@@ -476,8 +476,8 @@ void GameState_Destroy(GameState* gameState) {
         // Performing clear skeletons before unload resources fixes an actor heap corruption crash due to the skeleton patching system.
         ResourceMgr_ClearSkeletons();
 
-        if (sceneNum > -0 && sceneNum <= SCENE_TESTROOM) {
-            ResourceMgr_RegisterUnloadSceneAssets(sceneNum);
+        if (play->sceneNum >= SCENE_DEKU_TREE && play->sceneNum <= SCENE_TESTROOM) {
+            ResourceMgr_RegisterUnloadSceneAssets(play->sceneNum);
         }
 
         if (ResourceMgr_IsAltAssetsEnabled()) {

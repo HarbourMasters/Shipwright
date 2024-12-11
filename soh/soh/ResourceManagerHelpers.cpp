@@ -604,27 +604,38 @@ extern "C" void ResourceMgr_UnloadSceneAssets() {
     }
 }
 
+// Persisted assets never unload, generally because they're used in multiple places. The biggest use of this
+// is the skyboxes, handled by "alt/textures/*", and also take the most memory in the biggest packs
+// Overlays loads the file select and pause menus, textures also handles icons for those menus
 extern "C" void ResourceMgr_LoadDelayedPersistentAltAssets() {
+    // Load sound effects first for title screen "Press Start" and pause sounds. These are loaded
+    // before the alt assets to prevent load lock for the audio itself
     Ship::Context::GetInstance()->GetResourceManager()->LoadResourceAsync("audio/fonts/00_Sound_Effects_1");
     Ship::Context::GetInstance()->GetResourceManager()->LoadResourceAsync("audio/fonts/00_Sound_Effects_2");
     ResourceLoadDirectoryAsync("audio/*");
     ResourceLoadDirectoryAsync("alt/overlays/*");
-    ResourceLoadDirectoryAsync("alt/textures/*");
+    // Load the skyboxes before anything else
     ResourceLoadDirectoryAsync("alt/textures/vr_cloud*");
+    ResourceLoadDirectoryAsync("alt/textures/vr_fine*");
+    ResourceLoadDirectoryAsync("alt/textures/*");
     ResourceLoadDirectoryAsync("alt/objects/gameplay_*");
-    ResourceLoadDirectoryAsync("alt/scenes/*/spot00*");
     ResourceLoadDirectoryAsync("alt/code/*");
 }
 
+// Setup initial preload based on Fast File Select and Save Index options
 extern "C" void ResourceMgr_LoadPersistentAltAssets() {
     bool skipTitle = CVarGetInteger(CVAR_DEVELOPER_TOOLS("SkipLogoTitle"), 0);
     int fastFile = CVarGetInteger(CVAR_DEVELOPER_TOOLS("SaveFileID"), 0);
 
     if (!skipTitle) {
         ResourceLoadDirectoryAsync("alt/textures/nintendo_rogo_static/*");
+        // Title screen/hyrule field
         ResourceLoadDirectoryAsync("alt/scenes/*/spot00*");
+        // Title logos
         ResourceLoadDirectoryAsync("alt/objects/object_mag/*");
+        // Non-in-game gameplay_keep
         ResourceLoadDirectoryAsync("alt/objects/gameplay_keep/*");
+        // Title screen music
         Ship::Context::GetInstance()->GetResourceManager()->LoadResourceAsync("audio/sequences/030_Title_Theme");
         Ship::Context::GetInstance()->GetResourceManager()->LoadResourceAsync("audio/fonts/06_Title_Theme");
     }
@@ -632,6 +643,9 @@ extern "C" void ResourceMgr_LoadPersistentAltAssets() {
         ResourceLoadDirectoryAsync("alt/overlays/ovl_file_choose/*");
         ResourceLoadDirectoryAsync("alt/textures/title_static/*");
         ResourceLoadDirectoryAsync("alt/objects/gameplay_keep/*");
+        ResourceLoadDirectoryAsync("alt/textures/vr_cloud*");
+        ResourceLoadDirectoryAsync("alt/textures/vr_fine*");
+        // File Select music
         Ship::Context::GetInstance()->GetResourceManager()->LoadResourceAsync("audio/sequences/087_File_Select");
         Ship::Context::GetInstance()->GetResourceManager()->LoadResourceAsync("audio/fonts/09_Fairy_Fountain");
     }
