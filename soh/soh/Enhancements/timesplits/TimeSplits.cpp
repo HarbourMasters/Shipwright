@@ -774,13 +774,13 @@ void TimeSplitsDrawOptionsMenu() {
         color.b = windowColor.z * 255.0;
         color.a = windowColor.w * 255.0;
         CVarSetColor("TimeSplits.WindowColor", color);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
     ImGui::SameLine();
     if (ImGui::Button("Reset")) {
         windowColor = { 0.0f, 0.0f, 0.0f, 1.0f };
         CVarSetColor("TimeSplits.WindowColor", {0, 0, 0, 1});
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
 
     if (UIWidgets::PaddedEnhancementSliderFloat("Window Size: %.1fx", "##windowSize",

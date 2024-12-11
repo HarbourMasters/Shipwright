@@ -238,10 +238,10 @@ static int GetMaxGSCount() {
   int maxBridge = 0;
   int maxLACS = 0;
   if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS)) {
-    maxBridge = ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).Value<uint8_t>();
+    maxBridge = ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).GetContextOptionIndex();
   }
   if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_TOKENS)) {
-    maxLACS = ctx->GetOption(RSK_LACS_TOKEN_COUNT).Value<uint8_t>();
+    maxLACS = ctx->GetOption(RSK_LACS_TOKEN_COUNT).GetContextOptionIndex();
   }
   maxBridge = std::max(maxBridge, maxLACS);
   //Get the max amount of GS which could be useful from token reward locations
@@ -266,7 +266,7 @@ static int GetMaxGSCount() {
       maxUseful = 10;
   }
   //Return max of the two possible reasons tokens could be important, minus the tokens in the starting inventory
-  return std::max(maxUseful, maxBridge) - ctx->GetOption(RSK_STARTING_SKULLTULA_TOKEN).Value<uint8_t>();
+  return std::max(maxUseful, maxBridge) - ctx->GetOption(RSK_STARTING_SKULLTULA_TOKEN).GetContextOptionIndex();
 }
 
 std::string GetShopItemBaseName(std::string itemName) {
@@ -855,11 +855,6 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
                 SPDLOG_DEBUG("\nCANNOT PLACE ");
                 SPDLOG_DEBUG(Rando::StaticData::RetrieveItem(item).GetName().GetEnglish());
                 SPDLOG_DEBUG(". TRYING AGAIN...\n");
-
-#ifdef ENABLE_DEBUG
-                Regions::DumpWorldGraph(Rando::StaticData::RetrieveItem(item).GetName().GetEnglish());
-                PlacementLog_Write();
-#endif
 
                 // reset any locations that got an item
                 for (RandomizerCheck loc : attemptedLocations) {

@@ -238,7 +238,7 @@ namespace UIWidgets {
         bool val = (bool)CVarGetInteger(cvarName, defaultValue);
         if (CustomCheckbox(text, &val, disabled, disabledGraphic)) {
             CVarSetInteger(cvarName, val);
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             changed = true;
         }
 
@@ -257,7 +257,7 @@ namespace UIWidgets {
         int val = CVarGetInteger(cvarName, defaultValue);
         if (CustomCheckboxTristate(text, &val, disabled, disabledGraphic)) {
             CVarSetInteger(cvarName, val);
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             changed = true;
         }
 
@@ -297,7 +297,7 @@ namespace UIWidgets {
                         CVarSetInteger(cvarName, i);
                         selected = i;
                         changed = true;
-                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                     }
                 }
             }
@@ -310,7 +310,7 @@ namespace UIWidgets {
             if (disabledValue >= 0 && selected != disabledValue) {
                 CVarSetInteger(cvarName, disabledValue);
                 changed = true;
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             }
         }
 
@@ -400,7 +400,7 @@ namespace UIWidgets {
 
         if (changed && (oldVal != val)) {
             CVarSetInteger(cvarName, val);
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         } else {
             changed = false;
         }
@@ -501,7 +501,7 @@ namespace UIWidgets {
             ss << std::setprecision(ticks + 1) << std::setiosflags(std::ios_base::fixed) << val;
             val = std::stof(ss.str());
             CVarSetFloat(cvarName, val);
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         } else {
             changed = false;
         }
@@ -550,7 +550,7 @@ namespace UIWidgets {
         int val = CVarGetInteger(cvarName, 0);
         if (ImGui::RadioButton(make_invisible.c_str(), id == val)) {
             CVarSetInteger(cvarName, id);
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             ret = true;
         }
         ImGui::SameLine();
@@ -577,7 +577,7 @@ namespace UIWidgets {
 
             CVarSetColor(cvarName, colorsRGBA);
             CVarSetInteger(Cvar_RBM.c_str(), 0); //On click disable rainbow mode.
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             changed = true;
         }
         Tooltip("Revert colors to the game's original colors (GameCube version)\nOverwrites previously chosen color");
@@ -602,7 +602,7 @@ namespace UIWidgets {
             NewColors.b = fmin(fmax(colors->z * 255, 0), 255);
             CVarSetColor(cvarName, NewColors);
             CVarSetInteger(Cvar_RBM.c_str(), 0); // On click disable rainbow mode.
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             changed = true;
         }
         Tooltip("Chooses a random color\nOverwrites previously chosen color");
@@ -663,7 +663,7 @@ namespace UIWidgets {
                 colors.a = 255.0;
 
                 CVarSetColor(cvarName, colors);
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                 changed = true;
             }
         }
@@ -679,7 +679,7 @@ namespace UIWidgets {
                 colors.a = ColorRGBA.w * 255.0;
 
                 CVarSetColor(cvarName, colors);
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                 changed = true;
             }
         }

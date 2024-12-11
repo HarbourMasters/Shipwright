@@ -16,7 +16,7 @@ void RegionTable_Init_GerudoValley() {
                   Entrance(RR_GV_UPPER_STREAM,   {[]{return true;}}),
                   Entrance(RR_GV_CRATE_LEDGE,    {[]{return logic->IsChild || logic->CanUse(RG_LONGSHOT);}}),
                   Entrance(RR_GV_GROTTO_LEDGE,   {[]{return true;}}),
-                  Entrance(RR_GV_FORTRESS_SIDE,  {[]{return (logic->IsAdult && (logic->CanUse(RG_EPONA) || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_OPEN) || logic->CarpenterRescue)) || (logic->IsChild && logic->CanUse(RG_HOOKSHOT));}}),
+                  Entrance(RR_GV_FORTRESS_SIDE,  {[]{return (logic->IsAdult && (logic->CanUse(RG_EPONA) || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_FREE) || logic->CarpenterRescue)) || (logic->IsChild && logic->CanUse(RG_HOOKSHOT));}}),
   });
 
   areaTable[RR_GV_UPPER_STREAM] = Region("GV Upper Stream", "Gerudo Valley", {RA_GERUDO_VALLEY}, DAY_NIGHT_CYCLE, {
@@ -64,7 +64,7 @@ void RegionTable_Init_GerudoValley() {
                   //Exits
                   Entrance(RR_GERUDO_FORTRESS,   {[]{return true;}}),
                   Entrance(RR_GV_UPPER_STREAM,   {[]{return true;}}),
-                  Entrance(RR_GERUDO_VALLEY,     {[]{return logic->IsChild || logic->CanUse(RG_EPONA) || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_OPEN) || logic->CarpenterRescue;}}),
+                  Entrance(RR_GERUDO_VALLEY,     {[]{return logic->IsChild || logic->CanUse(RG_EPONA) || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_FREE) || logic->CarpenterRescue;}}),
                   Entrance(RR_GV_CARPENTER_TENT, {[]{return logic->IsAdult;}}),
                   Entrance(RR_GV_STORMS_GROTTO,  {[]{return logic->IsAdult && logic->CanOpenStormsGrotto();}}),
                   Entrance(RR_GV_CRATE_LEDGE, {[]{return false;}}),

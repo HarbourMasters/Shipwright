@@ -6070,7 +6070,7 @@ void Interface_Draw(PlayState* play) {
                         svar5 = CVarGetInteger(CVAR_COSMETIC("HUD.Timers.PosX"), 0)+204+X_Margins_Timer;
                     } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Timers.PosType"), 0) == 4) {//Hidden
                         svar5 = -9999;
-                    }
+                    }                
                 }
 
                 OVERLAY_DISP =

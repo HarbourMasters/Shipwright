@@ -14,7 +14,7 @@ void BgSpot01Idomizu_Destroy(Actor* thisx, PlayState* play);
 void BgSpot01Idomizu_Update(Actor* thisx, PlayState* play);
 void BgSpot01Idomizu_Draw(Actor* thisx, PlayState* play);
 
-void func_808ABB84(BgSpot01Idomizu* this, PlayState* play);
+void BgSpot01Idomizu_UpdateWaterLevel(BgSpot01Idomizu* this, PlayState* play);
 
 const ActorInit Bg_Spot01_Idomizu_InitVars = {
     ACTOR_BG_SPOT01_IDOMIZU,
@@ -42,14 +42,14 @@ void BgSpot01Idomizu_Init(Actor* thisx, PlayState* play) {
     } else {
         this->waterHeight = 52.0f;
     }
-    this->actionFunc = func_808ABB84;
+    this->actionFunc = BgSpot01Idomizu_UpdateWaterLevel;
     this->actor.world.pos.y = this->waterHeight;
 }
 
 void BgSpot01Idomizu_Destroy(Actor* thisx, PlayState* play) {
 }
 
-void func_808ABB84(BgSpot01Idomizu* this, PlayState* play) {
+void BgSpot01Idomizu_UpdateWaterLevel(BgSpot01Idomizu* this, PlayState* play) {
     if (Flags_GetEventChkInf(EVENTCHKINF_DRAINED_WELL_IN_KAKARIKO)) {
         this->waterHeight = -550.0f;
     }

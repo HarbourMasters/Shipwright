@@ -173,7 +173,7 @@ cmake --build build-cmake --target ExtractAssetHeaders
 ```
 
 ## macOS
-Requires Xcode (or xcode-tools) && `sdl2, libpng, glew, ninja, cmake` (can be installed via homebrew, macports, etc)
+Requires Xcode (or xcode-tools) && `sdl2, libpng, glew, ninja, cmake, tinyxml2, nlohmann-json, libzip` (can be installed via [homebrew](https://brew.sh/), macports, etc)
 
 **Important: For maximum performance make sure you have ninja build tools installed!**
 
@@ -186,6 +186,9 @@ cd ShipWright
 
 # Clone the submodule libultraship
 git submodule update --init
+
+# Install development dependencies (assuming homebrew)
+brew install sdl2 libpng glew ninja cmake tinyxml2 nlohmann-json libzip
 
 # Generate Ninja project
 # Add `-DCMAKE_BUILD_TYPE:STRING=Release` if you're packaging

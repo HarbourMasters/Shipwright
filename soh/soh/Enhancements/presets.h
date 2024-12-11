@@ -242,6 +242,8 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("AuthenticLogo"),
     CVAR_ENHANCEMENT("PauseLiveLinkRotationSpeed"),
     CVAR_ENHANCEMENT("BowReticle"),
+    CVAR_ENHANCEMENT("BoomerangFirstPerson"),
+    CVAR_ENHANCEMENT("BoomerangReticle"),
     CVAR_ENHANCEMENT("FixTexturesOOB"),
     CVAR_ENHANCEMENT("IvanCoopModeEnabled"),
     CVAR_ENHANCEMENT("EnemySpawnsOverWaterboxes"),
@@ -304,6 +306,7 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("TimeSavers.SkipChildStealth"),
     CVAR_ENHANCEMENT("TimeSavers.SkipTowerEscape"),
     CVAR_ENHANCEMENT("TimeSavers.SkipForcedDialog"),
+    CVAR_ENHANCEMENT("TimeSavers.SleepingWaterfall"),
     CVAR_ENHANCEMENT("SlowTextSpeed"),
 };
 
@@ -549,6 +552,7 @@ const std::vector<const char*> randomizerCvars = {
     CVAR_RANDOMIZER_SETTING("SkipChildZelda"),
     CVAR_RANDOMIZER_SETTING("SkipEponaRace"),
     CVAR_RANDOMIZER_SETTING("SkipScarecrowsSong"),
+    CVAR_RANDOMIZER_SETTING("SleepingWaterfall"),
     CVAR_RANDOMIZER_SETTING("StartingAge"),
     CVAR_RANDOMIZER_SETTING("StartingBoleroOfFire"),
     CVAR_RANDOMIZER_SETTING("StartingConsumables"),
@@ -1175,12 +1179,13 @@ const std::vector<PresetEntry> s6PresetEntries = {
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("SkipChildZelda"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("SkipEponaRace"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("SkipTowerEscape"), 1),
+    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("SleepingWaterfall"), RO_WATERFALL_CLOSED),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("StartingAge"), RO_AGE_RANDOM),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("StartingConsumables"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("StartingDekuShield"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("StartingMapsCompasses"), RO_DUNGEON_ITEM_LOC_STARTWITH),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("StartingOcarina"), 1),
-    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("ZorasFountain"), 0),
+    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("ZorasFountain"), RO_ZF_CLOSED),
 };
 
 const std::vector<PresetEntry> hellModePresetEntries = {
@@ -1235,16 +1240,18 @@ const std::vector<PresetEntry> hellModePresetEntries = {
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("SkipEponaRace"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("SkipScarecrowsSong"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("SkipTowerEscape"), 1),
+    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("SleepingWaterfall"), RO_WATERFALL_OPEN),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("StartingAge"), RO_AGE_RANDOM),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("StartingMapsCompasses"), RO_DUNGEON_ITEM_LOC_ANYWHERE),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("SunlightArrows"), 1),
-    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("ZorasFountain"), 2),
+    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("ZorasFountain"), RO_ZF_OPEN),
 };
 
 const std::vector<PresetEntry> BenchmarkPresetEntries = {
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("Forest"), RO_FOREST_CLOSED_DEKU),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("KakarikoGate"), RO_KAK_GATE_OPEN),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("DoorOfTime"), RO_DOOROFTIME_SONGONLY),
+    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("SleepingWaterfall"), RO_WATERFALL_CLOSED),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("ZorasFountain"), RO_ZF_CLOSED),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("GerudoFortress"), RO_GF_NORMAL),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("RainbowBridge"), RO_BRIDGE_DUNGEON_REWARDS),

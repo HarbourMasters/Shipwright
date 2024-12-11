@@ -415,6 +415,38 @@ namespace Rando {
         bool killed = false;
         switch(enemy) {
             case RE_GOLD_SKULLTULA:
+                switch (distance){
+                    case ED_CLOSE:
+                        //hammer jumpslash cannot damage these, but hammer swing can
+                        killed = CanUse(RG_MEGATON_HAMMER);
+                        [[fallthrough]];
+                    case ED_SHORT_JUMPSLASH:
+                        killed = killed || CanUse(RG_KOKIRI_SWORD);
+                        [[fallthrough]];
+                    case ED_MASTER_SWORD_JUMPSLASH:
+                        killed = killed || CanUse(RG_MASTER_SWORD);
+                        [[fallthrough]];
+                    case ED_LONG_JUMPSLASH:
+                        killed = killed || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_STICKS);
+                        [[fallthrough]];
+                    case ED_BOMB_THROW:
+                        killed = killed || CanUse(RG_BOMB_BAG);
+                        [[fallthrough]];
+                    case ED_BOOMERANG:
+                        killed = killed || CanUse(RG_BOOMERANG) || CanUse(RG_DINS_FIRE);
+                        [[fallthrough]];
+                    case ED_HOOKSHOT:
+                        //RANDOTODO test dins and chu range in a practical example
+                        killed = killed || CanUse(RG_HOOKSHOT) || (wallOrFloor && CanUse(RG_BOMBCHU_5));
+                        [[fallthrough]];
+                    case ED_LONGSHOT:
+                        killed = killed || CanUse(RG_LONGSHOT);
+                        [[fallthrough]];
+                    case ED_FAR:
+                        killed = killed || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW);
+                        break;
+                }
+                return killed;
             case RE_GOHMA_LARVA:
             case RE_MAD_SCRUB:
             case RE_DEKU_BABA:
@@ -618,8 +650,15 @@ namespace Rando {
             case RE_PURPLE_LEEVER:
               //dies on it's own, so this is the conditions to spawn it (killing 10 normal leevers)
               //Sticks and Ice arrows work but will need ammo capacity logic
-              //other mothods can damage them but not kill them, and they run when hit, making them impractical
-              return CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD);
+              //other methods can damage them but not kill them, and they run when hit, making them impractical
+                return CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD);
+            case RE_TENTACLE:
+                return CanUse(RG_BOOMERANG);
+            case RE_BARI:
+                return HookshotOrBoomerang() || CanUse(RG_FAIRY_BOW) || HasExplosives() || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_STICKS) || CanUse(RG_DINS_FIRE) || (TakeDamage() && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)));
+            case RE_SHABOM:
+            //RANDOTODO when you add better damage logic, you can kill this by taking hits
+                return CanUse(RG_BOOMERANG) || CanUse(RG_NUTS) || CanJumpslash() || CanUse(RG_DINS_FIRE) || CanUse(RG_ICE_ARROWS);
             default:
                 SPDLOG_ERROR("CanKillEnemy reached `default`.");
                 assert(false);
@@ -974,7 +1013,7 @@ namespace Rando {
         10 for OHKO.
         This is the number of shifts to apply, not a real multiplier
         */
-        uint8_t Multiplier = (ctx->GetOption(RSK_DAMAGE_MULTIPLIER).Value<uint8_t>() < 6) ? ctx->GetOption(RSK_DAMAGE_MULTIPLIER).Value<uint8_t>() : 10;
+        uint8_t Multiplier = (ctx->GetOption(RSK_DAMAGE_MULTIPLIER).GetContextOptionIndex() < 6) ? ctx->GetOption(RSK_DAMAGE_MULTIPLIER).GetContextOptionIndex() : 10;
         //(Hearts() << (2 + HasItem(RG_DOUBLE_DEFENSE))) is quarter hearts after DD
         //>> Multiplier halves on normal and does nothing on half, meaning we're working with half hearts on normal damage 
         return ((Hearts() << (2 + HasItem(RG_DOUBLE_DEFENSE))) >> Multiplier) + 
@@ -1085,7 +1124,7 @@ namespace Rando {
     bool Logic::CanFinishGerudoFortress(){
         return (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_NORMAL) && SmallKeys(RR_GERUDO_FORTRESS, 4) && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)) && (HasItem(RG_GERUDO_MEMBERSHIP_CARD) || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_KITCHEN))) ||
                (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_FAST)   && SmallKeys(RR_GERUDO_FORTRESS, 1) && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD))) ||
-               ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_OPEN);
+               ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_FREE);
     }
 
     bool Logic::CanStandingShield(){
@@ -1103,21 +1142,21 @@ namespace Rando {
     bool Logic::CanBuildRainbowBridge(){
         return ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_ALWAYS_OPEN)      ||
                (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_VANILLA)         && HasItem(RG_SHADOW_MEDALLION) && HasItem(RG_SPIRIT_MEDALLION) && CanUse(RG_LIGHT_ARROWS)) ||
-               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_STONES)          && StoneCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG_REWARD)) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_STONE_COUNT).Value<uint8_t>()) ||
-               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_MEDALLIONS)      && MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG_REWARD)) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT).Value<uint8_t>()) ||
-               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEON_REWARDS) && StoneCount() + MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG_REWARD)) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).Value<uint8_t>()) ||
-               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEONS)        && DungeonCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG_REWARD)) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).Value<uint8_t>()) ||
-               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS)          && GetGSCount() >= ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).Value<uint8_t>()) ||
+               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_STONES)          && StoneCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG_REWARD)) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_STONE_COUNT).GetContextOptionIndex()) ||
+               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_MEDALLIONS)      && MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG_REWARD)) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT).GetContextOptionIndex()) ||
+               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEON_REWARDS) && StoneCount() + MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG_REWARD)) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).GetContextOptionIndex()) ||
+               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEONS)        && DungeonCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG_REWARD)) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).GetContextOptionIndex()) ||
+               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS)          && GetGSCount() >= ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).GetContextOptionIndex()) ||
                (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_GREG)            && HasItem(RG_GREG_RUPEE));
     }
 
     bool Logic::CanTriggerLACS(){
         return (ctx->GetSettings()->LACSCondition() == RO_LACS_VANILLA    && HasItem(RG_SHADOW_MEDALLION) && HasItem(RG_SPIRIT_MEDALLION)) ||
-               (ctx->GetSettings()->LACSCondition() == RO_LACS_STONES     && StoneCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >= ctx->GetOption(RSK_LACS_STONE_COUNT).Value<uint8_t>()) ||
-               (ctx->GetSettings()->LACSCondition() == RO_LACS_MEDALLIONS && MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >= ctx->GetOption(RSK_LACS_MEDALLION_COUNT).Value<uint8_t>()) ||
-               (ctx->GetSettings()->LACSCondition() == RO_LACS_REWARDS    && StoneCount() + MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >= ctx->GetOption(RSK_LACS_REWARD_COUNT).Value<uint8_t>()) ||
-               (ctx->GetSettings()->LACSCondition() == RO_LACS_DUNGEONS   && DungeonCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >= ctx->GetOption(RSK_LACS_DUNGEON_COUNT).Value<uint8_t>()) ||
-               (ctx->GetSettings()->LACSCondition() == RO_LACS_TOKENS     && GetGSCount() >= ctx->GetOption(RSK_LACS_TOKEN_COUNT).Value<uint8_t>());
+               (ctx->GetSettings()->LACSCondition() == RO_LACS_STONES     && StoneCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >= ctx->GetOption(RSK_LACS_STONE_COUNT).GetContextOptionIndex()) ||
+               (ctx->GetSettings()->LACSCondition() == RO_LACS_MEDALLIONS && MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >= ctx->GetOption(RSK_LACS_MEDALLION_COUNT).GetContextOptionIndex()) ||
+               (ctx->GetSettings()->LACSCondition() == RO_LACS_REWARDS    && StoneCount() + MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >= ctx->GetOption(RSK_LACS_REWARD_COUNT).GetContextOptionIndex()) ||
+               (ctx->GetSettings()->LACSCondition() == RO_LACS_DUNGEONS   && DungeonCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >= ctx->GetOption(RSK_LACS_DUNGEON_COUNT).GetContextOptionIndex()) ||
+               (ctx->GetSettings()->LACSCondition() == RO_LACS_TOKENS     && GetGSCount() >= ctx->GetOption(RSK_LACS_TOKEN_COUNT).GetContextOptionIndex());
     }
 
     bool Logic::SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmount) {
@@ -2088,7 +2127,7 @@ namespace Rando {
         //CanPlantBean        = false;
         BigPoeKill            = false;
 
-        BaseHearts      = ctx->GetOption(RSK_STARTING_HEARTS).Value<uint8_t>() + 1;
+        BaseHearts      = ctx->GetOption(RSK_STARTING_HEARTS).GetContextOptionIndex() + 1;
         
 
         //Bridge Requirements
@@ -2144,6 +2183,7 @@ namespace Rando {
         GTGPlatformSilverRupees   = false;
         MQJabuHolesRoomDoor       = false;
         JabuWestTentacle          = false;
+        JabuEastTentacle          = false;
         JabuNorthTentacle         = false;
         LoweredJabuPath           = false;
         MQJabuLiftRoomCow         = false;
@@ -2157,6 +2197,9 @@ namespace Rando {
         MQSpiritCrawlBoulder      = false;
         MQSpiritMapRoomEnemies    = false;
         MQSpirit3SunsEnemies      = false;
+        Spirit1FSilverRupees      = false;
+        JabuRutoInB1              = false;
+        JabuRutoIn1F              = false;
 
         StopPerformanceTimer(PT_LOGIC_RESET);
     }

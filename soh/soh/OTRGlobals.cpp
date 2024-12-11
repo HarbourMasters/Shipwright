@@ -348,8 +348,8 @@ OTRGlobals::OTRGlobals() {
     context->InitWindow({ sohInputEditorWindow });
 
     auto overlay = context->GetInstance()->GetWindow()->GetGui()->GetGameOverlay();
-    overlay->LoadFont("Press Start 2P", "fonts/PressStart2P-Regular.ttf", 12.0f);
-    overlay->LoadFont("Fipps", "fonts/Fipps-Regular.otf", 32.0f);
+    overlay->LoadFont("Press Start 2P", 12.0f, "fonts/PressStart2P-Regular.ttf");
+    overlay->LoadFont("Fipps", 32.0f, "fonts/Fipps-Regular.otf");
     overlay->SetCurrentFont(CVarGetString(CVAR_GAME_OVERLAY_FONT, "Press Start 2P"));
 
     context->InitAudio({ .SampleRate = 44100, .SampleLength = 1024, .DesiredBuffered = 2480 });
@@ -1920,7 +1920,7 @@ extern "C" u32 SpoilerFileExists(const char* spoilerFileName) {
 }
 
 extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey) {
-    return OTRGlobals::Instance->gRandoContext->GetOption(randoSettingKey).GetSelectedOptionIndex();
+    return OTRGlobals::Instance->gRandoContext->GetOption(randoSettingKey).GetContextOptionIndex();
 }
 
 extern "C" RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams) {
@@ -2140,7 +2140,6 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         } else if (textId >= TEXT_SHOP_ITEM_RANDOM_CONFIRM && textId <= TEXT_SHOP_ITEM_RANDOM_CONFIRM_END){
             RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf((RandomizerInf)((textId - TEXT_SHOP_ITEM_RANDOM_CONFIRM) + RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1));
             messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(rc, TEXT_SHOP_ITEM_RANDOM_CONFIRM);
-        // textId: TEXT_SCRUB_RANDOM + (randomizerInf - RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT)
         } else if (textId == TEXT_SCRUB_RANDOM) {
             EnDns* enDns = (EnDns*)GET_PLAYER(play)->talkActor;
             RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf((RandomizerInf)enDns->sohScrubIdentity.randomizerInf);
@@ -2446,7 +2445,7 @@ void SoH_ProcessDroppedFiles(std::string filePath) {
         gui->GetGuiWindow("Stats")->Hide();
         std::dynamic_pointer_cast<Ship::ConsoleWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->ClearBindings();
 
-        gui->SaveConsoleVariablesOnNextTick();
+        gui->SaveConsoleVariablesNextFrame();
 
         uint32_t finalHash = boost::hash_32<std::string>{}(configJson.dump());
         gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Configuration Loaded. Hash: %d", finalHash);

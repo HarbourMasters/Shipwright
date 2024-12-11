@@ -2,6 +2,7 @@
 #include "vt.h"
 
 #include "overlays/actors/ovl_Arms_Hook/z_arms_hook.h"
+#include "overlays/actors/ovl_En_Arrow/z_en_arrow.h"
 #include "overlays/actors/ovl_En_Part/z_en_part.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
@@ -3854,8 +3855,14 @@ Actor* Actor_GetProjectileActor(PlayState* play, Actor* refActor, f32 radius) {
             //  it can also be an arrow.
             //  Luckily, the field at the same offset in the arrow actor is the x component of a vector
             //  which will rarely ever be 0. So it's very unlikely for this bug to cause an issue.
+            //
+            //  SoH [Port] We're making a change here, it doesn't technically fix the bug but makes it behave
+            //  more like hardware. Because of pointer size differences in SoH this was accessing a different
+            //  place in memory and causing issues with Dark link behavior, and probably other places too
             if ((Math_Vec3f_DistXYZ(&refActor->world.pos, &actor->world.pos) > radius) ||
-                (((ArmsHook*)actor)->timer == 0)) {
+                (actor->id == ACTOR_ARMS_HOOK && ((ArmsHook*)actor)->timer == 0) ||
+                (actor->id == ACTOR_EN_ARROW && ((EnArrow*)actor)->unk_210.x == 0)
+            ) {
                 actor = actor->next;
             } else {
                 deltaX = Math_SinS(actor->world.rot.y) * (actor->speedXZ * 10.0f);
@@ -4540,25 +4547,25 @@ void func_80034CC4(PlayState* play, SkelAnime* skelAnime, OverrideLimbDraw overr
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-s16 func_80034DD4(Actor* actor, PlayState* play, s16 arg2, f32 arg3) {
+s16 Actor_UpdateAlphaByDistance(Actor* actor, PlayState* play, s16 alpha, f32 radius) {
     Player* player = GET_PLAYER(play);
-    f32 var;
+    f32 distance;
 
     if ((play->csCtx.state != CS_STATE_IDLE) || (gDbgCamEnabled)) {
-        var = Math_Vec3f_DistXYZ(&actor->world.pos, &play->view.eye) * 0.25f;
+        distance = Math_Vec3f_DistXYZ(&actor->world.pos, &play->view.eye) * 0.25f;
     } else {
-        var = Math_Vec3f_DistXYZ(&actor->world.pos, &player->actor.world.pos);
+        distance = Math_Vec3f_DistXYZ(&actor->world.pos, &player->actor.world.pos);
     }
 
-    if (arg3 < var) {
+    if (radius < distance) {
         actor->flags &= ~ACTOR_FLAG_TARGETABLE;
-        Math_SmoothStepToS(&arg2, 0, 6, 0x14, 1);
+        Math_SmoothStepToS(&alpha, 0, 6, 0x14, 1);
     } else {
         actor->flags |= ACTOR_FLAG_TARGETABLE;
-        Math_SmoothStepToS(&arg2, 0xFF, 6, 0x14, 1);
+        Math_SmoothStepToS(&alpha, 0xFF, 6, 0x14, 1);
     }
 
-    return arg2;
+    return alpha;
 }
 
 void Animation_ChangeByInfo(SkelAnime* skelAnime, AnimationInfo* animationInfo, s32 index) {

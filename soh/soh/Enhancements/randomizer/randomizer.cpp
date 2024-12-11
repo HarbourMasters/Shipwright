@@ -478,7 +478,8 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
                 (CUR_UPG_VALUE(UPG_STICKS) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE);
         case RG_DEKU_STICK_1:
         case RG_BUY_DEKU_STICK_1:
-            return CUR_UPG_VALUE(UPG_STICKS) ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
+            return CUR_UPG_VALUE(UPG_STICKS) || !OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG).GetContextOptionIndex()
+                 ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
         case RG_PROGRESSIVE_NUT_UPGRADE:
             return infiniteUpgrades != RO_INF_UPGRADES_OFF ?
                 (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_NUT_UPGRADE) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN) :
@@ -487,7 +488,8 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_DEKU_NUTS_10:
         case RG_BUY_DEKU_NUTS_5:
         case RG_BUY_DEKU_NUTS_10:
-            return CUR_UPG_VALUE(UPG_NUTS) ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
+            return CUR_UPG_VALUE(UPG_NUTS) || !OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_DEKU_NUT_BAG).GetContextOptionIndex()
+                ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
         case RG_PROGRESSIVE_BOMB_BAG:
             return infiniteUpgrades != RO_INF_UPGRADES_OFF ?
                 (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMB_BAG) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN) :
@@ -1270,7 +1272,7 @@ FishIdentity Randomizer::IdentifyFish(s32 sceneNum, s32 actorParams) {
 }
 
 u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
-    return Rando::Context::GetInstance()->GetOption(randoSettingKey).GetSelectedOptionIndex();
+    return Rando::Context::GetInstance()->GetOption(randoSettingKey).GetContextOptionIndex();
 }
 
 GetItemEntry Randomizer::GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId, bool checkObtainability) {
@@ -1339,7 +1341,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     RandoMain::GenerateRando(excludedLocations, enabledTricks, seed);
 
     CVarSetInteger(CVAR_GENERAL("RandoGenerating"), 0);
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 
     generated = 1;
 }
@@ -1511,7 +1513,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                             excludedLocationString += ",";
                                         }
                                         CVarSetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"), excludedLocationString.c_str());
-                                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                                     }
                                     ImGui::SameLine();
                                     ImGui::Text("%s", Rando::StaticData::GetLocation(location)->GetShortName().c_str());
@@ -1556,7 +1558,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                         } else {
                                             CVarSetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"), excludedLocationString.c_str());
                                         }
-                                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                                     }
                                     ImGui::SameLine();
                                     ImGui::Text("%s", Rando::StaticData::GetLocation(location)->GetShortName().c_str());
@@ -1726,7 +1728,7 @@ void RandomizerSettingsWindow::DrawElement() {
                         enabledTrickString += ",";
                     }
                     CVarClear(CVAR_RANDOMIZER_SETTING("EnabledTricks"));
-                    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                 }
                 ImGui::SameLine();
                 if (ImGui::Button("Enable All")) {
@@ -1741,7 +1743,7 @@ void RandomizerSettingsWindow::DrawElement() {
                         enabledTrickString += ",";
                     }
                     CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
-                    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                 }
             }
             if (ImGui::BeginTable("trickTags", showTag.size(), ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders)) {  
@@ -1796,7 +1798,7 @@ void RandomizerSettingsWindow::DrawElement() {
                             enabledTrickString += ",";
                         }
                         CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
-                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                     }
                     
                     ImGui::BeginChild("ChildTricksDisabled", ImVec2(0, -8), false, ImGuiWindowFlags_HorizontalScrollbar);
@@ -1831,7 +1833,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                                 enabledTrickString += ",";
                                             }
                                             CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
-                                            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                                            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                                         }
                                         Rando::Tricks::DrawTagChips(option.GetTags());
                                         ImGui::SameLine();
@@ -1887,7 +1889,7 @@ void RandomizerSettingsWindow::DrawElement() {
                         } else {
                             CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
                         }
-                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                     }
                     
                     ImGui::BeginChild("ChildTricksEnabled", ImVec2(0, -8), false, ImGuiWindowFlags_HorizontalScrollbar);
@@ -1926,7 +1928,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                         } else {
                                             CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
                                         }
-                                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                                     }
                                     Rando::Tricks::DrawTagChips(option.GetTags());
                                     ImGui::SameLine();

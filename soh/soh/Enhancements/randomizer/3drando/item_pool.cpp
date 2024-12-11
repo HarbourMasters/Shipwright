@@ -655,7 +655,7 @@ static void SetMinimalItemPool() {
   ReplaceMaxItem(RG_PROGRESSIVE_BOMB_BAG, 1);
   ReplaceMaxItem(RG_PIECE_OF_HEART, 0);
   // Need an extra heart container when starting with 1 heart to be able to reach 3 hearts
-  ReplaceMaxItem(RG_HEART_CONTAINER, (ctx->GetOption(RSK_STARTING_HEARTS).Value<uint8_t>() == 18)? 1 : 0);
+  ReplaceMaxItem(RG_HEART_CONTAINER, (ctx->GetOption(RSK_STARTING_HEARTS).GetContextOptionIndex() == 18)? 1 : 0);
 }
 
 void GenerateItemPool() {
@@ -721,7 +721,7 @@ void GenerateItemPool() {
 
   if (ctx->GetOption(RSK_TRIFORCE_HUNT)) {
     ctx->possibleIceTrapModels.push_back(RG_TRIFORCE_PIECE);
-    AddItemToMainPool(RG_TRIFORCE_PIECE, (ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).Value<uint8_t>() + 1));
+    AddItemToMainPool(RG_TRIFORCE_PIECE, (ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).GetContextOptionIndex() + 1));
     ctx->PlaceItemInLocation(RC_TRIFORCE_COMPLETED, RG_TRIFORCE); // Win condition
     ctx->PlaceItemInLocation(RC_GANON, GetJunkItem(), false, true);
   } else {
@@ -821,7 +821,7 @@ void GenerateItemPool() {
   if (fsMode.IsNot(RO_FISHSANITY_OFF)) {
     if (fsMode.Is(RO_FISHSANITY_POND) || fsMode.Is(RO_FISHSANITY_BOTH)) {
       // 17 max child pond fish
-      uint8_t pondCt = ctx->GetOption(RSK_FISHSANITY_POND_COUNT).GetSelectedOptionIndex();
+      uint8_t pondCt = ctx->GetOption(RSK_FISHSANITY_POND_COUNT).GetContextOptionIndex();
       for (uint8_t i = 0; i < pondCt; i++) {
         AddItemToMainPool(GetJunkItem());
       }
@@ -1026,7 +1026,7 @@ void GenerateItemPool() {
   }
 
   //Gerudo Fortress
-  if (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_OPEN)) {
+  if (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_FREE)) {
     ctx->PlaceItemInLocation(RC_GF_NORTH_F1_CARPENTER, RG_RECOVERY_HEART, false, true);
     ctx->PlaceItemInLocation(RC_GF_NORTH_F2_CARPENTER, RG_RECOVERY_HEART, false, true);
     ctx->PlaceItemInLocation(RC_GF_SOUTH_F1_CARPENTER, RG_RECOVERY_HEART, false, true);
@@ -1071,7 +1071,7 @@ void GenerateItemPool() {
   }
 
   //Gerudo Membership Card
-  if (ctx->GetOption(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD) && ctx->GetOption(RSK_GERUDO_FORTRESS).IsNot(RO_GF_OPEN)) {
+  if (ctx->GetOption(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD) && ctx->GetOption(RSK_GERUDO_FORTRESS).IsNot(RO_GF_FREE)) {
     AddItemToMainPool(RG_GERUDO_MEMBERSHIP_CARD);
     ctx->possibleIceTrapModels.push_back(RG_GERUDO_MEMBERSHIP_CARD);
   } else if (ctx->GetOption(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD)) {
@@ -1348,7 +1348,7 @@ void GenerateItemPool() {
 
   if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_KAK_TOKENS)) {
     ctx->PlaceItemInLocation(RC_KAK_100_GOLD_SKULLTULA_REWARD, RG_GANONS_CASTLE_BOSS_KEY);
-  } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Value<uint8_t>() >= RO_GANON_BOSS_KEY_LACS_VANILLA && ctx->GetOption(RSK_GANONS_BOSS_KEY).IsNot(RO_GANON_BOSS_KEY_TRIFORCE_HUNT)) {
+  } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).GetContextOptionIndex() >= RO_GANON_BOSS_KEY_LACS_VANILLA && ctx->GetOption(RSK_GANONS_BOSS_KEY).IsNot(RO_GANON_BOSS_KEY_TRIFORCE_HUNT)) {
     ctx->PlaceItemInLocation(RC_TOT_LIGHT_ARROWS_CUTSCENE, RG_GANONS_CASTLE_BOSS_KEY);
   } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_VANILLA)) {
     ctx->PlaceItemInLocation(RC_GANONS_TOWER_BOSS_KEY_CHEST, RG_GANONS_CASTLE_BOSS_KEY);

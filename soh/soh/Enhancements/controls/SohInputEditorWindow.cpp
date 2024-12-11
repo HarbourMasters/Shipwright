@@ -84,7 +84,7 @@ void SohInputEditorWindow::UpdateElement() {
             }
         }
 
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->BlockImGuiGamepadNavigation();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->BlockGamepadNavigation();
     } else {
         if (mGameInputBlockTimer != INT32_MAX) {
             mGameInputBlockTimer--;
@@ -95,13 +95,13 @@ void SohInputEditorWindow::UpdateElement() {
             }
         }
 
-        if (Ship::Context::GetInstance()->GetWindow()->GetGui()->ImGuiGamepadNavigationEnabled()) {
+        if (Ship::Context::GetInstance()->GetWindow()->GetGui()->GamepadNavigationEnabled()) {
             mMappingInputBlockTimer = ImGui::GetIO().Framerate / 3;
         } else {
             mMappingInputBlockTimer = INT32_MAX;
         }
 
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->UnblockImGuiGamepadNavigation();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->UnblockGamepadNavigation();
     }
 }
 
@@ -1109,7 +1109,7 @@ void SohInputEditorWindow::DrawLEDSection(uint8_t port) {
                         color.b = colorVec.z * 255.0;
 
                         CVarSetColor24(CVAR_SETTING("LEDPort1Color"), color);
-                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                     }
                     ImGui::SameLine();
                     ImGui::Text("Custom Color");
@@ -1525,7 +1525,7 @@ void SohInputEditorWindow::DrawMapping(CustomButtonMap& mapping, float labelWidt
             }
             if (ImGui::Selectable(i->second, i->first == currentButton)) {
                 CVarSetInteger(mapping.cVarName, i->first);
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             }
         }
         ImGui::EndCombo();

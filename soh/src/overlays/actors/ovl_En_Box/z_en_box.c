@@ -737,6 +737,8 @@ void EnBox_CreateExtraChestTextures() {
         gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, gChristmasGreenTreasureChestSideAndTopTex),
     };
 
+    Gfx gNoOp[] = { gsDPNoOp() };
+
     Gfx* frontCmd = ResourceMgr_LoadGfxByName(gTreasureChestChestFrontDL);
     int frontIndex = 0;
     while (frontCmd->words.w0 >> 24 != G_ENDDL) {
@@ -745,6 +747,20 @@ void EnBox_CreateExtraChestTextures() {
         gKeyTreasureChestChestFrontDL[frontIndex] = *frontCmd;
         gChristmasRedTreasureChestChestFrontDL[frontIndex] = *frontCmd;
         gChristmasGreenTreasureChestChestFrontDL[frontIndex] = *frontCmd;
+
+        // Set the second instruction of img OTR hash opcode to noop, since we will replace it with the
+        // OTR filepath opcode below
+        if (frontCmd->words.w0 >> 24 == G_SETTIMG_OTR_HASH) {
+            frontIndex++;
+            ++frontCmd;
+
+            gSkullTreasureChestChestFrontDL[frontIndex] = gNoOp[0];
+            gGoldTreasureChestChestFrontDL[frontIndex] = gNoOp[0];
+            gKeyTreasureChestChestFrontDL[frontIndex] = gNoOp[0];
+            gChristmasRedTreasureChestChestFrontDL[frontIndex] = gNoOp[0];
+            gChristmasGreenTreasureChestChestFrontDL[frontIndex] = gNoOp[0];
+        }
+
         frontIndex++;
         ++frontCmd;
     }
@@ -783,6 +799,20 @@ void EnBox_CreateExtraChestTextures() {
         gKeyTreasureChestChestSideAndLidDL[sideIndex] = *sideCmd;
         gChristmasRedTreasureChestChestSideAndLidDL[sideIndex] = *sideCmd;
         gChristmasGreenTreasureChestChestSideAndLidDL[sideIndex] = *sideCmd;
+
+        // Set the second instruction of img OTR hash opcode to noop, since we will replace it with the
+        // OTR filepath opcode below
+        if (sideCmd->words.w0 >> 24 == G_SETTIMG_OTR_HASH) {
+            sideIndex++;
+            ++sideCmd;
+
+            gSkullTreasureChestChestSideAndLidDL[sideIndex] = gNoOp[0];
+            gGoldTreasureChestChestSideAndLidDL[sideIndex] = gNoOp[0];
+            gKeyTreasureChestChestSideAndLidDL[sideIndex] = gNoOp[0];
+            gChristmasRedTreasureChestChestSideAndLidDL[sideIndex] = gNoOp[0];
+            gChristmasGreenTreasureChestChestSideAndLidDL[sideIndex] = gNoOp[0];
+        }
+
         sideIndex++;
         ++sideCmd;
     }

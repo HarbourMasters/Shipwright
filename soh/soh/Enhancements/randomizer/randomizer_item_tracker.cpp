@@ -1376,7 +1376,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
         CVarSetFloat(CVAR_TRACKER_ITEM("BgColorG"), ChromaKeyBackground.y);
         CVarSetFloat(CVAR_TRACKER_ITEM("BgColorB"), ChromaKeyBackground.z);
         CVarSetFloat(CVAR_TRACKER_ITEM("BgColorA"), ChromaKeyBackground.w);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
     ImGui::PopItemWidth();
 

@@ -35,10 +35,13 @@ extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 extern int32_t D_8011D3AC;
 
-extern void func_80AF36EC(EnRu2* enRu2, PlayState* play);
+extern void BgSpot03Taki_HandleWaterfallState(BgSpot03Taki* bgSpot03Taki, PlayState* play);
+extern void BgSpot03Taki_ApplyOpeningAlpha(BgSpot03Taki* bgSpot03Taki, s32 bufferIndex);
+
+extern void EnRu2_SetEncounterSwitchFlag(EnRu2* enRu2, PlayState* play);
 }
 
-#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetSelectedOptionIndex()
+#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetContextOptionIndex()
 
 void EnMa1_EndTeachSong(EnMa1* enMa1, PlayState* play) {
     if (Message_GetState(&gPlayState->msgCtx) == TEXT_STATE_CLOSING) {
@@ -94,6 +97,9 @@ void EnDntDemo_JudgeSkipToReward(EnDntDemo* enDntDemo, PlayState* play) {
             return;
         }
     }
+}
+
+void BgSpot03Taki_KeepOpen(BgSpot03Taki* bgSpot03Taki, PlayState* play) {
 }
 
 static int successChimeCooldown = 0;
@@ -206,6 +212,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 s16* csId = va_arg(args, s16*);
                 BgSpot03Taki* taki = NULL;
                 switch (*csId) {
+                    case 3150:
                     case 4180:
                     case 4100:
                         *should = false;
@@ -283,7 +290,8 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                     case ACTOR_BG_HIDAN_FWBIG:
                     case ACTOR_EN_EX_ITEM:
                     case ACTOR_EN_DNT_NOMAL:
-                    case ACTOR_EN_DNT_DEMO: {
+                    case ACTOR_EN_DNT_DEMO:
+                    case ACTOR_BG_HAKA_ZOU: {
                         *should = false;
                         break;
                     }
@@ -299,6 +307,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                     case ACTOR_BG_YDAN_MARUTA:
                     case ACTOR_BG_SPOT18_SHUTTER:
                     case ACTOR_BG_SPOT05_SOKO:
+                    case ACTOR_BG_SPOT06_OBJECTS:
                     case ACTOR_BG_SPOT18_BASKET:
                     case ACTOR_BG_HIDAN_CURTAIN:
                     case ACTOR_BG_MORI_HINERI:
@@ -331,11 +340,14 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             if (ForcedDialogIsDisabled(FORCED_DIALOG_SKIP_NAVI)) {
                 ElfMsg* naviTalk = va_arg(args, ElfMsg*);
                 int32_t paramsHighByte = naviTalk->actor.params >> 8;
-                if ((paramsHighByte & 0x80) == 0 && (paramsHighByte & 0x3F) != 0x3F) {
-                    Flags_SetSwitch(gPlayState, paramsHighByte & 0x3F);
-                    Actor_Kill(&naviTalk->actor);
-                    *should = false;
+                if ((paramsHighByte & 0x80) != 0) {
+                    break;
                 }
+                if ((paramsHighByte & 0x3F) != 0x3F) {
+                    Flags_SetSwitch(gPlayState, paramsHighByte & 0x3F);
+                }
+                Actor_Kill(&naviTalk->actor);
+                *should = false;
             }
             break;
         }
@@ -394,6 +406,14 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                     *textId = 0x3036;
                     *should = true;
                 }
+            }
+            break;
+        }
+        case VB_PLAY_MWEEP_CS: {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), 0)) {
+                *should = false;
+                Inventory_ReplaceItem(gPlayState, ITEM_LETTER_RUTO, ITEM_BOTTLE);
+                Flags_SetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED);
             }
             break;
         }
@@ -692,6 +712,8 @@ static uint32_t enFuUpdateHook = 0;
 static uint32_t enFuKillHook = 0;
 static uint32_t bgSpot02UpdateHook = 0;
 static uint32_t bgSpot02KillHook = 0;
+static uint32_t bgSpot03UpdateHook = 0;
+static uint32_t bgSpot03KillHook = 0;
 static uint32_t enPoSistersUpdateHook = 0;
 static uint32_t enPoSistersKillHook = 0;
 void TimeSaverOnActorInitHandler(void* actorRef) {
@@ -747,6 +769,10 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
         });
     }
 
+    if (actor->id == ACTOR_EN_OWL && gPlayState->sceneNum == SCENE_ZORAS_RIVER && CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SleepingWaterfall"), 0) == 2) {
+        Actor_Kill(actor);
+    }
+
     if (actor->id == ACTOR_BG_SPOT02_OBJECTS && actor->params == 2) {
         bgSpot02UpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* innerActorRef) mutable {
             Actor* innerActor = static_cast<Actor*>(innerActorRef);
@@ -766,6 +792,61 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
             GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(bgSpot02KillHook);
             bgSpot02UpdateHook = 0;
             bgSpot02KillHook = 0;
+        });
+    }
+
+    if (actor->id == ACTOR_BG_SPOT03_TAKI) {
+        bgSpot03UpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* innerActorRef) mutable {
+            Actor* innerActor = static_cast<Actor*>(innerActorRef);
+
+            if (innerActor->id != ACTOR_BG_SPOT03_TAKI) {
+                return;
+            }
+
+            bool shouldKeepOpen;
+            switch (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SleepingWaterfall"), 0)) {
+                case 1:
+                    shouldKeepOpen = Flags_GetEventChkInf(EVENTCHKINF_OPENED_ZORAS_DOMAIN);
+                    break;
+                case 2:
+                    if (IS_RANDO && RAND_GET_OPTION(RSK_SLEEPING_WATERFALL) == RO_WATERFALL_OPEN) {
+                        shouldKeepOpen = true;
+                    } else {
+                        shouldKeepOpen = CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) &&
+                                         (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME ||
+                                          INV_CONTENT(ITEM_OCARINA_FAIRY) == ITEM_OCARINA_FAIRY);
+                    }
+                    break;
+                default:
+                    shouldKeepOpen = false;
+                    break;
+            }
+
+            if (!shouldKeepOpen) {
+                return;
+            }
+
+            BgSpot03Taki* bgSpot03 = static_cast<BgSpot03Taki*>(innerActorRef);
+            if (bgSpot03->actionFunc == BgSpot03Taki_HandleWaterfallState) {
+                bgSpot03->actionFunc = BgSpot03Taki_KeepOpen;
+                bgSpot03->state = WATERFALL_OPENED;
+                bgSpot03->openingAlpha = 0.0f;
+                Flags_SetSwitch(gPlayState, bgSpot03->switchFlag);
+                func_8003EBF8(gPlayState, &gPlayState->colCtx.dyna, bgSpot03->dyna.bgId);
+                BgSpot03Taki_ApplyOpeningAlpha(bgSpot03, 0);
+                BgSpot03Taki_ApplyOpeningAlpha(bgSpot03, 1);
+
+                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(bgSpot03UpdateHook);
+                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(bgSpot03KillHook);
+                bgSpot03UpdateHook = 0;
+                bgSpot03KillHook = 0;
+            }
+        });
+        bgSpot03KillHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) mutable {
+            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(bgSpot03UpdateHook);
+            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(bgSpot03KillHook);
+            bgSpot03UpdateHook = 0;
+            bgSpot03KillHook = 0;
         });
     }
 
@@ -815,7 +896,7 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
     if (actor->id == ACTOR_EN_RU2 && gPlayState->sceneNum == SCENE_WATER_TEMPLE) {
         if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
             EnRu2* enRu2 = (EnRu2*)actor;
-            func_80AF36EC(enRu2, gPlayState);
+            EnRu2_SetEncounterSwitchFlag(enRu2, gPlayState);
             Actor_Kill(actor);
         }
     }

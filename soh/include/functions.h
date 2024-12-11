@@ -537,7 +537,7 @@ void func_80034BA0(PlayState* play, SkelAnime* skelAnime, OverrideLimbDraw overr
                    PostLimbDraw postLimbDraw, Actor* actor, s16 alpha);
 void func_80034CC4(PlayState* play, SkelAnime* skelAnime, OverrideLimbDraw overrideLimbDraw,
                    PostLimbDraw postLimbDraw, Actor* actor, s16 alpha);
-s16 func_80034DD4(Actor* actor, PlayState* play, s16 arg2, f32 arg3);
+s16 Actor_UpdateAlphaByDistance(Actor* actor, PlayState* play, s16 arg2, f32 arg3);
 void Animation_ChangeByInfo(SkelAnime* skelAnime, AnimationInfo* animationInfo, s32 index);
 void func_80034F54(PlayState* play, s16* arg1, s16* arg2, s32 arg3);
 void Actor_Noop(Actor* actor, PlayState* play);
