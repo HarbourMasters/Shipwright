@@ -335,7 +335,7 @@ void EnKusa_Main(EnKusa* this, PlayState* play) {
             if (this->actor.xzDistToPlayer < 400.0f) {
                 CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
                 if (this->actor.xzDistToPlayer < 100.0f) {
-                    func_8002F580(&this->actor, play);
+                    Actor_OfferCarry(&this->actor, play);
                 }
             }
         }

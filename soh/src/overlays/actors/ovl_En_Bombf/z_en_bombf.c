@@ -194,7 +194,7 @@ void EnBombf_GrowBomb(EnBombf* this, PlayState* play) {
                 }
             } else {
                 if (!Actor_HasParent(&this->actor, play)) {
-                    func_8002F580(&this->actor, play);
+                    Actor_OfferCarry(&this->actor, play);
                 } else {
                     player->actor.child = NULL;
                     player->heldActor = NULL;
@@ -244,7 +244,7 @@ void EnBombf_Move(EnBombf* this, PlayState* play) {
             func_8002F850(play, &this->actor);
             this->actor.velocity.y *= -0.5f;
         } else if (this->timer >= 4) {
-            func_8002F580(&this->actor, play);
+            Actor_OfferCarry(&this->actor, play);
         }
     }
 }

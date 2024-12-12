@@ -142,7 +142,7 @@ void func_808BAF40(BgTokiSwd* this, PlayState* play) {
         } else {
             Player* player = GET_PLAYER(play);
             if (Actor_IsFacingPlayer(&this->actor, 0x2000)) {
-                func_8002F580(&this->actor, play);
+                Actor_OfferCarry(&this->actor, play);
             }
         }
     }

@@ -455,13 +455,13 @@ u32 Actor_TextboxIsClosing(Actor* actor, PlayState* play);
 s8 func_8002F368(PlayState* play);
 void Actor_GetScreenPos(PlayState* play, Actor* actor, s16* x, s16* y);
 u32 Actor_HasParent(Actor* actor, PlayState* play);
-// TODO: Rename the follwing 3 functions using whatever scheme we use when we rename Actor_OfferGetItem and func_8002F554.
+// TODO: Rename the follwing 3 functions using whatever scheme we use when we rename Actor_OfferGetItem and Actor_OfferGetItemNearby.
 s32 GiveItemEntryWithoutActor(PlayState* play, GetItemEntry getItemEntry);
 s32 GiveItemEntryFromActor(Actor* actor, PlayState* play, GetItemEntry getItemEntry, f32 xzRange, f32 yRange);
 s32 GiveItemEntryFromActorWithFixedRange(Actor* actor, PlayState* play, GetItemEntry getItemEntry);
 s32 Actor_OfferGetItem(Actor* actor, PlayState* play, s32 getItemId, f32 xzRange, f32 yRange);
-void func_8002F554(Actor* actor, PlayState* play, s32 getItemId);
-void func_8002F580(Actor* actor, PlayState* play);
+void Actor_OfferGetItemNearby(Actor* actor, PlayState* play, s32 getItemId);
+void Actor_OfferCarry(Actor* actor, PlayState* play);
 u32 Actor_HasNoParent(Actor* actor, PlayState* play);
 void func_8002F5C4(Actor* actorA, Actor* actorB, PlayState* play);
 void func_8002F5F0(Actor* actor, PlayState* play);
