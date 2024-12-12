@@ -2128,7 +2128,7 @@ void DemoEffect_DrawGetItem(Actor* thisx, PlayState* play) {
                     rg = RG_SHADOW_MEDALLION;
                     break;
                 case DEMO_EFFECT_MEDAL_LIGHT:
-                    rc = RC_GIFT_FROM_SAGES;
+                    rc = RC_GIFT_FROM_RAURU;
                     rg = RG_LIGHT_MEDALLION;
                     break;
                 case DEMO_EFFECT_LIGHTARROW:

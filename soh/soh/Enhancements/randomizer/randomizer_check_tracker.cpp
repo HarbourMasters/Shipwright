@@ -559,7 +559,7 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
             SetCheckCollected(RC_TWINROVA);
             return;
         } else if (giEntry.itemId == ITEM_MEDALLION_LIGHT) {
-            SetCheckCollected(RC_GIFT_FROM_SAGES);
+            SetCheckCollected(RC_GIFT_FROM_RAURU);
             return;
         } else if (giEntry.itemId == ITEM_SONG_EPONA) {
             SetCheckCollected(RC_SONG_FROM_MALON);
@@ -1264,7 +1264,7 @@ bool IsCheckShuffled(RandomizerCheck rc) {
         return (loc->GetQuest() == RCQUEST_BOTH ||
             (loc->GetQuest() == RCQUEST_MQ && OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(loc->GetScene())->IsMQ()) ||
             (loc->GetQuest() == RCQUEST_VANILLA && OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(loc->GetScene())->IsVanilla()) ||
-            rc == RC_GIFT_FROM_SAGES) && rc != RC_LINKS_POCKET;
+            rc == RC_GIFT_FROM_RAURU) && rc != RC_LINKS_POCKET;
     }
     return false;
 }

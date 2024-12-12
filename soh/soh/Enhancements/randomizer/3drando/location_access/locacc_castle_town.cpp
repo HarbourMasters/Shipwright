@@ -66,7 +66,7 @@ void RegionTable_Init_CastleTown() {
                 }, {
                   //Locations
                   LOCATION(RC_TOT_MASTER_SWORD, logic->IsAdult),
-                  LOCATION(RC_GIFT_FROM_SAGES,  logic->IsAdult),
+                  LOCATION(RC_GIFT_FROM_RAURU,  logic->IsAdult),
                   LOCATION(RC_SHEIK_AT_TEMPLE,  logic->HasItem(RG_FOREST_MEDALLION) && logic->IsAdult),
                 }, {
                   //Exits

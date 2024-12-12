@@ -1604,7 +1604,7 @@ void Cutscene_Command_Textbox(PlayState* play, CutsceneContext* csCtx, CsCmdText
                                 getItemEntry = Randomizer_GetItemFromKnownCheck(RC_BONGO_BONGO, RG_SHADOW_MEDALLION);
                                 break;
                             case 0x40:
-                                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GIFT_FROM_SAGES, RG_LIGHT_MEDALLION);
+                                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GIFT_FROM_RAURU, RG_LIGHT_MEDALLION);
                                 break;
                             case 0x72:
                                 getItemEntry = Randomizer_GetItemFromKnownCheck(RC_TOT_LIGHT_ARROWS_CUTSCENE, RG_LIGHT_ARROWS);
