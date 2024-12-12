@@ -268,7 +268,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                         break;
                     }
                     case ACTOR_BG_BDAN_SWITCH: {
-                        // The switch in jabu that you are intended to press with a box to reach barrinade
+                        // The switch in jabu that you are intended to press with a box to reach barinade
                         // can be skipped by either a frame perfect roll open or with OI
                         // The One Point for that switch is used in common setups for the former and is required for the latter to work
                         if (actor->params == 14848 && gPlayState->sceneNum == SCENE_JABU_JABU && CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)){
@@ -314,6 +314,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                     case ACTOR_BG_MORI_HINERI:
                     case ACTOR_BG_MIZU_SHUTTER:
                     case ACTOR_SHOT_SUN:
+                    case ACTOR_BG_HAKA_GATE:
                         *should = false;
                         RateLimitedSuccessChime();
                         break;
