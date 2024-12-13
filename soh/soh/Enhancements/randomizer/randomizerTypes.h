@@ -3217,6 +3217,7 @@ typedef enum {
     RHT_MORPHA,
     RHT_BONGO_BONGO,
     RHT_TWINROVA,
+    RHT_GIFT_FROM_SAGES,
     RHT_SONG_FROM_IMPA,
     RHT_SONG_FROM_MALON,
     RHT_SONG_FROM_SARIA,
@@ -4781,7 +4782,7 @@ typedef enum {
 typedef enum {
     RO_GF_NORMAL,
     RO_GF_FAST,
-    RO_GF_OPEN,
+    RO_GF_FREE,
 } RandoOptionGerudoFortress;
 
 //Kakariko Gate settings (closed/open)

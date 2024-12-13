@@ -348,8 +348,8 @@ OTRGlobals::OTRGlobals() {
     context->InitWindow({ sohInputEditorWindow });
 
     auto overlay = context->GetInstance()->GetWindow()->GetGui()->GetGameOverlay();
-    overlay->LoadFont("Press Start 2P", "fonts/PressStart2P-Regular.ttf", 12.0f);
-    overlay->LoadFont("Fipps", "fonts/Fipps-Regular.otf", 32.0f);
+    overlay->LoadFont("Press Start 2P", 12.0f, "fonts/PressStart2P-Regular.ttf");
+    overlay->LoadFont("Fipps", 32.0f, "fonts/Fipps-Regular.otf");
     overlay->SetCurrentFont(CVarGetString(CVAR_GAME_OVERLAY_FONT, "Press Start 2P"));
 
     context->InitAudio({ .SampleRate = 44100, .SampleLength = 1024, .DesiredBuffered = 2480 });
@@ -908,9 +908,9 @@ OTRVersion ReadPortVersionFromOTR(std::string otrPath) {
     OTRVersion version = {};
 
     // Use a temporary archive instance to load the otr and read the version file
-    auto archive = Ship::OtrArchive(otrPath);
-    if (archive.Open()) {
-        auto t = archive.LoadFile("portVersion", std::make_shared<Ship::ResourceInitData>());
+    auto archive = std::make_shared<Ship::OtrArchive>(otrPath);
+    if (archive->Open()) {
+        auto t = archive->LoadFile("portVersion", std::make_shared<Ship::ResourceInitData>());
         if (t != nullptr && t->IsLoaded) {
             auto stream = std::make_shared<Ship::MemoryStream>(t->Buffer->data(), t->Buffer->size());
             auto reader = std::make_shared<Ship::BinaryReader>(stream);
@@ -920,7 +920,7 @@ OTRVersion ReadPortVersionFromOTR(std::string otrPath) {
             version.minor = reader->ReadUInt16();
             version.patch = reader->ReadUInt16();
         }
-        archive.Close();
+        archive->Close();
     }
 
     return version;
@@ -1142,9 +1142,9 @@ extern "C" void InitOTR() {
     SaveManager::Instance = new SaveManager();
 
     std::shared_ptr<Ship::Config> conf = OTRGlobals::Instance->context->GetConfig();
-    conf->RegisterConfigVersionUpdater(std::make_shared<SOH::ConfigVersion1Updater>());
-    conf->RegisterConfigVersionUpdater(std::make_shared<SOH::ConfigVersion2Updater>());
-    conf->RegisterConfigVersionUpdater(std::make_shared<SOH::ConfigVersion3Updater>());
+    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion1Updater>());
+    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion2Updater>());
+    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion3Updater>());
     conf->RunVersionUpdates();
 
     SohGui::SetupGuiElements();
@@ -2446,7 +2446,7 @@ void SoH_ProcessDroppedFiles(std::string filePath) {
         gui->GetGuiWindow("Stats")->Hide();
         std::dynamic_pointer_cast<Ship::ConsoleWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->ClearBindings();
 
-        gui->SaveConsoleVariablesOnNextTick();
+        gui->SaveConsoleVariablesNextFrame();
 
         uint32_t finalHash = boost::hash_32<std::string>{}(configJson.dump());
         gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Configuration Loaded. Hash: %d", finalHash);

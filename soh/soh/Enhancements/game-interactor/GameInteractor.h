@@ -286,6 +286,9 @@ typedef enum {
     VB_SPAWN_BLUE_WARP,
     // Vanilla condition: this->warpTimer > sWarpTimerTarget && gSaveContext.nextCutsceneIndex == 0xFFEF
     VB_BLUE_WARP_APPLY_ENTRANCE_AND_CUTSCENE,
+    // Vanilla condition: SurfaceType_GetSlope(&play->colCtx, poly, bgId) == 2
+    // Opt: int (original next entrance index)
+    VB_SET_VOIDOUT_FROM_SURFACE,
     // Vanilla condition: this->collider.base.acFlags & 2
     VB_BG_BREAKWALL_BREAK,
     // Vanilla condition: true
@@ -314,6 +317,8 @@ typedef enum {
     // Vanilla condition: !EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL
     VB_PLAY_PULL_MASTER_SWORD_CS,
     VB_PLAY_DROP_FISH_FOR_JABU_CS,
+    // Opt: *EnKz
+    VB_PLAY_MWEEP_CS,
     // Vanilla condition: player->getItemId == GI_GAUNTLETS_SILVER
     VB_PLAY_NABOORU_CAPTURED_CS,
     VB_PLAY_ZELDAS_LULLABY_CS,
@@ -324,6 +329,8 @@ typedef enum {
     VB_PLAY_BOLERO_OF_FIRE_CS,
     VB_PLAY_SERENADE_OF_WATER_CS,
     VB_PLAY_EYEDROPS_CS,
+    // Opt: *EnGo2
+    VB_PLAY_GORON_FREE_CS,
     // Opt: *EnOkarinaTag
     VB_PLAY_DRAIN_WELL_CS,
     // Opt: *EnOkarinaTag

@@ -178,6 +178,15 @@ void Option::RemoveFlag(const int imFlag_) {
     imFlags &= ~imFlag_;
 }
 
+void Option::SetContextIndexFromText(const std::string text) {
+    if (optionsTextToVar.contains(text)){
+        SetContextIndex(optionsTextToVar[text]);
+    } else {
+        SPDLOG_ERROR("Option {} does not have a var named {}.", name, text);
+        assert(false);
+    }
+}
+
 Option::Option(uint8_t var_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
                std::string cvarName_, std::string description_, WidgetType widgetType_, uint8_t defaultOption_,
                bool defaultHidden_, int imFlags_)
@@ -186,6 +195,7 @@ Option::Option(uint8_t var_, std::string name_, std::vector<std::string> options
       defaultOption(defaultOption_), defaultHidden(defaultHidden_), imFlags(imFlags_) {
     menuSelection = contextSelection = defaultOption;
     hidden = defaultHidden;
+    PopulateTextToNum();
     SetFromCVar();
 }
 Option::Option(bool var_, std::string name_, std::vector<std::string> options_, const OptionCategory category_,
@@ -196,6 +206,7 @@ Option::Option(bool var_, std::string name_, std::vector<std::string> options_, 
       defaultOption(defaultOption_), defaultHidden(defaultHidden_), imFlags(imFlags_) {
     menuSelection = contextSelection = defaultOption;
     hidden = defaultHidden;
+    PopulateTextToNum();
     SetFromCVar();
 }
 
@@ -208,7 +219,7 @@ bool Option::RenderCheckbox() {
     if (CustomCheckbox(name.c_str(), &val, disabled, disabledGraphic)) {
         CVarSetInteger(cvarName.c_str(), val);
         changed = true;
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
     if (!description.empty()) {
         UIWidgets::InsertHelpHoverText(description.c_str());
@@ -228,7 +239,7 @@ bool Option::RenderTristateCheckbox() {
     if (CustomCheckboxTristate(name.c_str(), &val, disabled, disabledGraphic)) {
         CVarSetInteger(cvarName.c_str(), val);
         changed = true;
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
     if (!description.empty()) {
         UIWidgets::InsertHelpHoverText(description.c_str());
@@ -250,7 +261,7 @@ bool Option::RenderCombobox() {
         selected = options.size();
         CVarSetInteger(cvarName.c_str(), selected);
         changed = true;
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
     if (!description.empty()) {
         UIWidgets::InsertHelpHoverText(description.c_str());
@@ -263,7 +274,7 @@ bool Option::RenderCombobox() {
                     CVarSetInteger(cvarName.c_str(), static_cast<int>(i));
                     changed = true;
                     selected = i;
-                    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                 }
             }
         }
@@ -328,9 +339,15 @@ bool Option::RenderSlider() {
     if (changed) {
         CVarSetInteger(cvarName.c_str(), val);
         SetFromCVar();
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
     return changed;
+}
+
+void Option::PopulateTextToNum(){
+    for (uint8_t count = 0; count < options.size(); count++){
+        optionsTextToVar[options[count]] = count;
+    }
 }
 
 TrickOption::TrickOption(const RandomizerCheckQuest quest_, const RandomizerArea area_, std::set<Tricks::Tag> tags_, const bool glitch_, const std::string& name_, std::string description_) :
@@ -363,26 +380,26 @@ const std::set<Tricks::Tag>& TrickOption::GetTags() const {
 }
 
 OptionGroup::OptionGroup(std::string name, std::vector<Option*> options, const OptionGroupType groupType,
-                         const bool printInSpoiler, const WidgetContainerType containerType, std::string description)
-    : mName(std::move(name)), mOptions(std::move(options)), mGroupType(groupType), mPrintInSpoiler(printInSpoiler),
+                         const WidgetContainerType containerType, std::string description)
+    : mName(std::move(name)), mOptions(std::move(options)), mGroupType(groupType),
       mContainerType(containerType), mDescription(std::move(description)) {
 }
 
 OptionGroup::OptionGroup(std::string name, std::vector<OptionGroup*> subGroups, const OptionGroupType groupType,
-                         const bool printInSpoiler, const WidgetContainerType containerType, std::string description)
-    : mName(std::move(name)), mSubGroups(std::move(subGroups)), mGroupType(groupType), mPrintInSpoiler(printInSpoiler),
+                         const WidgetContainerType containerType, std::string description)
+    : mName(std::move(name)), mSubGroups(std::move(subGroups)), mGroupType(groupType),
       mContainsType(OptionGroupType::SUBGROUP), mContainerType(containerType), mDescription(std::move(description)) {
 }
 
-OptionGroup OptionGroup::SubGroup(std::string name, std::vector<Option*> options, const bool printInSpoiler,
+OptionGroup OptionGroup::SubGroup(std::string name, std::vector<Option*> options,
                                   const WidgetContainerType containerType, std::string description) {
-    return {std::move(name), std::move(options), OptionGroupType::SUBGROUP, printInSpoiler, containerType,
+    return {std::move(name), std::move(options), OptionGroupType::SUBGROUP, containerType,
                        std::move(description)};
 }
 
-OptionGroup OptionGroup::SubGroup(std::string name, std::vector<OptionGroup*> subGroups, const bool printInSpoiler,
+OptionGroup OptionGroup::SubGroup(std::string name, std::vector<OptionGroup*> subGroups,
                                   const WidgetContainerType containerType, std::string description) {
-    return {std::move(name), std::move(subGroups), OptionGroupType::SUBGROUP, printInSpoiler, containerType,
+    return {std::move(name), std::move(subGroups), OptionGroupType::SUBGROUP, containerType,
                        std::move(description)};
 }
 
@@ -396,10 +413,6 @@ const std::vector<Option*>& OptionGroup::GetOptions() const {
 
 const std::vector<OptionGroup*>& OptionGroup::GetSubGroups() const {
     return mSubGroups;
-}
-
-bool OptionGroup::PrintInSpoiler() const {
-    return mPrintInSpoiler;
 }
 
 OptionGroupType OptionGroup::GetGroupType() const {

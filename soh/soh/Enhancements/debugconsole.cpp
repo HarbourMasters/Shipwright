@@ -1596,5 +1596,5 @@ void DebugConsole_Init(void) {
             {"group_name", Ship::ArgumentType::TEXT, true},
     }});
 
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 }

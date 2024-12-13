@@ -61,7 +61,7 @@ void GenerateStartingInventory() {
       AddItemToInventory(RG_GANONS_CASTLE_BOSS_KEY);
   }
 
-  if (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_OPEN) && !ctx->GetOption(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD)) {
+  if (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_FREE) && !ctx->GetOption(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD)) {
     AddItemToInventory(RG_GERUDO_MEMBERSHIP_CARD);
   }
 

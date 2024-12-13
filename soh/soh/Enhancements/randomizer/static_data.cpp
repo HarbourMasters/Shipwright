@@ -251,7 +251,8 @@ std::unordered_map<std::string, uint32_t> StaticData::hintNameToEnum = {};
 std::unordered_map<std::string, uint32_t> StaticData::hintTypeNameToEnum = {};
 std::unordered_map<std::string, uint32_t> StaticData::areaNameToEnum = {};
 std::unordered_map<std::string, uint32_t> StaticData::trialNameToEnum = {};
-std::unordered_map<std::string, RandomizerCheck> StaticData::locationNameToEnum = {}; //is filled in context based on location table, not touching that because of VB 
+std::unordered_map<std::string, RandomizerSettingKey> StaticData::optionNameToEnum = {};
+std::unordered_map<std::string, RandomizerCheck> StaticData::locationNameToEnum = {}; //is filled in context based on location table
 
 std::unordered_map<u32, RandomizerHint> StaticData::stoneParamsToHint{
   {0x1,  RH_ZF_FAIRY_GOSSIP_STONE},
