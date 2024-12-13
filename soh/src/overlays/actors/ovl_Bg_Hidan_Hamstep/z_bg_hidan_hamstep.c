@@ -376,7 +376,7 @@ void func_80888A58(BgHidanHamstep* this, PlayState* play) {
                 func_808884C8(this, play);
 
                 if ((this->dyna.actor.params & 0xFF) == 5) {
-                    func_80078884(NA_SE_SY_CORRECT_CHIME);
+                    Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
                 }
 
                 osSyncPrintf("B(%d)\n", this->dyna.actor.params);

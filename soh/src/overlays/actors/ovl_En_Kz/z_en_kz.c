@@ -6,6 +6,9 @@
 
 #include "z_en_kz.h"
 #include "objects/object_kz/object_kz.h"
+#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
@@ -168,12 +171,12 @@ s16 func_80A9C6C0(PlayState* play, Actor* thisx) {
         case TEXT_STATE_DONE_FADING:
             if (this->actor.textId != 0x4014) {
                 if (this->actor.textId == 0x401B && !this->sfxPlayed) {
-                    Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &D_801333D4, 4, &D_801333E0, &D_801333E0,
-                                           &D_801333E8);
+                    Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                           &gSfxDefaultReverb);
                     this->sfxPlayed = true;
                 }
             } else if (!this->sfxPlayed) {
-                Audio_PlaySoundGeneral(NA_SE_SY_TRE_BOX_APPEAR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_SY_TRE_BOX_APPEAR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 this->sfxPlayed = true;
             }
             break;
@@ -434,17 +437,23 @@ void EnKz_SetupMweep(EnKz* this, PlayState* play) {
     Vec3f pos;
     Vec3f initPos;
 
-    this->cutsceneCamera = Play_CreateSubCamera(play);
-    this->gameplayCamera = play->activeCamera;
-    Play_ChangeCameraStatus(play, this->gameplayCamera, CAM_STAT_WAIT);
-    Play_ChangeCameraStatus(play, this->cutsceneCamera, CAM_STAT_ACTIVE);
+    bool shouldPlayCutscene = GameInteractor_Should(VB_PLAY_MWEEP_CS, true);
+
+    if (shouldPlayCutscene) {
+        this->cutsceneCamera = Play_CreateSubCamera(play);
+        this->gameplayCamera = play->activeCamera;
+        Play_ChangeCameraStatus(play, this->gameplayCamera, CAM_STAT_WAIT);
+        Play_ChangeCameraStatus(play, this->cutsceneCamera, CAM_STAT_ACTIVE);
+    }
     pos = this->actor.world.pos;
     initPos = this->actor.home.pos;
     pos.y += 60.0f;
     initPos.y += -100.0f;
     initPos.z += 260.0f;
-    Play_CameraSetAtEye(play, this->cutsceneCamera, &pos, &initPos);
-    Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
+    if (shouldPlayCutscene) {
+        Play_CameraSetAtEye(play, this->cutsceneCamera, &pos, &initPos);
+        Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
+    }
     this->actor.speedXZ = 0.1f * CVarGetFloat(CVAR_ENHANCEMENT("MweepSpeed"), 1.0f);
     this->actionFunc = EnKz_Mweep;
 }
@@ -459,7 +468,9 @@ void EnKz_Mweep(EnKz* this, PlayState* play) {
     pos.y += 60.0f;
     initPos.y += -100.0f;
     initPos.z += 260.0f;
-    Play_CameraSetAtEye(play, this->cutsceneCamera, &pos, &initPos);
+    if (GameInteractor_Should(VB_PLAY_MWEEP_CS, true)) {
+        Play_CameraSetAtEye(play, this->cutsceneCamera, &pos, &initPos);
+    }
     if ((EnKz_FollowPath(this, play) == 1) && (this->waypoint == 0)) {
         Animation_ChangeByInfo(&this->skelanime, sAnimationInfo, ENKZ_ANIM_1);
         Inventory_ReplaceItem(play, ITEM_LETTER_RUTO, ITEM_BOTTLE);
@@ -474,9 +485,11 @@ void EnKz_Mweep(EnKz* this, PlayState* play) {
 }
 
 void EnKz_StopMweep(EnKz* this, PlayState* play) {
-    Play_ChangeCameraStatus(play, this->gameplayCamera, CAM_STAT_ACTIVE);
-    Play_ClearCamera(play, this->cutsceneCamera);
-    Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
+    if (GameInteractor_Should(VB_PLAY_MWEEP_CS, true)) {
+        Play_ChangeCameraStatus(play, this->gameplayCamera, CAM_STAT_ACTIVE);
+        Play_ClearCamera(play, this->cutsceneCamera);
+        Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
+    }
     this->actionFunc = EnKz_Wait;
 }
 

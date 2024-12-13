@@ -8,6 +8,7 @@
 extern "C" {
 #include "variables.h"
 #include "macros.h"
+#include "soh/cvar_prefixes.h"
 #include "functions.h"
 extern PlayState* gPlayState;
 }
@@ -341,7 +342,7 @@ void GameInteractor::RawAction::UpdateActor(void* refActor) {
 }
 
 void GameInteractor::RawAction::TeleportPlayer(int32_t nextEntrance) {
-    Audio_PlaySoundGeneral(NA_SE_EN_GANON_LAUGH, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+    Audio_PlaySoundGeneral(NA_SE_EN_GANON_LAUGH, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     gPlayState->nextEntranceIndex = nextEntrance;
     gPlayState->transitionTrigger = TRANS_TRIGGER_START;
     gPlayState->transitionType = TRANS_TYPE_FADE_BLACK;
@@ -476,7 +477,7 @@ void GameInteractor::RawAction::SetCosmeticsColor(uint8_t cosmeticCategory, uint
             break;
     }
 
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     ApplyOrResetCustomGfxPatches();
 }
 

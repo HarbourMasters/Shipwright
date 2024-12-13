@@ -5,6 +5,7 @@
 #include "functions.h"
 #include "variables.h"
 #include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
 #include "randomizerTypes.h"
 #include <array>
 #include "objects/object_gi_key/object_gi_key.h"

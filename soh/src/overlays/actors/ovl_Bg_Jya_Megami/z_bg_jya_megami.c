@@ -275,7 +275,7 @@ void BgJyaMegami_Explode(BgJyaMegami* this, PlayState* play) {
         func_80033480(play, &sp8C, 100.0f, 1, 150, 100, 1);
     }
     if (this->explosionTimer == 60) {
-        func_80078884(NA_SE_SY_CORRECT_CHIME);
+        Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
     }
     if (this->explosionTimer >= 100) {
         Actor_Kill(&this->dyna.actor);

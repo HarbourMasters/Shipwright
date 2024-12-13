@@ -137,11 +137,11 @@ void BgMoriKaitenkabe_Rotate(BgMoriKaitenkabe* this, PlayState* play) {
             thisx->home.rot.y -= 0x2000;
         }
         thisx->world.rot.y = thisx->shape.rot.y = thisx->home.rot.y;
-        func_800788CC(NA_SE_EV_STONEDOOR_STOP);
+        Sfx_PlaySfxCentered2(NA_SE_EV_STONEDOOR_STOP);
     } else {
         rotY = this->rotYdeg * (0x10000 / 360.0f);
         thisx->world.rot.y = thisx->shape.rot.y = thisx->home.rot.y + rotY;
-        func_800788CC(NA_SE_EV_WALL_SLIDE - SFX_FLAG);
+        Sfx_PlaySfxCentered2(NA_SE_EV_WALL_SLIDE - SFX_FLAG);
     }
     if (fabsf(this->dyna.unk_150) > 0.001f) {
         this->dyna.unk_150 = 0.0f;

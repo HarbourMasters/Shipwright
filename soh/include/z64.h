@@ -3,6 +3,7 @@
 
 #include <libultraship/libultra.h>
 #include "unk.h" // this used to get pulled in via ultra64.h
+#include "attributes.h"
 #include "z64save.h"
 #include "z64light.h"
 #include "z64bgcheck.h"
@@ -24,12 +25,14 @@
 #include "z64skin.h"
 #include "z64transition.h"
 #include "z64interface.h"
+#include "z64vis.h"
 #include "alignment.h"
 #include "sequence.h"
 #include "sfx.h"
 #include <libultraship/color.h>
 #include "ichain.h"
 #include "regs.h"
+#include "gfx.h"
 
 #if defined(__LP64__) 
 #define _SOH64
@@ -2035,13 +2038,13 @@ typedef struct ArenaNode {
     /* 0x04 */ size_t size;
     /* 0x08 */ struct ArenaNode* next;
     /* 0x0C */ struct ArenaNode* prev;
-    ///* 0x10 */ const char* filename;
-    ///* 0x14 */ s32 line;
-    ///* 0x18 */ OSId threadId;
-    ///* 0x1C */ Arena* arena;
-    ///* 0x20 */ OSTime time;
-    ///* 0x28 */ u8 unk_28[0x30-0x28]; // probably padding
-} ArenaNode; // size = 0x10
+    // /* 0x10 */ const char* filename;
+    // /* 0x14 */ s32 line;
+    // /* 0x18 */ OSId threadId;
+    // /* 0x1C */ Arena* arena;
+    // /* 0x20 */ OSTime time;
+    // /* 0x28 */ u8 unk_28[0x30-0x28]; // probably padding
+} ArenaNode; // size = 0x30
 
 typedef struct OverlayRelocationSection {
     /* 0x00 */ u32 textSize;
@@ -2223,31 +2226,6 @@ typedef struct {
     /* 0x0080 */ u32 viFeatures;
     /* 0x0084 */ u32 unk_84;
 } ViMode;
-
-// Vis...
-typedef struct {
-    /* 0x00 */ u32 type;
-    /* 0x04 */ u32 setScissor;
-    /* 0x08 */ Color_RGBA8_u32 color;
-    /* 0x0C */ Color_RGBA8_u32 envColor;
-} struct_801664F0; // size = 0x10
-
-typedef struct {
-    /* 0x00 */ u32 unk_00;
-    /* 0x04 */ u32 setScissor;
-    /* 0x08 */ Color_RGBA8_u32 primColor;
-    /* 0x0C */ Color_RGBA8_u32 envColor;
-    /* 0x10 */ u16* tlut;
-    /* 0x14 */ Gfx* monoDl;
-} VisMono; // size = 0x18
-
-// Vis...
-typedef struct {
-    /* 0x00 */ u32 useRgba;
-    /* 0x04 */ u32 setScissor;
-    /* 0x08 */ Color_RGBA8_u32 primColor;
-    /* 0x08 */ Color_RGBA8_u32 envColor;
-} struct_80166500; // size = 0x10
 
 typedef struct {
     /* 0x000 */ u8 rumbleEnable[4];

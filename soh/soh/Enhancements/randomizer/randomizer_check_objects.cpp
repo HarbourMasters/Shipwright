@@ -6,6 +6,7 @@
 #include <libultraship/bridge.h>
 #include "z64.h"
 #include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
 #include "fishsanity.h"
 
 std::map<RandomizerCheckArea, std::string> rcAreaNames = {
@@ -205,7 +206,7 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGanonBossKey"), RO_GANON_BOSS_KEY_VANILLA) !=
                  RO_GANON_BOSS_KEY_KAK_TOKENS) && // 100 skull reward ganon boss key
             (location.GetRCType() != RCTYPE_GF_KEY && location.GetRandomizerCheck() != RC_GF_GERUDO_MEMBERSHIP_CARD ||
-             (CVarGetInteger(CVAR_RANDOMIZER_SETTING("GerudoFortress"), RO_GF_NORMAL) == RO_GF_OPEN &&
+             (CVarGetInteger(CVAR_RANDOMIZER_SETTING("GerudoFortress"), RO_GF_NORMAL) == RO_GF_FREE &&
               location.GetRCType() != RCTYPE_GF_KEY && location.GetRandomizerCheck() != RC_GF_GERUDO_MEMBERSHIP_CARD) ||
              (CVarGetInteger(CVAR_RANDOMIZER_SETTING("GerudoFortress"), RO_GF_NORMAL) == RO_GF_FAST &&
               ((location.GetRandomizerCheck() == RC_GF_GERUDO_MEMBERSHIP_CARD &&

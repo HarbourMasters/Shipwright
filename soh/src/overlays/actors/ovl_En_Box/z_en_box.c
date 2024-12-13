@@ -3,6 +3,8 @@
 #include "soh_assets.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include <assert.h>
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
@@ -277,8 +279,8 @@ void EnBox_Fall(EnBox* this, PlayState* play) {
                 OnePointCutscene_EndCutscene(play, this->unk_1AC);
             }
         }
-        Audio_PlaySoundGeneral(NA_SE_EV_COFFIN_CAP_BOUND, &this->dyna.actor.projectedPos, 4, &D_801333E0, &D_801333E0,
-                               &D_801333E8);
+        Audio_PlaySoundGeneral(NA_SE_EV_COFFIN_CAP_BOUND, &this->dyna.actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultReverb);
         EnBox_SpawnDust(this, play);
     }
     yDiff = this->dyna.actor.world.pos.y - this->dyna.actor.floorHeight;
@@ -387,8 +389,8 @@ void EnBox_AppearInit(EnBox* this, PlayState* play) {
         this->unk_1A8 = 0;
         Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_KANKYO, this->dyna.actor.home.pos.x,
                     this->dyna.actor.home.pos.y, this->dyna.actor.home.pos.z, 0, 0, 0, 0x0011, true);
-        Audio_PlaySoundGeneral(NA_SE_EV_TRE_BOX_APPEAR, &this->dyna.actor.projectedPos, 4, &D_801333E0, &D_801333E0,
-                               &D_801333E8);
+        Audio_PlaySoundGeneral(NA_SE_EV_TRE_BOX_APPEAR, &this->dyna.actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultReverb);
     }
 }
 
@@ -491,7 +493,7 @@ void EnBox_Open(EnBox* this, PlayState* play) {
         }
 
         if (sfxId != 0) {
-            Audio_PlaySoundGeneral(sfxId, &this->dyna.actor.projectedPos, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            Audio_PlaySoundGeneral(sfxId, &this->dyna.actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         }
 
         if (this->skelanime.jointTable[3].z > 0) {
@@ -735,6 +737,8 @@ void EnBox_CreateExtraChestTextures() {
         gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, gChristmasGreenTreasureChestSideAndTopTex),
     };
 
+    Gfx gNoOp[] = { gsDPNoOp() };
+
     Gfx* frontCmd = ResourceMgr_LoadGfxByName(gTreasureChestChestFrontDL);
     int frontIndex = 0;
     while (frontCmd->words.w0 >> 24 != G_ENDDL) {
@@ -743,6 +747,20 @@ void EnBox_CreateExtraChestTextures() {
         gKeyTreasureChestChestFrontDL[frontIndex] = *frontCmd;
         gChristmasRedTreasureChestChestFrontDL[frontIndex] = *frontCmd;
         gChristmasGreenTreasureChestChestFrontDL[frontIndex] = *frontCmd;
+
+        // Set the second instruction of img OTR hash opcode to noop, since we will replace it with the
+        // OTR filepath opcode below
+        if (frontCmd->words.w0 >> 24 == G_SETTIMG_OTR_HASH) {
+            frontIndex++;
+            ++frontCmd;
+
+            gSkullTreasureChestChestFrontDL[frontIndex] = gNoOp[0];
+            gGoldTreasureChestChestFrontDL[frontIndex] = gNoOp[0];
+            gKeyTreasureChestChestFrontDL[frontIndex] = gNoOp[0];
+            gChristmasRedTreasureChestChestFrontDL[frontIndex] = gNoOp[0];
+            gChristmasGreenTreasureChestChestFrontDL[frontIndex] = gNoOp[0];
+        }
+
         frontIndex++;
         ++frontCmd;
     }
@@ -781,6 +799,20 @@ void EnBox_CreateExtraChestTextures() {
         gKeyTreasureChestChestSideAndLidDL[sideIndex] = *sideCmd;
         gChristmasRedTreasureChestChestSideAndLidDL[sideIndex] = *sideCmd;
         gChristmasGreenTreasureChestChestSideAndLidDL[sideIndex] = *sideCmd;
+
+        // Set the second instruction of img OTR hash opcode to noop, since we will replace it with the
+        // OTR filepath opcode below
+        if (sideCmd->words.w0 >> 24 == G_SETTIMG_OTR_HASH) {
+            sideIndex++;
+            ++sideCmd;
+
+            gSkullTreasureChestChestSideAndLidDL[sideIndex] = gNoOp[0];
+            gGoldTreasureChestChestSideAndLidDL[sideIndex] = gNoOp[0];
+            gKeyTreasureChestChestSideAndLidDL[sideIndex] = gNoOp[0];
+            gChristmasRedTreasureChestChestSideAndLidDL[sideIndex] = gNoOp[0];
+            gChristmasGreenTreasureChestChestSideAndLidDL[sideIndex] = gNoOp[0];
+        }
+
         sideIndex++;
         ++sideCmd;
     }

@@ -11,6 +11,7 @@
 #include "vt.h"
 
 #include "soh/frame_interpolation.h"
+#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
@@ -2284,7 +2285,7 @@ void Fishing_UpdateLure(Fishing* this, PlayState* play) {
                     sRodReelingSpeed = 0.5f;
                     D_80B7E118 = Rand_ZeroFloat(1.9f);
                     sFishMouthOffset.y = 500.0f;
-                    func_80078914(&sSoundPos, NA_SE_IT_SWORD_SWING_HARD);
+                    Sfx_PlaySfxAtPos(&sSoundPos, NA_SE_IT_SWORD_SWING_HARD);
                 }
             }
             break;
@@ -2304,7 +2305,7 @@ void Fishing_UpdateLure(Fishing* this, PlayState* play) {
                 sLurePosDelta.x *= 0.9f;
                 sLurePosDelta.z *= 0.9f;
                 if (!sIsOwnersHatHooked) {
-                    func_80078884(NA_SE_IT_FISHING_REEL_HIGH - SFX_FLAG);
+                    Sfx_PlaySfxCentered(NA_SE_IT_FISHING_REEL_HIGH - SFX_FLAG);
                 }
             }
 
@@ -2359,7 +2360,7 @@ void Fishing_UpdateLure(Fishing* this, PlayState* play) {
                     sReelLinePosStep = 0.0;
                 } else {
                     Math_ApproachF(&D_80B7E148, 0.0f, 1.0f, 0.05f);
-                    func_80078914(&sSoundPos, NA_SE_EN_FANTOM_FLOAT - SFX_FLAG);
+                    Sfx_PlaySfxAtPos(&sSoundPos, NA_SE_EN_FANTOM_FLOAT - SFX_FLAG);
                 }
             } else {
                 spE4 = WATER_SURFACE_Y(play);
@@ -2377,7 +2378,7 @@ void Fishing_UpdateLure(Fishing* this, PlayState* play) {
 
                     if ((sLurePos.y <= spE4) && (spE4 < spE0) && (spE4 == WATER_SURFACE_Y(play))) {
                         D_80B7E114 = 10;
-                        func_80078914(&sSoundPos, NA_SE_EV_BOMB_DROP_WATER);
+                        Sfx_PlaySfxAtPos(&sSoundPos, NA_SE_EV_BOMB_DROP_WATER);
                         sLureCastDelta.y = 0.0f;
                         sLurePosDelta.y *= 0.2f;
 
@@ -2403,7 +2404,7 @@ void Fishing_UpdateLure(Fishing* this, PlayState* play) {
                     }
                 } else {
                     Math_ApproachZeroF(&D_80B7E148, 1.0f, 0.05f);
-                    func_80078914(&sSoundPos, NA_SE_EN_FANTOM_FLOAT - SFX_FLAG);
+                    Sfx_PlaySfxAtPos(&sSoundPos, NA_SE_EN_FANTOM_FLOAT - SFX_FLAG);
                 }
             }
 
@@ -2536,7 +2537,7 @@ void Fishing_UpdateLure(Fishing* this, PlayState* play) {
                     sLureRot.x = 0.0f;
                     if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
                         sRodLineSpooled += 6.0f;
-                        func_80078914(&sSoundPos, NA_SE_PL_WALK_SAND);
+                        Sfx_PlaySfxAtPos(&sSoundPos, NA_SE_PL_WALK_SAND);
                     }
                 } else {
                     if (sRodLineSpooled > 150.0f) {
@@ -2617,11 +2618,11 @@ void Fishing_UpdateLure(Fishing* this, PlayState* play) {
             if (CHECK_BTN_ALL(input->cur.button, BTN_A)) {
                 if (CHECK_BTN_ALL(input->cur.button, BTN_R)) {
                     sRodLineSpooled += 1.5f;
-                    func_80078884(NA_SE_IT_FISHING_REEL_HIGH - SFX_FLAG);
+                    Sfx_PlaySfxCentered(NA_SE_IT_FISHING_REEL_HIGH - SFX_FLAG);
                     Math_ApproachF(&sReelLinePosStep, 1000.0f, 1.0f, 2.0f);
                 } else {
                     sRodLineSpooled += sRodReelingSpeed;
-                    func_80078884(NA_SE_IT_FISHING_REEL_SLOW - SFX_FLAG);
+                    Sfx_PlaySfxCentered(NA_SE_IT_FISHING_REEL_SLOW - SFX_FLAG);
                     Math_ApproachF(&sReelLinePosStep, 1000.0f, 1.0f, 0.2f);
                 }
 
@@ -2679,7 +2680,7 @@ void Fishing_UpdateLure(Fishing* this, PlayState* play) {
                 } else {
                     sRodLineSpooled += sRodReelingSpeed;
                 }
-                func_80078884(NA_SE_IT_FISHING_REEL_SLOW - SFX_FLAG);
+                Sfx_PlaySfxCentered(NA_SE_IT_FISHING_REEL_SLOW - SFX_FLAG);
             }
 
             if ((sLureTimer & 0x1F) == 0) {
@@ -3608,7 +3609,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
             } else if (distToTarget < 10.0f) {
                 if (sLurePos.y > (WATER_SURFACE_Y(play) - 10.0f)) {
                     Audio_PlayActorSound2(&this->actor, NA_SE_EV_JUMP_OUT_WATER);
-                    func_80078884(NA_SE_PL_CATCH_BOOMERANG);
+                    Sfx_PlaySfxCentered(NA_SE_PL_CATCH_BOOMERANG);
                 }
 
                 Fishing_SplashBySize(this, play, false);
@@ -3685,7 +3686,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                     func_800A9F6C(0.0f, rumbleStrength, 120, 5);
                     sRumbleDelay = 40;
                     sRodHitTimer = 10;
-                    func_80078884(NA_SE_IT_FISHING_HIT);
+                    Sfx_PlaySfxCentered(NA_SE_IT_FISHING_HIT);
                 }
             }
 
@@ -5090,16 +5091,14 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                     
                     if (sLinkAge == LINK_AGE_CHILD) { // 9 lbs
                         //if we should give the main prize AND it's not rando
-                        if (GameInteractor_Should(VB_SHOULD_GIVE_VANILLA_FISHING_PRIZE, false, &fishData)){
-                        //((sFishingRecordLength >= 50.0f) && !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_CHILD)) {
+                        if (GameInteractor_Should(VB_SHOULD_GIVE_VANILLA_FISHING_PRIZE, (sFishingRecordLength >= 50.0f) && !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_CHILD), &fishData)){
                             HIGH_SCORE(HS_FISHING) |= HS_FISH_PRIZE_CHILD;
                             getItemId = GI_HEART_PIECE;
                             sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
                         }
                     } else { // 13 lbs
                         //if we should give the main prize AND it's not rando
-                        if (GameInteractor_Should(VB_SHOULD_GIVE_VANILLA_FISHING_PRIZE, false, &fishData)){
-                        //(sFishingRecordLength >= 60.0f) && !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_ADULT)) {
+                        if (GameInteractor_Should(VB_SHOULD_GIVE_VANILLA_FISHING_PRIZE, (sFishingRecordLength >= 60.0f) && !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_ADULT), &fishData)){
                             HIGH_SCORE(HS_FISHING) |= HS_FISH_PRIZE_ADULT;
                             getItemId = GI_SCALE_GOLDEN;
                             sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
@@ -5360,7 +5359,7 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
         sSinkingLureLocation = 0;
         sFishingPlayerCinematicState = 20;
         func_800A9F6C(0.0f, 150, 10, 10);
-        func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
+        Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
         Audio_QueueSeqCmd(0x1 << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0x1400FF);
     }
 
@@ -5369,7 +5368,7 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
         sLureEquipped = FS_LURE_STOCK;
         sFishingPlayerCinematicState = 20;
         func_800A9F6C(0.0f, 150, 10, 10);
-        func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
+        Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
         Audio_QueueSeqCmd(0x1 << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0x1400FF);
     }
 
@@ -5447,9 +5446,9 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
                     }
 
                     if ((sLureCameraZoomLevel == 0) || (sLureCameraZoomLevel == 3)) {
-                        func_80078884(NA_SE_SY_CAMERA_ZOOM_DOWN);
+                        Sfx_PlaySfxCentered(NA_SE_SY_CAMERA_ZOOM_DOWN);
                     } else {
-                        func_80078884(NA_SE_SY_CAMERA_ZOOM_UP);
+                        Sfx_PlaySfxCentered(NA_SE_SY_CAMERA_ZOOM_UP);
                     }
                 }
             }
@@ -5831,7 +5830,7 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
     SkinMatrix_Vec3fMtxFMultXYZW(&play->viewProjectionMtxF, &sStreamSoundPos, &sStreamSoundProjectedPos,
                                  &sProjectedW);
 
-    func_80078914(&sStreamSoundProjectedPos, NA_SE_EV_WATER_WALL - SFX_FLAG);
+    Sfx_PlaySfxAtPos(&sStreamSoundProjectedPos, NA_SE_EV_WATER_WALL - SFX_FLAG);
 
     gSaveContext.minigameScore = (SQ((f32)sFishLengthToWeigh) * 0.0036f) + 0.5f;
 

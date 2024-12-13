@@ -1,6 +1,7 @@
 #include "static_data.h"
 #include "z64save.h"
 #include "context.h"
+#include "dungeon.h"
 
 #define TWO_ACTOR_PARAMS(a, b) (abs(a) << 16) | abs(b)
 
@@ -117,18 +118,14 @@ std::vector<RandomizerCheck> Rando::StaticData::GetOverworldLocations() {
     return overworldLocations;
 }
 
-std::vector<RandomizerCheck> Rando::StaticData::GetDungeonLocations() {
-    std::vector<RandomizerCheck> overworldLocations = {};
-    for (Location& location : locationTable) {
-        if (
-            location.IsDungeon() &&
-            location.GetRCType() != RCTYPE_STATIC_HINT && 
-            location.GetRCType() != RCTYPE_GOSSIP_STONE  //don't put items on hints
-        ) {
-            overworldLocations.push_back(location.GetRandomizerCheck());
-        }
+std::vector<RandomizerCheck> Rando::StaticData::GetAllDungeonLocations() {
+    auto ctx = Rando::Context::GetInstance();
+    std::vector<RandomizerCheck> dungeonLocations;
+    for (const auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
+        std::vector<RandomizerCheck> dungeonLoc = dungeon->GetDungeonLocations();
+        dungeonLocations.insert(dungeonLocations.end(), dungeonLoc.begin(), dungeonLoc.end());
     }
-    return overworldLocations;
+    return dungeonLocations;
 }
 
 void Rando::StaticData::InitLocationTable() { //                                                      Randomizer Check                                                 Quest            Type                                Area                                 Actor ID              Scene ID                            Params                        Flags Short Name                                     Hint Text Key                                                    Vanilla Item                                                        Spoiler Collection Check                                                                                                      Vanilla Progression  Price
@@ -687,7 +684,7 @@ void Rando::StaticData::InitLocationTable() { //                                
     locationTable[RC_FIRE_TEMPLE_GS_BOULDER_MAZE] =                                 Location::GSToken(RC_FIRE_TEMPLE_GS_BOULDER_MAZE,                                  RCQUEST_VANILLA,                                                                                                SCENE_FIRE_TEMPLE,                  9220,                         0x04, "GS Boulder Maze",                             RHT_FIRE_TEMPLE_GS_BOULDER_MAZE);
     locationTable[RC_FIRE_TEMPLE_GS_SCARECROW_TOP] =                                Location::GSToken(RC_FIRE_TEMPLE_GS_SCARECROW_TOP,                                 RCQUEST_VANILLA,                                                                                                SCENE_FIRE_TEMPLE,                  9224,                         0x08, "GS Scarecrow Top",                            RHT_FIRE_TEMPLE_GS_SCARECROW_TOP);
     locationTable[RC_FIRE_TEMPLE_GS_SCARECROW_CLIMB] =                              Location::GSToken(RC_FIRE_TEMPLE_GS_SCARECROW_CLIMB,                               RCQUEST_VANILLA,                                                                                                SCENE_FIRE_TEMPLE,                  9232,                         0x10, "GS Scarecrow Climb",                          RHT_FIRE_TEMPLE_GS_SCARECROW_CLIMB);
-    locationTable[RC_FIRE_TEMPLE_MQ_GS_ABOVE_FIRE_WALL_MAZE] =                      Location::GSToken(RC_FIRE_TEMPLE_MQ_GS_ABOVE_FIRE_WALL_MAZE,                       RCQUEST_MQ,                                                                                                     SCENE_FIRE_TEMPLE,                  9218,                         0x02, "MQ GS Above Fire Wall Maze",                  RHT_FIRE_TEMPLE_MQ_GS_ABOVE_FIRE_WALL_MAZE);
+    locationTable[RC_FIRE_TEMPLE_MQ_GS_ABOVE_FIRE_MAZE] =                      Location::GSToken(RC_FIRE_TEMPLE_MQ_GS_ABOVE_FIRE_MAZE,                       RCQUEST_MQ,                                                                                                     SCENE_FIRE_TEMPLE,                  9218,                         0x02, "MQ GS Above Fire Wall Maze",                  RHT_FIRE_TEMPLE_MQ_GS_ABOVE_FIRE_WALL_MAZE);
     locationTable[RC_FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_CENTER] =                     Location::GSToken(RC_FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_CENTER,                      RCQUEST_MQ,                                                                                                     SCENE_FIRE_TEMPLE,                  9224,                         0x08, "MQ GS Fire Wall Maze Center",                 RHT_FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_CENTER);
     locationTable[RC_FIRE_TEMPLE_MQ_GS_BIG_LAVA_ROOM_OPEN_DOOR] =                   Location::GSToken(RC_FIRE_TEMPLE_MQ_GS_BIG_LAVA_ROOM_OPEN_DOOR,                    RCQUEST_MQ,                                                                                                     SCENE_FIRE_TEMPLE,                  9217,                         0x01, "MQ GS Big Lava Room Open Door",               RHT_FIRE_TEMPLE_MQ_GS_BIG_LAVA_ROOM_OPEN_DOOR);
     locationTable[RC_FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_SIDE_ROOM] =                  Location::GSToken(RC_FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_SIDE_ROOM,                   RCQUEST_MQ,                                                                                                     SCENE_FIRE_TEMPLE,                  9232,                         0x10, "MQ GS Fire Wall Maze Side Room",              RHT_FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_SIDE_ROOM);
@@ -821,7 +818,7 @@ void Rando::StaticData::InitLocationTable() { //                                
     locationTable[RC_TWINROVA] =                                                       Location::Base(RC_TWINROVA,                                                     RCQUEST_BOTH,    RCTYPE_DUNGEON_REWARD,                                                   ACTOR_DOOR_WARP1,     SCENE_SPIRIT_TEMPLE_BOSS,           0x00,                               "Twinrova",        "Twinrova",                 RHT_TWINROVA,                                                    RG_SPIRIT_MEDALLION,                                                SpoilerCollectionCheck::RandomizerInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE),                                                  true);
     locationTable[RC_BONGO_BONGO] =                                                    Location::Base(RC_BONGO_BONGO,                                                  RCQUEST_BOTH,    RCTYPE_DUNGEON_REWARD,                                                   ACTOR_DOOR_WARP1,     SCENE_SHADOW_TEMPLE_BOSS,           0x00,                               "Bongo Bongo",     "Bongo Bongo",              RHT_BONGO_BONGO,                                                 RG_SHADOW_MEDALLION,                                                SpoilerCollectionCheck::RandomizerInf(RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE),                                                  true);
     locationTable[RC_GANON] =                                                          Location::Base(RC_GANON,                                                        RCQUEST_BOTH,    RCTYPE_DUNGEON_REWARD,                                                   ACTOR_DOOR_WARP1,     SCENE_GANON_BOSS,                   0x00,                               "Ganon",           "Ganon",                    RHT_NONE,                                                        RG_TRIFORCE);
-    locationTable[RC_GIFT_FROM_SAGES] =                                                Location::Base(RC_GIFT_FROM_SAGES,                                              RCQUEST_BOTH,    RCTYPE_DUNGEON_REWARD,              RCAREA_MARKET,                       ACTOR_ID_MAX,         SCENE_ID_MAX,                       0x00,                               "Gift from Raoru", "Gift from Raoru",          RHT_NONE,                                                        RG_LIGHT_MEDALLION,                                                 SpoilerCollectionCheck::EventChkInf(0xC9),                                                                                    true);
+    locationTable[RC_GIFT_FROM_SAGES] =                                                Location::Base(RC_GIFT_FROM_SAGES,                                              RCQUEST_BOTH,    RCTYPE_DUNGEON_REWARD,              RCAREA_MARKET,                       ACTOR_ID_MAX,         SCENE_ID_MAX,                       0x00,                               "Gift from Raoru", "Gift from Raoru",          RHT_GIFT_FROM_SAGES,                                             RG_LIGHT_MEDALLION,                                                 SpoilerCollectionCheck::EventChkInf(0xC9),                                                                                    true);
 
     // Heart Containers
     locationTable[RC_DEKU_TREE_QUEEN_GOHMA_HEART] =                                    Location::Base(RC_DEKU_TREE_QUEEN_GOHMA_HEART,                                  RCQUEST_BOTH,    RCTYPE_BOSS_HEART_OR_OTHER_REWARD,                                       ACTOR_ITEM_B_HEART,   SCENE_DEKU_TREE_BOSS,               0x00,                               "Queen Gohma Heart Container",                 RHT_DEKU_TREE_QUEEN_GOHMA_HEART,                                 RG_HEART_CONTAINER,                                                 SpoilerCollectionCheck::Collectable(0x11, 0x1F),                                                                              true);

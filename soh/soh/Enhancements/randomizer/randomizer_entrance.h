@@ -8,50 +8,7 @@
 
 #define ENTRANCE_TABLE_SIZE ENTR_MAX
 
-#define ENTRANCE_RANDO_GROTTO_LOAD_START 0x0700
-#define ENTRANCE_RANDO_GROTTO_EXIT_START 0x0800
 #define MAX_ENTRANCE_RANDO_USED_INDEX 0x0820
-
-typedef enum {
-    /* 0x00 */ GROTTO_COLOSSUS_OFFSET,
-    /* 0x01 */ GROTTO_LH_OFFSET,
-    /* 0x02 */ GROTTO_ZR_STORMS_OFFSET,
-    /* 0x03 */ GROTTO_ZR_FAIRY_OFFSET,
-    /* 0x04 */ GROTTO_ZR_OPEN_OFFSET,
-    /* 0x05 */ GROTTO_DMC_HAMMER_OFFSET,
-    /* 0x06 */ GROTTO_DMC_UPPER_OFFSET,
-    /* 0x07 */ GROTTO_GORON_CITY_OFFSET,
-    /* 0x08 */ GROTTO_DMT_STORMS_OFFSET,
-    /* 0x09 */ GROTTO_DMT_COW_OFFSET,
-    /* 0x0A */ GROTTO_KAK_OPEN_OFFSET,
-    /* 0x0B */ GROTTO_KAK_REDEAD_OFFSET,
-    /* 0x0C */ GROTTO_HC_STORMS_OFFSET,
-    /* 0x0D */ GROTTO_HF_TEKTITE_OFFSET,
-    /* 0x0E */ GROTTO_HF_NEAR_KAK_OFFSET,
-    /* 0x0F */ GROTTO_HF_FAIRY_OFFSET,
-    /* 0x10 */ GROTTO_HF_NEAR_MARKET_OFFSET,
-    /* 0x11 */ GROTTO_HF_COW_OFFSET,
-    /* 0x12 */ GROTTO_HF_INSIDE_FENCE_OFFSET,
-    /* 0x13 */ GROTTO_HF_OPEN_OFFSET,
-    /* 0x14 */ GROTTO_HF_SOUTHEAST_OFFSET,
-    /* 0x15 */ GROTTO_LLR_OFFSET,
-    /* 0x16 */ GROTTO_SFM_WOLFOS_OFFSET,
-    /* 0x17 */ GROTTO_SFM_STORMS_OFFSET,
-    /* 0x18 */ GROTTO_SFM_FAIRY_OFFSET,
-    /* 0x19 */ GROTTO_LW_SCRUBS_OFFSET,
-    /* 0x1A */ GROTTO_LW_NEAR_SHORTCUTS_OFFSET,
-    /* 0x1B */ GROTTO_KF_STORMS_OFFSET,
-    /* 0x1C */ GROTTO_ZD_STORMS_OFFSET,
-    /* 0x1D */ GROTTO_GF_STORMS_OFFSET,
-    /* 0x1E */ GROTTO_GV_STORMS_OFFSET,
-    /* 0x1F */ GROTTO_GV_OCTOROK_OFFSET,
-    /* 0x20 */ GROTTO_LW_DEKU_THEATRE_OFFSET,
-    /* 0x21 */ GROTTO_OFFSET_MAX,
-} GrottoEntranceOffsets;
-
-#define ENTRANCE_RANDO_GROTTO_LOAD(index) ENTRANCE_RANDO_GROTTO_LOAD_START + index
-#define ENTRANCE_RANDO_GROTTO_EXIT(index) ENTRANCE_RANDO_GROTTO_EXIT_START + index
-
 #define ENTRANCE_OVERRIDES_MAX_COUNT 267 // 19 one-way entrances + 124 two-way entrances (x2)
 #define SHUFFLEABLE_BOSS_COUNT 8
 
@@ -88,7 +45,6 @@ void Entrance_SetGameOverEntrance(void);
 void Entrance_SetSavewarpEntrance(void);
 void Entrance_SetWarpSongEntrance(void);
 void Entrance_OverrideBlueWarp(void);
-void Entrance_OverrideCutsceneEntrance(uint16_t cutsceneCmd);
 void Entrance_HandleEponaState(void);
 void Entrance_OverrideWeatherState(void);
 void Entrance_OverrideGeurdoGuardCapture(void);

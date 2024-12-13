@@ -6,6 +6,8 @@
 
 #include "z_en_ganon_mant.h"
 #include "overlays/actors/ovl_Boss_Ganon/z_boss_ganon.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 

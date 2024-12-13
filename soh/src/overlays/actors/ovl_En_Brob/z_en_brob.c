@@ -6,6 +6,7 @@
 
 #include "z_en_brob.h"
 #include "objects/object_brob/object_brob.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
 

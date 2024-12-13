@@ -1,4 +1,5 @@
 #include "OTRGlobals.h"
+#include "ResourceManagerHelpers.h"
 #include <libultraship/libultraship.h>
 #include "soh/resource/type/Scene.h"
 #include <utils/StringHelper.h>
@@ -38,9 +39,6 @@ extern Ship::IResource* OTRPlay_LoadFile(PlayState* play, const char* fileName);
 extern "C" s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId);
 extern "C" RomFile sNaviMsgFiles[];
 s32 OTRScene_ExecuteCommands(PlayState* play, SOH::Scene* scene);
-
-// Forward Declaration of function declared in OTRGlobals.cpp
-std::shared_ptr<Ship::IResource> GetResourceByNameHandlingMQ(const char* path);
 
 bool Scene_CommandSpawnList(PlayState* play, SOH::ISceneCommand* cmd) {
     // SOH::SetStartPositionList* cmdStartPos = std::static_pointer_cast<SOH::SetStartPositionList>(cmd);
@@ -273,7 +271,7 @@ bool Scene_CommandTimeSettings(PlayState* play, SOH::ISceneCommand* cmd) {
     play->envCtx.sunPos.z = (Math_CosS(((void)0, gSaveContext.dayTime) - 0x8000) * 20.0f) * 25.0f;
 
     if (((play->envCtx.timeIncrement == 0) && (gSaveContext.cutsceneIndex < 0xFFF0)) ||
-        (gSaveContext.entranceIndex == ENTR_LAKE_HYLIA_8)) {
+        (gSaveContext.entranceIndex == ENTR_LAKE_HYLIA_WARP_PAD)) {
         gSaveContext.skyboxTime = ((void)0, gSaveContext.dayTime);
         if ((gSaveContext.skyboxTime >= 0x2AAC) && (gSaveContext.skyboxTime < 0x4555)) {
             gSaveContext.skyboxTime = 0x3556;
@@ -512,7 +510,7 @@ extern "C" s32 OTRfunc_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomN
                             //&roomCtx->loadQueue, NULL, __FILE__, __LINE__);
 
         auto roomData =
-            std::static_pointer_cast<SOH::Scene>(GetResourceByNameHandlingMQ(play->roomList[roomNum].fileName));
+            std::static_pointer_cast<SOH::Scene>(ResourceMgr_GetResourceByNameHandlingMQ(play->roomList[roomNum].fileName));
         roomCtx->status = 1;
         roomCtx->roomToLoad = roomData.get();
 

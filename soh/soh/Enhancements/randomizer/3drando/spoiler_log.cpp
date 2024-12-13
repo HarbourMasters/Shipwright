@@ -6,7 +6,6 @@
 #include "../entrance.h"
 #include "random.hpp"
 #include "../trial.h"
-#include "tinyxml2.h"
 #include "utils.hpp"
 #include "hints.hpp"
 #include "pool_functions.hpp"
@@ -56,9 +55,6 @@ void GenerateHash() {
         int number = std::stoi(hash.substr(j, 2));
         ctx->hashIconIndexes[i] = number;
     }
-
-    // Clear out spoiler log data here, in case we aren't going to re-generate it
-    // spoilerData = { 0 };
 }
 
 static auto GetGeneralPath() {
@@ -79,7 +75,6 @@ static void WriteLocation(
   Rando::Location* location = Rando::StaticData::GetLocation(locationKey);
   Rando::ItemLocation* itemLocation = Rando::Context::GetInstance()->GetItemLocation(locationKey);
 
-  // auto node = parentNode->InsertNewChildElement("location");
   switch (gSaveContext.language) {
         case LANGUAGE_ENG:
         default:
@@ -89,35 +84,6 @@ static void WriteLocation(
             jsonData["playthrough"][sphere][location->GetName()] = itemLocation->GetPlacedItemName().GetFrench();
             break;
     }
-  // node->SetAttribute("name", location->GetName().c_str());
-  // node->SetText(location->GetPlacedItemName().GetEnglish().c_str());
-
-  // if (withPadding) {
-  //   constexpr int16_t LONGEST_NAME = 56; // The longest name of a location.
-  //   constexpr int16_t PRICE_ATTRIBUTE = 12; // Length of a 3-digit price attribute.
-
-  //   // Insert a padding so we get a kind of table in the XML document.
-  //   int16_t requiredPadding = LONGEST_NAME - location->GetName().length();
-  //   if (location->GetRCType() == RCTYPE_SHOP) {
-  //     // Shop items have short location names, but come with an additional price attribute.
-  //     requiredPadding -= PRICE_ATTRIBUTE;
-  //   }
-  //   if (requiredPadding >= 0) {
-  //     std::string padding(requiredPadding, ' ');
-  //     node->SetAttribute("_", padding.c_str());
-  //   }
-  // }
-
-  // if (location->GetRCType() == RCTYPE_SHOP) {
-  //   char price[6];
-  //   sprintf(price, "%03d", location->GetPrice());
-  //   node->SetAttribute("price", price);
-  // }
-  // if (!location->IsAddedToPool()) {
-  //   #ifdef ENABLE_DEBUG
-  //     node->SetAttribute("not-added", true);
-  //   #endif
-  // }
 }
 
 //Writes a shuffled entrance to the specified node
@@ -171,62 +137,30 @@ static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) 
 }
 
 // Writes the settings (without excluded locations, starting inventory and tricks) to the spoilerLog document.
-static void WriteSettings(const bool printAll = false) {
-    // auto parentNode = spoilerLog.NewElement("settings");
+static void WriteSettings() {
     auto ctx = Rando::Context::GetInstance();
-    auto allOptionGroups = ctx->GetSettings()->GetOptionGroups();
-    for (const Rando::OptionGroup& optionGroup : allOptionGroups) {
-        if (optionGroup.GetName() == "Timesaver Settings") {
-            for (const Rando::Option* option : optionGroup.GetOptions()) {
-                if (option->GetName() == "Big Poe Target Count" || option->GetName() == "Cuccos to return" ||
-                    option->GetName() == "Skip Epona Race" || option->GetName() == "Skip Tower Escape" ||
-                    option->GetName() == "Skip Child Stealth" || option->GetName() == "Complete Mask Quest" ||
-                    option->GetName() == "Skip Scarecrow's Song" ||
-                    option->GetName() == "Enable Glitch-Useful Cutscenes") {
-                    std::string settingName = optionGroup.GetName() + ":" + option->GetName();
-                    jsonData["settings"][settingName] = option->GetSelectedOptionText();
-                }
-            }
-            continue;
-        }
-        if (optionGroup.GetContainsType() == Rando::OptionGroupType::DEFAULT && optionGroup.PrintInSpoiler()) {
-            for (const Rando::Option* option : optionGroup.GetOptions()) {
-                std::string settingName = optionGroup.GetName() + ":" + option->GetName();
-                jsonData["settings"][settingName] = option->GetSelectedOptionText();
-            }
-        }
+    std::array<Rando::Option, RSK_MAX> options = ctx->GetSettings()->GetAllOptions();
+    for (const Rando::Option& option : options) {
+      if (option.GetName() != ""){
+        jsonData["settings"][option.GetName()] = option.GetSelectedOptionText();
+      }
     }
-
-    // spoilerLog.RootElement()->InsertEndChild(parentNode);
-
-    //     for (const uint32_t key : allLocations) {
-    //       ItemLocation* location = GetLocation(key);
-    //       settingsJsonData["locations"][location->GetName()] = location->GetPlacedItemName().english;
-    //   }
 }
 
 // Writes the excluded locations to the spoiler log, if there are any.
 static void WriteExcludedLocations() {
-  // auto parentNode = spoilerLog.NewElement("excluded-locations");
   auto ctx = Rando::Context::GetInstance();
 
   for (size_t i = 1; i < ctx->GetSettings()->GetExcludeLocationsOptions().size(); i++) {
     for (const auto& location : ctx->GetSettings()->GetExcludeLocationsOptions()[i]) {
-      if (location->GetSelectedOptionIndex() == RO_LOCATION_INCLUDE) {
+      if (location->GetContextOptionIndex() == RO_LOCATION_INCLUDE) {
         continue;
       }
 
       jsonData["excludedLocations"].push_back(RemoveLineBreaks(location->GetName()));
 
-      // tinyxml2::XMLElement* node = spoilerLog.NewElement("location");
-      // node->SetAttribute("name", RemoveLineBreaks(location->GetName()).c_str());
-      // parentNode->InsertEndChild(node);
     }
   }
-
-  // if (!parentNode->NoChildren()) {
-  //   spoilerLog.RootElement()->InsertEndChild(parentNode);
-  // }
 }
 
 // Writes the starting inventory to the spoiler log, if there is any.
@@ -235,63 +169,27 @@ static void WriteStartingInventory() {
     const Rando::OptionGroup& optionGroup = ctx->GetSettings()->GetOptionGroup(RSG_STARTING_INVENTORY);
     for (const Rando::OptionGroup* subGroup : optionGroup.GetSubGroups()) {
         if (subGroup->GetContainsType() == Rando::OptionGroupType::DEFAULT) {
-            for (const Rando::Option* option : subGroup->GetOptions()) {
+            for (Rando::Option* option : subGroup->GetOptions()) {
                 jsonData["settings"][option->GetName()] = option->GetSelectedOptionText();
             }
         }
     }
 }
 
-// Writes the enabled tricks to the spoiler log, if there are any.
-static void WriteEnabledTricks(tinyxml2::XMLDocument& spoilerLog) {
-  //auto parentNode = spoilerLog.NewElement("enabled-tricks");
+//Writes the enabled tricks to the spoiler log, if there are any.
+static void WriteEnabledTricks() {
   auto ctx = Rando::Context::GetInstance();
 
   for (const auto& setting : ctx->GetSettings()->GetOptionGroup(RSG_TRICKS).GetOptions()) {
-    if (setting->GetSelectedOptionIndex() != RO_GENERIC_ON/* || !setting->IsCategory(OptionCategory::Setting)*/) {
+    if (setting->GetContextOptionIndex() != RO_GENERIC_ON) {
       continue;
     }
     jsonData["enabledTricks"].push_back(RemoveLineBreaks(setting->GetName()).c_str());
-    //auto node = parentNode->InsertNewChildElement("trick");
-    //node->SetAttribute("name", RemoveLineBreaks(setting->GetName()).c_str());
   }
-
-  // if (!parentNode->NoChildren()) {
-  //  spoilerLog.RootElement()->InsertEndChild(parentNode);
-  //}
 }
 
-// Writes the enabled glitches to the spoiler log, if there are any.
-// TODO: Implement Glitches
-// static void WriteEnabledGlitches(tinyxml2::XMLDocument& spoilerLog) {
-//   auto parentNode = spoilerLog.NewElement("enabled-glitches");
-
-//   for (const auto& setting : Settings::glitchCategories) {
-//     if (setting->Value<uint8_t>() == 0) {
-//       continue;
-//     }
-
-//     auto node = parentNode->InsertNewChildElement("glitch-category");
-//     node->SetAttribute("name", setting->GetName().c_str());
-//     node->SetText(setting->GetSelectedOptionText().c_str());
-//   }
-
-//   for (const auto& setting : Settings::miscGlitches) {
-//     if (!setting->Value<bool>()) {
-//       continue;
-//     }
-
-//     auto node = parentNode->InsertNewChildElement("misc-glitch");
-//     node->SetAttribute("name", RemoveLineBreaks(setting->GetName()).c_str());
-//   }
-
-//   if (!parentNode->NoChildren()) {
-//     spoilerLog.RootElement()->InsertEndChild(parentNode);
-//   }
-// }
-
 // Writes the Master Quest dungeons to the spoiler log, if there are any.
-static void WriteMasterQuestDungeons(tinyxml2::XMLDocument& spoilerLog) {
+static void WriteMasterQuestDungeons() {
     auto ctx = Rando::Context::GetInstance();
     for (const auto* dungeon : ctx->GetDungeons()->GetDungeonList()) {
         std::string dungeonName;
@@ -315,7 +213,6 @@ static void WriteRequiredTrials() {
 
 // Writes the intended playthrough to the spoiler log, separated into spheres.
 static void WritePlaythrough() {
-  // auto playthroughNode = spoilerLog.NewElement("playthrough");
   auto ctx = Rando::Context::GetInstance();
 
   for (uint32_t i = 0; i < ctx->playthroughLocations.size(); ++i) {
@@ -327,8 +224,6 @@ static void WritePlaythrough() {
       WriteLocation(sphereString, key, true);
     }
   }
-
-  // spoilerLog.RootElement()->InsertEndChild(playthroughNode);
 }
 
 //Write the randomized entrance playthrough to the spoiler log, if applicable
@@ -410,11 +305,6 @@ static void WriteAllLocations() {
 
 const char* SpoilerLog_Write() {
     auto ctx = Rando::Context::GetInstance();
-    auto spoilerLog = tinyxml2::XMLDocument(false);
-    spoilerLog.InsertEndChild(spoilerLog.NewDeclaration());
-
-    auto rootNode = spoilerLog.NewElement("spoiler-log");
-    spoilerLog.InsertEndChild(rootNode);
 
     jsonData.clear();
 
@@ -434,11 +324,8 @@ const char* SpoilerLog_Write() {
     WriteSettings();
     WriteExcludedLocations();
     WriteStartingInventory();
-    WriteEnabledTricks(spoilerLog); //RANDOTODO clean up spoilerLog refernces
-    //if (Settings::Logic.Is(LOGIC_GLITCHED)) {
-    //    WriteEnabledGlitches(spoilerLog);
-    //}
-    WriteMasterQuestDungeons(spoilerLog);
+    WriteEnabledTricks(); 
+    WriteMasterQuestDungeons();
     WriteRequiredTrials();
     WritePlaythrough();
 
@@ -487,30 +374,3 @@ void PlacementLog_Clear() {
     placementtxt = "";
 }
 
-// RANDOTODO: Do we even use this?
-bool PlacementLog_Write() {
-    auto placementLog = tinyxml2::XMLDocument(false);
-    placementLog.InsertEndChild(placementLog.NewDeclaration());
-
-    auto rootNode = placementLog.NewElement("placement-log");
-    placementLog.InsertEndChild(rootNode);
-
-    // rootNode->SetAttribute("version", Settings::version.c_str());
-    // rootNode->SetAttribute("seed", Settings::seed);
-
-    // WriteSettings(placementLog, true); // Include hidden settings.
-    // WriteExcludedLocations(placementLog);
-    // WriteStartingInventory(placementLog);
-    WriteEnabledTricks(placementLog);
-    //WriteEnabledGlitches(placementLog);
-    WriteMasterQuestDungeons(placementLog);
-    //WriteRequiredTrials(placementLog);
-
-    placementtxt = "\n" + placementtxt;
-
-    auto node = rootNode->InsertNewChildElement("log");
-    auto contentNode = node->InsertNewText(placementtxt.c_str());
-    contentNode->SetCData(true);
-
-    return true;
-}

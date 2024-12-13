@@ -56,9 +56,9 @@ class Option {
      * @param options_ A vector of value names for this Option. This vector should have a size of 2.
      * The name corresponding to the selected index for this option will be printed to the spoiler/patch file.
      * @param category_ The desired `OptionCategory` for this option.
-     * @param cvarName_ The name ofthe CVar this option should correspond with. Set as an empty string to not
+     * @param cvarName_ The name of the CVar this option should correspond with. Set as an empty string to not
      * link to any Cvar.
-     * @param description_ A description of what this option affects. Will be rendered in a toolip in ImGui.
+     * @param description_ A description of what this option affects. Will be rendered in a tooltip in ImGui.
      * Can be left as an empty string if desired, no tooltip will be rendered.
      * @param widgetType_ What type of widget should be rendered. Should probably be `Checkbox` but technically
      * `Combobox` or `Slider` would render and function correctly.
@@ -127,41 +127,24 @@ class Option {
     static Option LogicTrick(std::string name_);
 
     /**
-     * @brief Gets the selected index or boolean value of the Option.
-     *
-     * @tparam T uint8_t or bool, depending on how the option was constructed.
-     * @return T
-     */
-    template <typename T> T Value() const {
-        return std::get<T>(var);
-    }
-
-    /**
      * @brief Determines if the value/selected index of this Option matches the provided value.
      *
-     * @tparam T uint8_t, bool, or an enum (which will be cast to uint8_t).
      * @param other The value to compare.
      * @return true
      * @return false
      */
-    template <typename T> bool Is(T other) const {
-        static_assert(std::is_integral_v<T> || std::is_enum_v<T>, "T must be an integral type or an enum.");
-        if constexpr ((std::is_integral_v<T> && !std::is_same_v<bool, T>) || std::is_enum_v<T>) {
-            return Value<uint8_t>() == static_cast<uint8_t>(other);
-        } else {
-            return Value<bool>() == static_cast<bool>(other);
-        }
+    bool Is(uint32_t other) const {
+        return contextSelection == other;
     }
 
     /**
      * @brief Determines if the value/selected index of this Option does not match the provided value.
      *
-     * @tparam T uint8_t, book, or an enum (which will be cast to uint8_t).
      * @param other The value to compare.
      * @return true
      * @return false
      */
-    template <typename T> bool IsNot(T other) const {
+    bool IsNot(uint32_t other) const {
         return !Is(other);
     }
 
@@ -203,11 +186,18 @@ class Option {
     const std::string& GetCVarName() const;
 
     /**
-     * @brief Get the selected index for this Option.
+     * @brief Get the menu index for this Option.
      *
      * @return uint8_t
      */
-    uint8_t GetSelectedOptionIndex() const;
+    uint8_t GetMenuOptionIndex() const;
+
+    /**
+     * @brief Get the rando context index for this Option.
+     *
+     * @return uint8_t
+     */
+    uint8_t GetContextOptionIndex() const;
 
     /**
      * @brief Sets the variable to the currently selected index for this Option.
@@ -218,7 +208,7 @@ class Option {
      * @brief Sets the CVar corresponding to the property `cvarName` equal to the value
      * of the property `selectedValue`.
     */
-    void SetCVar() const;
+    void SaveCVar() const;
 
     /**
      * @brief Sets the value of property `selectedValue` equal to the CVar corresponding
@@ -237,11 +227,18 @@ class Option {
     void RestoreDelayedOption();
 
     /**
-     * @brief Set the selected index for this Option. Also calls `SetVariable()`.
+     * @brief Set the menu index for this Option. Also calls `SetVariable()`.
      *
      * @param idx the index to set as the selected index.
      */
-    void SetSelectedIndex(size_t idx);
+    void SetMenuIndex(size_t idx);
+
+    /**
+     * @brief Set the rando context index for this Option. Also calls `SetVariable()`.
+     *
+     * @param idx the index to set as the selected index.
+     */
+    void SetContextIndex(size_t idx);
 
     /**
      * @brief Hides this Option in the menu. (Not currently being used afaik, we prefer to
@@ -308,6 +305,8 @@ class Option {
     void SetFlag(int imFlag_);
     void RemoveFlag(int imFlag_);
 
+    void SetContextIndexFromText(std::string text);
+
 protected:
     Option(uint8_t var_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
            std::string cvarName_, std::string description_, WidgetType widgetType_, uint8_t defaultOption_,
@@ -321,11 +320,13 @@ protected:
     bool RenderTristateCheckbox();
     bool RenderCombobox();
     bool RenderSlider();
+    void PopulateTextToNum();
     std::variant<bool, uint8_t> var;
     std::string name;
     std::vector<std::string> options;
-    uint8_t selectedOption = 0;
-    uint8_t delayedOption = 0;
+    uint8_t menuSelection = 0;
+    uint8_t contextSelection = 0;
+    uint8_t delayedSelection = 0;
     bool hidden = false;
     OptionCategory category = OptionCategory::Setting;
     std::string cvarName;
@@ -337,6 +338,7 @@ protected:
     bool disabled = false;
     UIWidgets::CheckboxGraphics disabledGraphic = UIWidgets::CheckboxGraphics::Cross;
     std::string disabledText;
+    std::unordered_map<std::string, uint8_t> optionsTextToVar = {};
 };
 
 class TrickOption : public Option {
@@ -418,13 +420,11 @@ class OptionGroup {
      * @param options A vector of Option pointers
      * @param groupType `DEFAULT` if this group is not contained within any other groups, `SUBGROUP` if it is a
      * subgroup of another group.
-     * @param printInSpoiler Whether or not to print the contents of this group to the spoiler/patch file.
      * @param containerType Specifies the type of container this widget should render as in ImGui.
      * @param description A description that can appear in a tooltip in ImGui.
      */
     OptionGroup(std::string name, std::vector<Option*> options, OptionGroupType groupType = OptionGroupType::DEFAULT,
-                bool printInSpoiler = true, WidgetContainerType containerType = WidgetContainerType::BASIC,
-                std::string description = "");
+                WidgetContainerType containerType = WidgetContainerType::BASIC, std::string description = "");
 
     /**
      * @brief Construct a new Option Group containing a list of `OptionGroup` pointers.
@@ -433,13 +433,11 @@ class OptionGroup {
      * @param subGroups A vector of OptionGroup pointers that will be subgroups of this group.
      * @param groupType `DEFAULT` if this group is not contained within any other groups, `SUBGROUP` if it is a
      * subgroup of another group.
-     * @param printInSpoiler Whether or not to print the contents of this group to spoiler/patch file.
      * @param containerType Specifies the type of container this widget should render as in ImGui.
      * @param description A description that can appear in a tooltip in ImGui.
      */
     OptionGroup(std::string name, std::vector<OptionGroup*> subGroups, OptionGroupType groupType = OptionGroupType::DEFAULT,
-                bool printInSpoiler = true, WidgetContainerType containerType = WidgetContainerType::BASIC,
-                std::string description = "");
+                WidgetContainerType containerType = WidgetContainerType::BASIC, std::string description = "");
 
     /**
      * @brief Convenience function for constructing an OptionGroup of groupType `SUBGROUP` with
@@ -447,13 +445,11 @@ class OptionGroup {
      *
      * @param name The name of this option group. Appears in the spoiler/patch file.
      * @param options A vector of Option pointers.
-     * @param printInSpoiler Whether or not to print the options of this group to the spoiler/patch file.
      * @param containerType Specifies the type of container this widget should render as in ImGui.
      * @param description A description that can appear in a tooltip in ImGui.
      * @return OptionGroup
      */
-    static OptionGroup SubGroup(std::string name, std::vector<Option*> options, bool printInSpoiler = true,
-                                WidgetContainerType containerType = WidgetContainerType::BASIC,
+    static OptionGroup SubGroup(std::string name, std::vector<Option*> options, WidgetContainerType containerType = WidgetContainerType::BASIC,
                                 std::string description = "");
 
     /**
@@ -462,13 +458,11 @@ class OptionGroup {
      *
      * @param name The name of this option group. Appears in the spoiler/patch file.
      * @param subGroups A vector of OptionGroup pointers.
-     * @param printInSpoiler Whether or not to print the options of this group to the spoiler/patch file.
      * @param containerType Specifies the type of container this widget should render as in ImGui.
      * @param description A description that can appear in a tooltip in ImGui.
      * @return OptionGroup
      */
-    static OptionGroup SubGroup(std::string name, std::vector<OptionGroup*> subGroups, bool printInSpoiler = true,
-                                WidgetContainerType containerType = WidgetContainerType::BASIC,
+    static OptionGroup SubGroup(std::string name, std::vector<OptionGroup*> subGroups, WidgetContainerType containerType = WidgetContainerType::BASIC,
                                 std::string description = "");
 
     /**
@@ -491,15 +485,6 @@ class OptionGroup {
      * @return const std::vector<OptionGroup*>&
      */
     const std::vector<OptionGroup*>& GetSubGroups() const;
-
-    /**
-     * @brief Returns whether or not this `OptionGroup`'s contents should be printed to the
-     * spoiler/patch file.
-     *
-     * @return true
-     * @return false
-     */
-    bool PrintInSpoiler() const;
 
     /**
      * @brief Get the Group Type of this `OptionGroup`. `DEFAULT` means this group is not contained
@@ -534,7 +519,6 @@ class OptionGroup {
     std::vector<Option*> mOptions;
     std::vector<OptionGroup*> mSubGroups;
     OptionGroupType mGroupType = OptionGroupType::DEFAULT;
-    bool mPrintInSpoiler = true;
     OptionGroupType mContainsType = OptionGroupType::DEFAULT;
     WidgetContainerType mContainerType = WidgetContainerType::BASIC;
     std::string mDescription;

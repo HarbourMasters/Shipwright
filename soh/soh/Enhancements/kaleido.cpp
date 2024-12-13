@@ -125,8 +125,8 @@ namespace Rando {
                     std::make_shared<KaleidoEntryIconCountRequired>(
                             gTriforcePieceTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, Color_RGBA8{ 255,255,255,255 }, 0,
                             yOffset, reinterpret_cast<int*>(&gSaveContext.triforcePiecesCollected),
-                            ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).GetSelectedOptionIndex() + 1,
-                            ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).GetSelectedOptionIndex() + 1));
+                            ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).GetContextOptionIndex() + 1,
+                            ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).GetContextOptionIndex() + 1));
             yOffset += 18;
         }
         if (ctx->GetOption(RSK_SHUFFLE_OCARINA_BUTTONS)) {
@@ -215,12 +215,12 @@ namespace Rando {
             } else if (pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_LEFT) {
                 if ((pauseCtx->stickRelX > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
                     pauseCtx->cursorSpecialPos = 0;
-                    Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                    Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 }
             } else if (pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_RIGHT) {
                 if ((pauseCtx->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
                     pauseCtx->cursorSpecialPos = 0;
-                    Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                    Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 }
             }
         }
@@ -230,7 +230,7 @@ namespace Rando {
             if (shouldScroll) {
                 entry->SetYOffset(yOffset);
                 yOffset += 18;
-                Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             }
             Matrix_Push();
             entry->Draw(play, &mEntryDl);

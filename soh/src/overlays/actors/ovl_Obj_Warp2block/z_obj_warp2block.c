@@ -290,7 +290,7 @@ void func_80BA2610(ObjWarp2block* this, PlayState* play) {
         }
     }
     if (this->unk_16C == 0x32) {
-        func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
+        Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
     }
 }
 

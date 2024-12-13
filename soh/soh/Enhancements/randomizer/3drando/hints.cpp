@@ -113,8 +113,8 @@ StaticHintInfo::StaticHintInfo(HintType _type, std::vector<RandomizerHintTextKey
 
 RandomizerHintTextKey GetRandomJunkHint(){ 
   //temp code to handle random junk hints now I work in keys instead of a vector of HintText
-  // Will be replaced with a better system once more customisable hint pools are added
-  uint32_t range = RHT_JUNK_SG_8 - RHT_JUNK02;
+  //Will be replaced with a better system once more customisable hint pools are added
+  uint32_t range = RHT_JUNK_CREW_29 - RHT_JUNK02;
   return (RandomizerHintTextKey)(Random(0, range) + RHT_JUNK02);
 }
 
@@ -222,18 +222,18 @@ uint8_t StonesRequiredBySettings() {
     auto ctx = Rando::Context::GetInstance();
     uint8_t stones = 0;
     if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_STONES)) {
-        stones = ctx->GetOption(RSK_RAINBOW_BRIDGE_STONE_COUNT).Value<uint8_t>();
+        stones = ctx->GetOption(RSK_RAINBOW_BRIDGE_STONE_COUNT).GetContextOptionIndex();
     } else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEON_REWARDS)) {
-        stones = ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).Value<uint8_t>() - 6;
+        stones = ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).GetContextOptionIndex() - 6;
     } else if ((ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEONS)) && (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON))) {
-        stones = ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).Value<uint8_t>() - 6;
+        stones = ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).GetContextOptionIndex() - 6;
     }
     if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_STONES)) {
-        stones = std::max<uint8_t>({ stones, ctx->GetOption(RSK_LACS_STONE_COUNT).Value<uint8_t>() });
+        stones = std::max<uint8_t>({ stones, ctx->GetOption(RSK_LACS_STONE_COUNT).GetContextOptionIndex() });
     } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_STONES)) {
-        stones = std::max<uint8_t>({ stones, (uint8_t)(ctx->GetOption(RSK_LACS_REWARD_COUNT).Value<uint8_t>() - 6 )});
+        stones = std::max<uint8_t>({ stones, (uint8_t)(ctx->GetOption(RSK_LACS_REWARD_COUNT).GetContextOptionIndex() - 6 )});
     } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_DUNGEONS)) {
-        stones = std::max<uint8_t>({ stones, (uint8_t)(ctx->GetOption(RSK_LACS_DUNGEON_COUNT).Value<uint8_t>() - 6 )});
+        stones = std::max<uint8_t>({ stones, (uint8_t)(ctx->GetOption(RSK_LACS_DUNGEON_COUNT).GetContextOptionIndex() - 6 )});
     }
     return stones;
 }
@@ -242,18 +242,18 @@ uint8_t MedallionsRequiredBySettings() {
     auto ctx = Rando::Context::GetInstance();
     uint8_t medallions = 0;
     if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_MEDALLIONS)) {
-        medallions = ctx->GetOption(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT).Value<uint8_t>();
+        medallions = ctx->GetOption(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT).GetContextOptionIndex();
     } else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEON_REWARDS)) {
-        medallions = ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).Value<uint8_t>() - 3;
+        medallions = ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).GetContextOptionIndex() - 3;
     } else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEONS) && ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
-        medallions = ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).Value<uint8_t>() - 3;
+        medallions = ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).GetContextOptionIndex() - 3;
     }
     if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_MEDALLIONS)) {
-        medallions = std::max({ medallions, ctx->GetOption(RSK_LACS_MEDALLION_COUNT).Value<uint8_t>() });
+        medallions = std::max({ medallions, ctx->GetOption(RSK_LACS_MEDALLION_COUNT).GetContextOptionIndex() });
     } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_REWARDS)) {
-        medallions = std::max({ medallions, (uint8_t)(ctx->GetOption(RSK_LACS_REWARD_COUNT).Value<uint8_t>() - 3 )});
+        medallions = std::max({ medallions, (uint8_t)(ctx->GetOption(RSK_LACS_REWARD_COUNT).GetContextOptionIndex() - 3 )});
     } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_DUNGEONS) && ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
-        medallions = std::max({ medallions, (uint8_t)(ctx->GetOption(RSK_LACS_DUNGEON_COUNT).Value<uint8_t>() - 3 )});
+        medallions = std::max({ medallions, (uint8_t)(ctx->GetOption(RSK_LACS_DUNGEON_COUNT).GetContextOptionIndex() - 3 )});
     }
     return medallions;
 }
@@ -262,10 +262,10 @@ uint8_t TokensRequiredBySettings() {
     auto ctx = Rando::Context::GetInstance();
     uint8_t tokens = 0;
     if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS)) {
-        tokens = ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).Value<uint8_t>();
+        tokens = ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).GetContextOptionIndex();
     }
     if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_TOKENS)) {
-        tokens = std::max<uint8_t>({ tokens, ctx->GetOption(RSK_LACS_TOKEN_COUNT).Value<uint8_t>() });
+        tokens = std::max<uint8_t>({ tokens, ctx->GetOption(RSK_LACS_TOKEN_COUNT).GetContextOptionIndex() });
     }
     return tokens;
 }
@@ -273,7 +273,7 @@ uint8_t TokensRequiredBySettings() {
 std::vector<std::pair<RandomizerCheck, std::function<bool()>>> conditionalAlwaysHints = {
     std::make_pair(RC_MARKET_10_BIG_POES, []() {
                        auto ctx = Rando::Context::GetInstance();
-                       return ctx->GetOption(RSK_BIG_POE_COUNT).Value<uint8_t>() >= 3 && !ctx->GetOption(RSK_BIG_POES_HINT);
+                       return ctx->GetOption(RSK_BIG_POE_COUNT).GetContextOptionIndex() >= 3 && !ctx->GetOption(RSK_BIG_POES_HINT);
                    }), // Remember, the option's value being 3 means 4 are required
     std::make_pair(RC_DEKU_THEATER_MASK_OF_TRUTH, []() {
                        auto ctx = Rando::Context::GetInstance();
@@ -411,7 +411,7 @@ static bool CreateHint(RandomizerCheck location, uint8_t copies, HintType type, 
       return false;
   }
   RandomizerCheck gossipStone = RandomElement(gossipStoneLocations);
-  RandomizerArea area = RandomElementFromSet(ctx->GetItemLocation(location)->GetAreas());
+  RandomizerArea area = ctx->GetItemLocation(location)->GetRandomArea();
 
   //Set that hints are accesible
   ctx->GetItemLocation(location)->SetHintAccesible();
@@ -483,7 +483,7 @@ static void CreateTrialHints(uint8_t copies) {
       AddGossipStoneHintCopies(copies, HINT_TYPE_HINT_KEY, "Trial", {RHT_ZERO_TRIALS});
     } else {
       std::vector<TrialInfo*> trials = ctx->GetTrials()->GetTrialList(); //there's probably a way to remove this assignment
-      if (ctx->GetOption(RSK_TRIAL_COUNT).Value<uint8_t>() >= 4) {//4 or 5 required trials, get skipped trials
+      if (ctx->GetOption(RSK_TRIAL_COUNT).GetContextOptionIndex() >= 4) {//4 or 5 required trials, get skipped trials
         trials = FilterFromPool(trials, [](TrialInfo* trial){return trial->IsSkipped();});
       } else {//1 to 3 trials, get requried trials
         auto requiredTrials = FilterFromPool(trials, [](TrialInfo* trial){return trial->IsRequired();});
@@ -501,10 +501,7 @@ void CreateWarpSongTexts() {
     auto warpSongEntrances = GetShuffleableEntrances(EntranceType::WarpSong, false);
     for (auto entrance : warpSongEntrances) {
       //RANDOTODO make random
-      RandomizerArea destination = RA_NONE;
-      if (!entrance->GetConnectedRegion()->GetAllAreas().empty()){
-        destination = *entrance->GetConnectedRegion()->GetAllAreas().begin();
-      }
+      RandomizerArea destination = entrance->GetConnectedRegion()->GetFirstArea();
       switch (entrance->GetIndex()) {
         case 0x0600: // minuet RANDOTODO make into entrance hints when they are added
           ctx->AddHint(RH_MINUET_WARP_LOC, Hint(RH_MINUET_WARP_LOC, HINT_TYPE_AREA, "", {RHT_WARP_SONG}, {}, {destination}));
@@ -614,7 +611,7 @@ uint8_t PlaceHints(std::vector<uint8_t>& selectedHints, std::vector<HintDistribu
 void CreateStoneHints() {
   auto ctx = Rando::Context::GetInstance();
   SPDLOG_DEBUG("\nNOW CREATING HINTS\n");
-  const HintSetting& hintSetting = hintSettingTable[ctx->GetOption(RSK_HINT_DISTRIBUTION).Value<uint8_t>()];
+  const HintSetting& hintSetting = hintSettingTable[ctx->GetOption(RSK_HINT_DISTRIBUTION).GetContextOptionIndex()];
   std::vector<HintDistributionSetting> distTable = hintSetting.distTable;
 
   // Apply impa's song exclusions when zelda is skipped
@@ -710,7 +707,7 @@ void CreateChildAltarHint() {
     }
     std::vector<RandomizerArea> stoneAreas = {};
     for (auto loc : stoneLocs){
-      stoneAreas.push_back(RandomElementFromSet(ctx->GetItemLocation(loc)->GetAreas()));
+      stoneAreas.push_back(ctx->GetItemLocation(loc)->GetRandomArea());
     }
     ctx->AddHint(RH_ALTAR_CHILD, Hint(RH_ALTAR_CHILD, HINT_TYPE_ALTAR_CHILD, {}, stoneLocs, stoneAreas));
   }
@@ -732,7 +729,7 @@ void CreateAdultAltarHint() {
     }
     std::vector<RandomizerArea> medallionAreas = {};
     for (auto loc : medallionLocs){
-      medallionAreas.push_back(RandomElementFromSet(ctx->GetItemLocation(loc)->GetAreas()));
+      medallionAreas.push_back(ctx->GetItemLocation(loc)->GetRandomArea());
     }
     ctx->AddHint(RH_ALTAR_ADULT, Hint(RH_ALTAR_ADULT, HINT_TYPE_ALTAR_ADULT, {}, medallionLocs, medallionAreas));
   }
@@ -748,13 +745,23 @@ void CreateStaticHintFromData(RandomizerHint hint, StaticHintInfo staticData){
       std::vector<RandomizerCheck> locations = {};
       if (staticData.targetItems.size() > 0){
         locations = FindItemsAndMarkHinted(staticData.targetItems, staticData.hintChecks);
-      }
-      for(auto check: staticData.targetChecks){
-        ctx->GetItemLocation(check)->SetHintAccesible();
+      } else {
+        for(auto check: staticData.targetChecks){
+          locations.push_back(check);
+        }
       }
       std::vector<RandomizerArea> areas = {};
       for (auto loc : locations){
-        areas.push_back(RandomElementFromSet(ctx->GetItemLocation(loc)->GetAreas()));
+        ctx->GetItemLocation(loc)->SetHintAccesible();
+        if (ctx->GetItemLocation(loc)->GetAreas().empty()){
+          //If we get to here then it means a location got through with no area assignment, which means something went wrong elsewhere.
+          SPDLOG_DEBUG("Attempted to hint location with no areas: ");
+          SPDLOG_DEBUG(Rando::StaticData::GetLocation(loc)->GetName());
+          //assert(false);
+          areas.push_back(RA_NONE);
+        } else {
+          areas.push_back(ctx->GetItemLocation(loc)->GetRandomArea());
+        }
       }
       //hintKeys are defaulted to in the hint object and do not need to be specified
       ctx->AddHint(hint, Hint(hint, staticData.type, {}, locations, areas, {}, staticData.yourPocket, staticData.num));
@@ -769,7 +776,7 @@ void CreateStaticItemHint(RandomizerHint hintKey, std::vector<RandomizerHintText
   std::vector<RandomizerCheck> locations = FindItemsAndMarkHinted(items, hintChecks);
   std::vector<RandomizerArea> areas = {};
   for (auto loc : locations){
-    areas.push_back(RandomElementFromSet(ctx->GetItemLocation(loc)->GetAreas()));
+    areas.push_back(ctx->GetItemLocation(loc)->GetRandomArea());
   }
   ctx->AddHint(hintKey, Hint(hintKey, HINT_TYPE_AREA, hintTextKeys, locations, areas, {}, yourPocket));
 }

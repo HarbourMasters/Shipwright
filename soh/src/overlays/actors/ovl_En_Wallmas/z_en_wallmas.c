@@ -8,6 +8,7 @@
 #include "objects/object_wallmaster/object_wallmaster.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -497,7 +498,7 @@ void EnWallmas_TakePlayer(EnWallmas* this, PlayState* play) {
     Math_StepToF(&this->actor.world.pos.z, player->actor.world.pos.z, 3.0f);
 
     if (this->timer == 0x1E) {
-        func_80078884(NA_SE_OC_ABYSS);
+        Sfx_PlaySfxCentered(NA_SE_OC_ABYSS);
         Play_TriggerRespawn(play);
     }
 }

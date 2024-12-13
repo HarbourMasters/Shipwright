@@ -6,6 +6,9 @@
 
 #include "z_en_toryo.h"
 #include "objects/object_toryo/object_toryo.h"
+#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
@@ -243,7 +246,7 @@ u32 func_80B20634(EnToryo* this, PlayState* play) {
 
     if (this->unk_1E0 != 0) {
         if (this->unk_1E0 == 10) {
-            func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
+            Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
             if (Flags_GetInfTable(INFTABLE_171)) {
                 ret = 0x606E;
             } else {

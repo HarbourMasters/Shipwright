@@ -7,6 +7,8 @@
 #include "z_en_ta.h"
 #include "vt.h"
 #include "objects/object_ta/object_ta.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
@@ -747,7 +749,7 @@ void EnTa_RunCuccoGame(EnTa* this, PlayState* play) {
     if (gSaveContext.timer1Value == 0 && !Play_InCsMode(play)) {
         Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_STOP);
         this->unk_2E0 &= ~0x200;
-        func_80078884(NA_SE_SY_FOUND);
+        Sfx_PlaySfxCentered(NA_SE_SY_FOUND);
         gSaveContext.timer1State = 0;
         Player_SetCsActionWithHaltedActors(play, &this->actor, 1);
         Message_StartTextbox(play, 0x2081, &this->actor);

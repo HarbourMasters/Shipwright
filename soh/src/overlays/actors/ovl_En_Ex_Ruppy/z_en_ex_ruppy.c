@@ -211,7 +211,7 @@ void EnExRuppy_DropIntoWater(EnExRuppy* this, PlayState* play) {
     this->actor.shape.rot.y += 0x7A8;
     Math_ApproachF(&this->actor.gravity, -2.0f, 0.3f, 1.0f);
     EnExRuppy_SpawnSparkles(this, play, 2, 0);
-    func_80078884(NA_SE_EV_RAINBOW_SHOWER - SFX_FLAG);
+    Sfx_PlaySfxCentered(NA_SE_EV_RAINBOW_SHOWER - SFX_FLAG);
     divingGame = (EnDivingGame*)this->actor.parent;
     if ((divingGame != NULL) && (divingGame->actor.update != NULL) &&
         ((divingGame->unk_296 == 0) || (this->actor.bgCheckFlags & 0x20) || (this->timer == 0))) {
@@ -219,7 +219,7 @@ void EnExRuppy_DropIntoWater(EnExRuppy* this, PlayState* play) {
         this->actor.speedXZ = 0.0f;
         this->actor.velocity.x = this->actor.velocity.y = this->actor.velocity.z = 0.0f;
         this->actor.gravity = 0.0f;
-        func_80078914(&this->actor.projectedPos, NA_SE_EV_BOMB_DROP_WATER);
+        Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_EV_BOMB_DROP_WATER);
         this->actionFunc = EnExRuppy_EnterWater;
     }
 }
@@ -256,7 +256,7 @@ void EnExRuppy_Sink(EnExRuppy* this, PlayState* play) {
         this->actor.velocity.y = -1.0f;
         this->actor.gravity = -0.2f;
         EffectSsGSplash_Spawn(play, &pos, 0, 0, 0, 800);
-        func_80078914(&this->actor.projectedPos, NA_SE_EV_BOMB_DROP_WATER);
+        Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_EV_BOMB_DROP_WATER);
         this->actionFunc = EnExRuppy_WaitInGame;
     }
     divingGame = (EnDivingGame*)this->actor.parent;
@@ -284,7 +284,7 @@ void EnExRuppy_WaitInGame(EnExRuppy* this, PlayState* play) {
                 this->actionFunc = EnExRuppy_Kill;
             } else if (this->actor.xyzDistToPlayerSq < SQ(localConst)) {
                 Rupees_ChangeBy(this->rupeeValue);
-                func_80078884(NA_SE_SY_GET_RUPY);
+                Sfx_PlaySfxCentered(NA_SE_SY_GET_RUPY);
                 divingGame->grabbedRupeesCounter++;
                 Actor_Kill(&this->actor);
             }
@@ -348,7 +348,7 @@ void EnExRuppy_WaitAsCollectible(EnExRuppy* this, PlayState* play) {
     f32 localConst = 30.0f;
 
     if (this->actor.xyzDistToPlayerSq < SQ(localConst)) {
-        func_80078884(NA_SE_SY_GET_RUPY);
+        Sfx_PlaySfxCentered(NA_SE_SY_GET_RUPY);
         Item_DropCollectible(play, &this->actor.world.pos, (sEnExRuppyCollectibleTypes[this->colorIdx] | 0x8000));
         Actor_Kill(&this->actor);
     }

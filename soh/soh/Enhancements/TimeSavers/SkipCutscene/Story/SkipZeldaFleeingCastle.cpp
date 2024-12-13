@@ -10,7 +10,7 @@ extern "C" {
 
 void SkipZeldaFleeingCastle_ShouldPlayTransitionCS(GIVanillaBehavior _, bool* should, va_list originalArgs) {
     if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
-        if (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_0 && gSaveContext.cutsceneIndex == 0xFFF1) {
+        if (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN && gSaveContext.cutsceneIndex == 0xFFF1) {
             // Normally set in the cutscene
             gSaveContext.dayTime = gSaveContext.skyboxTime = 0x4AAA;
 

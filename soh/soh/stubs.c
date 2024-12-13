@@ -23,6 +23,10 @@ u16 gAudioSEFlagSwapSource[64];
 u16 gAudioSEFlagSwapTarget[64];
 u8 gAudioSEFlagSwapMode[64];
 
+// Zbuffer and Color framebuffer
+u16 D_0E000000[SCREEN_WIDTH * SCREEN_HEIGHT];
+u16 D_0F000000[SCREEN_WIDTH * SCREEN_HEIGHT];
+
 u8 osAppNmiBuffer[2048];
 
 f32 qNaN0x10000 = 0x7F810000;

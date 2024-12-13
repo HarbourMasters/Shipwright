@@ -36,7 +36,7 @@ const ActorInit En_Eg_InitVars = {
 };
 
 void EnEg_PlayVoidOutSFX() {
-    func_800788CC(NA_SE_OC_ABYSS);
+    Sfx_PlaySfxCentered2(NA_SE_OC_ABYSS);
 }
 
 void EnEg_Destroy(Actor* thisx, PlayState* play) {

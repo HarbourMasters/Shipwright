@@ -8,6 +8,7 @@
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/draw.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #include <stdlib.h>
 
@@ -886,6 +887,16 @@ s32 Player_HoldsSlingshot(Player* this) {
     return this->heldItemAction == PLAYER_IA_SLINGSHOT;
 }
 
+// #region SOH [Enhancement]
+s32 Player_HoldsBoomerang(Player* this) {
+    return this->heldItemAction == PLAYER_IA_BOOMERANG;
+}
+
+s32 Player_AimsBoomerang(Player* this) {
+    return Player_HoldsBoomerang(this) && (this->unk_834 != 0);
+}
+// #endregion
+
 s32 func_8008F128(Player* this) {
     return Player_HoldsHookshot(this) && (this->heldActor == NULL);
 }
@@ -1752,7 +1763,7 @@ Vec3f sLeftHandArrowVec3 = { 398.0f, 1419.0f, 244.0f };
 
 BowStringData sBowStringData[] = {
     { gLinkAdultBowStringDL, { 0.0f, -360.4f, 0.0f } },       // bow
-    { gLinkChildSlinghotStringDL, { 606.0f, 236.0f, 0.0f } }, // slingshot
+    { gLinkChildSlingshotStringDL, { 606.0f, 236.0f, 0.0f } }, // slingshot
 };
 
 Vec3f sRightHandLimbModelShieldQuadVertices[] = {
@@ -1787,6 +1798,9 @@ Vec3f sLeftRightFootLimbModelFootPos[] = {
 
 void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     Player* this = (Player*)thisx;
+
+    const Vec3s BoomerangViewAdult = { -31200, -9200, 17000 };
+    const Vec3s BoomerangViewChild = { -31200, -8700, 17000 };
 
     if (*dList != NULL) {
         Matrix_MultVec3f(&sZeroVec, D_80160000);
@@ -1949,6 +1963,8 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                             play, this, ((this->heldItemAction == PLAYER_IA_HOOKSHOT) ? 38600.0f : 77600.0f) * CVarGetFloat(CVAR_CHEAT("HookshotReachMultiplier"), 1.0f));
                     }
                 }
+
+            // #region SOH [Enhancement]            
             } else if (CVarGetInteger(CVAR_ENHANCEMENT("BowReticle"), 0) && (
                         (this->heldItemAction == PLAYER_IA_BOW_FIRE) ||
                         (this->heldItemAction == PLAYER_IA_BOW_ICE) ||
@@ -1967,6 +1983,21 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                         Player_DrawHookshotReticle(play, this, RETICLE_MAX);
                     }
                 }
+            } else if (CVarGetInteger(CVAR_ENHANCEMENT("BoomerangReticle"), 0) && (this->heldItemAction == PLAYER_IA_BOOMERANG)) {
+                if (Player_HoldsBoomerang(this)) {
+                    if (LINK_IS_ADULT) {
+                        Matrix_RotateZYX(BoomerangViewAdult.x, BoomerangViewAdult.y, BoomerangViewAdult.z,
+                                         MTXMODE_APPLY);
+                    } else {
+                        Matrix_RotateZYX(BoomerangViewChild.x, BoomerangViewChild.y, BoomerangViewChild.z, MTXMODE_APPLY);
+                    }
+
+                    if (Player_AimsBoomerang(this)) {
+                        Matrix_Translate(500.0f, 300.0f, 0.0f, MTXMODE_APPLY);
+                        Player_DrawHookshotReticle(play, this, RETICLE_MAX);
+                    }
+                }
+            // #endregion
             }
 
             if ((this->unk_862 != 0) || ((func_8002DD6C(this) == 0) && (heldActor != NULL))) {

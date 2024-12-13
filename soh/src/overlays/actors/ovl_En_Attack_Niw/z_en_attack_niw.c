@@ -7,6 +7,7 @@
 #include "z_en_attack_niw.h"
 #include "objects/object_niw/object_niw.h"
 #include "overlays/actors/ovl_En_Niw/z_en_niw.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 

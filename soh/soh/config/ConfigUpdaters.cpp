@@ -77,5 +77,11 @@ namespace SOH {
             }
             CVarClear(migration.from.c_str());
         }
+        if (conf->Contains("CVars.gEnhancements.InjectItemCounts")) {
+            CVarClear("gEnhancements.InjectItemCounts");
+            CVarSetInteger("gEnhancements.InjectItemCounts.GoldSkulltula", 1);
+            CVarSetInteger("gEnhancements.InjectItemCounts.HeartContainer", 1);
+            CVarSetInteger("gEnhancements.InjectItemCounts.HeartPiece", 1);
+        }
     }
 }

@@ -30,7 +30,7 @@ std::vector<std::string> sceneNames = {
     "Phantom Ganon's Lair",
     "Volvagia's Lair",
     "Morpha's Lair",
-    "Twinrova's Lair & Nabooru's Mini-Boss Room",
+    "Twinrova's Lair",
     "Bongo Bongo's Lair",
     "Ganondorf's Lair",
     "Tower Collapse Exterior",
@@ -79,34 +79,34 @@ std::vector<std::string> sceneNames = {
     "Castle Hedge Maze (Day)",
     "Castle Hedge Maze (Night)",
     "Cutscene Map",
-    "Damp�'s Grave & Windmill",
+    "Dampe's Grave & Windmill",
     "Fishing Pond",
     "Castle Courtyard",
     "Bombchu Bowling Alley",
     "Ranch House & Silo",
     "Guard House",
     "Granny's Potion Shop",
-    "Ganon's Tower Collapse & Battle Arena",
+    "Ganon's Tower Collapse & Arena",
     "House of Skulltula",
-    "Spot 00 - Hyrule Field",
-    "Spot 01 - Kakariko Village",
-    "Spot 02 - Graveyard",
-    "Spot 03 - Zora's River",
-    "Spot 04 - Kokiri Forest",
-    "Spot 05 - Sacred Forest Meadow",
-    "Spot 06 - Lake Hylia",
-    "Spot 07 - Zora's Domain",
-    "Spot 08 - Zora's Fountain",
-    "Spot 09 - Gerudo Valley",
-    "Spot 10 - Lost Woods",
-    "Spot 11 - Desert Colossus",
-    "Spot 12 - Gerudo's Fortress",
-    "Spot 13 - Haunted Wasteland",
-    "Spot 15 - Hyrule Castle",
-    "Spot 16 - Death Mountain Trail",
-    "Spot 17 - Death Mountain Crater",
-    "Spot 18 - Goron City",
-    "Spot 20 - Lon Lon Ranch",
+    "Hyrule Field",
+    "Kakariko Village",
+    "Graveyard",
+    "Zora's River",
+    "Kokiri Forest",
+    "Sacred Forest Meadow",
+    "Lake Hylia",
+    "Zora's Domain",
+    "Zora's Fountain",
+    "Gerudo Valley",
+    "Lost Woods",
+    "Desert Colossus",
+    "Gerudo's Fortress",
+    "Haunted Wasteland",
+    "Hyrule Castle",
+    "Death Mountain Trail",
+    "Death Mountain Crater",
+    "Goron City",
+    "Lon Lon Ranch",
     "Ganon's Castle Exterior",
     "Jungle Gym",
     "Ganondorf Test Room",
@@ -389,4 +389,17 @@ size_t SohUtils::CopyStringToCharBuffer(char* buffer, const std::string& source,
     }
 
     return 0;
+}
+
+bool SohUtils::IsStringEmpty(std::string str) {
+    // Remove spaces at the beginning of the string
+    std::string::size_type start = str.find_first_not_of(' ');
+    // Remove spaces at the end of the string
+    std::string::size_type end = str.find_last_not_of(' ');
+
+    // Check if the string is empty after stripping spaces
+    if (start == std::string::npos || end == std::string::npos)
+        return true; // The string is empty
+    else
+        return false; // The string is not empty
 }

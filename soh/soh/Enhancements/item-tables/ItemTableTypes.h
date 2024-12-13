@@ -30,13 +30,13 @@ typedef enum GetItemCategory {
 } GetItemCategory;
 
 #define GET_ITEM(itemId, objectId, drawId, textId, field, chestAnim, itemCategory, modIndex, getItemId) \
-    { itemId, field, (int16_t)((chestAnim != CHEST_ANIM_SHORT ? 1 : -1) * (drawId + 1)), textId, objectId, modIndex, modIndex, getItemId, drawId, true, ITEM_FROM_NPC, itemCategory, NULL }
+    { itemId, field, (int16_t)((chestAnim != CHEST_ANIM_SHORT ? 1 : -1) * (drawId + 1)), textId, objectId, modIndex, modIndex, getItemId, drawId, true, ITEM_FROM_NPC, itemCategory, itemId, modIndex, NULL }
 
 #define GET_ITEM_CUSTOM_TABLE(itemId, objectId, drawId, textId, field, chestAnim, itemCategory, modIndex, tableId, getItemId) \
-    { itemId, field, (int16_t)((chestAnim != CHEST_ANIM_SHORT ? 1 : -1) * (drawId + 1)), textId, objectId, modIndex, tableId, getItemId, drawId, true, ITEM_FROM_NPC, itemCategory, NULL }
+    { itemId, field, (int16_t)((chestAnim != CHEST_ANIM_SHORT ? 1 : -1) * (drawId + 1)), textId, objectId, modIndex, tableId, getItemId, drawId, true, ITEM_FROM_NPC, itemCategory, itemId, modIndex, NULL }
 
 #define GET_ITEM_NONE \
-    { ITEM_NONE, 0, 0, 0, 0, 0, 0, 0, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_JUNK, NULL }
+    { ITEM_NONE, 0, 0, 0, 0, 0, 0, 0, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_JUNK, ITEM_NONE, 0, NULL }
 
 typedef struct PlayState PlayState;
 typedef struct GetItemEntry GetItemEntry;

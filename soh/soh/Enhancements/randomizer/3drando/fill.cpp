@@ -238,10 +238,10 @@ static int GetMaxGSCount() {
   int maxBridge = 0;
   int maxLACS = 0;
   if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS)) {
-    maxBridge = ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).Value<uint8_t>();
+    maxBridge = ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).GetContextOptionIndex();
   }
   if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_TOKENS)) {
-    maxLACS = ctx->GetOption(RSK_LACS_TOKEN_COUNT).Value<uint8_t>();
+    maxLACS = ctx->GetOption(RSK_LACS_TOKEN_COUNT).GetContextOptionIndex();
   }
   maxBridge = std::max(maxBridge, maxLACS);
   //Get the max amount of GS which could be useful from token reward locations
@@ -266,7 +266,7 @@ static int GetMaxGSCount() {
       maxUseful = 10;
   }
   //Return max of the two possible reasons tokens could be important, minus the tokens in the starting inventory
-  return std::max(maxUseful, maxBridge) - ctx->GetOption(RSK_STARTING_SKULLTULA_TOKEN).Value<uint8_t>();
+  return std::max(maxUseful, maxBridge) - ctx->GetOption(RSK_STARTING_SKULLTULA_TOKEN).GetContextOptionIndex();
 }
 
 std::string GetShopItemBaseName(std::string itemName) {
@@ -617,8 +617,8 @@ void LookForExternalArea(Region* currentRegion, std::set<Region*> &alreadyChecke
     //if this entrance does not pass areas, only process it if we are in low priority mode
     if ((LowPriorityMode || entrance->DoesSpreadAreas()) && !alreadyChecked.contains(entrance->GetParentRegion())){
       std::set<RandomizerArea> otherAreas = entrance->GetParentRegion()->GetAllAreas();
-      alreadyChecked.insert(entrance->GetParentRegion());
       if (otherAreas.size() == 0) {
+        alreadyChecked.insert(entrance->GetParentRegion());
         LookForExternalArea(entrance->GetParentRegion(), alreadyChecked, areas, LowPriorityMode);
       //If we find a valid area we should add it.
       //If it's Links Pocket or RA_NONE, do not propagate those, they are not real areas.
@@ -715,7 +715,7 @@ static void CalculateWotH() {
       //If removing this item and no other item caused the game to become unbeatable, then it is strictly necessary,
       //so add it unless it is in Links Pocket or an isolated place.
       auto itemLoc = ctx->GetItemLocation(ctx->playthroughLocations[i][j]);
-      if (itemLoc->IsHintable() && *itemLoc->GetAreas().begin() > RA_LINKS_POCKET &&
+      if (itemLoc->IsHintable() && itemLoc->GetFirstArea() > RA_LINKS_POCKET &&
           !(IsBeatableWithout(ctx->playthroughLocations[i][j], true))) {
         itemLoc->SetWothCandidate();
       }
@@ -855,11 +855,6 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
                 SPDLOG_DEBUG("\nCANNOT PLACE ");
                 SPDLOG_DEBUG(Rando::StaticData::RetrieveItem(item).GetName().GetEnglish());
                 SPDLOG_DEBUG(". TRYING AGAIN...\n");
-
-#ifdef ENABLE_DEBUG
-                Regions::DumpWorldGraph(Rando::StaticData::RetrieveItem(item).GetName().GetEnglish());
-                PlacementLog_Write();
-#endif
 
                 // reset any locations that got an item
                 for (RandomizerCheck loc : attemptedLocations) {
@@ -1041,8 +1036,7 @@ static void RandomizeDungeonItems() {
   auto ctx = Rando::Context::GetInstance();
 
   //Get Any Dungeon and Overworld group locations
-  std::vector<RandomizerCheck> anyDungeonLocations = Rando::StaticData::GetDungeonLocations();
-  //Rando::StaticData::GetOverworldLocations() defined in item_location.cpp
+  std::vector<RandomizerCheck> anyDungeonLocations = Rando::StaticData::GetAllDungeonLocations();
 
   //Create Any Dungeon and Overworld item pools
   std::vector<RandomizerGet> anyDungeonItems;

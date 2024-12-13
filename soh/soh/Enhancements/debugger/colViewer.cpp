@@ -8,12 +8,14 @@
 #include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
 #include "soh/OTRGlobals.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 extern "C" {
 #include <z64.h>
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
+#include "soh/cvar_prefixes.h"
 extern PlayState* gPlayState;
 }
 
@@ -274,11 +276,6 @@ void CreateSphereData() {
     }
 
     sphereGfx.push_back(gsSPEndDisplayList());
-}
-
-void ColViewerWindow::InitElement() {
-    CreateCylinderData();
-    CreateSphereData();
 }
 
 // Initializes the display list for a ColRenderSetting
@@ -688,4 +685,11 @@ extern "C" void DrawColViewer() {
     }
 
     CLOSE_DISPS(gPlayState->state.gfxCtx);
+}
+
+void ColViewerWindow::InitElement() {
+    CreateCylinderData();
+    CreateSphereData();
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayDrawEnd>(DrawColViewer);
 }
