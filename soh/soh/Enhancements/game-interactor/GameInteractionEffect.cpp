@@ -534,7 +534,7 @@ namespace GameInteractionEffect {
         }
     }
     void PressRandomButton::_Apply() {
-        GameInteractor::RawAction::EmulateRandomButtonPress(parameters[0]);
+        GameInteractor::RawAction::EmulateRandomButtonPress(30);
     }
 
     // MARK: - AddOrTakeAmmo
