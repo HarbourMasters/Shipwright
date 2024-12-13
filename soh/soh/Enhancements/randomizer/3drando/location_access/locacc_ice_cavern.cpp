@@ -43,9 +43,9 @@ void RegionTable_Init_IceCavern() {
                   LOCATION(RC_ICE_CAVERN_SPINNING_BLADE_POT_1,    logic->CanBreakPots()),
                   LOCATION(RC_ICE_CAVERN_SPINNING_BLADE_POT_2,    logic->CanBreakPots()),
                   LOCATION(RC_ICE_CAVERN_SPINNING_BLADE_POT_3,    logic->CanBreakPots()),
-                  LOCATION(RC_ICE_CAVERN_NEAR_END_POT_1,          logic->CanBreakPots()),
-                  LOCATION(RC_ICE_CAVERN_NEAR_END_POT_2,          logic->CanBreakPots()),
-                  LOCATION(RC_ICE_CAVERN_FROZEN_POT_1,            logic->CanBreakPots()),
+                  LOCATION(RC_ICE_CAVERN_NEAR_END_POT_1,          logic->CanBreakPots() && logic->BlueFire()),
+                  LOCATION(RC_ICE_CAVERN_NEAR_END_POT_2,          logic->CanBreakPots() && logic->BlueFire()),
+                  LOCATION(RC_ICE_CAVERN_FROZEN_POT_1,            logic->CanBreakPots() && logic->BlueFire() && logic->IsAdult),
   }, {});
   }
 
