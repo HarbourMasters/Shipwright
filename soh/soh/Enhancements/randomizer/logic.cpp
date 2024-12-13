@@ -660,7 +660,7 @@ namespace Rando {
             //RANDOTODO when you add better damage logic, you can kill this by taking hits
                 return CanUse(RG_BOOMERANG) || CanUse(RG_NUTS) || CanJumpslash() || CanUse(RG_DINS_FIRE) || CanUse(RG_ICE_ARROWS);
             case RE_OCTOROK:
-                return CanReflectNuts() || HookshotOrBoomerang() || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT);
+                return CanReflectNuts() || HookshotOrBoomerang() || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOMB_BAG) || (wallOrFloor && CanUse(RG_BOMBCHU_5));
             default:
                 SPDLOG_ERROR("CanKillEnemy reached `default`.");
                 assert(false);

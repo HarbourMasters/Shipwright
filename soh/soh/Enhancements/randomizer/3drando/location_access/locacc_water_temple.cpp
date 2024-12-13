@@ -46,8 +46,8 @@ void RegionTable_Init_WaterTemple() {
                   EventAccess(&logic->CanWaterTempleLowFromHigh, {[]{return logic->CanWaterTempleLowFromHigh || logic->CanUse(RG_ZELDAS_LULLABY);}}),
                 }, {
                   //Locations
-                  LOCATION(RC_WATER_TEMPLE_TORCH_POT_1, logic->CanBreakPots()),
-                  LOCATION(RC_WATER_TEMPLE_TORCH_POT_2, logic->CanBreakPots()),
+                  LOCATION(RC_WATER_TEMPLE_TORCH_POT_1, logic->CanBreakPots() && (logic->CanWaterTempleLowFromHigh || (logic->CanUse(RG_HOOKSHOT) && logic->CanUse(RG_IRON_BOOTS)))),
+                  LOCATION(RC_WATER_TEMPLE_TORCH_POT_2, logic->CanBreakPots() && (logic->CanWaterTempleLowFromHigh || (logic->CanUse(RG_HOOKSHOT) && logic->CanUse(RG_IRON_BOOTS)))),
                 }, {
                   //Exits
                   Entrance(RR_WATER_TEMPLE_LOBBY,        {[]{return logic->CanWaterTempleLowFromHigh || ((ctx->GetTrickOption(RT_FEWER_TUNIC_REQUIREMENTS) || logic->CanUse(RG_ZORA_TUNIC)) && logic->CanUse(RG_IRON_BOOTS));}}),
@@ -134,11 +134,11 @@ void RegionTable_Init_WaterTemple() {
 
   areaTable[RR_WATER_TEMPLE_SOUTH_LOWER] = Region("Water Temple South Lower", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LOCATION(RC_WATER_TEMPLE_GS_BEHIND_GATE, logic->CanJumpslash() && (logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)))),
-                  LOCATION(RC_WATER_TEMPLE_BEHIND_GATE_POT_1, logic->CanBreakPots() && (logic->CanJumpslash() || logic->CanUse(RG_MEGATON_HAMMER)) && (logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)))),
-                  LOCATION(RC_WATER_TEMPLE_BEHIND_GATE_POT_2, logic->CanBreakPots() && (logic->CanJumpslash() || logic->CanUse(RG_MEGATON_HAMMER)) && (logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)))),
-                  LOCATION(RC_WATER_TEMPLE_BEHIND_GATE_POT_3, logic->CanBreakPots() && (logic->CanJumpslash() || logic->CanUse(RG_MEGATON_HAMMER)) && (logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)))),
-                  LOCATION(RC_WATER_TEMPLE_BEHIND_GATE_POT_4, logic->CanBreakPots() && (logic->CanJumpslash() || logic->CanUse(RG_MEGATON_HAMMER)) && (logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)))),
+                  LOCATION(RC_WATER_TEMPLE_GS_BEHIND_GATE,    logic->CanJumpslash() && (logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)))),
+                  LOCATION(RC_WATER_TEMPLE_BEHIND_GATE_POT_1, logic->CanJumpslash() && (logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)))),
+                  LOCATION(RC_WATER_TEMPLE_BEHIND_GATE_POT_2, logic->CanJumpslash() && (logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)))),
+                  LOCATION(RC_WATER_TEMPLE_BEHIND_GATE_POT_3, logic->CanJumpslash() && (logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)))),
+                  LOCATION(RC_WATER_TEMPLE_BEHIND_GATE_POT_4, logic->CanJumpslash() && (logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)))),
                 }, {
                   //Exits
                   Entrance(RR_WATER_TEMPLE_LOBBY, {[]{return logic->CanUse(RG_IRON_BOOTS);}}),
@@ -232,8 +232,8 @@ void RegionTable_Init_WaterTemple() {
 
   areaTable[RR_WATER_TEMPLE_DRAGON_PILLARS_ROOM] = Region("Water Temple Dragon Pillars Room", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LOCATION(RC_WATER_TEMPLE_LIKE_LIKE_POT_1, logic->CanBreakPots()),
-                  LOCATION(RC_WATER_TEMPLE_LIKE_LIKE_POT_2, logic->CanBreakPots()),
+                  LOCATION(RC_WATER_TEMPLE_LIKE_LIKE_POT_1, logic->CanUse(RG_HOOKSHOT)),
+                  LOCATION(RC_WATER_TEMPLE_LIKE_LIKE_POT_2, logic->CanUse(RG_HOOKSHOT)),
                 }, {
                   //Exits
                   Entrance(RR_WATER_TEMPLE_FALLING_PLATFORM_ROOM, {[]{return logic->CanUseProjectile();}}),

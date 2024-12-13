@@ -96,14 +96,14 @@ void RegionTable_Init_SpiritTemple() {
                                                                            ctx->GetTrickOption(RT_SPIRIT_LOBBY_GS) && logic->CanUse(RG_BOOMERANG) && (logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_SPIRIT_LOBBY_JUMP))) ||
                                                                           (ctx->GetTrickOption(RT_SPIRIT_LOBBY_GS) && logic->SmallKeys(RR_SPIRIT_TEMPLE, 5) && logic->HasExplosives() && logic->CanUse(RG_BOOMERANG)) ||
                                                                           (logic->SmallKeys(RR_SPIRIT_TEMPLE, 3) && logic->CanUse(RG_SILVER_GAUNTLETS) && (logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_SPIRIT_LOBBY_JUMP)))),
-                  LOCATION(RC_SPIRIT_TEMPLE_AFTER_SUN_BLOCK_POT_1,        logic->CanBreakPots()),
-                  LOCATION(RC_SPIRIT_TEMPLE_AFTER_SUN_BLOCK_POT_2,        logic->CanBreakPots()),
-                  LOCATION(RC_SPIRIT_TEMPLE_CENTRAL_CHAMBER_POT_1,        logic->CanBreakPots()),
-                  LOCATION(RC_SPIRIT_TEMPLE_CENTRAL_CHAMBER_POT_2,        logic->CanBreakPots()),
-                  LOCATION(RC_SPIRIT_TEMPLE_CENTRAL_CHAMBER_POT_3,        logic->CanBreakPots()),
-                  LOCATION(RC_SPIRIT_TEMPLE_CENTRAL_CHAMBER_POT_4,        logic->CanBreakPots()),
-                  LOCATION(RC_SPIRIT_TEMPLE_CENTRAL_CHAMBER_POT_5,        logic->CanBreakPots()),
-                  LOCATION(RC_SPIRIT_TEMPLE_CENTRAL_CHAMBER_POT_6,        logic->CanBreakPots()),
+                  LOCATION(RC_SPIRIT_TEMPLE_AFTER_SUN_BLOCK_POT_1,        logic->CanBreakPots() && (logic->SmallKeys(RR_SPIRIT_TEMPLE, 3) || (logic->SmallKeys(RR_SPIRIT_TEMPLE, 2) && ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && logic->BombchuRefill() && ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).Is(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)))),
+                  LOCATION(RC_SPIRIT_TEMPLE_AFTER_SUN_BLOCK_POT_2,        logic->CanBreakPots() && (logic->SmallKeys(RR_SPIRIT_TEMPLE, 3) || (logic->SmallKeys(RR_SPIRIT_TEMPLE, 2) && ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && logic->BombchuRefill() && ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).Is(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)))),
+                  LOCATION(RC_SPIRIT_TEMPLE_CENTRAL_CHAMBER_POT_1,        logic->CanBreakPots() && (logic->SmallKeys(RR_SPIRIT_TEMPLE, 3) || (logic->SmallKeys(RR_SPIRIT_TEMPLE, 2) && ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && logic->BombchuRefill() && ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).Is(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)))),
+                  LOCATION(RC_SPIRIT_TEMPLE_CENTRAL_CHAMBER_POT_2,        logic->CanBreakPots() && (logic->SmallKeys(RR_SPIRIT_TEMPLE, 3) || (logic->SmallKeys(RR_SPIRIT_TEMPLE, 2) && ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && logic->BombchuRefill() && ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).Is(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)))),
+                  LOCATION(RC_SPIRIT_TEMPLE_CENTRAL_CHAMBER_POT_3,        logic->CanBreakPots() && (logic->SmallKeys(RR_SPIRIT_TEMPLE, 3) || (logic->SmallKeys(RR_SPIRIT_TEMPLE, 2) && ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && logic->BombchuRefill() && ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).Is(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)))),
+                  LOCATION(RC_SPIRIT_TEMPLE_CENTRAL_CHAMBER_POT_4,        logic->CanBreakPots() && (logic->SmallKeys(RR_SPIRIT_TEMPLE, 3) || (logic->SmallKeys(RR_SPIRIT_TEMPLE, 2) && ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && logic->BombchuRefill() && ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).Is(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)))),
+                  LOCATION(RC_SPIRIT_TEMPLE_CENTRAL_CHAMBER_POT_5,        logic->CanBreakPots() && (logic->SmallKeys(RR_SPIRIT_TEMPLE, 3) || (logic->SmallKeys(RR_SPIRIT_TEMPLE, 2) && ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && logic->BombchuRefill() && ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).Is(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)))),
+                  LOCATION(RC_SPIRIT_TEMPLE_CENTRAL_CHAMBER_POT_6,        logic->CanBreakPots() && (logic->SmallKeys(RR_SPIRIT_TEMPLE, 3) || (logic->SmallKeys(RR_SPIRIT_TEMPLE, 2) && ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && logic->BombchuRefill() && ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).Is(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)))),
                 }, {
                   //Exits
                   Entrance(RR_SPIRIT_TEMPLE_OUTDOOR_HANDS,              {[]{return logic->CanJumpslashExceptHammer() || logic->HasExplosives();}}),

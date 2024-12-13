@@ -57,11 +57,11 @@ void RegionTable_Init_JabuJabusBelly() {
                   LOCATION(RC_JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_LOWER, logic->HookshotOrBoomerang()),
                   LOCATION(RC_JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_UPPER, logic->HookshotOrBoomerang()),
                   LOCATION(RC_JABU_JABUS_BELLY_GS_WATER_SWITCH_ROOM,    logic->HookshotOrBoomerang()),
-                  LOCATION(RC_JABU_JABUS_BELLY_TWO_OCTOROK_POT_1, (logic->CanBreakPots() && (logic->CanUse(RG_BOOMERANG) || (logic->CanUse(RG_HOVER_BOOTS) && logic->CanKillEnemy(RE_OCTOROK))))),
-                  LOCATION(RC_JABU_JABUS_BELLY_TWO_OCTOROK_POT_2, (logic->CanBreakPots() && (logic->CanUse(RG_BOOMERANG) || (logic->CanUse(RG_HOVER_BOOTS) && logic->CanKillEnemy(RE_OCTOROK))))),
-                  LOCATION(RC_JABU_JABUS_BELLY_TWO_OCTOROK_POT_3, (logic->CanBreakPots() && (logic->CanUse(RG_BOOMERANG) || (logic->CanUse(RG_HOVER_BOOTS) && logic->CanKillEnemy(RE_OCTOROK))))),
-                  LOCATION(RC_JABU_JABUS_BELLY_TWO_OCTOROK_POT_4, (logic->CanBreakPots() && (logic->CanUse(RG_BOOMERANG) || (logic->CanUse(RG_HOVER_BOOTS) && logic->CanKillEnemy(RE_OCTOROK))))),
-                  LOCATION(RC_JABU_JABUS_BELLY_TWO_OCTOROK_POT_5, (logic->CanBreakPots() && (logic->CanUse(RG_BOOMERANG) || (logic->CanUse(RG_HOVER_BOOTS) && logic->CanKillEnemy(RE_OCTOROK))))),
+                  LOCATION(RC_JABU_JABUS_BELLY_TWO_OCTOROK_POT_1, (logic->CanBreakPots() && (logic->CanUse(RG_BOOMERANG) || (logic->CanUse(RG_HOVER_BOOTS) && logic->CanKillEnemy(RE_OCTOROK, ED_BOOMERANG, false))))),
+                  LOCATION(RC_JABU_JABUS_BELLY_TWO_OCTOROK_POT_2, (logic->CanBreakPots() && (logic->CanUse(RG_BOOMERANG) || (logic->CanUse(RG_HOVER_BOOTS) && logic->CanKillEnemy(RE_OCTOROK, ED_BOOMERANG, false))))),
+                  LOCATION(RC_JABU_JABUS_BELLY_TWO_OCTOROK_POT_3, (logic->CanBreakPots() && (logic->CanUse(RG_BOOMERANG) || (logic->CanUse(RG_HOVER_BOOTS) && logic->CanKillEnemy(RE_OCTOROK, ED_BOOMERANG, false))))),
+                  LOCATION(RC_JABU_JABUS_BELLY_TWO_OCTOROK_POT_4, (logic->CanBreakPots() && (logic->CanUse(RG_BOOMERANG) || (logic->CanUse(RG_HOVER_BOOTS) && logic->CanKillEnemy(RE_OCTOROK, ED_BOOMERANG, false))))),
+                  LOCATION(RC_JABU_JABUS_BELLY_TWO_OCTOROK_POT_5, (logic->CanBreakPots() && (logic->CanUse(RG_BOOMERANG) || (logic->CanUse(RG_HOVER_BOOTS) && logic->CanKillEnemy(RE_OCTOROK, ED_BOOMERANG, false))))),
   }, {
                   //Exits
                   Entrance(RR_JABU_JABUS_BELLY_MAIN,                    {[]{return true;}}),
