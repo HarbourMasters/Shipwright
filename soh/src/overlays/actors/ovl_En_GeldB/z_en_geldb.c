@@ -1404,7 +1404,7 @@ void EnGeldB_Update(Actor* thisx, PlayState* play) {
 
     EnGeldB_CollisionCheck(this, play);
     if (this->actor.colChkInfo.damageEffect != GELDB_DMG_UNK_6) {
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
         Actor_UpdateBgCheckInfo(play, &this->actor, 15.0f, 30.0f, 60.0f, 0x1D);
         this->actionFunc(this, play);
         this->actor.focus.pos = this->actor.world.pos;

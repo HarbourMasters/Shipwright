@@ -631,7 +631,7 @@ void EnPartner_Update(Actor* thisx, PlayState* play) {
     this->actor.gravity = this->yVelocity;
 
     if (this->canMove == 1) {
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
         Actor_UpdateBgCheckInfo(play, &this->actor, 19.0f, 20.0f, 0.0f, 5);
     }
 

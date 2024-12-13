@@ -795,7 +795,7 @@ void EnBw_Update(Actor* thisx, PlayState* play2) {
         this->unk_234 = Actor_TestFloorInDirection(thisx, play, 50.0f, thisx->world.rot.y);
         if ((this->unk_220 == 4) || (this->unk_220 == 6) || (this->unk_220 == 5) || (this->unk_220 == 1) ||
             (this->unk_234 != 0)) {
-            Actor_MoveForward(thisx);
+            Actor_MoveXZGravity(thisx);
         }
         Actor_UpdateBgCheckInfo(play, thisx, 20.0f, 30.0f, 21.0f, 0x1F);
     }

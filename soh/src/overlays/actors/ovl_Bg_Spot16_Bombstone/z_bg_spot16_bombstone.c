@@ -500,7 +500,7 @@ void func_808B5B58(BgSpot16Bombstone* this) {
 void func_808B5B6C(BgSpot16Bombstone* this, PlayState* play) {
     Actor* actor = &this->actor;
 
-    Actor_MoveForward(actor);
+    Actor_MoveXZGravity(actor);
     actor->shape.rot.x += this->unk_210;
     actor->shape.rot.z += this->unk_212;
 

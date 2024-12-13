@@ -210,7 +210,7 @@ void EnKakasi2_Update(Actor* thisx, PlayState* play2) {
     this->actor.world.rot = this->actor.shape.rot;
     Actor_SetFocus(&this->actor, this->height);
     this->actionFunc(this, play);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 
     if (this->actor.shape.yOffset == 0.0f) {
         Collider_UpdateCylinder(&this->actor, &this->collider);

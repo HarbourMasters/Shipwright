@@ -950,9 +950,9 @@ void BossFd_Fly(BossFd* this, PlayState* play) {
         Math_ApproachF(&this->fwork[BFD_TURN_RATE], this->fwork[BFD_TURN_RATE_MAX], 1.0f, 20000.0f);
         Math_ApproachF(&this->actor.speedXZ, this->fwork[BFD_FLY_SPEED], 1.0f, 0.1f);
         if (this->work[BFD_ACTION_STATE] < BOSSFD_SKULL_FALL) {
-            func_8002D908(&this->actor);
+            Actor_UpdateVelocityXYZ(&this->actor);
         }
-        func_8002D7EC(&this->actor);
+        Actor_UpdatePos(&this->actor);
 
         this->work[BFD_LEAD_BODY_SEG]++;
         if (this->work[BFD_LEAD_BODY_SEG] >= 100) {

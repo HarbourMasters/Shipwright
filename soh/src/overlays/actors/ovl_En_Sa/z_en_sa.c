@@ -758,7 +758,7 @@ void EnSa_Update(Actor* thisx, PlayState* play) {
         this->actor.world.pos.y += this->actor.velocity.y;
         this->actor.world.pos.z += this->actor.velocity.z;
     } else {
-        func_8002D7EC(&this->actor);
+        Actor_UpdatePos(&this->actor);
     }
 
     if (play->sceneNum != SCENE_SACRED_FOREST_MEADOW) {

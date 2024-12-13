@@ -290,7 +290,7 @@ void ObjTsubo_LiftedUp(ObjTsubo* this, PlayState* play) {
         this->actor.room = play->roomCtx.curRoom.num;
         ObjTsubo_SetupThrown(this);
         ObjTsubo_ApplyGravity(this);
-        func_8002D7EC(&this->actor);
+        Actor_UpdatePos(&this->actor);
         Actor_UpdateBgCheckInfo(play, &this->actor, 5.0f, 15.0f, 0.0f, 0x85);
     }
 }
@@ -321,7 +321,7 @@ void ObjTsubo_Thrown(ObjTsubo* this, PlayState* play) {
         Actor_Kill(&this->actor);
     } else {
         ObjTsubo_ApplyGravity(this);
-        func_8002D7EC(&this->actor);
+        Actor_UpdatePos(&this->actor);
         Math_StepToS(&D_80BA1B54, D_80BA1B50, 0x64);
         Math_StepToS(&D_80BA1B5C, D_80BA1B58, 0x64);
         this->actor.shape.rot.x += D_80BA1B54;

@@ -149,7 +149,7 @@ void func_80AFB950(EnSi* this, PlayState* play) {
 void EnSi_Update(Actor* thisx, PlayState* play) {
     EnSi* this = (EnSi*)thisx;
 
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);
     this->actionFunc(this, play);
     Actor_SetFocus(&this->actor, 16.0f);

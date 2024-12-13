@@ -1712,7 +1712,7 @@ void EnTest_Update(Actor* thisx, PlayState* play) {
     EnTest_UpdateDamage(this, play);
 
     if (this->actor.colChkInfo.damageEffect != STALFOS_DMGEFF_FIREMAGIC) {
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
         Actor_UpdateBgCheckInfo(play, &this->actor, 75.0f, 30.0f, 30.0f, 0x1D);
 
         if (this->actor.params == STALFOS_TYPE_1) {

@@ -598,8 +598,8 @@ void BossTw_TurnToPlayer(BossTw* this, PlayState* play) {
     Math_ApproachS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 5, this->rotateSpeed);
     Math_ApproachS(&this->actor.shape.rot.x, 0, 5, this->rotateSpeed);
     Math_ApproachF(&this->rotateSpeed, 4096.0f, 1.0f, 200.0f);
-    func_8002D908(&this->actor);
-    func_8002D7EC(&this->actor);
+    Actor_UpdateVelocityXYZ(&this->actor);
+    Actor_UpdatePos(&this->actor);
     if (this->timers[0] == 0) {
         if ((otherTw->actionFunc != BossTw_ShootBeam) && this->work[CAN_SHOOT]) {
             this->work[CAN_SHOOT] = false;
@@ -670,8 +670,8 @@ void BossTw_FlyTo(BossTw* this, PlayState* play) {
     Math_ApproachS(&this->actor.shape.rot.x, pitchTarget, 0xA, this->rotateSpeed);
     Math_ApproachF(&this->rotateSpeed, 4096.0f, 1.0f, 100.0f);
     Math_ApproachF(&this->actor.speedXZ, 10.0f, 1.0f, 1.0f);
-    func_8002D908(&this->actor);
-    func_8002D7EC(&this->actor);
+    Actor_UpdateVelocityXYZ(&this->actor);
+    Actor_UpdatePos(&this->actor);
 
     if ((this->timers[0] == 0) || (xzDist < 70.0f)) {
         BossTw_SetupTurnToPlayer(this, play);
@@ -2336,8 +2336,8 @@ void BossTw_DeathBall(BossTw* this, PlayState* play) {
     Math_ApproachS(&this->actor.world.rot.x, Math_FAtan2F(yDiff, sqrtf(SQ(xDiff) + SQ(zDiff))) * (32768 / M_PI), 5,
                    this->rotateSpeed);
     Math_ApproachS(&this->actor.world.rot.y, yaw, 5, this->rotateSpeed);
-    func_8002D908(&this->actor);
-    func_8002D7EC(&this->actor);
+    Actor_UpdateVelocityXYZ(&this->actor);
+    Actor_UpdatePos(&this->actor);
 }
 
 void BossTw_TwinrovaSetupDeathCS(BossTw* this, PlayState* play) {
@@ -3928,8 +3928,8 @@ void BossTw_BlastFire(BossTw* this, PlayState* play) {
                 case 10:
                     this->blastActive = true;
                     if (this->timers[0] == 0) {
-                        func_8002D908(&this->actor);
-                        func_8002D7EC(&this->actor);
+                        Actor_UpdateVelocityXYZ(&this->actor);
+                        Actor_UpdatePos(&this->actor);
                         Audio_PlayActorSound2(&this->actor, NA_SE_EN_TWINROBA_SHOOT_FIRE & ~SFX_FLAG);
                     } else {
                         Vec3f velocity;
@@ -4118,8 +4118,8 @@ void BossTw_BlastIce(BossTw* this, PlayState* play) {
                     this->blastActive = true;
 
                     if (this->timers[0] == 0) {
-                        func_8002D908(&this->actor);
-                        func_8002D7EC(&this->actor);
+                        Actor_UpdateVelocityXYZ(&this->actor);
+                        Actor_UpdatePos(&this->actor);
                         Audio_PlayActorSound2(&this->actor, NA_SE_EN_TWINROBA_SHOOT_FREEZE - SFX_FLAG);
                     } else {
                         Vec3f velocity;
@@ -5438,7 +5438,7 @@ void BossTw_TwinrovaFly(BossTw* this, PlayState* play) {
     Math_ApproachS(&this->actor.shape.rot.y, yaw, 0xA, this->rotateSpeed);
     Math_ApproachF(&this->rotateSpeed, 2000.0f, 1.0f, 100.0f);
     Math_ApproachF(&this->actor.speedXZ, 30.0f, 1.0f, 2.0f);
-    func_8002D908(&this->actor);
+    Actor_UpdateVelocityXYZ(&this->actor);
     Math_ApproachF(&this->actor.world.pos.x, this->targetPos.x, 0.1f, fabsf(this->actor.velocity.x) * 1.5f);
     Math_ApproachF(&this->actor.world.pos.y, this->targetPos.y, 0.1f, fabsf(this->actor.velocity.y) * 1.5f);
     Math_ApproachF(&this->targetPos.y, 380.0f, 1.0f, 2.0f);

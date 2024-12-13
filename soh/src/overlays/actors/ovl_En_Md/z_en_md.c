@@ -819,7 +819,7 @@ void EnMd_Update(Actor* thisx, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
     EnMd_UpdateEyes(this);
     func_80AAB5A4(this, play);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     func_80AAB158(this, play);
     Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);
     this->actionFunc(this, play);

@@ -608,7 +608,7 @@ void EnReeba_Update(Actor* thisx, PlayState* play2) {
         this->unk_276--;
     }
 
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 35.0f, 60.0f, 60.0f, 0x1D);
 
     if (this->collider.base.atFlags & AT_BOUNCED) {

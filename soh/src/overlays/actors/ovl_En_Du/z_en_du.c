@@ -615,7 +615,7 @@ void EnDu_Update(Actor* thisx, PlayState* play) {
         this->actor.world.pos.y += this->actor.velocity.y;
         this->actor.world.pos.z += this->actor.velocity.z;
     } else {
-        func_8002D7EC(&this->actor);
+        Actor_UpdatePos(&this->actor);
     }
 
     Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);

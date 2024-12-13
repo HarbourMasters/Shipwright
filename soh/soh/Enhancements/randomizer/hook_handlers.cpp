@@ -475,7 +475,7 @@ void ItemEtcetera_func_80B85824_Randomized(ItemEtcetera* itemEtcetera, PlayState
 
 void ItemEtcetera_MoveRandomizedFireArrowDown(ItemEtcetera* itemEtcetera, PlayState* play) {
     Actor_UpdateBgCheckInfo(play, &itemEtcetera->actor, 10.0f, 10.0f, 0.0f, 5);
-    Actor_MoveForward(&itemEtcetera->actor);
+    Actor_MoveXZGravity(&itemEtcetera->actor);
     if (!(itemEtcetera->actor.bgCheckFlags & 1)) {
         ItemEtcetera_SpawnSparkles(itemEtcetera, play);
     }

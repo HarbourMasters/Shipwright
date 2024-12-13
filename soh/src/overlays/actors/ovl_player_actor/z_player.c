@@ -10433,7 +10433,7 @@ void Player_Action_80846120(Player* this, PlayState* play) {
         this->heldActor = &heavyBlock->dyna.actor;
         this->actor.child = &heavyBlock->dyna.actor;
         heavyBlock->dyna.actor.parent = &this->actor;
-        func_8002DBD0(&heavyBlock->dyna.actor, &heavyBlock->unk_164, &this->leftHandPos);
+        Actor_WorldToActorCoords(&heavyBlock->dyna.actor, &heavyBlock->unk_164, &this->leftHandPos);
         return;
     }
 
@@ -11995,7 +11995,7 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
     if (this->stateFlags2 & PLAYER_STATE2_PAUSE_MOST_UPDATING) {
         if (!(this->actor.bgCheckFlags & 1)) {
             Player_ZeroSpeedXZ(this);
-            Actor_MoveForward(&this->actor);
+            Actor_MoveXZGravity(&this->actor);
         }
 
         Player_ProcessSceneCollision(play, this);
@@ -12088,7 +12088,7 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
                 this->actor.world.rot.y = this->yaw;
             }
 
-            func_8002D868(&this->actor);
+            Actor_UpdateVelocityXZGravity(&this->actor);
 
             if ((this->pushedSpeed != 0.0f) && !Player_InCsMode(play) &&
                 !(this->stateFlags1 & (PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE | PLAYER_STATE1_CLIMBING_LADDER)) &&
@@ -12097,7 +12097,7 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
                 this->actor.velocity.z += this->pushedSpeed * Math_CosS(this->pushedYaw);
             }
 
-            func_8002D7EC(&this->actor);
+            Actor_UpdatePos(&this->actor);
             Player_ProcessSceneCollision(play, this);
         } else {
             sFloorType = 0;

@@ -162,7 +162,7 @@ void EnBom_Move(EnBom* this, PlayState* play) {
             this->actor.world.rot.y = ((this->actor.wallYaw - this->actor.world.rot.y) + this->actor.wallYaw) - 0x8000;
         }
         Audio_PlayActorSound2(&this->actor, NA_SE_EV_BOMB_BOUND);
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
         this->actor.speedXZ *= 0.7f;
         this->actor.bgCheckFlags &= ~8;
     }
@@ -180,7 +180,7 @@ void EnBom_Move(EnBom* this, PlayState* play) {
         }
     }
 
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 }
 
 void EnBom_WaitForRelease(EnBom* this, PlayState* play) {

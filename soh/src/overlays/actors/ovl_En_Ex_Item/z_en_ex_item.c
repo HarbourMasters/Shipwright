@@ -337,7 +337,7 @@ void EnExItem_ExitChest(EnExItem* this, PlayState* play) {
             Actor_Kill(&this->actor);
         }
     }
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 }
 
 void EnExItem_FairyMagic(EnExItem* this, PlayState* play) {

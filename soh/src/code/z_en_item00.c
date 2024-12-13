@@ -831,7 +831,7 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
 
         } else {
             sp3A = 1;
-            Actor_MoveForward(&this->actor);
+            Actor_MoveXZGravity(&this->actor);
         }
 
         if (sp3A || D_80157D94[0]) {

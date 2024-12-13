@@ -216,7 +216,7 @@ void EnBa_FallAsBlob(EnBa* this, PlayState* play) {
             Actor_Kill(&this->actor);
         }
     } else {
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
         Actor_UpdateBgCheckInfo(play, &this->actor, 30.0f, 28.0f, 80.0f, 5);
     }
 }

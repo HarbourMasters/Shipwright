@@ -661,7 +661,7 @@ void func_80B0D878(EnSw* this, PlayState* play) {
 }
 
 void func_80B0DB00(EnSw* this, PlayState* play) {
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     this->actor.shape.rot.x += 0x1000;
     this->actor.shape.rot.z += 0x1000;
     Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 20.0f, 0.0f, 5);

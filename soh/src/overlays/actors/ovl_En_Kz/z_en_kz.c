@@ -557,7 +557,7 @@ void EnKz_Update(Actor* thisx, PlayState* play) {
     CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
     SkelAnime_Update(&this->skelanime);
     EnKz_UpdateEyes(this);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     if (this->actionFunc != EnKz_StartTimer) {
         func_80A9CB18(this, play);
     }

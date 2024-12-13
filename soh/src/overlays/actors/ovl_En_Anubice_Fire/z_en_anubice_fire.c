@@ -179,7 +179,7 @@ void EnAnubiceFire_Update(Actor* thisx, PlayState* play) {
 
     Actor_SetScale(&this->actor, this->scale);
     this->actionFunc(this, play);
-    func_8002D7EC(&this->actor);
+    Actor_UpdatePos(&this->actor);
     this->unk_160[0] = this->actor.world.pos;
 
     for (i = 4; i >= 0; i--) {

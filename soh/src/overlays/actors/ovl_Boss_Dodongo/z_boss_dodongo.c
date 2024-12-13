@@ -1044,7 +1044,7 @@ void BossDodongo_Update(Actor* thisx, PlayState* play2) {
     thisx->shape.rot.y = thisx->world.rot.y;
 
     Math_SmoothStepToF(&thisx->shape.yOffset, this->unk_228, 1.0f, 100.0f, 0.0f);
-    Actor_MoveForward(thisx);
+    Actor_MoveXZGravity(thisx);
     BossDodongo_UpdateDamage(this, play);
     Actor_UpdateBgCheckInfo(play, thisx, 10.0f, 10.0f, 20.0f, 4);
     Math_SmoothStepToF(&this->unk_208, 0, 1, 0.001f, 0.0);
