@@ -3350,6 +3350,7 @@ void FileChoose_Main(GameState* thisx) {
 
     if (CVarGetInteger(CVAR_ENHANCEMENT("TimeFlowFileSelect"), 0) != 0) {
         gSaveContext.skyboxTime += 0x10;
+        ResourceMgr_CheckLoadSkybox(true);
     }
 
     OPEN_DISPS(this->state.gfxCtx);

@@ -204,6 +204,7 @@ void DrawInfoTab() {
     const uint16_t dayTimeMin = 0;
     const uint16_t dayTimeMax = 0xFFFF;
     ImGui::SetNextItemWidth(ImGui::GetFontSize() * 15);
+    ImGui::SliderScalar("Skybox Time", ImGuiDataType_U16, &gSaveContext.skyboxTime, &dayTimeMin, &dayTimeMax);
     ImGui::SliderScalar("Time", ImGuiDataType_U16, &gSaveContext.dayTime, &dayTimeMin, &dayTimeMax);
     UIWidgets::InsertHelpHoverText("Time of day");
     if (ImGui::Button("Dawn")) {

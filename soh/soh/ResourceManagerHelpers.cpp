@@ -12,6 +12,7 @@
 #include "resource/type/Skeleton.h"
 #include "resource/type/PlayerAnimation.h"
 #include "soh/ActorDB.h"
+#include "soh/Enhancements/TimeDisplay/TimeDisplay.h"
 #include "soh/resource/type/Scene.h"
 #include "soh/resource/type/scenecommand/SetRoomList.h"
 #include "soh/resource/type/scenecommand/SetActorList.h"
@@ -601,25 +602,43 @@ void UnloadSceneAssetsProcess() {
 extern "C" void ResourceMgr_UnloadSceneAssets() {
     if (unloadScene != -1) {
         helperThreads->submit_task(UnloadSceneAssetsProcess);
+        //UnloadSceneAssetsProcess();
     }
 }
 
 // Persisted assets never unload, generally because they're used in multiple places. The biggest use of this
 // is the skyboxes, handled by "alt/textures/*", and also take the most memory in the biggest packs
 // Overlays loads the file select and pause menus, textures also handles icons for those menus
-extern "C" void ResourceMgr_LoadDelayedPersistentAltAssets() {
+void ResourceMgr_LoadDelayedPersistentAltAssets() {
     // Load sound effects first for title screen "Press Start" and pause sounds. These are loaded
     // before the alt assets to prevent load lock for the audio itself
-    Ship::Context::GetInstance()->GetResourceManager()->LoadResourceAsync("audio/fonts/00_Sound_Effects_1");
-    Ship::Context::GetInstance()->GetResourceManager()->LoadResourceAsync("audio/fonts/00_Sound_Effects_2");
     ResourceLoadDirectoryAsync("audio/*");
     ResourceLoadDirectoryAsync("alt/overlays/*");
-    // Load the skyboxes before anything else
-    ResourceLoadDirectoryAsync("alt/textures/vr_cloud*");
-    ResourceLoadDirectoryAsync("alt/textures/vr_fine*");
-    ResourceLoadDirectoryAsync("alt/textures/*");
     ResourceLoadDirectoryAsync("alt/objects/gameplay_*");
     ResourceLoadDirectoryAsync("alt/code/*");
+    static std::vector<std::string> textureIncludes = { "alt/textures/*" };
+    static std::vector<std::string> textureExcludes = { "alt/textures/vr_holy*", "alt/textures/vr_cloud*", "alt/textures/vr_fine*" };
+    Ship::Context::GetInstance()->GetResourceManager()->LoadDirectoryAsyncWithExclude(textureIncludes, textureExcludes);
+    Ship::Context::GetInstance()->GetResourceManager()->LoadResourceAsync("audio/fonts/00_Sound_Effects_1");
+    Ship::Context::GetInstance()->GetResourceManager()->LoadResourceAsync("audio/fonts/00_Sound_Effects_2");
+}
+
+int lastSkyboxLoad = -1;
+extern "C" void ResourceMgr_LoadSkyBox(int timeIndex, bool fileSelect) {
+    std::string mask = fmt::format("alt/textures/vr_fine{}*", timeIndex);
+    Ship::Context::GetInstance()->GetResourceManager()->LoadDirectoryAsync(mask);
+    if (!fileSelect) {
+        std::string mask = fmt::format("alt/textures/vr_cloud{}*", timeIndex);
+        Ship::Context::GetInstance()->GetResourceManager()->LoadDirectoryAsync(mask);
+    }
+    lastSkyboxLoad = timeIndex;
+}
+
+int lastSkyboxUnload = -1;
+extern "C" void ResourceMgr_UnloadSkyBox(int timeIndex) {
+    std::string mask = fmt::format("alt/textures/vr_*{}*", timeIndex);
+    ResourceUnloadDirectory(mask.c_str());
+    lastSkyboxUnload = timeIndex;
 }
 
 // Setup initial preload based on Fast File Select and Save Index options
@@ -643,8 +662,11 @@ extern "C" void ResourceMgr_LoadPersistentAltAssets() {
         ResourceLoadDirectoryAsync("alt/overlays/ovl_file_choose/*");
         ResourceLoadDirectoryAsync("alt/textures/title_static/*");
         ResourceLoadDirectoryAsync("alt/objects/gameplay_keep/*");
-        ResourceLoadDirectoryAsync("alt/textures/vr_cloud*");
-        ResourceLoadDirectoryAsync("alt/textures/vr_fine*");
+        ResourceLoadDirectoryAsync("alt/textures/vr_fine0*");
+        ResourceLoadDirectoryAsync("alt/textures/parameter*");
+        ResourceLoadDirectoryAsync("alt/textures/icon*");
+        ResourceLoadDirectoryAsync("alt/textures/item*");
+        ResourceLoadDirectoryAsync("alt/textures/font*");
         // File Select music
         Ship::Context::GetInstance()->GetResourceManager()->LoadResourceAsync("audio/sequences/087_File_Select");
         Ship::Context::GetInstance()->GetResourceManager()->LoadResourceAsync("audio/fonts/09_Fairy_Fountain");
@@ -653,8 +675,99 @@ extern "C" void ResourceMgr_LoadPersistentAltAssets() {
         ResourceLoadDirectoryAsync("alt/textures/icon*");
         ResourceLoadDirectoryAsync("alt/textures/do_action_static/*");
         ResourceLoadDirectoryAsync("alt/textures/map*");
-        ResourceLoadDirectoryAsync("alt/textures/parameter_Static/*");
+        ResourceLoadDirectoryAsync("alt/textures/parameter_static/*");
         ResourceLoadDirectoryAsync("alt/objects/gameplay_*");
     }
     helperThreads->submit_task(ResourceMgr_LoadDelayedPersistentAltAssets);
+}
+
+extern "C" void ResourceMgr_SceneInitSkybox() {
+    if (gSaveContext.dayTime > SUNRISE_BEGINS && gSaveContext.dayTime < DAY_BEGINS) {
+        ResourceMgr_LoadSkyBox(0, false);
+        ResourceMgr_LoadSkyBox(3, false);
+        ResourceMgr_LoadSkyBox(1, false);
+        helperThreads->submit_task(std::bind(ResourceMgr_UnloadSkyBox, 2));
+    }
+    else if (gSaveContext.dayTime > DAY_BEGINS && gSaveContext.dayTime < SUNSET_BEGINS) {
+        ResourceMgr_LoadSkyBox(1, false);
+        helperThreads->submit_task(std::bind(ResourceMgr_UnloadSkyBox, 2));
+        helperThreads->submit_task(std::bind(ResourceMgr_UnloadSkyBox, 3));
+        helperThreads->submit_task(std::bind(ResourceMgr_UnloadSkyBox, 0));
+    }
+    else if (gSaveContext.dayTime > SUNSET_BEGINS && gSaveContext.dayTime < NIGHT_BEGINS) {
+        ResourceMgr_LoadSkyBox(1, false);
+        ResourceMgr_LoadSkyBox(2, false);
+        ResourceMgr_LoadSkyBox(3, false);
+        helperThreads->submit_task(std::bind(ResourceMgr_UnloadSkyBox, 0));
+    }
+    else if (gSaveContext.dayTime > NIGHT_BEGINS || gSaveContext.dayTime < SUNRISE_BEGINS) {
+        ResourceMgr_LoadSkyBox(3, false);
+        helperThreads->submit_task(std::bind(ResourceMgr_UnloadSkyBox, 0));
+        helperThreads->submit_task(std::bind(ResourceMgr_UnloadSkyBox, 1));
+        helperThreads->submit_task(std::bind(ResourceMgr_UnloadSkyBox, 2));
+    }
+}
+
+uint16_t skyboxLoadTimes[2][4] = { { SUNRISE_BEGINS - 2000, DAY_BEGINS - 2000, SUNSET_BEGINS - 2000, NIGHT_BEGINS - 2000 }, { 0, 18000, 34000, 51000 } };
+uint16_t skyboxUnloadTimes[2][4] = { { SUNRISE_BEGINS + 8000, DAY_BEGINS + 8000, SUNSET_BEGINS + 8000, NIGHT_BEGINS + 8000 }, { 14000, 30000, 46000, 0 } };
+
+extern "C" void ResourceMgr_CheckLoadSkybox(bool fileSelect) {
+    if (gSaveContext.skyboxTime > skyboxLoadTimes[fileSelect][0] && gSaveContext.skyboxTime < (skyboxLoadTimes[fileSelect][0] + 800)) {
+        if (lastSkyboxLoad != 0) {
+            lastSkyboxLoad = 0;
+            helperThreads->submit_task(std::bind(ResourceMgr_LoadSkyBox, 0, fileSelect));
+        }
+    }
+    else if (gSaveContext.skyboxTime > skyboxLoadTimes[fileSelect][1] && gSaveContext.skyboxTime < (skyboxLoadTimes[fileSelect][1] + 800)) {
+        if (lastSkyboxLoad != 1) {
+            lastSkyboxLoad = 1;
+            helperThreads->submit_task(std::bind(ResourceMgr_LoadSkyBox, 1, fileSelect));
+        }
+    }
+    else if (gSaveContext.skyboxTime > skyboxLoadTimes[fileSelect][2] && gSaveContext.skyboxTime < (skyboxLoadTimes[fileSelect][2] + 800)) {
+        if (lastSkyboxLoad != 2) {
+            lastSkyboxLoad = 2;
+            helperThreads->submit_task(std::bind(ResourceMgr_LoadSkyBox, 2, fileSelect));
+        }
+    }
+    else if (gSaveContext.skyboxTime > skyboxLoadTimes[fileSelect][3] && gSaveContext.skyboxTime < (skyboxLoadTimes[fileSelect][3] + 800)) {
+        if (lastSkyboxLoad != 3) {
+            lastSkyboxLoad = 3;
+            helperThreads->submit_task(std::bind(ResourceMgr_LoadSkyBox, 3, fileSelect));
+        }
+    }
+
+    if (gSaveContext.skyboxTime > skyboxUnloadTimes[fileSelect][0] && gSaveContext.skyboxTime < (skyboxUnloadTimes[fileSelect][0] + 800)) {
+        if (lastSkyboxUnload != 0) {
+            lastSkyboxUnload = 3;
+            helperThreads->submit_task(std::bind(ResourceMgr_UnloadSkyBox, 3));
+        }
+    }
+    else if (gSaveContext.skyboxTime > skyboxUnloadTimes[fileSelect][1] && gSaveContext.skyboxTime < (skyboxUnloadTimes[fileSelect][1] + 800)) {
+        if (lastSkyboxUnload != 1) {
+            lastSkyboxUnload = 0;
+            helperThreads->submit_task(std::bind(ResourceMgr_UnloadSkyBox, 0));
+        }
+    }
+    else if (gSaveContext.skyboxTime > skyboxUnloadTimes[fileSelect][2] && gSaveContext.skyboxTime < (skyboxUnloadTimes[fileSelect][2] + 800)) {
+        if (lastSkyboxUnload != 2) {
+            lastSkyboxUnload = 1;
+            helperThreads->submit_task(std::bind(ResourceMgr_UnloadSkyBox, 1));
+        }
+    }
+    else if (gSaveContext.skyboxTime > skyboxUnloadTimes[fileSelect][3] && gSaveContext.skyboxTime < (skyboxUnloadTimes[fileSelect][3] + 800)) {
+        if (lastSkyboxUnload != 3) {
+            lastSkyboxUnload = 2;
+            helperThreads->submit_task(std::bind(ResourceMgr_UnloadSkyBox, 2));
+        }
+    }
+}
+
+extern "C" void ResourceMgr_RegisterHooks() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+        ResourceMgr_CheckLoadSkybox(false);
+    });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](uint32_t sceneNum) {
+        ResourceMgr_SceneInitSkybox();
+    });
 }

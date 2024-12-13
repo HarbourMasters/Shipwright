@@ -24,8 +24,10 @@ typedef enum {
     NAVI_PREPARE = 600,
     NAVI_ACTIVE = 3000,
     NAVI_COOLDOWN = 25800,
-    DAY_BEGINS = 17759,
-    NIGHT_BEGINS = 49155
+    SUNRISE_BEGINS = 0x2AAC,
+    DAY_BEGINS = 0x4555,
+    SUNSET_BEGINS = 0xAAAB,
+    NIGHT_BEGINS = 0xC001
 };
 
 typedef struct {

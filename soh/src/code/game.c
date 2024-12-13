@@ -479,6 +479,7 @@ void GameState_Destroy(GameState* gameState) {
         if (play->sceneNum >= SCENE_DEKU_TREE && play->sceneNum <= SCENE_TESTROOM) {
             ResourceMgr_RegisterUnloadSceneAssets(play->sceneNum);
         }
+        ResourceUnloadDirectory("alt/textures/vs*");
 
         if (ResourceMgr_IsAltAssetsEnabled()) {
             gfx_texture_cache_clear();

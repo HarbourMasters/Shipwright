@@ -1131,9 +1131,12 @@ extern "C" void InitOTR() {
     DetectOTRVersion("oot-mq.otr", true);
 
     OTRGlobals::Instance = new OTRGlobals();
+
+    ResourceMgr_LoadPersistentAltAssets();
     CustomMessageManager::Instance = new CustomMessageManager();
     ItemTableManager::Instance = new ItemTableManager();
     GameInteractor::Instance = new GameInteractor();
+    ResourceMgr_RegisterHooks();
     SaveManager::Instance = new SaveManager();
 
     std::shared_ptr<Ship::Config> conf = OTRGlobals::Instance->context->GetConfig();
@@ -1196,8 +1199,6 @@ extern "C" void InitOTR() {
         Sail::Instance->Enable();
     }
 #endif
-
-    ResourceMgr_LoadPersistentAltAssets();
 }
 
 extern "C" void SaveManager_ThreadPoolWait() {

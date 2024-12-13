@@ -66,6 +66,11 @@ extern "C" {
     void ResourceMgr_LoadDelayedPersistentAltAssets();
     void ResourceMgr_LoadPersistentAltAssets();
     void ResourceMgr_RegisterUnloadSceneAssets(s16 prevScene);
+    void ResourceMgr_CheckLoadSkybox(bool fileSelect);
+    void ResourceMgr_SceneInitSkybox();
+    void ResourceMgr_RegisterHooks();
+    void ResourceMgr_LoadSkyBox(int timeIndex, bool fileSelect);
+    void ResourceMgr_UnloadSkyBox(int timeIndex);
 #ifdef __cplusplus
 }
 #endif // __cplusplus
