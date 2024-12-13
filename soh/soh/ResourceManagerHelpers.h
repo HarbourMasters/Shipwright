@@ -19,6 +19,12 @@ extern "C" {
     #include "z64animation.h"
     #include "z64audio.h"
     #include "z64bgcheck.h"
+    typedef enum {
+        TOD_Sunrise,
+        TOD_Day,
+        TOD_Sunset,
+        TOD_Night
+    } TimeOfDay;
     uint32_t ResourceMgr_IsGameMasterQuest();
     uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
     uint32_t ResourceMgr_GameHasMasterQuest();
@@ -69,8 +75,8 @@ extern "C" {
     void ResourceMgr_CheckLoadSkybox(bool fileSelect);
     void ResourceMgr_SceneInitSkybox();
     void ResourceMgr_RegisterHooks();
-    void ResourceMgr_LoadSkyBox(int timeIndex, bool fileSelect);
-    void ResourceMgr_UnloadSkyBox(int timeIndex);
+    void ResourceMgr_LoadSkyBox(TimeOfDay timeIndex, bool fileSelect);
+    void ResourceMgr_UnloadSkyBox(TimeOfDay timeIndex);
 #ifdef __cplusplus
 }
 #endif // __cplusplus
