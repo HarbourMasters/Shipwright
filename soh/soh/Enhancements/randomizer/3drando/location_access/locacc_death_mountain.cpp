@@ -52,8 +52,8 @@ void RegionTable_Init_DeathMountain() {
 
   areaTable[RR_DMT_COW_GROTTO] = Region("DMT Cow Grotto", "DMT Cow Grotto", {}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LOCATION(RC_DMT_COW_GROTTO_COW,     logic->CanUse(RG_EPONAS_SONG)),
-                  LOCATION(RC_DMT_COW_GROTTO_BEEHIVE, logic->CanBreakLowerBeehives()),
+                  LOCATION(RC_DMT_COW_GROTTO_COW,                logic->CanUse(RG_EPONAS_SONG)),
+                  LOCATION(RC_DMT_COW_GROTTO_BEEHIVE,            logic->CanBreakLowerBeehives()),
                   LOCATION(RC_DMT_COW_GROTTO_LEFT_HEART,         true),
                   LOCATION(RC_DMT_COW_GROTTO_MIDDLE_LEFT_HEART,  true),
                   LOCATION(RC_DMT_COW_GROTTO_MIDDLE_RIGHT_HEART, true),
@@ -305,13 +305,13 @@ void RegionTable_Init_DeathMountain() {
 
   areaTable[RR_DMC_DISTANT_PLATFORM] = Region("DMC Distant Platform", "Death Mountain Crater", {RA_DEATH_MOUNTAIN_CRATER}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LOCATION(RC_DMC_DISTANT_PLATFORM_GREEN_RUPEE_1, true),
-                  LOCATION(RC_DMC_DISTANT_PLATFORM_GREEN_RUPEE_2, true),
-                  LOCATION(RC_DMC_DISTANT_PLATFORM_GREEN_RUPEE_3, true),
-                  LOCATION(RC_DMC_DISTANT_PLATFORM_GREEN_RUPEE_4, true),
-                  LOCATION(RC_DMC_DISTANT_PLATFORM_GREEN_RUPEE_5, true),
-                  LOCATION(RC_DMC_DISTANT_PLATFORM_GREEN_RUPEE_6, true),
-                  LOCATION(RC_DMC_DISTANT_PLATFORM_RED_RUPEE,     true),
+                  LOCATION(RC_DMC_DISTANT_PLATFORM_GREEN_RUPEE_1, logic->IsAdult),
+                  LOCATION(RC_DMC_DISTANT_PLATFORM_GREEN_RUPEE_2, logic->IsAdult),
+                  LOCATION(RC_DMC_DISTANT_PLATFORM_GREEN_RUPEE_3, logic->IsAdult),
+                  LOCATION(RC_DMC_DISTANT_PLATFORM_GREEN_RUPEE_4, logic->IsAdult),
+                  LOCATION(RC_DMC_DISTANT_PLATFORM_GREEN_RUPEE_5, logic->IsAdult),
+                  LOCATION(RC_DMC_DISTANT_PLATFORM_GREEN_RUPEE_6, logic->IsAdult),
+                  LOCATION(RC_DMC_DISTANT_PLATFORM_RED_RUPEE,     logic->IsAdult),
                 }, {
                   //Exits
                   Entrance(RR_DMC_CENTRAL_LOCAL, {[]{return logic->FireTimer() >= 48 && logic->CanUse(RG_DISTANT_SCARECROW);}}),

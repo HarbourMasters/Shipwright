@@ -85,8 +85,8 @@ void RegionTable_Init_ForestTemple() {
                 }, {
                   //Locations
                   LOCATION(RC_FOREST_TEMPLE_GS_LEVEL_ISLAND_COURTYARD, logic->CanUse(RG_LONGSHOT) || Here(RR_FOREST_TEMPLE_NW_OUTDOORS_UPPER, []{return logic->HookshotOrBoomerang();})),
-                  LOCATION(RC_FOREST_TEMPLE_COURTYARD_RIGHT_HEART,     HasAccessTo(RR_FOREST_TEMPLE_NW_OUTDOORS_UPPER) || (logic->CanUse(RG_BOOMERANG) && ctx->GetTrickOption(RT_FOREST_OUTDOORS_HEARTS_BOOMERANG))),
-                  LOCATION(RC_FOREST_TEMPLE_COURTYARD_LEFT_HEART,      HasAccessTo(RR_FOREST_TEMPLE_NW_OUTDOORS_UPPER) || (logic->CanUse(RG_BOOMERANG) && ctx->GetTrickOption(RT_FOREST_OUTDOORS_HEARTS_BOOMERANG))),
+                  LOCATION(RC_FOREST_TEMPLE_COURTYARD_RIGHT_HEART,     logic->CanUse(RG_BOOMERANG) && ctx->GetTrickOption(RT_FOREST_OUTDOORS_HEARTS_BOOMERANG)),
+                  LOCATION(RC_FOREST_TEMPLE_COURTYARD_LEFT_HEART,      logic->CanUse(RG_BOOMERANG) && ctx->GetTrickOption(RT_FOREST_OUTDOORS_HEARTS_BOOMERANG)),
                 }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_LOBBY,             {[]{return logic->CanUse(RG_SONG_OF_TIME);}}),
@@ -100,7 +100,11 @@ void RegionTable_Init_ForestTemple() {
                   //Events
                   EventAccess(&logic->DekuBabaSticks, {[]{return logic->CanGetDekuBabaSticks();}}),
                   EventAccess(&logic->DekuBabaNuts,   {[]{return logic->CanGetDekuBabaNuts();}}),
-                }, {}, {
+                }, {
+                  //Locations
+                  LOCATION(RC_FOREST_TEMPLE_COURTYARD_RIGHT_HEART, true),
+                  LOCATION(RC_FOREST_TEMPLE_COURTYARD_LEFT_HEART,  true),
+                }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_NW_OUTDOORS_LOWER,    {[]{return true;}}),
                   Entrance(RR_FOREST_TEMPLE_BELOW_BOSS_KEY_CHEST, {[]{return true;}}),
@@ -147,8 +151,8 @@ void RegionTable_Init_ForestTemple() {
   areaTable[RR_FOREST_TEMPLE_SEWER] = Region("Forest Temple Sewer", "Forest Temple", {RA_FOREST_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_FOREST_TEMPLE_WELL_CHEST,       HasAccessTo(RR_FOREST_TEMPLE_NE_OUTDOORS_UPPER)),
-                  LOCATION(RC_FOREST_TEMPLE_WELL_WEST_HEART,  HasAccessTo(RR_FOREST_TEMPLE_NE_OUTDOORS_UPPER) || logic->CanUse(RG_IRON_BOOTS)),
-                  LOCATION(RC_FOREST_TEMPLE_WELL_EAST_HEART,  HasAccessTo(RR_FOREST_TEMPLE_NE_OUTDOORS_UPPER) || logic->CanUse(RG_IRON_BOOTS)),
+                  LOCATION(RC_FOREST_TEMPLE_WELL_WEST_HEART,  HasAccessTo(RR_FOREST_TEMPLE_NE_OUTDOORS_UPPER) || (logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8)),
+                  LOCATION(RC_FOREST_TEMPLE_WELL_EAST_HEART,  HasAccessTo(RR_FOREST_TEMPLE_NE_OUTDOORS_UPPER) || (logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8)),
                 }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_NW_OUTDOORS_LOWER, {[]{return true;}}),

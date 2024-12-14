@@ -65,7 +65,7 @@ void RegionTable_Init_BottomOfTheWell() {
                   Entrance(RR_BOTTOM_OF_THE_WELL_BASEMENT_PLATFORM, {[]{return ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH);}}),
   });
 
-//this area has pots and can be reached without lens in logic from basement, but that could require silver rupees if they are shuffled.
+//this area can be reached without lens in logic from basement, but that could require silver rupees if they are shuffled.
   areaTable[RR_BOTTOM_OF_THE_WELL_SOUTHWEST_ROOM] = Region("Bottom of the Well Southwest Room", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_BOTTOM_OF_THE_WELL_LEFT_SIDE_POT_1, logic->CanBreakPots()),
