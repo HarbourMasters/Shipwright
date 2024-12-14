@@ -576,6 +576,7 @@ CrowdControl::Effect* CrowdControl::ParseMessage(nlohmann::json dataReceived) {
             effect->category = kEffectCatRandomButtons;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::PressRandomButton();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = 30;
             break;
         case kEffectClearCbuttons:
             effect->giEffect = new GameInteractionEffect::ClearAssignedButtons();

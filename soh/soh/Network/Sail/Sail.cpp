@@ -297,6 +297,9 @@ GameInteractionEffectBase* Sail::EffectFromJson(nlohmann::json payload) {
         return effect;
     } else if (name == "PressRandomButton") {
         auto effect = new GameInteractionEffect::PressRandomButton();
+        if (payload.contains("parameters")) {
+            effect->parameters[0] = payload["parameters"][0].get<int32_t>();
+        }
         return effect;
     } else if (name == "AddOrTakeAmmo") {
         auto effect = new GameInteractionEffect::AddOrTakeAmmo();

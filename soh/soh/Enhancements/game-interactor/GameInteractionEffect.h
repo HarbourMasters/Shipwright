@@ -217,7 +217,7 @@ namespace GameInteractionEffect {
         void _Apply() override;
     };
 
-    class PressRandomButton: public GameInteractionEffectBase, public RemovableGameInteractionEffect {
+    class PressRandomButton: public RemovableGameInteractionEffect, public ParameterizedGameInteractionEffect {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
     };
