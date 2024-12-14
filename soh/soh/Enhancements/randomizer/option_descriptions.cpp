@@ -256,6 +256,18 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "The Gerudo Card is required to enter the Gerudo Training Ground, opening "
         "the gate to Haunted Wasteland and the Horseback Archery minigame.";
+    mOptionDescriptions[RSK_SHUFFLE_POTS] = "Pots will drop a randomized item the first time they're broken and collected. This does not include the flying pots."
+                                              " Pots will have a different appearance when they hold a randomized item.\n"
+                                              "With this option enabled, Ganon's boss key door is moved further up the stairs to\n"
+                                              "allow access to the pots before obtaining Ganon's Boss Key.\n"
+                                              "\n"
+                                              "Off - Pots will not be shuffled.\n"
+                                              "\n"
+                                              "Dungeons - Only shuffle pots that are within dungeons.\n"
+                                              "\n"
+                                              "Overworld - Only shuffle pots that are outside of dungeons.\n"
+                                              "\n"
+                                              "All pots - Shuffle all pots.";
     mOptionDescriptions[RSK_SHUFFLE_FISHING_POLE] = "Shuffles the fishing pole into the item pool.\n"
         "\n"
         "The fishing pole is required to play the fishing pond minigame.";

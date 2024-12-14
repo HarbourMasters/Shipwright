@@ -1222,7 +1222,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
             AddElementsToPool(entrancePools[EntranceType::Boss], GetShuffleableEntrances(EntranceType::AdultBoss));
             // If forest is closed, ensure Ghoma is inside the Deku tree
             // Deku tree being in its vanilla location is handled below
-            if (ctx->GetOption(RSK_FOREST).Is(RO_FOREST_CLOSED) &&
+            if (ctx->GetOption(RSK_FOREST).Is(RO_CLOSED_FOREST_ON) &&
                 !(ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES))) {
                 FilterAndEraseFromPool(entrancePools[EntranceType::Boss], [](const Entrance* entrance) {
                     return entrance->GetParentRegionKey() == RR_DEKU_TREE_BOSS_ENTRYWAY &&
@@ -1238,7 +1238,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
             entrancePools[EntranceType::ChildBoss] = GetShuffleableEntrances(EntranceType::ChildBoss);
             entrancePools[EntranceType::AdultBoss] = GetShuffleableEntrances(EntranceType::AdultBoss);
             // If forest is closed, ensure Ghoma is inside the Deku tree
-            if (ctx->GetOption(RSK_FOREST).Is(RO_FOREST_CLOSED) &&
+            if (ctx->GetOption(RSK_FOREST).Is(RO_CLOSED_FOREST_ON) &&
                 !(ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES))) {
                 FilterAndEraseFromPool(entrancePools[EntranceType::ChildBoss], [](const Entrance* entrance) {
                     return entrance->GetParentRegionKey() == RR_DEKU_TREE_BOSS_ENTRYWAY &&
@@ -1265,7 +1265,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
                               GetShuffleableEntrances(EntranceType::GanonDungeon));
         }
         // If forest is closed don't allow a forest escape via spirit temple hands
-        if (ctx->GetOption(RSK_FOREST).Is(RO_FOREST_CLOSED) &&
+        if (ctx->GetOption(RSK_FOREST).Is(RO_CLOSED_FOREST_ON) &&
             !(ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES))) {
             FilterAndEraseFromPool(entrancePools[EntranceType::Dungeon], [](const Entrance* entrance) {
                 return entrance->GetParentRegionKey() == RR_KF_OUTSIDE_DEKU_TREE &&

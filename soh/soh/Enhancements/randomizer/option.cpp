@@ -499,7 +499,7 @@ bool OptionGroup::RenderImGui() const { // NOLINT(*-no-recursion)
                 ImGui::Unindent();
             }
             if (option->HasFlag(IMFLAG_SEPARATOR_BOTTOM)) {
-                UIWidgets::PaddedSeparator();
+                UIWidgets::PaddedSeparator(false, true);
             }
         }
     }

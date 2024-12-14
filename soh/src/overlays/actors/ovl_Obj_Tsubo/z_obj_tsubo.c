@@ -8,6 +8,7 @@
 #include "overlays/effects/ovl_Effect_Ss_Kakera/z_eff_ss_kakera.h"
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 #include "objects/object_tsubo/object_tsubo.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_ALWAYS_THROWN)
 
@@ -86,7 +87,7 @@ static InitChainEntry sInitChain[] = {
 void ObjTsubo_SpawnCollectible(ObjTsubo* this, PlayState* play) {
     s16 dropParams = this->actor.params & 0x1F;
 
-    if ((dropParams >= ITEM00_RUPEE_GREEN) && (dropParams <= ITEM00_BOMBS_SPECIAL)) {
+    if (GameInteractor_Should(VB_POT_DROP_ITEM, (dropParams >= ITEM00_RUPEE_GREEN) && (dropParams <= ITEM00_BOMBS_SPECIAL), this)) {
         Item_DropCollectible(play, &this->actor.world.pos,
                              (dropParams | (((this->actor.params >> 9) & 0x3F) << 8)));
     }
@@ -226,7 +227,9 @@ void ObjTsubo_SetupWaitForObject(ObjTsubo* this) {
 
 void ObjTsubo_WaitForObject(ObjTsubo* this, PlayState* play) {
     if (Object_IsLoaded(&play->objectCtx, this->objTsuboBankIndex)) {
-        this->actor.draw = ObjTsubo_Draw;
+        if (GameInteractor_Should(VB_POT_SETUP_DRAW, true, this)) {
+            this->actor.draw = ObjTsubo_Draw;
+        }
         this->actor.objBankIndex = this->objTsuboBankIndex;
         ObjTsubo_SetupIdle(this);
         this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;

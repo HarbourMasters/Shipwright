@@ -215,7 +215,7 @@ void ObjKibako_Idle(ObjKibako* this, PlayState* play) {
             }
         }
         if (this->actor.xzDistToPlayer < 100.0f) {
-            func_8002F580(&this->actor, play);
+            Actor_OfferCarry(&this->actor, play);
         }
     }
 }

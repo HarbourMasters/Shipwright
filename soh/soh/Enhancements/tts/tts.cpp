@@ -1045,16 +1045,16 @@ void InitTTSBank() {
     initData->ResourceVersion = 0;
     
     sceneMap = std::static_pointer_cast<Ship::Json>(
-        Ship::Context::GetInstance()->GetResourceManager()->LoadResource("accessibility/texts/scenes" + languageSuffix, 0, true, initData))->Data;
+        Ship::Context::GetInstance()->GetResourceManager()->LoadResource("accessibility/texts/scenes" + languageSuffix, true, initData))->Data;
 
     miscMap = std::static_pointer_cast<Ship::Json>(
-        Ship::Context::GetInstance()->GetResourceManager()->LoadResource("accessibility/texts/misc" + languageSuffix, 0, true, initData))->Data;
+        Ship::Context::GetInstance()->GetResourceManager()->LoadResource("accessibility/texts/misc" + languageSuffix, true, initData))->Data;
 
     kaleidoMap = std::static_pointer_cast<Ship::Json>(
-        Ship::Context::GetInstance()->GetResourceManager()->LoadResource("accessibility/texts/kaleidoscope" + languageSuffix, 0, true, initData))->Data;
+        Ship::Context::GetInstance()->GetResourceManager()->LoadResource("accessibility/texts/kaleidoscope" + languageSuffix, true, initData))->Data;
 
     fileChooseMap = std::static_pointer_cast<Ship::Json>(
-        Ship::Context::GetInstance()->GetResourceManager()->LoadResource("accessibility/texts/filechoose" + languageSuffix, 0, true, initData))->Data;
+        Ship::Context::GetInstance()->GetResourceManager()->LoadResource("accessibility/texts/filechoose" + languageSuffix, true, initData))->Data;
 }
 
 void RegisterOnSetGameLanguageHook() {
