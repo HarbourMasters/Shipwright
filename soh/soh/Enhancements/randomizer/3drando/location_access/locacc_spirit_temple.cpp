@@ -157,6 +157,8 @@ void RegionTable_Init_SpiritTemple() {
   }, {
                   //Locations
                   LOCATION(RC_SPIRIT_TEMPLE_MQ_CHILD_HAMMER_SWITCH_CHEST, logic->MQSpiritTimeTravelChest),
+                  LOCATION(RC_SPIRIT_TEMPLE_MQ_CHILD_LEFT_HEART,          logic->CanHitEyeTargets()),
+                  LOCATION(RC_SPIRIT_TEMPLE_MQ_CHILD_RIGHT_HEART,         logic->CanHitEyeTargets()),
   }, {
                   //Exits
                   Entrance(RR_SPIRIT_TEMPLE_MQ_1F_GIBDO_ROOM_SOUTH,   {[]{return Here(RR_SPIRIT_TEMPLE_MQ_1F_WEST, []{return logic->CanKillEnemy(RE_TORCH_SLUG);});}}),
@@ -278,8 +280,6 @@ void RegionTable_Init_SpiritTemple() {
   areaTable[RR_SPIRIT_TEMPLE_MQ_SILVER_GAUNTLETS_HAND] = Region("Spirit Temple MQ Silver Gauntlets Hand", "Spirit Temple", {RA_SPIRIT_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST, true),
-                  LOCATION(RC_SPIRIT_TEMPLE_MQ_CHILD_LEFT_HEART,           logic->CanHitEyeTargets()),
-                  LOCATION(RC_SPIRIT_TEMPLE_MQ_CHILD_RIGHT_HEART,          logic->CanHitEyeTargets()),
   }, {
                   //Exits
                   //If it is ever relevent for 1 age to spawn the mirror shield chest for the other can longshot across, it needs an eventAccess

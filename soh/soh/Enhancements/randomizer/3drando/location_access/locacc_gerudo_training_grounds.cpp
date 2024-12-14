@@ -233,11 +233,9 @@ void RegionTable_Init_GerudoTrainingGrounds() {
                   //Events
                   EventAccess(&logic->MQGTGRightSideSwitch,    {[]{return logic->CanUse(RG_MEGATON_HAMMER);}}),
                   EventAccess(&logic->GTGPlatformSilverRupees, {[]{return logic->CanUse(RG_FIRE_ARROWS) && logic->CanUse(RG_HOVER_BOOTS);}}),
-  }, {
-                  //Locations
-                  LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_DINOLFOS_CHEST, logic->IsAdult && (logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_BIGGORON_SWORD))),
-  }, {
+  }, {}, {
                   //Exits
+                  Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_TORCH_SLUG_ROOM,       {[]{return true;}}),
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_LEDGE_SIDE_PLATFORMS,  {[]{return logic->CanUse(RG_FIRE_ARROWS);}}),
                   //the fire bubble here is a jerk if you are aiming for the nearest hook platform, you have to aim to the right hand side with hook to dodge it
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_PLATFORMS_UNLIT_TORCH, {[]{return logic->CanUse(RG_LONGSHOT) || (logic->GTGPlatformSilverRupees && logic->CanUse(RG_HOOKSHOT)) ||

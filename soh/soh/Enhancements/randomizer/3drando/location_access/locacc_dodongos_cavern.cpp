@@ -230,10 +230,10 @@ void RegionTable_Init_DodongosCavern() {
                   EventAccess(&logic->GossipStoneFairy, {[]{return (Here(RR_DODONGOS_CAVERN_MQ_LOBBY, []{return logic->CanBreakMudWalls();}) || logic->HasItem(RG_GORONS_BRACELET)) && logic->CallGossipFairy();}}),
   }, {
                   //Locations
-                  LOCATION(RC_DODONGOS_CAVERN_MQ_MAP_CHEST,                 logic->CanBreakMudWalls() || logic->HasItem(RG_GORONS_BRACELET)),
-                  LOCATION(RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_REAR,     logic->CanStunDeku()),
-                  LOCATION(RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_FRONT,    logic->CanStunDeku()),
-                  LOCATION(RC_DODONGOS_CAVERN_GOSSIP_STONE,                 Here(RR_DODONGOS_CAVERN_MQ_LOBBY, []{return logic->CanBreakMudWalls() || logic->HasItem(RG_GORONS_BRACELET);})),
+                  LOCATION(RC_DODONGOS_CAVERN_MQ_MAP_CHEST,              logic->CanBreakMudWalls() || logic->HasItem(RG_GORONS_BRACELET)),
+                  LOCATION(RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_REAR,  logic->CanStunDeku()),
+                  LOCATION(RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_FRONT, logic->CanStunDeku()),
+                  LOCATION(RC_DODONGOS_CAVERN_GOSSIP_STONE,              Here(RR_DODONGOS_CAVERN_MQ_LOBBY, []{return logic->CanBreakMudWalls() || logic->HasItem(RG_GORONS_BRACELET);})),
   }, {
                   //Exits
                   Entrance(RR_DODONGOS_CAVERN_MQ_MOUTH_SIDE_BRIDGE,     {[]{return Here(RR_DODONGOS_CAVERN_MQ_LOBBY, []{return logic->BlastOrSmash() || logic->HasItem(RG_GORONS_BRACELET);});}}),
@@ -343,7 +343,8 @@ void RegionTable_Init_DodongosCavern() {
 
   areaTable[RR_DODONGOS_CAVERN_MQ_UPPER_LIZALFOS] = Region("Dodongos Cavern MQ Before Upper Lizalfos", "Dodongos Cavern", {RA_DODONGOS_CAVERN}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LOCATION(RC_DODONGOS_CAVERN_MQ_GS_LIZALFOS_ROOM,   logic->BlastOrSmash()), //Implied CanGetEnemyDrop(RE_GOLD_SKULLTULA)
+                  LOCATION(RC_DODONGOS_CAVERN_MQ_GS_LIZALFOS_ROOM,     logic->BlastOrSmash()), //Implied CanGetEnemyDrop(RE_GOLD_SKULLTULA)
+                  LOCATION(RC_DODONGOS_CAVERN_MQ_LIZALFOS_ROOM_HEART,  logic->BlastOrSmash()),
   }, {
                   //Exits
                   //Falling down gets you stuck with nothing there, not a useful exit for logic
@@ -379,11 +380,9 @@ void RegionTable_Init_DodongosCavern() {
   });
 
   areaTable[RR_DODONGOS_CAVERN_MQ_LOWER_LIZALFOS] = Region("Dodongos Cavern MQ Lower Lizalfos", "Dodongos Cavern", {RA_DODONGOS_CAVERN}, NO_DAY_NIGHT_CYCLE, {
-                  //When you add wonder item logic for behind the lavafall, use Here(RR_DODONGOS_CAVERN_MQ_UPPER_LIZALFOS) to account for jumping down instead of an exit
-                  //because the doors are sealed when entering from the top and you can't spawn the lower lizalfos
   }, {
                   //Locations
-                  LOCATION(RC_DODONGOS_CAVERN_MQ_LIZALFOS_ROOM_HEART,                      true),
+                  LOCATION(RC_DODONGOS_CAVERN_MQ_LIZALFOS_ROOM_HEART,  true),
   }, {
                   //Exits
                   Entrance(RR_DODONGOS_CAVERN_MQ_LOWER_RIGHT_SIDE, {[]{return Here(RR_DODONGOS_CAVERN_MQ_LOWER_LIZALFOS, []{return logic->CanKillEnemy(RE_LIZALFOS);});}}),

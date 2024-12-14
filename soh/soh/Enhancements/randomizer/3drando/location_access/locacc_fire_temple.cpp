@@ -564,7 +564,7 @@ void RegionTable_Init_FireTemple() {
 
   areaTable[RR_FIRE_TEMPLE_MQ_SOUTH_FIRE_MAZE] = Region("Fire Temple MQ South Fire Maze", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LOCATION(RC_FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_CENTER,    logic->HasExplosives()),
+                  LOCATION(RC_FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_CENTER, logic->HasExplosives()),
   }, {
                   //Exits
                   Entrance(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_DOOR,      {[]{return logic->HitFireTemplePlatform;}}),
