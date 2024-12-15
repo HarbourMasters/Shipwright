@@ -127,7 +127,7 @@ typedef enum {
     */
     VB_BE_ELIGIBLE_FOR_NOCTURNE_OF_SHADOW,
     // Opt: *EnGo2
-    VB_GORON_LINK_NOT_BE_SCARED,
+    VB_GORON_LINK_BE_SCARED,
     // Vanilla condition: CUR_CAPACITY(UPG_BOMB_BAG) >= 20 && this->waypoint > 7 && this->waypoint < 12
     VB_BE_ELIGIBLE_FOR_CHILD_ROLLING_GORON_REWARD,
     // Vanilla condition: !CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BIGGORON)

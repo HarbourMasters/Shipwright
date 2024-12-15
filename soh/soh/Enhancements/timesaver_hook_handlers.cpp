@@ -355,7 +355,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             }
             break;
         }
-        case VB_GORON_LINK_NOT_BE_SCARED: {
+        case VB_GORON_LINK_BE_SCARED: {
             if (ForcedDialogIsDisabled(FORCED_DIALOG_SKIP_NPC)) {
                 EnGo2* goronLink = va_arg(args, EnGo2*);
                 goronLink->trackingMode = NPC_TRACKING_NONE;

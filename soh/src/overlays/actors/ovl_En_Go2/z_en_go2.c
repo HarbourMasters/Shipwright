@@ -1768,7 +1768,7 @@ void EnGo2_GroundRolling(EnGo2* this, PlayState* play) {
         if (this->unk_59C == 0) {
             switch (this->actor.params & 0x1F) {
                 case GORON_CITY_LINK:
-                    if (GameInteractor_Should(VB_GORON_LINK_NOT_BE_SCARED, true, this)) {
+                    if (GameInteractor_Should(VB_GORON_LINK_BE_SCARED, true, this)) {
                         this->goronState = 0;
                         this->actionFunc = EnGo2_GoronLinkStopRolling;
                     }
