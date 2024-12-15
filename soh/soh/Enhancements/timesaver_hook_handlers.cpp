@@ -39,6 +39,8 @@ extern int32_t D_8011D3AC;
 extern void BgSpot03Taki_HandleWaterfallState(BgSpot03Taki* bgSpot03Taki, PlayState* play);
 extern void BgSpot03Taki_ApplyOpeningAlpha(BgSpot03Taki* bgSpot03Taki, s32 bufferIndex);
 
+extern void EnGo2_CurledUp(EnGo2* enGo2, PlayState* play);
+
 extern void EnRu2_SetEncounterSwitchFlag(EnRu2* enRu2, PlayState* play);
 }
 
@@ -349,6 +351,18 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                     Flags_SetSwitch(gPlayState, paramsHighByte & 0x3F);
                 }
                 Actor_Kill(&naviTalk->actor);
+                *should = false;
+            }
+            break;
+        }
+        case VB_GORON_LINK_NOT_BE_SCARED: {
+            if (ForcedDialogIsDisabled(FORCED_DIALOG_SKIP_NPC)) {
+                EnGo2* goronLink = va_arg(args, EnGo2*);
+                goronLink->trackingMode = NPC_TRACKING_NONE;
+                goronLink->unk_211 = false;
+                goronLink->isAwake = false;
+                goronLink->actionFunc = EnGo2_CurledUp;
+                Flags_SetInfTable(INFTABLE_STOPPED_GORON_LINKS_ROLLING);
                 *should = false;
             }
             break;
