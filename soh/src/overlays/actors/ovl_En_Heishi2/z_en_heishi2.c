@@ -13,6 +13,8 @@
 #include "overlays/actors/ovl_Bg_Spot15_Saku/z_bg_spot15_saku.h"
 #include "soh/ResourceManagerHelpers.h"
 
+#include "soh/Enhancements/Holiday/Archez.h"
+
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
 void EnHeishi2_Init(Actor* thisx, PlayState* play);
@@ -815,6 +817,10 @@ s32 EnHeishi2_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3
                 rot->x = rot->x + this->unk_260.y;
                 rot->z = rot->z + this->unk_260.z;
             }
+    }
+
+    if (limbIndex == 15) {
+        SkipOverrideNextLimb();
     }
 
     return false;

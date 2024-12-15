@@ -10,6 +10,8 @@
 #include "soh_assets.h"
 #include "soh/ResourceManagerHelpers.h"
 
+#include "soh/Enhancements/Holiday/Archez.h"
+
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnTest_Init(Actor* thisx, PlayState* play);
@@ -1843,6 +1845,10 @@ s32 EnTest_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* 
 
     if ((this->actor.params == STALFOS_TYPE_INVISIBLE) && !CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_LENS)) {
         *dList = NULL;
+    }
+
+    if (limbIndex == STALFOS_LIMB_SWORD || limbIndex == STALFOS_LIMB_SHIELD) {
+        SkipOverrideNextLimb();
     }
 
     return false;

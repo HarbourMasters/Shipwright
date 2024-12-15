@@ -15,6 +15,8 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
+#include "soh/Enhancements/Holiday/Archez.h"
+
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_DRAGGED_BY_HOOKSHOT)
 
 #define vParity actionVar
@@ -2862,6 +2864,11 @@ s32 BossSst_OverrideHeadDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f*
             rot->z -= 0x200;
         }
     }
+
+    if (limbIndex == 7) {
+        SkipOverrideNextLimb();
+    }
+
     return false;
 }
 

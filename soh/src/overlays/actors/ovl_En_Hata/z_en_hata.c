@@ -7,6 +7,8 @@
 #include "z_en_hata.h"
 #include "objects/object_hata/object_hata.h"
 
+#include "soh/Enhancements/Holiday/Archez.h"
+
 #define FLAGS 0
 
 void EnHata_Init(Actor* thisx, PlayState* play);
@@ -130,6 +132,11 @@ s32 EnHata_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* 
         rot->y += limbs[limbIndex].y;
         rot->z += limbs[limbIndex].z;
     }
+
+    if (limbIndex == FLAGPOLE_LIMB_POLE_BASE || limbIndex == FLAGPOLE_LIMB_POLE) {
+        SkipOverrideNextLimb();
+    }
+
     return false;
 }
 

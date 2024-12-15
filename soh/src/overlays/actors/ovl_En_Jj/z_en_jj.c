@@ -10,6 +10,8 @@
 #include "soh_assets.h"
 #include "soh/ResourceManagerHelpers.h"
 
+#include "soh/Enhancements/Holiday/Archez.h"
+
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 typedef enum {
@@ -340,6 +342,7 @@ void EnJj_Draw(Actor* thisx, PlayState* play2) {
     Matrix_Translate(0.0f, (cosf(this->skelAnime.curFrame * (M_PI / 41.0f)) * 10.0f) - 10.0f, 0.0f, MTXMODE_APPLY);
     Matrix_Scale(10.0f, 10.0f, 10.0f, MTXMODE_APPLY);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeIndex]));
+    SkipOverrideNextSkeleton();
     SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, EnJj_PostLimbDraw, this);
 
     CLOSE_DISPS(play->state.gfxCtx);

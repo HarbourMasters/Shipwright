@@ -59,6 +59,9 @@ static const ALIGN_ASSET(2) char gSkullTreasureChestFrontTex[] = dgSkullTreasure
 #define dgSkullTreasureChestSideAndTopTex "__OTR__objects/object_box/gSkullTreasureChestSideAndTopTex"
 static const ALIGN_ASSET(2) char gSkullTreasureChestSideAndTopTex[] = dgSkullTreasureChestSideAndTopTex;
 
+#define dgSnowballDL "__OTR__objects/custom_snowball/snowball"
+static const ALIGN_ASSET(2) char gSnowballDL[] = dgSnowballDL;
+
 #define dgTitleRandomizerSubtitleTex "__OTR__objects/object_mag/gTitleRandomizerSubtitleTex"
 static const ALIGN_ASSET(2) char gTitleRandomizerSubtitleTex[] = dgTitleRandomizerSubtitleTex;
 

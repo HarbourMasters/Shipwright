@@ -12,6 +12,8 @@
 #include "soh_assets.h"
 #include "soh/ResourceManagerHelpers.h"
 
+#include "soh/Enhancements/Holiday/Archez.h"
+
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnVm_Init(Actor* thisx, PlayState* play);
@@ -544,6 +546,7 @@ void EnVm_Draw(Actor* thisx, PlayState* play2) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+    SkipOverrideNextSkeleton();
     SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnVm_OverrideLimbDraw,
                       EnVm_PostLimbDraw, this);
     actorPos = this->actor.world.pos;

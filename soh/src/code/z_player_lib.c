@@ -12,6 +12,7 @@
 
 #include <stdlib.h>
 #include <soh_assets.h>
+#include "soh/Enhancements/Holiday/Archez.h"
 
 typedef struct {
     /* 0x00 */ u8 flag;
@@ -1422,6 +1423,10 @@ s32 Player_OverrideLimbDrawGameplayDefault(PlayState* play, s32 limbIndex, Gfx**
                 sLeftHandType = PLAYER_MODELTYPE_LH_CLOSED;
             }
 
+            if (sLeftHandType != PLAYER_MODELTYPE_LH_OPEN && sLeftHandType != PLAYER_MODELTYPE_LH_CLOSED) {
+                SkipOverrideNextLimb();
+            }
+
             *dList = ResourceMgr_LoadGfxByName(dLists[sDListsLodOffset]);
         } else if (limbIndex == PLAYER_LIMB_R_HAND) {
             Gfx** dLists = this->rightHandDLists;
@@ -1433,8 +1438,13 @@ s32 Player_OverrideLimbDrawGameplayDefault(PlayState* play, s32 limbIndex, Gfx**
                 sRightHandType = PLAYER_MODELTYPE_RH_CLOSED;
             }
 
+            if (sRightHandType != PLAYER_MODELTYPE_RH_OPEN && sRightHandType != PLAYER_MODELTYPE_RH_CLOSED) {
+                SkipOverrideNextLimb();
+            }
+
             *dList = ResourceMgr_LoadGfxByName(dLists[sDListsLodOffset]);
         } else if (limbIndex == PLAYER_LIMB_SHEATH) {
+            SkipOverrideNextLimb();
             Gfx** dLists = this->sheathDLists;
 
             if ((this->sheathType == PLAYER_MODELTYPE_SHEATH_18) || (this->sheathType == PLAYER_MODELTYPE_SHEATH_19)) {
@@ -1491,10 +1501,13 @@ s32 Player_OverrideLimbDrawGameplayFirstPerson(PlayState* play, s32 limbIndex, G
             }
             *dList = sFirstPersonLeftHandDLs[handOutDlIndex];
         } else if (limbIndex == PLAYER_LIMB_R_SHOULDER) {
+            SkipOverrideNextLimb();
             *dList = sFirstPersonRightShoulderDLs[gSaveContext.linkAge];
         } else if (limbIndex == PLAYER_LIMB_R_FOREARM) {
+            SkipOverrideNextLimb();
             *dList = sFirstPersonForearmDLs[gSaveContext.linkAge];
         } else if (limbIndex == PLAYER_LIMB_R_HAND) {
+            SkipOverrideNextLimb();
             s32 firstPersonWeaponIndex = gSaveContext.linkAge;
             if (CVarGetInteger(CVAR_ENHANCEMENT("BowSlingshotAmmoFix"), 0) || CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0)) {
                 if (Player_HoldsBow(this)) {

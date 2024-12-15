@@ -8,6 +8,8 @@
 #include "objects/object_torch2/object_torch2.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
+#include "soh/Enhancements/Holiday/Archez.h"
+
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 typedef enum {
@@ -771,6 +773,10 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
 s32 EnTorch2_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx,
                               Gfx** gfx) {
     Player* this = (Player*)thisx;
+
+    if (limbIndex == PLAYER_LIMB_L_HAND || limbIndex == PLAYER_LIMB_R_HAND) {
+        SkipOverrideNextLimb();
+    }
 
     return Player_OverrideLimbDrawGameplayCommon(play, limbIndex, dList, pos, rot, &this->actor);
 }

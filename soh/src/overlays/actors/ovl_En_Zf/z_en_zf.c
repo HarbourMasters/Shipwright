@@ -10,6 +10,8 @@
 #include "soh_assets.h"
 #include "soh/ResourceManagerHelpers.h"
 
+#include "soh/Enhancements/Holiday/Archez.h"
+
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnZf_Init(Actor* thisx, PlayState* play);
@@ -2132,11 +2134,13 @@ s32 EnZf_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* po
             rot->y -= this->headRot;
             break;
         case ENZF_LIMB_SWORD:
+            SkipOverrideNextLimb();
             if (this->swordSheathed) {
                 *dList = gZfEmptyHandDL;
             }
             break;
         case ENZF_LIMB_SCABBARD:
+            SkipOverrideNextLimb();
             if (this->swordSheathed) {
                 *dList = gZfSheathedSwordDL;
             }

@@ -3,6 +3,8 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
+#include "soh/Enhancements/Holiday/Archez.h"
+
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void EnBigokuta_Init(Actor* thisx, PlayState* play);
@@ -868,6 +870,11 @@ s32 EnBigokuta_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec
             Matrix_Scale(1.0f, 1.25f - temp_f0, 1.25f - temp_f0, MTXMODE_APPLY);
         }
     }
+
+    if (limbIndex == 15 || limbIndex == 16 || limbIndex == CVarGetInteger("gMyThing", 0)) {
+        SkipOverrideNextLimb();
+    }
+
     return false;
 }
 

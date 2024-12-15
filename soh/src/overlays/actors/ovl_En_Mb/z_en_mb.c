@@ -9,6 +9,8 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
+#include "soh/Enhancements/Holiday/Archez.h"
+
 /*
  * This actor can have three behaviors:
  * - "Spear Guard" (variable -1): uses a spear, walks around home point, charges player if too close
@@ -1551,6 +1553,22 @@ void EnMb_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, 
     }
 }
 
+s32 EnMb_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
+    EnMb* this = (EnMb*)thisx;
+
+    if (this->actor.params == ENMB_TYPE_CLUB) {
+        if (limbIndex == ENMB_LIMB_LHAND) {
+            SkipOverrideNextLimb();
+        }
+    } else {
+        if (limbIndex == ENMB_LIMB_RHAND) {
+            SkipOverrideNextLimb();
+        }
+    }
+
+    return 0;
+}
+
 void EnMb_Draw(Actor* thisx, PlayState* play) {
     static Vec3f frontShieldingTriModel0[] = {
         { 4000.0f, 7000.0f, 3500.0f },
@@ -1570,7 +1588,7 @@ void EnMb_Draw(Actor* thisx, PlayState* play) {
     EnMb* this = (EnMb*)thisx;
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, EnMb_PostLimbDraw, thisx);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnMb_OverrideLimbDraw, EnMb_PostLimbDraw, thisx);
 
     if (thisx->params != ENMB_TYPE_CLUB) {
         if (this->attack > ENMB_ATTACK_NONE) {

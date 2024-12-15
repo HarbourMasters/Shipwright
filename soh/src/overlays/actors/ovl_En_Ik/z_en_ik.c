@@ -12,6 +12,8 @@
 #include "soh_assets.h"
 #include "soh/ResourceManagerHelpers.h"
 
+#include "soh/Enhancements/Holiday/Archez.h"
+
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 typedef void (*EnIkDrawFunc)(struct EnIk*, PlayState*);
@@ -846,6 +848,11 @@ s32 EnIk_OverrideLimbDraw3(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* p
             *dList = NULL;
         }
     }
+
+    if (limbIndex == 17) {
+        SkipOverrideNextLimb();
+    }
+
     return false;
 }
 
@@ -1193,6 +1200,10 @@ s32 EnIk_OverrideLimbDraw2(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* p
         }
     }
 
+    if (limbIndex == 17) {
+        SkipOverrideNextLimb();
+    }
+
     return 0;
 }
 
@@ -1359,6 +1370,7 @@ s32 EnIk_OverrideLimbDraw1(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* p
             if (curFrame < 120.0f) {
                 *dList = NULL;
             } else {
+                SkipOverrideNextLimb();
                 func_80A76E2C(this, play, pos);
             }
             break;

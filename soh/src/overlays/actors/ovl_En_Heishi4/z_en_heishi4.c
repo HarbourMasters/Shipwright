@@ -5,6 +5,8 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 
+#include "soh/Enhancements/Holiday/Archez.h"
+
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
 void EnHeishi4_Init(Actor* thisx, PlayState* play);
@@ -414,6 +416,11 @@ s32 EnHeishi_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f
         rot->x += this->unk_260.y;
         rot->z += this->unk_260.z;
     }
+
+    if (limbIndex == 15) {
+        SkipOverrideNextLimb();
+    }
+
     return false;
 }
 

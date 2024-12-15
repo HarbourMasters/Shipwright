@@ -15,6 +15,8 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh_assets.h"
 
+#include "soh/Enhancements/Holiday/Archez.h"
+
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 typedef enum {
@@ -1351,6 +1353,8 @@ s32 BossGanondrof_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, 
         case 15:
             if ((this->actionFunc == BossGanondrof_Intro) && this->work[GND_MASK_OFF]) {
                 *dList = gPhantomGanonFaceDL;
+            } else {
+                SkipOverrideNextLimb();
             }
             rot->y += this->rideRotY[limbIndex];
             rot->z += this->rideRotZ[limbIndex];
@@ -1408,6 +1412,10 @@ s32 BossGanondrof_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, 
             rot->y += this->rideRotY[limbIndex];
             rot->z += this->rideRotZ[limbIndex];
             break;
+    }
+
+    if (limbIndex == 12) {
+        SkipOverrideNextLimb();
     }
 
     return 0;

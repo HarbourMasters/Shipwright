@@ -9,6 +9,8 @@
 #include "vt.h"
 #include "soh/ResourceManagerHelpers.h"
 
+#include "soh/Enhancements/Holiday/Archez.h"
+
 #define FLAGS 0
 
 void EnHeishi3_Init(Actor* thisx, PlayState* play);
@@ -243,6 +245,10 @@ s32 EnHeishi3_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3
     if (limbIndex == 16) {
         rot->x += this->unk_262;
         rot->z += this->unk_264;
+    }
+
+    if (limbIndex == 15) {
+        SkipOverrideNextLimb();
     }
 
     return false;

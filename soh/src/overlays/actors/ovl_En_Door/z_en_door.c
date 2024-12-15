@@ -12,6 +12,8 @@
 #include "objects/object_haka_door/object_haka_door.h"
 #include "soh/ResourceManagerHelpers.h"
 
+#include "soh/Enhancements/Holiday/Archez.h"
+
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 #define DOOR_AJAR_SLAM_RANGE 120.0f
@@ -339,6 +341,7 @@ void EnDoor_Draw(Actor* thisx, PlayState* play) {
         OPEN_DISPS(play->state.gfxCtx);
 
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
+        SkipOverrideNextSkeleton();
         SkelAnime_DrawSkeletonOpa(play, &this->skelAnime,
                                                    EnDoor_OverrideLimbDraw,
                           NULL, &this->actor);

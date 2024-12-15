@@ -13,6 +13,8 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
+#include "soh/Enhancements/Holiday/Archez.h"
+
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 typedef enum {
@@ -533,6 +535,7 @@ void DoorKiller_DrawDoor(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_37Opa(play->state.gfxCtx);
     DoorKiller_SetTexture(&this->actor, play);
+    SkipOverrideNextSkeleton();
     SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, NULL, NULL);
 }
 

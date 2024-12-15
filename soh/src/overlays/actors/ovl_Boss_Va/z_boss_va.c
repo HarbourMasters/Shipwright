@@ -19,6 +19,8 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
+#include "soh/Enhancements/Holiday/Archez.h"
+
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 #define GET_BODY(this) ((BossVa*)(this)->actor.parent)
@@ -3265,6 +3267,7 @@ void BossVa_Draw(Actor* thisx, PlayState* play) {
             break;
         default:
             if (!this->isDead) {
+                SkipOverrideNextSkeleton();
                 SkelAnime_DrawSkeletonOpa(play, &this->skelAnime,
                                   BossVa_BariOverrideLimbDraw, BossVa_BariPostLimbDraw, this);
                 Collider_UpdateSpheres(0, &this->colliderSph);
