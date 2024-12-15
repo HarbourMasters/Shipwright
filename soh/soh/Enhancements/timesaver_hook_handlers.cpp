@@ -288,8 +288,13 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                         RateLimitedSuccessChime();
                         break;
                     }
+                    case ACTOR_EN_GO2: {
+                        EnGo2* biggoron = (EnGo2*)actor;
+                        biggoron->isAwake = true;
+                        *should = false;
+                        break;
+                    }
                     case ACTOR_BG_HIDAN_FWBIG:
-                    case ACTOR_EN_GO2:
                     case ACTOR_EN_EX_ITEM:
                     case ACTOR_EN_DNT_NOMAL:
                     case ACTOR_EN_DNT_DEMO:
