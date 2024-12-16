@@ -6,7 +6,7 @@
 #include "Enhancements/enhancementTypes.h"
 #include "Enhancements/randomizer/dungeon.h"
 #include <libultraship/libultraship.h>
-#include <GameVersions.h>
+#include <soh/GameVersions.h>
 #include "resource/type/SohResourceType.h"
 #include "resource/type/Array.h"
 #include "resource/type/Skeleton.h"

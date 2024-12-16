@@ -11,7 +11,7 @@
 #include <File.h>
 #include <DisplayList.h>
 #include <Window.h>
-#include <GameVersions.h>
+#include <soh/GameVersions.h>
 
 #include "Enhancements/gameconsole.h"
 #ifdef _WIN32
