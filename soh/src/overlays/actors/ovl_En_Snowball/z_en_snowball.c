@@ -218,12 +218,12 @@ void EnSnowball_Draw(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     Matrix_RotateZYX(this->sRot, thisx->world.rot.y, 0, MTXMODE_APPLY);
-    
-    Matrix_Translate(0.0f, 7600.0f, -148.649f, MTXMODE_APPLY);
-    Matrix_Scale(4.844f, 4.844f, 4.844f, MTXMODE_APPLY);
+
+    Matrix_Translate(0.0f, 5.0f, 0.0f, MTXMODE_APPLY);
+    Matrix_Scale(0.5f, 0.5f, 0.5f, MTXMODE_APPLY);
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gSPDisplayList(POLY_OPA_DISP++, gLinkAdultPompomDL);
+    gSPDisplayList(POLY_OPA_DISP++, gSnowballDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
