@@ -136,8 +136,7 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
             if ((pauseCtx->state != 6) || ((pauseCtx->stickRelX == 0) && (pauseCtx->stickRelY == 0))) {
                 // No cursor movement
                 sp216 = pauseCtx->cursorSlot[PAUSE_QUEST];
-            }
-            else {
+            } else {
                 phi_s3 = pauseCtx->cursorPoint[PAUSE_QUEST];
 
                 if ((pauseCtx->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
