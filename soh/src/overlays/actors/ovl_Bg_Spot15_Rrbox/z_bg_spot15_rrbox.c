@@ -319,7 +319,7 @@ void func_808B43D0(BgSpot15Rrbox* this, PlayState* play) {
         player->stateFlags2 &= ~PLAYER_STATE2_MOVING_DYNAPOLY;
     }
 
-    Actor_MoveForward(actor);
+    Actor_MoveXZGravity(actor);
 
     if (actor->world.pos.y <= BGCHECK_Y_MIN + 10.0f) {
         // "Lon Lon wooden crate fell too much"

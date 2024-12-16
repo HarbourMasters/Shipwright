@@ -974,7 +974,7 @@ void EnNiw_Update(Actor* thisx, PlayState* play) {
     thisx->shape.shadowScale = 15.0f;
     this->actionFunc(this, play);
     Actor_SetFocus(&this->actor, this->unk_304);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 
     if (this->actionFunc != func_80AB6EB4 && this->actionFunc != func_80AB6450 && play->sceneNum != SCENE_ZORAS_RIVER) {
         Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 20.0f, 60.0f, 31);

@@ -795,7 +795,7 @@ void EnRr_Update(Actor* thisx, PlayState* play) {
     }
 
     Math_StepToF(&this->actor.speedXZ, 0.0f, 0.1f);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Collider_UpdateCylinder(&this->actor, &this->collider1);
     this->collider2.dim.pos.x = this->mouthPos.x;
     this->collider2.dim.pos.y = this->mouthPos.y;

@@ -181,7 +181,7 @@ void BgHidanDalm_Update(Actor* thisx, PlayState* play) {
     BgHidanDalm* this = (BgHidanDalm*)thisx;
 
     this->actionFunc(this, play);
-    Actor_MoveForward(&this->dyna.actor);
+    Actor_MoveXZGravity(&this->dyna.actor);
     Actor_UpdateBgCheckInfo(play, &this->dyna.actor, 10.0f, 15.0f, 32.0f, 5);
 }
 

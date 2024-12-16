@@ -245,7 +245,7 @@ void BgMoriHashigo_LadderFall(BgMoriHashigo* this, PlayState* play) {
     static f32 bounceSpeed[3] = { 4.0f, 2.7f, 1.7f };
     Actor* thisx = &this->dyna.actor;
 
-    Actor_MoveForward(thisx);
+    Actor_MoveXZGravity(thisx);
     if ((thisx->bgCheckFlags & 1) && (thisx->velocity.y < 0.0f)) {
         if (this->bounceCounter >= ARRAY_COUNT(bounceSpeed)) {
             BgMoriHashigo_SetupLadderRest(this);

@@ -1118,7 +1118,7 @@ void EnGo2_RollForward(EnGo2* this) {
     }
 
     if (this->actionFunc != EnGo2_ContinueRolling) {
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
     }
 
     this->actor.speedXZ = speedXZ;
@@ -1768,8 +1768,10 @@ void EnGo2_GroundRolling(EnGo2* this, PlayState* play) {
         if (this->unk_59C == 0) {
             switch (this->actor.params & 0x1F) {
                 case GORON_CITY_LINK:
-                    this->goronState = 0;
-                    this->actionFunc = EnGo2_GoronLinkStopRolling;
+                    if (GameInteractor_Should(VB_GORON_LINK_BE_SCARED, true, this)) {
+                        this->goronState = 0;
+                        this->actionFunc = EnGo2_GoronLinkStopRolling;
+                    }
                     break;
                 case GORON_CITY_ROLLING_BIG:
                     EnGo2_WakeUp(this, play);
@@ -1952,7 +1954,7 @@ void EnGo2_GoronFireGenericAction(EnGo2* this, PlayState* play) {
                 if (!(this->animTimer % 8)) {
                     Audio_PlayActorSound2(&this->actor, NA_SE_EN_MORIBLIN_WALK);
                 }
-                Actor_MoveForward(&this->actor);
+                Actor_MoveXZGravity(&this->actor);
             } else {
                 this->animTimer = 0;
                 this->actor.speedXZ = 0.0f;

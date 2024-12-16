@@ -745,7 +745,7 @@ void EnInsect_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
 
     if (this->actor.update != NULL) {
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
         if (this->unk_314 & 0x100) {
             if (this->unk_314 & 1) {
                 if (this->actor.bgCheckFlags & 1) {

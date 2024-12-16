@@ -788,7 +788,7 @@ void func_80A75FA0(Actor* thisx, PlayState* play) {
             player->invincibilityTimer = prevInvincibilityTimer;
         }
     }
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 75.0f, 30.0f, 30.0f, 0x1D);
     this->actor.focus.pos = this->actor.world.pos;
     this->actor.focus.pos.y += 45.0f;

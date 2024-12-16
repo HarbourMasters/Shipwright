@@ -671,7 +671,7 @@ void EnTk_Update(Actor* thisx, PlayState* play) {
 
     SkelAnime_Update(&this->skelAnime);
 
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 
     Actor_UpdateBgCheckInfo(play, &this->actor, 40.0f, 10.0f, 0.0f, 5);
 

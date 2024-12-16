@@ -335,7 +335,7 @@ void BgHidanRock_Update(Actor* thisx, PlayState* play) {
 
     this->actionFunc(this, play);
     if (this->actionFunc == func_8088B79C) {
-        Actor_MoveForward(&this->dyna.actor);
+        Actor_MoveXZGravity(&this->dyna.actor);
         Actor_UpdateBgCheckInfo(play, &this->dyna.actor, 0.0f, 0.0f, 0.0f, 4);
     }
 

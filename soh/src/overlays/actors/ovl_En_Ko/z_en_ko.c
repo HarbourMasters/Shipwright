@@ -1273,7 +1273,7 @@ void EnKo_Update(Actor* thisx, PlayState* play) {
         }
     }
     if (this->interactInfo.talkState == NPC_TALK_STATE_IDLE) {
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
     }
     if (func_80A97C7C(this)) {
         Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);

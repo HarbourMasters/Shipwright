@@ -102,7 +102,7 @@ void EnLightbox_Update(Actor* thisx, PlayState* play) {
             }
         }
     }
-    Actor_MoveForward(thisx);
+    Actor_MoveXZGravity(thisx);
     Actor_UpdateBgCheckInfo(play, thisx, thisx->colChkInfo.cylHeight, thisx->colChkInfo.cylRadius,
                             thisx->colChkInfo.cylRadius, 0x1D);
     thisx->focus.pos = thisx->world.pos;

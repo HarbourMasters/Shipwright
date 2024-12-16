@@ -4148,10 +4148,10 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                 Math_ApproachS(&this->unk_16E, spF6, 3, 0xBB8);
             }
 
-            func_8002D908(&this->actor);
+            Actor_UpdateVelocityXYZ(&this->actor);
         }
 
-        func_8002D7EC(&this->actor);
+        Actor_UpdatePos(&this->actor);
 
         this->actor.world.pos.y += (this->unk_184 * 1.5f);
 

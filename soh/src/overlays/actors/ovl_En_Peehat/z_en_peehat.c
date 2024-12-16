@@ -940,7 +940,7 @@ void EnPeehat_Update(Actor* thisx, PlayState* play) {
     }
     if (thisx->colChkInfo.damageEffect != PEAHAT_DMG_EFF_LIGHT_ICE_ARROW) {
         if (thisx->speedXZ != 0.0f || thisx->velocity.y != 0.0f) {
-            Actor_MoveForward(thisx);
+            Actor_MoveXZGravity(thisx);
             Actor_UpdateBgCheckInfo(play, thisx, 25.0f, 30.0f, 30.0f, 5);
         }
 

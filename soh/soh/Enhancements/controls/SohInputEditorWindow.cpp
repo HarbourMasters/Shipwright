@@ -1535,8 +1535,10 @@ void SohInputEditorWindow::DrawMapping(CustomButtonMap& mapping, float labelWidt
 
 void SohInputEditorWindow::DrawOcarinaControlPanel() {
     ImVec2 cursor = ImGui::GetCursorPos();
-    ImGui::SetCursorPos(ImVec2(cursor.x + 24, cursor.y + 5));
-
+    ImGui::SetCursorPos(ImVec2(cursor.x, cursor.y + 5));
+    
+    UIWidgets::EnhancementCheckbox("Dpad Ocarina Playback", CVAR_SETTING("CustomOcarina.Dpad"));
+    UIWidgets::EnhancementCheckbox("Right Stick Ocarina Playback", CVAR_SETTING("CustomOcarina.RightStick"));
     UIWidgets::EnhancementCheckbox("Customize Ocarina Controls", CVAR_SETTING("CustomOcarina.Enabled"));
 
     if (!CVarGetInteger(CVAR_SETTING("CustomOcarina.Enabled"), 0)) {

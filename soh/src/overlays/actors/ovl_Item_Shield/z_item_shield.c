@@ -98,7 +98,7 @@ void ItemShield_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void func_80B86AC8(ItemShield* this, PlayState* play) {
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     if (Actor_HasParent(&this->actor, play)) {
         Actor_Kill(&this->actor);
         return;
@@ -148,7 +148,7 @@ void func_80B86CA8(ItemShield* this, PlayState* play) {
     s32 i;
     s32 temp;
 
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 10.0f, 10.0f, 0.0f, 5);
     this->actor.shape.yOffset = ABS(Math_SinS(this->actor.shape.rot.x)) * 1500.0f;
 

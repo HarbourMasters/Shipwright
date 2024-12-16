@@ -425,7 +425,7 @@ void EnDntJiji_Update(Actor* thisx, PlayState* play) {
         }
     }
     this->actionFunc(this, play);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 20.0f, 60.0f, 0x1D);
     Collider_UpdateCylinder(&this->actor, &this->collider);
     if (this->isSolid != 0) {

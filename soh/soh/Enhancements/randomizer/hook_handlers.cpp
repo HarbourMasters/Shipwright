@@ -475,7 +475,7 @@ void ItemEtcetera_func_80B85824_Randomized(ItemEtcetera* itemEtcetera, PlayState
 
 void ItemEtcetera_MoveRandomizedFireArrowDown(ItemEtcetera* itemEtcetera, PlayState* play) {
     Actor_UpdateBgCheckInfo(play, &itemEtcetera->actor, 10.0f, 10.0f, 0.0f, 5);
-    Actor_MoveForward(&itemEtcetera->actor);
+    Actor_MoveXZGravity(&itemEtcetera->actor);
     if (!(itemEtcetera->actor.bgCheckFlags & 1)) {
         ItemEtcetera_SpawnSparkles(itemEtcetera, play);
     }
@@ -800,6 +800,9 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             *should = false;
             break;
         }
+        case VB_SPAWN_FIRE_ARROW:
+            *should = !Flags_GetTreasure(gPlayState, 0x1F);
+            break;
         case VB_PLAY_NABOORU_CAPTURED_CS:
             // This behavior is replicated for randomizer in RandomizerOnItemReceiveHandler
             *should = false;

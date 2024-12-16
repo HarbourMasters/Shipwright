@@ -192,7 +192,7 @@ void EnGe3_UpdateCollision(EnGe3* this, PlayState* play) {
 
 void EnGe3_MoveAndBlink(EnGe3* this, PlayState* play) {
 
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 
     if (DECR(this->blinkTimer) == 0) {
         this->blinkTimer = Rand_S16Offset(60, 60);

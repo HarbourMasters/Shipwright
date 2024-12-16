@@ -370,7 +370,7 @@ void EnExRuppy_Update(Actor* thisx, PlayState* play) {
     if (this->timer != 0) {
         this->timer--;
     }
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 20.0f, 50.0f, 0x1C);
 }
 

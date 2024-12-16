@@ -1501,7 +1501,7 @@ void BossMo_IntroCs(BossMo* this, PlayState* play) {
                            this->cameraAtVel.z * this->cameraSpeedMod);
             Math_ApproachF(&this->cameraSpeedMod, 1.0f, 1.0f, this->cameraAccel);
         } else if (this->csState < MO_INTRO_REVEAL) {
-            func_8002D908(&this->actor);
+            Actor_UpdateVelocityXYZ(&this->actor);
             this->cameraEye.x += this->actor.velocity.x;
             this->cameraEye.y += this->actor.velocity.y;
             this->cameraEye.z += this->actor.velocity.z;
@@ -2164,12 +2164,12 @@ void BossMo_Core(BossMo* this, PlayState* play) {
                 spD0 = (s16)(Math_FAtan2F(spD8, sqrtf(SQ(spDC) + SQ(spD4))) * (0x8000 / M_PI));
                 Math_ApproachS(&this->actor.world.rot.y, spCC, this->tentMaxAngle, this->tentSpeed);
                 Math_ApproachS(&this->actor.world.rot.x, spD0, this->tentMaxAngle, this->tentSpeed);
-                func_8002D908(&this->actor);
+                Actor_UpdateVelocityXYZ(&this->actor);
             } else {
                 this->actor.world.pos.y += this->actor.velocity.y;
                 this->actor.velocity.y -= 1.0f;
             }
-            func_8002D7EC(&this->actor);
+            Actor_UpdatePos(&this->actor);
             temp = (this->actor.world.pos.y < -200.0f) ? 5 : 1;
             this->actor.world.pos.y -= 20.0f;
             Actor_UpdateBgCheckInfo(play, &this->actor, 50.0f, 20.0f, 100.0f, temp);
@@ -2346,7 +2346,7 @@ void BossMo_UpdateTent(Actor* thisx, PlayState* play) {
         }
     }
     Math_ApproachS(&this->actor.world.rot.y, this->actor.yawTowardsPlayer, 0xA, 0xC8);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Math_ApproachF(&this->actor.speedXZ, 0.0, 1.0f, 0.02f);
 
     if (BossMo_NearLand(&this->actor.world.pos, 40)) {

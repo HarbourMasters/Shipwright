@@ -625,9 +625,9 @@ void EnBili_Update(Actor* thisx, PlayState* play2) {
             }
         }
         if (this->actionFunc == EnBili_Recoil) {
-            func_8002D97C(&this->actor);
+            Actor_MoveXYZ(&this->actor);
         } else {
-            Actor_MoveForward(&this->actor);
+            Actor_MoveXZGravity(&this->actor);
         }
 
         Actor_UpdateBgCheckInfo(play, &this->actor, 5.0f, this->collider.dim.radius, this->collider.dim.height, 7);

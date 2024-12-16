@@ -463,7 +463,7 @@ void EnSb_Update(Actor* thisx, PlayState* play) {
     } else {
         Actor_SetFocus(&this->actor, 20.0f);
         Actor_SetScale(&this->actor, 0.006f);
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
         this->actionFunc(this, play);
         Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 20.0f, 20.0f, 5);
         EnSb_UpdateDamage(this, play);

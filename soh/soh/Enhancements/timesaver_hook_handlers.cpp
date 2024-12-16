@@ -39,6 +39,8 @@ extern int32_t D_8011D3AC;
 extern void BgSpot03Taki_HandleWaterfallState(BgSpot03Taki* bgSpot03Taki, PlayState* play);
 extern void BgSpot03Taki_ApplyOpeningAlpha(BgSpot03Taki* bgSpot03Taki, s32 bufferIndex);
 
+extern void EnGo2_CurledUp(EnGo2* enGo2, PlayState* play);
+
 extern void EnRu2_SetEncounterSwitchFlag(EnRu2* enRu2, PlayState* play);
 }
 
@@ -288,6 +290,12 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                         RateLimitedSuccessChime();
                         break;
                     }
+                    case ACTOR_EN_GO2: {
+                        EnGo2* biggoron = (EnGo2*)actor;
+                        biggoron->isAwake = true;
+                        *should = false;
+                        break;
+                    }
                     case ACTOR_BG_HIDAN_FWBIG:
                     case ACTOR_EN_EX_ITEM:
                     case ACTOR_EN_DNT_NOMAL:
@@ -349,6 +357,18 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                     Flags_SetSwitch(gPlayState, paramsHighByte & 0x3F);
                 }
                 Actor_Kill(&naviTalk->actor);
+                *should = false;
+            }
+            break;
+        }
+        case VB_GORON_LINK_BE_SCARED: {
+            if (ForcedDialogIsDisabled(FORCED_DIALOG_SKIP_NPC)) {
+                EnGo2* goronLink = va_arg(args, EnGo2*);
+                goronLink->trackingMode = NPC_TRACKING_NONE;
+                goronLink->unk_211 = false;
+                goronLink->isAwake = false;
+                goronLink->actionFunc = EnGo2_CurledUp;
+                Flags_SetInfTable(INFTABLE_STOPPED_GORON_LINKS_ROLLING);
                 *should = false;
             }
             break;
@@ -532,6 +552,12 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 *should = false;
                 Flags_SetEnv(gPlayState, 2);
                 Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
+            }
+            break;
+        }
+        case VB_PLAY_FIRE_ARROW_CS: {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), 0)) {
+                *should = false;
             }
             break;
         }

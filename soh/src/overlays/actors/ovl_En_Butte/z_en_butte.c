@@ -414,7 +414,7 @@ void EnButte_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
 
     if (this->actor.update != NULL) {
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
         Math_StepToF(&this->actor.world.pos.y, this->posYTarget, 0.6f);
         if (this->actor.xyzDistToPlayerSq < 5000.0f) {
             CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);

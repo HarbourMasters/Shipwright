@@ -79,7 +79,7 @@ void EnPubox_Update(Actor* thisx, PlayState* play) {
     }
     this->dyna.unk_154 = 0.0f;
     this->dyna.unk_150 = 0.0f;
-    Actor_MoveForward(thisx);
+    Actor_MoveXZGravity(thisx);
     Actor_UpdateBgCheckInfo(play, thisx, thisx->colChkInfo.cylHeight, thisx->colChkInfo.cylRadius,
                             thisx->colChkInfo.cylRadius, 0x1D);
     thisx->focus.pos = thisx->world.pos;
