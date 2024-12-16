@@ -345,7 +345,8 @@ OTRGlobals::OTRGlobals() {
     context->InitConsole();
 
     auto sohInputEditorWindow = std::make_shared<SohInputEditorWindow>(CVAR_WINDOW("ControllerConfiguration"), "Controller Configuration");
-    context->InitWindow({ sohInputEditorWindow });
+    auto sohFast3dWindow = std::make_shared<Fast::Fast3dWindow>(std::vector<std::shared_ptr<Ship::GuiWindow>>({sohInputEditorWindow}));
+    context->InitWindow(sohFast3dWindow);
 
     auto overlay = context->GetInstance()->GetWindow()->GetGui()->GetGameOverlay();
     overlay->LoadFont("Press Start 2P", 12.0f, "fonts/PressStart2P-Regular.ttf");
