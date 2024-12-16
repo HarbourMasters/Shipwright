@@ -5289,6 +5289,14 @@ typedef enum {
     RO_TOKENSANITY_ALL,
 } RandoOptionTokensanity;
 
+//Freestanding Hearts/Rupees settings (off, dungeons, overworld, all)
+typedef enum {
+    RO_FREESTANDING_OFF,
+    RO_FREESTANDING_DUNGEONS,
+    RO_FREESTANDING_OVERWORLD,
+    RO_FREESTANDING_ALL,
+} RandoOptionFreestanding;
+
 // Shuffle Pots settings (off, dungeons, overworld, all)
 typedef enum {
     RO_SHUFFLE_POTS_OFF,

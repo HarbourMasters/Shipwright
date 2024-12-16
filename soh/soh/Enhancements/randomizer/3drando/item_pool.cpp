@@ -629,7 +629,7 @@ static void PlaceFreestandingItems() {
   auto option = ctx->GetOption(RSK_SHUFFLE_FREESTANDING);
   for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, RCTYPE_FREESTANDING)) {
     RandomizerGet vanillaItem = Rando::StaticData::GetLocation(loc)->GetVanillaItem();
-    if (option.Is(RO_TOKENSANITY_OVERWORLD) || option.Is(RO_TOKENSANITY_ALL)) {
+    if (option.Is(RO_FREESTANDING_OVERWORLD) || option.Is(RO_FREESTANDING_ALL)) {
       AddItemToMainPool(vanillaItem);
     } else {
       ctx->PlaceItemInLocation(loc, vanillaItem, false, true);
@@ -639,7 +639,7 @@ static void PlaceFreestandingItems() {
   for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
     for (RandomizerCheck loc : ctx->GetLocations(dungeon->GetDungeonLocations(), RCTYPE_FREESTANDING)) {
       RandomizerGet vanillaItem = Rando::StaticData::GetLocation(loc)->GetVanillaItem();
-      if (option.Is(RO_TOKENSANITY_DUNGEONS) || option.Is(RO_TOKENSANITY_ALL)) {
+      if (option.Is(RO_FREESTANDING_DUNGEONS) || option.Is(RO_FREESTANDING_ALL)) {
         AddItemToMainPool(vanillaItem);
       } else {
         ctx->PlaceItemInLocation(loc, vanillaItem, false, true);
