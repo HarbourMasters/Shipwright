@@ -19,9 +19,9 @@
 #include "soh/resource/type/scenecommand/SetObjectList.h"
 #include <Fast3D/gfx_pc.h>
 #include <DisplayList.h>
+#include "resource/ResourceManager.h"
 
 s16 unloadScene = -1;
-std::shared_ptr<BS::thread_pool> helperThreads = std::make_shared<BS::thread_pool>(1);
 
 extern "C" PlayState* gPlayState;
 
@@ -125,8 +125,8 @@ extern "C" uint32_t ResourceMgr_IsGameMasterQuest() {
     return gPlayState != NULL ? IsSceneMasterQuest(gPlayState->sceneNum) : 0;
 }
 
-extern "C" void ResourceMgr_LoadDirectory(const char* resName) {
-    Ship::Context::GetInstance()->GetResourceManager()->LoadResources(resName);
+extern "C" void ResourceMgr_LoadDirectory(const char* filter) {
+    Ship::Context::GetInstance()->GetResourceManager()->LoadResources(filter);
 }
 
 extern "C" void ResourceMgr_DirtyDirectory(const char* resName) {
@@ -144,7 +144,7 @@ extern "C" void ResourceMgr_UnloadResource(const char* resName) {
 // OTRTODO: There is probably a more elegant way to go about this...
 // Kenix: This is definitely leaking memory when it's called.
 extern "C" char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize) {
-    auto lst = Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->ListFiles(searchMask);
+    auto lst = Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->ListFiles({searchMask}, {});
     char** result = (char**)malloc(lst->size() * sizeof(char*));
 
     for (size_t i = 0; i < lst->size(); i++) {
@@ -539,18 +539,7 @@ std::string GetScenePathMask(int16_t sceneNum) {
 
 std::array<std::unordered_set<std::string>, SCENE_TESTROOM + 1> sceneObjects;
 
-// Load scene and object assets for the given scene
-extern "C" void LoadSceneResourcesProcess(int16_t sceneNum) {
-
-    for (auto objectName : sceneObjects[sceneNum]) {
-        if (!sceneObjects[gPlayState->sceneNum].contains(objectName)) {
-            OTRGlobals::Instance->context->GetResourceManager()->LoadDirectoryAsync("alt/objects/" + objectName + "/*");
-        }
-    }
-    OTRGlobals::Instance->context->GetResourceManager()->LoadDirectoryAsync(GetScenePathMask(sceneNum));
-}
-
-// Iterate over scene object/actor commands if not already done so, and kick off thread task to load those and scene assets
+// Iterate over scene object/actor commands if not already done so, and load the scene and object assets
 extern "C" void ResourceMgr_LoadAllSceneResources(int16_t sceneNum, bool now) {
     auto play = gPlayState;
     if (sceneObjects[sceneNum].empty()) {
@@ -584,7 +573,12 @@ extern "C" void ResourceMgr_LoadAllSceneResources(int16_t sceneNum, bool now) {
             }
         }
     }
-    helperThreads->submit_task(std::bind(LoadSceneResourcesProcess, sceneNum));
+    for (auto objectName : sceneObjects[sceneNum]) {
+        if (!sceneObjects[gPlayState->sceneNum].contains(objectName)) {
+            OTRGlobals::Instance->context->GetResourceManager()->LoadResourcesAsync("alt/objects/" + objectName + "/*");
+        }
+    }
+    OTRGlobals::Instance->context->GetResourceManager()->LoadResourcesAsync(GetScenePathMask(sceneNum));
 }
 
 extern "C" void ResourceMgr_RegisterUnloadSceneAssets(s16 prevScene) {
@@ -596,18 +590,18 @@ void UnloadSceneAssetsProcess() {
     for (auto objectName : sceneObjects[unloadScene]) {
         if (!sceneObjects[gPlayState->sceneNum].contains(objectName)) {
             std::string objectPath = fmt::format("alt/objects/{}/*", objectName);
-            OTRGlobals::Instance->context->GetResourceManager()->UnloadDirectory(objectPath);
+            OTRGlobals::Instance->context->GetResourceManager()->UnloadResources(objectPath);
         }
     }
-    OTRGlobals::Instance->context->GetResourceManager()->UnloadDirectory(GetScenePathMask(unloadScene));
-    OTRGlobals::Instance->context->GetResourceManager()->UnloadDirectory("alt/textures/vr_holy*");
+    OTRGlobals::Instance->context->GetResourceManager()->UnloadResources(GetScenePathMask(unloadScene));
+    OTRGlobals::Instance->context->GetResourceManager()->UnloadResources("alt/textures/vr_holy*");
     unloadScene = -1;
 }
 
 // Start unload loops on a thread for performance purposes
 extern "C" void ResourceMgr_UnloadSceneAssets() {
     if (unloadScene != -1) {
-        helperThreads->submit_task(UnloadSceneAssetsProcess);
+        UnloadSceneAssetsProcess();
     }
 }
 
@@ -616,29 +610,21 @@ extern "C" void ResourceMgr_UnloadSceneAssets() {
 void ResourceMgr_LoadDelayedPersistentAltAssets() {
     // Load sound effects first for title screen "Press Start" and pause sounds. These are loaded
     // before the alt assets to prevent load lock for the audio itself
-    Ship::Context::GetInstance()->GetResourceManager()->LoadResourceAsync("audio/fonts/00_Sound_Effects_1");
-    Ship::Context::GetInstance()->GetResourceManager()->LoadResourceAsync("audio/fonts/00_Sound_Effects_2");
-    ResourceLoadDirectoryAsync("audio/*");
-    ResourceLoadDirectoryAsync("alt/textures/parameter*");
-    ResourceLoadDirectoryAsync("alt/textures/icon*");
-    ResourceLoadDirectoryAsync("alt/textures/item*");
-    ResourceLoadDirectoryAsync("alt/textures/font*");
-    ResourceLoadDirectoryAsync("alt/objects/gameplay_*");
-    ResourceLoadDirectoryAsync("alt/overlays/*");
-    ResourceLoadDirectoryAsync("alt/code/*");
-    static std::vector<std::string> textureIncludes = { "alt/textures/*" };
-    static std::vector<std::string> textureExcludes = { "alt/textures/vr_holy*", "alt/textures/vr_cloud*", "alt/textures/vr_fine*" };
-    Ship::Context::GetInstance()->GetResourceManager()->LoadDirectoryAsyncWithExclude(textureIncludes, textureExcludes);
+    static std::list<std::string> textureIncludes = {"audio/fonts/00_Sound_Effects_1", "audio/fonts/00_Sound_Effects_2",
+        "audio/*", "alt/textures/parameter*", "alt/textures/icon*", "alt/textures/item*", "alt/textures/font*",
+        "alt/objects/gameplay_*", "alt/overlays/*", "alt/code/*", "alt/textures/*" };
+    static std::list<std::string> textureExcludes = { "alt/textures/vr_holy*", "alt/textures/vr_cloud*", "alt/textures/vr_fine*" };
+    Ship::Context::GetInstance()->GetResourceManager()->LoadResourcesAsync({textureIncludes, textureExcludes, 0, nullptr});
 }
 
 int lastSkyboxLoad = -1;
 // Load regular and cloudy skyboxes for specified TimeOfDay
 extern "C" void ResourceMgr_LoadSkyBox(TimeOfDay timeIndex, bool fileSelect) {
     std::string mask = fmt::format("alt/textures/vr_fine{}*", static_cast<uint8_t>(timeIndex));
-    Ship::Context::GetInstance()->GetResourceManager()->LoadDirectoryAsync(mask);
+    Ship::Context::GetInstance()->GetResourceManager()->LoadResourcesAsync(mask);
     if (!fileSelect) {
         std::string mask = fmt::format("alt/textures/vr_cloud{}*", static_cast<uint8_t>(timeIndex));
-        Ship::Context::GetInstance()->GetResourceManager()->LoadDirectoryAsync(mask);
+        Ship::Context::GetInstance()->GetResourceManager()->LoadResourcesAsync(mask);
     }
     lastSkyboxLoad = timeIndex;
 }
@@ -646,9 +632,10 @@ extern "C" void ResourceMgr_LoadSkyBox(TimeOfDay timeIndex, bool fileSelect) {
 int lastSkyboxUnload = -1;
 // Unload skyboxes for specified TimeOfDay
 extern "C" void ResourceMgr_UnloadSkyBox(TimeOfDay timeIndex) {
-    std::string mask = fmt::format("alt/textures/vr_*{}*", static_cast<uint8_t>(timeIndex));
+    std::string mask = fmt::format("alt/textures/vr_cloud{}*", static_cast<uint8_t>(timeIndex));
     ResourceUnloadDirectory(mask.c_str());
-    lastSkyboxUnload = timeIndex;
+    mask = fmt::format("alt/textures/vr_fine{}*", static_cast<uint8_t>(timeIndex));
+    ResourceUnloadDirectory(mask.c_str());
 }
 
 // Setup initial preload based on Fast File Select and Save Index options
@@ -667,10 +654,9 @@ extern "C" void ResourceMgr_LoadPersistentAltAssets() {
         Ship::Context::GetInstance()->GetResourceManager()->LoadResourceAsync("audio/fonts/06_Title_Theme");
     }
     else if (skipTitle && fastFile == 4) {
-        ResourceLoadDirectoryAsync("alt/overlays/ovl_file_choose/*");
-        ResourceLoadDirectoryAsync("alt/textures/title_static/*");
-        ResourceLoadDirectoryAsync("alt/objects/gameplay_keep/*");
-        ResourceLoadDirectoryAsync("alt/textures/vr_fine0*");
+        Ship::Context::GetInstance()->GetResourceManager()->LoadResourcesAsync({
+            {"alt/overlays/ovl_file_choose/*", "alt/textures/title_static/*", "alt/objects/gameplay_keep/*", "alt/textures/vr_fine3*", "alt/textures/vr_fine0*"},
+            {}, 0, nullptr});
         // File Select music
         Ship::Context::GetInstance()->GetResourceManager()->LoadResourceAsync("audio/sequences/087_File_Select");
         Ship::Context::GetInstance()->GetResourceManager()->LoadResourceAsync("audio/fonts/09_Fairy_Fountain");
@@ -681,83 +667,83 @@ extern "C" void ResourceMgr_LoadPersistentAltAssets() {
         ResourceLoadDirectoryAsync("alt/textures/map*");
         ResourceLoadDirectoryAsync("alt/textures/parameter_static/*");
     }
-    helperThreads->submit_task(ResourceMgr_LoadDelayedPersistentAltAssets);
+    ResourceMgr_LoadDelayedPersistentAltAssets();
 }
 
 // Just to make sure the cloudy skyboxes are loaded across transitions for things like Song of Storms
 extern "C" void ResourceMgr_SceneInitSkybox() {
     if (gSaveContext.dayTime > SUNRISE_BEGINS && gSaveContext.dayTime < DAY_BEGINS) {
-        helperThreads->submit_task(std::bind(ResourceMgr_LoadSkyBox, TOD_Sunrise, false));
-        helperThreads->submit_task(std::bind(ResourceMgr_LoadSkyBox, TOD_Night, false));
-        helperThreads->submit_task(std::bind(ResourceMgr_LoadSkyBox, TOD_Day, false));
+        ResourceMgr_LoadSkyBox(TOD_Sunrise, false);
+        ResourceMgr_LoadSkyBox(TOD_Night, false);
+        ResourceMgr_LoadSkyBox(TOD_Day, false);
     }
     else if (gSaveContext.dayTime > DAY_BEGINS && gSaveContext.dayTime < SUNSET_BEGINS) {
-        helperThreads->submit_task(std::bind(ResourceMgr_LoadSkyBox, TOD_Day, false));
+        ResourceMgr_LoadSkyBox(TOD_Day, false);
     }
     else if (gSaveContext.dayTime > SUNSET_BEGINS && gSaveContext.dayTime < NIGHT_BEGINS) {
-        helperThreads->submit_task(std::bind(ResourceMgr_LoadSkyBox, TOD_Day, false));
-        helperThreads->submit_task(std::bind(ResourceMgr_LoadSkyBox, TOD_Sunset, false));
-        helperThreads->submit_task(std::bind(ResourceMgr_LoadSkyBox, TOD_Night, false));
+        ResourceMgr_LoadSkyBox(TOD_Day, false);
+        ResourceMgr_LoadSkyBox(TOD_Sunset, false);
+        ResourceMgr_LoadSkyBox(TOD_Night, false);
     }
     else if (gSaveContext.dayTime > NIGHT_BEGINS || gSaveContext.dayTime < SUNRISE_BEGINS) {
-        helperThreads->submit_task(std::bind(ResourceMgr_LoadSkyBox, TOD_Night, false));
+        ResourceMgr_LoadSkyBox(TOD_Night, false);
     }
 }
 
 // These are absolutely arbitrary numbers, and are my best guess for lead time needed to load skyboxes for the given time of day
-uint16_t skyboxLoadTimes[2][4] = { { SUNRISE_BEGINS - 2000, DAY_BEGINS - 2000, SUNSET_BEGINS - 2000, NIGHT_BEGINS - 2000 }, { 0, 18000, 34000, 51000 } };
+uint16_t skyboxLoadTimes[2][4] = { { SUNRISE_BEGINS - 3000, DAY_BEGINS - 3000, SUNSET_BEGINS - 3000, NIGHT_BEGINS - 3000 }, { 63000, 16000, 32000, 49000 } };
 // These are what were needed to be able to unload the skyboxes without hiccups, since they're held onto for a bit after transitions are done
-uint16_t skyboxUnloadTimes[2][4] = { { SUNRISE_BEGINS + 8000, DAY_BEGINS + 8000, SUNSET_BEGINS + 8000, NIGHT_BEGINS + 8000 }, { 14000, 30000, 46000, 0 } };
+uint16_t skyboxUnloadTimes[2][4] = { { DAY_BEGINS + 4000, SUNSET_BEGINS + 4000, NIGHT_BEGINS + 4000, SUNRISE_BEGINS + 4000 }, { 32000, 49000, 63000, 16000 } };
 
 // Used to preload and unload skyboxes for time-based skybox changes
 extern "C" void ResourceMgr_CheckLoadSkybox(bool fileSelect) {
     if (gSaveContext.skyboxTime > skyboxLoadTimes[fileSelect][TOD_Sunrise] && gSaveContext.skyboxTime < (skyboxLoadTimes[fileSelect][TOD_Sunrise] + 800)) {
         if (lastSkyboxLoad != 0) {
             lastSkyboxLoad = 0;
-            helperThreads->submit_task(std::bind(ResourceMgr_LoadSkyBox, TOD_Sunrise, fileSelect));
+            ResourceMgr_LoadSkyBox(TOD_Sunrise, fileSelect);
         }
     }
     else if (gSaveContext.skyboxTime > skyboxLoadTimes[fileSelect][TOD_Day] && gSaveContext.skyboxTime < (skyboxLoadTimes[fileSelect][TOD_Day] + 800)) {
         if (lastSkyboxLoad != 1) {
             lastSkyboxLoad = 1;
-            helperThreads->submit_task(std::bind(ResourceMgr_LoadSkyBox, TOD_Day, fileSelect));
+            ResourceMgr_LoadSkyBox(TOD_Day, fileSelect);
         }
     }
     else if (gSaveContext.skyboxTime > skyboxLoadTimes[fileSelect][TOD_Sunset] && gSaveContext.skyboxTime < (skyboxLoadTimes[fileSelect][TOD_Sunset] + 800)) {
         if (lastSkyboxLoad != 2) {
             lastSkyboxLoad = 2;
-            helperThreads->submit_task(std::bind(ResourceMgr_LoadSkyBox, TOD_Sunset, fileSelect));
+            ResourceMgr_LoadSkyBox(TOD_Sunset, fileSelect);
         }
     }
     else if (gSaveContext.skyboxTime > skyboxLoadTimes[fileSelect][TOD_Night] && gSaveContext.skyboxTime < (skyboxLoadTimes[fileSelect][TOD_Night] + 800)) {
         if (lastSkyboxLoad != 3) {
             lastSkyboxLoad = 3;
-            helperThreads->submit_task(std::bind(ResourceMgr_LoadSkyBox, TOD_Night, fileSelect));
+            ResourceMgr_LoadSkyBox(TOD_Night, fileSelect);
         }
     }
 
     if (gSaveContext.skyboxTime > skyboxUnloadTimes[fileSelect][TOD_Sunrise] && gSaveContext.skyboxTime < (skyboxUnloadTimes[fileSelect][TOD_Sunrise] + 800)) {
         if (lastSkyboxUnload != 0) {
-            lastSkyboxUnload = 3;
-            helperThreads->submit_task(std::bind(ResourceMgr_UnloadSkyBox, TOD_Night));
+            lastSkyboxUnload = 0;
+            ResourceMgr_UnloadSkyBox(TOD_Sunrise);
         }
     }
     else if (gSaveContext.skyboxTime > skyboxUnloadTimes[fileSelect][TOD_Day] && gSaveContext.skyboxTime < (skyboxUnloadTimes[fileSelect][TOD_Day] + 800)) {
         if (lastSkyboxUnload != 1) {
-            lastSkyboxUnload = 0;
-            helperThreads->submit_task(std::bind(ResourceMgr_UnloadSkyBox, TOD_Sunrise));
+            lastSkyboxUnload = 1;
+            ResourceMgr_UnloadSkyBox(TOD_Day);
         }
     }
     else if (gSaveContext.skyboxTime > skyboxUnloadTimes[fileSelect][TOD_Sunset] && gSaveContext.skyboxTime < (skyboxUnloadTimes[fileSelect][TOD_Sunset] + 800)) {
         if (lastSkyboxUnload != 2) {
-            lastSkyboxUnload = 1;
-            helperThreads->submit_task(std::bind(ResourceMgr_UnloadSkyBox, TOD_Day));
+            lastSkyboxUnload = 2;
+            ResourceMgr_UnloadSkyBox(TOD_Sunset);
         }
     }
     else if (gSaveContext.skyboxTime > skyboxUnloadTimes[fileSelect][TOD_Night] && gSaveContext.skyboxTime < (skyboxUnloadTimes[fileSelect][TOD_Night] + 800)) {
         if (lastSkyboxUnload != 3) {
-            lastSkyboxUnload = 2;
-            helperThreads->submit_task(std::bind(ResourceMgr_UnloadSkyBox, TOD_Sunset));
+            lastSkyboxUnload = 3;
+            ResourceMgr_UnloadSkyBox(TOD_Night);
         }
     }
 }
