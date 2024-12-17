@@ -494,19 +494,21 @@ void RegionTable_Init_FireTemple() {
                   EventAccess(&logic->FairyPot, {[]{return logic->CanUse(RG_HOOKSHOT);}}),
   }, {
                   //Locations
-                  LOCATION(RC_FIRE_TEMPLE_MQ_BOSS_KEY_CHEST,   logic->CanUse(RG_HOOKSHOT)),
-                  LOCATION(RC_FIRE_TEMPLE_MQ_LAVA_TORCH_POT_1, logic->HookshotOrBoomerang()),
-                  LOCATION(RC_FIRE_TEMPLE_MQ_LAVA_TORCH_POT_2, logic->HookshotOrBoomerang()),
-                  LOCATION(RC_FIRE_TEMPLE_MQ_FIRE_PILLAR_LEFT_HEART,           logic->CanUse(RG_GORON_TUNIC) && logic->SmallKeys(RR_FIRE_TEMPLE, 1)),
-                  LOCATION(RC_FIRE_TEMPLE_MQ_FIRE_PILLAR_RIGHT_HEART,          logic->CanUse(RG_GORON_TUNIC) && logic->SmallKeys(RR_FIRE_TEMPLE, 1)),
-                  LOCATION(RC_FIRE_TEMPLE_MQ_FIRE_PILLAR_LOWER_HEART,          logic->CanUse(RG_GORON_TUNIC) && logic->SmallKeys(RR_FIRE_TEMPLE, 1)),
+                  LOCATION(RC_FIRE_TEMPLE_MQ_BOSS_KEY_CHEST,          logic->CanUse(RG_HOOKSHOT)),
+                  LOCATION(RC_FIRE_TEMPLE_MQ_LAVA_TORCH_POT_1,        logic->HookshotOrBoomerang()),
+                  LOCATION(RC_FIRE_TEMPLE_MQ_LAVA_TORCH_POT_2,        logic->HookshotOrBoomerang()),
   }, {
                   //Exits
                   Entrance(RR_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM, {[]{return true;}}),
 });
 
 //This room assumes Goron Tunic until looser tunic requirements tricks are made
-  areaTable[RR_FIRE_TEMPLE_MQ_ELEVATOR_ROOM] = Region("Fire Temple MQ Elevator Room", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_FIRE_TEMPLE_MQ_ELEVATOR_ROOM] = Region("Fire Temple MQ Elevator Room", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
+                  //Locations
+                  LOCATION(RC_FIRE_TEMPLE_MQ_FIRE_PILLAR_LEFT_HEART,  true),
+                  LOCATION(RC_FIRE_TEMPLE_MQ_FIRE_PILLAR_RIGHT_HEART, true),
+                  LOCATION(RC_FIRE_TEMPLE_MQ_FIRE_PILLAR_LOWER_HEART, true),
+    }, {
                   //Exits
                   Entrance(RR_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM,     {[]{return true;}}),
                   Entrance(RR_FIRE_TEMPLE_MQ_BIG_TORCH_ROOM,    {[]{return true;}}),
