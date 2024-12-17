@@ -252,7 +252,7 @@ void EnFu_Update(Actor* thisx, PlayState* play) {
 
     Collider_UpdateCylinder(&this->actor, &this->collider);
     CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);
     if ((!(this->behaviorFlags & FU_WAIT)) && (SkelAnime_Update(&this->skelanime) != 0)) {
         Animation_Change(&this->skelanime, this->skelanime.animation, 1.0f, 0.0f,

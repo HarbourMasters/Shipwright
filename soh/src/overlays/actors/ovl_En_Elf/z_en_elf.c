@@ -507,14 +507,14 @@ void func_80A02C98(EnElf* this, Vec3f* targetPos, f32 arg2) {
     func_80A02BD8(this, targetPos, arg2);
     Math_StepToF(&this->actor.velocity.x, xVelTarget, 1.5f);
     Math_StepToF(&this->actor.velocity.z, zVelTarget, 1.5f);
-    func_8002D7EC(&this->actor);
+    Actor_UpdatePos(&this->actor);
 }
 
 void func_80A02E30(EnElf* this, Vec3f* targetPos) {
     func_80A02BD8(this, targetPos, 0.2f);
     this->actor.velocity.x = (targetPos->x + this->unk_28C.x) - this->actor.world.pos.x;
     this->actor.velocity.z = (targetPos->z + this->unk_28C.z) - this->actor.world.pos.z;
-    func_8002D7EC(&this->actor);
+    Actor_UpdatePos(&this->actor);
     this->actor.world.pos.x = targetPos->x + this->unk_28C.x;
     this->actor.world.pos.z = targetPos->z + this->unk_28C.z;
 }
@@ -522,7 +522,7 @@ void func_80A02E30(EnElf* this, Vec3f* targetPos) {
 void func_80A02EC0(EnElf* this, Vec3f* targetPos) {
     func_80A02BD8(this, targetPos, 0.2f);
     this->actor.velocity.x = this->actor.velocity.z = 0.0f;
-    func_8002D7EC(&this->actor);
+    Actor_UpdatePos(&this->actor);
     this->actor.world.pos.x = targetPos->x + this->unk_28C.x;
     this->actor.world.pos.z = targetPos->z + this->unk_28C.z;
 }
@@ -569,7 +569,7 @@ void func_80A03018(EnElf* this, PlayState* play) {
 
     Math_SmoothStepToS(&this->unk_2BC, targetYaw, 10, this->unk_2AC, 0x20);
     this->actor.world.rot.y = this->unk_2BC;
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 }
 
 void func_80A03148(EnElf* this, Vec3f* arg1, f32 arg2, f32 arg3, f32 arg4) {
@@ -597,7 +597,7 @@ void func_80A03148(EnElf* this, Vec3f* arg1, f32 arg2, f32 arg3, f32 arg4) {
 
     Math_StepToF(&this->actor.velocity.x, xVelTarget, 5.0f);
     Math_StepToF(&this->actor.velocity.z, zVelTarget, 5.0f);
-    func_8002D7EC(&this->actor);
+    Actor_UpdatePos(&this->actor);
 }
 
 void func_80A0329C(EnElf* this, PlayState* play) {

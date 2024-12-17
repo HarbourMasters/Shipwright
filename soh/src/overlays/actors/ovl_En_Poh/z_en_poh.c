@@ -734,7 +734,7 @@ void EnPoh_Death(EnPoh* this, PlayState* play) {
         Actor_Kill(&this->actor);
         return;
     }
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 10.0f, 10.0f, 10.0f, 4);
 }
 
@@ -1003,7 +1003,7 @@ void EnPoh_UpdateLiving(Actor* thisx, PlayState* play) {
     func_80AE032C(this, play);
     EnPoh_UpdateVisibility(this);
     this->actionFunc(this, play);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     if (this->actionFunc == EnPoh_Attack && this->unk_198 < 10) {
         this->actor.flags |= ACTOR_FLAG_PLAY_HIT_SFX;
         CollisionCheck_SetAT(play, &play->colChkCtx, &this->colliderSph.base);

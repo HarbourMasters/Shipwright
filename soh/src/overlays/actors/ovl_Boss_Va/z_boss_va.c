@@ -1308,7 +1308,7 @@ void BossVa_BodyPhase3(BossVa* this, PlayState* play) {
         this->actor.speedXZ = 0.0f;
     }
 
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     if (SkelAnime_Update(&this->skelAnime) && (sFightPhase >= PHASE_4)) {
         BossVa_SetupBodyPhase4(this, play);
     }
@@ -1508,7 +1508,7 @@ void BossVa_BodyPhase4(BossVa* this, PlayState* play) {
         }
     }
 
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     this->actor.focus.pos = this->actor.world.pos;
     this->actor.focus.pos.y += 60.0f;
     if (((play->gameplayFrames % 2) == 0) && (this->timer == 0)) {

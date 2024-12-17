@@ -396,7 +396,7 @@ void BgHakaZou_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
 
     if (this->dyna.actor.params == 3) {
-        Actor_MoveForward(&this->dyna.actor);
+        Actor_MoveXZGravity(&this->dyna.actor);
     }
 }
 

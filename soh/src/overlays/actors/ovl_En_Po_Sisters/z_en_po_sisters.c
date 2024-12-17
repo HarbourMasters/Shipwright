@@ -1198,7 +1198,7 @@ void EnPoSisters_Update(Actor* thisx, PlayState* play) {
         if (this->unk_199 & 8) {
             func_80ADA35C(this, play);
         }
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
 
         if (this->unk_199 & 0x10) {
             Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 20.0f, 0.0f, 5);

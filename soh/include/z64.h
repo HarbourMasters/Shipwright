@@ -46,6 +46,8 @@ namespace LUS
 {
     class IResource;
     class Scene;
+};
+namespace Fast {
     class DisplayList;
 };
 #include <memory>

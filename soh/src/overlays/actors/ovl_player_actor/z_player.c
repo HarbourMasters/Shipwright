@@ -5145,9 +5145,9 @@ s32 Player_HandleExitsAndVoids(PlayState* play, Player* this, CollisionPoly* pol
 
                     Scene_SetTransitionForNextEntrance(play);
                 } else {
-                    // In Entrance rando, if our respawnFlag is set for a grotto return, we don't want the void out to happen
-                    if (SurfaceType_GetSlope(&play->colCtx, poly, bgId) == 2 &&
-                        (!IS_RANDO || (Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES) && gSaveContext.respawnFlag != 2))) {
+                    if (GameInteractor_Should(VB_SET_VOIDOUT_FROM_SURFACE,
+                                              SurfaceType_GetSlope(&play->colCtx, poly, bgId) == 2,
+                                              play->setupExitList[exitIndex - 1])) {
                         gSaveContext.respawn[RESPAWN_MODE_DOWN].entranceIndex = play->nextEntranceIndex;
                         Play_TriggerVoidOut(play);
                         gSaveContext.respawnFlag = -2;
@@ -10433,7 +10433,7 @@ void Player_Action_80846120(Player* this, PlayState* play) {
         this->heldActor = &heavyBlock->dyna.actor;
         this->actor.child = &heavyBlock->dyna.actor;
         heavyBlock->dyna.actor.parent = &this->actor;
-        func_8002DBD0(&heavyBlock->dyna.actor, &heavyBlock->unk_164, &this->leftHandPos);
+        Actor_WorldToActorCoords(&heavyBlock->dyna.actor, &heavyBlock->unk_164, &this->leftHandPos);
         return;
     }
 
@@ -11995,7 +11995,7 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
     if (this->stateFlags2 & PLAYER_STATE2_PAUSE_MOST_UPDATING) {
         if (!(this->actor.bgCheckFlags & 1)) {
             Player_ZeroSpeedXZ(this);
-            Actor_MoveForward(&this->actor);
+            Actor_MoveXZGravity(&this->actor);
         }
 
         Player_ProcessSceneCollision(play, this);
@@ -12088,7 +12088,7 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
                 this->actor.world.rot.y = this->yaw;
             }
 
-            func_8002D868(&this->actor);
+            Actor_UpdateVelocityXZGravity(&this->actor);
 
             if ((this->pushedSpeed != 0.0f) && !Player_InCsMode(play) &&
                 !(this->stateFlags1 & (PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE | PLAYER_STATE1_CLIMBING_LADDER)) &&
@@ -12097,7 +12097,7 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
                 this->actor.velocity.z += this->pushedSpeed * Math_CosS(this->pushedYaw);
             }
 
-            func_8002D7EC(&this->actor);
+            Actor_UpdatePos(&this->actor);
             Player_ProcessSceneCollision(play, this);
         } else {
             sFloorType = 0;

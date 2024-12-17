@@ -159,7 +159,7 @@ void EnNutsball_Update(Actor* thisx, PlayState* play) {
     if (!(player->stateFlags1 & (PLAYER_STATE1_TALKING | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE)) || (this->actionFunc == func_80ABBB34)) {
         this->actionFunc(this, play);
 
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
         Actor_UpdateBgCheckInfo(play, &this->actor, 10, sCylinderInit.dim.radius, sCylinderInit.dim.height, 5);
         Collider_UpdateCylinder(&this->actor, &this->collider);
 

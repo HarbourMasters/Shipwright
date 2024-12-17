@@ -11,7 +11,7 @@
 #include <textures/parameter_static/parameter_static.h>
 #include "textures/message_static/message_static.h"
 #include "soh/frame_interpolation.h"
-#include <GameVersions.h>
+#include <soh/GameVersions.h>
 #include "objects/object_mag/object_mag.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "soh_assets.h"

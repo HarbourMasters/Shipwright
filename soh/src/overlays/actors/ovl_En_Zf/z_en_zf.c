@@ -2045,7 +2045,7 @@ void EnZf_Update(Actor* thisx, PlayState* play) {
         }
 
         if (!this->unk_3F8) {
-            Actor_MoveForward(&this->actor);
+            Actor_MoveXZGravity(&this->actor);
         }
 
         Actor_UpdateBgCheckInfo(play, &this->actor, 25.0f, 30.0f, 60.0f, 0x1D);

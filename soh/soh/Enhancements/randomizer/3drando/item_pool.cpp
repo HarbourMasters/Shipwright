@@ -817,6 +817,43 @@ void GenerateItemPool() {
     PlaceVanillaCowMilk();
   }
 
+  // Shuffle Pots
+  if (ctx->GetOption(RSK_SHUFFLE_POTS).IsNot(RO_SHUFFLE_POTS_OFF)) {
+    bool overworldPotsActive = ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_OVERWORLD) ||
+                               ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_ALL);
+    bool dungeonPotsActive = ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_DUNGEONS) ||
+                             ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_ALL);
+    
+    for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, RCTYPE_POT)) {
+      bool overworldPot = Rando::StaticData::GetLocation(loc)->IsOverworld();
+      bool dungeonPot = !overworldPot;
+
+      // If pot is in the overworld and shuffled, add its item to the pool
+      if (overworldPotsActive && overworldPot) {
+        AddItemToMainPool(Rando::StaticData::GetLocation(loc)->GetVanillaItem());
+      } else if (dungeonPotsActive && dungeonPot) {
+        // If pot is the same in MQ and vanilla, add.
+        RandomizerCheckQuest currentQuest = Rando::StaticData::GetLocation(loc)->GetQuest();
+        if (currentQuest == RCQUEST_BOTH) {
+          AddItemToMainPool(Rando::StaticData::GetLocation(loc)->GetVanillaItem());
+        } else {
+          // Check if current pot's dungeon is vanilla or MQ, and only add if quest corresponds to it.
+          SceneID potScene = Rando::StaticData::GetLocation(loc)->GetScene();
+
+          for (uint8_t i = SCENE_DEKU_TREE; i <= SCENE_GERUDO_TRAINING_GROUND; i++) {
+            if (i == potScene) {
+              bool isMQ = ctx->GetDungeon(SCENE_DEKU_TREE)->IsMQ();
+
+              if ((isMQ && currentQuest == RCQUEST_MQ) || (!isMQ && currentQuest == RCQUEST_VANILLA)) {
+                AddItemToMainPool(Rando::StaticData::GetLocation(loc)->GetVanillaItem());
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
   auto fsMode = ctx->GetOption(RSK_FISHSANITY);
   if (fsMode.IsNot(RO_FISHSANITY_OFF)) {
     if (fsMode.Is(RO_FISHSANITY_POND) || fsMode.Is(RO_FISHSANITY_BOTH)) {
@@ -1026,13 +1063,13 @@ void GenerateItemPool() {
   }
 
   //Gerudo Fortress
-  if (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_OPEN)) {
+  if (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE)) {
     ctx->PlaceItemInLocation(RC_GF_NORTH_F1_CARPENTER, RG_RECOVERY_HEART, false, true);
     ctx->PlaceItemInLocation(RC_GF_NORTH_F2_CARPENTER, RG_RECOVERY_HEART, false, true);
     ctx->PlaceItemInLocation(RC_GF_SOUTH_F1_CARPENTER, RG_RECOVERY_HEART, false, true);
     ctx->PlaceItemInLocation(RC_GF_SOUTH_F2_CARPENTER, RG_RECOVERY_HEART, false, true);
   } else if (ctx->GetOption(RSK_GERUDO_KEYS).IsNot(RO_GERUDO_KEYS_VANILLA)) {
-    if (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_FAST)) {
+    if (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST)) {
       AddItemToMainPool(RG_GERUDO_FORTRESS_SMALL_KEY);
       ctx->PlaceItemInLocation(RC_GF_NORTH_F2_CARPENTER, RG_RECOVERY_HEART, false, true);
       ctx->PlaceItemInLocation(RC_GF_SOUTH_F1_CARPENTER, RG_RECOVERY_HEART, false, true);
@@ -1050,14 +1087,14 @@ void GenerateItemPool() {
       }
     }
     if (ctx->GetOption(RSK_ITEM_POOL).Is(RO_ITEM_POOL_PLENTIFUL)) {
-      if (ctx->GetOption(RSK_KEYRINGS_GERUDO_FORTRESS) && ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_NORMAL)) {
+      if (ctx->GetOption(RSK_KEYRINGS_GERUDO_FORTRESS) && ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL)) {
         AddItemToPool(PendingJunkPool, RG_GERUDO_FORTRESS_KEY_RING);
       } else {
         AddItemToPool(PendingJunkPool, RG_GERUDO_FORTRESS_SMALL_KEY);
       }
     }
   } else {
-    if (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_FAST)) {
+    if (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST)) {
       ctx->PlaceItemInLocation(RC_GF_NORTH_F1_CARPENTER, RG_GERUDO_FORTRESS_SMALL_KEY, false, true);
       ctx->PlaceItemInLocation(RC_GF_NORTH_F2_CARPENTER, RG_RECOVERY_HEART, false, true);
       ctx->PlaceItemInLocation(RC_GF_SOUTH_F1_CARPENTER, RG_RECOVERY_HEART, false, true);
@@ -1071,7 +1108,7 @@ void GenerateItemPool() {
   }
 
   //Gerudo Membership Card
-  if (ctx->GetOption(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD) && ctx->GetOption(RSK_GERUDO_FORTRESS).IsNot(RO_GF_OPEN)) {
+  if (ctx->GetOption(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD) && ctx->GetOption(RSK_GERUDO_FORTRESS).IsNot(RO_GF_CARPENTERS_FREE)) {
     AddItemToMainPool(RG_GERUDO_MEMBERSHIP_CARD);
     ctx->possibleIceTrapModels.push_back(RG_GERUDO_MEMBERSHIP_CARD);
   } else if (ctx->GetOption(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD)) {

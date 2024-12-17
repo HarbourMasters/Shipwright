@@ -46,6 +46,7 @@ class StaticData {
       static std::vector<RandomizerCheck> GetStaticHintLocations();
       static std::vector<RandomizerCheck> GetPondFishLocations();
       static std::vector<RandomizerCheck> GetOverworldFishLocations();
+      static std::vector<RandomizerCheck> GetOverworldPotLocations();
       static std::array<std::pair<RandomizerCheck, RandomizerCheck>, 17> randomizerFishingPondFish;
       static std::unordered_map<int8_t, RandomizerCheck> randomizerGrottoFishMap;
       static std::vector<RandomizerHint> oldVerHintOrder;
@@ -61,6 +62,7 @@ class StaticData {
       static std::unordered_map<std::string, uint32_t> areaNameToEnum;
       static std::unordered_map<uint32_t, RandomizerHintTextKey> trialData;
       static std::unordered_map<std::string, uint32_t> trialNameToEnum;
+      static std::unordered_map<std::string, RandomizerSettingKey> optionNameToEnum;
       static std::unordered_map<RandomizerHint, StaticHintInfo> staticHintInfoMap;
       static std::unordered_map<u32, RandomizerHint> stoneParamsToHint;
       static std::unordered_map<u32, RandomizerHint> grottoChestParamsToHint;

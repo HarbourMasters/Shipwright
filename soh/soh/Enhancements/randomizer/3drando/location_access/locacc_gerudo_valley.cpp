@@ -16,7 +16,7 @@ void RegionTable_Init_GerudoValley() {
                   Entrance(RR_GV_UPPER_STREAM,   {[]{return true;}}),
                   Entrance(RR_GV_CRATE_LEDGE,    {[]{return logic->IsChild || logic->CanUse(RG_LONGSHOT);}}),
                   Entrance(RR_GV_GROTTO_LEDGE,   {[]{return true;}}),
-                  Entrance(RR_GV_FORTRESS_SIDE,  {[]{return (logic->IsAdult && (logic->CanUse(RG_EPONA) || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_OPEN) || logic->CarpenterRescue)) || (logic->IsChild && logic->CanUse(RG_HOOKSHOT));}}),
+                  Entrance(RR_GV_FORTRESS_SIDE,  {[]{return (logic->IsAdult && (logic->CanUse(RG_EPONA) || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->CarpenterRescue)) || (logic->IsChild && logic->CanUse(RG_HOOKSHOT));}}),
   });
 
   areaTable[RR_GV_UPPER_STREAM] = Region("GV Upper Stream", "Gerudo Valley", {RA_GERUDO_VALLEY}, DAY_NIGHT_CYCLE, {
@@ -64,7 +64,7 @@ void RegionTable_Init_GerudoValley() {
                   //Exits
                   Entrance(RR_GERUDO_FORTRESS,   {[]{return true;}}),
                   Entrance(RR_GV_UPPER_STREAM,   {[]{return true;}}),
-                  Entrance(RR_GERUDO_VALLEY,     {[]{return logic->IsChild || logic->CanUse(RG_EPONA) || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_OPEN) || logic->CarpenterRescue;}}),
+                  Entrance(RR_GERUDO_VALLEY,     {[]{return logic->IsChild || logic->CanUse(RG_EPONA) || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->CarpenterRescue;}}),
                   Entrance(RR_GV_CARPENTER_TENT, {[]{return logic->IsAdult;}}),
                   Entrance(RR_GV_STORMS_GROTTO,  {[]{return logic->IsAdult && logic->CanOpenStormsGrotto();}}),
                   Entrance(RR_GV_CRATE_LEDGE, {[]{return false;}}),
@@ -107,6 +107,22 @@ void RegionTable_Init_GerudoValley() {
                   LOCATION(RC_GF_GERUDO_MEMBERSHIP_CARD,       logic->CanFinishGerudoFortress()),
                   LOCATION(RC_GF_GS_ARCHERY_RANGE,   logic->IsAdult && logic->HookshotOrBoomerang() && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->AtNight && logic->CanGetNightTimeGS()),
                   LOCATION(RC_GF_GS_TOP_FLOOR,       logic->IsAdult && logic->AtNight && (logic->CanJumpslashExceptHammer() || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOOMERANG) || logic->HasExplosives() || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_DINS_FIRE)) && (logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_KITCHEN) || ctx->GetTrickOption(RT_GF_JUMP)) && logic->CanGetNightTimeGS()),
+                  LOCATION(RC_GF_BREAK_ROOM_POT_1,   logic->CanBreakPots()),
+                  LOCATION(RC_GF_BREAK_ROOM_POT_2,   logic->CanBreakPots()),
+                  LOCATION(RC_GF_KITCHEN_POT_1,      (logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT)) && logic->CanBreakPots()),
+                  LOCATION(RC_GF_KITCHEN_POT_2,      (logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT)) && logic->CanBreakPots()),
+                  LOCATION(RC_GF_NORTH_F1_CARPENTER_POT_1, logic->CanBreakPots()),
+                  LOCATION(RC_GF_NORTH_F1_CARPENTER_POT_2, logic->CanBreakPots()),
+                  LOCATION(RC_GF_NORTH_F1_CARPENTER_POT_3, logic->CanBreakPots()),
+                  LOCATION(RC_GF_NORTH_F2_CARPENTER_POT_1, logic->CanBreakPots()),
+                  LOCATION(RC_GF_NORTH_F2_CARPENTER_POT_2, logic->CanBreakPots()),
+                  LOCATION(RC_GF_SOUTH_F1_CARPENTER_POT_1, logic->CanBreakPots()),
+                  LOCATION(RC_GF_SOUTH_F1_CARPENTER_POT_2, logic->CanBreakPots()),
+                  LOCATION(RC_GF_SOUTH_F1_CARPENTER_POT_3, logic->CanBreakPots()),
+                  LOCATION(RC_GF_SOUTH_F1_CARPENTER_CELL_POT_1, logic->CanBreakPots()),
+                  LOCATION(RC_GF_SOUTH_F1_CARPENTER_CELL_POT_2, logic->CanBreakPots()),
+                  LOCATION(RC_GF_SOUTH_F1_CARPENTER_CELL_POT_3, logic->CanBreakPots()),
+                  LOCATION(RC_GF_SOUTH_F1_CARPENTER_CELL_POT_4, logic->CanBreakPots()),
                 }, {
                   //Exits
                   Entrance(RR_GV_FORTRESS_SIDE,                 {[]{return true;}}),
@@ -148,6 +164,10 @@ void RegionTable_Init_GerudoValley() {
                   LOCATION(RC_WASTELAND_CHEST,            logic->HasFireSource()),
                   LOCATION(RC_WASTELAND_BOMBCHU_SALESMAN, logic->CanJumpslashExceptHammer() || logic->CanUse(RG_HOVER_BOOTS)),
                   LOCATION(RC_WASTELAND_GS,               logic->HookshotOrBoomerang()),
+                  LOCATION(RC_WASTELAND_NEAR_GS_POT_1,    logic->CanBreakPots()),
+                  LOCATION(RC_WASTELAND_NEAR_GS_POT_2,    logic->CanBreakPots()),
+                  LOCATION(RC_WASTELAND_NEAR_GS_POT_3,    logic->CanBreakPots()),
+                  LOCATION(RC_WASTELAND_NEAR_GS_POT_4,    logic->CanBreakPots()),
                 }, {
                   //Exits
                   Entrance(RR_WASTELAND_NEAR_COLOSSUS, {[]{return ctx->GetTrickOption(RT_LENS_HW) || logic->CanUse(RG_LENS_OF_TRUTH);}}),

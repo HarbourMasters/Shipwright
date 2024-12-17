@@ -97,12 +97,12 @@ void EnLightbox_Update(Actor* thisx, PlayState* play) {
                     thisx->velocity.y *= IREG(60) / 100.0f;
                     thisx->bgCheckFlags &= ~0x1;
                 } else {
-                    func_8002F580(thisx, play);
+                    Actor_OfferCarry(thisx, play);
                 }
             }
         }
     }
-    Actor_MoveForward(thisx);
+    Actor_MoveXZGravity(thisx);
     Actor_UpdateBgCheckInfo(play, thisx, thisx->colChkInfo.cylHeight, thisx->colChkInfo.cylRadius,
                             thisx->colChkInfo.cylRadius, 0x1D);
     thisx->focus.pos = thisx->world.pos;

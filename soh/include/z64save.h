@@ -284,7 +284,7 @@ typedef struct {
     // #endregion
     // #region SOH [Randomizer]
     // Upstream TODO: Move these to their own struct or name to more obviously specific to Randomizer
-    /*        */ u16 randomizerInf[17];
+    /*        */ u16 randomizerInf[(RAND_INF_MAX + 15) / 16];
     /*        */ u8 mqDungeonCount;
     /*        */ u16 adultTradeItems;
     /*        */ u8 triforcePiecesCollected;

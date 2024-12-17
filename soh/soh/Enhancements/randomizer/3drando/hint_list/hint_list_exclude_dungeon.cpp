@@ -275,6 +275,10 @@ hintTextTable[RHT_DODONGOS_CAVERN_BOSS_ROOM_CHEST] = HintText(CustomMessage("The
                                                                                                  /*french*/ "Selon moi, la #peste Mojo au coeur de la Caverne Dodongo# vend #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                                               // /*spanish*/ Según dicen, un #deku custodiado por Lizalfos# vende #[[1]]#.
 
+    hintTextTable[RHT_POT_DODONGOS_CAVERN] = HintText(CustomMessage("They say that a #pot in Dodongo's Cavern# contains #[[1]]#.",
+                                                         /*german*/ "",
+                                                         /*french*/ "", {QM_RED, QM_GREEN}));
+
   /*--------------------------
   |     JABU JABUS BELLY     |
   ---------------------------*/
@@ -421,6 +425,11 @@ hintTextTable[RHT_DODONGOS_CAVERN_BOSS_ROOM_CHEST] = HintText(CustomMessage("The
                                                                  /*german*/ "Man erzählt sich, daß ein #Deku in einer Gottheit #[[1]]# verkaufe.",
                                                                  /*french*/ "Selon moi, la #peste Mojo dans le ventre du gardien# vend #[[1]]#.", {QM_RED, QM_GREEN}));
                                                               // /*spanish*/ Según dicen, un #deku dentro de cierta deidad# vende #[[1]]#.
+
+    hintTextTable[RHT_POT_JABU_JABUS_BELLY] = HintText(CustomMessage("They say that a #pot in Jabu Jabu's Belly# contains #[[1]]#.",
+                                                          /*german*/ "",
+                                                          /*french*/ "", {QM_RED, QM_GREEN}));
+
   /*--------------------------
   |      FOREST TEMPLE       |
   ---------------------------*/
@@ -638,10 +647,15 @@ hintTextTable[RHT_DODONGOS_CAVERN_BOSS_ROOM_CHEST] = HintText(CustomMessage("The
                                                                                 /*german*/ "Man erzählt sich, daß eine #Spinne auf einem Vorsprung# im Waldtempel #[[1]]# besäße.",
                                                                                 /*french*/ "Selon moi, une #Skulltula dans le jardin du Temple de la Forêt# a #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                              // /*spanish*/ Según dicen, una #Skulltula en un borde# del Templo del Bosque otorga #[[1]]#.
-  hintTextTable[RHT_FOREST_TEMPLE_MQ_GS_WELL] = HintText(CustomMessage("They say that #draining a well# in Forest Temple uncovers a spider with #[[1]]#.",
+    hintTextTable[RHT_FOREST_TEMPLE_MQ_GS_WELL] = HintText(CustomMessage("They say that #draining a well# in Forest Temple uncovers a spider with #[[1]]#.",
                                                               /*german*/ "Man erzählt sich, daß das #Entleeren eines Brunnens# im Waldtempel eine Spinne mit #[[1]]# enthülle.",
                                                               /*french*/ "Selon moi, une #Skulltula au fond du Puits du Temple de la Forêt# a #[[1]]#.", {QM_RED, QM_GREEN}));
                                                            // /*spanish*/ Según dicen, #vaciar el pozo# del Templo del Bosque desvela una Skulltula que otorga #[[1]]#.
+
+    hintTextTable[RHT_POT_FOREST_TEMPLE] = HintText(CustomMessage("They say that a #pot in Forest Temple# contains #[[1]]#.",
+                                                       /*german*/ "",
+                                                       /*french*/ "", {QM_RED, QM_GREEN}));
+
   
   /*--------------------------
   |       FIRE TEMPLE        |
@@ -831,6 +845,10 @@ hintTextTable[RHT_FIRE_TEMPLE_NEAR_BOSS_CHEST] = HintText(CustomMessage("They sa
                                                                                 /*french*/ "Selon moi, une #Skulltula près du labyrinthe enflammé du Temple du Feu# a #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                              // /*spanish*/ Según dicen, una #Skulltula junto a un ardiente laberinto# otorga #[[1]]#.
 
+    hintTextTable[RHT_POT_FIRE_TEMPLE] = HintText(CustomMessage("They say that a #pot in Fire Temple# contains #[[1]]#.",
+                                                     /*german*/ "",
+                                                     /*french*/ "", {QM_RED, QM_GREEN}));
+
   /*--------------------------
   |       WATER TEMPLE       |
   ---------------------------*/
@@ -957,6 +975,10 @@ hintTextTable[RHT_FIRE_TEMPLE_NEAR_BOSS_CHEST] = HintText(CustomMessage("They sa
                                                               /*german*/ "Man erzählt sich, daß eine #Spinne oberhalb eines Flusses# im Wassertempel #[[1]]# besäße.",
                                                               /*french*/ "Selon moi, une #Skulltula au dessus de la rivière du Temple de l'Eau# a #[[1]]#.", {QM_RED, QM_GREEN}));
                                                            // /*spanish*/ Según dicen, una #Skulltula sobre un río# del Templo del Agua otorga #[[1]]#.
+
+    hintTextTable[RHT_POT_WATER_TEMPLE] = HintText(CustomMessage("They say that a #pot in Water Temple# contains #[[1]]#.",
+                                                      /*german*/ "",
+                                                      /*french*/ "", {QM_RED, QM_GREEN}));
 
   /*--------------------------
   |      SPIRIT TEMPLE       |
@@ -1190,6 +1212,10 @@ hintTextTable[RHT_FIRE_TEMPLE_NEAR_BOSS_CHEST] = HintText(CustomMessage("They sa
                                                                         /*german*/ "Man erzählt sich, daß #auf einer Webe aus Glas# im Geistertempel eine Spinne säße, welche #[[1]]# besäße.",
                                                                         /*french*/ "Selon moi, une #Skulltula sur une paroi de verre du Temple de l'Esprit# a #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                      // /*spanish*/ Según dicen, #sobre una plataforma de cristal# yace una Skulltula que otorga #[[1]]#.
+
+    hintTextTable[RHT_POT_SPIRIT_TEMPLE] = HintText(CustomMessage("They say that a #pot in Spirit Temple# contains #[[1]]#.",
+                                                       /*german*/ "",
+                                                       /*french*/ "", {QM_RED, QM_GREEN}));
 
   /*--------------------------
   |      SHADOW TEMPLE       |
@@ -1434,6 +1460,10 @@ hintTextTable[RHT_SHADOW_TEMPLE_MAP_CHEST] = HintText(CustomMessage("They say th
                                                                    /*french*/ "Selon moi, une #Skulltula près du repère du Temple de l'Ombre# a #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                 // /*spanish*/ Según dicen, una #Skulltula flotante# del Templo de las Sombras otorga #[[1]]#.
 
+    hintTextTable[RHT_POT_SHADOW_TEMPLE] = HintText(CustomMessage("They say that a #pot in Shadow Temple# contains #[[1]]#.",
+                                                       /*german*/ "",
+                                                       /*french*/ "", {QM_RED, QM_GREEN}));
+
   /*--------------------------
   |    BOTTOM OF THE WELL    |
   ---------------------------*/
@@ -1552,6 +1582,10 @@ hintTextTable[RHT_SHADOW_TEMPLE_MAP_CHEST] = HintText(CustomMessage("They say th
                                                                               /*french*/ "Selon moi, une #Skulltula embarrée dans la crypte au fonds du Puits# a #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                            // /*spanish*/ Según dicen, una #Skulltula encerrada en una cripta# del pozo otorga #[[1]]#.
 
+    hintTextTable[RHT_POT_BOTTOM_OF_THE_WELL] = HintText(CustomMessage("They say that a #pot in Bottom of the Well# contains #[[1]]#.",
+                                                            /*german*/ "",
+                                                            /*french*/ "", {QM_RED, QM_GREEN}));
+
   /*--------------------------
   |        ICE CAVERN        |
   ---------------------------*/
@@ -1624,6 +1658,10 @@ hintTextTable[RHT_SHADOW_TEMPLE_MAP_CHEST] = HintText(CustomMessage("They say th
                                                               /*german*/ "Man erzählt sich, daß eine #Spinne in feurigem Eis# #[[1]]# horte.",
                                                               /*french*/ "Selon moi, une #Skulltula figée dans la glace rouge# a #[[1]]#.", {QM_RED, QM_GREEN}));
                                                            // /*spanish*/ Según dicen, una #Skulltula tras un ardiente hielo# otorga #[[1]]#.
+
+    hintTextTable[RHT_POT_ICE_CAVERN] = HintText(CustomMessage("They say that a #pot in Ice Cavern# contains #[[1]]#.",
+                                                    /*german*/ "",
+                                                    /*french*/ "", { QM_RED, QM_GREEN }));
 
   /*--------------------------
   | GERUDO TRAINING GROUNDS  |
@@ -1995,5 +2033,9 @@ hintTextTable[RHT_SHADOW_TEMPLE_MAP_CHEST] = HintText(CustomMessage("They say th
                                                                       /*german*/ "Man erzählt sich, daß #Dekus in Ganons Schloß# #[[1]]# verkaufen würden.",
                                                                       /*french*/ "Selon moi, les #pestes Mojo dans le Château de Ganon# vendent #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                    // /*spanish*/ Según dicen, los #dekus del Castillo de Ganon# venden #[[1]]#.
+
+    hintTextTable[RHT_POT_GANONS_CASTLE] = HintText(CustomMessage("They say that a #pot in Ganon's Castle# contains #[[1]]#.",
+                                                       /*german*/ "",
+                                                       /*french*/ "", {QM_RED, QM_GREEN}));
 }
 }

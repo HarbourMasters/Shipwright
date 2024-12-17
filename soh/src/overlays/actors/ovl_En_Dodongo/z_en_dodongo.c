@@ -774,7 +774,7 @@ void EnDodongo_Update(Actor* thisx, PlayState* play) {
     EnDodongo_CollisionCheck(this, play);
     if (this->actor.colChkInfo.damageEffect != 0xE) {
         this->actionFunc(this, play);
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
         Actor_UpdateBgCheckInfo(play, &this->actor, 75.0f, 60.0f, 70.0f, 0x1D);
         if (this->actor.bgCheckFlags & 2) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_RIZA_DOWN);

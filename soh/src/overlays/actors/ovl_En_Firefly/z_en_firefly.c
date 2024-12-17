@@ -692,12 +692,12 @@ void EnFirefly_Update(Actor* thisx, PlayState* play2) {
 
     if (!(this->actor.flags & ACTOR_FLAG_DRAGGED_BY_ARROW)) {
         if ((this->actor.colChkInfo.health == 0) || (this->actionFunc == EnFirefly_Stunned)) {
-            Actor_MoveForward(&this->actor);
+            Actor_MoveXZGravity(&this->actor);
         } else {
             if (this->actionFunc != EnFirefly_Rebound) {
                 this->actor.world.rot.x = 0x1554 - this->actor.shape.rot.x;
             }
-            func_8002D97C(&this->actor);
+            Actor_MoveXYZ(&this->actor);
         }
     }
 

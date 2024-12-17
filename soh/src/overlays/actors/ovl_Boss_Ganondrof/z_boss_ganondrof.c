@@ -720,7 +720,7 @@ void BossGanondrof_Stunned(BossGanondrof* this, PlayState* play) {
         this->actor.gravity = 0.0f;
     }
 
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 }
 
 void BossGanondrof_SetupBlock(BossGanondrof* this, PlayState* play) {
@@ -806,8 +806,8 @@ void BossGanondrof_Charge(BossGanondrof* this, PlayState* play) {
                     Math_FAtan2F(vecToLink.y, sqrtf(SQ(vecToLink.x) + SQ(vecToLink.z))) * (0x8000 / M_PI);
             }
 
-            func_8002D908(thisx);
-            func_8002D7EC(thisx);
+            Actor_UpdateVelocityXYZ(thisx);
+            Actor_UpdatePos(thisx);
             Math_ApproachF(&thisx->speedXZ, 10.0f, 1.0f, 0.5f);
             if ((sqrtf(SQ(dxCenter) + SQ(dzCenter)) > 280.0f) || (thisx->xyzDistToPlayerSq < SQ(100.0f))) {
                 this->work[GND_ACTION_STATE] = CHARGE_FINISH;
@@ -816,7 +816,7 @@ void BossGanondrof_Charge(BossGanondrof* this, PlayState* play) {
             break;
         case CHARGE_FINISH:
             thisx->gravity = 0.2f;
-            Actor_MoveForward(thisx);
+            Actor_MoveXZGravity(thisx);
             osSyncPrintf("YP %f @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n", thisx->world.pos.y);
             if (thisx->world.pos.y < 5.0f) {
                 thisx->world.pos.y = 5.0f;

@@ -370,6 +370,14 @@ Rando::Location Rando::Location::GrottoFish(RandomizerCheck rc, RandomizerCheckQ
             SpoilerCollectionCheck(SPOILER_CHK_RANDOMIZER_INF, SCENE_GROTTOS, flag_)};
 }
 
+Rando::Location Rando::Location::Pot(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
+                                     SceneID scene_, int32_t actorParams_, std::string&& shortName_,
+                                     std::string&& spoilerName_, RandomizerHintTextKey hintKey,
+                                     RandomizerGet vanillaItem, SpoilerCollectionCheck collectionCheck) {
+    return {rc, quest_, RCTYPE_POT, area_, ACTOR_OBJ_TSUBO, scene_, actorParams_, std::move(shortName_), std::move(spoilerName_), hintKey, vanillaItem, false,
+            collectionCheck };
+}
+
 Rando::Location Rando::Location::HintStone(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, SceneID scene_, int32_t actorParams_, std::string&& shortName_) {
     return { rc, quest_, RCTYPE_GOSSIP_STONE, area_, ACTOR_EN_GS, scene_, actorParams_, std::move(shortName_), RHT_NONE, RG_NONE, false };
 }

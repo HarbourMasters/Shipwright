@@ -12,6 +12,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_Bg_Bdan_Switch/z_bg_bdan_switch.h"
 #include "src/overlays/actors/ovl_Bg_Treemouth/z_bg_treemouth.h"
 #include "src/overlays/actors/ovl_En_Owl/z_en_owl.h"
+#include "src/overlays/actors/ovl_En_Go2/z_en_go2.h"
 #include "src/overlays/actors/ovl_En_Ko/z_en_ko.h"
 #include "src/overlays/actors/ovl_En_Ma1/z_en_ma1.h"
 #include "src/overlays/actors/ovl_En_Ru2/z_en_ru2.h"
@@ -35,10 +36,12 @@ extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 extern int32_t D_8011D3AC;
 
-extern void func_808ADEF0(BgSpot03Taki* bgSpot03Taki, PlayState* play);
+extern void BgSpot03Taki_HandleWaterfallState(BgSpot03Taki* bgSpot03Taki, PlayState* play);
 extern void BgSpot03Taki_ApplyOpeningAlpha(BgSpot03Taki* bgSpot03Taki, s32 bufferIndex);
 
-extern void func_80AF36EC(EnRu2* enRu2, PlayState* play);
+extern void EnGo2_CurledUp(EnGo2* enGo2, PlayState* play);
+
+extern void EnRu2_SetEncounterSwitchFlag(EnRu2* enRu2, PlayState* play);
 }
 
 #define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetContextOptionIndex()
@@ -212,6 +215,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 s16* csId = va_arg(args, s16*);
                 BgSpot03Taki* taki = NULL;
                 switch (*csId) {
+                    case 3150:
                     case 4180:
                     case 4100:
                         *should = false;
@@ -266,7 +270,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                         break;
                     }
                     case ACTOR_BG_BDAN_SWITCH: {
-                        // The switch in jabu that you are intended to press with a box to reach barrinade
+                        // The switch in jabu that you are intended to press with a box to reach barinade
                         // can be skipped by either a frame perfect roll open or with OI
                         // The One Point for that switch is used in common setups for the former and is required for the latter to work
                         if (actor->params == 14848 && gPlayState->sceneNum == SCENE_JABU_JABU && CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)){
@@ -284,6 +288,12 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                         BgHidanKousi_SetupAction(switchActor, func_80889C18);
                         *should = false;
                         RateLimitedSuccessChime();
+                        break;
+                    }
+                    case ACTOR_EN_GO2: {
+                        EnGo2* biggoron = (EnGo2*)actor;
+                        biggoron->isAwake = true;
+                        *should = false;
                         break;
                     }
                     case ACTOR_BG_HIDAN_FWBIG:
@@ -306,11 +316,13 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                     case ACTOR_BG_YDAN_MARUTA:
                     case ACTOR_BG_SPOT18_SHUTTER:
                     case ACTOR_BG_SPOT05_SOKO:
+                    case ACTOR_BG_SPOT06_OBJECTS:
                     case ACTOR_BG_SPOT18_BASKET:
                     case ACTOR_BG_HIDAN_CURTAIN:
                     case ACTOR_BG_MORI_HINERI:
                     case ACTOR_BG_MIZU_SHUTTER:
                     case ACTOR_SHOT_SUN:
+                    case ACTOR_BG_HAKA_GATE:
                         *should = false;
                         RateLimitedSuccessChime();
                         break;
@@ -338,11 +350,26 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             if (ForcedDialogIsDisabled(FORCED_DIALOG_SKIP_NAVI)) {
                 ElfMsg* naviTalk = va_arg(args, ElfMsg*);
                 int32_t paramsHighByte = naviTalk->actor.params >> 8;
-                if ((paramsHighByte & 0x80) == 0 && (paramsHighByte & 0x3F) != 0x3F) {
-                    Flags_SetSwitch(gPlayState, paramsHighByte & 0x3F);
-                    Actor_Kill(&naviTalk->actor);
-                    *should = false;
+                if ((paramsHighByte & 0x80) != 0) {
+                    break;
                 }
+                if ((paramsHighByte & 0x3F) != 0x3F) {
+                    Flags_SetSwitch(gPlayState, paramsHighByte & 0x3F);
+                }
+                Actor_Kill(&naviTalk->actor);
+                *should = false;
+            }
+            break;
+        }
+        case VB_GORON_LINK_BE_SCARED: {
+            if (ForcedDialogIsDisabled(FORCED_DIALOG_SKIP_NPC)) {
+                EnGo2* goronLink = va_arg(args, EnGo2*);
+                goronLink->trackingMode = NPC_TRACKING_NONE;
+                goronLink->unk_211 = false;
+                goronLink->isAwake = false;
+                goronLink->actionFunc = EnGo2_CurledUp;
+                Flags_SetInfTable(INFTABLE_STOPPED_GORON_LINKS_ROLLING);
+                *should = false;
             }
             break;
         }
@@ -401,6 +428,14 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                     *textId = 0x3036;
                     *should = true;
                 }
+            }
+            break;
+        }
+        case VB_PLAY_MWEEP_CS: {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), 0)) {
+                *should = false;
+                Inventory_ReplaceItem(gPlayState, ITEM_LETTER_RUTO, ITEM_BOTTLE);
+                Flags_SetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED);
             }
             break;
         }
@@ -506,11 +541,23 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             }
             break;
         }
+        case VB_PLAY_GORON_FREE_CS: {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), 0)) {
+                *should = false;
+            }
+            break;
+        }
         case VB_PLAY_DOOR_OF_TIME_CS: {
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO)) {
                 *should = false;
                 Flags_SetEnv(gPlayState, 2);
                 Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
+            }
+            break;
+        }
+        case VB_PLAY_FIRE_ARROW_CS: {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), 0)) {
+                *should = false;
             }
             break;
         }
@@ -814,7 +861,7 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
             }
 
             BgSpot03Taki* bgSpot03 = static_cast<BgSpot03Taki*>(innerActorRef);
-            if (bgSpot03->actionFunc == func_808ADEF0) {
+            if (bgSpot03->actionFunc == BgSpot03Taki_HandleWaterfallState) {
                 bgSpot03->actionFunc = BgSpot03Taki_KeepOpen;
                 bgSpot03->state = WATERFALL_OPENED;
                 bgSpot03->openingAlpha = 0.0f;
@@ -883,7 +930,7 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
     if (actor->id == ACTOR_EN_RU2 && gPlayState->sceneNum == SCENE_WATER_TEMPLE) {
         if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
             EnRu2* enRu2 = (EnRu2*)actor;
-            func_80AF36EC(enRu2, gPlayState);
+            EnRu2_SetEncounterSwitchFlag(enRu2, gPlayState);
             Actor_Kill(actor);
         }
     }

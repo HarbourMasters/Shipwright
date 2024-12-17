@@ -68,6 +68,8 @@ void RegionTable_Init_HyruleField() {
                   LOCATION(RC_HF_GS_COW_GROTTO,           logic->HasFireSource() && logic->HookshotOrBoomerang()),
                   LOCATION(RC_HF_COW_GROTTO_COW,          logic->HasFireSource() && logic->CanUse(RG_EPONAS_SONG)),
                   LOCATION(RC_HF_COW_GROTTO_GOSSIP_STONE, logic->HasFireSource()),
+                  LOCATION(RC_HF_COW_GROTTO_POT_1,        logic->HasFireSource() && logic->CanBreakPots()),
+                  LOCATION(RC_HF_COW_GROTTO_POT_2,        logic->HasFireSource() && logic->CanBreakPots()),
                 }, {
                   //Exits
                   Entrance(RR_HYRULE_FIELD, {[]{return true;}}),
@@ -228,6 +230,13 @@ void RegionTable_Init_HyruleField() {
                   LOCATION(RC_LLR_GS_RAIN_SHED,    logic->IsChild && logic->AtNight && logic->CanGetNightTimeGS()),
                   LOCATION(RC_LLR_GS_HOUSE_WINDOW, logic->IsChild && logic->HookshotOrBoomerang() && logic->AtNight && logic->CanGetNightTimeGS()),
                   LOCATION(RC_LLR_GS_BACK_WALL,    logic->IsChild && logic->HookshotOrBoomerang() && logic->AtNight && logic->CanGetNightTimeGS()),
+                  LOCATION(RC_LLR_FRONT_POT_1,     logic->IsChild && logic->CanBreakPots()),
+                  LOCATION(RC_LLR_FRONT_POT_2,     logic->IsChild && logic->CanBreakPots()),
+                  LOCATION(RC_LLR_FRONT_POT_3,     logic->IsChild && logic->CanBreakPots()),
+                  LOCATION(RC_LLR_FRONT_POT_4,     logic->IsChild && logic->CanBreakPots()),
+                  LOCATION(RC_LLR_RAIN_SHED_POT_1, logic->IsChild && logic->CanBreakPots()),
+                  LOCATION(RC_LLR_RAIN_SHED_POT_2, logic->IsChild && logic->CanBreakPots()),
+                  LOCATION(RC_LLR_RAIN_SHED_POT_3, logic->IsChild && logic->CanBreakPots()),
                 }, {
                   //Exits
                   Entrance(RR_HYRULE_FIELD,     {[]{return true;}}),
@@ -240,6 +249,9 @@ void RegionTable_Init_HyruleField() {
   areaTable[RR_LLR_TALONS_HOUSE] = Region("LLR Talons House", "LLR Talons House", {}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_LLR_TALONS_CHICKENS, logic->HasItem(RG_CHILD_WALLET) && logic->IsChild && logic->AtDay && logic->HasItem(RG_ZELDAS_LETTER)),
+                  LOCATION(RC_LLR_TALONS_HOUSE_POT_1, logic->CanBreakPots()),
+                  LOCATION(RC_LLR_TALONS_HOUSE_POT_2, logic->CanBreakPots()),
+                  LOCATION(RC_LLR_TALONS_HOUSE_POT_3, logic->CanBreakPots()),
                 }, {
                   //Exits
                   Entrance(RR_LON_LON_RANCH, {[]{return true;}}),

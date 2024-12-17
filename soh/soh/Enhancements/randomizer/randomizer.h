@@ -52,6 +52,7 @@ class Randomizer {
     BeehiveIdentity IdentifyBeehive(s32 sceneNum, s16 xPosition, s32 respawnData);
     ShopItemIdentity IdentifyShopItem(s32 sceneNum, u8 slotIndex);
     CowIdentity IdentifyCow(s32 sceneNum, s32 posX, s32 posZ);
+    PotIdentity IdentifyPot(s32 sceneNum, s32 posX, s32 posZ);
     FishIdentity IdentifyFish(s32 sceneNum, s32 actorParams);
     GetItemEntry GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId, bool checkObtainability = true);
     GetItemEntry GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId, bool checkObtainability = true);

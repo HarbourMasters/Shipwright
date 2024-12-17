@@ -98,7 +98,7 @@ void func_80AFB768(EnSi* this, PlayState* play) {
                 this->collider.base.ocFlags2 &= ~OC2_HIT_PLAYER;
                 if (GameInteractor_Should(VB_GIVE_ITEM_SKULL_TOKEN, true, this)) {
                     Item_Give(play, ITEM_SKULL_TOKEN);
-                    if (GameInteractor_Should(VB_FREEZE_ON_SKULL_TOKEN, true, this)) {
+                    if (GameInteractor_Should(VB_FREEZE_ON_SKULL_TOKEN, true)) {
                         player->actor.freezeTimer = 10;
                     }
                     Message_StartTextbox(play, TEXT_GS_NO_FREEZE, NULL);
@@ -124,7 +124,7 @@ void func_80AFB89C(EnSi* this, PlayState* play) {
     if (!CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_HOOKSHOT_ATTACHED)) {
         if (GameInteractor_Should(VB_GIVE_ITEM_SKULL_TOKEN, true, this)) {
             Item_Give(play, ITEM_SKULL_TOKEN);
-            if (GameInteractor_Should(VB_FREEZE_ON_SKULL_TOKEN, true, this)) {
+            if (GameInteractor_Should(VB_FREEZE_ON_SKULL_TOKEN, true)) {
                 player->actor.freezeTimer = 10;
             }
             Message_StartTextbox(play, TEXT_GS_NO_FREEZE, NULL);
@@ -137,7 +137,7 @@ void func_80AFB89C(EnSi* this, PlayState* play) {
 void func_80AFB950(EnSi* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    if (Message_GetState(&play->msgCtx) != TEXT_STATE_CLOSING && GameInteractor_Should(VB_FREEZE_ON_SKULL_TOKEN, true, this)) {
+    if (Message_GetState(&play->msgCtx) != TEXT_STATE_CLOSING && GameInteractor_Should(VB_FREEZE_ON_SKULL_TOKEN, true)) {
         player->actor.freezeTimer = 10;
     } else {
         SET_GS_FLAGS((this->actor.params & 0x1F00) >> 8, this->actor.params & 0xFF);
@@ -149,7 +149,7 @@ void func_80AFB950(EnSi* this, PlayState* play) {
 void EnSi_Update(Actor* thisx, PlayState* play) {
     EnSi* this = (EnSi*)thisx;
 
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);
     this->actionFunc(this, play);
     Actor_SetFocus(&this->actor, 16.0f);

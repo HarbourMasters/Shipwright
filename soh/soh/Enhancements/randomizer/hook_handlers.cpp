@@ -7,6 +7,7 @@
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/dungeon.h"
 #include "soh/Enhancements/randomizer/fishsanity.h"
+#include "soh/Enhancements/randomizer/ShufflePots.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ImGuiUtils.h"
@@ -474,7 +475,7 @@ void ItemEtcetera_func_80B85824_Randomized(ItemEtcetera* itemEtcetera, PlayState
 
 void ItemEtcetera_MoveRandomizedFireArrowDown(ItemEtcetera* itemEtcetera, PlayState* play) {
     Actor_UpdateBgCheckInfo(play, &itemEtcetera->actor, 10.0f, 10.0f, 0.0f, 5);
-    Actor_MoveForward(&itemEtcetera->actor);
+    Actor_MoveXZGravity(&itemEtcetera->actor);
     if (!(itemEtcetera->actor.bgCheckFlags & 1)) {
         ItemEtcetera_SpawnSparkles(itemEtcetera, play);
     }
@@ -799,6 +800,9 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             *should = false;
             break;
         }
+        case VB_SPAWN_FIRE_ARROW:
+            *should = !Flags_GetTreasure(gPlayState, 0x1F);
+            break;
         case VB_PLAY_NABOORU_CAPTURED_CS:
             // This behavior is replicated for randomizer in RandomizerOnItemReceiveHandler
             *should = false;
@@ -814,12 +818,12 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             *should = !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST);
             break;
         case VB_MIDO_SPAWN:
-            if (RAND_GET_OPTION(RSK_FOREST) != RO_FOREST_OPEN && !Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD)) {
+            if (RAND_GET_OPTION(RSK_FOREST) != RO_CLOSED_FOREST_OFF && !Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD)) {
                 *should = true;
             }
             break;
         case VB_MOVE_MIDO_IN_KOKIRI_FOREST:
-            if (RAND_GET_OPTION(RSK_FOREST) == RO_FOREST_OPEN && gSaveContext.cutsceneIndex == 0) {
+            if (RAND_GET_OPTION(RSK_FOREST) == RO_CLOSED_FOREST_OFF && gSaveContext.cutsceneIndex == 0) {
                 *should = true;
             }
             break;
@@ -827,7 +831,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             *should = Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD);
             break;
         case VB_OPEN_KOKIRI_FOREST:
-            *should = Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD) || RAND_GET_OPTION(RSK_FOREST) != RO_FOREST_CLOSED;
+            *should = Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD) || RAND_GET_OPTION(RSK_FOREST) != RO_CLOSED_FOREST_ON;
             break;
         case VB_BE_ELIGIBLE_FOR_DARUNIAS_JOY_REWARD:
             *should = !Flags_GetRandomizerInf(RAND_INF_DARUNIAS_JOY);
@@ -1558,6 +1562,40 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             *should = !Flags_GetInfTable(INFTABLE_145) || Flags_GetInfTable(INFTABLE_146);
             break;
         }
+        case VB_SET_VOIDOUT_FROM_SURFACE: {
+            // ENTRTODO: Move all entrance rando handling to a dedicated file
+            std::vector<s16> entrPersistTempFlags = {
+                ENTR_DEKU_TREE_BOSS_ENTRANCE,     ENTR_DEKU_TREE_BOSS_DOOR,        ENTR_DODONGOS_CAVERN_BOSS_ENTRANCE,
+                ENTR_DODONGOS_CAVERN_BOSS_DOOR,   ENTR_JABU_JABU_BOSS_ENTRANCE,    ENTR_JABU_JABU_BOSS_DOOR,
+                ENTR_FOREST_TEMPLE_BOSS_ENTRANCE, ENTR_FOREST_TEMPLE_BOSS_DOOR,    ENTR_FIRE_TEMPLE_BOSS_ENTRANCE,
+                ENTR_FIRE_TEMPLE_BOSS_DOOR,       ENTR_WATER_TEMPLE_BOSS_ENTRANCE, ENTR_WATER_TEMPLE_BOSS_DOOR,
+                ENTR_SPIRIT_TEMPLE_BOSS_ENTRANCE, ENTR_SPIRIT_TEMPLE_BOSS_DOOR,    ENTR_SHADOW_TEMPLE_BOSS_ENTRANCE,
+                ENTR_SHADOW_TEMPLE_BOSS_DOOR,     ENTR_SPIRIT_TEMPLE_ENTRANCE,
+            };
+
+            s16 originalEntrance = (s16)va_arg(args, int);
+
+            // In Entrance rando, if our respawnFlag is set for a grotto return, we don't want the void out to happen
+            if (*should == true && RAND_GET_OPTION(RSK_SHUFFLE_ENTRANCES)) {
+                // Check for dungeon special entrances that are randomized to a new location
+                if (std::find(entrPersistTempFlags.begin(), entrPersistTempFlags.end(), originalEntrance) !=
+                    entrPersistTempFlags.end() && originalEntrance != gPlayState->nextEntranceIndex) {
+                    // Normally dungeons use a special voidout between scenes so that entering/exiting a boss room,
+                    // or leaving via Spirit Hands and going back in persist temp flags across scenes.
+                    // For ER, the temp flags should be wiped out so that they aren't transferred to the new location.
+                    gPlayState->actorCtx.flags.tempSwch = 0;
+                    gPlayState->actorCtx.flags.tempCollect = 0;
+
+                    // If the respawnFlag is set for a grotto return, we don't want the void out to happen.
+                    // Set the data flag to one to prevent the respawn point from being overriden by dungeon doors.
+                    if (gSaveContext.respawnFlag == 2) {
+                        gSaveContext.respawn[RESPAWN_MODE_DOWN].data = 1;
+                        *should = false;
+                    }
+                }
+            }
+            break;
+        }
         case VB_FREEZE_ON_SKULL_TOKEN:
         case VB_TRADE_TIMER_ODD_MUSHROOM:
         case VB_TRADE_TIMER_FROG:
@@ -1623,6 +1661,7 @@ void RandomizerOnSceneInitHandler(int16_t sceneNum) {
         CheckTracker::RecalculateAllAreaTotals();
     }
 
+    // ENTRTODO: Move all entrance rando handling to a dedicated file
     if (RAND_GET_OPTION(RSK_SHUFFLE_ENTRANCES)) {
         // In ER, override roomNum to load based on scene and spawn during scene init
         if (gSaveContext.respawnFlag <= 0) {
@@ -1912,7 +1951,7 @@ void RandomizerOnActorInitHandler(void* actorRef) {
 
     if (actor->id == ACTOR_BG_TREEMOUTH && LINK_IS_ADULT &&
         RAND_GET_OPTION(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF &&
-        (RAND_GET_OPTION(RSK_FOREST) == RO_FOREST_OPEN ||
+        (RAND_GET_OPTION(RSK_FOREST) == RO_CLOSED_FOREST_OFF ||
             Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD))) {
         BgTreemouth* bgTreemouth = static_cast<BgTreemouth*>(actorRef);
         bgTreemouth->unk_168 = 1.0f;
@@ -2283,6 +2322,9 @@ void RandomizerRegisterHooks() {
     static uint32_t fishsanityOnVanillaBehaviorHook = 0;
     static uint32_t fishsanityOnItemReceiveHook = 0;
 
+    static uint32_t shufflePotsOnActorInitHook = 0;
+    static uint32_t shufflePotsOnVanillaBehaviorHook = 0;
+
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
         randomizerQueuedChecks = std::queue<RandomizerCheck>();
         randomizerQueuedCheck = RC_UNKNOWN_CHECK;
@@ -2311,6 +2353,9 @@ void RandomizerRegisterHooks() {
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(fishsanityOnVanillaBehaviorHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnItemReceive>(fishsanityOnItemReceiveHook);
 
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(shufflePotsOnActorInitHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(shufflePotsOnVanillaBehaviorHook);
+
         onFlagSetHook = 0;
         onSceneFlagSetHook = 0;
         onPlayerUpdateForRCQueueHook = 0;
@@ -2334,8 +2379,12 @@ void RandomizerRegisterHooks() {
         fishsanityOnVanillaBehaviorHook = 0;
         fishsanityOnItemReceiveHook = 0;
 
+        shufflePotsOnActorInitHook = 0;
+        shufflePotsOnVanillaBehaviorHook = 0;
+
         if (!IS_RANDO) return;
 
+        // ENTRTODO: Move all entrance rando handling to a dedicated file
         // Setup the modified entrance table and entrance shuffle table for rando
         Entrance_Init();
 
@@ -2369,6 +2418,11 @@ void RandomizerRegisterHooks() {
             fishsanityOnSceneInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(Rando::Fishsanity::OnSceneInitHandler);
             fishsanityOnVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(Rando::Fishsanity::OnVanillaBehaviorHandler);
             fishsanityOnItemReceiveHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>(Rando::Fishsanity::OnItemReceiveHandler);
+        }
+
+        if (RAND_GET_OPTION(RSK_SHUFFLE_POTS) != RO_SHUFFLE_POTS_OFF) {
+            shufflePotsOnActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(ObjTsubo_RandomizerInit);
+            shufflePotsOnVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(ShufflePots_OnVanillaBehaviorHandler);
         }
     });
 }

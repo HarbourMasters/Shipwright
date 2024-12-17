@@ -190,7 +190,7 @@ void BgHakaShip_Update(Actor* thisx, PlayState* play) {
 
     this->actionFunc(this, play);
     if (this->dyna.actor.params == 0) {
-        Actor_MoveForward(&this->dyna.actor);
+        Actor_MoveXZGravity(&this->dyna.actor);
     }
 }
 

@@ -382,7 +382,7 @@ void func_80A4ED34(EnGs* this, PlayState* play) {
             func_8002F974(&this->actor, NA_SE_EV_STONE_LAUNCH - SFX_FLAG);
         }
 
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
         if (this->actor.yDistToPlayer < -12000.0f) {
             Actor_Kill(&this->actor);
         }

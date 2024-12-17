@@ -588,7 +588,7 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
     }
 
     if ((getItemId != GI_NONE) && !Actor_HasParent(&this->actor, play)) {
-        func_8002F554(&this->actor, play, getItemId);
+        Actor_OfferGetItemNearby(&this->actor, play, getItemId);
     }
 
     EnItem00_SetupAction(this, func_8001E5C8);
@@ -831,7 +831,7 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
 
         } else {
             sp3A = 1;
-            Actor_MoveForward(&this->actor);
+            Actor_MoveXZGravity(&this->actor);
         }
 
         if (sp3A || D_80157D94[0]) {
@@ -956,7 +956,7 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
     params = &this->actor.params;
 
     if ((getItemId != GI_NONE) && !Actor_HasParent(&this->actor, play)) {
-        func_8002F554(&this->actor, play, getItemId);
+        Actor_OfferGetItemNearby(&this->actor, play, getItemId);
     }
 
     switch (*params) {

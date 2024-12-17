@@ -322,7 +322,7 @@ void EnAObj_Update(Actor* thisx, PlayState* play) {
     EnAObj* this = (EnAObj*)thisx;
 
     this->actionFunc(this, play);
-    Actor_MoveForward(&this->dyna.actor);
+    Actor_MoveXZGravity(&this->dyna.actor);
 
     if (this->dyna.actor.gravity != 0.0f) {
         if (this->dyna.actor.params != A_OBJ_BOULDER_FRAGMENT) {

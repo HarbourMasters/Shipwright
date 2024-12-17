@@ -1118,7 +1118,7 @@ void EnGo2_RollForward(EnGo2* this) {
     }
 
     if (this->actionFunc != EnGo2_ContinueRolling) {
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
     }
 
     this->actor.speedXZ = speedXZ;
@@ -1768,8 +1768,10 @@ void EnGo2_GroundRolling(EnGo2* this, PlayState* play) {
         if (this->unk_59C == 0) {
             switch (this->actor.params & 0x1F) {
                 case GORON_CITY_LINK:
-                    this->goronState = 0;
-                    this->actionFunc = EnGo2_GoronLinkStopRolling;
+                    if (GameInteractor_Should(VB_GORON_LINK_BE_SCARED, true, this)) {
+                        this->goronState = 0;
+                        this->actionFunc = EnGo2_GoronLinkStopRolling;
+                    }
                     break;
                 case GORON_CITY_ROLLING_BIG:
                     EnGo2_WakeUp(this, play);
@@ -1919,7 +1921,9 @@ void EnGo2_GoronFireGenericAction(EnGo2* this, PlayState* play) {
     switch (this->goronState) {
         case 0: // Wake up
             if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
-                EnGo2_GoronFireCamera(this, play);
+                if (GameInteractor_Should(VB_PLAY_GORON_FREE_CS, true)) {
+                    EnGo2_GoronFireCamera(this, play);
+                }
                 play->msgCtx.msgMode = MSGMODE_PAUSED;
                 Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_2);
                 this->waypoint = 1;
@@ -1939,7 +1943,9 @@ void EnGo2_GoronFireGenericAction(EnGo2* this, PlayState* play) {
                     (f32)((Math_SinS(this->actor.world.rot.y) * -30.0f) + this->actor.world.pos.x);
                 player->actor.world.pos.z =
                     (f32)((Math_CosS(this->actor.world.rot.y) * -30.0f) + this->actor.world.pos.z);
-                Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
+                if (GameInteractor_Should(VB_PLAY_GORON_FREE_CS, true)) {
+                    Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
+                }
                 Audio_PlayFanfare(NA_BGM_APPEAR);
             }
             break;
@@ -1948,7 +1954,7 @@ void EnGo2_GoronFireGenericAction(EnGo2* this, PlayState* play) {
                 if (!(this->animTimer % 8)) {
                     Audio_PlayActorSound2(&this->actor, NA_SE_EN_MORIBLIN_WALK);
                 }
-                Actor_MoveForward(&this->actor);
+                Actor_MoveXZGravity(&this->actor);
             } else {
                 this->animTimer = 0;
                 this->actor.speedXZ = 0.0f;
@@ -1975,8 +1981,10 @@ void EnGo2_GoronFireGenericAction(EnGo2* this, PlayState* play) {
             }
         case 4: // Finalize walking away
             Message_CloseTextbox(play);
-            EnGo2_GoronFireClearCamera(this, play);
-            Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
+            if (GameInteractor_Should(VB_PLAY_GORON_FREE_CS, true)) {
+                EnGo2_GoronFireClearCamera(this, play);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
+            }
             Actor_Kill(&this->actor);
             break;
         case 1:

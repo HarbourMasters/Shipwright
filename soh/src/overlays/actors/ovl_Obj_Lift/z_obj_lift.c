@@ -192,7 +192,7 @@ void func_80B96840(ObjLift* this, PlayState* play) {
     s32 bgId;
     Vec3f sp2C;
 
-    Actor_MoveForward(&this->dyna.actor);
+    Actor_MoveXZGravity(&this->dyna.actor);
     Math_Vec3f_Copy(&sp2C, &this->dyna.actor.prevPos);
     sp2C.y += sMaxFallDistances[(this->dyna.actor.params >> 1) & 1];
     this->dyna.actor.floorHeight =

@@ -84,7 +84,7 @@ void SohInputEditorWindow::UpdateElement() {
             }
         }
 
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->BlockImGuiGamepadNavigation();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->BlockGamepadNavigation();
     } else {
         if (mGameInputBlockTimer != INT32_MAX) {
             mGameInputBlockTimer--;
@@ -95,13 +95,13 @@ void SohInputEditorWindow::UpdateElement() {
             }
         }
 
-        if (Ship::Context::GetInstance()->GetWindow()->GetGui()->ImGuiGamepadNavigationEnabled()) {
+        if (Ship::Context::GetInstance()->GetWindow()->GetGui()->GamepadNavigationEnabled()) {
             mMappingInputBlockTimer = ImGui::GetIO().Framerate / 3;
         } else {
             mMappingInputBlockTimer = INT32_MAX;
         }
 
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->UnblockImGuiGamepadNavigation();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->UnblockGamepadNavigation();
     }
 }
 
@@ -1109,7 +1109,7 @@ void SohInputEditorWindow::DrawLEDSection(uint8_t port) {
                         color.b = colorVec.z * 255.0;
 
                         CVarSetColor24(CVAR_SETTING("LEDPort1Color"), color);
-                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                     }
                     ImGui::SameLine();
                     ImGui::Text("Custom Color");
@@ -1304,7 +1304,7 @@ void SohInputEditorWindow::DrawButtonDeviceIcons(uint8_t portIndex, std::set<N64
     }
 }
 
-void SohInputEditorWindow::DrawAnalogStickDeviceIcons(uint8_t portIndex, Ship::Stick stick) {
+void SohInputEditorWindow::DrawAnalogStickDeviceIcons(uint8_t portIndex, Ship::StickIndex stickIndex) {
     std::set<Ship::ShipDeviceIndex> allLusDeviceIndices;
     allLusDeviceIndices.insert(Ship::ShipDeviceIndex::Keyboard);
     for (auto [lusIndex, mapping] : Ship::Context::GetInstance()
@@ -1317,7 +1317,7 @@ void SohInputEditorWindow::DrawAnalogStickDeviceIcons(uint8_t portIndex, Ship::S
     std::vector<std::pair<Ship::ShipDeviceIndex, bool>> lusDeviceIndiciesWithMappings;
     for (auto lusIndex : allLusDeviceIndices) {
         auto controllerStick =
-            stick == Ship::Stick::LEFT_STICK
+            stickIndex == Ship::StickIndex::LEFT_STICK
                 ? Ship::Context::GetInstance()->GetControlDeck()->GetControllerByPort(portIndex)->GetLeftStick()
                 : Ship::Context::GetInstance()->GetControlDeck()->GetControllerByPort(portIndex)->GetRightStick();
         if (controllerStick->HasMappingsForShipDeviceIndex(lusIndex)) {
@@ -1525,7 +1525,7 @@ void SohInputEditorWindow::DrawMapping(CustomButtonMap& mapping, float labelWidt
             }
             if (ImGui::Selectable(i->second, i->first == currentButton)) {
                 CVarSetInteger(mapping.cVarName, i->first);
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             }
         }
         ImGui::EndCombo();
@@ -1535,8 +1535,10 @@ void SohInputEditorWindow::DrawMapping(CustomButtonMap& mapping, float labelWidt
 
 void SohInputEditorWindow::DrawOcarinaControlPanel() {
     ImVec2 cursor = ImGui::GetCursorPos();
-    ImGui::SetCursorPos(ImVec2(cursor.x + 24, cursor.y + 5));
-
+    ImGui::SetCursorPos(ImVec2(cursor.x, cursor.y + 5));
+    
+    UIWidgets::EnhancementCheckbox("Dpad Ocarina Playback", CVAR_SETTING("CustomOcarina.Dpad"));
+    UIWidgets::EnhancementCheckbox("Right Stick Ocarina Playback", CVAR_SETTING("CustomOcarina.RightStick"));
     UIWidgets::EnhancementCheckbox("Customize Ocarina Controls", CVAR_SETTING("CustomOcarina.Enabled"));
 
     if (!CVarGetInteger(CVAR_SETTING("CustomOcarina.Enabled"), 0)) {

@@ -512,7 +512,7 @@ void EnDh_Update(Actor* thisx, PlayState* play) {
 
     EnDh_CollisionCheck(this, play);
     this->actionFunc(this, play);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 45.0f, 45.0f, 0x1D);
     this->actor.focus.pos = this->headPos;
     Collider_UpdateCylinder(&this->actor, &this->collider1);

@@ -170,7 +170,7 @@ void InputViewer::DrawElement() {
         ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0, 0, 0, 0));
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0.0f, 0.0f));
 
-        OSContPad* pads = Ship::Context::GetInstance()->GetControlDeck()->GetPads();
+        OSContPad* pads = std::dynamic_pointer_cast<LUS::ControlDeck>(Ship::Context::GetInstance()->GetControlDeck())->GetPads();
 
         ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar |
             ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoBackground |

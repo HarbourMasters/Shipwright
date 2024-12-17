@@ -31,6 +31,9 @@ void RegionTable_Init_BottomOfTheWell() {
                   LOCATION(RC_BOTTOM_OF_THE_WELL_FREESTANDING_KEY,             (logic->HasItem(RG_BRONZE_SCALE) || logic->LoweredWaterInsideBotw) && logic->CanUse(RG_STICKS) || logic->CanUse(RG_DINS_FIRE)),
                   LOCATION(RC_BOTTOM_OF_THE_WELL_UNDERWATER_FRONT_CHEST,       logic->LoweredWaterInsideBotw),
                   LOCATION(RC_BOTTOM_OF_THE_WELL_UNDERWATER_LEFT_CHEST,        logic->LoweredWaterInsideBotw),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_NEAR_ENTRANCE_POT_1,          logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_NEAR_ENTRANCE_POT_2,          logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_UNDERWATER_POT,               (logic->CanBreakPots() && logic->LoweredWaterInsideBotw) || logic->CanUse(RG_BOOMERANG)),
                 }, {
                   //Exits
                   Entrance(RR_BOTTOM_OF_THE_WELL_ENTRYWAY,          {[]{return logic->IsChild && logic->CanPassEnemy(RE_BIG_SKULLTULA);}}),
@@ -63,7 +66,12 @@ void RegionTable_Init_BottomOfTheWell() {
   });
 
 //this area has pots and can be reached without lens in logic from basement, but that could require silver rupees if they are shuffled.
-  areaTable[RR_BOTTOM_OF_THE_WELL_SOUTHWEST_ROOM] = Region("Bottom of the Well Southwest Room", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_BOTTOM_OF_THE_WELL_SOUTHWEST_ROOM] = Region("Bottom of the Well Southwest Room", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {
+                  //Locations
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_LEFT_SIDE_POT_1, logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_LEFT_SIDE_POT_2, logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_LEFT_SIDE_POT_3, logic->CanBreakPots()),
+  }, {
                   //Exits
                   Entrance(RR_BOTTOM_OF_THE_WELL_PERIMETER,   {[]{return ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH);}}),
   });
@@ -72,6 +80,7 @@ void RegionTable_Init_BottomOfTheWell() {
   areaTable[RR_BOTTOM_OF_THE_WELL_KEESE_BEAMOS_ROOM] = Region("Bottom of the Well Keese-Beamos Room", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_BOTTOM_OF_THE_WELL_FIRE_KEESE_CHEST, ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH)),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_FIRE_KEESE_POT_1, logic->CanBreakPots() && (ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH))),
                 }, {
                   //Exits
                   Entrance(RR_BOTTOM_OF_THE_WELL_PERIMETER,                    {[]{return logic->IsChild && logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 3) && (ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH));}}),
@@ -123,7 +132,19 @@ void RegionTable_Init_BottomOfTheWell() {
 
   areaTable[RR_BOTTOM_OF_THE_WELL_BASEMENT] = Region("Bottom of the Well Basement", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LOCATION(RC_BOTTOM_OF_THE_WELL_MAP_CHEST, logic->BlastOrSmash()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_MAP_CHEST,       logic->BlastOrSmash()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_1,  logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_2,  logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_3,  logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_4,  logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_5,  logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_6,  logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_7,  logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_8,  logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_9,  logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_10, logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_11, logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_12, logic->CanBreakPots()),
                 }, {
                   //Exits
                   Entrance(RR_BOTTOM_OF_THE_WELL_SOUTHWEST_ROOM,               {[]{return logic->IsChild && logic->CanPassEnemy(RE_BIG_SKULLTULA);}}),
@@ -160,7 +181,11 @@ void RegionTable_Init_BottomOfTheWell() {
                   //You have to throw the pot from further back to hit the switch from the front instead of the top, trying to hit the "fingers" directly
                   //This unintuitiveness means it should be a trick. ZL is needed to get a clear path to carry the pot
                   EventAccess(&logic->LoweredWaterInsideBotw, {[]{return logic->CanJumpslash() || logic->CanUseProjectile();}}),
-  }, {}, {
+  }, {
+                  //Locations
+                  //Implies CanBreakPots()
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_OUTER_LOBBY_POT, Here(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER, []{return logic->BlastOrSmash();}) && logic->CanHitEyeTargets()),
+  }, {
                   //Exits
                   Entrance(RR_BOTTOM_OF_THE_WELL_ENTRYWAY,            {[]{return logic->IsChild;}}),
                   Entrance(RR_BOTTOM_OF_THE_WELL_MQ_WEST_ROOM_SWITCH, {[]{return Here(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER, []{return logic->BlastOrSmash();}) && logic->CanPassEnemy(RE_BIG_SKULLTULA);}}),
@@ -209,7 +234,7 @@ void RegionTable_Init_BottomOfTheWell() {
 
   areaTable[RR_BOTTOM_OF_THE_WELL_MQ_MIDDLE] = Region("Bottom of the Well MQ Middle", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_MAP_CHEST,              true),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_MAP_CHEST,                        true),
                   //This location technically involves an invisible platform, but it's intended to do lensless in vanilla and is clearly signposted by pots.
                   LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_EAST_INNER_ROOM_FREESTANDING_KEY, true),
                   //The enemies in this room are invisible and crowd around the player, being awkward to deal with blind unless you already know how.
@@ -220,16 +245,22 @@ void RegionTable_Init_BottomOfTheWell() {
                   //An MQ lens trick is recommended here, and a review of this room for OHKO logic what that is added is advised. 
                   //In the meantime I assume damage taken or the easy answer (nuts)
                   LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_GS_WEST_INNER_ROOM,               logic->OpenedWestRoomMQBotw && (logic->TakeDamage() || logic->CanUse(RG_NUTS)) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_INNER_LOBBY_POT_1,                logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_INNER_LOBBY_POT_2,                logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_INNER_LOBBY_POT_3,                logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_EAST_INNER_ROOM_POT_1,            logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_EAST_INNER_ROOM_POT_2,            logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_EAST_INNER_ROOM_POT_3,            logic->CanBreakPots()),
   }, {
                   //Exits
                   //If a relevant trick causes you to be able to warp into here without going through PERIMETER, a new eventAccess will be needed for lowering the gates with ZL 
                   Entrance(RR_BOTTOM_OF_THE_WELL_MQ_BASEMENT_SWITCH_PLATFORM, {[]{return logic->OpenedMiddleHoleMQBotw;}}),
-                  Entrance(RR_BOTTOM_OF_THE_WELL_MQ_BASEMENT,  {[]{return true;}}),
+                  Entrance(RR_BOTTOM_OF_THE_WELL_MQ_BASEMENT,                 {[]{return true;}}),
   });
 
   areaTable[RR_BOTTOM_OF_THE_WELL_MQ_BASEMENT] = Region("Bottom of the Well MQ Basement", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  //behind invisible big skulltulas, but with navi spotting it's easy to avoid them, or at worst, take your way through as they do not block the path
+                  //behind invisible big skulltulas, but with navi spotting it's easy to avoid them, or at worst, tank your way through as they do not block the path
                   LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_GS_BASEMENT,  logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
   }, {
                   //Exits

@@ -54,6 +54,8 @@ bool showMasterSword;
 bool showHyruleLoach;
 bool showWeirdEgg;
 bool showGerudoCard;
+bool showOverworldPots;
+bool showDungeonPots;
 bool showFrogSongRupees;
 bool showStartingMapsCompasses;
 bool showKeysanity;
@@ -559,7 +561,7 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
             SetCheckCollected(RC_TWINROVA);
             return;
         } else if (giEntry.itemId == ITEM_MEDALLION_LIGHT) {
-            SetCheckCollected(RC_GIFT_FROM_SAGES);
+            SetCheckCollected(RC_GIFT_FROM_RAURU);
             return;
         } else if (giEntry.itemId == ITEM_SONG_EPONA) {
             SetCheckCollected(RC_SONG_FROM_MALON);
@@ -820,7 +822,7 @@ void CheckTrackerWindow::DrawElement() {
         if (CVarGetInteger(CVAR_TRACKER_CHECK("DisplayType"), TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_COMBO_BUTTON) {
             int comboButton1Mask = buttons[CVarGetInteger(CVAR_TRACKER_CHECK("ComboButton1"), TRACKER_COMBO_BUTTON_L)];
             int comboButton2Mask = buttons[CVarGetInteger(CVAR_TRACKER_CHECK("ComboButton2"), TRACKER_COMBO_BUTTON_R)];
-            OSContPad* trackerButtonsPressed = Ship::Context::GetInstance()->GetControlDeck()->GetPads();
+            OSContPad* trackerButtonsPressed = std::dynamic_pointer_cast<LUS::ControlDeck>(Ship::Context::GetInstance()->GetControlDeck())->GetPads();
             bool comboButtonsHeld = trackerButtonsPressed != nullptr &&
                 trackerButtonsPressed[0].button & comboButton1Mask &&
                 trackerButtonsPressed[0].button & comboButton2Mask;
@@ -1177,22 +1179,43 @@ void LoadSettings() {
                 showDungeonTokens = false;
                 break;
         }
+
+        switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_POTS)) {
+            case RO_SHUFFLE_POTS_ALL:
+                showOverworldPots = true;
+                showDungeonPots = true;
+                break;
+            case RO_SHUFFLE_POTS_OVERWORLD:
+                showOverworldPots = true;
+                showDungeonPots = false;
+                break;
+            case RO_SHUFFLE_POTS_DUNGEONS:
+                showOverworldPots = false;
+                showDungeonPots = true;
+                break;
+            default:
+                showOverworldPots = false;
+                showDungeonPots = false;
+                break;
+        }
     } else { // Vanilla
         showOverworldTokens = true;
         showDungeonTokens = true;
+        showOverworldPots = false;
+        showDungeonPots = false;
     }
 
     fortressFast = false;
     fortressNormal = false;
     switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_FORTRESS)) {
-        case RO_GF_OPEN:
+        case RO_GF_CARPENTERS_FREE:
             showGerudoFortressKeys = false;
             showGerudoCard = false;
             break;
-        case RO_GF_FAST:
+        case RO_GF_CARPENTERS_FAST:
             fortressFast = true;
             break;
-        case RO_GF_NORMAL:
+        case RO_GF_CARPENTERS_NORMAL:
             fortressNormal = true;
             break;
     }
@@ -1236,6 +1259,9 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                 (showOverworldTokens && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea())) ||
                 (showDungeonTokens && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))
                 ) &&
+            (loc->GetRCType() != RCTYPE_POT ||
+                (showOverworldPots && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea())) ||
+                (showDungeonPots && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))) &&
             (loc->GetRCType() != RCTYPE_COW || showCows) &&
             (loc->GetRCType() != RCTYPE_FISH || OTRGlobals::Instance->gRandoContext->GetFishsanity()->GetFishLocationIncluded(loc)) &&
             (loc->GetRCType() != RCTYPE_ADULT_TRADE ||
@@ -1264,7 +1290,7 @@ bool IsCheckShuffled(RandomizerCheck rc) {
         return (loc->GetQuest() == RCQUEST_BOTH ||
             (loc->GetQuest() == RCQUEST_MQ && OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(loc->GetScene())->IsMQ()) ||
             (loc->GetQuest() == RCQUEST_VANILLA && OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(loc->GetScene())->IsVanilla()) ||
-            rc == RC_GIFT_FROM_SAGES) && rc != RC_LINKS_POCKET;
+            rc == RC_GIFT_FROM_RAURU) && rc != RC_LINKS_POCKET;
     }
     return false;
 }

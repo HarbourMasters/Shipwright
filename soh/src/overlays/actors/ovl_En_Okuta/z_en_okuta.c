@@ -652,7 +652,7 @@ void EnOkuta_Update(Actor* thisx, PlayState* play2) {
                  this->actor.scale.y * 100.0f);
         } else {
             sp34 = false;
-            Actor_MoveForward(&this->actor);
+            Actor_MoveXZGravity(&this->actor);
             Math_Vec3f_Copy(&sp38, &this->actor.world.pos);
             Actor_UpdateBgCheckInfo(play, &this->actor, 10.0f, 15.0f, 30.0f, 5);
             if ((this->actor.bgCheckFlags & 8) &&

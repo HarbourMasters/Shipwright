@@ -1307,7 +1307,7 @@ void EnWf_Update(Actor* thisx, PlayState* play) {
     EnWf_UpdateDamage(this, play);
 
     if (this->actor.colChkInfo.damageEffect != ENWF_DMGEFF_ICE_MAGIC) {
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
         Actor_UpdateBgCheckInfo(play, &this->actor, 32.0f, 30.0f, 60.0f, 0x1D);
         this->actionFunc(this, play);
         func_80B36F40(this, play);

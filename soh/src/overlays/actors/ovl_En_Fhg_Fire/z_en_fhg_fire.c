@@ -296,7 +296,7 @@ void EnFhgFire_LightningShock(EnFhgFire* this, PlayState* play) {
         EffectSsFhgFlash_SpawnShock(play, &this->actor, &pos, 200, FHGFLASH_SHOCK_NO_ACTOR);
     }
 
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Collider_UpdateCylinder(&this->actor, &this->collider);
     if (player->invincibilityTimer == 0) {
         CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
@@ -440,8 +440,8 @@ void EnFhgFire_EnergyBall(EnFhgFire* this, PlayState* play) {
         dxL = player->actor.world.pos.x - this->actor.world.pos.x;
         dyL = player->actor.world.pos.y + 40.0f - this->actor.world.pos.y;
         dzL = player->actor.world.pos.z - this->actor.world.pos.z;
-        func_8002D908(&this->actor);
-        func_8002D7EC(&this->actor);
+        Actor_UpdateVelocityXYZ(&this->actor);
+        Actor_UpdatePos(&this->actor);
         if (this->work[FHGFIRE_VARIANCE_TIMER] & 1) {
             Actor_SetScale(&this->actor, 6.0f);
         } else {

@@ -139,14 +139,11 @@ static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) 
 // Writes the settings (without excluded locations, starting inventory and tricks) to the spoilerLog document.
 static void WriteSettings() {
     auto ctx = Rando::Context::GetInstance();
-    auto allOptionGroups = ctx->GetSettings()->GetOptionGroups();
-    for (const Rando::OptionGroup& optionGroup : allOptionGroups) {
-        if (optionGroup.GetContainsType() == Rando::OptionGroupType::DEFAULT && optionGroup.PrintInSpoiler()) {
-            for (Rando::Option* option : optionGroup.GetOptions()) {
-                std::string settingName = optionGroup.GetName() + ":" + option->GetName();
-                jsonData["settings"][settingName] = option->GetSelectedOptionText();
-            }
-        }
+    std::array<Rando::Option, RSK_MAX> options = ctx->GetSettings()->GetAllOptions();
+    for (const Rando::Option& option : options) {
+      if (option.GetName() != ""){
+        jsonData["settings"][option.GetName()] = option.GetSelectedOptionText();
+      }
     }
 }
 

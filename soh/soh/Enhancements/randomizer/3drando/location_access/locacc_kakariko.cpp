@@ -19,6 +19,17 @@ void RegionTable_Init_Kakariko() {
                   LOCATION(RC_KAK_GS_GUARDS_HOUSE,             logic->IsChild && logic->AtNight && logic->CanGetNightTimeGS()),
                   LOCATION(RC_KAK_GS_TREE,                     logic->IsChild && logic->AtNight && logic->CanGetNightTimeGS()),
                   LOCATION(RC_KAK_GS_WATCHTOWER,               logic->IsChild && (logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOMBCHU_5) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_KAK_TOWER_GS) && logic->CanJumpslashExceptHammer())) && logic->AtNight && logic->CanGetNightTimeGS()),
+                  LOCATION(RC_KAK_NEAR_POTION_SHOP_POT_1,      logic->IsChild && logic->CanBreakPots()),
+                  LOCATION(RC_KAK_NEAR_POTION_SHOP_POT_2,      logic->IsChild && logic->CanBreakPots()),
+                  LOCATION(RC_KAK_NEAR_POTION_SHOP_POT_3,      logic->IsChild && logic->CanBreakPots()),
+                  LOCATION(RC_KAK_NEAR_IMPAS_HOUSE_POT_1,      logic->IsChild && logic->CanBreakPots()),
+                  LOCATION(RC_KAK_NEAR_IMPAS_HOUSE_POT_2,      logic->IsChild && logic->CanBreakPots()),
+                  LOCATION(RC_KAK_NEAR_IMPAS_HOUSE_POT_3,      logic->IsChild && logic->CanBreakPots()),
+                  LOCATION(RC_KAK_NEAR_GUARDS_HOUSE_POT_1,     logic->IsChild && logic->CanBreakPots()),
+                  LOCATION(RC_KAK_NEAR_GUARDS_HOUSE_POT_2,     logic->IsChild && logic->CanBreakPots()),
+                  LOCATION(RC_KAK_NEAR_GUARDS_HOUSE_POT_3,     logic->IsChild && logic->CanBreakPots()),
+                  LOCATION(RC_KAK_NEAR_MEDICINE_SHOP_POT_1,    logic->IsChild && logic->CanBreakPots()),
+                  LOCATION(RC_KAK_NEAR_MEDICINE_SHOP_POT_2,    logic->IsChild && logic->CanBreakPots()),
                 }, {
                   //Exits
                   Entrance(RR_HYRULE_FIELD,                {[]{return true;}}),
@@ -253,6 +264,12 @@ void RegionTable_Init_Kakariko() {
                   //Locations
                   LOCATION(RC_GRAVEYARD_HOOKSHOT_CHEST,              true),
                   LOCATION(RC_GRAVEYARD_DAMPE_RACE_FREESTANDING_POH, logic->IsAdult || ctx->GetTrickOption(RT_GY_CHILD_DAMPE_RACE_POH)),
+                  LOCATION(RC_GY_DAMPES_GRAVE_POT_1,                 logic->CanBreakPots()),
+                  LOCATION(RC_GY_DAMPES_GRAVE_POT_2,                 logic->CanBreakPots()),
+                  LOCATION(RC_GY_DAMPES_GRAVE_POT_3,                 logic->CanBreakPots()),
+                  LOCATION(RC_GY_DAMPES_GRAVE_POT_4,                 logic->CanBreakPots()),
+                  LOCATION(RC_GY_DAMPES_GRAVE_POT_5,                 logic->CanBreakPots()),
+                  LOCATION(RC_GY_DAMPES_GRAVE_POT_6,                 logic->CanBreakPots()),
                 }, {
                   //Exits
                   Entrance(RR_THE_GRAVEYARD, {[]{return true;}}),

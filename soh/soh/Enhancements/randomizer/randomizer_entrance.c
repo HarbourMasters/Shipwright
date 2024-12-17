@@ -267,13 +267,6 @@ s16 Entrance_PeekNextIndexOverride(int16_t nextEntranceIndex) {
 }
 
 s16 Entrance_OverrideNextIndex(s16 nextEntranceIndex) {
-    // When entering Spirit Temple, clear temp flags so they don't carry over to the randomized dungeon
-    if (nextEntranceIndex == ENTR_SPIRIT_TEMPLE_ENTRANCE && Entrance_GetOverride(nextEntranceIndex) != nextEntranceIndex &&
-        gPlayState != NULL) {
-        gPlayState->actorCtx.flags.tempSwch = 0;
-        gPlayState->actorCtx.flags.tempCollect = 0;
-    }
-
     // Exiting through the crawl space from Hyrule Castle courtyard is the same exit as leaving Ganon's castle
     // Don't override the entrance if we came from the Castle courtyard (day and night scenes)
     if (gPlayState != NULL && (gPlayState->sceneNum == SCENE_CASTLE_COURTYARD_GUARDS_DAY || gPlayState->sceneNum == SCENE_CASTLE_COURTYARD_GUARDS_NIGHT) &&

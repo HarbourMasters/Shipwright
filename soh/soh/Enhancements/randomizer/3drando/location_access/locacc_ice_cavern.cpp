@@ -38,6 +38,14 @@ void RegionTable_Init_IceCavern() {
                   LOCATION(RC_ICE_CAVERN_GS_SPINNING_SCYTHE_ROOM, logic->HookshotOrBoomerang()),
                   LOCATION(RC_ICE_CAVERN_GS_HEART_PIECE_ROOM,     logic->BlueFire() && logic->HookshotOrBoomerang()),
                   LOCATION(RC_ICE_CAVERN_GS_PUSH_BLOCK_ROOM,      logic->BlueFire() && (logic->HookshotOrBoomerang() || (ctx->GetTrickOption(RT_ICE_BLOCK_GS) && logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)))),
+                  LOCATION(RC_ICE_CAVERN_HALL_POT_1,              logic->CanBreakPots()),
+                  LOCATION(RC_ICE_CAVERN_HALL_POT_2,              logic->CanBreakPots()),
+                  LOCATION(RC_ICE_CAVERN_SPINNING_BLADE_POT_1,    logic->CanBreakPots()),
+                  LOCATION(RC_ICE_CAVERN_SPINNING_BLADE_POT_2,    logic->CanBreakPots()),
+                  LOCATION(RC_ICE_CAVERN_SPINNING_BLADE_POT_3,    logic->CanBreakPots()),
+                  LOCATION(RC_ICE_CAVERN_NEAR_END_POT_1,          logic->CanBreakPots() && logic->BlueFire()),
+                  LOCATION(RC_ICE_CAVERN_NEAR_END_POT_2,          logic->CanBreakPots() && logic->BlueFire()),
+                  LOCATION(RC_ICE_CAVERN_FROZEN_POT_1,            logic->CanBreakPots() && logic->BlueFire() && logic->IsAdult),
   }, {});
   }
 
@@ -45,7 +53,10 @@ void RegionTable_Init_IceCavern() {
   |   MASTER QUEST DUNGEON    |
   ---------------------------*/
   if (ctx->GetDungeon(ICE_CAVERN)->IsMQ()) {
-  areaTable[RR_ICE_CAVERN_MQ_BEGINNING] = Region("Ice Cavern MQ Beginning", "Ice Cavern", {RA_ICE_CAVERN}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_ICE_CAVERN_MQ_BEGINNING] = Region("Ice Cavern MQ Beginning", "Ice Cavern", {RA_ICE_CAVERN}, NO_DAY_NIGHT_CYCLE, {}, {
+                  //Locations
+                  LOCATION(RC_ICE_CAVERN_MQ_ENTRANCE_POT, logic->CanBreakPots()),
+  }, {
                   //Exits
                   Entrance(RR_ICE_CAVERN_ENTRYWAY, {[]{return true;}}),
                   //It is in logic to use a pot to hit the toggle switch here.
@@ -55,14 +66,22 @@ void RegionTable_Init_IceCavern() {
   areaTable[RR_ICE_CAVERN_MQ_HUB] = Region("Ice Cavern MQ Hub", "Ice Cavern", {RA_ICE_CAVERN}, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->FairyPot, {[]{return true;}}),
-  }, {}, {
+  }, {
+                  //Locations
+                  LOCATION(RC_ICE_CAVERN_MQ_FIRST_CRYSTAL_POT_1, logic->CanBreakPots()),
+                  LOCATION(RC_ICE_CAVERN_MQ_FIRST_CRYSTAL_POT_2, logic->CanBreakPots()),
+                  LOCATION(RC_ICE_CAVERN_MQ_EARLY_WOLFOS_POT_1,  logic->CanBreakPots()),
+                  LOCATION(RC_ICE_CAVERN_MQ_EARLY_WOLFOS_POT_2,  logic->CanBreakPots()),
+                  LOCATION(RC_ICE_CAVERN_MQ_EARLY_WOLFOS_POT_3,  logic->CanBreakPots()),
+                  LOCATION(RC_ICE_CAVERN_MQ_EARLY_WOLFOS_POT_4,  logic->CanBreakPots()),
+  }, {
                   //Exits
                   //the switch for the glass blocking the entrance is linked to the switch that controls the glass around the skulltulla in RR_ICE_CAVERN_MQ_SCARECROW_ROOM
                   //if you clear the ice, you can hit it with a pot from here.
-                  Entrance(RR_ICE_CAVERN_BEGINNING,            {[]{return logic->BlueFire();}}),
-                  Entrance(RR_ICE_CAVERN_MQ_MAP_ROOM,          {[]{return Here(RR_ICE_CAVERN_MQ_BEGINNING, []{return logic->CanKillEnemy(RE_WHITE_WOLFOS) && logic->CanKillEnemy(RE_FREEZARD);});}}),
-                  Entrance(RR_ICE_CAVERN_MQ_COMPASS_ROOM,      {[]{return logic->IsAdult && logic->BlueFire();}}),
-                  Entrance(RR_ICE_CAVERN_MQ_STALFOS_ROOM, {[]{return logic->BlueFire();}}),
+                  Entrance(RR_ICE_CAVERN_BEGINNING,         {[]{return logic->BlueFire();}}),
+                  Entrance(RR_ICE_CAVERN_MQ_MAP_ROOM,       {[]{return Here(RR_ICE_CAVERN_MQ_BEGINNING, []{return logic->CanKillEnemy(RE_WHITE_WOLFOS) && logic->CanKillEnemy(RE_FREEZARD);});}}),
+                  Entrance(RR_ICE_CAVERN_MQ_COMPASS_ROOM,   {[]{return logic->IsAdult && logic->BlueFire();}}),
+                  Entrance(RR_ICE_CAVERN_MQ_SCARECROW_ROOM, {[]{return logic->BlueFire();}}),
   });
 
   areaTable[RR_ICE_CAVERN_MQ_MAP_ROOM] = Region("Ice Cavern MQ Map Room", "Ice Cavern", {RA_ICE_CAVERN}, NO_DAY_NIGHT_CYCLE, {
@@ -80,9 +99,19 @@ void RegionTable_Init_IceCavern() {
                   LOCATION(RC_ICE_CAVERN_MQ_GS_SCARECROW,     logic->CanUse(RG_SCARECROW) || (logic->IsAdult && (logic->CanUse(RG_LONGSHOT) || ctx->GetTrickOption(RT_ICE_MQ_SCARECROW)))),
   }, {
                   //Exits
-                  Entrance(RR_ICE_CAVERN_MQ_HUB,          {[]{return logic->BlueFire();}}),
+                  Entrance(RR_ICE_CAVERN_MQ_HUB,           {[]{return logic->BlueFire();}}),
                   //Assumes RR_ICE_CAVERN_MQ_HUB access for a pot if using blue fire
-                  Entrance(RR_ICE_CAVERN_MQ_STALFOS_ROOM, {[]{return logic->IsAdult && logic->BlueFire();}}),
+                  Entrance(RR_ICE_CAVERN_MQ_WEST_CORRIDOR, {[]{return logic->IsAdult && logic->BlueFire();}}),
+  });
+
+  areaTable[RR_ICE_CAVERN_MQ_WEST_CORRIDOR] = Region("Ice Cavern MQ West Corridor", "Ice Cavern", {RA_ICE_CAVERN}, NO_DAY_NIGHT_CYCLE, {}, {
+                  //Locations
+                  LOCATION(RC_ICE_CAVERN_MQ_PUSH_BLOCK_POT_1, logic->CanBreakPots()),
+                  LOCATION(RC_ICE_CAVERN_MQ_PUSH_BLOCK_POT_2, logic->CanBreakPots()),
+  }, {
+                  //Exits
+                  Entrance(RR_ICE_CAVERN_MQ_SCARECROW_ROOM, {[]{return logic->BlueFire();}}),
+                  Entrance(RR_ICE_CAVERN_MQ_STALFOS_ROOM,   {[]{return true;}}),
   });
 
   areaTable[RR_ICE_CAVERN_MQ_STALFOS_ROOM] = Region("Ice Cavern MQ Stalfos Room", "Ice Cavern", {RA_ICE_CAVERN}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -106,6 +135,8 @@ void RegionTable_Init_IceCavern() {
                   //doing RT_ICE_MQ_RED_ICE_GS as child is untested, as I could not perform the trick reliably even as adult
                   LOCATION(RC_ICE_CAVERN_MQ_GS_RED_ICE,       (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && logic->CanUse(RG_ICE_ARROWS)) || 
                                                               (logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE) && (logic->CanUse(RG_SONG_OF_TIME) || (logic->IsAdult && ctx->GetTrickOption(RT_ICE_MQ_RED_ICE_GS))) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA))),
+                  LOCATION(RC_ICE_CAVERN_MQ_COMPASS_POT_1,    logic->CanBreakPots()),
+                  LOCATION(RC_ICE_CAVERN_MQ_COMPASS_POT_2,    logic->CanBreakPots()),
   }, {});
   }
 }
