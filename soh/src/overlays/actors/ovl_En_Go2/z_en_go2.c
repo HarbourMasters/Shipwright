@@ -1923,8 +1923,8 @@ void EnGo2_GoronFireGenericAction(EnGo2* this, PlayState* play) {
             if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
                 if (GameInteractor_Should(VB_PLAY_GORON_FREE_CS, true)) {
                     EnGo2_GoronFireCamera(this, play);
+                    play->msgCtx.msgMode = MSGMODE_PAUSED;
                 }
-                play->msgCtx.msgMode = MSGMODE_PAUSED;
                 Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_2);
                 this->waypoint = 1;
                 this->skelAnime.playSpeed = 2.0f;
@@ -1945,7 +1945,7 @@ void EnGo2_GoronFireGenericAction(EnGo2* this, PlayState* play) {
                     (f32)((Math_CosS(this->actor.world.rot.y) * -30.0f) + this->actor.world.pos.z);
                 if (GameInteractor_Should(VB_PLAY_GORON_FREE_CS, true)) {
                     Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
-                }
+                } 
                 Audio_PlayFanfare(NA_BGM_APPEAR);
             }
             break;
