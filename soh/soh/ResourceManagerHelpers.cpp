@@ -551,9 +551,9 @@ std::array<std::unordered_set<std::string>, SCENE_TESTROOM + 1> sceneObjects;
 void LoadSceneResourcesProcess(int16_t sceneNum) {
     auto play = gPlayState;
     for (auto objectName : sceneObjects[sceneNum]) {
-        //if (!sceneObjects[play->sceneNum].contains(objectName)) {
+        if (!sceneObjects[play->sceneNum].contains(objectName)) {
             OTRGlobals::Instance->context->GetResourceManager()->LoadResources("alt/objects/" + objectName + "/*");
-        //}
+        }
     }
     OTRGlobals::Instance->context->GetResourceManager()->LoadResources(GetScenePathMask(sceneNum));
 }
