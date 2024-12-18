@@ -464,7 +464,8 @@ void CheckTrackerLoadGame(int32_t fileNum) {
             }
         }
 
-        if (areaChecksGotten[entry2->GetArea()] != 0 || RandomizerCheckObjects::AreaIsOverworld(entry2->GetArea())) {
+        if (areaChecksGotten[entry2->GetArea()] != 0 || RandomizerCheckObjects::AreaIsOverworld(entry2->GetArea()) ||
+            loc->GetCheckStatus() == RCSHOW_SCUMMED) {
             areasSpoiled |= (1 << entry2->GetArea());
         }
 
