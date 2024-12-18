@@ -551,11 +551,11 @@ std::array<std::unordered_set<std::string>, SCENE_TESTROOM + 1> sceneObjects;
 void LoadSceneResourcesProcess(int16_t sceneNum) {
     auto play = gPlayState;
     for (auto objectName : sceneObjects[sceneNum]) {
-        if (!sceneObjects[play->sceneNum].contains(objectName)) {
-            OTRGlobals::Instance->context->GetResourceManager()->LoadResourcesAsync("alt/objects/" + objectName + "/*");
-        }
+        //if (!sceneObjects[play->sceneNum].contains(objectName)) {
+            OTRGlobals::Instance->context->GetResourceManager()->LoadResources("alt/objects/" + objectName + "/*");
+        //}
     }
-    OTRGlobals::Instance->context->GetResourceManager()->LoadResourcesAsync(GetScenePathMask(sceneNum));
+    OTRGlobals::Instance->context->GetResourceManager()->LoadResources(GetScenePathMask(sceneNum));
 }
 
 // Iterate over scene object/actor commands if not already done so, and load the scene and object assets
@@ -603,10 +603,10 @@ static int lastSkyboxLoad = -1;
 
 void LoadSkyBoxProcess(TimeOfDay timeIndex, bool fileSelect) {
     std::string mask = fmt::format("alt/textures/vr_fine{}*", static_cast<uint8_t>(timeIndex));
-    Ship::Context::GetInstance()->GetResourceManager()->LoadResourcesAsync(mask);
+    Ship::Context::GetInstance()->GetResourceManager()->LoadResources(mask);
     if (!fileSelect) {
         std::string mask = fmt::format("alt/textures/vr_cloud{}*", static_cast<uint8_t>(timeIndex));
-        Ship::Context::GetInstance()->GetResourceManager()->LoadResourcesAsync(mask);
+        Ship::Context::GetInstance()->GetResourceManager()->LoadResources(mask);
     }
     lastSkyboxLoad = timeIndex;
 }
@@ -737,7 +737,7 @@ extern "C" void ResourceMgr_CheckLoadSkybox(bool fileSelect) {
 }
 
 extern "C" void ResourceMgr_Init() {
-    helperThreads = std::make_shared<BS::thread_pool>();
+    helperThreads = std::make_shared<BS::thread_pool>(1);
     for (int16_t sceneNum = 0; sceneNum <= SCENE_OUTSIDE_GANONS_CASTLE; sceneNum++) {
         if (sceneObjects[sceneNum].empty()) {
             SOH::SceneCommandID cmdCode;
