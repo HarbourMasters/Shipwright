@@ -22,6 +22,7 @@
 #include "resource/ResourceManager.h"
 
 s16 unloadScene = -1;
+std::shared_ptr<BS::thread_pool> helperThreads;
 
 extern "C" PlayState* gPlayState;
 
@@ -521,10 +522,9 @@ bool IsSharedScene(int16_t sceneNum) {
            sceneNum != SCENE_INSIDE_GANONS_CASTLE;
 }
 
-// Return full path mask for scene assets
-std::string GetScenePathMask(int16_t sceneNum) {
+std::string GetSceneRootPath(int16_t sceneNum, bool alt = true) {
     std::string sceneName = gSceneTable[sceneNum].sceneFile.fileName;
-    std::string path = "alt/scenes/shared/" + sceneName + "/*";
+    std::string path = fmt::format("{}scenes/shared/{}/", (alt ? "alt/" : ""), sceneName);
     if (!IsSharedScene(sceneNum)) {
         size_t pos = path.find("/shared/", 0);
         if (IS_MASTER_QUEST || (IS_RANDO && OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(sceneNum)->IsMQ())) {
@@ -537,48 +537,30 @@ std::string GetScenePathMask(int16_t sceneNum) {
     return path;
 }
 
+// Return full path mask for scene assets
+std::string GetScenePathMask(int16_t sceneNum, bool alt = true) {
+    return GetSceneRootPath(sceneNum, alt) + "*";
+}
+
+std::string GetSceneFilePath(int16_t sceneNum, bool alt = true) {
+    return GetSceneRootPath(sceneNum, alt) + gSceneTable[sceneNum].sceneFile.fileName;
+}
+
 std::array<std::unordered_set<std::string>, SCENE_TESTROOM + 1> sceneObjects;
 
-// Iterate over scene object/actor commands if not already done so, and load the scene and object assets
-extern "C" void ResourceMgr_LoadAllSceneResources(int16_t sceneNum, bool now) {
+void LoadSceneResourcesProcess(int16_t sceneNum) {
     auto play = gPlayState;
-    if (sceneObjects[sceneNum].empty()) {
-        SOH::SceneCommandID cmdCode;
-        auto scene = (SOH::Scene*)play->sceneSegment;
-        for (auto sceneCmd : scene->commands) {
-            if (sceneCmd->cmdId == SOH::SceneCommandID::SetRoomList) {
-                auto setRoomListCmd = std::dynamic_pointer_cast<SOH::SetRoomList>(sceneCmd);
-                for (auto room : setRoomListCmd->rooms) {
-                    auto roomScene = (SOH::Scene*)Ship::Context::GetInstance()->GetResourceManager()->LoadResource(room.fileName).get();
-                    for (auto roomSceneCmd : roomScene->commands) {
-                        if (roomSceneCmd->cmdId == SOH::SceneCommandID::SetObjectList) {
-                            auto setObjectCmd = std::dynamic_pointer_cast<SOH::SetObjectList>(roomSceneCmd);
-                            for (auto objectId : setObjectCmd->objects) {
-                                std::string objectName = gObjectTable[objectId].fileName;
-                                sceneObjects[sceneNum].insert(objectName);
-                            }
-                        }
-                        else if (roomSceneCmd->cmdId == SOH::SceneCommandID::SetActorList) {
-                            auto setActorCmd = std::dynamic_pointer_cast<SOH::SetActorList>(roomSceneCmd);
-                            if (setActorCmd->numActors > 0) {
-                                for (uint16_t i = 0; i < setActorCmd->numActors; i++) {
-                                    auto actorEntry = (ActorEntry*)setActorCmd->GetRawPointer();
-                                    std::string objectName = gObjectTable[ActorDB::Instance->RetrieveEntry(actorEntry->id).entry.objectId].fileName;
-                                    sceneObjects[sceneNum].insert(objectName);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
     for (auto objectName : sceneObjects[sceneNum]) {
-        if (!sceneObjects[gPlayState->sceneNum].contains(objectName)) {
+        if (!sceneObjects[play->sceneNum].contains(objectName)) {
             OTRGlobals::Instance->context->GetResourceManager()->LoadResourcesAsync("alt/objects/" + objectName + "/*");
         }
     }
     OTRGlobals::Instance->context->GetResourceManager()->LoadResourcesAsync(GetScenePathMask(sceneNum));
+}
+
+// Iterate over scene object/actor commands if not already done so, and load the scene and object assets
+extern "C" void ResourceMgr_LoadAllSceneResources(int16_t sceneNum, bool now) {
+    helperThreads->submit_task(std::bind(LoadSceneResourcesProcess, sceneNum));
 }
 
 extern "C" void ResourceMgr_RegisterUnloadSceneAssets(s16 prevScene) {
@@ -601,7 +583,7 @@ void UnloadSceneAssetsProcess() {
 // Start unload loops on a thread for performance purposes
 extern "C" void ResourceMgr_UnloadSceneAssets() {
     if (unloadScene != -1) {
-        UnloadSceneAssetsProcess();
+        helperThreads->submit_task(UnloadSceneAssetsProcess);
     }
 }
 
@@ -617,9 +599,9 @@ void ResourceMgr_LoadDelayedPersistentAltAssets() {
     Ship::Context::GetInstance()->GetResourceManager()->LoadResourcesAsync({textureIncludes, textureExcludes, 0, nullptr});
 }
 
-int lastSkyboxLoad = -1;
-// Load regular and cloudy skyboxes for specified TimeOfDay
-extern "C" void ResourceMgr_LoadSkyBox(TimeOfDay timeIndex, bool fileSelect) {
+static int lastSkyboxLoad = -1;
+
+void LoadSkyBoxProcess(TimeOfDay timeIndex, bool fileSelect) {
     std::string mask = fmt::format("alt/textures/vr_fine{}*", static_cast<uint8_t>(timeIndex));
     Ship::Context::GetInstance()->GetResourceManager()->LoadResourcesAsync(mask);
     if (!fileSelect) {
@@ -628,14 +610,20 @@ extern "C" void ResourceMgr_LoadSkyBox(TimeOfDay timeIndex, bool fileSelect) {
     }
     lastSkyboxLoad = timeIndex;
 }
+// Load regular and cloudy skyboxes for specified TimeOfDay
+extern "C" void ResourceMgr_LoadSkyBox(TimeOfDay timeIndex, bool fileSelect) {
+    helperThreads->submit_task(std::bind(LoadSkyBoxProcess, timeIndex, fileSelect));
+}
 
-int lastSkyboxUnload = -1;
+static int lastSkyboxUnload = -1;
 // Unload skyboxes for specified TimeOfDay
 extern "C" void ResourceMgr_UnloadSkyBox(TimeOfDay timeIndex) {
-    std::string mask = fmt::format("alt/textures/vr_cloud{}*", static_cast<uint8_t>(timeIndex));
-    ResourceUnloadDirectory(mask.c_str());
-    mask = fmt::format("alt/textures/vr_fine{}*", static_cast<uint8_t>(timeIndex));
-    ResourceUnloadDirectory(mask.c_str());
+    helperThreads->submit_task([timeIndex]() -> void {
+        std::string mask = fmt::format("alt/textures/vr_cloud{}*", static_cast<uint8_t>(timeIndex));
+        ResourceUnloadDirectory(mask.c_str());
+        mask = fmt::format("alt/textures/vr_fine{}*", static_cast<uint8_t>(timeIndex));
+        ResourceUnloadDirectory(mask.c_str());
+    });
 }
 
 // Setup initial preload based on Fast File Select and Save Index options
@@ -744,6 +732,44 @@ extern "C" void ResourceMgr_CheckLoadSkybox(bool fileSelect) {
         if (lastSkyboxUnload != 3) {
             lastSkyboxUnload = 3;
             ResourceMgr_UnloadSkyBox(TOD_Night);
+        }
+    }
+}
+
+extern "C" void ResourceMgr_Init() {
+    helperThreads = std::make_shared<BS::thread_pool>();
+    for (int16_t sceneNum = 0; sceneNum <= SCENE_OUTSIDE_GANONS_CASTLE; sceneNum++) {
+        if (sceneObjects[sceneNum].empty()) {
+            SOH::SceneCommandID cmdCode;
+            std::string scenePath = GetSceneFilePath(sceneNum, false);
+            auto scene = (SOH::Scene*)Ship::Context::GetInstance()->GetResourceManager()->LoadResource(scenePath.c_str()).get();
+            for (auto sceneCmd : scene->commands) {
+                if (sceneCmd->cmdId == SOH::SceneCommandID::SetRoomList) {
+                    auto setRoomListCmd = std::dynamic_pointer_cast<SOH::SetRoomList>(sceneCmd);
+                    for (auto room : setRoomListCmd->rooms) {
+                        auto roomScene = (SOH::Scene*)Ship::Context::GetInstance()->GetResourceManager()->LoadResource(room.fileName).get();
+                        for (auto roomSceneCmd : roomScene->commands) {
+                            if (roomSceneCmd->cmdId == SOH::SceneCommandID::SetObjectList) {
+                                auto setObjectCmd = std::dynamic_pointer_cast<SOH::SetObjectList>(roomSceneCmd);
+                                for (auto objectId : setObjectCmd->objects) {
+                                    std::string objectName = gObjectTable[objectId].fileName;
+                                    sceneObjects[sceneNum].insert(objectName);
+                                }
+                            }
+                            else if (roomSceneCmd->cmdId == SOH::SceneCommandID::SetActorList) {
+                                auto setActorCmd = std::dynamic_pointer_cast<SOH::SetActorList>(roomSceneCmd);
+                                if (setActorCmd->numActors > 0) {
+                                    for (uint16_t i = 0; i < setActorCmd->numActors; i++) {
+                                        auto actorEntry = (ActorEntry*)setActorCmd->GetRawPointer();
+                                        std::string objectName = gObjectTable[ActorDB::Instance->RetrieveEntry(actorEntry->id).entry.objectId].fileName;
+                                        sceneObjects[sceneNum].insert(objectName);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

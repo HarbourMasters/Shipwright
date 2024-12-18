@@ -1199,6 +1199,8 @@ extern "C" void InitOTR() {
         Sail::Instance->Enable();
     }
 #endif
+
+    ResourceMgr_Init();
 }
 
 extern "C" void SaveManager_ThreadPoolWait() {

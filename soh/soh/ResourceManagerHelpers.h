@@ -77,6 +77,7 @@ extern "C" {
     void ResourceMgr_RegisterHooks();
     void ResourceMgr_LoadSkyBox(TimeOfDay timeIndex, bool fileSelect);
     void ResourceMgr_UnloadSkyBox(TimeOfDay timeIndex);
+    void ResourceMgr_Init();
 #ifdef __cplusplus
 }
 #endif // __cplusplus
