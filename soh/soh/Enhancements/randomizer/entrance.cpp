@@ -969,7 +969,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
         { { EntranceType::Interior, RR_ZORAS_FOUNTAIN,                RR_ZF_GREAT_FAIRY_FOUNTAIN,       ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_FARORES_ZF },
           { EntranceType::Interior, RR_ZF_GREAT_FAIRY_FOUNTAIN,       RR_ZORAS_FOUNTAIN,                ENTR_ZORAS_FOUNTAIN_OUTSIDE_GREAT_FAIRY } },
 
-        { { EntranceType::SpecialInterior, RR_KOKIRI_FOREST,         RR_KF_LINKS_HOUSE,        ENTR_LINKS_HOUSE_CHILD_SPAWN },
+        { { EntranceType::SpecialInterior, RR_KOKIRI_FOREST,         RR_KF_LINKS_HOUSE,        ENTR_LINKS_HOUSE_1 },
           { EntranceType::SpecialInterior, RR_KF_LINKS_HOUSE,        RR_KOKIRI_FOREST,         ENTR_KOKIRI_FOREST_OUTSIDE_LINKS_HOUSE } },
         { { EntranceType::SpecialInterior, RR_TOT_ENTRANCE,          RR_TEMPLE_OF_TIME,        ENTR_TEMPLE_OF_TIME_ENTRANCE },
           { EntranceType::SpecialInterior, RR_TEMPLE_OF_TIME,        RR_TOT_ENTRANCE,          ENTR_TEMPLE_OF_TIME_EXTERIOR_DAY_OUTSIDE_TEMPLE } },
