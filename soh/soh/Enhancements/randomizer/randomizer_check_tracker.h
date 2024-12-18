@@ -59,4 +59,5 @@ void UpdateAreas(RandomizerCheckArea area);
 void UpdateAllOrdering();
 void UpdateAllAreas();
 void RecalculateAllAreaTotals();
+void SpoilAreaFromCheck(RandomizerCheck rc);
 } // namespace CheckTracker
