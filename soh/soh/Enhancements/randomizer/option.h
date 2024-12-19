@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <set>
 #include <string>
+#include <unordered_map>
 #include <vector>
 #include <variant>
 #include <type_traits>

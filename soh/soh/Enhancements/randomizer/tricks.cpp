@@ -55,21 +55,30 @@ namespace Rando {
         return true;
     }
 
-    const std::unordered_map<Tag, std::string> rtTagNames = {
-        { Tag::NOVICE, "Novice" },
-        { Tag::INTERMEDIATE, "Intermediate" },
-        { Tag::ADVANCED, "Advanced" },
-        { Tag::EXPERT, "Expert" },
-        { Tag::EXTREME, "Extreme" },
+    const std::unordered_map<Tricks::Tag, std::string> rtTagNames = {
+        { Tricks::Tag::NOVICE, "Novice" },
+        { Tricks::Tag::INTERMEDIATE, "Intermediate" },
+        { Tricks::Tag::ADVANCED, "Advanced" },
+        { Tricks::Tag::EXPERT, "Expert" },
+        { Tricks::Tag::EXTREME, "Extreme" },
         /*
-        { Tag::LENS, "Lens" },
-        { Tag::BKSKIP, "Boss Key Skip" },
-        { Tag::EXPERIMENTAL, "Experimental" },
+        { Tricks::Tag::LENS, "Lens" },
+        { Tricks::Tag::BKSKIP, "Boss Key Skip" },
         */
+        { Tricks::Tag::EXPERIMENTAL, "Experimental" },
     };
 
     const std::string Tricks::GetTagName(const Tag tag) {
         return rtTagNames.at(tag);
+    }
+
+    const ImVec4 Tricks::GetTextColor(const Tag tag) {
+        switch(tag) {
+            case Tag::EXPERIMENTAL:
+                return { 0.00f, 0.00f, 0.00f, 1.0f };
+            default:
+                return { 1.00f, 1.00f, 1.00f, 1.00f };
+        }
     }
 
     const ImVec4 Tricks::GetTagColor(const Tag tag) {
@@ -89,9 +98,9 @@ namespace Rando {
                 return { .f, .f, .f, 1.0f };
             case Tag::BKSKIP:
                 return { .f, .f, .f, 1.0f };
-            case Tag::EXPERIMENTAL:
-                return { .f, .f, .f, 1.0f };
             */
+            case Tag::EXPERIMENTAL:
+                return { 0.00f, 1.00f, 1.00f, 1.0f };
             default:
                 return { 0.50f, 0.50f, 0.50f, 1.00f };
         }

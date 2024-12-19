@@ -22,13 +22,14 @@ namespace Rando {
                 /*
                 LENS,
                 BKSKIP,
-                EXPERIMENTAL,
                 */
+                EXPERIMENTAL,
             };
 
             static const std::string& GetAreaName(RandomizerArea area);
             static const bool CheckTags(const std::map<Tag, bool>& showTag, const std::set<Tag>& rtTags);
             static const std::string GetTagName(Tag tag);
+            static const ImVec4 GetTextColor(Tag tag);
             static const ImVec4 GetTagColor(Tag tag);
             static void DrawTagChips(const std::set<Tag>& rtTags);
     };

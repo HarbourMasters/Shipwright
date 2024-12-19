@@ -2278,6 +2278,11 @@ void RandomizerSettingsWindow::DrawElement() {
                 { Rando::Tricks::Tag::ADVANCED, true },
                 { Rando::Tricks::Tag::EXPERT, true },
                 { Rando::Tricks::Tag::EXTREME, true },
+                /*
+                { Rando::Tricks::Tag::LENS, true },
+                { Rando::Tricks::Tag::BKSKIP, true },
+                */
+                { Rando::Tricks::Tag::EXPERIMENTAL, true },
             };
             static ImGuiTextFilter trickSearch;
             trickSearch.Draw("Filter (inc,-exc)", 490.0f);
@@ -2317,9 +2322,10 @@ void RandomizerSettingsWindow::DrawElement() {
             if (ImGui::BeginTable("trickTags", showTag.size(), ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders)) {  
                 for (auto [rtTag, isShown] : showTag) {
                     ImGui::TableNextColumn();
+                    ImGui::PushStyleColor(ImGuiCol_Text, Rando::Tricks::GetTextColor(rtTag));
                     ImGui::PushStyleColor(ImGuiCol_Header, Rando::Tricks::GetTagColor(rtTag));
                     ImGui::Selectable(Rando::Tricks::GetTagName(rtTag).c_str(), &showTag[rtTag]);
-                    ImGui::PopStyleColor(1);
+                    ImGui::PopStyleColor(2);
                 }
                 ImGui::EndTable();
             }
