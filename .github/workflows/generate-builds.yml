@@ -22,7 +22,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y $(cat .github/workflows/apt-deps.txt)
+        sudo apt-get install -y $(cat .github/workflows/apt-deps.txt) libzip-dev zipcmp zipmerge ziptool
     - name: Cache build folders
       uses: actions/cache@v4
       with:
@@ -32,15 +32,16 @@ jobs:
           ${{ runner.os }}-otr-build-
         path: |
           build-cmake
-          SDL2-2.28.5
+          SDL2-2.30.3
+          tinyxml2-10.0.0
     - name: Install latest SDL
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        if [ ! -d "SDL2-2.28.5" ]; then
-          wget https://www.libsdl.org/release/SDL2-2.28.5.tar.gz
-          tar -xzf SDL2-2.28.5.tar.gz
+        if [ ! -d "SDL2-2.30.3" ]; then
+          wget https://www.libsdl.org/release/SDL2-2.30.3.tar.gz
+          tar -xzf SDL2-2.30.3.tar.gz
         fi
-        cd SDL2-2.28.5
+        cd SDL2-2.30.3
         ./configure --enable-hidapi-libusb
         make -j 10
         sudo make install
@@ -54,7 +55,7 @@ jobs:
           tar -xzf 10.0.0.tar.gz
         fi
         cd tinyxml2-10.0.0
-        mkdir build
+        mkdir -p build
         cd build
         cmake ..
         make
@@ -157,34 +158,22 @@ jobs:
           linux-build-${{ github.ref }}
           linux-build-
         path: |
-          SDL2-2.28.5
+          SDL2-2.30.3
           SDL2_net-2.2.0
+          tinyxml2-10.0.0
+          libzip-1.10.1
     - name: Install latest SDL
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        if [ ! -d "SDL2-2.28.5" ]; then
-          wget https://www.libsdl.org/release/SDL2-2.28.5.tar.gz
-          tar -xzf SDL2-2.28.5.tar.gz
+        if [ ! -d "SDL2-2.30.3" ]; then
+          wget https://www.libsdl.org/release/SDL2-2.30.3.tar.gz
+          tar -xzf SDL2-2.30.3.tar.gz
         fi
-        cd SDL2-2.28.5
+        cd SDL2-2.30.3
         ./configure --enable-hidapi-libusb
         make -j 10
         sudo make install
         sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
-    - name: Install latest tinyxml2
-      run: |
-        sudo apt-get remove libtinyxml2-dev
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        if [ ! -d "tinyxml2-10.0.0" ]; then
-          wget https://github.com/leethomason/tinyxml2/archive/refs/tags/10.0.0.tar.gz
-          tar -xzf 10.0.0.tar.gz
-        fi
-        cd tinyxml2-10.0.0
-        mkdir build
-        cd build
-        cmake ..
-        make
-        sudo make install
     - name: Install latest SDL_net
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
@@ -197,6 +186,34 @@ jobs:
         make -j 10
         sudo make install
         sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
+    - name: Install latest tinyxml2
+      run: |
+        sudo apt-get remove libtinyxml2-dev
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+        if [ ! -d "tinyxml2-10.0.0" ]; then
+          wget https://github.com/leethomason/tinyxml2/archive/refs/tags/10.0.0.tar.gz
+          tar -xzf 10.0.0.tar.gz
+        fi
+        cd tinyxml2-10.0.0
+        mkdir -p build
+        cd build
+        cmake ..
+        make
+        sudo make install
+    - name: Install libzip without crypto
+      run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+        if [ ! -d "libzip-1.10.1" ]; then
+          wget https://github.com/nih-at/libzip/releases/download/v1.10.1/libzip-1.10.1.tar.gz
+          tar -xzf libzip-1.10.1.tar.gz
+        fi
+        cd libzip-1.10.1
+        mkdir -p build
+        cd build
+        cmake .. -DENABLE_COMMONCRYPTO=OFF -DENABLE_GNUTLS=OFF -DENABLE_MBEDTLS=OFF -DENABLE_OPENSSL=OFF
+        make
+        sudo make install
+        sudo cp -av /usr/local/lib/libzip* /lib/x86_64-linux-gnu/
     - name: Download soh.otr
       uses: actions/download-artifact@v4
       with:

@@ -889,8 +889,8 @@ int EntranceShuffler::ShuffleAllEntrances() {
           { EntranceType::Dungeon,      RR_BOTTOM_OF_THE_WELL_ENTRYWAY,      RR_KAKARIKO_VILLAGE,                  ENTR_KAKARIKO_VILLAGE_OUTSIDE_BOTTOM_OF_THE_WELL } },
         { { EntranceType::Dungeon,      RR_ZORAS_FOUNTAIN,                   RR_ICE_CAVERN_ENTRYWAY,               ENTR_ICE_CAVERN_ENTRANCE },
           { EntranceType::Dungeon,      RR_ICE_CAVERN_ENTRYWAY,              RR_ZORAS_FOUNTAIN,                    ENTR_ZORAS_FOUNTAIN_OUTSIDE_ICE_CAVERN } },
-        { { EntranceType::Dungeon,      RR_GERUDO_FORTRESS,                  RR_GERUDO_TRAINING_GROUNDS_ENTRYWAY,  ENTR_GERUDO_TRAINING_GROUND_ENTRANCE },
-          { EntranceType::Dungeon,      RR_GERUDO_TRAINING_GROUNDS_ENTRYWAY, RR_GERUDO_FORTRESS,                   ENTR_GERUDOS_FORTRESS_OUTSIDE_GERUDO_TRAINING_GROUND } },
+        { { EntranceType::Dungeon,      RR_GERUDO_FORTRESS,                  RR_GERUDO_TRAINING_GROUND_ENTRYWAY,  ENTR_GERUDO_TRAINING_GROUND_ENTRANCE },
+          { EntranceType::Dungeon,      RR_GERUDO_TRAINING_GROUND_ENTRYWAY, RR_GERUDO_FORTRESS,                   ENTR_GERUDOS_FORTRESS_OUTSIDE_GERUDO_TRAINING_GROUND } },
         { { EntranceType::GanonDungeon, RR_GANONS_CASTLE_LEDGE,              RR_GANONS_CASTLE_ENTRYWAY,            ENTR_INSIDE_GANONS_CASTLE_ENTRANCE },
           { EntranceType::GanonDungeon, RR_GANONS_CASTLE_ENTRYWAY,           RR_CASTLE_GROUNDS_FROM_GANONS_CASTLE, ENTR_CASTLE_GROUNDS_RAINBOW_BRIDGE_EXIT } },
 
@@ -969,7 +969,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
         { { EntranceType::Interior, RR_ZORAS_FOUNTAIN,                RR_ZF_GREAT_FAIRY_FOUNTAIN,       ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_FARORES_ZF },
           { EntranceType::Interior, RR_ZF_GREAT_FAIRY_FOUNTAIN,       RR_ZORAS_FOUNTAIN,                ENTR_ZORAS_FOUNTAIN_OUTSIDE_GREAT_FAIRY } },
 
-        { { EntranceType::SpecialInterior, RR_KOKIRI_FOREST,         RR_KF_LINKS_HOUSE,        ENTR_LINKS_HOUSE_CHILD_SPAWN },
+        { { EntranceType::SpecialInterior, RR_KOKIRI_FOREST,         RR_KF_LINKS_HOUSE,        ENTR_LINKS_HOUSE_1 },
           { EntranceType::SpecialInterior, RR_KF_LINKS_HOUSE,        RR_KOKIRI_FOREST,         ENTR_KOKIRI_FOREST_OUTSIDE_LINKS_HOUSE } },
         { { EntranceType::SpecialInterior, RR_TOT_ENTRANCE,          RR_TEMPLE_OF_TIME,        ENTR_TEMPLE_OF_TIME_ENTRANCE },
           { EntranceType::SpecialInterior, RR_TEMPLE_OF_TIME,        RR_TOT_ENTRANCE,          ENTR_TEMPLE_OF_TIME_EXTERIOR_DAY_OUTSIDE_TEMPLE } },

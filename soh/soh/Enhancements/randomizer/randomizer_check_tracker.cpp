@@ -259,6 +259,33 @@ void RecalculateAreaTotals(RandomizerCheckArea rcArea) {
     CalculateTotals();
 }
 
+std::map<RandomizerGet, RandomizerCheckArea> MapRGtoRandomizerCheckArea = {
+    { RG_DEKU_TREE_MAP, RCAREA_DEKU_TREE},
+    { RG_DODONGOS_CAVERN_MAP, RCAREA_DODONGOS_CAVERN },
+    { RG_JABU_JABUS_BELLY_MAP, RCAREA_JABU_JABUS_BELLY },
+    { RG_FOREST_TEMPLE_MAP, RCAREA_FOREST_TEMPLE },
+    { RG_FIRE_TEMPLE_MAP, RCAREA_FIRE_TEMPLE },
+    { RG_WATER_TEMPLE_MAP, RCAREA_WATER_TEMPLE },
+    { RG_SPIRIT_TEMPLE_MAP, RCAREA_SPIRIT_TEMPLE },
+    { RG_SHADOW_TEMPLE_MAP, RCAREA_SHADOW_TEMPLE },
+    { RG_BOTTOM_OF_THE_WELL_MAP, RCAREA_BOTTOM_OF_THE_WELL },
+    { RG_ICE_CAVERN_MAP, RCAREA_ICE_CAVERN }
+};
+
+void SpoilAreaFromCheck(RandomizerCheck rc) {
+    Rando::Location* loc = Rando::StaticData::GetLocation(rc);
+    Rando::ItemLocation* itemLoc = Rando::Context::GetInstance()->GetItemLocation(rc);
+    if (itemLoc->GetPlacedItem().GetItemType() == ItemType::ITEMTYPE_MAP) {
+        RandomizerCheckArea area = MapRGtoRandomizerCheckArea[itemLoc->GetPlacedRandomizerGet()];
+        if (!IsAreaSpoiled(area)) {
+            SetAreaSpoiled(area);
+        }
+    }
+    if (!IsAreaSpoiled(loc->GetArea())) {
+        SetAreaSpoiled(loc->GetArea());
+    }
+}
+
 void RecalculateAllAreaTotals() {
     for (auto& [rcArea, checks] : checksByArea) {
         if (rcArea == RCAREA_INVALID) {
@@ -437,7 +464,8 @@ void CheckTrackerLoadGame(int32_t fileNum) {
             }
         }
 
-        if (areaChecksGotten[entry2->GetArea()] != 0 || RandomizerCheckObjects::AreaIsOverworld(entry2->GetArea())) {
+        if (areaChecksGotten[entry2->GetArea()] != 0 || RandomizerCheckObjects::AreaIsOverworld(entry2->GetArea()) ||
+            loc->GetCheckStatus() == RCSHOW_SCUMMED) {
             areasSpoiled |= (1 << entry2->GetArea());
         }
 

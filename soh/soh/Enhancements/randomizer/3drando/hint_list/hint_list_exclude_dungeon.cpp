@@ -1664,29 +1664,29 @@ hintTextTable[RHT_SHADOW_TEMPLE_MAP_CHEST] = HintText(CustomMessage("They say th
                                                     /*french*/ "", { QM_RED, QM_GREEN }));
 
   /*--------------------------
-  | GERUDO TRAINING GROUNDS  |
+  | Gerudo Training Ground  |
   ---------------------------*/
-    hintTextTable[RHT_GERUDO_TRAINING_GROUND_LOBBY_LEFT_CHEST] = HintText(CustomMessage("They say that a #blinded eye in the Gerudo Training Grounds# drops #[[1]]#.",
+    hintTextTable[RHT_GERUDO_TRAINING_GROUND_LOBBY_LEFT_CHEST] = HintText(CustomMessage("They say that a #blinded eye in the Gerudo Training Ground# drops #[[1]]#.",
                                                                              /*german*/ "Man erzählt sich, daß ein #erblindetes Auge in der Gerudo-Trainingsarena# #[[1]]# fallen ließe.",
                                                                              /*french*/ "Selon moi, l'#Oeil dans le Gymnase Gerudo# voit #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                           // /*spanish*/ Según dicen, #cegar un ojo en el Centro de Instrucción Gerudo# revela #[[1]]#.
 
-    hintTextTable[RHT_GERUDO_TRAINING_GROUND_LOBBY_RIGHT_CHEST] = HintText(CustomMessage("They say that a #blinded eye in the Gerudo Training Grounds# drops #[[1]]#.",
+    hintTextTable[RHT_GERUDO_TRAINING_GROUND_LOBBY_RIGHT_CHEST] = HintText(CustomMessage("They say that a #blinded eye in the Gerudo Training Ground# drops #[[1]]#.",
                                                                               /*german*/ "Man erzählt sich, daß ein #erblindetes Auge in der Gerudo-Trainingsarena# #[[1]]# fallen ließe.",
                                                                               /*french*/ "Selon moi, l'#Oeil dans le Gymnase Gerudo# voit #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                            // /*spanish*/ Según dicen, #cegar un ojo en el Centro de Instrucción Gerudo# revela #[[1]]#.
 
-    hintTextTable[RHT_GERUDO_TRAINING_GROUND_STALFOS_CHEST] = HintText(CustomMessage("They say that #soldiers walking on shifting sands# in the Gerudo Training Grounds guard #[[1]]#.",
+    hintTextTable[RHT_GERUDO_TRAINING_GROUND_STALFOS_CHEST] = HintText(CustomMessage("They say that #soldiers walking on shifting sands# in the Gerudo Training Ground guard #[[1]]#.",
                                                                           /*german*/ "Man erzählt sich, daß #auf veränderlichen Sanden laufende Soldaten# in der Gerudo-Trainingsarena #[[1]]# bewachen würden.",
                                                                           /*french*/ "Selon moi, les #squelettes# du Gymnase Gerudo protègent #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                        // /*spanish*/ Según dicen, #soldados en resbaladizas arenas# del Centro de Instrucción Gerudo protegen #[[1]]#.
 
-    hintTextTable[RHT_GERUDO_TRAINING_GROUND_BEAMOS_CHEST] = HintText(CustomMessage("They say that #reptilian warriors# in the Gerudo Training Grounds protect #[[1]]#.",
+    hintTextTable[RHT_GERUDO_TRAINING_GROUND_BEAMOS_CHEST] = HintText(CustomMessage("They say that #reptilian warriors# in the Gerudo Training Ground protect #[[1]]#.",
                                                                          /*german*/ "Man erzählt sich, daß #reptilienartige Krieger# in der Gerudo-Trainingsarena #[[1]]# schützen würden.",
                                                                          /*french*/ "Selon moi, les #lézards# dans le Gymnase Gerudo protègent #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                       // /*spanish*/ Según dicen, #unos escamosos guerreros# del Centro de Instrucción Gerudo protegen #[[1]]#.
 
-    hintTextTable[RHT_GERUDO_TRAINING_GROUND_HIDDEN_CEILING_CHEST] = HintText(CustomMessage("They say that the #Eye of Truth# in the Gerudo Training Grounds reveals #[[1]]#.",
+    hintTextTable[RHT_GERUDO_TRAINING_GROUND_HIDDEN_CEILING_CHEST] = HintText(CustomMessage("They say that the #Eye of Truth# in the Gerudo Training Ground reveals #[[1]]#.",
                                                                                  /*german*/ "Man erzählt sich, daß das #Auge der Wahrheit# in der Gerudo-Trainingsarena #[[1]]# enthülle.",
                                                                                  /*french*/ "Selon moi, #bien caché# dans le Gymnase Gerudo gît #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                               // /*spanish*/ Según dicen, el #Ojo de la Verdad# en el Centro de Instrucción Gerudo revela #[[1]]#.
@@ -1706,17 +1706,17 @@ hintTextTable[RHT_SHADOW_TEMPLE_MAP_CHEST] = HintText(CustomMessage("They say th
                                                                                   /*french*/ "Selon moi, le #troisième trésor du Gymnase Gerudo# est #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                                // /*spanish*/ Según dicen, el tercer premio de la #instrucción bandida# se trata de #[[1]]#.
 
-    hintTextTable[RHT_GERUDO_TRAINING_GROUND_MAZE_RIGHT_CENTRAL_CHEST] = HintText(CustomMessage("They say that the #Song of Time# in the Gerudo Training Grounds leads to #[[1]]#.",
+    hintTextTable[RHT_GERUDO_TRAINING_GROUND_MAZE_RIGHT_CENTRAL_CHEST] = HintText(CustomMessage("They say that the #Song of Time# in the Gerudo Training Ground leads to #[[1]]#.",
                                                                                      /*german*/ "Man erzählt sich, daß die #Hymne der Zeit# in der Gerudo-Trainingsarena zu #[[1]]# führe.",
                                                                                      /*french*/ "Selon moi, le #chant du temps# révèle dans le Gymnase Gerudo #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                                   // /*spanish*/ Según dicen, la #Canción del Tiempo# en el Centro de Instrucción Gerudo conduce a #[[1]]#.
 
-    hintTextTable[RHT_GERUDO_TRAINING_GROUND_MAZE_RIGHT_SIDE_CHEST] = HintText(CustomMessage("They say that the #Song of Time# in the Gerudo Training Grounds leads to #[[1]]#.",
+    hintTextTable[RHT_GERUDO_TRAINING_GROUND_MAZE_RIGHT_SIDE_CHEST] = HintText(CustomMessage("They say that the #Song of Time# in the Gerudo Training Ground leads to #[[1]]#.",
                                                                                   /*german*/ "Man erzählt sich, daß die #Hymne der Zeit# in der Gerudo-Trainingsarena zu #[[1]]# führe.",
                                                                                   /*french*/ "Selon moi, le #chant du temps# révèle dans le Gymnase Gerudo #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                                // /*spanish*/ Según dicen, la #Canción del Tiempo# en el Centro de Instrucción Gerudo conduce a #[[1]]#.
 
-    hintTextTable[RHT_GERUDO_TRAINING_GROUND_HAMMER_ROOM_CLEAR_CHEST] = HintText(CustomMessage("They say that #fiery foes# in the Gerudo Training Grounds guard #[[1]]#.",
+    hintTextTable[RHT_GERUDO_TRAINING_GROUND_HAMMER_ROOM_CLEAR_CHEST] = HintText(CustomMessage("They say that #fiery foes# in the Gerudo Training Ground guard #[[1]]#.",
                                                                                     /*german*/ "Man erzählt sich, daß #feurige Feinde# in der Gerudo-Trainingsarena #[[1]]# bewachen würden.",
                                                                                     /*french*/ "Selon moi, les #limaces de feu# du Gymnase Gerudo protègent #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                                  // /*spanish*/ Según dicen, unos #flamígeros enemigos# del Centro de Instrucción Gerudo guardan #[[1]]#.
@@ -1761,7 +1761,7 @@ hintTextTable[RHT_SHADOW_TEMPLE_MAP_CHEST] = HintText(CustomMessage("They say th
                                                                                      /*french*/ "Selon moi, #derrière un bloc argent# dans le Gymnase Gerudo gît #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                                   // /*spanish*/ Según dicen, una #hazaña de fuerza# premia a las bandidas con #[[1]]#.
 
-    hintTextTable[RHT_GERUDO_TRAINING_GROUND_FREESTANDING_KEY] = HintText(CustomMessage("They say that the #Song of Time# in the Gerudo Training Grounds leads to #[[1]]#.",
+    hintTextTable[RHT_GERUDO_TRAINING_GROUND_FREESTANDING_KEY] = HintText(CustomMessage("They say that the #Song of Time# in the Gerudo Training Ground leads to #[[1]]#.",
                                                                              /*german*/ "Man erzählt sich, daß die #Hymne der Zeit# in der Gerudo-Trainingsarena zu #[[1]]# führe.",
                                                                              /*french*/ "Selon moi, le #chant du temps# révèle dans le Gymnase Gerudo #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                           // /*spanish*/ Según dicen, la #Canción del Tiempo# en el Centro de Instrucción Gerudo conduce a #[[1]]#.
@@ -1776,7 +1776,7 @@ hintTextTable[RHT_SHADOW_TEMPLE_MAP_CHEST] = HintText(CustomMessage("They say th
                                                                                 /*french*/ "Selon moi, dans #l'entrée du Gymnase Gerudo# gît #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                              // /*spanish*/ Según dicen, las #bandidas se instruyen# con #[[1]]#.
 
-    hintTextTable[RHT_GERUDO_TRAINING_GROUND_MQ_FIRST_IRON_KNUCKLE_CHEST] = HintText(CustomMessage("They say that #soldiers walking on shifting sands# in the Gerudo Training Grounds guard #[[1]]#.",
+    hintTextTable[RHT_GERUDO_TRAINING_GROUND_MQ_FIRST_IRON_KNUCKLE_CHEST] = HintText(CustomMessage("They say that #soldiers walking on shifting sands# in the Gerudo Training Ground guard #[[1]]#.",
                                                                                         /*german*/ "Man erzählt sich, daß #auf veränderlichen Sanden laufende Soldaten# in der Gerudo-Trainingsarena #[[1]]# bewachen würden.",
                                                                                         /*french*/ "Selon moi, les #squelettes# du Gymnase Gerudo protègent #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                                      // /*spanish*/ Según dicen, #soldados en resbaladizas arenas# del Centro de Instrucción Gerudo protegen #[[1]]#.
@@ -1796,12 +1796,12 @@ hintTextTable[RHT_SHADOW_TEMPLE_MAP_CHEST] = HintText(CustomMessage("They say th
                                                                                   /*french*/ "Selon moi, le #trésor enflammé# du Gymnase Gerudo est #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                                // /*spanish*/ Según dicen, donde entrenan las bandidas #entre llamas# yace #[[1]]#.
 
-    hintTextTable[RHT_GERUDO_TRAINING_GROUND_MQ_SECOND_IRON_KNUCKLE_CHEST] = HintText(CustomMessage("They say that #fiery foes# in the Gerudo Training Grounds guard #[[1]]#.",
+    hintTextTable[RHT_GERUDO_TRAINING_GROUND_MQ_SECOND_IRON_KNUCKLE_CHEST] = HintText(CustomMessage("They say that #fiery foes# in the Gerudo Training Ground guard #[[1]]#.",
                                                                                          /*german*/ "Man erzählt sich, daß #feurige Feinde# in der Gerudo-Trainingsarena #[[1]]# bewachen würden.",
                                                                                          /*french*/ "Selon moi, les #ennemis de feu# du Gymnase Gerudo protègent #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                                       // /*spanish*/ Según dicen, unos #flamígeros enemigos# del Centro de Instrucción Gerudo guardan #[[1]]#.
 
-    hintTextTable[RHT_GERUDO_TRAINING_GROUND_MQ_DINOLFOS_CHEST] = HintText(CustomMessage("They say that #reptilian warriors# in the Gerudo Training Grounds protect #[[1]]#.",
+    hintTextTable[RHT_GERUDO_TRAINING_GROUND_MQ_DINOLFOS_CHEST] = HintText(CustomMessage("They say that #reptilian warriors# in the Gerudo Training Ground protect #[[1]]#.",
                                                                               /*german*/ "Man erzählt sich, daß #reptilienartige Krieger# in der Gerudo-Trainingsarena #[[1]]# schützen würden.",
                                                                               /*french*/ "Selon moi, les #lézards# dans le Gymnase Gerudo protègent #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                            // /*spanish*/ Según dicen, #unos escamosos guerreros# del Centro de Instrucción Gerudo protegen #[[1]]#.
@@ -1831,7 +1831,7 @@ hintTextTable[RHT_SHADOW_TEMPLE_MAP_CHEST] = HintText(CustomMessage("They say th
                                                                                       /*french*/ "Selon moi, le #deuxième trésor du Gymnase Gerudo# est #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                                    // /*spanish*/ Según dicen, el segundo premio de la #instrucción bandida# se trata de #[[1]]#.
 
-    hintTextTable[RHT_GERUDO_TRAINING_GROUND_MQ_HIDDEN_CEILING_CHEST] = HintText(CustomMessage("They say that the #Eye of Truth# in the Gerudo Training Grounds reveals #[[1]]#.",
+    hintTextTable[RHT_GERUDO_TRAINING_GROUND_MQ_HIDDEN_CEILING_CHEST] = HintText(CustomMessage("They say that the #Eye of Truth# in the Gerudo Training Ground reveals #[[1]]#.",
                                                                                     /*german*/ "Man erzählt sich, daß das #Auge der Wahrheit# in der Gerudo-Trainingsarena #[[1]]# enthülle.",
                                                                                     /*french*/ "Selon moi, #bien caché# dans le Gymnase Gerudo gît #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                                  // /*spanish*/ Según dicen, el #Ojo de la Verdad# en el Centro de Instrucción Gerudo revela #[[1]]#.

@@ -1214,6 +1214,11 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
                 case ITEM_NUT_UPGRADE_40:
                     color_slot = 7;
                     break;
+                case ITEM_BOTTLE:
+                case ITEM_MILK_BOTTLE:
+                case ITEM_LETTER_RUTO:
+                    color_slot = 8;
+                    break;
                 default:
                     return;
             }
@@ -1223,13 +1228,35 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
                 case RG_MAGIC_SINGLE:
                 case RG_MAGIC_DOUBLE:
                 case RG_MAGIC_BEAN_PACK:
+                case RG_BOTTLE_WITH_GREEN_POTION:
+                case RG_BOTTLE_WITH_BUGS:
+                case RG_GREG_RUPEE:
                     color_slot = 0;
+                    break;
+                case RG_BOTTLE_WITH_FISH:
+                    color_slot = 2;
+                    break;
+                case RG_BOTTLE_WITH_POE:
+                    color_slot = 4;
+                    break;
+                case RG_BOTTLE_WITH_BIG_POE:
+                    color_slot = 5;
                     break;
                 case RG_DOUBLE_DEFENSE:
                     color_slot = 8;
                     break;
                 case RG_PROGRESSIVE_BOMBCHUS:
                     color_slot = 9;
+                    break;
+                case RG_BOTTLE_WITH_FAIRY:
+                    color_slot = 10;
+                    break;
+                case RG_BOTTLE_WITH_RED_POTION:
+                    color_slot = 11;
+                    break;
+                case RG_BOTTLE_WITH_BLUE_FIRE:
+                case RG_BOTTLE_WITH_BLUE_POTION:
+                    color_slot = 12;
                     break;
                 default:
                     return;
@@ -1240,31 +1267,37 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
     }
 
     // Color of the circle for the particles
-    static Color_RGBA8 mainColors[10][3] = {
-        { 34, 255, 76 },   // Minuet, Bean Pack, and Magic Upgrades
+    static Color_RGBA8 mainColors[13][3] = {
+        { 34, 255, 76 },   // Minuet, Bean Pack, and Magic Upgrades, Bottle with Green Potion, Bottle with Bugs, and Greg
         { 177, 35, 35 },   // Bolero
-        { 115, 251, 253 }, // Serenade
+        { 115, 251, 253 }, // Serenade and Bottle with Fish
         { 177, 122, 35 },  // Requiem
-        { 177, 28, 212 },  // Nocturne
-        { 255, 255, 92 },  // Prelude
+        { 177, 28, 212 },  // Nocturne and Bottle with Poe
+        { 255, 255, 92 },  // Prelude and Bottle with Big Poe
         { 31, 152, 49 },   // Stick Upgrade
         { 222, 182, 20 },  // Nut Upgrade
-        { 255, 255, 255 }, // Double Defense
-        { 19, 120, 182 }   // Progressive Bombchu
+        { 255, 255, 255 }, // Double Defense, Empty Bottle, Bottle with Milk, and Bottle with Ruto's Letter
+        { 19, 120, 182 },  // Progressive Bombchu
+        { 255, 205, 255 }, // Bottle with Fairy
+        { 255, 118, 118 }, // Bottle with Red Potion
+        { 154, 204, 255 }  // Bottle with Blue Fire and Bottle with Blue Potion
     };
 
     // Color of the faded flares stretching off the particles
-    static Color_RGBA8 flareColors[10][3] = {
-        { 30, 110, 30 },   // Minuet, Bean Pack, and Magic Upgrades
+    static Color_RGBA8 flareColors[13][3] = {
+        { 30, 110, 30 },   // Minuet, Bean Pack, Magic Upgrades, Bottle with Green Potion, Bottle with Bugs, and Greg
         { 90, 10, 10 },    // Bolero
-        { 35, 35, 177 },   // Serenade
+        { 35, 35, 177 },   // Serenade and Bottle with Fish
         { 70, 20, 10 },    // Requiem
-        { 100, 20, 140 },  // Nocturne
-        { 100, 100, 10 },  // Prelude
+        { 100, 20, 140 },  // Nocturne and Bottle with Poe
+        { 100, 100, 10 },  // Prelude and Bottle with Big Poe
         { 5, 50, 10 },     // Stick Upgrade
         { 150, 100, 5 },   // Nut Upgrade
-        { 154, 154, 154 }, // Double Defense
-        { 204, 102, 0 }    // Progressive Bombchu
+        { 154, 154, 154 }, // Double Defense, Empty Bottle, Bottle with Milk, and Bottle with Ruto's Letter
+        { 204, 102, 0 },   // Progressive Bombchu
+        { 216, 70, 216 },  // Bottle with Fairy
+        { 90, 10, 10 },    // Bottle with Red Potion
+        { 35, 35, 177 }    // Bottle with Blue Fire
     };
 
     static Vec3f velocity = { 0.0f, 0.0f, 0.0f };

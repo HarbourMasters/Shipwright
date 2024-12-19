@@ -183,7 +183,7 @@ void EnGe1_Init(Actor* thisx, PlayState* play) {
             }
             break;
 
-        case GE1_TYPE_TRAINING_GROUNDS_GUARD:
+        case GE1_TYPE_TRAINING_GROUND_GUARD:
             this->hairstyle = GE1_HAIR_STRAIGHT;
 
             if (GameInteractor_Should(VB_GERUDOS_BE_FRIENDLY, EnGe1_CheckCarpentersFreed())) {
