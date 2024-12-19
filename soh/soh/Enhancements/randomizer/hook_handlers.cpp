@@ -63,6 +63,8 @@ extern void Player_SetupActionPreserveAnimMovement(PlayState* play, Player* play
 extern s32 Player_SetupWaitForPutAway(PlayState* play, Player* player, AfterPutAwayFunc func);
 extern void Play_InitEnvironment(PlayState * play, s16 skyboxId);
 extern void EnMk_Wait(EnMk* enMk, PlayState* play);
+extern void EnKz_Wait(EnKz* enMk, PlayState* play);
+extern void EnKz_SetupGetItem(EnKz* enMk, PlayState* play);
 }
 
 #define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetContextOptionIndex()
@@ -946,6 +948,12 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             }
             break;
         }
+        case VB_KING_ZORA_TUNIC_CHECK: {
+            if(!Flags_GetRandomizerInf(RAND_INF_KING_ZORA_THAWED)){
+                *should = false;
+            }
+            break;
+        }
         case VB_BIGGORON_CONSIDER_SWORD_COLLECTED: {
             *should = Flags_GetRandomizerInf(RAND_INF_ADULT_TRADES_DMT_TRADE_CLAIM_CHECK);
             break;
@@ -1051,17 +1059,6 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             Flags_SetRandomizerInf(RAND_INF_MERCHANTS_GRANNYS_SHOP);
             granny->actor.parent = NULL;
             granny->actionFunc = EnDs_Talk;
-            *should = false;
-            break;
-        }
-        case VB_GIVE_ITEM_FROM_THAWING_KING_ZORA: {
-            EnKz* enKz = va_arg(args, EnKz*);
-            // If we aren't setting up the item offer, then we're just checking if it should be possible.
-            if (enKz->actionFunc != (EnKzActionFunc)EnKz_SetupGetItem) {
-                // Always give the reward in rando
-                *should = true;
-                break;
-            }
             *should = false;
             break;
         }
@@ -1195,14 +1192,26 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             *should = false;
             break;
         }
-        case VB_TRADE_PRESCRIPTION: {
+        case VB_ADULT_KING_ZORA_ITEM_GIVE: {
             EnKz* enKz = va_arg(args, EnKz*);
-            // If we aren't setting up the item offer, then we're just checking if it should be possible.
-            if (enKz->actionFunc != (EnKzActionFunc)EnKz_SetupGetItem) {
-                *should = !Flags_GetRandomizerInf(RAND_INF_ADULT_TRADES_ZD_TRADE_PRESCRIPTION);
-                break;
+            if (CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
+                if (func_8002F368(gPlayState) == EXCH_ITEM_PRESCRIPTION){ 
+                    Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_ZD_TRADE_PRESCRIPTION);
+                    Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_PRESCRIPTION);
+                } else {
+                    Flags_SetRandomizerInf(RAND_INF_KING_ZORA_THAWED);
+                }
+            } else {
+                if (enKz->isTrading){ 
+                    Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_ZD_TRADE_PRESCRIPTION);
+                    Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_PRESCRIPTION);
+                } else {
+                    Flags_SetRandomizerInf(RAND_INF_KING_ZORA_THAWED);
+                }
             }
-            Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_PRESCRIPTION);
+            enKz->actor.parent = NULL;
+            enKz->interactInfo.talkState = NPC_TALK_STATE_IDLE;
+            enKz->actionFunc = EnKz_Wait;
             *should = false;
             break;
         }
@@ -1599,7 +1608,6 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         }
         case VB_FREEZE_ON_SKULL_TOKEN:
         case VB_TRADE_TIMER_ODD_MUSHROOM:
-        case VB_TRADE_TIMER_FROG:
         case VB_ANJU_SET_OBTAINED_TRADE_ITEM:
         case VB_GIVE_ITEM_FROM_TARGET_IN_WOODS:
         case VB_GIVE_ITEM_FROM_TALONS_CHICKENS:
