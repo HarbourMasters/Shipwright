@@ -2,7 +2,7 @@
 
 namespace Rando {
 void Settings::CreateOptionDescriptions() {
-    mOptionDescriptions[RSK_FOREST] = " Determines if Kokiri forest can be left for the Lost Woods bridge or the Deku Tree.\n"
+    mOptionDescriptions[RSK_FOREST] = "Determines if Kokiri forest can be left for the Lost Woods bridge or the Deku Tree.\n"
                                       "\n"
                                       "Closed - Kokiri Sword & Deku Shield are required to access "
                                       "the Deku Tree, and completing the Deku Tree is required to "
