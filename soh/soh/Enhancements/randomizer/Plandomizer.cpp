@@ -208,7 +208,7 @@ std::unordered_map<RandomizerGet, std::string> itemImageMap = {
     { RG_SPIRIT_TEMPLE_SMALL_KEY,   		"ITEM_KEY_SMALL" },
     { RG_SHADOW_TEMPLE_SMALL_KEY,   		"ITEM_KEY_SMALL" },
     { RG_BOTTOM_OF_THE_WELL_SMALL_KEY, 		"ITEM_KEY_SMALL" },
-    { RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, "ITEM_KEY_SMALL" },
+    { RG_GERUDO_TRAINING_GROUND_SMALL_KEY, "ITEM_KEY_SMALL" },
     { RG_GERUDO_FORTRESS_SMALL_KEY, 		"ITEM_KEY_SMALL" },
     { RG_GANONS_CASTLE_SMALL_KEY,   		"ITEM_KEY_SMALL" },
     { RG_TREASURE_GAME_SMALL_KEY,   		"ITEM_KEY_SMALL" },
@@ -302,8 +302,8 @@ ImVec4 plandomizerGetItemColor(Rando::Item randoItem) {
         } else if (randoItem.GetRandomizerGet() == RG_BOTTOM_OF_THE_WELL_SMALL_KEY || 
             randoItem.GetRandomizerGet() == RG_BOTTOM_OF_THE_WELL_KEY_RING) {
             itemColor = ImVec4( 0.89f, 0.43f, 1.0f, 1.0f );
-        } else if (randoItem.GetRandomizerGet() == RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY || 
-            randoItem.GetRandomizerGet() == RG_GERUDO_TRAINING_GROUNDS_KEY_RING) {
+        } else if (randoItem.GetRandomizerGet() == RG_GERUDO_TRAINING_GROUND_SMALL_KEY || 
+            randoItem.GetRandomizerGet() == RG_GERUDO_TRAINING_GROUND_KEY_RING) {
             itemColor = ImVec4( 1.0f, 1.0f, 0, 1.0f );
         } else if (randoItem.GetRandomizerGet() == RG_GERUDO_FORTRESS_SMALL_KEY || 
             randoItem.GetRandomizerGet() == RG_GERUDO_FORTRESS_KEY_RING) {

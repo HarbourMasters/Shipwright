@@ -246,7 +246,7 @@ void func_80B3A4F8(EnWonderTalk2* this, PlayState* play) {
                         osSyncPrintf(VT_FGCOL(PURPLE) " ☆☆ 強制 ☆☆ \n" VT_RST);
                         break;
                     case 4:
-                        // "Gerudo Training Grounds Forced Check Only"
+                        // "Gerudo Training Ground Forced Check Only"
                         osSyncPrintf(VT_FGCOL(RED) " ☆☆ ゲルドの修練場強制チェックのみ ☆☆ \n" VT_RST);
                         break;
                 }
