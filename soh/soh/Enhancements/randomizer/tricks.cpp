@@ -66,6 +66,7 @@ namespace Rando {
         { Tricks::Tag::BKSKIP, "Boss Key Skip" },
         */
         { Tricks::Tag::EXPERIMENTAL, "Experimental" },
+        { Tricks::Tag::GLITCH, "Glitch" },
     };
 
     const std::string Tricks::GetTagName(const Tag tag) {
@@ -75,6 +76,7 @@ namespace Rando {
     const ImVec4 Tricks::GetTextColor(const Tag tag) {
         switch(tag) {
             case Tag::EXPERIMENTAL:
+            case Tag::GLITCH:
                 return { 0.00f, 0.00f, 0.00f, 1.0f };
             default:
                 return { 1.00f, 1.00f, 1.00f, 1.00f };
@@ -95,13 +97,16 @@ namespace Rando {
                 return { 0.27f, 0.00f, 0.27f, 1.00f };
             /*
             case Tag::LENS:
-                return { .f, .f, .f, 1.0f };
+                return { 0.00f, 0.00f, 0.00f, 1.00f };
             case Tag::BKSKIP:
-                return { .f, .f, .f, 1.0f };
+                return { 0.00f, 0.00f, 0.00f, 1.00f };
             */
             case Tag::EXPERIMENTAL:
-                return { 0.00f, 1.00f, 1.00f, 1.0f };
+                return { 0.00f, 1.00f, 1.00f, 1.00f };
+            case Tag::GLITCH:
+                return { 1.00f, 1.00f, 1.00f, 1.00f };
             default:
+                assert(false);
                 return { 0.50f, 0.50f, 0.50f, 1.00f };
         }
     }

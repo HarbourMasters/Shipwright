@@ -24,6 +24,7 @@ namespace Rando {
                 BKSKIP,
                 */
                 EXPERIMENTAL,
+                GLITCH,
             };
 
             static const std::string& GetAreaName(RandomizerArea area);

@@ -2283,6 +2283,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 { Rando::Tricks::Tag::BKSKIP, true },
                 */
                 { Rando::Tricks::Tag::EXPERIMENTAL, true },
+                //{ Rando::Tricks::Tag::GLITCH, false },
             };
             static ImGuiTextFilter trickSearch;
             trickSearch.Draw("Filter (inc,-exc)", 490.0f);
@@ -2291,7 +2292,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 if (ImGui::Button("Disable All")) {
                     for (int i = 0; i < RT_MAX; i++) {
                         auto etfound = enabledTricks.find(static_cast<RandomizerTrick>(i));
-                        if (!ctx->GetTrickOption(static_cast<RandomizerTrick>(i)).IsGlitch() && etfound != enabledTricks.end()) {
+                        if (etfound != enabledTricks.end()) {
                             enabledTricks.erase(etfound);
                         }
                     }
@@ -2306,7 +2307,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::SameLine();
                 if (ImGui::Button("Enable All")) {
                     for (int i = 0; i < RT_MAX; i++) {
-                        if (!ctx->GetTrickOption(static_cast<RandomizerTrick>(i)).IsGlitch() && !enabledTricks.count(static_cast<RandomizerTrick>(i))) {
+                        if (!enabledTricks.count(static_cast<RandomizerTrick>(i))) {
                             enabledTricks.insert(static_cast<RandomizerTrick>(i));
                         }
                     }
@@ -2322,7 +2323,11 @@ void RandomizerSettingsWindow::DrawElement() {
             if (ImGui::BeginTable("trickTags", showTag.size(), ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders)) {  
                 for (auto [rtTag, isShown] : showTag) {
                     ImGui::TableNextColumn();
-                    ImGui::PushStyleColor(ImGuiCol_Text, Rando::Tricks::GetTextColor(rtTag));
+                    if (isShown) {
+                        ImGui::PushStyleColor(ImGuiCol_Text, Rando::Tricks::GetTextColor(rtTag));
+                    } else {
+                        ImGui::PushStyleColor(ImGuiCol_Text, { 1.0f, 1.0f, 1.0f, 1.0f });
+                    }
                     ImGui::PushStyleColor(ImGuiCol_Header, Rando::Tricks::GetTagColor(rtTag));
                     ImGui::Selectable(Rando::Tricks::GetTagName(rtTag).c_str(), &showTag[rtTag]);
                     ImGui::PopStyleColor(2);
@@ -2358,7 +2363,7 @@ void RandomizerSettingsWindow::DrawElement() {
                     if (ImGui::Button("Enable Visible")) {
                         for (int i = 0; i < RT_MAX; i++) {
                             auto option = mSettings->GetTrickOption(static_cast<RandomizerTrick>(i));
-                            if (!option.IsGlitch() && !enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
+                            if (!enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
                                 trickSearch.PassFilter(option.GetName().c_str()) &&
                                 areaTreeDisabled[option.GetArea()] &&
                                 Rando::Tricks::CheckTags(showTag, option.GetTags())) {
@@ -2381,8 +2386,7 @@ void RandomizerSettingsWindow::DrawElement() {
                         for (auto rt : trickIds) {
                             auto option = mSettings->GetTrickOption(rt);
                             if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
-                                !enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags()) &&
-                                !option.IsGlitch()) {
+                                !enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                                 hasTricks = true;
                                 break;
                             }
@@ -2394,8 +2398,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                 for (auto rt : trickIds) {
                                     auto option = mSettings->GetTrickOption(rt);
                                     if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
-                                        !enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags()) &&
-                                        !option.IsGlitch()) {
+                                        !enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                                         ImGui::TreeNodeSetOpen(ImGui::GetID((Rando::Tricks::GetAreaName(option.GetArea()) + "##disabled").c_str()), areaTreeDisabled[option.GetArea()]);
                                         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                                         if (ImGui::ArrowButton(std::to_string(rt).c_str(), ImGuiDir_Right)) {
@@ -2442,7 +2445,7 @@ void RandomizerSettingsWindow::DrawElement() {
                     if (ImGui::Button("Disable Visible")) {
                         for (int i = 0; i < RT_MAX; i++) {
                             auto option = mSettings->GetTrickOption(static_cast<RandomizerTrick>(i));
-                            if (!option.IsGlitch() && enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
+                            if (enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
                                 trickSearch.PassFilter(option.GetName().c_str()) &&
                                 areaTreeEnabled[option.GetArea()] &&
                                 Rando::Tricks::CheckTags(showTag, option.GetTags())) {
@@ -2469,8 +2472,7 @@ void RandomizerSettingsWindow::DrawElement() {
                         for (auto rt : trickIds) {
                             auto option = mSettings->GetTrickOption(rt);
                             if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
-                                enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags()) &&
-                                !option.IsGlitch()) {
+                                enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                                 hasTricks = true;
                                 break;
                             }
@@ -2482,8 +2484,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                 for (auto rt : trickIds) {
                                     auto option = mSettings->GetTrickOption(rt);
                                     if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
-                                        enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags()) &&
-                                        !option.IsGlitch()) {
+                                        enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                                         ImGui::TreeNodeSetOpen(ImGui::GetID((Rando::Tricks::GetAreaName(option.GetArea()) + "##enabled").c_str()), areaTreeEnabled[option.GetArea()]);
                                         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                                         if (ImGui::ArrowButton(std::to_string(rt).c_str(), ImGuiDir_Left)) {
