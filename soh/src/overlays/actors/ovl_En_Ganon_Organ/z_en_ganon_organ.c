@@ -32,7 +32,7 @@ const ActorInit En_Ganon_Organ_InitVars = {
 #include "overlays/ovl_En_Ganon_Organ/ovl_En_Ganon_Organ.h"
 
 void EnGanonOrgan_Init(Actor* thisx, PlayState* play) {
-    thisx->flags &= ~ACTOR_FLAG_TARGETABLE;
+    thisx->flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
 }
 
 void EnGanonOrgan_Destroy(Actor* thisx, PlayState* play) {

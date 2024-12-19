@@ -10,7 +10,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
 
 void EnCow_Init(Actor* thisx, PlayState* play);
 void EnCow_Destroy(Actor* thisx, PlayState* play);
@@ -141,7 +141,7 @@ void EnCow_Init(Actor* thisx, PlayState* play) {
             this->actor.draw = func_809E0070;
             this->actionFunc = func_809DFA84;
             func_809DEF94(this);
-            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+            this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
             this->unk_278 = ((u32)(Rand_ZeroFloat(1000.0f)) & 0xFFFF) + 40.0f;
             break;
     }
@@ -246,7 +246,7 @@ void func_809DF8FC(EnCow* this, PlayState* play) {
         this->actionFunc = func_809DF870;
     } else {
         this->actor.flags |= ACTOR_FLAG_WILL_TALK;
-        func_8002F2CC(&this->actor, play, 170.0f);
+        Actor_OfferTalk(&this->actor, play, 170.0f);
         this->actor.textId = 0x2006;
     }
     func_809DF494(this, play);
@@ -265,7 +265,7 @@ void func_809DF96C(EnCow* this, PlayState* play) {
                     if (GameInteractor_Should(VB_GIVE_ITEM_FROM_COW, true, this)) {
                         this->actionFunc = func_809DF8FC;
                         this->actor.flags |= ACTOR_FLAG_WILL_TALK;
-                        func_8002F2CC(&this->actor, play, 170.0f);
+                        Actor_OfferTalk(&this->actor, play, 170.0f);
                         this->actor.textId = 0x2006;
                     } else {
                         return;

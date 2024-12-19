@@ -13,7 +13,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnGm_Init(Actor* thisx, PlayState* play);
 void EnGm_Destroy(Actor* thisx, PlayState* play);
@@ -187,7 +187,7 @@ void func_80A3DB04(EnGm* this, PlayState* play) {
         this->actionFunc = func_80A3DBF4;
     } else if ((this->collider.base.ocFlags1 & OC1_HIT) || (SQ(dx) + SQ(dz)) < SQ(100.0f)) {
         this->collider.base.acFlags &= ~AC_HIT;
-        func_8002F2CC(&this->actor, play, 415.0f);
+        Actor_OfferTalk(&this->actor, play, 415.0f);
     }
 }
 
@@ -227,7 +227,7 @@ void func_80A3DC44(EnGm* this, PlayState* play) {
     }
     if ((this->collider.base.ocFlags1 & OC1_HIT) || (SQ(dx) + SQ(dz)) < SQ(100.0f)) {
         this->collider.base.acFlags &= ~AC_HIT;
-        func_8002F2CC(&this->actor, play, 415.0f);
+        Actor_OfferTalk(&this->actor, play, 415.0f);
     }
 }
 

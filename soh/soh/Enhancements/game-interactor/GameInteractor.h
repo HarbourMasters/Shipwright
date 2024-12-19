@@ -194,8 +194,10 @@ typedef enum {
     // Vanilla condition: this->actor.textId == 0x401A
     VB_BE_ABLE_TO_EXCHANGE_RUTOS_LETTER,
     // Opt: *EnKz
-    // Vanilla condition: Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)
+    // Vanilla condition: Flags_GetEventChkInf(EVENTCHKINF_GAVE_LETTER_TO_KING_ZORA)
     VB_KING_ZORA_BE_MOVED,
+    // Opt: *EnKz,
+    VB_KING_ZORA_TUNIC_CHECK,
     // Vanilla condition: gSaveState.bgsFlag
     VB_BIGGORON_CONSIDER_TRADE_COMPLETE,
     // Vanilla condition: gSaveState.bgsFlag
@@ -479,13 +481,12 @@ typedef enum {
     // Opt: *EnToryo
     VB_TRADE_SAW,
     // Opt: *EnKz,
-    VB_TRADE_PRESCRIPTION,
+    VB_ADULT_KING_ZORA_ITEM_GIVE,
     // Opt: *EnMk
     VB_TRADE_FROG,
 
     VB_TRADE_TIMER_ODD_MUSHROOM,
     VB_TRADE_TIMER_EYEDROPS,
-    VB_TRADE_TIMER_FROG,
     // Opt: *EnNiwLady
     VB_ANJU_SET_OBTAINED_TRADE_ITEM,
 

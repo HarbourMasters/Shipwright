@@ -18,7 +18,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnHy_Init(Actor* thisx, PlayState* play);
 void EnHy_Destroy(Actor* thisx, PlayState* play);
@@ -730,10 +730,10 @@ void func_80A70834(EnHy* this, PlayState* play) {
     if ((this->actor.params & 0x7F) == ENHY_TYPE_BOJ_5) {
         if (!Inventory_HasSpecificBottle(ITEM_BLUE_FIRE) && !Inventory_HasSpecificBottle(ITEM_BUG) &&
             !Inventory_HasSpecificBottle(ITEM_FISH)) {
-            switch (func_8002F368(play)) {
+            switch (Actor_GetPlayerExchangeItemId(play)) {
                 case EXCH_ITEM_POE:
                 case EXCH_ITEM_BIG_POE:
-                case EXCH_ITEM_LETTER_RUTO:
+                case EXCH_ITEM_BOTTLE_RUTOS_LETTER:
                     this->actor.textId = 0x70EF;
                     break;
                 default:
@@ -743,7 +743,7 @@ void func_80A70834(EnHy* this, PlayState* play) {
                     break;
             }
         } else {
-            switch (func_8002F368(play)) {
+            switch (Actor_GetPlayerExchangeItemId(play)) {
                 case EXCH_ITEM_BLUE_FIRE:
                     this->actor.textId = 0x70F0;
                     break;
@@ -1008,7 +1008,7 @@ void func_80A711B4(EnHy* this, PlayState* play) {
 }
 
 void func_80A7127C(EnHy* this, PlayState* play) {
-    func_80034F54(play, this->unk_21C, this->unk_23C, 16);
+    Actor_UpdateFidgetTables(play, this->unk_21C, this->unk_23C, 16);
 }
 
 void EnHy_DoNothing(EnHy* this, PlayState* play) {
@@ -1021,7 +1021,7 @@ void func_80A712C0(EnHy* this, PlayState* play) {
         this->actionFunc = func_80A7134C;
     }
 
-    func_80034F54(play, this->unk_21C, this->unk_23C, 16);
+    Actor_UpdateFidgetTables(play, this->unk_21C, this->unk_23C, 16);
 }
 
 void func_80A7134C(EnHy* this, PlayState* play) {

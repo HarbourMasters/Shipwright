@@ -11,7 +11,7 @@
 #include "vt.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnDntJiji_Init(Actor* thisx, PlayState* play);
 void EnDntJiji_Destroy(Actor* thisx, PlayState* play);
@@ -85,7 +85,7 @@ void EnDntJiji_Init(Actor* thisx, PlayState* play) {
     osSyncPrintf("\n\n");
     // "Deku Scrub mask show elder"
     osSyncPrintf(VT_FGCOL(YELLOW) "☆☆☆☆☆ デグナッツお面品評会長老 ☆☆☆☆☆ %x\n" VT_RST, this->stage);
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->actor.colChkInfo.mass = 0xFF;
     this->actor.targetMode = 6;
     this->actionFunc = EnDntJiji_SetFlower;
@@ -229,7 +229,7 @@ void EnDntJiji_SetupCower(EnDntJiji* this, PlayState* play) {
     } else {
         this->getItemId = GI_NUT_UPGRADE_40;
     }
-    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+    this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
     this->actor.textId = 0x10DB;
     this->unused = 5;
     this->actionFunc = EnDntJiji_Cower;
@@ -244,7 +244,7 @@ void EnDntJiji_Cower(EnDntJiji* this, PlayState* play) {
         if (Actor_ProcessTalkRequest(&this->actor, play)) {
             this->actionFunc = EnDntJiji_SetupTalk;
         } else {
-            func_8002F2CC(&this->actor, play, 100.0f);
+            Actor_OfferTalk(&this->actor, play, 100.0f);
         }
     }
 }
@@ -310,7 +310,7 @@ void EnDntJiji_GivePrize(EnDntJiji* this, PlayState* play) {
                 this->stage->leaderSignal = DNT_SIGNAL_RETURN;
             }
         }
-        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+        this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
         if (!this->unburrow) {
             this->actionFunc = EnDntJiji_SetupHide;
         } else {

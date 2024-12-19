@@ -11,7 +11,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnMk_Init(Actor* thisx, PlayState* play);
 void EnMk_Destroy(Actor* thisx, PlayState* play);
@@ -100,7 +100,7 @@ void func_80AACA94(EnMk* this, PlayState* play) {
         this->actor.parent = NULL;
         if (GameInteractor_Should(VB_TRADE_TIMER_EYEDROPS, true, this)) {
             this->actionFunc = func_80AACA40;
-            func_80088AA0(240);
+            Interface_SetSubTimer(240);
             gSaveContext.eventInf[1] &= ~1;
         }
     } else {
@@ -229,7 +229,7 @@ void EnMk_Wait(EnMk* this, PlayState* play) {
     s32 playerExchangeItem;
 
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
-        playerExchangeItem = func_8002F368(play);
+        playerExchangeItem = Actor_GetPlayerExchangeItemId(play);
 
         if (this->actor.textId != 0x4018) {
             player->actor.textId = this->actor.textId;

@@ -180,7 +180,7 @@ void EnDoor_SetupType(EnDoor* this, PlayState* play) {
                 doorType = DOOR_SCENEEXIT;
             } else {
                 this->actionFunc = EnDoor_WaitForCheck;
-                this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_NO_LOCKON;
+                this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_NO_LOCKON;
             }
         }
         // Replace the door type it was loaded with by the new type
@@ -237,7 +237,7 @@ void EnDoor_WaitForCheck(EnDoor* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->actionFunc = EnDoor_Check;
     } else {
-        func_8002F2CC(&this->actor, play, DOOR_CHECK_RANGE);
+        Actor_OfferTalk(&this->actor, play, DOOR_CHECK_RANGE);
     }
 }
 

@@ -10,7 +10,7 @@
 #include "soh/frame_interpolation.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
 
 typedef enum {
     /* 0 */ ENZO_EFFECT_NONE,
@@ -428,7 +428,7 @@ u16 EnZo_GetTextId(PlayState* play, Actor* thisx) {
                 return 0x402D;
             }
 
-            if (Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED) ||
+            if (Flags_GetEventChkInf(EVENTCHKINF_GAVE_LETTER_TO_KING_ZORA) ||
                 (CVarGetInteger(CVAR_ENHANCEMENT("FixZoraHintDialogue"), 0) &&
                  Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_RUTOS_LETTER))) {
                 return 0x4010;
@@ -612,7 +612,7 @@ void EnZo_Init(Actor* thisx, PlayState* play) {
         this->alpha = 255.0f;
         this->actionFunc = EnZo_Standing;
     } else {
-        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+        this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
         this->actionFunc = EnZo_Submerged;
     }
 }
@@ -626,7 +626,7 @@ void EnZo_Destroy(Actor* thisx, PlayState* play) {
 void EnZo_Standing(EnZo* this, PlayState* play) {
     s16 angle;
 
-    func_80034F54(play, this->unk_656, this->unk_67E, 20);
+    Actor_UpdateFidgetTables(play, this->unk_656, this->unk_67E, 20);
     EnZo_SetAnimation(this);
     if (this->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
         this->trackingMode = NPC_TRACKING_FULL_BODY;
@@ -657,7 +657,7 @@ void EnZo_Surface(EnZo* this, PlayState* play) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EV_OUT_OF_WATER);
         EnZo_SpawnSplashes(this);
         Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENZO_ANIM_3);
-        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
         this->actionFunc = EnZo_TreadWater;
         this->actor.velocity.y = 0.0f;
         this->alpha = 255.0f;
@@ -668,7 +668,7 @@ void EnZo_Surface(EnZo* this, PlayState* play) {
 }
 
 void EnZo_TreadWater(EnZo* this, PlayState* play) {
-    func_80034F54(play, this->unk_656, this->unk_67E, 20);
+    Actor_UpdateFidgetTables(play, this->unk_656, this->unk_67E, 20);
     if (Animation_OnFrame(&this->skelAnime, this->skelAnime.endFrame)) {
         this->canSpeak = true;
         this->trackingMode = NPC_TRACKING_FULL_BODY;
@@ -707,7 +707,7 @@ void EnZo_Dive(EnZo* this, PlayState* play) {
     if (Animation_OnFrame(&this->skelAnime, this->skelAnime.endFrame)) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EV_DIVE_WATER);
         EnZo_SpawnSplashes(this);
-        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+        this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
         this->actor.velocity.y = -4.0f;
         this->skelAnime.playSpeed = 0.0f;
     }

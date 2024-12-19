@@ -94,7 +94,7 @@ typedef struct {
     /* 0x18 */ Vec3f feetPos[2]; // Update by using `Actor_SetFeetPos` in PostLimbDraw
 } ActorShape; // size = 0x30
 
-#define ACTOR_FLAG_TARGETABLE (1 << 0)
+#define ACTOR_FLAG_ATTENTION_ENABLED (1 << 0)
 #define ACTOR_FLAG_HOSTILE (1 << 2)
 #define ACTOR_FLAG_FRIENDLY (1 << 3)
 #define ACTOR_FLAG_UPDATE_WHILE_CULLED (1 << 4)

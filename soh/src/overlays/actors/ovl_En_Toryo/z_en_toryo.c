@@ -11,7 +11,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
 
 void EnToryo_Init(Actor* thisx, PlayState* play);
 void EnToryo_Destroy(Actor* thisx, PlayState* play);
@@ -327,7 +327,7 @@ void func_80B20768(EnToryo* this, PlayState* play) {
 
     if (this->unk_1E4 == 0) {
         if (Actor_ProcessTalkRequest(&this->actor, play)) {
-            this->unk_1E0 = func_8002F368(play);
+            this->unk_1E0 = Actor_GetPlayerExchangeItemId(play);
             if (this->unk_1E0 != 0) {
                 player->actor.textId = func_80B20634(this, play);
                 this->actor.textId = player->actor.textId;

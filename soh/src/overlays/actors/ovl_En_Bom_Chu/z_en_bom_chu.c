@@ -240,7 +240,7 @@ void EnBomChu_WaitForRelease(EnBomChu* this, PlayState* play) {
         //! @bug there is no NULL check on the floor poly.  If the player is out of bounds the floor poly will be NULL
         //! and will cause a crash inside this function.
         EnBomChu_UpdateFloorPoly(this, this->actor.floorPoly, play);
-        this->actor.flags |= ACTOR_FLAG_TARGETABLE; // make chu targetable
+        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED; // make chu targetable
         func_8002F850(play, &this->actor);
         this->actionFunc = EnBomChu_Move;
     }

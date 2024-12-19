@@ -311,7 +311,7 @@ void func_8089E318(BgMizuMovebg* this, PlayState* play) {
                 this->dyna.actor.child->world.pos.x = this->dyna.actor.world.pos.x + sp28.x;
                 this->dyna.actor.child->world.pos.y = this->dyna.actor.world.pos.y + sp28.y;
                 this->dyna.actor.child->world.pos.z = this->dyna.actor.world.pos.z + sp28.z;
-                this->dyna.actor.child->flags &= ~ACTOR_FLAG_TARGETABLE;
+                this->dyna.actor.child->flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
             }
             break;
     }

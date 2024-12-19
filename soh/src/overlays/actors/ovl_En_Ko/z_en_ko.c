@@ -15,7 +15,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 #define ENKO_TYPE (this->actor.params & 0xFF)
 #define ENKO_PATH ((this->actor.params & 0xFF00) >> 8)
@@ -687,7 +687,7 @@ s32 func_80A97D68(EnKo* this, PlayState* play) {
 s32 func_80A97E18(EnKo* this, PlayState* play) {
     s16 trackingMode;
 
-    func_80034F54(play, this->unk_2E4, this->unk_304, 16);
+    Actor_UpdateFidgetTables(play, this->unk_2E4, this->unk_304, 16);
     if (EnKo_IsWithinTalkAngle(this) == true) {
         trackingMode = NPC_TRACKING_HEAD_AND_TORSO;
     } else {
@@ -706,7 +706,7 @@ s32 func_80A97EB0(EnKo* this, PlayState* play) {
     s16 trackingMode;
     s32 result;
 
-    func_80034F54(play, this->unk_2E4, this->unk_304, 16);
+    Actor_UpdateFidgetTables(play, this->unk_2E4, this->unk_304, 16);
     result = EnKo_IsWithinTalkAngle(this);
     trackingMode = (result == true) ? NPC_TRACKING_HEAD_AND_TORSO : NPC_TRACKING_NONE;
     Npc_TrackPoint(&this->actor, &this->interactInfo, 2, trackingMode);
@@ -714,7 +714,7 @@ s32 func_80A97EB0(EnKo* this, PlayState* play) {
 }
 
 s32 func_80A97F20(EnKo* this, PlayState* play) {
-    func_80034F54(play, this->unk_2E4, this->unk_304, 16);
+    Actor_UpdateFidgetTables(play, this->unk_2E4, this->unk_304, 16);
     Npc_TrackPoint(&this->actor, &this->interactInfo, 2, NPC_TRACKING_FULL_BODY);
     return 1;
 }
@@ -726,7 +726,7 @@ s32 func_80A97F70(EnKo* this, PlayState* play) {
         if ((this->skelAnime.animation == &gKokiriBlockingAnim) == false) {
             Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENKO_ANIM_29);
         }
-        func_80034F54(play, this->unk_2E4, this->unk_304, 16);
+        Actor_UpdateFidgetTables(play, this->unk_2E4, this->unk_304, 16);
         trackingMode = NPC_TRACKING_HEAD_AND_TORSO;
     } else {
         if ((this->skelAnime.animation == &gKokiriCuttingGrassAnim) == false) {
@@ -746,7 +746,7 @@ s32 func_80A98034(EnKo* this, PlayState* play) {
         if ((this->skelAnime.animation == &gKokiriBlockingAnim) == false) {
             Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENKO_ANIM_29);
         }
-        func_80034F54(play, this->unk_2E4, this->unk_304, 16);
+        Actor_UpdateFidgetTables(play, this->unk_2E4, this->unk_304, 16);
         result = EnKo_IsWithinTalkAngle(this);
         trackingMode = (result == true) ? NPC_TRACKING_HEAD_AND_TORSO : NPC_TRACKING_NONE;
     } else {
@@ -762,7 +762,7 @@ s32 func_80A98034(EnKo* this, PlayState* play) {
 
 // Same as func_80A97F20
 s32 func_80A98124(EnKo* this, PlayState* play) {
-    func_80034F54(play, this->unk_2E4, this->unk_304, 16);
+    Actor_UpdateFidgetTables(play, this->unk_2E4, this->unk_304, 16);
     Npc_TrackPoint(&this->actor, &this->interactInfo, 2, NPC_TRACKING_FULL_BODY);
     return 1;
 }
@@ -776,7 +776,7 @@ s32 func_80A98174(EnKo* this, PlayState* play) {
         this->skelAnime.playSpeed = 1.0f;
     }
     if (this->skelAnime.playSpeed == 0.0f) {
-        func_80034F54(play, this->unk_2E4, this->unk_304, 16);
+        Actor_UpdateFidgetTables(play, this->unk_2E4, this->unk_304, 16);
     }
     Npc_TrackPoint(&this->actor, &this->interactInfo, 2,
                    (this->skelAnime.playSpeed == 0.0f) ? NPC_TRACKING_HEAD_AND_TORSO : NPC_TRACKING_NONE);
@@ -957,7 +957,7 @@ void func_80A9877C(EnKo* this, PlayState* play) {
         ENKO_TYPE == ENKO_TYPE_CHILD_FADO && play->sceneNum == SCENE_LOST_WOODS) {
         this->actor.textId = INV_CONTENT(ITEM_TRADE_ADULT) > ITEM_ODD_POTION ? 0x10B9 : 0x10DF;
 
-        if (func_8002F368(play) == ENKO_TYPE_CHILD_9) {
+        if (Actor_GetPlayerExchangeItemId(play) == ENKO_TYPE_CHILD_9) {
             this->actor.textId = (Flags_GetInfTable(INFTABLE_BC)) ? 0x10B8 : 0x10B7;
             this->unk_210 = 0;
         }
@@ -1097,9 +1097,9 @@ void func_80A98DB4(EnKo* this, PlayState* play) {
     }
     
     if (this->modelAlpha < 10.0f) {
-        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+        this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     } else {
-        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
     }
 }
 
