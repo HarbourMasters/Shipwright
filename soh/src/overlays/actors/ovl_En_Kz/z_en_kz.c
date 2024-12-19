@@ -139,7 +139,7 @@ s16 EnKz_UpdateTalkState(PlayState* play, Actor* thisx) {
                 switch (this->actor.textId) {
                     case 0x4012:
                         Flags_SetInfTable(INFTABLE_139);
-                        [[fallthrough]];
+                        FALLTHROUGH;
                     case 0x401B:
                         talkState = NPC_TALK_STATE_ACTION;
                         break;
