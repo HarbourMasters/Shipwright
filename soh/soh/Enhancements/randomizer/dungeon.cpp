@@ -1033,9 +1033,9 @@ Dungeons::Dungeons() {
                                               RC_SHEIK_IN_ICE_CAVERN,
                                           },
                                           {});
-    dungeonList[GERUDO_TRAINING_GROUNDS] =
-        DungeonInfo("Gerudo Training Grounds", RHT_GERUDO_TRAINING_GROUND, RG_NONE, RG_NONE,
-                    RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, RG_GERUDO_TRAINING_GROUNDS_KEY_RING, RG_NONE, RA_GERUDO_TRAINING_GROUND, 9, 3, RSK_MQ_GTG,
+    dungeonList[GERUDO_TRAINING_GROUND] =
+        DungeonInfo("Gerudo Training Ground", RHT_GERUDO_TRAINING_GROUND, RG_NONE, RG_NONE,
+                    RG_GERUDO_TRAINING_GROUND_SMALL_KEY, RG_GERUDO_TRAINING_GROUND_KEY_RING, RG_NONE, RA_GERUDO_TRAINING_GROUND, 9, 3, RSK_MQ_GTG,
                     {
                         // Vanilla Locations
                         RC_GERUDO_TRAINING_GROUND_LOBBY_LEFT_CHEST,
@@ -1084,10 +1084,10 @@ Dungeons::Dungeons() {
                     {}, 
                     {
                         // MQ Pots
-                        RC_GERUDO_TRAINING_GROUNDS_MQ_LOBBY_LEFT_POT_1,
-                        RC_GERUDO_TRAINING_GROUNDS_MQ_LOBBY_LEFT_POT_2,
-                        RC_GERUDO_TRAINING_GROUNDS_MQ_LOBBY_RIGHT_POT_1,
-                        RC_GERUDO_TRAINING_GROUNDS_MQ_LOBBY_RIGHT_POT_2,
+                        RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_LEFT_POT_1,
+                        RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_LEFT_POT_2,
+                        RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_POT_1,
+                        RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_POT_2,
                     }, {}, {});
     dungeonList[GANONS_CASTLE] =
         DungeonInfo("Ganon's Castle", RHT_GANONS_CASTLE, RG_NONE, RG_NONE, RG_GANONS_CASTLE_SMALL_KEY,
@@ -1246,7 +1246,7 @@ DungeonInfo* Dungeons::GetDungeonFromScene(const uint16_t scene) {
         case SCENE_ICE_CAVERN:
             return &dungeonList[ICE_CAVERN];
         case SCENE_GERUDO_TRAINING_GROUND:
-            return &dungeonList[GERUDO_TRAINING_GROUNDS];
+            return &dungeonList[GERUDO_TRAINING_GROUND];
         case SCENE_INSIDE_GANONS_CASTLE:
             return &dungeonList[GANONS_CASTLE];
         default:

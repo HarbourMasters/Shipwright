@@ -479,7 +479,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
     }},
     { "28:Gerudo Fortress", "28:Gerudo-Festung", "28:Forteresse Gerudo", Select_LoadGame, 18, {
         { "From Gerudo Valley", "Vom Gerudotal", "Depuis la Vallee Gerudo", ENTR_GERUDOS_FORTRESS_EAST_EXIT, 0 },
-        { "From Gerudo Training Grounds", "Von der Gerudo-Trainingsarena", "Depuis le Gymnase Gerudo", ENTR_GERUDOS_FORTRESS_OUTSIDE_GERUDO_TRAINING_GROUND, 0 },
+        { "From Gerudo Training Ground", "Von der Gerudo-Trainingsarena", "Depuis le Gymnase Gerudo", ENTR_GERUDOS_FORTRESS_OUTSIDE_GERUDO_TRAINING_GROUND, 0 },
         { "From Haunted Wasteland", "Von der Gespensterwueste", "Depuis le Desert Hante", ENTR_GERUDOS_FORTRESS_GATE_EXIT, 0 },
         { "Horseback Riding Minigame", "Bogen zu Pferde Minispiel", "Archerie Montee", ENTR_GERUDOS_FORTRESS_16, 0 },
         { "Gerudo Fortress Jail", "Gerudo-Festung Gefaengnis", "Prison de la Forteresse Gerudo", ENTR_GERUDOS_FORTRESS_17, 0 },
@@ -584,7 +584,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
     { "42:Ice Cavern", "42:Eishoehle", "42:Caverne Polaire", Select_LoadGame, 1, {
         { "Entrance", "Eingang", "Entree", ENTR_ICE_CAVERN_ENTRANCE, 1 },
     }},
-    { "43:Gerudo Training Grounds", "43:Gerudo-Trainingsarena", "43:Gymnase Gerudo", Select_LoadGame, 1, {
+    { "43:Gerudo Training Ground", "43:Gerudo-Trainingsarena", "43:Gymnase Gerudo", Select_LoadGame, 1, {
         { "Entrance", "Eingang", "Entree", ENTR_GERUDO_TRAINING_GROUND_ENTRANCE, 1 },
     }},
     { "44:Warps", "44:Teleportpunkte", "44:Teleporteurs", Select_LoadGame, 6, {

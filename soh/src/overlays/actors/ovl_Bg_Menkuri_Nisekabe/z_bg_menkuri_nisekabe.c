@@ -1,7 +1,7 @@
 /*
  * File: z_bg_menkuri_nisekabe.c
  * Overlay: ovl_Bg_Menkuri_Nisekabe
- * Description: False Stone Walls (Gerudo Training Grounds)
+ * Description: False Stone Walls (Gerudo Training Ground)
  */
 
 #include "z_bg_menkuri_nisekabe.h"

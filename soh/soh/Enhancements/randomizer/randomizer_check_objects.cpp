@@ -40,7 +40,7 @@ std::map<RandomizerCheckArea, std::string> rcAreaNames = {
     { RCAREA_SHADOW_TEMPLE, "Shadow Temple" },
     { RCAREA_BOTTOM_OF_THE_WELL, "Bottom of the Well" },
     { RCAREA_ICE_CAVERN, "Ice Cavern" },
-    { RCAREA_GERUDO_TRAINING_GROUND, "Gerudo Training Grounds" },
+    { RCAREA_GERUDO_TRAINING_GROUND, "Gerudo Training Ground" },
     { RCAREA_GANONS_CASTLE, "Ganon's Castle" },
     { RCAREA_INVALID, "Invalid" },
 };

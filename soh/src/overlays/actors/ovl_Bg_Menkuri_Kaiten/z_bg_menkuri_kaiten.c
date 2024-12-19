@@ -1,7 +1,7 @@
 /*
  * File: z_bg_menkuri_kaiten.c
  * Overlay: Bg_Menkuri_Kaiten
- * Description: Large rotating stone ring used in Gerudo Training Grounds and Forest Temple.
+ * Description: Large rotating stone ring used in Gerudo Training Ground and Forest Temple.
  */
 
 #include "z_bg_menkuri_kaiten.h"

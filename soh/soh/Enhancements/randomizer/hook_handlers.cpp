@@ -1937,7 +1937,7 @@ void RandomizerOnActorInitHandler(void* actorRef) {
     if (actor->id == ACTOR_EN_GE1) {
         EnGe1* enGe1 = static_cast<EnGe1*>(actorRef);
         auto ge1Type = enGe1->actor.params & 0xFF;
-        if (ge1Type == GE1_TYPE_TRAINING_GROUNDS_GUARD &&
+        if (ge1Type == GE1_TYPE_TRAINING_GROUND_GUARD &&
             Flags_GetRandomizerInf(RAND_INF_GF_GTG_GATE_PERMANENTLY_OPEN)) {
             enGe1->actionFunc = (EnGe1ActionFunc)EnGe1_SetNormalText;
         }
