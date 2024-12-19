@@ -2166,7 +2166,7 @@ void RandomizerSettingsWindow::DrawElement() {
                     enabledGlitches.insert((RandomizerTrick)std::stoi(enabledGlitchString));
                 }
             }
-            
+
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (ImGui::BeginTable("tableRandoLogic", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -2337,13 +2337,12 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::TableHeadersRow();
                 ImGui::PopItemFlag();
                 ImGui::TableNextRow();
-                
-                if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
 
+                if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
                     // COLUMN 1 - DISABLED TRICKS
                     ImGui::TableNextColumn();
                     window->DC.CurrLineTextBaseOffset = 0.0f;
-                    
+
                     if (ImGui::Button("Collapse All##disabled")) {
                         for (int i = 0; i < RA_MAX; i++) {
                             areaTreeDisabled[static_cast<RandomizerArea>(i)] = false;
@@ -2374,7 +2373,7 @@ void RandomizerSettingsWindow::DrawElement() {
                         CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
                         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                     }
-                    
+
                     ImGui::BeginChild("ChildTricksDisabled", ImVec2(0, -8), false, ImGuiWindowFlags_HorizontalScrollbar);
 
                     for (auto [area, trickIds] : mSettings->mTricksByArea) {
@@ -2424,12 +2423,9 @@ void RandomizerSettingsWindow::DrawElement() {
                     }
                     ImGui::EndChild();
 
-                    
-
                     // COLUMN 2 - ENABLED TRICKS
                     ImGui::TableNextColumn();
                     window->DC.CurrLineTextBaseOffset = 0.0f;
-
 
                     if (ImGui::Button("Collapse All##enabled")) {
                         for (int i = 0; i < RA_MAX; i++) {
@@ -2465,7 +2461,7 @@ void RandomizerSettingsWindow::DrawElement() {
                         }
                         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                     }
-                    
+
                     ImGui::BeginChild("ChildTricksEnabled", ImVec2(0, -8), false, ImGuiWindowFlags_HorizontalScrollbar);
 
                     for (auto [area, trickIds] : mSettings->mTricksByArea) {
@@ -2520,10 +2516,6 @@ void RandomizerSettingsWindow::DrawElement() {
 
                     ImGui::EndChild();
                 } else {
-                    ImGui::TableNextColumn();
-                    ImGui::BeginChild("ChildTrickAreas", ImVec2(0, -8));
-                    ImGui::Text("Requires Logic Turned On.");
-                    ImGui::EndChild();
                     ImGui::TableNextColumn();
                     ImGui::BeginChild("ChildTricksDisabled", ImVec2(0, -8));
                     ImGui::Text("Requires Logic Turned On.");
