@@ -64,7 +64,7 @@ namespace Rando {
             { RA_SHADOW_TEMPLE, "Shadow Temple"},
             { RA_BOTTOM_OF_THE_WELL, "Bottom of the Well"},
             { RA_ICE_CAVERN, "Ice Cavern"},
-            { RA_GERUDO_TRAINING_GROUND, "Gerudo Training Grounds"},
+            { RA_GERUDO_TRAINING_GROUND, "Gerudo Training Ground"},
             { RA_GANONS_CASTLE, "Ganon's Castle"},
             { RA_MAX, "Invalid"},
         };

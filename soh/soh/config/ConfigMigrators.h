@@ -260,7 +260,6 @@ namespace SOH {
         { MigrationAction::Rename, "gHurtContainer", "gEnhancements.HurtContainer" },
         { MigrationAction::Rename, "gHyperBosses", "gEnhancements.HyperBosses" },
         { MigrationAction::Rename, "gHyperEnemies", "gEnhancements.HyperEnemies" },
-        { MigrationAction::Rename, "gInjectItemCounts", "gEnhancements.InjectItemCounts" },
         { MigrationAction::Rename, "gInstantFishing", "gEnhancements.InstantFishing" },
         { MigrationAction::Rename, "gInstantOcarinaGameWin", "gEnhancements.InstantOcarinaGameWin" },
         { MigrationAction::Rename, "gInstantPutaway", "gEnhancements.InstantPutaway" },

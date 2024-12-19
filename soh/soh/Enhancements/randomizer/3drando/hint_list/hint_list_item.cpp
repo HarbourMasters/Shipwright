@@ -1302,7 +1302,7 @@ void StaticData::HintTable_Init_Item() {
                                                           CustomMessage("a creepy lockpick", /*german*/"ein gruseliger Dietrich", /*french*/"un crochet à porte sinistre")});
                                                            // /*spanish*/una apertura portentosa siniestra:a
 
-    hintTextTable[RHT_GERUDO_TRAINING_GROUNDS_SMALL_KEY] = HintText(CustomMessage("a Gerudo Training Ground Small Key", /*german*/"ein kleiner Schlüssel des Gerudo-Trainingsgeländes", /*french*/"une petite clé du Gymnase Gerudo"),
+    hintTextTable[RHT_GERUDO_TRAINING_GROUND_SMALL_KEY] = HintText(CustomMessage("a Gerudo Training Ground Small Key", /*german*/"ein kleiner Schlüssel des Gerudo-Trainingsgeländes", /*french*/"une petite clé du Gymnase Gerudo"),
                                                                     // /*spanish*/una llave pequeña del Centro de Instrucción Gerudo
                                                                     {
                                                                     CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
@@ -1437,7 +1437,7 @@ void StaticData::HintTable_Init_Item() {
                                                          CustomMessage("a creepy skeleton key", /*german*/"ein gruseliger Skelettschlüssel", /*french*/"des crochets à porte sinistres")});
                                                           // /*spanish*/un anillo tenebroso contra cerrojos
 
-    hintTextTable[RHT_GERUDO_TRAINING_GROUNDS_KEY_RING] = HintText(CustomMessage("a Gerudo Training Ground Key Ring", /*german*/"ein Schlüsselbund des Gerudo-Trainingsgeländes", /*french*/"un trousseau de clés du Gymnase Gerudo"),
+    hintTextTable[RHT_GERUDO_TRAINING_GROUND_KEY_RING] = HintText(CustomMessage("a Gerudo Training Ground Key Ring", /*german*/"ein Schlüsselbund des Gerudo-Trainingsgeländes", /*french*/"un trousseau de clés du Gymnase Gerudo"),
                                                                    // /*spanish*/un llavero del Centro de Instrucción Gerudo
                                                                    {
                                                                    CustomMessage("a key ring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")

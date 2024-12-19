@@ -442,7 +442,7 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
                     result.maxCapacity = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;
                     break;
                 case SCENE_GERUDO_TRAINING_GROUND:
-                    result.maxCapacity = GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX;
+                    result.maxCapacity = GERUDO_TRAINING_GROUND_SMALL_KEY_MAX;
                     break;
                 case SCENE_THIEVES_HIDEOUT:
                     result.maxCapacity = GERUDO_FORTRESS_SMALL_KEY_MAX;
@@ -1224,7 +1224,7 @@ void ItemTrackerWindow::DrawElement() {
     int iconSpacing = CVarGetInteger(CVAR_TRACKER_ITEM("IconSpacing"), 12);
     int comboButton1Mask = buttonMap[CVarGetInteger(CVAR_TRACKER_ITEM("ComboButton1"), TRACKER_COMBO_BUTTON_L)];
     int comboButton2Mask = buttonMap[CVarGetInteger(CVAR_TRACKER_ITEM("ComboButton2"), TRACKER_COMBO_BUTTON_R)];
-    OSContPad* buttonsPressed = Ship::Context::GetInstance()->GetControlDeck()->GetPads();
+    OSContPad* buttonsPressed = std::dynamic_pointer_cast<LUS::ControlDeck>(Ship::Context::GetInstance()->GetControlDeck())->GetPads();
     bool comboButtonsHeld = buttonsPressed != nullptr && buttonsPressed[0].button & comboButton1Mask && buttonsPressed[0].button & comboButton2Mask;
     bool isPaused = CVarGetInteger(CVAR_TRACKER_ITEM("ShowOnlyPaused"), 0) == 0 || gPlayState != nullptr && gPlayState->pauseCtx.state > 0;
 

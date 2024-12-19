@@ -893,7 +893,7 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
     // This is a bit of a hack, we can't effectively override the behavior of the torches 
     // or poes from which the cutscene is triggered until we can have a "BeforeActorInit" hook.
     // So for now we're just going to set the flag before they get to the room the cutscene is in
-    if (gPlayState->sceneNum == SCENE_FOREST_TEMPLE && actor->id == ACTOR_EN_ST && !Flags_GetSwitch(gPlayState, 0x1B)) {
+    if (gPlayState->sceneNum == SCENE_FOREST_TEMPLE && actor->id == ACTOR_EN_ST && !Flags_GetSwitch(gPlayState, 0x1B) && !Flags_GetSwitch(gPlayState, 0x1C)) {
         if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), 0) && !CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)) {
             Flags_SetSwitch(gPlayState, 0x1B);
         }

@@ -453,7 +453,7 @@ static constexpr std::pair<u16, const char*> actorDescriptionData[] = {
     { ACTOR_EN_KAKASI3, "Bonooru the Scarecrow" },
     { ACTOR_OCEFF_WIPE4, "Scarecrow's Song Ocarina Effect" },
     { ACTOR_EN_EG, "Void-out Trigger (Tower Collapse)" },
-    { ACTOR_BG_MENKURI_NISEKABE, "False Stone Walls (Gerudo Training Grounds)" },
+    { ACTOR_BG_MENKURI_NISEKABE, "False Stone Walls (Gerudo Training Ground)" },
     { ACTOR_EN_ZO, "Zora" },
     { ACTOR_OBJ_MAKEKINSUTA, "Skulltula Sprouting from Bean Spot" },
     { ACTOR_EN_GE3, "Gerudo Fortress Leader" },

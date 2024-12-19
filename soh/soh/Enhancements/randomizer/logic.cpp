@@ -1213,7 +1213,7 @@ namespace Rando {
                 }*/
                 return GetSmallKeyCount(SCENE_BOTTOM_OF_THE_WELL) >= requiredAmountGlitchless;
 
-            case RR_GERUDO_TRAINING_GROUNDS:
+            case RR_GERUDO_TRAINING_GROUND:
                 /*if (IsGlitched && (false)) {
                     return GerudoTrainingGroundsKeys >= requiredAmountGlitched;
                 }*/
@@ -1285,7 +1285,7 @@ namespace Rando {
         { RG_SPIRIT_TEMPLE_SMALL_KEY,           SCENE_SPIRIT_TEMPLE },
         { RG_SHADOW_TEMPLE_SMALL_KEY,           SCENE_SHADOW_TEMPLE },
         { RG_BOTTOM_OF_THE_WELL_SMALL_KEY,      SCENE_BOTTOM_OF_THE_WELL },
-        { RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, SCENE_GERUDO_TRAINING_GROUND },
+        { RG_GERUDO_TRAINING_GROUND_SMALL_KEY, SCENE_GERUDO_TRAINING_GROUND },
         { RG_GERUDO_FORTRESS_SMALL_KEY,         SCENE_THIEVES_HIDEOUT },
         { RG_GANONS_CASTLE_SMALL_KEY,           SCENE_INSIDE_GANONS_CASTLE },
         { RG_FOREST_TEMPLE_KEY_RING,            SCENE_FOREST_TEMPLE },
@@ -1294,7 +1294,7 @@ namespace Rando {
         { RG_SPIRIT_TEMPLE_KEY_RING,            SCENE_SPIRIT_TEMPLE },
         { RG_SHADOW_TEMPLE_KEY_RING,            SCENE_SHADOW_TEMPLE },
         { RG_BOTTOM_OF_THE_WELL_KEY_RING,       SCENE_BOTTOM_OF_THE_WELL },
-        { RG_GERUDO_TRAINING_GROUNDS_KEY_RING,  SCENE_GERUDO_TRAINING_GROUND },
+        { RG_GERUDO_TRAINING_GROUND_KEY_RING,  SCENE_GERUDO_TRAINING_GROUND },
         { RG_GERUDO_FORTRESS_KEY_RING,          SCENE_THIEVES_HIDEOUT },
         { RG_GANONS_CASTLE_KEY_RING,            SCENE_INSIDE_GANONS_CASTLE },
         { RG_FOREST_TEMPLE_BOSS_KEY,            SCENE_FOREST_TEMPLE },

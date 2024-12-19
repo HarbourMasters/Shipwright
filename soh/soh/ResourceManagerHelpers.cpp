@@ -6,7 +6,7 @@
 #include "Enhancements/enhancementTypes.h"
 #include "Enhancements/randomizer/dungeon.h"
 #include <libultraship/libultraship.h>
-#include <GameVersions.h>
+#include <soh/GameVersions.h>
 #include "resource/type/SohResourceType.h"
 #include "resource/type/Array.h"
 #include "resource/type/Skeleton.h"
@@ -205,7 +205,7 @@ extern "C" char* ResourceMgr_GetResourceDataByNameHandlingMQ(const char* path) {
 }
 
 extern "C" uint8_t ResourceMgr_TexIsRaw(const char* texPath) {
-    auto res = std::static_pointer_cast<LUS::Texture>(ResourceMgr_GetResourceByNameHandlingMQ(texPath));
+    auto res = std::static_pointer_cast<Fast::Texture>(ResourceMgr_GetResourceByNameHandlingMQ(texPath));
     return res->Flags & TEX_FLAG_LOAD_AS_RAW;
 }
 
@@ -253,8 +253,8 @@ extern "C" char* ResourceMgr_LoadJPEG(char* data, size_t dataSize) {
 extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
     auto res = ResourceMgr_GetResourceByNameHandlingMQ(filePath);
 
-    if (res->GetInitData()->Type == static_cast<uint32_t>(LUS::ResourceType::DisplayList)) {
-        return (char*)&((std::static_pointer_cast<LUS::DisplayList>(res))->Instructions[0]);
+    if (res->GetInitData()->Type == static_cast<uint32_t>(Fast::ResourceType::DisplayList)) {
+        return (char*)&((std::static_pointer_cast<Fast::DisplayList>(res))->Instructions[0]);
     }
 
     if (res->GetInitData()->Type == static_cast<uint32_t>(SOH::ResourceType::SOH_Array)) {
@@ -267,8 +267,8 @@ extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
 extern "C" char* ResourceMgr_LoadIfDListByName(const char* filePath) {
     auto res = ResourceMgr_GetResourceByNameHandlingMQ(filePath);
 
-    if (res->GetInitData()->Type == static_cast<uint32_t>(LUS::ResourceType::DisplayList)) {
-        return (char*)&((std::static_pointer_cast<LUS::DisplayList>(res))->Instructions[0]);
+    if (res->GetInitData()->Type == static_cast<uint32_t>(Fast::ResourceType::DisplayList)) {
+        return (char*)&((std::static_pointer_cast<Fast::DisplayList>(res))->Instructions[0]);
     }
 
     return nullptr;
@@ -290,12 +290,12 @@ extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path) {
     // OTRTODO: If Alt loading over original cache is fixed, this line can most likely be removed
     ResourceMgr_UnloadOriginalWhenAltExists(path);
 
-    auto res = std::static_pointer_cast<LUS::DisplayList>(ResourceMgr_GetResourceByNameHandlingMQ(path));
+    auto res = std::static_pointer_cast<Fast::DisplayList>(ResourceMgr_GetResourceByNameHandlingMQ(path));
     return (Gfx*)&res->Instructions[0];
 }
 
 extern "C" uint8_t ResourceMgr_FileIsCustomByName(const char* path) {
-    auto res = std::static_pointer_cast<LUS::DisplayList>(ResourceMgr_GetResourceByNameHandlingMQ(path));
+    auto res = std::static_pointer_cast<Fast::DisplayList>(ResourceMgr_GetResourceByNameHandlingMQ(path));
     return res->GetInitData()->IsCustom;
 }
 
@@ -309,7 +309,7 @@ std::unordered_map<std::string, std::unordered_map<std::string, GfxPatch>> origi
 // Attention! This is primarily for cosmetics & bug fixes. For things like mods and model replacement you should be using OTRs
 // instead (When that is available). Index can be found using the commented out section below.
 extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction) {
-    auto res = std::static_pointer_cast<LUS::DisplayList>(
+    auto res = std::static_pointer_cast<Fast::DisplayList>(
         Ship::Context::GetInstance()->GetResourceManager()->LoadResource(path));
 
     // Leaving this here for people attempting to find the correct Dlist index to patch
@@ -348,7 +348,7 @@ extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchNa
 }
 
 extern "C" void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const char* patchName, int destinationIndex, int sourceIndex) {
-    auto res = std::static_pointer_cast<LUS::DisplayList>(
+    auto res = std::static_pointer_cast<Fast::DisplayList>(
         Ship::Context::GetInstance()->GetResourceManager()->LoadResource(path));
 
     // Do not patch custom assets as they most likely do not have the same instructions as authentic assets
@@ -371,7 +371,7 @@ extern "C" void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const ch
 
 extern "C" void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName) {
     if (originalGfx.contains(path) && originalGfx[path].contains(patchName)) {
-        auto res = std::static_pointer_cast<LUS::DisplayList>(
+        auto res = std::static_pointer_cast<Fast::DisplayList>(
             Ship::Context::GetInstance()->GetResourceManager()->LoadResource(path));
 
         Gfx* gfx = (Gfx*)&res->Instructions[originalGfx[path][patchName].index];
