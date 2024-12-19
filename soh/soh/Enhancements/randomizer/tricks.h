@@ -19,10 +19,6 @@ namespace Rando {
                 ADVANCED,
                 EXPERT,
                 EXTREME,
-                /*
-                LENS,
-                BKSKIP,
-                */
                 EXPERIMENTAL,
                 GLITCH,
             };

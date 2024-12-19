@@ -2278,10 +2278,6 @@ void RandomizerSettingsWindow::DrawElement() {
                 { Rando::Tricks::Tag::ADVANCED, true },
                 { Rando::Tricks::Tag::EXPERT, true },
                 { Rando::Tricks::Tag::EXTREME, true },
-                /*
-                { Rando::Tricks::Tag::LENS, true },
-                { Rando::Tricks::Tag::BKSKIP, true },
-                */
                 { Rando::Tricks::Tag::EXPERIMENTAL, true },
                 //{ Rando::Tricks::Tag::GLITCH, false },
             };

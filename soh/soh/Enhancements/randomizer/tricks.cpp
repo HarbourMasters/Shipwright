@@ -61,10 +61,6 @@ namespace Rando {
         { Tricks::Tag::ADVANCED, "Advanced" },
         { Tricks::Tag::EXPERT, "Expert" },
         { Tricks::Tag::EXTREME, "Extreme" },
-        /*
-        { Tricks::Tag::LENS, "Lens" },
-        { Tricks::Tag::BKSKIP, "Boss Key Skip" },
-        */
         { Tricks::Tag::EXPERIMENTAL, "Experimental" },
         { Tricks::Tag::GLITCH, "Glitch" },
     };
@@ -95,12 +91,6 @@ namespace Rando {
                 return { 0.53f, 0.05f, 0.14f, 1.00f };
             case Tag::EXTREME:
                 return { 0.27f, 0.00f, 0.27f, 1.00f };
-            /*
-            case Tag::LENS:
-                return { 0.00f, 0.00f, 0.00f, 1.00f };
-            case Tag::BKSKIP:
-                return { 0.00f, 0.00f, 0.00f, 1.00f };
-            */
             case Tag::EXPERIMENTAL:
                 return { 0.00f, 1.00f, 1.00f, 1.00f };
             case Tag::GLITCH:
