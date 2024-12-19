@@ -2,12 +2,14 @@
 
 namespace Rando {
 void Settings::CreateOptionDescriptions() {
-    mOptionDescriptions[RSK_FOREST] = "Closed - Kokiri Sword & Deku Shield are required to access "
-                                      "the Deku Tree, and completing the Deku Tree is required to "
-                                      "access the Hyrule Field exit.\n"
+    mOptionDescriptions[RSK_FOREST] = " Determines if Kokiri forest can be left for the Lost Woods bridge or the Deku Tree.\n"
                                       "\n"
-                                      "Closed Deku - Kokiri boy no longer blocks the path to Hyrule "
-                                      "Field but Mido still requires the Kokiri Sword and Deku Shield "
+                                      "Closed - Kokiri Sword & Deku Shield are required to access "
+                                      "the Deku Tree, and completing the Deku Tree is required to "
+                                      "access the Lost Woods Bridge Exit.\n"
+                                      "\n"
+                                      "Closed Deku - Kokiri boy no longer blocks the path to the Bridge "
+                                      "but Mido still requires the Kokiri Sword and Deku Shield "
                                       "to access the tree.\n"
                                       "\n"
                                       "Open - Mido no longer blocks the path to the Deku Tree. Kokiri "
