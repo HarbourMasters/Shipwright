@@ -322,6 +322,7 @@ void Settings::CreateOptions() {
 
     mExcludeLocationsOptionsAreas.reserve(RCAREA_INVALID);
 
+    // the following are glitches and are currently hidden/not operational
     mTrickOptions[RT_ACUTE_ANGLE_CLIP] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED}, true, "Acute angle clip", "Enables locations requiring jumpslash clips through walls which meet at an acute angle.");
     mTrickOptions[RT_ADVANCED_CLIPS] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED}, true, "Advanced clips", "Enables locations requiring clips through walls and objects requiring precise jumps or other tricks.");
     mTrickOptions[RT_BLANK_A] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED}, true, "Blank A", "Enables locations requiring blank A button; NOTE: this requires the 'Quick Putaway' restoration.");
@@ -336,6 +337,7 @@ void Settings::CreateOptions() {
     mTrickOptions[RT_HOOKSHOT_CLIP] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED}, true, "Hookshot Clip", "Enables locations requiring hookshot clips.");
     mTrickOptions[RT_HOOKSHOT_JUMP] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED}, true, "Hookshot Jump", "Enables locations requiring hookshot jumps.");
     mTrickOptions[RT_ISG] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED}, true, "ISG", "Enables locations requiring use of the infinite sword glitch.");
+
     mTrickOptions[RT_VISIBLE_COLLISION] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::NOVICE}, false, "Pass Through Visible One-Way Collision", "Allows climbing through the platform to reach Impa's House Back as adult with no items and going through the Kakariko Village Gate as child when coming from the Mountain Trail side.");
     mTrickOptions[RT_GROTTOS_WITHOUT_AGONY] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::NOVICE}, false, "Hidden Grottos without Stone of Agony", "Allows entering hidden grottos without the Stone of Agony.");
     mTrickOptions[RT_FEWER_TUNIC_REQUIREMENTS] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::INTERMEDIATE}, false, "Fewer Tunic Requirements", "Allows the following possible without Tunics:\n- Enter Water Temple. The area below the center pillar still requires Zora Tunic. Applies to MQ also.\n- Enter Fire Temple. Volvagia still requires Goron tunic. Applies to MQ also, and includes child access to first floor with dungeon shuffle.");
@@ -343,8 +345,8 @@ void Settings::CreateOptions() {
     mTrickOptions[RT_FLAMING_CHESTS] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::INTERMEDIATE}, false, "Flaming Chests", "The chests encircled in flames in Gerudo Training Ground and in Spirit Temple can be opened by running into the flames while Link is invincible after taking damage.");
     // the following trick is disabled for now, can't check for being able to use bunny hood + bunny hood speedup is currently completely decoupled from rando
     // mTrickOptions[RT_BUNNY_HOOD_JUMPS] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED}, false, "Bunny Hood Jumps", "Allows reaching locations using Bunny Hood's extended jumps.");
-    // mTrickOptions[RT_DAMAGE_BOOST_SIMPLE] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED}, false, "Simple damage boosts", "Allows damage boosts to reach Hyrule Castle guards, the bomb bag area in DC and the Gerudo Valley crate Piece of Heart. Can be combined with \"Simple hover boosts\" for reaching far distances.");
-    // mTrickOptions[RT_HOVER_BOOST_SIMPLE] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED}, false, "Simple hover boosts", "Allows equipping of hover boots when link is moving at high speeds to extend distance covered. Can be combined with \"Simple damage boosts\" for greater uses.");
+    mTrickOptions[RT_DAMAGE_BOOST_SIMPLE] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL}, false, "Simple damage boosts", "Allows damage boosts in order to reach further locations. Can be combined with \"Simple hover boosts\" for reaching far distances.");
+    mTrickOptions[RT_HOVER_BOOST_SIMPLE] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL}, false, "Simple hover boosts", "Allows equipping of hover boots when link is moving at high speeds to extend distance covered. Can be combined with \"Simple damage boosts\" for greater uses.");
     mTrickOptions[RT_BOMBCHU_BEEHIVES] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::NOVICE}, false, "Bombchu Beehives", "Allows exploding beehives with bombchus"),
     mTrickOptions[RT_KF_ADULT_GS] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_KOKIRI_FOREST, {Tricks::Tag::NOVICE}, false, "Adult Kokiri Forest GS with Hover Boots", "Can be obtained without Hookshot by using the Hover Boots off of one of the roots.");
     mTrickOptions[RT_LW_BRIDGE] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_THE_LOST_WOODS, {Tricks::Tag::EXPERT}, false, "Jump onto the Lost Woods Bridge as Adult with Nothing", "With very precise movement it's possible for adult to jump onto the bridge without needing Longshot, Hover Boots, or Bean.");
