@@ -11496,13 +11496,7 @@ void Player_UpdateCamAndSeqModes(PlayState* play, Player* this) {
                     camMode = CAM_MODE_TALK;
                 } else if (this->stateFlags1 & PLAYER_STATE1_FRIENDLY_ACTOR_FOCUS) {
                     if (this->stateFlags1 & PLAYER_STATE1_BOOMERANG_THROWN) {
-                        // #region SOH [Enhancement]
-                        if (CVarGetInteger(CVAR_ENHANCEMENT("BoomerangFirstPerson"), 0)) {
-                            camMode = CAM_MODE_TARGET;
-                        // #endregion
-                        } else {
-                            camMode = CAM_MODE_FOLLOWBOOMERANG;
-                        }
+                        camMode = CAM_MODE_FOLLOWBOOMERANG;
                     } else {
                         camMode = CAM_MODE_FOLLOWTARGET;
                     }
@@ -11515,7 +11509,13 @@ void Player_UpdateCamAndSeqModes(PlayState* play, Player* this) {
             } else if (this->stateFlags1 & PLAYER_STATE1_BOOMERANG_THROWN) {
                 // #region SOH [Enhancement]
                 if (CVarGetInteger(CVAR_ENHANCEMENT("BoomerangFirstPerson"), 0)) {
-                    camMode = CAM_MODE_TARGET;
+                    // Avoid camera jumps by switching  to normal cam to exit the first person camera,
+                    // before following the boomerang
+                    if (Play_GetCamera(play, 0)->mode == CAM_MODE_FIRSTPERSON) {
+                        camMode = CAM_MODE_NORMAL;
+                    } else {
+                        camMode = CAM_MODE_FOLLOWBOOMERANG;
+                    }
                 // #endregion
                 } else {
                     camMode = CAM_MODE_FOLLOWBOOMERANG;
