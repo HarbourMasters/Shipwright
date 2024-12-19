@@ -11236,7 +11236,7 @@ void Player_ProcessSceneCollision(PlayState* play, Player* this) {
                 func_80074CE8(play,
                               SurfaceType_GetLightSettingIndex(&play->colCtx, floorPoly, this->actor.floorBgId));
             } else {
-                func_80043508(&play->colCtx, this->actor.floorBgId);
+                DynaPoly_SetPlayerAbove(&play->colCtx, this->actor.floorBgId);
             }
         }
 
@@ -11438,7 +11438,7 @@ void Player_ProcessSceneCollision(PlayState* play, Player* this) {
             s32 pad3;
 
             if (this->actor.floorBgId != BGCHECK_SCENE) {
-                func_800434C8(&play->colCtx, this->actor.floorBgId);
+                DynaPoly_SetPlayerOnTop(&play->colCtx, this->actor.floorBgId);
             }
 
             floorPolyNormalX = COLPOLY_GET_NORMAL(floorPoly->normal.x);

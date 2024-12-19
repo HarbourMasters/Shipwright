@@ -82,7 +82,7 @@ s32 func_80BA1ECC(ObjWarp2block* this, PlayState* play) {
     Vec3f sp20;
     f32 temp_f2;
 
-    if (func_80043590(&this->dyna)) {
+    if (DynaPolyActor_IsPlayerAbove(&this->dyna)) {
         return 0;
     }
 
