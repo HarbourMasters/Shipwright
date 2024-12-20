@@ -949,7 +949,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_KING_ZORA_TUNIC_CHECK: {
-            if(!Flags_GetRandomizerInf(RAND_INF_KING_ZORA_THAWED)){
+            if (!Flags_GetRandomizerInf(RAND_INF_KING_ZORA_THAWED)) {
                 *should = false;
             }
             break;
@@ -1194,8 +1194,16 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         }
         case VB_ADULT_KING_ZORA_ITEM_GIVE: {
             EnKz* enKz = va_arg(args, EnKz*);
+            Input input = gPlayState->state.input[0];
+
             if (CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
-                if (func_8002F368(gPlayState) == EXCH_ITEM_PRESCRIPTION){ 
+                // For early eyeball frog hook override, simulate collection delay behavior by just checking for the R
+                // button being held while wearing a shield, and a trade item lower than frog in inventory
+                bool hasShieldHoldingR = (CHECK_BTN_ANY(input.cur.button, BTN_R) &&
+                                          CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD) > EQUIP_VALUE_SHIELD_NONE);
+
+                if (func_8002F368(gPlayState) == EXCH_ITEM_PRESCRIPTION ||
+                    (hasShieldHoldingR && INV_CONTENT(ITEM_TRADE_ADULT) < ITEM_FROG)) {
                     Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_ZD_TRADE_PRESCRIPTION);
                     Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_PRESCRIPTION);
                 } else {
@@ -1209,9 +1217,6 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                     Flags_SetRandomizerInf(RAND_INF_KING_ZORA_THAWED);
                 }
             }
-            enKz->actor.parent = NULL;
-            enKz->interactInfo.talkState = NPC_TALK_STATE_IDLE;
-            enKz->actionFunc = EnKz_Wait;
             *should = false;
             break;
         }
@@ -1608,6 +1613,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         }
         case VB_FREEZE_ON_SKULL_TOKEN:
         case VB_TRADE_TIMER_ODD_MUSHROOM:
+        case VB_TRADE_TIMER_FROG:
         case VB_ANJU_SET_OBTAINED_TRADE_ITEM:
         case VB_GIVE_ITEM_FROM_TARGET_IN_WOODS:
         case VB_GIVE_ITEM_FROM_TALONS_CHICKENS:
