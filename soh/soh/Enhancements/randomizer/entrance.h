@@ -2,7 +2,7 @@
 #ifdef __cplusplus
 
 #include "randomizerTypes.h"
-#include "3drando/location_access.hpp"
+#include "location_access.h"
 
 #include <nlohmann/json.hpp>
 

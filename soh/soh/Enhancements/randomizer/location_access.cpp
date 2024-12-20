@@ -1,12 +1,12 @@
-#include "location_access.hpp"
+#include "location_access.h"
 
-#include "../dungeon.h"
-#include "../static_data.h"
-#include "../context.h"
-#include "item_pool.hpp"
-#include "spoiler_log.hpp"
-#include "../trial.h"
-#include "../entrance.h"
+#include "soh/Enhancements/randomizer/dungeon.h"
+#include "soh/Enhancements/randomizer/static_data.h"
+#include "soh/Enhancements/randomizer/context.h"
+#include "soh/Enhancements/randomizer/3drando/item_pool.hpp"
+#include "soh/Enhancements/randomizer/3drando/spoiler_log.hpp"
+#include "soh/Enhancements/randomizer/trial.h"
+#include "soh/Enhancements/randomizer/entrance.h"
 #include "soh/Enhancements/debugger/performanceTimer.h"
 
 #include <fstream>

@@ -1,5 +1,5 @@
-#include "../location_access.hpp"
-#include "../../entrance.h"
+#include "soh/Enhancements/randomizer/location_access.h"
+#include "soh/Enhancements/randomizer/entrance.h"
 
 using namespace Rando;
 

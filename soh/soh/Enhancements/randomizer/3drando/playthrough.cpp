@@ -4,7 +4,7 @@
 #include <boost_custom/container_hash/hash_32.hpp>
 #include "custom_messages.hpp"
 #include "fill.hpp"
-#include "location_access.hpp"
+#include "../location_access.h"
 #include "random.hpp"
 #include "spoiler_log.hpp"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"

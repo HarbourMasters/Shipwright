@@ -5,9 +5,9 @@
 #include <list>
 #include <set>
 
-#include "../randomizerTypes.h"
-#include "../context.h"
-#include "../logic.h"
+#include "soh/Enhancements/randomizer/randomizerTypes.h"
+#include "soh/Enhancements/randomizer/context.h"
+#include "soh/Enhancements/randomizer/logic.h"
 
 typedef bool (*ConditionFn)();
 

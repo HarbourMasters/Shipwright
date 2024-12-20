@@ -1,6 +1,6 @@
-#include "../location_access.hpp"
-#include "../../entrance.h"
-#include "../../dungeon.h"
+#include "soh/Enhancements/randomizer/location_access.h"
+#include "soh/Enhancements/randomizer/entrance.h"
+#include "soh/Enhancements/randomizer/dungeon.h"
 
 using namespace Rando;
 

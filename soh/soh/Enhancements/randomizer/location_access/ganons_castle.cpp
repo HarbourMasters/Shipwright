@@ -1,7 +1,7 @@
-#include "../location_access.hpp"
-#include "../../entrance.h"
-#include "../../dungeon.h"
-#include "../../trial.h"
+#include "soh/Enhancements/randomizer/location_access.h"
+#include "soh/Enhancements/randomizer/entrance.h"
+#include "soh/Enhancements/randomizer/dungeon.h"
+#include "soh/Enhancements/randomizer/trial.h"
 
 using namespace Rando;
 
