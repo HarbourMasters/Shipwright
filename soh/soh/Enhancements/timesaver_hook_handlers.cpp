@@ -221,6 +221,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                     case 4100:
                         *should = false;
                         RateLimitedSuccessChime();
+                        Message_CloseTextbox(gPlayState);
                         taki = (BgSpot03Taki*)Actor_FindNearby(gPlayState, &GET_PLAYER(gPlayState)->actor,
                                                                ACTOR_BG_SPOT03_TAKI, ACTORCAT_BG, 999.0f);
                         if (taki != NULL) {
