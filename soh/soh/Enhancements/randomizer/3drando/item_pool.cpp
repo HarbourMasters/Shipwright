@@ -679,16 +679,16 @@ void GenerateItemPool() {
     RG_FIRE_ARROWS,
     RG_ICE_ARROWS,
     RG_LIGHT_ARROWS,
-    RG_DOUBLE_DEFENSE, //Double defense
+    RG_DOUBLE_DEFENSE,
     RG_CLAIM_CHECK,
-    RG_PROGRESSIVE_HOOKSHOT, //Progressive hookshot
-    RG_PROGRESSIVE_STRENGTH, //Progressive strength
-    RG_PROGRESSIVE_BOMB_BAG, //Progressive bomb bag
-    RG_PROGRESSIVE_BOW, //Progressive bow
-    RG_PROGRESSIVE_SLINGSHOT, //Progressive slingshot
-    RG_PROGRESSIVE_WALLET, //Progressive wallet
-    RG_PROGRESSIVE_SCALE, //Progressive scale
-    RG_PROGRESSIVE_MAGIC_METER, //Progressive magic
+    RG_PROGRESSIVE_HOOKSHOT,
+    RG_PROGRESSIVE_STRENGTH,
+    RG_PROGRESSIVE_BOMB_BAG,
+    RG_PROGRESSIVE_BOW,
+    RG_PROGRESSIVE_SLINGSHOT,
+    RG_PROGRESSIVE_WALLET,
+    RG_PROGRESSIVE_SCALE,
+    RG_PROGRESSIVE_MAGIC_METER,
   };
   //Check song shuffle and dungeon reward shuffle just for ice traps
   if (ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_ANYWHERE)) {
@@ -742,7 +742,7 @@ void GenerateItemPool() {
 
   if (ctx->GetOption(RSK_SHUFFLE_MASTER_SWORD)) {
     AddItemToMainPool(RG_MASTER_SWORD);
-    ctx->possibleIceTrapModels.push_back(RG_MASTER_SWORD); //Master Sword without the GI enum
+    ctx->possibleIceTrapModels.push_back(RG_MASTER_SWORD);
   } else {
       if (!ctx->GetOption(RSK_STARTING_MASTER_SWORD)) {
           ctx->PlaceItemInLocation(RC_TOT_MASTER_SWORD, RG_MASTER_SWORD, false, true);
@@ -761,7 +761,7 @@ void GenerateItemPool() {
     if (ctx->GetOption(RSK_ITEM_POOL).Is(RO_ITEM_POOL_PLENTIFUL)) {
       AddItemToPool(PendingJunkPool, RG_PROGRESSIVE_OCARINA);
     }
-    ctx->possibleIceTrapModels.push_back(RG_PROGRESSIVE_OCARINA); //Progressive ocarina
+    ctx->possibleIceTrapModels.push_back(RG_PROGRESSIVE_OCARINA);
   } else {
       if (ctx->GetOption(RSK_STARTING_OCARINA).Is(RO_STARTING_OCARINA_OFF)) {
           ctx->PlaceItemInLocation(RC_LW_GIFT_FROM_SARIA, RG_PROGRESSIVE_OCARINA, false, true);
@@ -780,7 +780,6 @@ void GenerateItemPool() {
     AddItemToMainPool(RG_OCARINA_C_LEFT_BUTTON);
     AddItemToMainPool(RG_OCARINA_C_RIGHT_BUTTON);
 
-    //TODO: Re-add when custom models work with ice traps
     ctx->possibleIceTrapModels.push_back(RG_OCARINA_A_BUTTON);
     ctx->possibleIceTrapModels.push_back(RG_OCARINA_C_UP_BUTTON);
     ctx->possibleIceTrapModels.push_back(RG_OCARINA_C_DOWN_BUTTON);
@@ -911,7 +910,7 @@ void GenerateItemPool() {
     if (ctx->GetOption(RSK_ITEM_POOL).Is(RO_ITEM_POOL_PLENTIFUL)) {
       AddItemToPool(PendingJunkPool, RG_MAGIC_BEAN_PACK);
     }
-    ctx->possibleIceTrapModels.push_back(RG_MAGIC_BEAN_PACK); //Magic bean pack
+    ctx->possibleIceTrapModels.push_back(RG_MAGIC_BEAN_PACK);
   } else {
     ctx->PlaceItemInLocation(RC_ZR_MAGIC_BEAN_SALESMAN, RG_MAGIC_BEAN, false, true);
   }
@@ -1410,7 +1409,7 @@ void GenerateItemPool() {
   if (/*ProgressiveGoronSword TODO: Implement Setting*/false) {
     ReplaceMaxItem(RG_BIGGORON_SWORD, 0);
     AddItemToMainPool(RG_PROGRESSIVE_GORONSWORD, 2);
-    ctx->possibleIceTrapModels.push_back(RG_PROGRESSIVE_GORONSWORD); // Progressive Goron Sword
+    ctx->possibleIceTrapModels.push_back(RG_PROGRESSIVE_GORONSWORD);
   } else {
     ctx->possibleIceTrapModels.push_back(RG_BIGGORON_SWORD);
   }
