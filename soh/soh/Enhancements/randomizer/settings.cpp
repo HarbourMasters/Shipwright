@@ -387,6 +387,7 @@ void Settings::CreateOptions() {
     mTrickOptions[RT_ZR_CUCCO] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_ZORAS_RIVER, {Tricks::Tag::NOVICE}, "Zora\'s Domain Entry with Cucco", "You can fly behind the waterfall with a Cucco as child.");
     mTrickOptions[RT_ZD_KING_ZORA_SKIP] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_ZORAS_DOMAIN, {Tricks::Tag::INTERMEDIATE}, "Skip King Zora as Adult with Nothing", "With a precise jump as adult, it is possible to get on the fence next to King Zora from the front to access Zora's Fountain.");
     mTrickOptions[RT_ZD_GS] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_ZORAS_DOMAIN, {Tricks::Tag::INTERMEDIATE}, "Zora\'s Domain GS with No Additional Items", "A precise jump slash can kill the Skulltula and recoil back onto the top of the frozen waterfall. To kill it, the logic normally guarantees one of Hookshot, Bow, or Magic.");
+    mTrickOptions[RT_ZF_GREAT_FAIRY_WITHOUT_EXPLOSIVES] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_ZORAS_FOUNTAIN, {Tricks::Tag::NOVICE}, "Zora\'s Fountain Great Fairy Without Explosives", "It's possible to use silver gauntlets to pick up the silver rock and hammer to break the rock below it, allowing you to ledge grab the edge of the hole and get past the breakable wall (hammer can't break the wall itself).");
     mTrickOptions[RT_LH_LAB_WALL_GS] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_LAKE_HYLIA, {Tricks::Tag::NOVICE}, "Lake Hylia Lab Wall GS with Jump Slash", "The jump slash to actually collect the token is somewhat precise.");
     mTrickOptions[RT_LH_LAB_DIVING] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_LAKE_HYLIA, {Tricks::Tag::NOVICE}, "Lake Hylia Lab Dive without Gold Scale", "Remove the Iron Boots in the midst of Hookshotting the underwater crate.");
     mTrickOptions[RT_LH_WATER_HOOKSHOT] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_LAKE_HYLIA, {Tricks::Tag::INTERMEDIATE}, "Water Temple Entry without Iron Boots using Hookshot", "When entering Water Temple using Gold Scale instead of Iron Boots, the Longshot is usually used to be able to hit the switch and open the gate. But, by standing in a particular spot, the switch can be hit with only the reach of the Hookshot.");
@@ -572,6 +573,7 @@ void Settings::CreateOptions() {
         &mTrickOptions[RT_ZR_CUCCO],
         &mTrickOptions[RT_ZD_KING_ZORA_SKIP],
         &mTrickOptions[RT_ZD_GS],
+        &mTrickOptions[RT_ZF_GREAT_FAIRY_WITHOUT_EXPLOSIVES],
         &mTrickOptions[RT_LH_LAB_WALL_GS],
         &mTrickOptions[RT_LH_LAB_DIVING],
         &mTrickOptions[RT_LH_WATER_HOOKSHOT],
