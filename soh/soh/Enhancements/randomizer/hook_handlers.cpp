@@ -63,8 +63,6 @@ extern void Player_SetupActionPreserveAnimMovement(PlayState* play, Player* play
 extern s32 Player_SetupWaitForPutAway(PlayState* play, Player* player, AfterPutAwayFunc func);
 extern void Play_InitEnvironment(PlayState * play, s16 skyboxId);
 extern void EnMk_Wait(EnMk* enMk, PlayState* play);
-extern void EnKz_Wait(EnKz* enMk, PlayState* play);
-extern void EnKz_SetupGetItem(EnKz* enMk, PlayState* play);
 }
 
 #define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetContextOptionIndex()
