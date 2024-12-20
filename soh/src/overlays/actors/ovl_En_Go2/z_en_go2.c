@@ -1945,7 +1945,7 @@ void EnGo2_GoronFireGenericAction(EnGo2* this, PlayState* play) {
                     (f32)((Math_CosS(this->actor.world.rot.y) * -30.0f) + this->actor.world.pos.z);
                 if (GameInteractor_Should(VB_PLAY_GORON_FREE_CS, true)) {
                     Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
-                } 
+                }
                 Audio_PlayFanfare(NA_BGM_APPEAR);
             }
             break;
