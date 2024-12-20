@@ -197,7 +197,7 @@ typedef enum {
     // Vanilla condition: Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)
     VB_KING_ZORA_BE_MOVED,
     // Opt: *EnKz,
-    // Vanilla condition: !CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_ZORA)
+    // Vanilla condition: CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_ZORA)
     VB_KING_ZORA_TUNIC_CHECK,
     // Vanilla condition: gSaveState.bgsFlag
     VB_BIGGORON_CONSIDER_TRADE_COMPLETE,
