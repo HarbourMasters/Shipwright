@@ -97,7 +97,7 @@ int Playthrough_Repeat(std::set<RandomizerCheck> excludedLocations, std::set<Ran
         ctx->GetSettings()->SetSeedString(std::to_string(rand() % 0xFFFFFFFF));
         repeatedSeed = boost::hash_32<std::string>{}(ctx->GetSettings()->GetSeedString());
         ctx->GetSettings()->SetSeed(repeatedSeed % 0xFFFFFFFF);
-        //CitraPrint("testing seed: " + std::to_string(Settings::seed));
+        SPDLOG_DEBUG("testing seed: %d", repeatedSeed);
         ClearProgress();
         Playthrough_Init(ctx->GetSettings()->GetSeed(), excludedLocations, enabledTricks);
         SPDLOG_INFO("Seeds Generated: {}", i + 1);

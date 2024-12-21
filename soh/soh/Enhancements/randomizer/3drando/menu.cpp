@@ -7,7 +7,6 @@
 
 #include "menu.hpp"
 #include "playthrough.hpp"
-#include "randomizer.hpp"
 #include "spoiler_log.hpp"
 #include "../location_access.h"
 #include "soh/Enhancements/debugger/performanceTimer.h"

@@ -86,7 +86,7 @@ void func_80B92C80(ObjElevator* this, PlayState* play) {
     f32 sub;
     Actor* thisx = &this->dyna.actor;
 
-    if ((this->dyna.unk_160 & 2) && !(this->unk_170 & 2)) {
+    if ((this->dyna.interactFlags & DYNA_INTERACT_PLAYER_ON_TOP) && !(this->unk_170 & DYNA_INTERACT_PLAYER_ON_TOP)) {
         sub = thisx->world.pos.y - thisx->home.pos.y;
         if (fabsf(sub) < 0.1f) {
             this->unk_168 = thisx->home.pos.y + ((thisx->params >> 0xC) & 0xF) * 80.0f;
@@ -118,7 +118,7 @@ void ObjElevator_Update(Actor* thisx, PlayState* play) {
     if (this->actionFunc) {
         this->actionFunc(this, play);
     }
-    this->unk_170 = this->dyna.unk_160;
+    this->unk_170 = this->dyna.interactFlags;
 }
 
 void ObjElevator_Draw(Actor* thisx, PlayState* play) {

@@ -122,8 +122,8 @@ void EnAObj_Init(Actor* thisx, PlayState* play) {
 
     thisx->focus.pos = thisx->world.pos;
     this->dyna.bgId = BGACTOR_NEG_ONE;
-    this->dyna.unk_160 = 0;
-    this->dyna.unk_15C = DPM_UNK;
+    this->dyna.interactFlags = 0;
+    this->dyna.transformFlags = DPM_UNK;
     thisx->uncullZoneDownward = 1200.0f;
     thisx->uncullZoneScale = 200.0f;
 
@@ -234,7 +234,7 @@ void EnAObj_SetupBlockRot(EnAObj* this, s16 type) {
 
 void EnAObj_BlockRot(EnAObj* this, PlayState* play) {
     if (this->rotateState == 0) {
-        if (this->dyna.unk_160 != 0) {
+        if (this->dyna.interactFlags != 0) {
             this->rotateState++;
             this->rotateForTimer = 20;
 

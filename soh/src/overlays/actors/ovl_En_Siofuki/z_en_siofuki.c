@@ -128,7 +128,7 @@ void func_80AFBE8C(EnSiofuki* this, PlayState* play) {
 
     if ((dX > (this->dyna.actor.scale.x * -346.0f)) && (dX < (this->dyna.actor.scale.x * 346.0f)) &&
         (dZ > (this->dyna.actor.scale.z * -400.0f)) && (dZ < (this->dyna.actor.scale.z * 400.0f)) && (dY < 0.0f)) {
-        if (func_8004356C(&this->dyna)) {
+        if (DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
             if (this->splashTimer <= 0) {
                 EffectSsGSplash_Spawn(play, &player->actor.world.pos, NULL, NULL, 1, 1);
                 this->splashTimer = 10;

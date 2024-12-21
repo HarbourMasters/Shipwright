@@ -187,7 +187,7 @@ void BgJya1flift_Update(Actor* thisx, PlayState* play2) {
     // Room 0 is the first room and 6 is the room that the lift starts on
     if (play->roomCtx.curRoom.num == 6 || play->roomCtx.curRoom.num == 0) {
         this->actionFunc(this, play);
-        tempIsRiding = func_8004356C(&this->dyna) ? true : false;
+        tempIsRiding = DynaPolyActor_IsPlayerOnTop(&this->dyna) ? true : false;
         if ((this->actionFunc == BgJya1flift_Move) || (this->actionFunc == BgJya1flift_DelayMove)) {
             if (tempIsRiding) {
                 Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_FIRE_PLATFORM);

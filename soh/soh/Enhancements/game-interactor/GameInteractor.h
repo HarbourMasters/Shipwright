@@ -196,6 +196,9 @@ typedef enum {
     // Opt: *EnKz
     // Vanilla condition: Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)
     VB_KING_ZORA_BE_MOVED,
+    // Opt: *EnKz,
+    // Vanilla condition: CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_ZORA)
+    VB_KING_ZORA_TUNIC_CHECK,
     // Vanilla condition: gSaveState.bgsFlag
     VB_BIGGORON_CONSIDER_TRADE_COMPLETE,
     // Vanilla condition: gSaveState.bgsFlag
@@ -395,9 +398,6 @@ typedef enum {
     VB_GIVE_ITEM_FROM_ANJU_AS_CHILD,
     // Opt: *EnNiwLady
     VB_GIVE_ITEM_FROM_ANJU_AS_ADULT,
-    // Opt: *EnKz
-    // Vanilla condition: !CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_ZORA)
-    VB_GIVE_ITEM_FROM_THAWING_KING_ZORA,
     // Opt: *EnGo2
     VB_GIVE_ITEM_FROM_GORON,
     // Opt: *EnGb
@@ -479,13 +479,13 @@ typedef enum {
     // Opt: *EnToryo
     VB_TRADE_SAW,
     // Opt: *EnKz,
-    VB_TRADE_PRESCRIPTION,
+    VB_ADULT_KING_ZORA_ITEM_GIVE,
     // Opt: *EnMk
     VB_TRADE_FROG,
 
     VB_TRADE_TIMER_ODD_MUSHROOM,
-    VB_TRADE_TIMER_EYEDROPS,
     VB_TRADE_TIMER_FROG,
+    VB_TRADE_TIMER_EYEDROPS,
     // Opt: *EnNiwLady
     VB_ANJU_SET_OBTAINED_TRADE_ITEM,
 

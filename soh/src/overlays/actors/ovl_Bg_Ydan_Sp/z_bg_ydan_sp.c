@@ -292,7 +292,7 @@ void BgYdanSp_FloorWebIdle(BgYdanSp* this, PlayState* play) {
         BgYdanSp_BurnWeb(this, play);
         return;
     }
-    if (func_8004356C(&this->dyna)) {
+    if (DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
         sqrtFallDistance = sqrtf(CLAMP_MIN(player->fallDistance, 0.0f));
         if (player->fallDistance > 750.0f) {
             if (this->dyna.actor.xzDistToPlayer < 80.0f) {
