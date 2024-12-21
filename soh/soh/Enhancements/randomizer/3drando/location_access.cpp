@@ -257,7 +257,10 @@ void RegionTable_Init() {
   areaTable.fill(Region("Invalid Region", "Invalid Region", {}, NO_DAY_NIGHT_CYCLE, {}, {}, {}));
 
                        //name, scene, hint text,                       events, locations, exits
-  areaTable[RR_ROOT] = Region("Root", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_ROOT] = Region("Root", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {
+                  //Events
+                  EventAccess(&logic->KakarikoVillageGateOpen, {[]{return ctx->GetOption(RSK_KAK_GATE).Is(RO_KAK_GATE_OPEN);}}),
+                }, {
                   //Locations
                   LOCATION(RC_LINKS_POCKET,       true),
                   LOCATION(RC_TRIFORCE_COMPLETED, logic->GetSaveContext()->triforcePiecesCollected >= ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).GetContextOptionIndex();),

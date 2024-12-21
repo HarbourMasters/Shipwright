@@ -12,9 +12,9 @@ void RegionTable_Init_LostWoods() {
                 }, {
                   //Locations
                   LOCATION(RC_KF_KOKIRI_SWORD_CHEST,   logic->IsChild),
-                  LOCATION(RC_KF_GS_KNOW_IT_ALL_HOUSE, logic->IsChild && logic->CanAttack() && logic->AtNight && (/*TODO: HasNightStart ||*/ logic->CanLeaveForest() || logic->CanUse(RG_SUNS_SONG)) && logic->CanGetNightTimeGS()),
+                  LOCATION(RC_KF_GS_KNOW_IT_ALL_HOUSE, logic->IsChild && logic->CanAttack() && (/*TODO: HasNightStart ||*/ logic->CanLeaveForest() || logic->CanUse(RG_SUNS_SONG)) && logic->CanGetNightTimeGS()),
                   LOCATION(RC_KF_GS_BEAN_PATCH,        logic->CanSpawnSoilSkull() && logic->CanAttack()),
-                  LOCATION(RC_KF_GS_HOUSE_OF_TWINS,    logic->IsAdult && logic->AtNight && (logic->HookshotOrBoomerang() || (ctx->GetTrickOption(RT_KF_ADULT_GS) && logic->CanUse(RG_HOVER_BOOTS))) && logic->CanGetNightTimeGS()),
+                  LOCATION(RC_KF_GS_HOUSE_OF_TWINS,    logic->IsAdult && (logic->HookshotOrBoomerang() || (ctx->GetTrickOption(RT_KF_ADULT_GS) && logic->CanUse(RG_HOVER_BOOTS))) && logic->CanGetNightTimeGS()),
                   LOCATION(RC_KF_GOSSIP_STONE,         true),
                 }, {
                   //Exits
@@ -161,7 +161,7 @@ void RegionTable_Init_LostWoods() {
                   //Locations
                   LOCATION(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT, logic->IsChild && logic->CanStunDeku()),
                   LOCATION(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_LEFT,  logic->IsChild && logic->CanStunDeku()),
-                  LOCATION(RC_LW_GS_ABOVE_THEATER,                   logic->IsAdult && logic->AtNight && ((CanPlantBean(RR_LW_BEYOND_MIDO) && logic->CanAttack()) || (ctx->GetTrickOption(RT_LW_GS_BEAN) && logic->CanUse(RG_HOOKSHOT) && (logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOMBCHU_5) || logic->CanUse(RG_DINS_FIRE)))) && logic->CanGetNightTimeGS()),
+                  LOCATION(RC_LW_GS_ABOVE_THEATER,                   logic->IsAdult && ((CanPlantBean(RR_LW_BEYOND_MIDO) && logic->CanAttack()) || (ctx->GetTrickOption(RT_LW_GS_BEAN) && logic->CanUse(RG_HOOKSHOT) && (logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOMBCHU_5) || logic->CanUse(RG_DINS_FIRE)))) && logic->CanGetNightTimeGS()),
                   LOCATION(RC_LW_GS_BEAN_PATCH_NEAR_THEATER,         logic->CanSpawnSoilSkull() && (logic->CanAttack() || (ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_OFF) && logic->CanReflectNuts()))),
                 }, {
                   //Exits
@@ -217,7 +217,7 @@ void RegionTable_Init_LostWoods() {
                   //Locations
                   LOCATION(RC_SONG_FROM_SARIA,             logic->IsChild && logic->HasItem(RG_ZELDAS_LETTER)),
                   LOCATION(RC_SHEIK_IN_FOREST,             logic->IsAdult),
-                  LOCATION(RC_SFM_GS,                      logic->IsAdult && logic->HookshotOrBoomerang() && logic->AtNight && logic->CanGetNightTimeGS()),
+                  LOCATION(RC_SFM_GS,                      logic->IsAdult && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
                   LOCATION(RC_SFM_MAZE_LOWER_GOSSIP_STONE, true),
                   LOCATION(RC_SFM_MAZE_UPPER_GOSSIP_STONE, true),
                   LOCATION(RC_SFM_SARIA_GOSSIP_STONE,      true),
