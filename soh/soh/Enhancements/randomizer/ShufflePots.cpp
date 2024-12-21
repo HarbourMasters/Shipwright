@@ -26,8 +26,8 @@ extern "C" void ObjTsubo_RandomizerDraw(Actor* thisx, PlayState* play) {
 
 uint8_t ObjTsubo_RandomizerHoldsItem(ObjTsubo* potActor, PlayState* play) {
     uint8_t isDungeon =
-        play->sceneNum < SCENE_GANONS_TOWER_COLLAPSE_INTERIOR ||
-        (play->sceneNum > SCENE_TREASURE_BOX_SHOP && play->sceneNum < SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR);
+        (play->sceneNum < SCENE_THIEVES_HIDEOUT || play->sceneNum == SCENE_INSIDE_GANONS_CASTLE ||
+             (play->sceneNum > SCENE_TREASURE_BOX_SHOP && play->sceneNum < SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR));
     uint8_t potSetting = Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_POTS).GetContextOptionIndex();
 
     // Don't pull randomized item if pot isn't randomized or is already checked
