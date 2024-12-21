@@ -329,7 +329,9 @@ void RegionTable_Init() {
     RegionTable_Init_HyruleField();
     RegionTable_Init_LakeHylia();
     RegionTable_Init_LonLonRanch();
-    RegionTable_Init_CastleTown();
+    RegionTable_Init_Market();
+    RegionTable_Init_TempleOfTime();
+    RegionTable_Init_CastleGrounds();
     RegionTable_Init_Kakariko();
     RegionTable_Init_DeathMountain();
     RegionTable_Init_ZorasDomain();
