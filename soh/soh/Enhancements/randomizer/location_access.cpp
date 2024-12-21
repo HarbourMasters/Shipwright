@@ -325,7 +325,9 @@ void RegionTable_Init() {
     });
 
     // Overworld
+    RegionTable_Init_KokiriForest();
     RegionTable_Init_LostWoods();
+    RegionTable_Init_SacredForestMeadow();
     RegionTable_Init_HyruleField();
     RegionTable_Init_LakeHylia();
     RegionTable_Init_LonLonRanch();

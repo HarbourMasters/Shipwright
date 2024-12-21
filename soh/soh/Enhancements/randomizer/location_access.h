@@ -352,7 +352,9 @@ std::vector<Rando::Entrance*> GetShuffleableEntrances(Rando::EntranceType type, 
 Rando::Entrance* GetEntrance(const std::string name);
 
 // Overworld
+void RegionTable_Init_KokiriForest();
 void RegionTable_Init_LostWoods();
+void RegionTable_Init_SacredForestMeadow();
 void RegionTable_Init_HyruleField();
 void RegionTable_Init_LakeHylia();
 void RegionTable_Init_LonLonRanch();
