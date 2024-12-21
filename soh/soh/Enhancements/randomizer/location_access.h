@@ -361,7 +361,9 @@ void RegionTable_Init_TempleOfTime();
 void RegionTable_Init_CastleGrounds();
 void RegionTable_Init_Kakariko();
 void RegionTable_Init_Graveyard();
-void RegionTable_Init_DeathMountain();
+void RegionTable_Init_DeathMountainTrail();
+void RegionTable_Init_GoronCity();
+void RegionTable_Init_DeathMountainCrater();
 void RegionTable_Init_ZorasDomain();
 void RegionTable_Init_GerudoValley();
 // Dungeons

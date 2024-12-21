@@ -334,7 +334,9 @@ void RegionTable_Init() {
     RegionTable_Init_CastleGrounds();
     RegionTable_Init_Kakariko();
     RegionTable_Init_Graveyard();
-    RegionTable_Init_DeathMountain();
+    RegionTable_Init_DeathMountainTrail();
+    RegionTable_Init_GoronCity();
+    RegionTable_Init_DeathMountainCrater();
     RegionTable_Init_ZorasDomain();
     RegionTable_Init_GerudoValley();
     // Dungeons
