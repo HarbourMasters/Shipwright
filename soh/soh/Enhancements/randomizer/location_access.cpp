@@ -327,6 +327,8 @@ void RegionTable_Init() {
     // Overworld
     RegionTable_Init_LostWoods();
     RegionTable_Init_HyruleField();
+    RegionTable_Init_LakeHylia();
+    RegionTable_Init_LonLonRanch();
     RegionTable_Init_CastleTown();
     RegionTable_Init_Kakariko();
     RegionTable_Init_DeathMountain();

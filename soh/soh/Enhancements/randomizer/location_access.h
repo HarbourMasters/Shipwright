@@ -354,6 +354,8 @@ Rando::Entrance* GetEntrance(const std::string name);
 // Overworld
 void RegionTable_Init_LostWoods();
 void RegionTable_Init_HyruleField();
+void RegionTable_Init_LakeHylia();
+void RegionTable_Init_LonLonRanch();
 void RegionTable_Init_CastleTown();
 void RegionTable_Init_Kakariko();
 void RegionTable_Init_DeathMountain();
