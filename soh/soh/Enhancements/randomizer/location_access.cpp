@@ -341,6 +341,9 @@ void RegionTable_Init() {
     RegionTable_Init_DeathMountainCrater();
     RegionTable_Init_ZorasDomain();
     RegionTable_Init_GerudoValley();
+    RegionTable_Init_GerudoFortress();
+    RegionTable_Init_HauntedWasteland();
+    RegionTable_Init_DesertColossus();
     // Dungeons
     RegionTable_Init_DekuTree();
     RegionTable_Init_DodongosCavern();

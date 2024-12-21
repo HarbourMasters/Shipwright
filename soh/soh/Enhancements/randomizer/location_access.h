@@ -368,6 +368,9 @@ void RegionTable_Init_GoronCity();
 void RegionTable_Init_DeathMountainCrater();
 void RegionTable_Init_ZorasDomain();
 void RegionTable_Init_GerudoValley();
+void RegionTable_Init_GerudoFortress();
+void RegionTable_Init_HauntedWasteland();
+void RegionTable_Init_DesertColossus();
 // Dungeons
 void RegionTable_Init_DekuTree();
 void RegionTable_Init_DodongosCavern();
