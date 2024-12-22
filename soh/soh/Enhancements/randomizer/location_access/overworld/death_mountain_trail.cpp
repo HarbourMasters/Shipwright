@@ -14,6 +14,8 @@ void RegionTable_Init_DeathMountainTrail() {
         LOCATION(RC_DMT_GS_BEAN_PATCH,            logic->CanSpawnSoilSkull() && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET) || (ctx->GetTrickOption(RT_DMT_SOIL_GS) && (logic->TakeDamage() || logic->CanUse(RG_HOVER_BOOTS)) && logic->CanUse(RG_BOOMERANG)))),
         LOCATION(RC_DMT_GS_NEAR_KAK,              logic->BlastOrSmash()),
         LOCATION(RC_DMT_GS_ABOVE_DODONGOS_CAVERN, logic->IsAdult && logic->AtNight && (logic->CanUse(RG_MEGATON_HAMMER) || (ctx->GetTrickOption(RT_DMT_HOOKSHOT_LOWER_GS) && logic->CanUse(RG_HOOKSHOT)) || (ctx->GetTrickOption(RT_DMT_BEAN_LOWER_GS) && CanPlantBean(RR_DEATH_MOUNTAIN_TRAIL)) || (ctx->GetTrickOption(RT_DMT_HOVERS_LOWER_GS) && logic->CanUse(RG_HOVER_BOOTS)) || ctx->GetTrickOption(RT_DMT_JS_LOWER_GS)) && logic->CanGetNightTimeGS()),
+        LOCATION(RC_DMT_BLUE_RUPEE,               logic->IsChild && logic->BlastOrSmash()),
+        LOCATION(RC_DMT_RED_RUPEE,                logic->IsChild && logic->BlastOrSmash()),
     }, {
         //Exits
         Entrance(RR_KAK_BEHIND_GATE,          {[]{return true;}}),
@@ -50,8 +52,19 @@ void RegionTable_Init_DeathMountainTrail() {
 
     areaTable[RR_DMT_COW_GROTTO] = Region("DMT Cow Grotto", "DMT Cow Grotto", {}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_DMT_COW_GROTTO_COW,     logic->CanUse(RG_EPONAS_SONG)),
-        LOCATION(RC_DMT_COW_GROTTO_BEEHIVE, logic->CanBreakLowerBeehives()),
+        LOCATION(RC_DMT_COW_GROTTO_COW,                logic->CanUse(RG_EPONAS_SONG)),
+        LOCATION(RC_DMT_COW_GROTTO_BEEHIVE,            logic->CanBreakLowerBeehives()),
+        LOCATION(RC_DMT_COW_GROTTO_LEFT_HEART,         true),
+        LOCATION(RC_DMT_COW_GROTTO_MIDDLE_LEFT_HEART,  true),
+        LOCATION(RC_DMT_COW_GROTTO_MIDDLE_RIGHT_HEART, true),
+        LOCATION(RC_DMT_COW_GROTTO_RIGHT_HEART,        true),
+        LOCATION(RC_DMT_COW_GROTTO_RUPEE_1,            true),
+        LOCATION(RC_DMT_COW_GROTTO_RUPEE_2,            true),
+        LOCATION(RC_DMT_COW_GROTTO_RUPEE_3,            true),
+        LOCATION(RC_DMT_COW_GROTTO_RUPEE_4,            true),
+        LOCATION(RC_DMT_COW_GROTTO_RUPEE_5,            true),
+        LOCATION(RC_DMT_COW_GROTTO_RUPEE_6,            true),
+        LOCATION(RC_DMT_COW_GROTTO_RED_RUPEE,          true),
     }, {
         //Exits
         Entrance(RR_DEATH_MOUNTAIN_SUMMIT, {[]{return true;}}),

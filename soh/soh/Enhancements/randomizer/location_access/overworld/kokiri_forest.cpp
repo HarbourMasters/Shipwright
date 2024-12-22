@@ -11,11 +11,29 @@ void RegionTable_Init_KokiriForest() {
         EventAccess(&logic->ShowedMidoSwordAndShield, {[]{return logic->ShowedMidoSwordAndShield || (logic->IsChild && logic->CanUse(RG_KOKIRI_SWORD) && logic->CanUse(RG_DEKU_SHIELD));}}),
     }, {
         //Locations
-        LOCATION(RC_KF_KOKIRI_SWORD_CHEST,   logic->IsChild),
-        LOCATION(RC_KF_GS_KNOW_IT_ALL_HOUSE, logic->IsChild && logic->CanAttack() && logic->AtNight && (/*TODO: HasNightStart ||*/ logic->CanLeaveForest() || logic->CanUse(RG_SUNS_SONG)) && logic->CanGetNightTimeGS()),
-        LOCATION(RC_KF_GS_BEAN_PATCH,        logic->CanSpawnSoilSkull() && logic->CanAttack()),
-        LOCATION(RC_KF_GS_HOUSE_OF_TWINS,    logic->IsAdult && logic->AtNight && (logic->HookshotOrBoomerang() || (ctx->GetTrickOption(RT_KF_ADULT_GS) && logic->CanUse(RG_HOVER_BOOTS))) && logic->CanGetNightTimeGS()),
-        LOCATION(RC_KF_GOSSIP_STONE,         true),
+        LOCATION(RC_KF_KOKIRI_SWORD_CHEST,      logic->IsChild),
+        LOCATION(RC_KF_GS_KNOW_IT_ALL_HOUSE,    logic->IsChild && logic->CanAttack() && logic->AtNight && (/*TODO: HasNightStart ||*/ logic->CanLeaveForest() || logic->CanUse(RG_SUNS_SONG)) && logic->CanGetNightTimeGS()),
+        LOCATION(RC_KF_GS_BEAN_PATCH,           logic->CanSpawnSoilSkull() && logic->CanAttack()),
+        LOCATION(RC_KF_GS_HOUSE_OF_TWINS,       logic->IsAdult && logic->AtNight && (logic->HookshotOrBoomerang() || (ctx->GetTrickOption(RT_KF_ADULT_GS) && logic->CanUse(RG_HOVER_BOOTS))) && logic->CanGetNightTimeGS()),
+        LOCATION(RC_KF_BRIDGE_RUPEE,            logic->IsChild),
+        LOCATION(RC_KF_BEHIND_MIDOS_RUPEE,      logic->IsChild),
+        LOCATION(RC_KF_SOUTH_GRASS_WEST_RUPEE,  logic->IsChild),
+        LOCATION(RC_KF_SOUTH_GRASS_EAST_RUPEE,  logic->IsChild),
+        LOCATION(RC_KF_NORTH_GRASS_WEST_RUPEE,  logic->IsChild),
+        LOCATION(RC_KF_NORTH_GRASS_EAST_RUPEE,  logic->IsChild),
+        LOCATION(RC_KF_BOULDER_RUPEE_1,         logic->IsChild),
+        LOCATION(RC_KF_BOULDER_RUPEE_2,         logic->IsChild),
+        LOCATION(RC_KF_BEAN_RUPEE_1,            logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
+        LOCATION(RC_KF_BEAN_RUPEE_2,            logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
+        LOCATION(RC_KF_BEAN_RUPEE_3,            logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
+        LOCATION(RC_KF_BEAN_RUPEE_4,            logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
+        LOCATION(RC_KF_BEAN_RUPEE_5,            logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
+        LOCATION(RC_KF_BEAN_RUPEE_6,            logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
+        LOCATION(RC_KF_BEAN_RED_RUPEE,          logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
+        LOCATION(RC_KF_SARIAS_ROOF_WEST_HEART,  logic->IsChild),
+        LOCATION(RC_KF_SARIAS_ROOF_EAST_HEART,  logic->IsChild),
+        LOCATION(RC_KF_SARIAS_ROOF_NORTH_HEART, logic->IsChild),
+        LOCATION(RC_KF_GOSSIP_STONE,            true),
     }, {
         //Exits
         Entrance(RR_KF_LINKS_HOUSE,        {[]{return true;}}),
@@ -65,7 +83,13 @@ void RegionTable_Init_KokiriForest() {
         Entrance(RR_KOKIRI_FOREST, {[]{return true;}}),
     });
 
-    areaTable[RR_KF_SARIAS_HOUSE] = Region("KF Saria's House", "KF Saria's House", {}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_KF_SARIAS_HOUSE] = Region("KF Saria's House", "KF Saria's House", {}, NO_DAY_NIGHT_CYCLE, {}, {
+        //Locations
+        LOCATION(RC_KF_SARIAS_TOP_LEFT_HEART,     true),
+        LOCATION(RC_KF_SARIAS_TOP_RIGHT_HEART,    true),
+        LOCATION(RC_KF_SARIAS_BOTTOM_LEFT_HEART,  true),
+        LOCATION(RC_KF_SARIAS_BOTTOM_RIGHT_HEART, true),
+    }, {
         //Exits
         Entrance(RR_KOKIRI_FOREST, {[]{return true;}}),
     });

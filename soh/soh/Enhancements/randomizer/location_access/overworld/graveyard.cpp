@@ -66,6 +66,14 @@ void RegionTable_Init_Graveyard() {
         LOCATION(RC_GY_DAMPES_GRAVE_POT_4,                 logic->CanBreakPots()),
         LOCATION(RC_GY_DAMPES_GRAVE_POT_5,                 logic->CanBreakPots()),
         LOCATION(RC_GY_DAMPES_GRAVE_POT_6,                 logic->CanBreakPots()),
+        LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_1,          true),
+        LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_2,          true),
+        LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_3,          true),
+        LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_4,          true),
+        LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_5,          true),
+        LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_6,          true),
+        LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_7,          true),
+        LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_8,          true),
     }, {
         //Exits
         Entrance(RR_THE_GRAVEYARD, {[]{return true;}}),

@@ -32,6 +32,15 @@ void RegionTable_Init_LostWoods() {
         LOCATION(RC_LW_TARGET_IN_WOODS,           logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT)),
         LOCATION(RC_LW_DEKU_SCRUB_NEAR_BRIDGE,    logic->IsChild && logic->CanStunDeku()),
         LOCATION(RC_LW_GS_BEAN_PATCH_NEAR_BRIDGE, logic->CanSpawnSoilSkull() && logic->CanAttack()),
+        //RANDOTODO handle collecting some of these as you leave the shortcut from the other side
+        LOCATION(RC_LW_SHORTCUT_RUPEE_1,          logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_LW_SHORTCUT_RUPEE_2,          logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_LW_SHORTCUT_RUPEE_3,          logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_LW_SHORTCUT_RUPEE_4,          logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_LW_SHORTCUT_RUPEE_5,          logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_LW_SHORTCUT_RUPEE_6,          logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_LW_SHORTCUT_RUPEE_7,          logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_LW_SHORTCUT_RUPEE_8,          logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
         LOCATION(RC_LW_GOSSIP_STONE,              true),
     }, {
         //Exits
@@ -52,6 +61,7 @@ void RegionTable_Init_LostWoods() {
         LOCATION(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_LEFT,  logic->IsChild && logic->CanStunDeku()),
         LOCATION(RC_LW_GS_ABOVE_THEATER,                   logic->IsAdult && logic->AtNight && ((CanPlantBean(RR_LW_BEYOND_MIDO) && logic->CanAttack()) || (ctx->GetTrickOption(RT_LW_GS_BEAN) && logic->CanUse(RG_HOOKSHOT) && (logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOMBCHU_5) || logic->CanUse(RG_DINS_FIRE)))) && logic->CanGetNightTimeGS()),
         LOCATION(RC_LW_GS_BEAN_PATCH_NEAR_THEATER,         logic->CanSpawnSoilSkull() && (logic->CanAttack() || (ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_OFF) && logic->CanReflectNuts()))),
+        LOCATION(RC_LW_BOULDER_RUPEE,                      logic->BlastOrSmash()),
     }, {
         //Exits
         Entrance(RR_LW_FOREST_EXIT,   {[]{return true;}}),
