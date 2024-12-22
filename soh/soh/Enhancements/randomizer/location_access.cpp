@@ -339,7 +339,9 @@ void RegionTable_Init() {
     RegionTable_Init_DeathMountainTrail();
     RegionTable_Init_GoronCity();
     RegionTable_Init_DeathMountainCrater();
+    RegionTable_Init_ZoraRiver();
     RegionTable_Init_ZorasDomain();
+    RegionTable_Init_ZorasFountain();
     RegionTable_Init_GerudoValley();
     RegionTable_Init_GerudoFortress();
     RegionTable_Init_HauntedWasteland();
