@@ -624,6 +624,30 @@ static void PlaceVanillaOverworldFish() {
   }
 }
 
+static void PlaceFreestandingItems() {
+  auto ctx = Rando::Context::GetInstance();
+  auto option = ctx->GetOption(RSK_SHUFFLE_FREESTANDING);
+  for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, RCTYPE_FREESTANDING)) {
+    RandomizerGet vanillaItem = Rando::StaticData::GetLocation(loc)->GetVanillaItem();
+    if (option.Is(RO_FREESTANDING_OVERWORLD) || option.Is(RO_FREESTANDING_ALL)) {
+      AddItemToMainPool(vanillaItem);
+    } else {
+      ctx->PlaceItemInLocation(loc, vanillaItem, false, true);
+    }
+  }
+
+  for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
+    for (RandomizerCheck loc : ctx->GetLocations(dungeon->GetDungeonLocations(), RCTYPE_FREESTANDING)) {
+      RandomizerGet vanillaItem = Rando::StaticData::GetLocation(loc)->GetVanillaItem();
+      if (option.Is(RO_FREESTANDING_DUNGEONS) || option.Is(RO_FREESTANDING_ALL)) {
+        AddItemToMainPool(vanillaItem);
+      } else {
+        ctx->PlaceItemInLocation(loc, vanillaItem, false, true);
+      }
+    }
+  }
+}
+
 static void SetScarceItemPool() {
   ReplaceMaxItem(RG_PROGRESSIVE_BOMBCHUS, 3);
   ReplaceMaxItem(RG_BOMBCHU_5, 1);
@@ -1254,6 +1278,8 @@ void GenerateItemPool() {
   } else {
     PlaceVanillaDekuScrubItems(ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_OFF));
   }
+
+  PlaceFreestandingItems();
 
   AddItemsToPool(ItemPool, alwaysItems);
   AddItemsToPool(ItemPool, dungeonRewards);

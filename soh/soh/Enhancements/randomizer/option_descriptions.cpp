@@ -436,6 +436,16 @@ void Settings::CreateOptionDescriptions() {
         "have collected all 100 Gold Skulltula Tokens.\n"
         "\n"
         "You can still talk to him multiple times to get Huge Rupees.";
+    mOptionDescriptions[RSK_SHUFFLE_FREESTANDING] = "Freestanding rupees & hearts are shuffles to random items. "
+                                              "Freestanding heart pieces and small keys are already shuffled by default.\n"
+                                              "\n"
+                                              "Off - freestanding rupees & hearts will not be shuffled.\n"
+                                              "\n"
+                                              "Dungeons - Only freestanding rupees & hearts that are within dungeons.\n"
+                                              "\n"
+                                              "Overworld - Only freestanding rupees & hearts that are outside of dungeons.\n"
+                                              "\n"
+                                              "All Items - Shuffle all freestanding rupees & hearts.";
     mOptionDescriptions[RSK_SHUFFLE_DUNGEON_REWARDS] =
         "Shuffles the location of Spiritual Stones and medallions.\n"
         "\n"

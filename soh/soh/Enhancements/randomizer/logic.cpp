@@ -1049,6 +1049,7 @@ namespace Rando {
         return CanUse(RG_GORON_TUNIC) ? 255 : (ctx->GetTrickOption(RT_FEWER_TUNIC_REQUIREMENTS)) ? (Hearts() * 8) : 0;
     }
     
+    //Tunic is not required if you are using irons to do something that a simple gold scale dive could do, and you are not in water temple. (celing swimming and long walks through water do not count)
     uint8_t Logic::WaterTimer(){
         return CanUse(RG_ZORA_TUNIC) ? 255 : (ctx->GetTrickOption(RT_FEWER_TUNIC_REQUIREMENTS)) ? (Hearts() * 8) : 0;
     }
