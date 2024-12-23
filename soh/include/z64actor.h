@@ -297,7 +297,6 @@ typedef struct EnItem00 {
     /* 0x15C */ f32 scale;
     /* 0x160 */ ColliderCylinder collider;
     // #region SOH [Randomizer]
-    GetItemEntry randoGiEntry;
     RandomizerCheck randoCheck;
     RandomizerInf randoInf;
     /*       */ s16 ogParams;

@@ -876,13 +876,24 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         case VB_ITEM00_DESPAWN: {
             EnItem00* item00 = va_arg(args, EnItem00*);
-            if (item00->actor.params == ITEM00_HEART_PIECE || item00->actor.params == ITEM00_SMALL_KEY) {
-                RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(item00->actor.id, gPlayState->sceneNum, item00->ogParams);
-                if (rc != RC_UNKNOWN_CHECK) {
+            item00->randoInf = RAND_INF_MAX;
+            item00->randoCheck = RC_UNKNOWN_CHECK;
+
+            auto pos = item00->actor.world.pos;
+            uint32_t params = item00->actor.params == ITEM00_HEART_PIECE || item00->actor.params == ITEM00_SMALL_KEY ? item00->ogParams : TWO_ACTOR_PARAMS((int32_t)pos.x, (int32_t)pos.z);
+            Rando::Location* loc = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(item00->actor.id, gPlayState->sceneNum, params);
+
+            if (loc && loc->GetRandomizerCheck() != RC_UNKNOWN_CHECK && (RAND_GET_OPTION(RSK_SHUFFLE_FREESTANDING) || item00->actor.params == ITEM00_HEART_PIECE || item00->actor.params == ITEM00_SMALL_KEY)) {
+                // Spawn vanilla item if collected and renewable
+                if (loc->GetCollectionCheck().type != SPOILER_CHK_RANDOMIZER_INF || !Rando::Context::GetInstance()->GetItemLocation(loc->GetRandomizerCheck())->HasObtained()) {
+                    item00->randoCheck = loc->GetRandomizerCheck();
+                    item00->itemEntry = Rando::Context::GetInstance()->GetFinalGIEntry(loc->GetRandomizerCheck(), true);
                     item00->actor.params = ITEM00_SOH_DUMMY;
-                    item00->itemEntry = Rando::Context::GetInstance()->GetFinalGIEntry(rc, true, (GetItemID)Rando::StaticData::GetLocation(rc)->GetVanillaItem());
                     item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
-                    *should = Rando::Context::GetInstance()->GetItemLocation(rc)->HasObtained();
+                    if (loc->GetCollectionCheck().type == SPOILER_CHK_RANDOMIZER_INF) {
+                        item00->randoInf = static_cast<RandomizerInf>(loc->GetCollectionCheck().flag);
+                    }
+                    *should = Rando::Context::GetInstance()->GetItemLocation(loc->GetRandomizerCheck())->HasObtained();
                 }
             } else if (item00->actor.params == ITEM00_SOH_GIVE_ITEM_ENTRY || item00->actor.params == ITEM00_SOH_GIVE_ITEM_ENTRY_GI) {
                 GetItemEntry itemEntry = randomizerQueuedItemEntry;

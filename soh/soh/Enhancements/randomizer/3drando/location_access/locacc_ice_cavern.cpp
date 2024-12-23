@@ -46,6 +46,13 @@ void RegionTable_Init_IceCavern() {
                   LOCATION(RC_ICE_CAVERN_NEAR_END_POT_1,          logic->CanBreakPots() && logic->BlueFire()),
                   LOCATION(RC_ICE_CAVERN_NEAR_END_POT_2,          logic->CanBreakPots() && logic->BlueFire()),
                   LOCATION(RC_ICE_CAVERN_FROZEN_POT_1,            logic->CanBreakPots() && logic->BlueFire() && logic->IsAdult),
+                  LOCATION(RC_ICE_CAVERN_LOBBY_RUPEE,             logic->BlueFire()),
+                  LOCATION(RC_ICE_CAVERN_MAP_ROOM_LEFT_HEART,     logic->IsAdult),
+                  LOCATION(RC_ICE_CAVERN_MAP_ROOM_MIDDLE_HEART,   logic->IsAdult),
+                  LOCATION(RC_ICE_CAVERN_MAP_ROOM_RIGHT_HEART,    logic->IsAdult),
+                  LOCATION(RC_ICE_CAVERN_SLIDING_BLOCK_RUPEE_1,   logic->BlueFire() && (logic->CanUse(RG_SONG_OF_TIME) || logic->CanUse(RG_BOOMERANG))),
+                  LOCATION(RC_ICE_CAVERN_SLIDING_BLOCK_RUPEE_2,   logic->BlueFire() && (logic->CanUse(RG_SONG_OF_TIME) || logic->CanUse(RG_BOOMERANG))),
+                  LOCATION(RC_ICE_CAVERN_SLIDING_BLOCK_RUPEE_3,   logic->BlueFire() && (logic->CanUse(RG_SONG_OF_TIME) || logic->CanUse(RG_BOOMERANG))),
   }, {});
   }
 

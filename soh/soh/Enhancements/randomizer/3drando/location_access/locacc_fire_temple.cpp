@@ -133,7 +133,12 @@ void RegionTable_Init_FireTemple() {
                   Entrance(RR_FIRE_TEMPLE_BIG_LAVA_ROOM, {[]{return true;}}),
   });
 
-  areaTable[RR_FIRE_TEMPLE_FIRE_PILLAR_ROOM] = Region("Fire Temple Fire Pillar Room", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_FIRE_TEMPLE_FIRE_PILLAR_ROOM] = Region("Fire Temple Fire Pillar Room", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
+                  //Locations
+                  LOCATION(RC_FIRE_TEMPLE_FIRE_PILLAR_LEFT_HEART,   logic->FireTimer() >= 56),
+                  LOCATION(RC_FIRE_TEMPLE_FIRE_PILLAR_RIGHT_HEART,  logic->FireTimer() >= 56),
+                  LOCATION(RC_FIRE_TEMPLE_FIRE_PILLAR_BACK_HEART,   logic->FireTimer() >= 56),
+                }, {
                   //Exits
                   Entrance(RR_FIRE_TEMPLE_BIG_LAVA_ROOM, {[]{return logic->SmallKeys(RR_FIRE_TEMPLE, 3);}}),
                   Entrance(RR_FIRE_TEMPLE_SHORTCUT_ROOM, {[]{return logic->FireTimer() >= 56 && logic->SmallKeys(RR_FIRE_TEMPLE, 4);}}),
@@ -175,7 +180,12 @@ void RegionTable_Init_FireTemple() {
                   Entrance(RR_FIRE_TEMPLE_BOULDER_MAZE_LOWER, {[]{return true;}}),
   });
 
-  areaTable[RR_FIRE_TEMPLE_EAST_CENTRAL_ROOM] = Region("Fire Temple East Central Room", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_FIRE_TEMPLE_EAST_CENTRAL_ROOM] = Region("Fire Temple East Central Room", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
+                  //Locations
+                  LOCATION(RC_FIRE_TEMPLE_EAST_CENTRAL_LEFT_HEART,    true),
+                  LOCATION(RC_FIRE_TEMPLE_EAST_CENTRAL_RIGHT_HEART,   true),
+                  LOCATION(RC_FIRE_TEMPLE_EAST_CENTRAL_MIDDLE_HEART,  true),
+                }, {
                   //Exits
                   Entrance(RR_FIRE_TEMPLE_BIG_LAVA_ROOM,      {[]{return logic->TakeDamage();}}),
                   Entrance(RR_FIRE_TEMPLE_BOULDER_MAZE_LOWER, {[]{return logic->SmallKeys(RR_FIRE_TEMPLE, 5, 8);}}),
@@ -183,7 +193,12 @@ void RegionTable_Init_FireTemple() {
                   Entrance(RR_FIRE_TEMPLE_MAP_AREA,           {[]{return logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW);}}),
   });
 
-  areaTable[RR_FIRE_TEMPLE_FIRE_WALL_CHASE] = Region("Fire Temple Fire Wall Chase", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_FIRE_TEMPLE_FIRE_WALL_CHASE] = Region("Fire Temple Fire Wall Chase", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
+                  //Locations
+                  LOCATION(RC_FIRE_TEMPLE_FIRE_WALL_EAST_HEART, logic->FireTimer() >= 24 && (logic->IsAdult || logic->CanUse(RG_BOOMERANG))),
+                  LOCATION(RC_FIRE_TEMPLE_FIRE_WALL_WEST_HEART, logic->FireTimer() >= 24 && (logic->IsAdult || logic->CanUse(RG_BOOMERANG))),
+                  LOCATION(RC_FIRE_TEMPLE_FIRE_WALL_EXIT_HEART, logic->FireTimer() >= 24),
+                }, {
                   //Exits
                   Entrance(RR_FIRE_TEMPLE_EAST_CENTRAL_ROOM,  {[]{return logic->FireTimer() >= 24 && logic->SmallKeys(RR_FIRE_TEMPLE, 6, 8);}}),
                   Entrance(RR_FIRE_TEMPLE_MAP_AREA,           {[]{return logic->IsAdult;}}),
@@ -235,7 +250,13 @@ void RegionTable_Init_FireTemple() {
                   Entrance(RR_FIRE_TEMPLE_FIRE_MAZE_ROOM,  {[]{return true;}}),
   });
 
-  areaTable[RR_FIRE_TEMPLE_FIRE_MAZE_ROOM] = Region("Fire Temple Fire Maze Room", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_FIRE_TEMPLE_FIRE_MAZE_ROOM] = Region("Fire Temple Fire Maze Room", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
+                  // Locations
+                  LOCATION(RC_FIRE_TEMPLE_FLAME_MAZE_LEFT_POT_1, logic->CanBreakPots()),
+                  LOCATION(RC_FIRE_TEMPLE_FLAME_MAZE_LEFT_POT_2, logic->CanBreakPots()),
+                  LOCATION(RC_FIRE_TEMPLE_FLAME_MAZE_LEFT_POT_3, logic->CanBreakPots()),
+                  LOCATION(RC_FIRE_TEMPLE_FLAME_MAZE_LEFT_POT_4, logic->CanBreakPots()),
+  }, {
                   //Exits
                   Entrance(RR_FIRE_TEMPLE_CORRIDOR,            {[]{return true;}}),
                   Entrance(RR_FIRE_TEMPLE_FIRE_MAZE_UPPER,     {[]{return logic->CanUse(RG_HOVER_BOOTS);}}),
@@ -278,10 +299,6 @@ void RegionTable_Init_FireTemple() {
 
   areaTable[RR_FIRE_TEMPLE_LATE_FIRE_MAZE] = Region("Fire Temple Late Fire Maze", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
                   // Locations
-                  LOCATION(RC_FIRE_TEMPLE_FLAME_MAZE_LEFT_POT_1, logic->CanBreakPots()),
-                  LOCATION(RC_FIRE_TEMPLE_FLAME_MAZE_LEFT_POT_2, logic->CanBreakPots()),
-                  LOCATION(RC_FIRE_TEMPLE_FLAME_MAZE_LEFT_POT_3, logic->CanBreakPots()),
-                  LOCATION(RC_FIRE_TEMPLE_FLAME_MAZE_LEFT_POT_4, logic->CanBreakPots()),
                   LOCATION(RC_FIRE_TEMPLE_FLAME_MAZE_RIGHT_POT_1, logic->CanBreakPots()),
                   LOCATION(RC_FIRE_TEMPLE_FLAME_MAZE_RIGHT_POT_2, logic->CanBreakPots()),
                   LOCATION(RC_FIRE_TEMPLE_FLAME_MAZE_RIGHT_POT_3, logic->CanBreakPots()),
@@ -477,16 +494,21 @@ void RegionTable_Init_FireTemple() {
                   EventAccess(&logic->FairyPot, {[]{return logic->CanUse(RG_HOOKSHOT);}}),
   }, {
                   //Locations
-                  LOCATION(RC_FIRE_TEMPLE_MQ_BOSS_KEY_CHEST,   logic->CanUse(RG_HOOKSHOT)),
-                  LOCATION(RC_FIRE_TEMPLE_MQ_LAVA_TORCH_POT_1, logic->HookshotOrBoomerang()),
-                  LOCATION(RC_FIRE_TEMPLE_MQ_LAVA_TORCH_POT_2, logic->HookshotOrBoomerang()),
+                  LOCATION(RC_FIRE_TEMPLE_MQ_BOSS_KEY_CHEST,          logic->CanUse(RG_HOOKSHOT)),
+                  LOCATION(RC_FIRE_TEMPLE_MQ_LAVA_TORCH_POT_1,        logic->HookshotOrBoomerang()),
+                  LOCATION(RC_FIRE_TEMPLE_MQ_LAVA_TORCH_POT_2,        logic->HookshotOrBoomerang()),
   }, {
                   //Exits
                   Entrance(RR_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM, {[]{return true;}}),
 });
 
 //This room assumes Goron Tunic until looser tunic requirements tricks are made
-  areaTable[RR_FIRE_TEMPLE_MQ_ELEVATOR_ROOM] = Region("Fire Temple MQ Elevator Room", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_FIRE_TEMPLE_MQ_ELEVATOR_ROOM] = Region("Fire Temple MQ Elevator Room", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
+                  //Locations
+                  LOCATION(RC_FIRE_TEMPLE_MQ_FIRE_PILLAR_LEFT_HEART,  true),
+                  LOCATION(RC_FIRE_TEMPLE_MQ_FIRE_PILLAR_RIGHT_HEART, true),
+                  LOCATION(RC_FIRE_TEMPLE_MQ_FIRE_PILLAR_LOWER_HEART, true),
+    }, {
                   //Exits
                   Entrance(RR_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM,     {[]{return true;}}),
                   Entrance(RR_FIRE_TEMPLE_MQ_BIG_TORCH_ROOM,    {[]{return true;}}),
