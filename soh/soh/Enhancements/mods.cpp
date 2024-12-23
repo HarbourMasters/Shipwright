@@ -144,21 +144,6 @@ void RegisterInfiniteNayrusLove() {
     });
 }
 
-void RegisterMoonJumpOnL() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded(true)) return;
-        
-        if (CVarGetInteger(CVAR_CHEAT("MoonJumpOnL"), 0) != 0) {
-            Player* player = GET_PLAYER(gPlayState);
-
-            if (CHECK_BTN_ANY(gPlayState->state.input[0].cur.button, BTN_L)) {
-                player->actor.velocity.y = 6.34375f;
-            }
-        }
-    });
-}
-
-
 void RegisterInfiniteISG() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!GameInteractor::IsSaveLoaded(true)) return;
@@ -1411,7 +1396,6 @@ void InitMods() {
     RegisterInfiniteAmmo();
     RegisterInfiniteMagic();
     RegisterInfiniteNayrusLove();
-    RegisterMoonJumpOnL();
     RegisterInfiniteISG();
     RegisterEzQPA();
     RegisterUnrestrictedItems();
