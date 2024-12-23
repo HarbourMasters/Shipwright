@@ -1183,19 +1183,22 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
     }
 }
 
-#define MINUET_GREEN 0
-#define BOLERO_RED 1
-#define SERENADE_AQUA 2 
-#define REQUIEM_AMBER 3
-#define NOCTURNE_VIOLET 4
-#define PRELUDE_YELLOW 5
-#define STICK_FOREST_GREEN 6 
-#define NUT_GOLD 7
-#define DOUBLE_WHITE 8 
-#define BOMBCHU_BLUE 9
-#define FAIRY_PINK 10
-#define RED_POTION_RED 11
-#define BLUE_FIRE_BLUE 12
+
+typedef enum {
+    PARTICLE_BRIGHT_GREEN,
+    PARTICLE_RED,
+    PARTICLE_CYAN,
+    PARTICLE_ORANGE,
+    PARTICLE_VIOLET,
+    PARTICLE_YELLOW,
+    PARTICLE_GREEN,
+    PARTICLE_GOLD,
+    PARTICLE_WHITE,
+    PARTICLE_DARK_BLUE,
+    PARTICLE_PINK,
+    PARTICLE_BRIGHT_RED,
+    PARTICLE_BLUE,
+} Item00ParticleColors;
 
 void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry giEntry) {
     s16 colorIndex;
@@ -1203,35 +1206,35 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
         case MOD_NONE:
             switch (giEntry.drawItemId) {
                 case ITEM_SONG_MINUET:
-                    colorIndex = MINUET_GREEN;
+                    colorIndex = PARTICLE_BRIGHT_GREEN;
                     break;
                 case ITEM_SONG_BOLERO:
-                    colorIndex = BOLERO_RED;
+                    colorIndex = PARTICLE_RED;
                     break;
                 case ITEM_SONG_SERENADE:
-                    colorIndex = SERENADE_AQUA;
+                    colorIndex = PARTICLE_CYAN;
                     break;
                 case ITEM_SONG_REQUIEM:
-                    colorIndex = REQUIEM_AMBER;
+                    colorIndex = PARTICLE_ORANGE;
                     break;
                 case ITEM_SONG_NOCTURNE:
-                    colorIndex = NOCTURNE_VIOLET;
+                    colorIndex = PARTICLE_VIOLET;
                     break;
                 case ITEM_SONG_PRELUDE:
-                    colorIndex = PRELUDE_YELLOW;
+                    colorIndex = PARTICLE_YELLOW;
                     break;
                 case ITEM_STICK_UPGRADE_20:
                 case ITEM_STICK_UPGRADE_30:
-                    colorIndex = STICK_FOREST_GREEN;
+                    colorIndex = PARTICLE_GREEN;
                     break;
                 case ITEM_NUT_UPGRADE_30:
                 case ITEM_NUT_UPGRADE_40:
-                    colorIndex = NUT_GOLD;
+                    colorIndex = PARTICLE_GOLD;
                     break;
                 case ITEM_BOTTLE:
                 case ITEM_MILK_BOTTLE:
                 case ITEM_LETTER_RUTO:
-                    colorIndex = DOUBLE_WHITE;
+                    colorIndex = PARTICLE_WHITE;
                     break;
                 default:
                     return;
@@ -1245,32 +1248,38 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
                 case RG_BOTTLE_WITH_GREEN_POTION:
                 case RG_BOTTLE_WITH_BUGS:
                 case RG_GREG_RUPEE:
-                    colorIndex = MINUET_GREEN;
+                    colorIndex = PARTICLE_BRIGHT_GREEN;
                     break;
                 case RG_BOTTLE_WITH_FISH:
-                    colorIndex = SERENADE_AQUA;
+                    colorIndex = PARTICLE_CYAN;
                     break;
                 case RG_BOTTLE_WITH_POE:
-                    colorIndex = NOCTURNE_VIOLET;
+                    colorIndex = PARTICLE_VIOLET;
                     break;
                 case RG_BOTTLE_WITH_BIG_POE:
-                    colorIndex = PRELUDE_YELLOW;
+                    colorIndex = PARTICLE_YELLOW;
+                    break;
+                case RG_DEKU_STICK_BAG:
+                    colorIndex = PARTICLE_GREEN;
+                    break;
+                case RG_DEKU_NUT_BAG:
+                    colorIndex = PARTICLE_GOLD;
                     break;
                 case RG_DOUBLE_DEFENSE:
-                    colorIndex = DOUBLE_WHITE;
+                    colorIndex = PARTICLE_WHITE;
                     break;
                 case RG_PROGRESSIVE_BOMBCHUS:
-                    colorIndex = BOMBCHU_BLUE;
+                    colorIndex = PARTICLE_DARK_BLUE;
                     break;
                 case RG_BOTTLE_WITH_FAIRY:
-                    colorIndex = FAIRY_PINK;
+                    colorIndex = PARTICLE_PINK;
                     break;
                 case RG_BOTTLE_WITH_RED_POTION:
-                    colorIndex = RED_POTION_RED;
+                    colorIndex = PARTICLE_BRIGHT_RED;
                     break;
                 case RG_BOTTLE_WITH_BLUE_FIRE:
                 case RG_BOTTLE_WITH_BLUE_POTION:
-                    colorIndex = BLUE_FIRE_BLUE;
+                    colorIndex = PARTICLE_BLUE;
                     break;
                 default:
                     return;
@@ -1282,7 +1291,7 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
 
     // Color of the circle for the particles
     static Color_RGBA8 mainColors[13][3] = {
-        { 34, 255, 76 },   // Minuet, Bean Pack, and Magic Upgrades, Bottle with Green Potion, Bottle with Bugs, and Greg
+        { 34, 255, 76 },   // Minuet, Bean Pack, Magic Upgrades, Bottle with Green Potion, Bottle with Bugs, and Greg
         { 177, 35, 35 },   // Bolero
         { 115, 251, 253 }, // Serenade and Bottle with Fish
         { 177, 122, 35 },  // Requiem
