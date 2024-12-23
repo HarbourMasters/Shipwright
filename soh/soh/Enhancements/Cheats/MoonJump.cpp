@@ -12,7 +12,6 @@ extern PlayState* gPlayState;
 
 void RegisterMoonJump() {
     COND_ID_HOOK(OnActorUpdate, ACTOR_PLAYER, CVAR, [](void* actorRef) {
-        Actor* actor = (Actor*)actorRef;
         Player* player = GET_PLAYER(gPlayState);
 
         if (player != nullptr && CHECK_BTN_ANY(gPlayState->state.input[0].cur.button, BTN_L)) {
