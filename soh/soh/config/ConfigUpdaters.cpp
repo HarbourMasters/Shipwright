@@ -79,17 +79,25 @@ namespace SOH {
             CVarSetInteger("gEnhancements.InjectItemCounts.HeartPiece", 1);
         }
 
+        // Migrate all audio settings to ints
         if (conf->GetNestedJson().contains("CVars") && conf->GetNestedJson()["CVars"].contains("gGameMasterVolume")) {
-            
             CVarSetInteger("gSettings.Volume.Master", (int32_t)(CVarGetFloat("gGameMasterVolume", 1.0f) * 100));
-            CVarSetInteger("gSettings.Volume.MainMusic", (int32_t)(CVarGetFloat("gMainMusicVolume", 1.0f) * 100));
-            CVarSetInteger("gSettings.Volume.SubMusic", (int32_t)(CVarGetFloat("gSubMusicVolume", 1.0f) * 100));
-            CVarSetInteger("gSettings.Volume.SFX", (int32_t)(CVarGetFloat("gSFXMusicVolume", 1.0f) * 100));
-            CVarSetInteger("gSettings.Volume.Fanfare", (int32_t)(CVarGetFloat("gFanfareVolume", 1.0f) * 100));
             CVarClear("gGameMasterVolume");
+        }
+        if (conf->GetNestedJson().contains("CVars") && conf->GetNestedJson()["CVars"].contains("gMainMusicVolume")) {
+            CVarSetInteger("gSettings.Volume.MainMusic", (int32_t)(CVarGetFloat("gMainMusicVolume", 1.0f) * 100));
             CVarClear("gMainMusicVolume");
+        }
+        if (conf->GetNestedJson().contains("CVars") && conf->GetNestedJson()["CVars"].contains("gSubMusicVolume")) {
+            CVarSetInteger("gSettings.Volume.SubMusic", (int32_t)(CVarGetFloat("gSubMusicVolume", 1.0f) * 100));
             CVarClear("gSubMusicVolume");
+        }
+        if (conf->GetNestedJson().contains("CVars") && conf->GetNestedJson()["CVars"].contains("gSFXMusicVolume")) {
+            CVarSetInteger("gSettings.Volume.SFX", (int32_t)(CVarGetFloat("gSFXMusicVolume", 1.0f) * 100));
             CVarClear("gSFXMusicVolume");
+        }
+        if (conf->GetNestedJson().contains("CVars") && conf->GetNestedJson()["CVars"].contains("gFanfareVolume")) {
+            CVarSetInteger("gSettings.Volume.Fanfare", (int32_t)(CVarGetFloat("gFanfareVolume", 1.0f) * 100));
             CVarClear("gFanfareVolume");
         }
 
