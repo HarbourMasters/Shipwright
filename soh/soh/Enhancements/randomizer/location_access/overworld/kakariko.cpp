@@ -7,18 +7,20 @@ void RegionTable_Init_Kakariko() {
     areaTable[RR_KAKARIKO_VILLAGE] = Region("Kakariko Village", "Kakariko Village", {RA_KAKARIKO_VILLAGE}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->BugRock,                 {[]{return true;}}),
-        EventAccess(&logic->KakarikoVillageGateOpen, {[]{return logic->KakarikoVillageGateOpen || (logic->IsChild && (logic->HasItem(RG_ZELDAS_LETTER) || ctx->GetOption(RSK_KAK_GATE).Is(RO_KAK_GATE_OPEN)));}}),
+        //Open Gate setting is applies in RR_ROOT
+        EventAccess(&logic->KakarikoVillageGateOpen, {[]{return logic->IsChild && logic->HasItem(RG_ZELDAS_LETTER);}}),
     }, {
         //Locations
         LOCATION(RC_SHEIK_IN_KAKARIKO,               logic->IsAdult && logic->HasItem(RG_FOREST_MEDALLION) && logic->HasItem(RG_FIRE_MEDALLION) && logic->HasItem(RG_WATER_MEDALLION)),
         LOCATION(RC_KAK_ANJU_AS_CHILD,               logic->IsChild && logic->AtDay),
         LOCATION(RC_KAK_ANJU_AS_ADULT,               logic->IsAdult && logic->AtDay),
         LOCATION(RC_KAK_TRADE_POCKET_CUCCO,          logic->IsAdult && logic->AtDay && (logic->CanUse(RG_POCKET_EGG) && logic->WakeUpAdultTalon)),
+        //Can kill lower kak skulls with pots
         LOCATION(RC_KAK_GS_HOUSE_UNDER_CONSTRUCTION, logic->IsChild && logic->CanGetNightTimeGS()),
         LOCATION(RC_KAK_GS_SKULLTULA_HOUSE,          logic->IsChild && logic->CanGetNightTimeGS()),
         LOCATION(RC_KAK_GS_GUARDS_HOUSE,             logic->IsChild && logic->CanGetNightTimeGS()),
         LOCATION(RC_KAK_GS_TREE,                     logic->IsChild && logic->CanGetNightTimeGS()),
-        LOCATION(RC_KAK_GS_WATCHTOWER,               logic->IsChild && (logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOMBCHU_5) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_KAK_TOWER_GS) && logic->CanJumpslashExceptHammer())) && logic->CanGetNightTimeGS()),
+        LOCATION(RC_KAK_GS_WATCHTOWER,               logic->IsChild && (logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_LONGSHOT) || (ctx->GetTrickOption(RT_KAK_TOWER_GS) && logic->CanJumpslashExceptHammer())) && logic->CanGetNightTimeGS()),
         LOCATION(RC_KAK_NEAR_POTION_SHOP_POT_1,      logic->IsChild && logic->CanBreakPots()),
         LOCATION(RC_KAK_NEAR_POTION_SHOP_POT_2,      logic->IsChild && logic->CanBreakPots()),
         LOCATION(RC_KAK_NEAR_POTION_SHOP_POT_3,      logic->IsChild && logic->CanBreakPots()),
