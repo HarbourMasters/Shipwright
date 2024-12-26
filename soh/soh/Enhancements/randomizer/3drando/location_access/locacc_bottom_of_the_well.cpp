@@ -13,7 +13,7 @@ void RegionTable_Init_BottomOfTheWell() {
                   //Technically involves an fake wall, but passing it lensless is intended in vanilla and it is well telegraphed
                   Entrance(RR_BOTTOM_OF_THE_WELL_PERIMETER,    {[]{return ctx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsVanilla() && logic->IsChild && logic->CanPassEnemy(RE_BIG_SKULLTULA);}}),
                   Entrance(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER, {[]{return ctx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsMQ()      && logic->IsChild;}}),
-                  Entrance(RR_KAKARIKO_VILLAGE,                {[]{return true;}}),
+                  Entrance(RR_KAK_WELL,                        {[]{return true;}}),
   });
 
   /*--------------------------
