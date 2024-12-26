@@ -3,6 +3,11 @@
 
 using namespace Rando;
 
+/*
+ * This file should be split into "gerudo_fortress.cpp" (overworld) & "thieves_hideout.cpp" (dungeons)
+ * when the gerudo fortress refactor is done
+ */
+
 void RegionTable_Init_GerudoFortress() {
     areaTable[RR_GERUDO_FORTRESS] = Region("Gerudo Fortress", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
         //Events
