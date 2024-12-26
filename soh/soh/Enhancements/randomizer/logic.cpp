@@ -437,10 +437,10 @@ namespace Rando {
                         [[fallthrough]];
                     case ED_HOOKSHOT:
                         //RANDOTODO test dins and chu range in a practical example
-                        killed = killed || CanUse(RG_HOOKSHOT) || (wallOrFloor && CanUse(RG_BOMBCHU_5));
+                        killed = killed || CanUse(RG_HOOKSHOT);
                         [[fallthrough]];
                     case ED_LONGSHOT:
-                        killed = killed || CanUse(RG_LONGSHOT);
+                        killed = killed || CanUse(RG_LONGSHOT) || (wallOrFloor && CanUse(RG_BOMBCHU_5));
                         [[fallthrough]];
                     case ED_FAR:
                         killed = killed || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW);
@@ -1067,7 +1067,7 @@ namespace Rando {
     }
 
     bool Logic::CanGetNightTimeGS(){
-        return CanUse(RG_SUNS_SONG) || !ctx->GetOption(RSK_SKULLS_SUNS_SONG);
+        return AtNight && (CanUse(RG_SUNS_SONG) || !ctx->GetOption(RSK_SKULLS_SUNS_SONG));
     }
 
     bool Logic::CanBreakUpperBeehives(){

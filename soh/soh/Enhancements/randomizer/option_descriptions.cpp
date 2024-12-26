@@ -381,7 +381,7 @@ void Settings::CreateOptionDescriptions() {
         "This setting governs if the Bean Salesman, Medigoron, Granny and the Carpet Salesman "
         "sell a random item.\n"
         "Beans Only - Only the Bean Salesman will have a check, and a pack of Magic Beans will be added "
-        "to the item pool."
+        "to the item pool.\n"
         "All But Beans - Medigoron, Granny and the Carpet Salesman will have checks, "
         "A Giant's Knife and a pack of Bombchus will be added to the item pool, and "
         "one of the bottles will contain a Blue Potion.\n\n"
