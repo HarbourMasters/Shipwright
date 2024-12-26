@@ -18,7 +18,7 @@ void RegionTable_Init_SacredForestMeadow() {
         //Locations
         LOCATION(RC_SONG_FROM_SARIA,             logic->IsChild && logic->HasItem(RG_ZELDAS_LETTER)),
         LOCATION(RC_SHEIK_IN_FOREST,             logic->IsAdult),
-        LOCATION(RC_SFM_GS,                      logic->IsAdult && logic->HookshotOrBoomerang() && logic->AtNight && logic->CanGetNightTimeGS()),
+        LOCATION(RC_SFM_GS,                      logic->IsAdult && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
         LOCATION(RC_SFM_MAZE_LOWER_GOSSIP_STONE, true),
         LOCATION(RC_SFM_MAZE_UPPER_GOSSIP_STONE, true),
         LOCATION(RC_SFM_SARIA_GOSSIP_STONE,      true),
