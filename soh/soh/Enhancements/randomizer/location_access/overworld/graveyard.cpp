@@ -6,9 +6,9 @@ using namespace Rando;
 void RegionTable_Init_Graveyard() {
     areaTable[RR_THE_GRAVEYARD] = Region("The Graveyard", "The Graveyard", {RA_THE_GRAVEYARD}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->ButterflyFairy, {[]{return logic->ButterflyFairy || (logic->CanUse(RG_STICKS) && logic->AtDay);}}),
-        EventAccess(&logic->BeanPlantFairy, {[]{return logic->BeanPlantFairy || (CanPlantBean(RR_THE_GRAVEYARD) && logic->CanUse(RG_SONG_OF_STORMS));}}),
-        EventAccess(&logic->BugRock,        {[]{return true;}}),
+        EventAccess(&logic->ButterflyFairy, []{return logic->ButterflyFairy || (logic->CanUse(RG_STICKS) && logic->AtDay);}),
+        EventAccess(&logic->BeanPlantFairy, []{return logic->BeanPlantFairy || (CanPlantBean(RR_THE_GRAVEYARD) && logic->CanUse(RG_SONG_OF_STORMS));}),
+        EventAccess(&logic->BugRock,        []{return true;}),
     }, {
         //Locations
         LOCATION(RC_GRAVEYARD_FREESTANDING_POH,        (logic->IsAdult && CanPlantBean(RR_THE_GRAVEYARD)) || logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_GY_POH) && logic->CanUse(RG_BOOMERANG))),
@@ -17,13 +17,13 @@ void RegionTable_Init_Graveyard() {
         LOCATION(RC_GRAVEYARD_GS_BEAN_PATCH,           logic->CanSpawnSoilSkull() && logic->CanAttack()),
     }, {
         //Exits
-        Entrance(RR_GRAVEYARD_SHIELD_GRAVE,       {[]{return logic->IsAdult || logic->AtNight;}}),
-        Entrance(RR_GRAVEYARD_COMPOSERS_GRAVE,    {[]{return logic->CanUse(RG_ZELDAS_LULLABY);}}),
-        Entrance(RR_GRAVEYARD_HEART_PIECE_GRAVE,  {[]{return logic->IsAdult || logic->AtNight;}}),
-        Entrance(RR_GRAVEYARD_DAMPES_GRAVE,       {[]{return logic->IsAdult;}}),
-        Entrance(RR_GRAVEYARD_DAMPES_HOUSE,       {[]{return logic->IsAdult /*|| logic->AtDampeTime*/;}}), //TODO: This needs to be handled in ToD rework
-        Entrance(RR_KAKARIKO_VILLAGE,             {[]{return true;}}),
-        Entrance(RR_GRAVEYARD_WARP_PAD_REGION,    {[]{return false;}}),
+        Entrance(RR_GRAVEYARD_SHIELD_GRAVE,       []{return logic->IsAdult || logic->AtNight;}),
+        Entrance(RR_GRAVEYARD_COMPOSERS_GRAVE,    []{return logic->CanUse(RG_ZELDAS_LULLABY);}),
+        Entrance(RR_GRAVEYARD_HEART_PIECE_GRAVE,  []{return logic->IsAdult || logic->AtNight;}),
+        Entrance(RR_GRAVEYARD_DAMPES_GRAVE,       []{return logic->IsAdult;}),
+        Entrance(RR_GRAVEYARD_DAMPES_HOUSE,       []{return logic->IsAdult /*|| logic->AtDampeTime*/;}), //TODO: This needs to be handled in ToD rework
+        Entrance(RR_KAKARIKO_VILLAGE,             []{return true;}),
+        Entrance(RR_GRAVEYARD_WARP_PAD_REGION,    []{return false;}),
     });
 
     areaTable[RR_GRAVEYARD_SHIELD_GRAVE] = Region("Graveyard Shield Grave", "Graveyard Shield Grave", {}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -32,7 +32,7 @@ void RegionTable_Init_Graveyard() {
         //Free Fairies
     }, {
         //Exits
-        Entrance(RR_THE_GRAVEYARD, {[]{return true;}}),
+        Entrance(RR_THE_GRAVEYARD, []{return true;}),
     });
 
     areaTable[RR_GRAVEYARD_HEART_PIECE_GRAVE] = Region("Graveyard Heart Piece Grave", "Graveyard Heart Piece Grave", {}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -40,7 +40,7 @@ void RegionTable_Init_Graveyard() {
         LOCATION(RC_GRAVEYARD_HEART_PIECE_GRAVE_CHEST, logic->CanUse(RG_SUNS_SONG)),
     }, {
         //Exits
-        Entrance(RR_THE_GRAVEYARD, {[]{return true;}}),
+        Entrance(RR_THE_GRAVEYARD, []{return true;}),
     });
 
     areaTable[RR_GRAVEYARD_COMPOSERS_GRAVE] = Region("Graveyard Composers Grave", "Graveyard Composers Grave", {}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -49,13 +49,13 @@ void RegionTable_Init_Graveyard() {
         LOCATION(RC_SONG_FROM_ROYAL_FAMILYS_TOMB,       logic->CanUseProjectile() || logic->CanJumpslash()),
     }, {
         //Exits
-        Entrance(RR_THE_GRAVEYARD, {[]{return true;}}),
+        Entrance(RR_THE_GRAVEYARD, []{return true;}),
     });
 
     areaTable[RR_GRAVEYARD_DAMPES_GRAVE] = Region("Graveyard Dampes Grave", "Windmill and Dampes Grave", {}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->NutPot,               {[]{return true;}}),
-        EventAccess(&logic->DampesWindmillAccess, {[]{return logic->DampesWindmillAccess || (logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME));}}),
+        EventAccess(&logic->NutPot,               []{return true;}),
+        EventAccess(&logic->DampesWindmillAccess, []{return logic->DampesWindmillAccess || (logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME));}),
     }, {
         //Locations
         LOCATION(RC_GRAVEYARD_HOOKSHOT_CHEST,              true),
@@ -76,8 +76,8 @@ void RegionTable_Init_Graveyard() {
         LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_8,          true),
     }, {
         //Exits
-        Entrance(RR_THE_GRAVEYARD, {[]{return true;}}),
-        Entrance(RR_KAK_WINDMILL,  {[]{return logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME);}}, false),
+        Entrance(RR_THE_GRAVEYARD, []{return true;}),
+        Entrance(RR_KAK_WINDMILL,  []{return logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME);}, false),
     });
 
     areaTable[RR_GRAVEYARD_DAMPES_HOUSE] = Region("Graveyard Dampes House", "Graveyard Dampes House", {}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -85,18 +85,18 @@ void RegionTable_Init_Graveyard() {
         LOCATION(RC_DAMPE_HINT, logic->IsAdult),
     }, {
         //Exits
-        Entrance(RR_THE_GRAVEYARD, {[]{return true;}}),
+        Entrance(RR_THE_GRAVEYARD, []{return true;}),
     });
 
     areaTable[RR_GRAVEYARD_WARP_PAD_REGION] = Region("Graveyard Warp Pad Region", "Graveyard", {RA_THE_GRAVEYARD}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->GossipStoneFairy, {[]{return logic->CallGossipFairyExceptSuns();}}),
+        EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairyExceptSuns();}),
     }, {
         //Locations
         LOCATION(RC_GRAVEYARD_GOSSIP_STONE, true),
     }, {
         //Exits
-        Entrance(RR_THE_GRAVEYARD,          {[]{return true;}}),
-        Entrance(RR_SHADOW_TEMPLE_ENTRYWAY, {[]{return logic->CanUse(RG_DINS_FIRE) || (ctx->GetTrickOption(RT_GY_SHADOW_FIRE_ARROWS) && logic->IsAdult && logic->CanUse(RG_FIRE_ARROWS));}}),
+        Entrance(RR_THE_GRAVEYARD,          []{return true;}),
+        Entrance(RR_SHADOW_TEMPLE_ENTRYWAY, []{return logic->CanUse(RG_DINS_FIRE) || (ctx->GetTrickOption(RT_GY_SHADOW_FIRE_ARROWS) && logic->IsAdult && logic->CanUse(RG_FIRE_ARROWS));}),
     });
 }

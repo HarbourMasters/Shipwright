@@ -6,28 +6,28 @@ using namespace Rando;
 void RegionTable_Init_HyruleField() {
     areaTable[RR_HYRULE_FIELD] = Region("Hyrule Field", "Hyrule Field", {RA_HYRULE_FIELD}, DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->BigPoeKill, {[]{return logic->CanUse(RG_FAIRY_BOW) && logic->CanUse(RG_EPONA) && logic->HasBottle();}}),
+        EventAccess(&logic->BigPoeKill, []{return logic->CanUse(RG_FAIRY_BOW) && logic->CanUse(RG_EPONA) && logic->HasBottle();}),
     }, {
         //Locations
         LOCATION(RC_HF_OCARINA_OF_TIME_ITEM,   logic->IsChild && logic->StoneCount() == 3),
         LOCATION(RC_SONG_FROM_OCARINA_OF_TIME, logic->IsChild && logic->StoneCount() == 3),
     }, {
         //Exits
-        Entrance(RR_LW_BRIDGE,              {[]{return true;}}),
-        Entrance(RR_LAKE_HYLIA,             {[]{return true;}}),
-        Entrance(RR_GERUDO_VALLEY,          {[]{return true;}}),
-        Entrance(RR_MARKET_ENTRANCE,        {[]{return true;}}),
-        Entrance(RR_KAKARIKO_VILLAGE,       {[]{return true;}}),
-        Entrance(RR_ZR_FRONT,               {[]{return true;}}),
-        Entrance(RR_LON_LON_RANCH,          {[]{return true;}}),
-        Entrance(RR_HF_SOUTHEAST_GROTTO,    {[]{return Here(RR_HYRULE_FIELD, []{return logic->BlastOrSmash();});}}),
-        Entrance(RR_HF_OPEN_GROTTO,         {[]{return true;}}),
-        Entrance(RR_HF_INSIDE_FENCE_GROTTO, {[]{return logic->CanOpenBombGrotto();}}),
-        Entrance(RR_HF_COW_GROTTO,          {[]{return (logic->CanUse(RG_MEGATON_HAMMER) || logic->IsChild) && logic->CanOpenBombGrotto();}}),
-        Entrance(RR_HF_NEAR_MARKET_GROTTO,  {[]{return Here(RR_HYRULE_FIELD, []{return logic->BlastOrSmash();});}}),
-        Entrance(RR_HF_FAIRY_GROTTO,        {[]{return Here(RR_HYRULE_FIELD, []{return logic->BlastOrSmash();});}}),
-        Entrance(RR_HF_NEAR_KAK_GROTTO,     {[]{return logic->CanOpenBombGrotto();}}),
-        Entrance(RR_HF_TEKTITE_GROTTO,      {[]{return logic->CanOpenBombGrotto();}}),
+        Entrance(RR_LW_BRIDGE,              []{return true;}),
+        Entrance(RR_LAKE_HYLIA,             []{return true;}),
+        Entrance(RR_GERUDO_VALLEY,          []{return true;}),
+        Entrance(RR_MARKET_ENTRANCE,        []{return true;}),
+        Entrance(RR_KAKARIKO_VILLAGE,       []{return true;}),
+        Entrance(RR_ZR_FRONT,               []{return true;}),
+        Entrance(RR_LON_LON_RANCH,          []{return true;}),
+        Entrance(RR_HF_SOUTHEAST_GROTTO,    []{return Here(RR_HYRULE_FIELD, []{return logic->BlastOrSmash();});}),
+        Entrance(RR_HF_OPEN_GROTTO,         []{return true;}),
+        Entrance(RR_HF_INSIDE_FENCE_GROTTO, []{return logic->CanOpenBombGrotto();}),
+        Entrance(RR_HF_COW_GROTTO,          []{return (logic->CanUse(RG_MEGATON_HAMMER) || logic->IsChild) && logic->CanOpenBombGrotto();}),
+        Entrance(RR_HF_NEAR_MARKET_GROTTO,  []{return Here(RR_HYRULE_FIELD, []{return logic->BlastOrSmash();});}),
+        Entrance(RR_HF_FAIRY_GROTTO,        []{return Here(RR_HYRULE_FIELD, []{return logic->BlastOrSmash();});}),
+        Entrance(RR_HF_NEAR_KAK_GROTTO,     []{return logic->CanOpenBombGrotto();}),
+        Entrance(RR_HF_TEKTITE_GROTTO,      []{return logic->CanOpenBombGrotto();}),
     });
 
     areaTable[RR_HF_SOUTHEAST_GROTTO] = Region("HF Southeast Grotto", "HF Southeast Grotto", {}, NO_DAY_NIGHT_CYCLE, grottoEvents, {
@@ -39,7 +39,7 @@ void RegionTable_Init_HyruleField() {
         LOCATION(RC_HF_SOUTHEAST_GROTTO_BEEHIVE_RIGHT, logic->CanBreakLowerBeehives()),
     }, {
         //Exits
-        Entrance(RR_HYRULE_FIELD, {[]{return true;}}),
+        Entrance(RR_HYRULE_FIELD, []{return true;}),
     });
 
     areaTable[RR_HF_OPEN_GROTTO] = Region("HF Open Grotto", "HF Open Grotto", {}, NO_DAY_NIGHT_CYCLE, grottoEvents, {
@@ -51,7 +51,7 @@ void RegionTable_Init_HyruleField() {
         LOCATION(RC_HF_OPEN_GROTTO_BEEHIVE_RIGHT, logic->CanBreakLowerBeehives()),
     }, {
         //Exits
-        Entrance(RR_HYRULE_FIELD, {[]{return true;}}),
+        Entrance(RR_HYRULE_FIELD, []{return true;}),
     });
 
     areaTable[RR_HF_INSIDE_FENCE_GROTTO] = Region("HF Inside Fence Grotto", "HF Inside Fence Grotto", {}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -60,7 +60,7 @@ void RegionTable_Init_HyruleField() {
         LOCATION(RC_HF_INSIDE_FENCE_GROTTO_BEEHIVE, logic->CanBreakLowerBeehives()),
     }, {
         //Exits
-        Entrance(RR_HYRULE_FIELD, {[]{return true;}}),
+        Entrance(RR_HYRULE_FIELD, []{return true;}),
     });
 
     areaTable[RR_HF_COW_GROTTO] = Region("HF Cow Grotto", "HF Cow Grotto", {}, NO_DAY_NIGHT_CYCLE, grottoEvents, {
@@ -72,7 +72,7 @@ void RegionTable_Init_HyruleField() {
         LOCATION(RC_HF_COW_GROTTO_POT_2,        logic->HasFireSource() && logic->CanBreakPots()),
     }, {
         //Exits
-        Entrance(RR_HYRULE_FIELD, {[]{return true;}}),
+        Entrance(RR_HYRULE_FIELD, []{return true;}),
     });
 
     areaTable[RR_HF_NEAR_MARKET_GROTTO] = Region("HF Near Market Grotto", "HF Near Market Grotto", {}, NO_DAY_NIGHT_CYCLE, grottoEvents, {
@@ -84,15 +84,15 @@ void RegionTable_Init_HyruleField() {
         LOCATION(RC_HF_NEAR_MARKET_GROTTO_BEEHIVE_RIGHT, logic->CanBreakLowerBeehives()),
     }, {
         //Exits
-        Entrance(RR_HYRULE_FIELD, {[]{return true;}}),
+        Entrance(RR_HYRULE_FIELD, []{return true;}),
     });
 
     areaTable[RR_HF_FAIRY_GROTTO] = Region("HF Fairy Grotto", "HF Fairy Grotto", {}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->FreeFairies, {[]{return true;}}),
+        EventAccess(&logic->FreeFairies, []{return true;}),
     }, {}, {
         //Exits
-        Entrance(RR_HYRULE_FIELD, {[]{return true;}}),
+        Entrance(RR_HYRULE_FIELD, []{return true;}),
     });
 
     areaTable[RR_HF_NEAR_KAK_GROTTO] = Region("HF Near Kak Grotto", "HF Near Kak Grotto", {}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -100,7 +100,7 @@ void RegionTable_Init_HyruleField() {
         LOCATION(RC_HF_GS_NEAR_KAK_GROTTO, logic->HookshotOrBoomerang()),
     }, {
         //Exits
-        Entrance(RR_HYRULE_FIELD, {[]{return true;}}),
+        Entrance(RR_HYRULE_FIELD, []{return true;}),
     });
 
     areaTable[RR_HF_TEKTITE_GROTTO] = Region("HF Tektite Grotto", "HF Tektite Grotto", {}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -108,6 +108,6 @@ void RegionTable_Init_HyruleField() {
         LOCATION(RC_HF_TEKTITE_GROTTO_FREESTANDING_POH, logic->HasItem(RG_GOLDEN_SCALE) || logic->CanUse(RG_IRON_BOOTS)),
     }, {
         //Exits
-        Entrance(RR_HYRULE_FIELD, {[]{return true;}}),
+        Entrance(RR_HYRULE_FIELD, []{return true;}),
     });
 }

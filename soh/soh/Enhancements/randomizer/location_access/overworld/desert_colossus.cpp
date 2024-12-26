@@ -6,8 +6,8 @@ using namespace Rando;
 void RegionTable_Init_DesertColossus() {
     areaTable[RR_DESERT_COLOSSUS] = Region("Desert Colossus", "Desert Colossus", {RA_DESERT_COLOSSUS}, DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->FairyPond, {[]{return logic->FairyPond || logic->CanUse(RG_SONG_OF_STORMS);}}),
-        EventAccess(&logic->BugRock,   {[]{return true;}}),
+        EventAccess(&logic->FairyPond, []{return logic->FairyPond || logic->CanUse(RG_SONG_OF_STORMS);}),
+        EventAccess(&logic->BugRock,   []{return true;}),
     }, {
         //Locations
         LOCATION(RC_COLOSSUS_FREESTANDING_POH, logic->IsAdult && CanPlantBean(RR_DESERT_COLOSSUS)),
@@ -17,10 +17,10 @@ void RegionTable_Init_DesertColossus() {
         LOCATION(RC_COLOSSUS_GOSSIP_STONE,     true),
     }, {
         //Exits
-        Entrance(RR_COLOSSUS_GREAT_FAIRY_FOUNTAIN, {[]{return logic->HasExplosives();}}),
-        Entrance(RR_SPIRIT_TEMPLE_ENTRYWAY,        {[]{return true;}}),
-        Entrance(RR_WASTELAND_NEAR_COLOSSUS,       {[]{return true;}}),
-        Entrance(RR_COLOSSUS_GROTTO,               {[]{return logic->CanUse(RG_SILVER_GAUNTLETS);}}),
+        Entrance(RR_COLOSSUS_GREAT_FAIRY_FOUNTAIN, []{return logic->HasExplosives();}),
+        Entrance(RR_SPIRIT_TEMPLE_ENTRYWAY,        []{return true;}),
+        Entrance(RR_WASTELAND_NEAR_COLOSSUS,       []{return true;}),
+        Entrance(RR_COLOSSUS_GROTTO,               []{return logic->CanUse(RG_SILVER_GAUNTLETS);}),
     });
 
     areaTable[RR_DESERT_COLOSSUS_OUTSIDE_TEMPLE] = Region("Desert Colossus From Spirit Entryway", "Desert Colossus", {RA_DESERT_COLOSSUS}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -28,7 +28,7 @@ void RegionTable_Init_DesertColossus() {
         LOCATION(RC_SHEIK_AT_COLOSSUS, true),
     }, {
         //Exist
-        Entrance(RR_DESERT_COLOSSUS, {[]{return true;}}),
+        Entrance(RR_DESERT_COLOSSUS, []{return true;}),
     });
 
     areaTable[RR_COLOSSUS_GREAT_FAIRY_FOUNTAIN] = Region("Colossus Great Fairy Fountain", "Colossus Great Fairy Fountain", {}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -36,7 +36,7 @@ void RegionTable_Init_DesertColossus() {
         LOCATION(RC_COLOSSUS_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY)),
     }, {
         //Exits
-        Entrance(RR_DESERT_COLOSSUS, {[]{return true;}}),
+        Entrance(RR_DESERT_COLOSSUS, []{return true;}),
     });
 
     areaTable[RR_COLOSSUS_GROTTO] = Region("Colossus Grotto", "Colossus Grotto", {}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -46,6 +46,6 @@ void RegionTable_Init_DesertColossus() {
         LOCATION(RC_COLOSSUS_GROTTO_BEEHIVE,          logic->CanBreakUpperBeehives()),
     }, {
         //Exits
-        Entrance(RR_DESERT_COLOSSUS, {[]{return true;}}),
+        Entrance(RR_DESERT_COLOSSUS, []{return true;}),
     });
 }

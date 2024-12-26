@@ -6,8 +6,8 @@ using namespace Rando;
 void RegionTable_Init_LonLonRanch() {
     areaTable[RR_LON_LON_RANCH] = Region("Lon Lon Ranch", "Lon Lon Ranch", {RA_LON_LON_RANCH}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->FreedEpona, {[]{return logic->FreedEpona || ((logic->HasItem(RG_CHILD_WALLET) || ctx->GetOption(RSK_SKIP_EPONA_RACE)) && logic->CanUse(RG_EPONAS_SONG) && logic->IsAdult && logic->AtDay);}}),
-        EventAccess(&logic->LinksCow,   {[]{return logic->LinksCow || (logic->HasItem(RG_CHILD_WALLET) && logic->CanUse(RG_EPONAS_SONG) && logic->IsAdult && logic->AtDay);}}),
+        EventAccess(&logic->FreedEpona, []{return logic->FreedEpona || ((logic->HasItem(RG_CHILD_WALLET) || ctx->GetOption(RSK_SKIP_EPONA_RACE)) && logic->CanUse(RG_EPONAS_SONG) && logic->IsAdult && logic->AtDay);}),
+        EventAccess(&logic->LinksCow,   []{return logic->LinksCow || (logic->HasItem(RG_CHILD_WALLET) && logic->CanUse(RG_EPONAS_SONG) && logic->IsAdult && logic->AtDay);}),
     }, {
         //Locations
         LOCATION(RC_SONG_FROM_MALON,     logic->IsChild && logic->HasItem(RG_ZELDAS_LETTER) && logic->HasItem(RG_FAIRY_OCARINA) && logic->AtDay),
@@ -24,11 +24,11 @@ void RegionTable_Init_LonLonRanch() {
         LOCATION(RC_LLR_RAIN_SHED_POT_3, logic->IsChild && logic->CanBreakPots()),
     }, {
         //Exits
-        Entrance(RR_HYRULE_FIELD,     {[]{return true;}}),
-        Entrance(RR_LLR_TALONS_HOUSE, {[]{return true;}}),
-        Entrance(RR_LLR_STABLES,      {[]{return true;}}),
-        Entrance(RR_LLR_TOWER,        {[]{return true;}}),
-        Entrance(RR_LLR_GROTTO,       {[]{return logic->IsChild;}}),
+        Entrance(RR_HYRULE_FIELD,     []{return true;}),
+        Entrance(RR_LLR_TALONS_HOUSE, []{return true;}),
+        Entrance(RR_LLR_STABLES,      []{return true;}),
+        Entrance(RR_LLR_TOWER,        []{return true;}),
+        Entrance(RR_LLR_GROTTO,       []{return logic->IsChild;}),
     });
 
     areaTable[RR_LLR_TALONS_HOUSE] = Region("LLR Talons House", "LLR Talons House", {}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -39,7 +39,7 @@ void RegionTable_Init_LonLonRanch() {
         LOCATION(RC_LLR_TALONS_HOUSE_POT_3, logic->CanBreakPots()),
     }, {
         //Exits
-        Entrance(RR_LON_LON_RANCH, {[]{return true;}}),
+        Entrance(RR_LON_LON_RANCH, []{return true;}),
     });
 
     areaTable[RR_LLR_STABLES] = Region("LLR Stables", "LLR Stables", {}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -48,7 +48,7 @@ void RegionTable_Init_LonLonRanch() {
         LOCATION(RC_LLR_STABLES_RIGHT_COW, logic->CanUse(RG_EPONAS_SONG)),
     }, {
         //Exits
-        Entrance(RR_LON_LON_RANCH, {[]{return true;}}),
+        Entrance(RR_LON_LON_RANCH, []{return true;}),
     });
 
     areaTable[RR_LLR_TOWER] = Region("LLR Tower", "LLR Tower", {}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -58,7 +58,7 @@ void RegionTable_Init_LonLonRanch() {
         LOCATION(RC_LLR_TOWER_RIGHT_COW,  logic->CanUse(RG_EPONAS_SONG)),
     }, {
         //Exits
-        Entrance(RR_LON_LON_RANCH, {[]{return true;}}),
+        Entrance(RR_LON_LON_RANCH, []{return true;}),
     });
 
     areaTable[RR_LLR_GROTTO] = Region("LLR Grotto", "LLR Grotto", {}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -69,6 +69,6 @@ void RegionTable_Init_LonLonRanch() {
         LOCATION(RC_LLR_GROTTO_BEEHIVE,           logic->CanBreakUpperBeehives()),
     }, {
         //Exits
-        Entrance(RR_LON_LON_RANCH, {[]{return true;}}),
+        Entrance(RR_LON_LON_RANCH, []{return true;}),
     });
 }

@@ -17,25 +17,16 @@ extern std::shared_ptr<Rando::Logic> logic;
 
 class EventAccess {
     public:
-        explicit EventAccess(bool* event_, std::vector<ConditionFn> conditions_met_) : event(event_) {
-            conditions_met.resize(2);
-            for (size_t i = 0; i < conditions_met_.size(); i++) {
-                conditions_met[i] = conditions_met_[i];
-            }
-        }
+        explicit EventAccess(bool* event_, ConditionFn condition_function_) : event(event_), condition_function(condition_function_) {}
 
         bool ConditionsMet() const {
             auto ctx = Rando::Context::GetInstance();
             if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC) || ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
                 return true;
             } else if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS)) {
-                return conditions_met[0]();
+                return condition_function();
             } else if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHED)) {
-                if (conditions_met[0]()) {
-                    return true;
-                } else if (conditions_met[1] != NULL) {
-                    return conditions_met[1]();
-                }
+                return condition_function();
             }
             return false;
         }
@@ -62,7 +53,7 @@ class EventAccess {
 
     private:
         bool* event;
-        std::vector<ConditionFn> conditions_met;
+        ConditionFn condition_function;
 };
 
 std::string CleanCheckConditionString(std::string condition);

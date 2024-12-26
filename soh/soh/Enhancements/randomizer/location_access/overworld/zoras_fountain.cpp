@@ -6,8 +6,8 @@ using namespace Rando;
 void RegionTable_Init_ZorasFountain() {
     areaTable[RR_ZORAS_FOUNTAIN] = Region("Zoras Fountain", "Zoras Fountain", {RA_ZORAS_FOUNTAIN}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->GossipStoneFairy, {[]{return logic->CallGossipFairyExceptSuns();}}),
-        EventAccess(&logic->ButterflyFairy,   {[]{return logic->ButterflyFairy   || (logic->CanUse(RG_STICKS) && logic->AtDay);}}),
+        EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairyExceptSuns();}),
+        EventAccess(&logic->ButterflyFairy,   []{return logic->ButterflyFairy   || (logic->CanUse(RG_STICKS) && logic->AtDay);}),
     }, {
         //Locations
         LOCATION(RC_ZF_ICEBERG_FREESTANDING_POH,      logic->IsAdult),
@@ -44,10 +44,10 @@ void RegionTable_Init_ZorasFountain() {
         LOCATION(RC_ZF_NEAR_JABU_POT_4,               logic->IsChild && logic->CanBreakPots()),
     }, {
         //Exits
-        Entrance(RR_ZD_BEHIND_KING_ZORA,       {[]{return true;}}),
-        Entrance(RR_JABU_JABUS_BELLY_ENTRYWAY, {[]{return (logic->IsChild && logic->CanUse(RG_BOTTLE_WITH_FISH));}}),
-        Entrance(RR_ICE_CAVERN_ENTRYWAY,       {[]{return logic->IsAdult;}}),
-        Entrance(RR_ZF_GREAT_FAIRY_FOUNTAIN,   {[]{return logic->HasExplosives();}}),
+        Entrance(RR_ZD_BEHIND_KING_ZORA,       []{return true;}),
+        Entrance(RR_JABU_JABUS_BELLY_ENTRYWAY, []{return (logic->IsChild && logic->CanUse(RG_BOTTLE_WITH_FISH));}),
+        Entrance(RR_ICE_CAVERN_ENTRYWAY,       []{return logic->IsAdult;}),
+        Entrance(RR_ZF_GREAT_FAIRY_FOUNTAIN,   []{return logic->HasExplosives();}),
     });
 
     areaTable[RR_ZF_GREAT_FAIRY_FOUNTAIN] = Region("ZF Great Fairy Fountain", "ZF Great Fairy Fountain", {}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -55,6 +55,6 @@ void RegionTable_Init_ZorasFountain() {
         LOCATION(RC_ZF_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY)),
     }, {
         //Exits
-        Entrance(RR_ZORAS_FOUNTAIN, {[]{return true;}}),
+        Entrance(RR_ZORAS_FOUNTAIN, []{return true;}),
     });
 }
