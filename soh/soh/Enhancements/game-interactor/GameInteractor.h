@@ -486,8 +486,6 @@ typedef enum {
     VB_TRADE_TIMER_ODD_MUSHROOM,
     VB_TRADE_TIMER_FROG,
     VB_TRADE_TIMER_EYEDROPS,
-    // Opt: *EnNiwLady
-    VB_ANJU_SET_OBTAINED_TRADE_ITEM,
 
     /*** Fixes ***/
     // Vanilla condition: false
