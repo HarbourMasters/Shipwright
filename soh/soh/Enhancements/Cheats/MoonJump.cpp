@@ -7,17 +7,20 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-#define CVAR_NAME "gCheats.MoonJumpOnL"
-#define CVAR CVarGetInteger(CVAR_NAME, 0)
+#define CVAR_MOON_JUMP_NAME "gCheats.MoonJumpOnL"
+#define CVAR_MOON_JUMP_DEFAULT 0
+#define CVAR_MOON_JUMP_VALUE CVarGetInteger(CVAR_MOON_JUMP_NAME, CVAR_MOON_JUMP_DEFAULT)
 
-void RegisterMoonJump() {
-    COND_ID_HOOK(OnActorUpdate, ACTOR_PLAYER, CVAR, [](void* actorRef) {
-        Player* player = GET_PLAYER(gPlayState);
+void OnPlayerUpdateMoonJump() {
+    Player* player = GET_PLAYER(gPlayState);
 
-        if (player != nullptr && CHECK_BTN_ANY(gPlayState->state.input[0].cur.button, BTN_L)) {
-            player->actor.velocity.y = 6.34375f;
-        }
-    });
+    if (player != nullptr && CHECK_BTN_ANY(gPlayState->state.input[0].cur.button, BTN_L)) {
+        player->actor.velocity.y = 6.34375f;
+    }
 }
 
-static RegisterShipInitFunc initFunc(RegisterMoonJump, { CVAR_NAME });
+void RegisterMoonJump() {
+    COND_HOOK(OnPlayerUpdate, CVAR_MOON_JUMP_VALUE, OnPlayerUpdateMoonJump);
+}
+
+static RegisterShipInitFunc initFunc(RegisterMoonJump, { CVAR_MOON_JUMP_NAME });
