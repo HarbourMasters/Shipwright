@@ -1448,6 +1448,7 @@ void DrawSillyTab() {
     if (UIWidgets::EnhancementCheckbox("Let It Snow", CVAR_GENERAL("LetItSnow"))) {
        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
+    UIWidgets::Tooltip("Makes snow fall, changes chest texture colors to red and green, etc, for December holidays.\nWill reset on restart outside of December 23-25.");
     if (UIWidgets::EnhancementSliderFloat("Link Body Scale: %.3fx", "##Link_BodyScale", CVAR_COSMETIC("Link.BodyScale.Value"), 0.001f, 0.025f, "", 0.01f, true)) {
         CVarSetInteger(CVAR_COSMETIC("Link.BodyScale.Changed"), 1);
     }
