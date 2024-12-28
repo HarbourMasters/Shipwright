@@ -52,8 +52,8 @@ void EnPubox_Init(Actor* thisx, PlayState* play) {
     thisx->uncullZoneDownward = 1200.0f;
     thisx->uncullZoneScale = 720.0f;
     ActorShape_Init(&thisx->shape, 0.0f, ActorShadow_DrawCircle, 6.0f);
-    this->dyna.unk_160 = 0;
-    this->dyna.unk_15C = DPM_UNK;
+    this->dyna.interactFlags = 0;
+    this->dyna.transformFlags = DPM_UNK;
     thisx->targetMode = 1;
     thisx->gravity = -2.0f;
     CollisionHeader_GetVirtual(&gBlockMediumCol, &colHeader);

@@ -48,6 +48,8 @@ bool showMajorScrubs;
 bool showMerchants;
 bool showBeehives;
 bool showCows;
+bool showOverworldFreestanding;
+bool showDungeonFreestanding;
 bool showAdultTrade;
 bool showKokiriSword;
 bool showMasterSword;
@@ -259,6 +261,33 @@ void RecalculateAreaTotals(RandomizerCheckArea rcArea) {
     CalculateTotals();
 }
 
+std::map<RandomizerGet, RandomizerCheckArea> MapRGtoRandomizerCheckArea = {
+    { RG_DEKU_TREE_MAP, RCAREA_DEKU_TREE},
+    { RG_DODONGOS_CAVERN_MAP, RCAREA_DODONGOS_CAVERN },
+    { RG_JABU_JABUS_BELLY_MAP, RCAREA_JABU_JABUS_BELLY },
+    { RG_FOREST_TEMPLE_MAP, RCAREA_FOREST_TEMPLE },
+    { RG_FIRE_TEMPLE_MAP, RCAREA_FIRE_TEMPLE },
+    { RG_WATER_TEMPLE_MAP, RCAREA_WATER_TEMPLE },
+    { RG_SPIRIT_TEMPLE_MAP, RCAREA_SPIRIT_TEMPLE },
+    { RG_SHADOW_TEMPLE_MAP, RCAREA_SHADOW_TEMPLE },
+    { RG_BOTTOM_OF_THE_WELL_MAP, RCAREA_BOTTOM_OF_THE_WELL },
+    { RG_ICE_CAVERN_MAP, RCAREA_ICE_CAVERN }
+};
+
+void SpoilAreaFromCheck(RandomizerCheck rc) {
+    Rando::Location* loc = Rando::StaticData::GetLocation(rc);
+    Rando::ItemLocation* itemLoc = Rando::Context::GetInstance()->GetItemLocation(rc);
+    if (itemLoc->GetPlacedItem().GetItemType() == ItemType::ITEMTYPE_MAP) {
+        RandomizerCheckArea area = MapRGtoRandomizerCheckArea[itemLoc->GetPlacedRandomizerGet()];
+        if (!IsAreaSpoiled(area)) {
+            SetAreaSpoiled(area);
+        }
+    }
+    if (!IsAreaSpoiled(loc->GetArea())) {
+        SetAreaSpoiled(loc->GetArea());
+    }
+}
+
 void RecalculateAllAreaTotals() {
     for (auto& [rcArea, checks] : checksByArea) {
         if (rcArea == RCAREA_INVALID) {
@@ -437,7 +466,8 @@ void CheckTrackerLoadGame(int32_t fileNum) {
             }
         }
 
-        if (areaChecksGotten[entry2->GetArea()] != 0 || RandomizerCheckObjects::AreaIsOverworld(entry2->GetArea())) {
+        if (areaChecksGotten[entry2->GetArea()] != 0 || RandomizerCheckObjects::AreaIsOverworld(entry2->GetArea()) ||
+            loc->GetCheckStatus() == RCSHOW_SCUMMED) {
             areasSpoiled |= (1 << entry2->GetArea());
         }
 
@@ -1223,6 +1253,30 @@ void LoadSettings() {
     fishsanityMode = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY);
     fishsanityPondCount = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY_POND_COUNT);
     fishsanityAgeSplit = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY_AGE_SPLIT);
+
+    if (IS_RANDO) {
+        switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_FREESTANDING)) {
+            case RO_FREESTANDING_ALL:
+                showOverworldFreestanding = true;
+                showDungeonFreestanding = true;
+                break;
+            case RO_FREESTANDING_OVERWORLD:
+                showOverworldFreestanding = true;
+                showDungeonFreestanding = false;
+                break;
+            case RO_FREESTANDING_DUNGEONS:
+                showOverworldFreestanding = false;
+                showDungeonFreestanding = true;
+                break;
+            default:
+                showOverworldFreestanding = false;
+                showDungeonFreestanding = false;
+                break;
+        }
+    } else { // Vanilla
+        showOverworldFreestanding = false;
+        showDungeonFreestanding = true;
+    }
 }
 
 bool IsCheckShuffled(RandomizerCheck rc) {
@@ -1264,6 +1318,10 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                 (showDungeonPots && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))) &&
             (loc->GetRCType() != RCTYPE_COW || showCows) &&
             (loc->GetRCType() != RCTYPE_FISH || OTRGlobals::Instance->gRandoContext->GetFishsanity()->GetFishLocationIncluded(loc)) &&
+            (loc->GetRCType() != RCTYPE_FREESTANDING ||
+                (showOverworldFreestanding && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea())) ||
+                (showDungeonFreestanding && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))
+                ) &&
             (loc->GetRCType() != RCTYPE_ADULT_TRADE ||
                 showAdultTrade ||
                 rc == RC_KAK_ANJU_AS_ADULT ||  // adult trade checks that are always shuffled

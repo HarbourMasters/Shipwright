@@ -53,9 +53,9 @@ const std::string& Rando::Location::GetShortName() const {
 
 bool Rando::Location::IsDungeon() const {
     return (checkType != RCTYPE_SKULL_TOKEN &&
-            (scene < SCENE_THIEVES_HIDEOUT || scene == SCENE_INSIDE_GANONS_CASTLE ||
-             (scene > SCENE_TREASURE_BOX_SHOP && scene < SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR))) ||
-           (checkType == RCTYPE_SKULL_TOKEN && scene < SCENE_GANONS_TOWER);
+            (scene <= SCENE_GERUDO_TRAINING_GROUND || scene == SCENE_INSIDE_GANONS_CASTLE ||
+             (scene >= SCENE_DEKU_TREE_BOSS && scene <= SCENE_GANONDORF_BOSS))) ||
+           (checkType == RCTYPE_SKULL_TOKEN && scene <= SCENE_ICE_CAVERN);
 }
 
 bool Rando::Location::IsOverworld() const {

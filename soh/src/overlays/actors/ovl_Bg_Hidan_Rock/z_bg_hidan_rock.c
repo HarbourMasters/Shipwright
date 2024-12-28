@@ -212,7 +212,7 @@ void func_8088B5F4(BgHidanRock* this, PlayState* play) {
 }
 
 void func_8088B634(BgHidanRock* this, PlayState* play) {
-    if (func_8004356C(&this->dyna)) {
+    if (DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
         this->timer = 20;
         this->dyna.actor.world.rot.y = Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) + 0x4000;
         this->actionFunc = func_8088B69C;
@@ -263,12 +263,12 @@ void func_8088B79C(BgHidanRock* this, PlayState* play) {
     this->unk_16C = CLAMP_MIN(this->unk_16C, 0.0f);
 
     if (this->type == 0) {
-        if (func_8004356C(&this->dyna)) {
+        if (DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
             if (this->unk_169 == 0) {
                 this->unk_169 = 3;
             }
             Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_FIRE_PLATFORM);
-        } else if (!func_8004356C(&this->dyna)) {
+        } else if (!DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
             if (this->unk_169 != 0) {
                 Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_DUNGEON0);
             }
@@ -316,12 +316,12 @@ void func_8088B990(BgHidanRock* this, PlayState* play) {
 
     this->unk_16C = (this->dyna.actor.world.pos.y + 50.0f - this->dyna.actor.home.pos.y + 40.0f) / 80.0f;
     if (this->type == 0) {
-        if (func_8004356C(&this->dyna)) {
+        if (DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
             if (this->unk_169 == 0) {
                 this->unk_169 = 3;
             }
             Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_FIRE_PLATFORM);
-        } else if (!func_8004356C(&this->dyna)) {
+        } else if (!DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
             if (this->unk_169 != 0) {
                 Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_DUNGEON0);
             }

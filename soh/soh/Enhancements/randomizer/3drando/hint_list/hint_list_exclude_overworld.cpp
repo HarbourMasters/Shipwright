@@ -1542,5 +1542,65 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
     hintTextTable[RHT_POT_HYRULE_CASTLE] = HintText(CustomMessage("They say that a #pot in Hyrule Castle# contains #[[1]]#.",
                                                        /*german*/ "",
                                                        /*french*/ "", {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_KOKIRI_FOREST_RUPEE] = HintText(CustomMessage("They say that a rupee in a #tranquil forest# hides #[[1]]#.",
+                                                         /*german*/ "",
+                                                         /*french*/ "", {QM_RED, QM_GREEN}));
+                                                      // /*spanish*/
+    hintTextTable[RHT_KOKIRI_FOREST_HEART] = HintText(CustomMessage("They say that a heart in a #tranquil forest# hides #[[1]]#.",
+                                                         /*german*/ "",
+                                                         /*french*/ "", {QM_RED, QM_GREEN}));
+                                                      // /*spanish*/
+    hintTextTable[RHT_SARIAS_HOUSE_HEART] = HintText(CustomMessage("They say that a heart in a #dear friend's home# hides #[[1]]#.",
+                                                        /*german*/ "",
+                                                        /*french*/ "", {QM_RED, QM_GREEN}));
+                                                     // /*spanish*/
+    hintTextTable[RHT_LOST_WOODS_RUPEE] = HintText(CustomMessage("They say that under a #boulder in the woods# lies #[[1]]#.",
+                                                      /*german*/ "",
+                                                      /*french*/ "", {QM_RED, QM_GREEN}));
+                                                   // /*spanish*/
+    hintTextTable[RHT_LOST_WOODS_SHORTCUT_RUPEE] = HintText(CustomMessage("They say that in a #pool of water in the woods# lies #[[1]]#.",
+                                                               /*german*/ "",
+                                                               /*french*/ "", {QM_RED, QM_GREEN}));
+                                                            // /*spanish*/
+    hintTextTable[RHT_LAKE_HYLIA_RUPEE] = HintText(CustomMessage("They say that just off the #coast of a lake# lies #[[1]]#.",
+                                                      /*german*/ "",
+                                                      /*french*/ "", {QM_RED, QM_GREEN}));
+                                                   // /*spanish*/
+    hintTextTable[RHT_LABORATORY_RUPEE] = HintText(CustomMessage("They say that at the #bottom of a tank# lies #[[1]]#.",
+                                                      /*german*/ "",
+                                                      /*french*/ "", {QM_RED, QM_GREEN}));
+                                                   // /*spanish*/
+    hintTextTable[RHT_DAMPES_GRAVE_RUPEE] = HintText(CustomMessage("They say that within a #quick-footed spirit's grave# lies #[[1]]#.",
+                                                        /*german*/ "",
+                                                        /*french*/ "", {QM_RED, QM_GREEN}));
+                                                     // /*spanish*/
+    hintTextTable[RHT_GERUDO_VALLEY_GROTTO_RUPEE] = HintText(CustomMessage("They say that an Octarok in an #underground spring# guards #[[1]]#.",
+                                                                /*german*/ "",
+                                                                /*french*/ "", {QM_RED, QM_GREEN}));
+                                                             // /*spanish*/
+    hintTextTable[RHT_DEATH_MOUNTAIN_TRAIL_RUPEE] = HintText(CustomMessage("They say that beneath a boulder on a #mountain's cliffside# lies #[[1]]#.",
+                                                                /*german*/ "",
+                                                                /*french*/ "", {QM_RED, QM_GREEN}));
+                                                             // /*spanish*/
+    hintTextTable[RHT_DEATH_MOUNTAIN_TRAIL_GROTTO_HEART] = HintText(CustomMessage("They say that accompanying a #cow in a small cave# is #[[1]]#.",
+                                                                       /*german*/ "",
+                                                                       /*french*/ "", {QM_RED, QM_GREEN}));
+                                                                    // /*spanish*/
+    hintTextTable[RHT_DEATH_MOUNTAIN_TRAIL_GROTTO_RUPEE] = HintText(CustomMessage("They say that accompanying a #cow in a small cave# is #[[1]]#.",
+                                                                       /*german*/ "",
+                                                                       /*french*/ "", {QM_RED, QM_GREEN}));
+                                                                    // /*spanish*/
+    hintTextTable[RHT_DEATH_MOUNTAIN_CRATER_RUPEE] = HintText(CustomMessage("They say that on a #small platform suspended above lava# lies #[[1]]#.",
+                                                                 /*german*/ "",
+                                                                 /*french*/ "", {QM_RED, QM_GREEN}));
+                                                              // /*spanish*/
+    hintTextTable[RHT_ZORAS_RIVER_WATERFALL_RUPEE] = HintText(CustomMessage("They say that beneath a #waterfall feeding a narrow river# lies #[[1]]#.",
+                                                                 /*german*/ "",
+                                                                 /*french*/ "", {QM_RED, QM_GREEN}));
+                                                              // /*spanish*/
+    hintTextTable[RHT_ZORAS_FOUNTAIN_RUPEE] = HintText(CustomMessage("They say that at the bottom of a #partially-frozen spring# lies #[[1]]#.",
+                                                          /*german*/ "",
+                                                          /*french*/ "", {QM_RED, QM_GREEN}));
+                                                       // /*spanish*/
 }
 }
