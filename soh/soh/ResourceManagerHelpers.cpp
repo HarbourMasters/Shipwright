@@ -529,8 +529,7 @@ std::string GetSceneRootPath(int16_t sceneNum, bool alt = true) {
         size_t pos = path.find("/shared/", 0);
         if (IS_MASTER_QUEST || (IS_RANDO && OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(sceneNum)->IsMQ())) {
             path.replace(pos, 8, "/mq/");
-        }
-        else {
+        } else {
             path.replace(pos, 8, "/nonmq/");
         }
     }
@@ -780,5 +779,6 @@ extern "C" void ResourceMgr_RegisterHooks() {
     });
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](uint32_t sceneNum) {
         ResourceMgr_SceneInitSkybox();
+        ResourceMgr_UnloadSceneAssets();
     });
 }

@@ -471,20 +471,19 @@ void GameState_Destroy(GameState* gameState) {
     // Performing clear skeletons before unload resources fixes an actor heap corruption crash due to the skeleton patching system.
     PlayState* play = (PlayState*)gameState;
     static s16 sceneNum = -1;
-    if (play->sceneNum != sceneNum) {
 
-        // Performing clear skeletons before unload resources fixes an actor heap corruption crash due to the skeleton patching system.
-        ResourceMgr_ClearSkeletons();
+    // Performing clear skeletons before unload resources fixes an actor heap corruption crash due to the skeleton patching system.
+    ResourceMgr_ClearSkeletons();
+    if (play->sceneNum != sceneNum) {
 
         if (play->sceneNum >= SCENE_DEKU_TREE && play->sceneNum <= SCENE_TESTROOM) {
             ResourceMgr_RegisterUnloadSceneAssets(play->sceneNum);
         }
         ResourceUnloadDirectory("alt/textures/vs*");
-
-        if (ResourceMgr_IsAltAssetsEnabled()) {
-            gfx_texture_cache_clear();
-        }
         sceneNum = play->sceneNum;
+    }
+    if (ResourceMgr_IsAltAssetsEnabled()) {
+        gfx_texture_cache_clear();
     }
 }
 

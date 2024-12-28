@@ -77,8 +77,6 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
     Object_InitBank(play, &play->objectCtx);
     LightContext_Init(play, &play->lightCtx);
     TransitionActor_InitContext(&play->state, &play->transiActorCtx);
-    //ResourceMgr_LoadAllSceneResources(play->sceneNum, false);
-    ResourceMgr_UnloadSceneAssets();
 
     func_80096FD4(play, &play->roomCtx.curRoom);
     YREG(15) = 0;

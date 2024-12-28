@@ -1443,7 +1443,6 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     bool curAltAssets = CVarGetInteger(CVAR_ENHANCEMENT("AltAssets"), 0);
     if (prevAltAssets != curAltAssets) {
         prevAltAssets = curAltAssets;
-        CVarSetInteger(CVAR_ENHANCEMENT("AltAssets"), prevAltAssets);
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         Ship::Context::GetInstance()->GetResourceManager()->SetAltAssetsEnabled(curAltAssets);
         gfx_texture_cache_clear();
