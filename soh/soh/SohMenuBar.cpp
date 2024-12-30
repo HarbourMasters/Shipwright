@@ -14,6 +14,8 @@
 #include "z64.h"
 #include "cvar_prefixes.h"
 #include "macros.h"
+#include "functions.h"
+#include "variables.h"
 #include "Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/presets.h"
 #include "soh/Enhancements/mods.h"
@@ -1527,11 +1529,18 @@ void DrawEnhancementsMenu() {
                 UpdatePatchHand();
             }
             UIWidgets::Tooltip("Fixes Adult Link having a backwards left hand when holding the Megaton Hammer.");
-            UIWidgets::PaddedEnhancementCheckbox(
+            if (UIWidgets::PaddedEnhancementCheckbox(
                 "Fix Broken Giant's Knife bug", CVAR_ENHANCEMENT("FixBrokenGiantsKnife"), true, false, IS_RANDO,
                 "This setting is forcefully enabled when you are playing a randomizer.",
-                UIWidgets::CheckboxGraphics::Checkmark
-            );
+                UIWidgets::CheckboxGraphics::Checkmark)) {
+                bool hasGiantsKnife = CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BIGGORON);
+                bool hasBrokenKnife = CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BROKENGIANTKNIFE);
+                bool knifeIsBroken = gSaveContext.swordHealth == 0.0f;
+
+                if (hasGiantsKnife && (hasBrokenKnife != knifeIsBroken)) {
+                    func_800849EC(gPlayState);
+                }
+            }
             UIWidgets::Tooltip("Fixes the Broken Giant's Knife flag not being reset when Medigoron fixes it");
 
             ImGui::EndMenu();
