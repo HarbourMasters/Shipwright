@@ -226,7 +226,7 @@ void EnHeishi3_Update(Actor* thisx, PlayState* play) {
     }
     this->actionFunc(this, play);
     this->actor.shape.rot = this->actor.world.rot;
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 20.0f, 50.0f, 0x1C);
     Collider_UpdateCylinder(&this->actor, &this->collider);
     CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);

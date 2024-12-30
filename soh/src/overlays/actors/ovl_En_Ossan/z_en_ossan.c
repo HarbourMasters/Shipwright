@@ -2290,7 +2290,7 @@ void EnOssan_MainActionFunc(EnOssan* this, PlayState* play) {
         sStateFunc[this->stateFlag](this, play, player);
     }
 
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 26.0f, 10.0f, 0.0f, 5);
     Actor_SetFocus(&this->actor, 90.0f);
     Actor_SetScale(&this->actor, sShopkeeperScale[this->actor.params]);

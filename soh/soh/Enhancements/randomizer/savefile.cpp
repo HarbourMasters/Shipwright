@@ -184,8 +184,8 @@ void SetStartingItems() {
         gSaveContext.sohStats.dungeonKeys[SCENE_SHADOW_TEMPLE] = SHADOW_TEMPLE_SMALL_KEY_MAX;         // Shadow
         gSaveContext.inventory.dungeonKeys[SCENE_BOTTOM_OF_THE_WELL] = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX; // BotW
         gSaveContext.sohStats.dungeonKeys[SCENE_BOTTOM_OF_THE_WELL] = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;  // BotW
-        gSaveContext.inventory.dungeonKeys[SCENE_GERUDO_TRAINING_GROUND] = GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX;  // GTG
-        gSaveContext.sohStats.dungeonKeys[SCENE_GERUDO_TRAINING_GROUND] = GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX;   // GTG
+        gSaveContext.inventory.dungeonKeys[SCENE_GERUDO_TRAINING_GROUND] = GERUDO_TRAINING_GROUND_SMALL_KEY_MAX;  // GTG
+        gSaveContext.sohStats.dungeonKeys[SCENE_GERUDO_TRAINING_GROUND] = GERUDO_TRAINING_GROUND_SMALL_KEY_MAX;   // GTG
         gSaveContext.inventory.dungeonKeys[SCENE_INSIDE_GANONS_CASTLE] = GANONS_CASTLE_SMALL_KEY_MAX;      // Ganon
         gSaveContext.sohStats.dungeonKeys[SCENE_INSIDE_GANONS_CASTLE] = GANONS_CASTLE_SMALL_KEY_MAX;       // Ganon
     } else if (Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_VANILLA) {
@@ -433,10 +433,10 @@ extern "C" void Randomizer_InitSaveFile() {
     // Now handled on the fly
     // int openForest = Randomizer_GetSettingValue(RSK_FOREST);
     // switch (openForest) {
-    //     case RO_FOREST_OPEN:
+    //     case RO_CLOSED_FOREST_OFF:
     //         Flags_SetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD);
     //         // Fallthrough
-    //     case RO_FOREST_CLOSED_DEKU:
+    //     case RO_CLOSED_FOREST_DEKU_ONLY:
     //         Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD);
     //         break;
     // }
@@ -452,8 +452,8 @@ extern "C" void Randomizer_InitSaveFile() {
         Flags_SetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD);
     }
 
-    if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_FAST ||
-        Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_OPEN) {
+    if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_CARPENTERS_FAST ||
+        Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_CARPENTERS_FREE) {
         Flags_SetEventChkInf(EVENTCHKINF_CARPENTERS_FREE(1));
         Flags_SetEventChkInf(EVENTCHKINF_CARPENTERS_FREE(2));
         Flags_SetEventChkInf(EVENTCHKINF_CARPENTERS_FREE(3));
@@ -471,7 +471,7 @@ extern "C" void Randomizer_InitSaveFile() {
         gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].collect |= (1 << 0x0F);
     }
 
-    if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_OPEN) {
+    if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_CARPENTERS_FREE) {
         Flags_SetEventChkInf(EVENTCHKINF_CARPENTERS_FREE(0));
         gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x01); // heard yell and unlocked door
         gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x05);

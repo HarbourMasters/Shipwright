@@ -516,7 +516,7 @@ void EnGe2_MaintainColliderAndSetAnimState(EnGe2* this, PlayState* play) {
 }
 
 void EnGe2_MoveAndBlink(EnGe2* this, PlayState* play) {
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 
     if (DECR(this->blinkTimer) == 0) {
         this->blinkTimer = Rand_S16Offset(60, 60);

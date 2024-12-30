@@ -2,12 +2,14 @@
 
 namespace Rando {
 void Settings::CreateOptionDescriptions() {
-    mOptionDescriptions[RSK_FOREST] = "Closed - Kokiri Sword & Deku Shield are required to access "
-                                      "the Deku Tree, and completing the Deku Tree is required to "
-                                      "access the Hyrule Field exit.\n"
+    mOptionDescriptions[RSK_FOREST] = "Determines if Kokiri forest can be left for the Lost Woods bridge or the Deku Tree.\n"
                                       "\n"
-                                      "Closed Deku - Kokiri boy no longer blocks the path to Hyrule "
-                                      "Field but Mido still requires the Kokiri Sword and Deku Shield "
+                                      "Closed - Kokiri Sword & Deku Shield are required to access "
+                                      "the Deku Tree, and completing the Deku Tree is required to "
+                                      "access the Lost Woods Bridge Exit.\n"
+                                      "\n"
+                                      "Closed Deku - Kokiri boy no longer blocks the path to the Bridge "
+                                      "but Mido still requires the Kokiri Sword and Deku Shield "
                                       "to access the tree.\n"
                                       "\n"
                                       "Open - Mido no longer blocks the path to the Deku Tree. Kokiri "
@@ -43,14 +45,15 @@ void Settings::CreateOptionDescriptions() {
         "Choose which age Link will start as.\n\n"
         "Starting as adult means you start with the Master Sword in your inventory.\n"
         "The child option is forcefully set if it would conflict with other options.";
-    mOptionDescriptions[RSK_GERUDO_FORTRESS] = "Sets the amount of carpenters required to repair the bridge "
-                                               "in Gerudo Valley.\n"
+    mOptionDescriptions[RSK_GERUDO_FORTRESS] = "Sets the state of the carpenters captured by Gerudo "
+                                               "in Gerudo Fortress, and with it the number of guards that spawn.\n"
                                                "\n"
                                                "Normal - All 4 carpenters are required to be saved.\n"
                                                "\n"
                                                "Fast - Only the bottom left carpenter requires rescuing.\n"
                                                "\n"
-                                               "Open - The bridge is repaired from the start.\n"
+                                               "Free - The bridge is repaired from the start, and Nabooru cannot spawn.\n"
+                                               "If the Gerudo Membership Card isn't shuffled, you start with it.\n"
                                                "\n"
                                                "Only \"Normal\" is compatible with Gerudo Fortress Key Rings.";
     mOptionDescriptions[RSK_RAINBOW_BRIDGE] =
@@ -255,6 +258,18 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "The Gerudo Card is required to enter the Gerudo Training Ground, opening "
         "the gate to Haunted Wasteland and the Horseback Archery minigame.";
+    mOptionDescriptions[RSK_SHUFFLE_POTS] = "Pots will drop a randomized item the first time they're broken and collected. This does not include the flying pots."
+                                              " Pots will have a different appearance when they hold a randomized item.\n"
+                                              "With this option enabled, Ganon's boss key door is moved further up the stairs to\n"
+                                              "allow access to the pots before obtaining Ganon's Boss Key.\n"
+                                              "\n"
+                                              "Off - Pots will not be shuffled.\n"
+                                              "\n"
+                                              "Dungeons - Only shuffle pots that are within dungeons.\n"
+                                              "\n"
+                                              "Overworld - Only shuffle pots that are outside of dungeons.\n"
+                                              "\n"
+                                              "All pots - Shuffle all pots.";
     mOptionDescriptions[RSK_SHUFFLE_FISHING_POLE] = "Shuffles the fishing pole into the item pool.\n"
         "\n"
         "The fishing pole is required to play the fishing pond minigame.";
@@ -366,7 +381,7 @@ void Settings::CreateOptionDescriptions() {
         "This setting governs if the Bean Salesman, Medigoron, Granny and the Carpet Salesman "
         "sell a random item.\n"
         "Beans Only - Only the Bean Salesman will have a check, and a pack of Magic Beans will be added "
-        "to the item pool."
+        "to the item pool.\n"
         "All But Beans - Medigoron, Granny and the Carpet Salesman will have checks, "
         "A Giant's Knife and a pack of Bombchus will be added to the item pool, and "
         "one of the bottles will contain a Blue Potion.\n\n"
@@ -421,6 +436,16 @@ void Settings::CreateOptionDescriptions() {
         "have collected all 100 Gold Skulltula Tokens.\n"
         "\n"
         "You can still talk to him multiple times to get Huge Rupees.";
+    mOptionDescriptions[RSK_SHUFFLE_FREESTANDING] = "Freestanding rupees & hearts are shuffles to random items. "
+                                              "Freestanding heart pieces and small keys are already shuffled by default.\n"
+                                              "\n"
+                                              "Off - freestanding rupees & hearts will not be shuffled.\n"
+                                              "\n"
+                                              "Dungeons - Only freestanding rupees & hearts that are within dungeons.\n"
+                                              "\n"
+                                              "Overworld - Only freestanding rupees & hearts that are outside of dungeons.\n"
+                                              "\n"
+                                              "All Items - Shuffle all freestanding rupees & hearts.";
     mOptionDescriptions[RSK_SHUFFLE_DUNGEON_REWARDS] =
         "Shuffles the location of Spiritual Stones and medallions.\n"
         "\n"

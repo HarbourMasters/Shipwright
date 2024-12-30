@@ -493,7 +493,7 @@ void func_80B24038(EnTr* this, PlayState* play, s32 actionIndex) {
     Math_StepToF(&this->actor.velocity.x, endPos.x, 1.0f);
     Math_StepToF(&this->actor.velocity.y, endPos.y, 1.0f);
     Math_StepToF(&this->actor.velocity.z, endPos.z, 1.0f);
-    func_8002D7EC(&this->actor);
+    Actor_UpdatePos(&this->actor);
 }
 
 void EnTr_UpdateRotation(EnTr* this, PlayState* play, s32 actionIndex) {

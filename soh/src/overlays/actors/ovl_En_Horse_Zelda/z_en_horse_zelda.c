@@ -233,7 +233,7 @@ void EnHorseZelda_Update(Actor* thisx, PlayState* play) {
 
     sActionFuncs[this->action](this, play);
     this->actor.speedXZ = 0.0f;
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 55.0f, 100.0f, 0x1D);
     this->actor.focus.pos = this->actor.world.pos;
     this->actor.focus.pos.y += 70.0f;

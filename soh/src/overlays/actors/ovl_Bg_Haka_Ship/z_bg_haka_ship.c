@@ -179,7 +179,7 @@ void BgHakaShip_CrashFall(BgHakaShip* this, PlayState* play) {
         }
     } else {
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BLOCKSINK - SFX_FLAG);
-        if ((this->dyna.actor.home.pos.y - this->dyna.actor.world.pos.y > 500.0f) && func_8004356C(&this->dyna)) {
+        if ((this->dyna.actor.home.pos.y - this->dyna.actor.world.pos.y > 500.0f) && DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
             Play_TriggerVoidOut(play);
         }
     }
@@ -190,7 +190,7 @@ void BgHakaShip_Update(Actor* thisx, PlayState* play) {
 
     this->actionFunc(this, play);
     if (this->dyna.actor.params == 0) {
-        Actor_MoveForward(&this->dyna.actor);
+        Actor_MoveXZGravity(&this->dyna.actor);
     }
 }
 

@@ -621,7 +621,7 @@ void EnPoField_SoulIdle(EnPoField* this, PlayState* play) {
     } else if (this->actionTimer == 0) {
         EnPoField_SetupWaitForSpawn(this, play);
     }
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 10.0f, 10.0f, 10.0f, 4);
 }
 
@@ -867,7 +867,7 @@ void EnPoField_Update(Actor* thisx, PlayState* play) {
     EnPoField_UpdateFlame(this, play);
     if (this->actionFunc == EnPoField_Flee || this->actionFunc == EnPoField_Damage ||
         this->actionFunc == EnPoField_Appear) {
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
     }
     if (this->actionFunc != EnPoField_WaitForSpawn) {
         Actor_SetFocus(&this->actor, 42.0f);

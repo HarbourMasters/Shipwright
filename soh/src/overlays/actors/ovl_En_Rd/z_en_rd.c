@@ -824,7 +824,7 @@ void EnRd_Update(Actor* thisx, PlayState* play) {
 
         this->actionFunc(this, play);
         if (this->unk_31B != 8 && this->actor.speedXZ != 0.0f) {
-            Actor_MoveForward(&this->actor);
+            Actor_MoveXZGravity(&this->actor);
         }
 
         if ((this->actor.shape.rot.x == 0) && (this->unk_31B != 8) && (this->actor.speedXZ != 0.0f)) {

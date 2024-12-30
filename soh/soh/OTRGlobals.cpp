@@ -11,7 +11,7 @@
 #include <File.h>
 #include <DisplayList.h>
 #include <Window.h>
-#include <GameVersions.h>
+#include <soh/GameVersions.h>
 
 #include "Enhancements/gameconsole.h"
 #ifdef _WIN32
@@ -327,7 +327,7 @@ OTRGlobals::OTRGlobals() {
     prevAltAssets = CVarGetInteger(CVAR_ENHANCEMENT("AltAssets"), 0);
     context->GetResourceManager()->SetAltAssetsEnabled(prevAltAssets);
 
-    context->InitControlDeck({
+    auto controlDeck = std::make_shared<LUS::ControlDeck>(std::vector<CONTROLLERBUTTONS_T>({
         BTN_CUSTOM_MODIFIER1,
         BTN_CUSTOM_MODIFIER2,
         BTN_CUSTOM_OCARINA_NOTE_D4,
@@ -338,18 +338,20 @@ OTRGlobals::OTRGlobals() {
         BTN_CUSTOM_OCARINA_DISABLE_SONGS,
         BTN_CUSTOM_OCARINA_PITCH_UP,
         BTN_CUSTOM_OCARINA_PITCH_DOWN,
-    });
+    }));
+    context->InitControlDeck(controlDeck);
     context->GetControlDeck()->SetSinglePlayerMappingMode(true);
 
     context->InitCrashHandler();
     context->InitConsole();
 
     auto sohInputEditorWindow = std::make_shared<SohInputEditorWindow>(CVAR_WINDOW("ControllerConfiguration"), "Controller Configuration");
-    context->InitWindow({ sohInputEditorWindow });
+    auto sohFast3dWindow = std::make_shared<Fast::Fast3dWindow>(std::vector<std::shared_ptr<Ship::GuiWindow>>({sohInputEditorWindow}));
+    context->InitWindow(sohFast3dWindow);
 
     auto overlay = context->GetInstance()->GetWindow()->GetGui()->GetGameOverlay();
-    overlay->LoadFont("Press Start 2P", "fonts/PressStart2P-Regular.ttf", 12.0f);
-    overlay->LoadFont("Fipps", "fonts/Fipps-Regular.otf", 32.0f);
+    overlay->LoadFont("Press Start 2P", 12.0f, "fonts/PressStart2P-Regular.ttf");
+    overlay->LoadFont("Fipps", 32.0f, "fonts/Fipps-Regular.otf");
     overlay->SetCurrentFont(CVarGetString(CVAR_GAME_OVERLAY_FONT, "Press Start 2P"));
 
     context->InitAudio({ .SampleRate = 44100, .SampleLength = 1024, .DesiredBuffered = 2480 });
@@ -357,14 +359,14 @@ OTRGlobals::OTRGlobals() {
     SPDLOG_INFO("Starting Ship of Harkinian version {} (Branch: {} | Commit: {})", (char*)gBuildVersion, (char*)gGitBranch, (char*)gGitCommitHash);
 
     auto loader = context->GetResourceManager()->GetResourceLoader();
-    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryTextureV0>(), RESOURCE_FORMAT_BINARY, "Texture", static_cast<uint32_t>(LUS::ResourceType::Texture), 0);
-    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryTextureV1>(), RESOURCE_FORMAT_BINARY, "Texture", static_cast<uint32_t>(LUS::ResourceType::Texture), 1);
-    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryVertexV0>(), RESOURCE_FORMAT_BINARY, "Vertex", static_cast<uint32_t>(LUS::ResourceType::Vertex), 0);
-    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryXMLVertexV0>(), RESOURCE_FORMAT_XML, "Vertex", static_cast<uint32_t>(LUS::ResourceType::Vertex), 0);
-    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryDisplayListV0>(), RESOURCE_FORMAT_BINARY, "DisplayList", static_cast<uint32_t>(LUS::ResourceType::DisplayList), 0);
-    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryXMLDisplayListV0>(), RESOURCE_FORMAT_XML, "DisplayList", static_cast<uint32_t>(LUS::ResourceType::DisplayList), 0);
-    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryMatrixV0>(), RESOURCE_FORMAT_BINARY, "Matrix", static_cast<uint32_t>(LUS::ResourceType::Matrix), 0);
-    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryBlobV0>(), RESOURCE_FORMAT_BINARY, "Blob", static_cast<uint32_t>(LUS::ResourceType::Blob), 0);
+    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryBinaryTextureV0>(), RESOURCE_FORMAT_BINARY, "Texture", static_cast<uint32_t>(Fast::ResourceType::Texture), 0);
+    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryBinaryTextureV1>(), RESOURCE_FORMAT_BINARY, "Texture", static_cast<uint32_t>(Fast::ResourceType::Texture), 1);
+    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryBinaryVertexV0>(), RESOURCE_FORMAT_BINARY, "Vertex", static_cast<uint32_t>(Fast::ResourceType::Vertex), 0);
+    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryXMLVertexV0>(), RESOURCE_FORMAT_XML, "Vertex", static_cast<uint32_t>(Fast::ResourceType::Vertex), 0);
+    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryBinaryDisplayListV0>(), RESOURCE_FORMAT_BINARY, "DisplayList", static_cast<uint32_t>(Fast::ResourceType::DisplayList), 0);
+    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryXMLDisplayListV0>(), RESOURCE_FORMAT_XML, "DisplayList", static_cast<uint32_t>(Fast::ResourceType::DisplayList), 0);
+    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryBinaryMatrixV0>(), RESOURCE_FORMAT_BINARY, "Matrix", static_cast<uint32_t>(Fast::ResourceType::Matrix), 0);
+    loader->RegisterResourceFactory(std::make_shared<Ship::ResourceFactoryBinaryBlobV0>(), RESOURCE_FORMAT_BINARY, "Blob", static_cast<uint32_t>(Ship::ResourceType::Blob), 0);
     loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryArrayV0>(), RESOURCE_FORMAT_BINARY, "Array", static_cast<uint32_t>(SOH::ResourceType::SOH_Array), 0);
     loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryAnimationV0>(), RESOURCE_FORMAT_BINARY, "Animation", static_cast<uint32_t>(SOH::ResourceType::SOH_Animation), 0);
     loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryPlayerAnimationV0>(), RESOURCE_FORMAT_BINARY, "PlayerAnimation", static_cast<uint32_t>(SOH::ResourceType::SOH_PlayerAnimation), 0);
@@ -908,9 +910,9 @@ OTRVersion ReadPortVersionFromOTR(std::string otrPath) {
     OTRVersion version = {};
 
     // Use a temporary archive instance to load the otr and read the version file
-    auto archive = Ship::OtrArchive(otrPath);
-    if (archive.Open()) {
-        auto t = archive.LoadFile("portVersion", std::make_shared<Ship::ResourceInitData>());
+    auto archive = std::make_shared<Ship::OtrArchive>(otrPath);
+    if (archive->Open()) {
+        auto t = archive->LoadFile("portVersion", std::make_shared<Ship::ResourceInitData>());
         if (t != nullptr && t->IsLoaded) {
             auto stream = std::make_shared<Ship::MemoryStream>(t->Buffer->data(), t->Buffer->size());
             auto reader = std::make_shared<Ship::BinaryReader>(stream);
@@ -920,7 +922,7 @@ OTRVersion ReadPortVersionFromOTR(std::string otrPath) {
             version.minor = reader->ReadUInt16();
             version.patch = reader->ReadUInt16();
         }
-        archive.Close();
+        archive->Close();
     }
 
     return version;
@@ -1142,9 +1144,9 @@ extern "C" void InitOTR() {
     SaveManager::Instance = new SaveManager();
 
     std::shared_ptr<Ship::Config> conf = OTRGlobals::Instance->context->GetConfig();
-    conf->RegisterConfigVersionUpdater(std::make_shared<SOH::ConfigVersion1Updater>());
-    conf->RegisterConfigVersionUpdater(std::make_shared<SOH::ConfigVersion2Updater>());
-    conf->RegisterConfigVersionUpdater(std::make_shared<SOH::ConfigVersion3Updater>());
+    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion1Updater>());
+    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion2Updater>());
+    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion3Updater>());
     conf->RunVersionUpdates();
 
     SohGui::SetupGuiElements();
@@ -1946,6 +1948,7 @@ extern "C" CowIdentity Randomizer_IdentifyCow(s32 sceneNum, s32 posX, s32 posZ) 
 extern "C" FishIdentity Randomizer_IdentifyFish(s32 sceneNum, s32 actorParams) {
     return OTRGlobals::Instance->gRandomizer->IdentifyFish(sceneNum, actorParams);
 }
+
 extern "C" GetItemEntry ItemTable_Retrieve(int16_t getItemID) {
     GetItemEntry giEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, getItemID);
     return giEntry;
@@ -2445,7 +2448,7 @@ void SoH_ProcessDroppedFiles(std::string filePath) {
         gui->GetGuiWindow("Stats")->Hide();
         std::dynamic_pointer_cast<Ship::ConsoleWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->ClearBindings();
 
-        gui->SaveConsoleVariablesOnNextTick();
+        gui->SaveConsoleVariablesNextFrame();
 
         uint32_t finalHash = boost::hash_32<std::string>{}(configJson.dump());
         gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Configuration Loaded. Hash: %d", finalHash);

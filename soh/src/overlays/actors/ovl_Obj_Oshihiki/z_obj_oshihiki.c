@@ -51,7 +51,7 @@ static Color_RGB8 sColors[][4] = {
     { { 232, 210, 176 }, { 232, 210, 176 }, { 232, 210, 176 }, { 232, 210, 176 } }, // spirit temple
     { { 135, 125, 95 }, { 135, 125, 95 }, { 135, 125, 95 }, { 135, 125, 95 } },     // shadow temple
     { { 255, 255, 255 }, { 255, 255, 255 }, { 255, 255, 255 }, { 255, 255, 255 } }, // ganons castle
-    { { 232, 210, 176 }, { 232, 210, 176 }, { 232, 210, 176 }, { 232, 210, 176 } }, // gerudo training grounds
+    { { 232, 210, 176 }, { 232, 210, 176 }, { 232, 210, 176 }, { 232, 210, 176 } }, // Gerudo Training Ground
 };
 
 static s16 sScenes[] = {
@@ -500,7 +500,7 @@ void ObjOshihiki_OnActor(ObjOshihiki* this, PlayState* play) {
     DynaPolyActor* dynaPolyActor;
 
     this->stateFlags |= PUSHBLOCK_ON_ACTOR;
-    Actor_MoveForward(&this->dyna.actor);
+    Actor_MoveXZGravity(&this->dyna.actor);
 
     if (ObjOshihiki_CheckFloor(this, play)) {
         bgId = this->floorBgIds[this->highestFloor];
@@ -509,8 +509,8 @@ void ObjOshihiki_OnActor(ObjOshihiki* this, PlayState* play) {
         } else {
             dynaPolyActor = DynaPoly_GetActor(&play->colCtx, bgId);
             if (dynaPolyActor != NULL) {
-                func_800434A8(dynaPolyActor);
-                func_80043538(dynaPolyActor);
+                DynaPolyActor_SetActorOnTop(dynaPolyActor);
+                DynaPolyActor_SetSwitchPressed(dynaPolyActor);
 
                 if ((this->timer <= 0) && (fabsf(this->dyna.unk_150) > 0.001f)) {
                     if (ObjOshihiki_StrongEnough(this) && ObjOshihiki_NoSwitchPress(this, dynaPolyActor, play) &&
@@ -537,9 +537,9 @@ void ObjOshihiki_OnActor(ObjOshihiki* this, PlayState* play) {
         } else {
             dynaPolyActor = DynaPoly_GetActor(&play->colCtx, bgId);
 
-            if ((dynaPolyActor != NULL) && (dynaPolyActor->unk_15C & 1)) {
-                func_800434A8(dynaPolyActor);
-                func_80043538(dynaPolyActor);
+            if ((dynaPolyActor != NULL) && (dynaPolyActor->transformFlags & 1)) {
+                DynaPolyActor_SetActorOnTop(dynaPolyActor);
+                DynaPolyActor_SetSwitchPressed(dynaPolyActor);
                 this->dyna.actor.world.pos.y = this->dyna.actor.floorHeight;
             } else {
                 ObjOshihiki_SetupFall(this, play);
@@ -614,7 +614,7 @@ void ObjOshihiki_Fall(ObjOshihiki* this, PlayState* play) {
         this->dyna.unk_150 = 0.0f;
         player->stateFlags2 &= ~PLAYER_STATE2_MOVING_DYNAPOLY;
     }
-    Actor_MoveForward(&this->dyna.actor);
+    Actor_MoveXZGravity(&this->dyna.actor);
     if (ObjOshihiki_CheckGround(this, play)) {
         if (this->floorBgIds[this->highestFloor] == BGCHECK_SCENE) {
             ObjOshihiki_SetupOnScene(this, play);

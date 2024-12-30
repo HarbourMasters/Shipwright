@@ -88,7 +88,7 @@ void ArmsHook_Wait(ArmsHook* this, PlayState* play) {
         s32 length = ((player->heldItemAction == PLAYER_IA_HOOKSHOT) ? 13 : 26) * CVarGetFloat(CVAR_CHEAT("HookshotReachMultiplier"), 1.0f);
 
         ArmsHook_SetupAction(this, ArmsHook_Shoot);
-        func_8002D9A4(&this->actor, 20.0f);
+        Actor_SetProjectileSpeed(&this->actor, 20.0f);
         this->actor.parent = &GET_PLAYER(play)->actor;
         this->timer = length;
     }
@@ -250,7 +250,7 @@ void ArmsHook_Shoot(ArmsHook* this, PlayState* play) {
             }
         }
     } else {
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
         Math_Vec3f_Diff(&this->actor.world.pos, &this->actor.prevPos, &prevFrameDiff);
         Math_Vec3f_Sum(&this->unk_1E8, &prevFrameDiff, &this->unk_1E8);
         this->actor.shape.rot.x = Math_Atan2S(this->actor.speedXZ, -this->actor.velocity.y);

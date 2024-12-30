@@ -195,7 +195,7 @@ void EnDoor_Idle(EnDoor* this, PlayState* play) {
     s16 phi_v0;
 
     doorType = this->actor.params >> 7 & 7;
-    func_8002DBD0(&this->actor, &playerPosRelToDoor, &player->actor.world.pos);
+    Actor_WorldToActorCoords(&this->actor, &playerPosRelToDoor, &player->actor.world.pos);
     if (this->playerIsOpening != 0) {
         this->actionFunc = EnDoor_Open;
         Animation_PlayOnceSetSpeed(&this->skelAnime, D_809FCECC[this->animStyle],

@@ -194,7 +194,7 @@ std::vector<SplitObject> splitObjectList = {
     { SPLIT_TYPE_ENTRANCE,  SCENE_BOTTOM_OF_THE_WELL,             "Enter Bottom of the Well",         "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
     { SPLIT_TYPE_ENTRANCE,  SCENE_ICE_CAVERN,                     "Enter Ice Cavern",                 "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
     { SPLIT_TYPE_ENTRANCE,  SCENE_GANONS_TOWER,                   "Enter Ganons Tower",               "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
-    { SPLIT_TYPE_ENTRANCE,  SCENE_GERUDO_TRAINING_GROUND,         "Enter Gerudo Training Grounds",    "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
+    { SPLIT_TYPE_ENTRANCE,  SCENE_GERUDO_TRAINING_GROUND,         "Enter Gerudo Training Ground",    "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
     { SPLIT_TYPE_ENTRANCE,  SCENE_THIEVES_HIDEOUT,                "Enter Thieves Hideout",            "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
     { SPLIT_TYPE_ENTRANCE,  SCENE_INSIDE_GANONS_CASTLE,           "Enter Ganons Castle",              "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
     { SPLIT_TYPE_ENTRANCE,  SCENE_GANONS_TOWER_COLLAPSE_INTERIOR, "Enter Tower Collapse Interior",    "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
@@ -774,13 +774,13 @@ void TimeSplitsDrawOptionsMenu() {
         color.b = windowColor.z * 255.0;
         color.a = windowColor.w * 255.0;
         CVarSetColor("TimeSplits.WindowColor", color);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
     ImGui::SameLine();
     if (ImGui::Button("Reset")) {
         windowColor = { 0.0f, 0.0f, 0.0f, 1.0f };
         CVarSetColor("TimeSplits.WindowColor", {0, 0, 0, 1});
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
 
     if (UIWidgets::PaddedEnhancementSliderFloat("Window Size: %.1fx", "##windowSize",

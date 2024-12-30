@@ -228,11 +228,11 @@ void EnArrow_Shoot(EnArrow* this, PlayState* play) {
         Math_Vec3f_Copy(&this->unk_210, &this->actor.world.pos);
 
         if (this->actor.params >= ARROW_SEED) {
-            func_8002D9A4(&this->actor, 80.0f);
+            Actor_SetProjectileSpeed(&this->actor, 80.0f);
             this->timer = 15;
             this->actor.shape.rot.x = this->actor.shape.rot.y = this->actor.shape.rot.z = 0;
         } else {
-            func_8002D9A4(&this->actor, 150.0f);
+            Actor_SetProjectileSpeed(&this->actor, 150.0f);
             this->timer = 12;
         }
     }
@@ -370,7 +370,7 @@ void EnArrow_Fly(EnArrow* this, PlayState* play) {
         }
     } else {
         Math_Vec3f_Copy(&this->unk_210, &this->actor.world.pos);
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
 
         if ((this->touchedPoly =
                  BgCheck_ProjectileLineTest(&play->colCtx, &this->actor.prevPos, &this->actor.world.pos, &hitPoint,
@@ -422,7 +422,7 @@ void func_809B45E0(EnArrow* this, PlayState* play) {
 
 void func_809B4640(EnArrow* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 
     if (DECR(this->timer) == 0) {
         Actor_Kill(&this->actor);

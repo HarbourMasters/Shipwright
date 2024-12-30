@@ -52,8 +52,8 @@ void EnPubox_Init(Actor* thisx, PlayState* play) {
     thisx->uncullZoneDownward = 1200.0f;
     thisx->uncullZoneScale = 720.0f;
     ActorShape_Init(&thisx->shape, 0.0f, ActorShadow_DrawCircle, 6.0f);
-    this->dyna.unk_160 = 0;
-    this->dyna.unk_15C = DPM_UNK;
+    this->dyna.interactFlags = 0;
+    this->dyna.transformFlags = DPM_UNK;
     thisx->targetMode = 1;
     thisx->gravity = -2.0f;
     CollisionHeader_GetVirtual(&gBlockMediumCol, &colHeader);
@@ -79,7 +79,7 @@ void EnPubox_Update(Actor* thisx, PlayState* play) {
     }
     this->dyna.unk_154 = 0.0f;
     this->dyna.unk_150 = 0.0f;
-    Actor_MoveForward(thisx);
+    Actor_MoveXZGravity(thisx);
     Actor_UpdateBgCheckInfo(play, thisx, thisx->colChkInfo.cylHeight, thisx->colChkInfo.cylRadius,
                             thisx->colChkInfo.cylRadius, 0x1D);
     thisx->focus.pos = thisx->world.pos;

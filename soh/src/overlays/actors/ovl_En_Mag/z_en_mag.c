@@ -6,7 +6,7 @@
 
 #include "z_en_mag.h"
 #include "objects/object_mag/object_mag.h"
-#include <GameVersions.h>
+#include <soh/GameVersions.h>
 #include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)

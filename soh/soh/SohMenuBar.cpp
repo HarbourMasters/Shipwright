@@ -233,18 +233,18 @@ void DrawSettingsMenu() {
     if (ImGui::BeginMenu("Settings"))
     {
         if (ImGui::BeginMenu("Audio")) {
-            UIWidgets::PaddedEnhancementSliderFloat("Master Volume: %.1f %%", "##Master_Vol", CVAR_SETTING("Volume.Master"), 0.0f, 1.0f, "", 1.0f, true, true, false, true);
-            if (UIWidgets::PaddedEnhancementSliderFloat("Main Music Volume: %.1f %%", "##Main_Music_Vol", CVAR_SETTING("Volume.MainMusic"), 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
-                Audio_SetGameVolume(SEQ_PLAYER_BGM_MAIN, CVarGetFloat(CVAR_SETTING("Volume.MainMusic"), 1.0f));
+            UIWidgets::PaddedEnhancementSliderInt("Master Volume: %d %%", "##Master_Vol", CVAR_SETTING("Volume.Master"), 0, 100, "", 100, true, false, true);
+            if (UIWidgets::PaddedEnhancementSliderInt("Main Music Volume: %d %%", "##Main_Music_Vol", CVAR_SETTING("Volume.MainMusic"), 0, 100, "", 100, true, false, true)) {
+                Audio_SetGameVolume(SEQ_PLAYER_BGM_MAIN, ((float)CVarGetInteger(CVAR_SETTING("Volume.MainMusic"), 100) / 100.0f));
             }
-            if (UIWidgets::PaddedEnhancementSliderFloat("Sub Music Volume: %.1f %%", "##Sub_Music_Vol", CVAR_SETTING("Volume.SubMusic"), 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
-                Audio_SetGameVolume(SEQ_PLAYER_BGM_SUB, CVarGetFloat(CVAR_SETTING("Volume.SubMusic"), 1.0f));
+            if (UIWidgets::PaddedEnhancementSliderInt("Sub Music Volume: %d %%", "##Sub_Music_Vol", CVAR_SETTING("Volume.SubMusic"), 0, 100, "", 100, true, false, true)) {
+                Audio_SetGameVolume(SEQ_PLAYER_BGM_SUB, ((float)CVarGetInteger(CVAR_SETTING("Volume.SubMusic"), 100) / 100.0f));
             }
-            if (UIWidgets::PaddedEnhancementSliderFloat("Sound Effects Volume: %.1f %%", "##Sound_Effect_Vol", CVAR_SETTING("Volume.SFX"), 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
-                Audio_SetGameVolume(SEQ_PLAYER_SFX, CVarGetFloat(CVAR_SETTING("Volume.SFX"), 1.0f));
+            if (UIWidgets::PaddedEnhancementSliderInt("Fanfare Volume: %d %%", "##Fanfare_Vol", CVAR_SETTING("Volume.Fanfare"), 0, 100, "", 100, true, false, true)) {
+                Audio_SetGameVolume(SEQ_PLAYER_FANFARE, ((float)CVarGetInteger(CVAR_SETTING("Volume.Fanfare"), 100) / 100.0f));
             }
-            if (UIWidgets::PaddedEnhancementSliderFloat("Fanfare Volume: %.1f %%", "##Fanfare_Vol", CVAR_SETTING("Volume.Fanfare"), 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
-                Audio_SetGameVolume(SEQ_PLAYER_FANFARE, CVarGetFloat(CVAR_SETTING("Volume.Fanfare"), 1.0f));
+            if (UIWidgets::PaddedEnhancementSliderInt("Sound Effects Volume: %d %%", "##Sound_Effect_Vol", CVAR_SETTING("Volume.SFX"), 0, 100, "", 100, true, false, true)) {
+                Audio_SetGameVolume(SEQ_PLAYER_SFX, ((float)CVarGetInteger(CVAR_SETTING("Volume.SFX"), 100) / 100.0f));
             }
 
             static std::unordered_map<Ship::AudioBackend, const char*> audioBackendNames = {
@@ -253,7 +253,7 @@ void DrawSettingsMenu() {
             };
 
             ImGui::Text("Audio API (Needs reload)");
-            auto currentAudioBackend = Ship::Context::GetInstance()->GetAudio()->GetAudioBackend();
+            auto currentAudioBackend = Ship::Context::GetInstance()->GetAudio()->GetCurrentAudioBackend();
 
             if (Ship::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->size() <= 1) {
                 UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
@@ -262,7 +262,7 @@ void DrawSettingsMenu() {
                 for (uint8_t i = 0; i < Ship::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->size(); i++) {
                     auto backend = Ship::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->data()[i];
                     if (ImGui::Selectable(audioBackendNames[backend], backend == currentAudioBackend)) {
-                        Ship::Context::GetInstance()->GetAudio()->SetAudioBackend(backend);
+                        Ship::Context::GetInstance()->GetAudio()->SetCurrentAudioBackend(backend);
                     }
                 }
                 ImGui::EndCombo();
@@ -434,7 +434,7 @@ void DrawSettingsMenu() {
                     currentFps = 60;
                 }
                 CVarSetInteger(CVAR_SETTING("InterpolationFPS"), currentFps);
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             #else
                 bool matchingRefreshRate =
                     CVarGetInteger(CVAR_SETTING("MatchRefreshRate"), 0) && Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() != Ship::WindowBackend::FAST3D_DXGI_DX11;
@@ -463,7 +463,7 @@ void DrawSettingsMenu() {
                     int hz = Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
                     if (hz >= 20 && hz <= 360) {
                         CVarSetInteger(CVAR_SETTING("InterpolationFPS"), hz);
-                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                     }
                 }
             } else {
@@ -671,7 +671,7 @@ void DrawEnhancementsMenu() {
                     CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), newValue);
                     CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), newValue);
 
-                    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                 }
                 g->CurrentItemFlags = backup_item_flags;
                 UIWidgets::PaddedEnhancementCheckbox("Skip Intro", CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
@@ -912,7 +912,7 @@ void DrawEnhancementsMenu() {
                     std::for_each(itemCountMessageCVars, itemCountMessageCVars + numOptions,
                                   [newValue](const char* cvar) { CVarSetInteger(cvar, newValue); });
 
-                    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                 }
                 g->CurrentItemFlags = backup_item_flags;
 
@@ -1561,6 +1561,8 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Restores the original outcomes when performing Reverse Bottle Adventure.");
             UIWidgets::PaddedEnhancementCheckbox("Early Eyeball Frog", CVAR_ENHANCEMENT("EarlyEyeballFrog"), true, false);
             UIWidgets::Tooltip("Restores a bug from NTSC 1.0/1.1 that allows you to obtain the eyeball frog from King Zora instead of the Zora Tunic by holding shield.");
+            UIWidgets::PaddedEnhancementCheckbox("Pulsate boss icon", CVAR_ENHANCEMENT("PulsateBossIcon"), true, false);
+            UIWidgets::Tooltip("Restores an unfinished feature to pulsate the boss room icon when you are in the boss room.");
 
             ImGui::EndMenu();
         }
@@ -1854,7 +1856,7 @@ void DrawCheatsMenu() {
             if (UIWidgets::PaddedEnhancementCheckbox("I promise I have read the warning", CVAR_CHEAT("SaveStatePromise"), true,
                                                      false)) {
                 CVarSetInteger(CVAR_CHEAT("SaveStatesEnabled"), 0);
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             }
             if (CVarGetInteger(CVAR_CHEAT("SaveStatePromise"), 0) == 1) {
                 UIWidgets::PaddedEnhancementCheckbox("I understand, enable save states", CVAR_CHEAT("SaveStatesEnabled"), true,
@@ -1949,7 +1951,7 @@ void DrawCheatsMenu() {
                 CVarSetInteger(CVAR_CHEAT("BetaQuestWorld"), betaQuestWorld);
 
                 std::reinterpret_pointer_cast<Ship::ConsoleWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch("reset");
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             }
 
             if (!isBetaQuestEnabled) {

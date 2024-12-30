@@ -62,13 +62,13 @@ void BgSstFloor_Update(BgSstFloor* thisx, PlayState* play) {
 
     colHeader->vtxList = SEGMENTED_TO_VIRTUAL(colHeader->vtxList);
 
-    if (func_80043590(&this->dyna) && (this->dyna.actor.yDistToPlayer < 1000.0f)) {
+    if (DynaPolyActor_IsPlayerAbove(&this->dyna) && (this->dyna.actor.yDistToPlayer < 1000.0f)) {
         Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_BOSS_BONGO);
     } else {
         Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_DUNGEON0);
     }
 
-    if (func_8004356C(&this->dyna) && (player->fallDistance > 1000.0f)) {
+    if (DynaPolyActor_IsPlayerOnTop(&this->dyna) && (player->fallDistance > 1000.0f)) {
         this->dyna.actor.params = 1;
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EN_SHADEST_TAIKO_HIGH);
     }
@@ -82,7 +82,7 @@ void BgSstFloor_Update(BgSstFloor* thisx, PlayState* play) {
         this->dyna.actor.params = BONGOFLOOR_REST;
         this->drumPhase = 28;
 
-        if (func_8004356C(&this->dyna) && !(player->stateFlags1 & (PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE))) {
+        if (DynaPolyActor_IsPlayerOnTop(&this->dyna) && !(player->stateFlags1 & (PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE))) {
             distFromRim = 600.0f - this->dyna.actor.xzDistToPlayer;
             if (distFromRim > 0.0f) {
                 if (distFromRim > 350.0f) {

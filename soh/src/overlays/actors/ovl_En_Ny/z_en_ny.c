@@ -384,7 +384,7 @@ void EnNy_Update(Actor* thisx, PlayState* play) {
     temp_f22 = (24.0f * temp_f20) + 12.0f;
     this->actor.shape.rot.x += (s16)(this->unk_1E8 * 1000.0f);
     func_80ABD3B8(this, temp_f22 + 10.0f, temp_f22 - 10.0f);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Math_StepToF(&this->unk_1E4, this->unk_1E8, 0.1f);
     this->actionFunc(this, play);
     this->actor.prevPos.y -= temp_f22;
@@ -514,7 +514,7 @@ void EnNy_UpdateUnused(Actor* thisx, PlayState* play2) {
 
     CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
     CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Math_StepToF(&this->unk_1E4, this->unk_1E8, 0.1f);
 }
 static Vec3f sFireOffsets[] = {

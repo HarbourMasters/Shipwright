@@ -102,9 +102,6 @@ void EnDntJiji_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void EnDntJiji_SetFlower(EnDntJiji* this, PlayState* play) {
-    // SOH: Due to removed object dependencies, parent was still NULL when Init was called. In order to properly set
-    // stage, redo it here now that we are a frame later.
-    this->stage = (EnDntDemo*)this->actor.parent;
     if (this->actor.bgCheckFlags & 1) {
         this->flowerPos = this->actor.world.pos;
         this->actionFunc = EnDntJiji_SetupWait;
@@ -425,7 +422,7 @@ void EnDntJiji_Update(Actor* thisx, PlayState* play) {
         }
     }
     this->actionFunc(this, play);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 20.0f, 60.0f, 0x1D);
     Collider_UpdateCylinder(&this->actor, &this->collider);
     if (this->isSolid != 0) {

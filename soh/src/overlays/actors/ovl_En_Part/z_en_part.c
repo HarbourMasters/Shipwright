@@ -244,7 +244,7 @@ void EnPart_Update(Actor* thisx, PlayState* play) {
 
     EnPart* this = (EnPart*)thisx;
 
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 
     if ((this->actor.params > 4 && this->actor.params < 9) || this->actor.params < 0) {
         Actor_UpdateBgCheckInfo(play, &this->actor, 5.0f, 15.0f, 0.0f, 5);

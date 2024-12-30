@@ -6,7 +6,6 @@
 #include "../entrance.h"
 #include "random.hpp"
 #include "../trial.h"
-#include "utils.hpp"
 #include "hints.hpp"
 #include "pool_functions.hpp"
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
@@ -139,15 +138,18 @@ static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) 
 // Writes the settings (without excluded locations, starting inventory and tricks) to the spoilerLog document.
 static void WriteSettings() {
     auto ctx = Rando::Context::GetInstance();
-    auto allOptionGroups = ctx->GetSettings()->GetOptionGroups();
-    for (const Rando::OptionGroup& optionGroup : allOptionGroups) {
-        if (optionGroup.GetContainsType() == Rando::OptionGroupType::DEFAULT && optionGroup.PrintInSpoiler()) {
-            for (Rando::Option* option : optionGroup.GetOptions()) {
-                std::string settingName = optionGroup.GetName() + ":" + option->GetName();
-                jsonData["settings"][settingName] = option->GetSelectedOptionText();
-            }
-        }
+    std::array<Rando::Option, RSK_MAX> options = ctx->GetSettings()->GetAllOptions();
+    for (const Rando::Option& option : options) {
+      if (option.GetName() != ""){
+        jsonData["settings"][option.GetName()] = option.GetSelectedOptionText();
+      }
     }
+}
+
+// Removes any line breaks from s.
+std::string RemoveLineBreaks(std::string s) {
+  s.erase(std::remove(s.begin(), s.end(), '\n'), s.end());
+  return s;
 }
 
 // Writes the excluded locations to the spoiler log, if there are any.

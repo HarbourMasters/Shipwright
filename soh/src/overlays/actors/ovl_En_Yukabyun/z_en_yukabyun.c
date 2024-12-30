@@ -131,7 +131,7 @@ void EnYukabyun_Update(Actor* thisx, PlayState* play) {
     }
 
     this->actionfunc(this, play);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 
     if (!(this->actionfunc == func_80B43A94 || this->actionfunc == EnYukabyun_Break)) {
         Actor_UpdateBgCheckInfo(play, &this->actor, 5.0f, 20.0f, 8.0f, 5);

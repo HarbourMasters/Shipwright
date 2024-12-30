@@ -947,7 +947,7 @@ void DemoEffect_UpdateLightRingTriforce(DemoEffect* this, PlayState* play) {
 void DemoEffect_UpdateCreationFireball(DemoEffect* this, PlayState* play) {
     DemoEffect* effect;
 
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     this->actor.speedXZ = this->actor.speedXZ + (this->actor.gravity * 0.5f);
 
     if (this->fireBall.timer != 0) {
@@ -2128,7 +2128,7 @@ void DemoEffect_DrawGetItem(Actor* thisx, PlayState* play) {
                     rg = RG_SHADOW_MEDALLION;
                     break;
                 case DEMO_EFFECT_MEDAL_LIGHT:
-                    rc = RC_GIFT_FROM_SAGES;
+                    rc = RC_GIFT_FROM_RAURU;
                     rg = RG_LIGHT_MEDALLION;
                     break;
                 case DEMO_EFFECT_LIGHTARROW:

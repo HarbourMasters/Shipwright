@@ -716,7 +716,7 @@ void EnGoma_Update(Actor* thisx, PlayState* play) {
     }
 
     this->actionFunc(this, play);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     this->actor.world.pos.x = this->actor.world.pos.x + this->shieldKnockbackVel.x;
     this->actor.world.pos.z = this->actor.world.pos.z + this->shieldKnockbackVel.z;
     Math_ApproachZeroF(&this->shieldKnockbackVel.x, 1.0f, 3.0f);

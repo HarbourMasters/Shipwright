@@ -254,13 +254,13 @@ void func_8086D5C4(BgBdanSwitch* this) {
 void func_8086D5E0(BgBdanSwitch* this, PlayState* play) {
     switch (this->dyna.actor.params & 0xFF) {
         case BLUE:
-            if (func_800435B4(&this->dyna)) {
+            if (DynaPolyActor_IsSwitchPressed(&this->dyna)) {
                 func_8086D67C(this);
                 func_8086D4B4(this, play);
             }
             break;
         case YELLOW:
-            if (func_8004356C(&this->dyna)) {
+            if (DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
                 func_8086D67C(this);
                 func_8086D4B4(this, play);
             }
@@ -293,7 +293,7 @@ void func_8086D730(BgBdanSwitch* this) {
 void func_8086D754(BgBdanSwitch* this, PlayState* play) {
     switch (this->dyna.actor.params & 0xFF) {
         case BLUE:
-            if (!func_800435B4(&this->dyna)) {
+            if (!DynaPolyActor_IsSwitchPressed(&this->dyna)) {
                 if (this->unk_1D8 <= 0) {
                     func_8086D7FC(this);
                     func_8086D548(this, play);
@@ -328,7 +328,7 @@ void func_8086D86C(BgBdanSwitch* this) {
 }
 
 void func_8086D888(BgBdanSwitch* this, PlayState* play) {
-    if (func_8004356C(&this->dyna)) {
+    if (DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
         func_8086D8BC(this);
     }
 }
@@ -371,7 +371,7 @@ void func_8086D9F8(BgBdanSwitch* this) {
 void func_8086DA1C(BgBdanSwitch* this, PlayState* play) {
     Actor* heldActor = GET_PLAYER(play)->heldActor;
 
-    if (func_8004356C(&this->dyna)) {
+    if (DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
         if (heldActor != NULL && heldActor->id == ACTOR_EN_RU1) {
             if (this->unk_1D8 <= 0) {
                 func_8086D944(this);

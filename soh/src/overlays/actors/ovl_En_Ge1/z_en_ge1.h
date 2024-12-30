@@ -16,7 +16,7 @@ typedef enum {
     /* 0x04 */ GE1_TYPE_NORMAL = 4,
     /* 0x05 */ GE1_TYPE_VALLEY_FLOOR,
     /* 0x45 */ GE1_TYPE_HORSEBACK_ARCHERY = 0x45,
-    /* 0x46 */ GE1_TYPE_TRAINING_GROUNDS_GUARD
+    /* 0x46 */ GE1_TYPE_TRAINING_GROUND_GUARD
 } EnGe1Type;
 
 typedef enum {

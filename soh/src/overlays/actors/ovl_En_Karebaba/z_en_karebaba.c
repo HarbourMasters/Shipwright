@@ -368,7 +368,7 @@ void EnKarebaba_DeadItemDrop(EnKarebaba* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play) || this->actor.params == 0) {
         EnKarebaba_SetupDead(this);
     } else {
-        func_8002F554(&this->actor, play, GI_STICKS_1);
+        Actor_OfferGetItemNearby(&this->actor, play, GI_STICKS_1);
     }
 }
 
@@ -421,7 +421,7 @@ void EnKarebaba_Update(Actor* thisx, PlayState* play) {
 
     if (this->actionFunc != EnKarebaba_Dead) {
         if (this->actionFunc == EnKarebaba_Dying) {
-            Actor_MoveForward(&this->actor);
+            Actor_MoveXZGravity(&this->actor);
             Actor_UpdateBgCheckInfo(play, &this->actor, 10.0f, 15.0f, 10.0f, 5);
         } else {
             Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);
