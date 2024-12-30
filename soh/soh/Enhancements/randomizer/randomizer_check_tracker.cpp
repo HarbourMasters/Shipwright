@@ -698,10 +698,10 @@ void CheckTrackerFlagSet(int16_t flagType, int32_t flag) {
                 return;
             }
             if (!IS_RANDO) {
-                if (flag == INFTABLE_192) {
+                if (flag == INFTABLE_BOUGHT_STICK_UPGRADE) {
                     SetCheckCollected(RC_LW_DEKU_SCRUB_NEAR_BRIDGE);
                     return;
-                } else if (flag == INFTABLE_193) {
+                } else if (flag == INFTABLE_BOUGHT_NUT_UPGRADE) {
                     SetCheckCollected(RC_LW_DEKU_SCRUB_GROTTO_FRONT);
                     return;
                 }
@@ -715,7 +715,7 @@ void CheckTrackerFlagSet(int16_t flagType, int32_t flag) {
                 } else if (flag == ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE) {
                     SetCheckCollected(RC_DEKU_THEATER_MASK_OF_TRUTH);
                     return;
-                } else if (flag == ITEMGETINF_0B) {
+                } else if (flag == ITEMGETINF_DEKU_SCRUB_HEART_PIECE) {
                     SetCheckCollected(RC_HF_DEKU_SCRUB_GROTTO);
                     return;
                 }

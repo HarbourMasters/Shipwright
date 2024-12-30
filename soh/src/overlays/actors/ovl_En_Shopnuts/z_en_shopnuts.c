@@ -1,5 +1,6 @@
 #include "z_en_shopnuts.h"
 #include "objects/object_shopnuts/object_shopnuts.h"
+#include "overlays/actors/ovl_En_Dns/z_en_dns.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
@@ -73,9 +74,9 @@ void EnShopnuts_Init(Actor* thisx, PlayState* play) {
     Collider_UpdateCylinder(&this->actor, &this->collider);
 
     if (GameInteractor_Should(VB_BUSINESS_SCRUB_DESPAWN,
-        ((this->actor.params == 0x0002) && (Flags_GetItemGetInf(ITEMGETINF_0B))) ||
-        ((this->actor.params == 0x0009) && (Flags_GetInfTable(INFTABLE_192))) ||
-        ((this->actor.params == 0x000A) && (Flags_GetInfTable(INFTABLE_193))),
+        ((this->actor.params == DNS_TYPE_HEART_PIECE) && (Flags_GetItemGetInf(ITEMGETINF_DEKU_SCRUB_HEART_PIECE))) ||
+        ((this->actor.params == DNS_TYPE_DEKU_STICK_UPGRADE) && (Flags_GetInfTable(INFTABLE_BOUGHT_STICK_UPGRADE))) ||
+        ((this->actor.params == DNS_TYPE_DEKU_NUT_UPGRADE) && (Flags_GetInfTable(INFTABLE_BOUGHT_NUT_UPGRADE))),
     this)) {
         Actor_Kill(&this->actor);
     } else {

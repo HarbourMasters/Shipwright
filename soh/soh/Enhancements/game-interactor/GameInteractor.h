@@ -156,9 +156,9 @@ typedef enum {
     // Opt: *EnShopnuts
     /* Vanilla Condition:
     ```
-        ((this->actor.params == 0x0002) && (Flags_GetItemGetInf(ITEMGETINF_0B))) ||
-        ((this->actor.params == 0x0009) && (Flags_GetInfTable(INFTABLE_192))) ||
-        ((this->actor.params == 0x000A) && (Flags_GetInfTable(INFTABLE_193)))
+        ((this->actor.params == 0x0002) && (Flags_GetItemGetInf(ITEMGETINF_DEKU_SCRUB_HEART_PIECE))) ||
+        ((this->actor.params == 0x0009) && (Flags_GetInfTable(INFTABLE_BOUGHT_STICK_UPGRADE))) ||
+        ((this->actor.params == 0x000A) && (Flags_GetInfTable(INFTABLE_BOUGHT_NUT_UPGRADE)))
     ```
     */
     VB_BUSINESS_SCRUB_DESPAWN,
