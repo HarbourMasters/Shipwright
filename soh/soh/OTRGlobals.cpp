@@ -1356,12 +1356,18 @@ extern "C" void Graph_StartFrame() {
         CVarClear(CVAR_DROPPED_FILE);
     }
 
-    OTRGlobals::Instance->context->GetWindow()->StartFrame();
+    // OTRGlobals::Instance->context->GetWindow()->StartFrame();
 }
 
 void RunCommands(Gfx* Commands, const std::vector<std::unordered_map<Mtx*, MtxF>>& mtx_replacements) {
+    auto wnd = OTRGlobals::Instance->context->GetWindow();
+    auto gui = wnd->GetGui();
+
     for (const auto& m : mtx_replacements) {
+        gui->StartDraw();
+        wnd->StartFrame();
         gfx_run(Commands, m);
+        gui->EndDraw();
         gfx_end_frame();
     }
 }
