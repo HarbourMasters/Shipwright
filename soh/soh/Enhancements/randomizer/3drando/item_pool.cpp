@@ -535,8 +535,6 @@ static void PlaceVanillaDekuScrubItems(bool junkOneTimeScrubs) {
       ctx->PlaceItemInLocation(RC_GANONS_CASTLE_DEKU_SCRUB_RIGHT,        RG_RED_POTION_REFILL, false, true);
       ctx->PlaceItemInLocation(RC_GANONS_CASTLE_DEKU_SCRUB_LEFT,         RG_GREEN_POTION_REFILL, false, true);
     }
-
-
 }
 
 static void PlaceVanillaMapsAndCompasses() {
@@ -1267,7 +1265,7 @@ void GenerateItemPool() {
     //Overworld Scrubs
     AddItemsToPool(ItemPool, dekuScrubItems);
 
-    //I'm not sure what this is for, but it was in ootr so I copied it
+    //Scrubs which sell seeds or arrows sell it based on age, this randomly assigns them
     for (uint8_t i = 0; i < 7; i++) {
       if (Random(0, 3)) {
         AddItemToMainPool(RG_ARROWS_30);
