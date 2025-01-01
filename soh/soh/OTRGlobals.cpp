@@ -354,7 +354,7 @@ OTRGlobals::OTRGlobals() {
     overlay->LoadFont("Fipps", 32.0f, "fonts/Fipps-Regular.otf");
     overlay->SetCurrentFont(CVarGetString(CVAR_GAME_OVERLAY_FONT, "Press Start 2P"));
 
-    context->InitAudio({ .SampleRate = 44100, .SampleLength = 1024, .DesiredBuffered = 2480 });
+    context->InitAudio({ .SampleRate = 32000, .SampleLength = 1024, .DesiredBuffered = 2480 });
 
     SPDLOG_INFO("Starting Ship of Harkinian version {} (Branch: {} | Commit: {})", (char*)gBuildVersion, (char*)gGitBranch, (char*)gGitCommitHash);
 
@@ -533,9 +533,16 @@ void OTRAudio_Thread() {
         //#define SAMPLES_HIGH 656
         //#define SAMPLES_LOW 624
 
-        // 44KHZ values
+        #if 0
+        // Values for 44100 hz
         #define SAMPLES_HIGH 752
         #define SAMPLES_LOW 720
+        #else
+        // Values for 32000 hz
+        #define SAMPLES_HIGH 560
+        #define SAMPLES_LOW 528
+
+        #endif
 
         #define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1 )
         #define NUM_AUDIO_CHANNELS 2
