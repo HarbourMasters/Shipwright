@@ -622,25 +622,37 @@ static void PlaceVanillaOverworldFish() {
   }
 }
 
-static void PlaceFreestandingItems() {
-  auto ctx = Rando::Context::GetInstance();
-  auto option = ctx->GetOption(RSK_SHUFFLE_FREESTANDING);
-  for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, RCTYPE_FREESTANDING)) {
-    RandomizerGet vanillaItem = Rando::StaticData::GetLocation(loc)->GetVanillaItem();
-    if (option.Is(RO_FREESTANDING_OVERWORLD) || option.Is(RO_FREESTANDING_ALL)) {
-      AddItemToMainPool(vanillaItem);
-    } else {
-      ctx->PlaceItemInLocation(loc, vanillaItem, false, true);
-    }
-  }
+static void PlaceItemsForType(RandomizerCheckType rctype, bool overworldActive, bool dungeonActive, bool placeVanilla) {
+  for (RandomizerCheck rc : ctx->GetLocations(ctx->allLocations, rctype)) {
+    auto loc = Rando::StaticData::GetLocation(rc);
 
-  for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
-    for (RandomizerCheck loc : ctx->GetLocations(dungeon->GetDungeonLocations(), RCTYPE_FREESTANDING)) {
-      RandomizerGet vanillaItem = Rando::StaticData::GetLocation(loc)->GetVanillaItem();
-      if (option.Is(RO_FREESTANDING_DUNGEONS) || option.Is(RO_FREESTANDING_ALL)) {
-        AddItemToMainPool(vanillaItem);
-      } else {
-        ctx->PlaceItemInLocation(loc, vanillaItem, false, true);
+    // If item is in the overworld and shuffled, add its item to the pool
+    if (loc->IsOverworld()) {
+      if (overworldActive) {
+        AddItemToMainPool(loc->GetVanillaItem());
+      } else if (placeVanilla) {
+        ctx->PlaceItemInLocation(rc, loc->GetVanillaItem(), false, true);
+      }
+    } else {
+      if (dungeonActive) {
+        // If the same in MQ and vanilla, add.
+        RandomizerCheckQuest currentQuest = loc->GetQuest();
+        if (currentQuest == RCQUEST_BOTH) {
+          AddItemToMainPool(loc->GetVanillaItem());
+        } else {
+          // Check if current item's dungeon is vanilla or MQ, and only add if quest corresponds to it.
+          SceneID itemScene = loc->GetScene();
+
+          if (itemScene >= SCENE_DEKU_TREE && itemScene <= SCENE_GERUDO_TRAINING_GROUND) {
+            bool isMQ = ctx->GetDungeon(itemScene)->IsMQ();
+
+            if ((isMQ && currentQuest == RCQUEST_MQ) || (!isMQ && currentQuest == RCQUEST_VANILLA)) {
+              AddItemToMainPool(loc->GetVanillaItem());
+            }
+          }
+        }
+      } else if (placeVanilla) {
+        ctx->PlaceItemInLocation(rc, loc->GetVanillaItem(), false, true);
       }
     }
   }
@@ -839,40 +851,12 @@ void GenerateItemPool() {
   }
 
   // Shuffle Pots
-  if (ctx->GetOption(RSK_SHUFFLE_POTS).IsNot(RO_SHUFFLE_POTS_OFF)) {
-    bool overworldPotsActive = ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_OVERWORLD) ||
-                               ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_ALL);
-    bool dungeonPotsActive = ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_DUNGEONS) ||
+  bool overworldPotsActive = ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_OVERWORLD) ||
                              ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_ALL);
-    
-    for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, RCTYPE_POT)) {
-      bool overworldPot = Rando::StaticData::GetLocation(loc)->IsOverworld();
-      bool dungeonPot = !overworldPot;
-
-      // If pot is in the overworld and shuffled, add its item to the pool
-      if (overworldPotsActive && overworldPot) {
-        AddItemToMainPool(Rando::StaticData::GetLocation(loc)->GetVanillaItem());
-      } else if (dungeonPotsActive && dungeonPot) {
-        // If pot is the same in MQ and vanilla, add.
-        RandomizerCheckQuest currentQuest = Rando::StaticData::GetLocation(loc)->GetQuest();
-        if (currentQuest == RCQUEST_BOTH) {
-          AddItemToMainPool(Rando::StaticData::GetLocation(loc)->GetVanillaItem());
-        } else {
-          // Check if current pot's dungeon is vanilla or MQ, and only add if quest corresponds to it.
-          SceneID potScene = Rando::StaticData::GetLocation(loc)->GetScene();
-
-          for (uint8_t i = SCENE_DEKU_TREE; i <= SCENE_GERUDO_TRAINING_GROUND; i++) {
-            if (i == potScene) {
-              bool isMQ = ctx->GetDungeon(SCENE_DEKU_TREE)->IsMQ();
-
-              if ((isMQ && currentQuest == RCQUEST_MQ) || (!isMQ && currentQuest == RCQUEST_VANILLA)) {
-                AddItemToMainPool(Rando::StaticData::GetLocation(loc)->GetVanillaItem());
-              }
-            }
-          }
-        }
-      }
-    }
+  bool dungeonPotsActive = ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_DUNGEONS) ||
+                           ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_ALL);
+  if (overworldPotsActive || dungeonPotsActive) {
+    PlaceItemsForType(RCTYPE_POT, overworldPotsActive, dungeonPotsActive, false);
   }
   
   auto fsMode = ctx->GetOption(RSK_FISHSANITY);
@@ -1277,7 +1261,13 @@ void GenerateItemPool() {
     PlaceVanillaDekuScrubItems(ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_OFF));
   }
 
-  PlaceFreestandingItems();
+  bool overworldFreeStandingActive = ctx->GetOption(RSK_SHUFFLE_FREESTANDING).Is(RO_FREESTANDING_OVERWORLD) ||
+                             ctx->GetOption(RSK_SHUFFLE_FREESTANDING).Is(RO_FREESTANDING_ALL);
+  bool dungeonFreeStandingActive = ctx->GetOption(RSK_SHUFFLE_FREESTANDING).Is(RO_FREESTANDING_DUNGEONS) ||
+                           ctx->GetOption(RSK_SHUFFLE_FREESTANDING).Is(RO_FREESTANDING_ALL);
+  if (overworldFreeStandingActive || dungeonFreeStandingActive) {
+    PlaceItemsForType(RCTYPE_FREESTANDING, overworldFreeStandingActive, dungeonFreeStandingActive, true);
+  }
 
   AddItemsToPool(ItemPool, alwaysItems);
   AddItemsToPool(ItemPool, dungeonRewards);
