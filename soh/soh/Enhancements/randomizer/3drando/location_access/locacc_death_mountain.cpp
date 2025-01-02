@@ -14,6 +14,8 @@ void RegionTable_Init_DeathMountain() {
                   LOCATION(RC_DMT_GS_BEAN_PATCH,            logic->CanSpawnSoilSkull() && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET) || (ctx->GetTrickOption(RT_DMT_SOIL_GS) && (logic->TakeDamage() || logic->CanUse(RG_HOVER_BOOTS)) && logic->CanUse(RG_BOOMERANG)))),
                   LOCATION(RC_DMT_GS_NEAR_KAK,              logic->BlastOrSmash()),
                   LOCATION(RC_DMT_GS_ABOVE_DODONGOS_CAVERN, logic->IsAdult && logic->AtNight && (logic->CanUse(RG_MEGATON_HAMMER) || (ctx->GetTrickOption(RT_DMT_HOOKSHOT_LOWER_GS) && logic->CanUse(RG_HOOKSHOT)) || (ctx->GetTrickOption(RT_DMT_BEAN_LOWER_GS) && CanPlantBean(RR_DEATH_MOUNTAIN_TRAIL)) || (ctx->GetTrickOption(RT_DMT_HOVERS_LOWER_GS) && logic->CanUse(RG_HOVER_BOOTS)) || ctx->GetTrickOption(RT_DMT_JS_LOWER_GS)) && logic->CanGetNightTimeGS()),
+                  LOCATION(RC_DMT_BLUE_RUPEE,               logic->IsChild && logic->BlastOrSmash()),
+                  LOCATION(RC_DMT_RED_RUPEE,                logic->IsChild && logic->BlastOrSmash()),
                 }, {
                   //Exits
                   Entrance(RR_KAK_BEHIND_GATE,          {[]{return true;}}),
@@ -50,8 +52,19 @@ void RegionTable_Init_DeathMountain() {
 
   areaTable[RR_DMT_COW_GROTTO] = Region("DMT Cow Grotto", "DMT Cow Grotto", {}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LOCATION(RC_DMT_COW_GROTTO_COW,     logic->CanUse(RG_EPONAS_SONG)),
-                  LOCATION(RC_DMT_COW_GROTTO_BEEHIVE, logic->CanBreakLowerBeehives()),
+                  LOCATION(RC_DMT_COW_GROTTO_COW,                logic->CanUse(RG_EPONAS_SONG)),
+                  LOCATION(RC_DMT_COW_GROTTO_BEEHIVE,            logic->CanBreakLowerBeehives()),
+                  LOCATION(RC_DMT_COW_GROTTO_LEFT_HEART,         true),
+                  LOCATION(RC_DMT_COW_GROTTO_MIDDLE_LEFT_HEART,  true),
+                  LOCATION(RC_DMT_COW_GROTTO_MIDDLE_RIGHT_HEART, true),
+                  LOCATION(RC_DMT_COW_GROTTO_RIGHT_HEART,        true),
+                  LOCATION(RC_DMT_COW_GROTTO_RUPEE_1,            true),
+                  LOCATION(RC_DMT_COW_GROTTO_RUPEE_2,            true),
+                  LOCATION(RC_DMT_COW_GROTTO_RUPEE_3,            true),
+                  LOCATION(RC_DMT_COW_GROTTO_RUPEE_4,            true),
+                  LOCATION(RC_DMT_COW_GROTTO_RUPEE_5,            true),
+                  LOCATION(RC_DMT_COW_GROTTO_RUPEE_6,            true),
+                  LOCATION(RC_DMT_COW_GROTTO_RED_RUPEE,          true),
                 }, {
                   //Exits
                   Entrance(RR_DEATH_MOUNTAIN_SUMMIT, {[]{return true;}}),
@@ -193,6 +206,7 @@ void RegionTable_Init_DeathMountain() {
                   Entrance(RR_DMC_LADDER_AREA_NEARBY,   {[]{return logic->FireTimer() >= 16 || logic->Hearts() >= 3;}}),
                   Entrance(RR_DMC_CENTRAL_NEARBY,       {[]{return logic->IsAdult && logic->CanUse(RG_GORON_TUNIC) && logic->CanUse(RG_DISTANT_SCARECROW) && ((logic->EffectiveHealth() > 2) || (logic->CanUse(RG_BOTTLE_WITH_FAIRY) && ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)) || logic->CanUse(RG_NAYRUS_LOVE));}}),
                   Entrance(RR_DMC_LOWER_NEARBY,         {[]{return false;}}),
+                  Entrance(RR_DMC_DISTANT_PLATFORM,     {[]{return (logic->FireTimer() >= 48 && logic->Hearts() >= 2) || logic->Hearts() >= 3;}}),
   });
 
   areaTable[RR_DMC_LADDER_AREA_NEARBY] = Region("DMC Ladder Region Nearby", "Death Mountain Crater", {RA_DEATH_MOUNTAIN_CRATER}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -241,12 +255,21 @@ void RegionTable_Init_DeathMountain() {
                 }, {
                   //Locations
                   LOCATION(RC_DMC_GS_BEAN_PATCH, (logic->FireTimer() >= 8 || logic->Hearts() >= 3) && logic->CanSpawnSoilSkull() && logic->CanAttack()),
+                  LOCATION(RC_DMC_NEAR_PLATFORM_RED_RUPEE, logic->IsChild),
+                  LOCATION(RC_DMC_MIDDLE_PLATFORM_RED_RUPEE, logic->IsChild && (logic->FireTimer() >= 8 || logic->Hearts() >= 3)),
+                  LOCATION(RC_DMC_MIDDLE_PLATFORM_BLUE_RUPEE_1, logic->IsChild && (logic->FireTimer() >= 8 || logic->Hearts() >= 3)),
+                  LOCATION(RC_DMC_MIDDLE_PLATFORM_BLUE_RUPEE_2, logic->IsChild && (logic->FireTimer() >= 8 || logic->Hearts() >= 3)),
+                  LOCATION(RC_DMC_MIDDLE_PLATFORM_BLUE_RUPEE_3, logic->IsChild && (logic->FireTimer() >= 8 || logic->Hearts() >= 3)),
+                  LOCATION(RC_DMC_MIDDLE_PLATFORM_BLUE_RUPEE_4, logic->IsChild && (logic->FireTimer() >= 8 || logic->Hearts() >= 3)),
+                  LOCATION(RC_DMC_MIDDLE_PLATFORM_BLUE_RUPEE_5, logic->IsChild && (logic->FireTimer() >= 8 || logic->Hearts() >= 3)),
+                  LOCATION(RC_DMC_MIDDLE_PLATFORM_BLUE_RUPEE_6, logic->IsChild && (logic->FireTimer() >= 8 || logic->Hearts() >= 3)),
                 }, {
                   //Exits
                   Entrance(RR_DMC_CENTRAL_NEARBY,   {[]{return true;}}),
                   Entrance(RR_DMC_LOWER_NEARBY,     {[]{return (logic->IsAdult && CanPlantBean(RR_DMC_CENTRAL_LOCAL)) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT);}}),
                   Entrance(RR_DMC_UPPER_NEARBY,     {[]{return logic->IsAdult && CanPlantBean(RR_DMC_CENTRAL_LOCAL);}}),
                   Entrance(RR_FIRE_TEMPLE_ENTRYWAY, {[]{return (logic->IsChild && logic->Hearts() >= 3 && ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)) || (logic->IsAdult && logic->FireTimer() >= 24);}}),
+                  Entrance(RR_DMC_DISTANT_PLATFORM, {[]{return logic->FireTimer() >= 48 && logic->CanUse(RG_DISTANT_SCARECROW);}}),
   });
 
   areaTable[RR_DMC_GREAT_FAIRY_FOUNTAIN] = Region("DMC Great Fairy Fountain", "DMC Great Fairy Fountain", {}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -278,5 +301,19 @@ void RegionTable_Init_DeathMountain() {
                 }, {
                   //Exits
                   Entrance(RR_DMC_LOWER_LOCAL, {[]{return true;}}),
+  });
+
+  areaTable[RR_DMC_DISTANT_PLATFORM] = Region("DMC Distant Platform", "Death Mountain Crater", {RA_DEATH_MOUNTAIN_CRATER}, NO_DAY_NIGHT_CYCLE, {}, {
+                  //Locations
+                  LOCATION(RC_DMC_DISTANT_PLATFORM_GREEN_RUPEE_1, logic->IsAdult),
+                  LOCATION(RC_DMC_DISTANT_PLATFORM_GREEN_RUPEE_2, logic->IsAdult),
+                  LOCATION(RC_DMC_DISTANT_PLATFORM_GREEN_RUPEE_3, logic->IsAdult),
+                  LOCATION(RC_DMC_DISTANT_PLATFORM_GREEN_RUPEE_4, logic->IsAdult),
+                  LOCATION(RC_DMC_DISTANT_PLATFORM_GREEN_RUPEE_5, logic->IsAdult),
+                  LOCATION(RC_DMC_DISTANT_PLATFORM_GREEN_RUPEE_6, logic->IsAdult),
+                  LOCATION(RC_DMC_DISTANT_PLATFORM_RED_RUPEE,     logic->IsAdult),
+                }, {
+                  //Exits
+                  Entrance(RR_DMC_CENTRAL_LOCAL, {[]{return logic->FireTimer() >= 48 && logic->CanUse(RG_DISTANT_SCARECROW);}}),
   });
 }

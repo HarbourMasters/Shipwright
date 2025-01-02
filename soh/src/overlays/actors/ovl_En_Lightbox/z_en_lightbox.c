@@ -52,8 +52,8 @@ void EnLightbox_Init(Actor* thisx, PlayState* play) {
     thisx->colChkInfo.cylRadius = 30;
     thisx->colChkInfo.cylHeight = 50;
     ActorShape_Init(&thisx->shape, 0.0f, ActorShadow_DrawCircle, 6.0f);
-    this->dyna.unk_160 = 0;
-    this->dyna.unk_15C = 0;
+    this->dyna.interactFlags = 0;
+    this->dyna.transformFlags = 0;
     thisx->targetMode = 0;
     thisx->gravity = -2.0f;
     CollisionHeader_GetVirtual(&object_lightbox_Col_001F10, &colHeader);

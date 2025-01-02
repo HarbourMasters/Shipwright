@@ -2,12 +2,14 @@
 
 namespace Rando {
 void Settings::CreateOptionDescriptions() {
-    mOptionDescriptions[RSK_FOREST] = "Closed - Kokiri Sword & Deku Shield are required to access "
-                                      "the Deku Tree, and completing the Deku Tree is required to "
-                                      "access the Hyrule Field exit.\n"
+    mOptionDescriptions[RSK_FOREST] = "Determines if Kokiri forest can be left for the Lost Woods bridge or the Deku Tree.\n"
                                       "\n"
-                                      "Closed Deku - Kokiri boy no longer blocks the path to Hyrule "
-                                      "Field but Mido still requires the Kokiri Sword and Deku Shield "
+                                      "Closed - Kokiri Sword & Deku Shield are required to access "
+                                      "the Deku Tree, and completing the Deku Tree is required to "
+                                      "access the Lost Woods Bridge Exit.\n"
+                                      "\n"
+                                      "Closed Deku - Kokiri boy no longer blocks the path to the Bridge "
+                                      "but Mido still requires the Kokiri Sword and Deku Shield "
                                       "to access the tree.\n"
                                       "\n"
                                       "Open - Mido no longer blocks the path to the Deku Tree. Kokiri "
@@ -379,7 +381,7 @@ void Settings::CreateOptionDescriptions() {
         "This setting governs if the Bean Salesman, Medigoron, Granny and the Carpet Salesman "
         "sell a random item.\n"
         "Beans Only - Only the Bean Salesman will have a check, and a pack of Magic Beans will be added "
-        "to the item pool."
+        "to the item pool.\n"
         "All But Beans - Medigoron, Granny and the Carpet Salesman will have checks, "
         "A Giant's Knife and a pack of Bombchus will be added to the item pool, and "
         "one of the bottles will contain a Blue Potion.\n\n"
@@ -434,6 +436,16 @@ void Settings::CreateOptionDescriptions() {
         "have collected all 100 Gold Skulltula Tokens.\n"
         "\n"
         "You can still talk to him multiple times to get Huge Rupees.";
+    mOptionDescriptions[RSK_SHUFFLE_FREESTANDING] = "Freestanding rupees & hearts are shuffles to random items. "
+                                              "Freestanding heart pieces and small keys are already shuffled by default.\n"
+                                              "\n"
+                                              "Off - freestanding rupees & hearts will not be shuffled.\n"
+                                              "\n"
+                                              "Dungeons - Only freestanding rupees & hearts that are within dungeons.\n"
+                                              "\n"
+                                              "Overworld - Only freestanding rupees & hearts that are outside of dungeons.\n"
+                                              "\n"
+                                              "All Items - Shuffle all freestanding rupees & hearts.";
     mOptionDescriptions[RSK_SHUFFLE_DUNGEON_REWARDS] =
         "Shuffles the location of Spiritual Stones and medallions.\n"
         "\n"

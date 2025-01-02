@@ -535,8 +535,6 @@ static void PlaceVanillaDekuScrubItems(bool junkOneTimeScrubs) {
       ctx->PlaceItemInLocation(RC_GANONS_CASTLE_DEKU_SCRUB_RIGHT,        RG_RED_POTION_REFILL, false, true);
       ctx->PlaceItemInLocation(RC_GANONS_CASTLE_DEKU_SCRUB_LEFT,         RG_GREEN_POTION_REFILL, false, true);
     }
-
-
 }
 
 static void PlaceVanillaMapsAndCompasses() {
@@ -624,6 +622,42 @@ static void PlaceVanillaOverworldFish() {
   }
 }
 
+static void PlaceItemsForType(RandomizerCheckType rctype, bool overworldActive, bool dungeonActive, bool placeVanilla) {
+  for (RandomizerCheck rc : ctx->GetLocations(ctx->allLocations, rctype)) {
+    auto loc = Rando::StaticData::GetLocation(rc);
+
+    // If item is in the overworld and shuffled, add its item to the pool
+    if (loc->IsOverworld()) {
+      if (overworldActive) {
+        AddItemToMainPool(loc->GetVanillaItem());
+      } else if (placeVanilla) {
+        ctx->PlaceItemInLocation(rc, loc->GetVanillaItem(), false, true);
+      }
+    } else {
+      if (dungeonActive) {
+        // If the same in MQ and vanilla, add.
+        RandomizerCheckQuest currentQuest = loc->GetQuest();
+        if (currentQuest == RCQUEST_BOTH) {
+          AddItemToMainPool(loc->GetVanillaItem());
+        } else {
+          // Check if current item's dungeon is vanilla or MQ, and only add if quest corresponds to it.
+          SceneID itemScene = loc->GetScene();
+
+          if (itemScene >= SCENE_DEKU_TREE && itemScene <= SCENE_GERUDO_TRAINING_GROUND) {
+            bool isMQ = ctx->GetDungeon(itemScene)->IsMQ();
+
+            if ((isMQ && currentQuest == RCQUEST_MQ) || (!isMQ && currentQuest == RCQUEST_VANILLA)) {
+              AddItemToMainPool(loc->GetVanillaItem());
+            }
+          }
+        }
+      } else if (placeVanilla) {
+        ctx->PlaceItemInLocation(rc, loc->GetVanillaItem(), false, true);
+      }
+    }
+  }
+}
+
 static void SetScarceItemPool() {
   ReplaceMaxItem(RG_PROGRESSIVE_BOMBCHUS, 3);
   ReplaceMaxItem(RG_BOMBCHU_5, 1);
@@ -679,16 +713,16 @@ void GenerateItemPool() {
     RG_FIRE_ARROWS,
     RG_ICE_ARROWS,
     RG_LIGHT_ARROWS,
-    RG_DOUBLE_DEFENSE, //Double defense
+    RG_DOUBLE_DEFENSE,
     RG_CLAIM_CHECK,
-    RG_PROGRESSIVE_HOOKSHOT, //Progressive hookshot
-    RG_PROGRESSIVE_STRENGTH, //Progressive strength
-    RG_PROGRESSIVE_BOMB_BAG, //Progressive bomb bag
-    RG_PROGRESSIVE_BOW, //Progressive bow
-    RG_PROGRESSIVE_SLINGSHOT, //Progressive slingshot
-    RG_PROGRESSIVE_WALLET, //Progressive wallet
-    RG_PROGRESSIVE_SCALE, //Progressive scale
-    RG_PROGRESSIVE_MAGIC_METER, //Progressive magic
+    RG_PROGRESSIVE_HOOKSHOT,
+    RG_PROGRESSIVE_STRENGTH,
+    RG_PROGRESSIVE_BOMB_BAG,
+    RG_PROGRESSIVE_BOW,
+    RG_PROGRESSIVE_SLINGSHOT,
+    RG_PROGRESSIVE_WALLET,
+    RG_PROGRESSIVE_SCALE,
+    RG_PROGRESSIVE_MAGIC_METER,
   };
   //Check song shuffle and dungeon reward shuffle just for ice traps
   if (ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_ANYWHERE)) {
@@ -742,7 +776,7 @@ void GenerateItemPool() {
 
   if (ctx->GetOption(RSK_SHUFFLE_MASTER_SWORD)) {
     AddItemToMainPool(RG_MASTER_SWORD);
-    ctx->possibleIceTrapModels.push_back(RG_MASTER_SWORD); //Master Sword without the GI enum
+    ctx->possibleIceTrapModels.push_back(RG_MASTER_SWORD);
   } else {
       if (!ctx->GetOption(RSK_STARTING_MASTER_SWORD)) {
           ctx->PlaceItemInLocation(RC_TOT_MASTER_SWORD, RG_MASTER_SWORD, false, true);
@@ -761,7 +795,7 @@ void GenerateItemPool() {
     if (ctx->GetOption(RSK_ITEM_POOL).Is(RO_ITEM_POOL_PLENTIFUL)) {
       AddItemToPool(PendingJunkPool, RG_PROGRESSIVE_OCARINA);
     }
-    ctx->possibleIceTrapModels.push_back(RG_PROGRESSIVE_OCARINA); //Progressive ocarina
+    ctx->possibleIceTrapModels.push_back(RG_PROGRESSIVE_OCARINA);
   } else {
       if (ctx->GetOption(RSK_STARTING_OCARINA).Is(RO_STARTING_OCARINA_OFF)) {
           ctx->PlaceItemInLocation(RC_LW_GIFT_FROM_SARIA, RG_PROGRESSIVE_OCARINA, false, true);
@@ -780,7 +814,6 @@ void GenerateItemPool() {
     AddItemToMainPool(RG_OCARINA_C_LEFT_BUTTON);
     AddItemToMainPool(RG_OCARINA_C_RIGHT_BUTTON);
 
-    //TODO: Re-add when custom models work with ice traps
     ctx->possibleIceTrapModels.push_back(RG_OCARINA_A_BUTTON);
     ctx->possibleIceTrapModels.push_back(RG_OCARINA_C_UP_BUTTON);
     ctx->possibleIceTrapModels.push_back(RG_OCARINA_C_DOWN_BUTTON);
@@ -818,40 +851,12 @@ void GenerateItemPool() {
   }
 
   // Shuffle Pots
-  if (ctx->GetOption(RSK_SHUFFLE_POTS).IsNot(RO_SHUFFLE_POTS_OFF)) {
-    bool overworldPotsActive = ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_OVERWORLD) ||
-                               ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_ALL);
-    bool dungeonPotsActive = ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_DUNGEONS) ||
+  bool overworldPotsActive = ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_OVERWORLD) ||
                              ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_ALL);
-    
-    for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, RCTYPE_POT)) {
-      bool overworldPot = Rando::StaticData::GetLocation(loc)->IsOverworld();
-      bool dungeonPot = !overworldPot;
-
-      // If pot is in the overworld and shuffled, add its item to the pool
-      if (overworldPotsActive && overworldPot) {
-        AddItemToMainPool(Rando::StaticData::GetLocation(loc)->GetVanillaItem());
-      } else if (dungeonPotsActive && dungeonPot) {
-        // If pot is the same in MQ and vanilla, add.
-        RandomizerCheckQuest currentQuest = Rando::StaticData::GetLocation(loc)->GetQuest();
-        if (currentQuest == RCQUEST_BOTH) {
-          AddItemToMainPool(Rando::StaticData::GetLocation(loc)->GetVanillaItem());
-        } else {
-          // Check if current pot's dungeon is vanilla or MQ, and only add if quest corresponds to it.
-          SceneID potScene = Rando::StaticData::GetLocation(loc)->GetScene();
-
-          for (uint8_t i = SCENE_DEKU_TREE; i <= SCENE_GERUDO_TRAINING_GROUND; i++) {
-            if (i == potScene) {
-              bool isMQ = ctx->GetDungeon(SCENE_DEKU_TREE)->IsMQ();
-
-              if ((isMQ && currentQuest == RCQUEST_MQ) || (!isMQ && currentQuest == RCQUEST_VANILLA)) {
-                AddItemToMainPool(Rando::StaticData::GetLocation(loc)->GetVanillaItem());
-              }
-            }
-          }
-        }
-      }
-    }
+  bool dungeonPotsActive = ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_DUNGEONS) ||
+                           ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_ALL);
+  if (overworldPotsActive || dungeonPotsActive) {
+    PlaceItemsForType(RCTYPE_POT, overworldPotsActive, dungeonPotsActive, false);
   }
   
   auto fsMode = ctx->GetOption(RSK_FISHSANITY);
@@ -911,7 +916,7 @@ void GenerateItemPool() {
     if (ctx->GetOption(RSK_ITEM_POOL).Is(RO_ITEM_POOL_PLENTIFUL)) {
       AddItemToPool(PendingJunkPool, RG_MAGIC_BEAN_PACK);
     }
-    ctx->possibleIceTrapModels.push_back(RG_MAGIC_BEAN_PACK); //Magic bean pack
+    ctx->possibleIceTrapModels.push_back(RG_MAGIC_BEAN_PACK);
   } else {
     ctx->PlaceItemInLocation(RC_ZR_MAGIC_BEAN_SALESMAN, RG_MAGIC_BEAN, false, true);
   }
@@ -1244,7 +1249,7 @@ void GenerateItemPool() {
     //Overworld Scrubs
     AddItemsToPool(ItemPool, dekuScrubItems);
 
-    //I'm not sure what this is for, but it was in ootr so I copied it
+    //Scrubs which sell seeds or arrows sell it based on age, this randomly assigns them
     for (uint8_t i = 0; i < 7; i++) {
       if (Random(0, 3)) {
         AddItemToMainPool(RG_ARROWS_30);
@@ -1254,6 +1259,14 @@ void GenerateItemPool() {
     }
   } else {
     PlaceVanillaDekuScrubItems(ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_OFF));
+  }
+
+  bool overworldFreeStandingActive = ctx->GetOption(RSK_SHUFFLE_FREESTANDING).Is(RO_FREESTANDING_OVERWORLD) ||
+                             ctx->GetOption(RSK_SHUFFLE_FREESTANDING).Is(RO_FREESTANDING_ALL);
+  bool dungeonFreeStandingActive = ctx->GetOption(RSK_SHUFFLE_FREESTANDING).Is(RO_FREESTANDING_DUNGEONS) ||
+                           ctx->GetOption(RSK_SHUFFLE_FREESTANDING).Is(RO_FREESTANDING_ALL);
+  if (overworldFreeStandingActive || dungeonFreeStandingActive) {
+    PlaceItemsForType(RCTYPE_FREESTANDING, overworldFreeStandingActive, dungeonFreeStandingActive, true);
   }
 
   AddItemsToPool(ItemPool, alwaysItems);
@@ -1410,7 +1423,7 @@ void GenerateItemPool() {
   if (/*ProgressiveGoronSword TODO: Implement Setting*/false) {
     ReplaceMaxItem(RG_BIGGORON_SWORD, 0);
     AddItemToMainPool(RG_PROGRESSIVE_GORONSWORD, 2);
-    ctx->possibleIceTrapModels.push_back(RG_PROGRESSIVE_GORONSWORD); // Progressive Goron Sword
+    ctx->possibleIceTrapModels.push_back(RG_PROGRESSIVE_GORONSWORD);
   } else {
     ctx->possibleIceTrapModels.push_back(RG_BIGGORON_SWORD);
   }

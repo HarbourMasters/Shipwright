@@ -71,12 +71,36 @@ namespace SOH {
 
     void ConfigVersion3Updater::Update(Ship::Config* conf) {
         conf->EraseBlock("Controllers");
+
         if (conf->GetNestedJson().contains("CVars") && conf->GetNestedJson()["CVars"].contains("gInjectItemCounts")) {
             CVarClear("gInjectItemCounts");
             CVarSetInteger("gEnhancements.InjectItemCounts.GoldSkulltula", 1);
             CVarSetInteger("gEnhancements.InjectItemCounts.HeartContainer", 1);
             CVarSetInteger("gEnhancements.InjectItemCounts.HeartPiece", 1);
         }
+
+        // Migrate all audio settings to ints
+        if (conf->GetNestedJson().contains("CVars") && conf->GetNestedJson()["CVars"].contains("gGameMasterVolume")) {
+            CVarSetInteger("gSettings.Volume.Master", (int32_t)(CVarGetFloat("gGameMasterVolume", 1.0f) * 100));
+            CVarClear("gGameMasterVolume");
+        }
+        if (conf->GetNestedJson().contains("CVars") && conf->GetNestedJson()["CVars"].contains("gMainMusicVolume")) {
+            CVarSetInteger("gSettings.Volume.MainMusic", (int32_t)(CVarGetFloat("gMainMusicVolume", 1.0f) * 100));
+            CVarClear("gMainMusicVolume");
+        }
+        if (conf->GetNestedJson().contains("CVars") && conf->GetNestedJson()["CVars"].contains("gSubMusicVolume")) {
+            CVarSetInteger("gSettings.Volume.SubMusic", (int32_t)(CVarGetFloat("gSubMusicVolume", 1.0f) * 100));
+            CVarClear("gSubMusicVolume");
+        }
+        if (conf->GetNestedJson().contains("CVars") && conf->GetNestedJson()["CVars"].contains("gSFXMusicVolume")) {
+            CVarSetInteger("gSettings.Volume.SFX", (int32_t)(CVarGetFloat("gSFXMusicVolume", 1.0f) * 100));
+            CVarClear("gSFXMusicVolume");
+        }
+        if (conf->GetNestedJson().contains("CVars") && conf->GetNestedJson()["CVars"].contains("gFanfareVolume")) {
+            CVarSetInteger("gSettings.Volume.Fanfare", (int32_t)(CVarGetFloat("gFanfareVolume", 1.0f) * 100));
+            CVarClear("gFanfareVolume");
+        }
+
         for (Migration migration : version3Migrations) {
             if (migration.action == MigrationAction::Rename) {
                 CVarCopy(migration.from.c_str(), migration.to.value().c_str());

@@ -13,7 +13,7 @@ void RegionTable_Init_BottomOfTheWell() {
                   //Technically involves an fake wall, but passing it lensless is intended in vanilla and it is well telegraphed
                   Entrance(RR_BOTTOM_OF_THE_WELL_PERIMETER,    {[]{return ctx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsVanilla() && logic->IsChild && logic->CanPassEnemy(RE_BIG_SKULLTULA);}}),
                   Entrance(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER, {[]{return ctx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsMQ()      && logic->IsChild;}}),
-                  Entrance(RR_KAKARIKO_VILLAGE,                {[]{return true;}}),
+                  Entrance(RR_KAK_WELL,                        {[]{return true;}}),
   });
 
   /*--------------------------
@@ -65,7 +65,7 @@ void RegionTable_Init_BottomOfTheWell() {
                   Entrance(RR_BOTTOM_OF_THE_WELL_BASEMENT_PLATFORM, {[]{return ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH);}}),
   });
 
-//this area has pots and can be reached without lens in logic from basement, but that could require silver rupees if they are shuffled.
+//this area can be reached without lens in logic from basement, but that could require silver rupees if they are shuffled.
   areaTable[RR_BOTTOM_OF_THE_WELL_SOUTHWEST_ROOM] = Region("Bottom of the Well Southwest Room", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_BOTTOM_OF_THE_WELL_LEFT_SIDE_POT_1, logic->CanBreakPots()),
@@ -114,7 +114,9 @@ void RegionTable_Init_BottomOfTheWell() {
 
   areaTable[RR_BOTTOM_OF_THE_WELL_COFFIN_ROOM] = Region("Bottom of the Well Coffin Room", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LOCATION(RC_BOTTOM_OF_THE_WELL_FREESTANDING_KEY, logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_FREESTANDING_KEY,                logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_COFFIN_ROOM_FRONT_LEFT_HEART,    logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_COFFIN_ROOM_MIDDLE_RIGHT_HEART,  logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
                 }, {
                   //Exits
                   Entrance(RR_BOTTOM_OF_THE_WELL_PERIMETER, {[]{return logic->LoweredWaterInsideBotw || logic->HasItem(RG_BRONZE_SCALE);}}),
@@ -162,8 +164,14 @@ void RegionTable_Init_BottomOfTheWell() {
                   Entrance(RR_BOTTOM_OF_THE_WELL_BASEMENT, {[]{return logic->CanDetonateUprightBombFlower();}}),
   });
 
-//Relevant when freestanding shuffle is added
-  areaTable[RR_BOTTOM_OF_THE_WELL_BASEMENT_PLATFORM] = Region("Bottom of the Well Basement Platform", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_BOTTOM_OF_THE_WELL_BASEMENT_PLATFORM] = Region("Bottom of the Well Basement Platform", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {
+                  //Locations
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_PLATFORM_LEFT_RUPEE,        true),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_PLATFORM_BACK_LEFT_RUPEE,   true),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_PLATFORM_MIDDLE_RUPEE,      true),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_PLATFORM_BACK_RIGHT_RUPEE,  true),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_PLATFORM_RIGHT_RUPEE,       true),
+                }, {
                   //Exits
                   Entrance(RR_BOTTOM_OF_THE_WELL_BASEMENT, {[]{return true;}}),
   });
@@ -185,6 +193,9 @@ void RegionTable_Init_BottomOfTheWell() {
                   //Locations
                   //Implies CanBreakPots()
                   LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_OUTER_LOBBY_POT, Here(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER, []{return logic->BlastOrSmash();}) && logic->CanHitEyeTargets()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_BOMB_LEFT_HEART,  logic->HasExplosives()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_BOMB_RIGHT_HEART, logic->HasExplosives()),
+
   }, {
                   //Exits
                   Entrance(RR_BOTTOM_OF_THE_WELL_ENTRYWAY,            {[]{return logic->IsChild;}}),
@@ -208,7 +219,9 @@ void RegionTable_Init_BottomOfTheWell() {
 
   areaTable[RR_BOTTOM_OF_THE_WELL_MQ_COFFIN_ROOM] = Region("Bottom of the Well MQ Coffin Room", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_GS_COFFIN_ROOM, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_GS_COFFIN_ROOM,                 logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_COFFIN_ROOM_FRONT_RIGHT_HEART,  logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_COFFIN_ROOM_MIDDLE_LEFT_HEART,  logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
   }, {
                   //Exits
                   Entrance(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER,  {[]{return (logic->LoweredWaterInsideBotw || logic->HasItem(RG_BRONZE_SCALE)) && logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 2);}}),
@@ -261,7 +274,10 @@ void RegionTable_Init_BottomOfTheWell() {
   areaTable[RR_BOTTOM_OF_THE_WELL_MQ_BASEMENT] = Region("Bottom of the Well MQ Basement", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   //behind invisible big skulltulas, but with navi spotting it's easy to avoid them, or at worst, tank your way through as they do not block the path
-                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_GS_BASEMENT,  logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_GS_BASEMENT,                   logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_BASEMENT_HALLWAY_FRONT_HEART,  true),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_BASEMENT_HALLWAY_LEFT_HEART,   true),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_BASEMENT_HALLWAY_RIGHT_HEART,  true),
   }, {
                   //Exits
                   Entrance(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER, {[]{return true;}}),
