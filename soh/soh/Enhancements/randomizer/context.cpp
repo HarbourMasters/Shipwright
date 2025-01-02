@@ -278,7 +278,6 @@ void Context::ParseSpoiler(const char* spoilerFileName) {
     }
     mSeedGenerated = false;
     mSpoilerLoaded = false;
-    mPlandoLoaded = false;
     try {
         nlohmann::json spoilerFileJson;
         spoilerFileStream >> spoilerFileJson;
@@ -289,7 +288,6 @@ void Context::ParseSpoiler(const char* spoilerFileName) {
         mEntranceShuffler->ParseJson(spoilerFileJson);
         mDungeons->ParseJson(spoilerFileJson);
         mTrials->ParseJson(spoilerFileJson);
-        mPlandoLoaded = true;
         mSpoilerLoaded = true;
         mSeedGenerated = false;
     } catch (...) {

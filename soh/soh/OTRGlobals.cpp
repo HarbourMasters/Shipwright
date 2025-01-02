@@ -2009,6 +2009,14 @@ extern "C" void Randomizer_SetSpoilerLoaded(bool spoilerLoaded) {
     OTRGlobals::Instance->gRandoContext->SetSpoilerLoaded(spoilerLoaded);
 }
 
+extern "C" uint8_t Randomizer_GenerateRandomizer() {
+    return GenerateRandomizer() ? 1 : 0;
+}
+
+extern "C" void Randomizer_ShowRandomizerMenu() {
+    SohGui::ShowRandomizerSettingsMenu();
+}
+
 CustomMessage Randomizer_GetCustomGetItemMessage(Player* player) {
     s16 giid;
     if (player->getItemEntry.objectId != OBJECT_INVALID) {

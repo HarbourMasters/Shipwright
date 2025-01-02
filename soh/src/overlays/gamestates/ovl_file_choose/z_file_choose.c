@@ -986,9 +986,9 @@ void DrawSeedHashSprites(FileChooseContext* this) {
     if ((Randomizer_IsSeedGenerated() || Randomizer_IsSpoilerLoaded()) &&
         (((this->configMode == CM_NAME_ENTRY || this->configMode == CM_ROTATE_TO_NAME_ENTRY ||
            this->configMode == CM_NAME_ENTRY_TO_RANDOMIZER_SETTINGS_MENU || this->configMode == CM_START_NAME_ENTRY ||
-           this->configMode == CM_START_RANDOMIZER_SETTINGS_MENU) &&
-          gSaveContext.questId == QUEST_RANDOMIZER) ||
-        (this->configMode == CM_RANDOMIZER_SETTINGS_MENU && Randomizer_IsSpoilerLoaded()))) {
+           this->configMode == CM_START_RANDOMIZER_SETTINGS_MENU) ||
+          this->configMode == CM_RANDOMIZER_SETTINGS_MENU) &&
+         gSaveContext.questId == QUEST_RANDOMIZER)) {
 
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
         u16 xStart = 64;
@@ -1439,6 +1439,12 @@ void FileChoose_UpdateRandomizerMenu(GameState* thisx) {
     Input* input = &this->state.input[0];
     bool dpad = CVarGetInteger(CVAR_SETTING("DpadInText"), 0);
 
+    FileChoose_UpdateRandomizer();
+
+    if (generating) {
+        return;
+    }
+
     // Fade in elements after opening Randomizer options menu
     this->randomizerUIAlpha += 25;
     if (this->randomizerUIAlpha > 255) {
@@ -1450,7 +1456,7 @@ void FileChoose_UpdateRandomizerMenu(GameState* thisx) {
         // Move down
         if (this->stickRelY < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN))) {
             // When selecting past the last option, cycle back to the first option.
-            if ((this->randomizerIndex + 1) > 3) {
+            if ((this->randomizerIndex + 1) > 2) {
                 this->randomizerIndex = 0;
             } else {
                 this->randomizerIndex++;
@@ -1458,30 +1464,9 @@ void FileChoose_UpdateRandomizerMenu(GameState* thisx) {
         } else if (this->stickRelY > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DUP))) {
             // When selecting past the first option, cycle back to the last option and offset the list to view it properly.
             if ((this->randomizerIndex - 1) < 0) {
-                this->randomizerIndex = 3;
+                this->randomizerIndex = 2;
             } else {
                 this->randomizerIndex--;
-            }
-        }
-
-        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
-    }
-
-    // Cycle through spoiler log
-    if (ABS(this->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
-        if (this->stickRelX > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT))) {
-            // If exceeding the amount of choices for the selected option, cycle back to the first.
-            if ((gSaveContext.bossRushOptions[this->bossRushIndex] + 1) == BossRush_GetSettingOptionsAmount(this->bossRushIndex)) {
-                gSaveContext.bossRushOptions[this->bossRushIndex] = 0;
-            } else {
-                gSaveContext.bossRushOptions[this->bossRushIndex]++;
-            }
-        } else if (this->stickRelX < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT))) {
-            // If cycling back when already at the first choice for the selected option, cycle back to the last choice.
-            if ((gSaveContext.bossRushOptions[this->bossRushIndex] - 1) < 0) {
-                gSaveContext.bossRushOptions[this->bossRushIndex] = BossRush_GetSettingOptionsAmount(this->bossRushIndex) - 1;
-            } else {
-                gSaveContext.bossRushOptions[this->bossRushIndex]--;
             }
         }
 
@@ -1495,32 +1480,34 @@ void FileChoose_UpdateRandomizerMenu(GameState* thisx) {
 
     if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
         if (this->randomizerIndex == 0) {
-            func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_FILE_SELECT, 0, 7, 1);
-            static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
-            static u8 linkName[] = { 0x15, 0x2C, 0x31, 0x2E, 0x3E, 0x3E, 0x3E, 0x3E };
-            this->prevConfigMode = this->configMode;
-            this->configMode = CM_ROTATE_TO_NAME_ENTRY;
-            this->logoAlpha = 0;
-            CVarSetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 1);
-            this->kbdButton = FS_KBD_BTN_NONE;
-            this->charPage = FS_CHAR_PAGE_ENG;
-            this->kbdX = 0;
-            this->kbdY = 0;
-            this->charIndex = 0;
-            this->charBgAlpha = 0;
-            this->newFileNameCharCount = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? 4 : 0;
-            this->nameEntryBoxPosX = 120;
-            this->nameEntryBoxAlpha = 0;
-            memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName,
-                   CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkName : &emptyName, 8);
-            return;
+            if (Randomizer_IsSeedGenerated() || Randomizer_IsSpoilerLoaded()) {
+                Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
+                static u8 linkName[] = { 0x15, 0x2C, 0x31, 0x2E, 0x3E, 0x3E, 0x3E, 0x3E };
+                this->prevConfigMode = this->configMode;
+                this->configMode = CM_ROTATE_TO_NAME_ENTRY;
+                this->logoAlpha = 0;
+                CVarSetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 1);
+                this->kbdButton = FS_KBD_BTN_NONE;
+                this->charPage = FS_CHAR_PAGE_ENG;
+                this->kbdX = 0;
+                this->kbdY = 0;
+                this->charIndex = 0;
+                this->charBgAlpha = 0;
+                this->newFileNameCharCount = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? 4 : 0;
+                this->nameEntryBoxPosX = 120;
+                this->nameEntryBoxAlpha = 0;
+                memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName,
+                       CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkName : &emptyName, 8);
+            } else {
+                Sfx_PlaySfxCentered(NA_SE_SY_OCARINA_ERROR);
+            }
+        } else if (this->randomizerIndex == 1) {
+            Randomizer_GenerateRandomizer();
+        } else if (this->randomizerIndex == 2) {
+            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+            Randomizer_ShowRandomizerMenu();
         }
-    }
-
-    // Handle executing options
-    if (CHECK_BTN_ALL(input->press.button, BTN_START) || CHECK_BTN_ALL(input->press.button, BTN_A)) {
-        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
-        
     }
 }
 
@@ -2268,6 +2255,30 @@ const char* FileChoose_GetShipOptionsTitleTexName(Language lang) {
     }
 }
 
+static const char* noRandoGeneratedText[] = {
+    // English
+    "No randomizer seed loaded.\nPlease generate one first"
+#if defined(__WIIU__) || defined(__SWITCH__)
+    ".",
+#else
+    ",\nor drop a spoiler log on the game window.",
+#endif
+    // German
+    "No randomizer seed loaded.\nPlease generate one first"
+#if defined(__WIIU__) || defined(__SWITCH__)
+    ".",
+#else
+    ",\nor drop a spoiler log on the game window.",
+#endif
+    // French
+    "Aucune Seed de Randomizer actuellement disponible.\nGénérez-en une dans les \"Randomizer Settings\""
+#if (defined(__WIIU__) || defined(__SWITCH__))
+    "."
+#else
+    "\nou glissez un spoilerlog sur la fenêtre du jeu."
+#endif
+};
+
 /**
  * Draw most window contents including buttons, labels, and icons.
  * Does not include anything from the keyboard and settings windows.
@@ -2444,47 +2455,54 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
     } else if (this->configMode == CM_RANDOMIZER_SETTINGS_MENU) {
 
         uint8_t textAlpha = this->randomizerUIAlpha;
+        uint8_t textColorR = 255;
+        uint8_t textColorG = 255;
         uint8_t textColorB = 0;
 
         textColorB = this->randomizerIndex == 0 ? 80 : 255;
-        Interface_DrawTextLine(this->state.gfxCtx, "Create New Randomizer", 70, (80 + 0), 255, 255, textColorB, textAlpha, 0.8f, true);
-
-        textColorB = this->randomizerIndex == 1 ? 80 : 255;
-        Interface_DrawTextLine(this->state.gfxCtx, "Generate New Seed", 70, (80 + 16), 255, 255, textColorB, textAlpha, 0.8f, true);
-
-        textColorB = this->randomizerIndex == 2 ? 80 : 255;
-        Interface_DrawTextLine(this->state.gfxCtx, "Open Randomizer Settings", 70, (80 + 32), 255, 255, textColorB, textAlpha, 0.8f, true);
-
-        textColorB = this->randomizerIndex == 3 ? 80 : 255;
-        Interface_DrawTextLine(this->state.gfxCtx, "Select Seed:", 70, (80 + 48), 255, 255, textColorB, textAlpha, 0.8f, true);
-
-        uint16_t finalKerning = Interface_DrawTextLine(this->state.gfxCtx, "10-10-10-10-10.json", 140, (80 + 48), 255, 255, 255, textAlpha, 0.8f, true);
-
-        if (this->randomizerIndex != 3) {
-            uint16_t textOffset = 16 * this->randomizerIndex;
-            Gfx_SetupDL_39Opa(this->state.gfxCtx);
-            gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-            gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowCursorTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 24, 0,
-                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
-                                G_TX_NOLOD);
-            FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.arrowColorR,
-                                   this->stickRightPrompt.arrowColorG, this->stickRightPrompt.arrowColorB, textAlpha,
-                                   62, (85 + textOffset), 0.42f, 0, 0, 1.0f, 1.0f);
-        } else {
-            Gfx_SetupDL_39Opa(this->state.gfxCtx);
-            gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-            gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowCursorTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 24, 0,
-                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
-                                G_TX_NOLOD);
-            FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.arrowColorR,
-                                    this->stickLeftPrompt.arrowColorG, this->stickLeftPrompt.arrowColorB,
-                                    textAlpha, 135, (85 + 48), 0.42f, 0, 0, -1.0f,
-                                    1.0f);
-            FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.arrowColorR,
-                                    this->stickRightPrompt.arrowColorG, this->stickRightPrompt.arrowColorB,
-                                    textAlpha, (146 + finalKerning),
-                                    (85 + 48), 0.42f, 0, 0, 1.0f, 1.0f);
+        if (!Randomizer_IsSeedGenerated() && !Randomizer_IsSpoilerLoaded() || generating) {
+            textColorR = textColorG = textColorB = 100;
         }
+        Interface_DrawTextLine(this->state.gfxCtx, "Start Randomizer", 70, (80 + 0), textColorR, textColorG, textColorB,
+                               textAlpha, 0.8f, true);
+
+        if (generating) {
+            textColorR = textColorG = textColorB = 100;
+        } else {
+            textColorR = textColorG = 255;
+            textColorB = this->randomizerIndex == 1 ? 80 : 255;
+        }
+        Interface_DrawTextLine(this->state.gfxCtx, "Generate New Randomizer Seed", 70, (80 + 16), textColorR,
+                               textColorG, textColorB, textAlpha, 0.8f, true);
+
+        if (generating) {
+            textColorR = textColorG = textColorB = 100;
+        } else {
+            textColorR = textColorG = 255;
+            textColorB = this->randomizerIndex == 2 ? 80 : 255;
+        }
+        Interface_DrawTextLine(this->state.gfxCtx, "Open Randomizer Settings", 70, (80 + 32), textColorR, textColorG,
+                               textColorB, textAlpha, 0.8f, true);
+
+        if (generating) {
+            Interface_DrawTextLine(this->state.gfxCtx, "Generating...", 70, (80 + 64), 255, 255, 255, textAlpha, 0.8f, true);
+        }
+
+        if (!Randomizer_IsSeedGenerated() && !Randomizer_IsSpoilerLoaded() && this->randomizerIndex == 0) {
+            Interface_DrawTextLine(this->state.gfxCtx, noRandoGeneratedText[gSaveContext.language], 70, (80 + 64), 240,
+                                   80, 80, textAlpha, 0.8f, true);
+        }
+        
+
+        uint16_t textOffset = 16 * this->randomizerIndex;
+        Gfx_SetupDL_39Opa(this->state.gfxCtx);
+        gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+        gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowCursorTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 24, 0,
+                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
+                            G_TX_NOLOD);
+        FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.arrowColorR,
+                                this->stickRightPrompt.arrowColorG, this->stickRightPrompt.arrowColorB, textAlpha,
+                                62, (85 + textOffset), 0.42f, 0, 0, 1.0f, 1.0f);
 
     } else if (this->configMode != CM_ROTATE_TO_NAME_ENTRY && this->configMode != CM_START_BOSS_RUSH_MENU &&
                this->configMode != CM_ROTATE_TO_BOSS_RUSH_MENU && this->configMode != CM_BOSS_RUSH_TO_QUEST &&
@@ -3324,77 +3342,6 @@ void FileChoose_DrawRandoSaveVersionWarning(GameState* thisx) {
     CLOSE_DISPS(this->state.gfxCtx);
 }
 
-static const char* noRandoGeneratedText[] = {
-    // English
-    "No Randomizer seed currently available.\nGenerate one in the Randomizer Settings"
-#if defined(__WIIU__) || defined(__SWITCH__)
-    ".",
-#else
-    ",\nor drop a spoiler log on the game window.",
-#endif
-    // German
-    "No Randomizer seed currently available.\nGenerate one in the Randomizer Settings"
-#if defined(__WIIU__) || defined(__SWITCH__)
-    ".",
-#else
-    ",\nor drop a spoiler log on the game window.",
-#endif
-    // French
-    "Aucune Seed de Randomizer actuellement disponible.\nGénérez-en une dans les \"Randomizer Settings\""
-#if (defined(__WIIU__) || defined(__SWITCH__))
-    "."
-#else
-    "\nou glissez un spoilerlog sur la fenêtre du jeu."
-#endif
-};
-
-void FileChoose_DrawNoRandoGeneratedWarning(GameState* thisx) {
-    FileChooseContext* this = (FileChooseContext*)thisx;
-
-    OPEN_DISPS(this->state.gfxCtx);
-
-    // Draw rando seed warning when build version doesn't match for Major or Minor number
-    if (this->configMode == CM_QUEST_MENU && this->questType[this->buttonIndex] == QUEST_RANDOMIZER && !(Randomizer_IsSeedGenerated() || Randomizer_IsSpoilerLoaded())) {
-        uint8_t textAlpha = 225;
-        uint8_t textboxAlpha = 170;
-        float textboxScale = 0.7f;
-
-        // float math to get a S5.10 number that will squish the texture
-        float texCoordinateHeightF = 512 / textboxScale;
-        uint16_t texCoordinateHeightScale = texCoordinateHeightF + 0.5f;
-        float texCoordinateWidthF = 512 / textboxScale;
-        uint16_t texCoordinateWidthScale = texCoordinateWidthF + 0.5f;
-        uint16_t textboxWidth = 256 * textboxScale;
-        uint16_t textboxHeight = 64 * textboxScale;
-        uint8_t leftOffset = 72;
-        uint8_t bottomOffset = 84;
-        uint8_t textVerticalOffset;
-#if defined(__WIIU__) || defined(__SWITCH__)
-        textVerticalOffset = 127; // 2 lines
-#else
-        textVerticalOffset = 122; // 3 lines
-#endif
-
-        Gfx_SetupDL_39Opa(this->state.gfxCtx);
-        gDPSetAlphaDither(POLY_OPA_DISP++, G_AD_DISABLE);
-        gSPClearGeometryMode(POLY_OPA_DISP++, G_SHADE);
-        gDPSetCombineLERP(POLY_OPA_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0,
-                          0, PRIMITIVE, 0);
-        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0, 0, 0, textboxAlpha);
-        gDPLoadTextureBlock_4b(POLY_OPA_DISP++, gDefaultMessageBackgroundTex, G_IM_FMT_I, 128, 64, 0, G_TX_MIRROR,
-                               G_TX_MIRROR, 7, 0, G_TX_NOLOD, G_TX_NOLOD);
-
-        gSPTextureRectangle(POLY_OPA_DISP++, leftOffset << 2, (SCREEN_HEIGHT - bottomOffset - textboxHeight) << 2,
-                            (textboxWidth + leftOffset) << 2, (SCREEN_HEIGHT - bottomOffset) << 2, G_TX_RENDERTILE, 0, 0,
-                            texCoordinateWidthScale << 1, texCoordinateHeightScale << 1);
-
-        Interface_DrawTextLine(this->state.gfxCtx, noRandoGeneratedText[gSaveContext.language], 80, textVerticalOffset,
-                               255, 255, 255, textAlpha, 0.6f, 1);
-    }
-    
-    CLOSE_DISPS(this->state.gfxCtx);
-}
-
 void FileChoose_Main(GameState* thisx) {
     static void* controlsTextures[] = {
         gFileSelControlsENGTex,
@@ -3588,8 +3535,6 @@ void FileChoose_Main(GameState* thisx) {
 
     // Draw rando save version warning over the controls text, but before the screen fill fade out
     FileChoose_DrawRandoSaveVersionWarning(&this->state);
-
-    FileChoose_DrawNoRandoGeneratedWarning(&this->state);
 
     gDPPipeSync(POLY_OPA_DISP++);
     gSPDisplayList(POLY_OPA_DISP++, sScreenFillSetupDL);

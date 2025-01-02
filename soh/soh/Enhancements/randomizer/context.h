@@ -104,6 +104,5 @@ class Context {
     std::shared_ptr<Kaleido> mKaleido;
     bool mSeedGenerated = false;
     bool mSpoilerLoaded = false;
-    bool mPlandoLoaded = false;
 };
 } // namespace Rando
