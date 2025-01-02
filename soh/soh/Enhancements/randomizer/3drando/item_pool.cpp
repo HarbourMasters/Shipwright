@@ -665,8 +665,8 @@ static void SetScarceItemPool() {
   ReplaceMaxItem(RG_BOMBCHU_20, 0);
   ReplaceMaxItem(RG_PROGRESSIVE_MAGIC_METER, 1);
   ReplaceMaxItem(RG_DOUBLE_DEFENSE, 0);
-  ReplaceMaxItem(RG_PROGRESSIVE_STICK_UPGRADE, 1);
-  ReplaceMaxItem(RG_PROGRESSIVE_NUT_UPGRADE, 1);
+  ReplaceMaxItem(RG_PROGRESSIVE_STICK_UPGRADE, ctx->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG) ? 2 : 1);
+  ReplaceMaxItem(RG_PROGRESSIVE_NUT_UPGRADE, ctx->GetOption(RSK_SHUFFLE_DEKU_NUT_BAG) ? 2 : 1);
   ReplaceMaxItem(RG_PROGRESSIVE_BOW, 2);
   ReplaceMaxItem(RG_PROGRESSIVE_SLINGSHOT, 2);
   ReplaceMaxItem(RG_PROGRESSIVE_BOMB_BAG, 2);
@@ -682,8 +682,8 @@ static void SetMinimalItemPool() {
   ReplaceMaxItem(RG_NAYRUS_LOVE, 0);
   ReplaceMaxItem(RG_PROGRESSIVE_MAGIC_METER, 1);
   ReplaceMaxItem(RG_DOUBLE_DEFENSE, 0);
-  ReplaceMaxItem(RG_PROGRESSIVE_STICK_UPGRADE, 0);
-  ReplaceMaxItem(RG_PROGRESSIVE_NUT_UPGRADE, 0);
+  ReplaceMaxItem(RG_PROGRESSIVE_STICK_UPGRADE, ctx->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG) ? 1 : 0);
+  ReplaceMaxItem(RG_PROGRESSIVE_NUT_UPGRADE, ctx->GetOption(RSK_SHUFFLE_DEKU_NUT_BAG) ? 1 : 0);
   ReplaceMaxItem(RG_PROGRESSIVE_BOW, 1);
   ReplaceMaxItem(RG_PROGRESSIVE_SLINGSHOT, 1);
   ReplaceMaxItem(RG_PROGRESSIVE_BOMB_BAG, 1);
