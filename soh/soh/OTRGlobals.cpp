@@ -1902,7 +1902,7 @@ extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSi
 }
 
 extern "C" void Randomizer_ParseSpoiler(const char* fileLoc) {
-    OTRGlobals::Instance->gRandoContext->ParseSpoiler(fileLoc, CVarGetInteger(CVAR_GENERAL("PlandoMode"), 0));
+    OTRGlobals::Instance->gRandoContext->ParseSpoiler(fileLoc);
 }
 
 extern "C" void Randomizer_LoadHintMessages() {
@@ -1993,14 +1993,6 @@ extern "C" GetItemEntry GetItemMystery() {
     return { ITEM_NONE_FE, 0, 0, 0, 0, 0, 0, ITEM_NONE_FE, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_JUNK, NULL, MOD_RANDOMIZER, (CustomDrawFunc)Randomizer_DrawMysteryItem };
 }
 
-extern "C" void Randomizer_GenerateSeed() {
-    std::string seed = "";
-    if (OTRGlobals::Instance->gRandoContext->IsSpoilerLoaded()) {
-        seed = OTRGlobals::Instance->gRandoContext->GetSettings()->GetSeedString();
-    }
-    GenerateRandomizer(seed);
-}
-
 extern "C" uint8_t Randomizer_IsSeedGenerated() {
     return OTRGlobals::Instance->gRandoContext->IsSeedGenerated() ? 1 : 0;
 }
@@ -2015,14 +2007,6 @@ extern "C" uint8_t Randomizer_IsSpoilerLoaded() {
 
 extern "C" void Randomizer_SetSpoilerLoaded(bool spoilerLoaded) {
     OTRGlobals::Instance->gRandoContext->SetSpoilerLoaded(spoilerLoaded);
-}
-
-extern "C" uint8_t Randomizer_IsPlandoLoaded() {
-    return OTRGlobals::Instance->gRandoContext->IsPlandoLoaded() ? 1 : 0;
-}
-
-extern "C" void Randomizer_SetPlandoLoaded(bool plandoLoaded) {
-    OTRGlobals::Instance->gRandoContext->SetPlandoLoaded(plandoLoaded);
 }
 
 CustomMessage Randomizer_GetCustomGetItemMessage(Player* player) {

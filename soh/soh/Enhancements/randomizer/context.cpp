@@ -229,14 +229,6 @@ void Context::SetSpoilerLoaded(const bool spoilerLoaded) {
     mSpoilerLoaded = spoilerLoaded;
 }
 
-bool Context::IsPlandoLoaded() const {
-    return mPlandoLoaded;
-}
-
-void Context::SetPlandoLoaded(const bool plandoLoaded) {
-    mPlandoLoaded = plandoLoaded;
-}
-
 GetItemEntry Context::GetFinalGIEntry(const RandomizerCheck rc, const bool checkObtainability, const GetItemID ogItemId) {
     const auto itemLoc = GetItemLocation(rc);
     if (itemLoc->GetPlacedRandomizerGet() == RG_NONE) {
@@ -279,7 +271,7 @@ std::string sanitize(std::string stringValue) {
     return stringValue;
 }
 
-void Context::ParseSpoiler(const char* spoilerFileName, const bool plandoMode) {
+void Context::ParseSpoiler(const char* spoilerFileName) {
     std::ifstream spoilerFileStream(sanitize(spoilerFileName));
     if (!spoilerFileStream) {
         return;
@@ -292,14 +284,12 @@ void Context::ParseSpoiler(const char* spoilerFileName, const bool plandoMode) {
         spoilerFileStream >> spoilerFileJson;
         ParseHashIconIndexesJson(spoilerFileJson);
         mSettings->ParseJson(spoilerFileJson);
-        if (plandoMode) {
-            ParseItemLocationsJson(spoilerFileJson);
-            ParseHintJson(spoilerFileJson);
-            mEntranceShuffler->ParseJson(spoilerFileJson);
-            mDungeons->ParseJson(spoilerFileJson);
-            mTrials->ParseJson(spoilerFileJson);
-            mPlandoLoaded = true;
-        }
+        ParseItemLocationsJson(spoilerFileJson);
+        ParseHintJson(spoilerFileJson);
+        mEntranceShuffler->ParseJson(spoilerFileJson);
+        mDungeons->ParseJson(spoilerFileJson);
+        mTrials->ParseJson(spoilerFileJson);
+        mPlandoLoaded = true;
         mSpoilerLoaded = true;
         mSeedGenerated = false;
     } catch (...) {
