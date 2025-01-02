@@ -163,6 +163,12 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
               RandomizerCheckObjects::AreaIsOverworld(location.GetArea())) ||
              ((CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleTokens"), RO_TOKENSANITY_OFF) == RO_TOKENSANITY_DUNGEONS) &&
               RandomizerCheckObjects::AreaIsDungeon(location.GetArea()))) &&
+            (location.GetRCType() != RCTYPE_FREESTANDING ||
+             (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleFreestanding"), RO_FREESTANDING_OFF) == RO_FREESTANDING_ALL) ||
+             ((CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleFreestanding"), RO_FREESTANDING_OFF) == RO_FREESTANDING_OVERWORLD) &&
+              RandomizerCheckObjects::AreaIsOverworld(location.GetArea())) ||
+             ((CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleFreestanding"), RO_FREESTANDING_OFF) == RO_FREESTANDING_DUNGEONS) &&
+              RandomizerCheckObjects::AreaIsDungeon(location.GetArea()))) &&
             (location.GetRCType() != RCTYPE_BEEHIVE || CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleBeehives"), RO_GENERIC_NO)) &&
             (location.GetRCType() != RCTYPE_COW || CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleCows"), RO_GENERIC_NO)) &&
             (location.GetRCType() != RCTYPE_POT || CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShufflePots"), RO_GENERIC_NO)) &&
