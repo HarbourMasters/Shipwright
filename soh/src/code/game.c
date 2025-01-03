@@ -468,7 +468,6 @@ void GameState_Destroy(GameState* gameState) {
 
     osSyncPrintf("game デストラクタ終了\n"); // "game destructor end"
 
-    // Performing clear skeletons before unload resources fixes an actor heap corruption crash due to the skeleton patching system.
     PlayState* play = (PlayState*)gameState;
     static s16 sceneNum = -1;
 

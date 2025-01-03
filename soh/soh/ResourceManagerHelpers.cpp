@@ -639,16 +639,14 @@ extern "C" void ResourceMgr_LoadPersistentAltAssets() {
         // Title screen music
         Ship::Context::GetInstance()->GetResourceManager()->LoadResourceAsync("audio/sequences/030_Title_Theme");
         Ship::Context::GetInstance()->GetResourceManager()->LoadResourceAsync("audio/fonts/06_Title_Theme");
-    }
-    else if (skipTitle && fastFile == 4) {
+    } else if (skipTitle && fastFile == 4) {
         Ship::Context::GetInstance()->GetResourceManager()->LoadResourcesAsync({
             {"alt/overlays/ovl_file_choose/*", "alt/textures/title_static/*", "alt/objects/gameplay_keep/*", "alt/textures/vr_fine3*", "alt/textures/vr_fine0*"},
             {}, 0, nullptr});
         // File Select music
         Ship::Context::GetInstance()->GetResourceManager()->LoadResourceAsync("audio/sequences/087_File_Select");
         Ship::Context::GetInstance()->GetResourceManager()->LoadResourceAsync("audio/fonts/09_Fairy_Fountain");
-    }
-    else if (skipTitle && fastFile < 3) {
+    } else if (skipTitle && fastFile < 3) {
         ResourceLoadDirectoryAsync("alt/textures/icon*");
         ResourceLoadDirectoryAsync("alt/textures/do_action_static/*");
         ResourceLoadDirectoryAsync("alt/textures/map*");
@@ -663,16 +661,13 @@ extern "C" void ResourceMgr_SceneInitSkybox() {
         ResourceMgr_LoadSkyBox(TOD_Sunrise, false);
         ResourceMgr_LoadSkyBox(TOD_Night, false);
         ResourceMgr_LoadSkyBox(TOD_Day, false);
-    }
-    else if (gSaveContext.dayTime > DAY_BEGINS && gSaveContext.dayTime < SUNSET_BEGINS) {
+    } else if (gSaveContext.dayTime > DAY_BEGINS && gSaveContext.dayTime < SUNSET_BEGINS) {
         ResourceMgr_LoadSkyBox(TOD_Day, false);
-    }
-    else if (gSaveContext.dayTime > SUNSET_BEGINS && gSaveContext.dayTime < NIGHT_BEGINS) {
+    } else if (gSaveContext.dayTime > SUNSET_BEGINS && gSaveContext.dayTime < NIGHT_BEGINS) {
         ResourceMgr_LoadSkyBox(TOD_Day, false);
         ResourceMgr_LoadSkyBox(TOD_Sunset, false);
         ResourceMgr_LoadSkyBox(TOD_Night, false);
-    }
-    else if (gSaveContext.dayTime > NIGHT_BEGINS || gSaveContext.dayTime < SUNRISE_BEGINS) {
+    } else if (gSaveContext.dayTime > NIGHT_BEGINS || gSaveContext.dayTime < SUNRISE_BEGINS) {
         ResourceMgr_LoadSkyBox(TOD_Night, false);
     }
 }
@@ -689,20 +684,17 @@ extern "C" void ResourceMgr_CheckLoadSkybox(bool fileSelect) {
             lastSkyboxLoad = 0;
             ResourceMgr_LoadSkyBox(TOD_Sunrise, fileSelect);
         }
-    }
-    else if (gSaveContext.skyboxTime > skyboxLoadTimes[fileSelect][TOD_Day] && gSaveContext.skyboxTime < (skyboxLoadTimes[fileSelect][TOD_Day] + 800)) {
+    } else if (gSaveContext.skyboxTime > skyboxLoadTimes[fileSelect][TOD_Day] && gSaveContext.skyboxTime < (skyboxLoadTimes[fileSelect][TOD_Day] + 800)) {
         if (lastSkyboxLoad != 1) {
             lastSkyboxLoad = 1;
             ResourceMgr_LoadSkyBox(TOD_Day, fileSelect);
         }
-    }
-    else if (gSaveContext.skyboxTime > skyboxLoadTimes[fileSelect][TOD_Sunset] && gSaveContext.skyboxTime < (skyboxLoadTimes[fileSelect][TOD_Sunset] + 800)) {
+    } else if (gSaveContext.skyboxTime > skyboxLoadTimes[fileSelect][TOD_Sunset] && gSaveContext.skyboxTime < (skyboxLoadTimes[fileSelect][TOD_Sunset] + 800)) {
         if (lastSkyboxLoad != 2) {
             lastSkyboxLoad = 2;
             ResourceMgr_LoadSkyBox(TOD_Sunset, fileSelect);
         }
-    }
-    else if (gSaveContext.skyboxTime > skyboxLoadTimes[fileSelect][TOD_Night] && gSaveContext.skyboxTime < (skyboxLoadTimes[fileSelect][TOD_Night] + 800)) {
+    } else if (gSaveContext.skyboxTime > skyboxLoadTimes[fileSelect][TOD_Night] && gSaveContext.skyboxTime < (skyboxLoadTimes[fileSelect][TOD_Night] + 800)) {
         if (lastSkyboxLoad != 3) {
             lastSkyboxLoad = 3;
             ResourceMgr_LoadSkyBox(TOD_Night, fileSelect);
@@ -714,20 +706,17 @@ extern "C" void ResourceMgr_CheckLoadSkybox(bool fileSelect) {
             lastSkyboxUnload = 0;
             ResourceMgr_UnloadSkyBox(TOD_Sunrise);
         }
-    }
-    else if (gSaveContext.skyboxTime > skyboxUnloadTimes[fileSelect][TOD_Day] && gSaveContext.skyboxTime < (skyboxUnloadTimes[fileSelect][TOD_Day] + 800)) {
+    } else if (gSaveContext.skyboxTime > skyboxUnloadTimes[fileSelect][TOD_Day] && gSaveContext.skyboxTime < (skyboxUnloadTimes[fileSelect][TOD_Day] + 800)) {
         if (lastSkyboxUnload != 1) {
             lastSkyboxUnload = 1;
             ResourceMgr_UnloadSkyBox(TOD_Day);
         }
-    }
-    else if (gSaveContext.skyboxTime > skyboxUnloadTimes[fileSelect][TOD_Sunset] && gSaveContext.skyboxTime < (skyboxUnloadTimes[fileSelect][TOD_Sunset] + 800)) {
+    } else if (gSaveContext.skyboxTime > skyboxUnloadTimes[fileSelect][TOD_Sunset] && gSaveContext.skyboxTime < (skyboxUnloadTimes[fileSelect][TOD_Sunset] + 800)) {
         if (lastSkyboxUnload != 2) {
             lastSkyboxUnload = 2;
             ResourceMgr_UnloadSkyBox(TOD_Sunset);
         }
-    }
-    else if (gSaveContext.skyboxTime > skyboxUnloadTimes[fileSelect][TOD_Night] && gSaveContext.skyboxTime < (skyboxUnloadTimes[fileSelect][TOD_Night] + 800)) {
+    } else if (gSaveContext.skyboxTime > skyboxUnloadTimes[fileSelect][TOD_Night] && gSaveContext.skyboxTime < (skyboxUnloadTimes[fileSelect][TOD_Night] + 800)) {
         if (lastSkyboxUnload != 3) {
             lastSkyboxUnload = 3;
             ResourceMgr_UnloadSkyBox(TOD_Night);
@@ -754,8 +743,7 @@ extern "C" void ResourceMgr_Init() {
                                     std::string objectName = gObjectTable[objectId].fileName;
                                     sceneObjects[sceneNum].insert(objectName);
                                 }
-                            }
-                            else if (roomSceneCmd->cmdId == SOH::SceneCommandID::SetActorList) {
+                            } else if (roomSceneCmd->cmdId == SOH::SceneCommandID::SetActorList) {
                                 auto setActorCmd = std::dynamic_pointer_cast<SOH::SetActorList>(roomSceneCmd);
                                 if (setActorCmd->numActors > 0) {
                                     for (uint16_t i = 0; i < setActorCmd->numActors; i++) {
