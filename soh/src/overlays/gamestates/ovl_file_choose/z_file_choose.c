@@ -17,6 +17,7 @@
 #include "soh_assets.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
+#include "soh/Enhancements/FileSelectEnhancements.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
@@ -2255,30 +2256,6 @@ const char* FileChoose_GetShipOptionsTitleTexName(Language lang) {
     }
 }
 
-static const char* noRandoGeneratedText[] = {
-    // English
-    "No randomizer seed loaded.\nPlease generate one first"
-#if defined(__WIIU__) || defined(__SWITCH__)
-    ".",
-#else
-    ",\nor drop a spoiler log on the game window.",
-#endif
-    // German
-    "No randomizer seed loaded.\nPlease generate one first"
-#if defined(__WIIU__) || defined(__SWITCH__)
-    ".",
-#else
-    ",\nor drop a spoiler log on the game window.",
-#endif
-    // French
-    "Aucune Seed de Randomizer actuellement disponible.\nGénérez-en une dans les \"Randomizer Settings\""
-#if (defined(__WIIU__) || defined(__SWITCH__))
-    "."
-#else
-    "\nou glissez un spoilerlog sur la fenêtre du jeu."
-#endif
-};
-
 /**
  * Draw most window contents including buttons, labels, and icons.
  * Does not include anything from the keyboard and settings windows.
@@ -2293,7 +2270,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
     s16 pad;
     char* tex;
 
-    switch (this->configMode) { 
+    switch (this->configMode) {
         case CM_QUEST_MENU:
         case CM_ROTATE_TO_NAME_ENTRY:
         case CM_START_QUEST_MENU:
@@ -2455,44 +2432,40 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
     } else if (this->configMode == CM_RANDOMIZER_SETTINGS_MENU) {
 
         uint8_t textAlpha = this->randomizerUIAlpha;
-        uint8_t textColorR = 255;
-        uint8_t textColorG = 255;
-        uint8_t textColorB = 0;
 
-        textColorB = this->randomizerIndex == 0 ? 80 : 255;
-        if (!Randomizer_IsSeedGenerated() && !Randomizer_IsSpoilerLoaded() || generating) {
-            textColorR = textColorG = textColorB = 100;
+        for (uint8_t index = 0; index <= RSM_OPEN_RANDOMIZER_SETTINGS; index++) {
+            uint8_t textColorR = 255;
+            uint8_t textColorG = 255;
+            uint8_t textColorB = 255;
+
+            // If current index is the selected one, make the text yellow.
+            if (this->randomizerIndex == index) {
+                textColorB = 80;
+            }
+
+            // If no randomizer is loaded and text is "start randomizer" or when a seed is generating, make all options gray.
+            if ((index == RSM_START_RANDOMIZER && !Randomizer_IsSeedGenerated() && !Randomizer_IsSpoilerLoaded()) || generating) {
+                textColorR = textColorG = textColorB = 100;
+            }
+
+            Interface_DrawTextLine(this->state.gfxCtx, SoHFileSelect_GetSettingText(index, gSaveContext.language), 70,
+                                   (80 + (index * 16)), textColorR, textColorG, textColorB, textAlpha, 0.8f, true);
         }
-        Interface_DrawTextLine(this->state.gfxCtx, "Start Randomizer", 70, (80 + 0), textColorR, textColorG, textColorB,
-                               textAlpha, 0.8f, true);
 
+        // Show text to indicate randomizer is being generated.
         if (generating) {
-            textColorR = textColorG = textColorB = 100;
-        } else {
-            textColorR = textColorG = 255;
-            textColorB = this->randomizerIndex == 1 ? 80 : 255;
-        }
-        Interface_DrawTextLine(this->state.gfxCtx, "Generate New Randomizer Seed", 70, (80 + 16), textColorR,
-                               textColorG, textColorB, textAlpha, 0.8f, true);
-
-        if (generating) {
-            textColorR = textColorG = textColorB = 100;
-        } else {
-            textColorR = textColorG = 255;
-            textColorB = this->randomizerIndex == 2 ? 80 : 255;
-        }
-        Interface_DrawTextLine(this->state.gfxCtx, "Open Randomizer Settings", 70, (80 + 32), textColorR, textColorG,
-                               textColorB, textAlpha, 0.8f, true);
-
-        if (generating) {
-            Interface_DrawTextLine(this->state.gfxCtx, "Generating...", 70, (80 + 64), 255, 255, 255, textAlpha, 0.8f, true);
+            Interface_DrawTextLine(this->state.gfxCtx,
+                                   SoHFileSelect_GetSettingText(RSM_GENERATING, gSaveContext.language), 70,
+                                   (80 + 64), 255, 255, 255, textAlpha, 0.8f, true);
         }
 
-        if (!Randomizer_IsSeedGenerated() && !Randomizer_IsSpoilerLoaded() && this->randomizerIndex == 0) {
-            Interface_DrawTextLine(this->state.gfxCtx, noRandoGeneratedText[gSaveContext.language], 70, (80 + 64), 240,
-                                   80, 80, textAlpha, 0.8f, true);
+        // If no randomizer is generated and "start randomizer" is selected, show text to explain why user can't start the randomizer.
+        if (!Randomizer_IsSeedGenerated() && !Randomizer_IsSpoilerLoaded() && this->randomizerIndex == RSM_START_RANDOMIZER) {
+            Interface_DrawTextLine(this->state.gfxCtx,
+                                   SoHFileSelect_GetSettingText(RSM_NO_RANDOMIZER_GENERATED, gSaveContext.language), 70,
+                                   (80 + 64),
+                                   240, 80, 80, textAlpha, 0.8f, true);
         }
-        
 
         uint16_t textOffset = 16 * this->randomizerIndex;
         Gfx_SetupDL_39Opa(this->state.gfxCtx);
