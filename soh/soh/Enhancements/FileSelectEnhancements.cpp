@@ -64,6 +64,6 @@ std::array<std::string, LANGUAGE_MAX> RandomizerSettingsMenuText[RSM_MAX] = {
     },
 };
 
-const char* SoHFileSelect_GetSettingText(uint8_t optionIndex, uint8_t language) {
+const char* SohFileSelect_GetSettingText(uint8_t optionIndex, uint8_t language) {
     return RandomizerSettingsMenuText[optionIndex][language].c_str();
 }

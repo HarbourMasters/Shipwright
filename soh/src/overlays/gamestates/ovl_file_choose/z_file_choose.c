@@ -1315,7 +1315,6 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
             this->prevConfigMode = this->configMode;
             this->configMode = CM_ROTATE_TO_NAME_ENTRY;
             this->logoAlpha = 0;
-            CVarSetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
             this->kbdButton = FS_KBD_BTN_NONE;
             this->charPage = FS_CHAR_PAGE_ENG;
             this->kbdX = 0;
@@ -1457,15 +1456,15 @@ void FileChoose_UpdateRandomizerMenu(GameState* thisx) {
         // Move down
         if (this->stickRelY < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN))) {
             // When selecting past the last option, cycle back to the first option.
-            if ((this->randomizerIndex + 1) > 2) {
-                this->randomizerIndex = 0;
+            if ((this->randomizerIndex + 1) > RSM_OPEN_RANDOMIZER_SETTINGS) {
+                this->randomizerIndex = RSM_START_RANDOMIZER;
             } else {
                 this->randomizerIndex++;
             }
         } else if (this->stickRelY > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DUP))) {
             // When selecting past the first option, cycle back to the last option and offset the list to view it properly.
-            if ((this->randomizerIndex - 1) < 0) {
-                this->randomizerIndex = 2;
+            if ((this->randomizerIndex - 1) < RSM_START_RANDOMIZER) {
+                this->randomizerIndex = RSM_OPEN_RANDOMIZER_SETTINGS;
             } else {
                 this->randomizerIndex--;
             }
@@ -1480,7 +1479,7 @@ void FileChoose_UpdateRandomizerMenu(GameState* thisx) {
     }
 
     if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
-        if (this->randomizerIndex == 0) {
+        if (this->randomizerIndex == RSM_START_RANDOMIZER) {
             if (Randomizer_IsSeedGenerated() || Randomizer_IsSpoilerLoaded()) {
                 Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
@@ -1503,9 +1502,9 @@ void FileChoose_UpdateRandomizerMenu(GameState* thisx) {
             } else {
                 Sfx_PlaySfxCentered(NA_SE_SY_OCARINA_ERROR);
             }
-        } else if (this->randomizerIndex == 1) {
+        } else if (this->randomizerIndex == RSM_GENERATE_RANDOMIZER) {
             Randomizer_GenerateRandomizer();
-        } else if (this->randomizerIndex == 2) {
+        } else if (this->randomizerIndex == RSM_OPEN_RANDOMIZER_SETTINGS) {
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             Randomizer_ShowRandomizerMenu();
         }
@@ -2244,7 +2243,7 @@ const char* FileChoose_GetQuestChooseTitleTexName(Language lang) {
     }
 }
 
-const char* FileChoose_GetShipOptionsTitleTexName(Language lang) {
+const char* FileChoose_GetSohOptionsTitleTexName(Language lang) {
     switch (lang) {
         case LANGUAGE_ENG:
         default:
@@ -2430,7 +2429,6 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
             }
         }
     } else if (this->configMode == CM_RANDOMIZER_SETTINGS_MENU) {
-
         uint8_t textAlpha = this->randomizerUIAlpha;
 
         for (uint8_t index = 0; index <= RSM_OPEN_RANDOMIZER_SETTINGS; index++) {
@@ -2448,21 +2446,21 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                 textColorR = textColorG = textColorB = 100;
             }
 
-            Interface_DrawTextLine(this->state.gfxCtx, SoHFileSelect_GetSettingText(index, gSaveContext.language), 70,
+            Interface_DrawTextLine(this->state.gfxCtx, SohFileSelect_GetSettingText(index, gSaveContext.language), 70,
                                    (80 + (index * 16)), textColorR, textColorG, textColorB, textAlpha, 0.8f, true);
         }
 
         // Show text to indicate randomizer is being generated.
         if (generating) {
             Interface_DrawTextLine(this->state.gfxCtx,
-                                   SoHFileSelect_GetSettingText(RSM_GENERATING, gSaveContext.language), 70,
+                                   SohFileSelect_GetSettingText(RSM_GENERATING, gSaveContext.language), 70,
                                    (80 + 64), 255, 255, 255, textAlpha, 0.8f, true);
         }
 
         // If no randomizer is generated and "start randomizer" is selected, show text to explain why user can't start the randomizer.
         if (!Randomizer_IsSeedGenerated() && !Randomizer_IsSpoilerLoaded() && this->randomizerIndex == RSM_START_RANDOMIZER) {
             Interface_DrawTextLine(this->state.gfxCtx,
-                                   SoHFileSelect_GetSettingText(RSM_NO_RANDOMIZER_GENERATED, gSaveContext.language), 70,
+                                   SohFileSelect_GetSettingText(RSM_NO_RANDOMIZER_GENERATED, gSaveContext.language), 70,
                                    (80 + 64),
                                    240, 80, 80, textAlpha, 0.8f, true);
         }

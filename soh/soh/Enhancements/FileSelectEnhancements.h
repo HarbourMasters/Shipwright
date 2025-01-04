@@ -6,7 +6,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-const char* SoHFileSelect_GetSettingText(u8 optionIndex, u8 language);
+const char* SohFileSelect_GetSettingText(u8 optionIndex, u8 language);
 #ifdef __cplusplus
 };
 #endif
