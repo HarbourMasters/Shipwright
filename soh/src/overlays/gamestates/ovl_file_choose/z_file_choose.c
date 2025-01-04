@@ -2286,7 +2286,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
         case CM_START_RANDOMIZER_SETTINGS_MENU:
         case CM_RANDOMIZER_SETTINGS_MENU_TO_QUEST:
         case CM_NAME_ENTRY_TO_RANDOMIZER_SETTINGS_MENU:
-            tex = FileChoose_GetShipOptionsTitleTexName(gSaveContext.language);
+            tex = FileChoose_GetSohOptionsTitleTexName(gSaveContext.language);
             break;
         default:
             tex = sTitleLabels[gSaveContext.language][this->titleLabel];
