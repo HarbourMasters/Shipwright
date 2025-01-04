@@ -1257,15 +1257,15 @@ void LoadSettings() {
 
     if (IS_RANDO) {
         switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_FREESTANDING)) {
-            case RO_FREESTANDING_ALL:
+            case RO_SHUFFLE_FREESTANDING_ALL:
                 showOverworldFreestanding = true;
                 showDungeonFreestanding = true;
                 break;
-            case RO_FREESTANDING_OVERWORLD:
+            case RO_SHUFFLE_FREESTANDING_OVERWORLD:
                 showOverworldFreestanding = true;
                 showDungeonFreestanding = false;
                 break;
-            case RO_FREESTANDING_DUNGEONS:
+            case RO_SHUFFLE_FREESTANDING_DUNGEONS:
                 showOverworldFreestanding = false;
                 showDungeonFreestanding = true;
                 break;
