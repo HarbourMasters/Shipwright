@@ -2493,90 +2493,94 @@ void StaticData::HintTable_Init() {
     /*--------------------------
     |      BOSS HINT TEXT      |
     ---------------------------*/
-//RANDOTODO check the beginning and end on the french and german translations
+//RANDOTODO check the beginning and end on the french translations
     hintTextTable[RHT_QUEEN_GOHMA] = HintText(CustomMessage("They say that #Queen Gohma# holds #[[1]]#.",
-                                                 /*german*/ "Man erzählt sich, daß #Königin Gohma# hält #[[1]]# lehre.",
+                                                 /*german*/ "Man erzählt sich, daß #Königin Gohma# #[[1]]# hielte.",
                                                  /*french*/ "Selon moi, la #Reine Gohma# possède #[[1]]#.", {QM_RED, QM_GREEN}),
                                               // /*spanish*/la #Reina Goma# porta #[[1]]#.
                                               {},
                                               {CustomMessage("They say that the #Parasitic Armored Arachnid# holds #[[1]]#.",
-                                                  /*german*/ "Man erzählt sich, daß die #gepanzerte parasitäre Spinne# hält #[[1]]# lehre.",
+                                                  /*german*/ "Man erzählt sich, daß die #gepanzerte parasitäre Spinne# #[[1]]# hielte.",
                                                   /*french*/ "Selon moi, le #monstre insectoïde géant# possède #[[1]]#.", {QM_RED, QM_GREEN})});
                                                // /*spanish*/el #arácnido parasitario acorazado# porta #[[1]]#.
 
     hintTextTable[RHT_KING_DODONGO] = HintText(CustomMessage("They say that #King Dodongo# holds #[[1]]#.",
-                                                  /*german*/ "Man erzählt sich, daß #König Dodongo# hält #[[1]]# lehre.",
+                                                  /*german*/ "Man erzählt sich, daß #König Dodongo# #[[1]]# hielte.",
                                                   /*french*/ "Selon moi, le #Roi Dodongo# possède #[[1]]#.", {QM_RED, QM_GREEN}),
                                                // /*spanish*/el #Rey Dodongo# porta #[[1]]#.
                                                {},
                                                {CustomMessage("They say that the #Infernal Dinosaur# holds #[[1]]#.",
-                                                   /*german*/ "Man erzählt sich, daß der #infernalische Dinosaurier# hält #[[1]]# lehre.",
+                                                   /*german*/ "Man erzählt sich, daß der #infernalische Dinosaurier# #[[1]]# hielte.",
                                                    /*french*/ "Selon moi, le #dinosaure infernal# possède #[[1]]#.", {QM_RED, QM_GREEN})});
                                                 // /*spanish*/el #dinosaurio infernal# porta #[[1]]#.
 
     hintTextTable[RHT_BARINADE] = HintText(CustomMessage("They say that #Barinade# holds #[[1]]#.",
-                                              /*german*/ "Man erzählt sich, daß #Barinade# hält #[[1]]# lehre.",
+                                              /*german*/ "Man erzählt sich, daß #Barinade# #[[1]]# hielte.",
                                               /*french*/ "Selon moi, #Barinade# possède #[[1]]#.", {QM_RED, QM_GREEN}),
                                            // /*spanish*/#Barinade# porta #[[1]]#.
                                            {},
                                            {CustomMessage("They say that the #Bio-Electric Anemone# holds #[[1]]#.",
-                                               /*german*/ "Man erzählt sich, daß die #bioelektrische Anemone# hält #[[1]]# lehre.",
+                                               /*german*/ "Man erzählt sich, daß die #bioelektrische Anemone# #[[1]]# hielte.",
                                                /*french*/ "Selon moi, l'#anémone bioélectrique# possède #[[1]]#.", {QM_RED, QM_GREEN})});
                                             // /*spanish*/la #anémona bioeléctrica# porta #[[1]]#.
 
     hintTextTable[RHT_PHANTOM_GANON] = HintText(CustomMessage("They say that #Phantom Ganon# holds #[[1]]#.",
-                                                   /*german*/ "Man erzählt sich, daß #Phantom-Ganon# hält #[[1]]# lehre.",
+                                                   /*german*/ "Man erzählt sich, daß #Phantom-Ganon# #[[1]]# hielte.",
                                                    /*french*/ "Selon moi, #Ganon Spectral# possède #[[1]]#.", {QM_RED, QM_GREEN}),
                                                 // /*spanish*/#Ganon Fantasma# porta #[[1]]#.
                                                 {},
                                                 {CustomMessage("They say that the #Evil Spirit from Beyond# holds #[[1]]#.",
-                                                    /*german*/ "Man erzählt sich, daß der #böse Geist aus dem Jenseits# hält #[[1]]# lehre.",
+                                                    /*german*/ "Man erzählt sich, daß der #böse Geist aus dem Jenseits# #[[1]]# hielte.",
                                                     /*french*/ "Selon moi, l'#esprit maléfique de l'au-delà# possède #[[1]]#.", {QM_RED, QM_GREEN})});
                                                  // /*spanish*/el #espíritu maligno de ultratumba# porta #[[1]]#.
 
     hintTextTable[RHT_VOLVAGIA] = HintText(CustomMessage("They say that #Volvagia# holds #[[1]]#.",
-                                              /*german*/ "Man erzählt sich, daß #Volvagia# hält #[[1]]# lehre.",
+                                              /*german*/ "Man erzählt sich, daß #Volvagia# #[[1]]# hielte.",
                                               /*french*/ "Selon moi, #Volvagia# possède #[[1]]#.", {QM_RED, QM_GREEN}),
                                            // /*spanish*/#Volvagia# porta #[[1]]#.
                                            {},
                                            {CustomMessage("They say that the #Subterranean Lava Dragon# holds #[[1]]#.",
-                                               /*german*/ "Man erzählt sich, daß der #subterrane Lavadrache# hält #[[1]]# lehre.",
+                                               /*german*/ "Man erzählt sich, daß der #subterrane Lavadrache# #[[1]]# hielte.",
                                                /*french*/ "Selon moi, le #dragon des profondeurs# possède #[[1]]#.", {QM_RED, QM_GREEN})});
                                             // /*spanish*/el #dragón de lava subterráneo# porta #[[1]]#.
 
     hintTextTable[RHT_MORPHA] = HintText(CustomMessage("They say that #Morpha# holds #[[1]]#.",
-                                            /*german*/ "Man erzählt sich, daß #Morpha# hält #[[1]]# lehre.",
+                                            /*german*/ "Man erzählt sich, daß #Morpha# #[[1]]# hielte.",
                                             /*french*/ "Selon moi, #Morpha# possède #[[1]]#.", {QM_RED, QM_GREEN}),
                                          // /*spanish*/#Morpha# porta #[[1]]#.
                                          {},
                                          {CustomMessage("They say that the #Giant Aquatic Amoeba# holds #[[1]]#.",
-                                             /*german*/ "Man erzählt sich, daß die #gigantische aquatische Amöbe# hält #[[1]]# lehre.",
+                                             /*german*/ "Man erzählt sich, daß die #gigantische aquatische Amöbe# #[[1]]# hielte.",
                                              /*french*/ "Selon moi, l'#amibe aquatique géante# possède #[[1]]#.", {QM_RED, QM_GREEN})});
                                           // /*spanish*/la #ameba acuática gigante# porta #[[1]]#.
 
     hintTextTable[RHT_BONGO_BONGO] = HintText(CustomMessage("They say that #Bongo Bongo# holds #[[1]]#.",
-                                                 /*german*/ "Man erzählt sich, daß #Bongo Bongo# hält #[[1]]# lehre.",
+                                                 /*german*/ "Man erzählt sich, daß #Bongo Bongo# #[[1]]# hielte.",
                                                  /*french*/ "Selon moi, #Bongo Bongo# possède #[[1]]#.", {QM_RED, QM_GREEN}),
                                               // /*spanish*/#Bongo Bongo# porta #[[1]]#.
                                               {},
                                               {CustomMessage("They say that the #Phantom Shadow Beast# holds #[[1]]#.",
-                                                  /*german*/ "Man erzählt sich, daß das #Phantomschattenbiest# hält #[[1]]# lehre.",
+                                                  /*german*/ "Man erzählt sich, daß das #Phantomschattenbiest# #[[1]]# hielte.",
                                                   /*french*/ "Selon moi, le #monstre de l'ombre# possède #[[1]]#.", {QM_RED, QM_GREEN})});
                                                // /*spanish*/la #alimaña oscura espectral# porta #[[1]]#.
 
     hintTextTable[RHT_TWINROVA] = HintText(CustomMessage("They say that #Twinrova# holds #[[1]]#.",
-                                              /*german*/ "Man erzählt sich, daß #Twinrova# hält #[[1]]# lehre.",
+                                              /*german*/ "Man erzählt sich, daß #Twinrova# #[[1]]# hielte.",
                                               /*french*/ "Selon moi, #Twinrova# possède #[[1]]#.", {QM_RED, QM_GREEN}),
                                            // /*spanish*/#Birova# porta #[[1]]#.
                                            {},
                                            {CustomMessage("They say that the #Sorceress Sisters# hold #[[1]]#.",
-                                               /*german*/ "Man erzählt sich, daß die #Hexenschwestern# halten #[[1]]# lehre.",
+                                               /*german*/ "Man erzählt sich, daß die #Hexenschwestern# #[[1]]# hielten.",
                                                /*french*/ "Selon moi, #les sorcières jumelles# possède #[[1]]#.", {QM_RED, QM_GREEN})});
                                             // /*spanish*/las #hermanas hechiceras# portan #[[1]]#.
 
-    hintTextTable[RHT_GIFT_FROM_RAURU] = HintText(CustomMessage("They say that the #Sage of Light# gifts @ #[[1]]#.", {QM_RED, QM_GREEN}),
-                                           {},
-                                           {CustomMessage("They say that #a former owl# gifts @ #[[1]]#.", {QM_RED, QM_GREEN})});
+    hintTextTable[RHT_GIFT_FROM_RAURU] = HintText(CustomMessage("They say that the #Sage of Light# gifts @ #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß der #Weise des Lichts# #[[1]]# schenke.",
+                                                     /*french*/ "Selon moi, #le Sage de la Lumière# donne #[[1]]#.", {QM_RED, QM_GREEN}),
+                                                 {},
+                                                 {CustomMessage("They say that #a former owl# gifts @ #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß #eine einstige Eule# #[[1]]# schenke.",
+                                                     /*french*/ "Selon moi, #un ancien hibou# donne #[[1]]#.", {QM_RED, QM_GREEN})});
 
     /*--------------------------
     |     BRIDGE HINT TEXT     |
@@ -2782,7 +2786,7 @@ void StaticData::HintTable_Init() {
     |        ALTAR TEXT        |
     ---------------------------*/
 
-    hintTextTable[RHT_CHILD_ALTAR_STONES] = HintText(CustomMessage("3 Spiritual Stone's found in Hyrule...^$0#[[1]]#...^$1#[[2]]#...^$2#[[3]]#...^",
+    hintTextTable[RHT_CHILD_ALTAR_STONES] = HintText(CustomMessage("3 Spiritual Stones found in Hyrule...^$0#[[1]]#...^$1#[[2]]#...^$2#[[3]]#...^",
                                                         /*german*/ "Drei Heilige Steine, zu finden in Hyrule...$0#[[1]]#...^$1#[[2]]#...^$2#[[3]]#...^",
                                                         /*french*/ "Les trois Pierres Ancestrales cachées&dans Hyrule...$0#[[1]]#...^$1#[[2]]#...^$2#[[3]]#...^",
                                                         {QM_GREEN, QM_RED, QM_BLUE}, {true, true, true}));

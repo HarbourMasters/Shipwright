@@ -143,7 +143,6 @@ void RegionTable_Init_Kakariko() {
                 }, {
                   //Locations
                   LOCATION(RC_KAK_WINDMILL_FREESTANDING_POH, logic->CanUse(RG_BOOMERANG) || logic->DampesWindmillAccess || (logic->IsAdult && ctx->GetTrickOption(RT_KAK_ADULT_WINDMILL_POH)) || (logic->IsChild && logic->CanJumpslashExceptHammer() && ctx->GetTrickOption(RT_KAK_CHILD_WINDMILL_POH))),
-                    //PoH as child not added to trick options yet (needs uncommenting in randomizer_tricks.cpp)
                   LOCATION(RC_SONG_FROM_WINDMILL,            logic->IsAdult && logic->HasItem(RG_FAIRY_OCARINA)),
                 }, {
                   //Exits

@@ -59,7 +59,7 @@ if (IS_DAY || gTimeIncrement >= 0x190) {
 }
 ```
 
-We can make a quick change to this code to verify this is indeed what we are looking for, lets multiply the the gTimeIncrement by 10:
+We can make a quick change to this code to verify this is indeed what we are looking for, lets multiply the gTimeIncrement by 10:
 
 ```diff
 if (IS_DAY || gTimeIncrement >= 0x190) {

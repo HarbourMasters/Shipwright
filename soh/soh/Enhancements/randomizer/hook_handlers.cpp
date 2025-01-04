@@ -883,9 +883,22 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             uint32_t params = item00->actor.params == ITEM00_HEART_PIECE || item00->actor.params == ITEM00_SMALL_KEY ? item00->ogParams : TWO_ACTOR_PARAMS((int32_t)pos.x, (int32_t)pos.z);
             Rando::Location* loc = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(item00->actor.id, gPlayState->sceneNum, params);
 
-            if (loc && loc->GetRandomizerCheck() != RC_UNKNOWN_CHECK && (RAND_GET_OPTION(RSK_SHUFFLE_FREESTANDING) || item00->actor.params == ITEM00_HEART_PIECE || item00->actor.params == ITEM00_SMALL_KEY)) {
+            if (loc && loc->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+                auto ctx = Rando::Context::GetInstance();
+                bool freestanding_mode = ctx->GetOption(RSK_SHUFFLE_FREESTANDING).Is(RO_FREESTANDING_ALL);
+                if (!freestanding_mode) {
+                    if (loc->IsOverworld()) {
+                        freestanding_mode = ctx->GetOption(RSK_SHUFFLE_FREESTANDING).Is(RO_FREESTANDING_OVERWORLD);
+                    } else {
+                        freestanding_mode = ctx->GetOption(RSK_SHUFFLE_FREESTANDING).Is(RO_FREESTANDING_DUNGEONS);
+                    }
+                }
+
                 // Spawn vanilla item if collected and renewable
-                if (loc->GetCollectionCheck().type != SPOILER_CHK_RANDOMIZER_INF || !Rando::Context::GetInstance()->GetItemLocation(loc->GetRandomizerCheck())->HasObtained()) {
+                if (
+                   (freestanding_mode || item00->actor.params == ITEM00_HEART_PIECE || item00->actor.params == ITEM00_SMALL_KEY) &&
+                   (loc->GetCollectionCheck().type != SPOILER_CHK_RANDOMIZER_INF || !Rando::Context::GetInstance()->GetItemLocation(loc->GetRandomizerCheck())->HasObtained())
+                ) {
                     item00->randoCheck = loc->GetRandomizerCheck();
                     item00->itemEntry = Rando::Context::GetInstance()->GetFinalGIEntry(loc->GetRandomizerCheck(), true);
                     item00->actor.params = ITEM00_SOH_DUMMY;
@@ -1443,10 +1456,10 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                 (item == ITEM_BOMB && Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMB_BAG)) ||
                 (
                     (item == ITEM_BOW || item == ITEM_BOW_ARROW_FIRE || item == ITEM_BOW_ARROW_ICE || item == ITEM_BOW_ARROW_LIGHT) &&
-                    Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_QUIVER)
+                    Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_QUIVER) && gPlayState->shootingGalleryStatus < 2 && gSaveContext.minigameState != 1
                 ) ||
-                (item == ITEM_SLINGSHOT && Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BULLET_BAG)) ||
-                (item == ITEM_BOMBCHU && Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS))
+                (item == ITEM_SLINGSHOT && Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BULLET_BAG) && gPlayState->shootingGalleryStatus < 2) ||
+                (item == ITEM_BOMBCHU && Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS) && gPlayState->bombchuBowlingStatus < 1)
             ) {
                 *should = false;
             }

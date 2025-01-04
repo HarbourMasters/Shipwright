@@ -117,11 +117,11 @@ extern "C" uint32_t ResourceMgr_IsGameMasterQuest() {
 }
 
 extern "C" void ResourceMgr_LoadDirectory(const char* resName) {
-    Ship::Context::GetInstance()->GetResourceManager()->LoadDirectory(resName);
+    Ship::Context::GetInstance()->GetResourceManager()->LoadResources(resName);
 }
 
 extern "C" void ResourceMgr_DirtyDirectory(const char* resName) {
-    Ship::Context::GetInstance()->GetResourceManager()->DirtyDirectory(resName);
+    Ship::Context::GetInstance()->GetResourceManager()->DirtyResources(resName);
 }
 
 extern "C" void ResourceMgr_UnloadResource(const char* resName) {

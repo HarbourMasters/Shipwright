@@ -51,11 +51,12 @@ void RegionTable_Init_GerudoValley() {
                   LOCATION(RC_GV_CRATE_FREESTANDING_POH, true),
                 }, {
                   //Exits
+                  Entrance(RR_GV_UPPER_STREAM, {[]{return ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives();}}),
                   Entrance(RR_GV_LOWER_STREAM, {[]{return true;}}),
   });
 
   areaTable[RR_GV_FORTRESS_SIDE] = Region("GV Fortress Side", "Gerudo Valley", {RA_GERUDO_VALLEY}, DAY_NIGHT_CYCLE, {}, {
-                  //Locations                                       
+                  //Locations
                   LOCATION(RC_GV_CHEST,          logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
                   LOCATION(RC_GV_TRADE_SAW,      logic->IsAdult && logic->CanUse(RG_POACHERS_SAW)),
                   LOCATION(RC_GV_GS_BEHIND_TENT, logic->IsAdult && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
@@ -67,7 +68,7 @@ void RegionTable_Init_GerudoValley() {
                   Entrance(RR_GERUDO_VALLEY,     {[]{return logic->IsChild || logic->CanUse(RG_EPONA) || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->CarpenterRescue;}}),
                   Entrance(RR_GV_CARPENTER_TENT, {[]{return logic->IsAdult;}}),
                   Entrance(RR_GV_STORMS_GROTTO,  {[]{return logic->IsAdult && logic->CanOpenStormsGrotto();}}),
-                  Entrance(RR_GV_CRATE_LEDGE, {[]{return false;}}),
+                  Entrance(RR_GV_CRATE_LEDGE,    {[]{return ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives();}}),
   });
 
   areaTable[RR_GV_CARPENTER_TENT] = Region("GV Carpenter Tent", "GV Carpenter Tent", {}, NO_DAY_NIGHT_CYCLE, {}, {}, {

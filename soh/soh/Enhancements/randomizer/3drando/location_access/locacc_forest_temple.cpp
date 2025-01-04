@@ -90,7 +90,7 @@ void RegionTable_Init_ForestTemple() {
                 }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_LOBBY,             {[]{return logic->CanUse(RG_SONG_OF_TIME);}}),
-                  Entrance(RR_FOREST_TEMPLE_NW_OUTDOORS_UPPER, {[]{return false;}}),
+                  Entrance(RR_FOREST_TEMPLE_NW_OUTDOORS_UPPER, {[]{return ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives() && logic->CanUse(RG_HOVER_BOOTS);}}),
                   Entrance(RR_FOREST_TEMPLE_MAP_ROOM,          {[]{return true;}}),
                   Entrance(RR_FOREST_TEMPLE_SEWER,             {[]{return logic->HasItem(RG_GOLDEN_SCALE) || logic->CanUse(RG_IRON_BOOTS) || HasAccessTo(RR_FOREST_TEMPLE_NE_OUTDOORS_UPPER);}}),
                   Entrance(RR_FOREST_TEMPLE_BOSS_ENTRYWAY,     {[]{return false;}}),
@@ -358,13 +358,12 @@ void RegionTable_Init_ForestTemple() {
   areaTable[RR_FOREST_TEMPLE_MQ_LOWER_BLOCK_PUZZLE] = Region("Forest Temple MQ Lower Block Puzzle", "Forest Temple", {RA_FOREST_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
                   //longshot is capable of hitting the switch, but some invisible collision makes the shot harder than you would think, so it may be trickworthy
                   EventAccess(&logic->MQForestBlockRoomTargets,  {[]{return (ctx->GetTrickOption(RT_FOREST_MQ_BLOCK_PUZZLE) && logic->CanUse(RG_BOMBCHU_5));}}),
-                  //Trick (RT_FOREST_MQ_HOOKSHOT_HALLWAY_SWITCH not added to either n64 or oot3d rando as of yet, to enable in SoH needs uncommenting in randomizer_tricks.cpp)
                   //It is barely possible to get this as child with master + hovers, but it's tight without bunny speed
                   EventAccess(&logic->ForestCanTwistHallway,     {[]{return (ctx->GetTrickOption(RT_FOREST_MQ_JS_HALLWAY_SWITCH) && logic->CanUse(RG_HOVER_BOOTS) &&
-                                                                             (logic->IsAdult && logic->CanJumpslash()) || 
+                                                                             (logic->IsAdult && logic->CanJumpslash()) ||
                                                                              (logic->CanUse(RG_STICKS) || logic->CanUse(RG_BIGGORON_SWORD) || (logic->MQForestBlockRoomTargets && logic->CanUse(RG_MASTER_SWORD)))) ||
-                                                                            (ctx->GetTrickOption(RT_FOREST_MQ_RANG_HALLWAY_SWITCH) && logic->CanUse(RG_BOOMERANG)) || 
-                                                                            (ctx->GetTrickOption(RT_FOREST_MQ_HOOKSHOT_HALLWAY_SWITCH) && logic->CanUse(RG_HOOKSHOT));}}),                                          
+                                                                            (ctx->GetTrickOption(RT_FOREST_MQ_RANG_HALLWAY_SWITCH) && logic->CanUse(RG_BOOMERANG)) ||
+                                                                            (ctx->GetTrickOption(RT_FOREST_MQ_HOOKSHOT_HALLWAY_SWITCH) && logic->CanUse(RG_HOOKSHOT));}}),
   }, {
                   //Locations
                   LOCATION(RC_FOREST_TEMPLE_MQ_GS_BLOCK_PUSH_ROOM, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),

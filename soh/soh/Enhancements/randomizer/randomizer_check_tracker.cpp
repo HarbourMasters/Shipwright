@@ -909,6 +909,7 @@ void CheckTrackerWindow::DrawElement() {
     ImGui::SameLine();
     if (ImGui::Button("Clear")) {
         checkSearch.Clear();
+        UpdateFilters();
         doAreaScroll = true;
     }
     UIWidgets::Tooltip("Clear the search field");
