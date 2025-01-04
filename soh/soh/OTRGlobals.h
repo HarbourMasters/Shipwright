@@ -140,7 +140,7 @@ void Randomizer_SetSeedGenerated(bool seedGenerated);
 uint8_t Randomizer_IsSpoilerLoaded();
 void Randomizer_SetSpoilerLoaded(bool spoilerLoaded);
 uint8_t Randomizer_GenerateRandomizer();
-//void Randomizer_ShowRandomizerMenu();
+void Randomizer_ShowRandomizerMenu();
 int CustomMessage_RetrieveIfExists(PlayState* play);
 void Overlay_DisplayText(float duration, const char* text);
 void Overlay_DisplayText_Seconds(int seconds, const char* text);
