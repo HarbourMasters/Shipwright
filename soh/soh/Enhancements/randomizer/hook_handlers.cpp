@@ -2449,7 +2449,7 @@ void RandomizerRegisterHooks() {
         }
 
         if (RAND_GET_OPTION(RSK_SHUFFLE_FREESTANDING) != RO_SHUFFLE_FREESTANDING_OFF) {
-            shufflePotsOnVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(ShuffleFreestanding_OnVanillaBehaviorHandler);
+            shuffleFreestandingOnVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(ShuffleFreestanding_OnVanillaBehaviorHandler);
         }
     });
 }
