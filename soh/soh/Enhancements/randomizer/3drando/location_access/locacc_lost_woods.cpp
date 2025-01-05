@@ -6,7 +6,7 @@ using namespace Rando;
 void RegionTable_Init_LostWoods() {
   areaTable[RR_KOKIRI_FOREST] = Region("Kokiri Forest", "Kokiri Forest", {RA_KOKIRI_FOREST}, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->BeanPlantFairy,           {[]{return logic->BeanPlantFairy   || (CanPlantBean(RR_KOKIRI_FOREST) && logic->CanUse(RG_SONG_OF_STORMS));}}),
+                  EventAccess(&logic->BeanPlantFairy,           {[]{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}}),
                   EventAccess(&logic->GossipStoneFairy,         {[]{return logic->CallGossipFairyExceptSuns();}}),
                   EventAccess(&logic->ShowedMidoSwordAndShield, {[]{return logic->ShowedMidoSwordAndShield || (logic->IsChild && logic->CanUse(RG_KOKIRI_SWORD) && logic->CanUse(RG_DEKU_SHIELD));}}),
                 }, {
@@ -15,6 +15,11 @@ void RegionTable_Init_LostWoods() {
                   LOCATION(RC_KF_GS_KNOW_IT_ALL_HOUSE,    logic->IsChild && logic->CanAttack() && (/*TODO: HasNightStart ||*/ logic->CanLeaveForest() || logic->CanUse(RG_SUNS_SONG)) && logic->CanGetNightTimeGS()),
                   LOCATION(RC_KF_GS_BEAN_PATCH,           logic->CanSpawnSoilSkull() && logic->CanAttack()),
                   LOCATION(RC_KF_GS_HOUSE_OF_TWINS,       logic->IsAdult && (logic->HookshotOrBoomerang() || (ctx->GetTrickOption(RT_KF_ADULT_GS) && logic->CanUse(RG_HOVER_BOOTS))) && logic->CanGetNightTimeGS()),
+                  LOCATION(RC_KF_BEAN_SPROUT_FAIRY_1,     logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+                  LOCATION(RC_KF_BEAN_SPROUT_FAIRY_2,     logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+                  LOCATION(RC_KF_BEAN_SPROUT_FAIRY_3,     logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+                  LOCATION(RC_KF_GOSSIP_STONE_FAIRY,      logic->CallGossipFairyExceptSuns()),
+                  LOCATION(RC_KF_GOSSIP_STONE_FAIRY_BIG,  logic->CanUse(RG_SONG_OF_STORMS)),
                   LOCATION(RC_KF_BRIDGE_RUPEE,            logic->IsChild),
                   LOCATION(RC_KF_BEHIND_MIDOS_RUPEE,      logic->IsChild),
                   LOCATION(RC_KF_SOUTH_GRASS_WEST_RUPEE,  logic->IsChild),
@@ -55,8 +60,12 @@ void RegionTable_Init_LostWoods() {
                   EventAccess(&logic->ShowedMidoSwordAndShield, {[]{return logic->ShowedMidoSwordAndShield || (logic->IsChild && logic->CanUse(RG_KOKIRI_SWORD) && logic->CanUse(RG_DEKU_SHIELD));}}),
                 }, {
                   //Locations
-                  LOCATION(RC_KF_DEKU_TREE_LEFT_GOSSIP_STONE,  true),
-                  LOCATION(RC_KF_DEKU_TREE_RIGHT_GOSSIP_STONE, true),
+                  LOCATION(RC_KF_DEKU_TREE_LEFT_GOSSIP_STONE_FAIRY,       logic->CallGossipFairyExceptSuns()),
+                  LOCATION(RC_KF_DEKU_TREE_LEFT_GOSSIP_STONE_FAIRY_BIG,   logic->CanUse(RG_SONG_OF_STORMS)),
+                  LOCATION(RC_KF_DEKU_TREE_RIGHT_GOSSIP_STONE_FAIRY,      logic->CallGossipFairyExceptSuns()),
+                  LOCATION(RC_KF_DEKU_TREE_RIGHT_GOSSIP_STONE_FAIRY_BIG,  logic->CanUse(RG_SONG_OF_STORMS)),
+                  LOCATION(RC_KF_DEKU_TREE_LEFT_GOSSIP_STONE,             true),
+                  LOCATION(RC_KF_DEKU_TREE_RIGHT_GOSSIP_STONE,            true),
                 }, {
                   //Exits
                   Entrance(RR_DEKU_TREE_ENTRYWAY, {[]{return logic->IsChild || (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) && (ctx->GetOption(RSK_FOREST).Is(RO_CLOSED_FOREST_OFF) || logic->ShowedMidoSwordAndShield));}}),
@@ -131,6 +140,8 @@ void RegionTable_Init_LostWoods() {
                   //Locations
                   LOCATION(RC_KF_STORMS_GROTTO_CHEST,         true),
                   LOCATION(RC_KF_STORMS_GROTTO_FISH,          logic->HasBottle()),
+                  LOCATION(RC_KF_STORMS_GROTTO_GOSSIP_STONE_FAIRY,      logic->CallGossipFairy()),
+                  LOCATION(RC_KF_STORMS_GROTTO_GOSSIP_STONE_FAIRY_BIG,  logic->CanUse(RG_SONG_OF_STORMS)),
                   LOCATION(RC_KF_STORMS_GROTTO_GOSSIP_STONE,  true),
                   LOCATION(RC_KF_STORMS_GROTTO_BEEHIVE_LEFT,  logic->CanBreakLowerBeehives()),
                   LOCATION(RC_KF_STORMS_GROTTO_BEEHIVE_RIGHT, logic->CanBreakLowerBeehives()),
@@ -147,14 +158,14 @@ void RegionTable_Init_LostWoods() {
   areaTable[RR_THE_LOST_WOODS] = Region("Lost Woods", "Lost Woods", {RA_THE_LOST_WOODS}, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->GossipStoneFairy,  {[]{return logic->CallGossipFairyExceptSuns();}}),
-                  EventAccess(&logic->BeanPlantFairy,    {[]{return logic->BeanPlantFairy    || logic->CanUse(RG_SONG_OF_STORMS);}}),
+                  EventAccess(&logic->BeanPlantFairy,    {[]{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}}),
                   EventAccess(&logic->BugShrub,          {[]{return logic->IsChild && logic->CanCutShrubs();}}),
                 }, {
                   //Locations
-                  LOCATION(RC_LW_SKULL_KID,                 logic->IsChild && logic->CanUse(RG_SARIAS_SONG)),
-                  LOCATION(RC_LW_TRADE_COJIRO,              logic->IsAdult && logic->CanUse(RG_COJIRO)),
+                  LOCATION(RC_LW_SKULL_KID,                       logic->IsChild && logic->CanUse(RG_SARIAS_SONG)),
+                  LOCATION(RC_LW_TRADE_COJIRO,                    logic->IsAdult && logic->CanUse(RG_COJIRO)),
                   //I cannot think of a case where you can use Odd pot but not Cojiro to reset the quadrant should you have both. If one exists, add it to logic
-                  LOCATION(RC_LW_TRADE_ODD_POTION,          logic->IsAdult && logic->CanUse(RG_ODD_POTION)),
+                  LOCATION(RC_LW_TRADE_ODD_POTION,                logic->IsAdult && logic->CanUse(RG_ODD_POTION)),
                                                                                                 //all 5 buttons are logically required for memory game
                                                                                                 //because the chances of being able to beat it
                                                                                                 //every time you attempt it are as follows:
@@ -163,20 +174,26 @@ void RegionTable_Init_LostWoods() {
                                                                                                 //3 buttons        => 3.75%
                                                                                                 //4 buttons        => 25.3125%
                                                                                                 //5 buttons        => 100%
-                  LOCATION(RC_LW_OCARINA_MEMORY_GAME,       logic->IsChild && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 5),
-                  LOCATION(RC_LW_TARGET_IN_WOODS,           logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT)),
-                  LOCATION(RC_LW_DEKU_SCRUB_NEAR_BRIDGE,    logic->IsChild && logic->CanStunDeku()),
-                  LOCATION(RC_LW_GS_BEAN_PATCH_NEAR_BRIDGE, logic->CanSpawnSoilSkull() && logic->CanAttack()),
+                  LOCATION(RC_LW_OCARINA_MEMORY_GAME,             logic->IsChild && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 5),
+                  LOCATION(RC_LW_TARGET_IN_WOODS,                 logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT)),
+                  LOCATION(RC_LW_DEKU_SCRUB_NEAR_BRIDGE,          logic->IsChild && logic->CanStunDeku()),
+                  LOCATION(RC_LW_GS_BEAN_PATCH_NEAR_BRIDGE,       logic->CanSpawnSoilSkull() && logic->CanAttack()),
                   //RANDOTODO handle collecting some of these as you leave the shortcut from the other side
-                  LOCATION(RC_LW_SHORTCUT_RUPEE_1,          logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
-                  LOCATION(RC_LW_SHORTCUT_RUPEE_2,          logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
-                  LOCATION(RC_LW_SHORTCUT_RUPEE_3,          logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
-                  LOCATION(RC_LW_SHORTCUT_RUPEE_4,          logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
-                  LOCATION(RC_LW_SHORTCUT_RUPEE_5,          logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
-                  LOCATION(RC_LW_SHORTCUT_RUPEE_6,          logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
-                  LOCATION(RC_LW_SHORTCUT_RUPEE_7,          logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
-                  LOCATION(RC_LW_SHORTCUT_RUPEE_8,          logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
-                  LOCATION(RC_LW_GOSSIP_STONE,              true),
+                  LOCATION(RC_LW_SHORTCUT_RUPEE_1,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+                  LOCATION(RC_LW_SHORTCUT_RUPEE_2,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+                  LOCATION(RC_LW_SHORTCUT_RUPEE_3,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+                  LOCATION(RC_LW_SHORTCUT_RUPEE_4,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+                  LOCATION(RC_LW_SHORTCUT_RUPEE_5,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+                  LOCATION(RC_LW_SHORTCUT_RUPEE_6,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+                  LOCATION(RC_LW_SHORTCUT_RUPEE_7,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+                  LOCATION(RC_LW_SHORTCUT_RUPEE_8,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+                  LOCATION(RC_LW_BEAN_SPROUT_NEAR_BRIDGE_FAIRY_1, logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+                  LOCATION(RC_LW_BEAN_SPROUT_NEAR_BRIDGE_FAIRY_2, logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+                  LOCATION(RC_LW_BEAN_SPROUT_NEAR_BRIDGE_FAIRY_3, logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+                  LOCATION(RC_LW_GOSSIP_STONE_FAIRY,              logic->CallGossipFairyExceptSuns()),
+                  LOCATION(RC_LW_GOSSIP_STONE_FAIRY_BIG,          logic->CanUse(RG_SONG_OF_STORMS)),
+                  LOCATION(RC_LW_SHORTCUT_STORMS_FAIRY,           logic->CanUse(RG_SONG_OF_STORMS)),
+                  LOCATION(RC_LW_GOSSIP_STONE,                    true),
                 }, {
                   //Exits
                   Entrance(RR_LW_FOREST_EXIT,           {[]{return true;}}),
@@ -197,6 +214,9 @@ void RegionTable_Init_LostWoods() {
                   LOCATION(RC_LW_GS_ABOVE_THEATER,                   logic->IsAdult && ((CanPlantBean(RR_LW_BEYOND_MIDO) && logic->CanAttack()) || (ctx->GetTrickOption(RT_LW_GS_BEAN) && logic->CanUse(RG_HOOKSHOT) && (logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOMBCHU_5) || logic->CanUse(RG_DINS_FIRE)))) && logic->CanGetNightTimeGS()),
                   LOCATION(RC_LW_GS_BEAN_PATCH_NEAR_THEATER,         logic->CanSpawnSoilSkull() && (logic->CanAttack() || (ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_OFF) && logic->CanReflectNuts()))),
                   LOCATION(RC_LW_BOULDER_RUPEE,                      logic->BlastOrSmash()),
+                  LOCATION(RC_LW_BEAN_SPROUT_NEAR_THEATER_FAIRY_1,   logic->IsChild && logic->HasItem(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+                  LOCATION(RC_LW_BEAN_SPROUT_NEAR_THEATER_FAIRY_2,   logic->IsChild && logic->HasItem(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+                  LOCATION(RC_LW_BEAN_SPROUT_NEAR_THEATER_FAIRY_3,   logic->IsChild && logic->HasItem(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
                 }, {
                   //Exits
                   Entrance(RR_LW_FOREST_EXIT,   {[]{return true;}}),
@@ -208,11 +228,13 @@ void RegionTable_Init_LostWoods() {
 
   areaTable[RR_LW_NEAR_SHORTCUTS_GROTTO] = Region("LW Near Shortcuts Grotto", "LW Near Shortcuts Grotto", {}, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
-                  LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_CHEST,         true),
-                  LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_FISH,          logic->HasBottle()),
-                  LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE,  true),
-                  LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_LEFT,  logic->CanBreakLowerBeehives()),
-                  LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_RIGHT, logic->CanBreakLowerBeehives()),
+                  LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_CHEST,                   true),
+                  LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_FISH,                    logic->HasBottle()),
+                  LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE_FAIRY,      logic->CallGossipFairy()),
+                  LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE_FAIRY_BIG,  logic->CanUse(RG_SONG_OF_STORMS)),
+                  LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE,            true),
+                  LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_LEFT,            logic->CanBreakLowerBeehives()),
+                  LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_RIGHT,           logic->CanBreakLowerBeehives()),
                 }, {
                   //Exits
                   Entrance(RR_THE_LOST_WOODS, {[]{return true;}}),
@@ -249,12 +271,18 @@ void RegionTable_Init_LostWoods() {
                   EventAccess(&logic->GossipStoneFairy, {[]{return logic->CallGossipFairyExceptSuns();}}),
                 }, {
                   //Locations
-                  LOCATION(RC_SONG_FROM_SARIA,             logic->IsChild && logic->HasItem(RG_ZELDAS_LETTER)),
-                  LOCATION(RC_SHEIK_IN_FOREST,             logic->IsAdult),
-                  LOCATION(RC_SFM_GS,                      logic->IsAdult && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
-                  LOCATION(RC_SFM_MAZE_LOWER_GOSSIP_STONE, true),
-                  LOCATION(RC_SFM_MAZE_UPPER_GOSSIP_STONE, true),
-                  LOCATION(RC_SFM_SARIA_GOSSIP_STONE,      true),
+                  LOCATION(RC_SONG_FROM_SARIA,                        logic->IsChild && logic->HasItem(RG_ZELDAS_LETTER)),
+                  LOCATION(RC_SHEIK_IN_FOREST,                        logic->IsAdult),
+                  LOCATION(RC_SFM_GS,                                 logic->IsAdult && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
+                  LOCATION(RC_SFM_MAZE_LOWER_GOSSIP_STONE_FAIRY,      logic->CallGossipFairyExceptSuns()),
+                  LOCATION(RC_SFM_MAZE_LOWER_GOSSIP_STONE_FAIRY_BIG,  logic->CanUse(RG_SONG_OF_STORMS)),
+                  LOCATION(RC_SFM_MAZE_UPPER_GOSSIP_STONE_FAIRY,      logic->CallGossipFairyExceptSuns()),
+                  LOCATION(RC_SFM_MAZE_UPPER_GOSSIP_STONE_FAIRY_BIG,  logic->CanUse(RG_SONG_OF_STORMS)),
+                  LOCATION(RC_SFM_SARIA_GOSSIP_STONE_FAIRY,           logic->CallGossipFairyExceptSuns()),
+                  LOCATION(RC_SFM_SARIA_GOSSIP_STONE_FAIRY_BIG,       logic->CanUse(RG_SONG_OF_STORMS)),
+                  LOCATION(RC_SFM_MAZE_LOWER_GOSSIP_STONE,            true),
+                  LOCATION(RC_SFM_MAZE_UPPER_GOSSIP_STONE,            true),
+                  LOCATION(RC_SFM_SARIA_GOSSIP_STONE,                 true),
                 }, {
                   //Exits
                   Entrance(RR_SFM_ENTRYWAY,           {[]{return true;}}),
@@ -266,7 +294,17 @@ void RegionTable_Init_LostWoods() {
   areaTable[RR_SFM_FAIRY_GROTTO] = Region("SFM Fairy Grotto", "SFM Fairy Grotto", {}, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->FreeFairies, {[]{return true;}}),
-                }, {}, {
+                }, {
+                  //Locations
+                  LOCATION(RC_SFM_FAIRY_GROTTO_FAIRY_1, true),
+                  LOCATION(RC_SFM_FAIRY_GROTTO_FAIRY_2, true),
+                  LOCATION(RC_SFM_FAIRY_GROTTO_FAIRY_3, true),
+                  LOCATION(RC_SFM_FAIRY_GROTTO_FAIRY_4, true),
+                  LOCATION(RC_SFM_FAIRY_GROTTO_FAIRY_5, true),
+                  LOCATION(RC_SFM_FAIRY_GROTTO_FAIRY_6, true),
+                  LOCATION(RC_SFM_FAIRY_GROTTO_FAIRY_7, true),
+                  LOCATION(RC_SFM_FAIRY_GROTTO_FAIRY_8, true),
+                }, {
                   //Exits
                   Entrance(RR_SACRED_FOREST_MEADOW, {[]{return true;}}),
   });

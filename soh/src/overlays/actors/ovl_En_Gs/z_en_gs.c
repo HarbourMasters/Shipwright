@@ -8,6 +8,7 @@
 #include "objects/object_gs/object_gs.h"
 #include "overlays/actors/ovl_En_Elf/z_en_elf.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
@@ -149,8 +150,7 @@ void func_80A4E470(EnGs* this, PlayState* play) {
                 func_8010BD58(play, OCARINA_ACTION_FREE_PLAY);
                 this->unk_19D |= 1;
             }
-
-        } else if (this->unk_19D & 1) {
+        } else if (GameInteractor_Should(VB_SPAWN_GOSSIP_STONE_FAIRY, this->unk_19D & 1, this)) {
             if (play->msgCtx.ocarinaMode == OCARINA_MODE_04) {
                 if ((play->msgCtx.unk_E3F2 == OCARINA_SONG_SARIAS) ||
                     (play->msgCtx.unk_E3F2 == OCARINA_SONG_EPONAS) ||

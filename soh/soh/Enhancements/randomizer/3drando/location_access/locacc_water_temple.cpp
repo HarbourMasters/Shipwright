@@ -403,7 +403,7 @@ void RegionTable_Init_WaterTemple() {
   //Raising the targets by clearing this room achieves nothing logically because it requires WL_LOW to do and hookshot to use, which implies access to WL_MID and WL_HIGH already
   areaTable[RR_WATER_TEMPLE_MQ_EAST_TOWER_1F_ROOM] = Region("Water Temple MQ East Tower 1F Room", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LOCATION(RC_WATER_TEMPLE_MQ_COMPASS_CHEST,  logic->CanKillEnemy(RE_LIZALFOS) && logic->CanKillEnemy(RE_SPIKE)),
+                  LOCATION(RC_WATER_TEMPLE_MQ_COMPASS_CHEST, logic->CanKillEnemy(RE_LIZALFOS) && logic->CanKillEnemy(RE_SPIKE)),
   }, {
                   Entrance(RR_WATER_TEMPLE_MQ_EAST_TOWER, {[]{return true;}}),
   });
@@ -549,9 +549,11 @@ void RegionTable_Init_WaterTemple() {
                   EventAccess(&logic->NutPot,   {[]{return true;}}),
   }, {
                   //Locations
-                  LOCATION(RC_WATER_TEMPLE_MQ_STALFOS_PIT_SOUTH_POT,  logic->CanBreakPots()),
-                  LOCATION(RC_WATER_TEMPLE_MQ_STALFOS_PIT_MIDDLE_POT, logic->CanBreakPots()),
-                  LOCATION(RC_WATER_TEMPLE_MQ_STALFOS_PIT_NORTH_POT,  logic->CanBreakPots()),
+                  LOCATION(RC_WATER_TEMPLE_MQ_STALFOS_PIT_SOUTH_POT,     logic->CanBreakPots()),
+                  LOCATION(RC_WATER_TEMPLE_MQ_STALFOS_PIT_MIDDLE_POT,    logic->CanBreakPots()),
+                  LOCATION(RC_WATER_TEMPLE_MQ_STALFOS_PIT_NORTH_POT,     logic->CanBreakPots()),
+                  LOCATION(RC_WATER_TEMPLE_MQ_DARK_LINK_PILAR_SUN_FAIRY, logic->CanUse(RG_SUNS_SONG)),
+                  
   }, {
                   //Exits
                   Entrance(RR_WATER_TEMPLE_MQ_WATERFALL,         {[]{return logic->MQWaterStalfosPit && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_LONGSHOT));}}),
@@ -562,8 +564,10 @@ void RegionTable_Init_WaterTemple() {
 //specifically the area past the spikes
   areaTable[RR_WATER_TEMPLE_MQ_STALFOS_PIT_UPPER] = Region("Water Temple MQ Stalfos Pit Upper", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LOCATION(RC_WATER_TEMPLE_MQ_BEFORE_DARK_LINK_POT_1, logic->CanBreakPots()),
-                  LOCATION(RC_WATER_TEMPLE_MQ_BEFORE_DARK_LINK_POT_2, logic->CanBreakPots()),
+                  LOCATION(RC_WATER_TEMPLE_MQ_BEFORE_DARK_LINK_POT_1,     logic->CanBreakPots()),
+                  LOCATION(RC_WATER_TEMPLE_MQ_BEFORE_DARK_LINK_POT_2,     logic->CanBreakPots()),
+                  LOCATION(RC_WATER_TEMPLE_MQ_DARK_LINK_LEFT_STORM_FAIRY, logic->CanUse(RG_SONG_OF_STORMS)),
+                  LOCATION(RC_WATER_TEMPLE_MQ_DARK_LINK_RIGHT_SUN_FAIRY,  logic->CanUse(RG_SUNS_SONG)),
   }, {
                   //Exits
                   Entrance(RR_WATER_TEMPLE_MQ_STALFOS_PIT,      {[]{return logic->IsAdult || logic->TakeDamage();}}),

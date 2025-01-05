@@ -62,8 +62,6 @@ class Context {
     void SetSeedGenerated(bool seedGenerated = true);
     bool IsSpoilerLoaded() const;
     void SetSpoilerLoaded(bool spoilerLoaded = true);
-    bool IsPlandoLoaded() const;
-    void SetPlandoLoaded(bool plandoLoaded = true);
     std::shared_ptr<Settings> GetSettings();
     std::shared_ptr<EntranceShuffler> GetEntranceShuffler();
     std::shared_ptr<Dungeons> GetDungeons();
@@ -78,7 +76,7 @@ class Context {
     Option& GetOption(RandomizerSettingKey key) const;
     TrickOption& GetTrickOption(RandomizerTrick key) const;
     GetItemEntry GetFinalGIEntry(RandomizerCheck rc, bool checkObtainability = true, GetItemID ogItemId = GI_NONE);
-    void ParseSpoiler(const char* spoilerFileName, bool plandoMode);
+    void ParseSpoiler(const char* spoilerFileName);
     void ParseHashIconIndexesJson(nlohmann::json spoilerFileJson);
     void ParseItemLocationsJson(nlohmann::json spoilerFileJson);
     void WriteHintJson(nlohmann::ordered_json& spoilerFileJson);
@@ -106,6 +104,5 @@ class Context {
     std::shared_ptr<Kaleido> mKaleido;
     bool mSeedGenerated = false;
     bool mSpoilerLoaded = false;
-    bool mPlandoLoaded = false;
 };
 } // namespace Rando

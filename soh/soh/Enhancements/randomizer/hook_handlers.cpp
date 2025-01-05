@@ -7,6 +7,7 @@
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/dungeon.h"
 #include "soh/Enhancements/randomizer/fishsanity.h"
+#include "soh/Enhancements/randomizer/static_data.h"
 #include "soh/Enhancements/randomizer/ShufflePots.h"
 #include "soh/Enhancements/randomizer/ShuffleFreestanding.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
@@ -14,6 +15,7 @@
 #include "soh/ImGuiUtils.h"
 #include "soh/Notification/Notification.h"
 #include "soh/SaveManager.h"
+#include "soh/Enhancements/randomizer/ShuffleFairies.h"
 
 extern "C" {
 #include "macros.h"
@@ -2237,7 +2239,7 @@ void RandomizerOnPlayerUpdateHandler() {
         gPlayState->transitionTrigger != TRANS_TRIGGER_START &&
         (1 << 0 & gSaveContext.inventory.dungeonItems[SCENE_GANONS_TOWER]) == 0
     ) {
-        GiveItemEntryWithoutActor(gPlayState, ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER, RG_GANONS_CASTLE_BOSS_KEY));
+        GiveItemEntryWithoutActor(gPlayState, *Rando::StaticData::GetItemTable().at(RG_GANONS_CASTLE_BOSS_KEY).GetGIEntry());
     }
 
     if (
@@ -2405,6 +2407,8 @@ void RandomizerRegisterHooks() {
 
         shuffleFreestandingOnVanillaBehaviorHook = 0;
 
+        ShuffleFairies_UnregisterHooks();
+
         if (!IS_RANDO) return;
 
         // ENTRTODO: Move all entrance rando handling to a dedicated file
@@ -2450,6 +2454,10 @@ void RandomizerRegisterHooks() {
 
         if (RAND_GET_OPTION(RSK_SHUFFLE_FREESTANDING) != RO_SHUFFLE_FREESTANDING_OFF) {
             shuffleFreestandingOnVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(ShuffleFreestanding_OnVanillaBehaviorHandler);
+        }
+        
+        if (RAND_GET_OPTION(RSK_SHUFFLE_FAIRIES)) {
+            ShuffleFairies_RegisterHooks();
         }
     });
 }

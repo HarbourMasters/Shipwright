@@ -342,16 +342,7 @@ void RegionTable_Init_JabuJabusBelly() {
     |         BOSS ROOM         |
     ---------------------------*/
     areaTable[RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY] =
-        Region("Jabu Jabus Belly Boss Entryway", "Jabu Jabus Belly", {RA_JABU_JABUS_BELLY}, NO_DAY_NIGHT_CYCLE, {},
-             {
-                 //Locations
-                 LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_1, logic->CanBreakPots()),
-                 LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_2, logic->CanBreakPots()),
-                 LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_3, logic->CanBreakPots()),
-                 LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_4, logic->CanBreakPots()),
-                 LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_5, logic->CanBreakPots()),
-                 LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_6, logic->CanBreakPots()),
-             },
+        Region("Jabu Jabus Belly Boss Entryway", "Jabu Jabus Belly", {RA_JABU_JABUS_BELLY}, NO_DAY_NIGHT_CYCLE, {}, {},
              {
                  // Exits
                  Entrance(RR_JABU_JABUS_BELLY_NEAR_BOSS_ROOM, { [] { return ctx->GetDungeon(JABU_JABUS_BELLY)->IsVanilla(); } }),
@@ -368,6 +359,12 @@ void RegionTable_Init_JabuJabusBelly() {
              },
              {
                  // Locations
+                 LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_1, logic->CanBreakPots()),
+                 LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_2, logic->CanBreakPots()),
+                 LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_3, logic->CanBreakPots()),
+                 LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_4, logic->CanBreakPots()),
+                 LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_5, logic->CanBreakPots()),
+                 LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_6, logic->CanBreakPots()),
                  LOCATION(RC_JABU_JABUS_BELLY_BARINADE_HEART, logic->JabuJabusBellyClear),
                  LOCATION(RC_BARINADE, logic->JabuJabusBellyClear),
              },
