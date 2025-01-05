@@ -121,6 +121,13 @@ void Context::AddLocations(const Container& locations, std::vector<RandomizerChe
     destination->insert(destination->end(), std::cbegin(locations), std::cend(locations));
 }
 
+bool Context::IsQuestOfLocationActive(RandomizerCheck rc) {
+    const auto loc = Rando::StaticData::GetLocation(rc);
+    return loc->GetQuest() == RCQUEST_BOTH ||
+        loc->GetQuest() == RCQUEST_MQ && mDungeons->GetDungeonFromScene(loc->GetScene())->IsMQ() ||
+        loc->GetQuest() == RCQUEST_VANILLA && mDungeons->GetDungeonFromScene(loc->GetScene())->IsVanilla();
+}
+
 void Context::GenerateLocationPool() {
     allLocations.clear();
     if (mSettings->GetOption(RSK_TRIFORCE_HUNT)) {

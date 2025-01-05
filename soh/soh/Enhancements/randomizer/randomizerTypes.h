@@ -5625,10 +5625,10 @@ typedef enum {
 
 //Freestanding Hearts/Rupees settings (off, dungeons, overworld, all)
 typedef enum {
-    RO_FREESTANDING_OFF,
-    RO_FREESTANDING_DUNGEONS,
-    RO_FREESTANDING_OVERWORLD,
-    RO_FREESTANDING_ALL,
+    RO_SHUFFLE_FREESTANDING_OFF,
+    RO_SHUFFLE_FREESTANDING_DUNGEONS,
+    RO_SHUFFLE_FREESTANDING_OVERWORLD,
+    RO_SHUFFLE_FREESTANDING_ALL,
 } RandoOptionFreestanding;
 
 // Shuffle Pots settings (off, dungeons, overworld, all)
