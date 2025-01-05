@@ -2066,9 +2066,6 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
     for (Option& option : mOptions) {
         option.SetContextIndex(option.GetMenuOptionIndex());
     }
-    // If we've loaded a spoiler file, the settings have already been populated, so we
-    // only need to do things like resolve the starting age or determine MQ dungeons.
-    // Any logic dependent on cvarSettings should go in this if statement
     
     // if we skip child zelda, we start with zelda's letter, and malon starts
     // at the ranch, so we should *not* shuffle the weird egg
