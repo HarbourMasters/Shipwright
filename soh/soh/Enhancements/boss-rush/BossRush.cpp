@@ -398,6 +398,12 @@ void BossRush_InitSave() {
     gSaveContext.eventChkInf[7] |= 0x40; // barinade
     gSaveContext.eventChkInf[7] |= 0x80; // bongo bongo
 
+    // Sets all rando flags to false
+    // Boss Rush currently uses 2 randomizer flags (RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE & RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE)
+    for (s32 i = 0; i < ARRAY_COUNT(gSaveContext.randomizerInf); i++) {
+        gSaveContext.ship.randomizerInf[i] = 0;
+    }
+
     // Set items
     std::array<u8, 24> brItems = {
         ITEM_STICK,     ITEM_NUT,  ITEM_BOMB, ITEM_BOW,      ITEM_NONE,        ITEM_NONE,

@@ -4983,11 +4983,14 @@ void Flags_UnsetEventInf(s32 flag) {
  * Tests if "randomizerInf" flag is set.
  */
 s32 Flags_GetRandomizerInf(RandomizerInf flag) {
+    // Randomizer flags are currently accessible from any quest (boss rush as an example)
+    /*
     if (!IS_RANDO) {
-        //LUSLOG_ERROR("Tried to get randomizerInf flag \"%d\" outside of rando", flag);
-        //assert(false);
+        LUSLOG_ERROR("Tried to get randomizerInf flag \"%d\" outside of rando", flag);
+        assert(false);
         return 0;
     }
+    */
 
     return gSaveContext.ship.randomizerInf[flag >> 4] & (1 << (flag & 0xF));
 }
@@ -4996,11 +4999,14 @@ s32 Flags_GetRandomizerInf(RandomizerInf flag) {
  * Sets "randomizerInf" flag.
  */
 void Flags_SetRandomizerInf(RandomizerInf flag) {
+    // Randomizer flags are currently accessible from any quest (boss rush as an example)
+    /*
     if (!IS_RANDO) {
         LUSLOG_ERROR("Tried to set randomizerInf flag \"%d\" outside of rando", flag);
         assert(false);
         return;
     }
+    */
 
     s32 previouslyOff = !Flags_GetRandomizerInf(flag);
     gSaveContext.ship.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
@@ -5014,11 +5020,14 @@ void Flags_SetRandomizerInf(RandomizerInf flag) {
  * Unsets "randomizerInf" flag.
  */
 void Flags_UnsetRandomizerInf(RandomizerInf flag) {
+    // Randomizer flags are currently accessible from any quest (boss rush as an example)
+    /*
     if (!IS_RANDO) {
         LUSLOG_ERROR("Tried to unset randomizerInf flag \"%d\" outside of rando", flag);
         assert(false);
         return;
     }
+    */
 
     s32 previouslyOn = Flags_GetRandomizerInf(flag);
     gSaveContext.ship.randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
