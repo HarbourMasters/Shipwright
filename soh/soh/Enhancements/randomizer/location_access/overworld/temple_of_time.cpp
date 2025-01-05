@@ -9,10 +9,18 @@ void RegionTable_Init_TempleOfTime() {
         EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairyExceptSuns();}),
     }, {
         //Locations
-        LOCATION(RC_TOT_LEFTMOST_GOSSIP_STONE,     true),
-        LOCATION(RC_TOT_LEFT_CENTER_GOSSIP_STONE,  true),
-        LOCATION(RC_TOT_RIGHT_CENTER_GOSSIP_STONE, true),
-        LOCATION(RC_TOT_RIGHTMOST_GOSSIP_STONE,    true),
+        LOCATION(RC_TOT_LEFTMOST_GOSSIP_STONE_FAIRY,         logic->CallGossipFairyExceptSuns() || (logic->CanUse(RG_SUNS_SONG) && logic->IsAdult)),
+        LOCATION(RC_TOT_LEFTMOST_GOSSIP_STONE_FAIRY_BIG,     logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_TOT_LEFT_CENTER_GOSSIP_STONE_FAIRY,      logic->CallGossipFairyExceptSuns() || (logic->CanUse(RG_SUNS_SONG) && logic->IsAdult)),
+        LOCATION(RC_TOT_LEFT_CENTER_GOSSIP_STONE_FAIRY_BIG,  logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_TOT_RIGHT_CENTER_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns() || (logic->CanUse(RG_SUNS_SONG) && logic->IsAdult)),
+        LOCATION(RC_TOT_RIGHT_CENTER_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_TOT_RIGHTMOST_GOSSIP_STONE_FAIRY,        logic->CallGossipFairyExceptSuns() || (logic->CanUse(RG_SUNS_SONG) && logic->IsAdult)),
+        LOCATION(RC_TOT_RIGHTMOST_GOSSIP_STONE_FAIRY_BIG,    logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_TOT_LEFTMOST_GOSSIP_STONE,               true),
+        LOCATION(RC_TOT_LEFT_CENTER_GOSSIP_STONE,            true),
+        LOCATION(RC_TOT_RIGHT_CENTER_GOSSIP_STONE,           true),
+        LOCATION(RC_TOT_RIGHTMOST_GOSSIP_STONE,              true),
     }, {
         //Exits
         Entrance(RR_THE_MARKET,     []{return true;}),

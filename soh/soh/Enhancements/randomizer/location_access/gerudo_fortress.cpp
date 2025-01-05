@@ -42,6 +42,8 @@ void RegionTable_Init_GerudoFortress() {
         LOCATION(RC_GF_SOUTH_F1_CARPENTER_CELL_POT_2, logic->CanBreakPots()),
         LOCATION(RC_GF_SOUTH_F1_CARPENTER_CELL_POT_3, logic->CanBreakPots()),
         LOCATION(RC_GF_SOUTH_F1_CARPENTER_CELL_POT_4, logic->CanBreakPots()),
+        //RANDOTODO doublecheck when GF isn't a blob
+        LOCATION(RC_GF_KITCHEN_SUN_FAIRY,             (logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT)) && logic->CanUse(RG_SUNS_SONG)),
     }, {
         //Exits
         Entrance(RR_GV_FORTRESS_SIDE,                []{return true;}),
@@ -62,7 +64,17 @@ void RegionTable_Init_GerudoFortress() {
     areaTable[RR_GF_STORMS_GROTTO] = Region("GF Storms Grotto", "GF Storms Grotto", {}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->FreeFairies, []{return true;}),
-    }, {}, {
+    }, {
+        //Locations
+        LOCATION(RC_GF_FAIRY_GROTTO_FAIRY_1, true),
+        LOCATION(RC_GF_FAIRY_GROTTO_FAIRY_2, true),
+        LOCATION(RC_GF_FAIRY_GROTTO_FAIRY_3, true),
+        LOCATION(RC_GF_FAIRY_GROTTO_FAIRY_4, true),
+        LOCATION(RC_GF_FAIRY_GROTTO_FAIRY_5, true),
+        LOCATION(RC_GF_FAIRY_GROTTO_FAIRY_6, true),
+        LOCATION(RC_GF_FAIRY_GROTTO_FAIRY_7, true),
+        LOCATION(RC_GF_FAIRY_GROTTO_FAIRY_8, true),
+    }, {
         //Exits
         Entrance(RR_GERUDO_FORTRESS, []{return true;}),
     });

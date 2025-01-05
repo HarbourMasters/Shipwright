@@ -15,31 +15,42 @@ void RegionTable_Init_GoronCity() {
         EventAccess(&logic->StopGCRollingGoronAsAdult, []{return logic->StopGCRollingGoronAsAdult || (logic->IsAdult && (logic->HasItem(RG_GORONS_BRACELET) || logic->HasExplosives() || logic->CanUse(RG_FAIRY_BOW) || (ctx->GetTrickOption(RT_GC_LINK_GORON_DINS) && logic->CanUse(RG_DINS_FIRE))));}),
     }, {
         //Locations
-        LOCATION(RC_GC_MAZE_LEFT_CHEST,        logic->CanUse(RG_MEGATON_HAMMER) || logic->CanUse(RG_SILVER_GAUNTLETS) || (ctx->GetTrickOption(RT_GC_LEFTMOST) && logic->HasExplosives() && logic->CanUse(RG_HOVER_BOOTS))),
-        LOCATION(RC_GC_MAZE_CENTER_CHEST,      logic->BlastOrSmash()  || logic->CanUse(RG_SILVER_GAUNTLETS)),
-        LOCATION(RC_GC_MAZE_RIGHT_CHEST,       logic->BlastOrSmash()  || logic->CanUse(RG_SILVER_GAUNTLETS)),
-        LOCATION(RC_GC_POT_FREESTANDING_POH,   logic->IsChild && logic->GoronCityChildFire && (logic->CanUse(RG_BOMB_BAG) || (logic->HasItem(RG_GORONS_BRACELET) && ctx->GetTrickOption(RT_GC_POT_STRENGTH)) || (logic->CanUse(RG_BOMBCHU_5) && ctx->GetTrickOption(RT_GC_POT)))),
-        LOCATION(RC_GC_ROLLING_GORON_AS_CHILD, logic->IsChild && (logic->HasExplosives() || (logic->HasItem(RG_GORONS_BRACELET) && ctx->GetTrickOption(RT_GC_ROLLING_STRENGTH)))),
-        LOCATION(RC_GC_ROLLING_GORON_AS_ADULT, logic->StopGCRollingGoronAsAdult),
-        LOCATION(RC_GC_GS_BOULDER_MAZE,        logic->IsChild && logic->BlastOrSmash()),
-        LOCATION(RC_GC_GS_CENTER_PLATFORM,     logic->IsAdult && logic->CanAttack()),
-        LOCATION(RC_GC_MEDIGORON,              logic->IsAdult && (logic->BlastOrSmash() || logic->HasItem(RG_GORONS_BRACELET))),
-        LOCATION(RC_GC_MAZE_GOSSIP_STONE,      logic->BlastOrSmash() || logic->CanUse(RG_SILVER_GAUNTLETS)),
-        LOCATION(RC_GC_MEDIGORON_GOSSIP_STONE, logic->BlastOrSmash() || logic->HasItem(RG_GORONS_BRACELET)),
-        LOCATION(RC_GC_LOWER_STAIRCASE_POT_1,  logic->CanBreakPots()),
-        LOCATION(RC_GC_LOWER_STAIRCASE_POT_2,  logic->CanBreakPots()),
-        LOCATION(RC_GC_UPPER_STAIRCASE_POT_1,  logic->CanBreakPots()),
-        LOCATION(RC_GC_UPPER_STAIRCASE_POT_2,  logic->CanBreakPots()),
-        LOCATION(RC_GC_UPPER_STAIRCASE_POT_3,  logic->CanBreakPots()),
-        // Implied CanBreakPots as when we shuffle strength 0 in the future, the GORONS_BRACELET check will have to check for specifically strength 1 anyway.
-        LOCATION(RC_GC_MEDIGORON_POT_1,        logic->BlastOrSmash() || logic->HasItem(RG_GORONS_BRACELET)),
+        LOCATION(RC_GC_MAZE_LEFT_CHEST,             logic->CanUse(RG_MEGATON_HAMMER) || logic->CanUse(RG_SILVER_GAUNTLETS) || (ctx->GetTrickOption(RT_GC_LEFTMOST) && logic->HasExplosives() && logic->CanUse(RG_HOVER_BOOTS))),
+        LOCATION(RC_GC_MAZE_CENTER_CHEST,           logic->BlastOrSmash()  || logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_MAZE_RIGHT_CHEST,            logic->BlastOrSmash()  || logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_POT_FREESTANDING_POH,        logic->IsChild && logic->GoronCityChildFire && (logic->CanUse(RG_BOMB_BAG) || (logic->HasItem(RG_GORONS_BRACELET) && ctx->GetTrickOption(RT_GC_POT_STRENGTH)) || (logic->CanUse(RG_BOMBCHU_5) && ctx->GetTrickOption(RT_GC_POT)))),
+        LOCATION(RC_GC_ROLLING_GORON_AS_CHILD,      logic->IsChild && (logic->HasExplosives() || (logic->HasItem(RG_GORONS_BRACELET) && ctx->GetTrickOption(RT_GC_ROLLING_STRENGTH)))),
+        LOCATION(RC_GC_ROLLING_GORON_AS_ADULT,      logic->StopGCRollingGoronAsAdult),
+        LOCATION(RC_GC_GS_BOULDER_MAZE,             logic->IsChild && logic->BlastOrSmash()),
+        LOCATION(RC_GC_GS_CENTER_PLATFORM,          logic->IsAdult && logic->CanAttack()),
+        LOCATION(RC_GC_MEDIGORON,                   logic->IsAdult && (logic->CanBreakMudWalls() || logic->HasItem(RG_GORONS_BRACELET))),
+        LOCATION(RC_GC_MAZE_GOSSIP_STONE_FAIRY,     (logic->BlastOrSmash() || logic->CanUse(RG_SILVER_GAUNTLETS)) && logic->CallGossipFairyExceptSuns()),
+        LOCATION(RC_GC_MAZE_GOSSIP_STONE_FAIRY_BIG, (logic->BlastOrSmash() || logic->CanUse(RG_SILVER_GAUNTLETS)) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_GC_MAZE_GOSSIP_STONE,           logic->BlastOrSmash() || logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_LOWER_STAIRCASE_POT_1,       logic->CanBreakPots()),
+        LOCATION(RC_GC_LOWER_STAIRCASE_POT_2,       logic->CanBreakPots()),
+        LOCATION(RC_GC_UPPER_STAIRCASE_POT_1,       logic->CanBreakPots()),
+        LOCATION(RC_GC_UPPER_STAIRCASE_POT_2,       logic->CanBreakPots()),
+        LOCATION(RC_GC_UPPER_STAIRCASE_POT_3,       logic->CanBreakPots()),
     }, {
         //Exits
         Entrance(RR_DEATH_MOUNTAIN_TRAIL, []{return true;}),
+        Entrance(RR_GC_MEDIGORON,         []{return logic->CanBreakMudWalls() || logic->HasItem(RG_GORONS_BRACELET);}),
         Entrance(RR_GC_WOODS_WARP,        []{return logic->GCWoodsWarpOpen;}),
         Entrance(RR_GC_SHOP,              []{return (logic->IsAdult && logic->StopGCRollingGoronAsAdult) || (logic->IsChild && (logic->BlastOrSmash() || logic->HasItem(RG_GORONS_BRACELET) || logic->GoronCityChildFire || logic->CanUse(RG_FAIRY_BOW)));}),
         Entrance(RR_GC_DARUNIAS_CHAMBER,  []{return (logic->IsAdult && logic->StopGCRollingGoronAsAdult) || (logic->IsChild && logic->GCDaruniasDoorOpenChild);}),
         Entrance(RR_GC_GROTTO_PLATFORM,   []{return logic->IsAdult && ((logic->CanUse(RG_SONG_OF_TIME) && ((logic->EffectiveHealth() > 2) || logic->CanUse(RG_GORON_TUNIC) || logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_NAYRUS_LOVE))) || (logic->EffectiveHealth() > 1 && logic->CanUse(RG_GORON_TUNIC) && logic->CanUse(RG_HOOKSHOT)) || (logic->CanUse(RG_NAYRUS_LOVE) && logic->CanUse(RG_HOOKSHOT)) || (logic->EffectiveHealth() > 2 && logic->CanUse(RG_HOOKSHOT) && ctx->GetTrickOption(RT_GC_GROTTO)));}),
+    });
+
+    areaTable[RR_GC_MEDIGORON] = Region("GC Medigoron", "Goron City", {RA_GORON_CITY}, NO_DAY_NIGHT_CYCLE, {}, {
+        //Locations
+        LOCATION(RC_GC_MEDIGORON_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns()),
+        LOCATION(RC_GC_MEDIGORON_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_GC_MEDIGORON_GOSSIP_STONE,           true),
+        LOCATION(RC_GC_MEDIGORON_POT_1,                  logic->CanBreakPots()),
+    }, {
+        //Exits
+        Entrance(RR_GORON_CITY, []{return true;}),
     });
 
     areaTable[RR_GC_WOODS_WARP] = Region("GC Woods Warp", "Goron City", {RA_GORON_CITY}, NO_DAY_NIGHT_CYCLE, {

@@ -20,10 +20,14 @@ void RegionTable_Init_CastleGrounds() {
         EventAccess(&logic->BugRock,          []{return true;}),
     }, {
         //Locations
-        LOCATION(RC_HC_MALON_EGG,              true),
-        LOCATION(RC_HC_GS_TREE,                logic->IsChild && logic->CanAttack()),
-        LOCATION(RC_HC_MALON_GOSSIP_STONE,     true),
-        LOCATION(RC_HC_ROCK_WALL_GOSSIP_STONE, true),
+        LOCATION(RC_HC_MALON_EGG,                        true),
+        LOCATION(RC_HC_GS_TREE,                          logic->IsChild && logic->CanAttack()),
+        LOCATION(RC_HC_MALON_GOSSIP_STONE_FAIRY,         logic->CallGossipFairy()),
+        LOCATION(RC_HC_MALON_GOSSIP_STONE_FAIRY_BIG,     logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_HC_ROCK_WALL_GOSSIP_STONE_FAIRY,     logic->CallGossipFairy()),
+        LOCATION(RC_HC_ROCK_WALL_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_HC_MALON_GOSSIP_STONE,               true),
+        LOCATION(RC_HC_ROCK_WALL_GOSSIP_STONE,           true),
     }, {
         //Exits
         Entrance(RR_CASTLE_GROUNDS,          []{return true;}),
@@ -49,19 +53,30 @@ void RegionTable_Init_CastleGrounds() {
         Entrance(RR_CASTLE_GROUNDS, []{return true;}),
     });
 
-    areaTable[RR_HC_STORMS_GROTTO] = Region("HC Storms Grotto", "HC Storms Grotto", {}, NO_DAY_NIGHT_CYCLE, {
+    areaTable[RR_HC_STORMS_GROTTO] = Region("HC Storms Grotto", "HC Storms Grotto", {}, NO_DAY_NIGHT_CYCLE, {}, {
+        //Locations
+        LOCATION(RC_HC_GS_STORMS_GROTTO, logic->CanUse(RG_BOOMERANG) && ctx->GetTrickOption(RT_HC_STORMS_GS)),
+    }, {
+        //Exits
+        Entrance(RR_CASTLE_GROUNDS,                []{return true;}),
+        Entrance(RR_HC_STORMS_GROTTO_BEHIND_WALLS, []{return logic->CanBreakMudWalls();}),
+    });
+
+    areaTable[RR_HC_STORMS_GROTTO_BEHIND_WALLS] = Region("HC Storms Grotto Behind Walls", "HC Storms Grotto", {}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->NutPot,           []{return logic->NutPot || logic->BlastOrSmash();}),
-        EventAccess(&logic->GossipStoneFairy, []{return logic->CanBreakMudWalls() && logic->CallGossipFairy();}),
-        EventAccess(&logic->WanderingBugs,    []{return logic->WanderingBugs || logic->BlastOrSmash();}),
+        EventAccess(&logic->NutPot,           []{return true;}),
+        EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairy();}),
+        EventAccess(&logic->WanderingBugs,    []{return true;}),
     }, {
         //Locations
-        LOCATION(RC_HC_GS_STORMS_GROTTO,           (logic->BlastOrSmash() && logic->HookshotOrBoomerang()) || (logic->CanUse(RG_BOOMERANG) && ctx->GetTrickOption(RT_HC_STORMS_GS))),
-        LOCATION(RC_HC_STORMS_GROTTO_GOSSIP_STONE, logic->BlastOrSmash()),
-        LOCATION(RC_HC_STORMS_GROTTO_POT_1,        logic->BlastOrSmash() && logic->CanBreakPots()),
-        LOCATION(RC_HC_STORMS_GROTTO_POT_2,        logic->BlastOrSmash() && logic->CanBreakPots()),
-        LOCATION(RC_HC_STORMS_GROTTO_POT_3,        logic->BlastOrSmash() && logic->CanBreakPots()),
-        LOCATION(RC_HC_STORMS_GROTTO_POT_4,        logic->BlastOrSmash() && logic->CanBreakPots()),
+        LOCATION(RC_HC_GS_STORMS_GROTTO,                     logic->HookshotOrBoomerang()),
+        LOCATION(RC_HC_STORMS_GROTTO_GOSSIP_STONE_FAIRY,     logic->CallGossipFairy()),
+        LOCATION(RC_HC_STORMS_GROTTO_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_HC_STORMS_GROTTO_GOSSIP_STONE,           true),
+        LOCATION(RC_HC_STORMS_GROTTO_POT_1,                  logic->CanBreakPots()),
+        LOCATION(RC_HC_STORMS_GROTTO_POT_2,                  logic->CanBreakPots()),
+        LOCATION(RC_HC_STORMS_GROTTO_POT_3,                  logic->CanBreakPots()),
+        LOCATION(RC_HC_STORMS_GROTTO_POT_4,                  logic->CanBreakPots()),
     }, {
         //Exits
         Entrance(RR_CASTLE_GROUNDS, []{return true;}),

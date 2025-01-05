@@ -216,11 +216,13 @@ void RegionTable_Init_Kakariko() {
 
     areaTable[RR_KAK_OPEN_GROTTO] = Region("Kak Open Grotto", "Kak Open Grotto", {}, NO_DAY_NIGHT_CYCLE, grottoEvents, {
         //Locations
-        LOCATION(RC_KAK_OPEN_GROTTO_CHEST,         true),
-        LOCATION(RC_KAK_OPEN_GROTTO_FISH,          logic->HasBottle()),
-        LOCATION(RC_KAK_OPEN_GROTTO_GOSSIP_STONE,  true),
-        LOCATION(RC_KAK_OPEN_GROTTO_BEEHIVE_LEFT,  logic->CanBreakLowerBeehives()),
-        LOCATION(RC_KAK_OPEN_GROTTO_BEEHIVE_RIGHT, logic->CanBreakLowerBeehives()),
+        LOCATION(RC_KAK_OPEN_GROTTO_CHEST,                  true),
+        LOCATION(RC_KAK_OPEN_GROTTO_FISH,                   logic->HasBottle()),
+        LOCATION(RC_KAK_OPEN_GROTTO_GOSSIP_STONE_FAIRY,     logic->CallGossipFairy()),
+        LOCATION(RC_KAK_OPEN_GROTTO_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_KAK_OPEN_GROTTO_GOSSIP_STONE,           true),
+        LOCATION(RC_KAK_OPEN_GROTTO_BEEHIVE_LEFT,           logic->CanBreakLowerBeehives()),
+        LOCATION(RC_KAK_OPEN_GROTTO_BEEHIVE_RIGHT,          logic->CanBreakLowerBeehives()),
     }, {
         //Exits
         Entrance(RR_KAK_BACKYARD, []{return true;}),

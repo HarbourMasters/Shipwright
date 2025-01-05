@@ -6,7 +6,7 @@ using namespace Rando;
 void RegionTable_Init_KokiriForest() {
     areaTable[RR_KOKIRI_FOREST] = Region("Kokiri Forest", "Kokiri Forest", {RA_KOKIRI_FOREST}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->BeanPlantFairy,           []{return logic->BeanPlantFairy   || (CanPlantBean(RR_KOKIRI_FOREST) && logic->CanUse(RG_SONG_OF_STORMS));}),
+        EventAccess(&logic->BeanPlantFairy,           []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}),
         EventAccess(&logic->GossipStoneFairy,         []{return logic->CallGossipFairyExceptSuns();}),
         EventAccess(&logic->ShowedMidoSwordAndShield, []{return logic->ShowedMidoSwordAndShield || (logic->IsChild && logic->CanUse(RG_KOKIRI_SWORD) && logic->CanUse(RG_DEKU_SHIELD));}),
     }, {
@@ -15,6 +15,11 @@ void RegionTable_Init_KokiriForest() {
         LOCATION(RC_KF_GS_KNOW_IT_ALL_HOUSE,    logic->IsChild && logic->CanAttack() && (/*TODO: HasNightStart ||*/ logic->CanLeaveForest() || logic->CanUse(RG_SUNS_SONG)) && logic->CanGetNightTimeGS()),
         LOCATION(RC_KF_GS_BEAN_PATCH,           logic->CanSpawnSoilSkull() && logic->CanAttack()),
         LOCATION(RC_KF_GS_HOUSE_OF_TWINS,       logic->IsAdult && (logic->HookshotOrBoomerang() || (ctx->GetTrickOption(RT_KF_ADULT_GS) && logic->CanUse(RG_HOVER_BOOTS))) && logic->CanGetNightTimeGS()),
+        LOCATION(RC_KF_BEAN_SPROUT_FAIRY_1,     logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_KF_BEAN_SPROUT_FAIRY_2,     logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_KF_BEAN_SPROUT_FAIRY_3,     logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_KF_GOSSIP_STONE_FAIRY,      logic->CallGossipFairyExceptSuns()),
+        LOCATION(RC_KF_GOSSIP_STONE_FAIRY_BIG,  logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_KF_BRIDGE_RUPEE,            logic->IsChild),
         LOCATION(RC_KF_BEHIND_MIDOS_RUPEE,      logic->IsChild),
         LOCATION(RC_KF_SOUTH_GRASS_WEST_RUPEE,  logic->IsChild),
@@ -55,8 +60,12 @@ void RegionTable_Init_KokiriForest() {
         EventAccess(&logic->ShowedMidoSwordAndShield, []{return logic->ShowedMidoSwordAndShield || (logic->IsChild && logic->CanUse(RG_KOKIRI_SWORD) && logic->CanUse(RG_DEKU_SHIELD));}),
     }, {
         //Locations
-        LOCATION(RC_KF_DEKU_TREE_LEFT_GOSSIP_STONE,  true),
-        LOCATION(RC_KF_DEKU_TREE_RIGHT_GOSSIP_STONE, true),
+        LOCATION(RC_KF_DEKU_TREE_LEFT_GOSSIP_STONE_FAIRY,      logic->CallGossipFairyExceptSuns()),
+        LOCATION(RC_KF_DEKU_TREE_LEFT_GOSSIP_STONE_FAIRY_BIG,  logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_KF_DEKU_TREE_RIGHT_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns()),
+        LOCATION(RC_KF_DEKU_TREE_RIGHT_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_KF_DEKU_TREE_LEFT_GOSSIP_STONE,            true),
+        LOCATION(RC_KF_DEKU_TREE_RIGHT_GOSSIP_STONE,           true),
     }, {
         //Exits
         Entrance(RR_DEKU_TREE_ENTRYWAY, []{return logic->IsChild || (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) && (ctx->GetOption(RSK_FOREST).Is(RO_CLOSED_FOREST_OFF) || logic->ShowedMidoSwordAndShield));}),
@@ -129,11 +138,13 @@ void RegionTable_Init_KokiriForest() {
 
     areaTable[RR_KF_STORMS_GROTTO] = Region("KF Storms Grotto", "KF Storms Grotto", {}, NO_DAY_NIGHT_CYCLE, grottoEvents, {
         //Locations
-        LOCATION(RC_KF_STORMS_GROTTO_CHEST,         true),
-        LOCATION(RC_KF_STORMS_GROTTO_FISH,          logic->HasBottle()),
-        LOCATION(RC_KF_STORMS_GROTTO_GOSSIP_STONE,  true),
-        LOCATION(RC_KF_STORMS_GROTTO_BEEHIVE_LEFT,  logic->CanBreakLowerBeehives()),
-        LOCATION(RC_KF_STORMS_GROTTO_BEEHIVE_RIGHT, logic->CanBreakLowerBeehives()),
+        LOCATION(RC_KF_STORMS_GROTTO_CHEST,                  true),
+        LOCATION(RC_KF_STORMS_GROTTO_FISH,                   logic->HasBottle()),
+        LOCATION(RC_KF_STORMS_GROTTO_GOSSIP_STONE_FAIRY,     logic->CallGossipFairy()),
+        LOCATION(RC_KF_STORMS_GROTTO_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_KF_STORMS_GROTTO_GOSSIP_STONE,           true),
+        LOCATION(RC_KF_STORMS_GROTTO_BEEHIVE_LEFT,           logic->CanBreakLowerBeehives()),
+        LOCATION(RC_KF_STORMS_GROTTO_BEEHIVE_RIGHT,          logic->CanBreakLowerBeehives()),
     }, {
         //Exits
         Entrance(RR_KOKIRI_FOREST, []{return true;})

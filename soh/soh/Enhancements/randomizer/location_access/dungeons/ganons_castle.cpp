@@ -46,6 +46,14 @@ void RegionTable_Init_GanonsCastle() {
         LOCATION(RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_RIGHT, logic->CanStunDeku()),
         LOCATION(RC_GANONS_CASTLE_DEKU_SCRUB_RIGHT,        logic->CanStunDeku()),
         LOCATION(RC_GANONS_CASTLE_DEKU_SCRUB_LEFT,         logic->CanStunDeku()),
+        LOCATION(RC_GANONS_CASTLE_SCRUBS_FAIRY_1,          true),
+        LOCATION(RC_GANONS_CASTLE_SCRUBS_FAIRY_2,          true),
+        LOCATION(RC_GANONS_CASTLE_SCRUBS_FAIRY_3,          true),
+        LOCATION(RC_GANONS_CASTLE_SCRUBS_FAIRY_4,          true),
+        LOCATION(RC_GANONS_CASTLE_SCRUBS_FAIRY_5,          true),
+        LOCATION(RC_GANONS_CASTLE_SCRUBS_FAIRY_6,          true),
+        LOCATION(RC_GANONS_CASTLE_SCRUBS_FAIRY_7,          true),
+        LOCATION(RC_GANONS_CASTLE_SCRUBS_FAIRY_8,          true),
     }, {});
 
     areaTable[RR_GANONS_CASTLE_FOREST_TRIAL] = Region("Ganon's Castle Forest Trial", "Ganon's Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {
@@ -108,6 +116,7 @@ void RegionTable_Init_GanonsCastle() {
         LOCATION(RC_GANONS_CASTLE_SPIRIT_TRIAL_INVISIBLE_CHEST,      (ctx->GetTrickOption(RT_GANON_SPIRIT_TRIAL_HOOKSHOT) || logic->CanUse(RG_HOOKSHOT)) && logic->CanUse(RG_BOMBCHU_5) && (ctx->GetTrickOption(RT_LENS_GANON) || logic->CanUse(RG_LENS_OF_TRUTH))),
         LOCATION(RC_GANONS_CASTLE_SPIRIT_TRIAL_POT_1,                ((ctx->GetTrickOption(RT_GANON_SPIRIT_TRIAL_HOOKSHOT) && logic->CanJumpslashExceptHammer()) || logic->CanUse(RG_HOOKSHOT)) && logic->CanUse(RG_BOMBCHU_5) && logic->CanUse(RG_FAIRY_BOW) && (logic->CanUse(RG_MIRROR_SHIELD) || (ctx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS)))),
         LOCATION(RC_GANONS_CASTLE_SPIRIT_TRIAL_POT_2,                ((ctx->GetTrickOption(RT_GANON_SPIRIT_TRIAL_HOOKSHOT) && logic->CanJumpslashExceptHammer()) || logic->CanUse(RG_HOOKSHOT)) && logic->CanUse(RG_BOMBCHU_5) && logic->CanUse(RG_FAIRY_BOW) && (logic->CanUse(RG_MIRROR_SHIELD) || (ctx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS)))),
+        LOCATION(RC_GANONS_CASTLE_SPIRIT_TRIAL_SUN_FAIRY,            logic->CanUse(RG_SUNS_SONG)),
         LOCATION(RC_GANONS_CASTLE_SPIRIT_TRIAL_HEART,                true),
     }, {});
 
@@ -172,6 +181,14 @@ void RegionTable_Init_GanonsCastle() {
         LOCATION(RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER_RIGHT, logic->CanStunDeku()),
         LOCATION(RC_GANONS_CASTLE_MQ_DEKU_SCRUB_LEFT,         logic->CanStunDeku()),
         LOCATION(RC_GANONS_CASTLE_MQ_DEKU_SCRUB_RIGHT,        logic->CanStunDeku()),
+        LOCATION(RC_GANONS_CASTLE_MQ_SCRUBS_FAIRY_1,          true),
+        LOCATION(RC_GANONS_CASTLE_MQ_SCRUBS_FAIRY_2,          true),
+        LOCATION(RC_GANONS_CASTLE_MQ_SCRUBS_FAIRY_3,          true),
+        LOCATION(RC_GANONS_CASTLE_MQ_SCRUBS_FAIRY_4,          true),
+        LOCATION(RC_GANONS_CASTLE_MQ_SCRUBS_FAIRY_5,          true),
+        LOCATION(RC_GANONS_CASTLE_MQ_SCRUBS_FAIRY_6,          true),
+        LOCATION(RC_GANONS_CASTLE_MQ_SCRUBS_FAIRY_7,          true),
+        LOCATION(RC_GANONS_CASTLE_MQ_SCRUBS_FAIRY_8,          true),
     }, {
         //Exits
         Entrance(RR_GANONS_CASTLE_MQ_MAIN, []{return true;}),

@@ -24,6 +24,8 @@ void RegionTable_Init_ZorasDomain() {
         LOCATION(RC_ZD_FISH_3,                              logic->IsChild && logic->HasBottle()),
         LOCATION(RC_ZD_FISH_4,                              logic->IsChild && logic->HasBottle()),
         LOCATION(RC_ZD_FISH_5,                              logic->IsChild && logic->HasBottle()),
+        LOCATION(RC_ZD_GOSSIP_STONE_FAIRY,                  logic->CallGossipFairyExceptSuns()),
+        LOCATION(RC_ZD_GOSSIP_STONE_FAIRY_BIG,              logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_ZD_GOSSIP_STONE,                        true),
         LOCATION(RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_LEFT,  logic->CanBreakUpperBeehives()),
         LOCATION(RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_RIGHT, logic->CanBreakUpperBeehives()),
@@ -38,7 +40,13 @@ void RegionTable_Init_ZorasDomain() {
         Entrance(RR_LAKE_HYLIA,          []{return logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS));}),
         Entrance(RR_ZD_BEHIND_KING_ZORA, []{return logic->DeliverLetter || ctx->GetOption(RSK_ZORAS_FOUNTAIN).Is(RO_ZF_OPEN) || (ctx->GetOption(RSK_ZORAS_FOUNTAIN).Is(RO_ZF_CLOSED_CHILD) && logic->IsAdult) || (ctx->GetTrickOption(RT_ZD_KING_ZORA_SKIP) && logic->IsAdult);}),
         Entrance(RR_ZD_SHOP,             []{return logic->IsChild || logic->BlueFire();}),
-        Entrance(RR_ZD_STORMS_GROTTO,    []{return logic->CanOpenStormsGrotto();}),
+        Entrance(RR_ZORAS_DOMAIN_ISLAND, []{return true;}),
+    });
+
+    areaTable[RR_ZORAS_DOMAIN_ISLAND] = Region("Zoras Domain Island", "Zoras Domain", {RA_ZORAS_DOMAIN}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+        //Exits
+        Entrance(RR_ZORAS_DOMAIN,     []{return logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE);}),
+        Entrance(RR_ZD_STORMS_GROTTO, []{return logic->CanOpenStormsGrotto();}),
     });
 
     areaTable[RR_ZD_BEHIND_KING_ZORA] = Region("ZD Behind King Zora", "Zoras Domain", {RA_ZORAS_DOMAIN}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -68,8 +76,18 @@ void RegionTable_Init_ZorasDomain() {
     areaTable[RR_ZD_STORMS_GROTTO] = Region("ZD Storms Grotto", "ZD Storms Grotto", {}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->FreeFairies, []{return true;}),
-    }, {}, {
+    }, {
+        //Locations
+        LOCATION(RC_ZD_FAIRY_GROTTO_FAIRY_1, true),
+        LOCATION(RC_ZD_FAIRY_GROTTO_FAIRY_2, true),
+        LOCATION(RC_ZD_FAIRY_GROTTO_FAIRY_3, true),
+        LOCATION(RC_ZD_FAIRY_GROTTO_FAIRY_4, true),
+        LOCATION(RC_ZD_FAIRY_GROTTO_FAIRY_5, true),
+        LOCATION(RC_ZD_FAIRY_GROTTO_FAIRY_6, true),
+        LOCATION(RC_ZD_FAIRY_GROTTO_FAIRY_7, true),
+        LOCATION(RC_ZD_FAIRY_GROTTO_FAIRY_8, true),
+    }, {
         //Exits
-        Entrance(RR_ZORAS_DOMAIN, []{return true;}),
+        Entrance(RR_ZORAS_DOMAIN_ISLAND, []{return true;}),
     });
 }
