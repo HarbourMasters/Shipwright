@@ -64,6 +64,8 @@ namespace Rando {
                 return ScarecrowsSong() && CanUse(RG_HOOKSHOT);
             case RG_DISTANT_SCARECROW:
                 return ScarecrowsSong() && CanUse(RG_LONGSHOT);
+            case RG_MAGIC_BEAN:
+                return GetAmmo(ITEM_BEAN) > 0;
             case RG_KOKIRI_SWORD:
             case RG_DEKU_SHIELD:
             case RG_GORON_TUNIC:
@@ -303,6 +305,8 @@ namespace Rando {
                 return BombchuRefill() && BombchusEnabled();
             case RG_WEIRD_EGG:
             case RG_RUTOS_LETTER:
+                return IsChild;
+            case RG_MAGIC_BEAN:
                 return IsChild;
 
             // Songs

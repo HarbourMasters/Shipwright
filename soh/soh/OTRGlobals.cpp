@@ -127,6 +127,7 @@ Sail* Sail::Instance;
 #include "soh/resource/importer/BackgroundFactory.h"
 
 #include "soh/config/ConfigUpdaters.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "src/overlays/actors/ovl_En_Dns/z_en_dns.h"
@@ -1150,6 +1151,7 @@ extern "C" void InitOTR() {
     conf->RunVersionUpdates();
 
     SohGui::SetupGuiElements();
+    ShipInit::InitAll();
     AudioCollection::Instance = new AudioCollection();
     ActorDB::Instance = new ActorDB();
 #ifdef __APPLE__

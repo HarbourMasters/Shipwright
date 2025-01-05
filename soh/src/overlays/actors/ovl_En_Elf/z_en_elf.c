@@ -7,6 +7,7 @@
 #include "z_en_elf.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include <assert.h>
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
@@ -400,9 +401,11 @@ void EnElf_Init(Actor* thisx, PlayState* play) {
             EnElf_SetupAction(this, func_80A03604);
             func_80A01C38(this, 8);
 
-            for (i = 0; i < 8; i++) {
-                Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, thisx->world.pos.x,
-                            thisx->world.pos.y - 30.0f, thisx->world.pos.z, 0, 0, 0, FAIRY_HEAL, true);
+            if (GameInteractor_Should(VB_SPAWN_FOUNTAIN_FAIRIES, true, this)) {
+                for (i = 0; i < 8; i++) {
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, thisx->world.pos.x,
+                                thisx->world.pos.y - 30.0f, thisx->world.pos.z, 0, 0, 0, FAIRY_HEAL, true);
+                }
             }
             break;
         default:
@@ -632,19 +635,7 @@ void func_80A0329C(EnElf* this, PlayState* play) {
 
         if ((heightDiff > 0.0f) && (heightDiff < 60.0f)) {
             if (!func_80A01F90(&this->actor.world.pos, &refActor->actor.world.pos, 10.0f)) {
-                if (CVarGetInteger(CVAR_ENHANCEMENT("FairyEffect"), 0) && !(this->fairyFlags & FAIRY_FLAG_BIG))
-                {
-                    if (CVarGetInteger(CVAR_ENHANCEMENT("FairyPercentRestore"), 0))
-                    {
-                        Health_ChangeBy(play, (gSaveContext.healthCapacity * CVarGetInteger(CVAR_ENHANCEMENT("FairyHealth"), 100) / 100 + 15) / 16 * 16);
-                    }
-                    else
-                    {
-                        Health_ChangeBy(play, CVarGetInteger(CVAR_ENHANCEMENT("FairyHealth"), 8) * 16);
-                    }
-                }
-                else
-                {
+                if (GameInteractor_Should(VB_FAIRY_HEAL, true, this)) {
                     Health_ChangeBy(play, 128);
                 }
                 if (this->fairyFlags & FAIRY_FLAG_BIG) {

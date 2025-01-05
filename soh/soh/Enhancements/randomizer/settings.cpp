@@ -225,6 +225,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_FISHSANITY] = Option::U8("Fishsanity", {"Off", "Shuffle only Hyrule Loach", "Shuffle Fishing Pond", "Shuffle Overworld Fish", "Shuffle Both"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("Fishsanity"), mOptionDescriptions[RSK_FISHSANITY], WidgetType::Combobox, RO_FISHSANITY_OFF);
     mOptions[RSK_FISHSANITY_POND_COUNT] = Option::U8("Pond Fish Count", {NumOpts(0,17,1)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("FishsanityPondCount"), mOptionDescriptions[RSK_FISHSANITY_POND_COUNT], WidgetType::Slider, 0, true, IMFLAG_NONE);
     mOptions[RSK_FISHSANITY_AGE_SPLIT] = Option::Bool("Pond Age Split", CVAR_RANDOMIZER_SETTING("FishsanityAgeSplit"), mOptionDescriptions[RSK_FISHSANITY_AGE_SPLIT]);
+    mOptions[RSK_SHUFFLE_FAIRIES] = Option::Bool("Shuffle Fairies", CVAR_RANDOMIZER_SETTING("ShuffleFairies"), mOptionDescriptions[RSK_SHUFFLE_FAIRIES]);
     mOptions[RSK_SHUFFLE_MAPANDCOMPASS] = Option::U8("Maps/Compasses", {"Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StartingMapsCompasses"), mOptionDescriptions[RSK_SHUFFLE_MAPANDCOMPASS], WidgetType::Combobox, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
     mOptions[RSK_KEYSANITY] = Option::U8("Small Key Shuffle", {"Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("Keysanity"), mOptionDescriptions[RSK_KEYSANITY], WidgetType::Combobox, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
     mOptions[RSK_GERUDO_KEYS] = Option::U8("Gerudo Fortress Keys", {"Vanilla", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("GerudoKeys"), mOptionDescriptions[RSK_GERUDO_KEYS], WidgetType::Combobox, RO_GERUDO_KEYS_VANILLA);
@@ -506,9 +507,9 @@ void Settings::CreateOptions() {
     mTrickOptions[RT_SPIRIT_MQ_SUN_BLOCK_GS] = TrickOption::LogicTrick(RCQUEST_MQ, RA_SPIRIT_TEMPLE, {Tricks::Tag::INTERMEDIATE}, "Spirit Temple MQ Sun Block Room GS with Boomerang", "Throw the Boomerang in such a way that it curves through the side of the glass block to hit the Gold Skulltula.");
     mTrickOptions[RT_SPIRIT_MQ_LOWER_ADULT] = TrickOption::LogicTrick(RCQUEST_MQ, RA_SPIRIT_TEMPLE, {Tricks::Tag::INTERMEDIATE}, "Spirit Temple MQ Lower Adult without Fire Arrows", "By standing in a precise position it is possible to light two of the torches with a single use of Din\'s Fire. This saves enough time to be able to light all three torches with only Din\'s.");
     mTrickOptions[RT_SPIRIT_MQ_FROZEN_EYE] = TrickOption::LogicTrick(RCQUEST_MQ, RA_SPIRIT_TEMPLE, {Tricks::Tag::NOVICE}, "Spirit Temple MQ Frozen Eye Switch without Fire", "You can melt the ice by shooting an arrow through a torch. The only way to find a line of sight for this shot is to first spawn a Song of Time block, and then stand on the very edge of it.");
-    mTrickOptions[RT_ICE_BLOCK_GS] = TrickOption::LogicTrick(RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, {Tricks::Tag::INTERMEDIATE}, "Ice Cavern Block Room GS with Hover Boots", "The Hover Boots can be used to get in front of the Skulltula to kill it with a jump slash. Then, the Hover Boots can again be used to obtain the Token, all without Hookshot or Boomerang.");
-    mTrickOptions[RT_ICE_MQ_RED_ICE_GS] = TrickOption::LogicTrick(RCQUEST_MQ, RA_SPIRIT_TEMPLE, {Tricks::Tag::INTERMEDIATE}, "Ice Cavern MQ Red Ice GS without Song of Time", "If you side-hop into the perfect position, you can briefly stand on the platform with the red ice just long enough to dump some blue fire.");
-    mTrickOptions[RT_ICE_MQ_SCARECROW] = TrickOption::LogicTrick(RCQUEST_MQ, RA_SPIRIT_TEMPLE, {Tricks::Tag::INTERMEDIATE}, "Ice Cavern MQ Scarecrow GS with No Additional Items", "As adult a precise jump can be used to reach this alcove.");
+    mTrickOptions[RT_ICE_BLOCK_GS] = TrickOption::LogicTrick(RCQUEST_VANILLA, RA_ICE_CAVERN, {Tricks::Tag::INTERMEDIATE}, "Ice Cavern Block Room GS with Hover Boots", "The Hover Boots can be used to get in front of the Skulltula to kill it with a jump slash. Then, the Hover Boots can again be used to obtain the Token, all without Hookshot or Boomerang.");
+    mTrickOptions[RT_ICE_MQ_RED_ICE_GS] = TrickOption::LogicTrick(RCQUEST_MQ, RA_ICE_CAVERN, {Tricks::Tag::INTERMEDIATE}, "Ice Cavern MQ Red Ice GS without Song of Time", "If you side-hop into the perfect position, you can briefly stand on the platform with the red ice just long enough to dump some blue fire.");
+    mTrickOptions[RT_ICE_MQ_SCARECROW] = TrickOption::LogicTrick(RCQUEST_MQ, RA_ICE_CAVERN, {Tricks::Tag::INTERMEDIATE}, "Ice Cavern MQ Scarecrow GS with No Additional Items", "As adult a precise jump can be used to reach this alcove.");
     mTrickOptions[RT_LENS_GTG] = TrickOption::LogicTrick(RCQUEST_VANILLA, RA_GERUDO_TRAINING_GROUND, {Tricks::Tag::NOVICE}, "Gerudo Training Ground without Lens of Truth", "Removes the requirements for the Lens of Truth in Gerudo Training Ground.");
     mTrickOptions[RT_GTG_WITHOUT_HOOKSHOT] = TrickOption::LogicTrick(RCQUEST_VANILLA, RA_GERUDO_TRAINING_GROUND, {Tricks::Tag::INTERMEDIATE}, "Gerudo Training Ground Left Side Silver Rupees without Hookshot", "After collecting the rest of the silver rupees in the room, you can reach the final silver rupee on the ceiling by being pulled up into it after getting grabbed by the Wallmaster. Then, you must also reach the exit of the room without the use of the Hookshot. If you move quickly you can sneak past the edge of a flame wall before it can rise up to block you. To do so without taking damage is more precise.");
     mTrickOptions[RT_GTG_FAKE_WALL] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_GERUDO_TRAINING_GROUND, {Tricks::Tag::NOVICE}, "Reach Gerudo Training Ground Fake Wall Ledge with Hover Boots", "A precise Hover Boots use from the top of the chest can allow you to grab the ledge without needing the usual requirements. In Master Quest, this always skips a Song of Time requirement. In Vanilla, this skips a Hookshot requirement, but is only relevant if \"Gerudo Training Ground Left Side Silver Rupees without Hookshot\" is enabled.");
@@ -835,6 +836,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHUFFLE_ADULT_TRADE],
         &mOptions[RSK_SHUFFLE_100_GS_REWARD],
         &mOptions[RSK_SHUFFLE_BOSS_SOULS],
+        &mOptions[RSK_SHUFFLE_FAIRIES],
     }, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_SHUFFLE_DUNGEON_ITEMS_IMGUI] = OptionGroup::SubGroup("Shuffle Dungeon Items", {
         &mOptions[RSK_SHUFFLE_DUNGEON_REWARDS],
@@ -1083,6 +1085,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHUFFLE_DEKU_STICK_BAG],
         &mOptions[RSK_SHUFFLE_DEKU_NUT_BAG],
         &mOptions[RSK_SHUFFLE_FREESTANDING],
+        &mOptions[RSK_SHUFFLE_FAIRIES],
     });
     mOptionGroups[RSG_SHUFFLE_DUNGEON_ITEMS] = OptionGroup("Shuffle Dungeon Items", {
         &mOptions[RSK_SHUFFLE_MAPANDCOMPASS],
@@ -1283,6 +1286,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHUFFLE_FROG_SONG_RUPEES],
         &mOptions[RSK_SHUFFLE_ADULT_TRADE],
         &mOptions[RSK_SHUFFLE_100_GS_REWARD],
+        &mOptions[RSK_SHUFFLE_FAIRIES],
         &mOptions[RSK_GOSSIP_STONE_HINTS],
     };
 }
