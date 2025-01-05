@@ -62,7 +62,7 @@ void ColViewerWindow::DrawElement() {
     UIWidgets::LabeledRightAlignedEnhancementCombobox("Col Check", CVAR_DEVELOPER_TOOLS("ColViewer.ColCheck"), ColRenderSettingNames, COLVIEW_DISABLED);
     UIWidgets::LabeledRightAlignedEnhancementCombobox("Waterbox", CVAR_DEVELOPER_TOOLS("ColViewer.Waterbox"), ColRenderSettingNames, COLVIEW_DISABLED);
 
-    UIWidgets::EnhancementCheckbox("Apply as decal", CVAR_DEVELOPER_TOOLS("ColViewer.Decal"));
+    UIWidgets::EnhancementCheckbox("Apply as decal", CVAR_DEVELOPER_TOOLS("ColViewer.Decal"), false, "", UIWidgets::CheckboxGraphics::Cross, true);
     UIWidgets::InsertHelpHoverText("Applies the collision as a decal display. This can be useful if there is z-fighting occuring "
                         "with the scene geometry, but can cause other artifacts.");
     UIWidgets::EnhancementCheckbox("Shaded", CVAR_DEVELOPER_TOOLS("ColViewer.Shaded"));
@@ -299,7 +299,7 @@ void InitGfx(std::vector<Gfx>& gfx, ColRenderSetting setting) {
         alpha = 0xFF;
     }
 
-    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Decal"), 0) != 0) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Decal"), 1) != 0) {
         rm |= ZMODE_DEC;
     } else if (setting == ColRenderSetting::Transparent) {
         rm |= ZMODE_XLU;

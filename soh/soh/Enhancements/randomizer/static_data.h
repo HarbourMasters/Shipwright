@@ -46,6 +46,8 @@ class StaticData {
       static std::vector<RandomizerCheck> GetStaticHintLocations();
       static std::vector<RandomizerCheck> GetPondFishLocations();
       static std::vector<RandomizerCheck> GetOverworldFishLocations();
+      static std::vector<RandomizerCheck> GetOverworldPotLocations();
+      static std::vector<RandomizerCheck> GetOverworldFairyLocations();
       static std::array<std::pair<RandomizerCheck, RandomizerCheck>, 17> randomizerFishingPondFish;
       static std::unordered_map<int8_t, RandomizerCheck> randomizerGrottoFishMap;
       static std::vector<RandomizerHint> oldVerHintOrder;

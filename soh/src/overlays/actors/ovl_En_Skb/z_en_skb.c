@@ -503,7 +503,7 @@ void EnSkb_Update(Actor* thisx, PlayState* play) {
     s32 pad;
 
     func_80AFD968(this, play);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 15.0f, 30.0f, 60.0f, 0x1D);
     this->actionFunc(this, play);
     this->actor.focus.pos = this->actor.world.pos;

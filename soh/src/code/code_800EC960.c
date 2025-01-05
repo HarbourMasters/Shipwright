@@ -26,6 +26,10 @@
 #define Audio_SeqCmd8(playerIdx, a, b, c) \
     Audio_QueueSeqCmd(0x80000000 | ((u8)playerIdx << 24) | ((u8)a << 16) | ((u8)b << 8) | ((u8)c))
 #define Audio_SeqCmdF(playerIdx, a) Audio_QueueSeqCmd(0xF0000000 | ((u8)playerIdx << 24) | ((u8)a))
+#define BTN_CUSTOM_RSTICK_UP       ((CONTROLLERBUTTONS_T)0x01000000)
+#define BTN_CUSTOM_RSTICK_DOWN     ((CONTROLLERBUTTONS_T)0x02000000)
+#define BTN_CUSTOM_RSTICK_LEFT     ((CONTROLLERBUTTONS_T)0x04000000)
+#define BTN_CUSTOM_RSTICK_RIGHT    ((CONTROLLERBUTTONS_T)0x08000000)
 
 typedef struct {
     /* 0x0 */ f32 vol;
@@ -1261,12 +1265,25 @@ void Audio_OcaUpdateBtnMap(bool customControls) {
         sOcarinaA4BtnMap = BTN_CUSTOM_OCARINA_NOTE_A4;
         sOcarinaF4BtnMap = BTN_CUSTOM_OCARINA_NOTE_F4;
         sOcarinaD4BtnMap = BTN_CUSTOM_OCARINA_NOTE_D4;
-    } else {
+    }
+    else {
         sOcarinaD5BtnMap = BTN_CUP;
         sOcarinaB4BtnMap = BTN_CLEFT;
         sOcarinaA4BtnMap = BTN_CRIGHT;
         sOcarinaF4BtnMap = BTN_CDOWN;
         sOcarinaD4BtnMap = BTN_A;
+    }
+    if (CVarGetInteger(CVAR_SETTING("CustomOcarina.Dpad"), 0)) {
+        sOcarinaD5BtnMap |= BTN_DUP;
+        sOcarinaB4BtnMap |= BTN_DLEFT;
+        sOcarinaA4BtnMap |= BTN_DRIGHT;
+        sOcarinaF4BtnMap |= BTN_DDOWN;
+    }
+    if (CVarGetInteger(CVAR_SETTING("CustomOcarina.RightStick"), 0)) {
+        sOcarinaD5BtnMap |= BTN_CUSTOM_RSTICK_UP;
+        sOcarinaB4BtnMap |= BTN_CUSTOM_RSTICK_LEFT;
+        sOcarinaA4BtnMap |= BTN_CUSTOM_RSTICK_RIGHT;
+        sOcarinaF4BtnMap |= BTN_CUSTOM_RSTICK_DOWN;
     }
 
     sOcarinaAllowedBtnMask = (
@@ -1289,6 +1306,21 @@ void Audio_GetOcaInput(void) {
     sPrevOcarinaBtnPress = sp18;
     sCurOcaStick.x = input->rel.stick_x;
     sCurOcaStick.y = input->rel.stick_y;
+    s8 rstick_x = input->cur.right_stick_x;
+    s8 rstick_y = input->cur.right_stick_y;
+    const s8 sensitivity = 64;
+    if (rstick_x > sensitivity) {
+        sCurOcarinaBtnPress |= BTN_CUSTOM_RSTICK_RIGHT;
+    }
+    if (rstick_x < -sensitivity) {
+        sCurOcarinaBtnPress |= BTN_CUSTOM_RSTICK_LEFT;
+    }
+    if (rstick_y > sensitivity) {
+        sCurOcarinaBtnPress |= BTN_CUSTOM_RSTICK_UP;
+    }
+    if (rstick_y < -sensitivity) {
+        sCurOcarinaBtnPress |= BTN_CUSTOM_RSTICK_DOWN;
+    }
 }
 
 f32 Audio_OcaAdjStick(s8 inp) {

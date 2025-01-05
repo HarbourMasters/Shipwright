@@ -162,7 +162,7 @@ void BgMoriBigst_SetupFall(BgMoriBigst* this, PlayState* play) {
 }
 
 void BgMoriBigst_Fall(BgMoriBigst* this, PlayState* play) {
-    Actor_MoveForward(&this->dyna.actor);
+    Actor_MoveXZGravity(&this->dyna.actor);
     if (this->dyna.actor.world.pos.y <= this->dyna.actor.home.pos.y) {
         this->dyna.actor.world.pos.y = this->dyna.actor.home.pos.y;
         BgMoriBigst_SetupLanding(this, play);
@@ -241,7 +241,7 @@ void BgMoriBigst_Update(Actor* thisx, PlayState* play) {
     if (this->waitTimer > 0) {
         this->waitTimer--;
     }
-    if (func_80043590(&this->dyna)) {
+    if (DynaPolyActor_IsPlayerAbove(&this->dyna)) {
         func_80074CE8(play, 6);
     }
     if (this->actionFunc != NULL) {

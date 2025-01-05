@@ -480,7 +480,7 @@ void EnDekunuts_Update(Actor* thisx, PlayState* play) {
     if (this->actor.params != DEKUNUTS_FLOWER) {
         EnDekunuts_ColliderCheck(this, play);
         this->actionFunc(this, play);
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
         Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, this->collider.dim.radius, this->collider.dim.height,
                                 0x1D);
         Collider_UpdateCylinder(&this->actor, &this->collider);

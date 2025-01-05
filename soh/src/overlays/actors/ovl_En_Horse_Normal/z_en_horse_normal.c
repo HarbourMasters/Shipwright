@@ -570,7 +570,7 @@ void EnHorseNormal_Update(Actor* thisx, PlayState* play) {
     s32 pad;
 
     sActionFuncs[this->action](this, play);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 35.0f, 100.0f, 0x1D);
     if (play->sceneNum == SCENE_LON_LON_RANCH && this->actor.world.pos.z < -2400.0f) {
         this->actor.world.pos.z = -2400.0f;

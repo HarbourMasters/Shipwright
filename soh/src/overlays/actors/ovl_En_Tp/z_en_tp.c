@@ -356,7 +356,7 @@ void EnTp_Fragment_SetupFade(EnTp* this) {
 }
 
 void EnTp_Fragment_Fade(EnTp* this, PlayState* play) {
-    func_8002D7EC(&this->actor);
+    Actor_UpdatePos(&this->actor);
     this->alpha -= 20;
 
     if (this->alpha < 20) {
@@ -668,7 +668,7 @@ void EnTp_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
 
     if (this->actor.params <= TAILPASARAN_HEAD) {
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
 
         if (this->actionIndex != TAILPASARAN_ACTION_HEAD_BURROWRETURNHOME) {
             Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 15.0f, 10.0f, 5);

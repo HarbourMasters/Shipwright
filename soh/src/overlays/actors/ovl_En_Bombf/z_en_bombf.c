@@ -194,7 +194,7 @@ void EnBombf_GrowBomb(EnBombf* this, PlayState* play) {
                 }
             } else {
                 if (!Actor_HasParent(&this->actor, play)) {
-                    func_8002F580(&this->actor, play);
+                    Actor_OfferCarry(&this->actor, play);
                 } else {
                     player->actor.child = NULL;
                     player->heldActor = NULL;
@@ -244,7 +244,7 @@ void EnBombf_Move(EnBombf* this, PlayState* play) {
             func_8002F850(play, &this->actor);
             this->actor.velocity.y *= -0.5f;
         } else if (this->timer >= 4) {
-            func_8002F580(&this->actor, play);
+            Actor_OfferCarry(&this->actor, play);
         }
     }
 }
@@ -335,7 +335,7 @@ void EnBombf_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
 
     if (thisx->params == BOMBFLOWER_BODY) {
-        Actor_MoveForward(thisx);
+        Actor_MoveXZGravity(thisx);
     }
 
     if (thisx->gravity != 0.0f) {
@@ -357,7 +357,7 @@ void EnBombf_Update(Actor* thisx, PlayState* play) {
                 thisx->world.rot.y = ((thisx->wallYaw - thisx->world.rot.y) + thisx->wallYaw) - 0x8000;
             }
             Audio_PlayActorSound2(thisx, NA_SE_EV_BOMB_BOUND);
-            Actor_MoveForward(thisx);
+            Actor_MoveXZGravity(thisx);
             DREG(6) = 1;
             Actor_UpdateBgCheckInfo(play, thisx, 5.0f, 10.0f, 0.0f, 0x1F);
             DREG(6) = 0;

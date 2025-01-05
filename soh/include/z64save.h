@@ -188,7 +188,7 @@ typedef struct ShipSaveContextData {
     ShipQuestSaveContextData quest;
     u8 maskMemory;
     //TODO: Move non-rando specific flags to a new sohInf and move the remaining randomizerInf to ShipRandomizerSaveContextData
-    u16 randomizerInf[17];
+    u16 randomizerInf[(RAND_INF_MAX + 15) / 16];
 } ShipSaveContextData;
 
 #pragma endregion

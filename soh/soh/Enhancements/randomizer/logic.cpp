@@ -64,6 +64,8 @@ namespace Rando {
                 return ScarecrowsSong() && CanUse(RG_HOOKSHOT);
             case RG_DISTANT_SCARECROW:
                 return ScarecrowsSong() && CanUse(RG_LONGSHOT);
+            case RG_MAGIC_BEAN:
+                return GetAmmo(ITEM_BEAN) > 0;
             case RG_KOKIRI_SWORD:
             case RG_DEKU_SHIELD:
             case RG_GORON_TUNIC:
@@ -304,6 +306,8 @@ namespace Rando {
             case RG_WEIRD_EGG:
             case RG_RUTOS_LETTER:
                 return IsChild;
+            case RG_MAGIC_BEAN:
+                return IsChild;
 
             // Songs
             case RG_ZELDAS_LULLABY:
@@ -437,10 +441,10 @@ namespace Rando {
                         [[fallthrough]];
                     case ED_HOOKSHOT:
                         //RANDOTODO test dins and chu range in a practical example
-                        killed = killed || CanUse(RG_HOOKSHOT) || (wallOrFloor && CanUse(RG_BOMBCHU_5));
+                        killed = killed || CanUse(RG_HOOKSHOT);
                         [[fallthrough]];
                     case ED_LONGSHOT:
-                        killed = killed || CanUse(RG_LONGSHOT);
+                        killed = killed || CanUse(RG_LONGSHOT) || (wallOrFloor && CanUse(RG_BOMBCHU_5));
                         [[fallthrough]];
                     case ED_FAR:
                         killed = killed || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW);
@@ -659,6 +663,8 @@ namespace Rando {
             case RE_SHABOM:
             //RANDOTODO when you add better damage logic, you can kill this by taking hits
                 return CanUse(RG_BOOMERANG) || CanUse(RG_NUTS) || CanJumpslash() || CanUse(RG_DINS_FIRE) || CanUse(RG_ICE_ARROWS);
+            case RE_OCTOROK:
+                return CanReflectNuts() || HookshotOrBoomerang() || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOMB_BAG) || (wallOrFloor && CanUse(RG_BOMBCHU_5));
             default:
                 SPDLOG_ERROR("CanKillEnemy reached `default`.");
                 assert(false);
@@ -698,6 +704,7 @@ namespace Rando {
             case RE_ANUBIS:
             case RE_WALLMASTER:
             case RE_PURPLE_LEEVER:
+            case RE_OCTOROK:
                 return true;
             case RE_BIG_SKULLTULA:
                 //hammer jumpslash can pass, but only on flat land where you can kill with hammer swing
@@ -964,6 +971,10 @@ namespace Rando {
         return CanUse(RG_BOTTLE_WITH_BLUE_FIRE) || (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && CanUse(RG_ICE_ARROWS));
     }
 
+    bool Logic::CanBreakPots(){
+        return true;
+    }
+
     bool Logic::HasExplosives(){
         return CanUse(RG_BOMB_BAG) || CanUse(RG_BOMBCHU_5);
     }
@@ -989,7 +1000,7 @@ namespace Rando {
     }
 
     bool Logic::CanLeaveForest(){
-        return ctx->GetOption(RSK_FOREST).IsNot(RO_FOREST_CLOSED) || IsAdult || DekuTreeClear || ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES);
+        return ctx->GetOption(RSK_FOREST).IsNot(RO_CLOSED_FOREST_ON) || IsAdult || DekuTreeClear || ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES);
     }
 
     bool Logic::CallGossipFairyExceptSuns(){
@@ -1042,6 +1053,7 @@ namespace Rando {
         return CanUse(RG_GORON_TUNIC) ? 255 : (ctx->GetTrickOption(RT_FEWER_TUNIC_REQUIREMENTS)) ? (Hearts() * 8) : 0;
     }
     
+    //Tunic is not required if you are using irons to do something that a simple gold scale dive could do, and you are not in water temple. (celing swimming and long walks through water do not count)
     uint8_t Logic::WaterTimer(){
         return CanUse(RG_ZORA_TUNIC) ? 255 : (ctx->GetTrickOption(RT_FEWER_TUNIC_REQUIREMENTS)) ? (Hearts() * 8) : 0;
     }
@@ -1059,7 +1071,7 @@ namespace Rando {
     }
 
     bool Logic::CanGetNightTimeGS(){
-        return CanUse(RG_SUNS_SONG) || !ctx->GetOption(RSK_SKULLS_SUNS_SONG);
+        return AtNight && (CanUse(RG_SUNS_SONG) || !ctx->GetOption(RSK_SKULLS_SUNS_SONG));
     }
 
     bool Logic::CanBreakUpperBeehives(){
@@ -1122,9 +1134,9 @@ namespace Rando {
     }
 
     bool Logic::CanFinishGerudoFortress(){
-        return (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_NORMAL) && SmallKeys(RR_GERUDO_FORTRESS, 4) && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)) && (HasItem(RG_GERUDO_MEMBERSHIP_CARD) || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_KITCHEN))) ||
-               (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_FAST)   && SmallKeys(RR_GERUDO_FORTRESS, 1) && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD))) ||
-               ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_FREE);
+        return (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL) && SmallKeys(RR_GERUDO_FORTRESS, 4) && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)) && (HasItem(RG_GERUDO_MEMBERSHIP_CARD) || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_KITCHEN))) ||
+               (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST)   && SmallKeys(RR_GERUDO_FORTRESS, 1) && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD))) ||
+               ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE);
     }
 
     bool Logic::CanStandingShield(){
@@ -1205,7 +1217,7 @@ namespace Rando {
                 }*/
                 return GetSmallKeyCount(SCENE_BOTTOM_OF_THE_WELL) >= requiredAmountGlitchless;
 
-            case RR_GERUDO_TRAINING_GROUNDS:
+            case RR_GERUDO_TRAINING_GROUND:
                 /*if (IsGlitched && (false)) {
                     return GerudoTrainingGroundsKeys >= requiredAmountGlitched;
                 }*/
@@ -1277,7 +1289,7 @@ namespace Rando {
         { RG_SPIRIT_TEMPLE_SMALL_KEY,           SCENE_SPIRIT_TEMPLE },
         { RG_SHADOW_TEMPLE_SMALL_KEY,           SCENE_SHADOW_TEMPLE },
         { RG_BOTTOM_OF_THE_WELL_SMALL_KEY,      SCENE_BOTTOM_OF_THE_WELL },
-        { RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, SCENE_GERUDO_TRAINING_GROUND },
+        { RG_GERUDO_TRAINING_GROUND_SMALL_KEY, SCENE_GERUDO_TRAINING_GROUND },
         { RG_GERUDO_FORTRESS_SMALL_KEY,         SCENE_THIEVES_HIDEOUT },
         { RG_GANONS_CASTLE_SMALL_KEY,           SCENE_INSIDE_GANONS_CASTLE },
         { RG_FOREST_TEMPLE_KEY_RING,            SCENE_FOREST_TEMPLE },
@@ -1286,7 +1298,7 @@ namespace Rando {
         { RG_SPIRIT_TEMPLE_KEY_RING,            SCENE_SPIRIT_TEMPLE },
         { RG_SHADOW_TEMPLE_KEY_RING,            SCENE_SHADOW_TEMPLE },
         { RG_BOTTOM_OF_THE_WELL_KEY_RING,       SCENE_BOTTOM_OF_THE_WELL },
-        { RG_GERUDO_TRAINING_GROUNDS_KEY_RING,  SCENE_GERUDO_TRAINING_GROUND },
+        { RG_GERUDO_TRAINING_GROUND_KEY_RING,  SCENE_GERUDO_TRAINING_GROUND },
         { RG_GERUDO_FORTRESS_KEY_RING,          SCENE_THIEVES_HIDEOUT },
         { RG_GANONS_CASTLE_KEY_RING,            SCENE_INSIDE_GANONS_CASTLE },
         { RG_FOREST_TEMPLE_BOSS_KEY,            SCENE_FOREST_TEMPLE },

@@ -120,9 +120,9 @@ void DLViewerWindow::DrawElement() {
     }
 
     try {
-        auto res = std::static_pointer_cast<LUS::DisplayList>(Ship::Context::GetInstance()->GetResourceManager()->LoadResource(activeDisplayList));
+        auto res = std::static_pointer_cast<Fast::DisplayList>(Ship::Context::GetInstance()->GetResourceManager()->LoadResource(activeDisplayList));
 
-        if (res->GetInitData()->Type != static_cast<uint32_t>(LUS::ResourceType::DisplayList)) {
+        if (res->GetInitData()->Type != static_cast<uint32_t>(Fast::ResourceType::DisplayList)) {
             ImGui::Text("Resource type is not a Display List. Please choose another.");
             return;
         }

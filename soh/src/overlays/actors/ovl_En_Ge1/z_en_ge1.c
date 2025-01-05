@@ -183,7 +183,7 @@ void EnGe1_Init(Actor* thisx, PlayState* play) {
             }
             break;
 
-        case GE1_TYPE_TRAINING_GROUNDS_GUARD:
+        case GE1_TYPE_TRAINING_GROUND_GUARD:
             this->hairstyle = GE1_HAIR_STRAIGHT;
 
             if (GameInteractor_Should(VB_GERUDOS_BE_FRIENDLY, EnGe1_CheckCarpentersFreed())) {
@@ -754,7 +754,7 @@ void EnGe1_Update(Actor* thisx, PlayState* play) {
 
     Collider_UpdateCylinder(&this->actor, &this->collider);
     CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 40.0f, 25.0f, 40.0f, 5);
     this->animFunc(this);
     this->actionFunc(this, play);

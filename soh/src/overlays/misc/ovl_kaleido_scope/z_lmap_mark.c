@@ -37,8 +37,6 @@ extern PauseMapMarksData gPauseMapMarkDataTable[];
 extern PauseMapMarksData gPauseMapMarkDataTableMasterQuest[];
 
 void PauseMapMark_Init(PlayState* play) {
-    gBossMarkState = 0;
-    gBossMarkScale = 1.0f;
     if(ResourceMgr_IsGameMasterQuest()) {
         gLoadedPauseMarkDataTable = gPauseMapMarkDataTableMasterQuest;
     } else {
@@ -171,6 +169,20 @@ void PauseMapMark_Draw(PlayState* play) {
         case SCENE_BOTTOM_OF_THE_WELL:
         case SCENE_ICE_CAVERN:
             PauseMapMark_DrawForDungeon(play);
+            break;
+        case SCENE_DEKU_TREE_BOSS:
+        case SCENE_DODONGOS_CAVERN_BOSS:
+        case SCENE_JABU_JABU_BOSS:
+        case SCENE_FOREST_TEMPLE_BOSS:
+        case SCENE_FIRE_TEMPLE_BOSS:
+        case SCENE_WATER_TEMPLE_BOSS:
+        case SCENE_SPIRIT_TEMPLE_BOSS:
+        case SCENE_SHADOW_TEMPLE_BOSS:
+        case SCENE_GANONDORF_BOSS:
+        case SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR:
+            if (CVarGetInteger(CVAR_ENHANCEMENT("PulsateBossIcon"), 0) != 0) {
+                PauseMapMark_DrawForDungeon(play);
+            }
             break;
     }
 

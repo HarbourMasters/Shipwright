@@ -200,7 +200,7 @@ void BgHidanFwbig_MoveCollider(BgHidanFwbig* this, PlayState* play) {
     f32 cs;
     f32 sn;
 
-    func_8002DBD0(&this->actor, &projPos, &player->actor.world.pos);
+    Actor_WorldToActorCoords(&this->actor, &projPos, &player->actor.world.pos);
     projPos.z = ((projPos.z >= 0.0f) ? 1.0f : -1.0f) * 25.0f * -1.0f;
     if (this->direction == 0) {
         projPos.x = CLAMP(projPos.x, -360.0f, 360.0f);

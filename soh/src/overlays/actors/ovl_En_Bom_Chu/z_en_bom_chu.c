@@ -197,8 +197,8 @@ void EnBomChu_UpdateFloorPoly(EnBomChu* this, CollisionPoly* floorPoly, PlayStat
 
             // A hack for preventing bombchus from sticking to ledges.
             // The visual rotation reverts the sign inversion (shape.rot.x = -world.rot.x).
-            // The better fix would be making func_8002D908 compute XYZ velocity better,
-            // or not using it and make the bombchu compute its own velocity.
+            // The better fix would be making Actor_UpdateVelocityXYZ compute XYZ velocity
+            // better, or not using it and make the bombchu compute its own velocity.
             this->actor.world.rot.x = -this->actor.world.rot.x;
         }
     }
@@ -428,7 +428,7 @@ void EnBomChu_Update(Actor* thisx, PlayState* play2) {
     }
 
     this->actionFunc(this, play);
-    func_8002D97C(&this->actor);
+    Actor_MoveXYZ(&this->actor);
 
     this->collider.elements[0].dim.worldSphere.center.x = this->actor.world.pos.x;
     this->collider.elements[0].dim.worldSphere.center.y = this->actor.world.pos.y;

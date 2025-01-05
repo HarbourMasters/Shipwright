@@ -96,7 +96,7 @@ class SohInputEditorWindow : public Ship::GuiWindow {
     std::set<N64ButtonMask> mModifierButtonsBitmasks;
     std::set<N64ButtonMask> mCustomOcarinaButtonsBitmasks;
     void DrawButtonDeviceIcons(uint8_t portIndex, std::set<N64ButtonMask> bitmasks);
-    void DrawAnalogStickDeviceIcons(uint8_t portIndex, Ship::Stick stick);
+    void DrawAnalogStickDeviceIcons(uint8_t portIndex, Ship::StickIndex stickIndex);
     void DrawRumbleDeviceIcons(uint8_t portIndex);
     void DrawGyroDeviceIcons(uint8_t portIndex);
     void DrawLEDDeviceIcons(uint8_t portIndex);

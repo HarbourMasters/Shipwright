@@ -1987,13 +1987,9 @@ u8 Item_Give(PlayState* play, u8 item) {
         if (item == ITEM_SWORD_BGS) {
             gSaveContext.swordHealth = 8;
 
-            // In rando, when buying Giant's Knife, also check
-            // without the Koriri Sword in case we don't have it
             if (ALL_EQUIP_VALUE(EQUIP_TYPE_SWORD) == 
                 ((1 << EQUIP_INV_SWORD_KOKIRI) | (1 << EQUIP_INV_SWORD_MASTER) | (1 << EQUIP_INV_SWORD_BIGGORON) |
-                 (1 << EQUIP_INV_SWORD_BROKENGIANTKNIFE)) || 
-                (IS_RANDO && ALL_EQUIP_VALUE(EQUIP_TYPE_SWORD) == 
-                ((1 << EQUIP_INV_SWORD_MASTER) | (1 << EQUIP_INV_SWORD_BIGGORON) | (1 << EQUIP_INV_SWORD_BROKENGIANTKNIFE)))) {
+                 (1 << EQUIP_INV_SWORD_BROKENGIANTKNIFE))) {
 
                 gSaveContext.inventory.equipment ^= OWNED_EQUIP_FLAG_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BROKENGIANTKNIFE);
 

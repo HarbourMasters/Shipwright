@@ -698,7 +698,7 @@ void EnFz_Update(Actor* thisx, PlayState* play) {
     }
 
     Math_StepToF(&this->actor.speedXZ, this->speedXZ, 0.2f);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 
     if (this->updateBgInfo) {
         Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 20.0f, 20.0f, 5);

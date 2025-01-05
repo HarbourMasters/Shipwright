@@ -2,74 +2,74 @@
 
 void DynaPolyActor_Init(DynaPolyActor* dynaActor, s32 flags) {
     dynaActor->bgId = -1;
-    dynaActor->unk_15C = flags;
-    dynaActor->unk_160 = 0;
+    dynaActor->transformFlags = flags;
+    dynaActor->interactFlags = 0;
     dynaActor->unk_150 = 0.0f;
     dynaActor->unk_154 = 0.0f;
 }
 
-void func_800434A0(DynaPolyActor* dynaActor) {
-    dynaActor->unk_160 = 0;
+void DynaPolyActor_UnsetAllInteractFlags(DynaPolyActor* dynaActor) {
+    dynaActor->interactFlags = 0;
 }
 
-void func_800434A8(DynaPolyActor* dynaActor) {
-    dynaActor->unk_160 |= 1;
+void DynaPolyActor_SetActorOnTop(DynaPolyActor* dynaActor) {
+    dynaActor->interactFlags |= DYNA_INTERACT_ACTOR_ON_TOP;
 }
 
-void func_800434B8(DynaPolyActor* dynaActor) {
-    dynaActor->unk_160 |= 2;
+void DynaPolyActor_SetPlayerOnTop(DynaPolyActor* dynaActor) {
+    dynaActor->interactFlags |= DYNA_INTERACT_PLAYER_ON_TOP;
 }
 
-void func_800434C8(CollisionContext* colCtx, s32 floorBgId) {
+void DynaPoly_SetPlayerOnTop(CollisionContext* colCtx, s32 floorBgId) {
     DynaPolyActor* dynaActor = DynaPoly_GetActor(colCtx, floorBgId);
 
     if (dynaActor != NULL) {
-        func_800434B8(dynaActor);
+        DynaPolyActor_SetPlayerOnTop(dynaActor);
     }
 }
 
-void func_800434F8(DynaPolyActor* dynaActor) {
-    dynaActor->unk_160 |= 4;
+void DynaPolyActor_SetPlayerAbove(DynaPolyActor* dynaActor) {
+    dynaActor->interactFlags |= DYNA_INTERACT_PLAYER_ABOVE;
 }
 
-void func_80043508(CollisionContext* colCtx, s32 floorBgId) {
+void DynaPoly_SetPlayerAbove(CollisionContext* colCtx, s32 floorBgId) {
     DynaPolyActor* dynaActor = DynaPoly_GetActor(colCtx, floorBgId);
 
     if (dynaActor != NULL) {
-        func_800434F8(dynaActor);
+        DynaPolyActor_SetPlayerAbove(dynaActor);
     }
 }
 
-void func_80043538(DynaPolyActor* dynaActor) {
-    dynaActor->unk_160 |= 8;
+void DynaPolyActor_SetSwitchPressed(DynaPolyActor* dynaActor) {
+    dynaActor->interactFlags |= DYNA_INTERACT_ACTOR_SWITCH_PRESSED;
 }
 
-s32 func_80043548(DynaPolyActor* dynaActor) {
-    if (dynaActor->unk_160 & 1) {
+s32 DynaPolyActor_IsActorOnTop(DynaPolyActor* dynaActor) {
+    if (dynaActor->interactFlags & DYNA_INTERACT_ACTOR_ON_TOP) {
         return true;
     } else {
         return false;
     }
 }
 
-s32 func_8004356C(DynaPolyActor* dynaActor) {
-    if (dynaActor->unk_160 & 2) {
+s32 DynaPolyActor_IsPlayerOnTop(DynaPolyActor* dynaActor) {
+    if (dynaActor->interactFlags & DYNA_INTERACT_PLAYER_ON_TOP) {
         return true;
     } else {
         return false;
     }
 }
 
-s32 func_80043590(DynaPolyActor* dynaActor) {
-    if (dynaActor->unk_160 & 4) {
+s32 DynaPolyActor_IsPlayerAbove(DynaPolyActor* dynaActor) {
+    if (dynaActor->interactFlags & DYNA_INTERACT_PLAYER_ABOVE) {
         return true;
     } else {
         return false;
     }
 }
 
-s32 func_800435B4(DynaPolyActor* dynaActor) {
-    if (dynaActor->unk_160 & 8) {
+s32 DynaPolyActor_IsSwitchPressed(DynaPolyActor* dynaActor) {
+    if (dynaActor->interactFlags & DYNA_INTERACT_ACTOR_SWITCH_PRESSED) {
         return true;
     } else {
         return false;

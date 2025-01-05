@@ -3,7 +3,7 @@
 ## Windows
 
 Requires:
-  * At least 8GB of RAM (machines with 4GB have seen complier failures)
+  * At least 8GB of RAM (machines with 4GB have seen compiler failures)
   * Visual Studio 2022 Community Edition with the C++ feature set
   * One of the Windows SDKs that comes with Visual Studio, for example the current Windows 10 version 10.0.19041.0
   * The `MSVC v143 - VS 2022 C++ build tools` component of Visual Studio

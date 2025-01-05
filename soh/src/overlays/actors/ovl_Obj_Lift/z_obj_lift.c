@@ -138,7 +138,7 @@ void func_80B96560(ObjLift* this, PlayState* play) {
     s32 pad;
     s32 quakeIndex;
 
-    if (func_8004356C(&this->dyna)) {
+    if (DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
         if (this->timer <= 0) {
             if (((this->dyna.actor.params >> 8) & 7) == 7) {
                 func_80B967C0(this);
@@ -192,7 +192,7 @@ void func_80B96840(ObjLift* this, PlayState* play) {
     s32 bgId;
     Vec3f sp2C;
 
-    Actor_MoveForward(&this->dyna.actor);
+    Actor_MoveXZGravity(&this->dyna.actor);
     Math_Vec3f_Copy(&sp2C, &this->dyna.actor.prevPos);
     sp2C.y += sMaxFallDistances[(this->dyna.actor.params >> 1) & 1];
     this->dyna.actor.floorHeight =
