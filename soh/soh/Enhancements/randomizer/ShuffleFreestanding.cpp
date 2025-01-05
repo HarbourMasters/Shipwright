@@ -1,7 +1,7 @@
 #include "ShuffleFreestanding.h"
 
 extern "C" {
-#include "functions.h";
+#include "functions.h"
 extern PlayState* gPlayState;
 }
 
