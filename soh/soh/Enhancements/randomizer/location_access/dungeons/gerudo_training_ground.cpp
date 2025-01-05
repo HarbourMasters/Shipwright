@@ -4,7 +4,7 @@
 
 using namespace Rando;
 
-void RegionTable_Init_GerudoTrainingGrounds() {
+void RegionTable_Init_GerudoTrainingGround() {
     // Vanilla/MQ Decider
     areaTable[RR_GERUDO_TRAINING_GROUND_ENTRYWAY] = Region("Gerudo Training Ground Entryway", "Gerudo Training Ground", {RA_GERUDO_TRAINING_GROUND}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits

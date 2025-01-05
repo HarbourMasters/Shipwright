@@ -360,7 +360,7 @@ void RegionTable_Init() {
     RegionTable_Init_ShadowTemple();
     RegionTable_Init_BottomOfTheWell();
     RegionTable_Init_IceCavern();
-    RegionTable_Init_GerudoTrainingGrounds();
+    RegionTable_Init_GerudoTrainingGround();
     RegionTable_Init_GanonsCastle();
 
     //Set parent regions

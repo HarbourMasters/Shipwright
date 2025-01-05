@@ -361,5 +361,5 @@ void RegionTable_Init_SpiritTemple();
 void RegionTable_Init_ShadowTemple();
 void RegionTable_Init_BottomOfTheWell();
 void RegionTable_Init_IceCavern();
-void RegionTable_Init_GerudoTrainingGrounds();
+void RegionTable_Init_GerudoTrainingGround();
 void RegionTable_Init_GanonsCastle();
