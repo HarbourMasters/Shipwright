@@ -1261,13 +1261,15 @@ void GenerateItemPool() {
     PlaceVanillaDekuScrubItems(ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_OFF));
   }
 
+  // RANDOTODO: Don't add freestanding locations to the seed at all in the first place so this check
+  // can be put back in place, and not place the vanilla items in PlaceItemsForType.
   bool overworldFreeStandingActive = ctx->GetOption(RSK_SHUFFLE_FREESTANDING).Is(RO_SHUFFLE_FREESTANDING_OVERWORLD) ||
                              ctx->GetOption(RSK_SHUFFLE_FREESTANDING).Is(RO_SHUFFLE_FREESTANDING_ALL);
   bool dungeonFreeStandingActive = ctx->GetOption(RSK_SHUFFLE_FREESTANDING).Is(RO_SHUFFLE_FREESTANDING_DUNGEONS) ||
                            ctx->GetOption(RSK_SHUFFLE_FREESTANDING).Is(RO_SHUFFLE_FREESTANDING_ALL);
-  if (overworldFreeStandingActive || dungeonFreeStandingActive) {
+  //if (overworldFreeStandingActive || dungeonFreeStandingActive) {
     PlaceItemsForType(RCTYPE_FREESTANDING, overworldFreeStandingActive, dungeonFreeStandingActive, true);
-  }
+  //}
 
   AddItemsToPool(ItemPool, alwaysItems);
   AddItemsToPool(ItemPool, dungeonRewards);
