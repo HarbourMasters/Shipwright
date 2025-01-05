@@ -2063,102 +2063,99 @@ void Settings::UpdateOptionProperties() {
 
 void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocations, const std::set<RandomizerTrick>& enabledTricks) {
     const auto ctx = Rando::Context::GetInstance();
-    if (!ctx->IsSpoilerLoaded()) {
-        for (Option& option : mOptions) {
-            option.SetContextIndex(option.GetMenuOptionIndex());
-        }
-        // If we've loaded a spoiler file, the settings have already been populated, so we
-        // only need to do things like resolve the starting age or determine MQ dungeons.
-        // Any logic dependent on cvarSettings should go in this if statement
-        
-        // if we skip child zelda, we start with zelda's letter, and malon starts
-        // at the ranch, so we should *not* shuffle the weird egg
-        if (mOptions[RSK_SKIP_CHILD_ZELDA]) {
-            mOptions[RSK_SHUFFLE_WEIRD_EGG].SetContextIndex(RO_GENERIC_OFF);
-        }
+    for (Option& option : mOptions) {
+        option.SetContextIndex(option.GetMenuOptionIndex());
+    }
+    // If we've loaded a spoiler file, the settings have already been populated, so we
+    // only need to do things like resolve the starting age or determine MQ dungeons.
+    // Any logic dependent on cvarSettings should go in this if statement
+    
+    // if we skip child zelda, we start with zelda's letter, and malon starts
+    // at the ranch, so we should *not* shuffle the weird egg
+    if (mOptions[RSK_SKIP_CHILD_ZELDA]) {
+        mOptions[RSK_SHUFFLE_WEIRD_EGG].SetContextIndex(RO_GENERIC_OFF);
+    }
 
-        // With certain access settings, the seed is only beatable if Starting Age is set to Child.
-        if (mOptions[RSK_FOREST].Is(RO_CLOSED_FOREST_ON) || (mOptions[RSK_DOOR_OF_TIME].Is(RO_DOOROFTIME_CLOSED) &&
-            !mOptions[RSK_SHUFFLE_OCARINA])) {
-            mOptions[RSK_STARTING_AGE].SetContextIndex(RO_AGE_CHILD);
-        }
+    // With certain access settings, the seed is only beatable if Starting Age is set to Child.
+    if (mOptions[RSK_FOREST].Is(RO_CLOSED_FOREST_ON) || (mOptions[RSK_DOOR_OF_TIME].Is(RO_DOOROFTIME_CLOSED) &&
+        !mOptions[RSK_SHUFFLE_OCARINA])) {
+        mOptions[RSK_STARTING_AGE].SetContextIndex(RO_AGE_CHILD);
+    }
 
-        if (mOptions[RSK_TRIFORCE_HUNT]) {
-            mOptions[RSK_GANONS_BOSS_KEY].SetContextIndex(RO_GANON_BOSS_KEY_TRIFORCE_HUNT);
-        }
+    if (mOptions[RSK_TRIFORCE_HUNT]) {
+        mOptions[RSK_GANONS_BOSS_KEY].SetContextIndex(RO_GANON_BOSS_KEY_TRIFORCE_HUNT);
+    }
 
-        // Force 100 GS Shuffle if that's where Ganon's Boss Key is
-        if (mOptions[RSK_GANONS_BOSS_KEY].Is(RO_GANON_BOSS_KEY_KAK_TOKENS)) {
-            mOptions[RSK_SHUFFLE_100_GS_REWARD].SetContextIndex(1);
-        }
+    // Force 100 GS Shuffle if that's where Ganon's Boss Key is
+    if (mOptions[RSK_GANONS_BOSS_KEY].Is(RO_GANON_BOSS_KEY_KAK_TOKENS)) {
+        mOptions[RSK_SHUFFLE_100_GS_REWARD].SetContextIndex(1);
+    }
 
-        // If we only have MQ, set all dungeons to MQ
-        if (OTRGlobals::Instance->HasMasterQuest() && !OTRGlobals::Instance->HasOriginal()) {
-            mOptions[RSK_MQ_DUNGEON_RANDOM].SetContextIndex(RO_MQ_DUNGEONS_SET_NUMBER);
-            mOptions[RSK_MQ_DUNGEON_COUNT].SetContextIndex(12);
-            mOptions[RSK_MQ_DUNGEON_SET].SetContextIndex(RO_GENERIC_OFF);
-        }
+    // If we only have MQ, set all dungeons to MQ
+    if (OTRGlobals::Instance->HasMasterQuest() && !OTRGlobals::Instance->HasOriginal()) {
+        mOptions[RSK_MQ_DUNGEON_RANDOM].SetContextIndex(RO_MQ_DUNGEONS_SET_NUMBER);
+        mOptions[RSK_MQ_DUNGEON_COUNT].SetContextIndex(12);
+        mOptions[RSK_MQ_DUNGEON_SET].SetContextIndex(RO_GENERIC_OFF);
+    }
 
-        // If we don't have MQ, set all dungeons to Vanilla
-        if (OTRGlobals::Instance->HasOriginal() && !OTRGlobals::Instance->HasMasterQuest()) {
-            mOptions[RSK_MQ_DUNGEON_RANDOM].SetContextIndex(RO_MQ_DUNGEONS_NONE);
-        }
+    // If we don't have MQ, set all dungeons to Vanilla
+    if (OTRGlobals::Instance->HasOriginal() && !OTRGlobals::Instance->HasMasterQuest()) {
+        mOptions[RSK_MQ_DUNGEON_RANDOM].SetContextIndex(RO_MQ_DUNGEONS_NONE);
+    }
 
-        if (mOptions[RSK_MQ_DUNGEON_RANDOM].Is(RO_MQ_DUNGEONS_NONE)) {
-            mOptions[RSK_MQ_DUNGEON_COUNT].SetContextIndex(0);
-            mOptions[RSK_MQ_DUNGEON_SET].SetContextIndex(RO_GENERIC_OFF);
-        }
+    if (mOptions[RSK_MQ_DUNGEON_RANDOM].Is(RO_MQ_DUNGEONS_NONE)) {
+        mOptions[RSK_MQ_DUNGEON_COUNT].SetContextIndex(0);
+        mOptions[RSK_MQ_DUNGEON_SET].SetContextIndex(RO_GENERIC_OFF);
+    }
 
-        // If any of the individual shuffle settings are on, turn on the main Shuffle Entrances option
-        if (mOptions[RSK_SHUFFLE_DUNGEON_ENTRANCES].IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)
-            || mOptions[RSK_SHUFFLE_BOSS_ENTRANCES].IsNot(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)
-            || mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES]
-            || mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES].IsNot(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF)
-            || mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES] || mOptions[RSK_SHUFFLE_OWL_DROPS]
-            || mOptions[RSK_SHUFFLE_WARP_SONGS] || mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS]) {
-            mOptions[RSK_SHUFFLE_ENTRANCES].SetContextIndex(RO_GENERIC_ON);
+    // If any of the individual shuffle settings are on, turn on the main Shuffle Entrances option
+    if (mOptions[RSK_SHUFFLE_DUNGEON_ENTRANCES].IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)
+        || mOptions[RSK_SHUFFLE_BOSS_ENTRANCES].IsNot(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)
+        || mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES]
+        || mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES].IsNot(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF)
+        || mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES] || mOptions[RSK_SHUFFLE_OWL_DROPS]
+        || mOptions[RSK_SHUFFLE_WARP_SONGS] || mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS]) {
+        mOptions[RSK_SHUFFLE_ENTRANCES].SetContextIndex(RO_GENERIC_ON);
+    } else {
+        mOptions[RSK_SHUFFLE_ENTRANCES].SetContextIndex(RO_GENERIC_OFF);
+    }
+
+    if (mOptions[RSK_SHUFFLE_DUNGEON_REWARDS].Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
+        mOptions[RSK_LINKS_POCKET].SetContextIndex(RO_LINKS_POCKET_DUNGEON_REWARD);
+    }
+
+    ctx->AddExcludedOptions();
+    for (const auto locationKey : ctx->everyPossibleLocation) {
+        if (const auto location = ctx->GetItemLocation(locationKey); excludedLocations.contains(location->GetRandomizerCheck())) {
+            location->GetExcludedOption()->SetContextIndex(1);
         } else {
-            mOptions[RSK_SHUFFLE_ENTRANCES].SetContextIndex(RO_GENERIC_OFF);
+            location->GetExcludedOption()->SetContextIndex(0);
         }
-
-        if (mOptions[RSK_SHUFFLE_DUNGEON_REWARDS].Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
-            mOptions[RSK_LINKS_POCKET].SetContextIndex(RO_LINKS_POCKET_DUNGEON_REWARD);
+    }
+    // Tricks
+    ResetTrickOptions();
+    for (const auto randomizerTrick : enabledTricks) {
+        mTrickOptions[randomizerTrick].SetContextIndex(1);
+    }
+    if (!mOptions[RSK_SHUFFLE_KOKIRI_SWORD]) {
+        if (mOptions[RSK_STARTING_KOKIRI_SWORD]) {
+            ctx->GetItemLocation(RC_KF_KOKIRI_SWORD_CHEST)->GetExcludedOption()->SetContextIndex(1);
         }
-
-        if (!ctx->IsSpoilerLoaded()) {
-            ctx->AddExcludedOptions();
-            for (const auto locationKey : ctx->everyPossibleLocation) {
-                if (const auto location = ctx->GetItemLocation(locationKey); excludedLocations.contains(location->GetRandomizerCheck())) {
-                    location->GetExcludedOption()->SetContextIndex(1);
-                } else {
-                    location->GetExcludedOption()->SetContextIndex(0);
-                }
-            }
-            // Tricks
-            ResetTrickOptions();
-            for (const auto randomizerTrick : enabledTricks) {
-                mTrickOptions[randomizerTrick].SetContextIndex(1);
-            }
+    }
+    if (!mOptions[RSK_SHUFFLE_MASTER_SWORD]) {
+        if (mOptions[RSK_STARTING_MASTER_SWORD]) {
+            ctx->GetItemLocation(RC_MASTER_SWORD_PEDESTAL)->GetExcludedOption()->SetContextIndex(1);
         }
-        if (!mOptions[RSK_SHUFFLE_KOKIRI_SWORD]) {
-            if (mOptions[RSK_STARTING_KOKIRI_SWORD]) {
-                ctx->GetItemLocation(RC_KF_KOKIRI_SWORD_CHEST)->GetExcludedOption()->SetContextIndex(1);
-            }
-        }
-        if (!mOptions[RSK_SHUFFLE_MASTER_SWORD]) {
-            if (mOptions[RSK_STARTING_MASTER_SWORD]) {
-                ctx->GetItemLocation(RC_MASTER_SWORD_PEDESTAL)->GetExcludedOption()->SetContextIndex(1);
-            }
-        }
-        if (!mOptions[RSK_SHUFFLE_OCARINA]) {
-            if (mOptions[RSK_STARTING_OCARINA].IsNot(RO_STARTING_OCARINA_OFF)) {
-                ctx->GetItemLocation(RC_LW_GIFT_FROM_SARIA)->GetExcludedOption()->SetContextIndex(1);
-                if (mOptions[RSK_STARTING_OCARINA].Is(RO_STARTING_OCARINA_TIME)) {
-                    ctx->GetItemLocation(RC_HF_OCARINA_OF_TIME_ITEM)->GetExcludedOption()->SetContextIndex(1);
-                }
+    }
+    if (!mOptions[RSK_SHUFFLE_OCARINA]) {
+        if (mOptions[RSK_STARTING_OCARINA].IsNot(RO_STARTING_OCARINA_OFF)) {
+            ctx->GetItemLocation(RC_LW_GIFT_FROM_SARIA)->GetExcludedOption()->SetContextIndex(1);
+            if (mOptions[RSK_STARTING_OCARINA].Is(RO_STARTING_OCARINA_TIME)) {
+                ctx->GetItemLocation(RC_HF_OCARINA_OF_TIME_ITEM)->GetExcludedOption()->SetContextIndex(1);
             }
         }
     }
+    
 
     if (mOptions[RSK_SHUFFLE_DEKU_STICK_BAG]) {
         mOptions[RSK_STARTING_STICKS].SetContextIndex(false);

@@ -1873,11 +1873,8 @@ void GenerateRandomizerImgui(std::string seed = "") {
     CVarSetInteger(CVAR_GENERAL("RandoGenerating"), 1);
     CVarSave();
     auto ctx = Rando::Context::GetInstance();
-    /*RANDOTODO proper UI for selecting if a spoiler loaded should be used for settings
-    if (!ctx->IsSpoilerLoaded()) {
-        // We use the settings from the spoiler rather than CVars.
-        ctx->GetSettings()->SetAllFromCVar();
-    }*/
+    //RANDOTODO proper UI for selecting if a spoiler loaded should be used for settings
+    ctx->GetSettings()->SetAllFromCVar();
     
     // todo: this efficently when we build out cvar array support
     std::set<RandomizerCheck> excludedLocations;
