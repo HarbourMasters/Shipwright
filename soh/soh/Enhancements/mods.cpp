@@ -79,17 +79,6 @@ void RegisterInfiniteMoney() {
     });
 }
 
-void RegisterInfiniteMagic() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded(true)) return;
-        if (CVarGetInteger(CVAR_CHEAT("InfiniteMagic"), 0) != 0) {
-            if (gSaveContext.isMagicAcquired && gSaveContext.magic != (gSaveContext.isDoubleMagicAcquired + 1) * 0x30) {
-                gSaveContext.magic = (gSaveContext.isDoubleMagicAcquired + 1) * 0x30;
-            }
-        }
-    });
-}
-
 void RegisterInfiniteNayrusLove() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!GameInteractor::IsSaveLoaded(true)) return;
@@ -1432,7 +1421,6 @@ void InitMods() {
     TimeSavers_Register();
     RegisterTTS();
     RegisterInfiniteMoney();
-    RegisterInfiniteMagic();
     RegisterInfiniteNayrusLove();
     RegisterInfiniteISG();
     RegisterEzQPA();
