@@ -68,15 +68,6 @@ static const ALIGN_ASSET(2) char tokinoma_room_0DL_007A70[] = dtokinoma_room_0DL
 #define dtokinoma_room_0DL_007FD0 "__OTR__scenes/shared/tokinoma_scene/tokinoma_room_0DL_007FD0"
 static const ALIGN_ASSET(2) char tokinoma_room_0DL_007FD0[] = dtokinoma_room_0DL_007FD0;
 
-void RegisterInfiniteNayrusLove() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded(true)) return;
-        if (CVarGetInteger(CVAR_CHEAT("InfiniteNayru"), 0) != 0) {
-            gSaveContext.nayrusLoveTimer = 0x44B;
-        }
-    });
-}
-
 void RegisterInfiniteISG() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!GameInteractor::IsSaveLoaded(true)) return;
@@ -1409,7 +1400,6 @@ void InitMods() {
     CheatsRegisterHooks();
     TimeSavers_Register();
     RegisterTTS();
-    RegisterInfiniteNayrusLove();
     RegisterInfiniteISG();
     RegisterEzQPA();
     RegisterUnrestrictedItems();
