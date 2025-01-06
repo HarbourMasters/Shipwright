@@ -784,6 +784,15 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
     va_copy(args, originalArgs);
 
     switch (id) {
+        case VB_ALLOW_ENTRANCE_CS_FOR_EITHER_AGE: {
+            s32 entranceIndex = va_arg(args, s32);
+
+            // Allow Nabooru fight cutscene to play for child in rando
+            if (entranceIndex == ENTR_SPIRIT_TEMPLE_BOSS_ENTRANCE) {
+                *should = true;
+            }
+            break;
+        }
         case VB_PLAY_SLOW_CHEST_CS: {
             // We force fast chests if SkipGetItemAnimation is enabled because the camera in the CS looks pretty wonky otherwise
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_DISABLED)) {
