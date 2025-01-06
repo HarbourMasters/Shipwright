@@ -90,43 +90,6 @@ void RegisterInfiniteHealth() {
     });
 }
 
-void RegisterInfiniteAmmo() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded(true)) return;
-        if (CVarGetInteger(CVAR_CHEAT("InfiniteAmmo"), 0) != 0) {
-            // Deku Sticks
-            if (AMMO(ITEM_STICK) < CUR_CAPACITY(UPG_STICKS)) {
-                AMMO(ITEM_STICK) = CUR_CAPACITY(UPG_STICKS);
-            }
-
-            // Deku Nuts
-            if (AMMO(ITEM_NUT) < CUR_CAPACITY(UPG_NUTS)) {
-                AMMO(ITEM_NUT) = CUR_CAPACITY(UPG_NUTS);
-            }
-
-            // Bombs
-            if (AMMO(ITEM_BOMB) < CUR_CAPACITY(UPG_BOMB_BAG)) {
-                AMMO(ITEM_BOMB) = CUR_CAPACITY(UPG_BOMB_BAG);
-            }
-
-            // Fairy Bow (Ammo)
-            if (AMMO(ITEM_BOW) < CUR_CAPACITY(UPG_QUIVER)) {
-                AMMO(ITEM_BOW) = CUR_CAPACITY(UPG_QUIVER);
-            }
-
-            // Fairy Slingshot (Ammo)
-            if (AMMO(ITEM_SLINGSHOT) < CUR_CAPACITY(UPG_BULLET_BAG)) {
-                AMMO(ITEM_SLINGSHOT) = CUR_CAPACITY(UPG_BULLET_BAG);
-            }
-
-            // Bombchus (max: 50, no upgrades)
-            if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU && AMMO(ITEM_BOMBCHU) < 50) {
-                AMMO(ITEM_BOMBCHU) = 50;
-            }
-        }
-    });
-}
-
 void RegisterInfiniteMagic() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!GameInteractor::IsSaveLoaded(true)) return;
@@ -1481,7 +1444,6 @@ void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
     RegisterInfiniteHealth();
-    RegisterInfiniteAmmo();
     RegisterInfiniteMagic();
     RegisterInfiniteNayrusLove();
     RegisterInfiniteISG();
