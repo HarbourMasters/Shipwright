@@ -92,18 +92,6 @@ void RegisterEzQPA() {
     });
 }
 
-void RegisterUnrestrictedItems() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded(true)) return;
-
-        if (CVarGetInteger(CVAR_CHEAT("NoRestrictItems"), 0) != 0) {
-            u8 sunsBackup = gPlayState->interfaceCtx.restrictions.sunsSong;
-            memset(&gPlayState->interfaceCtx.restrictions, 0, sizeof(gPlayState->interfaceCtx.restrictions));
-            gPlayState->interfaceCtx.restrictions.sunsSong = sunsBackup;
-        }
-    });
-}
-
 void RegisterFreezeTime() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (CVarGetInteger(CVAR_CHEAT("FreezeTime"), 0) != 0) {
@@ -1402,7 +1390,6 @@ void InitMods() {
     RegisterTTS();
     RegisterInfiniteISG();
     RegisterEzQPA();
-    RegisterUnrestrictedItems();
     RegisterFreezeTime();
     RegisterOcarinaTimeTravel();
     RegisterAutoSave();
