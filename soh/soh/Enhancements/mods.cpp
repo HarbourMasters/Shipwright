@@ -68,17 +68,6 @@ static const ALIGN_ASSET(2) char tokinoma_room_0DL_007A70[] = dtokinoma_room_0DL
 #define dtokinoma_room_0DL_007FD0 "__OTR__scenes/shared/tokinoma_scene/tokinoma_room_0DL_007FD0"
 static const ALIGN_ASSET(2) char tokinoma_room_0DL_007FD0[] = dtokinoma_room_0DL_007FD0;
 
-void RegisterInfiniteISG() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded(true)) return;
-
-        if (CVarGetInteger(CVAR_CHEAT("EasyISG"), 0) != 0) {
-            Player* player = GET_PLAYER(gPlayState);
-            player->meleeWeaponState = 1;
-        }
-    });
-}
-
 /// Switches Link's age and respawns him at the last entrance he entered.
 void SwitchAge() {
     if (gPlayState == NULL) return;
@@ -1360,7 +1349,6 @@ void InitMods() {
     CheatsRegisterHooks();
     TimeSavers_Register();
     RegisterTTS();
-    RegisterInfiniteISG();
     RegisterOcarinaTimeTravel();
     RegisterAutoSave();
     RegisterDaytimeGoldSkultullas();
