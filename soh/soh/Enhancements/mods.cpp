@@ -79,17 +79,6 @@ void RegisterInfiniteMoney() {
     });
 }
 
-void RegisterInfiniteHealth() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded(true)) return;
-        if (CVarGetInteger(CVAR_CHEAT("InfiniteHealth"), 0) != 0) {
-            if (gSaveContext.health < gSaveContext.healthCapacity) {
-                gSaveContext.health = gSaveContext.healthCapacity;
-            }
-        }
-    });
-}
-
 void RegisterInfiniteMagic() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!GameInteractor::IsSaveLoaded(true)) return;
@@ -1443,7 +1432,6 @@ void InitMods() {
     TimeSavers_Register();
     RegisterTTS();
     RegisterInfiniteMoney();
-    RegisterInfiniteHealth();
     RegisterInfiniteMagic();
     RegisterInfiniteNayrusLove();
     RegisterInfiniteISG();
