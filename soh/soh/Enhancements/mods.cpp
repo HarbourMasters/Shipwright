@@ -92,21 +92,6 @@ void RegisterEzQPA() {
     });
 }
 
-void RegisterFreezeTime() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (CVarGetInteger(CVAR_CHEAT("FreezeTime"), 0) != 0) {
-            if (CVarGetInteger(CVAR_GENERAL("PrevTime"), -1) == -1) {
-                CVarSetInteger(CVAR_GENERAL("PrevTime"), gSaveContext.dayTime);
-            }
-
-            int32_t prevTime = CVarGetInteger(CVAR_GENERAL("PrevTime"), gSaveContext.dayTime);
-            gSaveContext.dayTime = prevTime;
-        } else {
-            CVarClear(CVAR_GENERAL("PrevTime"));
-        }
-    });
-}
-
 /// Switches Link's age and respawns him at the last entrance he entered.
 void SwitchAge() {
     if (gPlayState == NULL) return;
@@ -1390,7 +1375,6 @@ void InitMods() {
     RegisterTTS();
     RegisterInfiniteISG();
     RegisterEzQPA();
-    RegisterFreezeTime();
     RegisterOcarinaTimeTravel();
     RegisterAutoSave();
     RegisterDaytimeGoldSkultullas();
