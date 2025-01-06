@@ -68,17 +68,6 @@ static const ALIGN_ASSET(2) char tokinoma_room_0DL_007A70[] = dtokinoma_room_0DL
 #define dtokinoma_room_0DL_007FD0 "__OTR__scenes/shared/tokinoma_scene/tokinoma_room_0DL_007FD0"
 static const ALIGN_ASSET(2) char tokinoma_room_0DL_007FD0[] = dtokinoma_room_0DL_007FD0;
 
-void RegisterInfiniteMoney() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded(true)) return;
-        if (CVarGetInteger(CVAR_CHEAT("InfiniteMoney"), 0) != 0 && (!IS_RANDO || Flags_GetRandomizerInf(RAND_INF_HAS_WALLET))) {
-            if (gSaveContext.rupees < CUR_CAPACITY(UPG_WALLET)) {
-                gSaveContext.rupees = CUR_CAPACITY(UPG_WALLET);
-            }
-        }
-    });
-}
-
 void RegisterInfiniteNayrusLove() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!GameInteractor::IsSaveLoaded(true)) return;
@@ -1420,7 +1409,6 @@ void InitMods() {
     CheatsRegisterHooks();
     TimeSavers_Register();
     RegisterTTS();
-    RegisterInfiniteMoney();
     RegisterInfiniteNayrusLove();
     RegisterInfiniteISG();
     RegisterEzQPA();
