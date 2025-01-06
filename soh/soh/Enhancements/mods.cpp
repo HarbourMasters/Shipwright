@@ -79,19 +79,6 @@ void RegisterInfiniteISG() {
     });
 }
 
-//Permanent quick put away (QPA) glitched damage value
-void RegisterEzQPA() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded(true)) return;
-
-        if (CVarGetInteger(CVAR_CHEAT("EasyQPA"), 0) != 0) {
-            Player* player = GET_PLAYER(gPlayState);
-            player->meleeWeaponQuads[0].info.toucher.dmgFlags = 0x16171617;
-            player->meleeWeaponQuads[1].info.toucher.dmgFlags = 0x16171617;
-        }
-    });
-}
-
 /// Switches Link's age and respawns him at the last entrance he entered.
 void SwitchAge() {
     if (gPlayState == NULL) return;
@@ -1374,7 +1361,6 @@ void InitMods() {
     TimeSavers_Register();
     RegisterTTS();
     RegisterInfiniteISG();
-    RegisterEzQPA();
     RegisterOcarinaTimeTravel();
     RegisterAutoSave();
     RegisterDaytimeGoldSkultullas();
