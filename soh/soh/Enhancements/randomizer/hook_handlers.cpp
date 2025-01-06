@@ -883,6 +883,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                 RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(
                     item00->actor.id, gPlayState->sceneNum, item00->ogParams);
                 if (rc != RC_UNKNOWN_CHECK) {
+                    item00->randoInf = RAND_INF_MAX;
                     item00->actor.params = ITEM00_SOH_DUMMY;
                     item00->itemEntry = Rando::Context::GetInstance()->GetFinalGIEntry(
                         rc, true, (GetItemID)Rando::StaticData::GetLocation(rc)->GetVanillaItem());
