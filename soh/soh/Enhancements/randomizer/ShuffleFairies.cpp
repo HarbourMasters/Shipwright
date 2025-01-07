@@ -68,7 +68,6 @@ bool ShuffleFairies_SpawnFairy(f32 posX, f32 posY, f32 posZ, int32_t params) {
                                            0, 0, FAIRY_HEAL, true);
         fairy->sohFairyIdentity = fairyIdentity;
         fairy->actor.draw = (ActorFunc)ShuffleFairies_DrawRandomizedItem;
-        fairy->fairyFlags |= FAIRY_FLAG_TIMED;
         return true;
     }
     return false;
