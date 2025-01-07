@@ -517,6 +517,8 @@ typedef enum {
     VB_FAIRY_HEAL,
     // Opt: *ObjBean
     VB_SPAWN_BEAN_STALK_FAIRIES,
+    // Opt: *ShotSun
+    VB_SPAWN_SONG_FAIRY,
     // Opt: *EnGs
     VB_SPAWN_GOSSIP_STONE_FAIRY,
 } GIVanillaBehavior;
