@@ -17,10 +17,21 @@
 #include "objects/object_fish/object_fish.h"
 #include "objects/object_toki_objects/object_toki_objects.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
+#include "objects/object_goma/object_goma.h"
+#include "objects/object_kingdodongo/object_kingdodongo.h"
+#include "objects/object_bv/object_bv.h"
+#include "objects/object_gnd/object_gnd.h"
+#include "objects/object_fd/object_fd.h"
+#include "objects/object_mo/object_mo.h"
+#include "objects/object_sst/object_sst.h"
+#include "overlays/ovl_Boss_Sst/ovl_Boss_Sst.h"
+#include "objects/object_tw/object_tw.h"
+#include "objects/object_ganon/object_ganon.h"
 #include "soh_assets.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 
 extern "C" {
+extern PlayState* gPlayState;
 extern SaveContext gSaveContext;
 }
 
@@ -350,6 +361,265 @@ extern "C" void Randomizer_DrawMysteryItem(PlayState* play, GetItemEntry getItem
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
+Gfx* GetEmptyDlist(GraphicsContext* gfxCtx) {
+    Gfx* dListHead;
+    Gfx* dList;
+
+    dList = dListHead = (Gfx*)Graph_Alloc(gfxCtx, sizeof(Gfx) * 1);
+
+    gSPEndDisplayList(dListHead++);
+
+    return dList;
+}
+
+#define LIMB_COUNT_GOHMA 86
+extern "C" void DrawGohma() {
+    OPEN_DISPS(gPlayState->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(gPlayState->state.gfxCtx);
+    Matrix_Translate(0.0f, -20.0f, 0.0f, MTXMODE_APPLY);
+    Matrix_Scale(0.005f, 0.005f, 0.005f, MTXMODE_APPLY);
+
+    static bool initialized = false;
+    static SkelAnime skelAnime;
+    static Vec3s jointTable[LIMB_COUNT_GOHMA];
+    static Vec3s otherTable[LIMB_COUNT_GOHMA];
+    
+    static u32 lastUpdate = 0;
+    if (!initialized) {
+        initialized = true;
+        SkelAnime_InitFlex(gPlayState, &skelAnime, (FlexSkeletonHeader*)&gGohmaSkel,
+                           (AnimationHeader*)&gGohmaIdleCrouchedAnim, jointTable, otherTable, LIMB_COUNT_GOHMA);
+    }
+    if (gPlayState != NULL && lastUpdate != gPlayState->state.frames) {
+        lastUpdate = gPlayState->state.frames;
+        SkelAnime_Update(&skelAnime);
+    }
+    gSPSegment(POLY_OPA_DISP++, 0x08, (uintptr_t)GetEmptyDlist(gPlayState->state.gfxCtx));
+    SkelAnime_DrawFlexOpa(gPlayState, skelAnime.skeleton, skelAnime.jointTable, skelAnime.dListCount, NULL, NULL, NULL);
+
+    CLOSE_DISPS(gPlayState->state.gfxCtx);
+}
+
+#define LIMB_COUNT_KING_DODONGO 49
+extern "C" void DrawKingDodongo() {
+    OPEN_DISPS(gPlayState->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(gPlayState->state.gfxCtx);
+    Matrix_Translate(0.0f, -20.0f, 0.0f, MTXMODE_APPLY);
+    Matrix_Scale(0.004f, 0.004f, 0.004f, MTXMODE_APPLY);
+
+    static bool initialized = false;
+    static SkelAnime skelAnime;
+    static Vec3s jointTable[LIMB_COUNT_KING_DODONGO];
+    static Vec3s otherTable[LIMB_COUNT_KING_DODONGO];
+
+    static u32 lastUpdate = 0;
+    if (!initialized) {
+        initialized = true;
+        SkelAnime_InitFlex(gPlayState, &skelAnime, (FlexSkeletonHeader*)&object_kingdodongo_Skel_01B310,
+                           (AnimationHeader*)&object_kingdodongo_Anim_00F0D8, jointTable, otherTable,
+                           LIMB_COUNT_KING_DODONGO);
+    }
+    if (gPlayState != NULL && lastUpdate != gPlayState->state.frames) {
+        lastUpdate = gPlayState->state.frames;
+        SkelAnime_Update(&skelAnime);
+    }
+    gSPSegment(POLY_OPA_DISP++, 0x08, (uintptr_t)GetEmptyDlist(gPlayState->state.gfxCtx));
+    SkelAnime_DrawFlexOpa(gPlayState, skelAnime.skeleton, skelAnime.jointTable, skelAnime.dListCount,
+                          NULL,
+                          NULL,
+                          NULL);
+
+    CLOSE_DISPS(gPlayState->state.gfxCtx);
+}
+
+#define LIMB_COUNT_BARINADE 64
+extern "C" void DrawBarinade() {
+    OPEN_DISPS(gPlayState->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(gPlayState->state.gfxCtx);
+    Matrix_Translate(0.0f, -20.0f, 0.0f, MTXMODE_APPLY);
+    Matrix_Scale(0.03f, 0.03f, 0.03f, MTXMODE_APPLY);
+
+    static bool initialized = false;
+    static SkelAnime skelAnime;
+    static Vec3s jointTable[LIMB_COUNT_BARINADE];
+    static Vec3s otherTable[LIMB_COUNT_BARINADE];
+
+    static u32 lastUpdate = 0;
+    if (!initialized) {
+        initialized = true;
+        SkelAnime_InitFlex(gPlayState, &skelAnime, (FlexSkeletonHeader*)&gBarinadeBodySkel,
+                           (AnimationHeader*)&gBarinadeBodyAnim, jointTable, otherTable, LIMB_COUNT_BARINADE);
+    }
+    if (gPlayState != NULL && lastUpdate != gPlayState->state.frames) {
+        lastUpdate = gPlayState->state.frames;
+        SkelAnime_Update(&skelAnime);
+    }
+    gSPSegment(POLY_OPA_DISP++, 0x08, (uintptr_t)GetEmptyDlist(gPlayState->state.gfxCtx));
+    SkelAnime_DrawFlexOpa(gPlayState, skelAnime.skeleton, skelAnime.jointTable, skelAnime.dListCount, NULL, NULL, NULL);
+
+    CLOSE_DISPS(gPlayState->state.gfxCtx);
+}
+
+#define LIMB_COUNT_PHANTOM_GANON 26
+extern "C" void DrawPhantomGanon() {
+    OPEN_DISPS(gPlayState->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(gPlayState->state.gfxCtx);
+    Matrix_Translate(0.0f, 0.0f, 0.0f, MTXMODE_APPLY);
+    Matrix_Scale(0.007f, 0.007f, 0.007f, MTXMODE_APPLY);
+
+    static bool initialized = false;
+    static SkelAnime skelAnime;
+    static Vec3s jointTable[LIMB_COUNT_PHANTOM_GANON];
+    static Vec3s otherTable[LIMB_COUNT_PHANTOM_GANON];
+
+    static u32 lastUpdate = 0;
+    if (!initialized) {
+        initialized = true;
+        SkelAnime_InitFlex(gPlayState, &skelAnime, (FlexSkeletonHeader*)&gPhantomGanonSkel,
+                           (AnimationHeader*)&gPhantomGanonNeutralAnim, jointTable, otherTable,
+                           LIMB_COUNT_PHANTOM_GANON);
+    }
+    if (gPlayState != NULL && lastUpdate != gPlayState->state.frames) {
+        lastUpdate = gPlayState->state.frames;
+        SkelAnime_Update(&skelAnime);
+    }
+    gSPSegment(POLY_OPA_DISP++, 0x08, (uintptr_t)GetEmptyDlist(gPlayState->state.gfxCtx));
+    SkelAnime_DrawFlexOpa(gPlayState, skelAnime.skeleton, skelAnime.jointTable, skelAnime.dListCount, NULL, NULL, NULL);
+
+    CLOSE_DISPS(gPlayState->state.gfxCtx);
+}
+
+#define LIMB_COUNT_VOLVAGIA 7
+extern "C" void DrawVolvagia() {
+    OPEN_DISPS(gPlayState->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(gPlayState->state.gfxCtx);
+    Matrix_Translate(0.0f, 0.0f, 0.0f, MTXMODE_APPLY);
+    Matrix_Scale(0.007f, 0.007f, 0.007f, MTXMODE_APPLY);
+
+    static bool initialized = false;
+    static SkelAnime skelAnime;
+    static Vec3s jointTable[LIMB_COUNT_VOLVAGIA];
+    static Vec3s otherTable[LIMB_COUNT_VOLVAGIA];
+
+    static u32 lastUpdate = 0;
+    if (!initialized) {
+        initialized = true;
+        SkelAnime_InitFlex(gPlayState, &skelAnime, (FlexSkeletonHeader*)&gVolvagiaHeadSkel,
+                           (AnimationHeader*)&gVolvagiaHeadEmergeAnim, jointTable, otherTable, LIMB_COUNT_VOLVAGIA);
+    }
+    if (gPlayState != NULL && lastUpdate != gPlayState->state.frames) {
+        lastUpdate = gPlayState->state.frames;
+        SkelAnime_Update(&skelAnime);
+    }
+    gSPSegment(POLY_OPA_DISP++, 0x08, (uintptr_t)GetEmptyDlist(gPlayState->state.gfxCtx));
+    gDPSetEnvColor(POLY_XLU_DISP++, 0x80, 0x80, 255, 255, 255, (s8)255);
+    SkelAnime_DrawFlexOpa(gPlayState, skelAnime.skeleton, skelAnime.jointTable, skelAnime.dListCount, NULL, NULL, NULL);
+
+    CLOSE_DISPS(gPlayState->state.gfxCtx);
+}
+
+extern "C" void DrawMorpha() {
+    OPEN_DISPS(gPlayState->state.gfxCtx);
+
+    Gfx_SetupDL_25Xlu(gPlayState->state.gfxCtx);
+
+    Matrix_Scale(0.015f, 0.015f, 0.015f, MTXMODE_APPLY);
+
+    gSPSegment(POLY_XLU_DISP++, 0x08,
+               (uintptr_t)Gfx_TwoTexScroll(gPlayState->state.gfxCtx, 0, gPlayState->state.frames,
+                                           gPlayState->state.frames, 32, 32, 1, gPlayState->state.frames,
+                                           gPlayState->state.frames,
+                                32, 32));
+
+    gSPSegment(POLY_XLU_DISP++, 0x09,
+               (uintptr_t)Gfx_TwoTexScroll(gPlayState->state.gfxCtx, 0, gPlayState->state.frames % 3, 0, 32, 32, 1, 0,
+                                           gPlayState->state.frames % 3, 32, 32));
+
+    Matrix_RotateX(gPlayState->state.frames * 0.1f, MTXMODE_APPLY);
+    Matrix_RotateZ(gPlayState->state.frames * 0.16f, MTXMODE_APPLY);
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gPlayState->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+
+    gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 255, 255, 255, (s8)255);
+
+    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gMorphaCoreMembraneDL);
+
+    gDPPipeSync(POLY_XLU_DISP++);
+
+    gDPSetEnvColor(POLY_XLU_DISP++, 0, 220, 255, 128);
+    gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 255, 255, 255, 255);
+
+    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gMorphaCoreNucleusDL);
+
+    CLOSE_DISPS(gPlayState->state.gfxCtx);
+}
+
+#define LIMB_COUNT_BONGO_BONGO 27
+extern "C" void DrawBongoBongo() {
+    OPEN_DISPS(gPlayState->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(gPlayState->state.gfxCtx);
+    Matrix_Translate(0.0f, -20.0f, 0.0f, MTXMODE_APPLY);
+    Matrix_Scale(0.007f, 0.007f, 0.007f, MTXMODE_APPLY);
+
+    static bool initialized = false;
+    static SkelAnime skelAnime;
+    static Vec3s jointTable[LIMB_COUNT_BONGO_BONGO];
+    static Vec3s otherTable[LIMB_COUNT_BONGO_BONGO];
+
+    static u32 lastUpdate = 0;
+    if (!initialized) {
+        initialized = true;
+        SkelAnime_InitFlex(gPlayState, &skelAnime, (FlexSkeletonHeader*)&dgBongoLeftHandSkel,
+                           (AnimationHeader*)&gBongoLeftHandIdleAnim, jointTable, otherTable,
+                           LIMB_COUNT_BONGO_BONGO);
+    }
+    if (gPlayState != NULL && lastUpdate != gPlayState->state.frames) {
+        lastUpdate = gPlayState->state.frames;
+        SkelAnime_Update(&skelAnime);
+    }
+
+    gSPSegment(POLY_OPA_DISP++, 0x08, (uintptr_t)GetEmptyDlist(gPlayState->state.gfxCtx));
+    gDPSetEnvColor(POLY_XLU_DISP++, 0x80, 0x80, 255, 255, 255, (s8)255);
+    SkelAnime_DrawFlexOpa(gPlayState, skelAnime.skeleton, skelAnime.jointTable, skelAnime.dListCount, NULL, NULL, NULL);
+
+    CLOSE_DISPS(gPlayState->state.gfxCtx);
+}
+
+#define LIMB_COUNT_TWINROVA 27
+extern "C" void DrawTwinrova() {
+    OPEN_DISPS(gPlayState->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(gPlayState->state.gfxCtx);
+    Matrix_Translate(0.0f, 0.0f, 0.0f, MTXMODE_APPLY);
+    Matrix_Scale(0.007f, 0.007f, 0.007f, MTXMODE_APPLY);
+
+    static bool initialized = false;
+    static SkelAnime skelAnime;
+    static Vec3s jointTable[LIMB_COUNT_TWINROVA];
+    static Vec3s otherTable[LIMB_COUNT_TWINROVA];
+
+    static u32 lastUpdate = 0;
+    if (!initialized) {
+        initialized = true;
+        SkelAnime_InitFlex(gPlayState, &skelAnime, (FlexSkeletonHeader*)&gTwinrovaKotakeSkel,
+                           (AnimationHeader*)&gTwinrovaKotakeKoumeFlyAnim, jointTable, otherTable, LIMB_COUNT_TWINROVA);
+    }
+    if (gPlayState != NULL && lastUpdate != gPlayState->state.frames) {
+        lastUpdate = gPlayState->state.frames;
+        SkelAnime_Update(&skelAnime);
+    }
+    gSPSegment(POLY_OPA_DISP++, 0x08, (uintptr_t)GetEmptyDlist(gPlayState->state.gfxCtx));
+    SkelAnime_DrawFlexOpa(gPlayState, skelAnime.skeleton, skelAnime.jointTable, skelAnime.dListCount, NULL, NULL, NULL);
+
+    CLOSE_DISPS(gPlayState->state.gfxCtx);
+}
+
 extern "C" void Randomizer_DrawBossSoul(PlayState* play, GetItemEntry* getItemEntry) {
     s16 slot = getItemEntry->getItemId - RG_GOHMA_SOUL;
     s16 flameColors[9][3] = {
@@ -363,40 +633,59 @@ extern "C" void Randomizer_DrawBossSoul(PlayState* play, GetItemEntry* getItemEn
         { 222, 158, 47 },  // Twinrova
         { 80, 80, 80 },    // Ganon/Dorf
     }; 
-    OPEN_DISPS(play->state.gfxCtx);
 
+    // Draw the blue fire DL but coloured to the boss soul.
+    OPEN_DISPS(play->state.gfxCtx);
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+    gSPSegment(POLY_XLU_DISP++, 8,
+               (uintptr_t)Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0 * (play->state.frames * 0),
+                                           0 * (play->state.frames * 0), 16, 32, 1, 1 * (play->state.frames * 1),
+                                           -1 * (play->state.frames * 8), 16, 32));
+    Matrix_Push();
+    Matrix_Translate(0.0f, -70.0f, 0.0f, MTXMODE_APPLY);
+    Matrix_Scale(5.0f, 5.0f, 5.0f, MTXMODE_APPLY);
+    Matrix_ReplaceRotation(&play->billboardMtxF);
     gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
-    if (slot == 8) { // For Ganon only...
-        gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 0, 0, 0, 255);
-    } else {
-        gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 255);
-    }
-    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gBossSoulSkullDL);
-    
-    if (slot >= 0) {
-        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
-        gSPSegment(POLY_XLU_DISP++, 8, (uintptr_t)Gfx_TwoTexScroll(
-            play->state.gfxCtx, 0, 0 * (play->state.frames * 0),
-            0 * (play->state.frames * 0), 16, 32, 1, 1 * (play->state.frames * 1),
-            -1 * (play->state.frames * 8), 16, 32
-        ));
-        Matrix_Push();
-        Matrix_Translate(0.0f, -70.0f, 0.0f, MTXMODE_APPLY);
-        Matrix_Scale(5.0f, 5.0f, 5.0f, MTXMODE_APPLY);
-        Matrix_ReplaceRotation(&play->billboardMtxF);
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
-                  G_MTX_MODELVIEW | G_MTX_LOAD);
-        gDPSetGrayscaleColor(POLY_XLU_DISP++, flameColors[slot][0], flameColors[slot][1], flameColors[slot][2], 255);
-        gSPGrayscale(POLY_XLU_DISP++, true);
-        gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiBlueFireFlameDL);
-        gSPGrayscale(POLY_XLU_DISP++, false);
-        Matrix_Pop();
-    }
-
+    gDPSetGrayscaleColor(POLY_XLU_DISP++, flameColors[slot][0], flameColors[slot][1], flameColors[slot][2], 255);
+    gSPGrayscale(POLY_XLU_DISP++, true);
+    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiBlueFireFlameDL);
+    gSPGrayscale(POLY_XLU_DISP++, false);
+    Matrix_Pop();
     CLOSE_DISPS(play->state.gfxCtx);
 
+    // Draw the boss' skeleton
+    switch (slot) {
+        case 0: // Gohma
+            DrawGohma();
+            break;
+        case 1: // King Dodongo
+            DrawKingDodongo();
+            break;
+        case 2: // Barinade
+            DrawBarinade();
+            break;
+        case 3: // Phantom Ganon
+            DrawPhantomGanon();
+            break;
+        case 4: // Volvagia
+            DrawVolvagia();
+            break;
+        case 5: // Morpha
+            DrawMorpha();
+            break;
+        case 6: // Bongo Bongo
+            DrawBongoBongo();
+            break;
+        case 7: // Twinrova
+            DrawTwinrova();
+            break;
+        case 8: // Ganon
+            //DrawGanon();
+            break;
+        default:
+            break;
+    }
 }
 
 extern "C" void Randomizer_DrawOcarinaButton(PlayState* play, GetItemEntry* getItemEntry) {
