@@ -353,7 +353,7 @@ void func_80ABA778(EnNiwLady* this, PlayState* play) {
         }
         this->unk_273 = 1;
         this->unk_262 = TEXT_STATE_CHOICE;
-    } else { 
+    } else {
         this->unk_27A = 2;
         if (!Flags_GetItemGetInf(ITEMGETINF_2E)) {
             this->unk_27A = 3;
