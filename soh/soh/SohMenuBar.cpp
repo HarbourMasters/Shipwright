@@ -14,6 +14,8 @@
 #include "z64.h"
 #include "cvar_prefixes.h"
 #include "macros.h"
+#include "functions.h"
+#include "variables.h"
 #include "Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/presets.h"
 #include "soh/Enhancements/mods.h"
@@ -1523,10 +1525,23 @@ void DrawEnhancementsMenu() {
                 "This will lower them, making activating them easier");
             UIWidgets::PaddedEnhancementCheckbox("Fix Zora hint dialogue", CVAR_ENHANCEMENT("FixZoraHintDialogue"), true, false);
             UIWidgets::Tooltip("Fixes one Zora's dialogue giving a hint about bringing Ruto's Letter to King Zora to properly occur before moving King Zora rather than after");
-            if (UIWidgets::PaddedEnhancementCheckbox("Fix hand holding Hammer", "gEnhancements.FixHammerHand", true, false)) {
+            if (UIWidgets::PaddedEnhancementCheckbox("Fix hand holding Hammer", CVAR_ENHANCEMENT("FixHammerHand"), true, false)) {
                 UpdatePatchHand();
             }
-            UIWidgets::Tooltip("Fixes Adult Link have a backwards left hand when holding the Megaton Hammer.");
+            UIWidgets::Tooltip("Fixes Adult Link having a backwards left hand when holding the Megaton Hammer.");
+            if (UIWidgets::PaddedEnhancementCheckbox(
+                "Fix Broken Giant's Knife bug", CVAR_ENHANCEMENT("FixBrokenGiantsKnife"), true, false, IS_RANDO,
+                "This setting is forcefully enabled when you are playing a randomizer.",
+                UIWidgets::CheckboxGraphics::Checkmark)) {
+                bool hasGiantsKnife = CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BIGGORON);
+                bool hasBrokenKnife = CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BROKENGIANTKNIFE);
+                bool knifeIsBroken = gSaveContext.swordHealth == 0.0f;
+
+                if (hasGiantsKnife && (hasBrokenKnife != knifeIsBroken)) {
+                    func_800849EC(gPlayState);
+                }
+            }
+            UIWidgets::Tooltip("Fixes the Broken Giant's Knife flag not being reset when Medigoron fixes it");
 
             ImGui::EndMenu();
         }
@@ -2108,25 +2123,17 @@ void DrawRemoteControlMenu() {
 #endif
 
 extern std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
+extern std::shared_ptr<PlandomizerWindow> mPlandomizerWindow;
 extern std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
 extern std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
 extern std::shared_ptr<EntranceTrackerWindow> mEntranceTrackerWindow;
 extern std::shared_ptr<EntranceTrackerSettingsWindow> mEntranceTrackerSettingsWindow;
 extern std::shared_ptr<CheckTracker::CheckTrackerWindow> mCheckTrackerWindow;
 extern std::shared_ptr<CheckTracker::CheckTrackerSettingsWindow> mCheckTrackerSettingsWindow;
-extern std::shared_ptr<PlandomizerWindow> mPlandomizerWindow;
 extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 
 void DrawRandomizerMenu() {
     if (ImGui::BeginMenu("Randomizer")) {
-        UIWidgets::EnhancementCheckbox("Plando Mode", CVAR_GENERAL("PlandoMode"));
-        UIWidgets::Tooltip(
-            "When dropping a spoiler file on the game window, parse the full spoiler file instead of just the "
-            "necessary "
-            "parts to regenerate a seed.\n\nKeep in mind if you do this, all custom text will only be available in the "
-            "language present in the spoilerfile. You can use this to edit a previously generated spoilerfile that has "
-            "been edited with custom hint text and item locations. May be useful for debugging.");
-        UIWidgets::PaddedSeparator();
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
         ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
         ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
@@ -2144,17 +2151,17 @@ void DrawRandomizerMenu() {
         static float separationToOptionsButton = 5.0f;
     #endif
 
-        if (mPlandomizerWindow) {
-            if (ImGui::Button(GetWindowButtonText("Plandomizer Editor", CVarGetInteger(CVAR_WINDOW("PlandomizerWindow"), 0)).c_str(), buttonSize)) {
-                mPlandomizerWindow->ToggleVisibility();
+        if (mRandomizerSettingsWindow) {
+            if (ImGui::Button(GetWindowButtonText("Randomizer Settings", CVarGetInteger(CVAR_WINDOW("RandomizerSettings"), 0)).c_str(), buttonSize)) {
+                mRandomizerSettingsWindow->ToggleVisibility();
             }
         }
 
         UIWidgets::Spacer(0);
 
-        if (mRandomizerSettingsWindow) {
-            if (ImGui::Button(GetWindowButtonText("Randomizer Settings", CVarGetInteger(CVAR_WINDOW("RandomizerSettings"), 0)).c_str(), buttonSize)) {
-                mRandomizerSettingsWindow->ToggleVisibility();
+        if (mPlandomizerWindow) {
+            if (ImGui::Button(GetWindowButtonText("Plandomizer Editor", CVarGetInteger(CVAR_WINDOW("PlandomizerWindow"), 0)).c_str(), buttonSize)) {
+                mPlandomizerWindow->ToggleVisibility();
             }
         }
 

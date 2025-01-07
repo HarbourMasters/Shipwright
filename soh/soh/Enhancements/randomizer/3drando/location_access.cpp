@@ -263,7 +263,7 @@ void RegionTable_Init() {
                 }, {
                   //Locations
                   LOCATION(RC_LINKS_POCKET,       true),
-                  LOCATION(RC_TRIFORCE_COMPLETED, logic->GetSaveContext()->triforcePiecesCollected >= ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).GetContextOptionIndex();),
+                  LOCATION(RC_TRIFORCE_COMPLETED, logic->GetSaveContext()->triforcePiecesCollected >= ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).GetContextOptionIndex() + 1;),
                   LOCATION(RC_SARIA_SONG_HINT,    logic->CanUse(RG_SARIAS_SONG)),
                 }, {
                   //Exits

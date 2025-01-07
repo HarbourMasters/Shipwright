@@ -1873,10 +1873,9 @@ void GenerateRandomizerImgui(std::string seed = "") {
     CVarSetInteger(CVAR_GENERAL("RandoGenerating"), 1);
     CVarSave();
     auto ctx = Rando::Context::GetInstance();
-    if (!ctx->IsSpoilerLoaded()) {
-        // We use the settings from the spoiler rather than CVars.
-        ctx->GetSettings()->SetAllFromCVar();
-    }
+    //RANDOTODO proper UI for selecting if a spoiler loaded should be used for settings
+    ctx->GetSettings()->SetAllFromCVar();
+    
     // todo: this efficently when we build out cvar array support
     std::set<RandomizerCheck> excludedLocations;
     std::stringstream excludedLocationStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"), ""));
@@ -1968,7 +1967,6 @@ void RandomizerSettingsWindow::DrawElement() {
         ctx->SetSpoilerLoaded(false);
         GenerateRandomizer(CVarGetInteger(CVAR_RANDOMIZER_SETTING("ManualSeedEntry"), 0) ? seedString : "");
     }
-    UIWidgets::Tooltip("You can also press L on the Quest Select screen to generate a new seed");
     ImGui::EndDisabled();
 
     UIWidgets::Spacer(0);
@@ -2166,7 +2164,7 @@ void RandomizerSettingsWindow::DrawElement() {
                     enabledGlitches.insert((RandomizerTrick)std::stoi(enabledGlitchString));
                 }
             }
-            
+
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (ImGui::BeginTable("tableRandoLogic", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -2273,11 +2271,13 @@ void RandomizerSettingsWindow::DrawElement() {
             };
 
             static std::map<Rando::Tricks::Tag, bool> showTag {
-                {Rando::Tricks::Tag::NOVICE,true},
-                {Rando::Tricks::Tag::INTERMEDIATE,true},
-                {Rando::Tricks::Tag::ADVANCED,true},
-                {Rando::Tricks::Tag::EXPERT,true},
-                {Rando::Tricks::Tag::EXTREME,true}
+                { Rando::Tricks::Tag::NOVICE, true },
+                { Rando::Tricks::Tag::INTERMEDIATE, true },
+                { Rando::Tricks::Tag::ADVANCED, true },
+                { Rando::Tricks::Tag::EXPERT, true },
+                { Rando::Tricks::Tag::EXTREME, true },
+                { Rando::Tricks::Tag::EXPERIMENTAL, true },
+                //{ Rando::Tricks::Tag::GLITCH, false },
             };
             static ImGuiTextFilter trickSearch;
             trickSearch.Draw("Filter (inc,-exc)", 490.0f);
@@ -2286,7 +2286,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 if (ImGui::Button("Disable All")) {
                     for (int i = 0; i < RT_MAX; i++) {
                         auto etfound = enabledTricks.find(static_cast<RandomizerTrick>(i));
-                        if (!ctx->GetTrickOption(static_cast<RandomizerTrick>(i)).IsGlitch() && etfound != enabledTricks.end()) {
+                        if (etfound != enabledTricks.end()) {
                             enabledTricks.erase(etfound);
                         }
                     }
@@ -2301,7 +2301,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::SameLine();
                 if (ImGui::Button("Enable All")) {
                     for (int i = 0; i < RT_MAX; i++) {
-                        if (!ctx->GetTrickOption(static_cast<RandomizerTrick>(i)).IsGlitch() && !enabledTricks.count(static_cast<RandomizerTrick>(i))) {
+                        if (!enabledTricks.count(static_cast<RandomizerTrick>(i))) {
                             enabledTricks.insert(static_cast<RandomizerTrick>(i));
                         }
                     }
@@ -2317,9 +2317,14 @@ void RandomizerSettingsWindow::DrawElement() {
             if (ImGui::BeginTable("trickTags", showTag.size(), ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders)) {  
                 for (auto [rtTag, isShown] : showTag) {
                     ImGui::TableNextColumn();
-                    ImGui::PushStyleColor(ImGuiCol_Header, Rando::Tricks::GetRTTagColor(rtTag));
-                    ImGui::Selectable(Rando::Tricks::GetRTTagName(rtTag).c_str(), &showTag[rtTag]);
-                    ImGui::PopStyleColor(1);
+                    if (isShown) {
+                        ImGui::PushStyleColor(ImGuiCol_Text, Rando::Tricks::GetTextColor(rtTag));
+                    } else {
+                        ImGui::PushStyleColor(ImGuiCol_Text, { 1.0f, 1.0f, 1.0f, 1.0f });
+                    }
+                    ImGui::PushStyleColor(ImGuiCol_Header, Rando::Tricks::GetTagColor(rtTag));
+                    ImGui::Selectable(Rando::Tricks::GetTagName(rtTag).c_str(), &showTag[rtTag]);
+                    ImGui::PopStyleColor(2);
                 }
                 ImGui::EndTable();
             }
@@ -2331,13 +2336,12 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::TableHeadersRow();
                 ImGui::PopItemFlag();
                 ImGui::TableNextRow();
-                
-                if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
 
+                if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
                     // COLUMN 1 - DISABLED TRICKS
                     ImGui::TableNextColumn();
                     window->DC.CurrLineTextBaseOffset = 0.0f;
-                    
+
                     if (ImGui::Button("Collapse All##disabled")) {
                         for (int i = 0; i < RA_MAX; i++) {
                             areaTreeDisabled[static_cast<RandomizerArea>(i)] = false;
@@ -2353,10 +2357,10 @@ void RandomizerSettingsWindow::DrawElement() {
                     if (ImGui::Button("Enable Visible")) {
                         for (int i = 0; i < RT_MAX; i++) {
                             auto option = mSettings->GetTrickOption(static_cast<RandomizerTrick>(i));
-                            if (!option.IsGlitch() && !enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
+                            if (!enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
                                 trickSearch.PassFilter(option.GetName().c_str()) &&
                                 areaTreeDisabled[option.GetArea()] &&
-                                Rando::Tricks::CheckRTTags(showTag, option.GetTags())) {
+                                Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                                 enabledTricks.insert(static_cast<RandomizerTrick>(i));
                             }
                         }
@@ -2368,7 +2372,7 @@ void RandomizerSettingsWindow::DrawElement() {
                         CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
                         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                     }
-                    
+
                     ImGui::BeginChild("ChildTricksDisabled", ImVec2(0, -8), false, ImGuiWindowFlags_HorizontalScrollbar);
 
                     for (auto [area, trickIds] : mSettings->mTricksByArea) {
@@ -2376,22 +2380,20 @@ void RandomizerSettingsWindow::DrawElement() {
                         for (auto rt : trickIds) {
                             auto option = mSettings->GetTrickOption(rt);
                             if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
-                                !enabledTricks.count(rt) && Rando::Tricks::CheckRTTags(showTag, option.GetTags()) &&
-                                !option.IsGlitch()) {
+                                !enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                                 hasTricks = true;
                                 break;
                             }
                         }
                         if (hasTricks) {
-                            ImGui::TreeNodeSetOpen(ImGui::GetID((Rando::Tricks::GetRTAreaName(area) + "##disabled").c_str()), areaTreeDisabled[area]);
+                            ImGui::TreeNodeSetOpen(ImGui::GetID((Rando::Tricks::GetAreaName(area) + "##disabled").c_str()), areaTreeDisabled[area]);
                             ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                            if (ImGui::TreeNode((Rando::Tricks::GetRTAreaName(area) + "##disabled").c_str())) {
+                            if (ImGui::TreeNode((Rando::Tricks::GetAreaName(area) + "##disabled").c_str())) {
                                 for (auto rt : trickIds) {
                                     auto option = mSettings->GetTrickOption(rt);
                                     if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
-                                        !enabledTricks.count(rt) && Rando::Tricks::CheckRTTags(showTag, option.GetTags()) &&
-                                        !option.IsGlitch()) {
-                                        ImGui::TreeNodeSetOpen(ImGui::GetID((Rando::Tricks::GetRTAreaName(option.GetArea()) + "##disabled").c_str()), areaTreeDisabled[option.GetArea()]);
+                                        !enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags())) {
+                                        ImGui::TreeNodeSetOpen(ImGui::GetID((Rando::Tricks::GetAreaName(option.GetArea()) + "##disabled").c_str()), areaTreeDisabled[option.GetArea()]);
                                         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                                         if (ImGui::ArrowButton(std::to_string(rt).c_str(), ImGuiDir_Right)) {
                                             enabledTricks.insert(rt);
@@ -2418,12 +2420,9 @@ void RandomizerSettingsWindow::DrawElement() {
                     }
                     ImGui::EndChild();
 
-                    
-
                     // COLUMN 2 - ENABLED TRICKS
                     ImGui::TableNextColumn();
                     window->DC.CurrLineTextBaseOffset = 0.0f;
-
 
                     if (ImGui::Button("Collapse All##enabled")) {
                         for (int i = 0; i < RA_MAX; i++) {
@@ -2440,10 +2439,10 @@ void RandomizerSettingsWindow::DrawElement() {
                     if (ImGui::Button("Disable Visible")) {
                         for (int i = 0; i < RT_MAX; i++) {
                             auto option = mSettings->GetTrickOption(static_cast<RandomizerTrick>(i));
-                            if (!option.IsGlitch() && enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
+                            if (enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
                                 trickSearch.PassFilter(option.GetName().c_str()) &&
                                 areaTreeEnabled[option.GetArea()] &&
-                                Rando::Tricks::CheckRTTags(showTag, option.GetTags())) {
+                                Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                                 enabledTricks.erase(static_cast<RandomizerTrick>(i));
                             }
                         }
@@ -2459,7 +2458,7 @@ void RandomizerSettingsWindow::DrawElement() {
                         }
                         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                     }
-                    
+
                     ImGui::BeginChild("ChildTricksEnabled", ImVec2(0, -8), false, ImGuiWindowFlags_HorizontalScrollbar);
 
                     for (auto [area, trickIds] : mSettings->mTricksByArea) {
@@ -2467,22 +2466,20 @@ void RandomizerSettingsWindow::DrawElement() {
                         for (auto rt : trickIds) {
                             auto option = mSettings->GetTrickOption(rt);
                             if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
-                                enabledTricks.count(rt) && Rando::Tricks::CheckRTTags(showTag, option.GetTags()) &&
-                                !option.IsGlitch()) {
+                                enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                                 hasTricks = true;
                                 break;
                             }
                         }
                         if (hasTricks) {
-                            ImGui::TreeNodeSetOpen(ImGui::GetID((Rando::Tricks::GetRTAreaName(area) + "##enabled").c_str()), areaTreeEnabled[area]);
+                            ImGui::TreeNodeSetOpen(ImGui::GetID((Rando::Tricks::GetAreaName(area) + "##enabled").c_str()), areaTreeEnabled[area]);
                             ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                            if (ImGui::TreeNode((Rando::Tricks::GetRTAreaName(area) + "##enabled").c_str())) {
+                            if (ImGui::TreeNode((Rando::Tricks::GetAreaName(area) + "##enabled").c_str())) {
                                 for (auto rt : trickIds) {
                                     auto option = mSettings->GetTrickOption(rt);
                                     if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
-                                        enabledTricks.count(rt) && Rando::Tricks::CheckRTTags(showTag, option.GetTags()) &&
-                                        !option.IsGlitch()) {
-                                        ImGui::TreeNodeSetOpen(ImGui::GetID((Rando::Tricks::GetRTAreaName(option.GetArea()) + "##enabled").c_str()), areaTreeEnabled[option.GetArea()]);
+                                        enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags())) {
+                                        ImGui::TreeNodeSetOpen(ImGui::GetID((Rando::Tricks::GetAreaName(option.GetArea()) + "##enabled").c_str()), areaTreeEnabled[option.GetArea()]);
                                         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                                         if (ImGui::ArrowButton(std::to_string(rt).c_str(), ImGuiDir_Left)) {
                                             enabledTricks.erase(rt);
@@ -2514,10 +2511,6 @@ void RandomizerSettingsWindow::DrawElement() {
 
                     ImGui::EndChild();
                 } else {
-                    ImGui::TableNextColumn();
-                    ImGui::BeginChild("ChildTrickAreas", ImVec2(0, -8));
-                    ImGui::Text("Requires Logic Turned On.");
-                    ImGui::EndChild();
                     ImGui::TableNextColumn();
                     ImGui::BeginChild("ChildTricksDisabled", ImVec2(0, -8));
                     ImGui::Text("Requires Logic Turned On.");

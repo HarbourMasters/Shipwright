@@ -143,7 +143,6 @@ void RegionTable_Init_Kakariko() {
                 }, {
                   //Locations
                   LOCATION(RC_KAK_WINDMILL_FREESTANDING_POH, logic->CanUse(RG_BOOMERANG) || logic->DampesWindmillAccess || (logic->IsAdult && ctx->GetTrickOption(RT_KAK_ADULT_WINDMILL_POH)) || (logic->IsChild && logic->CanJumpslashExceptHammer() && ctx->GetTrickOption(RT_KAK_CHILD_WINDMILL_POH))),
-                    //PoH as child not added to trick options yet (needs uncommenting in randomizer_tricks.cpp)
                   LOCATION(RC_SONG_FROM_WINDMILL,            logic->IsAdult && logic->HasItem(RG_FAIRY_OCARINA)),
                 }, {
                   //Exits
@@ -217,11 +216,13 @@ void RegionTable_Init_Kakariko() {
 
   areaTable[RR_KAK_OPEN_GROTTO] = Region("Kak Open Grotto", "Kak Open Grotto", {}, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
-                  LOCATION(RC_KAK_OPEN_GROTTO_CHEST,         true),
-                  LOCATION(RC_KAK_OPEN_GROTTO_FISH,          logic->HasBottle()),
-                  LOCATION(RC_KAK_OPEN_GROTTO_GOSSIP_STONE,  true),
-                  LOCATION(RC_KAK_OPEN_GROTTO_BEEHIVE_LEFT,  logic->CanBreakLowerBeehives()),
-                  LOCATION(RC_KAK_OPEN_GROTTO_BEEHIVE_RIGHT, logic->CanBreakLowerBeehives()),
+                  LOCATION(RC_KAK_OPEN_GROTTO_CHEST,                  true),
+                  LOCATION(RC_KAK_OPEN_GROTTO_FISH,                   logic->HasBottle()),
+                  LOCATION(RC_KAK_OPEN_GROTTO_GOSSIP_STONE_FAIRY,     logic->CallGossipFairy()),
+                  LOCATION(RC_KAK_OPEN_GROTTO_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
+                  LOCATION(RC_KAK_OPEN_GROTTO_GOSSIP_STONE,           true),
+                  LOCATION(RC_KAK_OPEN_GROTTO_BEEHIVE_LEFT,           logic->CanBreakLowerBeehives()),
+                  LOCATION(RC_KAK_OPEN_GROTTO_BEEHIVE_RIGHT,          logic->CanBreakLowerBeehives()),
                 }, {
                   //Exits
                   Entrance(RR_KAK_BACKYARD, {[]{return true;}}),
@@ -242,7 +243,7 @@ void RegionTable_Init_Kakariko() {
   areaTable[RR_THE_GRAVEYARD] = Region("The Graveyard", "The Graveyard", {RA_THE_GRAVEYARD}, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->ButterflyFairy, {[]{return logic->ButterflyFairy || (logic->CanUse(RG_STICKS) && logic->AtDay);}}),
-                  EventAccess(&logic->BeanPlantFairy, {[]{return logic->BeanPlantFairy || (CanPlantBean(RR_THE_GRAVEYARD) && logic->CanUse(RG_SONG_OF_STORMS));}}),
+                  EventAccess(&logic->BeanPlantFairy, {[]{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}}),
                   EventAccess(&logic->BugRock,        {[]{return true;}}),
                 }, {
                   //Locations
@@ -250,6 +251,9 @@ void RegionTable_Init_Kakariko() {
                   LOCATION(RC_GRAVEYARD_DAMPE_GRAVEDIGGING_TOUR, logic->HasItem(RG_CHILD_WALLET) && logic->IsChild && logic->AtNight), //TODO: This needs to change
                   LOCATION(RC_GRAVEYARD_GS_WALL,                 logic->IsChild && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
                   LOCATION(RC_GRAVEYARD_GS_BEAN_PATCH,           logic->CanSpawnSoilSkull() && logic->CanAttack()),
+                  LOCATION(RC_GRAVEYARD_BEAN_SPROUT_FAIRY_1,     logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+                  LOCATION(RC_GRAVEYARD_BEAN_SPROUT_FAIRY_2,     logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+                  LOCATION(RC_GRAVEYARD_BEAN_SPROUT_FAIRY_3,     logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
                 }, {
                   //Exits
                   Entrance(RR_GRAVEYARD_SHIELD_GRAVE,       {[]{return logic->IsAdult || logic->AtNight;}}),
@@ -264,7 +268,22 @@ void RegionTable_Init_Kakariko() {
   areaTable[RR_GRAVEYARD_SHIELD_GRAVE] = Region("Graveyard Shield Grave", "Graveyard Shield Grave", {}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_GRAVEYARD_SHIELD_GRAVE_CHEST, true),
-                  //Free Fairies
+                }, {
+                  //Exits
+                  Entrance(RR_THE_GRAVEYARD,               {[]{return true;}}),
+                  Entrance(RR_GRAVEYARD_SHIELD_GRAVE_BACK, {[]{return Here(RR_GRAVEYARD_SHIELD_GRAVE, []{return logic->CanBreakMudWalls();});}}),
+  });
+
+  areaTable[RR_GRAVEYARD_SHIELD_GRAVE_BACK] = Region("Graveyard Shield Grave Back", "Graveyard Shield Grave", {}, NO_DAY_NIGHT_CYCLE, {}, {
+                  //Locations
+                  LOCATION(RC_GRAVEYARD_SHIELD_GRAVE_FAIRY_1, true),
+                  LOCATION(RC_GRAVEYARD_SHIELD_GRAVE_FAIRY_2, true),
+                  LOCATION(RC_GRAVEYARD_SHIELD_GRAVE_FAIRY_3, true),
+                  LOCATION(RC_GRAVEYARD_SHIELD_GRAVE_FAIRY_4, true),
+                  LOCATION(RC_GRAVEYARD_SHIELD_GRAVE_FAIRY_5, true),
+                  LOCATION(RC_GRAVEYARD_SHIELD_GRAVE_FAIRY_6, true),
+                  LOCATION(RC_GRAVEYARD_SHIELD_GRAVE_FAIRY_7, true),
+                  LOCATION(RC_GRAVEYARD_SHIELD_GRAVE_FAIRY_8, true),
                 }, {
                   //Exits
                   Entrance(RR_THE_GRAVEYARD, {[]{return true;}}),
@@ -328,11 +347,13 @@ void RegionTable_Init_Kakariko() {
                   EventAccess(&logic->GossipStoneFairy, {[]{return logic->CallGossipFairyExceptSuns();}}),
                 }, {
                   //Locations
-                  LOCATION(RC_GRAVEYARD_GOSSIP_STONE, true),
+                  LOCATION(RC_GRAVEYARD_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns()),
+                  LOCATION(RC_GRAVEYARD_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
+                  LOCATION(RC_GRAVEYARD_GOSSIP_STONE,           true),
                 }, {
                   //Exits
-                  Entrance(RR_THE_GRAVEYARD,             {[]{return true;}}),
-                  Entrance(RR_SHADOW_TEMPLE_ENTRYWAY,    {[]{return logic->CanUse(RG_DINS_FIRE) || (ctx->GetTrickOption(RT_GY_SHADOW_FIRE_ARROWS) && logic->IsAdult && logic->CanUse(RG_FIRE_ARROWS));}}),
+                  Entrance(RR_THE_GRAVEYARD,          {[]{return true;}}),
+                  Entrance(RR_SHADOW_TEMPLE_ENTRYWAY, {[]{return logic->CanUse(RG_DINS_FIRE) || (ctx->GetTrickOption(RT_GY_SHADOW_FIRE_ARROWS) && logic->IsAdult && logic->CanUse(RG_FIRE_ARROWS));}}),
   });
 
 }
