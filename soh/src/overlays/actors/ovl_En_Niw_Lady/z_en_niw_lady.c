@@ -173,7 +173,7 @@ void func_80AB9F24(EnNiwLady* this, PlayState* play) {
         this->unk_272 = 0;
         this->actor.targetMode = 6;
         this->actor.draw = EnNiwLady_Draw;
-        switch (this->unk_278) { //if in impas house
+        switch (this->unk_278) {
             case 0:
                 if (!Flags_GetItemGetInf(ITEMGETINF_0C) && !LINK_IS_ADULT) {
                     frames = Animation_GetLastFrame(&gObjOsAnim_A630);
@@ -345,25 +345,25 @@ void func_80ABA778(EnNiwLady* this, PlayState* play) {
     osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ アダルトメッセージチェック ☆☆☆☆☆ \n" VT_RST);
     this->unk_262 = TEXT_STATE_DONE;
     this->unk_273 = 0;
-    if (!Flags_GetItemGetInf(ITEMGETINF_2C)) { //have not picked up pocket egg
-        if (this->unk_274 != 0) {//set when processing a talk without item
-            this->unk_27A = 1; //What do you think? Will you try?
+    if (!Flags_GetItemGetInf(ITEMGETINF_2C)) {
+        if (this->unk_274 != 0) {
+            this->unk_27A = 1;
         } else {
-            this->unk_27A = 0; //I bred a new type of miniature Cucco!
+            this->unk_27A = 0;
         }
         this->unk_273 = 1;
         this->unk_262 = TEXT_STATE_CHOICE;
     } else { 
-        this->unk_27A = 2; //My brother must have been very lonely... 
-        if (!Flags_GetItemGetInf(ITEMGETINF_2E)) { //have not picked up cojiro
-            this->unk_27A = 3; //were you pecked by a Cucco when you were little
+        this->unk_27A = 2;
+        if (!Flags_GetItemGetInf(ITEMGETINF_2E)) {
+            this->unk_27A = 3;
             if (Flags_GetEventChkInf(EVENTCHKINF_TALON_WOKEN_IN_KAKARIKO)) {
-                this->unk_27A = 9; //Please make my Cucco happy!
-                if (this->unk_277 != 0) { //set to 1 by saying no in func_80ABAB08, refusing cojiro
-                    this->unk_27A = 10; //How is your Cucco? Is he happy?
+                this->unk_27A = 9;
+                if (this->unk_277 != 0) {
+                    this->unk_27A = 10;
                 }
             } else {
-                this->unk_27A = 4;//Please make my Cucco happy!
+                this->unk_27A = 4;
             }
         }
     }
@@ -383,12 +383,12 @@ void func_80ABA878(EnNiwLady* this, PlayState* play) {
         playerExchangeItemId = func_8002F368(play);
         if ((playerExchangeItemId == 6) && (Flags_GetEventChkInf(EVENTCHKINF_TALON_WOKEN_IN_KAKARIKO))) {
             Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
-            player->actor.textId = sTradeItemTextIds[5]; //He must have awakened an extremely lazy guy!
+            player->actor.textId = sTradeItemTextIds[5];
             this->unk_26E = this->unk_27A + 21;
             this->unk_262 = TEXT_STATE_CHOICE;
             this->actionFunc = func_80ABAB08;
         } else if (playerExchangeItemId != 0) {
-            player->actor.textId = sTradeItemTextIds[7]; // can't use that here
+            player->actor.textId = sTradeItemTextIds[7];
             this->unk_26E = this->unk_27A + 21;
         } else {
             this->unk_274 = 1;
@@ -414,7 +414,7 @@ void func_80ABA9B8(EnNiwLady* this, PlayState* play) {
 
                 break;
             case 1:
-                this->actor.textId = sTradeItemTextIds[3];//pecked when you were little
+                this->actor.textId = sTradeItemTextIds[3];
                 this->unk_26E = this->unk_27A + 21;
                 Message_ContinueTextbox(play, this->actor.textId);
                 this->unk_262 = TEXT_STATE_EVENT;
@@ -446,7 +446,7 @@ void func_80ABAB08(EnNiwLady* this, PlayState* play) {
             case 1:
                 Message_CloseTextbox(play);
                 this->unk_277 = 1;
-                this->actor.textId = sTradeItemTextIds[8]; //It looks as if you really like that other Cucco
+                this->actor.textId = sTradeItemTextIds[8];
                 this->unk_26E = this->unk_27A + 21;
                 Message_ContinueTextbox(play, this->actor.textId);
                 this->unk_262 = TEXT_STATE_EVENT;
