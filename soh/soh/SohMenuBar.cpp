@@ -2293,6 +2293,12 @@ void DrawRandomizerMenu() {
                 "Displays a \"Mystery Item\" model in place of any freestanding/GS/shop items that were shuffled, "
                 "and replaces item names for them and scrubs and merchants, regardless of hint settings, "
                 "so you never know what you're getting.");
+            UIWidgets::PaddedEnhancementCheckbox("Simpler Boss Soul Models",
+                                                 CVAR_RANDOMIZER_ENHANCEMENT("SimplerBossSoulModels"), true, false);
+            UIWidgets::Tooltip(
+                "When shuffling boss souls, they'll appear as a simpler model instead of showing the boss' models."
+                "This might make boss souls more distinguishable from a distance, and can help with performance."
+            );
             ImGui::EndMenu();
         }
 
