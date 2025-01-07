@@ -9,7 +9,7 @@
 #include "objects/object_tk/object_tk.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_IGNORE_QUAKE | ACTOR_FLAG_WILL_TALK)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_IGNORE_QUAKE | ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED)
 
 void EnPoRelay_Init(Actor* thisx, PlayState* play);
 void EnPoRelay_Destroy(Actor* thisx, PlayState* play);
@@ -147,14 +147,14 @@ void EnPoRelay_SetupRace(EnPoRelay* this) {
     this->hookshotSlotFull = (INV_CONTENT(ITEM_HOOKSHOT) != ITEM_NONE && !IS_RANDO) ||
                              (IS_RANDO && Flags_GetTreasure(gPlayState, 0x1E));
     this->unk_19A = Actor_WorldYawTowardPoint(&this->actor, &vec);
-    this->actor.flags |= ACTOR_FLAG_NO_LOCKON;
+    this->actor.flags |= ACTOR_FLAG_LOCK_ON_DISABLED;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_PO_LAUGH);
     this->actionFunc = EnPoRelay_Race;
 }
 
 void EnPoRelay_SetupEndRace(EnPoRelay* this) {
     this->actor.world.rot.y = this->actor.home.rot.y + 0xC000;
-    this->actor.flags &= ~ACTOR_FLAG_NO_LOCKON;
+    this->actor.flags &= ~ACTOR_FLAG_LOCK_ON_DISABLED;
     this->actor.speedXZ = 0.0f;
     this->actionFunc = EnPoRelay_EndRace;
 }
@@ -167,10 +167,10 @@ void EnPoRelay_CorrectY(EnPoRelay* this) {
 void EnPoRelay_Idle(EnPoRelay* this, PlayState* play) {
     Math_ScaledStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 0x100);
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
-        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+        this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         this->actionFunc = EnPoRelay_Talk;
     } else if (this->actor.xzDistToPlayer < 250.0f) {
-        this->actor.flags |= ACTOR_FLAG_WILL_TALK;
+        this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         this->actor.textId = this->textId;
         func_8002F2CC(&this->actor, play, 250.0f);
     }

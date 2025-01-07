@@ -8,7 +8,7 @@
 #include "objects/object_timeblock/object_timeblock.h"
 #include "vt.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA | ACTOR_FLAG_NO_LOCKON)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_UPDATE_DURING_OCARINA | ACTOR_FLAG_LOCK_ON_DISABLED)
 
 void ObjWarp2block_Init(Actor* thisx, PlayState* play);
 void ObjWarp2block_Destroy(Actor* thisx, PlayState* play);

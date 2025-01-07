@@ -7,7 +7,7 @@
 #include "z_en_lightbox.h"
 #include "objects/object_lightbox/object_lightbox.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void EnLightbox_Init(Actor* thisx, PlayState* play);
 void EnLightbox_Destroy(Actor* thisx, PlayState* play);

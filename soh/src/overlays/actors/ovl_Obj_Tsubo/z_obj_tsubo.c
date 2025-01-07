@@ -10,7 +10,7 @@
 #include "objects/object_tsubo/object_tsubo.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_ALWAYS_THROWN)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_THROW_ONLY)
 
 void ObjTsubo_Init(Actor* thisx, PlayState* play);
 void ObjTsubo_Destroy(Actor* thisx, PlayState* play);
@@ -232,7 +232,7 @@ void ObjTsubo_WaitForObject(ObjTsubo* this, PlayState* play) {
         }
         this->actor.objBankIndex = this->objTsuboBankIndex;
         ObjTsubo_SetupIdle(this);
-        this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
+        this->actor.flags &= ~ACTOR_FLAG_UPDATE_CULLING_DISABLED;
     }
 }
 
@@ -282,7 +282,7 @@ void ObjTsubo_SetupLiftedUp(ObjTsubo* this) {
     this->actionFunc = ObjTsubo_LiftedUp;
     this->actor.room = -1;
     Player_PlaySfx(&this->actor, NA_SE_PL_PULL_UP_POT);
-    this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+    this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
 }
 
 void ObjTsubo_LiftedUp(ObjTsubo* this, PlayState* play) {

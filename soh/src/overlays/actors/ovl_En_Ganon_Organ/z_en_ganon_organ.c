@@ -7,7 +7,7 @@
 #include "z_en_ganon_organ.h"
 #include "overlays/actors/ovl_Boss_Ganon/z_boss_ganon.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void EnGanonOrgan_Init(Actor* thisx, PlayState* play);
 void EnGanonOrgan_Destroy(Actor* thisx, PlayState* play);
@@ -32,7 +32,7 @@ const ActorInit En_Ganon_Organ_InitVars = {
 #include "overlays/ovl_En_Ganon_Organ/ovl_En_Ganon_Organ.h"
 
 void EnGanonOrgan_Init(Actor* thisx, PlayState* play) {
-    thisx->flags &= ~ACTOR_FLAG_TARGETABLE;
+    thisx->flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
 }
 
 void EnGanonOrgan_Destroy(Actor* thisx, PlayState* play) {

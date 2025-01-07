@@ -440,7 +440,7 @@ namespace Rando {
 
         // Reset fish group counter when the group gets culled
         if (actor->id == ACTOR_OBJ_MURE && gPlayState->sceneNum == SCENE_ZORAS_DOMAIN && fishGroupCounter > 0 &&
-            !(actor->flags & ACTOR_FLAG_UPDATE_WHILE_CULLED) && fs->GetOverworldFishShuffled()) {
+            !(actor->flags & ACTOR_FLAG_UPDATE_CULLING_DISABLED) && fs->GetOverworldFishShuffled()) {
             fishGroupCounter = 0;
         }
     }

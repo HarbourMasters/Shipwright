@@ -46,7 +46,7 @@ void BgUmaJump_Init(Actor* thisx, PlayState* play) {
             Actor_Kill(&this->dyna.actor);
             return;
         }
-        this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED;
+        this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED;
     }
 }
 

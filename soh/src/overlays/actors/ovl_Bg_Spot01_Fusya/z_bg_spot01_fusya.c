@@ -7,7 +7,7 @@
 #include "z_bg_spot01_fusya.h"
 #include "objects/object_spot01_objects/object_spot01_objects.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void BgSpot01Fusya_Init(Actor* thisx, PlayState* play);
 void BgSpot01Fusya_Destroy(Actor* thisx, PlayState* play);

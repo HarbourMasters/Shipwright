@@ -10,7 +10,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "vt.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
 
 void ShotSun_Init(Actor* thisx, PlayState* play);
 void ShotSun_Destroy(Actor* thisx, PlayState* play);
@@ -63,15 +63,15 @@ void ShotSun_Init(Actor* thisx, PlayState* play) {
     params = this->actor.params & 0xFF;
     if (params == 0x40 || params == 0x41) {
         this->unk_1A4 = 0;
-        this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
-        this->actor.flags |= ACTOR_FLAG_NO_FREEZE_OCARINA;
+        this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
+        this->actor.flags |= ACTOR_FLAG_UPDATE_DURING_OCARINA;
         this->actionFunc = func_80BADF0C;
-        this->actor.flags |= ACTOR_FLAG_NO_LOCKON;
+        this->actor.flags |= ACTOR_FLAG_LOCK_ON_DISABLED;
     } else {
         Collider_InitCylinder(play, &this->collider);
         Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
         this->actionFunc = ShotSun_UpdateHyliaSun;
-        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+        this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     }
 }
 

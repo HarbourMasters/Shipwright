@@ -11,7 +11,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void EnRu2_Init(Actor* thisx, PlayState* play);
 void EnRu2_Destroy(Actor* thisx, PlayState* play);

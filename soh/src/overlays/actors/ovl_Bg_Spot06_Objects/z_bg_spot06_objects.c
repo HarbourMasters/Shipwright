@@ -8,7 +8,7 @@
 #include "objects/object_spot06_objects/object_spot06_objects.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 
-#define FLAGS ACTOR_FLAG_HOOKSHOT_DRAGS
+#define FLAGS ACTOR_FLAG_HOOKSHOT_PULLS_ACTOR
 
 typedef enum {
     /* 0x0 */ LHO_WATER_TEMPLE_ENTRACE_GATE,
@@ -154,7 +154,7 @@ void BgSpot06Objects_Init(Actor* thisx, PlayState* play) {
             break;
         case LHO_WATER_PLANE:
             Actor_ProcessInitChain(thisx, sInitChainWaterPlane);
-            thisx->flags = ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED;
+            thisx->flags = ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED;
 
             if (LINK_IS_ADULT && !Flags_GetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER)) {
                 if (gSaveContext.sceneSetupIndex < 4) {
@@ -322,7 +322,7 @@ void BgSpot06Objects_LockWait(BgSpot06Objects* this, PlayState* play) {
 
     if (this->collider.base.acFlags & 2) {
         this->timer = 130;
-        this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+        this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
         sin = Math_SinS(this->dyna.actor.world.rot.y);
         cos = Math_CosS(this->dyna.actor.world.rot.y);
         this->dyna.actor.world.pos.x += (3.0f * sin);
@@ -395,7 +395,7 @@ void BgSpot06Objects_LockSwimToSurface(BgSpot06Objects* this, PlayState* play) {
                 this->dyna.actor.world.pos.z - (Math_CosS(this->dyna.actor.shape.rot.y) * 16.0f);
             this->dyna.actor.world.pos.y = -1993.0f;
             this->timer = 32;
-            this->dyna.actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
+            this->dyna.actor.flags &= ~ACTOR_FLAG_UPDATE_CULLING_DISABLED;
             this->collider.elements[0].dim.worldSphere.radius = this->collider.elements[0].dim.modelSphere.radius * 2;
             this->actionFunc = BgSpot06Objects_LockFloat;
         }

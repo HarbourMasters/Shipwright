@@ -1100,7 +1100,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                 enJs->actor.parent = NULL;
                 enJs->actor.textId = TEXT_CARPET_SALESMAN_ARMS_DEALER;
                 enJs->actionFunc = (EnJsActionFunc)func_80A890C0;
-                enJs->actor.flags |= ACTOR_FLAG_WILL_TALK;
+                enJs->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
                 Flags_SetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN);
                 *should = true;
             }
@@ -1180,7 +1180,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             Flags_SetItemGetInf(ITEMGETINF_30);
             granny->actor.textId = 0x504F;
             granny->actionFunc = (EnDsActionFunc)EnDs_TalkAfterGiveOddPotion;
-            granny->actor.flags &= ~ACTOR_FLAG_PLAYER_TALKED_TO;
+            granny->actor.flags &= ~ACTOR_FLAG_TALK;
             *should = false;
             break;
         }
@@ -1570,7 +1570,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_TRADE_TIMER_EYEDROPS:{
             EnMk* enMk = va_arg(args, EnMk*);
             Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_LH_TRADE_FROG);
-            enMk->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+            enMk->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
             enMk->actionFunc = EnMk_Wait;
             enMk->flags |= 1;
             *should = false;

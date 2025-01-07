@@ -11,7 +11,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
 
 void EnDns_Init(Actor* thisx, PlayState* play);
 void EnDns_Destroy(Actor* thisx, PlayState* play);
@@ -332,9 +332,9 @@ void EnDns_Wait(EnDns* this, PlayState* play) {
         this->actionFunc = EnDns_Talk;
     } else {
         if ((this->collider.base.ocFlags1 & OC1_HIT) || this->actor.isTargeted) {
-            this->actor.flags |= ACTOR_FLAG_WILL_TALK;
+            this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         } else {
-            this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+            this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         }
         if (this->actor.xzDistToPlayer < 130.0f) {
             func_8002F2F4(&this->actor, play);
@@ -423,7 +423,7 @@ void func_809EFF98(EnDns* this, PlayState* play) {
             this->dnsItemEntry->setRupeesAndFlags(this);
             this->dropCollectible = 1;
             this->maintainCollider = 0;
-            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+            this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
             EnDns_ChangeAnim(this, ENDNS_ANIM_1);
             this->actionFunc = EnDns_SetupBurrow;
         }
@@ -431,7 +431,7 @@ void func_809EFF98(EnDns* this, PlayState* play) {
         this->dnsItemEntry->setRupeesAndFlags(this);
         this->dropCollectible = 1;
         this->maintainCollider = 0;
-        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+        this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
         EnDns_ChangeAnim(this, ENDNS_ANIM_1);
         this->actionFunc = EnDns_SetupBurrow;
     }
@@ -440,7 +440,7 @@ void func_809EFF98(EnDns* this, PlayState* play) {
 void func_809F008C(EnDns* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
         this->maintainCollider = 0;
-        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+        this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
         EnDns_ChangeAnim(this, ENDNS_ANIM_1);
         this->actionFunc = EnDns_SetupBurrow;
     }

@@ -8,7 +8,7 @@
 #include "objects/object_jya_obj/object_jya_obj.h"
 #include "soh/OTRGlobals.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void BgJyaLift_Init(Actor* thisx, PlayState* play);
 void BgJyaLift_Destroy(Actor* thisx, PlayState* play);

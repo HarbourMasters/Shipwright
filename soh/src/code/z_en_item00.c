@@ -1618,7 +1618,7 @@ EnItem00* Item_DropCollectible(PlayState* play, Vec3f* spawnPos, s16 params) {
                     (spawnedActor->actor.params != ITEM00_HEART_CONTAINER)) {
                     spawnedActor->actor.room = -1;
                 }
-                spawnedActor->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+                spawnedActor->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
             }
         }
     }
@@ -1652,7 +1652,7 @@ EnItem00* Item_DropCollectible2(PlayState* play, Vec3f* spawnPos, s16 params) {
                 spawnedActor->actor.speedXZ = 0.0f;
                 spawnedActor->actor.gravity = param4000 ? 0.0f : -0.9f;
                 spawnedActor->actor.world.rot.y = Rand_CenteredFloat(65536.0f);
-                spawnedActor->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+                spawnedActor->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
             }
         }
     }
@@ -1766,7 +1766,7 @@ void Item_DropCollectibleRandom(PlayState* play, Actor* fromActor, Vec3f* spawnP
                         spawnedActor->actor.world.rot.y = Rand_ZeroOne() * 40000.0f;
                         Actor_SetScale(&spawnedActor->actor, 0.0f);
                         EnItem00_SetupAction(spawnedActor, func_8001E304);
-                        spawnedActor->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+                        spawnedActor->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
                         if ((spawnedActor->actor.params != ITEM00_SMALL_KEY) &&
                             (spawnedActor->actor.params != ITEM00_HEART_PIECE) &&
                             (spawnedActor->actor.params != ITEM00_HEART_CONTAINER)) {

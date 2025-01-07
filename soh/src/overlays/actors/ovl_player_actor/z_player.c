@@ -1612,7 +1612,7 @@ BAD_RETURN(s32) func_80832224(Player* this) {
 s32 Player_IsTalking(PlayState* play) {
     Player* this = GET_PLAYER(play);
 
-    return CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_PLAYER_TALKED_TO);
+    return CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_TALK);
 }
 
 void Player_AnimPlayOnce(PlayState* play, Player* this, LinkAnimationHeader* anim) {
@@ -2424,7 +2424,7 @@ s32 Player_FriendlyLockOnOrParallel(Player* this) {
  */
 s32 Player_UpdateHostileLockOn(Player* this) {
     if ((this->focusActor != NULL) &&
-        CHECK_FLAG_ALL(this->focusActor->flags, ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)) {
+        CHECK_FLAG_ALL(this->focusActor->flags, ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE)) {
         this->stateFlags1 |= PLAYER_STATE1_HOSTILE_LOCK_ON;
         return true;
     } else {
@@ -3841,7 +3841,7 @@ void Player_UpdateZTargeting(Player* this, PlayState* play) {
 
                 this->stateFlags1 |= PLAYER_STATE1_Z_TARGETING;
 
-                if ((nextLockOnActor != NULL) && !(nextLockOnActor->flags & ACTOR_FLAG_NO_LOCKON)) {
+                if ((nextLockOnActor != NULL) && !(nextLockOnActor->flags & ACTOR_FLAG_LOCK_ON_DISABLED)) {
 
                     // Navi hovers over the current lock-on actor, so `nextLockOnActor` and `focusActor`
                     // will be the same if already locked on.
@@ -3901,7 +3901,7 @@ void Player_UpdateZTargeting(Player* this, PlayState* play) {
             // is hostile. This is a special case to allow Player to have more freedom of movement and be able
             // to throw a carried actor at the lock-on actor, even if it is hostile.
             if ((this->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) ||
-                !CHECK_FLAG_ALL(this->focusActor->flags, ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)) {
+                !CHECK_FLAG_ALL(this->focusActor->flags, ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE)) {
                 this->stateFlags1 |= PLAYER_STATE1_FRIENDLY_ACTOR_FOCUS;
             }
         } else {
@@ -4845,7 +4845,7 @@ s32 func_808382DC(Player* this, PlayState* play) {
                 Actor* ac = this->cylinder.base.ac;
                 s32 sp4C;
 
-                if (ac->flags & ACTOR_FLAG_PLAY_HIT_SFX) {
+                if (ac->flags & ACTOR_FLAG_SFX_FOR_PLAYER_BODY_HIT) {
                     Player_PlaySfx(this, NA_SE_PL_BODY_HIT);
                 }
 
@@ -6029,7 +6029,7 @@ s32 Player_ActionHandler_13(Player* this, PlayState* play) {
                                 this->av2.actionVar2 = 0x50;
                                 this->av1.actionVar1 = -1;
                             }
-                            talkActor->flags |= ACTOR_FLAG_PLAYER_TALKED_TO;
+                            talkActor->flags |= ACTOR_FLAG_TALK;
                             this->focusActor = this->talkActor;
                         } else if (sp2C == EXCH_ITEM_LETTER_RUTO) {
                             this->av1.actionVar1 = 1;
@@ -6041,7 +6041,7 @@ s32 Player_ActionHandler_13(Player* this, PlayState* play) {
                             func_80835EA4(play, 4);
                         }
 
-                        this->actor.flags |= ACTOR_FLAG_PLAYER_TALKED_TO;
+                        this->actor.flags |= ACTOR_FLAG_TALK;
                         this->exchangeItemId = sp2C;
 
                         if (this->av1.actionVar1 < 0) {
@@ -6115,7 +6115,7 @@ s32 Player_ActionHandler_Talk(Player* this, PlayState* play) {
 
     canTalkToLockOnWithCUp =
         (lockOnActor != NULL) &&
-        (CHECK_FLAG_ALL(lockOnActor->flags, ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_NAVI_HAS_INFO) ||
+        (CHECK_FLAG_ALL(lockOnActor->flags, ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_TALK_WITH_C_UP) ||
         (lockOnActor->naviEnemyId != 0xFF));
 
     if (canTalkToLockOnWithCUp || (this->naviTextId != 0)) {
@@ -6142,13 +6142,13 @@ s32 Player_ActionHandler_Talk(Player* this, PlayState* play) {
         if ((lockOnActor == NULL) || (lockOnActor == talkOfferActor) || (lockOnActor == cUpTalkActor)) {
             if (!(this->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) ||
                 ((this->heldActor != NULL) && (forceTalkToNavi || (talkOfferActor == this->heldActor) || (cUpTalkActor == this->heldActor) ||
-                                               ((talkOfferActor != NULL) && (talkOfferActor->flags & ACTOR_FLAG_WILL_TALK))))) {
+                                               ((talkOfferActor != NULL) && (talkOfferActor->flags & ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED))))) {
                 if ((this->actor.bgCheckFlags & 1) || (this->stateFlags1 & PLAYER_STATE1_ON_HORSE) ||
                     (func_808332B8(this) && !(this->stateFlags2 & PLAYER_STATE2_UNDERWATER))) {
 
                     if (talkOfferActor != NULL) {
                         this->stateFlags2 |= PLAYER_STATE2_CAN_ACCEPT_TALK_OFFER;
-                        if (CHECK_BTN_ALL(sControlInput->press.button, BTN_A) || (talkOfferActor->flags & ACTOR_FLAG_WILL_TALK)) {
+                        if (CHECK_BTN_ALL(sControlInput->press.button, BTN_A) || (talkOfferActor->flags & ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED)) {
                             cUpTalkActor = NULL;
                         } else if (cUpTalkActor == NULL) {
                             return 0;
@@ -6213,7 +6213,7 @@ s32 Player_ActionHandler_0(Player* this, PlayState* play) {
         return 1;
     }
 
-    if ((this->focusActor != NULL) && (CHECK_FLAG_ALL(this->focusActor->flags, ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_NAVI_HAS_INFO) ||
+    if ((this->focusActor != NULL) && (CHECK_FLAG_ALL(this->focusActor->flags, ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_TALK_WITH_C_UP) ||
                                     (this->focusActor->naviEnemyId != 0xFF))) {
         this->stateFlags2 |= PLAYER_STATE2_NAVI_ALERT;
     } else if ((this->naviTextId == 0 || CVarGetInteger(CVAR_ENHANCEMENT("NaviOnL"), 0)) && !Player_CheckHostileLockOn(this) && CHECK_BTN_ALL(sControlInput->press.button, BTN_CUP) &&
@@ -7436,7 +7436,7 @@ void func_8083EA94(Player* this, PlayState* play) {
 }
 
 s32 func_8083EAF0(Player* this, Actor* actor) {
-    if ((actor != NULL) && !(actor->flags & ACTOR_FLAG_ALWAYS_THROWN) &&
+    if ((actor != NULL) && !(actor->flags & ACTOR_FLAG_THROW_ONLY) &&
         ((this->linearVelocity < 1.1f) || (actor->id == ACTOR_EN_BOM_CHU))) {
         return 0;
     }
@@ -9011,7 +9011,7 @@ void Player_Action_8084279C(Player* this, PlayState* play) {
             func_8083A098(this, GET_PLAYER_ANIM(PLAYER_ANIMGROUP_check_end, this->modelAnimType), play);
         }
 
-        this->actor.flags &= ~ACTOR_FLAG_PLAYER_TALKED_TO;
+        this->actor.flags &= ~ACTOR_FLAG_TALK;
         func_8005B1A4(Play_GetCamera(play, 0));
     }
 }
@@ -11492,7 +11492,7 @@ void Player_UpdateCamAndSeqModes(PlayState* play, Player* this) {
             } else if (this->stateFlags2 & PLAYER_STATE2_GRABBING_DYNAPOLY) {
                 camMode = CAM_MODE_PUSHPULL;
             } else if ((focusActor = this->focusActor) != NULL) {
-                if (CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_PLAYER_TALKED_TO)) {
+                if (CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_TALK)) {
                     camMode = CAM_MODE_TALK;
                 } else if (this->stateFlags1 & PLAYER_STATE1_FRIENDLY_ACTOR_FOCUS) {
                     if (this->stateFlags1 & PLAYER_STATE1_BOOMERANG_THROWN) {
@@ -12241,7 +12241,7 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
 
         Player_UpdateShapeYaw(this, play);
 
-        if (CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_PLAYER_TALKED_TO)) {
+        if (CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_TALK)) {
             this->talkActorDistance = 0.0f;
         } else {
             this->talkActor = NULL;
@@ -13050,9 +13050,9 @@ void Player_Action_Talk(Player* this, PlayState* play) {
     Player_UpdateUpperBody(this, play);
 
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
-        this->actor.flags &= ~ACTOR_FLAG_PLAYER_TALKED_TO;
+        this->actor.flags &= ~ACTOR_FLAG_TALK;
 
-        if (!CHECK_FLAG_ALL(this->talkActor->flags, ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)) {
+        if (!CHECK_FLAG_ALL(this->talkActor->flags, ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE)) {
             this->stateFlags2 &= ~PLAYER_STATE2_LOCK_ON_WITH_SWITCH;
         }
 
@@ -14840,7 +14840,7 @@ void Player_Action_ExchangeItem(Player* this, PlayState* play) {
 
             this->unk_862 = 0;
             if (talkActor->textId != 0xFFFF) {
-                this->actor.flags |= ACTOR_FLAG_PLAYER_TALKED_TO;
+                this->actor.flags |= ACTOR_FLAG_TALK;
             }
 
             Player_StartTalking(play, talkActor);
@@ -14866,7 +14866,7 @@ void Player_Action_ExchangeItem(Player* this, PlayState* play) {
 
                 this->av2.actionVar2 = 1;
             } else if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
-                this->actor.flags &= ~ACTOR_FLAG_PLAYER_TALKED_TO;
+                this->actor.flags &= ~ACTOR_FLAG_TALK;
                 this->unk_862 = 0;
 
                 if (this->av1.actionVar1 == 1) {
@@ -16631,7 +16631,7 @@ void func_80852C50(PlayState* play, Player* this, CsCmdActorCue* cue) {
     }
 
     if (linkCsAction == NULL) {
-        this->actor.flags &= ~ACTOR_FLAG_ACTIVE;
+        this->actor.flags &= ~ACTOR_FLAG_INSIDE_CULLING_VOLUME;
         return;
     }
 
@@ -16763,8 +16763,8 @@ void Player_StartTalking(PlayState* play, Actor* actor) {
     s32 pad;
 
     if ((this->talkActor != NULL) || (actor == this->naviActor) ||
-        CHECK_FLAG_ALL(actor->flags, ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_NAVI_HAS_INFO)) {
-        actor->flags |= ACTOR_FLAG_PLAYER_TALKED_TO;
+        CHECK_FLAG_ALL(actor->flags, ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_TALK_WITH_C_UP)) {
+        actor->flags |= ACTOR_FLAG_TALK;
     }
 
     this->talkActor = actor;
@@ -16774,13 +16774,13 @@ void Player_StartTalking(PlayState* play, Actor* actor) {
         // Player will stand and look at the actor with no text appearing.
         // This can be used to delay text from appearing, for example.
         Player_SetCsActionWithHaltedActors(play, actor, 1);
-        actor->flags |= ACTOR_FLAG_PLAYER_TALKED_TO;
+        actor->flags |= ACTOR_FLAG_TALK;
         Player_PutAwayHeldItem(play, this);
     } else {
-        if (this->actor.flags & ACTOR_FLAG_PLAYER_TALKED_TO) {
+        if (this->actor.flags & ACTOR_FLAG_TALK) {
             this->actor.textId = 0;
         } else {
-            this->actor.flags |= ACTOR_FLAG_PLAYER_TALKED_TO;
+            this->actor.flags |= ACTOR_FLAG_TALK;
             this->actor.textId = actor->textId;
         }
 
@@ -16823,7 +16823,7 @@ void Player_StartTalking(PlayState* play, Actor* actor) {
     }
 
     if ((this->naviActor == this->talkActor) && ((this->talkActor->textId & 0xFF00) != 0x200)) {
-        this->naviActor->flags |= ACTOR_FLAG_PLAYER_TALKED_TO;
+        this->naviActor->flags |= ACTOR_FLAG_TALK;
         func_80835EA4(play, 0xB);
     }
 }

@@ -11,7 +11,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
 
 void EnTa_Init(Actor* thisx, PlayState* play);
 void EnTa_Destroy(Actor* thisx, PlayState* play);
@@ -184,7 +184,7 @@ void EnTa_Init(Actor* thisx, PlayState* play2) {
                     Actor_Kill(&this->actor);
                 } else {
                     if (IS_DAY) {
-                        this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+                        this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
                         this->unk_2C4[0] = this->unk_2C4[1] = this->unk_2C4[2] = 7;
                         this->superCuccos[0] = (EnNiw*)Actor_Spawn(
                             &play->actorCtx, play, ACTOR_EN_NIW, this->actor.world.pos.x + 5.0f,
@@ -459,7 +459,7 @@ void func_80B14AF4(EnTa* this, PlayState* play) {
         Audio_PlayActorSound2(&this->actor, NA_SE_VO_TA_CRY_1);
         EnTa_SetupAction(this, func_80B14A54, EnTa_AnimRepeatCurrent);
         this->unk_2CC = 65;
-        this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+        this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
     }
 }
 
@@ -625,7 +625,7 @@ void func_80B15100(EnTa* this, PlayState* play) {
 void func_80B15260(EnTa* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->actionFunc = func_80B15100;
-        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+        this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
     } else {
         func_8002F2CC(&this->actor, play, 1000.0f);
     }
@@ -732,7 +732,7 @@ void EnTa_RunCuccoGame(EnTa* this, PlayState* play) {
                             break;
                     }
                     this->actionFunc = func_80B15260;
-                    this->actor.flags |= ACTOR_FLAG_WILL_TALK;
+                    this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
                     func_8002F2CC(&this->actor, play, 1000.0f);
                     return;
                 }
@@ -1061,9 +1061,9 @@ void EnTa_IdleAfterCuccoGameFinished(EnTa* this, PlayState* play) {
                 this->actionFunc = func_80B1642C;
                 break;
         }
-        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+        this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
     } else {
-        this->actor.flags |= ACTOR_FLAG_WILL_TALK;
+        this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         func_8002F2CC(&this->actor, play, 1000.0f);
     }
     this->unk_2E0 |= 1;

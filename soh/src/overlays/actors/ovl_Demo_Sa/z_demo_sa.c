@@ -12,7 +12,7 @@
 
 #include "vt.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void DemoSa_Init(Actor* thisx, PlayState* play);
 void DemoSa_Destroy(Actor* thisx, PlayState* play);

@@ -9,7 +9,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
 void EnZf_Init(Actor* thisx, PlayState* play);
 void EnZf_Destroy(Actor* thisx, PlayState* play);
@@ -636,7 +636,7 @@ void EnZf_SetupDropIn(EnZf* this) {
     this->hopAnimIndex = 1;
     this->action = ENZF_ACTION_DROP_IN;
     this->actor.bgCheckFlags &= ~2;
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->actor.shape.rot.y = this->actor.world.rot.y = this->actor.yawTowardsPlayer;
     EnZf_SetupAction(this, EnZf_DropIn);
 }
@@ -644,7 +644,7 @@ void EnZf_SetupDropIn(EnZf* this) {
 void EnZf_DropIn(EnZf* this, PlayState* play) {
     if (this->unk_3F0 == 1) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_RIZA_CRY);
-        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
 
         if (this->actor.params == ENZF_TYPE_LIZALFOS_MINIBOSS_A) {
             func_800F5ACC(NA_BGM_MINI_BOSS);
@@ -656,7 +656,7 @@ void EnZf_DropIn(EnZf* this, PlayState* play) {
             this->unk_3F0--;
         } else if (this->actor.xzDistToPlayer <= 160.0f) {
             this->unk_3F0 = 0;
-            this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+            this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_RIZA_CRY);
         }
 
@@ -1904,7 +1904,7 @@ void EnZf_SetupDie(EnZf* this) {
     }
 
     this->action = ENZF_ACTION_DIE;
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
 
     if (D_80B4A1B4 != -1) {
         if (this->actor.prev != NULL) {

@@ -50,7 +50,7 @@ void EnMa1_EndTeachSong(EnMa1* enMa1, PlayState* play) {
     if (Message_GetState(&gPlayState->msgCtx) == TEXT_STATE_CLOSING) {
         Flags_SetRandomizerInf(RAND_INF_LEARNED_EPONA_SONG);
         Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
-        enMa1->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+        enMa1->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
         enMa1->actionFunc = func_80AA0D88;
         enMa1->unk_1E0 = 1;
@@ -63,7 +63,7 @@ void EnFu_EndTeachSong(EnFu* enFu, PlayState* play) {
     if (Message_GetState(&gPlayState->msgCtx) == TEXT_STATE_CLOSING) {
         Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
         enFu->actionFunc = EnFu_WaitAdult;
-        enFu->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+        enFu->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
 
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
         Flags_SetEventChkInf(EVENTCHKINF_PLAYED_SONG_OF_STORMS_IN_WINDMILL);

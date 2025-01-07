@@ -11,7 +11,7 @@
 #include "objects/object_kusa/object_kusa.h"
 #include "vt.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_ALWAYS_THROWN)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_THROW_ONLY)
 
 void EnKusa_Init(Actor* thisx, PlayState* play);
 void EnKusa_Destroy(Actor* thisx, PlayState* play);
@@ -282,7 +282,7 @@ void EnKusa_SetupWaitObject(EnKusa* this) {
 
 void EnKusa_WaitObject(EnKusa* this, PlayState* play) {
     if (Object_IsLoaded(&play->objectCtx, this->objBankIndex)) {
-        if (this->actor.flags & ACTOR_FLAG_ENKUSA_CUT) {
+        if (this->actor.flags & ACTOR_FLAG_GRASS_DESTROYED) {
             EnKusa_SetupCut(this);
         } else {
             EnKusa_SetupMain(this);
@@ -290,13 +290,13 @@ void EnKusa_WaitObject(EnKusa* this, PlayState* play) {
 
         this->actor.draw = EnKusa_Draw;
         this->actor.objBankIndex = this->objBankIndex;
-        this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
+        this->actor.flags &= ~ACTOR_FLAG_UPDATE_CULLING_DISABLED;
     }
 }
 
 void EnKusa_SetupMain(EnKusa* this) {
     EnKusa_SetupAction(this, EnKusa_Main);
-    this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
+    this->actor.flags &= ~ACTOR_FLAG_UPDATE_CULLING_DISABLED;
 }
 
 void EnKusa_Main(EnKusa* this, PlayState* play) {
@@ -322,7 +322,7 @@ void EnKusa_Main(EnKusa* this, PlayState* play) {
         }
 
         EnKusa_SetupCut(this);
-        this->actor.flags |= ACTOR_FLAG_ENKUSA_CUT;
+        this->actor.flags |= ACTOR_FLAG_GRASS_DESTROYED;
     } else {
         if (!(this->collider.base.ocFlags1 & OC1_TYPE_PLAYER) && (this->actor.xzDistToPlayer > 12.0f)) {
             this->collider.base.ocFlags1 |= OC1_TYPE_PLAYER;
@@ -345,7 +345,7 @@ void EnKusa_Main(EnKusa* this, PlayState* play) {
 void EnKusa_SetupLiftedUp(EnKusa* this) {
     EnKusa_SetupAction(this, EnKusa_LiftedUp);
     this->actor.room = -1;
-    this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+    this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
 }
 
 void EnKusa_LiftedUp(EnKusa* this, PlayState* play) {
@@ -468,7 +468,7 @@ void EnKusa_SetupRegrow(EnKusa* this) {
     EnKusa_SetupAction(this, EnKusa_Regrow);
     EnKusa_SetScaleSmall(this);
     this->actor.shape.rot = this->actor.home.rot;
-    this->actor.flags &= ~ACTOR_FLAG_ENKUSA_CUT;
+    this->actor.flags &= ~ACTOR_FLAG_GRASS_DESTROYED;
 }
 
 void EnKusa_Regrow(EnKusa* this, PlayState* play) {
@@ -492,7 +492,7 @@ void EnKusa_Update(Actor* thisx, PlayState* play) {
 
     this->actionFunc(this, play);
 
-    if (this->actor.flags & ACTOR_FLAG_ENKUSA_CUT) {
+    if (this->actor.flags & ACTOR_FLAG_GRASS_DESTROYED) {
         this->actor.shape.yOffset = -6.25f;
     } else {
         this->actor.shape.yOffset = 0.0f;
@@ -503,7 +503,7 @@ void EnKusa_Draw(Actor* thisx, PlayState* play) {
     static Gfx* dLists[] = { gFieldBushDL, object_kusa_DL_000140, object_kusa_DL_000140 };
     EnKusa* this = (EnKusa*)thisx;
 
-    if (this->actor.flags & ACTOR_FLAG_ENKUSA_CUT) {
+    if (this->actor.flags & ACTOR_FLAG_GRASS_DESTROYED) {
         Gfx_DrawDListOpa(play, object_kusa_DL_0002E0);
     } else {
         Gfx_DrawDListOpa(play, dLists[thisx->params & 3]);

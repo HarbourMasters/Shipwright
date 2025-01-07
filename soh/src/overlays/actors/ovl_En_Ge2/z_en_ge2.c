@@ -13,7 +13,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
 #define GE2_STATE_ANIMCOMPLETE (1 << 1)
 #define GE2_STATE_KO (1 << 2)
@@ -312,7 +312,7 @@ void EnGe2_KnockedOut(EnGe2* this, PlayState* play) {
     s32 effectAngle;
     Vec3f effectPos;
 
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     if (this->stateFlags & GE2_STATE_ANIMCOMPLETE) {
         effectAngle = (play->state.frames) * 0x2800;
         effectPos.x = this->actor.focus.pos.x + (Math_CosS(effectAngle) * 5.0f);
@@ -452,7 +452,7 @@ void EnGe2_SetActionAfterTalk(EnGe2* this, PlayState* play) {
                 break;
         }
         this->actor.update = EnGe2_UpdateFriendly;
-        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+        this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
     }
     EnGe2_TurnToFacePlayer(this, play);
 }
@@ -473,7 +473,7 @@ void EnGe2_WaitTillCardGiven(EnGe2* this, PlayState* play) {
 void EnGe2_GiveCard(EnGe2* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
         Message_CloseTextbox(play);
-        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+        this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         this->actionFunc = EnGe2_WaitTillCardGiven;
         if (GameInteractor_Should(VB_GIVE_ITEM_GERUDO_MEMBERSHIP_CARD, true)) {
             Actor_OfferGetItem(&this->actor, play, GI_GERUDO_CARD, 10000.0f, 50.0f);
@@ -487,7 +487,7 @@ void EnGe2_ForceTalk(EnGe2* this, PlayState* play) {
         this->actionFunc = EnGe2_GiveCard;
     } else {
         this->actor.textId = 0x6004;
-        this->actor.flags |= ACTOR_FLAG_WILL_TALK;
+        this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         func_8002F1C4(&this->actor, play, 300.0f, 300.0f, 0);
     }
     EnGe2_LookAtPlayer(this, play);

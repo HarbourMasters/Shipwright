@@ -2,7 +2,7 @@
 #include "vt.h"
 #include "overlays/actors/ovl_En_Tite/z_en_tite.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_LOCKON)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_LOCK_ON_DISABLED)
 
 void EnEncount1_Init(Actor* thisx, PlayState* play);
 void EnEncount1_Update(Actor* thisx, PlayState* play);
@@ -65,7 +65,7 @@ void EnEncount1_Init(Actor* thisx, PlayState* play) {
     osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 発生チェック範囲   ☆☆☆☆☆ %f\n" VT_RST, this->spawnRange);
     osSyncPrintf("\n\n");
 
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     switch (this->spawnType) {
         case SPAWNER_LEEVER:
             this->timer = 30;
