@@ -177,7 +177,7 @@ void Entrance_Init(void) {
 
         s16 originalIndex = entranceOverrides[i].index;
         s16 originalDestination = entranceOverrides[i].destination;
-        s16 overrideIndex = entranceOverrides[i].override;
+        s16 overrideIndex = entranceOverrides[i].override; 
 
         int16_t bossScene = -1;
         int16_t saveWarpEntrance = originalDestination; // Default save warp to the original return entrance
