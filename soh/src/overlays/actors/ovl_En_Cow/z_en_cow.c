@@ -6,6 +6,8 @@
 
 #include "z_en_cow.h"
 #include "objects/object_cow/object_cow.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
@@ -306,7 +308,7 @@ void EnCow_Update(Actor* thisx, PlayState* play2) {
 
     CollisionCheck_SetOC(play, &play->colChkCtx, &this->colliders[0].base);
     CollisionCheck_SetOC(play, &play->colChkCtx, &this->colliders[1].base);
-    Actor_MoveForward(thisx);
+    Actor_MoveXZGravity(thisx);
     Actor_UpdateBgCheckInfo(play, thisx, 0.0f, 0.0f, 0.0f, 4);
     if (SkelAnime_Update(&this->skelAnime) != 0) {
         if (this->skelAnime.animation == &gCowBodyChewAnim) {

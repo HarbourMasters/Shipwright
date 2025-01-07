@@ -286,7 +286,7 @@ void func_808B4194(BgSpot15Rrbox* this, PlayState* play) {
             Audio_PlayActorSound2(actor, NA_SE_EV_WOOD_BOUND);
         }
         if (func_808B3A40(this, play)) {
-            func_80078884(NA_SE_SY_CORRECT_CHIME);
+            Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
         }
         actor->home.pos.x = actor->world.pos.x;
         actor->home.pos.z = actor->world.pos.z;
@@ -319,7 +319,7 @@ void func_808B43D0(BgSpot15Rrbox* this, PlayState* play) {
         player->stateFlags2 &= ~PLAYER_STATE2_MOVING_DYNAPOLY;
     }
 
-    Actor_MoveForward(actor);
+    Actor_MoveXZGravity(actor);
 
     if (actor->world.pos.y <= BGCHECK_Y_MIN + 10.0f) {
         // "Lon Lon wooden crate fell too much"

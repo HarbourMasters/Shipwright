@@ -59,10 +59,13 @@ namespace Rando {
             case RG_PROGRESSIVE_NUT_UPGRADE:
             case RG_NUTS:
                 return CurrentUpgrade(UPG_NUTS);
+            //RANDOTODO handle cases where the scarecrow is persistent between age better when OI is added
             case RG_SCARECROW:
                 return ScarecrowsSong() && CanUse(RG_HOOKSHOT);
             case RG_DISTANT_SCARECROW:
                 return ScarecrowsSong() && CanUse(RG_LONGSHOT);
+            case RG_MAGIC_BEAN:
+                return GetAmmo(ITEM_BEAN) > 0;
             case RG_KOKIRI_SWORD:
             case RG_DEKU_SHIELD:
             case RG_GORON_TUNIC:
@@ -303,6 +306,8 @@ namespace Rando {
             case RG_WEIRD_EGG:
             case RG_RUTOS_LETTER:
                 return IsChild;
+            case RG_MAGIC_BEAN:
+                return IsChild;
 
             // Songs
             case RG_ZELDAS_LULLABY:
@@ -336,7 +341,7 @@ namespace Rando {
                 return BugShrub || WanderingBugs || BugRock || GetInLogic(LOGIC_BUGS_ACCESS);
             case RG_BOTTLE_WITH_FISH:
                 return LoneFish || FishGroup || GetInLogic(LOGIC_FISH_ACCESS); //is there any need to care about lone vs group?
-            case RG_BOTTLE_WITH_BLUE_FIRE: //RANDOTODO should probably be better named to 
+            case RG_BOTTLE_WITH_BLUE_FIRE: //RANDOTODO should probably be better named
                 return BlueFireAccess || GetInLogic(LOGIC_BLUE_FIRE_ACCESS);
             case RG_BOTTLE_WITH_FAIRY:
                 return FairyPot || GossipStoneFairy || BeanPlantFairy || ButterflyFairy || FreeFairies || FairyPond || GetInLogic(LOGIC_FAIRY_ACCESS);
@@ -410,10 +415,42 @@ namespace Rando {
 
 //RANDOTODO quantity is a placeholder for proper ammo use calculation logic. in time will want updating to account for ammo capacity
 //Can we kill this enemy
-    bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wallOrFloor, uint8_t quantity) {
+    bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wallOrFloor, uint8_t quantity, bool timer, bool inWater) {
         bool killed = false;
         switch(enemy) {
             case RE_GOLD_SKULLTULA:
+                switch (distance){
+                    case ED_CLOSE:
+                        //hammer jumpslash cannot damage these, but hammer swing can
+                        killed = CanUse(RG_MEGATON_HAMMER);
+                        [[fallthrough]];
+                    case ED_SHORT_JUMPSLASH:
+                        killed = killed || CanUse(RG_KOKIRI_SWORD);
+                        [[fallthrough]];
+                    case ED_MASTER_SWORD_JUMPSLASH:
+                        killed = killed || CanUse(RG_MASTER_SWORD);
+                        [[fallthrough]];
+                    case ED_LONG_JUMPSLASH:
+                        killed = killed || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_STICKS);
+                        [[fallthrough]];
+                    case ED_BOMB_THROW:
+                        killed = killed || CanUse(RG_BOMB_BAG);
+                        [[fallthrough]];
+                    case ED_BOOMERANG:
+                        killed = killed || CanUse(RG_BOOMERANG) || CanUse(RG_DINS_FIRE);
+                        [[fallthrough]];
+                    case ED_HOOKSHOT:
+                        //RANDOTODO test dins and chu range in a practical example
+                        killed = killed || CanUse(RG_HOOKSHOT);
+                        [[fallthrough]];
+                    case ED_LONGSHOT:
+                        killed = killed || CanUse(RG_LONGSHOT) || (wallOrFloor && CanUse(RG_BOMBCHU_5));
+                        [[fallthrough]];
+                    case ED_FAR:
+                        killed = killed || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW);
+                        break;
+                }
+                return killed;
             case RE_GOHMA_LARVA:
             case RE_MAD_SCRUB:
             case RE_DEKU_BABA:
@@ -422,30 +459,73 @@ namespace Rando {
                 switch (distance){
                     case ED_CLOSE:
                         //hammer jumpslash cannot damage these, but hammer swing can
-                        killed = killed || CanUse(RG_MEGATON_HAMMER);
+                        killed = CanUse(RG_MEGATON_HAMMER);
                         [[fallthrough]];
-                    case ED_HAMMER_JUMPSLASH:
+                    case ED_SHORT_JUMPSLASH:
+                        killed = killed || CanUse(RG_KOKIRI_SWORD);
+                        [[fallthrough]];
                     case ED_MASTER_SWORD_JUMPSLASH:
-                        killed = killed || CanJumpslashExceptHammer();
+                        killed = killed || CanUse(RG_MASTER_SWORD);
                         [[fallthrough]];
-                    case ED_RANG_OR_HOOKSHOT:
-                        //RANDOTODO test dins, bomb and chu range in a practical example
-                        killed = killed || CanUse(RG_HOOKSHOT) || CanUse(RG_BOMB_BAG) || (wallOrFloor && CanUse(RG_BOMBCHU_5)) || CanUse(RG_DINS_FIRE);
+                    case ED_LONG_JUMPSLASH:
+                        killed = killed || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_STICKS);
+                        [[fallthrough]];
+                    case ED_BOMB_THROW:
+                        killed = killed || CanUse(RG_BOMB_BAG);
+                        [[fallthrough]];
+                    case ED_BOOMERANG:
+                        //RANDOTODO test dins and chu range in a practical example
+                        killed = killed || CanUse(RG_DINS_FIRE);
+                        [[fallthrough]];
+                    case ED_HOOKSHOT:
+                        //RANDOTODO test dins and chu range in a practical example
+                        killed = killed || CanUse(RG_HOOKSHOT) || (wallOrFloor && CanUse(RG_BOMBCHU_5));
                         [[fallthrough]];
                     case ED_LONGSHOT:
                         killed = killed || CanUse(RG_LONGSHOT);
                         [[fallthrough]];
                     case ED_FAR:
-                        killed = CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW);
+                        killed = killed || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW);
                         break;
                 }
                 return killed;
             case RE_DODONGO:
+                return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || (quantity <= 5 && CanUse(RG_STICKS)) || HasExplosives() || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW);
             case RE_LIZALFOS:
                 return CanJumpslash() || HasExplosives() || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW);
             case RE_KEESE:
             case RE_FIRE_KEESE:
-                return CanJumpslash() || HasExplosives() || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG);
+                switch (distance){
+                    case ED_CLOSE:
+                    case ED_SHORT_JUMPSLASH:
+                        killed = CanUse(RG_MEGATON_HAMMER) || CanUse(RG_KOKIRI_SWORD);
+                        [[fallthrough]];
+                    case ED_MASTER_SWORD_JUMPSLASH:
+                        killed = killed || CanUse(RG_MASTER_SWORD);
+                        [[fallthrough]];
+                    case ED_LONG_JUMPSLASH:
+                        killed = killed || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_STICKS);
+                        [[fallthrough]];
+                    case ED_BOMB_THROW:
+                        //RANDOTODO test dins and chu range in a practical example
+                        killed = killed || (!inWater && CanUse(RG_BOMB_BAG));
+                        [[fallthrough]];
+                    case ED_BOOMERANG:
+                        //RANDOTODO test dins and chu range in a practical example
+                        killed = killed || CanUse(RG_BOOMERANG);
+                        [[fallthrough]];
+                    case ED_HOOKSHOT:
+                        //RANDOTODO test dins, bomb and chu range in a practical example
+                        killed = killed || CanUse(RG_HOOKSHOT) || (wallOrFloor && CanUse(RG_BOMBCHU_5));
+                        [[fallthrough]];
+                    case ED_LONGSHOT:
+                        killed = killed || CanUse(RG_LONGSHOT);
+                        [[fallthrough]];
+                    case ED_FAR:
+                        killed = killed || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW);
+                        break;
+                }
+                return killed;
             case RE_BLUE_BUBBLE:
                 //RANDOTODO Trick to use shield hylian shield as child to stun these guys
                 //RANDOTODO check hammer damage
@@ -460,8 +540,31 @@ namespace Rando {
                 return CanDamage();
             case RE_STALFOS:
                 //RANDOTODO Add trick to kill stalfos with sticks, and a second one for bombs without stunning. Higher ammo logic for bombs is also plausible
-                return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_FAIRY_BOW) || CanUse(RG_BOMBCHU_5) || 
-                       (quantity <= 2 && (CanUse(RG_NUTS) || HookshotOrBoomerang()) && CanUse(RG_BOMB_BAG)) || (quantity <= 1 && CanUse(RG_STICKS));
+                switch (distance){
+                    case ED_CLOSE:
+                    case ED_SHORT_JUMPSLASH:
+                        killed = CanUse(RG_MEGATON_HAMMER) || CanUse(RG_KOKIRI_SWORD);
+                        [[fallthrough]];
+                    case ED_MASTER_SWORD_JUMPSLASH:
+                        killed = killed || CanUse(RG_MASTER_SWORD);
+                        [[fallthrough]];
+                    case ED_LONG_JUMPSLASH:
+                        killed = killed || CanUse(RG_BIGGORON_SWORD) || (quantity <= 1 && CanUse(RG_STICKS));
+                        [[fallthrough]];
+                    case ED_BOMB_THROW:
+                        killed = killed || (quantity <= 2 && !timer && !inWater && (CanUse(RG_NUTS) || HookshotOrBoomerang()) && CanUse(RG_BOMB_BAG));
+                        [[fallthrough]];
+                    case ED_BOOMERANG:
+                    case ED_HOOKSHOT:
+                        //RANDOTODO test dins and chu range in a practical example
+                        killed = killed || (wallOrFloor && CanUse(RG_BOMBCHU_5));
+                        [[fallthrough]];
+                    case ED_LONGSHOT:
+                    case ED_FAR:
+                        killed = killed || CanUse(RG_FAIRY_BOW);
+                        break;
+                }
+                return killed;
             //Needs 16 bombs, but is in default logic in N64, probably because getting the hits is quite easy.
             //bow and sling can wake them and damage after they shed their armour, so could reduce ammo requirements for explosives to 10.
             //requires 8 sticks to kill so would be a trick unless we apply higher stick bag logic
@@ -474,7 +577,12 @@ namespace Rando {
             case RE_FLARE_DANCER:
                 return CanUse(RG_MEGATON_HAMMER) || CanUse(RG_HOOKSHOT) || (HasExplosives() && (CanJumpslashExceptHammer() || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOOMERANG)));
             case RE_WOLFOS:
-                return CanJumpslash() || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOMBCHU_5) || (CanUse(RG_BOMB_BAG) && (CanUse(RG_NUTS) || CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG)));
+            case RE_WHITE_WOLFOS:
+            case RE_WALLMASTER:
+                return CanJumpslash() || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOMBCHU_5) || CanUse(RG_DINS_FIRE) || (CanUse(RG_BOMB_BAG) && (CanUse(RG_NUTS) || CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG)));
+            case RE_GERUDO_WARRIOR:
+                return CanJumpslash() || CanUse(RG_FAIRY_BOW) || (ctx->GetTrickOption(RT_GF_WARRIOR_WITH_DIFFICULT_WEAPON) && (CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOMBCHU_5)));
+            case RE_GIBDO:
             case RE_REDEAD:
                 return CanJumpslash() || CanUse(RG_DINS_FIRE);
             case RE_MEG:
@@ -487,9 +595,78 @@ namespace Rando {
                 return CanJumpslash() || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || HasExplosives()/* || (CanUse(RG_DINS_FIRE) && (CanUse(RG_NUTS) || CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG)))*/;
             case RE_DINOLFOS:
                 //stunning + bombs is possible but painful, as it loves to dodge the bombs and hookshot. it also dodges chus but if you cook it so it detonates under the dodge it usually gets caught on landing
-                return CanJumpslash() || CanUse(RG_FAIRY_BOW) || CanUse(RG_BOMBCHU_5) || CanUse(RG_FAIRY_SLINGSHOT);
+                return CanJumpslash() || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || (!timer && CanUse(RG_BOMBCHU_5));
             case RE_TORCH_SLUG:
                 return CanJumpslash() || HasExplosives() || CanUse(RG_FAIRY_BOW);
+            case RE_FREEZARD:
+                return CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_STICKS) || HasExplosives() || CanUse(RG_HOOKSHOT) || CanUse(RG_DINS_FIRE) || CanUse(RG_FIRE_ARROWS);
+            case RE_SPIKE:
+                return CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_STICKS) || HasExplosives() || CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_DINS_FIRE);
+            case RE_STINGER:
+                switch (distance){
+                    case ED_CLOSE:
+                    case ED_SHORT_JUMPSLASH:
+                        killed = CanUse(RG_MEGATON_HAMMER) || CanUse(RG_KOKIRI_SWORD);
+                        [[fallthrough]];
+                    case ED_MASTER_SWORD_JUMPSLASH:
+                        killed = killed || CanUse(RG_MASTER_SWORD);
+                        [[fallthrough]];
+                    case ED_LONG_JUMPSLASH:
+                        killed = killed || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_STICKS);
+                        [[fallthrough]];
+                    case ED_BOMB_THROW:
+                        //RANDOTODO test dins and chu range in a practical example
+                        killed = killed || (!inWater && CanUse(RG_BOMB_BAG));
+                        [[fallthrough]];
+                    case ED_BOOMERANG:
+                    case ED_HOOKSHOT:
+                        //RANDOTODO test dins, bomb and chu range in a practical example
+                        killed = killed || CanUse(RG_HOOKSHOT) || (wallOrFloor && CanUse(RG_BOMBCHU_5));
+                        [[fallthrough]];
+                    case ED_LONGSHOT:
+                        killed = killed || CanUse(RG_LONGSHOT);
+                        [[fallthrough]];
+                    case ED_FAR:
+                        killed = killed || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW);
+                        break;
+                }
+                return killed;
+            case RE_BIG_OCTO:
+                //If chasing octo is annoying but with rolls you can catch him, and you need rang to get into this room without shenanigains anyway. Bunny makes it free
+                return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_STICKS) || CanUse(RG_MASTER_SWORD);
+            case RE_GANONDORF:
+                // RANDOTODO: Trick to use hammer (no jumpslash) or stick (only jumpslash) instead of a sword to reflect the energy ball
+                // and either of them regardless of jumpslashing to damage and kill ganondorf
+
+                // Bottle is not taken into account since a sword, hammer or stick are required
+                // for killing ganondorf and all of those can reflect the energy ball
+                // This will not be the case once ammo logic in taken into account as
+                // sticks are limited and using a bottle might become a requirement in that case
+                return HasBossSoul(RG_GANON_SOUL) && CanUse(RG_LIGHT_ARROWS) && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD));
+            case RE_GANON:
+                return HasBossSoul(RG_GANON_SOUL) && CanUse(RG_MASTER_SWORD);
+            case RE_DARK_LINK:
+            //RANDOTODO Dark link is buggy right now, retest when he is not
+                return CanJumpslash() || CanUse(RG_FAIRY_BOW);
+            case RE_ANUBIS:
+                //there's a restoration that allows beating them with mirror shield + some way to trigger thier attack
+                return HasFireSource();
+            case RE_BEAMOS:
+                return HasExplosives();
+            case RE_PURPLE_LEEVER:
+              //dies on it's own, so this is the conditions to spawn it (killing 10 normal leevers)
+              //Sticks and Ice arrows work but will need ammo capacity logic
+              //other methods can damage them but not kill them, and they run when hit, making them impractical
+                return CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD);
+            case RE_TENTACLE:
+                return CanUse(RG_BOOMERANG);
+            case RE_BARI:
+                return HookshotOrBoomerang() || CanUse(RG_FAIRY_BOW) || HasExplosives() || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_STICKS) || CanUse(RG_DINS_FIRE) || (TakeDamage() && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)));
+            case RE_SHABOM:
+            //RANDOTODO when you add better damage logic, you can kill this by taking hits
+                return CanUse(RG_BOOMERANG) || CanUse(RG_NUTS) || CanJumpslash() || CanUse(RG_DINS_FIRE) || CanUse(RG_ICE_ARROWS);
+            case RE_OCTOROK:
+                return CanReflectNuts() || HookshotOrBoomerang() || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOMB_BAG) || (wallOrFloor && CanUse(RG_BOMBCHU_5));
             default:
                 SPDLOG_ERROR("CanKillEnemy reached `default`.");
                 assert(false);
@@ -519,19 +696,29 @@ namespace Rando {
             case RE_STALFOS:
             case RE_FLARE_DANCER:
             case RE_WOLFOS:
+            case RE_WHITE_WOLFOS:
             case RE_FLOORMASTER:
             case RE_MEG:
             case RE_ARMOS:
+            case RE_FREEZARD:
+            case RE_SPIKE:
+            case RE_DARK_LINK:
+            case RE_ANUBIS:
+            case RE_WALLMASTER:
+            case RE_PURPLE_LEEVER:
+            case RE_OCTOROK:
                 return true;
             case RE_BIG_SKULLTULA:
                 //hammer jumpslash can pass, but only on flat land where you can kill with hammer swing
                 return CanUse(RG_NUTS) || CanUse(RG_BOOMERANG);
             case RE_LIKE_LIKE:
                 return CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG);
+            case RE_GIBDO:
             case RE_REDEAD:
                 // we need a way to check if suns won't force a reload
                 return CanUse(RG_HOOKSHOT) || CanUse(RG_SUNS_SONG);
             case RE_IRON_KNUCKLE:
+            case RE_BIG_OCTO:
                 return false;
             case RE_GREEN_BUBBLE:
                 return TakeDamage() || CanUse(RG_NUTS) || CanUse(RG_BOOMERANG) || CanUse(RG_HOOKSHOT);
@@ -543,42 +730,56 @@ namespace Rando {
     }
 
 //Can we avoid this enemy while climbing up a wall, or doing a difficult platforming challenge?
-    bool Logic::CanAvoidEnemy(RandomizerEnemy enemy) {
-        if (CanKillEnemy(enemy)){
-            return true;
-        }
-        switch(enemy) {
-            case RE_GOLD_SKULLTULA: 
-            case RE_GOHMA_LARVA:
-            case RE_LIZALFOS:
-            case RE_DODONGO: //RANDOTODO do dodongos block the way in tight corridors?
-            case RE_BIG_SKULLTULA:
-            case RE_DEAD_HAND:
-            case RE_DEKU_BABA:
-            case RE_WITHERED_DEKU_BABA:
-            case RE_LIKE_LIKE:
-            case RE_STALFOS:
-            case RE_IRON_KNUCKLE:
-            case RE_FLARE_DANCER:
-            case RE_WOLFOS:
-            case RE_FLOORMASTER:
-            case RE_REDEAD:
-            case RE_MEG:
-            case RE_ARMOS:
-            case RE_GREEN_BUBBLE:
-                return true;
-            case RE_MAD_SCRUB:
-            case RE_KEESE:
-            case RE_FIRE_KEESE:
-                return CanUse(RG_NUTS);
-            case RE_BLUE_BUBBLE:
-                //RANDOTODO Trick to use shield hylian shield as child to stun these guys
-                return CanUse(RG_NUTS) || HookshotOrBoomerang() || CanStandingShield();
-            default:
-                SPDLOG_ERROR("CanPassEnemy reached `default`.");
-                assert(false);
-                return false;
-        }
+//use grounded if the challenge is such that the enemy interfears even if it cannot hit link out of the air
+    bool Logic::CanAvoidEnemy(RandomizerEnemy enemy, bool grounded, uint8_t quantity) {
+      //DISTANCE AND WALL ASSUMED, add more arguments later if needed
+      if (CanKillEnemy(enemy, ED_CLOSE, true, quantity)){
+        return true;
+      }
+      switch(enemy) {
+        case RE_GOLD_SKULLTULA: 
+        case RE_GOHMA_LARVA:
+        case RE_LIZALFOS:
+        case RE_DODONGO:
+        case RE_BIG_SKULLTULA:
+        case RE_DEAD_HAND:
+        case RE_DEKU_BABA:
+        case RE_WITHERED_DEKU_BABA:
+        case RE_LIKE_LIKE:
+        case RE_STALFOS:
+        case RE_IRON_KNUCKLE:
+        case RE_FLARE_DANCER:
+        case RE_WOLFOS:
+        case RE_WHITE_WOLFOS:
+        case RE_FLOORMASTER:
+        case RE_REDEAD:
+        case RE_MEG:
+        case RE_ARMOS:
+        case RE_GREEN_BUBBLE:
+        case RE_FREEZARD:
+        case RE_SPIKE:
+        case RE_BIG_OCTO:
+        case RE_GIBDO:
+        case RE_DARK_LINK:
+        case RE_WALLMASTER:
+        case RE_ANUBIS:
+        case RE_PURPLE_LEEVER:
+          return true;
+        case RE_BEAMOS:
+          return !grounded || CanUse(RG_NUTS) || (quantity == 1 && (CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT)));
+        case RE_MAD_SCRUB:
+          return !grounded || CanUse(RG_NUTS);
+        case RE_KEESE:
+        case RE_FIRE_KEESE:
+          return CanUse(RG_NUTS);
+        case RE_BLUE_BUBBLE:
+          //RANDOTODO Trick to use shield hylian shield as child to stun these guys
+          return !grounded || CanUse(RG_NUTS) || HookshotOrBoomerang() || CanStandingShield();
+        default:
+          SPDLOG_ERROR("CanPassEnemy reached `default`.");
+          assert(false);
+          return false;
+      }
     }
 
     bool Logic::CanGetEnemyDrop(RandomizerEnemy enemy, EnemyDistance distance, bool aboveLink) {
@@ -588,15 +789,35 @@ namespace Rando {
         if (distance <= ED_MASTER_SWORD_JUMPSLASH){
             return true;
         }
+        bool drop = false;
         switch(enemy) {
             case RE_GOLD_SKULLTULA:
-                //RANDOTODO double check all jumpslash kills that might be out of jump/backflip range
-                return distance <= ED_HAMMER_JUMPSLASH || (distance <= ED_RANG_OR_HOOKSHOT && (CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG))) || (distance == ED_LONGSHOT && CanUse(RG_LONGSHOT));
+                switch(distance){
+                    case ED_CLOSE:
+                    case ED_SHORT_JUMPSLASH:
+                    case ED_MASTER_SWORD_JUMPSLASH:
+                    case ED_LONG_JUMPSLASH:
+                    case ED_BOMB_THROW:
+                    case ED_BOOMERANG:
+                        drop = drop || CanUse(RG_BOOMERANG);
+                        [[fallthrough]];
+                    case ED_HOOKSHOT:
+                        drop = drop || CanUse(RG_HOOKSHOT);
+                        [[fallthrough]];
+                    case ED_LONGSHOT:
+                        drop = drop || CanUse(RG_LONGSHOT);
+                        [[fallthrough]];
+                    case ED_FAR:
+                        break;
+                        //RANDOTODO double check all jumpslash kills that might be out of jump/backflip range
+                }
+                return drop;
+                break;
             case RE_KEESE:
             case RE_FIRE_KEESE:
                 return true;
             default:
-                return aboveLink || (distance <= ED_RANG_OR_HOOKSHOT && CanUse(RG_BOOMERANG));
+                return aboveLink || (distance <= ED_BOOMERANG && CanUse(RG_BOOMERANG));
         }
     }
 
@@ -623,6 +844,35 @@ namespace Rando {
 
     bool Logic::CanDetonateUprightBombFlower() {
         return CanDetonateBombFlowers() || HasItem(RG_GORONS_BRACELET);
+    }
+
+    bool Logic::MQWaterLevel(RandoWaterLevel level) {
+        //For ease of reading, I will call the triforce emblem that sets the water to WL_LOW the "Low Emblem", the one that sets it to WL_MID the "Mid Emblem", and the one that sets it to WL_HIGH the "High Emblem"
+        switch(level){
+            //While you have to go through WL_LOW to get to Mid, the requirements for WL_LOW are stricter than WL_MID because you can always go up to WL_MID and then could need to go back to WL_HIGH to reach the Low Emblem again
+            //Thanks to this caveat you need to be able to reach and play ZL to both the High and Low Emblems to have WL_LOW in logic.
+            //Alternativly a way to reach WL_LOW from WL_MID could exist, but all glitchless methods need you to do a Low-locked action
+            case WL_LOW:
+                return (CanWaterTempleHigh && CanWaterTempleLowFromHigh) || (CanWaterTempleLowFromMid && CanWaterTempleLowFromHigh);
+            case WL_LOW_OR_MID:
+                return (CanWaterTempleHigh && CanWaterTempleLowFromHigh) || (CanWaterTempleLowFromHigh && CanWaterTempleMiddle) || (CanWaterTempleLowFromMid && CanWaterTempleLowFromHigh);
+            //If we can set it to High out of logic we can just repeat what we did to lower the water in the first place as High is the default. 
+            //Because of this you only need to be able to use the Low and Mid Emblems, WL_LOW could be skipped if it was ever possible to play ZL underwater.
+            case WL_MID:
+                return CanWaterTempleLowFromHigh && CanWaterTempleMiddle;
+            //Despite being the initial state of water temple, WL_HIGH has the extra requirement of making sure that, if we were to lower the water out of logic, we could put it back to WL_HIGH
+            //However because it is the default state, we do not need to check if we can actually change the water level, only to make sure we can return to WL_HIGH if we found the means to play ZL out of logic.
+            //There are 2 methods to lock yourself out after playing ZL already: Not being able to reach the High Emblem and being unable to replay ZL. (I will be ignoring other-age-access shenanigains)
+            //The former check would simply be a check to see if we can reach High Emblem, but we assume the water is WL_MID (as if we can set it to WL_LOW, we can set it to WL_MID, as Mid Emblem has no requirements)
+            //The latter check can be assumed for now but will want a revisit once OI tricks are added.
+            case WL_HIGH:
+                return ReachedWaterHighEmblem;
+            case WL_HIGH_OR_MID:
+                return ReachedWaterHighEmblem || (CanWaterTempleLowFromHigh && CanWaterTempleMiddle);
+        }
+        SPDLOG_ERROR("MQWaterLevel reached `return false;`. Missing case for a Water Level");
+        assert(false);
+        return false;
     }
 
     Logic::Logic() {
@@ -660,8 +910,37 @@ namespace Rando {
         return CanJumpslashExceptHammer() || CanUse(RG_MEGATON_HAMMER);
     }
 
-    bool Logic::CanHitSwitch() {
-        return CanUse(RG_FAIRY_SLINGSHOT) || CanJumpslash() || HasExplosives() || CanUse(RG_FAIRY_BOW) || CanUse(RG_BOOMERANG) || CanUse(RG_HOOKSHOT);
+    bool Logic::CanHitSwitch(EnemyDistance distance, bool inWater) {
+        bool hit = false;
+        switch (distance){
+            case ED_CLOSE:
+            case ED_SHORT_JUMPSLASH:
+                hit = CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MEGATON_HAMMER);
+                [[fallthrough]];
+            case ED_MASTER_SWORD_JUMPSLASH:
+                hit = hit || CanUse(RG_MASTER_SWORD);
+                [[fallthrough]];
+            case ED_LONG_JUMPSLASH:
+                hit = hit || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_STICKS);
+                [[fallthrough]];
+            case ED_BOMB_THROW:
+                hit = hit || (!inWater && CanUse(RG_BOMB_BAG));
+                [[fallthrough]];
+            case ED_BOOMERANG:
+                hit = hit || CanUse(RG_BOOMERANG);
+                [[fallthrough]];
+            case ED_HOOKSHOT:
+                //RANDOTODO test chu range in a practical example
+                hit = hit || CanUse(RG_HOOKSHOT) || CanUse(RG_BOMBCHU_5) ;
+                [[fallthrough]];
+            case ED_LONGSHOT:
+                hit = hit || CanUse(RG_LONGSHOT);
+                [[fallthrough]];
+            case ED_FAR:
+                hit = hit || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW);
+                break;
+        }
+        return hit;
     }
 
     bool Logic::CanDamage() {
@@ -694,6 +973,10 @@ namespace Rando {
         return CanUse(RG_BOTTLE_WITH_BLUE_FIRE) || (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && CanUse(RG_ICE_ARROWS));
     }
 
+    bool Logic::CanBreakPots(){
+        return true;
+    }
+
     bool Logic::HasExplosives(){
         return CanUse(RG_BOMB_BAG) || CanUse(RG_BOMBCHU_5);
     }
@@ -719,7 +1002,7 @@ namespace Rando {
     }
 
     bool Logic::CanLeaveForest(){
-        return ctx->GetOption(RSK_FOREST).IsNot(RO_FOREST_CLOSED) || IsAdult || DekuTreeClear || ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES);
+        return ctx->GetOption(RSK_FOREST).IsNot(RO_CLOSED_FOREST_ON) || IsAdult || DekuTreeClear || ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES);
     }
 
     bool Logic::CallGossipFairyExceptSuns(){
@@ -743,7 +1026,7 @@ namespace Rando {
         10 for OHKO.
         This is the number of shifts to apply, not a real multiplier
         */
-        uint8_t Multiplier = (ctx->GetOption(RSK_DAMAGE_MULTIPLIER).Value<uint8_t>() < 6) ? ctx->GetOption(RSK_DAMAGE_MULTIPLIER).Value<uint8_t>() : 10;
+        uint8_t Multiplier = (ctx->GetOption(RSK_DAMAGE_MULTIPLIER).GetContextOptionIndex() < 6) ? ctx->GetOption(RSK_DAMAGE_MULTIPLIER).GetContextOptionIndex() : 10;
         //(Hearts() << (2 + HasItem(RG_DOUBLE_DEFENSE))) is quarter hearts after DD
         //>> Multiplier halves on normal and does nothing on half, meaning we're working with half hearts on normal damage 
         return ((Hearts() << (2 + HasItem(RG_DOUBLE_DEFENSE))) >> Multiplier) + 
@@ -772,6 +1055,7 @@ namespace Rando {
         return CanUse(RG_GORON_TUNIC) ? 255 : (ctx->GetTrickOption(RT_FEWER_TUNIC_REQUIREMENTS)) ? (Hearts() * 8) : 0;
     }
     
+    //Tunic is not required if you are using irons to do something that a simple gold scale dive could do, and you are not in water temple. (celing swimming and long walks through water do not count)
     uint8_t Logic::WaterTimer(){
         return CanUse(RG_ZORA_TUNIC) ? 255 : (ctx->GetTrickOption(RT_FEWER_TUNIC_REQUIREMENTS)) ? (Hearts() * 8) : 0;
     }
@@ -789,7 +1073,7 @@ namespace Rando {
     }
 
     bool Logic::CanGetNightTimeGS(){
-        return CanUse(RG_SUNS_SONG) || !ctx->GetOption(RSK_SKULLS_SUNS_SONG);
+        return AtNight && (CanUse(RG_SUNS_SONG) || !ctx->GetOption(RSK_SKULLS_SUNS_SONG));
     }
 
     bool Logic::CanBreakUpperBeehives(){
@@ -852,9 +1136,9 @@ namespace Rando {
     }
 
     bool Logic::CanFinishGerudoFortress(){
-        return (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_NORMAL) && SmallKeys(RR_GERUDO_FORTRESS, 4) && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)) && (HasItem(RG_GERUDO_MEMBERSHIP_CARD) || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_KITCHEN))) ||
-               (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_FAST)   && SmallKeys(RR_GERUDO_FORTRESS, 1) && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD))) ||
-               ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_OPEN);
+        return (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL) && SmallKeys(RR_GERUDO_FORTRESS, 4) && CanKillEnemy(RE_GERUDO_WARRIOR) && (HasItem(RG_GERUDO_MEMBERSHIP_CARD) || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_KITCHEN))) ||
+               (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST)   && SmallKeys(RR_GERUDO_FORTRESS, 1) && CanKillEnemy(RE_GERUDO_WARRIOR)) ||
+               ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE);
     }
 
     bool Logic::CanStandingShield(){
@@ -866,27 +1150,27 @@ namespace Rando {
     }
 
     bool Logic::CanUseProjectile(){
-        return  HasExplosives() || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOOMERANG);
+        return HasExplosives() || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOOMERANG);
     }
 
     bool Logic::CanBuildRainbowBridge(){
         return ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_ALWAYS_OPEN)      ||
                (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_VANILLA)         && HasItem(RG_SHADOW_MEDALLION) && HasItem(RG_SPIRIT_MEDALLION) && CanUse(RG_LIGHT_ARROWS)) ||
-               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_STONES)          && StoneCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG)) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_STONE_COUNT).Value<uint8_t>()) ||
-               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_MEDALLIONS)      && MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG)) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT).Value<uint8_t>()) ||
-               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEON_REWARDS) && StoneCount() + MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG)) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).Value<uint8_t>()) ||
-               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEONS)        && DungeonCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG)) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).Value<uint8_t>()) ||
-               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS)          && GetGSCount() >= ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).Value<uint8_t>()) ||
+               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_STONES)          && StoneCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG_REWARD)) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_STONE_COUNT).GetContextOptionIndex()) ||
+               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_MEDALLIONS)      && MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG_REWARD)) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT).GetContextOptionIndex()) ||
+               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEON_REWARDS) && StoneCount() + MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG_REWARD)) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).GetContextOptionIndex()) ||
+               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEONS)        && DungeonCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG_REWARD)) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).GetContextOptionIndex()) ||
+               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS)          && GetGSCount() >= ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).GetContextOptionIndex()) ||
                (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_GREG)            && HasItem(RG_GREG_RUPEE));
     }
 
     bool Logic::CanTriggerLACS(){
         return (ctx->GetSettings()->LACSCondition() == RO_LACS_VANILLA    && HasItem(RG_SHADOW_MEDALLION) && HasItem(RG_SPIRIT_MEDALLION)) ||
-               (ctx->GetSettings()->LACSCondition() == RO_LACS_STONES     && StoneCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >= ctx->GetOption(RSK_LACS_STONE_COUNT).Value<uint8_t>()) ||
-               (ctx->GetSettings()->LACSCondition() == RO_LACS_MEDALLIONS && MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >= ctx->GetOption(RSK_LACS_MEDALLION_COUNT).Value<uint8_t>()) ||
-               (ctx->GetSettings()->LACSCondition() == RO_LACS_REWARDS    && StoneCount() + MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >= ctx->GetOption(RSK_LACS_REWARD_COUNT).Value<uint8_t>()) ||
-               (ctx->GetSettings()->LACSCondition() == RO_LACS_DUNGEONS   && DungeonCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >= ctx->GetOption(RSK_LACS_DUNGEON_COUNT).Value<uint8_t>()) ||
-               (ctx->GetSettings()->LACSCondition() == RO_LACS_TOKENS     && GetGSCount() >= ctx->GetOption(RSK_LACS_TOKEN_COUNT).Value<uint8_t>());
+               (ctx->GetSettings()->LACSCondition() == RO_LACS_STONES     && StoneCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >= ctx->GetOption(RSK_LACS_STONE_COUNT).GetContextOptionIndex()) ||
+               (ctx->GetSettings()->LACSCondition() == RO_LACS_MEDALLIONS && MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >= ctx->GetOption(RSK_LACS_MEDALLION_COUNT).GetContextOptionIndex()) ||
+               (ctx->GetSettings()->LACSCondition() == RO_LACS_REWARDS    && StoneCount() + MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >= ctx->GetOption(RSK_LACS_REWARD_COUNT).GetContextOptionIndex()) ||
+               (ctx->GetSettings()->LACSCondition() == RO_LACS_DUNGEONS   && DungeonCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >= ctx->GetOption(RSK_LACS_DUNGEON_COUNT).GetContextOptionIndex()) ||
+               (ctx->GetSettings()->LACSCondition() == RO_LACS_TOKENS     && GetGSCount() >= ctx->GetOption(RSK_LACS_TOKEN_COUNT).GetContextOptionIndex());
     }
 
     bool Logic::SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmount) {
@@ -935,7 +1219,7 @@ namespace Rando {
                 }*/
                 return GetSmallKeyCount(SCENE_BOTTOM_OF_THE_WELL) >= requiredAmountGlitchless;
 
-            case RR_GERUDO_TRAINING_GROUNDS:
+            case RR_GERUDO_TRAINING_GROUND:
                 /*if (IsGlitched && (false)) {
                     return GerudoTrainingGroundsKeys >= requiredAmountGlitched;
                 }*/
@@ -1007,7 +1291,7 @@ namespace Rando {
         { RG_SPIRIT_TEMPLE_SMALL_KEY,           SCENE_SPIRIT_TEMPLE },
         { RG_SHADOW_TEMPLE_SMALL_KEY,           SCENE_SHADOW_TEMPLE },
         { RG_BOTTOM_OF_THE_WELL_SMALL_KEY,      SCENE_BOTTOM_OF_THE_WELL },
-        { RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, SCENE_GERUDO_TRAINING_GROUND },
+        { RG_GERUDO_TRAINING_GROUND_SMALL_KEY, SCENE_GERUDO_TRAINING_GROUND },
         { RG_GERUDO_FORTRESS_SMALL_KEY,         SCENE_THIEVES_HIDEOUT },
         { RG_GANONS_CASTLE_SMALL_KEY,           SCENE_INSIDE_GANONS_CASTLE },
         { RG_FOREST_TEMPLE_KEY_RING,            SCENE_FOREST_TEMPLE },
@@ -1016,7 +1300,7 @@ namespace Rando {
         { RG_SPIRIT_TEMPLE_KEY_RING,            SCENE_SPIRIT_TEMPLE },
         { RG_SHADOW_TEMPLE_KEY_RING,            SCENE_SHADOW_TEMPLE },
         { RG_BOTTOM_OF_THE_WELL_KEY_RING,       SCENE_BOTTOM_OF_THE_WELL },
-        { RG_GERUDO_TRAINING_GROUNDS_KEY_RING,  SCENE_GERUDO_TRAINING_GROUND },
+        { RG_GERUDO_TRAINING_GROUND_KEY_RING,  SCENE_GERUDO_TRAINING_GROUND },
         { RG_GERUDO_FORTRESS_KEY_RING,          SCENE_THIEVES_HIDEOUT },
         { RG_GANONS_CASTLE_KEY_RING,            SCENE_INSIDE_GANONS_CASTLE },
         { RG_FOREST_TEMPLE_BOSS_KEY,            SCENE_FOREST_TEMPLE },
@@ -1349,6 +1633,8 @@ namespace Rando {
             case RG_BOMBCHU_20:
                 SetInventory(ITEM_BOMBCHU, (!state ? ITEM_NONE : ITEM_BOMBCHU));
                 break;
+            default:
+                break;
             }
         }
         break;
@@ -1446,6 +1732,8 @@ namespace Rando {
             case RG_BOMBCHU_10:
             case RG_BOMBCHU_20:
                 SetInventory(ITEM_BOMBCHU, (!state ? ITEM_NONE : ITEM_BOMBCHU));
+                break;
+            default:
                 break;
             }
         } break;
@@ -1854,7 +2142,7 @@ namespace Rando {
         //CanPlantBean        = false;
         BigPoeKill            = false;
 
-        BaseHearts      = ctx->GetOption(RSK_STARTING_HEARTS).Value<uint8_t>() + 1;
+        BaseHearts      = ctx->GetOption(RSK_STARTING_HEARTS).GetContextOptionIndex() + 1;
         
 
         //Bridge Requirements
@@ -1876,9 +2164,10 @@ namespace Rando {
         GCWoodsWarpOpen           = false;
         GCDaruniasDoorOpenChild   = false;
         StopGCRollingGoronAsAdult = false;
-        WaterTempleLow            = false;
-        WaterTempleMiddle         = false;
-        WaterTempleHigh           = false;
+        CanWaterTempleLowFromHigh = false;
+        CanWaterTempleLowFromMid  = false;
+        CanWaterTempleMiddle      = false;
+        CanWaterTempleHigh        = false;
         KakarikoVillageGateOpen   = false;
         KingZoraThawed            = false;
         ForestTempleJoelle        = false;
@@ -1905,6 +2194,27 @@ namespace Rando {
         ForestClearBelowBowChest  = false;
         ForestOpenBossCorridor    = false;
         ShadowTrialFirstChest     = false;
+        MQGTGMazeSwitch           = false;
+        GTGPlatformSilverRupees   = false;
+        MQJabuHolesRoomDoor       = false;
+        JabuWestTentacle          = false;
+        JabuEastTentacle          = false;
+        JabuNorthTentacle         = false;
+        LoweredJabuPath           = false;
+        MQJabuLiftRoomCow         = false;
+        MQShadowFloorSpikeRupees  = false;
+        ShadowShortcutBlock       = false;
+        MQWaterStalfosPit         = false;
+        MQWaterDragonTorches      = false;
+        MQWaterB1Switch           = false;
+        //MQWaterPillarSoTBlock     = false;
+        MQWaterOpenedPillarB1     = false;
+        MQSpiritCrawlBoulder      = false;
+        MQSpiritMapRoomEnemies    = false;
+        MQSpirit3SunsEnemies      = false;
+        Spirit1FSilverRupees      = false;
+        JabuRutoInB1              = false;
+        JabuRutoIn1F              = false;
 
         StopPerformanceTimer(PT_LOGIC_RESET);
     }

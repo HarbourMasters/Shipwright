@@ -1,6 +1,7 @@
 #include "z_en_sw.h"
 #include "objects/object_st/object_st.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -214,16 +215,6 @@ s32 func_80B0C0CC(EnSw* this, PlayState* play, s32 arg2) {
     return sp64;
 }
 
-// Presumably, due to the removal of object dependency, there is a race condition where
-// the GS on the Kak construction site spawns to early and fails to detect the
-// construction site dyna poly. This custom action func rechecks moving the GS
-// to the nearest poly one frame after init. Further explanation available:
-// https://github.com/HarbourMasters/Shipwright/issues/2310#issuecomment-1492829517
-void EnSw_MoveGoldLater(EnSw* this, PlayState* play) {
-    func_80B0C0CC(this, play, 1);
-    this->actionFunc = func_80B0D590;
-}
-
 void EnSw_Init(Actor* thisx, PlayState* play) {
     EnSw* this = (EnSw*)thisx;
     s32 phi_v0;
@@ -277,7 +268,7 @@ void EnSw_Init(Actor* thisx, PlayState* play) {
     }
 
     if (((thisx->params & 0xE000) >> 0xD) >= 3) {
-        Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 
     switch ((thisx->params & 0xE000) >> 0xD) {
@@ -314,14 +305,6 @@ void EnSw_Init(Actor* thisx, PlayState* play) {
         this->actionFunc = func_80B0E5E0;
     } else {
         this->actionFunc = func_80B0D590;
-    }
-
-    // If a normal GS failed to get attached to a poly during init
-    // try once more on the next frame via a custom action func
-    if ((((thisx->params & 0xE000) >> 0xD) == 1 ||
-         ((thisx->params & 0xE000) >> 0xD) == 2) &&
-        this->actor.floorPoly == NULL) {
-        this->actionFunc = EnSw_MoveGoldLater;
     }
 }
 
@@ -635,7 +618,7 @@ void func_80B0D878(EnSw* this, PlayState* play) {
     this->actor.shape.rot = this->actor.world.rot;
 
     if ((this->unk_394 == 0) && (this->unk_392 == 0)) {
-        Audio_PlaySoundGeneral(NA_SE_SY_KINSTA_MARK_APPEAR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        Audio_PlaySoundGeneral(NA_SE_SY_KINSTA_MARK_APPEAR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         x = (this->unk_364.x * 10.0f);
         y = (this->unk_364.y * 10.0f);
         z = (this->unk_364.z * 10.0f);
@@ -660,7 +643,7 @@ void func_80B0D878(EnSw* this, PlayState* play) {
 }
 
 void func_80B0DB00(EnSw* this, PlayState* play) {
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     this->actor.shape.rot.x += 0x1000;
     this->actor.shape.rot.z += 0x1000;
     Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 20.0f, 0.0f, 5);

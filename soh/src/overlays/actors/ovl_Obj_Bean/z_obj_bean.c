@@ -8,6 +8,7 @@
 #include "objects/object_mamenoki/object_mamenoki.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "vt.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_IGNORE_POINTLIGHTS
 
@@ -701,12 +702,14 @@ void ObjBean_GrowWaterPhase3(ObjBean* this, PlayState* play) {
             itemDropPos.x = this->dyna.actor.world.pos.x;
             itemDropPos.y = this->dyna.actor.world.pos.y - 25.0f;
             itemDropPos.z = this->dyna.actor.world.pos.z;
-            for (i = 0; i < 3; i++) {
-                Item_DropCollectible(play, &itemDropPos, ITEM00_FLEXIBLE);
+            if (GameInteractor_Should(VB_SPAWN_BEAN_STALK_FAIRIES, true, this)) {
+                for (i = 0; i < 3; i++) {
+                    Item_DropCollectible(play, &itemDropPos, ITEM00_FLEXIBLE);
+                }
             }
             this->stateFlags |= BEAN_STATE_BEEN_WATERED;
             Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BUTTERFRY_TO_FAIRY);
-            func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
+            Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
         }
     } else if (this->timer <= 0) {
         ObjBean_SetupGrowWaterPhase4(this);
@@ -752,7 +755,7 @@ void ObjBean_SetupWaitForPlayer(ObjBean* this) {
 }
 
 void ObjBean_WaitForPlayer(ObjBean* this, PlayState* play) {
-    if (func_8004356C(&this->dyna)) { // Player is standing on
+    if (DynaPolyActor_IsPlayerOnTop(&this->dyna)) { // Player is standing on
         ObjBean_SetupFly(this);
         if (play->sceneNum == SCENE_LOST_WOODS) { // Lost woods
             Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_BEAN_LOST_WOODS);
@@ -786,7 +789,7 @@ void ObjBean_Fly(ObjBean* this, PlayState* play) {
             Camera_ChangeSetting(camera, CAM_SET_NORMAL0);
         }
 
-    } else if (func_8004356C(&this->dyna) != 0) { // Player is on top
+    } else if (DynaPolyActor_IsPlayerOnTop(&this->dyna) != 0) { // Player is on top
 
         func_8002F974(&this->dyna.actor, NA_SE_PL_PLANT_MOVE - SFX_FLAG);
 
@@ -812,7 +815,7 @@ void ObjBean_SetupWaitForStepOff(ObjBean* this) {
 }
 
 void ObjBean_WaitForStepOff(ObjBean* this, PlayState* play) {
-    if (!func_80043590(&this->dyna)) {
+    if (!DynaPolyActor_IsPlayerAbove(&this->dyna)) {
         ObjBean_SetupWaitForPlayer(this);
     }
     ObjBean_UpdatePosition(this);
@@ -824,7 +827,7 @@ void func_80B908EC(ObjBean* this) {
 }
 
 void func_80B90918(ObjBean* this, PlayState* play) {
-    if (!func_8004356C(&this->dyna)) {
+    if (!DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
         ObjBean_SetupPathCount(this, play);
         ObjBean_SetupPath(this, play);
         ObjBean_Move(this);
@@ -904,7 +907,7 @@ void ObjBean_Update(Actor* thisx, PlayState* play) {
     }
     Actor_SetFocus(&this->dyna.actor, 6.0f);
     if (this->stateFlags & BEAN_STATE_DYNAPOLY_SET) {
-        if (func_8004356C(&this->dyna)) {
+        if (DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
             this->stateFlags |= BEAN_STATE_PLAYER_ON_TOP;
         } else {
             this->stateFlags &= ~BEAN_STATE_PLAYER_ON_TOP;

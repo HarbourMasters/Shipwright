@@ -8,6 +8,7 @@
 #include "objects/object_gs/object_gs.h"
 #include "overlays/actors/ovl_En_Elf/z_en_elf.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
@@ -149,8 +150,7 @@ void func_80A4E470(EnGs* this, PlayState* play) {
                 func_8010BD58(play, OCARINA_ACTION_FREE_PLAY);
                 this->unk_19D |= 1;
             }
-
-        } else if (this->unk_19D & 1) {
+        } else if (GameInteractor_Should(VB_SPAWN_GOSSIP_STONE_FAIRY, this->unk_19D & 1, this)) {
             if (play->msgCtx.ocarinaMode == OCARINA_MODE_04) {
                 if ((play->msgCtx.unk_E3F2 == OCARINA_SONG_SARIAS) ||
                     (play->msgCtx.unk_E3F2 == OCARINA_SONG_EPONAS) ||
@@ -326,14 +326,14 @@ void func_80A4ED34(EnGs* this, PlayState* play) {
             if (this->unk_200 < 20) {
                 Color_RGBA8_Copy(&this->flashColor, &flashRed);
                 if ((this->unk_200 % 20) == 7) {
-                    Audio_PlaySoundGeneral(NA_SE_SY_WARNING_COUNT_E, &D_801333D4, 4, &D_801333E0, &D_801333E0,
-                                           &D_801333E8);
+                    Audio_PlaySoundGeneral(NA_SE_SY_WARNING_COUNT_E, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                           &gSfxDefaultReverb);
                 }
             } else {
                 Color_RGBA8_Copy(&this->flashColor, &flashBlue);
                 if ((this->unk_200 % 20) == 7) {
-                    Audio_PlaySoundGeneral(NA_SE_SY_WARNING_COUNT_N, &D_801333D4, 4, &D_801333E0, &D_801333E0,
-                                           &D_801333E8);
+                    Audio_PlaySoundGeneral(NA_SE_SY_WARNING_COUNT_N, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                           &gSfxDefaultReverb);
                 }
             }
         }
@@ -382,7 +382,7 @@ void func_80A4ED34(EnGs* this, PlayState* play) {
             func_8002F974(&this->actor, NA_SE_EV_STONE_LAUNCH - SFX_FLAG);
         }
 
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
         if (this->actor.yDistToPlayer < -12000.0f) {
             Actor_Kill(&this->actor);
         }

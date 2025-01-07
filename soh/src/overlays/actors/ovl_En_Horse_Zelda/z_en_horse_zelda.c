@@ -200,7 +200,7 @@ void func_80A6DD14(EnHorseZelda* this) {
     this->action = 1;
     this->animationIndex = 0;
     sp34 = this->actor.speedXZ / 6.0f;
-    Audio_PlaySoundGeneral(NA_SE_EV_HORSE_RUN, &this->actor.projectedPos, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+    Audio_PlaySoundGeneral(NA_SE_EV_HORSE_RUN, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     Animation_Change(&this->skin.skelAnime, sAnimationHeaders[this->animationIndex],
                      splaySpeeds[this->animationIndex] * sp34 * 1.5f, 0.0f,
                      Animation_GetLastFrame(sAnimationHeaders[this->animationIndex]), ANIMMODE_ONCE, 0.0f);
@@ -233,7 +233,7 @@ void EnHorseZelda_Update(Actor* thisx, PlayState* play) {
 
     sActionFuncs[this->action](this, play);
     this->actor.speedXZ = 0.0f;
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 55.0f, 100.0f, 0x1D);
     this->actor.focus.pos = this->actor.world.pos;
     this->actor.focus.pos.y += 70.0f;

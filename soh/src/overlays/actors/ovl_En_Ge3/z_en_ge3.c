@@ -6,6 +6,8 @@
 
 #include "z_en_ge3.h"
 #include "objects/object_geldb/object_geldb.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
@@ -190,7 +192,7 @@ void EnGe3_UpdateCollision(EnGe3* this, PlayState* play) {
 
 void EnGe3_MoveAndBlink(EnGe3* this, PlayState* play) {
 
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 
     if (DECR(this->blinkTimer) == 0) {
         this->blinkTimer = Rand_S16Offset(60, 60);

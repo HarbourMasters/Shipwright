@@ -35,7 +35,7 @@ void SohModalWindow::DrawElement() {
             ImGui::OpenPopup(curModal.title_.c_str());
         }
         if (ImGui::BeginPopupModal(curModal.title_.c_str(), NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoSavedSettings)) {
-            ImGui::Text(curModal.message_.c_str());
+            ImGui::Text("%s", curModal.message_.c_str());
             if (ImGui::Button(curModal.button1_.c_str())) {
                 if (curModal.button1callback_ != nullptr) {
                     curModal.button1callback_();

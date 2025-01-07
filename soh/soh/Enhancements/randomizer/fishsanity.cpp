@@ -17,7 +17,7 @@ extern PlayState* gPlayState;
 
 #define FSi OTRGlobals::Instance->gRandoContext->GetFishsanity()
 
-#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetSelectedOptionIndex()
+#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetContextOptionIndex()
 
 /**
  * @brief Parallel list of pond fish checks for both ages
@@ -59,6 +59,7 @@ namespace Rando {
     const FishIdentity Fishsanity::defaultIdentity = { RAND_INF_MAX, RC_UNKNOWN_CHECK };
     bool Fishsanity::fishsanityHelpersInit = false;
     s16 Fishsanity::fishGroupCounter = 0;
+    bool Fishsanity::enableAdvance = false;
     std::unordered_map<RandomizerCheck, LinkAge> Fishsanity::pondFishAgeMap;
     std::vector<RandomizerCheck> Fishsanity::childPondFish;
     std::vector<RandomizerCheck> Fishsanity::adultPondFish;
@@ -395,22 +396,6 @@ namespace Rando {
         }
     }
 
-    void Fishsanity::OnFlagSetHandler(int16_t flagType, int16_t flag) {
-        if (flagType != FLAG_RANDOMIZER_INF) {
-            return;
-        }
-        RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf((RandomizerInf)flag);
-        FishsanityCheckType fsType = Rando::Fishsanity::GetCheckType(rc);
-        if (fsType == FSC_NONE) {
-            return;
-        }
-
-        // When a pond fish is caught, advance the pond.
-        if (fsType == FSC_POND) {
-            OTRGlobals::Instance->gRandoContext->GetFishsanity()->AdvancePond();
-        }
-    }
-
     void Fishsanity::OnActorUpdateHandler(void* refActor) {
         if (gPlayState->sceneNum != SCENE_GROTTOS && gPlayState->sceneNum != SCENE_ZORAS_DOMAIN && gPlayState->sceneNum != SCENE_FISHING_POND) {
             return;
@@ -428,6 +413,7 @@ namespace Rando {
                 FishIdentity identity = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
                 if (identity.randomizerCheck != RC_UNKNOWN_CHECK) {
                     Flags_SetRandomizerInf(identity.randomizerInf);
+                    enableAdvance = true;
                     // Remove uncaught effect
                     if (actor->shape.shadowDraw != NULL) {
                         actor->shape.shadowDraw = NULL;
@@ -481,6 +467,13 @@ namespace Rando {
                 actor->parent = &GET_PLAYER(gPlayState)->actor;
                 *should = false;
             }
+        }
+    }
+
+    void Fishsanity::OnItemReceiveHandler(GetItemEntry itemEntry) {
+        if (enableAdvance) {
+            enableAdvance = false;
+            OTRGlobals::Instance->gRandoContext->GetFishsanity()->AdvancePond();
         }
     }
 } // namespace Rando

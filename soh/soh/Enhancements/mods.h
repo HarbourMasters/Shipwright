@@ -18,6 +18,7 @@ void UpdateHyperBossesState();
 void InitMods();
 void UpdatePatchHand(); 
 void UpdatePatchCustomEquipmentDlists();
+void SwitchAge();
 
 #ifdef __cplusplus
 }

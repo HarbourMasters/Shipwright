@@ -4,14 +4,14 @@
 #include <string>
 #include <version>
 
-static std::unordered_map<const char*, std::unordered_map<HOOK_ID, HookInfo>> hookData;
+static std::unordered_map<const char*, std::unordered_map<HOOK_ID, HookInfo>*> hookData;
 
 const ImVec4 grey = ImVec4(0.75, 0.75, 0.75, 1);
 const ImVec4 yellow = ImVec4(1, 1, 0, 1);
 const ImVec4 red = ImVec4(1, 0, 0, 1);
 
 void DrawHookRegisteringInfos(const char* hookName) {
-    if (hookData[hookName].size() == 0) {
+    if ((*hookData[hookName]).size() == 0) {
         ImGui::TextColored(grey, "No hooks found");
         return;
     }
@@ -27,7 +27,7 @@ void DrawHookRegisteringInfos(const char* hookName) {
         //ImGui::TableSetupColumn("Stub");
         ImGui::TableSetupColumn("Number of Calls");
         ImGui::TableHeadersRow();
-        for (auto& [id, hookInfo] : hookData[hookName]) {
+        for (auto& [id, hookInfo] : (*hookData[hookName])) {
             ImGui::TableNextRow();
 
             ImGui::TableNextColumn();
@@ -100,9 +100,7 @@ void HookDebuggerWindow::DrawElement() {
     }
 }
 
-void HookDebuggerWindow::UpdateElement() {
-    hookData.clear();
-
+void HookDebuggerWindow::InitElement() {
     #define DEFINE_HOOK(name, _) hookData.insert({#name, GameInteractor::Instance->GetHookData<GameInteractor::name>()});
 
     #include "../game-interactor/GameInteractor_HookTable.h"

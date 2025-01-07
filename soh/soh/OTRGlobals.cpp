@@ -6,17 +6,14 @@
 #include <fstream>
 #include <chrono>
 
-#include <ResourceManager.h>
+#include "ResourceManagerHelpers.h"
 #include "graphic/Fast3D/Fast3dWindow.h"
 #include <File.h>
 #include <DisplayList.h>
 #include <Window.h>
-#include <GameVersions.h>
+#include <soh/GameVersions.h>
 
-#include "z64animation.h"
-#include "z64bgcheck.h"
 #include "Enhancements/gameconsole.h"
-#include <libultraship/libultra/gbi.h>
 #ifdef _WIN32
 #include <Windows.h>
 #else
@@ -27,7 +24,6 @@
 #include "Enhancements/controls/SohInputEditorWindow.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/audio/AudioCollection.h"
-#include "Enhancements/audio/AudioEditor.h"
 #include "Enhancements/enhancementTypes.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/randomizer/randomizer.h"
@@ -56,7 +52,6 @@
 #endif
 
 #include <Fast3D/gfx_pc.h>
-#include <Fast3D/gfx_rendering_api.h>
 
 #ifdef __APPLE__
 #include <SDL_scancode.h>
@@ -77,6 +72,7 @@
 #include "Enhancements/item-tables/ItemTableManager.h"
 #include "SohGui.hpp"
 #include "ActorDB.h"
+#include "SaveManager.h"
 
 #ifdef ENABLE_REMOTE_CONTROL
 #include "soh/Network/CrowdControl/CrowdControl.h"
@@ -131,6 +127,7 @@ Sail* Sail::Instance;
 #include "soh/resource/importer/BackgroundFactory.h"
 
 #include "soh/config/ConfigUpdaters.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "src/overlays/actors/ovl_En_Dns/z_en_dns.h"
@@ -331,7 +328,7 @@ OTRGlobals::OTRGlobals() {
     prevAltAssets = CVarGetInteger(CVAR_ENHANCEMENT("AltAssets"), 0);
     context->GetResourceManager()->SetAltAssetsEnabled(prevAltAssets);
 
-    context->InitControlDeck({
+    auto controlDeck = std::make_shared<LUS::ControlDeck>(std::vector<CONTROLLERBUTTONS_T>({
         BTN_CUSTOM_MODIFIER1,
         BTN_CUSTOM_MODIFIER2,
         BTN_CUSTOM_OCARINA_NOTE_D4,
@@ -342,18 +339,20 @@ OTRGlobals::OTRGlobals() {
         BTN_CUSTOM_OCARINA_DISABLE_SONGS,
         BTN_CUSTOM_OCARINA_PITCH_UP,
         BTN_CUSTOM_OCARINA_PITCH_DOWN,
-    });
+    }));
+    context->InitControlDeck(controlDeck);
     context->GetControlDeck()->SetSinglePlayerMappingMode(true);
 
     context->InitCrashHandler();
     context->InitConsole();
 
     auto sohInputEditorWindow = std::make_shared<SohInputEditorWindow>(CVAR_WINDOW("ControllerConfiguration"), "Controller Configuration");
-    context->InitWindow({ sohInputEditorWindow });
+    auto sohFast3dWindow = std::make_shared<Fast::Fast3dWindow>(std::vector<std::shared_ptr<Ship::GuiWindow>>({sohInputEditorWindow}));
+    context->InitWindow(sohFast3dWindow);
 
     auto overlay = context->GetInstance()->GetWindow()->GetGui()->GetGameOverlay();
-    overlay->LoadFont("Press Start 2P", "fonts/PressStart2P-Regular.ttf", 12.0f);
-    overlay->LoadFont("Fipps", "fonts/Fipps-Regular.otf", 32.0f);
+    overlay->LoadFont("Press Start 2P", 12.0f, "fonts/PressStart2P-Regular.ttf");
+    overlay->LoadFont("Fipps", 32.0f, "fonts/Fipps-Regular.otf");
     overlay->SetCurrentFont(CVarGetString(CVAR_GAME_OVERLAY_FONT, "Press Start 2P"));
 
     context->InitAudio({ .SampleRate = 44100, .SampleLength = 1024, .DesiredBuffered = 2480 });
@@ -361,14 +360,14 @@ OTRGlobals::OTRGlobals() {
     SPDLOG_INFO("Starting Ship of Harkinian version {} (Branch: {} | Commit: {})", (char*)gBuildVersion, (char*)gGitBranch, (char*)gGitCommitHash);
 
     auto loader = context->GetResourceManager()->GetResourceLoader();
-    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryTextureV0>(), RESOURCE_FORMAT_BINARY, "Texture", static_cast<uint32_t>(LUS::ResourceType::Texture), 0);
-    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryTextureV1>(), RESOURCE_FORMAT_BINARY, "Texture", static_cast<uint32_t>(LUS::ResourceType::Texture), 1);
-    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryVertexV0>(), RESOURCE_FORMAT_BINARY, "Vertex", static_cast<uint32_t>(LUS::ResourceType::Vertex), 0);
-    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryXMLVertexV0>(), RESOURCE_FORMAT_XML, "Vertex", static_cast<uint32_t>(LUS::ResourceType::Vertex), 0);
-    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryDisplayListV0>(), RESOURCE_FORMAT_BINARY, "DisplayList", static_cast<uint32_t>(LUS::ResourceType::DisplayList), 0);
-    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryXMLDisplayListV0>(), RESOURCE_FORMAT_XML, "DisplayList", static_cast<uint32_t>(LUS::ResourceType::DisplayList), 0);
-    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryMatrixV0>(), RESOURCE_FORMAT_BINARY, "Matrix", static_cast<uint32_t>(LUS::ResourceType::Matrix), 0);
-    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryBlobV0>(), RESOURCE_FORMAT_BINARY, "Blob", static_cast<uint32_t>(LUS::ResourceType::Blob), 0);
+    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryBinaryTextureV0>(), RESOURCE_FORMAT_BINARY, "Texture", static_cast<uint32_t>(Fast::ResourceType::Texture), 0);
+    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryBinaryTextureV1>(), RESOURCE_FORMAT_BINARY, "Texture", static_cast<uint32_t>(Fast::ResourceType::Texture), 1);
+    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryBinaryVertexV0>(), RESOURCE_FORMAT_BINARY, "Vertex", static_cast<uint32_t>(Fast::ResourceType::Vertex), 0);
+    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryXMLVertexV0>(), RESOURCE_FORMAT_XML, "Vertex", static_cast<uint32_t>(Fast::ResourceType::Vertex), 0);
+    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryBinaryDisplayListV0>(), RESOURCE_FORMAT_BINARY, "DisplayList", static_cast<uint32_t>(Fast::ResourceType::DisplayList), 0);
+    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryXMLDisplayListV0>(), RESOURCE_FORMAT_XML, "DisplayList", static_cast<uint32_t>(Fast::ResourceType::DisplayList), 0);
+    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryBinaryMatrixV0>(), RESOURCE_FORMAT_BINARY, "Matrix", static_cast<uint32_t>(Fast::ResourceType::Matrix), 0);
+    loader->RegisterResourceFactory(std::make_shared<Ship::ResourceFactoryBinaryBlobV0>(), RESOURCE_FORMAT_BINARY, "Blob", static_cast<uint32_t>(Ship::ResourceType::Blob), 0);
     loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryArrayV0>(), RESOURCE_FORMAT_BINARY, "Array", static_cast<uint32_t>(SOH::ResourceType::SOH_Array), 0);
     loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryAnimationV0>(), RESOURCE_FORMAT_BINARY, "Animation", static_cast<uint32_t>(SOH::ResourceType::SOH_Animation), 0);
     loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryPlayerAnimationV0>(), RESOURCE_FORMAT_BINARY, "PlayerAnimation", static_cast<uint32_t>(SOH::ResourceType::SOH_PlayerAnimation), 0);
@@ -506,18 +505,11 @@ uint32_t OTRGlobals::GetInterpolationFPS() {
     return std::min<uint32_t>(Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate(), CVarGetInteger(CVAR_SETTING("InterpolationFPS"), 20));
 }
 
-struct ExtensionEntry {
-    std::string path;
-    std::string ext;
-};
-
 extern "C" void OTRMessage_Init();
 extern "C" void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
 extern "C" int AudioPlayer_Buffered(void);
 extern "C" int AudioPlayer_GetDesiredBuffered(void);
-extern "C" void ResourceMgr_LoadDirectory(const char* resName);
-extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path);
 std::unordered_map<std::string, ExtensionEntry> ExtensionCache;
 
 void OTRAudio_Thread() {
@@ -885,6 +877,7 @@ std::unordered_map<ItemID, RandomizerGet> ItemIDtoRandomizerGetMap {
     { ITEM_KOKIRI_EMERALD, RG_KOKIRI_EMERALD },
     { ITEM_GORON_RUBY, RG_GORON_RUBY },
     { ITEM_ZORA_SAPPHIRE, RG_ZORA_SAPPHIRE },
+    { ITEM_SWORD_MASTER, RG_MASTER_SWORD },
 };
 
 extern "C" RandomizerGet RetrieveRandomizerGetFromItemID(ItemID itemID) {
@@ -918,9 +911,9 @@ OTRVersion ReadPortVersionFromOTR(std::string otrPath) {
     OTRVersion version = {};
 
     // Use a temporary archive instance to load the otr and read the version file
-    auto archive = Ship::OtrArchive(otrPath);
-    if (archive.Open()) {
-        auto t = archive.LoadFile("portVersion", std::make_shared<Ship::ResourceInitData>());
+    auto archive = std::make_shared<Ship::OtrArchive>(otrPath);
+    if (archive->Open()) {
+        auto t = archive->LoadFile("portVersion", std::make_shared<Ship::ResourceInitData>());
         if (t != nullptr && t->IsLoaded) {
             auto stream = std::make_shared<Ship::MemoryStream>(t->Buffer->data(), t->Buffer->size());
             auto reader = std::make_shared<Ship::BinaryReader>(stream);
@@ -930,7 +923,7 @@ OTRVersion ReadPortVersionFromOTR(std::string otrPath) {
             version.minor = reader->ReadUInt16();
             version.patch = reader->ReadUInt16();
         }
-        archive.Close();
+        archive->Close();
     }
 
     return version;
@@ -1152,12 +1145,13 @@ extern "C" void InitOTR() {
     SaveManager::Instance = new SaveManager();
 
     std::shared_ptr<Ship::Config> conf = OTRGlobals::Instance->context->GetConfig();
-    conf->RegisterConfigVersionUpdater(std::make_shared<SOH::ConfigVersion1Updater>());
-    conf->RegisterConfigVersionUpdater(std::make_shared<SOH::ConfigVersion2Updater>());
-    conf->RegisterConfigVersionUpdater(std::make_shared<SOH::ConfigVersion3Updater>());
+    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion1Updater>());
+    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion2Updater>());
+    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion3Updater>());
     conf->RunVersionUpdates();
 
     SohGui::SetupGuiElements();
+    ShipInit::InitAll();
     AudioCollection::Instance = new AudioCollection();
     ActorDB::Instance = new ActorDB();
 #ifdef __APPLE__
@@ -1445,11 +1439,9 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 
     bool curAltAssets = CVarGetInteger(CVAR_ENHANCEMENT("AltAssets"), 0);
     if (prevAltAssets != curAltAssets) {
-        UpdatePatchCustomEquipmentDlists();
         prevAltAssets = curAltAssets;
         Ship::Context::GetInstance()->GetResourceManager()->SetAltAssetsEnabled(curAltAssets);
         gfx_texture_cache_clear();
-        UpdatePatchCustomEquipmentDlists();
         SOH::SkeletonPatcher::UpdateSkeletons();
         GameInteractor::Instance->ExecuteHooks<GameInteractor::OnAssetAltChange>();
     }
@@ -1480,438 +1472,12 @@ extern "C" uint16_t OTRGetPixelDepth(float x, float y) {
     return wnd->GetPixelDepth(x, y);
 }
 
-extern "C" uint32_t ResourceMgr_GetNumGameVersions() {
-    return Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions().size();
-}
-
-extern "C" uint32_t ResourceMgr_GetGameVersion(int index) {
-    return Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions()[index];
-}
-
-extern "C" uint32_t ResourceMgr_GetGamePlatform(int index) {
-    uint32_t version = Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions()[index];
-
-    switch (version) {
-        case OOT_NTSC_US_10:
-        case OOT_NTSC_US_11:
-        case OOT_NTSC_US_12:
-        case OOT_PAL_10:
-        case OOT_PAL_11:
-            return GAME_PLATFORM_N64;
-        case OOT_NTSC_JP_GC:
-        case OOT_NTSC_US_GC:
-        case OOT_PAL_GC:
-        case OOT_NTSC_JP_MQ:
-        case OOT_NTSC_US_MQ:
-        case OOT_PAL_MQ:
-        case OOT_PAL_GC_DBG1:
-        case OOT_PAL_GC_DBG2:
-        case OOT_PAL_GC_MQ_DBG:
-            return GAME_PLATFORM_GC;
-    }
-}
-
-extern "C" uint32_t ResourceMgr_GetGameRegion(int index) {
-    uint32_t version = Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions()[index];
-
-    switch (version) {
-        case OOT_NTSC_US_10:
-        case OOT_NTSC_US_11:
-        case OOT_NTSC_US_12:
-        case OOT_NTSC_JP_GC:
-        case OOT_NTSC_US_GC:
-        case OOT_NTSC_JP_MQ:
-        case OOT_NTSC_US_MQ:
-            return GAME_REGION_NTSC;
-        case OOT_PAL_10:
-        case OOT_PAL_11:
-        case OOT_PAL_GC:
-        case OOT_PAL_MQ:
-        case OOT_PAL_GC_DBG1:
-        case OOT_PAL_GC_DBG2:
-        case OOT_PAL_GC_MQ_DBG:
-            return GAME_REGION_PAL;
-    }
-}
-
-uint32_t IsSceneMasterQuest(s16 sceneNum) {
-    uint32_t value = 0;
-    uint8_t mqMode = CVarGetInteger(CVAR_GENERAL("BetterDebugWarpScreenMQMode"), WARP_MODE_OVERRIDE_OFF);
-    if (mqMode == WARP_MODE_OVERRIDE_MQ_AS_VANILLA) {
-        return 1;
-    } else if (mqMode == WARP_MODE_OVERRIDE_VANILLA_AS_MQ) {
-        return 0;
-    } else {
-        if (OTRGlobals::Instance->HasMasterQuest()) {
-            if (!OTRGlobals::Instance->HasOriginal()) {
-                value = 1;
-            } else if (IS_MASTER_QUEST) {
-                value = 1;
-            } else {
-                value = 0;
-                if (IS_RANDO) {
-                    auto dungeon = OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(sceneNum);
-                    if (dungeon != nullptr && dungeon->IsMQ()) {
-                        value = 1;
-                    }
-                }
-            }
-        }
-    }
-    return value;
-}
-
-uint32_t IsGameMasterQuest() {
-    return gPlayState != NULL ? IsSceneMasterQuest(gPlayState->sceneNum) : 0;
-}
-
-extern "C" uint32_t ResourceMgr_GameHasMasterQuest() {
-    return OTRGlobals::Instance->HasMasterQuest();
-}
-
-extern "C" uint32_t ResourceMgr_GameHasOriginal() {
-    return OTRGlobals::Instance->HasOriginal();
-}
-
-extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum) {
-    return IsSceneMasterQuest(sceneNum);
-}
-
-extern "C" uint32_t ResourceMgr_IsGameMasterQuest() {
-    return IsGameMasterQuest();
-}
-
-extern "C" void ResourceMgr_LoadDirectory(const char* resName) {
-    Ship::Context::GetInstance()->GetResourceManager()->LoadDirectory(resName);
-}
-extern "C" void ResourceMgr_DirtyDirectory(const char* resName) {
-    Ship::Context::GetInstance()->GetResourceManager()->DirtyDirectory(resName);
-}
-
-extern "C" void ResourceMgr_UnloadResource(const char* resName) {
-    std::string path = resName;
-    if (path.substr(0, 7) == "__OTR__") {
-        path = path.substr(7);
-    }
-    auto res = Ship::Context::GetInstance()->GetResourceManager()->UnloadResource(path);
-}
-
-// OTRTODO: There is probably a more elegant way to go about this...
-// Kenix: This is definitely leaking memory when it's called.
-extern "C" char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize) {
-    auto lst = Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->ListFiles(searchMask);
-    char** result = (char**)malloc(lst->size() * sizeof(char*));
-
-    for (size_t i = 0; i < lst->size(); i++) {
-        char* str = (char*)malloc(lst.get()[0][i].size() + 1);
-        memcpy(str, lst.get()[0][i].data(), lst.get()[0][i].size());
-        str[lst.get()[0][i].size()] = '\0';
-        result[i] = str;
-    }
-    *resultSize = lst->size();
-
-    return result;
-}
-
-extern "C" uint8_t ResourceMgr_FileExists(const char* filePath) {
-    std::string path = filePath;
-    if(path.substr(0, 7) == "__OTR__"){
-        path = path.substr(7);
-    }
-
-    return ExtensionCache.contains(path);
-}
-
-extern "C" uint8_t ResourceMgr_FileAltExists(const char* filePath) {
-    std::string path = filePath;
-    if (path.substr(0, 7) == "__OTR__") {
-        path = path.substr(7);
-    }
-
-    if (path.substr(0, 4) != "alt/") {
-        path = "alt/" + path;
-    }
-
-    return ExtensionCache.contains(path);
-}
-
-extern "C" bool ResourceMgr_IsAltAssetsEnabled() {
-    return Ship::Context::GetInstance()->GetResourceManager()->IsAltAssetsEnabled();
-}
-
-// Unloads a resource if an alternate version exists when alt assets are enabled
-// The resource is only removed from the internal cache to prevent it from used in the next resource lookup
-extern "C" void ResourceMgr_UnloadOriginalWhenAltExists(const char* resName) {
-    if (ResourceMgr_IsAltAssetsEnabled() && ResourceMgr_FileAltExists((char*)resName)) {
-        ResourceMgr_UnloadResource((char*) resName);
-    }
-}
-
-std::shared_ptr<Ship::IResource> GetResourceByNameHandlingMQ(const char* path) {
-    std::string Path = path;
-    if (ResourceMgr_IsGameMasterQuest()) {
-        size_t pos = 0;
-        if ((pos = Path.find("/nonmq/", 0)) != std::string::npos) {
-            Path.replace(pos, 7, "/mq/");
-        }
-    }
-    return Ship::Context::GetInstance()->GetResourceManager()->LoadResource(Path.c_str());
-}
-
-extern "C" char* GetResourceDataByNameHandlingMQ(const char* path) {
-    auto res = GetResourceByNameHandlingMQ(path);
-    
-    if (res == nullptr) {
-        return nullptr;
-    }
-    
-    return (char*)res->GetRawPointer();
-}
-
-extern "C" uint8_t ResourceMgr_TexIsRaw(const char* texPath) {
-    auto res = std::static_pointer_cast<LUS::Texture>(GetResourceByNameHandlingMQ(texPath));
-    return res->Flags & TEX_FLAG_LOAD_AS_RAW;
-}
-
-extern "C" uint8_t ResourceMgr_ResourceIsBackground(char* texPath) {
-    auto res = GetResourceByNameHandlingMQ(texPath);
-    return res->GetInitData()->Type == static_cast<uint32_t>(SOH::ResourceType::SOH_Background);
-}
-
-extern "C" char* ResourceMgr_LoadJPEG(char* data, size_t dataSize)
-{
-    static char* finalBuffer = 0;
-
-    if (finalBuffer == 0)
-        finalBuffer = (char*)malloc(dataSize);
-
-    int w;
-    int h;
-    int comp;
-
-    unsigned char* pixels = stbi_load_from_memory((const unsigned char*)data, 320 * 240 * 2, &w, &h, &comp, STBI_rgb_alpha);
-    //unsigned char* pixels = stbi_load_from_memory((const unsigned char*)data, 480 * 240 * 2, &w, &h, &comp, STBI_rgb_alpha);
-    int idx = 0;
-
-    for (int y = 0; y < h; y++)
-    {
-        for (int x = 0; x < w; x++)
-        {
-            uint16_t* bufferTest = (uint16_t*)finalBuffer;
-            int pixelIdx = ((y * w) + x) * 4;
-
-            uint8_t r = pixels[pixelIdx + 0] / 8;
-            uint8_t g = pixels[pixelIdx + 1] / 8;
-            uint8_t b = pixels[pixelIdx + 2] / 8;
-
-            uint8_t alphaBit = pixels[pixelIdx + 3] != 0;
-
-            uint16_t data = (r << 11) + (g << 6) + (b << 1) + alphaBit;
-
-            finalBuffer[idx++] = (data & 0xFF00) >> 8;
-            finalBuffer[idx++] = (data & 0x00FF);
-        }
-    }
-
-    return (char*)finalBuffer;
-}
-
-extern "C" uint16_t ResourceMgr_LoadTexWidthByName(char* texPath);
-
-extern "C" uint16_t ResourceMgr_LoadTexHeightByName(char* texPath);
-
-extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
-    auto res = GetResourceByNameHandlingMQ(filePath);
-
-    if (res->GetInitData()->Type == static_cast<uint32_t>(LUS::ResourceType::DisplayList))
-        return (char*)&((std::static_pointer_cast<LUS::DisplayList>(res))->Instructions[0]);
-    else if (res->GetInitData()->Type == static_cast<uint32_t>(SOH::ResourceType::SOH_Array))
-        return (char*)(std::static_pointer_cast<SOH::Array>(res))->Vertices.data();
-    else {
-        return (char*)GetResourceDataByNameHandlingMQ(filePath);
-    }
-}
-
-extern "C" char* ResourceMgr_LoadIfDListByName(const char* filePath) {
-    auto res = GetResourceByNameHandlingMQ(filePath);
-
-    if (res->GetInitData()->Type == static_cast<uint32_t>(LUS::ResourceType::DisplayList))
-        return (char*)&((std::static_pointer_cast<LUS::DisplayList>(res))->Instructions[0]);
-    
-    return nullptr;
-}
-
 extern "C" Sprite* GetSeedTexture(uint8_t index) {
-
     return OTRGlobals::Instance->gRandoContext->GetSeedTexture(index);
 }
 
 extern "C" uint8_t GetSeedIconIndex(uint8_t index) {
     return OTRGlobals::Instance->gRandoContext->hashIconIndexes[index];
-}
-
-extern "C" char* ResourceMgr_LoadPlayerAnimByName(const char* animPath) {
-    auto anim = std::static_pointer_cast<SOH::PlayerAnimation>(GetResourceByNameHandlingMQ(animPath));
-
-    return (char*)&anim->limbRotData[0];
-}
-
-extern "C" void ResourceMgr_PushCurrentDirectory(char* path)
-{
-    gfx_push_current_dir(path);
-}
-
-extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path)
-{
-    // When an alt resource exists for the DL, we need to unload the original asset
-    // to clear the cache so the alt asset will be loaded instead
-    // OTRTODO: If Alt loading over original cache is fixed, this line can most likely be removed
-    ResourceMgr_UnloadOriginalWhenAltExists(path);
-
-    auto res = std::static_pointer_cast<LUS::DisplayList>(GetResourceByNameHandlingMQ(path));
-    return (Gfx*)&res->Instructions[0];
-}
-
-extern "C" uint8_t ResourceMgr_FileIsCustomByName(const char* path) {
-    auto res = std::static_pointer_cast<LUS::DisplayList>(GetResourceByNameHandlingMQ(path));
-    return res->GetInitData()->IsCustom;
-}
-
-typedef struct {
-    int index;
-    Gfx instruction;
-} GfxPatch;
-
-std::unordered_map<std::string, std::unordered_map<std::string, GfxPatch>> originalGfx;
-
-// Attention! This is primarily for cosmetics & bug fixes. For things like mods and model replacement you should be using OTRs
-// instead (When that is available). Index can be found using the commented out section below.
-extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction) {
-    auto res = std::static_pointer_cast<LUS::DisplayList>(
-        Ship::Context::GetInstance()->GetResourceManager()->LoadResource(path));
-
-    // Leaving this here for people attempting to find the correct Dlist index to patch
-    /*if (strcmp("__OTR__objects/object_gi_longsword/gGiBiggoronSwordDL", path) == 0) {
-        for (int i = 0; i < res->instructions.size(); i++) {
-            Gfx* gfx = (Gfx*)&res->instructions[i];
-            // Log all commands
-            // SPDLOG_INFO("index:{} command:{}", i, gfx->words.w0 >> 24);
-            // Log only SetPrimColors
-            if (gfx->words.w0 >> 24 == 250) {
-                SPDLOG_INFO("index:{} r:{} g:{} b:{} a:{}", i, _SHIFTR(gfx->words.w1, 24, 8), _SHIFTR(gfx->words.w1, 16, 8), _SHIFTR(gfx->words.w1, 8, 8), _SHIFTR(gfx->words.w1, 0, 8));
-            }
-        }
-    }*/
-
-    // Index refers to individual gfx words, which are half the size on 32-bit
-    // if (sizeof(uintptr_t) < 8) {
-    // index /= 2;
-    // }
-
-    // Do not patch custom assets as they most likely do not have the same instructions as authentic assets
-    if (res->GetInitData()->IsCustom) {
-        return;
-    }
-
-    Gfx* gfx = (Gfx*)&res->Instructions[index];
-
-    if (!originalGfx.contains(path) || !originalGfx[path].contains(patchName)) {
-        originalGfx[path][patchName] = {
-            index,
-            *gfx
-        };
-    }
-
-    *gfx = instruction;
-}
-
-extern "C" void ResourceMgr_PatchCustomGfxByName(const char* path, const char* patchName, int index, Gfx instruction) {
-    auto res = std::static_pointer_cast<LUS::DisplayList>(
-        Ship ::Context::GetInstance()->GetResourceManager()->LoadResource(path));
-
-    Gfx* gfx = (Gfx*)&res->Instructions[index];
-
-    if (!originalGfx.contains(path) || !originalGfx[path].contains(patchName)) {
-        originalGfx[path][patchName] = { index, *gfx };
-    }
-
-    *gfx = instruction;
-}
-
-extern "C" void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const char* patchName, int destinationIndex, int sourceIndex) {
-    auto res = std::static_pointer_cast<LUS::DisplayList>(
-        Ship::Context::GetInstance()->GetResourceManager()->LoadResource(path));
-
-    // Do not patch custom assets as they most likely do not have the same instructions as authentic assets
-    if (res->GetInitData()->IsCustom) {
-        return;
-    }
-
-    Gfx* destinationGfx = (Gfx*)&res->Instructions[destinationIndex];
-    Gfx sourceGfx = *(Gfx*)&res->Instructions[sourceIndex];
-
-    if (!originalGfx.contains(path) || !originalGfx[path].contains(patchName)) {
-        originalGfx[path][patchName] = {
-            destinationIndex,
-            *destinationGfx
-        };
-    }
-
-    *destinationGfx = sourceGfx;
-}
-
-extern "C" void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName) {
-    if (originalGfx.contains(path) && originalGfx[path].contains(patchName)) {
-        auto res = std::static_pointer_cast<LUS::DisplayList>(
-            Ship::Context::GetInstance()->GetResourceManager()->LoadResource(path));
-
-        Gfx* gfx = (Gfx*)&res->Instructions[originalGfx[path][patchName].index];
-        *gfx = originalGfx[path][patchName].instruction;
-
-        originalGfx[path].erase(patchName);
-    }
-}
-
-extern "C" char* ResourceMgr_LoadArrayByName(const char* path)
-{
-    auto res = std::static_pointer_cast<SOH::Array>(GetResourceByNameHandlingMQ(path));
-
-    return (char*)res->Scalars.data();
-}
-
-// Return of LoadArrayByNameAsVec3s must be freed by the caller
-extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path) {
-    auto res = std::static_pointer_cast<SOH::Array>(GetResourceByNameHandlingMQ(path));
-
-    // if (res->CachedGameAsset != nullptr)
-    //     return (char*)res->CachedGameAsset;
-    // else
-    // {
-        Vec3s* data = (Vec3s*)malloc(sizeof(Vec3s) * res->Scalars.size());
-
-        for (size_t i = 0; i < res->Scalars.size(); i += 3) {
-            data[(i / 3)].x = res->Scalars[i + 0].s16;
-            data[(i / 3)].y = res->Scalars[i + 1].s16;
-            data[(i / 3)].z = res->Scalars[i + 2].s16;
-        }
-
-        // res->CachedGameAsset = data;
-
-        return (char*)data;
-    // }
-}
-
-extern "C" CollisionHeader* ResourceMgr_LoadColByName(const char* path) {
-    return (CollisionHeader*) ResourceGetDataByName(path);
-}
-
-extern "C" Vtx* ResourceMgr_LoadVtxByName(char* path) {
-    return (Vtx*) ResourceGetDataByName(path);
-}
-
-extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path) {
-    SequenceData* sequence = (SequenceData*) ResourceGetDataByName(path);
-    return *sequence;
 }
 
 std::map<std::string, SoundFontSample*> cachedCustomSFs;
@@ -1974,81 +1540,6 @@ extern "C" SoundFontSample* ReadCustomSample(const char* path) {
 */
 }
 
-extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path) {
-    return (SoundFontSample*) ResourceGetDataByName(path);
-}
-
-extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
-    return (SoundFont*) ResourceGetDataByName(path);
-}
-
-extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
-{
-	uintptr_t i = (uintptr_t)(imgData);
-
-// if (i == 0xD9000000 || i == 0xE7000000 || (i & 1) == 1)
-    if ((i & 1) == 1)
-        return 0;
-
-// if ((i & 0xFF000000) != 0xAB000000 && (i & 0xFF000000) != 0xCD000000 && i != 0) {
-    if (i != 0) {
-        if (imgData[0] == '_' && imgData[1] == '_' && imgData[2] == 'O' && imgData[3] == 'T' && imgData[4] == 'R' &&
-            imgData[5] == '_' && imgData[6] == '_')
-            return 1;
-    }
-
-    return 0;
-}
-
-extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
-    return (AnimationHeaderCommon*) ResourceGetDataByName(path);
-}
-
-extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, SkelAnime* skelAnime) {
-    std::string pathStr = std::string(path);
-    static const std::string sOtr = "__OTR__";
-
-    if (pathStr.starts_with(sOtr)) {
-        pathStr = pathStr.substr(sOtr.length());
-    }
-
-    bool isAlt = ResourceMgr_IsAltAssetsEnabled();
-
-    if (isAlt) {
-        pathStr = Ship::IResource::gAltAssetPrefix + pathStr;
-    }
-
-    SkeletonHeader* skelHeader = (SkeletonHeader*) ResourceGetDataByName(pathStr.c_str());
-
-    // If there isn't an alternate model, load the regular one
-    if (isAlt && skelHeader == NULL) {
-        skelHeader = (SkeletonHeader*) ResourceGetDataByName(path);
-    }
-
-    // This function is only called when a skeleton is initialized.
-    // Therefore we can take this oppurtunity to take note of the Skeleton that is created...
-    if (skelAnime != nullptr) {
-        auto stringPath = std::string(path);
-        SOH::SkeletonPatcher::RegisterSkeleton(stringPath, skelAnime);
-    }
-
-    return skelHeader;
-}
-
-extern "C" void ResourceMgr_UnregisterSkeleton(SkelAnime* skelAnime) {
-    if (skelAnime != nullptr)
-        SOH::SkeletonPatcher::UnregisterSkeleton(skelAnime);
-}
-
-extern "C" void ResourceMgr_ClearSkeletons(SkelAnime* skelAnime) {
-    if (skelAnime != nullptr)
-        SOH::SkeletonPatcher::ClearSkeletons();
-}
-
-extern "C" s32* ResourceMgr_LoadCSByName(const char* path) {
-    return (s32*)GetResourceDataByNameHandlingMQ(path);
-}
-
 std::filesystem::path GetSaveFile(std::shared_ptr<Ship::Config> Conf) {
     const std::string fileName = Conf->GetString("Game.SaveName", Ship::Context::GetPathRelativeToAppDirectory("oot_save.sav"));
     std::filesystem::path saveFile = std::filesystem::absolute(fileName);
@@ -2093,7 +1584,7 @@ std::wstring StringToU16(const std::string& s) {
     size_t i = 0;
     while (i < s.size()) {
         unsigned long uni;
-        size_t nbytes;
+        size_t nbytes = 0;
         bool error = false;
         unsigned char c = s[i++];
         if (c < 0x80) { // ascii
@@ -2413,7 +1904,7 @@ extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSi
 }
 
 extern "C" void Randomizer_ParseSpoiler(const char* fileLoc) {
-    OTRGlobals::Instance->gRandoContext->ParseSpoiler(fileLoc, CVarGetInteger(CVAR_GENERAL("PlandoMode"), 0));
+    OTRGlobals::Instance->gRandoContext->ParseSpoiler(fileLoc);
 }
 
 extern "C" void Randomizer_LoadHintMessages() {
@@ -2433,7 +1924,7 @@ extern "C" u32 SpoilerFileExists(const char* spoilerFileName) {
 }
 
 extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey) {
-    return OTRGlobals::Instance->gRandoContext->GetOption(randoSettingKey).GetSelectedOptionIndex();
+    return OTRGlobals::Instance->gRandoContext->GetOption(randoSettingKey).GetContextOptionIndex();
 }
 
 extern "C" RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams) {
@@ -2459,6 +1950,7 @@ extern "C" CowIdentity Randomizer_IdentifyCow(s32 sceneNum, s32 posX, s32 posZ) 
 extern "C" FishIdentity Randomizer_IdentifyFish(s32 sceneNum, s32 actorParams) {
     return OTRGlobals::Instance->gRandomizer->IdentifyFish(sceneNum, actorParams);
 }
+
 extern "C" GetItemEntry ItemTable_Retrieve(int16_t getItemID) {
     GetItemEntry giEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, getItemID);
     return giEntry;
@@ -2503,14 +1995,6 @@ extern "C" GetItemEntry GetItemMystery() {
     return { ITEM_NONE_FE, 0, 0, 0, 0, 0, 0, ITEM_NONE_FE, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_JUNK, NULL, MOD_RANDOMIZER, (CustomDrawFunc)Randomizer_DrawMysteryItem };
 }
 
-extern "C" void Randomizer_GenerateSeed() {
-    std::string seed = "";
-    if (OTRGlobals::Instance->gRandoContext->IsSpoilerLoaded()) {
-        seed = OTRGlobals::Instance->gRandoContext->GetSettings()->GetSeedString();
-    }
-    GenerateRandomizer(seed);
-}
-
 extern "C" uint8_t Randomizer_IsSeedGenerated() {
     return OTRGlobals::Instance->gRandoContext->IsSeedGenerated() ? 1 : 0;
 }
@@ -2527,12 +2011,12 @@ extern "C" void Randomizer_SetSpoilerLoaded(bool spoilerLoaded) {
     OTRGlobals::Instance->gRandoContext->SetSpoilerLoaded(spoilerLoaded);
 }
 
-extern "C" uint8_t Randomizer_IsPlandoLoaded() {
-    return OTRGlobals::Instance->gRandoContext->IsPlandoLoaded() ? 1 : 0;
+extern "C" uint8_t Randomizer_GenerateRandomizer() {
+    return GenerateRandomizer() ? 1 : 0;
 }
 
-extern "C" void Randomizer_SetPlandoLoaded(bool plandoLoaded) {
-    OTRGlobals::Instance->gRandoContext->SetPlandoLoaded(plandoLoaded);
+extern "C" void Randomizer_ShowRandomizerMenu() {
+    SohGui::ShowRandomizerSettingsMenu();
 }
 
 CustomMessage Randomizer_GetCustomGetItemMessage(Player* player) {
@@ -2653,7 +2137,6 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         } else if (textId >= TEXT_SHOP_ITEM_RANDOM_CONFIRM && textId <= TEXT_SHOP_ITEM_RANDOM_CONFIRM_END){
             RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf((RandomizerInf)((textId - TEXT_SHOP_ITEM_RANDOM_CONFIRM) + RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1));
             messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(rc, TEXT_SHOP_ITEM_RANDOM_CONFIRM);
-        // textId: TEXT_SCRUB_RANDOM + (randomizerInf - RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT)
         } else if (textId == TEXT_SCRUB_RANDOM) {
             EnDns* enDns = (EnDns*)GET_PLAYER(play)->talkActor;
             RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf((RandomizerInf)enDns->sohScrubIdentity.randomizerInf);
@@ -2875,14 +2358,6 @@ extern "C" void Overlay_DisplayText_Seconds(int seconds, const char* text) {
     Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(duration, true, text);
 }
 
-extern "C" void Entrance_ClearEntranceTrackingData(void) {
-    ClearEntranceTrackingData();
-}
-
-extern "C" void Entrance_InitEntranceTrackingData(void) {
-    InitEntranceTrackingData();
-}
-
 extern "C" void EntranceTracker_SetCurrentGrottoID(s16 entranceIndex) {
     SetCurrentGrottoIDForTracker(entranceIndex);
 }
@@ -2907,7 +2382,7 @@ extern "C" void Gfx_TextureCacheDelete(const uint8_t* texAddr) {
     }
 
     if (ResourceMgr_OTRSigCheck(imgName)) {
-        texAddr = (const uint8_t*)GetResourceDataByNameHandlingMQ(imgName);
+        texAddr = (const uint8_t*)ResourceMgr_GetResourceDataByNameHandlingMQ(imgName);
     }
 
     gfx_texture_cache_delete(texAddr);
@@ -2967,7 +2442,7 @@ void SoH_ProcessDroppedFiles(std::string filePath) {
         gui->GetGuiWindow("Stats")->Hide();
         std::dynamic_pointer_cast<Ship::ConsoleWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->ClearBindings();
 
-        gui->SaveConsoleVariablesOnNextTick();
+        gui->SaveConsoleVariablesNextFrame();
 
         uint32_t finalHash = boost::hash_32<std::string>{}(configJson.dump());
         gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Configuration Loaded. Hash: %d", finalHash);

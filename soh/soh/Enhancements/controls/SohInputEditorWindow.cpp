@@ -3,6 +3,7 @@
 #include "soh/OTRGlobals.h"
 #include "../../UIWidgets.hpp"
 #include "z64.h"
+#include "soh/cvar_prefixes.h"
 #ifndef __WIIU__
 #include "controller/controldevice/controller/mapping/sdl/SDLAxisDirectionToButtonMapping.h"
 #endif
@@ -83,7 +84,7 @@ void SohInputEditorWindow::UpdateElement() {
             }
         }
 
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->BlockImGuiGamepadNavigation();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->BlockGamepadNavigation();
     } else {
         if (mGameInputBlockTimer != INT32_MAX) {
             mGameInputBlockTimer--;
@@ -94,13 +95,13 @@ void SohInputEditorWindow::UpdateElement() {
             }
         }
 
-        if (Ship::Context::GetInstance()->GetWindow()->GetGui()->ImGuiGamepadNavigationEnabled()) {
+        if (Ship::Context::GetInstance()->GetWindow()->GetGui()->GamepadNavigationEnabled()) {
             mMappingInputBlockTimer = ImGui::GetIO().Framerate / 3;
         } else {
             mMappingInputBlockTimer = INT32_MAX;
         }
 
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->UnblockImGuiGamepadNavigation();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->UnblockGamepadNavigation();
     }
 }
 
@@ -297,7 +298,7 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, N64Butt
         ImGui::OpenPopup(popupId.c_str());
     }
     if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayNormal | ImGuiHoveredFlags_NoSharedDelay)) {
-        ImGui::SetTooltip(mapping->GetPhysicalDeviceName().c_str());
+        ImGui::SetTooltip("%s", mapping->GetPhysicalDeviceName().c_str());
     }
     ImGui::PopStyleColor();
     ImGui::PopStyleColor();
@@ -571,7 +572,7 @@ void SohInputEditorWindow::DrawStickDirectionLineEditMappingButton(uint8_t port,
         ImGui::OpenPopup(popupId.c_str());
     }
     if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayNormal | ImGuiHoveredFlags_NoSharedDelay)) {
-        ImGui::SetTooltip(mapping->GetPhysicalDeviceName().c_str());
+        ImGui::SetTooltip("%s", mapping->GetPhysicalDeviceName().c_str());
     }
     ImGui::PopStyleColor();
     ImGui::PopStyleColor();
@@ -1108,7 +1109,7 @@ void SohInputEditorWindow::DrawLEDSection(uint8_t port) {
                         color.b = colorVec.z * 255.0;
 
                         CVarSetColor24(CVAR_SETTING("LEDPort1Color"), color);
-                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                     }
                     ImGui::SameLine();
                     ImGui::Text("Custom Color");
@@ -1178,7 +1179,7 @@ void SohInputEditorWindow::DrawGyroSection(uint8_t port) {
         auto id = mapping->GetGyroMappingId();
         ImGui::AlignTextToFramePadding();
         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-        ImGui::BulletText(mapping->GetPhysicalDeviceName().c_str());
+        ImGui::BulletText("%s", mapping->GetPhysicalDeviceName().c_str());
         DrawRemoveGyroMappingButton(port, id);
 
         static float sPitch, sYaw = 0.0f;
@@ -1303,7 +1304,7 @@ void SohInputEditorWindow::DrawButtonDeviceIcons(uint8_t portIndex, std::set<N64
     }
 }
 
-void SohInputEditorWindow::DrawAnalogStickDeviceIcons(uint8_t portIndex, Ship::Stick stick) {
+void SohInputEditorWindow::DrawAnalogStickDeviceIcons(uint8_t portIndex, Ship::StickIndex stickIndex) {
     std::set<Ship::ShipDeviceIndex> allLusDeviceIndices;
     allLusDeviceIndices.insert(Ship::ShipDeviceIndex::Keyboard);
     for (auto [lusIndex, mapping] : Ship::Context::GetInstance()
@@ -1316,7 +1317,7 @@ void SohInputEditorWindow::DrawAnalogStickDeviceIcons(uint8_t portIndex, Ship::S
     std::vector<std::pair<Ship::ShipDeviceIndex, bool>> lusDeviceIndiciesWithMappings;
     for (auto lusIndex : allLusDeviceIndices) {
         auto controllerStick =
-            stick == Ship::Stick::LEFT_STICK
+            stickIndex == Ship::StickIndex::LEFT_STICK
                 ? Ship::Context::GetInstance()->GetControlDeck()->GetControllerByPort(portIndex)->GetLeftStick()
                 : Ship::Context::GetInstance()->GetControlDeck()->GetControllerByPort(portIndex)->GetRightStick();
         if (controllerStick->HasMappingsForShipDeviceIndex(lusIndex)) {
@@ -1524,7 +1525,7 @@ void SohInputEditorWindow::DrawMapping(CustomButtonMap& mapping, float labelWidt
             }
             if (ImGui::Selectable(i->second, i->first == currentButton)) {
                 CVarSetInteger(mapping.cVarName, i->first);
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             }
         }
         ImGui::EndCombo();
@@ -1534,8 +1535,10 @@ void SohInputEditorWindow::DrawMapping(CustomButtonMap& mapping, float labelWidt
 
 void SohInputEditorWindow::DrawOcarinaControlPanel() {
     ImVec2 cursor = ImGui::GetCursorPos();
-    ImGui::SetCursorPos(ImVec2(cursor.x + 24, cursor.y + 5));
-
+    ImGui::SetCursorPos(ImVec2(cursor.x, cursor.y + 5));
+    
+    UIWidgets::EnhancementCheckbox("Dpad Ocarina Playback", CVAR_SETTING("CustomOcarina.Dpad"));
+    UIWidgets::EnhancementCheckbox("Right Stick Ocarina Playback", CVAR_SETTING("CustomOcarina.RightStick"));
     UIWidgets::EnhancementCheckbox("Customize Ocarina Controls", CVAR_SETTING("CustomOcarina.Enabled"));
 
     if (!CVarGetInteger(CVAR_SETTING("CustomOcarina.Enabled"), 0)) {
@@ -1578,10 +1581,10 @@ void SohInputEditorWindow::DrawCameraControlPanel() {
     UIWidgets::Tooltip("Inverts the Camera X Axis in:\n-First-Person/C-Up view\n-Weapon Aiming");
     UIWidgets::PaddedEnhancementCheckbox("Invert Aiming Y Axis", CVAR_SETTING("Controls.InvertAimingYAxis"), true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
     UIWidgets::Tooltip("Inverts the Camera Y Axis in:\n-First-Person/C-Up view\n-Weapon Aiming");
-    UIWidgets::PaddedEnhancementCheckbox("Invert Shield Aiming Y Axis", CVAR_SETTING("Controls.InvertShieldAimingYAxis"), true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
-    UIWidgets::Tooltip("Inverts the Shield Aiming Y Axis");
-    UIWidgets::PaddedEnhancementCheckbox("Invert Shield Aiming X Axis", CVAR_SETTING("Controls.InvertShieldAimingYAxis"));
+    UIWidgets::PaddedEnhancementCheckbox("Invert Shield Aiming X Axis", CVAR_SETTING("Controls.InvertShieldAimingXAxis"), true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
     UIWidgets::Tooltip("Inverts the Shield Aiming X Axis");
+    UIWidgets::PaddedEnhancementCheckbox("Invert Shield Aiming Y Axis", CVAR_SETTING("Controls.InvertShieldAimingYAxis"));
+    UIWidgets::Tooltip("Inverts the Shield Aiming Y Axis");
     UIWidgets::PaddedEnhancementCheckbox("Invert Z-Weapon Aiming Y Axis", CVAR_SETTING("Controls.InvertZAimingYAxis"), true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
     UIWidgets::Tooltip("Inverts the Camera Y Axis in:\n-Z-Weapon Aiming");
     UIWidgets::PaddedEnhancementCheckbox("Disable Auto-Centering in First-Person View", CVAR_SETTING("DisableFirstPersonAutoCenterView"));

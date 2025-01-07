@@ -11,8 +11,9 @@
 #include "textures/nintendo_rogo_static/nintendo_rogo_static.h"
 #include "assets/objects/gameplay_keep/gameplay_keep.h"
 #include <soh/Enhancements/bootcommands.h>
-#include <GameVersions.h>
+#include <soh/GameVersions.h>
 #include <soh/SaveManager.h>
+#include "soh/ResourceManagerHelpers.h"
 #include <string.h>
 
 #include "time.h"
@@ -293,8 +294,6 @@ void Title_Init(GameState* thisx) {
 
     //ResourceMgr_LoadDirectory("nintendo_rogo_static*");
 
-    // Disable vismono
-    D_801614B0.a = 0;
     R_UPDATE_RATE = 1;
     Matrix_Init(&this->state);
     View_Init(&this->view, this->state.gfxCtx);

@@ -1,7 +1,7 @@
 /*
  * File: z_bg_menkuri_kaiten.c
  * Overlay: Bg_Menkuri_Kaiten
- * Description: Large rotating stone ring used in Gerudo Training Grounds and Forest Temple.
+ * Description: Large rotating stone ring used in Gerudo Training Ground and Forest Temple.
  */
 
 #include "z_bg_menkuri_kaiten.h"
@@ -51,7 +51,7 @@ void BgMenkuriKaiten_Destroy(Actor* thisx, PlayState* play) {
 void BgMenkuriKaiten_Update(Actor* thisx, PlayState* play) {
     BgMenkuriKaiten* this = (BgMenkuriKaiten*)thisx;
 
-    if (!Flags_GetSwitch(play, this->dyna.actor.params) && func_80043590(&this->dyna)) {
+    if (!Flags_GetSwitch(play, this->dyna.actor.params) && DynaPolyActor_IsPlayerAbove(&this->dyna)) {
         func_8002F974(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE - SFX_FLAG);
         this->dyna.actor.shape.rot.y += 0x80;
     }

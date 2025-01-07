@@ -8,6 +8,8 @@
 #include "vt.h"
 #include "objects/object_ge1/object_ge1.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
@@ -181,7 +183,7 @@ void EnGe1_Init(Actor* thisx, PlayState* play) {
             }
             break;
 
-        case GE1_TYPE_TRAINING_GROUNDS_GUARD:
+        case GE1_TYPE_TRAINING_GROUND_GUARD:
             this->hairstyle = GE1_HAIR_STRAIGHT;
 
             if (GameInteractor_Should(VB_GERUDOS_BE_FRIENDLY, EnGe1_CheckCarpentersFreed())) {
@@ -270,7 +272,7 @@ void EnGe1_SpotPlayer(EnGe1* this, PlayState* play) {
     this->cutsceneTimer = 30;
     this->actionFunc = EnGe1_KickPlayer;
     Player_SetCsActionWithHaltedActors(play, &this->actor, 0x5F);
-    func_80078884(NA_SE_SY_FOUND);
+    Sfx_PlaySfxCentered(NA_SE_SY_FOUND);
     Message_StartTextbox(play, 0x6000, &this->actor);
 }
 
@@ -610,7 +612,7 @@ void EnGe1_BeginGame_Archery(EnGe1* this, PlayState* play) {
                     this->actionFunc = EnGe1_TalkTooPoor_Archery;
                 } else {
                     Rupees_ChangeBy(-20);
-                    play->nextEntranceIndex = ENTR_GERUDOS_FORTRESS_0;
+                    play->nextEntranceIndex = ENTR_GERUDOS_FORTRESS_EAST_EXIT;
                     gSaveContext.nextCutsceneIndex = 0xFFF0;
                     play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST);
                     play->transitionTrigger = TRANS_TRIGGER_START;
@@ -752,7 +754,7 @@ void EnGe1_Update(Actor* thisx, PlayState* play) {
 
     Collider_UpdateCylinder(&this->actor, &this->collider);
     CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 40.0f, 25.0f, 40.0f, 5);
     this->animFunc(this);
     this->actionFunc(this, play);

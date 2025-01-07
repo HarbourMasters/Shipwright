@@ -1,6 +1,7 @@
 #include "z_en_eiyer.h"
 #include "objects/object_ei/object_ei.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
 
@@ -647,9 +648,9 @@ void EnEiyer_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
 
     if (this->actor.world.rot.x == 0 || this->actionFunc == EnEiyer_Stunned) {
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
     } else {
-        func_8002D97C(&this->actor);
+        Actor_MoveXYZ(&this->actor);
     }
 
     if (this->actionFunc == EnEiyer_Glide || this->actionFunc == EnEiyer_DiveAttack ||

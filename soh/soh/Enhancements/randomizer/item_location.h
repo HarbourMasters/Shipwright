@@ -23,6 +23,8 @@ class ItemLocation {
     RandomizerRegion GetParentRegionKey() const;
     void SetParentRegion (RandomizerRegion region);
     std::set<RandomizerArea> GetAreas() const;
+    RandomizerArea GetFirstArea() const;
+    RandomizerArea GetRandomArea() const;
     void MergeAreas (std::set<RandomizerArea> newAreas);
     void PlaceVanillaItem();
     void ApplyPlacedItemEffect() const;
@@ -43,7 +45,7 @@ class ItemLocation {
     const std::vector<RandomizerHint>& GetHintedBy() const;
     void AddHintedBy(RandomizerHint hintKey);
     bool IsHidden() const;
-    bool IsExcluded() const;
+    bool IsExcluded();
     void AddExcludeOption();
     Option* GetExcludedOption();
     void SetHidden(bool hidden_);

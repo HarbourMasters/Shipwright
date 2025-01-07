@@ -369,7 +369,7 @@ void EnTrap_Update(Actor* thisx, PlayState* play) {
                 }
             }
         }
-        Actor_MoveForward(thisx); // Only used by straight line logic
+        Actor_MoveXZGravity(thisx); // Only used by straight line logic
         // Adjust position using bgcheck, but do not adjust x, z position if in straight line mode:
         if (thisx->params & SPIKETRAP_MODE_LINEAR) {
             posTemp = thisx->world.pos;

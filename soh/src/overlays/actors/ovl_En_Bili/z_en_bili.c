@@ -7,6 +7,7 @@
 #include "z_en_bili.h"
 #include "objects/object_bl/object_bl.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_IGNORE_QUAKE | ACTOR_FLAG_ARROW_DRAGGABLE)
 
@@ -624,9 +625,9 @@ void EnBili_Update(Actor* thisx, PlayState* play2) {
             }
         }
         if (this->actionFunc == EnBili_Recoil) {
-            func_8002D97C(&this->actor);
+            Actor_MoveXYZ(&this->actor);
         } else {
-            Actor_MoveForward(&this->actor);
+            Actor_MoveXZGravity(&this->actor);
         }
 
         Actor_UpdateBgCheckInfo(play, &this->actor, 5.0f, this->collider.dim.radius, this->collider.dim.height, 7);

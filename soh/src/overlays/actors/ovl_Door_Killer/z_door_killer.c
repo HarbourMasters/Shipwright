@@ -11,6 +11,7 @@
 #include "objects/object_haka_door/object_haka_door.h"
 #include "objects/object_door_killer/object_door_killer.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
@@ -246,7 +247,7 @@ void DoorKiller_FallAsRubble(DoorKiller* this, PlayState* play) {
     } else {
         Actor_Kill(&this->actor);
     }
-    func_8002D7EC(&this->actor);
+    Actor_UpdatePos(&this->actor);
 }
 
 s32 DoorKiller_IsHit(Actor* thisx, PlayState* play) {
@@ -373,7 +374,7 @@ void DoorKiller_FallOver(DoorKiller* this, PlayState* play) {
     if (!(this->hasHitPlayerOrGround & 1)) {
         Vec3f playerPosRelToDoor;
         Player* player = GET_PLAYER(play);
-        func_8002DBD0(&this->actor, &playerPosRelToDoor, &player->actor.world.pos);
+        Actor_WorldToActorCoords(&this->actor, &playerPosRelToDoor, &player->actor.world.pos);
         if ((fabsf(playerPosRelToDoor.y) < 20.0f) && (fabsf(playerPosRelToDoor.x) < 20.0f) &&
             (playerPosRelToDoor.z < 100.0f) && (playerPosRelToDoor.z > 0.0f)) {
             this->hasHitPlayerOrGround |= 1;
@@ -435,7 +436,7 @@ void DoorKiller_Wait(DoorKiller* this, PlayState* play) {
     Vec3f playerPosRelToDoor;
     s16 angleToFacingPlayer;
 
-    func_8002DBD0(&this->actor, &playerPosRelToDoor, &player->actor.world.pos);
+    Actor_WorldToActorCoords(&this->actor, &playerPosRelToDoor, &player->actor.world.pos);
 
     // playerIsOpening is set by player
     if (this->playerIsOpening) {

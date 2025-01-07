@@ -210,7 +210,7 @@ void func_8087FFC0(BgHakaTrap* this, PlayState* play) {
     f32 zNonNegative;
     Player* player = GET_PLAYER(play);
 
-    func_8002DBD0(&this->dyna.actor, &sp28, &player->actor.world.pos);
+    Actor_WorldToActorCoords(&this->dyna.actor, &sp28, &player->actor.world.pos);
 
     sine = Math_SinS(this->dyna.actor.shape.rot.y);
     cosine = Math_CosS(this->dyna.actor.shape.rot.y);
@@ -434,7 +434,7 @@ void func_808809E4(BgHakaTrap* this, PlayState* play, s16 arg2) {
     Player* player = GET_PLAYER(play);
     Vec3f sp18;
 
-    func_8002DBD0(&this->dyna.actor, &sp18, &player->actor.world.pos);
+    Actor_WorldToActorCoords(&this->dyna.actor, &sp18, &player->actor.world.pos);
 
     if ((fabsf(sp18.x) < 70.0f) && (fabsf(sp18.y) < 100.0f) && (sp18.z < 500.0f) &&
         (GET_PLAYER(play)->currentBoots != PLAYER_BOOTS_IRON)) {
@@ -546,7 +546,7 @@ void BgHakaTrap_Draw(Actor* thisx, PlayState* play) {
         sp2C.y = this->dyna.actor.world.pos.y + 110.0f;
 
         SkinMatrix_Vec3fMtxFMultXYZ(&play->viewProjectionMtxF, &sp2C, &this->unk_16C);
-        func_80078914(&this->unk_16C, NA_SE_EV_BRIDGE_CLOSE - SFX_FLAG);
+        Sfx_PlaySfxAtPos(&this->unk_16C, NA_SE_EV_BRIDGE_CLOSE - SFX_FLAG);
     }
 }
 

@@ -9,6 +9,7 @@
 #include "overlays/actors/ovl_En_Attack_Niw/z_en_attack_niw.h"
 #include "vt.h"
 #include "soh/frame_interpolation.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_ALWAYS_THROWN)
 
@@ -489,7 +490,7 @@ void func_80AB6570(EnNiw* this, PlayState* play) {
             this->actionFunc = func_80AB6BF8;
             return;
         }
-        func_8002F580(&this->actor, play);
+        Actor_OfferCarry(&this->actor, play);
     } else {
         if (this->path != 0) {
             this->unk_2A6 = 1;
@@ -694,7 +695,7 @@ void func_80AB6D08(EnNiw* this, PlayState* play) {
         this->actionFunc = func_80AB6BF8;
     } else {
         if (this->timer5 >= 6) {
-            func_8002F580(&this->actor, play);
+            Actor_OfferCarry(&this->actor, play);
         }
         func_80AB5BF8(this, play, 2);
     }
@@ -973,7 +974,7 @@ void EnNiw_Update(Actor* thisx, PlayState* play) {
     thisx->shape.shadowScale = 15.0f;
     this->actionFunc(this, play);
     Actor_SetFocus(&this->actor, this->unk_304);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 
     if (this->actionFunc != func_80AB6EB4 && this->actionFunc != func_80AB6450 && play->sceneNum != SCENE_ZORAS_RIVER) {
         Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 20.0f, 60.0f, 31);

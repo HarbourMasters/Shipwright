@@ -9,6 +9,8 @@
 #include "objects/object_po_sisters/object_po_sisters.h"
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_HOOKSHOT_DRAGS | ACTOR_FLAG_IGNORE_QUAKE | ACTOR_FLAG_ARROW_DRAGGABLE)
 
@@ -823,7 +825,7 @@ void func_80ADB17C(EnPoSisters* this, PlayState* play) {
             Flags_UnsetSwitch(play, 0x1B);
         }
         play->envCtx.unk_BF = 0xFF;
-        func_80078884(NA_SE_SY_CORRECT_CHIME);
+        Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
         Actor_Kill(&this->actor);
     } else if (this->unk_19A < 32) {
         func_80AD9240(this, this->unk_19A, &this->actor.world.pos);
@@ -1196,7 +1198,7 @@ void EnPoSisters_Update(Actor* thisx, PlayState* play) {
         if (this->unk_199 & 8) {
             func_80ADA35C(this, play);
         }
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
 
         if (this->unk_199 & 0x10) {
             Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 20.0f, 0.0f, 5);

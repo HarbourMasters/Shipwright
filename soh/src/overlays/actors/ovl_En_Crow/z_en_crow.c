@@ -1,6 +1,7 @@
 #include "z_en_crow.h"
 #include "objects/object_crow/object_crow.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_IGNORE_QUAKE | ACTOR_FLAG_ARROW_DRAGGABLE)
 
@@ -451,10 +452,10 @@ void EnCrow_Update(Actor* thisx, PlayState* play) {
     if (this->actionFunc != EnCrow_Respawn) {
         if (this->actor.colChkInfo.health != 0) {
             height = 20.0f * scale;
-            func_8002D97C(&this->actor);
+            Actor_MoveXYZ(&this->actor);
         } else {
             height = 0.0f;
-            Actor_MoveForward(&this->actor);
+            Actor_MoveXZGravity(&this->actor);
         }
         Actor_UpdateBgCheckInfo(play, &this->actor, 12.0f * scale, 25.0f * scale, 50.0f * scale, 7);
     } else {

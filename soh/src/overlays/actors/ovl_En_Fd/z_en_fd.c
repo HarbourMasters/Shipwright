@@ -9,6 +9,7 @@
 #include "objects/object_fw/object_fw.h"
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_HOOKSHOT_DRAGS)
 
@@ -680,7 +681,7 @@ void EnFd_Update(Actor* thisx, PlayState* play) {
     } else if (this->actionFunc != EnFd_WaitForCore) {
         EnFd_ColliderCheck(this, play);
     }
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);
     EnFd_Fade(this, play);
     this->actionFunc(this, play);

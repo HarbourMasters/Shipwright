@@ -13,8 +13,9 @@ class DungeonInfo {
     DungeonInfo(std::string name_, RandomizerHintTextKey hintKey_, RandomizerGet map_, RandomizerGet compass_,
                 RandomizerGet smallKey_, RandomizerGet keyRing_, RandomizerGet bossKey_, RandomizerArea area_, 
                 uint8_t vanillaKeyCount_, uint8_t mqKeyCount_, RandomizerSettingKey mqSetting_,
-                std::vector<RandomizerCheck> vanillaLocations_,
-                std::vector<RandomizerCheck> mqLocations_, std::vector<RandomizerCheck> sharedLocations_,
+                std::vector<RandomizerCheck> vanillaLocations_, std::vector<RandomizerCheck> mqLocations_,
+                std::vector<RandomizerCheck> vanillaPots_, std::vector<RandomizerCheck> mqPots_,
+                std::vector<RandomizerCheck> sharedLocations_,
                 std::vector<RandomizerCheck> bossRoomLocations_);
     DungeonInfo();
     ~DungeonInfo();
@@ -61,6 +62,8 @@ class DungeonInfo {
     bool hasKeyRing = false;
     std::vector<RandomizerCheck> vanillaLocations;
     std::vector<RandomizerCheck> mqLocations;
+    std::vector<RandomizerCheck> vanillaPots;
+    std::vector<RandomizerCheck> mqPots;
     std::vector<RandomizerCheck> sharedLocations;
     std::vector<RandomizerCheck> bossRoomLocations;
 };
@@ -76,8 +79,8 @@ typedef enum {
     SHADOW_TEMPLE,
     BOTTOM_OF_THE_WELL,
     ICE_CAVERN,
-    GERUDO_TRAINING_GROUNDS,
-    GANONS_CASTLE
+    GANONS_CASTLE,
+    GERUDO_TRAINING_GROUND
 } DungeonKey;
 
 class Dungeons {

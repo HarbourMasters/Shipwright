@@ -8,12 +8,14 @@
 #include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
 #include "soh/OTRGlobals.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 extern "C" {
 #include <z64.h>
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
+#include "soh/cvar_prefixes.h"
 extern PlayState* gPlayState;
 }
 
@@ -60,7 +62,7 @@ void ColViewerWindow::DrawElement() {
     UIWidgets::LabeledRightAlignedEnhancementCombobox("Col Check", CVAR_DEVELOPER_TOOLS("ColViewer.ColCheck"), ColRenderSettingNames, COLVIEW_DISABLED);
     UIWidgets::LabeledRightAlignedEnhancementCombobox("Waterbox", CVAR_DEVELOPER_TOOLS("ColViewer.Waterbox"), ColRenderSettingNames, COLVIEW_DISABLED);
 
-    UIWidgets::EnhancementCheckbox("Apply as decal", CVAR_DEVELOPER_TOOLS("ColViewer.Decal"));
+    UIWidgets::EnhancementCheckbox("Apply as decal", CVAR_DEVELOPER_TOOLS("ColViewer.Decal"), false, "", UIWidgets::CheckboxGraphics::Cross, true);
     UIWidgets::InsertHelpHoverText("Applies the collision as a decal display. This can be useful if there is z-fighting occuring "
                         "with the scene geometry, but can cause other artifacts.");
     UIWidgets::EnhancementCheckbox("Shaded", CVAR_DEVELOPER_TOOLS("ColViewer.Shaded"));
@@ -276,11 +278,6 @@ void CreateSphereData() {
     sphereGfx.push_back(gsSPEndDisplayList());
 }
 
-void ColViewerWindow::InitElement() {
-    CreateCylinderData();
-    CreateSphereData();
-}
-
 // Initializes the display list for a ColRenderSetting
 void InitGfx(std::vector<Gfx>& gfx, ColRenderSetting setting) {
     uint32_t rm;
@@ -302,7 +299,7 @@ void InitGfx(std::vector<Gfx>& gfx, ColRenderSetting setting) {
         alpha = 0xFF;
     }
 
-    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Decal"), 0) != 0) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Decal"), 1) != 0) {
         rm |= ZMODE_DEC;
     } else if (setting == ColRenderSetting::Transparent) {
         rm |= ZMODE_XLU;
@@ -688,4 +685,11 @@ extern "C" void DrawColViewer() {
     }
 
     CLOSE_DISPS(gPlayState->state.gfxCtx);
+}
+
+void ColViewerWindow::InitElement() {
+    CreateCylinderData();
+    CreateSphereData();
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayDrawEnd>(DrawColViewer);
 }

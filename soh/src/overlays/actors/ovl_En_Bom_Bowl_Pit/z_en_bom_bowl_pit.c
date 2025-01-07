@@ -2,6 +2,7 @@
 #include "vt.h"
 #include "overlays/actors/ovl_En_Bom_Chu/z_en_bom_chu.h"
 #include "overlays/actors/ovl_En_Ex_Item/z_en_ex_item.h"
+#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
@@ -107,7 +108,7 @@ void EnBomBowlPit_DetectHit(EnBomBowlPit* this, PlayState* play) {
                 this->actor.textId = 0xF;
                 Message_StartTextbox(play, this->actor.textId, NULL);
                 this->unk_154 = TEXT_STATE_EVENT;
-                func_80078884(NA_SE_EV_HIT_SOUND);
+                Sfx_PlaySfxCentered(NA_SE_EV_HIT_SOUND);
                 Player_SetCsActionWithHaltedActors(play, NULL, 8);
                 this->status = 1;
                 this->actionFunc = EnBomBowlPit_CameraDollyIn;

@@ -18,6 +18,7 @@ extern "C" {
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
+#include "soh/cvar_prefixes.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 extern PlayState* gPlayState;
 
@@ -1206,7 +1207,7 @@ void DrawQuestStatusTab() {
     ImGui::SameLine();
     DrawQuestItemButton(QUEST_GERUDO_CARD);
 
-    for (const SongMapEntry& entry : songMapping) {
+    for (const auto& [quest, entry] : songMapping) {
         if ((entry.id != QUEST_SONG_MINUET) && (entry.id != QUEST_SONG_LULLABY)) {
             ImGui::SameLine();
         }

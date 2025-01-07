@@ -8,6 +8,7 @@
 #include "overlays/effects/ovl_Effect_Ss_Hahen/z_eff_ss_hahen.h"
 #include "objects/object_dekunuts/object_dekunuts.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
 
@@ -479,7 +480,7 @@ void EnDekunuts_Update(Actor* thisx, PlayState* play) {
     if (this->actor.params != DEKUNUTS_FLOWER) {
         EnDekunuts_ColliderCheck(this, play);
         this->actionFunc(this, play);
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
         Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, this->collider.dim.radius, this->collider.dim.height,
                                 0x1D);
         Collider_UpdateCylinder(&this->actor, &this->collider);

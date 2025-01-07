@@ -7,6 +7,7 @@
 #include "z_en_floormas.h"
 #include "objects/object_wallmaster/object_wallmaster.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_DRAGGED_BY_HOOKSHOT)
 
@@ -1051,7 +1052,7 @@ void EnFloormas_Update(Actor* thisx, PlayState* play) {
         }
 
         if (this->actionFunc != EnFloormas_GrabLink) {
-            Actor_MoveForward(&this->actor);
+            Actor_MoveXZGravity(&this->actor);
         }
 
         Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, this->actor.scale.x * 3000.0f, 0.0f, 0x1D);

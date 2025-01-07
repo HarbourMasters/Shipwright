@@ -38,6 +38,7 @@
 #include "Enhancements/resolution-editor/ResolutionEditor.h"
 #include "Enhancements/debugger/MessageViewer.h"
 #include "soh/Notification/Notification.h"
+#include "soh/Enhancements/TimeDisplay/TimeDisplay.h"
 
 bool isBetaQuestEnabled = false;
 
@@ -131,10 +132,12 @@ namespace SohGui {
     std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
     std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
     std::shared_ptr<TimeSplitWindow> mTimeSplitWindow;
+    std::shared_ptr<PlandomizerWindow> mPlandomizerWindow;
     std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
     std::shared_ptr<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow> mAdvancedResolutionSettingsWindow;
     std::shared_ptr<SohModalWindow> mModalWindow;
     std::shared_ptr<Notification::Window> mNotificationWindow;
+    std::shared_ptr<TimeDisplayWindow> mTimeDisplayWindow;
 
     void SetupGuiElements() {
         auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
@@ -210,6 +213,8 @@ namespace SohGui {
         gui->AddGuiWindow(mRandomizerSettingsWindow);
         mTimeSplitWindow = std::make_shared<TimeSplitWindow>(CVAR_WINDOW("TimeSplitEnabled"), "Time Splits", ImVec2(450, 660));
         gui->AddGuiWindow(mTimeSplitWindow);
+        mPlandomizerWindow = std::make_shared<PlandomizerWindow>(CVAR_WINDOW("PlandomizerWindow"), "Plandomizer Editor", ImVec2(850, 760));
+        gui->AddGuiWindow(mPlandomizerWindow);
         mAdvancedResolutionSettingsWindow = std::make_shared<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow>(CVAR_WINDOW("AdvancedResolutionEditor"), "Advanced Resolution Settings", ImVec2(497, 599));
         gui->AddGuiWindow(mAdvancedResolutionSettingsWindow);
         mModalWindow = std::make_shared<SohModalWindow>(CVAR_WINDOW("ModalWindow"), "Modal Window");
@@ -218,6 +223,8 @@ namespace SohGui {
         mNotificationWindow = std::make_shared<Notification::Window>(CVAR_WINDOW("Notifications"), "Notifications Window");
         gui->AddGuiWindow(mNotificationWindow);
         mNotificationWindow->Show();
+        mTimeDisplayWindow = std::make_shared<TimeDisplayWindow>(CVAR_WINDOW("TimeDisplayEnabled"), "Additional Timers");
+        gui->AddGuiWindow(mTimeDisplayWindow);
     }
 
     void Destroy() {
@@ -252,9 +259,15 @@ namespace SohGui {
         mInputViewer = nullptr;
         mInputViewerSettings = nullptr;
         mTimeSplitWindow = nullptr;
+        mPlandomizerWindow = nullptr;
+        mTimeDisplayWindow = nullptr;
     }
 
     void RegisterPopup(std::string title, std::string message, std::string button1, std::string button2, std::function<void()> button1callback, std::function<void()> button2callback) {
         mModalWindow->RegisterPopup(title, message, button1, button2, button1callback, button2callback);
+    }
+
+    void ShowRandomizerSettingsMenu() {
+        mRandomizerSettingsWindow->Show();
     }
 }

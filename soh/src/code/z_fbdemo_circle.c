@@ -1,5 +1,7 @@
 #include "global.h"
 #include <string.h>
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 
 // unused
 Gfx sCircleNullDList[] = {
@@ -9,31 +11,35 @@ Gfx sCircleNullDList[] = {
 //#include "code/fbdemo_circle/z_fbdemo_circle.c"
 #include "code/fbdemo_circle/z_fbdemo_circle.h"
 
-Gfx __sCircleDList[] = {
-    gsDPPipeSync(),                                                                                                 // 0
-    gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |                  // 1
+Gfx sTransCircleDL[] = {
+    gsDPPipeSync(),
+    gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
                           G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH),
-    gsSPSetGeometryMode(G_SHADE | G_SHADING_SMOOTH),                                                                // 2
-    gsDPSetOtherMode(G_AD_DISABLE | G_CD_MAGICSQ | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TT_NONE | G_TL_TILE |    // 3
+    gsSPSetGeometryMode(G_SHADE | G_SHADING_SMOOTH),
+    gsDPSetOtherMode(G_AD_DISABLE | G_CD_MAGICSQ | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TT_NONE | G_TL_TILE |
                          G_TD_CLAMP | G_TP_PERSP | G_CYC_1CYCLE | G_PM_NPRIMITIVE,
-                     G_AC_NONE | G_ZS_PIXEL | G_RM_XLU_SURF | G_RM_XLU_SURF2),                                      // 4
-    gsDPSetCombineMode(G_CC_BLENDPEDECALA, G_CC_BLENDPEDECALA),                                                     // 5
-    gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),                                                          // 6
-    gsDPLoadTextureBlock(SEG_ADDR(8, 0), G_IM_FMT_I, G_IM_SIZ_8b, 16, 64, 0, G_TX_NOMIRROR | G_TX_WRAP,                 // 7
+                     G_AC_NONE | G_ZS_PIXEL | G_RM_XLU_SURF | G_RM_XLU_SURF2),
+    gsDPSetCombineMode(G_CC_BLENDPEDECALA, G_CC_BLENDPEDECALA),
+    gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
+    gsDPLoadTextureBlock(SEG_ADDR(8, 0), G_IM_FMT_I, G_IM_SIZ_8b, 16, 64, 0, G_TX_NOMIRROR | G_TX_WRAP,
                          G_TX_NOMIRROR | G_TX_CLAMP, 4, 6, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPDisplayList(SEG_ADDR(9, 0)),                                                                                    // 8
-    gsSPVertex(sTransCircleVtx, 32, 0),                                                                              // 9
-    gsSP2Triangles(0, 1, 2, 0, 1, 3, 4, 0),                                                                         // 10
-    gsSP2Triangles(3, 5, 6, 0, 5, 7, 8, 0),                                                                         // 11
-    gsSP2Triangles(7, 9, 10, 0, 9, 11, 12, 0),                                                                      // 12
-    gsSP2Triangles(11, 13, 14, 0, 13, 15, 16, 0),                                                                   // 13
-    gsSP2Triangles(15, 17, 18, 0, 17, 19, 20, 0),                                                                   // 14
-    gsSP2Triangles(19, 21, 22, 0, 21, 23, 24, 0),                                                                   // 15
-    gsSP2Triangles(23, 25, 26, 0, 25, 27, 28, 0),                                                                   // 16
-    gsSP1Triangle(27, 29, 30, 0),                                                                                   // 17
-    gsSPVertex(&sTransCircleVtx[31], 3, 0),                                                                          // 18
-    gsSP1Triangle(0, 1, 2, 0),                                                                                      // 19
-    gsSPEndDisplayList(),                                                                                           // 20
+    gsSPDisplayList(SEG_ADDR(9, 0)),
+    // OTRTODO: Add proper gsSPVertexOTRFilepath macro
+    { G_VTX_OTR_FILEPATH << 24, (uintptr_t)sTransCircleVtx },
+    { 32, 0 << 16 | 0 },
+    gsSP2Triangles(0, 1, 2, 0, 1, 3, 4, 0),
+    gsSP2Triangles(3, 5, 6, 0, 5, 7, 8, 0),
+    gsSP2Triangles(7, 9, 10, 0, 9, 11, 12, 0),
+    gsSP2Triangles(11, 13, 14, 0, 13, 15, 16, 0),
+    gsSP2Triangles(15, 17, 18, 0, 17, 19, 20, 0),
+    gsSP2Triangles(19, 21, 22, 0, 21, 23, 24, 0),
+    gsSP2Triangles(23, 25, 26, 0, 25, 27, 28, 0),
+    gsSP1Triangle(27, 29, 30, 0),
+    // OTRTODO: Add proper gsSPVertexOTRFilepath macro
+    { G_VTX_OTR_FILEPATH << 24, (uintptr_t)sTransCircleVtx },
+    { 3, 0 << 16 | 31 },
+    gsSP1Triangle(0, 1, 2, 0),
+    gsSPEndDisplayList(),
 };
 
 void TransitionCircle_Start(void* thisx) {
@@ -84,7 +90,7 @@ void TransitionCircle_Start(void* thisx) {
     } else {
         this->texY = 0x1F4;
         if (this->appearanceType == TCA_RIPPLE) {
-            Audio_PlaySoundGeneral(NA_SE_OC_SECRET_WARP_OUT, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            Audio_PlaySoundGeneral(NA_SE_OC_SECRET_WARP_OUT, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         }
     }
     guPerspective(&this->projection, &this->normal, 60.0f, (4.0f / 3.0f), 10.0f, 12800.0f, 1.0f);
@@ -109,7 +115,7 @@ void TransitionCircle_Update(void* thisx, s32 updateRate) {
     if (this->direction != 0) {
         if (this->texY == 0) {
             if (this->appearanceType == TCA_RIPPLE) {
-                Audio_PlaySoundGeneral(NA_SE_OC_SECRET_WARP_IN, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_OC_SECRET_WARP_IN, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             }
         }
         this->texY += this->speed * 3 / updateRate;
@@ -147,7 +153,7 @@ void TransitionCircle_Draw(void* thisx, Gfx** gfxP) {
 
     this->frame ^= 1;
     gDPPipeSync(gfx++);
-    texScroll = Gfx_BranchTexScroll(&gfx, this->texX, this->texY, 0x10, 0x40);
+    texScroll = Gfx_BranchTexScroll(&gfx, this->texX, this->texY, 16, 64);
     gSPSegment(gfx++, 9, texScroll);
     gSPSegment(gfx++, 8, this->texture);
     gDPSetColor(gfx++, G_SETPRIMCOLOR, this->color.rgba);
@@ -172,15 +178,7 @@ void TransitionCircle_Draw(void* thisx, Gfx** gfxP) {
         guTranslate(&modelView[2], tPos, tPos, 0.0f);
         gSPMatrix(gfx++, &modelView[2], G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     }
-
-    // OTRTODO: This is an ugly hack but it will do for now...
-    Vtx* vtx = ResourceMgr_LoadVtxByName(sTransCircleVtx);
-    Gfx var1 = gsSPVertex(vtx, 32, 0);
-    Gfx var2 = gsSPVertex(&vtx[31], 3, 0);
-    __sCircleDList[0xe] = var1;
-    __sCircleDList[0x17] = var2;
-
-    gSPDisplayList(gfx++, __sCircleDList);
+    gSPDisplayList(gfx++, sTransCircleDL);
     gDPPipeSync(gfx++);
     *gfxP = gfx;
 }

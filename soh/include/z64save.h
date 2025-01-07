@@ -284,7 +284,7 @@ typedef struct {
     // #endregion
     // #region SOH [Randomizer]
     // Upstream TODO: Move these to their own struct or name to more obviously specific to Randomizer
-    /*        */ u16 randomizerInf[17];
+    /*        */ u16 randomizerInf[(RAND_INF_MAX + 15) / 16];
     /*        */ u8 mqDungeonCount;
     /*        */ u16 adultTradeItems;
     /*        */ u8 triforcePiecesCollected;
@@ -361,7 +361,7 @@ typedef enum {
     /* 4 */ SCENE_LAYER_CUTSCENE_FIRST
 } SceneLayer;
 
-#define IS_CUTSCENE_LAYER (gSaveContext.sceneLayer >= SCENE_LAYER_CUTSCENE_FIRST)
+#define IS_CUTSCENE_LAYER (gSaveContext.sceneSetupIndex >= SCENE_LAYER_CUTSCENE_FIRST)
 
 typedef enum {
     /* 0 */ LINK_AGE_ADULT,
@@ -735,14 +735,14 @@ typedef enum {
 #define INFTABLE_12A 0x12A
 #define INFTABLE_138 0x138
 #define INFTABLE_139 0x139
-#define INFTABLE_140 0x140
-#define INFTABLE_RUTO_IN_JJ_MEET_RUTO 0x141
-#define INFTABLE_RUTO_IN_JJ_TALK_FIRST_TIME 0x142
-#define INFTABLE_143 0x143
-#define INFTABLE_RUTO_IN_JJ_WANTS_TO_BE_TOSSED_TO_SAPPHIRE 0x144
-#define INFTABLE_145 0x145
-#define INFTABLE_146 0x146
-#define INFTABLE_147 0x147
+#define INFTABLE_140 0x140 // Left her on blue switch in fork room (causes her to spawn in fork room)
+#define INFTABLE_RUTO_IN_JJ_MEET_RUTO 0x141 // Jumped down hole from hole room
+#define INFTABLE_RUTO_IN_JJ_TALK_FIRST_TIME 0x142 // in the basement
+#define INFTABLE_143 0x143 // Sat down in basement (causes her to get upset if this is set when actor is spawned)
+#define INFTABLE_RUTO_IN_JJ_WANTS_TO_BE_TOSSED_TO_SAPPHIRE 0x144 // Entered the room with the sapphire
+#define INFTABLE_145 0x145 // Thrown to sapphire (not kidnapped yet)
+#define INFTABLE_146 0x146 // Kidnapped
+#define INFTABLE_147 0x147 // Brought ruto back up to holes room, causes her to spawn in holes room instead of basement
 #define INFTABLE_160 0x160
 #define INFTABLE_161 0x161
 #define INFTABLE_162 0x162

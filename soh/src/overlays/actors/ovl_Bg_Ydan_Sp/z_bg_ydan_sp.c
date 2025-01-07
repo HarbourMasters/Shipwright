@@ -6,6 +6,7 @@
 
 #include "z_bg_ydan_sp.h"
 #include "objects/object_ydan_objects/object_ydan_objects.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS 0
 
@@ -172,7 +173,7 @@ void BgYdanSp_UpdateFloorWebCollision(BgYdanSp* this) {
 void BgYdanSp_BurnWeb(BgYdanSp* this, PlayState* play) {
     this->timer = 30;
     this = this;
-    func_80078884(NA_SE_SY_CORRECT_CHIME);
+    Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
     Flags_SetSwitch(play, this->isDestroyedSwitchFlag);
     if (this->dyna.actor.params == WEB_FLOOR) {
         this->actionFunc = BgYdanSp_BurnFloorWeb;
@@ -255,7 +256,7 @@ void BgYdanSp_FloorWebBreaking(BgYdanSp* this, PlayState* play) {
     if (this->dyna.actor.home.pos.y - this->dyna.actor.world.pos.y > 190.0f) {
         func_8003EBF8(play, &play->colCtx.dyna, this->dyna.bgId);
         this->timer = 40;
-        func_80078884(NA_SE_SY_CORRECT_CHIME);
+        Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
         Flags_SetSwitch(play, this->isDestroyedSwitchFlag);
         this->actionFunc = BgYdanSp_FloorWebBroken;
         pos.y = this->dyna.actor.world.pos.y - 60.0f;
@@ -291,7 +292,7 @@ void BgYdanSp_FloorWebIdle(BgYdanSp* this, PlayState* play) {
         BgYdanSp_BurnWeb(this, play);
         return;
     }
-    if (func_8004356C(&this->dyna)) {
+    if (DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
         sqrtFallDistance = sqrtf(CLAMP_MIN(player->fallDistance, 0.0f));
         if (player->fallDistance > 750.0f) {
             if (this->dyna.actor.xzDistToPlayer < 80.0f) {
@@ -403,7 +404,7 @@ void BgYdanSp_WallWebIdle(BgYdanSp* this, PlayState* play) {
         this->dyna.actor.home.pos.y = this->dyna.actor.world.pos.y + 80.0f;
         BgYdanSp_BurnWeb(this, play);
     } else if (player->heldItemAction == PLAYER_IA_DEKU_STICK && player->unk_860 != 0) {
-        func_8002DBD0(&this->dyna.actor, &sp30, &player->meleeWeaponInfo[0].tip);
+        Actor_WorldToActorCoords(&this->dyna.actor, &sp30, &player->meleeWeaponInfo[0].tip);
         if (fabsf(sp30.x) < 100.0f && sp30.z < 1.0f && sp30.y < 200.0f) {
             OnePointCutscene_Init(play, 3020, 40, &this->dyna.actor, MAIN_CAM);
             Math_Vec3f_Copy(&this->dyna.actor.home.pos, &player->meleeWeaponInfo[0].tip);

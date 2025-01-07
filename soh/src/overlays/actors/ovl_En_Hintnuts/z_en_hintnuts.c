@@ -7,6 +7,7 @@
 #include "z_en_hintnuts.h"
 #include "objects/object_hintnuts/object_hintnuts.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
 
@@ -214,7 +215,7 @@ void EnHintnuts_SetupFreeze(EnHintnuts* this) {
     this->animFlagAndTimer = 0;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_NUTS_FAINT);
     if (sPuzzleCounter == -3) {
-        func_80078884(NA_SE_SY_ERROR);
+        Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
         sPuzzleCounter = -4;
     }
     this->actionFunc = EnHintnuts_Freeze;
@@ -487,7 +488,7 @@ void EnHintnuts_Update(Actor* thisx, PlayState* play) {
         EnHintnuts_ColliderCheck(this, play);
         this->actionFunc(this, play);
         if (this->actionFunc != EnHintnuts_Freeze && this->actionFunc != EnHintnuts_BeginFreeze) {
-            Actor_MoveForward(&this->actor);
+            Actor_MoveXZGravity(&this->actor);
             Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, this->collider.dim.radius,
                                     this->collider.dim.height, 0x1D);
         }

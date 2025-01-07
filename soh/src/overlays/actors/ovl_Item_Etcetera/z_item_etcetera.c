@@ -6,6 +6,7 @@
 
 #include "z_item_etcetera.h"
 #include <assert.h>
+#include "soh/OTRGlobals.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
@@ -166,7 +167,7 @@ void ItemEtcetera_SpawnSparkles(ItemEtcetera* this, PlayState* play) {
 
 void ItemEtcetera_MoveFireArrowDown(ItemEtcetera* this, PlayState* play) {
     Actor_UpdateBgCheckInfo(play, &this->actor, 10.0f, 10.0f, 0.0f, 5);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     if (!(this->actor.bgCheckFlags & 1)) {
         ItemEtcetera_SpawnSparkles(this, play);
     }

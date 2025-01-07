@@ -6,6 +6,7 @@
 
 #include "z_bg_toki_swd.h"
 #include "objects/object_toki_objects/object_toki_objects.h"
+#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
@@ -141,7 +142,7 @@ void func_808BAF40(BgTokiSwd* this, PlayState* play) {
         } else {
             Player* player = GET_PLAYER(play);
             if (Actor_IsFacingPlayer(&this->actor, 0x2000)) {
-                func_8002F580(&this->actor, play);
+                Actor_OfferCarry(&this->actor, play);
             }
         }
     }

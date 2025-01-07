@@ -125,7 +125,8 @@ void BgMoriElevator_Destroy(Actor* thisx, PlayState* play) {
 }
 
 s32 BgMoriElevator_IsPlayerRiding(BgMoriElevator* this, PlayState* play) {
-    return ((this->dyna.unk_160 & 2) && !(this->unk_170 & 2) &&
+    return ((this->dyna.interactFlags & DYNA_INTERACT_PLAYER_ON_TOP) &&
+            !(this->unk_170 & DYNA_INTERACT_PLAYER_ON_TOP) &&
             ((GET_PLAYER(play)->actor.world.pos.y - this->dyna.actor.world.pos.y) < 80.0f));
 }
 
@@ -244,7 +245,7 @@ void BgMoriElevator_Update(Actor* thisx, PlayState* play) {
     BgMoriElevator* this = (BgMoriElevator*)thisx;
 
     this->actionFunc(this, play);
-    this->unk_170 = this->dyna.unk_160;
+    this->unk_170 = this->dyna.interactFlags;
     this->unk_16C = Flags_GetSwitch(play, (thisx->params & 0x3F));
 }
 

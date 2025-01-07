@@ -25,7 +25,9 @@ void RegionTable_Init_DekuTree() {
                   EventAccess(&logic->DekuBabaNuts,   {[]{return logic->CanGetDekuBabaNuts();}}),
                 }, {
                   //Locations
-                  LOCATION(RC_DEKU_TREE_MAP_CHEST, true),
+                  LOCATION(RC_DEKU_TREE_MAP_CHEST,         true),
+                  LOCATION(RC_DEKU_TREE_LOBBY_LOWER_HEART, true),
+                  LOCATION(RC_DEKU_TREE_LOBBY_UPPER_HEART, logic->CanPassEnemy(RE_BIG_SKULLTULA)),
                 }, {
                   //Exits
                   Entrance(RR_DEKU_TREE_ENTRYWAY,          {[]{return true;}}),
@@ -114,9 +116,8 @@ void RegionTable_Init_DekuTree() {
 
   areaTable[RR_DEKU_TREE_BASEMENT_BACK_LOBBY] = Region("Deku Tree Basement Back Lobby", "Deku Tree", {RA_DEKU_TREE}, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->DekuBabaSticks, {[]{return logic->DekuBabaSticks || (logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_BOOMERANG));}}),
-                  EventAccess(&logic->DekuBabaNuts,   {[]{return logic->DekuBabaNuts   || (Here(RR_DEKU_TREE_BASEMENT_BACK_LOBBY, []{return logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW);}) &&
-                                                                            (logic->CanJumpslash() || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->HasExplosives() || logic->CanUse(RG_DINS_FIRE)));}}),
+                  EventAccess(&logic->DekuBabaSticks, {[]{return logic->CanKillEnemy(RE_WITHERED_DEKU_BABA);}}),
+                  EventAccess(&logic->DekuBabaNuts,   {[]{return logic->CanGetDekuBabaNuts();}}),
                 }, {}, {
                   //Exits
                   Entrance(RR_DEKU_TREE_BASEMENT_TORCH_ROOM, {[]{return true;}}),
@@ -144,7 +145,12 @@ void RegionTable_Init_DekuTree() {
                   Entrance(RR_DEKU_TREE_OUTSIDE_BOSS_ROOM,   {[]{return Here(RR_DEKU_TREE_BASEMENT_UPPER, []{return logic->HasFireSourceWithTorch() || (ctx->GetTrickOption(RT_DEKU_B1_BOW_WEBS) && logic->IsAdult && logic->CanUse(RG_FAIRY_BOW));});}}),
   });
 
-  areaTable[RR_DEKU_TREE_OUTSIDE_BOSS_ROOM] = Region("Deku Tree Outside Boss Room", "Deku Tree", {RA_DEKU_TREE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_DEKU_TREE_OUTSIDE_BOSS_ROOM] = Region("Deku Tree Outside Boss Room", "Deku Tree", {RA_DEKU_TREE}, NO_DAY_NIGHT_CYCLE, {}, {
+                  //Locations
+                  LOCATION(RC_DEKU_TREE_BEFORE_BOSS_LEFT_HEART,   logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG)),
+                  LOCATION(RC_DEKU_TREE_BEFORE_BOSS_MIDDLE_HEART, logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG)),
+                  LOCATION(RC_DEKU_TREE_BEFORE_BOSS_RIGHT_HEART,  logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG)),
+                }, {
                   //Exits
                   Entrance(RR_DEKU_TREE_BASEMENT_UPPER, {[]{return true;}}),
                   Entrance(RR_DEKU_TREE_BOSS_ENTRYWAY,  {[]{return (logic->HasItem(RG_BRONZE_SCALE) || Here(RR_DEKU_TREE_OUTSIDE_BOSS_ROOM, []{return logic->CanUse(RG_IRON_BOOTS);})) && Here(RR_DEKU_TREE_OUTSIDE_BOSS_ROOM, []{return logic->CanReflectNuts();});}}),
@@ -173,8 +179,9 @@ void RegionTable_Init_DekuTree() {
 
   areaTable[RR_DEKU_TREE_MQ_2F] = Region("Deku Tree MQ 2F", "Deku Tree", {RA_DEKU_TREE}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LOCATION(RC_DEKU_TREE_MQ_MAP_CHEST,                 true),
-                  LOCATION(RC_DEKU_TREE_MQ_GS_LOBBY,                  logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
+                  LOCATION(RC_DEKU_TREE_MQ_MAP_CHEST,   true),
+                  LOCATION(RC_DEKU_TREE_MQ_GS_LOBBY,    logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
+                  LOCATION(RC_DEKU_TREE_MQ_LOBBY_HEART, true),
   }, {
                   //Exits
                   Entrance(RR_DEKU_TREE_MQ_1F,              {[]{return true;}}),
@@ -193,6 +200,7 @@ void RegionTable_Init_DekuTree() {
                   //Implies CanKillEnemy(RE_GOHMA_LARVA)
                   LOCATION(RC_DEKU_TREE_MQ_SLINGSHOT_CHEST,           logic->CanKillEnemy(RE_DEKU_BABA)),
                   LOCATION(RC_DEKU_TREE_MQ_SLINGSHOT_ROOM_BACK_CHEST, logic->HasFireSourceWithTorch() || (logic->IsAdult && logic->CanUse(RG_FAIRY_BOW))),
+                  LOCATION(RC_DEKU_TREE_MQ_SLINGSHOT_ROOM_HEART,      true),
   }, {
                   //Exits
                   Entrance(RR_DEKU_TREE_MQ_2F,              {[]{return true;}}),
@@ -201,7 +209,10 @@ void RegionTable_Init_DekuTree() {
                   Entrance(RR_DEKU_TREE_MQ_BASEMENT,        {[]{return true;}}),
   });
 
-  areaTable[RR_DEKU_TREE_MQ_EYE_TARGET_ROOM] = Region("Deku Tree MQ Eye Target Room", "Deku Tree", {RA_DEKU_TREE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_DEKU_TREE_MQ_EYE_TARGET_ROOM] = Region("Deku Tree MQ Eye Target Room", "Deku Tree", {RA_DEKU_TREE}, NO_DAY_NIGHT_CYCLE, {}, {
+                  //Locations
+                  LOCATION(RC_DEKU_TREE_MQ_DEKU_BABA_HEART, true),
+                }, {
                   //Exits
                   Entrance(RR_DEKU_TREE_MQ_COMPASS_ROOM, {[]{return Here(RR_DEKU_TREE_MQ_EYE_TARGET_ROOM, []{return logic->CanHitEyeTargets();});}}),
                   Entrance(RR_DEKU_TREE_MQ_2F,           {[]{return true;}}),
@@ -220,7 +231,8 @@ void RegionTable_Init_DekuTree() {
 
   areaTable[RR_DEKU_TREE_MQ_PAST_BOULDER_VINES] = Region("Deku Tree MQ Past Boulder Vines", "Deku Tree", {RA_DEKU_TREE}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LOCATION(RC_DEKU_TREE_MQ_GS_PAST_BOULDER_VINES, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_RANG_OR_HOOKSHOT)),
+                  LOCATION(RC_DEKU_TREE_MQ_GS_PAST_BOULDER_VINES, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
+                  LOCATION(RC_DEKU_TREE_MQ_COMPASS_ROOM_HEART,    true),
   }, {
                   //Exits
                   Entrance(RR_DEKU_TREE_MQ_COMPASS_ROOM, {[]{return logic->BlastOrSmash();}}),
@@ -277,7 +289,7 @@ void RegionTable_Init_DekuTree() {
                   LOCATION(RC_DEKU_TREE_MQ_AFTER_SPINNING_LOG_CHEST, logic->CanUse(RG_SONG_OF_TIME) && logic->CanPassEnemy(RE_BIG_SKULLTULA)),
   }, {
                   //Exits
-                  Entrance(RR_DEKU_TREE_MQ_BASEMENT_SOUTHWEST_ROOM,   {[]{return logic->MQDekuWaterRoomTorches && logic->CanPassEnemy(RE_BIG_SKULLTULA, logic->CanUse(RG_SONG_OF_TIME) ? ED_CLOSE : ED_HAMMER_JUMPSLASH);}}),
+                  Entrance(RR_DEKU_TREE_MQ_BASEMENT_SOUTHWEST_ROOM,   {[]{return logic->MQDekuWaterRoomTorches && logic->CanPassEnemy(RE_BIG_SKULLTULA, logic->CanUse(RG_SONG_OF_TIME) ? ED_CLOSE : ED_SHORT_JUMPSLASH);}}),
                   Entrance(RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_FRONT, {[]{return ctx->GetTrickOption(RT_DEKU_MQ_LOG) || (logic->IsChild && logic->CanShield()) ||
                                                                                  logic->CanUse(RG_LONGSHOT) || logic->HasItem(RG_BRONZE_SCALE) ||
                                                                                  (logic->CanUse(RG_IRON_BOOTS) && (logic->IsAdult || logic->CanUse(RG_HOOKSHOT)));}}),
@@ -296,7 +308,7 @@ void RegionTable_Init_DekuTree() {
                   EventAccess(&logic->DekuBabaNuts,   {[]{return logic->CanGetDekuBabaNuts();}})
   }, {
                   //Locations
-                  LOCATION(RC_DEKU_TREE_MQ_GS_BASEMENT_GRAVES_ROOM, logic->CanUse(RG_LONGSHOT) || (logic->CanUse(RG_SONG_OF_TIME) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_RANG_OR_HOOKSHOT))),
+                  LOCATION(RC_DEKU_TREE_MQ_GS_BASEMENT_GRAVES_ROOM, logic->CanUse(RG_LONGSHOT) || (logic->CanUse(RG_SONG_OF_TIME) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG))),
   }, {
                   //Exits
                   Entrance(RR_DEKU_TREE_MQ_BASEMENT_LEDGE,           {[]{return logic->IsChild && Here(RR_DEKU_TREE_MQ_BASEMENT_GRAVE_ROOM, []{return logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW);});}}),
@@ -307,7 +319,7 @@ void RegionTable_Init_DekuTree() {
 
   areaTable[RR_DEKU_TREE_MQ_BASEMENT_BACK_ROOM] = Region("Deku Tree MQ Basement Back Room", "Deku Tree", {RA_DEKU_TREE}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LOCATION(RC_DEKU_TREE_MQ_GS_BASEMENT_BACK_ROOM,   logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_RANG_OR_HOOKSHOT)),
+                  LOCATION(RC_DEKU_TREE_MQ_GS_BASEMENT_BACK_ROOM,   logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
   }, {
                   //Exits
                   Entrance(RR_DEKU_TREE_MQ_BASEMENT_GRAVE_ROOM,  {[]{return true;}}),
@@ -330,11 +342,14 @@ void RegionTable_Init_DekuTree() {
   });
 
     areaTable[RR_DEKU_TREE_MQ_OUTSIDE_BOSS_ROOM] =
-            Region("Deku Tree MQ Outside Boss Room", "Deku Tree", {RA_DEKU_TREE}, NO_DAY_NIGHT_CYCLE, {}, {},
-                 {
+            Region("Deku Tree MQ Outside Boss Room", "Deku Tree", {RA_DEKU_TREE}, NO_DAY_NIGHT_CYCLE, {}, {
+                    LOCATION(RC_DEKU_TREE_MQ_BEFORE_BOSS_LEFT_HEART,    logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG)),
+                    LOCATION(RC_DEKU_TREE_MQ_BEFORE_BOSS_MIDDLE_HEART,  logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG)),
+                    LOCATION(RC_DEKU_TREE_MQ_BEFORE_BOSS_RIGHT_HEART,   logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG)),
+                }, {
                      // Exits
-                     Entrance(RR_DEKU_TREE_MQ_BASEMENT_LEDGE, {[]{return logic->HasItem(RG_BRONZE_SCALE);}}),
-                     Entrance(RR_DEKU_TREE_BOSS_ENTRYWAY,     {[]{return Here(RR_DEKU_TREE_MQ_OUTSIDE_BOSS_ROOM, []{return logic->CanReflectNuts();});}}),
+                    Entrance(RR_DEKU_TREE_MQ_BASEMENT_LEDGE, {[]{return logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_HOOKSHOT);}}),
+                    Entrance(RR_DEKU_TREE_BOSS_ENTRYWAY,     {[]{return Here(RR_DEKU_TREE_MQ_OUTSIDE_BOSS_ROOM, []{return logic->CanReflectNuts();});}}),
                  });
   }
 

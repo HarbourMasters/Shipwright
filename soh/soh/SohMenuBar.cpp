@@ -10,8 +10,12 @@
 #include "include/z64audio.h"
 #include "graphic/Fast3D/gfx_rendering_api.h"
 #include "OTRGlobals.h"
+#include "SaveManager.h"
 #include "z64.h"
+#include "cvar_prefixes.h"
 #include "macros.h"
+#include "functions.h"
+#include "variables.h"
 #include "Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/presets.h"
 #include "soh/Enhancements/mods.h"
@@ -41,6 +45,8 @@
 #include "Enhancements/resolution-editor/ResolutionEditor.h"
 #include "Enhancements/enemyrandomizer.h"
 #include "Enhancements/timesplits/TimeSplits.h"
+#include "Enhancements/randomizer/Plandomizer.h"
+#include "Enhancements/TimeDisplay/TimeDisplay.h"
 
 // FA icons are kind of wonky, if they worked how I expected them to the "+ 2.0f" wouldn't be needed, but
 // they don't work how I expect them to so I added that because it looked good when I eyeballed it
@@ -80,6 +86,7 @@ static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large
     static const char* chestStyleMatchesContentsOptions[4] = { "Disabled", "Both", "Texture Only", "Size Only" };
     static const char* skipGetItemAnimationOptions[3] = { "Disabled", "Junk Items", "All Items" };
     static const char* skipForcedDialogOptions[4] = { "None", "Navi Only", "NPCs Only", "All" };
+    static const char* sleepingWaterfallOptions[3] = { "Always", "Once", "Never" };
     static const char* bunnyHoodOptions[3] = { "Disabled", "Faster Run & Longer Jump", "Faster Run" };
     static const char* mirroredWorldModes[9] = {
         "Disabled",           "Always",        "Random",          "Random (Seeded)",          "Dungeons",
@@ -120,7 +127,7 @@ static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large
         CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"),
         CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"),
     };
-    static const char* itemCountMessageOptions[sizeof(itemCountMessageCVars) / sizeof(const char*)] = {
+    static const char* itemCountMessageOptions[ARRAY_COUNT(itemCountMessageCVars)] = {
         "Gold Skulltula Tokens",
         "Pieces of Heart",
         "Heart Containers",
@@ -228,18 +235,18 @@ void DrawSettingsMenu() {
     if (ImGui::BeginMenu("Settings"))
     {
         if (ImGui::BeginMenu("Audio")) {
-            UIWidgets::PaddedEnhancementSliderFloat("Master Volume: %.1f %%", "##Master_Vol", CVAR_SETTING("Volume.Master"), 0.0f, 1.0f, "", 1.0f, true, true, false, true);
-            if (UIWidgets::PaddedEnhancementSliderFloat("Main Music Volume: %.1f %%", "##Main_Music_Vol", CVAR_SETTING("Volume.MainMusic"), 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
-                Audio_SetGameVolume(SEQ_PLAYER_BGM_MAIN, CVarGetFloat(CVAR_SETTING("Volume.MainMusic"), 1.0f));
+            UIWidgets::PaddedEnhancementSliderInt("Master Volume: %d %%", "##Master_Vol", CVAR_SETTING("Volume.Master"), 0, 100, "", 100, true, false, true);
+            if (UIWidgets::PaddedEnhancementSliderInt("Main Music Volume: %d %%", "##Main_Music_Vol", CVAR_SETTING("Volume.MainMusic"), 0, 100, "", 100, true, false, true)) {
+                Audio_SetGameVolume(SEQ_PLAYER_BGM_MAIN, ((float)CVarGetInteger(CVAR_SETTING("Volume.MainMusic"), 100) / 100.0f));
             }
-            if (UIWidgets::PaddedEnhancementSliderFloat("Sub Music Volume: %.1f %%", "##Sub_Music_Vol", CVAR_SETTING("Volume.SubMusic"), 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
-                Audio_SetGameVolume(SEQ_PLAYER_BGM_SUB, CVarGetFloat(CVAR_SETTING("Volume.SubMusic"), 1.0f));
+            if (UIWidgets::PaddedEnhancementSliderInt("Sub Music Volume: %d %%", "##Sub_Music_Vol", CVAR_SETTING("Volume.SubMusic"), 0, 100, "", 100, true, false, true)) {
+                Audio_SetGameVolume(SEQ_PLAYER_BGM_SUB, ((float)CVarGetInteger(CVAR_SETTING("Volume.SubMusic"), 100) / 100.0f));
             }
-            if (UIWidgets::PaddedEnhancementSliderFloat("Sound Effects Volume: %.1f %%", "##Sound_Effect_Vol", CVAR_SETTING("Volume.SFX"), 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
-                Audio_SetGameVolume(SEQ_PLAYER_SFX, CVarGetFloat(CVAR_SETTING("Volume.SFX"), 1.0f));
+            if (UIWidgets::PaddedEnhancementSliderInt("Fanfare Volume: %d %%", "##Fanfare_Vol", CVAR_SETTING("Volume.Fanfare"), 0, 100, "", 100, true, false, true)) {
+                Audio_SetGameVolume(SEQ_PLAYER_FANFARE, ((float)CVarGetInteger(CVAR_SETTING("Volume.Fanfare"), 100) / 100.0f));
             }
-            if (UIWidgets::PaddedEnhancementSliderFloat("Fanfare Volume: %.1f %%", "##Fanfare_Vol", CVAR_SETTING("Volume.Fanfare"), 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
-                Audio_SetGameVolume(SEQ_PLAYER_FANFARE, CVarGetFloat(CVAR_SETTING("Volume.Fanfare"), 1.0f));
+            if (UIWidgets::PaddedEnhancementSliderInt("Sound Effects Volume: %d %%", "##Sound_Effect_Vol", CVAR_SETTING("Volume.SFX"), 0, 100, "", 100, true, false, true)) {
+                Audio_SetGameVolume(SEQ_PLAYER_SFX, ((float)CVarGetInteger(CVAR_SETTING("Volume.SFX"), 100) / 100.0f));
             }
 
             static std::unordered_map<Ship::AudioBackend, const char*> audioBackendNames = {
@@ -248,7 +255,7 @@ void DrawSettingsMenu() {
             };
 
             ImGui::Text("Audio API (Needs reload)");
-            auto currentAudioBackend = Ship::Context::GetInstance()->GetAudio()->GetAudioBackend();
+            auto currentAudioBackend = Ship::Context::GetInstance()->GetAudio()->GetCurrentAudioBackend();
 
             if (Ship::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->size() <= 1) {
                 UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
@@ -257,7 +264,7 @@ void DrawSettingsMenu() {
                 for (uint8_t i = 0; i < Ship::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->size(); i++) {
                     auto backend = Ship::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->data()[i];
                     if (ImGui::Selectable(audioBackendNames[backend], backend == currentAudioBackend)) {
-                        Ship::Context::GetInstance()->GetAudio()->SetAudioBackend(backend);
+                        Ship::Context::GetInstance()->GetAudio()->SetCurrentAudioBackend(backend);
                     }
                 }
                 ImGui::EndCombo();
@@ -429,7 +436,7 @@ void DrawSettingsMenu() {
                     currentFps = 60;
                 }
                 CVarSetInteger(CVAR_SETTING("InterpolationFPS"), currentFps);
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             #else
                 bool matchingRefreshRate =
                     CVarGetInteger(CVAR_SETTING("MatchRefreshRate"), 0) && Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() != Ship::WindowBackend::FAST3D_DXGI_DX11;
@@ -458,7 +465,7 @@ void DrawSettingsMenu() {
                     int hz = Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
                     if (hz >= 20 && hz <= 360) {
                         CVarSetInteger(CVAR_SETTING("InterpolationFPS"), hz);
-                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                     }
                 }
             } else {
@@ -580,9 +587,9 @@ void DrawSettingsMenu() {
 
             ImGui::Text("Position");
             UIWidgets::EnhancementCombobox(CVAR_SETTING("Notifications.Position"), notificationPosition, 0);
-            UIWidgets::EnhancementSliderFloat("Duration: %.0f seconds", "##NotificationDuration", CVAR_SETTING("Notifications.Duration"), 3.0f, 30.0f, "", 10.0f, false, false, false);
-            UIWidgets::EnhancementSliderFloat("BG Opacity: %.1f %%", "##NotificaitonBgOpacity", CVAR_SETTING("Notifications.BgOpacity"), 0.0f, 1.0f, "", 0.5f, true, false, false);
-            UIWidgets::EnhancementSliderFloat("Size: %.1f", "##NotificaitonSize", CVAR_SETTING("Notifications.Size"), 1.0f, 5.0f, "", 1.8f, false, false, false);
+            UIWidgets::EnhancementSliderFloat("Duration: %.1f seconds", "##NotificationDuration", CVAR_SETTING("Notifications.Duration"), 3.0f, 30.0f, "", 10.0f, false, true, false);
+            UIWidgets::EnhancementSliderFloat("BG Opacity: %.1f %%", "##NotificaitonBgOpacity", CVAR_SETTING("Notifications.BgOpacity"), 0.0f, 1.0f, "", 0.5f, true, true, false);
+            UIWidgets::EnhancementSliderFloat("Size: %.1f", "##NotificaitonSize", CVAR_SETTING("Notifications.Size"), 1.0f, 20.0f, "", 1.8f, false, true, false);
 
             UIWidgets::Spacer(0);
 
@@ -603,6 +610,7 @@ extern std::shared_ptr<AudioEditor> mAudioEditorWindow;
 extern std::shared_ptr<CosmeticsEditorWindow> mCosmeticsEditorWindow;
 extern std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
 extern std::shared_ptr<TimeSplitWindow> mTimeSplitWindow;
+extern std::shared_ptr<TimeDisplayWindow> mTimeDisplayWindow;
 
 void DrawEnhancementsMenu() {
     if (ImGui::BeginMenu("Enhancements"))
@@ -665,7 +673,7 @@ void DrawEnhancementsMenu() {
                     CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), newValue);
                     CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), newValue);
 
-                    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                 }
                 g->CurrentItemFlags = backup_item_flags;
                 UIWidgets::PaddedEnhancementCheckbox("Skip Intro", CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
@@ -678,8 +686,8 @@ void DrawEnhancementsMenu() {
                 UIWidgets::PaddedEnhancementCheckbox("Skip Owl Interactions", CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
                 UIWidgets::PaddedEnhancementCheckbox("Skip Misc Interactions", CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
                 UIWidgets::PaddedEnhancementCheckbox("Disable Title Card", CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
-                UIWidgets::PaddedEnhancementCheckbox("Skip Glitch-Aiding Cutscenes", CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), false, false, false, "", UIWidgets::CheckboxGraphics::Cross, 0);
-                UIWidgets::Tooltip("Skip cutscenes that are associated with useful glitches, currently this is only the Fire Temple Darunia CS and Forest Temple Poe Sisters CS");
+                UIWidgets::PaddedEnhancementCheckbox("Exclude Glitch-Aiding Cutscenes", CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), false, false, false, "", UIWidgets::CheckboxGraphics::Cross, 0);
+                UIWidgets::Tooltip("Don't skip cutscenes that are associated with useful glitches, currently this is only the Fire Temple Darunia CS, Forest Temple Poe Sisters CS and the Box Skip One Point in Jabu");
                 UIWidgets::PaddedEnhancementCheckbox("Skip Child Stealth", CVAR_ENHANCEMENT("TimeSavers.SkipChildStealth"), false, false, false, "", UIWidgets::CheckboxGraphics::Cross, false);
                 UIWidgets::Tooltip("The crawlspace into Hyrule Castle goes straight to Zelda, skipping the guards.");
                 UIWidgets::PaddedEnhancementCheckbox("Skip Tower Escape", CVAR_ENHANCEMENT("TimeSavers.SkipTowerEscape"), false, false, false, "", UIWidgets::CheckboxGraphics::Cross, false);
@@ -715,18 +723,11 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("Skip pickup messages for new consumable items and bottle swipes");
                 UIWidgets::PaddedEnhancementCheckbox("Fast Ocarina Playback", CVAR_ENHANCEMENT("FastOcarinaPlayback"), true, false);
                 UIWidgets::Tooltip("Skip the part where the Ocarina playback is called when you play a song");
-                bool forceSkipScarecrow = IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SKIP_SCARECROWS_SONG);
-                static const char* forceSkipScarecrowText = "This setting is forcefully enabled because a savefile\nwith \"Skip Scarecrow Song\" is loaded";
-                UIWidgets::PaddedEnhancementCheckbox("Skip Scarecrow Song", CVAR_ENHANCEMENT("InstantScarecrow"), true, false,
-                                                        forceSkipScarecrow, forceSkipScarecrowText, UIWidgets::CheckboxGraphics::Checkmark);
-                UIWidgets::Tooltip("Pierre appears when Ocarina is pulled out. Requires learning scarecrow song.");
                 UIWidgets::PaddedEnhancementCheckbox("Skip Magic Arrow Equip Animation", CVAR_ENHANCEMENT("SkipArrowAnimation"), true, false);
                 UIWidgets::PaddedEnhancementCheckbox("Skip save confirmation", CVAR_ENHANCEMENT("SkipSaveConfirmation"), true, false);
                 UIWidgets::Tooltip("Skip the \"Game saved.\" confirmation screen");
                 UIWidgets::PaddedEnhancementCheckbox("Faster Farore's Wind", CVAR_ENHANCEMENT("FastFarores"), true, false);
                 UIWidgets::Tooltip("Greatly decreases cast time of Farore's Wind magic spell.");
-                UIWidgets::PaddedEnhancementCheckbox("Skip water take breath animation", CVAR_ENHANCEMENT("SkipSwimDeepEndAnim"), true, false);
-                UIWidgets::Tooltip("Skips Link's taking breath animation after coming up from water. This setting does not interfere with getting items from underwater.");
 
                 ImGui::TableNextColumn();
                 UIWidgets::Spacer(0);
@@ -793,6 +794,30 @@ void DrawEnhancementsMenu() {
                     "- Not within range of Ocarina playing spots");
                 UIWidgets::PaddedEnhancementCheckbox("Pause Warp", CVAR_ENHANCEMENT("PauseWarp"), true, false);
                 UIWidgets::Tooltip("Selection of warp song in pause menu initiates warp. Disables song playback.");
+                UIWidgets::PaddedEnhancementCheckbox("Skip water take breath animation", CVAR_ENHANCEMENT("SkipSwimDeepEndAnim"), true, false);
+                UIWidgets::Tooltip("Skips Link's taking breath animation after coming up from water. This setting does not interfere with getting items from underwater.");
+                bool forceSkipScarecrow = IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SKIP_SCARECROWS_SONG);
+                static const char* forceSkipScarecrowText = "This setting is forcefully enabled because a savefile\nwith \"Skip Scarecrow Song\" is loaded";
+                UIWidgets::PaddedEnhancementCheckbox("Skip Scarecrow Song", CVAR_ENHANCEMENT("InstantScarecrow"), true, false,
+                                                        forceSkipScarecrow, forceSkipScarecrowText, UIWidgets::CheckboxGraphics::Checkmark);
+                UIWidgets::Tooltip("Pierre appears when Ocarina is pulled out. Requires learning scarecrow song.");
+                bool forceSleepingWaterfallEnhancement =
+                    IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SLEEPING_WATERFALL) == RO_WATERFALL_OPEN;
+                uint8_t forceSleepingWaterfallValue = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SLEEPING_WATERFALL) + 1;
+                static const char* forceSleepingWaterfallText =
+                    "This setting is forcefully enabled because a randomizer savefile with \"Sleeping Waterfall: Open\" is loaded.";
+                UIWidgets::PaddedText("Play Zelda's Lullaby to open Sleeping Waterfall", true, false);
+                UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("TimeSavers.SleepingWaterfall"),
+                                               sleepingWaterfallOptions, 0, forceSleepingWaterfallEnhancement,
+                                               forceSleepingWaterfallText, forceSleepingWaterfallValue);
+                UIWidgets::Tooltip(
+                    "Always: Link must always play Zelda's Lullaby to open "
+                    "the waterfall entrance to Zora's Domain.\n"
+                    "Once: Link only needs to play Zelda's Lullaby once to "
+                    "open the waterfall; after that, it stays open permanently.\n"
+                    "Never: Link never needs to play Zelda's Lullaby to open the "
+                    "waterfall; he only needs to have learned it and have an ocarina."
+                );
                 
                 ImGui::EndTable();
                 ImGui::EndMenu();
@@ -851,6 +876,17 @@ void DrawEnhancementsMenu() {
                 "Toggling while inside the shop will not change prices or restock any SOLD OUTs");
                 UIWidgets::PaddedEnhancementCheckbox("Aiming reticle for the bow/slingshot", CVAR_ENHANCEMENT("BowReticle"), true, false);
                 UIWidgets::Tooltip("Aiming with a bow or slingshot will display a reticle as with the hookshot when the projectile is ready to fire.");
+                if (UIWidgets::PaddedEnhancementCheckbox("Aim boomerang in first-person mode", CVAR_ENHANCEMENT("BoomerangFirstPerson"), true, false)) {
+                    if (!CVarGetInteger(CVAR_ENHANCEMENT("BoomerangFirstPerson"), 0)) {
+                        CVarSetInteger(CVAR_ENHANCEMENT("BoomerangReticle"), 0);
+                    }
+                }
+                UIWidgets::Tooltip(
+                    "Change aiming for the boomerang from third person to first person to see past Link's head");
+                if (CVarGetInteger(CVAR_ENHANCEMENT("BoomerangFirstPerson"), 0)) {
+                    UIWidgets::PaddedEnhancementCheckbox("Aiming reticle for boomerang", CVAR_ENHANCEMENT("BoomerangReticle"), true, false);
+                    UIWidgets::Tooltip("Aiming with the boomerang will display a reticle as with the hookshot");
+                }
                 if (UIWidgets::PaddedEnhancementCheckbox("Allow strength equipment to be toggled", CVAR_ENHANCEMENT("ToggleStrength"), true, false)) {
                     if (!CVarGetInteger(CVAR_ENHANCEMENT("ToggleStrength"), 0)) {
                         CVarSetInteger(CVAR_ENHANCEMENT("StrengthDisabled"), 0);
@@ -863,7 +899,7 @@ void DrawEnhancementsMenu() {
             UIWidgets::Spacer(0);
 
             if (ImGui::BeginMenu("Item Count Messages")) {
-                int numOptions = sizeof(itemCountMessageCVars) / sizeof(const char*);
+                int numOptions = ARRAY_COUNT(itemCountMessageCVars);
                 bool allItemCountsChecked = std::all_of(itemCountMessageCVars, itemCountMessageCVars + numOptions,
                                                         [](const char* cvar) { return CVarGetInteger(cvar, 0); });
                 bool someItemCountsChecked = std::any_of(itemCountMessageCVars, itemCountMessageCVars + numOptions,
@@ -878,7 +914,7 @@ void DrawEnhancementsMenu() {
                     std::for_each(itemCountMessageCVars, itemCountMessageCVars + numOptions,
                                   [newValue](const char* cvar) { CVarSetInteger(cvar, newValue); });
 
-                    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                 }
                 g->CurrentItemFlags = backup_item_flags;
 
@@ -1265,6 +1301,9 @@ void DrawEnhancementsMenu() {
             UIWidgets::PaddedEnhancementCheckbox("Targetable Hookshot Reticle", CVAR_ENHANCEMENT("HookshotableReticle"), true, false);
             UIWidgets::Tooltip("Use a different color when aiming at hookshotable collision");
 
+            UIWidgets::PaddedEnhancementCheckbox("Faster Rupee Accumulator", CVAR_ENHANCEMENT("TimeSavers.FasterRupeeAccumulator"), true, false);
+            UIWidgets::Tooltip("Causes your wallet to fill and empty faster when you gain or lose money.");
+
             ImGui::EndMenu();
         }
 
@@ -1488,10 +1527,23 @@ void DrawEnhancementsMenu() {
                 "This will lower them, making activating them easier");
             UIWidgets::PaddedEnhancementCheckbox("Fix Zora hint dialogue", CVAR_ENHANCEMENT("FixZoraHintDialogue"), true, false);
             UIWidgets::Tooltip("Fixes one Zora's dialogue giving a hint about bringing Ruto's Letter to King Zora to properly occur before moving King Zora rather than after");
-            if (UIWidgets::PaddedEnhancementCheckbox("Fix hand holding Hammer", "gEnhancements.FixHammerHand", true, false)) {
+            if (UIWidgets::PaddedEnhancementCheckbox("Fix hand holding Hammer", CVAR_ENHANCEMENT("FixHammerHand"), true, false)) {
                 UpdatePatchHand();
             }
-            UIWidgets::Tooltip("Fixes Adult Link have a backwards left hand when holding the Megaton Hammer.");
+            UIWidgets::Tooltip("Fixes Adult Link having a backwards left hand when holding the Megaton Hammer.");
+            if (UIWidgets::PaddedEnhancementCheckbox(
+                "Fix Broken Giant's Knife bug", CVAR_ENHANCEMENT("FixBrokenGiantsKnife"), true, false, IS_RANDO,
+                "This setting is forcefully enabled when you are playing a randomizer.",
+                UIWidgets::CheckboxGraphics::Checkmark)) {
+                bool hasGiantsKnife = CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BIGGORON);
+                bool hasBrokenKnife = CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BROKENGIANTKNIFE);
+                bool knifeIsBroken = gSaveContext.swordHealth == 0.0f;
+
+                if (hasGiantsKnife && (hasBrokenKnife != knifeIsBroken)) {
+                    func_800849EC(gPlayState);
+                }
+            }
+            UIWidgets::Tooltip("Fixes the Broken Giant's Knife flag not being reset when Medigoron fixes it");
 
             ImGui::EndMenu();
         }
@@ -1520,6 +1572,8 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Restores the original outcomes when performing Reverse Bottle Adventure.");
             UIWidgets::PaddedEnhancementCheckbox("Early Eyeball Frog", CVAR_ENHANCEMENT("EarlyEyeballFrog"), true, false);
             UIWidgets::Tooltip("Restores a bug from NTSC 1.0/1.1 that allows you to obtain the eyeball frog from King Zora instead of the Zora Tunic by holding shield.");
+            UIWidgets::PaddedEnhancementCheckbox("Pulsate boss icon", CVAR_ENHANCEMENT("PulsateBossIcon"), true, false);
+            UIWidgets::Tooltip("Restores an unfinished feature to pulsate the boss room icon when you are in the boss room.");
 
             ImGui::EndMenu();
         }
@@ -1690,6 +1744,36 @@ void DrawEnhancementsMenu() {
                 mTimeSplitWindow->ToggleVisibility();
             }
         }
+
+        if (mTimeDisplayWindow) {
+            if (ImGui::Button(GetWindowButtonText("Additional Timers", CVarGetInteger(CVAR_WINDOW("TimeDisplayEnabled"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+                mTimeDisplayWindow->ToggleVisibility();
+            }
+        }
+        if (mTimeDisplayWindow->IsVisible()) {
+            ImGui::SeparatorText("Timer Display Options");
+
+            if (!gPlayState) {
+                ImGui::Text("Additional Timer options\n"
+                            "available when a file is\n"
+                            "loaded...");
+            } else {
+                if (UIWidgets::PaddedEnhancementSliderFloat("Font Scale: %.2fx", "##FontScale", CVAR_ENHANCEMENT("TimeDisplay.FontScale"), 
+                    1.0f, 5.0f, "", 1.0f, false, true, false, true)) {
+                    TimeDisplayInitSettings();
+                }
+                if (UIWidgets::PaddedEnhancementCheckbox("Hide Background", CVAR_ENHANCEMENT("TimeDisplay.ShowWindowBG"), 
+                    false, false)) {
+                    TimeDisplayInitSettings();
+                }
+                ImGui::Separator();
+                for (auto& timer : timeDisplayList) {
+                    if (UIWidgets::PaddedEnhancementCheckbox(timer.timeLabel.c_str(), timer.timeEnable, false, false)) {
+                        TimeDisplayUpdateDisplayOptions();
+                    }
+                }
+            }
+        }
         ImGui::PopStyleVar(3);
         ImGui::PopStyleColor(1);
 
@@ -1744,7 +1828,7 @@ void DrawCheatsMenu() {
         UIWidgets::EnhancementSliderFloat("Hookshot Reach Multiplier: %.2fx", "##gCheatHookshotReachMultiplier", CVAR_CHEAT("HookshotReachMultiplier"), 1.0f, 5.0f, "", 1.0f, false);
         UIWidgets::Spacer(2.0f);
         if (ImGui::Button("Change Age")) {
-            CVarSetInteger(CVAR_GENERAL("SwitchAge"), 1);
+            SwitchAge();
         }
         UIWidgets::Tooltip("Switches Link's age and reloads the area.");  
         UIWidgets::Spacer(2.0f);
@@ -1783,7 +1867,7 @@ void DrawCheatsMenu() {
             if (UIWidgets::PaddedEnhancementCheckbox("I promise I have read the warning", CVAR_CHEAT("SaveStatePromise"), true,
                                                      false)) {
                 CVarSetInteger(CVAR_CHEAT("SaveStatesEnabled"), 0);
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             }
             if (CVarGetInteger(CVAR_CHEAT("SaveStatePromise"), 0) == 1) {
                 UIWidgets::PaddedEnhancementCheckbox("I understand, enable save states", CVAR_CHEAT("SaveStatesEnabled"), true,
@@ -1878,7 +1962,7 @@ void DrawCheatsMenu() {
                 CVarSetInteger(CVAR_CHEAT("BetaQuestWorld"), betaQuestWorld);
 
                 std::reinterpret_pointer_cast<Ship::ConsoleWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch("reset");
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             }
 
             if (!isBetaQuestEnabled) {
@@ -2041,6 +2125,7 @@ void DrawRemoteControlMenu() {
 #endif
 
 extern std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
+extern std::shared_ptr<PlandomizerWindow> mPlandomizerWindow;
 extern std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
 extern std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
 extern std::shared_ptr<EntranceTrackerWindow> mEntranceTrackerWindow;
@@ -2051,14 +2136,6 @@ extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 
 void DrawRandomizerMenu() {
     if (ImGui::BeginMenu("Randomizer")) {
-        UIWidgets::EnhancementCheckbox("Plando Mode", CVAR_GENERAL("PlandoMode"));
-        UIWidgets::Tooltip(
-            "When dropping a spoiler file on the game window, parse the full spoiler file instead of just the "
-            "necessary "
-            "parts to regenerate a seed.\n\nKeep in mind if you do this, all custom text will only be available in the "
-            "language present in the spoilerfile. You can use this to edit a previously generated spoilerfile that has "
-            "been edited with custom hint text and item locations. May be useful for debugging.");
-        UIWidgets::PaddedSeparator();
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
         ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
         ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
@@ -2079,6 +2156,14 @@ void DrawRandomizerMenu() {
         if (mRandomizerSettingsWindow) {
             if (ImGui::Button(GetWindowButtonText("Randomizer Settings", CVarGetInteger(CVAR_WINDOW("RandomizerSettings"), 0)).c_str(), buttonSize)) {
                 mRandomizerSettingsWindow->ToggleVisibility();
+            }
+        }
+
+        UIWidgets::Spacer(0);
+
+        if (mPlandomizerWindow) {
+            if (ImGui::Button(GetWindowButtonText("Plandomizer Editor", CVarGetInteger(CVAR_WINDOW("PlandomizerWindow"), 0)).c_str(), buttonSize)) {
+                mPlandomizerWindow->ToggleVisibility();
             }
         }
 

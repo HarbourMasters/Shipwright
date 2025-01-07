@@ -7,6 +7,7 @@
 #include "z_en_fish.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "vt.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS 0
 
@@ -691,7 +692,7 @@ void EnFish_OrdinaryUpdate(EnFish* this, PlayState* play) {
     }
 
     if ((this->actionFunc == NULL) || (this->actionFunc(this, play), (this->actor.update != NULL))) {
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
 
         if (this->unk_250 != 0) {
             Actor_UpdateBgCheckInfo(play, &this->actor, 17.5f, 4.0f, 0.0f, this->unk_250);
@@ -730,7 +731,7 @@ void EnFish_RespawningUpdate(EnFish* this, PlayState* play) {
     }
 
     if ((this->actionFunc == NULL) || (this->actionFunc(this, play), (this->actor.update != NULL))) {
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
 
         if (this->respawnTimer == 20) {
             this->actor.draw = EnFish_Draw;

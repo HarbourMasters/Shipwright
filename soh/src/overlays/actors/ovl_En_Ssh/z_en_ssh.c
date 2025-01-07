@@ -1,5 +1,7 @@
 #include "z_en_ssh.h"
 #include "objects/object_ssh/object_ssh.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
@@ -824,7 +826,7 @@ void EnSsh_Update(Actor* thisx, PlayState* play) {
         EnSsh_Damaged(this);
     } else {
         SkelAnime_Update(&this->skelAnime);
-        func_8002D7EC(&this->actor);
+        Actor_UpdatePos(&this->actor);
         Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);
         this->actionFunc(this, play);
     }

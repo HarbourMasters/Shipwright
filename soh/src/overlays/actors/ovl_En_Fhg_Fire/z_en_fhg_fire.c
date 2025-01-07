@@ -296,7 +296,7 @@ void EnFhgFire_LightningShock(EnFhgFire* this, PlayState* play) {
         EffectSsFhgFlash_SpawnShock(play, &this->actor, &pos, 200, FHGFLASH_SHOCK_NO_ACTOR);
     }
 
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Collider_UpdateCylinder(&this->actor, &this->collider);
     if (player->invincibilityTimer == 0) {
         CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
@@ -440,8 +440,8 @@ void EnFhgFire_EnergyBall(EnFhgFire* this, PlayState* play) {
         dxL = player->actor.world.pos.x - this->actor.world.pos.x;
         dyL = player->actor.world.pos.y + 40.0f - this->actor.world.pos.y;
         dzL = player->actor.world.pos.z - this->actor.world.pos.z;
-        func_8002D908(&this->actor);
-        func_8002D7EC(&this->actor);
+        Actor_UpdateVelocityXYZ(&this->actor);
+        Actor_UpdatePos(&this->actor);
         if (this->work[FHGFIRE_VARIANCE_TIMER] & 1) {
             Actor_SetScale(&this->actor, 6.0f);
         } else {
@@ -494,8 +494,8 @@ void EnFhgFire_EnergyBall(EnFhgFire* this, PlayState* play) {
                     canBottleReflect2 = canBottleReflect1;
                     if (!canBottleReflect2 && (hurtbox->toucher.dmgFlags & 0x00100000)) {
                         killMode = BALL_IMPACT;
-                        Audio_PlaySoundGeneral(NA_SE_IT_SHIELD_REFLECT_MG, &player->actor.projectedPos, 4, &D_801333E0,
-                                               &D_801333E0, &D_801333E8);
+                        Audio_PlaySoundGeneral(NA_SE_IT_SHIELD_REFLECT_MG, &player->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                         func_800AA000(this->actor.xyzDistToPlayerSq, 0xFF, 0x14, 0x96);
                     } else {
                         if (bossGnd->flyMode == GND_FLY_NEUTRAL) {
@@ -523,8 +523,8 @@ void EnFhgFire_EnergyBall(EnFhgFire* this, PlayState* play) {
                             angleModX;
                         this->work[FHGFIRE_FIRE_MODE] = FHGFIRE_LIGHT_BLUE;
                         this->work[FHGFIRE_FX_TIMER] = 2;
-                        Audio_PlaySoundGeneral(NA_SE_IT_SWORD_REFLECT_MG, &player->actor.projectedPos, 4, &D_801333E0,
-                                               &D_801333E0, &D_801333E8);
+                        Audio_PlaySoundGeneral(NA_SE_IT_SWORD_REFLECT_MG, &player->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                         func_800AA000(this->actor.xyzDistToPlayerSq, 0xB4, 0x14, 0x64);
                     }
                 } else if (sqrtf(SQ(dxL) + SQ(dyL) + SQ(dzL)) <= 25.0f) {
@@ -556,9 +556,9 @@ void EnFhgFire_EnergyBall(EnFhgFire* this, PlayState* play) {
                         killMode = BALL_IMPACT;
                         bossGnd->returnCount = this->work[FHGFIRE_RETURN_COUNT] + 1;
                         Audio_PlaySoundGeneral(NA_SE_EN_FANTOM_HIT_THUNDER, &bossGnd->actor.projectedPos, 4,
-                                               &D_801333E0, &D_801333E0, &D_801333E8);
-                        Audio_PlaySoundGeneral(NA_SE_EN_FANTOM_DAMAGE, &bossGnd->actor.projectedPos, 4, &D_801333E0,
-                                               &D_801333E0, &D_801333E8);
+                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                        Audio_PlaySoundGeneral(NA_SE_EN_FANTOM_DAMAGE, &bossGnd->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     }
                 }
                 break;

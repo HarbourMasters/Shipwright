@@ -426,7 +426,7 @@ void EnKanban_Update(Actor* thisx, PlayState* play2) {
             f32 tempYDistToWater;
             u8 onGround;
 
-            Actor_MoveForward(&this->actor);
+            Actor_MoveXZGravity(&this->actor);
             Actor_UpdateBgCheckInfo(play, &this->actor, 30.0f, 30.0f, 50.0f, 5);
 
             tempX = this->actor.world.pos.x;
@@ -598,7 +598,7 @@ void EnKanban_Update(Actor* thisx, PlayState* play2) {
                 if (this->actor.bgCheckFlags & 1) {
                     this->actor.speedXZ = 0.0f;
                 }
-                Actor_MoveForward(&this->actor);
+                Actor_MoveXZGravity(&this->actor);
                 if (this->actor.speedXZ != 0.0f) {
                     Actor_UpdateBgCheckInfo(play, &this->actor, 10.0f, 10.0f, 50.0f, 5);
                     if (this->actor.bgCheckFlags & 8) {
@@ -716,8 +716,8 @@ void EnKanban_Update(Actor* thisx, PlayState* play2) {
                         (play->msgCtx.unk_E3F2 == OCARINA_SONG_LULLABY)) {
                         this->actionState = ENKANBAN_REPAIR;
                         this->bounceX = 1;
-                        Audio_PlaySoundGeneral(NA_SE_SY_TRE_BOX_APPEAR, &D_801333D4, 4, &D_801333E0, &D_801333E0,
-                                               &D_801333E8);
+                        Audio_PlaySoundGeneral(NA_SE_SY_TRE_BOX_APPEAR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                               &gSfxDefaultReverb);
                     }
                     break;
             }

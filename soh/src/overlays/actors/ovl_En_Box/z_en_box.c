@@ -3,6 +3,8 @@
 #include "soh_assets.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include <assert.h>
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
@@ -11,7 +13,7 @@
 
 /*
 set on init unless treasure flag is set
-if clear, chest moves (Actor_MoveForward) (falls, likely)
+if clear, chest moves (Actor_MoveXZGravity) (falls, likely)
 ends up cleared from SWITCH_FLAG_FALL types when switch flag is set
 */
 #define ENBOX_MOVE_IMMOBILE (1 << 0)
@@ -277,8 +279,8 @@ void EnBox_Fall(EnBox* this, PlayState* play) {
                 OnePointCutscene_EndCutscene(play, this->unk_1AC);
             }
         }
-        Audio_PlaySoundGeneral(NA_SE_EV_COFFIN_CAP_BOUND, &this->dyna.actor.projectedPos, 4, &D_801333E0, &D_801333E0,
-                               &D_801333E8);
+        Audio_PlaySoundGeneral(NA_SE_EV_COFFIN_CAP_BOUND, &this->dyna.actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultReverb);
         EnBox_SpawnDust(this, play);
     }
     yDiff = this->dyna.actor.world.pos.y - this->dyna.actor.floorHeight;
@@ -387,8 +389,8 @@ void EnBox_AppearInit(EnBox* this, PlayState* play) {
         this->unk_1A8 = 0;
         Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_KANKYO, this->dyna.actor.home.pos.x,
                     this->dyna.actor.home.pos.y, this->dyna.actor.home.pos.z, 0, 0, 0, 0x0011, true);
-        Audio_PlaySoundGeneral(NA_SE_EV_TRE_BOX_APPEAR, &this->dyna.actor.projectedPos, 4, &D_801333E0, &D_801333E0,
-                               &D_801333E8);
+        Audio_PlaySoundGeneral(NA_SE_EV_TRE_BOX_APPEAR, &this->dyna.actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultReverb);
     }
 }
 
@@ -447,10 +449,10 @@ void EnBox_WaitOpen(EnBox* this, PlayState* play) {
         Flags_SetTreasure(play, this->dyna.actor.params & 0x1F);
     } else {
         player = GET_PLAYER(play);
-        func_8002DBD0(&this->dyna.actor, &sp4C, &player->actor.world.pos);
+        Actor_WorldToActorCoords(&this->dyna.actor, &sp4C, &player->actor.world.pos);
         if (sp4C.z > -50.0f && sp4C.z < 0.0f && fabsf(sp4C.y) < 10.0f && fabsf(sp4C.x) < 20.0f &&
             Player_IsFacingActor(&this->dyna.actor, 0x3000, play)) {
-                func_8002F554(&this->dyna.actor, play, -(this->dyna.actor.params >> 5 & 0x7F));
+                Actor_OfferGetItemNearby(&this->dyna.actor, play, -(this->dyna.actor.params >> 5 & 0x7F));
         }
         if (Flags_GetTreasure(play, this->dyna.actor.params & 0x1F)) {
             EnBox_SetupAction(this, EnBox_Open);
@@ -491,7 +493,7 @@ void EnBox_Open(EnBox* this, PlayState* play) {
         }
 
         if (sfxId != 0) {
-            Audio_PlaySoundGeneral(sfxId, &this->dyna.actor.projectedPos, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            Audio_PlaySoundGeneral(sfxId, &this->dyna.actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         }
 
         if (this->skelanime.jointTable[3].z > 0) {
@@ -549,7 +551,7 @@ void EnBox_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
 
     if (!(this->movementFlags & ENBOX_MOVE_IMMOBILE)) {
-        Actor_MoveForward(&this->dyna.actor);
+        Actor_MoveXZGravity(&this->dyna.actor);
         Actor_UpdateBgCheckInfo(play, &this->dyna.actor, 0.0f, 0.0f, 0.0f, 0x1C);
     }
 
@@ -594,7 +596,7 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
             getItemCategory = ITEM_CATEGORY_JUNK;
         // If it's a bottle and they already have one, consider the item lesser
         } else if (
-            (this->getItemEntry.modIndex == MOD_RANDOMIZER && this->getItemEntry.getItemId >= RG_BOTTLE_WITH_RED_POTION && this->getItemEntry.getItemId <= RG_BOTTLE_WITH_BIG_POE) ||
+            (this->getItemEntry.modIndex == MOD_RANDOMIZER && this->getItemEntry.getItemId >= RG_BOTTLE_WITH_RED_POTION && this->getItemEntry.getItemId <= RG_BOTTLE_WITH_POE) ||
             (this->getItemEntry.modIndex == MOD_NONE && (this->getItemEntry.getItemId == GI_BOTTLE || this->getItemEntry.getItemId == GI_MILK_BOTTLE))
         ) {
             if (gSaveContext.inventory.items[SLOT_BOTTLE_1] != ITEM_NONE) {
@@ -735,6 +737,8 @@ void EnBox_CreateExtraChestTextures() {
         gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, gChristmasGreenTreasureChestSideAndTopTex),
     };
 
+    Gfx gNoOp[] = { gsDPNoOp() };
+
     Gfx* frontCmd = ResourceMgr_LoadGfxByName(gTreasureChestChestFrontDL);
     int frontIndex = 0;
     while (frontCmd->words.w0 >> 24 != G_ENDDL) {
@@ -743,6 +747,20 @@ void EnBox_CreateExtraChestTextures() {
         gKeyTreasureChestChestFrontDL[frontIndex] = *frontCmd;
         gChristmasRedTreasureChestChestFrontDL[frontIndex] = *frontCmd;
         gChristmasGreenTreasureChestChestFrontDL[frontIndex] = *frontCmd;
+
+        // Set the second instruction of img OTR hash opcode to noop, since we will replace it with the
+        // OTR filepath opcode below
+        if (frontCmd->words.w0 >> 24 == G_SETTIMG_OTR_HASH) {
+            frontIndex++;
+            ++frontCmd;
+
+            gSkullTreasureChestChestFrontDL[frontIndex] = gNoOp[0];
+            gGoldTreasureChestChestFrontDL[frontIndex] = gNoOp[0];
+            gKeyTreasureChestChestFrontDL[frontIndex] = gNoOp[0];
+            gChristmasRedTreasureChestChestFrontDL[frontIndex] = gNoOp[0];
+            gChristmasGreenTreasureChestChestFrontDL[frontIndex] = gNoOp[0];
+        }
+
         frontIndex++;
         ++frontCmd;
     }
@@ -781,6 +799,20 @@ void EnBox_CreateExtraChestTextures() {
         gKeyTreasureChestChestSideAndLidDL[sideIndex] = *sideCmd;
         gChristmasRedTreasureChestChestSideAndLidDL[sideIndex] = *sideCmd;
         gChristmasGreenTreasureChestChestSideAndLidDL[sideIndex] = *sideCmd;
+
+        // Set the second instruction of img OTR hash opcode to noop, since we will replace it with the
+        // OTR filepath opcode below
+        if (sideCmd->words.w0 >> 24 == G_SETTIMG_OTR_HASH) {
+            sideIndex++;
+            ++sideCmd;
+
+            gSkullTreasureChestChestSideAndLidDL[sideIndex] = gNoOp[0];
+            gGoldTreasureChestChestSideAndLidDL[sideIndex] = gNoOp[0];
+            gKeyTreasureChestChestSideAndLidDL[sideIndex] = gNoOp[0];
+            gChristmasRedTreasureChestChestSideAndLidDL[sideIndex] = gNoOp[0];
+            gChristmasGreenTreasureChestChestSideAndLidDL[sideIndex] = gNoOp[0];
+        }
+
         sideIndex++;
         ++sideCmd;
     }

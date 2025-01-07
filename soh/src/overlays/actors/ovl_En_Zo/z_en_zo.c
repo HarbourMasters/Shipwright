@@ -8,6 +8,7 @@
 #include "objects/object_zo/object_zo.h"
 
 #include "soh/frame_interpolation.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
@@ -738,7 +739,7 @@ void EnZo_Update(Actor* thisx, PlayState* play) {
         EnZo_Blink(this);
     }
 
-    Actor_MoveForward(thisx);
+    Actor_MoveXZGravity(thisx);
     Actor_UpdateBgCheckInfo(play, thisx, this->collider.dim.radius, this->collider.dim.height * 0.25f, 0.0f, 5);
     this->actionFunc(this, play);
     EnZo_Dialog(this, play);

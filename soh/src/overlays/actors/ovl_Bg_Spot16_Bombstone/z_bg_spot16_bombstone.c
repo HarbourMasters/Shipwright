@@ -472,7 +472,7 @@ void func_808B5A94(BgSpot16Bombstone* this, PlayState* play) {
     func_808B5240(this, play);
 
     if (this->unk_154 == 56) {
-        func_80078884(NA_SE_SY_CORRECT_CHIME);
+        Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
     }
 
     if (this->unk_154 > 60) {
@@ -500,7 +500,7 @@ void func_808B5B58(BgSpot16Bombstone* this) {
 void func_808B5B6C(BgSpot16Bombstone* this, PlayState* play) {
     Actor* actor = &this->actor;
 
-    Actor_MoveForward(actor);
+    Actor_MoveXZGravity(actor);
     actor->shape.rot.x += this->unk_210;
     actor->shape.rot.z += this->unk_212;
 

@@ -3,6 +3,10 @@
 #include "game-interactor/GameInteractor.h"
 #include "tts/tts.h"
 #include "soh/OTRGlobals.h"
+#include "soh/SaveManager.h"
+#include "soh/ResourceManagerHelpers.h"
+#include "soh/resource/type/Skeleton.h"
+#include "soh/Enhancements/boss-rush/BossRushTypes.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
@@ -33,15 +37,18 @@
 #include "src/overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
 #include "src/overlays/actors/ovl_Door_Gerudo/z_door_gerudo.h"
 #include "src/overlays/actors/ovl_En_Door/z_en_door.h"
+#include "src/overlays/actors/ovl_En_Elf/z_en_elf.h"
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
 #include "objects/object_custom_equip/object_custom_equip.h"
+#include "soh_assets.h"
 #include "kaleido.h"
 
 extern "C" {
 #include <z64.h>
 #include "align_asset_macro.h"
 #include "macros.h"
+#include "soh/cvar_prefixes.h"
 #include "functions.h"
 #include "variables.h"
 #include "functions.h"
@@ -55,7 +62,6 @@ uint8_t ResourceMgr_FileExists(const char* resName);
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 extern void Overlay_DisplayText(float duration, const char* text);
-uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 }
 
 // GreyScaleEndDlist
@@ -67,15 +73,6 @@ static const ALIGN_ASSET(2) char gEndGrayscaleAndEndDlistDL[] = dgEndGrayscaleAn
 static const ALIGN_ASSET(2) char tokinoma_room_0DL_007A70[] = dtokinoma_room_0DL_007A70;
 #define dtokinoma_room_0DL_007FD0 "__OTR__scenes/shared/tokinoma_scene/tokinoma_room_0DL_007FD0"
 static const ALIGN_ASSET(2) char tokinoma_room_0DL_007FD0[] = dtokinoma_room_0DL_007FD0;
-
-// TODO: When there's more uses of something like this, create a new GI::RawAction?
-void ReloadSceneTogglingLinkAge() {
-    gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
-    gPlayState->transitionTrigger = TRANS_TRIGGER_START;
-    gPlayState->transitionType = TRANS_TYPE_CIRCLE(TCA_WAVE, TCC_WHITE, TCS_FAST); // Fade Out
-    gSaveContext.nextTransitionType = TRANS_TYPE_CIRCLE(TCA_WAVE, TCC_WHITE, TCS_FAST);
-    gPlayState->linkAgeOnLoad ^= 1; // toggle linkAgeOnLoad
-}
 
 void RegisterInfiniteMoney() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
@@ -156,21 +153,6 @@ void RegisterInfiniteNayrusLove() {
     });
 }
 
-void RegisterMoonJumpOnL() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded(true)) return;
-        
-        if (CVarGetInteger(CVAR_CHEAT("MoonJumpOnL"), 0) != 0) {
-            Player* player = GET_PLAYER(gPlayState);
-
-            if (CHECK_BTN_ANY(gPlayState->state.input[0].cur.button, BTN_L)) {
-                player->actor.velocity.y = 6.34375f;
-            }
-        }
-    });
-}
-
-
 void RegisterInfiniteISG() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!GameInteractor::IsSaveLoaded(true)) return;
@@ -223,42 +205,43 @@ void RegisterFreezeTime() {
 }
 
 /// Switches Link's age and respawns him at the last entrance he entered.
-void RegisterSwitchAge() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        static bool warped = false;
+void SwitchAge() {
+    if (gPlayState == NULL) return;
 
-        if (!GameInteractor::IsSaveLoaded(true)) {
-            CVarClear(CVAR_GENERAL("SwitchAge"));
-            warped = false;
-            return;
+    Player* player = GET_PLAYER(gPlayState);
+
+    // Hyrule Castle: Very likely to fall through floor, so we force a specific entrance
+    if (gPlayState->sceneNum == SCENE_HYRULE_CASTLE || gPlayState->sceneNum == SCENE_OUTSIDE_GANONS_CASTLE) {
+        gPlayState->nextEntranceIndex = ENTR_CASTLE_GROUNDS_SOUTH_EXIT;
+    } else {
+        gSaveContext.respawnFlag = 1;
+        gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
+
+        // Preserve the player's position and orientation
+        gSaveContext.respawn[RESPAWN_MODE_DOWN].entranceIndex = gPlayState->nextEntranceIndex;
+        gSaveContext.respawn[RESPAWN_MODE_DOWN].roomIndex = gPlayState->roomCtx.curRoom.num;
+        gSaveContext.respawn[RESPAWN_MODE_DOWN].pos = player->actor.world.pos;
+        gSaveContext.respawn[RESPAWN_MODE_DOWN].yaw = player->actor.shape.rot.y;
+
+        if (gPlayState->roomCtx.curRoom.behaviorType2 < 4) {
+            gSaveContext.respawn[RESPAWN_MODE_DOWN].playerParams = 0x0DFF;
+        } else {
+            // Scenes with static backgrounds use a special camera we need to preserve
+            Camera* camera = GET_ACTIVE_CAM(gPlayState);
+            s16 camId = camera->camDataIdx;
+            gSaveContext.respawn[RESPAWN_MODE_DOWN].playerParams = 0x0D00 | camId;
         }
+    }
 
-        static Vec3f playerPos;
-        static int16_t playerYaw;
-        static RoomContext* roomCtx;
-        static s32 roomNum;
+    gPlayState->transitionTrigger = TRANS_TRIGGER_START;
+    gPlayState->transitionType = TRANS_TYPE_INSTANT;
+    gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK_FAST;
+    gPlayState->linkAgeOnLoad ^= 1;
 
-        if (CVarGetInteger(CVAR_GENERAL("SwitchAge"), 0) && !warped) {
-            playerPos = GET_PLAYER(gPlayState)->actor.world.pos;
-            playerYaw = GET_PLAYER(gPlayState)->actor.shape.rot.y;
-            roomCtx = &gPlayState->roomCtx;
-            roomNum = roomCtx->curRoom.num;
-            ReloadSceneTogglingLinkAge();
-            warped = true;
-        }
-
-        if (warped && gPlayState->transitionTrigger != TRANS_TRIGGER_START &&
-            gSaveContext.nextTransitionType == TRANS_NEXT_TYPE_DEFAULT) {
-            GET_PLAYER(gPlayState)->actor.shape.rot.y = playerYaw;
-            GET_PLAYER(gPlayState)->actor.world.pos = playerPos;
-            if (roomNum != roomCtx->curRoom.num) {
-                func_8009728C(gPlayState, roomCtx, roomNum); //load original room
-                //func_800973FC(gPlayState, &gPlayState->roomCtx); // commit to room load?
-                func_80097534(gPlayState, roomCtx);  // load map for new room (unloading the previous room)
-            }
-            warped = false;
-            CVarClear(CVAR_GENERAL("SwitchAge"));
-        }
+    static HOOK_ID hookId = 0;
+    hookId = REGISTER_VB_SHOULD(VB_INFLICT_VOID_DAMAGE, {
+        *should = false;
+        GameInteractor::Instance->UnregisterGameHookForID<GameInteractor::OnVanillaBehavior>(hookId);
     });
 }
 
@@ -266,8 +249,7 @@ void RegisterSwitchAge() {
 void RegisterOcarinaTimeTravel() {
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnOcarinaSongAction>([]() {
-        if (!GameInteractor::IsSaveLoaded(true)) {
-            CVarClear(CVAR_ENHANCEMENT("TimeTravel"));
+        if (!GameInteractor::IsSaveLoaded(true) || !CVarGetInteger(CVAR_ENHANCEMENT("TimeTravel"), 0)) {
             return;
         }
 
@@ -277,22 +259,15 @@ void RegisterOcarinaTimeTravel() {
         Actor* nearbyOcarinaSpot = Actor_FindNearby(gPlayState, player, ACTOR_EN_OKARINA_TAG, ACTORCAT_PROP, 120.0f);
         Actor* nearbyDoorOfTime = Actor_FindNearby(gPlayState, player, ACTOR_DOOR_TOKI, ACTORCAT_BG, 500.0f);
         Actor* nearbyFrogs = Actor_FindNearby(gPlayState, player, ACTOR_EN_FR, ACTORCAT_NPC, 300.0f);
-        uint8_t hasMasterSword = CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER);
-        uint8_t hasOcarinaOfTime = (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME);
-        // If TimeTravel + Player have the Ocarina of Time + Have Master Sword + is in proper range
+        Actor* nearbyGossipStone = Actor_FindNearby(gPlayState, player, ACTOR_EN_GS, ACTORCAT_NPC, 300.0f);
+        bool justPlayedSoT = gPlayState->msgCtx.lastPlayedSong == OCARINA_SONG_TIME;
+        bool notNearAnySource = !nearbyTimeBlockEmpty && !nearbyTimeBlock && !nearbyOcarinaSpot && !nearbyDoorOfTime && !nearbyFrogs && !nearbyGossipStone;
+        bool hasOcarinaOfTime = (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME);
+        bool doesntNeedOcarinaOfTime = CVarGetInteger(CVAR_ENHANCEMENT("TimeTravel"), 0) == 2;
+        bool hasMasterSword = CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER);
         // TODO: Once Swordless Adult is fixed: Remove the Master Sword check
-        if (((CVarGetInteger(CVAR_ENHANCEMENT("TimeTravel"), 0) == 1 && hasOcarinaOfTime) || CVarGetInteger(CVAR_ENHANCEMENT("TimeTravel"), 0) == 2) && hasMasterSword &&
-            gPlayState->msgCtx.lastPlayedSong == OCARINA_SONG_TIME && !nearbyTimeBlockEmpty && !nearbyTimeBlock &&
-            !nearbyOcarinaSpot && !nearbyFrogs) {
-
-            if (IS_RANDO) {
-                CVarSetInteger(CVAR_GENERAL("SwitchTimeline"), 1);
-            } else if (!IS_RANDO && !nearbyDoorOfTime) {
-                // This check is made for when Link is learning the Song Of Time in a vanilla save file that load a
-                // Temple of Time scene where the only object present is the Door of Time
-                CVarSetInteger(CVAR_GENERAL("SwitchTimeline"), 1);
-            }
-            ReloadSceneTogglingLinkAge();
+        if (justPlayedSoT && notNearAnySource && (hasOcarinaOfTime || doesntNeedOcarinaOfTime) && hasMasterSword) {
+            SwitchAge();
         }
     });
 }
@@ -471,7 +446,7 @@ void RegisterPermanentHeartLoss() {
 
 void RegisterDeleteFileOnDeath() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("DeleteFileOnDeath"), 0) || !GameInteractor::IsSaveLoaded() || &gPlayState->gameOverCtx == NULL || &gPlayState->pauseCtx == NULL) return;
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("DeleteFileOnDeath"), 0) || !GameInteractor::IsSaveLoaded() || gPlayState == NULL) return;
 
         if (gPlayState->gameOverCtx.state == GAMEOVER_DEATH_MENU && gPlayState->pauseCtx.state == 9) {
             SaveManager::Instance->DeleteZeldaFile(gSaveContext.fileNum);
@@ -1023,6 +998,42 @@ void RegisterResetNaviTimer() {
 	});
 }
 
+void RegisterBrokenGiantsKnifeFix() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry itemEntry) {
+        if (itemEntry.itemId != ITEM_SWORD_BGS) {
+            return;
+        }
+
+        int32_t bypassEquipmentChecks = 0;
+
+        if (IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("FixBrokenGiantsKnife"), 0)) {
+            // Flag wasn't reset because Kokiri or Master Sword was missing, so we need to
+            // bypass those checks
+            bypassEquipmentChecks |= (1 << EQUIP_INV_SWORD_KOKIRI) | (1 << EQUIP_INV_SWORD_MASTER);
+        } else {
+            // If enhancement is off, flag should be handled exclusively by vanilla behaviour
+            return;
+        }
+
+        int32_t allSwordsInEquipment = bypassEquipmentChecks | ALL_EQUIP_VALUE(EQUIP_TYPE_SWORD);
+        int32_t allSwordFlags = (1 << EQUIP_INV_SWORD_KOKIRI) | (1 << EQUIP_INV_SWORD_MASTER) |
+                                (1 << EQUIP_INV_SWORD_BIGGORON) | (1 << EQUIP_INV_SWORD_BROKENGIANTKNIFE);
+
+        if (allSwordsInEquipment != allSwordFlags) {
+            return;
+        }
+
+        gSaveContext.inventory.equipment ^= OWNED_EQUIP_FLAG_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BROKENGIANTKNIFE);
+
+        if (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KNIFE) {
+            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_BGS;
+            if (gPlayState != NULL) {
+                Interface_LoadItemIcon1(gPlayState, 0);
+            }
+        }
+    });
+}
+
 //this map is used for enemies that can be uniquely identified by their id
 //and that are always counted
 //enemies that can't be uniquely identified by their id
@@ -1284,6 +1295,9 @@ std::vector<AltTrapType> getEnabledAddTraps () {
     std::vector<AltTrapType> enabledAddTraps;
     for (int i = 0; i < ADD_TRAP_MAX; i++) {
         if (CVarGetInteger(altTrapTypeCvars[i], 0)) {
+            if (gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE && (i == ADD_VOID_TRAP || i == ADD_TELEPORT_TRAP)) {
+                continue; // don't add void or teleport if you're holding the fishing pole, as this causes issues
+            }
             enabledAddTraps.push_back(static_cast<AltTrapType>(i));
         }
     }
@@ -1317,7 +1331,7 @@ void RegisterAltTrapTypes() {
                 eventTimer = 3;
                 break;
             case ADD_SPEED_TRAP:
-                Audio_PlaySoundGeneral(NA_SE_VO_KZ_MOVE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_VO_KZ_MOVE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 GameInteractor::State::RunSpeedModifier = -2;
                 statusTimer = 200;
                 Overlay_DisplayText(10, "Speed Decreased!");
@@ -1326,8 +1340,8 @@ void RegisterAltTrapTypes() {
                 eventTimer = 3;
                 break;
             case ADD_VOID_TRAP:
-                Audio_PlaySoundGeneral(NA_SE_EN_GANON_LAUGH, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-                eventTimer = 3;                    
+                Audio_PlaySoundGeneral(NA_SE_EN_GANON_LAUGH, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                eventTimer = 3;
                 break;
             case ADD_AMMO_TRAP:
                 eventTimer = 3;
@@ -1338,6 +1352,8 @@ void RegisterAltTrapTypes() {
                 break;
             case ADD_TELEPORT_TRAP:
                 eventTimer = 3;
+                break;
+            default:
                 break;
         }
     });
@@ -1364,9 +1380,9 @@ void RegisterAltTrapTypes() {
                     AMMO(ITEM_BOW) = AMMO(ITEM_BOW) * 0.5;
                     AMMO(ITEM_BOMB) = AMMO(ITEM_BOMB) * 0.5;
                     AMMO(ITEM_BOMBCHU) = AMMO(ITEM_BOMBCHU) * 0.5;
-                    Audio_PlaySoundGeneral(NA_SE_VO_FR_SMILE_0, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                    Audio_PlaySoundGeneral(NA_SE_VO_FR_SMILE_0, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     break;
-                case ADD_TELEPORT_TRAP:
+                case ADD_TELEPORT_TRAP: {
                     int entrance;
                     int index = 1 + rand() % 10;
                     switch (index) {
@@ -1393,6 +1409,9 @@ void RegisterAltTrapTypes() {
                             break;
                     }
                     GameInteractor::RawAction::TeleportPlayer(entrance);
+                    break;
+                }
+                default:
                     break;
             }
         }
@@ -1639,6 +1658,54 @@ void RegisterRandomizerCompasses() {
     });
 }
 
+void RegisterCustomSkeletons() {
+    static int8_t previousTunic = -1;
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+
+        if (!GameInteractor::IsSaveLoaded() || gPlayState == NULL) {
+            return;
+        }
+
+        if (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC) != previousTunic) {
+            SOH::SkeletonPatcher::UpdateCustomSkeletons();
+        }
+        previousTunic = CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC);
+    });
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnAssetAltChange>([]() {
+        if (!GameInteractor::IsSaveLoaded() || gPlayState == NULL) {
+            return;
+        }
+
+        SOH::SkeletonPatcher::UpdateCustomSkeletons();
+    });
+}
+
+#define FAIRY_FLAG_BIG (1 << 9)
+
+
+void RegisterFairyCustomization() {
+    REGISTER_VB_SHOULD(VB_FAIRY_HEAL, {
+        EnElf* enElf = va_arg(args, EnElf*);
+        // Don't trigger if fairy is shuffled
+        if (!IS_RANDO || !OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_FAIRIES) || enElf->sohFairyIdentity.randomizerInf == RAND_INF_MAX) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("FairyEffect"), 0) && !(enElf->fairyFlags & FAIRY_FLAG_BIG))
+            {
+                if (CVarGetInteger(CVAR_ENHANCEMENT("FairyPercentRestore"), 0))
+                {
+                    Health_ChangeBy(gPlayState, (gSaveContext.healthCapacity * CVarGetInteger(CVAR_ENHANCEMENT("FairyHealth"), 100) / 100 + 15) / 16 * 16);
+                }
+                else
+                {
+                    Health_ChangeBy(gPlayState, CVarGetInteger(CVAR_ENHANCEMENT("FairyHealth"), 8) * 16);
+                }
+                *should = false;
+            }
+        }
+    });
+}
+
 void InitMods() {
     BossRush_RegisterHooks();
     RandomizerRegisterHooks();
@@ -1651,12 +1718,10 @@ void InitMods() {
     RegisterInfiniteAmmo();
     RegisterInfiniteMagic();
     RegisterInfiniteNayrusLove();
-    RegisterMoonJumpOnL();
     RegisterInfiniteISG();
     RegisterEzQPA();
     RegisterUnrestrictedItems();
     RegisterFreezeTime();
-    RegisterSwitchAge();
     RegisterOcarinaTimeTravel();
     RegisterAutoSave();
     RegisterDaytimeGoldSkultullas();
@@ -1670,6 +1735,7 @@ void InitMods() {
     RegisterMenuPathFix();
     RegisterMirrorModeHandler();
     RegisterResetNaviTimer();
+    RegisterBrokenGiantsKnifeFix();
     RegisterEnemyDefeatCounts();
     RegisterBossDefeatTimestamps();
     RegisterAltTrapTypes();
@@ -1684,4 +1750,6 @@ void InitMods() {
     RegisterPatchCustomEquipmentDlistsHandler();
     RegisterPauseMenuHooks();
     RandoKaleido_RegisterHooks();
+    RegisterFairyCustomization();
+    RegisterCustomSkeletons();
 }

@@ -10,6 +10,7 @@
 #include "objects/object_hidan_objects/object_hidan_objects.h"
 #include "objects/object_mizu_objects/object_mizu_objects.h"
 #include "objects/object_haka_door/object_haka_door.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
@@ -194,7 +195,7 @@ void EnDoor_Idle(EnDoor* this, PlayState* play) {
     s16 phi_v0;
 
     doorType = this->actor.params >> 7 & 7;
-    func_8002DBD0(&this->actor, &playerPosRelToDoor, &player->actor.world.pos);
+    Actor_WorldToActorCoords(&this->actor, &playerPosRelToDoor, &player->actor.world.pos);
     if (this->playerIsOpening != 0) {
         this->actionFunc = EnDoor_Open;
         Animation_PlayOnceSetSpeed(&this->skelAnime, D_809FCECC[this->animStyle],

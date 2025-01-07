@@ -10,6 +10,9 @@ void TimeSavers_Register() {
             SkipZeldaFleeingCastle_Register();
         SkipIntro_Register();
     // SkipMiscInteractions
+        MoveJabuJabuElevator_Register();
         MoveMidoInKokiriForest_Register();
+        SkipChildRutoInteractions_Register();
     FasterHeavyBlockLift_Register();
+    FasterRupeeAccumulator_Register();
 }

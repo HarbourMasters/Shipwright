@@ -26,6 +26,14 @@ class Settings {
     void CreateOptions();
 
     /**
+     * @brief Populates the map used to translate strings into RandomiserSettingKeys
+     *
+     * @return std::unordered_map<std::string, RandomizerSettingKey>
+     */
+
+    std::unordered_map<std::string, RandomizerSettingKey> PopulateOptionNameToEnum();
+
+    /**
      * @brief Get a reference to the `Option` corresponding to the provided RandomizerSettingKey.
      *
      * @param key
@@ -180,6 +188,7 @@ class Settings {
     void ParseJson(nlohmann::json spoilerFileJson);
     std::vector<Option*> VanillaLogicDefaults = {};
     std::map<RandomizerArea, std::vector<RandomizerTrick>> mTricksByArea = {};
+    void ReloadOptions();
 
   private:
     /**
@@ -191,7 +200,6 @@ class Settings {
     std::array<OptionGroup, RSG_MAX> mOptionGroups = {};
     std::array<TrickOption, RT_MAX> mTrickOptions = {};
     std::vector<std::vector<Option*>> mExcludeLocationsOptionsAreas = {};
-    std::unordered_map<std::string, RandomizerSettingKey> mSpoilerfileSettingNameToEnum;
     RandoOptionStartingAge mResolvedStartingAge =  RO_AGE_CHILD;
     RandoOptionLACSCondition mLACSCondition = RO_LACS_VANILLA;
     std::string mHash;

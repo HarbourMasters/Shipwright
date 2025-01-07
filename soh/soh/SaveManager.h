@@ -1,6 +1,7 @@
 #pragma once
 
 #include <libultraship/libultra/gbi.h>
+#include "z64save.h"
 
 #define SECTION_PARENT_NONE -1
 typedef struct {
@@ -44,8 +45,6 @@ typedef struct {
 #define BS_THREAD_POOL_ENABLE_PRIORITY
 #define BS_THREAD_POOL_ENABLE_PAUSE
 #include <BS_thread_pool.hpp>
-
-#include "z64save.h"
 
 #include <nlohmann/json.hpp>
 

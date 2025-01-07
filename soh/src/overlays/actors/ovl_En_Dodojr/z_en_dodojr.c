@@ -8,6 +8,7 @@
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
 #include "objects/object_dodojr/object_dodojr.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
 
@@ -433,7 +434,7 @@ void func_809F74C4(EnDodojr* this, PlayState* play) {
 }
 
 void func_809F758C(EnDodojr* this, PlayState* play) {
-    func_8002D868(&this->actor);
+    Actor_UpdateVelocityXZGravity(&this->actor);
     func_809F6730(this, play, &this->actor.world.pos);
 
     if (DECR(this->timer4) == 0) {
@@ -490,7 +491,7 @@ void func_809F773C(EnDodojr* this, PlayState* play) {
 void func_809F77AC(EnDodojr* this, PlayState* play) {
     this->rootScale = 1.2f;
     this->rootScale *= ((f32)this->actor.colorFilterTimer / 8);
-    func_8002D868(&this->actor);
+    Actor_UpdateVelocityXZGravity(&this->actor);
 
     if (func_809F68B0(this, play) != 0) {
         this->timer3 = 60;
@@ -505,7 +506,7 @@ void func_809F784C(EnDodojr* this, PlayState* play) {
 }
 
 void func_809F786C(EnDodojr* this, PlayState* play) {
-    func_8002D868(&this->actor);
+    Actor_UpdateVelocityXZGravity(&this->actor);
 
     if (func_809F68B0(this, play) != 0) {
         func_809F6AC4(this);
@@ -538,7 +539,7 @@ void func_809F78EC(EnDodojr* this, PlayState* play) {
 
 void func_809F799C(EnDodojr* this, PlayState* play) {
     this->actor.flags |= ACTOR_FLAG_PLAY_HIT_SFX;
-    func_8002D868(&this->actor);
+    Actor_UpdateVelocityXZGravity(&this->actor);
 
     if (func_809F68B0(this, play) != 0) {
         func_809F6994(this);
@@ -562,7 +563,7 @@ void func_809F7A00(EnDodojr* this, PlayState* play) {
 }
 
 void func_809F7AB8(EnDodojr* this, PlayState* play) {
-    func_8002D868(&this->actor);
+    Actor_UpdateVelocityXZGravity(&this->actor);
     Math_SmoothStepToS(&this->actor.shape.rot.y, 0, 4, 1000, 10);
     this->actor.world.rot.x = this->actor.shape.rot.x;
 
@@ -612,7 +613,7 @@ void EnDodojr_Update(Actor* thisx, PlayState* play) {
     EnDodojr* this = (EnDodojr*)thisx;
 
     SkelAnime_Update(&this->skelAnime);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     func_809F70E8(this, play);
 
     if (this->actionFunc != func_809F73AC) {

@@ -41,6 +41,8 @@ void CheatsOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list 
             }
             break;
         }
+        default:
+            break;
     }
 }
 

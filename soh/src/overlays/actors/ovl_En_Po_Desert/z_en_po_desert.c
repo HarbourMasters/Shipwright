@@ -6,6 +6,7 @@
 
 #include "z_en_po_desert.h"
 #include "objects/object_po_field/object_po_field.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_LENS | ACTOR_FLAG_IGNORE_QUAKE)
 
@@ -194,7 +195,7 @@ void EnPoDesert_Update(Actor* thisx, PlayState* play) {
 
     SkelAnime_Update(&this->skelAnime);
     this->actionFunc(this, play);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     EnPoDesert_UpdateSpeedModifier(this);
     Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 27.0f, 60.0f, 4);
     Actor_SetFocus(&this->actor, 42.0f);

@@ -294,7 +294,7 @@ void func_80888860(BgHidanHamstep* this, PlayState* play) {
     s32 pad2;
     s32 quakeIndex;
 
-    Actor_MoveForward(&this->dyna.actor);
+    Actor_MoveXZGravity(&this->dyna.actor);
 
     if (((this->dyna.actor.world.pos.y - this->dyna.actor.home.pos.y) < (-20.0f - this->dyna.actor.minVelocityY)) &&
         (this->dyna.actor.velocity.y <= 0.0f)) {
@@ -343,7 +343,7 @@ void func_80888A58(BgHidanHamstep* this, PlayState* play) {
     s32 pad2;
     s32 quakeIndex;
 
-    Actor_MoveForward(&this->dyna.actor);
+    Actor_MoveXZGravity(&this->dyna.actor);
     func_80888694(this, (BgHidanHamstep*)this->dyna.actor.parent);
 
     if (((this->dyna.actor.params & 0xFF) <= 0) || ((this->dyna.actor.params & 0xFF) >= 6)) {
@@ -376,7 +376,7 @@ void func_80888A58(BgHidanHamstep* this, PlayState* play) {
                 func_808884C8(this, play);
 
                 if ((this->dyna.actor.params & 0xFF) == 5) {
-                    func_80078884(NA_SE_SY_CORRECT_CHIME);
+                    Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
                 }
 
                 osSyncPrintf("B(%d)\n", this->dyna.actor.params);

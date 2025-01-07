@@ -261,7 +261,7 @@ void DoorShutter_Init(Actor* thisx, PlayState* play2) {
     DoorShutter_SetupAction(this, DoorShutter_SetupType);
     this->unk_16B = phi_a3;
     if (this->doorType == SHUTTER_KEY_LOCKED || this->doorType == SHUTTER_BOSS) {
-        if (!Flags_GetSwitch(play, this->dyna.actor.params & 0x3F)) {
+        if (GameInteractor_Should(VB_LOCK_BOSS_DOOR, !Flags_GetSwitch(play, this->dyna.actor.params & 0x3F), this)) {
             this->unk_16E = 10;
         }
         Actor_SetFocus(&this->dyna.actor, 60.0f);
@@ -322,7 +322,7 @@ f32 func_80996840(PlayState* play, DoorShutter* this, f32 arg2, f32 arg3, f32 ar
     sp28.x = player->actor.world.pos.x;
     sp28.y = player->actor.world.pos.y + arg2;
     sp28.z = player->actor.world.pos.z;
-    func_8002DBD0(&this->dyna.actor, &sp1C, &sp28);
+    Actor_WorldToActorCoords(&this->dyna.actor, &sp1C, &sp28);
     if (arg3 < fabsf(sp1C.x) || arg4 < fabsf(sp1C.y)) {
         return FLT_MAX;
     } else {
@@ -543,7 +543,7 @@ void func_80997220(DoorShutter* this, PlayState* play) {
     if (this->dyna.actor.room >= 0) {
         Vec3f vec;
 
-        func_8002DBD0(&this->dyna.actor, &vec, &player->actor.world.pos);
+        Actor_WorldToActorCoords(&this->dyna.actor, &vec, &player->actor.world.pos);
         this->dyna.actor.room =
             play->transiActorCtx.list[(u16)this->dyna.actor.params >> 0xA].sides[(vec.z < 0.0f) ? 0 : 1].room;
         if (room != this->dyna.actor.room) {
@@ -600,7 +600,7 @@ void func_80997568(DoorShutter* this, PlayState* play) {
 }
 
 void func_809975C0(DoorShutter* this, PlayState* play) {
-    Actor_MoveForward(&this->dyna.actor);
+    Actor_MoveXZGravity(&this->dyna.actor);
     Actor_UpdateBgCheckInfo(play, &this->dyna.actor, 0.0f, 0.0f, 0.0f, 4);
     if (this->dyna.actor.bgCheckFlags & 1) {
         DoorShutter_SetupAction(this, func_809976B8);

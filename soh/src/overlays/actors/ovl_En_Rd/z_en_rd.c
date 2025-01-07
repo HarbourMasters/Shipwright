@@ -1,6 +1,7 @@
 #include "z_en_rd.h"
 #include "objects/object_rd/object_rd.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAGGED_BY_HOOKSHOT)
 
@@ -823,7 +824,7 @@ void EnRd_Update(Actor* thisx, PlayState* play) {
 
         this->actionFunc(this, play);
         if (this->unk_31B != 8 && this->actor.speedXZ != 0.0f) {
-            Actor_MoveForward(&this->actor);
+            Actor_MoveXZGravity(&this->actor);
         }
 
         if ((this->actor.shape.rot.x == 0) && (this->unk_31B != 8) && (this->actor.speedXZ != 0.0f)) {

@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
@@ -518,6 +519,8 @@ static bool SaveStateHandler(std::shared_ptr<Ship::Console> Console, const std::
         case SaveStateReturn::FAIL_WRONG_GAMESTATE:
             ERROR_MESSAGE("[SOH] Can not save a state outside of \"GamePlay\"");
             return 1;
+        default:
+            return 1;
     }
 }
 
@@ -537,6 +540,8 @@ static bool LoadStateHandler(std::shared_ptr<Ship::Console> Console, const std::
             return 1;
         case SaveStateReturn::FAIL_WRONG_GAMESTATE:
             ERROR_MESSAGE("[SOH] Can not load a state outside of \"GamePlay\"");
+            return 1;
+        default:
             return 1;
     }
 
@@ -1307,6 +1312,7 @@ static constexpr std::array<std::pair<const char*, CosmeticGroup>, COSMETICS_GRO
     {"trials", COSMETICS_GROUP_TRAILS},
     {"navi", COSMETICS_GROUP_NAVI},
     {"ivan", COSMETICS_GROUP_IVAN},
+    {"message", COSMETICS_GROUP_MESSAGE},
 }};
 
 static bool CosmeticsHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
@@ -1590,5 +1596,5 @@ void DebugConsole_Init(void) {
             {"group_name", Ship::ArgumentType::TEXT, true},
     }});
 
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 }

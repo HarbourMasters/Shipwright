@@ -12,6 +12,7 @@
 #include "overlays/effects/ovl_Effect_Ss_Hahen/z_eff_ss_hahen.h"
 #include "objects/object_hintnuts/object_hintnuts.h"
 #include "vt.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
@@ -247,7 +248,7 @@ void EnDntNomal_TargetWait(EnDntNomal* this, PlayState* play) {
             scorePos.z = this->actor.world.pos.z;
             EffectSsExtra_Spawn(play, &scorePos, &scoreVel, &scoreAccel, 4, 2);
             Audio_StopSfxById(NA_SE_SY_TRE_BOX_APPEAR);
-            func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
+            Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
             // "Big hit"
             osSyncPrintf(VT_FGCOL(CYAN) "☆☆☆☆☆ 大当り ☆☆☆☆☆ %d\n" VT_RST, this->hitCounter);
             if (!LINK_IS_ADULT && !Flags_GetItemGetInf(ITEMGETINF_1D)) {
@@ -594,7 +595,7 @@ void EnDntNomal_StageDance(EnDntNomal* this, PlayState* play) {
 void EnDntNomal_SetupStageHide(EnDntNomal* this, PlayState* play) {
     if (this->timer3 != 0) {
         if ((this->timer3 == 1) && (this->ignore == 1)) {
-            func_80078884(NA_SE_SY_ERROR);
+            Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
         }
     } else {
         this->endFrame = (f32)Animation_GetLastFrame(&gDntStageHideAnim);
@@ -636,7 +637,7 @@ void EnDntNomal_StageHide(EnDntNomal* this, PlayState* play) {
                     if (rupee->colorIdx == 2) {
                         rupee->actor.velocity.y = 7.0f;
                     }
-                    func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
+                    Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
                 }
                 this->action = DNT_ACTION_NONE;
                 this->actionFunc = EnDntNomal_SetupStageWait;
@@ -813,7 +814,7 @@ void EnDntNomal_Update(Actor* thisx, PlayState* play) {
         }
     }
     this->actionFunc(this, play);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 20.0f, 60.0f, 0x1D);
     if (this->type == ENDNTNOMAL_TARGET) {
         Collider_SetQuadVertices(&this->targetQuad, &this->targetVtx[0], &this->targetVtx[1], &this->targetVtx[2],

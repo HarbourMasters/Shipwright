@@ -4,7 +4,7 @@
 
 void (*sKaleidoScopeUpdateFunc)(PlayState* play);
 void (*sKaleidoScopeDrawFunc)(PlayState* play);
-f32 gBossMarkScale;
+f32 gBossMarkScale = 1.0f;
 u32 D_8016139C;
 PauseMapMarksData* gLoadedPauseMarkDataTable;
 

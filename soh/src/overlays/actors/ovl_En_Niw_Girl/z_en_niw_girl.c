@@ -7,6 +7,7 @@
 #include "z_en_niw_girl.h"
 #include "objects/object_gr/object_gr.h"
 #include "vt.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -226,7 +227,7 @@ void EnNiwGirl_Update(Actor* thisx, PlayState* play) {
         this->jumpTimer--;
     }
     this->actionFunc(this, play);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 100.0f, 100.0f, 200.0f, 0x1C);
     Collider_UpdateCylinder(&this->actor, &this->collider);
     CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);

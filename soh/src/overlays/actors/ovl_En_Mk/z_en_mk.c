@@ -6,6 +6,9 @@
 
 #include "z_en_mk.h"
 #include "objects/object_mk/object_mk.h"
+#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
@@ -95,9 +98,8 @@ void func_80AACA40(EnMk* this, PlayState* play) {
 void func_80AACA94(EnMk* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play) != 0 || !GameInteractor_Should(VB_TRADE_FROG, true, this)) {
         this->actor.parent = NULL;
-        this->actionFunc = func_80AACA40;
-        Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_LH_TRADE_FROG);
-        if (GameInteractor_Should(VB_TRADE_TIMER_EYEDROPS, true)) {
+        if (GameInteractor_Should(VB_TRADE_TIMER_EYEDROPS, true, this)) {
+            this->actionFunc = func_80AACA40;
             func_80088AA0(240);
             gSaveContext.eventInf[1] &= ~1;
         }
@@ -267,7 +269,7 @@ void EnMk_Wait(EnMk* this, PlayState* play) {
                                          Animation_GetLastFrame(&object_mk_Anim_000368), ANIMMODE_ONCE, -4.0f);
                         this->flags &= ~2;
                         gSaveContext.timer2State = 0;
-                        func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
+                        Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
                         break;
                     default:
                         player->actor.textId = 0x4018;
@@ -301,7 +303,7 @@ void EnMk_Update(Actor* thisx, PlayState* play) {
 
     Collider_UpdateCylinder(&this->actor, &this->collider);
     CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);
 
     if ((!(this->flags & 2)) && (SkelAnime_Update(&this->skelAnime))) {
@@ -347,7 +349,7 @@ void EnMk_Update(Actor* thisx, PlayState* play) {
 
                     if ((!(this->flags & 4)) && (this->swimFlag >= 8)) {
                         this->flags |= 4;
-                        func_80078884(NA_SE_SY_CORRECT_CHIME);
+                        Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
                     }
                 }
             }

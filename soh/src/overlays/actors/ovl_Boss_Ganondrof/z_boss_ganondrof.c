@@ -11,6 +11,7 @@
 #include "overlays/effects/ovl_Effect_Ss_Fhg_Flash/z_eff_ss_fhg_flash.h"
 #include "overlays/effects/ovl_Effect_Ss_Hahen/z_eff_ss_hahen.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
+#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
@@ -316,7 +317,7 @@ void BossGanondrof_Intro(BossGanondrof* this, PlayState* play) {
     }
 
     if (this->timers[1] == 30) {
-        func_80078914(&sAudioVec, NA_SE_EN_FANTOM_TRANSFORM);
+        Sfx_PlaySfxAtPos(&sAudioVec, NA_SE_EN_FANTOM_TRANSFORM);
     }
 
     if (horse->bossGndSignal == FHG_LIGHTNING) {
@@ -719,7 +720,7 @@ void BossGanondrof_Stunned(BossGanondrof* this, PlayState* play) {
         this->actor.gravity = 0.0f;
     }
 
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 }
 
 void BossGanondrof_SetupBlock(BossGanondrof* this, PlayState* play) {
@@ -805,8 +806,8 @@ void BossGanondrof_Charge(BossGanondrof* this, PlayState* play) {
                     Math_FAtan2F(vecToLink.y, sqrtf(SQ(vecToLink.x) + SQ(vecToLink.z))) * (0x8000 / M_PI);
             }
 
-            func_8002D908(thisx);
-            func_8002D7EC(thisx);
+            Actor_UpdateVelocityXYZ(thisx);
+            Actor_UpdatePos(thisx);
             Math_ApproachF(&thisx->speedXZ, 10.0f, 1.0f, 0.5f);
             if ((sqrtf(SQ(dxCenter) + SQ(dzCenter)) > 280.0f) || (thisx->xyzDistToPlayerSq < SQ(100.0f))) {
                 this->work[GND_ACTION_STATE] = CHARGE_FINISH;
@@ -815,7 +816,7 @@ void BossGanondrof_Charge(BossGanondrof* this, PlayState* play) {
             break;
         case CHARGE_FINISH:
             thisx->gravity = 0.2f;
-            Actor_MoveForward(thisx);
+            Actor_MoveXZGravity(thisx);
             osSyncPrintf("YP %f @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n", thisx->world.pos.y);
             if (thisx->world.pos.y < 5.0f) {
                 thisx->world.pos.y = 5.0f;

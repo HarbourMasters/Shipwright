@@ -32,8 +32,12 @@
 //#define SEGMENTED_TO_VIRTUAL(addr) PHYSICAL_TO_VIRTUAL(gSegments[SEGMENT_NUMBER(addr)] + SEGMENT_OFFSET(addr))
 #define SEGMENTED_TO_VIRTUAL(addr) addr
 
+#ifndef SQ
 #define SQ(x) ((x)*(x))
+#endif
+#ifndef ABS
 #define ABS(x) ((x) >= 0 ? (x) : -(x))
+#endif
 #define DECR(x) ((x) == 0 ? 0 : --(x))
 #define CLAMP(x, min, max) ((x) < (min) ? (min) : (x) > (max) ? (max) : (x))
 #define CLAMP_MAX(x, max) ((x) > (max) ? (max) : (x))
@@ -295,6 +299,10 @@ extern GraphicsContext* __gfxCtx;
 #define BGCHECK_POS_ERROR_CHECK(vec3f) BgCheck_PosErrorCheck(vec3f, __FILE__, __LINE__)
 
 #define SEG_ADDR(seg, addr) (addr | (seg << 24) | 1)
+
+// Upstream TODO: Bring back decomp file/line macro use in src (but ignore the args for our needs)
+#define SYSTEM_ARENA_MALLOC(size, file, line) SystemArena_MallocDebug(size, __FILE__, __LINE__)
+#define SYSTEM_ARENA_FREE(ptr, file, line) SystemArena_FreeDebug(ptr, __FILE__, __LINE__)
 // #endregion
 
 #define DPAD_ITEM(button) ((gSaveContext.buttonStatus[(button) + 5] != BTN_DISABLED) \
@@ -312,7 +320,7 @@ extern GraphicsContext* __gfxCtx;
 #define SPIRIT_TEMPLE_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_SPIRIT_TEMPLE) ? 7 : 5)
 #define SHADOW_TEMPLE_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_SHADOW_TEMPLE) ? 6 : 5)
 #define BOTTOM_OF_THE_WELL_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_BOTTOM_OF_THE_WELL) ? 2 : 3)
-#define GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_GERUDO_TRAINING_GROUND) ? 3 : 9)
+#define GERUDO_TRAINING_GROUND_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_GERUDO_TRAINING_GROUND) ? 3 : 9)
 #define GERUDO_FORTRESS_SMALL_KEY_MAX 4
 #define GANONS_CASTLE_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_INSIDE_GANONS_CASTLE) ? 3 : 2)
 #define TREASURE_GAME_SMALL_KEY_MAX 6

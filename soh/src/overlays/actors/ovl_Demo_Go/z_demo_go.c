@@ -101,14 +101,14 @@ void func_8097C930(DemoGo* this) {
 }
 
 void func_8097C9B8(DemoGo* this) {
-    func_80078914(&this->actor.projectedPos, NA_SE_EN_DODO_M_GND);
+    Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_EN_DODO_M_GND);
 }
 
 void func_8097C9DC(DemoGo* this) {
     s32 pad[2];
 
     if (Animation_OnFrame(&this->skelAnime, 12.0f) || Animation_OnFrame(&this->skelAnime, 25.0f)) {
-        func_80078914(&this->actor.projectedPos, NA_SE_EN_MORIBLIN_WALK);
+        Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_EN_MORIBLIN_WALK);
     }
 }
 
@@ -159,11 +159,11 @@ void func_8097CC08(DemoGo* this) {
     } else {
         this->actor.speedXZ = (kREG(15) * 0.01f) + 1.2f;
     }
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 }
 
 void func_8097CCC0(DemoGo* this) {
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 }
 
 void func_8097CCE0(DemoGo* this, PlayState* play) {

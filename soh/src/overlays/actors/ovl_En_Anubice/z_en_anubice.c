@@ -10,6 +10,7 @@
 #include "overlays/actors/ovl_Bg_Hidan_Curtain/z_bg_hidan_curtain.h"
 #include "vt.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -447,7 +448,7 @@ void EnAnubice_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
 
     this->actor.velocity.y += this->actor.gravity;
-    func_8002D7EC(&this->actor);
+    Actor_UpdatePos(&this->actor);
 
     if (!this->isLinkOutOfRange) {
         Actor_UpdateBgCheckInfo(play, &this->actor, 5.0f, 5.0f, 10.0f, 0x1D);

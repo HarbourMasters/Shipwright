@@ -8,6 +8,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_Bb/object_Bb.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_PLAY_HIT_SFX)
 
@@ -1239,7 +1240,7 @@ void EnBb_Update(Actor* thisx, PlayState* play2) {
         this->actionFunc(this, play);
         if ((this->actor.params <= ENBB_BLUE) && (this->actor.speedXZ >= -6.0f) &&
             ((this->actor.flags & ACTOR_FLAG_DRAGGED_BY_ARROW) == 0)) {
-            Actor_MoveForward(&this->actor);
+            Actor_MoveXZGravity(&this->actor);
         }
         if (this->moveMode == BBMOVE_NORMAL) {
             if ((this->actor.world.pos.y - 20.0f) <= this->actor.floorHeight) {

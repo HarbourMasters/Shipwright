@@ -6,6 +6,7 @@
 
 #include "z_en_brob.h"
 #include "objects/object_brob/object_brob.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
 
@@ -153,7 +154,7 @@ void func_809CB054(EnBrob* this, PlayState* play) {
         this->timer--;
     }
     if (this->timer == 0) {
-        if (func_8004356C(&this->dyna) != 0) {
+        if (DynaPolyActor_IsPlayerOnTop(&this->dyna) != 0) {
             func_8002F71C(play, &this->dyna.actor, 5.0f, this->dyna.actor.yawTowardsPlayer, 1.0f);
             func_809CAE44(this, play);
         } else if (this->dyna.actor.xzDistToPlayer < 300.0f) {

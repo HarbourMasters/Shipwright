@@ -10,6 +10,7 @@
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "variables.h"
 #include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
 #include "../option.h"
 #include "soh/Enhancements/debugger/performanceTimer.h"
 
@@ -79,14 +80,6 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
             SPDLOG_ERROR("Writing Spoiler Log Failed");
         }
         StopPerformanceTimer(PT_SPOILER_LOG);
-#ifdef ENABLE_DEBUG
-        SPDLOG_INFO("Writing Placement Log...");
-        if (PlacementLog_Write()) {
-            SPDLOG_INFO("Writing Placement Log Done");
-        } else {
-            SPDLOG_ERROR("Writing Placement Log Failed");
-        }
-#endif
     }
 
     ctx->playthroughLocations.clear();
@@ -104,7 +97,7 @@ int Playthrough_Repeat(std::set<RandomizerCheck> excludedLocations, std::set<Ran
         ctx->GetSettings()->SetSeedString(std::to_string(rand() % 0xFFFFFFFF));
         repeatedSeed = boost::hash_32<std::string>{}(ctx->GetSettings()->GetSeedString());
         ctx->GetSettings()->SetSeed(repeatedSeed % 0xFFFFFFFF);
-        //CitraPrint("testing seed: " + std::to_string(Settings::seed));
+        SPDLOG_DEBUG("testing seed: %d", repeatedSeed);
         ClearProgress();
         Playthrough_Init(ctx->GetSettings()->GetSeed(), excludedLocations, enabledTricks);
         SPDLOG_INFO("Seeds Generated: {}", i + 1);

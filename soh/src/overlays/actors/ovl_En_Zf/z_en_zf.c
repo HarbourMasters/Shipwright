@@ -7,6 +7,7 @@
 #include "z_en_zf.h"
 #include "objects/object_zf/object_zf.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -2044,7 +2045,7 @@ void EnZf_Update(Actor* thisx, PlayState* play) {
         }
 
         if (!this->unk_3F8) {
-            Actor_MoveForward(&this->actor);
+            Actor_MoveXZGravity(&this->actor);
         }
 
         Actor_UpdateBgCheckInfo(play, &this->actor, 25.0f, 30.0f, 60.0f, 0x1D);

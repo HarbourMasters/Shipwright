@@ -73,7 +73,10 @@ void DrawPresetSelector(PresetType presetTypeId) {
         if (selectedPresetId != 0) {
             applyPreset(selectedPresetDef.entries);
         }
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        if (presetTypeId == PRESET_TYPE_RANDOMIZER){
+            Rando::Context::GetInstance()->GetSettings()->ReloadOptions();
+        }
     }
     ImGui::PopStyleVar(1);
 }

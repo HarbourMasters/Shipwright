@@ -7,6 +7,8 @@
 #include "z_en_ta.h"
 #include "vt.h"
 #include "objects/object_ta/object_ta.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
@@ -394,7 +396,7 @@ void func_80B14818(EnTa* this, PlayState* play) {
     if (this->actor.speedXZ < 6.0f) {
         this->actor.speedXZ += 0.4f;
     }
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 }
 
 void func_80B14898(EnTa* this, PlayState* play) {
@@ -747,7 +749,7 @@ void EnTa_RunCuccoGame(EnTa* this, PlayState* play) {
     if (gSaveContext.timer1Value == 0 && !Play_InCsMode(play)) {
         Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_STOP);
         this->unk_2E0 &= ~0x200;
-        func_80078884(NA_SE_SY_FOUND);
+        Sfx_PlaySfxCentered(NA_SE_SY_FOUND);
         gSaveContext.timer1State = 0;
         Player_SetCsActionWithHaltedActors(play, &this->actor, 1);
         Message_StartTextbox(play, 0x2081, &this->actor);
@@ -1151,7 +1153,7 @@ void EnTa_Update(Actor* thisx, PlayState* play) {
 
     Collider_UpdateCylinder(&this->actor, &this->collider);
     CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);
     this->unk_260(this);
     this->actionFunc(this, play);

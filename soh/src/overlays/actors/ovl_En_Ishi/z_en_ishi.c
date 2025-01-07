@@ -7,6 +7,7 @@
 #include "z_en_ishi.h"
 #include "overlays/effects/ovl_Effect_Ss_Kakera/z_eff_ss_kakera.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
+#include "soh/OTRGlobals.h"
 
 #include "vt.h"
 
@@ -403,7 +404,7 @@ void EnIshi_LiftedUp(EnIshi* this, PlayState* play) {
         EnIshi_SetupFly(this);
         EnIshi_Fall(this);
         func_80A7ED94(&this->actor.velocity, D_80A7FA28[this->actor.params & 1]);
-        func_8002D7EC(&this->actor);
+        Actor_UpdatePos(&this->actor);
         Actor_UpdateBgCheckInfo(play, &this->actor, 7.5f, 35.0f, 0.0f, 0xC5);
     }
 }
@@ -470,7 +471,7 @@ void EnIshi_Fly(EnIshi* this, PlayState* play) {
     Math_StepToF(&this->actor.shape.yOffset, 0.0f, 2.0f);
     EnIshi_Fall(this);
     func_80A7ED94(&this->actor.velocity, D_80A7FA28[type]);
-    func_8002D7EC(&this->actor);
+    Actor_UpdatePos(&this->actor);
     this->actor.shape.rot.x += sRockRotSpeedX;
     this->actor.shape.rot.y += sRockRotSpeedY;
     Actor_UpdateBgCheckInfo(play, &this->actor, 7.5f, 35.0f, 0.0f, 0xC5);

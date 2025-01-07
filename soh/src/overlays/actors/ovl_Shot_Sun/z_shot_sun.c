@@ -7,6 +7,7 @@
 #include "z_shot_sun.h"
 #include "overlays/actors/ovl_En_Elf/z_en_elf.h"
 #include "scenes/overworld/spot06/spot06_scene.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "vt.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
@@ -115,7 +116,7 @@ void ShotSun_TriggerFairy(ShotSun* this, PlayState* play) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_KANKYO, this->actor.home.pos.x, this->actor.home.pos.y,
                     this->actor.home.pos.z, 0, 0, 0, 0x11, true);
 
-        func_80078914(&this->actor.projectedPos, NA_SE_EV_TRE_BOX_APPEAR);
+        Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_EV_TRE_BOX_APPEAR);
     }
 }
 
@@ -160,13 +161,14 @@ void ShotSun_UpdateHyliaSun(ShotSun* this, PlayState* play) {
     Vec3f spawnPos;
 
     if (this->collider.base.acFlags & AC_HIT) {
-        func_80078884(NA_SE_SY_CORRECT_CHIME);
+        Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
         osSyncPrintf(VT_FGCOL(CYAN) "SHOT_SUN HIT!!!!!!!\n" VT_RST);
-        if ((INV_CONTENT(ITEM_ARROW_FIRE) == ITEM_NONE && !IS_RANDO) ||
-            (!Flags_GetTreasure(play, 0x1F) && IS_RANDO)) {
+        if (GameInteractor_Should(VB_SPAWN_FIRE_ARROW, INV_CONTENT(ITEM_ARROW_FIRE) == ITEM_NONE)) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_ETCETERA, 700.0f, -800.0f, 7261.0f, 0, 0, 0, 7, true);
-            play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gLakeHyliaFireArrowsCS);
-            gSaveContext.cutsceneTrigger = 1;
+            if (GameInteractor_Should(VB_PLAY_FIRE_ARROW_CS, true)) {
+                play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gLakeHyliaFireArrowsCS);
+                gSaveContext.cutsceneTrigger = 1;
+            }
         } else {
             spawnPos.x = 700.0f;
             spawnPos.y = -800.0f;

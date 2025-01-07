@@ -1,7 +1,10 @@
 #include "randomizer_item_tracker.h"
-#include "../../util.h"
-#include "../../OTRGlobals.h"
-#include "../../UIWidgets.hpp"
+#include "soh/util.h"
+#include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
+#include "soh/SaveManager.h"
+#include "soh/ResourceManagerHelpers.h"
+#include "soh/UIWidgets.hpp"
 #include "randomizerTypes.h"
 
 #include <map>
@@ -22,7 +25,6 @@ extern PlayState* gPlayState;
 #include "textures/icon_item_static/icon_item_static.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 }
-extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 
 void DrawEquip(ItemTrackerItem item);
 void DrawItem(ItemTrackerItem item);
@@ -440,7 +442,7 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
                     result.maxCapacity = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;
                     break;
                 case SCENE_GERUDO_TRAINING_GROUND:
-                    result.maxCapacity = GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX;
+                    result.maxCapacity = GERUDO_TRAINING_GROUND_SMALL_KEY_MAX;
                     break;
                 case SCENE_THIEVES_HIDEOUT:
                     result.maxCapacity = GERUDO_FORTRESS_SMALL_KEY_MAX;
@@ -598,11 +600,11 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         ImGui::SetCursorScreenPos(
             ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize((currentString + maxString).c_str()).x / 2), p.y - 14));
         ImGui::PushStyleColor(ImGuiCol_Text, currentColor);
-        ImGui::Text(currentString.c_str());
+        ImGui::Text("%s", currentString.c_str());
         ImGui::PopStyleColor();
         ImGui::SameLine(0, 0.0f);
         ImGui::PushStyleColor(ImGuiCol_Text, maxColor);
-        ImGui::Text(maxString.c_str());
+        ImGui::Text("%s", maxString.c_str());
         ImGui::PopStyleColor();
     } else {
         ImGui::SetCursorScreenPos(ImVec2(p.x, p.y - 14));
@@ -1222,7 +1224,7 @@ void ItemTrackerWindow::DrawElement() {
     int iconSpacing = CVarGetInteger(CVAR_TRACKER_ITEM("IconSpacing"), 12);
     int comboButton1Mask = buttonMap[CVarGetInteger(CVAR_TRACKER_ITEM("ComboButton1"), TRACKER_COMBO_BUTTON_L)];
     int comboButton2Mask = buttonMap[CVarGetInteger(CVAR_TRACKER_ITEM("ComboButton2"), TRACKER_COMBO_BUTTON_R)];
-    OSContPad* buttonsPressed = Ship::Context::GetInstance()->GetControlDeck()->GetPads();
+    OSContPad* buttonsPressed = std::dynamic_pointer_cast<LUS::ControlDeck>(Ship::Context::GetInstance()->GetControlDeck())->GetPads();
     bool comboButtonsHeld = buttonsPressed != nullptr && buttonsPressed[0].button & comboButton1Mask && buttonsPressed[0].button & comboButton2Mask;
     bool isPaused = CVarGetInteger(CVAR_TRACKER_ITEM("ShowOnlyPaused"), 0) == 0 || gPlayState != nullptr && gPlayState->pauseCtx.state > 0;
 
@@ -1374,7 +1376,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
         CVarSetFloat(CVAR_TRACKER_ITEM("BgColorG"), ChromaKeyBackground.y);
         CVarSetFloat(CVAR_TRACKER_ITEM("BgColorB"), ChromaKeyBackground.z);
         CVarSetFloat(CVAR_TRACKER_ITEM("BgColorA"), ChromaKeyBackground.w);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
     ImGui::PopItemWidth();
 
