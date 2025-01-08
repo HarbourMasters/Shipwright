@@ -304,9 +304,9 @@ class Region {
 extern std::array<Region, RR_MAX> areaTable;
 extern std::vector<EventAccess> grottoEvents;
 
-bool Here(const RandomizerRegion region, ConditionFn condition); //RANDOTODO make a less stupid way to check own at either age than self referncing with this
-bool MQSpiritSharedStatueRoom(const RandomizerRegion region, ConditionFn condition, bool anyAge = false); 
-bool MQSpiritSharedBrokenWallRoom(const RandomizerRegion region, ConditionFn condition, bool anyAge = false); 
+bool Here(const RandomizerRegion region, ConditionFn condition); //RANDOTODO make a less stupid way to check own at either age than self referencing with this
+bool MQSpiritSharedStatueRoom(const RandomizerRegion region, ConditionFn condition, bool anyAge = false);
+bool MQSpiritSharedBrokenWallRoom(const RandomizerRegion region, ConditionFn condition, bool anyAge = false);
 bool CanPlantBean(const RandomizerRegion region);
 bool BothAges(const RandomizerRegion region);
 bool ChildCanAccess(const RandomizerRegion region);

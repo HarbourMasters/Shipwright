@@ -389,7 +389,7 @@ void RegionTable_Init_WaterTemple() {
     //Raising the targets by clearing this room achieves nothing logically because it requires WL_LOW to do and hookshot to use, which implies access to WL_MID and WL_HIGH already
     areaTable[RR_WATER_TEMPLE_MQ_EAST_TOWER_1F_ROOM] = Region("Water Temple MQ East Tower 1F Room", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_WATER_TEMPLE_MQ_COMPASS_CHEST,  logic->CanKillEnemy(RE_LIZALFOS) && logic->CanKillEnemy(RE_SPIKE)),
+        LOCATION(RC_WATER_TEMPLE_MQ_COMPASS_CHEST, logic->CanKillEnemy(RE_LIZALFOS) && logic->CanKillEnemy(RE_SPIKE)),
     }, {
         Entrance(RR_WATER_TEMPLE_MQ_EAST_TOWER, []{return true;}),
     });
@@ -435,7 +435,7 @@ void RegionTable_Init_WaterTemple() {
     areaTable[RR_WATER_TEMPLE_MQ_CENTRAL_PILLAR_B1] = Region("Water Temple MQ Central Pillar B1", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         //Can't know water level, so we'll just assume any possibility and skip to MAIN
-        Entrance(RR_WATER_TEMPLE_MQ_MAIN,                    []{return logic->MQWaterOpenedPillarB1 && logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_BRONZE_SCALE);}),
+        Entrance(RR_WATER_TEMPLE_MQ_MAIN,                    []{return logic->MQWaterOpenedPillarB1 && logic->CanUse(RG_IRON_BOOTS) && logic->HasItem(RG_BRONZE_SCALE);}),
         //Child needs to release irons for height to push down the larger "peg", however they can push the lower one down by climbing and then hit the switch through the larger peg, but it's a trick
         Entrance(RR_WATER_TEMPLE_MQ_CENTRAL_PILLAR_B1_FINAL, []{return ((logic->IsAdult && logic->CanUse(RG_LONGSHOT)) || (logic->CanUse(RG_HOOKSHOT) && logic->HasItem(RG_BRONZE_SCALE)));}),
     });
@@ -674,7 +674,7 @@ void RegionTable_Init_WaterTemple() {
         //Child can use the crate to get the height to make it with hovers, but it's annoyingly tight so would be a trick
         Entrance(RR_WATER_TEMPLE_MQ_SINGLE_STALFOS_ROOM,    []{return logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8 &&
                                                                                                                                 //We're putting the requirement to get out of the water here as the scarecrow method in includes hook which satisfies it
-                                                                                                                                ((logic->IsAdult && (logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_WATER_NORTH_BASEMENT_LEDGE_JUMP)) && (logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_BRONZE_SCALE))) ||
+                                                                                                                                ((logic->IsAdult && (logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_WATER_NORTH_BASEMENT_LEDGE_JUMP)) && (logic->CanUse(RG_HOOKSHOT) || logic->HasItem(RG_BRONZE_SCALE))) ||
                                                                                                                                  (Here(RR_WATER_TEMPLE_MQ_CRATES_WHIRLPOOLS_ROOM, []{return logic->ScarecrowsSong();}) && logic->CanUse(RG_HOOKSHOT)));}),
         Entrance(RR_WATER_TEMPLE_MQ_4_TORCH_ROOM,           []{return logic->IsAdult && (logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_WATER_NORTH_BASEMENT_LEDGE_JUMP) || (Here(RR_WATER_TEMPLE_MQ_CRATES_WHIRLPOOLS_ROOM, []{return logic->ScarecrowsSong();}) && logic->CanUse(RG_HOOKSHOT)));}),
         Entrance(RR_WATER_TEMPLE_MQ_CRATES_WHIRLPOOLS_CAGE, []{return ctx->GetTrickOption(RT_WATER_MQ_LOCKED_GS) && (logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT));}),

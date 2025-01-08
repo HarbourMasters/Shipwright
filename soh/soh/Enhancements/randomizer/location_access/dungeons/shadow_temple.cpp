@@ -21,7 +21,7 @@ void RegionTable_Init_ShadowTemple() {
     }, {
         //Locations
         LOCATION(RC_SHADOW_TEMPLE_MAP_CHEST,              logic->CanJumpslashExceptHammer()),
-        LOCATION(RC_SHADOW_TEMPLE_HOVER_BOOTS_CHEST,      (logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD))),
+        LOCATION(RC_SHADOW_TEMPLE_HOVER_BOOTS_CHEST,      logic->CanKillEnemy(RE_DEAD_HAND)),
         LOCATION(RC_SHADOW_TEMPLE_NEAR_DEAD_HAND_POT_1,   logic->CanBreakPots()),
         LOCATION(RC_SHADOW_TEMPLE_WHISPERING_WALLS_POT_1, logic->CanBreakPots()),
         LOCATION(RC_SHADOW_TEMPLE_WHISPERING_WALLS_POT_2, logic->CanBreakPots()),
