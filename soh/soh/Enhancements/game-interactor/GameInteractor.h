@@ -310,7 +310,9 @@ typedef enum {
     VB_PLAY_FIRE_ARROW_CS,
     // Vanilla condition: INV_CONTENT(ITEM_ARROW_FIRE) == ITEM_NONE
     VB_SPAWN_FIRE_ARROW,
-    // Opt: *EventChkInf flag
+    // Opt: s32 entranceIndex
+    VB_ALLOW_ENTRANCE_CS_FOR_EITHER_AGE,
+    // Opt: s32 flag/EventChkInf, s32 entranceIndex
     VB_PLAY_ENTRANCE_CS,
     // Opt: *cutsceneId
     VB_PLAY_ONEPOINT_CS,
@@ -486,8 +488,6 @@ typedef enum {
     VB_TRADE_TIMER_ODD_MUSHROOM,
     VB_TRADE_TIMER_FROG,
     VB_TRADE_TIMER_EYEDROPS,
-    // Opt: *EnNiwLady
-    VB_ANJU_SET_OBTAINED_TRADE_ITEM,
 
     /*** Fixes ***/
     // Vanilla condition: false

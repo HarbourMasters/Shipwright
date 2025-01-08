@@ -111,7 +111,7 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
         auto itemLoc = ctx->GetItemLocation(location.GetRandomizerCheck());
         itemLoc->SetVisible(
             (location.GetRandomizerCheck() != RC_UNKNOWN_CHECK) &&
-            (!RandomizerCheckObjects::AreaIsDungeon(location.GetArea()) || location.GetQuest() == RCQUEST_BOTH ||
+            (location.GetQuest() == RCQUEST_BOTH ||
              location.GetQuest() == RCQUEST_MQ &&
                  ((CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeons"), RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_SET_NUMBER &&
                        (CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeonCount"), 12) > 0) || // at least one MQ dungeon
@@ -164,10 +164,10 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
              ((CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleTokens"), RO_TOKENSANITY_OFF) == RO_TOKENSANITY_DUNGEONS) &&
               RandomizerCheckObjects::AreaIsDungeon(location.GetArea()))) &&
             (location.GetRCType() != RCTYPE_FREESTANDING ||
-             (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleFreestanding"), RO_FREESTANDING_OFF) == RO_FREESTANDING_ALL) ||
-             ((CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleFreestanding"), RO_FREESTANDING_OFF) == RO_FREESTANDING_OVERWORLD) &&
+             (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleFreestanding"), RO_SHUFFLE_FREESTANDING_OFF) == RO_SHUFFLE_FREESTANDING_ALL) ||
+             ((CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleFreestanding"), RO_SHUFFLE_FREESTANDING_OFF) == RO_SHUFFLE_FREESTANDING_OVERWORLD) &&
               RandomizerCheckObjects::AreaIsOverworld(location.GetArea())) ||
-             ((CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleFreestanding"), RO_FREESTANDING_OFF) == RO_FREESTANDING_DUNGEONS) &&
+             ((CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleFreestanding"), RO_SHUFFLE_FREESTANDING_OFF) == RO_SHUFFLE_FREESTANDING_DUNGEONS) &&
               RandomizerCheckObjects::AreaIsDungeon(location.GetArea()))) &&
             (location.GetRCType() != RCTYPE_BEEHIVE || CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleBeehives"), RO_GENERIC_NO)) &&
             (location.GetRCType() != RCTYPE_COW || CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleCows"), RO_GENERIC_NO)) &&

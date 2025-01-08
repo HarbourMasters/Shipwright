@@ -43,7 +43,7 @@ namespace Rando {
         return rtAreaNames.at(area);
     }
 
-    const bool Tricks::CheckTags(const std::map<Tag, bool>& showTag, const std::set<Tag>& rtTags) {
+    bool Tricks::CheckTags(const std::map<Tag, bool>& showTag, const std::set<Tag>& rtTags) {
         if (rtTags.empty()) {
             return false;
         }

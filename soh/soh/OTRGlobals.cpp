@@ -355,7 +355,7 @@ OTRGlobals::OTRGlobals() {
     overlay->LoadFont("Fipps", 32.0f, "fonts/Fipps-Regular.otf");
     overlay->SetCurrentFont(CVarGetString(CVAR_GAME_OVERLAY_FONT, "Press Start 2P"));
 
-    context->InitAudio({ .SampleRate = 44100, .SampleLength = 1024, .DesiredBuffered = 2480 });
+    context->InitAudio({ .SampleRate = 32000, .SampleLength = 1024, .DesiredBuffered = 1680 });
 
     SPDLOG_INFO("Starting Ship of Harkinian version {} (Branch: {} | Commit: {})", (char*)gBuildVersion, (char*)gGitBranch, (char*)gGitCommitHash);
 
@@ -528,15 +528,8 @@ void OTRAudio_Thread() {
         //AudioMgr_ThreadEntry(&gAudioMgr);
         // 528 and 544 relate to 60 fps at 32 kHz 32000/60 = 533.333..
         // in an ideal world, one third of the calls should use num_samples=544 and two thirds num_samples=528
-        //#define SAMPLES_HIGH 560
-        //#define SAMPLES_LOW 528
-        // PAL values
-        //#define SAMPLES_HIGH 656
-        //#define SAMPLES_LOW 624
-
-        // 44KHZ values
-        #define SAMPLES_HIGH 752
-        #define SAMPLES_LOW 720
+        #define SAMPLES_HIGH 560
+        #define SAMPLES_LOW 528
 
         #define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1 )
         #define NUM_AUDIO_CHANNELS 2
@@ -1904,7 +1897,7 @@ extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSi
 }
 
 extern "C" void Randomizer_ParseSpoiler(const char* fileLoc) {
-    OTRGlobals::Instance->gRandoContext->ParseSpoiler(fileLoc, CVarGetInteger(CVAR_GENERAL("PlandoMode"), 0));
+    OTRGlobals::Instance->gRandoContext->ParseSpoiler(fileLoc);
 }
 
 extern "C" void Randomizer_LoadHintMessages() {
@@ -1995,14 +1988,6 @@ extern "C" GetItemEntry GetItemMystery() {
     return { ITEM_NONE_FE, 0, 0, 0, 0, 0, 0, ITEM_NONE_FE, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_JUNK, NULL, MOD_RANDOMIZER, (CustomDrawFunc)Randomizer_DrawMysteryItem };
 }
 
-extern "C" void Randomizer_GenerateSeed() {
-    std::string seed = "";
-    if (OTRGlobals::Instance->gRandoContext->IsSpoilerLoaded()) {
-        seed = OTRGlobals::Instance->gRandoContext->GetSettings()->GetSeedString();
-    }
-    GenerateRandomizer(seed);
-}
-
 extern "C" uint8_t Randomizer_IsSeedGenerated() {
     return OTRGlobals::Instance->gRandoContext->IsSeedGenerated() ? 1 : 0;
 }
@@ -2019,12 +2004,12 @@ extern "C" void Randomizer_SetSpoilerLoaded(bool spoilerLoaded) {
     OTRGlobals::Instance->gRandoContext->SetSpoilerLoaded(spoilerLoaded);
 }
 
-extern "C" uint8_t Randomizer_IsPlandoLoaded() {
-    return OTRGlobals::Instance->gRandoContext->IsPlandoLoaded() ? 1 : 0;
+extern "C" uint8_t Randomizer_GenerateRandomizer() {
+    return GenerateRandomizer() ? 1 : 0;
 }
 
-extern "C" void Randomizer_SetPlandoLoaded(bool plandoLoaded) {
-    OTRGlobals::Instance->gRandoContext->SetPlandoLoaded(plandoLoaded);
+extern "C" void Randomizer_ShowRandomizerMenu() {
+    SohGui::ShowRandomizerSettingsMenu();
 }
 
 CustomMessage Randomizer_GetCustomGetItemMessage(Player* player) {

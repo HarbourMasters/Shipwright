@@ -251,7 +251,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
 
     u8 currentQuest = fileChooseCtx->questType[fileChooseCtx->buttonIndex];
 
-    if (currentQuest == QUEST_RANDOMIZER && (Randomizer_IsSeedGenerated() || Randomizer_IsPlandoLoaded())) {
+    if (currentQuest == QUEST_RANDOMIZER && (Randomizer_IsSeedGenerated() || Randomizer_IsSpoilerLoaded())) {
         gSaveContext.questId = QUEST_RANDOMIZER;
 
         Randomizer_InitSaveFile();

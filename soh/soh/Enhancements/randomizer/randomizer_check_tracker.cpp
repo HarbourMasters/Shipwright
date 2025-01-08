@@ -1261,15 +1261,15 @@ void LoadSettings() {
 
     if (IS_RANDO) {
         switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_FREESTANDING)) {
-            case RO_FREESTANDING_ALL:
+            case RO_SHUFFLE_FREESTANDING_ALL:
                 showOverworldFreestanding = true;
                 showDungeonFreestanding = true;
                 break;
-            case RO_FREESTANDING_OVERWORLD:
+            case RO_SHUFFLE_FREESTANDING_OVERWORLD:
                 showOverworldFreestanding = true;
                 showDungeonFreestanding = false;
                 break;
-            case RO_FREESTANDING_DUNGEONS:
+            case RO_SHUFFLE_FREESTANDING_DUNGEONS:
                 showOverworldFreestanding = false;
                 showDungeonFreestanding = true;
                 break;
@@ -1297,11 +1297,7 @@ bool IsCheckShuffled(RandomizerCheck rc) {
             (loc->GetRCType() != RCTYPE_CHEST_GAME) &&      // don't show non final reward chest game checks until we support shuffling them
             (rc != RC_HC_ZELDAS_LETTER) &&        // don't show zeldas letter until we support shuffling it
             (rc != RC_LINKS_POCKET || showLinksPocket) &&
-            (!RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()) ||
-                loc->GetQuest() == RCQUEST_BOTH ||
-                loc->GetQuest() == RCQUEST_MQ && OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(loc->GetScene())->IsMQ() ||
-                loc->GetQuest() == RCQUEST_VANILLA && OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(loc->GetScene())->IsVanilla()
-                ) &&
+            OTRGlobals::Instance->gRandoContext->IsQuestOfLocationActive(rc) &&
             (loc->GetRCType() != RCTYPE_SHOP ||
                 (showShops && OTRGlobals::Instance->gRandomizer->IdentifyShopItem(loc->GetScene(), loc->GetActorParams() + 1).enGirlAShopItem == 50)) &&
             (rc != RC_TRIFORCE_COMPLETED || !hideTriforceCompleted) &&
@@ -1351,10 +1347,7 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                 );
     }
     else if (loc->IsVanillaCompletion()) {
-        return (loc->GetQuest() == RCQUEST_BOTH ||
-            (loc->GetQuest() == RCQUEST_MQ && OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(loc->GetScene())->IsMQ()) ||
-            (loc->GetQuest() == RCQUEST_VANILLA && OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(loc->GetScene())->IsVanilla()) ||
-            rc == RC_GIFT_FROM_RAURU) && rc != RC_LINKS_POCKET;
+        return (OTRGlobals::Instance->gRandoContext->IsQuestOfLocationActive(rc) || rc == RC_GIFT_FROM_RAURU) && rc != RC_LINKS_POCKET;
     }
     return false;
 }
@@ -1362,8 +1355,10 @@ bool IsCheckShuffled(RandomizerCheck rc) {
 bool IsVisibleInCheckTracker(RandomizerCheck rc) {
     auto loc = Rando::StaticData::GetLocation(rc);
     if (IS_RANDO) {
-        return IsCheckShuffled(rc) || (loc->GetRCType() == RCTYPE_SKULL_TOKEN && alwaysShowGS) ||
-            (loc->GetRCType() == RCTYPE_SHOP && (showShops && (!hideShopUnshuffledChecks)));
+        return IsCheckShuffled(rc) || (alwaysShowGS &&
+                loc->GetRCType() == RCTYPE_SKULL_TOKEN &&
+                OTRGlobals::Instance->gRandoContext->IsQuestOfLocationActive(rc)
+            ) || (loc->GetRCType() == RCTYPE_SHOP && showShops && !hideShopUnshuffledChecks);
     } else {
         return loc->IsVanillaCompletion() && (!loc->IsDungeon() || (loc->IsDungeon() && loc->GetQuest() == gSaveContext.questId));
     }
@@ -1711,7 +1706,7 @@ void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, 
             ImGui::EndTable();
         }
     }
-    if (tooltip != "") {
+    if (tooltip != NULL && strlen(tooltip) != 0) {
         ImGui::SameLine();
         ImGui::Text(" ?");
         UIWidgets::Tooltip(tooltip);

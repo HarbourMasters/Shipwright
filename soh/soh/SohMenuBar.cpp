@@ -2123,25 +2123,17 @@ void DrawRemoteControlMenu() {
 #endif
 
 extern std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
+extern std::shared_ptr<PlandomizerWindow> mPlandomizerWindow;
 extern std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
 extern std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
 extern std::shared_ptr<EntranceTrackerWindow> mEntranceTrackerWindow;
 extern std::shared_ptr<EntranceTrackerSettingsWindow> mEntranceTrackerSettingsWindow;
 extern std::shared_ptr<CheckTracker::CheckTrackerWindow> mCheckTrackerWindow;
 extern std::shared_ptr<CheckTracker::CheckTrackerSettingsWindow> mCheckTrackerSettingsWindow;
-extern std::shared_ptr<PlandomizerWindow> mPlandomizerWindow;
 extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 
 void DrawRandomizerMenu() {
     if (ImGui::BeginMenu("Randomizer")) {
-        UIWidgets::EnhancementCheckbox("Plando Mode", CVAR_GENERAL("PlandoMode"));
-        UIWidgets::Tooltip(
-            "When dropping a spoiler file on the game window, parse the full spoiler file instead of just the "
-            "necessary "
-            "parts to regenerate a seed.\n\nKeep in mind if you do this, all custom text will only be available in the "
-            "language present in the spoilerfile. You can use this to edit a previously generated spoilerfile that has "
-            "been edited with custom hint text and item locations. May be useful for debugging.");
-        UIWidgets::PaddedSeparator();
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
         ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
         ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
@@ -2159,17 +2151,17 @@ void DrawRandomizerMenu() {
         static float separationToOptionsButton = 5.0f;
     #endif
 
-        if (mPlandomizerWindow) {
-            if (ImGui::Button(GetWindowButtonText("Plandomizer Editor", CVarGetInteger(CVAR_WINDOW("PlandomizerWindow"), 0)).c_str(), buttonSize)) {
-                mPlandomizerWindow->ToggleVisibility();
+        if (mRandomizerSettingsWindow) {
+            if (ImGui::Button(GetWindowButtonText("Randomizer Settings", CVarGetInteger(CVAR_WINDOW("RandomizerSettings"), 0)).c_str(), buttonSize)) {
+                mRandomizerSettingsWindow->ToggleVisibility();
             }
         }
 
         UIWidgets::Spacer(0);
 
-        if (mRandomizerSettingsWindow) {
-            if (ImGui::Button(GetWindowButtonText("Randomizer Settings", CVarGetInteger(CVAR_WINDOW("RandomizerSettings"), 0)).c_str(), buttonSize)) {
-                mRandomizerSettingsWindow->ToggleVisibility();
+        if (mPlandomizerWindow) {
+            if (ImGui::Button(GetWindowButtonText("Plandomizer Editor", CVarGetInteger(CVAR_WINDOW("PlandomizerWindow"), 0)).c_str(), buttonSize)) {
+                mPlandomizerWindow->ToggleVisibility();
             }
         }
 
