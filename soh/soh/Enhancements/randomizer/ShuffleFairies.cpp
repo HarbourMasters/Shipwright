@@ -121,7 +121,6 @@ void ShuffleFairies_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should,
     // Spawn a fairy from a ShotSun when playing the right song near it
     } else if (id == VB_SPAWN_SONG_FAIRY) {
         ShotSun* shotSun = (ShotSun*)(actor);
-        bool fairySpawned = false;
         if (ShuffleFairies_SpawnFairy(shotSun->actor.world.pos.x, shotSun->actor.world.pos.y,
             shotSun->actor.world.pos.z,
             TWO_ACTOR_PARAMS(0x1000, (int32_t)shotSun->actor.world.pos.z))) {
