@@ -880,13 +880,26 @@ namespace Rando {
 
     uint8_t Logic::BottleCount() {
         uint8_t count = 0;
-        if (!CanEmptyBigPoes){
-            return 0;
-        }
-        for (int i = SLOT_BOTTLE_1; i <= SLOT_BOTTLE_4; i++) {
-            uint8_t item = GetSaveContext()->inventory.items[i];
-            if (item != ITEM_NONE && (item != ITEM_LETTER_RUTO || (item == ITEM_LETTER_RUTO && DeliverLetter))) {
-                count++;
+        if (CouldEmptyBigPoes){
+            for (int i = SLOT_BOTTLE_1; i <= SLOT_BOTTLE_4; i++) {
+                uint8_t item = GetSaveContext()->inventory.items[i];
+                switch (item) {
+                    case ITEM_LETTER_RUTO:
+                        if (DeliverLetter) {
+                            count++;
+                        }
+                        break;
+                    case ITEM_BIG_POE:
+                        if (CanEmptyBigPoes) {
+                            count++;
+                        }
+                        break;
+                    case ITEM_NONE:
+                        break;
+                    default:
+                        count++;
+                        break;
+                }
             }
         }
         return count;

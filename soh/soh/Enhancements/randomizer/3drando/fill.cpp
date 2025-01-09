@@ -164,7 +164,7 @@ static void ApplyAllAdvancmentItems(){
 static void ValidateSphereZero(GetAccessibleLocationsStruct& gals){
   auto ctx = Rando::Context::GetInstance();
   // Condition for verifying everything required for sphere 0, expanding search to all locations
-  if (logic->CanEmptyBigPoes && gals.validatedStartingRegion && gals.foundTempleOfTime && gals.haveTimeAccess) {
+  if (logic->CouldEmptyBigPoes && gals.validatedStartingRegion && gals.foundTempleOfTime && gals.haveTimeAccess) {
     // Apply all items that are necessary for checking all location access
     ApplyAllAdvancmentItems();
     // Reset access as the non-starting age
@@ -565,7 +565,7 @@ void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAcce
 
   ctx->allLocationsReachable = false;
   if (checkPoeCollectorAccess){
-    logic->CanEmptyBigPoes = false;
+    logic->CouldEmptyBigPoes = false;
   }
 
   if (checkOtherEntranceAccess){
