@@ -575,7 +575,7 @@ namespace Rando {
             //the core takes damage from hookshot even if it doesn't show
             //Dins killing isn't hard, but is obscure and tight on single magic, so is a trick
             case RE_FLARE_DANCER:
-                return CanUse(RG_MEGATON_HAMMER) || CanUse(RG_HOOKSHOT) || (HasExplosives() && (CanJumpslashExceptHammer() || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOOMERANG)));
+                return (CanUse(RG_MEGATON_HAMMER) || CanUse(RG_HOOKSHOT) || HasExplosives()) && (CanJumpslashExceptHammer() || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOOMERANG));
             case RE_WOLFOS:
             case RE_WHITE_WOLFOS:
             case RE_WALLMASTER:
