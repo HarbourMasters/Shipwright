@@ -310,7 +310,9 @@ typedef enum {
     VB_PLAY_FIRE_ARROW_CS,
     // Vanilla condition: INV_CONTENT(ITEM_ARROW_FIRE) == ITEM_NONE
     VB_SPAWN_FIRE_ARROW,
-    // Opt: *EventChkInf flag
+    // Opt: s32 entranceIndex
+    VB_ALLOW_ENTRANCE_CS_FOR_EITHER_AGE,
+    // Opt: s32 flag/EventChkInf, s32 entranceIndex
     VB_PLAY_ENTRANCE_CS,
     // Opt: *cutsceneId
     VB_PLAY_ONEPOINT_CS,
@@ -486,8 +488,6 @@ typedef enum {
     VB_TRADE_TIMER_ODD_MUSHROOM,
     VB_TRADE_TIMER_FROG,
     VB_TRADE_TIMER_EYEDROPS,
-    // Opt: *EnNiwLady
-    VB_ANJU_SET_OBTAINED_TRADE_ITEM,
 
     /*** Fixes ***/
     // Vanilla condition: false
@@ -510,6 +510,17 @@ typedef enum {
     // Vanilla condition: Actor is ACTOR_EN_ELF, ACTOR_EN_FISH, ACTOR_EN_ICE_HONO, or ACTOR_EN_INSECT
     // Opt: *Actor
     VB_BOTTLE_ACTOR,
+
+    /*** Shuffle Fairies ***/
+    // Opt: *EnElf
+    VB_SPAWN_FOUNTAIN_FAIRIES,
+    VB_FAIRY_HEAL,
+    // Opt: *ObjBean
+    VB_SPAWN_BEAN_STALK_FAIRIES,
+    // Opt: *ShotSun
+    VB_SPAWN_SONG_FAIRY,
+    // Opt: *EnGs
+    VB_SPAWN_GOSSIP_STONE_FAIRY,
 } GIVanillaBehavior;
 
 #ifdef __cplusplus
@@ -592,14 +603,42 @@ struct HookInfo {
 #define GET_CURRENT_REGISTERING_INFO(type) HookRegisteringInfo{}
 #endif
 
-#define REGISTER_VB_SHOULD(flag, body)                                                      \
+#define REGISTER_VB_SHOULD(flag, body)                                                  \
     GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnVanillaBehavior>( \
-        flag, [](GIVanillaBehavior _, bool* should, va_list _originalArgs) {                 \
-            va_list args;                                                                   \
-            va_copy(args, _originalArgs);                                                    \
-            body;                                                                           \
-            va_end(args);                                                                   \
+        flag, [](GIVanillaBehavior _, bool* should, va_list _originalArgs) {            \
+            va_list args;                                                               \
+            va_copy(args, _originalArgs);                                               \
+            body;                                                                       \
+            va_end(args);                                                               \
         })
+
+#define COND_HOOK(hookType, condition, body)                                                     \
+    {                                                                                            \
+        static HOOK_ID hookId = 0;                                                               \
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::hookType>(hookId);          \
+        hookId = 0;                                                                              \
+        if (condition) {                                                                         \
+            hookId = GameInteractor::Instance->RegisterGameHook<GameInteractor::hookType>(body); \
+        }                                                                                        \
+    }
+#define COND_ID_HOOK(hookType, id, condition, body)                                                       \
+    {                                                                                                     \
+        static HOOK_ID hookId = 0;                                                                        \
+        GameInteractor::Instance->UnregisterGameHookForID<GameInteractor::hookType>(hookId);              \
+        hookId = 0;                                                                                       \
+        if (condition) {                                                                                  \
+            hookId = GameInteractor::Instance->RegisterGameHookForID<GameInteractor::hookType>(id, body); \
+        }                                                                                                 \
+    }
+#define COND_VB_SHOULD(id, condition, body)                                                               \
+    {                                                                                                     \
+        static HOOK_ID hookId = 0;                                                                        \
+        GameInteractor::Instance->UnregisterGameHookForID<GameInteractor::ShouldVanillaBehavior>(hookId); \
+        hookId = 0;                                                                                       \
+        if (condition) {                                                                                  \
+            hookId = REGISTER_VB_SHOULD(id, body);                                                        \
+        }                                                                                                 \
+    }
 
 class GameInteractor {
 public:

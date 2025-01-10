@@ -121,6 +121,13 @@ void Context::AddLocations(const Container& locations, std::vector<RandomizerChe
     destination->insert(destination->end(), std::cbegin(locations), std::cend(locations));
 }
 
+bool Context::IsQuestOfLocationActive(RandomizerCheck rc) {
+    const auto loc = Rando::StaticData::GetLocation(rc);
+    return loc->GetQuest() == RCQUEST_BOTH ||
+        loc->GetQuest() == RCQUEST_MQ && mDungeons->GetDungeonFromScene(loc->GetScene())->IsMQ() ||
+        loc->GetQuest() == RCQUEST_VANILLA && mDungeons->GetDungeonFromScene(loc->GetScene())->IsVanilla();
+}
+
 void Context::GenerateLocationPool() {
     allLocations.clear();
     if (mSettings->GetOption(RSK_TRIFORCE_HUNT)) {
@@ -229,14 +236,6 @@ void Context::SetSpoilerLoaded(const bool spoilerLoaded) {
     mSpoilerLoaded = spoilerLoaded;
 }
 
-bool Context::IsPlandoLoaded() const {
-    return mPlandoLoaded;
-}
-
-void Context::SetPlandoLoaded(const bool plandoLoaded) {
-    mPlandoLoaded = plandoLoaded;
-}
-
 GetItemEntry Context::GetFinalGIEntry(const RandomizerCheck rc, const bool checkObtainability, const GetItemID ogItemId) {
     const auto itemLoc = GetItemLocation(rc);
     if (itemLoc->GetPlacedRandomizerGet() == RG_NONE) {
@@ -279,27 +278,23 @@ std::string sanitize(std::string stringValue) {
     return stringValue;
 }
 
-void Context::ParseSpoiler(const char* spoilerFileName, const bool plandoMode) {
+void Context::ParseSpoiler(const char* spoilerFileName) {
     std::ifstream spoilerFileStream(sanitize(spoilerFileName));
     if (!spoilerFileStream) {
         return;
     }
     mSeedGenerated = false;
     mSpoilerLoaded = false;
-    mPlandoLoaded = false;
     try {
         nlohmann::json spoilerFileJson;
         spoilerFileStream >> spoilerFileJson;
         ParseHashIconIndexesJson(spoilerFileJson);
         mSettings->ParseJson(spoilerFileJson);
-        if (plandoMode) {
-            ParseItemLocationsJson(spoilerFileJson);
-            ParseHintJson(spoilerFileJson);
-            mEntranceShuffler->ParseJson(spoilerFileJson);
-            mDungeons->ParseJson(spoilerFileJson);
-            mTrials->ParseJson(spoilerFileJson);
-            mPlandoLoaded = true;
-        }
+        ParseItemLocationsJson(spoilerFileJson);
+        ParseHintJson(spoilerFileJson);
+        mEntranceShuffler->ParseJson(spoilerFileJson);
+        mDungeons->ParseJson(spoilerFileJson);
+        mTrials->ParseJson(spoilerFileJson);
         mSpoilerLoaded = true;
         mSeedGenerated = false;
     } catch (...) {

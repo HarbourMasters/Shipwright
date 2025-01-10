@@ -1,3 +1,5 @@
+#pragma once
+
 #include "GameInteractor.h"
 #include <stdarg.h>
 

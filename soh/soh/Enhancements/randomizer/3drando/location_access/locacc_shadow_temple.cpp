@@ -24,8 +24,8 @@ void RegionTable_Init_ShadowTemple() {
                   EventAccess(&logic->NutPot, {[]{return true;}}),
                 }, {
                   //Locations
-                  LOCATION(RC_SHADOW_TEMPLE_MAP_CHEST,         logic->CanJumpslashExceptHammer()),
-                  LOCATION(RC_SHADOW_TEMPLE_HOVER_BOOTS_CHEST, (logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD))),
+                  LOCATION(RC_SHADOW_TEMPLE_MAP_CHEST,              logic->CanJumpslashExceptHammer()),
+                  LOCATION(RC_SHADOW_TEMPLE_HOVER_BOOTS_CHEST,      logic->CanKillEnemy(RE_DEAD_HAND)),
                   LOCATION(RC_SHADOW_TEMPLE_NEAR_DEAD_HAND_POT_1,   logic->CanBreakPots()),
                   LOCATION(RC_SHADOW_TEMPLE_WHISPERING_WALLS_POT_1, logic->CanBreakPots()),
                   LOCATION(RC_SHADOW_TEMPLE_WHISPERING_WALLS_POT_2, logic->CanBreakPots()),
@@ -48,6 +48,7 @@ void RegionTable_Init_ShadowTemple() {
                   LOCATION(RC_SHADOW_TEMPLE_COMPASS_CHEST,            logic->CanJumpslashExceptHammer()),
                   LOCATION(RC_SHADOW_TEMPLE_EARLY_SILVER_RUPEE_CHEST, logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT)),
                   LOCATION(RC_SHADOW_TEMPLE_GS_NEAR_SHIP,             false),
+                  LOCATION(RC_SHADOW_TEMPLE_BEAMOS_STORM_FAIRY,       logic->CanUse(RG_SONG_OF_STORMS)),
                 }, {
                   //Exits
                   Entrance(RR_SHADOW_TEMPLE_HUGE_PIT,    {[]{return logic->HasExplosives() && logic->IsAdult && logic->SmallKeys(RR_SHADOW_TEMPLE, 1, 2);}}),
@@ -73,6 +74,7 @@ void RegionTable_Init_ShadowTemple() {
                   //We cannot repeat the MQ invisible blades trick for these hearts as the like-like does not respawn if the room is cleared
                   LOCATION(RC_SHADOW_TEMPLE_INVISIBLE_BLADES_LEFT_HEART,      (logic->CanUse(RG_SONG_OF_TIME) && logic->IsAdult) || logic->CanUse(RG_BOOMERANG)),
                   LOCATION(RC_SHADOW_TEMPLE_INVISIBLE_BLADES_RIGHT_HEART,     (logic->CanUse(RG_SONG_OF_TIME) && logic->IsAdult) || logic->CanUse(RG_BOOMERANG)),
+                  LOCATION(RC_SHADOW_TEMPLE_PIT_STORM_FAIRY,                  logic->CanUse(RG_SONG_OF_STORMS)),
                 }, {
                   //Exits
                   Entrance(RR_SHADOW_TEMPLE_WIND_TUNNEL, {[]{return ((ctx->GetTrickOption(RT_LENS_SHADOW_PLATFORM) && ctx->GetTrickOption(RT_LENS_SHADOW)) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->CanUse(RG_HOOKSHOT) && logic->SmallKeys(RR_SHADOW_TEMPLE, 3, 4);}}),
@@ -84,6 +86,7 @@ void RegionTable_Init_ShadowTemple() {
                   LOCATION(RC_SHADOW_TEMPLE_AFTER_WIND_ENEMY_CHEST,  logic->CanJumpslashExceptHammer()),
                   LOCATION(RC_SHADOW_TEMPLE_AFTER_WIND_HIDDEN_CHEST, true),
                   LOCATION(RC_SHADOW_TEMPLE_GS_NEAR_SHIP,            logic->CanUse(RG_LONGSHOT) && logic->SmallKeys(RR_SHADOW_TEMPLE, 4, 5)),
+                  LOCATION(RC_SHADOW_TEMPLE_WIND_HINT_SUN_FAIRY,        logic->CanUse(RG_SUNS_SONG)),
                   LOCATION(RC_SHADOW_TEMPLE_AFTER_WIND_POT_1,        logic->CanBreakPots()),
                   LOCATION(RC_SHADOW_TEMPLE_AFTER_WIND_POT_2,        logic->CanBreakPots()),
                   LOCATION(RC_SHADOW_TEMPLE_SCARECROW_NORTH_HEART,   logic->CanUse(RG_DISTANT_SCARECROW) && logic->SmallKeys(RR_SHADOW_TEMPLE, 4, 5)),
@@ -155,6 +158,7 @@ void RegionTable_Init_ShadowTemple() {
                   //Locations
                   //Doing this sets the shared flag for the glass in RR_SHADOW_TEMPLE_MQ_DEAD_HAND_AREA, but doesn't seem to affect the chest
                   LOCATION(RC_SHADOW_TEMPLE_MQ_EARLY_GIBDOS_CHEST,  logic->CanKillEnemy(RE_GIBDO) && (ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH))),
+                  LOCATION(RC_SHADOW_TEMPLE_MQ_BEAMOS_STORM_FAIRY,  logic->CanUse(RG_SONG_OF_STORMS)),
   }, {
                   //Exits
                   Entrance(RR_SHADOW_TEMPLE_MQ_UPPER_HUGE_PIT,         {[]{return logic->HasExplosives() && logic->SmallKeys(RR_SHADOW_TEMPLE, 2);}}),
@@ -188,7 +192,10 @@ void RegionTable_Init_ShadowTemple() {
                   //bunnyhovers + lens lets you go from the very top of upper pit to the stationary invisible platform below quite easily
   });
 
-  areaTable[RR_SHADOW_TEMPLE_MQ_UPPER_HUGE_PIT] = Region("Shadow Temple MQ Upper Huge Pit", "Shadow Temple", {RA_SHADOW_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_SHADOW_TEMPLE_MQ_UPPER_HUGE_PIT] = Region("Shadow Temple MQ Upper Huge Pit", "Shadow Temple", {RA_SHADOW_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
+                  //Locations
+                  LOCATION(RC_SHADOW_TEMPLE_MQ_PIT_STORM_FAIRY, logic->CanUse(RG_SONG_OF_STORMS)),
+          }, {
                   //Exits
                   Entrance(RR_SHADOW_TEMPLE_MQ_LOWER_HUGE_PIT,        {[]{return (logic->HasFireSource() && (ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH))) || ctx->GetTrickOption(RT_SHADOW_MQ_HUGE_PIT);}}),
                   Entrance(RR_SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_ROOM, {[]{return ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH);}}),
@@ -286,8 +293,9 @@ void RegionTable_Init_ShadowTemple() {
 
   areaTable[RR_SHADOW_TEMPLE_MQ_WIND_HINT_ROOM] = Region("Shadow Temple MQ Wind Hint Room", "Shadow Temple", {RA_SHADOW_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LOCATION(RC_SHADOW_TEMPLE_MQ_WIND_HINT_CHEST,   (ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->CanPassEnemy(RE_REDEAD)),
-                  LOCATION(RC_SHADOW_TEMPLE_MQ_GS_WIND_HINT_ROOM, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
+                  LOCATION(RC_SHADOW_TEMPLE_MQ_WIND_HINT_CHEST,     (ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->CanPassEnemy(RE_REDEAD)),
+                  LOCATION(RC_SHADOW_TEMPLE_MQ_GS_WIND_HINT_ROOM,   logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
+                  LOCATION(RC_SHADOW_TEMPLE_MQ_WIND_HINT_SUN_FAIRY, logic->CanUse(RG_SUNS_SONG)),
   }, {
                   //Exits
                   Entrance(RR_SHADOW_TEMPLE_MQ_WIND_TUNNEL, {[]{return true;}}),
@@ -358,7 +366,7 @@ void RegionTable_Init_ShadowTemple() {
                   //Locations
                   //you can drop onto this and the respawn is reasonable
                   LOCATION(RC_SHADOW_TEMPLE_MQ_GS_NEAR_BOSS,  (logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_BOMB_THROW) || logic->CanUse(RG_MEGATON_HAMMER)) && (ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH))),
-            }, {
+  }, {
                   //Exits
                   Entrance(RR_SHADOW_TEMPLE_MQ_ACROSS_CHASM, {[]{return logic->CanUse(RG_HOVER_BOOTS) && (ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH));}}),
                   Entrance(RR_SHADOW_TEMPLE_BOSS_ENTRYWAY,   {[]{return logic->HasItem(RG_SHADOW_TEMPLE_BOSS_KEY);}}),

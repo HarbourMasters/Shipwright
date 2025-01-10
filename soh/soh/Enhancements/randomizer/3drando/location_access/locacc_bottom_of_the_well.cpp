@@ -134,19 +134,20 @@ void RegionTable_Init_BottomOfTheWell() {
 
   areaTable[RR_BOTTOM_OF_THE_WELL_BASEMENT] = Region("Bottom of the Well Basement", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LOCATION(RC_BOTTOM_OF_THE_WELL_MAP_CHEST,       logic->BlastOrSmash()),
-                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_1,  logic->CanBreakPots()),
-                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_2,  logic->CanBreakPots()),
-                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_3,  logic->CanBreakPots()),
-                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_4,  logic->CanBreakPots()),
-                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_5,  logic->CanBreakPots()),
-                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_6,  logic->CanBreakPots()),
-                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_7,  logic->CanBreakPots()),
-                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_8,  logic->CanBreakPots()),
-                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_9,  logic->CanBreakPots()),
-                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_10, logic->CanBreakPots()),
-                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_11, logic->CanBreakPots()),
-                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_12, logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_MAP_CHEST,           logic->BlastOrSmash()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_1,      logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_2,      logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_3,      logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_4,      logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_5,      logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_6,      logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_7,      logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_8,      logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_9,      logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_10,     logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_11,     logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_12,     logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_SUN_FAIRY,  logic->CanUse(RG_SUNS_SONG)),
                 }, {
                   //Exits
                   Entrance(RR_BOTTOM_OF_THE_WELL_SOUTHWEST_ROOM,               {[]{return logic->IsChild && logic->CanPassEnemy(RE_BIG_SKULLTULA);}}),
@@ -158,7 +159,7 @@ void RegionTable_Init_BottomOfTheWell() {
   areaTable[RR_BOTTOM_OF_THE_WELL_BASEMENT_USEFUL_BOMB_FLOWERS] = Region("Bottom of the Well Basement Useful Bomb Flowers", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   //Assumes RR_BOTTOM_OF_THE_WELL_BASEMENT access
-                  LOCATION(RC_BOTTOM_OF_THE_WELL_MAP_CHEST, logic->HasItem(RG_GORONS_BRACELET)),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_MAP_CHEST,           logic->HasItem(RG_GORONS_BRACELET)),
                 }, {
                   //Exits
                   Entrance(RR_BOTTOM_OF_THE_WELL_BASEMENT, {[]{return logic->CanDetonateUprightBombFlower();}}),
@@ -195,7 +196,6 @@ void RegionTable_Init_BottomOfTheWell() {
                   LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_OUTER_LOBBY_POT, Here(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER, []{return logic->BlastOrSmash();}) && logic->CanHitEyeTargets()),
                   LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_BOMB_LEFT_HEART,  logic->HasExplosives()),
                   LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_BOMB_RIGHT_HEART, logic->HasExplosives()),
-
   }, {
                   //Exits
                   Entrance(RR_BOTTOM_OF_THE_WELL_ENTRYWAY,            {[]{return logic->IsChild;}}),
@@ -257,13 +257,14 @@ void RegionTable_Init_BottomOfTheWell() {
                   //Also you get cheap shotted on entry sometimes.
                   //An MQ lens trick is recommended here, and a review of this room for OHKO logic what that is added is advised. 
                   //In the meantime I assume damage taken or the easy answer (nuts)
-                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_GS_WEST_INNER_ROOM,               logic->OpenedWestRoomMQBotw && (logic->TakeDamage() || logic->CanUse(RG_NUTS)) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
-                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_INNER_LOBBY_POT_1,                logic->CanBreakPots()),
-                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_INNER_LOBBY_POT_2,                logic->CanBreakPots()),
-                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_INNER_LOBBY_POT_3,                logic->CanBreakPots()),
-                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_EAST_INNER_ROOM_POT_1,            logic->CanBreakPots()),
-                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_EAST_INNER_ROOM_POT_2,            logic->CanBreakPots()),
-                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_EAST_INNER_ROOM_POT_3,            logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_GS_WEST_INNER_ROOM,    logic->OpenedWestRoomMQBotw && (logic->TakeDamage() || logic->CanUse(RG_NUTS)) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_INNER_LOBBY_POT_1,     logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_INNER_LOBBY_POT_2,     logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_INNER_LOBBY_POT_3,     logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_EAST_INNER_ROOM_POT_1, logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_EAST_INNER_ROOM_POT_2, logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_EAST_INNER_ROOM_POT_3, logic->CanBreakPots()),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_CELL_SUN_FAIRY,        logic->CanUse(RG_SUNS_SONG)),
   }, {
                   //Exits
                   //If a relevant trick causes you to be able to warp into here without going through PERIMETER, a new eventAccess will be needed for lowering the gates with ZL 
@@ -278,6 +279,7 @@ void RegionTable_Init_BottomOfTheWell() {
                   LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_BASEMENT_HALLWAY_FRONT_HEART,  true),
                   LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_BASEMENT_HALLWAY_LEFT_HEART,   true),
                   LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_BASEMENT_HALLWAY_RIGHT_HEART,  true),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_BASEMENT_SUN_FAIRY,            logic->CanUse(RG_SUNS_SONG)),
   }, {
                   //Exits
                   Entrance(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER, {[]{return true;}}),
