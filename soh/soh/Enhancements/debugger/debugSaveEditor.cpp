@@ -1133,7 +1133,7 @@ void DrawEquipmentTab() {
         "20",
         "30",
     };
-    DrawUpgrade("Sticks", UPG_STICKS, stickNames);
+    DrawUpgrade("Deku Stick Capacity", UPG_STICKS, stickNames);
 
     const std::vector<std::string> nutNames = {
         "None",
@@ -1141,7 +1141,7 @@ void DrawEquipmentTab() {
         "30",
         "40",
     };
-    DrawUpgrade("Deku Nuts", UPG_NUTS, nutNames);
+    DrawUpgrade("Deku Nut Capacity", UPG_NUTS, nutNames);
 }
 
 // Draws a toggleable icon for a quest item that is faded when disabled

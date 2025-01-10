@@ -239,6 +239,7 @@ namespace UIWidgets {
         if (CustomCheckbox(text, &val, disabled, disabledGraphic)) {
             CVarSetInteger(cvarName, val);
             Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            ShipInit::Init(cvarName);
             changed = true;
         }
 
@@ -298,6 +299,7 @@ namespace UIWidgets {
                         selected = i;
                         changed = true;
                         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+                        ShipInit::Init(cvarName);
                     }
                 }
             }
