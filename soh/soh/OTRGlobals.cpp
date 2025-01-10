@@ -1358,28 +1358,17 @@ extern "C" void Graph_StartFrame() {
 }
 
 void RunCommands(Gfx* Commands, const std::vector<std::unordered_map<Mtx*, MtxF>>& mtx_replacements) {
-    auto wnd = OTRGlobals::Instance->context->GetWindow();
-    auto gui = wnd->GetGui();
+    auto wnd = std::dynamic_pointer_cast<Fast::Fast3dWindow>(OTRGlobals::Instance->context->GetWindow());
+
+    if (wnd == nullptr) {
+        return;
+    }
 
     // Process window events for resize, mouse, keyboard events
     wnd->HandleEvents();
 
     for (const auto& m : mtx_replacements) {
-        // Skip dropped frames
-        if (!wnd->IsFrameReady()) {
-            continue;
-        }
-
-        // Setup of the backend frames and draw initial Window and GUI menus
-        gui->StartDraw();
-        // Setup game framebuffers to match available window space
-        wnd->StartFrame();
-        // Execute the games gfx commands
-        gfx_run(Commands, m);
-        // Renders the game frame buffer to the final window and finishes the GUI
-        gui->EndDraw();
-        // Finialize swap buffers
-        wnd->EndFrame();
+        wnd->DrawAndRunGraphicsCommands(Commands, m);
     }
 }
 
