@@ -2063,7 +2063,7 @@ void StaticData::HintTable_Init_Item() {
                                                CustomMessage("a key", /*german*/ "ein Schlüssel", /*french*/ "une clé")
                                                 // /*spanish*/una llave
                                                },
-                                               { CustomMessage("a master unlocker", /*german*/ "ein Meisterentsperrer", /*french*/ "un déverrouilleur maître") });
+                                               { CustomMessage("a master unlocker", /*german*/ "ein Meisterentsperrer", /*french*/ "un Kit de Déverrouillage") });
                                                 // /*spanish*/un desbloqueador maestro
     hintTextTable[RHT_QUIVER_INF] = HintText(CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
                                              {
