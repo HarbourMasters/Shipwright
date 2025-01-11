@@ -1355,14 +1355,20 @@ extern "C" void Graph_StartFrame() {
         CVarClear(CVAR_NEW_FILE_DROPPED);
         CVarClear(CVAR_DROPPED_FILE);
     }
-
-    OTRGlobals::Instance->context->GetWindow()->StartFrame();
 }
 
 void RunCommands(Gfx* Commands, const std::vector<std::unordered_map<Mtx*, MtxF>>& mtx_replacements) {
+    auto wnd = std::dynamic_pointer_cast<Fast::Fast3dWindow>(OTRGlobals::Instance->context->GetWindow());
+
+    if (wnd == nullptr) {
+        return;
+    }
+
+    // Process window events for resize, mouse, keyboard events
+    wnd->HandleEvents();
+
     for (const auto& m : mtx_replacements) {
-        gfx_run(Commands, m);
-        gfx_end_frame();
+        wnd->DrawAndRunGraphicsCommands(Commands, m);
     }
 }
 
