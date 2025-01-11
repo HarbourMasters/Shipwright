@@ -822,7 +822,7 @@ void SaveManager::InitFileNormal() {
         gSaveContext.infTable[flag] = 0;
     }
     // Currently randomizer flags are accessible from all quests
-    for (int flag = 0; flag < ARRAY_COUNT(gSaveContext.randomizerInf); flag++) {
+    for (int flag = 0; flag < ARRAY_COUNT(gSaveContext.ship.randomizerInf); flag++) {
         gSaveContext.ship.randomizerInf[flag] = 0;
     }
     gSaveContext.worldMapAreaData = 0;

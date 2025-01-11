@@ -400,7 +400,7 @@ void BossRush_InitSave() {
 
     // Sets all rando flags to false
     // Boss Rush currently uses 2 randomizer flags (RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE & RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE)
-    for (s32 i = 0; i < ARRAY_COUNT(gSaveContext.randomizerInf); i++) {
+    for (s32 i = 0; i < ARRAY_COUNT(gSaveContext.ship.randomizerInf); i++) {
         gSaveContext.ship.randomizerInf[i] = 0;
     }
 
