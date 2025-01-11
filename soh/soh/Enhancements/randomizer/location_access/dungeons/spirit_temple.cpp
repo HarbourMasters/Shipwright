@@ -267,7 +267,7 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_MQ_CHILD_CLIMB_NORTH_CHEST, MQSpiritSharedBrokenWallRoom(RR_SPIRIT_TEMPLE_MQ_BROKEN_WALL_ROOM, []{return logic->CanKillEnemy(RE_BEAMOS);})),
         //Sunlights only temp spawn this chest, which is unintuitive/a bug.
         //chest is only reachable as adult glitchlessly, so we can skip the shared in favour of IsAdult as adult access is always Certain
-        LOCATION(RC_SPIRIT_TEMPLE_MQ_CHILD_CLIMB_SOUTH_CHEST, logic->IsAdult && logic->HasExplosives() && (ctx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS)) && logic->CanUse(RG_HOOKSHOT)),
+        LOCATION(RC_SPIRIT_TEMPLE_MQ_CHILD_CLIMB_SOUTH_CHEST, logic->IsAdult && (logic->HasExplosives() || (ctx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS))) && logic->CanUse(RG_HOOKSHOT)),
     }, {
         //Exits
         Entrance(RR_SPIRIT_TEMPLE_MQ_UNDER_LIKE_LIKE, []{return logic->CanHitSwitch();}),
