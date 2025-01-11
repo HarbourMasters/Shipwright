@@ -1548,32 +1548,32 @@ hintTextTable[RHT_SHADOW_TEMPLE_MAP_CHEST] = HintText(CustomMessage("They say th
   /*--------------------------
   |    BOTTOM OF THE WELL    |
   ---------------------------*/
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_FRONT_LEFT_FAKE_WALL_CHEST] = HintText(CustomMessage("They say that the #Eye of Truth in the well# reveals #[[1]]#.",
+    hintTextTable[RHT_BOTW_WEST_FAKE_WALL_CHEST] = HintText(CustomMessage("They say that the #Eye of Truth in the well# reveals #[[1]]#.",
                                                                                    /*german*/ "Man erzählt sich, daß das #Auge der Wahrheit im Brunnen# #[[1]]# offenbare.",
                                                                                    /*french*/ "Selon moi, l'#oeil de vérité dans le Puits# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                                 // /*spanish*/ Según dicen, el #Ojo de la Verdad en el pozo# revela #[[1]]#.
 
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_FRONT_CENTER_BOMBABLE_CHEST] = HintText(CustomMessage("They say that #gruesome debris# in the well hides #[[1]]#.",
+    hintTextTable[RHT_BOTW_SOUTH_RUBBLE_CHEST] = HintText(CustomMessage("They say that #gruesome debris# in the well hides #[[1]]#.",
                                                                                     /*german*/ "Man erzählt sich, daß #grauenvolle Trümmer# im Brunnen #[[1]]# verbergen würden.",
                                                                                     /*french*/ "Selon moi, des #débris dans le Puits# cachent #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                                  // /*spanish*/ Según dicen, unos #horripilantes escombros# del pozo esconden #[[1]]#.
 
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_RIGHT_BOTTOM_FAKE_WALL_CHEST] = HintText(CustomMessage("They say that the #Eye of Truth in the well# reveals #[[1]]#.",
+    hintTextTable[RHT_BOTW_EAST_FAKE_WALL_CHEST] = HintText(CustomMessage("They say that the #Eye of Truth in the well# reveals #[[1]]#.",
                                                                                      /*german*/ "Man erzählt sich, daß das #Auge der Wahrheit im Brunnen# #[[1]]# offenbare.",
                                                                                      /*french*/ "Selon moi, l'#oeil de vérité dans le Puits# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                                   // /*spanish*/ Según dicen, el #Ojo de la Verdad en el pozo# revela #[[1]]#.
 
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_COMPASS_CHEST] = HintText(CustomMessage("They say that a #hidden entrance to a cage# in the well leads to #[[1]]#.",
+    hintTextTable[RHT_BOTW_CENTRAL_WEST_CHEST] = HintText(CustomMessage("They say that a #hidden entrance to a cage# in the well leads to #[[1]]#.",
                                                                       /*german*/ "Man erzählt sich, daß ein #verborgener Eingang zu einem Käfig# im Brunnen zu #[[1]]# führe.",
                                                                       /*french*/ "Selon moi, dans un #chemin caché dans le Puits# gît #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                    // /*spanish*/ Según dicen, la #entrada oculta de una celda# del pozo conduce a #[[1]]#.
 
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_CENTER_SKULLTULA_CHEST] = HintText(CustomMessage("They say that a #spider guarding a cage# in the well protects #[[1]]#.",
+    hintTextTable[RHT_BOTW_SKULLTULA_CHEST] = HintText(CustomMessage("They say that a #spider guarding a cage# in the well protects #[[1]]#.",
                                                                                /*german*/ "Man erzählt sich, daß eine #einen Käfig schützende Spinne# im Brunnen #[[1]]# schütze.",
                                                                                /*french*/ "Selon moi, l'#araignée dans la cage du Puits# protège #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                             // /*spanish*/ Según dicen, una #araña protegiendo una celda# del pozo guarda #[[1]]#.
 
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_BACK_LEFT_BOMBABLE_CHEST] = HintText(CustomMessage("They say that #gruesome debris# in the well hides #[[1]]#.",
+    hintTextTable[RHT_BOTW_NORTH_RUBBLE_CHEST] = HintText(CustomMessage("They say that #gruesome debris# in the well hides #[[1]]#.",
                                                                                  /*german*/ "Man erzählt sich, daß #grauenvolle Trümmer# im Brunnen #[[1]]# verbergen würde.",
                                                                                  /*french*/ "Selon moi, des #débris dans le Puits# cachent #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                               // /*spanish*/ Según dicen, unos #horripilantes escombros# del pozo esconden #[[1]]#.
@@ -1583,12 +1583,12 @@ hintTextTable[RHT_SHADOW_TEMPLE_MAP_CHEST] = HintText(CustomMessage("They say th
                                                                         /*french*/ "Selon moi, le #trésor invisible du Poigneur# est #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                      // /*spanish*/ Según dicen, el #secreto invisible de la Mano Muerta# esconde #[[1]]#.
 
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_UNDERWATER_FRONT_CHEST] = HintText(CustomMessage("They say that a #royal melody in the well# uncovers #[[1]]#.",
+    hintTextTable[RHT_BOTW_SOUTH_SUNKEN_CHEST] = HintText(CustomMessage("They say that a #royal melody in the well# uncovers #[[1]]#.",
                                                                                /*german*/ "Man erzählt sich, daß eine #königliche Melodie im Brunnen# #[[1]]# enthüllen würde.",
                                                                                /*french*/ "Selon moi, la #mélodie royale révèle dans le Puits# #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                             // /*spanish*/ Según dicen, una #melodía real en el pozo# revela #[[1]]#.
 
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_UNDERWATER_LEFT_CHEST] = HintText(CustomMessage("They say that a #royal melody in the well# uncovers #[[1]]#.",
+    hintTextTable[RHT_BOTW_WEST_SUNKEN_CHEST] = HintText(CustomMessage("They say that a #royal melody in the well# uncovers #[[1]]#.",
                                                                               /*german*/ "Man erzählt sich, daß eine #königliche Melodie im Brunnen# #[[1]]# enthüllen würde.",
                                                                               /*french*/ "Selon moi, la #mélodie royale révèle dans le Puits# #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                            // /*spanish*/ Según dicen, una #melodía real en el pozo# revela #[[1]]#.
@@ -1608,7 +1608,7 @@ hintTextTable[RHT_SHADOW_TEMPLE_MAP_CHEST] = HintText(CustomMessage("They say th
                                                                         /*french*/ "Selon moi, #dans une cage# du Puits gît #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                      // /*spanish*/ Según dicen, #entre rejas# en el pozo yace #[[1]]#.
 
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_FREESTANDING_KEY] = HintText(CustomMessage("They say that #inside a coffin# hides #[[1]]#.",
+    hintTextTable[RHT_BOTW_COFFIN_KEY] = HintText(CustomMessage("They say that #inside a coffin# hides #[[1]]#.",
                                                                          /*german*/ "Man erzählt sich, daß #in einem Sarg# #[[1]]# verborgen läge.",
                                                                          /*french*/ "Selon moi, dans #un cercueil# gît #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                       // /*spanish*/ Según dicen, en el #interior de un ataúd# yace #[[1]]#.
@@ -1663,9 +1663,21 @@ hintTextTable[RHT_SHADOW_TEMPLE_MAP_CHEST] = HintText(CustomMessage("They say th
                                                                               /*french*/ "Selon moi, une #Skulltula embarrée dans la crypte au fonds du Puits# a #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                            // /*spanish*/ Según dicen, una #Skulltula encerrada en una cripta# del pozo otorga #[[1]]#.
 
-    hintTextTable[RHT_POT_BOTTOM_OF_THE_WELL] = HintText(CustomMessage("They say that a #pot in Bottom of the Well# contains #[[1]]#.",
+    hintTextTable[RHT_POT_BOTW] = HintText(CustomMessage("They say that a #pot in Bottom of the Well# contains #[[1]]#.",
                                                             /*german*/ "",
                                                             /*french*/ "Selon moi, une #jarre dans le Puits# contient #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_BOTW_ENTRYWAY_WEST_POT] = HintText(CustomMessage("They say that a #pot to the Right of the Well's entrance# contains #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_BOTW_ENTRYWAY_EAST_POT] = HintText(CustomMessage("They say that a #pot to the Left of the Well's entrance# contains #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_BOTW_SUNKEN_POT] = HintText(CustomMessage("They say that a #sunken pot in the Well# contains #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_BOTW_FAKE_WALL_SOUTH_POT] = HintText(CustomMessage("They say that the #southern pot behind a fake wall in a Well# contains #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_BOTW_FAKE_WALL_CENTRAL_POT] = HintText(CustomMessage("They say that the #central pot behind a fake wall in a Well# contains #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_BOTW_FAKE_WALL_NORTH_POT] = HintText(CustomMessage("They say that the #northern pot behind a fake wall in a Well# contains #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_BOTTOM_OF_THE_WELL_HEART] = HintText(CustomMessage("They say that a #heart within the well# hides #[[1]]#.",
                                                               /*german*/ "",

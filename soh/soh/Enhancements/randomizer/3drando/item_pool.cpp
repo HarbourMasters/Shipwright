@@ -681,7 +681,7 @@ static void PlaceVanillaFairies() {
     ctx->PlaceItemInLocation(RC_BOTTOM_OF_THE_WELL_MQ_CELL_SUN_FAIRY, GetJunkItem(), false, true);
     ctx->PlaceItemInLocation(RC_BOTTOM_OF_THE_WELL_MQ_BASEMENT_SUN_FAIRY, GetJunkItem(), false, true);
   } else {
-    ctx->PlaceItemInLocation(RC_BOTTOM_OF_THE_WELL_BASEMENT_SUN_FAIRY, GetJunkItem(), false, true);
+    ctx->PlaceItemInLocation(RC_BOTW_B3_SUN_FAIRY, GetJunkItem(), false, true);
   }
   if (ctx->GetDungeon(Rando::ICE_CAVERN)->IsVanilla()) {
     ctx->PlaceItemInLocation(RC_ICE_CAVERN_ENTRANCE_STORMS_FAIRY, GetJunkItem(), false, true);
