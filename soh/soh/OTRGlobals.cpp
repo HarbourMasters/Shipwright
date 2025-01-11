@@ -265,7 +265,7 @@ OTRGlobals::OTRGlobals() {
     std::string mqPath = Ship::Context::LocateFileAcrossAppDirs("oot-mq.otr", appShortName);
     if (std::filesystem::exists(mqPath)) { 
         OTRFiles.push_back(mqPath);
-    } 
+    }
     std::string ootPath = Ship::Context::LocateFileAcrossAppDirs("oot.otr", appShortName);
     if (std::filesystem::exists(ootPath)) {
         OTRFiles.push_back(ootPath);
@@ -274,6 +274,7 @@ OTRGlobals::OTRGlobals() {
     if (std::filesystem::exists(sohOtrPath)) {
         OTRFiles.push_back(sohOtrPath);
     }
+    /*
     std::string patchesPath = Ship::Context::LocateFileAcrossAppDirs("mods", appShortName);
     std::vector<std::string> patchOTRs = {};
     if (patchesPath.length() > 0 && std::filesystem::exists(patchesPath)) {
@@ -297,7 +298,9 @@ OTRGlobals::OTRGlobals() {
             }
         );
     });
+
     OTRFiles.insert(OTRFiles.end(), patchOTRs.begin(), patchOTRs.end());
+    */
     std::unordered_set<uint32_t> ValidHashes = {
         OOT_PAL_MQ,
         OOT_NTSC_JP_MQ,

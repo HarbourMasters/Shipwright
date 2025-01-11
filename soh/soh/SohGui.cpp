@@ -36,6 +36,7 @@
 #include "Enhancements/debugger/MessageViewer.h"
 #include "soh/Notification/Notification.h"
 #include "soh/Enhancements/TimeDisplay/TimeDisplay.h"
+#include "soh/Enhancements/mod_menu.h"
 
 bool isBetaQuestEnabled = false;
 
@@ -110,6 +111,7 @@ namespace SohGui {
     std::shared_ptr<Ship::GuiWindow> mGfxDebuggerWindow;
     std::shared_ptr<Ship::GuiWindow> mInputEditorWindow;
 
+    std::shared_ptr<ModMenuWindow> mModMenuWindow;
     std::shared_ptr<AudioEditor> mAudioEditorWindow;
     std::shared_ptr<InputViewer> mInputViewer;
     std::shared_ptr<InputViewerSettingsWindow> mInputViewerSettings;
@@ -170,6 +172,8 @@ namespace SohGui {
             SPDLOG_ERROR("Could not find input editor window");
         }
 
+        mModMenuWindow = std::make_shared<ModMenuWindow>(CVAR_WINDOW("ModMenu"), "Mod Menu", ImVec2(820, 630));
+        gui->AddGuiWindow(mModMenuWindow);
         mAudioEditorWindow = std::make_shared<AudioEditor>(CVAR_WINDOW("AudioEditor"), "Audio Editor", ImVec2(820, 630));
         gui->AddGuiWindow(mAudioEditorWindow);
         mInputViewer = std::make_shared<InputViewer>(CVAR_WINDOW("InputViewer"), "Input Viewer");
@@ -227,8 +231,9 @@ namespace SohGui {
     void Destroy() {
         auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
         gui->RemoveAllGuiWindows();
-        
+
         mNotificationWindow = nullptr;
+        mModMenuWindow = nullptr;
         mModalWindow = nullptr;
         mAdvancedResolutionSettingsWindow = nullptr;
         mRandomizerSettingsWindow = nullptr;

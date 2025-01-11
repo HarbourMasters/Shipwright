@@ -44,6 +44,7 @@
 #include "Enhancements/timesplits/TimeSplits.h"
 #include "Enhancements/randomizer/Plandomizer.h"
 #include "Enhancements/TimeDisplay/TimeDisplay.h"
+#include "Enhancements/mod_menu.h"
 
 // FA icons are kind of wonky, if they worked how I expected them to the "+ 2.0f" wouldn't be needed, but
 // they don't work how I expect them to so I added that because it looked good when I eyeballed it
@@ -608,6 +609,7 @@ extern std::shared_ptr<CosmeticsEditorWindow> mCosmeticsEditorWindow;
 extern std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
 extern std::shared_ptr<TimeSplitWindow> mTimeSplitWindow;
 extern std::shared_ptr<TimeDisplayWindow> mTimeDisplayWindow;
+extern std::shared_ptr<ModMenuWindow> mModMenuWindow;
 
 void DrawEnhancementsMenu() {
     if (ImGui::BeginMenu("Enhancements"))
@@ -1769,6 +1771,13 @@ void DrawEnhancementsMenu() {
                 }
             }
         }
+
+        if (mModMenuWindow) {
+            if (ImGui::Button(GetWindowButtonText("Mod Menu", CVarGetInteger(CVAR_WINDOW("ModMenu"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+                mModMenuWindow->ToggleVisibility();
+            }
+        }
+
         ImGui::PopStyleVar(3);
         ImGui::PopStyleColor(1);
 
