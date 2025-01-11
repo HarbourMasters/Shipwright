@@ -2057,7 +2057,7 @@ void StaticData::HintTable_Init_Item() {
                                                }, {
                                                CustomMessage("a fish-puller", /*german*/"ein Fischzieher", /*french*/"(canne à pêche)")});
                                                 // /*spanish*/(caña de pescar)
-    hintTextTable[RHT_SKELETON_KEY] = HintText(CustomMessage("a Skeleton Key", /*german*/ "ein Universalschlüssel", /*french*/ "une Clé Squelette),
+    hintTextTable[RHT_SKELETON_KEY] = HintText(CustomMessage("a Skeleton Key", /*german*/ "ein Universalschlüssel", /*french*/ "une Clé Squelette"),
                                                // /*spanish*/una Llave Maestra
                                                {
                                                CustomMessage("a key", /*german*/ "ein Schlüssel", /*french*/ "une clé")
