@@ -662,6 +662,8 @@ void SaveManager::Init() {
             OTRGlobals::Instance->gRandoContext->ClearItemLocations();
         }
     }
+    auto ctx = Rando::Context::GetInstance();
+    ctx->GetSettings()->CreateOptions();
 }
 
 void SaveManager::InitMeta(int fileNum) {

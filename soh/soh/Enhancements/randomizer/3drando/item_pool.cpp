@@ -1354,13 +1354,15 @@ void GenerateItemPool() {
     PlaceVanillaDekuScrubItems(ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_OFF));
   }
 
-  bool overworldFreeStandingActive = ctx->GetOption(RSK_SHUFFLE_FREESTANDING).Is(RO_FREESTANDING_OVERWORLD) ||
-                             ctx->GetOption(RSK_SHUFFLE_FREESTANDING).Is(RO_FREESTANDING_ALL);
-  bool dungeonFreeStandingActive = ctx->GetOption(RSK_SHUFFLE_FREESTANDING).Is(RO_FREESTANDING_DUNGEONS) ||
-                           ctx->GetOption(RSK_SHUFFLE_FREESTANDING).Is(RO_FREESTANDING_ALL);
-  if (overworldFreeStandingActive || dungeonFreeStandingActive) {
+  // RANDOTODO: Don't add freestanding locations to the seed at all in the first place so this check
+  // can be put back in place, and not place the vanilla items in PlaceItemsForType.
+  bool overworldFreeStandingActive = ctx->GetOption(RSK_SHUFFLE_FREESTANDING).Is(RO_SHUFFLE_FREESTANDING_OVERWORLD) ||
+                             ctx->GetOption(RSK_SHUFFLE_FREESTANDING).Is(RO_SHUFFLE_FREESTANDING_ALL);
+  bool dungeonFreeStandingActive = ctx->GetOption(RSK_SHUFFLE_FREESTANDING).Is(RO_SHUFFLE_FREESTANDING_DUNGEONS) ||
+                           ctx->GetOption(RSK_SHUFFLE_FREESTANDING).Is(RO_SHUFFLE_FREESTANDING_ALL);
+  //if (overworldFreeStandingActive || dungeonFreeStandingActive) {
     PlaceItemsForType(RCTYPE_FREESTANDING, overworldFreeStandingActive, dungeonFreeStandingActive, true);
-  }
+  //}
 
   AddItemsToPool(ItemPool, alwaysItems);
   AddItemsToPool(ItemPool, dungeonRewards);
@@ -1471,10 +1473,8 @@ void GenerateItemPool() {
     for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
       if (dungeon->HasKeyRing() && ctx->GetOption(RSK_KEYSANITY).IsNot(RO_DUNGEON_ITEM_LOC_STARTWITH)) {
         AddItemToMainPool(dungeon->GetKeyRing());
-      } else {
-        if (dungeon->GetSmallKeyCount() > 0) {
-          AddItemToMainPool(dungeon->GetSmallKey(), dungeon->GetSmallKeyCount());
-        }
+      } else if (dungeon->GetSmallKeyCount() > 0) {
+        AddItemToMainPool(dungeon->GetSmallKey(), dungeon->GetSmallKeyCount());
       }
     }
   }

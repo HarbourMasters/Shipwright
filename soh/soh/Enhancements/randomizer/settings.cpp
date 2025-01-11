@@ -221,7 +221,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_SHUFFLE_BOSS_SOULS] = Option::U8("Shuffle Boss Souls", {"Off", "On", "On + Ganon"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleBossSouls"), mOptionDescriptions[RSK_SHUFFLE_BOSS_SOULS], WidgetType::Combobox);
     mOptions[RSK_SHUFFLE_DEKU_STICK_BAG] = Option::Bool("Shuffle Deku Stick Bag", CVAR_RANDOMIZER_SETTING("ShuffleDekuStickBag"), mOptionDescriptions[RSK_SHUFFLE_DEKU_STICK_BAG], IMFLAG_SEPARATOR_BOTTOM, WidgetType::Checkbox, RO_GENERIC_OFF);
     mOptions[RSK_SHUFFLE_DEKU_NUT_BAG] = Option::Bool("Shuffle Deku Nut Bag", CVAR_RANDOMIZER_SETTING("ShuffleDekuNutBag"), mOptionDescriptions[RSK_SHUFFLE_DEKU_NUT_BAG], IMFLAG_SEPARATOR_BOTTOM, WidgetType::Checkbox, RO_GENERIC_OFF);
-    mOptions[RSK_SHUFFLE_FREESTANDING] = Option::U8("Shuffle Freestanding Items", {"Off", "Dungeons", "Overworld", "All Items"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleFreestanding"), mOptionDescriptions[RSK_SHUFFLE_FREESTANDING], WidgetType::Combobox, RO_FREESTANDING_OFF);
+    mOptions[RSK_SHUFFLE_FREESTANDING] = Option::U8("Shuffle Freestanding Items", {"Off", "Dungeons", "Overworld", "All Items"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleFreestanding"), mOptionDescriptions[RSK_SHUFFLE_FREESTANDING], WidgetType::Combobox, RO_SHUFFLE_FREESTANDING_OFF);
     mOptions[RSK_FISHSANITY] = Option::U8("Fishsanity", {"Off", "Shuffle only Hyrule Loach", "Shuffle Fishing Pond", "Shuffle Overworld Fish", "Shuffle Both"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("Fishsanity"), mOptionDescriptions[RSK_FISHSANITY], WidgetType::Combobox, RO_FISHSANITY_OFF);
     mOptions[RSK_FISHSANITY_POND_COUNT] = Option::U8("Pond Fish Count", {NumOpts(0,17,1)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("FishsanityPondCount"), mOptionDescriptions[RSK_FISHSANITY_POND_COUNT], WidgetType::Slider, 0, true, IMFLAG_NONE);
     mOptions[RSK_FISHSANITY_AGE_SPLIT] = Option::Bool("Pond Age Split", CVAR_RANDOMIZER_SETTING("FishsanityAgeSplit"), mOptionDescriptions[RSK_FISHSANITY_AGE_SPLIT]);
@@ -343,13 +343,14 @@ void Settings::CreateOptions() {
     mTrickOptions[RT_VISIBLE_COLLISION] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::NOVICE}, "Pass Through Visible One-Way Collision", "Allows climbing through the platform to reach Impa's House Back as adult with no items and going through the Kakariko Village Gate as child when coming from the Mountain Trail side.");
     mTrickOptions[RT_GROTTOS_WITHOUT_AGONY] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::NOVICE}, "Hidden Grottos without Stone of Agony", "Allows entering hidden grottos without the Stone of Agony.");
     mTrickOptions[RT_FEWER_TUNIC_REQUIREMENTS] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::INTERMEDIATE}, "Fewer Tunic Requirements", "Allows the following possible without Tunics:\n- Enter Water Temple. The area below the center pillar still requires Zora Tunic. Applies to MQ also.\n- Enter Fire Temple. Volvagia still requires Goron tunic. Applies to MQ also, and includes child access to first floor with dungeon shuffle.");
-    mTrickOptions[RT_RUSTED_SWITCHES] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::NOVICE}, "Hammer Rusted Switches Through Walls", "Applies to: - Fire Temple Highest Goron Chest. - MQ Fire Temple Lizalfos Maze. - MQ Spirit Trial.");
+    mTrickOptions[RT_RUSTED_SWITCHES] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::NOVICE}, "Hammer Rusted Switches Through Walls", "Applies to:\n- Fire Temple Highest Goron Chest.\n- MQ Fire Temple Lizalfos Maze.\n- MQ Spirit Trial.");
     mTrickOptions[RT_FLAMING_CHESTS] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::INTERMEDIATE}, "Flaming Chests", "The chests encircled in flames in Gerudo Training Ground and in Spirit Temple can be opened by running into the flames while Link is invincible after taking damage.");
     // disabled for now, can't check for being able to use bunny hood & bunny hood speedup is currently completely decoupled from rando
     // mTrickOptions[RT_BUNNY_HOOD_JUMPS] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED}, "Bunny Hood Jumps", "Allows reaching locations using Bunny Hood's extended jumps.");
     mTrickOptions[RT_DAMAGE_BOOST_SIMPLE] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL}, "Simple damage boosts", "Allows damage boosts in order to reach further locations. Can be combined with \"Simple hover boosts\" for reaching far distances.");
     mTrickOptions[RT_HOVER_BOOST_SIMPLE] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL}, "Simple hover boosts", "Allows equipping of hover boots when link is moving at high speeds to extend distance covered. Can be combined with \"Simple damage boosts\" for greater uses.");
-    mTrickOptions[RT_BOMBCHU_BEEHIVES] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::NOVICE}, "Bombchu Beehives", "Allows exploding beehives with bombchus"),
+    mTrickOptions[RT_BOMBCHU_BEEHIVES] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::NOVICE}, "Bombchu Beehives", "Allows exploding beehives with bombchus.");
+    mTrickOptions[RT_BLUE_FIRE_MUD_WALLS] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::NOVICE}, "Break Mud Walls with Blue Fire", "Use Blue Fire to break mud walls.");
     mTrickOptions[RT_KF_ADULT_GS] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_KOKIRI_FOREST, {Tricks::Tag::NOVICE}, "Adult Kokiri Forest GS with Hover Boots", "Can be obtained without Hookshot by using the Hover Boots off of one of the roots.");
     mTrickOptions[RT_LW_BRIDGE] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_THE_LOST_WOODS, {Tricks::Tag::EXPERT}, "Jump onto the Lost Woods Bridge as Adult with Nothing", "With very precise movement it's possible for adult to jump onto the bridge without needing Longshot, Hover Boots, or Bean.");
     mTrickOptions[RT_LW_MIDO_BACKFLIP] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_THE_LOST_WOODS, {Tricks::Tag::NOVICE}, "Backflip over Mido as Adult", "With a specific position and angle, you can backflip over Mido.");
@@ -396,6 +397,7 @@ void Settings::CreateOptions() {
     mTrickOptions[RT_GV_CRATE_HOVERS] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_GERUDO_VALLEY, {Tricks::Tag::INTERMEDIATE}, "Gerudo Valley Crate PoH as Adult with Hover Boots", "From the far side of Gerudo Valley, a precise Hover Boots movement and jump-slash recoil can allow adult to reach the ledge with the crate PoH without needing Longshot. You will take fall damage.");
     mTrickOptions[RT_GF_KITCHEN] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_GERUDO_FORTRESS, {Tricks::Tag::NOVICE}, "Thieves\' Hideout \"Kitchen\" with No Additional Items", "Allows passing through the kitchen by avoiding being seen by the guards. The logic normally guarantees Bow or Hookshot to stun them from a distance, or Hover Boots to cross the room without needing to deal with the guards.");
     mTrickOptions[RT_GF_JUMP] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_GERUDO_FORTRESS, {Tricks::Tag::NOVICE}, "Gerudo\'s Fortress Ledge Jumps", "Adult can jump onto the top roof of the fortress without going through the interior of the hideout.");
+    mTrickOptions[RT_GF_WARRIOR_WITH_DIFFICULT_WEAPON] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_GERUDO_FORTRESS, {Tricks::Tag::NOVICE}, "Gerudo\'s Fortress Warriors with Difficult Weapons", "Warriors can be defeated with slingshot or bombchus.");
     // disabled for now, can't check for being able to use bunny hood & bunny hood speedup is currently completely decoupled from rando
     // mTrickOptions[RT_HW_BUNNY_CROSSING] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_HAUNTED_WASTELAND, {Tricks::Tag::NOVICE}, "Wasteland Crossing with Bunny Hood", "You can beat the quicksand by using the increased speed of the Bunny Hood. Note that jumping to the carpet merchant as child typically requires a fairly precise jump slash.");
     mTrickOptions[RT_HW_CROSSING] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_HAUNTED_WASTELAND, {Tricks::Tag::INTERMEDIATE}, "Wasteland Crossing without Hover Boots or Longshot", "You can beat the quicksand by backwalking across it in a specific way. Note that jumping to the carpet merchant as child typically requires a fairly precise jump slash.");
@@ -705,6 +707,7 @@ void Settings::CreateOptions() {
         &mTrickOptions[RT_GANON_MQ_SHADOW_TRIAL],
         &mTrickOptions[RT_GANON_MQ_LIGHT_TRIAL],
     });
+    mTricksByArea.clear();
     for (int i = 0; i < RT_MAX; i++) {
         auto& trick = mTrickOptions[i];
         if (!trick.GetName().empty()) {
@@ -2063,102 +2066,96 @@ void Settings::UpdateOptionProperties() {
 
 void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocations, const std::set<RandomizerTrick>& enabledTricks) {
     const auto ctx = Rando::Context::GetInstance();
-    if (!ctx->IsSpoilerLoaded()) {
-        for (Option& option : mOptions) {
-            option.SetContextIndex(option.GetMenuOptionIndex());
-        }
-        // If we've loaded a spoiler file, the settings have already been populated, so we
-        // only need to do things like resolve the starting age or determine MQ dungeons.
-        // Any logic dependent on cvarSettings should go in this if statement
-        
-        // if we skip child zelda, we start with zelda's letter, and malon starts
-        // at the ranch, so we should *not* shuffle the weird egg
-        if (mOptions[RSK_SKIP_CHILD_ZELDA]) {
-            mOptions[RSK_SHUFFLE_WEIRD_EGG].SetContextIndex(RO_GENERIC_OFF);
-        }
+    for (Option& option : mOptions) {
+        option.SetContextIndex(option.GetMenuOptionIndex());
+    }
+    
+    // if we skip child zelda, we start with zelda's letter, and malon starts
+    // at the ranch, so we should *not* shuffle the weird egg
+    if (mOptions[RSK_SKIP_CHILD_ZELDA]) {
+        mOptions[RSK_SHUFFLE_WEIRD_EGG].SetContextIndex(RO_GENERIC_OFF);
+    }
 
-        // With certain access settings, the seed is only beatable if Starting Age is set to Child.
-        if (mOptions[RSK_FOREST].Is(RO_CLOSED_FOREST_ON) || (mOptions[RSK_DOOR_OF_TIME].Is(RO_DOOROFTIME_CLOSED) &&
-            !mOptions[RSK_SHUFFLE_OCARINA])) {
-            mOptions[RSK_STARTING_AGE].SetContextIndex(RO_AGE_CHILD);
-        }
+    // With certain access settings, the seed is only beatable if Starting Age is set to Child.
+    if (mOptions[RSK_FOREST].Is(RO_CLOSED_FOREST_ON) || (mOptions[RSK_DOOR_OF_TIME].Is(RO_DOOROFTIME_CLOSED) &&
+        !mOptions[RSK_SHUFFLE_OCARINA])) {
+        mOptions[RSK_STARTING_AGE].SetContextIndex(RO_AGE_CHILD);
+    }
 
-        if (mOptions[RSK_TRIFORCE_HUNT]) {
-            mOptions[RSK_GANONS_BOSS_KEY].SetContextIndex(RO_GANON_BOSS_KEY_TRIFORCE_HUNT);
-        }
+    if (mOptions[RSK_TRIFORCE_HUNT]) {
+        mOptions[RSK_GANONS_BOSS_KEY].SetContextIndex(RO_GANON_BOSS_KEY_TRIFORCE_HUNT);
+    }
 
-        // Force 100 GS Shuffle if that's where Ganon's Boss Key is
-        if (mOptions[RSK_GANONS_BOSS_KEY].Is(RO_GANON_BOSS_KEY_KAK_TOKENS)) {
-            mOptions[RSK_SHUFFLE_100_GS_REWARD].SetContextIndex(1);
-        }
+    // Force 100 GS Shuffle if that's where Ganon's Boss Key is
+    if (mOptions[RSK_GANONS_BOSS_KEY].Is(RO_GANON_BOSS_KEY_KAK_TOKENS)) {
+        mOptions[RSK_SHUFFLE_100_GS_REWARD].SetContextIndex(1);
+    }
 
-        // If we only have MQ, set all dungeons to MQ
-        if (OTRGlobals::Instance->HasMasterQuest() && !OTRGlobals::Instance->HasOriginal()) {
-            mOptions[RSK_MQ_DUNGEON_RANDOM].SetContextIndex(RO_MQ_DUNGEONS_SET_NUMBER);
-            mOptions[RSK_MQ_DUNGEON_COUNT].SetContextIndex(12);
-            mOptions[RSK_MQ_DUNGEON_SET].SetContextIndex(RO_GENERIC_OFF);
-        }
+    // If we only have MQ, set all dungeons to MQ
+    if (OTRGlobals::Instance->HasMasterQuest() && !OTRGlobals::Instance->HasOriginal()) {
+        mOptions[RSK_MQ_DUNGEON_RANDOM].SetContextIndex(RO_MQ_DUNGEONS_SET_NUMBER);
+        mOptions[RSK_MQ_DUNGEON_COUNT].SetContextIndex(12);
+        mOptions[RSK_MQ_DUNGEON_SET].SetContextIndex(RO_GENERIC_OFF);
+    }
 
-        // If we don't have MQ, set all dungeons to Vanilla
-        if (OTRGlobals::Instance->HasOriginal() && !OTRGlobals::Instance->HasMasterQuest()) {
-            mOptions[RSK_MQ_DUNGEON_RANDOM].SetContextIndex(RO_MQ_DUNGEONS_NONE);
-        }
+    // If we don't have MQ, set all dungeons to Vanilla
+    if (OTRGlobals::Instance->HasOriginal() && !OTRGlobals::Instance->HasMasterQuest()) {
+        mOptions[RSK_MQ_DUNGEON_RANDOM].SetContextIndex(RO_MQ_DUNGEONS_NONE);
+    }
 
-        if (mOptions[RSK_MQ_DUNGEON_RANDOM].Is(RO_MQ_DUNGEONS_NONE)) {
-            mOptions[RSK_MQ_DUNGEON_COUNT].SetContextIndex(0);
-            mOptions[RSK_MQ_DUNGEON_SET].SetContextIndex(RO_GENERIC_OFF);
-        }
+    if (mOptions[RSK_MQ_DUNGEON_RANDOM].Is(RO_MQ_DUNGEONS_NONE)) {
+        mOptions[RSK_MQ_DUNGEON_COUNT].SetContextIndex(0);
+        mOptions[RSK_MQ_DUNGEON_SET].SetContextIndex(RO_GENERIC_OFF);
+    }
 
-        // If any of the individual shuffle settings are on, turn on the main Shuffle Entrances option
-        if (mOptions[RSK_SHUFFLE_DUNGEON_ENTRANCES].IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)
-            || mOptions[RSK_SHUFFLE_BOSS_ENTRANCES].IsNot(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)
-            || mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES]
-            || mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES].IsNot(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF)
-            || mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES] || mOptions[RSK_SHUFFLE_OWL_DROPS]
-            || mOptions[RSK_SHUFFLE_WARP_SONGS] || mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS]) {
-            mOptions[RSK_SHUFFLE_ENTRANCES].SetContextIndex(RO_GENERIC_ON);
+    // If any of the individual shuffle settings are on, turn on the main Shuffle Entrances option
+    if (mOptions[RSK_SHUFFLE_DUNGEON_ENTRANCES].IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)
+        || mOptions[RSK_SHUFFLE_BOSS_ENTRANCES].IsNot(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)
+        || mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES]
+        || mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES].IsNot(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF)
+        || mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES] || mOptions[RSK_SHUFFLE_OWL_DROPS]
+        || mOptions[RSK_SHUFFLE_WARP_SONGS] || mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS]) {
+        mOptions[RSK_SHUFFLE_ENTRANCES].SetContextIndex(RO_GENERIC_ON);
+    } else {
+        mOptions[RSK_SHUFFLE_ENTRANCES].SetContextIndex(RO_GENERIC_OFF);
+    }
+
+    if (mOptions[RSK_SHUFFLE_DUNGEON_REWARDS].Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
+        mOptions[RSK_LINKS_POCKET].SetContextIndex(RO_LINKS_POCKET_DUNGEON_REWARD);
+    }
+
+    ctx->AddExcludedOptions();
+    for (const auto locationKey : ctx->everyPossibleLocation) {
+        if (const auto location = ctx->GetItemLocation(locationKey); excludedLocations.contains(location->GetRandomizerCheck())) {
+            location->GetExcludedOption()->SetContextIndex(1);
         } else {
-            mOptions[RSK_SHUFFLE_ENTRANCES].SetContextIndex(RO_GENERIC_OFF);
+            location->GetExcludedOption()->SetContextIndex(0);
         }
-
-        if (mOptions[RSK_SHUFFLE_DUNGEON_REWARDS].Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
-            mOptions[RSK_LINKS_POCKET].SetContextIndex(RO_LINKS_POCKET_DUNGEON_REWARD);
+    }
+    // Tricks
+    ResetTrickOptions();
+    for (const auto randomizerTrick : enabledTricks) {
+        mTrickOptions[randomizerTrick].SetContextIndex(1);
+    }
+    if (!mOptions[RSK_SHUFFLE_KOKIRI_SWORD]) {
+        if (mOptions[RSK_STARTING_KOKIRI_SWORD]) {
+            ctx->GetItemLocation(RC_KF_KOKIRI_SWORD_CHEST)->GetExcludedOption()->SetContextIndex(1);
         }
-
-        if (!ctx->IsSpoilerLoaded()) {
-            ctx->AddExcludedOptions();
-            for (const auto locationKey : ctx->everyPossibleLocation) {
-                if (const auto location = ctx->GetItemLocation(locationKey); excludedLocations.contains(location->GetRandomizerCheck())) {
-                    location->GetExcludedOption()->SetContextIndex(1);
-                } else {
-                    location->GetExcludedOption()->SetContextIndex(0);
-                }
-            }
-            // Tricks
-            ResetTrickOptions();
-            for (const auto randomizerTrick : enabledTricks) {
-                mTrickOptions[randomizerTrick].SetContextIndex(1);
-            }
+    }
+    if (!mOptions[RSK_SHUFFLE_MASTER_SWORD]) {
+        if (mOptions[RSK_STARTING_MASTER_SWORD]) {
+            ctx->GetItemLocation(RC_MASTER_SWORD_PEDESTAL)->GetExcludedOption()->SetContextIndex(1);
         }
-        if (!mOptions[RSK_SHUFFLE_KOKIRI_SWORD]) {
-            if (mOptions[RSK_STARTING_KOKIRI_SWORD]) {
-                ctx->GetItemLocation(RC_KF_KOKIRI_SWORD_CHEST)->GetExcludedOption()->SetContextIndex(1);
-            }
-        }
-        if (!mOptions[RSK_SHUFFLE_MASTER_SWORD]) {
-            if (mOptions[RSK_STARTING_MASTER_SWORD]) {
-                ctx->GetItemLocation(RC_MASTER_SWORD_PEDESTAL)->GetExcludedOption()->SetContextIndex(1);
-            }
-        }
-        if (!mOptions[RSK_SHUFFLE_OCARINA]) {
-            if (mOptions[RSK_STARTING_OCARINA].IsNot(RO_STARTING_OCARINA_OFF)) {
-                ctx->GetItemLocation(RC_LW_GIFT_FROM_SARIA)->GetExcludedOption()->SetContextIndex(1);
-                if (mOptions[RSK_STARTING_OCARINA].Is(RO_STARTING_OCARINA_TIME)) {
-                    ctx->GetItemLocation(RC_HF_OCARINA_OF_TIME_ITEM)->GetExcludedOption()->SetContextIndex(1);
-                }
+    }
+    if (!mOptions[RSK_SHUFFLE_OCARINA]) {
+        if (mOptions[RSK_STARTING_OCARINA].IsNot(RO_STARTING_OCARINA_OFF)) {
+            ctx->GetItemLocation(RC_LW_GIFT_FROM_SARIA)->GetExcludedOption()->SetContextIndex(1);
+            if (mOptions[RSK_STARTING_OCARINA].Is(RO_STARTING_OCARINA_TIME)) {
+                ctx->GetItemLocation(RC_HF_OCARINA_OF_TIME_ITEM)->GetExcludedOption()->SetContextIndex(1);
             }
         }
     }
+    
 
     if (mOptions[RSK_SHUFFLE_DEKU_STICK_BAG]) {
         mOptions[RSK_STARTING_STICKS].SetContextIndex(false);

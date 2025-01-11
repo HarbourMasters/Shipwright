@@ -2176,7 +2176,7 @@ void Cutscene_HandleEntranceTriggers(PlayState* play) {
     for (i = 0; i < ARRAY_COUNT(sEntranceCutsceneTable); i++) {
         entranceCutscene = &sEntranceCutsceneTable[i];
         requiredAge = entranceCutscene->ageRestriction;
-        if (requiredAge == 2) {
+        if (GameInteractor_Should(VB_ALLOW_ENTRANCE_CS_FOR_EITHER_AGE, requiredAge == 2, entranceCutscene->entrance)) {
             requiredAge = gSaveContext.linkAge;
         }
 
@@ -2185,7 +2185,7 @@ void Cutscene_HandleEntranceTriggers(PlayState* play) {
             (gSaveContext.cutsceneIndex < 0xFFF0) && ((u8)gSaveContext.linkAge == requiredAge) &&
             (gSaveContext.respawnFlag <= 0)) {
             Flags_SetEventChkInf(entranceCutscene->flag);
-            if (GameInteractor_Should(VB_PLAY_ENTRANCE_CS, true, &entranceCutscene->flag)) {
+            if (GameInteractor_Should(VB_PLAY_ENTRANCE_CS, true, entranceCutscene->flag, entranceCutscene->entrance)) {
                 Cutscene_SetSegment(play, entranceCutscene->segAddr);
                 gSaveContext.cutsceneTrigger = 2;
                 gSaveContext.showTitleCard = false;

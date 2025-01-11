@@ -10,17 +10,13 @@
 namespace Rando {
 EntranceLinkInfo NO_RETURN_ENTRANCE = { EntranceType::None, RR_NONE, RR_NONE, -1 };
 
-Entrance::Entrance(RandomizerRegion connectedRegion_, std::vector<ConditionFn> conditions_met_, bool spreadsAreasWithPriority_)
-    : connectedRegion(connectedRegion_),  spreadsAreasWithPriority(spreadsAreasWithPriority_){
+Entrance::Entrance(RandomizerRegion connectedRegion_, ConditionFn condition_function_, bool spreadsAreasWithPriority_)
+    : connectedRegion(connectedRegion_), condition_function(condition_function_),  spreadsAreasWithPriority(spreadsAreasWithPriority_){
     originalConnectedRegion = connectedRegion_;
-    conditions_met.resize(2);
-    for (size_t i = 0; i < conditions_met_.size(); i++) {
-        conditions_met[i] = conditions_met_[i];
-    }
 }
 
 void Entrance::SetCondition(ConditionFn newCondition) {
-    conditions_met[0] = newCondition;
+    condition_function = newCondition;
 }
 
 bool Entrance::GetConditionsMet() const {
@@ -28,13 +24,9 @@ bool Entrance::GetConditionsMet() const {
     if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC) || ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
         return true;
     } else if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS)) {
-        return conditions_met[0]();
+        return condition_function();
     } else if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHED)) {
-        if (conditions_met[0]()) {
-            return true;
-        } else if (conditions_met[1] != NULL) {
-            return conditions_met[1]();
-        }
+        return condition_function();
     }
     return false;
 }
@@ -1071,8 +1063,8 @@ int EntranceShuffler::ShuffleAllEntrances() {
           { EntranceType::Overworld, RR_ZORAS_RIVER,             RR_THE_LOST_WOODS,          ENTR_LOST_WOODS_UNDERWATER_SHORTCUT } },
         { { EntranceType::Overworld, RR_LW_BEYOND_MIDO,          RR_SFM_ENTRYWAY,            ENTR_SACRED_FOREST_MEADOW_SOUTH_EXIT },
           { EntranceType::Overworld, RR_SFM_ENTRYWAY,            RR_LW_BEYOND_MIDO,          ENTR_LOST_WOODS_NORTH_EXIT } },
-        { { EntranceType::Overworld, RR_LW_BRIDGE,               RR_HYRULE_FIELD,            ENTR_LOST_WOODS_BRIDGE_WEST_EXIT },
-          { EntranceType::Overworld, RR_HYRULE_FIELD,            RR_LW_BRIDGE,               ENTR_HYRULE_FIELD_WOODED_EXIT } },
+        { { EntranceType::Overworld, RR_LW_BRIDGE,               RR_HYRULE_FIELD,            ENTR_HYRULE_FIELD_WOODED_EXIT },
+          { EntranceType::Overworld, RR_HYRULE_FIELD,            RR_LW_BRIDGE,               ENTR_LOST_WOODS_BRIDGE_WEST_EXIT } },
         { { EntranceType::Overworld, RR_HYRULE_FIELD,            RR_LAKE_HYLIA,              ENTR_LAKE_HYLIA_NORTH_EXIT },
           { EntranceType::Overworld, RR_LAKE_HYLIA,              RR_HYRULE_FIELD,            ENTR_HYRULE_FIELD_FENCE_EXIT } },
         { { EntranceType::Overworld, RR_HYRULE_FIELD,            RR_GERUDO_VALLEY,           ENTR_GERUDO_VALLEY_EAST_EXIT },
@@ -1095,10 +1087,10 @@ int EntranceShuffler::ShuffleAllEntrances() {
           { EntranceType::Overworld, RR_DESERT_COLOSSUS,         RR_WASTELAND_NEAR_COLOSSUS, ENTR_HAUNTED_WASTELAND_WEST_EXIT } },
         { { EntranceType::Overworld, RR_MARKET_ENTRANCE,         RR_THE_MARKET,              ENTR_MARKET_SOUTH_EXIT },
           { EntranceType::Overworld, RR_THE_MARKET,              RR_MARKET_ENTRANCE,         ENTR_MARKET_ENTRANCE_NORTH_EXIT } },
-        { { EntranceType::Overworld, RR_THE_MARKET,              RR_CASTLE_GROUNDS,          ENTR_MARKET_DAY_CASTLE_EXIT },
-          { EntranceType::Overworld, RR_CASTLE_GROUNDS,          RR_THE_MARKET,              ENTR_CASTLE_GROUNDS_SOUTH_EXIT } },
-        { { EntranceType::Overworld, RR_THE_MARKET,              RR_TOT_ENTRANCE,            ENTR_MARKET_DAY_TEMPLE_EXIT },
-          { EntranceType::Overworld, RR_TOT_ENTRANCE,            RR_THE_MARKET,              ENTR_TEMPLE_OF_TIME_EXTERIOR_DAY_GOSSIP_STONE_EXIT } },
+        { { EntranceType::Overworld, RR_THE_MARKET,              RR_CASTLE_GROUNDS,          ENTR_CASTLE_GROUNDS_SOUTH_EXIT },
+          { EntranceType::Overworld, RR_CASTLE_GROUNDS,          RR_THE_MARKET,              ENTR_MARKET_DAY_CASTLE_EXIT } },
+        { { EntranceType::Overworld, RR_THE_MARKET,              RR_TOT_ENTRANCE,            ENTR_TEMPLE_OF_TIME_EXTERIOR_DAY_GOSSIP_STONE_EXIT },
+          { EntranceType::Overworld, RR_TOT_ENTRANCE,            RR_THE_MARKET,              ENTR_MARKET_DAY_TEMPLE_EXIT } },
         { { EntranceType::Overworld, RR_KAKARIKO_VILLAGE,        RR_THE_GRAVEYARD,           ENTR_GRAVEYARD_ENTRANCE },
           { EntranceType::Overworld, RR_THE_GRAVEYARD,           RR_KAKARIKO_VILLAGE,        ENTR_KAKARIKO_VILLAGE_SOUTHEAST_EXIT } },
         { { EntranceType::Overworld, RR_KAK_BEHIND_GATE,         RR_DEATH_MOUNTAIN_TRAIL,    ENTR_DEATH_MOUNTAIN_TRAIL_BOTTOM_EXIT },

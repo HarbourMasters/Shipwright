@@ -341,7 +341,7 @@ namespace Rando {
                 return BugShrub || WanderingBugs || BugRock || GetInLogic(LOGIC_BUGS_ACCESS);
             case RG_BOTTLE_WITH_FISH:
                 return LoneFish || FishGroup || GetInLogic(LOGIC_FISH_ACCESS); //is there any need to care about lone vs group?
-            case RG_BOTTLE_WITH_BLUE_FIRE: //RANDOTODO should probably be better named to 
+            case RG_BOTTLE_WITH_BLUE_FIRE: //RANDOTODO should probably be better named
                 return BlueFireAccess || GetInLogic(LOGIC_BLUE_FIRE_ACCESS);
             case RG_BOTTLE_WITH_FAIRY:
                 return FairyPot || GossipStoneFairy || BeanPlantFairy || ButterflyFairy || FreeFairies || FairyPond || GetInLogic(LOGIC_FAIRY_ACCESS);
@@ -580,6 +580,8 @@ namespace Rando {
             case RE_WHITE_WOLFOS:
             case RE_WALLMASTER:
                 return CanJumpslash() || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOMBCHU_5) || CanUse(RG_DINS_FIRE) || (CanUse(RG_BOMB_BAG) && (CanUse(RG_NUTS) || CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG)));
+            case RE_GERUDO_WARRIOR:
+                return CanJumpslash() || CanUse(RG_FAIRY_BOW) || (ctx->GetTrickOption(RT_GF_WARRIOR_WITH_DIFFICULT_WEAPON) && (CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOMBCHU_5)));
             case RE_GIBDO:
             case RE_REDEAD:
                 return CanJumpslash() || CanUse(RG_DINS_FIRE);
@@ -820,8 +822,7 @@ namespace Rando {
     }
 
     bool Logic::CanBreakMudWalls() {
-        //RANDOTODO blue fire tricks
-        return BlastOrSmash();
+        return BlastOrSmash() || (ctx->GetTrickOption(RT_BLUE_FIRE_MUD_WALLS) && BlueFire());
     }
 
     bool Logic::CanGetDekuBabaSticks() {
@@ -1134,8 +1135,8 @@ namespace Rando {
     }
 
     bool Logic::CanFinishGerudoFortress(){
-        return (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL) && SmallKeys(RR_GERUDO_FORTRESS, 4) && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)) && (HasItem(RG_GERUDO_MEMBERSHIP_CARD) || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_KITCHEN))) ||
-               (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST)   && SmallKeys(RR_GERUDO_FORTRESS, 1) && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD))) ||
+        return (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL) && SmallKeys(RR_GERUDO_FORTRESS, 4) && CanKillEnemy(RE_GERUDO_WARRIOR) && (HasItem(RG_GERUDO_MEMBERSHIP_CARD) || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_KITCHEN))) ||
+               (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST)   && SmallKeys(RR_GERUDO_FORTRESS, 1) && CanKillEnemy(RE_GERUDO_WARRIOR)) ||
                ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE);
     }
 
@@ -1148,7 +1149,7 @@ namespace Rando {
     }
 
     bool Logic::CanUseProjectile(){
-        return  HasExplosives() || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOOMERANG);
+        return HasExplosives() || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOOMERANG);
     }
 
     bool Logic::CanBuildRainbowBridge(){

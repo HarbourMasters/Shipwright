@@ -8,9 +8,6 @@
 #include "SohGui.hpp"
 
 #include <spdlog/spdlog.h>
-#ifndef IMGUI_DEFINE_MATH_OPERATORS
-#define IMGUI_DEFINE_MATH_OPERATORS
-#endif
 #include <imgui.h>
 #include <imgui_internal.h>
 #include <libultraship/libultraship.h>
@@ -265,5 +262,9 @@ namespace SohGui {
 
     void RegisterPopup(std::string title, std::string message, std::string button1, std::string button2, std::function<void()> button1callback, std::function<void()> button2callback) {
         mModalWindow->RegisterPopup(title, message, button1, button2, button1callback, button2callback);
+    }
+
+    void ShowRandomizerSettingsMenu() {
+        mRandomizerSettingsWindow->Show();
     }
 }

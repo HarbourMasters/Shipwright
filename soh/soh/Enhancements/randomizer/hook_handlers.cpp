@@ -9,6 +9,7 @@
 #include "soh/Enhancements/randomizer/fishsanity.h"
 #include "soh/Enhancements/randomizer/static_data.h"
 #include "soh/Enhancements/randomizer/ShufflePots.h"
+#include "soh/Enhancements/randomizer/ShuffleFreestanding.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ImGuiUtils.h"
@@ -65,6 +66,7 @@ extern void Player_SetupActionPreserveAnimMovement(PlayState* play, Player* play
 extern s32 Player_SetupWaitForPutAway(PlayState* play, Player* player, AfterPutAwayFunc func);
 extern void Play_InitEnvironment(PlayState * play, s16 skyboxId);
 extern void EnMk_Wait(EnMk* enMk, PlayState* play);
+extern void func_80ABA778(EnNiwLady* enNiwLady, PlayState* play);
 }
 
 #define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetContextOptionIndex()
@@ -783,6 +785,15 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
     va_copy(args, originalArgs);
 
     switch (id) {
+        case VB_ALLOW_ENTRANCE_CS_FOR_EITHER_AGE: {
+            s32 entranceIndex = va_arg(args, s32);
+
+            // Allow Nabooru fight cutscene to play for child in rando
+            if (entranceIndex == ENTR_SPIRIT_TEMPLE_BOSS_ENTRANCE) {
+                *should = true;
+            }
+            break;
+        }
         case VB_PLAY_SLOW_CHEST_CS: {
             // We force fast chests if SkipGetItemAnimation is enabled because the camera in the CS looks pretty wonky otherwise
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_DISABLED)) {
@@ -878,39 +889,19 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         case VB_ITEM00_DESPAWN: {
             EnItem00* item00 = va_arg(args, EnItem00*);
-            item00->randoInf = RAND_INF_MAX;
-            item00->randoCheck = RC_UNKNOWN_CHECK;
-
-            auto pos = item00->actor.world.pos;
-            uint32_t params = item00->actor.params == ITEM00_HEART_PIECE || item00->actor.params == ITEM00_SMALL_KEY ? item00->ogParams : TWO_ACTOR_PARAMS((int32_t)pos.x, (int32_t)pos.z);
-            Rando::Location* loc = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(item00->actor.id, gPlayState->sceneNum, params);
-
-            if (loc && loc->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
-                auto ctx = Rando::Context::GetInstance();
-                bool freestanding_mode = ctx->GetOption(RSK_SHUFFLE_FREESTANDING).Is(RO_FREESTANDING_ALL);
-                if (!freestanding_mode) {
-                    if (loc->IsOverworld()) {
-                        freestanding_mode = ctx->GetOption(RSK_SHUFFLE_FREESTANDING).Is(RO_FREESTANDING_OVERWORLD);
-                    } else {
-                        freestanding_mode = ctx->GetOption(RSK_SHUFFLE_FREESTANDING).Is(RO_FREESTANDING_DUNGEONS);
-                    }
-                }
-
-                // Spawn vanilla item if collected and renewable
-                if (
-                   (freestanding_mode || item00->actor.params == ITEM00_HEART_PIECE || item00->actor.params == ITEM00_SMALL_KEY) &&
-                   (loc->GetCollectionCheck().type != SPOILER_CHK_RANDOMIZER_INF || !Rando::Context::GetInstance()->GetItemLocation(loc->GetRandomizerCheck())->HasObtained())
-                ) {
-                    item00->randoCheck = loc->GetRandomizerCheck();
-                    item00->itemEntry = Rando::Context::GetInstance()->GetFinalGIEntry(loc->GetRandomizerCheck(), true);
+            if (item00->actor.params == ITEM00_HEART_PIECE || item00->actor.params == ITEM00_SMALL_KEY) {
+                RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(
+                    item00->actor.id, gPlayState->sceneNum, item00->ogParams);
+                if (rc != RC_UNKNOWN_CHECK) {
+                    item00->randoInf = RAND_INF_MAX;
                     item00->actor.params = ITEM00_SOH_DUMMY;
+                    item00->itemEntry = Rando::Context::GetInstance()->GetFinalGIEntry(
+                        rc, true, (GetItemID)Rando::StaticData::GetLocation(rc)->GetVanillaItem());
                     item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
-                    if (loc->GetCollectionCheck().type == SPOILER_CHK_RANDOMIZER_INF) {
-                        item00->randoInf = static_cast<RandomizerInf>(loc->GetCollectionCheck().flag);
-                    }
-                    *should = Rando::Context::GetInstance()->GetItemLocation(loc->GetRandomizerCheck())->HasObtained();
+                    *should = Rando::Context::GetInstance()->GetItemLocation(rc)->HasObtained();
                 }
-            } else if (item00->actor.params == ITEM00_SOH_GIVE_ITEM_ENTRY || item00->actor.params == ITEM00_SOH_GIVE_ITEM_ENTRY_GI) {
+            } else if (item00->actor.params == ITEM00_SOH_GIVE_ITEM_ENTRY ||
+                       item00->actor.params == ITEM00_SOH_GIVE_ITEM_ENTRY_GI) {
                 GetItemEntry itemEntry = randomizerQueuedItemEntry;
                 item00->itemEntry = itemEntry;
                 item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
@@ -1092,7 +1083,9 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_GIVE_ITEM_FROM_ANJU_AS_ADULT: {
+            EnNiwLady* enNiwLady = va_arg(args, EnNiwLady*);
             Flags_SetItemGetInf(ITEMGETINF_2C);
+            enNiwLady->actionFunc = func_80ABA778;
             *should = false;
             break;
         }
@@ -1181,9 +1174,12 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_TRADE_POCKET_CUCCO: {
+            EnNiwLady* enNiwLady = va_arg(args, EnNiwLady*);
             Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_POCKET_CUCCO);
             // Trigger the reward now
             Flags_SetItemGetInf(ITEMGETINF_2E);
+            enNiwLady->actionFunc = func_80ABA778;
+
             *should = false;
             break;
         }
@@ -1638,7 +1634,6 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_FREEZE_ON_SKULL_TOKEN:
         case VB_TRADE_TIMER_ODD_MUSHROOM:
         case VB_TRADE_TIMER_FROG:
-        case VB_ANJU_SET_OBTAINED_TRADE_ITEM:
         case VB_GIVE_ITEM_FROM_TARGET_IN_WOODS:
         case VB_GIVE_ITEM_FROM_TALONS_CHICKENS:
         case VB_GIVE_ITEM_FROM_DIVING_MINIGAME:
@@ -2364,6 +2359,8 @@ void RandomizerRegisterHooks() {
     static uint32_t shufflePotsOnActorInitHook = 0;
     static uint32_t shufflePotsOnVanillaBehaviorHook = 0;
 
+    static uint32_t shuffleFreestandingOnVanillaBehaviorHook = 0;
+
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
         randomizerQueuedChecks = std::queue<RandomizerCheck>();
         randomizerQueuedCheck = RC_UNKNOWN_CHECK;
@@ -2395,6 +2392,8 @@ void RandomizerRegisterHooks() {
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(shufflePotsOnActorInitHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(shufflePotsOnVanillaBehaviorHook);
 
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(shuffleFreestandingOnVanillaBehaviorHook);
+
         onFlagSetHook = 0;
         onSceneFlagSetHook = 0;
         onPlayerUpdateForRCQueueHook = 0;
@@ -2420,6 +2419,8 @@ void RandomizerRegisterHooks() {
 
         shufflePotsOnActorInitHook = 0;
         shufflePotsOnVanillaBehaviorHook = 0;
+
+        shuffleFreestandingOnVanillaBehaviorHook = 0;
 
         ShuffleFairies_UnregisterHooks();
 
@@ -2466,6 +2467,10 @@ void RandomizerRegisterHooks() {
             shufflePotsOnVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(ShufflePots_OnVanillaBehaviorHandler);
         }
 
+        if (RAND_GET_OPTION(RSK_SHUFFLE_FREESTANDING) != RO_SHUFFLE_FREESTANDING_OFF) {
+            shuffleFreestandingOnVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(ShuffleFreestanding_OnVanillaBehaviorHandler);
+        }
+        
         if (RAND_GET_OPTION(RSK_SHUFFLE_FAIRIES)) {
             ShuffleFairies_RegisterHooks();
         }

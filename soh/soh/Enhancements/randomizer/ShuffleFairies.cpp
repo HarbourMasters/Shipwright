@@ -4,6 +4,7 @@
 #include "src/overlays/actors/ovl_En_Elf/z_en_elf.h"
 #include "src/overlays/actors/ovl_Obj_Bean/z_obj_bean.h"
 #include "src/overlays/actors/ovl_En_Gs/z_en_gs.h"
+#include "src/overlays/actors/ovl_Shot_Sun/z_shot_sun.h"
 #include "../../OTRGlobals.h"
 #include "../../cvar_prefixes.h"
 
@@ -68,7 +69,6 @@ bool ShuffleFairies_SpawnFairy(f32 posX, f32 posY, f32 posZ, int32_t params) {
                                            0, 0, FAIRY_HEAL, true);
         fairy->sohFairyIdentity = fairyIdentity;
         fairy->actor.draw = (ActorFunc)ShuffleFairies_DrawRandomizedItem;
-        fairy->fairyFlags |= FAIRY_FLAG_TIMED;
         return true;
     }
     return false;
@@ -115,6 +115,14 @@ void ShuffleFairies_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should,
             }
         }
         if (fairySpawned) {
+            *should = false;
+        }
+    // Spawn a fairy from a ShotSun when playing the right song near it
+    } else if (id == VB_SPAWN_SONG_FAIRY) {
+        ShotSun* shotSun = (ShotSun*)(actor);
+        if (ShuffleFairies_SpawnFairy(shotSun->actor.world.pos.x, shotSun->actor.world.pos.y,
+            shotSun->actor.world.pos.z,
+            TWO_ACTOR_PARAMS(0x1000, (int32_t)shotSun->actor.world.pos.z))) {
             *should = false;
         }
     // Handle playing both misc songs and song of storms in front of a gossip stone.
