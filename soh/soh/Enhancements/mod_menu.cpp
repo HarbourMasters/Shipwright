@@ -2,14 +2,44 @@
 #include "utils/StringHelper.h"
 #include <libultraship/classes.h>
 #include "soh/OTRGlobals.h"
+#include "soh/resource/type/Skeleton.h"
 #include <map>
 #include <ranges>
+extern "C" void gfx_texture_cache_clear();
 
 std::shared_ptr<Ship::ArchiveManager> GetArchiveManager() {
     return Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager();
 }
 
 std::map<std::string, bool> modFiles;
+
+#define CVAR_ENABLED_MODS_NAME CVAR_GENERAL("EnabledMods")
+#define CVAR_ENABLED_MODS_DEFAULT ""
+#define CVAR_ENABLED_MODS_VALUE CVarGetString(CVAR_ENABLED_MODS_NAME, CVAR_ENABLED_MODS_DEFAULT)
+
+#define SEPARATOR "|"
+
+void SaveEnabledModsCVarValue() {
+    std::string s = "";
+
+    for (auto& [modPath, enabled] : modFiles) {
+        if (enabled) {
+            s += modPath + SEPARATOR;
+        }
+    }
+
+    //remove trailing separator if present
+    if (s.length() != 0) {
+        s.pop_back();
+    }
+
+    CVarSetString(CVAR_ENABLED_MODS_NAME, s.c_str());
+}
+
+std::vector<std::string> GetEnabledModsFromCVar() {
+    std::string enabledModsCVarValue = CVAR_ENABLED_MODS_VALUE;
+    return StringHelper::Split(enabledModsCVarValue, SEPARATOR);
+}
 
 bool is_enabled(const std::pair<std::string, bool>& p) {
     return p.second;
@@ -41,8 +71,9 @@ std::vector<std::string> GetDisabledModFiles() {
     return keys;
 }
 
-void UpdateModFiles() {
+void UpdateModFiles(bool init = false) {
     modFiles.clear();
+    std::vector<std::string> enabledMods = GetEnabledModsFromCVar();
     std::string modsPath = Ship::Context::LocateFileAcrossAppDirs("mods", appShortName);
     if (modsPath.length() > 0 && std::filesystem::exists(modsPath)) {
         if (std::filesystem::is_directory(modsPath)) {
@@ -54,7 +85,12 @@ void UpdateModFiles() {
                     StringHelper::IEquals(extension, ".o2r") ||
                     StringHelper::IEquals(extension, ".zip")
                 ) {
-                    modFiles.emplace(p.path().generic_string(), false);
+                    std::string path = p.path().generic_string();
+                    bool shouldBeEnabled = std::find(enabledMods.begin(), enabledMods.end(), path) != enabledMods.end();
+                    if (init && shouldBeEnabled) {
+                        GetArchiveManager()->AddArchive(path);
+                    }
+                    modFiles.emplace(path, shouldBeEnabled);
                 }
             }
         }
@@ -71,6 +107,13 @@ void UpdateModFiles() {
         );
     });
     */
+}
+
+void AfterModChange() {
+    SaveEnabledModsCVarValue();
+    gfx_texture_cache_clear();
+    SOH::SkeletonPatcher::UpdateSkeletons();
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 }
 
 void ModMenuWindow::DrawElement() {
@@ -94,7 +137,8 @@ void ModMenuWindow::DrawElement() {
                 for (std::string file : enabledMods) {
                     if (ImGui::Button(("Disable##" + file).c_str())) {
                         modFiles[file] = false;
-                        Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->RemoveArchive(file);
+                        GetArchiveManager()->RemoveArchive(file);
+                        AfterModChange();
                     }
                     ImGui::SameLine();
                     ImGui::Text(file.c_str());
@@ -114,7 +158,8 @@ void ModMenuWindow::DrawElement() {
                 for (std::string file : disabledMods) {
                     if (ImGui::Button(("Enable##" + file).c_str())) {
                         modFiles[file] = true;
-                        Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->AddArchive(file);
+                        GetArchiveManager()->AddArchive(file);
+                        AfterModChange();
                     }
                     ImGui::SameLine();
                     ImGui::Text(file.c_str());
@@ -131,5 +176,5 @@ void ModMenuWindow::DrawElement() {
 }
 
 void ModMenuWindow::InitElement() {
-    UpdateModFiles();
+    UpdateModFiles(true);
 }
