@@ -707,6 +707,7 @@ void Settings::CreateOptions() {
         &mTrickOptions[RT_GANON_MQ_SHADOW_TRIAL],
         &mTrickOptions[RT_GANON_MQ_LIGHT_TRIAL],
     });
+    mTricksByArea.clear();
     for (int i = 0; i < RT_MAX; i++) {
         auto& trick = mTrickOptions[i];
         if (!trick.GetName().empty()) {

@@ -8,7 +8,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/UIWidgets.hpp"
 #include "dungeon.h"
-#include "3drando/location_access.hpp"
+#include "location_access.h"
 
 #include <string>
 #include <vector>
