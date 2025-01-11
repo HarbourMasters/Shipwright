@@ -15,6 +15,8 @@ typedef bool (*ConditionFn)();
 extern Rando::Context* ctx;
 extern std::shared_ptr<Rando::Logic> logic;
 
+class Region;
+
 class EventAccess {
     public:
         explicit EventAccess(bool* event_, ConditionFn condition_function_) : event(event_), condition_function(condition_function_) {}
@@ -81,7 +83,7 @@ class LocationAccess {
 
         bool CheckConditionAtAgeTime(bool& age, bool& time) const;
 
-        bool ConditionsMet() const;
+        bool ConditionsMet(Region* parentRegion) const;
 
         RandomizerCheck GetLocation() const {
             return location;

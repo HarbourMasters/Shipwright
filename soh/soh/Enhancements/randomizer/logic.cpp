@@ -1051,6 +1051,7 @@ namespace Rando {
     }
 
     uint8_t Logic::FireTimer(){
+        auto test = HasItem(RG_GORON_TUNIC);
         return CanUse(RG_GORON_TUNIC) ? 255 : (ctx->GetTrickOption(RT_FEWER_TUNIC_REQUIREMENTS)) ? (Hearts() * 8) : 0;
     }
     
