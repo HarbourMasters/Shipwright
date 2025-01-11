@@ -5,9 +5,9 @@
 #include "variables.h"
 
 extern "C" {
-    extern SaveContext gSaveContext;
-    extern s32 Flags_GetRandomizerInf(RandomizerInf flag);
-    #include "macros.h"
+extern SaveContext gSaveContext;
+extern s32 Flags_GetRandomizerInf(RandomizerInf flag);
+#include "macros.h"
 }
 
 #define CVAR_INFINITE_MONEY_NAME CVAR_CHEAT("InfiniteMoney")
@@ -17,10 +17,7 @@ extern "C" {
 void OnGameFrameUpdateInfiniteMoney() {
     if (
         !GameInteractor::IsSaveLoaded(true) ||
-        (
-            IS_RANDO &&
-            !Flags_GetRandomizerInf(RAND_INF_HAS_WALLET)
-        )
+        (IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_HAS_WALLET))
     ) {
         return;
     }

@@ -4,9 +4,9 @@
 #include "z64save.h"
 
 extern "C" {
-    extern SaveContext gSaveContext;
-    #include "variables.h"
-    #include "macros.h"
+extern SaveContext gSaveContext;
+#include "variables.h"
+#include "macros.h"
 }
 
 #define CVAR_INFINITE_AMMO_NAME CVAR_CHEAT("InfiniteAmmo")

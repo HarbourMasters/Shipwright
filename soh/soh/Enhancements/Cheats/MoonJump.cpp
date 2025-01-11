@@ -3,8 +3,8 @@
 #include "soh/ShipInit.hpp"
 
 extern "C" {
-    extern PlayState* gPlayState;
-    #include "macros.h"
+extern PlayState* gPlayState;
+#include "macros.h"
 }
 
 #define CVAR_MOON_JUMP_NAME CVAR_CHEAT("MoonJumpOnL")
