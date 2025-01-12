@@ -1468,18 +1468,10 @@ void DrawEnhancementsMenu() {
             UIWidgets::PaddedEnhancementCheckbox("Fix the Gravedigging Tour Glitch", CVAR_ENHANCEMENT("GravediggingTourFix"), true, false, SaveManager::Instance->IsRandoFile(),
                                                         "This setting is always enabled in randomizer files", UIWidgets::CheckboxGraphics::Checkmark);
             UIWidgets::Tooltip("Fixes a bug where the Gravedigging Tour Heart Piece disappears if the area reloads");
-            if (UIWidgets::PaddedEnhancementCheckbox(
-                    "Fix Deku Nut upgrade", CVAR_ENHANCEMENT("DekuNutUpgradeFix"), true, false, IS_RANDO,
-                    "This setting is forcefully enabled when you are playing a randomizer.",
-                    UIWidgets::CheckboxGraphics::Checkmark)) {
-                s32 expectedNutUpgrades = (INV_CONTENT(ITEM_NUT) == ITEM_NUT ? 1 : 0) +
-                                          (Flags_GetInfTable(INFTABLE_193) ? 1 : 0) +
-                                          (Flags_GetItemGetInf(ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE) ? 1 : 0);
-                s32 actualNutUpgrades = CUR_UPG_VALUE(UPG_NUTS);
-                if (expectedNutUpgrades != actualNutUpgrades) {
-                    Flags_UnsetItemGetInf(ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE);
-                }
-            }
+            UIWidgets::PaddedEnhancementCheckbox(
+                "Fix Deku Nut upgrade", CVAR_ENHANCEMENT("DekuNutUpgradeFix"), true, false, IS_RANDO,
+                "This setting is forcefully enabled when you are playing a randomizer.",
+                UIWidgets::CheckboxGraphics::Checkmark);
             UIWidgets::Tooltip("Prevents the Forest Stage Deku Nut upgrade from becoming unobtainable after receiving the Poacher's Saw");
             UIWidgets::PaddedEnhancementCheckbox("Fix Navi text HUD position", CVAR_ENHANCEMENT("NaviTextFix"), true, false);
             UIWidgets::Tooltip("Correctly centers the Navi text prompt on the HUD's C-Up button");
