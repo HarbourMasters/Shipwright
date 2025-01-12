@@ -391,14 +391,14 @@ void ApplyOrStoreItem(Rando::ItemLocation* loc, GetAccessibleLocationsStruct& ga
 }
 
 // Adds the contents of a location to the current progression and optionally playthrough
-bool AddCheckToLogic(LocationAccess& locPair, GetAccessibleLocationsStruct& gals, RandomizerGet ignore, bool stopOnBeatable, bool addToPlaythrough=false){
+bool AddCheckToLogic(LocationAccess& locPair, GetAccessibleLocationsStruct& gals, RandomizerGet ignore, bool stopOnBeatable, Region* parentRegion, bool addToPlaythrough=false){
   auto ctx = Rando::Context::GetInstance();
   StartPerformanceTimer(PT_LOCATION_LOGIC);
   RandomizerCheck loc = locPair.GetLocation();
   Rando::ItemLocation* location = ctx->GetItemLocation(loc);
   RandomizerGet locItem = location->GetPlacedRandomizerGet();
 
-  if (!location->IsAddedToPool() && locPair.ConditionsMet()) {
+  if (!location->IsAddedToPool() && locPair.ConditionsMet(parentRegion)) {
     location->AddToPool();
 
     if (locItem == RG_NONE) {
@@ -486,7 +486,7 @@ void ProcessRegion(Region* region, GetAccessibleLocationsStruct& gals, Randomize
   
   PropagateTimeTravel(gals, ignore, stopOnBeatable, addToPlaythrough);
   for (size_t k = 0; k < region->locations.size(); k++) {
-    if(AddCheckToLogic(region->locations[k], gals, ignore, stopOnBeatable, addToPlaythrough)){
+    if(AddCheckToLogic(region->locations[k], gals, ignore, stopOnBeatable, region, addToPlaythrough)){
       Rando::Context::GetInstance()->playthroughBeatable = true;
       return;
     }

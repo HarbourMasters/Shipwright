@@ -10,17 +10,13 @@
 namespace Rando {
 EntranceLinkInfo NO_RETURN_ENTRANCE = { EntranceType::None, RR_NONE, RR_NONE, -1 };
 
-Entrance::Entrance(RandomizerRegion connectedRegion_, std::vector<ConditionFn> conditions_met_, bool spreadsAreasWithPriority_)
-    : connectedRegion(connectedRegion_),  spreadsAreasWithPriority(spreadsAreasWithPriority_){
+Entrance::Entrance(RandomizerRegion connectedRegion_, ConditionFn condition_function_, bool spreadsAreasWithPriority_)
+    : connectedRegion(connectedRegion_), condition_function(condition_function_),  spreadsAreasWithPriority(spreadsAreasWithPriority_){
     originalConnectedRegion = connectedRegion_;
-    conditions_met.resize(2);
-    for (size_t i = 0; i < conditions_met_.size(); i++) {
-        conditions_met[i] = conditions_met_[i];
-    }
 }
 
 void Entrance::SetCondition(ConditionFn newCondition) {
-    conditions_met[0] = newCondition;
+    condition_function = newCondition;
 }
 
 bool Entrance::GetConditionsMet() const {
@@ -28,13 +24,9 @@ bool Entrance::GetConditionsMet() const {
     if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC) || ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
         return true;
     } else if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS)) {
-        return conditions_met[0]();
+        return condition_function();
     } else if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHED)) {
-        if (conditions_met[0]()) {
-            return true;
-        } else if (conditions_met[1] != NULL) {
-            return conditions_met[1]();
-        }
+        return condition_function();
     }
     return false;
 }
