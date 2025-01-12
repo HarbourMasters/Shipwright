@@ -189,6 +189,8 @@ class Location {
 
     static Location Fairy(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, SceneID scene_, int32_t actorParams_, std::string&& shortName_, std::string&& spoilerName_, RandomizerHintTextKey hintKey, SpoilerCollectionCheck collectionCheck);
 
+    static Location Fairy(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, SceneID scene_, int32_t actorParams_, std::string&& shortName_, RandomizerHintTextKey hintKey, SpoilerCollectionCheck collectionCheck);
+
     static Location HintStone(RandomizerCheck rc, RandomizerCheckQuest quest_, SceneID scene_, int32_t actorParams_, std::string&& shortName_);
 
     static Location HintStone(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, SceneID scene_, int32_t actorParams_, std::string&& shortName_);

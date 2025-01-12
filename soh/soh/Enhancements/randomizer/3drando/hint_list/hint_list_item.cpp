@@ -1029,7 +1029,7 @@ void StaticData::HintTable_Init_Item() {
                                                     CustomMessage("some creepy blueprints", /*german*/"einige gruselige Blaupausen", /*french*/"un plan sinistre")});
                                                      // /*spanish*/unos planos siniestras
 
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_MAP] = HintText(CustomMessage("the Bottom of the Well Map", /*german*/"die Karte des Grund des Brunnens", /*french*/"la carte du fond du Puits"),
+    hintTextTable[RHT_BOTW_MAP] = HintText(CustomMessage("the Bottom of the Well Map", /*german*/"die Karte des Grund des Brunnens", /*french*/"la carte du fond du Puits"),
                                                          // /*spanish*/el mapa del Fondo del pozo
                                                          {
                                                          CustomMessage("a dungeon map", /*german*/"eine Karte", /*french*/"une carte")
@@ -1139,7 +1139,7 @@ void StaticData::HintTable_Init_Item() {
                                                         CustomMessage("a creepy magnetic needle", /*german*/"eine gruselige Magnetnadel", /*french*/"une aimant sinistre")});
                                                          // /*spanish*/un imán siniestra
 
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_COMPASS] = HintText(CustomMessage("the Bottom of the Well Compass", /*german*/"der Kompaß des Grund des Brunnens", /*french*/"la boussole du fond du Puits"),
+    hintTextTable[RHT_BOTW_COMPASS] = HintText(CustomMessage("the Bottom of the Well Compass", /*german*/"der Kompaß des Grund des Brunnens", /*french*/"la boussole du fond du Puits"),
                                                              // /*spanish*/la brújula del Fondo del pozo
                                                              {
                                                              CustomMessage("a compass", /*german*/"ein Kompaß", /*french*/"une boussole")
@@ -1302,7 +1302,7 @@ void StaticData::HintTable_Init_Item() {
                                                           CustomMessage("a creepy lockpick", /*german*/"ein gruseliger Dietrich", /*french*/"un crochet à porte sinistre")});
                                                            // /*spanish*/una apertura portentosa siniestra:a
 
-    hintTextTable[RHT_GERUDO_TRAINING_GROUND_SMALL_KEY] = HintText(CustomMessage("a Gerudo Training Ground Small Key", /*german*/"ein kleiner Schlüssel des Gerudo-Trainingsgeländes", /*french*/"une petite clé du Gymnase Gerudo"),
+    hintTextTable[RHT_GTG_SMALL_KEY] = HintText(CustomMessage("a Gerudo Training Ground Small Key", /*german*/"ein kleiner Schlüssel des Gerudo-Trainingsgeländes", /*french*/"une petite clé du Gymnase Gerudo"),
                                                                     // /*spanish*/una llave pequeña del Centro de Instrucción Gerudo
                                                                     {
                                                                     CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
@@ -1332,7 +1332,7 @@ void StaticData::HintTable_Init_Item() {
                                                             CustomMessage("an imprisoned lockpick", /*german*/"ein gefangener Dietrich", /*french*/"un crochet à porte emprisonné")});
                                                              // /*spanish*/una apertura portentosa encarcelada
 
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_SMALL_KEY] = HintText(CustomMessage("a Bottom of the Well Small Key", /*german*/"ein kleiner Schlüssel des Grund des Brunnens", /*french*/"une petite clé du fond du Puits"),
+    hintTextTable[RHT_BOTW_SMALL_KEY] = HintText(CustomMessage("a Bottom of the Well Small Key", /*german*/"ein kleiner Schlüssel des Grund des Brunnens", /*french*/"une petite clé du fond du Puits"),
                                                                // /*spanish*/una llave pequeña del Fondo del pozo
                                                                {
                                                                CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
@@ -1437,7 +1437,7 @@ void StaticData::HintTable_Init_Item() {
                                                          CustomMessage("a creepy skeleton key", /*german*/"ein gruseliger Skelettschlüssel", /*french*/"des crochets à porte sinistres")});
                                                           // /*spanish*/un anillo tenebroso contra cerrojos
 
-    hintTextTable[RHT_GERUDO_TRAINING_GROUND_KEY_RING] = HintText(CustomMessage("a Gerudo Training Ground Key Ring", /*german*/"ein Schlüsselbund des Gerudo-Trainingsgeländes", /*french*/"un trousseau de clés du Gymnase Gerudo"),
+    hintTextTable[RHT_GTG_KEY_RING] = HintText(CustomMessage("a Gerudo Training Ground Key Ring", /*german*/"ein Schlüsselbund des Gerudo-Trainingsgeländes", /*french*/"un trousseau de clés du Gymnase Gerudo"),
                                                                    // /*spanish*/un llavero del Centro de Instrucción Gerudo
                                                                    {
                                                                    CustomMessage("a key ring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
@@ -1467,7 +1467,7 @@ void StaticData::HintTable_Init_Item() {
                                                            CustomMessage("an imprisoned skeleton key", /*german*/"ein gefangener Skelettschlüssel", /*french*/"des crochets à porte emprisonnés")});
                                                             // /*spanish*/un anillo enjaulado contra cerrojos
 
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_KEY_RING] = HintText(CustomMessage("a Bottom of the Well Key Ring", /*german*/"ein Schlüsselbund des Grund des Brunnens", /*french*/"un trousseau de clés du fond du Puits"),
+    hintTextTable[RHT_BOTW_KEY_RING] = HintText(CustomMessage("a Bottom of the Well Key Ring", /*german*/"ein Schlüsselbund des Grund des Brunnens", /*french*/"un trousseau de clés du fond du Puits"),
                                                               // /*spanish*/un llavero del Fondo del pozo
                                                               {
                                                               CustomMessage("a key ring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
@@ -1921,7 +1921,7 @@ void StaticData::HintTable_Init_Item() {
                                                       CustomMessage("a victory valentine", /*german*/"ein siegreicher Valentin", /*french*/"un amour gagnant")});
                                                        // /*spanish*/el amor victorioso
 
-    hintTextTable[RHT_TREASURE_GAME_GREEN_RUPEE] = HintText(CustomMessage("a Green Rupee", /*german*/"ein grüner Rubin", /*french*/"un rubis vert"),
+    hintTextTable[RHT_LOSER_GREEN_RUPEE] = HintText(CustomMessage("a Green Rupee", /*german*/"ein grüner Rubin", /*french*/"un rubis vert"),
                                                             // /*spanish*/una rupia verde
                                                             {
                                                             CustomMessage("some rupees", /*german*/"einige Rubine", /*french*/"une quantité de rubis")

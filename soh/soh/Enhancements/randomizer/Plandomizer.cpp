@@ -184,7 +184,7 @@ std::unordered_map<RandomizerGet, std::string> itemImageMap = {
     { RG_WATER_TEMPLE_MAP,          		"ITEM_DUNGEON_MAP" },
     { RG_SPIRIT_TEMPLE_MAP,         		"ITEM_DUNGEON_MAP" },
     { RG_SHADOW_TEMPLE_MAP,         		"ITEM_DUNGEON_MAP" },
-    { RG_BOTTOM_OF_THE_WELL_MAP,    		"ITEM_DUNGEON_MAP" },
+    { RG_BOTW_MAP,    		"ITEM_DUNGEON_MAP" },
     { RG_ICE_CAVERN_MAP,            		"ITEM_DUNGEON_MAP" },
     { RG_DEKU_TREE_COMPASS,         		"ITEM_COMPASS" },
     { RG_DODONGOS_CAVERN_COMPASS,   		"ITEM_COMPASS" },
@@ -194,7 +194,7 @@ std::unordered_map<RandomizerGet, std::string> itemImageMap = {
     { RG_WATER_TEMPLE_COMPASS,      		"ITEM_COMPASS" },
     { RG_SPIRIT_TEMPLE_COMPASS,     		"ITEM_COMPASS" },
     { RG_SHADOW_TEMPLE_COMPASS,     		"ITEM_COMPASS" },
-    { RG_BOTTOM_OF_THE_WELL_COMPASS,		"ITEM_COMPASS" },
+    { RG_BOTW_COMPASS,		"ITEM_COMPASS" },
     { RG_ICE_CAVERN_COMPASS,        		"ITEM_COMPASS" },
     { RG_FOREST_TEMPLE_BOSS_KEY,    		"ITEM_KEY_BOSS" },
     { RG_FIRE_TEMPLE_BOSS_KEY,      		"ITEM_KEY_BOSS" },
@@ -207,8 +207,8 @@ std::unordered_map<RandomizerGet, std::string> itemImageMap = {
     { RG_WATER_TEMPLE_SMALL_KEY,    		"ITEM_KEY_SMALL" },
     { RG_SPIRIT_TEMPLE_SMALL_KEY,   		"ITEM_KEY_SMALL" },
     { RG_SHADOW_TEMPLE_SMALL_KEY,   		"ITEM_KEY_SMALL" },
-    { RG_BOTTOM_OF_THE_WELL_SMALL_KEY, 		"ITEM_KEY_SMALL" },
-    { RG_GERUDO_TRAINING_GROUND_SMALL_KEY, "ITEM_KEY_SMALL" },
+    { RG_BOTW_SMALL_KEY, 		            "ITEM_KEY_SMALL" },
+    { RG_GTG_SMALL_KEY,                     "ITEM_KEY_SMALL" },
     { RG_GERUDO_FORTRESS_SMALL_KEY, 		"ITEM_KEY_SMALL" },
     { RG_GANONS_CASTLE_SMALL_KEY,   		"ITEM_KEY_SMALL" },
     { RG_TREASURE_GAME_SMALL_KEY,   		"ITEM_KEY_SMALL" },
@@ -228,7 +228,7 @@ std::unordered_map<RandomizerGet, std::string> itemImageMap = {
     { RG_RED_RUPEE,                 		"ITEM_RUPEE_GRAYSCALE" },
     { RG_PURPLE_RUPEE,              		"ITEM_RUPEE_GRAYSCALE" },
     { RG_HUGE_RUPEE,                		"ITEM_RUPEE_GRAYSCALE" },
-    { RG_TREASURE_GAME_GREEN_RUPEE,         "ITEM_RUPEE_GRAYSCALE" },
+    { RG_LOSER_GREEN_RUPEE,         "ITEM_RUPEE_GRAYSCALE" },
     { RG_PIECE_OF_HEART,            		"ITEM_HEART_PIECE" },
     { RG_HEART_CONTAINER,           		"ITEM_HEART_CONTAINER" },
     { RG_ICE_TRAP,                  		"ITEM_ICE_TRAP" },
@@ -299,11 +299,11 @@ ImVec4 plandomizerGetItemColor(Rando::Item randoItem) {
         } else if (randoItem.GetRandomizerGet() == RG_SHADOW_TEMPLE_SMALL_KEY || 
             randoItem.GetRandomizerGet() == RG_SHADOW_TEMPLE_KEY_RING) {
             itemColor = ImVec4( 0.49f, 0.06f, 0.69f, 1.0f );
-        } else if (randoItem.GetRandomizerGet() == RG_BOTTOM_OF_THE_WELL_SMALL_KEY || 
-            randoItem.GetRandomizerGet() == RG_BOTTOM_OF_THE_WELL_KEY_RING) {
+        } else if (randoItem.GetRandomizerGet() == RG_BOTW_SMALL_KEY || 
+            randoItem.GetRandomizerGet() == RG_BOTW_KEY_RING) {
             itemColor = ImVec4( 0.89f, 0.43f, 1.0f, 1.0f );
-        } else if (randoItem.GetRandomizerGet() == RG_GERUDO_TRAINING_GROUND_SMALL_KEY || 
-            randoItem.GetRandomizerGet() == RG_GERUDO_TRAINING_GROUND_KEY_RING) {
+        } else if (randoItem.GetRandomizerGet() == RG_GTG_SMALL_KEY || 
+            randoItem.GetRandomizerGet() == RG_GTG_KEY_RING) {
             itemColor = ImVec4( 1.0f, 1.0f, 0, 1.0f );
         } else if (randoItem.GetRandomizerGet() == RG_GERUDO_FORTRESS_SMALL_KEY || 
             randoItem.GetRandomizerGet() == RG_GERUDO_FORTRESS_KEY_RING) {
@@ -324,7 +324,7 @@ ImVec4 plandomizerGetItemColor(Rando::Item randoItem) {
     }
     if (randoItem.GetRandomizerGet() >= RG_GREEN_RUPEE && randoItem.GetRandomizerGet() <= RG_HUGE_RUPEE) {
         if (randoItem.GetRandomizerGet() == RG_GREG_RUPEE || randoItem.GetRandomizerGet() == RG_GREEN_RUPEE 
-            || randoItem.GetRandomizerGet() == RG_TREASURE_GAME_GREEN_RUPEE) {
+            || randoItem.GetRandomizerGet() == RG_LOSER_GREEN_RUPEE) {
             itemColor = ImVec4( 0.02f, 0.76f, 0.18f, 1.0f );
         } else if (randoItem.GetRandomizerGet() == RG_BLUE_RUPEE) {
             itemColor = ImVec4( 0.33f, 0.71f, 0.87f, 1.0f );

@@ -766,7 +766,7 @@ void StaticData::HintTable_Init() {
                                                                                 /*french*/ "Selon moi, la récompense ultime de #l'épreuve des voleurs# est #[[1]]#.", {QM_RED, QM_GREEN})),
                                                                              // /*spanish*/el premio final de la #instrucción de las bandidas# brinda #[[1]]#.
 
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_LENS_OF_TRUTH_CHEST] = HintText(CustomMessage("They say that #Dead Hand in the well# holds #[[1]]#.",
+    hintTextTable[RHT_BOTW_DEAD_HAND_CHEST] = HintText(CustomMessage("They say that #Dead Hand in the well# holds #[[1]]#.",
                                                                             /*german*/ "Man erzählt sich, daß der #Hirnsauger im Brunnen# #[[1]]# hielte.",
                                                                             /*french*/ "Selon moi, le #Poigneur dans le Puits# cache #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                          // /*spanish*/la #Mano Muerta del pozo# concede #[[1]]#.
@@ -780,7 +780,7 @@ void StaticData::HintTable_Init() {
                                                                              /*french*/ "Selon moi, le #spectre qui réside dans le Puits# a #[[1]]#.", {QM_RED, QM_GREEN})});
                                                                           // /*spanish*/el #temido morador del pozo# concede #[[1]]#.
 
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_MQ_COMPASS_CHEST] = HintText(CustomMessage("They say that #Dead Hand in the well# holds #[[1]]#.",
+    hintTextTable[RHT_BOTW_MQ_DEAD_HAND_CHEST] = HintText(CustomMessage("They say that #Dead Hand in the well# holds #[[1]]#.",
                                                                          /*german*/ "Man erzählt sich, daß der #Hirnsauger im Brunnen# #[[1]]# hielte.",
                                                                          /*french*/ "Selon moi, le #Poigneur dans le Puits# cache #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                       // /*spanish*/la #Mano Muerta del pozo# concede #[[1]]#.

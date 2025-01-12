@@ -226,7 +226,7 @@ RandomizerCheckArea GetAreaFromScene(uint8_t scene) {
             return RCAREA_SHADOW_TEMPLE;
 
         case SCENE_BOTTOM_OF_THE_WELL:
-            return RCAREA_BOTTOM_OF_THE_WELL;
+            return RCAREA_BOTW;
 
         case SCENE_ICE_CAVERN:
             return RCAREA_ICE_CAVERN;
@@ -394,4 +394,11 @@ Rando::Location Rando::Location::Fairy(RandomizerCheck rc, RandomizerCheckQuest 
                                         int32_t actorParams_, std::string&& shortName_, std::string&& spoilerName_,
                                         RandomizerHintTextKey hintKey, SpoilerCollectionCheck collectionCheck) {
     return {rc, quest_, RCTYPE_FAIRY, area_, ACTOR_EN_ELF, scene_, actorParams_, std::move(shortName_), std::move(spoilerName_), hintKey, RG_NONE, false, collectionCheck};
+}
+
+Rando::Location Rando::Location::Fairy(RandomizerCheck rc, RandomizerCheckQuest quest_,
+                                        RandomizerCheckArea area_, SceneID scene_,
+                                        int32_t actorParams_, std::string&& shortName_,
+                                        RandomizerHintTextKey hintKey, SpoilerCollectionCheck collectionCheck) {
+    return {rc, quest_, RCTYPE_FAIRY, area_, ACTOR_EN_ELF, scene_, actorParams_, std::move(shortName_), hintKey, RG_NONE, false, collectionCheck};
 }

@@ -682,7 +682,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
             return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_SPIRIT_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_SHADOW_TEMPLE_MAP:
             return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_SHADOW_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
-        case RG_BOTTOM_OF_THE_WELL_MAP:
+        case RG_BOTW_MAP:
             return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_BOTTOM_OF_THE_WELL) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_ICE_CAVERN_MAP:
             return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_ICE_CAVERN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
@@ -702,7 +702,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
             return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_SPIRIT_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_SHADOW_TEMPLE_COMPASS:
             return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_SHADOW_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
-        case RG_BOTTOM_OF_THE_WELL_COMPASS:
+        case RG_BOTW_COMPASS:
             return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_BOTTOM_OF_THE_WELL) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_ICE_CAVERN_COMPASS:
             return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_ICE_CAVERN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
@@ -728,9 +728,9 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
             return gSaveContext.inventory.dungeonKeys[SCENE_SPIRIT_TEMPLE] < SPIRIT_TEMPLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_SHADOW_TEMPLE_SMALL_KEY:
             return gSaveContext.inventory.dungeonKeys[SCENE_SHADOW_TEMPLE] < SHADOW_TEMPLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
-        case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
+        case RG_BOTW_SMALL_KEY:
             return gSaveContext.inventory.dungeonKeys[SCENE_BOTTOM_OF_THE_WELL] < BOTTOM_OF_THE_WELL_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
-        case RG_GERUDO_TRAINING_GROUND_SMALL_KEY:
+        case RG_GTG_SMALL_KEY:
             return gSaveContext.inventory.dungeonKeys[SCENE_GERUDO_TRAINING_GROUND] < GERUDO_TRAINING_GROUND_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_GERUDO_FORTRESS_SMALL_KEY:
             return gSaveContext.inventory.dungeonKeys[SCENE_THIEVES_HIDEOUT] < GERUDO_FORTRESS_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
@@ -782,7 +782,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_HEART_CONTAINER:
         case RG_ICE_TRAP:
         case RG_TREASURE_GAME_HEART:
-        case RG_TREASURE_GAME_GREEN_RUPEE:
+        case RG_LOSER_GREEN_RUPEE:
         case RG_BUY_HEART:
         case RG_TRIFORCE_PIECE:
         default:
@@ -1321,25 +1321,25 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_GANONS_CASTLE_GANONS_TOWER_POT_16,                             RAND_INF_GANONS_CASTLE_GANONS_TOWER_POT_16 },
     { RC_GANONS_CASTLE_GANONS_TOWER_POT_17,                             RAND_INF_GANONS_CASTLE_GANONS_TOWER_POT_17 },
     { RC_GANONS_CASTLE_GANONS_TOWER_POT_18,                             RAND_INF_GANONS_CASTLE_GANONS_TOWER_POT_18 },
-    { RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_1,                             RAND_INF_BOTTOM_OF_THE_WELL_BASEMENT_POT_1 },
-    { RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_2,                             RAND_INF_BOTTOM_OF_THE_WELL_BASEMENT_POT_2 },
-    { RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_3,                             RAND_INF_BOTTOM_OF_THE_WELL_BASEMENT_POT_3 },
-    { RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_4,                             RAND_INF_BOTTOM_OF_THE_WELL_BASEMENT_POT_4 },
-    { RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_5,                             RAND_INF_BOTTOM_OF_THE_WELL_BASEMENT_POT_5 },
-    { RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_6,                             RAND_INF_BOTTOM_OF_THE_WELL_BASEMENT_POT_6 },
-    { RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_7,                             RAND_INF_BOTTOM_OF_THE_WELL_BASEMENT_POT_7 },
-    { RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_8,                             RAND_INF_BOTTOM_OF_THE_WELL_BASEMENT_POT_8 },
-    { RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_9,                             RAND_INF_BOTTOM_OF_THE_WELL_BASEMENT_POT_9 },
-    { RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_10,                            RAND_INF_BOTTOM_OF_THE_WELL_BASEMENT_POT_10 },
-    { RC_BOTW_B3_WEST_POT_GROUP_FRONT,                            RAND_INF_BOTTOM_OF_THE_WELL_BASEMENT_POT_11 },
-    { RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_12,                            RAND_INF_BOTTOM_OF_THE_WELL_BASEMENT_POT_12 },
-    { RC_BOTW_FAKE_WALL_SOUTH_POT,                            RAND_INF_BOTW_FAKE_WALL_SOUTH_POT },
-    { RC_BOTW_FAKE_WALL_CENTRAL_POT,                            RAND_INF_BOTW_FAKE_WALL_CENTRAL_POT },
-    { RC_BOTW_FAKE_WALL_NORTH_POT,                            RAND_INF_BOTW_FAKE_WALL_NORTH_POT },
-    { RC_BOTW_ENTRYWAY_WEST_POT,                        RAND_INF_BOTW_ENTRYWAY_EAST_POT },
-    { RC_BOTW_ENTRYWAY_EAST_POT,                        RAND_INF_BOTW_ENTRYWAY_WEST_POT },
-    { RC_BOTW_3_HIDDEN_PITS_POT,                           RAND_INF_BOTTOM_OF_THE_WELL_FIRE_KEESE_POT_1 },
-    { RC_BOTW_SUNKEN_POT,                             RAND_INF_BOTW_SUNKEN_POT },
+    { RC_BOTW_B3_WEST_CENTER_POT,                                       RAND_INF_BOTW_B3_WEST_CENTER_POT },
+    { RC_BOTW_B3_EAST_CENTER_POT,                                       RAND_INF_BOTW_B3_EAST_CENTER_POT },
+    { RC_BOTW_B3_WEST_V_MID_NORTH_POT,                                  RAND_INF_BOTW_B3_WEST_V_MID_NORTH_POT },
+    { RC_BOTW_B3_EAST_V_MIDDLE_POT,                                     RAND_INF_BOTW_B3_EAST_V_MIDDLE_POT },
+    { RC_BOTW_B3_WEST_V_SOUTHMOST_POT,                                  RAND_INF_BOTW_B3_WEST_V_SOUTHMOST_POT },
+    { RC_BOTW_B3_EAST_V_SOUTHMOST_POT,                                  RAND_INF_BOTW_B3_EAST_V_SOUTHMOST_POT },
+    { RC_BOTW_B3_EAST_V_NORTHMOST_POT,                                  RAND_INF_BOTW_B3_EAST_V_NORTHMOST_POT },
+    { RC_BOTW_B3_EAST_V_MID_NORTH_POT,                                  RAND_INF_BOTW_B3_EAST_V_MID_NORTH_POT },
+    { RC_BOTW_B3_WEST_V_MID_SOUTH_POT,                                  RAND_INF_BOTW_B3_WEST_V_MID_SOUTH_POT },
+    { RC_BOTW_B3_EAST_V_MID_SOUTH_POT,                                  RAND_INF_BOTW_B3_EAST_V_MID_SOUTH_POT },
+    { RC_BOTW_B3_WEST_V_MIDDLE_POT,                                     RAND_INF_BOTW_B3_WEST_V_MIDDLE_POT },
+    { RC_BOTW_B3_WEST_V_NORTHMOST_POT,                                  RAND_INF_BOTW_B3_WEST_V_NORTHMOST_POT },
+    { RC_BOTW_FAKE_WALL_SOUTH_POT,                                      RAND_INF_BOTW_FAKE_WALL_SOUTH_POT },
+    { RC_BOTW_FAKE_WALL_CENTRAL_POT,                                    RAND_INF_BOTW_FAKE_WALL_CENTRAL_POT },
+    { RC_BOTW_FAKE_WALL_NORTH_POT,                                      RAND_INF_BOTW_FAKE_WALL_NORTH_POT },
+    { RC_BOTW_ENTRYWAY_WEST_POT,                                        RAND_INF_BOTW_ENTRYWAY_EAST_POT },
+    { RC_BOTW_ENTRYWAY_EAST_POT,                                        RAND_INF_BOTW_ENTRYWAY_WEST_POT },
+    { RC_BOTW_3_HIDDEN_PITS_POT,                                        RAND_INF_BOTW_3_HIDDEN_PITS_POT },
+    { RC_BOTW_SUNKEN_POT,                                               RAND_INF_BOTW_SUNKEN_POT },
     { RC_ICE_CAVERN_HALL_POT_1,                                         RAND_INF_ICE_CAVERN_HALL_POT_1 },
     { RC_ICE_CAVERN_HALL_POT_2,                                         RAND_INF_ICE_CAVERN_HALL_POT_2 },
     { RC_ICE_CAVERN_SPINNING_BLADE_POT_1,                               RAND_INF_ICE_CAVERN_SPINNING_BLADE_POT_1 },
@@ -1438,13 +1438,13 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_SHADOW_TEMPLE_MQ_SPIKE_BARICADE_POT,                           RAND_INF_SHADOW_TEMPLE_MQ_SPIKE_BARICADE_POT },
     { RC_SHADOW_TEMPLE_MQ_DEAD_HAND_POT_1,                              RAND_INF_SHADOW_TEMPLE_MQ_DEAD_HAND_POT_1 },
     { RC_SHADOW_TEMPLE_MQ_DEAD_HAND_POT_2,                              RAND_INF_SHADOW_TEMPLE_MQ_DEAD_HAND_POT_2 },
-    { RC_BOTTOM_OF_THE_WELL_MQ_INNER_LOBBY_POT_1,                       RAND_INF_BOTTOM_OF_THE_WELL_MQ_INNER_LOBBY_POT_1 },
-    { RC_BOTTOM_OF_THE_WELL_MQ_INNER_LOBBY_POT_2,                       RAND_INF_BOTTOM_OF_THE_WELL_MQ_INNER_LOBBY_POT_2 },
-    { RC_BOTTOM_OF_THE_WELL_MQ_INNER_LOBBY_POT_3,                       RAND_INF_BOTTOM_OF_THE_WELL_MQ_INNER_LOBBY_POT_3 },
-    { RC_BOTTOM_OF_THE_WELL_MQ_OUTER_LOBBY_POT,                         RAND_INF_BOTTOM_OF_THE_WELL_MQ_OUTER_LOBBY_POT },
-    { RC_BOTTOM_OF_THE_WELL_MQ_EAST_INNER_ROOM_POT_1,                   RAND_INF_BOTTOM_OF_THE_WELL_MQ_SOUTH_KEY_POT_1 },
-    { RC_BOTTOM_OF_THE_WELL_MQ_EAST_INNER_ROOM_POT_2,                   RAND_INF_BOTTOM_OF_THE_WELL_MQ_SOUTH_KEY_POT_2 },
-    { RC_BOTTOM_OF_THE_WELL_MQ_EAST_INNER_ROOM_POT_3,                   RAND_INF_BOTTOM_OF_THE_WELL_MQ_SOUTH_KEY_POT_3 },
+    { RC_BOTW_MQ_WOODEN_X_ROOM_CENTER_POT,                              RAND_INF_BOTW_MQ_WOODEN_X_ROOM_CENTER_POT },
+    { RC_BOTW_MQ_WOODEN_X_ROOM_EAST_POT,                                RAND_INF_BOTW_MQ_WOODEN_X_ROOM_EAST_POT },
+    { RC_BOTW_MQ_WOODEN_X_ROOM_WEST_POT,                                RAND_INF_BOTW_MQ_WOODEN_X_ROOM_WEST_POT },
+    { RC_BOTW_MQ_CAGED_POT,                                             RAND_INF_BOTW_MQ_CAGED_POT },
+    { RC_BOTW_MQ_EAST_INNER_ROOM_FAR_POT,                               RAND_INF_BOTW_MQ_EAST_INNER_ROOM_FAR_POT },
+    { RC_BOTW_MQ_EAST_INNER_ROOM_MID_POT,                               RAND_INF_BOTW_MQ_EAST_INNER_ROOM_MID_POT },
+    { RC_BOTW_MQ_EAST_INNER_ROOM_NEAR_POT,                              RAND_INF_BOTW_MQ_EAST_INNER_ROOM_NEAR_POT },
     { RC_FIRE_TEMPLE_MQ_ENTRANCE_POT_1,                                 RAND_INF_FIRE_TEMPLE_MQ_ENTRANCE_POT_1 },
     { RC_FIRE_TEMPLE_MQ_ENTRANCE_POT_2,                                 RAND_INF_FIRE_TEMPLE_MQ_ENTRANCE_POT_2 },
     { RC_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_POT_1,                             RAND_INF_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_POT_1 },
@@ -2680,7 +2680,7 @@ CustomMessage Randomizer::GetMapGetItemMessageWithHint(GetItemEntry itemEntry) {
         case RG_SHADOW_TEMPLE_MAP:
             sceneNum = SCENE_SHADOW_TEMPLE;
             break;
-        case RG_BOTTOM_OF_THE_WELL_MAP:
+        case RG_BOTW_MAP:
             sceneNum = SCENE_BOTTOM_OF_THE_WELL;
             break;
         case RG_ICE_CAVERN_MAP:
@@ -3408,11 +3408,11 @@ void Randomizer::CreateCustomMessages() {
 			"You found a %pShadow Temple &%wSmall Key!",
 			"Du erhältst einen %rKleinen&Schlüssel%w für den %pSchattentempel%w!",
 			"Vous obtenez une %rPetite Clé %w&du %pTemple de l'Ombre%w!"),
-        GIMESSAGE(RG_BOTTOM_OF_THE_WELL_SMALL_KEY, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_BOTW_SMALL_KEY, ITEM_KEY_SMALL,
 			"You found a %pBottom of the &Well %wSmall Key!",
 			"Du erhältst einen %rKleinen&Schlüssel%w für den %pGrund des Brunnens%w!",
 			"Vous obtenez une %rPetite Clé %w&du %pPuits%w!"),
-        GIMESSAGE(RG_GERUDO_TRAINING_GROUND_SMALL_KEY, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_GTG_SMALL_KEY, ITEM_KEY_SMALL,
 			"You found a %yGerudo Training &Grounds %wSmall Key!",
 			"Du erhältst einen %rKleinen&Schlüssel%w für die %yGerudo-Trainingsarena%w!",
 			"Vous obtenez une %rPetite Clé %w&du %yGymnase Gerudo%w!"),
@@ -3445,11 +3445,11 @@ void Randomizer::CreateCustomMessages() {
 			"You found a %pShadow Temple &%wKeyring!",
 			"Du erhältst ein %rSchlüsselbund%w&für den %pSchattentempel%w!",
 			"Vous obtenez un trousseau de&clés du %pTemple de l'Ombre%w!"),
-        GIMESSAGE(RG_BOTTOM_OF_THE_WELL_KEY_RING, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_BOTW_KEY_RING, ITEM_KEY_SMALL,
 			"You found a %pBottom of the &Well %wKeyring!",
 			"Du erhältst ein %rSchlüsselbund%w&für den %pGrund des Brunnens%w!",
 			"Vous obtenez un trousseau de&clés du %pPuits%w!"),
-        GIMESSAGE(RG_GERUDO_TRAINING_GROUND_KEY_RING, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_GTG_KEY_RING, ITEM_KEY_SMALL,
 			"You found a %yGerudo Training &Grounds %wKeyring!",
 			"Du erhältst ein %rSchlüsselbund%w&für die %yGerudo-Trainingsarena%w!",
 			"Vous obtenez un trousseau de&clés du %yGymnase Gerudo%w!"),
@@ -3515,7 +3515,7 @@ void Randomizer::CreateCustomMessages() {
 			"You found the %pShadow Temple &%wMap![[typeHint]]",
 			"Du erhältst die %rKarte%w für den&%pSchattentempel%w![[typeHint]]",
 			"Vous obtenez la %rCarte %wdu &%pTemple de l'Ombre%w![[typeHint]]"),
-        GIMESSAGE(RG_BOTTOM_OF_THE_WELL_MAP, ITEM_DUNGEON_MAP,
+        GIMESSAGE(RG_BOTW_MAP, ITEM_DUNGEON_MAP,
 			"You found the %pBottom of the &Well %wMap![[typeHint]]",
 			"Du erhältst die %rKarte%w für den&%pGrund des Brunnens%w![[typeHint]]",
 			"Vous obtenez la %rCarte %wdu &%pPuits%w![[typeHint]]"),
@@ -3556,7 +3556,7 @@ void Randomizer::CreateCustomMessages() {
 			"You found the %pShadow Temple &%wCompass!",
 			"Du erhältst den %rKompaß%w für den&%pSchattentempel%w!",
 			"Vous obtenez la %rBoussole %wdu &%pTemple de l'Ombre%w!"),
-        GIMESSAGE(RG_BOTTOM_OF_THE_WELL_COMPASS, ITEM_COMPASS,
+        GIMESSAGE(RG_BOTW_COMPASS, ITEM_COMPASS,
 			"You found the %pBottom of the &Well %wCompass!",
 			"Du erhältst den %rKompaß%w für den&%pGrund des Brunnens%w!",
 			"Vous obtenez la %rBoussole %wdu &%pPuits%w!"),
@@ -3886,10 +3886,10 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
                 mapIndex = SCENE_SHADOW_TEMPLE;
                 numOfKeysOnKeyring = SHADOW_TEMPLE_SMALL_KEY_MAX;
                 break;
-            case RG_BOTTOM_OF_THE_WELL_MAP:
-            case RG_BOTTOM_OF_THE_WELL_COMPASS:
-            case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
-            case RG_BOTTOM_OF_THE_WELL_KEY_RING:
+            case RG_BOTW_MAP:
+            case RG_BOTW_COMPASS:
+            case RG_BOTW_SMALL_KEY:
+            case RG_BOTW_KEY_RING:
                 mapIndex = SCENE_BOTTOM_OF_THE_WELL;
                 numOfKeysOnKeyring = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;
                 break;
@@ -3900,8 +3900,8 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             case RG_GANONS_CASTLE_BOSS_KEY:
                 mapIndex = SCENE_GANONS_TOWER;
                 break;
-            case RG_GERUDO_TRAINING_GROUND_SMALL_KEY:
-            case RG_GERUDO_TRAINING_GROUND_KEY_RING:
+            case RG_GTG_SMALL_KEY:
+            case RG_GTG_KEY_RING:
                 mapIndex = SCENE_GERUDO_TRAINING_GROUND;
                 numOfKeysOnKeyring = GERUDO_TRAINING_GROUND_SMALL_KEY_MAX;
                 break;

@@ -135,7 +135,7 @@ class Logic {
     bool LinksCow = false;
     bool DeliverLetter = false;
     bool ClearMQDCUpperLobbyRocks = false;
-    bool LoweredWaterInsideBotw = false;
+    bool LoweredBotwWater = false;
     bool OpenedWestRoomMQBotw = false;
     bool OpenedMiddleHoleMQBotw = false;
     bool BrokeDeku1FWeb = false;

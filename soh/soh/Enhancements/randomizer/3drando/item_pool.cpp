@@ -268,8 +268,8 @@ const std::array<RandomizerGet, 4> GTG_Vanilla = {
   RG_HUGE_RUPEE,
 };
 const std::array<RandomizerGet, 5> GTG_MQ = {
-  RG_TREASURE_GAME_GREEN_RUPEE,
-  RG_TREASURE_GAME_GREEN_RUPEE,
+  RG_LOSER_GREEN_RUPEE,
+  RG_LOSER_GREEN_RUPEE,
   RG_ARROWS_10,
   RG_GREEN_RUPEE,
   RG_PURPLE_RUPEE,
@@ -678,8 +678,8 @@ static void PlaceVanillaFairies() {
     ctx->PlaceItemInLocation(RC_SHADOW_TEMPLE_WIND_HINT_SUN_FAIRY, GetJunkItem(), false, true);
   }
   if (ctx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsMQ()) {
-    ctx->PlaceItemInLocation(RC_BOTTOM_OF_THE_WELL_MQ_CELL_SUN_FAIRY, GetJunkItem(), false, true);
-    ctx->PlaceItemInLocation(RC_BOTTOM_OF_THE_WELL_MQ_BASEMENT_SUN_FAIRY, GetJunkItem(), false, true);
+    ctx->PlaceItemInLocation(RC_BOTW_MQ_WOODEN_X_ROOM_SUN_FAIRY, GetJunkItem(), false, true);
+    ctx->PlaceItemInLocation(RC_BOTW_MQ_B3_SUN_FAIRY, GetJunkItem(), false, true);
   } else {
     ctx->PlaceItemInLocation(RC_BOTW_B3_SUN_FAIRY, GetJunkItem(), false, true);
   }
@@ -1222,9 +1222,9 @@ void GenerateItemPool() {
     //Plentiful small keys
     if (ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) || ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANY_DUNGEON) || ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_OVERWORLD)) {
       if (ctx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->HasKeyRing()) {
-        AddItemToPool(PendingJunkPool, RG_BOTTOM_OF_THE_WELL_KEY_RING);
+        AddItemToPool(PendingJunkPool, RG_BOTW_KEY_RING);
       } else {
-        AddItemToPool(PendingJunkPool, RG_BOTTOM_OF_THE_WELL_SMALL_KEY);
+        AddItemToPool(PendingJunkPool, RG_BOTW_SMALL_KEY);
       }
       if (ctx->GetDungeon(Rando::FOREST_TEMPLE)->HasKeyRing()) {
         AddItemToPool(PendingJunkPool, RG_FOREST_TEMPLE_KEY_RING);
@@ -1252,9 +1252,9 @@ void GenerateItemPool() {
         AddItemToPool(PendingJunkPool, RG_SHADOW_TEMPLE_SMALL_KEY);
       }
       if (ctx->GetDungeon(Rando::GERUDO_TRAINING_GROUND)->HasKeyRing()) {
-        AddItemToPool(PendingJunkPool, RG_GERUDO_TRAINING_GROUND_KEY_RING);
+        AddItemToPool(PendingJunkPool, RG_GTG_KEY_RING);
       } else {
-        AddItemToPool(PendingJunkPool, RG_GERUDO_TRAINING_GROUND_SMALL_KEY);
+        AddItemToPool(PendingJunkPool, RG_GTG_SMALL_KEY);
       }
       if (ctx->GetDungeon(Rando::GANONS_CASTLE)->HasKeyRing()) {
         AddItemToPool(PendingJunkPool, RG_GANONS_CASTLE_KEY_RING);

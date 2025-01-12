@@ -160,7 +160,7 @@ namespace Rando {
             case RG_WATER_TEMPLE_MAP:
             case RG_SPIRIT_TEMPLE_MAP:
             case RG_SHADOW_TEMPLE_MAP:
-            case RG_BOTTOM_OF_THE_WELL_MAP:
+            case RG_BOTW_MAP:
             case RG_ICE_CAVERN_MAP:
                 return CheckDungeonItem(DUNGEON_MAP, RandoGetToDungeonScene.at(itemName));
                 // Compasses
@@ -172,7 +172,7 @@ namespace Rando {
             case RG_WATER_TEMPLE_COMPASS:
             case RG_SPIRIT_TEMPLE_COMPASS:
             case RG_SHADOW_TEMPLE_COMPASS:
-            case RG_BOTTOM_OF_THE_WELL_COMPASS:
+            case RG_BOTW_COMPASS:
             case RG_ICE_CAVERN_COMPASS:
                 return CheckDungeonItem(DUNGEON_COMPASS, RandoGetToDungeonScene.at(itemName));
                 // Wallets
@@ -1289,8 +1289,8 @@ namespace Rando {
         { RG_WATER_TEMPLE_SMALL_KEY,            SCENE_WATER_TEMPLE },
         { RG_SPIRIT_TEMPLE_SMALL_KEY,           SCENE_SPIRIT_TEMPLE },
         { RG_SHADOW_TEMPLE_SMALL_KEY,           SCENE_SHADOW_TEMPLE },
-        { RG_BOTTOM_OF_THE_WELL_SMALL_KEY,      SCENE_BOTTOM_OF_THE_WELL },
-        { RG_GERUDO_TRAINING_GROUND_SMALL_KEY, SCENE_GERUDO_TRAINING_GROUND },
+        { RG_BOTW_SMALL_KEY,                    SCENE_BOTTOM_OF_THE_WELL },
+        { RG_GTG_SMALL_KEY,                     SCENE_GERUDO_TRAINING_GROUND },
         { RG_GERUDO_FORTRESS_SMALL_KEY,         SCENE_THIEVES_HIDEOUT },
         { RG_GANONS_CASTLE_SMALL_KEY,           SCENE_INSIDE_GANONS_CASTLE },
         { RG_FOREST_TEMPLE_KEY_RING,            SCENE_FOREST_TEMPLE },
@@ -1298,8 +1298,8 @@ namespace Rando {
         { RG_WATER_TEMPLE_KEY_RING,             SCENE_WATER_TEMPLE },
         { RG_SPIRIT_TEMPLE_KEY_RING,            SCENE_SPIRIT_TEMPLE },
         { RG_SHADOW_TEMPLE_KEY_RING,            SCENE_SHADOW_TEMPLE },
-        { RG_BOTTOM_OF_THE_WELL_KEY_RING,       SCENE_BOTTOM_OF_THE_WELL },
-        { RG_GERUDO_TRAINING_GROUND_KEY_RING,  SCENE_GERUDO_TRAINING_GROUND },
+        { RG_BOTW_KEY_RING,                     SCENE_BOTTOM_OF_THE_WELL },
+        { RG_GTG_KEY_RING,                      SCENE_GERUDO_TRAINING_GROUND },
         { RG_GERUDO_FORTRESS_KEY_RING,          SCENE_THIEVES_HIDEOUT },
         { RG_GANONS_CASTLE_KEY_RING,            SCENE_INSIDE_GANONS_CASTLE },
         { RG_FOREST_TEMPLE_BOSS_KEY,            SCENE_FOREST_TEMPLE },
@@ -1316,7 +1316,7 @@ namespace Rando {
         { RG_WATER_TEMPLE_MAP,                  SCENE_WATER_TEMPLE },
         { RG_SPIRIT_TEMPLE_MAP,                 SCENE_SPIRIT_TEMPLE },
         { RG_SHADOW_TEMPLE_MAP,                 SCENE_SHADOW_TEMPLE },
-        { RG_BOTTOM_OF_THE_WELL_MAP,            SCENE_BOTTOM_OF_THE_WELL },
+        { RG_BOTW_MAP,                          SCENE_BOTTOM_OF_THE_WELL },
         { RG_ICE_CAVERN_MAP,                    SCENE_ICE_CAVERN },
         { RG_DEKU_TREE_COMPASS,                 SCENE_DEKU_TREE },
         { RG_DODONGOS_CAVERN_COMPASS,           SCENE_DODONGOS_CAVERN },
@@ -1326,7 +1326,7 @@ namespace Rando {
         { RG_WATER_TEMPLE_COMPASS,              SCENE_WATER_TEMPLE },
         { RG_SPIRIT_TEMPLE_COMPASS,             SCENE_SPIRIT_TEMPLE },
         { RG_SHADOW_TEMPLE_COMPASS,             SCENE_SHADOW_TEMPLE },
-        { RG_BOTTOM_OF_THE_WELL_COMPASS,        SCENE_BOTTOM_OF_THE_WELL },
+        { RG_BOTW_COMPASS,                      SCENE_BOTTOM_OF_THE_WELL },
         { RG_ICE_CAVERN_COMPASS,                SCENE_ICE_CAVERN },
         { RG_TREASURE_GAME_SMALL_KEY,           SCENE_TREASURE_BOX_SHOP }
     };
@@ -2177,7 +2177,7 @@ namespace Rando {
         LinksCow                  = false;
         DeliverLetter             = false;
         ClearMQDCUpperLobbyRocks  = false;
-        LoweredWaterInsideBotw    = false;
+        LoweredBotwWater          = false;
         OpenedWestRoomMQBotw      = false;
         OpenedMiddleHoleMQBotw    = false;
         BrokeDeku1FWeb            = false;

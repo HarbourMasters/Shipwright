@@ -38,7 +38,7 @@ std::map<RandomizerCheckArea, std::string> rcAreaNames = {
     { RCAREA_WATER_TEMPLE, "Water Temple" },
     { RCAREA_SPIRIT_TEMPLE, "Spirit Temple" },
     { RCAREA_SHADOW_TEMPLE, "Shadow Temple" },
-    { RCAREA_BOTTOM_OF_THE_WELL, "Bottom of the Well" },
+    { RCAREA_BOTW, "Bottom of the Well" },
     { RCAREA_ICE_CAVERN, "Ice Cavern" },
     { RCAREA_GERUDO_TRAINING_GROUND, "Gerudo Training Ground" },
     { RCAREA_GANONS_CASTLE, "Ganon's Castle" },
@@ -62,7 +62,7 @@ std::map<RandomizerCheckArea, std::vector<RandomizerCheck>> RandomizerCheckObjec
 
 bool RandomizerCheckObjects::AreaIsDungeon(RandomizerCheckArea area) {
     return area == RCAREA_GANONS_CASTLE || area == RCAREA_GERUDO_TRAINING_GROUND || area == RCAREA_ICE_CAVERN ||
-           area == RCAREA_BOTTOM_OF_THE_WELL || area == RCAREA_SHADOW_TEMPLE || area == RCAREA_SPIRIT_TEMPLE ||
+           area == RCAREA_BOTW || area == RCAREA_SHADOW_TEMPLE || area == RCAREA_SPIRIT_TEMPLE ||
            area == RCAREA_WATER_TEMPLE || area == RCAREA_FIRE_TEMPLE || area == RCAREA_FOREST_TEMPLE ||
            area == RCAREA_JABU_JABUS_BELLY || area == RCAREA_DODONGOS_CAVERN || area == RCAREA_DEKU_TREE;
 }
