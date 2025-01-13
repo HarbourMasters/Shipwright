@@ -2452,6 +2452,12 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
         const RandomizerTrick rt = mTrickNameToEnum[it.value()];
         GetTrickOption(rt).SetContextIndex(RO_GENERIC_ON);
     }
+
+    if (spoilerFileJson.value("SelectedStartingAge", "Child") == "Adult"){
+        mResolvedStartingAge = RO_AGE_ADULT;
+    } else {
+        mResolvedStartingAge = RO_AGE_CHILD;
+    }
 }
 
 void Settings::ReloadOptions() {
