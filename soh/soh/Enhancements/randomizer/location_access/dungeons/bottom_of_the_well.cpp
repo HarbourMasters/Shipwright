@@ -103,7 +103,7 @@ void RegionTable_Init_BottomOfTheWell() {
     }, {
         //Locations
         LOCATION(RC_BOTW_INNER_WEST_ROOM_GS, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
-        LOCATION(RC_BOTW_UNSEEN_LEDGE_GS, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
+        LOCATION(RC_BOTW_UNSEEN_LEDGE_GS   , logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
     }, {
         //Exits
         Entrance(RR_BOTW_REQUIRES_LENS, []{return logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 3);}),
@@ -243,7 +243,7 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTW_MQ_WOODEN_X_ROOM] = Region("Bottom of the Well MQ Wooden X Room", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_BOTW_MQ_WOODEN_X_CHEST        , true),
+        LOCATION(RC_BOTW_MQ_WOODEN_X_CHEST     , true),
         //This location technically involves an invisible platform, but it's intended to do lensless in vanilla and is clearly signposted by pots.
         LOCATION(RC_BOTW_MQ_UNSEEN_LEDGE_KEY   , true),
         //The enemies in this room are invisible and crowd around the player, being awkward to deal with blind unless you already know how.
@@ -253,14 +253,14 @@ void RegionTable_Init_BottomOfTheWell() {
         //Also you get cheap shotted on entry sometimes.
         //An MQ lens trick is recommended here, and a review of this room for OHKO logic what that is added is advised.
         //In the meantime I assume damage taken or the easy answer (nuts)
-        LOCATION(RC_BOTW_MQ_UNDER_GRAVE_GS        , logic->OpenedWestRoomMQBotw && (logic->TakeDamage() || logic->CanUse(RG_NUTS)) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
-        LOCATION(RC_BOTW_MQ_WOODEN_X_ROOM_W_POT   , logic->CanBreakPots()),
-        LOCATION(RC_BOTW_MQ_WOODEN_X_ROOM_C_POT   , logic->CanBreakPots()),
-        LOCATION(RC_BOTW_MQ_WOODEN_X_ROOM_E_POT   , logic->CanBreakPots()),
+        LOCATION(RC_BOTW_MQ_UNDER_GRAVE_GS     , logic->OpenedWestRoomMQBotw && (logic->TakeDamage() || logic->CanUse(RG_NUTS)) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
+        LOCATION(RC_BOTW_MQ_WOODEN_X_ROOM_W_POT, logic->CanBreakPots()),
+        LOCATION(RC_BOTW_MQ_WOODEN_X_ROOM_C_POT, logic->CanBreakPots()),
+        LOCATION(RC_BOTW_MQ_WOODEN_X_ROOM_E_POT, logic->CanBreakPots()),
         LOCATION(RC_BOTW_MQ_UNSEEN_LEDGE_NW_POT, logic->CanBreakPots()),
         LOCATION(RC_BOTW_MQ_UNSEEN_LEDGE_NE_POT, logic->CanBreakPots()),
         LOCATION(RC_BOTW_MQ_UNSEEN_LEDGE_S_POT , logic->CanBreakPots()),
-        LOCATION(RC_BOTW_MQ_NEAR_POTS_SUN_FAIRY   , logic->CanUse(RG_SUNS_SONG)),
+        LOCATION(RC_BOTW_MQ_NEAR_POTS_SUN_FAIRY, logic->CanUse(RG_SUNS_SONG)),
     }, {
         //Exits
         //If a relevant trick causes you to be able to warp into here without going through LOBBY, a new eventAccess will be needed for lowering the gates with ZL
