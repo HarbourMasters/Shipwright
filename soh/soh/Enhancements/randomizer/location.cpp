@@ -384,6 +384,20 @@ Rando::Location Rando::Location::Pot(RandomizerCheck rc, RandomizerCheckQuest qu
     return {rc, quest_, RCTYPE_POT, area_, ACTOR_OBJ_TSUBO, scene_, actorParams_, std::move(shortName_), hintKey, vanillaItem, false,
             collectionCheck };
 }
+Rando::Location Rando::Location::Pot(RandomizerCheck rc, RandomizerCheckQuest quest_,
+                                     SceneID scene_, int32_t actorParams_, std::string&& shortName_,
+                                     std::string&& spoilerName_, RandomizerHintTextKey hintKey,
+                                     RandomizerGet vanillaItem, SpoilerCollectionCheck collectionCheck) {
+    return {rc, quest_, RCTYPE_POT, GetAreaFromScene(scene_), ACTOR_OBJ_TSUBO, scene_, actorParams_, std::move(shortName_), std::move(spoilerName_), hintKey, vanillaItem, false,
+            collectionCheck };
+}
+Rando::Location Rando::Location::Pot(RandomizerCheck rc, RandomizerCheckQuest quest_,
+                                     SceneID scene_, int32_t actorParams_, std::string&& shortName_,
+                                     RandomizerHintTextKey hintKey,
+                                     RandomizerGet vanillaItem, SpoilerCollectionCheck collectionCheck) {
+    return {rc, quest_, RCTYPE_POT, GetAreaFromScene(scene_), ACTOR_OBJ_TSUBO, scene_, actorParams_, std::move(shortName_), hintKey, vanillaItem, false,
+            collectionCheck };
+}
 
 Rando::Location Rando::Location::HintStone(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, SceneID scene_, int32_t actorParams_, std::string&& shortName_) {
     return { rc, quest_, RCTYPE_GOSSIP_STONE, area_, ACTOR_EN_GS, scene_, actorParams_, std::move(shortName_), RHT_NONE, RG_NONE, false };
@@ -401,4 +415,18 @@ Rando::Location Rando::Location::Fairy(RandomizerCheck rc, RandomizerCheckQuest 
                                         int32_t actorParams_, std::string&& shortName_,
                                         RandomizerHintTextKey hintKey, SpoilerCollectionCheck collectionCheck) {
     return {rc, quest_, RCTYPE_FAIRY, area_, ACTOR_EN_ELF, scene_, actorParams_, std::move(shortName_), hintKey, RG_NONE, false, collectionCheck};
+}
+
+Rando::Location Rando::Location::Fairy(RandomizerCheck rc, RandomizerCheckQuest quest_,
+                                        SceneID scene_,
+                                        int32_t actorParams_, std::string&& shortName_, std::string&& spoilerName_,
+                                        RandomizerHintTextKey hintKey, SpoilerCollectionCheck collectionCheck) {
+    return {rc, quest_, RCTYPE_FAIRY, GetAreaFromScene(scene_), ACTOR_EN_ELF, scene_, actorParams_, std::move(shortName_), std::move(spoilerName_), hintKey, RG_NONE, false, collectionCheck};
+}
+
+Rando::Location Rando::Location::Fairy(RandomizerCheck rc, RandomizerCheckQuest quest_,
+                                        SceneID scene_,
+                                        int32_t actorParams_, std::string&& shortName_,
+                                        RandomizerHintTextKey hintKey, SpoilerCollectionCheck collectionCheck) {
+    return {rc, quest_, RCTYPE_FAIRY, GetAreaFromScene(scene_), ACTOR_EN_ELF, scene_, actorParams_, std::move(shortName_), hintKey, RG_NONE, false, collectionCheck};
 }

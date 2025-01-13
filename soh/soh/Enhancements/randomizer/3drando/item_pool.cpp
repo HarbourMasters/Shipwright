@@ -678,7 +678,7 @@ static void PlaceVanillaFairies() {
     ctx->PlaceItemInLocation(RC_SHADOW_TEMPLE_WIND_HINT_SUN_FAIRY, GetJunkItem(), false, true);
   }
   if (ctx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsMQ()) {
-    ctx->PlaceItemInLocation(RC_BOTW_MQ_WOODEN_X_ROOM_SUN_FAIRY, GetJunkItem(), false, true);
+    ctx->PlaceItemInLocation(RC_BOTW_MQ_NEAR_POTS_SUN_FAIRY, GetJunkItem(), false, true);
     ctx->PlaceItemInLocation(RC_BOTW_MQ_B3_SUN_FAIRY, GetJunkItem(), false, true);
   } else {
     ctx->PlaceItemInLocation(RC_BOTW_B3_SUN_FAIRY, GetJunkItem(), false, true);

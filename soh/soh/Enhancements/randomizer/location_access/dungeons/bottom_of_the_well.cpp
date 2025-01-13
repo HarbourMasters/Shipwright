@@ -23,9 +23,8 @@ void RegionTable_Init_BottomOfTheWell() {
         EventAccess(&logic->LoweredBotwWater, []{return logic->CanUse(RG_ZELDAS_LULLABY);}),
     }, {
         //Locations
-        LOCATION(RC_BOTW_SOUTH_RUBBLE_CHEST, logic->HasExplosives()),
-        LOCATION(RC_BOTW_COFFIN_KEY        , (logic->HasItem(RG_BRONZE_SCALE) || logic->LoweredBotwWater) && logic->CanUse(RG_STICKS) || logic->CanUse(RG_DINS_FIRE)),
         LOCATION(RC_BOTW_SOUTH_SUNKEN_CHEST, logic->LoweredBotwWater),
+        LOCATION(RC_BOTW_SOUTH_BURIED_CHEST, logic->HasExplosives()),
         LOCATION(RC_BOTW_WEST_SUNKEN_CHEST , logic->LoweredBotwWater),
         LOCATION(RC_BOTW_ENTRYWAY_WEST_POT , logic->CanBreakPots()),
         LOCATION(RC_BOTW_ENTRYWAY_EAST_POT , logic->CanBreakPots()),
@@ -47,27 +46,27 @@ void RegionTable_Init_BottomOfTheWell() {
     //This region combines the Middle with the perimeter's hidden areas. If a warp puts link into the middle without crossing the perimeter or using lens, it will need it's own region
     areaTable[RR_BOTW_REQUIRES_LENS] = Region("Bottom of the Well Requires Lens", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_BOTW_WEST_FAKE_WALL_CHEST, true),
-        LOCATION(RC_BOTW_EAST_FAKE_WALL_CHEST, true),
-        LOCATION(RC_BOTW_CENTRAL_WEST_CHEST  , true),
+        LOCATION(RC_BOTW_WEST_FAKE_WALL_CHEST    , true),
+        LOCATION(RC_BOTW_EAST_FAKE_WALL_CHEST    , true),
+        LOCATION(RC_BOTW_WOODEN_X_ROOM_WEST_CHEST, true),
         //N64 has no extra check here, but I can't get past without dealing with the spider or taking a hit
-        LOCATION(RC_BOTW_CENTRAL_EAST_CHEST  , logic->CanPassEnemy(RE_BIG_SKULLTULA) || logic->TakeDamage()),
+        LOCATION(RC_BOTW_WOODEN_X_ROOM_EAST_CHEST, logic->CanPassEnemy(RE_BIG_SKULLTULA) || logic->TakeDamage()),
         //Not technically behind a wall, but still logically needs lens due to pits
-        LOCATION(RC_BOTW_NORTH_RUBBLE_CHEST  , logic->HasExplosives()),
+        LOCATION(RC_BOTW_NORTH_BURIED_CHEST      , logic->HasExplosives()),
     }, {
         //Exits
-        Entrance(RR_BOTW_LOBBY        , []{return ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH);}),
-        Entrance(RR_BOTW_CENTRAL_ROOMS, []{return logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 3);}),
-        Entrance(RR_BOTW_B3           , []{return true;}),
-        Entrance(RR_BOTW_B3_PLATFORM  , []{return ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH);}),
+        Entrance(RR_BOTW_LOBBY      , []{return ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH);}),
+        Entrance(RR_BOTW_INNER_ROOMS, []{return logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 3);}),
+        Entrance(RR_BOTW_B3         , []{return true;}),
+        Entrance(RR_BOTW_B3_PLATFORM, []{return ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH);}),
     });
 
     //This area can be reached without lens in logic from basement, but that could require silver rupees if they are shuffled.
     areaTable[RR_BOTW_SOUTHWEST_ROOM] = Region("Bottom of the Well Southwest Room", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_BOTW_FAKE_WALL_SOUTH_POT  , logic->CanBreakPots()),
-        LOCATION(RC_BOTW_FAKE_WALL_CENTRAL_POT, logic->CanBreakPots()),
         LOCATION(RC_BOTW_FAKE_WALL_NORTH_POT  , logic->CanBreakPots()),
+        LOCATION(RC_BOTW_FAKE_WALL_CENTRAL_POT, logic->CanBreakPots()),
+        LOCATION(RC_BOTW_FAKE_WALL_SOUTH_POT  , logic->CanBreakPots()),
     }, {
         //Exits
         Entrance(RR_BOTW_LOBBY, []{return ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH);}),
@@ -97,14 +96,14 @@ void RegionTable_Init_BottomOfTheWell() {
     });
 
     //If the player can voidwarp into one of these rooms they will need splitting up, and Fake walls will need specifying into middle and the rest moved to perimeter
-    areaTable[RR_BOTW_CENTRAL_ROOMS] = Region("Bottom of the Well Central Rooms", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {
+    areaTable[RR_BOTW_INNER_ROOMS] = Region("Bottom of the Well Inner Rooms", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->DekuBabaSticks, []{return logic->CanGetDekuBabaSticks();}),
-        EventAccess(&logic->DekuBabaNuts,   []{return logic->CanGetDekuBabaNuts();}),
+        EventAccess(&logic->DekuBabaNuts  , []{return logic->CanGetDekuBabaNuts();}),
     }, {
         //Locations
-        LOCATION(RC_BOTW_CENTER_WEST_ROOM_GS, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
-        LOCATION(RC_BOTW_CENTER_EAST_ROOM_GS, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
+        LOCATION(RC_BOTW_INNER_WEST_ROOM_GS, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
+        LOCATION(RC_BOTW_INVISIBLE_LEDGE_GS, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
     }, {
         //Exits
         Entrance(RR_BOTW_REQUIRES_LENS, []{return logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 3);}),
@@ -112,9 +111,9 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTW_COFFIN_ROOM] = Region("Bottom of the Well Coffin Room", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_BOTW_COFFIN_KEY,             logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
-        LOCATION(RC_BOTW_SOUTHEAST_COFFIN_HEART, logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
-        LOCATION(RC_BOTW_OPEN_COFFIN_HEART,      logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
+        LOCATION(RC_BOTW_COFFIN_KEY       , logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
+        LOCATION(RC_BOTW_OPEN_COFFIN_HEART, true),
+        LOCATION(RC_BOTW_SE_COFFIN_HEART  , logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
     }, {
         //Exits
         Entrance(RR_BOTW_LOBBY, []{return logic->LoweredBotwWater || logic->HasItem(RG_BRONZE_SCALE);}),
@@ -132,20 +131,20 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTW_B3] = Region("Bottom of the Well B3", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_BOTW_B3_CHEST               , logic->BlastOrSmash()),
-        LOCATION(RC_BOTW_B3_WEST_CENTER_POT     , logic->CanBreakPots()),
-        LOCATION(RC_BOTW_B3_EAST_CENTER_POT     , logic->CanBreakPots()),
-        LOCATION(RC_BOTW_B3_WEST_V_MID_NORTH_POT, logic->CanBreakPots()),
-        LOCATION(RC_BOTW_B3_EAST_V_MIDDLE_POT   , logic->CanBreakPots()),
-        LOCATION(RC_BOTW_B3_WEST_V_SOUTHMOST_POT, logic->CanBreakPots()),
-        LOCATION(RC_BOTW_B3_EAST_V_SOUTHMOST_POT, logic->CanBreakPots()),
-        LOCATION(RC_BOTW_B3_EAST_V_NORTHMOST_POT, logic->CanBreakPots()),
-        LOCATION(RC_BOTW_B3_EAST_V_MID_NORTH_POT, logic->CanBreakPots()),
-        LOCATION(RC_BOTW_B3_WEST_V_MID_SOUTH_POT, logic->CanBreakPots()),
-        LOCATION(RC_BOTW_B3_EAST_V_MID_SOUTH_POT, logic->CanBreakPots()),
-        LOCATION(RC_BOTW_B3_WEST_V_MIDDLE_POT   , logic->CanBreakPots()),
-        LOCATION(RC_BOTW_B3_WEST_V_NORTHMOST_POT, logic->CanBreakPots()),
-        LOCATION(RC_BOTW_B3_SUN_FAIRY           , logic->CanUse(RG_SUNS_SONG)),
+        LOCATION(RC_BOTW_B3_CHEST          , logic->BlastOrSmash()),
+        LOCATION(RC_BOTW_B3_WEST_CENTER_POT, logic->CanBreakPots()),
+        LOCATION(RC_BOTW_B3_EAST_CENTER_POT, logic->CanBreakPots()),
+        LOCATION(RC_BOTW_B3_WEST_V_N_POT   , logic->CanBreakPots()),
+        LOCATION(RC_BOTW_B3_WEST_V_NW_POT  , logic->CanBreakPots()),
+        LOCATION(RC_BOTW_B3_WEST_V_W_POT   , logic->CanBreakPots()),
+        LOCATION(RC_BOTW_B3_WEST_V_SW_POT  , logic->CanBreakPots()),
+        LOCATION(RC_BOTW_B3_WEST_V_S_POT   , logic->CanBreakPots()),
+        LOCATION(RC_BOTW_B3_EAST_V_N_POT   , logic->CanBreakPots()),
+        LOCATION(RC_BOTW_B3_EAST_V_NW_POT  , logic->CanBreakPots()),
+        LOCATION(RC_BOTW_B3_EAST_V_W_POT   , logic->CanBreakPots()),
+        LOCATION(RC_BOTW_B3_EAST_V_S_POT   , logic->CanBreakPots()),
+        LOCATION(RC_BOTW_B3_EAST_V_SW_POT  , logic->CanBreakPots()),
+        LOCATION(RC_BOTW_B3_SUN_FAIRY      , logic->CanUse(RG_SUNS_SONG)),
     }, {
         //Exits
         Entrance(RR_BOTW_SOUTHWEST_ROOM      , []{return true;}),
@@ -165,11 +164,11 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTW_B3_PLATFORM] = Region("Bottom of the Well B3 Platform", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_BOTW_B3_PLATFORM_WEST_RUPEE     , true),
-        LOCATION(RC_BOTW_B3_PLATFORM_NORTHWEST_RUPEE, true),
-        LOCATION(RC_BOTW_B3_PLATFORM_NORTH_RUPEE    , true),
-        LOCATION(RC_BOTW_B3_PLATFORM_NORTHEAST_RUPEE, true),
-        LOCATION(RC_BOTW_B3_PLATFORM_EAST_RUPEE     , true),
+        LOCATION(RC_BOTW_B3_PLATFORM_N_RUPEE , true),
+        LOCATION(RC_BOTW_B3_PLATFORM_NW_RUPEE, true),
+        LOCATION(RC_BOTW_B3_PLATFORM_NE_RUPEE, true),
+        LOCATION(RC_BOTW_B3_PLATFORM_W_RUPEE , true),
+        LOCATION(RC_BOTW_B3_PLATFORM_E_RUPEE , true),
     }, {
         //Exits
         Entrance(RR_BOTW_B3, []{return true;}),
@@ -190,18 +189,18 @@ void RegionTable_Init_BottomOfTheWell() {
     }, {
         //Locations
         //Implies CanBreakPots()
-        LOCATION(RC_BOTW_MQ_CAGED_POT         , Here(RR_BOTW_MQ_LOBBY, []{return logic->BlastOrSmash();}) && logic->CanHitEyeTargets()),
-        LOCATION(RC_BOTW_MQ_RUBBLE_NORTH_HEART, logic->HasExplosives()),
-        LOCATION(RC_BOTW_MQ_RUBBLE_SOUTH_HEART, logic->HasExplosives()),
+        LOCATION(RC_BOTW_MQ_CAGED_POT     , Here(RR_BOTW_MQ_LOBBY, []{return logic->BlastOrSmash();}) && logic->CanHitEyeTargets()),
+        LOCATION(RC_BOTW_MQ_N_BURIED_HEART, logic->HasExplosives()),
+        LOCATION(RC_BOTW_MQ_S_BURIED_HEART, logic->HasExplosives()),
     }, {
         //Exits
-        Entrance(RR_BOTW_ENTRYWAY          , []{return logic->IsChild;}),
-        Entrance(RR_BOTW_MQ_WEST_SWITCH    , []{return Here(RR_BOTW_MQ_LOBBY, []{return logic->BlastOrSmash();}) && logic->CanPassEnemy(RE_BIG_SKULLTULA);}),
-        Entrance(RR_BOTW_MQ_COFFIN_ROOM    , []{return (logic->LoweredBotwWater || logic->HasItem(RG_BRONZE_SCALE)) && logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 2);}),
-        Entrance(RR_BOTW_MQ_OUTER_CAGE     , []{return logic->IsChild && logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 2) && logic->CanUseProjectile();}),
-        Entrance(RR_BOTW_MQ_DEAD_HAND_ROOM , []{return logic->IsChild && logic->LoweredBotwWater;}),
-        Entrance(RR_BOTW_MQ_WOODEN_X_ROOM  , []{return logic->CanUse(RG_ZELDAS_LULLABY);}),
-        Entrance(RR_BOTW_MQ_B3             , []{return true;}),
+        Entrance(RR_BOTW_ENTRYWAY         , []{return logic->IsChild;}),
+        Entrance(RR_BOTW_MQ_WEST_SWITCH   , []{return Here(RR_BOTW_MQ_LOBBY, []{return logic->BlastOrSmash();}) && logic->CanPassEnemy(RE_BIG_SKULLTULA);}),
+        Entrance(RR_BOTW_MQ_COFFIN_ROOM   , []{return (logic->LoweredBotwWater || logic->HasItem(RG_BRONZE_SCALE)) && logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 2);}),
+        Entrance(RR_BOTW_MQ_OUTER_CAGE    , []{return logic->IsChild && logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 2) && logic->CanUseProjectile();}),
+        Entrance(RR_BOTW_MQ_DEAD_HAND_ROOM, []{return logic->IsChild && logic->LoweredBotwWater;}),
+        Entrance(RR_BOTW_MQ_WOODEN_X_ROOM , []{return logic->CanUse(RG_ZELDAS_LULLABY);}),
+        Entrance(RR_BOTW_MQ_B3            , []{return true;}),
     });
 
     areaTable[RR_BOTW_MQ_WEST_SWITCH] = Region("Bottom of the Well MQ West Switch", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {
@@ -216,9 +215,9 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTW_MQ_COFFIN_ROOM] = Region("Bottom of the Well MQ Coffin Room", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_BOTW_MQ_COFFIN_ROOM_GS        , logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
-        LOCATION(RC_BOTW_MQ_NORTHEAST_COFFIN_HEART, logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
-        LOCATION(RC_BOTW_MQ_SOUTH_COFFIN_HEART    , logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
+        LOCATION(RC_BOTW_MQ_COFFIN_ROOM_GS , logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
+        LOCATION(RC_BOTW_MQ_NE_COFFIN_HEART, logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
+        LOCATION(RC_BOTW_MQ_S_COFFIN_HEART , logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
     }, {
         //Exits
         Entrance(RR_BOTW_MQ_LOBBY,  []{return (logic->LoweredBotwWater || logic->HasItem(RG_BRONZE_SCALE)) && logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 2);}),
@@ -235,7 +234,7 @@ void RegionTable_Init_BottomOfTheWell() {
     areaTable[RR_BOTW_MQ_DEAD_HAND_ROOM] = Region("Bottom of the Well MQ Dead Hand Room", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
         LOCATION(RC_BOTW_MQ_DEAD_HAND_CHEST     , logic->CanKillEnemy(RE_DEAD_HAND)),
-        LOCATION(RC_BOTW_MQ_DEAD_HAND_RUBBLE_KEY, logic->HasExplosives() || (ctx->GetTrickOption(RT_BOTW_MQ_DEADHAND_KEY) && logic->CanUse(RG_BOOMERANG))),
+        LOCATION(RC_BOTW_MQ_DEAD_HAND_BURIED_KEY, logic->HasExplosives() || (ctx->GetTrickOption(RT_BOTW_MQ_DEADHAND_KEY) && logic->CanUse(RG_BOOMERANG))),
     }, {
         //Exits
         //This assumes we spawned in dead hand's room, if whatever trick made this relevant instead puts us in the previous room, remove the kill Dead Hand check.
@@ -244,9 +243,9 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTW_MQ_WOODEN_X_ROOM] = Region("Bottom of the Well MQ Wooden X Room", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_BOTW_MQ_WOODEN_X_CHEST           , true),
+        LOCATION(RC_BOTW_MQ_WOODEN_X_CHEST        , true),
         //This location technically involves an invisible platform, but it's intended to do lensless in vanilla and is clearly signposted by pots.
-        LOCATION(RC_BOTW_MQ_EAST_INNER_ROOM_KEY     , true),
+        LOCATION(RC_BOTW_MQ_INVISIBLE_LEDGE_KEY   , true),
         //The enemies in this room are invisible and crowd around the player, being awkward to deal with blind unless you already know how.
         //the right wall is safe, and can be followed to get behind the grave which you can then pull easily assuming you can tank invisible keese
         //Using a deku nut however stuns everything easily. and if you have a melee weapon you can kill the skull through the grave then grab the drop
@@ -254,14 +253,14 @@ void RegionTable_Init_BottomOfTheWell() {
         //Also you get cheap shotted on entry sometimes.
         //An MQ lens trick is recommended here, and a review of this room for OHKO logic what that is added is advised.
         //In the meantime I assume damage taken or the easy answer (nuts)
-        LOCATION(RC_BOTW_MQ_WEST_CENTER_ROOM_GS      , logic->OpenedWestRoomMQBotw && (logic->TakeDamage() || logic->CanUse(RG_NUTS)) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
-        LOCATION(RC_BOTW_MQ_WOODEN_X_ROOM_CENTER_POT , logic->CanBreakPots()),
-        LOCATION(RC_BOTW_MQ_WOODEN_X_ROOM_EAST_POT   , logic->CanBreakPots()),
-        LOCATION(RC_BOTW_MQ_WOODEN_X_ROOM_WEST_POT   , logic->CanBreakPots()),
-        LOCATION(RC_BOTW_MQ_EAST_INNER_ROOM_FAR_POT , logic->CanBreakPots()),
-        LOCATION(RC_BOTW_MQ_EAST_INNER_ROOM_MID_POT , logic->CanBreakPots()),
-        LOCATION(RC_BOTW_MQ_EAST_INNER_ROOM_NEAR_POT, logic->CanBreakPots()),
-        LOCATION(RC_BOTW_MQ_WOODEN_X_ROOM_SUN_FAIRY  , logic->CanUse(RG_SUNS_SONG)),
+        LOCATION(RC_BOTW_MQ_UNDER_GRAVE_GS        , logic->OpenedWestRoomMQBotw && (logic->TakeDamage() || logic->CanUse(RG_NUTS)) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
+        LOCATION(RC_BOTW_MQ_WOODEN_X_ROOM_W_POT   , logic->CanBreakPots()),
+        LOCATION(RC_BOTW_MQ_WOODEN_X_ROOM_C_POT   , logic->CanBreakPots()),
+        LOCATION(RC_BOTW_MQ_WOODEN_X_ROOM_E_POT   , logic->CanBreakPots()),
+        LOCATION(RC_BOTW_MQ_INVISIBLE_LEDGE_NW_POT, logic->CanBreakPots()),
+        LOCATION(RC_BOTW_MQ_INVISIBLE_LEDGE_NE_POT, logic->CanBreakPots()),
+        LOCATION(RC_BOTW_MQ_INVISIBLE_LEDGE_S_POT , logic->CanBreakPots()),
+        LOCATION(RC_BOTW_MQ_NEAR_POTS_SUN_FAIRY   , logic->CanUse(RG_SUNS_SONG)),
     }, {
         //Exits
         //If a relevant trick causes you to be able to warp into here without going through LOBBY, a new eventAccess will be needed for lowering the gates with ZL
@@ -272,11 +271,11 @@ void RegionTable_Init_BottomOfTheWell() {
     areaTable[RR_BOTW_MQ_B3] = Region("Bottom of the Well MQ B3", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
         //behind invisible big skulltulas, but with navi spotting it's easy to avoid them, or at worst, tank your way through as they do not block the path
-        LOCATION(RC_BOTW_MQ_B3_GS             , logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
-        LOCATION(RC_BOTW_MQ_B3_SOUTH_HEART    , true),
-        LOCATION(RC_BOTW_MQ_B3_NORTHWEST_HEART, true),
-        LOCATION(RC_BOTW_MQ_B3_NORTHEAST_HEART, true),
-        LOCATION(RC_BOTW_MQ_B3_SUN_FAIRY      , logic->CanUse(RG_SUNS_SONG)),
+        LOCATION(RC_BOTW_MQ_B3_GS       , logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
+        LOCATION(RC_BOTW_MQ_B3_S_HEART  , true),
+        LOCATION(RC_BOTW_MQ_B3_NW_HEART , true),
+        LOCATION(RC_BOTW_MQ_B3_NE_HEART , true),
+        LOCATION(RC_BOTW_MQ_B3_SUN_FAIRY, logic->CanUse(RG_SUNS_SONG)),
     }, {
         //Exits
         Entrance(RR_BOTW_MQ_LOBBY, []{return true;}),

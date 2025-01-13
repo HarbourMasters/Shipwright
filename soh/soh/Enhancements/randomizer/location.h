@@ -180,6 +180,16 @@ class Location {
                         RandomizerHintTextKey hintKey, RandomizerGet vanillaItem,
                         SpoilerCollectionCheck collectionCheck);
 
+    static Location Pot(RandomizerCheck rc, RandomizerCheckQuest quest_, SceneID scene_,
+                        int32_t actorParams_, std::string&& shortName_, std::string&& spoilerName_,
+                        RandomizerHintTextKey hintKey, RandomizerGet vanillaItem,
+                        SpoilerCollectionCheck collectionCheck);
+
+    static Location Pot(RandomizerCheck rc, RandomizerCheckQuest quest_, SceneID scene_,
+                        int32_t actorParams_, std::string&& shortName_,
+                        RandomizerHintTextKey hintKey, RandomizerGet vanillaItem,
+                        SpoilerCollectionCheck collectionCheck);
+
     static Location OtherHint(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, ActorID actorId_, SceneID scene_, std::string&& shortName_,
                               std::string&& spoilerName_);
 
@@ -190,6 +200,10 @@ class Location {
     static Location Fairy(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, SceneID scene_, int32_t actorParams_, std::string&& shortName_, std::string&& spoilerName_, RandomizerHintTextKey hintKey, SpoilerCollectionCheck collectionCheck);
 
     static Location Fairy(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, SceneID scene_, int32_t actorParams_, std::string&& shortName_, RandomizerHintTextKey hintKey, SpoilerCollectionCheck collectionCheck);
+
+    static Location Fairy(RandomizerCheck rc, RandomizerCheckQuest quest_, SceneID scene_, int32_t actorParams_, std::string&& shortName_, std::string&& spoilerName_, RandomizerHintTextKey hintKey, SpoilerCollectionCheck collectionCheck);
+
+    static Location Fairy(RandomizerCheck rc, RandomizerCheckQuest quest_, SceneID scene_, int32_t actorParams_, std::string&& shortName_, RandomizerHintTextKey hintKey, SpoilerCollectionCheck collectionCheck);
 
     static Location HintStone(RandomizerCheck rc, RandomizerCheckQuest quest_, SceneID scene_, int32_t actorParams_, std::string&& shortName_);
 
