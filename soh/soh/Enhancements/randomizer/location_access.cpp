@@ -27,11 +27,10 @@ bool LocationAccess::CheckConditionAtAgeTime(bool& age, bool& time) const {
     return GetConditionsMet();
 }
 
-bool LocationAccess::ConditionsMet() const {
+bool LocationAccess::ConditionsMet(Region* parentRegion) const {
     //WARNING enterance validation can run this after resetting the access for sphere 0 validation
     //When refactoring ToD access, either fix the above or do not assume that we
     //have any access at all just because this is being run
-    Region* parentRegion = RegionTable(Rando::Context::GetInstance()->GetItemLocation(location)->GetParentRegionKey());
     bool conditionsMet = false;
 
     if (
