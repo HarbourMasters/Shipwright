@@ -2372,6 +2372,7 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
         } else {
             mResolvedStartingAge = RO_AGE_ADULT;
         }
+        mOptions[RSK_STARTING_AGE].SetContextIndex(mResolvedStartingAge);
     } else {
         mResolvedStartingAge = static_cast<RandoOptionStartingAge>(mOptions[RSK_STARTING_AGE].GetContextOptionIndex());
     }
