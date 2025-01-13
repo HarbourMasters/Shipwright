@@ -103,7 +103,7 @@ void RegionTable_Init_BottomOfTheWell() {
     }, {
         //Locations
         LOCATION(RC_BOTW_INNER_WEST_ROOM_GS, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
-        LOCATION(RC_BOTW_INVISIBLE_LEDGE_GS, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
+        LOCATION(RC_BOTW_UNSEEN_LEDGE_GS, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
     }, {
         //Exits
         Entrance(RR_BOTW_REQUIRES_LENS, []{return logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 3);}),
@@ -245,7 +245,7 @@ void RegionTable_Init_BottomOfTheWell() {
         //Locations
         LOCATION(RC_BOTW_MQ_WOODEN_X_CHEST        , true),
         //This location technically involves an invisible platform, but it's intended to do lensless in vanilla and is clearly signposted by pots.
-        LOCATION(RC_BOTW_MQ_INVISIBLE_LEDGE_KEY   , true),
+        LOCATION(RC_BOTW_MQ_UNSEEN_LEDGE_KEY   , true),
         //The enemies in this room are invisible and crowd around the player, being awkward to deal with blind unless you already know how.
         //the right wall is safe, and can be followed to get behind the grave which you can then pull easily assuming you can tank invisible keese
         //Using a deku nut however stuns everything easily. and if you have a melee weapon you can kill the skull through the grave then grab the drop
@@ -257,9 +257,9 @@ void RegionTable_Init_BottomOfTheWell() {
         LOCATION(RC_BOTW_MQ_WOODEN_X_ROOM_W_POT   , logic->CanBreakPots()),
         LOCATION(RC_BOTW_MQ_WOODEN_X_ROOM_C_POT   , logic->CanBreakPots()),
         LOCATION(RC_BOTW_MQ_WOODEN_X_ROOM_E_POT   , logic->CanBreakPots()),
-        LOCATION(RC_BOTW_MQ_INVISIBLE_LEDGE_NW_POT, logic->CanBreakPots()),
-        LOCATION(RC_BOTW_MQ_INVISIBLE_LEDGE_NE_POT, logic->CanBreakPots()),
-        LOCATION(RC_BOTW_MQ_INVISIBLE_LEDGE_S_POT , logic->CanBreakPots()),
+        LOCATION(RC_BOTW_MQ_UNSEEN_LEDGE_NW_POT, logic->CanBreakPots()),
+        LOCATION(RC_BOTW_MQ_UNSEEN_LEDGE_NE_POT, logic->CanBreakPots()),
+        LOCATION(RC_BOTW_MQ_UNSEEN_LEDGE_S_POT , logic->CanBreakPots()),
         LOCATION(RC_BOTW_MQ_NEAR_POTS_SUN_FAIRY   , logic->CanUse(RG_SUNS_SONG)),
     }, {
         //Exits

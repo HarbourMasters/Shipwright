@@ -1629,7 +1629,7 @@ hintTextTable[RHT_SHADOW_TEMPLE_MAP_CHEST] = HintText(CustomMessage("They say th
                                                                   /*french*/ "Selon moi, le #secret explosif du Poigneur# est #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                 // /*spanish*/ Según dicen, el #explosivo secreto de la Mano Muerta# esconde #[[1]]#.
 
-    hintTextTable[RHT_BOTW_MQ_IMVISIBLE_LEDGE_KEY] = HintText(CustomMessage("They say that an #invisible path in the well# leads to #[[1]]#.",
+    hintTextTable[RHT_BOTW_MQ_UNSEEN_LEDGE_KEY] = HintText(CustomMessage("They say that an #invisible path in the well# leads to #[[1]]#.",
                                                                  /*german*/ "Man erzählt sich, daß ein #unsichtbarer Pfad im Brunnen# zu #[[1]]# führe.",
                                                                  /*french*/ "Selon moi, dans un #chemin caché dans le Puits# gît #[[1]]#.", {QM_RED, QM_GREEN}));
                                                              // /*spanish*/ Según dicen, un #camino invisible del pozo# conduce a #[[1]]#.
@@ -1710,11 +1710,11 @@ hintTextTable[RHT_SHADOW_TEMPLE_MAP_CHEST] = HintText(CustomMessage("They say th
 
     hintTextTable[RHT_BOTW_MQ_CAGED_POT] = HintText(CustomMessage("They say that #a pot caged in the well# contains #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_BOTW_MQ_INVISIBLE_LEDGE_S_POT] = HintText(CustomMessage("They say that #a doorside pot sitting on nothing# in the well contains #[[1]]#.", {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_BOTW_MQ_UNSEEN_LEDGE_S_POT] = HintText(CustomMessage("They say that #a doorside pot sitting on nothing# in the well contains #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_BOTW_MQ_INVISIBLE_LEDGE_NE_POT] = HintText(CustomMessage("They say that #a pot sitting on the corner of nothing# in the well contains #[[1]]#.", {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_BOTW_MQ_UNSEEN_LEDGE_NE_POT] = HintText(CustomMessage("They say that #a pot sitting on the corner of nothing# in the well contains #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_BOTW_MQ_INVISIBLE_LEDGE_NW_POT] = HintText(CustomMessage("They say that #a ledgeside pot sitting on nothing# in the well contains #[[1]]#.", {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_BOTW_MQ_UNSEEN_LEDGE_NW_POT] = HintText(CustomMessage("They say that #a ledgeside pot sitting on nothing# in the well contains #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_BOTW_SE_COFFIN_HEART] = HintText(CustomMessage("They say that in #well's doorside coffin# rests #[[1]]#.", {QM_RED, QM_GREEN}));
 
