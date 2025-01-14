@@ -214,7 +214,7 @@ static void WriteChosenOptions() {
       jsonData["requiredTrials"].push_back(RemoveLineBreaks(trialName));
     }
   }
-  if (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_ADULT){
+  if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_ADULT)){
     jsonData["SelectedStartingAge"] = "Adult";
   } else {
     jsonData["SelectedStartingAge"] = "Child";

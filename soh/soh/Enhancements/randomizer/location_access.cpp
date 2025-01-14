@@ -438,13 +438,13 @@ namespace Regions {
         }
 
         if (/*Settings::HasNightStart TODO:: Randomize Starting Time*/ false) {
-            if (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD) {
+            if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD)) {
                 RegionTable(RR_ROOT)->childNight = true;
             } else {
                 RegionTable(RR_ROOT)->adultNight = true;
             }
         } else {
-            if (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD) {
+            if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD)) {
                 RegionTable(RR_ROOT)->childDay = true;
             } else {
                 RegionTable(RR_ROOT)->adultDay = true;
@@ -465,13 +465,13 @@ namespace Regions {
         }
 
         if (/*Settings::HasNightStart TODO:: Randomize Starting Time*/ false) {
-            if (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD) {
+            if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD)) {
                 RegionTable(RR_ROOT)->childNight = true;
             } else {
                 RegionTable(RR_ROOT)->adultNight = true;
             }
         } else {
-            if (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD) {
+            if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD)) {
                 RegionTable(RR_ROOT)->childDay = true;
             } else {
                 RegionTable(RR_ROOT)->adultDay = true;

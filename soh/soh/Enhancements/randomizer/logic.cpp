@@ -2150,7 +2150,7 @@ namespace Rando {
         //Other
         AtDay         = false;
         AtNight       = false;
-        GetSaveContext()->linkAge = !ctx->GetSettings()->ResolvedStartingAge();
+        GetSaveContext()->linkAge = !ctx->GetOption(RSK_SELECTED_STARTING_AGE).GetContextOptionIndex();
 
         //Events
         ShowedMidoSwordAndShield  = false;

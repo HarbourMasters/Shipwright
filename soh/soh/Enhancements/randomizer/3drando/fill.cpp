@@ -130,14 +130,14 @@ static bool UpdateToDAccess(Entrance* entrance, Region* connection) {
 static void ValidateOtherEntrance(GetAccessibleLocationsStruct& gals) {
   auto ctx = Rando::Context::GetInstance();
   // Condition for validating Temple of Time Access
-  if (!gals.foundTempleOfTime && ((ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD && RegionTable(RR_TEMPLE_OF_TIME)->Adult()) || 
-                            (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_ADULT && RegionTable(RR_TEMPLE_OF_TIME)->Child()))) {
+  if (!gals.foundTempleOfTime && ((ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD) && RegionTable(RR_TEMPLE_OF_TIME)->Adult()) || 
+                            (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_ADULT) && RegionTable(RR_TEMPLE_OF_TIME)->Child()))) {
     gals.foundTempleOfTime = true;
   }
   // Condition for validating a valid starting region
   if (!gals.validatedStartingRegion) {
-    bool childAccess = ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD || RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Child();
-    bool adultAccess = ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_ADULT || RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Adult();
+    bool childAccess = ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD) || RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Child();
+    bool adultAccess = ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_ADULT) || RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Adult();
 
     Region* kokiri = RegionTable(RR_KOKIRI_FOREST);
     Region* kakariko = RegionTable(RR_KAKARIKO_VILLAGE);
@@ -168,7 +168,7 @@ static void ValidateSphereZero(GetAccessibleLocationsStruct& gals){
     // Apply all items that are necessary for checking all location access
     ApplyAllAdvancmentItems();
     // Reset access as the non-starting age
-    if (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD) {
+    if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD)) {
       for (RandomizerRegion regionKey : gals.regionPool) {
         RegionTable(regionKey)->adultDay = false;
         RegionTable(regionKey)->adultNight = false;
