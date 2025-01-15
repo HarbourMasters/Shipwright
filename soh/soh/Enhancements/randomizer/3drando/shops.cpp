@@ -1,5 +1,5 @@
 #include "item_pool.hpp"
-#include "location_access.hpp"
+#include "../location_access.h"
 #include "random.hpp"
 #include "shops.hpp"
 #include "../location.h"

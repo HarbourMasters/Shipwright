@@ -78,14 +78,6 @@ class Settings {
     const std::vector<std::vector<Option*>>& GetExcludeLocationsOptions() const;
 
     /**
-     * @brief Gets the resolved Starting Age. Represents the actual starting age when the
-     * RSK_STARTING_AGE option is set to Random.
-     *
-     * @return RandoOptionStartingAge
-     */
-    RandoOptionStartingAge ResolvedStartingAge() const;
-
-    /**
      * @brief Gets the resolved Light Arrow CutScene check condition.
      * There is no direct option for this, it is inferred based on the value of a few other options.
      *
@@ -200,7 +192,6 @@ class Settings {
     std::array<OptionGroup, RSG_MAX> mOptionGroups = {};
     std::array<TrickOption, RT_MAX> mTrickOptions = {};
     std::vector<std::vector<Option*>> mExcludeLocationsOptionsAreas = {};
-    RandoOptionStartingAge mResolvedStartingAge =  RO_AGE_CHILD;
     RandoOptionLACSCondition mLACSCondition = RO_LACS_VANILLA;
     std::string mHash;
     std::string mSeedString;

@@ -302,6 +302,8 @@ typedef enum {
     // Opt: *EnFr
     // Vanilla condition: this->reward == GI_NONE
     VB_FROGS_GO_TO_IDLE,
+    // Vanilla condition: var >= gSaveContext.health) && (gSaveContext.health > 0
+    VB_HEALTH_METER_BE_CRITICAL,
 
     /*** Play Cutscenes ***/
 
@@ -310,7 +312,9 @@ typedef enum {
     VB_PLAY_FIRE_ARROW_CS,
     // Vanilla condition: INV_CONTENT(ITEM_ARROW_FIRE) == ITEM_NONE
     VB_SPAWN_FIRE_ARROW,
-    // Opt: *EventChkInf flag
+    // Opt: s32 entranceIndex
+    VB_ALLOW_ENTRANCE_CS_FOR_EITHER_AGE,
+    // Opt: s32 flag/EventChkInf, s32 entranceIndex
     VB_PLAY_ENTRANCE_CS,
     // Opt: *cutsceneId
     VB_PLAY_ONEPOINT_CS,
@@ -486,8 +490,6 @@ typedef enum {
     VB_TRADE_TIMER_ODD_MUSHROOM,
     VB_TRADE_TIMER_FROG,
     VB_TRADE_TIMER_EYEDROPS,
-    // Opt: *EnNiwLady
-    VB_ANJU_SET_OBTAINED_TRADE_ITEM,
 
     /*** Fixes ***/
     // Vanilla condition: false
@@ -517,6 +519,8 @@ typedef enum {
     VB_FAIRY_HEAL,
     // Opt: *ObjBean
     VB_SPAWN_BEAN_STALK_FAIRIES,
+    // Opt: *ShotSun
+    VB_SPAWN_SONG_FAIRY,
     // Opt: *EnGs
     VB_SPAWN_GOSSIP_STONE_FAIRY,
 } GIVanillaBehavior;
@@ -631,7 +635,7 @@ struct HookInfo {
 #define COND_VB_SHOULD(id, condition, body)                                                               \
     {                                                                                                     \
         static HOOK_ID hookId = 0;                                                                        \
-        GameInteractor::Instance->UnregisterGameHookForID<GameInteractor::ShouldVanillaBehavior>(hookId); \
+        GameInteractor::Instance->UnregisterGameHookForID<GameInteractor::OnVanillaBehavior>(hookId); \
         hookId = 0;                                                                                       \
         if (condition) {                                                                                  \
             hookId = REGISTER_VB_SHOULD(id, body);                                                        \

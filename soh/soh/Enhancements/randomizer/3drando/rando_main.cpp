@@ -1,7 +1,7 @@
 #include "menu.hpp"
 #include "../static_data.h"
 #include "../item_location.h"
-#include "location_access.hpp"
+#include "../location_access.h"
 #include "rando_main.hpp"
 #include "../context.h"
 #include <libultraship/bridge.h>

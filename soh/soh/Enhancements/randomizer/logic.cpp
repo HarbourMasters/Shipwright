@@ -341,7 +341,7 @@ namespace Rando {
                 return BugShrub || WanderingBugs || BugRock || GetInLogic(LOGIC_BUGS_ACCESS);
             case RG_BOTTLE_WITH_FISH:
                 return LoneFish || FishGroup || GetInLogic(LOGIC_FISH_ACCESS); //is there any need to care about lone vs group?
-            case RG_BOTTLE_WITH_BLUE_FIRE: //RANDOTODO should probably be better named to 
+            case RG_BOTTLE_WITH_BLUE_FIRE: //RANDOTODO should probably be better named
                 return BlueFireAccess || GetInLogic(LOGIC_BLUE_FIRE_ACCESS);
             case RG_BOTTLE_WITH_FAIRY:
                 return FairyPot || GossipStoneFairy || BeanPlantFairy || ButterflyFairy || FreeFairies || FairyPond || GetInLogic(LOGIC_FAIRY_ACCESS);
@@ -580,6 +580,8 @@ namespace Rando {
             case RE_WHITE_WOLFOS:
             case RE_WALLMASTER:
                 return CanJumpslash() || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOMBCHU_5) || CanUse(RG_DINS_FIRE) || (CanUse(RG_BOMB_BAG) && (CanUse(RG_NUTS) || CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG)));
+            case RE_GERUDO_WARRIOR:
+                return CanJumpslash() || CanUse(RG_FAIRY_BOW) || (ctx->GetTrickOption(RT_GF_WARRIOR_WITH_DIFFICULT_WEAPON) && (CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOMBCHU_5)));
             case RE_GIBDO:
             case RE_REDEAD:
                 return CanJumpslash() || CanUse(RG_DINS_FIRE);
@@ -647,7 +649,7 @@ namespace Rando {
             //RANDOTODO Dark link is buggy right now, retest when he is not
                 return CanJumpslash() || CanUse(RG_FAIRY_BOW);
             case RE_ANUBIS:
-                //there's a restoration that allows beating them with mirror shield + some way to trigger thier attack
+                //there's a restoration that allows beating them with mirror shield + some way to trigger their attack
                 return HasFireSource();
             case RE_BEAMOS:
                 return HasExplosives();
@@ -820,8 +822,7 @@ namespace Rando {
     }
 
     bool Logic::CanBreakMudWalls() {
-        //RANDOTODO blue fire tricks
-        return BlastOrSmash();
+        return BlastOrSmash() || (ctx->GetTrickOption(RT_BLUE_FIRE_MUD_WALLS) && BlueFire());
     }
 
     bool Logic::CanGetDekuBabaSticks() {
@@ -879,13 +880,26 @@ namespace Rando {
 
     uint8_t Logic::BottleCount() {
         uint8_t count = 0;
-        if (!CanEmptyBigPoes){
-            return 0;
-        }
-        for (int i = SLOT_BOTTLE_1; i <= SLOT_BOTTLE_4; i++) {
-            uint8_t item = GetSaveContext()->inventory.items[i];
-            if (item != ITEM_NONE && (item != ITEM_LETTER_RUTO || (item == ITEM_LETTER_RUTO && DeliverLetter))) {
-                count++;
+        if (CouldEmptyBigPoes){
+            for (int i = SLOT_BOTTLE_1; i <= SLOT_BOTTLE_4; i++) {
+                uint8_t item = GetSaveContext()->inventory.items[i];
+                switch (item) {
+                    case ITEM_LETTER_RUTO:
+                        if (DeliverLetter) {
+                            count++;
+                        }
+                        break;
+                    case ITEM_BIG_POE:
+                        if (CanEmptyBigPoes) {
+                            count++;
+                        }
+                        break;
+                    case ITEM_NONE:
+                        break;
+                    default:
+                        count++;
+                        break;
+                }
             }
         }
         return count;
@@ -950,7 +964,7 @@ namespace Rando {
     }
 
     bool Logic::BombchusEnabled(){
-        return ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) ? CheckInventory(ITEM_BOMBCHU, true) : HasItem(RG_BOMB_BAG);
+        return ctx->GetOption(RSK_BOMBCHU_BAG) ? CheckInventory(ITEM_BOMBCHU, true) : HasItem(RG_BOMB_BAG);
     }
 
     // TODO: Implement Ammo Drop Setting in place of bombchu drops
@@ -1134,8 +1148,8 @@ namespace Rando {
     }
 
     bool Logic::CanFinishGerudoFortress(){
-        return (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL) && SmallKeys(RR_GERUDO_FORTRESS, 4) && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)) && (HasItem(RG_GERUDO_MEMBERSHIP_CARD) || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_KITCHEN))) ||
-               (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST)   && SmallKeys(RR_GERUDO_FORTRESS, 1) && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD))) ||
+        return (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL) && SmallKeys(RR_GERUDO_FORTRESS, 4) && CanKillEnemy(RE_GERUDO_WARRIOR) && (HasItem(RG_GERUDO_MEMBERSHIP_CARD) || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_KITCHEN))) ||
+               (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST)   && SmallKeys(RR_GERUDO_FORTRESS, 1) && CanKillEnemy(RE_GERUDO_WARRIOR)) ||
                ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE);
     }
 
@@ -1148,7 +1162,7 @@ namespace Rando {
     }
 
     bool Logic::CanUseProjectile(){
-        return  HasExplosives() || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOOMERANG);
+        return HasExplosives() || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOOMERANG);
     }
 
     bool Logic::CanBuildRainbowBridge(){
@@ -1624,7 +1638,7 @@ namespace Rando {
                 SetRandoInf(RandoGetToRandInf.at(randoGet), state);
                 break;
             case RG_TRIFORCE_PIECE:
-                mSaveContext->triforcePiecesCollected += (!state ? -1 : 1);
+                mSaveContext->ship.quest.data.randomizer.triforcePiecesCollected += (!state ? -1 : 1);
                 break;
             case RG_BOMBCHU_5:
             case RG_BOMBCHU_10:
@@ -1880,14 +1894,13 @@ namespace Rando {
         mSaveContext->sceneFlags[5].swch = 0x40000000;
 
         // SoH specific
-        mSaveContext->backupFW = mSaveContext->fw;
-        mSaveContext->pendingSale = ITEM_NONE;
-        mSaveContext->pendingSaleMod = MOD_NONE;
-        mSaveContext->isBossRushPaused = 0;
-        mSaveContext->pendingIceTrapCount = 0;
+        mSaveContext->ship.backupFW = mSaveContext->fw;
+        mSaveContext->ship.pendingSale = ITEM_NONE;
+        mSaveContext->ship.pendingSaleMod = MOD_NONE;
+        mSaveContext->ship.pendingIceTrapCount = 0;
 
         // Init with normal quest unless only an MQ rom is provided
-        mSaveContext->questId = OTRGlobals::Instance->HasOriginal() ? QUEST_NORMAL : QUEST_MASTER;
+        mSaveContext->ship.quest.id = OTRGlobals::Instance->HasOriginal() ? QUEST_NORMAL : QUEST_MASTER;
 
         //RANDOTODO (ADD ITEMLOCATIONS TO GSAVECONTEXT)
     }
@@ -1936,16 +1949,16 @@ namespace Rando {
 
     bool Logic::HasAdultTrade(uint32_t itemID) {
         int tradeIndex = itemID - ITEM_POCKET_EGG;
-        return mSaveContext->adultTradeItems & (1 << tradeIndex);
+        return mSaveContext->ship.quest.data.randomizer.adultTradeItems & (1 << tradeIndex);
     }
 
     void Logic::SetAdultTrade(uint32_t itemID, bool state) {
         int tradeIndex = itemID - ITEM_POCKET_EGG;
         if (!state) {
-            mSaveContext->adultTradeItems &= ~(1 << tradeIndex);
+            mSaveContext->ship.quest.data.randomizer.adultTradeItems &= ~(1 << tradeIndex);
         }
         else {
-            mSaveContext->adultTradeItems |= (1 << tradeIndex);
+            mSaveContext->ship.quest.data.randomizer.adultTradeItems |= (1 << tradeIndex);
         }
     }
 
@@ -1980,15 +1993,15 @@ namespace Rando {
     }
 
     bool Logic::CheckRandoInf(uint32_t flag) {
-        return mSaveContext->randomizerInf[flag >> 4] & (1 << (flag & 0xF));
+        return mSaveContext->ship.randomizerInf[flag >> 4] & (1 << (flag & 0xF));
     }
 
     void Logic::SetRandoInf(uint32_t flag, bool state) {
         if (!state) {
-            mSaveContext->randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
+            mSaveContext->ship.randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
         }
         else {
-            mSaveContext->randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
+            mSaveContext->ship.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
         }
     }
 
@@ -2149,7 +2162,7 @@ namespace Rando {
         //Other
         AtDay         = false;
         AtNight       = false;
-        GetSaveContext()->linkAge = !ctx->GetSettings()->ResolvedStartingAge();
+        GetSaveContext()->linkAge = !ctx->GetOption(RSK_SELECTED_STARTING_AGE).GetContextOptionIndex();
 
         //Events
         ShowedMidoSwordAndShield  = false;

@@ -8,7 +8,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/UIWidgets.hpp"
 #include "dungeon.h"
-#include "3drando/location_access.hpp"
+#include "location_access.h"
 
 #include <string>
 #include <vector>
@@ -490,7 +490,7 @@ void CheckTrackerLoadGame(int32_t fileNum) {
         }
     }
     if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING && IS_RANDO) {
-        s8 startingAge = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_AGE);
+        uint8_t startingAge = OTRGlobals::Instance->gRandoContext->GetOption(RSK_SELECTED_STARTING_AGE).GetContextOptionIndex();
         RandomizerCheckArea startingArea;
         switch (startingAge) {
             case RO_AGE_CHILD:
@@ -1360,7 +1360,7 @@ bool IsVisibleInCheckTracker(RandomizerCheck rc) {
                 OTRGlobals::Instance->gRandoContext->IsQuestOfLocationActive(rc)
             ) || (loc->GetRCType() == RCTYPE_SHOP && showShops && !hideShopUnshuffledChecks);
     } else {
-        return loc->IsVanillaCompletion() && (!loc->IsDungeon() || (loc->IsDungeon() && loc->GetQuest() == gSaveContext.questId));
+        return loc->IsVanillaCompletion() && (!loc->IsDungeon() || (loc->IsDungeon() && loc->GetQuest() == gSaveContext.ship.quest.id));
     }
 }
 
@@ -1546,7 +1546,7 @@ void DrawLocation(RandomizerCheck rc) {
             SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionId, true);
         }
     } else {
-        ImGui::InvisibleButton("", ImVec2(20.0f, 10.0f));
+        ImGui::Dummy(ImVec2(20.0f, 10.0f));
     }
     ImGui::SameLine();
 

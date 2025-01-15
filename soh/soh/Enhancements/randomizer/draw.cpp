@@ -16,6 +16,7 @@
 #include "objects/object_gi_fire/object_gi_fire.h"
 #include "objects/object_fish/object_fish.h"
 #include "objects/object_toki_objects/object_toki_objects.h"
+#include "objects/object_gi_bomb_2/object_gi_bomb_2.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
 #include "objects/object_goma/object_goma.h"
 #include "objects/object_kingdodongo/object_kingdodongo.h"
@@ -28,6 +29,7 @@
 #include "objects/object_tw/object_tw.h"
 #include "objects/object_ganon2/object_ganon2.h"
 #include "soh_assets.h"
+#include "dungeon.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 
 extern "C" {
@@ -35,24 +37,49 @@ extern PlayState* gPlayState;
 extern SaveContext gSaveContext;
 }
 
+const char* SmallBaseCvarValue[10] = {
+    CVAR_COSMETIC("Key.ForestSmallBase.Value"),
+    CVAR_COSMETIC("Key.FireSmallBase.Value"),
+    CVAR_COSMETIC("Key.WaterSmallBase.Value"),
+    CVAR_COSMETIC("Key.SpiritSmallBase.Value"),
+    CVAR_COSMETIC("Key.ShadowSmallBase.Value"),
+    CVAR_COSMETIC("Key.WellSmallBase.Value"),
+    CVAR_COSMETIC("Key.GTGSmallBase.Value"),
+    CVAR_COSMETIC("Key.FortSmallBase.Value"),
+    CVAR_COSMETIC("Key.GanonsSmallBase.Value"),
+    CVAR_COSMETIC("Key.ChestGameSmallBase.Value"),
+};
+
+const char* SmallEmblemCvarValue[10] = {
+    CVAR_COSMETIC("Key.ForestEmblem.Value"),
+    CVAR_COSMETIC("Key.FireEmblem.Value"),
+    CVAR_COSMETIC("Key.WaterEmblem.Value"),
+    CVAR_COSMETIC("Key.SpiritEmblem.Value"),
+    CVAR_COSMETIC("Key.ShadowEmblem.Value"),
+    CVAR_COSMETIC("Key.WellEmblem.Value"),
+    CVAR_COSMETIC("Key.GTGEmblem.Value"),
+    CVAR_COSMETIC("Key.FortEmblem.Value"),
+    CVAR_COSMETIC("Key.GanonsEmblem.Value"),
+    CVAR_COSMETIC("Key.ChestGameEmblem.Value"),
+};
+
 extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 
 extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEntry) {
-    s8 keysCanBeOutsideDungeon = getItemEntry->getItemId == RG_GERUDO_FORTRESS_SMALL_KEY ?
-        Randomizer_GetSettingValue(RSK_GERUDO_KEYS) != RO_GERUDO_KEYS_VANILLA :
-        DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_KEYSANITY);
-    s8 isColoredKeysEnabled = keysCanBeOutsideDungeon && CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MatchKeyColors"), 1);
-    s16 color_slot = getItemEntry->getItemId - RG_FOREST_TEMPLE_SMALL_KEY;
-    s16 colors[9][3] = {
-        { 4, 195, 46 },    // Forest Temple
-        { 237, 95, 95 },   // Fire Temple
-        { 85, 180, 223 },  // Water Temple
-        { 222, 158, 47 },  // Spirit Temple
-        { 126, 16, 177 },  // Shadow Temple
-        { 227, 110, 255 }, // Bottom of the Well
-        { 221, 212, 60 },  // Gerudo Training Ground
-        { 255, 255, 255 }, // Thieves' Hideout
-        { 80, 80, 80 }     // Ganon's Castle
+    s8 isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 0);
+    int slot = getItemEntry->drawItemId - RG_FOREST_TEMPLE_SMALL_KEY;
+
+    Gfx* customIconDLs[] = {
+        (Gfx*)gSmallKeyIconForestTempleDL,
+        (Gfx*)gSmallKeyIconFireTempleDL,
+        (Gfx*)gSmallKeyIconWaterTempleDL,
+        (Gfx*)gSmallKeyIconSpiritTempleDL,
+        (Gfx*)gSmallKeyIconShadowTempleDL,
+        (Gfx*)gSmallKeyIconBottomoftheWellDL,
+        (Gfx*)gSmallKeyIconGerudoTrainingGroundDL,
+        (Gfx*)gSmallKeyIconGerudoFortressDL,
+        (Gfx*)gSmallKeyIconGanonsCastleDL,
+        (Gfx*)gSmallKeyIconTreasureChestGameDL,
     };
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -62,14 +89,28 @@ extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEn
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    if (isColoredKeysEnabled) {
-        gDPSetGrayscaleColor(POLY_OPA_DISP++, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 255);
+    Color_RGB8 keyColor = { 255, 255, 255 };
+    keyColor = CVarGetColor24(SmallBaseCvarValue[slot], keyColor);
+
+    if (isCustomKeysEnabled) {
+        gDPSetEnvColor(POLY_OPA_DISP++, keyColor.r, keyColor.g, keyColor.b, 255);
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gSmallKeyCustomDL);
+
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+
+        Color_RGB8 emblemColor = { 255, 0, 0 };
+        emblemColor = CVarGetColor24(SmallEmblemCvarValue[slot], emblemColor);
+
+        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+                G_MTX_MODELVIEW | G_MTX_LOAD);
+        gDPSetEnvColor(POLY_XLU_DISP++, emblemColor.r, emblemColor.g, emblemColor.b, 255);
+
+        gSPDisplayList(POLY_XLU_DISP++, customIconDLs[slot]);
+
+    } else {
+        gDPSetGrayscaleColor(POLY_OPA_DISP++, keyColor.r, keyColor.g, keyColor.b, 255);
         gSPGrayscale(POLY_OPA_DISP++, true);
-    }
-
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiSmallKeyDL);
-
-    if (isColoredKeysEnabled) {
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiSmallKeyDL);
         gSPGrayscale(POLY_OPA_DISP++, false);
     }
 
@@ -120,19 +161,25 @@ extern "C" void Randomizer_DrawCompass(PlayState* play, GetItemEntry* getItemEnt
 }
 
 extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEntry) {
-    s8 keysCanBeOutsideDungeon = getItemEntry->getItemId == RG_GANONS_CASTLE_BOSS_KEY ?
-        DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_GANONS_BOSS_KEY) :
-        DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_BOSS_KEYSANITY);
-    s8 isColoredKeysEnabled = keysCanBeOutsideDungeon && CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MatchKeyColors"), 1);
-    s16 color_slot;
-    color_slot = getItemEntry->getItemId - RG_FOREST_TEMPLE_BOSS_KEY;
-    s16 colors[6][3] = {
-        { 4, 195, 46 },   // Forest Temple
-        { 237, 95, 95 },  // Fire Temple
-        { 85, 180, 223 }, // Water Temple
-        { 222, 158, 47 }, // Spirit Temple
-        { 126, 16, 177 }, // Shadow Temple
-        { 210, 0, 0 }     // Ganon's Castle
+    s8 isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 1);
+    s16 slot = getItemEntry->getItemId - RG_FOREST_TEMPLE_BOSS_KEY;
+
+    std::string CvarValue[6] = {
+        "gCosmetics.Key.Forest",
+        "gCosmetics.Key.Fire",
+        "gCosmetics.Key.Water",
+        "gCosmetics.Key.Spirit",
+        "gCosmetics.Key.Shadow",
+        "gCosmetics.Key.Ganons",
+    };
+
+    Gfx* CustomdLists[] = {
+        (Gfx*)gBossKeyIconForestTempleDL,
+        (Gfx*)gBossKeyIconFireTempleDL,
+        (Gfx*)gBossKeyIconWaterTempleDL,
+        (Gfx*)gBossKeyIconSpiritTempleDL,
+        (Gfx*)gBossKeyIconShadowTempleDL,
+        (Gfx*)gBossKeyIconGanonsCastleDL,
     };
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -142,15 +189,22 @@ extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEnt
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    if (color_slot == 5 && isColoredKeysEnabled) { // Ganon's Boss Key
-        gDPSetGrayscaleColor(POLY_OPA_DISP++, 80, 80, 80, 255);
-        gSPGrayscale(POLY_OPA_DISP++, true);
-    }
-
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiBossKeyDL);
-
-    if (color_slot == 5 && isColoredKeysEnabled) { // Ganon's Boss Key
-        gSPGrayscale(POLY_OPA_DISP++, false);
+    Color_RGB8 keyColor = { 255, 255, 0 };
+    //Supposed to use CVAR_COSMETIC but I can't figure out the syntax
+    keyColor = CVarGetColor24((CvarValue[slot] + "BossBase.Value").c_str(), keyColor);
+    
+    if (isCustomKeysEnabled){
+        gDPSetEnvColor(POLY_OPA_DISP++, keyColor.r, keyColor.g, keyColor.b, 255);
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gBossKeyCustomDL);
+    } else {
+        if (CVarGetInteger((CvarValue[slot] + "BossBase.Changed").c_str(), false)){
+            gDPSetGrayscaleColor(POLY_OPA_DISP++, keyColor.r, keyColor.g, keyColor.b, 255);
+            gSPGrayscale(POLY_OPA_DISP++, true);
+            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiBossKeyDL);
+            gSPGrayscale(POLY_OPA_DISP++, false);
+        } else {
+            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiBossKeyDL);
+        }
     }
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
@@ -158,62 +212,140 @@ extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEnt
     gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    if (isColoredKeysEnabled) {
-        gDPSetGrayscaleColor(POLY_XLU_DISP++, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 255);
-        gSPGrayscale(POLY_XLU_DISP++, true);
-    }
-
-    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiBossKeyGemDL);
-
-    if (isColoredKeysEnabled) {
-        gSPGrayscale(POLY_XLU_DISP++, false);
+    Color_RGB8 emblemColor = { 255, 0, 0 };
+    emblemColor = CVarGetColor24((CvarValue[slot] + "Emblem.Value").c_str(), emblemColor);
+    
+    if (isCustomKeysEnabled){
+        gDPSetEnvColor(POLY_XLU_DISP++, emblemColor.r, emblemColor.g, emblemColor.b, 255);
+        gSPDisplayList(POLY_XLU_DISP++, CustomdLists[slot]);
+    } else {
+        if (CVarGetInteger((CvarValue[slot] + "Emblem.Changed").c_str(), false)){
+            gDPSetGrayscaleColor(POLY_XLU_DISP++, emblemColor.r, emblemColor.g, emblemColor.b, 255);
+            gSPGrayscale(POLY_XLU_DISP++, true);
+            gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiBossKeyGemDL);
+            gSPGrayscale(POLY_XLU_DISP++, false);
+        } else {
+            gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiBossKeyGemDL);
+        }
     }
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
 extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEntry) {
-    s16 color_slot = getItemEntry->getItemId - RG_FOREST_TEMPLE_KEY_RING;
-    s16 colors[9][3] = {
-        { 4, 195, 46 },    // Forest Temple
-        { 237, 95, 95 },   // Fire Temple
-        { 85, 180, 223 },  // Water Temple
-        { 222, 158, 47 },  // Spirit Temple
-        { 126, 16, 177 },  // Shadow Temple
-        { 227, 110, 255 }, // Bottom of the Well
-        { 221, 212, 60 },  // Gerudo Training Ground
-        { 255, 255, 255 }, // Thieves' Hideout
-        { 80, 80, 80 }     // Ganon's Castle
+    s8 isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 0);
+    int slot = getItemEntry->drawItemId - RG_FOREST_TEMPLE_KEY_RING;
+
+    Gfx* CustomIconDLs[] = {
+        (Gfx*)gKeyringIconForestTempleDL,
+        (Gfx*)gKeyringIconFireTempleDL,
+        (Gfx*)gKeyringIconWaterTempleDL,
+        (Gfx*)gKeyringIconSpiritTempleDL,
+        (Gfx*)gKeyringIconShadowTempleDL,
+        (Gfx*)gKeyringIconBottomoftheWellDL,
+        (Gfx*)gKeyringIconGerudoTrainingGroundDL,
+        (Gfx*)gKeyringIconGerudoFortressDL,
+        (Gfx*)gKeyringIconGanonsCastleDL,
+        (Gfx*)gKeyringIconTreasureChestGameDL,
+    };
+
+    Gfx* CustomKeysDLs[] = {
+        (Gfx*)gKeyringKeysForestTempleDL,
+        (Gfx*)gKeyringKeysFireTempleDL,
+        (Gfx*)gKeyringKeysWaterTempleDL,
+        (Gfx*)gKeyringKeysSpiritTempleDL,
+        (Gfx*)gKeyringKeysShadowTempleDL,
+        (Gfx*)gKeyringKeysBottomoftheWellDL,
+        (Gfx*)gKeyringKeysGerudoTrainingGroundDL,
+        (Gfx*)gKeyringKeysGerudoFortressDL,
+        (Gfx*)gKeyringKeysGanonsCastleDL,
+        (Gfx*)gKeyringKeysTreasureChestGameDL,
+    };
+
+    Gfx* CustomKeysMQDLs[] = {
+        (Gfx*)gKeyringKeysForestTempleMQDL,
+        (Gfx*)gKeyringKeysFireTempleMQDL,
+        (Gfx*)gKeyringKeysWaterTempleMQDL,
+        (Gfx*)gKeyringKeysSpiritTempleMQDL,
+        (Gfx*)gKeyringKeysShadowTempleMQDL,
+        (Gfx*)gKeyringKeysBottomoftheWellMQDL,
+        (Gfx*)gKeyringKeysGerudoTrainingGroundMQDL,
+        (Gfx*)gKeyringKeysGerudoFortressDL,
+        (Gfx*)gKeyringKeysGanonsCastleMQDL,
+        (Gfx*)gKeyringKeysTreasureChestGameDL,
+    };
+
+    //RANDOTODO make DungeonInfo static and vanilla accessible to allow all these key model data vars to be stored there.
+    //(Rando::DungeonKey)0 means the keyring is not tied to a dungeon and should not be checked for an MQ variant
+    Rando::DungeonKey SlotToDungeon[10] = {
+        Rando::FOREST_TEMPLE,
+        Rando::FIRE_TEMPLE,
+        Rando::WATER_TEMPLE,
+        Rando::SPIRIT_TEMPLE,
+        Rando::SHADOW_TEMPLE,
+        Rando::BOTTOM_OF_THE_WELL,
+        Rando::GERUDO_TRAINING_GROUND,
+        (Rando::DungeonKey)0, //Gerudo Fortress
+        Rando::GANONS_CASTLE,
+        (Rando::DungeonKey)0, //Treasure Chest Game
     };
 
     OPEN_DISPS(play->state.gfxCtx);
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
-    gDPSetGrayscaleColor(POLY_OPA_DISP++, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 255);
-    gSPGrayscale(POLY_OPA_DISP++, true);
+    Color_RGB8 keyColor = { 255, 255, 255 };
+    keyColor = CVarGetColor24(SmallBaseCvarValue[slot], keyColor);
 
-    Matrix_Scale(0.5f, 0.5f, 0.5f, MTXMODE_APPLY);
-    Matrix_RotateZ(0.8f, MTXMODE_APPLY);
-    Matrix_RotateX(-2.16f, MTXMODE_APPLY);
-    Matrix_RotateY(-0.56f, MTXMODE_APPLY);
-    Matrix_RotateZ(-0.86f, MTXMODE_APPLY);
-    Matrix_Translate(28.29f, 0, 0, MTXMODE_APPLY);
-    Matrix_Translate(-(3.12f * 2), -(-0.34f * 2), -(17.53f * 2), MTXMODE_APPLY);
-    Matrix_RotateX(-(-0.31f * 2), MTXMODE_APPLY);
-    Matrix_RotateY(-(0.19f * 2), MTXMODE_APPLY);
-    Matrix_RotateZ(-(0.20f * 2), MTXMODE_APPLY);
-    for (int i = 0; i < 5; i++) {
+    if (isCustomKeysEnabled) {
         gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
-                G_MTX_MODELVIEW | G_MTX_LOAD);
-        Matrix_Translate(3.12f, -0.34f, 17.53f, MTXMODE_APPLY);
-        Matrix_RotateX(-0.31f, MTXMODE_APPLY);
-        Matrix_RotateY(0.19f, MTXMODE_APPLY);
-        Matrix_RotateZ(0.20f, MTXMODE_APPLY);
-        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiSmallKeyDL);
-    }
+            G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    gSPGrayscale(POLY_OPA_DISP++, false);
+        gDPSetEnvColor(POLY_OPA_DISP++, keyColor.r, keyColor.g, keyColor.b, 255);
+        if (SlotToDungeon[slot] != 0 && Rando::Context::GetInstance()->GetDungeon(SlotToDungeon[slot])->IsMQ()){
+            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)CustomKeysMQDLs[slot]);
+        } else  {
+            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)CustomKeysDLs[slot]);
+        }
+
+        Color_RGB8 ringColor = { 255, 255, 255 };
+        ringColor = CVarGetColor24(CVAR_COSMETIC("Key.KeyringRing.Value"), ringColor);
+        gDPSetEnvColor(POLY_OPA_DISP++, ringColor.r, ringColor.g, ringColor.b, 255);
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gKeyringRingDL);
+
+        Color_RGB8 emblemColor = { 255, 0, 0 };
+        emblemColor = CVarGetColor24(SmallEmblemCvarValue[slot], emblemColor);
+
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
+        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+            G_MTX_MODELVIEW | G_MTX_LOAD);
+        gDPSetEnvColor(POLY_OPA_DISP++, emblemColor.r, emblemColor.g, emblemColor.b, 255);
+
+        gSPDisplayList(POLY_OPA_DISP++, CustomIconDLs[slot]);
+    } else {
+        gDPSetGrayscaleColor(POLY_OPA_DISP++, keyColor.r, keyColor.g, keyColor.b, 255);
+        gSPGrayscale(POLY_OPA_DISP++, true);
+        Matrix_Scale(0.5f, 0.5f, 0.5f, MTXMODE_APPLY);
+        Matrix_RotateZ(0.8f, MTXMODE_APPLY);
+        Matrix_RotateX(-2.16f, MTXMODE_APPLY);
+        Matrix_RotateY(-0.56f, MTXMODE_APPLY);
+        Matrix_RotateZ(-0.86f, MTXMODE_APPLY);
+        Matrix_Translate(28.29f, 0, 0, MTXMODE_APPLY);
+        Matrix_Translate(-(3.12f * 2), -(-0.34f * 2), -(17.53f * 2), MTXMODE_APPLY);
+        Matrix_RotateX(-(-0.31f * 2), MTXMODE_APPLY);
+        Matrix_RotateY(-(0.19f * 2), MTXMODE_APPLY);
+        Matrix_RotateZ(-(0.20f * 2), MTXMODE_APPLY);
+        for (int i = 0; i < 5; i++) {
+            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+                    G_MTX_MODELVIEW | G_MTX_LOAD);
+            Matrix_Translate(3.12f, -0.34f, 17.53f, MTXMODE_APPLY);
+            Matrix_RotateX(-0.31f, MTXMODE_APPLY);
+            Matrix_RotateY(0.19f, MTXMODE_APPLY);
+            Matrix_RotateZ(0.20f, MTXMODE_APPLY);
+            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiSmallKeyDL);
+        }
+        gSPGrayscale(POLY_OPA_DISP++, false);
+    }
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -274,7 +406,7 @@ extern "C" void Randomizer_DrawTriforcePiece(PlayState* play, GetItemEntry getIt
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
-    uint8_t current = gSaveContext.triforcePiecesCollected;
+    uint8_t current = gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected;
 
     Matrix_Scale(0.035f, 0.035f, 0.035f, MTXMODE_APPLY);
 
@@ -298,7 +430,7 @@ extern "C" void Randomizer_DrawTriforcePieceGI(PlayState* play, GetItemEntry get
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
-    uint8_t current = gSaveContext.triforcePiecesCollected;
+    uint8_t current = gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected;
     uint8_t required = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1;
 
     Matrix_Scale(triforcePieceScale, triforcePieceScale, triforcePieceScale, MTXMODE_APPLY);
@@ -707,9 +839,9 @@ extern "C" void Randomizer_DrawBossSoul(PlayState* play, GetItemEntry* getItemEn
         gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
                   G_MTX_MODELVIEW | G_MTX_LOAD);
         if (slot == 8) { // For Ganon only...
-            gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 0, 0, 0, 255);
+            gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 0, 255);
         } else {
-            gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 255);
+            gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 255, 255);
         }
         gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gBossSoulSkullDL);
         CLOSE_DISPS(play->state.gfxCtx);
@@ -895,52 +1027,53 @@ extern "C" void Randomizer_DrawFishingPoleGI(PlayState* play, GetItemEntry* getI
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-int skeletonKeyHue = 0;
-
-// Runs every frame to update rainbow hue, taken from CosmeticsEditor.cpp.
-Color_RGBA8 GetSkeletonKeyColor() {
-    float rainbowSpeed = 0.6f;
-    
-    float frequency = 2 * M_PI / (360 * rainbowSpeed);
-    Color_RGBA8 color;
-    color.r = sin(frequency * skeletonKeyHue + 0) * 127 + 128;
-    color.g = sin(frequency * skeletonKeyHue + (2 * M_PI / 3)) * 127 + 128;
-    color.b = sin(frequency * skeletonKeyHue + (4 * M_PI / 3)) * 127 + 128;
-    color.a = 255;
-
-    skeletonKeyHue++;
-    if (skeletonKeyHue >= (360 * rainbowSpeed)) skeletonKeyHue = 0;
-
-    return color;
-}
-
-int skeletonKeyRotation = 0;
 
 extern "C" void Randomizer_DrawSkeletonKey(PlayState* play, GetItemEntry* getItemEntry) {
     OPEN_DISPS(play->state.gfxCtx);
 
-    Color_RGBA8 color = GetSkeletonKeyColor();
-
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-
-    skeletonKeyRotation += 1;
-
-    if (skeletonKeyRotation > 40) {
-        skeletonKeyRotation -= 80;
-    }
-
-    Matrix_RotateZ(M_PI / 40 * skeletonKeyRotation, MTXMODE_APPLY);
-    Matrix_RotateY(M_PI / 40 * skeletonKeyRotation, MTXMODE_APPLY);
 
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    gDPSetGrayscaleColor(POLY_OPA_DISP++, color.r, color.g, color.b, color.a);
-    gSPGrayscale(POLY_OPA_DISP++, true);
-
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiSmallKeyDL);
-
-    gSPGrayscale(POLY_OPA_DISP++, false);
+    Color_RGB8 keyColor = { 255, 255, 170 };
+    keyColor = CVarGetColor24(CVAR_COSMETIC("Key.Skeleton.Value"), keyColor);
+    gDPSetEnvColor(POLY_OPA_DISP++, keyColor.r, keyColor.g, keyColor.b, 255);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gSkeletonKeyDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawBombchuBag(PlayState* play, GetItemEntry* getItemEntry){
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_26Opa(play->state.gfxCtx);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    Color_RGB8 maskColor = { 0, 100, 150 };
+    maskColor = CVarGetColor24(CVAR_COSMETIC("Equipment.ChuFace.Value"), maskColor);
+    gDPSetEnvColor(POLY_OPA_DISP++, maskColor.r, maskColor.g, maskColor.b, 255);
+
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gBombchuBagMaskDL);
+
+    Color_RGB8 bodyColor = { 180, 130, 50 };
+    bodyColor = CVarGetColor24(CVAR_COSMETIC("Equipment.ChuBody.Value"), bodyColor);
+    gDPSetEnvColor(POLY_OPA_DISP++, bodyColor.r, bodyColor.g, bodyColor.b, 255);
+
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gBombchuBagBodyDL);
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawBombchuBagInLogic(PlayState* play, GetItemEntry* getItemEntry) {
+    if(IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOMBCHU_BAG)){
+        Randomizer_DrawBombchuBag(play, getItemEntry);
+    } else {
+        OPEN_DISPS(play->state.gfxCtx);
+        Gfx_SetupDL_26Opa(play->state.gfxCtx);
+        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiBombchuDL);
+        CLOSE_DISPS(play->state.gfxCtx);
+    }
 }

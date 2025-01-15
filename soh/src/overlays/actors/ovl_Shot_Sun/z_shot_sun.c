@@ -101,8 +101,10 @@ void ShotSun_SpawnFairy(ShotSun* this, PlayState* play) {
         }
 
         //! @bug fairyType may be uninitialized
-        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, this->actor.home.pos.x, this->actor.home.pos.y,
-                    this->actor.home.pos.z, 0, 0, 0, fairyType, true);
+        if (GameInteractor_Should(VB_SPAWN_SONG_FAIRY, true, this)) {
+            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, this->actor.home.pos.x, this->actor.home.pos.y,
+                        this->actor.home.pos.z, 0, 0, 0, fairyType, true);
+        }
 
         Actor_Kill(&this->actor);
     }

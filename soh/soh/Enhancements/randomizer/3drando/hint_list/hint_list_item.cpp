@@ -1512,6 +1512,16 @@ void StaticData::HintTable_Init_Item() {
                                                           CustomMessage("a gambler's lockpick", /*german*/"ein Spieler-Dietrich", /*french*/"un crochet à serrure de parieur")});
                                                            // /*spanish*/una apertura portentosa del juego de azar
 
+     hintTextTable[RHT_TREASURE_GAME_KEY_RING] = HintText(CustomMessage("a Chest Game Key Ring"),
+                                                         {
+                                                         CustomMessage("a key ring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
+                                                          // /*spanish*/un llavero
+                                                         }, {
+                                                         CustomMessage("a gambler's toolbox for unlocking"),
+                                                         CustomMessage("a gambler's season pass"),
+                                                         CustomMessage("a gambler's jingling ring"),
+                                                         CustomMessage("a gambler's skeleton key")});
+
     hintTextTable[RHT_KOKIRI_EMERALD] = HintText(CustomMessage("the Kokiri Emerald", /*german*/"der Kokiri-Smaragd", /*french*/"l'Émeraude Kokiri"),
                                                  // /*spanish*/la Esmeralda de los Kokiri
                                                  {
@@ -2057,7 +2067,24 @@ void StaticData::HintTable_Init_Item() {
                                                }, {
                                                CustomMessage("a fish-puller", /*german*/"ein Fischzieher", /*french*/"(canne à pêche)")});
                                                 // /*spanish*/(caña de pescar)
-  
+
+    hintTextTable[RHT_BOMBCHU_BAG] = HintText(CustomMessage("Bombchu Bag", /*german*/"!!!", /*french*/"!!!"),
+                                              {
+                                             CustomMessage("explosives", /*german*/"ein Explosivpaket", /*french*/"un paquet d'explosifs"),
+                                                  // /*spanish*/un montón de explosivos
+                                             CustomMessage("something that can remove boulders", /*german*/"etwas, das Geröll entfernen kann", /*french*/"une chose qui enlève les rochers")
+                                                  // /*spanish*/algo que pueda quitar rocas
+                                              }, {
+                                              CustomMessage("sack of mice", /*german*/"!!!", /*french*/"!!!")});
+
+    hintTextTable[RHT_SKELETON_KEY] = HintText(CustomMessage("a Skeleton Key", /*german*/ "ein Universalschlüssel", /*french*/ "une Clé Squelette"),
+                                               // /*spanish*/una Llave Maestra
+                                               {
+                                               CustomMessage("a key", /*german*/ "ein Schlüssel", /*french*/ "une clé")
+                                                // /*spanish*/una llave
+                                               },
+                                               { CustomMessage("a master unlocker", /*german*/ "ein Meisterentsperrer", /*french*/ "un Kit de Déverrouillage") });
+                                                // /*spanish*/un desbloqueador maestro
     hintTextTable[RHT_QUIVER_INF] = HintText(CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
                                              {
                                              CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
