@@ -58,7 +58,7 @@ void RegionTable_Init_GerudoFortress() {
     }, {}, {
         //Exits
         Entrance(RR_GERUDO_FORTRESS,         []{return (logic->IsAdult && (logic->CanUse(RG_HOOKSHOT) || !ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES))) || logic->GF_GateOpen;}),
-        Entrance(RR_WASTELAND_NEAR_FORTRESS, []{return true;}),
+        Entrance(RR_WASTELAND_SOUTH_OF_RIVER, []{return true;}),
     });
 
     areaTable[RR_GF_STORMS_GROTTO] = Region("GF Storms Grotto", "GF Storms Grotto", {}, NO_DAY_NIGHT_CYCLE, {

@@ -545,7 +545,7 @@ u8 EnJs_RandoCanGetCarpetMerchantItem() {
     return  (RAND_GET_OPTION(RSK_SHUFFLE_MERCHANTS) == RO_SHUFFLE_MERCHANTS_ALL ||
              RAND_GET_OPTION(RSK_SHUFFLE_MERCHANTS) == RO_SHUFFLE_MERCHANTS_ALL_BUT_BEANS) &&
             // If the rando check has already been awarded, use vanilla behavior.
-            !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN);
+            !Flags_GetRandomizerInf(RAND_INF_WASTELAND_CARPET_MERCHANT);
 }
 
 u8 EnGm_RandoCanGetMedigoronItem() {
@@ -736,7 +736,7 @@ void RandomizerOnDialogMessageHandler() {
                 break;
             case TEXT_CARPET_SALESMAN_1:
                 if (revealMerchant && nonBeanMerchants) {
-                    reveal = RC_WASTELAND_BOMBCHU_SALESMAN;
+                    reveal = RC_WASTELAND_CARPET_MERCHANT;
                 }
                 break;
             case TEXT_BIGGORON_BETTER_AT_SMITHING:
@@ -1101,19 +1101,19 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         }
         case VB_CHECK_RANDO_PRICE_OF_CARPET_SALESMAN: {
             if (EnJs_RandoCanGetCarpetMerchantItem()){
-                *should = gSaveContext.rupees < OTRGlobals::Instance->gRandoContext->GetItemLocation(RC_WASTELAND_BOMBCHU_SALESMAN)->GetPrice();
+                *should = gSaveContext.rupees < OTRGlobals::Instance->gRandoContext->GetItemLocation(RC_WASTELAND_CARPET_MERCHANT)->GetPrice();
             }
             break;
         }
         case VB_GIVE_ITEM_FROM_CARPET_SALESMAN: {
             EnJs* enJs = va_arg(args, EnJs*);
             if (EnJs_RandoCanGetCarpetMerchantItem()){
-                Rupees_ChangeBy(OTRGlobals::Instance->gRandoContext->GetItemLocation(RC_WASTELAND_BOMBCHU_SALESMAN)->GetPrice() * -1);
+                Rupees_ChangeBy(OTRGlobals::Instance->gRandoContext->GetItemLocation(RC_WASTELAND_CARPET_MERCHANT)->GetPrice() * -1);
                 enJs->actor.parent = NULL;
                 enJs->actor.textId = TEXT_CARPET_SALESMAN_ARMS_DEALER;
                 enJs->actionFunc = (EnJsActionFunc)func_80A890C0;
                 enJs->actor.flags |= ACTOR_FLAG_WILL_TALK;
-                Flags_SetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN);
+                Flags_SetRandomizerInf(RAND_INF_WASTELAND_CARPET_MERCHANT);
                 *should = true;
             }
             break;

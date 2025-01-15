@@ -516,7 +516,7 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
                                                                /*french*/ "Selon moi, #secourir les charpentiers capturés# assure #[[1]]#.", {QM_RED, QM_GREEN}));
                                                             // /*spanish*/ Según dicen, #rescatar los apresados carpinteros# se premia con #[[1]]#.
 
-    hintTextTable[RHT_WASTELAND_BOMBCHU_SALESMAN] = HintText(CustomMessage("They say that a #carpet guru# sells #[[1]]#.",
+    hintTextTable[RHT_WASTELAND_CARPET_MERCHANT] = HintText(CustomMessage("They say that a #carpet guru# sells #[[1]]#.",
                                                                 /*german*/ "Man erzählt sich, daß ein #Teppichguru# #[[1]]# verkaufe.",
                                                                 /*french*/ "Selon moi, #un marchand du désert# vend #[[1]]#.", {QM_RED, QM_GREEN}));
                                                              // /*spanish*/ Según dicen, el #genio de una alfombra# vende #[[1]]#.
@@ -1499,9 +1499,13 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
                                                          /*german*/ "",
                                                          /*french*/ "Selon moi, une #jarre dans la Forteresse Gerudo# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_POT_WASTELAND] = HintText(CustomMessage("They say that a #pot in Haunted Wasteland# contains #[[1]]#.",
-                                                   /*german*/ "",
-                                                   /*french*/ "Selon moi, une #jarre dans le Désert Hanté# contient #[[1]]#.", {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_WASTELAND_NW_POT] = HintText(CustomMessage("They say that the #northwest pot under the haunted dais# contains #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WASTELAND_NE_POT] = HintText(CustomMessage("They say that the #northeast pot under the haunted dais# contains #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WASTELAND_SW_POT] = HintText(CustomMessage("They say that the #southwest pot under the haunted dais# contains #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WASTELAND_SE_POT] = HintText(CustomMessage("They say that the #southeast pot under the haunted dais# contains #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_POT_MARKET] = HintText(CustomMessage("They say that a #pot in Market# contains #[[1]]#.",
                                                 /*german*/ "",

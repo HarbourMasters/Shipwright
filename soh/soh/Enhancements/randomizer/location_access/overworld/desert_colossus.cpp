@@ -26,7 +26,7 @@ void RegionTable_Init_DesertColossus() {
         Entrance(RR_DESERT_COLOSSUS_OASIS,         []{return logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS));}),
         Entrance(RR_COLOSSUS_GREAT_FAIRY_FOUNTAIN, []{return logic->HasExplosives();}),
         Entrance(RR_SPIRIT_TEMPLE_ENTRYWAY,        []{return true;}),
-        Entrance(RR_WASTELAND_NEAR_COLOSSUS,       []{return true;}),
+        Entrance(RR_WASTELAND_NORTH,       []{return true;}),
         Entrance(RR_COLOSSUS_GROTTO,               []{return logic->CanUse(RG_SILVER_GAUNTLETS);}),
     });
 

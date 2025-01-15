@@ -1006,7 +1006,7 @@ void GenerateItemPool() {
   } else {
     ctx->PlaceItemInLocation(RC_KAK_GRANNYS_SHOP, RG_BLUE_POTION_REFILL, false, true);
     ctx->PlaceItemInLocation(RC_GC_MEDIGORON, RG_GIANTS_KNIFE, false, true);
-    ctx->PlaceItemInLocation(RC_WASTELAND_BOMBCHU_SALESMAN, RG_BOMBCHU_10, false, true);
+    ctx->PlaceItemInLocation(RC_WASTELAND_CARPET_MERCHANT, RG_BOMBCHU_10, false, true);
   }
 
   if (ctx->GetOption(RSK_SHUFFLE_FROG_SONG_RUPEES)) {
