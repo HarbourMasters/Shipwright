@@ -1556,7 +1556,7 @@ s16 func_8001F404(s16 dropId) {
     if ((CVarGetInteger(CVAR_ENHANCEMENT("EnableBombchuDrops"), 0) || 
         (IS_RANDO && Randomizer_GetSettingValue(RSK_ENABLE_BOMBCHU_DROPS) == 1)) &&
         (dropId == ITEM00_BOMBS_A || dropId == ITEM00_BOMBS_B || dropId == ITEM00_BOMBS_SPECIAL) &&
-        (!IS_RANDO || Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC) || INV_CONTENT(ITEM_BOMB) != ITEM_NONE)) {
+        (!IS_RANDO || Randomizer_GetSettingValue(RSK_BOMBCHU_BAG) || INV_CONTENT(ITEM_BOMB) != ITEM_NONE)) {
         dropId = EnItem00_ConvertBombDropToBombchu(dropId);
     }
     // #endregion

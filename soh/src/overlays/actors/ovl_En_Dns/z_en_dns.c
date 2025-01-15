@@ -18,33 +18,33 @@ void EnDns_Destroy(Actor* thisx, PlayState* play);
 void EnDns_Update(Actor* thisx, PlayState* play);
 void EnDns_Draw(Actor* thisx, PlayState* play);
 
-u32 func_809EF5A4(EnDns* this);
-u32 func_809EF658(EnDns* this);
-u32 func_809EF70C(EnDns* this);
-u32 func_809EF73C(EnDns* this);
-u32 func_809EF800(EnDns* this);
-u32 func_809EF854(EnDns* this);
-u32 func_809EF8F4(EnDns* this);
-u32 func_809EF9A4(EnDns* this);
+u32 EnDns_CanBuyPrice(EnDns* this);
+u32 EnDns_CanBuyDekuNuts(EnDns* this);
+u32 EnDns_CanBuyDekuSticks(EnDns* this);
+u32 EnDns_CanBuyDekuSeeds(EnDns* this);
+u32 EnDns_CanBuyDekuShield(EnDns* this);
+u32 EnDns_CanBuyBombs(EnDns* this);
+u32 EnDns_CanBuyArrows(EnDns* this);
+u32 EnDns_CanBuyBottle(EnDns* this);
 
-void func_809EF9F8(EnDns* this);
-void func_809EFA28(EnDns* this);
-void func_809EFA58(EnDns* this);
-void func_809EFA9C(EnDns* this);
-void func_809EFACC(EnDns* this);
-void func_809EFAFC(EnDns* this);
-void func_809EFB40(EnDns* this);
+void EnDns_PayPrice(EnDns* this);
+void EnDns_PayForDekuNuts(EnDns* this);
+void EnDns_PayForHeartPiece(EnDns* this);
+void EnDns_PayForBombs(EnDns* this);
+void EnDns_PayForArrows(EnDns* this);
+void EnDns_PayForDekuStickUpgrade(EnDns* this);
+void EnDns_PayForDekuNutUpgrade(EnDns* this);
 
-void EnDns_SetupWait(EnDns* this, PlayState* play);
-void EnDns_Wait(EnDns* this, PlayState* play);
+void EnDns_SetupIdle(EnDns* this, PlayState* play);
+void EnDns_Idle(EnDns* this, PlayState* play);
 void EnDns_Talk(EnDns* this, PlayState* play);
-void func_809EFDD0(EnDns* this, PlayState* play);
-void func_809EFEE8(EnDns* this, PlayState* play);
-void func_809EFF50(EnDns* this, PlayState* play);
-void func_809EFF98(EnDns* this, PlayState* play);
-void func_809F008C(EnDns* this, PlayState* play);
+void EnDns_OfferSaleItem(EnDns* this, PlayState* play);
+void EnDns_SetupSale(EnDns* this, PlayState* play);
+void EnDns_Sale(EnDns* this, PlayState* play);
 void EnDns_SetupBurrow(EnDns* this, PlayState* play);
+void EnDns_SetupNoSaleBurrow(EnDns* this, PlayState* play);
 void EnDns_Burrow(EnDns* this, PlayState* play);
+void EnDns_PostBurrow(EnDns* this, PlayState* play);
 
 const ActorInit En_Dns_InitVars = {
     ACTOR_EN_DNS,
@@ -78,44 +78,35 @@ static ColliderCylinderInitType1 sCylinderInit = {
     { 18, 32, 0, { 0, 0, 0 } },
 };
 
-static u16 D_809F040C[] = {
+static u16 sStartingTextIds[] = {
     0x10A0, 0x10A1, 0x10A2, 0x10CA, 0x10CB, 0x10CC, 0x10CD, 0x10CE, 0x10CF, 0x10DC, 0x10DD,
 };
 
 // Debug text: "sells"  { "Deku Nuts",    "Deku Sticks",        "Piece of Heart",  "Deku Seeds",
 //                        "Deku Shield",  "Bombs",              "Arrows",          "Red Potion",
 //                        "Green Potion", "Deku Stick Upgrade", "Deku Nut Upgrade" }
-static char* D_809F0424[] = {
+static char* sItemDebugTxt[] = {
     "デクの実売り            ", "デクの棒売り            ", "ハートの欠片売り        ", "デクの種売り            ",
     "デクの盾売り            ", "バクダン売り            ", "矢売り                  ", "赤のくすり売り          ",
     "緑のくすり売り          ", "デクの棒持てる数を増やす", "デクの実持てる数を増やす",
 };
 
-static DnsItemEntry D_809F0450 = { 20, 5, GI_NUTS_5_2, func_809EF5A4, func_809EFA28 };
+static DnsItemEntry sItemNuts =        { 20,  5, GI_NUTS_5_2,     EnDns_CanBuyDekuNuts,   EnDns_PayForDekuNuts };
+static DnsItemEntry sItemSticks =      { 15,  1, GI_STICKS_1,     EnDns_CanBuyDekuSticks, EnDns_PayPrice };
+static DnsItemEntry sItemHeartPiece =  { 10,  1, GI_HEART_PIECE,  EnDns_CanBuyPrice,      EnDns_PayForHeartPiece };
+static DnsItemEntry sItemSeeds =       { 40, 30, GI_SEEDS_30,     EnDns_CanBuyDekuSeeds,  EnDns_PayPrice };
+static DnsItemEntry sItemDekuShield =  { 50,  1, GI_SHIELD_DEKU,  EnDns_CanBuyDekuShield, EnDns_PayPrice };
+static DnsItemEntry sItemBombs =       { 40,  5, GI_BOMBS_5,      EnDns_CanBuyBombs,      EnDns_PayForBombs };
+static DnsItemEntry sItemArrows =      { 70, 20, GI_ARROWS_LARGE, EnDns_CanBuyArrows,     EnDns_PayForArrows };
+static DnsItemEntry sItemRedPotion =   { 40,  1, GI_POTION_RED,   EnDns_CanBuyBottle,     EnDns_PayPrice };
+static DnsItemEntry sItemGreenPotion = { 40,  1, GI_POTION_GREEN, EnDns_CanBuyBottle,     EnDns_PayPrice };
 
-static DnsItemEntry D_809F0460 = { 15, 1, GI_STICKS_1, func_809EF658, func_809EF9F8 };
-
-static DnsItemEntry D_809F0470 = { 10, 1, GI_HEART_PIECE, func_809EF70C, func_809EFA58 };
-
-static DnsItemEntry D_809F0480 = { 40, 30, GI_SEEDS_30, func_809EF73C, func_809EF9F8 };
-
-static DnsItemEntry D_809F0490 = { 50, 1, GI_SHIELD_DEKU, func_809EF800, func_809EF9F8 };
-
-static DnsItemEntry D_809F04A0 = { 40, 5, GI_BOMBS_5, func_809EF854, func_809EFA9C };
-
-static DnsItemEntry D_809F04B0 = { 70, 20, GI_ARROWS_LARGE, func_809EF8F4, func_809EFACC };
-
-static DnsItemEntry D_809F04C0 = { 40, 1, GI_POTION_RED, func_809EF9A4, func_809EF9F8 };
-
-static DnsItemEntry D_809F04D0 = { 40, 1, GI_POTION_GREEN, func_809EF9A4, func_809EF9F8 };
-
-static DnsItemEntry D_809F04E0 = { 40, 1, GI_STICK_UPGRADE_20, func_809EF70C, func_809EFAFC };
-
-static DnsItemEntry D_809F04F0 = { 40, 1, GI_NUT_UPGRADE_30, func_809EF70C, func_809EFB40 };
+static DnsItemEntry sItemStickUpgrade = { 40, 1, GI_STICK_UPGRADE_20, EnDns_CanBuyPrice, EnDns_PayForDekuStickUpgrade };
+static DnsItemEntry sItemNutUpgrade =   { 40, 1, GI_NUT_UPGRADE_30,   EnDns_CanBuyPrice, EnDns_PayForDekuNutUpgrade };
 
 static DnsItemEntry* sItemEntries[] = {
-    &D_809F0450, &D_809F0460, &D_809F0470, &D_809F0480, &D_809F0490, &D_809F04A0,
-    &D_809F04B0, &D_809F04C0, &D_809F04D0, &D_809F04E0, &D_809F04F0,
+    &sItemNuts,   &sItemSticks,    &sItemHeartPiece,  &sItemSeeds,        &sItemDekuShield, &sItemBombs,
+    &sItemArrows, &sItemRedPotion, &sItemGreenPotion, &sItemStickUpgrade, &sItemNutUpgrade,
 };
 
 static InitChainEntry sInitChain[] = {
@@ -124,15 +115,9 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(targetArrowOffset, 30, ICHAIN_STOP),
 };
 
-typedef enum {
-    /* 0 */ ENDNS_ANIM_0,
-    /* 1 */ ENDNS_ANIM_1,
-    /* 2 */ ENDNS_ANIM_2
-} EnDnsAnimation;
-
 static AnimationMinimalInfo sAnimationInfo[] = {
     { &gBusinessScrubNervousIdleAnim, ANIMMODE_LOOP, 0.0f },
-    { &gBusinessScrubAnim_4404, ANIMMODE_ONCE, 0.0f },
+    { &gBusinessScrubLeaveBurrowAnim, ANIMMODE_ONCE, 0.0f },
     { &gBusinessScrubNervousTransitionAnim, ANIMMODE_ONCE, 0.0f },
 };
 
@@ -146,11 +131,11 @@ void EnDns_Init(Actor* thisx, PlayState* play) {
         return;
     }
     // Sell Seeds instead of Arrows if Link is child
-    if ((this->actor.params == 0x0006) && (LINK_AGE_IN_YEARS == YEARS_CHILD)) {
-        this->actor.params = 0x0003;
+    if ((this->actor.params == DNS_TYPE_ARROWS_30) && (LINK_AGE_IN_YEARS == YEARS_CHILD)) {
+        this->actor.params = DNS_TYPE_DEKU_SEEDS_30;
     }
     // "Deku Salesman"
-    osSyncPrintf(VT_FGCOL(GREEN) "◆◆◆ 売りナッツ『%s』 ◆◆◆" VT_RST "\n", D_809F0424[this->actor.params],
+    osSyncPrintf(VT_FGCOL(GREEN) "◆◆◆ 売りナッツ『%s』 ◆◆◆" VT_RST "\n", sItemDebugTxt[this->actor.params],
                  this->actor.params);
     Actor_ProcessInitChain(&this->actor, sInitChain);
     SkelAnime_InitFlex(play, &this->skelAnime, &gBusinessScrubSkel, &gBusinessScrubNervousTransitionAnim,
@@ -166,9 +151,9 @@ void EnDns_Init(Actor* thisx, PlayState* play) {
     this->actor.speedXZ = 0.0f;
     this->actor.velocity.y = 0.0f;
     this->actor.gravity = -1.0f;
-    this->actor.textId = D_809F040C[this->actor.params];
+    this->actor.textId = sStartingTextIds[this->actor.params];
     this->dnsItemEntry = sItemEntries[this->actor.params];
-    this->actionFunc = EnDns_SetupWait;
+    this->actionFunc = EnDns_SetupIdle;
 }
 
 void EnDns_Destroy(Actor* thisx, PlayState* play) {
@@ -183,149 +168,149 @@ void EnDns_ChangeAnim(EnDns* this, u8 index) {
     s16 frameCount;
 
     frameCount = Animation_GetLastFrame(sAnimationInfo[index].animation);
-    this->unk_2BA = index; // Not used anywhere else?
+    this->animIndex = index; // Not used anywhere else?
     Animation_Change(&this->skelAnime, sAnimationInfo[index].animation, 1.0f, 0.0f, (f32)frameCount,
                      sAnimationInfo[index].mode, sAnimationInfo[index].morphFrames);
 }
 
 /* Item give checking functions */
 
-u32 func_809EF5A4(EnDns* this) {
+u32 EnDns_CanBuyDekuNuts(EnDns* this) {
     if ((CUR_CAPACITY(UPG_NUTS) != 0) && (AMMO(ITEM_NUT) >= CUR_CAPACITY(UPG_NUTS))) {
-        return 1;
+        return DNS_CANBUY_RESULT_CAPACITY_FULL;
     }
     if (gSaveContext.rupees < this->dnsItemEntry->itemPrice) {
-        return 0;
+        return DNS_CANBUY_RESULT_NEED_RUPEES;
     }
     if (Item_CheckObtainability(ITEM_NUT) == ITEM_NONE) {
-        return 2;
+        return DNS_CANBUY_RESULT_SUCCESS_NEW_ITEM;
     }
-    return 4;
+    return DNS_CANBUY_RESULT_SUCCESS;
 }
 
-u32 func_809EF658(EnDns* this) {
+u32 EnDns_CanBuyDekuSticks(EnDns* this) {
     if ((CUR_CAPACITY(UPG_STICKS) != 0) && (AMMO(ITEM_STICK) >= CUR_CAPACITY(UPG_STICKS))) {
-        return 1;
+        return DNS_CANBUY_RESULT_CAPACITY_FULL;
     }
     if (gSaveContext.rupees < this->dnsItemEntry->itemPrice) {
-        return 0;
+        return DNS_CANBUY_RESULT_NEED_RUPEES;
     }
     if (Item_CheckObtainability(ITEM_STICK) == ITEM_NONE) {
-        return 2;
+        return DNS_CANBUY_RESULT_SUCCESS_NEW_ITEM;
     }
-    return 4;
+    return DNS_CANBUY_RESULT_SUCCESS;
 }
 
-u32 func_809EF70C(EnDns* this) {
+u32 EnDns_CanBuyPrice(EnDns* this) {
     if (gSaveContext.rupees < this->dnsItemEntry->itemPrice) {
-        return 0;
+        return DNS_CANBUY_RESULT_NEED_RUPEES;
     }
-    return 4;
+    return DNS_CANBUY_RESULT_SUCCESS;
 }
 
-u32 func_809EF73C(EnDns* this) {
+u32 EnDns_CanBuyDekuSeeds(EnDns* this) {
     if (INV_CONTENT(ITEM_SLINGSHOT) == ITEM_NONE) {
-        return 3;
+        return DNS_CANBUY_RESULT_CANT_GET_NOW;
     }
     if (AMMO(ITEM_SLINGSHOT) >= CUR_CAPACITY(UPG_BULLET_BAG)) {
-        return 1;
+        return DNS_CANBUY_RESULT_CAPACITY_FULL;
     }
     if (gSaveContext.rupees < this->dnsItemEntry->itemPrice) {
-        return 0;
+        return DNS_CANBUY_RESULT_NEED_RUPEES;
     }
     if (Item_CheckObtainability(ITEM_SEEDS) == ITEM_NONE) {
-        return 2;
+        return DNS_CANBUY_RESULT_SUCCESS_NEW_ITEM;
     }
-    return 4;
+    return DNS_CANBUY_RESULT_SUCCESS;
 }
 
-u32 func_809EF800(EnDns* this) {
+u32 EnDns_CanBuyDekuShield(EnDns* this) {
     if (CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SHIELD, EQUIP_INV_SHIELD_DEKU)) {
-        return 1;
+        return DNS_CANBUY_RESULT_CAPACITY_FULL;
     }
     if (gSaveContext.rupees < this->dnsItemEntry->itemPrice) {
-        return 0;
+        return DNS_CANBUY_RESULT_NEED_RUPEES;
     }
-    return 4;
+    return DNS_CANBUY_RESULT_SUCCESS;
 }
 
-u32 func_809EF854(EnDns* this) {
+u32 EnDns_CanBuyBombs(EnDns* this) {
     if (!CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) {
-        return 3;
+        return DNS_CANBUY_RESULT_CANT_GET_NOW;
     }
     if (AMMO(ITEM_BOMB) >= CUR_CAPACITY(UPG_BOMB_BAG)) {
-        return 1;
+        return DNS_CANBUY_RESULT_CAPACITY_FULL;
     }
     if (gSaveContext.rupees < this->dnsItemEntry->itemPrice) {
-        return 0;
+        return DNS_CANBUY_RESULT_NEED_RUPEES;
     }
-    return 4;
+    return DNS_CANBUY_RESULT_SUCCESS;
 }
 
-u32 func_809EF8F4(EnDns* this) {
+u32 EnDns_CanBuyArrows(EnDns* this) {
     if (Item_CheckObtainability(ITEM_BOW) == ITEM_NONE) {
-        return 3;
+        return DNS_CANBUY_RESULT_CANT_GET_NOW;
     }
     if (AMMO(ITEM_BOW) >= CUR_CAPACITY(UPG_QUIVER)) {
-        return 1;
+        return DNS_CANBUY_RESULT_CAPACITY_FULL;
     }
     if (gSaveContext.rupees < this->dnsItemEntry->itemPrice) {
-        return 0;
+        return DNS_CANBUY_RESULT_NEED_RUPEES;
     }
-    return 4;
+    return DNS_CANBUY_RESULT_SUCCESS;
 }
 
-u32 func_809EF9A4(EnDns* this) {
+u32 EnDns_CanBuyBottle(EnDns* this) {
     if (!Inventory_HasEmptyBottle()) {
-        return 1;
+        return DNS_CANBUY_RESULT_CAPACITY_FULL;
     }
     if (gSaveContext.rupees < this->dnsItemEntry->itemPrice) {
-        return 0;
+        return DNS_CANBUY_RESULT_NEED_RUPEES;
     }
-    return 4;
+    return DNS_CANBUY_RESULT_SUCCESS;
 }
 
 /* Paying and flagging functions */
 
-void func_809EF9F8(EnDns* this) {
+void EnDns_PayPrice(EnDns* this) {
     Rupees_ChangeBy(-this->dnsItemEntry->itemPrice);
 }
 
-void func_809EFA28(EnDns* this) {
+void EnDns_PayForDekuNuts(EnDns* this) {
     Rupees_ChangeBy(-this->dnsItemEntry->itemPrice);
 }
 
-void func_809EFA58(EnDns* this) {
-    Flags_SetItemGetInf(ITEMGETINF_0B);
+void EnDns_PayForHeartPiece(EnDns* this) {
+    Flags_SetItemGetInf(ITEMGETINF_DEKU_SCRUB_HEART_PIECE);
     Rupees_ChangeBy(-this->dnsItemEntry->itemPrice);
 }
 
-void func_809EFA9C(EnDns* this) {
+void EnDns_PayForBombs(EnDns* this) {
     Rupees_ChangeBy(-this->dnsItemEntry->itemPrice);
 }
 
-void func_809EFACC(EnDns* this) {
+void EnDns_PayForArrows(EnDns* this) {
     Rupees_ChangeBy(-this->dnsItemEntry->itemPrice);
 }
 
-void func_809EFAFC(EnDns* this) {
-    Flags_SetInfTable(INFTABLE_192);
+void EnDns_PayForDekuStickUpgrade(EnDns* this) {
+    Flags_SetInfTable(INFTABLE_BOUGHT_STICK_UPGRADE);
     Rupees_ChangeBy(-this->dnsItemEntry->itemPrice);
 }
 
-void func_809EFB40(EnDns* this) {
-    Flags_SetInfTable(INFTABLE_193);
+void EnDns_PayForDekuNutUpgrade(EnDns* this) {
+    Flags_SetInfTable(INFTABLE_BOUGHT_NUT_UPGRADE);
     Rupees_ChangeBy(-this->dnsItemEntry->itemPrice);
 }
 
-void EnDns_SetupWait(EnDns* this, PlayState* play) {
+void EnDns_SetupIdle(EnDns* this, PlayState* play) {
     if (this->skelAnime.curFrame == this->skelAnime.endFrame) {
-        this->actionFunc = EnDns_Wait;
-        EnDns_ChangeAnim(this, ENDNS_ANIM_0);
+        this->actionFunc = EnDns_Idle;
+        EnDns_ChangeAnim(this, DNS_ANIM_IDLE);
     }
 }
 
-void EnDns_Wait(EnDns* this, PlayState* play) {
+void EnDns_Idle(EnDns* this, PlayState* play) {
     Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 3, 2000, 0);
     this->actor.world.rot.y = this->actor.shape.rot.y;
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
@@ -347,41 +332,41 @@ void EnDns_Talk(EnDns* this, PlayState* play) {
         switch (play->msgCtx.choiceIndex) {
             case 0: // OK
                 switch (this->dnsItemEntry->purchaseableCheck(this)) {
-                    case 0:
+                    case DNS_CANBUY_RESULT_NEED_RUPEES:
                         Message_ContinueTextbox(play, 0x10A5);
-                        this->actionFunc = func_809F008C;
+                        this->actionFunc = EnDns_SetupNoSaleBurrow;
                         break;
-                    case 1:
+                    case DNS_CANBUY_RESULT_CAPACITY_FULL:
                         Message_ContinueTextbox(play, 0x10A6);
-                        this->actionFunc = func_809F008C;
+                        this->actionFunc = EnDns_SetupNoSaleBurrow;
                         break;
-                    case 3:
+                    case DNS_CANBUY_RESULT_CANT_GET_NOW:
                         Message_ContinueTextbox(play, 0x10DE);
-                        this->actionFunc = func_809F008C;
+                        this->actionFunc = EnDns_SetupNoSaleBurrow;
                         break;
-                    case 2:
-                    case 4:
+                    case DNS_CANBUY_RESULT_SUCCESS_NEW_ITEM:
+                    case DNS_CANBUY_RESULT_SUCCESS:
                         Message_ContinueTextbox(play, 0x10A7);
-                        this->actionFunc = func_809EFEE8;
+                        this->actionFunc = EnDns_SetupSale;
                         break;
                 }
                 break;
             case 1: // No way
                 Message_ContinueTextbox(play, 0x10A4);
-                this->actionFunc = func_809F008C;
+                this->actionFunc = EnDns_SetupNoSaleBurrow;
         }
     }
 }
 
-void func_809EFDD0(EnDns* this, PlayState* play) {
+void EnDns_OfferSaleItem(EnDns* this, PlayState* play) {
     u16 pendingGetItemId;
-    if (this->actor.params == 0x9) {
+    if (this->actor.params == DNS_TYPE_DEKU_STICK_UPGRADE) {
         if (CUR_UPG_VALUE(UPG_STICKS) < 2) {
             pendingGetItemId = GI_STICK_UPGRADE_20;
         } else {
             pendingGetItemId = GI_STICK_UPGRADE_30;
         }
-    } else if (this->actor.params == 0xA) {
+    } else if (this->actor.params == DNS_TYPE_DEKU_NUT_UPGRADE) {
         if (CUR_UPG_VALUE(UPG_NUTS) < 2) {
             pendingGetItemId = GI_NUT_UPGRADE_30;
         } else {
@@ -391,31 +376,31 @@ void func_809EFDD0(EnDns* this, PlayState* play) {
         pendingGetItemId = this->dnsItemEntry->getItemId;
     }
     GetItemEntry itemEntry = ItemTable_Retrieve(pendingGetItemId);
-    gSaveContext.pendingSale = itemEntry.itemId;
-    gSaveContext.pendingSaleMod = itemEntry.modIndex;
+    gSaveContext.ship.pendingSale = itemEntry.itemId;
+    gSaveContext.ship.pendingSaleMod = itemEntry.modIndex;
     Actor_OfferGetItem(&this->actor, play, pendingGetItemId, 130.0f, 100.0f);
 }
 
-void func_809EFEE8(EnDns* this, PlayState* play) {
+void EnDns_SetupSale(EnDns* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
         Message_CloseTextbox(play);
         if (GameInteractor_Should(VB_GIVE_ITEM_FROM_BUSINESS_SCRUB, true, this)) {
-            func_809EFDD0(this, play);
+            EnDns_OfferSaleItem(this, play);
         }
-        this->actionFunc = func_809EFF50;
+        this->actionFunc = EnDns_Sale;
     }
 }
 
-void func_809EFF50(EnDns* this, PlayState* play) {
+void EnDns_Sale(EnDns* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_BUSINESS_SCRUB, true, this)) {
         this->actor.parent = NULL;
-        this->actionFunc = func_809EFF98;
+        this->actionFunc = EnDns_SetupBurrow;
     } else {
-        func_809EFDD0(this, play);
+        EnDns_OfferSaleItem(this, play);
     }
 }
 
-void func_809EFF98(EnDns* this, PlayState* play) {
+void EnDns_SetupBurrow(EnDns* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (player->stateFlags1 & PLAYER_STATE1_GETTING_ITEM) {
@@ -424,40 +409,40 @@ void func_809EFF98(EnDns* this, PlayState* play) {
             this->dropCollectible = 1;
             this->maintainCollider = 0;
             this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
-            EnDns_ChangeAnim(this, ENDNS_ANIM_1);
-            this->actionFunc = EnDns_SetupBurrow;
+            EnDns_ChangeAnim(this, DNS_ANIM_BURROW);
+            this->actionFunc = EnDns_Burrow;
         }
     } else {
         this->dnsItemEntry->setRupeesAndFlags(this);
         this->dropCollectible = 1;
         this->maintainCollider = 0;
         this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
-        EnDns_ChangeAnim(this, ENDNS_ANIM_1);
-        this->actionFunc = EnDns_SetupBurrow;
+        EnDns_ChangeAnim(this, DNS_ANIM_BURROW);
+        this->actionFunc = EnDns_Burrow;
     }
 }
 
-void func_809F008C(EnDns* this, PlayState* play) {
+void EnDns_SetupNoSaleBurrow(EnDns* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
         this->maintainCollider = 0;
         this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
-        EnDns_ChangeAnim(this, ENDNS_ANIM_1);
-        this->actionFunc = EnDns_SetupBurrow;
+        EnDns_ChangeAnim(this, DNS_ANIM_BURROW);
+        this->actionFunc = EnDns_Burrow;
     }
 }
 
-void EnDns_SetupBurrow(EnDns* this, PlayState* play) {
-    f32 frameCount = Animation_GetLastFrame(&gBusinessScrubAnim_4404);
+void EnDns_Burrow(EnDns* this, PlayState* play) {
+    f32 frameCount = Animation_GetLastFrame(&gBusinessScrubLeaveBurrowAnim);
 
     if (this->skelAnime.curFrame == frameCount) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_AKINDONUTS_HIDE);
-        this->actionFunc = EnDns_Burrow;
+        this->actionFunc = EnDns_PostBurrow;
         this->standOnGround = 0;
         this->yInitPos = this->actor.world.pos.y;
     }
 }
 
-void EnDns_Burrow(EnDns* this, PlayState* play) {
+void EnDns_PostBurrow(EnDns* this, PlayState* play) {
     f32 depth;
     Vec3f initPos;
     s32 i;
@@ -490,7 +475,7 @@ void EnDns_Update(Actor* thisx, PlayState* play) {
     s16 pad;
 
     this->dustTimer++;
-    this->actor.textId = D_809F040C[this->actor.params];
+    this->actor.textId = sStartingTextIds[this->actor.params];
     Actor_SetFocus(&this->actor, 60.0f);
     Actor_SetScale(&this->actor, 0.01f);
     SkelAnime_Update(&this->skelAnime);

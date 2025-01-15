@@ -65,7 +65,10 @@ class Logic {
     // Bottle Count
     uint8_t Bottles = 0;
     uint8_t NumBottles = 0;
-    bool CanEmptyBigPoes = true;
+    //this event covers if the player can currently empty big poes in logic
+    bool CanEmptyBigPoes = false;
+    //this check covers if the generation has confirmed that it's possible to empty big poes if needed as adult
+    bool CouldEmptyBigPoes = true;
 
     // Drops and Bottle Contents Access
     bool NutPot = false;

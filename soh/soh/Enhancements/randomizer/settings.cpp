@@ -126,6 +126,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_GANONS_TRIALS] = Option::U8("Ganon's Trials", {"Skip", "Set Number", "Random Number"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("GanonTrial"), mOptionDescriptions[RSK_GANONS_TRIALS], WidgetType::Combobox, RO_GANONS_TRIALS_SET_NUMBER);
     mOptions[RSK_TRIAL_COUNT] = Option::U8("Ganon's Trials Count", {NumOpts(0, 6)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("GanonTrialCount"), mOptionDescriptions[RSK_TRIAL_COUNT], WidgetType::Slider, 6, true);
     mOptions[RSK_STARTING_AGE] = Option::U8("Starting Age", {"Child", "Adult", "Random"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StartingAge"), mOptionDescriptions[RSK_STARTING_AGE], WidgetType::Combobox, RO_AGE_CHILD);
+    mOptions[RSK_SELECTED_STARTING_AGE] = Option::U8("Selected Starting Age", {"Child", "Adult"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("SelectedStartingAge"), mOptionDescriptions[RSK_STARTING_AGE], WidgetType::Combobox, RO_AGE_CHILD);
     mOptions[RSK_SHUFFLE_ENTRANCES] = Option::Bool("Shuffle Entrances");
     mOptions[RSK_SHUFFLE_DUNGEON_ENTRANCES] = Option::U8("Dungeon Entrances", {"Off", "On", "On + Ganon"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleDungeonsEntrances"), mOptionDescriptions[RSK_SHUFFLE_DUNGEON_ENTRANCES], WidgetType::Combobox, RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
     mOptions[RSK_SHUFFLE_BOSS_ENTRANCES] = Option::U8("Boss Entrances", {"Off", "Age Restricted", "Full"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleBossEntrances"), mOptionDescriptions[RSK_SHUFFLE_BOSS_ENTRANCES], WidgetType::Combobox, RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
@@ -142,7 +143,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_MIX_INTERIOR_ENTRANCES] = Option::Bool("Mix Interiors", CVAR_RANDOMIZER_SETTING("MixInteriors"), mOptionDescriptions[RSK_MIX_INTERIOR_ENTRANCES], IMFLAG_NONE);
     mOptions[RSK_MIX_GROTTO_ENTRANCES] = Option::Bool("Mix Grottos", CVAR_RANDOMIZER_SETTING("MixGrottos"), mOptionDescriptions[RSK_MIX_GROTTO_ENTRANCES]);
     mOptions[RSK_DECOUPLED_ENTRANCES] = Option::Bool("Decouple Entrances", CVAR_RANDOMIZER_SETTING("DecoupleEntrances"), mOptionDescriptions[RSK_DECOUPLED_ENTRANCES]);
-    mOptions[RSK_BOMBCHUS_IN_LOGIC] = Option::Bool("Bombchus in Logic", CVAR_RANDOMIZER_SETTING("BombchusInLogic"), mOptionDescriptions[RSK_BOMBCHUS_IN_LOGIC]);
+    mOptions[RSK_BOMBCHU_BAG] = Option::Bool("Bombchu Bag", CVAR_RANDOMIZER_SETTING("BombchuBag"), mOptionDescriptions[RSK_BOMBCHU_BAG]);
     mOptions[RSK_ENABLE_BOMBCHU_DROPS] = Option::U8("Bombchu Drops", {"No", "Yes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("EnableBombchuDrops"), mOptionDescriptions[RSK_ENABLE_BOMBCHU_DROPS], WidgetType::Combobox, RO_AMMO_DROPS_ON);
     // TODO: AmmoDrops and/or HeartDropRefill, combine with/separate Ammo Drops from Bombchu Drops?
     mOptions[RSK_TRIFORCE_HUNT] = Option::Bool("Triforce Hunt", CVAR_RANDOMIZER_SETTING("TriforceHunt"), mOptionDescriptions[RSK_TRIFORCE_HUNT], IMFLAG_NONE);
@@ -920,7 +921,7 @@ void Settings::CreateOptions() {
     }, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_ADDITIONAL_FEATURES_IMGUI] = OptionGroup::SubGroup("Additional Features", {
         &mOptions[RSK_FULL_WALLETS],
-        &mOptions[RSK_BOMBCHUS_IN_LOGIC],
+        &mOptions[RSK_BOMBCHU_BAG],
         &mOptions[RSK_ENABLE_BOMBCHU_DROPS],
         &mOptions[RSK_BLUE_FIRE_ARROWS],
         &mOptions[RSK_SUNLIGHT_ARROWS],
@@ -1005,7 +1006,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_MIX_INTERIOR_ENTRANCES],
         &mOptions[RSK_MIX_GROTTO_ENTRANCES],
         &mOptions[RSK_DECOUPLED_ENTRANCES],
-        &mOptions[RSK_BOMBCHUS_IN_LOGIC],
+        &mOptions[RSK_BOMBCHU_BAG],
         &mOptions[RSK_ENABLE_BOMBCHU_DROPS],
         &mOptions[RSK_TRIFORCE_HUNT],
         &mOptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL],
@@ -1327,11 +1328,6 @@ std::vector<Option *>& Settings::GetExcludeOptionsForArea(const RandomizerCheckA
 const std::vector<std::vector<Option *>>& Settings::GetExcludeLocationsOptions() const {
     return mExcludeLocationsOptionsAreas;
 }
-
-RandoOptionStartingAge Settings::ResolvedStartingAge() const {
-    return mResolvedStartingAge;
-}
-
 RandoOptionLACSCondition Settings::LACSCondition() const {
     return mLACSCondition;
 }
@@ -2368,12 +2364,12 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
 
     if (mOptions[RSK_STARTING_AGE].Is(RO_AGE_RANDOM)) {
         if (const uint32_t choice = Random(0, 2); choice == 0) {
-            mResolvedStartingAge = RO_AGE_CHILD;
+            mOptions[RSK_SELECTED_STARTING_AGE].SetContextIndex(RO_AGE_CHILD);
         } else {
-            mResolvedStartingAge = RO_AGE_ADULT;
+            mOptions[RSK_SELECTED_STARTING_AGE].SetContextIndex(RO_AGE_ADULT);
         }
     } else {
-        mResolvedStartingAge = static_cast<RandoOptionStartingAge>(mOptions[RSK_STARTING_AGE].GetContextOptionIndex());
+        mOptions[RSK_SELECTED_STARTING_AGE].SetContextIndex(mOptions[RSK_STARTING_AGE].GetContextOptionIndex());
     }
 
     // TODO: Random Starting Time
