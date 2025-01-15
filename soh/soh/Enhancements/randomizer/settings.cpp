@@ -126,6 +126,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_GANONS_TRIALS] = Option::U8("Ganon's Trials", {"Skip", "Set Number", "Random Number"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("GanonTrial"), mOptionDescriptions[RSK_GANONS_TRIALS], WidgetType::Combobox, RO_GANONS_TRIALS_SET_NUMBER);
     mOptions[RSK_TRIAL_COUNT] = Option::U8("Ganon's Trials Count", {NumOpts(0, 6)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("GanonTrialCount"), mOptionDescriptions[RSK_TRIAL_COUNT], WidgetType::Slider, 6, true);
     mOptions[RSK_STARTING_AGE] = Option::U8("Starting Age", {"Child", "Adult", "Random"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StartingAge"), mOptionDescriptions[RSK_STARTING_AGE], WidgetType::Combobox, RO_AGE_CHILD);
+    mOptions[RSK_SELECTED_STARTING_AGE] = Option::U8("Selected Starting Age", {"Child", "Adult"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("SelectedStartingAge"), mOptionDescriptions[RSK_STARTING_AGE], WidgetType::Combobox, RO_AGE_CHILD);
     mOptions[RSK_SHUFFLE_ENTRANCES] = Option::Bool("Shuffle Entrances");
     mOptions[RSK_SHUFFLE_DUNGEON_ENTRANCES] = Option::U8("Dungeon Entrances", {"Off", "On", "On + Ganon"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleDungeonsEntrances"), mOptionDescriptions[RSK_SHUFFLE_DUNGEON_ENTRANCES], WidgetType::Combobox, RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
     mOptions[RSK_SHUFFLE_BOSS_ENTRANCES] = Option::U8("Boss Entrances", {"Off", "Age Restricted", "Full"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleBossEntrances"), mOptionDescriptions[RSK_SHUFFLE_BOSS_ENTRANCES], WidgetType::Combobox, RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
@@ -1327,11 +1328,6 @@ std::vector<Option *>& Settings::GetExcludeOptionsForArea(const RandomizerCheckA
 const std::vector<std::vector<Option *>>& Settings::GetExcludeLocationsOptions() const {
     return mExcludeLocationsOptionsAreas;
 }
-
-RandoOptionStartingAge Settings::ResolvedStartingAge() const {
-    return mResolvedStartingAge;
-}
-
 RandoOptionLACSCondition Settings::LACSCondition() const {
     return mLACSCondition;
 }
@@ -2368,12 +2364,12 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
 
     if (mOptions[RSK_STARTING_AGE].Is(RO_AGE_RANDOM)) {
         if (const uint32_t choice = Random(0, 2); choice == 0) {
-            mResolvedStartingAge = RO_AGE_CHILD;
+            mOptions[RSK_SELECTED_STARTING_AGE].SetContextIndex(RO_AGE_CHILD);
         } else {
-            mResolvedStartingAge = RO_AGE_ADULT;
+            mOptions[RSK_SELECTED_STARTING_AGE].SetContextIndex(RO_AGE_ADULT);
         }
     } else {
-        mResolvedStartingAge = static_cast<RandoOptionStartingAge>(mOptions[RSK_STARTING_AGE].GetContextOptionIndex());
+        mOptions[RSK_SELECTED_STARTING_AGE].SetContextIndex(mOptions[RSK_STARTING_AGE].GetContextOptionIndex());
     }
 
     // TODO: Random Starting Time

@@ -391,8 +391,8 @@ void func_809EFDD0(EnDns* this, PlayState* play) {
         pendingGetItemId = this->dnsItemEntry->getItemId;
     }
     GetItemEntry itemEntry = ItemTable_Retrieve(pendingGetItemId);
-    gSaveContext.pendingSale = itemEntry.itemId;
-    gSaveContext.pendingSaleMod = itemEntry.modIndex;
+    gSaveContext.ship.pendingSale = itemEntry.itemId;
+    gSaveContext.ship.pendingSaleMod = itemEntry.modIndex;
     Actor_OfferGetItem(&this->actor, play, pendingGetItemId, 130.0f, 100.0f);
 }
 

@@ -633,7 +633,7 @@ struct HookInfo {
 #define COND_VB_SHOULD(id, condition, body)                                                               \
     {                                                                                                     \
         static HOOK_ID hookId = 0;                                                                        \
-        GameInteractor::Instance->UnregisterGameHookForID<GameInteractor::ShouldVanillaBehavior>(hookId); \
+        GameInteractor::Instance->UnregisterGameHookForID<GameInteractor::OnVanillaBehavior>(hookId); \
         hookId = 0;                                                                                       \
         if (condition) {                                                                                  \
             hookId = REGISTER_VB_SHOULD(id, body);                                                        \

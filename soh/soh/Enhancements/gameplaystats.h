@@ -19,14 +19,14 @@ extern "C" {
     // Total gameplay time is tracked in tenths of seconds
     // I.E. game time counts frames at 20fps/2, pause time counts frames at 30fps/3
     // Frame counts in z_play.c and z_kaleido_scope_call.c
-#define GAMEPLAYSTAT_TOTAL_TIME (gSaveContext.sohStats.rtaTiming ?\
-    (!gSaveContext.sohStats.gameComplete ?\
-        (!gSaveContext.sohStats.fileCreatedAt ? 0 : ((GetUnixTimestamp() - gSaveContext.sohStats.fileCreatedAt) / 100)) :\
-        (gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANON])) :\
-    (gSaveContext.sohStats.playTimer / 2 + gSaveContext.sohStats.pauseTimer / 3))
+#define GAMEPLAYSTAT_TOTAL_TIME (gSaveContext.ship.stats.rtaTiming ?\
+    (!gSaveContext.ship.stats.gameComplete ?\
+        (!gSaveContext.ship.stats.fileCreatedAt ? 0 : ((GetUnixTimestamp() - gSaveContext.ship.stats.fileCreatedAt) / 100)) :\
+        (gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON])) :\
+    (gSaveContext.ship.stats.playTimer / 2 + gSaveContext.ship.stats.pauseTimer / 3))
 #define CURRENT_MODE_TIMER (CVarGetInteger(CVAR_ENHANCEMENT("GameplayStats.RoomBreakdown"), 0) ?\
-    gSaveContext.sohStats.roomTimer :\
-    gSaveContext.sohStats.sceneTimer)
+    gSaveContext.ship.stats.roomTimer :\
+    gSaveContext.ship.stats.sceneTimer)
 
 void InitStatTracker();
 

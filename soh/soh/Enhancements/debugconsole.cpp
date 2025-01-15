@@ -470,7 +470,7 @@ static bool FWHandler(std::shared_ptr<Ship::Console> Console, const std::vector<
                 break;
             case 2: //backup
                 if (CVarGetInteger(CVAR_ENHANCEMENT("BetterFarore"), 0)) {
-                    gSaveContext.fw = gSaveContext.backupFW;
+                    gSaveContext.fw = gSaveContext.ship.backupFW;
                     gSaveContext.fw.set = 1;
                     INFO_MESSAGE("[SOH] Backup FW data copied! Reload scene to take effect.");
                     return 0;

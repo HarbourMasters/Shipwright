@@ -394,7 +394,7 @@ extern "C" void Randomizer_DrawTriforcePiece(PlayState* play, GetItemEntry getIt
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
-    uint8_t current = gSaveContext.triforcePiecesCollected;
+    uint8_t current = gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected;
 
     Matrix_Scale(0.035f, 0.035f, 0.035f, MTXMODE_APPLY);
 
@@ -418,7 +418,7 @@ extern "C" void Randomizer_DrawTriforcePieceGI(PlayState* play, GetItemEntry get
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
-    uint8_t current = gSaveContext.triforcePiecesCollected;
+    uint8_t current = gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected;
     uint8_t required = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1;
 
     Matrix_Scale(triforcePieceScale, triforcePieceScale, triforcePieceScale, MTXMODE_APPLY);

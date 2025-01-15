@@ -49,7 +49,7 @@ void RegionTable_Init_BottomOfTheWell() {
         LOCATION(RC_BOTTOM_OF_THE_WELL_FRONT_LEFT_FAKE_WALL_CHEST,   true),
         LOCATION(RC_BOTTOM_OF_THE_WELL_RIGHT_BOTTOM_FAKE_WALL_CHEST, true),
         LOCATION(RC_BOTTOM_OF_THE_WELL_COMPASS_CHEST,                true),
-        //N64 has no extra check here, but I can't get past without dealing with the spider or taking a hit
+        //N64 has no extra check here, but I can't get past without dealing with the spider or taking a hit, they probably assume sticks
         LOCATION(RC_BOTTOM_OF_THE_WELL_CENTER_SKULLTULA_CHEST,       logic->CanPassEnemy(RE_BIG_SKULLTULA) || logic->TakeDamage()),
         //Not technically behind a wall, but still logically needs lens due to pits
         LOCATION(RC_BOTTOM_OF_THE_WELL_BACK_LEFT_BOMBABLE_CHEST,     logic->HasExplosives()),

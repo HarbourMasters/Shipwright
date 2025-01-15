@@ -2073,7 +2073,14 @@ void StaticData::HintTable_Init_Item() {
                                               CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
                                               }, {
                                               CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
-  
+    hintTextTable[RHT_SKELETON_KEY] = HintText(CustomMessage("a Skeleton Key", /*german*/ "ein Universalschlüssel", /*french*/ "une Clé Squelette"),
+                                               // /*spanish*/una Llave Maestra
+                                               {
+                                               CustomMessage("a key", /*german*/ "ein Schlüssel", /*french*/ "une clé")
+                                                // /*spanish*/una llave
+                                               },
+                                               { CustomMessage("a master unlocker", /*german*/ "ein Meisterentsperrer", /*french*/ "un Kit de Déverrouillage") });
+                                                // /*spanish*/un desbloqueador maestro
     hintTextTable[RHT_QUIVER_INF] = HintText(CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
                                              {
                                              CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
