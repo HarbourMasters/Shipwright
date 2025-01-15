@@ -405,6 +405,9 @@ OTRGlobals::OTRGlobals() {
     defaultFontLargest = CreateDefaultFontWithSize(20.0f);
     ScaleImGui();
 
+    // Force OSX behavior off so that CMD is not swapped with CTRL (i.e. our CMD+R hotkey, CTRL+LeftClick on input fields)
+    ImGui::GetIO().ConfigMacOSXBehaviors = false;
+
     // Move the camera strings from read only memory onto the heap (writable memory)
     // This is in OTRGlobals right now because this is a place that will only ever be run once at the beginning of startup.
     // We should probably find some code in db_camera that does initialization and only run once, and then dealloc on deinitialization.
