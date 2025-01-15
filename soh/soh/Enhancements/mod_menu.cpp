@@ -116,6 +116,10 @@ void AfterModChange() {
     Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 }
 
+void DrawModInfo(std::string file) {
+    ImGui::Text(file.c_str());
+}
+
 void ModMenuWindow::DrawElement() {
     if (ImGui::Button("Update")) {
         UpdateModFiles();
@@ -141,7 +145,7 @@ void ModMenuWindow::DrawElement() {
                         AfterModChange();
                     }
                     ImGui::SameLine();
-                    ImGui::Text(file.c_str());
+                    DrawModInfo(file);
                 }
             } else {
                 ImGui::Text("<None>");
@@ -162,7 +166,7 @@ void ModMenuWindow::DrawElement() {
                         AfterModChange();
                     }
                     ImGui::SameLine();
-                    ImGui::Text(file.c_str());
+                    DrawModInfo(file);
                 }
             } else {
                 ImGui::Text("<None>");
