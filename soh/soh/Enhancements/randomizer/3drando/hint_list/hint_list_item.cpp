@@ -2068,11 +2068,15 @@ void StaticData::HintTable_Init_Item() {
                                                CustomMessage("a fish-puller", /*german*/"ein Fischzieher", /*french*/"(canne à pêche)")});
                                                 // /*spanish*/(caña de pescar)
 
-    hintTextTable[RHT_BOMBCHU_BAG] = HintText(CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BOMBCHU_BAG] = HintText(CustomMessage("Bombchu Bag", /*german*/"!!!", /*french*/"!!!"),
                                               {
-                                              CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
+                                             CustomMessage("explosives", /*german*/"ein Explosivpaket", /*french*/"un paquet d'explosifs"),
+                                                  // /*spanish*/un montón de explosivos
+                                             CustomMessage("something that can remove boulders", /*german*/"etwas, das Geröll entfernen kann", /*french*/"une chose qui enlève les rochers")
+                                                  // /*spanish*/algo que pueda quitar rocas
                                               }, {
-                                              CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
+                                              CustomMessage("sack of mice", /*german*/"!!!", /*french*/"!!!")});
+
     hintTextTable[RHT_SKELETON_KEY] = HintText(CustomMessage("a Skeleton Key", /*german*/ "ein Universalschlüssel", /*french*/ "une Clé Squelette"),
                                                // /*spanish*/una Llave Maestra
                                                {

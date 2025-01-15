@@ -667,7 +667,7 @@ void Settings::CreateOptionDescriptions() {
         "Bombchus require their own bag to be found before use. Without this setting, any Bombchu requirement "
         "is filled by Bomb Bag + a renewable source of Bombchus.\n"
         "\n"
-        "The first Bombchu you fing be a Bag containing 20 chus, and subsequent packs will have 10."
+        "The first Bombchu you find be a Bag containing 20 chus, and subsequent packs will have 10."
         "Once found, they can be replenished at shops selling refills, Bombchu Bowling and the carpet merchant.\n"
         "\n"
         "Bombchu Bowling is opened by obtaining the Bombchu Bag.";

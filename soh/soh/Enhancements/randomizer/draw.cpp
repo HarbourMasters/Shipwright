@@ -26,31 +26,31 @@ extern "C" {
 extern SaveContext gSaveContext;
 }
 
-    const char* SmallBaseCvarValue[10] = {
-        CVAR_COSMETIC("Key.ForestSmallBase.Value"),
-        CVAR_COSMETIC("Key.FireSmallBase.Value"),
-        CVAR_COSMETIC("Key.WaterSmallBase.Value"),
-        CVAR_COSMETIC("Key.SpiritSmallBase.Value"),
-        CVAR_COSMETIC("Key.ShadowSmallBase.Value"),
-        CVAR_COSMETIC("Key.WellSmallBase.Value"),
-        CVAR_COSMETIC("Key.GTGSmallBase.Value"),
-        CVAR_COSMETIC("Key.FortSmallBase.Value"),
-        CVAR_COSMETIC("Key.GanonsSmallBase.Value"),
-        CVAR_COSMETIC("Key.ChestSmallBase.Value"),
-    };
+const char* SmallBaseCvarValue[10] = {
+    CVAR_COSMETIC("Key.ForestSmallBase.Value"),
+    CVAR_COSMETIC("Key.FireSmallBase.Value"),
+    CVAR_COSMETIC("Key.WaterSmallBase.Value"),
+    CVAR_COSMETIC("Key.SpiritSmallBase.Value"),
+    CVAR_COSMETIC("Key.ShadowSmallBase.Value"),
+    CVAR_COSMETIC("Key.WellSmallBase.Value"),
+    CVAR_COSMETIC("Key.GTGSmallBase.Value"),
+    CVAR_COSMETIC("Key.FortSmallBase.Value"),
+    CVAR_COSMETIC("Key.GanonsSmallBase.Value"),
+    CVAR_COSMETIC("Key.ChestGameSmallBase.Value"),
+};
 
-    const char* SmallIconCvarValue[10] = {
-        CVAR_COSMETIC("Key.ForestIcon.Value"),
-        CVAR_COSMETIC("Key.FireIcon.Value"),
-        CVAR_COSMETIC("Key.WaterIcon.Value"),
-        CVAR_COSMETIC("Key.SpiritIcon.Value"),
-        CVAR_COSMETIC("Key.ShadowIcon.Value"),
-        CVAR_COSMETIC("Key.WellIcon.Value"),
-        CVAR_COSMETIC("Key.GTGIcon.Value"),
-        CVAR_COSMETIC("Key.FortIcon.Value"),
-        CVAR_COSMETIC("Key.GanonsIcon.Value"),
-        CVAR_COSMETIC("Key.ChestIcon.Value"),
-    };
+const char* SmallEmblemCvarValue[10] = {
+    CVAR_COSMETIC("Key.ForestEmblem.Value"),
+    CVAR_COSMETIC("Key.FireEmblem.Value"),
+    CVAR_COSMETIC("Key.WaterEmblem.Value"),
+    CVAR_COSMETIC("Key.SpiritEmblem.Value"),
+    CVAR_COSMETIC("Key.ShadowEmblem.Value"),
+    CVAR_COSMETIC("Key.WellEmblem.Value"),
+    CVAR_COSMETIC("Key.GTGEmblem.Value"),
+    CVAR_COSMETIC("Key.FortEmblem.Value"),
+    CVAR_COSMETIC("Key.GanonsEmblem.Value"),
+    CVAR_COSMETIC("Key.ChestGameEmblem.Value"),
+};
 
 extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 
@@ -87,12 +87,12 @@ extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEn
 
         Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
-        Color_RGB8 iconColor = { 255, 0, 0 };
-        iconColor = CVarGetColor24(SmallIconCvarValue[slot], iconColor);
+        Color_RGB8 emblemColor = { 255, 0, 0 };
+        emblemColor = CVarGetColor24(SmallEmblemCvarValue[slot], emblemColor);
 
         gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
                 G_MTX_MODELVIEW | G_MTX_LOAD);
-        gDPSetEnvColor(POLY_XLU_DISP++, iconColor.r, iconColor.g, iconColor.b, 255);
+        gDPSetEnvColor(POLY_XLU_DISP++, emblemColor.r, emblemColor.g, emblemColor.b, 255);
 
         gSPDisplayList(POLY_XLU_DISP++, customIconDLs[slot]);
 
@@ -154,12 +154,12 @@ extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEnt
     s16 slot = getItemEntry->getItemId - RG_FOREST_TEMPLE_BOSS_KEY;
 
     std::string CvarValue[6] = {
-        "Forest",
-        "Fire",
-        "Water",
-        "Spirit",
-        "Shadow",
-        "Ganons",
+        "gCosmetics.Key.Forest",
+        "gCosmetics.Key.Fire",
+        "gCosmetics.Key.Water",
+        "gCosmetics.Key.Spirit",
+        "gCosmetics.Key.Shadow",
+        "gCosmetics.Key.Ganons",
     };
 
     Gfx* CustomdLists[] = {
@@ -180,13 +180,13 @@ extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEnt
 
     Color_RGB8 keyColor = { 255, 255, 0 };
     //Supposed to use CVAR_COSMETIC but I can't figure out the syntax
-    keyColor = CVarGetColor24(("gCosmetics.Key." + CvarValue[slot] + "BossBase.Value").c_str(), keyColor);
+    keyColor = CVarGetColor24((CvarValue[slot] + "BossBase.Value").c_str(), keyColor);
     
     if (isCustomKeysEnabled){
         gDPSetEnvColor(POLY_OPA_DISP++, keyColor.r, keyColor.g, keyColor.b, 255);
         gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gBossKeyCustomDL);
     } else {
-        if (CVarGetInteger(("gCosmetics.Key." + CvarValue[slot] + "BossBase.Changed").c_str(), false)){
+        if (CVarGetInteger((CvarValue[slot] + "BossBase.Changed").c_str(), false)){
             gDPSetGrayscaleColor(POLY_OPA_DISP++, keyColor.r, keyColor.g, keyColor.b, 255);
             gSPGrayscale(POLY_OPA_DISP++, true);
             gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiBossKeyDL);
@@ -201,15 +201,15 @@ extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEnt
     gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    Color_RGB8 iconColor = { 255, 0, 0 };
-    iconColor = CVarGetColor24(("gCosmetics.Key." + CvarValue[slot] + "Icon.Value").c_str(), iconColor);
+    Color_RGB8 emblemColor = { 255, 0, 0 };
+    emblemColor = CVarGetColor24((CvarValue[slot] + "Emblem.Value").c_str(), emblemColor);
     
     if (isCustomKeysEnabled){
-        gDPSetEnvColor(POLY_XLU_DISP++, iconColor.r, iconColor.g, iconColor.b, 255);
+        gDPSetEnvColor(POLY_XLU_DISP++, emblemColor.r, emblemColor.g, emblemColor.b, 255);
         gSPDisplayList(POLY_XLU_DISP++, CustomdLists[slot]);
     } else {
-        if (CVarGetInteger(("gCosmetics.Key." + CvarValue[slot] + "Icon.Changed").c_str(), false)){
-            gDPSetGrayscaleColor(POLY_XLU_DISP++, iconColor.r, iconColor.g, iconColor.b, 255);
+        if (CVarGetInteger((CvarValue[slot] + "Emblem.Changed").c_str(), false)){
+            gDPSetGrayscaleColor(POLY_XLU_DISP++, emblemColor.r, emblemColor.g, emblemColor.b, 255);
             gSPGrayscale(POLY_XLU_DISP++, true);
             gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiBossKeyGemDL);
             gSPGrayscale(POLY_XLU_DISP++, false);
@@ -265,6 +265,7 @@ extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEnt
     };
 
     //RANDOTODO make DungeonInfo static and vanilla accessible to allow all these key model data vars to be stored there.
+    //(Rando::DungeonKey)0 means the keyring is not tied to a dungeon and should not be checked for an MQ variant
     Rando::DungeonKey SlotToDungeon[10] = {
         Rando::FOREST_TEMPLE,
         Rando::FIRE_TEMPLE,
@@ -273,9 +274,9 @@ extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEnt
         Rando::SHADOW_TEMPLE,
         Rando::BOTTOM_OF_THE_WELL,
         Rando::GERUDO_TRAINING_GROUND,
-        (Rando::DungeonKey)0,
+        (Rando::DungeonKey)0, //Gerudo Fortress
         Rando::GANONS_CASTLE,
-        (Rando::DungeonKey)0,
+        (Rando::DungeonKey)0, //Treasure Chest Game
     };
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -301,13 +302,13 @@ extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEnt
         gDPSetEnvColor(POLY_OPA_DISP++, ringColor.r, ringColor.g, ringColor.b, 255);
         gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gKeyringRingDL);
 
-        Color_RGB8 iconColor = { 255, 0, 0 };
-        iconColor = CVarGetColor24(SmallIconCvarValue[slot], iconColor);
+        Color_RGB8 emblemColor = { 255, 0, 0 };
+        emblemColor = CVarGetColor24(SmallEmblemCvarValue[slot], emblemColor);
 
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
             G_MTX_MODELVIEW | G_MTX_LOAD);
-        gDPSetEnvColor(POLY_OPA_DISP++, iconColor.r, iconColor.g, iconColor.b, 255);
+        gDPSetEnvColor(POLY_OPA_DISP++, emblemColor.r, emblemColor.g, emblemColor.b, 255);
 
         gSPDisplayList(POLY_OPA_DISP++, CustomIconDLs[slot]);
     } else {
