@@ -405,7 +405,8 @@ void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play) {
     f32 mtxScale = CVarGetFloat(CVAR_ENHANCEMENT("TimeSavers.SkipGetItemAnimationScale"), 10.0f);
     Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
     GetItemEntry randoItem = enItem00->itemEntry;
-    if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
+    if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) &&
+        enItem00->actor.params != ITEM00_SOH_GIVE_ITEM_ENTRY) {
         randoItem = GET_ITEM_MYSTERY;
     }
     EnItem00_CustomItemsParticles(&enItem00->actor, play, randoItem);
