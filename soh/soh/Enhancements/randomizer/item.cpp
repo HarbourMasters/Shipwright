@@ -340,13 +340,11 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
            break;
         case RG_PROGRESSIVE_BOMBCHUS:
             if (logic->CurrentInventory(ITEM_BOMBCHU) == ITEM_NONE) {
-                actual = RG_BOMBCHU_20;
+                actual = RG_BOMBCHU_BAG;
             } else if (infiniteUpgrades != RO_INF_UPGRADES_OFF) {
                 actual = RG_BOMBCHU_INF;
-            } else if (logic->GetAmmo(ITEM_BOMBCHU) < 5) {
-                actual = RG_BOMBCHU_10;
             } else {
-                actual = RG_BOMBCHU_5;
+                actual = RG_BOMBCHU_10;
             }
             break;
         default:
@@ -398,7 +396,7 @@ bool Item::IsMajorItem() const {
     }
 
     if ((randomizerGet == RG_BOMBCHU_5 || randomizerGet == RG_BOMBCHU_10 || randomizerGet == RG_BOMBCHU_20) &&
-        !ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC)) {
+        !ctx->GetOption(RSK_BOMBCHU_BAG)) {
         return false;
     }
 

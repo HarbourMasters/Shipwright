@@ -18,9 +18,6 @@
 
 #include <Window.h>
 #include <Context.h>
-#ifndef IMGUI_DEFINE_MATH_OPERATORS
-#define IMGUI_DEFINE_MATH_OPERATORS
-#endif
 #include <imgui.h>
 #include <imgui_internal.h>
 #undef PATH_HACK
@@ -473,7 +470,7 @@ static bool FWHandler(std::shared_ptr<Ship::Console> Console, const std::vector<
                 break;
             case 2: //backup
                 if (CVarGetInteger(CVAR_ENHANCEMENT("BetterFarore"), 0)) {
-                    gSaveContext.fw = gSaveContext.backupFW;
+                    gSaveContext.fw = gSaveContext.ship.backupFW;
                     gSaveContext.fw.set = 1;
                     INFO_MESSAGE("[SOH] Backup FW data copied! Reload scene to take effect.");
                     return 0;
@@ -1300,6 +1297,7 @@ static constexpr std::array<std::pair<const char*, CosmeticGroup>, COSMETICS_GRO
     {"swords", COSMETICS_GROUP_SWORDS},
     {"gloves", COSMETICS_GROUP_GLOVES},
     {"equipment", COSMETICS_GROUP_EQUIPMENT},
+    {"key", COSMETICS_GROUP_KEY},
     {"consumable", COSMETICS_GROUP_CONSUMABLE},
     {"hud", COSMETICS_GROUP_HUD},
     {"kaleido", COSMETICS_GROUP_KALEIDO},

@@ -8,7 +8,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/UIWidgets.hpp"
 #include "dungeon.h"
-#include "3drando/location_access.hpp"
+#include "location_access.h"
 
 #include <string>
 #include <vector>
@@ -490,7 +490,7 @@ void CheckTrackerLoadGame(int32_t fileNum) {
         }
     }
     if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING && IS_RANDO) {
-        s8 startingAge = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_AGE);
+        uint8_t startingAge = OTRGlobals::Instance->gRandoContext->GetOption(RSK_SELECTED_STARTING_AGE).GetContextOptionIndex();
         RandomizerCheckArea startingArea;
         switch (startingAge) {
             case RO_AGE_CHILD:
@@ -699,10 +699,10 @@ void CheckTrackerFlagSet(int16_t flagType, int32_t flag) {
                 return;
             }
             if (!IS_RANDO) {
-                if (flag == INFTABLE_192) {
+                if (flag == INFTABLE_BOUGHT_STICK_UPGRADE) {
                     SetCheckCollected(RC_LW_DEKU_SCRUB_NEAR_BRIDGE);
                     return;
-                } else if (flag == INFTABLE_193) {
+                } else if (flag == INFTABLE_BOUGHT_NUT_UPGRADE) {
                     SetCheckCollected(RC_LW_DEKU_SCRUB_GROTTO_FRONT);
                     return;
                 }
@@ -716,7 +716,7 @@ void CheckTrackerFlagSet(int16_t flagType, int32_t flag) {
                 } else if (flag == ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE) {
                     SetCheckCollected(RC_DEKU_THEATER_MASK_OF_TRUTH);
                     return;
-                } else if (flag == ITEMGETINF_0B) {
+                } else if (flag == ITEMGETINF_DEKU_SCRUB_HEART_PIECE) {
                     SetCheckCollected(RC_HF_DEKU_SCRUB_GROTTO);
                     return;
                 }
@@ -1360,7 +1360,7 @@ bool IsVisibleInCheckTracker(RandomizerCheck rc) {
                 OTRGlobals::Instance->gRandoContext->IsQuestOfLocationActive(rc)
             ) || (loc->GetRCType() == RCTYPE_SHOP && showShops && !hideShopUnshuffledChecks);
     } else {
-        return loc->IsVanillaCompletion() && (!loc->IsDungeon() || (loc->IsDungeon() && loc->GetQuest() == gSaveContext.questId));
+        return loc->IsVanillaCompletion() && (!loc->IsDungeon() || (loc->IsDungeon() && loc->GetQuest() == gSaveContext.ship.quest.id));
     }
 }
 
@@ -1546,7 +1546,7 @@ void DrawLocation(RandomizerCheck rc) {
             SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionId, true);
         }
     } else {
-        ImGui::InvisibleButton("", ImVec2(20.0f, 10.0f));
+        ImGui::Dummy(ImVec2(20.0f, 10.0f));
     }
     ImGui::SameLine();
 

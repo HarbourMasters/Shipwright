@@ -4982,15 +4982,33 @@ void Flags_UnsetEventInf(s32 flag) {
  * Tests if "randomizerInf" flag is set.
  */
 s32 Flags_GetRandomizerInf(RandomizerInf flag) {
-    return gSaveContext.randomizerInf[flag >> 4] & (1 << (flag & 0xF));
+    // Randomizer flags are currently accessible from any quest (boss rush as an example)
+    /*
+    if (!IS_RANDO) {
+        LUSLOG_ERROR("Tried to get randomizerInf flag \"%d\" outside of rando", flag);
+        assert(false);
+        return 0;
+    }
+    */
+
+    return gSaveContext.ship.randomizerInf[flag >> 4] & (1 << (flag & 0xF));
 }
 
 /**
  * Sets "randomizerInf" flag.
  */
 void Flags_SetRandomizerInf(RandomizerInf flag) {
+    // Randomizer flags are currently accessible from any quest (boss rush as an example)
+    /*
+    if (!IS_RANDO) {
+        LUSLOG_ERROR("Tried to set randomizerInf flag \"%d\" outside of rando", flag);
+        assert(false);
+        return;
+    }
+    */
+
     s32 previouslyOff = !Flags_GetRandomizerInf(flag);
-    gSaveContext.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
+    gSaveContext.ship.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
     if (previouslyOff) {
         LUSLOG_INFO("RandomizerInf Flag Set - %#x", flag);
         GameInteractor_ExecuteOnFlagSet(FLAG_RANDOMIZER_INF, flag);
@@ -5001,8 +5019,17 @@ void Flags_SetRandomizerInf(RandomizerInf flag) {
  * Unsets "randomizerInf" flag.
  */
 void Flags_UnsetRandomizerInf(RandomizerInf flag) {
+    // Randomizer flags are currently accessible from any quest (boss rush as an example)
+    /*
+    if (!IS_RANDO) {
+        LUSLOG_ERROR("Tried to unset randomizerInf flag \"%d\" outside of rando", flag);
+        assert(false);
+        return;
+    }
+    */
+
     s32 previouslyOn = Flags_GetRandomizerInf(flag);
-    gSaveContext.randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
+    gSaveContext.ship.randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
     if (previouslyOn) {
         LUSLOG_INFO("RandomizerInf Flag Unset - %#x", flag);
         GameInteractor_ExecuteOnFlagUnset(FLAG_RANDOMIZER_INF, flag);

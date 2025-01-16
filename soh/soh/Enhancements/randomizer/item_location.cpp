@@ -56,6 +56,7 @@ void ItemLocation::SetParentRegion(const RandomizerRegion region) {
     parentRegion = region;
 }
 
+//RANDOTODO only used in tracker now, could possibly be removed
 RandomizerRegion ItemLocation::GetParentRegionKey() const {
     return parentRegion;
 }

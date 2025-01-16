@@ -487,7 +487,7 @@ void EnBox_Open(EnBox* this, PlayState* play) {
 
         if (Animation_OnFrame(&this->skelanime, 30.0f)) {
             sfxId = NA_SE_EV_TBOX_UNLOCK;
-            gSaveContext.sohStats.count[COUNT_CHESTS_OPENED]++;
+            gSaveContext.ship.stats.count[COUNT_CHESTS_OPENED]++;
         } else if (Animation_OnFrame(&this->skelanime, 90.0f)) {
             sfxId = NA_SE_EV_TBOX_OPEN;
         }
@@ -582,6 +582,7 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
         (play->sceneNum == SCENE_TREASURE_BOX_SHOP && this->dyna.actor.room != 6); // Exclude treasure game chests except for the final room
 
     if (!isVanilla) {
+        GetItemEntry test = this->getItemEntry;
         getItemCategory = this->getItemEntry.getItemCategory;
         // If they have bombchus, don't consider the bombchu item major
         if (

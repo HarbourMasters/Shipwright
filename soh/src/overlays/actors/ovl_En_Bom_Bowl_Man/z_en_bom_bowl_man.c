@@ -179,7 +179,7 @@ void EnBomBowMan_CheckBeatenDC(EnBomBowlMan* this, PlayState* play) {
         if (IS_RANDO) {
             // when rando'd, check if we have bombchus if chus are in logic
             // and check if we have a bomb bag if chus aren't in logic
-            u8 explosive = Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC) ? ITEM_BOMBCHU : ITEM_BOMB;
+            u8 explosive = Randomizer_GetSettingValue(RSK_BOMBCHU_BAG) ? ITEM_BOMBCHU : ITEM_BOMB;
             bombchuBowlingClosed = (INV_CONTENT(explosive) == ITEM_NONE);
         } else {
             // if not rando'd, check if we have beaten Dodongo's Cavern

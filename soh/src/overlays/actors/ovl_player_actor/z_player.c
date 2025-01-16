@@ -1789,9 +1789,9 @@ void Player_PlaySteppingSfx(Player* this, f32 pitchAdjustment) {
     func_800F4010(&this->actor.projectedPos, sfxId, pitchAdjustment);
     // Gameplay stats: Count footsteps
     // Only count while game isn't complete and don't count Link's idle animations or crawling in crawlspaces
-    if (!gSaveContext.sohStats.gameComplete && !(this->stateFlags2 & PLAYER_STATE2_IDLE_FIDGET) &&
+    if (!gSaveContext.ship.stats.gameComplete && !(this->stateFlags2 & PLAYER_STATE2_IDLE_FIDGET) &&
         !(this->stateFlags2 & PLAYER_STATE2_CRAWLING)) {
-        gSaveContext.sohStats.count[COUNT_STEPS]++;
+        gSaveContext.ship.stats.count[COUNT_STEPS]++;
     }
 }
 
@@ -2379,7 +2379,7 @@ void func_80833A20(Player* this, s32 newMeleeWeaponState) {
         }
 
         if (this->heldItemAction >= PLAYER_IA_SWORD_MASTER && this->heldItemAction <= PLAYER_IA_SWORD_BIGGORON) {
-            gSaveContext.sohStats.count[COUNT_SWORD_SWINGS]++;
+            gSaveContext.ship.stats.count[COUNT_SWORD_SWINGS]++;
         }
     }
 
@@ -3484,7 +3484,7 @@ void Player_UseItem(PlayState* play, Player* this, s32 item) {
                     this->currentMask = itemAction - PLAYER_IA_MASK_KEATON + 1;
                 }
 
-                gSaveContext.maskMemory = this->currentMask;
+                gSaveContext.ship.maskMemory = this->currentMask;
 
                 func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
             } else if (((itemAction >= PLAYER_IA_OCARINA_FAIRY) && (itemAction <= PLAYER_IA_OCARINA_OF_TIME)) ||
@@ -5538,7 +5538,7 @@ void func_8083A0F4(PlayState* play, Player* this) {
             Player_SetupAction(play, this, Player_Action_8084F608, 0);
             this->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
             if (!CVarGetInteger(CVAR_ENHANCEMENT("PersistentMasks"), 0) || !CVarGetInteger(CVAR_ENHANCEMENT("AdultMasks"), 0)) {
-                gSaveContext.maskMemory = PLAYER_MASK_NONE;
+                gSaveContext.ship.maskMemory = PLAYER_MASK_NONE;
             }
         } else {
             LinkAnimationHeader* anim;
@@ -6267,7 +6267,7 @@ void Player_SetupRoll(Player* this, PlayState* play) {
     LinkAnimation_PlayOnceSetSpeed(play, &this->skelAnime,
                                    GET_PLAYER_ANIM(PLAYER_ANIMGROUP_landing_roll, this->modelAnimType),
                                    1.25f * sWaterSpeedFactor);
-    gSaveContext.sohStats.count[COUNT_ROLLS]++;
+    gSaveContext.ship.stats.count[COUNT_ROLLS]++;
 }
 
 s32 Player_TryRoll(Player* this, PlayState* play) {
@@ -6326,10 +6326,10 @@ s32 Player_ActionHandler_10(Player* this, PlayState* play) {
             func_8083BCD0(this, play, controlStickDirection);
 
             if (controlStickDirection == 1 || controlStickDirection == 3) {
-                gSaveContext.sohStats.count[COUNT_SIDEHOPS]++;
+                gSaveContext.ship.stats.count[COUNT_SIDEHOPS]++;
             }
             if (controlStickDirection == 2) {
-                gSaveContext.sohStats.count[COUNT_BACKFLIPS]++;
+                gSaveContext.ship.stats.count[COUNT_BACKFLIPS]++;
             }
 
             return 1;
@@ -7254,8 +7254,8 @@ void func_8083E4C4(PlayState* play, Player* this, GetItemEntry* giEntry) {
 s32 Player_ActionHandler_2(Player* this, PlayState* play) {
     Actor* interactedActor;
 
-    if(gSaveContext.pendingIceTrapCount) {
-        gSaveContext.pendingIceTrapCount--;
+    if(gSaveContext.ship.pendingIceTrapCount) {
+        gSaveContext.ship.pendingIceTrapCount--;
         GameInteractor_ExecuteOnItemReceiveHooks(ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_ICE_TRAP));
         if (CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0)) {
             return 1;
@@ -7266,7 +7266,7 @@ s32 Player_ActionHandler_2(Player* this, PlayState* play) {
         this->getItemId = GI_NONE;
         this->getItemEntry = (GetItemEntry) GET_ITEM_NONE;
         // Gameplay stats: Increment Ice Trap count
-        gSaveContext.sohStats.count[COUNT_ICE_TRAPS]++;
+        gSaveContext.ship.stats.count[COUNT_ICE_TRAPS]++;
         return 1;
     }
 
@@ -7295,7 +7295,7 @@ s32 Player_ActionHandler_2(Player* this, PlayState* play) {
                     Player_SetPendingFlag(this, play);
                     Message_StartTextbox(play, 0xF8, NULL);
                     Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
-                    gSaveContext.pendingIceTrapCount++;
+                    gSaveContext.ship.pendingIceTrapCount++;
                     return 1;
                 }
 
@@ -9513,7 +9513,7 @@ void func_80843AE8(PlayState* play, Player* this) {
     } else if (play->gameOverCtx.state == GAMEOVER_DEATH_WAIT_GROUND) {
         play->gameOverCtx.state = GAMEOVER_DEATH_DELAY_MENU;
         if (!CVarGetInteger(CVAR_ENHANCEMENT("PersistentMasks"), 0)) {
-            gSaveContext.maskMemory = PLAYER_MASK_NONE;
+            gSaveContext.ship.maskMemory = PLAYER_MASK_NONE;
         }
     }
 }
@@ -9818,7 +9818,7 @@ void Player_Action_Roll(Player* this, PlayState* play) {
                     Player_PlayVoiceSfx(this, NA_SE_VO_LI_CLIMB_END);
                     this->av2.bonked = 1;
 
-                    gSaveContext.sohStats.count[COUNT_BONKS]++;
+                    gSaveContext.ship.stats.count[COUNT_BONKS]++;
                     GameInteractor_ExecuteOnPlayerBonk();
 
                     return;
@@ -10806,9 +10806,9 @@ void Player_Init(Actor* thisx, PlayState* play2) {
     //keep masks thru loading zones
     if (CVarGetInteger(CVAR_ENHANCEMENT("PersistentMasks"), 0)) {
         if (INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_SOLD_OUT) {
-            gSaveContext.maskMemory = PLAYER_MASK_NONE;
+            gSaveContext.ship.maskMemory = PLAYER_MASK_NONE;
         }
-        this->currentMask = gSaveContext.maskMemory;
+        this->currentMask = gSaveContext.ship.maskMemory;
     }
     Player_InitCommon(this, play, gPlayerSkelHeaders[((void)0, gSaveContext.linkAge)]);
     // `giObjectSegment` is used for both "get item" objects and title cards. The maximum size for
@@ -14282,7 +14282,7 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
             // #region SOH [Randomizer] TODO Better Ice trap handling?
             if (this->getItemEntry.itemId == RG_ICE_TRAP && this->getItemEntry.modIndex == MOD_RANDOMIZER) {
                 this->unk_862 = 0;
-                gSaveContext.pendingIceTrapCount++;
+                gSaveContext.ship.pendingIceTrapCount++;
                 Player_SetPendingFlag(this, play);
             }
             // #endregion
@@ -14460,7 +14460,7 @@ void Player_Action_8084E6D4(Player* this, PlayState* play) {
                                 this->actor.world.pos.y + 100.0f, this->actor.world.pos.z, 0, 0, 0, 0, true);
                     func_8083C0E8(this, play);
                 } else if (IS_RANDO) {
-                    gSaveContext.pendingIceTrapCount++;
+                    gSaveContext.ship.pendingIceTrapCount++;
                     Player_SetPendingFlag(this, play);
                     func_8083C0E8(this, play);
                 } else {

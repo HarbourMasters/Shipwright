@@ -1,7 +1,4 @@
 #include "SohMenuBar.h"
-#ifndef IMGUI_DEFINE_MATH_OPERATORS
-#define IMGUI_DEFINE_MATH_OPERATORS
-#endif
 #include <imgui.h>
 #include "regex"
 #include "public/bridge/consolevariablebridge.h"
@@ -2239,34 +2236,9 @@ void DrawRandomizerMenu() {
             UIWidgets::Tooltip(
                 "When obtaining rupees, randomize what the rupee is called in the textbox."
             );
-
-            // Only disable the key colors checkbox when none of the keysanity settings are set to "Any Dungeon", "Overworld" or "Anywhere"
-            bool disableKeyColors = true;
-
-            if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANY_DUNGEON ||
-                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OVERWORLD ||
-                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANYWHERE ||
-                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_KEYS) != RO_GERUDO_KEYS_VANILLA ||
-                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANY_DUNGEON ||
-                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OVERWORLD ||
-                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANYWHERE ||
-                (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) != RO_GANON_BOSS_KEY_VANILLA &&
-                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) != RO_GANON_BOSS_KEY_OWN_DUNGEON &&
-                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) != RO_GANON_BOSS_KEY_STARTWITH) || 
-                !IS_RANDO) {
-                disableKeyColors = false;
-            }
-
-            static const char* disableKeyColorsText =
-                "This setting is disabled because a savefile is loaded without any key\n"
-                "shuffle settings set to \"Any Dungeon\", \"Overworld\" or \"Anywhere\"";
-
-            UIWidgets::PaddedEnhancementCheckbox("Key Colors Match Dungeon", CVAR_RANDOMIZER_ENHANCEMENT("MatchKeyColors"), true, false,
-                                                  disableKeyColors, disableKeyColorsText, UIWidgets::CheckboxGraphics::Cross, true);
-            UIWidgets::Tooltip(
-                "Matches the color of small keys and boss keys to the dungeon they belong to. "
-                "This helps identify keys from afar and adds a little bit of flair.\n\nThis only "
-                "applies to seeds with keys and boss keys shuffled to \"Any Dungeon\", \"Overworld\", or \"Anywhere\".");
+            
+            UIWidgets::PaddedEnhancementCheckbox("Use Custom Key Models", CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), true, false);
+            UIWidgets::Tooltip("Use Custom graphics for dungeon keys, Big and Small, so that they can be easily told apart");
 
             bool disableCompassColors = !DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_SHUFFLE_MAPANDCOMPASS);
 
@@ -2293,6 +2265,12 @@ void DrawRandomizerMenu() {
                 "Displays a \"Mystery Item\" model in place of any freestanding/GS/shop items that were shuffled, "
                 "and replaces item names for them and scrubs and merchants, regardless of hint settings, "
                 "so you never know what you're getting.");
+            UIWidgets::PaddedEnhancementCheckbox("Simpler Boss Soul Models",
+                                                 CVAR_RANDOMIZER_ENHANCEMENT("SimplerBossSoulModels"), true, false);
+            UIWidgets::Tooltip(
+                "When shuffling boss souls, they'll appear as a simpler model instead of showing the boss' models."
+                "This might make boss souls more distinguishable from a distance, and can help with performance."
+            );
             ImGui::EndMenu();
         }
 

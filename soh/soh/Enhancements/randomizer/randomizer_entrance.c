@@ -740,7 +740,7 @@ u8 Entrance_GetIsSceneDiscovered(u8 sceneNum) {
     u32 idx = sceneNum / bitsPerIndex;
     if (idx < SAVEFILE_SCENES_DISCOVERED_IDX_COUNT) {
         u32 sceneBit = 1 << (sceneNum - (idx * bitsPerIndex));
-        return (gSaveContext.sohStats.scenesDiscovered[idx] & sceneBit) != 0;
+        return (gSaveContext.ship.stats.scenesDiscovered[idx] & sceneBit) != 0;
     }
     return 0;
 }
@@ -754,7 +754,7 @@ void Entrance_SetSceneDiscovered(u8 sceneNum) {
     u32 idx = sceneNum / bitsPerIndex;
     if (idx < SAVEFILE_SCENES_DISCOVERED_IDX_COUNT) {
         u32 sceneBit = 1 << (sceneNum - (idx * bitsPerIndex));
-        gSaveContext.sohStats.scenesDiscovered[idx] |= sceneBit;
+        gSaveContext.ship.stats.scenesDiscovered[idx] |= sceneBit;
     }
     // Save scenesDiscovered
     Save_SaveSection(SECTION_ID_SCENES);
@@ -765,7 +765,7 @@ u8 Entrance_GetIsEntranceDiscovered(u16 entranceIndex) {
     u32 idx = entranceIndex / bitsPerIndex;
     if (idx < SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT) {
         u32 entranceBit = 1 << (entranceIndex - (idx * bitsPerIndex));
-        return (gSaveContext.sohStats.entrancesDiscovered[idx] & entranceBit) != 0;
+        return (gSaveContext.ship.stats.entrancesDiscovered[idx] & entranceBit) != 0;
     }
     return 0;
 }
@@ -782,7 +782,7 @@ void Entrance_SetEntranceDiscovered(u16 entranceIndex, u8 isReversedEntrance) {
     u32 idx = entranceIndex / bitsPerIndex;
     if (idx < SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT) {
         u32 entranceBit = 1 << (entranceIndex - (idx * bitsPerIndex));
-        gSaveContext.sohStats.entrancesDiscovered[idx] |= entranceBit;
+        gSaveContext.ship.stats.entrancesDiscovered[idx] |= entranceBit;
 
         // Set reverse entrance when not decoupled
         if (!Randomizer_GetSettingValue(RSK_DECOUPLED_ENTRANCES) && !isReversedEntrance) {

@@ -142,7 +142,7 @@ void Sram_OpenSave() {
     }
 
     if (!CVarGetInteger(CVAR_ENHANCEMENT("PersistentMasks"), 0)) {
-        gSaveContext.maskMemory = PLAYER_MASK_NONE;
+        gSaveContext.ship.maskMemory = PLAYER_MASK_NONE;
     }
 
     osSyncPrintf("scene_no = %d\n", gSaveContext.entranceIndex);
@@ -252,11 +252,11 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
     u8 currentQuest = fileChooseCtx->questType[fileChooseCtx->buttonIndex];
 
     if (currentQuest == QUEST_RANDOMIZER && (Randomizer_IsSeedGenerated() || Randomizer_IsSpoilerLoaded())) {
-        gSaveContext.questId = QUEST_RANDOMIZER;
+        gSaveContext.ship.quest.id = QUEST_RANDOMIZER;
 
         Randomizer_InitSaveFile();
     } else {
-        gSaveContext.questId = currentQuest;
+        gSaveContext.ship.quest.id = currentQuest;
     }
 
     Save_SaveFile();

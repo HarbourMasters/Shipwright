@@ -206,8 +206,8 @@ void EnDs_OfferBluePotion(EnDs* this, PlayState* play) {
                         if (GameInteractor_Should(VB_GIVE_ITEM_FROM_GRANNYS_SHOP, true, this)) {
                             GetItemEntry itemEntry = ItemTable_Retrieve(GI_POTION_BLUE);
                             Actor_OfferGetItem(&this->actor, play, GI_POTION_BLUE, 10000.0f, 50.0f);
-                            gSaveContext.pendingSale = itemEntry.itemId;
-                            gSaveContext.pendingSaleMod = itemEntry.modIndex;
+                            gSaveContext.ship.pendingSale = itemEntry.itemId;
+                            gSaveContext.ship.pendingSaleMod = itemEntry.modIndex;
                             this->actionFunc = EnDs_GiveBluePotion;
                         }
                         

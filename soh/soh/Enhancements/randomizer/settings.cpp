@@ -126,6 +126,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_GANONS_TRIALS] = Option::U8("Ganon's Trials", {"Skip", "Set Number", "Random Number"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("GanonTrial"), mOptionDescriptions[RSK_GANONS_TRIALS], WidgetType::Combobox, RO_GANONS_TRIALS_SET_NUMBER);
     mOptions[RSK_TRIAL_COUNT] = Option::U8("Ganon's Trials Count", {NumOpts(0, 6)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("GanonTrialCount"), mOptionDescriptions[RSK_TRIAL_COUNT], WidgetType::Slider, 6, true);
     mOptions[RSK_STARTING_AGE] = Option::U8("Starting Age", {"Child", "Adult", "Random"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StartingAge"), mOptionDescriptions[RSK_STARTING_AGE], WidgetType::Combobox, RO_AGE_CHILD);
+    mOptions[RSK_SELECTED_STARTING_AGE] = Option::U8("Selected Starting Age", {"Child", "Adult"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("SelectedStartingAge"), mOptionDescriptions[RSK_STARTING_AGE], WidgetType::Combobox, RO_AGE_CHILD);
     mOptions[RSK_SHUFFLE_ENTRANCES] = Option::Bool("Shuffle Entrances");
     mOptions[RSK_SHUFFLE_DUNGEON_ENTRANCES] = Option::U8("Dungeon Entrances", {"Off", "On", "On + Ganon"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleDungeonsEntrances"), mOptionDescriptions[RSK_SHUFFLE_DUNGEON_ENTRANCES], WidgetType::Combobox, RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
     mOptions[RSK_SHUFFLE_BOSS_ENTRANCES] = Option::U8("Boss Entrances", {"Off", "Age Restricted", "Full"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleBossEntrances"), mOptionDescriptions[RSK_SHUFFLE_BOSS_ENTRANCES], WidgetType::Combobox, RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
@@ -142,7 +143,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_MIX_INTERIOR_ENTRANCES] = Option::Bool("Mix Interiors", CVAR_RANDOMIZER_SETTING("MixInteriors"), mOptionDescriptions[RSK_MIX_INTERIOR_ENTRANCES], IMFLAG_NONE);
     mOptions[RSK_MIX_GROTTO_ENTRANCES] = Option::Bool("Mix Grottos", CVAR_RANDOMIZER_SETTING("MixGrottos"), mOptionDescriptions[RSK_MIX_GROTTO_ENTRANCES]);
     mOptions[RSK_DECOUPLED_ENTRANCES] = Option::Bool("Decouple Entrances", CVAR_RANDOMIZER_SETTING("DecoupleEntrances"), mOptionDescriptions[RSK_DECOUPLED_ENTRANCES]);
-    mOptions[RSK_BOMBCHUS_IN_LOGIC] = Option::Bool("Bombchus in Logic", CVAR_RANDOMIZER_SETTING("BombchusInLogic"), mOptionDescriptions[RSK_BOMBCHUS_IN_LOGIC]);
+    mOptions[RSK_BOMBCHU_BAG] = Option::Bool("Bombchu Bag", CVAR_RANDOMIZER_SETTING("BombchuBag"), mOptionDescriptions[RSK_BOMBCHU_BAG]);
     mOptions[RSK_ENABLE_BOMBCHU_DROPS] = Option::U8("Bombchu Drops", {"No", "Yes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("EnableBombchuDrops"), mOptionDescriptions[RSK_ENABLE_BOMBCHU_DROPS], WidgetType::Combobox, RO_AMMO_DROPS_ON);
     // TODO: AmmoDrops and/or HeartDropRefill, combine with/separate Ammo Drops from Bombchu Drops?
     mOptions[RSK_TRIFORCE_HUNT] = Option::Bool("Triforce Hunt", CVAR_RANDOMIZER_SETTING("TriforceHunt"), mOptionDescriptions[RSK_TRIFORCE_HUNT], IMFLAG_NONE);
@@ -343,13 +344,14 @@ void Settings::CreateOptions() {
     mTrickOptions[RT_VISIBLE_COLLISION] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::NOVICE}, "Pass Through Visible One-Way Collision", "Allows climbing through the platform to reach Impa's House Back as adult with no items and going through the Kakariko Village Gate as child when coming from the Mountain Trail side.");
     mTrickOptions[RT_GROTTOS_WITHOUT_AGONY] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::NOVICE}, "Hidden Grottos without Stone of Agony", "Allows entering hidden grottos without the Stone of Agony.");
     mTrickOptions[RT_FEWER_TUNIC_REQUIREMENTS] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::INTERMEDIATE}, "Fewer Tunic Requirements", "Allows the following possible without Tunics:\n- Enter Water Temple. The area below the center pillar still requires Zora Tunic. Applies to MQ also.\n- Enter Fire Temple. Volvagia still requires Goron tunic. Applies to MQ also, and includes child access to first floor with dungeon shuffle.");
-    mTrickOptions[RT_RUSTED_SWITCHES] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::NOVICE}, "Hammer Rusted Switches Through Walls", "Applies to: - Fire Temple Highest Goron Chest. - MQ Fire Temple Lizalfos Maze. - MQ Spirit Trial.");
+    mTrickOptions[RT_RUSTED_SWITCHES] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::NOVICE}, "Hammer Rusted Switches Through Walls", "Applies to:\n- Fire Temple Highest Goron Chest.\n- MQ Fire Temple Lizalfos Maze.\n- MQ Spirit Trial.");
     mTrickOptions[RT_FLAMING_CHESTS] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::INTERMEDIATE}, "Flaming Chests", "The chests encircled in flames in Gerudo Training Ground and in Spirit Temple can be opened by running into the flames while Link is invincible after taking damage.");
     // disabled for now, can't check for being able to use bunny hood & bunny hood speedup is currently completely decoupled from rando
     // mTrickOptions[RT_BUNNY_HOOD_JUMPS] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED}, "Bunny Hood Jumps", "Allows reaching locations using Bunny Hood's extended jumps.");
     mTrickOptions[RT_DAMAGE_BOOST_SIMPLE] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL}, "Simple damage boosts", "Allows damage boosts in order to reach further locations. Can be combined with \"Simple hover boosts\" for reaching far distances.");
     mTrickOptions[RT_HOVER_BOOST_SIMPLE] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL}, "Simple hover boosts", "Allows equipping of hover boots when link is moving at high speeds to extend distance covered. Can be combined with \"Simple damage boosts\" for greater uses.");
-    mTrickOptions[RT_BOMBCHU_BEEHIVES] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::NOVICE}, "Bombchu Beehives", "Allows exploding beehives with bombchus"),
+    mTrickOptions[RT_BOMBCHU_BEEHIVES] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::NOVICE}, "Bombchu Beehives", "Allows exploding beehives with bombchus.");
+    mTrickOptions[RT_BLUE_FIRE_MUD_WALLS] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::NOVICE}, "Break Mud Walls with Blue Fire", "Use Blue Fire to break mud walls.");
     mTrickOptions[RT_KF_ADULT_GS] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_KOKIRI_FOREST, {Tricks::Tag::NOVICE}, "Adult Kokiri Forest GS with Hover Boots", "Can be obtained without Hookshot by using the Hover Boots off of one of the roots.");
     mTrickOptions[RT_LW_BRIDGE] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_THE_LOST_WOODS, {Tricks::Tag::EXPERT}, "Jump onto the Lost Woods Bridge as Adult with Nothing", "With very precise movement it's possible for adult to jump onto the bridge without needing Longshot, Hover Boots, or Bean.");
     mTrickOptions[RT_LW_MIDO_BACKFLIP] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_THE_LOST_WOODS, {Tricks::Tag::NOVICE}, "Backflip over Mido as Adult", "With a specific position and angle, you can backflip over Mido.");
@@ -396,6 +398,7 @@ void Settings::CreateOptions() {
     mTrickOptions[RT_GV_CRATE_HOVERS] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_GERUDO_VALLEY, {Tricks::Tag::INTERMEDIATE}, "Gerudo Valley Crate PoH as Adult with Hover Boots", "From the far side of Gerudo Valley, a precise Hover Boots movement and jump-slash recoil can allow adult to reach the ledge with the crate PoH without needing Longshot. You will take fall damage.");
     mTrickOptions[RT_GF_KITCHEN] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_GERUDO_FORTRESS, {Tricks::Tag::NOVICE}, "Thieves\' Hideout \"Kitchen\" with No Additional Items", "Allows passing through the kitchen by avoiding being seen by the guards. The logic normally guarantees Bow or Hookshot to stun them from a distance, or Hover Boots to cross the room without needing to deal with the guards.");
     mTrickOptions[RT_GF_JUMP] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_GERUDO_FORTRESS, {Tricks::Tag::NOVICE}, "Gerudo\'s Fortress Ledge Jumps", "Adult can jump onto the top roof of the fortress without going through the interior of the hideout.");
+    mTrickOptions[RT_GF_WARRIOR_WITH_DIFFICULT_WEAPON] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_GERUDO_FORTRESS, {Tricks::Tag::NOVICE}, "Gerudo\'s Fortress Warriors with Difficult Weapons", "Warriors can be defeated with slingshot or bombchus.");
     // disabled for now, can't check for being able to use bunny hood & bunny hood speedup is currently completely decoupled from rando
     // mTrickOptions[RT_HW_BUNNY_CROSSING] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_HAUNTED_WASTELAND, {Tricks::Tag::NOVICE}, "Wasteland Crossing with Bunny Hood", "You can beat the quicksand by using the increased speed of the Bunny Hood. Note that jumping to the carpet merchant as child typically requires a fairly precise jump slash.");
     mTrickOptions[RT_HW_CROSSING] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_HAUNTED_WASTELAND, {Tricks::Tag::INTERMEDIATE}, "Wasteland Crossing without Hover Boots or Longshot", "You can beat the quicksand by backwalking across it in a specific way. Note that jumping to the carpet merchant as child typically requires a fairly precise jump slash.");
@@ -705,6 +708,7 @@ void Settings::CreateOptions() {
         &mTrickOptions[RT_GANON_MQ_SHADOW_TRIAL],
         &mTrickOptions[RT_GANON_MQ_LIGHT_TRIAL],
     });
+    mTricksByArea.clear();
     for (int i = 0; i < RT_MAX; i++) {
         auto& trick = mTrickOptions[i];
         if (!trick.GetName().empty()) {
@@ -917,7 +921,7 @@ void Settings::CreateOptions() {
     }, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_ADDITIONAL_FEATURES_IMGUI] = OptionGroup::SubGroup("Additional Features", {
         &mOptions[RSK_FULL_WALLETS],
-        &mOptions[RSK_BOMBCHUS_IN_LOGIC],
+        &mOptions[RSK_BOMBCHU_BAG],
         &mOptions[RSK_ENABLE_BOMBCHU_DROPS],
         &mOptions[RSK_BLUE_FIRE_ARROWS],
         &mOptions[RSK_SUNLIGHT_ARROWS],
@@ -1002,7 +1006,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_MIX_INTERIOR_ENTRANCES],
         &mOptions[RSK_MIX_GROTTO_ENTRANCES],
         &mOptions[RSK_DECOUPLED_ENTRANCES],
-        &mOptions[RSK_BOMBCHUS_IN_LOGIC],
+        &mOptions[RSK_BOMBCHU_BAG],
         &mOptions[RSK_ENABLE_BOMBCHU_DROPS],
         &mOptions[RSK_TRIFORCE_HUNT],
         &mOptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL],
@@ -1324,11 +1328,6 @@ std::vector<Option *>& Settings::GetExcludeOptionsForArea(const RandomizerCheckA
 const std::vector<std::vector<Option *>>& Settings::GetExcludeLocationsOptions() const {
     return mExcludeLocationsOptionsAreas;
 }
-
-RandoOptionStartingAge Settings::ResolvedStartingAge() const {
-    return mResolvedStartingAge;
-}
-
 RandoOptionLACSCondition Settings::LACSCondition() const {
     return mLACSCondition;
 }
@@ -2365,12 +2364,12 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
 
     if (mOptions[RSK_STARTING_AGE].Is(RO_AGE_RANDOM)) {
         if (const uint32_t choice = Random(0, 2); choice == 0) {
-            mResolvedStartingAge = RO_AGE_CHILD;
+            mOptions[RSK_SELECTED_STARTING_AGE].SetContextIndex(RO_AGE_CHILD);
         } else {
-            mResolvedStartingAge = RO_AGE_ADULT;
+            mOptions[RSK_SELECTED_STARTING_AGE].SetContextIndex(RO_AGE_ADULT);
         }
     } else {
-        mResolvedStartingAge = static_cast<RandoOptionStartingAge>(mOptions[RSK_STARTING_AGE].GetContextOptionIndex());
+        mOptions[RSK_SELECTED_STARTING_AGE].SetContextIndex(mOptions[RSK_STARTING_AGE].GetContextOptionIndex());
     }
 
     // TODO: Random Starting Time
