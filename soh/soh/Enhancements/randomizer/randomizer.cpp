@@ -2182,8 +2182,6 @@ void RandomizerSettingsWindow::DrawElement() {
                     ImGui::SameLine();
                     ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Heads up! This will disable all rando settings except for entrance shuffle and starter items");
                 }
-
-                UIWidgets::PaddedSeparator();
                 ImGui::PopItemWidth();
                 ImGui::EndTable();
             }
