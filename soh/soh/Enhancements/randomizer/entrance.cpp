@@ -20,15 +20,11 @@ void Entrance::SetCondition(ConditionFn newCondition) {
 }
 
 bool Entrance::GetConditionsMet() const {
-    auto ctx = Rando::Context::GetInstance();
-    if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC) || ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
-        return true;
-    } else if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS)) {
-        return condition_function();
-    } else if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHED)) {
-        return condition_function();
-    }
-    return false;
+  auto ctx = Rando::Context::GetInstance();
+  if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS)) {
+    return condition_function();
+  }
+  return true;
 }
 
 std::string Entrance::to_string() const {

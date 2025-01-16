@@ -2184,11 +2184,6 @@ void RandomizerSettingsWindow::DrawElement() {
                 }
 
                 UIWidgets::PaddedSeparator();
-
-                // Enable Glitch-Useful Cutscenes
-                if (mSettings->GetOption(RSK_ENABLE_GLITCH_CUTSCENES).RenderImGui()) {
-                    mNeedsUpdate = true;
-                }
                 ImGui::PopItemWidth();
                 ImGui::EndTable();
             }
