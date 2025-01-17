@@ -1035,6 +1035,7 @@ void FileChoose_UpdateRandomizer() {
         SpoilerFileExists(CVarGetString(CVAR_GENERAL("SpoilerLog"), "")) && !fileSelectSpoilerFileLoaded) {
             if (CVarGetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 0) != 0) {
                 CVarSetString(CVAR_GENERAL("SpoilerLog"), CVarGetString(CVAR_GENERAL("RandomizerDroppedFile"), ""));
+                Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
             }
             const char* fileLoc = CVarGetString(CVAR_GENERAL("SpoilerLog"), "");
             CVarSetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 0);
