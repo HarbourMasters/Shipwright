@@ -108,8 +108,7 @@ void BgSpot03Taki_KeepOpen(BgSpot03Taki* bgSpot03Taki, PlayState* play) {
 static int successChimeCooldown = 0;
 void RateLimitedSuccessChime() {
     if (successChimeCooldown == 0) {
-        // Currently disabled, need to find a better way to do this, while being consistent with vanilla
-        // func_80078884(NA_SE_SY_CORRECT_CHIME);
+        Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
         successChimeCooldown = 120;
     }
 }
