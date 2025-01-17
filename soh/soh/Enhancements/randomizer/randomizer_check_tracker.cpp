@@ -1757,7 +1757,7 @@ void CheckTrackerSettingsWindow::DrawElement() {
     }
     UIWidgets::EnhancementCheckbox("Vanilla/MQ Dungeon Spoilers", CVAR_TRACKER_CHECK("MQSpoilers"));
     UIWidgets::Tooltip("If enabled, Vanilla/MQ dungeons will show on the tracker immediately. Otherwise, Vanilla/MQ dungeon locations must be unlocked.");
-    if (UIWidgets::EnhancementCheckbox("Hide unshuffled shop item checks", CVAR_TRACKER_CHECK("HideUnshuffledShopChecks"), false, "", UIWidgets::CheckboxGraphics::Cross, true)) {
+    if (UIWidgets::EnhancementCheckbox("Hide unshuffled shop item checks", CVAR_TRACKER_CHECK("HideUnshuffledShopChecks"), false, "", UIWidgets::CheckboxGraphics::Cross, false)) {
         hideShopUnshuffledChecks = !hideShopUnshuffledChecks;
         UpdateFilters();
     }
