@@ -31,7 +31,6 @@
                 "GenerateSohOtr"
             ],
             "group": "build",
-            "dependsOn": ["Setup CMake Project"],
             "problemMatcher": []
         },
         {
@@ -48,6 +47,15 @@
             },
             "dependsOn": ["Generate SOH OTR"],
             "problemMatcher": []
+        },
+        {
+            "label": "Build All",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Setup CMake Project",
+                "Generate SOH OTR",
+                "Build Project"
+            ]
         }
     ]
 }
