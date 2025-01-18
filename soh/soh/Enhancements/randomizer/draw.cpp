@@ -772,8 +772,8 @@ extern "C" void DrawMorpha(PlayState* play) {
                                            32, 1, play->state.frames * -3, play->state.frames * -3, 32, 32));
 
     gSPSegment(POLY_XLU_DISP++, 0x09,
-               (uintptr_t)Gfx_TwoTexScroll(play->state.gfxCtx, 0, play->state.frames * 5, 0, 32, 32, 1, 0,
-                                           play->state.frames * -10, 32, 32));
+               (uintptr_t)Gfx_TwoTexScroll(play->state.gfxCtx, 0, play->state.frames * 3, 0, 32, 32, 1, 0,
+                                           play->state.frames * -5, 32, 32));
 
     Matrix_RotateX(play->state.frames * 0.1f, MTXMODE_APPLY);
     Matrix_RotateZ(play->state.frames * 0.16f, MTXMODE_APPLY);
