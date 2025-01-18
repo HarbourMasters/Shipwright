@@ -324,12 +324,12 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
 
     #undef MESSAGE_COSMETIC_OPTION
 
-    COSMETIC_OPTION("Kaleido.ItemSelA",             "Item Select Color",        COSMETICS_GROUP_KALEIDO,      ColorRGBA8( 10,  50,  80, 255), false, true, false),
+    COSMETIC_OPTION("Kaleido.ItemSelA",             "Item Select Color",        COSMETICS_GROUP_KALEIDO,      ColorRGBA8( 10,  50,  80, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.ItemSelB",             "Item Select Color B",      COSMETICS_GROUP_KALEIDO,      ColorRGBA8( 70, 100, 130, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.ItemSelC",             "Item Select Color C",      COSMETICS_GROUP_KALEIDO,      ColorRGBA8( 70, 100, 130, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.ItemSelD",             "Item Select Color D",      COSMETICS_GROUP_KALEIDO,      ColorRGBA8( 10,  50,  80, 255), false, true, true),
 
-    COSMETIC_OPTION("Kaleido.EquipSelA",            "Equip Select Color",       COSMETICS_GROUP_KALEIDO,      ColorRGBA8( 10,  50,  40, 255), false, true, false),
+    COSMETIC_OPTION("Kaleido.EquipSelA",            "Equip Select Color",       COSMETICS_GROUP_KALEIDO,      ColorRGBA8( 10,  50,  40, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.EquipSelB",            "Equip Select Color B",     COSMETICS_GROUP_KALEIDO,      ColorRGBA8( 90, 100,  60, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.EquipSelC",            "Equip Select Color C",     COSMETICS_GROUP_KALEIDO,      ColorRGBA8( 90, 100,  60, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.EquipSelD",            "Equip Select Color D",     COSMETICS_GROUP_KALEIDO,      ColorRGBA8( 10,  50,  80, 255), false, true, true),
@@ -339,22 +339,22 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Kaleido.MapSelDunC",           "Map Dungeon Color C",      COSMETICS_GROUP_KALEIDO,      ColorRGBA8(140,  60,  60, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.MapSelDunD",           "Map Dungeon Color D",      COSMETICS_GROUP_KALEIDO,      ColorRGBA8( 80,  40,  30, 255), false, true, true),
     
-    COSMETIC_OPTION("Kaleido.QuestStatusA",         "Quest Status Color",       COSMETICS_GROUP_KALEIDO,      ColorRGBA8( 80,  80,  50, 255), false, true, false),
+    COSMETIC_OPTION("Kaleido.QuestStatusA",         "Quest Status Color",       COSMETICS_GROUP_KALEIDO,      ColorRGBA8( 80,  80,  50, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.QuestStatusB",         "Quest Status Color B",     COSMETICS_GROUP_KALEIDO,      ColorRGBA8(120, 120,  70, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.QuestStatusC",         "Quest Status Color C",     COSMETICS_GROUP_KALEIDO,      ColorRGBA8(120, 120,  70, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.QuestStatusD",         "Quest Status Color D",     COSMETICS_GROUP_KALEIDO,      ColorRGBA8( 80,  80,  50, 255), false, true, true),
 
-    COSMETIC_OPTION("Kaleido.MapSelectA",           "Map Color",                COSMETICS_GROUP_KALEIDO,      ColorRGBA8( 80,  40,  30, 255), false, true, false),
+    COSMETIC_OPTION("Kaleido.MapSelectA",           "Map Color",                COSMETICS_GROUP_KALEIDO,      ColorRGBA8( 80,  40,  30, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.MapSelectB",           "Map Color B",              COSMETICS_GROUP_KALEIDO,      ColorRGBA8(140,  60,  60, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.MapSelectC",           "Map Color C",              COSMETICS_GROUP_KALEIDO,      ColorRGBA8(140,  60,  60, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.MapSelectD",           "Map Color D",              COSMETICS_GROUP_KALEIDO,      ColorRGBA8( 80,  40,  30, 255), false, true, true),
     
-    COSMETIC_OPTION("Kaleido.SaveA",                "Save Color",               COSMETICS_GROUP_KALEIDO,      ColorRGBA8( 50,  50,  50, 255), false, true, false),
+    COSMETIC_OPTION("Kaleido.SaveA",                "Save Color",               COSMETICS_GROUP_KALEIDO,      ColorRGBA8( 50,  50,  50, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.SaveB",                "Save Color B",             COSMETICS_GROUP_KALEIDO,      ColorRGBA8(110, 110, 110, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.SaveC",                "Save Color C",             COSMETICS_GROUP_KALEIDO,      ColorRGBA8(110, 110, 110, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.SaveD",                "Save Color D",             COSMETICS_GROUP_KALEIDO,      ColorRGBA8( 50,  50,  50, 255), false, true, true),
     
-    COSMETIC_OPTION("Kaleido.NamePanel",            "Name Panel",               COSMETICS_GROUP_KALEIDO,      ColorRGBA8( 90, 100, 130, 255), true,  true, false),
+    COSMETIC_OPTION("Kaleido.NamePanel",            "Name Panel",               COSMETICS_GROUP_KALEIDO,      ColorRGBA8( 90, 100, 130, 255), true,  true, true),
     
     COSMETIC_OPTION("Title.FileChoose",             "File Choose",              COSMETICS_GROUP_TITLE,        ColorRGBA8(100, 150, 255, 255), false, true, false),
     COSMETIC_OPTION("Title.NintendoLogo",           "Nintendo Logo",            COSMETICS_GROUP_TITLE,        ColorRGBA8(  0,   0, 255, 255), false, true, true),
@@ -1576,66 +1576,6 @@ void ApplySideEffects(CosmeticOption& cosmeticOption) {
         CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("SpinAttack.Level1Primary"), 2.0f);
     } else if (cosmeticOption.label == "Level 2 Secondary") {
         CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("SpinAttack.Level2Primary"), 2.0f);
-    } else if (cosmeticOption.label == "Item Select Color") {
-        if (CVarGetInteger(cosmeticOption.rainbowCvar, 0)) {
-            ToggleRainbow(cosmeticOptions.at("Kaleido.ItemSelB"), true);
-            ToggleRainbow(cosmeticOptions.at("Kaleido.ItemSelC"), true);
-            ToggleRainbow(cosmeticOptions.at("Kaleido.ItemSelD"), true);
-        } else {
-            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kaleido.ItemSelB"), 2.0f);
-            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kaleido.ItemSelC"), 2.0f);
-            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kaleido.ItemSelD"), 1.0f);
-        }
-    } else if (cosmeticOption.label == "Equip Select Color") {
-        if (CVarGetInteger(cosmeticOption.rainbowCvar, 0)) {
-            ToggleRainbow(cosmeticOptions.at("Kaleido.EquipSelB"), true);
-            ToggleRainbow(cosmeticOptions.at("Kaleido.EquipSelC"), true);
-            ToggleRainbow(cosmeticOptions.at("Kaleido.EquipSelD"), true);
-        } else {
-            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kaleido.EquipSelB"), 2.0f);
-            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kaleido.EquipSelC"), 2.0f);
-            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kaleido.EquipSelD"), 1.0f);
-        }
-    } else if (cosmeticOption.label == "Map Dungeon Color") {
-        if (CVarGetInteger(cosmeticOption.rainbowCvar, 0)) {
-            ToggleRainbow(cosmeticOptions.at("Kaleido.MapSelDunB"), true);
-            ToggleRainbow(cosmeticOptions.at("Kaleido.MapSelDunC"), true);
-            ToggleRainbow(cosmeticOptions.at("Kaleido.MapSelDunD"), true);
-        } else {
-            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kaleido.MapSelDunB"), 2.0f);
-            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kaleido.MapSelDunC"), 2.0f);
-            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kaleido.MapSelDunD"), 1.0f);
-        }
-    } else if (cosmeticOption.label == "Quest Status Color") {
-        if (CVarGetInteger(cosmeticOption.rainbowCvar, 0)) {
-            ToggleRainbow(cosmeticOptions.at("Kaleido.QuestStatusB"), true);
-            ToggleRainbow(cosmeticOptions.at("Kaleido.QuestStatusC"), true);
-            ToggleRainbow(cosmeticOptions.at("Kaleido.QuestStatusD"), true);
-        } else {
-            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kaleido.QuestStatusB"), 2.0f);
-            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kaleido.QuestStatusC"), 2.0f);
-            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kaleido.QuestStatusD"), 1.0f);
-        }
-    } else if (cosmeticOption.label == "Map Color") {
-        if (CVarGetInteger(cosmeticOption.rainbowCvar, 0)) {
-            ToggleRainbow(cosmeticOptions.at("Kaleido.MapSelectB"), true);
-            ToggleRainbow(cosmeticOptions.at("Kaleido.MapSelectC"), true);
-            ToggleRainbow(cosmeticOptions.at("Kaleido.MapSelectD"), true);
-        } else {
-            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kaleido.MapSelectB"), 2.0f);
-            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kaleido.MapSelectC"), 2.0f);
-            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kaleido.MapSelectD"), 1.0f);
-        }
-    } else if (cosmeticOption.label == "Save Color") {
-        if (CVarGetInteger(cosmeticOption.rainbowCvar, 0)) {
-            ToggleRainbow(cosmeticOptions.at("Kaleido.SaveB"), true);
-            ToggleRainbow(cosmeticOptions.at("Kaleido.SaveC"), true);
-            ToggleRainbow(cosmeticOptions.at("Kaleido.SaveD"), true);
-        } else {
-            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kaleido.SaveB"), 2.0f);
-            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kaleido.SaveC"), 2.0f);
-            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kaleido.SaveD"), 1.0f);
-        }
     }
 }
 
@@ -2057,9 +1997,11 @@ void CosmeticsEditorWindow::DrawElement() {
             ImGui::EndTabItem();
         }
 
-        if (ImGui::BeginTabItem("Pause Menu")) {
-            DrawCosmeticGroup(COSMETICS_GROUP_KALEIDO);
-            ImGui::EndTabItem();
+        if (CVarGetInteger(CVAR_COSMETIC("AdvancedMode"), 0)) {
+            if (ImGui::BeginTabItem("Pause Menu")) {
+                DrawCosmeticGroup(COSMETICS_GROUP_KALEIDO);
+                ImGui::EndTabItem();
+            }
         }
 
         if (CVarGetInteger(CVAR_COSMETIC("AdvancedMode"), 0)) {
