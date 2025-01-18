@@ -871,6 +871,7 @@ extern "C" void DrawKotake(PlayState* play) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+    Matrix_Translate(0.0f, -10.0f, 0.0f, MTXMODE_APPLY);
     Matrix_Scale(0.01f, 0.01f, 0.01f, MTXMODE_APPLY);
 
     gSPSegment(POLY_OPA_DISP++, 10, (uintptr_t)gTwinrovaKotakeKoumeEyeOpenTex);
