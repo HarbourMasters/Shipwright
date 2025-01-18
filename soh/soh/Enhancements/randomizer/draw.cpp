@@ -505,7 +505,7 @@ Gfx* GetEmptyDlist(GraphicsContext* gfxCtx) {
     return dList;
 }
 
-s32 OverrideLimbDrawGohma(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
+extern "C" s32 OverrideLimbDrawGohma(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     OPEN_DISPS(play->state.gfxCtx);
 
     gDPPipeSync(POLY_OPA_DISP++);
@@ -587,7 +587,7 @@ extern "C" void DrawKingDodongo(PlayState* play) {
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-s32 OverrideLimbDrawBarinade(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
+extern "C" s32 OverrideLimbDrawBarinade(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     OPEN_DISPS(play->state.gfxCtx);
 
     s16 unk_1AC = play->gameplayFrames * 0xC31;
@@ -618,7 +618,7 @@ s32 OverrideLimbDrawBarinade(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f*
     return false;
 }
 
-void PostLimbDrawBarinade(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
+extern "C" void PostLimbDrawBarinade(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     OPEN_DISPS(play->state.gfxCtx);
 
     if (limbIndex == 25) {
@@ -828,7 +828,7 @@ extern "C" void DrawBongoBongo(PlayState* play) {
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-s32 OverrideLimbDrawKotake(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
+extern "C" s32 OverrideLimbDrawKotake(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     if (limbIndex == 21) { // Head
         *dList = (Gfx*)gTwinrovaKotakeHeadDL;
     }
@@ -836,7 +836,7 @@ s32 OverrideLimbDrawKotake(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* p
     return false;
 }
 
-void PostLimbDrawKotake(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
+extern "C" void PostLimbDrawKotake(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     OPEN_DISPS(play->state.gfxCtx);
 
     if (limbIndex == 21) { // Head
@@ -887,7 +887,7 @@ extern "C" void DrawKotake(PlayState* play) {
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-s32 OverrideLimbDrawGanon(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
+extern "C" s32 OverrideLimbDrawGanon(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     OPEN_DISPS(play->state.gfxCtx);
 
     if (limbIndex >= 42) { // Tail
