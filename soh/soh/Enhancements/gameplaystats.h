@@ -22,7 +22,10 @@ extern "C" {
 #define GAMEPLAYSTAT_TOTAL_TIME (gSaveContext.ship.stats.rtaTiming ?\
     (!gSaveContext.ship.stats.gameComplete ?\
         (!gSaveContext.ship.stats.fileCreatedAt ? 0 : ((GetUnixTimestamp() - gSaveContext.ship.stats.fileCreatedAt) / 100)) :\
-        (gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON])) :\
+        (gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON]                         \
+                       ? gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON]         \
+                       : gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED])) \
+         :\
     (gSaveContext.ship.stats.playTimer / 2 + gSaveContext.ship.stats.pauseTimer / 3))
 #define CURRENT_MODE_TIMER (CVarGetInteger(CVAR_ENHANCEMENT("GameplayStats.RoomBreakdown"), 0) ?\
     gSaveContext.ship.stats.roomTimer :\

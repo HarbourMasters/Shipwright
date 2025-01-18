@@ -25,6 +25,7 @@
 #include "objects/object_fd/object_fd.h"
 #include "objects/object_mo/object_mo.h"
 #include "objects/object_sst/object_sst.h"
+#include "overlays/actors/ovl_Boss_Goma/z_boss_goma.h"
 #include "overlays/ovl_Boss_Sst/ovl_Boss_Sst.h"
 #include "objects/object_tw/object_tw.h"
 #include "objects/object_ganon2/object_ganon2.h"
@@ -504,14 +505,28 @@ Gfx* GetEmptyDlist(GraphicsContext* gfxCtx) {
     return dList;
 }
 
+extern "C" s32 OverrideLimbDrawGohma(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    gDPPipeSync(POLY_OPA_DISP++);
+    gDPSetEnvColor(POLY_OPA_DISP++, 0, 255, 170, 255);
+
+    switch (limbIndex) {
+        case BOSSGOMA_LIMB_EYE:
+            gDPSetEnvColor(POLY_OPA_DISP++, 255, 255, 255, 63);
+            break;
+
+        case BOSSGOMA_LIMB_IRIS:
+            gDPSetEnvColor(POLY_OPA_DISP++, 255, 255, 255, 255);
+            break;
+    }
+
+    CLOSE_DISPS(play->state.gfxCtx);
+    return false;
+}
+
 #define LIMB_COUNT_GOHMA 86
-extern "C" void DrawGohma() {
-    OPEN_DISPS(gPlayState->state.gfxCtx);
-
-    Gfx_SetupDL_25Opa(gPlayState->state.gfxCtx);
-    Matrix_Translate(0.0f, -20.0f, 0.0f, MTXMODE_APPLY);
-    Matrix_Scale(0.005f, 0.005f, 0.005f, MTXMODE_APPLY);
-
+extern "C" void DrawGohma(PlayState* play) {
     static bool initialized = false;
     static SkelAnime skelAnime;
     static Vec3s jointTable[LIMB_COUNT_GOHMA];
@@ -520,29 +535,29 @@ extern "C" void DrawGohma() {
 
     if (!initialized) {
         initialized = true;
-        SkelAnime_InitFlex(gPlayState, &skelAnime, (FlexSkeletonHeader*)&gGohmaSkel,
-                           (AnimationHeader*)&gGohmaIdleCrouchedAnim, jointTable, otherTable, LIMB_COUNT_GOHMA);
+        SkelAnime_Init(play, &skelAnime, (SkeletonHeader*)&gGohmaSkel, (AnimationHeader*)&gGohmaIdleCrouchedAnim,
+                       jointTable, otherTable, LIMB_COUNT_GOHMA);
     }
 
-    if (gPlayState != NULL && lastUpdate != gPlayState->state.frames) {
-        lastUpdate = gPlayState->state.frames;
+    if (lastUpdate != play->state.frames) {
+        lastUpdate = play->state.frames;
         SkelAnime_Update(&skelAnime);
     }
 
-    gSPSegment(POLY_OPA_DISP++, 0x08, (uintptr_t)GetEmptyDlist(gPlayState->state.gfxCtx));
-    SkelAnime_DrawFlexOpa(gPlayState, skelAnime.skeleton, skelAnime.jointTable, skelAnime.dListCount, NULL, NULL, NULL);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    CLOSE_DISPS(gPlayState->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Matrix_Translate(0.0f, -20.0f, 0.0f, MTXMODE_APPLY);
+    Matrix_Scale(0.005f, 0.005f, 0.005f, MTXMODE_APPLY);
+
+    gSPSegment(POLY_OPA_DISP++, 0x08, (uintptr_t)GetEmptyDlist(play->state.gfxCtx));
+    SkelAnime_DrawSkeletonOpa(play, &skelAnime, OverrideLimbDrawGohma, NULL, NULL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
 }
 
 #define LIMB_COUNT_KING_DODONGO 49
-extern "C" void DrawKingDodongo() {
-    OPEN_DISPS(gPlayState->state.gfxCtx);
-
-    Gfx_SetupDL_25Opa(gPlayState->state.gfxCtx);
-    Matrix_Translate(0.0f, -20.0f, 0.0f, MTXMODE_APPLY);
-    Matrix_Scale(0.003f, 0.003f, 0.003f, MTXMODE_APPLY);
-
+extern "C" void DrawKingDodongo(PlayState* play) {
     static bool initialized = false;
     static SkelAnime skelAnime;
     static Vec3s jointTable[LIMB_COUNT_KING_DODONGO];
@@ -551,32 +566,89 @@ extern "C" void DrawKingDodongo() {
 
     if (!initialized) {
         initialized = true;
-        SkelAnime_InitFlex(gPlayState, &skelAnime, (FlexSkeletonHeader*)&object_kingdodongo_Skel_01B310,
-                           (AnimationHeader*)&object_kingdodongo_Anim_00F0D8, jointTable, otherTable,
-                           LIMB_COUNT_KING_DODONGO);
+        SkelAnime_Init(play, &skelAnime, (SkeletonHeader*)&object_kingdodongo_Skel_01B310,
+                       (AnimationHeader*)&object_kingdodongo_Anim_00F0D8, jointTable, otherTable,
+                       LIMB_COUNT_KING_DODONGO);
     }
 
-    if (gPlayState != NULL && lastUpdate != gPlayState->state.frames) {
-        lastUpdate = gPlayState->state.frames;
+    if (lastUpdate != play->state.frames) {
+        lastUpdate = play->state.frames;
         SkelAnime_Update(&skelAnime);
     }
 
-    SkelAnime_DrawFlexOpa(gPlayState, skelAnime.skeleton, skelAnime.jointTable, skelAnime.dListCount,
-                          NULL,
-                          NULL,
-                          NULL);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    CLOSE_DISPS(gPlayState->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Matrix_Translate(0.0f, -20.0f, 0.0f, MTXMODE_APPLY);
+    Matrix_Scale(0.003f, 0.003f, 0.003f, MTXMODE_APPLY);
+
+    SkelAnime_DrawSkeletonOpa(play, &skelAnime, NULL, NULL, NULL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" s32 OverrideLimbDrawBarinade(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    s16 unk_1AC = play->gameplayFrames * 0xC31;
+    f32 unk_1A0 = 0.0f;
+    f32 unk_1A4 = 0.0f;
+
+    if (limbIndex == 20) {
+        gDPPipeSync(POLY_OPA_DISP++);
+        gSPSegment(POLY_OPA_DISP++, 0x08,
+                   (uintptr_t)Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 8, 16, 1, 0,
+                                               (play->gameplayFrames * -2) % 64, 16, 16));
+        gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 200);
+        Matrix_RotateX(-M_PI / 2, MTXMODE_APPLY);
+    } else if ((limbIndex >= 10) && (limbIndex < 20)) {
+        rot->x -= 0x4000;
+        *dList = NULL;
+    } else if (limbIndex == 6) {
+        unk_1A4 = (Math_SinS(unk_1AC) * 0.05f) + 1.0f;
+        Matrix_Scale(unk_1A4, unk_1A4, unk_1A4, MTXMODE_APPLY);
+    } else if (limbIndex == 61) {
+        unk_1A0 = (Math_CosS(unk_1AC) * 0.1f) + 1.0f;
+        Matrix_Scale(unk_1A0, unk_1A0, unk_1A0, MTXMODE_APPLY);
+    } else if (limbIndex == 7) {
+        rot->x -= 0xCCC;
+    }
+
+    CLOSE_DISPS(play->state.gfxCtx);
+    return false;
+}
+
+extern "C" void PostLimbDrawBarinade(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    if (limbIndex == 25) {
+        gSPSegment(POLY_XLU_DISP++, 0x09,
+                   (uintptr_t)Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, (play->gameplayFrames * 10) % 128, 16, 32, 1,
+                                               0, (play->gameplayFrames * 5) % 128, 16, 32));
+        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gBarinadeDL_008D70);
+    } else if ((limbIndex >= 10) && (limbIndex < 20)) {
+        if (((limbIndex >= 16) || (limbIndex == 10))) {
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gBarinadeDL_008BB8);
+        } else if ((limbIndex >= 11)) {
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gBarinadeDL_008BB8);
+        }
+    } else if ((*dList != NULL) && (limbIndex >= 29) && (limbIndex < 56)) {
+        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPDisplayList(POLY_XLU_DISP++, *dList);
+    }
+
+    CLOSE_DISPS(play->state.gfxCtx);
 }
 
 #define LIMB_COUNT_BARINADE 64
-extern "C" void DrawBarinade() {
-    OPEN_DISPS(gPlayState->state.gfxCtx);
-
-    Gfx_SetupDL_25Opa(gPlayState->state.gfxCtx);
-    Matrix_Translate(0.0f, -25.0f, 0.0f, MTXMODE_APPLY);
-    Matrix_Scale(0.03f, 0.03f, 0.03f, MTXMODE_APPLY);
-
+extern "C" void DrawBarinade(PlayState* play) {
     static bool initialized = false;
     static SkelAnime skelAnime;
     static Vec3s jointTable[LIMB_COUNT_BARINADE];
@@ -585,28 +657,41 @@ extern "C" void DrawBarinade() {
 
     if (!initialized) {
         initialized = true;
-        SkelAnime_Init(gPlayState, &skelAnime, (SkeletonHeader*)&gBarinadeBodySkel,
-                           (AnimationHeader*)&gBarinadeBodyAnim, jointTable, otherTable, LIMB_COUNT_BARINADE);
+        SkelAnime_Init(play, &skelAnime, (SkeletonHeader*)&gBarinadeBodySkel, (AnimationHeader*)&gBarinadeBodyAnim,
+                       jointTable, otherTable, LIMB_COUNT_BARINADE);
+
+        // Freeze barniade on the last frame
+        f32 lastFrame = Animation_GetLastFrame((AnimationHeader*)&gBarinadeBodyAnim);
+        Animation_Change(&skelAnime, (AnimationHeader*)&gBarinadeBodyAnim, 1.0f, lastFrame, lastFrame, ANIMMODE_ONCE,
+                         0.0f);
     }
 
-    if (gPlayState != NULL && lastUpdate != gPlayState->state.frames) {
-        lastUpdate = gPlayState->state.frames;
+    if (lastUpdate != play->state.frames) {
+        lastUpdate = play->state.frames;
         SkelAnime_Update(&skelAnime);
     }
 
-    SkelAnime_DrawSkeletonOpa(gPlayState, &skelAnime, NULL, NULL, NULL);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    CLOSE_DISPS(gPlayState->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+    Matrix_Translate(0.0f, -25.0f, 0.0f, MTXMODE_APPLY);
+    Matrix_Scale(0.03f, 0.03f, 0.03f, MTXMODE_APPLY);
+
+    gSPSegment(POLY_OPA_DISP++, 0x08,
+               (uintptr_t)Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 8, 16, 1, 0, (play->gameplayFrames * -10) % 16,
+                                           16, 16));
+    gSPSegment(POLY_OPA_DISP++, 0x09,
+               (uintptr_t)Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, (play->gameplayFrames * -10) % 32, 16, 0x20, 1, 0,
+                                           (play->gameplayFrames * -5) % 32, 16, 32));
+
+    SkelAnime_DrawSkeletonOpa(play, &skelAnime, OverrideLimbDrawBarinade, PostLimbDrawBarinade, NULL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
 }
 
 #define LIMB_COUNT_PHANTOM_GANON 26
-extern "C" void DrawPhantomGanon() {
-    OPEN_DISPS(gPlayState->state.gfxCtx);
-
-    Gfx_SetupDL_25Opa(gPlayState->state.gfxCtx);
-    Matrix_Translate(0.0f, 10.0f, 0.0f, MTXMODE_APPLY);
-    Matrix_Scale(0.007f, 0.007f, 0.007f, MTXMODE_APPLY);
-
+extern "C" void DrawPhantomGanon(PlayState* play) {
     static bool initialized = false;
     static SkelAnime skelAnime;
     static Vec3s jointTable[LIMB_COUNT_PHANTOM_GANON];
@@ -615,28 +700,31 @@ extern "C" void DrawPhantomGanon() {
 
     if (!initialized) {
         initialized = true;
-        SkelAnime_InitFlex(gPlayState, &skelAnime, (FlexSkeletonHeader*)&gPhantomGanonSkel,
-                           (AnimationHeader*)&gPhantomGanonNeutralAnim, jointTable, otherTable,
-                           LIMB_COUNT_PHANTOM_GANON);
+        SkelAnime_Init(play, &skelAnime, (SkeletonHeader*)&gPhantomGanonSkel,
+                       (AnimationHeader*)&gPhantomGanonNeutralAnim, jointTable, otherTable, LIMB_COUNT_PHANTOM_GANON);
     }
 
-    if (gPlayState != NULL && lastUpdate != gPlayState->state.frames) {
-        lastUpdate = gPlayState->state.frames;
+    if (lastUpdate != play->state.frames) {
+        lastUpdate = play->state.frames;
         SkelAnime_Update(&skelAnime);
     }
 
-    SkelAnime_DrawFlexOpa(gPlayState, skelAnime.skeleton, skelAnime.jointTable, skelAnime.dListCount, NULL, NULL, NULL);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    CLOSE_DISPS(gPlayState->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Matrix_Translate(0.0f, 10.0f, 0.0f, MTXMODE_APPLY);
+    Matrix_Scale(0.007f, 0.007f, 0.007f, MTXMODE_APPLY);
+
+    // Eye color
+    gDPSetEnvColor(POLY_OPA_DISP++, 255, 255, 255, 255);
+    gSPSegment(POLY_OPA_DISP++, 0x08, (uintptr_t)GetEmptyDlist(play->state.gfxCtx));
+    SkelAnime_DrawSkeletonOpa(play, &skelAnime, NULL, NULL, NULL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
 }
 
 #define LIMB_COUNT_VOLVAGIA 7
-extern "C" void DrawVolvagia() {
-    OPEN_DISPS(gPlayState->state.gfxCtx);
-
-    Gfx_SetupDL_25Opa(gPlayState->state.gfxCtx);
-    Matrix_Scale(0.007f, 0.007f, 0.007f, MTXMODE_APPLY);
-
+extern "C" void DrawVolvagia(PlayState* play) {
     static bool initialized = false;
     static SkelAnime skelAnime;
     static Vec3s jointTable[LIMB_COUNT_VOLVAGIA];
@@ -645,52 +733,55 @@ extern "C" void DrawVolvagia() {
 
     if (!initialized) {
         initialized = true;
-        SkelAnime_InitFlex(gPlayState, &skelAnime, (FlexSkeletonHeader*)&gVolvagiaHeadSkel,
-                           (AnimationHeader*)&gVolvagiaHeadEmergeAnim, jointTable, otherTable, LIMB_COUNT_VOLVAGIA);
+        SkelAnime_Init(play, &skelAnime, (SkeletonHeader*)&gVolvagiaHeadSkel,
+                       (AnimationHeader*)&gVolvagiaHeadEmergeAnim, jointTable, otherTable, LIMB_COUNT_VOLVAGIA);
     }
 
-    if (gPlayState != NULL && lastUpdate != gPlayState->state.frames) {
-        lastUpdate = gPlayState->state.frames;
+    if (lastUpdate != play->state.frames) {
+        lastUpdate = play->state.frames;
         SkelAnime_Update(&skelAnime);
     }
 
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Matrix_Scale(0.007f, 0.007f, 0.007f, MTXMODE_APPLY);
+
+    gSPSegment(POLY_OPA_DISP++, 0x09, (uintptr_t)gVolvagiaEyeOpenTex);
     gSPSegment(POLY_OPA_DISP++, 0x08,
-               (uintptr_t)Gfx_TwoTexScroll(gPlayState->state.gfxCtx, 0, gPlayState->state.frames,
-                                           gPlayState->state.frames, 0x20, 0x20, 1, gPlayState->state.frames,
-                                           gPlayState->state.frames, 0x20, 0x20));
+               (uintptr_t)Gfx_TwoTexScroll(play->state.gfxCtx, 0, play->state.frames * 4, 120, 0x20, 0x20, 1,
+                                           play->state.frames * 3, play->state.frames * -2, 0x20, 0x20));
 
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
     gDPSetEnvColor(POLY_OPA_DISP++, 255, 255, 255, 255);
 
-    SkelAnime_DrawFlexOpa(gPlayState, skelAnime.skeleton, skelAnime.jointTable, skelAnime.dListCount, NULL, NULL, NULL);
+    SkelAnime_DrawSkeletonOpa(play, &skelAnime, NULL, NULL, NULL);
 
-    CLOSE_DISPS(gPlayState->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }
 
-extern "C" void DrawMorpha() {
-    OPEN_DISPS(gPlayState->state.gfxCtx);
+extern "C" void DrawMorpha(PlayState* play) {
+    OPEN_DISPS(play->state.gfxCtx);
 
-    Gfx_SetupDL_25Xlu(gPlayState->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     Matrix_Scale(0.015f, 0.015f, 0.015f, MTXMODE_APPLY);
 
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               (uintptr_t)Gfx_TwoTexScroll(gPlayState->state.gfxCtx, 0, gPlayState->state.frames,
-                                           gPlayState->state.frames, 32, 32, 1, gPlayState->state.frames,
-                                           gPlayState->state.frames,
-                                32, 32));
+               (uintptr_t)Gfx_TwoTexScroll(play->state.gfxCtx, 0, play->state.frames * 3, play->state.frames * 3, 32,
+                                           32, 1, play->state.frames * -3, play->state.frames * -3, 32, 32));
 
     gSPSegment(POLY_XLU_DISP++, 0x09,
-               (uintptr_t)Gfx_TwoTexScroll(gPlayState->state.gfxCtx, 0, gPlayState->state.frames % 3, 0, 32, 32, 1, 0,
-                                           gPlayState->state.frames % 3, 32, 32));
+               (uintptr_t)Gfx_TwoTexScroll(play->state.gfxCtx, 0, play->state.frames * 3, 0, 32, 32, 1, 0,
+                                           play->state.frames * -5, 32, 32));
 
-    Matrix_RotateX(gPlayState->state.frames * 0.1f, MTXMODE_APPLY);
-    Matrix_RotateZ(gPlayState->state.frames * 0.16f, MTXMODE_APPLY);
+    Matrix_RotateX(play->state.frames * 0.1f, MTXMODE_APPLY);
+    Matrix_RotateZ(play->state.frames * 0.16f, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gPlayState->state.gfxCtx, (char*)__FILE__, __LINE__),
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 255, 255, 255, (s8)255);
+    gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 255, 255, 255, 255);
 
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gMorphaCoreMembraneDL);
 
@@ -701,17 +792,11 @@ extern "C" void DrawMorpha() {
 
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gMorphaCoreNucleusDL);
 
-    CLOSE_DISPS(gPlayState->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }
 
 #define LIMB_COUNT_BONGO_BONGO 27
-extern "C" void DrawBongoBongo() {
-    OPEN_DISPS(gPlayState->state.gfxCtx);
-
-    Gfx_SetupDL_25Opa(gPlayState->state.gfxCtx);
-    Matrix_Translate(0.0f, -25.0f, 0.0f, MTXMODE_APPLY);
-    Matrix_Scale(0.006f, 0.006f, 0.006f, MTXMODE_APPLY);
-
+extern "C" void DrawBongoBongo(PlayState* play) {
     static bool initialized = false;
     static SkelAnime skelAnime;
     static Vec3s jointTable[LIMB_COUNT_BONGO_BONGO];
@@ -720,29 +805,51 @@ extern "C" void DrawBongoBongo() {
 
     if (!initialized) {
         initialized = true;
-        SkelAnime_InitFlex(gPlayState, &skelAnime, (FlexSkeletonHeader*)&gBongoLeftHandSkel,
-                           (AnimationHeader*)&gBongoLeftHandIdleAnim, jointTable, otherTable,
-                           LIMB_COUNT_BONGO_BONGO);
+        SkelAnime_InitFlex(play, &skelAnime, (FlexSkeletonHeader*)&gBongoLeftHandSkel,
+                           (AnimationHeader*)&gBongoLeftHandIdleAnim, jointTable, otherTable, LIMB_COUNT_BONGO_BONGO);
     }
 
-    if (gPlayState != NULL && lastUpdate != gPlayState->state.frames) {
-        lastUpdate = gPlayState->state.frames;
+    if (lastUpdate != play->state.frames) {
+        lastUpdate = play->state.frames;
         SkelAnime_Update(&skelAnime);
     }
 
-    gDPSetPrimColor(POLY_OPA_DISP++, 0x80, 0x80, 255, 255, 255, (s8)255);
-    SkelAnime_DrawFlexOpa(gPlayState, skelAnime.skeleton, skelAnime.jointTable, skelAnime.dListCount, NULL, NULL, NULL);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    CLOSE_DISPS(gPlayState->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Matrix_Translate(0.0f, -25.0f, 0.0f, MTXMODE_APPLY);
+    Matrix_Scale(0.006f, 0.006f, 0.006f, MTXMODE_APPLY);
+
+    gSPSegment(POLY_OPA_DISP++, 0x08, (uintptr_t)GetEmptyDlist(play->state.gfxCtx));
+
+    gDPSetPrimColor(POLY_OPA_DISP++, 0x80, 0x80, 255, 255, 255, 255);
+    SkelAnime_DrawSkeletonOpa(play, &skelAnime, NULL, NULL, NULL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" s32 OverrideLimbDrawKotake(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
+    if (limbIndex == 21) { // Head
+        *dList = (Gfx*)gTwinrovaKotakeHeadDL;
+    }
+
+    return false;
+}
+
+extern "C" void PostLimbDrawKotake(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    if (limbIndex == 21) { // Head
+        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gTwinrovaKotakeIceHairDL);
+    }
+
+    CLOSE_DISPS(play->state.gfxCtx);
 }
 
 #define LIMB_COUNT_KOTAKE 27
-extern "C" void DrawKotake() {
-    OPEN_DISPS(gPlayState->state.gfxCtx);
-
-    Gfx_SetupDL_25Opa(gPlayState->state.gfxCtx);
-    Matrix_Scale(0.01f, 0.01f, 0.01f, MTXMODE_APPLY);
-
+extern "C" void DrawKotake(PlayState* play) {
     static bool initialized = false;
     static SkelAnime skelAnime;
     static Vec3s jointTable[LIMB_COUNT_KOTAKE];
@@ -751,30 +858,50 @@ extern "C" void DrawKotake() {
 
     if (!initialized) {
         initialized = true;
-        SkelAnime_InitFlex(gPlayState, &skelAnime, (FlexSkeletonHeader*)&gTwinrovaKotakeSkel,
-                           (AnimationHeader*)&gTwinrovaKotakeKoumeFlyAnim, jointTable, otherTable,
-                           LIMB_COUNT_KOTAKE);
+        SkelAnime_InitFlex(play, &skelAnime, (FlexSkeletonHeader*)&gTwinrovaKotakeSkel,
+                           (AnimationHeader*)&gTwinrovaKotakeKoumeFlyAnim, jointTable, otherTable, LIMB_COUNT_KOTAKE);
     }
 
-    if (gPlayState != NULL && lastUpdate != gPlayState->state.frames) {
-        lastUpdate = gPlayState->state.frames;
+    if (lastUpdate != play->state.frames) {
+        lastUpdate = play->state.frames;
         SkelAnime_Update(&skelAnime);
     }
 
-    SkelAnime_DrawFlexOpa(gPlayState, skelAnime.skeleton, skelAnime.jointTable, skelAnime.dListCount,
-                          NULL, NULL, NULL);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    CLOSE_DISPS(gPlayState->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+    Matrix_Translate(0.0f, -10.0f, 0.0f, MTXMODE_APPLY);
+    Matrix_Scale(0.01f, 0.01f, 0.01f, MTXMODE_APPLY);
+
+    gSPSegment(POLY_OPA_DISP++, 10, (uintptr_t)gTwinrovaKotakeKoumeEyeOpenTex);
+    gSPSegment(POLY_XLU_DISP++, 10, (uintptr_t)gTwinrovaKotakeKoumeEyeOpenTex);
+    gSPSegment(POLY_XLU_DISP++, 8,
+               (uintptr_t)Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0 & 0x7F, 0 & 0x7F, 0x20, 0x20, 1,
+                                           play->state.frames & 0x7F, (play->state.frames * -7) & 0xFF, 0x20, 0x40));
+
+    gSPSegment(POLY_XLU_DISP++, 9,
+               (uintptr_t)Gfx_TexScroll(play->state.gfxCtx, 0 & 0x7F, play->state.frames & 0xFF, 0x20, 0x40));
+
+    SkelAnime_DrawSkeletonOpa(play, &skelAnime, OverrideLimbDrawKotake, PostLimbDrawKotake, NULL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" s32 OverrideLimbDrawGanon(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    if (limbIndex >= 42) { // Tail
+        // Brighten up tail
+        gDPSetEnvColor(POLY_OPA_DISP++, 255, 255, 255, 255);
+    }
+
+    CLOSE_DISPS(play->state.gfxCtx);
+    return false;
 }
 
 #define LIMB_COUNT_GANON 47
-extern "C" void DrawGanon() {
-    OPEN_DISPS(gPlayState->state.gfxCtx);
-
-    Gfx_SetupDL_25Opa(gPlayState->state.gfxCtx);
-    Matrix_Translate(0.0f, -33.0f, 0.0f, MTXMODE_APPLY);
-    Matrix_Scale(0.005f, 0.005f, 0.005f, MTXMODE_APPLY);
-
+extern "C" void DrawGanon(PlayState* play) {
     static bool initialized = false;
     static SkelAnime skelAnime;
     static Vec3s jointTable[LIMB_COUNT_GANON];
@@ -783,20 +910,26 @@ extern "C" void DrawGanon() {
 
     if (!initialized) {
         initialized = true;
-        SkelAnime_InitFlex(gPlayState, &skelAnime, (FlexSkeletonHeader*)&gGanonSkel,
-                           (AnimationHeader*)&gGanonGuardIdleAnim, jointTable, otherTable,
-                           LIMB_COUNT_GANON);
+        SkelAnime_InitFlex(play, &skelAnime, (FlexSkeletonHeader*)&gGanonSkel, (AnimationHeader*)&gGanonGuardIdleAnim,
+                           jointTable, otherTable, LIMB_COUNT_GANON);
     }
 
-    if (gPlayState != NULL && lastUpdate != gPlayState->state.frames) {
-        lastUpdate = gPlayState->state.frames;
+    if (lastUpdate != play->state.frames) {
+        lastUpdate = play->state.frames;
         SkelAnime_Update(&skelAnime);
     }
 
-    SkelAnime_DrawFlexOpa(gPlayState, skelAnime.skeleton, skelAnime.jointTable, skelAnime.dListCount,
-                          NULL, NULL, NULL);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    CLOSE_DISPS(gPlayState->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Matrix_Translate(0.0f, -33.0f, 0.0f, MTXMODE_APPLY);
+    Matrix_Scale(0.005f, 0.005f, 0.005f, MTXMODE_APPLY);
+
+    gSPSegment(POLY_OPA_DISP++, 0x08, (uintptr_t)gGanonEyeOpenTex);
+
+    SkelAnime_DrawSkeletonOpa(play, &skelAnime, OverrideLimbDrawGanon, NULL, NULL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
 }
 
 extern "C" void Randomizer_DrawBossSoul(PlayState* play, GetItemEntry* getItemEntry) {
@@ -849,31 +982,31 @@ extern "C" void Randomizer_DrawBossSoul(PlayState* play, GetItemEntry* getItemEn
     } else {
         switch (slot) {
             case 0: // Gohma
-                DrawGohma();
+                DrawGohma(play);
                 break;
             case 1: // King Dodongo
-                DrawKingDodongo();
+                DrawKingDodongo(play);
                 break;
             case 2: // Barinade
-                DrawBarinade();
+                DrawBarinade(play);
                 break;
             case 3: // Phantom Ganon
-                DrawPhantomGanon();
+                DrawPhantomGanon(play);
                 break;
             case 4: // Volvagia
-                DrawVolvagia();
+                DrawVolvagia(play);
                 break;
             case 5: // Morpha
-                DrawMorpha();
+                DrawMorpha(play);
                 break;
             case 6: // Bongo Bongo
-                DrawBongoBongo();
+                DrawBongoBongo(play);
                 break;
             case 7: // Twinrova
-                DrawKotake();
+                DrawKotake(play);
                 break;
             case 8: // Ganon
-                DrawGanon();
+                DrawGanon(play);
                 break;
             default:
                 break;
