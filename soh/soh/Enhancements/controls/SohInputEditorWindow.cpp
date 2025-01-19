@@ -1439,27 +1439,17 @@ void SohInputEditorWindow::DrawDeviceNameButtons() {
     ImGui::PopStyleColor();
     ImGui::PopStyleColor();
 
-    // todo: display connected controller device names
-    // for (auto [lusIndex, info] : indexMappings) {
-    //     auto [name, sdlIndex] = info;
-    //     bool connected = sdlIndex != -1;
+    for (const auto& name : Ship::Context::GetInstance()->GetControlDeck()->GetConnectedPhysicalDeviceManager()->GetConnectedSDLGamepadNames()) {
+        auto buttonColor = ImGui::GetStyleColorVec4(ImGuiCol_Button);
+        auto buttonHoveredColor = ImGui::GetStyleColorVec4(ImGuiCol_ButtonHovered);
+        GetButtonColorsForDeviceType(Ship::PhysicalDeviceType::SDLGamepad, buttonColor, buttonHoveredColor);
+        ImGui::PushStyleColor(ImGuiCol_Button, buttonColor);
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, buttonHoveredColor);
+        ImGui::Button(StringHelper::Sprintf("%s %s (SDL)", ICON_FA_GAMEPAD, name.c_str()).c_str());
+        ImGui::PopStyleColor();
+        ImGui::PopStyleColor();
+    }
 
-    //     auto buttonColor = ImGui::GetStyleColorVec4(ImGuiCol_Button);
-    //     auto buttonHoveredColor = ImGui::GetStyleColorVec4(ImGuiCol_ButtonHovered);
-    //     GetButtonColorsForDeviceType(lusIndex, buttonColor, buttonHoveredColor);
-
-    //     ImGui::PushStyleColor(ImGuiCol_Button, buttonColor);
-    //     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, buttonHoveredColor);
-    //     bool visible = mDeviceTypeVisibility[lusIndex];
-    //     if(ImGui::Button(
-    //         StringHelper::Sprintf("%s %s %s (%s)", visible ? ICON_FA_EYE : ICON_FA_EYE_SLASH, connected ? ICON_FA_GAMEPAD : ICON_FA_CHAIN_BROKEN, name.c_str(),
-    //                                 connected ? StringHelper::Sprintf("SDL %d", sdlIndex).c_str() : "Disconnected")
-    //             .c_str())) {
-    //         mDeviceTypeVisibility[lusIndex] = !visible;
-    //     }
-    //     ImGui::PopStyleColor();
-    //     ImGui::PopStyleColor();
-    // }
     ImGui::PopItemFlag();
 }
 
