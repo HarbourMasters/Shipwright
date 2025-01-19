@@ -101,6 +101,6 @@ class SohInputEditorWindow : public Ship::GuiWindow {
     void DrawSetDefaultsButton(uint8_t portIndex);
     void DrawClearAllButton(uint8_t portIndex);
 
-    std::map<Ship::ShipDeviceIndex, bool> mDeviceIndexVisiblity;
+    std::map<Ship::ShipDeviceIndex, bool> mDeviceIndexVisibility;
     void DrawDeviceVisibilityButtons();
 };

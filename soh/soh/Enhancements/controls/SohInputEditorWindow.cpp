@@ -47,12 +47,10 @@ void SohInputEditorWindow::InitElement() {
     addButtonName(BTN_DRIGHT,	"D-pad right");
     addButtonName(0,			"None");
 
-    mDeviceIndexVisiblity.clear();
-    mDeviceIndexVisiblity[Ship::ShipDeviceIndex::Keyboard] = true;
-    mDeviceIndexVisiblity[Ship::ShipDeviceIndex::Blue] = true;
-    for (auto index = 1; index < Ship::ShipDeviceIndex::Max; index++) {
-        mDeviceIndexVisiblity[static_cast<Ship::ShipDeviceIndex>(index)] = false;
-    }
+    mDeviceIndexVisibility.clear();
+    mDeviceIndexVisibility[Ship::ShipDeviceIndex::Keyboard] = true;
+    mDeviceIndexVisibility[Ship::ShipDeviceIndex::SDLGamepad] = true;
+    mDeviceIndexVisibility[Ship::ShipDeviceIndex::Max] = false;
 }
 
 #define INPUT_EDITOR_WINDOW_GAME_INPUT_BLOCK_ID 95237929
@@ -198,21 +196,9 @@ void SohInputEditorWindow::GetButtonColorsForLUSDeviceIndex(Ship::ShipDeviceInde
             buttonColor = BUTTON_COLOR_KEYBOARD_BEIGE;
             buttonHoveredColor = BUTTON_COLOR_KEYBOARD_BEIGE_HOVERED;
             break;
-        case Ship::ShipDeviceIndex::Blue:
+        case Ship::ShipDeviceIndex::SDLGamepad:
             buttonColor = BUTTON_COLOR_GAMEPAD_BLUE;
             buttonHoveredColor = BUTTON_COLOR_GAMEPAD_BLUE_HOVERED;
-            break;
-        case Ship::ShipDeviceIndex::Red:
-            buttonColor = BUTTON_COLOR_GAMEPAD_RED;
-            buttonHoveredColor = BUTTON_COLOR_GAMEPAD_RED_HOVERED;
-            break;
-        case Ship::ShipDeviceIndex::Orange:
-            buttonColor = BUTTON_COLOR_GAMEPAD_ORANGE;
-            buttonHoveredColor = BUTTON_COLOR_GAMEPAD_ORANGE_HOVERED;
-            break;
-        case Ship::ShipDeviceIndex::Green:
-            buttonColor = BUTTON_COLOR_GAMEPAD_GREEN;
-            buttonHoveredColor = BUTTON_COLOR_GAMEPAD_GREEN_HOVERED;
             break;
         default:
             buttonColor = BUTTON_COLOR_GAMEPAD_PURPLE;
@@ -266,7 +252,7 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, N64Butt
     if (mapping == nullptr) {
         return;
     }
-    if (!mDeviceIndexVisiblity[mapping->GetShipDeviceIndex()]) {
+    if (!mDeviceIndexVisibility[mapping->GetShipDeviceIndex()]) {
         return;
     }
 
@@ -539,7 +525,7 @@ void SohInputEditorWindow::DrawStickDirectionLineEditMappingButton(uint8_t port,
     if (mapping == nullptr) {
         return;
     }
-    if (!mDeviceIndexVisiblity[mapping->GetShipDeviceIndex()]) {
+    if (!mDeviceIndexVisibility[mapping->GetShipDeviceIndex()]) {
         return;
     }
 
@@ -1682,11 +1668,11 @@ void SohInputEditorWindow::DrawDeviceVisibilityButtons() {
     GetButtonColorsForLUSDeviceIndex(Ship::ShipDeviceIndex::Keyboard, keyboardButtonColor, keyboardButtonHoveredColor);
     ImGui::PushStyleColor(ImGuiCol_Button, keyboardButtonColor);
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, keyboardButtonHoveredColor);
-    bool keyboardVisible = mDeviceIndexVisiblity[Ship::ShipDeviceIndex::Keyboard];
+    bool keyboardVisible = mDeviceIndexVisibility[Ship::ShipDeviceIndex::Keyboard];
     if(ImGui::Button(
         StringHelper::Sprintf("%s %s Keyboard", keyboardVisible ? ICON_FA_EYE : ICON_FA_EYE_SLASH, ICON_FA_KEYBOARD_O)
             .c_str())) {
-        mDeviceIndexVisiblity[Ship::ShipDeviceIndex::Keyboard] = !keyboardVisible;
+        mDeviceIndexVisibility[Ship::ShipDeviceIndex::Keyboard] = !keyboardVisible;
     }
     ImGui::PopStyleColor();
     ImGui::PopStyleColor();
@@ -1702,12 +1688,12 @@ void SohInputEditorWindow::DrawDeviceVisibilityButtons() {
 
         ImGui::PushStyleColor(ImGuiCol_Button, buttonColor);
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, buttonHoveredColor);
-        bool visible = mDeviceIndexVisiblity[lusIndex];
+        bool visible = mDeviceIndexVisibility[lusIndex];
         if(ImGui::Button(
             StringHelper::Sprintf("%s %s %s (%s)", visible ? ICON_FA_EYE : ICON_FA_EYE_SLASH, connected ? ICON_FA_GAMEPAD : ICON_FA_CHAIN_BROKEN, name.c_str(),
                                     connected ? StringHelper::Sprintf("SDL %d", sdlIndex).c_str() : "Disconnected")
                 .c_str())) {
-            mDeviceIndexVisiblity[lusIndex] = !visible;
+            mDeviceIndexVisibility[lusIndex] = !visible;
         }
         ImGui::PopStyleColor();
         ImGui::PopStyleColor();
