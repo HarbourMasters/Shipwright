@@ -341,7 +341,6 @@ OTRGlobals::OTRGlobals() {
         BTN_CUSTOM_OCARINA_PITCH_DOWN,
     }));
     context->InitControlDeck(controlDeck);
-    context->GetControlDeck()->SetSinglePlayerMappingMode(true);
 
     context->InitCrashHandler();
     context->InitConsole();
