@@ -46,11 +46,6 @@ void SohInputEditorWindow::InitElement() {
     addButtonName(BTN_DLEFT,	"D-pad left");
     addButtonName(BTN_DRIGHT,	"D-pad right");
     addButtonName(0,			"None");
-
-    mDeviceTypeVisibility.clear();
-    mDeviceTypeVisibility[Ship::PhysicalDeviceType::Keyboard] = true;
-    mDeviceTypeVisibility[Ship::PhysicalDeviceType::SDLGamepad] = true;
-    mDeviceTypeVisibility[Ship::PhysicalDeviceType::Max] = false;
 }
 
 #define INPUT_EDITOR_WINDOW_GAME_INPUT_BLOCK_ID 95237929
@@ -193,6 +188,7 @@ void SohInputEditorWindow::GetButtonColorsForDeviceType(Ship::PhysicalDeviceType
                                                             ImVec4& buttonHoveredColor) {
     switch (lusIndex) {
         case Ship::PhysicalDeviceType::Keyboard:
+        case Ship::PhysicalDeviceType::Mouse:
             buttonColor = BUTTON_COLOR_KEYBOARD_BEIGE;
             buttonHoveredColor = BUTTON_COLOR_KEYBOARD_BEIGE_HOVERED;
             break;
@@ -250,9 +246,6 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, N64Butt
                        ->GetButton(bitmask)
                        ->GetButtonMappingById(id);
     if (mapping == nullptr) {
-        return;
-    }
-    if (!mDeviceTypeVisibility[mapping->GetPhysicalDeviceType()]) {
         return;
     }
 
@@ -517,9 +510,6 @@ void SohInputEditorWindow::DrawStickDirectionLineEditMappingButton(uint8_t port,
     }
 
     if (mapping == nullptr) {
-        return;
-    }
-    if (!mDeviceTypeVisibility[mapping->GetPhysicalDeviceType()]) {
         return;
     }
 
@@ -1428,67 +1418,49 @@ void SohInputEditorWindow::DrawDpadControlPanel() {
     Ship::GuiWindow::EndGroupPanel(0);
 }
 
-void SohInputEditorWindow::DrawDeviceVisibilityButtons() {
-    std::map<Ship::PhysicalDeviceType, std::pair<std::string, int32_t>> indexMappings;
-    for (auto [lusIndex, mapping] : Ship::Context::GetInstance()
-                                        ->GetControlDeck()
-                                        ->GetDeviceIndexMappingManager()
-                                        ->GetAllDeviceIndexMappingsFromConfig()) {
-        auto sdlIndexMapping = std::static_pointer_cast<Ship::ShipDeviceIndexToSDLDeviceIndexMapping>(mapping);
-        if (sdlIndexMapping == nullptr) {
-            continue;
-        }
-
-        indexMappings[lusIndex] = { sdlIndexMapping->GetSDLControllerName(), -1 };
-    }
-
-    for (auto [lusIndex, mapping] : Ship::Context::GetInstance()
-                                        ->GetControlDeck()
-                                        ->GetDeviceIndexMappingManager()
-                                        ->GetAllDeviceIndexMappings()) {
-        auto sdlIndexMapping = std::static_pointer_cast<Ship::ShipDeviceIndexToSDLDeviceIndexMapping>(mapping);
-        if (sdlIndexMapping == nullptr) {
-            continue;
-        }
-
-        indexMappings[lusIndex] = { sdlIndexMapping->GetSDLControllerName(), sdlIndexMapping->GetSDLDeviceIndex() };
-    }
+void SohInputEditorWindow::DrawDeviceNameButtons() {
+    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
 
     auto keyboardButtonColor = ImGui::GetStyleColorVec4(ImGuiCol_Button);
     auto keyboardButtonHoveredColor = ImGui::GetStyleColorVec4(ImGuiCol_ButtonHovered);
     GetButtonColorsForDeviceType(Ship::PhysicalDeviceType::Keyboard, keyboardButtonColor, keyboardButtonHoveredColor);
     ImGui::PushStyleColor(ImGuiCol_Button, keyboardButtonColor);
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, keyboardButtonHoveredColor);
-    bool keyboardVisible = mDeviceTypeVisibility[Ship::PhysicalDeviceType::Keyboard];
-    if(ImGui::Button(
-        StringHelper::Sprintf("%s %s Keyboard", keyboardVisible ? ICON_FA_EYE : ICON_FA_EYE_SLASH, ICON_FA_KEYBOARD_O)
-            .c_str())) {
-        mDeviceTypeVisibility[Ship::PhysicalDeviceType::Keyboard] = !keyboardVisible;
-    }
+    ImGui::Button(StringHelper::Sprintf("%s Keyboard", ICON_FA_KEYBOARD_O).c_str());
     ImGui::PopStyleColor();
     ImGui::PopStyleColor();
 
+    auto mouseButtonColor = ImGui::GetStyleColorVec4(ImGuiCol_Button);
+    auto mouseButtonHoveredColor = ImGui::GetStyleColorVec4(ImGuiCol_ButtonHovered);
+    GetButtonColorsForDeviceType(Ship::PhysicalDeviceType::Mouse, mouseButtonColor, mouseButtonHoveredColor);
+    ImGui::PushStyleColor(ImGuiCol_Button, mouseButtonColor);
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, mouseButtonHoveredColor);
+    ImGui::Button(StringHelper::Sprintf("%s Mouse", ICON_FA_KEYBOARD_O).c_str());
+    ImGui::PopStyleColor();
+    ImGui::PopStyleColor();
 
-    for (auto [lusIndex, info] : indexMappings) {
-        auto [name, sdlIndex] = info;
-        bool connected = sdlIndex != -1;
+    // todo: display connected controller device names
+    // for (auto [lusIndex, info] : indexMappings) {
+    //     auto [name, sdlIndex] = info;
+    //     bool connected = sdlIndex != -1;
 
-        auto buttonColor = ImGui::GetStyleColorVec4(ImGuiCol_Button);
-        auto buttonHoveredColor = ImGui::GetStyleColorVec4(ImGuiCol_ButtonHovered);
-        GetButtonColorsForDeviceType(lusIndex, buttonColor, buttonHoveredColor);
+    //     auto buttonColor = ImGui::GetStyleColorVec4(ImGuiCol_Button);
+    //     auto buttonHoveredColor = ImGui::GetStyleColorVec4(ImGuiCol_ButtonHovered);
+    //     GetButtonColorsForDeviceType(lusIndex, buttonColor, buttonHoveredColor);
 
-        ImGui::PushStyleColor(ImGuiCol_Button, buttonColor);
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, buttonHoveredColor);
-        bool visible = mDeviceTypeVisibility[lusIndex];
-        if(ImGui::Button(
-            StringHelper::Sprintf("%s %s %s (%s)", visible ? ICON_FA_EYE : ICON_FA_EYE_SLASH, connected ? ICON_FA_GAMEPAD : ICON_FA_CHAIN_BROKEN, name.c_str(),
-                                    connected ? StringHelper::Sprintf("SDL %d", sdlIndex).c_str() : "Disconnected")
-                .c_str())) {
-            mDeviceTypeVisibility[lusIndex] = !visible;
-        }
-        ImGui::PopStyleColor();
-        ImGui::PopStyleColor();
-    }
+    //     ImGui::PushStyleColor(ImGuiCol_Button, buttonColor);
+    //     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, buttonHoveredColor);
+    //     bool visible = mDeviceTypeVisibility[lusIndex];
+    //     if(ImGui::Button(
+    //         StringHelper::Sprintf("%s %s %s (%s)", visible ? ICON_FA_EYE : ICON_FA_EYE_SLASH, connected ? ICON_FA_GAMEPAD : ICON_FA_CHAIN_BROKEN, name.c_str(),
+    //                                 connected ? StringHelper::Sprintf("SDL %d", sdlIndex).c_str() : "Disconnected")
+    //             .c_str())) {
+    //         mDeviceTypeVisibility[lusIndex] = !visible;
+    //     }
+    //     ImGui::PopStyleColor();
+    //     ImGui::PopStyleColor();
+    // }
+    ImGui::PopItemFlag();
 }
 
 void SohInputEditorWindow::DrawLinkTab() {
@@ -1496,7 +1468,7 @@ void SohInputEditorWindow::DrawLinkTab() {
     if (ImGui::BeginTabItem(StringHelper::Sprintf("Link (P1)###port%d", portIndex).c_str())) {
         DrawClearAllButton(portIndex);
         DrawSetDefaultsButton(portIndex);
-        DrawDeviceVisibilityButtons();
+        DrawDeviceNameButtons();
 
         UpdateBitmaskToMappingIds(portIndex);
         UpdateStickDirectionToMappingIds(portIndex);
@@ -1625,7 +1597,7 @@ void SohInputEditorWindow::DrawIvanTab() {
     if (ImGui::BeginTabItem(StringHelper::Sprintf("Ivan (P2)###port%d", portIndex).c_str())) {
         DrawClearAllButton(portIndex);
         DrawSetDefaultsButton(portIndex);
-        DrawDeviceVisibilityButtons();
+        DrawDeviceNameButtons();
 
         UpdateBitmaskToMappingIds(portIndex);
         UpdateStickDirectionToMappingIds(portIndex);
@@ -1672,7 +1644,7 @@ void SohInputEditorWindow::DrawDebugPortTab(uint8_t portIndex, std::string custo
                                 : customName.c_str())) {
         DrawClearAllButton(portIndex);
         DrawSetDefaultsButton(portIndex);
-        DrawDeviceVisibilityButtons();
+        DrawDeviceNameButtons();
 
         UpdateBitmaskToMappingIds(portIndex);
         UpdateStickDirectionToMappingIds(portIndex);
