@@ -83,7 +83,7 @@ class SohInputEditorWindow : public Ship::GuiWindow {
     void UpdateBitmaskToMappingIds(uint8_t port);
     void UpdateStickDirectionToMappingIds(uint8_t port);
 
-    void GetButtonColorsForLUSDeviceIndex(Ship::ShipDeviceIndex lusIndex, ImVec4& buttonColor,
+    void GetButtonColorsForLUSDeviceIndex(Ship::ShipDeviceType lusIndex, ImVec4& buttonColor,
                                           ImVec4& buttonHoveredColor);
     void DrawLinkTab();
     void DrawIvanTab();
@@ -101,6 +101,6 @@ class SohInputEditorWindow : public Ship::GuiWindow {
     void DrawSetDefaultsButton(uint8_t portIndex);
     void DrawClearAllButton(uint8_t portIndex);
 
-    std::map<Ship::ShipDeviceIndex, bool> mDeviceIndexVisibility;
+    std::map<Ship::ShipDeviceType, bool> mDeviceIndexVisibility;
     void DrawDeviceVisibilityButtons();
 };
