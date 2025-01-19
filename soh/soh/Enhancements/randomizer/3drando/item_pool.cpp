@@ -998,7 +998,7 @@ void GenerateItemPool() {
     if (/*!ProgressiveGoronSword TODO: Implement Progressive Goron Sword*/true) {
       AddItemToMainPool(RG_GIANTS_KNIFE);
     }
-    if (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC)) {
+    if (ctx->GetOption(RSK_BOMBCHU_BAG)) {
       AddItemToMainPool(RG_PROGRESSIVE_BOMBCHUS);
     } else {
       AddItemToMainPool(RG_BOMBCHU_10);
@@ -1122,7 +1122,7 @@ void GenerateItemPool() {
     AddItemToMainPool(RG_PROGRESSIVE_NUT_UPGRADE);
   }
 
-  if (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC)) {
+  if (ctx->GetOption(RSK_BOMBCHU_BAG)) {
     AddItemToMainPool(RG_PROGRESSIVE_BOMBCHUS, 5);
   } else {
     AddItemToMainPool(RG_BOMBCHU_5);

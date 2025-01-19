@@ -4,6 +4,7 @@
 #include "src/overlays/actors/ovl_En_Elf/z_en_elf.h"
 #include "src/overlays/actors/ovl_Obj_Bean/z_obj_bean.h"
 #include "src/overlays/actors/ovl_En_Gs/z_en_gs.h"
+#include "src/overlays/actors/ovl_Shot_Sun/z_shot_sun.h"
 #include "../../OTRGlobals.h"
 #include "../../cvar_prefixes.h"
 
@@ -116,50 +117,54 @@ void ShuffleFairies_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should,
         if (fairySpawned) {
             *should = false;
         }
+    // Spawn a fairy from a ShotSun when playing the right song near it
+    } else if (id == VB_SPAWN_SONG_FAIRY) {
+        ShotSun* shotSun = (ShotSun*)(actor);
+        if (ShuffleFairies_SpawnFairy(shotSun->actor.world.pos.x, shotSun->actor.world.pos.y,
+            shotSun->actor.world.pos.z,
+            TWO_ACTOR_PARAMS(0x1000, (int32_t)shotSun->actor.world.pos.z))) {
+            *should = false;
+        }
     // Handle playing both misc songs and song of storms in front of a gossip stone.
     } else if (id == VB_SPAWN_GOSSIP_STONE_FAIRY) {
         EnGs* gossipStone = (EnGs*)(actor);
 
-        // If not any of the songs that normally spawn a fairy, mimic vanilla behaviour.
-        if (gPlayState->msgCtx.ocarinaMode == OCARINA_MODE_01) {
-            Player* player = GET_PLAYER(gPlayState);
-            player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
-            return;
-        } else if (gPlayState->msgCtx.unk_E3F2 != OCARINA_SONG_LULLABY &&
-                   gPlayState->msgCtx.unk_E3F2 != OCARINA_SONG_SARIAS &&
-                   gPlayState->msgCtx.unk_E3F2 != OCARINA_SONG_EPONAS &&
-                   gPlayState->msgCtx.unk_E3F2 != OCARINA_SONG_SUNS &&
-                   gPlayState->msgCtx.unk_E3F2 != OCARINA_SONG_TIME &&
-                   gPlayState->msgCtx.unk_E3F2 != OCARINA_SONG_STORMS &&
-                   gPlayState->msgCtx.ocarinaMode != OCARINA_MODE_04) {
-            return;
-        }
+        // Mimic vanilla behaviour, only go into this path if song played is one of the ones normally spawning a fairy.
+        // Otherwise fall back to vanilla behaviour.
+        if (gPlayState->msgCtx.ocarinaMode == OCARINA_MODE_04 &&
+            (gPlayState->msgCtx.unk_E3F2 == OCARINA_SONG_LULLABY ||
+                gPlayState->msgCtx.unk_E3F2 == OCARINA_SONG_SARIAS ||
+                gPlayState->msgCtx.unk_E3F2 == OCARINA_SONG_EPONAS ||
+                gPlayState->msgCtx.unk_E3F2 == OCARINA_SONG_SUNS || 
+                gPlayState->msgCtx.unk_E3F2 == OCARINA_SONG_TIME ||
+                gPlayState->msgCtx.unk_E3F2 == OCARINA_SONG_STORMS)) {
 
-        int32_t params = (gPlayState->sceneNum == SCENE_GROTTOS) ? Grotto_CurrentGrotto() : 0;
-        // Distinguish storms fairies from the normal song fairies
-        if (gPlayState->msgCtx.unk_E3F2 == OCARINA_SONG_STORMS) {
-            params |= 0x1000;
-        }
+            int32_t params = (gPlayState->sceneNum == SCENE_GROTTOS) ? Grotto_CurrentGrotto() : 0;
+            // Distinguish storms fairies from the normal song fairies
+            if (gPlayState->msgCtx.unk_E3F2 == OCARINA_SONG_STORMS) {
+                params |= 0x1000;
+            }
 
-        // Combine actor + song params with position to get the right randomizer check
-        params = TWO_ACTOR_PARAMS(params, (int32_t)gossipStone->actor.world.pos.z);
+            // Combine actor + song params with position to get the right randomizer check
+            params = TWO_ACTOR_PARAMS(params, (int32_t)gossipStone->actor.world.pos.z);
 
-        // Check if a fairy already exists with the same identity as the stone is trying to spawn.
-        // Because the gossip stone code runs several times after playing the song, we need to
-        // stop spawning the vanilla fairy as well when these fairies exist, otherwise both
-        // the randomized and the vanilla fairy will spawn. When the randomized fairy is already
-        // collected, the vanilla code will handle that part automatically.
-        FairyIdentity fairyIdentity = ShuffleFairies_GetFairyIdentity(params);
-        if (!ShuffleFairies_FairyExists(fairyIdentity)) {
-            if (ShuffleFairies_SpawnFairy(gossipStone->actor.world.pos.x, gossipStone->actor.world.pos.y,
-                gossipStone->actor.world.pos.z, params)) {
-                Audio_PlayActorSound2(&gossipStone->actor, NA_SE_EV_BUTTERFRY_TO_FAIRY);
-                // Set vanilla check for fairy spawned so it doesn't spawn the vanilla fairy afterwards as well.
-                gossipStone->unk_19D = 0;
+            // Check if a fairy already exists with the same identity as the stone is trying to spawn.
+            // Because the gossip stone code runs several times after playing the song, we need to
+            // stop spawning the vanilla fairy as well when these fairies exist, otherwise both
+            // the randomized and the vanilla fairy will spawn. When the randomized fairy is already
+            // collected, the vanilla code will handle that part automatically.
+            FairyIdentity fairyIdentity = ShuffleFairies_GetFairyIdentity(params);
+            if (!ShuffleFairies_FairyExists(fairyIdentity)) {
+                if (ShuffleFairies_SpawnFairy(gossipStone->actor.world.pos.x, gossipStone->actor.world.pos.y,
+                                                gossipStone->actor.world.pos.z, params)) {
+                    Audio_PlayActorSound2(&gossipStone->actor, NA_SE_EV_BUTTERFRY_TO_FAIRY);
+                    // Set vanilla check for fairy spawned so it doesn't spawn the vanilla fairy afterwards as well.
+                    gossipStone->unk_19D = 0;
+                    *should = false;
+                }
+            } else {
                 *should = false;
             }
-        } else {
-            *should = false;
         }
     }
 }

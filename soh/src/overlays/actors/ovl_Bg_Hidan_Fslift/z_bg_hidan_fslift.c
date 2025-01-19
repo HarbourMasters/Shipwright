@@ -7,7 +7,7 @@
 #include "z_bg_hidan_fslift.h"
 #include "objects/object_hidan_objects/object_hidan_objects.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void BgHidanFslift_Init(Actor* thisx, PlayState* play);
 void BgHidanFslift_Destroy(Actor* thisx, PlayState* play);

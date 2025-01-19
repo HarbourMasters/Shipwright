@@ -653,14 +653,14 @@ void func_80097534(PlayState* play, RoomContext* roomCtx) {
         Map_SavePlayerInitialInfo(play);
     }
     Audio_SetEnvReverb(play->roomCtx.curRoom.echo);
-    u8 idx = gSaveContext.sohStats.tsIdx;
-    gSaveContext.sohStats.sceneTimestamps[idx].scene = gSaveContext.sohStats.sceneNum;
-    gSaveContext.sohStats.sceneTimestamps[idx].room = gSaveContext.sohStats.roomNum;
-    gSaveContext.sohStats.sceneTimestamps[idx].roomTime = gSaveContext.sohStats.roomTimer / 2;
-    gSaveContext.sohStats.sceneTimestamps[idx].isRoom = 
-        gPlayState->sceneNum == gSaveContext.sohStats.sceneTimestamps[idx].scene &&
-        gPlayState->roomCtx.curRoom.num != gSaveContext.sohStats.sceneTimestamps[idx].room;
-    gSaveContext.sohStats.tsIdx++;
-    gSaveContext.sohStats.roomNum = roomCtx->curRoom.num;
-    gSaveContext.sohStats.roomTimer = 0;
+    u8 idx = gSaveContext.ship.stats.tsIdx;
+    gSaveContext.ship.stats.sceneTimestamps[idx].scene = gSaveContext.ship.stats.sceneNum;
+    gSaveContext.ship.stats.sceneTimestamps[idx].room = gSaveContext.ship.stats.roomNum;
+    gSaveContext.ship.stats.sceneTimestamps[idx].roomTime = gSaveContext.ship.stats.roomTimer / 2;
+    gSaveContext.ship.stats.sceneTimestamps[idx].isRoom = 
+        gPlayState->sceneNum == gSaveContext.ship.stats.sceneTimestamps[idx].scene &&
+        gPlayState->roomCtx.curRoom.num != gSaveContext.ship.stats.sceneTimestamps[idx].room;
+    gSaveContext.ship.stats.tsIdx++;
+    gSaveContext.ship.stats.roomNum = roomCtx->curRoom.num;
+    gSaveContext.ship.stats.roomTimer = 0;
 }

@@ -11,7 +11,7 @@
 #include <assert.h>
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
 void EnGuest_Init(Actor* thisx, PlayState* play);
 void EnGuest_Destroy(Actor* thisx, PlayState* play);
@@ -82,7 +82,7 @@ void EnGuest_Update(Actor* thisx, PlayState* play) {
     s32 pad;
 
     if (Object_IsLoaded(&play->objectCtx, this->osAnimeBankIndex)) {
-        this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
+        this->actor.flags &= ~ACTOR_FLAG_UPDATE_CULLING_DISABLED;
         Actor_ProcessInitChain(&this->actor, sInitChain);
 
         SkelAnime_InitFlex(play, &this->skelAnime, &object_boj_Skel_0000F0, NULL, this->jointTable, this->morphTable, 16);

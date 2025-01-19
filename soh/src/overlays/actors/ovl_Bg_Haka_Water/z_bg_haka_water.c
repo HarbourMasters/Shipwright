@@ -7,7 +7,7 @@
 #include "z_bg_haka_water.h"
 #include "objects/object_hakach_objects/object_hakach_objects.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void BgHakaWater_Init(Actor* thisx, PlayState* play);
 void BgHakaWater_Destroy(Actor* thisx, PlayState* play);

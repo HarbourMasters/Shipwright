@@ -8,7 +8,7 @@
 #include "objects/object_torch2/object_torch2.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 typedef enum {
     /* 0 */ ENTORCH2_WAIT,
@@ -374,7 +374,7 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
                         player->skelAnime.curFrame = 3.0f;
                         sStickAngle = this->actor.yawTowardsPlayer + 0x8000;
                         sSwordJumpTimer = sSwordJumpState = 0;
-                        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+                        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
                     } else if (sSwordJumpState == 1) {
                         if (sSwordJumpTimer < 16) {
                             EnTorch2_SwingSword(play, input, this);
@@ -405,7 +405,7 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
                                 sStickTilt = 0.0f;
                                 sSwordJumpState = 1;
                                 player->stateFlags3 |= PLAYER_STATE3_PAUSE_ACTION_FUNC;
-                                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+                                this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
                                 sSwordJumpTimer = 27;
                                 player->meleeWeaponState = 0;
                                 player->linearVelocity = 0.0f;
@@ -524,7 +524,7 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
             input->cur.stick_x = input->cur.stick_y = 0;
             if ((this->invincibilityTimer > 0) && (this->actor.world.pos.y < (this->actor.floorHeight - 160.0f))) {
                 this->stateFlags3 &= ~PLAYER_STATE3_IGNORE_CEILING_FLOOR_WATER;
-                this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+                this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
                 this->invincibilityTimer = 0;
                 this->actor.velocity.y = 0.0f;
                 this->actor.world.pos.y = sSpawnPoint.y + 40.0f;
@@ -613,7 +613,7 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
 
         if (!Actor_ApplyDamage(&this->actor)) {
             func_800F5B58();
-            this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE);
+            this->actor.flags &= ~(ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE);
             this->knockbackType = 2;
             this->knockbackSpeed = 6.0f;
             this->knockbackYVelocity = 6.0f;
@@ -633,7 +633,7 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
                     Actor_SetColorFilter(&this->actor, 0, 0xFF, 0x2000, 0x50);
                 }
             } else {
-                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+                this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
                 this->knockbackDamage = this->actor.colChkInfo.damage;
                 this->knockbackType = 1;
                 this->knockbackYVelocity = 6.0f;

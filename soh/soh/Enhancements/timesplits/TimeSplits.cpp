@@ -345,8 +345,8 @@ void HandleDragAndDrop(std::vector<SplitObject>& objectList, int targetIndex, co
 }
 
 void TimeSplitCompleteSplits() {
-    gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
-    gSaveContext.sohStats.gameComplete = true;
+    gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
+    gSaveContext.ship.stats.gameComplete = true;
 }
 
 void TimeSplitsSkipSplit(uint32_t index) {
@@ -432,8 +432,10 @@ void TimeSplitsPopUpContext() {
             ImGui::BeginTable("Token Table", 2);
             ImGui::TableNextColumn();
             SplitsPushImageButtonStyle();
-            ImGui::ImageButton(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("QUEST_SKULL_TOKEN"),
-                    ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), 2.0f, ImVec4(0, 0, 0, 0));
+            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2.0f, 2.0f));
+            ImGui::ImageButton("QUEST_SKULL_TOKEN", Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("QUEST_SKULL_TOKEN"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0));
+            ImGui::PopStyleVar();
             ImGui::TableNextColumn();
             SplitsPopImageButtonStyle();
             ImGui::PushItemWidth(150.0f);
@@ -479,8 +481,11 @@ void TimeSplitsPopUpContext() {
                 SplitObject& popupObject = *findID;
                 ImGui::BeginGroup();
                 ImGui::PushID(popupObject.splitID);
-                if (ImGui::ImageButton(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(popupObject.splitImage),
-                ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), 2, ImVec4(0, 0, 0, 0), popupObject.splitTint)) {
+                ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2.0f, 2.0f));
+                auto ret = ImGui::ImageButton(popupObject.splitImage.c_str(), Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(popupObject.splitImage),
+                                              ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), popupObject.splitTint);
+                ImGui::PopStyleVar();
+                if (ret) {
                     splitList.push_back(popupObject);
                     if (splitList.size() == 1) {
                         splitList[0].splitTimeStatus = SPLIT_STATUS_ACTIVE;
@@ -650,8 +655,11 @@ void TimeSplitsDrawSplitsList() {
             ImGui::TableSetBgColor(ImGuiTableBgTarget_RowBg0, IM_COL32(47, 79, 90, 255));
         }
         TimeSplitsGetImageSize(split.splitID);
-        if (ImGui::ImageButton(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(split.splitImage),
-                               imageSize, ImVec2(0, 0), ImVec2(1, 1), imagePadding, ImVec4(0, 0, 0, 0), split.splitTint)) {
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(imagePadding, imagePadding));
+        auto ret = ImGui::ImageButton(split.splitImage.c_str(), Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(split.splitImage),
+                                      imageSize, ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), split.splitTint);
+        ImGui::PopStyleVar();
+        if (ret) {
             TimeSplitsSkipSplit(dragIndex);
         }
         HandleDragAndDrop(splitList, dragIndex, split.splitName);
@@ -722,9 +730,11 @@ void TimeSplitsDrawItemList(uint32_t type) {
             ImGui::PushID(split.splitID);
             TimeSplitsGetImageSize(split.splitID);
             SplitsPushImageButtonStyle();
-            if (ImGui::ImageButton(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(split.splitImage),
-                               imageSize, ImVec2(0, 0), ImVec2(1, 1), imagePadding, ImVec4(0, 0, 0, 0), split.splitTint)) {
-                
+            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(imagePadding, imagePadding));
+            auto ret = ImGui::ImageButton(split.splitImage.c_str(), Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(split.splitImage),
+                                          imageSize, ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), split.splitTint);
+            ImGui::PopStyleVar();
+            if (ret) {
                 if (popupList.contains(split.splitID) && (split.splitType < SPLIT_TYPE_BOSS)) {
                     popupID = split.splitID;
                     ImGui::OpenPopup("TimeSplitsPopUp");
@@ -875,8 +885,11 @@ void TimeSplitsDrawManageList() {
                 ImGui::SetCursorPosX(ImGui::GetCursorPosX() + offsetX); // Apply the offset to center
             }
             TimeSplitsGetImageSize(data.splitID);
-            if (ImGui::ImageButton(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(data.splitImage),
-                                   imageSize, ImVec2(0, 0), ImVec2(1, 1), imagePadding, ImVec4(0, 0, 0, 0), data.splitTint)) {
+            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(imagePadding, imagePadding));
+            auto ret = ImGui::ImageButton(data.splitImage.c_str(), Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(data.splitImage),
+                                          imageSize, ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), data.splitTint);
+            ImGui::PopStyleVar();
+            if (ret) {
                 removeIndex = index;
             }
             HandleDragAndDrop(splitList, index, splitList[index].splitName);

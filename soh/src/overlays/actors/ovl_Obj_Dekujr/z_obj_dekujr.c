@@ -8,7 +8,7 @@
 #include "objects/object_dekujr/object_dekujr.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
 
 void ObjDekujr_Init(Actor* thisx, PlayState* play);
 void ObjDekujr_Destroy(Actor* thisx, PlayState* play);

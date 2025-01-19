@@ -124,7 +124,7 @@ namespace Rando {
             mEntries.push_back(
                     std::make_shared<KaleidoEntryIconCountRequired>(
                             gTriforcePieceTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, Color_RGBA8{ 255,255,255,255 }, 0,
-                            yOffset, reinterpret_cast<int*>(&gSaveContext.triforcePiecesCollected),
+                            yOffset, reinterpret_cast<int*>(&gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected),
                             ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).GetContextOptionIndex() + 1,
                             ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).GetContextOptionIndex() + 1));
             yOffset += 18;

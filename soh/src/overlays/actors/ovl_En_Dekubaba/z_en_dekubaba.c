@@ -5,7 +5,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE)
 
 void EnDekubaba_Init(Actor* thisx, PlayState* play);
 void EnDekubaba_Destroy(Actor* thisx, PlayState* play);
@@ -408,7 +408,7 @@ void EnDekubaba_SetupPrunedSomersault(EnDekubaba* this) {
     this->actor.world.rot.y = this->actor.shape.rot.y + 0x8000;
     this->collider.base.acFlags &= ~AC_ON;
     this->actor.speedXZ = this->size * 3.0f;
-    this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED;
+    this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED;
     this->actionFunc = EnDekubaba_PrunedSomersault;
 
     GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
@@ -465,7 +465,7 @@ void EnDekubaba_SetupDeadStickDrop(EnDekubaba* this, PlayState* play) {
     this->actor.velocity.y = 0.0f;
     this->actor.shape.shadowScale = 3.0f;
     Actor_ChangeCategory(play, &play->actorCtx, &this->actor, ACTORCAT_MISC);
-    this->actor.flags &= ~ACTOR_FLAG_DRAW_WHILE_CULLED;
+    this->actor.flags &= ~ACTOR_FLAG_DRAW_CULLING_DISABLED;
     this->timer = 200;
     this->actionFunc = EnDekubaba_DeadStickDrop;
 }
@@ -964,7 +964,7 @@ void EnDekubaba_PrunedSomersault(EnDekubaba* this, PlayState* play) {
         if ((this->actor.scale.x > 0.005f) && ((this->actor.bgCheckFlags & 2) || (this->actor.bgCheckFlags & 8))) {
             this->actor.scale.x = this->actor.scale.y = this->actor.scale.z = 0.0f;
             this->actor.speedXZ = 0.0f;
-            this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE);
+            this->actor.flags &= ~(ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE);
             EffectSsHahen_SpawnBurst(play, &this->actor.world.pos, this->size * 3.0f, 0, this->size * 12.0f,
                                      this->size * 5.0f, 15, HAHEN_OBJECT_DEFAULT, 10, NULL);
         }
@@ -1140,7 +1140,7 @@ void EnDekubaba_Update(Actor* thisx, PlayState* play) {
     }
     if (this->actionFunc == EnDekubaba_Lunge) {
         CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
-        this->actor.flags |= ACTOR_FLAG_PLAY_HIT_SFX;
+        this->actor.flags |= ACTOR_FLAG_SFX_FOR_PLAYER_BODY_HIT;
     }
 
     if (this->collider.base.acFlags & AC_ON) {

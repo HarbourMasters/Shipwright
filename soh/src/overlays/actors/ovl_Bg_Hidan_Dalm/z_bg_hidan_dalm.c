@@ -139,7 +139,7 @@ void BgHidanDalm_Wait(BgHidanDalm* this, PlayState* play) {
         this->dyna.actor.world.pos.z += 32.5f * Math_CosS(this->dyna.actor.world.rot.y);
 
         Player_SetCsActionWithHaltedActors(play, &this->dyna.actor, 8);
-        this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+        this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
         this->actionFunc = BgHidanDalm_Shrink;
         this->dyna.actor.bgCheckFlags &= ~2;
         this->dyna.actor.bgCheckFlags &= ~8;

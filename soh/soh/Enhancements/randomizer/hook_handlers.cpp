@@ -66,6 +66,7 @@ extern void Player_SetupActionPreserveAnimMovement(PlayState* play, Player* play
 extern s32 Player_SetupWaitForPutAway(PlayState* play, Player* player, AfterPutAwayFunc func);
 extern void Play_InitEnvironment(PlayState * play, s16 skyboxId);
 extern void EnMk_Wait(EnMk* enMk, PlayState* play);
+extern void func_80ABA778(EnNiwLady* enNiwLady, PlayState* play);
 }
 
 #define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetContextOptionIndex()
@@ -277,6 +278,7 @@ void RandomizerOnPlayerUpdateForRCQueueHandler() {
     if (loc->HasObtained()) {
         SPDLOG_INFO("RC {} already obtained, skipping", static_cast<uint32_t>(rc));
     } else {
+        iceTrapScale = 0.0f;
         randomizerQueuedCheck = rc;
         randomizerQueuedItemEntry = getItemEntry;
         SPDLOG_INFO("Queueing Item mod {} item {} from RC {}", getItemEntry.modIndex, getItemEntry.itemId, static_cast<uint32_t>(rc));
@@ -404,7 +406,8 @@ void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play) {
     f32 mtxScale = CVarGetFloat(CVAR_ENHANCEMENT("TimeSavers.SkipGetItemAnimationScale"), 10.0f);
     Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
     GetItemEntry randoItem = enItem00->itemEntry;
-    if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
+    if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) &&
+        enItem00->actor.params != ITEM00_SOH_GIVE_ITEM_ENTRY) {
         randoItem = GET_ITEM_MYSTERY;
     }
     EnItem00_CustomItemsParticles(&enItem00->actor, play, randoItem);
@@ -784,6 +787,15 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
     va_copy(args, originalArgs);
 
     switch (id) {
+        case VB_ALLOW_ENTRANCE_CS_FOR_EITHER_AGE: {
+            s32 entranceIndex = va_arg(args, s32);
+
+            // Allow Nabooru fight cutscene to play for child in rando
+            if (entranceIndex == ENTR_SPIRIT_TEMPLE_BOSS_ENTRANCE) {
+                *should = true;
+            }
+            break;
+        }
         case VB_PLAY_SLOW_CHEST_CS: {
             // We force fast chests if SkipGetItemAnimation is enabled because the camera in the CS looks pretty wonky otherwise
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_DISABLED)) {
@@ -1000,7 +1012,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                     Item_Give(gPlayState, item00->itemEntry.itemId);
                 } else if (item00->itemEntry.modIndex == MOD_RANDOMIZER) {
                     if (item00->itemEntry.getItemId == RG_ICE_TRAP) {
-                        gSaveContext.pendingIceTrapCount++;
+                        gSaveContext.ship.pendingIceTrapCount++;
                     } else {
                         Randomizer_Item_Give(gPlayState, item00->itemEntry);
                     }
@@ -1073,7 +1085,9 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_GIVE_ITEM_FROM_ANJU_AS_ADULT: {
+            EnNiwLady* enNiwLady = va_arg(args, EnNiwLady*);
             Flags_SetItemGetInf(ITEMGETINF_2C);
+            enNiwLady->actionFunc = func_80ABA778;
             *should = false;
             break;
         }
@@ -1100,14 +1114,14 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                 enJs->actor.parent = NULL;
                 enJs->actor.textId = TEXT_CARPET_SALESMAN_ARMS_DEALER;
                 enJs->actionFunc = (EnJsActionFunc)func_80A890C0;
-                enJs->actor.flags |= ACTOR_FLAG_WILL_TALK;
+                enJs->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
                 Flags_SetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN);
                 *should = true;
             }
             break;
         }
         case VB_GIVE_BOMBCHUS_FROM_CARPET_SALESMAN: {
-            *should = RAND_GET_OPTION(RSK_BOMBCHUS_IN_LOGIC) == false || INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU;
+            *should = RAND_GET_OPTION(RSK_BOMBCHU_BAG) == false || INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU;
             break;
         }
         case VB_CHECK_RANDO_PRICE_OF_MEDIGORON: {
@@ -1162,9 +1176,12 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_TRADE_POCKET_CUCCO: {
+            EnNiwLady* enNiwLady = va_arg(args, EnNiwLady*);
             Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_POCKET_CUCCO);
             // Trigger the reward now
             Flags_SetItemGetInf(ITEMGETINF_2E);
+            enNiwLady->actionFunc = func_80ABA778;
+
             *should = false;
             break;
         }
@@ -1180,7 +1197,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             Flags_SetItemGetInf(ITEMGETINF_30);
             granny->actor.textId = 0x504F;
             granny->actionFunc = (EnDsActionFunc)EnDs_TalkAfterGiveOddPotion;
-            granny->actor.flags &= ~ACTOR_FLAG_PLAYER_TALKED_TO;
+            granny->actor.flags &= ~ACTOR_FLAG_TALK;
             *should = false;
             break;
         }
@@ -1518,7 +1535,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_BE_ABLE_TO_PLAY_BOMBCHU_BOWLING: {
             // Only check for bomb bag when bombchus aren't in logic
             // and only check for bombchus when bombchus are in logic
-            *should = INV_CONTENT((RAND_GET_OPTION(RSK_BOMBCHUS_IN_LOGIC) ? ITEM_BOMBCHU : ITEM_BOMB)) != ITEM_NONE;
+            *should = INV_CONTENT((RAND_GET_OPTION(RSK_BOMBCHU_BAG) ? ITEM_BOMBCHU : ITEM_BOMB)) != ITEM_NONE;
             break;
         }
         case VB_SHOULD_CHECK_FOR_FISHING_RECORD: {
@@ -1570,7 +1587,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_TRADE_TIMER_EYEDROPS:{
             EnMk* enMk = va_arg(args, EnMk*);
             Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_LH_TRADE_FROG);
-            enMk->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+            enMk->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
             enMk->actionFunc = EnMk_Wait;
             enMk->flags |= 1;
             *should = false;
@@ -1616,10 +1633,15 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             }
             break;
         }
+        case VB_HEALTH_METER_BE_CRITICAL: {
+            if (gSaveContext.health == gSaveContext.healthCapacity) {
+                *should = false;
+            }
+            break;
+        }
         case VB_FREEZE_ON_SKULL_TOKEN:
         case VB_TRADE_TIMER_ODD_MUSHROOM:
         case VB_TRADE_TIMER_FROG:
-        case VB_ANJU_SET_OBTAINED_TRADE_ITEM:
         case VB_GIVE_ITEM_FROM_TARGET_IN_WOODS:
         case VB_GIVE_ITEM_FROM_TALONS_CHICKENS:
         case VB_GIVE_ITEM_FROM_DIVING_MINIGAME:
@@ -2378,7 +2400,7 @@ void RandomizerRegisterHooks() {
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(shufflePotsOnActorInitHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(shufflePotsOnVanillaBehaviorHook);
 
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(shuffleFreestandingOnVanillaBehaviorHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(shuffleFreestandingOnVanillaBehaviorHook);
 
         onFlagSetHook = 0;
         onSceneFlagSetHook = 0;

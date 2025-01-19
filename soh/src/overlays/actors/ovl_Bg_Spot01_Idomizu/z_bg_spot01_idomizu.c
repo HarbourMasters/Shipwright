@@ -7,7 +7,7 @@
 #include "z_bg_spot01_idomizu.h"
 #include "objects/object_spot01_objects/object_spot01_objects.h"
 
-#define FLAGS ACTOR_FLAG_DRAW_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_DRAW_CULLING_DISABLED
 
 void BgSpot01Idomizu_Init(Actor* thisx, PlayState* play);
 void BgSpot01Idomizu_Destroy(Actor* thisx, PlayState* play);

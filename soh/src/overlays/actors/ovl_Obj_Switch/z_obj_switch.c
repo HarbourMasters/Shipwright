@@ -9,7 +9,7 @@
 #include "vt.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 // type:        (this->dyna.actor.params & 7)
 // subtype:     (this->dyna.actor.params >> 4 & 7)
@@ -313,7 +313,7 @@ void ObjSwitch_Init(Actor* thisx, PlayState* play) {
     }
 
     if (type == OBJSWITCH_TYPE_CRYSTAL_TARGETABLE) {
-        this->dyna.actor.flags |= ACTOR_FLAG_TARGETABLE;
+        this->dyna.actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
         this->dyna.actor.targetMode = 4;
     }
 

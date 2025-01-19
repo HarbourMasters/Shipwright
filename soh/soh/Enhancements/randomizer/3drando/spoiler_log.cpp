@@ -206,14 +206,19 @@ static void WriteMasterQuestDungeons() {
 }
 
 // Writes the required trials to the spoiler log, if there are any.
-static void WriteRequiredTrials() {
-    auto ctx = Rando::Context::GetInstance();
-    for (const auto& trial : ctx->GetTrials()->GetTrialList()) {
-        if (trial->IsRequired()) {
-            std::string trialName = trial->GetName().GetForCurrentLanguage(MF_CLEAN);
-            jsonData["requiredTrials"].push_back(RemoveLineBreaks(trialName));
-        }
+static void WriteChosenOptions() {
+  auto ctx = Rando::Context::GetInstance();
+  for (const auto& trial : ctx->GetTrials()->GetTrialList()) {
+    if (trial->IsRequired()) {
+      std::string trialName = trial->GetName().GetForCurrentLanguage(MF_CLEAN);
+      jsonData["requiredTrials"].push_back(RemoveLineBreaks(trialName));
     }
+  }
+  if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_ADULT)){
+    jsonData["SelectedStartingAge"] = "Adult";
+  } else {
+    jsonData["SelectedStartingAge"] = "Child";
+  }
 }
 
 // Writes the intended playthrough to the spoiler log, separated into spheres.
@@ -331,7 +336,7 @@ const char* SpoilerLog_Write() {
     WriteStartingInventory();
     WriteEnabledTricks(); 
     WriteMasterQuestDungeons();
-    WriteRequiredTrials();
+    WriteChosenOptions();
     WritePlaythrough();
 
     ctx->playthroughLocations.clear();

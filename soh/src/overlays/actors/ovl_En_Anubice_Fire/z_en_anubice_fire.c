@@ -9,7 +9,7 @@
 #include "objects/object_anubice/object_anubice.h"
 #include "soh/frame_interpolation.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void EnAnubiceFire_Init(Actor* thisx, PlayState* play);
 void EnAnubiceFire_Destroy(Actor* thisx, PlayState* play);

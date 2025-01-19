@@ -6,7 +6,7 @@
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 #include "soh/OTRGlobals.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void EnGo_Init(Actor* thisx, PlayState* play);
 void EnGo_Destroy(Actor* thisx, PlayState* play);
@@ -641,8 +641,8 @@ void EnGo_Init(Actor* thisx, PlayState* play) {
     }
 
     if ((this->actor.params & 0xF0) && ((this->actor.params & 0xF0) != 0x90)) {
-        this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
-        this->actor.flags &= ~ACTOR_FLAG_DRAW_WHILE_CULLED;
+        this->actor.flags &= ~ACTOR_FLAG_UPDATE_CULLING_DISABLED;
+        this->actor.flags &= ~ACTOR_FLAG_DRAW_CULLING_DISABLED;
     }
 
     EnGo_ChangeAnim(this, ENGO_ANIM_0);

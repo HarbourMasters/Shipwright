@@ -10,7 +10,7 @@
 #include "soh/frame_interpolation.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void EnSyatekiNiw_Init(Actor* thisx, PlayState* play);
 void EnSyatekiNiw_Destroy(Actor* thisx, PlayState* play);
@@ -71,7 +71,7 @@ void EnSyatekiNiw_Init(Actor* thisx, PlayState* play) {
     EnSyatekiNiw* this = (EnSyatekiNiw*)thisx;
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 25.0f);
     SkelAnime_InitFlex(play, &this->skelAnime, &gCuccoSkel, &gCuccoAnim, this->jointTable, this->morphTable, 16);
 

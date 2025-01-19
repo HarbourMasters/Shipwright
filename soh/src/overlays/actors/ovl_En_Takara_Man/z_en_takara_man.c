@@ -10,7 +10,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_NO_LOCKON)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED | ACTOR_FLAG_LOCK_ON_DISABLED)
 
 void EnTakaraMan_Init(Actor* thisx, PlayState* play);
 void EnTakaraMan_Reset(Actor* thisx, PlayState* play);
@@ -127,11 +127,11 @@ void func_80B1778C(EnTakaraMan* this, PlayState* play) {
         absYawDiff = ABS(yawDiff);
         if (absYawDiff < 0x4300) {
             if (play->roomCtx.curRoom.num != this->originalRoomNum) {
-                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+                this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
                 this->unk_218 = 0;
             } else {
                 if (!this->unk_218) {
-                    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+                    this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
                     this->unk_218 = 1;
                 }
                 func_8002F2CC(&this->actor, play, 100.0f);
