@@ -1264,7 +1264,7 @@ void SohInputEditorWindow::DrawButtonDeviceIcons(uint8_t portIndex, std::set<N64
                 for (auto [id, mapping] : button->GetAllButtonMappings()) {
                     if (mapping->GetPhysicalDeviceType() == lusIndex) {
                         lusDeviceIndiciesWithMappings.push_back(
-                            std::pair<Ship::PhysicalDeviceType, bool>(lusIndex, mapping->PhysicalDeviceIsConnected()));
+                            std::pair<Ship::PhysicalDeviceType, bool>(lusIndex, true));
                         break;
                     }
                 }
@@ -1313,7 +1313,7 @@ void SohInputEditorWindow::DrawAnalogStickDeviceIcons(uint8_t portIndex, Ship::S
                     if (mapping->GetPhysicalDeviceType() == lusIndex) {
                         foundMapping = true;
                         lusDeviceIndiciesWithMappings.push_back(
-                            std::pair<Ship::PhysicalDeviceType, bool>(lusIndex, mapping->PhysicalDeviceIsConnected()));
+                            std::pair<Ship::PhysicalDeviceType, bool>(lusIndex, true));
                         break;
                     }
                 }
@@ -1364,7 +1364,7 @@ void SohInputEditorWindow::DrawRumbleDeviceIcons(uint8_t portIndex) {
                                           ->GetAllRumbleMappings()) {
                 if (mapping->GetPhysicalDeviceType() == lusIndex) {
                     lusDeviceIndiciesWithMappings.push_back(
-                        std::pair<Ship::PhysicalDeviceType, bool>(lusIndex, mapping->PhysicalDeviceIsConnected()));
+                        std::pair<Ship::PhysicalDeviceType, bool>(lusIndex, true));
                     break;
                 }
             }
@@ -1397,7 +1397,7 @@ void SohInputEditorWindow::DrawGyroDeviceIcons(uint8_t portIndex) {
     ImGui::PushStyleColor(ImGuiCol_Button, buttonColor);
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, buttonHoveredColor);
     ImGui::SameLine();
-    ImGui::SmallButton(mapping->PhysicalDeviceIsConnected() ? ICON_FA_GAMEPAD : ICON_FA_CHAIN_BROKEN);
+    ImGui::SmallButton(true ? ICON_FA_GAMEPAD : ICON_FA_CHAIN_BROKEN);
     ImGui::PopStyleColor();
     ImGui::PopStyleColor();
 }
@@ -1425,7 +1425,7 @@ void SohInputEditorWindow::DrawLEDDeviceIcons(uint8_t portIndex) {
                                           ->GetAllLEDMappings()) {
                 if (mapping->GetPhysicalDeviceType() == lusIndex) {
                     lusDeviceIndiciesWithMappings.push_back(
-                        std::pair<Ship::PhysicalDeviceType, bool>(lusIndex, mapping->PhysicalDeviceIsConnected()));
+                        std::pair<Ship::PhysicalDeviceType, bool>(lusIndex, true));
                     break;
                 }
             }

@@ -1841,7 +1841,7 @@ extern "C" int Controller_ShouldRumble(size_t slot) {
                                   ->GetControllerByPort(static_cast<uint8_t>(slot))
                                   ->GetRumble()
                                   ->GetAllRumbleMappings()) {
-        if (mapping->PhysicalDeviceIsConnected()) {
+        if (true) {
             return 1;
         }
     }
