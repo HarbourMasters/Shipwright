@@ -946,7 +946,13 @@ extern "C" void DrawGanon(PlayState* play) {
 }
 
 extern "C" void Randomizer_DrawBossSoul(PlayState* play, GetItemEntry* getItemEntry) {
-    s16 slot = getItemEntry->getItemId - RG_GOHMA_SOUL;
+    s16 slot;
+    if (getItemEntry->getItemId != RG_ICE_TRAP) {
+        slot = getItemEntry->getItemId - RG_GOHMA_SOUL;
+    } else {
+        slot = getItemEntry->drawItemId - RG_GOHMA_SOUL;
+    }
+    
     s16 flameColors[9][3] = {
         { 0, 255, 0 },     // Gohma
         { 255, 0, 100 },   // King Dodongo
