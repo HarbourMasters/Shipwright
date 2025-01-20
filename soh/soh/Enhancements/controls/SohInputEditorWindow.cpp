@@ -1424,7 +1424,7 @@ void SohInputEditorWindow::DrawDpadControlPanel() {
     Ship::GuiWindow::EndGroupPanel(0);
 }
 
-void SohInputEditorWindow::DrawDeviceNameButtons() {
+void SohInputEditorWindow::DrawDeviceToggles(uint8_t portIndex) {
     ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
 
     auto keyboardButtonColor = ImGui::GetStyleColorVec4(ImGuiCol_Button);
@@ -1445,18 +1445,32 @@ void SohInputEditorWindow::DrawDeviceNameButtons() {
     ImGui::PopStyleColor();
     ImGui::PopStyleColor();
 
-    for (const auto& name : Ship::Context::GetInstance()->GetControlDeck()->GetConnectedPhysicalDeviceManager()->GetConnectedSDLGamepadNames()) {
+    ImGui::PopItemFlag();
+
+    auto connectedDeviceManager = Ship::Context::GetInstance()->GetControlDeck()->GetConnectedPhysicalDeviceManager();
+    for (const auto& [instanceId, name] : connectedDeviceManager->GetConnectedSDLGamepadNames()) {
+        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
         auto buttonColor = ImGui::GetStyleColorVec4(ImGuiCol_Button);
         auto buttonHoveredColor = ImGui::GetStyleColorVec4(ImGuiCol_ButtonHovered);
         GetButtonColorsForDeviceType(Ship::PhysicalDeviceType::SDLGamepad, buttonColor, buttonHoveredColor);
         ImGui::PushStyleColor(ImGuiCol_Button, buttonColor);
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, buttonHoveredColor);
+        auto notIgnored = !connectedDeviceManager->PortIsIgnoringInstanceId(portIndex, instanceId);
+        ImGui::PopItemFlag();
+        if(ImGui::Checkbox(StringHelper::Sprintf("###instanceId_%d", instanceId).c_str(), &notIgnored)) {
+            if (notIgnored) {
+                connectedDeviceManager->UnignoreInstanceIdForPort(portIndex, instanceId);
+            } else {
+                connectedDeviceManager->IgnoreInstanceIdForPort(portIndex, instanceId);
+            }
+        };
+        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+        ImGui::SameLine();
         ImGui::Button(StringHelper::Sprintf("%s %s (SDL)", ICON_FA_GAMEPAD, name.c_str()).c_str());
         ImGui::PopStyleColor();
         ImGui::PopStyleColor();
+        ImGui::PopItemFlag();
     }
-
-    ImGui::PopItemFlag();
 }
 
 void SohInputEditorWindow::DrawLinkTab() {
@@ -1464,7 +1478,7 @@ void SohInputEditorWindow::DrawLinkTab() {
     if (ImGui::BeginTabItem(StringHelper::Sprintf("Link (P1)###port%d", portIndex).c_str())) {
         DrawClearAllButton(portIndex);
         DrawSetDefaultsButton(portIndex);
-        DrawDeviceNameButtons();
+        DrawDeviceToggles(portIndex);
 
         UpdateBitmaskToMappingIds(portIndex);
         UpdateStickDirectionToMappingIds(portIndex);
@@ -1593,7 +1607,7 @@ void SohInputEditorWindow::DrawIvanTab() {
     if (ImGui::BeginTabItem(StringHelper::Sprintf("Ivan (P2)###port%d", portIndex).c_str())) {
         DrawClearAllButton(portIndex);
         DrawSetDefaultsButton(portIndex);
-        DrawDeviceNameButtons();
+        DrawDeviceToggles(portIndex);
 
         UpdateBitmaskToMappingIds(portIndex);
         UpdateStickDirectionToMappingIds(portIndex);
@@ -1640,7 +1654,7 @@ void SohInputEditorWindow::DrawDebugPortTab(uint8_t portIndex, std::string custo
                                 : customName.c_str())) {
         DrawClearAllButton(portIndex);
         DrawSetDefaultsButton(portIndex);
-        DrawDeviceNameButtons();
+        DrawDeviceToggles(portIndex);
 
         UpdateBitmaskToMappingIds(portIndex);
         UpdateStickDirectionToMappingIds(portIndex);
