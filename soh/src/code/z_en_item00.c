@@ -1210,6 +1210,9 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
                 case ITEM_LETTER_RUTO:
                     colorIndex = PARTICLE_WHITE;
                     break;
+                case ITEM_BOMBCHU:
+                    colorIndex = PARTICLE_DARK_BLUE;
+                    break;
                 default:
                     return;
             }
@@ -1253,9 +1256,6 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
                     break;
                 case RG_DOUBLE_DEFENSE:
                     colorIndex = PARTICLE_WHITE;
-                    break;
-                case RG_PROGRESSIVE_BOMBCHUS:
-                    colorIndex = PARTICLE_DARK_BLUE;
                     break;
                 case RG_BOTTLE_WITH_FAIRY:
                     colorIndex = PARTICLE_PINK;
