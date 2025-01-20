@@ -9,6 +9,7 @@
 #include "hints.hpp"
 #include "pool_functions.hpp"
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include <nlohmann/json.hpp>
 
 #include <cstdio>
@@ -91,8 +92,8 @@ static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) 
   int16_t destinationIndex = -1;
   int16_t replacementIndex = entrance->GetReplacement()->GetIndex();
   int16_t replacementDestinationIndex = -1;
-  std::string name = entrance->GetName();
-  std::string text = entrance->GetConnectedRegion()->regionName + " from " + entrance->GetReplacement()->GetParentRegion()->regionName;
+  std::string name = GetEntranceData(originalIndex)->source;
+  std::string text = GetEntranceData(replacementIndex)->destination;
 
   // Track the reverse destination, useful for savewarp handling
   if (entrance->GetReverse() != nullptr) {
