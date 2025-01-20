@@ -77,7 +77,7 @@ std::unordered_map<RandomizerGet, std::string> ocarinaButtonNames = {
     { RG_OCARINA_C_RIGHT_BUTTON,    "C-RHT" },
 };
 
-std::map<RandomizerGet, ImVec4> bossSoulMapping = {
+std::map<RandomizerGet, ImVec4> bossSoulColorMapping = {
     { RG_GOHMA_SOUL,          { 0.00f, 1.00f, 0.00f, 1.0f } },
     { RG_KING_DODONGO_SOUL,   { 1.00f, 0.00f, 0.39f, 1.0f } },
     { RG_BARINADE_SOUL,       { 0.20f, 1.00f, 1.00f, 1.0f } },
@@ -339,7 +339,7 @@ ImVec4 plandomizerGetItemColor(Rando::Item randoItem) {
     }
 
     if (randoItem.GetRandomizerGet() >= RG_GOHMA_SOUL && randoItem.GetRandomizerGet() <= RG_GANON_SOUL) {
-        itemColor = bossSoulMapping.at(randoItem.GetRandomizerGet());
+        itemColor = bossSoulColorMapping.at(randoItem.GetRandomizerGet());
     }
     
     return itemColor;
