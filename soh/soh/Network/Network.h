@@ -5,6 +5,7 @@
 
 #include <thread>
 #include <SDL2/SDL_net.h>
+#include <libwebsockets.h>
 #include <nlohmann/json.hpp>
 
 class Network {
