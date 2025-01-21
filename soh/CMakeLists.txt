@@ -705,6 +705,7 @@ else()
 		"ZAPDLib;"
 		SDL2::SDL2
         "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:SDL2_net::SDL2_net>"
+        "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:websockets>"
 		${CMAKE_DL_LIBS}
 		Threads::Threads
 	)
