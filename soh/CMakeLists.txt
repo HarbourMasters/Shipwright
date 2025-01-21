@@ -655,6 +655,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"SDL2::SDL2;"
 			"SDL2::SDL2main;"
             "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:SDL2_net::SDL2_net-static>"
+            "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:websockets>"
 			"glfw;"
 			"winmm;"
 			"imm32;"
