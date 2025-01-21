@@ -11,6 +11,10 @@ void Network::Enable(const char* host, uint16_t port) {
         return;
     }
 
+    lws_context_creation_info info;
+    lws_context* context;
+    context = lws_create_context(&info);
+
     if (SDLNet_ResolveHost(&networkAddress, host, port) == -1) {
         SPDLOG_ERROR("[Network] SDLNet_ResolveHost: {}", SDLNet_GetError());
     }
