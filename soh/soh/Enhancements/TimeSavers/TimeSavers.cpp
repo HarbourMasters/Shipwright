@@ -9,7 +9,6 @@ void TimeSavers_Register() {
             SkipToGivingZeldasLetter_Register();
             SkipZeldaFleeingCastle_Register();
         SkipIntro_Register();
-        SkipLogoTitle_Register();
     // SkipMiscInteractions
         MoveJabuJabuElevator_Register();
         MoveMidoInKokiriForest_Register();
