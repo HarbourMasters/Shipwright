@@ -315,6 +315,13 @@ if (BUILD_REMOTE_CONTROL)
     else()
         set(SDL2-NET-INCLUDE ${SDL_NET_INCLUDE_DIRS})
     endif()
+
+    find_package(libwebsockets)
+    if(NOT libwebsockets_FOUND)
+        message(STATUS "libwebsockets not found. Disabling BUILD_REMOTE_CONTROL.")
+        set(BUILD_REMOTE_CONTROL 0)
+    endif()
+
 endif()
 
 target_include_directories(${PROJECT_NAME} PRIVATE assets
