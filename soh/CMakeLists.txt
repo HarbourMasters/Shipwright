@@ -306,6 +306,7 @@ endif()
 find_package(SDL2)
 set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
 
+set(BUILD_REMOTE_CONTROL 1)
 if (BUILD_REMOTE_CONTROL)
     find_package(SDL2_net)
 
@@ -319,7 +320,7 @@ if (BUILD_REMOTE_CONTROL)
     find_package(libwebsockets)
     if(NOT libwebsockets_FOUND)
         message(STATUS "libwebsockets not found. Disabling BUILD_REMOTE_CONTROL.")
-        set(BUILD_REMOTE_CONTROL 0)
+        # set(BUILD_REMOTE_CONTROL 0)
     endif()
 
 endif()
