@@ -14,6 +14,7 @@
 #include <soh/GameVersions.h>
 #include <soh/SaveManager.h>
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include <string.h>
 
 #include "time.h"
@@ -274,6 +275,8 @@ void Title_Main(GameState* thisx) {
         else
             SET_NEXT_GAMESTATE(&this->state, Opening_Init, OpeningContext);
     }
+
+    GameInteractor_ExecuteOnZTitleUpdate(this);
 
     CLOSE_DISPS(this->state.gfxCtx);
 }
