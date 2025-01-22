@@ -9,6 +9,7 @@ extern "C" {
 #include "z64.h"
 #include "functions.h"
 #include "variables.h"
+#include "soh/Enhancements/enhancementTypes.h"
 }
 
 extern "C" {
@@ -22,7 +23,10 @@ static const ALIGN_ASSET(2) char gShipLogoDL[] = dgShipLogoDL;
 #define dnintendo_rogo_static_Tex_LUS_000000 "__OTR__textures/nintendo_rogo_static/nintendo_rogo_static_Tex_LUS_000000"
 static const ALIGN_ASSET(2) char nintendo_rogo_static_Tex_LUS_000000[] = dnintendo_rogo_static_Tex_LUS_000000;
 
-extern "C" void CustomLogoTitle_Draw(TitleContext* titleContext) {
+#define LOGO_TO_DRAW_LUS 0
+#define LOGO_TO_DRAW_N64 1
+
+extern "C" void CustomLogoTitle_Draw(TitleContext* titleContext, uint8_t logoToDraw) {
     static s16 sTitleRotY = 0;
     static Lights1 sTitleLights = gdSPDefLights1(0x64, 0x64, 0x64, 0xFF, 0xFF, 0xFF, 0x45, 0x45, 0x45);
 
@@ -55,11 +59,13 @@ extern "C" void CustomLogoTitle_Draw(TitleContext* titleContext) {
     Matrix_RotateZYX(0, sTitleRotY, 0, MTXMODE_APPLY);
 
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(titleContext->state.gfxCtx), G_MTX_LOAD);
-    if (CVarGetInteger(CVAR_ENHANCEMENT("AuthenticLogo"), 0)) {
-        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gNintendo64LogoDL);
-    } else {
+
+    if (logoToDraw == LOGO_TO_DRAW_LUS) {
         gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gShipLogoDL);
+    } else {
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gNintendo64LogoDL);
     }
+
     Gfx_SetupDL_39Opa(titleContext->state.gfxCtx);
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetCycleType(POLY_OPA_DISP++, G_CYC_2CYCLE);
@@ -80,7 +86,7 @@ extern "C" void CustomLogoTitle_Draw(TitleContext* titleContext) {
 
     for (idx = 0, y = 94; idx < 16; idx++, y += 2)
     {
-        gDPLoadMultiTile(POLY_OPA_DISP++, CVarGetInteger(CVAR_ENHANCEMENT("AuthenticLogo"), 0) ? nintendo_rogo_static_Tex_000000 : nintendo_rogo_static_Tex_LUS_000000, 0, G_TX_RENDERTILE, G_IM_FMT_I, G_IM_SIZ_8b, 192, 32,
+        gDPLoadMultiTile(POLY_OPA_DISP++, (logoToDraw == LOGO_TO_DRAW_N64) ? nintendo_rogo_static_Tex_000000 : nintendo_rogo_static_Tex_LUS_000000, 0, G_TX_RENDERTILE, G_IM_FMT_I, G_IM_SIZ_8b, 192, 32,
                          0, idx * 2, 192 - 1, (idx + 1) * 2 - 1, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                          G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         
@@ -115,24 +121,27 @@ extern "C" void CustomLogoTitle_Draw(TitleContext* titleContext) {
 }
 
 extern "C" void CustomLogoTitle_Main(TitleContext* titleContext) {
+    static uint8_t logosDrawn = 0;
+    static uint8_t logoToDraw = LOGO_TO_DRAW_LUS;
+    if (CVarGetInteger(CVAR_ENHANCEMENT("BootSequence"), BOOTSEQUENCE_DEFAULT) == BOOTSEQUENCE_AUTHENTIC) {
+        logoToDraw = LOGO_TO_DRAW_N64;
+    }
+
     OPEN_DISPS(titleContext->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0, (uintptr_t)NULL);
     gSPSegment(POLY_OPA_DISP++, 1, (uintptr_t)titleContext->staticSegment);
     Gfx_SetupFrame(titleContext->state.gfxCtx, 0, 0, 0);
     Title_Calc(titleContext);
-    CustomLogoTitle_Draw(titleContext);
+    CustomLogoTitle_Draw(titleContext, logoToDraw);
 
-    if (titleContext->exit || CVarGetInteger(CVAR_DEVELOPER_TOOLS("SkipLogoTitle"), 0)) {
+    if (titleContext->exit) {
         gSaveContext.seqId = (u8)NA_BGM_DISABLED;
         gSaveContext.natureAmbienceId = 0xFF;
         gSaveContext.gameMode = 1;
         titleContext->state.running = false;
 
-        if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("SkipLogoTitle"), 0))
-            SET_NEXT_GAMESTATE(&titleContext->state, FileChoose_Init, FileChooseContext);
-        else
-            SET_NEXT_GAMESTATE(&titleContext->state, Opening_Init, OpeningContext);
+        SET_NEXT_GAMESTATE(&titleContext->state, Opening_Init, OpeningContext);
     }
 
     GameInteractor_ExecuteOnZTitleUpdate(titleContext);
@@ -140,8 +149,17 @@ extern "C" void CustomLogoTitle_Main(TitleContext* titleContext) {
     CLOSE_DISPS(titleContext->state.gfxCtx);
 }
 
+// // // //
+// Always
+// 
+
+void OnZTitleInitReplaceTitleMainWithCustom(void* gameState) {
+    TitleContext* titleContext = (TitleContext*)gameState;
+    titleContext->state.main = (GameStateFunc)CustomLogoTitle_Main;
+}
+
 // Allows pressing A to skip the boot logo and go to the next state (opening or file select)
-void OnZTitleUpdateSkipLogoTitle(void* gameState) {
+void OnZTitleUpdatePressButtonToSkip(void* gameState) {
     TitleContext* titleContext = (TitleContext*)gameState;
 
     if (CHECK_BTN_ANY(titleContext->state.input->press.button, BTN_A | BTN_B | BTN_START)) {
@@ -151,14 +169,39 @@ void OnZTitleUpdateSkipLogoTitle(void* gameState) {
     }
 }
 
-void OnZTitleInitReplaceTitleMainWithCustom(void* gameState) {
-    TitleContext* titleContext = (TitleContext*)gameState;
-    titleContext->state.main = (GameStateFunc)CustomLogoTitle_Main;
-}
-
 void RegisterCustomLogoTitle() {
     COND_HOOK(OnZTitleInit, true, OnZTitleInitReplaceTitleMainWithCustom);
-    COND_HOOK(OnZTitleUpdate, true, OnZTitleUpdateSkipLogoTitle);
+    COND_HOOK(OnZTitleUpdate, true, OnZTitleUpdatePressButtonToSkip);
 }
 
-static RegisterShipInitFunc initFunc(RegisterCustomLogoTitle);
+static RegisterShipInitFunc initFuncAlways(RegisterCustomLogoTitle);
+
+// // // // // //
+// Bootsequence
+// 
+
+void OnZTitleUpdateSkipToFileSelect(void* gameState) {
+    TitleContext* titleContext = (TitleContext*)gameState;
+
+    gSaveContext.seqId = (u8)NA_BGM_DISABLED;
+    gSaveContext.natureAmbienceId = 0xFF;
+    gSaveContext.gameMode = 1;
+    titleContext->state.running = false;
+
+    SET_NEXT_GAMESTATE(&titleContext->state, FileChoose_Init, FileChooseContext);
+}
+
+#define CVAR_BOOTSEQUENCE_NAME CVAR_ENHANCEMENT("BootSequence")
+#define CVAR_BOOTSEQUENCE_DEFAULT BOOTSEQUENCE_DEFAULT
+#define CVAR_BOOTSEQUENCE_VALUE CVarGetInteger(CVAR_BOOTSEQUENCE_NAME, CVAR_BOOTSEQUENCE_DEFAULT)
+
+void RegisterCustomLogoTitleBootsequence() {
+    COND_HOOK(OnZTitleUpdate, CVAR_BOOTSEQUENCE_VALUE == BOOTSEQUENCE_FILESELECT, OnZTitleUpdateSkipToFileSelect);
+}
+
+static RegisterShipInitFunc initFuncBootsequence(RegisterCustomLogoTitleBootsequence, { CVAR_BOOTSEQUENCE_NAME });
+
+// // // // // //
+// Let it Snow
+// 
+
