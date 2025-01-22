@@ -53,14 +53,6 @@ typedef enum {
 } EnemyRandomizerMode;
 
 typedef enum {
-    FASTFILE_1,
-    FASTFILE_2,
-    FASTFILE_3,
-    FASTFILE_MAP_SELECT,
-    FASTFILE_FILE_SELECT
-} FastFileSelectTarget;
-
-typedef enum {
     AUTOSAVE_OFF,
     AUTOSAVE_LOCATION_AND_MAJOR_ITEMS,
     AUTOSAVE_LOCATION_AND_ALL_ITEMS,
