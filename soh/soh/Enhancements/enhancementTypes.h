@@ -70,6 +70,12 @@ typedef enum {
 } AutosaveType;
 
 typedef enum {
+    BOOTSEQUENCE_DEFAULT,
+    BOOTSEQUENCE_AUTHENTIC,
+    BOOTSEQUENCE_FILESELECT
+} BootSequenceType;
+
+typedef enum {
     ZFIGHT_FIX_DISABLED,
     ZFIGHT_FIX_CONSISTENT_VANISH,
     ZFIGHT_FIX_NO_VANISH,

@@ -104,6 +104,7 @@ static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large
     static const char* subSubPowers[7] = { allPowers[0], allPowers[1], allPowers[2], allPowers[3], allPowers[4], allPowers[5], allPowers[6] };
     static const char* zFightingOptions[3] = { "Disabled", "Consistent Vanish", "No Vanish" };
     static const char* autosaveLabels[6] = { "Off", "New Location + Major Item", "New Location + Any Item", "New Location", "Major Item", "Any Item" };
+    static const char* bootSequenceLabels[3] = { "Default", "Authentic", "File Select" };
     static const char* DebugSaveFileModes[3] = { "Off", "Vanilla", "Maxed" };
     static const char* FastFileSelect[5] = { "File N.1", "File N.2", "File N.3", "Zelda Map Select (require OoT Debug Mode)", "File select" };
     static const char* DekuStickCheat[3] = { "Normal", "Unbreakable", "Unbreakable + Always on Fire" };
@@ -1706,6 +1707,16 @@ void DrawEnhancementsMenu() {
         UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("Autosave"), autosaveLabels, AUTOSAVE_OFF);
         UIWidgets::Tooltip("Automatically save the game when changing locations and/or obtaining items\n"
             "Major items exclude rupees and health/magic/ammo refills (but include bombchus unless bombchu drops are enabled)");
+
+        UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
+
+        UIWidgets::PaddedText("Boot Sequence", false, true);
+        UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("BootSequence"), bootSequenceLabels, BOOTSEQUENCE_DEFAULT);
+        UIWidgets::Tooltip("Configure what happens when starting or resetting the game\n\n"
+                           "Default: LUS logo -> N64 logo\n"
+                           "Authentic: N64 logo only\n"
+                           "File Select: Skip to file select menu"
+        );
 
         UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
 

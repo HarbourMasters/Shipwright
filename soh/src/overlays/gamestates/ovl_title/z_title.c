@@ -142,8 +142,6 @@ void Title_Main(GameState* thisx) {
         SET_NEXT_GAMESTATE(&this->state, Opening_Init, OpeningContext);
     }
 
-    GameInteractor_ExecuteOnZTitleUpdate(this);
-
     CLOSE_DISPS(this->state.gfxCtx);
 }
 
@@ -171,4 +169,6 @@ void Title_Init(GameState* thisx) {
     this->coverAlpha = 255;
     this->addAlpha = -3;
     this->visibleDuration = 0x3C;
+
+    GameInteractor_ExecuteOnZTitleInit(this);
 }
