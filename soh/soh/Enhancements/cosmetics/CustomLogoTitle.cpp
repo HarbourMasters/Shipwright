@@ -121,7 +121,6 @@ extern "C" void CustomLogoTitle_Draw(TitleContext* titleContext, uint8_t logoToD
 }
 
 extern "C" void CustomLogoTitle_Main(TitleContext* titleContext) {
-    static uint8_t logosDrawn = 0;
     static uint8_t logoToDraw = LOGO_TO_DRAW_LUS;
     if (CVarGetInteger(CVAR_ENHANCEMENT("BootSequence"), BOOTSEQUENCE_DEFAULT) == BOOTSEQUENCE_AUTHENTIC) {
         logoToDraw = LOGO_TO_DRAW_N64;
@@ -141,7 +140,25 @@ extern "C" void CustomLogoTitle_Main(TitleContext* titleContext) {
         gSaveContext.gameMode = 1;
         titleContext->state.running = false;
 
-        SET_NEXT_GAMESTATE(&titleContext->state, Opening_Init, OpeningContext);
+        // default boot sequence is lus -> n64 -> opening
+        if (CVarGetInteger(CVAR_ENHANCEMENT("BootSequence"), BOOTSEQUENCE_DEFAULT) == BOOTSEQUENCE_DEFAULT) {
+            // if we're drawing the n64 logo in the default boot sequence
+            if (logoToDraw == LOGO_TO_DRAW_N64) {
+                // go to the opening next
+                SET_NEXT_GAMESTATE(&titleContext->state, Opening_Init, OpeningContext);
+                
+                // make sure to draw the lus logo on reset
+                logoToDraw = LOGO_TO_DRAW_LUS;
+            } else { // we're drawing the lus logo
+                // go to the title again
+                SET_NEXT_GAMESTATE(&titleContext->state, Title_Init, TitleContext);
+
+                // draw the n64 logo this time
+                logoToDraw = LOGO_TO_DRAW_N64;
+            }
+        } else { // we're doing the authentic boot sequence, just n64 -> opening 
+            SET_NEXT_GAMESTATE(&titleContext->state, Opening_Init, OpeningContext);
+        }
     }
 
     GameInteractor_ExecuteOnZTitleUpdate(titleContext);
