@@ -1361,7 +1361,18 @@ void StaticData::HintTable_Init_Item() {
                                                            // /*spanish*/un destructor de cerraduras final
                                                           CustomMessage("a final lockpick", /*german*/"ein finaler Dietrich", /*french*/"un crochet à porte final")});
                                                            // /*spanish*/una apertura portentosa final
-
+    hintTextTable[RHT_OVERWORLD_KEY] = HintText(CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld"),
+                                                // /*spanish*/una llave del mundo exterior
+                                                {
+                                                CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
+                                                 // /*spanish*/una llave
+                                                }, {
+                                                CustomMessage("a key to the world", /*german*/"ein Schlüssel zur Welt", /*french*/"une clé du monde"),
+                                                 // /*spanish*/una llave al mundo
+                                                CustomMessage("a key to the kingdom", /*german*/"ein Schlüssel zum Königreich", /*french*/"une clé du royaume"),
+                                                 // /*spanish*/una llave al reino
+                                                CustomMessage("a key to the universe", /*german*/"ein Schlüssel zum Universum", /*french*/"une clé de l'univers")});
+                                                 // /*spanish*/una llave al universo
     hintTextTable[RHT_FOREST_TEMPLE_KEY_RING] = HintText(CustomMessage("a Forest Temple Key Ring", /*german*/"ein Schlüsselbund des Waldtempels", /*french*/"un trousseau de clés du Temple de la Forêt"),
                                                          // /*spanish*/un llavero del Templo del Bosque
                                                          {

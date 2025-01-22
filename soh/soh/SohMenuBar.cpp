@@ -784,7 +784,9 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
                 UIWidgets::PaddedEnhancementCheckbox("Exit Market at Night", CVAR_ENHANCEMENT("MarketSneak"), true, false);
                 UIWidgets::Tooltip("Allows exiting Hyrule Castle Market Town to Hyrule Field at night by speaking to the guard next to the gate.");
-                UIWidgets::PaddedEnhancementCheckbox("Shops and Games Always Open", CVAR_ENHANCEMENT("OpenAllHours"), true, false);
+                bool randoLockedOverworldDoors = IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOCK_OVERWORLD_DOORS);
+                UIWidgets::PaddedEnhancementCheckbox("Shops and Games Always Open", CVAR_ENHANCEMENT("OpenAllHours"), true, false, randoLockedOverworldDoors, 
+                    "This is not compatible with the Locked Overworld Doors Randomizer option", UIWidgets::CheckboxGraphics::Checkmark);
                 UIWidgets::Tooltip("Shops and minigames are open both day and night. Requires scene reload to take effect.");
                 UIWidgets::PaddedEnhancementCheckbox("Link as default file name", CVAR_ENHANCEMENT("LinkDefaultName"), true, false);
                 UIWidgets::Tooltip("Allows you to have \"Link\" as a premade file name");

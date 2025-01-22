@@ -1935,6 +1935,20 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
     hintTextTable[RHT_DMC_UPPER_GROTTO_GOSSIP_STONE_FAIRY_BIG] = HintText(CustomMessage("They say that #playing a stormy tune for an odd stone within the side of a crater# reveals #[[1]]#.",
                                             /*german*/ "!!!",
                                             /*french*/ "Selon moi, jouer une mélodie orageuse pour une pierre étrange dans le côté d'un cratère révèle [[1]].", {QM_RED, QM_GREEN}));
+    
+    hintTextTable[RHT_LH_ISLAND_SUN_FAIRY] = HintText(CustomMessage("They say that #summoning the sun on the lake's island# calls #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_HF_POND_STORMS_FAIRY] = HintText(CustomMessage("They say that #calling rain to the field's pond# summons #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_HF_FENCE_GROTTO_STORMS_FAIRY] = HintText(CustomMessage("They say that #making it rain in a scrub's cave# wakes #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_DMT_FLAG_SUN_FAIRY] = HintText(CustomMessage("They say that #changing the time in front of the trail's flag# reveals #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_DMT_COW_GROTTO_STORMS_FAIRY] = HintText(CustomMessage("They say that #calling a storm for a lonely cow# reveals #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_LW_SHORTCUT_STORMS_FAIRY] = HintText(CustomMessage("They say that #making it rain in the Lost Woods# reveals #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_GF_KITCHEN_SUN_FAIRY] = HintText(CustomMessage("They say that #calling the sun in a guarded kitchen# exposes #[[1]]#.", {QM_RED, QM_GREEN}));
 
 }
 }

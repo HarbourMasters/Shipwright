@@ -1276,6 +1276,33 @@ void GenerateItemPool() {
     }
   }
 
+  if (ctx->GetOption(RSK_LOCK_OVERWORLD_DOORS)) {
+    AddItemToPool(ItemPool, RG_GUARD_HOUSE_KEY);
+    AddItemToPool(ItemPool, RG_MARKET_BAZAAR_KEY);
+    AddItemToPool(ItemPool, RG_MARKET_POTION_SHOP_KEY);
+    AddItemToPool(ItemPool, RG_MASK_SHOP_KEY);
+    AddItemToPool(ItemPool, RG_MARKET_SHOOTING_GALLERY_KEY);
+    AddItemToPool(ItemPool, RG_BOMBCHU_BOWLING_KEY);
+    AddItemToPool(ItemPool, RG_TREASURE_CHEST_GAME_BUILDING_KEY);
+    AddItemToPool(ItemPool, RG_BOMBCHU_SHOP_KEY);
+    AddItemToPool(ItemPool, RG_RICHARDS_HOUSE_KEY);
+    AddItemToPool(ItemPool, RG_ALLEY_HOUSE_KEY);
+    AddItemToPool(ItemPool, RG_KAK_BAZAAR_KEY);
+    AddItemToPool(ItemPool, RG_KAK_POTION_SHOP_KEY);
+    AddItemToPool(ItemPool, RG_BOSS_HOUSE_KEY);
+    AddItemToPool(ItemPool, RG_GRANNYS_POTION_SHOP_KEY);
+    AddItemToPool(ItemPool, RG_SKULLTULA_HOUSE_KEY);
+    AddItemToPool(ItemPool, RG_IMPAS_HOUSE_KEY);
+    AddItemToPool(ItemPool, RG_WINDMILL_KEY);
+    AddItemToPool(ItemPool, RG_KAK_SHOOTING_GALLERY_KEY);
+    AddItemToPool(ItemPool, RG_DAMPES_HUT_KEY);
+    AddItemToPool(ItemPool, RG_TALONS_HOUSE_KEY);
+    AddItemToPool(ItemPool, RG_STABLES_KEY);
+    AddItemToPool(ItemPool, RG_BACK_TOWER_KEY);
+    AddItemToPool(ItemPool, RG_HYLIA_LAB_KEY);
+    AddItemToPool(ItemPool, RG_FISHING_HOLE_KEY);
+  }
+
   //Shopsanity
   if (
     ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF) ||

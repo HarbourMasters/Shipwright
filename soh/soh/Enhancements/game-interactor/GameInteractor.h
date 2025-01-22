@@ -305,6 +305,13 @@ typedef enum {
     VB_FROGS_GO_TO_IDLE,
     // Vanilla condition: var >= gSaveContext.health) && (gSaveContext.health > 0
     VB_HEALTH_METER_BE_CRITICAL,
+    VB_CONSUME_SMALL_KEY,
+    // Vanilla condition: gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] <= 0
+    VB_NOT_HAVE_SMALL_KEY,
+    // Vanilla condition: !Flags_GetSwitch(play, this->actor.params & 0x3F)
+    VB_DOOR_BE_LOCKED,
+    // Vanilla condition: ((doorActor->params >> 7) & 7) == 3
+    VB_DOOR_PLAY_SCENE_TRANSITION,
 
     /*** Play Cutscenes ***/
 

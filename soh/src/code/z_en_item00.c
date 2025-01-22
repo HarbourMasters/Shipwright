@@ -1197,24 +1197,6 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
     switch (giEntry.drawModIndex) {
         case MOD_NONE:
             switch (giEntry.drawItemId) {
-                case ITEM_SONG_MINUET:
-                    colorIndex = PARTICLE_BRIGHT_GREEN;
-                    break;
-                case ITEM_SONG_BOLERO:
-                    colorIndex = PARTICLE_RED;
-                    break;
-                case ITEM_SONG_SERENADE:
-                    colorIndex = PARTICLE_CYAN;
-                    break;
-                case ITEM_SONG_REQUIEM:
-                    colorIndex = PARTICLE_ORANGE;
-                    break;
-                case ITEM_SONG_NOCTURNE:
-                    colorIndex = PARTICLE_VIOLET;
-                    break;
-                case ITEM_SONG_PRELUDE:
-                    colorIndex = PARTICLE_YELLOW;
-                    break;
                 case ITEM_STICK_UPGRADE_20:
                 case ITEM_STICK_UPGRADE_30:
                     colorIndex = PARTICLE_GREEN;
@@ -1234,6 +1216,7 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
             break;
         case MOD_RANDOMIZER:
             switch (giEntry.drawItemId) {
+                case RG_MINUET_OF_FOREST:
                 case RG_MAGIC_SINGLE:
                 case RG_MAGIC_DOUBLE:
                 case RG_MAGIC_BEAN_PACK:
@@ -1242,19 +1225,30 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
                 case RG_GREG_RUPEE:
                     colorIndex = PARTICLE_BRIGHT_GREEN;
                     break;
+                case RG_BOLERO_OF_FIRE:
+                    colorIndex = PARTICLE_RED;
+                    break;
+                case RG_SERENADE_OF_WATER:
                 case RG_BOTTLE_WITH_FISH:
                     colorIndex = PARTICLE_CYAN;
                     break;
+                case RG_REQUIEM_OF_SPIRIT:
+                    colorIndex = PARTICLE_ORANGE;
+                    break;
+                case RG_NOCTURNE_OF_SHADOW:
                 case RG_BOTTLE_WITH_POE:
                     colorIndex = PARTICLE_VIOLET;
                     break;
+                case RG_PRELUDE_OF_LIGHT:
                 case RG_BOTTLE_WITH_BIG_POE:
                     colorIndex = PARTICLE_YELLOW;
                     break;
                 case RG_DEKU_STICK_BAG:
+                case RG_STICK_UPGRADE_INF:
                     colorIndex = PARTICLE_GREEN;
                     break;
                 case RG_DEKU_NUT_BAG:
+                case RG_NUT_UPGRADE_INF:
                     colorIndex = PARTICLE_GOLD;
                     break;
                 case RG_DOUBLE_DEFENSE:

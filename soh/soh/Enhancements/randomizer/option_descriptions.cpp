@@ -41,6 +41,7 @@ void Settings::CreateOptionDescriptions() {
                                                   "\n"
                                                   "Open - Sleeping Waterfall is always open. "
                                                   "Link may always enter Zora's Domain.";
+    mOptionDescriptions[RSK_LOCK_OVERWORLD_DOORS] = "Add locks to all wooden overworld doors, requiring specific small keys to open them";
     mOptionDescriptions[RSK_STARTING_AGE] =
         "Choose which age Link will start as.\n\n"
         "Starting as adult means you start with the Master Sword in your inventory.\n"
@@ -697,9 +698,6 @@ void Settings::CreateOptionDescriptions() {
                                                        "location is reachable. When disabled, only "
                                                        "required items and locations to beat the game "
                                                        "will be guaranteed reachable.";
-    mOptionDescriptions[RSK_ENABLE_GLITCH_CUTSCENES] =
-        "The cutscenes of the Poes in Forest Temple and Darunia in Fire Temple will not be skipped. "
-        "These cutscenes are only useful for glitched gameplay and can be safely skipped otherwise.";
     mOptionDescriptions[RSK_SHUFFLE_BOSS_SOULS] = "Shuffles 8 boss souls (one for each blue warp dungeon). A boss will not appear until you collect its respective soul."
                 "\n\"On + Ganon\" will also hide Ganon and Ganondorf behind a boss soul.";
 }

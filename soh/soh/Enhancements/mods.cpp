@@ -1133,7 +1133,7 @@ void RegisterOpenAllHours() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
         Actor* actor = static_cast<Actor*>(refActor);
 
-        if (CVarGetInteger(CVAR_ENHANCEMENT("OpenAllHours"), 0) && (actor->id == ACTOR_EN_DOOR)) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("OpenAllHours"), 0) && (actor->id == ACTOR_EN_DOOR) && (!IS_RANDO || !OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOCK_OVERWORLD_DOORS))) {
             switch (actor->params) {
                 case 4753: // Night Market Bazaar
                 case 1678: // Night Potion Shop
