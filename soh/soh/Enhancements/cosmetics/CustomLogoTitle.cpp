@@ -73,8 +73,7 @@ extern "C" void CustomLogoTitle_Draw(TitleContext* titleContext, uint8_t logoToD
     gDPSetCombineLERP(POLY_OPA_DISP++, TEXEL1, PRIMITIVE, ENV_ALPHA, TEXEL0, 0, 0, 0, TEXEL0, PRIMITIVE, ENVIRONMENT,
         COMBINED, ENVIRONMENT, COMBINED, 0, PRIMITIVE, 0);
     if (CVarGetInteger(CVAR_COSMETIC("Title.NintendoLogo.Changed"), 0)) {
-        Color_RGB8 defaultColor = {0, 0, 255};
-        Color_RGB8 nintendoLogoColor = CVarGetColor24(CVAR_COSMETIC("Title.NintendoLogo.Value"), defaultColor);
+        Color_RGB8 nintendoLogoColor = CVarGetColor24(CVAR_COSMETIC("Title.NintendoLogo.Value"), Color_RGB8{0, 0, 255});
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
         gDPSetEnvColor(POLY_OPA_DISP++, nintendoLogoColor.r, nintendoLogoColor.g, nintendoLogoColor.b, 128);
     } else {
