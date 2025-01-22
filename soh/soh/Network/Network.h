@@ -4,14 +4,14 @@
 #ifdef __cplusplus
 
 #include <thread>
-#include <SDL2/SDL_net.h>
 #include <libwebsockets.h>
 #include <nlohmann/json.hpp>
 
 class Network {
   private:
-    IPaddress networkAddress;
-    TCPsocket networkSocket;
+    // commented out because of SDL_net removal
+    // IPaddress networkAddress;
+    // TCPsocket networkSocket;
     std::thread receiveThread;
     std::string receivedData;
 

@@ -308,21 +308,11 @@ set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
 
 set(BUILD_REMOTE_CONTROL 1)
 if (BUILD_REMOTE_CONTROL)
-    find_package(SDL2_net)
-
-    if(NOT SDL2_net_FOUND)
-        message(STATUS "SDL2_net not found (it's possible the version installed is too old). Disabling BUILD_REMOTE_CONTROL.")
-        set(BUILD_REMOTE_CONTROL 0)
-    else()
-        set(SDL2-NET-INCLUDE ${SDL_NET_INCLUDE_DIRS})
-    endif()
-
     find_package(libwebsockets)
     if(NOT libwebsockets_FOUND)
         message(STATUS "libwebsockets not found. Disabling BUILD_REMOTE_CONTROL.")
         # set(BUILD_REMOTE_CONTROL 0)
     endif()
-
 endif()
 
 target_include_directories(${PROJECT_NAME} PRIVATE assets
@@ -654,7 +644,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"glu32;"
 			"SDL2::SDL2;"
 			"SDL2::SDL2main;"
-            "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:SDL2_net::SDL2_net-static>"
             "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:websockets>"
 			"glfw;"
 			"winmm;"
@@ -705,7 +694,6 @@ else()
         "libultraship;"
 		"ZAPDLib;"
 		SDL2::SDL2
-        "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:SDL2_net::SDL2_net>"
         "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:websockets>"
 		${CMAKE_DL_LIBS}
 		Threads::Threads

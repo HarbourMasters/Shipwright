@@ -1188,7 +1188,8 @@ extern "C" void InitOTR() {
 
     srand(now);
 #ifdef ENABLE_REMOTE_CONTROL
-    SDLNet_Init();
+    // commented out because of SDL_net removal
+    // SDLNet_Init();
     if (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0)) {
         CrowdControl::Instance->Enable();
     }
@@ -1212,7 +1213,8 @@ extern "C" void DeinitOTR() {
     if (CVarGetInteger(CVAR_REMOTE_SAIL("Enabled"), 0)) {
         Sail::Instance->Disable();
     }
-    SDLNet_Quit();
+    // commented out because of SDL_net removal
+    // SDLNet_Quit();
 #endif
 
     // Destroying gui here because we have shared ptrs to LUS objects which output to SPDLOG which is destroyed before these shared ptrs.

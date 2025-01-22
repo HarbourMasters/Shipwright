@@ -15,9 +15,10 @@ void Network::Enable(const char* host, uint16_t port) {
     lws_context* context;
     context = lws_create_context(&info);
 
-    if (SDLNet_ResolveHost(&networkAddress, host, port) == -1) {
-        SPDLOG_ERROR("[Network] SDLNet_ResolveHost: {}", SDLNet_GetError());
-    }
+    // commented out because of SDL_net removal
+    // if (SDLNet_ResolveHost(&networkAddress, host, port) == -1) {
+    //     SPDLOG_ERROR("[Network] SDLNet_ResolveHost: {}", SDLNet_GetError());
+    // }
 
     isEnabled = true;
 
@@ -52,7 +53,8 @@ void Network::OnDisconnected() {
 
 void Network::SendDataToRemote(const char* payload) {
     SPDLOG_DEBUG("[Network] Sending data: {}", payload);
-    SDLNet_TCP_Send(networkSocket, payload, strlen(payload) + 1);
+    // commented out because of SDL_net removal
+    // SDLNet_TCP_Send(networkSocket, payload, strlen(payload) + 1);
 }
 
 void Network::SendJsonToRemote(nlohmann::json payload) {
@@ -65,67 +67,71 @@ void Network::ReceiveFromServer() {
     while (isEnabled) {
         while (!isConnected && isEnabled) {
             SPDLOG_TRACE("[Network] Attempting to make connection to server...");
-            networkSocket = SDLNet_TCP_Open(&networkAddress);
+            // commented out because of SDL_net removal
+            // networkSocket = SDLNet_TCP_Open(&networkAddress);
 
-            if (networkSocket) {
-                isConnected = true;
-                SPDLOG_INFO("[Network] Connection to server established!");
+            // if (networkSocket) {
+            //     isConnected = true;
+            //     SPDLOG_INFO("[Network] Connection to server established!");
 
-                OnConnected();
-                break;
-            }
+            //     OnConnected();
+            //     break;
+            // }
         }
 
-        SDLNet_SocketSet socketSet = SDLNet_AllocSocketSet(1);
-        if (networkSocket) {
-            SDLNet_TCP_AddSocket(socketSet, networkSocket);
-        }
+        // commented out because of SDL_net removal
+        // SDLNet_SocketSet socketSet = SDLNet_AllocSocketSet(1);
+        // if (networkSocket) {
+        //     SDLNet_TCP_AddSocket(socketSet, networkSocket);
+        // }
 
         // Listen to socket messages
-        while (isConnected && networkSocket && isEnabled) {
-            // we check first if socket has data, to not block in the TCP_Recv
-            int socketsReady = SDLNet_CheckSockets(socketSet, 0);
+        // commented out because of SDL_net removal
+        // while (isConnected && networkSocket && isEnabled) {
+        //     // we check first if socket has data, to not block in the TCP_Recv
+        //     int socketsReady = SDLNet_CheckSockets(socketSet, 0);
 
-            if (socketsReady == -1) {
-                SPDLOG_ERROR("[Network] SDLNet_CheckSockets: {}", SDLNet_GetError());
-                break;
-            }
+        //     if (socketsReady == -1) {
+        //         SPDLOG_ERROR("[Network] SDLNet_CheckSockets: {}", SDLNet_GetError());
+        //         break;
+        //     }
 
-            if (socketsReady == 0) {
-                continue;
-            }
+        //     if (socketsReady == 0) {
+        //         continue;
+        //     }
 
-            char remoteDataReceived[512];
-            memset(remoteDataReceived, 0, sizeof(remoteDataReceived));
-            int len = SDLNet_TCP_Recv(networkSocket, &remoteDataReceived, sizeof(remoteDataReceived));
-            if (!len || !networkSocket || len == -1) {
-                SPDLOG_ERROR("[Network] SDLNet_TCP_Recv: {}", SDLNet_GetError());
-                break;
-            }
+        //     char remoteDataReceived[512];
+        //     memset(remoteDataReceived, 0, sizeof(remoteDataReceived));
+        //     int len = SDLNet_TCP_Recv(networkSocket, &remoteDataReceived, sizeof(remoteDataReceived));
+        //     if (!len || !networkSocket || len == -1) {
+        //         SPDLOG_ERROR("[Network] SDLNet_TCP_Recv: {}", SDLNet_GetError());
+        //         break;
+        //     }
 
-            HandleRemoteData(remoteDataReceived);
+        //     HandleRemoteData(remoteDataReceived);
 
-            receivedData.append(remoteDataReceived, len);
+        //     receivedData.append(remoteDataReceived, len);
 
-            // Proess all complete packets
-            size_t delimiterPos = receivedData.find('\0');
-            while (delimiterPos != std::string::npos) {
-                // Extract the complete packet until the delimiter
-                std::string packet = receivedData.substr(0, delimiterPos);
-                // Remove the packet (including the delimiter) from the received data
-                receivedData.erase(0, delimiterPos + 1);
-                HandleRemoteJson(packet);
-                // Find the next delimiter
-                delimiterPos = receivedData.find('\0');
-            }
-        }
+        //     // Proess all complete packets
+        //     size_t delimiterPos = receivedData.find('\0');
+        //     while (delimiterPos != std::string::npos) {
+        //         // Extract the complete packet until the delimiter
+        //         std::string packet = receivedData.substr(0, delimiterPos);
+        //         // Remove the packet (including the delimiter) from the received data
+        //         receivedData.erase(0, delimiterPos + 1);
+        //         HandleRemoteJson(packet);
+        //         // Find the next delimiter
+        //         delimiterPos = receivedData.find('\0');
+        //     }
+        // }
 
-        if (isConnected) {
-            SDLNet_TCP_Close(networkSocket);
-            isConnected = false;
-            OnDisconnected();
-            SPDLOG_INFO("[Network] Ending receiving thread...");
-        }
+        // commented out because of SDL_net removal
+        // if (isConnected) {
+        //     SDLNet_TCP_Close(networkSocket);
+        //     isConnected = false;
+        //     OnDisconnected();
+        //     SPDLOG_INFO("[Network] Ending receiving thread...");
+        // }
     }
 }
 
