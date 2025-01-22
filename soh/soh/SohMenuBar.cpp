@@ -1547,8 +1547,6 @@ void DrawEnhancementsMenu() {
 
         if (ImGui::BeginMenu("Restoration"))
         {
-            UIWidgets::EnhancementCheckbox("Authentic Logo Screen", CVAR_ENHANCEMENT("AuthenticLogo"));
-            UIWidgets::Tooltip("Hide the game version and build details and display the authentic model and texture on the boot logo start screen");
             UIWidgets::PaddedEnhancementCheckbox("Red Ganon blood", CVAR_ENHANCEMENT("RedGanonBlood"), true, false);
             UIWidgets::Tooltip("Restore the original red blood from NTSC 1.0/1.1. Disable for green blood");
             UIWidgets::PaddedEnhancementCheckbox("Fish while hovering", CVAR_ENHANCEMENT("HoverFishing"), true, false);
