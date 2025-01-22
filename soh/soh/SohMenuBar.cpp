@@ -44,6 +44,7 @@
 #include "Enhancements/timesplits/TimeSplits.h"
 #include "Enhancements/randomizer/Plandomizer.h"
 #include "Enhancements/TimeDisplay/TimeDisplay.h"
+#include "AboutWindow.h"
 
 // FA icons are kind of wonky, if they worked how I expected them to the "+ 2.0f" wouldn't be needed, but
 // they don't work how I expect them to so I added that because it looked good when I eyeballed it
@@ -177,8 +178,18 @@ void DrawMenuBarIcon() {
     }
 }
 
+extern std::shared_ptr<AboutWindow> mAboutWindow;
+
 void DrawShipMenu() {
     if (ImGui::BeginMenu("Ship")) {
+        if (mAboutWindow) {
+            if (ImGui::MenuItem("About...")) {
+                mAboutWindow->Show();
+            }
+        }
+
+        UIWidgets::Spacer(0);
+
         if (ImGui::MenuItem("Hide Menu Bar",
 #if !defined(__SWITCH__) && !defined(__WIIU__)
          "F1"
