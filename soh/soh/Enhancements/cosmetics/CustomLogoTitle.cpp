@@ -5,6 +5,7 @@
 #include "assets/objects/gameplay_keep/gameplay_keep.h"
 
 extern "C" {
+#include "alloca.h"
 #include <string.h>
 #include "macros.h"
 #include "z64.h"
