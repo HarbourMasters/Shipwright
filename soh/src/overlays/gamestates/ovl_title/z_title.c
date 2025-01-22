@@ -4,8 +4,6 @@
  * Description: Displays the Nintendo Logo
  */
 
-#define NORMAL_GAMEPLAY
-
 #include "global.h"
 #include "alloca.h"
 #include "textures/nintendo_rogo_static/nintendo_rogo_static.h"
@@ -22,7 +20,6 @@
 // Note: In other rom versions this function also updates unk_1D4, coverAlpha, addAlpha, visibleDuration to calculate
 // the fade-in/fade-out + the duration of the n64 logo animation
 void Title_Calc(TitleContext* this) {
-#ifdef NORMAL_GAMEPLAY
     if ((this->coverAlpha == 0) && (this->visibleDuration != 0)) {
         this->visibleDuration--;
         this->unk_1D4--;
@@ -41,9 +38,6 @@ void Title_Calc(TitleContext* this) {
     }
     this->uls = this->ult & 0x7F;
     this->ult++;
-#else
-    this->exit = true;
-#endif
 }
 
 void Title_SetupView(TitleContext* this, f32 x, f32 y, f32 z) {
@@ -63,12 +57,6 @@ void Title_SetupView(TitleContext* this, f32 x, f32 y, f32 z) {
     func_800AA358(view, &eye, &lookAt, &up);
     func_800AAA50(view, 0xF);
 }
-
-#define dgShipLogoDL "__OTR__textures/nintendo_rogo_static/gShipLogoDL"
-static const ALIGN_ASSET(2) char gShipLogoDL[] = dgShipLogoDL;
-
-#define dnintendo_rogo_static_Tex_LUS_000000 "__OTR__textures/nintendo_rogo_static/nintendo_rogo_static_Tex_LUS_000000"
-static const ALIGN_ASSET(2) char nintendo_rogo_static_Tex_LUS_000000[] = dnintendo_rogo_static_Tex_LUS_000000;
 
 void Title_Draw(TitleContext* this) {
     static s16 sTitleRotY = 0;
@@ -111,12 +99,7 @@ void Title_Draw(TitleContext* this) {
     gDPSetCombineLERP(POLY_OPA_DISP++, TEXEL1, PRIMITIVE, ENV_ALPHA, TEXEL0, 0, 0, 0, TEXEL0, PRIMITIVE, ENVIRONMENT,
         COMBINED, ENVIRONMENT, COMBINED, 0, PRIMITIVE, 0);
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
-    if (CVarGetInteger(CVAR_COSMETIC("Title.NintendoLogo.Changed"), 0)) {
-        Color_RGB8 nintendoLogoColor = CVarGetColor24(CVAR_COSMETIC("Title.NintendoLogo.Value"), (Color_RGB8){0, 0, 255});    
-        gDPSetEnvColor(POLY_OPA_DISP++, nintendoLogoColor.r, nintendoLogoColor.g, nintendoLogoColor.b, 128);
-    } else {
-        gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 255, 128);
-    }
+    gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 255, 128);
 
     gDPLoadMultiBlock(POLY_OPA_DISP++, nintendo_rogo_static_Tex_001800, 0x100, 1, G_IM_FMT_I, G_IM_SIZ_8b, 32, 32, 0,
         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 2, 11);
