@@ -5323,6 +5323,7 @@ typedef enum {
     RSK_SHUFFLE_WEIRD_EGG,
     RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD,
     RSK_SHUFFLE_POTS,
+    RSK_SHUFFLE_CRATES,
     RSK_SHUFFLE_FROG_SONG_RUPEES,
     RSK_ITEM_POOL,
     RSK_ICE_TRAPS,
@@ -5800,6 +5801,14 @@ typedef enum {
     RO_SHUFFLE_POTS_DUNGEONS,
     RO_SHUFFLE_POTS_OVERWORLD,
     RO_SHUFFLE_POTS_ALL,
+} RandoOptionShufflePots;
+
+// Shuffle Crates settings (off, dungeons, overworld, all)
+typedef enum {
+    RO_SHUFFLE_CRATES_OFF,
+    RO_SHUFFLE_CRATES_DUNGEONS,
+    RO_SHUFFLE_CRATES_OVERWORLD,
+    RO_SHUFFLE_CRATES_ALL,
 } RandoOptionShufflePots;
 
 //Link's Pocket Settings (dungeon reward, advancement, anything, nothing)

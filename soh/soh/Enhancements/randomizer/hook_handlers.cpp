@@ -16,6 +16,7 @@
 #include "soh/Notification/Notification.h"
 #include "soh/SaveManager.h"
 #include "soh/Enhancements/randomizer/ShuffleFairies.h"
+#include "soh/Enhancements/randomizer/ShuffleCrates.h"
 
 extern "C" {
 #include "macros.h"
@@ -2369,6 +2370,9 @@ void RandomizerRegisterHooks() {
 
     static uint32_t shuffleFreestandingOnVanillaBehaviorHook = 0;
 
+    static uint32_t shuffleCratesOnActorInitHook = 0;
+    static uint32_t shuffleCratesOnVanillaBehaviorHook = 0;
+
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
         ShipInit::Init("IS_RANDO");
 
@@ -2404,6 +2408,9 @@ void RandomizerRegisterHooks() {
 
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(shuffleFreestandingOnVanillaBehaviorHook);
 
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(shuffleCratesOnActorInitHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(shuffleCratesOnVanillaBehaviorHook);
+
         onFlagSetHook = 0;
         onSceneFlagSetHook = 0;
         onPlayerUpdateForRCQueueHook = 0;
@@ -2431,6 +2438,9 @@ void RandomizerRegisterHooks() {
         shufflePotsOnVanillaBehaviorHook = 0;
 
         shuffleFreestandingOnVanillaBehaviorHook = 0;
+
+        shuffleCratesOnActorInitHook = 0;
+        shuffleCratesOnVanillaBehaviorHook = 0;
 
         ShuffleFairies_UnregisterHooks();
 
@@ -2483,6 +2493,11 @@ void RandomizerRegisterHooks() {
         
         if (RAND_GET_OPTION(RSK_SHUFFLE_FAIRIES)) {
             ShuffleFairies_RegisterHooks();
+        }
+
+        if (RAND_GET_OPTION(RSK_SHUFFLE_CRATES)) {
+            shuffleCratesOnActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(ObjKibako2_RandomizerInit);
+            shuffleCratesOnVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(ShuffleCrates_OnVanillaBehaviorHandler);
         }
     });
 }
