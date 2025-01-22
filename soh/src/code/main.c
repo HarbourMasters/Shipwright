@@ -1,4 +1,7 @@
 #ifdef _WIN32
+#ifdef ENABLE_REMOTE_CONTROL
+#include <winsock2.h>
+#endif
 #include <Windows.h>
 #endif
 
