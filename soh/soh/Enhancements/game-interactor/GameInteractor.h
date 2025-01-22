@@ -64,6 +64,7 @@ typedef enum {
 } GITeleportDestinations;
 
 typedef enum {
+    VB_DRAW_ICE_ON_LOGO,
     // Vanilla condition: gSaveContext.showTitleCard
     VB_SHOW_TITLE_CARD,
     // Opt: *EnWonderTalk2

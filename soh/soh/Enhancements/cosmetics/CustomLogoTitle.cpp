@@ -98,7 +98,7 @@ extern "C" void CustomLogoTitle_Draw(TitleContext* titleContext, uint8_t logoToD
     }
 
     // Draw ice block around spinning N or ship.
-    if (CVarGetInteger(CVAR_GENERAL("LetItSnow"), 0)) {
+    if (GameInteractor_Should(VB_DRAW_ICE_ON_LOGO, false)) {
         f32 scale = 0.4f;
 
         gSPSegment(POLY_OPA_DISP++, 0x08,
@@ -205,3 +205,12 @@ static RegisterShipInitFunc initFuncBootsequence(RegisterCustomLogoTitleBootsequ
 // Let it Snow
 // 
 
+#define CVAR_LETITSNOW_NAME CVAR_GENERAL("LetItSnow")
+#define CVAR_LETITSNOW_DEFAULT 0
+#define CVAR_LETITSNOW_VALUE CVarGetInteger(CVAR_LETITSNOW_NAME, CVAR_LETITSNOW_DEFAULT)
+
+void RegisterCustomLogoTitleLetItSnow() {
+    COND_VB_SHOULD(VB_DRAW_ICE_ON_LOGO, CVAR_LETITSNOW_VALUE != CVAR_LETITSNOW_DEFAULT, { *should = true; });
+}
+
+static RegisterShipInitFunc initFuncLetItSnow(RegisterCustomLogoTitleLetItSnow, { CVAR_LETITSNOW_NAME });
