@@ -120,9 +120,23 @@ extern "C" void CustomLogoTitle_Draw(TitleContext* titleContext, uint8_t logoToD
     CLOSE_DISPS(titleContext->state.gfxCtx);
 }
 
+#define CVAR_BOOTSEQUENCE_NAME CVAR_ENHANCEMENT("BootSequence")
+#define CVAR_BOOTSEQUENCE_DEFAULT BOOTSEQUENCE_DEFAULT
+#define CVAR_BOOTSEQUENCE_VALUE CVarGetInteger(CVAR_BOOTSEQUENCE_NAME, CVAR_BOOTSEQUENCE_DEFAULT)
+
 extern "C" void CustomLogoTitle_Main(TitleContext* titleContext) {
-    static uint8_t logoToDraw = LOGO_TO_DRAW_LUS;
-    if (CVarGetInteger(CVAR_ENHANCEMENT("BootSequence"), BOOTSEQUENCE_DEFAULT) == BOOTSEQUENCE_AUTHENTIC) {
+    static uint8_t logosSeen = 0;
+    uint8_t logoToDraw;
+
+    if (CVAR_BOOTSEQUENCE_VALUE == BOOTSEQUENCE_DEFAULT) {
+        if (logosSeen == 0) {
+            logoToDraw = LOGO_TO_DRAW_LUS;
+        } else {
+            logoToDraw = LOGO_TO_DRAW_N64;
+        }
+    }
+
+    if (CVAR_BOOTSEQUENCE_VALUE == BOOTSEQUENCE_AUTHENTIC) {
         logoToDraw = LOGO_TO_DRAW_N64;
     }
 
@@ -139,25 +153,17 @@ extern "C" void CustomLogoTitle_Main(TitleContext* titleContext) {
         gSaveContext.natureAmbienceId = 0xFF;
         gSaveContext.gameMode = 1;
         titleContext->state.running = false;
+        
+        logosSeen++;
 
-        // default boot sequence is lus -> n64 -> opening
-        if (CVarGetInteger(CVAR_ENHANCEMENT("BootSequence"), BOOTSEQUENCE_DEFAULT) == BOOTSEQUENCE_DEFAULT) {
-            // if we're drawing the n64 logo in the default boot sequence
-            if (logoToDraw == LOGO_TO_DRAW_N64) {
-                // go to the opening next
-                SET_NEXT_GAMESTATE(&titleContext->state, Opening_Init, OpeningContext);
-                
-                // make sure to draw the lus logo on reset
-                logoToDraw = LOGO_TO_DRAW_LUS;
-            } else { // we're drawing the lus logo
-                // go to the title again
-                SET_NEXT_GAMESTATE(&titleContext->state, Title_Init, TitleContext);
+        if (CVAR_BOOTSEQUENCE_VALUE == BOOTSEQUENCE_DEFAULT && logosSeen == 1) {
+            SET_NEXT_GAMESTATE(&titleContext->state, Title_Init, TitleContext);
+        }
 
-                // draw the n64 logo this time
-                logoToDraw = LOGO_TO_DRAW_N64;
-            }
-        } else { // we're doing the authentic boot sequence, just n64 -> opening 
+        if ((CVAR_BOOTSEQUENCE_VALUE == BOOTSEQUENCE_DEFAULT && logosSeen == 2) ||
+            (CVAR_BOOTSEQUENCE_VALUE == BOOTSEQUENCE_AUTHENTIC)) {
             SET_NEXT_GAMESTATE(&titleContext->state, Opening_Init, OpeningContext);
+            logosSeen = 0;
         }
     }
 
@@ -207,10 +213,6 @@ void OnZTitleUpdateSkipToFileSelect(void* gameState) {
 
     SET_NEXT_GAMESTATE(&titleContext->state, FileChoose_Init, FileChooseContext);
 }
-
-#define CVAR_BOOTSEQUENCE_NAME CVAR_ENHANCEMENT("BootSequence")
-#define CVAR_BOOTSEQUENCE_DEFAULT BOOTSEQUENCE_DEFAULT
-#define CVAR_BOOTSEQUENCE_VALUE CVarGetInteger(CVAR_BOOTSEQUENCE_NAME, CVAR_BOOTSEQUENCE_DEFAULT)
 
 void RegisterCustomLogoTitleBootsequence() {
     COND_HOOK(OnZTitleUpdate, CVAR_BOOTSEQUENCE_VALUE == BOOTSEQUENCE_FILESELECT, OnZTitleUpdateSkipToFileSelect);
