@@ -13,6 +13,9 @@ AboutWindow::~AboutWindow() {
 
 void AboutWindow::InitElement() {
     mIsTaggedVersion = gGitCommitTag[0] != 0;
+
+    strncpy(mGitCommitHashTruncated, (char*)gGitCommitHash, 7);
+    mGitCommitHashTruncated[7] = 0;
 }
 
 void AboutWindow::Draw() {
@@ -87,12 +90,8 @@ void AboutWindow::DrawElement() {
     if (mIsTaggedVersion) {
         ImGui::Text("%s", gBuildVersion);
     } else {
-        //truncate the commit to 7 characters
-        char gGitCommitHashTruncated[8];
-        strncpy(gGitCommitHashTruncated, (char*)gGitCommitHash, 7);
-        gGitCommitHashTruncated[7] = 0;
         ImGui::Text("%s", gGitBranch);
-        ImGui::Text("%s", gGitCommitHashTruncated);
+        ImGui::Text("%s", mGitCommitHashTruncated);
     }
     ImGui::EndGroup();
 

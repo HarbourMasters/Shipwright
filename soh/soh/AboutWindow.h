@@ -16,4 +16,5 @@ class AboutWindow : public Ship::GuiWindow {
     const char* GetGameVersionString(uint32_t index);
 
     bool mIsTaggedVersion;
+    char mGitCommitHashTruncated[8];
 };
