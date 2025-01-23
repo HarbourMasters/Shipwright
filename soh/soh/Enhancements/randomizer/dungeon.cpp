@@ -148,8 +148,8 @@ void DungeonInfo::PlaceVanillaSmallKeys() const {
 // Gets the chosen dungeon locations for a playthrough (so either MQ or Vanilla)
 std::vector<RandomizerCheck> DungeonInfo::GetDungeonLocations() const {
     auto locations = masterQuest ? mqLocations : vanillaLocations;
-    if (Context::GetInstance()->GetSettings()->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_DUNGEONS) ||
-        Context::GetInstance()->GetSettings()->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_ALL)) {
+    if (Context::GetInstance()->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_DUNGEONS) ||
+        Context::GetInstance()->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_ALL)) {
         auto potLocations = masterQuest ? mqPots : vanillaPots;
         AddElementsToPool(locations, potLocations);
     }

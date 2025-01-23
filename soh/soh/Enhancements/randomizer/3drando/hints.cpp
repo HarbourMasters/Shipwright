@@ -222,18 +222,18 @@ uint8_t StonesRequiredBySettings() {
     auto ctx = Rando::Context::GetInstance();
     uint8_t stones = 0;
     if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_STONES)) {
-        stones = ctx->GetOption(RSK_RAINBOW_BRIDGE_STONE_COUNT).GetContextOptionIndex();
+        stones = ctx->GetOption(RSK_RAINBOW_BRIDGE_STONE_COUNT).Get();
     } else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEON_REWARDS)) {
-        stones = ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).GetContextOptionIndex() - 6;
+        stones = ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).Get() - 6;
     } else if ((ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEONS)) && (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON))) {
-        stones = ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).GetContextOptionIndex() - 6;
+        stones = ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).Get() - 6;
     }
     if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_STONES)) {
-        stones = std::max<uint8_t>({ stones, ctx->GetOption(RSK_LACS_STONE_COUNT).GetContextOptionIndex() });
+        stones = std::max<uint8_t>({ stones, ctx->GetOption(RSK_LACS_STONE_COUNT).Get() });
     } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_STONES)) {
-        stones = std::max<uint8_t>({ stones, (uint8_t)(ctx->GetOption(RSK_LACS_REWARD_COUNT).GetContextOptionIndex() - 6 )});
+        stones = std::max<uint8_t>({ stones, (uint8_t)(ctx->GetOption(RSK_LACS_REWARD_COUNT).Get() - 6 )});
     } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_DUNGEONS)) {
-        stones = std::max<uint8_t>({ stones, (uint8_t)(ctx->GetOption(RSK_LACS_DUNGEON_COUNT).GetContextOptionIndex() - 6 )});
+        stones = std::max<uint8_t>({ stones, (uint8_t)(ctx->GetOption(RSK_LACS_DUNGEON_COUNT).Get() - 6 )});
     }
     return stones;
 }
@@ -242,18 +242,18 @@ uint8_t MedallionsRequiredBySettings() {
     auto ctx = Rando::Context::GetInstance();
     uint8_t medallions = 0;
     if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_MEDALLIONS)) {
-        medallions = ctx->GetOption(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT).GetContextOptionIndex();
+        medallions = ctx->GetOption(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT).Get();
     } else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEON_REWARDS)) {
-        medallions = ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).GetContextOptionIndex() - 3;
+        medallions = ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).Get() - 3;
     } else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEONS) && ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
-        medallions = ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).GetContextOptionIndex() - 3;
+        medallions = ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).Get() - 3;
     }
     if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_MEDALLIONS)) {
-        medallions = std::max({ medallions, ctx->GetOption(RSK_LACS_MEDALLION_COUNT).GetContextOptionIndex() });
+        medallions = std::max({ medallions, ctx->GetOption(RSK_LACS_MEDALLION_COUNT).Get() });
     } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_REWARDS)) {
-        medallions = std::max({ medallions, (uint8_t)(ctx->GetOption(RSK_LACS_REWARD_COUNT).GetContextOptionIndex() - 3 )});
+        medallions = std::max({ medallions, (uint8_t)(ctx->GetOption(RSK_LACS_REWARD_COUNT).Get() - 3 )});
     } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_DUNGEONS) && ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
-        medallions = std::max({ medallions, (uint8_t)(ctx->GetOption(RSK_LACS_DUNGEON_COUNT).GetContextOptionIndex() - 3 )});
+        medallions = std::max({ medallions, (uint8_t)(ctx->GetOption(RSK_LACS_DUNGEON_COUNT).Get() - 3 )});
     }
     return medallions;
 }
@@ -262,10 +262,10 @@ uint8_t TokensRequiredBySettings() {
     auto ctx = Rando::Context::GetInstance();
     uint8_t tokens = 0;
     if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS)) {
-        tokens = ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).GetContextOptionIndex();
+        tokens = ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).Get();
     }
     if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_TOKENS)) {
-        tokens = std::max<uint8_t>({ tokens, ctx->GetOption(RSK_LACS_TOKEN_COUNT).GetContextOptionIndex() });
+        tokens = std::max<uint8_t>({ tokens, ctx->GetOption(RSK_LACS_TOKEN_COUNT).Get() });
     }
     return tokens;
 }
@@ -273,7 +273,7 @@ uint8_t TokensRequiredBySettings() {
 std::vector<std::pair<RandomizerCheck, std::function<bool()>>> conditionalAlwaysHints = {
     std::make_pair(RC_MARKET_10_BIG_POES, []() {
                        auto ctx = Rando::Context::GetInstance();
-                       return ctx->GetOption(RSK_BIG_POE_COUNT).GetContextOptionIndex() >= 3 && !ctx->GetOption(RSK_BIG_POES_HINT);
+                       return ctx->GetOption(RSK_BIG_POE_COUNT).Get() >= 3 && !ctx->GetOption(RSK_BIG_POES_HINT);
                    }), // Remember, the option's value being 3 means 4 are required
     std::make_pair(RC_DEKU_THEATER_MASK_OF_TRUTH, []() {
                        auto ctx = Rando::Context::GetInstance();
@@ -483,7 +483,7 @@ static void CreateTrialHints(uint8_t copies) {
       AddGossipStoneHintCopies(copies, HINT_TYPE_HINT_KEY, "Trial", {RHT_ZERO_TRIALS});
     } else {
       std::vector<TrialInfo*> trials = ctx->GetTrials()->GetTrialList(); //there's probably a way to remove this assignment
-      if (ctx->GetOption(RSK_TRIAL_COUNT).GetContextOptionIndex() >= 4) {//4 or 5 required trials, get skipped trials
+      if (ctx->GetOption(RSK_TRIAL_COUNT).Get() >= 4) {//4 or 5 required trials, get skipped trials
         trials = FilterFromPool(trials, [](TrialInfo* trial){return trial->IsSkipped();});
       } else {//1 to 3 trials, get requried trials
         auto requiredTrials = FilterFromPool(trials, [](TrialInfo* trial){return trial->IsRequired();});
@@ -611,7 +611,7 @@ uint8_t PlaceHints(std::vector<uint8_t>& selectedHints, std::vector<HintDistribu
 void CreateStoneHints() {
   auto ctx = Rando::Context::GetInstance();
   SPDLOG_DEBUG("\nNOW CREATING HINTS\n");
-  const HintSetting& hintSetting = hintSettingTable[ctx->GetOption(RSK_HINT_DISTRIBUTION).GetContextOptionIndex()];
+  const HintSetting& hintSetting = hintSettingTable[ctx->GetOption(RSK_HINT_DISTRIBUTION).Get()];
   std::vector<HintDistributionSetting> distTable = hintSetting.distTable;
 
   // Apply impa's song exclusions when zelda is skipped
@@ -738,7 +738,7 @@ void CreateAdultAltarHint() {
 void CreateStaticHintFromData(RandomizerHint hint, StaticHintInfo staticData){
   auto ctx = Rando::Context::GetInstance();
   if (!ctx->GetHint(hint)->IsEnabled()){
-    Option option = ctx->GetOption(staticData.setting);
+    OptionValue& option = ctx->GetOption(staticData.setting);
     if ((std::holds_alternative<bool>(staticData.condition) && option.Is(std::get<bool>(staticData.condition))) ||
         (std::holds_alternative<uint8_t>(staticData.condition) && option.Is(std::get<uint8_t>(staticData.condition)))){
 

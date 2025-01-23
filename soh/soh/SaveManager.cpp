@@ -180,7 +180,7 @@ void SaveManager::LoadRandomizerVersion1() {
         int key, value;
         SaveManager::Instance->LoadData("sk" + std::to_string(i), key);
         SaveManager::Instance->LoadData("sv" + std::to_string(i), value);
-        randoContext->GetOption(RandomizerSettingKey(key)).SetContextIndex(value);
+        randoContext->GetOption(RandomizerSettingKey(key)).Set(value);
     }
 
     for (int i = 0; i < 50; i++) {
@@ -277,16 +277,16 @@ void SaveManager::LoadRandomizerVersion2() {
 
     std::string inputSeed;
     SaveManager::Instance->LoadData("inputSeed", inputSeed);
-    randoContext->GetSettings()->SetSeedString(inputSeed);
+    randoContext->SetSeedString(inputSeed);
 
     uint32_t finalSeed;
     SaveManager::Instance->LoadData("finalSeed", finalSeed);
-    randoContext->GetSettings()->SetSeed(finalSeed);
+    randoContext->SetSeed(finalSeed);
 
     SaveManager::Instance->LoadArray("randoSettings", RSK_MAX, [&](size_t i) {
         int value = 0;
         SaveManager::Instance->LoadData("", value);
-        randoContext->GetOption(RandomizerSettingKey(i)).SetContextIndex(value);
+        randoContext->GetOption(RandomizerSettingKey(i)).Set(value);
     });
 
     SaveManager::Instance->LoadArray("hintLocations", RH_ZR_OPEN_GROTTO_GOSSIP_STONE + 1, [&](size_t i) {
@@ -426,16 +426,16 @@ void SaveManager::LoadRandomizerVersion3() {
 
     std::string inputSeed;
     SaveManager::Instance->LoadData("inputSeed", inputSeed);
-    randoContext->GetSettings()->SetSeedString(inputSeed);
+    randoContext->SetSeedString(inputSeed);
 
     uint32_t finalSeed;
     SaveManager::Instance->LoadData("finalSeed", finalSeed);
-    randoContext->GetSettings()->SetSeed(finalSeed);
+    randoContext->SetSeed(finalSeed);
 
     SaveManager::Instance->LoadArray("randoSettings", RSK_MAX, [&](size_t i) {
         int value = 0;
         SaveManager::Instance->LoadData("", value);
-        randoContext->GetOption(RandomizerSettingKey(i)).SetContextIndex(value);
+        randoContext->GetOption(RandomizerSettingKey(i)).Set(value);
     });
 
     SaveManager::Instance->LoadArray("hintLocations", RH_MAX, [&](size_t i) {
@@ -464,7 +464,7 @@ void SaveManager::LoadRandomizerVersion3() {
     });
 
     randoContext->GetTrials()->SkipAll();
-    SaveManager::Instance->LoadArray("requiredTrials", randoContext->GetOption(RSK_TRIAL_COUNT).GetContextOptionIndex() + 1, [&](size_t i) {
+    SaveManager::Instance->LoadArray("requiredTrials", randoContext->GetOption(RSK_TRIAL_COUNT).Get() + 1, [&](size_t i) {
         size_t trialId;
         SaveManager::Instance->LoadData("", trialId);
         randoContext->GetTrial(trialId)->SetAsRequired();
@@ -508,12 +508,12 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
         SaveManager::Instance->SaveData("", randoContext->hashIconIndexes[i]);
     });
 
-    SaveManager::Instance->SaveData("inputSeed", randoContext->GetSettings()->GetSeedString());
+    SaveManager::Instance->SaveData("inputSeed", randoContext->GetSeedString());
 
-    SaveManager::Instance->SaveData("finalSeed", randoContext->GetSettings()->GetSeed());
+    SaveManager::Instance->SaveData("finalSeed", randoContext->GetSeed());
 
     SaveManager::Instance->SaveArray("randoSettings", RSK_MAX, [&](size_t i) {
-        SaveManager::Instance->SaveData("", randoContext->GetOption((RandomizerSettingKey(i))).GetContextOptionIndex());
+        SaveManager::Instance->SaveData("", randoContext->GetOption((RandomizerSettingKey(i))).Get());
     });
 
     SaveManager::Instance->SaveArray("hintLocations", RH_MAX, [&](size_t i) {
@@ -662,8 +662,6 @@ void SaveManager::Init() {
             OTRGlobals::Instance->gRandoContext->ClearItemLocations();
         }
     }
-    auto ctx = Rando::Context::GetInstance();
-    ctx->GetSettings()->CreateOptions();
 }
 
 void SaveManager::InitMeta(int fileNum) {
@@ -2846,14 +2844,11 @@ extern "C" void Save_SaveGlobal(void) {
 extern "C" void Save_LoadFile(void) {
     // Handle vanilla context reset
     OTRGlobals::Instance->gRandoContext->GetLogic()->SetContext(nullptr);
+    Rando::Settings::GetInstance()->ClearContext();
     OTRGlobals::Instance->gRandoContext.reset();
     OTRGlobals::Instance->gRandoContext = Rando::Context::CreateInstance();
     OTRGlobals::Instance->gRandoContext->GetLogic()->SetSaveContext(&gSaveContext);
-
-    if (SaveManager::Instance->fileMetaInfo[gSaveContext.fileNum].randoSave) {
-        OTRGlobals::Instance->gRandoContext->AddExcludedOptions();
-        OTRGlobals::Instance->gRandoContext->GetSettings()->CreateOptions();
-    }
+    Rando::Settings::GetInstance()->AssignContext(OTRGlobals::Instance->gRandoContext);
     SaveManager::Instance->LoadFile(gSaveContext.fileNum);
 }
 
