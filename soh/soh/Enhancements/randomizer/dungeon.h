@@ -15,6 +15,7 @@ class DungeonInfo {
                 uint8_t vanillaKeyCount_, uint8_t mqKeyCount_, RandomizerSettingKey mqSetting_,
                 std::vector<RandomizerCheck> vanillaLocations_, std::vector<RandomizerCheck> mqLocations_,
                 std::vector<RandomizerCheck> vanillaPots_, std::vector<RandomizerCheck> mqPots_,
+                std::vector<RandomizerCheck> vanillaCrates_, std::vector<RandomizerCheck> mqCrates_,
                 std::vector<RandomizerCheck> sharedLocations_,
                 std::vector<RandomizerCheck> bossRoomLocations_);
     DungeonInfo();
@@ -64,6 +65,8 @@ class DungeonInfo {
     std::vector<RandomizerCheck> mqLocations;
     std::vector<RandomizerCheck> vanillaPots;
     std::vector<RandomizerCheck> mqPots;
+    std::vector<RandomizerCheck> vanillaCrates;
+    std::vector<RandomizerCheck> mqCrates;
     std::vector<RandomizerCheck> sharedLocations;
     std::vector<RandomizerCheck> bossRoomLocations;
 };
