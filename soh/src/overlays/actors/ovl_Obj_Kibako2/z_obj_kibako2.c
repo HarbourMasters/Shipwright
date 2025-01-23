@@ -7,6 +7,7 @@
 #include "z_obj_kibako2.h"
 #include "objects/object_kibako2/object_kibako2.h"
 #include "overlays/effects/ovl_Effect_Ss_Kakera/z_eff_ss_kakera.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
 
@@ -108,6 +109,10 @@ void ObjKibako2_SpawnCollectible(ObjKibako2* this, PlayState* play) {
     s16 itemDropped;
     s16 collectibleFlagTemp;
 
+    if (!GameInteractor_Should(VB_CRATE_DROP_ITEM, false, this)) {
+        return;
+    }
+
     collectibleFlagTemp = this->collectibleFlag;
     itemDropped = this->dyna.actor.home.rot.x;
     if (itemDropped >= 0 && itemDropped < 0x1A) {
@@ -176,5 +181,9 @@ void ObjKibako2_Update(Actor* thisx, PlayState* play) {
 }
 
 void ObjKibako2_Draw(Actor* thisx, PlayState* play) {
+    if (!GameInteractor_Should(VB_CRATE_SETUP_DRAW, false, thisx)) {
+        return;
+    }
+
     Gfx_DrawDListOpa(play, gLargeCrateDL);
 }
