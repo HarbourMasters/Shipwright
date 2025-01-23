@@ -146,7 +146,7 @@ extern "C" void CustomLogoTitle_Main(TitleContext* titleContext) {
     if (titleContext->exit) {
         gSaveContext.seqId = (u8)NA_BGM_DISABLED;
         gSaveContext.natureAmbienceId = 0xFF;
-        gSaveContext.gameMode = 1;
+        gSaveContext.gameMode = GAMEMODE_TITLE_SCREEN;
         titleContext->state.running = false;
         
         logosSeen++;
@@ -203,7 +203,7 @@ void OnZTitleUpdateSkipToFileSelect(void* gameState) {
 
     gSaveContext.seqId = (u8)NA_BGM_DISABLED;
     gSaveContext.natureAmbienceId = 0xFF;
-    gSaveContext.gameMode = 1;
+    gSaveContext.gameMode = GAMEMODE_TITLE_SCREEN;
     titleContext->state.running = false;
 
     SET_NEXT_GAMESTATE(&titleContext->state, FileChoose_Init, FileChooseContext);
