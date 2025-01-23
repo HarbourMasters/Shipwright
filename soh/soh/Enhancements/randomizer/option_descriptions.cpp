@@ -271,6 +271,16 @@ void Settings::CreateOptionDescriptions() {
                                               "Overworld - Only shuffle pots that are outside of dungeons.\n"
                                               "\n"
                                               "All pots - Shuffle all pots.";
+    mOptionDescriptions[RSK_SHUFFLE_CRATES] = "Crates will drop a randomized item the first time they're broken and collected. "
+                                              "Crates will have a different appearance when they hold a randomized item.\n"
+                                              "\n"
+                                              "Off - Crates will not be shuffled.\n"
+                                              "\n"
+                                              "Dungeons - Only shuffle crates that are within dungeons.\n"
+                                              "\n"
+                                              "Overworld - Only shuffle crates that are outside of dungeons.\n"
+                                              "\n"
+                                              "All Crates - Shuffle all crates.";
     mOptionDescriptions[RSK_SHUFFLE_FISHING_POLE] = "Shuffles the fishing pole into the item pool.\n"
         "\n"
         "The fishing pole is required to play the fishing pond minigame.";

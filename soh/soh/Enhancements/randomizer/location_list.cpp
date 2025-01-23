@@ -43,6 +43,16 @@ std::vector<RandomizerCheck> Rando::StaticData::GetOverworldPotLocations() {
     return overworldPotLocations;
 }
 
+std::vector<RandomizerCheck> Rando::StaticData::GetOverworldCrateLocations() {
+    std::vector<RandomizerCheck> overworldCrateLocations = {};
+    for (Location& location : locationTable) {
+        if (location.GetRCType() == RCTYPE_CRATE && location.IsOverworld() && location.GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+            overworldCrateLocations.push_back(location.GetRandomizerCheck());
+        }
+    }
+    return overworldCrateLocations;
+}
+
 std::vector<RandomizerCheck> Rando::StaticData::GetStaticHintLocations() {
     std::vector<RandomizerCheck> staticHintLocations = {};
     for (Location& location : locationTable) {
