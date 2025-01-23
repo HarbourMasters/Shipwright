@@ -286,13 +286,6 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
                 Fault_AddHungupAndCrash(__FILE__, __LINE__);
         }
 
-        // When 3 frames are left on easy pause buffer, re-apply the last held inputs to the prev inputs
-        // to compute the pressed difference. This makes it so previously held inputs are continued as "held",
-        // but new inputs when unpausing are "pressed" out of the pause menu.
-        if (CVarGetInteger(CVAR_GENERAL("CheatEasyPauseBufferTimer"), 0) == 3) {
-            input->prev.button = CVarGetInteger(CVAR_GENERAL("CheatEasyPauseBufferLastInputs"), 0);
-        }
-
         buttonDiff = input->prev.button ^ input->cur.button;
         input->press.button |= (u16)(buttonDiff & input->cur.button);
         input->rel.button |= (u16)(buttonDiff & input->prev.button);

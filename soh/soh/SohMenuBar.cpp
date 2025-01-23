@@ -310,9 +310,6 @@ void DrawSettingsMenu() {
             ImGui::PopStyleColor(1);
             ImGui::PopStyleVar(3);
 
-            UIWidgets::PaddedEnhancementSliderInt("Simulated Input Lag: %d frames", "##SimulatedInputLag", CVAR_SIMULATED_INPUT_LAG, 0, 6, "", 0, true, true, false);
-            UIWidgets::Tooltip("Buffers your inputs to be executed a specified amount of frames later");
-
             ImGui::EndMenu();
         }
 
@@ -1571,7 +1568,11 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Restores a bug from NTSC 1.0/1.1 that allows you to obtain the eyeball frog from King Zora instead of the Zora Tunic by holding shield.");
             UIWidgets::PaddedEnhancementCheckbox("Pulsate boss icon", CVAR_ENHANCEMENT("PulsateBossIcon"), true, false);
             UIWidgets::Tooltip("Restores an unfinished feature to pulsate the boss room icon when you are in the boss room.");
-
+            UIWidgets::PaddedEnhancementSliderInt("Pause Buffer Input Window: %d", "##PauseBufferWindow", CVAR_ENHANCEMENT("PauseBufferWindow"), 0, 40, "", 0, true, true, false);
+            UIWidgets::PaddedEnhancementCheckbox("Include held inputs at start of Buffer Input Window", CVAR_ENHANCEMENT("IncludeHeldInputsBufferWindow"), true, false);
+            UIWidgets::Tooltip("Typically, inputs that are held prior to the buffer window are not included in the buffer. This setting changes that behavior to include them. This may cause some inputs to be re-triggered undesireably, for instance Z-Targetting something you might not want to.");
+            UIWidgets::PaddedEnhancementSliderInt("Simulated Input Lag: %d frames", "##SimulatedInputLag", CVAR_SIMULATED_INPUT_LAG, 0, 6, "", 0, true, true, false);
+            UIWidgets::Tooltip("Buffers your inputs to be executed a specified amount of frames later");
             ImGui::EndMenu();
         }
 
@@ -1885,11 +1886,8 @@ void DrawCheatsMenu() {
         UIWidgets::Tooltip("Makes every surface in the game climbable");
         UIWidgets::PaddedEnhancementCheckbox("Moon Jump on L", CVAR_CHEAT("MoonJumpOnL"), true, false);
         UIWidgets::Tooltip("Holding L makes you float into the air");
-        UIWidgets::PaddedEnhancementCheckbox("Easy Frame Advancing", CVAR_CHEAT("EasyPauseBuffer"), true, false);
-        UIWidgets::Tooltip("Continue holding START button when unpausing to only advance a single frame and then re-pause");
-        const bool bEasyFrameAdvanceEnabled = CVarGetInteger(CVAR_CHEAT("EasyPauseBuffer"), 0);
-        UIWidgets::PaddedEnhancementCheckbox("Easy Input Buffering", CVAR_CHEAT("EasyInputBuffer"), true, false, bEasyFrameAdvanceEnabled, "Forced enabled when Easy Frame Advancing is enabled", UIWidgets::CheckboxGraphics::Checkmark);
-        UIWidgets::Tooltip("Inputs that are held down while the Subscreen is closing will be pressed when the game is resumed");
+        UIWidgets::PaddedEnhancementCheckbox("New Easy Frame Advancing", CVAR_CHEAT("EasyFrameAdvance"), true, false);
+        UIWidgets::Tooltip("Continue holding START button when unpausing to only advance a single frame and then re-pause.");
         UIWidgets::PaddedEnhancementCheckbox("Drops Don't Despawn", CVAR_CHEAT("DropsDontDie"), true, false);
         UIWidgets::Tooltip("Drops from enemies, grass, etc. don't disappear after a set amount of time");
         UIWidgets::PaddedEnhancementCheckbox("Fish Don't despawn", CVAR_CHEAT("NoFishDespawn"), true, false);
