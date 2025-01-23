@@ -11,7 +11,15 @@ void RegionTable_Init_Market() {
         Entrance(RR_MARKET_GUARD_HOUSE, []{return logic->CanOpenOverworldDoor(RG_GUARD_HOUSE_KEY);}),
     });
 
-    areaTable[RR_THE_MARKET] = Region("Market", "Market", {RA_THE_MARKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_THE_MARKET] = Region("Market", "Market", {RA_THE_MARKET}, NO_DAY_NIGHT_CYCLE, {}, 
+    {
+        //Locations
+        LOCATION(RC_MK_NEAR_BAZAAR_CRATE_1,      true),
+        LOCATION(RC_MK_NEAR_BAZAAR_CRATE_2,      true),
+        LOCATION(RC_MK_SHOOTING_GALLERY_CRATE_1, true),
+        LOCATION(RC_MK_SHOOTING_GALLERY_CRATE_2, true),
+    }, 
+    {
         //Exits
         Entrance(RR_MARKET_ENTRANCE,            []{return true;}),
         Entrance(RR_TOT_ENTRANCE,               []{return true;}),
@@ -96,6 +104,11 @@ void RegionTable_Init_Market() {
         LOCATION(RC_MK_GUARD_HOUSE_ADULT_POT_9,  logic->IsAdult && logic->CanBreakPots()),
         LOCATION(RC_MK_GUARD_HOUSE_ADULT_POT_10, logic->IsAdult && logic->CanBreakPots()),
         LOCATION(RC_MK_GUARD_HOUSE_ADULT_POT_11, logic->IsAdult && logic->CanBreakPots()),
+        LOCATION(RC_MK_GUARD_HOUSE_CRATE_1,      true),
+        LOCATION(RC_MK_GUARD_HOUSE_CRATE_2,      true),
+        LOCATION(RC_MK_GUARD_HOUSE_CRATE_3,      true),
+        LOCATION(RC_MK_GUARD_HOUSE_CRATE_4,      true),
+        LOCATION(RC_MK_GUARD_HOUSE_CRATE_5,      true),
     }, {
         //Exits
         Entrance(RR_MARKET_ENTRANCE, []{return logic->CanOpenOverworldDoor(RG_GUARD_HOUSE_KEY);}),
@@ -199,7 +212,8 @@ void RegionTable_Init_Market() {
 
     areaTable[RR_MARKET_DOG_LADY_HOUSE] = Region("Market Dog Lady House", "Market Dog Lady House", {}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_MARKET_LOST_DOG, logic->IsChild && logic->AtNight),
+        LOCATION(RC_MARKET_LOST_DOG,         logic->IsChild && logic->AtNight),
+        LOCATION(RC_MK_LOST_DOG_HOUSE_CRATE, true),
     }, {
         //Exits
         Entrance(RR_MARKET_BACK_ALLEY, []{return logic->CanOpenOverworldDoor(RG_RICHARDS_HOUSE_KEY);}),

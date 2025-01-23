@@ -22,6 +22,8 @@ void RegionTable_Init_LonLonRanch() {
         LOCATION(RC_LLR_RAIN_SHED_POT_1, logic->IsChild && logic->CanBreakPots()),
         LOCATION(RC_LLR_RAIN_SHED_POT_2, logic->IsChild && logic->CanBreakPots()),
         LOCATION(RC_LLR_RAIN_SHED_POT_3, logic->IsChild && logic->CanBreakPots()),
+        LOCATION(RC_LLR_NEAR_TREE_CRATE, true),
+
     }, {
         //Exits
         Entrance(RR_HYRULE_FIELD,     []{return true;}),

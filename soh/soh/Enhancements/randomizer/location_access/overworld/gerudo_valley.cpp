@@ -53,7 +53,9 @@ void RegionTable_Init_GerudoValley() {
 
     areaTable[RR_GV_CRATE_LEDGE] = Region("GV Crate Ledge", "Gerudo Valley", {RA_GERUDO_VALLEY}, DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_GV_CRATE_FREESTANDING_POH, true),
+                 LOCATION(RC_GV_CRATE_FREESTANDING_POH, true), 
+                 LOCATION(RC_GV_FREESTANDING_POH_CRATE, true),
+                 LOCATION(RC_GV_NEAR_COW_CRATE, true),
     }, {
         //Exits
         Entrance(RR_GV_UPPER_STREAM, []{return ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives();}),

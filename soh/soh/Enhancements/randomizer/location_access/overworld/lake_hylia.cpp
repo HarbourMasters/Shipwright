@@ -68,6 +68,8 @@ void RegionTable_Init_LakeHylia() {
         LOCATION(RC_LH_LAB_FRONT_RUPEE, logic->CanUse(RG_IRON_BOOTS) || logic->HasItem(RG_GOLDEN_SCALE)),
         LOCATION(RC_LH_LAB_LEFT_RUPEE,  logic->CanUse(RG_IRON_BOOTS) || logic->HasItem(RG_GOLDEN_SCALE)),
         LOCATION(RC_LH_LAB_RIGHT_RUPEE, logic->CanUse(RG_IRON_BOOTS) || logic->HasItem(RG_GOLDEN_SCALE)),
+        LOCATION(RC_LH_LAB_CRATE,       true),
+
     }, {
         //Exits
         Entrance(RR_LAKE_HYLIA, []{return logic->CanOpenOverworldDoor(RG_HYLIA_LAB_KEY);}),
