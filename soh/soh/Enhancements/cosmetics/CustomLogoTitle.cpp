@@ -21,6 +21,8 @@ extern void Title_SetupView(TitleContext*, f32, f32, f32);
 #define LOGO_TO_DRAW_LUS 0
 #define LOGO_TO_DRAW_N64 1
 
+static bool shouldDrawIceOnSpinningLogo = false;
+
 extern "C" void CustomLogoTitle_Draw(TitleContext* titleContext, uint8_t logoToDraw) {
     static s16 sTitleRotY = 0;
     static Lights1 sTitleLights = gdSPDefLights1(0x64, 0x64, 0x64, 0xFF, 0xFF, 0xFF, 0x45, 0x45, 0x45);
@@ -93,7 +95,7 @@ extern "C" void CustomLogoTitle_Draw(TitleContext* titleContext, uint8_t logoToD
     }
 
     // Draw ice block around spinning N or ship.
-    if (GameInteractor_Should(VB_DRAW_ICE_ON_LOGO, false)) {
+    if (shouldDrawIceOnSpinningLogo) {
         f32 scale = 0.4f;
 
         gSPSegment(POLY_OPA_DISP++, 0x08,
@@ -224,7 +226,7 @@ static RegisterShipInitFunc initFuncBootsequence(RegisterCustomLogoTitleBootsequ
 #define CVAR_LETITSNOW_VALUE CVarGetInteger(CVAR_LETITSNOW_NAME, CVAR_LETITSNOW_DEFAULT)
 
 void RegisterCustomLogoTitleLetItSnow() {
-    COND_VB_SHOULD(VB_DRAW_ICE_ON_LOGO, CVAR_LETITSNOW_VALUE != CVAR_LETITSNOW_DEFAULT, { *should = true; });
+    shouldDrawIceOnSpinningLogo = CVAR_LETITSNOW_VALUE != CVAR_LETITSNOW_DEFAULT;
 }
 
 static RegisterShipInitFunc initFuncLetItSnow(RegisterCustomLogoTitleLetItSnow, { CVAR_LETITSNOW_NAME });
