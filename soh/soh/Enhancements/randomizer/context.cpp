@@ -144,6 +144,11 @@ void Context::GenerateLocationPool() {
         AddLocations(StaticData::GetOverworldPotLocations());
     }
 
+    if (mSettings->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_OVERWORLD) ||
+        mSettings->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_ALL)) {
+        AddLocations(StaticData::GetOverworldCrateLocations());
+    }
+
     AddLocations(StaticData::GetAllDungeonLocations());
 }
 
