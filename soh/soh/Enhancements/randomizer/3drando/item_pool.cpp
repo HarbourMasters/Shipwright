@@ -930,6 +930,15 @@ void GenerateItemPool() {
   if (overworldPotsActive || dungeonPotsActive) {
     PlaceItemsForType(RCTYPE_POT, overworldPotsActive, dungeonPotsActive, false);
   }
+
+  // Shuffle Crates
+  bool overworldCratesActive = ctx->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_OVERWORLD) ||
+                               ctx->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_ALL);
+  bool dungeonCratesActive = ctx->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_DUNGEONS) ||
+                           ctx->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_ALL);
+  if (overworldCratesActive || dungeonCratesActive) {
+      PlaceItemsForType(RCTYPE_CRATE, overworldCratesActive, dungeonCratesActive, false);
+  }
   
   auto fsMode = ctx->GetOption(RSK_FISHSANITY);
   if (fsMode.IsNot(RO_FISHSANITY_OFF)) {
