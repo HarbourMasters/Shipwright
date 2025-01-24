@@ -1954,7 +1954,7 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
                             /*german*/ "",
                             /*french*/ "", { QM_RED, QM_GREEN }));
 
-    hintTextTable[RHT_CRATE_GERUDO_FORTRESS] = HintText(CustomMessage("They say that a #crate in Gerudo Fortress# contains #[[1]]#.",
+    hintTextTable[RHT_CRATE_GERUDOS_FORTRESS] = HintText(CustomMessage("They say that a #crate in Gerudo Fortress# contains #[[1]]#.",
                             /*german*/ "",
                             /*french*/ "", { QM_RED, QM_GREEN }));
 

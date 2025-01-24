@@ -2497,7 +2497,7 @@ void RandomizerRegisterHooks() {
             ShuffleFairies_RegisterHooks();
         }
 
-        if (RAND_GET_OPTION(RSK_SHUFFLE_CRATES)) {
+        if (RAND_GET_OPTION(RSK_SHUFFLE_CRATES) != RO_SHUFFLE_CRATES_OFF) {
             shuffleCratesOnActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(ObjKibako2_RandomizerInit);
             shuffleCratesOnVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(ShuffleCrates_OnVanillaBehaviorHandler);
         }

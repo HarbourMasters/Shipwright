@@ -61,10 +61,12 @@ void ObjKibako2_RandomizerSpawnCollectible(ObjKibako2* crateActor, PlayState* pl
 void ObjKibako2_RandomizerInit(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
 
-    if (actor->id != ACTOR_OBJ_KIBAKO2) return;
+    if (actor->id != ACTOR_OBJ_KIBAKO2 || 
+        (gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS && (s16)actor->world.pos.x == -4051 && (s16)actor->world.pos.z == -3429) ||
+        (gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS && (s16)actor->world.pos.x == -4571 && (s16)actor->world.pos.z == -3429))
+        return;
 
     ObjKibako2* crateActor = static_cast<ObjKibako2*>(actorRef);
-    //s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
 
     crateActor->crateIdentity = OTRGlobals::Instance->gRandomizer->IdentifyCrate(gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
 }
@@ -79,6 +81,8 @@ void ShuffleCrates_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, 
         if (ObjKibako2_RandomizerHoldsItem(crateActor, gPlayState)) {
             crateActor->dyna.actor.draw = (ActorFunc)ObjKibako2_RandomizerDraw;
             *should = false;
+        } else {
+            *should = true;
         }
     }
 
@@ -88,6 +92,8 @@ void ShuffleCrates_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, 
         if (ObjKibako2_RandomizerHoldsItem(crateActor, gPlayState)) {
             ObjKibako2_RandomizerSpawnCollectible(crateActor, gPlayState);
             *should = false;
+        } else {
+            *should = true;
         }
     }
 
