@@ -283,6 +283,8 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_MQ_STATUE_2F_CENTER_EAST_POT, MQSpiritSharedStatueRoom(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM, []{return logic->CanBreakPots();})),
         LOCATION(RC_SPIRIT_TEMPLE_MQ_STATUE_2F_WEST_POT,        MQSpiritSharedStatueRoom(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM, []{return logic->CanBreakPots();})),
         LOCATION(RC_SPIRIT_TEMPLE_MQ_STATUE_2F_EASTMOST_POT,    MQSpiritSharedStatueRoom(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM, []{return logic->CanBreakPots();})),
+        LOCATION(RC_SPIRIT_TEMPLE_MQ_STATUE_CRATE_1,            MQSpiritSharedStatueRoom(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM, [] { return logic->CanBreakCrates();})),
+        LOCATION(RC_SPIRIT_TEMPLE_MQ_STATUE_CRATE_2,            MQSpiritSharedStatueRoom(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM, []{return logic->CanBreakCrates();})),
     }, {
         //Exits
         //we check possible adult access directly in MQSpiritSharedBrokenWallRoom, so this exit only covers Certain Access
@@ -506,10 +508,14 @@ void RegionTable_Init_SpiritTemple() {
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_BIG_MIRROR_ROOM] = Region("Spirit Temple MQ Big Mirror Room", "Spirit Temple", {RA_SPIRIT_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_SPIRIT_TEMPLE_MQ_BIG_MIRROR_POT_1, logic->CanBreakPots()),
-        LOCATION(RC_SPIRIT_TEMPLE_MQ_BIG_MIRROR_POT_2, logic->CanBreakPots()),
-        LOCATION(RC_SPIRIT_TEMPLE_MQ_BIG_MIRROR_POT_3, logic->CanBreakPots()),
-        LOCATION(RC_SPIRIT_TEMPLE_MQ_BIG_MIRROR_POT_4, logic->CanBreakPots()),
+        LOCATION(RC_SPIRIT_TEMPLE_MQ_BIG_MIRROR_POT_1,   logic->CanBreakPots()),
+        LOCATION(RC_SPIRIT_TEMPLE_MQ_BIG_MIRROR_POT_2,   logic->CanBreakPots()),
+        LOCATION(RC_SPIRIT_TEMPLE_MQ_BIG_MIRROR_POT_3,   logic->CanBreakPots()),
+        LOCATION(RC_SPIRIT_TEMPLE_MQ_BIG_MIRROR_POT_4,   logic->CanBreakPots()),
+        LOCATION(RC_SPIRIT_TEMPLE_MQ_BIG_MIRROR_CRATE_1, logic->CanBreakCrates()),
+        LOCATION(RC_SPIRIT_TEMPLE_MQ_BIG_MIRROR_CRATE_4, logic->CanBreakCrates()),
+        LOCATION(RC_SPIRIT_TEMPLE_MQ_BIG_MIRROR_CRATE_2, logic->CanBreakCrates()),
+        LOCATION(RC_SPIRIT_TEMPLE_MQ_BIG_MIRROR_CRATE_3, logic->CanBreakCrates()),
     }, {
         //Exits
         Entrance(RR_SPIRIT_TEMPLE_MQ_4F_CENTRAL,      []{return true;}),
