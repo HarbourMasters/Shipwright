@@ -302,6 +302,8 @@ void RegionTable_Init_DodongosCavern() {
         LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_POT_2, logic->CanBreakPots()),
         LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_POT_3, logic->CanBreakPots()),
         LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_POT_4, logic->CanBreakPots()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_LOWER_CRATE_1, logic->CanBreakCrates()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_LOWER_CRATE_2, logic->CanBreakCrates()),
     }, {
         //Exits
         //This is possible with sticks and shield, igniting a first flower by "touch" then very quickly crouch stabbing in a way that cuts the corner to light the 3rd bomb on the other side, but that's a trick
@@ -325,6 +327,10 @@ void RegionTable_Init_DodongosCavern() {
     areaTable[RR_DODONGOS_CAVERN_MQ_STAIRS_UPPER] = Region("Dodongos Cavern MQ Stairs Upper", "Dodongos Cavern", {RA_DODONGOS_CAVERN}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
         LOCATION(RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_STAIRCASE, logic->CanStunDeku()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_UPPER_CRATE_1, logic->CanBreakCrates()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_UPPER_CRATE_2, logic->CanBreakCrates()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_UPPER_CRATE_3, logic->CanBreakCrates()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_UPPER_CRATE_4, logic->CanBreakCrates()),
     }, {
         //Exits
         Entrance(RR_DODONGOS_CAVERN_MQ_STAIRS_LOWER,               []{return true;}),
@@ -379,8 +385,14 @@ void RegionTable_Init_DodongosCavern() {
 
     areaTable[RR_DODONGOS_CAVERN_MQ_LARVAE_ROOM] = Region("Dodongos Cavern MQ Larvae Room", "Dodongos Cavern", {RA_DODONGOS_CAVERN}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CHEST, true), //implied logic->CanKillEnemy(RE_GOHMA_LARVA) based on entry reqs with a trick to kill with nuts
-        LOCATION(RC_DODONGOS_CAVERN_MQ_GS_LARVAE_ROOM,    true), //implied logic->CanKillEnemy(RE_GOLD_SKULTULLA) based on entry reqs. Add crate logic when BONKO is added
+        LOCATION(RC_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CHEST,   true), //implied logic->CanKillEnemy(RE_GOHMA_LARVA) based on entry reqs with a trick to kill with nuts
+        LOCATION(RC_DODONGOS_CAVERN_MQ_GS_LARVAE_ROOM,      logic->CanBreakCrates()), //implied logic->CanKillEnemy(RE_GOLD_SKULTULLA) based on entry reqs. Add crate logic when BONKO is added
+        LOCATION(RC_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CRATE_1, logic->CanBreakCrates()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CRATE_2, logic->CanBreakCrates()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CRATE_3, logic->CanBreakCrates()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CRATE_4, logic->CanBreakCrates()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CRATE_5, logic->CanBreakCrates()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CRATE_6, logic->CanBreakCrates()),
     }, {
         //Exits
         Entrance(RR_DODONGOS_CAVERN_MQ_TORCH_PUZZLE_LOWER, []{return true;}), //implied logic->CanKillEnemy(RE_GOHMA_LARVA) based on entry reqs with a trick to kill with nuts
@@ -405,6 +417,8 @@ void RegionTable_Init_DodongosCavern() {
         //Locations
         LOCATION(RC_DODONGOS_CAVERN_MQ_TWO_FLAMES_POT_1, logic->CanBreakPots()),
         LOCATION(RC_DODONGOS_CAVERN_MQ_TWO_FLAMES_POT_2, logic->CanBreakPots()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_TWO_FLAMES_CRATE_1, logic->CanBreakCrates()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_TWO_FLAMES_CRATE_2, logic->CanBreakCrates()),
     }, {
         //Exits
         Entrance(RR_DODONGOS_CAVERN_MQ_UPPER_LIZALFOS,     []{return true;}),
@@ -458,7 +472,15 @@ void RegionTable_Init_DodongosCavern() {
         LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_POT_2, logic->CanBreakPots()),
         LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_POT_3, logic->CanBreakPots()),
         LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_POT_4, logic->CanBreakPots()),
-    }, {
+        LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_1, logic->CanBreakCrates()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_2, logic->CanBreakCrates()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_3, logic->CanBreakCrates()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_4, logic->CanBreakCrates()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_5, logic->CanBreakCrates()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_6, logic->CanBreakCrates()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_7, logic->CanBreakCrates()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_8, logic->CanBreakCrates()),
+        }, {
         //Exits
         Entrance(RR_DODONGOS_CAVERN_MQ_LOWER_RIGHT_SIDE, []{return Here(RR_DODONGOS_CAVERN_MQ_POES_ROOM, []{return logic->CanDetonateBombFlowers() || logic->HasItem(RG_GORONS_BRACELET);});}),
         Entrance(RR_DODONGOS_CAVERN_MQ_LOWER_LIZALFOS,   []{return true;}),

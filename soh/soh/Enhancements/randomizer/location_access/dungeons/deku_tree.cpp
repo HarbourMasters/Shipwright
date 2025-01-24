@@ -175,6 +175,8 @@ void RegionTable_Init_DekuTree() {
         LOCATION(RC_DEKU_TREE_MQ_MAP_CHEST,   true),
         LOCATION(RC_DEKU_TREE_MQ_GS_LOBBY,    logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
         LOCATION(RC_DEKU_TREE_MQ_LOBBY_HEART, true),
+        LOCATION(RC_DEKU_TREE_MQ_LOBBY_CRATE, logic->CanBreakCrates()),
+
     }, {
         //Exits
         Entrance(RR_DEKU_TREE_MQ_1F,              []{return true;}),
@@ -194,6 +196,9 @@ void RegionTable_Init_DekuTree() {
         LOCATION(RC_DEKU_TREE_MQ_SLINGSHOT_CHEST,           logic->CanKillEnemy(RE_DEKU_BABA)),
         LOCATION(RC_DEKU_TREE_MQ_SLINGSHOT_ROOM_BACK_CHEST, logic->HasFireSourceWithTorch() || (logic->IsAdult && logic->CanUse(RG_FAIRY_BOW))),
         LOCATION(RC_DEKU_TREE_MQ_SLINGSHOT_ROOM_HEART,      true),
+        LOCATION(RC_DEKU_TREE_MQ_SLINGSHOT_ROOM_CRATE_1,    logic->CanBreakCrates()),
+        LOCATION(RC_DEKU_TREE_MQ_SLINGSHOT_ROOM_CRATE_2,    logic->CanBreakCrates()),
+
     }, {
         //Exits
         Entrance(RR_DEKU_TREE_MQ_2F,              []{return true;}),
