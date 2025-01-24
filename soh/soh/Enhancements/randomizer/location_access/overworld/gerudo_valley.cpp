@@ -53,9 +53,9 @@ void RegionTable_Init_GerudoValley() {
 
     areaTable[RR_GV_CRATE_LEDGE] = Region("GV Crate Ledge", "Gerudo Valley", {RA_GERUDO_VALLEY}, DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_GV_CRATE_FREESTANDING_POH, true), 
-        LOCATION(RC_GV_FREESTANDING_POH_CRATE, true),
-        LOCATION(RC_GV_NEAR_COW_CRATE, true),
+        LOCATION(RC_GV_CRATE_FREESTANDING_POH, logic->CanBreakCrates()), 
+        LOCATION(RC_GV_FREESTANDING_POH_CRATE, logic->CanBreakCrates()),
+        LOCATION(RC_GV_NEAR_COW_CRATE,         logic->IsChild && logic->CanBreakCrates()),
     }, {
         //Exits
         Entrance(RR_GV_UPPER_STREAM, []{return ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives();}),
@@ -68,10 +68,10 @@ void RegionTable_Init_GerudoValley() {
         LOCATION(RC_GV_TRADE_SAW,      logic->IsAdult && logic->CanUse(RG_POACHERS_SAW)),
         LOCATION(RC_GV_GS_BEHIND_TENT, logic->IsAdult && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
         LOCATION(RC_GV_GS_PILLAR,      logic->IsAdult && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
-        LOCATION(RC_GV_CRATE_BRIDGE_1, true),
-        LOCATION(RC_GV_CRATE_BRIDGE_2, true),
-        LOCATION(RC_GV_CRATE_BRIDGE_3, true),
-        LOCATION(RC_GV_CRATE_BRIDGE_4, true),
+        LOCATION(RC_GV_CRATE_BRIDGE_1, logic->IsChild && logic->CanBreakCrates()),
+        LOCATION(RC_GV_CRATE_BRIDGE_2, logic->IsChild && logic->CanBreakCrates()),
+        LOCATION(RC_GV_CRATE_BRIDGE_3, logic->IsChild && logic->CanBreakCrates()),
+        LOCATION(RC_GV_CRATE_BRIDGE_4, logic->IsChild && logic->CanBreakCrates()),
 
     }, {
         //Exits
