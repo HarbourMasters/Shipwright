@@ -19,7 +19,7 @@ extern "C" void ObjKibako2_RandomizerDraw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    gDPSetGrayscaleColor(POLY_OPA_DISP++, 175, 255, 0, 255);
+    gDPSetGrayscaleColor(POLY_OPA_DISP++, 255, 175, 0, 255);
 
     if (Flags_GetRandomizerInf(crateActor->crateIdentity.randomizerInf) == 0) {
         gSPGrayscale(POLY_OPA_DISP++, true);
