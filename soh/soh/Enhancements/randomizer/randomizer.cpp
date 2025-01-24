@@ -1549,8 +1549,12 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_POT_1,                  RAND_INF_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_POT_1 },
     { RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_POT_2,                  RAND_INF_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_POT_2 },
     // Crates
-    { RC_GV_FREESTANDING_POH_CRATE,                                      RAND_INF_GV_FREESTANDING_POH_CRATE, },
+    { RC_GV_FREESTANDING_POH_CRATE,                                     RAND_INF_GV_FREESTANDING_POH_CRATE, },
     { RC_GV_NEAR_COW_CRATE,                                             RAND_INF_GV_NEAR_COW_CRATE, },
+    { RC_GV_CRATE_BRIDGE_1,                                             RAND_INF_GV_CRATE_BRIDGE_1, },
+    { RC_GV_CRATE_BRIDGE_2,                                             RAND_INF_GV_CRATE_BRIDGE_2, },
+    { RC_GV_CRATE_BRIDGE_3,                                             RAND_INF_GV_CRATE_BRIDGE_3, },
+    { RC_GV_CRATE_BRIDGE_4,                                             RAND_INF_GV_CRATE_BRIDGE_4, },
     { RC_GF_ABOVE_JAIL_CRATE,                                           RAND_INF_GF_ABOVE_JAIL_CRATE, },
     { RC_GF_OUTSIDE_CENTER_CRATE_1,                                     RAND_INF_GF_OUTSIDE_CENTER_CRATE_1, },
     { RC_GF_OUTSIDE_CENTER_CRATE_2,                                     RAND_INF_GF_OUTSIDE_CENTER_CRATE_2, },
@@ -2055,8 +2059,9 @@ CrateIdentity Randomizer::IdentifyCrate(s32 sceneNum, s32 posX, s32 posZ) {
     struct CrateIdentity crateIdentity;
     uint32_t crateSceneNum = sceneNum;
 
-    if (sceneNum == SCENE_GANONDORF_BOSS) {
-        crateSceneNum = SCENE_GANONS_TOWER;
+    // pretend night is day to align crates in market and align GF child/adult crates
+    if (sceneNum == SCENE_MARKET_NIGHT) {
+        crateSceneNum = SCENE_MARKET_DAY;
     }
 
     crateIdentity.randomizerInf = RAND_INF_MAX;
