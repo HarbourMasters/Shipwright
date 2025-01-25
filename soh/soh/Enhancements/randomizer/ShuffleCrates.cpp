@@ -52,6 +52,23 @@ extern "C" void ObjKibako_RandomizerDraw(Actor* thisx, PlayState* play) {
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
+bool GetOverworldCratesIncluded(Rando::Location* loc) {
+    uint8_t logicSetting = Rando::Context::GetInstance()->GetOption(RSK_LOGIC_RULES).GetContextOptionIndex();
+    uint8_t crateSetting = Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_CRATES).GetContextOptionIndex();
+
+    if (loc->GetRCType() != RCTYPE_CRATE || crateSetting == RO_SHUFFLE_CRATES_OFF) {
+        return false;
+    }
+
+    RandomizerCheck rc = loc->GetRandomizerCheck();
+    
+    if (logicSetting != RO_LOGIC_NO_LOGIC && (rc == RC_GV_CRATE_BRIDGE_1 || rc == RC_GV_CRATE_BRIDGE_2 || rc == RC_GV_CRATE_BRIDGE_3 ||
+        rc == RC_GV_CRATE_BRIDGE_4 || rc == RC_GF_ARCHERY_LEFT_END_CHILD_CRATE)) {
+        return false;
+    }
+    return true;
+}
+
 uint8_t ObjKibako2_RandomizerHoldsItem(ObjKibako2* crateActor, PlayState* play) {
     RandomizerCheck rc = crateActor->crateIdentity.randomizerCheck;
     uint8_t isDungeon = Rando::StaticData::GetLocation(rc)->IsDungeon();
@@ -107,17 +124,19 @@ void ObjKibako_RandomizerSpawnCollectible(ObjKibako* smallcrateActor, PlayState*
 
 void ObjKibako2_RandomizerInit(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
+    uint8_t logicSetting = Rando::Context::GetInstance()->GetOption(RSK_LOGIC_RULES).GetContextOptionIndex();
 
     //ignore crates that are either OOB or inaccessible in logic (child-only GV + GF)
     //TODO add back when able to exclude from tracker
-    if (actor->id != ACTOR_OBJ_KIBAKO2 || 
+    if (actor->id != ACTOR_OBJ_KIBAKO2 ||
         (gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS && (s16)actor->world.pos.x == -4051 && (s16)actor->world.pos.z == -3429) ||
         (gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS && (s16)actor->world.pos.x == -4571 && (s16)actor->world.pos.z == -3429) ||
-        (gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS && (s16)actor->world.pos.x == 3443 && (s16)actor->world.pos.z == -4876) ||
+        (logicSetting != RO_LOGIC_NO_LOGIC &&
+        ((gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS && (s16)actor->world.pos.x == 3443 && (s16)actor->world.pos.z == -4876) ||
         (gPlayState->sceneNum == SCENE_GERUDO_VALLEY && (s16)actor->world.pos.x == -764 && (s16)actor->world.pos.z == 148) || 
         (gPlayState->sceneNum == SCENE_GERUDO_VALLEY && (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -125) ||
         (gPlayState->sceneNum == SCENE_GERUDO_VALLEY && (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -150) || 
-        (gPlayState->sceneNum == SCENE_GERUDO_VALLEY && (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -90))
+        (gPlayState->sceneNum == SCENE_GERUDO_VALLEY && (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -90))))
         return;
 
     ObjKibako2* crateActor = static_cast<ObjKibako2*>(actorRef);

@@ -60,6 +60,7 @@ void RegionTable_Init_GerudoFortress() {
         LOCATION(RC_GF_ARCHERY_START_CRATE_2,         (logic->IsChild || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD)) && logic->CanBreakCrates()),
         LOCATION(RC_GF_ARCHERY_LEFT_END_CRATE_1,      (logic->IsChild || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD)) && logic->CanBreakCrates()),
         LOCATION(RC_GF_ARCHERY_LEFT_END_CRATE_2,      (logic->IsChild || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD)) && logic->CanBreakCrates()),
+        LOCATION(RC_GF_ARCHERY_LEFT_END_CHILD_CRATE,  logic->IsChild && logic->HasExplosives() && logic->CanBreakCrates()),
         LOCATION(RC_GF_ARCHERY_RIGHT_END_CRATE_1,     (logic->IsChild || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD)) && logic->CanBreakCrates()),
         LOCATION(RC_GF_ARCHERY_RIGHT_END_CRATE_2,     (logic->IsChild || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD)) && logic->CanBreakCrates()),
         LOCATION(RC_GF_KITCHEN_CRATE_1,               (logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT)) && logic->CanBreakCrates()),

@@ -1573,6 +1573,7 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_GF_ARCHERY_START_CRATE_2,                                      RAND_INF_GF_ARCHERY_START_CRATE_2, },
     { RC_GF_ARCHERY_LEFT_END_CRATE_1,                                   RAND_INF_GF_ARCHERY_LEFT_END_CRATE_1, },
     { RC_GF_ARCHERY_LEFT_END_CRATE_2,                                   RAND_INF_GF_ARCHERY_LEFT_END_CRATE_2, },
+    { RC_GF_ARCHERY_LEFT_END_CHILD_CRATE,                               RAND_INF_GF_ARCHERY_LEFT_END_CHILD_CRATE, },
     { RC_GF_ARCHERY_RIGHT_END_CRATE_1,                                  RAND_INF_GF_ARCHERY_RIGHT_END_CRATE_1, },
     { RC_GF_ARCHERY_RIGHT_END_CRATE_2,                                  RAND_INF_GF_ARCHERY_RIGHT_END_CRATE_2, },
     { RC_GF_KITCHEN_CRATE_1,                                            RAND_INF_GF_KITCHEN_CRATE_1, },
