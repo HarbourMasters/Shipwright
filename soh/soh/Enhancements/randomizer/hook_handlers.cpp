@@ -2486,6 +2486,5 @@ void RandomizerRegisterHooks() {
         if (RAND_GET_OPTION(RSK_SHUFFLE_FAIRIES)) {
             ShuffleFairies_RegisterHooks();
         }
-
     });
 }
