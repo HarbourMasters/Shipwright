@@ -442,6 +442,8 @@ const EntranceData* GetEntranceData(s16 index) {
     return nullptr;
 }
 
+// Used for verifying the names on both sides of entrance pairs match. Keeping for ease of use for further name changes later
+// TODO: Figure out how to remove the need for duplicate entrance names so this is no longer necessary
 void CheckEntranceNames() {
         SPDLOG_ERROR("Checking entrance names:");
     for (size_t i = 0; i < ARRAY_COUNT(entranceData); i++) {
@@ -451,9 +453,6 @@ void CheckEntranceNames() {
             if (entrance->source != reverse->destination) {
                 SPDLOG_ERROR("{}({}) -> {}({})", entrance->source, entrance->index, reverse->destination, reverse->reverseIndex);
             }
-            //if (entrance->destination != reverse->source) {
-            //    SPDLOG_ERROR("{}({}) -> {}({})", entrance->destination, entrance->reverseIndex, reverse->source, reverse->index);
-            //}
         }
     }
 }
