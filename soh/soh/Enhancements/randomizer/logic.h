@@ -239,6 +239,7 @@ class Logic {
     bool CanBreakLowerBeehives();
     bool CanBreakPots();
     bool CanBreakCrates();
+    bool CanBreakSmallCrates();
     bool HasFireSource();
     bool HasFireSourceWithTorch();
     bool TradeQuestStep(RandomizerGet rg);

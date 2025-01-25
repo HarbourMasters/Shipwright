@@ -28,10 +28,12 @@ void RegionTable_Init_JabuJabusBelly() {
         EventAccess(&logic->JabuWestTentacle, []{return logic->JabuRutoIn1F && logic->CanKillEnemy(RE_TENTACLE, ED_BOOMERANG);}),
     }, {
         //Locations
-        LOCATION(RC_JABU_JABUS_BELLY_DEKU_SCRUB,      logic->HasItem(RG_BRONZE_SCALE) && (logic->IsChild || logic->HasItem(RG_SILVER_SCALE) || ctx->GetTrickOption(RT_JABU_ALCOVE_JUMP_DIVE) || logic->CanUse(RG_IRON_BOOTS)) && logic->CanStunDeku()),
+        LOCATION(RC_JABU_JABUS_BELLY_DEKU_SCRUB,                    logic->HasItem(RG_BRONZE_SCALE) && (logic->IsChild || logic->HasItem(RG_SILVER_SCALE) || ctx->GetTrickOption(RT_JABU_ALCOVE_JUMP_DIVE) || logic->CanUse(RG_IRON_BOOTS)) && logic->CanStunDeku()),
         //We can kill the Stingers with ruto
-        LOCATION(RC_JABU_JABUS_BELLY_BOOMERANG_CHEST, logic->JabuRutoIn1F),
-        LOCATION(RC_JABU_JABUS_BELLY_MAP_CHEST,       logic->JabuWestTentacle),
+        LOCATION(RC_JABU_JABUS_BELLY_BOOMERANG_CHEST,               logic->JabuRutoIn1F),
+        LOCATION(RC_JABU_JABUS_BELLY_MAP_CHEST,                     logic->JabuWestTentacle),
+        LOCATION(RC_JABU_JABUS_BELLY_PLATFORM_ROOM_SMALL_CRATE_1,   logic->CanBreakSmallCrates()),
+        LOCATION(RC_JABU_JABUS_BELLY_PLATFORM_ROOM_SMALL_CRATE_2,   logic->CanBreakSmallCrates()),
     }, {
         //Exits
         Entrance(RR_JABU_JABUS_BELLY_BEGINNING,      []{return true;}),
@@ -254,6 +256,8 @@ void RegionTable_Init_JabuJabusBelly() {
         LOCATION(RC_JABU_JABUS_BELLY_MQ_FALLING_LIKE_LIKE_ROOM_CHEST, logic->CanUse(RG_FAIRY_SLINGSHOT)),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_LIKE_LIKES_POT_1,             logic->CanBreakPots()),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_LIKE_LIKES_POT_2,             logic->CanBreakPots()),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_TRIPLE_HALLWAY_SMALL_CRATE_1, logic->CanBreakSmallCrates()),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_TRIPLE_HALLWAY_SMALL_CRATE_2, logic->CanBreakSmallCrates()),
     }, {
         //Exits
         Entrance(RR_JABU_JABUS_BELLY_MQ_HOLES_ROOM,        []{return logic->CanUse(RG_BOOMERANG);}),
