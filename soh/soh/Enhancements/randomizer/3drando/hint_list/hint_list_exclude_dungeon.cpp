@@ -464,6 +464,10 @@ hintTextTable[RHT_DODONGOS_CAVERN_BOSS_ROOM_CHEST] = HintText(CustomMessage("The
                                                      /*german*/ "",
                                                      /*french*/ "Selon moi, près d'un #ascenceur central dans le Ventre de Jabu-Jabu# se trouve #[[1]]#.", {QM_RED, QM_GREEN}));
 
+    hintTextTable[RHT_CRATE_JABU_JABU] = HintText(CustomMessage("They say that a #crate in Jabu Jabu's Belly# contains #[[1]]#.",
+                                                     /*german*/ "",
+                                                     /*french*/ "Selon moi, une #caisse dans le Ventre de Jabu-Jabu# contient #[[1]]#.", {QM_RED, QM_GREEN}));
+
   /*--------------------------
   |      FOREST TEMPLE       |
   ---------------------------*/
@@ -693,6 +697,10 @@ hintTextTable[RHT_DODONGOS_CAVERN_BOSS_ROOM_CHEST] = HintText(CustomMessage("The
   hintTextTable[RHT_FOREST_TEMPLE_HEART] = HintText(CustomMessage("They say that a #heart in the Forest Temple# hides #[[1]]#.",
                                                        /*german*/ "",
                                                        /*french*/ "Selon moi, un #coeur dans le Temple de la Fôret# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_CRATE_FOREST_TEMPLE] = HintText(CustomMessage("They say that a #crate in Forest Temple# contains #[[1]]#.",
+                                                     /*german*/ "",
+                                                     /*french*/ "Selon moi, une #caisse dans le Temple de la Fôret# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
   /*--------------------------
   |       FIRE TEMPLE        |
@@ -1564,6 +1572,10 @@ hintTextTable[RHT_SHADOW_TEMPLE_MAP_CHEST] = HintText(CustomMessage("They say th
     hintTextTable[RHT_SHADOW_TEMPLE_WIND_HINT_SUN_FAIRY] = HintText(CustomMessage("They say that an #calling the sun near an invisible chest guarded by the dead# reveals #[[1]]#.",
                                                                        /*german*/ "!!!",
                                                                        /*french*/ "Selon moi, #appeler le soleil près d’un coffre invisible gardé par les morts# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_CRATE_FOREST_TEMPLE] = HintText(CustomMessage("They say that a #crate in Shadow Temple# contains #[[1]]#.",
+                                                     /*german*/ "",
+                                                     /*french*/ "Selon moi, une #caisse dans le Temple de l'Ombre# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
   /*--------------------------
   |    BOTTOM OF THE WELL    |

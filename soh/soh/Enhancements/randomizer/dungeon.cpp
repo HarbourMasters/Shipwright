@@ -459,8 +459,16 @@ Dungeons::Dungeons() {
                                                     RC_JABU_JABUS_BELLY_BARINADE_POT_5,
                                                     RC_JABU_JABUS_BELLY_BARINADE_POT_6,
                                                 }, 
-                                                {},
-                                                {},
+                                                {
+                                                    // Vanilla Small Crates
+                                                    RC_JABU_JABUS_BELLY_PLATFORM_ROOM_SMALL_CRATE_1,
+                                                    RC_JABU_JABUS_BELLY_PLATFORM_ROOM_SMALL_CRATE_2,
+                                                },
+                                                {
+                                                    // MQ Small Crates
+                                                    RC_JABU_JABUS_BELLY_MQ_TRIPLE_HALLWAY_SMALL_CRATE_1,
+                                                    RC_JABU_JABUS_BELLY_MQ_TRIPLE_HALLWAY_SMALL_CRATE_2,                                                
+                                                },
                                                 {},
                                                 {
                                                     // Boss Room Locations
@@ -568,7 +576,12 @@ Dungeons::Dungeons() {
                         RC_FOREST_TEMPLE_MQ_BASEMENT_POT_4,
                     },
                     {},
-                    {},
+                    {
+                        // MQ Small Crates
+                        RC_FOREST_TEMPLE_MQ_FROZEN_EYE_SWITCH_SMALL_CRATE_1,
+                        RC_FOREST_TEMPLE_MQ_FROZEN_EYE_SWITCH_SMALL_CRATE_2,
+                        RC_FOREST_TEMPLE_MQ_FROZEN_EYE_SWITCH_SMALL_CRATE_3,
+                    },
                     {},
                     {
                         // Boss Room Locations
@@ -683,7 +696,11 @@ Dungeons::Dungeons() {
                         RC_FIRE_TEMPLE_MQ_BEFORE_MINI_BOSS_POT_7,
                         RC_FIRE_TEMPLE_MQ_BEFORE_MINI_BOSS_POT_8,
                     },
-                    {},
+                    {
+                        // Vanilla Small Crates
+                        RC_FIRE_TEMPLE_AFTER_HAMMER_SMALL_CRATE_1,
+                        RC_FIRE_TEMPLE_AFTER_HAMMER_SMALL_CRATE_2,
+                    },
                     {
                         // MQ Crates
                         RC_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_CRATE_1,
@@ -709,6 +726,15 @@ Dungeons::Dungeons() {
                         RC_FIRE_TEMPLE_MQ_LAVA_TORCH_CRATE_3,
                         RC_FIRE_TEMPLE_MQ_LAVA_TORCH_CRATE_4,
                         RC_FIRE_TEMPLE_MQ_LAVA_TORCH_CRATE_5,
+
+                        // MQ Small Crates
+                        RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_SMALL_CRATE_1,
+                        RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_SMALL_CRATE_2,
+                        RC_FIRE_TEMPLE_MQ_LAVA_TORCH_SMALL_CRATE_1,
+                        RC_FIRE_TEMPLE_MQ_LAVA_TORCH_SMALL_CRATE_2,
+                        RC_FIRE_TEMPLE_MQ_LAVA_TORCH_SMALL_CRATE_3,
+                        RC_FIRE_TEMPLE_MQ_LAVA_TORCH_SMALL_CRATE_4,
+                        RC_FIRE_TEMPLE_MQ_LAVA_TORCH_SMALL_CRATE_5,
                     },
                     {},
                     {
@@ -906,6 +932,17 @@ Dungeons::Dungeons() {
                         RC_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_GATE_CRATE_1,
                         RC_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_GATE_CRATE_2,
                         RC_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_GATE_CRATE_3,
+
+                        // MQ Small Crates
+                        RC_WATER_TEMPLE_MQ_DRAGON_ROOM_TORCHES_SMALL_CRATE_1,
+                        RC_WATER_TEMPLE_MQ_DRAGON_ROOM_TORCHES_SMALL_CRATE_2,
+                        RC_WATER_TEMPLE_MQ_DRAGON_ROOM_TORCHES_SMALL_CRATE_3,
+                        RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_SMALL_CRATE_1,
+                        RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_SMALL_CRATE_2,
+                        RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_SMALL_CRATE_3,
+                        RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_SMALL_CRATE_4,
+                        RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_SMALL_CRATE,
+                        RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_UPPER_SMALL_CRATE,
                     },
                     {},
                     {
@@ -1027,7 +1064,11 @@ Dungeons::Dungeons() {
                         RC_SPIRIT_TEMPLE_MQ_EARLY_ADULT_POT_1,
                         RC_SPIRIT_TEMPLE_MQ_EARLY_ADULT_POT_2,
                     },
-                    {},
+                    {
+                        // Vanilla Small Crates
+                        RC_SPIRIT_TEMPLE_BEFORE_CHILD_CLIMB_SMALL_CRATE_1,
+                        RC_SPIRIT_TEMPLE_BEFORE_CHILD_CLIMB_SMALL_CRATE_2,
+                    },
                     {
                         // MQ Crates
                         RC_SPIRIT_TEMPLE_MQ_STATUE_CRATE_1,
@@ -1036,6 +1077,10 @@ Dungeons::Dungeons() {
                         RC_SPIRIT_TEMPLE_MQ_BIG_MIRROR_CRATE_2,
                         RC_SPIRIT_TEMPLE_MQ_BIG_MIRROR_CRATE_3,
                         RC_SPIRIT_TEMPLE_MQ_BIG_MIRROR_CRATE_4,
+
+                        // MQ Small Crates
+                        RC_SPIRIT_TEMPLE_MQ_STATUE_SMALL_CRATE,
+                        RC_SPIRIT_TEMPLE_MQ_BEAMOS_SMALL_CRATE,
                     },
                     {
                         // Shared Locations
@@ -1168,7 +1213,13 @@ Dungeons::Dungeons() {
                         RC_SHADOW_TEMPLE_MQ_DEAD_HAND_POT_2,
                     },
                     {},
-                    {},
+                    {
+                        // MQ Small Crates
+                        RC_SHADOW_TEMPLE_MQ_TRUTH_SPINNER_SMALL_CRATE_1,
+                        RC_SHADOW_TEMPLE_MQ_TRUTH_SPINNER_SMALL_CRATE_2,
+                        RC_SHADOW_TEMPLE_MQ_TRUTH_SPINNER_SMALL_CRATE_3,
+                        RC_SHADOW_TEMPLE_MQ_TRUTH_SPINNER_SMALL_CRATE_4,
+                    },
                     {},
                     {
                         // Boss Room Locations
