@@ -12,6 +12,7 @@ void ObjKibako2_RandomizerInit(void* actorRef);
 };
 #endif
 
+bool GetCrateLocationExcluded(Rando::Location* loc);
 void ShuffleCrates_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs);
 
 #endif //ShuffleCrates_H

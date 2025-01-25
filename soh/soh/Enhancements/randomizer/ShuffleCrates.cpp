@@ -19,7 +19,7 @@ extern "C" void ObjKibako2_RandomizerDraw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    gDPSetGrayscaleColor(POLY_OPA_DISP++, 255, 175, 0, 255);
+    gDPSetGrayscaleColor(POLY_OPA_DISP++, 200, 0, 200, 255);
 
     if (Flags_GetRandomizerInf(crateActor->crateIdentity.randomizerInf) == 0) {
         gSPGrayscale(POLY_OPA_DISP++, true);
@@ -103,10 +103,18 @@ void ObjKibako2_MoveForRandomizer(ObjKibako2* objKibako2, PlayState* play) {
 
 void ObjKibako2_RandomizerInit(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
+    uint8_t logicSetting = Rando::Context::GetInstance()->GetOption(RSK_LOGIC_RULES).GetContextOptionIndex();
 
+    //ignore crates that are either OOB or inaccessible in logic (child-only GV + GF)
+    //TODO add back when able to exclude from tracker
     if (actor->id != ACTOR_OBJ_KIBAKO2 || 
         (gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS && (s16)actor->world.pos.x == -4051 && (s16)actor->world.pos.z == -3429) ||
-        (gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS && (s16)actor->world.pos.x == -4571 && (s16)actor->world.pos.z == -3429))
+        (gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS && (s16)actor->world.pos.x == -4571 && (s16)actor->world.pos.z == -3429) ||
+        (gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS && (s16)actor->world.pos.x == 3443 && (s16)actor->world.pos.z == -4876) ||
+        (gPlayState->sceneNum == SCENE_GERUDO_VALLEY && (s16)actor->world.pos.x == -764 && (s16)actor->world.pos.z == 148) || 
+        (gPlayState->sceneNum == SCENE_GERUDO_VALLEY && (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -125) ||
+        (gPlayState->sceneNum == SCENE_GERUDO_VALLEY && (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -150) || 
+        (gPlayState->sceneNum == SCENE_GERUDO_VALLEY && (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -90))
         return;
 
     ObjKibako2* crateActor = static_cast<ObjKibako2*>(actorRef);
