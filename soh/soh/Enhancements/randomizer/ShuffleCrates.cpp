@@ -11,8 +11,9 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
+#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetContextOptionIndex()
 
+extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
 
 extern "C" void ObjKibako2_RandomizerDraw(Actor* thisx, PlayState* play) {
     static Gfx* dList = (Gfx*)gLargeCrateDL;
@@ -154,12 +155,70 @@ void ObjKibako_RandomizerInit(void* actorRef) {
     smallcrateActor->smallcrateIdentity = OTRGlobals::Instance->gRandomizer->IdentifySmallCrate(gPlayState->sceneNum, (s16)actor->home.pos.x, (s16)actor->home.pos.z);
 }
 
-void ShuffleCrates_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
-    va_list args;
-    va_copy(args, originalArgs);
+//void ShuffleCrates_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
+//    va_list args;
+//    va_copy(args, originalArgs);
+//
+//    // Draw custom model for crates to indicate it holding a randomized item.
+//    if (id == VB_CRATE_SETUP_DRAW) {
+//        ObjKibako2* crateActor = va_arg(args, ObjKibako2*);
+//        if (ObjKibako2_RandomizerHoldsItem(crateActor, gPlayState)) {
+//            crateActor->dyna.actor.draw = (ActorFunc)ObjKibako2_RandomizerDraw;
+//            *should = false;
+//        } else {
+//            *should = true;
+//        }
+//    }
+//
+//    // Do not spawn vanilla item from crates, instead spawn the randomized item.
+//    if (id == VB_CRATE_DROP_ITEM) {
+//        ObjKibako2* crateActor = va_arg(args, ObjKibako2*);
+//        if (ObjKibako2_RandomizerHoldsItem(crateActor, gPlayState)) {
+//            ObjKibako2_RandomizerSpawnCollectible(crateActor, gPlayState);
+//            *should = false;
+//        } else {
+//            *should = true;
+//        }
+//    }
+//
+//    va_end(args);
+//}
 
-    // Draw custom model for crates to indicate it holding a randomized item.
-    if (id == VB_CRATE_SETUP_DRAW) {
+//void ShuffleSmallCrates_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
+//    va_list args;
+//    va_copy(args, originalArgs);
+//
+//    // Draw custom model for crates to indicate it holding a randomized item.
+//    if (id == VB_SMALL_CRATE_SETUP_DRAW) {
+//        ObjKibako* smallcrateActor = va_arg(args, ObjKibako*);
+//        if (ObjKibako_RandomizerHoldsItem(smallcrateActor, gPlayState)) {
+//            smallcrateActor->actor.draw = (ActorFunc)ObjKibako_RandomizerDraw;
+//            *should = false;
+//        } else {
+//            *should = true;
+//        }
+//    }
+//
+//    // Do not spawn vanilla item from crates, instead spawn the randomized item.
+//    if (id == VB_SMALL_CRATE_DROP_ITEM) {
+//        ObjKibako* smallcrateActor = va_arg(args, ObjKibako*);
+//        if (ObjKibako_RandomizerHoldsItem(smallcrateActor, gPlayState)) {
+//            ObjKibako_RandomizerSpawnCollectible(smallcrateActor, gPlayState);
+//            *should = false;
+//        } else {
+//            *should = true;
+//        }
+//    }
+//
+//    va_end(args);
+//}
+
+void RegisterShuffleCrates() {
+    bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_CRATES);
+
+    COND_ID_HOOK(OnActorInit, ACTOR_OBJ_KIBAKO2, shouldRegister, ObjKibako2_RandomizerInit);
+
+    COND_VB_SHOULD(VB_CRATE_SETUP_DRAW, shouldRegister, {
         ObjKibako2* crateActor = va_arg(args, ObjKibako2*);
         if (ObjKibako2_RandomizerHoldsItem(crateActor, gPlayState)) {
             crateActor->dyna.actor.draw = (ActorFunc)ObjKibako2_RandomizerDraw;
@@ -167,10 +226,9 @@ void ShuffleCrates_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, 
         } else {
             *should = true;
         }
-    }
+    });
 
-    // Do not spawn vanilla item from crates, instead spawn the randomized item.
-    if (id == VB_CRATE_DROP_ITEM) {
+    COND_VB_SHOULD(VB_CRATE_DROP_ITEM, shouldRegister, {
         ObjKibako2* crateActor = va_arg(args, ObjKibako2*);
         if (ObjKibako2_RandomizerHoldsItem(crateActor, gPlayState)) {
             ObjKibako2_RandomizerSpawnCollectible(crateActor, gPlayState);
@@ -178,17 +236,11 @@ void ShuffleCrates_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, 
         } else {
             *should = true;
         }
-    }
+    });
 
-    va_end(args);
-}
+    COND_ID_HOOK(OnActorInit, ACTOR_OBJ_KIBAKO, shouldRegister, ObjKibako_RandomizerInit);
 
-void ShuffleSmallCrates_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
-    va_list args;
-    va_copy(args, originalArgs);
-
-    // Draw custom model for crates to indicate it holding a randomized item.
-    if (id == VB_SMALL_CRATE_SETUP_DRAW) {
+    COND_VB_SHOULD(VB_SMALL_CRATE_SETUP_DRAW, shouldRegister, {
         ObjKibako* smallcrateActor = va_arg(args, ObjKibako*);
         if (ObjKibako_RandomizerHoldsItem(smallcrateActor, gPlayState)) {
             smallcrateActor->actor.draw = (ActorFunc)ObjKibako_RandomizerDraw;
@@ -196,10 +248,9 @@ void ShuffleSmallCrates_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* sho
         } else {
             *should = true;
         }
-    }
+    });
 
-    // Do not spawn vanilla item from crates, instead spawn the randomized item.
-    if (id == VB_SMALL_CRATE_DROP_ITEM) {
+    COND_VB_SHOULD(VB_SMALL_CRATE_DROP_ITEM, shouldRegister, {
         ObjKibako* smallcrateActor = va_arg(args, ObjKibako*);
         if (ObjKibako_RandomizerHoldsItem(smallcrateActor, gPlayState)) {
             ObjKibako_RandomizerSpawnCollectible(smallcrateActor, gPlayState);
@@ -207,7 +258,8 @@ void ShuffleSmallCrates_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* sho
         } else {
             *should = true;
         }
-    }
+    });
 
-    va_end(args);
 }
+
+static RegisterShipInitFunc initFunc(RegisterShuffleCrates, { "IS_RANDO" });
