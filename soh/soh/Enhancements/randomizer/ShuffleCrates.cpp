@@ -150,7 +150,6 @@ void ObjKibako2_MoveForRandomizer(ObjKibako2* objKibako2, PlayState* play) {
 
 void ObjKibako2_RandomizerInit(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
-    uint8_t logicSetting = Rando::Context::GetInstance()->GetOption(RSK_LOGIC_RULES).GetContextOptionIndex();
 
     //ignore crates that are either OOB or inaccessible in logic (child-only GV + GF)
     //TODO add back when able to exclude from tracker
@@ -173,13 +172,12 @@ void ObjKibako2_RandomizerInit(void* actorRef) {
 
 void ObjKibako_RandomizerInit(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
-    uint8_t logicSetting = Rando::Context::GetInstance()->GetOption(RSK_LOGIC_RULES).GetContextOptionIndex();
 
     if (actor->id != ACTOR_OBJ_KIBAKO) return;
 
     ObjKibako* smallcrateActor = static_cast<ObjKibako*>(actorRef);
 
-    smallcrateActor->smallcrateIdentity = OTRGlobals::Instance->gRandomizer->IdentifySmallCrate(gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
+    smallcrateActor->smallcrateIdentity = OTRGlobals::Instance->gRandomizer->IdentifySmallCrate(gPlayState->sceneNum, (s16)actor->home.pos.x, (s16)actor->home.pos.z);
 }
 
 void ShuffleCrates_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {

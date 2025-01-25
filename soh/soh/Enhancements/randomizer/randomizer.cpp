@@ -2119,14 +2119,14 @@ CrateIdentity Randomizer::IdentifyCrate(s32 sceneNum, s32 posX, s32 posZ) {
 
 SmallCrateIdentity Randomizer::IdentifySmallCrate(s32 sceneNum, s32 posX, s32 posZ) {
     struct SmallCrateIdentity smallcrateIdentity;
-    uint32_t crateSceneNum = sceneNum;
+    uint32_t smallcrateSceneNum = sceneNum;
 
     smallcrateIdentity.randomizerInf = RAND_INF_MAX;
     smallcrateIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
 
     s32 actorParams = TWO_ACTOR_PARAMS(posX, posZ);
 
-    Rando::Location* location = GetCheckObjectFromActor(ACTOR_OBJ_KIBAKO, crateSceneNum, actorParams);
+    Rando::Location* location = GetCheckObjectFromActor(ACTOR_OBJ_KIBAKO, smallcrateSceneNum, actorParams);
 
     if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
         LUSLOG_WARN("IdentifyCrate did not receive a valid RC value (%d).", location->GetRandomizerCheck());
