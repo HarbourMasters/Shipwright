@@ -938,6 +938,7 @@ void GenerateItemPool() {
                            ctx->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_ALL);
   if (overworldCratesActive || dungeonCratesActive) {
       PlaceItemsForType(RCTYPE_CRATE, overworldCratesActive, dungeonCratesActive, false);
+      PlaceItemsForType(RCTYPE_SMALL_CRATE, overworldCratesActive, dungeonCratesActive, false);
   }
   
   auto fsMode = ctx->GetOption(RSK_FISHSANITY);

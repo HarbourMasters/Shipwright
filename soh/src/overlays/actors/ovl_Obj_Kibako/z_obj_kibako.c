@@ -7,6 +7,7 @@
 #include "z_obj_kibako.h"
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 #include "overlays/effects/ovl_Effect_Ss_Kakera/z_eff_ss_kakera.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_CAN_PRESS_SWITCHES)
 
@@ -106,6 +107,10 @@ void ObjKibako_Init(Actor* thisx, PlayState* play) {
 void ObjKibako_Destroy(Actor* thisx, PlayState* play2) {
     PlayState* play = play2;
     ObjKibako* this = (ObjKibako*)thisx;
+
+   if (!GameInteractor_Should(VB_SMALL_CRATE_DROP_ITEM, false, this)) {
+        return;
+    }
 
     Collider_DestroyCylinder(play, &this->collider);
 }
@@ -283,6 +288,8 @@ void ObjKibako_Update(Actor* thisx, PlayState* play) {
 void ObjKibako_Draw(Actor* thisx, PlayState* play) {
     s32 pad;
     ObjKibako* this = (ObjKibako*)thisx;
+
+    if (!GameInteractor_Should(VB_SMALL_CRATE_SETUP_DRAW, false, thisx)) {}
 
     Gfx_DrawDListOpa(play, gSmallWoodenBoxDL);
 }

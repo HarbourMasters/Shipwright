@@ -2374,6 +2374,8 @@ void RandomizerRegisterHooks() {
 
     static uint32_t shuffleCratesOnActorInitHook = 0;
     static uint32_t shuffleCratesOnVanillaBehaviorHook = 0;
+    static uint32_t shuffleSmallCratesOnActorInitHook = 0;
+    static uint32_t shuffleSmallCratesOnVanillaBehaviorHook = 0;
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
         ShipInit::Init("IS_RANDO");
@@ -2412,6 +2414,8 @@ void RandomizerRegisterHooks() {
 
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(shuffleCratesOnActorInitHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(shuffleCratesOnVanillaBehaviorHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(shuffleSmallCratesOnActorInitHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(shuffleSmallCratesOnVanillaBehaviorHook);
 
         onFlagSetHook = 0;
         onSceneFlagSetHook = 0;
@@ -2443,6 +2447,8 @@ void RandomizerRegisterHooks() {
 
         shuffleCratesOnActorInitHook = 0;
         shuffleCratesOnVanillaBehaviorHook = 0;
+        shuffleSmallCratesOnActorInitHook = 0;
+        shuffleSmallCratesOnVanillaBehaviorHook = 0;
 
         ShuffleFairies_UnregisterHooks();
 
@@ -2500,6 +2506,8 @@ void RandomizerRegisterHooks() {
         if (RAND_GET_OPTION(RSK_SHUFFLE_CRATES) != RO_SHUFFLE_CRATES_OFF) {
             shuffleCratesOnActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(ObjKibako2_RandomizerInit);
             shuffleCratesOnVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(ShuffleCrates_OnVanillaBehaviorHandler);
+            shuffleSmallCratesOnActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(ObjKibako_RandomizerInit);
+            shuffleSmallCratesOnVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(ShuffleSmallCrates_OnVanillaBehaviorHandler);
         }
     });
 }

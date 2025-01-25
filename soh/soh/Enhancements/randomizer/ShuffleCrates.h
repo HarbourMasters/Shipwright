@@ -8,10 +8,12 @@
 extern "C" {
 #endif
 void ObjKibako2_RandomizerInit(void* actorRef);
+void ObjKibako_RandomizerInit(void* actorRef);
 #ifdef __cplusplus
 };
 #endif
 
 void ShuffleCrates_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs);
+void ShuffleSmallCrates_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs);
 
 #endif //ShuffleCrates_H

@@ -2117,6 +2117,28 @@ CrateIdentity Randomizer::IdentifyCrate(s32 sceneNum, s32 posX, s32 posZ) {
     return crateIdentity;
 }
 
+SmallCrateIdentity Randomizer::IdentifySmallCrate(s32 sceneNum, s32 posX, s32 posZ) {
+    struct SmallCrateIdentity smallcrateIdentity;
+    uint32_t crateSceneNum = sceneNum;
+
+    smallcrateIdentity.randomizerInf = RAND_INF_MAX;
+    smallcrateIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+
+    s32 actorParams = TWO_ACTOR_PARAMS(posX, posZ);
+
+    Rando::Location* location = GetCheckObjectFromActor(ACTOR_OBJ_KIBAKO, crateSceneNum, actorParams);
+
+    if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
+        LUSLOG_WARN("IdentifyCrate did not receive a valid RC value (%d).", location->GetRandomizerCheck());
+        assert(false);
+    } else {
+        smallcrateIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        smallcrateIdentity.randomizerCheck = location->GetRandomizerCheck();
+    }
+
+    return smallcrateIdentity;
+}
+
 u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
     return Rando::Context::GetInstance()->GetOption(randoSettingKey).GetContextOptionIndex();
 }

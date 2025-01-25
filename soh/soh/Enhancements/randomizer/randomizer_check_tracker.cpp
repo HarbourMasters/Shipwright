@@ -1343,6 +1343,9 @@ bool IsCheckShuffled(RandomizerCheck rc) {
             (loc->GetRCType() != RCTYPE_CRATE ||
                 (showOverworldCrates && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea())) ||
                 (showDungeonCrates && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))) &&
+            (loc->GetRCType() != RCTYPE_SMALL_CRATE ||
+                (showOverworldCrates && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea())) ||
+                (showDungeonCrates && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))) &&
             (loc->GetRCType() != RCTYPE_COW || showCows) &&
             (loc->GetRCType() != RCTYPE_FISH || OTRGlobals::Instance->gRandoContext->GetFishsanity()->GetFishLocationIncluded(loc)) &&
             (loc->GetRCType() != RCTYPE_FREESTANDING ||

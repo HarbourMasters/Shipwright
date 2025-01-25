@@ -386,6 +386,14 @@ Rando::Location Rando::Location::Crate(RandomizerCheck rc, RandomizerCheckQuest 
             collectionCheck };
 }
 
+Rando::Location Rando::Location::SmallCrate(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
+                                     SceneID scene_, int32_t actorParams_, std::string&& shortName_,
+                                     std::string&& spoilerName_, RandomizerHintTextKey hintKey,
+                                     RandomizerGet vanillaItem, SpoilerCollectionCheck collectionCheck) {
+    return {rc, quest_, RCTYPE_SMALL_CRATE, area_, ACTOR_OBJ_KIBAKO, scene_, actorParams_, std::move(shortName_), std::move(spoilerName_), hintKey, vanillaItem, false,
+            collectionCheck };
+}
+
 Rando::Location Rando::Location::HintStone(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, SceneID scene_, int32_t actorParams_, std::string&& shortName_) {
     return { rc, quest_, RCTYPE_GOSSIP_STONE, area_, ACTOR_EN_GS, scene_, actorParams_, std::move(shortName_), RHT_NONE, RG_NONE, false };
 }
