@@ -127,8 +127,6 @@ void ObjKibako2_RandomizerInit(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
     uint8_t logicSetting = Rando::Context::GetInstance()->GetOption(RSK_LOGIC_RULES).GetContextOptionIndex();
 
-    //ignore crates that are either OOB or inaccessible in logic (child-only GV + GF)
-    //TODO add back when able to exclude from tracker
     if (actor->id != ACTOR_OBJ_KIBAKO2 ||
         (gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS && (s16)actor->world.pos.x == -4051 && (s16)actor->world.pos.z == -3429) ||
         (gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS && (s16)actor->world.pos.x == -4571 && (s16)actor->world.pos.z == -3429) ||
