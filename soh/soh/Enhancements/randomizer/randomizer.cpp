@@ -2097,7 +2097,13 @@ CrateIdentity Randomizer::IdentifyCrate(s32 sceneNum, s32 posX, s32 posZ) {
     // pretend night is day to align crates in market and align GF child/adult crates
     if (sceneNum == SCENE_MARKET_NIGHT) {
         crateSceneNum = SCENE_MARKET_DAY;
-    }
+    } else if (sceneNum == SCENE_GERUDOS_FORTRESS && gPlayState->linkAgeOnLoad == 1 && posX == 310) {
+            if (posZ == -1830) {
+                posZ = -1842.0f;
+            } else if (posZ == -1770) {
+                posZ = -1782.0f;
+            }
+        }
 
     crateIdentity.randomizerInf = RAND_INF_MAX;
     crateIdentity.randomizerCheck = RC_UNKNOWN_CHECK;

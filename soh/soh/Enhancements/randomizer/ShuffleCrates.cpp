@@ -52,26 +52,6 @@ extern "C" void ObjKibako_RandomizerDraw(Actor* thisx, PlayState* play) {
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-static ColliderCylinderInit sCylinderInit = {
-    {
-        COLTYPE_NONE,
-        AT_NONE,
-        AC_ON | AC_TYPE_PLAYER,
-        OC1_NONE,
-        OC2_TYPE_2,
-        COLSHAPE_CYLINDER,
-    },
-    {
-        ELEMTYPE_UNK0,
-        { 0x00000000, 0x00, 0x00 },
-        { 0x40000040, 0x00, 0x00 },
-        TOUCH_NONE,
-        BUMP_ON,
-        OCELEM_NONE,
-    },
-    { 31, 48, 0, { 0, 0, 0 } },
-};
-
 uint8_t ObjKibako2_RandomizerHoldsItem(ObjKibako2* crateActor, PlayState* play) {
     RandomizerCheck rc = crateActor->crateIdentity.randomizerCheck;
     uint8_t isDungeon = Rando::StaticData::GetLocation(rc)->IsDungeon();
@@ -125,29 +105,6 @@ void ObjKibako_RandomizerSpawnCollectible(ObjKibako* smallcrateActor, PlayState*
     item00->actor.world.rot.y = Rand_CenteredFloat(65536.0f);
 }
 
-void ObjKibako2_MoveForRandomizer(ObjKibako2* objKibako2, PlayState* play) {
-    bool moved = false;
-
-    // Move misaligned child crates in Gerudo Fortress
-    if (play->sceneNum == SCENE_GERUDOS_FORTRESS && gPlayState->linkAgeOnLoad == 1 && objKibako2->dyna.actor.world.pos.x == 310) {
-        if (objKibako2->dyna.actor.world.pos.z == -1830) {
-            objKibako2->dyna.actor.world.pos.z = -1842.0f;
-            moved = true;
-        } else if (objKibako2->dyna.actor.world.pos.z == -1770) {
-            objKibako2->dyna.actor.world.pos.z = -1782.0f;
-            moved = true;
-        }
-    }
-
-    if (moved) {
-        // Reposition collider
-        Collider_InitCylinder(play, &objKibako2->collider);
-        Collider_SetCylinder(play, &objKibako2->collider, &objKibako2->dyna.actor, &sCylinderInit);
-        Collider_UpdateCylinder(&objKibako2->dyna.actor, &objKibako2->collider);
-        ;
-    }
-}
-
 void ObjKibako2_RandomizerInit(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
 
@@ -164,8 +121,6 @@ void ObjKibako2_RandomizerInit(void* actorRef) {
         return;
 
     ObjKibako2* crateActor = static_cast<ObjKibako2*>(actorRef);
-
-    ObjKibako2_MoveForRandomizer(crateActor, gPlayState);
 
     crateActor->crateIdentity = OTRGlobals::Instance->gRandomizer->IdentifyCrate(gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
 }
