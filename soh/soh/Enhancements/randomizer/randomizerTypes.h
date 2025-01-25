@@ -2334,7 +2334,7 @@ typedef enum {
     RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_POT_2,
     // End Pots
     
-    //Overworld Crates
+    // Overworld Crates
     RC_GV_FREESTANDING_POH_CRATE,
     RC_GV_NEAR_COW_CRATE,
     RC_GV_CRATE_BRIDGE_1,
@@ -2414,7 +2414,7 @@ typedef enum {
     RC_LLR_NEAR_TREE_CRATE,
     RC_LH_LAB_CRATE,
 
-    //MQ Dungeon Crates
+    // MQ Dungeon Crates
     RC_DEKU_TREE_MQ_LOBBY_CRATE,
     RC_DEKU_TREE_MQ_SLINGSHOT_ROOM_CRATE_1,
     RC_DEKU_TREE_MQ_SLINGSHOT_ROOM_CRATE_2,
@@ -2555,7 +2555,7 @@ typedef enum {
     RC_SPIRIT_TEMPLE_MQ_BIG_MIRROR_CRATE_3,
     RC_SPIRIT_TEMPLE_MQ_BIG_MIRROR_CRATE_4,
     RC_GERUDO_TRAINING_GROUND_MQ_MAZE_CRATE,
-    //end crates
+    // End Crates
 
     RC_PIERRE,
     RC_DELIVER_RUTOS_LETTER,

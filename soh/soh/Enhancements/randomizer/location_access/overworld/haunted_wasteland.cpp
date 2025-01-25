@@ -32,7 +32,6 @@ void RegionTable_Init_HauntedWasteland() {
         LOCATION(RC_HW_AFTER_QUICKSAND_CRATE_1, logic->CanBreakCrates()),
         LOCATION(RC_HW_AFTER_QUICKSAND_CRATE_2, logic->CanBreakCrates()),
         LOCATION(RC_HW_AFTER_QUICKSAND_CRATE_3, logic->CanBreakCrates()),
-
     }, {
         //Exits
         Entrance(RR_WASTELAND_NEAR_COLOSSUS, []{return ctx->GetTrickOption(RT_LENS_HW) || logic->CanUse(RG_LENS_OF_TRUTH);}),

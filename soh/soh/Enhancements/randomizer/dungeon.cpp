@@ -18,7 +18,7 @@ DungeonInfo::DungeonInfo(std::string name_, const RandomizerHintTextKey hintKey_
       mqSetting(mqSetting_),
       vanillaLocations(std::move(vanillaLocations_)), mqLocations(std::move(mqLocations_)),
       vanillaPots(std::move(vanillaPots_)), mqPots(std::move(mqPots_)),
-      mqCrates(std::move(mqCrates_)),
+      vanillaCrates(std::move(vanillaCrates_)), mqCrates(std::move(mqCrates_)),
       sharedLocations(std::move(sharedLocations_)), bossRoomLocations(std::move(bossRoomLocations_)) {
 }
 DungeonInfo::DungeonInfo() : hintKey(RHT_NONE), map(RG_NONE), compass(RG_NONE), smallKey(RG_NONE), keyRing(RG_NONE),
@@ -171,6 +171,8 @@ std::vector<RandomizerCheck> DungeonInfo::GetEveryLocation() const {
     AddElementsToPool(locations, mqLocations);
     AddElementsToPool(locations, vanillaPots);
     AddElementsToPool(locations, mqPots);
+    AddElementsToPool(locations, vanillaCrates);
+    AddElementsToPool(locations, mqCrates);
     AddElementsToPool(locations, sharedLocations);
     AddElementsToPool(locations, bossRoomLocations);
     return locations;

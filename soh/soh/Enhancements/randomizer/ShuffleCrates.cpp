@@ -5,7 +5,6 @@
 extern "C" {
 #include "variables.h"
 #include "overlays/actors/ovl_Obj_Kibako2/z_obj_kibako2.h"
-#include "objects/gameplay_field_keep/gameplay_field_keep.h"
 #include "objects/object_kibako2/object_kibako2.h"
 extern PlayState* gPlayState;
 }
