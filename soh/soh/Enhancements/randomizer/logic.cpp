@@ -1431,6 +1431,18 @@ namespace Rando {
         { RG_GERUDO_MEMBERSHIP_CARD, QUEST_GERUDO_CARD },
     };
 
+    std::map<uint32_t, uint32_t> BottleRandomizerGetToItemID = {
+        { RG_BOTTLE_WITH_RED_POTION, ITEM_POTION_RED },
+        { RG_BOTTLE_WITH_GREEN_POTION, ITEM_POTION_GREEN },
+        { RG_BOTTLE_WITH_BLUE_POTION, ITEM_POTION_BLUE },
+        { RG_BOTTLE_WITH_FAIRY, ITEM_FAIRY },
+        { RG_BOTTLE_WITH_FISH, ITEM_FISH },
+        { RG_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE },
+        { RG_BOTTLE_WITH_BUGS, ITEM_BUG },
+        { RG_BOTTLE_WITH_POE, ITEM_POE },
+        { RG_BOTTLE_WITH_BIG_POE, ITEM_BIG_POE },
+    };
+
     uint32_t HookshotLookup[3] = { ITEM_NONE, ITEM_HOOKSHOT, ITEM_LONGSHOT };
     uint32_t OcarinaLookup[3] = { ITEM_NONE, ITEM_OCARINA_FAIRY, ITEM_OCARINA_TIME };
 
@@ -1675,7 +1687,11 @@ namespace Rando {
                     }
                     slot++;
                 }
-                mSaveContext->inventory.items[slot] = item.GetGIEntry()->itemId;
+                uint16_t itemId = item.GetGIEntry()->itemId;
+                if (BottleRandomizerGetToItemID.contains(randoGet)) {
+                    itemId = BottleRandomizerGetToItemID[randoGet];
+                }
+                mSaveContext->inventory.items[slot] = itemId;
             }   break;
             case RG_RUTOS_LETTER:
                 SetEventChkInf(EVENTCHKINF_OBTAINED_RUTOS_LETTER, state);
@@ -2201,7 +2217,7 @@ namespace Rando {
         //Bottle Count
         Bottles    = 0;
         NumBottles = 0;
-        CanEmptyBigPoes = true;
+        CanEmptyBigPoes = false;
 
         //Drops and Bottle Contents Access
         NutPot           = false;
