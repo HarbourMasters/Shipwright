@@ -305,7 +305,7 @@ EnemyEntry GetRandomizedEnemyEntry(uint32_t seed) {
         GetSelectedEnemies();
     }
     if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), ENEMY_RANDOMIZER_OFF) == ENEMY_RANDOMIZER_RANDOM_SEEDED) {
-        uint32_t finalSeed = seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSettings()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
+        uint32_t finalSeed = seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
         Random_Init(finalSeed);
         uint32_t randomNumber = Random(0, RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE);
         return selectedEnemyList[randomNumber];

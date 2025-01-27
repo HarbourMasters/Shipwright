@@ -5,37 +5,51 @@
 #include "soh/UIWidgets.hpp"
 
 namespace Rando {
-Option Option::Bool(std::string name_, std::vector<std::string> options_, const OptionCategory category_,
-                    std::string cvarName_, std::string description_, WidgetType widgetType_, const uint8_t defaultOption_,
-                    const bool defaultHidden_, int imFlags_) {
-    return {false, std::move(name_), std::move(options_), category_, std::move(cvarName_), std::move(description_),
-                  widgetType_, defaultOption_, defaultHidden_, imFlags_};
+Option Option::Bool(RandomizerSettingKey key_, std::string name_, std::vector<std::string> options_,
+                    const OptionCategory category_, std::string cvarName_, std::string description_,
+                    WidgetType widgetType_, const uint8_t defaultOption_, const bool defaultHidden_, int imFlags_) {
+    return {static_cast<size_t>(key_), std::move(name_), std::move(options_), category_,
+            std::move(cvarName_), std::move(description_), widgetType_, defaultOption_, defaultHidden_, imFlags_};
 }
 
-Option Option::Bool(std::string name_, std::string cvarName_, std::string description_, const int imFlags_,
-    const WidgetType widgetType_, const bool defaultOption_) {
-    return Option(false, std::move(name_), {"Off", "On"}, OptionCategory::Setting, std::move(cvarName_),
+Option Option::Bool(RandomizerSettingKey key_, std::string name_, std::string cvarName_, std::string description_,
+                    const int imFlags_, const WidgetType widgetType_, const bool defaultOption_) {
+    return Option(key_, std::move(name_), {"Off", "On"}, OptionCategory::Setting, std::move(cvarName_),
                   std::move(description_), widgetType_, defaultOption_, false, imFlags_);
 }
 
-Option Option::U8(std::string name_, std::vector<std::string> options_, const OptionCategory category_,
-                  std::string cvarName_, std::string description_, WidgetType widgetType_, const uint8_t defaultOption_,
-                  const bool defaultHidden_, int imFlags_) {
-    return {static_cast<uint8_t>(0), std::move(name_), std::move(options_), category_, std::move(cvarName_),
+Option Option::U8(RandomizerSettingKey key_, std::string name_, std::vector<std::string> options_,
+                  const OptionCategory category_, std::string cvarName_, std::string description_,
+                  WidgetType widgetType_, const uint8_t defaultOption_, const bool defaultHidden_, int imFlags_) {
+    return {static_cast<size_t>(key_), std::move(name_), std::move(options_), category_, std::move(cvarName_),
                   std::move(description_), widgetType_, defaultOption_, defaultHidden_, imFlags_};
 }
 
-Option Option::LogicTrick(std::string name_) {
-    return Option(false, std::move(name_), { "Disabled", "Enabled" }, OptionCategory::Setting, "",
+Option Option::LogicTrick(RandomizerTrick rt_, std::string name_) {
+    return Option(rt_, std::move(name_), { "Disabled", "Enabled" }, OptionCategory::Setting, "",
                   "", WidgetType::Checkbox, 0, false, IMFLAG_NONE);
 }
 
-Option::operator bool() const {
-    return contextSelection != 0;
+OptionValue::OptionValue(uint8_t val) : mVal(val) {}
+
+uint8_t OptionValue::Get() {
+    return mVal;
+}
+
+void OptionValue::Set(uint8_t val) {
+    mVal = val;
+}
+
+OptionValue::operator bool() const {
+    return mVal != 0;
 }
 
 size_t Option::GetOptionCount() const {
     return options.size();
+}
+
+const RandomizerSettingKey Option::GetKey() const {
+    return static_cast<RandomizerSettingKey>(key);
 }
 
 const std::string& Option::GetName() const {
@@ -50,24 +64,12 @@ uint8_t Option::GetMenuOptionIndex() const {
     return menuSelection;
 }
 
-uint8_t Option::GetContextOptionIndex() const {
-    return contextSelection;
-}
-
-const std::string& Option::GetSelectedOptionText() const {
-    return options[contextSelection];
+const std::string& Option::GetOptionText(size_t index) const {
+    return options[index];
 }
 
 const std::string& Option::GetCVarName() const {
     return cvarName;
-}
-
-void Option::SetVariable() {
-    if (std::holds_alternative<bool>(var)) {
-        var.emplace<bool>(menuSelection != 0);
-    } else {
-        var.emplace<uint8_t>(menuSelection);
-    }
 }
 
 void Option::SaveCVar() const {
@@ -95,10 +97,10 @@ void Option::SetMenuIndex(size_t idx) {
     if (menuSelection > options.size() - 1) {
         menuSelection = options.size() - 1;
     }
-    SetVariable();
 }
 
 void Option::SetContextIndex(size_t idx) {
+    // TODO: Set to Context's OptionValue array.
     contextSelection = idx;
     if (contextSelection > options.size() - 1) {
         contextSelection = options.size() - 1;
@@ -178,6 +180,16 @@ void Option::RemoveFlag(const int imFlag_) {
     imFlags &= ~imFlag_;
 }
 
+uint8_t Option::GetValueFromText(const std::string text) {
+    if (optionsTextToVar.contains(text)) {
+        return optionsTextToVar[text];
+    } else {
+        SPDLOG_ERROR("Option {} does not have a var named {}.", name, text);
+        assert(false);
+    }
+    return defaultOption;
+}
+
 void Option::SetContextIndexFromText(const std::string text) {
     if (optionsTextToVar.contains(text)){
         SetContextIndex(optionsTextToVar[text]);
@@ -187,21 +199,10 @@ void Option::SetContextIndexFromText(const std::string text) {
     }
 }
 
-Option::Option(uint8_t var_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
+Option::Option(size_t key_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
                std::string cvarName_, std::string description_, WidgetType widgetType_, uint8_t defaultOption_,
                bool defaultHidden_, int imFlags_)
-    : var(var_), name(std::move(name_)), options(std::move(options_)), category(category_),
-      cvarName(std::move(cvarName_)), description(std::move(description_)), widgetType(widgetType_),
-      defaultOption(defaultOption_), defaultHidden(defaultHidden_), imFlags(imFlags_) {
-    menuSelection = contextSelection = defaultOption;
-    hidden = defaultHidden;
-    PopulateTextToNum();
-    SetFromCVar();
-}
-Option::Option(bool var_, std::string name_, std::vector<std::string> options_, const OptionCategory category_,
-               std::string cvarName_, std::string description_, WidgetType widgetType_, const uint8_t defaultOption_,
-               const bool defaultHidden_, int imFlags_)
-    : var(var_), name(std::move(name_)), options(std::move(options_)), category(category_),
+    : key(key_), name(std::move(name_)), options(std::move(options_)), category(category_),
       cvarName(std::move(cvarName_)), description(std::move(description_)), widgetType(widgetType_),
       defaultOption(defaultOption_), defaultHidden(defaultHidden_), imFlags(imFlags_) {
     menuSelection = contextSelection = defaultOption;
@@ -350,13 +351,25 @@ void Option::PopulateTextToNum(){
     }
 }
 
-TrickOption::TrickOption(const RandomizerCheckQuest quest_, const RandomizerArea area_, std::set<Tricks::Tag> tags_, const std::string& name_, std::string description_) :
-    Option(false, name_, {"Disabled", "Enabled"}, OptionCategory::Setting, "",
+LocationOption::LocationOption(RandomizerCheck key_, const std::string& name_) : 
+    Option(key_, name_, {"Included", "Excluded"}, OptionCategory::Setting, "", "", WidgetType::Checkbox,
+           RO_LOCATION_INCLUDE, false, IMFLAG_NONE) {}
+
+const RandomizerCheck LocationOption::GetKey() const {
+    return static_cast<RandomizerCheck>(key);
+}
+
+TrickOption::TrickOption(RandomizerTrick key_, const RandomizerCheckQuest quest_, const RandomizerArea area_, std::set<Tricks::Tag> tags_, const std::string& name_, std::string description_) :
+    Option(key_, name_, {"Disabled", "Enabled"}, OptionCategory::Setting, "",
         std::move(description_), WidgetType::Checkbox, 0, false, IMFLAG_NONE),
     mQuest(quest_), mArea(area_), mTags(std::move(tags_)) {}
 
-TrickOption TrickOption::LogicTrick(RandomizerCheckQuest quest_, RandomizerArea area_, std::set<Tricks::Tag> tags_, const std::string& name_, std::string description_) {
-    return {quest_, area_, std::move(tags_), name_, std::move(description_)};
+TrickOption TrickOption::LogicTrick(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_, std::set<Tricks::Tag> tags_, const std::string& name_, std::string description_) {
+    return {key_, quest_, area_, std::move(tags_), name_, std::move(description_)};
+}
+
+const RandomizerTrick TrickOption::GetKey() const {
+    return static_cast<RandomizerTrick>(key);
 }
 
 RandomizerCheckQuest TrickOption::GetQuest() const {

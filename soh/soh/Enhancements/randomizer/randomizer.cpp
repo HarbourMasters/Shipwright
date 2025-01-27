@@ -475,7 +475,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
                 (CUR_UPG_VALUE(UPG_STICKS) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE);
         case RG_DEKU_STICK_1:
         case RG_BUY_DEKU_STICK_1:
-            return CUR_UPG_VALUE(UPG_STICKS) || !OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG).GetContextOptionIndex()
+            return CUR_UPG_VALUE(UPG_STICKS) || !OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG).Get()
                  ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
         case RG_PROGRESSIVE_NUT_UPGRADE:
             return infiniteUpgrades != RO_INF_UPGRADES_OFF ?
@@ -485,7 +485,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_DEKU_NUTS_10:
         case RG_BUY_DEKU_NUTS_5:
         case RG_BUY_DEKU_NUTS_10:
-            return CUR_UPG_VALUE(UPG_NUTS) || !OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_DEKU_NUT_BAG).GetContextOptionIndex()
+            return CUR_UPG_VALUE(UPG_NUTS) || !OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_DEKU_NUT_BAG).Get()
                 ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
         case RG_PROGRESSIVE_BOMB_BAG:
             return infiniteUpgrades != RO_INF_UPGRADES_OFF ?
@@ -1837,7 +1837,7 @@ FishIdentity Randomizer::IdentifyFish(s32 sceneNum, s32 actorParams) {
 }
 
 u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
-    return Rando::Context::GetInstance()->GetOption(randoSettingKey).GetContextOptionIndex();
+    return Rando::Context::GetInstance()->GetOption(randoSettingKey).Get();
 }
 
 GetItemEntry Randomizer::GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId, bool checkObtainability) {
@@ -1871,7 +1871,8 @@ void GenerateRandomizerImgui(std::string seed = "") {
     CVarSave();
     auto ctx = Rando::Context::GetInstance();
     //RANDOTODO proper UI for selecting if a spoiler loaded should be used for settings
-    ctx->GetSettings()->SetAllFromCVar();
+    Rando::Settings::GetInstance()->SetAllFromCVar();
+    Rando::Settings::GetInstance()->SetAllToContext();
     
     // todo: this efficently when we build out cvar array support
     std::set<RandomizerCheck> excludedLocations;
@@ -3787,10 +3788,10 @@ class ExtendedVanillaTableInvalidItemIdException: public std::exception {
 };
 
 void RandomizerSettingsWindow::InitElement() {
-    mSettings = Rando::Context::GetInstance()->GetSettings();
+    mSettings = Rando::Settings::GetInstance();
     Randomizer::CreateCustomMessages();
     seedString = (char*)calloc(MAX_SEED_STRING_SIZE, sizeof(char));
-    Rando::Context::GetInstance()->GetSettings()->UpdateOptionProperties();
+    mSettings->UpdateOptionProperties();
 }
 
 // Gameplay stat tracking: Update time the item was acquired
