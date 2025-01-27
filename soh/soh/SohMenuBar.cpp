@@ -44,6 +44,7 @@
 #include "Enhancements/timesplits/TimeSplits.h"
 #include "Enhancements/randomizer/Plandomizer.h"
 #include "Enhancements/TimeDisplay/TimeDisplay.h"
+#include "AboutWindow.h"
 
 // FA icons are kind of wonky, if they worked how I expected them to the "+ 2.0f" wouldn't be needed, but
 // they don't work how I expect them to so I added that because it looked good when I eyeballed it
@@ -104,8 +105,8 @@ static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large
     static const char* subSubPowers[7] = { allPowers[0], allPowers[1], allPowers[2], allPowers[3], allPowers[4], allPowers[5], allPowers[6] };
     static const char* zFightingOptions[3] = { "Disabled", "Consistent Vanish", "No Vanish" };
     static const char* autosaveLabels[6] = { "Off", "New Location + Major Item", "New Location + Any Item", "New Location", "Major Item", "Any Item" };
+    static const char* bootSequenceLabels[3] = { "Default", "Authentic", "File Select" };
     static const char* DebugSaveFileModes[3] = { "Off", "Vanilla", "Maxed" };
-    static const char* FastFileSelect[5] = { "File N.1", "File N.2", "File N.3", "Zelda Map Select (require OoT Debug Mode)", "File select" };
     static const char* DekuStickCheat[3] = { "Normal", "Unbreakable", "Unbreakable + Always on Fire" };
     static const char* bonkDamageValues[8] = {
         "No Damage",
@@ -177,8 +178,18 @@ void DrawMenuBarIcon() {
     }
 }
 
+extern std::shared_ptr<AboutWindow> mAboutWindow;
+
 void DrawShipMenu() {
     if (ImGui::BeginMenu("Ship")) {
+        if (mAboutWindow) {
+            if (ImGui::MenuItem("About...")) {
+                mAboutWindow->Show();
+            }
+        }
+
+        UIWidgets::Spacer(0);
+
         if (ImGui::MenuItem("Hide Menu Bar",
 #if !defined(__SWITCH__) && !defined(__WIIU__)
          "F1"
@@ -309,9 +320,6 @@ void DrawSettingsMenu() {
             }
             ImGui::PopStyleColor(1);
             ImGui::PopStyleVar(3);
-
-            UIWidgets::PaddedEnhancementSliderInt("Simulated Input Lag: %d frames", "##SimulatedInputLag", CVAR_SIMULATED_INPUT_LAG, 0, 6, "", 0, true, true, false);
-            UIWidgets::Tooltip("Buffers your inputs to be executed a specified amount of frames later");
 
             ImGui::EndMenu();
         }
@@ -773,7 +781,9 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
                 UIWidgets::PaddedEnhancementCheckbox("Exit Market at Night", CVAR_ENHANCEMENT("MarketSneak"), true, false);
                 UIWidgets::Tooltip("Allows exiting Hyrule Castle Market Town to Hyrule Field at night by speaking to the guard next to the gate.");
-                UIWidgets::PaddedEnhancementCheckbox("Shops and Games Always Open", CVAR_ENHANCEMENT("OpenAllHours"), true, false);
+                bool randoLockedOverworldDoors = IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOCK_OVERWORLD_DOORS);
+                UIWidgets::PaddedEnhancementCheckbox("Shops and Games Always Open", CVAR_ENHANCEMENT("OpenAllHours"), true, false, randoLockedOverworldDoors, 
+                    "This is not compatible with the Locked Overworld Doors Randomizer option", UIWidgets::CheckboxGraphics::Checkmark);
                 UIWidgets::Tooltip("Shops and minigames are open both day and night. Requires scene reload to take effect.");
                 UIWidgets::PaddedEnhancementCheckbox("Link as default file name", CVAR_ENHANCEMENT("LinkDefaultName"), true, false);
                 UIWidgets::Tooltip("Allows you to have \"Link\" as a premade file name");
@@ -1547,8 +1557,6 @@ void DrawEnhancementsMenu() {
 
         if (ImGui::BeginMenu("Restoration"))
         {
-            UIWidgets::EnhancementCheckbox("Authentic Logo Screen", CVAR_ENHANCEMENT("AuthenticLogo"));
-            UIWidgets::Tooltip("Hide the game version and build details and display the authentic model and texture on the boot logo start screen");
             UIWidgets::PaddedEnhancementCheckbox("Red Ganon blood", CVAR_ENHANCEMENT("RedGanonBlood"), true, false);
             UIWidgets::Tooltip("Restore the original red blood from NTSC 1.0/1.1. Disable for green blood");
             UIWidgets::PaddedEnhancementCheckbox("Fish while hovering", CVAR_ENHANCEMENT("HoverFishing"), true, false);
@@ -1569,7 +1577,11 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Restores a bug from NTSC 1.0/1.1 that allows you to obtain the eyeball frog from King Zora instead of the Zora Tunic by holding shield.");
             UIWidgets::PaddedEnhancementCheckbox("Pulsate boss icon", CVAR_ENHANCEMENT("PulsateBossIcon"), true, false);
             UIWidgets::Tooltip("Restores an unfinished feature to pulsate the boss room icon when you are in the boss room.");
-
+            UIWidgets::PaddedEnhancementSliderInt("Pause Buffer Input Window: %d", "##PauseBufferWindow", CVAR_ENHANCEMENT("PauseBufferWindow"), 0, 40, "", 0, true, true, false);
+            UIWidgets::PaddedEnhancementCheckbox("Include held inputs at start of Buffer Input Window", CVAR_ENHANCEMENT("IncludeHeldInputsBufferWindow"), true, false);
+            UIWidgets::Tooltip("Typically, inputs that are held prior to the buffer window are not included in the buffer. This setting changes that behavior to include them. This may cause some inputs to be re-triggered undesireably, for instance Z-Targetting something you might not want to.");
+            UIWidgets::PaddedEnhancementSliderInt("Simulated Input Lag: %d frames", "##SimulatedInputLag", CVAR_SIMULATED_INPUT_LAG, 0, 6, "", 0, true, true, false);
+            UIWidgets::Tooltip("Buffers your inputs to be executed a specified amount of frames later");
             ImGui::EndMenu();
         }
 
@@ -1706,6 +1718,16 @@ void DrawEnhancementsMenu() {
         UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("Autosave"), autosaveLabels, AUTOSAVE_OFF);
         UIWidgets::Tooltip("Automatically save the game when changing locations and/or obtaining items\n"
             "Major items exclude rupees and health/magic/ammo refills (but include bombchus unless bombchu drops are enabled)");
+
+        UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
+
+        UIWidgets::PaddedText("Boot Sequence", false, true);
+        UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("BootSequence"), bootSequenceLabels, BOOTSEQUENCE_DEFAULT);
+        UIWidgets::Tooltip("Configure what happens when starting or resetting the game\n\n"
+                           "Default: LUS logo -> N64 logo\n"
+                           "Authentic: N64 logo only\n"
+                           "File Select: Skip to file select menu"
+        );
 
         UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
 
@@ -1883,11 +1905,8 @@ void DrawCheatsMenu() {
         UIWidgets::Tooltip("Makes every surface in the game climbable");
         UIWidgets::PaddedEnhancementCheckbox("Moon Jump on L", CVAR_CHEAT("MoonJumpOnL"), true, false);
         UIWidgets::Tooltip("Holding L makes you float into the air");
-        UIWidgets::PaddedEnhancementCheckbox("Easy Frame Advancing", CVAR_CHEAT("EasyPauseBuffer"), true, false);
-        UIWidgets::Tooltip("Continue holding START button when unpausing to only advance a single frame and then re-pause");
-        const bool bEasyFrameAdvanceEnabled = CVarGetInteger(CVAR_CHEAT("EasyPauseBuffer"), 0);
-        UIWidgets::PaddedEnhancementCheckbox("Easy Input Buffering", CVAR_CHEAT("EasyInputBuffer"), true, false, bEasyFrameAdvanceEnabled, "Forced enabled when Easy Frame Advancing is enabled", UIWidgets::CheckboxGraphics::Checkmark);
-        UIWidgets::Tooltip("Inputs that are held down while the Subscreen is closing will be pressed when the game is resumed");
+        UIWidgets::PaddedEnhancementCheckbox("New Easy Frame Advancing", CVAR_CHEAT("EasyFrameAdvance"), true, false);
+        UIWidgets::Tooltip("Continue holding START button when unpausing to only advance a single frame and then re-pause.");
         UIWidgets::PaddedEnhancementCheckbox("Drops Don't Despawn", CVAR_CHEAT("DropsDontDie"), true, false);
         UIWidgets::Tooltip("Drops from enemies, grass, etc. don't disappear after a set amount of time");
         UIWidgets::PaddedEnhancementCheckbox("Fish Don't despawn", CVAR_CHEAT("NoFishDespawn"), true, false);
@@ -2001,12 +2020,6 @@ void DrawDeveloperToolsMenu() {
         }
         UIWidgets::PaddedEnhancementCheckbox("OoT Skulltula Debug", CVAR_DEVELOPER_TOOLS("SkulltulaDebugEnabled"), true, false);
         UIWidgets::Tooltip("Enables Skulltula Debug, when moving the cursor in the menu above various map icons (boss key, compass, map screen locations, etc) will set the GS bits in that area.\nUSE WITH CAUTION AS IT DOES NOT UPDATE THE GS COUNT.");
-        UIWidgets::PaddedEnhancementCheckbox("Fast File Select", CVAR_DEVELOPER_TOOLS("SkipLogoTitle"), true, false);
-        UIWidgets::Tooltip("Load the game to the selected menu or file\n\"Zelda Map Select\" require debug mode else you will fallback to File choose menu\nUsing a file number that don't have save will create a save file only if you toggle on \"Create a new save if none ?\" else it will bring you to the File choose menu");
-        if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("SkipLogoTitle"), 0)) {
-            ImGui::Text("Loading:");
-            UIWidgets::EnhancementCombobox(CVAR_DEVELOPER_TOOLS("SaveFileID"), FastFileSelect, 0);
-        };
         UIWidgets::PaddedEnhancementCheckbox("Better Debug Warp Screen", CVAR_DEVELOPER_TOOLS("BetterDebugWarpScreen"), true, false);
         UIWidgets::Tooltip("Optimized debug warp screen, with the added ability to chose entrances and time of day");
         UIWidgets::PaddedEnhancementCheckbox("Debug Warp Screen Translation", CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"), true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
@@ -2236,34 +2249,9 @@ void DrawRandomizerMenu() {
             UIWidgets::Tooltip(
                 "When obtaining rupees, randomize what the rupee is called in the textbox."
             );
-
-            // Only disable the key colors checkbox when none of the keysanity settings are set to "Any Dungeon", "Overworld" or "Anywhere"
-            bool disableKeyColors = true;
-
-            if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANY_DUNGEON ||
-                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OVERWORLD ||
-                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANYWHERE ||
-                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_KEYS) != RO_GERUDO_KEYS_VANILLA ||
-                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANY_DUNGEON ||
-                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OVERWORLD ||
-                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANYWHERE ||
-                (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) != RO_GANON_BOSS_KEY_VANILLA &&
-                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) != RO_GANON_BOSS_KEY_OWN_DUNGEON &&
-                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) != RO_GANON_BOSS_KEY_STARTWITH) || 
-                !IS_RANDO) {
-                disableKeyColors = false;
-            }
-
-            static const char* disableKeyColorsText =
-                "This setting is disabled because a savefile is loaded without any key\n"
-                "shuffle settings set to \"Any Dungeon\", \"Overworld\" or \"Anywhere\"";
-
-            UIWidgets::PaddedEnhancementCheckbox("Key Colors Match Dungeon", CVAR_RANDOMIZER_ENHANCEMENT("MatchKeyColors"), true, false,
-                                                  disableKeyColors, disableKeyColorsText, UIWidgets::CheckboxGraphics::Cross, true);
-            UIWidgets::Tooltip(
-                "Matches the color of small keys and boss keys to the dungeon they belong to. "
-                "This helps identify keys from afar and adds a little bit of flair.\n\nThis only "
-                "applies to seeds with keys and boss keys shuffled to \"Any Dungeon\", \"Overworld\", or \"Anywhere\".");
+            
+            UIWidgets::PaddedEnhancementCheckbox("Use Custom Key Models", CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), true, false);
+            UIWidgets::Tooltip("Use Custom graphics for dungeon keys, Big and Small, so that they can be easily told apart");
 
             bool disableCompassColors = !DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_SHUFFLE_MAPANDCOMPASS);
 
@@ -2290,6 +2278,12 @@ void DrawRandomizerMenu() {
                 "Displays a \"Mystery Item\" model in place of any freestanding/GS/shop items that were shuffled, "
                 "and replaces item names for them and scrubs and merchants, regardless of hint settings, "
                 "so you never know what you're getting.");
+            UIWidgets::PaddedEnhancementCheckbox("Simpler Boss Soul Models",
+                                                 CVAR_RANDOMIZER_ENHANCEMENT("SimplerBossSoulModels"), true, false);
+            UIWidgets::Tooltip(
+                "When shuffling boss souls, they'll appear as a simpler model instead of showing the boss' models."
+                "This might make boss souls more distinguishable from a distance, and can help with performance."
+            );
             ImGui::EndMenu();
         }
 

@@ -12,7 +12,7 @@
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 typedef enum {
     /* 0 */ DEATH_START,
@@ -531,7 +531,7 @@ void BossFd2_Vulnerable(BossFd2* this, PlayState* play) {
     s16 i;
 
     this->disableAT = true;
-    this->actor.flags |= ACTOR_FLAG_DRAGGED_BY_HOOKSHOT;
+    this->actor.flags |= ACTOR_FLAG_HOOKSHOT_PULLS_PLAYER;
     SkelAnime_Update(&this->skelAnime);
     switch (this->work[FD2_ACTION_STATE]) {
         case 0:
@@ -619,7 +619,7 @@ void BossFd2_SetupDeath(BossFd2* this, PlayState* play) {
     Animation_Change(&this->skelAnime, &gHoleVolvagiaDamagedAnim, 1.0f, 0.0f, this->fwork[FD2_END_FRAME],
                      ANIMMODE_ONCE_INTERP, -3.0f);
     this->actionFunc = BossFd2_Death;
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->deathState = DEATH_START;
 }
 
@@ -968,7 +968,7 @@ void BossFd2_Update(Actor* thisx, PlayState* play2) {
 
     osSyncPrintf("FD2 move start \n");
     this->disableAT = false;
-    this->actor.flags &= ~ACTOR_FLAG_DRAGGED_BY_HOOKSHOT;
+    this->actor.flags &= ~ACTOR_FLAG_HOOKSHOT_PULLS_PLAYER;
     this->work[FD2_VAR_TIMER]++;
     this->work[FD2_UNK_TIMER]++;
 
@@ -1003,9 +1003,9 @@ void BossFd2_Update(Actor* thisx, PlayState* play2) {
     this->fwork[FD2_TEX2_SCROLL_X] += 3.0f;
     this->fwork[FD2_TEX2_SCROLL_Y] -= 2.0f;
     if (this->actor.focus.pos.y < 90.0f) {
-        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+        this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     } else {
-        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
     }
 }
 

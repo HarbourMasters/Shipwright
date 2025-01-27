@@ -3,7 +3,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE)
 
 void EnEiyer_Init(Actor* thisx, PlayState* play);
 void EnEiyer_Destroy(Actor* thisx, PlayState* play);
@@ -206,7 +206,7 @@ void EnEiyer_SetupAppearFromGround(EnEiyer* this) {
 
     this->collider.base.atFlags &= ~AT_ON;
     this->collider.base.acFlags &= ~AC_ON;
-    this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_IGNORE_QUAKE);
+    this->actor.flags &= ~(ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_IGNORE_QUAKE);
     this->actor.shape.shadowScale = 0.0f;
     this->actor.shape.yOffset = 0.0f;
     this->actionFunc = EnEiyer_AppearFromGround;
@@ -221,12 +221,12 @@ void EnEiyer_SetupUnderground(EnEiyer* this) {
     }
 
     this->collider.base.acFlags |= AC_ON;
-    this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
-    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_UPDATE_CULLING_DISABLED;
+    this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
 }
 
 void EnEiyer_SetupInactive(EnEiyer* this) {
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->actor.world.rot.y = this->actor.shape.rot.y;
     this->actionFunc = EnEiyer_Inactive;
 }
@@ -271,7 +271,7 @@ void EnEiyer_SetupDiveAttack(EnEiyer* this, PlayState* play) {
 void EnEiyer_SetupLand(EnEiyer* this) {
     Animation_MorphToPlayOnce(&this->skelanime, &gStingerDiveAnim, -3.0f);
     this->collider.base.atFlags &= ~AT_ON;
-    this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+    this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
 
     // Update BgCheck info, play sound, and spawn effect on the first frame of the land action
     this->timer = -1;
@@ -614,7 +614,7 @@ void EnEiyer_UpdateDamage(EnEiyer* this, PlayState* play) {
             if (Actor_ApplyDamage(&this->actor) == 0) {
                 Enemy_StartFinishingBlow(play, &this->actor);
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_EIER_DEAD);
-                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+                this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
                 GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
             }
 
@@ -678,7 +678,7 @@ void EnEiyer_Update(Actor* thisx, PlayState* play) {
         }
     }
 
-    if (this->actor.flags & ACTOR_FLAG_TARGETABLE) {
+    if (this->actor.flags & ACTOR_FLAG_ATTENTION_ENABLED) {
         this->actor.focus.pos.x = this->actor.world.pos.x + Math_SinS(this->actor.shape.rot.y) * 12.5f;
         this->actor.focus.pos.z = this->actor.world.pos.z + Math_CosS(this->actor.shape.rot.y) * 12.5f;
         this->actor.focus.pos.y = this->actor.world.pos.y;

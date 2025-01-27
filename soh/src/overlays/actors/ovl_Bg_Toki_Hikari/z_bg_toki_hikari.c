@@ -7,7 +7,7 @@
 #include "z_bg_toki_hikari.h"
 #include "objects/object_toki_objects/object_toki_objects.h"
 
-#define FLAGS ACTOR_FLAG_DRAW_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_DRAW_CULLING_DISABLED
 
 void BgTokiHikari_Init(Actor* thisx, PlayState* play);
 void BgTokiHikari_Destroy(Actor* thisx, PlayState* play);

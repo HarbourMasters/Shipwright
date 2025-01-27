@@ -10,7 +10,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
 #define TIMER_SCALE ((f32)OS_CLOCK_RATE / 10000000000)
 #define DEGREE_60_RAD (60.0f * M_PI / 180.0f)
@@ -161,8 +161,8 @@ void EnWallmas_Destroy(Actor* thisx, PlayState* play) {
 void EnWallmas_TimerInit(EnWallmas* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
-    this->actor.flags |= ACTOR_FLAG_DRAW_WHILE_CULLED;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
+    this->actor.flags |= ACTOR_FLAG_DRAW_CULLING_DISABLED;
     this->timer = 0x82;
     this->actor.velocity.y = 0.0f;
     this->actor.world.pos.y = player->actor.world.pos.y;
@@ -182,8 +182,8 @@ void EnWallmas_SetupDrop(EnWallmas* this, PlayState* play) {
     this->actor.world.pos.y = player->actor.world.pos.y + 300.0f;
     this->actor.world.rot.y = player->actor.shape.rot.y + 0x8000;
     this->actor.floorHeight = player->actor.floorHeight;
-    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
-    this->actor.flags &= ~ACTOR_FLAG_DRAW_WHILE_CULLED;
+    this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
+    this->actor.flags &= ~ACTOR_FLAG_DRAW_CULLING_DISABLED;
     this->actionFunc = EnWallmas_Drop;
 }
 
@@ -278,7 +278,7 @@ void EnWallmas_SetupTakePlayer(EnWallmas* this, PlayState* play) {
 void EnWallmas_ProximityOrSwitchInit(EnWallmas* this) {
     this->timer = 0;
     this->actor.draw = NULL;
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     if (this->actor.params == WMT_PROXIMITY || this->actor.params == WMT_SHADOWTAG) {
         this->actionFunc = EnWallmas_WaitForProximity;
     } else {
@@ -541,7 +541,7 @@ void EnWallmas_ColUpdate(EnWallmas* this, PlayState* play) {
             if (Actor_ApplyDamage(&this->actor) == 0) {
                 Enemy_StartFinishingBlow(play, &this->actor);
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_FALL_DEAD);
-                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+                this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
             } else {
                 if (this->actor.colChkInfo.damage != 0) {
                     Audio_PlayActorSound2(&this->actor, NA_SE_EN_FALL_DAMAGE);

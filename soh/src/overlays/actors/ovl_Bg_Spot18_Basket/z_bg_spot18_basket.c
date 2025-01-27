@@ -2,7 +2,7 @@
 #include "objects/object_spot18_obj/object_spot18_obj.h"
 #include "vt.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void BgSpot18Basket_Init(Actor* thisx, PlayState* play);
 void BgSpot18Basket_Destroy(Actor* thisx, PlayState* play);

@@ -136,6 +136,18 @@ std::map<uint32_t, ItemMapEntry> triforcePieceMapping = {
     {RG_TRIFORCE_PIECE, {RG_TRIFORCE_PIECE, "RG_TRIFORCE_PIECE", "RG_TRIFORCE_PIECE_Faded", gTriforcePieceTex}}
 };
 
+std::map<uint32_t, ItemMapEntry> bossSoulMapping = {
+    { RG_GOHMA_SOUL,        { RG_GOHMA_SOUL,        "RG_GOHMA_SOUL",        "RG_GOHMA_SOUL_Faded",          gBossSoulTex } },
+    { RG_KING_DODONGO_SOUL, { RG_KING_DODONGO_SOUL, "RG_KING_DODONGO_SOUL", "RG_KING_DODONGO_SOUL_Faded",   gBossSoulTex } },
+    { RG_BARINADE_SOUL,     { RG_BARINADE_SOUL,     "RG_BARINADE_SOUL",     "RG_BARINADE_SOUL_Faded",       gBossSoulTex } },
+    { RG_PHANTOM_GANON_SOUL,{ RG_PHANTOM_GANON_SOUL,"RG_PHANTOM_GANON_SOUL","RG_PHANTOM_GANON_SOUL_Faded",  gBossSoulTex } },
+    { RG_VOLVAGIA_SOUL,     { RG_VOLVAGIA_SOUL,     "RG_VOLVAGIA_SOUL",     "RG_VOLVAGIA_SOUL_Faded",       gBossSoulTex } },
+    { RG_MORPHA_SOUL,       { RG_MORPHA_SOUL,       "RG_MORPHA_SOUL",       "RG_MORPHA_SOUL_Faded",         gBossSoulTex } },
+    { RG_BONGO_BONGO_SOUL,  { RG_BONGO_BONGO_SOUL,  "RG_BONGO_BONGO_SOUL",  "RG_BONGO_BONGO_SOUL_Faded",    gBossSoulTex } },
+    { RG_TWINROVA_SOUL,     { RG_TWINROVA_SOUL,     "RG_TWINROVA_SOUL",     "RG_TWINROVA_SOUL_Faded",       gBossSoulTex } },
+    { RG_GANON_SOUL,        { RG_GANON_SOUL,        "RG_GANON_SOUL",        "RG_GANON_SOUL_Faded",          gBossSoulTex } },
+};
+
 std::map<uint32_t, QuestMapEntry> questMapping = {
     QUEST_MAP_ENTRY(QUEST_MEDALLION_FOREST, dgQuestIconMedallionForestTex),
     QUEST_MAP_ENTRY(QUEST_MEDALLION_FIRE, dgQuestIconMedallionFireTex),
@@ -204,6 +216,11 @@ void RegisterImGuiItemIcons() {
     }
 
     for (const auto& entry : triforcePieceMapping) {
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath, ImVec4(1, 1, 1, 1));
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
+    }
+
+    for (const auto& entry : bossSoulMapping) {
         Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath, ImVec4(1, 1, 1, 1));
         Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
     }

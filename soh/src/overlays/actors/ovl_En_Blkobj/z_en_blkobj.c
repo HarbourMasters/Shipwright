@@ -8,7 +8,7 @@
 #include "objects/object_blkobj/object_blkobj.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void EnBlkobj_Init(Actor* thisx, PlayState* play);
 void EnBlkobj_Destroy(Actor* thisx, PlayState* play);
@@ -89,7 +89,7 @@ void EnBlkobj_Wait(EnBlkobj* this, PlayState* play) {
 }
 
 void EnBlkobj_SpawnDarkLink(EnBlkobj* this, PlayState* play) {
-    if (!(this->dyna.actor.flags & ACTOR_FLAG_ACTIVE)) {
+    if (!(this->dyna.actor.flags & ACTOR_FLAG_INSIDE_CULLING_VOLUME)) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_TORCH2, this->dyna.actor.world.pos.x,
                     this->dyna.actor.world.pos.y, this->dyna.actor.world.pos.z, 0, this->dyna.actor.yawTowardsPlayer, 0,
                     0, true);

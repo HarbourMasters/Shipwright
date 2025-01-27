@@ -7,7 +7,7 @@
 #include "objects/object_jya_obj/object_jya_obj.h"
 #include "vt.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void BgJyaCobra_Init(Actor* thisx, PlayState* play);
 void BgJyaCobra_Destroy(Actor* thisx, PlayState* play);

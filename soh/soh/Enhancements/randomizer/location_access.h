@@ -23,14 +23,10 @@ class EventAccess {
 
         bool ConditionsMet() const {
             auto ctx = Rando::Context::GetInstance();
-            if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC) || ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
-                return true;
-            } else if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS)) {
-                return condition_function();
-            } else if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHED)) {
+            if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS)) {
                 return condition_function();
             }
-            return false;
+            return true;
         }
 
         bool CheckConditionAtAgeTime(bool& age, bool& time) {
@@ -71,14 +67,10 @@ class LocationAccess {
 
         bool GetConditionsMet() const {
             auto ctx = Rando::Context::GetInstance();
-            if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC) || ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
-                return true;
-            } else if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS)) {
-                return condition_function();
-            } else if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHED)) {
+            if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS)) {
                 return condition_function();
             }
-            return false;
+            return true;
         }
 
         bool CheckConditionAtAgeTime(bool& age, bool& time) const;

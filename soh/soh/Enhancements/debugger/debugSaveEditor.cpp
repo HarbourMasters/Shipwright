@@ -314,7 +314,7 @@ void DrawInfoTab() {
     UIWidgets::InsertHelpHoverText("Z-Targeting behavior");
 
     if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT)) {
-        ImGui::InputScalar("Triforce Pieces", ImGuiDataType_U8, &gSaveContext.triforcePiecesCollected);
+        ImGui::InputScalar("Triforce Pieces", ImGuiDataType_U8, &gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected);
         UIWidgets::InsertHelpHoverText("Currently obtained Triforce Pieces. For Triforce Hunt.");
     }
 
@@ -416,17 +416,17 @@ void DrawBGSItemFlag(uint8_t itemID) {
     ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1));
     ImGui::SameLine();
     int tradeIndex = itemID - ITEM_POCKET_EGG;
-    bool hasItem = (gSaveContext.adultTradeItems & (1 << tradeIndex)) != 0;
+    bool hasItem = (gSaveContext.ship.quest.data.randomizer.adultTradeItems & (1 << tradeIndex)) != 0;
     bool shouldHaveItem = hasItem;
     ImGui::Checkbox(("##adultTradeFlag" + std::to_string(itemID)).c_str(), &shouldHaveItem);
     if (hasItem != shouldHaveItem) {
         if (shouldHaveItem) {
-            gSaveContext.adultTradeItems |= (1 << tradeIndex);
+            gSaveContext.ship.quest.data.randomizer.adultTradeItems |= (1 << tradeIndex);
             if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_NONE) {
                 INV_CONTENT(ITEM_TRADE_ADULT) = ITEM_POCKET_EGG + tradeIndex;
             }
         } else {
-            gSaveContext.adultTradeItems &= ~(1 << tradeIndex);
+            gSaveContext.ship.quest.data.randomizer.adultTradeItems &= ~(1 << tradeIndex);
             Inventory_ReplaceItem(gPlayState, itemID, Randomizer_GetNextAdultTradeItem());
         }
     }
@@ -477,7 +477,7 @@ void DrawInventoryTab() {
                 if (ImGui::Button("##itemNonePicker", ImVec2(32.0f, 32.0f))) {
                     gSaveContext.inventory.items[selectedIndex] = ITEM_NONE;
                     if (selectedIndex == SLOT_TRADE_ADULT) {
-                        gSaveContext.adultTradeItems = 0;
+                        gSaveContext.ship.quest.data.randomizer.adultTradeItems = 0;
                     }
                     ImGui::CloseCurrentPopup();
                 }
@@ -517,7 +517,7 @@ void DrawInventoryTab() {
                             OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE) &&
                             selectedIndex == SLOT_TRADE_ADULT &&
                             slotEntry.id >= ITEM_POCKET_EGG && slotEntry.id <= ITEM_CLAIM_CHECK) {
-                            gSaveContext.adultTradeItems |= ADULT_TRADE_FLAG(slotEntry.id);
+                            gSaveContext.ship.quest.data.randomizer.adultTradeItems |= ADULT_TRADE_FLAG(slotEntry.id);
                         }
                         ImGui::CloseCurrentPopup();
                     }
@@ -923,7 +923,7 @@ void DrawFlagsTab() {
                             DrawFlagTableArray16(flagTable, j, gSaveContext.eventInf[j]);
                             break;
                         case RANDOMIZER_INF:
-                            DrawFlagTableArray16(flagTable, j, gSaveContext.randomizerInf[j]);
+                            DrawFlagTableArray16(flagTable, j, gSaveContext.ship.randomizerInf[j]);
                             break;
                     }
                 });
@@ -1305,7 +1305,7 @@ void DrawQuestStatusTab() {
             ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(itemMapping[ITEM_KEY_SMALL].name), ImVec2(lineHeight, lineHeight));
             ImGui::SameLine();
             if (ImGui::InputScalar("##Keys", ImGuiDataType_S8, gSaveContext.inventory.dungeonKeys + dungeonItemsScene)) {
-                gSaveContext.sohStats.dungeonKeys[dungeonItemsScene] = gSaveContext.inventory.dungeonKeys[dungeonItemsScene];
+                gSaveContext.ship.stats.dungeonKeys[dungeonItemsScene] = gSaveContext.inventory.dungeonKeys[dungeonItemsScene];
             };
         } else {
             // dungeonItems is size 20 but dungeonKeys is size 19, so there are no keys for the last scene (Barinade's Lair)

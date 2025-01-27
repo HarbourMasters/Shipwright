@@ -9,7 +9,7 @@
 #include <soh/GameVersions.h>
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void EnMag_Init(Actor* thisx, PlayState* play);
 void EnMag_InitMq(Actor* thisx, PlayState* play);

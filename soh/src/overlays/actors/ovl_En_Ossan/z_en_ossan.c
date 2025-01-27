@@ -19,7 +19,7 @@
 #include <assert.h>
 #include "soh/OTRGlobals.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
 void EnOssan_Init(Actor* thisx, PlayState* play);
 void EnOssan_Destroy(Actor* thisx, PlayState* play);
@@ -2182,7 +2182,7 @@ void EnOssan_InitActionFunc(EnOssan* this, PlayState* play) {
     ShopItem* items;
 
     if (EnOssan_AreShopkeeperObjectsLoaded(this, play)) {
-        this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
+        this->actor.flags &= ~ACTOR_FLAG_UPDATE_CULLING_DISABLED;
         this->actor.objBankIndex = this->objBankIndex1;
         Actor_SetObjectDependency(play, &this->actor);
 
@@ -2267,7 +2267,7 @@ void EnOssan_InitActionFunc(EnOssan* this, PlayState* play) {
         this->blinkTimer = 20;
         this->eyeTextureIdx = 0;
         this->blinkFunc = EnOssan_WaitForBlink;
-        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+        this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
         EnOssan_SetupAction(this, EnOssan_MainActionFunc);
     }
 }

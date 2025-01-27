@@ -4,7 +4,7 @@
 #include <z64.h>
 
 #define ADULT_TRADE_FLAG(itemId) (1 << (itemId - ITEM_POCKET_EGG))
-#define PLAYER_HAS_SHUFFLED_ADULT_TRADE_ITEM(itemID) (gSaveContext.adultTradeItems & ADULT_TRADE_FLAG(itemID))
+#define PLAYER_HAS_SHUFFLED_ADULT_TRADE_ITEM(itemID) (IS_RANDO && gSaveContext.ship.quest.data.randomizer.adultTradeItems & ADULT_TRADE_FLAG(itemID))
 
 void Randomizer_ConsumeAdultTradeItem(PlayState* play, u8 itemId);
 u8 Randomizer_GetNextAdultTradeItem();

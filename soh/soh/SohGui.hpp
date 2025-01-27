@@ -26,6 +26,7 @@
 #include "Enhancements/randomizer/randomizer_settings_window.h"
 #include "Enhancements/timesplits/TimeSplits.h"
 #include "Enhancements/randomizer/Plandomizer.h"
+#include "AboutWindow.h"
 #include "SohModals.h"
 
 #ifdef __cplusplus

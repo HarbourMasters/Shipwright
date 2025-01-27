@@ -10,7 +10,7 @@
 #include "objects/object_tsubo/object_tsubo.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_ALWAYS_THROWN)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_THROW_ONLY)
 
 void ObjTsubo_Init(Actor* thisx, PlayState* play);
 void ObjTsubo_Destroy(Actor* thisx, PlayState* play);
@@ -189,7 +189,7 @@ void ObjTsubo_AirBreak(ObjTsubo* this, PlayState* play) {
                              sObjectIds[(this->actor.params >> 8) & 1], D_80BA1B8C[(this->actor.params >> 8) & 1]);
     }
     func_80033480(play, &this->actor.world.pos, 30.0f, 4, 20, 50, 1);
-    gSaveContext.sohStats.count[COUNT_POTS_BROKEN]++;
+    gSaveContext.ship.stats.count[COUNT_POTS_BROKEN]++;
 }
 
 void ObjTsubo_WaterBreak(ObjTsubo* this, PlayState* play) {
@@ -218,7 +218,7 @@ void ObjTsubo_WaterBreak(ObjTsubo* this, PlayState* play) {
                              (Rand_ZeroOne() * 95.0f) + 15.0f, 0, 32, 70, KAKERA_COLOR_NONE,
                              sObjectIds[(this->actor.params >> 8) & 1], D_80BA1B8C[(this->actor.params >> 8) & 1]);
     }
-    gSaveContext.sohStats.count[COUNT_POTS_BROKEN]++;
+    gSaveContext.ship.stats.count[COUNT_POTS_BROKEN]++;
 }
 
 void ObjTsubo_SetupWaitForObject(ObjTsubo* this) {
@@ -232,7 +232,7 @@ void ObjTsubo_WaitForObject(ObjTsubo* this, PlayState* play) {
         }
         this->actor.objBankIndex = this->objTsuboBankIndex;
         ObjTsubo_SetupIdle(this);
-        this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
+        this->actor.flags &= ~ACTOR_FLAG_UPDATE_CULLING_DISABLED;
     }
 }
 
@@ -282,7 +282,7 @@ void ObjTsubo_SetupLiftedUp(ObjTsubo* this) {
     this->actionFunc = ObjTsubo_LiftedUp;
     this->actor.room = -1;
     Player_PlaySfx(&this->actor, NA_SE_PL_PULL_UP_POT);
-    this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+    this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
 }
 
 void ObjTsubo_LiftedUp(ObjTsubo* this, PlayState* play) {

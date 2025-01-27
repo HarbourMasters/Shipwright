@@ -11,7 +11,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
 void EnWf_Init(Actor* thisx, PlayState* play);
 void EnWf_Destroy(Actor* thisx, PlayState* play);
@@ -375,7 +375,7 @@ void EnWf_SetupWaitToAppear(EnWf* this) {
     this->actionTimer = 20;
     this->unk_300 = false;
     this->action = WOLFOS_ACTION_WAIT_TO_APPEAR;
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->actor.scale.y = 0.0f;
     this->actor.gravity = 0.0f;
     EnWf_SetupAction(this, EnWf_WaitToAppear);
@@ -387,7 +387,7 @@ void EnWf_WaitToAppear(EnWf* this, PlayState* play) {
 
         if (this->actor.xzDistToPlayer < 240.0f) {
             this->actionTimer = 5;
-            this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+            this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
 
             // Disable miniboss music with Enemy Randomizer because the music would keep
             // playing if the enemy was never defeated, which is common with Enemy Randomizer.
@@ -1195,7 +1195,7 @@ void EnWf_SetupDie(EnWf* this) {
     }
 
     this->action = WOLFOS_ACTION_DIE;
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->actionTimer = this->skelAnime.animLength;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_WOLFOS_DEAD);
     EnWf_SetupAction(this, EnWf_Die);

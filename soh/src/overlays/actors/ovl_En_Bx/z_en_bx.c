@@ -8,7 +8,7 @@
 #include "objects/object_bxa/object_bxa.h"
 #include "soh/frame_interpolation.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void EnBx_Init(Actor* thisx, PlayState* play);
 void EnBx_Destroy(Actor* thisx, PlayState* play);
