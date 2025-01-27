@@ -52,12 +52,7 @@ extern "C" {
 #include "variables.h"
 #include "functions.h"
 #include "src/overlays/actors/ovl_En_Door/z_en_door.h"
-void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
-void ResourceMgr_PatchCustomGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
-void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
-uint8_t ResourceGetIsCustomByName(const char* name);
 uint8_t Player_IsCustomLinkModel();
-uint8_t ResourceMgr_FileExists(const char* resName);
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 extern void Overlay_DisplayText(float duration, const char* text);
