@@ -65,7 +65,7 @@ std::vector<AltTrapType> getEnabledAddTraps () {
 };
 
 static void RollRandomTrap(uint32_t seed) {
-    uint32_t finalSeed = seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSettings()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
+    uint32_t finalSeed = seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
     Random_Init(finalSeed);
 
     roll = RandomElement(getEnabledAddTraps());

@@ -117,7 +117,42 @@ void AfterModChange() {
 }
 
 void DrawModInfo(std::string file) {
+    ImGui::SameLine();
     ImGui::Text(file.c_str());
+}
+
+void DrawEnabledMods() {
+    std::vector<std::string> enabledMods = GetEnabledModFiles();
+    if (enabledMods.empty()) {
+        ImGui::Text("<None>");
+        return;
+    }
+
+    for (std::string file : enabledMods) {
+        if (ImGui::ArrowButton(file.c_str(), ImGuiDir_Left)) {
+            modFiles[file] = false;
+            GetArchiveManager()->RemoveArchive(file);
+            AfterModChange();
+        }
+        DrawModInfo(file);
+    }
+}
+
+void DrawDisabledMods() {
+    std::vector<std::string> disabledMods = GetDisabledModFiles();
+    if (disabledMods.empty()) {
+        ImGui::Text("<None>");
+        return;
+    }
+
+    for (std::string file : disabledMods) {
+        if (ImGui::ArrowButton(file.c_str(), ImGuiDir_Right)) {
+            modFiles[file] = true;
+            GetArchiveManager()->AddArchive(file);
+            AfterModChange();
+        }
+        DrawModInfo(file);
+    }
 }
 
 void ModMenuWindow::DrawElement() {
@@ -136,20 +171,7 @@ void ModMenuWindow::DrawElement() {
         ImGui::TableNextColumn();
 
         if (ImGui::BeginChild("Disabled Mods", ImVec2(0, -8))) {
-            std::vector<std::string> disabledMods = GetDisabledModFiles();
-            if (!disabledMods.empty()) {
-                for (std::string file : disabledMods) {
-                    if (ImGui::ArrowButton(file.c_str(), ImGuiDir_Right)) {
-                        modFiles[file] = true;
-                        GetArchiveManager()->AddArchive(file);
-                        AfterModChange();
-                    }
-                    ImGui::SameLine();
-                    DrawModInfo(file);
-                }
-            } else {
-                ImGui::Text("<None>");
-            }
+            DrawDisabledMods();
 
             ImGui::EndChild();
         }
@@ -157,20 +179,7 @@ void ModMenuWindow::DrawElement() {
         ImGui::TableNextColumn();
 
         if (ImGui::BeginChild("Enabled Mods", ImVec2(0, -8))) {
-            std::vector<std::string> enabledMods = GetEnabledModFiles();
-            if (!enabledMods.empty()) {
-                for (std::string file : enabledMods) {
-                    if (ImGui::ArrowButton(file.c_str(), ImGuiDir_Left)) {
-                        modFiles[file] = false;
-                        GetArchiveManager()->RemoveArchive(file);
-                        AfterModChange();
-                    }
-                    ImGui::SameLine();
-                    DrawModInfo(file);
-                }
-            } else {
-                ImGui::Text("<None>");
-            }
+            DrawEnabledMods();
 
             ImGui::EndChild();
         }
