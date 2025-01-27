@@ -14,7 +14,7 @@
 #include <assert.h>
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void Demo6K_Init(Actor* thisx, PlayState* play);
 void Demo6K_Destroy(Actor* thisx, PlayState* play);
@@ -168,7 +168,7 @@ void Demo6K_Init(Actor* thisx, PlayState* play) {
         case 17:
         case 18:
         case 19:
-            this->actor.flags |= ACTOR_FLAG_DRAW_WHILE_CULLED;
+            this->actor.flags |= ACTOR_FLAG_DRAW_CULLING_DISABLED;
             this->drawFunc = func_8096865C;
             this->initActionFunc = func_80967410;
             this->flags |= 1;

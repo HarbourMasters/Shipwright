@@ -3,7 +3,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include <objects/object_d_hsblock/object_d_hsblock.h>
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void EnAObj_Init(Actor* thisx, PlayState* play);
 void EnAObj_Destroy(Actor* thisx, PlayState* play);
@@ -142,7 +142,7 @@ void EnAObj_Init(Actor* thisx, PlayState* play) {
             break;
         case A_OBJ_UNKNOWN_6:
             // clang-format off
-            thisx->flags |= ACTOR_FLAG_TARGETABLE; this->dyna.bgId = 5; this->focusYoffset = 10.0f;
+            thisx->flags |= ACTOR_FLAG_ATTENTION_ENABLED; this->dyna.bgId = 5; this->focusYoffset = 10.0f;
             // clang-format on
             thisx->gravity = -2.0f;
             EnAObj_SetupWaitTalk(this, thisx->params);
@@ -156,7 +156,7 @@ void EnAObj_Init(Actor* thisx, PlayState* play) {
         case A_OBJ_SIGNPOST_ARROW:
             thisx->textId = (this->textId & 0xFF) | 0x300;
             // clang-format off
-            thisx->flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY; thisx->targetArrowOffset = 500.0f;
+            thisx->flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY; thisx->targetArrowOffset = 500.0f;
             // clang-format on
             this->focusYoffset = 45.0f;
             EnAObj_SetupWaitTalk(this, thisx->params);

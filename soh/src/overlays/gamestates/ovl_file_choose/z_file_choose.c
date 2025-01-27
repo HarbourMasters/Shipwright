@@ -752,8 +752,6 @@ static s16 sUnused = 106;
 
 static s16 sScreenFillAlpha = 255;
 
-static u8 isFastFileIdIncompatible = 0;
-
 static Gfx sScreenFillSetupDL[] = {
     gsDPPipeSync(),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -989,7 +987,7 @@ void DrawSeedHashSprites(FileChooseContext* this) {
            this->configMode == CM_NAME_ENTRY_TO_RANDOMIZER_SETTINGS_MENU || this->configMode == CM_START_NAME_ENTRY ||
            this->configMode == CM_START_RANDOMIZER_SETTINGS_MENU) ||
           this->configMode == CM_RANDOMIZER_SETTINGS_MENU) &&
-         gSaveContext.questId == QUEST_RANDOMIZER)) {
+         gSaveContext.ship.quest.id == QUEST_RANDOMIZER)) {
 
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
         u16 xStart = 64;
@@ -1035,6 +1033,7 @@ void FileChoose_UpdateRandomizer() {
         SpoilerFileExists(CVarGetString(CVAR_GENERAL("SpoilerLog"), "")) && !fileSelectSpoilerFileLoaded) {
             if (CVarGetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 0) != 0) {
                 CVarSetString(CVAR_GENERAL("SpoilerLog"), CVarGetString(CVAR_GENERAL("RandomizerDroppedFile"), ""));
+                Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
             }
             const char* fileLoc = CVarGetString(CVAR_GENERAL("SpoilerLog"), "");
             CVarSetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 0);
@@ -1298,7 +1297,7 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
     }
 
     if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
-        gSaveContext.questId = this->questType[this->buttonIndex];
+        gSaveContext.ship.quest.id = this->questType[this->buttonIndex];
 
         if (this->questType[this->buttonIndex] == QUEST_BOSSRUSH) {
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
@@ -1393,17 +1392,17 @@ void FileChoose_UpdateBossRushMenu(GameState* thisx) {
     if (ABS(this->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
         if (this->stickRelX > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT))) {
             // If exceeding the amount of choices for the selected option, cycle back to the first.
-            if ((gSaveContext.bossRushOptions[this->bossRushIndex] + 1) == BossRush_GetSettingOptionsAmount(this->bossRushIndex)) {
-                gSaveContext.bossRushOptions[this->bossRushIndex] = 0;
+            if ((gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex] + 1) == BossRush_GetSettingOptionsAmount(this->bossRushIndex)) {
+                gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex] = 0;
             } else {
-                gSaveContext.bossRushOptions[this->bossRushIndex]++;
+                gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex]++;
             }
         } else if (this->stickRelX < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT))) {
             // If cycling back when already at the first choice for the selected option, cycle back to the last choice.
-            if ((gSaveContext.bossRushOptions[this->bossRushIndex] - 1) < 0) {
-                gSaveContext.bossRushOptions[this->bossRushIndex] = BossRush_GetSettingOptionsAmount(this->bossRushIndex) - 1;
+            if ((gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex] - 1) < 0) {
+                gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex] = BossRush_GetSettingOptionsAmount(this->bossRushIndex) - 1;
             } else {
-                gSaveContext.bossRushOptions[this->bossRushIndex]--;
+                gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex]--;
             }
         }
 
@@ -1411,10 +1410,10 @@ void FileChoose_UpdateBossRushMenu(GameState* thisx) {
     }
 
     if (sLastBossRushOptionIndex != this->bossRushIndex ||
-        sLastBossRushOptionValue != gSaveContext.bossRushOptions[this->bossRushIndex]) {
-        GameInteractor_ExecuteOnUpdateFileBossRushOptionSelection(this->bossRushIndex, gSaveContext.bossRushOptions[this->bossRushIndex]);
+        sLastBossRushOptionValue != gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex]) {
+        GameInteractor_ExecuteOnUpdateFileBossRushOptionSelection(this->bossRushIndex, gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex]);
         sLastBossRushOptionIndex = this->bossRushIndex;
-        sLastBossRushOptionValue = gSaveContext.bossRushOptions[this->bossRushIndex];
+        sLastBossRushOptionValue = gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex];
     }
 
     if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
@@ -2408,7 +2407,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                 65, (87 + textYOffset), 255, 255, 80, textAlpha, 0.8f, true);
 
             // Selected choice for option.
-            uint16_t finalKerning = Interface_DrawTextLine(this->state.gfxCtx, BossRush_GetSettingChoiceName(i, gSaveContext.bossRushOptions[i], gSaveContext.language), 
+            uint16_t finalKerning = Interface_DrawTextLine(this->state.gfxCtx, BossRush_GetSettingChoiceName(i, gSaveContext.ship.quest.data.bossRush.options[i], gSaveContext.language), 
                 165, (87 + textYOffset), 255, 255, 255, textAlpha, 0.8f, true);
 
             // Draw arrows around selected option.
@@ -3353,20 +3352,6 @@ void FileChoose_Main(GameState* thisx) {
         gSaveContext.skyboxTime += 0x10;
     }
 
-    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("SkipLogoTitle"), 0) && CVarGetInteger(CVAR_DEVELOPER_TOOLS("SaveFileID"), FASTFILE_1) <= FASTFILE_3 && !isFastFileIdIncompatible) {
-        if (Save_Exist(CVarGetInteger(CVAR_DEVELOPER_TOOLS("SaveFileID"), FASTFILE_1)) && FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(CVarGetInteger(CVAR_DEVELOPER_TOOLS("SaveFileID"), FASTFILE_1)))) {
-            this->buttonIndex = CVarGetInteger(CVAR_DEVELOPER_TOOLS("SaveFileID"), FASTFILE_1);
-            this->menuMode = FS_MENU_MODE_SELECT;
-            this->selectMode = SM_LOAD_GAME;
-        } else {
-            isFastFileIdIncompatible = 1;
-        }
-    } else if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("SkipLogoTitle"), 0) && CVarGetInteger(CVAR_DEVELOPER_TOOLS("SaveFileID"), FASTFILE_1) == FASTFILE_MAP_SELECT) {
-        this->buttonIndex = 0xFF;
-        this->menuMode = FS_MENU_MODE_SELECT;
-        this->selectMode = SM_LOAD_GAME;
-    }
-
     OPEN_DISPS(this->state.gfxCtx);
 
     this->n64ddFlag = 0;
@@ -3725,7 +3710,7 @@ void FileChoose_Init(GameState* thisx) {
     this->questType[0] = MIN_QUEST;
     this->questType[1] = MIN_QUEST;
     this->questType[2] = MIN_QUEST;
-    isFastFileIdIncompatible = 0;
+    fileSelectSpoilerFileLoaded = false;
     CVarSetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
 
     SREG(30) = 1;

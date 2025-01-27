@@ -11,7 +11,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA | ACTOR_FLAG_NO_LOCKON)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED | ACTOR_FLAG_UPDATE_DURING_OCARINA | ACTOR_FLAG_LOCK_ON_DISABLED)
 
 static ColliderCylinderInit sCylinderInit = {
     {
@@ -93,7 +93,7 @@ void EnKakasi2_Init(Actor* thisx, PlayState* play) {
     this->actor.colChkInfo.mass = MASS_IMMOVABLE;
     this->height = 60.0f;
     Actor_SetScale(&this->actor, 0.01f);
-    this->actor.flags |= ACTOR_FLAG_DRAGGED_BY_HOOKSHOT;
+    this->actor.flags |= ACTOR_FLAG_HOOKSHOT_PULLS_PLAYER;
     this->unk_198 = this->actor.shape.rot.y;
 
     if (this->switchFlag >= 0 && Flags_GetSwitch(play, this->switchFlag)) {
@@ -127,7 +127,7 @@ void func_80A90264(EnKakasi2* this, PlayState* play) {
         Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
         SkelAnime_InitFlex(play, &this->skelAnime, &object_ka_Skel_0065B0, &object_ka_Anim_000214, NULL, NULL, 0);
         OnePointCutscene_Attention(play, &this->actor);
-        this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_NO_LOCKON;
+        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_LOCK_ON_DISABLED;
 
         Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
         if (this->switchFlag >= 0) {
@@ -155,7 +155,7 @@ void func_80A90264(EnKakasi2* this, PlayState* play) {
             OnePointCutscene_Attention(play, &this->actor);
             Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
 
-            this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_NO_LOCKON;
+            this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_LOCK_ON_DISABLED;
             this->actionFunc = func_80A904D8;
         }
     }

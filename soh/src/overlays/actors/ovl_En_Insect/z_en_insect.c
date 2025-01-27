@@ -190,7 +190,7 @@ void EnInsect_Init(Actor* thisx, PlayState* play2) {
 
     if (this->unk_314 & 4) {
         this->unk_31C = Rand_S16Offset(200, 40);
-        this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+        this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
     }
 
     if (temp_s2 == 2 || temp_s2 == 3) {

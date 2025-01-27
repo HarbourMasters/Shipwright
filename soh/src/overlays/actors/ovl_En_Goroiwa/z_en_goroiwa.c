@@ -10,7 +10,7 @@
 #include "objects/object_goroiwa/object_goroiwa.h"
 #include "vt.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 typedef s32 (*EnGoroiwaUnkFunc1)(EnGoroiwa* this, PlayState* play);
 typedef void (*EnGoroiwaUnkFunc2)(EnGoroiwa* this);

@@ -90,17 +90,15 @@ std::vector<ItemTrackerItem> triforcePieces = {
 };
 
 std::vector<ItemTrackerItem> bossSoulItems = {
-    //Hack for right now, just gonna draw souls as bottles/big poes.
-    //Will replace with other macro once we have a custom texture
-    ITEM_TRACKER_ITEM_CUSTOM(RG_GOHMA_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_KING_DODONGO_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_BARINADE_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_PHANTOM_GANON_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_VOLVAGIA_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_MORPHA_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_BONGO_BONGO_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_TWINROVA_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_GANON_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
+    ITEM_TRACKER_ITEM(RG_GOHMA_SOUL, 0, DrawItem),
+    ITEM_TRACKER_ITEM(RG_KING_DODONGO_SOUL, 0, DrawItem ),
+    ITEM_TRACKER_ITEM(RG_BARINADE_SOUL, 0, DrawItem ),
+    ITEM_TRACKER_ITEM(RG_PHANTOM_GANON_SOUL, 0, DrawItem ),
+    ITEM_TRACKER_ITEM(RG_VOLVAGIA_SOUL, 0, DrawItem ),
+    ITEM_TRACKER_ITEM(RG_MORPHA_SOUL, 0, DrawItem ),
+    ITEM_TRACKER_ITEM(RG_BONGO_BONGO_SOUL, 0, DrawItem ),
+    ITEM_TRACKER_ITEM(RG_TWINROVA_SOUL, 0, DrawItem ),
+    ITEM_TRACKER_ITEM(RG_GANON_SOUL, 0, DrawItem ),
 };
 
 std::vector<ItemTrackerItem> ocarinaButtonItems = {
@@ -411,17 +409,17 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
             break;
         case ITEM_HEART_CONTAINER:
             result.maxCapacity = result.currentCapacity = 8;
-            result.currentAmmo = gSaveContext.sohStats.heartContainers;
+            result.currentAmmo = gSaveContext.ship.stats.heartContainers;
             break;
         case ITEM_HEART_PIECE:
             result.maxCapacity = result.currentCapacity = 36;
-            result.currentAmmo = gSaveContext.sohStats.heartPieces;
+            result.currentAmmo = gSaveContext.ship.stats.heartPieces;
             break;
         case ITEM_KEY_SMALL:
             // Though the ammo/capacity naming doesn't really make sense for keys, we are
             // hijacking the same system to display key counts as there are enough similarities
             result.currentAmmo = MAX(gSaveContext.inventory.dungeonKeys[item.data], 0);
-            result.currentCapacity = gSaveContext.sohStats.dungeonKeys[item.data];
+            result.currentCapacity = gSaveContext.ship.stats.dungeonKeys[item.data];
             switch (item.data) {
                 case SCENE_FOREST_TEMPLE:
                     result.maxCapacity = FOREST_TEMPLE_SMALL_KEY_MAX;
@@ -582,11 +580,11 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         std::string maxString = "";
         uint8_t piecesRequired = (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1);
         uint8_t piecesTotal = (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL) + 1);
-        ImU32 currentColor = gSaveContext.triforcePiecesCollected >= piecesRequired ? IM_COL_GREEN : IM_COL_WHITE;
+        ImU32 currentColor = gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected >= piecesRequired ? IM_COL_GREEN : IM_COL_WHITE;
         ImU32 maxColor = IM_COL_GREEN;
         int32_t trackerTriforcePieceNumberDisplayMode = CVarGetInteger(CVAR_TRACKER_ITEM("TriforcePieceCounts"), TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX);
 
-        currentString += std::to_string(gSaveContext.triforcePiecesCollected);
+        currentString += std::to_string(gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected);
         currentString += "/";
         // gItemTrackerTriforcePieceTrack
         if (trackerTriforcePieceNumberDisplayMode == TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX) {
@@ -651,11 +649,11 @@ void DrawItem(ItemTrackerItem item) {
     switch (item.id) {
         case ITEM_HEART_CONTAINER:
             actualItemId = item.id;
-            hasItem = gSaveContext.sohStats.heartContainers > 0;
+            hasItem = gSaveContext.ship.stats.heartContainers > 0;
             break;
         case ITEM_HEART_PIECE:
             actualItemId = item.id;
-            hasItem = gSaveContext.sohStats.heartPieces > 0;
+            hasItem = gSaveContext.ship.stats.heartPieces > 0;
             break;
         case ITEM_MAGIC_SMALL:
         case ITEM_MAGIC_LARGE:

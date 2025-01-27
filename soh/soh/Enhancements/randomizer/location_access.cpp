@@ -27,11 +27,10 @@ bool LocationAccess::CheckConditionAtAgeTime(bool& age, bool& time) const {
     return GetConditionsMet();
 }
 
-bool LocationAccess::ConditionsMet() const {
+bool LocationAccess::ConditionsMet(Region* parentRegion) const {
     //WARNING enterance validation can run this after resetting the access for sphere 0 validation
     //When refactoring ToD access, either fix the above or do not assume that we
     //have any access at all just because this is being run
-    Region* parentRegion = RegionTable(Rando::Context::GetInstance()->GetItemLocation(location)->GetParentRegionKey());
     bool conditionsMet = false;
 
     if (
@@ -268,7 +267,7 @@ void RegionTable_Init() {
     }, {
         //Locations
         LOCATION(RC_LINKS_POCKET,       true),
-        LOCATION(RC_TRIFORCE_COMPLETED, logic->GetSaveContext()->triforcePiecesCollected >= ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).GetContextOptionIndex() + 1;),
+        LOCATION(RC_TRIFORCE_COMPLETED, logic->GetSaveContext()->ship.quest.data.randomizer.triforcePiecesCollected >= ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).Get() + 1;),
         LOCATION(RC_SARIA_SONG_HINT,    logic->CanUse(RG_SARIAS_SONG)),
     }, {
         //Exits
@@ -410,7 +409,7 @@ void ReplaceAllInString(std::string& s, std::string const& toReplace, std::strin
 std::string CleanCheckConditionString(std::string condition) {
     ReplaceAllInString(condition, "logic->", "");
     ReplaceAllInString(condition, "ctx->", "");
-    ReplaceAllInString(condition, ".GetContextOptionIndex()", "");
+    ReplaceAllInString(condition, ".Get()", "");
     ReplaceAllInString(condition, "GetSaveContext()->", "");
     return condition;
 }
@@ -439,13 +438,13 @@ namespace Regions {
         }
 
         if (/*Settings::HasNightStart TODO:: Randomize Starting Time*/ false) {
-            if (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD) {
+            if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD)) {
                 RegionTable(RR_ROOT)->childNight = true;
             } else {
                 RegionTable(RR_ROOT)->adultNight = true;
             }
         } else {
-            if (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD) {
+            if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD)) {
                 RegionTable(RR_ROOT)->childDay = true;
             } else {
                 RegionTable(RR_ROOT)->adultDay = true;
@@ -466,13 +465,13 @@ namespace Regions {
         }
 
         if (/*Settings::HasNightStart TODO:: Randomize Starting Time*/ false) {
-            if (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD) {
+            if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD)) {
                 RegionTable(RR_ROOT)->childNight = true;
             } else {
                 RegionTable(RR_ROOT)->adultNight = true;
             }
         } else {
-            if (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD) {
+            if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD)) {
                 RegionTable(RR_ROOT)->childDay = true;
             } else {
                 RegionTable(RR_ROOT)->adultDay = true;

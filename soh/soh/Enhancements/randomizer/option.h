@@ -40,6 +40,59 @@ enum class WidgetType {
   Slider, /** Compatible with U8s. If constructed with NumOpts, consider using this. Technically can be used for Bool or non-NumOpts options but it would be a bit weird semantically. */
 };
 
+class OptionValue {
+  public:
+    OptionValue() = default;
+    OptionValue(uint8_t value_);
+
+    /**
+     * @brief Returns the value of the OptionValue's mVal
+     * 
+     * @return uint8_t 
+     */
+    uint8_t Get();
+
+    /**
+     * @brief Set the OptionValue's mVal to the provided val.
+     * 
+     * @param val 
+     */
+    void Set(uint8_t val);
+
+    /**
+     * @brief Determines if the value/selected index of this Option matches the provided value.
+     *
+     * @param other The value to compare.
+     * @return true
+     * @return false
+     */
+    bool Is(uint32_t other) const {
+        return mVal == other;
+    }
+
+    /**
+     * @brief Determines if the value/selected index of this Option does not match the provided value.
+     *
+     * @param other The value to compare.
+     * @return true
+     * @return false
+     */
+    bool IsNot(uint32_t other) const {
+        return !Is(other);
+    }
+
+    /**
+     * @brief Allows the option to be used as a boolean value directly.
+     *
+     * @return true
+     * @return false
+     */
+    explicit operator bool() const;
+
+  private:
+    uint8_t mVal;
+};
+
 /**
  * @brief A class describing the state of a single option/setting, such as its name,
  * options, current value, whether or not it is interactable in the menu, or the CVar,
@@ -68,7 +121,8 @@ class Option {
      * @param imFlags_ (see ImGuiMenuFlags type) flags that can modify how this option is rendered.
      * @return Option
      */
-    static Option Bool(std::string name_, std::vector<std::string> options_ = { "Off", "On" },
+    static Option Bool(RandomizerSettingKey key_, std::string name_,
+                       std::vector<std::string> options_ = { "Off", "On" },
                        OptionCategory category_ = OptionCategory::Setting, std::string cvarName_ = "",
                        std::string description_ = "", WidgetType widgetType_ = WidgetType::Checkbox,
                        uint8_t defaultOption_ = 0, bool defaultHidden_ = false, int imFlags_ = IMFLAG_SEPARATOR_BOTTOM);
@@ -79,6 +133,7 @@ class Option {
      * existing calls to the other overload of this function. The options vector will be { "Off", "On" }
      * when using this overload. If you want your option to have different value names, use the other overload.
      *
+     * @param key_ The RandomizerSettingKey of this option.
      * @param name_ The name of the option. Appears in the spoiler/patch file.
      * @param cvarName_ The name of the CVar this option should correspond with. Set as an empty string to not
      * link to any CVar.
@@ -90,13 +145,14 @@ class Option {
      * @param defaultOption_ The defaulted selected index for this Option.
      * @return Option
      */
-    static Option Bool(std::string name_, std::string cvarName_, std::string description_ = "",
-                       int imFlags_ = IMFLAG_SEPARATOR_BOTTOM, WidgetType widgetType_ = WidgetType::Checkbox,
-                       bool defaultOption_ = false);
+    static Option Bool(RandomizerSettingKey key_, std::string name_, std::string cvarName_,
+                      std::string description_ = "", int imFlags_ = IMFLAG_SEPARATOR_BOTTOM,
+                      WidgetType widgetType_ = WidgetType::Checkbox, bool defaultOption_ = false);
 
     /**
      * @brief Constructs a U8 Option.
      *
+     * @param key_ The RandomizerSettingKey for this option.
      * @param name_ The name of this Option. Appears in the spoiler/patch file.
      * @param options_ A vector of value names for this Option. The name corresponding to the selected
      * index for this option will be printed to the spoiler/patch file.
@@ -114,7 +170,7 @@ class Option {
      * @param imFlags_ (see ImGuiMenuFlags type) flags that can modify how this option is rendered.
      * @return Option
      */
-    static Option U8(std::string name_, std::vector<std::string> options_,
+    static Option U8(RandomizerSettingKey key_, std::string name_, std::vector<std::string> options_,
                      OptionCategory category_ = OptionCategory::Setting, std::string cvarName_ = "",
                      std::string description_ = "", WidgetType widgetType_ = WidgetType::Combobox,
                      uint8_t defaultOption_ = 0, bool defaultHidden_ = false, int imFlags_ = IMFLAG_SEPARATOR_BOTTOM);
@@ -125,37 +181,7 @@ class Option {
      * @param name_ The name of the trick. Appears in the spoiler/patch file.
      * @return Option
      */
-    static Option LogicTrick(std::string name_);
-
-    /**
-     * @brief Determines if the value/selected index of this Option matches the provided value.
-     *
-     * @param other The value to compare.
-     * @return true
-     * @return false
-     */
-    bool Is(uint32_t other) const {
-        return contextSelection == other;
-    }
-
-    /**
-     * @brief Determines if the value/selected index of this Option does not match the provided value.
-     *
-     * @param other The value to compare.
-     * @return true
-     * @return false
-     */
-    bool IsNot(uint32_t other) const {
-        return !Is(other);
-    }
-
-    /**
-     * @brief Allows the option to be used as a boolean value directly.
-     *
-     * @return true
-     * @return false
-     */
-    explicit operator bool() const;
+    static Option LogicTrick(RandomizerTrick rt_, std::string name_);
 
     /**
      * @brief Get the size of the options array.
@@ -163,6 +189,13 @@ class Option {
      * @return size_t
      */
     size_t GetOptionCount() const;
+
+    /**
+     * @brief Get the Key Option
+     * 
+     * @return const RandomizerSettingKey 
+     */
+    const RandomizerSettingKey GetKey() const;
 
     /**
      * @brief Get the name of the Option.
@@ -173,11 +206,12 @@ class Option {
     const std::string& GetDescription() const;
 
     /**
-     * @brief Get the value name corresponding to the selected index.
-     *
-     * @return const std::string&
+     * @brief Get the text of the Option value of the selected index.
+     * 
+     * @param index 
+     * @return const std::string& 
      */
-    const std::string& GetSelectedOptionText() const;
+    const std::string& GetOptionText(size_t index) const;
 
     /**
      * @brief Get the CVar name for this Option.
@@ -192,18 +226,6 @@ class Option {
      * @return uint8_t
      */
     uint8_t GetMenuOptionIndex() const;
-
-    /**
-     * @brief Get the rando context index for this Option.
-     *
-     * @return uint8_t
-     */
-    uint8_t GetContextOptionIndex() const;
-
-    /**
-     * @brief Sets the variable to the currently selected index for this Option.
-     */
-    void SetVariable();
 
     /**
      * @brief Sets the CVar corresponding to the property `cvarName` equal to the value
@@ -306,15 +328,14 @@ class Option {
     void SetFlag(int imFlag_);
     void RemoveFlag(int imFlag_);
 
+    uint8_t GetValueFromText(std::string text);
     void SetContextIndexFromText(std::string text);
 
 protected:
-    Option(uint8_t var_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
+    Option(size_t key_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
            std::string cvarName_, std::string description_, WidgetType widgetType_, uint8_t defaultOption_,
            bool defaultHidden_, int imFlags_);
-    Option(bool var_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
-           std::string cvarName_, std::string description_, WidgetType widgetType_, uint8_t defaultOption_,
-           bool defaultHidden_, int imFlags_);
+    size_t key;
 
   private:
     bool RenderCheckbox();
@@ -322,7 +343,6 @@ protected:
     bool RenderCombobox();
     bool RenderSlider();
     void PopulateTextToNum();
-    std::variant<bool, uint8_t> var;
     std::string name;
     std::vector<std::string> options;
     uint8_t menuSelection = 0;
@@ -342,12 +362,20 @@ protected:
     std::unordered_map<std::string, uint8_t> optionsTextToVar = {};
 };
 
+class LocationOption : public Option {
+public:
+  LocationOption() = default;
+  LocationOption(RandomizerCheck key_, const std::string& name_);
+  const RandomizerCheck GetKey() const;
+};
+
 class TrickOption : public Option {
 public:
     TrickOption() = default;
     /**
      * @brief A convenience function for constructing the Option for a trick.
      *
+     * @param key_ A RandomizerTrick key for this option.
      * @param quest_ MQ, Vanilla, or Both.
      * @param area_ The area the trick is relevant for.
      * @param tags_ The set of RandomizerTrickTags for this trick.
@@ -355,7 +383,9 @@ public:
      * @param description_ A brief description of the trick.
      * @return Option
      */
-    static TrickOption LogicTrick(RandomizerCheckQuest quest_, RandomizerArea area_, std::set<Tricks::Tag> tags_, const std::string& name_, std::string description_);
+    static TrickOption LogicTrick(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_, std::set<Tricks::Tag> tags_, const std::string& name_, std::string description_);
+
+    const RandomizerTrick GetKey() const;
 
     /**
      * @brief Retrieve the quest type this trick is relevant for.
@@ -382,7 +412,7 @@ public:
     const std::set<Tricks::Tag>& GetTags() const;
 
 private:
-    TrickOption(RandomizerCheckQuest quest_, RandomizerArea area_, std::set<Tricks::Tag> tags_, const std::string& name_, std::string description_);
+    TrickOption(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_, std::set<Tricks::Tag> tags_, const std::string& name_, std::string description_);
     RandomizerCheckQuest mQuest;
     RandomizerArea mArea;
     std::set<Tricks::Tag> mTags;

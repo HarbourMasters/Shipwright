@@ -12,7 +12,7 @@
 #include "objects/object_zl2_anime1/object_zl2_anime1.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void EnZl2_Init(Actor* thisx, PlayState* play);
 void EnZl2_Destroy(Actor* thisx, PlayState* play);

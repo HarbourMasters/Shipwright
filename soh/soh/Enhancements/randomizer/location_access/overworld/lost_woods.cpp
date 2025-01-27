@@ -105,9 +105,10 @@ void RegionTable_Init_LostWoods() {
 
     areaTable[RR_LW_SCRUBS_GROTTO] = Region("LW Scrubs Grotto", "LW Scrubs Grotto", {}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_LW_DEKU_SCRUB_GROTTO_REAR,    logic->CanStunDeku()),
-        LOCATION(RC_LW_DEKU_SCRUB_GROTTO_FRONT,   logic->CanStunDeku()),
-        LOCATION(RC_LW_DEKU_SCRUB_GROTTO_BEEHIVE, logic->CanBreakUpperBeehives()),
+        LOCATION(RC_LW_DEKU_SCRUB_GROTTO_REAR,      logic->CanStunDeku()),
+        LOCATION(RC_LW_DEKU_SCRUB_GROTTO_FRONT,     logic->CanStunDeku()),
+        LOCATION(RC_LW_DEKU_SCRUB_GROTTO_BEEHIVE,   logic->CanBreakUpperBeehives()), 
+        LOCATION(RC_LW_DEKU_SCRUB_GROTTO_SUN_FAIRY, logic->CanUse(RG_SUNS_SONG)),
     }, {
         //Exits
         Entrance(RR_LW_BEYOND_MIDO, []{return true;}),

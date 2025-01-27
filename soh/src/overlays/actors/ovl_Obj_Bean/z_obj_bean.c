@@ -640,7 +640,7 @@ void ObjBean_WaitForWater(ObjBean* this, PlayState* play) {
         ObjBean_SetupGrowWaterPhase1(this);
         D_80B90E30 = this;
         OnePointCutscene_Init(play, 2210, -99, &this->dyna.actor, MAIN_CAM);
-        this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+        this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
         return;
     }
 
@@ -745,7 +745,7 @@ void ObjBean_GrowWaterPhase5(ObjBean* this, PlayState* play) {
     this->transformFunc(this);
     if (this->timer <= 0) {
         func_80B8FF50(this);
-        this->dyna.actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
+        this->dyna.actor.flags &= ~ACTOR_FLAG_UPDATE_CULLING_DISABLED;
     }
 }
 
@@ -770,7 +770,7 @@ void ObjBean_SetupFly(ObjBean* this) {
     this->actionFunc = ObjBean_Fly;
     ObjBean_SetDrawMode(this, BEAN_STATE_DRAW_PLANT);
     this->dyna.actor.speedXZ = 0.0f;
-    this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED; // Never stop updating
+    this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED; // Never stop updating
 }
 
 void ObjBean_Fly(ObjBean* this, PlayState* play) {
@@ -782,7 +782,7 @@ void ObjBean_Fly(ObjBean* this, PlayState* play) {
         ObjBean_SetupPath(this, play);
         ObjBean_SetupWaitForStepOff(this);
 
-        this->dyna.actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED; // Never stop updating (disable)
+        this->dyna.actor.flags &= ~ACTOR_FLAG_UPDATE_CULLING_DISABLED; // Never stop updating (disable)
         camera = play->cameraPtrs[MAIN_CAM];
 
         if ((camera->setting == CAM_SET_BEAN_LOST_WOODS) || (camera->setting == CAM_SET_BEAN_GENERIC)) {

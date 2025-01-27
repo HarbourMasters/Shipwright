@@ -94,34 +94,120 @@ typedef struct {
     /* 0x18 */ Vec3f feetPos[2]; // Update by using `Actor_SetFeetPos` in PostLimbDraw
 } ActorShape; // size = 0x30
 
-#define ACTOR_FLAG_TARGETABLE (1 << 0)
+// Actor is discoverable by the Attention System. This enables Navi to hover over the actor when it is in range.
+// The actor can also be locked onto (as long as `ACTOR_FLAG_LOCK_ON_DISABLED` is not set).
+#define ACTOR_FLAG_ATTENTION_ENABLED (1 << 0)
+
+// Actor is hostile toward the Player. Player has specific "battle" behavior when locked onto hostile actors.
+// Enemy background music will also be played when the player is close enough to a hostile actor.
+// Note: This must be paired with `ACTOR_FLAG_ATTENTION_ENABLED` to have any effect
 #define ACTOR_FLAG_HOSTILE (1 << 2)
+
+// Actor is considered "friendly"; Opposite flag of `ACTOR_FLAG_HOSTILE`.
+// Note that this flag doesn't have any effect on either the actor, or Player's behavior.
+// What actually matters is the presence or lack of `ACTOR_FLAG_HOSTILE`.
 #define ACTOR_FLAG_FRIENDLY (1 << 3)
-#define ACTOR_FLAG_UPDATE_WHILE_CULLED (1 << 4)
-#define ACTOR_FLAG_DRAW_WHILE_CULLED (1 << 5)
-#define ACTOR_FLAG_ACTIVE (1 << 6)
-#define ACTOR_FLAG_LENS (1 << 7)
-#define ACTOR_FLAG_PLAYER_TALKED_TO (1 << 8)
-#define ACTOR_FLAG_HOOKSHOT_DRAGS (1 << 9)
-#define ACTOR_FLAG_DRAGGED_BY_HOOKSHOT (1 << 10)
-#define ACTOR_FLAG_ENKUSA_CUT (1 << 11)
+
+// Culling of the actor's update process is disabled.
+// In other words, the actor will keep updating even if the actor is outside its own culling volume.
+// See `Actor_CullingCheck` for more information about culling.
+// See `Actor_CullingVolumeTest` for more information on the test used to determine if an actor should be culled.
+#define ACTOR_FLAG_UPDATE_CULLING_DISABLED (1 << 4)
+
+// Culling of the actor's draw process is disabled.
+// In other words, the actor will keep drawing even if the actor is outside its own culling volume.
+// See `Actor_CullingCheck` for more information about culling.
+// See `Actor_CullingVolumeTest` for more information on the test used to determine if an actor should be culled.
+// (The original name for this flag is `NO_CULL_DRAW`, known from the Majora's Mask Debug ROM)
+#define ACTOR_FLAG_DRAW_CULLING_DISABLED (1 << 5)
+
+// Set if the actor is currently within the bounds of its culling volume.
+// In most cases, this flag can be used to determine whether or not an actor is currently culled.
+// However this flag still updates even if `ACTOR_FLAG_UPDATE_CULLING_DISABLED` or `ACTOR_FLAG_DRAW_CULLING_DISABLED`
+// are set. Meaning, the flag can still have a value of "false" even if it is not actually culled.
+// (The original name for this flag is `NO_CULL_FLAG`, known from the Majora's Mask Debug ROM)
+#define ACTOR_FLAG_INSIDE_CULLING_VOLUME (1 << 6)
+
+// hidden or revealed by Lens of Truth (depending on room lensMode)
+#define ACTOR_FLAG_REACT_TO_LENS (1 << 7)
+
+// Signals that player has accepted an offer to talk to an actor
+// Player will retain this flag until the player is finished talking
+// Actor will retain this flag until `Actor_TalkOfferAccepted` is called or manually turned off by the actor
+#define ACTOR_FLAG_TALK (1 << 8)
+
+// When the hookshot attaches to this actor, the actor will be pulled back as the hookshot retracts.
+#define ACTOR_FLAG_HOOKSHOT_PULLS_ACTOR (1 << 9)
+
+// When the hookshot attaches to this actor, Player will be pulled by the hookshot and fly to the actor.
+#define ACTOR_FLAG_HOOKSHOT_PULLS_PLAYER (1 << 10)
+
+// A clump of grass (EN_KUSA) has been destroyed.
+// This flag is used to communicate with the spawner actor (OBJ_MURE).
+#define ACTOR_FLAG_GRASS_DESTROYED (1 << 11)
+
+// Actor will not shake when a quake occurs
 #define ACTOR_FLAG_IGNORE_QUAKE (1 << 12)
+
+// The hookshot is currently attached to this actor.
+// The behavior that occurs after attachment is determined by `ACTOR_FLAG_HOOKSHOT_PULLS_ACTOR` and `ACTOR_FLAG_HOOKSHOT_PULLS_PLAYER`.
+// If neither of those flags are set attachment cannot occur, and the hookshot will simply act as a damage source.
+//
+// This flag is also reused to indicate that an actor is attached to the boomerang.
+// This only has an effect for Gold Skulltula Tokens (EN_SI) which has overlapping behavior for hookshot and boomerang.
 #define ACTOR_FLAG_HOOKSHOT_ATTACHED (1 << 13)
-#define ACTOR_FLAG_ARROW_DRAGGABLE (1 << 14)
-#define ACTOR_FLAG_DRAGGED_BY_ARROW (1 << 15)
-#define ACTOR_FLAG_WILL_TALK (1 << 16)
-#define ACTOR_FLAG_PILLAR_PICKUP (1 << 17)
-#define ACTOR_FLAG_NAVI_HAS_INFO (1 << 18)
-#define ACTOR_FLAG_SFX_AT_POS (1 << 19)
-#define ACTOR_FLAG_SFX_AT_CENTER (1 << 20)
-#define ACTOR_FLAG_SFX_AT_CENTER2 (1 << 21)
+
+// When hit by an arrow, the actor will be able to attach to the arrow and fly with it in the air
+#define ACTOR_FLAG_CAN_ATTACH_TO_ARROW (1 << 14)
+
+// Actor is currently attached to an arrow and flying with it in the air
+#define ACTOR_FLAG_ATTACHED_TO_ARROW (1 << 15)
+
+// Player automatically accepts a Talk Offer without needing to press the A button.
+// Player still has to meet all conditions to be able to receive a talk offer (for example, being in range).
+#define ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED (1 << 16)
+
+// Actor will be influenced by the pitch (x rot) of Player's left hand when being carried,
+// instead of Player's yaw which is the default actor carry behavior.
+// This flag is helpful for something like the `BG_HEAVY_BLOCK` actor which Player carries underhanded.
+#define ACTOR_FLAG_CARRY_X_ROT_INFLUENCE (1 << 17)
+
+// When locked onto an actor with this flag set, the C-Up button can be used to talk to this actor.
+// A C-Up button labeled "Navi" will appear on the HUD when locked on which indicates the actor can be checked with Navi.
+// With this flag Player talks directly to the actor with C-Up. It is expected that the resulting dialog should appear
+// to be coming from Navi, even though she is not involved at all with this interaction.
+#define ACTOR_FLAG_TALK_WITH_C_UP (1 << 18)
+
+// Flags controlling the use of `Actor.sfx`. Do not use directly.
+#define ACTOR_FLAG_SFX_ACTOR_POS_2 (1 << 19)
+#define ACTOR_AUDIO_FLAG_SFX_CENTERED_1 (1 << 20)
+#define ACTOR_AUDIO_FLAG_SFX_CENTERED_2 (1 << 21)
+
+// ignores point lights but not directional lights (such as environment lights)
 #define ACTOR_FLAG_IGNORE_POINTLIGHTS (1 << 22)
-#define ACTOR_FLAG_ALWAYS_THROWN (1 << 23)
-#define ACTOR_FLAG_PLAY_HIT_SFX (1 << 24)
-#define ACTOR_FLAG_NO_FREEZE_OCARINA (1 << 25)
-#define ACTOR_FLAG_CAN_PRESS_SWITCH (1 << 26)
-#define ACTOR_FLAG_NO_LOCKON (1 << 27)
-#define ACTOR_FLAG_SFX_AS_TIMER (1 << 28)
+
+// When Player is carrying this actor, it can only be thrown, not dropped/placed.
+// Typically an actor can only be thrown when moving, but this allows an actor to be thrown when standing still.
+#define ACTOR_FLAG_THROW_ONLY (1 << 23)
+
+// When colliding with Player's body AC collider, a "thump" sound will play indicating his body has been hit
+#define ACTOR_FLAG_SFX_FOR_PLAYER_BODY_HIT (1 << 24)
+
+// Actor can update even if Player is currently using the ocarina.
+// Typically an actor will halt while the ocarina is active (depending on category).
+// This flag allows a given actor to be an exception.
+#define ACTOR_FLAG_UPDATE_DURING_OCARINA (1 << 25)
+
+// Actor can press and hold down switches.
+// See usages of `DynaPolyActor_SetSwitchPressed` and `DynaPolyActor_IsSwitchPressed` for more context on how switches work.
+#define ACTOR_FLAG_CAN_PRESS_SWITCHES (1 << 26)
+
+// Player is not able to lock onto the actor.
+// Navi will still be able to hover over the actor, assuming `ACTOR_FLAG_ATTENTION_ENABLED` is set.
+#define ACTOR_FLAG_LOCK_ON_DISABLED (1 << 27)
+
+// Flag controlling the use of `Actor.sfx`. Do not use directly. See Actor_PlaySfx_FlaggedTimer
+#define ACTOR_FLAG_SFX_TIMER (1 << 28)
 
 typedef struct Actor {
     /* 0x000 */ s16 id; // Actor ID

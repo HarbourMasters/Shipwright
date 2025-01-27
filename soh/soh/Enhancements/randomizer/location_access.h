@@ -15,20 +15,18 @@ typedef bool (*ConditionFn)();
 extern Rando::Context* ctx;
 extern std::shared_ptr<Rando::Logic> logic;
 
+class Region;
+
 class EventAccess {
     public:
         explicit EventAccess(bool* event_, ConditionFn condition_function_) : event(event_), condition_function(condition_function_) {}
 
         bool ConditionsMet() const {
             auto ctx = Rando::Context::GetInstance();
-            if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC) || ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
-                return true;
-            } else if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS)) {
-                return condition_function();
-            } else if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHED)) {
+            if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS)) {
                 return condition_function();
             }
-            return false;
+            return true;
         }
 
         bool CheckConditionAtAgeTime(bool& age, bool& time) {
@@ -69,19 +67,15 @@ class LocationAccess {
 
         bool GetConditionsMet() const {
             auto ctx = Rando::Context::GetInstance();
-            if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC) || ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
-                return true;
-            } else if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS)) {
-                return condition_function();
-            } else if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHED)) {
+            if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS)) {
                 return condition_function();
             }
-            return false;
+            return true;
         }
 
         bool CheckConditionAtAgeTime(bool& age, bool& time) const;
 
-        bool ConditionsMet() const;
+        bool ConditionsMet(Region* parentRegion) const;
 
         RandomizerCheck GetLocation() const {
             return location;

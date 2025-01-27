@@ -12,7 +12,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
 
 #define GE1_STATE_TALKING (1 << 0)
 #define GE1_STATE_GIVE_QUIVER (1 << 1)
@@ -555,7 +555,7 @@ void EnGe1_BeginGiveItem_Archery(EnGe1* this, PlayState* play) {
     s32 getItemId;
 
     if (Actor_TextboxIsClosing(&this->actor, play)) {
-        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+        this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         this->actionFunc = EnGe1_WaitTillItemGiven_Archery;
     }
 
@@ -581,7 +581,7 @@ void EnGe1_BeginGiveItem_Archery(EnGe1* this, PlayState* play) {
 void EnGe1_TalkWinPrize_Archery(EnGe1* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->actionFunc = EnGe1_BeginGiveItem_Archery;
-        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+        this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
     } else {
         func_8002F2CC(&this->actor, play, 200.0f);
     }
@@ -603,7 +603,7 @@ void EnGe1_BeginGame_Archery(EnGe1* this, PlayState* play) {
     Actor* horse;
 
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE) && Message_ShouldAdvance(play)) {
-        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+        this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
 
         switch (play->msgCtx.choiceIndex) {
             case 0:
@@ -661,7 +661,7 @@ void EnGe1_TalkAfterGame_Archery(EnGe1* this, PlayState* play) {
     gSaveContext.eventInf[0] &= ~0x100;
     LOG_NUM("z_common_data.yabusame_total", gSaveContext.minigameScore);
     LOG_NUM("z_common_data.memory.information.room_inf[127][ 0 ]", HIGH_SCORE(HS_HBA));
-    this->actor.flags |= ACTOR_FLAG_WILL_TALK;
+    this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
 
     if (HIGH_SCORE(HS_HBA) < gSaveContext.minigameScore) {
         HIGH_SCORE(HS_HBA) = gSaveContext.minigameScore;

@@ -213,11 +213,11 @@ namespace UIWidgets {
     }
 
     void ReEnableComponent(const char* disabledTooltipText) {
-        // End of disable region of previous component
-        ImGui::PopStyleVar(1);
         if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && strcmp(disabledTooltipText, "") != 0) {
             ImGui::SetTooltip("%s", disabledTooltipText);
         }
+        // End of disable region of previous component
+        ImGui::PopStyleVar(1);
         ImGui::PopItemFlag();
     }
 
@@ -400,6 +400,7 @@ namespace UIWidgets {
         if (changed && (oldVal != val)) {
             CVarSetInteger(cvarName, val);
             Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            ShipInit::Init(cvarName);
         } else {
             changed = false;
         }

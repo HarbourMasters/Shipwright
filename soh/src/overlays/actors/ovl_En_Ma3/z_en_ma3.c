@@ -7,7 +7,7 @@
 #include "z_en_ma3.h"
 #include "objects/object_ma2/object_ma2.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void EnMa3_Init(Actor* thisx, PlayState* play);
 void EnMa3_Destroy(Actor* thisx, PlayState* play);
@@ -82,7 +82,7 @@ u16 func_80AA2AA0(PlayState* play, Actor* thisx) {
     timer1ValuePtr = &gSaveContext.timer1Value;
     if (gSaveContext.eventInf[0] & 0x400) {
         gSaveContext.timer1Value = gSaveContext.timer1Value;
-        thisx->flags |= ACTOR_FLAG_WILL_TALK;
+        thisx->flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         if (gSaveContext.timer1Value >= 0xD3) {
             return 0x208E;
         }
@@ -152,7 +152,7 @@ s16 func_80AA2BD4(PlayState* play, Actor* thisx) {
                     }
                 case 0x208E:
                     gSaveContext.eventInf[0] &= ~0x400;
-                    thisx->flags &= ~ACTOR_FLAG_WILL_TALK;
+                    thisx->flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
                     ret = NPC_TALK_STATE_IDLE;
                     gSaveContext.timer1State = 0xA;
                     break;
@@ -277,7 +277,7 @@ void EnMa3_Destroy(Actor* thisx, PlayState* play) {
 
 void func_80AA3200(EnMa3* this, PlayState* play) {
     if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
-        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+        this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
     }
 }

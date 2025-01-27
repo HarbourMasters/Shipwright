@@ -7,7 +7,7 @@
 #include "z_en_boom.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void EnBoom_Init(Actor* thisx, PlayState* play);
 void EnBoom_Destroy(Actor* thisx, PlayState* play);

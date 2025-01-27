@@ -426,21 +426,21 @@ void RegionTable_Init_FireTemple() {
         Entrance(RR_FIRE_TEMPLE_MQ_MAP_ROOM_SOUTH, []{return logic->OpenedLowestGoronCage;}),
     });
 
-        areaTable[RR_FIRE_TEMPLE_NEAR_BOSS_ROOM] = Region("Fire Temple MQ Near Boss Room", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
+    areaTable[RR_FIRE_TEMPLE_MQ_NEAR_BOSS_ROOM] = Region("Fire Temple MQ Near Boss Room", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
         //If we're using the south torch as the initial torch, or using FAs, we either have to cross to the north to remove the crate, or use a trick to ignore it
         LOCATION(RC_FIRE_TEMPLE_MQ_NEAR_BOSS_CHEST, logic->FireTimer() > 25 && ctx->GetTrickOption(RT_FIRE_MQ_NEAR_BOSS) && (logic->CanUse(RG_FIRE_ARROWS) || (logic->IsAdult && logic->CanUse(RG_DINS_FIRE) && logic->CanUse(RG_FAIRY_BOW))))
     }, {
         //Exits
-        Entrance(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_UPPER,  []{return true;}),
+        Entrance(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_UPPER,     []{return true;}),
         //Child cannot make it to the north side torches without a hook without specifically bunny hood speed + hover boots
-        Entrance(RR_FIRE_TEMPLE_NEAR_BOSS_ROOM_NORTH, []{return logic->FireTimer() > 32 && (logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)));}),
-        Entrance(RR_FIRE_TEMPLE_BOSS_ENTRYWAY,        []{return logic->HasItem(RG_FIRE_TEMPLE_BOSS_KEY) && logic->FireTimer() >= 15 && ((logic->IsAdult && (ctx->GetTrickOption(RT_FIRE_BOSS_DOOR_JUMP) || logic->CanUse(RG_HOVER_BOOTS))) || (logic->IsAdult && logic->HitFireTemplePlatform) || (logic->HitFireTemplePlatform && logic->CanUse(RG_HOVER_BOOTS)));}),
+        Entrance(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_ROOM_NORTH, []{return logic->FireTimer() > 32 && (logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)));}),
+        Entrance(RR_FIRE_TEMPLE_BOSS_ENTRYWAY,           []{return logic->HasItem(RG_FIRE_TEMPLE_BOSS_KEY) && logic->FireTimer() >= 15 && ((logic->IsAdult && (ctx->GetTrickOption(RT_FIRE_BOSS_DOOR_JUMP) || logic->CanUse(RG_HOVER_BOOTS))) || (logic->IsAdult && logic->HitFireTemplePlatform) || (logic->HitFireTemplePlatform && logic->CanUse(RG_HOVER_BOOTS)));}),
     });
 
     //This room assumes tunic logic is handled on entry.
     //Covers the upper section too, as all methods to reach this can climb up somehow
-    areaTable[RR_FIRE_TEMPLE_NEAR_BOSS_ROOM_NORTH] = Region("Fire Temple MQ Near Boss Room North", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
+    areaTable[RR_FIRE_TEMPLE_MQ_NEAR_BOSS_ROOM_NORTH] = Region("Fire Temple MQ Near Boss Room North", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
         //If we have FAs, we can just remove the crate and use those to light the torches.
         //otherwise, with Dins, we first light them with dins and then either use a bow shot or to cross back over to light the other torch
@@ -616,7 +616,7 @@ void RegionTable_Init_FireTemple() {
         LOCATION(RC_FIRE_TEMPLE_MQ_SOUTH_FIRE_MAZE_EAST_POT, logic->CanBreakPots()),
     }, {
         //Exits
-        Entrance(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_DOOR,      []{return logic->HitFireTemplePlatform;}),
+        Entrance(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_ROOM,      []{return logic->HitFireTemplePlatform;}),
         Entrance(RR_FIRE_TEMPLE_MQ_HIGH_TORCH_ROOM,     []{return true;}),
         Entrance(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_PLATFORMS, []{return logic->IsAdult || logic->CanUse(RG_SONG_OF_TIME) || logic->CanUse(RG_HOVER_BOOTS);}),
         //Hover boots get there via the platforms
@@ -699,7 +699,7 @@ void RegionTable_Init_FireTemple() {
     areaTable[RR_FIRE_TEMPLE_BOSS_ENTRYWAY] = Region("Fire Temple Boss Entryway", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         // Exits
         Entrance(RR_FIRE_TEMPLE_NEAR_BOSS_ROOM,    []{return ctx->GetDungeon(FIRE_TEMPLE)->IsVanilla() && false;}),
-        Entrance(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_DOOR, []{return ctx->GetDungeon(FIRE_TEMPLE)->IsMQ() && false;}),
+        Entrance(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_ROOM, []{return ctx->GetDungeon(FIRE_TEMPLE)->IsMQ() && false;}),
         Entrance(RR_FIRE_TEMPLE_BOSS_ROOM,         []{return true;}),
     });
 

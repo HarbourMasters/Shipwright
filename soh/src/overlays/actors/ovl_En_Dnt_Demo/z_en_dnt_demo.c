@@ -100,7 +100,7 @@ void EnDntDemo_Init(Actor* thisx, PlayState* play2) {
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ じじじじじじじじじじい ☆☆☆☆☆ %x\n" VT_RST, this->leader);
     }
     this->subCamera = 0;
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->actionFunc = EnDntDemo_Judge;
 }
 

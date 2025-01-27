@@ -1,7 +1,7 @@
 #include "z_bg_mori_elevator.h"
 #include "objects/object_mori_objects/object_mori_objects.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void BgMoriElevator_Init(Actor* thisx, PlayState* play);
 void BgMoriElevator_Destroy(Actor* thisx, PlayState* play);

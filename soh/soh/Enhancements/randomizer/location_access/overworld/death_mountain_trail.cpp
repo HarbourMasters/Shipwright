@@ -71,6 +71,7 @@ void RegionTable_Init_DeathMountainTrail() {
         LOCATION(RC_DMT_COW_GROTTO_RUPEE_5,            true),
         LOCATION(RC_DMT_COW_GROTTO_RUPEE_6,            true),
         LOCATION(RC_DMT_COW_GROTTO_RED_RUPEE,          true),
+        LOCATION(RC_DMT_COW_GROTTO_STORMS_FAIRY,       logic->CanUse(RG_SONG_OF_STORMS)),
     }, {
         //Exits
         Entrance(RR_DEATH_MOUNTAIN_SUMMIT, []{return true;}),

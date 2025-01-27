@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_IGNORE_QUAKE)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_IGNORE_QUAKE)
 
 void EnVali_Init(Actor* thisx, PlayState* play);
 void EnVali_Destroy(Actor* thisx, PlayState* play);
@@ -158,7 +158,7 @@ void EnVali_Init(Actor* thisx, PlayState* play) {
 
     EnVali_SetupLurk(this);
 
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->actor.floorHeight = BgCheck_EntityRaycastFloor4(&play->colCtx, &this->actor.floorPoly, &bgId,
                                                           &this->actor, &this->actor.world.pos);
     this->actor.params = BARI_TYPE_NORMAL;
@@ -187,7 +187,7 @@ void EnVali_SetupLurk(EnVali* this) {
 
 void EnVali_SetupDropAppear(EnVali* this) {
     this->actor.draw = EnVali_Draw;
-    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+    this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
     this->actor.velocity.y = 1.0f;
     this->actionFunc = EnVali_DropAppear;
 }
@@ -203,7 +203,7 @@ void EnVali_SetupFloatIdle(EnVali* this) {
             this->leftArmCollider.dim.quad[1].y = this->rightArmCollider.dim.quad[0].y =
                 this->rightArmCollider.dim.quad[1].y = this->actor.world.pos.y - 10.0f;
 
-    this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
+    this->actor.flags &= ~ACTOR_FLAG_UPDATE_CULLING_DISABLED;
     this->bodyCollider.base.acFlags |= AC_ON;
     this->slingshotReactionTimer = 0;
     this->floatHomeHeight = this->actor.world.pos.y;
@@ -215,7 +215,7 @@ void EnVali_SetupFloatIdle(EnVali* this) {
  */
 void EnVali_SetupAttacked(EnVali* this) {
     this->lightningTimer = 20;
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->bodyCollider.base.acFlags &= ~AC_ON;
     this->actionFunc = EnVali_Attacked;
 }
@@ -261,7 +261,7 @@ void EnVali_SetupDivideAndDie(EnVali* this, PlayState* play) {
     this->timer = Rand_S16Offset(10, 10);
     this->bodyCollider.base.acFlags &= ~AC_ON;
     SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 40, NA_SE_EN_BARI_SPLIT);
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->actor.draw = NULL;
     this->actionFunc = EnVali_DivideAndDie;
     GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
@@ -288,8 +288,8 @@ void EnVali_SetupFrozen(EnVali* this) {
 
 void EnVali_SetupReturnToLurk(EnVali* this) {
     Animation_MorphToPlayOnce(&this->skelAnime, &gBariLurkingAnim, 10.0f);
-    this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->actionFunc = EnVali_ReturnToLurk;
 }
 
@@ -375,7 +375,7 @@ void EnVali_Attacked(EnVali* this, PlayState* play) {
     EnVali_DischargeLightning(this, play);
 
     if (this->lightningTimer == 0) {
-        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
         this->bodyCollider.base.acFlags |= AC_ON;
         if (this->actor.params == BARI_TYPE_SWORD_DAMAGE) {
             EnVali_SetupRetaliate(this);
@@ -516,7 +516,7 @@ void EnVali_UpdateDamage(EnVali* this, PlayState* play) {
             if (Actor_ApplyDamage(&this->actor) == 0) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_BARI_DEAD);
                 Enemy_StartFinishingBlow(play, &this->actor);
-                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+                this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
             } else if ((this->actor.colChkInfo.damageEffect != BARI_DMGEFF_STUN) &&
                        (this->actor.colChkInfo.damageEffect != BARI_DMGEFF_SLINGSHOT)) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_BARI_DAMAGE);

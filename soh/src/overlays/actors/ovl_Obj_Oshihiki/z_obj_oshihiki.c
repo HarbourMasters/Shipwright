@@ -9,7 +9,7 @@
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void ObjOshihiki_Init(Actor* thisx, PlayState* play);
 void ObjOshihiki_Destroy(Actor* thisx, PlayState* play);

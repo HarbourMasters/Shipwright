@@ -559,23 +559,23 @@ CustomMessage Hint::GetBridgeReqsText() {
   } 
   else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_STONES)) {
     bridgeMessage = StaticData::hintTextTable[RHT_BRIDGE_STONES_HINT].GetHintMessage();
-    bridgeMessage.InsertNumber(ctx->GetOption(RSK_RAINBOW_BRIDGE_STONE_COUNT).GetContextOptionIndex());
+    bridgeMessage.InsertNumber(ctx->GetOption(RSK_RAINBOW_BRIDGE_STONE_COUNT).Get());
   } 
   else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_MEDALLIONS)) {
     bridgeMessage = StaticData::hintTextTable[RHT_BRIDGE_MEDALLIONS_HINT].GetHintMessage();
-    bridgeMessage.InsertNumber(ctx->GetOption(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT).GetContextOptionIndex());
+    bridgeMessage.InsertNumber(ctx->GetOption(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT).Get());
   } 
   else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEON_REWARDS)) {
     bridgeMessage = StaticData::hintTextTable[RHT_BRIDGE_REWARDS_HINT].GetHintMessage();
-    bridgeMessage.InsertNumber(ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).GetContextOptionIndex());
+    bridgeMessage.InsertNumber(ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).Get());
   } 
   else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEONS)) {
     bridgeMessage = StaticData::hintTextTable[RHT_BRIDGE_DUNGEONS_HINT].GetHintMessage();
-    bridgeMessage.InsertNumber(ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).GetContextOptionIndex());
+    bridgeMessage.InsertNumber(ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).Get());
   } 
   else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS)) {
     bridgeMessage = StaticData::hintTextTable[RHT_BRIDGE_TOKENS_HINT].GetHintMessage();
-    bridgeMessage.InsertNumber(ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).GetContextOptionIndex());
+    bridgeMessage.InsertNumber(ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).Get());
   } 
   else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_GREG)) {
     return  StaticData::hintTextTable[RHT_BRIDGE_GREG_HINT].GetHintMessage();
@@ -613,23 +613,23 @@ CustomMessage Hint::GetGanonBossKeyText() {
   } 
   else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_STONES)) {
     ganonBossKeyMessage = StaticData::hintTextTable[RHT_LACS_STONES_HINT].GetHintMessage();
-    ganonBossKeyMessage.InsertNumber(ctx->GetOption(RSK_LACS_STONE_COUNT).GetContextOptionIndex());
+    ganonBossKeyMessage.InsertNumber(ctx->GetOption(RSK_LACS_STONE_COUNT).Get());
   } 
   else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_MEDALLIONS)) {
     ganonBossKeyMessage = StaticData::hintTextTable[RHT_LACS_MEDALLIONS_HINT].GetHintMessage();
-    ganonBossKeyMessage.InsertNumber(ctx->GetOption(RSK_LACS_MEDALLION_COUNT).GetContextOptionIndex());
+    ganonBossKeyMessage.InsertNumber(ctx->GetOption(RSK_LACS_MEDALLION_COUNT).Get());
   }
   else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_REWARDS)) {
     ganonBossKeyMessage = StaticData::hintTextTable[RHT_LACS_REWARDS_HINT].GetHintMessage();
-    ganonBossKeyMessage.InsertNumber(ctx->GetOption(RSK_LACS_REWARD_COUNT).GetContextOptionIndex());
+    ganonBossKeyMessage.InsertNumber(ctx->GetOption(RSK_LACS_REWARD_COUNT).Get());
   } 
   else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_DUNGEONS)) {
     ganonBossKeyMessage = StaticData::hintTextTable[RHT_LACS_DUNGEONS_HINT].GetHintMessage();
-    ganonBossKeyMessage.InsertNumber(ctx->GetOption(RSK_LACS_DUNGEON_COUNT).GetContextOptionIndex());
+    ganonBossKeyMessage.InsertNumber(ctx->GetOption(RSK_LACS_DUNGEON_COUNT).Get());
   } 
   else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_TOKENS)) {
     ganonBossKeyMessage = StaticData::hintTextTable[RHT_LACS_TOKENS_HINT].GetHintMessage();
-    ganonBossKeyMessage.InsertNumber(ctx->GetOption(RSK_LACS_TOKEN_COUNT).GetContextOptionIndex());
+    ganonBossKeyMessage.InsertNumber(ctx->GetOption(RSK_LACS_TOKEN_COUNT).Get());
   }
   else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_TRIFORCE_HUNT)) {
     return StaticData::hintTextTable[RHT_GANON_BK_TRIFORCE_HINT].GetHintMessage();

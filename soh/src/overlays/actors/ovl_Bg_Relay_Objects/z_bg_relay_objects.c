@@ -7,7 +7,7 @@
 #include "z_bg_relay_objects.h"
 #include "objects/object_relay_objects/object_relay_objects.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 typedef enum {
     /* 0 */ WINDMILL_ROTATING_GEAR,
@@ -64,7 +64,7 @@ void BgRelayObjects_Init(Actor* thisx, PlayState* play) {
         }
         func_800F5718();
         thisx->room = -1;
-        thisx->flags |= ACTOR_FLAG_DRAW_WHILE_CULLED;
+        thisx->flags |= ACTOR_FLAG_DRAW_CULLING_DISABLED;
         if (D_808A9508 & 2) {
             thisx->params = 0xFF;
             Actor_Kill(thisx);
@@ -156,7 +156,7 @@ void func_808A9234(BgRelayObjects* this, PlayState* play) {
             return;
         }
         Flags_UnsetSwitch(play, this->switchFlag);
-        this->dyna.actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
+        this->dyna.actor.flags &= ~ACTOR_FLAG_UPDATE_CULLING_DISABLED;
         if (play->roomCtx.curRoom.num == 4) {
             gSaveContext.timer1State = 0xF;
         }
