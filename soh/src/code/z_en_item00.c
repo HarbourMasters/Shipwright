@@ -350,7 +350,6 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
     f32 yOffset = 980.0f;
     f32 shadowScale = 6.0f;
     s32 getItemId = GI_NONE;
-    this->randoGiEntry = (GetItemEntry)GET_ITEM_NONE;
     this->randoCheck = (RandomizerCheck)RC_UNKNOWN_CHECK;
     this->itemEntry = (GetItemEntry)GET_ITEM_NONE;
     s16 spawnParam8000 = this->actor.params & 0x8000;
@@ -493,13 +492,6 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
     this->actor.shape.shadowAlpha = 180;
     this->actor.focus.pos = this->actor.world.pos;
     this->getItemId = GI_NONE;
-    this->randoCheck = Randomizer_GetCheckFromActor(this->actor.id, play->sceneNum, this->ogParams);
-    this->randoInf = RAND_INF_MAX;
-
-    if (IS_RANDO && this->randoCheck != RC_UNKNOWN_CHECK) {
-        this->randoGiEntry = Randomizer_GetItemFromKnownCheck(this->randoCheck, getItemId);
-        this->randoGiEntry.getItemFrom = ITEM_FROM_FREESTANDING;
-    }
 
     if (!spawnParam8000) {
         EnItem00_SetupAction(this, func_8001DFC8);
@@ -1183,36 +1175,40 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
     }
 }
 
+
+typedef enum {
+    PARTICLE_BRIGHT_GREEN,
+    PARTICLE_RED,
+    PARTICLE_CYAN,
+    PARTICLE_ORANGE,
+    PARTICLE_VIOLET,
+    PARTICLE_YELLOW,
+    PARTICLE_GREEN,
+    PARTICLE_GOLD,
+    PARTICLE_WHITE,
+    PARTICLE_DARK_BLUE,
+    PARTICLE_PINK,
+    PARTICLE_BRIGHT_RED,
+    PARTICLE_BLUE,
+} Item00ParticleColors;
+
 void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry giEntry) {
-    s16 color_slot;
+    s16 colorIndex;
     switch (giEntry.drawModIndex) {
         case MOD_NONE:
             switch (giEntry.drawItemId) {
-                case ITEM_SONG_MINUET:
-                    color_slot = 0;
-                    break;
-                case ITEM_SONG_BOLERO:
-                    color_slot = 1;
-                    break;
-                case ITEM_SONG_SERENADE:
-                    color_slot = 2;
-                    break;
-                case ITEM_SONG_REQUIEM:
-                    color_slot = 3;
-                    break;
-                case ITEM_SONG_NOCTURNE:
-                    color_slot = 4;
-                    break;
-                case ITEM_SONG_PRELUDE:
-                    color_slot = 5;
-                    break;
                 case ITEM_STICK_UPGRADE_20:
                 case ITEM_STICK_UPGRADE_30:
-                    color_slot = 6;
+                    colorIndex = PARTICLE_GREEN;
                     break;
                 case ITEM_NUT_UPGRADE_30:
                 case ITEM_NUT_UPGRADE_40:
-                    color_slot = 7;
+                    colorIndex = PARTICLE_GOLD;
+                    break;
+                case ITEM_BOTTLE:
+                case ITEM_MILK_BOTTLE:
+                case ITEM_LETTER_RUTO:
+                    colorIndex = PARTICLE_WHITE;
                     break;
                 default:
                     return;
@@ -1220,16 +1216,56 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
             break;
         case MOD_RANDOMIZER:
             switch (giEntry.drawItemId) {
+                case RG_MINUET_OF_FOREST:
                 case RG_MAGIC_SINGLE:
                 case RG_MAGIC_DOUBLE:
                 case RG_MAGIC_BEAN_PACK:
-                    color_slot = 0;
+                case RG_BOTTLE_WITH_GREEN_POTION:
+                case RG_BOTTLE_WITH_BUGS:
+                case RG_GREG_RUPEE:
+                    colorIndex = PARTICLE_BRIGHT_GREEN;
+                    break;
+                case RG_BOLERO_OF_FIRE:
+                    colorIndex = PARTICLE_RED;
+                    break;
+                case RG_SERENADE_OF_WATER:
+                case RG_BOTTLE_WITH_FISH:
+                    colorIndex = PARTICLE_CYAN;
+                    break;
+                case RG_REQUIEM_OF_SPIRIT:
+                    colorIndex = PARTICLE_ORANGE;
+                    break;
+                case RG_NOCTURNE_OF_SHADOW:
+                case RG_BOTTLE_WITH_POE:
+                    colorIndex = PARTICLE_VIOLET;
+                    break;
+                case RG_PRELUDE_OF_LIGHT:
+                case RG_BOTTLE_WITH_BIG_POE:
+                    colorIndex = PARTICLE_YELLOW;
+                    break;
+                case RG_DEKU_STICK_BAG:
+                case RG_STICK_UPGRADE_INF:
+                    colorIndex = PARTICLE_GREEN;
+                    break;
+                case RG_DEKU_NUT_BAG:
+                case RG_NUT_UPGRADE_INF:
+                    colorIndex = PARTICLE_GOLD;
                     break;
                 case RG_DOUBLE_DEFENSE:
-                    color_slot = 8;
+                    colorIndex = PARTICLE_WHITE;
                     break;
                 case RG_PROGRESSIVE_BOMBCHUS:
-                    color_slot = 9;
+                    colorIndex = PARTICLE_DARK_BLUE;
+                    break;
+                case RG_BOTTLE_WITH_FAIRY:
+                    colorIndex = PARTICLE_PINK;
+                    break;
+                case RG_BOTTLE_WITH_RED_POTION:
+                    colorIndex = PARTICLE_BRIGHT_RED;
+                    break;
+                case RG_BOTTLE_WITH_BLUE_FIRE:
+                case RG_BOTTLE_WITH_BLUE_POTION:
+                    colorIndex = PARTICLE_BLUE;
                     break;
                 default:
                     return;
@@ -1240,39 +1276,45 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
     }
 
     // Color of the circle for the particles
-    static Color_RGBA8 mainColors[10][3] = {
-        { 34, 255, 76 },   // Minuet, Bean Pack, and Magic Upgrades
+    static Color_RGBA8 mainColors[13][3] = {
+        { 34, 255, 76 },   // Minuet, Bean Pack, Magic Upgrades, Bottle with Green Potion, Bottle with Bugs, and Greg
         { 177, 35, 35 },   // Bolero
-        { 115, 251, 253 }, // Serenade
+        { 115, 251, 253 }, // Serenade and Bottle with Fish
         { 177, 122, 35 },  // Requiem
-        { 177, 28, 212 },  // Nocturne
-        { 255, 255, 92 },  // Prelude
+        { 177, 28, 212 },  // Nocturne and Bottle with Poe
+        { 255, 255, 92 },  // Prelude and Bottle with Big Poe
         { 31, 152, 49 },   // Stick Upgrade
         { 222, 182, 20 },  // Nut Upgrade
-        { 255, 255, 255 }, // Double Defense
-        { 19, 120, 182 }   // Progressive Bombchu
+        { 255, 255, 255 }, // Double Defense, Empty Bottle, Bottle with Milk, and Bottle with Ruto's Letter
+        { 19, 120, 182 },  // Progressive Bombchu
+        { 255, 205, 255 }, // Bottle with Fairy
+        { 255, 118, 118 }, // Bottle with Red Potion
+        { 154, 204, 255 }  // Bottle with Blue Fire and Bottle with Blue Potion
     };
 
     // Color of the faded flares stretching off the particles
-    static Color_RGBA8 flareColors[10][3] = {
-        { 30, 110, 30 },   // Minuet, Bean Pack, and Magic Upgrades
+    static Color_RGBA8 flareColors[13][3] = {
+        { 30, 110, 30 },   // Minuet, Bean Pack, Magic Upgrades, Bottle with Green Potion, Bottle with Bugs, and Greg
         { 90, 10, 10 },    // Bolero
-        { 35, 35, 177 },   // Serenade
+        { 35, 35, 177 },   // Serenade and Bottle with Fish
         { 70, 20, 10 },    // Requiem
-        { 100, 20, 140 },  // Nocturne
-        { 100, 100, 10 },  // Prelude
+        { 100, 20, 140 },  // Nocturne and Bottle with Poe
+        { 100, 100, 10 },  // Prelude and Bottle with Big Poe
         { 5, 50, 10 },     // Stick Upgrade
         { 150, 100, 5 },   // Nut Upgrade
-        { 154, 154, 154 }, // Double Defense
-        { 204, 102, 0 }    // Progressive Bombchu
+        { 154, 154, 154 }, // Double Defense, Empty Bottle, Bottle with Milk, and Bottle with Ruto's Letter
+        { 204, 102, 0 },   // Progressive Bombchu
+        { 216, 70, 216 },  // Bottle with Fairy
+        { 90, 10, 10 },    // Bottle with Red Potion
+        { 35, 35, 177 }    // Bottle with Blue Fire
     };
 
     static Vec3f velocity = { 0.0f, 0.0f, 0.0f };
     static Vec3f accel = { 0.0f, 0.0f, 0.0f };
     Color_RGBA8 primColor;
     Color_RGBA8 envColor;
-    Color_RGBA8_Copy(&primColor, &mainColors[color_slot]);
-    Color_RGBA8_Copy(&envColor, &flareColors[color_slot]);
+    Color_RGBA8_Copy(&primColor, &mainColors[colorIndex]);
+    Color_RGBA8_Copy(&envColor, &flareColors[colorIndex]);
     Vec3f pos;
 
     // Make particles more compact for shop items and use a different height offset for them.
@@ -1508,7 +1550,7 @@ s16 func_8001F404(s16 dropId) {
     if ((CVarGetInteger(CVAR_ENHANCEMENT("EnableBombchuDrops"), 0) || 
         (IS_RANDO && Randomizer_GetSettingValue(RSK_ENABLE_BOMBCHU_DROPS) == 1)) &&
         (dropId == ITEM00_BOMBS_A || dropId == ITEM00_BOMBS_B || dropId == ITEM00_BOMBS_SPECIAL) &&
-        (!IS_RANDO || Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC) || INV_CONTENT(ITEM_BOMB) != ITEM_NONE)) {
+        (!IS_RANDO || Randomizer_GetSettingValue(RSK_BOMBCHU_BAG) || INV_CONTENT(ITEM_BOMB) != ITEM_NONE)) {
         dropId = EnItem00_ConvertBombDropToBombchu(dropId);
     }
     // #endregion
@@ -1570,7 +1612,7 @@ EnItem00* Item_DropCollectible(PlayState* play, Vec3f* spawnPos, s16 params) {
                     (spawnedActor->actor.params != ITEM00_HEART_CONTAINER)) {
                     spawnedActor->actor.room = -1;
                 }
-                spawnedActor->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+                spawnedActor->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
             }
         }
     }
@@ -1604,7 +1646,7 @@ EnItem00* Item_DropCollectible2(PlayState* play, Vec3f* spawnPos, s16 params) {
                 spawnedActor->actor.speedXZ = 0.0f;
                 spawnedActor->actor.gravity = param4000 ? 0.0f : -0.9f;
                 spawnedActor->actor.world.rot.y = Rand_CenteredFloat(65536.0f);
-                spawnedActor->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+                spawnedActor->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
             }
         }
     }
@@ -1718,7 +1760,7 @@ void Item_DropCollectibleRandom(PlayState* play, Actor* fromActor, Vec3f* spawnP
                         spawnedActor->actor.world.rot.y = Rand_ZeroOne() * 40000.0f;
                         Actor_SetScale(&spawnedActor->actor, 0.0f);
                         EnItem00_SetupAction(spawnedActor, func_8001E304);
-                        spawnedActor->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+                        spawnedActor->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
                         if ((spawnedActor->actor.params != ITEM00_SMALL_KEY) &&
                             (spawnedActor->actor.params != ITEM00_HEART_PIECE) &&
                             (spawnedActor->actor.params != ITEM00_HEART_CONTAINER)) {

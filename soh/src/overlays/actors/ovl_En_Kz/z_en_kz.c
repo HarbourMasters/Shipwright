@@ -11,7 +11,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
 
 void EnKz_Init(Actor* thisx, PlayState* play);
 void EnKz_Destroy(Actor* thisx, PlayState* play);
@@ -94,9 +94,8 @@ u16 EnKz_GetTextNoMaskAdult(PlayState* play, EnKz* this) {
     // this works because both ITEM_NONE and later trade items are > ITEM_FROG
     if (INV_CONTENT(ITEM_TRADE_ADULT) >= ITEM_FROG) {
         if (!Flags_GetInfTable(INFTABLE_139)) {
-            if (!GameInteractor_Should(VB_GIVE_ITEM_FROM_THAWING_KING_ZORA, (
-                !CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_ZORA)
-            ), this)) {
+            if (GameInteractor_Should(VB_KING_ZORA_TUNIC_CHECK,
+                                      CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_ZORA), this)) {
                 return 0x401F;
             } else {
                 return 0x4012;
@@ -148,7 +147,7 @@ s16 func_80A9C6C0(PlayState* play, Actor* thisx) {
                     case 0x401F:
                         Flags_SetInfTable(INFTABLE_139);
                         break;
-                }                
+                }
             }
             break;
         case TEXT_STATE_CLOSING:
@@ -243,11 +242,11 @@ s32 func_80A9C95C(PlayState* play, EnKz* this, s16* talkState, f32 unkf, NpcGetT
         yaw = Math_Vec3f_Yaw(&this->actor.home.pos, &player->actor.world.pos);
         yaw -= this->actor.shape.rot.y;
         if ((fabsf(yaw) > 1638.0f) || (this->actor.xzDistToPlayer < 265.0f)) {
-            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+            this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
             return 0;
         }
 
-        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
     }
 
     Actor_GetScreenPos(play, &this->actor, &sp32, &sp30);
@@ -282,11 +281,11 @@ void func_80A9CB18(EnKz* this, PlayState* play) {
         yaw = Math_Vec3f_Yaw(&this->actor.home.pos, &player->actor.world.pos);
         yaw -= this->actor.shape.rot.y;
         if ((fabsf(yaw) > 1638.0f) || (this->actor.xzDistToPlayer < 265.0f)) {
-            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+            this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
             return;
         }
 
-        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
     }
 
     if (func_80A9C95C(play, this, &this->interactInfo.talkState, 340.0f, EnKz_GetText, func_80A9C6C0)) {
@@ -306,15 +305,13 @@ void func_80A9CB18(EnKz* this, PlayState* play) {
         if (LINK_IS_ADULT) {
             if ((INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_PRESCRIPTION) &&
                 (func_8002F368(play) == EXCH_ITEM_PRESCRIPTION)) {
-                if (GameInteractor_Should(VB_TRADE_PRESCRIPTION, true, this)) {
-                    this->actor.textId = 0x4014;
-                    this->sfxPlayed = false;
-                    player->actor.textId = this->actor.textId;
-                    if (!CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
-                        this->isTrading = true;
-                    }
-                    return;
+                this->actor.textId = 0x4014;
+                this->sfxPlayed = false;
+                player->actor.textId = this->actor.textId;
+                if (!CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
+                    this->isTrading = true;
                 }
+                return;
             }
             if (!CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
                 this->isTrading = false;
@@ -324,11 +321,10 @@ void func_80A9CB18(EnKz* this, PlayState* play) {
                 player->actor.textId = this->actor.textId;
             } else {
                 this->actor.textId =
-                    !GameInteractor_Should(VB_GIVE_ITEM_FROM_THAWING_KING_ZORA,
-                                            (!CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_ZORA)), this)
+                    GameInteractor_Should(VB_KING_ZORA_TUNIC_CHECK,
+                                          CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_ZORA), this)
                         ? 0x401F
                         : 0x4012;
-
                 player->actor.textId = this->actor.textId;
             }
         }
@@ -511,18 +507,10 @@ void EnKz_SetupGetItem(EnKz* this, PlayState* play) {
     f32 xzRange;
     f32 yRange;
 
-    if (Actor_HasParent(&this->actor, play) || (
-        (this->isTrading && !GameInteractor_Should(VB_TRADE_PRESCRIPTION, true, this)) ||
-        (!this->isTrading && !GameInteractor_Should(VB_GIVE_ITEM_FROM_THAWING_KING_ZORA, true, this))
-    )) {
+    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_ADULT_KING_ZORA_ITEM_GIVE, true, this)) {
         this->actor.parent = NULL;
         this->interactInfo.talkState = NPC_TALK_STATE_TALKING;
         this->actionFunc = EnKz_StartTimer;
-        if (!this->isTrading) {
-            Flags_SetRandomizerInf(RAND_INF_KING_ZORA_THAWED);
-        } else {
-            Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_ZD_TRADE_PRESCRIPTION);
-        }
     } else {
         if (CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
             getItemId = func_8002F368(play) == EXCH_ITEM_PRESCRIPTION ? GI_FROG : GI_TUNIC_ZORA;
@@ -537,7 +525,7 @@ void EnKz_SetupGetItem(EnKz* this, PlayState* play) {
 
 void EnKz_StartTimer(EnKz* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
-        if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_FROG && GameInteractor_Should(VB_TRADE_TIMER_FROG, true)) { 
+        if (GameInteractor_Should(VB_TRADE_TIMER_FROG, INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_FROG)) {
             func_80088AA0(180); // start timer2 with 3 minutes
             gSaveContext.eventInf[1] &= ~1;
         }

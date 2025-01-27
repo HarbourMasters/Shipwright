@@ -3,7 +3,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
 void EnSw_Init(Actor* thisx, PlayState* play);
 void EnSw_Destroy(Actor* thisx, PlayState* play);
@@ -215,16 +215,6 @@ s32 func_80B0C0CC(EnSw* this, PlayState* play, s32 arg2) {
     return sp64;
 }
 
-// Presumably, due to the removal of object dependency, there is a race condition where
-// the GS on the Kak construction site spawns to early and fails to detect the
-// construction site dyna poly. This custom action func rechecks moving the GS
-// to the nearest poly one frame after init. Further explanation available:
-// https://github.com/HarbourMasters/Shipwright/issues/2310#issuecomment-1492829517
-void EnSw_MoveGoldLater(EnSw* this, PlayState* play) {
-    func_80B0C0CC(this, play, 1);
-    this->actionFunc = func_80B0D590;
-}
-
 void EnSw_Init(Actor* thisx, PlayState* play) {
     EnSw* this = (EnSw*)thisx;
     s32 phi_v0;
@@ -294,7 +284,7 @@ void EnSw_Init(Actor* thisx, PlayState* play) {
             this->collider.elements[0].info.toucher.damage *= 2;
             this->actor.naviEnemyId = 0x20;
             this->actor.colChkInfo.health *= 2;
-            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+            this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
             break;
         default:
             Actor_ChangeCategory(play, &play->actorCtx, &this->actor, ACTORCAT_ENEMY);
@@ -315,14 +305,6 @@ void EnSw_Init(Actor* thisx, PlayState* play) {
         this->actionFunc = func_80B0E5E0;
     } else {
         this->actionFunc = func_80B0D590;
-    }
-
-    // If a normal GS failed to get attached to a poly during init
-    // try once more on the next frame via a custom action func
-    if ((((thisx->params & 0xE000) >> 0xD) == 1 ||
-         ((thisx->params & 0xE000) >> 0xD) == 2) &&
-        this->actor.floorPoly == NULL) {
-        this->actionFunc = EnSw_MoveGoldLater;
     }
 }
 
@@ -374,7 +356,7 @@ s32 func_80B0C9F0(EnSw* this, PlayState* play) {
                 this->unk_38A = 2;
                 this->actor.shape.shadowScale = 16.0f;
                 this->actor.gravity = -1.0f;
-                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+                this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
                 this->actionFunc = func_80B0DB00;
             }
             

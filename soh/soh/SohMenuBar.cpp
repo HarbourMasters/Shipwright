@@ -1,7 +1,4 @@
 #include "SohMenuBar.h"
-#ifndef IMGUI_DEFINE_MATH_OPERATORS
-#define IMGUI_DEFINE_MATH_OPERATORS
-#endif
 #include <imgui.h>
 #include "regex"
 #include "public/bridge/consolevariablebridge.h"
@@ -14,6 +11,8 @@
 #include "z64.h"
 #include "cvar_prefixes.h"
 #include "macros.h"
+#include "functions.h"
+#include "variables.h"
 #include "Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/presets.h"
 #include "soh/Enhancements/mods.h"
@@ -45,6 +44,7 @@
 #include "Enhancements/timesplits/TimeSplits.h"
 #include "Enhancements/randomizer/Plandomizer.h"
 #include "Enhancements/TimeDisplay/TimeDisplay.h"
+#include "AboutWindow.h"
 
 // FA icons are kind of wonky, if they worked how I expected them to the "+ 2.0f" wouldn't be needed, but
 // they don't work how I expect them to so I added that because it looked good when I eyeballed it
@@ -105,8 +105,8 @@ static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large
     static const char* subSubPowers[7] = { allPowers[0], allPowers[1], allPowers[2], allPowers[3], allPowers[4], allPowers[5], allPowers[6] };
     static const char* zFightingOptions[3] = { "Disabled", "Consistent Vanish", "No Vanish" };
     static const char* autosaveLabels[6] = { "Off", "New Location + Major Item", "New Location + Any Item", "New Location", "Major Item", "Any Item" };
+    static const char* bootSequenceLabels[3] = { "Default", "Authentic", "File Select" };
     static const char* DebugSaveFileModes[3] = { "Off", "Vanilla", "Maxed" };
-    static const char* FastFileSelect[5] = { "File N.1", "File N.2", "File N.3", "Zelda Map Select (require OoT Debug Mode)", "File select" };
     static const char* DekuStickCheat[3] = { "Normal", "Unbreakable", "Unbreakable + Always on Fire" };
     static const char* bonkDamageValues[8] = {
         "No Damage",
@@ -178,8 +178,18 @@ void DrawMenuBarIcon() {
     }
 }
 
+extern std::shared_ptr<AboutWindow> mAboutWindow;
+
 void DrawShipMenu() {
     if (ImGui::BeginMenu("Ship")) {
+        if (mAboutWindow) {
+            if (ImGui::MenuItem("About...")) {
+                mAboutWindow->Show();
+            }
+        }
+
+        UIWidgets::Spacer(0);
+
         if (ImGui::MenuItem("Hide Menu Bar",
 #if !defined(__SWITCH__) && !defined(__WIIU__)
          "F1"
@@ -233,18 +243,18 @@ void DrawSettingsMenu() {
     if (ImGui::BeginMenu("Settings"))
     {
         if (ImGui::BeginMenu("Audio")) {
-            UIWidgets::PaddedEnhancementSliderFloat("Master Volume: %.1f %%", "##Master_Vol", CVAR_SETTING("Volume.Master"), 0.0f, 1.0f, "", 1.0f, true, true, false, true);
-            if (UIWidgets::PaddedEnhancementSliderFloat("Main Music Volume: %.1f %%", "##Main_Music_Vol", CVAR_SETTING("Volume.MainMusic"), 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
-                Audio_SetGameVolume(SEQ_PLAYER_BGM_MAIN, CVarGetFloat(CVAR_SETTING("Volume.MainMusic"), 1.0f));
+            UIWidgets::PaddedEnhancementSliderInt("Master Volume: %d %%", "##Master_Vol", CVAR_SETTING("Volume.Master"), 0, 100, "", 100, true, false, true);
+            if (UIWidgets::PaddedEnhancementSliderInt("Main Music Volume: %d %%", "##Main_Music_Vol", CVAR_SETTING("Volume.MainMusic"), 0, 100, "", 100, true, false, true)) {
+                Audio_SetGameVolume(SEQ_PLAYER_BGM_MAIN, ((float)CVarGetInteger(CVAR_SETTING("Volume.MainMusic"), 100) / 100.0f));
             }
-            if (UIWidgets::PaddedEnhancementSliderFloat("Sub Music Volume: %.1f %%", "##Sub_Music_Vol", CVAR_SETTING("Volume.SubMusic"), 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
-                Audio_SetGameVolume(SEQ_PLAYER_BGM_SUB, CVarGetFloat(CVAR_SETTING("Volume.SubMusic"), 1.0f));
+            if (UIWidgets::PaddedEnhancementSliderInt("Sub Music Volume: %d %%", "##Sub_Music_Vol", CVAR_SETTING("Volume.SubMusic"), 0, 100, "", 100, true, false, true)) {
+                Audio_SetGameVolume(SEQ_PLAYER_BGM_SUB, ((float)CVarGetInteger(CVAR_SETTING("Volume.SubMusic"), 100) / 100.0f));
             }
-            if (UIWidgets::PaddedEnhancementSliderFloat("Sound Effects Volume: %.1f %%", "##Sound_Effect_Vol", CVAR_SETTING("Volume.SFX"), 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
-                Audio_SetGameVolume(SEQ_PLAYER_SFX, CVarGetFloat(CVAR_SETTING("Volume.SFX"), 1.0f));
+            if (UIWidgets::PaddedEnhancementSliderInt("Fanfare Volume: %d %%", "##Fanfare_Vol", CVAR_SETTING("Volume.Fanfare"), 0, 100, "", 100, true, false, true)) {
+                Audio_SetGameVolume(SEQ_PLAYER_FANFARE, ((float)CVarGetInteger(CVAR_SETTING("Volume.Fanfare"), 100) / 100.0f));
             }
-            if (UIWidgets::PaddedEnhancementSliderFloat("Fanfare Volume: %.1f %%", "##Fanfare_Vol", CVAR_SETTING("Volume.Fanfare"), 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
-                Audio_SetGameVolume(SEQ_PLAYER_FANFARE, CVarGetFloat(CVAR_SETTING("Volume.Fanfare"), 1.0f));
+            if (UIWidgets::PaddedEnhancementSliderInt("Sound Effects Volume: %d %%", "##Sound_Effect_Vol", CVAR_SETTING("Volume.SFX"), 0, 100, "", 100, true, false, true)) {
+                Audio_SetGameVolume(SEQ_PLAYER_SFX, ((float)CVarGetInteger(CVAR_SETTING("Volume.SFX"), 100) / 100.0f));
             }
 
             static std::unordered_map<Ship::AudioBackend, const char*> audioBackendNames = {
@@ -310,9 +320,6 @@ void DrawSettingsMenu() {
             }
             ImGui::PopStyleColor(1);
             ImGui::PopStyleVar(3);
-
-            UIWidgets::PaddedEnhancementSliderInt("Simulated Input Lag: %d frames", "##SimulatedInputLag", CVAR_SIMULATED_INPUT_LAG, 0, 6, "", 0, true, true, false);
-            UIWidgets::Tooltip("Buffers your inputs to be executed a specified amount of frames later");
 
             ImGui::EndMenu();
         }
@@ -774,7 +781,9 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
                 UIWidgets::PaddedEnhancementCheckbox("Exit Market at Night", CVAR_ENHANCEMENT("MarketSneak"), true, false);
                 UIWidgets::Tooltip("Allows exiting Hyrule Castle Market Town to Hyrule Field at night by speaking to the guard next to the gate.");
-                UIWidgets::PaddedEnhancementCheckbox("Shops and Games Always Open", CVAR_ENHANCEMENT("OpenAllHours"), true, false);
+                bool randoLockedOverworldDoors = IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOCK_OVERWORLD_DOORS);
+                UIWidgets::PaddedEnhancementCheckbox("Shops and Games Always Open", CVAR_ENHANCEMENT("OpenAllHours"), true, false, randoLockedOverworldDoors, 
+                    "This is not compatible with the Locked Overworld Doors Randomizer option", UIWidgets::CheckboxGraphics::Checkmark);
                 UIWidgets::Tooltip("Shops and minigames are open both day and night. Requires scene reload to take effect.");
                 UIWidgets::PaddedEnhancementCheckbox("Link as default file name", CVAR_ENHANCEMENT("LinkDefaultName"), true, false);
                 UIWidgets::Tooltip("Allows you to have \"Link\" as a premade file name");
@@ -1523,10 +1532,23 @@ void DrawEnhancementsMenu() {
                 "This will lower them, making activating them easier");
             UIWidgets::PaddedEnhancementCheckbox("Fix Zora hint dialogue", CVAR_ENHANCEMENT("FixZoraHintDialogue"), true, false);
             UIWidgets::Tooltip("Fixes one Zora's dialogue giving a hint about bringing Ruto's Letter to King Zora to properly occur before moving King Zora rather than after");
-            if (UIWidgets::PaddedEnhancementCheckbox("Fix hand holding Hammer", "gEnhancements.FixHammerHand", true, false)) {
+            if (UIWidgets::PaddedEnhancementCheckbox("Fix hand holding Hammer", CVAR_ENHANCEMENT("FixHammerHand"), true, false)) {
                 UpdatePatchHand();
             }
-            UIWidgets::Tooltip("Fixes Adult Link have a backwards left hand when holding the Megaton Hammer.");
+            UIWidgets::Tooltip("Fixes Adult Link having a backwards left hand when holding the Megaton Hammer.");
+            if (UIWidgets::PaddedEnhancementCheckbox(
+                "Fix Broken Giant's Knife bug", CVAR_ENHANCEMENT("FixBrokenGiantsKnife"), true, false, IS_RANDO,
+                "This setting is forcefully enabled when you are playing a randomizer.",
+                UIWidgets::CheckboxGraphics::Checkmark)) {
+                bool hasGiantsKnife = CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BIGGORON);
+                bool hasBrokenKnife = CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BROKENGIANTKNIFE);
+                bool knifeIsBroken = gSaveContext.swordHealth == 0.0f;
+
+                if (hasGiantsKnife && (hasBrokenKnife != knifeIsBroken)) {
+                    func_800849EC(gPlayState);
+                }
+            }
+            UIWidgets::Tooltip("Fixes the Broken Giant's Knife flag not being reset when Medigoron fixes it");
 
             ImGui::EndMenu();
         }
@@ -1535,8 +1557,6 @@ void DrawEnhancementsMenu() {
 
         if (ImGui::BeginMenu("Restoration"))
         {
-            UIWidgets::EnhancementCheckbox("Authentic Logo Screen", CVAR_ENHANCEMENT("AuthenticLogo"));
-            UIWidgets::Tooltip("Hide the game version and build details and display the authentic model and texture on the boot logo start screen");
             UIWidgets::PaddedEnhancementCheckbox("Red Ganon blood", CVAR_ENHANCEMENT("RedGanonBlood"), true, false);
             UIWidgets::Tooltip("Restore the original red blood from NTSC 1.0/1.1. Disable for green blood");
             UIWidgets::PaddedEnhancementCheckbox("Fish while hovering", CVAR_ENHANCEMENT("HoverFishing"), true, false);
@@ -1557,7 +1577,11 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Restores a bug from NTSC 1.0/1.1 that allows you to obtain the eyeball frog from King Zora instead of the Zora Tunic by holding shield.");
             UIWidgets::PaddedEnhancementCheckbox("Pulsate boss icon", CVAR_ENHANCEMENT("PulsateBossIcon"), true, false);
             UIWidgets::Tooltip("Restores an unfinished feature to pulsate the boss room icon when you are in the boss room.");
-
+            UIWidgets::PaddedEnhancementSliderInt("Pause Buffer Input Window: %d", "##PauseBufferWindow", CVAR_ENHANCEMENT("PauseBufferWindow"), 0, 40, "", 0, true, true, false);
+            UIWidgets::PaddedEnhancementCheckbox("Include held inputs at start of Buffer Input Window", CVAR_ENHANCEMENT("IncludeHeldInputsBufferWindow"), true, false);
+            UIWidgets::Tooltip("Typically, inputs that are held prior to the buffer window are not included in the buffer. This setting changes that behavior to include them. This may cause some inputs to be re-triggered undesireably, for instance Z-Targetting something you might not want to.");
+            UIWidgets::PaddedEnhancementSliderInt("Simulated Input Lag: %d frames", "##SimulatedInputLag", CVAR_SIMULATED_INPUT_LAG, 0, 6, "", 0, true, true, false);
+            UIWidgets::Tooltip("Buffers your inputs to be executed a specified amount of frames later");
             ImGui::EndMenu();
         }
 
@@ -1694,6 +1718,16 @@ void DrawEnhancementsMenu() {
         UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("Autosave"), autosaveLabels, AUTOSAVE_OFF);
         UIWidgets::Tooltip("Automatically save the game when changing locations and/or obtaining items\n"
             "Major items exclude rupees and health/magic/ammo refills (but include bombchus unless bombchu drops are enabled)");
+
+        UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
+
+        UIWidgets::PaddedText("Boot Sequence", false, true);
+        UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("BootSequence"), bootSequenceLabels, BOOTSEQUENCE_DEFAULT);
+        UIWidgets::Tooltip("Configure what happens when starting or resetting the game\n\n"
+                           "Default: LUS logo -> N64 logo\n"
+                           "Authentic: N64 logo only\n"
+                           "File Select: Skip to file select menu"
+        );
 
         UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
 
@@ -1871,11 +1905,8 @@ void DrawCheatsMenu() {
         UIWidgets::Tooltip("Makes every surface in the game climbable");
         UIWidgets::PaddedEnhancementCheckbox("Moon Jump on L", CVAR_CHEAT("MoonJumpOnL"), true, false);
         UIWidgets::Tooltip("Holding L makes you float into the air");
-        UIWidgets::PaddedEnhancementCheckbox("Easy Frame Advancing", CVAR_CHEAT("EasyPauseBuffer"), true, false);
-        UIWidgets::Tooltip("Continue holding START button when unpausing to only advance a single frame and then re-pause");
-        const bool bEasyFrameAdvanceEnabled = CVarGetInteger(CVAR_CHEAT("EasyPauseBuffer"), 0);
-        UIWidgets::PaddedEnhancementCheckbox("Easy Input Buffering", CVAR_CHEAT("EasyInputBuffer"), true, false, bEasyFrameAdvanceEnabled, "Forced enabled when Easy Frame Advancing is enabled", UIWidgets::CheckboxGraphics::Checkmark);
-        UIWidgets::Tooltip("Inputs that are held down while the Subscreen is closing will be pressed when the game is resumed");
+        UIWidgets::PaddedEnhancementCheckbox("New Easy Frame Advancing", CVAR_CHEAT("EasyFrameAdvance"), true, false);
+        UIWidgets::Tooltip("Continue holding START button when unpausing to only advance a single frame and then re-pause.");
         UIWidgets::PaddedEnhancementCheckbox("Drops Don't Despawn", CVAR_CHEAT("DropsDontDie"), true, false);
         UIWidgets::Tooltip("Drops from enemies, grass, etc. don't disappear after a set amount of time");
         UIWidgets::PaddedEnhancementCheckbox("Fish Don't despawn", CVAR_CHEAT("NoFishDespawn"), true, false);
@@ -1989,12 +2020,6 @@ void DrawDeveloperToolsMenu() {
         }
         UIWidgets::PaddedEnhancementCheckbox("OoT Skulltula Debug", CVAR_DEVELOPER_TOOLS("SkulltulaDebugEnabled"), true, false);
         UIWidgets::Tooltip("Enables Skulltula Debug, when moving the cursor in the menu above various map icons (boss key, compass, map screen locations, etc) will set the GS bits in that area.\nUSE WITH CAUTION AS IT DOES NOT UPDATE THE GS COUNT.");
-        UIWidgets::PaddedEnhancementCheckbox("Fast File Select", CVAR_DEVELOPER_TOOLS("SkipLogoTitle"), true, false);
-        UIWidgets::Tooltip("Load the game to the selected menu or file\n\"Zelda Map Select\" require debug mode else you will fallback to File choose menu\nUsing a file number that don't have save will create a save file only if you toggle on \"Create a new save if none ?\" else it will bring you to the File choose menu");
-        if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("SkipLogoTitle"), 0)) {
-            ImGui::Text("Loading:");
-            UIWidgets::EnhancementCombobox(CVAR_DEVELOPER_TOOLS("SaveFileID"), FastFileSelect, 0);
-        };
         UIWidgets::PaddedEnhancementCheckbox("Better Debug Warp Screen", CVAR_DEVELOPER_TOOLS("BetterDebugWarpScreen"), true, false);
         UIWidgets::Tooltip("Optimized debug warp screen, with the added ability to chose entrances and time of day");
         UIWidgets::PaddedEnhancementCheckbox("Debug Warp Screen Translation", CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"), true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
@@ -2108,25 +2133,17 @@ void DrawRemoteControlMenu() {
 #endif
 
 extern std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
+extern std::shared_ptr<PlandomizerWindow> mPlandomizerWindow;
 extern std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
 extern std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
 extern std::shared_ptr<EntranceTrackerWindow> mEntranceTrackerWindow;
 extern std::shared_ptr<EntranceTrackerSettingsWindow> mEntranceTrackerSettingsWindow;
 extern std::shared_ptr<CheckTracker::CheckTrackerWindow> mCheckTrackerWindow;
 extern std::shared_ptr<CheckTracker::CheckTrackerSettingsWindow> mCheckTrackerSettingsWindow;
-extern std::shared_ptr<PlandomizerWindow> mPlandomizerWindow;
 extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 
 void DrawRandomizerMenu() {
     if (ImGui::BeginMenu("Randomizer")) {
-        UIWidgets::EnhancementCheckbox("Plando Mode", CVAR_GENERAL("PlandoMode"));
-        UIWidgets::Tooltip(
-            "When dropping a spoiler file on the game window, parse the full spoiler file instead of just the "
-            "necessary "
-            "parts to regenerate a seed.\n\nKeep in mind if you do this, all custom text will only be available in the "
-            "language present in the spoilerfile. You can use this to edit a previously generated spoilerfile that has "
-            "been edited with custom hint text and item locations. May be useful for debugging.");
-        UIWidgets::PaddedSeparator();
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
         ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
         ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
@@ -2144,17 +2161,17 @@ void DrawRandomizerMenu() {
         static float separationToOptionsButton = 5.0f;
     #endif
 
-        if (mPlandomizerWindow) {
-            if (ImGui::Button(GetWindowButtonText("Plandomizer Editor", CVarGetInteger(CVAR_WINDOW("PlandomizerWindow"), 0)).c_str(), buttonSize)) {
-                mPlandomizerWindow->ToggleVisibility();
+        if (mRandomizerSettingsWindow) {
+            if (ImGui::Button(GetWindowButtonText("Randomizer Settings", CVarGetInteger(CVAR_WINDOW("RandomizerSettings"), 0)).c_str(), buttonSize)) {
+                mRandomizerSettingsWindow->ToggleVisibility();
             }
         }
 
         UIWidgets::Spacer(0);
 
-        if (mRandomizerSettingsWindow) {
-            if (ImGui::Button(GetWindowButtonText("Randomizer Settings", CVarGetInteger(CVAR_WINDOW("RandomizerSettings"), 0)).c_str(), buttonSize)) {
-                mRandomizerSettingsWindow->ToggleVisibility();
+        if (mPlandomizerWindow) {
+            if (ImGui::Button(GetWindowButtonText("Plandomizer Editor", CVarGetInteger(CVAR_WINDOW("PlandomizerWindow"), 0)).c_str(), buttonSize)) {
+                mPlandomizerWindow->ToggleVisibility();
             }
         }
 
@@ -2232,34 +2249,9 @@ void DrawRandomizerMenu() {
             UIWidgets::Tooltip(
                 "When obtaining rupees, randomize what the rupee is called in the textbox."
             );
-
-            // Only disable the key colors checkbox when none of the keysanity settings are set to "Any Dungeon", "Overworld" or "Anywhere"
-            bool disableKeyColors = true;
-
-            if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANY_DUNGEON ||
-                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OVERWORLD ||
-                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANYWHERE ||
-                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_KEYS) != RO_GERUDO_KEYS_VANILLA ||
-                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANY_DUNGEON ||
-                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OVERWORLD ||
-                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANYWHERE ||
-                (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) != RO_GANON_BOSS_KEY_VANILLA &&
-                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) != RO_GANON_BOSS_KEY_OWN_DUNGEON &&
-                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) != RO_GANON_BOSS_KEY_STARTWITH) || 
-                !IS_RANDO) {
-                disableKeyColors = false;
-            }
-
-            static const char* disableKeyColorsText =
-                "This setting is disabled because a savefile is loaded without any key\n"
-                "shuffle settings set to \"Any Dungeon\", \"Overworld\" or \"Anywhere\"";
-
-            UIWidgets::PaddedEnhancementCheckbox("Key Colors Match Dungeon", CVAR_RANDOMIZER_ENHANCEMENT("MatchKeyColors"), true, false,
-                                                  disableKeyColors, disableKeyColorsText, UIWidgets::CheckboxGraphics::Cross, true);
-            UIWidgets::Tooltip(
-                "Matches the color of small keys and boss keys to the dungeon they belong to. "
-                "This helps identify keys from afar and adds a little bit of flair.\n\nThis only "
-                "applies to seeds with keys and boss keys shuffled to \"Any Dungeon\", \"Overworld\", or \"Anywhere\".");
+            
+            UIWidgets::PaddedEnhancementCheckbox("Use Custom Key Models", CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), true, false);
+            UIWidgets::Tooltip("Use Custom graphics for dungeon keys, Big and Small, so that they can be easily told apart");
 
             bool disableCompassColors = !DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_SHUFFLE_MAPANDCOMPASS);
 
@@ -2286,6 +2278,12 @@ void DrawRandomizerMenu() {
                 "Displays a \"Mystery Item\" model in place of any freestanding/GS/shop items that were shuffled, "
                 "and replaces item names for them and scrubs and merchants, regardless of hint settings, "
                 "so you never know what you're getting.");
+            UIWidgets::PaddedEnhancementCheckbox("Simpler Boss Soul Models",
+                                                 CVAR_RANDOMIZER_ENHANCEMENT("SimplerBossSoulModels"), true, false);
+            UIWidgets::Tooltip(
+                "When shuffling boss souls, they'll appear as a simpler model instead of showing the boss' models."
+                "This might make boss souls more distinguishable from a distance, and can help with performance."
+            );
             ImGui::EndMenu();
         }
 

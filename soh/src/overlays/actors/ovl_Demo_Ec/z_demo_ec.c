@@ -37,7 +37,7 @@
 #include "objects/object_bba/object_bba.h"
 #include "objects/object_ane/object_ane.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void DemoEc_Init(Actor* thisx, PlayState* play);
 void DemoEc_Destroy(Actor* thisx, PlayState* play);

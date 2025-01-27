@@ -8,8 +8,9 @@
 #include "objects/object_gs/object_gs.h"
 #include "overlays/actors/ovl_En_Elf/z_en_elf.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_NO_FREEZE_OCARINA)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_DURING_OCARINA)
 
 void EnGs_Init(Actor* thisx, PlayState* play);
 void EnGs_Destroy(Actor* thisx, PlayState* play);
@@ -149,8 +150,7 @@ void func_80A4E470(EnGs* this, PlayState* play) {
                 func_8010BD58(play, OCARINA_ACTION_FREE_PLAY);
                 this->unk_19D |= 1;
             }
-
-        } else if (this->unk_19D & 1) {
+        } else if (GameInteractor_Should(VB_SPAWN_GOSSIP_STONE_FAIRY, this->unk_19D & 1, this)) {
             if (play->msgCtx.ocarinaMode == OCARINA_MODE_04) {
                 if ((play->msgCtx.unk_E3F2 == OCARINA_SONG_SARIAS) ||
                     (play->msgCtx.unk_E3F2 == OCARINA_SONG_EPONAS) ||
@@ -359,7 +359,7 @@ void func_80A4ED34(EnGs* this, PlayState* play) {
         func_8002F974(&this->actor, NA_SE_EV_FIRE_PILLAR - SFX_FLAG);
         if (this->unk_200++ >= 40) {
             this->unk_19E |= 0x10;
-            this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+            this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
             this->actor.uncullZoneForward = 12000.0f;
 
             this->actor.gravity = 0.3f;

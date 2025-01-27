@@ -4,7 +4,7 @@
 #include "overlays/actors/ovl_En_Bombf/z_en_bombf.h"
 #include "overlays/effects/ovl_Effect_Ss_Kakera/z_eff_ss_kakera.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void BgSpot16Bombstone_Init(Actor* thisx, PlayState* play);
 void BgSpot16Bombstone_Destroy(Actor* thisx, PlayState* play);

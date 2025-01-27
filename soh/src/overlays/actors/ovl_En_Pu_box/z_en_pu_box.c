@@ -7,7 +7,7 @@
 #include "z_en_pu_box.h"
 #include "objects/object_pu_box/object_pu_box.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void EnPubox_Init(Actor* thisx, PlayState* play);
 void EnPubox_Destroy(Actor* thisx, PlayState* play);
@@ -52,8 +52,8 @@ void EnPubox_Init(Actor* thisx, PlayState* play) {
     thisx->uncullZoneDownward = 1200.0f;
     thisx->uncullZoneScale = 720.0f;
     ActorShape_Init(&thisx->shape, 0.0f, ActorShadow_DrawCircle, 6.0f);
-    this->dyna.unk_160 = 0;
-    this->dyna.unk_15C = DPM_UNK;
+    this->dyna.interactFlags = 0;
+    this->dyna.transformFlags = DPM_UNK;
     thisx->targetMode = 1;
     thisx->gravity = -2.0f;
     CollisionHeader_GetVirtual(&gBlockMediumCol, &colHeader);

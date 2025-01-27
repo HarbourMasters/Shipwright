@@ -10,33 +10,21 @@
 namespace Rando {
 EntranceLinkInfo NO_RETURN_ENTRANCE = { EntranceType::None, RR_NONE, RR_NONE, -1 };
 
-Entrance::Entrance(RandomizerRegion connectedRegion_, std::vector<ConditionFn> conditions_met_, bool spreadsAreasWithPriority_)
-    : connectedRegion(connectedRegion_),  spreadsAreasWithPriority(spreadsAreasWithPriority_){
+Entrance::Entrance(RandomizerRegion connectedRegion_, ConditionFn condition_function_, bool spreadsAreasWithPriority_)
+    : connectedRegion(connectedRegion_), condition_function(condition_function_),  spreadsAreasWithPriority(spreadsAreasWithPriority_){
     originalConnectedRegion = connectedRegion_;
-    conditions_met.resize(2);
-    for (size_t i = 0; i < conditions_met_.size(); i++) {
-        conditions_met[i] = conditions_met_[i];
-    }
 }
 
 void Entrance::SetCondition(ConditionFn newCondition) {
-    conditions_met[0] = newCondition;
+    condition_function = newCondition;
 }
 
 bool Entrance::GetConditionsMet() const {
-    auto ctx = Rando::Context::GetInstance();
-    if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC) || ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
-        return true;
-    } else if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS)) {
-        return conditions_met[0]();
-    } else if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHED)) {
-        if (conditions_met[0]()) {
-            return true;
-        } else if (conditions_met[1] != NULL) {
-            return conditions_met[1]();
-        }
-    }
-    return false;
+  auto ctx = Rando::Context::GetInstance();
+  if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS)) {
+    return condition_function();
+  }
+  return true;
 }
 
 std::string Entrance::to_string() const {
@@ -544,10 +532,10 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
 
             // The player should be able to get back to ToT after going through time, without having collected any items
             // This is important to ensure that the player never loses access to the pedestal after going through time
-            if (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD && !RegionTable(RR_TEMPLE_OF_TIME)->Adult()) {
+            if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD) && !RegionTable(RR_TEMPLE_OF_TIME)->Adult()) {
                 SPDLOG_DEBUG("Path to Temple of Time as adult is not guaranteed\n");
                 return false;
-            } else if (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_ADULT &&
+            } else if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_ADULT) &&
                        !RegionTable(RR_TEMPLE_OF_TIME)->Child()) {
                 SPDLOG_DEBUG("Path to Temple of Time as child is not guaranteed\n");
                 return false;
@@ -885,12 +873,12 @@ int EntranceShuffler::ShuffleAllEntrances() {
           { EntranceType::Dungeon,      RR_SPIRIT_TEMPLE_ENTRYWAY,           RR_DESERT_COLOSSUS_OUTSIDE_TEMPLE,    ENTR_DESERT_COLOSSUS_OUTSIDE_TEMPLE } },
         { { EntranceType::Dungeon,      RR_GRAVEYARD_WARP_PAD_REGION,        RR_SHADOW_TEMPLE_ENTRYWAY,            ENTR_SHADOW_TEMPLE_ENTRANCE },
           { EntranceType::Dungeon,      RR_SHADOW_TEMPLE_ENTRYWAY,           RR_GRAVEYARD_WARP_PAD_REGION,         ENTR_GRAVEYARD_OUTSIDE_TEMPLE } },
-        { { EntranceType::Dungeon,      RR_KAKARIKO_VILLAGE,                 RR_BOTTOM_OF_THE_WELL_ENTRYWAY,       ENTR_BOTTOM_OF_THE_WELL_ENTRANCE },
-          { EntranceType::Dungeon,      RR_BOTTOM_OF_THE_WELL_ENTRYWAY,      RR_KAKARIKO_VILLAGE,                  ENTR_KAKARIKO_VILLAGE_OUTSIDE_BOTTOM_OF_THE_WELL } },
+        { { EntranceType::Dungeon,      RR_KAK_WELL,                         RR_BOTTOM_OF_THE_WELL_ENTRYWAY,       ENTR_BOTTOM_OF_THE_WELL_ENTRANCE },
+          { EntranceType::Dungeon,      RR_BOTTOM_OF_THE_WELL_ENTRYWAY,      RR_KAK_WELL,                          ENTR_KAKARIKO_VILLAGE_OUTSIDE_BOTTOM_OF_THE_WELL } },
         { { EntranceType::Dungeon,      RR_ZORAS_FOUNTAIN,                   RR_ICE_CAVERN_ENTRYWAY,               ENTR_ICE_CAVERN_ENTRANCE },
           { EntranceType::Dungeon,      RR_ICE_CAVERN_ENTRYWAY,              RR_ZORAS_FOUNTAIN,                    ENTR_ZORAS_FOUNTAIN_OUTSIDE_ICE_CAVERN } },
-        { { EntranceType::Dungeon,      RR_GERUDO_FORTRESS,                  RR_GERUDO_TRAINING_GROUNDS_ENTRYWAY,  ENTR_GERUDO_TRAINING_GROUND_ENTRANCE },
-          { EntranceType::Dungeon,      RR_GERUDO_TRAINING_GROUNDS_ENTRYWAY, RR_GERUDO_FORTRESS,                   ENTR_GERUDOS_FORTRESS_OUTSIDE_GERUDO_TRAINING_GROUND } },
+        { { EntranceType::Dungeon,      RR_GERUDO_FORTRESS,                  RR_GERUDO_TRAINING_GROUND_ENTRYWAY,  ENTR_GERUDO_TRAINING_GROUND_ENTRANCE },
+          { EntranceType::Dungeon,      RR_GERUDO_TRAINING_GROUND_ENTRYWAY, RR_GERUDO_FORTRESS,                   ENTR_GERUDOS_FORTRESS_OUTSIDE_GERUDO_TRAINING_GROUND } },
         { { EntranceType::GanonDungeon, RR_GANONS_CASTLE_LEDGE,              RR_GANONS_CASTLE_ENTRYWAY,            ENTR_INSIDE_GANONS_CASTLE_ENTRANCE },
           { EntranceType::GanonDungeon, RR_GANONS_CASTLE_ENTRYWAY,           RR_CASTLE_GROUNDS_FROM_GANONS_CASTLE, ENTR_CASTLE_GROUNDS_RAINBOW_BRIDGE_EXIT } },
 
@@ -969,7 +957,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
         { { EntranceType::Interior, RR_ZORAS_FOUNTAIN,                RR_ZF_GREAT_FAIRY_FOUNTAIN,       ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_FARORES_ZF },
           { EntranceType::Interior, RR_ZF_GREAT_FAIRY_FOUNTAIN,       RR_ZORAS_FOUNTAIN,                ENTR_ZORAS_FOUNTAIN_OUTSIDE_GREAT_FAIRY } },
 
-        { { EntranceType::SpecialInterior, RR_KOKIRI_FOREST,         RR_KF_LINKS_HOUSE,        ENTR_LINKS_HOUSE_CHILD_SPAWN },
+        { { EntranceType::SpecialInterior, RR_KOKIRI_FOREST,         RR_KF_LINKS_HOUSE,        ENTR_LINKS_HOUSE_1 },
           { EntranceType::SpecialInterior, RR_KF_LINKS_HOUSE,        RR_KOKIRI_FOREST,         ENTR_KOKIRI_FOREST_OUTSIDE_LINKS_HOUSE } },
         { { EntranceType::SpecialInterior, RR_TOT_ENTRANCE,          RR_TEMPLE_OF_TIME,        ENTR_TEMPLE_OF_TIME_ENTRANCE },
           { EntranceType::SpecialInterior, RR_TEMPLE_OF_TIME,        RR_TOT_ENTRANCE,          ENTR_TEMPLE_OF_TIME_EXTERIOR_DAY_OUTSIDE_TEMPLE } },
@@ -1040,8 +1028,8 @@ int EntranceShuffler::ShuffleAllEntrances() {
           { EntranceType::GrottoGrave, RR_LW_NEAR_SHORTCUTS_GROTTO, RR_THE_LOST_WOODS,           ENTRANCE_GROTTO_EXIT(GROTTO_LW_NEAR_SHORTCUTS_OFFSET) } },
         { { EntranceType::GrottoGrave, RR_KOKIRI_FOREST,            RR_KF_STORMS_GROTTO,         ENTRANCE_GROTTO_LOAD(GROTTO_KF_STORMS_OFFSET) },
           { EntranceType::GrottoGrave, RR_KF_STORMS_GROTTO,         RR_KOKIRI_FOREST,            ENTRANCE_GROTTO_EXIT(GROTTO_KF_STORMS_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_ZORAS_DOMAIN,             RR_ZD_STORMS_GROTTO,         ENTRANCE_GROTTO_LOAD(GROTTO_ZD_STORMS_OFFSET) },
-          { EntranceType::GrottoGrave, RR_ZD_STORMS_GROTTO,         RR_ZORAS_DOMAIN,             ENTRANCE_GROTTO_EXIT(GROTTO_ZD_STORMS_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_ZORAS_DOMAIN_ISLAND,      RR_ZD_STORMS_GROTTO,         ENTRANCE_GROTTO_LOAD(GROTTO_ZD_STORMS_OFFSET) },
+          { EntranceType::GrottoGrave, RR_ZD_STORMS_GROTTO,         RR_ZORAS_DOMAIN_ISLAND,      ENTRANCE_GROTTO_EXIT(GROTTO_ZD_STORMS_OFFSET) } },
         { { EntranceType::GrottoGrave, RR_GERUDO_FORTRESS,          RR_GF_STORMS_GROTTO,         ENTRANCE_GROTTO_LOAD(GROTTO_GF_STORMS_OFFSET) },
           { EntranceType::GrottoGrave, RR_GF_STORMS_GROTTO,         RR_GERUDO_FORTRESS,          ENTRANCE_GROTTO_EXIT(GROTTO_GF_STORMS_OFFSET) } },
         { { EntranceType::GrottoGrave, RR_GV_FORTRESS_SIDE,         RR_GV_STORMS_GROTTO,         ENTRANCE_GROTTO_LOAD(GROTTO_GV_STORMS_OFFSET) },
@@ -1071,8 +1059,8 @@ int EntranceShuffler::ShuffleAllEntrances() {
           { EntranceType::Overworld, RR_ZORAS_RIVER,             RR_THE_LOST_WOODS,          ENTR_LOST_WOODS_UNDERWATER_SHORTCUT } },
         { { EntranceType::Overworld, RR_LW_BEYOND_MIDO,          RR_SFM_ENTRYWAY,            ENTR_SACRED_FOREST_MEADOW_SOUTH_EXIT },
           { EntranceType::Overworld, RR_SFM_ENTRYWAY,            RR_LW_BEYOND_MIDO,          ENTR_LOST_WOODS_NORTH_EXIT } },
-        { { EntranceType::Overworld, RR_LW_BRIDGE,               RR_HYRULE_FIELD,            ENTR_LOST_WOODS_BRIDGE_WEST_EXIT },
-          { EntranceType::Overworld, RR_HYRULE_FIELD,            RR_LW_BRIDGE,               ENTR_HYRULE_FIELD_WOODED_EXIT } },
+        { { EntranceType::Overworld, RR_LW_BRIDGE,               RR_HYRULE_FIELD,            ENTR_HYRULE_FIELD_WOODED_EXIT },
+          { EntranceType::Overworld, RR_HYRULE_FIELD,            RR_LW_BRIDGE,               ENTR_LOST_WOODS_BRIDGE_WEST_EXIT } },
         { { EntranceType::Overworld, RR_HYRULE_FIELD,            RR_LAKE_HYLIA,              ENTR_LAKE_HYLIA_NORTH_EXIT },
           { EntranceType::Overworld, RR_LAKE_HYLIA,              RR_HYRULE_FIELD,            ENTR_HYRULE_FIELD_FENCE_EXIT } },
         { { EntranceType::Overworld, RR_HYRULE_FIELD,            RR_GERUDO_VALLEY,           ENTR_GERUDO_VALLEY_EAST_EXIT },
@@ -1095,10 +1083,10 @@ int EntranceShuffler::ShuffleAllEntrances() {
           { EntranceType::Overworld, RR_DESERT_COLOSSUS,         RR_WASTELAND_NEAR_COLOSSUS, ENTR_HAUNTED_WASTELAND_WEST_EXIT } },
         { { EntranceType::Overworld, RR_MARKET_ENTRANCE,         RR_THE_MARKET,              ENTR_MARKET_SOUTH_EXIT },
           { EntranceType::Overworld, RR_THE_MARKET,              RR_MARKET_ENTRANCE,         ENTR_MARKET_ENTRANCE_NORTH_EXIT } },
-        { { EntranceType::Overworld, RR_THE_MARKET,              RR_CASTLE_GROUNDS,          ENTR_MARKET_DAY_CASTLE_EXIT },
-          { EntranceType::Overworld, RR_CASTLE_GROUNDS,          RR_THE_MARKET,              ENTR_CASTLE_GROUNDS_SOUTH_EXIT } },
-        { { EntranceType::Overworld, RR_THE_MARKET,              RR_TOT_ENTRANCE,            ENTR_MARKET_DAY_TEMPLE_EXIT },
-          { EntranceType::Overworld, RR_TOT_ENTRANCE,            RR_THE_MARKET,              ENTR_TEMPLE_OF_TIME_EXTERIOR_DAY_GOSSIP_STONE_EXIT } },
+        { { EntranceType::Overworld, RR_THE_MARKET,              RR_CASTLE_GROUNDS,          ENTR_CASTLE_GROUNDS_SOUTH_EXIT },
+          { EntranceType::Overworld, RR_CASTLE_GROUNDS,          RR_THE_MARKET,              ENTR_MARKET_DAY_CASTLE_EXIT } },
+        { { EntranceType::Overworld, RR_THE_MARKET,              RR_TOT_ENTRANCE,            ENTR_TEMPLE_OF_TIME_EXTERIOR_DAY_GOSSIP_STONE_EXIT },
+          { EntranceType::Overworld, RR_TOT_ENTRANCE,            RR_THE_MARKET,              ENTR_MARKET_DAY_TEMPLE_EXIT } },
         { { EntranceType::Overworld, RR_KAKARIKO_VILLAGE,        RR_THE_GRAVEYARD,           ENTR_GRAVEYARD_ENTRANCE },
           { EntranceType::Overworld, RR_THE_GRAVEYARD,           RR_KAKARIKO_VILLAGE,        ENTR_KAKARIKO_VILLAGE_SOUTHEAST_EXIT } },
         { { EntranceType::Overworld, RR_KAK_BEHIND_GATE,         RR_DEATH_MOUNTAIN_TRAIL,    ENTR_DEATH_MOUNTAIN_TRAIL_BOTTOM_EXIT },
@@ -1330,12 +1318,12 @@ int EntranceShuffler::ShuffleAllEntrances() {
         (ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES) ? 1 : 0) + (ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES) ? 1 : 0) +
         (ctx->GetOption(RSK_MIX_GROTTO_ENTRANCES) ? 1 : 0);
     if (totalMixedPools < 2) {
-        ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS).SetContextIndex(RO_GENERIC_OFF);
-        ctx->GetOption(RSK_MIX_DUNGEON_ENTRANCES).SetContextIndex(RO_GENERIC_OFF);
-        ctx->GetOption(RSK_MIX_BOSS_ENTRANCES).SetContextIndex(RO_GENERIC_OFF);
-        ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES).SetContextIndex(RO_GENERIC_OFF);
-        ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES).SetContextIndex(RO_GENERIC_OFF);
-        ctx->GetOption(RSK_MIX_GROTTO_ENTRANCES).SetContextIndex(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS).Set(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIX_DUNGEON_ENTRANCES).Set(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIX_BOSS_ENTRANCES).Set(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES).Set(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES).Set(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIX_GROTTO_ENTRANCES).Set(RO_GENERIC_OFF);
     }
     if (ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS)) {
         std::set<EntranceType> poolsToMix = {};

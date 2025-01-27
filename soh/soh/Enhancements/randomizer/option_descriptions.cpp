@@ -2,15 +2,17 @@
 
 namespace Rando {
 void Settings::CreateOptionDescriptions() {
-    mOptionDescriptions[RSK_FOREST] = "Closed - Kokiri Sword & Deku Shield are required to access "
-                                      "the Deku Tree, and completing the Deku Tree is required to "
-                                      "access the Hyrule Field exit.\n"
+    mOptionDescriptions[RSK_FOREST] = "Determines if Kokiri forest can be left for the Lost Woods bridge or the Deku Tree.\n"
                                       "\n"
-                                      "Closed Deku - Kokiri boy no longer blocks the path to Hyrule "
-                                      "Field but Mido still requires the Kokiri Sword and Deku Shield "
+                                      "On - Kokiri Sword & Deku Shield are required to access "
+                                      "the Deku Tree, and completing the Deku Tree is required to "
+                                      "access the Lost Woods Bridge Exit.\n"
+                                      "\n"
+                                      "Deku Only - Kokiri boy no longer blocks the path to the Bridge "
+                                      "but Mido still requires the Kokiri Sword and Deku Shield "
                                       "to access the tree.\n"
                                       "\n"
-                                      "Open - Mido no longer blocks the path to the Deku Tree. Kokiri "
+                                      "Off - Mido no longer blocks the path to the Deku Tree. Kokiri "
                                       "boy no longer blocks the path out of the forest.";
     mOptionDescriptions[RSK_KAK_GATE] = "Closed - The gate will remain closed until Zelda's Letter "
                                         "is shown to the guard.\n"
@@ -39,6 +41,7 @@ void Settings::CreateOptionDescriptions() {
                                                   "\n"
                                                   "Open - Sleeping Waterfall is always open. "
                                                   "Link may always enter Zora's Domain.";
+    mOptionDescriptions[RSK_LOCK_OVERWORLD_DOORS] = "Add locks to all wooden overworld doors, requiring specific small keys to open them";
     mOptionDescriptions[RSK_STARTING_AGE] =
         "Choose which age Link will start as.\n\n"
         "Starting as adult means you start with the Master Sword in your inventory.\n"
@@ -379,10 +382,10 @@ void Settings::CreateOptionDescriptions() {
         "This setting governs if the Bean Salesman, Medigoron, Granny and the Carpet Salesman "
         "sell a random item.\n"
         "Beans Only - Only the Bean Salesman will have a check, and a pack of Magic Beans will be added "
-        "to the item pool."
+        "to the item pool.\n"
         "All But Beans - Medigoron, Granny and the Carpet Salesman will have checks, "
         "A Giant's Knife and a pack of Bombchus will be added to the item pool, and "
-        "one of the bottles will contain a Blue Potion.\n\n"
+        "one of the bottles will contain a Blue Potion.\n"
         "All - Apply both effects.\n"
         "\n"
         "Granny's item will only be offered after you have traded in the Odd Mushroom when Shuffle Adult Trade is on. "
@@ -434,6 +437,18 @@ void Settings::CreateOptionDescriptions() {
         "have collected all 100 Gold Skulltula Tokens.\n"
         "\n"
         "You can still talk to him multiple times to get Huge Rupees.";
+    mOptionDescriptions[RSK_SHUFFLE_FREESTANDING] = "Freestanding rupees & hearts are shuffles to random items. "
+                                              "Freestanding heart pieces and small keys are already shuffled by default.\n"
+                                              "\n"
+                                              "Off - freestanding rupees & hearts will not be shuffled.\n"
+                                              "\n"
+                                              "Dungeons - Only freestanding rupees & hearts that are within dungeons.\n"
+                                              "\n"
+                                              "Overworld - Only freestanding rupees & hearts that are outside of dungeons.\n"
+                                              "\n"
+                                              "All Items - Shuffle all freestanding rupees & hearts.";
+    mOptionDescriptions[RSK_SHUFFLE_FAIRIES] =
+        "Shuffle fairy locations.";
     mOptionDescriptions[RSK_SHUFFLE_DUNGEON_REWARDS] =
         "Shuffles the location of Spiritual Stones and medallions.\n"
         "\n"
@@ -649,20 +664,19 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_KAK_100_SKULLS_HINT] = "Talking to the Cursed Resident in the Skulltula House who is saved after 100 tokens will tell you the reward.";
     mOptionDescriptions[RSK_MASK_SHOP_HINT] = "Reading the mask shop sign will tell you rewards from showing masks at the Deku Theatre.";
     mOptionDescriptions[RSK_FULL_WALLETS] = "Start with a full wallet. All wallet upgrades come filled with rupees.";
-    mOptionDescriptions[RSK_BOMBCHUS_IN_LOGIC] =
-        "Bombchus are properly considered in logic. Without this setting, any Bombchu requirement "
+    mOptionDescriptions[RSK_BOMBCHU_BAG] =
+        "Bombchus require their own bag to be found before use. Without this setting, any Bombchu requirement "
         "is filled by Bomb Bag + a renewable source of Bombchus.\n"
         "\n"
-        "The first Bombchu pack will always be 20, and subsequent packs will be "
-        "5 or 10 based on how many you have.\n"
-        "Once found, they can be replenished at the Bombchu shop.\n"
+        "The first Bombchu you find be a Bag containing 20 chus, and subsequent packs will have 10."
+        "Once found, they can be replenished at shops selling refills, Bombchu Bowling and the carpet merchant.\n"
         "\n"
-        "Bombchu Bowling is opened by obtaining Bombchus.";
-    mOptionDescriptions[RSK_ENABLE_BOMBCHU_DROPS] = "Once you obtain Bombchus for the first time, refills can be found "
-                                                    "in bushes and other places where bomb drops can normally spawn."
+        "Bombchu Bowling is opened by obtaining the Bombchu Bag.";
+    mOptionDescriptions[RSK_ENABLE_BOMBCHU_DROPS] = "Once you obtain a Bombchu Bag, refills will sometimes replace "
+                                                    "Bomb drops that would spawn."
                                                     "\n"
-                                                    "If you have Bombchus in Logic disabled, you will also need a "
-                                                    "Bomb Bag for Bombchus to drop.";
+                                                    "If you have Bombchu Bag disabled, you will need a Bomb Bag "
+                                                    "and existing Bombchus for Bombchus to drop.";
     mOptionDescriptions[RSK_BLUE_FIRE_ARROWS] =
         "Ice Arrows act like Blue Fire, making them able to melt red ice. "
         "Item placement logic will respect this option, so it might be required to use this to progress.";
@@ -684,9 +698,6 @@ void Settings::CreateOptionDescriptions() {
                                                        "location is reachable. When disabled, only "
                                                        "required items and locations to beat the game "
                                                        "will be guaranteed reachable.";
-    mOptionDescriptions[RSK_ENABLE_GLITCH_CUTSCENES] =
-        "The cutscenes of the Poes in Forest Temple and Darunia in Fire Temple will not be skipped. "
-        "These cutscenes are only useful for glitched gameplay and can be safely skipped otherwise.";
     mOptionDescriptions[RSK_SHUFFLE_BOSS_SOULS] = "Shuffles 8 boss souls (one for each blue warp dungeon). A boss will not appear until you collect its respective soul."
                 "\n\"On + Ganon\" will also hide Ganon and Ganondorf behind a boss soul.";
 }

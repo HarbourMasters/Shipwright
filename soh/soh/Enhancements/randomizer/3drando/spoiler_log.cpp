@@ -2,14 +2,14 @@
 
 #include "../dungeon.h"
 #include "../static_data.h"
-#include "../context.h"
+#include "../settings.h"
 #include "../entrance.h"
 #include "random.hpp"
 #include "../trial.h"
-#include "utils.hpp"
 #include "hints.hpp"
 #include "pool_functions.hpp"
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include <nlohmann/json.hpp>
 
 #include <cstdio>
@@ -46,7 +46,7 @@ std::string placementtxt;
 
 void GenerateHash() {
     auto ctx = Rando::Context::GetInstance();
-    std::string hash = ctx->GetSettings()->GetHash();
+    std::string hash = ctx->GetHash();
     // adds leading 0s to the hash string if it has less than 10 digits.
     while (hash.length() < 10) {
         hash = "0" + hash;
@@ -92,8 +92,8 @@ static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) 
   int16_t destinationIndex = -1;
   int16_t replacementIndex = entrance->GetReplacement()->GetIndex();
   int16_t replacementDestinationIndex = -1;
-  std::string name = entrance->GetName();
-  std::string text = entrance->GetConnectedRegion()->regionName + " from " + entrance->GetReplacement()->GetParentRegion()->regionName;
+  std::string name = GetEntranceData(originalIndex)->source;
+  std::string text = GetEntranceData(replacementIndex)->destination;
 
   // Track the reverse destination, useful for savewarp handling
   if (entrance->GetReverse() != nullptr) {
@@ -139,21 +139,27 @@ static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) 
 // Writes the settings (without excluded locations, starting inventory and tricks) to the spoilerLog document.
 static void WriteSettings() {
     auto ctx = Rando::Context::GetInstance();
-    std::array<Rando::Option, RSK_MAX> options = ctx->GetSettings()->GetAllOptions();
+    std::array<Rando::Option, RSK_MAX> options = Rando::Settings::GetInstance()->GetAllOptions();
     for (const Rando::Option& option : options) {
       if (option.GetName() != ""){
-        jsonData["settings"][option.GetName()] = option.GetSelectedOptionText();
+        jsonData["settings"][option.GetName()] = option.GetOptionText(ctx->GetOption(option.GetKey()).Get());
       }
     }
+}
+
+// Removes any line breaks from s.
+std::string RemoveLineBreaks(std::string s) {
+  s.erase(std::remove(s.begin(), s.end(), '\n'), s.end());
+  return s;
 }
 
 // Writes the excluded locations to the spoiler log, if there are any.
 static void WriteExcludedLocations() {
   auto ctx = Rando::Context::GetInstance();
 
-  for (size_t i = 1; i < ctx->GetSettings()->GetExcludeLocationsOptions().size(); i++) {
-    for (const auto& location : ctx->GetSettings()->GetExcludeLocationsOptions()[i]) {
-      if (location->GetContextOptionIndex() == RO_LOCATION_INCLUDE) {
+  for (size_t i = 1; i < Rando::Settings::GetInstance()->GetExcludeLocationsOptions().size(); i++) {
+    for (const auto& location : Rando::Settings::GetInstance()->GetExcludeLocationsOptions()[i]) {
+      if (ctx->GetOption(location->GetKey()).Get() == RO_LOCATION_INCLUDE) {
         continue;
       }
 
@@ -166,11 +172,11 @@ static void WriteExcludedLocations() {
 // Writes the starting inventory to the spoiler log, if there is any.
 static void WriteStartingInventory() {
     auto ctx = Rando::Context::GetInstance();
-    const Rando::OptionGroup& optionGroup = ctx->GetSettings()->GetOptionGroup(RSG_STARTING_INVENTORY);
+    const Rando::OptionGroup& optionGroup = Rando::Settings::GetInstance()->GetOptionGroup(RSG_STARTING_INVENTORY);
     for (const Rando::OptionGroup* subGroup : optionGroup.GetSubGroups()) {
         if (subGroup->GetContainsType() == Rando::OptionGroupType::DEFAULT) {
             for (Rando::Option* option : subGroup->GetOptions()) {
-                jsonData["settings"][option->GetName()] = option->GetSelectedOptionText();
+                jsonData["settings"][option->GetName()] = option->GetOptionText(ctx->GetOption(option->GetKey()).Get());
             }
         }
     }
@@ -180,8 +186,8 @@ static void WriteStartingInventory() {
 static void WriteEnabledTricks() {
   auto ctx = Rando::Context::GetInstance();
 
-  for (const auto& setting : ctx->GetSettings()->GetOptionGroup(RSG_TRICKS).GetOptions()) {
-    if (setting->GetContextOptionIndex() != RO_GENERIC_ON) {
+  for (const auto& setting : Rando::Settings::GetInstance()->GetOptionGroup(RSG_TRICKS).GetOptions()) {
+    if (ctx->GetOption(setting->GetKey()).IsNot(RO_GENERIC_ON)) {
       continue;
     }
     jsonData["enabledTricks"].push_back(RemoveLineBreaks(setting->GetName()).c_str());
@@ -201,14 +207,19 @@ static void WriteMasterQuestDungeons() {
 }
 
 // Writes the required trials to the spoiler log, if there are any.
-static void WriteRequiredTrials() {
-    auto ctx = Rando::Context::GetInstance();
-    for (const auto& trial : ctx->GetTrials()->GetTrialList()) {
-        if (trial->IsRequired()) {
-            std::string trialName = trial->GetName().GetForCurrentLanguage(MF_CLEAN);
-            jsonData["requiredTrials"].push_back(RemoveLineBreaks(trialName));
-        }
+static void WriteChosenOptions() {
+  auto ctx = Rando::Context::GetInstance();
+  for (const auto& trial : ctx->GetTrials()->GetTrialList()) {
+    if (trial->IsRequired()) {
+      std::string trialName = trial->GetName().GetForCurrentLanguage(MF_CLEAN);
+      jsonData["requiredTrials"].push_back(RemoveLineBreaks(trialName));
     }
+  }
+  if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_ADULT)){
+    jsonData["SelectedStartingAge"] = "Adult";
+  } else {
+    jsonData["SelectedStartingAge"] = "Child";
+  }
 }
 
 // Writes the intended playthrough to the spoiler log, separated into spheres.
@@ -311,8 +322,8 @@ const char* SpoilerLog_Write() {
     jsonData["version"] = (char*) gBuildVersion;
     jsonData["git_branch"] = (char*) gGitBranch;
     jsonData["git_commit"] = (char*) gGitCommitHash;
-    jsonData["seed"] = ctx->GetSettings()->GetSeedString();
-    jsonData["finalSeed"] = ctx->GetSettings()->GetSeed();
+    jsonData["seed"] = ctx->GetSeedString();
+    jsonData["finalSeed"] = ctx->GetSeed();
 
     // Write Hash
     int index = 0;
@@ -326,7 +337,7 @@ const char* SpoilerLog_Write() {
     WriteStartingInventory();
     WriteEnabledTricks(); 
     WriteMasterQuestDungeons();
-    WriteRequiredTrials();
+    WriteChosenOptions();
     WritePlaythrough();
 
     ctx->playthroughLocations.clear();

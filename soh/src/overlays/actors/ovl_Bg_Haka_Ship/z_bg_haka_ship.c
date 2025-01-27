@@ -7,7 +7,7 @@
 #include "z_bg_haka_ship.h"
 #include "objects/object_haka_objects/object_haka_objects.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void BgHakaShip_Init(Actor* thisx, PlayState* play);
 void BgHakaShip_Destroy(Actor* thisx, PlayState* play);
@@ -179,7 +179,7 @@ void BgHakaShip_CrashFall(BgHakaShip* this, PlayState* play) {
         }
     } else {
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BLOCKSINK - SFX_FLAG);
-        if ((this->dyna.actor.home.pos.y - this->dyna.actor.world.pos.y > 500.0f) && func_8004356C(&this->dyna)) {
+        if ((this->dyna.actor.home.pos.y - this->dyna.actor.world.pos.y > 500.0f) && DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
             Play_TriggerVoidOut(play);
         }
     }

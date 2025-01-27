@@ -2,6 +2,7 @@
 #include "static_data.h"
 #include <algorithm>
 #include <assert.h>
+#include "option.h"
 
 RandomizerCheck Rando::Location::GetRandomizerCheck() const {
     return rc;
@@ -53,9 +54,9 @@ const std::string& Rando::Location::GetShortName() const {
 
 bool Rando::Location::IsDungeon() const {
     return (checkType != RCTYPE_SKULL_TOKEN &&
-            (scene < SCENE_THIEVES_HIDEOUT || scene == SCENE_INSIDE_GANONS_CASTLE ||
-             (scene > SCENE_TREASURE_BOX_SHOP && scene < SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR))) ||
-           (checkType == RCTYPE_SKULL_TOKEN && scene < SCENE_GANONS_TOWER);
+            (scene <= SCENE_GERUDO_TRAINING_GROUND || scene == SCENE_INSIDE_GANONS_CASTLE ||
+             (scene >= SCENE_DEKU_TREE_BOSS && scene <= SCENE_GANONDORF_BOSS))) ||
+           (checkType == RCTYPE_SKULL_TOKEN && scene <= SCENE_ICE_CAVERN);
 }
 
 bool Rando::Location::IsOverworld() const {
@@ -84,6 +85,10 @@ RandomizerGet Rando::Location::GetVanillaItem() const {
 
 int16_t Rando::Location::GetVanillaPrice() const {
     return vanillaPrice;
+}
+
+Rando::Option* Rando::Location::GetExcludedOption() {
+    return &excludedOption;
 }
 
 RandomizerCheckArea GetAreaFromScene(uint8_t scene) {
@@ -380,4 +385,11 @@ Rando::Location Rando::Location::Pot(RandomizerCheck rc, RandomizerCheckQuest qu
 
 Rando::Location Rando::Location::HintStone(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, SceneID scene_, int32_t actorParams_, std::string&& shortName_) {
     return { rc, quest_, RCTYPE_GOSSIP_STONE, area_, ACTOR_EN_GS, scene_, actorParams_, std::move(shortName_), RHT_NONE, RG_NONE, false };
+}
+
+Rando::Location Rando::Location::Fairy(RandomizerCheck rc, RandomizerCheckQuest quest_,
+                                        RandomizerCheckArea area_, SceneID scene_,
+                                        int32_t actorParams_, std::string&& shortName_, std::string&& spoilerName_,
+                                        RandomizerHintTextKey hintKey, SpoilerCollectionCheck collectionCheck) {
+    return {rc, quest_, RCTYPE_FAIRY, area_, ACTOR_EN_ELF, scene_, actorParams_, std::move(shortName_), std::move(spoilerName_), hintKey, RG_NONE, false, collectionCheck};
 }

@@ -10,7 +10,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
 void EnGe3_Init(Actor* thisx, PlayState* play);
 void EnGe3_Destroy(Actor* thisx, PlayState* play);
@@ -133,7 +133,7 @@ void EnGe3_Wait(EnGe3* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
         this->actionFunc = EnGe3_WaitLookAtPlayer;
         this->actor.update = EnGe3_UpdateWhenNotTalking;
-        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+        this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
     }
     EnGe3_TurnToFacePlayer(this, play);
 }
@@ -154,7 +154,7 @@ void EnGe3_WaitTillCardGiven(EnGe3* this, PlayState* play) {
 void EnGe3_GiveCard(EnGe3* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
         Message_CloseTextbox(play);
-        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+        this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         this->actionFunc = EnGe3_WaitTillCardGiven;
         if (GameInteractor_Should(VB_GIVE_ITEM_GERUDO_MEMBERSHIP_CARD, true)) {
             Actor_OfferGetItem(&this->actor, play, GI_GERUDO_CARD, 10000.0f, 50.0f);
@@ -171,7 +171,7 @@ void EnGe3_ForceTalk(EnGe3* this, PlayState* play) {
             this->unk_30C |= 4;
         }
         this->actor.textId = 0x6004;
-        this->actor.flags |= ACTOR_FLAG_WILL_TALK;
+        this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         func_8002F1C4(&this->actor, play, 300.0f, 300.0f, 0);
     }
     EnGe3_LookAtPlayer(this, play);

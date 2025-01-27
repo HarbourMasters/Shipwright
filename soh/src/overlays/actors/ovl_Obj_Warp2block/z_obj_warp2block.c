@@ -8,7 +8,7 @@
 #include "objects/object_timeblock/object_timeblock.h"
 #include "vt.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA | ACTOR_FLAG_NO_LOCKON)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_UPDATE_DURING_OCARINA | ACTOR_FLAG_LOCK_ON_DISABLED)
 
 void ObjWarp2block_Init(Actor* thisx, PlayState* play);
 void ObjWarp2block_Destroy(Actor* thisx, PlayState* play);
@@ -82,7 +82,7 @@ s32 func_80BA1ECC(ObjWarp2block* this, PlayState* play) {
     Vec3f sp20;
     f32 temp_f2;
 
-    if (func_80043590(&this->dyna)) {
+    if (DynaPolyActor_IsPlayerAbove(&this->dyna)) {
         return 0;
     }
 

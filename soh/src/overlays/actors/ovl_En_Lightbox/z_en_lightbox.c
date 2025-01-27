@@ -7,7 +7,7 @@
 #include "z_en_lightbox.h"
 #include "objects/object_lightbox/object_lightbox.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void EnLightbox_Init(Actor* thisx, PlayState* play);
 void EnLightbox_Destroy(Actor* thisx, PlayState* play);
@@ -52,8 +52,8 @@ void EnLightbox_Init(Actor* thisx, PlayState* play) {
     thisx->colChkInfo.cylRadius = 30;
     thisx->colChkInfo.cylHeight = 50;
     ActorShape_Init(&thisx->shape, 0.0f, ActorShadow_DrawCircle, 6.0f);
-    this->dyna.unk_160 = 0;
-    this->dyna.unk_15C = 0;
+    this->dyna.interactFlags = 0;
+    this->dyna.transformFlags = 0;
     thisx->targetMode = 0;
     thisx->gravity = -2.0f;
     CollisionHeader_GetVirtual(&object_lightbox_Col_001F10, &colHeader);

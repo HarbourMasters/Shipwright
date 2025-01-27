@@ -1,5 +1,6 @@
 #include "ShufflePots.h"
 #include "soh_assets.h"
+#include "static_data.h"
 
 extern "C" {
 #include "variables.h"
@@ -25,10 +26,9 @@ extern "C" void ObjTsubo_RandomizerDraw(Actor* thisx, PlayState* play) {
 }
 
 uint8_t ObjTsubo_RandomizerHoldsItem(ObjTsubo* potActor, PlayState* play) {
-    uint8_t isDungeon =
-        play->sceneNum < SCENE_GANONS_TOWER_COLLAPSE_INTERIOR ||
-        (play->sceneNum > SCENE_TREASURE_BOX_SHOP && play->sceneNum < SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR);
-    uint8_t potSetting = Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_POTS).GetContextOptionIndex();
+    RandomizerCheck rc = potActor->potIdentity.randomizerCheck;
+    uint8_t isDungeon = Rando::StaticData::GetLocation(rc)->IsDungeon();
+    uint8_t potSetting = Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_POTS).Get();
 
     // Don't pull randomized item if pot isn't randomized or is already checked
     if (!IS_RANDO || (potSetting == RO_SHUFFLE_POTS_OVERWORLD && isDungeon) ||
@@ -55,7 +55,7 @@ void ObjTsubo_RandomizerInit(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
 
     // Check for Lake Hylia specifically because the game spawns 2 pots out of bounds there for some reason.
-    if (actor->id != ACTOR_OBJ_TSUBO || gPlayState->sceneNum == SCENE_LAKE_HYLIA) return;
+    if (actor->id != ACTOR_OBJ_TSUBO || gPlayState->sceneNum == SCENE_LAKE_HYLIA || gPlayState->sceneNum == SCENE_HYRULE_CASTLE) return;
 
     ObjTsubo* potActor = static_cast<ObjTsubo*>(actorRef);
 
@@ -87,7 +87,7 @@ void ShufflePots_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va
     // Unlock early Ganon's Boss Key doors to allow access to the pots there when pots are shuffled in dungeon
     if (id == VB_LOCK_BOSS_DOOR) {
         DoorShutter* doorActor = va_arg(args, DoorShutter*);
-        uint8_t shufflePotSetting = Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_POTS).GetContextOptionIndex();
+        uint8_t shufflePotSetting = Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_POTS).Get();
         if (gPlayState->sceneNum == SCENE_GANONS_TOWER && doorActor->dyna.actor.world.pos.y == 800 &&
             (shufflePotSetting == RO_SHUFFLE_POTS_DUNGEONS || shufflePotSetting == RO_SHUFFLE_POTS_ALL)) {
             *should = false;

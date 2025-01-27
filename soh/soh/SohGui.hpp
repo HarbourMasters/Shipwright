@@ -26,6 +26,7 @@
 #include "Enhancements/randomizer/randomizer_settings_window.h"
 #include "Enhancements/timesplits/TimeSplits.h"
 #include "Enhancements/randomizer/Plandomizer.h"
+#include "AboutWindow.h"
 #include "SohModals.h"
 
 #ifdef __cplusplus
@@ -43,6 +44,7 @@ namespace SohGui {
     void Draw();
     void Destroy();
     void RegisterPopup(std::string title, std::string message, std::string button1 = "OK", std::string button2 = "", std::function<void()> button1callback = nullptr, std::function<void()> button2callback = nullptr);
+    void ShowRandomizerSettingsMenu();
 }
 
 #endif /* SohGui_hpp */

@@ -9,7 +9,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void BgMoriBigst_Init(Actor* thisx, PlayState* play);
 void BgMoriBigst_Destroy(Actor* thisx, PlayState* play);
@@ -241,7 +241,7 @@ void BgMoriBigst_Update(Actor* thisx, PlayState* play) {
     if (this->waitTimer > 0) {
         this->waitTimer--;
     }
-    if (func_80043590(&this->dyna)) {
+    if (DynaPolyActor_IsPlayerAbove(&this->dyna)) {
         func_80074CE8(play, 6);
     }
     if (this->actionFunc != NULL) {

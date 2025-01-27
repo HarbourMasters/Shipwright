@@ -7,7 +7,7 @@
 #include "z_bg_gnd_darkmeiro.h"
 #include "objects/object_demo_kekkai/object_demo_kekkai.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void BgGndDarkmeiro_Init(Actor* thisx, PlayState* play);
 void BgGndDarkmeiro_Destroy(Actor* thisx, PlayState* play);
@@ -56,7 +56,7 @@ void BgGndDarkmeiro_Init(Actor* thisx, PlayState* play2) {
     switch (this->dyna.actor.params & 0xFF) {
         case DARKMEIRO_INVISIBLE_PATH:
             this->dyna.actor.draw = BgGndDarkmeiro_DrawInvisiblePath;
-            this->dyna.actor.flags |= ACTOR_FLAG_LENS;
+            this->dyna.actor.flags |= ACTOR_FLAG_REACT_TO_LENS;
             break;
         case DARKMEIRO_CLEAR_BLOCK:
             CollisionHeader_GetVirtual(&gClearBlockCol, &colHeader);

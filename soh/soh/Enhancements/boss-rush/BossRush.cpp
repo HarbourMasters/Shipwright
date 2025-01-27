@@ -265,10 +265,10 @@ void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpPosZ) {
             gSaveContext.linkAge = LINK_AGE_ADULT;
 
             // Change to Adult Link.
-            if (gSaveContext.bossRushOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_ALL) {
+            if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_ALL) {
                 BossRush_SetEquipment(LINK_AGE_ADULT);
             // Warp to credits.
-            } else if (gSaveContext.bossRushOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_CHILD) {
+            } else if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_CHILD) {
                 play->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
                 gSaveContext.nextCutsceneIndex = 0xFFF2;
                 play->transitionTrigger = TRANS_TRIGGER_START;
@@ -285,14 +285,14 @@ void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpPosZ) {
 void BossRush_HandleBlueWarpHeal(PlayState* play) {
 
     // This function gets called multiple times per blue warp, so only heal when player isn't at max HP.
-    if (gSaveContext.bossRushOptions[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_EVERYBOSS &&
+    if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_EVERYBOSS &&
         gSaveContext.health != gSaveContext.healthCapacity) {
         Health_ChangeBy(play, 320);
     }
 }
 
 void BossRush_HandleCompleteBoss(PlayState* play) {
-    gSaveContext.isBossRushPaused = 1;
+    gSaveContext.ship.quest.data.bossRush.isPaused = true;
     switch (play->sceneNum) {
         case SCENE_DEKU_TREE_BOSS:
             Flags_SetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP);
@@ -323,16 +323,16 @@ void BossRush_HandleCompleteBoss(PlayState* play) {
     }
 
     // Fully heal the player after Ganondorf
-    if (gSaveContext.bossRushOptions[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_EVERYBOSS &&
+    if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_EVERYBOSS &&
         play->sceneNum == SCENE_GANONDORF_BOSS) {
         Health_ChangeBy(play, 320);
     }
 
-    if ((CheckDungeonCount() == 3 && gSaveContext.bossRushOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_CHILD) ||
+    if ((CheckDungeonCount() == 3 && gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_CHILD) ||
         play->sceneNum == SCENE_GANON_BOSS) {
-        gSaveContext.sohStats.playTimer += 2;
-        gSaveContext.sohStats.gameComplete = 1;
-        gSaveContext.sohStats.itemTimestamp[TIMESTAMP_BOSSRUSH_FINISH] = GAMEPLAYSTAT_TOTAL_TIME;
+        gSaveContext.ship.stats.playTimer += 2;
+        gSaveContext.ship.stats.gameComplete = 1;
+        gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_BOSSRUSH_FINISH] = GAMEPLAYSTAT_TOTAL_TIME;
     }
 }
 
@@ -344,14 +344,14 @@ void BossRush_InitSave() {
         gSaveContext.playerName[i] = brPlayerName[i];
     }
 
-    gSaveContext.questId = QUEST_BOSSRUSH;
-    gSaveContext.isBossRushPaused = 1;
+    gSaveContext.ship.quest.id = QUEST_BOSSRUSH;
+    gSaveContext.ship.quest.data.bossRush.isPaused = true;
     gSaveContext.entranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
     gSaveContext.cutsceneIndex = 0x8000;
     gSaveContext.isMagicAcquired = 1;
 
     // Set magic
-    if (gSaveContext.bossRushOptions[BR_OPTIONS_MAGIC] == BR_CHOICE_MAGIC_SINGLE) {
+    if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_MAGIC] == BR_CHOICE_MAGIC_SINGLE) {
         gSaveContext.magicLevel = 1;
         gSaveContext.magic = 48;
     } else {
@@ -362,7 +362,7 @@ void BossRush_InitSave() {
 
     // Set health
     u16 health = 16;
-    switch (gSaveContext.bossRushOptions[BR_OPTIONS_HEARTS]) { 
+    switch (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_HEARTS]) {
         case BR_CHOICE_HEARTS_7:
             health *= 7;
             break;
@@ -399,8 +399,9 @@ void BossRush_InitSave() {
     gSaveContext.eventChkInf[7] |= 0x80; // bongo bongo
 
     // Sets all rando flags to false
-    for (s32 i = 0; i < ARRAY_COUNT(gSaveContext.randomizerInf); i++) {
-        gSaveContext.randomizerInf[i] = 0;
+    // Boss Rush currently uses 2 randomizer flags (RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE & RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE)
+    for (s32 i = 0; i < ARRAY_COUNT(gSaveContext.ship.randomizerInf); i++) {
+        gSaveContext.ship.randomizerInf[i] = 0;
     }
 
     // Set items
@@ -411,11 +412,11 @@ void BossRush_InitSave() {
         ITEM_NONE,      ITEM_NONE, ITEM_NONE, ITEM_NONE,     ITEM_NONE,        ITEM_NONE,
     };
 
-    if (gSaveContext.bossRushOptions[BR_OPTIONS_LONGSHOT] == BR_CHOICE_LONGSHOT_YES) {
+    if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_LONGSHOT] == BR_CHOICE_LONGSHOT_YES) {
         brItems[9] = ITEM_LONGSHOT;
     }
 
-    switch (gSaveContext.bossRushOptions[BR_OPTIONS_BOTTLE]) {
+    switch (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_BOTTLE]) {
         case BR_CHOICE_BOTTLE_EMPTY:
             brItems[18] = ITEM_BOTTLE;
             break;
@@ -435,7 +436,7 @@ void BossRush_InitSave() {
             break;
     }
 
-    if (gSaveContext.bossRushOptions[BR_OPTIONS_BUNNYHOOD] == BR_CHOICE_BUNNYHOOD_YES) {
+    if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_BUNNYHOOD] == BR_CHOICE_BUNNYHOOD_YES) {
         brItems[23] = ITEM_MASK_BUNNY;
     }
 
@@ -446,9 +447,9 @@ void BossRush_InitSave() {
     // Set consumable counts
     std::array<s8, 16> brAmmo = { 5, 5, 10, 10, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-    if (gSaveContext.bossRushOptions[BR_OPTIONS_AMMO] == BR_CHOICE_AMMO_FULL) {
+    if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_AMMO] == BR_CHOICE_AMMO_FULL) {
         brAmmo = { 10, 20, 20, 30, 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    } else if (gSaveContext.bossRushOptions[BR_OPTIONS_AMMO] == BR_CHOICE_AMMO_MAXED) {
+    } else if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_AMMO] == BR_CHOICE_AMMO_MAXED) {
         brAmmo = { 30, 40, 40, 50, 0, 0, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     }
 
@@ -462,17 +463,17 @@ void BossRush_InitSave() {
     gSaveContext.inventory.equipment |= 1 << 4; // Deku Shield
     gSaveContext.inventory.equipment |= 1 << 6; // Mirror Shield
     gSaveContext.inventory.equipment |= 1 << 9; // Goron Tunic
-    if (gSaveContext.bossRushOptions[BR_OPTIONS_BGS] == BR_CHOICE_BGS_YES) {
+    if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_BGS] == BR_CHOICE_BGS_YES) {
         gSaveContext.inventory.equipment |= 1 << 2; // Biggoron Sword
         gSaveContext.bgsFlag = 1;
     }
-    if (gSaveContext.bossRushOptions[BR_OPTIONS_HOVERBOOTS] == BR_CHOICE_HOVERBOOTS_YES) {
+    if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_HOVERBOOTS] == BR_CHOICE_HOVERBOOTS_YES) {
         gSaveContext.inventory.equipment |= 1 << 14; // Hover Boots
     }
 
     // Upgrades
     u8 upgradeLevel = 1;
-    if (gSaveContext.bossRushOptions[BR_OPTIONS_AMMO] == BR_CHOICE_AMMO_MAXED) {
+    if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_AMMO] == BR_CHOICE_AMMO_MAXED) {
         upgradeLevel = 3;
     }
     Inventory_ChangeUpgrade(UPG_QUIVER, upgradeLevel);
@@ -483,12 +484,12 @@ void BossRush_InitSave() {
     Inventory_ChangeUpgrade(UPG_STRENGTH, 1);
 
     // Set flags and Link's age based on chosen settings.
-    if (gSaveContext.bossRushOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_ADULT ||
-        gSaveContext.bossRushOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_GANONDORF_GANON) {
+    if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_ADULT ||
+        gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_GANONDORF_GANON) {
         Flags_SetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP);
         Flags_SetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP);
         Flags_SetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP);
-        if (gSaveContext.bossRushOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_GANONDORF_GANON) {
+        if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_GANONDORF_GANON) {
             Flags_SetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP);
             Flags_SetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP);
             Flags_SetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP);
@@ -516,7 +517,7 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
     switch (id) {
         // Allow not healing before ganon
         case VB_GANON_HEAL_BEFORE_FIGHT: {
-            if (gSaveContext.bossRushOptions[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_NEVER) {
+            if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_NEVER) {
                 *should = false;
             }
             break;
@@ -669,7 +670,7 @@ void BossRush_OnActorInitHandler(void* actorRef) {
 void BossRush_OnSceneInitHandler(s16 sceneNum) {
     // Unpause the timer when the scene loaded isn't the Chamber of Sages.
     if (sceneNum != SCENE_CHAMBER_OF_THE_SAGES) {
-        gSaveContext.isBossRushPaused = 0;
+        gSaveContext.ship.quest.data.bossRush.isPaused = false;
     }
 }
 

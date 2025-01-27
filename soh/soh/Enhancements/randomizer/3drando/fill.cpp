@@ -130,14 +130,14 @@ static bool UpdateToDAccess(Entrance* entrance, Region* connection) {
 static void ValidateOtherEntrance(GetAccessibleLocationsStruct& gals) {
   auto ctx = Rando::Context::GetInstance();
   // Condition for validating Temple of Time Access
-  if (!gals.foundTempleOfTime && ((ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD && RegionTable(RR_TEMPLE_OF_TIME)->Adult()) || 
-                            (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_ADULT && RegionTable(RR_TEMPLE_OF_TIME)->Child()))) {
+  if (!gals.foundTempleOfTime && ((ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD) && RegionTable(RR_TEMPLE_OF_TIME)->Adult()) || 
+                            (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_ADULT) && RegionTable(RR_TEMPLE_OF_TIME)->Child()))) {
     gals.foundTempleOfTime = true;
   }
   // Condition for validating a valid starting region
   if (!gals.validatedStartingRegion) {
-    bool childAccess = ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD || RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Child();
-    bool adultAccess = ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_ADULT || RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Adult();
+    bool childAccess = ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD) || RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Child();
+    bool adultAccess = ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_ADULT) || RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Adult();
 
     Region* kokiri = RegionTable(RR_KOKIRI_FOREST);
     Region* kakariko = RegionTable(RR_KAKARIKO_VILLAGE);
@@ -164,11 +164,11 @@ static void ApplyAllAdvancmentItems(){
 static void ValidateSphereZero(GetAccessibleLocationsStruct& gals){
   auto ctx = Rando::Context::GetInstance();
   // Condition for verifying everything required for sphere 0, expanding search to all locations
-  if (logic->CanEmptyBigPoes && gals.validatedStartingRegion && gals.foundTempleOfTime && gals.haveTimeAccess) {
+  if (logic->CouldEmptyBigPoes && gals.validatedStartingRegion && gals.foundTempleOfTime && gals.haveTimeAccess) {
     // Apply all items that are necessary for checking all location access
     ApplyAllAdvancmentItems();
     // Reset access as the non-starting age
-    if (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD) {
+    if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD)) {
       for (RandomizerRegion regionKey : gals.regionPool) {
         RegionTable(regionKey)->adultDay = false;
         RegionTable(regionKey)->adultNight = false;
@@ -238,10 +238,10 @@ static int GetMaxGSCount() {
   int maxBridge = 0;
   int maxLACS = 0;
   if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS)) {
-    maxBridge = ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).GetContextOptionIndex();
+    maxBridge = ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).Get();
   }
   if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_TOKENS)) {
-    maxLACS = ctx->GetOption(RSK_LACS_TOKEN_COUNT).GetContextOptionIndex();
+    maxLACS = ctx->GetOption(RSK_LACS_TOKEN_COUNT).Get();
   }
   maxBridge = std::max(maxBridge, maxLACS);
   //Get the max amount of GS which could be useful from token reward locations
@@ -266,7 +266,7 @@ static int GetMaxGSCount() {
       maxUseful = 10;
   }
   //Return max of the two possible reasons tokens could be important, minus the tokens in the starting inventory
-  return std::max(maxUseful, maxBridge) - ctx->GetOption(RSK_STARTING_SKULLTULA_TOKEN).GetContextOptionIndex();
+  return std::max(maxUseful, maxBridge) - ctx->GetOption(RSK_STARTING_SKULLTULA_TOKEN).Get();
 }
 
 std::string GetShopItemBaseName(std::string itemName) {
@@ -391,14 +391,14 @@ void ApplyOrStoreItem(Rando::ItemLocation* loc, GetAccessibleLocationsStruct& ga
 }
 
 // Adds the contents of a location to the current progression and optionally playthrough
-bool AddCheckToLogic(LocationAccess& locPair, GetAccessibleLocationsStruct& gals, RandomizerGet ignore, bool stopOnBeatable, bool addToPlaythrough=false){
+bool AddCheckToLogic(LocationAccess& locPair, GetAccessibleLocationsStruct& gals, RandomizerGet ignore, bool stopOnBeatable, Region* parentRegion, bool addToPlaythrough=false){
   auto ctx = Rando::Context::GetInstance();
   StartPerformanceTimer(PT_LOCATION_LOGIC);
   RandomizerCheck loc = locPair.GetLocation();
   Rando::ItemLocation* location = ctx->GetItemLocation(loc);
   RandomizerGet locItem = location->GetPlacedRandomizerGet();
 
-  if (!location->IsAddedToPool() && locPair.ConditionsMet()) {
+  if (!location->IsAddedToPool() && locPair.ConditionsMet(parentRegion)) {
     location->AddToPool();
 
     if (locItem == RG_NONE) {
@@ -486,7 +486,7 @@ void ProcessRegion(Region* region, GetAccessibleLocationsStruct& gals, Randomize
   
   PropagateTimeTravel(gals, ignore, stopOnBeatable, addToPlaythrough);
   for (size_t k = 0; k < region->locations.size(); k++) {
-    if(AddCheckToLogic(region->locations[k], gals, ignore, stopOnBeatable, addToPlaythrough)){
+    if(AddCheckToLogic(region->locations[k], gals, ignore, stopOnBeatable, region, addToPlaythrough)){
       Rando::Context::GetInstance()->playthroughBeatable = true;
       return;
     }
@@ -565,7 +565,7 @@ void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAcce
 
   ctx->allLocationsReachable = false;
   if (checkPoeCollectorAccess){
-    logic->CanEmptyBigPoes = false;
+    logic->CouldEmptyBigPoes = false;
   }
 
   if (checkOtherEntranceAccess){

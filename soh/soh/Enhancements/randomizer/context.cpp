@@ -28,8 +28,31 @@ Context::Context() {
     mDungeons = std::make_shared<Dungeons>();
     mLogic = std::make_shared<Logic>();
     mTrials = std::make_shared<Trials>();
-    mSettings = std::make_shared<Settings>();
     mFishsanity = std::make_shared<Fishsanity>();
+    VanillaLogicDefaults = {
+        // RANDOTODO check what this does
+        &mOptions[RSK_LINKS_POCKET],
+        &mOptions[RSK_SHUFFLE_DUNGEON_REWARDS],
+        &mOptions[RSK_SHUFFLE_SONGS],
+        &mOptions[RSK_SHOPSANITY],
+        &mOptions[RSK_SHOPSANITY_COUNT],
+        &mOptions[RSK_SHOPSANITY_PRICES],
+        &mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE],
+        &mOptions[RSK_FISHSANITY],
+        &mOptions[RSK_FISHSANITY_POND_COUNT],
+        &mOptions[RSK_FISHSANITY_AGE_SPLIT],
+        &mOptions[RSK_SHUFFLE_SCRUBS],
+        &mOptions[RSK_SHUFFLE_BEEHIVES],
+        &mOptions[RSK_SHUFFLE_COWS],
+        &mOptions[RSK_SHUFFLE_POTS],
+        &mOptions[RSK_SHUFFLE_FREESTANDING],
+        &mOptions[RSK_SHUFFLE_MERCHANTS],
+        &mOptions[RSK_SHUFFLE_FROG_SONG_RUPEES],
+        &mOptions[RSK_SHUFFLE_ADULT_TRADE],
+        &mOptions[RSK_SHUFFLE_100_GS_REWARD],
+        &mOptions[RSK_SHUFFLE_FAIRIES],
+        &mOptions[RSK_GOSSIP_STONE_HINTS],
+    };
 }
 
 RandomizerArea Context::GetAreaFromString(std::string str) {
@@ -94,7 +117,7 @@ void Context::PlaceItemInLocation(const RandomizerCheck locKey, const Randomizer
     const auto loc = GetItemLocation(locKey);
     SPDLOG_DEBUG(StaticData::RetrieveItem(item).GetName().GetEnglish() + " placed at " + StaticData::GetLocation(locKey)->GetName() + "\n");
     
-    if (applyEffectImmediately || mSettings->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS) || mSettings->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
+    if (applyEffectImmediately || mOptions[RSK_LOGIC_RULES].Is(RO_LOGIC_GLITCHLESS) || mOptions[RSK_LOGIC_RULES].Is(RO_LOGIC_VANILLA)) {
         StaticData::RetrieveItem(item).ApplyEffect();
     }
 
@@ -121,19 +144,26 @@ void Context::AddLocations(const Container& locations, std::vector<RandomizerChe
     destination->insert(destination->end(), std::cbegin(locations), std::cend(locations));
 }
 
+bool Context::IsQuestOfLocationActive(RandomizerCheck rc) {
+    const auto loc = Rando::StaticData::GetLocation(rc);
+    return loc->GetQuest() == RCQUEST_BOTH ||
+        loc->GetQuest() == RCQUEST_MQ && mDungeons->GetDungeonFromScene(loc->GetScene())->IsMQ() ||
+        loc->GetQuest() == RCQUEST_VANILLA && mDungeons->GetDungeonFromScene(loc->GetScene())->IsVanilla();
+}
+
 void Context::GenerateLocationPool() {
     allLocations.clear();
-    if (mSettings->GetOption(RSK_TRIFORCE_HUNT)) {
+    if (mOptions[RSK_TRIFORCE_HUNT]) {
         AddLocation(RC_TRIFORCE_COMPLETED);
     }
     AddLocations(StaticData::GetOverworldLocations());
 
-    if (mSettings->GetOption(RSK_FISHSANITY).IsNot(RO_FISHSANITY_OFF)) {
+    if (mOptions[RSK_FISHSANITY].IsNot(RO_FISHSANITY_OFF)) {
         AddLocations(mFishsanity->GetFishsanityLocations().first);
     }
 
-    if (mSettings->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_OVERWORLD) ||
-        mSettings->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_ALL)) {
+    if (mOptions[RSK_SHUFFLE_POTS].Is(RO_SHUFFLE_POTS_OVERWORLD) ||
+        mOptions[RSK_SHUFFLE_POTS].Is(RO_SHUFFLE_POTS_ALL)) {
         AddLocations(StaticData::GetOverworldPotLocations());
     }
 
@@ -146,7 +176,17 @@ void Context::AddExcludedOptions() {
         AddLocations(dungeon->GetEveryLocation(), &everyPossibleLocation);
     }
     for (const RandomizerCheck rc : everyPossibleLocation) {
-        GetItemLocation(rc)->AddExcludeOption();
+        bool alreadyAdded = false;
+        Location* loc = StaticData::GetLocation(rc);
+        for (Option* location : Rando::Settings::GetInstance()->GetExcludeOptionsForArea(loc->GetArea()))
+        {
+            if (location->GetName() == loc->GetExcludedOption()->GetName()) {
+                alreadyAdded = true;
+            }
+        }
+        if (!alreadyAdded) {
+            Rando::Settings::GetInstance()->GetExcludeOptionsForArea(loc->GetArea()).push_back(loc->GetExcludedOption());
+        }
     }
 }
 
@@ -229,14 +269,6 @@ void Context::SetSpoilerLoaded(const bool spoilerLoaded) {
     mSpoilerLoaded = spoilerLoaded;
 }
 
-bool Context::IsPlandoLoaded() const {
-    return mPlandoLoaded;
-}
-
-void Context::SetPlandoLoaded(const bool plandoLoaded) {
-    mPlandoLoaded = plandoLoaded;
-}
-
 GetItemEntry Context::GetFinalGIEntry(const RandomizerCheck rc, const bool checkObtainability, const GetItemID ogItemId) {
     const auto itemLoc = GetItemLocation(rc);
     if (itemLoc->GetPlacedRandomizerGet() == RG_NONE) {
@@ -279,27 +311,23 @@ std::string sanitize(std::string stringValue) {
     return stringValue;
 }
 
-void Context::ParseSpoiler(const char* spoilerFileName, const bool plandoMode) {
+void Context::ParseSpoiler(const char* spoilerFileName) {
     std::ifstream spoilerFileStream(sanitize(spoilerFileName));
     if (!spoilerFileStream) {
         return;
     }
     mSeedGenerated = false;
     mSpoilerLoaded = false;
-    mPlandoLoaded = false;
     try {
         nlohmann::json spoilerFileJson;
         spoilerFileStream >> spoilerFileJson;
         ParseHashIconIndexesJson(spoilerFileJson);
-        mSettings->ParseJson(spoilerFileJson);
-        if (plandoMode) {
-            ParseItemLocationsJson(spoilerFileJson);
-            ParseHintJson(spoilerFileJson);
-            mEntranceShuffler->ParseJson(spoilerFileJson);
-            mDungeons->ParseJson(spoilerFileJson);
-            mTrials->ParseJson(spoilerFileJson);
-            mPlandoLoaded = true;
-        }
+        Rando::Settings::GetInstance()->ParseJson(spoilerFileJson);
+        ParseItemLocationsJson(spoilerFileJson);
+        ParseHintJson(spoilerFileJson);
+        mEntranceShuffler->ParseJson(spoilerFileJson);
+        mDungeons->ParseJson(spoilerFileJson);
+        mTrials->ParseJson(spoilerFileJson);
         mSpoilerLoaded = true;
         mSeedGenerated = false;
     } catch (...) {
@@ -367,10 +395,6 @@ void Context::ParseHintJson(nlohmann::json spoilerFileJson) {
     CreateStaticHints();
 }
 
-std::shared_ptr<Settings> Context::GetSettings() {
-    return mSettings;
-}
-
 std::shared_ptr<EntranceShuffler> Context::GetEntranceShuffler() {
     return mEntranceShuffler;
 }
@@ -410,12 +434,28 @@ Sprite* Context::GetSeedTexture(const uint8_t index) {
     return &gSeedTextures[index];
 }
 
-Option& Context::GetOption(const RandomizerSettingKey key) const {
-    return mSettings->GetOption(key);
+OptionValue& Context::GetOption(const RandomizerSettingKey key) {
+    return mOptions[key];
 }
 
-TrickOption& Context::GetTrickOption(const RandomizerTrick key) const {
-    return mSettings->GetTrickOption(key);
+OptionValue& Context::GetOption(const RandomizerTrick key) {
+    return mTrickOptions[key];
+}
+
+OptionValue& Context::GetOption(const RandomizerCheck key) {
+    return itemLocationTable[key].GetExcludedOption();
+}
+
+OptionValue& Context::GetTrickOption(const RandomizerTrick key) {
+    return mTrickOptions[key];
+}
+
+OptionValue& Context::GetLocationOption(const RandomizerCheck key) {
+    return itemLocationTable[key].GetExcludedOption();
+}
+
+RandoOptionLACSCondition Context::LACSCondition() const {
+    return mLACSCondition;
 }
 
 std::shared_ptr<Kaleido> Context::GetKaleido() {
@@ -423,5 +463,29 @@ std::shared_ptr<Kaleido> Context::GetKaleido() {
         mKaleido = std::make_shared<Kaleido>();
     }
     return mKaleido;
+}
+
+std::string Context::GetHash() const {
+    return mHash;
+}
+
+void Context::SetHash(std::string hash) {
+    mHash = std::move(hash);
+}
+
+const std::string& Context::GetSeedString() const {
+    return mSeedString;
+}
+
+void Context::SetSeedString(std::string seedString) {
+    mSeedString = std::move(seedString);
+}
+
+uint32_t Context::GetSeed() const {
+    return mFinalSeed;
+}
+
+void Context::SetSeed(const uint32_t seed) {
+    mFinalSeed = seed;
 }
 } // namespace Rando

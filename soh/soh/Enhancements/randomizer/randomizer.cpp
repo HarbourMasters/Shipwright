@@ -14,9 +14,6 @@
 #include "soh/UIWidgets.hpp"
 #include "3drando/custom_messages.hpp"
 #include "../../UIWidgets.hpp"
-#ifndef IMGUI_DEFINE_MATH_OPERATORS
-#define IMGUI_DEFINE_MATH_OPERATORS
-#endif
 #include <imgui.h>
 #include <imgui_internal.h>
 #include "../custom-message/CustomMessageTypes.h"
@@ -164,7 +161,7 @@ std::unordered_map<std::string, SceneID> spoilerFileDungeonToScene = {
     { "Shadow Temple", SCENE_SHADOW_TEMPLE },
     { "Bottom of the Well", SCENE_BOTTOM_OF_THE_WELL },
     { "Ice Cavern", SCENE_ICE_CAVERN },
-    { "Gerudo Training Grounds", SCENE_GERUDO_TRAINING_GROUND },
+    { "Gerudo Training Ground", SCENE_GERUDO_TRAINING_GROUND },
     { "Ganon's Castle", SCENE_INSIDE_GANONS_CASTLE }
 };
 
@@ -375,7 +372,7 @@ void Randomizer::LoadMerchantMessages() {
                                     "\x1B#Buy&Don't buy#",
                         /*german*/ "Furchterregend, oder? Ich erzähle Euch mehr, wenn ich #Geld# sehe...^Wie wär's mit #[[2]] Rubinen#?&&"
                                     "\x1B#Aber sicher!&Ich bin weg!#",
-                        /*french*/ "Un concentré de puissance! Mais montre tes #rubis# avant que je te dise ce que c'est...^Disons #[[2]] "
+                        /*french*/ "Terrible! Mais montre tes #rubis# avant que je te dise ce que c'est...^Disons #[[2]] "
                                     "rubis#?&&\x1B#Acheter&Ne pas acheter#",
                                     {QM_RED, QM_YELLOW, QM_GREEN}));
                     /*spanish*/ // ¡Terrorífico! No te revelaré su nombre hasta que vea el #dinero#...^#[[2]] rupias#, ¿qué te parece?&&"
@@ -478,7 +475,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
                 (CUR_UPG_VALUE(UPG_STICKS) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE);
         case RG_DEKU_STICK_1:
         case RG_BUY_DEKU_STICK_1:
-            return CUR_UPG_VALUE(UPG_STICKS) || !OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG).GetContextOptionIndex()
+            return CUR_UPG_VALUE(UPG_STICKS) || !OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG).Get()
                  ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
         case RG_PROGRESSIVE_NUT_UPGRADE:
             return infiniteUpgrades != RO_INF_UPGRADES_OFF ?
@@ -488,7 +485,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_DEKU_NUTS_10:
         case RG_BUY_DEKU_NUTS_5:
         case RG_BUY_DEKU_NUTS_10:
-            return CUR_UPG_VALUE(UPG_NUTS) || !OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_DEKU_NUT_BAG).GetContextOptionIndex()
+            return CUR_UPG_VALUE(UPG_NUTS) || !OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_DEKU_NUT_BAG).Get()
                 ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
         case RG_PROGRESSIVE_BOMB_BAG:
             return infiniteUpgrades != RO_INF_UPGRADES_OFF ?
@@ -733,8 +730,8 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
             return gSaveContext.inventory.dungeonKeys[SCENE_SHADOW_TEMPLE] < SHADOW_TEMPLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
             return gSaveContext.inventory.dungeonKeys[SCENE_BOTTOM_OF_THE_WELL] < BOTTOM_OF_THE_WELL_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
-        case RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
-            return gSaveContext.inventory.dungeonKeys[SCENE_GERUDO_TRAINING_GROUND] < GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_GERUDO_TRAINING_GROUND_SMALL_KEY:
+            return gSaveContext.inventory.dungeonKeys[SCENE_GERUDO_TRAINING_GROUND] < GERUDO_TRAINING_GROUND_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_GERUDO_FORTRESS_SMALL_KEY:
             return gSaveContext.inventory.dungeonKeys[SCENE_THIEVES_HIDEOUT] < GERUDO_FORTRESS_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_GANONS_CASTLE_SMALL_KEY:
@@ -1547,10 +1544,10 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_WATER_TEMPLE_MQ_LOWEST_GS_POT_3,                               RAND_INF_WATER_TEMPLE_MQ_LOWEST_GS_POT_3 },
     { RC_WATER_TEMPLE_MQ_LOWEST_GS_POT_4,                               RAND_INF_WATER_TEMPLE_MQ_LOWEST_GS_POT_4 },
     { RC_WATER_TEMPLE_MQ_BOSS_KEY_POT,                                  RAND_INF_WATER_TEMPLE_MQ_BOSS_KEY_POT },
-    { RC_GERUDO_TRAINING_GROUNDS_MQ_LOBBY_LEFT_POT_1,                   RAND_INF_GERUDO_TRAINING_GROUNDS_MQ_LOBBY_LEFT_POT_1 },
-    { RC_GERUDO_TRAINING_GROUNDS_MQ_LOBBY_LEFT_POT_2,                   RAND_INF_GERUDO_TRAINING_GROUNDS_MQ_LOBBY_LEFT_POT_2 },
-    { RC_GERUDO_TRAINING_GROUNDS_MQ_LOBBY_RIGHT_POT_1,                  RAND_INF_GERUDO_TRAINING_GROUNDS_MQ_LOBBY_RIGHT_POT_1 },
-    { RC_GERUDO_TRAINING_GROUNDS_MQ_LOBBY_RIGHT_POT_2,                  RAND_INF_GERUDO_TRAINING_GROUNDS_MQ_LOBBY_RIGHT_POT_2 },
+    { RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_LEFT_POT_1,                   RAND_INF_GERUDO_TRAINING_GROUND_MQ_LOBBY_LEFT_POT_1 },
+    { RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_LEFT_POT_2,                   RAND_INF_GERUDO_TRAINING_GROUND_MQ_LOBBY_LEFT_POT_2 },
+    { RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_POT_1,                  RAND_INF_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_POT_1 },
+    { RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_POT_2,                  RAND_INF_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_POT_2 },
 };
 
 BeehiveIdentity Randomizer::IdentifyBeehive(s32 sceneNum, s16 xPosition, s32 respawnData) {
@@ -1840,7 +1837,7 @@ FishIdentity Randomizer::IdentifyFish(s32 sceneNum, s32 actorParams) {
 }
 
 u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
-    return Rando::Context::GetInstance()->GetOption(randoSettingKey).GetContextOptionIndex();
+    return Rando::Context::GetInstance()->GetOption(randoSettingKey).Get();
 }
 
 GetItemEntry Randomizer::GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId, bool checkObtainability) {
@@ -1873,10 +1870,10 @@ void GenerateRandomizerImgui(std::string seed = "") {
     CVarSetInteger(CVAR_GENERAL("RandoGenerating"), 1);
     CVarSave();
     auto ctx = Rando::Context::GetInstance();
-    if (!ctx->IsSpoilerLoaded()) {
-        // We use the settings from the spoiler rather than CVars.
-        ctx->GetSettings()->SetAllFromCVar();
-    }
+    //RANDOTODO proper UI for selecting if a spoiler loaded should be used for settings
+    Rando::Settings::GetInstance()->SetAllFromCVar();
+    Rando::Settings::GetInstance()->SetAllToContext();
+    
     // todo: this efficently when we build out cvar array support
     std::set<RandomizerCheck> excludedLocations;
     std::stringstream excludedLocationStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"), ""));
@@ -1968,7 +1965,6 @@ void RandomizerSettingsWindow::DrawElement() {
         ctx->SetSpoilerLoaded(false);
         GenerateRandomizer(CVarGetInteger(CVAR_RANDOMIZER_SETTING("ManualSeedEntry"), 0) ? seedString : "");
     }
-    UIWidgets::Tooltip("You can also press L on the Quest Select screen to generate a new seed");
     ImGui::EndDisabled();
 
     UIWidgets::Spacer(0);
@@ -2166,7 +2162,7 @@ void RandomizerSettingsWindow::DrawElement() {
                     enabledGlitches.insert((RandomizerTrick)std::stoi(enabledGlitchString));
                 }
             }
-            
+
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (ImGui::BeginTable("tableRandoLogic", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -2186,13 +2182,6 @@ void RandomizerSettingsWindow::DrawElement() {
                 if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA) {
                     ImGui::SameLine();
                     ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Heads up! This will disable all rando settings except for entrance shuffle and starter items");
-                }
-
-                UIWidgets::PaddedSeparator();
-
-                // Enable Glitch-Useful Cutscenes
-                if (mSettings->GetOption(RSK_ENABLE_GLITCH_CUTSCENES).RenderImGui()) {
-                    mNeedsUpdate = true;
                 }
                 ImGui::PopItemWidth();
                 ImGui::EndTable();
@@ -2273,11 +2262,13 @@ void RandomizerSettingsWindow::DrawElement() {
             };
 
             static std::map<Rando::Tricks::Tag, bool> showTag {
-                {Rando::Tricks::Tag::NOVICE,true},
-                {Rando::Tricks::Tag::INTERMEDIATE,true},
-                {Rando::Tricks::Tag::ADVANCED,true},
-                {Rando::Tricks::Tag::EXPERT,true},
-                {Rando::Tricks::Tag::EXTREME,true}
+                { Rando::Tricks::Tag::NOVICE, true },
+                { Rando::Tricks::Tag::INTERMEDIATE, true },
+                { Rando::Tricks::Tag::ADVANCED, true },
+                { Rando::Tricks::Tag::EXPERT, true },
+                { Rando::Tricks::Tag::EXTREME, true },
+                { Rando::Tricks::Tag::EXPERIMENTAL, true },
+                //{ Rando::Tricks::Tag::GLITCH, false },
             };
             static ImGuiTextFilter trickSearch;
             trickSearch.Draw("Filter (inc,-exc)", 490.0f);
@@ -2286,7 +2277,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 if (ImGui::Button("Disable All")) {
                     for (int i = 0; i < RT_MAX; i++) {
                         auto etfound = enabledTricks.find(static_cast<RandomizerTrick>(i));
-                        if (!ctx->GetTrickOption(static_cast<RandomizerTrick>(i)).IsGlitch() && etfound != enabledTricks.end()) {
+                        if (etfound != enabledTricks.end()) {
                             enabledTricks.erase(etfound);
                         }
                     }
@@ -2301,7 +2292,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::SameLine();
                 if (ImGui::Button("Enable All")) {
                     for (int i = 0; i < RT_MAX; i++) {
-                        if (!ctx->GetTrickOption(static_cast<RandomizerTrick>(i)).IsGlitch() && !enabledTricks.count(static_cast<RandomizerTrick>(i))) {
+                        if (!enabledTricks.count(static_cast<RandomizerTrick>(i))) {
                             enabledTricks.insert(static_cast<RandomizerTrick>(i));
                         }
                     }
@@ -2317,9 +2308,14 @@ void RandomizerSettingsWindow::DrawElement() {
             if (ImGui::BeginTable("trickTags", showTag.size(), ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders)) {  
                 for (auto [rtTag, isShown] : showTag) {
                     ImGui::TableNextColumn();
-                    ImGui::PushStyleColor(ImGuiCol_Header, Rando::Tricks::GetRTTagColor(rtTag));
-                    ImGui::Selectable(Rando::Tricks::GetRTTagName(rtTag).c_str(), &showTag[rtTag]);
-                    ImGui::PopStyleColor(1);
+                    if (isShown) {
+                        ImGui::PushStyleColor(ImGuiCol_Text, Rando::Tricks::GetTextColor(rtTag));
+                    } else {
+                        ImGui::PushStyleColor(ImGuiCol_Text, { 1.0f, 1.0f, 1.0f, 1.0f });
+                    }
+                    ImGui::PushStyleColor(ImGuiCol_Header, Rando::Tricks::GetTagColor(rtTag));
+                    ImGui::Selectable(Rando::Tricks::GetTagName(rtTag).c_str(), &showTag[rtTag]);
+                    ImGui::PopStyleColor(2);
                 }
                 ImGui::EndTable();
             }
@@ -2331,13 +2327,12 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::TableHeadersRow();
                 ImGui::PopItemFlag();
                 ImGui::TableNextRow();
-                
-                if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
 
+                if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
                     // COLUMN 1 - DISABLED TRICKS
                     ImGui::TableNextColumn();
                     window->DC.CurrLineTextBaseOffset = 0.0f;
-                    
+
                     if (ImGui::Button("Collapse All##disabled")) {
                         for (int i = 0; i < RA_MAX; i++) {
                             areaTreeDisabled[static_cast<RandomizerArea>(i)] = false;
@@ -2353,10 +2348,10 @@ void RandomizerSettingsWindow::DrawElement() {
                     if (ImGui::Button("Enable Visible")) {
                         for (int i = 0; i < RT_MAX; i++) {
                             auto option = mSettings->GetTrickOption(static_cast<RandomizerTrick>(i));
-                            if (!option.IsGlitch() && !enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
+                            if (!enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
                                 trickSearch.PassFilter(option.GetName().c_str()) &&
                                 areaTreeDisabled[option.GetArea()] &&
-                                Rando::Tricks::CheckRTTags(showTag, option.GetTags())) {
+                                Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                                 enabledTricks.insert(static_cast<RandomizerTrick>(i));
                             }
                         }
@@ -2368,7 +2363,7 @@ void RandomizerSettingsWindow::DrawElement() {
                         CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
                         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                     }
-                    
+
                     ImGui::BeginChild("ChildTricksDisabled", ImVec2(0, -8), false, ImGuiWindowFlags_HorizontalScrollbar);
 
                     for (auto [area, trickIds] : mSettings->mTricksByArea) {
@@ -2376,22 +2371,20 @@ void RandomizerSettingsWindow::DrawElement() {
                         for (auto rt : trickIds) {
                             auto option = mSettings->GetTrickOption(rt);
                             if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
-                                !enabledTricks.count(rt) && Rando::Tricks::CheckRTTags(showTag, option.GetTags()) &&
-                                !option.IsGlitch()) {
+                                !enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                                 hasTricks = true;
                                 break;
                             }
                         }
                         if (hasTricks) {
-                            ImGui::TreeNodeSetOpen(ImGui::GetID((Rando::Tricks::GetRTAreaName(area) + "##disabled").c_str()), areaTreeDisabled[area]);
+                            ImGui::TreeNodeSetOpen(ImGui::GetID((Rando::Tricks::GetAreaName(area) + "##disabled").c_str()), areaTreeDisabled[area]);
                             ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                            if (ImGui::TreeNode((Rando::Tricks::GetRTAreaName(area) + "##disabled").c_str())) {
+                            if (ImGui::TreeNode((Rando::Tricks::GetAreaName(area) + "##disabled").c_str())) {
                                 for (auto rt : trickIds) {
                                     auto option = mSettings->GetTrickOption(rt);
                                     if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
-                                        !enabledTricks.count(rt) && Rando::Tricks::CheckRTTags(showTag, option.GetTags()) &&
-                                        !option.IsGlitch()) {
-                                        ImGui::TreeNodeSetOpen(ImGui::GetID((Rando::Tricks::GetRTAreaName(option.GetArea()) + "##disabled").c_str()), areaTreeDisabled[option.GetArea()]);
+                                        !enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags())) {
+                                        ImGui::TreeNodeSetOpen(ImGui::GetID((Rando::Tricks::GetAreaName(option.GetArea()) + "##disabled").c_str()), areaTreeDisabled[option.GetArea()]);
                                         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                                         if (ImGui::ArrowButton(std::to_string(rt).c_str(), ImGuiDir_Right)) {
                                             enabledTricks.insert(rt);
@@ -2418,12 +2411,9 @@ void RandomizerSettingsWindow::DrawElement() {
                     }
                     ImGui::EndChild();
 
-                    
-
                     // COLUMN 2 - ENABLED TRICKS
                     ImGui::TableNextColumn();
                     window->DC.CurrLineTextBaseOffset = 0.0f;
-
 
                     if (ImGui::Button("Collapse All##enabled")) {
                         for (int i = 0; i < RA_MAX; i++) {
@@ -2440,10 +2430,10 @@ void RandomizerSettingsWindow::DrawElement() {
                     if (ImGui::Button("Disable Visible")) {
                         for (int i = 0; i < RT_MAX; i++) {
                             auto option = mSettings->GetTrickOption(static_cast<RandomizerTrick>(i));
-                            if (!option.IsGlitch() && enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
+                            if (enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
                                 trickSearch.PassFilter(option.GetName().c_str()) &&
                                 areaTreeEnabled[option.GetArea()] &&
-                                Rando::Tricks::CheckRTTags(showTag, option.GetTags())) {
+                                Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                                 enabledTricks.erase(static_cast<RandomizerTrick>(i));
                             }
                         }
@@ -2459,7 +2449,7 @@ void RandomizerSettingsWindow::DrawElement() {
                         }
                         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                     }
-                    
+
                     ImGui::BeginChild("ChildTricksEnabled", ImVec2(0, -8), false, ImGuiWindowFlags_HorizontalScrollbar);
 
                     for (auto [area, trickIds] : mSettings->mTricksByArea) {
@@ -2467,22 +2457,20 @@ void RandomizerSettingsWindow::DrawElement() {
                         for (auto rt : trickIds) {
                             auto option = mSettings->GetTrickOption(rt);
                             if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
-                                enabledTricks.count(rt) && Rando::Tricks::CheckRTTags(showTag, option.GetTags()) &&
-                                !option.IsGlitch()) {
+                                enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                                 hasTricks = true;
                                 break;
                             }
                         }
                         if (hasTricks) {
-                            ImGui::TreeNodeSetOpen(ImGui::GetID((Rando::Tricks::GetRTAreaName(area) + "##enabled").c_str()), areaTreeEnabled[area]);
+                            ImGui::TreeNodeSetOpen(ImGui::GetID((Rando::Tricks::GetAreaName(area) + "##enabled").c_str()), areaTreeEnabled[area]);
                             ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                            if (ImGui::TreeNode((Rando::Tricks::GetRTAreaName(area) + "##enabled").c_str())) {
+                            if (ImGui::TreeNode((Rando::Tricks::GetAreaName(area) + "##enabled").c_str())) {
                                 for (auto rt : trickIds) {
                                     auto option = mSettings->GetTrickOption(rt);
                                     if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
-                                        enabledTricks.count(rt) && Rando::Tricks::CheckRTTags(showTag, option.GetTags()) &&
-                                        !option.IsGlitch()) {
-                                        ImGui::TreeNodeSetOpen(ImGui::GetID((Rando::Tricks::GetRTAreaName(option.GetArea()) + "##enabled").c_str()), areaTreeEnabled[option.GetArea()]);
+                                        enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags())) {
+                                        ImGui::TreeNodeSetOpen(ImGui::GetID((Rando::Tricks::GetAreaName(option.GetArea()) + "##enabled").c_str()), areaTreeEnabled[option.GetArea()]);
                                         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                                         if (ImGui::ArrowButton(std::to_string(rt).c_str(), ImGuiDir_Left)) {
                                             enabledTricks.erase(rt);
@@ -2514,10 +2502,6 @@ void RandomizerSettingsWindow::DrawElement() {
 
                     ImGui::EndChild();
                 } else {
-                    ImGui::TableNextColumn();
-                    ImGui::BeginChild("ChildTrickAreas", ImVec2(0, -8));
-                    ImGui::Text("Requires Logic Turned On.");
-                    ImGui::EndChild();
                     ImGui::TableNextColumn();
                     ImGui::BeginChild("ChildTricksDisabled", ImVec2(0, -8));
                     ImGui::Text("Requires Logic Turned On.");
@@ -2572,7 +2556,7 @@ CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
                 messageEntry = CustomMessage(
                 "@, meet me at %gGanon's Castle%w once you obtain the %rkey to his lair%w.",
                 "@, wir treffen uns bei %gGanons Schloß%w, sobald Du den %rSchlüssel zu seinem Verlies%w hast.",
-                "Retrouve-moi au %gChâteau de Ganon%w une fois que tu auras obtenu la Mrclé de son repaire%w.");
+                "Retrouve-moi au %gChâteau de Ganon%w une fois que tu auras obtenu la %rclé de son repaire%w.");
             } else {
                 messageEntry = CustomMessage(
                 "The time has come. Prepare yourself.",
@@ -2595,7 +2579,7 @@ CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
                 messageEntry = CustomMessage(
                     "You may have what you need to defeat %rthe Evil King%w, but the %cbarrier%w still stands.^Complete the remaining %gtrials%w to destroy it.",
                     "Du magst das haben, was Du brauchst um %rden bösen König%w zu besiegen, aber die %cBarriere%w steht noch.^Absolviere die verbleibenden %gPrüfungen%w um sie zu zerstören.",
-		    "");
+		            "@, tu as peut-être ce qu'il te faut pour vaincre %rle Malin%w, mais les barrières sont toujours actives.^Termine les épreuves restantes pour les détruire.");
             } else {
                 messageEntry = CustomMessage(
                     "If you're ready, then proceed.^Good luck.",
@@ -2613,7 +2597,7 @@ CustomMessage Randomizer::GetFishingPondOwnerMessage(u16 originalTextId) {
     CustomMessage messageEntry = CustomMessage(
       "Sorry, but the pond is closed.&I've lost my good %rfishing pole%w...&Can't go fishing without it!",
       "Entschuldigung, aber der Teich ist zu.&Ich habe meine gute %rAngelrute%w verloren.&Ohne kann ich nicht fischen!",
-      ""
+      "Désolé, mais l'étang est fermé.&J'ai perdu ma bonne %rCanne à Pêche%w...&Impossible de pêcher sans elle!"
     );
 
     if (Rando::Context::GetInstance()->GetOption(RSK_FISHING_POLE_HINT)) {
@@ -2625,7 +2609,7 @@ CustomMessage Randomizer::GetFishingPondOwnerMessage(u16 originalTextId) {
         messageEntry = CustomMessage(
             "Hey, mister! I remember you!&It's been a long time!^",
             "Hallo, mein Herr! Ich erinnere mich an Sie!&Lang ist's her!",
-            ""
+            "Hé, monsieur! Je me souviens de toi!&Ça fait longtemps!"
         ) + messageEntry;
     }
 
@@ -2746,8 +2730,10 @@ void CreateRupeeMessages() {
         }
         customMessageManager->CreateMessage(
             Randomizer::rupeeMessageTableID, rupee,
-            CustomMessage("You found" + rupeeText + " !", "Du hast" + rupeeText + "  gefunden!",
-                          "Vous obtenez" + rupeeText + " !", TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM));
+            CustomMessage(
+                "You found" + rupeeText + " !",
+                "Du hast" + rupeeText + "  gefunden!",
+                "Vous obtenez" + rupeeText + " !", TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM));
     }
 }
 
@@ -2795,7 +2781,7 @@ void CreateTriforcePieceMessages() {
 
 CustomMessage Randomizer::GetTriforcePieceMessage() {
     // Item is only given after the textbox, so reflect that inside the textbox.
-    uint8_t current = gSaveContext.triforcePiecesCollected + 1;
+    uint8_t current = gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected + 1;
     uint8_t required = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1;
     uint8_t remaining = required - current;
     float percentageCollected = (float)current / (float)required;
@@ -2963,7 +2949,7 @@ CustomMessage Randomizer::GetIceTrapMessage() {
         "Thank you #@#! But your item is in another castle!",
         "#FREEZE#! Don't move!",
         "Wouldn't it be #ice# if we were colder?",
-        "Greetings from #Snowhead#! Wish you were here",
+        "Greetings from #Snowhead#! Wish you were here.",
         "Too #cool# for you?",
         "#Ice#, #ice#, baby...",
         "Time to break the #ice#.",
@@ -2972,12 +2958,12 @@ CustomMessage Randomizer::GetIceTrapMessage() {
         "#Ice# to meet you!",
         "Do you want to #freeze# a snowman?",
         "Isn't there a #mansion# around here?",
-        "Now you know how #King Zora# feels",
+        "Now you know how #King Zora# feels.",
         "May the #Frost# be with you.",
         "Carpe diem. #Freeze# the day.",
         "There #snow# place like home.",
         "That'll do, #ice#. That'll do.",
-        "All that is #cold# does not glitter, Not all those who wander are #frost#.",
+        "All that is #cold# does not glitter. Not all those who wander are #frost#.",
         "I Used To Be An Adventurer Like You. Then I Took An #Icetrap# To The Knee.",
         "Would you like #ice# with that?",
         "You have obtained the #Ice# Medallion!",
@@ -2999,9 +2985,9 @@ CustomMessage Randomizer::GetIceTrapMessage() {
         "Stay hydrated and brush your teeth!",
         "Isn't it too hot here? Let's turn the #AC# on.",
         "One serving of #cold# @, coming right up!",
-        "Is it #cold# in here is that just me?",
+        "Is it #cold# in here or is that just me?",
         "Yahaha! You found me!",
-        "You'd made a great #ice#-tronaut!",
+        "You'd make a great #ice#-tronaut!",
         "That's just the tip of the #iceberg#!",
         "It's the triforce!&No, just kidding, it's an #ice trap#.",
         "WINNER!",
@@ -3027,7 +3013,7 @@ CustomMessage Randomizer::GetIceTrapMessage() {
         "Ice puns are #snow# problem!",
         "This #ice# is #snow# joke!",
         "There's no business like #snow# business!",
-        "no, dude",
+        "No, dude.",
         "N#ice# trap ya got here!",
         "Quick do your best impression of #Zoras Domain#!",
         "Ganon used #ice beam#, it's super effective!",
@@ -3043,9 +3029,9 @@ CustomMessage Randomizer::GetIceTrapMessage() {
         "I know, I know... #FREEZE#!",
         "#Ice# of you to drop by!",
         "STOP!&You violated the #Thaw#!",
-        "I wanted to give you a treasure, but it looks like you got #cold feet#",
+        "I wanted to give you a treasure, but it looks like you got #cold feet#.",
         "You told me you wanted to deliver #just ice# to Ganondorf!",
-        "You got the triforce!&This ancient artifact of divine power can grant any- wait, no, sorry, it's just an ice trap. My bad",
+        "You got the triforce!&This ancient artifact of divine power can grant any- wait, no, sorry, it's just an ice trap. My bad.",
         "Time to #cool off#!",
         "The #Ice Cavern# sends its regards.",
         "Loading item, please #wait#...",
@@ -3053,12 +3039,12 @@ CustomMessage Randomizer::GetIceTrapMessage() {
         "Sorry, your item is in another location.", //would be better if it could have the name of the item
         "You only wish this was %gGreg%w.",
         "Do you want to drink a hot chocolate?",
-        "The #cold# never bothered me anyway",
+        "The #cold# never bothered me anyway.",
         "Hope you're too school for #cool#!",
         "Be thankful this isn't #absolute zero#.",
         "Did you know the F in ZFG stands for #Freeze#?",
         "You got #Ice Age (2002)#!",
-        "Now you can cast a #spell# you don't know",
+        "Now you can cast a #spell# you don't know.",
         "How's about a hero #on the rocks#?",
         "Ain't no tunic for #this#!",
         "I knew you were #part metroid#!",
@@ -3076,14 +3062,14 @@ CustomMessage Randomizer::GetIceTrapMessage() {
         "Mweep... mweep... mweep...",
         "Scum, #freezebag#! I mean #freeze#, scumbag!",
         "Is it #chilly# in here or is it just #you#?",
-        "#Proceed#",
+        "#Proceed#.",
         "WHAT'S SHE GONNA DO, MAKE ME AN #[Ice Cream]#!?",
         "You've met with a #terrible fate#, haven't you?",
         "So I heard you like the Shining, here's how it #ends#.",
         "Minor routing mistake. #I win#.",
         "Hold this #L#, @.",
-        "#SKILL ISSUE#",
-        "All you heat are belong to us",
+        "#SKILL ISSUE#.",
+        "All your heat are belong to us.",
         "Wait a second, don't you already have #this item#?",
         "#Freeze#! We have you surrounded!",
         "Error 404 - Item not #found#.",
@@ -3135,7 +3121,7 @@ CustomMessage Randomizer::GetIceTrapMessage() {
         "Kalt. Kalt. Kälter. #EISKALT#!",
     };
 
-    static const char* const frenchIceTrapMessages[23] = {
+    static const char* const frenchIceTrapMessages[83] = {
         "#Pauvre fou#...",
         "Tu es un #glaçon#, Harry!",
         "#Sot# que tu es.",
@@ -3159,6 +3145,66 @@ CustomMessage Randomizer::GetIceTrapMessage() {
         "Never gonna #give you up#. Never gonna #let you down#. Never gonna run around and #desert you#.",
         "Merci #@#! Mais ton objet est dans un autre château!",
         "J'espère que ça ne te fait ni chaud, ni #froid#.",
+        "Je voulais t'offrir un trésor, mais il semble que tu aies eu #froid aux pieds#",
+        "Tu m'as dit que tu voulais livrer #de la glace# à Ganondorf!",
+        "Tu as obtenu la Triforce!&Cet ancien artefact divin peut exaucer n'importe quel... ah non, désolé, c'est juste un piège de glace.",
+        "Il est temps de #te rafraîchir#!",
+        "La #Caverne Polaire# te passe le bonjour.",
+        "Chargement de l'objet, veuillez #patienter#...",
+        "Martèle A+B pour ne pas #mourir#.",
+        "Désolé, ton objet est à un autre endroit.", //would be better if it could have the name of the item
+        "Tu espérais que ce soit %gGreg%w.",
+        "Tu veux boire un chocolat chaud?",
+        "Le #froid# ne m'a jamais dérangé, de toute façon.",
+        "J'espère que tu es trop cool pour être #cool#!",
+        "Sois reconnaissant que ce n'est pas le #zéro absolu#.",
+        "Tu savais que le G de ZFG signifie #Glace#?",
+        "Tu as obtenu #L'Âge de Glace (2002)#!",
+        "Maintenant, tu peux lancer un #sort# que tu ne connais pas.",
+        "Que dirais-tu d'un héros #sur glace# ?",
+        "Pas de tunique pour #ça#!",
+        "Je savais que tu étais #partiellement Metroid#!",
+        "Voilà juste la #cerise sur le gâteau#!",
+        "Tu es tellement #cool#, @!",
+        "Tu as trouvé de la #déception#!",
+        "Tu t'es fait #BERNER#!",
+        "Commence à marteler.",
+        "Cet objet va #s'autodétruire# dans 5 secondes...",
+        "Souviens-toi, il pourrait y avoir un léger #inconfort#.",
+        "Dans un monde parfait, les #pièges de glace# comme moi n'existeraient pas, mais ce n'est pas un monde parfait.",
+        "Mon dieu qu'il fait #froid# ici.",
+        "Tu as testé l'objet avec ton #détecteur de glace#, il a bipé.", //would be better if it could have the name of the item
+        "Tu as découvert le chemin du zéro. Le #sub-zéro#.",
+        "Mweep... mweep... mweep...",
+        "Gelé, #sac à glace#! Je veux dire #gèle-toi#, racaille!",
+        "Est-ce qu'il fait #frais# ici ou est-ce juste #toi#?",
+        "#Continue#",
+        "QU'EST-CE QU'ELLE VA FAIRE, ME FAIRE UNE #[Glace]#!?",
+        "Tu as rencontré un #terrible destin#, n'est-ce pas?",
+        "Alors comme ça, tu aimes Shining ? Voici comment ça #finit#.",
+        "Petite erreur de trajectoire. #Je gagne#.",
+        "Prends ce #L#, @.",
+        "#Problème de compétence#",
+        "Tout ton chauffage nous appartient.",
+        "Attends une seconde, tu as déjà #cet objet#, non?",
+        "#Gèle#! Tu es entouré !",
+        "Erreur 404 - Objet non #trouvé#.",
+        "Pause hydratation ! Hé, qui a #gelé# mon eau?",
+        "Oups, mauvais #modèle d'objet#.",
+        "Oups! Tu dois mettre l'objet #dans ton inventaire#.",
+        "Tu as fait tomber l'objet, le brisant en #éclats de glace#!", //would be better if it could have the name of the item
+        "Tu es le maillon faible @, #au revoir#!",
+        "Ugh... Pourquoi avons-nous même randomisé #cet objet#?",
+        "La #Lune de Givre# se lève...",
+        "Selon toutes les lois connues de la physique et de la biologie, @ ne devrait pas survivre à #être complètement enfermé dans la glace#. Les cellules de @ mourraient avant qu'elles ne #dégèlent#. Mais c'est un jeu vidéo, alors @ survit... #Probablement#.",
+        "OK, arrête-moi si tu l'as déjà entendue - un joueur et une bouteille de #nitrogène liquide# entrent dans un bar à lait...",
+        "Lástima, c'est un #piège de glace#...&&Personne ne s'attend à un #piège de glace espagnol#!",
+        "Mon dieu qu'il fait #GLAGLA# ici.",
+        "C'est bon, @ savait que c'était un #piège#, il l'utilise juste pour prendre des dégâts intentionnellement et manipuler la RNG.",
+        "Cet objet n'est #pas disponible# dans votre pays.", //would be better if it could have the name of the item
+        "#Bonne# tentative. #;)#",
+        "Où est mon #Super Costume#?",
+        "#La revanche du Titanic#.",
     };
 
     CustomMessage msg;
@@ -3278,7 +3324,7 @@ void CreateFireTempleGoronMessages() {
 CustomMessage Randomizer::GetGoronMessage(u16 index) {
     CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, goronIDs[index]);
     messageEntry.Replace("[[days]]", std::to_string(gSaveContext.totalDays));
-    messageEntry.Replace("[[a_btn]]", std::to_string(gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_A]));
+    messageEntry.Replace("[[a_btn]]", std::to_string(gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_A]));
     messageEntry.Format();
     return messageEntry;
 }
@@ -3286,16 +3332,16 @@ CustomMessage Randomizer::GetGoronMessage(u16 index) {
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
-    const std::array<GetItemMessage, 85> getItemMessages = {{
-        GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON, 
+    const std::array<GetItemMessage, 112> getItemMessages = {{
+        GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON,
 			"You found %gGreg%w!",
 			"%gGreg%w! Du hast ihn wirklich gefunden!",
             "Félicitation! Vous avez trouvé %gGreg%w!"),
-        GIMESSAGE(RG_MASTER_SWORD, ITEM_SWORD_MASTER, 
+        GIMESSAGE(RG_MASTER_SWORD, ITEM_SWORD_MASTER,
             "You found the %gMaster Sword%w!",
             "Du erhältst das %gMaster-Schwert%w!",
             "Vous obtenez %gl'Épée de Légende%w!"),
-        GIMESSAGE(RG_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE, 
+        GIMESSAGE(RG_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE,
 			"You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!",
 			"Du erhältst eine %rFlasche mit&blauem Feuer%w! Nutze es um&%rRotes Eis%w zu schmelzen!",
             "Vous obtenez une %rBouteille avec&une Flamme Bleue%w! Utilisez-la&pour faire fondre la %rGlace&Rouge%w!"),
@@ -3334,40 +3380,140 @@ void Randomizer::CreateCustomMessages() {
 
         GIMESSAGE(RG_GERUDO_FORTRESS_SMALL_KEY, ITEM_KEY_SMALL,
 			"You found a %yThieves Hideout &%wSmall Key!",
-			"Du erhältst einen %rKleinen&Schlüssel%w für das %yDiebesversteck%w!",
+			"Du erhältst einen %rkleinen&Schlüssel%w für das %yDiebesversteck%w!",
 			"Vous obtenez une %rPetite Clé %w&du %yRepaire des Voleurs%w!"),
         GIMESSAGE(RG_FOREST_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL,
 			"You found a %gForest Temple &%wSmall Key!",
-			"Du erhältst einen %rKleinen&Schlüssel%w für den %gWaldtempel%w!",
+			"Du erhältst einen %rkleinen&Schlüssel%w für den %gWaldtempel%w!",
 			"Vous obtenez une %rPetite Clé %w&du %gTemple de la Forêt%w!"),
         GIMESSAGE(RG_FIRE_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL,
 			"You found a %rFire Temple &%wSmall Key!",
-			"Du erhältst einen %rKleinen&Schlüssel%w für den %rFeuertempel%w!",
+			"Du erhältst einen %rkleinen&Schlüssel%w für den %rFeuertempel%w!",
 			"Vous obtenez une %rPetite Clé %w&du %rTemple du Feu%w!"),
         GIMESSAGE(RG_WATER_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL,
 			"You found a %bWater Temple &%wSmall Key!",
-			"Du erhältst einen %rKleinen&Schlüssel%w für den %bWassertempel%w!",
+			"Du erhältst einen %rkleinen&Schlüssel%w für den %bWassertempel%w!",
 			"Vous obtenez une %rPetite Clé %w&du %bTemple de l'Eau%w!"),
         GIMESSAGE(RG_SPIRIT_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL,
 			"You found a %ySpirit Temple &%wSmall Key!",
-			"Du erhältst einen %rKleinen&Schlüssel%w für den %yGeistertempel%w!",
+			"Du erhältst einen %rkleinen&Schlüssel%w für den %yGeistertempel%w!",
 			"Vous obtenez une %rPetite Clé %w&du %yTemple de l'Esprit%w!"),
         GIMESSAGE(RG_SHADOW_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL,
 			"You found a %pShadow Temple &%wSmall Key!",
-			"Du erhältst einen %rKleinen&Schlüssel%w für den %pSchattentempel%w!",
+			"Du erhältst einen %rkleinen&Schlüssel%w für den %pSchattentempel%w!",
 			"Vous obtenez une %rPetite Clé %w&du %pTemple de l'Ombre%w!"),
         GIMESSAGE(RG_BOTTOM_OF_THE_WELL_SMALL_KEY, ITEM_KEY_SMALL,
 			"You found a %pBottom of the &Well %wSmall Key!",
-			"Du erhältst einen %rKleinen&Schlüssel%w für den %pGrund des Brunnens%w!",
+			"Du erhältst einen %rkleinen&Schlüssel%w für den %pGrund des Brunnens%w!",
 			"Vous obtenez une %rPetite Clé %w&du %pPuits%w!"),
-        GIMESSAGE(RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_GERUDO_TRAINING_GROUND_SMALL_KEY, ITEM_KEY_SMALL,
 			"You found a %yGerudo Training &Grounds %wSmall Key!",
-			"Du erhältst einen %rKleinen&Schlüssel%w für die %yGerudo-Trainingsarena%w!",
+			"Du erhältst einen %rkleinen&Schlüssel%w für die %yGerudo-Trainingsarena%w!",
 			"Vous obtenez une %rPetite Clé %w&du %yGymnase Gerudo%w!"),
         GIMESSAGE(RG_GANONS_CASTLE_SMALL_KEY, ITEM_KEY_SMALL,
 			"You found a %rGanon's Castle &%wSmall Key!",
-			"Du erhältst einen %rKleinen&Schlüssel%w für %rGanons Schloß%w!",
+			"Du erhältst einen %rkleinen&Schlüssel%w für %rGanons Schloß%w!",
 			"Vous obtenez une %rPetite Clé %w&du %rChâteau de Ganon%w!"),
+        GIMESSAGE(RG_GUARD_HOUSE_KEY, ITEM_KEY_SMALL,
+			"You found the key to the&%gGuard House%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für das %gHaus der Wachen%w!",
+            "Vous obtenez une %rPetite Clé %w&de la %gMaison des Gardes%w!"),
+        GIMESSAGE(RG_MARKET_BAZAAR_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gMarket Bazaar%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für den %gBasar des Marktes%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gMarché%w!"),
+        GIMESSAGE(RG_MARKET_POTION_SHOP_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gMarket Potion Shop%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für den %gMagie-Laden des Marktes%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gMarché%w!"),
+        GIMESSAGE(RG_MASK_SHOP_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gMask Shop%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für den %gMaskenladen%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gMagasin de Masques%w!"),
+        GIMESSAGE(RG_MARKET_SHOOTING_GALLERY_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gMarket Shooting Gallery%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für die %gSchießbude des Marktes%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gStand de Tir%w!"),
+        GIMESSAGE(RG_BOMBCHU_BOWLING_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gBombchu Bowling Alley%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für die %gMinenbowlingbahn%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gBowling Bombchu%w!"),
+        GIMESSAGE(RG_TREASURE_CHEST_GAME_BUILDING_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gTreasure Chest Game Building%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für das %gHaus des Schatzkisten-Pokers%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gJeu de la Chasse au Trésor%w!"),
+        GIMESSAGE(RG_BOMBCHU_SHOP_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gBombchu Shop%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für den %gKrabbelminenladen%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gMagasin de Bombchu%w!"),
+        GIMESSAGE(RG_RICHARDS_HOUSE_KEY, ITEM_KEY_SMALL,
+            "You found the key to&%gRichard's House%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für das %gHaus von Richard%w!",
+            "Vous obtenez une %rPetite Clé %w&de la %gMaison de Richard%w!"),
+        GIMESSAGE(RG_RICHARDS_HOUSE_KEY, ITEM_KEY_SMALL,
+            "You found the key to&%gRichard's House%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für das %gHaus von Richard%w!",
+            "Vous obtenez une %rPetite Clé %w&de la %gMaison de Richard%w!"),
+        GIMESSAGE(RG_ALLEY_HOUSE_KEY, ITEM_KEY_SMALL,
+            "You found the key to&the %gAlley House%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für das %gHaus in der Gasse%w!",
+            "Vous obtenez une %rPetite Clé %w&de la %gMaison de la Ruelle%w!"),
+        GIMESSAGE(RG_KAK_BAZAAR_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gKakariko Bazaar%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für den %gBasar von Kakariko%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gMarché de Cocorico%w!"),
+        GIMESSAGE(RG_KAK_POTION_SHOP_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gKakariko Potion Shop%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für den %gMagie-Laden von Kakariko%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gMagasin de Potions de Cocorico%w!"),
+        GIMESSAGE(RG_BOSS_HOUSE_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gBoss's House%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für das %gHaus des Chefs%w!",
+            "Vous obtenez une %rPetite Clé %w&de la %gMaison du Boss%w!"),
+        GIMESSAGE(RG_GRANNYS_POTION_SHOP_KEY, ITEM_KEY_SMALL,
+            "You found the key to&%gGranny's Potion Shop%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für %gAsas Hexenladen%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gMagasin de Potions de Grand-mère%w!"),
+        GIMESSAGE(RG_SKULLTULA_HOUSE_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gSkulltula House%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für das %gSkulltula-Haus%w!",
+            "Vous obtenez une %rPetite Clé %w&de la %gMaison des Skulltulas%w!"),
+        GIMESSAGE(RG_IMPAS_HOUSE_KEY, ITEM_KEY_SMALL,
+            "You found the key to&%gImpa's House%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für das %gHaus von Impa%w!",
+            "Vous obtenez une %rPetite Clé %w&de la %gMaison d'Impa%w!"),
+        GIMESSAGE(RG_WINDMILL_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gWindmill%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für die %gWindmühle%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gMoulin à Vent%w!"),
+        GIMESSAGE(RG_KAK_SHOOTING_GALLERY_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gKakariko Shooting Gallery%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für die %gSchießbude von Kakariko%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gStand de Tir de Cocorico%w!"),
+        GIMESSAGE(RG_DAMPES_HUT_KEY, ITEM_KEY_SMALL,
+            "You found the key to&%gDampe's Hut%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für die %gHütte von Boris%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gChalet de Dampe%w!"),
+        GIMESSAGE(RG_TALONS_HOUSE_KEY, ITEM_KEY_SMALL,
+            "You found the key to&%gTalon's House%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für das %gHaus von Talon%w!",
+            "Vous obtenez une %rPetite Clé %w&de la %gMaison de Talon%w!"),
+        GIMESSAGE(RG_STABLES_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gStables%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für die %gStälle%w!",
+            "Vous obtenez une %rPetite Clé %w&des %gÉcuries%w!"),
+        GIMESSAGE(RG_BACK_TOWER_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gBack Tower%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für den %ghinteren Turm%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gTour Arrière%w!"),
+        GIMESSAGE(RG_HYLIA_LAB_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gHylia Laboratory%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für das %gHylia-Labor%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gLaboratoire d'Hylia%w!"),
+        GIMESSAGE(RG_FISHING_HOLE_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gFishing Hole%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für den %gFischweiher%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gTrou de Pêche%w!"),
 
         GIMESSAGE(RG_GERUDO_FORTRESS_KEY_RING, ITEM_KEY_SMALL,
 			"You found a %yThieves Hideout &%wKeyring!",
@@ -3397,14 +3543,18 @@ void Randomizer::CreateCustomMessages() {
 			"You found a %pBottom of the &Well %wKeyring!",
 			"Du erhältst ein %rSchlüsselbund%w&für den %pGrund des Brunnens%w!",
 			"Vous obtenez un trousseau de&clés du %pPuits%w!"),
-        GIMESSAGE(RG_GERUDO_TRAINING_GROUNDS_KEY_RING, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_GERUDO_TRAINING_GROUND_KEY_RING, ITEM_KEY_SMALL,
 			"You found a %yGerudo Training &Grounds %wKeyring!",
 			"Du erhältst ein %rSchlüsselbund%w&für die %yGerudo-Trainingsarena%w!",
 			"Vous obtenez un trousseau de&clés du %yGymnase Gerudo%w!"),
-        GIMESSAGE(RG_GANONS_CASTLE_KEY_RING, ITEM_KEY_SMALL, 
+        GIMESSAGE(RG_GANONS_CASTLE_KEY_RING, ITEM_KEY_SMALL,
 			"You found a %rGanon's Castle &%wKeyring!",
 			"Du erhältst ein %rSchlüsselbund%w&für %rGanons Schloß%w!",
 			"Vous obtenez un trousseau de&clés du %rChâteau de Ganon%w!"),
+        GIMESSAGE(RG_TREASURE_GAME_KEY_RING, ITEM_KEY_SMALL, 
+			"You found a %rTreasure Chest Game &%wKeyring!",
+			"!!!",
+			"!!!"),
 
         GIMESSAGE(RG_FOREST_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS,
 			"You found the %gForest Temple &%wBoss Key!",
@@ -3524,17 +3674,35 @@ void Randomizer::CreateCustomMessages() {
         GIMESSAGE(RG_CHILD_WALLET, ITEM_WALLET_ADULT,
 			"You got a %rChild's Wallet%w!&Now you can carry&up to %y99 rupees%w!",
 			"Du erhältst die %rKindergeldbörse%w!&Jetzt kannst Du bis&zu %y99 Rubine%w mit Dir führen!",
-			"Vous obtenez la %rBourse d'Enfant%w!&Elle peut contenir jusqu'à %y99 rubis%w!"),
+			"Vous obtenez la %rPetite Bourse%w!&Elle peut contenir jusqu'à %y99 rubis%w!"),
 
-        GIMESSAGE_UNTRANSLATED(RG_GOHMA_SOUL, ITEM_BIG_POE, "You found the soul for %gGohma%w!"),
-        GIMESSAGE_UNTRANSLATED(RG_KING_DODONGO_SOUL, ITEM_BIG_POE, "You found the soul for %rKing&Dodongo%w!"),
-        GIMESSAGE_UNTRANSLATED(RG_BARINADE_SOUL, ITEM_BIG_POE, "You found the soul for %bBarinade%w!"),
-        GIMESSAGE_UNTRANSLATED(RG_PHANTOM_GANON_SOUL, ITEM_BIG_POE, "You found the soul for %gPhantom&Ganon%w!"),
-        GIMESSAGE_UNTRANSLATED(RG_VOLVAGIA_SOUL, ITEM_BIG_POE, "You found the soul for %rVolvagia%w!"),
-        GIMESSAGE_UNTRANSLATED(RG_MORPHA_SOUL, ITEM_BIG_POE, "You found the soul for %bMorpha%w!"),
-        GIMESSAGE_UNTRANSLATED(RG_BONGO_BONGO_SOUL, ITEM_BIG_POE, "You found the soul for %pBongo&Bongo%w!"),
-        GIMESSAGE_UNTRANSLATED(RG_TWINROVA_SOUL, ITEM_BIG_POE, "You found the soul for %yTwinrova%w!"),
-        GIMESSAGE_UNTRANSLATED(RG_GANON_SOUL, ITEM_BIG_POE, "You found the soul for %cGanon%w!"),
+        GIMESSAGE_NO_GERMAN(RG_GOHMA_SOUL, ITEM_BIG_POE,
+            "You found the soul for %gGohma%w!",
+            "Vous obtenez l'âme de %gGohma%w!"),
+        GIMESSAGE_NO_GERMAN(RG_KING_DODONGO_SOUL, ITEM_BIG_POE,
+            "You found the soul for %rKing&Dodongo%w!",
+            "Vous obtenez l'âme du %rRoi Dodongo%w!"),
+        GIMESSAGE_NO_GERMAN(RG_BARINADE_SOUL, ITEM_BIG_POE,
+            "You found the soul for %bBarinade%w!",
+            "Vous obtenez l'âme de %bBarinade%w!"),
+        GIMESSAGE_NO_GERMAN(RG_PHANTOM_GANON_SOUL, ITEM_BIG_POE,
+            "You found the soul for %gPhantom&Ganon%w!",
+            "Vous obtenez l'âme de %gGanon Spectral%w!"),
+        GIMESSAGE_NO_GERMAN(RG_VOLVAGIA_SOUL, ITEM_BIG_POE,
+            "You found the soul for %rVolvagia%w!",
+            "Vous obtenez l'âme de %rVulcania%w!"),
+        GIMESSAGE_NO_GERMAN(RG_MORPHA_SOUL, ITEM_BIG_POE,
+            "You found the soul for %bMorpha%w!",
+            "Vous obtenez l'âme de %bMorpha%w!"),
+        GIMESSAGE_NO_GERMAN(RG_BONGO_BONGO_SOUL, ITEM_BIG_POE,
+            "You found the soul for %pBongo&Bongo%w!",
+            "Vous obtenez l'âme de %pBongo Bongo%w!"),
+        GIMESSAGE_NO_GERMAN(RG_TWINROVA_SOUL, ITEM_BIG_POE,
+            "You found the soul for %yTwinrova%w!",
+            "Vous obtenez l'âme du %yDuo Maléfique%w!"),
+        GIMESSAGE_NO_GERMAN(RG_GANON_SOUL, ITEM_BIG_POE,
+            "You found the soul for %cGanon%w!",
+            "Vous obtenez l'âme de %cGanon%w!"),
 
         GIMESSAGE(RG_OCARINA_A_BUTTON, ITEM_OCARINA_TIME,
             "You got the %b\x9f%r button for the&Ocarina%w! You can now use it&while playing songs!",
@@ -3556,19 +3724,49 @@ void Randomizer::CreateCustomMessages() {
             "You got the %y\xa6%r button for the&Ocarina%w! You can now use it&while playing songs!",
 			"Der %y\xa6%r Knopf%w!&Du kannst ihn nun zum Spielen&von Liedern auf der %rOkarina%w&verwenden!",
 			"Vous trouvez la %rtouche %y\xa6%r de&l'Ocarina%w! Vous pouvez&maintenant l'utiliser lorsque&vous en jouez!"),
-        GIMESSAGE_UNTRANSLATED(RG_BRONZE_SCALE, ITEM_SCALE_SILVER, "You got the %rBronze Scale%w!&The power of buoyancy is yours!"),
-        GIMESSAGE_UNTRANSLATED(RG_FISHING_POLE, ITEM_FISHING_POLE, "You found a lost %rFishing Pole%w!&Time to hit the pond!"),
-        GIMESSAGE_UNTRANSLATED(RG_BOMB_BAG_INF, ITEM_BOMB_BAG_40, "You got an %rInfinite Bomb Bag%w!&Now you have %yinfinite bombs%w!"),
-        GIMESSAGE_UNTRANSLATED(RG_QUIVER_INF, ITEM_QUIVER_50, "You got an %rInfinite Quiver%w!&Now you have %yinfinite arrows%w!"),
-        GIMESSAGE_UNTRANSLATED(RG_BULLET_BAG_INF, ITEM_BULLET_BAG_50, "You got an %rInfinite Bullet Bag%w!&Now you have %yinfinite&slingshot seeds%w!"),
-        GIMESSAGE_UNTRANSLATED(RG_STICK_UPGRADE_INF, ITEM_STICK, "You now have %yinfinite%w %rDeku Sticks%w!"),
-        GIMESSAGE_UNTRANSLATED(RG_NUT_UPGRADE_INF, ITEM_NUT, "You now have %yinfinite%w %rDeku Nuts%w!"),
-        GIMESSAGE_UNTRANSLATED(RG_MAGIC_INF, ITEM_MAGIC_LARGE, "You now have %yinfinite%w %rMagic%w!"),
-        GIMESSAGE_UNTRANSLATED(RG_BOMBCHU_INF, ITEM_BOMBCHU, "You now have %yinfinite%w %rBombchus%w!"),
-        GIMESSAGE_UNTRANSLATED(RG_WALLET_INF, ITEM_WALLET_GIANT, "You now have %yinfinite%w %rmoney%w!"),
-        GIMESSAGE_UNTRANSLATED(RG_SKELETON_KEY, ITEM_KEY_SMALL, "You found the %rSkeleton Key%w!"),
-        GIMESSAGE_UNTRANSLATED(RG_DEKU_STICK_BAG, ITEM_STICK, "You found the %rDeku Stick Bag%w!&You can now hold deku sticks!"),
-        GIMESSAGE_UNTRANSLATED(RG_DEKU_NUT_BAG, ITEM_NUT, "You found the %rDeku Nut Bag%w!&You can now hold deku nuts!"),
+        
+        GIMESSAGE_NO_GERMAN(RG_BRONZE_SCALE, ITEM_SCALE_SILVER,
+            "You got the %rBronze Scale%w!&The power of buoyancy is yours!",
+            "Vous avez obtenu l'%rÉcaille de Bronze%w!&Le pouvoir de la flottabilité est à vous!"),
+        GIMESSAGE_NO_GERMAN(RG_FISHING_POLE, ITEM_FISHING_POLE,
+            "You found a lost %rFishing Pole%w!&Time to hit the pond!",
+            "Vous avez trouvé une %rCanne à pêche%w perdue!&Il est temps d'aller à l'étang!"),
+        GIMESSAGE_NO_GERMAN(RG_BOMBCHU_BAG, ITEM_BOMBCHU,
+            "You found the %rBombchu Bag%w!",
+            "!!!"),
+        GIMESSAGE_NO_GERMAN(RG_BOMB_BAG_INF, ITEM_BOMB_BAG_40,
+            "You got an %rInfinite Bomb Bag%w!&Now you have %yinfinite bombs%w!",
+            "Vous avez obtenu un %rSac à bombes à l'infini%w!&Vous avez maintenant des %ybombes à l'infini%w!"),
+        GIMESSAGE_NO_GERMAN(RG_QUIVER_INF, ITEM_QUIVER_50,
+            "You got an %rInfinite Quiver%w!&Now you have %yinfinite arrows%w!",
+            "Vous avez obtenu un %rCarquois à l'infini%w!&Vous avez maintenant des %yflèches à l'infini%w!"),
+        GIMESSAGE_NO_GERMAN(RG_BULLET_BAG_INF, ITEM_BULLET_BAG_50,
+            "You got an %rInfinite Bullet Bag%w!&Now you have %yinfinite&slingshot seeds%w!",
+            "Vous avez obtenu un %rSac de Graine à l'infini%w!&Vous avez maintenant des %ygraines de lance-pierres à l'infini%w!"),
+        GIMESSAGE_NO_GERMAN(RG_STICK_UPGRADE_INF, ITEM_STICK,
+            "You now have %yinfinite%w %rDeku Sticks%w!",
+            "Vous avez maintenant des %yBâtons Mojo à l'infini%w!"),
+        GIMESSAGE_NO_GERMAN(RG_NUT_UPGRADE_INF, ITEM_NUT,
+            "You now have %yinfinite%w %rDeku Nuts%w!",
+            "Vous avez maintenant des %yNoix Mojo à l'infini%w!"),
+        GIMESSAGE_NO_GERMAN(RG_MAGIC_INF, ITEM_MAGIC_LARGE,
+            "You now have %yinfinite%w %rMagic%w!",
+            "Vous avez maintenant de la %ymagie à l'infini%w!"),
+        GIMESSAGE_NO_GERMAN(RG_BOMBCHU_INF, ITEM_BOMBCHU,
+            "You now have %yinfinite%w %rBombchus%w!",
+            "Vous avez maintenant des %Missiles Teigneux à l'infini%w!"),
+        GIMESSAGE_NO_GERMAN(RG_WALLET_INF, ITEM_WALLET_GIANT,
+            "You now have %yinfinite%w %rmoney%w!",
+            "Vous avez maintenant de l'%yargent à l'infini%w!"),
+        GIMESSAGE_NO_GERMAN(RG_SKELETON_KEY, ITEM_KEY_SMALL,
+            "You found the %rSkeleton Key%w!",
+            "Vous avez trouvé la %rClé Squelette%w!"),
+        GIMESSAGE_NO_GERMAN(RG_DEKU_STICK_BAG, ITEM_STICK,
+            "You found the %rDeku Stick Bag%w!&You can now hold deku sticks!",
+            "Vous avez trouvé le %rSac de Bâtons Mojo%w!&Vous pouvez maintenant porter des Bâtons Mojo!"),
+        GIMESSAGE_NO_GERMAN(RG_DEKU_NUT_BAG, ITEM_NUT,
+            "You found the %rDeku Nut Bag%w!&You can now hold deku nuts!",
+            "Vous avez trouvé le %rSac de Noix Mojo%w!&Vous pouvez maintenant porter des Noix Mojo!"),
     }};
     CreateGetItemMessages(&getItemMessages);
     CreateRupeeMessages();
@@ -3590,10 +3788,10 @@ class ExtendedVanillaTableInvalidItemIdException: public std::exception {
 };
 
 void RandomizerSettingsWindow::InitElement() {
-    mSettings = Rando::Context::GetInstance()->GetSettings();
+    mSettings = Rando::Settings::GetInstance();
     Randomizer::CreateCustomMessages();
     seedString = (char*)calloc(MAX_SEED_STRING_SIZE, sizeof(char));
-    Rando::Context::GetInstance()->GetSettings()->UpdateOptionProperties();
+    mSettings->UpdateOptionProperties();
 }
 
 // Gameplay stat tracking: Update time the item was acquired
@@ -3609,28 +3807,28 @@ void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
 
     // Use ITEM_KEY_BOSS to timestamp Ganon's boss key
     if (item == RG_GANONS_CASTLE_BOSS_KEY) {
-        gSaveContext.sohStats.itemTimestamp[ITEM_KEY_BOSS] = time;
+        gSaveContext.ship.stats.itemTimestamp[ITEM_KEY_BOSS] = time;
     }
 
     // Count any bottled item as a bottle
     if (item >= RG_EMPTY_BOTTLE && item <= RG_BOTTLE_WITH_BIG_POE) {
-        if (gSaveContext.sohStats.itemTimestamp[ITEM_BOTTLE] == 0) {
-            gSaveContext.sohStats.itemTimestamp[ITEM_BOTTLE] = time;
+        if (gSaveContext.ship.stats.itemTimestamp[ITEM_BOTTLE] == 0) {
+            gSaveContext.ship.stats.itemTimestamp[ITEM_BOTTLE] = time;
         }
         return;
     }
     // Count any bombchu pack as bombchus
     if ((item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_20) || item == RG_PROGRESSIVE_BOMBCHUS) {
-        if (gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] = 0) {
-            gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] = time;
+        if (gSaveContext.ship.stats.itemTimestamp[ITEM_BOMBCHU] = 0) {
+            gSaveContext.ship.stats.itemTimestamp[ITEM_BOMBCHU] = time;
         }
         return;
     }
     if (item == RG_MAGIC_SINGLE) {
-        gSaveContext.sohStats.itemTimestamp[ITEM_SINGLE_MAGIC] = time;
+        gSaveContext.ship.stats.itemTimestamp[ITEM_SINGLE_MAGIC] = time;
     }
     if (item == RG_DOUBLE_DEFENSE) {
-        gSaveContext.sohStats.itemTimestamp[ITEM_DOUBLE_DEFENSE] = time;
+        gSaveContext.ship.stats.itemTimestamp[ITEM_DOUBLE_DEFENSE] = time;
     }
 }
 
@@ -3803,10 +4001,10 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             case RG_GANONS_CASTLE_BOSS_KEY:
                 mapIndex = SCENE_GANONS_TOWER;
                 break;
-            case RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
-            case RG_GERUDO_TRAINING_GROUNDS_KEY_RING:
+            case RG_GERUDO_TRAINING_GROUND_SMALL_KEY:
+            case RG_GERUDO_TRAINING_GROUND_KEY_RING:
                 mapIndex = SCENE_GERUDO_TRAINING_GROUND;
-                numOfKeysOnKeyring = GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX;
+                numOfKeysOnKeyring = GERUDO_TRAINING_GROUND_SMALL_KEY_MAX;
                 break;
             case RG_GERUDO_FORTRESS_SMALL_KEY:
             case RG_GERUDO_FORTRESS_KEY_RING:
@@ -3823,7 +4021,7 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         }
 
         if ((item >= RG_FOREST_TEMPLE_SMALL_KEY) && (item <= RG_GANONS_CASTLE_SMALL_KEY)) {
-            gSaveContext.sohStats.dungeonKeys[mapIndex]++;
+            gSaveContext.ship.stats.dungeonKeys[mapIndex]++;
             if (gSaveContext.inventory.dungeonKeys[mapIndex] < 0) {
                 gSaveContext.inventory.dungeonKeys[mapIndex] = 1;
             } else {
@@ -3833,7 +4031,7 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         }
 
         if ((item >= RG_FOREST_TEMPLE_KEY_RING) && (item <= RG_GANONS_CASTLE_KEY_RING)) {
-            gSaveContext.sohStats.dungeonKeys[mapIndex] = numOfKeysOnKeyring;
+            gSaveContext.ship.stats.dungeonKeys[mapIndex] = numOfKeysOnKeyring;
             gSaveContext.inventory.dungeonKeys[mapIndex] = numOfKeysOnKeyring;
             return Return_Item_Entry(giEntry, RG_NONE);
         }
@@ -3848,6 +4046,9 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         }
 
         gSaveContext.inventory.dungeonItems[mapIndex] |= bitmask;
+        return Return_Item_Entry(giEntry, RG_NONE);
+    } else if (item >= RG_GUARD_HOUSE_KEY && item <= RG_FISHING_HOLE_KEY) {
+        Flags_SetRandomizerInf((RandomizerInf)((int)RAND_INF_GUARD_HOUSE_UNLOCKED + ((item - RG_GUARD_HOUSE_KEY) * 2) + 1));
         return Return_Item_Entry(giEntry, RG_NONE);
     }
 
@@ -3892,16 +4093,16 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         case RG_GREG_RUPEE:
             Rupees_ChangeBy(1);
             Flags_SetRandomizerInf(RAND_INF_GREG_FOUND);
-            gSaveContext.sohStats.itemTimestamp[TIMESTAMP_FOUND_GREG] = GAMEPLAYSTAT_TOTAL_TIME;
+            gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_FOUND_GREG] = GAMEPLAYSTAT_TOTAL_TIME;
             break;
         case RG_TRIFORCE_PIECE:
-            gSaveContext.triforcePiecesCollected++;
+            gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected++;
             GameInteractor_SetTriforceHuntPieceGiven(true);
 
             // Teleport to credits when goal is reached.
-            if (gSaveContext.triforcePiecesCollected == (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1)) {
-                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] = GAMEPLAYSTAT_TOTAL_TIME;
-                gSaveContext.sohStats.gameComplete = 1;
+            if (gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected == (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1)) {
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] = GAMEPLAYSTAT_TOTAL_TIME;
+                gSaveContext.ship.stats.gameComplete = 1;
                 Flags_SetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY);
                 Play_PerformSave(play);
                 GameInteractor_SetTriforceHuntCreditsWarpActive(true);
@@ -3909,13 +4110,14 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
 
             break;
         case RG_PROGRESSIVE_BOMBCHUS:
+        case RG_BOMBCHU_BAG:
             if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
                 INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
                 AMMO(ITEM_BOMBCHU) = 20;
             } else if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_INFINITE_UPGRADES)) {
                 Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS);
             } else {
-                AMMO(ITEM_BOMBCHU) += AMMO(ITEM_BOMBCHU) < 5 ? 10 : 5;
+                AMMO(ITEM_BOMBCHU) += 10;
                 if (AMMO(ITEM_BOMBCHU) > 50) {
                     AMMO(ITEM_BOMBCHU) = 50;
                 }

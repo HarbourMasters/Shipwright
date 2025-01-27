@@ -9,7 +9,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void BgTokiSwd_Init(Actor* thisx, PlayState* play);
 void BgTokiSwd_Destroy(Actor* thisx, PlayState* play);
@@ -117,8 +117,8 @@ void func_808BAF40(BgTokiSwd* this, PlayState* play) {
     if (((Flags_GetEventChkInf(EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER)) == 0) && (gSaveContext.sceneSetupIndex < 4) &&
         Actor_IsFacingAndNearPlayer(&this->actor, 800.0f, 0x7530) && !Play_InCsMode(play)) {
         Flags_SetEventChkInf(EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER);
-        s32 flag = EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER;
-        if (GameInteractor_Should(VB_PLAY_ENTRANCE_CS, true, &flag)) {
+        if (GameInteractor_Should(VB_PLAY_ENTRANCE_CS, true, EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER,
+                                  gSaveContext.entranceIndex)) {
             play->csCtx.segment = D_808BBD90;
             gSaveContext.cutsceneTrigger = 1;
         }

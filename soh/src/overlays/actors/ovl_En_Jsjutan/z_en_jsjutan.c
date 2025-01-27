@@ -8,7 +8,7 @@
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
 
 void EnJsjutan_Init(Actor* thisx, PlayState* play);
 void EnJsjutan_Destroy(Actor* thisx, PlayState* play);
@@ -42,7 +42,7 @@ void EnJsjutan_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     CollisionHeader* header = NULL;
 
-    this->dyna.actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->dyna.actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
     CollisionHeader_GetVirtual(&sCol, &header);
     this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, thisx, header);

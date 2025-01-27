@@ -8,9 +8,6 @@
 #include "SohGui.hpp"
 
 #include <spdlog/spdlog.h>
-#ifndef IMGUI_DEFINE_MATH_OPERATORS
-#define IMGUI_DEFINE_MATH_OPERATORS
-#endif
 #include <imgui.h>
 #include <imgui_internal.h>
 #include <libultraship/libultraship.h>
@@ -68,7 +65,6 @@ namespace SohGui {
     static const char* subSubPowers[7] = { allPowers[0], allPowers[1], allPowers[2], allPowers[3], allPowers[4], allPowers[5], allPowers[6] };
     static const char* zFightingOptions[3] = { "Disabled", "Consistent Vanish", "No Vanish" };
     static const char* autosaveLabels[6] = { "Off", "New Location + Major Item", "New Location + Any Item", "New Location", "Major Item", "Any Item" };
-    static const char* FastFileSelect[5] = { "File N.1", "File N.2", "File N.3", "Zelda Map Select (require OoT Debug Mode)", "File select" };
     static const char* bonkDamageValues[8] = {
         "No Damage",
         "0.25 Heart",
@@ -138,6 +134,7 @@ namespace SohGui {
     std::shared_ptr<SohModalWindow> mModalWindow;
     std::shared_ptr<Notification::Window> mNotificationWindow;
     std::shared_ptr<TimeDisplayWindow> mTimeDisplayWindow;
+    std::shared_ptr<AboutWindow> mAboutWindow;
 
     void SetupGuiElements() {
         auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
@@ -225,6 +222,8 @@ namespace SohGui {
         mNotificationWindow->Show();
         mTimeDisplayWindow = std::make_shared<TimeDisplayWindow>(CVAR_WINDOW("TimeDisplayEnabled"), "Additional Timers");
         gui->AddGuiWindow(mTimeDisplayWindow);
+        mAboutWindow = std::make_shared<AboutWindow>(CVAR_WINDOW("AboutWindow"), "About");
+        gui->AddGuiWindow(mAboutWindow);
     }
 
     void Destroy() {
@@ -261,9 +260,14 @@ namespace SohGui {
         mTimeSplitWindow = nullptr;
         mPlandomizerWindow = nullptr;
         mTimeDisplayWindow = nullptr;
+        mAboutWindow = nullptr;
     }
 
     void RegisterPopup(std::string title, std::string message, std::string button1, std::string button2, std::function<void()> button1callback, std::function<void()> button2callback) {
         mModalWindow->RegisterPopup(title, message, button1, button2, button1callback, button2callback);
+    }
+
+    void ShowRandomizerSettingsMenu() {
+        mRandomizerSettingsWindow->Show();
     }
 }

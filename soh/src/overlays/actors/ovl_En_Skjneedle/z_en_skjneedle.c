@@ -7,7 +7,7 @@
 #include "z_en_skjneedle.h"
 #include "objects/object_skj/object_skj.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_HOOKSHOT_DRAGS)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_HOOKSHOT_PULLS_ACTOR)
 
 void EnSkjneedle_Init(Actor* thisx, PlayState* play);
 void EnSkjneedle_Destroy(Actor* thisx, PlayState* play);
@@ -60,7 +60,7 @@ void EnSkjneedle_Init(Actor* thisx, PlayState* play) {
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinderType1(play, &this->collider, &this->actor, &sCylinderInit);
     ActorShape_Init(&this->actor.shape, 0, ActorShadow_DrawCircle, 20.0f);
-    thisx->flags &= ~ACTOR_FLAG_TARGETABLE;
+    thisx->flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     Actor_SetScale(&this->actor, 0.01f);
 }
 

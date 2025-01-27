@@ -156,7 +156,7 @@ void EnBox_Init(Actor* thisx, PlayState* play2) {
         EnBox_SetupAction(this, EnBox_FallOnSwitchFlag);
         this->alpha = 0;
         this->movementFlags |= ENBOX_MOVE_IMMOBILE;
-        this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+        this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
     } else if ((this->type == ENBOX_TYPE_ROOM_CLEAR_BIG || this->type == ENBOX_TYPE_ROOM_CLEAR_SMALL) &&
                !Flags_GetClear(play, this->dyna.actor.room)) {
         EnBox_SetupAction(this, EnBox_AppearOnRoomClear);
@@ -164,25 +164,25 @@ void EnBox_Init(Actor* thisx, PlayState* play2) {
         this->movementFlags |= ENBOX_MOVE_IMMOBILE;
         this->dyna.actor.world.pos.y = this->dyna.actor.home.pos.y - 50.0f;
         this->alpha = 0;
-        this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+        this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
     } else if (this->type == ENBOX_TYPE_9 || this->type == ENBOX_TYPE_10) {
         EnBox_SetupAction(this, func_809C9700);
-        this->dyna.actor.flags |= ACTOR_FLAG_NO_FREEZE_OCARINA;
+        this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_DURING_OCARINA;
         func_8003EBF8(play, &play->colCtx.dyna, this->dyna.bgId);
         this->movementFlags |= ENBOX_MOVE_IMMOBILE;
         this->dyna.actor.world.pos.y = this->dyna.actor.home.pos.y - 50.0f;
         this->alpha = 0;
-        this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+        this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
     } else if (this->type == ENBOX_TYPE_SWITCH_FLAG_BIG && !Flags_GetSwitch(play, this->switchFlag)) {
         EnBox_SetupAction(this, EnBox_AppearOnSwitchFlag);
         func_8003EBF8(play, &play->colCtx.dyna, this->dyna.bgId);
         this->movementFlags |= ENBOX_MOVE_IMMOBILE;
         this->dyna.actor.world.pos.y = this->dyna.actor.home.pos.y - 50.0f;
         this->alpha = 0;
-        this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+        this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
     } else {
         if (this->type == ENBOX_TYPE_4 || this->type == ENBOX_TYPE_6) {
-            this->dyna.actor.flags |= ACTOR_FLAG_LENS;
+            this->dyna.actor.flags |= ACTOR_FLAG_REACT_TO_LENS;
         }
         EnBox_SetupAction(this, EnBox_WaitOpen);
         this->movementFlags |= ENBOX_MOVE_IMMOBILE;
@@ -335,7 +335,7 @@ void func_809C9700(EnBox* this, PlayState* play) {
         } else if (this->unk_1FB == ENBOX_STATE_2 && play->msgCtx.ocarinaMode == OCARINA_MODE_04) {
             if ((play->msgCtx.lastPlayedSong == OCARINA_SONG_LULLABY && this->type == ENBOX_TYPE_9) ||
                 (play->msgCtx.lastPlayedSong == OCARINA_SONG_SUNS && this->type == ENBOX_TYPE_10)) {
-                this->dyna.actor.flags &= ~ACTOR_FLAG_NO_FREEZE_OCARINA;
+                this->dyna.actor.flags &= ~ACTOR_FLAG_UPDATE_DURING_OCARINA;
                 EnBox_SetupAction(this, EnBox_AppearInit);
                 OnePointCutscene_Attention(play, &this->dyna.actor);
                 this->unk_1A8 = 0;
@@ -466,7 +466,7 @@ void EnBox_WaitOpen(EnBox* this, PlayState* play) {
 void EnBox_Open(EnBox* this, PlayState* play) {
     u16 sfxId;
 
-    this->dyna.actor.flags &= ~ACTOR_FLAG_LENS;
+    this->dyna.actor.flags &= ~ACTOR_FLAG_REACT_TO_LENS;
 
     if (SkelAnime_Update(&this->skelanime)) {
         if (this->unk_1F4 > 0) {
@@ -487,7 +487,7 @@ void EnBox_Open(EnBox* this, PlayState* play) {
 
         if (Animation_OnFrame(&this->skelanime, 30.0f)) {
             sfxId = NA_SE_EV_TBOX_UNLOCK;
-            gSaveContext.sohStats.count[COUNT_CHESTS_OPENED]++;
+            gSaveContext.ship.stats.count[COUNT_CHESTS_OPENED]++;
         } else if (Animation_OnFrame(&this->skelanime, 90.0f)) {
             sfxId = NA_SE_EV_TBOX_OPEN;
         }
@@ -582,6 +582,7 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
         (play->sceneNum == SCENE_TREASURE_BOX_SHOP && this->dyna.actor.room != 6); // Exclude treasure game chests except for the final room
 
     if (!isVanilla) {
+        GetItemEntry test = this->getItemEntry;
         getItemCategory = this->getItemEntry.getItemCategory;
         // If they have bombchus, don't consider the bombchu item major
         if (
@@ -596,7 +597,7 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
             getItemCategory = ITEM_CATEGORY_JUNK;
         // If it's a bottle and they already have one, consider the item lesser
         } else if (
-            (this->getItemEntry.modIndex == MOD_RANDOMIZER && this->getItemEntry.getItemId >= RG_BOTTLE_WITH_RED_POTION && this->getItemEntry.getItemId <= RG_BOTTLE_WITH_BIG_POE) ||
+            (this->getItemEntry.modIndex == MOD_RANDOMIZER && this->getItemEntry.getItemId >= RG_BOTTLE_WITH_RED_POTION && this->getItemEntry.getItemId <= RG_BOTTLE_WITH_POE) ||
             (this->getItemEntry.modIndex == MOD_NONE && (this->getItemEntry.getItemId == GI_BOTTLE || this->getItemEntry.getItemId == GI_MILK_BOTTLE))
         ) {
             if (gSaveContext.inventory.items[SLOT_BOTTLE_1] != ITEM_NONE) {
@@ -912,11 +913,11 @@ void EnBox_Draw(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     /*
-    this->dyna.actor.flags & ACTOR_FLAG_LENS is set by Init (if type is 4 or 6)
+    this->dyna.actor.flags & ACTOR_FLAG_REACT_TO_LENS is set by Init (if type is 4 or 6)
     and cleared by Open
     */
     if ((this->alpha == 255 && !(this->type == ENBOX_TYPE_4 || this->type == ENBOX_TYPE_6)) ||
-        (!CHECK_FLAG_ALL(this->dyna.actor.flags, ACTOR_FLAG_LENS) &&
+        (!CHECK_FLAG_ALL(this->dyna.actor.flags, ACTOR_FLAG_REACT_TO_LENS) &&
          (this->type == ENBOX_TYPE_4 || this->type == ENBOX_TYPE_6))) {
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);

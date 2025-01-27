@@ -2,6 +2,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/randomizer/logic.h"
 
 extern "C" {
 #include <z64.h>
@@ -24,7 +25,7 @@ void StartingItemGive(GetItemEntry getItemEntry, RandomizerCheck randomizerCheck
         Item_Give(NULL, getItemEntry.itemId);
     } else if (getItemEntry.modIndex == MOD_RANDOMIZER) {
         if (getItemEntry.getItemId == RG_ICE_TRAP) {
-            gSaveContext.pendingIceTrapCount++;
+            gSaveContext.ship.pendingIceTrapCount++;
         } else {
             Randomizer_Item_Give(NULL, getItemEntry);
         }
@@ -105,6 +106,7 @@ void GiveLinksPocketItem() {
     }
 }
 
+
 void SetStartingItems() {
     if (Randomizer_GetSettingValue(RSK_STARTING_KOKIRI_SWORD))
         Item_Give(NULL, ITEM_SWORD_KOKIRI);
@@ -172,22 +174,22 @@ void SetStartingItems() {
     }
 
     if (Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH) {
-        gSaveContext.inventory.dungeonKeys[SCENE_FOREST_TEMPLE] = FOREST_TEMPLE_SMALL_KEY_MAX;         // Forest
-        gSaveContext.sohStats.dungeonKeys[SCENE_FOREST_TEMPLE] = FOREST_TEMPLE_SMALL_KEY_MAX;          // Forest
-        gSaveContext.inventory.dungeonKeys[SCENE_FIRE_TEMPLE] = FIRE_TEMPLE_SMALL_KEY_MAX;            // Fire
-        gSaveContext.sohStats.dungeonKeys[SCENE_FIRE_TEMPLE] = FIRE_TEMPLE_SMALL_KEY_MAX;             // Fire
-        gSaveContext.inventory.dungeonKeys[SCENE_WATER_TEMPLE] = WATER_TEMPLE_SMALL_KEY_MAX;         // Water
-        gSaveContext.sohStats.dungeonKeys[SCENE_WATER_TEMPLE] = WATER_TEMPLE_SMALL_KEY_MAX;          // Water
-        gSaveContext.inventory.dungeonKeys[SCENE_SPIRIT_TEMPLE] = SPIRIT_TEMPLE_SMALL_KEY_MAX;      // Spirit
-        gSaveContext.sohStats.dungeonKeys[SCENE_SPIRIT_TEMPLE] = SPIRIT_TEMPLE_SMALL_KEY_MAX;       // Spirit
-        gSaveContext.inventory.dungeonKeys[SCENE_SHADOW_TEMPLE] = SHADOW_TEMPLE_SMALL_KEY_MAX;        // Shadow
-        gSaveContext.sohStats.dungeonKeys[SCENE_SHADOW_TEMPLE] = SHADOW_TEMPLE_SMALL_KEY_MAX;         // Shadow
-        gSaveContext.inventory.dungeonKeys[SCENE_BOTTOM_OF_THE_WELL] = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX; // BotW
-        gSaveContext.sohStats.dungeonKeys[SCENE_BOTTOM_OF_THE_WELL] = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;  // BotW
-        gSaveContext.inventory.dungeonKeys[SCENE_GERUDO_TRAINING_GROUND] = GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX;  // GTG
-        gSaveContext.sohStats.dungeonKeys[SCENE_GERUDO_TRAINING_GROUND] = GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX;   // GTG
-        gSaveContext.inventory.dungeonKeys[SCENE_INSIDE_GANONS_CASTLE] = GANONS_CASTLE_SMALL_KEY_MAX;      // Ganon
-        gSaveContext.sohStats.dungeonKeys[SCENE_INSIDE_GANONS_CASTLE] = GANONS_CASTLE_SMALL_KEY_MAX;       // Ganon
+        gSaveContext.inventory.dungeonKeys[SCENE_FOREST_TEMPLE] = FOREST_TEMPLE_SMALL_KEY_MAX;                    // Forest
+        gSaveContext.ship.stats.dungeonKeys[SCENE_FOREST_TEMPLE] = FOREST_TEMPLE_SMALL_KEY_MAX;                   // Forest
+        gSaveContext.inventory.dungeonKeys[SCENE_FIRE_TEMPLE] = FIRE_TEMPLE_SMALL_KEY_MAX;                        // Fire
+        gSaveContext.ship.stats.dungeonKeys[SCENE_FIRE_TEMPLE] = FIRE_TEMPLE_SMALL_KEY_MAX;                       // Fire
+        gSaveContext.inventory.dungeonKeys[SCENE_WATER_TEMPLE] = WATER_TEMPLE_SMALL_KEY_MAX;                      // Water
+        gSaveContext.ship.stats.dungeonKeys[SCENE_WATER_TEMPLE] = WATER_TEMPLE_SMALL_KEY_MAX;                     // Water
+        gSaveContext.inventory.dungeonKeys[SCENE_SPIRIT_TEMPLE] = SPIRIT_TEMPLE_SMALL_KEY_MAX;                    // Spirit
+        gSaveContext.ship.stats.dungeonKeys[SCENE_SPIRIT_TEMPLE] = SPIRIT_TEMPLE_SMALL_KEY_MAX;                   // Spirit
+        gSaveContext.inventory.dungeonKeys[SCENE_SHADOW_TEMPLE] = SHADOW_TEMPLE_SMALL_KEY_MAX;                    // Shadow
+        gSaveContext.ship.stats.dungeonKeys[SCENE_SHADOW_TEMPLE] = SHADOW_TEMPLE_SMALL_KEY_MAX;                   // Shadow
+        gSaveContext.inventory.dungeonKeys[SCENE_BOTTOM_OF_THE_WELL] = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;          // BotW
+        gSaveContext.ship.stats.dungeonKeys[SCENE_BOTTOM_OF_THE_WELL] = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;         // BotW
+        gSaveContext.inventory.dungeonKeys[SCENE_GERUDO_TRAINING_GROUND] = GERUDO_TRAINING_GROUND_SMALL_KEY_MAX;  // GTG
+        gSaveContext.ship.stats.dungeonKeys[SCENE_GERUDO_TRAINING_GROUND] = GERUDO_TRAINING_GROUND_SMALL_KEY_MAX; // GTG
+        gSaveContext.inventory.dungeonKeys[SCENE_INSIDE_GANONS_CASTLE] = GANONS_CASTLE_SMALL_KEY_MAX;             // Ganon
+        gSaveContext.ship.stats.dungeonKeys[SCENE_INSIDE_GANONS_CASTLE] = GANONS_CASTLE_SMALL_KEY_MAX;            // Ganon
     } else if (Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_VANILLA) {
         // Logic cannot handle vanilla key layout in some dungeons
         // this is because vanilla expects the dungeon major item to be
@@ -196,7 +198,7 @@ void SetStartingItems() {
         if (ResourceMgr_IsSceneMasterQuest(SCENE_SPIRIT_TEMPLE)) {
             // MQ Spirit needs 3 keys
             gSaveContext.inventory.dungeonKeys[SCENE_SPIRIT_TEMPLE] = 3;
-            gSaveContext.sohStats.dungeonKeys[SCENE_SPIRIT_TEMPLE] = 3;
+            gSaveContext.ship.stats.dungeonKeys[SCENE_SPIRIT_TEMPLE] = 3;
         }
     }
 
@@ -214,103 +216,26 @@ void SetStartingItems() {
 }
 
 extern "C" void Randomizer_InitSaveFile() {
-    // Now handled by cutscene skips
-    // gSaveContext.cutsceneIndex = 0; // no intro cutscene
+    auto ctx = Rando::Context::GetInstance();
+    ctx->GetLogic()->SetSaveContext(&gSaveContext);
+
     // Starts pending ice traps out at 0 before potentially incrementing them down the line.
-    gSaveContext.pendingIceTrapCount = 0;
+    gSaveContext.ship.pendingIceTrapCount = 0;
 
     // Reset triforce pieces collected
-    gSaveContext.triforcePiecesCollected = 0;
+    gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected = 0;
 
     // Set Cutscene flags and texts to skip them
-    // Now handled by cutscene skips
-    // Flags_SetInfTable(INFTABLE_GREETED_BY_SARIA);
     Flags_SetEventChkInf(EVENTCHKINF_FIRST_SPOKE_TO_MIDO);
-    // Now handled by cutscene skips
-    // Flags_SetEventChkInf(EVENTCHKINF_MET_DEKU_TREE);
-    // Flags_SetEventChkInf(EVENTCHKINF_DEKU_TREE_OPENED_MOUTH);
     Flags_SetInfTable(INFTABLE_SPOKE_TO_KAEPORA_IN_LAKE_HYLIA);
-    // Now handled by cutscene skips
-    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER);
-    // Now using this to grant master sword check
-    // Flags_SetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL);
     Flags_SetEventChkInf(EVENTCHKINF_SHEIK_SPAWNED_AT_MASTER_SWORD_PEDESTAL);
-    // Now used to give player LACS rewards
-    // Flags_SetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS);
     Flags_SetEventChkInf(EVENTCHKINF_RENTED_HORSE_FROM_INGO);
     Flags_SetInfTable(INFTABLE_SPOKE_TO_POE_COLLECTOR_IN_RUINED_MARKET);
     Flags_SetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO);
     Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_NABOORU_IN_SPIRIT_TEMPLE);
 
-    // Now handled by cutscene skips
-    // Flags_SetInfTable(INFTABLE_MET_CHILD_MALON_AT_CASTLE_OR_MARKET);
-    // Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_CHILD_MALON_AT_CASTLE_OR_MARKET);
-    // Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_INGO_AT_RANCH_BEFORE_TALON_RETURNS);
-    // Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_CHILD_MALON_AT_RANCH);
-    // Flags_SetEventChkInf(EVENTCHKINF_INVITED_TO_SING_WITH_CHILD_MALON);
-    // Flags_SetInfTable(INFTABLE_CHILD_MALON_SAID_EPONA_WAS_AFRAID_OF_YOU);
-    // Flags_SetInfTable(INFTABLE_SPOKE_TO_INGO_ONCE_AS_ADULT);
-
-    // Now handled by cutscene skips
-    // Ruto already met in jabu and spawns down the hole immediately
-    // Flags_SetInfTable(INFTABLE_RUTO_IN_JJ_MEET_RUTO);
-    // Flags_SetInfTable(INFTABLE_RUTO_IN_JJ_TALK_FIRST_TIME);
-    // Flags_SetInfTable(INFTABLE_RUTO_IN_JJ_WANTS_TO_BE_TOSSED_TO_SAPPHIRE);
-
-    // Now handled by cutscene skips
-    // Skip cutscenes before Nabooru fight
-    // Flags_SetEventChkInf(EVENTCHKINF_BEGAN_NABOORU_BATTLE);
-    // Flags_SetEventChkInf(EVENTCHKINF_NABOORU_ORDERED_TO_FIGHT_BY_TWINROVA);
-
-    // Now handled by cutscene skips
-    // Skip boss cutscenes
-    // Flags_SetEventChkInf(EVENTCHKINF_BEGAN_GOHMA_BATTLE);
-    // Flags_SetEventChkInf(EVENTCHKINF_BEGAN_KING_DODONGO_BATTLE);
-    // Flags_SetEventChkInf(EVENTCHKINF_BEGAN_PHANTOM_GANON_BATTLE);
-    // Flags_SetEventChkInf(EVENTCHKINF_BEGAN_VOLVAGIA_BATTLE);
-    // Flags_SetEventChkInf(EVENTCHKINF_BEGAN_MORPHA_BATTLE);
-    // Flags_SetEventChkInf(EVENTCHKINF_BEGAN_TWINROVA_BATTLE);
-    // Flags_SetEventChkInf(EVENTCHKINF_BEGAN_BARINA_BATTLE);
-    // Flags_SetEventChkInf(EVENTCHKINF_BEGAN_BONGO_BONGO_BATTLE);
-
-    // Now handled by cutscene skips
-    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_HYRULE_FIELD);
-    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DEATH_MOUNTAIN_TRAIL);
-    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_KAKARIKO_VILLAGE);
-    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_ZORAS_DOMAIN);
-    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_HYRULE_CASTLE);
-    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_GORON_CITY);
-    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_TEMPLE_OF_TIME);
-    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DEKU_TREE);
-    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DODONGOS_CAVERN);
-    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_LAKE_HYLIA);
-    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_GERUDO_VALLEY);
-    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_GERUDOS_FORTRESS);
-    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_LON_LON_RANCH);
-    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_JABU_JABUS_BELLY);
-    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_GRAVEYARD);
-    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_ZORAS_FOUNTAIN);
-    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DESERT_COLOSSUS);
-    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DEATH_MOUNTAIN_CRATER);
-    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_GANONS_CASTLE_EXTERIOR);
-    // Ensure Malon appears at castle first time you enter
-    // Flags_SetInfTable(INFTABLE_ENTERED_HYRULE_CASTLE);
-
-    // skip the z target talk instructions by the kokiri shop
-    // Now handled by cutscene skips
-    // gSaveContext.sceneFlags[SCENE_KOKIRI_FOREST].swch |= (1 << 0x1F);
-
     // Go away ruto (water temple first cutscene)
     gSaveContext.sceneFlags[SCENE_WATER_TEMPLE].swch |= (1 << 0x10);
-
-    // Now handled by cutscene skips
-    // no more kaepora
-    // gSaveContext.sceneFlags[SCENE_HYRULE_FIELD].swch |= (1 << 0xC);  // hyrule field kaepora outside kokiri forest
-    // gSaveContext.sceneFlags[SCENE_HYRULE_FIELD].swch |= (1 << 0xB);  // hyrule field kaepora outside lake hylia
-    // gSaveContext.sceneFlags[SCENE_LOST_WOODS].swch |= (1 << 0x7);  // lost woods kaepora pre-saria
-    // gSaveContext.sceneFlags[SCENE_LOST_WOODS].swch |= (1 << 0x8);  // lost woods kaepora post-saria
-    // gSaveContext.sceneFlags[SCENE_DESERT_COLOSSUS].swch |= (1 << 0x1F); // desert colossus kaepora
-    // gSaveContext.sceneFlags[SCENE_HYRULE_CASTLE].swch |= (1 << 0x5);  // hyrule castle kaepora
 
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_OCARINA_BUTTONS) == RO_GENERIC_OFF) {
         Flags_SetRandomizerInf(RAND_INF_HAS_OCARINA_A);
@@ -337,7 +262,7 @@ extern "C" void Randomizer_InitSaveFile() {
 
     // shuffle adult trade quest
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
-        gSaveContext.adultTradeItems = 0;
+        gSaveContext.ship.quest.data.randomizer.adultTradeItems = 0;
     }
 
     // remove One Time scrubs with scrubsanity off
@@ -347,7 +272,7 @@ extern "C" void Randomizer_InitSaveFile() {
         Flags_SetRandomizerInf(RAND_INF_SCRUBS_PURCHASED_HF_DEKU_SCRUB_GROTTO);
     }
 
-    int startingAge = OTRGlobals::Instance->gRandoContext->GetSettings()->ResolvedStartingAge();
+    int startingAge = OTRGlobals::Instance->gRandoContext->GetOption(RSK_SELECTED_STARTING_AGE).Get();
     switch (startingAge) {
         case RO_AGE_ADULT: // Adult
             gSaveContext.linkAge = LINK_AGE_ADULT;

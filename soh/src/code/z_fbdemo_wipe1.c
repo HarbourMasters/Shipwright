@@ -3,25 +3,30 @@
 
 #include "code/fbdemo_wipe1/z_fbdemo_wipe1.h"
 
-Gfx sWipeDList[] = {
+Gfx sTransWipeDL[] = {
     gsDPPipeSync(),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
                           G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH),
-    gsSPSetGeometryMode(G_ZBUFFER | G_SHADE | G_SHADING_SMOOTH),
+    // SOH [Port] Removed G_ZBUFFER as gsDPSetPrimDepth is unimplemented in LUS.
+    // This should have the same effect of ignoring previous depth values
+    // LUSTODO: Add back once gsDPSetPrimDepth is implemented
+    gsSPSetGeometryMode(/* G_ZBUFFER | */ G_SHADE | G_SHADING_SMOOTH),
     gsDPSetOtherMode(G_AD_DISABLE | G_CD_MAGICSQ | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TT_NONE | G_TL_TILE |
                          G_TD_CLAMP | G_TP_PERSP | G_CYC_2CYCLE | G_PM_1PRIMITIVE,
                      G_AC_NONE | G_ZS_PRIM | G_RM_PASS | G_RM_AA_ZB_TEX_EDGE2),
     gsDPSetCombineLERP(TEXEL1, TEXEL0, PRIM_LOD_FRAC, TEXEL0, TEXEL1, TEXEL0, PRIM_LOD_FRAC, TEXEL0, COMBINED, 0,
                        PRIMITIVE, 0, COMBINED, 0, PRIMITIVE, 0),
     gsDPSetPrimDepth(0, 0),
-    gsDPLoadTextureBlock_4b(sTransWipeTex, G_IM_FMT_I, 64, 64, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_MIRROR | G_TX_WRAP, 6, 6,
-                            11, G_TX_NOLOD),
+    gsDPLoadTextureBlock_4b(sTransWipeTex, G_IM_FMT_I, 64, 64, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_MIRROR | G_TX_WRAP, 6,
+                            6, 11, G_TX_NOLOD),
     gsDPLoadMultiBlock_4b(sTransWipeTex, 0x0100, 1, G_IM_FMT_I, 64, 64, 0, G_TX_NOMIRROR | G_TX_WRAP,
                           G_TX_MIRROR | G_TX_WRAP, 6, 6, 11, 1),
     gsDPSetTextureLUT(G_TT_NONE),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
     gsSPDisplayList(SEG_ADDR(8, 0)),
-    gsSPVertex(sTransWipeVtx, 25, 0),
+    // OTRTODO: Add proper gsSPVertexOTRFilepath macro
+    { G_VTX_OTR_FILEPATH << 24, (uintptr_t)sTransWipeVtx },
+    { 25, 0 << 16 | 0 },
     gsSP2Triangles(0, 1, 2, 0, 1, 3, 4, 0),
     gsSP2Triangles(5, 6, 7, 0, 6, 8, 9, 0),
     gsSP2Triangles(8, 10, 11, 0, 10, 12, 13, 0),
@@ -32,7 +37,7 @@ Gfx sWipeDList[] = {
 };
 
 // unused.
-Gfx sWipeSyncDList[] = {
+Gfx sTransWipeSyncDL[] = {
     gsDPPipeSync(),
     gsSPEndDisplayList(),
 };
@@ -88,18 +93,17 @@ void TransitionWipe_Draw(void* thisx, Gfx** gfxP) {
     Mtx* modelView;
     TransitionWipe* this = (TransitionWipe*)thisx;
     s32 pad[4];
-    Gfx* tex;
-    Gfx* wipeDl = sWipeDList;
+    Gfx* texScroll;
 
     modelView = this->modelView[this->frame];
-
     this->frame ^= 1;
+
     guScale(&modelView[0], 0.56f, 0.56f, 1.0f);
     guRotate(&modelView[1], 0.0f, 0.0f, 0.0f, 1.0f);
     guTranslate(&modelView[2], 0.0f, 0.0f, 0.0f);
     gDPPipeSync(gfx++);
-    tex = Gfx_BranchTexScroll(&gfx, this->texX, this->texY, 0, 0);
-    gSPSegment(gfx++, 8, tex);
+    texScroll = Gfx_BranchTexScroll(&gfx, this->texX, this->texY, 0, 0);
+    gSPSegment(gfx++, 8, texScroll);
     gDPSetPrimColor(gfx++, 0, 0x80, this->color.r, this->color.g, this->color.b, 255);
     gSPMatrix(gfx++, &this->projection, G_MTX_LOAD | G_MTX_PROJECTION);
     gSPPerspNormalize(gfx++, this->normal);
@@ -107,7 +111,7 @@ void TransitionWipe_Draw(void* thisx, Gfx** gfxP) {
     gSPMatrix(gfx++, &modelView[0], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPMatrix(gfx++, &modelView[1], G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gSPMatrix(gfx++, &modelView[2], G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
-    gSPDisplayList(gfx++, sWipeDList);
+    gSPDisplayList(gfx++, sTransWipeDL);
     gDPPipeSync(gfx++);
     *gfxP = gfx;
 }

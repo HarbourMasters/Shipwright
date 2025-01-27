@@ -7,7 +7,7 @@
 #include "z_magic_fire.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_UPDATE_DURING_OCARINA)
 
 void MagicFire_Init(Actor* thisx, PlayState* play);
 void MagicFire_Destroy(Actor* thisx, PlayState* play);

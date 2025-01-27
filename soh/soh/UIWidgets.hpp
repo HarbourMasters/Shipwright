@@ -1,10 +1,3 @@
-//
-//  UIWidgets.hpp
-//  soh
-//
-//  Created by David Chavez on 25.08.22.
-//
-
 #ifndef UIWidgets_hpp
 #define UIWidgets_hpp
 
@@ -13,10 +6,8 @@
 #include <vector>
 #include <span>
 #include <stdint.h>
-#ifndef IMGUI_DEFINE_MATH_OPERATORS
-#define IMGUI_DEFINE_MATH_OPERATORS
-#endif
 #include <imgui.h>
+#include "soh/ShipInit.hpp"
 
 namespace UIWidgets {
 

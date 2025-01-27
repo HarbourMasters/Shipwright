@@ -10,7 +10,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
 typedef enum {
     /*  0 */ GELDB_WAIT,
@@ -354,7 +354,7 @@ void EnGeldB_SetupWait(EnGeldB* this) {
     this->action = GELDB_WAIT;
     this->actor.bgCheckFlags &= ~3;
     this->actor.gravity = -2.0f;
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     EnGeldB_SetupAction(this, EnGeldB_Wait);
 }
 
@@ -372,7 +372,7 @@ void EnGeldB_Wait(EnGeldB* this, PlayState* play) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_RIZA_DOWN);
         this->skelAnime.playSpeed = 1.0f;
         this->actor.world.pos.y = this->actor.floorHeight;
-        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
         this->actor.focus.pos = this->actor.world.pos;
         this->actor.bgCheckFlags &= ~2;
         this->actor.velocity.y = 0.0f;
@@ -1320,7 +1320,7 @@ void EnGeldB_SetupDefeated(EnGeldB* this) {
         this->invisible = true;
     }
     this->action = GELDB_DEFEAT;
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_GERUDOFT_DEAD);
     EnGeldB_SetupAction(this, EnGeldB_Defeated);
     GameInteractor_ExecuteOnEnemyDefeat(&this->actor);

@@ -8,7 +8,7 @@
 #include <assert.h>
 #include "soh/OTRGlobals.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void ItemEtcetera_Init(Actor* thisx, PlayState* play);
 void ItemEtcetera_Destroy(Actor* thisx, PlayState* play);
