@@ -592,8 +592,10 @@ void ResourceMgr_LoadDelayedPersistentAltAssets() {
     // Load sound effects first for title screen "Press Start" and pause sounds. These are loaded
     // before the alt assets to prevent load lock for the audio itself
     static std::list<std::string> textureIncludes = {"audio/fonts/00_Sound_Effects_1", "audio/fonts/00_Sound_Effects_2",
-        "audio/*", "alt/textures/parameter*", "alt/textures/icon*", "alt/textures/item*", "alt/textures/font*",
-        "alt/objects/gameplay_*", "alt/overlays/*", "alt/code/*", "alt/textures/*" };
+        "audio/*", "textures/*", "overlays/*", "code/*", "misc/*", "text/*", "objects/*", "scenes/*",
+        "alt/textures/parameter*", "alt/textures/icon*", "alt/textures/item*", "alt/textures/font*",
+        "alt/objects/gameplay_*", "alt/overlays/*", "alt/code/*", "alt/textures/*", 
+        };
     static std::list<std::string> textureExcludes = { "alt/textures/vr_holy*", "alt/textures/vr_cloud*", "alt/textures/vr_fine*" };
     Ship::Context::GetInstance()->GetResourceManager()->LoadResourcesAsync({textureIncludes, textureExcludes, 0, nullptr});
 }
