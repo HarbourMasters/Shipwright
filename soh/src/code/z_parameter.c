@@ -2446,8 +2446,8 @@ u8 Item_Give(PlayState* play, u8 item) {
             Flags_SetItemGetInf(ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE);
         }
 
-        if (item >= ITEM_POCKET_EGG) {
-            gSaveContext.ship.quest.data.randomizer.adultTradeItems |= ADULT_TRADE_FLAG(item);
+        if (item >= ITEM_POCKET_EGG && IS_RANDO) {
+            Flags_SetRandomizerInf(item - ITEM_POCKET_EGG + RAND_INF_ADULT_TRADES_HAS_POCKET_EGG);
         }
 
         temp = INV_CONTENT(item);
@@ -2759,12 +2759,12 @@ bool Inventory_HatchPocketCucco(PlayState* play) {
         return Inventory_ReplaceItem(play, ITEM_POCKET_EGG, ITEM_POCKET_CUCCO);
     }
 
-    if (!PLAYER_HAS_SHUFFLED_ADULT_TRADE_ITEM(ITEM_POCKET_EGG)) { 
-         return 0;
+    if (!Flags_GetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_POCKET_EGG)) {
+        return 0;
     }
 
-    gSaveContext.ship.quest.data.randomizer.adultTradeItems &= ~ADULT_TRADE_FLAG(ITEM_POCKET_EGG);
-    gSaveContext.ship.quest.data.randomizer.adultTradeItems |= ADULT_TRADE_FLAG(ITEM_POCKET_CUCCO);
+    Flags_UnsetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_POCKET_EGG);
+    Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_POCKET_CUCCO);
     Inventory_ReplaceItem(play, ITEM_POCKET_EGG, ITEM_POCKET_CUCCO);
     return 1;
 }

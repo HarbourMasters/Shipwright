@@ -414,6 +414,7 @@ void DrawInfoTab() {
 void DrawBGSItemFlag(uint8_t itemID) {
     const ItemMapEntry& slotEntry = itemMapping[itemID];
     ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1));
+    /*
     ImGui::SameLine();
     int tradeIndex = itemID - ITEM_POCKET_EGG;
     bool hasItem = (gSaveContext.ship.quest.data.randomizer.adultTradeItems & (1 << tradeIndex)) != 0;
@@ -430,6 +431,7 @@ void DrawBGSItemFlag(uint8_t itemID) {
             Inventory_ReplaceItem(gPlayState, itemID, Randomizer_GetNextAdultTradeItem());
         }
     }
+    */
 }
 
 void DrawInventoryTab() {
@@ -476,9 +478,11 @@ void DrawInventoryTab() {
             if (ImGui::BeginPopup(itemPopupPicker)) {
                 if (ImGui::Button("##itemNonePicker", ImVec2(32.0f, 32.0f))) {
                     gSaveContext.inventory.items[selectedIndex] = ITEM_NONE;
+                    /*
                     if (selectedIndex == SLOT_TRADE_ADULT) {
                         gSaveContext.ship.quest.data.randomizer.adultTradeItems = 0;
                     }
+                    */
                     ImGui::CloseCurrentPopup();
                 }
                 UIWidgets::SetLastItemHoverText("None");
@@ -512,13 +516,15 @@ void DrawInventoryTab() {
                     ImGui::PopStyleVar();
                     if (ret) {
                         gSaveContext.inventory.items[selectedIndex] = slotEntry.id;
-                        // Set adult trade item flag if you're playing adult trade shuffle in rando  
+                        /*
+                        // Set adult trade item flag if you're playing adult trade shuffle in rando
                         if (IS_RANDO &&
                             OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE) &&
                             selectedIndex == SLOT_TRADE_ADULT &&
                             slotEntry.id >= ITEM_POCKET_EGG && slotEntry.id <= ITEM_CLAIM_CHECK) {
                             gSaveContext.ship.quest.data.randomizer.adultTradeItems |= ADULT_TRADE_FLAG(slotEntry.id);
                         }
+                        */
                         ImGui::CloseCurrentPopup();
                     }
                     UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(slotEntry.id));

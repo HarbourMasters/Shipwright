@@ -1,19 +1,13 @@
-#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 #include "functions.h"
 #include "variables.h"
 #include "macros.h"
-
-void Randomizer_ConsumeAdultTradeItem(PlayState* play, u8 itemId) {
-    gSaveContext.ship.quest.data.randomizer.adultTradeItems &= ~ADULT_TRADE_FLAG(itemId);
-	Inventory_ReplaceItem(play, itemId, Randomizer_GetNextAdultTradeItem());
-}
 
 u8 Randomizer_GetNextAdultTradeItem() {
     const u8 numTradeItems = ITEM_CLAIM_CHECK - ITEM_POCKET_EGG + 1;
     u8 currentTradeItemIndex = INV_CONTENT(ITEM_TRADE_ADULT) - ITEM_POCKET_EGG;
     for (int i = 0; i < numTradeItems; i++) {
         u8 tradeIndex = (currentTradeItemIndex + i + 1) % numTradeItems;
-        if (gSaveContext.ship.quest.data.randomizer.adultTradeItems & (1 << tradeIndex)) {
+        if (Flags_GetRandomizerInf(tradeIndex + RAND_INF_ADULT_TRADES_HAS_POCKET_EGG)) {
 			return ITEM_POCKET_EGG + tradeIndex;
         }
     }
@@ -25,7 +19,7 @@ u8 Randomizer_GetPrevAdultTradeItem() {
     u8 currentTradeItemIndex = INV_CONTENT(ITEM_TRADE_ADULT) - ITEM_POCKET_EGG;
     for (int i = 0; i < numTradeItems; i++) {
         u8 tradeIndex = (currentTradeItemIndex - i - 1 + numTradeItems) % numTradeItems;
-        if (gSaveContext.ship.quest.data.randomizer.adultTradeItems & (1 << tradeIndex)) {
+        if (Flags_GetRandomizerInf(tradeIndex + RAND_INF_ADULT_TRADES_HAS_POCKET_EGG)) {
 			return ITEM_POCKET_EGG + tradeIndex;
         }
     }

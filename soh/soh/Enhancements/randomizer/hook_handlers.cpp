@@ -220,10 +220,12 @@ void RandomizerOnFlagSetHandler(int16_t flagType, int16_t flag) {
     if (RAND_GET_OPTION(RSK_SHUFFLE_ADULT_TRADE) && flagType == FLAG_RANDOMIZER_INF) {
         switch (flag) {
             case RAND_INF_ADULT_TRADES_DMT_TRADE_BROKEN_SWORD:
-                Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_SWORD_BROKEN);
+                Flags_UnsetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_SWORD_BROKEN);
+                Inventory_ReplaceItem(play, ITEM_SWORD_BROKEN, Randomizer_GetNextAdultTradeItem());
                 break;
             case RAND_INF_ADULT_TRADES_DMT_TRADE_EYEDROPS:
-                Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_EYEDROPS);
+                Flags_UnsetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_EYEDROPS);
+                Inventory_ReplaceItem(play, ITEM_EYEDROPS, Randomizer_GetNextAdultTradeItem());
                 break;
         }
     }
@@ -1170,7 +1172,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             EnFr* enFr = va_arg(args, EnFr*);
 
             if (
-                (enFr->songIndex >= FROG_STORMS && enFr->reward == GI_HEART_PIECE) || 
+                (enFr->songIndex >= FROG_STORMS && enFr->reward == GI_HEART_PIECE) ||
                 (enFr->songIndex < FROG_STORMS && enFr->reward == GI_RUPEE_PURPLE)
             ) {
                 *should = true;
@@ -1179,7 +1181,8 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         }
         case VB_TRADE_POCKET_CUCCO: {
             EnNiwLady* enNiwLady = va_arg(args, EnNiwLady*);
-            Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_POCKET_CUCCO);
+            Flags_UnsetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_POCKET_CUCCO);
+            Inventory_ReplaceItem(play, ITEM_POCKET_CUCCO, Randomizer_GetNextAdultTradeItem());
             // Trigger the reward now
             Flags_SetItemGetInf(ITEMGETINF_2E);
             enNiwLady->actionFunc = func_80ABA778;
@@ -1188,13 +1191,15 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_TRADE_COJIRO: {
-            Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_COJIRO);
+            Flags_UnsetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_COJIRO);
+            Inventory_ReplaceItem(play, ITEM_COJIRO, Randomizer_GetNextAdultTradeItem());
             *should = false;
             break;
         }
         case VB_TRADE_ODD_MUSHROOM: {
             EnDs* granny = va_arg(args, EnDs*);
-            Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_ODD_MUSHROOM);
+            Flags_UnsetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_ODD_MUSHROOM);
+            Inventory_ReplaceItem(play, ITEM_ODD_MUSHROOM, Randomizer_GetNextAdultTradeItem());
             // Trigger the reward now
             Flags_SetItemGetInf(ITEMGETINF_30);
             granny->actor.textId = 0x504F;
@@ -1205,14 +1210,16 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         }
         case VB_TRADE_ODD_POTION: {
             EnKo* enKo = va_arg(args, EnKo*);
-            Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_ODD_POTION);
+            Flags_UnsetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_ODD_POTION);
+            Inventory_ReplaceItem(play, ITEM_ODD_POTION, Randomizer_GetNextAdultTradeItem());
             // Trigger the reward now
             Flags_SetItemGetInf(ITEMGETINF_31);
             *should = false;
             break;
         }
         case VB_TRADE_SAW: {
-            Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_SAW);
+            Flags_UnsetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_SAW);
+            Inventory_ReplaceItem(play, ITEM_SAW, Randomizer_GetNextAdultTradeItem());
             *should = false;
             break;
         }
@@ -1229,14 +1236,16 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                 if (func_8002F368(gPlayState) == EXCH_ITEM_PRESCRIPTION ||
                     (hasShieldHoldingR && INV_CONTENT(ITEM_TRADE_ADULT) < ITEM_FROG)) {
                     Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_ZD_TRADE_PRESCRIPTION);
-                    Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_PRESCRIPTION);
+                    Flags_UnsetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_PRESCRIPTION);
+                    Inventory_ReplaceItem(play, ITEM_PRESCRIPTION, Randomizer_GetNextAdultTradeItem());
                 } else {
                     Flags_SetRandomizerInf(RAND_INF_KING_ZORA_THAWED);
                 }
             } else {
-                if (enKz->isTrading){ 
+                if (enKz->isTrading) {
                     Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_ZD_TRADE_PRESCRIPTION);
-                    Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_PRESCRIPTION);
+                    Flags_UnsetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_PRESCRIPTION);
+                    Inventory_ReplaceItem(play, ITEM_PRESCRIPTION, Randomizer_GetNextAdultTradeItem());
                 } else {
                     Flags_SetRandomizerInf(RAND_INF_KING_ZORA_THAWED);
                 }
@@ -1245,7 +1254,8 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_TRADE_FROG: {
-            Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_FROG);
+            Flags_UnsetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_FROG);
+            Inventory_ReplaceItem(play, ITEM_FROG, Randomizer_GetNextAdultTradeItem());
             *should = false;
             break;
         }
@@ -1282,9 +1292,9 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             if (!RAND_GET_OPTION(RSK_SHUFFLE_ADULT_TRADE)) {
                 break;
             }
-            if (PLAYER_HAS_SHUFFLED_ADULT_TRADE_ITEM(ITEM_COJIRO)) {
+            if (Flags_GetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_COJIRO)) {
                 *should = false;
-            } else if (PLAYER_HAS_SHUFFLED_ADULT_TRADE_ITEM(ITEM_ODD_POTION)) {
+            } else if (Flags_GetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_ODD_POTION)) {
                 *should = true;
             } else {
                 *should = Flags_GetItemGetInf(ITEMGETINF_30); // Traded odd mushroom
@@ -1296,10 +1306,10 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                 break;
             }
 
-            if (PLAYER_HAS_SHUFFLED_ADULT_TRADE_ITEM(ITEM_COJIRO)) {
+            if (Flags_GetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_COJIRO)) {
                 *should = false;
             } else {
-                *should = PLAYER_HAS_SHUFFLED_ADULT_TRADE_ITEM(ITEM_ODD_POTION);
+                *should = Flags_GetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_ODD_POTION);
             }
 
             break;

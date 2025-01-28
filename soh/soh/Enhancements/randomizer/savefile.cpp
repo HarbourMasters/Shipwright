@@ -260,11 +260,6 @@ extern "C" void Randomizer_InitSaveFile() {
     // Give Link's pocket item
     GiveLinksPocketItem();
 
-    // shuffle adult trade quest
-    if (Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
-        gSaveContext.ship.quest.data.randomizer.adultTradeItems = 0;
-    }
-
     // remove One Time scrubs with scrubsanity off
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_OFF) {
         Flags_SetRandomizerInf(RAND_INF_SCRUBS_PURCHASED_LW_DEKU_SCRUB_NEAR_BRIDGE);

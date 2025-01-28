@@ -386,7 +386,7 @@ void KaleidoScope_DrawItemCycles(PlayState* play) {
             ITEM_MASK_KEATON :
             INV_CONTENT(ITEM_TRADE_CHILD) + 1
     );
-    
+
     //draw the adult trade select
     KaleidoScope_DrawItemCycleExtras(
         play,
