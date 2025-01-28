@@ -554,7 +554,7 @@ void OTRAudio_Thread() {
 extern "C" void OTRAudio_Init()
 {
     // Precache all our samples, sequences, etc...
-    ResourceMgr_LoadDirectory("audio");
+    ResourceMgr_LoadDirectory("audio/*");
 
     if (!audio.running) {
         audio.running = true;
@@ -1133,11 +1133,9 @@ extern "C" void InitOTR() {
 
     OTRGlobals::Instance = new OTRGlobals();
 
-    ResourceMgr_LoadPersistentAltAssets();
     CustomMessageManager::Instance = new CustomMessageManager();
     ItemTableManager::Instance = new ItemTableManager();
     GameInteractor::Instance = new GameInteractor();
-    ResourceMgr_RegisterHooks();
     SaveManager::Instance = new SaveManager();
 
     std::shared_ptr<Ship::Config> conf = OTRGlobals::Instance->context->GetConfig();
@@ -1168,6 +1166,9 @@ extern "C" void InitOTR() {
 
     OTRMessage_Init();
     OTRAudio_Init();
+    ResourceMgr_Init();
+    ResourceMgr_RegisterHooks();
+    ResourceMgr_LoadPersistentAltAssets();
     OTRExtScanner();
     VanillaItemTable_Init();
     DebugConsole_Init();
@@ -1200,8 +1201,6 @@ extern "C" void InitOTR() {
         Sail::Instance->Enable();
     }
 #endif
-
-    ResourceMgr_Init();
 }
 
 extern "C" void SaveManager_ThreadPoolWait() {

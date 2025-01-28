@@ -591,12 +591,11 @@ extern "C" void ResourceMgr_UnloadSceneAssets() {
 void ResourceMgr_LoadDelayedPersistentAltAssets() {
     // Load sound effects first for title screen "Press Start" and pause sounds. These are loaded
     // before the alt assets to prevent load lock for the audio itself
-    static std::list<std::string> textureIncludes = {"audio/fonts/00_Sound_Effects_1", "audio/fonts/00_Sound_Effects_2",
-        "audio/*", "textures/*", "overlays/*", "code/*", "misc/*", "text/*", "objects/*", "scenes/*",
+    static std::list<std::string> textureIncludes = { "textures/*", "overlays/*", "code/*", "misc/*", "text/*", "objects/*", "scenes/*",
         "alt/textures/parameter*", "alt/textures/icon*", "alt/textures/item*", "alt/textures/font*",
         "alt/objects/gameplay_*", "alt/overlays/*", "alt/code/*", "alt/textures/*", 
         };
-    static std::list<std::string> textureExcludes = { "alt/textures/vr_holy*", "alt/textures/vr_cloud*", "alt/textures/vr_fine*" };
+    static std::list<std::string> textureExcludes = { "alt/textures/vr_holy*", "alt/textures/vr_cloud*", "alt/textures/vr_fine*", "textures/buttons/*" };
     Ship::Context::GetInstance()->GetResourceManager()->LoadResourcesAsync({textureIncludes, textureExcludes, 0, nullptr});
 }
 
@@ -638,16 +637,10 @@ extern "C" void ResourceMgr_LoadPersistentAltAssets() {
         ResourceLoadDirectoryAsync("alt/scenes/*/spot00*");
         // Title logos
         ResourceLoadDirectoryAsync("alt/objects/object_mag/*");
-        // Title screen music
-        Ship::Context::GetInstance()->GetResourceManager()->LoadResourceAsync("audio/sequences/030_Title_Theme");
-        Ship::Context::GetInstance()->GetResourceManager()->LoadResourceAsync("audio/fonts/06_Title_Theme");
     } else if (skipTitle && fastFile == 4) {
         Ship::Context::GetInstance()->GetResourceManager()->LoadResourcesAsync({
             {"alt/overlays/ovl_file_choose/*", "alt/textures/title_static/*", "alt/objects/gameplay_keep/*", "alt/textures/vr_fine3*", "alt/textures/vr_fine0*"},
             {}, 0, nullptr});
-        // File Select music
-        Ship::Context::GetInstance()->GetResourceManager()->LoadResourceAsync("audio/sequences/087_File_Select");
-        Ship::Context::GetInstance()->GetResourceManager()->LoadResourceAsync("audio/fonts/09_Fairy_Fountain");
     } else if (skipTitle && fastFile < 3) {
         ResourceLoadDirectoryAsync("alt/textures/icon*");
         ResourceLoadDirectoryAsync("alt/textures/do_action_static/*");
