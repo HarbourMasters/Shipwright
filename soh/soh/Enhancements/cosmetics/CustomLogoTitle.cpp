@@ -4,7 +4,6 @@
 #include "textures/nintendo_rogo_static/nintendo_rogo_static.h"
 #include "assets/objects/gameplay_keep/gameplay_keep.h"
 #include "soh_assets.h"
-#include <algorithm>
 
 extern "C" {
 #include "macros.h"
@@ -186,7 +185,7 @@ void OnZTitleUpdatePressButtonToSkip(void* gameState) {
     if (CHECK_BTN_ANY(titleContext->state.input->press.button, BTN_A | BTN_B | BTN_START)) {
         // Force the title state to start fading to black and to last roughly 5 frames based on current fade in/out
         titleContext->visibleDuration = 0;
-        titleContext->addAlpha = std::clamp((255 - titleContext->coverAlpha) / 5, 1, INT16_MAX);
+        titleContext->addAlpha = std::clamp<int16_t>((255 - titleContext->coverAlpha) / 5, 1, INT16_MAX);
     }
 }
 
