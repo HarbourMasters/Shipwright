@@ -187,6 +187,9 @@ void OnZTitleUpdatePressButtonToSkip(void* gameState) {
         // Force the title state to start fading to black and to last roughly 5 frames based on current fade in/out
         titleContext->visibleDuration = 0;
         titleContext->addAlpha = (255 - titleContext->coverAlpha) / 5;
+        if (titleContext->addAlpha == 0) {
+            titleContext->addAlpha = 1;
+        }
     }
 }
 
