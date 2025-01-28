@@ -123,7 +123,6 @@ extern "C" void CustomLogoTitle_Draw(TitleContext* titleContext, uint8_t logoToD
 
 extern "C" void CustomLogoTitle_Main(TitleContext* titleContext) {
     static uint8_t logosSeen = 0;
-    SPDLOG_DEBUG("Logos Seen: {}", logosSeen);
     uint8_t logoToDraw;
 
     if (CVAR_BOOTSEQUENCE_VALUE == BOOTSEQUENCE_DEFAULT) {
@@ -186,10 +185,7 @@ void OnZTitleUpdatePressButtonToSkip(void* gameState) {
     if (CHECK_BTN_ANY(titleContext->state.input->press.button, BTN_A | BTN_B | BTN_START)) {
         // Force the title state to start fading to black and to last roughly 5 frames based on current fade in/out
         titleContext->visibleDuration = 0;
-        titleContext->addAlpha = (255 - titleContext->coverAlpha) / 5;
-        if (titleContext->addAlpha == 0) {
-            titleContext->addAlpha = 1;
-        }
+        titleContext->addAlpha = std::clamp((255 - titleContext->coverAlpha) / 5, 1, INT16_MAX);
     }
 }
 
