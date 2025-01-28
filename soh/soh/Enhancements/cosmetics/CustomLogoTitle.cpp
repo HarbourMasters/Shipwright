@@ -123,6 +123,7 @@ extern "C" void CustomLogoTitle_Draw(TitleContext* titleContext, uint8_t logoToD
 
 extern "C" void CustomLogoTitle_Main(TitleContext* titleContext) {
     static uint8_t logosSeen = 0;
+    SPDLOG_DEBUG("Logos Seen: {}", logosSeen);
     uint8_t logoToDraw;
 
     if (CVAR_BOOTSEQUENCE_VALUE == BOOTSEQUENCE_DEFAULT) {
