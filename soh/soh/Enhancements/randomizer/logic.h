@@ -186,6 +186,7 @@ class Logic {
     bool HasProjectile(HasProjectileAge age);
     bool HasItem(RandomizerGet itemName);
     bool HasBossSoul(RandomizerGet itemName);
+    bool CanOpenOverworldDoor(RandomizerGet itemName);
     bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmount);
     bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched);
     bool CanDoGlitch(GlitchType glitch);

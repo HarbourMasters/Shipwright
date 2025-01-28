@@ -237,6 +237,9 @@ static const ALIGN_ASSET(2) char gKeyringKeysShadowTempleMQDL[] = dgKeyringKeysS
 #define dgKeyringKeysGanonsCastleMQDL "__OTR__objects/object_keyring/gKeyringKeysGanonsCastleMQDL"
 static const ALIGN_ASSET(2) char gKeyringKeysGanonsCastleMQDL[] = dgKeyringKeysGanonsCastleMQDL;
 
+#define dgHouseKeyDL "__OTR__objects/object_housekey/gHouseKeyDL"
+static const ALIGN_ASSET(2) char gHouseKeyDL[] = dgHouseKeyDL;
+
 // overlays
 #define dgOptionsDividerChangeLangVtx "__OTR__overlays/ovl_file_choose/gOptionsDividerChangeLangVtx"
 static const ALIGN_ASSET(2) char gOptionsDividerChangeLangVtx[] = dgOptionsDividerChangeLangVtx;
@@ -335,3 +338,10 @@ static const ALIGN_ASSET(2) char gLinkAdultGoronTunicSkel[] = dgLinkAdultGoronTu
 
 #define dgLinkAdultZoraTunicSkel "__OTR__objects/object_link_boy_zora/gLinkAdultZoraTunicSkel"
 static const ALIGN_ASSET(2) char gLinkAdultZoraTunicSkel[] = dgLinkAdultZoraTunicSkel;
+
+// LUS Logo
+#define dgShipLogoDL "__OTR__textures/nintendo_rogo_static/gShipLogoDL"
+static const ALIGN_ASSET(2) char gShipLogoDL[] = dgShipLogoDL;
+
+#define dnintendo_rogo_static_Tex_LUS_000000 "__OTR__textures/nintendo_rogo_static/nintendo_rogo_static_Tex_LUS_000000"
+static const ALIGN_ASSET(2) char nintendo_rogo_static_Tex_LUS_000000[] = dnintendo_rogo_static_Tex_LUS_000000;

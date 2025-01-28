@@ -5418,7 +5418,7 @@ s32 Player_ActionHandler_1(Player* this, PlayState* play) {
                     this->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
                     Actor_DisableLens(play);
 
-                    if (((doorActor->params >> 7) & 7) == 3) {
+                    if (GameInteractor_Should(VB_DOOR_PLAY_SCENE_TRANSITION, ((doorActor->params >> 7) & 7) == 3, doorActor)) {
                         checkPos.x = doorActor->world.pos.x - (sp6C * sp74);
                         checkPos.y = doorActor->world.pos.y + 10.0f;
                         checkPos.z = doorActor->world.pos.z - (sp6C * sp78);
@@ -7254,19 +7254,9 @@ void func_8083E4C4(PlayState* play, Player* this, GetItemEntry* giEntry) {
 s32 Player_ActionHandler_2(Player* this, PlayState* play) {
     Actor* interactedActor;
 
-    if(gSaveContext.ship.pendingIceTrapCount) {
-        gSaveContext.ship.pendingIceTrapCount--;
-        GameInteractor_ExecuteOnItemReceiveHooks(ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_ICE_TRAP));
-        if (CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0)) {
-            return 1;
-        }
-        this->stateFlags1 &= ~(PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_CARRYING_ACTOR);
-        this->actor.colChkInfo.damage = 0;
-        func_80837C0C(play, this, 3, 0.0f, 0.0f, 0, 20);
+    if (GameInteractor_Should(VB_SHORT_CIRCUIT_GIVE_ITEM_PROCESS, false)) {
         this->getItemId = GI_NONE;
-        this->getItemEntry = (GetItemEntry) GET_ITEM_NONE;
-        // Gameplay stats: Increment Ice Trap count
-        gSaveContext.ship.stats.count[COUNT_ICE_TRAPS]++;
+        this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
         return 1;
     }
 

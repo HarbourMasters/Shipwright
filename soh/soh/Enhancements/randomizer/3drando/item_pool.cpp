@@ -761,7 +761,7 @@ static void SetMinimalItemPool() {
   ReplaceMaxItem(RG_PROGRESSIVE_BOMB_BAG, 1);
   ReplaceMaxItem(RG_PIECE_OF_HEART, 0);
   // Need an extra heart container when starting with 1 heart to be able to reach 3 hearts
-  ReplaceMaxItem(RG_HEART_CONTAINER, (ctx->GetOption(RSK_STARTING_HEARTS).GetContextOptionIndex() == 18)? 1 : 0);
+  ReplaceMaxItem(RG_HEART_CONTAINER, (ctx->GetOption(RSK_STARTING_HEARTS).Get() == 18)? 1 : 0);
 }
 
 void GenerateItemPool() {
@@ -827,7 +827,7 @@ void GenerateItemPool() {
 
   if (ctx->GetOption(RSK_TRIFORCE_HUNT)) {
     ctx->possibleIceTrapModels.push_back(RG_TRIFORCE_PIECE);
-    AddItemToMainPool(RG_TRIFORCE_PIECE, (ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).GetContextOptionIndex() + 1));
+    AddItemToMainPool(RG_TRIFORCE_PIECE, (ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).Get() + 1));
     ctx->PlaceItemInLocation(RC_TRIFORCE_COMPLETED, RG_TRIFORCE); // Win condition
     ctx->PlaceItemInLocation(RC_GANON, GetJunkItem(), false, true);
   } else {
@@ -935,7 +935,7 @@ void GenerateItemPool() {
   if (fsMode.IsNot(RO_FISHSANITY_OFF)) {
     if (fsMode.Is(RO_FISHSANITY_POND) || fsMode.Is(RO_FISHSANITY_BOTH)) {
       // 17 max child pond fish
-      uint8_t pondCt = ctx->GetOption(RSK_FISHSANITY_POND_COUNT).GetContextOptionIndex();
+      uint8_t pondCt = ctx->GetOption(RSK_FISHSANITY_POND_COUNT).Get();
       for (uint8_t i = 0; i < pondCt; i++) {
         AddItemToMainPool(GetJunkItem());
       }
@@ -1276,6 +1276,33 @@ void GenerateItemPool() {
     }
   }
 
+  if (ctx->GetOption(RSK_LOCK_OVERWORLD_DOORS)) {
+    AddItemToPool(ItemPool, RG_GUARD_HOUSE_KEY);
+    AddItemToPool(ItemPool, RG_MARKET_BAZAAR_KEY);
+    AddItemToPool(ItemPool, RG_MARKET_POTION_SHOP_KEY);
+    AddItemToPool(ItemPool, RG_MASK_SHOP_KEY);
+    AddItemToPool(ItemPool, RG_MARKET_SHOOTING_GALLERY_KEY);
+    AddItemToPool(ItemPool, RG_BOMBCHU_BOWLING_KEY);
+    AddItemToPool(ItemPool, RG_TREASURE_CHEST_GAME_BUILDING_KEY);
+    AddItemToPool(ItemPool, RG_BOMBCHU_SHOP_KEY);
+    AddItemToPool(ItemPool, RG_RICHARDS_HOUSE_KEY);
+    AddItemToPool(ItemPool, RG_ALLEY_HOUSE_KEY);
+    AddItemToPool(ItemPool, RG_KAK_BAZAAR_KEY);
+    AddItemToPool(ItemPool, RG_KAK_POTION_SHOP_KEY);
+    AddItemToPool(ItemPool, RG_BOSS_HOUSE_KEY);
+    AddItemToPool(ItemPool, RG_GRANNYS_POTION_SHOP_KEY);
+    AddItemToPool(ItemPool, RG_SKULLTULA_HOUSE_KEY);
+    AddItemToPool(ItemPool, RG_IMPAS_HOUSE_KEY);
+    AddItemToPool(ItemPool, RG_WINDMILL_KEY);
+    AddItemToPool(ItemPool, RG_KAK_SHOOTING_GALLERY_KEY);
+    AddItemToPool(ItemPool, RG_DAMPES_HUT_KEY);
+    AddItemToPool(ItemPool, RG_TALONS_HOUSE_KEY);
+    AddItemToPool(ItemPool, RG_STABLES_KEY);
+    AddItemToPool(ItemPool, RG_BACK_TOWER_KEY);
+    AddItemToPool(ItemPool, RG_HYLIA_LAB_KEY);
+    AddItemToPool(ItemPool, RG_FISHING_HOLE_KEY);
+  }
+
   //Shopsanity
   if (
     ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF) ||
@@ -1491,7 +1518,7 @@ void GenerateItemPool() {
 
   if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_KAK_TOKENS)) {
     ctx->PlaceItemInLocation(RC_KAK_100_GOLD_SKULLTULA_REWARD, RG_GANONS_CASTLE_BOSS_KEY);
-  } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).GetContextOptionIndex() >= RO_GANON_BOSS_KEY_LACS_VANILLA && ctx->GetOption(RSK_GANONS_BOSS_KEY).IsNot(RO_GANON_BOSS_KEY_TRIFORCE_HUNT)) {
+  } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Get() >= RO_GANON_BOSS_KEY_LACS_VANILLA && ctx->GetOption(RSK_GANONS_BOSS_KEY).IsNot(RO_GANON_BOSS_KEY_TRIFORCE_HUNT)) {
     ctx->PlaceItemInLocation(RC_TOT_LIGHT_ARROWS_CUTSCENE, RG_GANONS_CASTLE_BOSS_KEY);
   } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_VANILLA)) {
     ctx->PlaceItemInLocation(RC_GANONS_TOWER_BOSS_KEY_CHEST, RG_GANONS_CASTLE_BOSS_KEY);

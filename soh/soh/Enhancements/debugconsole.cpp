@@ -402,6 +402,7 @@ static bool EntranceHandler(std::shared_ptr<Ship::Console> Console, const std::v
     gPlayState->transitionTrigger = TRANS_TRIGGER_START;
     gPlayState->transitionType = TRANS_TYPE_INSTANT;
     gSaveContext.nextTransitionType = TRANS_TYPE_INSTANT;
+    return 0;
 }
 
 static bool VoidHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
@@ -1297,7 +1298,9 @@ static constexpr std::array<std::pair<const char*, CosmeticGroup>, COSMETICS_GRO
     {"swords", COSMETICS_GROUP_SWORDS},
     {"gloves", COSMETICS_GROUP_GLOVES},
     {"equipment", COSMETICS_GROUP_EQUIPMENT},
-    {"key", COSMETICS_GROUP_KEY},
+    {"keyring", COSMETICS_GROUP_KEYRING},
+    {"small_keys", COSMETICS_GROUP_SMALL_KEYS },
+    {"boss_keys", COSMETICS_GROUP_BOSS_KEYS },
     {"consumable", COSMETICS_GROUP_CONSUMABLE},
     {"hud", COSMETICS_GROUP_HUD},
     {"kaleido", COSMETICS_GROUP_KALEIDO},

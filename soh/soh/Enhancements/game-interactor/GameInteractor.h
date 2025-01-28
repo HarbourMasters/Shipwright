@@ -286,6 +286,7 @@ typedef enum {
     VB_RENDER_YES_ON_CONTINUE_PROMPT,
     // Vanilla condition: CHECK_BTN_ALL(input->press.button, BTN_START)
     VB_CLOSE_PAUSE_MENU,
+    VB_KALEIDO_UNPAUSE_CLOSE,
     // Vanilla condition: true
     VB_SPAWN_BLUE_WARP,
     // Vanilla condition: this->warpTimer > sWarpTimerTarget && gSaveContext.nextCutsceneIndex == 0xFFEF
@@ -304,6 +305,13 @@ typedef enum {
     VB_FROGS_GO_TO_IDLE,
     // Vanilla condition: var >= gSaveContext.health) && (gSaveContext.health > 0
     VB_HEALTH_METER_BE_CRITICAL,
+    VB_CONSUME_SMALL_KEY,
+    // Vanilla condition: gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] <= 0
+    VB_NOT_HAVE_SMALL_KEY,
+    // Vanilla condition: !Flags_GetSwitch(play, this->actor.params & 0x3F)
+    VB_DOOR_BE_LOCKED,
+    // Vanilla condition: ((doorActor->params >> 7) & 7) == 3
+    VB_DOOR_PLAY_SCENE_TRANSITION,
 
     /*** Play Cutscenes ***/
 
@@ -381,6 +389,7 @@ typedef enum {
 
     /*** Give Items ***/
 
+    VB_SHORT_CIRCUIT_GIVE_ITEM_PROCESS,
     VB_FREEZE_ON_SKULL_TOKEN,
     // Opt: *EnBox
     VB_GIVE_ITEM_FROM_CHEST,

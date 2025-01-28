@@ -75,7 +75,7 @@ void DrawPresetSelector(PresetType presetTypeId) {
         }
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         if (presetTypeId == PRESET_TYPE_RANDOMIZER){
-            Rando::Context::GetInstance()->GetSettings()->ReloadOptions();
+            Rando::Settings::GetInstance()->ReloadOptions();
         }
     }
     ImGui::PopStyleVar(1);

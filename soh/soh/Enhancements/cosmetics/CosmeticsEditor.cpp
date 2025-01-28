@@ -32,7 +32,6 @@ extern "C" {
 #include "objects/object_st/object_st.h"
 #include "objects/object_gi_boomerang/object_gi_boomerang.h"
 #include "objects/object_gi_liquid/object_gi_liquid.h"
-#include "objects/object_gi_bow/object_gi_bow.h"
 #include "objects/object_gi_hearts/object_gi_hearts.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_gi_sword_1/object_gi_sword_1.h"
@@ -47,9 +46,8 @@ extern "C" {
 #include "objects/object_gjyo_objects/object_gjyo_objects.h"
 #include "textures/nintendo_rogo_static/nintendo_rogo_static.h"
 #include "objects/object_gi_rabit_mask/object_gi_rabit_mask.h"
-#include "overlays/ovl_Boss_Ganon2/ovl_Boss_Ganon2.h"
 #include "overlays/ovl_Magic_Wind/ovl_Magic_Wind.h"
-#include "textures/nintendo_rogo_static/nintendo_rogo_static.h"
+
 extern PlayState* gPlayState;
 void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
 void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const char* patchName, int destinationIndex, int sourceIndex);
@@ -74,7 +72,9 @@ std::map<CosmeticGroup, const char*> groupLabels = {
     { COSMETICS_GROUP_SWORDS,       "Swords" },
     { COSMETICS_GROUP_GLOVES,       "Gloves" },
     { COSMETICS_GROUP_EQUIPMENT,    "Equipment" },
-    { COSMETICS_GROUP_KEY,          "Keys" },
+    { COSMETICS_GROUP_KEYRING,      "Keyring" },
+    { COSMETICS_GROUP_SMALL_KEYS,   "Small Keys" },
+    { COSMETICS_GROUP_BOSS_KEYS,    "Boss Keys" },
     { COSMETICS_GROUP_CONSUMABLE,   "Consumables" },
     { COSMETICS_GROUP_HUD,          "HUD" },
     { COSMETICS_GROUP_KALEIDO,      "Pause Menu" },
@@ -253,34 +253,41 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Consumable.GoldRupee",         "Gold Rupee",               COSMETICS_GROUP_CONSUMABLE,   ColorRGBA8(255, 190,  55, 255), false, true, true),
     COSMETIC_OPTION("Consumable.SilverRupee",       "Silver Rupee",             COSMETICS_GROUP_CONSUMABLE,   ColorRGBA8(255, 255, 255, 255), false, true, true),
 
-    COSMETIC_OPTION("Key.KeyringRing",              "Key Ring Ring",            COSMETICS_GROUP_KEY,          ColorRGBA8(255, 255, 255, 255), false, true, false),
-    COSMETIC_OPTION("Key.ForestSmallBase",          "Forest Small Key",         COSMETICS_GROUP_KEY,          ColorRGBA8(255, 255, 255, 255), false, true, false),
-    COSMETIC_OPTION("Key.ForestEmblem",               "Forest Key Gem/Emblem",      COSMETICS_GROUP_KEY,          ColorRGBA8(255, 0,   0,   255), false, true, true),
-    COSMETIC_OPTION("Key.ForestBossBase",           "Forest Boss Key",          COSMETICS_GROUP_KEY,          ColorRGBA8(255, 255, 0,   255), false, true, false),
-    COSMETIC_OPTION("Key.FireSmallBase",            "Fire Small Key",           COSMETICS_GROUP_KEY,          ColorRGBA8(255, 255, 255, 255), false, true, false),
-    COSMETIC_OPTION("Key.FireEmblem",                 "Fire Key Gem/Emblem",        COSMETICS_GROUP_KEY,          ColorRGBA8(255, 0,   0,   255), false, true, true),
-    COSMETIC_OPTION("Key.FireBossBase",             "Fire Boss Key",            COSMETICS_GROUP_KEY,          ColorRGBA8(255, 255, 0,   255), false, true, false),
-    COSMETIC_OPTION("Key.WaterSmallBase",           "Water Small Key",          COSMETICS_GROUP_KEY,          ColorRGBA8(255, 255, 255, 255), false, true, false),
-    COSMETIC_OPTION("Key.WaterEmblem",                "Water Key Gem/Emblem",       COSMETICS_GROUP_KEY,          ColorRGBA8(255, 0,   0,   255), false, true, true),
-    COSMETIC_OPTION("Key.WaterBossBase",            "Water Boss Key",           COSMETICS_GROUP_KEY,          ColorRGBA8(255, 255, 0,   255), false, true, false),
-    COSMETIC_OPTION("Key.SpiritSmallBase",          "Spirit Small Key",         COSMETICS_GROUP_KEY,          ColorRGBA8(255, 255, 255, 255), false, true, false),
-    COSMETIC_OPTION("Key.SpiritEmblem",               "Spirit Key Gem/Emblem",      COSMETICS_GROUP_KEY,          ColorRGBA8(255, 0,   0,   255), false, true, true),
-    COSMETIC_OPTION("Key.SpiritBossBase",           "Spirit Boss Key",          COSMETICS_GROUP_KEY,          ColorRGBA8(255, 255, 0,   255), false, true, false),
-    COSMETIC_OPTION("Key.ShadowSmallBase",          "Shadow Small Key",         COSMETICS_GROUP_KEY,          ColorRGBA8(255, 255, 255, 255), false, true, false),
-    COSMETIC_OPTION("Key.ShadowEmblem",               "Shadow Key Gem/Emblem",      COSMETICS_GROUP_KEY,          ColorRGBA8(255, 0,   0,   255), false, true, true),
-    COSMETIC_OPTION("Key.ShadowBossBase",           "Shadow Boss Key",          COSMETICS_GROUP_KEY,          ColorRGBA8(255, 255, 0,   255), false, true, false),
-    COSMETIC_OPTION("Key.WellSmallBase",            "Well Small Key",           COSMETICS_GROUP_KEY,          ColorRGBA8(255, 255, 255, 255), false, true, false),
-    COSMETIC_OPTION("Key.WellEmblem",                 "Well Key Emblem",            COSMETICS_GROUP_KEY,          ColorRGBA8(255, 0,   0,   255), false, true, true),
-    COSMETIC_OPTION("Key.FortSmallBase",            "Fortress Small Key",       COSMETICS_GROUP_KEY,          ColorRGBA8(255, 255, 255, 255), false, true, false),
-    COSMETIC_OPTION("Key.FortEmblem",                 "Fortress Key Emblem",        COSMETICS_GROUP_KEY,          ColorRGBA8(255, 0,   0,   255), false, true, true),
-    COSMETIC_OPTION("Key.GTGSmallBase",             "GTG Small Key",            COSMETICS_GROUP_KEY,          ColorRGBA8(255, 255, 255, 255), false, true, false),
-    COSMETIC_OPTION("Key.GTGEmblem",                  "GTG Key Emblem",             COSMETICS_GROUP_KEY,          ColorRGBA8(255, 0,   0,   255), false, true, true),
-    COSMETIC_OPTION("Key.GanonsSmallBase",          "Ganon's Small Key",        COSMETICS_GROUP_KEY,          ColorRGBA8(255, 255, 255, 255), false, true, false),
-    COSMETIC_OPTION("Key.GanonsEmblem",               "Ganon's Key Gem/Emblem",     COSMETICS_GROUP_KEY,          ColorRGBA8(255, 0,   0,   255), false, true, true),
-    COSMETIC_OPTION("Key.GanonsBossBase",           "Ganon's Boss Key",         COSMETICS_GROUP_KEY,          ColorRGBA8(255, 255, 0,   255), false, true, false),
-    //COSMETIC_OPTION("Key.ChestGameSmallBase",     "Chest Game Key",           COSMETICS_GROUP_KEY,          ColorRGBA8(255, 255, 255, 255), false, true, false),
-    //COSMETIC_OPTION("Key.ChestGameEmblem",          "Chest Game Key Emblem",      COSMETICS_GROUP_KEY,          ColorRGBA8(255, 0,   0,   255), false, true, true),
-    COSMETIC_OPTION("Key.Skeleton",                 "Skeleton Key",             COSMETICS_GROUP_KEY,          ColorRGBA8(255, 255, 170, 255), false, true, false),
+    COSMETIC_OPTION("Key.KeyringRing",              "Key Ring Ring",            COSMETICS_GROUP_KEYRING,      ColorRGBA8(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("Key.ForestSmallBody",          "Forest Small Key Body",    COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("Key.ForestSmallEmblem",        "Forest Small Key Emblem",  COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(4,   195, 46,  255), false, true, false),
+    COSMETIC_OPTION("Key.ForestBossBody",           "Forest Boss Key Body",     COSMETICS_GROUP_BOSS_KEYS,    ColorRGBA8(255, 255, 0,   255), false, true, false),
+    COSMETIC_OPTION("Key.ForestBossGem",            "Forest Boss Key Gem",      COSMETICS_GROUP_BOSS_KEYS,    ColorRGBA8(255, 0,   0,   255), false, true, false),
+    COSMETIC_OPTION("Key.FireSmallBody",            "Fire Small Key Body",      COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("Key.FireSmallEmblem",          "Fire Small Key Emblem",    COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(237, 95,  95,  255), false, true, false),
+    COSMETIC_OPTION("Key.FireBossBody",             "Fire Boss Key Body",       COSMETICS_GROUP_BOSS_KEYS,    ColorRGBA8(255, 255, 0,   255), false, true, false),
+    COSMETIC_OPTION("Key.FireBossGem",              "Fire Boss Key Gem",        COSMETICS_GROUP_BOSS_KEYS,    ColorRGBA8(255, 0,   0,   255), false, true, false),
+    COSMETIC_OPTION("Key.WaterSmallBody",           "Water Small Key Body",     COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("Key.WaterSmallEmblem",         "Water Small Key Emblem",   COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(85,  180, 223, 255), false, true, false),
+    COSMETIC_OPTION("Key.WaterBossBody",            "Water Boss Key Body",      COSMETICS_GROUP_BOSS_KEYS,    ColorRGBA8(255, 255, 0,   255), false, true, false),
+    COSMETIC_OPTION("Key.WaterBossGem",             "Water Boss Key Gem",       COSMETICS_GROUP_BOSS_KEYS,    ColorRGBA8(255, 0,   0,   255), false, true, false),
+    COSMETIC_OPTION("Key.SpiritSmallBody",          "Spirit Small Key Body",    COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("Key.SpiritSmallEmblem",        "Spirit Small Key Emblem",  COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(222, 158, 47,  255), false, true, false),
+    COSMETIC_OPTION("Key.SpiritBossBody",           "Spirit Boss Key Body",     COSMETICS_GROUP_BOSS_KEYS,    ColorRGBA8(255, 255, 0,   255), false, true, false),
+    COSMETIC_OPTION("Key.SpiritBossGem",            "Spirit Boss Key Gem",      COSMETICS_GROUP_BOSS_KEYS,    ColorRGBA8(255, 0,   0,   255), false, true, false),
+    COSMETIC_OPTION("Key.ShadowSmallBody",          "Shadow Small Key Body",    COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("Key.ShadowSmallEmblem",        "Shadow Small Key Emblem",  COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(126, 16,  177, 255), false, true, false),
+    COSMETIC_OPTION("Key.ShadowBossBody",           "Shadow Boss Key Body",     COSMETICS_GROUP_BOSS_KEYS,    ColorRGBA8(255, 255, 0,   255), false, true, false),
+    COSMETIC_OPTION("Key.ShadowBossGem",            "Shadow Boss Key Gem",      COSMETICS_GROUP_BOSS_KEYS,    ColorRGBA8(255, 0,   0,   255), false, true, false),
+    COSMETIC_OPTION("Key.GanonsSmallBody",          "Ganons Small Key Body",    COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("Key.GanonsSmallEmblem",        "Ganons Small Key Emblem",  COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(80,  80,  80,  255), false, true, false),
+    COSMETIC_OPTION("Key.GanonsBossBody",           "Ganons Boss Key Body",     COSMETICS_GROUP_BOSS_KEYS,    ColorRGBA8(255, 255, 0,   255), false, true, false),
+    COSMETIC_OPTION("Key.GanonsBossGem",            "Ganons Boss Key Gem",      COSMETICS_GROUP_BOSS_KEYS,    ColorRGBA8(255, 0,   0,   255), false, true, false),
+
+    COSMETIC_OPTION("Key.WellSmallBody",            "Well Small Key",           COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("Key.WellSmallEmblem",          "Well Small Key Emblem",    COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(227, 110, 255, 255), false, true, true),
+    COSMETIC_OPTION("Key.FortSmallBody",            "Fortress Small Key",       COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("Key.FortSmallEmblem",          "Fortress Small Key Emblem",COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("Key.GTGSmallBody",             "GTG Small Key",            COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("Key.GTGSmallEmblem",           "GTG Small Key Emblem",     COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(221, 212, 60,  255), false, true, true),
+    //COSMETIC_OPTION("Key.ChestGameSmallBody",     "Chest Game Key",           COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(255, 255, 255, 255), false, true, false),
+    //COSMETIC_OPTION("Key.ChestGameEmblem",        "Chest Game Key Emblem",    COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(255, 0,   0,   255), false, true, true),
+    COSMETIC_OPTION("Key.Skeleton",                 "Skeleton Key",             COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(255, 255, 170, 255), false, true, false),
     
     COSMETIC_OPTION("HUD.AButton",                  "A Button",                 COSMETICS_GROUP_HUD,          ColorRGBA8( 90,  90, 255, 255), false, true, false),
     COSMETIC_OPTION("HUD.BButton",                  "B Button",                 COSMETICS_GROUP_HUD,          ColorRGBA8(  0, 150,   0, 255), false, true, false),
@@ -1475,10 +1482,16 @@ void Reset_Option_Double(const char* Button_Title, const char* name) {
 
 void DrawSillyTab() {
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
+
+    UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
+
     if (UIWidgets::EnhancementCheckbox("Let It Snow", CVAR_GENERAL("LetItSnow"))) {
        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
     UIWidgets::Tooltip("Makes snow fall, changes chest texture colors to red and green, etc, for December holidays.\nWill reset on restart outside of December 23-25.");
+
+    UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
+
     if (UIWidgets::EnhancementSliderFloat("Link Body Scale: %.3fx", "##Link_BodyScale", CVAR_COSMETIC("Link.BodyScale.Value"), 0.001f, 0.025f, "", 0.01f, true)) {
         CVarSetInteger(CVAR_COSMETIC("Link.BodyScale.Changed"), 1);
     }
@@ -1494,31 +1507,64 @@ void DrawSillyTab() {
             player->actor.scale.z = 0.01f;
         }
     }
+
+    UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
+
     if (UIWidgets::EnhancementSliderFloat("Link Head Scale: %.2fx", "##Link_HeadScale", CVAR_COSMETIC("Link.HeadScale.Value"), 0.4f, 4.0f, "", 1.0f, false)) {
         CVarSetInteger(CVAR_COSMETIC("Link.HeadScale.Changed"), 1);
     }
     Reset_Option_Double("Reset##Link_HeadScale", CVAR_COSMETIC("Link.HeadScale"));
+
+    UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
+
     if (UIWidgets::EnhancementSliderFloat("Link Sword Scale: %f", "##Link_SwordScale", CVAR_COSMETIC("Link.SwordScale.Value"), 1.0f, 2.5f, "", 1.0f, false)) {
         CVarSetInteger(CVAR_COSMETIC("Link.SwordScale.Changed"), 1);
     }
     Reset_Option_Double("Reset##Link_SwordScale", CVAR_COSMETIC("Link.SwordScale"));
+
+    UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
+
     UIWidgets::EnhancementSliderFloat("Bunny Hood Length: %f", "##BunnyHood_EarLength", CVAR_COSMETIC("BunnyHood.EarLength"), -300.0f, 1000.0f, "", 0.0f, false);
     Reset_Option_Single("Reset##BunnyHood_EarLength", CVAR_COSMETIC("BunnyHood.EarLength"));
+
+    UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
+
     UIWidgets::EnhancementSliderFloat("Bunny Hood Spread: %f", "##BunnyHood_EarSpread", CVAR_COSMETIC("BunnyHood.EarSpread"), -300.0f, 500.0f, "", 0.0f, false);
     Reset_Option_Single("Reset##BunnyHood_EarSpread", CVAR_COSMETIC("BunnyHood.EarSpread"));
+
+    UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
+
     UIWidgets::EnhancementSliderFloat("Goron Neck Length: %f", "##Goron_NeckLength", CVAR_COSMETIC("Goron.NeckLength"), 0.0f, 5000.0f, "", 0.0f, false);
     Reset_Option_Single("Reset##Goron_NeckLength", CVAR_COSMETIC("Goron.NeckLength"));
+
+    UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
+
     UIWidgets::EnhancementCheckbox("Unfix Goron Spin", CVAR_COSMETIC("UnfixGoronSpin"));
+
+    UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
+
     UIWidgets::EnhancementSliderFloat("Fairies Size: %f", "##Fairies_Size", CVAR_COSMETIC("Fairies.Size"), 0.25f, 5.0f, "", 1.0f, false);
     Reset_Option_Single("Reset##Fairies_Size", CVAR_COSMETIC("Fairies.Size"));
+
+    UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
+
     UIWidgets::EnhancementSliderFloat("N64 Logo Spin Speed: %f", "##N64Logo_SpinSpeed", CVAR_COSMETIC("N64Logo.SpinSpeed"), 0.25f, 5.0f, "", 1.0f, false);
     Reset_Option_Single("Reset##N64Logo_SpinSpeed", CVAR_COSMETIC("N64Logo.SpinSpeed"));
+
+    UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
+
     UIWidgets::EnhancementSliderFloat("Moon Size: %f", "##Moon_Size", CVAR_COSMETIC("Moon.Size"), 0.5f, 2.0f, "", 1.0f, false);
     Reset_Option_Single("Reset##Moon_Size", CVAR_COSMETIC("Moon.Size"));
+
+    UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
+
     if (UIWidgets::EnhancementSliderFloat("Kak Windmill Speed: %f", "##Kak_Windmill_Speed", CVAR_COSMETIC("Kak.Windmill_Speed.Value"), 100.0f, 6000.0f, "", 100.0f, false)) {
         CVarSetInteger(CVAR_COSMETIC("Kak.Windmill_Speed.Changed"), 1);
     }
     Reset_Option_Double("Reset##Kak_Windmill_Speed", CVAR_COSMETIC("Kak.Windmill_Speed"));
+
+    UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
+
     ImGui::EndDisabled();
 }
 
@@ -1748,6 +1794,7 @@ void DrawCosmeticGroup(CosmeticGroup cosmeticGroup) {
             DrawCosmeticRow(cosmeticOption);
         }
     }
+    UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
 }
 
 static const char* colorSchemes[2] = {
@@ -1755,92 +1802,95 @@ static const char* colorSchemes[2] = {
     "Gamecube",
 };
 
-void CosmeticsEditorWindow::ApplyDungeonEmblemColors(){
-    CVarSetColor(cosmeticOptions["Key.ForestEmblem"].cvar, {0, 255, 0, 255});
-    CVarSetInteger(cosmeticOptions["Key.ForestEmblem"].changedCvar, 1);
-    cosmeticOptions["Key.ForestEmblem"].currentColor = {0, 255/255.0f, 0, 255/255.0f};
+void CosmeticsEditorWindow::ApplyDungeonKeyColors() {
+    // Keyring
+    ResetColor(cosmeticOptions.at("Key.KeyringRing"));
 
-    CVarSetColor(cosmeticOptions["Key.FireEmblem"].cvar, {255, 30, 0, 255});
-    CVarSetInteger(cosmeticOptions["Key.FireEmblem"].changedCvar, 1);
-    cosmeticOptions["Key.FireEmblem"].currentColor = {255/255.0f, 30/255.0f, 0, 255/255.0f};
+    // Forest Temple
+    CVarSetColor(cosmeticOptions["Key.ForestSmallBody"].cvar, { 4, 195, 46, 255 });
+    CVarSetInteger(cosmeticOptions["Key.ForestSmallBody"].changedCvar, 1);
+    cosmeticOptions["Key.ForestSmallBody"].currentColor = { 4 / 255.0f, 195 / 255.0f, 46 / 255.0f, 255 / 255.0f };
+    ResetColor(cosmeticOptions.at("Key.ForestSmallEmblem"));
+
+    ResetColor(cosmeticOptions.at("Key.ForestBossBody"));
+    CVarSetColor(cosmeticOptions["Key.ForestBossGem"].cvar, { 0, 255, 0, 255 });
+    CVarSetInteger(cosmeticOptions["Key.ForestBossGem"].changedCvar, 1);
+    cosmeticOptions["Key.ForestBossGem"].currentColor = { 0, 255 / 255.0f, 0, 255 / 255.0f };
+
+    // Fire Temple
+    CVarSetColor(cosmeticOptions["Key.FireSmallBody"].cvar, { 237, 95, 95, 255 });
+    CVarSetInteger(cosmeticOptions["Key.FireSmallBody"].changedCvar, 1);
+    cosmeticOptions["Key.FireSmallBody"].currentColor = { 237 / 255.0f, 95 / 255.0f, 95 / 255.0f, 255 / 255.0f };
+    ResetColor(cosmeticOptions.at("Key.FireSmallEmblem"));
+
+    ResetColor(cosmeticOptions.at("Key.FireBossBody"));
+    CVarSetColor(cosmeticOptions["Key.FireBossGem"].cvar, { 255, 30, 0, 255 });
+    CVarSetInteger(cosmeticOptions["Key.FireBossGem"].changedCvar, 1);
+    cosmeticOptions["Key.FireBossGem"].currentColor = { 255 / 255.0f, 30 / 255.0f, 0, 255 / 255.0f };
+
+    // Water Temple
+    CVarSetColor(cosmeticOptions["Key.WaterSmallBody"].cvar, { 85, 180, 223, 255 });
+    CVarSetInteger(cosmeticOptions["Key.WaterSmallBody"].changedCvar, 1);
+    cosmeticOptions["Key.WaterSmallBody"].currentColor = { 85 / 255.0f, 180 / 255.0f, 223 / 255.0f, 255 / 255.0f };
+    ResetColor(cosmeticOptions.at("Key.WaterSmallEmblem"));
+
+    ResetColor(cosmeticOptions.at("Key.WaterBossBody"));
+    CVarSetColor(cosmeticOptions["Key.WaterBossGem"].cvar, { 0, 137, 255, 255 });
+    CVarSetInteger(cosmeticOptions["Key.WaterBossGem"].changedCvar, 1);
+    cosmeticOptions["Key.WaterBossGem"].currentColor = { 0, 137 / 255.0f, 255 / 255.0f, 255 / 255.0f };
+
+    // Spirit Temple
+    CVarSetColor(cosmeticOptions["Key.SpiritSmallBody"].cvar, { 222, 158, 47, 255 });
+    CVarSetInteger(cosmeticOptions["Key.SpiritSmallBody"].changedCvar, 1);
+    cosmeticOptions["Key.SpiritSmallBody"].currentColor = { 222 / 255.0f, 158 / 255.0f, 47 / 255.0f, 255 / 255.0f };
+    ResetColor(cosmeticOptions.at("Key.SpiritSmallEmblem"));
+
+    ResetColor(cosmeticOptions.at("Key.SpiritBossBody"));
+    CVarSetColor(cosmeticOptions["Key.SpiritBossGem"].cvar, { 255, 85, 0, 255 });
+    CVarSetInteger(cosmeticOptions["Key.SpiritBossGem"].changedCvar, 1);
+    cosmeticOptions["Key.SpiritBossGem"].currentColor = { 255 / 255.0f, 85 / 255.0f, 0, 255 / 255.0f };
+
+    // Shadow Temple
+    CVarSetColor(cosmeticOptions["Key.ShadowSmallBody"].cvar, { 126, 16, 177, 255 });
+    CVarSetInteger(cosmeticOptions["Key.ShadowSmallBody"].changedCvar, 1);
+    cosmeticOptions["Key.ShadowSmallBody"].currentColor = { 126 / 255.0f, 16 / 255.0f, 177 / 255.0f, 255 / 255.0f };
+    ResetColor(cosmeticOptions.at("Key.ShadowSmallEmblem"));
+
+    ResetColor(cosmeticOptions.at("Key.ShadowBossBody"));
+    CVarSetColor(cosmeticOptions["Key.ShadowBossGem"].cvar, { 153, 0, 255, 255 });
+    CVarSetInteger(cosmeticOptions["Key.ShadowBossGem"].changedCvar, 1);
+    cosmeticOptions["Key.ShadowBossGem"].currentColor = { 153 / 255.0f, 0, 255 / 255.0f, 255 / 255.0f };
+
+    // Ganon's Tower
+    CVarSetColor(cosmeticOptions["Key.GanonsSmallBody"].cvar, { 80, 80, 80, 255 });
+    CVarSetInteger(cosmeticOptions["Key.GanonsSmallBody"].changedCvar, 1);
+    cosmeticOptions["Key.GanonsSmallBody"].currentColor = { 80 / 255.0f, 80 / 255.0f, 80 / 255.0f, 255 / 255.0f };
+    ResetColor(cosmeticOptions.at("Key.GanonsSmallEmblem"));
+
+    CVarSetColor(cosmeticOptions["Key.GanonsBossBody"].cvar, { 80, 80, 80, 255 });
+    CVarSetInteger(cosmeticOptions["Key.GanonsBossBody"].changedCvar, 1);
+    cosmeticOptions["Key.GanonsBossBody"].currentColor = { 80 / 255.0f, 80 / 255.0f, 80 / 255.0f, 255 / 255.0f };
+    CVarSetColor(cosmeticOptions["Key.GanonsBossGem"].cvar, { 255, 0, 0, 255 });
+    CVarSetInteger(cosmeticOptions["Key.GanonsBossGem"].changedCvar, 1);
+    cosmeticOptions["Key.GanonsBossGem"].currentColor = { 255 / 255.0f, 0, 0, 255 / 255.0f };
     
-    CVarSetColor(cosmeticOptions["Key.WaterEmblem"].cvar, {0, 137, 255, 255});
-    CVarSetInteger(cosmeticOptions["Key.WaterEmblem"].changedCvar, 1);
-    cosmeticOptions["Key.WaterEmblem"].currentColor = {0, 137/255.0f, 255/255.0f, 255/255.0f};
+    // Bottom of the Well
+    CVarSetColor(cosmeticOptions["Key.WellSmallBody"].cvar, { 227, 110, 255, 255 });
+    CVarSetInteger(cosmeticOptions["Key.WellSmallBody"].changedCvar, 1);
+    cosmeticOptions["Key.WellSmallBody"].currentColor = { 227 / 255.0f, 110 / 255.0f, 255 / 255.0f, 255 / 255.0f };
+    ResetColor(cosmeticOptions.at("Key.WellSmallEmblem"));
+
+    // Gerudo Training Ground
+    CVarSetColor(cosmeticOptions["Key.GTGSmallBody"].cvar, { 221, 212, 60, 255 });
+    CVarSetInteger(cosmeticOptions["Key.GTGSmallBody"].changedCvar, 1);
+    cosmeticOptions["Key.GTGSmallBody"].currentColor = { 221 / 255.0f, 212 / 255.0f, 60 / 255.0f, 255 / 255.0f };
+    ResetColor(cosmeticOptions.at("Key.GTGSmallEmblem"));
     
-    CVarSetColor(cosmeticOptions["Key.SpiritEmblem"].cvar, {255, 85, 0, 255});
-    CVarSetInteger(cosmeticOptions["Key.SpiritEmblem"].changedCvar, 1);
-    cosmeticOptions["Key.SpiritEmblem"].currentColor = {255/255.0f, 85/255.0f, 0, 255/255.0f};
-    
-    CVarSetColor(cosmeticOptions["Key.ShadowEmblem"].cvar, {153, 0, 255, 255});
-    CVarSetInteger(cosmeticOptions["Key.ShadowEmblem"].changedCvar, 1);
-    cosmeticOptions["Key.ShadowEmblem"].currentColor = {153/255.0f, 0, 255/255.0f, 255/255.0f};
-    
-    CVarSetColor(cosmeticOptions["Key.WellEmblem"].cvar, { 255, 0, 188, 255});
-    CVarSetInteger(cosmeticOptions["Key.WellEmblem"].changedCvar, 1);
-    cosmeticOptions["Key.WellEmblem"].currentColor = {255/255.0f, 0, 188/255.0f, 255/255.0f};
-    
-    CVarSetColor(cosmeticOptions["Key.GTGEmblem"].cvar, {255, 255, 0, 255});
-    CVarSetInteger(cosmeticOptions["Key.GTGEmblem"].changedCvar, 1);
-    cosmeticOptions["Key.GTGEmblem"].currentColor = {255/255.0f, 255/255.0f, 0, 255/255.0f};
-    
-    CVarSetColor(cosmeticOptions["Key.FortEmblem"].cvar, {255, 255, 203, 255});
-    CVarSetInteger(cosmeticOptions["Key.FortEmblem"].changedCvar, 1);
-    cosmeticOptions["Key.FortEmblem"].currentColor = { 255/255.0f, 255/255.0f, 203/255.0f, 255/255.0f};
-    
-    CVarSetColor(cosmeticOptions["Key.GanonsEmblem"].cvar, {255, 0, 0, 255});
-    CVarSetInteger(cosmeticOptions["Key.GanonsEmblem"].changedCvar, 1);
-    cosmeticOptions["Key.GanonsEmblem"].currentColor = {255/255.0f, 0, 0, 255/255.0f};
-
-    //CVarSetColor(cosmeticOptions["Key.ChestGameEmblem"].cvar, {255, 255, 0, 255});
-    //CVarSetInteger(cosmeticOptions["Key.ChestGameEmblem"].changedCvar, 1);
-    //cosmeticOptions["Key.ChestGameEmblem"].currentColor = {255/255.0f, 255/255.0f, 0, 255/255.0f};
-}
-
-void CosmeticsEditorWindow::ApplyDungeonBaseColors(){
-    CVarSetColor(cosmeticOptions["Key.ForestSmallBase"].cvar, {4, 195, 46, 255});
-    CVarSetInteger(cosmeticOptions["Key.ForestSmallBase"].changedCvar, 1);
-    cosmeticOptions["Key.ForestSmallBase"].currentColor = {4/255.0f, 195/255.0f, 46/255.0f, 255/255.0f};
-
-    CVarSetColor(cosmeticOptions["Key.FireSmallBase"].cvar, {237, 95, 95, 255});
-    CVarSetInteger(cosmeticOptions["Key.FireSmallBase"].changedCvar, 1);
-    cosmeticOptions["Key.FireSmallBase"].currentColor = {237/255.0f, 95/255.0f, 95/255.0f, 255/255.0f};
-
-    CVarSetColor(cosmeticOptions["Key.WaterSmallBase"].cvar, {85, 180, 223, 255});
-    CVarSetInteger(cosmeticOptions["Key.WaterSmallBase"].changedCvar, 1);
-    cosmeticOptions["Key.WaterSmallBase"].currentColor = {85/255.0f, 180/255.0f, 223/255.0f, 255/255.0f};
-
-    CVarSetColor(cosmeticOptions["Key.SpiritSmallBase"].cvar, {222, 158, 47, 255});
-    CVarSetInteger(cosmeticOptions["Key.SpiritSmallBase"].changedCvar, 1);
-    cosmeticOptions["Key.SpiritSmallBase"].currentColor = {222/255.0f, 158/255.0f, 47/255.0f, 255/255.0f};
-
-    CVarSetColor(cosmeticOptions["Key.ShadowSmallBase"].cvar, {126, 16, 177, 255});
-    CVarSetInteger(cosmeticOptions["Key.ShadowSmallBase"].changedCvar, 1);
-    cosmeticOptions["Key.ShadowSmallBase"].currentColor = {126/255.0f, 16/255.0f, 177/255.0f, 255/255.0f};
-
-    CVarSetColor(cosmeticOptions["Key.WellSmallBase"].cvar, {227, 110, 255, 255});
-    CVarSetInteger(cosmeticOptions["Key.WellSmallBase"].changedCvar, 1);
-    cosmeticOptions["Key.WellSmallBase"].currentColor = {227/255.0f, 110/255.0f, 255/255.0f, 255/255.0f};
-
-    CVarSetColor(cosmeticOptions["Key.GTGSmallBase"].cvar, {221, 212, 60, 255});
-    CVarSetInteger(cosmeticOptions["Key.GTGSmallBase"].changedCvar, 1);
-    cosmeticOptions["Key.GTGSmallBase"].currentColor = {221/255.0f, 212/255.0f, 60/255.0f, 255/255.0f};
-
-    CVarSetColor(cosmeticOptions["Key.FortSmallBase"].cvar, {255, 255, 255, 255});
-    CVarSetInteger(cosmeticOptions["Key.FortSmallBase"].changedCvar, 1);
-    cosmeticOptions["Key.FortSmallBase"].currentColor = {255/255.0f, 255/255.0f, 255/255.0f, 255/255.0f};
-
-    CVarSetColor(cosmeticOptions["Key.GanonsSmallBase"].cvar, {80, 80, 80, 255});
-    CVarSetInteger(cosmeticOptions["Key.GanonsSmallBase"].changedCvar, 1);
-    cosmeticOptions["Key.GanonsSmallBase"].currentColor = {80/255.0f, 80/255.0f, 80/255.0f, 255/255.0f};
-
-    CVarSetColor(cosmeticOptions["Key.GanonsBossBase"].cvar, {80, 80, 80, 255});
-    CVarSetInteger(cosmeticOptions["Key.GanonsBossBase"].changedCvar, 1);
-    cosmeticOptions["Key.GanonsBossBase"].currentColor = {80/255.0f, 80/255.0f, 80/255.0f, 255/255.0f};
-
-    //CVarSetColor(cosmeticOptions["Key.ChestGameSmallBase"].cvar, {255, 255, 0, 255});
-    //CVarSetInteger(cosmeticOptions["Key.ChestGameSmallBase"].changedCvar, 1);
-    //cosmeticOptions["Key.ChestGameSmallBase"].currentColor = {255/255.0f, 255/255.0f, 0, 255/255.0f};
+    // Gerudo Fortress
+    CVarSetColor(cosmeticOptions["Key.FortSmallBody"].cvar, { 255, 255, 255, 255 });
+    CVarSetInteger(cosmeticOptions["Key.FortSmallBody"].changedCvar, 1);
+    cosmeticOptions["Key.FortSmallBody"].currentColor = { 255 / 255.0f, 255 / 255.0f, 255 / 255.0f, 255 / 255.0f };
+    ResetColor(cosmeticOptions.at("Key.FortSmallEmblem"));
 }
 
 void CosmeticsEditorWindow::DrawElement() {
@@ -1853,15 +1903,6 @@ void CosmeticsEditorWindow::DrawElement() {
         "For example, if you have custom Link model, then the Link's Hair color option will most likely not apply."
     );
 
-    if (ImGui::Button("Apply Dungeon Gem/Emblem Colors", ImVec2(ImGui::GetContentRegionAvail().x / 2, 30.0f))) {
-        ApplyDungeonEmblemColors();
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    }
-    ImGui::SameLine();
-    if (ImGui::Button("Apply Dungeon Base Colors", ImVec2(ImGui::GetContentRegionAvail().x, 30.0f))) {
-        ApplyDungeonBaseColors();
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    }
     if (CVarGetInteger(CVAR_COSMETIC("AdvancedMode"), 0)) {
         if (ImGui::Button("Lock All Advanced", ImVec2(ImGui::GetContentRegionAvail().x / 2, 30.0f))) {
             for (auto& [id, cosmeticOption] : cosmeticOptions) {
@@ -1950,16 +1991,40 @@ void CosmeticsEditorWindow::DrawElement() {
 
     if (ImGui::BeginTabBar("CosmeticsContextTabBar", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         if (ImGui::BeginTabItem("Link & Items")) {
+
+            UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
+
             DrawCosmeticGroup(COSMETICS_GROUP_LINK);
             DrawCosmeticGroup(COSMETICS_GROUP_GLOVES);
             DrawCosmeticGroup(COSMETICS_GROUP_MIRRORSHIELD);
             DrawCosmeticGroup(COSMETICS_GROUP_EQUIPMENT);
             DrawCosmeticGroup(COSMETICS_GROUP_SWORDS);
-            DrawCosmeticGroup(COSMETICS_GROUP_KEY);
             DrawCosmeticGroup(COSMETICS_GROUP_CONSUMABLE);
             ImGui::EndTabItem();
         }
+
+        if (ImGui::BeginTabItem("Keys")) {
+
+            UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
+
+            if (ImGui::Button("Give all keys dungeon-specific colors", ImVec2(300.0f, 30.0f))) {
+                ApplyDungeonKeyColors();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            }
+
+            UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
+
+            DrawCosmeticGroup(COSMETICS_GROUP_KEYRING);
+            DrawCosmeticGroup(COSMETICS_GROUP_SMALL_KEYS);
+            DrawCosmeticGroup(COSMETICS_GROUP_BOSS_KEYS);
+
+            ImGui::EndTabItem();
+        }
+
         if (ImGui::BeginTabItem("Effects")) {
+
+            UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
+
             DrawCosmeticGroup(COSMETICS_GROUP_MAGIC);
             DrawCosmeticGroup(COSMETICS_GROUP_ARROWS);
             DrawCosmeticGroup(COSMETICS_GROUP_SPIN_ATTACK);
@@ -1973,9 +2038,15 @@ void CosmeticsEditorWindow::DrawElement() {
                 CVarClear(CVAR_COSMETIC("Trails.Duration.Changed"));
                 Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             }
+
+            UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
+
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("World & NPCs")) {
+
+            UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
+
             DrawCosmeticGroup(COSMETICS_GROUP_WORLD);
             DrawCosmeticGroup(COSMETICS_GROUP_NAVI);
             DrawCosmeticGroup(COSMETICS_GROUP_IVAN);
@@ -1987,6 +2058,9 @@ void CosmeticsEditorWindow::DrawElement() {
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("HUD")) {
+
+            UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
+
             DrawCosmeticGroup(COSMETICS_GROUP_HUD);
             DrawCosmeticGroup(COSMETICS_GROUP_TITLE);
             ImGui::EndTabItem();
