@@ -185,7 +185,7 @@ void OnZTitleUpdatePressButtonToSkip(void* gameState) {
     if (CHECK_BTN_ANY(titleContext->state.input->press.button, BTN_A | BTN_B | BTN_START)) {
         // Force the title state to start fading to black and to last roughly 5 frames based on current fade in/out
         titleContext->visibleDuration = 0;
-        titleContext->addAlpha = (255 - titleContext->coverAlpha) / 5;
+        titleContext->addAlpha = std::max<int16_t>((255 - titleContext->coverAlpha) / 5, 1);
     }
 }
 
