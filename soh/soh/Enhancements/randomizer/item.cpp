@@ -383,7 +383,7 @@ bool Item::IsBottleItem() const {
 bool Item::IsMajorItem() const {
     const auto ctx = Context::GetInstance();
     if (type == ITEMTYPE_TOKEN) {
-        return ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS) || ctx->GetSettings()->LACSCondition() == RO_LACS_TOKENS;
+        return ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS) || ctx->LACSCondition() == RO_LACS_TOKENS;
     }
 
     if (type == ITEMTYPE_DROP || type == ITEMTYPE_EVENT || type == ITEMTYPE_SHOP || type == ITEMTYPE_MAP ||

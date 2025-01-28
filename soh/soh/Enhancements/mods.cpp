@@ -535,7 +535,7 @@ void UpdateMirrorModeState(int32_t sceneNum) {
                         (sceneNum == SCENE_GANON_BOSS);
 
     if (mirroredMode == MIRRORED_WORLD_RANDOM_SEEDED || mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED) {
-        uint32_t seed = sceneNum + (IS_RANDO ? Rando::Context::GetInstance()->GetSettings()->GetSeed()
+        uint32_t seed = sceneNum + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed()
                                              : gSaveContext.ship.stats.fileCreatedAt);
         Random_Init(seed);
     }

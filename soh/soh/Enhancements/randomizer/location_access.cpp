@@ -267,7 +267,7 @@ void RegionTable_Init() {
     }, {
         //Locations
         LOCATION(RC_LINKS_POCKET,       true),
-        LOCATION(RC_TRIFORCE_COMPLETED, logic->GetSaveContext()->ship.quest.data.randomizer.triforcePiecesCollected >= ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).GetContextOptionIndex() + 1;),
+        LOCATION(RC_TRIFORCE_COMPLETED, logic->GetSaveContext()->ship.quest.data.randomizer.triforcePiecesCollected >= ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).Get() + 1;),
         LOCATION(RC_SARIA_SONG_HINT,    logic->CanUse(RG_SARIAS_SONG)),
     }, {
         //Exits
@@ -409,7 +409,7 @@ void ReplaceAllInString(std::string& s, std::string const& toReplace, std::strin
 std::string CleanCheckConditionString(std::string condition) {
     ReplaceAllInString(condition, "logic->", "");
     ReplaceAllInString(condition, "ctx->", "");
-    ReplaceAllInString(condition, ".GetContextOptionIndex()", "");
+    ReplaceAllInString(condition, ".Get()", "");
     ReplaceAllInString(condition, "GetSaveContext()->", "");
     return condition;
 }

@@ -44,12 +44,12 @@ bool GenerateRandomizer(std::set<RandomizerCheck> excludedLocations, std::set<Ra
         return false; // TODO: Not sure if this is correct but I don't think we support this functionality yet anyway.
     }
 
-    ctx->GetSettings()->SetSeedString(seedInput);
-    uint32_t seedHash = boost::hash_32<std::string>{}(ctx->GetSettings()->GetSeedString());
-    ctx->GetSettings()->SetSeed(seedHash & 0xFFFFFFFF);
+    ctx->SetSeedString(seedInput);
+    uint32_t seedHash = boost::hash_32<std::string>{}(ctx->GetSeedString());
+    ctx->SetSeed(seedHash & 0xFFFFFFFF);
 
     ctx->ClearItemLocations();
-    int ret = Playthrough::Playthrough_Init(ctx->GetSettings()->GetSeed(), excludedLocations, enabledTricks);
+    int ret = Playthrough::Playthrough_Init(ctx->GetSeed(), excludedLocations, enabledTricks);
     if (ret < 0) {
         if (ret == -1) { // Failed to generate after 5 tries
             SPDLOG_ERROR("Failed to generate after 5 tries.");
@@ -58,14 +58,6 @@ bool GenerateRandomizer(std::set<RandomizerCheck> excludedLocations, std::set<Ra
             SPDLOG_ERROR("Error {} with fill.", ret);
             return false;
         }
-    }
-
-    // Restore settings that were set to a specific value for vanilla logic
-    if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
-        for (Rando::Option* setting : ctx->GetSettings()->VanillaLogicDefaults) {
-            setting->RestoreDelayedOption();
-        }
-        ctx->GetOption(RSK_KEYSANITY).RestoreDelayedOption();
     }
 
     StopPerformanceTimer(PT_WHOLE_SEED);

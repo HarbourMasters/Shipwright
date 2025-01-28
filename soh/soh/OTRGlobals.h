@@ -28,7 +28,7 @@ struct ExtensionEntry {
 };
 
 extern std::unordered_map<std::string, ExtensionEntry> ExtensionCache;
-#include "Enhancements/randomizer/context.h"
+#include "Enhancements/randomizer/settings.h"
 
 const std::string customMessageTableID = "BaseGameOverrides";
 const std::string appShortName = "soh";

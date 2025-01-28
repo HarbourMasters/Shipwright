@@ -17,7 +17,7 @@ extern PlayState* gPlayState;
 
 #define FSi OTRGlobals::Instance->gRandoContext->GetFishsanity()
 
-#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetContextOptionIndex()
+#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).Get()
 
 /**
  * @brief Parallel list of pond fish checks for both ages

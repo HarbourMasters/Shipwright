@@ -40,7 +40,7 @@ void RegionTable_Init_Kakariko() {
         Entrance(RR_KAK_BAZAAR,               []{return logic->IsAdult && logic->AtDay && logic->CanOpenOverworldDoor(RG_KAK_BAZAAR_KEY);}),
         Entrance(RR_KAK_SHOOTING_GALLERY,     []{return logic->IsAdult && logic->AtDay && logic->CanOpenOverworldDoor(RG_KAK_SHOOTING_GALLERY_KEY);}),
         Entrance(RR_KAK_WELL,                 []{return logic->IsAdult || logic->DrainWell || logic->CanUse(RG_IRON_BOOTS);}),
-        Entrance(RR_KAK_POTION_SHOP_FRONT,    []{return logic->AtDay || logic->IsChild && logic->CanOpenOverworldDoor(RG_KAK_POTION_SHOP_KEY);}),
+        Entrance(RR_KAK_POTION_SHOP_FRONT,    []{return (logic->AtDay || logic->IsChild) && logic->CanOpenOverworldDoor(RG_KAK_POTION_SHOP_KEY);}),
         Entrance(RR_KAK_REDEAD_GROTTO,        []{return logic->CanOpenBombGrotto();}),
         Entrance(RR_KAK_IMPAS_LEDGE,          []{return (logic->IsChild && logic->AtDay) || (logic->IsAdult && ctx->GetTrickOption(RT_VISIBLE_COLLISION));}),
         Entrance(RR_KAK_WATCHTOWER,           []{return logic->IsAdult || logic->AtDay || logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_LONGSHOT) || (ctx->GetTrickOption(RT_KAK_TOWER_GS) && logic->CanJumpslashExceptHammer());}),
