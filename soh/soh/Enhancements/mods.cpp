@@ -852,6 +852,10 @@ void RegisterPatchCustomEquipmentDlistsHandler() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() { 
         UpdatePatchCustomEquipmentDlists(); 
     });
+
+   GameInteractor::Instance->RegisterGameHook<GameInteractor::OnAssetAltChange>([]() {
+        UpdatePatchCustomEquipmentDlists();
+    });
 }
 
 void RegisterResetNaviTimer() {
