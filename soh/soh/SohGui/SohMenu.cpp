@@ -22,7 +22,7 @@ extern std::unordered_map<s16, const char*> warpPointSceneList;
 extern void Warp();
 
 namespace SohGui {
-extern std::shared_ptr<SohMenu> mBenMenu;
+extern std::shared_ptr<SohMenu> mSohMenu;
 void FreeLookPitchMinMax() {
     f32 maxY = CVarGetFloat("gEnhancements.Camera.FreeLook.MaxPitch", 72.0f);
     f32 minY = CVarGetFloat("gEnhancements.Camera.FreeLook.MinPitch", -49.0f);
@@ -30,7 +30,7 @@ void FreeLookPitchMinMax() {
     CVarSetFloat("gEnhancements.Camera.FreeLook.MinPitch", std::min(maxY, minY));
 }
 
-using namespace UIWidgets;
+using namespace UIWidgets2;
 
 void SohMenu::AddSidebarEntry(std::string sectionName, std::string sidebarName, uint32_t columnCount) {
     assert(!sectionName.empty());
@@ -122,9 +122,9 @@ void SohMenu::AddSettings() {
         .CVar("gSettings.Menu.SidebarSearch")
         .Callback([](WidgetInfo& info) {
             if (CVarGetInteger("gSettings.Menu.SidebarSearch", 0)) {
-                mBenMenu->InsertSidebarSearch();
+                mSohMenu->InsertSidebarSearch();
             } else {
-                mBenMenu->RemoveSidebarSearch();
+                mSohMenu->RemoveSidebarSearch();
             }
         })
         .Options(CheckboxOptions().Tooltip(
@@ -227,11 +227,11 @@ void SohMenu::AddSettings() {
                 CVarGetFloat(CVAR_INTERNAL_RESOLUTION, 1));
         })
         .PreFunc([](WidgetInfo& info) {
-            if (mBenMenu->disabledMap.at(DISABLE_FOR_ADVANCED_RESOLUTION_ON).active &&
-                mBenMenu->disabledMap.at(DISABLE_FOR_VERTICAL_RES_TOGGLE_ON).active) {
+            if (mSohMenu->disabledMap.at(DISABLE_FOR_ADVANCED_RESOLUTION_ON).active &&
+                mSohMenu->disabledMap.at(DISABLE_FOR_VERTICAL_RES_TOGGLE_ON).active) {
                 info.activeDisables.push_back(DISABLE_FOR_ADVANCED_RESOLUTION_ON);
                 info.activeDisables.push_back(DISABLE_FOR_VERTICAL_RES_TOGGLE_ON);
-            } else if (mBenMenu->disabledMap.at(DISABLE_FOR_LOW_RES_MODE_ON).active) {
+            } else if (mSohMenu->disabledMap.at(DISABLE_FOR_LOW_RES_MODE_ON).active) {
                 info.activeDisables.push_back(DISABLE_FOR_LOW_RES_MODE_ON);
             }
         })
@@ -272,7 +272,7 @@ void SohMenu::AddSettings() {
             }
         })
         .PreFunc([](WidgetInfo& info) {
-            if (mBenMenu->disabledMap.at(DISABLE_FOR_MATCH_REFRESH_RATE_ON).active)
+            if (mSohMenu->disabledMap.at(DISABLE_FOR_MATCH_REFRESH_RATE_ON).active)
                 info.activeDisables.push_back(DISABLE_FOR_MATCH_REFRESH_RATE_ON);
         })
         .Options(IntSliderOptions().Tooltip(tooltip).Min(20).Max(maxFps).DefaultValue(20));
@@ -284,15 +284,15 @@ void SohMenu::AddSettings() {
                 Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             }
         })
-        .PreFunc([](WidgetInfo& info) { info.isHidden = mBenMenu->disabledMap.at(DISABLE_FOR_NOT_DIRECTX).active; })
+        .PreFunc([](WidgetInfo& info) { info.isHidden = mSohMenu->disabledMap.at(DISABLE_FOR_NOT_DIRECTX).active; })
         .Options(ButtonOptions().Tooltip("Matches interpolation value to the current game's window refresh rate."));
     AddWidget(path, "Match Refresh Rate", WIDGET_CVAR_CHECKBOX)
         .CVar("gMatchRefreshRate")
-        .PreFunc([](WidgetInfo& info) { info.isHidden = mBenMenu->disabledMap.at(DISABLE_FOR_DIRECTX).active; })
+        .PreFunc([](WidgetInfo& info) { info.isHidden = mSohMenu->disabledMap.at(DISABLE_FOR_DIRECTX).active; })
         .Options(CheckboxOptions().Tooltip("Matches interpolation value to the current game's window refresh rate."));
     AddWidget(path, "Jitter fix : >= % d FPS", WIDGET_CVAR_SLIDER_INT)
         .CVar("gExtraLatencyThreshold")
-        .PreFunc([](WidgetInfo& info) { info.isHidden = mBenMenu->disabledMap.at(DISABLE_FOR_NOT_DIRECTX).active; })
+        .PreFunc([](WidgetInfo& info) { info.isHidden = mSohMenu->disabledMap.at(DISABLE_FOR_NOT_DIRECTX).active; })
         .Options(IntSliderOptions()
                      .Tooltip("When Interpolation FPS setting is at least this threshold, add one frame of input "
                               "lag (e.g. 16.6 ms for 60 FPS) in order to avoid jitter. This setting allows the "
@@ -304,18 +304,18 @@ void SohMenu::AddSettings() {
     AddWidget(path, "Renderer API (Needs reload)", WIDGET_VIDEO_BACKEND);
     AddWidget(path, "Enable Vsync", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_VSYNC_ENABLED)
-        .PreFunc([](WidgetInfo& info) { info.isHidden = mBenMenu->disabledMap.at(DISABLE_FOR_NO_VSYNC).active; })
+        .PreFunc([](WidgetInfo& info) { info.isHidden = mSohMenu->disabledMap.at(DISABLE_FOR_NO_VSYNC).active; })
         .Options(CheckboxOptions().Tooltip("Enables Vsync."));
     AddWidget(path, "Windowed Fullscreen", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SDL_WINDOWED_FULLSCREEN)
         .PreFunc([](WidgetInfo& info) {
-            info.isHidden = mBenMenu->disabledMap.at(DISABLE_FOR_NO_WINDOWED_FULLSCREEN).active;
+            info.isHidden = mSohMenu->disabledMap.at(DISABLE_FOR_NO_WINDOWED_FULLSCREEN).active;
         })
         .Options(CheckboxOptions().Tooltip("Enables Windowed Fullscreen Mode."));
     AddWidget(path, "Allow multi-windows", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENABLE_MULTI_VIEWPORTS)
         .PreFunc(
-            [](WidgetInfo& info) { info.isHidden = mBenMenu->disabledMap.at(DISABLE_FOR_NO_MULTI_VIEWPORT).active; })
+            [](WidgetInfo& info) { info.isHidden = mSohMenu->disabledMap.at(DISABLE_FOR_NO_MULTI_VIEWPORT).active; })
         .Options(CheckboxOptions().Tooltip(
             "Allows multiple windows to be opened at once. Requires a reload to take effect."));
     AddWidget(path, "Texture Filter (Needs reload)", WIDGET_CVAR_COMBOBOX)
@@ -392,6 +392,7 @@ void SohMenu::AddEnhancements() {
     AddMenuEntry("Enhancements", "gSettings.Menu.EnhancementsSidebarSection");
     WidgetPath path = { "Enhancements", "Camera", SECTION_COLUMN_1 };
     AddSidebarEntry("Enhancements", "Camera", 3);
+    AddWidget(path, "Filler1", WIDGET_TEXT);
     
     // HUD Editor
     //path = { "Enhancements", "HUD Editor", SECTION_COLUMN_1 };
@@ -415,66 +416,67 @@ void SohMenu::AddDevTools() {
     AddMenuEntry("Developer Tools", "gSettings.Menu.DevToolsSidebarSection");
     AddSidebarEntry("Developer Tools", "General", 3);
     WidgetPath path = { "Developer Tools", "General", SECTION_COLUMN_1 };
-    AddWidget(path, "Popout Menu", WIDGET_CVAR_CHECKBOX)
-        .CVar("gSettings.Menu.Popout")
-        .Options(CheckboxOptions().Tooltip("Changes the menu display from overlay to windowed."));
-    
-    // dev tools windows
-    path = { "Developer Tools", "Collision Viewer", SECTION_COLUMN_1 };
-    AddSidebarEntry("Developer Tools", "Collision Viewer", 1);
-    AddWidget(path, "Popout Collision Viewer", WIDGET_WINDOW_BUTTON)
-        .CVar("gWindows.CollisionViewer")
-        .Options(ButtonOptions().Tooltip("Makes collision visible on screen").Size(Sizes::Inline))
-        .WindowName("Collision Viewer");
+    AddWidget(path, "Filler1", WIDGET_TEXT);
+    //AddWidget(path, "Popout Menu", WIDGET_CVAR_CHECKBOX)
+    //    .CVar("gSettings.Menu.Popout")
+    //    .Options(CheckboxOptions().Tooltip("Changes the menu display from overlay to windowed."));
+    //
+    //// dev tools windows
+    //path = { "Developer Tools", "Collision Viewer", SECTION_COLUMN_1 };
+    //AddSidebarEntry("Developer Tools", "Collision Viewer", 1);
+    //AddWidget(path, "Popout Collision Viewer", WIDGET_WINDOW_BUTTON)
+    //    .CVar("gWindows.CollisionViewer")
+    //    .Options(ButtonOptions().Tooltip("Makes collision visible on screen").Size(Sizes::Inline))
+    //    .WindowName("Collision Viewer");
 
-    path = { "Developer Tools", "Stats", SECTION_COLUMN_1 };
-    AddSidebarEntry("Developer Tools", "Stats", 1);
-    AddWidget(path, "Popout Stats", WIDGET_WINDOW_BUTTON)
-        .CVar("gOpenWindows.Stats")
-        .Options(ButtonOptions().Tooltip(
-            "Shows the stats window, with your FPS and frametimes, and the OS you're playing on"))
-        .WindowName("Stats");
+    //path = { "Developer Tools", "Stats", SECTION_COLUMN_1 };
+    //AddSidebarEntry("Developer Tools", "Stats", 1);
+    //AddWidget(path, "Popout Stats", WIDGET_WINDOW_BUTTON)
+    //    .CVar("gOpenWindows.Stats")
+    //    .Options(ButtonOptions().Tooltip(
+    //        "Shows the stats window, with your FPS and frametimes, and the OS you're playing on"))
+    //    .WindowName("Stats");
 
-    path = { "Developer Tools", "Console", SECTION_COLUMN_1 };
-    AddSidebarEntry("Developer Tools", "Console", 1);
-    AddWidget(path, "Popout Console", WIDGET_WINDOW_BUTTON)
-        .CVar("gOpenWindows.Console")
-        .Options(ButtonOptions().Tooltip(
-            "Enables the console window, allowing you to input commands. Type help for some examples"))
-        .WindowName("Console");
+    //path = { "Developer Tools", "Console", SECTION_COLUMN_1 };
+    //AddSidebarEntry("Developer Tools", "Console", 1);
+    //AddWidget(path, "Popout Console", WIDGET_WINDOW_BUTTON)
+    //    .CVar("gOpenWindows.Console")
+    //    .Options(ButtonOptions().Tooltip(
+    //        "Enables the console window, allowing you to input commands. Type help for some examples"))
+    //    .WindowName("Console");
 
-    path = { "Developer Tools", "Gfx Debugger", SECTION_COLUMN_1 };
-    AddSidebarEntry("Developer Tools", "Gfx Debugger", 1);
-    AddWidget(path, "Popout Gfx Debugger", WIDGET_WINDOW_BUTTON)
-        .CVar("gOpenWindows.GfxDebugger")
-        .Options(ButtonOptions().Tooltip(
-            "Enables the Gfx Debugger window, allowing you to input commands, type help for some examples"))
-        .WindowName("GfxDebuggerWindow");
+    //path = { "Developer Tools", "Gfx Debugger", SECTION_COLUMN_1 };
+    //AddSidebarEntry("Developer Tools", "Gfx Debugger", 1);
+    //AddWidget(path, "Popout Gfx Debugger", WIDGET_WINDOW_BUTTON)
+    //    .CVar("gOpenWindows.GfxDebugger")
+    //    .Options(ButtonOptions().Tooltip(
+    //        "Enables the Gfx Debugger window, allowing you to input commands, type help for some examples"))
+    //    .WindowName("GfxDebuggerWindow");
 
-    path = { "Developer Tools", "Save Editor", SECTION_COLUMN_1 };
-    AddSidebarEntry("Developer Tools", "Save Editor", 1);
-    AddWidget(path, "Popout Save Editor", WIDGET_WINDOW_BUTTON)
-        .CVar("gWindows.SaveEditor")
-        .Options(ButtonOptions().Tooltip("Enables the Save Editor window, allowing you to edit your save file"))
-        .WindowName("Save Editor");
+    //path = { "Developer Tools", "Save Editor", SECTION_COLUMN_1 };
+    //AddSidebarEntry("Developer Tools", "Save Editor", 1);
+    //AddWidget(path, "Popout Save Editor", WIDGET_WINDOW_BUTTON)
+    //    .CVar("gWindows.SaveEditor")
+    //    .Options(ButtonOptions().Tooltip("Enables the Save Editor window, allowing you to edit your save file"))
+    //    .WindowName("Save Editor");
 
-    path = { "Developer Tools", "Actor Viewer", SECTION_COLUMN_1 };
-    AddSidebarEntry("Developer Tools", "Actor Viewer", 1);
-    AddWidget(path, "Popout Actor Viewer", WIDGET_WINDOW_BUTTON)
-        .CVar("gWindows.ActorViewer")
-        .Options(ButtonOptions().Tooltip("Enables the Actor Viewer window, allowing you to view actors in the world."))
-        .WindowName("Actor Viewer");
+    //path = { "Developer Tools", "Actor Viewer", SECTION_COLUMN_1 };
+    //AddSidebarEntry("Developer Tools", "Actor Viewer", 1);
+    //AddWidget(path, "Popout Actor Viewer", WIDGET_WINDOW_BUTTON)
+    //    .CVar("gWindows.ActorViewer")
+    //    .Options(ButtonOptions().Tooltip("Enables the Actor Viewer window, allowing you to view actors in the world."))
+    //    .WindowName("Actor Viewer");
 
-    path = { "Developer Tools", "Event Log", SECTION_COLUMN_1 };
-    AddSidebarEntry("Developer Tools", "Event Log", 1);
-    AddWidget(path, "Popout Event Log", WIDGET_WINDOW_BUTTON)
-        .CVar("gWindows.EventLog")
-        .Options(ButtonOptions().Tooltip("Enables the event log window"))
-        .WindowName("Event Log");
+    //path = { "Developer Tools", "Event Log", SECTION_COLUMN_1 };
+    //AddSidebarEntry("Developer Tools", "Event Log", 1);
+    //AddWidget(path, "Popout Event Log", WIDGET_WINDOW_BUTTON)
+    //    .CVar("gWindows.EventLog")
+    //    .Options(ButtonOptions().Tooltip("Enables the event log window"))
+    //    .WindowName("Event Log");
 }
 
 SohMenu::SohMenu(const std::string& consoleVariable, const std::string& name)
-    : Menu(consoleVariable, name, 0, UIWidgets::Colors::LightBlue) {
+    : Menu(consoleVariable, name, 0, UIWidgets2::Colors::LightBlue) {
 }
 
 void SohMenu::InitElement() {

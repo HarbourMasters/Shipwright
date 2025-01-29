@@ -74,8 +74,8 @@ typedef enum {
 // evaluation
 using CVarVariant = std::variant<int32_t, const char*, float, Color_RGBA8, Color_RGB8>;
 using OptionsVariant =
-    std::variant<UIWidgets::ButtonOptions, UIWidgets::CheckboxOptions, UIWidgets::ComboboxOptions,
-                 UIWidgets::FloatSliderOptions, UIWidgets::IntSliderOptions, UIWidgets::WidgetOptions>;
+    std::variant<UIWidgets2::ButtonOptions, UIWidgets2::CheckboxOptions, UIWidgets2::ComboboxOptions,
+                 UIWidgets2::FloatSliderOptions, UIWidgets2::IntSliderOptions, UIWidgets2::WidgetOptions>;
 
 // All the info needed for display and search of all widgets in the menu.
 // `name` is the label displayed,
@@ -101,7 +101,7 @@ struct WidgetInfo {
     std::string name; // Used by all widgets
     const char* cVar; // Used by all widgets except
     WidgetType type;
-    std::shared_ptr<UIWidgets::WidgetOptions> options;
+    std::shared_ptr<UIWidgets2::WidgetOptions> options;
     std::variant<bool*, int32_t*, float*> valuePointer;
     WidgetFunc callback = nullptr;
     WidgetFunc preFunc = nullptr;
@@ -122,31 +122,31 @@ struct WidgetInfo {
             case WIDGET_VIDEO_BACKEND:
             case WIDGET_COMBOBOX:
             case WIDGET_CVAR_COMBOBOX:
-                options = std::make_shared<UIWidgets::ComboboxOptions>(std::get<UIWidgets::ComboboxOptions>(options_));
+                options = std::make_shared<UIWidgets2::ComboboxOptions>(std::get<UIWidgets2::ComboboxOptions>(options_));
                 break;
             case WIDGET_CHECKBOX:
             case WIDGET_CVAR_CHECKBOX:
-                options = std::make_shared<UIWidgets::CheckboxOptions>(std::get<UIWidgets::CheckboxOptions>(options_));
+                options = std::make_shared<UIWidgets2::CheckboxOptions>(std::get<UIWidgets2::CheckboxOptions>(options_));
                 break;
             case WIDGET_SLIDER_FLOAT:
             case WIDGET_CVAR_SLIDER_FLOAT:
                 options =
-                    std::make_shared<UIWidgets::FloatSliderOptions>(std::get<UIWidgets::FloatSliderOptions>(options_));
+                    std::make_shared<UIWidgets2::FloatSliderOptions>(std::get<UIWidgets2::FloatSliderOptions>(options_));
                 break;
             case WIDGET_SLIDER_INT:
             case WIDGET_CVAR_SLIDER_INT:
                 options =
-                    std::make_shared<UIWidgets::IntSliderOptions>(std::get<UIWidgets::IntSliderOptions>(options_));
+                    std::make_shared<UIWidgets2::IntSliderOptions>(std::get<UIWidgets2::IntSliderOptions>(options_));
                 break;
             case WIDGET_BUTTON:
             case WIDGET_WINDOW_BUTTON:
-                options = std::make_shared<UIWidgets::ButtonOptions>(std::get<UIWidgets::ButtonOptions>(options_));
+                options = std::make_shared<UIWidgets2::ButtonOptions>(std::get<UIWidgets2::ButtonOptions>(options_));
                 break;
             case WIDGET_TEXT:
             case WIDGET_SEPARATOR_TEXT:
             case WIDGET_SEPARATOR:
             default:
-                options = std::make_shared<UIWidgets::WidgetOptions>(std::get<UIWidgets::WidgetOptions>(options_));
+                options = std::make_shared<UIWidgets2::WidgetOptions>(std::get<UIWidgets2::WidgetOptions>(options_));
         }
         return *this;
     }
@@ -156,7 +156,7 @@ struct WidgetInfo {
         options->disabledTooltip = "";
         activeDisables.clear();
     }
-    WidgetInfo& Options(std::shared_ptr<UIWidgets::WidgetOptions> options_) {
+    WidgetInfo& Options(std::shared_ptr<UIWidgets2::WidgetOptions> options_) {
         options = options_;
         return *this;
     }

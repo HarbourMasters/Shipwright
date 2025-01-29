@@ -12,30 +12,30 @@
 #include "soh/ShipUtils.h"
 #include "soh/ShipInit.hpp"
 
-namespace UIWidgets {
+namespace UIWidgets2 {
 
     using SectionFunc = void(*)();
 
-    //struct TextFilters {
-    //    static int FilterNumbers(ImGuiInputTextCallbackData* data) {
-    //        if (data->EventChar < 256 && strchr("1234567890", (char)data->EventChar)) {
-    //            return 0;
-    //        }
-    //        return 1;
-    //    }
+    struct TextFilters {
+        static int FilterNumbers(ImGuiInputTextCallbackData* data) {
+            if (data->EventChar < 256 && strchr("1234567890", (char)data->EventChar)) {
+                return 0;
+            }
+            return 1;
+        }
 
-    //    static int FilterAlphaNum(ImGuiInputTextCallbackData* data) {
-    //        const char* alphanum = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWYZ0123456789";
-    //        if (data->EventChar < 256 && strchr(alphanum, (char)data->EventChar)) {
-    //            return 0;
-    //        }
-    //        return 1;
-    //    }
-    //};
+        static int FilterAlphaNum(ImGuiInputTextCallbackData* data) {
+            const char* alphanum = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWYZ0123456789";
+            if (data->EventChar < 256 && strchr(alphanum, (char)data->EventChar)) {
+                return 0;
+            }
+            return 1;
+        }
+    };
 
-    /*std::string WrappedText(const char* text, unsigned int charactersPerLine = 60);
+    std::string WrappedText(const char* text, unsigned int charactersPerLine = 60);
     std::string WrappedText(const std::string& text, unsigned int charactersPerLine = 60);
-    void Tooltip(const char* text);*/
+    void Tooltip(const char* text);
 
     // mostly in order for colors usable by the menu without custom text color
     enum Colors {
@@ -668,7 +668,7 @@ namespace UIWidgets {
         int32_t value = CVarGetInteger(cvarName, options.defaultIndex);
         if (Combobox<T>(label, &value, comboMap, options)) {
             CVarSetInteger(cvarName, value);
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             ShipInit::Init(cvarName);
             dirty = true;
         }
@@ -681,7 +681,7 @@ namespace UIWidgets {
         int32_t value = CVarGetInteger(cvarName, options.defaultIndex);
         if (Combobox<T>(label, &value, comboVector, options)) {
             CVarSetInteger(cvarName, value);
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             ShipInit::Init(cvarName);
             dirty = true;
         }
@@ -694,7 +694,7 @@ namespace UIWidgets {
         int32_t value = CVarGetInteger(cvarName, options.defaultIndex);
         if (Combobox<T>(label, &value, comboArray, options)) {
             CVarSetInteger(cvarName, value);
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             ShipInit::Init(cvarName);
             dirty = true;
         }

@@ -14,7 +14,7 @@ class Menu : public GuiWindow {
     using GuiWindow::GuiWindow;
 
     Menu(const std::string& cVar, const std::string& name, uint8_t searchSidebarIndex_ = 0,
-         UIWidgets::Colors menuThemeIndex_ = UIWidgets::Colors::LightBlue);
+         UIWidgets2::Colors menuThemeIndex_ = UIWidgets2::Colors::LightBlue);
 
     void InitElement() override;
     void DrawElement() override;
@@ -24,7 +24,7 @@ class Menu : public GuiWindow {
     void RemoveSidebarSearch();
     void UpdateWindowBackendObjects();
 
-    void MenuDrawItem(WidgetInfo& widget, uint32_t width, UIWidgets::Colors menuThemeIndex);
+    void MenuDrawItem(WidgetInfo& widget, uint32_t width, UIWidgets2::Colors menuThemeIndex);
     void AddMenuEntry(std::string entryName, const char* entryCvar);
     std::unordered_map<uint32_t, disabledInfo>& GetDisabledMap();
 
@@ -37,7 +37,7 @@ class Menu : public GuiWindow {
     uint32_t DrawSearchResults(std::string& menuSearchText);
     ImGuiTextFilter menuSearch;
     uint8_t searchSidebarIndex;
-    UIWidgets::Colors defaultThemeIndex;
+    UIWidgets2::Colors defaultThemeIndex;
     std::shared_ptr<std::vector<Ship::WindowBackend>> availableWindowBackends;
     std::unordered_map<Ship::WindowBackend, const char*> availableWindowBackendsMap;
     Ship::WindowBackend configWindowBackend;
@@ -48,7 +48,7 @@ class Menu : public GuiWindow {
         .columnCount = 1,
         .columnWidgets = { { { .name = "Sidebar Search",
                                .type = WIDGET_SEARCH,
-                               .options = std::make_shared<UIWidgets::WidgetOptions>(UIWidgets::WidgetOptions{}.Tooltip(
+                               .options = std::make_shared<UIWidgets2::WidgetOptions>(UIWidgets2::WidgetOptions{}.Tooltip(
                                    "Searches all menus for the given text, including tooltips.")) } } }
     };
 

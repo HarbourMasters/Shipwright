@@ -9,7 +9,7 @@ extern "C" {
 
 extern float OTRGetAspectRatio();
 
-extern f32 sNESFontWidths[160];
+//extern f32 sNESFontWidths[160];
 extern const char* fontTbl[156];
 //extern TexturePtr gItemIcons[131];
 //extern TexturePtr gQuestIcons[14];
@@ -80,15 +80,15 @@ extern "C" void Ship_CreateQuadVertexGroup(Vtx* vtxList, s32 xStart, s32 yStart,
     vtxList[3].v.tc[1] = height << 5;
 }
 
-extern "C" f32 Ship_GetCharFontWidthNES(u8 character) {
-    u8 adjustedChar = character - ' ';
-
-    if (adjustedChar >= ARRAY_COUNTU(sNESFontWidths)) {
-        return 0.0f;
-    }
-
-    return sNESFontWidths[adjustedChar];
-}
+//extern "C" f32 Ship_GetCharFontWidthNES(u8 character) {
+//    u8 adjustedChar = character - ' ';
+//
+//    if (adjustedChar >= ARRAY_COUNTU(sNESFontWidths)) {
+//        return 0.0f;
+//    }
+//
+//    return sNESFontWidths[adjustedChar];
+//}
 
 //extern "C" TexturePtr Ship_GetCharFontTextureNES(u8 character) {
 //    u8 adjustedChar = character - ' ';

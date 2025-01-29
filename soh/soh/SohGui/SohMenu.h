@@ -10,20 +10,20 @@
 namespace SohGui {
 
 static const std::unordered_map<int32_t, const char*> menuThemeOptions = {
-    { UIWidgets::Colors::Red, "Red" },
-    { UIWidgets::Colors::DarkRed, "Dark Red" },
-    { UIWidgets::Colors::Orange, "Orange" },
-    { UIWidgets::Colors::Green, "Green" },
-    { UIWidgets::Colors::DarkGreen, "Dark Green" },
-    { UIWidgets::Colors::LightBlue, "Light Blue" },
-    { UIWidgets::Colors::Blue, "Blue" },
-    { UIWidgets::Colors::DarkBlue, "Dark Blue" },
-    { UIWidgets::Colors::Indigo, "Indigo" },
-    { UIWidgets::Colors::Violet, "Violet" },
-    { UIWidgets::Colors::Purple, "Purple" },
-    { UIWidgets::Colors::Brown, "Brown" },
-    { UIWidgets::Colors::Gray, "Gray" },
-    { UIWidgets::Colors::DarkGray, "Dark Gray" },
+    { UIWidgets2::Colors::Red, "Red" },
+    { UIWidgets2::Colors::DarkRed, "Dark Red" },
+    { UIWidgets2::Colors::Orange, "Orange" },
+    { UIWidgets2::Colors::Green, "Green" },
+    { UIWidgets2::Colors::DarkGreen, "Dark Green" },
+    { UIWidgets2::Colors::LightBlue, "Light Blue" },
+    { UIWidgets2::Colors::Blue, "Blue" },
+    { UIWidgets2::Colors::DarkBlue, "Dark Blue" },
+    { UIWidgets2::Colors::Indigo, "Indigo" },
+    { UIWidgets2::Colors::Violet, "Violet" },
+    { UIWidgets2::Colors::Purple, "Purple" },
+    { UIWidgets2::Colors::Brown, "Brown" },
+    { UIWidgets2::Colors::Gray, "Gray" },
+    { UIWidgets2::Colors::DarkGray, "Dark Gray" },
 };
 
 static const std::unordered_map<int32_t, const char*> textureFilteringMap = {

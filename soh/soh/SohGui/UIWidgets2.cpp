@@ -1,4 +1,4 @@
-#include "UIWidgets.hpp"
+#include "UIWidgets2.hpp"
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <imgui_internal.h>
 #include <sstream>
@@ -8,7 +8,7 @@
 #include <libultraship/libultra/types.h>
 #include <spdlog/fmt/fmt.h>
 
-namespace UIWidgets {
+namespace UIWidgets2 {
 
 // Automatically adds newlines to break up text longer than a specified number of characters
 // Manually included newlines will still be respected and reset the line length
@@ -51,14 +51,14 @@ void Tooltip(const char* text) {
 void PushStyleMenu(const ImVec4& color) {
     ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(color.x, color.y, color.z, 0.5f));
     ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(color.x, color.y, color.z, 1.0f));
-    ImGui::PushStyleColor(ImGuiCol_PopupBg, UIWidgets::ColorValues.at(Colors::DarkGray));
-    ImGui::PushStyleColor(ImGuiCol_Border, UIWidgets::ColorValues.at(Colors::DarkGray));
+    ImGui::PushStyleColor(ImGuiCol_PopupBg, ColorValues.at(Colors::DarkGray));
+    ImGui::PushStyleColor(ImGuiCol_Border, ColorValues.at(Colors::DarkGray));
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(8.0f, 15.0f));
     ImGui::PushStyleVar(ImGuiStyleVar_PopupBorderSize, 3.0f);
 }
 
 void PushStyleMenu(Colors color) {
-    PushStyleMenu(UIWidgets::ColorValues.at(color));
+    PushStyleMenu(ColorValues.at(color));
 }
 
 void PopStyleMenu() {
@@ -112,7 +112,7 @@ void PushStyleButton(const ImVec4& color) {
 }
 
 void PushStyleButton(Colors color) {
-    PushStyleButton(UIWidgets::ColorValues.at(color));
+    PushStyleButton(ColorValues.at(color));
 }
 
 void PopStyleButton() {
@@ -165,7 +165,7 @@ void PushStyleCheckbox(const ImVec4& color) {
 }
 
 void PushStyleCheckbox(Colors color) {
-    PushStyleCheckbox(UIWidgets::ColorValues.at(color));
+    PushStyleCheckbox(ColorValues.at(color));
 }
 
 void PopStyleCheckbox() {
@@ -319,7 +319,7 @@ void PushStyleCombobox(const ImVec4& color) {
 }
 
 void PushStyleCombobox(Colors color) {
-    PushStyleCombobox(UIWidgets::ColorValues.at(color));
+    PushStyleCombobox(ColorValues.at(color));
 }
 
 void PopStyleCombobox() {
@@ -328,7 +328,7 @@ void PopStyleCombobox() {
 }
 
 void PushStyleSlider(Colors color_) {
-    const ImVec4& color = UIWidgets::ColorValues.at(color_);
+    const ImVec4& color = ColorValues.at(color_);
     ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(color.x, color.y, color.z, 1.0f));
     ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(color.x, color.y, color.z, 1.0f));
     ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4(color.x, color.y, color.z, 1.0f));
@@ -556,7 +556,7 @@ void DrawFlagArray32(const std::string& name, uint32_t& flags) {
         uint32_t bitMask = 1 << flagIndex;
         bool flag = (flags & bitMask) != 0;
         std::string label = fmt::format("0x{:02X} ({})", flagIndex, flagIndex);
-        if (UIWidgets::Checkbox(label.c_str(), &flag,
+        if (Checkbox(label.c_str(), &flag,
                                 CheckboxOptions{ { .tooltip = label.c_str() } }.LabelPosition(LabelPosition::None))) {
             if (flag) {
                 flags |= bitMask;
@@ -579,7 +579,7 @@ void DrawFlagArray16(const std::string& name, uint16_t& flags) {
         uint16_t bitMask = 1 << flagIndex;
         bool flag = (flags & bitMask) != 0;
         std::string label = fmt::format("0x{:02X} ({})", flagIndex, flagIndex);
-        if (UIWidgets::Checkbox(label.c_str(), &flag,
+        if (Checkbox(label.c_str(), &flag,
                                 CheckboxOptions{ { .tooltip = label.c_str() } }.LabelPosition(LabelPosition::None))) {
             if (flag) {
                 flags |= bitMask;
@@ -602,7 +602,7 @@ void DrawFlagArray8(const std::string& name, uint8_t& flags) {
         uint8_t bitMask = 1 << flagIndex;
         bool flag = (flags & bitMask) != 0;
         std::string label = fmt::format("0x{:02X} ({})", flagIndex, flagIndex);
-        if (UIWidgets::Checkbox(label.c_str(), &flag,
+        if (Checkbox(label.c_str(), &flag,
                                 CheckboxOptions{ { .tooltip = label.c_str() } }.LabelPosition(LabelPosition::None))) {
             if (flag) {
                 flags |= bitMask;
@@ -625,7 +625,7 @@ void DrawFlagArray8Mask(const std::string& name, uint8_t& flags) {
         uint8_t bitMask = 1 << flagIndex;
         bool flag = (flags & bitMask) != 0;
         std::string label = fmt::format("0x{:02X} ({})", bitMask, flagIndex);
-        if (UIWidgets::Checkbox(label.c_str(), &flag,
+        if (Checkbox(label.c_str(), &flag,
                                 CheckboxOptions{ { .tooltip = label.c_str() } }.LabelPosition(LabelPosition::None))) {
             if (flag) {
                 flags |= bitMask;
