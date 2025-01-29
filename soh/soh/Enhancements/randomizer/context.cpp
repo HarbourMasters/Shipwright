@@ -438,14 +438,6 @@ OptionValue& Context::GetOption(const RandomizerSettingKey key) {
     return mOptions[key];
 }
 
-OptionValue& Context::GetOption(const RandomizerTrick key) {
-    return mTrickOptions[key];
-}
-
-OptionValue& Context::GetOption(const RandomizerCheck key) {
-    return itemLocationTable[key].GetExcludedOption();
-}
-
 OptionValue& Context::GetTrickOption(const RandomizerTrick key) {
     return mTrickOptions[key];
 }

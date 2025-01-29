@@ -1,8 +1,8 @@
 #include "debugSaveEditor.h"
-#include "../../util.h"
-#include "../../ImGuiUtils.h"
-#include "../../OTRGlobals.h"
-#include "../../UIWidgets.hpp"
+#include "soh/util.h"
+#include "soh/SohGui/ImGuiUtils.h"
+#include "soh/OTRGlobals.h"
+#include "soh/SohGui/UIWidgets.hpp"
 
 #include <spdlog/fmt/fmt.h>
 #include <array>

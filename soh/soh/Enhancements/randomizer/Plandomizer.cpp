@@ -1,5 +1,5 @@
 #include "Plandomizer.h"
-#include "soh/UIWidgets.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include "soh/util.h"
 #include <vector>
 #include "soh/Notification/Notification.h"
@@ -10,7 +10,7 @@
 #include <filesystem>
 
 #include "soh/OTRGlobals.h"
-#include "soh/ImGuiUtils.h"
+#include "soh/SohGui/ImGuiUtils.h"
 #include "soh/Enhancements/randomizer/logic.h"
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
 #include "soh/Enhancements/randomizer/rando_hash.h"

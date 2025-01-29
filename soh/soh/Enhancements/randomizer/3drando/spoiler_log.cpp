@@ -159,7 +159,7 @@ static void WriteExcludedLocations() {
 
   for (size_t i = 1; i < Rando::Settings::GetInstance()->GetExcludeLocationsOptions().size(); i++) {
     for (const auto& location : Rando::Settings::GetInstance()->GetExcludeLocationsOptions()[i]) {
-      if (ctx->GetOption(location->GetKey()).Get() == RO_LOCATION_INCLUDE) {
+      if (ctx->GetLocationOption(static_cast<RandomizerCheck>(location->GetKey())).Get() == RO_LOCATION_INCLUDE) {
         continue;
       }
 

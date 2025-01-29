@@ -42,7 +42,6 @@
 #include "Fonts.h"
 #include <utils/StringHelper.h>
 #include "Enhancements/custom-message/CustomMessageManager.h"
-#include "ImGuiUtils.h"
 #include "Enhancements/presets.h"
 #include "util.h"
 #include <boost_custom/container_hash/hash_32.hpp>
@@ -70,7 +69,8 @@
 #include "Enhancements/custom-message/CustomMessageTypes.h"
 #include <functions.h>
 #include "Enhancements/item-tables/ItemTableManager.h"
-#include "SohGui.hpp"
+#include "soh/SohGui/SohGui.hpp"
+#include "soh/SohGui/ImGuiUtils.h"
 #include "ActorDB.h"
 #include "SaveManager.h"
 

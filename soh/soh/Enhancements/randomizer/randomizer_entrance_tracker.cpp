@@ -1,7 +1,7 @@
 #include "randomizer_entrance_tracker.h"
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
-#include "soh/UIWidgets.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 
 #include <map>
 #include <string>
