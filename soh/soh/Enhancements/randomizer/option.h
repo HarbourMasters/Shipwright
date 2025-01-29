@@ -1,6 +1,6 @@
 #pragma once
 
-#include "soh/UIWidgets.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 
 #include <cstdint>
 #include <set>

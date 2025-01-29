@@ -3,7 +3,7 @@
 #include <string>
 #include <cstdint>
 #include <libultraship/bridge.h>
-#include "soh/UIWidgets.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include <libultraship/libultraship.h>
 
 void clearCvars(std::vector<const char*> cvarsToClear) {
