@@ -1075,7 +1075,7 @@ namespace Rando {
         10 for OHKO.
         This is the number of shifts to apply, not a real multiplier
         */
-        uint8_t Multiplier = (ctx->GetOption(RSK_DAMAGE_MULTIPLIER).GetContextOptionIndex() < 6) ? ctx->GetOption(RSK_DAMAGE_MULTIPLIER).GetContextOptionIndex() : 10;
+        uint8_t Multiplier = (ctx->GetOption(RSK_DAMAGE_MULTIPLIER).Get() < 6) ? ctx->GetOption(RSK_DAMAGE_MULTIPLIER).Get() : 10;
         //(Hearts() << (2 + HasItem(RG_DOUBLE_DEFENSE))) is quarter hearts after DD
         //>> Multiplier halves on normal and does nothing on half, meaning we're working with half hearts on normal damage 
         return ((Hearts() << (2 + HasItem(RG_DOUBLE_DEFENSE))) >> Multiplier) + 
@@ -1205,21 +1205,21 @@ namespace Rando {
     bool Logic::CanBuildRainbowBridge(){
         return ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_ALWAYS_OPEN)      ||
                (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_VANILLA)         && HasItem(RG_SHADOW_MEDALLION) && HasItem(RG_SPIRIT_MEDALLION) && CanUse(RG_LIGHT_ARROWS)) ||
-               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_STONES)          && StoneCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG_REWARD)) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_STONE_COUNT).GetContextOptionIndex()) ||
-               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_MEDALLIONS)      && MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG_REWARD)) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT).GetContextOptionIndex()) ||
-               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEON_REWARDS) && StoneCount() + MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG_REWARD)) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).GetContextOptionIndex()) ||
-               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEONS)        && DungeonCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG_REWARD)) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).GetContextOptionIndex()) ||
-               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS)          && GetGSCount() >= ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).GetContextOptionIndex()) ||
+               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_STONES)          && StoneCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG_REWARD)) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_STONE_COUNT).Get()) ||
+               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_MEDALLIONS)      && MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG_REWARD)) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT).Get()) ||
+               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEON_REWARDS) && StoneCount() + MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG_REWARD)) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).Get()) ||
+               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEONS)        && DungeonCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG_REWARD)) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).Get()) ||
+               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS)          && GetGSCount() >= ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).Get()) ||
                (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_GREG)            && HasItem(RG_GREG_RUPEE));
     }
 
     bool Logic::CanTriggerLACS(){
-        return (ctx->GetSettings()->LACSCondition() == RO_LACS_VANILLA    && HasItem(RG_SHADOW_MEDALLION) && HasItem(RG_SPIRIT_MEDALLION)) ||
-               (ctx->GetSettings()->LACSCondition() == RO_LACS_STONES     && StoneCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >= ctx->GetOption(RSK_LACS_STONE_COUNT).GetContextOptionIndex()) ||
-               (ctx->GetSettings()->LACSCondition() == RO_LACS_MEDALLIONS && MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >= ctx->GetOption(RSK_LACS_MEDALLION_COUNT).GetContextOptionIndex()) ||
-               (ctx->GetSettings()->LACSCondition() == RO_LACS_REWARDS    && StoneCount() + MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >= ctx->GetOption(RSK_LACS_REWARD_COUNT).GetContextOptionIndex()) ||
-               (ctx->GetSettings()->LACSCondition() == RO_LACS_DUNGEONS   && DungeonCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >= ctx->GetOption(RSK_LACS_DUNGEON_COUNT).GetContextOptionIndex()) ||
-               (ctx->GetSettings()->LACSCondition() == RO_LACS_TOKENS     && GetGSCount() >= ctx->GetOption(RSK_LACS_TOKEN_COUNT).GetContextOptionIndex());
+        return (ctx->LACSCondition() == RO_LACS_VANILLA    && HasItem(RG_SHADOW_MEDALLION) && HasItem(RG_SPIRIT_MEDALLION)) ||
+               (ctx->LACSCondition() == RO_LACS_STONES     && StoneCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >= ctx->GetOption(RSK_LACS_STONE_COUNT).Get()) ||
+               (ctx->LACSCondition() == RO_LACS_MEDALLIONS && MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >= ctx->GetOption(RSK_LACS_MEDALLION_COUNT).Get()) ||
+               (ctx->LACSCondition() == RO_LACS_REWARDS    && StoneCount() + MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >= ctx->GetOption(RSK_LACS_REWARD_COUNT).Get()) ||
+               (ctx->LACSCondition() == RO_LACS_DUNGEONS   && DungeonCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >= ctx->GetOption(RSK_LACS_DUNGEON_COUNT).Get()) ||
+               (ctx->LACSCondition() == RO_LACS_TOKENS     && GetGSCount() >= ctx->GetOption(RSK_LACS_TOKEN_COUNT).Get());
     }
 
     bool Logic::SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmount) {
@@ -1429,6 +1429,18 @@ namespace Rando {
         { RG_ZORA_SAPPHIRE,          QUEST_ZORA_SAPPHIRE },
         { RG_STONE_OF_AGONY,         QUEST_STONE_OF_AGONY },
         { RG_GERUDO_MEMBERSHIP_CARD, QUEST_GERUDO_CARD },
+    };
+
+    std::map<uint32_t, uint32_t> BottleRandomizerGetToItemID = {
+        { RG_BOTTLE_WITH_RED_POTION, ITEM_POTION_RED },
+        { RG_BOTTLE_WITH_GREEN_POTION, ITEM_POTION_GREEN },
+        { RG_BOTTLE_WITH_BLUE_POTION, ITEM_POTION_BLUE },
+        { RG_BOTTLE_WITH_FAIRY, ITEM_FAIRY },
+        { RG_BOTTLE_WITH_FISH, ITEM_FISH },
+        { RG_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE },
+        { RG_BOTTLE_WITH_BUGS, ITEM_BUG },
+        { RG_BOTTLE_WITH_POE, ITEM_POE },
+        { RG_BOTTLE_WITH_BIG_POE, ITEM_BIG_POE },
     };
 
     uint32_t HookshotLookup[3] = { ITEM_NONE, ITEM_HOOKSHOT, ITEM_LONGSHOT };
@@ -1675,7 +1687,11 @@ namespace Rando {
                     }
                     slot++;
                 }
-                mSaveContext->inventory.items[slot] = item.GetGIEntry()->itemId;
+                uint16_t itemId = item.GetGIEntry()->itemId;
+                if (BottleRandomizerGetToItemID.contains(randoGet)) {
+                    itemId = BottleRandomizerGetToItemID[randoGet];
+                }
+                mSaveContext->inventory.items[slot] = itemId;
             }   break;
             case RG_RUTOS_LETTER:
                 SetEventChkInf(EVENTCHKINF_OBTAINED_RUTOS_LETTER, state);
@@ -2201,7 +2217,7 @@ namespace Rando {
         //Bottle Count
         Bottles    = 0;
         NumBottles = 0;
-        CanEmptyBigPoes = true;
+        CanEmptyBigPoes = false;
 
         //Drops and Bottle Contents Access
         NutPot           = false;
@@ -2238,7 +2254,7 @@ namespace Rando {
         //CanPlantBean        = false;
         BigPoeKill            = false;
 
-        BaseHearts      = ctx->GetOption(RSK_STARTING_HEARTS).GetContextOptionIndex() + 1;
+        BaseHearts      = ctx->GetOption(RSK_STARTING_HEARTS).Get() + 1;
         
 
         //Bridge Requirements
@@ -2247,7 +2263,7 @@ namespace Rando {
         //Other
         AtDay         = false;
         AtNight       = false;
-        GetSaveContext()->linkAge = !ctx->GetOption(RSK_SELECTED_STARTING_AGE).GetContextOptionIndex();
+        GetSaveContext()->linkAge = !ctx->GetOption(RSK_SELECTED_STARTING_AGE).Get();
 
         //Events
         ShowedMidoSwordAndShield  = false;

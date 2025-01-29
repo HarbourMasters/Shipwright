@@ -5,7 +5,7 @@
 #include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
 #include "UIWidgets.hpp"
-#include "OTRGlobals.h"
+#include "soh/OTRGlobals.h"
 #include "z64.h"
 
 extern "C" PlayState* gPlayState;

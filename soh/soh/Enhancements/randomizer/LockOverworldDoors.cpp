@@ -9,7 +9,7 @@ extern PlayState* gPlayState;
 #include "src/overlays/actors/ovl_En_Door/z_en_door.h"
 }
 
-#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetContextOptionIndex()
+#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).Get()
 
 using SceneDoorParamsPair = std::pair<int, int>;
 std::map<SceneDoorParamsPair, RandomizerInf> lookupTable = {

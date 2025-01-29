@@ -4,7 +4,7 @@
 
 #include "assets/textures/parameter_static/parameter_static.h"
 #include "assets/soh_assets.h"
-#include "soh/ImGuiUtils.h"
+#include "soh/SohGui/ImGuiUtils.h"
 
 extern "C" {
 #include "macros.h"

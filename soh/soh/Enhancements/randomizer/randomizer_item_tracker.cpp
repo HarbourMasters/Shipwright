@@ -4,7 +4,7 @@
 #include "soh/cvar_prefixes.h"
 #include "soh/SaveManager.h"
 #include "soh/ResourceManagerHelpers.h"
-#include "soh/UIWidgets.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include "randomizerTypes.h"
 
 #include <map>
