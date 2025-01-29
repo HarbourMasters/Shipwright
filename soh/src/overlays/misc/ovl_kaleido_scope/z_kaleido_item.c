@@ -315,12 +315,28 @@ void KaleidoScope_HandleItemCycleExtras(PlayState* play, u8 slot, bool canCycle,
     }
 }
 
+bool CanMaskSelect() {
+    if (IS_RANDO) {
+        return CVarGetInteger(CVAR_ENHANCEMENT("MaskSelect"), 0) /* || Randomizer_GetSettingValue(RSK_SHUFFLE_CHILD_TRADE) */;
+    }
+
+    // only allow mask select when:
+    // the shop is open:
+    // * zelda's letter check: Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)
+    // * kak gate check: Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD)
+    // and the mask quest is complete: Flags_GetEventChkInf(EVENTCHKINF_PAID_BACK_BUNNY_HOOD_FEE)
+    return CVarGetInteger(CVAR_ENHANCEMENT("MaskSelect"), 0) &&
+           Flags_GetEventChkInf(EVENTCHKINF_PAID_BACK_BUNNY_HOOD_FEE) &&
+           Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER) &&
+           Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD);
+}
+
 void KaleidoScope_HandleItemCycles(PlayState* play) {
     //handle the mask select
     KaleidoScope_HandleItemCycleExtras(
         play,
         SLOT_TRADE_CHILD,
-        CVarGetInteger(CVAR_ENHANCEMENT("MaskSelect"), 0) /* || Randomizer_GetSettingValue(RSK_SHUFFLE_CHILD_TRADE) */,
+        CanMaskSelect(),
         IS_RANDO ?
             Randomizer_GetPrevChildTradeItem() :
             (
@@ -374,7 +390,7 @@ void KaleidoScope_DrawItemCycles(PlayState* play) {
     KaleidoScope_DrawItemCycleExtras(
         play,
         SLOT_TRADE_CHILD,
-        CVarGetInteger(CVAR_ENHANCEMENT("MaskSelect"), 0) /* || Randomizer_GetSettingValue(RSK_SHUFFLE_CHILD_TRADE) */,
+        CanMaskSelect(),
         IS_RANDO ?
             Randomizer_GetPrevChildTradeItem() :
             (
