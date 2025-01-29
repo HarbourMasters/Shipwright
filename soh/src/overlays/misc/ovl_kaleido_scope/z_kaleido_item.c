@@ -1,7 +1,7 @@
 #include "z_kaleido_scope.h"
 #include "textures/parameter_static/parameter_static.h"
 #include "textures/icon_item_static/icon_item_static.h"
-#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
+#include "soh/Enhancements/randomizer/trade_shuffle.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
@@ -315,30 +315,26 @@ void KaleidoScope_HandleItemCycleExtras(PlayState* play, u8 slot, bool canCycle,
     }
 }
 
-bool CanMaskSelect() {
-    // only allow mask select when:
-    // the shop is open:
-    // * zelda's letter check: Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)
-    // * kak gate check: Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD)
-    // and the mask quest is complete: Flags_GetEventChkInf(EVENTCHKINF_PAID_BACK_BUNNY_HOOD_FEE)
-    return CVarGetInteger(CVAR_ENHANCEMENT("MaskSelect"), 0) &&
-           Flags_GetEventChkInf(EVENTCHKINF_PAID_BACK_BUNNY_HOOD_FEE) &&
-           Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER) &&
-           Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD);
-}
-
 void KaleidoScope_HandleItemCycles(PlayState* play) {
     //handle the mask select
     KaleidoScope_HandleItemCycleExtras(
         play,
         SLOT_TRADE_CHILD,
-        CanMaskSelect(),
-        INV_CONTENT(ITEM_TRADE_CHILD) <= ITEM_MASK_KEATON || INV_CONTENT(ITEM_TRADE_CHILD) > ITEM_MASK_TRUTH ?
-            ITEM_MASK_TRUTH :
-            INV_CONTENT(ITEM_TRADE_CHILD) - 1,
-        INV_CONTENT(ITEM_TRADE_CHILD) >= ITEM_MASK_TRUTH || INV_CONTENT(ITEM_TRADE_CHILD) < ITEM_MASK_KEATON ?
-            ITEM_MASK_KEATON :
-            INV_CONTENT(ITEM_TRADE_CHILD) + 1,
+        CVarGetInteger(CVAR_ENHANCEMENT("MaskSelect"), 0) /* || Randomizer_GetSettingValue(RSK_SHUFFLE_CHILD_TRADE) */,
+        IS_RANDO ?
+            Randomizer_GetPrevChildTradeItem() :
+            (
+                INV_CONTENT(ITEM_TRADE_CHILD) <= ITEM_MASK_KEATON || INV_CONTENT(ITEM_TRADE_CHILD) > ITEM_MASK_TRUTH ?
+                    ITEM_MASK_TRUTH :
+                    INV_CONTENT(ITEM_TRADE_CHILD) - 1
+            ),
+        IS_RANDO ?
+            Randomizer_GetNextChildTradeItem() :
+            (
+                INV_CONTENT(ITEM_TRADE_CHILD) >= ITEM_MASK_TRUTH || INV_CONTENT(ITEM_TRADE_CHILD) < ITEM_MASK_KEATON ?
+                    ITEM_MASK_KEATON :
+                    INV_CONTENT(ITEM_TRADE_CHILD) + 1
+            ),
         true
     );
 
@@ -378,13 +374,21 @@ void KaleidoScope_DrawItemCycles(PlayState* play) {
     KaleidoScope_DrawItemCycleExtras(
         play,
         SLOT_TRADE_CHILD,
-        CanMaskSelect(),
-        INV_CONTENT(ITEM_TRADE_CHILD) <= ITEM_MASK_KEATON || INV_CONTENT(ITEM_TRADE_CHILD) > ITEM_MASK_TRUTH ?
-            ITEM_MASK_TRUTH :
-            INV_CONTENT(ITEM_TRADE_CHILD) - 1,
-        INV_CONTENT(ITEM_TRADE_CHILD) >= ITEM_MASK_TRUTH || INV_CONTENT(ITEM_TRADE_CHILD) < ITEM_MASK_KEATON ?
-            ITEM_MASK_KEATON :
-            INV_CONTENT(ITEM_TRADE_CHILD) + 1
+        CVarGetInteger(CVAR_ENHANCEMENT("MaskSelect"), 0) /* || Randomizer_GetSettingValue(RSK_SHUFFLE_CHILD_TRADE) */,
+        IS_RANDO ?
+            Randomizer_GetPrevChildTradeItem() :
+            (
+                INV_CONTENT(ITEM_TRADE_CHILD) <= ITEM_MASK_KEATON || INV_CONTENT(ITEM_TRADE_CHILD) > ITEM_MASK_TRUTH ?
+                    ITEM_MASK_TRUTH :
+                    INV_CONTENT(ITEM_TRADE_CHILD) - 1
+            ),
+        IS_RANDO ?
+            Randomizer_GetNextChildTradeItem() :
+            (
+                INV_CONTENT(ITEM_TRADE_CHILD) >= ITEM_MASK_TRUTH || INV_CONTENT(ITEM_TRADE_CHILD) < ITEM_MASK_KEATON ?
+                    ITEM_MASK_KEATON :
+                    INV_CONTENT(ITEM_TRADE_CHILD) + 1
+            )
     );
 
     //draw the adult trade select

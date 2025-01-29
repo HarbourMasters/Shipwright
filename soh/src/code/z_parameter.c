@@ -4,7 +4,7 @@
 #include "textures/do_action_static/do_action_static.h"
 #include "textures/icon_item_static/icon_item_static.h"
 #include "soh_assets.h"
-#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
+#include "soh/Enhancements/randomizer/trade_shuffle.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
 #include "libultraship/bridge.h"
@@ -2446,8 +2446,17 @@ u8 Item_Give(PlayState* play, u8 item) {
             Flags_SetItemGetInf(ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE);
         }
 
-        if (item >= ITEM_POCKET_EGG && IS_RANDO) {
-            Flags_SetRandomizerInf(item - ITEM_POCKET_EGG + RAND_INF_ADULT_TRADES_HAS_POCKET_EGG);
+        if (IS_RANDO) {
+            if (item >= ITEM_POCKET_EGG) {
+                Flags_SetRandomizerInf(item - ITEM_POCKET_EGG + RAND_INF_ADULT_TRADES_HAS_POCKET_EGG);
+            } else if (item == ITEM_LETTER_ZELDA) {
+                //don't care about zelda's letter if it's already been shown to the guard
+                if (!Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD)) {
+                    Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_LETTER_ZELDA);
+                }
+            } else {
+                Flags_SetRandomizerInf(item - ITEM_WEIRD_EGG + RAND_INF_CHILD_TRADES_HAS_WEIRD_EGG);
+            }
         }
 
         temp = INV_CONTENT(item);

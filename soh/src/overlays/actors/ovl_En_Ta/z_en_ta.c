@@ -281,6 +281,10 @@ void func_80B14410(EnTa* this) {
     if (!LINK_IS_ADULT) {
         EnTa_SetupAction(this, EnTa_IdleAwakeInCastle, EnTa_AnimRepeatCurrent);
         Flags_SetEventChkInf(EVENTCHKINF_TALON_WOKEN_IN_CASTLE);
+        if (IS_RANDO) {
+            //remove chicken as this is the only use for it
+            Flags_UnsetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_CHICKEN);
+        }
     } else {
         EnTa_SetupAction(this, EnTa_IdleAwakeInKakariko, EnTa_AnimRepeatCurrent);
         Flags_SetEventChkInf(EVENTCHKINF_TALON_WOKEN_IN_KAKARIKO);

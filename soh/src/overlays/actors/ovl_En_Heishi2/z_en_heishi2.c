@@ -408,6 +408,10 @@ void func_80A53AD4(EnHeishi2* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         exchangeItemId = func_8002F368(play);
         if (exchangeItemId == EXCH_ITEM_LETTER_ZELDA) {
+            if (IS_RANDO) {
+                //remove zelda's letter as this is the only use for it
+                Flags_UnsetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_LETTER_ZELDA);
+            }
             Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
             player->actor.textId = 0x2010;
             this->unk_300 = TEXT_STATE_EVENT;
