@@ -3,7 +3,7 @@
 #include <string>
 #include <cstdint>
 #include <libultraship/bridge.h>
-#include "soh/UIWidgets.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include <libultraship/libultraship.h>
 
 void clearCvars(std::vector<const char*> cvarsToClear) {
@@ -42,7 +42,10 @@ void applyPreset(std::vector<PresetEntry> entries) {
 void DrawPresetSelector(PresetType presetTypeId) {
     const std::string presetTypeCvar = CVAR_GENERAL("SelectedPresets.") + std::to_string(presetTypeId);
     const PresetTypeDefinition presetTypeDef = presetTypes.at(presetTypeId);
-    const uint16_t selectedPresetId = CVarGetInteger(presetTypeCvar.c_str(), 0);
+    uint16_t selectedPresetId = CVarGetInteger(presetTypeCvar.c_str(), 0);
+    if(selectedPresetId >= presetTypeDef.presets.size()){
+        selectedPresetId = 0;
+    }
     const PresetDefinition selectedPresetDef = presetTypeDef.presets.at(selectedPresetId);
     std::string comboboxTooltip = "";
     for ( auto iter = presetTypeDef.presets.begin(); iter != presetTypeDef.presets.end(); ++iter ) {
@@ -70,7 +73,10 @@ void DrawPresetSelector(PresetType presetTypeId) {
         if (selectedPresetId != 0) {
             applyPreset(selectedPresetDef.entries);
         }
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        if (presetTypeId == PRESET_TYPE_RANDOMIZER){
+            Rando::Settings::GetInstance()->ReloadOptions();
+        }
     }
     ImGui::PopStyleVar(1);
 }

@@ -198,11 +198,19 @@ std::shared_ptr<Ship::IResource> SetMeshFactoryXML::ReadResource(std::shared_ptr
             int32_t polyType = child->IntAttribute("PolyType"); // Unused
             std::string meshOpa = child->Attribute("MeshOpa");
             std::string meshXlu = child->Attribute("MeshXlu");
+            if (meshOpa != "") {
+                auto opaRes = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshOpa.c_str());
+                dlist.opa = (Gfx*)(opaRes ? opaRes->GetRawPointer() : nullptr);
+            } else {
+                dlist.opa = 0;
+            }
 
-            auto opaRes = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshOpa.c_str());
-            auto xluRes = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshXlu.c_str());
-            dlist.opa = meshOpa != "" ? (Gfx*)(opaRes ? opaRes->GetRawPointer() : nullptr) : 0;
-            dlist.xlu = meshXlu != "" ? (Gfx*)(xluRes ? xluRes->GetRawPointer() : nullptr) : 0;
+            if (meshXlu != "") {
+                auto xluRes = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshXlu.c_str());
+                dlist.xlu = (Gfx*)(xluRes ? xluRes->GetRawPointer() : nullptr);
+            } else {
+                dlist.xlu = 0;
+            }
 
             setMesh->opaPaths.push_back(meshOpa);
             setMesh->xluPaths.push_back(meshXlu);

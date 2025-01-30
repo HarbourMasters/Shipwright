@@ -3,6 +3,8 @@
 #include <string.h>
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 
 s32 D_8012D280 = 1;
 
@@ -282,13 +284,6 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
             default:
                 LOG_HEX("padnow1->errno", padnow1->err_no);
                 Fault_AddHungupAndCrash(__FILE__, __LINE__);
-        }
-
-        // When 3 frames are left on easy pause buffer, re-apply the last held inputs to the prev inputs
-        // to compute the pressed difference. This makes it so previously held inputs are continued as "held",
-        // but new inputs when unpausing are "pressed" out of the pause menu.
-        if (CVarGetInteger(CVAR_GENERAL("CheatEasyPauseBufferTimer"), 0) == 3) {
-            input->prev.button = CVarGetInteger(CVAR_GENERAL("CheatEasyPauseBufferLastInputs"), 0);
         }
 
         buttonDiff = input->prev.button ^ input->cur.button;

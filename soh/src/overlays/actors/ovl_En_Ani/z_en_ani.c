@@ -6,8 +6,11 @@
 
 #include "z_en_ani.h"
 #include "objects/object_ani/object_ani.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
 
 void EnAni_Init(Actor* thisx, PlayState* play);
 void EnAni_Destroy(Actor* thisx, PlayState* play);
@@ -119,7 +122,7 @@ void func_809B0524(EnAni* this, PlayState* play) {
 }
 
 void func_809B0558(EnAni* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play)) {
+    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_MAN_ON_ROOF, true)) {
         this->actor.parent = NULL;
         if (!LINK_IS_ADULT) {
             EnAni_SetupAction(this, func_809B04F0);
@@ -128,11 +131,8 @@ void func_809B0558(EnAni* this, PlayState* play) {
         }
         Flags_SetItemGetInf(ITEMGETINF_15);
     } else {
-        if (!IS_RANDO) {
-            func_8002F434(&this->actor, play, GI_HEART_PIECE, 10000.0f, 200.0f);
-        } else {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_MAN_ON_ROOF, GI_HEART_PIECE);
-            GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 200.0f);
+        if (GameInteractor_Should(VB_GIVE_ITEM_FROM_MAN_ON_ROOF, true)) {
+            Actor_OfferGetItem(&this->actor, play, GI_HEART_PIECE, 10000.0f, 200.0f);
         }
     }
 }
@@ -142,11 +142,8 @@ void func_809B05F0(EnAni* this, PlayState* play) {
         EnAni_SetupAction(this, func_809B0558);
     }
 
-    if (!IS_RANDO) {
-        func_8002F434(&this->actor, play, GI_HEART_PIECE, 10000.0f, 200.0f);
-    } else {
-        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_MAN_ON_ROOF, GI_HEART_PIECE);
-        GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 200.0f);
+    if (GameInteractor_Should(VB_GIVE_ITEM_FROM_MAN_ON_ROOF, true)) {
+        Actor_OfferGetItem(&this->actor, play, GI_HEART_PIECE, 10000.0f, 200.0f);
     }
 }
 
@@ -252,7 +249,7 @@ void EnAni_Update(Actor* thisx, PlayState* play) {
 
     Collider_UpdateCylinder(&this->actor, &this->collider);
     CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);
     if ((play->csCtx.state != CS_STATE_IDLE) && (play->csCtx.npcActions[0] != NULL)) {
         switch (this->unk_2AA) {
@@ -274,7 +271,7 @@ void EnAni_Update(Actor* thisx, PlayState* play) {
         }
 
         if (play->csCtx.frames == 100) {
-            func_800788CC(NA_SE_IT_EARTHQUAKE);
+            Sfx_PlaySfxCentered2(NA_SE_IT_EARTHQUAKE);
         }
     } else {
         if (SkelAnime_Update(&this->skelAnime) != 0) {

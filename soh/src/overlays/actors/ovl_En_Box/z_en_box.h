@@ -4,6 +4,7 @@
 #include <libultraship/libultra.h>
 #include "global.h"
 
+#define ENBOX_PARAMS(type, itemId, treasureFlag) ((type) << 12 | (itemId) << 5 | (treasureFlag))
 #define ENBOX_TREASURE_FLAG_UNK_MIN 20
 #define ENBOX_TREASURE_FLAG_UNK_MAX 32
 
@@ -45,7 +46,7 @@ typedef struct EnBox {
     /* 0x01F9 */ u8 type;
     /* 0x01FA */ u8 iceSmokeTimer;
     /* 0x01FB */ u8 unk_1FB;
-    /*        */ GetItemEntry getItemEntry;
+    /*        */ GetItemEntry getItemEntry; // This is only to determine the Chest Style, randomzier item gives are handled elsewhere
     /*        */ Gfx* boxLidDL;
     /*        */ Gfx* boxBodyDL;
 } EnBox; // size = 0x01FC

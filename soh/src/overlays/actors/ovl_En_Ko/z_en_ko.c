@@ -11,8 +11,11 @@
 #include "objects/object_kw1/object_kw1.h"
 #include "vt.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
 #define ENKO_TYPE (this->actor.params & 0xFF)
 #define ENKO_PATH ((this->actor.params & 0xFF00) >> 8)
@@ -541,8 +544,8 @@ s16 func_80A97738(PlayState* play, Actor* thisx) {
                 case 0x10B7:
                 case 0x10B8:
                     if (this->unk_210 == 0) {
-                        Audio_PlaySoundGeneral(NA_SE_SY_TRE_BOX_APPEAR, &D_801333D4, 4, &D_801333E0, &D_801333E0,
-                                               &D_801333E8);
+                        Audio_PlaySoundGeneral(NA_SE_SY_TRE_BOX_APPEAR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                               &gSfxDefaultReverb);
                         this->unk_210 = 1;
                     }
             }
@@ -1027,20 +1030,9 @@ s32 EnKo_CanSpawn(EnKo* this, PlayState* play) {
             }
 
         case SCENE_LOST_WOODS:
-            if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
-                // To explain the logic because Fado and Grog are linked:
-                // - If you have Cojiro, then spawn Grog and not Fado.
-                // - If you don't have Cojiro but do have Odd Potion, spawn Fado and not Grog.
-                // - If you don't have either, spawn Grog if you haven't traded the Odd Mushroom.
-                // - If you don't have either but have traded the mushroom, don't spawn either.
-                if (PLAYER_HAS_SHUFFLED_ADULT_TRADE_ITEM(ITEM_COJIRO)) {
-                    return false;
-                } else {
-                    return PLAYER_HAS_SHUFFLED_ADULT_TRADE_ITEM(ITEM_ODD_POTION);
-                }
-            } else {
-                return (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_ODD_POTION) ? true : false;
-            }
+            return GameInteractor_Should(VB_SPAWN_LW_FADO, (
+                (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_ODD_POTION) ? true : false
+            ), this);
         default:
             return false;
     }
@@ -1105,9 +1097,9 @@ void func_80A98DB4(EnKo* this, PlayState* play) {
     }
     
     if (this->modelAlpha < 10.0f) {
-        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+        this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     } else {
-        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
     }
 }
 
@@ -1151,7 +1143,7 @@ void EnKo_Destroy(Actor* thisx, PlayState* play) {
 
 void func_80A99048(EnKo* this, PlayState* play) {
     if (EnKo_IsOsAnimeLoaded(this, play) && EnKo_AreObjectsLoaded(this, play)) {
-        this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
+        this->actor.flags &= ~ACTOR_FLAG_UPDATE_CULLING_DISABLED;
         this->actor.objBankIndex = this->legsObjectBankIdx;
         gSegments[6] = VIRTUAL_TO_PHYSICAL(play->objectCtx.status[this->actor.objBankIndex].segment);
         SkelAnime_InitFlex(play, &this->skelAnime, sSkeleton[sModelInfo[ENKO_TYPE].legsId].flexSkeletonHeader,
@@ -1186,18 +1178,10 @@ void func_80A99048(EnKo* this, PlayState* play) {
         Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_ELF, this->actor.world.pos.x,
                            this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 3);
         if (ENKO_TYPE == ENKO_TYPE_CHILD_3) {
-            if (!IS_RANDO) {
-                if (!CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
-                    this->collider.dim.height += 200;
-                    this->actionFunc = func_80A995CC;
-                    return;
-                }
-            } else {
-                if (!Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD)) {
-                    this->collider.dim.height += 200;
-                    this->actionFunc = func_80A995CC;
-                    return;
-                }
+            if (!GameInteractor_Should(VB_OPEN_KOKIRI_FOREST, CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD), this)) {
+                this->collider.dim.height += 200;
+                this->actionFunc = func_80A995CC;
+                return;
             }
             Path_CopyLastPoint(this->path, &this->actor.world.pos);
         }
@@ -1230,18 +1214,11 @@ void func_80A99438(EnKo* this, PlayState* play) {
 }
 
 void func_80A99504(EnKo* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play)) {
+    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_TRADE_ODD_POTION, true, this)) {
         this->actor.parent = NULL;
         this->actionFunc = func_80A99560;
     } else {
-        if (IS_RANDO) {
-            GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_TRADE_ODD_POTION, GI_SAW);
-            Randomizer_ConsumeAdultTradeItem(play, ITEM_ODD_POTION);
-            GiveItemEntryFromActor(&this->actor, play, itemEntry, 120.0f, 10.0f);
-        } else {
-            s32 itemId = GI_SAW;
-            func_8002F434(&this->actor, play, itemId, 120.0f, 10.0f);
-        }
+        Actor_OfferGetItem(&this->actor, play, GI_SAW, 120.0f, 10.0f);
     }
 }
 
@@ -1296,7 +1273,7 @@ void EnKo_Update(Actor* thisx, PlayState* play) {
         }
     }
     if (this->interactInfo.talkState == NPC_TALK_STATE_IDLE) {
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
     }
     if (func_80A97C7C(this)) {
         Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);

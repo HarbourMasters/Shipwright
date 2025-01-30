@@ -1,0 +1,80 @@
+<DisplayList Version="0">
+	<LoadVertices Path="objects/object_gi_fishing_pole/gFishingPoleGiDL_vtx_0" VertexBufferIndex="0" VertexOffset="0" Count="32"/>
+	<Triangles2 V00="0" V01="1" V02="2" Flag0="0" V10="0" V11="3" V12="1" Flag1="0"/>
+	<Triangles2 V00="4" V01="3" V02="0" Flag0="0" V10="4" V11="5" V12="3" Flag1="0"/>
+	<Triangles2 V00="6" V01="5" V02="4" Flag0="0" V10="6" V11="7" V12="5" Flag1="0"/>
+	<Triangles2 V00="7" V01="6" V02="8" Flag0="0" V10="7" V11="8" V12="9" Flag1="0"/>
+	<Triangles2 V00="10" V01="9" V02="8" Flag0="0" V10="10" V11="11" V12="9" Flag1="0"/>
+	<Triangles2 V00="11" V01="10" V02="12" Flag0="0" V10="11" V11="12" V12="13" Flag1="0"/>
+	<Triangles2 V00="14" V01="13" V02="12" Flag0="0" V10="14" V11="15" V12="13" Flag1="0"/>
+	<Triangles2 V00="16" V01="15" V02="14" Flag0="0" V10="16" V11="17" V12="15" Flag1="0"/>
+	<Triangles2 V00="17" V01="18" V02="15" Flag0="0" V10="17" V11="19" V12="18" Flag1="0"/>
+	<Triangles2 V00="19" V01="20" V02="18" Flag0="0" V10="19" V11="21" V12="20" Flag1="0"/>
+	<Triangles2 V00="21" V01="22" V02="20" Flag0="0" V10="21" V11="23" V12="22" Flag1="0"/>
+	<Triangles2 V00="24" V01="22" V02="23" Flag0="0" V10="24" V11="23" V12="25" Flag1="0"/>
+	<Triangles2 V00="22" V01="24" V02="26" Flag0="0" V10="22" V11="26" V12="27" Flag1="0"/>
+	<Triangles2 V00="28" V01="27" V02="26" Flag0="0" V10="28" V11="29" V12="27" Flag1="0"/>
+	<Triangles2 V00="29" V01="28" V02="30" Flag0="0" V10="29" V11="30" V12="31" Flag1="0"/>
+	<LoadVertices Path="objects/object_gi_fishing_pole/gFishingPoleGiDL_vtx_0" VertexBufferIndex="0" VertexOffset="32" Count="32"/>
+	<Triangles2 V00="0" V01="1" V02="2" Flag0="0" V10="0" V11="3" V12="1" Flag1="0"/>
+	<Triangles2 V00="3" V01="0" V02="4" Flag0="0" V10="5" V11="4" V12="0" Flag1="0"/>
+	<Triangles2 V00="5" V01="6" V02="4" Flag0="0" V10="7" V11="6" V12="5" Flag1="0"/>
+	<Triangles2 V00="7" V01="8" V02="6" Flag0="0" V10="7" V11="9" V12="8" Flag1="0"/>
+	<Triangles2 V00="7" V01="10" V02="9" Flag0="0" V10="10" V11="7" V12="11" Flag1="0"/>
+	<Triangles2 V00="12" V01="11" V02="7" Flag0="0" V10="12" V11="13" V12="11" Flag1="0"/>
+	<Triangles2 V00="10" V01="11" V02="14" Flag0="0" V10="10" V11="14" V12="15" Flag1="0"/>
+	<Triangles2 V00="10" V01="15" V02="16" Flag0="0" V10="17" V11="16" V12="15" Flag1="0"/>
+	<Triangles2 V00="17" V01="15" V02="18" Flag0="0" V10="19" V11="17" V12="18" Flag1="0"/>
+	<Triangles2 V00="19" V01="9" V02="17" Flag0="0" V10="8" V11="9" V12="19" Flag1="0"/>
+	<Triangles2 V00="8" V01="19" V02="20" Flag0="0" V10="8" V11="20" V12="21" Flag1="0"/>
+	<Triangles2 V00="8" V01="21" V02="22" Flag0="0" V10="9" V11="16" V12="17" Flag1="0"/>
+	<Triangles2 V00="9" V01="10" V02="16" Flag0="0" V10="23" V11="24" V12="25" Flag1="0"/>
+	<Triangles2 V00="23" V01="26" V02="24" Flag0="0" V10="27" V11="26" V12="23" Flag1="0"/>
+	<Triangles2 V00="27" V01="28" V02="26" Flag0="0" V10="29" V11="28" V12="27" Flag1="0"/>
+	<Triangles2 V00="29" V01="27" V02="30" Flag0="0" V10="30" V11="27" V12="31" Flag1="0"/>
+	<LoadVertices Path="objects/object_gi_fishing_pole/gFishingPoleGiDL_vtx_0" VertexBufferIndex="0" VertexOffset="64" Count="32"/>
+	<Triangles2 V00="0" V01="1" V02="2" Flag0="0" V10="0" V11="2" V12="3" Flag1="0"/>
+	<Triangles2 V00="4" V01="0" V02="5" Flag0="0" V10="4" V11="5" V12="6" Flag1="0"/>
+	<Triangles2 V00="4" V01="6" V02="7" Flag0="0" V10="8" V11="7" V12="6" Flag1="0"/>
+	<Triangles2 V00="8" V01="6" V02="9" Flag0="0" V10="10" V11="8" V12="9" Flag1="0"/>
+	<Triangles2 V00="10" V01="11" V02="8" Flag0="0" V10="12" V11="11" V12="10" Flag1="0"/>
+	<Triangles2 V00="12" V01="10" V02="13" Flag0="0" V10="14" V11="12" V12="13" Flag1="0"/>
+	<Triangles2 V00="14" V01="15" V02="12" Flag0="0" V10="11" V11="7" V12="8" Flag1="0"/>
+	<Triangles2 V00="11" V01="4" V02="7" Flag0="0" V10="16" V11="17" V12="18" Flag1="0"/>
+	<Triangles2 V00="16" V01="19" V02="17" Flag0="0" V10="20" V11="19" V12="16" Flag1="0"/>
+	<Triangles2 V00="20" V01="21" V02="19" Flag0="0" V10="22" V11="21" V12="20" Flag1="0"/>
+	<Triangles2 V00="22" V01="23" V02="21" Flag0="0" V10="23" V11="22" V12="24" Flag1="0"/>
+	<Triangles2 V00="23" V01="24" V02="25" Flag0="0" V10="26" V11="25" V12="24" Flag1="0"/>
+	<Triangles2 V00="26" V01="27" V02="25" Flag0="0" V10="27" V11="26" V12="28" Flag1="0"/>
+	<Triangles2 V00="27" V01="28" V02="29" Flag0="0" V10="30" V11="29" V12="28" Flag1="0"/>
+	<Triangle1 V00="30" V01="31" V02="29"/>
+	<LoadVertices Path="objects/object_gi_fishing_pole/gFishingPoleGiDL_vtx_0" VertexBufferIndex="0" VertexOffset="96" Count="32"/>
+	<Triangles2 V00="0" V01="1" V02="2" Flag0="0" V10="0" V11="3" V12="1" Flag1="0"/>
+	<Triangles2 V00="3" V01="4" V02="1" Flag0="0" V10="3" V11="5" V12="4" Flag1="0"/>
+	<Triangles2 V00="6" V01="1" V02="4" Flag0="0" V10="6" V11="7" V12="1" Flag1="0"/>
+	<Triangles2 V00="7" V01="6" V02="8" Flag0="0" V10="7" V11="8" V12="9" Flag1="0"/>
+	<Triangles2 V00="10" V01="9" V02="8" Flag0="0" V10="10" V11="11" V12="9" Flag1="0"/>
+	<Triangles2 V00="11" V01="10" V02="12" Flag0="0" V10="10" V11="13" V12="12" Flag1="0"/>
+	<Triangles2 V00="12" V01="13" V02="14" Flag0="0" V10="12" V11="14" V12="15" Flag1="0"/>
+	<Triangles2 V00="15" V01="14" V02="16" Flag0="0" V10="15" V11="16" V12="17" Flag1="0"/>
+	<Triangles2 V00="18" V01="15" V02="17" Flag0="0" V10="18" V11="17" V12="19" Flag1="0"/>
+	<Triangles2 V00="20" V01="18" V02="19" Flag0="0" V10="20" V11="19" V12="21" Flag1="0"/>
+	<Triangles2 V00="22" V01="18" V02="20" Flag0="0" V10="22" V11="23" V12="18" Flag1="0"/>
+	<Triangles2 V00="24" V01="23" V02="22" Flag0="0" V10="24" V11="11" V12="23" Flag1="0"/>
+	<Triangles2 V00="11" V01="24" V02="25" Flag0="0" V10="11" V11="25" V12="9" Flag1="0"/>
+	<Triangles2 V00="26" V01="9" V02="25" Flag0="0" V10="26" V11="7" V12="9" Flag1="0"/>
+	<Triangles2 V00="7" V01="26" V02="2" Flag0="0" V10="7" V11="2" V12="1" Flag1="0"/>
+	<Triangles2 V00="11" V01="12" V02="23" Flag0="0" V10="23" V11="12" V12="15" Flag1="0"/>
+	<Triangles2 V00="23" V01="15" V02="18" Flag0="0" V10="27" V11="28" V12="29" Flag1="0"/>
+	<Triangles2 V00="29" V01="30" V02="27" Flag0="0" V10="29" V11="31" V12="30" Flag1="0"/>
+	<LoadVertices Path="objects/object_gi_fishing_pole/gFishingPoleGiDL_vtx_0" VertexBufferIndex="0" VertexOffset="128" Count="17"/>
+	<Triangles2 V00="0" V01="1" V02="2" Flag0="0" V10="3" V11="4" V12="5" Flag1="0"/>
+	<Triangles2 V00="3" V01="6" V02="4" Flag0="0" V10="7" V11="6" V12="3" Flag1="0"/>
+	<Triangles2 V00="7" V01="8" V02="6" Flag0="0" V10="9" V11="8" V12="7" Flag1="0"/>
+	<Triangles2 V00="9" V01="10" V02="8" Flag0="0" V10="11" V11="10" V12="9" Flag1="0"/>
+	<Triangles2 V00="11" V01="12" V02="10" Flag0="0" V10="13" V11="12" V12="11" Flag1="0"/>
+	<Triangles2 V00="13" V01="14" V02="12" Flag0="0" V10="15" V11="14" V12="13" Flag1="0"/>
+	<Triangle1 V00="15" V01="16" V02="14"/>
+	<EndDisplayList/>
+</DisplayList>
+

@@ -21,6 +21,9 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/gameplaystats.h"
 
 #define DO_ACTION_TEX_WIDTH() 48
 #define DO_ACTION_TEX_HEIGHT() 16
@@ -1607,10 +1610,8 @@ void Inventory_SwapAgeEquipment(void) {
     s16 i;
     u16 shieldEquipValue;
 
-    // Mod Enhancments can utilise the rando flow path
-    if (IS_RANDO || CVarGetInteger(CVAR_GENERAL("SwitchAge"), 0) || CVarGetInteger(CVAR_GENERAL("SwitchTimeline"), 0)) {
+    if (IS_RANDO) {
         Rando_Inventory_SwapAgeEquipment();
-        CVarSetInteger(CVAR_GENERAL("SwitchTimeline"), 0);
         return;
     }
 
@@ -1811,7 +1812,7 @@ void func_80084BF4(PlayState* play, u16 flag) {
 void GameplayStats_SetTimestamp(PlayState* play, u8 item) {
 
     // If we already have a timestamp for this item, do nothing
-    if (gSaveContext.sohStats.itemTimestamp[item] != 0){
+    if (gSaveContext.ship.stats.itemTimestamp[item] != 0){
         return;
     }
     // Use ITEM_KEY_BOSS only for Ganon's boss key - not any other boss keys
@@ -1830,61 +1831,24 @@ void GameplayStats_SetTimestamp(PlayState* play, u8 item) {
 
     // Count any bottled item as a bottle
     if (item >= ITEM_BOTTLE && item <= ITEM_POE) {
-        if (gSaveContext.sohStats.itemTimestamp[ITEM_BOTTLE] == 0) {
-            gSaveContext.sohStats.itemTimestamp[ITEM_BOTTLE] = time;
+        if (gSaveContext.ship.stats.itemTimestamp[ITEM_BOTTLE] == 0) {
+            gSaveContext.ship.stats.itemTimestamp[ITEM_BOTTLE] = time;
         }
         return;
     }
     // Count any bombchu pack as bombchus
     if (item == ITEM_BOMBCHU || (item >= ITEM_BOMBCHUS_5 && item <= ITEM_BOMBCHUS_20)) {
-        if (gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] == 0) {
-            gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] = time;
+        if (gSaveContext.ship.stats.itemTimestamp[ITEM_BOMBCHU] == 0) {
+            gSaveContext.ship.stats.itemTimestamp[ITEM_BOMBCHU] = time;
         }
         return;
     }
 
-    gSaveContext.sohStats.itemTimestamp[item] = time;
+    gSaveContext.ship.stats.itemTimestamp[item] = time;
+    GameInteractor_ExecuteOnTimestamp(item);
 }
 
-// Gameplay stat tracking: Update time the item was acquired
-// (special cases for rando items)
-void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
-
-    u32 time = GAMEPLAYSTAT_TOTAL_TIME;
-
-    // Have items in Link's pocket shown as being obtained at 0.1 seconds
-    if (time == 0) {
-        time = 1;
-    }
-
-    // Use ITEM_KEY_BOSS to timestamp Ganon's boss key
-    if (item == RG_GANONS_CASTLE_BOSS_KEY) {
-        gSaveContext.sohStats.itemTimestamp[ITEM_KEY_BOSS] = time;
-    }
-
-    // Count any bottled item as a bottle
-    if (item >= RG_EMPTY_BOTTLE && item <= RG_BOTTLE_WITH_BIG_POE) {
-        if (gSaveContext.sohStats.itemTimestamp[ITEM_BOTTLE] == 0) {
-            gSaveContext.sohStats.itemTimestamp[ITEM_BOTTLE] = time;
-        }
-        return;
-    }
-    // Count any bombchu pack as bombchus
-    if ((item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_DROP) || item == RG_PROGRESSIVE_BOMBCHUS) {
-        if (gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] = 0) {
-            gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] = time;
-        }
-        return;
-    }
-    if (item == RG_MAGIC_SINGLE) {
-        gSaveContext.sohStats.itemTimestamp[ITEM_SINGLE_MAGIC] = time;
-    }
-    if (item == RG_DOUBLE_DEFENSE) {
-        gSaveContext.sohStats.itemTimestamp[ITEM_DOUBLE_DEFENSE] = time;
-    }
-}
-
-u8 Return_Item_Entry(GetItemEntry itemEntry, ItemID returnItem ) {
+u8 Return_Item_Entry(GetItemEntry itemEntry, u8 returnItem) {
     GameInteractor_ExecuteOnItemReceiveHooks(itemEntry);
     return returnItem;
 }
@@ -1911,6 +1875,7 @@ u8 Return_Item(u8 itemID, ModIndex modId, ItemID returnItem) {
 
     // All randomizer items should go through Randomizer_Item_Give, so this should never be reached
     // but leaving this here just in case, as it was in the original behavior
+    assert(false);
     return Return_Item_Entry(ItemTable_RetrieveEntry(MOD_RANDOMIZER, itemID), returnItem);
 }
 
@@ -1926,6 +1891,26 @@ u8 Return_Item(u8 itemID, ModIndex modId, ItemID returnItem) {
  * @return u8 
  */
 u8 Item_Give(PlayState* play, u8 item) {
+    //prevents getting sticks without the bag in case something got missed
+    if (
+        IS_RANDO &&
+        (item == ITEM_STICK || item == ITEM_STICKS_5 || item == ITEM_STICKS_10) &&
+        Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_STICK_BAG) &&
+        CUR_UPG_VALUE(UPG_STICKS) == 0
+    ) {
+        return item;
+    }
+
+    //prevents getting nuts without the bag in case something got missed
+    if (
+        IS_RANDO &&
+        (item == ITEM_NUT || item == ITEM_NUTS_5 || item == ITEM_NUTS_10) &&
+        Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_NUT_BAG) &&
+        CUR_UPG_VALUE(UPG_NUTS) == 0
+    ) {
+        return item;
+    }
+
     lusprintf(__FILE__, __LINE__, 2, "Item Give - item: %#x", item);
     static s16 sAmmoRefillCounts[] = { 5, 10, 20, 30, 5, 10, 30, 0, 5, 20, 1, 5, 20, 50, 200, 10 };
     s16 i;
@@ -2002,13 +1987,9 @@ u8 Item_Give(PlayState* play, u8 item) {
         if (item == ITEM_SWORD_BGS) {
             gSaveContext.swordHealth = 8;
 
-            // In rando, when buying Giant's Knife, also check
-            // without the Koriri Sword in case we don't have it
             if (ALL_EQUIP_VALUE(EQUIP_TYPE_SWORD) == 
                 ((1 << EQUIP_INV_SWORD_KOKIRI) | (1 << EQUIP_INV_SWORD_MASTER) | (1 << EQUIP_INV_SWORD_BIGGORON) |
-                 (1 << EQUIP_INV_SWORD_BROKENGIANTKNIFE)) || 
-                (IS_RANDO && ALL_EQUIP_VALUE(EQUIP_TYPE_SWORD) == 
-                ((1 << EQUIP_INV_SWORD_MASTER) | (1 << EQUIP_INV_SWORD_BIGGORON) | (1 << EQUIP_INV_SWORD_BROKENGIANTKNIFE)))) {
+                 (1 << EQUIP_INV_SWORD_BROKENGIANTKNIFE))) {
 
                 gSaveContext.inventory.equipment ^= OWNED_EQUIP_FLAG_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BROKENGIANTKNIFE);
 
@@ -2206,7 +2187,9 @@ u8 Item_Give(PlayState* play, u8 item) {
                 AMMO(ITEM_STICK) = CUR_CAPACITY(UPG_STICKS);
             }
         }
-        item = ITEM_STICK;
+        // [SOH] This results in the same behavior as the original code, but also allows us to get an accurate ReceivedItemEntry hook
+        INV_CONTENT(ITEM_STICK) = ITEM_STICK;
+        return Return_Item(item, MOD_NONE, returnItem);
     } else if (item == ITEM_NUT) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
             Inventory_ChangeUpgrade(UPG_NUTS, 1);
@@ -2230,7 +2213,9 @@ u8 Item_Give(PlayState* play, u8 item) {
                 AMMO(ITEM_NUT) = CUR_CAPACITY(UPG_NUTS);
             }
         }
-        item = ITEM_NUT;
+        // [SOH] This results in the same behavior as the original code, but also allows us to get an accurate ReceivedItemEntry hook
+        INV_CONTENT(ITEM_NUT) = ITEM_NUT;
+        return Return_Item(item, MOD_NONE, returnItem);
     } else if (item == ITEM_BOMB) {
         // "Bomb  Bomb  Bomb  Bomb Bomb   Bomb Bomb"
         osSyncPrintf(" 爆弾  爆弾  爆弾  爆弾 爆弾   爆弾 爆弾 \n");
@@ -2353,7 +2338,7 @@ u8 Item_Give(PlayState* play, u8 item) {
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item == ITEM_HEART_PIECE_2) || (item == ITEM_HEART_PIECE)) {
         gSaveContext.inventory.questItems += 1 << (QUEST_HEART_PIECE + 4);
-        gSaveContext.sohStats.heartPieces++;
+        gSaveContext.ship.stats.heartPieces++;
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_HEART_CONTAINER) {
         if (!CVarGetInteger(CVAR_ENHANCEMENT("HurtContainer"), 0)) {
@@ -2363,7 +2348,7 @@ u8 Item_Give(PlayState* play, u8 item) {
             gSaveContext.healthCapacity -= 0x10;
             gSaveContext.health -= 0x10;
         }
-        gSaveContext.sohStats.heartContainers++;
+        gSaveContext.ship.stats.heartContainers++;
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_HEART) {
         osSyncPrintf("回復ハート回復ハート回復ハート\n"); // "Recovery Heart"
@@ -2462,7 +2447,7 @@ u8 Item_Give(PlayState* play, u8 item) {
         }
 
         if (item >= ITEM_POCKET_EGG) {
-            gSaveContext.adultTradeItems |= ADULT_TRADE_FLAG(item);
+            gSaveContext.ship.quest.data.randomizer.adultTradeItems |= ADULT_TRADE_FLAG(item);
         }
 
         temp = INV_CONTENT(item);
@@ -2490,261 +2475,6 @@ u8 Item_Give(PlayState* play, u8 item) {
     osSyncPrintf("Item_Register(%d)=%d  %d\n", slot, item, returnItem);
     INV_CONTENT(item) = item;
     return Return_Item(item, MOD_NONE, returnItem);
-}
-
-u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
-    uint16_t item = giEntry.getItemId;
-    uint16_t temp;
-    uint16_t i;
-    uint16_t slot;
-
-    // Gameplay stats: Update the time the item was obtained
-    Randomizer_GameplayStats_SetTimestamp(item);
-
-    slot = SLOT(item);
-    if (item == RG_MAGIC_SINGLE) {
-        gSaveContext.isMagicAcquired = true;
-        gSaveContext.magicFillTarget = MAGIC_NORMAL_METER;
-        Magic_Fill(play);
-        return Return_Item_Entry(giEntry, RG_NONE);
-    } else if (item == RG_MAGIC_DOUBLE) {
-        if (!gSaveContext.isMagicAcquired) {
-            gSaveContext.isMagicAcquired = true;
-        }
-        gSaveContext.isDoubleMagicAcquired = true;
-        gSaveContext.magicFillTarget = MAGIC_DOUBLE_METER;
-        gSaveContext.magicLevel = 0;
-        Magic_Fill(play);
-        return Return_Item_Entry(giEntry, RG_NONE);
-    }
-
-    if (item == RG_MAGIC_BEAN_PACK) {
-        if (INV_CONTENT(ITEM_BEAN) == ITEM_NONE) {
-            INV_CONTENT(ITEM_BEAN) = ITEM_BEAN;
-            AMMO(ITEM_BEAN) = 10;
-        }
-        return Return_Item_Entry(giEntry, RG_NONE);
-    }
-
-    if (item == RG_DOUBLE_DEFENSE) {
-        gSaveContext.isDoubleDefenseAcquired = true;
-        gSaveContext.inventory.defenseHearts = 20;
-        gSaveContext.healthAccumulator = 0x140;
-        return Return_Item_Entry(giEntry, RG_NONE);
-    }
-
-    if (item >= RG_BOTTLE_WITH_RED_POTION && item <= RG_BOTTLE_WITH_BIG_POE) {
-        temp = SLOT(ITEM_BOTTLE);
-        for (i = 0; i < 4; i++) {
-            if (gSaveContext.inventory.items[temp + i] == ITEM_NONE) {
-                switch (item) {
-                    case RG_BOTTLE_WITH_RED_POTION:
-                        item = ITEM_POTION_RED;
-                        break;
-                    case RG_BOTTLE_WITH_GREEN_POTION:
-                        item = ITEM_POTION_GREEN;
-                        break;
-                    case RG_BOTTLE_WITH_BLUE_POTION:
-                        item = ITEM_POTION_BLUE;
-                        break;
-                    case RG_BOTTLE_WITH_FAIRY:
-                        item = ITEM_FAIRY;
-                        break;
-                    case RG_BOTTLE_WITH_FISH:
-                        item = ITEM_FISH;
-                        break;
-                    case RG_BOTTLE_WITH_BLUE_FIRE:
-                        item = ITEM_BLUE_FIRE;
-                        break;
-                    case RG_BOTTLE_WITH_BUGS:
-                        item = ITEM_BUG;
-                        break;
-                    case RG_BOTTLE_WITH_POE:
-                        item = ITEM_POE;
-                        break;
-                    case RG_BOTTLE_WITH_BIG_POE:
-                        item = ITEM_BIG_POE;
-                        break;
-                }
-
-                gSaveContext.inventory.items[temp + i] = item;
-                return Return_Item_Entry(giEntry, RG_NONE);
-            }
-        }
-    } else if ((item >= RG_FOREST_TEMPLE_SMALL_KEY && item <= RG_GANONS_CASTLE_SMALL_KEY) ||
-                (item >= RG_FOREST_TEMPLE_KEY_RING && item <= RG_GANONS_CASTLE_KEY_RING) ||
-                (item >= RG_FOREST_TEMPLE_BOSS_KEY && item <= RG_GANONS_CASTLE_BOSS_KEY) ||
-                (item >= RG_DEKU_TREE_MAP && item <= RG_ICE_CAVERN_MAP) ||
-                (item >= RG_DEKU_TREE_COMPASS && item <= RG_ICE_CAVERN_COMPASS)) {
-        int mapIndex = gSaveContext.mapIndex;
-        int numOfKeysOnKeyring = 0;
-        switch (item) {
-            case RG_DEKU_TREE_MAP:
-            case RG_DEKU_TREE_COMPASS:
-                mapIndex = SCENE_DEKU_TREE;
-                break;
-            case RG_DODONGOS_CAVERN_MAP:
-            case RG_DODONGOS_CAVERN_COMPASS:
-                mapIndex = SCENE_DODONGOS_CAVERN;
-                break;
-            case RG_JABU_JABUS_BELLY_MAP:
-            case RG_JABU_JABUS_BELLY_COMPASS:
-                mapIndex = SCENE_JABU_JABU;
-                break;
-            case RG_FOREST_TEMPLE_MAP:
-            case RG_FOREST_TEMPLE_COMPASS:
-            case RG_FOREST_TEMPLE_SMALL_KEY:
-            case RG_FOREST_TEMPLE_KEY_RING:
-            case RG_FOREST_TEMPLE_BOSS_KEY:
-                mapIndex = SCENE_FOREST_TEMPLE;
-                numOfKeysOnKeyring = FOREST_TEMPLE_SMALL_KEY_MAX;
-                break;
-            case RG_FIRE_TEMPLE_MAP:
-            case RG_FIRE_TEMPLE_COMPASS:
-            case RG_FIRE_TEMPLE_SMALL_KEY:
-            case RG_FIRE_TEMPLE_KEY_RING:
-            case RG_FIRE_TEMPLE_BOSS_KEY:
-                mapIndex = SCENE_FIRE_TEMPLE;
-                numOfKeysOnKeyring = FIRE_TEMPLE_SMALL_KEY_MAX;
-                break;
-            case RG_WATER_TEMPLE_MAP:
-            case RG_WATER_TEMPLE_COMPASS:
-            case RG_WATER_TEMPLE_SMALL_KEY:
-            case RG_WATER_TEMPLE_KEY_RING:
-            case RG_WATER_TEMPLE_BOSS_KEY:
-                mapIndex = SCENE_WATER_TEMPLE;
-                numOfKeysOnKeyring = WATER_TEMPLE_SMALL_KEY_MAX;
-                break;
-            case RG_SPIRIT_TEMPLE_MAP:
-            case RG_SPIRIT_TEMPLE_COMPASS:
-            case RG_SPIRIT_TEMPLE_SMALL_KEY:
-            case RG_SPIRIT_TEMPLE_KEY_RING:
-            case RG_SPIRIT_TEMPLE_BOSS_KEY:
-                mapIndex = SCENE_SPIRIT_TEMPLE;
-                numOfKeysOnKeyring = SPIRIT_TEMPLE_SMALL_KEY_MAX;
-                break;
-            case RG_SHADOW_TEMPLE_MAP:
-            case RG_SHADOW_TEMPLE_COMPASS:
-            case RG_SHADOW_TEMPLE_SMALL_KEY:
-            case RG_SHADOW_TEMPLE_KEY_RING:
-            case RG_SHADOW_TEMPLE_BOSS_KEY:
-                mapIndex = SCENE_SHADOW_TEMPLE;
-                numOfKeysOnKeyring = SHADOW_TEMPLE_SMALL_KEY_MAX;
-                break;
-            case RG_BOTTOM_OF_THE_WELL_MAP:
-            case RG_BOTTOM_OF_THE_WELL_COMPASS:
-            case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
-            case RG_BOTTOM_OF_THE_WELL_KEY_RING:
-                mapIndex = SCENE_BOTTOM_OF_THE_WELL;
-                numOfKeysOnKeyring = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;
-                break;
-            case RG_ICE_CAVERN_MAP:
-            case RG_ICE_CAVERN_COMPASS:
-                mapIndex = SCENE_ICE_CAVERN;
-                break;
-            case RG_GANONS_CASTLE_BOSS_KEY:
-                mapIndex = SCENE_GANONS_TOWER;
-                break;
-            case RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
-            case RG_GERUDO_TRAINING_GROUNDS_KEY_RING:
-                mapIndex = SCENE_GERUDO_TRAINING_GROUND;
-                numOfKeysOnKeyring = GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX;
-                break;
-            case RG_GERUDO_FORTRESS_SMALL_KEY:
-            case RG_GERUDO_FORTRESS_KEY_RING:
-                mapIndex = SCENE_THIEVES_HIDEOUT;
-                numOfKeysOnKeyring = GERUDO_FORTRESS_SMALL_KEY_MAX;
-                break;
-            case RG_GANONS_CASTLE_SMALL_KEY:
-            case RG_GANONS_CASTLE_KEY_RING:
-                mapIndex = SCENE_INSIDE_GANONS_CASTLE;
-                numOfKeysOnKeyring = GANONS_CASTLE_SMALL_KEY_MAX;
-                break;
-        }
-
-        if ((item >= RG_FOREST_TEMPLE_SMALL_KEY) && (item <= RG_GANONS_CASTLE_SMALL_KEY)) {
-            gSaveContext.sohStats.dungeonKeys[mapIndex]++;
-            if (gSaveContext.inventory.dungeonKeys[mapIndex] < 0) {
-                gSaveContext.inventory.dungeonKeys[mapIndex] = 1;
-            } else {
-                gSaveContext.inventory.dungeonKeys[mapIndex]++;
-            }
-            return Return_Item_Entry(giEntry, RG_NONE);
-        } else if ((item >= RG_FOREST_TEMPLE_KEY_RING) && (item <= RG_GANONS_CASTLE_KEY_RING)) {
-            gSaveContext.sohStats.dungeonKeys[mapIndex] = numOfKeysOnKeyring;
-            gSaveContext.inventory.dungeonKeys[mapIndex] = numOfKeysOnKeyring;
-            return Return_Item_Entry(giEntry, RG_NONE);
-        } else {
-            int bitmask;
-            if ((item >= RG_DEKU_TREE_MAP) && (item <= RG_ICE_CAVERN_MAP)) {
-                bitmask = gBitFlags[2];
-            } else if ((item >= RG_DEKU_TREE_COMPASS) && (item <= RG_ICE_CAVERN_COMPASS)) {
-                bitmask = gBitFlags[1];
-            } else {
-                bitmask = gBitFlags[0];
-            }
-
-            gSaveContext.inventory.dungeonItems[mapIndex] |= bitmask;
-            return Return_Item_Entry(giEntry, RG_NONE);
-        }
-    }
-
-    if (item == RG_TYCOON_WALLET) {
-        Inventory_ChangeUpgrade(UPG_WALLET, 3);
-        if (IS_RANDO && Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
-            Rupees_ChangeBy(999);
-        }
-        return Return_Item_Entry(giEntry, RG_NONE);
-    }
-
-    if (item == RG_GREG_RUPEE) {
-        Rupees_ChangeBy(1);
-        Flags_SetRandomizerInf(RAND_INF_GREG_FOUND);
-        gSaveContext.sohStats.itemTimestamp[TIMESTAMP_FOUND_GREG] = GAMEPLAYSTAT_TOTAL_TIME;
-        return Return_Item_Entry(giEntry, RG_NONE);
-    }
-
-    if (item == RG_TRIFORCE_PIECE) {
-        gSaveContext.triforcePiecesCollected++;
-        GameInteractor_SetTriforceHuntPieceGiven(true);
-
-        // Teleport to credits when goal is reached.
-        if (gSaveContext.triforcePiecesCollected == Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED)) {
-            gSaveContext.sohStats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] = GAMEPLAYSTAT_TOTAL_TIME;
-            gSaveContext.sohStats.gameComplete = 1;
-            Flags_SetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY);
-            Play_PerformSave(play);
-            GameInteractor_SetTriforceHuntCreditsWarpActive(true);
-        }
-
-        return Return_Item_Entry(giEntry, RG_NONE);
-    }
-
-    if (item == RG_PROGRESSIVE_BOMBCHUS) {
-        if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
-            INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
-            AMMO(ITEM_BOMBCHU) = 20;
-        } else {
-            AMMO(ITEM_BOMBCHU) += AMMO(ITEM_BOMBCHU) < 5 ? 10 : 5;
-            if (AMMO(ITEM_BOMBCHU) > 50) {
-                AMMO(ITEM_BOMBCHU) = 50;
-            }
-        }
-        return Return_Item_Entry(giEntry, RG_NONE);
-    }
-
-    if (item == RG_MASTER_SWORD) {
-        if (!CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
-            gSaveContext.inventory.equipment |= gBitFlags[1] << gEquipShifts[EQUIP_TYPE_SWORD];
-        }
-        return Return_Item_Entry(giEntry, RG_NONE);
-    }
-
-    temp = gSaveContext.inventory.items[slot];
-    osSyncPrintf("Item_Register(%d)=%d  %d\n", slot, item, temp);
-    INV_CONTENT(item) = item;
-
-    return temp;
 }
 
 u8 Item_CheckObtainability(u8 item) {
@@ -3033,8 +2763,8 @@ bool Inventory_HatchPocketCucco(PlayState* play) {
          return 0;
     }
 
-    gSaveContext.adultTradeItems &= ~ADULT_TRADE_FLAG(ITEM_POCKET_EGG);
-    gSaveContext.adultTradeItems |= ADULT_TRADE_FLAG(ITEM_POCKET_CUCCO);
+    gSaveContext.ship.quest.data.randomizer.adultTradeItems &= ~ADULT_TRADE_FLAG(ITEM_POCKET_EGG);
+    gSaveContext.ship.quest.data.randomizer.adultTradeItems |= ADULT_TRADE_FLAG(ITEM_POCKET_CUCCO);
     Inventory_ReplaceItem(play, ITEM_POCKET_EGG, ITEM_POCKET_CUCCO);
     return 1;
 }
@@ -3096,12 +2826,12 @@ void Interface_SetNaviCall(PlayState* play, u16 naviCallState) {
         (play->csCtx.state == CS_STATE_IDLE)) {
         if (!CVarGetInteger(CVAR_ENHANCEMENT("DisableNaviCallAudio"), 0)) {
             // clang-format off
-            if (naviCallState == 0x1E) { Audio_PlaySoundGeneral(NA_SE_VO_NAVY_CALL, &D_801333D4, 4,
-                                                                &D_801333E0, &D_801333E0, &D_801333E8); }
+            if (naviCallState == 0x1E) { Audio_PlaySoundGeneral(NA_SE_VO_NAVY_CALL, &gSfxDefaultPos, 4,
+                                                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb); }
             // clang-format on
 
             if (naviCallState == 0x1D) {
-                func_800F4524(&D_801333D4, NA_SE_VO_NA_HELLO_2, 32);
+                func_800F4524(&gSfxDefaultPos, NA_SE_VO_NA_HELLO_2, 32);
             }
         }
 
@@ -3152,7 +2882,7 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
                  gSaveContext.healthCapacity);
 
     if (healthChange < 0) {
-        gSaveContext.sohStats.count[COUNT_DAMAGE_TAKEN] += -healthChange;
+        gSaveContext.ship.stats.count[COUNT_DAMAGE_TAKEN] += -healthChange;
     }
 
     // If one-hit ko mode is on, any damage kills you and you cannot gain health.
@@ -3165,8 +2895,8 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
     }
 
     // clang-format off
-    if (healthChange > 0) { Audio_PlaySoundGeneral(NA_SE_SY_HP_RECOVER, &D_801333D4, 4,
-                                                   &D_801333E0, &D_801333E0, &D_801333E8);
+    if (healthChange > 0) { Audio_PlaySoundGeneral(NA_SE_SY_HP_RECOVER, &gSfxDefaultPos, 4,
+                                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     } else if ((gSaveContext.isDoubleDefenseAcquired != 0) && (healthChange < 0)) {
         healthChange >>= 1;
         osSyncPrintf("ハート減少半分！！＝%d\n", healthChange); // "Heart decrease halved!!＝%d"
@@ -3204,6 +2934,8 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
     // "Life=%d ＊＊＊  %d ＊＊＊＊＊＊"
     osSyncPrintf("  ライフ=%d  ＊＊＊  %d  ＊＊＊＊＊＊\n", gSaveContext.health, healthLevel);
 
+    GameInteractor_ExecuteOnPlayerHealthChange(healthChange);
+
     if (gSaveContext.health <= 0) {
         gSaveContext.health = 0;
         return 0;
@@ -3220,10 +2952,10 @@ void Rupees_ChangeBy(s16 rupeeChange) {
     }
 
     if (rupeeChange > 0) {
-        gSaveContext.sohStats.count[COUNT_RUPEES_COLLECTED] += rupeeChange;
+        gSaveContext.ship.stats.count[COUNT_RUPEES_COLLECTED] += rupeeChange;
     }
     if (rupeeChange < 0) {
-        gSaveContext.sohStats.count[COUNT_RUPEES_SPENT] += -rupeeChange;
+        gSaveContext.ship.stats.count[COUNT_RUPEES_SPENT] += -rupeeChange;
     }
 }
 
@@ -3231,25 +2963,25 @@ void GameplayStats_UpdateAmmoUsed(s16 item, s16 ammoUsed) {
 
     switch (item) { 
         case ITEM_STICK:
-            gSaveContext.sohStats.count[COUNT_AMMO_USED_STICK] += ammoUsed;
+            gSaveContext.ship.stats.count[COUNT_AMMO_USED_STICK] += ammoUsed;
             break;
         case ITEM_NUT:
-            gSaveContext.sohStats.count[COUNT_AMMO_USED_NUT] += ammoUsed;
+            gSaveContext.ship.stats.count[COUNT_AMMO_USED_NUT] += ammoUsed;
             break;
         case ITEM_BOMB:
-            gSaveContext.sohStats.count[COUNT_AMMO_USED_BOMB] += ammoUsed;
+            gSaveContext.ship.stats.count[COUNT_AMMO_USED_BOMB] += ammoUsed;
             break;
         case ITEM_BOW:
-            gSaveContext.sohStats.count[COUNT_AMMO_USED_ARROW] += ammoUsed;
+            gSaveContext.ship.stats.count[COUNT_AMMO_USED_ARROW] += ammoUsed;
             break;
         case ITEM_SLINGSHOT:
-            gSaveContext.sohStats.count[COUNT_AMMO_USED_SEED] += ammoUsed;
+            gSaveContext.ship.stats.count[COUNT_AMMO_USED_SEED] += ammoUsed;
             break;
         case ITEM_BOMBCHU:
-            gSaveContext.sohStats.count[COUNT_AMMO_USED_BOMBCHU] += ammoUsed;
+            gSaveContext.ship.stats.count[COUNT_AMMO_USED_BOMBCHU] += ammoUsed;
             break;
         case ITEM_BEAN:
-            gSaveContext.sohStats.count[COUNT_AMMO_USED_BEAN] += ammoUsed;
+            gSaveContext.ship.stats.count[COUNT_AMMO_USED_BEAN] += ammoUsed;
             break;
         default:
             break;
@@ -3344,7 +3076,7 @@ s32 Magic_RequestChange(PlayState* play, s16 amount, s16 type) {
 
     if ((type != 5) && (gSaveContext.magic - amount) < 0) {
         if (gSaveContext.magicCapacity != 0) {
-            Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         }
         return false;
     }
@@ -3360,7 +3092,7 @@ s32 Magic_RequestChange(PlayState* play, s16 amount, s16 type) {
                 gSaveContext.magicState = MAGIC_STATE_CONSUME_SETUP;
                 return 1;
             } else {
-                Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 return false;
             }
         case MAGIC_CONSUME_WAIT_NO_PREVIEW:
@@ -3372,7 +3104,7 @@ s32 Magic_RequestChange(PlayState* play, s16 amount, s16 type) {
                 gSaveContext.magicState = MAGIC_STATE_METER_FLASH_3;
                 return true;
             } else {
-                Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 return false;
             }
         case MAGIC_CONSUME_LENS:
@@ -3400,7 +3132,7 @@ s32 Magic_RequestChange(PlayState* play, s16 amount, s16 type) {
                 gSaveContext.magicState = MAGIC_STATE_METER_FLASH_2;
                 return true;
             } else {
-                Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 return false;
             }
         case MAGIC_ADD:
@@ -3484,8 +3216,8 @@ void Interface_UpdateMagicBar(PlayState* play) {
             gSaveContext.magic += 4;
 
             if (gSaveContext.gameMode == 0 && gSaveContext.sceneSetupIndex < 4) {
-                Audio_PlaySoundGeneral(NA_SE_SY_GAUGE_UP - SFX_FLAG, &D_801333D4, 4, &D_801333E0, &D_801333E0,
-                                       &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_SY_GAUGE_UP - SFX_FLAG, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                       &gSfxDefaultReverb);
             }
 
             // "Storage  MAGIC_NOW=%d (%d)"
@@ -3503,21 +3235,23 @@ void Interface_UpdateMagicBar(PlayState* play) {
             break;
 
         case MAGIC_STATE_CONSUME:
-            gSaveContext.magic -= 2;
-            if (gSaveContext.magic <= 0) {
-                gSaveContext.magic = 0;
-                gSaveContext.magicState = MAGIC_STATE_METER_FLASH_1;
-                if (CVarGetInteger(CVAR_COSMETIC("Consumable.MagicBorder.Changed"), 0)) {
-                    sMagicBorder = CVarGetColor24(CVAR_COSMETIC("Consumable.MagicBorder.Value"), sMagicBorder_ori);
-                } else {
-                    sMagicBorder = sMagicBorder_ori;
-                }
-            } else if (gSaveContext.magic == gSaveContext.magicTarget) {
-                gSaveContext.magicState = MAGIC_STATE_METER_FLASH_1;
-                if (CVarGetInteger(CVAR_COSMETIC("Consumable.MagicBorder.Changed"), 0)) {
-                    sMagicBorder = CVarGetColor24(CVAR_COSMETIC("Consumable.MagicBorder.Value"), sMagicBorder_ori);
-                } else {
-                    sMagicBorder = sMagicBorder_ori;
+            if (!Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MAGIC_METER)) {
+                gSaveContext.magic -= 2;
+                if (gSaveContext.magic <= 0) {
+                    gSaveContext.magic = 0;
+                    gSaveContext.magicState = MAGIC_STATE_METER_FLASH_1;
+                    if (CVarGetInteger(CVAR_COSMETIC("Consumable.MagicBorder.Changed"), 0)) {
+                        sMagicBorder = CVarGetColor24(CVAR_COSMETIC("Consumable.MagicBorder.Value"), sMagicBorder_ori);
+                    } else {
+                        sMagicBorder = sMagicBorder_ori;
+                    }
+                } else if (gSaveContext.magic == gSaveContext.magicTarget) {
+                    gSaveContext.magicState = MAGIC_STATE_METER_FLASH_1;
+                    if (CVarGetInteger(CVAR_COSMETIC("Consumable.MagicBorder.Changed"), 0)) {
+                        sMagicBorder = CVarGetColor24(CVAR_COSMETIC("Consumable.MagicBorder.Value"), sMagicBorder_ori);
+                    } else {
+                        sMagicBorder = sMagicBorder_ori;
+                    }
                 }
             }
         case MAGIC_STATE_METER_FLASH_1:
@@ -3573,7 +3307,8 @@ void Interface_UpdateMagicBar(PlayState* play) {
                 (msgCtx->msgMode == MSGMODE_NONE) && (play->gameOverCtx.state == GAMEOVER_INACTIVE) &&
                 (play->transitionTrigger == TRANS_TRIGGER_OFF) && (play->transitionMode == TRANS_MODE_OFF) && !Play_InCsMode(play)) {
                 bool hasLens = false;
-                for (int buttonIndex = 1; buttonIndex < (CVarGetInteger(CVAR_SETTING("DpadEquips"), 0) != 0) ? ARRAY_COUNT(gSaveContext.equips.buttonItems) : 4; buttonIndex++) {
+                for (int buttonIndex = 1; buttonIndex < ((CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) ? ARRAY_COUNT(gSaveContext.equips.buttonItems) : 4);
+                     buttonIndex++) {
                     if (gSaveContext.equips.buttonItems[buttonIndex] == ITEM_LENS) {
                         hasLens = true;
                         break;
@@ -3583,8 +3318,8 @@ void Interface_UpdateMagicBar(PlayState* play) {
                     !hasLens ||
                     !play->actorCtx.lensActive) {
                     play->actorCtx.lensActive = false;
-                    Audio_PlaySoundGeneral(NA_SE_SY_GLASSMODE_OFF, &D_801333D4, 4, &D_801333E0, &D_801333E0,
-                                           &D_801333E8);
+                    Audio_PlaySoundGeneral(NA_SE_SY_GLASSMODE_OFF, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                           &gSfxDefaultReverb);
                     gSaveContext.magicState = MAGIC_STATE_IDLE;
                     if (CVarGetInteger(CVAR_COSMETIC("Consumable.MagicBorder.Changed"), 0)) {
                         sMagicBorder = CVarGetColor24(CVAR_COSMETIC("Consumable.MagicBorder.Value"), sMagicBorder_ori);
@@ -3639,7 +3374,7 @@ void Interface_UpdateMagicBar(PlayState* play) {
 
         case MAGIC_STATE_ADD:
             gSaveContext.magic += 4;
-            Audio_PlaySoundGeneral(NA_SE_SY_GAUGE_UP - SFX_FLAG, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            Audio_PlaySoundGeneral(NA_SE_SY_GAUGE_UP - SFX_FLAG, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             if (gSaveContext.magic >= gSaveContext.magicTarget) {
                 gSaveContext.magic = gSaveContext.magicTarget;
                 gSaveContext.magicState = gSaveContext.prevMagicState;
@@ -3649,6 +3384,11 @@ void Interface_UpdateMagicBar(PlayState* play) {
 
         default:
             gSaveContext.magicState = MAGIC_STATE_IDLE;
+            if (CVarGetInteger(CVAR_COSMETIC("Consumable.MagicBorder.Changed"), 0)) {
+                sMagicBorder = CVarGetColor24(CVAR_COSMETIC("Consumable.MagicBorder.Value"), sMagicBorder_ori);
+            } else {
+                sMagicBorder = sMagicBorder_ori;
+            }
             break;
     }
 }
@@ -3681,12 +3421,16 @@ void Interface_DrawMagicBar(PlayState* play) {
     s16 magicBarY;
     Color_RGB8 magicbar_yellow = {250,250,0}; //Magic bar being used
     Color_RGB8 magicbar_green = {R_MAGIC_FILL_COLOR(0),R_MAGIC_FILL_COLOR(1),R_MAGIC_FILL_COLOR(2)}; //Magic bar fill
+    Color_RGB8 magicbar_blue = {0,0,200};//Infinite magic bar
 
     if (CVarGetInteger(CVAR_COSMETIC("Consumable.MagicActive.Changed"), 0)) {
         magicbar_yellow = CVarGetColor24(CVAR_COSMETIC("Consumable.MagicActive.Value"), magicbar_yellow);
     }
     if (CVarGetInteger(CVAR_COSMETIC("Consumable.Magic.Changed"), 0)) {
         magicbar_green = CVarGetColor24(CVAR_COSMETIC("Consumable.Magic.Value"), magicbar_green);
+    }
+    if (CVarGetInteger("gCosmetics.Consumable_MagicInfinite.Changed", 0)) {
+        magicbar_blue = CVarGetColor24("gCosmetics.Consumable_MagicInfinite.Value", magicbar_blue);
     }
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -3795,14 +3539,26 @@ void Interface_DrawMagicBar(PlayState* play) {
 
             // Fill the rest of the bar with the normal magic color
             gDPPipeSync(OVERLAY_DISP++);
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, magicbar_green.r, magicbar_green.g, magicbar_green.b, interfaceCtx->magicAlpha);
+            if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MAGIC_METER)) {
+                // Blue magic
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, magicbar_blue.r, magicbar_blue.g, magicbar_blue.b, interfaceCtx->magicAlpha);
+            } else {
+                // Green magic (default)
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, magicbar_green.r, magicbar_green.g, magicbar_green.b, interfaceCtx->magicAlpha);
+            }
 
             gSPWideTextureRectangle(OVERLAY_DISP++, rMagicFillX << 2, (magicBarY + 3) << 2,
                                 (rMagicFillX + gSaveContext.magicTarget) << 2, (magicBarY + 10) << 2, G_TX_RENDERTILE,
                                 0, 0, 1 << 10, 1 << 10);
         } else {
             // Fill the whole bar with the normal magic color
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, magicbar_green.r, magicbar_green.g, magicbar_green.b, interfaceCtx->magicAlpha);
+            if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MAGIC_METER)) {
+                // Blue magic
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, magicbar_blue.r, magicbar_blue.g, magicbar_blue.b, interfaceCtx->magicAlpha);
+            } else {
+                // Green magic (default)
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, magicbar_green.r, magicbar_green.g, magicbar_green.b, interfaceCtx->magicAlpha);
+            }
 
             gDPLoadMultiBlock_4b(OVERLAY_DISP++, gMagicMeterFillTex, 0, G_TX_RENDERTILE, G_IM_FMT_I, 16, 16, 0,
                                  G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
@@ -3862,8 +3618,8 @@ void Interface_DrawEnemyHealthBar(TargetContext* targetCtx, PlayState* play) {
     s32 healthbar_offsetY = CVarGetInteger(CVAR_COSMETIC("HUD.EnemyHealthBar.PosY"), 0);
     s8 anchorType = CVarGetInteger(CVAR_COSMETIC("HUD.EnemyHealthBar.PosType"), ENEMYHEALTH_ANCHOR_ACTOR);
 
-    if (CVarGetInteger(CVAR_COSMETIC("HUD.EnemyHealthBar..Changed"), 0)) {
-        healthbar_red = CVarGetColor(CVAR_COSMETIC("HUD.EnemyHealthBar..Value"), healthbar_red);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.EnemyHealthBar.Changed"), 0)) {
+        healthbar_red = CVarGetColor(CVAR_COSMETIC("HUD.EnemyHealthBar.Value"), healthbar_red);
     }
     if (CVarGetInteger(CVAR_COSMETIC("HUD.EnemyHealthBorder.Changed"), 0)) {
         healthbar_border = CVarGetColor(CVAR_COSMETIC("HUD.EnemyHealthBorder.Value"), healthbar_border);
@@ -3915,7 +3671,7 @@ void Interface_DrawEnemyHealthBar(TargetContext* targetCtx, PlayState* play) {
         Interface_CreateQuadVertexGroup(&sEnemyHealthVtx[12], -floorf(halfBarWidth) + endTexWidth, (-texHeight / 2) + 3,
                                         healthBarFill, 7, 0);
 
-        if (((!(player->stateFlags1 & PLAYER_STATE1_TEXT_ON_SCREEN)) || (actor != player->unk_664)) && targetCtx->unk_44 < 500.0f) {
+        if (((!(player->stateFlags1 & PLAYER_STATE1_TALKING)) || (actor != player->focusActor)) && targetCtx->unk_44 < 500.0f) {
             f32 slideInOffsetY = 0;
 
             // Slide in the health bar from edge of the screen (mimic the Z-Target triangles fly in)
@@ -4946,10 +4702,25 @@ void Interface_DrawAmmoCount(PlayState* play, s16 button, s16 alpha) {
 
     i = gSaveContext.equips.buttonItems[button];
 
-    if ((i == ITEM_STICK) || (i == ITEM_NUT) || (i == ITEM_BOMB) || (i == ITEM_BOW) ||
-        ((i >= ITEM_BOW_ARROW_FIRE) && (i <= ITEM_BOW_ARROW_LIGHT)) || (i == ITEM_SLINGSHOT) || (i == ITEM_BOMBCHU) ||
-        (i == ITEM_BEAN)) {
-
+    if (
+        GameInteractor_Should(
+            VB_DRAW_AMMO_COUNT,
+            (
+                (i == ITEM_STICK) ||
+                (i == ITEM_NUT) ||
+                (i == ITEM_BOMB) ||
+                (i == ITEM_BOW) ||
+                (
+                    (i >= ITEM_BOW_ARROW_FIRE) &&
+                    (i <= ITEM_BOW_ARROW_LIGHT)
+                ) ||
+                (i == ITEM_SLINGSHOT) ||
+                (i == ITEM_BOMBCHU) ||
+                (i == ITEM_BEAN)
+            ),
+            &i
+        )
+    ) {
         if ((i >= ITEM_BOW_ARROW_FIRE) && (i <= ITEM_BOW_ARROW_LIGHT)) {
             i = ITEM_BOW;
         }
@@ -5220,205 +4991,204 @@ void Interface_Draw(PlayState* play) {
         Gfx_SetupDL_39Overlay(play->state.gfxCtx);
 
         if (fullUi) {
-            // Rupee Icon
-            if (CVarGetInteger(CVAR_ENHANCEMENT("DynamicWalletIcon"), 0)) {
-                switch (CUR_UPG_VALUE(UPG_WALLET)) {
-                    case 0:
-                        if (CVarGetInteger(CVAR_COSMETIC("Consumable.GreenRupee.Changed"), 0)) {
-                            rColor = CVarGetColor24(CVAR_COSMETIC("Consumable.GreenRupee.Value"), rupeeWalletColors[0]);
-                        } else {
-                            rColor = rupeeWalletColors[0];
-                        }
-                        break;
-                    case 1:
-                        if (CVarGetInteger(CVAR_COSMETIC("Consumable.BlueRupee.Changed"), 0)) {
-                            rColor = CVarGetColor24(CVAR_COSMETIC("Consumable.BlueRupee.Value"), rupeeWalletColors[1]);
-                        } else {
-                            rColor = rupeeWalletColors[1];
-                        }
-                        break;
-                    case 2:
-                        if (CVarGetInteger(CVAR_COSMETIC("Consumable.RedRupee.Changed"), 0)) {
-                            rColor = CVarGetColor24(CVAR_COSMETIC("Consumable.RedRupee.Value"), rupeeWalletColors[2]);
-                        } else {
-                            rColor = rupeeWalletColors[2];
-                        }
-                        break;
-                    case 3:
-                        if (CVarGetInteger(CVAR_COSMETIC("Consumable.PurpleRupee.Changed"), 0)) {
-                            rColor = CVarGetColor24(CVAR_COSMETIC("Consumable.PurpleRupee.Value"), rupeeWalletColors[3]);
-                        } else {
-                            rColor = rupeeWalletColors[3];
-                        }
-                        break;
-                }
-            } else {
-                if (CVarGetInteger(CVAR_COSMETIC("Consumable.GreenRupee.Changed"), rupeeWalletColors)) {
-                     rColor = CVarGetColor24(CVAR_COSMETIC("Consumable.GreenRupee.Value"), rupeeWalletColors[0]);
-                } else {
-                     rColor = rupeeWalletColors[0];
-                }
-            }
-
-            //Rupee icon & counter
-            s16 X_Margins_RC;
-            s16 Y_Margins_RC;
-            if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.UseMargins"), 0) != 0) {
-                if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) == 0) {X_Margins_RC = Left_HUD_Margin;};
-                Y_Margins_RC = Bottom_HUD_Margin;
-            } else {
-                X_Margins_RC = 0;
-                Y_Margins_RC = 0;
-            }
-            s16 PosX_RC_ori = OTRGetRectDimensionFromLeftEdge(26+X_Margins_RC);
-            s16 PosY_RC_ori = 206+Y_Margins_RC;
             s16 PosX_RC;
             s16 PosY_RC;
-            if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) != 0) {
-                PosY_RC = CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosY"), 0)+Y_Margins_RC;
-                if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) == 1) {//Anchor Left
-                    if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.UseMargins"), 0) != 0) {X_Margins_RC = Left_HUD_Margin;};
-                    PosX_RC = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosX"), 0)+X_Margins_RC);
-                } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) == 2) {//Anchor Right
-                    if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.UseMargins"), 0) != 0) {X_Margins_RC = Right_HUD_Margin;};
-                    PosX_RC = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosX"), 0)+X_Margins_RC);
-                } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) == 3) {//Anchor None
-                    PosX_RC = CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosX"), 0);
-                } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) == 4) {//Hidden
-                PosX_RC = -9999;
+            if (GameInteractor_Should(VB_RENDER_RUPEE_COUNTER, true)) {
+                // Rupee Icon
+                if (CVarGetInteger(CVAR_ENHANCEMENT("DynamicWalletIcon"), 0)) {
+                    switch (CUR_UPG_VALUE(UPG_WALLET)) {
+                        case 0:
+                            if (CVarGetInteger(CVAR_COSMETIC("Consumable.GreenRupee.Changed"), 0)) {
+                                rColor = CVarGetColor24(CVAR_COSMETIC("Consumable.GreenRupee.Value"), rupeeWalletColors[0]);
+                            } else {
+                                rColor = rupeeWalletColors[0];
+                            }
+                            break;
+                        case 1:
+                            if (CVarGetInteger(CVAR_COSMETIC("Consumable.BlueRupee.Changed"), 0)) {
+                                rColor = CVarGetColor24(CVAR_COSMETIC("Consumable.BlueRupee.Value"), rupeeWalletColors[1]);
+                            } else {
+                                rColor = rupeeWalletColors[1];
+                            }
+                            break;
+                        case 2:
+                            if (CVarGetInteger(CVAR_COSMETIC("Consumable.RedRupee.Changed"), 0)) {
+                                rColor = CVarGetColor24(CVAR_COSMETIC("Consumable.RedRupee.Value"), rupeeWalletColors[2]);
+                            } else {
+                                rColor = rupeeWalletColors[2];
+                            }
+                            break;
+                        case 3:
+                            if (CVarGetInteger(CVAR_COSMETIC("Consumable.PurpleRupee.Changed"), 0)) {
+                                rColor = CVarGetColor24(CVAR_COSMETIC("Consumable.PurpleRupee.Value"), rupeeWalletColors[3]);
+                            } else {
+                                rColor = rupeeWalletColors[3];
+                            }
+                            break;
+                    }
+                } else {
+                    if (CVarGetInteger(CVAR_COSMETIC("Consumable.GreenRupee.Changed"), rupeeWalletColors)) {
+                        rColor = CVarGetColor24(CVAR_COSMETIC("Consumable.GreenRupee.Value"), rupeeWalletColors[0]);
+                    } else {
+                        rColor = rupeeWalletColors[0];
+                    }
                 }
-            } else {
-                PosY_RC = PosY_RC_ori;
-                PosX_RC = PosX_RC_ori;
-            }
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, rColor.r, rColor.g, rColor.b, interfaceCtx->magicAlpha);
-            // Draw Rupee icon. Hide in Boss Rush.
-            if (!IS_BOSS_RUSH) {
+
+                //Rupee icon & counter
+                s16 X_Margins_RC;
+                s16 Y_Margins_RC;
+                if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.UseMargins"), 0) != 0) {
+                    if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) == 0) {X_Margins_RC = Left_HUD_Margin;};
+                    Y_Margins_RC = Bottom_HUD_Margin;
+                } else {
+                    X_Margins_RC = 0;
+                    Y_Margins_RC = 0;
+                }
+                s16 PosX_RC_ori = OTRGetRectDimensionFromLeftEdge(26+X_Margins_RC);
+                s16 PosY_RC_ori = 206+Y_Margins_RC;
+                if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) != 0) {
+                    PosY_RC = CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosY"), 0)+Y_Margins_RC;
+                    if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) == 1) {//Anchor Left
+                        if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.UseMargins"), 0) != 0) {X_Margins_RC = Left_HUD_Margin;};
+                        PosX_RC = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosX"), 0)+X_Margins_RC);
+                    } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) == 2) {//Anchor Right
+                        if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.UseMargins"), 0) != 0) {X_Margins_RC = Right_HUD_Margin;};
+                        PosX_RC = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosX"), 0)+X_Margins_RC);
+                    } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) == 3) {//Anchor None
+                        PosX_RC = CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosX"), 0);
+                    } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) == 4) {//Hidden
+                        PosX_RC = -9999;
+                    }
+                } else {
+                    PosY_RC = PosY_RC_ori;
+                    PosX_RC = PosX_RC_ori;
+                }
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, rColor.r, rColor.g, rColor.b, interfaceCtx->magicAlpha);
                 OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gRupeeCounterIconTex, 16, 16, PosX_RC, PosY_RC, 16, 16, 1 << 10, 1 << 10);
             }
 
-            switch (play->sceneNum) {
-                case SCENE_FOREST_TEMPLE:
-                case SCENE_FIRE_TEMPLE:
-                case SCENE_WATER_TEMPLE:
-                case SCENE_SPIRIT_TEMPLE:
-                case SCENE_SHADOW_TEMPLE:
-                case SCENE_BOTTOM_OF_THE_WELL:
-                case SCENE_ICE_CAVERN:
-                case SCENE_GANONS_TOWER:
-                case SCENE_GERUDO_TRAINING_GROUND:
-                case SCENE_THIEVES_HIDEOUT:
-                case SCENE_INSIDE_GANONS_CASTLE:
-                case SCENE_GANONS_TOWER_COLLAPSE_INTERIOR:
-                case SCENE_INSIDE_GANONS_CASTLE_COLLAPSE:
-                case SCENE_TREASURE_BOX_SHOP:
-                    if (gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] >= 0) {
-                        s16 X_Margins_SKC;
-                        s16 Y_Margins_SKC;
-                        if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.UseMargins"), 0) != 0) {
-                            if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) == 0) {X_Margins_SKC = Left_HUD_Margin;};
-                            Y_Margins_SKC = Bottom_HUD_Margin;
-                        } else {
-                            X_Margins_SKC = 0;
-                            Y_Margins_SKC = 0;
-                        }
-                        s16 PosX_SKC_ori = OTRGetRectDimensionFromLeftEdge(26+X_Margins_SKC);
-                        s16 PosY_SKC_ori = 190+Y_Margins_SKC;
-                        s16 PosX_SKC;
-                        s16 PosY_SKC;
-                        if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) != 0) {
-                            PosY_SKC = CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosY"), 0)+Y_Margins_SKC;
-                            if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) == 1) {//Anchor Left
-                                if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.UseMargins"), 0) != 0) {X_Margins_SKC = Left_HUD_Margin;};
-                                PosX_SKC = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosX"), 0)+X_Margins_SKC);
-                            } else if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) == 2) {//Anchor Right
-                                if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.UseMargins"), 0) != 0) {X_Margins_SKC = Right_HUD_Margin;};
-                                PosX_SKC = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosX"), 0)+X_Margins_SKC);
-                            } else if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) == 3) {//Anchor None
-                                PosX_SKC = CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosX"), 0);
-                            } else if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) == 4) {//Hidden
-                            PosX_SKC = -9999;
+            if (GameInteractor_Should(VB_RENDER_KEY_COUNTER, true)) {
+                switch (play->sceneNum) {
+                    case SCENE_FOREST_TEMPLE:
+                    case SCENE_FIRE_TEMPLE:
+                    case SCENE_WATER_TEMPLE:
+                    case SCENE_SPIRIT_TEMPLE:
+                    case SCENE_SHADOW_TEMPLE:
+                    case SCENE_BOTTOM_OF_THE_WELL:
+                    case SCENE_ICE_CAVERN:
+                    case SCENE_GANONS_TOWER:
+                    case SCENE_GERUDO_TRAINING_GROUND:
+                    case SCENE_THIEVES_HIDEOUT:
+                    case SCENE_INSIDE_GANONS_CASTLE:
+                    case SCENE_GANONS_TOWER_COLLAPSE_INTERIOR:
+                    case SCENE_INSIDE_GANONS_CASTLE_COLLAPSE:
+                    case SCENE_TREASURE_BOX_SHOP:
+                        if (gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] >= 0) {
+                            s16 X_Margins_SKC;
+                            s16 Y_Margins_SKC;
+                            if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.UseMargins"), 0) != 0) {
+                                if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) == 0) {X_Margins_SKC = Left_HUD_Margin;};
+                                Y_Margins_SKC = Bottom_HUD_Margin;
+                            } else {
+                                X_Margins_SKC = 0;
+                                Y_Margins_SKC = 0;
                             }
-                        } else {
-                            PosY_SKC = PosY_SKC_ori;
-                            PosX_SKC = PosX_SKC_ori;
+                            s16 PosX_SKC_ori = OTRGetRectDimensionFromLeftEdge(26+X_Margins_SKC);
+                            s16 PosY_SKC_ori = 190+Y_Margins_SKC;
+                            s16 PosX_SKC;
+                            s16 PosY_SKC;
+                            if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) != 0) {
+                                PosY_SKC = CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosY"), 0)+Y_Margins_SKC;
+                                if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) == 1) {//Anchor Left
+                                    if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.UseMargins"), 0) != 0) {X_Margins_SKC = Left_HUD_Margin;};
+                                    PosX_SKC = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosX"), 0)+X_Margins_SKC);
+                                } else if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) == 2) {//Anchor Right
+                                    if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.UseMargins"), 0) != 0) {X_Margins_SKC = Right_HUD_Margin;};
+                                    PosX_SKC = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosX"), 0)+X_Margins_SKC);
+                                } else if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) == 3) {//Anchor None
+                                    PosX_SKC = CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosX"), 0);
+                                } else if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) == 4) {//Hidden
+                                    PosX_SKC = -9999;
+                                }
+                            } else {
+                                PosY_SKC = PosY_SKC_ori;
+                                PosX_SKC = PosX_SKC_ori;
+                            }
+                            // Small Key Icon
+                            gDPPipeSync(OVERLAY_DISP++);
+
+                            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, keyCountColor.r,keyCountColor.g,keyCountColor.b, interfaceCtx->magicAlpha);
+                            gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 20, 255); //We reset this here so it match user color :)
+                            OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gSmallKeyCounterIconTex, 16, 16, PosX_SKC, PosY_SKC, 16, 16,
+                                                          1 << 10, 1 << 10);
+
+                            // Small Key Counter
+                            gDPPipeSync(OVERLAY_DISP++);
+                            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->magicAlpha);
+                            gDPSetCombineLERP(OVERLAY_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE,
+                                              TEXEL0, 0, PRIMITIVE, 0);
+
+                            interfaceCtx->counterDigits[2] = 0;
+                            interfaceCtx->counterDigits[3] = gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex];
+
+                            while (interfaceCtx->counterDigits[3] >= 10) {
+                                interfaceCtx->counterDigits[2]++;
+                                interfaceCtx->counterDigits[3] -= 10;
+                            }
+
+                            if (interfaceCtx->counterDigits[2] != 0) {
+                                OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)((u8*)digitTextures[interfaceCtx->counterDigits[2]])), 8, 16, PosX_SKC+8, PosY_SKC, 8, 16, 1 << 10, 1 << 10);
+                            }
+
+                            OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)digitTextures[interfaceCtx->counterDigits[3]]), 8, 16, PosX_SKC+16, PosY_SKC, 8, 16, 1 << 10, 1 << 10);
                         }
-                        // Small Key Icon
-                        gDPPipeSync(OVERLAY_DISP++);
-
-                        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, keyCountColor.r,keyCountColor.g,keyCountColor.b, interfaceCtx->magicAlpha);
-                        gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 20, 255); //We reset this here so it match user color :)
-                        OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gSmallKeyCounterIconTex, 16, 16, PosX_SKC, PosY_SKC, 16, 16,
-                                                      1 << 10, 1 << 10);
-
-                        // Small Key Counter
-                        gDPPipeSync(OVERLAY_DISP++);
-                        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->magicAlpha);
-                        gDPSetCombineLERP(OVERLAY_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE,
-                                          TEXEL0, 0, PRIMITIVE, 0);
-
-                        interfaceCtx->counterDigits[2] = 0;
-                        interfaceCtx->counterDigits[3] = gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex];
-
-                        while (interfaceCtx->counterDigits[3] >= 10) {
-                            interfaceCtx->counterDigits[2]++;
-                            interfaceCtx->counterDigits[3] -= 10;
-                        }
-
-                        if (interfaceCtx->counterDigits[2] != 0) {
-                            OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)((u8*)digitTextures[interfaceCtx->counterDigits[2]])), 8, 16, PosX_SKC+8, PosY_SKC, 8, 16, 1 << 10, 1 << 10);
-                        }
-
-                        OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)digitTextures[interfaceCtx->counterDigits[3]]), 8, 16, PosX_SKC+16, PosY_SKC, 8, 16, 1 << 10, 1 << 10);
-                    }
-                    break;
-                default:
-                    break;
+                        break;
+                    default:
+                        break;
+                }
             }
 
-            // Rupee Counter
-            gDPPipeSync(OVERLAY_DISP++);
+            if (GameInteractor_Should(VB_RENDER_RUPEE_COUNTER, true)) {
+                // Rupee Counter
+                gDPPipeSync(OVERLAY_DISP++);
 
-            if (gSaveContext.rupees == CUR_CAPACITY(UPG_WALLET)) {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 120, 255, 0, interfaceCtx->magicAlpha);
-            } else if (gSaveContext.rupees != 0) {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->magicAlpha);
-            } else {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 100, 100, 100, interfaceCtx->magicAlpha);
-            }
+                if (gSaveContext.rupees == CUR_CAPACITY(UPG_WALLET)) {
+                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 120, 255, 0, interfaceCtx->magicAlpha);
+                } else if (gSaveContext.rupees != 0) {
+                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->magicAlpha);
+                } else {
+                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 100, 100, 100, interfaceCtx->magicAlpha);
+                }
 
-            gDPSetCombineLERP(OVERLAY_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0,
-                              PRIMITIVE, 0);
+                gDPSetCombineLERP(OVERLAY_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0,
+                                  PRIMITIVE, 0);
 
-            interfaceCtx->counterDigits[0] = interfaceCtx->counterDigits[1] = 0;
-            interfaceCtx->counterDigits[2] = gSaveContext.rupees;
+                interfaceCtx->counterDigits[0] = interfaceCtx->counterDigits[1] = 0;
+                interfaceCtx->counterDigits[2] = gSaveContext.rupees;
 
-            if ((interfaceCtx->counterDigits[2] > 9999) || (interfaceCtx->counterDigits[2] < 0)) {
-                interfaceCtx->counterDigits[2] &= 0xDDD;
-            }
+                if ((interfaceCtx->counterDigits[2] > 9999) || (interfaceCtx->counterDigits[2] < 0)) {
+                    interfaceCtx->counterDigits[2] &= 0xDDD;
+                }
 
-            while (interfaceCtx->counterDigits[2] >= 100) {
-                interfaceCtx->counterDigits[0]++;
-                interfaceCtx->counterDigits[2] -= 100;
-            }
+                while (interfaceCtx->counterDigits[2] >= 100) {
+                    interfaceCtx->counterDigits[0]++;
+                    interfaceCtx->counterDigits[2] -= 100;
+                }
 
-            while (interfaceCtx->counterDigits[2] >= 10) {
-                interfaceCtx->counterDigits[1]++;
-                interfaceCtx->counterDigits[2] -= 10;
-            }
+                while (interfaceCtx->counterDigits[2] >= 10) {
+                    interfaceCtx->counterDigits[1]++;
+                    interfaceCtx->counterDigits[2] -= 10;
+                }
 
-            svar2 = rupeeDigitsFirst[CUR_UPG_VALUE(UPG_WALLET)];
-            svar5 = rupeeDigitsCount[CUR_UPG_VALUE(UPG_WALLET)];
+                svar2 = rupeeDigitsFirst[CUR_UPG_VALUE(UPG_WALLET)];
+                svar5 = rupeeDigitsCount[CUR_UPG_VALUE(UPG_WALLET)];
 
-            // Draw Rupee Counter. Hide in Boss Rush.
-            if (!IS_BOSS_RUSH) {
                 for (svar1 = 0, svar3 = 16; svar1 < svar5; svar1++, svar2++, svar3 += 8) {
                     OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)digitTextures[interfaceCtx->counterDigits[svar2]]),
                                                  8, 16, PosX_RC + svar3, PosY_RC, 8, 16, 1 << 10, 1 << 10);
                 }
             }
-        }
-        else {
+        } else {
             // Make sure item counts have black backgrounds
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 0, 0, 0, interfaceCtx->magicAlpha);
             gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 0);
@@ -5578,7 +5348,7 @@ void Interface_Draw(PlayState* play) {
             Interface_DrawAmmoCount(play, 3, interfaceCtx->cRightAlpha);
         }
 
-        if (CVarGetInteger(CVAR_SETTING("DpadEquips"), 0) != 0) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) {
             // DPad is only greyed-out when all 4 DPad directions are too
             uint16_t dpadAlpha =
                 MAX(MAX(MAX(interfaceCtx->dpadUpAlpha, interfaceCtx->dpadDownAlpha), interfaceCtx->dpadLeftAlpha),
@@ -5913,17 +5683,19 @@ void Interface_Draw(PlayState* play) {
             }
 
             // Revert any spoiling trade quest items
-            for (svar1 = 0; svar1 < ARRAY_COUNT(gSpoilingItems); svar1++) {
-                if (INV_CONTENT(ITEM_TRADE_ADULT) == gSpoilingItems[svar1]) {
-                    gSaveContext.eventInf[0] &= 0x7F80;
-                    osSyncPrintf("EVENT_INF=%x\n", gSaveContext.eventInf[0]);
-                    play->nextEntranceIndex = spoilingItemEntrances[svar1];
-                    INV_CONTENT(gSpoilingItemReverts[svar1]) = gSpoilingItemReverts[svar1];
+            if (GameInteractor_Should(VB_REVERT_SPOILING_ITEMS, true)) {
+                for (svar1 = 0; svar1 < ARRAY_COUNT(gSpoilingItems); svar1++) {
+                    if (INV_CONTENT(ITEM_TRADE_ADULT) == gSpoilingItems[svar1]) {
+                        gSaveContext.eventInf[0] &= 0x7F80;
+                        osSyncPrintf("EVENT_INF=%x\n", gSaveContext.eventInf[0]);
+                        play->nextEntranceIndex = spoilingItemEntrances[svar1];
+                        INV_CONTENT(gSpoilingItemReverts[svar1]) = gSpoilingItemReverts[svar1];
 
-                    for (svar2 = 1; svar2 < ARRAY_COUNT(gSaveContext.equips.buttonItems); svar2++) {
-                        if (gSaveContext.equips.buttonItems[svar2] == gSpoilingItems[svar1]) {
-                            gSaveContext.equips.buttonItems[svar2] = gSpoilingItemReverts[svar1];
-                            Interface_LoadItemIcon1(play, svar2);
+                        for (svar2 = 1; svar2 < ARRAY_COUNT(gSaveContext.equips.buttonItems); svar2++) {
+                            if (gSaveContext.equips.buttonItems[svar2] == gSpoilingItems[svar1]) {
+                                gSaveContext.equips.buttonItems[svar2] = gSpoilingItemReverts[svar1];
+                                Interface_LoadItemIcon1(play, svar2);
+                            }
                         }
                     }
                 }
@@ -6030,17 +5802,17 @@ void Interface_Draw(PlayState* play) {
                                 D_80125A5C = 0;
                             } else if (gSaveContext.timer1Value > 60) {
                                 if (timerDigits[4] == 1) {
-                                    Audio_PlaySoundGeneral(NA_SE_SY_MESSAGE_WOMAN, &D_801333D4, 4, &D_801333E0,
-                                                           &D_801333E0, &D_801333E8);
+                                    Audio_PlaySoundGeneral(NA_SE_SY_MESSAGE_WOMAN, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                                 }
                             } else if (gSaveContext.timer1Value >= 11) {
                                 if (timerDigits[4] & 1) {
-                                    Audio_PlaySoundGeneral(NA_SE_SY_WARNING_COUNT_N, &D_801333D4, 4, &D_801333E0,
-                                                           &D_801333E0, &D_801333E8);
+                                    Audio_PlaySoundGeneral(NA_SE_SY_WARNING_COUNT_N, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                                 }
                             } else {
-                                Audio_PlaySoundGeneral(NA_SE_SY_WARNING_COUNT_E, &D_801333D4, 4, &D_801333E0,
-                                                       &D_801333E0, &D_801333E8);
+                                Audio_PlaySoundGeneral(NA_SE_SY_WARNING_COUNT_E, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                             }
                         }
                     }
@@ -6087,8 +5859,8 @@ void Interface_Draw(PlayState* play) {
                                 D_8015FFE2 = 40;
                                 gSaveContext.timer1State = 15;
                             } else {
-                                Audio_PlaySoundGeneral(NA_SE_SY_WARNING_COUNT_N, &D_801333D4, 4, &D_801333E0,
-                                                       &D_801333E0, &D_801333E8);
+                                Audio_PlaySoundGeneral(NA_SE_SY_WARNING_COUNT_N, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                             }
                         }
                     }
@@ -6198,24 +5970,24 @@ void Interface_Draw(PlayState* play) {
                                                 gSaveContext.timer2State = 5;
                                                 gSaveContext.cutsceneIndex = 0;
                                                 Message_StartTextbox(play, 0x71B0, NULL);
-                                                func_8002DF54(play, NULL, 8);
+                                                Player_SetCsActionWithHaltedActors(play, NULL, 8);
                                             } else {
                                                 D_8015FFE6 = 40;
                                                 gSaveContext.timer2State = 6;
                                             }
                                         } else if (gSaveContext.timer2Value > 60) {
                                             if (timerDigits[4] == 1) {
-                                                Audio_PlaySoundGeneral(NA_SE_SY_MESSAGE_WOMAN, &D_801333D4, 4,
-                                                                       &D_801333E0, &D_801333E0, &D_801333E8);
+                                                Audio_PlaySoundGeneral(NA_SE_SY_MESSAGE_WOMAN, &gSfxDefaultPos, 4,
+                                                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                                             }
                                         } else if (gSaveContext.timer2Value > 10) {
                                             if ((timerDigits[4] & 1)) {
-                                                Audio_PlaySoundGeneral(NA_SE_SY_WARNING_COUNT_N, &D_801333D4, 4,
-                                                                       &D_801333E0, &D_801333E0, &D_801333E8);
+                                                Audio_PlaySoundGeneral(NA_SE_SY_WARNING_COUNT_N, &gSfxDefaultPos, 4,
+                                                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                                             }
                                         } else {
-                                            Audio_PlaySoundGeneral(NA_SE_SY_WARNING_COUNT_E, &D_801333D4, 4,
-                                                                   &D_801333E0, &D_801333E0, &D_801333E8);
+                                            Audio_PlaySoundGeneral(NA_SE_SY_WARNING_COUNT_E, &gSfxDefaultPos, 4,
+                                                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                                         }
                                     } else {
                                         gSaveContext.timer2Value++;
@@ -6229,8 +6001,8 @@ void Interface_Draw(PlayState* play) {
                                     }
 
                                     if ((gSaveContext.timer2Value % 60) == 0) {
-                                        Audio_PlaySoundGeneral(NA_SE_SY_WARNING_COUNT_N, &D_801333D4, 4, &D_801333E0,
-                                                               &D_801333E0, &D_801333E8);
+                                        Audio_PlaySoundGeneral(NA_SE_SY_WARNING_COUNT_N, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                                     }
                                 }
                             }
@@ -6294,7 +6066,7 @@ void Interface_Draw(PlayState* play) {
                         svar5 = CVarGetInteger(CVAR_COSMETIC("HUD.Timers.PosX"), 0)+204+X_Margins_Timer;
                     } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Timers.PosType"), 0) == 4) {//Hidden
                         svar5 = -9999;
-                    }
+                    }                
                 }
 
                 OVERLAY_DISP =
@@ -6350,7 +6122,7 @@ void Interface_Draw(PlayState* play) {
 void Interface_DrawTotalGameplayTimer(PlayState* play) {
     // Draw timer based on the Gameplay Stats total time.
 
-    if ((IS_BOSS_RUSH && gSaveContext.bossRushOptions[BR_OPTIONS_TIMER] == BR_CHOICE_TIMER_YES) ||
+    if ((IS_BOSS_RUSH && gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_TIMER] == BR_CHOICE_TIMER_YES) ||
         (CVarGetInteger(CVAR_ENHANCEMENT("GameplayStats.ShowIngameTimer"), 0) && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2)) {
 
         s32 X_Margins_Timer = 0;
@@ -6430,9 +6202,9 @@ void Interface_DrawTotalGameplayTimer(PlayState* play) {
                                     (rectTop + rectHeight) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
 
             // Draw regular text. Change color based on if the timer is paused, running or the game is completed.
-            if (gSaveContext.sohStats.gameComplete) {
+            if (gSaveContext.ship.stats.gameComplete) {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 120, 255, 0, 255);
-            } else if (gSaveContext.isBossRushPaused && !gSaveContext.sohStats.rtaTiming) {
+            } else if (IS_BOSS_RUSH && gSaveContext.ship.quest.data.bossRush.isPaused && !gSaveContext.ship.stats.rtaTiming) {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 150, 150, 150, 255);
             } else {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, 255);
@@ -6595,7 +6367,7 @@ void Interface_Update(PlayState* play) {
         gSaveContext.health += 4;
 
         if ((gSaveContext.health & 0xF) < 4) {
-            Audio_PlaySoundGeneral(NA_SE_SY_HP_RECOVER, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            Audio_PlaySoundGeneral(NA_SE_SY_HP_RECOVER, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         }
 
         osSyncPrintf("now_life=%d  max_life=%d\n", gSaveContext.health, gSaveContext.healthCapacity);
@@ -6632,7 +6404,7 @@ void Interface_Update(PlayState* play) {
             if (gSaveContext.rupees < CUR_CAPACITY(UPG_WALLET)) {
                 gSaveContext.rupeeAccumulator--;
                 gSaveContext.rupees++;
-                Audio_PlaySoundGeneral(NA_SE_SY_RUPY_COUNT, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_SY_RUPY_COUNT, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             } else {
                 // "Rupee Amount MAX = %d"
                 osSyncPrintf("ルピー数ＭＡＸ = %d\n", CUR_CAPACITY(UPG_WALLET));
@@ -6648,20 +6420,20 @@ void Interface_Update(PlayState* play) {
                     gSaveContext.rupees = 0;
                 }
 
-                Audio_PlaySoundGeneral(NA_SE_SY_RUPY_COUNT, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_SY_RUPY_COUNT, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             } else {
                 gSaveContext.rupeeAccumulator++;
                 gSaveContext.rupees--;
-                Audio_PlaySoundGeneral(NA_SE_SY_RUPY_COUNT, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_SY_RUPY_COUNT, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             }
         } else {
             gSaveContext.rupeeAccumulator = 0;
         }
-        if (gSaveContext.rupeeAccumulator == 0 && gSaveContext.pendingSale != ITEM_NONE) {
-            u16 tempSaleItem = gSaveContext.pendingSale;
-            u16 tempSaleMod = gSaveContext.pendingSaleMod;
-            gSaveContext.pendingSale = ITEM_NONE;
-            gSaveContext.pendingSaleMod = MOD_NONE;
+        if (gSaveContext.rupeeAccumulator == 0 && gSaveContext.ship.pendingSale != ITEM_NONE) {
+            u16 tempSaleItem = gSaveContext.ship.pendingSale;
+            u16 tempSaleMod = gSaveContext.ship.pendingSaleMod;
+            gSaveContext.ship.pendingSale = ITEM_NONE;
+            gSaveContext.ship.pendingSaleMod = MOD_NONE;
             if (tempSaleMod == MOD_NONE) {
                 GetItemID getItemID = RetrieveGetItemIDFromItemID(tempSaleItem);
                 RandomizerGet randomizerGet = RetrieveRandomizerGetFromItemID(tempSaleItem);

@@ -6,8 +6,9 @@
 
 #include "z_en_wonder_talk2.h"
 #include "vt.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_NO_LOCKON)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_LOCK_ON_DISABLED)
 
 void EnWonderTalk2_Init(Actor* thisx, PlayState* play);
 void EnWonderTalk2_Destroy(Actor* thisx, PlayState* play);
@@ -92,7 +93,7 @@ void EnWonderTalk2_Init(Actor* thisx, PlayState* play) {
         this->talkMode = 4;
     }
     if (this->talkMode == 3) {
-        this->actor.flags &= ~ACTOR_FLAG_NO_LOCKON;
+        this->actor.flags &= ~ACTOR_FLAG_LOCK_ON_DISABLED;
         this->actionFunc = EnWonderTalk2_DoNothing;
     } else {
         this->actionFunc = func_80B3A10C;
@@ -115,7 +116,7 @@ void func_80B3A15C(EnWonderTalk2* this, PlayState* play) {
     this->unk_158++;
     if ((this->switchFlag >= 0) && Flags_GetSwitch(play, this->switchFlag)) {
         if (!this->unk_15A) {
-            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+            this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
             this->unk_15A = true;
         }
     } else if (Actor_ProcessTalkRequest(&this->actor, play)) {
@@ -193,8 +194,10 @@ void func_80B3A3D4(EnWonderTalk2* this, PlayState* play) {
             if (this->talkMode == 4) {
                 this->unk_15A = true;
             }
-            this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_UPDATE_WHILE_CULLED);
-            func_8002DF54(play, NULL, 7);
+            this->actor.flags &= ~(ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_UPDATE_CULLING_DISABLED);
+            if (GameInteractor_Should(VB_WONDER_TALK, true, this)) {
+                Player_SetCsActionWithHaltedActors(play, NULL, 7);
+            }
             this->unk_156 = true;
             this->actionFunc = func_80B3A4F8;
             break;
@@ -208,7 +211,7 @@ void func_80B3A4F8(EnWonderTalk2* this, PlayState* play) {
     this->unk_158++;
     if (this->switchFlag >= 0 && Flags_GetSwitch(play, this->switchFlag)) {
         if (!this->unk_15A) {
-            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+            this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
             this->unk_15A = true;
         }
     } else if ((this->talkMode != 4) || !this->unk_15A) {
@@ -243,7 +246,7 @@ void func_80B3A4F8(EnWonderTalk2* this, PlayState* play) {
                         osSyncPrintf(VT_FGCOL(PURPLE) " ☆☆ 強制 ☆☆ \n" VT_RST);
                         break;
                     case 4:
-                        // "Gerudo Training Grounds Forced Check Only"
+                        // "Gerudo Training Ground Forced Check Only"
                         osSyncPrintf(VT_FGCOL(RED) " ☆☆ ゲルドの修練場強制チェックのみ ☆☆ \n" VT_RST);
                         break;
                 }
@@ -252,42 +255,12 @@ void func_80B3A4F8(EnWonderTalk2* this, PlayState* play) {
             }
             this->unk_158 = 0;
             if (!this->unk_156) {
-                // Whether or not to skip the text in rando
-                bool randoSkipText = false;
-                if (IS_RANDO) {
-                    // Scenes for which all of this type of wonder talk should be skipped.
-                    switch (play->sceneNum) {
-                        case SCENE_SHADOW_TEMPLE: // Shadow Temple
-                            randoSkipText = true;
-                            break;
-                        case SCENE_GERUDO_TRAINING_GROUND: // Gerudo Training Grounds
-                            randoSkipText = true;
-                            break;
-                        case SCENE_THIEVES_HIDEOUT: // Inside Gerudo Fortress
-                            randoSkipText = true;
-                            break;
-                        default:
-                            break;
-                    }
-                    // individual textIds that should be skipped, or that should be preserved
-                    // in a scene that otherwise has all wonder talk skipped.
-                    //switch (this->actor.textId) { 
-                    //    case: 0x023c //textId we want to skip
-                    //        randoSkipText = true;
-                    //        break;
-                    //    case 0x023c: // textId in a skipped scene that we don't want to skip
-                    //        randoSkipText = false;
-                    //        break;
-                    //    default:
-                    //        break;
-                    //}
-                }
-                if (!(randoSkipText)) {
+                if (GameInteractor_Should(VB_WONDER_TALK, true, this)) {
                     Message_StartTextbox(play, this->actor.textId, NULL);
-                    func_8002DF54(play, NULL, 8);
-                    this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_UPDATE_WHILE_CULLED;
-                    this->actionFunc = func_80B3A3D4;
+                    Player_SetCsActionWithHaltedActors(play, NULL, 8);
                 }
+                this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_UPDATE_CULLING_DISABLED;
+                this->actionFunc = func_80B3A3D4;
             }
 
         } else {

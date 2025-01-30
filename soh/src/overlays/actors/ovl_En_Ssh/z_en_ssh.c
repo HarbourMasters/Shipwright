@@ -1,7 +1,9 @@
 #include "z_en_ssh.h"
 #include "objects/object_ssh/object_ssh.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 #define SSH_STATE_STUNNED (1 << 0)
 #define SSH_STATE_GROUND_START (1 << 2)
@@ -350,12 +352,13 @@ void EnSsh_Bob(EnSsh* this, PlayState* play) {
 }
 
 s32 EnSsh_IsCloseToLink(EnSsh* this, PlayState* play) {
-    Player* player = GET_PLAYER(play);
-    f32 yDist;
-
+    // #region SOH [Randomizer] automatically lower skultulla people
     if (IS_RANDO) {
         return true;
     }
+    // #endregion
+    Player* player = GET_PLAYER(play);
+    f32 yDist;
     if (this->stateFlags & SSH_STATE_GROUND_START) {
         return true;
     }
@@ -698,19 +701,25 @@ void EnSsh_Idle(EnSsh* this, PlayState* play) {
                 this->actor.textId = Text_GetFaceReaction(play, 0xD);
                 if (this->actor.textId == 0) {
                     if (this->actor.params == ENSSH_FATHER) {
-                        if (gSaveContext.inventory.gsTokens >= 50) {
-                            this->actor.textId = 0x29;
-                        } else if (gSaveContext.inventory.gsTokens >= 10) {
-                            if (Flags_GetInfTable(INFTABLE_197)) {
-                                this->actor.textId = 0x24;
-                            } else {
-                                this->actor.textId = 0x25;
-                            }
+                        // #region SOH [Randomizer] Skip the complexity of the father's text when he should just give a hint
+                        if (IS_RANDO && Randomizer_GetSettingValue(RSK_KAK_100_SKULLS_HINT)){
+                            this->actor.textId = 0x27;
+                        // #endregion
                         } else {
-                            if (Flags_GetInfTable(INFTABLE_196)) {
-                                this->actor.textId = 0x27;
+                            if (gSaveContext.inventory.gsTokens >= 50) {
+                                this->actor.textId = 0x29;
+                            } else if (gSaveContext.inventory.gsTokens >= 10) {
+                                if (Flags_GetInfTable(INFTABLE_197)) {
+                                    this->actor.textId = 0x24;
+                                } else {
+                                    this->actor.textId = 0x25;
+                                }
                             } else {
-                                this->actor.textId = 0x26;
+                                if (Flags_GetInfTable(INFTABLE_196)) {
+                                    this->actor.textId = 0x27;
+                                } else {
+                                    this->actor.textId = 0x26;
+                                }
                             }
                         }
                     } else {
@@ -817,7 +826,7 @@ void EnSsh_Update(Actor* thisx, PlayState* play) {
         EnSsh_Damaged(this);
     } else {
         SkelAnime_Update(&this->skelAnime);
-        func_8002D7EC(&this->actor);
+        Actor_UpdatePos(&this->actor);
         Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);
         this->actionFunc(this, play);
     }

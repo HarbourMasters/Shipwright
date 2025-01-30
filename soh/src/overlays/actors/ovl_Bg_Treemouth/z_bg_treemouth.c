@@ -7,8 +7,10 @@
 #include "z_bg_treemouth.h"
 #include "objects/object_spot04_objects/object_spot04_objects.h"
 #include "overlays/effects/ovl_Effect_Ss_Hahen/z_eff_ss_hahen.h"
+#include "soh/OTRGlobals.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void BgTreemouth_Init(Actor* thisx, PlayState* play);
 void BgTreemouth_Destroy(Actor* thisx, PlayState* play);
@@ -73,11 +75,7 @@ void BgTreemouth_Init(Actor* thisx, PlayState* play) {
 
     if ((gSaveContext.sceneSetupIndex < 4) && !LINK_IS_ADULT) {
         BgTreemouth_SetupAction(this, func_808BC8B8);
-    // If dungeon entrance randomizer is on, keep the tree mouth open
-    // when Link is adult and sword & shield have been shown to Mido
-    } else if ((LINK_IS_ADULT && (!IS_RANDO ||
-        Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) == RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) ||
-        !Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD)) || (gSaveContext.sceneSetupIndex == 7)) {
+    } else if (LINK_IS_ADULT || (gSaveContext.sceneSetupIndex == 7)) {
         this->unk_168 = 0.0f;
         BgTreemouth_SetupAction(this, BgTreemouth_DoNothing);
     } else {
@@ -95,7 +93,7 @@ void BgTreemouth_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void func_808BC65C(BgTreemouth* this, PlayState* play) {
-    CsCmdActorAction* npcAction;
+    CsCmdActorCue* npcAction;
 
     if ((play->csCtx.state != CS_STATE_IDLE)) {
         npcAction = play->csCtx.npcActions[0];
@@ -103,7 +101,7 @@ void func_808BC65C(BgTreemouth* this, PlayState* play) {
             if (npcAction->action == 2) {
                 BgTreemouth_SetupAction(this, func_808BC80C);
             } else if (npcAction->action == 3) {
-                Audio_PlaySoundGeneral(NA_SE_EV_WOODDOOR_OPEN, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_EV_WOODDOOR_OPEN, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 BgTreemouth_SetupAction(this, func_808BC6F8);
             }
         }
@@ -147,9 +145,9 @@ void func_808BC8B8(BgTreemouth* this, PlayState* play) {
         if (!LINK_IS_ADULT) {
             if (Flags_GetEventChkInf(EVENTCHKINF_MET_DEKU_TREE)) {
                 if (Actor_IsFacingAndNearPlayer(&this->dyna.actor, 1658.0f, 0x7530)) {
-                    this->dyna.actor.flags |= ACTOR_FLAG_TARGETABLE;
+                    this->dyna.actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
                     if (this->dyna.actor.isTargeted) {
-                        this->dyna.actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+                        this->dyna.actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
                         play->csCtx.segment = D_808BD2A0;
                         gSaveContext.cutsceneTrigger = 1;
                         BgTreemouth_SetupAction(this, func_808BC9EC);
@@ -157,9 +155,11 @@ void func_808BC8B8(BgTreemouth* this, PlayState* play) {
                 }
             } else if (Actor_IsFacingAndNearPlayer(&this->dyna.actor, 1658.0f, 0x4E20)) {
                 Flags_SetEventChkInf(EVENTCHKINF_MET_DEKU_TREE);
-                play->csCtx.segment = D_808BCE20;
-                gSaveContext.cutsceneTrigger = 1;
-                BgTreemouth_SetupAction(this, func_808BC9EC);
+                if (GameInteractor_Should(VB_PLAY_DEKU_TREE_INTRO_CS, true, this)) {
+                    play->csCtx.segment = D_808BCE20;
+                    gSaveContext.cutsceneTrigger = 1;
+                    BgTreemouth_SetupAction(this, func_808BC9EC);
+                }
             }
         }
     } else {
@@ -199,7 +199,7 @@ void func_808BC9EC(BgTreemouth* this, PlayState* play) {
 }
 
 void func_808BCAF0(BgTreemouth* this, PlayState* play) {
-    CsCmdActorAction* npcAction;
+    CsCmdActorCue* npcAction;
 
     if (play->csCtx.state != CS_STATE_IDLE) {
         npcAction = play->csCtx.npcActions[0];
@@ -207,7 +207,7 @@ void func_808BCAF0(BgTreemouth* this, PlayState* play) {
             if (npcAction->action == 2) {
                 BgTreemouth_SetupAction(this, func_808BC80C);
             } else if (npcAction->action == 3) {
-                Audio_PlaySoundGeneral(NA_SE_EV_WOODDOOR_OPEN, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_EV_WOODDOOR_OPEN, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 BgTreemouth_SetupAction(this, func_808BC6F8);
             }
         }

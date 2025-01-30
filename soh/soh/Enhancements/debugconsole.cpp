@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
@@ -17,9 +18,6 @@
 
 #include <Window.h>
 #include <Context.h>
-#ifndef IMGUI_DEFINE_MATH_OPERATORS
-#define IMGUI_DEFINE_MATH_OPERATORS
-#endif
 #include <imgui.h>
 #include <imgui_internal.h>
 #undef PATH_HACK
@@ -404,6 +402,7 @@ static bool EntranceHandler(std::shared_ptr<Ship::Console> Console, const std::v
     gPlayState->transitionTrigger = TRANS_TRIGGER_START;
     gPlayState->transitionType = TRANS_TYPE_INSTANT;
     gSaveContext.nextTransitionType = TRANS_TYPE_INSTANT;
+    return 0;
 }
 
 static bool VoidHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
@@ -472,7 +471,7 @@ static bool FWHandler(std::shared_ptr<Ship::Console> Console, const std::vector<
                 break;
             case 2: //backup
                 if (CVarGetInteger(CVAR_ENHANCEMENT("BetterFarore"), 0)) {
-                    gSaveContext.fw = gSaveContext.backupFW;
+                    gSaveContext.fw = gSaveContext.ship.backupFW;
                     gSaveContext.fw.set = 1;
                     INFO_MESSAGE("[SOH] Backup FW data copied! Reload scene to take effect.");
                     return 0;
@@ -518,6 +517,8 @@ static bool SaveStateHandler(std::shared_ptr<Ship::Console> Console, const std::
         case SaveStateReturn::FAIL_WRONG_GAMESTATE:
             ERROR_MESSAGE("[SOH] Can not save a state outside of \"GamePlay\"");
             return 1;
+        default:
+            return 1;
     }
 }
 
@@ -537,6 +538,8 @@ static bool LoadStateHandler(std::shared_ptr<Ship::Console> Console, const std::
             return 1;
         case SaveStateReturn::FAIL_WRONG_GAMESTATE:
             ERROR_MESSAGE("[SOH] Can not load a state outside of \"GamePlay\"");
+            return 1;
+        default:
             return 1;
     }
 
@@ -1295,6 +1298,9 @@ static constexpr std::array<std::pair<const char*, CosmeticGroup>, COSMETICS_GRO
     {"swords", COSMETICS_GROUP_SWORDS},
     {"gloves", COSMETICS_GROUP_GLOVES},
     {"equipment", COSMETICS_GROUP_EQUIPMENT},
+    {"keyring", COSMETICS_GROUP_KEYRING},
+    {"small_keys", COSMETICS_GROUP_SMALL_KEYS },
+    {"boss_keys", COSMETICS_GROUP_BOSS_KEYS },
     {"consumable", COSMETICS_GROUP_CONSUMABLE},
     {"hud", COSMETICS_GROUP_HUD},
     {"kaleido", COSMETICS_GROUP_KALEIDO},
@@ -1307,6 +1313,7 @@ static constexpr std::array<std::pair<const char*, CosmeticGroup>, COSMETICS_GRO
     {"trials", COSMETICS_GROUP_TRAILS},
     {"navi", COSMETICS_GROUP_NAVI},
     {"ivan", COSMETICS_GROUP_IVAN},
+    {"message", COSMETICS_GROUP_MESSAGE},
 }};
 
 static bool CosmeticsHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
@@ -1590,5 +1597,5 @@ void DebugConsole_Init(void) {
             {"group_name", Ship::ArgumentType::TEXT, true},
     }});
 
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 }

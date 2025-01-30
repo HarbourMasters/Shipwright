@@ -4,7 +4,9 @@ __pycache__/
 .DS_Store
 
 # Text editor remnants
-.vscode/
+.vscode/*
+!.vscode/tasks.json
+
 .vs/
 .idea/
 cmake-build-**
@@ -41,6 +43,7 @@ tools/asmsplitter/c/*
 ctx.c
 tools/*dSYM/
 graphs/
+.netcoredbg_hist
 
 # Assets
 *.png
@@ -399,7 +402,6 @@ ASALocalRun/
 lib/libgfxd/libgfxd.a
 ExporterTest/ExporterTest.a
 ZAPDUtils/ZAPDUtils.a
-.vscode/
 build/
 external/
 ZAPDUtils/build/

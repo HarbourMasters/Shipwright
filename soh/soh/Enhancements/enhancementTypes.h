@@ -15,6 +15,20 @@ typedef enum {
 } ChestStyleMatchesContentsType;
 
 typedef enum {
+    SGIA_DISABLED,
+    SGIA_JUNK,
+    SGIA_ALL,
+    SGIA_SIZE
+} SkipGetItemAnimationType;
+
+typedef enum {
+    FORCED_DIALOG_SKIP_NONE,
+    FORCED_DIALOG_SKIP_NAVI,
+    FORCED_DIALOG_SKIP_NPC,
+    FORCED_DIALOG_SKIP_ALL
+} ForcedDialogMode;
+
+typedef enum {
     BUNNY_HOOD_VANILLA,
     BUNNY_HOOD_FAST_AND_JUMP,
     BUNNY_HOOD_FAST
@@ -39,14 +53,6 @@ typedef enum {
 } EnemyRandomizerMode;
 
 typedef enum {
-    FASTFILE_1,
-    FASTFILE_2,
-    FASTFILE_3,
-    FASTFILE_MAP_SELECT,
-    FASTFILE_FILE_SELECT
-} FastFileSelectTarget;
-
-typedef enum {
     AUTOSAVE_OFF,
     AUTOSAVE_LOCATION_AND_MAJOR_ITEMS,
     AUTOSAVE_LOCATION_AND_ALL_ITEMS,
@@ -54,6 +60,12 @@ typedef enum {
     AUTOSAVE_MAJOR_ITEMS,
     AUTOSAVE_ALL_ITEMS
 } AutosaveType;
+
+typedef enum {
+    BOOTSEQUENCE_DEFAULT,
+    BOOTSEQUENCE_AUTHENTIC,
+    BOOTSEQUENCE_FILESELECT
+} BootSequenceType;
 
 typedef enum {
     ZFIGHT_FIX_DISABLED,

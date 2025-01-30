@@ -4,7 +4,7 @@
 #include "macros.h"
 
 void Randomizer_ConsumeAdultTradeItem(PlayState* play, u8 itemId) {
-    gSaveContext.adultTradeItems &= ~ADULT_TRADE_FLAG(itemId);
+    gSaveContext.ship.quest.data.randomizer.adultTradeItems &= ~ADULT_TRADE_FLAG(itemId);
 	Inventory_ReplaceItem(play, itemId, Randomizer_GetNextAdultTradeItem());
 }
 
@@ -13,7 +13,7 @@ u8 Randomizer_GetNextAdultTradeItem() {
     u8 currentTradeItemIndex = INV_CONTENT(ITEM_TRADE_ADULT) - ITEM_POCKET_EGG;
     for (int i = 0; i < numTradeItems; i++) {
         u8 tradeIndex = (currentTradeItemIndex + i + 1) % numTradeItems;
-        if (gSaveContext.adultTradeItems & (1 << tradeIndex)) {
+        if (gSaveContext.ship.quest.data.randomizer.adultTradeItems & (1 << tradeIndex)) {
 			return ITEM_POCKET_EGG + tradeIndex;
         }
     }
@@ -25,7 +25,7 @@ u8 Randomizer_GetPrevAdultTradeItem() {
     u8 currentTradeItemIndex = INV_CONTENT(ITEM_TRADE_ADULT) - ITEM_POCKET_EGG;
     for (int i = 0; i < numTradeItems; i++) {
         u8 tradeIndex = (currentTradeItemIndex - i - 1 + numTradeItems) % numTradeItems;
-        if (gSaveContext.adultTradeItems & (1 << tradeIndex)) {
+        if (gSaveContext.ship.quest.data.randomizer.adultTradeItems & (1 << tradeIndex)) {
 			return ITEM_POCKET_EGG + tradeIndex;
         }
     }

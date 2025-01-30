@@ -7,7 +7,7 @@
 #include "z_en_lightbox.h"
 #include "objects/object_lightbox/object_lightbox.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void EnLightbox_Init(Actor* thisx, PlayState* play);
 void EnLightbox_Destroy(Actor* thisx, PlayState* play);
@@ -52,8 +52,8 @@ void EnLightbox_Init(Actor* thisx, PlayState* play) {
     thisx->colChkInfo.cylRadius = 30;
     thisx->colChkInfo.cylHeight = 50;
     ActorShape_Init(&thisx->shape, 0.0f, ActorShadow_DrawCircle, 6.0f);
-    this->dyna.unk_160 = 0;
-    this->dyna.unk_15C = 0;
+    this->dyna.interactFlags = 0;
+    this->dyna.transformFlags = 0;
     thisx->targetMode = 0;
     thisx->gravity = -2.0f;
     CollisionHeader_GetVirtual(&object_lightbox_Col_001F10, &colHeader);
@@ -80,8 +80,8 @@ void EnLightbox_Update(Actor* thisx, PlayState* play) {
             if (thisx->speedXZ) {
                 if (thisx->bgCheckFlags & 8) {
                     thisx->world.rot.y = (thisx->world.rot.y + thisx->wallYaw) - thisx->world.rot.y;
-                    Audio_PlaySoundGeneral(NA_SE_EV_BOMB_BOUND, &thisx->projectedPos, 4, &D_801333E0, &D_801333E0,
-                                           &D_801333E8);
+                    Audio_PlaySoundGeneral(NA_SE_EV_BOMB_BOUND, &thisx->projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                           &gSfxDefaultReverb);
                     thisx->speedXZ *= 0.7f;
                     thisx->bgCheckFlags &= ~0x8;
                 }
@@ -92,17 +92,17 @@ void EnLightbox_Update(Actor* thisx, PlayState* play) {
             } else {
                 Math_StepToF(&thisx->speedXZ, 0, IREG(58) / 100.0f);
                 if ((thisx->bgCheckFlags & 2) && (thisx->velocity.y < IREG(59) / 100.0f)) {
-                    Audio_PlaySoundGeneral(NA_SE_EV_BOMB_BOUND, &thisx->projectedPos, 4, &D_801333E0, &D_801333E0,
-                                           &D_801333E8);
+                    Audio_PlaySoundGeneral(NA_SE_EV_BOMB_BOUND, &thisx->projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                           &gSfxDefaultReverb);
                     thisx->velocity.y *= IREG(60) / 100.0f;
                     thisx->bgCheckFlags &= ~0x1;
                 } else {
-                    func_8002F580(thisx, play);
+                    Actor_OfferCarry(thisx, play);
                 }
             }
         }
     }
-    Actor_MoveForward(thisx);
+    Actor_MoveXZGravity(thisx);
     Actor_UpdateBgCheckInfo(play, thisx, thisx->colChkInfo.cylHeight, thisx->colChkInfo.cylRadius,
                             thisx->colChkInfo.cylRadius, 0x1D);
     thisx->focus.pos = thisx->world.pos;

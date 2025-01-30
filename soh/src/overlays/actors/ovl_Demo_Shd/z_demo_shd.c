@@ -6,7 +6,7 @@
 
 #include "z_demo_shd.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void DemoShd_Init(Actor* thisx, PlayState* play);
 void DemoShd_Destroy(Actor* thisx, PlayState* play);
@@ -59,7 +59,7 @@ void func_80991298(DemoShd* this, PlayState* play) {
     }
 
     if (play->csCtx.state != CS_STATE_IDLE) {
-        CsCmdActorAction* npcAction0 = play->csCtx.npcActions[0];
+        CsCmdActorCue* npcAction0 = play->csCtx.npcActions[0];
 
         if (npcAction0 != NULL) {
             if (npcAction0->action == 2) {
@@ -74,7 +74,7 @@ void func_80991298(DemoShd* this, PlayState* play) {
     }
 
     if (play->csCtx.state != CS_STATE_IDLE) {
-        CsCmdActorAction* npcAction1 = play->csCtx.npcActions[1];
+        CsCmdActorCue* npcAction1 = play->csCtx.npcActions[1];
 
         if (npcAction1 != NULL) {
             if (npcAction1->action == 2) {

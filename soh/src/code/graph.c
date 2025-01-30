@@ -15,6 +15,15 @@
 #define GFXPOOL_HEAD_MAGIC 0x1234
 #define GFXPOOL_TAIL_MAGIC 0x5678
 
+// SOH [Port] Game State management for our render loop
+static struct RunFrameContext {
+    GraphicsContext gfxCtx;
+    GameState* gameState;
+    GameStateOverlay* nextOvl;
+    GameStateOverlay* ovl;
+    int state;
+} runFrameContext;
+
 OSTime sGraphUpdateTime;
 OSTime sGraphSetTaskTime;
 FaultClient sGraphFaultClient;
@@ -104,14 +113,12 @@ void Graph_InitTHGA(GraphicsContext* gfxCtx) {
     pool->tailMagic = GFXPOOL_TAIL_MAGIC;
     THGA_Ct(&gfxCtx->polyOpa, pool->polyOpaBuffer, sizeof(pool->polyOpaBuffer));
     THGA_Ct(&gfxCtx->polyXlu, pool->polyXluBuffer, sizeof(pool->polyXluBuffer));
-    THGA_Ct(&gfxCtx->worldOverlay, pool->worldOverlayBuffer, sizeof(pool->worldOverlayBuffer));
     THGA_Ct(&gfxCtx->polyKal, pool->polyKalBuffer, sizeof(pool->polyKalBuffer));
     THGA_Ct(&gfxCtx->overlay, pool->overlayBuffer, sizeof(pool->overlayBuffer));
     THGA_Ct(&gfxCtx->work, pool->workBuffer, sizeof(pool->workBuffer));
 
     gfxCtx->polyOpaBuffer = pool->polyOpaBuffer;
     gfxCtx->polyXluBuffer = pool->polyXluBuffer;
-    gfxCtx->worldOverlayBuffer = pool->worldOverlayBuffer;
     gfxCtx->polyKalBuffer = pool->polyKalBuffer;
     gfxCtx->overlayBuffer = pool->overlayBuffer;
     gfxCtx->workBuffer = pool->workBuffer;
@@ -273,6 +280,12 @@ void Graph_TaskSet00(GraphicsContext* gfxCtx) {
 void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
     u32 problem;
 
+    // Skip game frame updates while gfx debugger is active, and execute with the last frame's DL buffer
+    if (GfxDebuggerIsDebugging()) {
+        Graph_ProcessGfxCommands(runFrameContext.gfxCtx.workBuffer);
+        return;
+    }
+
     gameState->unk_A0 = 0;
     Graph_InitTHGA(gfxCtx);
 
@@ -287,7 +300,6 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
 
     GameState_ReqPadData(gameState);
     GameState_Update(gameState);
-    DrawColViewer();
 
     OPEN_DISPS(gfxCtx);
 
@@ -324,8 +336,7 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
 
     gSPBranchList(WORK_DISP++, gfxCtx->polyOpaBuffer);
     gSPBranchList(POLY_OPA_DISP++, gfxCtx->polyXluBuffer);
-    gSPBranchList(POLY_XLU_DISP++, gfxCtx->worldOverlayBuffer);
-    gSPBranchList(WORLD_OVERLAY_DISP++, gfxCtx->polyKalBuffer);
+    gSPBranchList(POLY_XLU_DISP++, gfxCtx->polyKalBuffer);
     gSPBranchList(POLY_KAL_DISP++, gfxCtx->overlayBuffer);
     gDPPipeSync(OVERLAY_DISP++);
     gDPFullSync(OVERLAY_DISP++);
@@ -446,15 +457,6 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
 uint64_t GetFrequency();
 uint64_t GetPerfCounter();
 
-static struct RunFrameContext {
-    GraphicsContext gfxCtx;
-    GameState* gameState;
-    GameStateOverlay* nextOvl;
-    GameStateOverlay* ovl;
-    int state;
-} runFrameContext;
-
-
 extern AudioMgr gAudioMgr;
 
 extern void ProcessSaveStateRequests(void);
@@ -518,6 +520,10 @@ static void RunFrame()
             Graph_Update(&runFrameContext.gfxCtx, runFrameContext.gameState);
             //ticksB = GetPerfCounter();
 
+            if (GfxDebuggerIsDebuggingRequested()) {
+                GfxDebuggerDebugDisplayList(runFrameContext.gfxCtx.workBuffer);
+            }
+
             Graph_ProcessGfxCommands(runFrameContext.gfxCtx.workBuffer);
 
 
@@ -568,7 +574,8 @@ void* Graph_Alloc2(GraphicsContext* gfxCtx, size_t size) {
 }
 
 void Graph_OpenDisps(Gfx** dispRefs, GraphicsContext* gfxCtx, const char* file, s32 line) {
-    if (HREG(80) == 7 && HREG(82) != 4) {
+    // SOH [Debugging] Force open/close disp string handling on so that the graphics debugger can leverage it
+    if (true || HREG(80) == 7 && HREG(82) != 4) {
         dispRefs[0] = gfxCtx->polyOpa.p;
         dispRefs[1] = gfxCtx->polyXlu.p;
         dispRefs[2] = gfxCtx->overlay.p;
@@ -580,7 +587,8 @@ void Graph_OpenDisps(Gfx** dispRefs, GraphicsContext* gfxCtx, const char* file, 
 }
 
 void Graph_CloseDisps(Gfx** dispRefs, GraphicsContext* gfxCtx, const char* file, s32 line) {
-    if (HREG(80) == 7 && HREG(82) != 4) {
+    // SOH [Debugging] Force open/close disp string handling on so that the graphics debugger can leverage it
+    if (true || HREG(80) == 7 && HREG(82) != 4) {
         if (dispRefs[0] + 1 == gfxCtx->polyOpa.p) {
             gfxCtx->polyOpa.p = dispRefs[0];
         } else {

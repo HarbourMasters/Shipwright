@@ -4,8 +4,11 @@
 #include "overlays/actors/ovl_En_Niw/z_en_niw.h"
 #include "vt.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
 void EnNiwLady_Init(Actor* thisx, PlayState* play);
 void EnNiwLady_Destroy(Actor* thisx, PlayState* play);
@@ -204,7 +207,9 @@ void func_80ABA244(EnNiwLady* this, PlayState* play) {
     EnNiw* currentCucco;
     s32 phi_s1;
 
-    this->cuccosInPen = IS_RANDO ? (7 - Randomizer_GetSettingValue(RSK_CUCCO_COUNT)) : 0;
+    if (GameInteractor_Should(VB_SET_CUCCO_COUNT, true, this)) {
+        this->cuccosInPen = 0;
+    }
     currentCucco = (EnNiw*)play->actorCtx.actorLists[ACTORCAT_PROP].head;
     while (currentCucco != NULL) {
         if (currentCucco->actor.id == ACTOR_EN_NIW) {
@@ -239,9 +244,11 @@ void func_80ABA244(EnNiwLady* this, PlayState* play) {
             phi_s1 = 7;
         }
     }
+    // Completed minigame and then threw Cucco(s) out of the pen
     if ((this->unk_26C != 0) && (phi_s1 < 7)) {
         phi_s1 = 9;
     }
+
     this->actor.textId = sMissingCuccoTextIds[phi_s1];
     if (Text_GetFaceReaction(play, 8) != 0) {
         this->actor.textId = Text_GetFaceReaction(play, 8);
@@ -262,7 +269,7 @@ void func_80ABA244(EnNiwLady* this, PlayState* play) {
         osSyncPrintf("\n\n");
         if (Text_GetFaceReaction(play, 8) == 0) {
             if (this->actor.textId == 0x503C) {
-                func_80078884(NA_SE_SY_ERROR);
+                Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
                 this->unk_26C = 2;
                 this->unk_262 = TEXT_STATE_EVENT;
                 this->actionFunc = func_80ABA654;
@@ -270,7 +277,7 @@ void func_80ABA244(EnNiwLady* this, PlayState* play) {
             }
             this->unk_26E = phi_s1 + 1;
             if (phi_s1 == 7) {
-                func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
+                Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
                 this->unk_26C = 1;
                 this->unk_262 = TEXT_STATE_EVENT;
                 this->unk_26A = this->cuccosInPen;
@@ -283,9 +290,9 @@ void func_80ABA244(EnNiwLady* this, PlayState* play) {
             }
             if (this->unk_26A != this->cuccosInPen) {
                 if (this->cuccosInPen < this->unk_26A) {
-                    func_80078884(NA_SE_SY_ERROR);
+                    Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
                 } else if (phi_s1 + 1 < 9) {
-                    func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
+                    Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
                 }
             }
             if (this->unk_26A < this->cuccosInPen) {
@@ -308,20 +315,22 @@ void func_80ABA654(EnNiwLady* this, PlayState* play) {
         if (!Flags_GetItemGetInf(ITEMGETINF_0C)) {
             this->actor.parent = NULL;
 
-            if (!IS_RANDO) {
+            if (GameInteractor_Should(VB_GIVE_ITEM_FROM_ANJU_AS_CHILD, true, this)) {
                 this->getItemId = GI_BOTTLE;
-                func_8002F434(&this->actor, play, GI_BOTTLE, 100.0f, 50.0f);
+                Actor_OfferGetItem(&this->actor, play, GI_BOTTLE, 100.0f, 50.0f);
             } else {
-                this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_ANJU_AS_CHILD, GI_BOTTLE);
-                GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 100.0f, 50.0f);
+                // Circumvent the item offer action
+                this->actionFunc = func_80ABAC84;
+                return;
             }
 
             this->actionFunc = func_80ABAC00;
             return;
+
         }
         if (this->unk_26C == 1) {
             this->getItemId = GI_RUPEE_PURPLE;
-            func_8002F434(&this->actor, play, GI_RUPEE_PURPLE, 100.0f, 50.0f);
+            Actor_OfferGetItem(&this->actor, play, GI_RUPEE_PURPLE, 100.0f, 50.0f);
             this->actionFunc = func_80ABAC00;
         }
         this->actionFunc = func_80ABA244;
@@ -373,7 +382,7 @@ void func_80ABA878(EnNiwLady* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         playerExchangeItemId = func_8002F368(play);
         if ((playerExchangeItemId == 6) && (Flags_GetEventChkInf(EVENTCHKINF_TALON_WOKEN_IN_KAKARIKO))) {
-            func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
+            Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
             player->actor.textId = sTradeItemTextIds[5];
             this->unk_26E = this->unk_27A + 21;
             this->unk_262 = TEXT_STATE_CHOICE;
@@ -398,15 +407,11 @@ void func_80ABA9B8(EnNiwLady* this, PlayState* play) {
                 Message_CloseTextbox(play);
                 this->actor.parent = NULL;
 
-                if (!IS_RANDO) {
-                    func_8002F434(&this->actor, play, GI_POCKET_EGG, 200.0f, 100.0f);
-                } else {
-                    this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_ANJU_AS_ADULT, GI_POCKET_EGG);
-                    GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 200.0f, 100.0f);
-                    Flags_SetItemGetInf(ITEMGETINF_2C);
+                if (GameInteractor_Should(VB_GIVE_ITEM_FROM_ANJU_AS_ADULT, true, this)) {
+                    Actor_OfferGetItem(&this->actor, play, GI_POCKET_EGG, 200.0f, 100.0f);
+                    this->actionFunc = func_80ABAC00;
                 }
 
-                this->actionFunc = func_80ABAC00;
                 break;
             case 1:
                 this->actor.textId = sTradeItemTextIds[3];
@@ -433,15 +438,10 @@ void func_80ABAB08(EnNiwLady* this, PlayState* play) {
             case 0:
                 Message_CloseTextbox(play);
                 this->actor.parent = NULL;
-                if (!IS_RANDO) {
-                    func_8002F434(&this->actor, play, GI_COJIRO, 200.0f, 100.0f);
-                } else {
-                    this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_TRADE_POCKET_CUCCO, GI_COJIRO);
-                    Randomizer_ConsumeAdultTradeItem(play, ITEM_POCKET_CUCCO);
-                    GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 200.0f, 100.0f);
-                    Flags_SetItemGetInf(ITEMGETINF_2E);
+                if (GameInteractor_Should(VB_TRADE_POCKET_CUCCO, true, this)) {
+                    Actor_OfferGetItem(&this->actor, play, GI_COJIRO, 200.0f, 100.0f);
+                    this->actionFunc = func_80ABAC00;
                 }
-                this->actionFunc = func_80ABAC00;
                 break;
             case 1:
                 Message_CloseTextbox(play);
@@ -462,17 +462,11 @@ void func_80ABAC00(EnNiwLady* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
         this->actionFunc = func_80ABAC84;
     } else {
-         if (IS_RANDO) {
-            getItemId = this->getItemEntry.getItemId;
-            GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 200.0f, 100.0f);
-            return;
-        }
-
         getItemId = this->getItemId;
         if (LINK_IS_ADULT) {
             getItemId = !Flags_GetItemGetInf(ITEMGETINF_2C) ? GI_POCKET_EGG : GI_COJIRO;
         }
-        func_8002F434(&this->actor, play, getItemId, 200.0f, 100.0f);
+        Actor_OfferGetItem(&this->actor, play, getItemId, 200.0f, 100.0f);
     }
 }
 
@@ -482,13 +476,10 @@ void func_80ABAC84(EnNiwLady* this, PlayState* play) {
     }
     osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 正常終了 ☆☆☆☆☆ \n" VT_RST);
     if (LINK_IS_ADULT) {
-        // Flags for randomizer gives are set in the original message prompt choice handling
-        if (!IS_RANDO) {
-            if (!Flags_GetItemGetInf(ITEMGETINF_2C)) {
-                Flags_SetItemGetInf(ITEMGETINF_2C);
-            } else {
-                Flags_SetItemGetInf(ITEMGETINF_2E);
-            }
+        if (!Flags_GetItemGetInf(ITEMGETINF_2C)) {
+            Flags_SetItemGetInf(ITEMGETINF_2C);
+        } else {
+            Flags_SetItemGetInf(ITEMGETINF_2E);
         }
         this->actionFunc = func_80ABA778;
     } else {

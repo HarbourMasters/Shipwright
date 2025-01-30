@@ -33,6 +33,10 @@ s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId) {
     return objectCtx->num - 1;
 }
 
+
+// SOH [Port] Track when objects are first loaded for a scene
+static u8 sObjectFirstUpdateSkippedForScene = false;
+
 void Object_InitBank(PlayState* play, ObjectContext* objectCtx) {
     PlayState* play2 = play; // Needs to be a new variable to match (possibly a sub struct?)
     size_t spaceSize;
@@ -75,6 +79,8 @@ void Object_InitBank(PlayState* play, ObjectContext* objectCtx) {
 
     objectCtx->mainKeepIndex = Object_Spawn(objectCtx, OBJECT_GAMEPLAY_KEEP);
     gSegments[4] = VIRTUAL_TO_PHYSICAL(objectCtx->status[objectCtx->mainKeepIndex].segment);
+
+    sObjectFirstUpdateSkippedForScene = false;
 }
 
 void Object_UpdateBank(ObjectContext* objectCtx) {
@@ -83,6 +89,12 @@ void Object_UpdateBank(ObjectContext* objectCtx) {
     RomFile* objectFile;
     size_t size;
 
+    // SOH [Port] Skip the first object load after scene init so that actors have their init delayed by one frame
+    // This seems to mostly if not nearly resolve actors that depend on console DMA requests ending later
+    if (!sObjectFirstUpdateSkippedForScene) {
+        sObjectFirstUpdateSkippedForScene = true;
+        return;
+    }
 
     for (i = 0; i < objectCtx->num; i++) {
         if (status->id < 0) {
@@ -363,7 +375,7 @@ void Scene_CommandTimeSettings(PlayState* play, SceneCmd* cmd) {
     play->envCtx.sunPos.z = (Math_CosS(((void)0, gSaveContext.dayTime) - 0x8000) * 20.0f) * 25.0f;
 
     if (((play->envCtx.timeIncrement == 0) && (gSaveContext.cutsceneIndex < 0xFFF0)) ||
-        (gSaveContext.entranceIndex == ENTR_LAKE_HYLIA_8)) {
+        (gSaveContext.entranceIndex == ENTR_LAKE_HYLIA_WARP_PAD)) {
         gSaveContext.skyboxTime = ((void)0, gSaveContext.dayTime);
         if ((gSaveContext.skyboxTime >= 0x2AAC) && (gSaveContext.skyboxTime < 0x4555)) {
             gSaveContext.skyboxTime = 0x3556;

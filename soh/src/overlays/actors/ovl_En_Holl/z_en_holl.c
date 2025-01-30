@@ -1,6 +1,6 @@
 #include "z_en_holl.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 // Horizontal Plane parameters
 
@@ -125,7 +125,7 @@ void func_80A58DD4(EnHoll* this, PlayState* play) {
     f32 absZ;
     s32 transitionActorIdx;
 
-    func_8002DBD0(&this->actor, &vec, &player->actor.world.pos);
+    Actor_WorldToActorCoords(&this->actor, &vec, &player->actor.world.pos);
     this->side = (vec.z < 0.0f) ? 0 : 1;
     absZ = fabsf(vec.z);
     if (vec.y > PLANE_Y_MIN && vec.y < PLANE_Y_MAX && fabsf(vec.x) < PLANE_HALFWIDTH &&
@@ -162,7 +162,7 @@ void func_80A59014(EnHoll* this, PlayState* play) {
     f32 planeHalfWidth;
     f32 absZ;
 
-    func_8002DBD0(&this->actor, &vec, (useViewEye) ? &play->view.eye : &player->actor.world.pos);
+    Actor_WorldToActorCoords(&this->actor, &vec, (useViewEye) ? &play->view.eye : &player->actor.world.pos);
     planeHalfWidth = (((this->actor.params >> 6) & 7) == 6) ? PLANE_HALFWIDTH : PLANE_HALFWIDTH_2;
 
     temp = EnHoll_IsKokiriSetup8();
@@ -278,7 +278,7 @@ void func_80A59618(EnHoll* this, PlayState* play) {
             this->unk_14F = 0;
         }
     } else {
-        func_8002DBD0(&this->actor, &vec, &player->actor.world.pos);
+        Actor_WorldToActorCoords(&this->actor, &vec, &player->actor.world.pos);
         absZ = fabsf(vec.z);
         if (PLANE_Y_MIN < vec.y && vec.y < PLANE_Y_MAX && fabsf(vec.x) < PLANE_HALFWIDTH_2 && absZ < 100.0f) {
             this->unk_14F = 1;

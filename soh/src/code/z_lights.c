@@ -5,6 +5,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 
 #include "soh/frame_interpolation.h"
+#include "soh/OTRGlobals.h"
 
 #define LIGHTS_BUFFER_SIZE 32
 //#define LIGHTS_BUFFER_SIZE 1024 // Kill me
@@ -162,11 +163,7 @@ void Lights_BindAll(Lights* lights, LightNode* listHead, Vec3f* vec) {
 
     while (listHead != NULL) {
         info = listHead->info;
-        // OTRTODO: we do not know the root cause of the info->type value being invalid
-        // but this prevents it from crashing the game on the game over screen
-        if (info->type < 3) {
-            bindFuncs[info->type](lights, &info->params, vec);
-        }
+        bindFuncs[info->type](lights, &info->params, vec);
         listHead = listHead->next;
     }
 }

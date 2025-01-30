@@ -24,6 +24,11 @@ bool HasEquipment(ItemTrackerItem);
         id, #id, #id "_Faded", data, drawFunc     \
     }
 
+#define ITEM_TRACKER_ITEM_CUSTOM(id, name, nameFaded, data, drawFunc)\
+    {                                                                \
+        id, #name, #nameFaded "_Faded", data, drawFunc               \
+    }
+
 typedef struct ItemTrackerDungeon {
     uint32_t id;
     std::vector<uint32_t> items;

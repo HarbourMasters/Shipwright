@@ -41,4 +41,7 @@ typedef struct EnFu {
     /* 0x02AC */ EnFuActionFunc actionFunc;
 } EnFu; // size = 0x02B0
 
+void EnFu_TeachSong(EnFu* enFu, PlayState* play);
+void EnFu_WaitAdult(EnFu* enFu, PlayState* play);
+
 #endif

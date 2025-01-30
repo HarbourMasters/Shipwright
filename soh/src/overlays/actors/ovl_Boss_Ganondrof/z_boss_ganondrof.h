@@ -61,6 +61,23 @@ typedef enum {
     /* 13 */ GND_FLOAT_COUNT = 13
 } BossGanondrofF32Var;
 
+// SOH [Enhancements] Relocated from z_boss_ganondrof.c to use in time saver.
+typedef enum {
+    /* 0 */ NOT_DEAD,
+    /* 1 */ DEATH_START,
+    /* 2 */ DEATH_THROES,
+    /* 3 */ DEATH_WARP,
+    /* 4 */ DEATH_SCREAM,
+    /* 5 */ DEATH_DISINTEGRATE,
+    /* 6 */ DEATH_FINISH
+} BossGanondrofDeathState;
+
+typedef enum {
+    /* 0 */ DEATH_SPASM,
+    /* 1 */ DEATH_LIMP,
+    /* 2 */ DEATH_HUNCHED
+} BossGanondrofDeathAction;
+
 typedef struct BossGanondrof {
     /* 0x0000 */ Actor actor;
     /* 0x014C */ SkelAnime skelAnime;

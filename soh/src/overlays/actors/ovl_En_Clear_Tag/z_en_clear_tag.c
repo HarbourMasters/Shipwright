@@ -5,7 +5,7 @@
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void EnClearTag_Init(Actor* thisx, PlayState* play);
 void EnClearTag_Destroy(Actor* thisx, PlayState* play);
@@ -245,9 +245,9 @@ void EnClearTag_Init(Actor* thisx, PlayState* play) {
         this->state = CLEAR_TAG_STATE_LASER;
         this->timers[CLEAR_TAG_TIMER_LASER_DEATH] = 70;
         this->actor.speedXZ = 35.0f;
-        func_8002D908(&this->actor);
+        Actor_UpdateVelocityXYZ(&this->actor);
         for (j = 0; j <= 0; j++) {
-            func_8002D7EC(&this->actor);
+            Actor_UpdatePos(&this->actor);
         }
         this->actor.scale.x = 0.4f;
         this->actor.scale.y = 0.4f;
@@ -255,18 +255,18 @@ void EnClearTag_Init(Actor* thisx, PlayState* play) {
         this->actor.speedXZ = 70.0f;
         this->actor.shape.rot.x = -this->actor.shape.rot.x;
 
-        func_8002D908(&this->actor);
+        Actor_UpdateVelocityXYZ(&this->actor);
         Collider_SetCylinder(play, &this->collider, &this->actor, &sLaserCylinderInit);
         Audio_PlayActorSound2(&this->actor, NA_SE_IT_SWORD_REFLECT_MG);
     } else { // Initialize the Arwing.
 
         // Change Arwing to regular enemy instead of boss with enemy randomizer and crowd control.
         // This way Arwings will be considered for "clear enemy" rooms properly.
-        if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) || (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL) == GI_SCHEME_CROWD_CONTROL && CVarGetInteger(CVAR_REMOTE("Enabled"), 0))) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) || (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0))) {
             Actor_ChangeCategory(play, &play->actorCtx, thisx, ACTORCAT_ENEMY);
         }
 
-        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
         this->actor.targetMode = 5;
         Collider_SetCylinder(play, &this->collider, &this->actor, &sArwingCylinderInit);
         this->actor.colChkInfo.health = 3;
@@ -495,7 +495,7 @@ void EnClearTag_Update(Actor* thisx, PlayState* play2) {
                 this->actor.shape.rot.x = -this->actor.shape.rot.x;
 
                 // Update the Arwing's velocity.
-                func_8002D908(&this->actor);
+                Actor_UpdateVelocityXYZ(&this->actor);
                 this->actor.velocity.x += this->acceleration.x;
                 this->actor.velocity.y += this->acceleration.y;
                 this->actor.velocity.z += this->acceleration.z;
@@ -517,7 +517,7 @@ void EnClearTag_Update(Actor* thisx, PlayState* play2) {
                     this->crashingTimer--;
                 }
 
-                func_8002D7EC(&this->actor);
+                Actor_UpdatePos(&this->actor);
 
                 Actor_SetFocus(&this->actor, 0.0f);
 
@@ -553,7 +553,7 @@ void EnClearTag_Update(Actor* thisx, PlayState* play2) {
                         if (this->drawMode != CLEAR_TAG_DRAW_MODE_ARWING) {
                             this->drawMode = CLEAR_TAG_DRAW_MODE_EFFECT;
                             this->deathTimer = 70;
-                            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+                            this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
                         } else {
                             Actor_Kill(&this->actor);
                         }
@@ -562,7 +562,7 @@ void EnClearTag_Update(Actor* thisx, PlayState* play2) {
                 break;
 
             case CLEAR_TAG_STATE_LASER:
-                func_8002D7EC(&this->actor);
+                Actor_UpdatePos(&this->actor);
 
                 // Check if the laser has hit a target.
                 if (this->collider.base.atFlags & AT_HIT) {

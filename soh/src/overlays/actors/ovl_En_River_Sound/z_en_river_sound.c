@@ -6,7 +6,7 @@
 
 #include "z_en_river_sound.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void EnRiverSound_Init(Actor* thisx, PlayState* play);
 void EnRiverSound_Destroy(Actor* thisx, PlayState* play);
@@ -201,7 +201,7 @@ void EnRiverSound_Update(Actor* thisx, PlayState* play) {
             }
         }
     } else if ((thisx->params == RS_UNK_13) || (thisx->params == RS_UNK_19)) {
-        func_8002DBD0(&player->actor, &thisx->home.pos, &thisx->world.pos);
+        Actor_WorldToActorCoords(&player->actor, &thisx->home.pos, &thisx->world.pos);
     } else if (play->sceneNum == SCENE_DODONGOS_CAVERN_BOSS && Flags_GetClear(play, thisx->room)) {
         Actor_Kill(thisx);
     }
@@ -250,7 +250,7 @@ void EnRiverSound_Draw(Actor* thisx, PlayState* play) {
         Audio_PlaySariaBgm(&this->actor.home.pos, NA_BGM_GREAT_FAIRY, 800);
     } else if ((this->actor.params == RS_SANDSTORM) || (this->actor.params == RS_CHAMBER_OF_SAGES_1) ||
                (this->actor.params == RS_CHAMBER_OF_SAGES_2) || (this->actor.params == RS_RUMBLING)) {
-        func_800788CC(soundEffects[this->actor.params]);
+        Sfx_PlaySfxCentered2(soundEffects[this->actor.params]);
     } else {
         Audio_PlayActorSound2(&this->actor, soundEffects[this->actor.params]);
     }

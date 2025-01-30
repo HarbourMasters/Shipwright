@@ -6,8 +6,11 @@
 
 #include "z_en_cow.h"
 #include "objects/object_cow/object_cow.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
 
 void EnCow_Init(Actor* thisx, PlayState* play);
 void EnCow_Destroy(Actor* thisx, PlayState* play);
@@ -18,7 +21,6 @@ void func_809E0070(Actor* thisx, PlayState* play);
 
 void func_809DF494(EnCow* this, PlayState* play);
 void func_809DF6BC(EnCow* this, PlayState* play);
-void EnCow_MoveForRandomizer(EnCow* this, PlayState* play);
 void func_809DF778(EnCow* this, PlayState* play);
 void func_809DF7D8(EnCow* this, PlayState* play);
 void func_809DF870(EnCow* this, PlayState* play);
@@ -107,10 +109,6 @@ void EnCow_Init(Actor* thisx, PlayState* play) {
     EnCow* this = (EnCow*)thisx;
     s32 pad;
 
-    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_COWS)) {
-        EnCow_MoveForRandomizer(thisx, play);
-    }
-
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 72.0f);
     switch (this->actor.params) {
         case 0:
@@ -122,18 +120,15 @@ void EnCow_Init(Actor* thisx, PlayState* play) {
             Collider_SetCylinder(play, &this->colliders[1], &this->actor, &sCylinderInit);
             func_809DEE9C(this);
             this->actionFunc = func_809DF96C;
-            if (play->sceneNum == SCENE_LINKS_HOUSE) {
-                if (!LINK_IS_ADULT && !CVarGetInteger(CVAR_ENHANCEMENT("CowOfTime"), 0)) {
-                    Actor_Kill(&this->actor);
-                    return;
-                }
-                if (!Flags_GetEventChkInf(EVENTCHKINF_WON_COW_IN_MALONS_RACE)) {
-                    Actor_Kill(&this->actor);
-                    return;
-                }
+            if (GameInteractor_Should(VB_DESPAWN_HORSE_RACE_COW, (
+                play->sceneNum == SCENE_LINKS_HOUSE && (!LINK_IS_ADULT || !Flags_GetEventChkInf(EVENTCHKINF_WON_COW_IN_MALONS_RACE))
+            ), this)) {
+                Actor_Kill(&this->actor);
+                return;
             }
+
             Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_COW, this->actor.world.pos.x,
-                               this->actor.world.pos.y, this->actor.world.pos.z, 0, this->actor.shape.rot.y, 0, 1);
+                                this->actor.world.pos.y, this->actor.world.pos.z, 0, this->actor.shape.rot.y, 0, 1);
             this->unk_278 = Rand_ZeroFloat(1000.0f) + 40.0f;
             this->unk_27A = 0;
             this->actor.targetMode = 6;
@@ -146,7 +141,7 @@ void EnCow_Init(Actor* thisx, PlayState* play) {
             this->actor.draw = func_809E0070;
             this->actionFunc = func_809DFA84;
             func_809DEF94(this);
-            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+            this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
             this->unk_278 = ((u32)(Rand_ZeroFloat(1000.0f)) & 0xFFFF) + 40.0f;
             break;
     }
@@ -203,7 +198,7 @@ void func_809DF494(EnCow* this, PlayState* play) {
 
 void func_809DF6BC(EnCow* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
-        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+        this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         Message_CloseTextbox(play);
         this->actionFunc = func_809DF96C;
     }
@@ -211,33 +206,9 @@ void func_809DF6BC(EnCow* this, PlayState* play) {
 
 void func_809DF730(EnCow* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
-        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+        this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         this->actionFunc = func_809DF96C;
     }
-}
-
-void EnCow_MoveForRandomizer(EnCow* this, PlayState* play) {
-    // Only move the cow body (the tail will be moved with the body)
-    if (this->actor.params != 0) {
-        return;
-    }
-
-    // Move left cow in lon lon tower
-    if (play->sceneNum == SCENE_LON_LON_BUILDINGS && this->actor.world.pos.x == -108 && this->actor.world.pos.z == -65) {
-        this->actor.world.pos.x = -229.0f;
-        this->actor.world.pos.z = 157.0f;
-        this->actor.shape.rot.y = 15783.0f;
-    // Move right cow in lon lon stable
-    } else if (play->sceneNum == SCENE_STABLE && this->actor.world.pos.x == -3 && this->actor.world.pos.z == -254) {
-        this->actor.world.pos.x += 119.0f;
-    }
-}
-
-void EnCow_SetCowMilked(EnCow* this, PlayState* play) {
-    CowIdentity cowIdentity = Randomizer_IdentifyCow(play->sceneNum, this->actor.world.pos.x, this->actor.world.pos.z);
-    Player* player = GET_PLAYER(play);
-    player->pendingFlag.flagID = cowIdentity.randomizerInf;
-    player->pendingFlag.flagType = FLAG_RANDOMIZER_INF;
 }
 
 void func_809DF778(EnCow* this, PlayState* play) {
@@ -245,16 +216,16 @@ void func_809DF778(EnCow* this, PlayState* play) {
         this->actor.parent = NULL;
         this->actionFunc = func_809DF730;
     } else {
-        func_8002F434(&this->actor, play, GI_MILK, 10000.0f, 100.0f);
+        Actor_OfferGetItem(&this->actor, play, GI_MILK, 10000.0f, 100.0f);
     }
 }
 
 void func_809DF7D8(EnCow* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
-        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+        this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         Message_CloseTextbox(play);
         this->actionFunc = func_809DF778;
-        func_8002F434(&this->actor, play, GI_MILK, 10000.0f, 100.0f);
+        Actor_OfferGetItem(&this->actor, play, GI_MILK, 10000.0f, 100.0f);
     }
 }
 
@@ -274,28 +245,11 @@ void func_809DF8FC(EnCow* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->actionFunc = func_809DF870;
     } else {
-        this->actor.flags |= ACTOR_FLAG_WILL_TALK;
+        this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         func_8002F2CC(&this->actor, play, 170.0f);
         this->actor.textId = 0x2006;
     }
     func_809DF494(this, play);
-}
-
-bool EnCow_HasBeenMilked(EnCow* this, PlayState* play) {
-    CowIdentity cowIdentity = Randomizer_IdentifyCow(play->sceneNum, this->actor.world.pos.x, this->actor.world.pos.z);
-    return Flags_GetRandomizerInf(cowIdentity.randomizerInf);
-}
-
-void EnCow_GivePlayerRandomizedItem(EnCow* this, PlayState* play) {
-    if (!EnCow_HasBeenMilked(this, play)) {
-        CowIdentity cowIdentity = Randomizer_IdentifyCow(play->sceneNum, this->actor.world.pos.x, this->actor.world.pos.z);
-        GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(cowIdentity.randomizerCheck, GI_MILK);
-        GiveItemEntryFromActor(&this->actor, play, itemEntry, 10000.0f, 100.0f);
-    } else {
-        // once we've gotten the rando reward from the cow,
-        // return them to the their default action function
-        this->actionFunc = func_809DF96C;
-    }
 }
 
 void func_809DF96C(EnCow* this, PlayState* play) {
@@ -308,23 +262,14 @@ void func_809DF96C(EnCow* this, PlayState* play) {
                 if ((this->actor.xzDistToPlayer < 150.0f) &&
                     (ABS((s16)(this->actor.yawTowardsPlayer - this->actor.shape.rot.y)) < 0x61A8)) {
                     DREG(53) = 0;
-                    // when randomized with cowsanity, if we haven't gotten the
-                    // reward from this cow yet, give that, otherwise use the
-                    // vanilla cow behavior
-                    if (IS_RANDO &&
-                        Randomizer_GetSettingValue(RSK_SHUFFLE_COWS) &&
-                        !EnCow_HasBeenMilked(this, play)) {
-                        EnCow_SetCowMilked(this, play);
-                        // setting the ocarina mode here prevents intermittent issues
-                        // with the item get not triggering until walking away
-                        play->msgCtx.ocarinaMode = OCARINA_MODE_00;
-                        this->actionFunc = EnCow_GivePlayerRandomizedItem;
+                    if (GameInteractor_Should(VB_GIVE_ITEM_FROM_COW, true, this)) {
+                        this->actionFunc = func_809DF8FC;
+                        this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
+                        func_8002F2CC(&this->actor, play, 170.0f);
+                        this->actor.textId = 0x2006;
+                    } else {
                         return;
                     }
-                    this->actionFunc = func_809DF8FC;
-                    this->actor.flags |= ACTOR_FLAG_WILL_TALK;
-                    func_8002F2CC(&this->actor, play, 170.0f);
-                    this->actor.textId = 0x2006;
                 } else {
                     this->unk_276 |= 4;
                 }
@@ -363,7 +308,7 @@ void EnCow_Update(Actor* thisx, PlayState* play2) {
 
     CollisionCheck_SetOC(play, &play->colChkCtx, &this->colliders[0].base);
     CollisionCheck_SetOC(play, &play->colChkCtx, &this->colliders[1].base);
-    Actor_MoveForward(thisx);
+    Actor_MoveXZGravity(thisx);
     Actor_UpdateBgCheckInfo(play, thisx, 0.0f, 0.0f, 0.0f, 4);
     if (SkelAnime_Update(&this->skelAnime) != 0) {
         if (this->skelAnime.animation == &gCowBodyChewAnim) {

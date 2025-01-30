@@ -6,8 +6,11 @@
 
 #include "z_en_js.h"
 #include "objects/object_js/object_js.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
 
 void EnJs_Init(Actor* thisx, PlayState* play);
 void EnJs_Destroy(Actor* thisx, PlayState* play);
@@ -106,7 +109,7 @@ void func_80A89008(EnJs* this) {
 void func_80A89078(EnJs* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
         func_80A89008(this);
-        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+        this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
     }
 }
 
@@ -122,7 +125,7 @@ void func_80A8910C(EnJs* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
         this->actor.textId = 0x6078;
         En_Js_SetupAction(this, func_80A890C0);
-        this->actor.flags |= ACTOR_FLAG_WILL_TALK;
+        this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
     }
 }
 
@@ -131,19 +134,10 @@ void func_80A89160(EnJs* this, PlayState* play) {
         this->actor.parent = NULL;
         En_Js_SetupAction(this, func_80A8910C);
     } else {
-        if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF && 
-            !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN)) {
-            GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_WASTELAND_BOMBCHU_SALESMAN, GI_BOMBCHUS_10);
-            gSaveContext.pendingSale = itemEntry.itemId;
-            gSaveContext.pendingSaleMod = itemEntry.modIndex;
-            GiveItemEntryFromActor(&this->actor, play, itemEntry, 10000.0f, 50.0f);
-            Flags_SetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN);
-        } else {
-            GetItemEntry itemEntry = ItemTable_Retrieve(GI_BOMBCHUS_10);
-            gSaveContext.pendingSale = itemEntry.itemId;
-            gSaveContext.pendingSaleMod = itemEntry.modIndex;
-            func_8002F434(&this->actor, play, GI_BOMBCHUS_10, 10000.0f, 50.0f);
-        }
+        GetItemEntry itemEntry = ItemTable_Retrieve(GI_BOMBCHUS_10);
+        gSaveContext.ship.pendingSale = itemEntry.itemId;
+        gSaveContext.ship.pendingSaleMod = itemEntry.modIndex;
+        Actor_OfferGetItem(&this->actor, play, GI_BOMBCHUS_10, 10000.0f, 50.0f);
     }
 }
 
@@ -151,12 +145,19 @@ void func_80A891C4(EnJs* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
         switch (play->msgCtx.choiceIndex) {
             case 0: // yes
-                if (gSaveContext.rupees < 200) {
+                if (GameInteractor_Should(VB_CHECK_RANDO_PRICE_OF_CARPET_SALESMAN, gSaveContext.rupees < 200, this)) {
                     Message_ContinueTextbox(play, 0x6075);
                     func_80A89008(this);
                 } else {
-                    Rupees_ChangeBy(-200);
-                    En_Js_SetupAction(this, func_80A89160);
+                    if (!GameInteractor_Should(VB_GIVE_ITEM_FROM_CARPET_SALESMAN, false, this)) {
+                        if (GameInteractor_Should(VB_GIVE_BOMBCHUS_FROM_CARPET_SALESMAN, true, this) || Actor_HasParent(&this->actor, play)){
+                            Rupees_ChangeBy(-200);
+                            En_Js_SetupAction(this, func_80A89160);
+                        } else{
+                            Message_ContinueTextbox(play, 0x6073);
+                            func_80A89008(this);
+                        }
+                    }
                 }
                 break;
             case 1: // no
@@ -185,7 +186,7 @@ void EnJs_Update(Actor* thisx, PlayState* play) {
 
     Collider_UpdateCylinder(&this->actor, &this->collider);
     CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);
 
     if (this->actor.bgCheckFlags & 1) {
