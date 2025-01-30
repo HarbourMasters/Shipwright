@@ -22,6 +22,7 @@
 #endif
 
 #include "UIWidgets.hpp"
+#include "SohMenu.h"
 #include "include/global.h"
 #include "include/z64audio.h"
 #include "soh/SaveManager.h"
@@ -108,7 +109,8 @@ namespace SohGui {
     std::shared_ptr<Ship::GuiWindow> mStatsWindow;
     std::shared_ptr<Ship::GuiWindow> mGfxDebuggerWindow;
     std::shared_ptr<Ship::GuiWindow> mInputEditorWindow;
-
+    
+    std::shared_ptr<SohMenu> mSohMenu;
     std::shared_ptr<AudioEditor> mAudioEditorWindow;
     std::shared_ptr<InputViewer> mInputViewer;
     std::shared_ptr<InputViewerSettingsWindow> mInputViewerSettings;
@@ -142,13 +144,16 @@ namespace SohGui {
         mSohMenuBar = std::make_shared<SohMenuBar>(CVAR_MENU_BAR_OPEN, CVarGetInteger(CVAR_MENU_BAR_OPEN, 0));
         gui->SetMenuBar(std::reinterpret_pointer_cast<Ship::GuiMenuBar>(mSohMenuBar));
 
-        if (gui->GetMenuBar() && !gui->GetMenuBar()->IsVisible()) {
+        if (!gui->GetMenuBar() && !CVarGetInteger("gSettings.DisableMenuShortcutNotify", 0)) {
 #if defined(__SWITCH__) || defined(__WIIU__)
-            Notification::Emit({ .message = "Press - to access enhancements menu", .remainingTime = 10.0f });
+            gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Press - to access enhancements menu");
 #else
-            Notification::Emit({ .message = "Press F1 to access enhancements menu", .remainingTime = 10.0f });
+            gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Press F1 to access enhancements menu");
 #endif
         }
+
+        mSohMenu = std::make_shared<SohMenu>(CVAR_WINDOW("Menu"), "Port Menu");
+        gui->SetMenu(mSohMenu);
 
         mStatsWindow = gui->GetGuiWindow("Stats");
         if (mStatsWindow == nullptr) {
