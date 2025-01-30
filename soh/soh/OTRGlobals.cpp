@@ -42,7 +42,6 @@
 #include "Fonts.h"
 #include <utils/StringHelper.h>
 #include "Enhancements/custom-message/CustomMessageManager.h"
-#include "ImGuiUtils.h"
 #include "Enhancements/presets.h"
 #include "util.h"
 #include <boost_custom/container_hash/hash_32.hpp>
@@ -70,7 +69,8 @@
 #include "Enhancements/custom-message/CustomMessageTypes.h"
 #include <functions.h>
 #include "Enhancements/item-tables/ItemTableManager.h"
-#include "SohGui.hpp"
+#include "soh/SohGui/SohGui.hpp"
+#include "soh/SohGui/ImGuiUtils.h"
 #include "ActorDB.h"
 #include "SaveManager.h"
 
@@ -391,9 +391,10 @@ OTRGlobals::OTRGlobals() {
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     gRandoContext->InitStaticData();
     gRandoContext = Rando::Context::CreateInstance();
+    Rando::Settings::GetInstance()->AssignContext(gRandoContext);
     Rando::StaticData::InitItemTable();//RANDOTODO make this not rely on context's logic so it can be initialised in InitStaticData
     gRandoContext->AddExcludedOptions();
-    gRandoContext->GetSettings()->CreateOptions();
+    Rando::Settings::GetInstance()->CreateOptions();
     gRandomizer = std::make_shared<Randomizer>();
 
     hasMasterQuest = hasOriginal = false;
@@ -1932,7 +1933,7 @@ extern "C" u32 SpoilerFileExists(const char* spoilerFileName) {
 }
 
 extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey) {
-    return OTRGlobals::Instance->gRandoContext->GetOption(randoSettingKey).GetContextOptionIndex();
+    return OTRGlobals::Instance->gRandoContext->GetOption(randoSettingKey).Get();
 }
 
 extern "C" RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams) {
@@ -2441,9 +2442,8 @@ void SoH_ProcessDroppedFiles(std::string filePath) {
             }
         }
 
-        auto randoCtx = Rando::Context::GetInstance();
-        randoCtx->GetSettings()->UpdateOptionProperties();
-        randoCtx->GetSettings()->SetAllFromCVar();
+        Rando::Settings::GetInstance()->UpdateOptionProperties();
+        Rando::Settings::GetInstance()->SetAllFromCVar();
 
         auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
         gui->GetGuiWindow("Console")->Hide();

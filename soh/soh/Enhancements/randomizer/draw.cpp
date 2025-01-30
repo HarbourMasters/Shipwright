@@ -946,7 +946,13 @@ extern "C" void DrawGanon(PlayState* play) {
 }
 
 extern "C" void Randomizer_DrawBossSoul(PlayState* play, GetItemEntry* getItemEntry) {
-    s16 slot = getItemEntry->getItemId - RG_GOHMA_SOUL;
+    s16 slot;
+    if (getItemEntry->getItemId != RG_ICE_TRAP) {
+        slot = getItemEntry->getItemId - RG_GOHMA_SOUL;
+    } else {
+        slot = getItemEntry->drawItemId - RG_GOHMA_SOUL;
+    }
+    
     s16 flameColors[9][3] = {
         { 0, 255, 0 },     // Gohma
         { 255, 0, 100 },   // King Dodongo
@@ -1222,4 +1228,19 @@ extern "C" void Randomizer_DrawBombchuBagInLogic(PlayState* play, GetItemEntry* 
         gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiBombchuDL);
         CLOSE_DISPS(play->state.gfxCtx);
     }
+}
+
+extern "C" void Randomizer_DrawOverworldKey(PlayState* play, GetItemEntry* getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
+    gDPSetEnvColor(POLY_OPA_DISP++, 255, 255, 255, 255);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gHouseKeyDL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
 }

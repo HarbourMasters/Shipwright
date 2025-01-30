@@ -11,9 +11,9 @@
 #include "3drando/rando_main.hpp"
 #include "3drando/random.hpp"
 #include "soh/ResourceManagerHelpers.h"
-#include "soh/UIWidgets.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include "3drando/custom_messages.hpp"
-#include "../../UIWidgets.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include <imgui.h>
 #include <imgui_internal.h>
 #include "../custom-message/CustomMessageTypes.h"
@@ -475,7 +475,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
                 (CUR_UPG_VALUE(UPG_STICKS) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE);
         case RG_DEKU_STICK_1:
         case RG_BUY_DEKU_STICK_1:
-            return CUR_UPG_VALUE(UPG_STICKS) || !OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG).GetContextOptionIndex()
+            return CUR_UPG_VALUE(UPG_STICKS) || !OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG).Get()
                  ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
         case RG_PROGRESSIVE_NUT_UPGRADE:
             return infiniteUpgrades != RO_INF_UPGRADES_OFF ?
@@ -485,7 +485,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_DEKU_NUTS_10:
         case RG_BUY_DEKU_NUTS_5:
         case RG_BUY_DEKU_NUTS_10:
-            return CUR_UPG_VALUE(UPG_NUTS) || !OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_DEKU_NUT_BAG).GetContextOptionIndex()
+            return CUR_UPG_VALUE(UPG_NUTS) || !OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_DEKU_NUT_BAG).Get()
                 ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
         case RG_PROGRESSIVE_BOMB_BAG:
             return infiniteUpgrades != RO_INF_UPGRADES_OFF ?
@@ -1837,7 +1837,7 @@ FishIdentity Randomizer::IdentifyFish(s32 sceneNum, s32 actorParams) {
 }
 
 u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
-    return Rando::Context::GetInstance()->GetOption(randoSettingKey).GetContextOptionIndex();
+    return Rando::Context::GetInstance()->GetOption(randoSettingKey).Get();
 }
 
 GetItemEntry Randomizer::GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId, bool checkObtainability) {
@@ -1871,7 +1871,8 @@ void GenerateRandomizerImgui(std::string seed = "") {
     CVarSave();
     auto ctx = Rando::Context::GetInstance();
     //RANDOTODO proper UI for selecting if a spoiler loaded should be used for settings
-    ctx->GetSettings()->SetAllFromCVar();
+    Rando::Settings::GetInstance()->SetAllFromCVar();
+    Rando::Settings::GetInstance()->SetAllToContext();
     
     // todo: this efficently when we build out cvar array support
     std::set<RandomizerCheck> excludedLocations;
@@ -2181,13 +2182,6 @@ void RandomizerSettingsWindow::DrawElement() {
                 if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA) {
                     ImGui::SameLine();
                     ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Heads up! This will disable all rando settings except for entrance shuffle and starter items");
-                }
-
-                UIWidgets::PaddedSeparator();
-
-                // Enable Glitch-Useful Cutscenes
-                if (mSettings->GetOption(RSK_ENABLE_GLITCH_CUTSCENES).RenderImGui()) {
-                    mNeedsUpdate = true;
                 }
                 ImGui::PopItemWidth();
                 ImGui::EndTable();
@@ -3338,7 +3332,7 @@ CustomMessage Randomizer::GetGoronMessage(u16 index) {
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
-    const std::array<GetItemMessage, 87> getItemMessages = {{
+    const std::array<GetItemMessage, 112> getItemMessages = {{
         GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON,
 			"You found %gGreg%w!",
 			"%gGreg%w! Du hast ihn wirklich gefunden!",
@@ -3386,40 +3380,140 @@ void Randomizer::CreateCustomMessages() {
 
         GIMESSAGE(RG_GERUDO_FORTRESS_SMALL_KEY, ITEM_KEY_SMALL,
 			"You found a %yThieves Hideout &%wSmall Key!",
-			"Du erhältst einen %rKleinen&Schlüssel%w für das %yDiebesversteck%w!",
+			"Du erhältst einen %rkleinen&Schlüssel%w für das %yDiebesversteck%w!",
 			"Vous obtenez une %rPetite Clé %w&du %yRepaire des Voleurs%w!"),
         GIMESSAGE(RG_FOREST_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL,
 			"You found a %gForest Temple &%wSmall Key!",
-			"Du erhältst einen %rKleinen&Schlüssel%w für den %gWaldtempel%w!",
+			"Du erhältst einen %rkleinen&Schlüssel%w für den %gWaldtempel%w!",
 			"Vous obtenez une %rPetite Clé %w&du %gTemple de la Forêt%w!"),
         GIMESSAGE(RG_FIRE_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL,
 			"You found a %rFire Temple &%wSmall Key!",
-			"Du erhältst einen %rKleinen&Schlüssel%w für den %rFeuertempel%w!",
+			"Du erhältst einen %rkleinen&Schlüssel%w für den %rFeuertempel%w!",
 			"Vous obtenez une %rPetite Clé %w&du %rTemple du Feu%w!"),
         GIMESSAGE(RG_WATER_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL,
 			"You found a %bWater Temple &%wSmall Key!",
-			"Du erhältst einen %rKleinen&Schlüssel%w für den %bWassertempel%w!",
+			"Du erhältst einen %rkleinen&Schlüssel%w für den %bWassertempel%w!",
 			"Vous obtenez une %rPetite Clé %w&du %bTemple de l'Eau%w!"),
         GIMESSAGE(RG_SPIRIT_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL,
 			"You found a %ySpirit Temple &%wSmall Key!",
-			"Du erhältst einen %rKleinen&Schlüssel%w für den %yGeistertempel%w!",
+			"Du erhältst einen %rkleinen&Schlüssel%w für den %yGeistertempel%w!",
 			"Vous obtenez une %rPetite Clé %w&du %yTemple de l'Esprit%w!"),
         GIMESSAGE(RG_SHADOW_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL,
 			"You found a %pShadow Temple &%wSmall Key!",
-			"Du erhältst einen %rKleinen&Schlüssel%w für den %pSchattentempel%w!",
+			"Du erhältst einen %rkleinen&Schlüssel%w für den %pSchattentempel%w!",
 			"Vous obtenez une %rPetite Clé %w&du %pTemple de l'Ombre%w!"),
         GIMESSAGE(RG_BOTTOM_OF_THE_WELL_SMALL_KEY, ITEM_KEY_SMALL,
 			"You found a %pBottom of the &Well %wSmall Key!",
-			"Du erhältst einen %rKleinen&Schlüssel%w für den %pGrund des Brunnens%w!",
+			"Du erhältst einen %rkleinen&Schlüssel%w für den %pGrund des Brunnens%w!",
 			"Vous obtenez une %rPetite Clé %w&du %pPuits%w!"),
         GIMESSAGE(RG_GERUDO_TRAINING_GROUND_SMALL_KEY, ITEM_KEY_SMALL,
 			"You found a %yGerudo Training &Grounds %wSmall Key!",
-			"Du erhältst einen %rKleinen&Schlüssel%w für die %yGerudo-Trainingsarena%w!",
+			"Du erhältst einen %rkleinen&Schlüssel%w für die %yGerudo-Trainingsarena%w!",
 			"Vous obtenez une %rPetite Clé %w&du %yGymnase Gerudo%w!"),
         GIMESSAGE(RG_GANONS_CASTLE_SMALL_KEY, ITEM_KEY_SMALL,
 			"You found a %rGanon's Castle &%wSmall Key!",
-			"Du erhältst einen %rKleinen&Schlüssel%w für %rGanons Schloß%w!",
+			"Du erhältst einen %rkleinen&Schlüssel%w für %rGanons Schloß%w!",
 			"Vous obtenez une %rPetite Clé %w&du %rChâteau de Ganon%w!"),
+        GIMESSAGE(RG_GUARD_HOUSE_KEY, ITEM_KEY_SMALL,
+			"You found the key to the&%gGuard House%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für das %gHaus der Wachen%w!",
+            "Vous obtenez une %rPetite Clé %w&de la %gMaison des Gardes%w!"),
+        GIMESSAGE(RG_MARKET_BAZAAR_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gMarket Bazaar%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für den %gBasar des Marktes%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gMarché%w!"),
+        GIMESSAGE(RG_MARKET_POTION_SHOP_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gMarket Potion Shop%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für den %gMagie-Laden des Marktes%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gMarché%w!"),
+        GIMESSAGE(RG_MASK_SHOP_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gMask Shop%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für den %gMaskenladen%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gMagasin de Masques%w!"),
+        GIMESSAGE(RG_MARKET_SHOOTING_GALLERY_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gMarket Shooting Gallery%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für die %gSchießbude des Marktes%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gStand de Tir%w!"),
+        GIMESSAGE(RG_BOMBCHU_BOWLING_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gBombchu Bowling Alley%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für die %gMinenbowlingbahn%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gBowling Bombchu%w!"),
+        GIMESSAGE(RG_TREASURE_CHEST_GAME_BUILDING_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gTreasure Chest Game Building%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für das %gHaus des Schatzkisten-Pokers%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gJeu de la Chasse au Trésor%w!"),
+        GIMESSAGE(RG_BOMBCHU_SHOP_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gBombchu Shop%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für den %gKrabbelminenladen%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gMagasin de Bombchu%w!"),
+        GIMESSAGE(RG_RICHARDS_HOUSE_KEY, ITEM_KEY_SMALL,
+            "You found the key to&%gRichard's House%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für das %gHaus von Richard%w!",
+            "Vous obtenez une %rPetite Clé %w&de la %gMaison de Richard%w!"),
+        GIMESSAGE(RG_RICHARDS_HOUSE_KEY, ITEM_KEY_SMALL,
+            "You found the key to&%gRichard's House%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für das %gHaus von Richard%w!",
+            "Vous obtenez une %rPetite Clé %w&de la %gMaison de Richard%w!"),
+        GIMESSAGE(RG_ALLEY_HOUSE_KEY, ITEM_KEY_SMALL,
+            "You found the key to&the %gAlley House%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für das %gHaus in der Gasse%w!",
+            "Vous obtenez une %rPetite Clé %w&de la %gMaison de la Ruelle%w!"),
+        GIMESSAGE(RG_KAK_BAZAAR_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gKakariko Bazaar%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für den %gBasar von Kakariko%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gMarché de Cocorico%w!"),
+        GIMESSAGE(RG_KAK_POTION_SHOP_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gKakariko Potion Shop%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für den %gMagie-Laden von Kakariko%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gMagasin de Potions de Cocorico%w!"),
+        GIMESSAGE(RG_BOSS_HOUSE_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gBoss's House%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für das %gHaus des Chefs%w!",
+            "Vous obtenez une %rPetite Clé %w&de la %gMaison du Boss%w!"),
+        GIMESSAGE(RG_GRANNYS_POTION_SHOP_KEY, ITEM_KEY_SMALL,
+            "You found the key to&%gGranny's Potion Shop%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für %gAsas Hexenladen%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gMagasin de Potions de Grand-mère%w!"),
+        GIMESSAGE(RG_SKULLTULA_HOUSE_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gSkulltula House%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für das %gSkulltula-Haus%w!",
+            "Vous obtenez une %rPetite Clé %w&de la %gMaison des Skulltulas%w!"),
+        GIMESSAGE(RG_IMPAS_HOUSE_KEY, ITEM_KEY_SMALL,
+            "You found the key to&%gImpa's House%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für das %gHaus von Impa%w!",
+            "Vous obtenez une %rPetite Clé %w&de la %gMaison d'Impa%w!"),
+        GIMESSAGE(RG_WINDMILL_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gWindmill%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für die %gWindmühle%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gMoulin à Vent%w!"),
+        GIMESSAGE(RG_KAK_SHOOTING_GALLERY_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gKakariko Shooting Gallery%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für die %gSchießbude von Kakariko%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gStand de Tir de Cocorico%w!"),
+        GIMESSAGE(RG_DAMPES_HUT_KEY, ITEM_KEY_SMALL,
+            "You found the key to&%gDampe's Hut%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für die %gHütte von Boris%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gChalet de Dampe%w!"),
+        GIMESSAGE(RG_TALONS_HOUSE_KEY, ITEM_KEY_SMALL,
+            "You found the key to&%gTalon's House%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für das %gHaus von Talon%w!",
+            "Vous obtenez une %rPetite Clé %w&de la %gMaison de Talon%w!"),
+        GIMESSAGE(RG_STABLES_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gStables%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für die %gStälle%w!",
+            "Vous obtenez une %rPetite Clé %w&des %gÉcuries%w!"),
+        GIMESSAGE(RG_BACK_TOWER_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gBack Tower%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für den %ghinteren Turm%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gTour Arrière%w!"),
+        GIMESSAGE(RG_HYLIA_LAB_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gHylia Laboratory%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für das %gHylia-Labor%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gLaboratoire d'Hylia%w!"),
+        GIMESSAGE(RG_FISHING_HOLE_KEY, ITEM_KEY_SMALL,
+            "You found the key to the&%gFishing Hole%w!",
+            "Du erhältst einen %rkleinen&Schlüssel%w für den %gFischweiher%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gTrou de Pêche%w!"),
 
         GIMESSAGE(RG_GERUDO_FORTRESS_KEY_RING, ITEM_KEY_SMALL,
 			"You found a %yThieves Hideout &%wKeyring!",
@@ -3694,10 +3788,10 @@ class ExtendedVanillaTableInvalidItemIdException: public std::exception {
 };
 
 void RandomizerSettingsWindow::InitElement() {
-    mSettings = Rando::Context::GetInstance()->GetSettings();
+    mSettings = Rando::Settings::GetInstance();
     Randomizer::CreateCustomMessages();
     seedString = (char*)calloc(MAX_SEED_STRING_SIZE, sizeof(char));
-    Rando::Context::GetInstance()->GetSettings()->UpdateOptionProperties();
+    mSettings->UpdateOptionProperties();
 }
 
 // Gameplay stat tracking: Update time the item was acquired
@@ -3952,6 +4046,9 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         }
 
         gSaveContext.inventory.dungeonItems[mapIndex] |= bitmask;
+        return Return_Item_Entry(giEntry, RG_NONE);
+    } else if (item >= RG_GUARD_HOUSE_KEY && item <= RG_FISHING_HOLE_KEY) {
+        Flags_SetRandomizerInf((RandomizerInf)((int)RAND_INF_GUARD_HOUSE_UNLOCKED + ((item - RG_GUARD_HOUSE_KEY) * 2) + 1));
         return Return_Item_Entry(giEntry, RG_NONE);
     }
 

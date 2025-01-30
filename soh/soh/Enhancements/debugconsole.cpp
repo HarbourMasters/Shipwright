@@ -402,6 +402,7 @@ static bool EntranceHandler(std::shared_ptr<Ship::Console> Console, const std::v
     gPlayState->transitionTrigger = TRANS_TRIGGER_START;
     gPlayState->transitionType = TRANS_TYPE_INSTANT;
     gSaveContext.nextTransitionType = TRANS_TYPE_INSTANT;
+    return 0;
 }
 
 static bool VoidHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {

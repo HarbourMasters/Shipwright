@@ -400,6 +400,7 @@ namespace UIWidgets {
         if (changed && (oldVal != val)) {
             CVarSetInteger(cvarName, val);
             Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            ShipInit::Init(cvarName);
         } else {
             changed = false;
         }

@@ -1319,7 +1319,6 @@ namespace SOH {
         { MigrationAction::Rename, "gRandomizeDoorOfTime", "gRandoSettings.DoorOfTime" },
         { MigrationAction::Rename, "gRandomizeDungeonCount", "gRandoSettings.DungeonCount" },
         { MigrationAction::Rename, "gRandomizeEnableBombchuDrops", "gRandoSettings.EnableBombchuDrops" },
-        { MigrationAction::Rename, "gRandomizeEnableGlitchCutscenes", "gRandoSettings.EnableGlitchCutscenes" },
         { MigrationAction::Rename, "gRandomizeEnabledTricks", "gRandoSettings.EnabledTricks" },
         { MigrationAction::Rename, "gRandomizeForest", "gRandoSettings.ClosedForest" },
         { MigrationAction::Rename, "gRandomizeFrogsHint", "gRandoSettings.FrogsHint" },

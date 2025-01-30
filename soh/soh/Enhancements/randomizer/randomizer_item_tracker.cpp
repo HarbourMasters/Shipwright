@@ -4,7 +4,7 @@
 #include "soh/cvar_prefixes.h"
 #include "soh/SaveManager.h"
 #include "soh/ResourceManagerHelpers.h"
-#include "soh/UIWidgets.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include "randomizerTypes.h"
 
 #include <map>
@@ -90,17 +90,15 @@ std::vector<ItemTrackerItem> triforcePieces = {
 };
 
 std::vector<ItemTrackerItem> bossSoulItems = {
-    //Hack for right now, just gonna draw souls as bottles/big poes.
-    //Will replace with other macro once we have a custom texture
-    ITEM_TRACKER_ITEM_CUSTOM(RG_GOHMA_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_KING_DODONGO_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_BARINADE_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_PHANTOM_GANON_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_VOLVAGIA_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_MORPHA_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_BONGO_BONGO_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_TWINROVA_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_GANON_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
+    ITEM_TRACKER_ITEM(RG_GOHMA_SOUL, 0, DrawItem),
+    ITEM_TRACKER_ITEM(RG_KING_DODONGO_SOUL, 0, DrawItem ),
+    ITEM_TRACKER_ITEM(RG_BARINADE_SOUL, 0, DrawItem ),
+    ITEM_TRACKER_ITEM(RG_PHANTOM_GANON_SOUL, 0, DrawItem ),
+    ITEM_TRACKER_ITEM(RG_VOLVAGIA_SOUL, 0, DrawItem ),
+    ITEM_TRACKER_ITEM(RG_MORPHA_SOUL, 0, DrawItem ),
+    ITEM_TRACKER_ITEM(RG_BONGO_BONGO_SOUL, 0, DrawItem ),
+    ITEM_TRACKER_ITEM(RG_TWINROVA_SOUL, 0, DrawItem ),
+    ITEM_TRACKER_ITEM(RG_GANON_SOUL, 0, DrawItem ),
 };
 
 std::vector<ItemTrackerItem> ocarinaButtonItems = {
@@ -923,7 +921,11 @@ void DrawTotalChecks() {
     uint16_t totalChecksGotten = CheckTracker::GetTotalChecksGotten();
 
     ImGui::BeginGroup();
-    ImGui::SetWindowFontScale(2.5);
+    if (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING) {
+        ImGui::SetWindowFontScale(2.5);
+    } else {
+        ImGui::SetWindowFontScale(1);
+    }
     ImGui::Text("Checks: %d/%d", totalChecksGotten, totalChecks);
     ImGui::EndGroup();
 }
@@ -1342,7 +1344,7 @@ void ItemTrackerWindow::DrawElement() {
 
         if (CVarGetInteger("gTrackers.ItemTracker.TotalChecks.DisplayType", SECTION_DISPLAY_MINIMAL_HIDDEN) ==
             SECTION_DISPLAY_MINIMAL_SEPARATE) {
-            ImGui::SetNextWindowSize(ImVec2(400, 300), ImGuiCond_FirstUseEver);
+            ImGui::SetNextWindowSize(ImVec2(450, 300), ImGuiCond_FirstUseEver);
             BeginFloatingWindows("Total Checks");
             DrawTotalChecks();
             EndFloatingWindows();

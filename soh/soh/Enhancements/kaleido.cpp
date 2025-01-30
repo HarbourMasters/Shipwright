@@ -125,8 +125,8 @@ namespace Rando {
                     std::make_shared<KaleidoEntryIconCountRequired>(
                             gTriforcePieceTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, Color_RGBA8{ 255,255,255,255 }, 0,
                             yOffset, reinterpret_cast<int*>(&gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected),
-                            ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).GetContextOptionIndex() + 1,
-                            ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).GetContextOptionIndex() + 1));
+                            ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).Get() + 1,
+                            ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).Get() + 1));
             yOffset += 18;
         }
         if (ctx->GetOption(RSK_SHUFFLE_OCARINA_BUTTONS)) {

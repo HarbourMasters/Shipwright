@@ -20,15 +20,11 @@ void Entrance::SetCondition(ConditionFn newCondition) {
 }
 
 bool Entrance::GetConditionsMet() const {
-    auto ctx = Rando::Context::GetInstance();
-    if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC) || ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
-        return true;
-    } else if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS)) {
-        return condition_function();
-    } else if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHED)) {
-        return condition_function();
-    }
-    return false;
+  auto ctx = Rando::Context::GetInstance();
+  if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS)) {
+    return condition_function();
+  }
+  return true;
 }
 
 std::string Entrance::to_string() const {
@@ -1322,12 +1318,12 @@ int EntranceShuffler::ShuffleAllEntrances() {
         (ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES) ? 1 : 0) + (ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES) ? 1 : 0) +
         (ctx->GetOption(RSK_MIX_GROTTO_ENTRANCES) ? 1 : 0);
     if (totalMixedPools < 2) {
-        ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS).SetContextIndex(RO_GENERIC_OFF);
-        ctx->GetOption(RSK_MIX_DUNGEON_ENTRANCES).SetContextIndex(RO_GENERIC_OFF);
-        ctx->GetOption(RSK_MIX_BOSS_ENTRANCES).SetContextIndex(RO_GENERIC_OFF);
-        ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES).SetContextIndex(RO_GENERIC_OFF);
-        ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES).SetContextIndex(RO_GENERIC_OFF);
-        ctx->GetOption(RSK_MIX_GROTTO_ENTRANCES).SetContextIndex(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS).Set(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIX_DUNGEON_ENTRANCES).Set(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIX_BOSS_ENTRANCES).Set(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES).Set(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES).Set(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIX_GROTTO_ENTRANCES).Set(RO_GENERIC_OFF);
     }
     if (ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS)) {
         std::set<EntranceType> poolsToMix = {};
