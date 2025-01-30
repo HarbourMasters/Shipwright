@@ -1,5 +1,5 @@
-#ifndef BENMENU_H
-#define BENMNEU_H
+#ifndef SOHMENU_H
+#define SOHMENU_H
 
 #include <libultraship/libultraship.h>
 #include "UIWidgets2.hpp"
@@ -63,10 +63,12 @@ class SohMenu : public Ship::Menu {
 
     void AddSidebarEntry(std::string sectionName, std::string sidbarName, uint32_t columnCount);
     WidgetInfo& AddWidget(WidgetPath& pathInfo, std::string widgetName, WidgetType widgetType);
-    void AddSettings();
-    void AddEnhancements();
-    void AddDevTools();
+    void AddMenuSettings();
+    void AddMenuEnhancements();
+    void AddMenuDevTools();
+    void AddMenuRandomizer();
+    void AddMenuNetwork();
 };
-} // namespace BenGui
+} // namespace SohGui
 
-#endif // BENMENU_H
+#endif // SOHMENU_H

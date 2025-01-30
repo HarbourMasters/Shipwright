@@ -4,18 +4,10 @@
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/controls/SohInputEditorWindow.h"
 #include "window/gui/GuiMenuBar.h"
-#include "window/gui/GuiElement.h"/*
-#include "DeveloperTools/SaveEditor.h"
-#include "DeveloperTools/ActorViewer.h"
-#include "DeveloperTools/CollisionViewer.h"
-#include "DeveloperTools/EventLog.h"
-#include "2s2h/Enhancements/GfxPatcher/AuthenticGfxPatches.h"
-#include "HudEditor.h"
-#include "Notification.h"*/
+#include "window/gui/GuiElement.h"
 #include <variant>
 #include <spdlog/fmt/fmt.h>
 #include "variables.h"
-#include <variant>
 #include <tuple>
 
 extern "C" {
@@ -549,7 +541,7 @@ void Menu::DrawElement() {
     float headerWidth = style.ItemSpacing.x;
     bool headerSearch = !CVarGetInteger("gSettings.Menu.SidebarSearch", 0);
     if (headerSearch) {
-        headerWidth += 200.0f + style.ItemSpacing.x + style.FramePadding.x;
+        headerWidth += 220.0f + style.ItemSpacing.x + style.FramePadding.x;
     }
     for (auto& label : menuOrder) {
         ImVec2 size = ImGui::CalcTextSize(label.c_str());
@@ -559,7 +551,18 @@ void Menu::DrawElement() {
             headerWidth += style.ItemSpacing.x;
         }
     }
+
+    // Full screen menu with widths below 1280, heights below 800.
+    // Up to 100 pixel padding when up to 1700 width, 1050 height.
+    // Everything above that, fixed size of 1600x950.
     ImVec2 menuSize = { std::fminf(1280, windowWidth), std::fminf(800, windowHeight) };
+    if (windowWidth > 1380) {
+        menuSize.x = std::fminf(1600, windowWidth - 100);
+    }
+    if (windowHeight > 900) {
+        menuSize.y = std::fminf(950, windowHeight - 100);
+    }
+    
     pos += window->WorkRect.GetSize() / 2 - menuSize / 2;
     ImGui::SetNextWindowPos(pos);
     ImGui::BeginChild("Menu Block", menuSize,
@@ -672,7 +675,7 @@ void Menu::DrawElement() {
     UIWidgets2::ButtonOptions options3 = {};
     options3.color = UIWidgets2::Colors::Red;
     options3.size = UIWidgets2::Sizes::Inline;
-    options3.tooltip = "Quit 2S2H";
+    options3.tooltip = "Quit SoH";
     if (UIWidgets2::Button(ICON_FA_POWER_OFF, options3)) {
         if (!popped) {
             ToggleVisibility();

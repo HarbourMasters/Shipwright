@@ -84,7 +84,7 @@ using OptionsVariant =
 // `type` is the WidgetType for the widget, which is what determines how the information is used in the draw func
 // `options` is a variant that holds the UIWidgetsOptions struct for the widget type
 // blank objects need to be initialized with specific typing matching the expected Options struct for the widget
-// `callback` is a lambda used for running code on widget change. may need `BenGui::GetMenu()` for specific menu actions
+// `callback` is a lambda used for running code on widget change. may need `SohGui::GetMenu()` for specific menu actions
 // `preFunc` is a lambda called before drawing code starts. It can be used to determine a widget's status,
 // whether disabled or hidden, as well as update pointers for non-CVar widget types.
 // `postFunc` is a lambda called after all drawing code is finished, for reacting to states other than
