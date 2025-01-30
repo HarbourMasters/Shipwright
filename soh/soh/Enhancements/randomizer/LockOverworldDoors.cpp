@@ -61,30 +61,6 @@ std::map<SceneDoorParamsPair, RandomizerInf> lookupTable = {
     {{ SCENE_LON_LON_RANCH, 447 },               RAND_INF_BACK_TOWER_UNLOCKED },
     {{ SCENE_LAKE_HYLIA, 447 },                  RAND_INF_HYLIA_LAB_UNLOCKED },
     {{ SCENE_LAKE_HYLIA, 1471 },                 RAND_INF_FISHING_HOLE_UNLOCKED },
-    // Doors below this are the insides of the interior areas. In entrance rando, this meant you could
-    // very easily get stuck inside these areas. Outside of entrance rando, you wouldn't be able
-    // to enter these areas without unlocking the outside door anyway, so for now they're
-    // commented out just in case someone else wants to use them for something in the future.
-    /*
-    {{ SCENE_MARKET_GUARD_HOUSE, 447 },          RAND_INF_GUARD_HOUSE_UNLOCKED },
-    {{ SCENE_SHOOTING_GALLERY, 447 },            RAND_INF_MARKET_SHOOTING_GALLERY_UNLOCKED },
-    {{ SCENE_BOMBCHU_BOWLING_ALLEY, 447 },       RAND_INF_BOMBCHU_BOWLING_UNLOCKED },
-    {{ SCENE_TREASURE_BOX_SHOP, 6591 },          RAND_INF_TREASURE_CHEST_GAME_BUILDING_UNLOCKED },
-    {{ SCENE_DOG_LADY_HOUSE, 447 },              RAND_INF_RICHARDS_HOUSE_UNLOCKED },
-    {{ SCENE_BACK_ALLEY_NIGHT, 1471 },           RAND_INF_ALLEY_HOUSE_UNLOCKED },
-    {{ SCENE_KAKARIKO_CENTER_GUEST_HOUSE, 447 }, RAND_INF_BOSS_HOUSE_UNLOCKED },
-    {{ SCENE_POTION_SHOP_GRANNY, 447 },          RAND_INF_GRANNYS_POTION_SHOP_UNLOCKED },
-    {{ SCENE_HOUSE_OF_SKULLTULA, 447 },          RAND_INF_SKULLTULA_HOUSE_UNLOCKED },
-    {{ SCENE_IMPAS_HOUSE, 447 },                 RAND_INF_IMPAS_HOUSE_UNLOCKED },
-    {{ SCENE_WINDMILL_AND_DAMPES_GRAVE, 2495 },  RAND_INF_WINDMILL_UNLOCKED },
-    {{ SCENE_SHOOTING_GALLERY, 447 },            RAND_INF_KAK_SHOOTING_GALLERY_UNLOCKED },
-    {{ SCENE_GRAVEKEEPERS_HUT, 447 },            RAND_INF_DAMPES_HUT_UNLOCKED },
-    {{ SCENE_LON_LON_BUILDINGS, 1471 },          RAND_INF_TALONS_HOUSE_UNLOCKED },
-    {{ SCENE_STABLE, 447 },                      RAND_INF_STABLES_UNLOCKED },
-    {{ SCENE_LON_LON_BUILDINGS, 447 },           RAND_INF_BACK_TOWER_UNLOCKED },
-    {{ SCENE_LAKESIDE_LABORATORY, 447 },         RAND_INF_HYLIA_LAB_UNLOCKED },
-    {{ SCENE_FISHING_POND, 447 },                RAND_INF_FISHING_HOLE_UNLOCKED },
-    */
 };
 
 static void OnDoorInit(void* actorRef) {

@@ -68,10 +68,7 @@ void RegionTable_Init_LakeHylia() {
         LOCATION(RC_LH_LAB_FRONT_RUPEE, logic->CanUse(RG_IRON_BOOTS) || logic->HasItem(RG_GOLDEN_SCALE)),
         LOCATION(RC_LH_LAB_LEFT_RUPEE,  logic->CanUse(RG_IRON_BOOTS) || logic->HasItem(RG_GOLDEN_SCALE)),
         LOCATION(RC_LH_LAB_RIGHT_RUPEE, logic->CanUse(RG_IRON_BOOTS) || logic->HasItem(RG_GOLDEN_SCALE)),
-    }, {
-        //Exits
-        Entrance(RR_LAKE_HYLIA, []{return logic->CanOpenOverworldDoor(RG_HYLIA_LAB_KEY);}),
-    });
+    }, {});
 
     // TODO: should some of these helpers be done via events instead?
     areaTable[RR_LH_FISHING_POND] = Region("LH Fishing Hole", "LH Fishing Hole", {}, DAY_NIGHT_CYCLE, {}, {
@@ -113,10 +110,7 @@ void RegionTable_Init_LakeHylia() {
         LOCATION(RC_LH_ADULT_LOACH,    logic->CanUse(RG_FISHING_POLE) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
         LOCATION(RC_LH_HYRULE_LOACH,   logic->CanUse(RG_FISHING_POLE)),
         LOCATION(RC_FISHING_POLE_HINT, true),
-    }, {
-        //Exits
-        Entrance(RR_LH_FISHING_ISLAND, []{return logic->CanOpenOverworldDoor(RG_FISHING_HOLE_KEY);}),
-    });
+    }, {});
 
     areaTable[RR_LH_GROTTO] = Region("LH Grotto", "LH Grotto", {}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations

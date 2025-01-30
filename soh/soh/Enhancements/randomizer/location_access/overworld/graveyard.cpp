@@ -101,10 +101,7 @@ void RegionTable_Init_Graveyard() {
     areaTable[RR_GRAVEYARD_DAMPES_HOUSE] = Region("Graveyard Dampes House", "Graveyard Dampes House", {}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
         LOCATION(RC_DAMPE_HINT, logic->IsAdult),
-    }, {
-        //Exits
-        Entrance(RR_THE_GRAVEYARD, []{return logic->CanOpenOverworldDoor(RG_DAMPES_HUT_KEY);}),
-    });
+    }, {});
 
     areaTable[RR_GRAVEYARD_WARP_PAD_REGION] = Region("Graveyard Warp Pad Region", "Graveyard", {RA_THE_GRAVEYARD}, NO_DAY_NIGHT_CYCLE, {
         //Events
