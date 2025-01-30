@@ -6,11 +6,7 @@
 #include <thread>
 
 #ifdef _WIN32
-#undef u32
-#undef u64
-#include <libwebsockets.h>
-#define u32 uint32_t
-#define u64 uint64_t
+#include "libwebsockets_windows.h"
 #else
 #include <libwebsockets.h>
 #endif
