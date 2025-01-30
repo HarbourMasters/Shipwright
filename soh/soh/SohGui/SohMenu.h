@@ -5,7 +5,7 @@
 #include "UIWidgets2.hpp"
 #include "Menu.h"
 #include "graphic/Fast3D/gfx_rendering_api.h"
-#include "soh/Notification/Notification.h"
+#include "soh/cvar_prefixes.h"
 
 namespace SohGui {
 
@@ -32,12 +32,6 @@ static const std::unordered_map<int32_t, const char*> textureFilteringMap = {
     { FILTER_NONE, "None" },
 };
 
-//static const std::unordered_map<int32_t, const char*> debugSaveOptions = {
-//    { DEBUG_SAVE_INFO_COMPLETE, "100\% save" },
-//    { DEBUG_SAVE_INFO_VANILLA_DEBUG, "Vanilla debug save" },
-//    { DEBUG_SAVE_INFO_NONE, "Empty save" },
-//};
-
 static const std::unordered_map<int32_t, const char*> logLevels = {
     { DEBUG_LOG_TRACE, "Trace" }, { DEBUG_LOG_DEBUG, "Debug" }, { DEBUG_LOG_INFO, "Info" },
     { DEBUG_LOG_WARN, "Warn" },   { DEBUG_LOG_ERROR, "Error" }, { DEBUG_LOG_CRITICAL, "Critical" },
@@ -46,10 +40,6 @@ static const std::unordered_map<int32_t, const char*> logLevels = {
 
 static const std::unordered_map<int32_t, const char*> notificationPosition = {
     { 0, "Top Left" }, { 1, "Top Right" }, { 2, "Bottom Left" }, { 3, "Bottom Right" }, { 4, "Hidden" },
-};
-
-static const std::unordered_map<int32_t, const char*> damageMultiplierOptions = {
-    { 0, "1x" }, { 1, "2x" }, { 2, "4x" }, { 3, "8x" }, { 4, "16x" }, { 10, "1 Hit KO" },
 };
 
 class SohMenu : public Ship::Menu {

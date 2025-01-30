@@ -1,6 +1,5 @@
 #include "ShipUtils.h"
 #include <libultraship/libultraship.h>
-//#include "assets/2s2h_assets.h"
 
 extern "C" {
 #include "z64.h"

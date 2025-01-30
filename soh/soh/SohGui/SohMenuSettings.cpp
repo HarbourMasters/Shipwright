@@ -1,6 +1,12 @@
 #include "SohMenu.h"
 #include "soh/Notification/Notification.h"
 
+
+extern "C" {
+#include "include/z64audio.h"
+#include "variables.h"
+}
+
 namespace SohGui {
 
 extern std::shared_ptr<SohMenu> mSohMenu;
@@ -14,7 +20,7 @@ void SohMenu::AddMenuSettings() {
     AddSidebarEntry("Settings", "General", 3);
     WidgetPath path = { "Settings", "General", SECTION_COLUMN_1 };
     AddWidget(path, "Menu Theme", WIDGET_CVAR_COMBOBOX)
-        .CVar("gSettings.Menu.Theme")
+        .CVar(CVAR_SETTING("Menu.Theme"))
         .Options(ComboboxOptions()
                      .Tooltip("Changes the Theme of the Menu Widgets.")
                      .ComboMap(menuThemeOptions)
@@ -27,17 +33,17 @@ void SohMenu::AddMenuSettings() {
             "This will disable game inputs while the menu is visible.\n\nD-pad to move between "
             "items, A to select, B to move up in scope."));
     AddWidget(path, "Cursor Always Visible", WIDGET_CVAR_CHECKBOX)
-        .CVar("gSettings.CursorVisibility")
+        .CVar(CVAR_SETTING("CursorVisibility"))
         .Callback([](WidgetInfo& info) {
             Ship::Context::GetInstance()->GetWindow()->SetForceCursorVisibility(
-                CVarGetInteger("gSettings.CursorVisibility", 0));
+                CVarGetInteger(CVAR_SETTING("CursorVisibility"), 0));
         })
         .Options(CheckboxOptions().Tooltip("Makes the cursor always visible, even in full screen."));
 #endif
     AddWidget(path, "Search In Sidebar", WIDGET_CVAR_CHECKBOX)
-        .CVar("gSettings.Menu.SidebarSearch")
+        .CVar(CVAR_SETTING("Menu.SidebarSearch"))
         .Callback([](WidgetInfo& info) {
-            if (CVarGetInteger("gSettings.Menu.SidebarSearch", 0)) {
+            if (CVarGetInteger(CVAR_SETTING("Menu.SidebarSearch"), 0)) {
                 mSohMenu->InsertSidebarSearch();
             } else {
                 mSohMenu->RemoveSidebarSearch();
@@ -46,11 +52,11 @@ void SohMenu::AddMenuSettings() {
         .Options(CheckboxOptions().Tooltip(
             "Displays the Search menu as a sidebar entry in Settings instead of in the header."));
     AddWidget(path, "Search Input Autofocus", WIDGET_CVAR_CHECKBOX)
-        .CVar("gSettings.Menu.SearchAutofocus")
+        .CVar(CVAR_SETTING("Menu.SearchAutofocus"))
         .Options(CheckboxOptions().Tooltip(
             "Search input box gets autofocus when visible. Does not affect using other widgets."));
     AddWidget(path, "Alt Assets Tab hotkey", WIDGET_CVAR_CHECKBOX)
-        .CVar("gEnhancements.Mods.AlternateAssetsHotkey")
+        .CVar(CVAR_SETTING("Mods.AlternateAssetsHotkey"))
         .Options(
             CheckboxOptions().Tooltip("Allows pressing the Tab key to toggle alternate assets").DefaultValue(true));
     AddWidget(path, "Open App Files Folder", WIDGET_BUTTON)
@@ -63,57 +69,59 @@ void SohMenu::AddMenuSettings() {
     // Audio Settings
     path.sidebarName = "Audio";
     AddSidebarEntry("Settings", "Audio", 3);
-    AddWidget(path, "Master Volume: %.0f%%", WIDGET_CVAR_SLIDER_FLOAT)
-        .CVar("gSettings.Audio.MasterVolume")
-        .Options(FloatSliderOptions()
-                     .Tooltip("Adjust the overall sound volume.")
-                     .ShowButtons(false)
-                     .Format("")
-                     .IsPercentage());
-    /*AddWidget(path, "Main Music Volume: %.0f%%", WIDGET_CVAR_SLIDER_FLOAT)
-        .CVar("gSettings.Audio.MainMusicVolume")
+
+    AddWidget(path, "Master Volume: %d %%", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_SETTING("Volume.Master"))
+        .Options(IntSliderOptions()
+                     .Min(0)
+                     .Max(100)
+                     .DefaultValue(100)
+                     .ShowButtons(true)
+                     .Format(""));
+    AddWidget(path, "Main Music Volume: %d %%", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_SETTING("Volume.MainMusic"))
+        .Options(IntSliderOptions()
+                     .Min(0)
+                     .Max(100)
+                     .DefaultValue(100)
+                     .ShowButtons(true)
+                     .Format(""))
         .Callback([](WidgetInfo& info) {
-            AudioSeq_SetPortVolumeScale(SEQ_PLAYER_BGM_MAIN, CVarGetFloat("gSettings.Audio.MainMusicVolume", 1.0f));
-        })
-        .Options(FloatSliderOptions()
-                     .Tooltip("Adjust the background music volume.")
-                     .ShowButtons(false)
-                     .Format("")
-                     .IsPercentage());
-    AddWidget(path, "Sub Music Volume: %.0f%%", WIDGET_CVAR_SLIDER_FLOAT)
-        .CVar("gSettings.Audio.SubMusicVolume")
+            Audio_SetGameVolume(SEQ_PLAYER_BGM_MAIN, ((float)CVarGetInteger(CVAR_SETTING("Volume.MainMusic"), 100) / 100.0f));
+        });
+    AddWidget(path, "Sub Music Volume: %d %%", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_SETTING("Volume.SubMusic"))
+        .Options(IntSliderOptions()
+                     .Min(0)
+                     .Max(100)
+                     .DefaultValue(100)
+                     .ShowButtons(true)
+                     .Format(""))
         .Callback([](WidgetInfo& info) {
-            AudioSeq_SetPortVolumeScale(SEQ_PLAYER_BGM_SUB, CVarGetFloat("gSettings.Audio.SubMusicVolume", 1.0f));
-        })
-        .Options(
-            FloatSliderOptions().Tooltip("Adjust the sub music volume.").ShowButtons(false).Format("").IsPercentage());
-    AddWidget(path, "Sound Effects Volume: %.0f%%", WIDGET_CVAR_SLIDER_FLOAT)
-        .CVar("gSettings.Audio.SoundEffectsVolume")
+            Audio_SetGameVolume(SEQ_PLAYER_BGM_SUB, ((float)CVarGetInteger(CVAR_SETTING("Volume.SubMusic"), 100) / 100.0f));
+        });
+    AddWidget(path, "Fanfare Volume: %d %%", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_SETTING("Volume.Fanfare"))
+        .Options(IntSliderOptions()
+                     .Min(0)
+                     .Max(100)
+                     .DefaultValue(100)
+                     .ShowButtons(true)
+                     .Format(""))
         .Callback([](WidgetInfo& info) {
-            AudioSeq_SetPortVolumeScale(SEQ_PLAYER_SFX, CVarGetFloat("gSettings.Audio.SoundEffectsVolume", 1.0f));
-        })
-        .Options(FloatSliderOptions()
-                     .Tooltip("Adjust the sound effects volume.")
-                     .ShowButtons(false)
-                     .Format("")
-                     .IsPercentage());
-    AddWidget(path, "Fanfare Volume: %.0f%%", WIDGET_CVAR_SLIDER_FLOAT)
-        .CVar("gSettings.Audio.FanfareVolume")
+            Audio_SetGameVolume(SEQ_PLAYER_FANFARE, ((float)CVarGetInteger(CVAR_SETTING("Volume.Fanfare"), 100) / 100.0f));
+        });
+    AddWidget(path, "Sound Effects Volume: %d %%", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_SETTING("Volume.SFX"))
+        .Options(IntSliderOptions()
+                     .Min(0)
+                     .Max(100)
+                     .DefaultValue(100)
+                     .ShowButtons(true)
+                     .Format(""))
         .Callback([](WidgetInfo& info) {
-            AudioSeq_SetPortVolumeScale(SEQ_PLAYER_FANFARE, CVarGetFloat("gSettings.Audio.FanfareVolume", 1.0f));
-        })
-        .Options(
-            FloatSliderOptions().Tooltip("Adjust the fanfare volume.").ShowButtons(false).Format("").IsPercentage());
-    AddWidget(path, "Ambience Volume: %.0f%%", WIDGET_CVAR_SLIDER_FLOAT)
-        .CVar("gSettings.Audio.AmbienceVolume")
-        .Callback([](WidgetInfo& info) {
-            AudioSeq_SetPortVolumeScale(SEQ_PLAYER_AMBIENCE, CVarGetFloat("gSettings.Audio.AmbienceVolume", 1.0f));
-        })
-        .Options(FloatSliderOptions()
-                     .Tooltip("Adjust the ambient sound volume.")
-                     .ShowButtons(false)
-                     .Format("")
-                     .IsPercentage());*/
+            Audio_SetGameVolume(SEQ_PLAYER_SFX, ((float)CVarGetInteger(CVAR_SETTING("Volume.SFX"), 100) / 100.0f));
+        });
     AddWidget(path, "Audio API", WIDGET_AUDIO_BACKEND);
 
     // Graphics Settings

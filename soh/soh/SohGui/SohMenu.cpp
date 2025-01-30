@@ -7,7 +7,6 @@
 #include "StringHelper.h"
 #include <spdlog/fmt/fmt.h>
 #include <tuple>
-//#include "ResolutionEditor.h"
 
 extern "C" {
 #include "z64.h"
@@ -20,12 +19,6 @@ extern void Warp();
 
 namespace SohGui {
 extern std::shared_ptr<SohMenu> mSohMenu;
-void FreeLookPitchMinMax() {
-    f32 maxY = CVarGetFloat("gEnhancements.Camera.FreeLook.MaxPitch", 72.0f);
-    f32 minY = CVarGetFloat("gEnhancements.Camera.FreeLook.MinPitch", -49.0f);
-    CVarSetFloat("gEnhancements.Camera.FreeLook.MaxPitch", std::max(maxY, minY));
-    CVarSetFloat("gEnhancements.Camera.FreeLook.MinPitch", std::min(maxY, minY));
-}
 
 using namespace UIWidgets2;
 
@@ -109,29 +102,6 @@ void SohMenu::InitElement() {
     }
 
     disabledMap = {
-        { DISABLE_FOR_GYRO_OFF,
-          { [](disabledInfo& info) -> bool {
-               return !CVarGetInteger("gEnhancements.Camera.FirstPerson.GyroEnabled", 0);
-           },
-            "Gyro Aiming is Disabled" } },
-        { DISABLE_FOR_GYRO_ON,
-          { [](disabledInfo& info) -> bool {
-               return CVarGetInteger("gEnhancements.Camera.FirstPerson.GyroEnabled", 0);
-           },
-            "Gyro Aiming is Enabled" } },
-        { DISABLE_FOR_RIGHT_STICK_OFF,
-          { [](disabledInfo& info) -> bool {
-               return !CVarGetInteger("gEnhancements.Camera.FirstPerson.RightStickEnabled", 0);
-           },
-            "Right Stick Aiming is Disabled" } },
-        { DISABLE_FOR_AUTO_SAVE_OFF,
-          { [](disabledInfo& info) -> bool { return !CVarGetInteger("gEnhancements.Saving.Autosave", 0); },
-            "AutoSave is Disabled" } },
-        { DISABLE_FOR_NULL_PLAY_STATE,
-          { [](disabledInfo& info) -> bool { return gPlayState == NULL; }, "Save Not Loaded" } },
-        { DISABLE_FOR_DEBUG_MODE_OFF,
-          { [](disabledInfo& info) -> bool { return !CVarGetInteger("gDeveloperTools.DebugEnabled", 0); },
-            "Debug Mode is Disabled" } },
         { DISABLE_FOR_NO_VSYNC,
           { [](disabledInfo& info) -> bool {
                return !Ship::Context::GetInstance()->GetWindow()->CanDisableVerticalSync();
@@ -160,14 +130,8 @@ void SohMenu::InitElement() {
            },
             "Not Available on DirectX" } },
         { DISABLE_FOR_MATCH_REFRESH_RATE_ON,
-          { [](disabledInfo& info) -> bool { return CVarGetInteger("gMatchRefreshRate", 0); },
+          { [](disabledInfo& info) -> bool { return CVarGetInteger(CVAR_SETTING("gMatchRefreshRate"), 0); },
             "Match Refresh Rate is Enabled" } },
-        /*{ DISABLE_FOR_FRAME_ADVANCE_OFF,
-          { [](disabledInfo& info) -> bool { return !(gPlayState != nullptr && gPlayState->frameAdvCtx.enabled); },
-            "Frame Advance is Disabled" } },*/
-        { DISABLE_FOR_INTRO_SKIP_OFF,
-          { [](disabledInfo& info) -> bool { return !CVarGetInteger("gEnhancements.Cutscenes.SkipIntroSequence", 0); },
-            "Intro Skip Not Selected" } },
         { DISABLE_FOR_ADVANCED_RESOLUTION_ON,
           { [](disabledInfo& info) -> bool { return CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".Enabled", 0); },
             "Advanced Resolution Enabled" } },

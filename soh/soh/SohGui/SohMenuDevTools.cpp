@@ -13,13 +13,11 @@ void SohMenu::AddMenuDevTools() {
     AddSidebarEntry("Dev Tools", "General", 3);
     WidgetPath path = { "Dev Tools", "General", SECTION_COLUMN_1 };
 
-    AddWidget(path, "Filler1", WIDGET_TEXT);
+    AddWidget(path, "Popout Menu", WIDGET_CVAR_CHECKBOX)
+        .CVar("gSettings.Menu.Popout")
+        .Options(CheckboxOptions().Tooltip("Changes the menu display from overlay to windowed."));
 
-    // AddWidget(path, "Popout Menu", WIDGET_CVAR_CHECKBOX)
-    //     .CVar("gSettings.Menu.Popout")
-    //     .Options(CheckboxOptions().Tooltip("Changes the menu display from overlay to windowed."));
-    //
-    //// dev tools windows
+    // dev tools windows
     // path = { "Developer Tools", "Collision Viewer", SECTION_COLUMN_1 };
     // AddSidebarEntry("Developer Tools", "Collision Viewer", 1);
     // AddWidget(path, "Popout Collision Viewer", WIDGET_WINDOW_BUTTON)

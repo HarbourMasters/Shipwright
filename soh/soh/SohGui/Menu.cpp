@@ -538,10 +538,10 @@ void Menu::DrawElement() {
     ImVec2 pos = window->DC.CursorPos;
     float centerX = pos.x + windowWidth / 2 - (style.ItemSpacing.x * (menuEntries.size() + 1));
     std::vector<ImVec2> headerSizes;
-    float headerWidth = style.ItemSpacing.x;
+    float headerWidth = style.ItemSpacing.x + 20;
     bool headerSearch = !CVarGetInteger("gSettings.Menu.SidebarSearch", 0);
     if (headerSearch) {
-        headerWidth += 220.0f + style.ItemSpacing.x + style.FramePadding.x;
+        headerWidth += 200.0f + style.ItemSpacing.x + style.FramePadding.x;
     }
     for (auto& label : menuOrder) {
         ImVec2 size = ImGui::CalcTextSize(label.c_str());
