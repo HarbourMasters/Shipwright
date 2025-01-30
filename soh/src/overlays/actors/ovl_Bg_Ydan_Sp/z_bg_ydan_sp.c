@@ -298,7 +298,7 @@ void BgYdanSp_FloorWebIdle(BgYdanSp* this, PlayState* play) {
             if (this->dyna.actor.xzDistToPlayer < 80.0f) {
                 this->unk_16C = 200.0f;
                 this->dyna.actor.room = -1;
-                this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+                this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
                 this->timer = 40;
                 Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_WEB_BROKEN);
                 this->actionFunc = BgYdanSp_FloorWebBreaking;

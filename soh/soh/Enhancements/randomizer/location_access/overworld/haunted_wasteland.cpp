@@ -14,11 +14,11 @@ void RegionTable_Init_HauntedWasteland() {
         //Events
         EventAccess(&logic->FairyPot,       []{return true;}),
         EventAccess(&logic->NutPot,         []{return true;}),
-        EventAccess(&logic->CarpetMerchant, []{return logic->HasItem(RG_ADULT_WALLET) && CanBuyAnother(RC_WASTELAND_BOMBCHU_SALESMAN) && (logic->CanJumpslashExceptHammer() || logic->CanUse(RG_HOVER_BOOTS));}),
+        EventAccess(&logic->CarpetMerchant, []{return logic->HasItem(RG_ADULT_WALLET) && CanBuyAnother(RC_WASTELAND_BOMBCHU_SALESMAN) && (logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS));}),
     }, {
         //Locations
         LOCATION(RC_WASTELAND_CHEST,            logic->HasFireSource()),
-        LOCATION(RC_WASTELAND_BOMBCHU_SALESMAN, logic->CanJumpslashExceptHammer() || logic->CanUse(RG_HOVER_BOOTS)),
+        LOCATION(RC_WASTELAND_BOMBCHU_SALESMAN, logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS)),
         LOCATION(RC_WASTELAND_GS,               logic->HookshotOrBoomerang()),
         LOCATION(RC_WASTELAND_NEAR_GS_POT_1,    logic->CanBreakPots()),
         LOCATION(RC_WASTELAND_NEAR_GS_POT_2,    logic->CanBreakPots()),

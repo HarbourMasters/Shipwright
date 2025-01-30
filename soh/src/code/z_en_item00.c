@@ -1197,24 +1197,6 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
     switch (giEntry.drawModIndex) {
         case MOD_NONE:
             switch (giEntry.drawItemId) {
-                case ITEM_SONG_MINUET:
-                    colorIndex = PARTICLE_BRIGHT_GREEN;
-                    break;
-                case ITEM_SONG_BOLERO:
-                    colorIndex = PARTICLE_RED;
-                    break;
-                case ITEM_SONG_SERENADE:
-                    colorIndex = PARTICLE_CYAN;
-                    break;
-                case ITEM_SONG_REQUIEM:
-                    colorIndex = PARTICLE_ORANGE;
-                    break;
-                case ITEM_SONG_NOCTURNE:
-                    colorIndex = PARTICLE_VIOLET;
-                    break;
-                case ITEM_SONG_PRELUDE:
-                    colorIndex = PARTICLE_YELLOW;
-                    break;
                 case ITEM_STICK_UPGRADE_20:
                 case ITEM_STICK_UPGRADE_30:
                     colorIndex = PARTICLE_GREEN;
@@ -1234,6 +1216,7 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
             break;
         case MOD_RANDOMIZER:
             switch (giEntry.drawItemId) {
+                case RG_MINUET_OF_FOREST:
                 case RG_MAGIC_SINGLE:
                 case RG_MAGIC_DOUBLE:
                 case RG_MAGIC_BEAN_PACK:
@@ -1242,19 +1225,30 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
                 case RG_GREG_RUPEE:
                     colorIndex = PARTICLE_BRIGHT_GREEN;
                     break;
+                case RG_BOLERO_OF_FIRE:
+                    colorIndex = PARTICLE_RED;
+                    break;
+                case RG_SERENADE_OF_WATER:
                 case RG_BOTTLE_WITH_FISH:
                     colorIndex = PARTICLE_CYAN;
                     break;
+                case RG_REQUIEM_OF_SPIRIT:
+                    colorIndex = PARTICLE_ORANGE;
+                    break;
+                case RG_NOCTURNE_OF_SHADOW:
                 case RG_BOTTLE_WITH_POE:
                     colorIndex = PARTICLE_VIOLET;
                     break;
+                case RG_PRELUDE_OF_LIGHT:
                 case RG_BOTTLE_WITH_BIG_POE:
                     colorIndex = PARTICLE_YELLOW;
                     break;
                 case RG_DEKU_STICK_BAG:
+                case RG_STICK_UPGRADE_INF:
                     colorIndex = PARTICLE_GREEN;
                     break;
                 case RG_DEKU_NUT_BAG:
+                case RG_NUT_UPGRADE_INF:
                     colorIndex = PARTICLE_GOLD;
                     break;
                 case RG_DOUBLE_DEFENSE:
@@ -1556,7 +1550,7 @@ s16 func_8001F404(s16 dropId) {
     if ((CVarGetInteger(CVAR_ENHANCEMENT("EnableBombchuDrops"), 0) || 
         (IS_RANDO && Randomizer_GetSettingValue(RSK_ENABLE_BOMBCHU_DROPS) == 1)) &&
         (dropId == ITEM00_BOMBS_A || dropId == ITEM00_BOMBS_B || dropId == ITEM00_BOMBS_SPECIAL) &&
-        (!IS_RANDO || Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC) || INV_CONTENT(ITEM_BOMB) != ITEM_NONE)) {
+        (!IS_RANDO || Randomizer_GetSettingValue(RSK_BOMBCHU_BAG) || INV_CONTENT(ITEM_BOMB) != ITEM_NONE)) {
         dropId = EnItem00_ConvertBombDropToBombchu(dropId);
     }
     // #endregion
@@ -1618,7 +1612,7 @@ EnItem00* Item_DropCollectible(PlayState* play, Vec3f* spawnPos, s16 params) {
                     (spawnedActor->actor.params != ITEM00_HEART_CONTAINER)) {
                     spawnedActor->actor.room = -1;
                 }
-                spawnedActor->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+                spawnedActor->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
             }
         }
     }
@@ -1652,7 +1646,7 @@ EnItem00* Item_DropCollectible2(PlayState* play, Vec3f* spawnPos, s16 params) {
                 spawnedActor->actor.speedXZ = 0.0f;
                 spawnedActor->actor.gravity = param4000 ? 0.0f : -0.9f;
                 spawnedActor->actor.world.rot.y = Rand_CenteredFloat(65536.0f);
-                spawnedActor->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+                spawnedActor->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
             }
         }
     }
@@ -1766,7 +1760,7 @@ void Item_DropCollectibleRandom(PlayState* play, Actor* fromActor, Vec3f* spawnP
                         spawnedActor->actor.world.rot.y = Rand_ZeroOne() * 40000.0f;
                         Actor_SetScale(&spawnedActor->actor, 0.0f);
                         EnItem00_SetupAction(spawnedActor, func_8001E304);
-                        spawnedActor->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+                        spawnedActor->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
                         if ((spawnedActor->actor.params != ITEM00_SMALL_KEY) &&
                             (spawnedActor->actor.params != ITEM00_HEART_PIECE) &&
                             (spawnedActor->actor.params != ITEM00_HEART_CONTAINER)) {

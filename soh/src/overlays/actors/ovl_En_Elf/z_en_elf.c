@@ -10,7 +10,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED | ACTOR_FLAG_UPDATE_DURING_OCARINA)
 
 #define FAIRY_FLAG_TIMED (1 << 8)
 #define FAIRY_FLAG_BIG (1 << 9)
@@ -1387,7 +1387,7 @@ void func_80A053F0(Actor* thisx, PlayState* play) {
         }
     } else if (player->naviTextId < 0) {
         // trigger dialog instantly for negative message IDs
-        thisx->flags |= ACTOR_FLAG_WILL_TALK;
+        thisx->flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
     }
 
     if (Actor_ProcessTalkRequest(thisx, play)) {
@@ -1405,10 +1405,10 @@ void func_80A053F0(Actor* thisx, PlayState* play) {
         func_80A01C38(this, 3);
 
         if (this->elfMsg != NULL) {
-            this->elfMsg->actor.flags |= ACTOR_FLAG_PLAYER_TALKED_TO;
+            this->elfMsg->actor.flags |= ACTOR_FLAG_TALK;
         }
 
-        thisx->flags &= ~ACTOR_FLAG_WILL_TALK;
+        thisx->flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
     } else {
         this->actionFunc(this, play);
         thisx->shape.rot.y = this->unk_2BC;

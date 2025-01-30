@@ -10,7 +10,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include <assert.h>
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_DRAGGED_BY_HOOKSHOT)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED | ACTOR_FLAG_HOOKSHOT_PULLS_PLAYER)
 
 #define RR_MESSAGE_SHIELD (1 << 0)
 #define RR_MESSAGE_TUNIC (1 << 1)
@@ -255,7 +255,7 @@ void EnRr_SetupGrabPlayer(EnRr* this, Player* player) {
     s32 i;
 
     this->grabTimer = 100;
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->ocTimer = 8;
     this->hasPlayer = true;
     this->reachState = 0;
@@ -290,7 +290,7 @@ void EnRr_SetupReleasePlayer(EnRr* this, PlayState* play) {
     u8 shield;
     u8 tunic;
 
-    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+    this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
     this->hasPlayer = false;
     this->ocTimer = 110;
     this->segMoveRate = 0.0f;
@@ -382,7 +382,7 @@ void EnRr_SetupDeath(EnRr* this) {
     }
     this->actionFunc = EnRr_Death;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_LIKE_DEAD);
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 

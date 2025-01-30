@@ -9,7 +9,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void EnSt_Init(Actor* thisx, PlayState* play);
 void EnSt_Destroy(Actor* thisx, PlayState* play);
@@ -462,7 +462,7 @@ s32 EnSt_CheckHitBackside(EnSt* this, PlayState* play) {
         return false;
     }
     Enemy_StartFinishingBlow(play, &this->actor);
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->groundBounces = 3;
     this->deathTimer = 20;
     this->actor.gravity = -1.0f;
@@ -788,7 +788,7 @@ void EnSt_Init(Actor* thisx, PlayState* play) {
     this->blureIdx = EnSt_CreateBlureEffect(play);
     EnSt_InitColliders(this, play);
     if (thisx->params == 2) {
-        this->actor.flags |= ACTOR_FLAG_LENS;
+        this->actor.flags |= ACTOR_FLAG_REACT_TO_LENS;
     }
     if (this->actor.params == 1) {
         this->actor.naviEnemyId = 0x05;
@@ -796,8 +796,8 @@ void EnSt_Init(Actor* thisx, PlayState* play) {
         this->actor.naviEnemyId = 0x04;
     }
     EnSt_CheckCeilingPos(this, play);
-    this->actor.flags |= ACTOR_FLAG_ARROW_DRAGGABLE;
-    this->actor.flags |= ACTOR_FLAG_PLAY_HIT_SFX;
+    this->actor.flags |= ACTOR_FLAG_CAN_ATTACH_TO_ARROW;
+    this->actor.flags |= ACTOR_FLAG_SFX_FOR_PLAYER_BODY_HIT;
     EnSt_SetColliderScale(this);
     this->actor.gravity = 0.0f;
     this->initalYaw = this->actor.world.rot.y;
@@ -1013,7 +1013,7 @@ void EnSt_Update(Actor* thisx, PlayState* play) {
     s32 pad;
     Color_RGBA8 color = { 0, 0, 0, 0 };
 
-    if (this->actor.flags & ACTOR_FLAG_DRAGGED_BY_ARROW) {
+    if (this->actor.flags & ACTOR_FLAG_ATTACHED_TO_ARROW) {
         SkelAnime_Update(&this->skelAnime);
     } else if (!EnSt_CheckColliders(this, play)) {
         // no collision has been detected.

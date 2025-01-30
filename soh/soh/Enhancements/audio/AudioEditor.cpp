@@ -11,7 +11,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
 #include <utils/StringHelper.h>
-#include "soh/UIWidgets.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include "AudioCollection.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 

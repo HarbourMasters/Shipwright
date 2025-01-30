@@ -6,7 +6,7 @@
 
 #include "z_item_inbox.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
 
 void ItemInbox_Init(Actor* thisx, PlayState* play);
 void ItemInbox_Destroy(Actor* thisx, PlayState* play);

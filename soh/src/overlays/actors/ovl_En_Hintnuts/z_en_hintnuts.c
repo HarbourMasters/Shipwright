@@ -9,7 +9,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE)
 
 void EnHintnuts_Init(Actor* thisx, PlayState* play);
 void EnHintnuts_Destroy(Actor* thisx, PlayState* play);
@@ -78,7 +78,7 @@ void EnHintnuts_Init(Actor* thisx, PlayState* play) {
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
     if (this->actor.params == 0xA) {
-        this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE);
+        this->actor.flags &= ~(ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE);
     } else {
         ActorShape_Init(&this->actor.shape, 0x0, ActorShadow_DrawCircle, 35.0f);
         SkelAnime_Init(play, &this->skelAnime, &gHintNutsSkel, &gHintNutsStandAnim, this->jointTable,
@@ -115,8 +115,8 @@ void EnHintnuts_Destroy(Actor* thisx, PlayState* play) {
 void EnHintnuts_HitByScrubProjectile1(EnHintnuts* this, PlayState* play) {
     if (this->actor.textId != 0 && this->actor.category == ACTORCAT_ENEMY &&
         ((this->actor.params == 0) || (sPuzzleCounter == 2))) {
-        this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE);
-        this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
+        this->actor.flags &= ~(ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE);
+        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY;
         Actor_ChangeCategory(play, &play->actorCtx, &this->actor, ACTORCAT_BG);
     }
 }
@@ -175,7 +175,7 @@ void EnHintnuts_HitByScrubProjectile2(EnHintnuts* this) {
             }
             sPuzzleCounter--;
         }
-        this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+        this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
         this->actionFunc = EnHintnuts_BeginFreeze;
     } else {
         this->actionFunc = EnHintnuts_BeginRun;
@@ -200,7 +200,7 @@ void EnHintnuts_SetupLeave(EnHintnuts* this, PlayState* play) {
     this->animFlagAndTimer = 100;
     this->actor.world.rot.y = this->actor.shape.rot.y;
     this->collider.base.ocFlags1 &= ~OC1_ON;
-    this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+    this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_NUTS_DAMAGE);
     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ITEM00, this->actor.world.pos.x, this->actor.world.pos.y,
                 this->actor.world.pos.z, 0x0, 0x0, 0x0, 0x3, true); // recovery heart
@@ -209,7 +209,7 @@ void EnHintnuts_SetupLeave(EnHintnuts* this, PlayState* play) {
 
 void EnHintnuts_SetupFreeze(EnHintnuts* this) {
     Animation_PlayLoop(&this->skelAnime, &gHintNutsFreezeAnim);
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     Actor_SetColorFilter(&this->actor, 0, 0xFF, 0, 100);
     this->actor.colorFilterTimer = 1;
     this->animFlagAndTimer = 0;
@@ -329,9 +329,9 @@ void EnHintnuts_BeginFreeze(EnHintnuts* this, PlayState* play) {
 void EnHintnuts_CheckProximity(EnHintnuts* this, PlayState* play) {
     if (this->actor.category != ACTORCAT_ENEMY) {
         if ((this->collider.base.ocFlags1 & OC1_HIT) || this->actor.isTargeted) {
-            this->actor.flags |= ACTOR_FLAG_WILL_TALK;
+            this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         } else {
-            this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+            this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         }
         if (this->actor.xzDistToPlayer < 130.0f) {
             this->actor.textId = this->textIdCopy;
@@ -382,8 +382,8 @@ void EnHintnuts_Run(EnHintnuts* this, PlayState* play) {
                fabsf(this->actor.world.pos.y - this->actor.home.pos.y) < 2.0f) {
         this->actor.speedXZ = 0.0f;
         if (this->actor.category == ACTORCAT_BG) {
-            this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_WILL_TALK);
-            this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE;
+            this->actor.flags &= ~(ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED);
+            this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE;
             Actor_ChangeCategory(play, &play->actorCtx, &this->actor, ACTORCAT_ENEMY);
         }
         EnHintnuts_SetupBurrow(this);
@@ -455,8 +455,8 @@ void EnHintnuts_Freeze(EnHintnuts* this, PlayState* play) {
         if (this->animFlagAndTimer == 1) {
             Actor_Kill(&this->actor);
         } else {
-            this->actor.flags |= ACTOR_FLAG_TARGETABLE;
-            this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
+            this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
+            this->actor.flags &= ~ACTOR_FLAG_UPDATE_CULLING_DISABLED;
             this->actor.colChkInfo.health = sColChkInfoInit.health;
             this->actor.colorFilterTimer = 0;
             EnHintnuts_SetupWait(this);

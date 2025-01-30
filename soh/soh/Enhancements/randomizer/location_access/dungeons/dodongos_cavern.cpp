@@ -60,7 +60,7 @@ void RegionTable_Init_DodongosCavern() {
     }, {
         //Exits
         Entrance(RR_DODONGOS_CAVERN_LOBBY,               []{return true;}),
-        //Shield seems to be in logic to drop a pot on thier head as they hit you to blow up the wall
+        //Shield seems to be in logic to drop a pot on their head as they hit you to blow up the wall
         Entrance(RR_DODONGOS_CAVERN_SE_ROOM,             []{return Here(RR_DODONGOS_CAVERN_SE_CORRIDOR, []{return logic->BlastOrSmash() || logic->CanAttack() || (logic->TakeDamage() && logic->CanShield());});}),
         Entrance(RR_DODONGOS_CAVERN_NEAR_LOWER_LIZALFOS, []{return true;}),
     });

@@ -14,7 +14,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
 void EnOwl_Init(Actor* thisx, PlayState* play);
 void EnOwl_Destroy(Actor* thisx, PlayState* play);
@@ -286,7 +286,7 @@ s32 EnOwl_CheckInitTalk(EnOwl* this, PlayState* play, u16 textId, f32 targetDist
         this->actor.textId = textId;
         distCheck = (flags & 2) ? 200.0f : 1000.0f;
         if (GameInteractor_Should(VB_OWL_INTERACTION, this->actor.xzDistToPlayer < targetDist, this)) {
-            this->actor.flags |= ACTOR_FLAG_WILL_TALK;
+            this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
             func_8002F1C4(&this->actor, play, targetDist, distCheck, 0);
         }
         return false;
@@ -352,7 +352,7 @@ void func_80ACA76C(EnOwl* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
         Audio_QueueSeqCmd(0x1 << 28 | SEQ_PLAYER_FANFARE << 24 | 0xFF);
         func_80ACA62C(this, play);
-        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+        this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
     }
 }
 
@@ -368,7 +368,7 @@ void func_80ACA7E0(EnOwl* this, PlayState* play) {
             func_80ACA71C(this);
             this->actionFunc = func_80ACA690;
         }
-        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+        this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
     }
 }
 
@@ -572,7 +572,7 @@ void func_80ACB03C(EnOwl* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
         Audio_QueueSeqCmd(0x1 << 28 | SEQ_PLAYER_FANFARE << 24 | 0xFF);
         func_80ACA62C(this, play);
-        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+        this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
     }
 }
 
@@ -861,7 +861,7 @@ void func_80ACBAB8(EnOwl* this, PlayState* play) {
 }
 
 void func_80ACBC0C(EnOwl* this, PlayState* play) {
-    this->actor.flags |= ACTOR_FLAG_DRAW_WHILE_CULLED;
+    this->actor.flags |= ACTOR_FLAG_DRAW_CULLING_DISABLED;
 
     if (this->actor.xzDistToPlayer > 6000.0f && !(this->actionFlags & 0x80)) {
         Actor_Kill(&this->actor);

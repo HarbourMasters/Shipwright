@@ -10,7 +10,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_CAN_PRESS_SWITCH)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_CAN_PRESS_SWITCHES)
 
 void EnAm_Init(Actor* thisx, PlayState* play);
 void EnAm_Destroy(Actor* thisx, PlayState* play);
@@ -290,7 +290,7 @@ void EnAm_SetupStatue(EnAm* this) {
     f32 lastFrame = Animation_GetLastFrame(&gArmosRicochetAnim);
 
     Animation_Change(&this->skelAnime, &gArmosRicochetAnim, 0.0f, lastFrame, lastFrame, ANIMMODE_LOOP, 0.0f);
-    this->dyna.actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->dyna.actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->behavior = AM_BEHAVIOR_DO_NOTHING;
     this->dyna.actor.speedXZ = 0.0f;
     EnAm_SetupAction(this, EnAm_Statue);
@@ -391,7 +391,7 @@ void EnAm_Sleep(EnAm* this, PlayState* play) {
         if (this->textureBlend >= 240) {
             this->attackTimer = 200;
             this->textureBlend = 255;
-            this->dyna.actor.flags |= ACTOR_FLAG_TARGETABLE;
+            this->dyna.actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
             this->dyna.actor.shape.yOffset = 0.0f;
             EnAm_SetupLunge(this);
         } else {
@@ -412,7 +412,7 @@ void EnAm_Sleep(EnAm* this, PlayState* play) {
             this->textureBlend -= 10;
         } else {
             this->textureBlend = 0;
-            this->dyna.actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+            this->dyna.actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
 
             if (this->dyna.bgId < 0) {
                 this->unk_264 = 0;

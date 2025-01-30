@@ -20,15 +20,11 @@ void Entrance::SetCondition(ConditionFn newCondition) {
 }
 
 bool Entrance::GetConditionsMet() const {
-    auto ctx = Rando::Context::GetInstance();
-    if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC) || ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
-        return true;
-    } else if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS)) {
-        return condition_function();
-    } else if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHED)) {
-        return condition_function();
-    }
-    return false;
+  auto ctx = Rando::Context::GetInstance();
+  if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS)) {
+    return condition_function();
+  }
+  return true;
 }
 
 std::string Entrance::to_string() const {
@@ -536,10 +532,10 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
 
             // The player should be able to get back to ToT after going through time, without having collected any items
             // This is important to ensure that the player never loses access to the pedestal after going through time
-            if (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD && !RegionTable(RR_TEMPLE_OF_TIME)->Adult()) {
+            if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD) && !RegionTable(RR_TEMPLE_OF_TIME)->Adult()) {
                 SPDLOG_DEBUG("Path to Temple of Time as adult is not guaranteed\n");
                 return false;
-            } else if (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_ADULT &&
+            } else if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_ADULT) &&
                        !RegionTable(RR_TEMPLE_OF_TIME)->Child()) {
                 SPDLOG_DEBUG("Path to Temple of Time as child is not guaranteed\n");
                 return false;
@@ -1322,12 +1318,12 @@ int EntranceShuffler::ShuffleAllEntrances() {
         (ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES) ? 1 : 0) + (ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES) ? 1 : 0) +
         (ctx->GetOption(RSK_MIX_GROTTO_ENTRANCES) ? 1 : 0);
     if (totalMixedPools < 2) {
-        ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS).SetContextIndex(RO_GENERIC_OFF);
-        ctx->GetOption(RSK_MIX_DUNGEON_ENTRANCES).SetContextIndex(RO_GENERIC_OFF);
-        ctx->GetOption(RSK_MIX_BOSS_ENTRANCES).SetContextIndex(RO_GENERIC_OFF);
-        ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES).SetContextIndex(RO_GENERIC_OFF);
-        ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES).SetContextIndex(RO_GENERIC_OFF);
-        ctx->GetOption(RSK_MIX_GROTTO_ENTRANCES).SetContextIndex(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS).Set(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIX_DUNGEON_ENTRANCES).Set(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIX_BOSS_ENTRANCES).Set(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES).Set(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES).Set(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIX_GROTTO_ENTRANCES).Set(RO_GENERIC_OFF);
     }
     if (ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS)) {
         std::set<EntranceType> poolsToMix = {};

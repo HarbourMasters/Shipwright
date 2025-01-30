@@ -11,7 +11,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 typedef enum {
     /* 0x00 */ NB_CHAMBER_INIT,
@@ -1117,7 +1117,7 @@ void EnNb_CrawlspaceSpawnCheck(EnNb* this, PlayState* play) {
         } else {
             EnNb_SetCurrentAnim(this, &gNabooruStandingHandsOnHipsAnim, 0, 0.0f, 0);
             this->headTurnFlag = 1;
-            this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
+            this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY;
             this->actor.world.pos = this->finalPos;
             this->action = NB_IDLE_AFTER_TALK;
             this->drawMode = NB_DRAW_DEFAULT;
@@ -1196,7 +1196,7 @@ void EnNb_SetupIdleCrawlspace(EnNb* this, s32 animFinished) {
     if (animFinished) {
         EnNb_SetCurrentAnim(this, &gNabooruStandingHandsOnHipsAnim, 0, -8.0f, 0);
         this->headTurnFlag = 1;
-        this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
+        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY;
         this->action = NB_IDLE_CRAWLSPACE;
     }
 }
@@ -1205,7 +1205,7 @@ void func_80AB3838(EnNb* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->action = NB_IN_DIALOG;
     } else {
-        this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
+        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY;
 
         if (!Flags_GetInfTable(INFTABLE_16C)) {
             this->actor.textId = 0x601D;
@@ -1221,7 +1221,7 @@ void EnNb_SetupPathMovement(EnNb* this, PlayState* play) {
     EnNb_SetCurrentAnim(this, &gNabooruStandingToWalkingTransitionAnim, 2, -8.0f, 0);
     Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_NABOORU_IN_SPIRIT_TEMPLE);
     this->action = NB_IN_PATH;
-    this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY);
+    this->actor.flags &= ~(ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY);
 }
 
 void EnNb_SetTextIdAsChild(EnNb* this, PlayState* play) {
@@ -1241,7 +1241,7 @@ void EnNb_SetTextIdAsChild(EnNb* this, PlayState* play) {
             }
             this->action = NB_IDLE_CRAWLSPACE;
         }
-        this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY);
+        this->actor.flags &= ~(ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY);
     } else if ((Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE) && Message_ShouldAdvance(play)) {
         choiceIndex = play->msgCtx.choiceIndex;
 
@@ -1297,7 +1297,7 @@ void func_80AB3B04(EnNb* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->action = NB_ACTION_30;
     } else {
-        this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
+        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY;
         this->actor.textId = Text_GetFaceReaction(play, 0x23);
 
         if ((this->actor.textId) == 0) {
@@ -1311,7 +1311,7 @@ void func_80AB3B04(EnNb* this, PlayState* play) {
 void func_80AB3B7C(EnNb* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
         this->action = NB_IDLE_AFTER_TALK;
-        this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY);
+        this->actor.flags &= ~(ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY);
     }
 }
 

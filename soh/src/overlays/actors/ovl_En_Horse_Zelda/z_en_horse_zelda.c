@@ -7,7 +7,7 @@
 #include "z_en_horse_zelda.h"
 #include "objects/object_horse_zelda/object_horse_zelda.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void EnHorseZelda_Init(Actor* thisx, PlayState* play);
 void EnHorseZelda_Destroy(Actor* thisx, PlayState* play);

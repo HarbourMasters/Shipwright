@@ -1,5 +1,3 @@
-#pragma once
-
 #include "performanceTimer.h"
 
 void StartPerformanceTimer(TimerID timer){

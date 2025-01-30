@@ -12,7 +12,7 @@
 #include "soh/Enhancements/randomizer/ShuffleFreestanding.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ImGuiUtils.h"
+#include "soh/SohGui/ImGuiUtils.h"
 #include "soh/Notification/Notification.h"
 #include "soh/SaveManager.h"
 #include "soh/Enhancements/randomizer/ShuffleFairies.h"
@@ -69,7 +69,7 @@ extern void EnMk_Wait(EnMk* enMk, PlayState* play);
 extern void func_80ABA778(EnNiwLady* enNiwLady, PlayState* play);
 }
 
-#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetContextOptionIndex()
+#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).Get()
 
 bool LocMatchesQuest(Rando::Location loc) {
     if (loc.GetQuest() == RCQUEST_BOTH) {
@@ -273,11 +273,14 @@ void RandomizerOnPlayerUpdateForRCQueueHandler() {
 
     RandomizerCheck rc = randomizerQueuedChecks.front();
     auto loc = Rando::Context::GetInstance()->GetItemLocation(rc);
-    GetItemEntry getItemEntry = Rando::Context::GetInstance()->GetFinalGIEntry(rc, true, (GetItemID)Rando::StaticData::GetLocation(rc)->GetVanillaItem());
+    RandomizerGet vanillaRandomizerGet = Rando::StaticData::GetLocation(rc)->GetVanillaItem();
+    GetItemID vanillaItem = (GetItemID)Rando::StaticData::RetrieveItem(vanillaRandomizerGet).GetItemID();
+    GetItemEntry getItemEntry = Rando::Context::GetInstance()->GetFinalGIEntry(rc, true, (GetItemID)vanillaRandomizerGet);
 
     if (loc->HasObtained()) {
         SPDLOG_INFO("RC {} already obtained, skipping", static_cast<uint32_t>(rc));
     } else {
+        iceTrapScale = 0.0f;
         randomizerQueuedCheck = rc;
         randomizerQueuedItemEntry = getItemEntry;
         SPDLOG_INFO("Queueing Item mod {} item {} from RC {}", getItemEntry.modIndex, getItemEntry.itemId, static_cast<uint32_t>(rc));
@@ -405,7 +408,8 @@ void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play) {
     f32 mtxScale = CVarGetFloat(CVAR_ENHANCEMENT("TimeSavers.SkipGetItemAnimationScale"), 10.0f);
     Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
     GetItemEntry randoItem = enItem00->itemEntry;
-    if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
+    if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) &&
+        enItem00->actor.params != ITEM00_SOH_GIVE_ITEM_ENTRY) {
         randoItem = GET_ITEM_MYSTERY;
     }
     EnItem00_CustomItemsParticles(&enItem00->actor, play, randoItem);
@@ -643,7 +647,7 @@ void RandomizerOnDialogMessageHandler() {
     MessageContext *msgCtx = &gPlayState->msgCtx;
     Actor *actor = msgCtx->talkActor;
     auto ctx = Rando::Context::GetInstance();
-    bool revealMerchant = ctx->GetOption(RSK_MERCHANT_TEXT_HINT).GetContextOptionIndex() != RO_GENERIC_OFF;
+    bool revealMerchant = ctx->GetOption(RSK_MERCHANT_TEXT_HINT).Get() != RO_GENERIC_OFF;
     bool nonBeanMerchants = ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL_BUT_BEANS) ||
                              ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL);
 
@@ -712,7 +716,7 @@ void RandomizerOnDialogMessageHandler() {
                 }
                 break;
             case TEXT_SCRUB_RANDOM:
-                if (ctx->GetOption(RSK_SCRUB_TEXT_HINT).GetContextOptionIndex() != RO_GENERIC_OFF) {
+                if (ctx->GetOption(RSK_SCRUB_TEXT_HINT).Get() != RO_GENERIC_OFF) {
                     EnDns* enDns = (EnDns*)actor;
                     reveal = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf((RandomizerInf)enDns->sohScrubIdentity.randomizerInf);
                 }
@@ -1010,7 +1014,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                     Item_Give(gPlayState, item00->itemEntry.itemId);
                 } else if (item00->itemEntry.modIndex == MOD_RANDOMIZER) {
                     if (item00->itemEntry.getItemId == RG_ICE_TRAP) {
-                        gSaveContext.pendingIceTrapCount++;
+                        gSaveContext.ship.pendingIceTrapCount++;
                     } else {
                         Randomizer_Item_Give(gPlayState, item00->itemEntry);
                     }
@@ -1112,14 +1116,14 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                 enJs->actor.parent = NULL;
                 enJs->actor.textId = TEXT_CARPET_SALESMAN_ARMS_DEALER;
                 enJs->actionFunc = (EnJsActionFunc)func_80A890C0;
-                enJs->actor.flags |= ACTOR_FLAG_WILL_TALK;
+                enJs->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
                 Flags_SetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN);
                 *should = true;
             }
             break;
         }
         case VB_GIVE_BOMBCHUS_FROM_CARPET_SALESMAN: {
-            *should = RAND_GET_OPTION(RSK_BOMBCHUS_IN_LOGIC) == false || INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU;
+            *should = RAND_GET_OPTION(RSK_BOMBCHU_BAG) == false || INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU;
             break;
         }
         case VB_CHECK_RANDO_PRICE_OF_MEDIGORON: {
@@ -1195,7 +1199,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             Flags_SetItemGetInf(ITEMGETINF_30);
             granny->actor.textId = 0x504F;
             granny->actionFunc = (EnDsActionFunc)EnDs_TalkAfterGiveOddPotion;
-            granny->actor.flags &= ~ACTOR_FLAG_PLAYER_TALKED_TO;
+            granny->actor.flags &= ~ACTOR_FLAG_TALK;
             *should = false;
             break;
         }
@@ -1533,7 +1537,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_BE_ABLE_TO_PLAY_BOMBCHU_BOWLING: {
             // Only check for bomb bag when bombchus aren't in logic
             // and only check for bombchus when bombchus are in logic
-            *should = INV_CONTENT((RAND_GET_OPTION(RSK_BOMBCHUS_IN_LOGIC) ? ITEM_BOMBCHU : ITEM_BOMB)) != ITEM_NONE;
+            *should = INV_CONTENT((RAND_GET_OPTION(RSK_BOMBCHU_BAG) ? ITEM_BOMBCHU : ITEM_BOMB)) != ITEM_NONE;
             break;
         }
         case VB_SHOULD_CHECK_FOR_FISHING_RECORD: {
@@ -1585,7 +1589,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_TRADE_TIMER_EYEDROPS:{
             EnMk* enMk = va_arg(args, EnMk*);
             Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_LH_TRADE_FROG);
-            enMk->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+            enMk->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
             enMk->actionFunc = EnMk_Wait;
             enMk->flags |= 1;
             *should = false;
@@ -1628,6 +1632,12 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                         *should = false;
                     }
                 }
+            }
+            break;
+        }
+        case VB_HEALTH_METER_BE_CRITICAL: {
+            if (gSaveContext.health == gSaveContext.healthCapacity) {
+                *should = false;
             }
             break;
         }
@@ -2362,6 +2372,8 @@ void RandomizerRegisterHooks() {
     static uint32_t shuffleFreestandingOnVanillaBehaviorHook = 0;
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
+        ShipInit::Init("IS_RANDO");
+
         randomizerQueuedChecks = std::queue<RandomizerCheck>();
         randomizerQueuedCheck = RC_UNKNOWN_CHECK;
         randomizerQueuedItemEntry = GET_ITEM_NONE;
@@ -2392,7 +2404,7 @@ void RandomizerRegisterHooks() {
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(shufflePotsOnActorInitHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(shufflePotsOnVanillaBehaviorHook);
 
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(shuffleFreestandingOnVanillaBehaviorHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(shuffleFreestandingOnVanillaBehaviorHook);
 
         onFlagSetHook = 0;
         onSceneFlagSetHook = 0;

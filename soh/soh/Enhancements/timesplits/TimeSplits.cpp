@@ -1,5 +1,5 @@
 #include "TimeSplits.h"
-#include "soh/UIWidgets.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include "soh/Enhancements/gameplaystats.h"
 #include "soh/SaveManager.h"
 #include "soh/util.h"
@@ -345,8 +345,8 @@ void HandleDragAndDrop(std::vector<SplitObject>& objectList, int targetIndex, co
 }
 
 void TimeSplitCompleteSplits() {
-    gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
-    gSaveContext.sohStats.gameComplete = true;
+    gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
+    gSaveContext.ship.stats.gameComplete = true;
 }
 
 void TimeSplitsSkipSplit(uint32_t index) {

@@ -882,11 +882,11 @@ hintTextTable[RHT_FIRE_TEMPLE_NEAR_BOSS_CHEST] = HintText(CustomMessage("They sa
                                                        /*german*/ "",
                                                        /*french*/ "Selon moi, un #coeur dans le Temple du Feu# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RAND_INF_FIRE_TEMPLE_MQ_LOOP_STALFOS_SUN_FAIRY] = HintText(CustomMessage("They say that #calling the sun in a hot arena# reveals #[[1]]#.",
+    hintTextTable[RHT_FIRE_TEMPLE_MQ_LOOP_STALFOS_SUN_FAIRY] = HintText(CustomMessage("They say that #calling the sun in a hot arena# reveals #[[1]]#.",
                                                                                 /*german*/ "!!!",
                                                                                 /*french*/ "Selon moi, #appeler le soleil dans une arène chaude# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RAND_INF_FIRE_TEMPLE_MQ_LOOP_KNUCKLE_SUN_FAIRY] = HintText(CustomMessage("They say that #calling the sun behind a knight's throne in a volcano# reveals #[[1]]#.",
+    hintTextTable[RHT_FIRE_TEMPLE_MQ_LOOP_KNUCKLE_SUN_FAIRY] = HintText(CustomMessage("They say that #calling the sun behind a knight's throne in a volcano# reveals #[[1]]#.",
                                                                                 /*german*/ "!!!",
                                                                                 /*french*/ "Selon moi, #appeler le soleil derrière le trône d’un chevalier dans un volcan# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
