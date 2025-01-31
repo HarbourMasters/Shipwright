@@ -263,12 +263,12 @@ namespace GameInteractionEffect {
         void _Remove() override;
     };
     class SpawnEnemyWithOffset: public GameInteractionEffectBase, public ParameterizedGameInteractionEffect {
-    GameInteractionEffectQueryResult CanBeApplied() override;
-    void _Apply() override;
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void _Apply() override;
     };
     class SpawnActor: public GameInteractionEffectBase, public ParameterizedGameInteractionEffect {
-    GameInteractionEffectQueryResult CanBeApplied() override;
-    void _Apply() override;
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void _Apply() override;
     };
 }
 
