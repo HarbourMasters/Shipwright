@@ -16,7 +16,6 @@ void RegisterTunicBootsChangeUseHeldItem() {
 
         if (item >= ITEM_TUNIC_KOKIRI && item <= ITEM_BOOTS_HOVER) {
             *should = false;
-            return;
         }
     });
 }
