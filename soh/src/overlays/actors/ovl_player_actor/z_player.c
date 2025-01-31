@@ -2572,7 +2572,7 @@ void Player_ProcessItemButtons(Player* this, PlayState* play) {
             if ((item < ITEM_NONE_FE) && (Player_ItemToItemAction(item) == this->heldItemAction)) {
                 sHeldItemButtonIsHeldDown = true;
             }
-        } else {
+        } else if (item < ITEM_TUNIC_KOKIRI || item > ITEM_BOOTS_HOVER) {
             this->heldItemButton = i;
             Player_UseItem(play, this, item);
         }
