@@ -75,7 +75,7 @@ void SohMenu::AddMenuSettings() {
         .Options(IntSliderOptions()
                      .Min(0)
                      .Max(100)
-                     .DefaultValue(100)
+                     .DefaultValue(50)
                      .ShowButtons(true)
                      .Format(""));
     AddWidget(path, "Main Music Volume: %d %%", WIDGET_CVAR_SLIDER_INT)
@@ -140,7 +140,7 @@ void SohMenu::AddMenuSettings() {
     path.sidebarName = "Graphics";
     AddSidebarEntry("Settings", "Graphics", 3);
     AddWidget(path, "Toggle Fullscreen", WIDGET_CVAR_CHECKBOX)
-        .CVar("gSettings.Fullscreen")
+        .CVar(CVAR_SETTING("Fullscreen"))
         .Callback([](WidgetInfo& info) { Ship::Context::GetInstance()->GetWindow()->ToggleFullscreen(); })
         .Options(CheckboxOptions().Tooltip("Toggles Fullscreen On/Off."));
 #ifndef __APPLE__
@@ -186,7 +186,7 @@ void SohMenu::AddMenuSettings() {
 #endif
 
     AddWidget(path, "Current FPS: %d", WIDGET_CVAR_SLIDER_INT)
-        .CVar("gInterpolationFPS")
+        .CVar(CVAR_SETTING("InterpolationFPS"))
         .Callback([](WidgetInfo& info) {
             int32_t defaultValue = std::static_pointer_cast<IntSliderOptions>(info.options)->defaultValue;
             if (CVarGetInteger(info.cVar, defaultValue) == defaultValue) {
@@ -204,7 +204,7 @@ void SohMenu::AddMenuSettings() {
         .Callback([](WidgetInfo& info) {
             int hz = Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
             if (hz >= 20 && hz <= 360) {
-                CVarSetInteger("gInterpolationFPS", hz);
+                CVarSetInteger(CVAR_SETTING("InterpolationFPS"), hz);
                 Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             }
         })
@@ -246,38 +246,27 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_TEXTURE_FILTER)
         .Options(ComboboxOptions().Tooltip("Sets the applied Texture Filtering.").ComboMap(textureFilteringMap));
 
+
+    // Controls
     path.sidebarName = "Controls";
     AddSidebarEntry("Settings", "Controls", 1);
-    AddWidget(path,
-              "This interface can be a little daunting. Please bear with us as we work to improve the experience "
-              "and address some known issues.\n"
-              "\n"
-              "At first glance, you may notice several input devices displayed below the 'Clear All' button. "
-              "Some of these might be other controllers connected to your computer, while others may be "
-              "duplicated controllers (a known issue). We recommend clicking on the box with the " ICON_FA_EYE
-              " icon and the name of any disconnected or unused controllers to hide their inputs. Make sure the "
-              "target controller remains visible.\n"
-              "\n"
-              "If you encounter issues connecting your controller or registering inputs, try closing Steam or "
-              "any other external input software. Alternatively, test a different controller to determine if "
-              "it's a compatibility issue.\n",
-              WIDGET_TEXT);
     AddWidget(path, "Bindings", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Popout Bindings Window", WIDGET_WINDOW_BUTTON)
-        .CVar("gWindows.SohInputEditor")
-        .WindowName("SoH Input Editor")
+        .CVar("gWindows.InputEditor")
+        .WindowName("Input Editor")
         .Options(ButtonOptions().Tooltip("Enables the separate Bindings Window.").Size(Sizes::Inline));
 
+    // Notifications
     path.sidebarName = "Notifications";
     AddSidebarEntry("Settings", "Notifications", 3);
     AddWidget(path, "Position", WIDGET_CVAR_COMBOBOX)
-        .CVar("gNotifications.Position")
+        .CVar(CVAR_SETTING("gNotifications.Position"))
         .Options(ComboboxOptions()
                      .Tooltip("Which corner of the screen notifications appear in.")
                      .ComboMap(notificationPosition)
                      .DefaultIndex(3));
     AddWidget(path, "Duration: %.0f seconds", WIDGET_CVAR_SLIDER_FLOAT)
-        .CVar("gNotifications.Duration")
+        .CVar(CVAR_SETTING("gNotifications.Duration"))
         .Options(FloatSliderOptions()
                      .Tooltip("How long notifications are displayed for.")
                      .Format("%.1f")
@@ -286,13 +275,13 @@ void SohMenu::AddMenuSettings() {
                      .Max(30.0f)
                      .DefaultValue(10.0f));
     AddWidget(path, "Background Opacity: %.0f%%", WIDGET_CVAR_SLIDER_FLOAT)
-        .CVar("gNotifications.BgOpacity")
+        .CVar(CVAR_SETTING("gNotifications.BgOpacity"))
         .Options(FloatSliderOptions()
                      .Tooltip("How opaque the background of notifications is.")
                      .DefaultValue(0.5f)
                      .IsPercentage());
     AddWidget(path, "Size %.1f", WIDGET_CVAR_SLIDER_FLOAT)
-        .CVar("gNotifications.Size")
+        .CVar(CVAR_SETTING("gNotifications.Size"))
         .Options(FloatSliderOptions()
                      .Tooltip("How large notifications are.")
                      .Format("%.1f")
@@ -303,7 +292,7 @@ void SohMenu::AddMenuSettings() {
     AddWidget(path, "Test Notification", WIDGET_BUTTON)
         .Callback([](WidgetInfo& info) {
             Notification::Emit({
-                .itemIcon = "__OTR__icon_item_24_static_yar/gQuestIconGoldSkulltulaTex",
+                .itemIcon = "__OTR__textures/icon_item_24_static/gQuestIconGoldSkulltulaTex",
                 .prefix = "This",
                 .message = "is a",
                 .suffix = "test.",
