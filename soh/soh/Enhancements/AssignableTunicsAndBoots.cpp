@@ -6,6 +6,57 @@
 // in Player_UseTunicBoots (where the actual logic lives), which is
 // called by Player_UpdateCommon
 
+extern "C" {
+#include "macros.h"
+#include "variables.h"
+
+extern s32 Player_GetItemOnButton(PlayState*, s32);
+extern void Inventory_ChangeEquipment(s16, u16);
+extern void Player_SetEquipmentData(PlayState*, Player*);
+extern void func_808328EC(Player*, u16);
+}
+
+static u16 sItemButtons[] = { BTN_B, BTN_CLEFT, BTN_CDOWN, BTN_CRIGHT, BTN_DUP, BTN_DDOWN, BTN_DLEFT, BTN_DRIGHT };
+
+void UseTunicBoots(Player* player, PlayState* play, Input* input) {
+    // Boots and tunics equip despite state
+    if (
+        player->stateFlags1 & (PLAYER_STATE1_INPUT_DISABLED | PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE | PLAYER_STATE1_TALKING | PLAYER_STATE1_DEAD) ||
+        player->stateFlags2 & PLAYER_STATE2_OCARINA_PLAYING
+    ) {
+        return;
+    }
+
+    s32 i;
+    for (i = 0; i < ARRAY_COUNT(sItemButtons); i++) {
+        if (CHECK_BTN_ALL(input->press.button, sItemButtons[i])) {
+            break;
+        }
+    }
+    s32 item = Player_GetItemOnButton(play, i);
+    if (item >= ITEM_TUNIC_KOKIRI && item <= ITEM_BOOTS_HOVER) {
+        if (item >= ITEM_BOOTS_KOKIRI) {
+            u16 bootsValue = item - ITEM_BOOTS_KOKIRI + 1;
+            if (CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) == bootsValue) {
+                Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, EQUIP_VALUE_BOOTS_KOKIRI);
+            } else {
+                Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, bootsValue);
+            }
+            Player_SetEquipmentData(play, player);
+            func_808328EC(player, CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) == EQUIP_VALUE_BOOTS_IRON ? NA_SE_PL_WALK_HEAVYBOOTS : NA_SE_PL_CHANGE_ARMS);
+        } else {
+            u16 tunicValue = item - ITEM_TUNIC_KOKIRI + 1;
+            if (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC) == tunicValue) {
+                Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, EQUIP_VALUE_TUNIC_KOKIRI);
+            } else {
+                Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, tunicValue);
+            }
+            Player_SetEquipmentData(play, player);
+            func_808328EC(player, NA_SE_PL_CHANGE_ARMS);
+        }
+    }
+}
+
 #define CVAR_TUNICBOOTS_NAME CVAR_ENHANCEMENT("AssignableTunicsAndBoots")
 #define CVAR_TUNICBOOTS_DEFAULT 0
 #define CVAR_TUNICBOOTS_VALUE CVarGetInteger(CVAR_TUNICBOOTS_NAME, CVAR_TUNICBOOTS_DEFAULT)
@@ -25,6 +76,16 @@ void RegisterAssignableTunicsBoots() {
         if (item >= ITEM_TUNIC_KOKIRI && item <= ITEM_BOOTS_HOVER) {
             *should = true;
         }
+    });
+
+    COND_VB_SHOULD(VB_EXECUTE_PLAYER_ACTION_FUNC, CVAR_TUNICBOOTS_VALUE != CVAR_TUNICBOOTS_DEFAULT, {
+        Player* player = va_arg(args, Player*);
+        PlayState* play = va_arg(args, PlayState*);
+        Input* input = va_arg(args, Input*);
+
+        *should = false;
+        player->actionFunc(player, play);
+        UseTunicBoots(player, play, input);
     });
 }
 
