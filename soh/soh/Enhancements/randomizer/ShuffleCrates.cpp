@@ -15,7 +15,7 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetContextOptionIndex()
+#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).Get()
 
 extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
 
@@ -145,8 +145,8 @@ extern "C" void ObjKibako_RandomizerDraw(Actor* thisx, PlayState* play) {
 }
 
 bool GetOverworldCratesIncluded(Rando::Location* loc) {
-    uint8_t logicSetting = Rando::Context::GetInstance()->GetOption(RSK_LOGIC_RULES).GetContextOptionIndex();
-    uint8_t crateSetting = Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_CRATES).GetContextOptionIndex();
+    uint8_t logicSetting = Rando::Context::GetInstance()->GetOption(RSK_LOGIC_RULES).Get();
+    uint8_t crateSetting = Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_CRATES).Get();
 
     if (loc->GetRCType() != RCTYPE_CRATE || crateSetting == RO_SHUFFLE_CRATES_OFF) {
         return false;
@@ -165,7 +165,7 @@ bool GetOverworldCratesIncluded(Rando::Location* loc) {
 uint8_t ObjKibako2_RandomizerHoldsItem(ObjKibako2* crateActor, PlayState* play) {
     RandomizerCheck rc = crateActor->crateIdentity.randomizerCheck;
     uint8_t isDungeon = Rando::StaticData::GetLocation(rc)->IsDungeon();
-    uint8_t crateSetting = Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_CRATES).GetContextOptionIndex();
+    uint8_t crateSetting = Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_CRATES).Get();
 
     // Don't pull randomized item if crate isn't randomized or is already checked
     if (!IS_RANDO || (crateSetting == RO_SHUFFLE_CRATES_OVERWORLD && isDungeon) ||
@@ -181,7 +181,7 @@ uint8_t ObjKibako2_RandomizerHoldsItem(ObjKibako2* crateActor, PlayState* play) 
 uint8_t ObjKibako_RandomizerHoldsItem(ObjKibako* smallCrateActor, PlayState* play) {
     RandomizerCheck rc = smallCrateActor->smallCrateIdentity.randomizerCheck;
     uint8_t isDungeon = Rando::StaticData::GetLocation(rc)->IsDungeon();
-    uint8_t crateSetting = Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_CRATES).GetContextOptionIndex();
+    uint8_t crateSetting = Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_CRATES).Get();
 
     // Don't pull randomized item if crate isn't randomized or is already checked
     if (!IS_RANDO || (crateSetting == RO_SHUFFLE_CRATES_OVERWORLD && isDungeon) ||
@@ -217,7 +217,7 @@ void ObjKibako_RandomizerSpawnCollectible(ObjKibako* smallCrateActor, PlayState*
 
 void ObjKibako2_RandomizerInit(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
-    uint8_t logicSetting = Rando::Context::GetInstance()->GetOption(RSK_LOGIC_RULES).GetContextOptionIndex();
+    uint8_t logicSetting = Rando::Context::GetInstance()->GetOption(RSK_LOGIC_RULES).Get();
 
     // don't shuffle two OOB crates in GF and don't shuffle child GV/GF crates when not in no logic
     if (actor->id != ACTOR_OBJ_KIBAKO2 ||
