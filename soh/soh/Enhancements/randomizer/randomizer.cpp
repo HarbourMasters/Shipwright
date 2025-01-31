@@ -2125,25 +2125,25 @@ CrateIdentity Randomizer::IdentifyCrate(s32 sceneNum, s32 posX, s32 posZ) {
 }
 
 SmallCrateIdentity Randomizer::IdentifySmallCrate(s32 sceneNum, s32 posX, s32 posZ) {
-    struct SmallCrateIdentity smallcrateIdentity;
-    uint32_t smallcrateSceneNum = sceneNum;
+    struct SmallCrateIdentity smallCrateIdentity;
+    uint32_t smallCrateSceneNum = sceneNum;
 
-    smallcrateIdentity.randomizerInf = RAND_INF_MAX;
-    smallcrateIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+    smallCrateIdentity.randomizerInf = RAND_INF_MAX;
+    smallCrateIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
 
     s32 actorParams = TWO_ACTOR_PARAMS(posX, posZ);
 
-    Rando::Location* location = GetCheckObjectFromActor(ACTOR_OBJ_KIBAKO, smallcrateSceneNum, actorParams);
+    Rando::Location* location = GetCheckObjectFromActor(ACTOR_OBJ_KIBAKO, smallCrateSceneNum, actorParams);
 
     if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
         LUSLOG_WARN("IdentifyCrate did not receive a valid RC value (%d).", location->GetRandomizerCheck());
         assert(false);
     } else {
-        smallcrateIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
-        smallcrateIdentity.randomizerCheck = location->GetRandomizerCheck();
+        smallCrateIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        smallCrateIdentity.randomizerCheck = location->GetRandomizerCheck();
     }
 
-    return smallcrateIdentity;
+    return smallCrateIdentity;
 }
 
 u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {

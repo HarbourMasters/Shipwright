@@ -12,7 +12,7 @@ typedef struct ObjKibako {
     /* 0x0000 */ Actor actor;
     /* 0x014C */ ObjKibakoActionFunc actionFunc;
     /* 0x0150 */ ColliderCylinder collider;
-    /*        */ SmallCrateIdentity smallcrateIdentity;
+    /*        */ SmallCrateIdentity smallCrateIdentity;
 } ObjKibako; // size = 0x019C
 
 #endif

@@ -85,7 +85,7 @@ extern "C" void ObjKibako2_RandomizerDraw(Actor* thisx, PlayState* play) {
 
 extern "C" void ObjKibako_RandomizerDraw(Actor* thisx, PlayState* play) {
     GetItemCategory getItemCategory;
-    auto smallcrateActor = ((ObjKibako*)thisx);
+    auto smallCrateActor = ((ObjKibako*)thisx);
     // u8 hasCreatedRandoChestTextures = 0;
     u8 hasCustomSmallCrateDLs = 0;
     int csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED);
@@ -98,18 +98,18 @@ extern "C" void ObjKibako_RandomizerDraw(Actor* thisx, PlayState* play) {
 
     int isVanilla = csmc == CSMC_DISABLED || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
 
-    GetItemEntry smallcrateItem = Rando::Context::GetInstance()->GetFinalGIEntry(smallcrateActor->smallcrateIdentity.randomizerCheck, true, GI_NONE);
-    getItemCategory = smallcrateItem.getItemCategory;
+    GetItemEntry smallCrateItem = Rando::Context::GetInstance()->GetFinalGIEntry(smallCrateActor->smallCrateIdentity.randomizerCheck, true, GI_NONE);
+    getItemCategory = smallCrateItem.getItemCategory;
 
     if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU &&
-        ((smallcrateItem.modIndex == MOD_RANDOMIZER && smallcrateItem.getItemId == RG_PROGRESSIVE_BOMBCHUS) ||
-         (smallcrateItem.modIndex == MOD_NONE &&
-          (smallcrateItem.getItemId == GI_BOMBCHUS_5 || smallcrateItem.getItemId == GI_BOMBCHUS_10 || smallcrateItem.getItemId == GI_BOMBCHUS_20)))) {
+        ((smallCrateItem.modIndex == MOD_RANDOMIZER && smallCrateItem.getItemId == RG_PROGRESSIVE_BOMBCHUS) ||
+         (smallCrateItem.modIndex == MOD_NONE &&
+          (smallCrateItem.getItemId == GI_BOMBCHUS_5 || smallCrateItem.getItemId == GI_BOMBCHUS_10 || smallCrateItem.getItemId == GI_BOMBCHUS_20)))) {
         getItemCategory = ITEM_CATEGORY_JUNK;
         // If it's a bottle and they already have one, consider the item lesser
-    } else if ((smallcrateItem.modIndex == MOD_RANDOMIZER && smallcrateItem.getItemId >= RG_BOTTLE_WITH_RED_POTION &&
-                smallcrateItem.getItemId <= RG_BOTTLE_WITH_POE) ||
-               (smallcrateItem.modIndex == MOD_NONE && (smallcrateItem.getItemId == GI_BOTTLE || smallcrateItem.getItemId == GI_MILK_BOTTLE))) {
+    } else if ((smallCrateItem.modIndex == MOD_RANDOMIZER && smallCrateItem.getItemId >= RG_BOTTLE_WITH_RED_POTION &&
+                smallCrateItem.getItemId <= RG_BOTTLE_WITH_POE) ||
+               (smallCrateItem.modIndex == MOD_NONE && (smallCrateItem.getItemId == GI_BOTTLE || smallCrateItem.getItemId == GI_MILK_BOTTLE))) {
         if (gSaveContext.inventory.items[SLOT_BOTTLE_1] != ITEM_NONE) {
             getItemCategory = ITEM_CATEGORY_LESSER;
         }
@@ -177,16 +177,16 @@ uint8_t ObjKibako2_RandomizerHoldsItem(ObjKibako2* crateActor, PlayState* play) 
     }
 }
 
-uint8_t ObjKibako_RandomizerHoldsItem(ObjKibako* smallcrateActor, PlayState* play) {
-    RandomizerCheck rc = smallcrateActor->smallcrateIdentity.randomizerCheck;
+uint8_t ObjKibako_RandomizerHoldsItem(ObjKibako* smallCrateActor, PlayState* play) {
+    RandomizerCheck rc = smallCrateActor->smallCrateIdentity.randomizerCheck;
     uint8_t isDungeon = Rando::StaticData::GetLocation(rc)->IsDungeon();
     uint8_t crateSetting = Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_CRATES).GetContextOptionIndex();
 
     // Don't pull randomized item if crate isn't randomized or is already checked
     if (!IS_RANDO || (crateSetting == RO_SHUFFLE_CRATES_OVERWORLD && isDungeon) ||
         (crateSetting == RO_SHUFFLE_CRATES_DUNGEONS && !isDungeon) ||
-        Flags_GetRandomizerInf(smallcrateActor->smallcrateIdentity.randomizerInf) ||
-        smallcrateActor->smallcrateIdentity.randomizerCheck == RC_UNKNOWN_CHECK) {
+        Flags_GetRandomizerInf(smallCrateActor->smallCrateIdentity.randomizerInf) ||
+        smallCrateActor->smallCrateIdentity.randomizerCheck == RC_UNKNOWN_CHECK) {
         return false;
     } else {
         return true;
@@ -203,11 +203,11 @@ void ObjKibako2_RandomizerSpawnCollectible(ObjKibako2* crateActor, PlayState* pl
     item00->actor.world.rot.y = Rand_CenteredFloat(65536.0f);
 }
 
-void ObjKibako_RandomizerSpawnCollectible(ObjKibako* smallcrateActor, PlayState* play) {
-    EnItem00* item00 = (EnItem00*)Item_DropCollectible2(play, &smallcrateActor->actor.world.pos, ITEM00_SOH_DUMMY);
-    item00->randoInf = smallcrateActor->smallcrateIdentity.randomizerInf;
+void ObjKibako_RandomizerSpawnCollectible(ObjKibako* smallCrateActor, PlayState* play) {
+    EnItem00* item00 = (EnItem00*)Item_DropCollectible2(play, &smallCrateActor->actor.world.pos, ITEM00_SOH_DUMMY);
+    item00->randoInf = smallCrateActor->smallCrateIdentity.randomizerInf;
     item00->itemEntry =
-        Rando::Context::GetInstance()->GetFinalGIEntry(smallcrateActor->smallcrateIdentity.randomizerCheck, true, GI_NONE);
+        Rando::Context::GetInstance()->GetFinalGIEntry(smallCrateActor->smallCrateIdentity.randomizerCheck, true, GI_NONE);
     item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
     item00->actor.velocity.y = 8.0f;
     item00->actor.speedXZ = 2.0f;
@@ -239,9 +239,9 @@ void ObjKibako_RandomizerInit(void* actorRef) {
 
     if (actor->id != ACTOR_OBJ_KIBAKO) return;
 
-    ObjKibako* smallcrateActor = static_cast<ObjKibako*>(actorRef);
+    ObjKibako* smallCrateActor = static_cast<ObjKibako*>(actorRef);
 
-    smallcrateActor->smallcrateIdentity = OTRGlobals::Instance->gRandomizer->IdentifySmallCrate(gPlayState->sceneNum, (s16)actor->home.pos.x, (s16)actor->home.pos.z);
+    smallCrateActor->smallCrateIdentity = OTRGlobals::Instance->gRandomizer->IdentifySmallCrate(gPlayState->sceneNum, (s16)actor->home.pos.x, (s16)actor->home.pos.z);
 }
 
 void RegisterShuffleCrates() {
@@ -272,9 +272,9 @@ void RegisterShuffleCrates() {
     COND_ID_HOOK(OnActorInit, ACTOR_OBJ_KIBAKO, shouldRegister, ObjKibako_RandomizerInit);
 
     COND_VB_SHOULD(VB_SMALL_CRATE_SETUP_DRAW, shouldRegister, {
-        ObjKibako* smallcrateActor = va_arg(args, ObjKibako*);
-        if (ObjKibako_RandomizerHoldsItem(smallcrateActor, gPlayState)) {
-            smallcrateActor->actor.draw = (ActorFunc)ObjKibako_RandomizerDraw;
+        ObjKibako* smallCrateActor = va_arg(args, ObjKibako*);
+        if (ObjKibako_RandomizerHoldsItem(smallCrateActor, gPlayState)) {
+            smallCrateActor->actor.draw = (ActorFunc)ObjKibako_RandomizerDraw;
             *should = false;
         } else {
             *should = true;
@@ -282,9 +282,9 @@ void RegisterShuffleCrates() {
     });
 
     COND_VB_SHOULD(VB_SMALL_CRATE_DROP_ITEM, shouldRegister, {
-        ObjKibako* smallcrateActor = va_arg(args, ObjKibako*);
-        if (ObjKibako_RandomizerHoldsItem(smallcrateActor, gPlayState)) {
-            ObjKibako_RandomizerSpawnCollectible(smallcrateActor, gPlayState);
+        ObjKibako* smallCrateActor = va_arg(args, ObjKibako*);
+        if (ObjKibako_RandomizerHoldsItem(smallCrateActor, gPlayState)) {
+            ObjKibako_RandomizerSpawnCollectible(smallCrateActor, gPlayState);
             *should = false;
         } else {
             *should = true;
