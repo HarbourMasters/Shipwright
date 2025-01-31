@@ -34,6 +34,7 @@ void RegionTable_Init_GerudoValley() {
         LOCATION(RC_GV_GOSSIP_STONE_FAIRY,         logic->CallGossipFairy()),
         LOCATION(RC_GV_GOSSIP_STONE_FAIRY_BIG,     logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_GV_GOSSIP_STONE,               true),
+        LOCATION(RC_GV_NEAR_COW_CRATE,             logic->IsChild && logic->CanBreakCrates()),
     }, {
         //Exits
         Entrance(RR_GV_LOWER_STREAM, []{return true;}),
@@ -55,7 +56,6 @@ void RegionTable_Init_GerudoValley() {
         //Locations
         LOCATION(RC_GV_CRATE_FREESTANDING_POH, logic->CanBreakCrates()), 
         LOCATION(RC_GV_FREESTANDING_POH_CRATE, logic->CanBreakCrates()),
-        LOCATION(RC_GV_NEAR_COW_CRATE,         logic->IsChild && logic->CanBreakCrates()),
     }, {
         //Exits
         Entrance(RR_GV_UPPER_STREAM, []{return ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives();}),
