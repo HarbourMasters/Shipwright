@@ -535,6 +535,7 @@ typedef enum {
 
     /*** Equippable tunics and boots ***/
     VB_CHANGE_HELD_ITEM_AND_USE_ITEM,
+    VB_ITEM_ACTION_BE_NONE,
 } GIVanillaBehavior;
 
 #ifdef __cplusplus

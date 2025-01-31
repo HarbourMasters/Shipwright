@@ -10,7 +10,7 @@
 #define CVAR_TUNICBOOTS_DEFAULT 0
 #define CVAR_TUNICBOOTS_VALUE CVarGetInteger(CVAR_TUNICBOOTS_NAME, CVAR_TUNICBOOTS_DEFAULT)
 
-void RegisterTunicBootsChangeUseHeldItem() {
+void RegisterAssignableTunicsBoots() {
     COND_VB_SHOULD(VB_CHANGE_HELD_ITEM_AND_USE_ITEM, CVAR_TUNICBOOTS_VALUE != CVAR_TUNICBOOTS_DEFAULT, {
         int32_t item = va_arg(args, int32_t);
 
@@ -18,6 +18,14 @@ void RegisterTunicBootsChangeUseHeldItem() {
             *should = false;
         }
     });
+
+    COND_VB_SHOULD(VB_ITEM_ACTION_BE_NONE, CVAR_TUNICBOOTS_VALUE != CVAR_TUNICBOOTS_DEFAULT, {
+        int32_t item = va_arg(args, int32_t);
+
+        if (item >= ITEM_TUNIC_KOKIRI && item <= ITEM_BOOTS_HOVER) {
+            *should = true;
+        }
+    });
 }
 
-static RegisterShipInitFunc initFunc(RegisterTunicBootsChangeUseHeldItem, { CVAR_TUNICBOOTS_NAME });
+static RegisterShipInitFunc initFunc(RegisterAssignableTunicsBoots, { CVAR_TUNICBOOTS_NAME });
