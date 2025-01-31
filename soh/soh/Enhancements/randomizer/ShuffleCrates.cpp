@@ -154,6 +154,7 @@ bool GetOverworldCratesIncluded(Rando::Location* loc) {
 
     RandomizerCheck rc = loc->GetRandomizerCheck();
     
+    // Remove child GV/GF crates from check tracker when not shuffled
     if (logicSetting != RO_LOGIC_NO_LOGIC && (rc == RC_GV_CRATE_BRIDGE_1 || rc == RC_GV_CRATE_BRIDGE_2 || rc == RC_GV_CRATE_BRIDGE_3 ||
         rc == RC_GV_CRATE_BRIDGE_4 || rc == RC_GF_ARCHERY_LEFT_END_CHILD_CRATE)) {
         return false;
@@ -218,6 +219,7 @@ void ObjKibako2_RandomizerInit(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
     uint8_t logicSetting = Rando::Context::GetInstance()->GetOption(RSK_LOGIC_RULES).GetContextOptionIndex();
 
+    // don't shuffle two OOB crates in GF and don't shuffle child GV/GF crates when not in no logic
     if (actor->id != ACTOR_OBJ_KIBAKO2 ||
         (gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS && (s16)actor->world.pos.x == -4051 && (s16)actor->world.pos.z == -3429) ||
         (gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS && (s16)actor->world.pos.x == -4571 && (s16)actor->world.pos.z == -3429) ||
