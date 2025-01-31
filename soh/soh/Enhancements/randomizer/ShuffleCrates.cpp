@@ -1,6 +1,8 @@
 #include "ShuffleCrates.h"
 #include "soh_assets.h"
 #include "static_data.h"
+#include <libultraship/libultra.h>
+#include "global.h"
 
 extern "C" {
 #include "variables.h"
@@ -8,6 +10,8 @@ extern "C" {
 #include "objects/object_kibako2/object_kibako2.h"
 #include "overlays/actors/ovl_Obj_Kibako/z_obj_kibako.h"
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
+#include "soh/Enhancements/enhancementTypes.h"
+#include "soh/ResourceManagerHelpers.h"
 extern PlayState* gPlayState;
 }
 
@@ -16,41 +20,128 @@ extern PlayState* gPlayState;
 extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
 
 extern "C" void ObjKibako2_RandomizerDraw(Actor* thisx, PlayState* play) {
-    static Gfx* dList = (Gfx*)gLargeCrateDL;
+    GetItemCategory getItemCategory;
     auto crateActor = ((ObjKibako2*)thisx);
+    //u8 hasCreatedRandoChestTextures = 0;
+    u8 hasCustomCrateDLs = 0;
+    int csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED);
+    int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
 
-    OPEN_DISPS(play->state.gfxCtx);
-    Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    gDPSetGrayscaleColor(POLY_OPA_DISP++, 200, 0, 200, 255);
-
-    if (Flags_GetRandomizerInf(crateActor->crateIdentity.randomizerInf) == 0) {
-        gSPGrayscale(POLY_OPA_DISP++, true);
+    if (ResourceMgr_FileIsCustomByName(gLargeCrateDL)) {
+        hasCustomCrateDLs = 1;
+        return;
     }
 
-    Gfx_DrawDListOpa(play, dList);
+    int isVanilla = csmc == CSMC_DISABLED || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
 
-    gSPGrayscale(POLY_OPA_DISP++, false);
+    GetItemEntry crateItem =
+        Rando::Context::GetInstance()->GetFinalGIEntry(crateActor->crateIdentity.randomizerCheck, true, GI_NONE);
+    getItemCategory = crateItem.getItemCategory;
+   
+    // If they have bombchus, don't consider the bombchu item major
+    if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU &&
+            ((crateItem.modIndex == MOD_RANDOMIZER && crateItem.getItemId == RG_PROGRESSIVE_BOMBCHUS) ||
+             (crateItem.modIndex == MOD_NONE && 
+                 (crateItem.getItemId == GI_BOMBCHUS_5 || crateItem.getItemId == GI_BOMBCHUS_10 ||
+           crateItem.getItemId == GI_BOMBCHUS_20)))) {
+        getItemCategory = ITEM_CATEGORY_JUNK;
+        // If it's a bottle and they already have one, consider the item lesser
+    } else if ((crateItem.modIndex == MOD_RANDOMIZER && crateItem.getItemId >= RG_BOTTLE_WITH_RED_POTION && crateItem.getItemId <= RG_BOTTLE_WITH_POE) ||
+             (crateItem.modIndex == MOD_NONE && (crateItem.getItemId == GI_BOTTLE || crateItem.getItemId == GI_MILK_BOTTLE))) {
+        if (gSaveContext.inventory.items[SLOT_BOTTLE_1] != ITEM_NONE) {
+            getItemCategory = ITEM_CATEGORY_LESSER;
+        }
+    }
 
-    CLOSE_DISPS(play->state.gfxCtx);
+        // Change texture
+        // TODO: add heart texture when supported gLargeHeartCrateDL
+    if (!isVanilla && !hasCustomCrateDLs &&
+        (csmc == CSMC_BOTH || csmc == CSMC_TEXTURE)) {
+        switch (getItemCategory) {
+            case ITEM_CATEGORY_MAJOR:
+                Gfx_DrawDListOpa(play, (Gfx*)gLargeMajorCrateDL);
+                break;
+            case ITEM_CATEGORY_SKULLTULA_TOKEN:
+                Gfx_DrawDListOpa(play, (Gfx*)gLargeTokenCrateDL);
+                break;
+            case ITEM_CATEGORY_SMALL_KEY:
+                Gfx_DrawDListOpa(play, (Gfx*)gLargeSmallKeyCrateDL);
+                break;
+            case ITEM_CATEGORY_BOSS_KEY:
+                Gfx_DrawDListOpa(play, (Gfx*)gLargeBossKeyCrateDL);
+                break;
+            case ITEM_CATEGORY_LESSER:
+                Gfx_DrawDListOpa(play, (Gfx*)gLargeMinorCrateDL);
+                break;
+            case ITEM_CATEGORY_JUNK:
+            default:
+                Gfx_DrawDListOpa(play, (Gfx*)gLargeJunkCrateDL);
+                break;
+        }
+    } else {
+        Gfx_DrawDListOpa(play, (Gfx*)gLargeRandoCrateDL);
+    }
 }
 
 extern "C" void ObjKibako_RandomizerDraw(Actor* thisx, PlayState* play) {
-    static Gfx* dList = (Gfx*)gSmallWoodenBoxDL;
+    GetItemCategory getItemCategory;
     auto smallcrateActor = ((ObjKibako*)thisx);
+    // u8 hasCreatedRandoChestTextures = 0;
+    u8 hasCustomSmallCrateDLs = 0;
+    int csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED);
+    int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
 
-    OPEN_DISPS(play->state.gfxCtx);
-    Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    gDPSetGrayscaleColor(POLY_OPA_DISP++, 200, 0, 200, 255);
-
-    if (Flags_GetRandomizerInf(smallcrateActor->smallcrateIdentity.randomizerInf) == 0) {
-        gSPGrayscale(POLY_OPA_DISP++, true);
+    if (ResourceMgr_FileIsCustomByName(gSmallWoodenBoxDL)) {
+        hasCustomSmallCrateDLs = 1;
+        return;
     }
 
-    Gfx_DrawDListOpa(play, dList);
+    int isVanilla = csmc == CSMC_DISABLED || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
 
-    gSPGrayscale(POLY_OPA_DISP++, false);
+    GetItemEntry smallcrateItem = Rando::Context::GetInstance()->GetFinalGIEntry(smallcrateActor->smallcrateIdentity.randomizerCheck, true, GI_NONE);
+    getItemCategory = smallcrateItem.getItemCategory;
 
-    CLOSE_DISPS(play->state.gfxCtx);
+    if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU &&
+        ((smallcrateItem.modIndex == MOD_RANDOMIZER && smallcrateItem.getItemId == RG_PROGRESSIVE_BOMBCHUS) ||
+         (smallcrateItem.modIndex == MOD_NONE &&
+          (smallcrateItem.getItemId == GI_BOMBCHUS_5 || smallcrateItem.getItemId == GI_BOMBCHUS_10 || smallcrateItem.getItemId == GI_BOMBCHUS_20)))) {
+        getItemCategory = ITEM_CATEGORY_JUNK;
+        // If it's a bottle and they already have one, consider the item lesser
+    } else if ((smallcrateItem.modIndex == MOD_RANDOMIZER && smallcrateItem.getItemId >= RG_BOTTLE_WITH_RED_POTION &&
+                smallcrateItem.getItemId <= RG_BOTTLE_WITH_POE) ||
+               (smallcrateItem.modIndex == MOD_NONE && (smallcrateItem.getItemId == GI_BOTTLE || smallcrateItem.getItemId == GI_MILK_BOTTLE))) {
+        if (gSaveContext.inventory.items[SLOT_BOTTLE_1] != ITEM_NONE) {
+            getItemCategory = ITEM_CATEGORY_LESSER;
+        }
+    }
+
+    // Change texture
+    // TODO: add heart texture when supported gSmallHeartCrateDL
+    if (!isVanilla && !hasCustomSmallCrateDLs && (csmc == CSMC_BOTH || csmc == CSMC_TEXTURE)) {
+        switch (getItemCategory) {
+            case ITEM_CATEGORY_MAJOR:
+                Gfx_DrawDListOpa(play, (Gfx*)gSmallMajorCrateDL);
+                break;
+            case ITEM_CATEGORY_SKULLTULA_TOKEN:
+                Gfx_DrawDListOpa(play, (Gfx*)gSmallTokenCrateDL);
+                break;
+            case ITEM_CATEGORY_SMALL_KEY:
+                Gfx_DrawDListOpa(play, (Gfx*)gSmallSmallKeyCrateDL);
+                break;
+            case ITEM_CATEGORY_BOSS_KEY:
+                Gfx_DrawDListOpa(play, (Gfx*)gSmallBossKeyCrateDL);
+                break;
+            case ITEM_CATEGORY_LESSER:
+                Gfx_DrawDListOpa(play, (Gfx*)gSmallMinorCrateDL);
+                break;
+            case ITEM_CATEGORY_JUNK:
+            default:
+                Gfx_DrawDListOpa(play, (Gfx*)gSmallJunkCrateDL);
+                break;
+        }
+    } else {
+        Gfx_DrawDListOpa(play, (Gfx*)gSmallRandoCrateDL);
+    }
 }
 
 bool GetOverworldCratesIncluded(Rando::Location* loc) {
@@ -152,64 +243,6 @@ void ObjKibako_RandomizerInit(void* actorRef) {
 
     smallcrateActor->smallcrateIdentity = OTRGlobals::Instance->gRandomizer->IdentifySmallCrate(gPlayState->sceneNum, (s16)actor->home.pos.x, (s16)actor->home.pos.z);
 }
-
-//void ShuffleCrates_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
-//    va_list args;
-//    va_copy(args, originalArgs);
-//
-//    // Draw custom model for crates to indicate it holding a randomized item.
-//    if (id == VB_CRATE_SETUP_DRAW) {
-//        ObjKibako2* crateActor = va_arg(args, ObjKibako2*);
-//        if (ObjKibako2_RandomizerHoldsItem(crateActor, gPlayState)) {
-//            crateActor->dyna.actor.draw = (ActorFunc)ObjKibako2_RandomizerDraw;
-//            *should = false;
-//        } else {
-//            *should = true;
-//        }
-//    }
-//
-//    // Do not spawn vanilla item from crates, instead spawn the randomized item.
-//    if (id == VB_CRATE_DROP_ITEM) {
-//        ObjKibako2* crateActor = va_arg(args, ObjKibako2*);
-//        if (ObjKibako2_RandomizerHoldsItem(crateActor, gPlayState)) {
-//            ObjKibako2_RandomizerSpawnCollectible(crateActor, gPlayState);
-//            *should = false;
-//        } else {
-//            *should = true;
-//        }
-//    }
-//
-//    va_end(args);
-//}
-
-//void ShuffleSmallCrates_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
-//    va_list args;
-//    va_copy(args, originalArgs);
-//
-//    // Draw custom model for crates to indicate it holding a randomized item.
-//    if (id == VB_SMALL_CRATE_SETUP_DRAW) {
-//        ObjKibako* smallcrateActor = va_arg(args, ObjKibako*);
-//        if (ObjKibako_RandomizerHoldsItem(smallcrateActor, gPlayState)) {
-//            smallcrateActor->actor.draw = (ActorFunc)ObjKibako_RandomizerDraw;
-//            *should = false;
-//        } else {
-//            *should = true;
-//        }
-//    }
-//
-//    // Do not spawn vanilla item from crates, instead spawn the randomized item.
-//    if (id == VB_SMALL_CRATE_DROP_ITEM) {
-//        ObjKibako* smallcrateActor = va_arg(args, ObjKibako*);
-//        if (ObjKibako_RandomizerHoldsItem(smallcrateActor, gPlayState)) {
-//            ObjKibako_RandomizerSpawnCollectible(smallcrateActor, gPlayState);
-//            *should = false;
-//        } else {
-//            *should = true;
-//        }
-//    }
-//
-//    va_end(args);
-//}
 
 void RegisterShuffleCrates() {
     bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_CRATES);
