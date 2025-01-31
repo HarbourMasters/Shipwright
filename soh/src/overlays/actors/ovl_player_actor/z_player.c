@@ -2572,7 +2572,7 @@ void Player_ProcessItemButtons(Player* this, PlayState* play) {
             if ((item < ITEM_NONE_FE) && (Player_ItemToItemAction(item) == this->heldItemAction)) {
                 sHeldItemButtonIsHeldDown = true;
             }
-        } else if (item < ITEM_TUNIC_KOKIRI || item > ITEM_BOOTS_HOVER) {
+        } else if (GameInteractor_Should(VB_CHANGE_HELD_ITEM_AND_USE_ITEM, true, item)) {
             this->heldItemButton = i;
             Player_UseItem(play, this, item);
         }

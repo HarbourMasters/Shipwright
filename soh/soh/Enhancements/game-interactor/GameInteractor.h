@@ -532,6 +532,9 @@ typedef enum {
     VB_SPAWN_SONG_FAIRY,
     // Opt: *EnGs
     VB_SPAWN_GOSSIP_STONE_FAIRY,
+
+    /*** Equippable tunics and boots ***/
+    VB_CHANGE_HELD_ITEM_AND_USE_ITEM,
 } GIVanillaBehavior;
 
 #ifdef __cplusplus
