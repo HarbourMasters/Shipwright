@@ -571,19 +571,22 @@ void RegisterMirrorModeHandler() {
 }
 
 void UpdatePatchChildHylianShield() {
-    if ((CVarGetInteger(CVAR_ENHANCEMENT("RotateScaleChildHylianShield"), 0) && LINK_IS_CHILD) &&
-        (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI || gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE)) {
-        ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield1", 82, gsSPDisplayListOTRFilePath(gLinkChildSwordAndSheathNearDL));
-        ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield2", 83, gsSPEndDisplayList());
-    } else {
-        ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield1");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield2");
-    }
-    if ((CVarGetInteger(CVAR_ENHANCEMENT("RotateScaleChildHylianShield"), 0) && LINK_IS_CHILD) &&
-        (gSaveContext.equips.buttonItems[0] == ITEM_NONE || gSaveContext.equips.buttonItems[0] == ITEM_STICK)) {
-        ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield3", 82, gsSPEndDisplayList());
-    } else {
-        ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield3");
+    ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield1");
+    ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield2");
+    ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield3");
+
+    if ((CVarGetInteger(CVAR_ENHANCEMENT("RotateScaleChildHylianShield"), 0) && LINK_IS_CHILD)) {
+        if (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI ||
+            gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE) {
+            ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield1", 82,
+                                       gsSPDisplayListOTRFilePath(gLinkChildSwordAndSheathNearDL));
+            ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield2", 83,
+                                       gsSPEndDisplayList());
+        }
+        if (gSaveContext.equips.buttonItems[0] == ITEM_NONE || gSaveContext.equips.buttonItems[0] == ITEM_STICK) {
+            ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield3", 82,
+                                       gsSPEndDisplayList());
+        }
     }
 }
 

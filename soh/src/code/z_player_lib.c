@@ -689,7 +689,8 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     this->sheathDLists = &sPlayerDListGroups[this->sheathType][gSaveContext.linkAge];
 
     if (CVarGetInteger(CVAR_ENHANCEMENT("RotateScaleChildHylianShield"), 0)) {
-        if (LINK_IS_CHILD && this->sheathType == PLAYER_MODELTYPE_SHEATH_18 && this->currentShield == PLAYER_SHIELD_HYLIAN) {
+        if (LINK_IS_CHILD && this->sheathType == PLAYER_MODELTYPE_SHEATH_18 &&
+            this->currentShield == PLAYER_SHIELD_HYLIAN && (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_MASTER && gSaveContext.equips.buttonItems[0] != ITEM_SWORD_BGS)) {
             this->sheathDLists = &sPlayerDListGroups[this->sheathType][LINK_AGE_ADULT];
         }
     }
@@ -1347,10 +1348,7 @@ s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** 
             }
         }
         if (limbIndex == PLAYER_LIMB_R_HAND) {
-            if ((this->currentShield == PLAYER_SHIELD_HYLIAN && sRightHandType == PLAYER_MODELTYPE_RH_SHIELD) &&
-                (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI ||
-                 gSaveContext.equips.buttonItems[0] == ITEM_NONE ||
-                 gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE)) {
+            if ((this->currentShield == PLAYER_SHIELD_HYLIAN && sRightHandType == PLAYER_MODELTYPE_RH_SHIELD)) {
                 Matrix_Scale(0.8, 0.8, 0.8, MTXMODE_APPLY);
             }
         }

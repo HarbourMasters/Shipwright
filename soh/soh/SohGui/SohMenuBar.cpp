@@ -912,8 +912,9 @@ void DrawEnhancementsMenu() {
                         UpdateChildHylianShieldState();
                         UpdatePatchChildHylianShield();
                     }
+                    UIWidgets::Tooltip("Rotates and scales the Hylian Shield for Child Link, so that it is the same orientation as the other shields. May not work properly with some mods.");
                 }
-                UIWidgets::Tooltip("Rotates and scales the hylian shield for Child Link, so that it is the same orientation as the other shields. May not work properly with some mods.");
+                
                 ImGui::EndMenu();
             }
 
