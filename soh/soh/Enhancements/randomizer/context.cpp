@@ -45,6 +45,7 @@ Context::Context() {
         &mOptions[RSK_SHUFFLE_BEEHIVES],
         &mOptions[RSK_SHUFFLE_COWS],
         &mOptions[RSK_SHUFFLE_POTS],
+        &mOptions[RSK_SHUFFLE_CRATES],
         &mOptions[RSK_SHUFFLE_FREESTANDING],
         &mOptions[RSK_SHUFFLE_MERCHANTS],
         &mOptions[RSK_SHUFFLE_FROG_SONG_RUPEES],
@@ -167,8 +168,8 @@ void Context::GenerateLocationPool() {
         AddLocations(StaticData::GetOverworldPotLocations());
     }
 
-    if (mSettings->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_OVERWORLD) ||
-        mSettings->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_ALL)) {
+    if (mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_OVERWORLD) ||
+        mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_ALL)) {
         AddLocations(StaticData::GetOverworldCrateLocations());
         AddLocations(StaticData::GetOverworldSmallCrateLocations());
     }

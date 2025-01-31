@@ -155,8 +155,8 @@ std::vector<RandomizerCheck> DungeonInfo::GetDungeonLocations() const {
         auto potLocations = masterQuest ? mqPots : vanillaPots;
         AddElementsToPool(locations, potLocations);
     }
-    if (Context::GetInstance()->GetSettings()->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_DUNGEONS) ||
-        Context::GetInstance()->GetSettings()->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_ALL)) {
+    if (Context::GetInstance()->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_DUNGEONS) ||
+        Context::GetInstance()->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_ALL)) {
         auto crateLocations = masterQuest ? mqCrates : vanillaCrates;
         AddElementsToPool(locations, crateLocations);
     }
