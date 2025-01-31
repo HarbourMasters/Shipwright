@@ -2,6 +2,7 @@
 #include "static_data.h"
 #include <algorithm>
 #include <assert.h>
+#include "option.h"
 
 RandomizerCheck Rando::Location::GetRandomizerCheck() const {
     return rc;
@@ -84,6 +85,10 @@ RandomizerGet Rando::Location::GetVanillaItem() const {
 
 int16_t Rando::Location::GetVanillaPrice() const {
     return vanillaPrice;
+}
+
+Rando::Option* Rando::Location::GetExcludedOption() {
+    return &excludedOption;
 }
 
 RandomizerCheckArea GetAreaFromScene(uint8_t scene) {

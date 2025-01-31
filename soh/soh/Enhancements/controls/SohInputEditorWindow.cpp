@@ -1,7 +1,7 @@
 #include "SohInputEditorWindow.h"
 #include <utils/StringHelper.h>
 #include "soh/OTRGlobals.h"
-#include "../../UIWidgets.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include "z64.h"
 #include "soh/cvar_prefixes.h"
 #ifndef __WIIU__

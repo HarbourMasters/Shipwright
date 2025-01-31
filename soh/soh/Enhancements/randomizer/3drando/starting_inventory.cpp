@@ -112,7 +112,7 @@ void GenerateStartingInventory() {
   //   AddItemToInventory(RG_EMPTY_BOTTLE, 1);
   // }
   // AddItemToInventory(RG_RUTOS_LETTER,              StartingRutoBottle.Value<uint8_t>());
-  AddItemToInventory(RG_PROGRESSIVE_OCARINA,       ctx->GetOption(RSK_STARTING_OCARINA).GetContextOptionIndex());
+  AddItemToInventory(RG_PROGRESSIVE_OCARINA,       ctx->GetOption(RSK_STARTING_OCARINA).Get());
   AddItemToInventory(RG_ZELDAS_LULLABY,            ctx->GetOption(RSK_STARTING_ZELDAS_LULLABY) ? 1 : 0);
   AddItemToInventory(RG_EPONAS_SONG,               ctx->GetOption(RSK_STARTING_EPONAS_SONG) ? 1 : 0);
   AddItemToInventory(RG_SARIAS_SONG,               ctx->GetOption(RSK_STARTING_SARIAS_SONG) ? 1 : 0);
@@ -153,21 +153,21 @@ void GenerateStartingInventory() {
   // AddItemToInventory(RG_SPIRIT_MEDALLION,          StartingSpiritMedallion.Value<uint8_t>());
   // AddItemToInventory(RG_SHADOW_MEDALLION,          StartingShadowMedallion.Value<uint8_t>());
   // AddItemToInventory(RG_LIGHT_MEDALLION,           StartingLightMedallion.Value<uint8_t>());
-  AddItemToInventory(RG_GOLD_SKULLTULA_TOKEN,      ctx->GetOption(RSK_STARTING_SKULLTULA_TOKEN).GetContextOptionIndex());
+  AddItemToInventory(RG_GOLD_SKULLTULA_TOKEN,      ctx->GetOption(RSK_STARTING_SKULLTULA_TOKEN).Get());
 
-  int8_t hearts = ctx->GetOption(RSK_STARTING_HEARTS).GetContextOptionIndex() - 2;
+  int8_t hearts = ctx->GetOption(RSK_STARTING_HEARTS).Get() - 2;
   AdditionalHeartContainers = 0;
   if (hearts < 0) {
     AddItemToInventory(RG_PIECE_OF_HEART, 4);
     // Plentiful and minimal have less than 4 standard pieces of heart so also replace the winner heart
-    if (ctx->GetOption(RSK_ITEM_POOL).GetContextOptionIndex() == 0 || ctx->GetOption(RSK_ITEM_POOL).GetContextOptionIndex() == 3) {
+    if (ctx->GetOption(RSK_ITEM_POOL).Get() == 0 || ctx->GetOption(RSK_ITEM_POOL).Get() == 3) {
       AddItemToInventory(RG_TREASURE_GAME_HEART);
     }
 
     AdditionalHeartContainers = 1 - hearts;
   } else if (hearts > 0) {
     // 16 containers in plentiful, 8 in balanced and 0 in the others
-    uint8_t maxContainers = 8 * std::max(0, 2 - ctx->GetOption(RSK_ITEM_POOL).GetContextOptionIndex());
+    uint8_t maxContainers = 8 * std::max(0, 2 - ctx->GetOption(RSK_ITEM_POOL).Get());
 
     if (hearts <= maxContainers) {
       AddItemToInventory(RG_HEART_CONTAINER, hearts);

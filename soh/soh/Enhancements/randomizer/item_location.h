@@ -3,7 +3,7 @@
 #include "randomizerTypes.h"
 #include "3drando/text.hpp"
 #include "static_data.h"
-#include "settings.h"
+#include "option.h"
 
 namespace Rando {
 class ItemLocation {
@@ -46,8 +46,8 @@ class ItemLocation {
     void AddHintedBy(RandomizerHint hintKey);
     bool IsHidden() const;
     bool IsExcluded();
-    void AddExcludeOption();
-    Option* GetExcludedOption();
+    OptionValue& GetExcludedOption();
+    void SetExcludedOption(uint8_t val);
     void SetHidden(bool hidden_);
     bool IsVisible() const;
     void SetVisible(bool visibleInImGui_);
@@ -65,7 +65,7 @@ class ItemLocation {
     bool addedToPool = false;
     RandomizerGet placedItem = RG_NONE;
     RandomizerGet delayedItem = RG_NONE;
-    Option excludedOption = Option::Bool(StaticData::GetLocation(rc)->GetName(), {"Include", "Exclude"}, OptionCategory::Setting, "", "", WidgetType::Checkbox, RO_LOCATION_INCLUDE);
+    OptionValue excludedOption = OptionValue(RO_LOCATION_INCLUDE);
     uint16_t price = 0;
     RandomizerRegion parentRegion = RR_NONE;
     std::set<RandomizerArea> areas = {};

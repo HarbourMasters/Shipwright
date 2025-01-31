@@ -6,44 +6,45 @@
 #include "UIWidgets.hpp"
 #include "include/z64audio.h"
 #include "graphic/Fast3D/gfx_rendering_api.h"
-#include "OTRGlobals.h"
-#include "SaveManager.h"
+#include "soh/OTRGlobals.h"
+#include "soh/SaveManager.h"
 #include "z64.h"
-#include "cvar_prefixes.h"
+#include "soh/cvar_prefixes.h"
 #include "macros.h"
 #include "functions.h"
 #include "variables.h"
-#include "Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/presets.h"
 #include "soh/Enhancements/mods.h"
 #include "soh/Notification/Notification.h"
-#include "Enhancements/cosmetics/authenticGfxPatches.h"
+#include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
 #ifdef ENABLE_REMOTE_CONTROL
 #include "soh/Network/CrowdControl/CrowdControl.h"
 #include "soh/Network/Sail/Sail.h"
 #endif
 
 
-#include "Enhancements/audio/AudioEditor.h"
-#include "Enhancements/controls/InputViewer.h"
-#include "Enhancements/cosmetics/CosmeticsEditor.h"
-#include "Enhancements/debugger/actorViewer.h"
-#include "Enhancements/debugger/colViewer.h"
-#include "Enhancements/debugger/debugSaveEditor.h"
-#include "Enhancements/debugger/hookDebugger.h"
-#include "Enhancements/debugger/dlViewer.h"
-#include "Enhancements/debugger/valueViewer.h"
-#include "Enhancements/gameplaystatswindow.h"
-#include "Enhancements/debugger/MessageViewer.h"
-#include "Enhancements/randomizer/randomizer_check_tracker.h"
-#include "Enhancements/randomizer/randomizer_entrance_tracker.h"
-#include "Enhancements/randomizer/randomizer_item_tracker.h"
-#include "Enhancements/randomizer/randomizer_settings_window.h"
-#include "Enhancements/resolution-editor/ResolutionEditor.h"
-#include "Enhancements/enemyrandomizer.h"
-#include "Enhancements/timesplits/TimeSplits.h"
-#include "Enhancements/randomizer/Plandomizer.h"
-#include "Enhancements/TimeDisplay/TimeDisplay.h"
+#include "soh/Enhancements/audio/AudioEditor.h"
+#include "soh/Enhancements/controls/InputViewer.h"
+#include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
+#include "soh/Enhancements/debugger/actorViewer.h"
+#include "soh/Enhancements/debugger/colViewer.h"
+#include "soh/Enhancements/debugger/debugSaveEditor.h"
+#include "soh/Enhancements/debugger/hookDebugger.h"
+#include "soh/Enhancements/debugger/dlViewer.h"
+#include "soh/Enhancements/debugger/valueViewer.h"
+#include "soh/Enhancements/gameplaystatswindow.h"
+#include "soh/Enhancements/debugger/MessageViewer.h"
+#include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
+#include "soh/Enhancements/randomizer/randomizer_item_tracker.h"
+#include "soh/Enhancements/randomizer/randomizer_settings_window.h"
+#include "soh/Enhancements/resolution-editor/ResolutionEditor.h"
+#include "soh/Enhancements/enemyrandomizer.h"
+#include "soh/Enhancements/timesplits/TimeSplits.h"
+#include "soh/Enhancements/randomizer/Plandomizer.h"
+#include "soh/Enhancements/TimeDisplay/TimeDisplay.h"
+#include "soh/AboutWindow.h"
 
 // FA icons are kind of wonky, if they worked how I expected them to the "+ 2.0f" wouldn't be needed, but
 // they don't work how I expect them to so I added that because it looked good when I eyeballed it
@@ -104,8 +105,8 @@ static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large
     static const char* subSubPowers[7] = { allPowers[0], allPowers[1], allPowers[2], allPowers[3], allPowers[4], allPowers[5], allPowers[6] };
     static const char* zFightingOptions[3] = { "Disabled", "Consistent Vanish", "No Vanish" };
     static const char* autosaveLabels[6] = { "Off", "New Location + Major Item", "New Location + Any Item", "New Location", "Major Item", "Any Item" };
+    static const char* bootSequenceLabels[3] = { "Default", "Authentic", "File Select" };
     static const char* DebugSaveFileModes[3] = { "Off", "Vanilla", "Maxed" };
-    static const char* FastFileSelect[5] = { "File N.1", "File N.2", "File N.3", "Zelda Map Select (require OoT Debug Mode)", "File select" };
     static const char* DekuStickCheat[3] = { "Normal", "Unbreakable", "Unbreakable + Always on Fire" };
     static const char* bonkDamageValues[8] = {
         "No Damage",
@@ -177,8 +178,18 @@ void DrawMenuBarIcon() {
     }
 }
 
+extern std::shared_ptr<AboutWindow> mAboutWindow;
+
 void DrawShipMenu() {
     if (ImGui::BeginMenu("Ship")) {
+        if (mAboutWindow) {
+            if (ImGui::MenuItem("About...")) {
+                mAboutWindow->Show();
+            }
+        }
+
+        UIWidgets::Spacer(0);
+
         if (ImGui::MenuItem("Hide Menu Bar",
 #if !defined(__SWITCH__) && !defined(__WIIU__)
          "F1"
@@ -1546,8 +1557,6 @@ void DrawEnhancementsMenu() {
 
         if (ImGui::BeginMenu("Restoration"))
         {
-            UIWidgets::EnhancementCheckbox("Authentic Logo Screen", CVAR_ENHANCEMENT("AuthenticLogo"));
-            UIWidgets::Tooltip("Hide the game version and build details and display the authentic model and texture on the boot logo start screen");
             UIWidgets::PaddedEnhancementCheckbox("Red Ganon blood", CVAR_ENHANCEMENT("RedGanonBlood"), true, false);
             UIWidgets::Tooltip("Restore the original red blood from NTSC 1.0/1.1. Disable for green blood");
             UIWidgets::PaddedEnhancementCheckbox("Fish while hovering", CVAR_ENHANCEMENT("HoverFishing"), true, false);
@@ -1709,6 +1718,16 @@ void DrawEnhancementsMenu() {
         UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("Autosave"), autosaveLabels, AUTOSAVE_OFF);
         UIWidgets::Tooltip("Automatically save the game when changing locations and/or obtaining items\n"
             "Major items exclude rupees and health/magic/ammo refills (but include bombchus unless bombchu drops are enabled)");
+
+        UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
+
+        UIWidgets::PaddedText("Boot Sequence", false, true);
+        UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("BootSequence"), bootSequenceLabels, BOOTSEQUENCE_DEFAULT);
+        UIWidgets::Tooltip("Configure what happens when starting or resetting the game\n\n"
+                           "Default: LUS logo -> N64 logo\n"
+                           "Authentic: N64 logo only\n"
+                           "File Select: Skip to file select menu"
+        );
 
         UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
 
@@ -2001,12 +2020,6 @@ void DrawDeveloperToolsMenu() {
         }
         UIWidgets::PaddedEnhancementCheckbox("OoT Skulltula Debug", CVAR_DEVELOPER_TOOLS("SkulltulaDebugEnabled"), true, false);
         UIWidgets::Tooltip("Enables Skulltula Debug, when moving the cursor in the menu above various map icons (boss key, compass, map screen locations, etc) will set the GS bits in that area.\nUSE WITH CAUTION AS IT DOES NOT UPDATE THE GS COUNT.");
-        UIWidgets::PaddedEnhancementCheckbox("Fast File Select", CVAR_DEVELOPER_TOOLS("SkipLogoTitle"), true, false);
-        UIWidgets::Tooltip("Load the game to the selected menu or file\n\"Zelda Map Select\" require debug mode else you will fallback to File choose menu\nUsing a file number that don't have save will create a save file only if you toggle on \"Create a new save if none ?\" else it will bring you to the File choose menu");
-        if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("SkipLogoTitle"), 0)) {
-            ImGui::Text("Loading:");
-            UIWidgets::EnhancementCombobox(CVAR_DEVELOPER_TOOLS("SaveFileID"), FastFileSelect, 0);
-        };
         UIWidgets::PaddedEnhancementCheckbox("Better Debug Warp Screen", CVAR_DEVELOPER_TOOLS("BetterDebugWarpScreen"), true, false);
         UIWidgets::Tooltip("Optimized debug warp screen, with the added ability to chose entrances and time of day");
         UIWidgets::PaddedEnhancementCheckbox("Debug Warp Screen Translation", CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"), true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);

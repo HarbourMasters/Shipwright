@@ -6,7 +6,7 @@
 #include "soh/cvar_prefixes.h"
 #include "soh/SaveManager.h"
 #include "soh/ResourceManagerHelpers.h"
-#include "soh/UIWidgets.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include "dungeon.h"
 #include "location_access.h"
 
@@ -493,7 +493,7 @@ void CheckTrackerLoadGame(int32_t fileNum) {
         }
     }
     if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING && IS_RANDO) {
-        uint8_t startingAge = OTRGlobals::Instance->gRandoContext->GetOption(RSK_SELECTED_STARTING_AGE).GetContextOptionIndex();
+        uint8_t startingAge = OTRGlobals::Instance->gRandoContext->GetOption(RSK_SELECTED_STARTING_AGE).Get();
         RandomizerCheckArea startingArea;
         switch (startingAge) {
             case RO_AGE_CHILD:

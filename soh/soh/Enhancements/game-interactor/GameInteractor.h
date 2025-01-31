@@ -395,6 +395,7 @@ typedef enum {
 
     /*** Give Items ***/
 
+    VB_SHORT_CIRCUIT_GIVE_ITEM_PROCESS,
     VB_FREEZE_ON_SKULL_TOKEN,
     // Opt: *EnBox
     VB_GIVE_ITEM_FROM_CHEST,

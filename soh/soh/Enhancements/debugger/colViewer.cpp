@@ -1,6 +1,6 @@
 #include "colViewer.h"
 #include "../../frame_interpolation.h"
-#include "../../UIWidgets.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 
 #include <vector>
 #include <string>

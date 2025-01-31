@@ -7,6 +7,8 @@
 extern "C" {
 #endif
 // MARK: - Gameplay
+void GameInteractor_ExecuteOnZTitleInit(void* gameState);
+void GameInteractor_ExecuteOnZTitleUpdate(void* gameState);
 void GameInteractor_ExecuteOnLoadGame(int32_t fileNum);
 void GameInteractor_ExecuteOnExitGame(int32_t fileNum);
 void GameInteractor_ExecuteOnGameStateMainStart();
