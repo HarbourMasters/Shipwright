@@ -298,10 +298,10 @@ void RegionTable_Init_DodongosCavern() {
         //EventAccess(&logic->CanClimbDCStairs, []{return logic->HasExplosives || logic->CanUse(RG_DINS_FIRE) || (ctx->GetTrickOption(RT_DC_STAIRCASE) && logic->CanUse(RG_FAIRY_BOW));}),
     }, {
         //Locations
-        LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_POT_1, logic->CanBreakPots()),
-        LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_POT_2, logic->CanBreakPots()),
-        LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_POT_3, logic->CanBreakPots()),
-        LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_POT_4, logic->CanBreakPots()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_POT_1,         logic->CanBreakPots()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_POT_2,         logic->CanBreakPots()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_POT_3,         logic->CanBreakPots()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_POT_4,         logic->CanBreakPots()),
         LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_LOWER_CRATE_1, logic->CanBreakCrates()),
         LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_LOWER_CRATE_2, logic->CanBreakCrates()),
     }, {
@@ -326,7 +326,7 @@ void RegionTable_Init_DodongosCavern() {
 
     areaTable[RR_DODONGOS_CAVERN_MQ_STAIRS_UPPER] = Region("Dodongos Cavern MQ Stairs Upper", "Dodongos Cavern", {RA_DODONGOS_CAVERN}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_STAIRCASE, logic->CanStunDeku()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_STAIRCASE,    logic->CanStunDeku()),
         LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_UPPER_CRATE_1, logic->CanBreakCrates()),
         LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_UPPER_CRATE_2, logic->CanBreakCrates()),
         LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_UPPER_CRATE_3, logic->CanBreakCrates()),
@@ -415,10 +415,10 @@ void RegionTable_Init_DodongosCavern() {
 
     areaTable[RR_DODONGOS_CAVERN_MQ_TWO_FIRES_ROOM] = Region("Dodongos Cavern MQ Before Upper Lizalfos", "Dodongos Cavern", {RA_DODONGOS_CAVERN}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_DODONGOS_CAVERN_MQ_TWO_FLAMES_POT_1, logic->CanBreakPots()),
-        LOCATION(RC_DODONGOS_CAVERN_MQ_TWO_FLAMES_POT_2, logic->CanBreakPots()),
-        LOCATION(RC_DODONGOS_CAVERN_MQ_TWO_FLAMES_CRATE_1, logic->CanBreakCrates()),
-        LOCATION(RC_DODONGOS_CAVERN_MQ_TWO_FLAMES_CRATE_2, logic->CanBreakCrates()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_TWO_FLAMES_POT_1,    logic->CanBreakPots()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_TWO_FLAMES_POT_2,    logic->CanBreakPots()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_TWO_FLAMES_CRATE_1,  logic->CanBreakCrates()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_TWO_FLAMES_CRATE_2,  logic->CanBreakCrates()),
     }, {
         //Exits
         Entrance(RR_DODONGOS_CAVERN_MQ_UPPER_LIZALFOS,     []{return true;}),
@@ -468,18 +468,18 @@ void RegionTable_Init_DodongosCavern() {
         LOCATION(RC_DODONGOS_CAVERN_MQ_GS_SCRUB_ROOM,  (Here(RR_DODONGOS_CAVERN_MQ_POES_ROOM, []{return logic->CanDetonateBombFlowers() || logic->HasItem(RG_GORONS_BRACELET);}) && //could be a seperate room if it gets busy
                                                                                                         logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG, true))), //Implies you can avoid/kill the enemies with what you use on the skull, if this assumption is broken, add
                                                                                                     //&& (Here(RR_DODONGOS_CAVERN_MQ_POES_ROOM, []{return logic->CanKillEnemy(RE_FIRE_KEESE) && logic->CanKillEnemy(RE_MAD_SCRUB);}) || (logic->CanAvoidEnemy(RE_FIRE_KEESE) && logic->CanAvoidEnemy(RE_MAD_SCRUB)))
-        LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_POT_1, logic->CanBreakPots()),
-        LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_POT_2, logic->CanBreakPots()),
-        LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_POT_3, logic->CanBreakPots()),
-        LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_POT_4, logic->CanBreakPots()),
-        LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_1, logic->CanBreakCrates()),
-        LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_2, logic->CanBreakCrates()),
-        LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_3, logic->CanBreakCrates()),
-        LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_4, logic->CanBreakCrates()),
-        LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_5, logic->CanBreakCrates()),
-        LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_6, logic->CanBreakCrates()),
-        LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_7, logic->CanBreakCrates()),
-        LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_8, logic->CanBreakCrates()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_POT_1,      logic->CanBreakPots()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_POT_2,      logic->CanBreakPots()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_POT_3,      logic->CanBreakPots()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_POT_4,      logic->CanBreakPots()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_1,    logic->CanBreakCrates()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_2,    logic->CanBreakCrates()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_3,    logic->CanBreakCrates()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_4,    logic->CanBreakCrates()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_5,    logic->CanBreakCrates()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_6,    logic->CanBreakCrates()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_7,    logic->CanBreakCrates()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_8,    logic->CanBreakCrates()),
         }, {
         //Exits
         Entrance(RR_DODONGOS_CAVERN_MQ_LOWER_RIGHT_SIDE, []{return Here(RR_DODONGOS_CAVERN_MQ_POES_ROOM, []{return logic->CanDetonateBombFlowers() || logic->HasItem(RG_GORONS_BRACELET);});}),

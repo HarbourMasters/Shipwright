@@ -22,7 +22,6 @@ extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
 extern "C" void ObjKibako2_RandomizerDraw(Actor* thisx, PlayState* play) {
     GetItemCategory getItemCategory;
     auto crateActor = ((ObjKibako2*)thisx);
-    //u8 hasCreatedRandoChestTextures = 0;
     u8 hasCustomCrateDLs = 0;
     int csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED);
     int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
@@ -86,7 +85,6 @@ extern "C" void ObjKibako2_RandomizerDraw(Actor* thisx, PlayState* play) {
 extern "C" void ObjKibako_RandomizerDraw(Actor* thisx, PlayState* play) {
     GetItemCategory getItemCategory;
     auto smallCrateActor = ((ObjKibako*)thisx);
-    // u8 hasCreatedRandoChestTextures = 0;
     u8 hasCustomSmallCrateDLs = 0;
     int csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED);
     int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);

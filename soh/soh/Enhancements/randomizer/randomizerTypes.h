@@ -289,7 +289,7 @@ typedef enum {
     RCTYPE_BOSS_HEART_OR_OTHER_REWARD, // Boss heart container or lesser dungeon rewards (lens, ice arrow)
     RCTYPE_POT,                        // Pots
     RCTYPE_CRATE,                      // Crates
-    RCTYPE_SMALL_CRATE,                 // Small crates
+    RCTYPE_SMALL_CRATE,                // Small crates
     RCTYPE_DUNGEON_REWARD,             // Dungeon rewards (blue warps)
     RCTYPE_OCARINA,                    // Ocarina locations
     RCTYPE_BEEHIVE,                    // Beehives

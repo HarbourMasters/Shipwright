@@ -1308,7 +1308,7 @@ hintTextTable[RHT_FIRE_TEMPLE_NEAR_BOSS_CHEST] = HintText(CustomMessage("They sa
 
     hintTextTable[RHT_CRATE_SPIRIT_TEMPLE] = HintText(CustomMessage("They say that a #crate in Spirit Temple# contains #[[1]]#.",
                                                      /*german*/ "",
-                                                     /*french*/ "Selon moi, une #caisse dans le colosse# contient #[[1]]#.", {QM_RED, QM_GREEN}));
+                                                     /*french*/ "Selon moi, une #caisse dans le Temple de l'Esprit# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
   /*--------------------------
   |      SHADOW TEMPLE       |

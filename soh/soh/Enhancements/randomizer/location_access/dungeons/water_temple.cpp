@@ -466,20 +466,20 @@ void RegionTable_Init_WaterTemple() {
     //Region exists to add crate/pot/box locations
     areaTable[RR_WATER_TEMPLE_MQ_STORAGE_ROOM] = Region("Water Temple MQ Storage Room", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_POT_1,   logic->CanBreakPots()),
-        LOCATION(RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_POT_2,   logic->CanBreakPots()),
-        LOCATION(RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_POT_3,   logic->CanBreakPots()),
-        LOCATION(RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_1, logic->CanBreakCrates()),
-        LOCATION(RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_2, logic->CanBreakCrates()),
-        LOCATION(RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_3, logic->CanBreakCrates()),
-        LOCATION(RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_4, logic->CanBreakCrates()),
-        LOCATION(RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_5, logic->CanBreakCrates()),
-        LOCATION(RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_6, logic->CanBreakCrates()),
-        LOCATION(RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_7, logic->CanBreakCrates()),
-        LOCATION(RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_SMALL_CRATE_1, logic->CanBreakSmallCrates()),
-        LOCATION(RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_SMALL_CRATE_2, logic->CanBreakSmallCrates()),
-        LOCATION(RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_SMALL_CRATE_3, logic->CanBreakSmallCrates()),
-        LOCATION(RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_SMALL_CRATE_4, logic->CanBreakSmallCrates()),
+        LOCATION(RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_POT_1,           logic->CanBreakPots()),
+        LOCATION(RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_POT_2,           logic->CanBreakPots()),
+        LOCATION(RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_POT_3,           logic->CanBreakPots()),
+        LOCATION(RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_1,         logic->CanBreakCrates()),
+        LOCATION(RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_2,         logic->CanBreakCrates()),
+        LOCATION(RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_3,         logic->CanBreakCrates()),
+        LOCATION(RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_4,         logic->CanBreakCrates()),
+        LOCATION(RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_5,         logic->CanBreakCrates()),
+        LOCATION(RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_6,         logic->CanBreakCrates()),
+        LOCATION(RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_7,         logic->CanBreakCrates()),
+        LOCATION(RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_SMALL_CRATE_1,   logic->CanBreakSmallCrates()),
+        LOCATION(RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_SMALL_CRATE_2,   logic->CanBreakSmallCrates()),
+        LOCATION(RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_SMALL_CRATE_3,   logic->CanBreakSmallCrates()),
+        LOCATION(RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_SMALL_CRATE_4,   logic->CanBreakSmallCrates()),
     }, {
         //Exits
         Entrance(RR_WATER_TEMPLE_MQ_MAIN, []{return logic->MQWaterLevel(WL_LOW_OR_MID) || (logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8);}),
@@ -487,19 +487,19 @@ void RegionTable_Init_WaterTemple() {
 
     areaTable[RR_WATER_TEMPLE_MQ_BEHIND_BLUE_SWITCH_2F] = Region("Water Temple MQ Behind Blue Switch 2F", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_POT_1, logic->CanBreakPots()),
-        LOCATION(RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_POT_2, logic->CanBreakPots()),
-        LOCATION(RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_POT_3, logic->CanBreakPots()),
-        LOCATION(RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_CRATE_1, logic->CanBreakCrates()),
-        LOCATION(RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_CRATE_2, logic->CanBreakCrates()),
-        LOCATION(RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_CRATE_3, logic->CanBreakCrates()),
-        LOCATION(RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_CRATE_4, logic->CanBreakCrates()),
-        LOCATION(RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_CRATE_5, logic->CanBreakCrates()),
-        LOCATION(RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_CRATE_6, logic->CanBreakCrates()),
-        LOCATION(RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_SMALL_CRATE, logic->CanBreakSmallCrates()),
-        LOCATION(RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_UPPER_CRATE_1, logic->CanBreakCrates()),
-        LOCATION(RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_UPPER_CRATE_2, logic->CanBreakCrates()),
-        LOCATION(RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_UPPER_SMALL_CRATE, logic->CanBreakSmallCrates()),
+        LOCATION(RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_POT_1,              logic->CanBreakPots()),
+        LOCATION(RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_POT_2,              logic->CanBreakPots()),
+        LOCATION(RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_POT_3,              logic->CanBreakPots()),
+        LOCATION(RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_CRATE_1,      logic->CanBreakCrates()),
+        LOCATION(RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_CRATE_2,      logic->CanBreakCrates()),
+        LOCATION(RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_CRATE_3,      logic->CanBreakCrates()),
+        LOCATION(RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_CRATE_4,      logic->CanBreakCrates()),
+        LOCATION(RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_CRATE_5,      logic->CanBreakCrates()),
+        LOCATION(RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_CRATE_6,      logic->CanBreakCrates()),
+        LOCATION(RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_SMALL_CRATE,  logic->CanBreakSmallCrates()),
+        LOCATION(RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_UPPER_CRATE_1,      logic->CanBreakCrates()),
+        LOCATION(RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_UPPER_CRATE_2,      logic->CanBreakCrates()),
+        LOCATION(RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_UPPER_SMALL_CRATE,  logic->CanBreakSmallCrates()),
     }, {
         //Exits
         Entrance(RR_WATER_TEMPLE_MQ_MAIN,                  []{return true;}),
@@ -661,11 +661,11 @@ void RegionTable_Init_WaterTemple() {
     }, 
     {
         //Locations
-        LOCATION(RC_WATER_TEMPLE_MQ_DRAGON_ROOM_TORCHES_CRATE_1, logic->CanBreakCrates()),
-        LOCATION(RC_WATER_TEMPLE_MQ_DRAGON_ROOM_TORCHES_CRATE_2, logic->CanBreakCrates()),
-        LOCATION(RC_WATER_TEMPLE_MQ_DRAGON_ROOM_TORCHES_SMALL_CRATE_1, logic->CanBreakSmallCrates()),
-        LOCATION(RC_WATER_TEMPLE_MQ_DRAGON_ROOM_TORCHES_SMALL_CRATE_2, logic->CanBreakSmallCrates()),
-        LOCATION(RC_WATER_TEMPLE_MQ_DRAGON_ROOM_TORCHES_SMALL_CRATE_3, logic->CanBreakSmallCrates()),
+        LOCATION(RC_WATER_TEMPLE_MQ_DRAGON_ROOM_TORCHES_CRATE_1,        logic->CanBreakCrates()),
+        LOCATION(RC_WATER_TEMPLE_MQ_DRAGON_ROOM_TORCHES_CRATE_2,        logic->CanBreakCrates()),
+        LOCATION(RC_WATER_TEMPLE_MQ_DRAGON_ROOM_TORCHES_SMALL_CRATE_1,  logic->CanBreakSmallCrates()),
+        LOCATION(RC_WATER_TEMPLE_MQ_DRAGON_ROOM_TORCHES_SMALL_CRATE_2,  logic->CanBreakSmallCrates()),
+        LOCATION(RC_WATER_TEMPLE_MQ_DRAGON_ROOM_TORCHES_SMALL_CRATE_3,  logic->CanBreakSmallCrates()),
     }, 
     {
         //Exits
@@ -689,8 +689,8 @@ void RegionTable_Init_WaterTemple() {
 
     areaTable[RR_WATER_TEMPLE_MQ_BOSS_KEY_ROOM_SWITCH] = Region("Water Temple MQ Boss Key Room Switch", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_WATER_TEMPLE_MQ_BOSS_KEY_POT, logic->CanBreakPots()),
-        LOCATION(RC_WATER_TEMPLE_MQ_BK_ROOM_UPPER_CRATE, logic->CanBreakCrates()),
+        LOCATION(RC_WATER_TEMPLE_MQ_BOSS_KEY_POT,           logic->CanBreakPots()),
+        LOCATION(RC_WATER_TEMPLE_MQ_BK_ROOM_UPPER_CRATE,    logic->CanBreakCrates()),
     }, {
         //Exits
         Entrance(RR_WATER_TEMPLE_MQ_DRAGON_ROOM_DOOR,    []{return true;}),

@@ -112,7 +112,6 @@ void ObjKibako_Destroy(Actor* thisx, PlayState* play2) {
     PlayState* play = play2;
     ObjKibako* this = (ObjKibako*)thisx;
 
-
     Collider_DestroyCylinder(play, &this->collider);
 }
 
