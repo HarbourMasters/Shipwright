@@ -1,6 +1,7 @@
 #include "SohMenu.h"
 #include "soh/Notification/Notification.h"
-
+#include <soh/GameVersions.h>
+#include "soh/ResourceManagerHelpers.h"
 
 extern "C" {
 #include "include/z64audio.h"
@@ -12,11 +13,42 @@ namespace SohGui {
 extern std::shared_ptr<SohMenu> mSohMenu;
 using namespace UIWidgets2;
 
+const char* GetGameVersionString(uint32_t index) {
+    uint32_t gameVersion = ResourceMgr_GetGameVersion(index);
+    switch (gameVersion) {
+        case OOT_NTSC_US_10:
+            return "NTSC-U 1.0";
+        case OOT_NTSC_US_11:
+            return "NTSC-U 1.1";
+        case OOT_NTSC_US_12:
+            return "NTSC-U 1.2";
+        case OOT_PAL_10:
+            return "PAL 1.0";
+        case OOT_PAL_11:
+            return "PAL 1.1";
+        case OOT_PAL_GC:
+            return "PAL GC";
+        case OOT_PAL_MQ:
+            return "PAL MQ";
+        case OOT_PAL_GC_DBG1:
+        case OOT_PAL_GC_DBG2:
+            return "PAL GC-D";
+        case OOT_PAL_GC_MQ_DBG:
+            return "PAL MQ-D";
+        case OOT_IQUE_CN:
+            return "IQUE CN";
+        case OOT_IQUE_TW:
+            return "IQUE TW";
+        default:
+            return "UNKNOWN";
+    }
+}
+
 void SohMenu::AddMenuSettings() {
     // Add Settings Menu
     AddMenuEntry("Settings", CVAR_SETTING("Menu.SettingsSidebarSection"));
 
-    // General
+    // General - About
     AddSidebarEntry("Settings", "General", 3);
     WidgetPath path = { "Settings", "General", SECTION_COLUMN_1 };
 
@@ -31,7 +63,11 @@ void SohMenu::AddMenuSettings() {
     AddWidget(path, gGitCommitHash, WIDGET_TEXT).PreFunc([](WidgetInfo& info) {
         info.isHidden = (gGitCommitTag[0] != 0);
     });
+    for (uint32_t i = 0; i < ResourceMgr_GetNumGameVersions(); i++) {
+        AddWidget(path, GetGameVersionString(i), WIDGET_TEXT);
+    }
 
+    // General - Settings
     AddWidget(path, "Settings", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Menu Theme", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_SETTING("Menu.Theme"))

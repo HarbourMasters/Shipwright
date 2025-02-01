@@ -26,7 +26,6 @@
 #include "soh/Enhancements/randomizer/randomizer_settings_window.h"
 #include "soh/Enhancements/timesplits/TimeSplits.h"
 #include "soh/Enhancements/randomizer/Plandomizer.h"
-#include "soh/AboutWindow.h"
 #include "SohModals.h"
 
 #ifdef __cplusplus

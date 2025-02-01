@@ -136,7 +136,6 @@ namespace SohGui {
     std::shared_ptr<SohModalWindow> mModalWindow;
     std::shared_ptr<Notification::Window> mNotificationWindow;
     std::shared_ptr<TimeDisplayWindow> mTimeDisplayWindow;
-    std::shared_ptr<AboutWindow> mAboutWindow;
 
     void SetupGuiElements() {
         auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
@@ -227,8 +226,6 @@ namespace SohGui {
         mNotificationWindow->Show();
         mTimeDisplayWindow = std::make_shared<TimeDisplayWindow>(CVAR_WINDOW("AdditionalTimers"), "Additional Timers");
         gui->AddGuiWindow(mTimeDisplayWindow);
-        mAboutWindow = std::make_shared<AboutWindow>(CVAR_WINDOW("About"), "About");
-        gui->AddGuiWindow(mAboutWindow);
     }
 
     void Destroy() {
@@ -265,7 +262,6 @@ namespace SohGui {
         mTimeSplitWindow = nullptr;
         mPlandomizerWindow = nullptr;
         mTimeDisplayWindow = nullptr;
-        mAboutWindow = nullptr;
     }
 
     void RegisterPopup(std::string title, std::string message, std::string button1, std::string button2, std::function<void()> button1callback, std::function<void()> button2callback) {
