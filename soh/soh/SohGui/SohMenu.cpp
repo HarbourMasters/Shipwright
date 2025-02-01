@@ -93,7 +93,7 @@ void SohMenu::InitElement() {
     AddMenuNetwork();
     AddMenuDevTools();
 
-    if (CVarGetInteger("gSettings.Menu.SidebarSearch", 0)) {
+    if (CVarGetInteger(CVAR_SETTING("Menu.SidebarSearch"), 0)) {
         InsertSidebarSearch();
     }
 

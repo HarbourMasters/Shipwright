@@ -43,7 +43,7 @@ namespace SOH {
         { MigrationAction::Rename, "gCheckTrackerSettingsEnabled", "gOpenWindows.CheckTrackerSettings" },
         { MigrationAction::Rename, "gCollisionViewerEnabled", "gOpenWindows.CollisionViewer" },
         { MigrationAction::Rename, "gCosmeticsEditorEnabled", "gOpenWindows.CosmeticsEditor" },
-        { MigrationAction::Rename, "gDLViewerEnabled", "gOpenWindows.DLViewer" },
+        { MigrationAction::Rename, "gDLViewerEnabled", "gOpenWindows.DisplayListViewer" },
         { MigrationAction::Rename, "gEntranceTrackerEnabled", "gOpenWindows.EntranceTracker" },
         { MigrationAction::Rename, "gGameplayStatsEnabled", "gOpenWindows.GameplayStats" },
         { MigrationAction::Rename, "gItemTrackerEnabled", "gOpenWindows.ItemTracker" },

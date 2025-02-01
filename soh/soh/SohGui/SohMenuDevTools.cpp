@@ -7,9 +7,9 @@ using namespace UIWidgets2;
 
 void SohMenu::AddMenuDevTools() {
     // Add Dev Tools Menu
-    AddMenuEntry("Dev Tools", "gSettings.Menu.DevToolsSidebarSection");
+    AddMenuEntry("Dev Tools", CVAR_SETTING("Menu.DevToolsSidebarSection"));
 
-    // Menu 1
+    // General
     AddSidebarEntry("Dev Tools", "General", 3);
     WidgetPath path = { "Dev Tools", "General", SECTION_COLUMN_1 };
 
@@ -17,58 +17,86 @@ void SohMenu::AddMenuDevTools() {
         .CVar("gSettings.Menu.Popout")
         .Options(CheckboxOptions().Tooltip("Changes the menu display from overlay to windowed."));
 
-    // dev tools windows
-    // path = { "Developer Tools", "Collision Viewer", SECTION_COLUMN_1 };
-    // AddSidebarEntry("Developer Tools", "Collision Viewer", 1);
-    // AddWidget(path, "Popout Collision Viewer", WIDGET_WINDOW_BUTTON)
-    //     .CVar("gWindows.CollisionViewer")
-    //     .Options(ButtonOptions().Tooltip("Makes collision visible on screen").Size(Sizes::Inline))
-    //     .WindowName("Collision Viewer");
+    // Stats
+    path.sidebarName = "Stats";
+    AddSidebarEntry("Dev Tools", path.sidebarName, 1);
+    AddWidget(path, "Popout Stats Window", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("Stats"))
+        .WindowName("Stats")
+        .Options(ButtonOptions().Tooltip("Enables the separate Stats Window.").Size(Sizes::Inline));
 
-    // path = { "Developer Tools", "Stats", SECTION_COLUMN_1 };
-    // AddSidebarEntry("Developer Tools", "Stats", 1);
-    // AddWidget(path, "Popout Stats", WIDGET_WINDOW_BUTTON)
-    //     .CVar("gOpenWindows.Stats")
-    //     .Options(ButtonOptions().Tooltip(
-    //         "Shows the stats window, with your FPS and frametimes, and the OS you're playing on"))
-    //     .WindowName("Stats");
+    // Console
+    path.sidebarName = "Console";
+    AddSidebarEntry("Dev Tools", path.sidebarName, 1);
+    AddWidget(path, "Popout Console", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("Console"))
+        .WindowName("Console")
+        .Options(ButtonOptions().Tooltip("Enables the separate Console Window.").Size(Sizes::Inline));
 
-    // path = { "Developer Tools", "Console", SECTION_COLUMN_1 };
-    // AddSidebarEntry("Developer Tools", "Console", 1);
-    // AddWidget(path, "Popout Console", WIDGET_WINDOW_BUTTON)
-    //     .CVar("gOpenWindows.Console")
-    //     .Options(ButtonOptions().Tooltip(
-    //         "Enables the console window, allowing you to input commands. Type help for some examples"))
-    //     .WindowName("Console");
+    // Save Editor
+    path.sidebarName = "Save Editor";
+    AddSidebarEntry("Dev Tools", path.sidebarName, 1);
+    AddWidget(path, "Popout Save Editor", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("SaveEditor"))
+        .WindowName("Save Editor")
+        .Options(ButtonOptions().Tooltip("Enables the separate Save Editor Window.").Size(Sizes::Inline));
 
-    // path = { "Developer Tools", "Gfx Debugger", SECTION_COLUMN_1 };
-    // AddSidebarEntry("Developer Tools", "Gfx Debugger", 1);
-    // AddWidget(path, "Popout Gfx Debugger", WIDGET_WINDOW_BUTTON)
-    //     .CVar("gOpenWindows.GfxDebugger")
-    //     .Options(ButtonOptions().Tooltip(
-    //         "Enables the Gfx Debugger window, allowing you to input commands, type help for some examples"))
-    //     .WindowName("GfxDebuggerWindow");
+    // Hook Debugger
+    path.sidebarName = "Hook Debugger";
+    AddSidebarEntry("Dev Tools", path.sidebarName, 1);
+    AddWidget(path, "Popout Hook Debugger", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("HookDebugger"))
+        .WindowName("Hook Debugger")
+        .Options(ButtonOptions().Tooltip("Enables the separate Hook Debugger Window.").Size(Sizes::Inline));
 
-    // path = { "Developer Tools", "Save Editor", SECTION_COLUMN_1 };
-    // AddSidebarEntry("Developer Tools", "Save Editor", 1);
-    // AddWidget(path, "Popout Save Editor", WIDGET_WINDOW_BUTTON)
-    //     .CVar("gWindows.SaveEditor")
-    //     .Options(ButtonOptions().Tooltip("Enables the Save Editor window, allowing you to edit your save file"))
-    //     .WindowName("Save Editor");
+    // Collision Viewer
+    path.sidebarName = "Collision Viewer";
+    AddSidebarEntry("Dev Tools", path.sidebarName, 2);
+    AddWidget(path, "Popout Collision Viewer", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("CollisionViewer"))
+        .WindowName("Collision Viewer")
+        .Options(ButtonOptions().Tooltip("Enables the separate Collision Viewer Window.").Size(Sizes::Inline));
 
-    // path = { "Developer Tools", "Actor Viewer", SECTION_COLUMN_1 };
-    // AddSidebarEntry("Developer Tools", "Actor Viewer", 1);
-    // AddWidget(path, "Popout Actor Viewer", WIDGET_WINDOW_BUTTON)
-    //     .CVar("gWindows.ActorViewer")
-    //     .Options(ButtonOptions().Tooltip("Enables the Actor Viewer window, allowing you to view actors in the
-    //     world.")) .WindowName("Actor Viewer");
+    // Actor Viewer
+    path.sidebarName = "Actor Viewer";
+    AddSidebarEntry("Dev Tools", path.sidebarName, 1);
+    AddWidget(path, "Popout Actor Viewer", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("ActorViewer"))
+        .WindowName("Actor Viewer")
+        .Options(ButtonOptions().Tooltip("Enables the separate Actor Viewer Window.").Size(Sizes::Inline));
 
-    // path = { "Developer Tools", "Event Log", SECTION_COLUMN_1 };
-    // AddSidebarEntry("Developer Tools", "Event Log", 1);
-    // AddWidget(path, "Popout Event Log", WIDGET_WINDOW_BUTTON)
-    //     .CVar("gWindows.EventLog")
-    //     .Options(ButtonOptions().Tooltip("Enables the event log window"))
-    //     .WindowName("Event Log");
+    // Display List Viewer
+    path.sidebarName = "DList Viewer";
+    AddSidebarEntry("Dev Tools", path.sidebarName, 1);
+    AddWidget(path, "Popout Display List Viewer", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("DisplayListViewer"))
+        .WindowName("Display List Viewer")
+        .Options(ButtonOptions().Tooltip("Enables the separate Display List Viewer Window.").Size(Sizes::Inline));
+
+    // Value Viewer
+    path.sidebarName = "Value Viewer";
+    AddSidebarEntry("Dev Tools", path.sidebarName, 1);
+    AddWidget(path, "Popout Value Viewer", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("ValueViewer"))
+        .WindowName("Value Viewer")
+        .Options(ButtonOptions().Tooltip("Enables the separate Value Viewer Window.").Size(Sizes::Inline));
+
+    // Message Viewer
+    path.sidebarName = "Message Viewer";
+    AddSidebarEntry("Dev Tools", path.sidebarName, 1);
+    AddWidget(path, "Popout Message Viewer", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("MessageViewer"))
+        .WindowName("Message Viewer")
+        .Options(ButtonOptions().Tooltip("Enables the separate Message Viewer Window.").Size(Sizes::Inline));
+
+    // Gfx Debugger
+    path.sidebarName = "Gfx Debugger";
+    AddSidebarEntry("Dev Tools", path.sidebarName, 1);
+    AddWidget(path, "Popout Gfx Debugger", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("GfxDebugger"))
+        .WindowName("Gfx Debugger")
+        .Options(ButtonOptions().Tooltip("Enables the separate Gfx Debugger Window.").Size(Sizes::Inline));
+    
 }
 
 } // namespace SohGui

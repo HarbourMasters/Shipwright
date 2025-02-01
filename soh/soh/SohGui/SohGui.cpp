@@ -165,9 +165,9 @@ namespace SohGui {
             SPDLOG_ERROR("Could not find console window");
         }
 
-        mGfxDebuggerWindow = gui->GetGuiWindow("GfxDebuggerWindow");
+        mGfxDebuggerWindow = gui->GetGuiWindow("Gfx Debugger");
         if (mGfxDebuggerWindow == nullptr) {
-            SPDLOG_ERROR("Could not find input GfxDebuggerWindow");
+            SPDLOG_ERROR("Could not find Gfx Debugger window");
         }
 
         mInputEditorWindow = gui->GetGuiWindow("Controller Configuration");
@@ -191,7 +191,7 @@ namespace SohGui {
         gui->AddGuiWindow(mSaveEditorWindow);
         mHookDebuggerWindow = std::make_shared<HookDebuggerWindow>(CVAR_WINDOW("HookDebugger"), "Hook Debugger", ImVec2(1250, 850));
         gui->AddGuiWindow(mHookDebuggerWindow);
-        mDLViewerWindow = std::make_shared<DLViewerWindow>(CVAR_WINDOW("DLViewer"), "Display List Viewer", ImVec2(520, 600));
+        mDLViewerWindow = std::make_shared<DLViewerWindow>(CVAR_WINDOW("DisplayListViewer"), "Display List Viewer", ImVec2(520, 600));
         gui->AddGuiWindow(mDLViewerWindow);
         mValueViewerWindow = std::make_shared<ValueViewerWindow>(CVAR_WINDOW("ValueViewer"), "Value Viewer", ImVec2(520, 600));
         gui->AddGuiWindow(mValueViewerWindow);
@@ -213,9 +213,9 @@ namespace SohGui {
         gui->AddGuiWindow(mItemTrackerSettingsWindow);
         mRandomizerSettingsWindow = std::make_shared<RandomizerSettingsWindow>(CVAR_WINDOW("RandomizerSettings"), "Randomizer Settings", ImVec2(920, 600));
         gui->AddGuiWindow(mRandomizerSettingsWindow);
-        mTimeSplitWindow = std::make_shared<TimeSplitWindow>(CVAR_WINDOW("TimeSplitEnabled"), "Time Splits", ImVec2(450, 660));
+        mTimeSplitWindow = std::make_shared<TimeSplitWindow>(CVAR_WINDOW("TimeSplits"), "Time Splits", ImVec2(450, 660));
         gui->AddGuiWindow(mTimeSplitWindow);
-        mPlandomizerWindow = std::make_shared<PlandomizerWindow>(CVAR_WINDOW("PlandomizerWindow"), "Plandomizer Editor", ImVec2(850, 760));
+        mPlandomizerWindow = std::make_shared<PlandomizerWindow>(CVAR_WINDOW("PlandomizerEditor"), "Plandomizer Editor", ImVec2(850, 760));
         gui->AddGuiWindow(mPlandomizerWindow);
         mAdvancedResolutionSettingsWindow = std::make_shared<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow>(CVAR_WINDOW("AdvancedResolutionEditor"), "Advanced Resolution Settings", ImVec2(497, 599));
         gui->AddGuiWindow(mAdvancedResolutionSettingsWindow);
@@ -225,7 +225,7 @@ namespace SohGui {
         mNotificationWindow = std::make_shared<Notification::Window>(CVAR_WINDOW("Notifications"), "Notifications Window");
         gui->AddGuiWindow(mNotificationWindow);
         mNotificationWindow->Show();
-        mTimeDisplayWindow = std::make_shared<TimeDisplayWindow>(CVAR_WINDOW("TimeDisplayEnabled"), "Additional Timers");
+        mTimeDisplayWindow = std::make_shared<TimeDisplayWindow>(CVAR_WINDOW("AdditionalTimers"), "Additional Timers");
         gui->AddGuiWindow(mTimeDisplayWindow);
         mAboutWindow = std::make_shared<AboutWindow>(CVAR_WINDOW("AboutWindow"), "About");
         gui->AddGuiWindow(mAboutWindow);

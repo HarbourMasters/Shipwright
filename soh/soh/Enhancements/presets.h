@@ -314,7 +314,7 @@ const std::vector<const char*> cheatCvars = {
     CVAR_CONSOLE_WINDOW_OPEN,
     CVAR_WINDOW("ActorViewer"),
     CVAR_WINDOW("CollisionViewer"),
-    CVAR_WINDOW("DLViewer"),
+    CVAR_WINDOW("DisplayListViewer"),
     CVAR_WINDOW("SaveEditor"),
     CVAR_SETTING("WalkModifier.Enabled"),
     CVAR_SETTING("WalkModifier.SpeedToggle"),

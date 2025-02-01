@@ -7,7 +7,7 @@ using namespace UIWidgets2;
 
 void SohMenu::AddMenuNetwork() {
     // Add Network Menu
-    AddMenuEntry("Network", "gSettings.Menu.NetworkSidebarSection");
+    AddMenuEntry("Network", CVAR_SETTING("Menu.NetworkSidebarSection"));
 
     // General
     AddSidebarEntry("Network", "General", 3);

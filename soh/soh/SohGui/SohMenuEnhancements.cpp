@@ -7,7 +7,7 @@ using namespace UIWidgets2;
 
 void SohMenu::AddMenuEnhancements() {
     // Add Enhancements Menu
-    AddMenuEntry("Enhancements", "gSettings.Menu.EnhancementsSidebarSection");
+    AddMenuEntry("Enhancements", CVAR_SETTING("Menu.EnhancementsSidebarSection"));
 
 
     // Enhancements
@@ -27,9 +27,8 @@ void SohMenu::AddMenuEnhancements() {
     // Cosmetics Editor
     path.sidebarName = "Cosmetics Editor";
     AddSidebarEntry("Enhancements", path.sidebarName, 1);
-    AddWidget(path, "Cosmetics Editor", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Popout Cosmetics Editor Window", WIDGET_WINDOW_BUTTON)
-        .CVar("gWindows.CosmeticsEditor")
+        .CVar(CVAR_WINDOW("CosmeticsEditor"))
         .WindowName("Cosmetics Editor")
         .Options(ButtonOptions().Tooltip("Enables the separate Cosmetics Editor Window.").Size(Sizes::Inline));
 
@@ -37,9 +36,8 @@ void SohMenu::AddMenuEnhancements() {
     // Audio Editor
     path.sidebarName = "Audio Editor";
     AddSidebarEntry("Enhancements", path.sidebarName, 1);
-    AddWidget(path, "Audio Editor", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Popout Audio Editor Window", WIDGET_WINDOW_BUTTON)
-        .CVar("gWindows.AudioEditor")
+        .CVar(CVAR_WINDOW("AudioEditor"))
         .WindowName("Audio Editor")
         .Options(ButtonOptions().Tooltip("Enables the separate Audio Editor Window.").Size(Sizes::Inline));
 
@@ -47,9 +45,8 @@ void SohMenu::AddMenuEnhancements() {
     // Gameplay Stats
     path.sidebarName = "Gameplay Stats";
     AddSidebarEntry("Enhancements", path.sidebarName, 2);
-    AddWidget(path, "Gameplay Stats", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Popout Gameplay Stats Window", WIDGET_WINDOW_BUTTON)
-        .CVar("gWindows.GameplayStats")
+        .CVar(CVAR_WINDOW("GameplayStats"))
         .WindowName("Gameplay Stats")
         .Options(ButtonOptions().Tooltip("Enables the separate Gameplay Stats Window.").Size(Sizes::Inline));
 
@@ -57,9 +54,8 @@ void SohMenu::AddMenuEnhancements() {
     // Time Splits
     path.sidebarName = "Time Splits";
     AddSidebarEntry("Enhancements", path.sidebarName, 1);
-    AddWidget(path, "Time Splits", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Popout Time Splits Window", WIDGET_WINDOW_BUTTON)
-        .CVar("gWindows.TimeSplits")
+        .CVar(CVAR_WINDOW("TimeSplits"))
         .WindowName("Time Splits")
         .Options(ButtonOptions().Tooltip("Enables the separate Time Splits Window.").Size(Sizes::Inline));
 
@@ -67,9 +63,8 @@ void SohMenu::AddMenuEnhancements() {
     // Timers
     path.sidebarName = "Timers";
     AddSidebarEntry("Enhancements", path.sidebarName, 1);
-    AddWidget(path, "Timers", WIDGET_SEPARATOR_TEXT);
-    AddWidget(path, "Popout Timers Window", WIDGET_WINDOW_BUTTON)
-        .CVar("gWindows.AdditionalTimers")
+    AddWidget(path, "Toggle Timers Window", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("AdditionalTimers"))
         .WindowName("Additional Timers")
         .Options(ButtonOptions().Tooltip("Enables the separate Additional Timers Window.").Size(Sizes::Inline));
 }

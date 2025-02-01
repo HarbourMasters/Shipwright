@@ -14,7 +14,7 @@ using namespace UIWidgets2;
 
 void SohMenu::AddMenuSettings() {
     // Add Settings Menu
-    AddMenuEntry("Settings", "gSettings.Menu.SettingsSidebarSection");
+    AddMenuEntry("Settings", CVAR_SETTING("Menu.SettingsSidebarSection"));
 
     // General
     AddSidebarEntry("Settings", "General", 3);
