@@ -1,11 +1,6 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
 
-// Most of the assignable tunics and boots logic has not been moved
-// over to use hooks yet. It currently lives directly in z_player.c
-// in Player_UseTunicBoots (where the actual logic lives), which is
-// called by Player_UpdateCommon
-
 extern "C" {
 #include "macros.h"
 #include "variables.h"
@@ -57,11 +52,22 @@ void UseTunicBoots(Player* player, PlayState* play, Input* input) {
     }
 }
 
+void ClearAssignedTunicsBoots(int32_t unused = 0) {
+    for (int32_t buttonIndex = 0; buttonIndex < 8; buttonIndex++) {
+        int32_t item = gSaveContext.equips.buttonItems[buttonIndex];
+
+        if (item >= ITEM_TUNIC_KOKIRI && item <= ITEM_BOOTS_HOVER) {
+            gSaveContext.equips.buttonItems[buttonIndex] = ITEM_NONE;
+        }
+    }
+}
+
 #define CVAR_TUNICBOOTS_NAME CVAR_ENHANCEMENT("AssignableTunicsAndBoots")
 #define CVAR_TUNICBOOTS_DEFAULT 0
 #define CVAR_TUNICBOOTS_VALUE CVarGetInteger(CVAR_TUNICBOOTS_NAME, CVAR_TUNICBOOTS_DEFAULT)
 
 void RegisterAssignableTunicsBoots() {
+    // make sure we don't change our held/equipped item when changing tunics/boots
     COND_VB_SHOULD(VB_CHANGE_HELD_ITEM_AND_USE_ITEM, CVAR_TUNICBOOTS_VALUE != CVAR_TUNICBOOTS_DEFAULT, {
         int32_t item = va_arg(args, int32_t);
 
@@ -70,6 +76,7 @@ void RegisterAssignableTunicsBoots() {
         }
     });
 
+    // make sure we don't crash because tunics/boots don't have assoicated item actions
     COND_VB_SHOULD(VB_ITEM_ACTION_BE_NONE, CVAR_TUNICBOOTS_VALUE != CVAR_TUNICBOOTS_DEFAULT, {
         int32_t item = va_arg(args, int32_t);
 
@@ -78,6 +85,7 @@ void RegisterAssignableTunicsBoots() {
         }
     });
 
+    // do something when the player presses a button to use the tunics/boots
     COND_VB_SHOULD(VB_EXECUTE_PLAYER_ACTION_FUNC, CVAR_TUNICBOOTS_VALUE != CVAR_TUNICBOOTS_DEFAULT, {
         Player* player = va_arg(args, Player*);
         PlayState* play = va_arg(args, PlayState*);
@@ -87,6 +95,14 @@ void RegisterAssignableTunicsBoots() {
         player->actionFunc(player, play);
         UseTunicBoots(player, play, input);
     });
+
+    // clear out assigned tunics/boots when the enhancement is toggled off
+    if (GameInteractor::IsSaveLoaded(true) && CVAR_TUNICBOOTS_VALUE == CVAR_TUNICBOOTS_DEFAULT) {
+        ClearAssignedTunicsBoots();
+    }
+
+    // clear out assigned tunics/boots when loading a save with enhancement turned off
+    COND_HOOK(OnLoadGame, CVAR_TUNICBOOTS_VALUE == CVAR_TUNICBOOTS_DEFAULT, ClearAssignedTunicsBoots);
 }
 
 static RegisterShipInitFunc initFunc(RegisterAssignableTunicsBoots, { CVAR_TUNICBOOTS_NAME });
