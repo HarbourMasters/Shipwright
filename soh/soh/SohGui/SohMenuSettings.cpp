@@ -19,6 +19,20 @@ void SohMenu::AddMenuSettings() {
     // General
     AddSidebarEntry("Settings", "General", 3);
     WidgetPath path = { "Settings", "General", SECTION_COLUMN_1 };
+
+    AddWidget(path, "About", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Ship Of Harkinian", WIDGET_TEXT);
+    AddWidget(path, gBuildVersion, WIDGET_TEXT).PreFunc([](WidgetInfo& info) {
+        info.isHidden = (gGitCommitTag[0] == 0);
+    });
+    AddWidget(path, gGitBranch, WIDGET_TEXT).PreFunc([](WidgetInfo& info) {
+        info.isHidden = (gGitCommitTag[0] != 0);
+    });
+    AddWidget(path, gGitCommitHash, WIDGET_TEXT).PreFunc([](WidgetInfo& info) {
+        info.isHidden = (gGitCommitTag[0] != 0);
+    });
+
+    AddWidget(path, "Settings", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Menu Theme", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_SETTING("Menu.Theme"))
         .Options(ComboboxOptions()

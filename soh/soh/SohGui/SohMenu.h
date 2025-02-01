@@ -69,6 +69,10 @@ class SohMenu : public Ship::Menu {
     void AddMenuDevTools();
     void AddMenuRandomizer();
     void AddMenuNetwork();
+
+  private:
+    char mGitCommitHashTruncated[8];
+    bool mIsTaggedVersion;
 };
 } // namespace SohGui
 
