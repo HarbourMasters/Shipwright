@@ -1460,6 +1460,8 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Shows what items you have collected in the file select screen, like in N64 randomizer");
             UIWidgets::PaddedEnhancementCheckbox("Better ammo rendering in pause menu", CVAR_ENHANCEMENT("BetterAmmoRendering"), true, false);
             UIWidgets::Tooltip("Ammo counts in the pause menu will work correctly regardless of the position of items in the inventory");
+            UIWidgets::PaddedEnhancementCheckbox("Remove spin attack darkness", CVAR_ENHANCEMENT("RemoveSpinAttackDarkness"), true, false);
+            UIWidgets::Tooltip("Remove the darkness that appears when charging a spin attack");
             ImGui::EndMenu();
         }
 
