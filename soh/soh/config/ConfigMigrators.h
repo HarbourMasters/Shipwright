@@ -16,7 +16,7 @@ namespace SOH {
 
     std::vector<Migration> version3Migrations = {
         { MigrationAction::Rename, "gSwitchAge", "gGeneral.SwitchAge" },
-        { MigrationAction::Rename, "gFrameAdvance", "gGeneral.FrameAdvance" },
+        { MigrationAction::Rename, "gFrameAdvance", "gDeveloperTools.FrameAdvanceTick" },
         { MigrationAction::Rename, "gRandoGenerating", "gGeneral.RandoGenerating" },
         { MigrationAction::Rename, "gNewSeedGenerated", "gGeneral.NewSeedGenerated" },
         { MigrationAction::Rename, "gOnFileSelectNameEntry", "gGeneral.OnFileSelectNameEntry" },

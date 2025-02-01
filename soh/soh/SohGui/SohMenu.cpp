@@ -8,14 +8,7 @@
 #include <spdlog/fmt/fmt.h>
 #include <tuple>
 
-extern "C" {
-#include "z64.h"
-#include "functions.h"
-#include "variables.h"
-extern PlayState* gPlayState;
-}
 extern std::unordered_map<s16, const char*> warpPointSceneList;
-extern void Warp();
 
 namespace SohGui {
 extern std::shared_ptr<SohMenu> mSohMenu;
@@ -142,6 +135,14 @@ void SohMenu::InitElement() {
             "Vertical Resolution Toggle Enabled" } },
         { DISABLE_FOR_LOW_RES_MODE_ON,
           { [](disabledInfo& info) -> bool { return CVarGetInteger(CVAR_LOW_RES_MODE, 0); }, "N64 Mode Enabled" } },
+        { DISABLE_FOR_NULL_PLAY_STATE,
+          { [](disabledInfo& info) -> bool { return gPlayState == NULL; }, "Save Not Loaded" } },
+        { DISABLE_FOR_DEBUG_MODE_OFF,
+          { [](disabledInfo& info) -> bool { return !CVarGetInteger("gDeveloperTools.DebugEnabled", 0); },
+            "Debug Mode is Disabled" } },
+        { DISABLE_FOR_FRAME_ADVANCE_OFF,
+          { [](disabledInfo& info) -> bool { return !(gPlayState != nullptr && gPlayState->frameAdvCtx.enabled); },
+            "Frame Advance is Disabled" } },
     };
 }
 

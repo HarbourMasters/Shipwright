@@ -75,7 +75,7 @@ void SohMenu::AddMenuSettings() {
         .Options(IntSliderOptions()
                      .Min(0)
                      .Max(100)
-                     .DefaultValue(50)
+                     .DefaultValue(30)
                      .ShowButtons(true)
                      .Format(""));
     AddWidget(path, "Main Music Volume: %d %%", WIDGET_CVAR_SLIDER_INT)
