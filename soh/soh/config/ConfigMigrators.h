@@ -49,8 +49,6 @@ namespace SOH {
         { MigrationAction::Rename, "gItemTrackerEnabled", "gOpenWindows.ItemTracker" },
         { MigrationAction::Rename, "gItemTrackerSettingsEnabled", "gOpenWindows.ItemTrackerSettings" },
         { MigrationAction::Rename, "gMessageViewerEnabled", "gOpenWindows.MessageViewer" },
-        { MigrationAction::Rename, "gOpenWindows.InputViewer", "gOpenWindows.InputViewer" },
-        { MigrationAction::Rename, "gOpenWindows.InputViewerSettings", "gOpenWindows.InputViewerSettings" },
         { MigrationAction::Rename, "gRandomizerSettingsEnabled", "gOpenWindows.RandomizerSettings" },
         { MigrationAction::Rename, "gSaveEditorEnabled", "gOpenWindows.SaveEditor" },
         { MigrationAction::Rename, "gValueViewer.WindowOpen", "gOpenWindows.ValueViewer" },

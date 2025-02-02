@@ -41,6 +41,22 @@ void SohMenu::AddMenuRandomizer() {
         .WindowName("Item Tracker Settings")
         .Options(ButtonOptions().Tooltip("Enables the separate Item Tracker Settings Window.").Size(Sizes::Inline));
 
+    // Entrance Tracker
+    path.sidebarName = "Entrance Tracker";
+    AddSidebarEntry("Randomizer", path.sidebarName, 1);
+
+    AddWidget(path, "Entrance Tracker", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Toggle Entrance Tracker", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("EntranceTracker"))
+        .WindowName("Entrance Tracker")
+        .Options(ButtonOptions().Tooltip("Toggles the Entrance Tracker.").Size(Sizes::Inline));
+
+    AddWidget(path, "Entrance Tracker Settings", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Popout Entrance Tracker Settings", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("EntranceTrackerSettings"))
+        .WindowName("Entrance Tracker Settings")
+        .Options(ButtonOptions().Tooltip("Enables the separate Entrance Tracker Settings Window.").Size(Sizes::Inline));
+
     // Check Tracker
     path.sidebarName = "Check Tracker";
     AddSidebarEntry("Randomizer", path.sidebarName, 1);

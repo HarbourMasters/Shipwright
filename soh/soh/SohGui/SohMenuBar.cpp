@@ -105,7 +105,6 @@ static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large
     static const char* zFightingOptions[3] = { "Disabled", "Consistent Vanish", "No Vanish" };
     static const char* autosaveLabels[6] = { "Off", "New Location + Major Item", "New Location + Any Item", "New Location", "Major Item", "Any Item" };
     static const char* bootSequenceLabels[3] = { "Default", "Authentic", "File Select" };
-    static const char* DebugSaveFileModes[3] = { "Off", "Vanilla", "Maxed" };
     static const char* DekuStickCheat[3] = { "Normal", "Unbreakable", "Unbreakable + Always on Fire" };
     static const char* bonkDamageValues[8] = {
         "No Damage",
@@ -137,200 +136,14 @@ namespace SohGui {
 std::unordered_map<Ship::WindowBackend, const char*> availableWindowBackendsMap;
 Ship::WindowBackend configWindowBackend;
 
-void UpdateWindowBackendObjects() {
-    Ship::WindowBackend runningWindowBackend = Ship::Context::GetInstance()->GetWindow()->GetWindowBackend();
-    int32_t configWindowBackendId = Ship::Context::GetInstance()->GetConfig()->GetInt("Window.Backend.Id", -1);
-    if (Ship::Context::GetInstance()->GetWindow()->IsAvailableWindowBackend(configWindowBackendId)) {
-        configWindowBackend = static_cast<Ship::WindowBackend>(configWindowBackendId);
-    } else {
-        configWindowBackend = runningWindowBackend;
-    }
-
-    auto availableWindowBackends = Ship::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends();
-    for (auto& backend : *availableWindowBackends) {
-        availableWindowBackendsMap[backend] = windowBackendNames[backend];
-    }
-}
-
-void DrawMenuBarIcon() {
-    static bool gameIconLoaded = false;
-    if (!gameIconLoaded) {
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Game_Icon", "textures/icons/gIcon.png");
-        gameIconLoaded = true;
-    }
-
-    if (Ship::Context::GetInstance()->GetWindow()->GetGui()->HasTextureByName("Game_Icon")) {
-#ifdef __SWITCH__
-        ImVec2 iconSize = ImVec2(20.0f, 20.0f);
-        float posScale = 1.0f;
-#elif defined(__WIIU__)
-        ImVec2 iconSize = ImVec2(16.0f * 2, 16.0f * 2);
-        float posScale = 2.0f;
-#else
-        ImVec2 iconSize = ImVec2(16.0f, 16.0f);
-        float posScale = 1.0f;
-#endif
-        ImGui::SetCursorPos(ImVec2(5, 2.5f) * posScale);
-        ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Game_Icon"), iconSize);
-        ImGui::SameLine();
-        ImGui::SetCursorPos(ImVec2(25, 0) * posScale);
-    }
-}
-
-void DrawShipMenu() {
-    if (ImGui::BeginMenu("Ship")) {
-
-        UIWidgets::Spacer(0);
-
-        if (ImGui::MenuItem("Hide Menu Bar",
-#if !defined(__SWITCH__) && !defined(__WIIU__)
-         "F1"
-#else
-         "[-]"
-#endif
-        )) {
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->GetMenuBar()->ToggleVisibility();
-        }
-        UIWidgets::Spacer(0);
-#if !defined(__SWITCH__) && !defined(__WIIU__)
-        if (ImGui::MenuItem("Toggle Fullscreen", "F11")) {
-            Ship::Context::GetInstance()->GetWindow()->ToggleFullscreen();
-        }
-        UIWidgets::Spacer(0);
-#endif
-        if (ImGui::MenuItem("Reset",
-#ifdef __APPLE__
-                            "Command-R"
-#elif !defined(__SWITCH__) && !defined(__WIIU__)
-                            "Ctrl+R"
-#else
-                            ""
-#endif
-                            )) {
-            std::reinterpret_pointer_cast<Ship::ConsoleWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch("reset");
-        }
-#if !defined(__SWITCH__) && !defined(__WIIU__)
-        UIWidgets::Spacer(0);
-        if (ImGui::MenuItem("Open App Files Folder")) {
-            std::string filesPath = Ship::Context::GetInstance()->GetAppDirectoryPath();
-            SDL_OpenURL(std::string("file:///" + std::filesystem::absolute(filesPath).string()).c_str());
-        }
-        UIWidgets::Spacer(0);
-
-        if (ImGui::MenuItem("Quit")) {
-            Ship::Context::GetInstance()->GetWindow()->Close();
-        }
-#endif
-        ImGui::EndMenu();
-    }
-}
-
-extern std::shared_ptr<Ship::GuiWindow> mInputEditorWindow;
 extern std::shared_ptr<Ship::GuiWindow> mGfxDebuggerWindow;
-extern std::shared_ptr<InputViewer> mInputViewer;
-extern std::shared_ptr<InputViewerSettingsWindow> mInputViewerSettings;
 extern std::shared_ptr<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow> mAdvancedResolutionSettingsWindow;
 
 void DrawSettingsMenu() {
     if (ImGui::BeginMenu("Settings"))
     {
-        if (ImGui::BeginMenu("Audio")) {
-            UIWidgets::PaddedEnhancementSliderInt("Master Volume: %d %%", "##Master_Vol", CVAR_SETTING("Volume.Master"), 0, 100, "", 100, true, false, true);
-            if (UIWidgets::PaddedEnhancementSliderInt("Main Music Volume: %d %%", "##Main_Music_Vol", CVAR_SETTING("Volume.MainMusic"), 0, 100, "", 100, true, false, true)) {
-                Audio_SetGameVolume(SEQ_PLAYER_BGM_MAIN, ((float)CVarGetInteger(CVAR_SETTING("Volume.MainMusic"), 100) / 100.0f));
-            }
-            if (UIWidgets::PaddedEnhancementSliderInt("Sub Music Volume: %d %%", "##Sub_Music_Vol", CVAR_SETTING("Volume.SubMusic"), 0, 100, "", 100, true, false, true)) {
-                Audio_SetGameVolume(SEQ_PLAYER_BGM_SUB, ((float)CVarGetInteger(CVAR_SETTING("Volume.SubMusic"), 100) / 100.0f));
-            }
-            if (UIWidgets::PaddedEnhancementSliderInt("Fanfare Volume: %d %%", "##Fanfare_Vol", CVAR_SETTING("Volume.Fanfare"), 0, 100, "", 100, true, false, true)) {
-                Audio_SetGameVolume(SEQ_PLAYER_FANFARE, ((float)CVarGetInteger(CVAR_SETTING("Volume.Fanfare"), 100) / 100.0f));
-            }
-            if (UIWidgets::PaddedEnhancementSliderInt("Sound Effects Volume: %d %%", "##Sound_Effect_Vol", CVAR_SETTING("Volume.SFX"), 0, 100, "", 100, true, false, true)) {
-                Audio_SetGameVolume(SEQ_PLAYER_SFX, ((float)CVarGetInteger(CVAR_SETTING("Volume.SFX"), 100) / 100.0f));
-            }
-
-            static std::unordered_map<Ship::AudioBackend, const char*> audioBackendNames = {
-                { Ship::AudioBackend::WASAPI, "Windows Audio Session API" },
-                { Ship::AudioBackend::SDL, "SDL" }
-            };
-
-            ImGui::Text("Audio API (Needs reload)");
-            auto currentAudioBackend = Ship::Context::GetInstance()->GetAudio()->GetCurrentAudioBackend();
-
-            if (Ship::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->size() <= 1) {
-                UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
-            }
-            if (ImGui::BeginCombo("##AApi", audioBackendNames[currentAudioBackend])) {
-                for (uint8_t i = 0; i < Ship::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->size(); i++) {
-                    auto backend = Ship::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->data()[i];
-                    if (ImGui::Selectable(audioBackendNames[backend], backend == currentAudioBackend)) {
-                        Ship::Context::GetInstance()->GetAudio()->SetCurrentAudioBackend(backend);
-                    }
-                }
-                ImGui::EndCombo();
-            }
-            if (Ship::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->size() <= 1) {
-                UIWidgets::ReEnableComponent("");
-            }
-
-            ImGui::EndMenu();
-        }
-
-        UIWidgets::Spacer(0);
-
-        if (ImGui::BeginMenu("Controller")) {
-            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2 (12.0f, 6.0f));
-            ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.0f));
-            ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
-            ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
-            if (mInputEditorWindow) {
-                if (ImGui::Button(GetWindowButtonText("Controller Mapping", CVarGetInteger(CVAR_WINDOW("ControllerConfiguration"), 0)).c_str(), ImVec2 (-1.0f, 0.0f))) {
-                    mInputEditorWindow->ToggleVisibility();
-                }
-            }
-            UIWidgets::PaddedSeparator();
-            ImGui::PopStyleColor(1);
-            ImGui::PopStyleVar(3);
-        #ifndef __SWITCH__
-            UIWidgets::EnhancementCheckbox("Menubar Controller Navigation", CVAR_IMGUI_CONTROLLER_NAV);
-            UIWidgets::Tooltip("Allows controller navigation of the SOH menu bar (Settings, Enhancements,...)\nCAUTION: This will disable game inputs while the menubar is visible.\n\nD-pad to move between items, A to select, and X to grab focus on the menu bar");
-            UIWidgets::PaddedSeparator();
-        #endif
-            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2 (12.0f, 6.0f));
-            ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.0f));
-            ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
-            ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
-            if (mInputViewer) {
-                if (ImGui::Button(GetWindowButtonText("Input Viewer", CVarGetInteger(CVAR_WINDOW("InputViewer"), 0)).c_str(), ImVec2 (-1.0f, 0.0f))) {
-                    mInputViewer->ToggleVisibility();
-                }
-            }
-            if (mInputViewerSettings) {
-                if (ImGui::Button(GetWindowButtonText("Input Viewer Settings", CVarGetInteger(CVAR_WINDOW("InputViewerSettings"), 0)).c_str(), ImVec2 (-1.0f, 0.0f))) {
-                    mInputViewerSettings->ToggleVisibility();
-                }
-            }
-            ImGui::PopStyleColor(1);
-            ImGui::PopStyleVar(3);
-
-            ImGui::EndMenu();
-        }
-
-        UIWidgets::Spacer(0);
-
         if (ImGui::BeginMenu("Graphics")) {
         #ifndef __APPLE__
-            const bool disabled_resolutionSlider = CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".VerticalResolutionToggle", 0) &&
-                                                   CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".Enabled", 0);
-            if (UIWidgets::EnhancementSliderFloat("Internal Resolution: %.1f %%", "##IMul", CVAR_INTERNAL_RESOLUTION, 0.5f,
-                                                  2.0f, "", 1.0f, true, true, disabled_resolutionSlider)) {
-                Ship::Context::GetInstance()->GetWindow()->SetResolutionMultiplier(CVarGetFloat(CVAR_INTERNAL_RESOLUTION, 1));
-            }
-            UIWidgets::Tooltip("Resolution scale. Multiplies output resolution by this value, on each axis relative to window size.\n"
-                               "Lower values may improve performance.\n"
-                               "Values above 100% can be used for super-sampling, as an intensive but highly effective form of anti-aliasing.\n\n"
-                               "Default: 100%");
-            
             if (mAdvancedResolutionSettingsWindow) {
                 ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
                 ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.0f));
@@ -343,144 +156,7 @@ void DrawSettingsMenu() {
                 ImGui::PopStyleColor(1);
                 ImGui::PopStyleVar(3);
             }
-        #else
-            // macOS: Internal resolution is currently disabled in libultraship.
-            ImGui::BeginGroup();
-            ImGui::Text("Internal Resolution: 100.0%%");
-            UIWidgets::Spacer(0);
-            ImGui::Text(" " ICON_FA_INFO_CIRCLE " Not available on this system.");
-            UIWidgets::Spacer(0);
-            ImGui::EndGroup();
         #endif
-
-        #ifndef __WIIU__
-            if (UIWidgets::PaddedEnhancementSliderInt(
-                    (CVarGetInteger(CVAR_MSAA_VALUE, 1) == 1) ? "Anti-aliasing (MSAA): Off" : "Anti-aliasing (MSAA): %d",
-                    "##IMSAA", CVAR_MSAA_VALUE, 1, 8, "", 1, true, true, false)) {
-                Ship::Context::GetInstance()->GetWindow()->SetMsaaLevel(CVarGetInteger(CVAR_MSAA_VALUE, 1));
-            }
-            UIWidgets::Tooltip("Activates MSAA (multi-sample anti-aliasing) from 2x up to 8x, to smooth the edges of rendered geometry.\n"
-                               "Higher sample count will result in smoother edges on models, but may reduce performance.\n\n"
-                               "Recommended: 2x or 4x");
-        #endif
-
-            UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
-            { // FPS Slider
-                const int minFps = 20;
-                static int maxFps;
-                if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::FAST3D_DXGI_DX11) {
-                    maxFps = 360;
-                } else {
-                    maxFps = Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
-                }
-                int currentFps = fmax(fmin(OTRGlobals::Instance->GetInterpolationFPS(), maxFps), minFps);
-            #ifdef __WIIU__
-                UIWidgets::Spacer(0);
-                // only support divisors of 60 on the Wii U
-                if (currentFps > 60) {
-                    currentFps = 60;
-                } else {
-                    currentFps = 60 / (60 / currentFps);
-                }
-
-                int fpsSlider = 1;
-                if (currentFps == 20) {
-                    ImGui::Text("FPS: Original (20)");
-                } else {
-                    ImGui::Text("FPS: %d", currentFps);
-                    if (currentFps == 30) {
-                        fpsSlider = 2;
-                    } else { // currentFps == 60
-                        fpsSlider = 3;
-                    }
-                }
-                if (CVarGetInteger(CVAR_SETTING("MatchRefreshRate"), 0)) {
-                    UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
-                }
-
-                if (ImGui::Button(" - ##WiiUFPS")) {
-                    fpsSlider--;
-                }
-                ImGui::SameLine();
-                ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-
-                UIWidgets::Spacer(0);
-
-                ImGui::PushItemWidth(std::min((ImGui::GetContentRegionAvail().x - 60.0f), 260.0f));
-                ImGui::SliderInt("##WiiUFPSSlider", &fpsSlider, 1, 3, "", ImGuiSliderFlags_AlwaysClamp);
-                ImGui::PopItemWidth();
-
-                ImGui::SameLine();
-                ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-                if (ImGui::Button(" + ##WiiUFPS")) {
-                    fpsSlider++;
-                }
-
-                if (CVarGetInteger(CVAR_SETTING("MatchRefreshRate"), 0)) {
-                    UIWidgets::ReEnableComponent("");
-                }
-                if (fpsSlider > 3) {
-                    fpsSlider = 3;
-                } else if (fpsSlider < 1) {
-                    fpsSlider = 1;
-                }
-
-                if (fpsSlider == 1) {
-                    currentFps = 20;
-                } else if (fpsSlider == 2) {
-                    currentFps = 30;
-                } else if (fpsSlider == 3) {
-                    currentFps = 60;
-                }
-                CVarSetInteger(CVAR_SETTING("InterpolationFPS"), currentFps);
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-            #else
-                bool matchingRefreshRate =
-                    CVarGetInteger(CVAR_SETTING("MatchRefreshRate"), 0) && Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() != Ship::WindowBackend::FAST3D_DXGI_DX11;
-                UIWidgets::PaddedEnhancementSliderInt(
-                    (currentFps == 20) ? "Frame Rate: Original (20 fps)" : "Frame Rate: %d fps",
-                    "##FPSInterpolation", CVAR_SETTING("InterpolationFPS"), minFps, maxFps, "", 20, true, true, false, matchingRefreshRate);
-            #endif
-                if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::FAST3D_DXGI_DX11) {
-                    UIWidgets::Tooltip(
-                        "Uses Matrix Interpolation to create extra frames, resulting in smoother graphics.\n"
-                        "This is purely visual and does not impact game logic, execution of glitches etc.\n"
-                        "Higher frame rate settings may impact CPU performance."
-                        "\n\n " ICON_FA_INFO_CIRCLE 
-                        " There is no need to set this above your monitor's refresh rate. Doing so will waste resources and may give a worse result.");
-                } else {
-                    UIWidgets::Tooltip(
-                        "Uses Matrix Interpolation to create extra frames, resulting in smoother graphics.\n"
-                        "This is purely visual and does not impact game logic, execution of glitches etc.\n"
-                        "Higher frame rate settings may impact CPU performance.");
-                }
-            } // END FPS Slider
-
-            if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::FAST3D_DXGI_DX11) {
-                UIWidgets::Spacer(0);
-                if (ImGui::Button("Match Frame Rate to Refresh Rate")) {
-                    int hz = Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
-                    if (hz >= 20 && hz <= 360) {
-                        CVarSetInteger(CVAR_SETTING("InterpolationFPS"), hz);
-                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-                    }
-                }
-            } else {
-                UIWidgets::PaddedEnhancementCheckbox("Match Frame Rate to Refresh Rate", CVAR_SETTING("MatchRefreshRate"), true, false);
-            }
-            UIWidgets::Tooltip("Matches interpolation value to the game window's current refresh rate.");
-
-            if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::FAST3D_DXGI_DX11) {
-                UIWidgets::PaddedEnhancementSliderInt(CVarGetInteger(CVAR_SETTING("ExtraLatencyThreshold"), 80) == 0 ? "Jitter fix: Off" : "Jitter fix: >= %d FPS",
-                    "##ExtraLatencyThreshold", CVAR_SETTING("ExtraLatencyThreshold"), 0, 360, "", 80, true, true, false);
-                UIWidgets::Tooltip(
-                    "(For DirectX backend only)\n\n"
-                    "When Interpolation FPS (Frame Rate) setting is at least this threshold, add one frame of delay (e.g. 16.6 ms for 60 FPS) in order to avoid jitter."
-                    "This setting allows the CPU to work on one frame while GPU works on the previous frame.\n"
-                    "This setting should be used when your computer is too slow to do CPU + GPU work in time.");
-            }
-
-            UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
 
             ImGui::Text("ImGui Menu Scale");
             ImGui::SameLine();
@@ -489,52 +165,6 @@ void DrawSettingsMenu() {
                 OTRGlobals::Instance->ScaleImGui();
             }
             UIWidgets::Tooltip("Changes the scaling of the ImGui menu elements.");
-
-            UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
-
-            ImGui::Text("Renderer API (Needs reload)");
-
-            if (availableWindowBackendsMap.size() <= 1) {
-                UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
-            }
-            if (ImGui::BeginCombo("##RApi", availableWindowBackendsMap[configWindowBackend])) {
-                for (auto backend : availableWindowBackendsMap) {
-                    if (ImGui::Selectable(backend.second, backend.first == configWindowBackend)) {
-                        Ship::Context::GetInstance()->GetConfig()->SetInt("Window.Backend.Id", static_cast<int>(backend.first));
-                        Ship::Context::GetInstance()->GetConfig()->SetString("Window.Backend.Name", backend.second);
-                        Ship::Context::GetInstance()->GetConfig()->Save();
-                        UpdateWindowBackendObjects();
-                    }
-                }
-                ImGui::EndCombo();
-            }
-            if (availableWindowBackendsMap.size() <= 1) {
-                UIWidgets::ReEnableComponent("");
-            }
-
-            if (Ship::Context::GetInstance()->GetWindow()->CanDisableVerticalSync()) {
-                UIWidgets::PaddedEnhancementCheckbox("Enable Vsync", CVAR_VSYNC_ENABLED, true, false);
-                UIWidgets::Tooltip("Activate vertical sync, to prevent screen tearing.");
-            }
-
-            if (Ship::Context::GetInstance()->GetWindow()->SupportsWindowedFullscreen()) {
-                UIWidgets::PaddedEnhancementCheckbox("Windowed fullscreen", CVAR_SDL_WINDOWED_FULLSCREEN, true, false);
-            }
-
-            if (Ship::Context::GetInstance()->GetWindow()->GetGui()->SupportsViewports()) {
-                UIWidgets::PaddedEnhancementCheckbox("Allow multi-windows (Needs reload)", CVAR_ENABLE_MULTI_VIEWPORTS, true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
-                UIWidgets::Tooltip("Allows windows to be able to be dragged off of the main game window. Requires a reload to take effect.");
-            }
-
-            // If more filters are added to LUS, make sure to add them to the filters list here
-            ImGui::Text("Texture Filtering (Needs reload)");
-            UIWidgets::EnhancementCombobox(CVAR_TEXTURE_FILTER, filters, FILTER_THREE_POINT);
-            UIWidgets::Tooltip("Texture filtering, aka texture smoothing. Requires a reload to take effect.\n\n"
-                               "Three-Point: Replicates real N64 texture filtering.\n"
-                               "Bilinear: If Three-Point causes poor performance, try this.\n"
-                               "Nearest: Disables texture smoothing. (Not recommended)");
-
-            UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
 
             // Draw LUS settings menu (such as Overlays Text Font)
             Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->DrawSettings();
@@ -568,34 +198,6 @@ void DrawSettingsMenu() {
             UIWidgets::PaddedEnhancementCheckbox("Disable Idle Camera Re-Centering", CVAR_SETTING("A11yDisableIdleCam"));
             UIWidgets::Tooltip("Disables the automatic re-centering of the camera when idle.");
             
-            ImGui::EndMenu();
-        }
-
-        UIWidgets::Spacer(0);
-
-        if (ImGui::BeginMenu("Notifications")) {
-            static const char* notificationPosition[] = {
-                "Top Left",
-                "Top Right",
-                "Bottom Left",
-                "Bottom Right",
-                "Hidden",
-            };
-
-            ImGui::Text("Position");
-            UIWidgets::EnhancementCombobox(CVAR_SETTING("Notifications.Position"), notificationPosition, 0);
-            UIWidgets::EnhancementSliderFloat("Duration: %.1f seconds", "##NotificationDuration", CVAR_SETTING("Notifications.Duration"), 3.0f, 30.0f, "", 10.0f, false, true, false);
-            UIWidgets::EnhancementSliderFloat("BG Opacity: %.1f %%", "##NotificaitonBgOpacity", CVAR_SETTING("Notifications.BgOpacity"), 0.0f, 1.0f, "", 0.5f, true, true, false);
-            UIWidgets::EnhancementSliderFloat("Size: %.1f", "##NotificaitonSize", CVAR_SETTING("Notifications.Size"), 1.0f, 20.0f, "", 1.8f, false, true, false);
-
-            UIWidgets::Spacer(0);
-
-            if (ImGui::Button("Test Notification", ImVec2(-1.0f, 0.0f))) {
-                Notification::Emit({
-                    .message = (gPlayState != NULL ? SohUtils::GetSceneName(gPlayState->sceneNum) : "Hyrule") + " looks beautiful today!",
-                });
-            }
-
             ImGui::EndMenu();
         }
 
@@ -1730,30 +1332,6 @@ void DrawEnhancementsMenu() {
         ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
         ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
 
-        if (mCosmeticsEditorWindow) {
-            if (ImGui::Button(GetWindowButtonText("Cosmetics Editor", CVarGetInteger(CVAR_WINDOW("CosmeticsEditor"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
-                mCosmeticsEditorWindow->ToggleVisibility();
-            }
-        }
-
-        if (mAudioEditorWindow) {
-            if (ImGui::Button(GetWindowButtonText("Audio Editor", CVarGetInteger(CVAR_WINDOW("AudioEditor"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
-                mAudioEditorWindow->ToggleVisibility();
-            }
-        }
-
-        if (mGameplayStatsWindow) {
-            if (ImGui::Button(GetWindowButtonText("Gameplay Stats", CVarGetInteger(CVAR_WINDOW("GameplayStats"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
-                mGameplayStatsWindow->ToggleVisibility();
-            }
-        }
-
-        if (mTimeSplitWindow) {
-            if (ImGui::Button(GetWindowButtonText("Time Splits", CVarGetInteger(CVAR_WINDOW("TimeSplitEnabled"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
-                mTimeSplitWindow->ToggleVisibility();
-            }
-        }
-
         if (mTimeDisplayWindow) {
             if (ImGui::Button(GetWindowButtonText("Additional Timers", CVarGetInteger(CVAR_WINDOW("TimeDisplayEnabled"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
                 mTimeDisplayWindow->ToggleVisibility();
@@ -1785,15 +1363,6 @@ void DrawEnhancementsMenu() {
         }
         ImGui::PopStyleVar(3);
         ImGui::PopStyleColor(1);
-
-        #ifdef __SWITCH__
-        UIWidgets::Spacer(0);
-        ImGui::Text("Switch performance mode");
-        if (UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("SwitchPerfMode"), SWITCH_CPU_PROFILES, (int)Ship::SwitchProfiles::STOCK)) {
-            SPDLOG_INFO("Profile:: %s", SWITCH_CPU_PROFILES[CVarGetInteger(CVAR_ENHANCEMENT("SwitchPerfMode"), (int)Ship::SwitchProfiles::STOCK)]);
-            Ship::Switch::ApplyOverclock();
-        }
-        #endif
 
         ImGui::EndMenu();
     }
@@ -1982,138 +1551,6 @@ void DrawCheatsMenu() {
     }
 }
 
-extern std::shared_ptr<Ship::GuiWindow> mStatsWindow;
-extern std::shared_ptr<Ship::GuiWindow> mConsoleWindow;
-extern std::shared_ptr<SaveEditorWindow> mSaveEditorWindow;
-extern std::shared_ptr<HookDebuggerWindow> mHookDebuggerWindow;
-extern std::shared_ptr<ColViewerWindow> mColViewerWindow;
-extern std::shared_ptr<ActorViewerWindow> mActorViewerWindow;
-extern std::shared_ptr<DLViewerWindow> mDLViewerWindow;
-extern std::shared_ptr<ValueViewerWindow> mValueViewerWindow;
-extern std::shared_ptr<MessageViewer> mMessageViewerWindow;
-
-void DrawDeveloperToolsMenu() {
-    if (ImGui::BeginMenu("Developer Tools")) {
-        ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
-
-        UIWidgets::EnhancementCheckbox("OoT Debug Mode", CVAR_DEVELOPER_TOOLS("DebugEnabled"));
-        UIWidgets::Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + D-pad Right, and open the debug menu with L on the pause screen");
-        if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0)) {
-            UIWidgets::EnhancementCheckbox("OoT Registry Editor", CVAR_DEVELOPER_TOOLS("RegEditEnabled"));
-            UIWidgets::Tooltip("Enables the registry editor");
-            ImGui::Text("Debug Save File Mode:");
-            UIWidgets::EnhancementCombobox(CVAR_DEVELOPER_TOOLS("DebugSaveFileMode"), DebugSaveFileModes, 1);
-            UIWidgets::Tooltip(
-                "Changes the behaviour of debug file select creation (creating a save file on slot 1 with debug mode on)\n"
-                "- Off: The debug save file will be a normal savefile\n"
-                "- Vanilla: The debug save file will be the debug save file from the original game\n"
-                "- Maxed: The debug save file will be a save file with all of the items & upgrades"
-            );
-        }
-        UIWidgets::PaddedEnhancementCheckbox("OoT Skulltula Debug", CVAR_DEVELOPER_TOOLS("SkulltulaDebugEnabled"), true, false);
-        UIWidgets::Tooltip("Enables Skulltula Debug, when moving the cursor in the menu above various map icons (boss key, compass, map screen locations, etc) will set the GS bits in that area.\nUSE WITH CAUTION AS IT DOES NOT UPDATE THE GS COUNT.");
-        UIWidgets::PaddedEnhancementCheckbox("Better Debug Warp Screen", CVAR_DEVELOPER_TOOLS("BetterDebugWarpScreen"), true, false);
-        UIWidgets::Tooltip("Optimized debug warp screen, with the added ability to chose entrances and time of day");
-        UIWidgets::PaddedEnhancementCheckbox("Debug Warp Screen Translation", CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"), true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
-        UIWidgets::Tooltip("Translate the Debug Warp Screen based on the game language");
-        UIWidgets::PaddedEnhancementCheckbox("Resource logging", CVAR_DEVELOPER_TOOLS("ResourceLogging"), true, false);
-        UIWidgets::Tooltip("Logs some resources as XML when they're loaded in binary format");
-        if (gPlayState != NULL) {
-            UIWidgets::PaddedSeparator();
-            ImGui::Checkbox("Frame Advance##frameAdvance", (bool*)&gPlayState->frameAdvCtx.enabled);
-            if (gPlayState->frameAdvCtx.enabled) {
-                ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
-                ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0,0));
-                ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
-                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
-                if (ImGui::Button("Advance 1", ImVec2(ImGui::GetContentRegionAvail().x / 2.0f, 0.0f))) {
-                    CVarSetInteger(CVAR_GENERAL("FrameAdvance"), 1);
-                }
-                ImGui::SameLine();
-                ImGui::Button("Advance (Hold)");
-                if (ImGui::IsItemActive()) {
-                    CVarSetInteger(CVAR_GENERAL("FrameAdvance"), 1);
-                }
-                ImGui::PopStyleVar(3);
-                ImGui::PopStyleColor(1);
-            }
-        }
-        UIWidgets::PaddedSeparator();
-        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
-        ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0,0));
-        ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
-        ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
-        if (mStatsWindow) {
-            if (ImGui::Button(GetWindowButtonText("Stats", CVarGetInteger(CVAR_STATS_WINDOW_OPEN, 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
-                mStatsWindow->ToggleVisibility();
-            }
-            UIWidgets::Tooltip("Shows the stats window, with your FPS and frametimes, and the OS you're playing on");
-        }
-        UIWidgets::Spacer(0);
-        if (mConsoleWindow) {
-            if (ImGui::Button(GetWindowButtonText("Console", CVarGetInteger(CVAR_CONSOLE_WINDOW_OPEN, 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
-                mConsoleWindow->ToggleVisibility();
-            }
-            UIWidgets::Tooltip("Enables the console window, allowing you to input commands, type help for some examples");
-        }
-        UIWidgets::Spacer(0);
-        if (mSaveEditorWindow) {
-            if (ImGui::Button(GetWindowButtonText("Save Editor", CVarGetInteger(CVAR_WINDOW("SaveEditor"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
-                mSaveEditorWindow->ToggleVisibility();
-            }
-        }
-        UIWidgets::Spacer(0);
-        if (mHookDebuggerWindow) {
-            if (ImGui::Button(GetWindowButtonText("Hook Debugger", CVarGetInteger(CVAR_WINDOW("HookDebugger"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
-                mHookDebuggerWindow->ToggleVisibility();
-            }
-        }
-        UIWidgets::Spacer(0);
-        if (mColViewerWindow) {
-            if (ImGui::Button(GetWindowButtonText("Collision Viewer", CVarGetInteger(CVAR_WINDOW("CollisionViewer"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
-                mColViewerWindow->ToggleVisibility();
-            }
-        }
-        UIWidgets::Spacer(0);
-        if (mActorViewerWindow) {
-            if (ImGui::Button(GetWindowButtonText("Actor Viewer", CVarGetInteger(CVAR_WINDOW("ActorViewer"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
-                mActorViewerWindow->ToggleVisibility();
-            }
-        }
-        UIWidgets::Spacer(0);
-        if (mDLViewerWindow) {
-            if (ImGui::Button(GetWindowButtonText("Display List Viewer", CVarGetInteger(CVAR_WINDOW("DLViewer"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
-                mDLViewerWindow->ToggleVisibility();
-            }
-        }
-        UIWidgets::Spacer(0);
-        if (mValueViewerWindow) {
-            if (ImGui::Button(GetWindowButtonText("Value Viewer", CVarGetInteger(CVAR_WINDOW("ValueViewer"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
-                mValueViewerWindow->ToggleVisibility();
-            }
-        }
-        UIWidgets::Spacer(0);
-        if (mMessageViewerWindow) {
-            if (ImGui::Button(GetWindowButtonText("Message Viewer", CVarGetInteger(CVAR_WINDOW("MessageViewer"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
-                mMessageViewerWindow->ToggleVisibility();
-            }
-        }
-        UIWidgets::Spacer(0);
-        if (mGfxDebuggerWindow) {
-            if (ImGui::Button(GetWindowButtonText("Gfx Debugger", CVarGetInteger(CVAR_WINDOW("GfxDebugger"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
-                mGfxDebuggerWindow->ToggleVisibility();
-            }
-        }
-
-        ImGui::PopStyleVar(3);
-        ImGui::PopStyleColor(1);
-
-        ImGui::EndDisabled();
-
-        ImGui::EndMenu();
-    }
-}
-
 #ifdef ENABLE_REMOTE_CONTROL
 void DrawRemoteControlMenu() {
     if (ImGui::BeginMenu("Network")) {
@@ -2124,112 +1561,10 @@ void DrawRemoteControlMenu() {
 }
 #endif
 
-extern std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
-extern std::shared_ptr<PlandomizerWindow> mPlandomizerWindow;
-extern std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
-extern std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
-extern std::shared_ptr<EntranceTrackerWindow> mEntranceTrackerWindow;
-extern std::shared_ptr<EntranceTrackerSettingsWindow> mEntranceTrackerSettingsWindow;
-extern std::shared_ptr<CheckTracker::CheckTrackerWindow> mCheckTrackerWindow;
-extern std::shared_ptr<CheckTracker::CheckTrackerSettingsWindow> mCheckTrackerSettingsWindow;
 extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 
 void DrawRandomizerMenu() {
     if (ImGui::BeginMenu("Randomizer")) {
-        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
-        ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
-        ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
-        ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
-
-    #ifdef __WIIU__
-        static ImVec2 buttonSize(200.0f * 2.0f, 0.0f);
-        static ImVec2 buttonWithOptionsSize(170.0f * 2.0f, 0.0f);
-        static ImVec2 optionsButtonSize(25.0f * 2.0f, 0.0f);
-        static float separationToOptionsButton = 5.0f * 2.0f;
-    #else
-        static ImVec2 buttonSize(200.0f, 0.0f);
-        static ImVec2 buttonWithOptionsSize(170.0f, 0.0f);
-        static ImVec2 optionsButtonSize(25.0f, 0.0f);
-        static float separationToOptionsButton = 5.0f;
-    #endif
-
-        if (mRandomizerSettingsWindow) {
-            if (ImGui::Button(GetWindowButtonText("Randomizer Settings", CVarGetInteger(CVAR_WINDOW("RandomizerSettings"), 0)).c_str(), buttonSize)) {
-                mRandomizerSettingsWindow->ToggleVisibility();
-            }
-        }
-
-        UIWidgets::Spacer(0);
-
-        if (mPlandomizerWindow) {
-            if (ImGui::Button(GetWindowButtonText("Plandomizer Editor", CVarGetInteger(CVAR_WINDOW("PlandomizerWindow"), 0)).c_str(), buttonSize)) {
-                mPlandomizerWindow->ToggleVisibility();
-            }
-        }
-
-        UIWidgets::Spacer(0);
-
-        if (mItemTrackerWindow) {
-            if (ImGui::Button(GetWindowButtonText("Item Tracker", CVarGetInteger(CVAR_WINDOW("ItemTracker"), 0)).c_str(), buttonWithOptionsSize)) {
-                mItemTrackerWindow->ToggleVisibility();
-            }
-        }
-
-        ImGui::SameLine(0, 0);
-        ImVec2 cursor = ImGui::GetCursorPos();
-        ImGui::SetCursorPos(ImVec2(cursor.x + separationToOptionsButton, cursor.y));
-
-        if (mItemTrackerSettingsWindow) {
-            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(FA_ICON_BUTTON_FRAME_PADDING_X(ICON_FA_COG), 6.0f));
-            if (ImGui::Button(ICON_FA_COG "##ItemTrackerSettings", optionsButtonSize)) {
-                mItemTrackerSettingsWindow->ToggleVisibility();
-            }
-            ImGui::PopStyleVar();
-        }
-
-        UIWidgets::Spacer(0);
-        if (mEntranceTrackerWindow) {
-            if (ImGui::Button(GetWindowButtonText("Entrance Tracker", CVarGetInteger(CVAR_WINDOW("EntranceTracker"), 0)).c_str(), buttonWithOptionsSize)) {
-                mEntranceTrackerWindow->ToggleVisibility();
-            }
-        }
-
-        ImGui::SameLine(0, 0);
-        cursor = ImGui::GetCursorPos();
-        ImGui::SetCursorPos(ImVec2(cursor.x + separationToOptionsButton, cursor.y));
-
-        if (mEntranceTrackerSettingsWindow) {
-            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(FA_ICON_BUTTON_FRAME_PADDING_X(ICON_FA_COG), 6.0f));
-            if (ImGui::Button(ICON_FA_COG "##EntranceTrackerSettings", optionsButtonSize)) {
-                mEntranceTrackerSettingsWindow->ToggleVisibility();
-            }
-            ImGui::PopStyleVar();
-        }
-
-        UIWidgets::Spacer(0);
-
-        if (mCheckTrackerWindow) {
-            if (ImGui::Button(GetWindowButtonText("Check Tracker", CVarGetInteger(CVAR_WINDOW("CheckTracker"), 0)).c_str(), buttonWithOptionsSize)) {
-                mCheckTrackerWindow->ToggleVisibility();
-            }
-        }
-
-        ImGui::SameLine(0, 0);
-        cursor = ImGui::GetCursorPos();
-        ImGui::SetCursorPos(ImVec2(cursor.x + separationToOptionsButton, cursor.y));
-
-        if (mCheckTrackerSettingsWindow) {
-            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(FA_ICON_BUTTON_FRAME_PADDING_X(ICON_FA_COG), 6.0f));
-            if (ImGui::Button(ICON_FA_COG "##CheckTrackerSettings", optionsButtonSize)) {
-                mCheckTrackerSettingsWindow->ToggleVisibility();
-            }
-            ImGui::PopStyleVar();
-        }
-
-        ImGui::PopStyleVar(3);
-        ImGui::PopStyleColor(1);
-
-        UIWidgets::PaddedSeparator();
 
         if (ImGui::BeginMenu("Rando Enhancements"))
         {
@@ -2284,20 +1619,14 @@ void DrawRandomizerMenu() {
 }
 
 void SohMenuBar::InitElement() {
-    UpdateWindowBackendObjects();
+    
 }
 
 void SohMenuBar::DrawElement() {
     if (ImGui::BeginMenuBar()) {
-        DrawMenuBarIcon();
-
         static ImVec2 sWindowPadding(8.0f, 8.0f);
 
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, sWindowPadding);
-
-        DrawShipMenu();
-
-        ImGui::SetCursorPosY(0.0f);
 
         DrawSettingsMenu();
 
@@ -2308,10 +1637,6 @@ void SohMenuBar::DrawElement() {
         ImGui::SetCursorPosY(0.0f);
 
         DrawCheatsMenu();
-
-        ImGui::SetCursorPosY(0.0f);
-
-        DrawDeveloperToolsMenu();
 
         ImGui::SetCursorPosY(0.0f);
 
