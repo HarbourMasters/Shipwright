@@ -247,6 +247,7 @@ extern "C"
 	extern GfxPool gGfxPools[2]; // 0x24820 bytes
 	extern u8* gAudioHeap;
 	extern u8* gSystemHeap;
+	extern GameState* gGameState;
 
 #ifdef __cplusplus
 };
