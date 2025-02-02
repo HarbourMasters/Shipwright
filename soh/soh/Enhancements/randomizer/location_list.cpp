@@ -49,9 +49,6 @@ std::vector<RandomizerCheck> Rando::StaticData::GetOverworldCrateLocations() {
         if (location.GetRCType() == RCTYPE_CRATE && location.IsOverworld() && location.GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
             overworldCrateLocations.push_back(location.GetRandomizerCheck());
         }
-        if (location.GetRCType() == RCTYPE_SMALL_CRATE && location.IsOverworld() && location.GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
-            overworldCrateLocations.push_back(location.GetRandomizerCheck());
-        }
     }
     return overworldCrateLocations;
 }
