@@ -9,6 +9,7 @@ extern s32 Player_GetItemOnButton(PlayState*, s32);
 extern void Inventory_ChangeEquipment(s16, u16);
 extern void Player_SetEquipmentData(PlayState*, Player*);
 extern void func_808328EC(Player*, u16);
+extern PlayState* gPlayState;
 }
 
 static u16 sItemButtons[] = { BTN_B, BTN_CLEFT, BTN_CDOWN, BTN_CRIGHT, BTN_DUP, BTN_DDOWN, BTN_DLEFT, BTN_DRIGHT };
@@ -87,13 +88,17 @@ void RegisterAssignableTunicsBoots() {
 
     // do something when the player presses a button to use the tunics/boots
     COND_VB_SHOULD(VB_EXECUTE_PLAYER_ACTION_FUNC, CVAR_TUNICBOOTS_VALUE != CVAR_TUNICBOOTS_DEFAULT, {
-        Player* player = va_arg(args, Player*);
-        PlayState* play = va_arg(args, PlayState*);
+        // if the vanilla condition doesn't want us to run the actionFunc, don't do any of this
+        if (!*should) {
+            return;
+        }
+
         Input* input = va_arg(args, Input*);
+        Player* player = GET_PLAYER(gPlayState);
 
         *should = false;
-        player->actionFunc(player, play);
-        UseTunicBoots(player, play, input);
+        player->actionFunc(player, gPlayState);
+        UseTunicBoots(player, gPlayState, input);
     });
 
     // clear out assigned tunics/boots when the enhancement is toggled off
