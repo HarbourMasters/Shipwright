@@ -23,13 +23,14 @@ void UseTunicBoots(Player* player, PlayState* play, Input* input) {
         return;
     }
 
-    s32 i;
-    for (i = 0; i < ARRAY_COUNT(sItemButtons); i++) {
+    s32 item = ITEM_NONE;
+    for (s32 i = 0; i < ARRAY_COUNT(sItemButtons); i++) {
         if (CHECK_BTN_ALL(input->press.button, sItemButtons[i])) {
+            item = Player_GetItemOnButton(play, i);
             break;
         }
     }
-    s32 item = Player_GetItemOnButton(play, i);
+
     if (item >= ITEM_TUNIC_KOKIRI && item <= ITEM_BOOTS_HOVER) {
         if (item >= ITEM_BOOTS_KOKIRI) {
             u16 bootsValue = item - ITEM_BOOTS_KOKIRI + 1;
