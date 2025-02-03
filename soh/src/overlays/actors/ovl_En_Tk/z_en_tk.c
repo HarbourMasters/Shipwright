@@ -8,9 +8,10 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_tk/object_tk.h"
 #include "soh/frame_interpolation.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
 
 void EnTk_Init(Actor* thisx, PlayState* play);
 void EnTk_Destroy(Actor* thisx, PlayState* play);
@@ -670,7 +671,7 @@ void EnTk_Update(Actor* thisx, PlayState* play) {
 
     SkelAnime_Update(&this->skelAnime);
 
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 
     Actor_UpdateBgCheckInfo(play, &this->actor, 40.0f, 10.0f, 0.0f, 5);
 

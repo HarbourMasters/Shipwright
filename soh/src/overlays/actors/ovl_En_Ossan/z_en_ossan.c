@@ -17,8 +17,9 @@
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include <assert.h>
+#include "soh/OTRGlobals.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
 void EnOssan_Init(Actor* thisx, PlayState* play);
 void EnOssan_Destroy(Actor* thisx, PlayState* play);
@@ -2181,7 +2182,7 @@ void EnOssan_InitActionFunc(EnOssan* this, PlayState* play) {
     ShopItem* items;
 
     if (EnOssan_AreShopkeeperObjectsLoaded(this, play)) {
-        this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
+        this->actor.flags &= ~ACTOR_FLAG_UPDATE_CULLING_DISABLED;
         this->actor.objBankIndex = this->objBankIndex1;
         Actor_SetObjectDependency(play, &this->actor);
 
@@ -2266,7 +2267,7 @@ void EnOssan_InitActionFunc(EnOssan* this, PlayState* play) {
         this->blinkTimer = 20;
         this->eyeTextureIdx = 0;
         this->blinkFunc = EnOssan_WaitForBlink;
-        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+        this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
         EnOssan_SetupAction(this, EnOssan_MainActionFunc);
     }
 }
@@ -2289,7 +2290,7 @@ void EnOssan_MainActionFunc(EnOssan* this, PlayState* play) {
         sStateFunc[this->stateFlag](this, play, player);
     }
 
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 26.0f, 10.0f, 0.0f, 5);
     Actor_SetFocus(&this->actor, 90.0f);
     Actor_SetScale(&this->actor, sShopkeeperScale[this->actor.params]);

@@ -13,9 +13,11 @@
 #include "scenes/indoors/tokinoma/tokinoma_scene.h"
 #include "scenes/dungeons/ice_doukutu/ice_doukutu_scene.h"
 #include "vt.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void EnXc_Init(Actor* thisx, PlayState* play);
 void EnXc_Destroy(Actor* thisx, PlayState* play);
@@ -635,11 +637,11 @@ void EnXc_CalcXZAccel(EnXc* this) {
         *speedXZ = (kREG(2) * 0.01f) + 1.2f;
     }
 
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 }
 
 void func_80B3D644(EnXc* this) {
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 }
 
 void EnXc_CalcXZSpeed(EnXc* this) {
@@ -651,7 +653,7 @@ void EnXc_CalcXZSpeed(EnXc* this) {
     } else {
         *speedXZ = 0.0f;
     }
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 }
 
 void func_80B3D6F0(EnXc* this) {
@@ -659,7 +661,7 @@ void func_80B3D6F0(EnXc* this) {
 }
 
 void func_80B3D710(EnXc* this) {
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 }
 
 void func_80B3D730(EnXc* this) {
@@ -2214,7 +2216,7 @@ void EnXc_SetupDialogueAction(EnXc* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->action = SHEIK_ACTION_IN_DIALOGUE;
     } else {
-         this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY; //this arrangment is cute but I would rather handle all message selection in ship code
+         this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY; //this arrangment is cute but I would rather handle all message selection in ship code
         if (INV_CONTENT(ITEM_HOOKSHOT) != ITEM_NONE) {
             this->actor.textId = 0x7010; //"You have what you need"
         } else {
@@ -2227,7 +2229,7 @@ void EnXc_SetupDialogueAction(EnXc* this, PlayState* play) {
 void func_80B41798(EnXc* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
         this->action = SHEIK_ACTION_BLOCK_PEDESTAL;
-        this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY);
+        this->actor.flags &= ~(ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY);
     }
 }
 

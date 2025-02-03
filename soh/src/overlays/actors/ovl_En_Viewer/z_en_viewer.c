@@ -17,7 +17,7 @@
 #include "soh/frame_interpolation.h"
 #include <assert.h>
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void EnViewer_Init(Actor* thisx, PlayState* play);
 void EnViewer_Destroy(Actor* thisx, PlayState* play);
@@ -178,7 +178,7 @@ void EnViewer_InitImpl(EnViewer* this, PlayState* play) {
 
     if (!Object_IsLoaded(&play->objectCtx, skelObjBankIndex) ||
         !Object_IsLoaded(&play->objectCtx, this->animObjBankIndex)) {
-        this->actor.flags &= ~ACTOR_FLAG_ACTIVE;
+        this->actor.flags &= ~ACTOR_FLAG_INSIDE_CULLING_VOLUME;
         return;
     }
 
@@ -276,7 +276,7 @@ void EnViewer_UpdateImpl(EnViewer* this, PlayState* play) {
     }
 
     EnViewer_UpdatePosition(this, play);
-    Actor_MoveForward(&this->actor); // has no effect, speed/velocity and gravity are 0
+    Actor_MoveXZGravity(&this->actor); // has no effect, speed/velocity and gravity are 0
 
     animationEnded = SkelAnime_Update(&this->skin.skelAnime);
     if (type == ENVIEWER_TYPE_3_GANONDORF || type == ENVIEWER_TYPE_4_HORSE_GANONDORF) {

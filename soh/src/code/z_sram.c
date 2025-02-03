@@ -5,6 +5,8 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/randomizer/savefile.h"
+#include "soh/OTRGlobals.h"
+#include "soh/SaveManager.h"
 
 #define NUM_DUNGEONS 8
 #define NUM_COWS 10
@@ -140,7 +142,7 @@ void Sram_OpenSave() {
     }
 
     if (!CVarGetInteger(CVAR_ENHANCEMENT("PersistentMasks"), 0)) {
-        gSaveContext.maskMemory = PLAYER_MASK_NONE;
+        gSaveContext.ship.maskMemory = PLAYER_MASK_NONE;
     }
 
     osSyncPrintf("scene_no = %d\n", gSaveContext.entranceIndex);
@@ -249,12 +251,12 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
 
     u8 currentQuest = fileChooseCtx->questType[fileChooseCtx->buttonIndex];
 
-    if (currentQuest == QUEST_RANDOMIZER && (Randomizer_IsSeedGenerated() || Randomizer_IsPlandoLoaded())) {
-        gSaveContext.questId = QUEST_RANDOMIZER;
+    if (currentQuest == QUEST_RANDOMIZER && (Randomizer_IsSeedGenerated() || Randomizer_IsSpoilerLoaded())) {
+        gSaveContext.ship.quest.id = QUEST_RANDOMIZER;
 
         Randomizer_InitSaveFile();
     } else {
-        gSaveContext.questId = currentQuest;
+        gSaveContext.ship.quest.id = currentQuest;
     }
 
     Save_SaveFile();

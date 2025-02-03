@@ -21,6 +21,9 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/gameplaystats.h"
 
 #define DO_ACTION_TEX_WIDTH() 48
 #define DO_ACTION_TEX_HEIGHT() 16
@@ -1809,7 +1812,7 @@ void func_80084BF4(PlayState* play, u16 flag) {
 void GameplayStats_SetTimestamp(PlayState* play, u8 item) {
 
     // If we already have a timestamp for this item, do nothing
-    if (gSaveContext.sohStats.itemTimestamp[item] != 0){
+    if (gSaveContext.ship.stats.itemTimestamp[item] != 0){
         return;
     }
     // Use ITEM_KEY_BOSS only for Ganon's boss key - not any other boss keys
@@ -1828,20 +1831,20 @@ void GameplayStats_SetTimestamp(PlayState* play, u8 item) {
 
     // Count any bottled item as a bottle
     if (item >= ITEM_BOTTLE && item <= ITEM_POE) {
-        if (gSaveContext.sohStats.itemTimestamp[ITEM_BOTTLE] == 0) {
-            gSaveContext.sohStats.itemTimestamp[ITEM_BOTTLE] = time;
+        if (gSaveContext.ship.stats.itemTimestamp[ITEM_BOTTLE] == 0) {
+            gSaveContext.ship.stats.itemTimestamp[ITEM_BOTTLE] = time;
         }
         return;
     }
     // Count any bombchu pack as bombchus
     if (item == ITEM_BOMBCHU || (item >= ITEM_BOMBCHUS_5 && item <= ITEM_BOMBCHUS_20)) {
-        if (gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] == 0) {
-            gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] = time;
+        if (gSaveContext.ship.stats.itemTimestamp[ITEM_BOMBCHU] == 0) {
+            gSaveContext.ship.stats.itemTimestamp[ITEM_BOMBCHU] = time;
         }
         return;
     }
 
-    gSaveContext.sohStats.itemTimestamp[item] = time;
+    gSaveContext.ship.stats.itemTimestamp[item] = time;
     GameInteractor_ExecuteOnTimestamp(item);
 }
 
@@ -1984,13 +1987,9 @@ u8 Item_Give(PlayState* play, u8 item) {
         if (item == ITEM_SWORD_BGS) {
             gSaveContext.swordHealth = 8;
 
-            // In rando, when buying Giant's Knife, also check
-            // without the Koriri Sword in case we don't have it
             if (ALL_EQUIP_VALUE(EQUIP_TYPE_SWORD) == 
                 ((1 << EQUIP_INV_SWORD_KOKIRI) | (1 << EQUIP_INV_SWORD_MASTER) | (1 << EQUIP_INV_SWORD_BIGGORON) |
-                 (1 << EQUIP_INV_SWORD_BROKENGIANTKNIFE)) || 
-                (IS_RANDO && ALL_EQUIP_VALUE(EQUIP_TYPE_SWORD) == 
-                ((1 << EQUIP_INV_SWORD_MASTER) | (1 << EQUIP_INV_SWORD_BIGGORON) | (1 << EQUIP_INV_SWORD_BROKENGIANTKNIFE)))) {
+                 (1 << EQUIP_INV_SWORD_BROKENGIANTKNIFE))) {
 
                 gSaveContext.inventory.equipment ^= OWNED_EQUIP_FLAG_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BROKENGIANTKNIFE);
 
@@ -2339,7 +2338,7 @@ u8 Item_Give(PlayState* play, u8 item) {
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item == ITEM_HEART_PIECE_2) || (item == ITEM_HEART_PIECE)) {
         gSaveContext.inventory.questItems += 1 << (QUEST_HEART_PIECE + 4);
-        gSaveContext.sohStats.heartPieces++;
+        gSaveContext.ship.stats.heartPieces++;
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_HEART_CONTAINER) {
         if (!CVarGetInteger(CVAR_ENHANCEMENT("HurtContainer"), 0)) {
@@ -2349,7 +2348,7 @@ u8 Item_Give(PlayState* play, u8 item) {
             gSaveContext.healthCapacity -= 0x10;
             gSaveContext.health -= 0x10;
         }
-        gSaveContext.sohStats.heartContainers++;
+        gSaveContext.ship.stats.heartContainers++;
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_HEART) {
         osSyncPrintf("回復ハート回復ハート回復ハート\n"); // "Recovery Heart"
@@ -2448,7 +2447,7 @@ u8 Item_Give(PlayState* play, u8 item) {
         }
 
         if (item >= ITEM_POCKET_EGG) {
-            gSaveContext.adultTradeItems |= ADULT_TRADE_FLAG(item);
+            gSaveContext.ship.quest.data.randomizer.adultTradeItems |= ADULT_TRADE_FLAG(item);
         }
 
         temp = INV_CONTENT(item);
@@ -2764,8 +2763,8 @@ bool Inventory_HatchPocketCucco(PlayState* play) {
          return 0;
     }
 
-    gSaveContext.adultTradeItems &= ~ADULT_TRADE_FLAG(ITEM_POCKET_EGG);
-    gSaveContext.adultTradeItems |= ADULT_TRADE_FLAG(ITEM_POCKET_CUCCO);
+    gSaveContext.ship.quest.data.randomizer.adultTradeItems &= ~ADULT_TRADE_FLAG(ITEM_POCKET_EGG);
+    gSaveContext.ship.quest.data.randomizer.adultTradeItems |= ADULT_TRADE_FLAG(ITEM_POCKET_CUCCO);
     Inventory_ReplaceItem(play, ITEM_POCKET_EGG, ITEM_POCKET_CUCCO);
     return 1;
 }
@@ -2883,7 +2882,7 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
                  gSaveContext.healthCapacity);
 
     if (healthChange < 0) {
-        gSaveContext.sohStats.count[COUNT_DAMAGE_TAKEN] += -healthChange;
+        gSaveContext.ship.stats.count[COUNT_DAMAGE_TAKEN] += -healthChange;
     }
 
     // If one-hit ko mode is on, any damage kills you and you cannot gain health.
@@ -2953,10 +2952,10 @@ void Rupees_ChangeBy(s16 rupeeChange) {
     }
 
     if (rupeeChange > 0) {
-        gSaveContext.sohStats.count[COUNT_RUPEES_COLLECTED] += rupeeChange;
+        gSaveContext.ship.stats.count[COUNT_RUPEES_COLLECTED] += rupeeChange;
     }
     if (rupeeChange < 0) {
-        gSaveContext.sohStats.count[COUNT_RUPEES_SPENT] += -rupeeChange;
+        gSaveContext.ship.stats.count[COUNT_RUPEES_SPENT] += -rupeeChange;
     }
 }
 
@@ -2964,25 +2963,25 @@ void GameplayStats_UpdateAmmoUsed(s16 item, s16 ammoUsed) {
 
     switch (item) { 
         case ITEM_STICK:
-            gSaveContext.sohStats.count[COUNT_AMMO_USED_STICK] += ammoUsed;
+            gSaveContext.ship.stats.count[COUNT_AMMO_USED_STICK] += ammoUsed;
             break;
         case ITEM_NUT:
-            gSaveContext.sohStats.count[COUNT_AMMO_USED_NUT] += ammoUsed;
+            gSaveContext.ship.stats.count[COUNT_AMMO_USED_NUT] += ammoUsed;
             break;
         case ITEM_BOMB:
-            gSaveContext.sohStats.count[COUNT_AMMO_USED_BOMB] += ammoUsed;
+            gSaveContext.ship.stats.count[COUNT_AMMO_USED_BOMB] += ammoUsed;
             break;
         case ITEM_BOW:
-            gSaveContext.sohStats.count[COUNT_AMMO_USED_ARROW] += ammoUsed;
+            gSaveContext.ship.stats.count[COUNT_AMMO_USED_ARROW] += ammoUsed;
             break;
         case ITEM_SLINGSHOT:
-            gSaveContext.sohStats.count[COUNT_AMMO_USED_SEED] += ammoUsed;
+            gSaveContext.ship.stats.count[COUNT_AMMO_USED_SEED] += ammoUsed;
             break;
         case ITEM_BOMBCHU:
-            gSaveContext.sohStats.count[COUNT_AMMO_USED_BOMBCHU] += ammoUsed;
+            gSaveContext.ship.stats.count[COUNT_AMMO_USED_BOMBCHU] += ammoUsed;
             break;
         case ITEM_BEAN:
-            gSaveContext.sohStats.count[COUNT_AMMO_USED_BEAN] += ammoUsed;
+            gSaveContext.ship.stats.count[COUNT_AMMO_USED_BEAN] += ammoUsed;
             break;
         default:
             break;
@@ -3385,6 +3384,11 @@ void Interface_UpdateMagicBar(PlayState* play) {
 
         default:
             gSaveContext.magicState = MAGIC_STATE_IDLE;
+            if (CVarGetInteger(CVAR_COSMETIC("Consumable.MagicBorder.Changed"), 0)) {
+                sMagicBorder = CVarGetColor24(CVAR_COSMETIC("Consumable.MagicBorder.Value"), sMagicBorder_ori);
+            } else {
+                sMagicBorder = sMagicBorder_ori;
+            }
             break;
     }
 }
@@ -3614,8 +3618,8 @@ void Interface_DrawEnemyHealthBar(TargetContext* targetCtx, PlayState* play) {
     s32 healthbar_offsetY = CVarGetInteger(CVAR_COSMETIC("HUD.EnemyHealthBar.PosY"), 0);
     s8 anchorType = CVarGetInteger(CVAR_COSMETIC("HUD.EnemyHealthBar.PosType"), ENEMYHEALTH_ANCHOR_ACTOR);
 
-    if (CVarGetInteger(CVAR_COSMETIC("HUD.EnemyHealthBar..Changed"), 0)) {
-        healthbar_red = CVarGetColor(CVAR_COSMETIC("HUD.EnemyHealthBar..Value"), healthbar_red);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.EnemyHealthBar.Changed"), 0)) {
+        healthbar_red = CVarGetColor(CVAR_COSMETIC("HUD.EnemyHealthBar.Value"), healthbar_red);
     }
     if (CVarGetInteger(CVAR_COSMETIC("HUD.EnemyHealthBorder.Changed"), 0)) {
         healthbar_border = CVarGetColor(CVAR_COSMETIC("HUD.EnemyHealthBorder.Value"), healthbar_border);
@@ -5679,17 +5683,19 @@ void Interface_Draw(PlayState* play) {
             }
 
             // Revert any spoiling trade quest items
-            for (svar1 = 0; svar1 < ARRAY_COUNT(gSpoilingItems); svar1++) {
-                if (INV_CONTENT(ITEM_TRADE_ADULT) == gSpoilingItems[svar1]) {
-                    gSaveContext.eventInf[0] &= 0x7F80;
-                    osSyncPrintf("EVENT_INF=%x\n", gSaveContext.eventInf[0]);
-                    play->nextEntranceIndex = spoilingItemEntrances[svar1];
-                    INV_CONTENT(gSpoilingItemReverts[svar1]) = gSpoilingItemReverts[svar1];
+            if (GameInteractor_Should(VB_REVERT_SPOILING_ITEMS, true)) {
+                for (svar1 = 0; svar1 < ARRAY_COUNT(gSpoilingItems); svar1++) {
+                    if (INV_CONTENT(ITEM_TRADE_ADULT) == gSpoilingItems[svar1]) {
+                        gSaveContext.eventInf[0] &= 0x7F80;
+                        osSyncPrintf("EVENT_INF=%x\n", gSaveContext.eventInf[0]);
+                        play->nextEntranceIndex = spoilingItemEntrances[svar1];
+                        INV_CONTENT(gSpoilingItemReverts[svar1]) = gSpoilingItemReverts[svar1];
 
-                    for (svar2 = 1; svar2 < ARRAY_COUNT(gSaveContext.equips.buttonItems); svar2++) {
-                        if (gSaveContext.equips.buttonItems[svar2] == gSpoilingItems[svar1]) {
-                            gSaveContext.equips.buttonItems[svar2] = gSpoilingItemReverts[svar1];
-                            Interface_LoadItemIcon1(play, svar2);
+                        for (svar2 = 1; svar2 < ARRAY_COUNT(gSaveContext.equips.buttonItems); svar2++) {
+                            if (gSaveContext.equips.buttonItems[svar2] == gSpoilingItems[svar1]) {
+                                gSaveContext.equips.buttonItems[svar2] = gSpoilingItemReverts[svar1];
+                                Interface_LoadItemIcon1(play, svar2);
+                            }
                         }
                     }
                 }
@@ -6060,7 +6066,7 @@ void Interface_Draw(PlayState* play) {
                         svar5 = CVarGetInteger(CVAR_COSMETIC("HUD.Timers.PosX"), 0)+204+X_Margins_Timer;
                     } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Timers.PosType"), 0) == 4) {//Hidden
                         svar5 = -9999;
-                    }
+                    }                
                 }
 
                 OVERLAY_DISP =
@@ -6116,7 +6122,7 @@ void Interface_Draw(PlayState* play) {
 void Interface_DrawTotalGameplayTimer(PlayState* play) {
     // Draw timer based on the Gameplay Stats total time.
 
-    if ((IS_BOSS_RUSH && gSaveContext.bossRushOptions[BR_OPTIONS_TIMER] == BR_CHOICE_TIMER_YES) ||
+    if ((IS_BOSS_RUSH && gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_TIMER] == BR_CHOICE_TIMER_YES) ||
         (CVarGetInteger(CVAR_ENHANCEMENT("GameplayStats.ShowIngameTimer"), 0) && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2)) {
 
         s32 X_Margins_Timer = 0;
@@ -6196,9 +6202,9 @@ void Interface_DrawTotalGameplayTimer(PlayState* play) {
                                     (rectTop + rectHeight) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
 
             // Draw regular text. Change color based on if the timer is paused, running or the game is completed.
-            if (gSaveContext.sohStats.gameComplete) {
+            if (gSaveContext.ship.stats.gameComplete) {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 120, 255, 0, 255);
-            } else if (gSaveContext.isBossRushPaused && !gSaveContext.sohStats.rtaTiming) {
+            } else if (IS_BOSS_RUSH && gSaveContext.ship.quest.data.bossRush.isPaused && !gSaveContext.ship.stats.rtaTiming) {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 150, 150, 150, 255);
             } else {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, 255);
@@ -6423,11 +6429,11 @@ void Interface_Update(PlayState* play) {
         } else {
             gSaveContext.rupeeAccumulator = 0;
         }
-        if (gSaveContext.rupeeAccumulator == 0 && gSaveContext.pendingSale != ITEM_NONE) {
-            u16 tempSaleItem = gSaveContext.pendingSale;
-            u16 tempSaleMod = gSaveContext.pendingSaleMod;
-            gSaveContext.pendingSale = ITEM_NONE;
-            gSaveContext.pendingSaleMod = MOD_NONE;
+        if (gSaveContext.rupeeAccumulator == 0 && gSaveContext.ship.pendingSale != ITEM_NONE) {
+            u16 tempSaleItem = gSaveContext.ship.pendingSale;
+            u16 tempSaleMod = gSaveContext.ship.pendingSaleMod;
+            gSaveContext.ship.pendingSale = ITEM_NONE;
+            gSaveContext.ship.pendingSaleMod = MOD_NONE;
             if (tempSaleMod == MOD_NONE) {
                 GetItemID getItemID = RetrieveGetItemIDFromItemID(tempSaleItem);
                 RandomizerGet randomizerGet = RetrieveRandomizerGetFromItemID(tempSaleItem);

@@ -65,7 +65,10 @@ class Logic {
     // Bottle Count
     uint8_t Bottles = 0;
     uint8_t NumBottles = 0;
-    bool CanEmptyBigPoes = true;
+    //this event covers if the player can currently empty big poes in logic
+    bool CanEmptyBigPoes = false;
+    //this check covers if the generation has confirmed that it's possible to empty big poes if needed as adult
+    bool CouldEmptyBigPoes = true;
 
     // Drops and Bottle Contents Access
     bool NutPot = false;
@@ -156,6 +159,7 @@ class Logic {
     bool GTGPlatformSilverRupees = false;
     bool MQJabuHolesRoomDoor = false;
     bool JabuWestTentacle = false;
+    bool JabuEastTentacle = false;
     bool JabuNorthTentacle = false;
     bool LoweredJabuPath = false;
     bool MQJabuLiftRoomCow = false;
@@ -171,6 +175,8 @@ class Logic {
     bool MQSpiritTimeTravelChest = false;
     bool MQSpirit3SunsEnemies = false;
     bool Spirit1FSilverRupees = false;
+    bool JabuRutoInB1 = false;
+    bool JabuRutoIn1F = false;
 
     /* --- END OF HELPERS AND LOCATION ACCESS --- */
 
@@ -180,6 +186,7 @@ class Logic {
     bool HasProjectile(HasProjectileAge age);
     bool HasItem(RandomizerGet itemName);
     bool HasBossSoul(RandomizerGet itemName);
+    bool CanOpenOverworldDoor(RandomizerGet itemName);
     bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmount);
     bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched);
     bool CanDoGlitch(GlitchType glitch);
@@ -230,6 +237,7 @@ class Logic {
     bool CanGetNightTimeGS();
     bool CanBreakUpperBeehives();
     bool CanBreakLowerBeehives();
+    bool CanBreakPots();
     bool HasFireSource();
     bool HasFireSourceWithTorch();
     bool TradeQuestStep(RandomizerGet rg);

@@ -18,6 +18,9 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
+#include "soh/SaveManager.h"
 #include "soh/Enhancements/kaleido.h"
 
 
@@ -3989,10 +3992,6 @@ void KaleidoScope_Update(PlayState* play)
             switch (pauseCtx->unk_1E4) {
                 case 0:
                     if (GameInteractor_Should(VB_CLOSE_PAUSE_MENU, CHECK_BTN_ALL(input->press.button, BTN_START))) {
-                        if (CVarGetInteger(CVAR_CHEAT("EasyPauseBuffer"), 0) || CVarGetInteger(CVAR_CHEAT("EasyInputBuffer"), 0)) {
-                            // Easy pause buffer is 13 frames, 12 for kaledio to end, and one more to advance a single frame
-                            CVarSetInteger(CVAR_GENERAL("CheatEasyPauseBufferTimer"), 13);
-                        }
                         Interface_SetDoAction(play, DO_ACTION_NONE);
                         pauseCtx->state = 0x12;
                         WREG(2) = -6240;
@@ -4543,6 +4542,10 @@ void KaleidoScope_Update(PlayState* play)
             break;
 
         case 0x13:
+            if (!GameInteractor_Should(VB_KALEIDO_UNPAUSE_CLOSE, true)) {
+                break;
+            }
+
             pauseCtx->state = 0;
             R_UPDATE_RATE = 3;
             R_PAUSE_MENU_MODE = 0;

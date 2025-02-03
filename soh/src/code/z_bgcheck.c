@@ -1,7 +1,8 @@
 #include "global.h"
 #include "vt.h"
 
-#include <soh/OTRGlobals.h>
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 #include <assert.h>
 
 #define SS_NULL 0xFFFF
@@ -2953,7 +2954,7 @@ void func_8003F8EC(PlayState* play, DynaCollisionContext* dyna, Actor* actor) {
         if ((dyna->bgActorFlags[i] & 1)) {
             dynaActor = DynaPoly_GetActor(&play->colCtx, i);
             if (dynaActor != NULL && &dynaActor->actor == actor) {
-                func_800434A0((DynaPolyActor*)actor);
+                DynaPolyActor_UnsetAllInteractFlags((DynaPolyActor*)actor);
                 return;
             }
         }

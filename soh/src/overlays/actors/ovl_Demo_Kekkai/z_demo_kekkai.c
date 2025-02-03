@@ -7,8 +7,9 @@
 #include "z_demo_kekkai.h"
 #include "objects/object_demo_kekkai/object_demo_kekkai.h"
 #include "scenes/dungeons/ganontika/ganontika_scene.h"
+#include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void DemoKekkai_Init(Actor* thisx, PlayState* play);
 void DemoKekkai_Destroy(Actor* thisx, PlayState* play);

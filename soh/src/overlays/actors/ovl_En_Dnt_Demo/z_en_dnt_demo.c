@@ -9,6 +9,7 @@
 #include "overlays/actors/ovl_En_Dnt_Jiji/z_en_dnt_jiji.h"
 #include "overlays/actors/ovl_En_Dnt_Nomal/z_en_dnt_nomal.h"
 #include "vt.h"
+#include "soh/OTRGlobals.h"
 
 #define FLAGS 0
 
@@ -99,7 +100,7 @@ void EnDntDemo_Init(Actor* thisx, PlayState* play2) {
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ じじじじじじじじじじい ☆☆☆☆☆ %x\n" VT_RST, this->leader);
     }
     this->subCamera = 0;
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->actionFunc = EnDntDemo_Judge;
 }
 

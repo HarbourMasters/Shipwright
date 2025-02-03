@@ -3,10 +3,12 @@
 #include "overlays/actors/ovl_En_Syateki_Niw/z_en_syateki_niw.h"
 #include "overlays/actors/ovl_En_Ex_Item/z_en_ex_item.h"
 #include "objects/object_bg/object_bg.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_NO_LOCKON)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED | ACTOR_FLAG_LOCK_ON_DISABLED)
 
 typedef enum {
     /* 0 */ CHU_GIRL_EYES_ASLEEP,
@@ -177,7 +179,7 @@ void EnBomBowMan_CheckBeatenDC(EnBomBowlMan* this, PlayState* play) {
         if (IS_RANDO) {
             // when rando'd, check if we have bombchus if chus are in logic
             // and check if we have a bomb bag if chus aren't in logic
-            u8 explosive = Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC) ? ITEM_BOMBCHU : ITEM_BOMB;
+            u8 explosive = Randomizer_GetSettingValue(RSK_BOMBCHU_BAG) ? ITEM_BOMBCHU : ITEM_BOMB;
             bombchuBowlingClosed = (INV_CONTENT(explosive) == ITEM_NONE);
         } else {
             // if not rando'd, check if we have beaten Dodongo's Cavern

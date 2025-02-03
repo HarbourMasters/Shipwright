@@ -7,9 +7,11 @@
 #include "z_en_ta.h"
 #include "vt.h"
 #include "objects/object_ta/object_ta.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
 
 void EnTa_Init(Actor* thisx, PlayState* play);
 void EnTa_Destroy(Actor* thisx, PlayState* play);
@@ -182,7 +184,7 @@ void EnTa_Init(Actor* thisx, PlayState* play2) {
                     Actor_Kill(&this->actor);
                 } else {
                     if (IS_DAY) {
-                        this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+                        this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
                         this->unk_2C4[0] = this->unk_2C4[1] = this->unk_2C4[2] = 7;
                         this->superCuccos[0] = (EnNiw*)Actor_Spawn(
                             &play->actorCtx, play, ACTOR_EN_NIW, this->actor.world.pos.x + 5.0f,
@@ -394,7 +396,7 @@ void func_80B14818(EnTa* this, PlayState* play) {
     if (this->actor.speedXZ < 6.0f) {
         this->actor.speedXZ += 0.4f;
     }
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 }
 
 void func_80B14898(EnTa* this, PlayState* play) {
@@ -457,7 +459,7 @@ void func_80B14AF4(EnTa* this, PlayState* play) {
         Audio_PlayActorSound2(&this->actor, NA_SE_VO_TA_CRY_1);
         EnTa_SetupAction(this, func_80B14A54, EnTa_AnimRepeatCurrent);
         this->unk_2CC = 65;
-        this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+        this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
     }
 }
 
@@ -623,7 +625,7 @@ void func_80B15100(EnTa* this, PlayState* play) {
 void func_80B15260(EnTa* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->actionFunc = func_80B15100;
-        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+        this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
     } else {
         func_8002F2CC(&this->actor, play, 1000.0f);
     }
@@ -730,7 +732,7 @@ void EnTa_RunCuccoGame(EnTa* this, PlayState* play) {
                             break;
                     }
                     this->actionFunc = func_80B15260;
-                    this->actor.flags |= ACTOR_FLAG_WILL_TALK;
+                    this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
                     func_8002F2CC(&this->actor, play, 1000.0f);
                     return;
                 }
@@ -915,8 +917,8 @@ void func_80B15FE8(EnTa* this, PlayState* play) {
                         EnTa_SetupAction(this, EnTa_GiveItemInLonLonHouse, EnTa_AnimRunToEnd);
                         Rupees_ChangeBy(-30);
                         GetItemEntry itemEntry = ItemTable_Retrieve(GI_MILK);
-                        gSaveContext.pendingSale = itemEntry.itemId;
-                        gSaveContext.pendingSaleMod = itemEntry.modIndex;
+                        gSaveContext.ship.pendingSale = itemEntry.itemId;
+                        gSaveContext.ship.pendingSaleMod = itemEntry.modIndex;
                         Actor_OfferGetItem(&this->actor, play, GI_MILK, 10000.0f, 50.0f);
                         break;
                 }
@@ -1059,9 +1061,9 @@ void EnTa_IdleAfterCuccoGameFinished(EnTa* this, PlayState* play) {
                 this->actionFunc = func_80B1642C;
                 break;
         }
-        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+        this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
     } else {
-        this->actor.flags |= ACTOR_FLAG_WILL_TALK;
+        this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         func_8002F2CC(&this->actor, play, 1000.0f);
     }
     this->unk_2E0 |= 1;
@@ -1151,7 +1153,7 @@ void EnTa_Update(Actor* thisx, PlayState* play) {
 
     Collider_UpdateCylinder(&this->actor, &this->collider);
     CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);
     this->unk_260(this);
     this->actionFunc(this, play);

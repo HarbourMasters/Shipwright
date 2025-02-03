@@ -6,12 +6,12 @@
 #include "soh/Enhancements/enhancementTypes.h"
 #include "variables.h"
 #include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
+#include "soh/ResourceManagerHelpers.h"
 
 extern "C" {
 #include <z64.h>
 }
-
-extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 
 const char* enemyCVarList[] = {
     CVAR_ENHANCEMENT("RandomizedEnemyList.Armos"),        CVAR_ENHANCEMENT("RandomizedEnemyList.Arwing"),
@@ -305,7 +305,7 @@ EnemyEntry GetRandomizedEnemyEntry(uint32_t seed) {
         GetSelectedEnemies();
     }
     if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), ENEMY_RANDOMIZER_OFF) == ENEMY_RANDOMIZER_RANDOM_SEEDED) {
-        uint32_t finalSeed = seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSettings()->GetSeed() : gSaveContext.sohStats.fileCreatedAt);
+        uint32_t finalSeed = seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
         Random_Init(finalSeed);
         uint32_t randomNumber = Random(0, RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE);
         return selectedEnemyList[randomNumber];

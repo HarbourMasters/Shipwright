@@ -13,7 +13,7 @@ std::unordered_map<uint32_t, CustomMessage> StaticData::hintTypeNames = {
     {HINT_TYPE_ITEM_AREA, CustomMessage("Item Area")},
     {HINT_TYPE_ALTAR_CHILD, CustomMessage("Child Altar")},
     {HINT_TYPE_ALTAR_ADULT, CustomMessage("Adult Altar")},
-    {HINT_TYPE_WOTH,  CustomMessage("Way of the Hero")},
+    {HINT_TYPE_WOTH, CustomMessage("Way of the Hero")},
     {HINT_TYPE_FOOLISH, CustomMessage("Foolish")},
     {HINT_TYPE_MESSAGE, CustomMessage("Hardcoded Message")}
 };
@@ -60,7 +60,7 @@ std::unordered_map<uint32_t, CustomMessage> StaticData::hintNames = {
     {RH_LH_SOUTHEAST_GOSSIP_STONE, CustomMessage("LH Southeast Gossip Stone")},
     {RH_LH_SOUTHWEST_GOSSIP_STONE, CustomMessage("LH Southwest Gossip Stone")},
     {RH_GV_GOSSIP_STONE, CustomMessage("Gerudo Valley Gossip Stone")},
-    {RH_COLOSSUS_GOSSIP_STONE, CustomMessage("Desert Collosus Gossip Stone")},
+    {RH_COLOSSUS_GOSSIP_STONE, CustomMessage("Desert Colossus Gossip Stone")},
     {RH_DODONGOS_CAVERN_GOSSIP_STONE, CustomMessage("Dodongo's Cavern Gossip Stone")},
     {RH_GANONDORF_HINT, CustomMessage("Ganondorf Hint")},
     {RH_GANONDORF_JOKE, CustomMessage("Ganondorf Joke")},
@@ -189,7 +189,7 @@ std::unordered_map<uint32_t, RandomizerHintTextKey> StaticData::trialData = {
 std::unordered_map<RandomizerHint, StaticHintInfo> StaticData::staticHintInfoMap = {
   // RH_GANONDORF_HINT is special cased due to being different based on master sword shuffle
   // Altar hints are special cased due to special hint marking rules
-  // warp song hints are special cased due to entrences not being done properly yet
+  // warp song hints are special cased due to entrances not being done properly yet
   // Ganondorf Joke is special cased as the text is random
   {RH_SHEIK_HINT,          StaticHintInfo(HINT_TYPE_AREA,     {RHT_SHEIK_HINT_LA_ONLY},            RSK_SHEIK_LA_HINT,       true, {}, {RG_LIGHT_ARROWS},            {RC_SHEIK_HINT_GC, RC_SHEIK_HINT_MQ_GC}, true)},
   {RH_DAMPES_DIARY,        StaticHintInfo(HINT_TYPE_AREA,     {RHT_DAMPE_DIARY},                   RSK_DAMPES_DIARY_HINT,   true, {}, {RG_PROGRESSIVE_HOOKSHOT},    {RC_DAMPE_HINT})},
@@ -251,7 +251,8 @@ std::unordered_map<std::string, uint32_t> StaticData::hintNameToEnum = {};
 std::unordered_map<std::string, uint32_t> StaticData::hintTypeNameToEnum = {};
 std::unordered_map<std::string, uint32_t> StaticData::areaNameToEnum = {};
 std::unordered_map<std::string, uint32_t> StaticData::trialNameToEnum = {};
-std::unordered_map<std::string, RandomizerCheck> StaticData::locationNameToEnum = {}; //is filled in context based on location table, not touching that because of VB 
+std::unordered_map<std::string, RandomizerSettingKey> StaticData::optionNameToEnum = {};
+std::unordered_map<std::string, RandomizerCheck> StaticData::locationNameToEnum = {}; //is filled in context based on location table
 
 std::unordered_map<u32, RandomizerHint> StaticData::stoneParamsToHint{
   {0x1,  RH_ZF_FAIRY_GOSSIP_STONE},

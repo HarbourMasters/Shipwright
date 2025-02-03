@@ -1,6 +1,6 @@
 #include "actorViewer.h"
 #include "../../util.h"
-#include "../../UIWidgets.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include "soh/ActorDB.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/nametag.h"
@@ -13,6 +13,7 @@
 #include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
 #include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
 
 extern "C" {
 #include <z64.h>

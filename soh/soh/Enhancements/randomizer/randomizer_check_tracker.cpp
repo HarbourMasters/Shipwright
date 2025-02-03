@@ -2,10 +2,13 @@
 #include "randomizer_entrance_tracker.h"
 #include "randomizer_item_tracker.h"
 #include "randomizerTypes.h"
+#include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
+#include "soh/SaveManager.h"
+#include "soh/ResourceManagerHelpers.h"
+#include "soh/SohGui/UIWidgets.hpp"
 #include "dungeon.h"
-#include "../../OTRGlobals.h"
-#include "../../UIWidgets.hpp"
-#include "3drando/location_access.hpp"
+#include "location_access.h"
 
 #include <string>
 #include <vector>
@@ -24,15 +27,12 @@ extern "C" {
 #include "macros.h"
 extern PlayState* gPlayState;
 }
-extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 extern "C" GetItemEntry ItemTable_RetrieveEntry(s16 modIndex, s16 getItemID);
 
 extern std::vector<ItemTrackerItem> dungeonRewardStones;
 extern std::vector<ItemTrackerItem> dungeonRewardMedallions;
 extern std::vector<ItemTrackerItem> songItems;
 extern std::vector<ItemTrackerItem> equipmentItems;
-
-#define RCO_RAORU { RC_GIFT_FROM_SAGES, RCVORMQ_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_MARKET, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00, GI_NONE, false, "Gift from Raoru", "Gift from Raoru", true };
 
 using json = nlohmann::json;
 
@@ -48,13 +48,18 @@ bool showMajorScrubs;
 bool showMerchants;
 bool showBeehives;
 bool showCows;
+bool showOverworldFreestanding;
+bool showDungeonFreestanding;
 bool showAdultTrade;
 bool showKokiriSword;
 bool showMasterSword;
 bool showHyruleLoach;
 bool showWeirdEgg;
 bool showGerudoCard;
+bool showOverworldPots;
+bool showDungeonPots;
 bool showFrogSongRupees;
+bool showFairies;
 bool showStartingMapsCompasses;
 bool showKeysanity;
 bool showGerudoFortressKeys;
@@ -216,34 +221,6 @@ static ImGuiTextFilter checkSearch;
 std::array<bool, RCAREA_INVALID> filterAreasHidden = { 0 };
 std::array<bool, RC_MAX> filterChecksHidden = { 0 };
 
-void SongFromImpa() {
-    if (IS_RANDO) {
-        if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SKIP_CHILD_ZELDA) == RO_GENERIC_ON && IS_RANDO) {
-            //if (gSaveContext.checkTrackerData[RC_SONG_FROM_IMPA].status != RCSHOW_SAVED) {
-            //    gSaveContext.checkTrackerData[RC_SONG_FROM_IMPA].status = RCSHOW_SAVED;
-            //}
-        }
-    }
-}
-
-void GiftFromSages() {
-    if (!IS_RANDO) {
-        //DefaultCheckData(RC_GIFT_FROM_SAGES);
-    }
-}
-
-std::vector<RandomizerCheck> checks;
-// Function for adding Link's Pocket check
-void LinksPocket() {
-    /*if (IS_RANDO) {
-        if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING ||
-            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_DUNGEON_REWARDS) == RO_DUNGEON_REWARDS_END_OF_DUNGEON) {
-            DefaultCheckData(RC_LINKS_POCKET);
-            gSaveContext.checkTrackerData[RC_LINKS_POCKET].status = RCSHOW_SAVED;
-        }
-    }*/
-}
-
 void TrySetAreas() {
     if (checksByArea.empty()) {
         for (int i = RCAREA_KOKIRI_FOREST; i < RCAREA_INVALID; i++) {
@@ -283,6 +260,33 @@ void RecalculateAreaTotals(RandomizerCheckArea rcArea) {
         }
     }
     CalculateTotals();
+}
+
+std::map<RandomizerGet, RandomizerCheckArea> MapRGtoRandomizerCheckArea = {
+    { RG_DEKU_TREE_MAP, RCAREA_DEKU_TREE},
+    { RG_DODONGOS_CAVERN_MAP, RCAREA_DODONGOS_CAVERN },
+    { RG_JABU_JABUS_BELLY_MAP, RCAREA_JABU_JABUS_BELLY },
+    { RG_FOREST_TEMPLE_MAP, RCAREA_FOREST_TEMPLE },
+    { RG_FIRE_TEMPLE_MAP, RCAREA_FIRE_TEMPLE },
+    { RG_WATER_TEMPLE_MAP, RCAREA_WATER_TEMPLE },
+    { RG_SPIRIT_TEMPLE_MAP, RCAREA_SPIRIT_TEMPLE },
+    { RG_SHADOW_TEMPLE_MAP, RCAREA_SHADOW_TEMPLE },
+    { RG_BOTTOM_OF_THE_WELL_MAP, RCAREA_BOTTOM_OF_THE_WELL },
+    { RG_ICE_CAVERN_MAP, RCAREA_ICE_CAVERN }
+};
+
+void SpoilAreaFromCheck(RandomizerCheck rc) {
+    Rando::Location* loc = Rando::StaticData::GetLocation(rc);
+    Rando::ItemLocation* itemLoc = Rando::Context::GetInstance()->GetItemLocation(rc);
+    if (itemLoc->GetPlacedItem().GetItemType() == ItemType::ITEMTYPE_MAP) {
+        RandomizerCheckArea area = MapRGtoRandomizerCheckArea[itemLoc->GetPlacedRandomizerGet()];
+        if (!IsAreaSpoiled(area)) {
+            SetAreaSpoiled(area);
+        }
+    }
+    if (!IsAreaSpoiled(loc->GetArea())) {
+        SetAreaSpoiled(loc->GetArea());
+    }
 }
 
 void RecalculateAllAreaTotals() {
@@ -463,7 +467,8 @@ void CheckTrackerLoadGame(int32_t fileNum) {
             }
         }
 
-        if (areaChecksGotten[entry2->GetArea()] != 0 || RandomizerCheckObjects::AreaIsOverworld(entry2->GetArea())) {
+        if (areaChecksGotten[entry2->GetArea()] != 0 || RandomizerCheckObjects::AreaIsOverworld(entry2->GetArea()) ||
+            loc->GetCheckStatus() == RCSHOW_SCUMMED) {
             areasSpoiled |= (1 << entry2->GetArea());
         }
 
@@ -485,7 +490,7 @@ void CheckTrackerLoadGame(int32_t fileNum) {
         }
     }
     if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING && IS_RANDO) {
-        s8 startingAge = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_AGE);
+        uint8_t startingAge = OTRGlobals::Instance->gRandoContext->GetOption(RSK_SELECTED_STARTING_AGE).Get();
         RandomizerCheckArea startingArea;
         switch (startingAge) {
             case RO_AGE_CHILD:
@@ -507,9 +512,6 @@ void CheckTrackerLoadGame(int32_t fileNum) {
     showVOrMQ = (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_RANDOM) == RO_MQ_DUNGEONS_RANDOM_NUMBER ||
                 (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_RANDOM) == RO_MQ_DUNGEONS_SET_NUMBER &&
                 OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) < 12));
-    LinksPocket();
-    SongFromImpa();
-    GiftFromSages();
     initialized = true;
     UpdateAllOrdering();
     UpdateInventoryChecks();
@@ -590,7 +592,7 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
             SetCheckCollected(RC_TWINROVA);
             return;
         } else if (giEntry.itemId == ITEM_MEDALLION_LIGHT) {
-            SetCheckCollected(RC_GIFT_FROM_SAGES);
+            SetCheckCollected(RC_GIFT_FROM_RAURU);
             return;
         } else if (giEntry.itemId == ITEM_SONG_EPONA) {
             SetCheckCollected(RC_SONG_FROM_MALON);
@@ -697,10 +699,10 @@ void CheckTrackerFlagSet(int16_t flagType, int32_t flag) {
                 return;
             }
             if (!IS_RANDO) {
-                if (flag == INFTABLE_192) {
+                if (flag == INFTABLE_BOUGHT_STICK_UPGRADE) {
                     SetCheckCollected(RC_LW_DEKU_SCRUB_NEAR_BRIDGE);
                     return;
-                } else if (flag == INFTABLE_193) {
+                } else if (flag == INFTABLE_BOUGHT_NUT_UPGRADE) {
                     SetCheckCollected(RC_LW_DEKU_SCRUB_GROTTO_FRONT);
                     return;
                 }
@@ -714,7 +716,7 @@ void CheckTrackerFlagSet(int16_t flagType, int32_t flag) {
                 } else if (flag == ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE) {
                     SetCheckCollected(RC_DEKU_THEATER_MASK_OF_TRUTH);
                     return;
-                } else if (flag == ITEMGETINF_0B) {
+                } else if (flag == ITEMGETINF_DEKU_SCRUB_HEART_PIECE) {
                     SetCheckCollected(RC_HF_DEKU_SCRUB_GROTTO);
                     return;
                 }
@@ -851,7 +853,7 @@ void CheckTrackerWindow::DrawElement() {
         if (CVarGetInteger(CVAR_TRACKER_CHECK("DisplayType"), TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_COMBO_BUTTON) {
             int comboButton1Mask = buttons[CVarGetInteger(CVAR_TRACKER_CHECK("ComboButton1"), TRACKER_COMBO_BUTTON_L)];
             int comboButton2Mask = buttons[CVarGetInteger(CVAR_TRACKER_CHECK("ComboButton2"), TRACKER_COMBO_BUTTON_R)];
-            OSContPad* trackerButtonsPressed = Ship::Context::GetInstance()->GetControlDeck()->GetPads();
+            OSContPad* trackerButtonsPressed = std::dynamic_pointer_cast<LUS::ControlDeck>(Ship::Context::GetInstance()->GetControlDeck())->GetPads();
             bool comboButtonsHeld = trackerButtonsPressed != nullptr &&
                 trackerButtonsPressed[0].button & comboButton1Mask &&
                 trackerButtonsPressed[0].button & comboButton2Mask;
@@ -908,6 +910,7 @@ void CheckTrackerWindow::DrawElement() {
     ImGui::SameLine();
     if (ImGui::Button("Clear")) {
         checkSearch.Clear();
+        UpdateFilters();
         doAreaScroll = true;
     }
     UIWidgets::Tooltip("Clear the search field");
@@ -1162,6 +1165,9 @@ void LoadSettings() {
     showFrogSongRupees = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_FROG_SONG_RUPEES) == RO_GENERIC_YES
         : false;
+    showFairies = IS_RANDO ?
+        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_FAIRIES) == RO_GENERIC_YES
+        : false;
     showStartingMapsCompasses = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MAPANDCOMPASS) != RO_DUNGEON_ITEM_LOC_VANILLA
         : false;
@@ -1208,22 +1214,43 @@ void LoadSettings() {
                 showDungeonTokens = false;
                 break;
         }
+
+        switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_POTS)) {
+            case RO_SHUFFLE_POTS_ALL:
+                showOverworldPots = true;
+                showDungeonPots = true;
+                break;
+            case RO_SHUFFLE_POTS_OVERWORLD:
+                showOverworldPots = true;
+                showDungeonPots = false;
+                break;
+            case RO_SHUFFLE_POTS_DUNGEONS:
+                showOverworldPots = false;
+                showDungeonPots = true;
+                break;
+            default:
+                showOverworldPots = false;
+                showDungeonPots = false;
+                break;
+        }
     } else { // Vanilla
         showOverworldTokens = true;
         showDungeonTokens = true;
+        showOverworldPots = false;
+        showDungeonPots = false;
     }
 
     fortressFast = false;
     fortressNormal = false;
     switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_FORTRESS)) {
-        case RO_GF_OPEN:
+        case RO_GF_CARPENTERS_FREE:
             showGerudoFortressKeys = false;
             showGerudoCard = false;
             break;
-        case RO_GF_FAST:
+        case RO_GF_CARPENTERS_FAST:
             fortressFast = true;
             break;
-        case RO_GF_NORMAL:
+        case RO_GF_CARPENTERS_NORMAL:
             fortressNormal = true;
             break;
     }
@@ -1231,6 +1258,30 @@ void LoadSettings() {
     fishsanityMode = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY);
     fishsanityPondCount = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY_POND_COUNT);
     fishsanityAgeSplit = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY_AGE_SPLIT);
+
+    if (IS_RANDO) {
+        switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_FREESTANDING)) {
+            case RO_SHUFFLE_FREESTANDING_ALL:
+                showOverworldFreestanding = true;
+                showDungeonFreestanding = true;
+                break;
+            case RO_SHUFFLE_FREESTANDING_OVERWORLD:
+                showOverworldFreestanding = true;
+                showDungeonFreestanding = false;
+                break;
+            case RO_SHUFFLE_FREESTANDING_DUNGEONS:
+                showOverworldFreestanding = false;
+                showDungeonFreestanding = true;
+                break;
+            default:
+                showOverworldFreestanding = false;
+                showDungeonFreestanding = false;
+                break;
+        }
+    } else { // Vanilla
+        showOverworldFreestanding = false;
+        showDungeonFreestanding = true;
+    }
 }
 
 bool IsCheckShuffled(RandomizerCheck rc) {
@@ -1246,15 +1297,10 @@ bool IsCheckShuffled(RandomizerCheck rc) {
             (loc->GetRCType() != RCTYPE_CHEST_GAME) &&      // don't show non final reward chest game checks until we support shuffling them
             (rc != RC_HC_ZELDAS_LETTER) &&        // don't show zeldas letter until we support shuffling it
             (rc != RC_LINKS_POCKET || showLinksPocket) &&
-            (!RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()) ||
-                loc->GetQuest() == RCQUEST_BOTH ||
-                loc->GetQuest() == RCQUEST_MQ && OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(loc->GetScene())->IsMQ() ||
-                loc->GetQuest() == RCQUEST_VANILLA && OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(loc->GetScene())->IsVanilla()
-                ) &&
+            OTRGlobals::Instance->gRandoContext->IsQuestOfLocationActive(rc) &&
             (loc->GetRCType() != RCTYPE_SHOP ||
                 (showShops && OTRGlobals::Instance->gRandomizer->IdentifyShopItem(loc->GetScene(), loc->GetActorParams() + 1).enGirlAShopItem == 50)) &&
             (rc != RC_TRIFORCE_COMPLETED || !hideTriforceCompleted) &&
-            (rc != RC_GIFT_FROM_SAGES || !IS_RANDO) &&
             (loc->GetRCType() != RCTYPE_SCRUB ||
                 showScrubs ||
                 (showMajorScrubs && (rc == RC_LW_DEKU_SCRUB_NEAR_BRIDGE || // The 3 scrubs that are always randomized
@@ -1268,8 +1314,15 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                 (showOverworldTokens && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea())) ||
                 (showDungeonTokens && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))
                 ) &&
+            (loc->GetRCType() != RCTYPE_POT ||
+                (showOverworldPots && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea())) ||
+                (showDungeonPots && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))) &&
             (loc->GetRCType() != RCTYPE_COW || showCows) &&
             (loc->GetRCType() != RCTYPE_FISH || OTRGlobals::Instance->gRandoContext->GetFishsanity()->GetFishLocationIncluded(loc)) &&
+            (loc->GetRCType() != RCTYPE_FREESTANDING ||
+                (showOverworldFreestanding && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea())) ||
+                (showDungeonFreestanding && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))
+                ) &&
             (loc->GetRCType() != RCTYPE_ADULT_TRADE ||
                 showAdultTrade ||
                 rc == RC_KAK_ANJU_AS_ADULT ||  // adult trade checks that are always shuffled
@@ -1282,6 +1335,7 @@ bool IsCheckShuffled(RandomizerCheck rc) {
             (rc != RC_HC_MALON_EGG || showWeirdEgg) &&
             (loc->GetRCType() != RCTYPE_FROG_SONG || showFrogSongRupees) &&
             ((loc->GetRCType() != RCTYPE_MAP && loc->GetRCType() != RCTYPE_COMPASS) || showStartingMapsCompasses) &&
+            (loc->GetRCType() != RCTYPE_FAIRY || showFairies) &&
             (loc->GetRCType() != RCTYPE_SMALL_KEY || showKeysanity) &&
             (loc->GetRCType() != RCTYPE_BOSS_KEY || showBossKeysanity) &&
             (loc->GetRCType() != RCTYPE_GANON_BOSS_KEY || showGanonBossKey) &&
@@ -1293,10 +1347,7 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                 );
     }
     else if (loc->IsVanillaCompletion()) {
-        return (loc->GetQuest() == RCQUEST_BOTH ||
-            (loc->GetQuest() == RCQUEST_MQ && OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(loc->GetScene())->IsMQ()) ||
-            (loc->GetQuest() == RCQUEST_VANILLA && OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(loc->GetScene())->IsVanilla()) ||
-            rc == RC_GIFT_FROM_SAGES) && rc != RC_LINKS_POCKET;
+        return (OTRGlobals::Instance->gRandoContext->IsQuestOfLocationActive(rc) || rc == RC_GIFT_FROM_RAURU) && rc != RC_LINKS_POCKET;
     }
     return false;
 }
@@ -1304,10 +1355,12 @@ bool IsCheckShuffled(RandomizerCheck rc) {
 bool IsVisibleInCheckTracker(RandomizerCheck rc) {
     auto loc = Rando::StaticData::GetLocation(rc);
     if (IS_RANDO) {
-        return IsCheckShuffled(rc) || (loc->GetRCType() == RCTYPE_SKULL_TOKEN && alwaysShowGS) ||
-            (loc->GetRCType() == RCTYPE_SHOP && (showShops && (!hideShopUnshuffledChecks)));
+        return IsCheckShuffled(rc) || (alwaysShowGS &&
+                loc->GetRCType() == RCTYPE_SKULL_TOKEN &&
+                OTRGlobals::Instance->gRandoContext->IsQuestOfLocationActive(rc)
+            ) || (loc->GetRCType() == RCTYPE_SHOP && showShops && !hideShopUnshuffledChecks);
     } else {
-        return loc->IsVanillaCompletion() && (!loc->IsDungeon() || (loc->IsDungeon() && loc->GetQuest() == gSaveContext.questId));
+        return loc->IsVanillaCompletion() && (!loc->IsDungeon() || (loc->IsDungeon() && loc->GetQuest() == gSaveContext.ship.quest.id));
     }
 }
 
@@ -1493,7 +1546,7 @@ void DrawLocation(RandomizerCheck rc) {
             SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionId, true);
         }
     } else {
-        ImGui::InvisibleButton("", ImVec2(20.0f, 10.0f));
+        ImGui::Dummy(ImVec2(20.0f, 10.0f));
     }
     ImGui::SameLine();
 
@@ -1535,7 +1588,10 @@ void DrawLocation(RandomizerCheck rc) {
                         txt = itemLoc->GetPlacedItem().GetName().GetForLanguage(gSaveContext.language);
                     }
                     if (IsVisibleInCheckTracker(rc) && status == RCSHOW_IDENTIFIED && !mystery && !itemLoc->IsAddedToPool()) {
-                        txt += fmt::format(" - {}", OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->GetPrice());
+                        auto price = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->GetPrice();
+                        if (price) {
+                            txt += fmt::format(" - {}", price);
+                        }
                     }
                 } else {
                     if (IsHeartPiece((GetItemID)Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetItemID())) {
@@ -1650,7 +1706,7 @@ void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, 
             ImGui::EndTable();
         }
     }
-    if (tooltip != "") {
+    if (tooltip != NULL && strlen(tooltip) != 0) {
         ImGui::SameLine();
         ImGui::Text(" ?");
         UIWidgets::Tooltip(tooltip);
@@ -1701,7 +1757,7 @@ void CheckTrackerSettingsWindow::DrawElement() {
     }
     UIWidgets::EnhancementCheckbox("Vanilla/MQ Dungeon Spoilers", CVAR_TRACKER_CHECK("MQSpoilers"));
     UIWidgets::Tooltip("If enabled, Vanilla/MQ dungeons will show on the tracker immediately. Otherwise, Vanilla/MQ dungeon locations must be unlocked.");
-    if (UIWidgets::EnhancementCheckbox("Hide unshuffled shop item checks", CVAR_TRACKER_CHECK("HideUnshuffledShopChecks"), false, "", UIWidgets::CheckboxGraphics::Cross, true)) {
+    if (UIWidgets::EnhancementCheckbox("Hide unshuffled shop item checks", CVAR_TRACKER_CHECK("HideUnshuffledShopChecks"), false, "", UIWidgets::CheckboxGraphics::Cross, false)) {
         hideShopUnshuffledChecks = !hideShopUnshuffledChecks;
         UpdateFilters();
     }

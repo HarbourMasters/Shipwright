@@ -3,8 +3,10 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_oF1d_map/object_oF1d_map.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
+#include "soh/OTRGlobals.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void EnGo_Init(Actor* thisx, PlayState* play);
 void EnGo_Destroy(Actor* thisx, PlayState* play);
@@ -639,8 +641,8 @@ void EnGo_Init(Actor* thisx, PlayState* play) {
     }
 
     if ((this->actor.params & 0xF0) && ((this->actor.params & 0xF0) != 0x90)) {
-        this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
-        this->actor.flags &= ~ACTOR_FLAG_DRAW_WHILE_CULLED;
+        this->actor.flags &= ~ACTOR_FLAG_UPDATE_CULLING_DISABLED;
+        this->actor.flags &= ~ACTOR_FLAG_DRAW_CULLING_DISABLED;
     }
 
     EnGo_ChangeAnim(this, ENGO_ANIM_0);
@@ -1035,7 +1037,7 @@ void EnGo_Update(Actor* thisx, PlayState* play) {
     EnGo_UpdateShadow(this);
 
     if (this->interactInfo.talkState == NPC_TALK_STATE_IDLE) {
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
     }
 
     Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);

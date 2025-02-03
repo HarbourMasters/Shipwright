@@ -11,9 +11,10 @@
 #include "vt.h"
 
 #include "soh/frame_interpolation.h"
+#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 #define WATER_SURFACE_Y(play) play->colCtx.colHeader->waterBoxes->ySurface
 bool getShouldSpawnLoaches();
 
@@ -880,7 +881,7 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
 
         thisx->focus.pos = thisx->world.pos;
         thisx->focus.pos.y += 75.0f;
-        thisx->flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
+        thisx->flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY;
 
         if (sLinkAge != LINK_AGE_CHILD) {
             if (HIGH_SCORE(HS_FISHING) & HS_FISH_STOLE_HAT) {
@@ -1015,7 +1016,7 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
             this->fishState = 100;
             Actor_ChangeCategory(play, &play->actorCtx, thisx, ACTORCAT_PROP);
             thisx->targetMode = 0;
-            thisx->flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
+            thisx->flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY;
             this->lightNode = LightContext_InsertLight(play, &play->lightCtx, &this->lightInfo);
         } else {
             this->fishState = 10;
@@ -2899,7 +2900,7 @@ void Fishing_HandleAquariumDialog(Fishing* this, PlayState* play) {
 
     if (!this->isAquariumMessage) {
         if (this->aquariumWaitTimer == 0) {
-            this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+            this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
 
             if (Actor_ProcessTalkRequest(&this->actor, play)) {
                 sFishLengthToWeigh = sFishingRecordLength;
@@ -2909,7 +2910,7 @@ void Fishing_HandleAquariumDialog(Fishing* this, PlayState* play) {
             }
         } else {
             this->aquariumWaitTimer--;
-            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+            this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
         }
     } else if (Actor_TextboxIsClosing(&this->actor, play)) {
         this->isAquariumMessage = false;
@@ -2999,9 +3000,9 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
     }
 
     if ((D_80B7E0B0 != 0) || (sSubCamId != 0) || ((player->actor.world.pos.z > 1150.0f) && (this->fishState != 100))) {
-        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+        this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     } else {
-        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
         if (sRodCastState != 0) {
             if (D_80B7E0B2 == 0) {
                 this->actor.focus.pos = sLurePos;
@@ -3218,7 +3219,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
             if (sLureEquipped == FS_LURE_SINKING) {
                 func_80B70ED4(this, input);
             } else {
-                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+                this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
             }
             break;
 
@@ -3255,7 +3256,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                 if (sLureEquipped == FS_LURE_SINKING) {
                     func_80B70ED4(this, input);
                 } else {
-                    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+                    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
                 }
             }
             break;
@@ -3299,7 +3300,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                 this->fishTargetPos.z = Rand_ZeroFloat(50.0f);
             }
 
-            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+            this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
             break;
 
         case -2:
@@ -3338,7 +3339,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                 }
 
                 Math_ApproachF(&this->rotationStep, 2048.0f, 1.0f, 128.0f);
-                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+                this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
             }
             break;
 
@@ -4147,10 +4148,10 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                 Math_ApproachS(&this->unk_16E, spF6, 3, 0xBB8);
             }
 
-            func_8002D908(&this->actor);
+            Actor_UpdateVelocityXYZ(&this->actor);
         }
 
-        func_8002D7EC(&this->actor);
+        Actor_UpdatePos(&this->actor);
 
         this->actor.world.pos.y += (this->unk_184 * 1.5f);
 
@@ -5090,16 +5091,14 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                     
                     if (sLinkAge == LINK_AGE_CHILD) { // 9 lbs
                         //if we should give the main prize AND it's not rando
-                        if (GameInteractor_Should(VB_SHOULD_GIVE_VANILLA_FISHING_PRIZE, false, &fishData)){
-                        //((sFishingRecordLength >= 50.0f) && !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_CHILD)) {
+                        if (GameInteractor_Should(VB_SHOULD_GIVE_VANILLA_FISHING_PRIZE, (sFishingRecordLength >= 50.0f) && !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_CHILD), &fishData)){
                             HIGH_SCORE(HS_FISHING) |= HS_FISH_PRIZE_CHILD;
                             getItemId = GI_HEART_PIECE;
                             sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
                         }
                     } else { // 13 lbs
                         //if we should give the main prize AND it's not rando
-                        if (GameInteractor_Should(VB_SHOULD_GIVE_VANILLA_FISHING_PRIZE, false, &fishData)){
-                        //(sFishingRecordLength >= 60.0f) && !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_ADULT)) {
+                        if (GameInteractor_Should(VB_SHOULD_GIVE_VANILLA_FISHING_PRIZE, (sFishingRecordLength >= 60.0f) && !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_ADULT), &fishData)){
                             HIGH_SCORE(HS_FISHING) |= HS_FISH_PRIZE_ADULT;
                             getItemId = GI_SCALE_GOLDEN;
                             sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
@@ -5263,9 +5262,9 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
     SkelAnime_Update(&this->skelAnime);
 
     if ((sOwnerTheftTimer != 0) || (Message_GetState(&play->msgCtx) != TEXT_STATE_NONE)) {
-        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+        this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     } else {
-        this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_DRAW_WHILE_CULLED;
+        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED;
     }
 
     if ((this->actor.xzDistToPlayer < 120.0f) || (Message_GetState(&play->msgCtx) != TEXT_STATE_NONE)) {

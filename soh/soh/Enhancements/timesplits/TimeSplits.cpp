@@ -1,5 +1,5 @@
 #include "TimeSplits.h"
-#include "soh/UIWidgets.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include "soh/Enhancements/gameplaystats.h"
 #include "soh/SaveManager.h"
 #include "soh/util.h"
@@ -194,7 +194,7 @@ std::vector<SplitObject> splitObjectList = {
     { SPLIT_TYPE_ENTRANCE,  SCENE_BOTTOM_OF_THE_WELL,             "Enter Bottom of the Well",         "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
     { SPLIT_TYPE_ENTRANCE,  SCENE_ICE_CAVERN,                     "Enter Ice Cavern",                 "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
     { SPLIT_TYPE_ENTRANCE,  SCENE_GANONS_TOWER,                   "Enter Ganons Tower",               "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
-    { SPLIT_TYPE_ENTRANCE,  SCENE_GERUDO_TRAINING_GROUND,         "Enter Gerudo Training Grounds",    "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
+    { SPLIT_TYPE_ENTRANCE,  SCENE_GERUDO_TRAINING_GROUND,         "Enter Gerudo Training Ground",    "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
     { SPLIT_TYPE_ENTRANCE,  SCENE_THIEVES_HIDEOUT,                "Enter Thieves Hideout",            "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
     { SPLIT_TYPE_ENTRANCE,  SCENE_INSIDE_GANONS_CASTLE,           "Enter Ganons Castle",              "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
     { SPLIT_TYPE_ENTRANCE,  SCENE_GANONS_TOWER_COLLAPSE_INTERIOR, "Enter Tower Collapse Interior",    "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
@@ -301,6 +301,16 @@ void TimeSplitsGetImageSize(uint32_t item) {
     }
 }
 
+void SplitsPushImageButtonStyle(){
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 1.0f, 1.0f, 0.0f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(1.0f, 1.0f, 1.0f, 0.2f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(1.0f, 1.0f, 1.0f, 0.1f));
+}
+
+void SplitsPopImageButtonStyle(){
+    ImGui::PopStyleColor(3);
+}
+
 void TimeSplitsUpdateSplitStatus() {
     uint32_t index = 0;
     for (auto& data : splitList) {
@@ -310,7 +320,7 @@ void TimeSplitsUpdateSplitStatus() {
         }
         index++;
     }
-    for (int i = index; i < splitList.size(); i++) {
+    for (size_t i = index; i < splitList.size(); i++) {
         if (splitList[i].splitTimeStatus != SPLIT_STATUS_ACTIVE && splitList[i].splitTimeStatus != SPLIT_STATUS_COLLECTED) {
             splitList[i].splitTimeStatus = SPLIT_STATUS_INACTIVE;
         }
@@ -335,8 +345,8 @@ void HandleDragAndDrop(std::vector<SplitObject>& objectList, int targetIndex, co
 }
 
 void TimeSplitCompleteSplits() {
-    gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
-    gSaveContext.sohStats.gameComplete = true;
+    gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
+    gSaveContext.ship.stats.gameComplete = true;
 }
 
 void TimeSplitsSkipSplit(uint32_t index) {
@@ -421,11 +431,30 @@ void TimeSplitsPopUpContext() {
         if (popupID == ITEM_SKULL_TOKEN) {
             ImGui::BeginTable("Token Table", 2);
             ImGui::TableNextColumn();
-            ImGui::ImageButton(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("QUEST_SKULL_TOKEN"),
-                    ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), 2.0f, ImVec4(0, 0, 0, 0));
+            SplitsPushImageButtonStyle();
+            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2.0f, 2.0f));
+            ImGui::ImageButton("QUEST_SKULL_TOKEN", Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("QUEST_SKULL_TOKEN"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0));
+            ImGui::PopStyleVar();
             ImGui::TableNextColumn();
+            SplitsPopImageButtonStyle();
             ImGui::PushItemWidth(150.0f);
+
+            ImGui::BeginGroup();
+            std::string MinusBTNName = " - ##Set Tokens";
+            ImGui::SameLine();
+            if (ImGui::Button(MinusBTNName.c_str()) && skullTokenCount > 0) {
+                skullTokenCount--;
+            }
+            ImGui::SameLine();
             ImGui::SliderInt("##count", &skullTokenCount, 0, 100, "%d Tokens");
+            std::string PlusBTNName = " + ##Set Tokens";
+            ImGui::SameLine();
+            if (ImGui::Button(PlusBTNName.c_str()) && skullTokenCount < 100) {
+                skullTokenCount++;
+            }
+            ImGui::EndGroup();
+
             ImGui::PopItemWidth();
             if (ImGui::Button("Set Tokens")) {
                 auto findID = std::find_if(splitObjectList.begin(), splitObjectList.end(), [&](const SplitObject& obj) { return obj.splitID == ITEM_SKULL_TOKEN; });
@@ -442,6 +471,7 @@ void TimeSplitsPopUpContext() {
             ImGui::EndTable();
         }  else {
             int rowIndex = 0;
+            SplitsPushImageButtonStyle();
             for (auto item : popupList[popupID]) {
                 auto findID = std::find_if(splitObjectList.begin(), splitObjectList.end(), [&](const SplitObject& obj) { return obj.splitID == item; });
                 if (findID == splitObjectList.end()) {
@@ -451,8 +481,11 @@ void TimeSplitsPopUpContext() {
                 SplitObject& popupObject = *findID;
                 ImGui::BeginGroup();
                 ImGui::PushID(popupObject.splitID);
-                if (ImGui::ImageButton(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(popupObject.splitImage),
-                ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), 2, ImVec4(0, 0, 0, 0), popupObject.splitTint)) {
+                ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2.0f, 2.0f));
+                auto ret = ImGui::ImageButton(popupObject.splitImage.c_str(), Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(popupObject.splitImage),
+                                              ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), popupObject.splitTint);
+                ImGui::PopStyleVar();
+                if (ret) {
                     splitList.push_back(popupObject);
                     if (splitList.size() == 1) {
                         splitList[0].splitTimeStatus = SPLIT_STATUS_ACTIVE;
@@ -468,7 +501,7 @@ void TimeSplitsPopUpContext() {
                     if (popupID <= ITEM_SLINGSHOT && popupID != -1) {
                         ImVec2 imageMin = ImGui::GetItemRectMin();
                         ImVec2 imageMax = ImGui::GetItemRectMax();
-                        ImVec2 imageSize = ImVec2(imageMax.x - imageMin.x, imageMax.y - imageMin.y);
+                        //ImVec2 imageSize = ImVec2(imageMax.x - imageMin.x, imageMax.y - imageMin.y); UNUSED
                         ImVec2 textPos = ImVec2(imageMax.x - ImGui::CalcTextSize("00").x - 5,
                                                 imageMax.y - ImGui::CalcTextSize("00").y - 5);
 
@@ -484,6 +517,7 @@ void TimeSplitsPopUpContext() {
                 }
                 rowIndex++;
             }
+            SplitsPopImageButtonStyle();
         }
         ImGui::EndPopup();
     }
@@ -610,10 +644,8 @@ void TimeSplitsDrawSplitsList() {
     ImGui::TableSetupColumn("Prev. Best");
     ImGui::TableHeadersRow();
 
-    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 1.0f, 1.0f, 0.0f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(1.0f, 1.0f, 1.0f, 0.2f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(1.0f, 1.0f, 1.0f, 0.1f));
 
+    SplitsPushImageButtonStyle();
     for (auto& split : splitList) {
         ImGui::TableNextColumn();
         TimeSplitsSplitBestTimeDisplay(split);
@@ -623,8 +655,11 @@ void TimeSplitsDrawSplitsList() {
             ImGui::TableSetBgColor(ImGuiTableBgTarget_RowBg0, IM_COL32(47, 79, 90, 255));
         }
         TimeSplitsGetImageSize(split.splitID);
-        if (ImGui::ImageButton(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(split.splitImage),
-                               imageSize, ImVec2(0, 0), ImVec2(1, 1), imagePadding, ImVec4(0, 0, 0, 0), split.splitTint)) {
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(imagePadding, imagePadding));
+        auto ret = ImGui::ImageButton(split.splitImage.c_str(), Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(split.splitImage),
+                                      imageSize, ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), split.splitTint);
+        ImGui::PopStyleVar();
+        if (ret) {
             TimeSplitsSkipSplit(dragIndex);
         }
         HandleDragAndDrop(splitList, dragIndex, split.splitName);
@@ -648,10 +683,10 @@ void TimeSplitsDrawSplitsList() {
 
         dragIndex++;
     }
+    SplitsPopImageButtonStyle();
 
     TimeSplitsPostDragAndDrop();
 
-    ImGui::PopStyleColor(3);
     ImGui::PopStyleVar(1);
     ImGui::EndTable();
     ImGui::EndChild();
@@ -677,7 +712,7 @@ void TimeSplitsDrawItemList(uint32_t type) {
 
     ImGui::BeginChild("Item Child");
     ImGui::BeginTable("Item List", tableSize);
-    for (int i = 0; i < tableSize; i++) {
+    for (size_t i = 0; i < tableSize; i++) {
         if (i == 0) {
             ImGui::TableSetupColumn("Item Image", ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_NoHeaderLabel, 39.0f);
         } else {
@@ -689,18 +724,17 @@ void TimeSplitsDrawItemList(uint32_t type) {
         }
     }
 
-    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 1.0f, 1.0f, 0.0f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(1.0f, 1.0f, 1.0f, 0.2f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(1.0f, 1.0f, 1.0f, 0.1f));
-
     for (auto& split : splitObjectList) {
         if (split.splitType == type) {
             ImGui::TableNextColumn();
             ImGui::PushID(split.splitID);
             TimeSplitsGetImageSize(split.splitID);
-            if (ImGui::ImageButton(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(split.splitImage),
-                               imageSize, ImVec2(0, 0), ImVec2(1, 1), imagePadding, ImVec4(0, 0, 0, 0), split.splitTint)) {
-                
+            SplitsPushImageButtonStyle();
+            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(imagePadding, imagePadding));
+            auto ret = ImGui::ImageButton(split.splitImage.c_str(), Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(split.splitImage),
+                                          imageSize, ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), split.splitTint);
+            ImGui::PopStyleVar();
+            if (ret) {
                 if (popupList.contains(split.splitID) && (split.splitType < SPLIT_TYPE_BOSS)) {
                     popupID = split.splitID;
                     ImGui::OpenPopup("TimeSplitsPopUp");
@@ -715,6 +749,7 @@ void TimeSplitsDrawItemList(uint32_t type) {
                     }
                 }
             }
+            SplitsPopImageButtonStyle();
 
             TimeSplitsPopUpContext();
             ImGui::PopID();
@@ -729,7 +764,6 @@ void TimeSplitsDrawItemList(uint32_t type) {
             
         }
     }
-    ImGui::PopStyleColor(3);
     ImGui::EndTable();
     ImGui::EndChild();
 }
@@ -745,14 +779,18 @@ void TimeSplitsDrawOptionsMenu() {
     ImGui::SeparatorText("Window Options");
     if (ImGui::ColorEdit4("Background Color", (float*)&windowColor, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel)) {
         Color_RGBA8 color;
-        color.r = windowColor.x;
-        color.g = windowColor.y;
-        color.b = windowColor.z;
-        color.a = windowColor.w;
+        color.r = windowColor.x * 255.0;
+        color.g = windowColor.y * 255.0;
+        color.b = windowColor.z * 255.0;
+        color.a = windowColor.w * 255.0;
+        CVarSetColor("TimeSplits.WindowColor", color);
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
     ImGui::SameLine();
     if (ImGui::Button("Reset")) {
         windowColor = { 0.0f, 0.0f, 0.0f, 1.0f };
+        CVarSetColor("TimeSplits.WindowColor", {0, 0, 0, 1});
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
 
     if (UIWidgets::PaddedEnhancementSliderFloat("Window Size: %.1fx", "##windowSize",
@@ -847,8 +885,11 @@ void TimeSplitsDrawManageList() {
                 ImGui::SetCursorPosX(ImGui::GetCursorPosX() + offsetX); // Apply the offset to center
             }
             TimeSplitsGetImageSize(data.splitID);
-            if (ImGui::ImageButton(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(data.splitImage),
-                                   imageSize, ImVec2(0, 0), ImVec2(1, 1), imagePadding, ImVec4(0, 0, 0, 0), data.splitTint)) {
+            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(imagePadding, imagePadding));
+            auto ret = ImGui::ImageButton(data.splitImage.c_str(), Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(data.splitImage),
+                                          imageSize, ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), data.splitTint);
+            ImGui::PopStyleVar();
+            if (ret) {
                 removeIndex = index;
             }
             HandleDragAndDrop(splitList, index, splitList[index].splitName);
@@ -914,6 +955,9 @@ static bool initialized = false;
 void TimeSplitWindow::DrawElement() {
     ImGui::SetWindowFontScale(timeSplitsWindowSize);
     if (!initialized) {
+        Color_RGBA8 defaultColour = {0, 0, 0, 255};
+        Color_RGBA8 color = CVarGetColor("TimeSplits.WindowColor", defaultColour);
+        windowColor = {(float)color.r / 255.0f, (float)color.g / 255.0f, (float)color.b / 255.0f, (float)color.a / 255.0f};
         InitializeSplitDataFile();
         initialized = true;
     }

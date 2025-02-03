@@ -320,6 +320,20 @@ GameInteractionEffectBase* Sail::EffectFromJson(nlohmann::json payload) {
         return new GameInteractionEffect::PlayerInvincibility();
     } else if (name == "SlipperyFloor") {
         return new GameInteractionEffect::SlipperyFloor();
+    } else if (name == "SpawnEnemyWithOffset") {
+        auto effect = new GameInteractionEffect::SpawnEnemyWithOffset();
+        if (payload.contains("parameters")) {
+            effect->parameters[0] = payload["parameters"][0].get<int32_t>();
+            effect->parameters[1] = payload["parameters"][1].get<int32_t>();
+        }
+        return effect;
+    } else if (name == "SpawnActor") {
+        auto effect = new GameInteractionEffect::SpawnActor();
+        if (payload.contains("parameters")) {
+            effect->parameters[0] = payload["parameters"][0].get<int32_t>();
+            effect->parameters[1] = payload["parameters"][1].get<int32_t>();
+        }
+        return effect;
     } else {
         SPDLOG_INFO("[Sail] Unknown effect name: {}", name);
         return nullptr;
@@ -514,14 +528,14 @@ void Sail::DrawMenu() {
     ImGui::Text("Host & Port");
     if (UIWidgets::InputString("##Host", &host)) {
         CVarSetString(CVAR_REMOTE_SAIL("Host"), host.c_str());
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
 
     ImGui::SameLine();
     ImGui::PushItemWidth(ImGui::GetFontSize() * 5);
     if (ImGui::InputScalar("##Port", ImGuiDataType_U16, &port)) {
         CVarSetInteger(CVAR_REMOTE_SAIL("Port"), port);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
     ImGui::PopItemWidth();
     ImGui::EndDisabled();
@@ -533,11 +547,11 @@ void Sail::DrawMenu() {
     if (ImGui::Button(buttonLabel, ImVec2(-1.0f, 0.0f))) {
         if (isEnabled) {
             CVarClear(CVAR_REMOTE_SAIL("Enabled"));
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             Disable();
         } else {
             CVarSetInteger(CVAR_REMOTE_SAIL("Enabled"), 1);
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             Enable();
         }
     }

@@ -46,6 +46,8 @@ namespace LUS
 {
     class IResource;
     class Scene;
+};
+namespace Fast {
     class DisplayList;
 };
 #include <memory>
@@ -1595,6 +1597,9 @@ typedef struct {
     uint8_t bossRushOffset;
     int16_t bossRushUIAlpha;
     uint16_t bossRushArrowOffset;
+    uint8_t randomizerIndex;
+    int16_t randomizerUIAlpha;
+    uint16_t randomizerArrowOffset;
 } FileChooseContext; // size = 0x1CAE0
 
 // Macros for `EntranceInfo.field`
@@ -2038,13 +2043,13 @@ typedef struct ArenaNode {
     /* 0x04 */ size_t size;
     /* 0x08 */ struct ArenaNode* next;
     /* 0x0C */ struct ArenaNode* prev;
-    ///* 0x10 */ const char* filename;
-    ///* 0x14 */ s32 line;
-    ///* 0x18 */ OSId threadId;
-    ///* 0x1C */ Arena* arena;
-    ///* 0x20 */ OSTime time;
-    ///* 0x28 */ u8 unk_28[0x30-0x28]; // probably padding
-} ArenaNode; // size = 0x10
+    // /* 0x10 */ const char* filename;
+    // /* 0x14 */ s32 line;
+    // /* 0x18 */ OSId threadId;
+    // /* 0x1C */ Arena* arena;
+    // /* 0x20 */ OSTime time;
+    // /* 0x28 */ u8 unk_28[0x30-0x28]; // probably padding
+} ArenaNode; // size = 0x30
 
 typedef struct OverlayRelocationSection {
     /* 0x00 */ u32 textSize;

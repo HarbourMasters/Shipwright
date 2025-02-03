@@ -11,8 +11,10 @@
 #include <objects/object_link_child/object_link_child.h>
 #include <overlays/actors/ovl_En_Bom/z_en_bom.h>
 #include <overlays/actors/ovl_Obj_Switch/z_obj_switch.h>
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_DRAGGED_BY_HOOKSHOT | ACTOR_FLAG_CAN_PRESS_SWITCH)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED | ACTOR_FLAG_HOOKSHOT_PULLS_PLAYER | ACTOR_FLAG_CAN_PRESS_SWITCHES)
 
 void EnPartner_Init(Actor* thisx, PlayState* play);
 void EnPartner_Destroy(Actor* thisx, PlayState* play);
@@ -629,7 +631,7 @@ void EnPartner_Update(Actor* thisx, PlayState* play) {
     this->actor.gravity = this->yVelocity;
 
     if (this->canMove == 1) {
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
         Actor_UpdateBgCheckInfo(play, &this->actor, 19.0f, 20.0f, 0.0f, 5);
     }
 

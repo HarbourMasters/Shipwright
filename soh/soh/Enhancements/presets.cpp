@@ -3,7 +3,7 @@
 #include <string>
 #include <cstdint>
 #include <libultraship/bridge.h>
-#include "soh/UIWidgets.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include <libultraship/libultraship.h>
 
 void clearCvars(std::vector<const char*> cvarsToClear) {
@@ -73,8 +73,10 @@ void DrawPresetSelector(PresetType presetTypeId) {
         if (selectedPresetId != 0) {
             applyPreset(selectedPresetDef.entries);
         }
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-        Rando::Context::GetInstance()->GetSettings()->ReloadOptions();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        if (presetTypeId == PRESET_TYPE_RANDOMIZER){
+            Rando::Settings::GetInstance()->ReloadOptions();
+        }
     }
     ImGui::PopStyleVar(1);
 }

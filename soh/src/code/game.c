@@ -4,6 +4,7 @@
 #include "libultraship/bridge.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ResourceManagerHelpers.h"
 
 SpeedMeter D_801664D0;
 VisCvg sVisCvg;
@@ -12,6 +13,10 @@ VisMono sVisMono;
 ViMode sViMode;
 FaultClient sGameFaultClient;
 u16 sLastButtonPressed;
+
+// #region SOH [General] Making gGameState available
+GameState* gGameState;
+// #endregion
 
 // Forward declared, because this in a C++ header.
 int gfx_create_framebuffer(uint32_t width, uint32_t height, uint32_t native_width, uint32_t native_height, uint8_t resize);
@@ -253,6 +258,8 @@ void GameState_Update(GameState* gameState) {
     }
 
     GameState_SetFrameBuffer(gfxCtx);
+
+    GameInteractor_ExecuteOnGameStateMainStart();
 
     gameState->main(gameState);
 

@@ -1,0 +1,61 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Setup CMake Project",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "-S",
+                ".",
+                "-B",
+                "build/x64",
+                "-G",
+                "Visual Studio 17 2022",
+                "-T",
+                "v143",
+                "-A",
+                "x64"
+            ],
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Generate SOH OTR",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "./build/x64",
+                "--target",
+                "GenerateSohOtr"
+            ],
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Build Project",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "./build/x64"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "dependsOn": ["Generate SOH OTR"],
+            "problemMatcher": []
+        },
+        {
+            "label": "Build All",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Setup CMake Project",
+                "Generate SOH OTR",
+                "Build Project"
+            ]
+        }
+    ]
+}

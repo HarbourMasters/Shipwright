@@ -15,7 +15,7 @@ typedef struct EnBombf {
     /* 0x01B8 */ ColliderJntSphElement explosionColliderItems[1];
     /* 0x01F8 */ s16 timer;
     /* 0x01FC */ EnBombfActionFunc actionFunc;
-    /* 0x0200 */ s32 unk_200;
+    /* 0x0200 */ s32 isFuseEnabled;
     /* 0x0204 */ u8 bumpOn;
     /* 0x0206 */ s16 flashSpeedScale;
     /* 0x0208 */ f32 flashIntensity;

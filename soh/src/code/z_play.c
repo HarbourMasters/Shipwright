@@ -11,6 +11,9 @@
 #include <overlays/misc/ovl_kaleido_scope/z_kaleido_scope.h>
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
+#include "soh/SaveManager.h"
 #include "soh/framebuffer_effects.h"
 
 #include <libultraship/libultraship.h>
@@ -201,11 +204,6 @@ void Play_Destroy(GameState* thisx) {
     Player* player = GET_PLAYER(play);
 
     GameInteractor_ExecuteOnPlayDestroy();
-
-    // Only initialize the frame counter when exiting the title screen
-    if (gSaveContext.fileNum == 0xFF) {
-        play->gameplayFrames = 0;
-    }
 
     play->state.gfxCtx->callback = NULL;
     play->state.gfxCtx->callbackParam = 0;
@@ -643,32 +641,32 @@ void Play_Init(GameState* thisx) {
     gSaveContext.respawnFlag = 0;
 
     // #region SOH [Stats]
-    if (gSaveContext.sohStats.sceneNum != gPlayState->sceneNum) {
-        u16 idx = gSaveContext.sohStats.tsIdx;
-        gSaveContext.sohStats.sceneTimestamps[idx].sceneTime = gSaveContext.sohStats.sceneTimer / 2;
-        gSaveContext.sohStats.sceneTimestamps[idx].roomTime = gSaveContext.sohStats.roomTimer / 2;    
-        gSaveContext.sohStats.sceneTimestamps[idx].scene = gSaveContext.sohStats.sceneNum;
-        gSaveContext.sohStats.sceneTimestamps[idx].room = gSaveContext.sohStats.roomNum;
-        gSaveContext.sohStats.sceneTimestamps[idx].isRoom = 
-            gPlayState->sceneNum == gSaveContext.sohStats.sceneTimestamps[idx].scene &&
-            gPlayState->roomCtx.curRoom.num != gSaveContext.sohStats.sceneTimestamps[idx].room;
-        gSaveContext.sohStats.tsIdx++;
-        gSaveContext.sohStats.sceneTimer = 0;
-        gSaveContext.sohStats.roomTimer = 0;
-    } else if (gSaveContext.sohStats.roomNum != gPlayState->roomCtx.curRoom.num) {
-        u16 idx = gSaveContext.sohStats.tsIdx;
-        gSaveContext.sohStats.sceneTimestamps[idx].roomTime = gSaveContext.sohStats.roomTimer / 2;
-        gSaveContext.sohStats.sceneTimestamps[idx].scene = gSaveContext.sohStats.sceneNum;
-        gSaveContext.sohStats.sceneTimestamps[idx].room = gSaveContext.sohStats.roomNum;
-        gSaveContext.sohStats.sceneTimestamps[idx].isRoom = 
-            gPlayState->sceneNum == gSaveContext.sohStats.sceneTimestamps[idx].scene &&
-            gPlayState->roomCtx.curRoom.num != gSaveContext.sohStats.sceneTimestamps[idx].room;
-        gSaveContext.sohStats.tsIdx++;
-        gSaveContext.sohStats.roomTimer = 0;
+    if (gSaveContext.ship.stats.sceneNum != gPlayState->sceneNum) {
+        u16 idx = gSaveContext.ship.stats.tsIdx;
+        gSaveContext.ship.stats.sceneTimestamps[idx].sceneTime = gSaveContext.ship.stats.sceneTimer / 2;
+        gSaveContext.ship.stats.sceneTimestamps[idx].roomTime = gSaveContext.ship.stats.roomTimer / 2;    
+        gSaveContext.ship.stats.sceneTimestamps[idx].scene = gSaveContext.ship.stats.sceneNum;
+        gSaveContext.ship.stats.sceneTimestamps[idx].room = gSaveContext.ship.stats.roomNum;
+        gSaveContext.ship.stats.sceneTimestamps[idx].isRoom = 
+            gPlayState->sceneNum == gSaveContext.ship.stats.sceneTimestamps[idx].scene &&
+            gPlayState->roomCtx.curRoom.num != gSaveContext.ship.stats.sceneTimestamps[idx].room;
+        gSaveContext.ship.stats.tsIdx++;
+        gSaveContext.ship.stats.sceneTimer = 0;
+        gSaveContext.ship.stats.roomTimer = 0;
+    } else if (gSaveContext.ship.stats.roomNum != gPlayState->roomCtx.curRoom.num) {
+        u16 idx = gSaveContext.ship.stats.tsIdx;
+        gSaveContext.ship.stats.sceneTimestamps[idx].roomTime = gSaveContext.ship.stats.roomTimer / 2;
+        gSaveContext.ship.stats.sceneTimestamps[idx].scene = gSaveContext.ship.stats.sceneNum;
+        gSaveContext.ship.stats.sceneTimestamps[idx].room = gSaveContext.ship.stats.roomNum;
+        gSaveContext.ship.stats.sceneTimestamps[idx].isRoom = 
+            gPlayState->sceneNum == gSaveContext.ship.stats.sceneTimestamps[idx].scene &&
+            gPlayState->roomCtx.curRoom.num != gSaveContext.ship.stats.sceneTimestamps[idx].room;
+        gSaveContext.ship.stats.tsIdx++;
+        gSaveContext.ship.stats.roomTimer = 0;
     }
 
-    gSaveContext.sohStats.sceneNum = gPlayState->sceneNum;
-    gSaveContext.sohStats.roomNum = gPlayState->roomCtx.curRoom.num;
+    gSaveContext.ship.stats.sceneNum = gPlayState->sceneNum;
+    gSaveContext.ship.stats.roomNum = gPlayState->roomCtx.curRoom.num;
     // #endregion
 
 #if 0
@@ -738,28 +736,28 @@ void Play_Update(PlayState* play) {
         }
 
         // #region SOH [Stats] Gameplay stats: Count button presses
-        if (!gSaveContext.sohStats.gameComplete) {
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_A))      {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_A]++;}
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_B))      {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_B]++;}
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_CUP))    {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CUP]++;}
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_CRIGHT)) {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CRIGHT]++;}
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_CLEFT))  {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CLEFT]++;}
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_CDOWN))  {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CDOWN]++;}
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_DUP))    {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DUP]++;}
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_DRIGHT)) {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DRIGHT]++;}
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_DDOWN))  {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DDOWN]++;}
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_DLEFT))  {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DLEFT]++;}
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_L))      {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_L]++;}
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_R))      {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_R]++;}
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_Z))      {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_Z]++;}
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_START))  {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_START]++;}
+        if (!gSaveContext.ship.stats.gameComplete) {
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_A))      {gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_A]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_B))      {gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_B]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_CUP))    {gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_CUP]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_CRIGHT)) {gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_CRIGHT]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_CLEFT))  {gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_CLEFT]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_CDOWN))  {gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_CDOWN]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_DUP))    {gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_DUP]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_DRIGHT)) {gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_DRIGHT]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_DDOWN))  {gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_DDOWN]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_DLEFT))  {gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_DLEFT]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_L))      {gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_L]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_R))      {gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_R]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_Z))      {gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_Z]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_START))  {gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_START]++;}
 
             // Start RTA timing on first non-c-up input after intro cutscene
             if (
-                !gSaveContext.sohStats.fileCreatedAt && !Player_InCsMode(play) && 
+                !gSaveContext.ship.stats.fileCreatedAt && !Player_InCsMode(play) && 
                 ((input[0].press.button && input[0].press.button != 0x8) || input[0].rel.stick_x != 0 || input[0].rel.stick_y != 0)
             ) {
-                gSaveContext.sohStats.fileCreatedAt = GetUnixTimestamp();
+                gSaveContext.ship.stats.fileCreatedAt = GetUnixTimestamp();
             }
         }
         // #endregion
@@ -1143,14 +1141,14 @@ void Play_Update(PlayState* play) {
                 func_800AA178(true);
 
                 // Gameplay stat tracking
-                if (!gSaveContext.sohStats.gameComplete &&
-                    (!IS_BOSS_RUSH || !gSaveContext.isBossRushPaused)) {
-                      gSaveContext.sohStats.playTimer++;
-                      gSaveContext.sohStats.sceneTimer++;
-                      gSaveContext.sohStats.roomTimer++;
+                if (!gSaveContext.ship.stats.gameComplete &&
+                    (!IS_BOSS_RUSH || !gSaveContext.ship.quest.data.bossRush.isPaused)) {
+                      gSaveContext.ship.stats.playTimer++;
+                      gSaveContext.ship.stats.sceneTimer++;
+                      gSaveContext.ship.stats.roomTimer++;
 
                       if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA && Player_GetMask(play) == PLAYER_MASK_BUNNY) {
-                          gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD]++;
+                          gSaveContext.ship.stats.count[COUNT_TIME_BUNNY_HOOD]++;
                       }
                 }
 
@@ -1325,15 +1323,16 @@ void Play_Draw(PlayState* play) {
     // Track render size when paused and that a copy was performed
     static u32 lastPauseWidth;
     static u32 lastPauseHeight;
-    static u8 hasCapturedPauseBuffer;
-    u8 recapturePauseBuffer = false;
+    static bool lastAltAssets;
+    static bool hasCapturedPauseBuffer;
+    bool recapturePauseBuffer = false;
 
-    // If the size has changed or dropped frames leading to the buffer not being copied,
+    // If the size has changed, alt assets toggled, or dropped frames leading to the buffer not being copied,
     // set the prerender state back to setup to copy a new frame.
-    // This requires not rendering kaleido during this copy to avoid kaleido being copied
+    // This requires not rendering kaleido during this copy to avoid kaleido itself being copied too.
     if ((R_PAUSE_MENU_MODE == 2 || R_PAUSE_MENU_MODE == 3) &&
         (lastPauseWidth != OTRGetGameRenderWidth() || lastPauseHeight != OTRGetGameRenderHeight() ||
-         !hasCapturedPauseBuffer)) {
+         lastAltAssets != ResourceMgr_IsAltAssetsEnabled() || !hasCapturedPauseBuffer)) {
         R_PAUSE_MENU_MODE = 1;
         recapturePauseBuffer = true;
     }
@@ -1592,6 +1591,7 @@ void Play_Draw(PlayState* play) {
                 // #region SOH [Port] Custom handling for pause prerender background capture
                 lastPauseWidth = OTRGetGameRenderWidth();
                 lastPauseHeight = OTRGetGameRenderHeight();
+                lastAltAssets = ResourceMgr_IsAltAssetsEnabled();
                 hasCapturedPauseBuffer = false;
 
                 FB_CopyToFramebuffer(&gfxP, 0, gPauseFrameBuffer, false, &hasCapturedPauseBuffer);
@@ -1662,11 +1662,6 @@ time_t Play_GetRealTime() {
 
 void Play_Main(GameState* thisx) {
     PlayState* play = (PlayState*)thisx;
-
-    // Decrease the easy pause buffer timer every frame
-    if (CVarGetInteger(CVAR_GENERAL("CheatEasyPauseBufferTimer"), 0) > 0) {
-        CVarSetInteger(CVAR_GENERAL("CheatEasyPauseBufferTimer"), CVarGetInteger(CVAR_GENERAL("CheatEasyPauseBufferTimer"), 0) - 1);
-    }
 
     if (play->envCtx.unk_EE[2] == 0 && CVarGetInteger(CVAR_GENERAL("LetItSnow"), 0)) {
         play->envCtx.unk_EE[3] = 64;
@@ -2215,7 +2210,7 @@ void Play_PerformSave(PlayState* play) {
 
         uint8_t triforceHuntCompleted =
             IS_RANDO &&
-            gSaveContext.triforcePiecesCollected == (Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1) &&
+            gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected == (Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1) &&
             Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT);
         if (CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_OFF) != AUTOSAVE_OFF || triforceHuntCompleted) {
             Overlay_DisplayText(3.0f, "Game Saved");

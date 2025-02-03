@@ -7,7 +7,7 @@
 #include "z_en_horse_link_child.h"
 #include "objects/object_horse_link_child/object_horse_link_child.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_UPDATE_DURING_OCARINA)
 
 void EnHorseLinkChild_Init(Actor* thisx, PlayState* play);
 void EnHorseLinkChild_Destroy(Actor* thisx, PlayState* play);
@@ -555,7 +555,7 @@ void EnHorseLinkChild_Update(Actor* thisx, PlayState* play) {
     s32 pad;
 
     sActionFuncs[this->action](this, play);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 55.0f, 100.0f, 0x1D);
 
     if ((play->sceneNum == SCENE_LON_LON_RANCH) && (this->actor.world.pos.z < -2400.0f)) {

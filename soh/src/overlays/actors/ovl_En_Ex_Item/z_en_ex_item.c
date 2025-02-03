@@ -8,9 +8,10 @@
 #include "overlays/actors/ovl_En_Bom_Bowl_Pit/z_en_bom_bowl_pit.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "vt.h"
+#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void EnExItem_Init(Actor* thisx, PlayState* play);
 void EnExItem_Destroy(Actor* thisx, PlayState* play);
@@ -53,7 +54,7 @@ void EnExItem_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     EnExItem* this = (EnExItem*)thisx;
 
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->type = this->actor.params & 0xFF;
     this->unusedParam = (this->actor.params >> 8) & 0xFF;
     osSyncPrintf("\n\n");
@@ -336,7 +337,7 @@ void EnExItem_ExitChest(EnExItem* this, PlayState* play) {
             Actor_Kill(&this->actor);
         }
     }
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 }
 
 void EnExItem_FairyMagic(EnExItem* this, PlayState* play) {

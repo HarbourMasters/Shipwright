@@ -4,12 +4,13 @@
 #include <boost_custom/container_hash/hash_32.hpp>
 #include "custom_messages.hpp"
 #include "fill.hpp"
-#include "location_access.hpp"
+#include "../location_access.h"
 #include "random.hpp"
 #include "spoiler_log.hpp"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "variables.h"
 #include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
 #include "../option.h"
 #include "soh/Enhancements/debugger/performanceTimer.h"
 
@@ -30,10 +31,12 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
     Regions::AccessReset();
     StopPerformanceTimer(PT_REGION_RESET);
 
-    ctx->GetSettings()->FinalizeSettings(excludedLocations, enabledTricks);
+    ctx->FinalizeSettings(excludedLocations, enabledTricks);
     // once the settings have been finalized turn them into a string for hashing
     std::string settingsStr;
-    for (const Rando::OptionGroup& optionGroup : ctx->GetSettings()->GetOptionGroups()) {
+    auto& optionGroups = Rando::Settings::GetInstance()->GetOptionGroups();
+    for (size_t i = 0; i < RSG_MAX; i++) {
+        auto& optionGroup = optionGroups[i];
         // don't go through non-menus
         if (optionGroup.GetContainsType() == Rando::OptionGroupType::SUBGROUP) {
             continue;
@@ -42,7 +45,15 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
         for (Rando::Option* option : optionGroup.GetOptions()) {
             if (option->IsCategory(Rando::OptionCategory::Setting)) {
                 if (option->GetOptionCount() > 0) {
-                    settingsStr += option->GetSelectedOptionText();
+                    if (i >= RSG_EXCLUDES_KOKIRI_FOREST && i <= RSG_EXCLUDES_GANONS_CASTLE) {
+                        auto locationOption = static_cast<Rando::LocationOption*>(option);
+                        settingsStr += option->GetOptionText(ctx->GetLocationOption(locationOption->GetKey()).Get());
+                    } else if (i == RSG_TRICKS) {
+                        auto trickOption = static_cast<Rando::TrickOption*>(option);
+                        settingsStr += option->GetOptionText(ctx->GetTrickOption(trickOption->GetKey()).Get());
+                    } else {
+                        settingsStr += option->GetOptionText(ctx->GetOption(option->GetKey()).Get());
+                    }
                 }
             }
         }
@@ -52,9 +63,9 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
         settingsStr += (char*)gBuildVersion;
     }
 
-    uint32_t finalHash = boost::hash_32<std::string>{}(std::to_string(ctx->GetSettings()->GetSeed()) + settingsStr);
+    uint32_t finalHash = boost::hash_32<std::string>{}(std::to_string(ctx->GetSeed()) + settingsStr);
     Random_Init(finalHash);
-    ctx->GetSettings()->SetHash(std::to_string(finalHash));
+    ctx->SetHash(std::to_string(finalHash));
 
 
     if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
@@ -79,14 +90,6 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
             SPDLOG_ERROR("Writing Spoiler Log Failed");
         }
         StopPerformanceTimer(PT_SPOILER_LOG);
-#ifdef ENABLE_DEBUG
-        SPDLOG_INFO("Writing Placement Log...");
-        if (PlacementLog_Write()) {
-            SPDLOG_INFO("Writing Placement Log Done");
-        } else {
-            SPDLOG_ERROR("Writing Placement Log Failed");
-        }
-#endif
     }
 
     ctx->playthroughLocations.clear();
@@ -101,12 +104,12 @@ int Playthrough_Repeat(std::set<RandomizerCheck> excludedLocations, std::set<Ran
     auto ctx = Rando::Context::GetInstance();
     uint32_t repeatedSeed = 0;
     for (int i = 0; i < count; i++) {
-        ctx->GetSettings()->SetSeedString(std::to_string(rand() % 0xFFFFFFFF));
-        repeatedSeed = boost::hash_32<std::string>{}(ctx->GetSettings()->GetSeedString());
-        ctx->GetSettings()->SetSeed(repeatedSeed % 0xFFFFFFFF);
-        //CitraPrint("testing seed: " + std::to_string(Settings::seed));
+        ctx->SetSeedString(std::to_string(rand() % 0xFFFFFFFF));
+        repeatedSeed = boost::hash_32<std::string>{}(ctx->GetSeedString());
+        ctx->SetSeed(repeatedSeed % 0xFFFFFFFF);
+        SPDLOG_DEBUG("testing seed: %d", repeatedSeed);
         ClearProgress();
-        Playthrough_Init(ctx->GetSettings()->GetSeed(), excludedLocations, enabledTricks);
+        Playthrough_Init(ctx->GetSeed(), excludedLocations, enabledTricks);
         SPDLOG_INFO("Seeds Generated: {}", i + 1);
     }
 

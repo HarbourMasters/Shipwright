@@ -101,7 +101,7 @@ void BgSpot08Iceblock_SinkUnderPlayer(BgSpot08Iceblock* this) {
     }
 
     // Sink under Player's weight if standing on it
-    target = (func_80043548(&this->dyna) ? -4.0f : 0.0f);
+    target = (DynaPolyActor_IsActorOnTop(&this->dyna) ? -4.0f : 0.0f);
 
     Math_StepToF(&this->sinkOffset, target, step);
 }
@@ -200,7 +200,7 @@ void BgSpot08Iceblock_Roll(BgSpot08Iceblock* this, PlayState* play) {
     surfaceNormalHorizontal.z = this->surfaceNormal.z;
 
     // If player is standing on it or holding the edge
-    if (func_8004356C(&this->dyna) && (playerCentroidDist > 3.0f)) {
+    if (DynaPolyActor_IsPlayerOnTop(&this->dyna) && (playerCentroidDist > 3.0f)) {
         Math_Vec3f_Diff(&playerCentroidDiff, &surfaceNormalHorizontal, &playerMoment);
         BgSpot08Iceblock_MultVectorScalar(&playerMoment, &playerMoment,
                                           (sInertias[rollDataIndex] * playerCentroidDist) / this->dyna.actor.scale.x);

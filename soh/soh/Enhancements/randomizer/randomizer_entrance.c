@@ -9,6 +9,8 @@
 
 #include "randomizer_entrance.h"
 #include "randomizer_grotto.h"
+#include "soh/OTRGlobals.h"
+#include "soh/SaveManager.h"
 #include <string.h>
 
 #include "global.h"
@@ -159,7 +161,7 @@ void Entrance_Init(void) {
     }
 
     // Initialize all boss room save/death warps with their vanilla dungeon entryway
-    for (s16 i = 1; i < SHUFFLEABLE_BOSS_COUNT; i++) {
+    for (s16 i = 0; i < SHUFFLEABLE_BOSS_COUNT; i++) {
         bossSceneSaveDeathWarps[i] = dungeons[i].entryway;
     }
 
@@ -183,7 +185,7 @@ void Entrance_Init(void) {
         // Search for boss room overrides and look for the matching save/death warp value to use
         // If the boss room is in a dungeon, use the dungeons entryway as the save warp
         // Otherwise use the "exit" value for the entrance that lead to the boss room
-        for (int j = 0; j <= SHUFFLEABLE_BOSS_COUNT; j++) {
+        for (int j = 0; j < SHUFFLEABLE_BOSS_COUNT; j++) {
             if (overrideIndex == dungeons[j].bossDoor) {
                 bossScene = dungeons[j].bossScene;
             }
@@ -265,13 +267,6 @@ s16 Entrance_PeekNextIndexOverride(int16_t nextEntranceIndex) {
 }
 
 s16 Entrance_OverrideNextIndex(s16 nextEntranceIndex) {
-    // When entering Spirit Temple, clear temp flags so they don't carry over to the randomized dungeon
-    if (nextEntranceIndex == ENTR_SPIRIT_TEMPLE_ENTRANCE && Entrance_GetOverride(nextEntranceIndex) != nextEntranceIndex &&
-        gPlayState != NULL) {
-        gPlayState->actorCtx.flags.tempSwch = 0;
-        gPlayState->actorCtx.flags.tempCollect = 0;
-    }
-
     // Exiting through the crawl space from Hyrule Castle courtyard is the same exit as leaving Ganon's castle
     // Don't override the entrance if we came from the Castle courtyard (day and night scenes)
     if (gPlayState != NULL && (gPlayState->sceneNum == SCENE_CASTLE_COURTYARD_GUARDS_DAY || gPlayState->sceneNum == SCENE_CASTLE_COURTYARD_GUARDS_NIGHT) &&
@@ -745,7 +740,7 @@ u8 Entrance_GetIsSceneDiscovered(u8 sceneNum) {
     u32 idx = sceneNum / bitsPerIndex;
     if (idx < SAVEFILE_SCENES_DISCOVERED_IDX_COUNT) {
         u32 sceneBit = 1 << (sceneNum - (idx * bitsPerIndex));
-        return (gSaveContext.sohStats.scenesDiscovered[idx] & sceneBit) != 0;
+        return (gSaveContext.ship.stats.scenesDiscovered[idx] & sceneBit) != 0;
     }
     return 0;
 }
@@ -759,7 +754,7 @@ void Entrance_SetSceneDiscovered(u8 sceneNum) {
     u32 idx = sceneNum / bitsPerIndex;
     if (idx < SAVEFILE_SCENES_DISCOVERED_IDX_COUNT) {
         u32 sceneBit = 1 << (sceneNum - (idx * bitsPerIndex));
-        gSaveContext.sohStats.scenesDiscovered[idx] |= sceneBit;
+        gSaveContext.ship.stats.scenesDiscovered[idx] |= sceneBit;
     }
     // Save scenesDiscovered
     Save_SaveSection(SECTION_ID_SCENES);
@@ -770,7 +765,7 @@ u8 Entrance_GetIsEntranceDiscovered(u16 entranceIndex) {
     u32 idx = entranceIndex / bitsPerIndex;
     if (idx < SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT) {
         u32 entranceBit = 1 << (entranceIndex - (idx * bitsPerIndex));
-        return (gSaveContext.sohStats.entrancesDiscovered[idx] & entranceBit) != 0;
+        return (gSaveContext.ship.stats.entrancesDiscovered[idx] & entranceBit) != 0;
     }
     return 0;
 }
@@ -787,7 +782,7 @@ void Entrance_SetEntranceDiscovered(u16 entranceIndex, u8 isReversedEntrance) {
     u32 idx = entranceIndex / bitsPerIndex;
     if (idx < SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT) {
         u32 entranceBit = 1 << (entranceIndex - (idx * bitsPerIndex));
-        gSaveContext.sohStats.entrancesDiscovered[idx] |= entranceBit;
+        gSaveContext.ship.stats.entrancesDiscovered[idx] |= entranceBit;
 
         // Set reverse entrance when not decoupled
         if (!Randomizer_GetSettingValue(RSK_DECOUPLED_ENTRANCES) && !isReversedEntrance) {

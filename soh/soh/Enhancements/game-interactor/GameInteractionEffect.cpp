@@ -640,4 +640,28 @@ namespace GameInteractionEffect {
     void SlipperyFloor::_Remove() {
         GameInteractor::State::SlipperyFloorActive = 0;
     }
+
+    // MARK: - SpawnEnemyWithOffset
+    GameInteractionEffectQueryResult SpawnEnemyWithOffset::CanBeApplied() {
+        if (!GameInteractor::IsSaveLoaded()) {
+            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+    }
+            return GameInteractor::RawAction::SpawnEnemyWithOffset(parameters[0], parameters[1]);
+    }
+
+    void SpawnEnemyWithOffset::_Apply() {
+        GameInteractor::RawAction::SpawnEnemyWithOffset(parameters[0], parameters[1]);
+    }
+
+    // MARK: - SpawnActor
+    GameInteractionEffectQueryResult SpawnActor::CanBeApplied() {
+        if (!GameInteractor::IsSaveLoaded()) {
+            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+    }
+            return GameInteractor::RawAction::SpawnActor(parameters[0], parameters[1]);
+    }
+
+    void SpawnActor::_Apply() {
+        GameInteractor::RawAction::SpawnActor(parameters[0], parameters[1]);
+    }
 }

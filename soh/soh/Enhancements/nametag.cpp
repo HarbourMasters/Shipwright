@@ -10,6 +10,7 @@
 extern "C" {
 #include "z64.h"
 #include "macros.h"
+#include "soh/cvar_prefixes.h"
 #include "functions.h"
 #include "variables.h"
 #include "textures/message_static/message_static.h"
@@ -82,7 +83,7 @@ void DrawNameTag(PlayState* play, const NameTag* nameTag) {
 
     // Prefer the highest between world position and focus position if targetable
     float posY = nameTag->actor->world.pos.y;
-    if (nameTag->actor->flags & ACTOR_FLAG_TARGETABLE) {
+    if (nameTag->actor->flags & ACTOR_FLAG_ATTENTION_ENABLED) {
         posY = std::max(posY, nameTag->actor->focus.pos.y);
     }
 

@@ -7,8 +7,9 @@
 #include "z_en_mm.h"
 #include "objects/object_mm/object_mm.h"
 #include "objects/object_link_child/object_link_child.h"
+#include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
 typedef enum {
     /* 0 */ RM_ANIM_RUN,
@@ -391,7 +392,7 @@ s32 func_80AADEF0(EnMm* this, PlayState* play) {
     Math_SmoothStepToS(&this->actor.shape.rot.y, this->yawToWaypoint, 1, 2500, 0);
     this->actor.world.rot.y = this->actor.shape.rot.y;
     Math_SmoothStepToF(&this->actor.speedXZ, this->speedXZ, 0.6f, this->distToWaypoint, 0.0f);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);
 
     return 0;

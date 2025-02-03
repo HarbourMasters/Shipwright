@@ -3,7 +3,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include <objects/object_d_hsblock/object_d_hsblock.h>
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void EnAObj_Init(Actor* thisx, PlayState* play);
 void EnAObj_Destroy(Actor* thisx, PlayState* play);
@@ -122,8 +122,8 @@ void EnAObj_Init(Actor* thisx, PlayState* play) {
 
     thisx->focus.pos = thisx->world.pos;
     this->dyna.bgId = BGACTOR_NEG_ONE;
-    this->dyna.unk_160 = 0;
-    this->dyna.unk_15C = DPM_UNK;
+    this->dyna.interactFlags = 0;
+    this->dyna.transformFlags = DPM_UNK;
     thisx->uncullZoneDownward = 1200.0f;
     thisx->uncullZoneScale = 200.0f;
 
@@ -142,7 +142,7 @@ void EnAObj_Init(Actor* thisx, PlayState* play) {
             break;
         case A_OBJ_UNKNOWN_6:
             // clang-format off
-            thisx->flags |= ACTOR_FLAG_TARGETABLE; this->dyna.bgId = 5; this->focusYoffset = 10.0f;
+            thisx->flags |= ACTOR_FLAG_ATTENTION_ENABLED; this->dyna.bgId = 5; this->focusYoffset = 10.0f;
             // clang-format on
             thisx->gravity = -2.0f;
             EnAObj_SetupWaitTalk(this, thisx->params);
@@ -156,7 +156,7 @@ void EnAObj_Init(Actor* thisx, PlayState* play) {
         case A_OBJ_SIGNPOST_ARROW:
             thisx->textId = (this->textId & 0xFF) | 0x300;
             // clang-format off
-            thisx->flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY; thisx->targetArrowOffset = 500.0f;
+            thisx->flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY; thisx->targetArrowOffset = 500.0f;
             // clang-format on
             this->focusYoffset = 45.0f;
             EnAObj_SetupWaitTalk(this, thisx->params);
@@ -234,7 +234,7 @@ void EnAObj_SetupBlockRot(EnAObj* this, s16 type) {
 
 void EnAObj_BlockRot(EnAObj* this, PlayState* play) {
     if (this->rotateState == 0) {
-        if (this->dyna.unk_160 != 0) {
+        if (this->dyna.interactFlags != 0) {
             this->rotateState++;
             this->rotateForTimer = 20;
 
@@ -322,7 +322,7 @@ void EnAObj_Update(Actor* thisx, PlayState* play) {
     EnAObj* this = (EnAObj*)thisx;
 
     this->actionFunc(this, play);
-    Actor_MoveForward(&this->dyna.actor);
+    Actor_MoveXZGravity(&this->dyna.actor);
 
     if (this->dyna.actor.gravity != 0.0f) {
         if (this->dyna.actor.params != A_OBJ_BOULDER_FRAGMENT) {

@@ -18,7 +18,6 @@
 // SOH [Port] Game State management for our render loop
 static struct RunFrameContext {
     GraphicsContext gfxCtx;
-    GameState* gameState;
     GameStateOverlay* nextOvl;
     GameStateOverlay* ovl;
     int state;
@@ -487,28 +486,28 @@ static void RunFrame()
         size = runFrameContext.ovl->instanceSize;
         osSyncPrintf("クラスサイズ＝%dバイト\n", size); // "Class size = %d bytes"
 
-        runFrameContext.gameState = SYSTEM_ARENA_MALLOC_DEBUG(size);
+        gGameState = SYSTEM_ARENA_MALLOC_DEBUG(size);
 
-        if (!runFrameContext.gameState)
+        if (!gGameState)
         {
             osSyncPrintf("確保失敗\n"); // "Failure to secure"
 
             snprintf(faultMsg, sizeof(faultMsg), "CLASS SIZE= %d bytes", size);
             Fault_AddHungupAndCrashImpl("GAME CLASS MALLOC FAILED", faultMsg);
         }
-        GameState_Init(runFrameContext.gameState, runFrameContext.ovl->init, &runFrameContext.gfxCtx);
+        GameState_Init(gGameState, runFrameContext.ovl->init, &runFrameContext.gfxCtx);
 
         // Setup the normal skybox once before entering any game states to avoid the 0xabababab crash.
         // The crash is due to certain skyboxes not loading all the data they need from Skybox_Setup.
         if (!hasSetupSkybox) {
-            PlayState* play = (PlayState*)runFrameContext.gameState;
+            PlayState* play = (PlayState*)gGameState;
             Skybox_Setup(play, &play->skyboxCtx, SKYBOX_NORMAL_SKY);
             hasSetupSkybox = true;
         }
 
         uint64_t freq = GetFrequency();
 
-        while (GameState_IsRunning(runFrameContext.gameState))
+        while (GameState_IsRunning(gGameState))
         {
             //uint64_t ticksA, ticksB;
             //ticksA = GetPerfCounter();
@@ -517,7 +516,7 @@ static void RunFrame()
 
             PadMgr_ThreadEntry(&gPadMgr);
 
-            Graph_Update(&runFrameContext.gfxCtx, runFrameContext.gameState);
+            Graph_Update(&runFrameContext.gfxCtx, gGameState);
             //ticksB = GetPerfCounter();
 
             if (GfxDebuggerIsDebuggingRequested()) {
@@ -535,9 +534,9 @@ static void RunFrame()
             nextFrame:;
         }
 
-        runFrameContext.nextOvl = Graph_GetNextGameState(runFrameContext.gameState);
-        GameState_Destroy(runFrameContext.gameState);
-        SYSTEM_ARENA_FREE_DEBUG(runFrameContext.gameState);
+        runFrameContext.nextOvl = Graph_GetNextGameState(gGameState);
+        GameState_Destroy(gGameState);
+        SYSTEM_ARENA_FREE_DEBUG(gGameState);
         Overlay_FreeGameState(runFrameContext.ovl);
     }
     Graph_Destroy(&runFrameContext.gfxCtx);

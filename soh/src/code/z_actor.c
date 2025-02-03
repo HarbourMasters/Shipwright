@@ -2,6 +2,7 @@
 #include "vt.h"
 
 #include "overlays/actors/ovl_Arms_Hook/z_arms_hook.h"
+#include "overlays/actors/ovl_En_Arrow/z_en_arrow.h"
 #include "overlays/actors/ovl_En_Part/z_en_part.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
@@ -13,6 +14,7 @@
 #include "soh/Enhancements/nametag.h"
 
 #include "soh/ActorDB.h"
+#include "soh/OTRGlobals.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -527,7 +529,7 @@ void func_8002C124(TargetContext* targetCtx, PlayState* play) {
     }
 
     actor = targetCtx->unk_94;
-    if ((actor != NULL) && !(actor->flags & ACTOR_FLAG_NO_LOCKON)) {
+    if ((actor != NULL) && !(actor->flags & ACTOR_FLAG_LOCK_ON_DISABLED)) {
         FrameInterpolation_RecordOpenChild(actor, 1);
         NaviColor* naviColor = &sNaviColorList[actor->category];
 
@@ -622,7 +624,7 @@ void func_8002C7BC(TargetContext* targetCtx, Player* player, Actor* actorArg, Pl
                 targetCtx->unk_48 = 0;
             }
 
-            lockOnSfxId = CHECK_FLAG_ALL(actorArg->flags, ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE) ? NA_SE_SY_LOCK_ON
+            lockOnSfxId = CHECK_FLAG_ALL(actorArg->flags, ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE) ? NA_SE_SY_LOCK_ON
                                                                                        : NA_SE_SY_LOCK_ON_HUMAN;
             Sfx_PlaySfxCentered(lockOnSfxId);
         }
@@ -1080,14 +1082,11 @@ void TitleCard_InitPlaceName(PlayState* play, TitleCardContext* titleCtx, void* 
 }
 
 void TitleCard_Update(PlayState* play, TitleCardContext* titleCtx) {
-    const Color_RGB8 TitleCard_Colors_ori = {255,255,255};
-    Color_RGB8 TitleCard_Colors = {255,255,255};
-    if (titleCtx->isBossCard && CVarGetInteger(CVAR_COSMETIC("HUD.TitleCard.Boss.Changed"), 1) == 2) {
-        TitleCard_Colors = CVarGetColor24(CVAR_COSMETIC("HUD.TitleCard.Boss.Value"), TitleCard_Colors_ori);
-    } else if (!titleCtx->isBossCard && CVarGetInteger(CVAR_COSMETIC("HUD.TitleCard.Map.Changed"), 1) == 2) {
-        TitleCard_Colors = CVarGetColor24(CVAR_COSMETIC("HUD.TitleCard.Map.Value"), TitleCard_Colors_ori);
-    } else {
-        TitleCard_Colors = TitleCard_Colors_ori;
+    Color_RGB8 TitleCard_Colors = { 255, 255, 255 };
+    if (titleCtx->isBossCard && CVarGetInteger(CVAR_COSMETIC("HUD.TitleCard.Boss.Changed"), 0) == 1) {
+        TitleCard_Colors = CVarGetColor24(CVAR_COSMETIC("HUD.TitleCard.Boss.Value"), TitleCard_Colors);
+    } else if (!titleCtx->isBossCard && CVarGetInteger(CVAR_COSMETIC("HUD.TitleCard.Map.Changed"), 0) == 1) {
+        TitleCard_Colors = CVarGetColor24(CVAR_COSMETIC("HUD.TitleCard.Map.Value"), TitleCard_Colors);
     }
 
     if (DECR(titleCtx->delayTimer) == 0) {
@@ -1179,7 +1178,7 @@ void Actor_Kill(Actor* actor) {
     GameInteractor_ExecuteOnActorKill(actor);
     actor->draw = NULL;
     actor->update = NULL;
-    actor->flags &= ~ACTOR_FLAG_TARGETABLE;
+    actor->flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
 }
 
 void Actor_SetWorldToHome(Actor* actor) {
@@ -1256,7 +1255,7 @@ void Actor_Destroy(Actor* actor, PlayState* play) {
     NameTag_RemoveAllForActor(actor);
 }
 
-void func_8002D7EC(Actor* actor) {
+void Actor_UpdatePos(Actor* actor) {
     f32 speedRate = R_UPDATE_RATE * 0.5f;
 
     actor->world.pos.x += (actor->velocity.x * speedRate) + actor->colChkInfo.displacement.x;
@@ -1264,7 +1263,7 @@ void func_8002D7EC(Actor* actor) {
     actor->world.pos.z += (actor->velocity.z * speedRate) + actor->colChkInfo.displacement.z;
 }
 
-void func_8002D868(Actor* actor) {
+void Actor_UpdateVelocityXZGravity(Actor* actor) {
     actor->velocity.x = Math_SinS(actor->world.rot.y) * actor->speedXZ;
     actor->velocity.z = Math_CosS(actor->world.rot.y) * actor->speedXZ;
 
@@ -1274,12 +1273,12 @@ void func_8002D868(Actor* actor) {
     }
 }
 
-void Actor_MoveForward(Actor* actor) {
-    func_8002D868(actor);
-    func_8002D7EC(actor);
+void Actor_MoveXZGravity(Actor* actor) {
+    Actor_UpdateVelocityXZGravity(actor);
+    Actor_UpdatePos(actor);
 }
 
-void func_8002D908(Actor* actor) {
+void Actor_UpdateVelocityXYZ(Actor* actor) {
     f32 sp24 = Math_CosS(actor->world.rot.x) * actor->speedXZ;
 
     actor->velocity.x = Math_SinS(actor->world.rot.y) * sp24;
@@ -1287,17 +1286,17 @@ void func_8002D908(Actor* actor) {
     actor->velocity.z = Math_CosS(actor->world.rot.y) * sp24;
 }
 
-void func_8002D97C(Actor* actor) {
-    func_8002D908(actor);
-    func_8002D7EC(actor);
+void Actor_MoveXYZ(Actor* actor) {
+    Actor_UpdateVelocityXYZ(actor);
+    Actor_UpdatePos(actor);
 }
 
-void func_8002D9A4(Actor* actor, f32 arg1) {
+void Actor_SetProjectileSpeed(Actor* actor, f32 arg1) {
     actor->speedXZ = Math_CosS(actor->world.rot.x) * arg1;
     actor->velocity.y = -Math_SinS(actor->world.rot.x) * arg1;
 }
 
-void func_8002D9F8(Actor* actor, SkelAnime* skelAnime) {
+void Actor_UpdatePosByAnimation(Actor* actor, SkelAnime* skelAnime) {
     Vec3f sp1C;
 
     SkelAnime_UpdateTranslation(skelAnime, &sp1C, actor->shape.rot.y);
@@ -1346,20 +1345,20 @@ f32 Actor_WorldDistXZToPoint(Actor* actor, Vec3f* refPoint) {
     return Math_Vec3f_DistXZ(&actor->world.pos, refPoint);
 }
 
-void func_8002DBD0(Actor* actor, Vec3f* result, Vec3f* arg2) {
-    f32 cosRot2Y;
-    f32 sinRot2Y;
+void Actor_WorldToActorCoords(Actor* actor, Vec3f* dest, Vec3f* pos) {
+    f32 cosY;
+    f32 sinY;
     f32 deltaX;
     f32 deltaZ;
 
-    cosRot2Y = Math_CosS(actor->shape.rot.y);
-    sinRot2Y = Math_SinS(actor->shape.rot.y);
-    deltaX = arg2->x - actor->world.pos.x;
-    deltaZ = arg2->z - actor->world.pos.z;
+    cosY = Math_CosS(actor->shape.rot.y);
+    sinY = Math_SinS(actor->shape.rot.y);
+    deltaX = pos->x - actor->world.pos.x;
+    deltaZ = pos->z - actor->world.pos.z;
 
-    result->x = (deltaX * cosRot2Y) - (deltaZ * sinRot2Y);
-    result->z = (deltaX * sinRot2Y) + (deltaZ * cosRot2Y);
-    result->y = arg2->y - actor->world.pos.y;
+    dest->x = (deltaX * cosY) - (deltaZ * sinY);
+    dest->z = (deltaX * sinY) + (deltaZ * cosY);
+    dest->y = pos->y - actor->world.pos.y;
 }
 
 f32 Actor_HeightDiff(Actor* actorA, Actor* actorB) {
@@ -1855,7 +1854,7 @@ f32 func_8002EFC0(Actor* actor, Player* player, s16 arg2) {
     s16 yawTempAbs = ABS(yawTemp);
 
     if (player->focusActor != NULL) {
-        if ((yawTempAbs > 0x4000) || (actor->flags & ACTOR_FLAG_NO_LOCKON)) {
+        if ((yawTempAbs > 0x4000) || (actor->flags & ACTOR_FLAG_LOCK_ON_DISABLED)) {
             return FLT_MAX;
         } else {
             f32 ret =
@@ -1891,7 +1890,7 @@ u32 func_8002F090(Actor* actor, f32 arg1) {
 }
 
 s32 func_8002F0C8(Actor* actor, Player* player, s32 flag) {
-    if ((actor->update == NULL) || !(actor->flags & ACTOR_FLAG_TARGETABLE)) {
+    if ((actor->update == NULL) || !(actor->flags & ACTOR_FLAG_ATTENTION_ENABLED)) {
         return true;
     }
 
@@ -1913,8 +1912,8 @@ s32 func_8002F0C8(Actor* actor, Player* player, s32 flag) {
 }
 
 u32 Actor_ProcessTalkRequest(Actor* actor, PlayState* play) {
-    if (actor->flags & ACTOR_FLAG_PLAYER_TALKED_TO) {
-        actor->flags &= ~ACTOR_FLAG_PLAYER_TALKED_TO;
+    if (actor->flags & ACTOR_FLAG_TALK) {
+        actor->flags &= ~ACTOR_FLAG_TALK;
         return true;
     }
 
@@ -1925,7 +1924,7 @@ s32 func_8002F1C4(Actor* actor, PlayState* play, f32 arg2, f32 arg3, u32 exchang
     Player* player = GET_PLAYER(play);
 
     // This is convoluted but it seems like it must be a single if statement to match
-    if ((player->actor.flags & ACTOR_FLAG_PLAYER_TALKED_TO) || ((exchangeItemId != EXCH_ITEM_NONE) && Player_InCsMode(play)) ||
+    if ((player->actor.flags & ACTOR_FLAG_TALK) || ((exchangeItemId != EXCH_ITEM_NONE) && Player_InCsMode(play)) ||
         (!actor->isTargeted &&
          ((arg3 < fabsf(actor->yDistToPlayer)) || (player->talkActorDistance < actor->xzDistToPlayer) ||
           (arg2 < actor->xzDistToPlayer)))) {
@@ -2103,14 +2102,13 @@ s32 Actor_OfferGetItem(Actor* actor, PlayState* play, s32 getItemId, f32 xzRange
     return false;
 }
 
-// TODO: Rename to GiveItemIdFromActorWithFixedRange or similar
 // If you're doing something for randomizer, you're probably looking for GiveItemEntryFromActorWithFixedRange
-void func_8002F554(Actor* actor, PlayState* play, s32 getItemId) {
+void Actor_OfferGetItemNearby(Actor* actor, PlayState* play, s32 getItemId) {
     Actor_OfferGetItem(actor, play, getItemId, 50.0f, 10.0f);
 }
 
-void func_8002F580(Actor* actor, PlayState* play) {
-    func_8002F554(actor, play, GI_NONE);
+void Actor_OfferCarry(Actor* actor, PlayState* play) {
+    Actor_OfferGetItemNearby(actor, play, GI_NONE);
 }
 
 u32 Actor_HasNoParent(Actor* actor, PlayState* play) {
@@ -2237,30 +2235,30 @@ void func_8002F850(PlayState* play, Actor* actor) {
 
 void func_8002F8F0(Actor* actor, u16 sfxId) {
     actor->sfx = sfxId;
-    actor->flags |= ACTOR_FLAG_SFX_AT_POS;
-    actor->flags &= ~(ACTOR_FLAG_SFX_AT_CENTER | ACTOR_FLAG_SFX_AT_CENTER2 | ACTOR_FLAG_SFX_AS_TIMER);
+    actor->flags |= ACTOR_FLAG_SFX_ACTOR_POS_2;
+    actor->flags &= ~(ACTOR_AUDIO_FLAG_SFX_CENTERED_1 | ACTOR_AUDIO_FLAG_SFX_CENTERED_2 | ACTOR_FLAG_SFX_TIMER);
 }
 
 void func_8002F91C(Actor* actor, u16 sfxId) {
     actor->sfx = sfxId;
-    actor->flags |= ACTOR_FLAG_SFX_AT_CENTER;
-    actor->flags &= ~(ACTOR_FLAG_SFX_AT_POS | ACTOR_FLAG_SFX_AT_CENTER2 | ACTOR_FLAG_SFX_AS_TIMER);
+    actor->flags |= ACTOR_AUDIO_FLAG_SFX_CENTERED_1;
+    actor->flags &= ~(ACTOR_FLAG_SFX_ACTOR_POS_2 | ACTOR_AUDIO_FLAG_SFX_CENTERED_2 | ACTOR_FLAG_SFX_TIMER);
 }
 
 void func_8002F948(Actor* actor, u16 sfxId) {
     actor->sfx = sfxId;
-    actor->flags |= ACTOR_FLAG_SFX_AT_CENTER2;
-    actor->flags &= ~(ACTOR_FLAG_SFX_AT_POS | ACTOR_FLAG_SFX_AT_CENTER | ACTOR_FLAG_SFX_AS_TIMER);
+    actor->flags |= ACTOR_AUDIO_FLAG_SFX_CENTERED_2;
+    actor->flags &= ~(ACTOR_FLAG_SFX_ACTOR_POS_2 | ACTOR_AUDIO_FLAG_SFX_CENTERED_1 | ACTOR_FLAG_SFX_TIMER);
 }
 
 void func_8002F974(Actor* actor, u16 sfxId) {
-    actor->flags &= ~(ACTOR_FLAG_SFX_AT_POS | ACTOR_FLAG_SFX_AT_CENTER | ACTOR_FLAG_SFX_AT_CENTER2 | ACTOR_FLAG_SFX_AS_TIMER);
+    actor->flags &= ~(ACTOR_FLAG_SFX_ACTOR_POS_2 | ACTOR_AUDIO_FLAG_SFX_CENTERED_1 | ACTOR_AUDIO_FLAG_SFX_CENTERED_2 | ACTOR_FLAG_SFX_TIMER);
     actor->sfx = sfxId;
 }
 
 void func_8002F994(Actor* actor, s32 arg1) {
-    actor->flags |= ACTOR_FLAG_SFX_AS_TIMER;
-    actor->flags &= ~(ACTOR_FLAG_SFX_AT_POS | ACTOR_FLAG_SFX_AT_CENTER | ACTOR_FLAG_SFX_AT_CENTER2);
+    actor->flags |= ACTOR_FLAG_SFX_TIMER;
+    actor->flags &= ~(ACTOR_FLAG_SFX_ACTOR_POS_2 | ACTOR_AUDIO_FLAG_SFX_CENTERED_1 | ACTOR_AUDIO_FLAG_SFX_CENTERED_2);
     if (arg1 < 40) {
         actor->sfx = NA_SE_PL_WALK_DIRT - SFX_FLAG;
     } else if (arg1 < 100) {
@@ -2344,8 +2342,14 @@ void Actor_DrawFaroresWindPointer(PlayState* play) {
         } else if (D_8015BC18 > 0.0f) {
             static Vec3f effectVel = { 0.0f, -0.05f, 0.0f };
             static Vec3f effectAccel = { 0.0f, -0.025f, 0.0f };
-            static Color_RGBA8 effectPrimCol = { 255, 255, 255, 0 };
-            static Color_RGBA8 effectEnvCol = { 100, 200, 0, 0 };
+            Color_RGBA8 effectPrimCol = { 255, 255, 255, 0 };
+            Color_RGBA8 effectEnvCol = { 100, 200, 0, 0 };
+            if (CVarGetInteger(CVAR_COSMETIC("Magic.FaroresSecondary.Changed"), 0)) {
+                effectEnvCol = CVarGetColor(CVAR_COSMETIC("Magic.FaroresSecondary.Value"), effectEnvCol);
+            }
+            if (CVarGetInteger(CVAR_COSMETIC("Magic.FaroresPrimary.Changed"), 0)) {
+                effectPrimCol = CVarGetColor(CVAR_COSMETIC("Magic.FaroresPrimary.Value"), effectPrimCol);
+            }
             Vec3f* curPos = &gSaveContext.respawn[RESPAWN_MODE_TOP].pos;
             Vec3f* nextPos = &gSaveContext.respawn[RESPAWN_MODE_DOWN].pos;
             f32 prevNum = D_8015BC18;
@@ -2440,8 +2444,16 @@ void Actor_DrawFaroresWindPointer(PlayState* play) {
             Matrix_Push();
 
             gDPPipeSync(POLY_XLU_DISP++);
-            gDPSetPrimColor(POLY_XLU_DISP++, 128, 128, 255, 255, 200, alpha);
-            gDPSetEnvColor(POLY_XLU_DISP++, 100, 200, 0, 255);
+            Color_RGB8 Spell_env = { 100, 200, 0 };
+            Color_RGB8 Spell_col = { 255, 255, 200 };
+            if (CVarGetInteger(CVAR_COSMETIC("Magic.FaroresSecondary.Changed"), 0)) {
+                Spell_env = CVarGetColor24(CVAR_COSMETIC("Magic.FaroresSecondary.Value"), Spell_env);
+            }
+            if (CVarGetInteger(CVAR_COSMETIC("Magic.FaroresPrimary.Changed"), 0)) {
+                Spell_col = CVarGetColor24(CVAR_COSMETIC("Magic.FaroresPrimary.Value"), Spell_col);
+            }
+            gDPSetPrimColor(POLY_XLU_DISP++, 128, 128, Spell_col.r, Spell_col.g, Spell_col.b, alpha);
+            gDPSetEnvColor(POLY_XLU_DISP++, Spell_env.r, Spell_env.g, Spell_env.b, 255);
 
             Matrix_RotateZ(((play->gameplayFrames * 1500) & 0xFFFF) * M_PI / 32768.0f, MTXMODE_APPLY);
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
@@ -2555,7 +2567,7 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
     sp80 = &D_80116068[0];
 
     if (player->stateFlags2 & PLAYER_STATE2_OCARINA_PLAYING) {
-        unkFlag = ACTOR_FLAG_NO_FREEZE_OCARINA;
+        unkFlag = ACTOR_FLAG_UPDATE_DURING_OCARINA;
     }
 
     if ((player->stateFlags1 & PLAYER_STATE1_TALKING) && ((player->actor.textId & 0xFF00) != 0x600)) {
@@ -2610,9 +2622,9 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
                 actor->xyzDistToPlayerSq = SQ(actor->xzDistToPlayer) + SQ(actor->yDistToPlayer);
 
                 actor->yawTowardsPlayer = Actor_WorldYawTowardActor(actor, &player->actor);
-                actor->flags &= ~ACTOR_FLAG_PLAY_HIT_SFX;
+                actor->flags &= ~ACTOR_FLAG_SFX_FOR_PLAYER_BODY_HIT;
 
-                if ((DECR(actor->freezeTimer) == 0) && (actor->flags & (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_ACTIVE))) {
+                if ((DECR(actor->freezeTimer) == 0) && (actor->flags & (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_INSIDE_CULLING_VOLUME))) {
                     if (actor == player->focusActor) {
                         actor->isTargeted = true;
                     } else {
@@ -2754,13 +2766,13 @@ void Actor_Draw(PlayState* play, Actor* actor) {
 }
 
 void func_80030ED8(Actor* actor) {
-    if (actor->flags & ACTOR_FLAG_SFX_AT_POS) {
+    if (actor->flags & ACTOR_FLAG_SFX_ACTOR_POS_2) {
         Audio_PlaySoundGeneral(actor->sfx, &actor->projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
-    } else if (actor->flags & ACTOR_FLAG_SFX_AT_CENTER) {
+    } else if (actor->flags & ACTOR_AUDIO_FLAG_SFX_CENTERED_1) {
         Sfx_PlaySfxCentered(actor->sfx);
-    } else if (actor->flags & ACTOR_FLAG_SFX_AT_CENTER2) {
+    } else if (actor->flags & ACTOR_AUDIO_FLAG_SFX_CENTERED_2) {
         Sfx_PlaySfxCentered2(actor->sfx);
-    } else if (actor->flags & ACTOR_FLAG_SFX_AS_TIMER) {
+    } else if (actor->flags & ACTOR_FLAG_SFX_TIMER) {
         func_800F4C58(&gSfxDefaultPos, NA_SE_SY_TIMER - SFX_FLAG, (s8)(actor->sfx - 1));
     } else {
         Sfx_PlaySfxAtPos(&actor->projectedPos, actor->sfx);
@@ -3020,15 +3032,15 @@ void func_800315AC(PlayState* play, ActorContext* actorCtx) {
                                                  &shipShouldUpdate);
 
                     if (shipShouldUpdate) {
-                        actor->flags |= ACTOR_FLAG_ACTIVE;
+                        actor->flags |= ACTOR_FLAG_INSIDE_CULLING_VOLUME;
                     } else {
-                        actor->flags &= ~ACTOR_FLAG_ACTIVE;
+                        actor->flags &= ~ACTOR_FLAG_INSIDE_CULLING_VOLUME;
                     }
                 } else {
                     if (func_800314B0(play, actor)) {
-                        actor->flags |= ACTOR_FLAG_ACTIVE;
+                        actor->flags |= ACTOR_FLAG_INSIDE_CULLING_VOLUME;
                     } else {
-                        actor->flags &= ~ACTOR_FLAG_ACTIVE;
+                        actor->flags &= ~ACTOR_FLAG_INSIDE_CULLING_VOLUME;
                     }
                 }
             }
@@ -3037,9 +3049,9 @@ void func_800315AC(PlayState* play, ActorContext* actorCtx) {
 
             if ((HREG(64) != 1) || ((HREG(65) != -1) && (HREG(65) != HREG(66))) || (HREG(71) == 0)) {
                 if ((actor->init == NULL) && (actor->draw != NULL) &&
-                    ((actor->flags & (ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_ACTIVE)) || shipShouldDraw)) {
+                    ((actor->flags & (ACTOR_FLAG_DRAW_CULLING_DISABLED | ACTOR_FLAG_INSIDE_CULLING_VOLUME)) || shipShouldDraw)) {
                     // #endregion
-                    if ((actor->flags & ACTOR_FLAG_LENS) &&
+                    if ((actor->flags & ACTOR_FLAG_REACT_TO_LENS) &&
                         ((play->roomCtx.curRoom.lensMode == LENS_MODE_HIDE_ACTORS) ||
                          play->actorCtx.lensActive || (actor->room != play->roomCtx.curRoom.num))) {
                         assert(invisibleActorCounter < INVISIBLE_ACTOR_MAX);
@@ -3487,11 +3499,11 @@ void func_800328D4(PlayState* play, ActorContext* actorCtx, Player* player, u32 
     sp84 = player->focusActor;
 
     while (actor != NULL) {
-        if ((actor->update != NULL) && ((Player*)actor != player) && CHECK_FLAG_ALL(actor->flags, ACTOR_FLAG_TARGETABLE)) {
+        if ((actor->update != NULL) && ((Player*)actor != player) && CHECK_FLAG_ALL(actor->flags, ACTOR_FLAG_ATTENTION_ENABLED)) {
 
             // This block below is for determining the closest actor to player in determining the volume
             // used while playing enemy bgm music
-            if ((actorCategory == ACTORCAT_ENEMY) && CHECK_FLAG_ALL(actor->flags, ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE) &&
+            if ((actorCategory == ACTORCAT_ENEMY) && CHECK_FLAG_ALL(actor->flags, ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE) &&
                 (actor->xyzDistToPlayerSq < SQ(500.0f)) && (actor->xyzDistToPlayerSq < sbgmEnemyDistSq)) {
                 actorCtx->targetCtx.bgmEnemy = actor;
                 sbgmEnemyDistSq = actor->xyzDistToPlayerSq;
@@ -3842,8 +3854,14 @@ Actor* Actor_GetProjectileActor(PlayState* play, Actor* refActor, f32 radius) {
             //  it can also be an arrow.
             //  Luckily, the field at the same offset in the arrow actor is the x component of a vector
             //  which will rarely ever be 0. So it's very unlikely for this bug to cause an issue.
+            //
+            //  SoH [Port] We're making a change here, it doesn't technically fix the bug but makes it behave
+            //  more like hardware. Because of pointer size differences in SoH this was accessing a different
+            //  place in memory and causing issues with Dark link behavior, and probably other places too
             if ((Math_Vec3f_DistXYZ(&refActor->world.pos, &actor->world.pos) > radius) ||
-                (((ArmsHook*)actor)->timer == 0)) {
+                (actor->id == ACTOR_ARMS_HOOK && ((ArmsHook*)actor)->timer == 0) ||
+                (actor->id == ACTOR_EN_ARROW && ((EnArrow*)actor)->unk_210.x == 0)
+            ) {
                 actor = actor->next;
             } else {
                 deltaX = Math_SinS(actor->world.rot.y) * (actor->speedXZ * 10.0f);
@@ -4528,25 +4546,25 @@ void func_80034CC4(PlayState* play, SkelAnime* skelAnime, OverrideLimbDraw overr
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-s16 func_80034DD4(Actor* actor, PlayState* play, s16 arg2, f32 arg3) {
+s16 Actor_UpdateAlphaByDistance(Actor* actor, PlayState* play, s16 alpha, f32 radius) {
     Player* player = GET_PLAYER(play);
-    f32 var;
+    f32 distance;
 
     if ((play->csCtx.state != CS_STATE_IDLE) || (gDbgCamEnabled)) {
-        var = Math_Vec3f_DistXYZ(&actor->world.pos, &play->view.eye) * 0.25f;
+        distance = Math_Vec3f_DistXYZ(&actor->world.pos, &play->view.eye) * 0.25f;
     } else {
-        var = Math_Vec3f_DistXYZ(&actor->world.pos, &player->actor.world.pos);
+        distance = Math_Vec3f_DistXYZ(&actor->world.pos, &player->actor.world.pos);
     }
 
-    if (arg3 < var) {
-        actor->flags &= ~ACTOR_FLAG_TARGETABLE;
-        Math_SmoothStepToS(&arg2, 0, 6, 0x14, 1);
+    if (radius < distance) {
+        actor->flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
+        Math_SmoothStepToS(&alpha, 0, 6, 0x14, 1);
     } else {
-        actor->flags |= ACTOR_FLAG_TARGETABLE;
-        Math_SmoothStepToS(&arg2, 0xFF, 6, 0x14, 1);
+        actor->flags |= ACTOR_FLAG_ATTENTION_ENABLED;
+        Math_SmoothStepToS(&alpha, 0xFF, 6, 0x14, 1);
     }
 
-    return arg2;
+    return alpha;
 }
 
 void Animation_ChangeByInfo(SkelAnime* skelAnime, AnimationInfo* animationInfo, s32 index) {
@@ -4585,13 +4603,13 @@ s32 func_80035124(Actor* actor, PlayState* play) {
             if (Actor_HasParent(actor, play)) {
                 actor->params = 1;
             } else if (!(actor->bgCheckFlags & 1)) {
-                Actor_MoveForward(actor);
+                Actor_MoveXZGravity(actor);
                 Math_SmoothStepToF(&actor->speedXZ, 0.0f, 1.0f, 0.1f, 0.0f);
             } else if ((actor->bgCheckFlags & 2) && (actor->velocity.y < -4.0f)) {
                 ret = 1;
             } else {
                 actor->shape.rot.x = actor->shape.rot.z = 0;
-                func_8002F580(actor, play);
+                Actor_OfferCarry(actor, play);
             }
             break;
         case 1:
@@ -4964,15 +4982,33 @@ void Flags_UnsetEventInf(s32 flag) {
  * Tests if "randomizerInf" flag is set.
  */
 s32 Flags_GetRandomizerInf(RandomizerInf flag) {
-    return gSaveContext.randomizerInf[flag >> 4] & (1 << (flag & 0xF));
+    // Randomizer flags are currently accessible from any quest (boss rush as an example)
+    /*
+    if (!IS_RANDO) {
+        LUSLOG_ERROR("Tried to get randomizerInf flag \"%d\" outside of rando", flag);
+        assert(false);
+        return 0;
+    }
+    */
+
+    return gSaveContext.ship.randomizerInf[flag >> 4] & (1 << (flag & 0xF));
 }
 
 /**
  * Sets "randomizerInf" flag.
  */
 void Flags_SetRandomizerInf(RandomizerInf flag) {
+    // Randomizer flags are currently accessible from any quest (boss rush as an example)
+    /*
+    if (!IS_RANDO) {
+        LUSLOG_ERROR("Tried to set randomizerInf flag \"%d\" outside of rando", flag);
+        assert(false);
+        return;
+    }
+    */
+
     s32 previouslyOff = !Flags_GetRandomizerInf(flag);
-    gSaveContext.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
+    gSaveContext.ship.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
     if (previouslyOff) {
         LUSLOG_INFO("RandomizerInf Flag Set - %#x", flag);
         GameInteractor_ExecuteOnFlagSet(FLAG_RANDOMIZER_INF, flag);
@@ -4983,8 +5019,17 @@ void Flags_SetRandomizerInf(RandomizerInf flag) {
  * Unsets "randomizerInf" flag.
  */
 void Flags_UnsetRandomizerInf(RandomizerInf flag) {
+    // Randomizer flags are currently accessible from any quest (boss rush as an example)
+    /*
+    if (!IS_RANDO) {
+        LUSLOG_ERROR("Tried to unset randomizerInf flag \"%d\" outside of rando", flag);
+        assert(false);
+        return;
+    }
+    */
+
     s32 previouslyOn = Flags_GetRandomizerInf(flag);
-    gSaveContext.randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
+    gSaveContext.ship.randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
     if (previouslyOn) {
         LUSLOG_INFO("RandomizerInf Flag Unset - %#x", flag);
         GameInteractor_ExecuteOnFlagUnset(FLAG_RANDOMIZER_INF, flag);

@@ -7,7 +7,7 @@
 #include "z_en_anubice_tag.h"
 #include "vt.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void EnAnubiceTag_Init(Actor* thisx, PlayState* play);
 void EnAnubiceTag_Destroy(Actor* thisx, PlayState* play);

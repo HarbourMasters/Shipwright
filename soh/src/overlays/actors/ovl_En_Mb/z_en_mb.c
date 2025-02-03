@@ -7,6 +7,7 @@
 #include "z_en_mb.h"
 #include "objects/object_mb/object_mb.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ResourceManagerHelpers.h"
 
 /*
  * This actor can have three behaviors:
@@ -15,7 +16,7 @@
  * - "Spear Patrol" (variable 0xPP00 PP=pathId): uses a spear, patrols following a path, charges
  */
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
 typedef enum {
     /* -1 */ ENMB_TYPE_SPEAR_GUARD = -1,
@@ -309,7 +310,7 @@ void EnMb_Init(Actor* thisx, PlayState* play) {
             }
 
             ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawFeet, 90.0f);
-            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+            this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
             this->actor.naviEnemyId += 1;
             EnMb_SetupClubWaitPlayerNear(this);
             break;
@@ -325,7 +326,7 @@ void EnMb_Init(Actor* thisx, PlayState* play) {
             this->actor.colChkInfo.mass = MASS_HEAVY;
             this->maxHomeDist = 350.0f;
             this->playerDetectionRange = 1750.0f;
-            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+            this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
             EnMb_SetupSpearPatrolTurnTowardsWaypoint(this, play);
             break;
     }
@@ -585,7 +586,7 @@ void EnMb_SetupClubDamagedWhileKneeling(EnMb* this) {
 void EnMb_SetupClubDead(EnMb* this) {
     Animation_MorphToPlayOnce(&this->skelAnime, &gEnMbClubFallOnItsBackAnim, -4.0f);
     this->state = ENMB_STATE_CLUB_DEAD;
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->hitbox.dim.height = 80;
     this->hitbox.dim.radius = 95;
     this->timer1 = 30;
@@ -1165,12 +1166,12 @@ void EnMb_SpearGuardWalk(EnMb* this, PlayState* play) {
     if (this->timer3 == 0 &&
         Math_Vec3f_DistXZ(&this->actor.home.pos, &player->actor.world.pos) < this->playerDetectionRange) {
         Math_SmoothStepToS(&this->actor.world.rot.y, this->actor.yawTowardsPlayer, 1, 0x2EE, 0);
-        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
         if (this->actor.xzDistToPlayer < 500.0f && relYawTowardsPlayer < 0x1388) {
             EnMb_SetupSpearPrepareAndCharge(this);
         }
     } else {
-        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+        this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
         if (Math_Vec3f_DistXZ(&this->actor.world.pos, &this->actor.home.pos) > this->maxHomeDist || this->timer2 != 0) {
             yawTowardsHome = Math_Vec3f_Yaw(&this->actor.world.pos, &this->actor.home.pos);
             Math_SmoothStepToS(&this->actor.world.rot.y, yawTowardsHome, 1, 0x2EE, 0);
@@ -1330,7 +1331,7 @@ void EnMb_SetupSpearDead(EnMb* this) {
     this->timer1 = 30;
     this->state = ENMB_STATE_SPEAR_SPEARPATH_DAMAGED;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_MORIBLIN_DEAD);
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     EnMb_SetupAction(this, EnMb_SpearDead);
 }
 
@@ -1467,7 +1468,7 @@ void EnMb_Update(Actor* thisx, PlayState* play) {
     EnMb_CheckColliding(this, play);
     if (thisx->colChkInfo.damageEffect != ENMB_DMGEFF_FREEZE) {
         this->actionFunc(this, play);
-        Actor_MoveForward(thisx);
+        Actor_MoveXZGravity(thisx);
         Actor_UpdateBgCheckInfo(play, thisx, 40.0f, 40.0f, 70.0f, 0x1D);
         Actor_SetFocus(thisx, thisx->scale.x * 4500.0f);
         Collider_UpdateCylinder(thisx, &this->hitbox);

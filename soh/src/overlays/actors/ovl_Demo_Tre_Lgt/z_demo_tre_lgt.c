@@ -3,7 +3,7 @@
 #include "objects/object_box/object_box.h"
 #include <assert.h>
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void DemoTreLgt_Init(Actor* thisx, PlayState* play);
 void DemoTreLgt_Destroy(Actor* thisx, PlayState* play);

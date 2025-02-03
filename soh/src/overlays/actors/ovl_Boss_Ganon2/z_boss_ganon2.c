@@ -7,11 +7,13 @@
 #include "objects/object_ganon_anime3/object_ganon_anime3.h"
 #include "objects/object_geff/object_geff.h"
 #include "soh/frame_interpolation.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #include <string.h>
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void BossGanon2_Init(Actor* thisx, PlayState* play);
 void BossGanon2_Destroy(Actor* thisx, PlayState* play);
@@ -207,7 +209,7 @@ void func_808FD4D4(BossGanon2* this, PlayState* play, s16 arg2, s16 arg3) {
 
 void func_808FD5C4(BossGanon2* this, PlayState* play) {
     this->actionFunc = func_808FD5F4;
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->actor.world.pos.y = -3000.0f;
 }
 
@@ -924,7 +926,7 @@ void func_808FD5F4(BossGanon2* this, PlayState* play) {
                 this->unk_337 = 1;
                 func_808FFDB0(this, play);
                 this->unk_1A2[1] = 50;
-                this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+                this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
                 sBossGanon2Zelda->unk_3C8 = 7;
             }
             break;
@@ -1095,7 +1097,7 @@ void func_808FFDB0(BossGanon2* this, PlayState* play) {
         }
 
         this->unk_336 = 1;
-        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
         this->unk_228 = 1.0f;
         this->unk_224 = 1.0f;
     } else {
@@ -2045,7 +2047,7 @@ void BossGanon2_Update(Actor* thisx, PlayState* play) {
     if (this->unk_392 != 0) {
         this->unk_392--;
     }
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     this->actor.shape.rot = this->actor.world.rot;
     if (this->unk_335 != 0) {
         Actor_UpdateBgCheckInfo(play, &this->actor, 60.0f, 60.0f, 100.0f, 5);

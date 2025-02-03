@@ -1,9 +1,10 @@
 #include "z_en_du.h"
 #include "objects/object_du/object_du.h"
 #include "scenes/overworld/spot18/spot18_scene.h"
+#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_NO_FREEZE_OCARINA)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_DURING_OCARINA)
 
 void EnDu_Init(Actor* thisx, PlayState* play);
 void EnDu_Destroy(Actor* thisx, PlayState* play);
@@ -614,7 +615,7 @@ void EnDu_Update(Actor* thisx, PlayState* play) {
         this->actor.world.pos.y += this->actor.velocity.y;
         this->actor.world.pos.z += this->actor.velocity.z;
     } else {
-        func_8002D7EC(&this->actor);
+        Actor_UpdatePos(&this->actor);
     }
 
     Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);
