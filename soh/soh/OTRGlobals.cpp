@@ -266,7 +266,6 @@ const char* constCameraStrings[] = {
 };
 
 OTRGlobals::OTRGlobals() {
-
     std::vector<std::string> OTRFiles;
     std::string mqPath = Ship::Context::LocateFileAcrossAppDirs("oot-mq.otr", appShortName);
     if (std::filesystem::exists(mqPath)) { 
