@@ -1153,7 +1153,7 @@ void GenerateItemPool() {
       ctx->PlaceItemInLocation(RC_GF_SOUTH_F2_CARPENTER, RG_RECOVERY_HEART, false, true);
     } else {
       //Only add key ring if 4 Fortress keys necessary
-      if (ctx->GetOption(RSK_KEYRINGS_GERUDO_FORTRESS)) {
+      if (ctx->GetOption(RSK_KEYRINGS_GERUDO_FORTRESS) && ctx->GetOption(RSK_KEYRINGS)) {
         AddItemToMainPool(RG_GERUDO_FORTRESS_KEY_RING);
         //Add junk to make up for missing keys
         for (uint8_t i = 0; i < 3; i++) {
@@ -1164,7 +1164,7 @@ void GenerateItemPool() {
       }
     }
     if (ctx->GetOption(RSK_ITEM_POOL).Is(RO_ITEM_POOL_PLENTIFUL)) {
-      if (ctx->GetOption(RSK_KEYRINGS_GERUDO_FORTRESS) && ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL)) {
+      if (ctx->GetOption(RSK_KEYRINGS_GERUDO_FORTRESS) && ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL) && ctx->GetOption(RSK_KEYRINGS) ) {
         AddItemToPool(PendingJunkPool, RG_GERUDO_FORTRESS_KEY_RING);
       } else {
         AddItemToPool(PendingJunkPool, RG_GERUDO_FORTRESS_SMALL_KEY);

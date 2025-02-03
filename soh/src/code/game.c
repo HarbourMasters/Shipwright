@@ -14,6 +14,10 @@ ViMode sViMode;
 FaultClient sGameFaultClient;
 u16 sLastButtonPressed;
 
+// #region SOH [General] Making gGameState available
+GameState* gGameState;
+// #endregion
+
 // Forward declared, because this in a C++ header.
 int gfx_create_framebuffer(uint32_t width, uint32_t height, uint32_t native_width, uint32_t native_height, uint8_t resize);
 void gfx_texture_cache_clear();

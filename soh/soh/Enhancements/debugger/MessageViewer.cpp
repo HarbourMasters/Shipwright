@@ -1,6 +1,6 @@
 #include "MessageViewer.h"
 
-#include <soh/UIWidgets.hpp>
+#include <soh/SohGui/UIWidgets.hpp>
 #include <textures/message_static/message_static.h>
 
 #include "../custom-message/CustomMessageManager.h"
