@@ -10867,11 +10867,11 @@ void Player_Init(Actor* thisx, PlayState* play2) {
         }
     }
 
-    if (initMode == 1 && IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) &&
+    if (startMode == PLAYER_START_MODE_TIME_TRAVEL && IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) &&
         !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
         Math_Vec3f_Copy(&this->actor.world.pos, &D_808546F4);
         this->yaw = this->actor.shape.rot.y = -0x8000;
-        initMode = 13;
+        startMode = PLAYER_START_MODE_IDLE;
     }
 
     sStartModeFuncs[startMode](play, this);
