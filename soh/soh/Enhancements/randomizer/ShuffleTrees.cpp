@@ -53,7 +53,7 @@ extern "C" void EnWood02_RandomizerDraw(Actor* thisx, PlayState* play) {
 }
 
 uint8_t EnWood02_RandomizerHoldsItem(EnWood02* treeActor, PlayState* play) {
-    uint8_t treeSetting = Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_TREES).GetContextOptionIndex();
+    uint8_t treeSetting = Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_TREES).Get();
 
     // Don't pull randomized item if tree isn't randomized or is already checked
     if (!IS_RANDO ||
