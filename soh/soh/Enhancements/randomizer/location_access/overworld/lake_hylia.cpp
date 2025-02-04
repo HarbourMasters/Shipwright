@@ -71,7 +71,7 @@ void RegionTable_Init_LakeHylia() {
         LOCATION(RC_LH_LAB_CRATE,       logic->CanUse(RG_IRON_BOOTS) && logic->CanBreakCrates()),
     }, {
         //Exits
-        Entrance(RR_LAKE_HYLIA, []{return logic->CanOpenOverworldDoor(RG_HYLIA_LAB_KEY);}),
+        Entrance(RR_LAKE_HYLIA, []{return true;}),
     });
 
     // TODO: should some of these helpers be done via events instead?
@@ -116,7 +116,7 @@ void RegionTable_Init_LakeHylia() {
         LOCATION(RC_FISHING_POLE_HINT, true),
     }, {
         //Exits
-        Entrance(RR_LH_FISHING_ISLAND, []{return logic->CanOpenOverworldDoor(RG_FISHING_HOLE_KEY);}),
+        Entrance(RR_LH_FISHING_ISLAND, []{return true;}),
     });
 
     areaTable[RR_LH_GROTTO] = Region("LH Grotto", "LH Grotto", {}, NO_DAY_NIGHT_CYCLE, {}, {
