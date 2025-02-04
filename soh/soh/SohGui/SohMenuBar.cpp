@@ -327,7 +327,6 @@ void DrawSettingsMenu() {
         UIWidgets::Spacer(0);
 
         if (ImGui::BeginMenu("Graphics")) {
-        #ifndef __APPLE__
             const bool disabled_resolutionSlider = CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".VerticalResolutionToggle", 0) &&
                                                    CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".Enabled", 0);
             if (UIWidgets::EnhancementSliderFloat("Internal Resolution: %.1f %%", "##IMul", CVAR_INTERNAL_RESOLUTION, 0.5f,
@@ -351,15 +350,7 @@ void DrawSettingsMenu() {
                 ImGui::PopStyleColor(1);
                 ImGui::PopStyleVar(3);
             }
-        #else
-            // macOS: Internal resolution is currently disabled in libultraship.
-            ImGui::BeginGroup();
-            ImGui::Text("Internal Resolution: 100.0%%");
-            UIWidgets::Spacer(0);
-            ImGui::Text(" " ICON_FA_INFO_CIRCLE " Not available on this system.");
-            UIWidgets::Spacer(0);
-            ImGui::EndGroup();
-        #endif
+
 
         #ifndef __WIIU__
             if (UIWidgets::PaddedEnhancementSliderInt(
