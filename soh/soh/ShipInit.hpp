@@ -30,7 +30,7 @@ struct ShipInit {
  * @brief Register a function to execute on boot and (optionally) in other situations
  * 
  * @param initFunc The function to execute
- * @param updatePaths Strings to specify additional situations to execute the function.
+ * @param updatePaths Strings to specify additional situations in which to execute the function.
  * 
  * ### Examples:
  * 
