@@ -54,7 +54,7 @@ struct ShipInit {
  * 
  * ### Additional Information:
  * 
- * To get a better sense of when your function will be executed, 
+ * To get a better sense of when your function will be executed 
  * you can look for `ShipInit::Init` calls throughout the codebase 
  */
 struct RegisterShipInitFunc {
