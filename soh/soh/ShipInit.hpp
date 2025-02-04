@@ -26,6 +26,23 @@ struct ShipInit {
     }
 };
 
+/**
+ * @brief Add a function to be conditionally registered/unregistered
+ *
+ * Usage (with condition):
+ * 
+ * `RegisterShipInitFunc foo(initFunc, {updatePathString1, updatePathString2, etc...})`
+ * 
+ * Usage (without condition):
+ * 
+ * `RegisterShipInitFunc foo(initFunc)`
+ * 
+ * @param initFunc The function to run on registration
+ * @param updatePaths Strings to determine when a function should be registered/unregistered.
+ * These can be CVar names (registered/unregistered when the CVar value changes), or
+ * "IS_RANDO" (registered/unregistered OnLoadFile)
+ * 
+ */
 struct RegisterShipInitFunc {
     RegisterShipInitFunc(std::function<void()> initFunc, const std::set<std::string>& updatePaths = {}) {
         auto& shipInitFuncs = ShipInit::GetAll();
