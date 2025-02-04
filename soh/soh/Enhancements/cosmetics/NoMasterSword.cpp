@@ -1,5 +1,8 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
+#include "objects/object_link_boy/object_link_boy.h"
 
 extern "C" {
 #include "functions.h"
@@ -9,6 +12,55 @@ extern "C" {
 extern PlayState* gPlayState;
 extern void Player_StartMode_Idle(PlayState*, Player*);
 extern u8 Randomizer_GetSettingValue(RandomizerSettingKey);
+}
+
+void UpdateNoMSPatch() {
+    // Condition for patching
+    bool shouldPatch = (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_MASTER &&
+                        gSaveContext.equips.buttonItems[0] != ITEM_SWORD_BGS &&
+                        gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KNIFE &&
+                        (gSaveContext.equips.buttonItems[0] != ITEM_FISHING_POLE || 
+                        (!CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER) &&
+                            !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BIGGORON) &&
+                            !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BROKENGIANTKNIFE))));
+
+    if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MASTER_SWORD) && shouldPatch) {
+        // Patching if conditions are met
+        for (int i = 43; i <= 46; i++) {
+            std::string patchName = "adultNoMS." + std::to_string(1) + "." + std::to_string(i);
+            ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathFarDL, patchName.c_str(), i, gsDPNoOp());
+        }
+        for (int i = 62; i <= 150; i++) {
+            std::string patchName = "adultNoMS." + std::to_string(2) + "." + std::to_string(i);
+            ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, patchName.c_str(), i, gsDPNoOp());
+        }
+        for (int i = 61; i <= 118; i++) {
+            std::string patchName = "adultNoMS." + std::to_string(3) + "." + std::to_string(i);
+            ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathFarDL, patchName.c_str(), i, gsDPNoOp());
+        }
+        ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "adultNoMSHylianShield1", 75, gsSPEndDisplayList());
+        ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathFarDL, "adultNoMSHylianShield2", 71, gsSPEndDisplayList());
+        ResourceMgr_PatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "adultNoMasterSword1", 2, gsSPEndDisplayList());
+        ResourceMgr_PatchGfxByName(gLinkAdultMasterSwordAndSheathFarDL, "adultNoMasterSword2", 2, gsSPEndDisplayList());
+    } else {
+        // Unpatching if conditions are not met
+        for (int i = 43; i <= 46; i++) {
+            std::string patchName = "adultNoMS." + std::to_string(1) + "." + std::to_string(i);
+            ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathFarDL, patchName.c_str());
+        }
+        for (int i = 62; i <= 150; i++) {
+            std::string patchName = "adultNoMS." + std::to_string(2) + "." + std::to_string(i);
+            ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, patchName.c_str());
+        }
+        for (int i = 61; i <= 118; i++) {
+            std::string patchName = "adultNoMS." + std::to_string(3) + "." + std::to_string(i);
+            ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathFarDL, patchName.c_str());
+        }
+        ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "adultNoMSHylianShield1");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathFarDL, "adultNoMSHylianShield2");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "adultNoMasterSword1");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultMasterSwordAndSheathFarDL, "adultNoMasterSword2");
+    }
 }
 
 // copied from z_player (right above Player_StartMode_TimeTravel)
@@ -49,6 +101,16 @@ void RegisterNoMasterSword() {
             Player_StartMode_Idle(gPlayState, player);
         }
     });
+
+    COND_HOOK(OnPlayerUpdate, true, []{
+        static uint16_t lastItemOnB = gSaveContext.equips.buttonItems[0];
+        if (lastItemOnB != gSaveContext.equips.buttonItems[0]) {
+            UpdateNoMSPatch();
+            lastItemOnB = gSaveContext.equips.buttonItems[0];
+        }
+    });
+
+    COND_HOOK(OnSceneSpawnActors, true, UpdateNoMSPatch);
 }
 
 static RegisterShipInitFunc initFuncAlways(RegisterNoMasterSword);
