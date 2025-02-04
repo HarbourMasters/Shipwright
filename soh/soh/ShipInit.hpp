@@ -27,21 +27,35 @@ struct ShipInit {
 };
 
 /**
- * @brief Add a function to be conditionally registered/unregistered
- *
- * Usage (with condition):
+ * @brief Register a function to execute on boot and (optionally) in other situations
  * 
- * `RegisterShipInitFunc foo(initFunc, {updatePathString1, updatePathString2, etc...})`
+ * @param initFunc The function to execute
+ * @param updatePaths Strings to specify additional situations to execute the function.
  * 
- * Usage (without condition):
+ * ### Examples:
  * 
- * `RegisterShipInitFunc foo(initFunc)`
+ * #### Run function `bar` on boot
  * 
- * @param initFunc The function to run on registration
- * @param updatePaths Strings to determine when a function should be registered/unregistered.
- * These can be CVar names (registered/unregistered when the CVar value changes), or
- * "IS_RANDO" (registered/unregistered OnLoadFile)
+ * ```cpp
+ * static RegisterShipInitFunc foo(bar);
+ * ```
  * 
+ * #### Run function `funcBar` on boot and when the CVar `cvarBar` might have changed
+ * 
+ * ```cpp
+ * static RegisterShipInitFunc foo(funcBar, { "cvarBar" });
+ * ```
+ * 
+ * #### Run function `randoBar` on boot and when `IS_RANDO` might have changed
+ * 
+ * ```cpp
+ * static RegisterShipInitFunc foo(randoBar, { "IS_RANDO" });
+ * ```
+ * 
+ * ### Additional Information:
+ * 
+ * To get a better sense of when your function is being executed, 
+ * you can look for `ShipInit::Init` calls throughout the codebase 
  */
 struct RegisterShipInitFunc {
     RegisterShipInitFunc(std::function<void()> initFunc, const std::set<std::string>& updatePaths = {}) {
