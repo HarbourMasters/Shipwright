@@ -104,7 +104,7 @@ void RegionTable_Init_Graveyard() {
         LOCATION(RC_DAMPE_HINT, logic->IsAdult),
     }, {
         //Exits
-        Entrance(RR_THE_GRAVEYARD, []{return logic->CanOpenOverworldDoor(RG_DAMPES_HUT_KEY);}),
+        Entrance(RR_THE_GRAVEYARD, []{return true;}),
     });
 
     areaTable[RR_GRAVEYARD_WARP_PAD_REGION] = Region("Graveyard Warp Pad Region", "Graveyard", {RA_THE_GRAVEYARD}, NO_DAY_NIGHT_CYCLE, {

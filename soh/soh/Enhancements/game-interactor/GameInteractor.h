@@ -533,9 +533,16 @@ typedef enum {
     // Opt: *EnGs
     VB_SPAWN_GOSSIP_STONE_FAIRY,
 
+    /*** Equippable tunics and boots ***/
+    VB_CHANGE_HELD_ITEM_AND_USE_ITEM,
+    VB_ITEM_ACTION_BE_NONE,
+    VB_EXECUTE_PLAYER_ACTION_FUNC,
+
+    /*** Master Sword Shuffle ***/
+    VB_SHOW_MASTER_SWORD_TO_PLACE_IN_PEDESTAL,
+
     /*** no clue where this should go ***/
     VB_EXECUTE_PLAYER_STARTMODE_FUNC,
-    VB_SHOW_MASTER_SWORD_TO_PLACE_IN_PEDESTAL,
 } GIVanillaBehavior;
 
 #ifdef __cplusplus
