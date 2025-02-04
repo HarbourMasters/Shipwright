@@ -65,9 +65,9 @@ SetMeshFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData, s
             setMesh->meshHeader.polygon1.format = reader->ReadUByte();
 
             // These strings are the same that are read and used below. Not sure why they get exported twice from the exporter.
-            // We ignore these in favor of using the ones below.
-            std::string imgOpa = reader->ReadString();
-            std::string imgXlu = reader->ReadString();
+            // We read and ignore these to advance the reader.
+            reader->ReadString();
+            reader->ReadString();
 
             int32_t bgImageCount = reader->ReadUInt32();
             setMesh->images.reserve(bgImageCount);
@@ -241,11 +241,6 @@ std::shared_ptr<Ship::IResource> SetMeshFactoryXML::ReadResource(std::shared_ptr
             pType.xlu = nullptr;
 
             setMesh->meshHeader.polygon1.format = child->IntAttribute("Format");
-
-            // These strings are the same that are read and used below. Not sure why they get exported twice from the exporter.
-            // We ignore these in favor of using the ones below.
-            std::string imgOpa = child->Attribute("ImgOpa");
-            std::string imgXlu = child->Attribute("ImgXlu");
 
             int32_t bgImageCount = child->IntAttribute("BgImageCount");
             setMesh->images.reserve(bgImageCount);
