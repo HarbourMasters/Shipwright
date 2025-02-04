@@ -541,7 +541,7 @@ typedef enum {
     /*** Master Sword Shuffle ***/
     VB_SHOW_MASTER_SWORD_TO_PLACE_IN_PEDESTAL,
 
-    /*** no clue where this should go ***/
+    /*** Uncategorized ***/
     VB_EXECUTE_PLAYER_STARTMODE_FUNC,
 } GIVanillaBehavior;
 
