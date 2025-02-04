@@ -532,6 +532,9 @@ typedef enum {
     VB_SPAWN_SONG_FAIRY,
     // Opt: *EnGs
     VB_SPAWN_GOSSIP_STONE_FAIRY,
+
+    /*** no clue where this should go ***/
+    VB_EXECUTE_PLAYER_STARTMODE_FUNC,
 } GIVanillaBehavior;
 
 #ifdef __cplusplus

@@ -10867,14 +10867,9 @@ void Player_Init(Actor* thisx, PlayState* play2) {
         }
     }
 
-    if (startMode == PLAYER_START_MODE_TIME_TRAVEL && IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) &&
-        !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
-        Math_Vec3f_Copy(&this->actor.world.pos, &D_808546F4);
-        this->yaw = this->actor.shape.rot.y = -0x8000;
-        startMode = PLAYER_START_MODE_IDLE;
+    if (GameInteractor_Should(VB_EXECUTE_PLAYER_STARTMODE_FUNC, true, startMode)) {
+        sStartModeFuncs[startMode](play, this);
     }
-
-    sStartModeFuncs[startMode](play, this);
 
     if (startMode != PLAYER_START_MODE_NOTHING) {
         if ((gSaveContext.gameMode == 0) || (gSaveContext.gameMode == 3)) {
