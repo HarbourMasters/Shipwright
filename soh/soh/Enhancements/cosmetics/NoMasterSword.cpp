@@ -15,6 +15,22 @@ extern u8 Randomizer_GetSettingValue(RandomizerSettingKey);
 static Vec3f D_808546F4 = { -1.0f, 69.0f, 20.0f };
 
 void RegisterNoMasterSword() {
+    // don't show link taking out master sword to put in pedestal when we don't have a master sword
+    REGISTER_VB_SHOULD(VB_SHOW_MASTER_SWORD_TO_PLACE_IN_PEDESTAL, {
+        // if the vanilla condition is false respect it
+        if (!*should) {
+            return;
+        }
+
+
+        if (IS_RANDO && 
+            Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) &&
+            !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
+            
+            *should = false;
+        }
+    });
+    
     // skip post pedestal animation when we don't have a master sword
     REGISTER_VB_SHOULD(VB_EXECUTE_PLAYER_STARTMODE_FUNC, {
         int32_t startMode = va_arg(args, int32_t);

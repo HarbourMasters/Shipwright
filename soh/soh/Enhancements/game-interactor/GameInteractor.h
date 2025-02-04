@@ -535,6 +535,7 @@ typedef enum {
 
     /*** no clue where this should go ***/
     VB_EXECUTE_PLAYER_STARTMODE_FUNC,
+    VB_SHOW_MASTER_SWORD_TO_PLACE_IN_PEDESTAL,
 } GIVanillaBehavior;
 
 #ifdef __cplusplus

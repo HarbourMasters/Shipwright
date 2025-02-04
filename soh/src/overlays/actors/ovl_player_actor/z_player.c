@@ -7385,8 +7385,7 @@ s32 Player_ActionHandler_2(Player* this, PlayState* play) {
             }
 
             if ((this->heldActor == NULL) || Player_HoldsHookshot(this)) {
-                if ((interactedActor->id == ACTOR_BG_TOKI_SWD) && LINK_IS_ADULT && !(IS_RANDO &&
-                    Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER))) {
+                if (GameInteractor_Should(VB_SHOW_MASTER_SWORD_TO_PLACE_IN_PEDESTAL, (interactedActor->id == ACTOR_BG_TOKI_SWD) && LINK_IS_ADULT)) {
                     s32 sp24 = this->itemAction;
 
                     this->itemAction = PLAYER_IA_NONE;
