@@ -272,9 +272,12 @@ install(DIRECTORY ${CMAKE_BINARY_DIR}/assets
         PERMISSIONS ${PROGRAM_PERMISSIONS_EXECUTE}
         )
 
+# Rename the installed soh binary to drop the macos suffix
+INSTALL(CODE "FILE(RENAME \${CMAKE_INSTALL_PREFIX}/../MacOS/soh-macos \${CMAKE_INSTALL_PREFIX}/../MacOS/soh)")
+
 install(CODE "
     include(BundleUtilities)
-    fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/soh-macos\" \"\" \"${dirs}\")
+    fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/../MacOS/soh\" \"\" \"${dirs}\")
     ")
 
 endif()

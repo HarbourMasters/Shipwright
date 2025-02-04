@@ -1969,6 +1969,7 @@ void CosmeticsEditorWindow::DrawElement() {
                 )
             ) {
                 CVarSetInteger(cosmeticOption.rainbowCvar, 1);
+                CVarSetInteger(cosmeticOption.changedCvar, 1);
             }
         }
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();

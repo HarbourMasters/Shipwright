@@ -167,7 +167,7 @@ void Context::GenerateLocationPool() {
         AddLocations(StaticData::GetOverworldPotLocations());
     }
 
-    if (mSettings->GetOption(RSK_SHUFFLE_TREES).Is(RO_SHUFFLE_TREES_ON)) {
+    if (mOptions[RSK_SHUFFLE_TREES].Is(RO_SHUFFLE_TREES_ON)) {
         AddLocations(StaticData::GetTreeLocations());
     }
 
