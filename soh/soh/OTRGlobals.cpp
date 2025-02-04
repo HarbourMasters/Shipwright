@@ -1169,6 +1169,10 @@ extern "C" void InitOTR() {
     VanillaItemTable_Init();
     DebugConsole_Init();
 
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
+        ShipInit::Init("ON_SAVEFILE_LOAD"); 
+    });
+
     InitMods();
     ActorDB::AddBuiltInCustomActors();
     // #region SOH [Randomizer] TODO: Remove these and refactor spoiler file handling for randomizer

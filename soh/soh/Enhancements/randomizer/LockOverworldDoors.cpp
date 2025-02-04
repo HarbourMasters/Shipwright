@@ -151,4 +151,4 @@ void RegisterLockOverworldDoors() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterLockOverworldDoors, { "IS_RANDO" });
+static RegisterShipInitFunc initFunc(RegisterLockOverworldDoors, { "ON_SAVEFILE_LOAD" });
