@@ -284,8 +284,6 @@ static void WriteAllLocations() {
         }
 
         // We're dealing with a complex item, build out the json object for it
-        auto locName = Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName();
-        LUSLOG_DEBUG("loc: %s, itemName: %s", locName, placedItemName);
         jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["item"] = placedItemName;
 
         if (location->HasCustomPrice()) {

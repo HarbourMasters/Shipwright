@@ -15,32 +15,29 @@
 
 namespace Rando {
 enum ImGuiMenuFlags {
-    IMFLAG_NONE = 0,
-    IMFLAG_SEPARATOR_BOTTOM = 1 << 0, /** Adds a padded separator below the widget. */
-    IMFLAG_SEPARATOR_TOP = 1 << 1,    /** Adds a padded separator above the widget. */
-    IMFLAG_INDENT = 1 << 2,           /** Indents this widget and all proceeding widgets. */
-    IMFLAG_UNINDENT = 1 << 3,         /** Unindents this widget and all proceeding widgets. */
+  IMFLAG_NONE = 0,
+  IMFLAG_SEPARATOR_BOTTOM = 1 << 0, /** Adds a padded separator below the widget. */
+  IMFLAG_SEPARATOR_TOP = 1 << 1, /** Adds a padded separator above the widget. */
+  IMFLAG_INDENT = 1 << 2, /** Indents this widget and all proceeding widgets. */
+  IMFLAG_UNINDENT = 1 << 3, /** Unindents this widget and all proceeding widgets. */
 };
 
 /**
  * @brief Affects how options are handled when writing a spoiler/patch file
  */
 enum class OptionCategory {
-    Setting, /** An option that typically affects the logic/item pool/etc. of the seed. Typically gets written out to
-                the spoiler file. */
-    Toggle,  /** An option that typically affects other options rather than affecting the seed directly. i.e. A toggle
-                for randomizing the values of other options. */
+    Setting, /** An option that typically affects the logic/item pool/etc. of the seed. Typically gets written out to the spoiler file. */
+    Toggle, /** An option that typically affects other options rather than affecting the seed directly. i.e. A toggle for randomizing the values of other options. */
 };
 
 /**
  * @brief Controls how this option is rendered in the menu.
  */
 enum class WidgetType {
-    Checkbox,         /** Default for Bools, not compatible if options.size() > 2. */
-    TristateCheckbox, /** Compatible with U8s, not compatible if options.size() != 3. */
-    Combobox,         /** Default for U8s, works with U8s and Bools. */
-    Slider, /** Compatible with U8s. If constructed with NumOpts, consider using this. Technically can be used for Bool
-               or non-NumOpts options but it would be a bit weird semantically. */
+  Checkbox, /** Default for Bools, not compatible if options.size() > 2. */
+  TristateCheckbox, /** Compatible with U8s, not compatible if options.size() != 3. */
+  Combobox, /** Default for U8s, works with U8s and Bools. */
+  Slider, /** Compatible with U8s. If constructed with NumOpts, consider using this. Technically can be used for Bool or non-NumOpts options but it would be a bit weird semantically. */
 };
 
 class OptionValue {
@@ -50,15 +47,15 @@ class OptionValue {
 
     /**
      * @brief Returns the value of the OptionValue's mVal
-     *
-     * @return uint8_t
+     * 
+     * @return uint8_t 
      */
     uint8_t Get();
 
     /**
      * @brief Set the OptionValue's mVal to the provided val.
-     *
-     * @param val
+     * 
+     * @param val 
      */
     void Set(uint8_t val);
 
@@ -149,8 +146,8 @@ class Option {
      * @return Option
      */
     static Option Bool(RandomizerSettingKey key_, std::string name_, std::string cvarName_,
-                       std::string description_ = "", int imFlags_ = IMFLAG_SEPARATOR_BOTTOM,
-                       WidgetType widgetType_ = WidgetType::Checkbox, bool defaultOption_ = false);
+                      std::string description_ = "", int imFlags_ = IMFLAG_SEPARATOR_BOTTOM,
+                      WidgetType widgetType_ = WidgetType::Checkbox, bool defaultOption_ = false);
 
     /**
      * @brief Constructs a U8 Option.
@@ -195,8 +192,8 @@ class Option {
 
     /**
      * @brief Get the Key Option
-     *
-     * @return const RandomizerSettingKey
+     * 
+     * @return const RandomizerSettingKey 
      */
     RandomizerSettingKey GetKey() const;
 
@@ -210,9 +207,9 @@ class Option {
 
     /**
      * @brief Get the text of the Option value of the selected index.
-     *
-     * @param index
-     * @return const std::string&
+     * 
+     * @param index 
+     * @return const std::string& 
      */
     const std::string& GetOptionText(size_t index) const;
 
@@ -233,13 +230,13 @@ class Option {
     /**
      * @brief Sets the CVar corresponding to the property `cvarName` equal to the value
      * of the property `selectedValue`.
-     */
+    */
     void SaveCVar() const;
 
     /**
      * @brief Sets the value of property `selectedValue` equal to the CVar corresponding
      * to the property `cvarName`.
-     */
+    */
     void SetFromCVar();
 
     /**
@@ -301,7 +298,7 @@ class Option {
      * "Enable" in this context refers to the ability to change the option in the
      * settings menu. The actual value of the option is not decided by whether or not
      * the option is "Enabled".
-     */
+    */
     void Enable();
 
     /**
@@ -334,7 +331,7 @@ class Option {
     uint8_t GetValueFromText(std::string text);
     void SetContextIndexFromText(std::string text);
 
-  protected:
+protected:
     Option(size_t key_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
            std::string cvarName_, std::string description_, WidgetType widgetType_, uint8_t defaultOption_,
            bool defaultHidden_, int imFlags_);
@@ -366,14 +363,14 @@ class Option {
 };
 
 class LocationOption : public Option {
-  public:
-    LocationOption() = default;
-    LocationOption(RandomizerCheck key_, const std::string& name_);
-    RandomizerCheck GetKey() const;
+public:
+  LocationOption() = default;
+  LocationOption(RandomizerCheck key_, const std::string& name_);
+  RandomizerCheck GetKey() const;
 };
 
 class TrickOption : public Option {
-  public:
+public:
     TrickOption() = default;
     /**
      * @brief A convenience function for constructing the Option for a trick.
@@ -386,8 +383,7 @@ class TrickOption : public Option {
      * @param description_ A brief description of the trick.
      * @return Option
      */
-    static TrickOption LogicTrick(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_,
-                                  std::set<Tricks::Tag> tags_, const std::string& name_, std::string description_);
+    static TrickOption LogicTrick(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_, std::set<Tricks::Tag> tags_, const std::string& name_, std::string description_);
 
     RandomizerTrick GetKey() const;
 
@@ -415,9 +411,8 @@ class TrickOption : public Option {
 
     const std::set<Tricks::Tag>& GetTags() const;
 
-  private:
-    TrickOption(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_, std::set<Tricks::Tag> tags_,
-                const std::string& name_, std::string description_);
+private:
+    TrickOption(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_, std::set<Tricks::Tag> tags_, const std::string& name_, std::string description_);
     RandomizerCheckQuest mQuest;
     RandomizerArea mArea;
     std::set<Tricks::Tag> mTags;
@@ -429,11 +424,11 @@ enum class OptionGroupType {
 };
 
 enum class WidgetContainerType {
-    BASIC,   /** Barebones container, just lists the options within. */
-    SECTION, /** Similar to Barebones, but has a header with the section name. */
-    COLUMN,  /** Signifies the container should be the start of new column within a table. */
-    TABLE,   /** Signifies the container is a table (should contain other subgroups with type column)*/
-    TABBED,  /** Signifies this container's contents should be contained within a tabbed interface. */
+  BASIC, /** Barebones container, just lists the options within. */
+  SECTION, /** Similar to Barebones, but has a header with the section name. */
+  COLUMN, /** Signifies the container should be the start of new column within a table. */
+  TABLE, /** Signifies the container is a table (should contain other subgroups with type column)*/
+  TABBED, /** Signifies this container's contents should be contained within a tabbed interface. */
 };
 
 class OptionGroup {
@@ -463,8 +458,7 @@ class OptionGroup {
      * @param containerType Specifies the type of container this widget should render as in ImGui.
      * @param description A description that can appear in a tooltip in ImGui.
      */
-    OptionGroup(std::string name, std::vector<OptionGroup*> subGroups,
-                OptionGroupType groupType = OptionGroupType::DEFAULT,
+    OptionGroup(std::string name, std::vector<OptionGroup*> subGroups, OptionGroupType groupType = OptionGroupType::DEFAULT,
                 WidgetContainerType containerType = WidgetContainerType::BASIC, std::string description = "");
 
     /**
@@ -477,8 +471,7 @@ class OptionGroup {
      * @param description A description that can appear in a tooltip in ImGui.
      * @return OptionGroup
      */
-    static OptionGroup SubGroup(std::string name, std::vector<Option*> options,
-                                WidgetContainerType containerType = WidgetContainerType::BASIC,
+    static OptionGroup SubGroup(std::string name, std::vector<Option*> options, WidgetContainerType containerType = WidgetContainerType::BASIC,
                                 std::string description = "");
 
     /**
@@ -491,8 +484,7 @@ class OptionGroup {
      * @param description A description that can appear in a tooltip in ImGui.
      * @return OptionGroup
      */
-    static OptionGroup SubGroup(std::string name, std::vector<OptionGroup*> subGroups,
-                                WidgetContainerType containerType = WidgetContainerType::BASIC,
+    static OptionGroup SubGroup(std::string name, std::vector<OptionGroup*> subGroups, WidgetContainerType containerType = WidgetContainerType::BASIC,
                                 std::string description = "");
 
     /**

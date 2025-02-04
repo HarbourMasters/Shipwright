@@ -901,6 +901,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SCRUBS_PRICES_AFFORDABLE],
         &mOptions[RSK_SHUFFLE_BEEHIVES],
         &mOptions[RSK_SHUFFLE_COWS],
+        &mOptions[RSK_SHUFFLE_POTS],
         &mOptions[RSK_SHUFFLE_TREES],
         &mOptions[RSK_SHUFFLE_KOKIRI_SWORD],
         &mOptions[RSK_SHUFFLE_OCARINA],
