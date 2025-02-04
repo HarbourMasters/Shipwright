@@ -1,5 +1,5 @@
 #include "TimeSplits.h"
-#include "soh/UIWidgets.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include "soh/Enhancements/gameplaystats.h"
 #include "soh/SaveManager.h"
 #include "soh/util.h"

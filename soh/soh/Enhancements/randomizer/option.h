@@ -1,6 +1,6 @@
 #pragma once
 
-#include "soh/UIWidgets.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 
 #include <cstdint>
 #include <set>
@@ -195,7 +195,7 @@ class Option {
      * 
      * @return const RandomizerSettingKey 
      */
-    const RandomizerSettingKey GetKey() const;
+    RandomizerSettingKey GetKey() const;
 
     /**
      * @brief Get the name of the Option.
@@ -366,7 +366,7 @@ class LocationOption : public Option {
 public:
   LocationOption() = default;
   LocationOption(RandomizerCheck key_, const std::string& name_);
-  const RandomizerCheck GetKey() const;
+  RandomizerCheck GetKey() const;
 };
 
 class TrickOption : public Option {
@@ -385,7 +385,7 @@ public:
      */
     static TrickOption LogicTrick(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_, std::set<Tricks::Tag> tags_, const std::string& name_, std::string description_);
 
-    const RandomizerTrick GetKey() const;
+    RandomizerTrick GetKey() const;
 
     /**
      * @brief Retrieve the quest type this trick is relevant for.

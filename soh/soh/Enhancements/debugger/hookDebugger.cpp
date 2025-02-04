@@ -1,6 +1,6 @@
 #include "hookDebugger.h"
-#include "../game-interactor/GameInteractor.h"
-#include "../../UIWidgets.hpp"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/SohGui/UIWidgets.hpp"
 #include <string>
 #include <version>
 

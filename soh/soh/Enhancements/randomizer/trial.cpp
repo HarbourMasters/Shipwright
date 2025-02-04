@@ -71,13 +71,13 @@ size_t Trials::GetTrialListSize() const {
 
 void Trials::ParseJson(nlohmann::json spoilerFileJson) {
     nlohmann::json trialsJson = spoilerFileJson["requiredTrials"];
-    for (auto it = trialsJson.begin(); it != trialsJson.end(); ++it) {
-        std::string trialName = it.value().get<std::string>();
-        for (auto& trial : mTrials) {
-            if (trial.GetName() == trialName) {
+
+    for (auto& trial : mTrials) {
+        trial.SetAsSkipped();
+
+        for (auto nameInLang : trial.GetName().GetAllMessages()) {
+            if (std::find(trialsJson.begin(), trialsJson.end(), nameInLang) != trialsJson.end()) {
                 trial.SetAsRequired();
-            } else {
-                trial.SetAsSkipped();
             }
         }
     }

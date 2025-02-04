@@ -2,7 +2,7 @@
 #include "libultraship/bridge.h"
 #include <Context.h>
 #include <imgui.h>
-#include "soh/UIWidgets.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 
 namespace Rando {
 Option Option::Bool(RandomizerSettingKey key_, std::string name_, std::vector<std::string> options_,
@@ -48,7 +48,7 @@ size_t Option::GetOptionCount() const {
     return options.size();
 }
 
-const RandomizerSettingKey Option::GetKey() const {
+RandomizerSettingKey Option::GetKey() const {
     return static_cast<RandomizerSettingKey>(key);
 }
 
@@ -355,7 +355,7 @@ LocationOption::LocationOption(RandomizerCheck key_, const std::string& name_) :
     Option(key_, name_, {"Included", "Excluded"}, OptionCategory::Setting, "", "", WidgetType::Checkbox,
            RO_LOCATION_INCLUDE, false, IMFLAG_NONE) {}
 
-const RandomizerCheck LocationOption::GetKey() const {
+RandomizerCheck LocationOption::GetKey() const {
     return static_cast<RandomizerCheck>(key);
 }
 
@@ -368,7 +368,7 @@ TrickOption TrickOption::LogicTrick(RandomizerTrick key_, RandomizerCheckQuest q
     return {key_, quest_, area_, std::move(tags_), name_, std::move(description_)};
 }
 
-const RandomizerTrick TrickOption::GetKey() const {
+RandomizerTrick TrickOption::GetKey() const {
     return static_cast<RandomizerTrick>(key);
 }
 

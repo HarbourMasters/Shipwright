@@ -218,6 +218,9 @@ void Context::ItemReset() {
     for (const RandomizerCheck il : StaticData::dungeonRewardLocations) {
         GetItemLocation(il)->ResetVariables();
     }
+
+    GetItemLocation(RC_GIFT_FROM_RAURU)->ResetVariables();
+    GetItemLocation(RC_LINKS_POCKET)->ResetVariables();
 }
 
 void Context::LocationReset() {
@@ -440,14 +443,6 @@ Sprite* Context::GetSeedTexture(const uint8_t index) {
 
 OptionValue& Context::GetOption(const RandomizerSettingKey key) {
     return mOptions[key];
-}
-
-OptionValue& Context::GetOption(const RandomizerTrick key) {
-    return mTrickOptions[key];
-}
-
-OptionValue& Context::GetOption(const RandomizerCheck key) {
-    return itemLocationTable[key].GetExcludedOption();
 }
 
 OptionValue& Context::GetTrickOption(const RandomizerTrick key) {

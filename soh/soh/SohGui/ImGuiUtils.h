@@ -7,7 +7,7 @@
 #include <array>
 #include <map>
 #include <string>
-#include "Enhancements/randomizer/randomizerTypes.h"
+#include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "variables.h" //only for gItemIcons
 
 extern "C" {
