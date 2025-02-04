@@ -74,7 +74,6 @@ void RegisterNoMasterSword() {
             return;
         }
 
-
         if (IS_RANDO && 
             Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) &&
             !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
