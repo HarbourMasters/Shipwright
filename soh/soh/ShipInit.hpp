@@ -40,16 +40,16 @@ struct ShipInit {
  * static RegisterShipInitFunc foo(bar);
  * ```
  * 
- * #### Run function `funcBar` on boot and when the CVar `cvarBar` might have changed
+ * #### Run function `bar` on boot and when the CVar `baz` might have changed
  * 
  * ```cpp
- * static RegisterShipInitFunc foo(funcBar, { "cvarBar" });
+ * static RegisterShipInitFunc foo(bar, { "baz" });
  * ```
  * 
- * #### Run function `randoBar` on boot and when `IS_RANDO` might have changed
+ * #### Run function `bar` on boot and when `IS_RANDO` might have changed
  * 
  * ```cpp
- * static RegisterShipInitFunc foo(randoBar, { "IS_RANDO" });
+ * static RegisterShipInitFunc foo(bar, { "IS_RANDO" });
  * ```
  * 
  * ### Additional Information:
