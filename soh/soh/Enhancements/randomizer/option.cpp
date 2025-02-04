@@ -2,7 +2,7 @@
 #include "libultraship/bridge.h"
 #include <Context.h>
 #include <imgui.h>
-#include "soh/UIWidgets.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 
 namespace Rando {
 Option Option::Bool(RandomizerSettingKey key_, std::string name_, std::vector<std::string> options_,
