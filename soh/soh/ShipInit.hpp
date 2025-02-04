@@ -34,19 +34,19 @@ struct ShipInit {
  * 
  * ### Examples:
  * 
- * #### Run function `bar` on boot
+ * #### Execute function `bar` on boot
  * 
  * ```cpp
  * static RegisterShipInitFunc foo(bar);
  * ```
  * 
- * #### Run function `bar` on boot and when the CVar `baz` might have changed
+ * #### Execute function `bar` on boot and when the CVar `baz` might have changed
  * 
  * ```cpp
  * static RegisterShipInitFunc foo(bar, { "baz" });
  * ```
  * 
- * #### Run function `bar` on boot and when `IS_RANDO` might have changed
+ * #### Execute function `bar` on boot and when `IS_RANDO` might have changed
  * 
  * ```cpp
  * static RegisterShipInitFunc foo(bar, { "IS_RANDO" });
