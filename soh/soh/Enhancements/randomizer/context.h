@@ -91,8 +91,6 @@ class Context {
     TrialInfo* GetTrial(TrialKey key) const;
     static Sprite* GetSeedTexture(uint8_t index);
     OptionValue& GetOption(RandomizerSettingKey key);
-    OptionValue& GetOption(RandomizerTrick key);
-    OptionValue& GetOption(RandomizerCheck key);
     OptionValue& GetTrickOption(RandomizerTrick key);
     OptionValue& GetLocationOption(RandomizerCheck key);
 

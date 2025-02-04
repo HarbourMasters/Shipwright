@@ -6,23 +6,18 @@
 #include "UIWidgets2.hpp"
 
 typedef enum {
-    DISABLE_FOR_GYRO_OFF,
-    DISABLE_FOR_GYRO_ON,
-    DISABLE_FOR_RIGHT_STICK_OFF,
-    DISABLE_FOR_AUTO_SAVE_OFF,
-    DISABLE_FOR_NULL_PLAY_STATE,
-    DISABLE_FOR_DEBUG_MODE_OFF,
     DISABLE_FOR_NO_VSYNC,
     DISABLE_FOR_NO_WINDOWED_FULLSCREEN,
     DISABLE_FOR_NO_MULTI_VIEWPORT,
     DISABLE_FOR_NOT_DIRECTX,
     DISABLE_FOR_DIRECTX,
     DISABLE_FOR_MATCH_REFRESH_RATE_ON,
-    DISABLE_FOR_FRAME_ADVANCE_OFF,
-    DISABLE_FOR_INTRO_SKIP_OFF,
     DISABLE_FOR_ADVANCED_RESOLUTION_ON,
     DISABLE_FOR_VERTICAL_RES_TOGGLE_ON,
     DISABLE_FOR_LOW_RES_MODE_ON,
+    DISABLE_FOR_NULL_PLAY_STATE,
+    DISABLE_FOR_DEBUG_MODE_OFF,
+    DISABLE_FOR_FRAME_ADVANCE_OFF,
 } DisableOption;
 
 struct WidgetInfo;
@@ -84,7 +79,7 @@ using OptionsVariant =
 // `type` is the WidgetType for the widget, which is what determines how the information is used in the draw func
 // `options` is a variant that holds the UIWidgetsOptions struct for the widget type
 // blank objects need to be initialized with specific typing matching the expected Options struct for the widget
-// `callback` is a lambda used for running code on widget change. may need `BenGui::GetMenu()` for specific menu actions
+// `callback` is a lambda used for running code on widget change. may need `SohGui::GetMenu()` for specific menu actions
 // `preFunc` is a lambda called before drawing code starts. It can be used to determine a widget's status,
 // whether disabled or hidden, as well as update pointers for non-CVar widget types.
 // `postFunc` is a lambda called after all drawing code is finished, for reacting to states other than
