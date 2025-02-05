@@ -19,7 +19,7 @@ void RegionTable_Init_Kakariko() {
         LOCATION(RC_KAK_GS_HOUSE_UNDER_CONSTRUCTION, logic->IsChild && logic->CanGetNightTimeGS()),
         LOCATION(RC_KAK_GS_SKULLTULA_HOUSE,          logic->IsChild && logic->CanGetNightTimeGS()),
         LOCATION(RC_KAK_GS_GUARDS_HOUSE,             logic->IsChild && logic->CanGetNightTimeGS()),
-        LOCATION(RC_KAK_GS_TREE,                     logic->IsChild && logic->CanGetNightTimeGS()),
+        LOCATION(RC_KAK_GS_TREE,                     logic->IsChild && logic->CanGetNightTimeGS() && logic->CanBonkTrees()),
         LOCATION(RC_KAK_GS_WATCHTOWER,               logic->IsChild && (logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_LONGSHOT) || (ctx->GetTrickOption(RT_KAK_TOWER_GS) && logic->CanJumpslashExceptHammer())) && logic->CanGetNightTimeGS()),
         LOCATION(RC_KAK_NEAR_POTION_SHOP_POT_1,      logic->IsChild && logic->CanBreakPots()),
         LOCATION(RC_KAK_NEAR_POTION_SHOP_POT_2,      logic->IsChild && logic->CanBreakPots()),

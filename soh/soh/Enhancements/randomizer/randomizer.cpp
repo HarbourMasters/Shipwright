@@ -1609,7 +1609,6 @@ BeehiveIdentity Randomizer::IdentifyBeehive(s32 sceneNum, s16 xPosition, s32 res
 }
 
 Rando::Location* Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams = 0x00) {
-    //LUSLOG_DEBUG("GetCheckObjectFromActor: actorId = %d, sceneNum = %d, actorParams = %x", actorId, sceneNum, actorParams);
     auto fs = OTRGlobals::Instance->gRandoContext->GetFishsanity();
     RandomizerCheck specialRc = RC_UNKNOWN_CHECK;
     // TODO: Migrate these special cases into table, or at least document why they are special
@@ -1862,8 +1861,6 @@ TreeIdentity Randomizer::IdentifyTree(s32 sceneNum, s32 posX, s32 posZ) {
     s32 actorParams = TWO_ACTOR_PARAMS(posX, posZ);
 
     Rando::Location* location = GetCheckObjectFromActor(ACTOR_EN_WOOD02, treeSceneNum, actorParams);
-
-    LUSLOG_DEBUG("Rando location: (%d) X: %d Y: %d", location->GetRandomizerCheck(), posX, posZ);
 
     if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
         LUSLOG_DEBUG("Tree fitting criteria at X: %d Z: %d", posX, posZ);

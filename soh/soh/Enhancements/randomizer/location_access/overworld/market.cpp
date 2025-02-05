@@ -12,8 +12,7 @@ void RegionTable_Init_Market() {
     });
 
     areaTable[RR_THE_MARKET] = Region("Market", "Market", {RA_THE_MARKET}, NO_DAY_NIGHT_CYCLE, {}, {
-        LOCATION(RC_MARKET_DAY_TREE, logic->IsChild && logic->CanBonkTrees() && logic->AtDay),
-        LOCATION(RC_MARKET_NIGHT_TREE, logic->IsChild && logic->CanBonkTrees() && logic->AtNight),
+            LOCATION(RC_MARKET_DAY_TREE, logic->IsChild && logic->CanBonkTrees() && logic->AtDay),
         }, {
         //Exits
         Entrance(RR_MARKET_ENTRANCE,            []{return true;}),

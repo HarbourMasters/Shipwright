@@ -1235,14 +1235,7 @@ void LoadSettings() {
                 break;
         }
 
-        switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TREES)) {
-            case RO_SHUFFLE_TREES_ON:
-                showTrees = true;
-                break;
-            default:
-                showTrees = false;
-                break;
-        }
+        showTrees = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TREES);
     } else { // Vanilla
         showOverworldTokens = true;
         showDungeonTokens = true;
