@@ -394,7 +394,7 @@ void Entrance_SetSavewarpEntrance(void) {
     } else if (scene == SCENE_THIEVES_HIDEOUT) { // Theives hideout
         gSaveContext.entranceIndex = ENTR_THIEVES_HIDEOUT_0; // Gerudo Fortress -> Thieve's Hideout spawn 0
     } else if (scene == SCENE_LINKS_HOUSE) {
-        gSaveContext.entranceIndex = Entrance_OverrideNextIndex(ENTR_LINKS_HOUSE_CHILD_SPAWN);
+        gSaveContext.entranceIndex = ENTR_LINKS_HOUSE_CHILD_SPAWN; // Save warping in Link's house keeps the player there
     } else if (CVarGetInteger(CVAR_ENHANCEMENT("RememberSaveLocation"), 0) && scene != SCENE_FAIRYS_FOUNTAIN && scene != SCENE_GROTTOS &&
                gSaveContext.entranceIndex != ENTR_LOAD_OPENING) {
         // Use the saved entrance value with remember save location, except when in grottos/fairy fountains or if
