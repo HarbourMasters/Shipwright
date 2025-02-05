@@ -204,14 +204,13 @@ static bool SetPosHandler(std::shared_ptr<Ship::Console> Console, const std::vec
 }
 
 static bool ResetHandler(std::shared_ptr<Ship::Console> Console, std::vector<std::string> args, std::string* output) {
-    if (gPlayState == nullptr) {
-        ERROR_MESSAGE("PlayState == nullptr");
+    if (gGameState == nullptr) {
+        ERROR_MESSAGE("gGameState == nullptr");
         return 1;
     }
 
-    gPlayState->gameplayFrames = 0;
-    SET_NEXT_GAMESTATE(&gPlayState->state, TitleSetup_Init, GameState);
-    gPlayState->state.running = false;
+    SET_NEXT_GAMESTATE(gGameState, TitleSetup_Init, GameState);
+    gGameState->running = false;
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnExitGame>(gSaveContext.fileNum);
     return 0;
 }

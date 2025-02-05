@@ -1403,7 +1403,7 @@ const std::map<PresetType, PresetTypeDefinition> presetTypes = {
             "Spock Race",
             "Race preset used for the official Ship of Harkinian race on June 3rd 2023. The following settings are notable:\n" \
             "- Rainbow Bridge is set to Greg\n" \
-            "- Ganons Boss Key is 5 dungeon rewards\n" \
+            "- Ganon's Boss Key is 5 dungeon rewards\n" \
             "- Shopsanity and Scrubsanity enabled\n" \
             "- All locations reachable is off\n", \
             spockRacePresetEntries,
@@ -1413,7 +1413,7 @@ const std::map<PresetType, PresetTypeDefinition> presetTypes = {
                 "No Logic Race preset used for official Ship of Harkinian No Logic races. The following settings are "
                 "notable:\n"
                 "- Rainbow Bridge is set to Greg\n"
-                "- Ganons Boss Key is 5 dungeon rewards\n"
+                "- Ganon's Boss Key is 5 dungeon rewards\n"
                 "- Shopsanity and Scrubsanity enabled\n"
                 "- All locations reachable is off\n",
                 spockRaceNoLogicPresetEntries,
