@@ -1557,7 +1557,6 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_HF_NEAR_ZR_TREE,                                           RAND_INF_NEAR_ZR_TREE },
     { RC_HF_NEAR_KAK_S_TREE,                                        RAND_INF_NEAR_KAK_S_TREE },
     { RC_MARKET_DAY_TREE,                                           RAND_INF_MARKET_DAY_TREE },
-    { RC_MARKET_NIGHT_TREE,                                         RAND_INF_MARKET_NIGHT_TREE },
     { RC_HC_NEAR_GUARDS_TREE_5,                                     RAND_INF_HC_NEAR_GUARDS_TREE_5 },
     { RC_HC_NEAR_GUARDS_TREE_4,                                     RAND_INF_HC_NEAR_GUARDS_TREE_4 },
     { RC_HC_NEAR_GUARDS_TREE_3,                                     RAND_INF_HC_NEAR_GUARDS_TREE_3 },
