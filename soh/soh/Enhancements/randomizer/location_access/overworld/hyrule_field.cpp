@@ -21,7 +21,7 @@ void RegionTable_Init_HyruleField() {
         LOCATION(RC_HF_ADULT_NEAR_GV_TREE, logic->IsAdult && logic->CanBonkTrees()),
         LOCATION(RC_HF_TREE_NEAR_HC_GROTTO_1, logic->IsChild && logic->CanBonkTrees()),
         LOCATION(RC_HF_TREE_NEAR_HC_GROTTO_2, logic->IsChild && logic->CanBonkTrees()),
-        LOCATION(RC_TREE_HF_YELLOW_GROTTO_TREE, logic->IsChild && logic->CanBonkTrees()),
+        LOCATION(RC_HF_TREE_YELLOW_GROTTO_TREE, logic->IsChild && logic->CanBonkTrees()),
         LOCATION(RC_HF_SOUTHEAST_TREE_1, logic->IsChild && logic->CanBonkTrees()),
         LOCATION(RC_HF_NEAR_HC_GROTTO_TREE_3, logic->IsAdult && logic->CanBonkTrees()),
         LOCATION(RC_HF_SOUTHEAST_TREE_2, logic->CanBonkTrees()), // Both

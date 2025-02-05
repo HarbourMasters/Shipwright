@@ -1573,7 +1573,7 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_HF_SOUTHEAST_TREE_2,                                       RAND_INF_HF_SOUTHEAST_TREE_2 },
     { RC_HF_NEAR_HC_GROTTO_TREE_3,                                  RAND_INF_HF_NEAR_HC_GROTTO_TREE_3 },
     { RC_HF_SOUTHEAST_TREE_1,                                       RAND_INF_HF_SOUTHEAST_TREE_1 },
-    { RC_TREE_HF_YELLOW_GROTTO_TREE,                                RAND_INF_TREE_HF_YELLOW_GROTTO_TREE },
+    { RC_HF_TREE_YELLOW_GROTTO_TREE,                                RAND_INF_HF_TREE_YELLOW_GROTTO_TREE },
     { RC_HF_TREE_NEAR_HC_GROTTO_2,                                  RAND_INF_HF_TREE_NEAR_HC_GROTTO_2 },
     { RC_HF_TREE_NEAR_HC_GROTTO_1,                                  RAND_INF_HF_TREE_NEAR_HC_GROTTO_1 },
     { RC_ZF_TREE,                                                   RAND_INF_ZF_TREE },
@@ -1609,6 +1609,7 @@ BeehiveIdentity Randomizer::IdentifyBeehive(s32 sceneNum, s16 xPosition, s32 res
 }
 
 Rando::Location* Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams = 0x00) {
+    //LUSLOG_DEBUG("GetCheckObjectFromActor: actorId = %d, sceneNum = %d, actorParams = %x", actorId, sceneNum, actorParams);
     auto fs = OTRGlobals::Instance->gRandoContext->GetFishsanity();
     RandomizerCheck specialRc = RC_UNKNOWN_CHECK;
     // TODO: Migrate these special cases into table, or at least document why they are special
