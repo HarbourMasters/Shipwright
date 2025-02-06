@@ -143,6 +143,34 @@ namespace UIWidgets2 {
         }
     };
 
+    struct WindowButtonOptions : WidgetOptions {
+        ImVec2 size = Sizes::Inline;
+        Colors color = Colors::Gray;
+        bool showButton = true;
+        bool embedWindow = true;
+
+        WindowButtonOptions& Size(ImVec2 size_) {
+            size = size_;
+            return *this;
+        }
+        WindowButtonOptions& Tooltip(const char* tooltip_) {
+            WidgetOptions::tooltip = tooltip_;
+            return *this;
+        }
+        WindowButtonOptions& Color(Colors color_) {
+            WidgetOptions::color = color = color_;
+            return *this;
+        }
+        WindowButtonOptions& ShowButton(bool showButton_) {
+            showButton = showButton_;
+            return *this;
+        }
+        WindowButtonOptions& EmbedWindow(bool embedWindow_) {
+            embedWindow = embedWindow_;
+            return *this;
+        }
+    };
+
     struct CheckboxOptions : WidgetOptions {
         bool defaultValue = false; // Only applicable to CVarCheckbox
         ComponentAlignment alignment = ComponentAlignment::Left;
@@ -335,7 +363,7 @@ namespace UIWidgets2 {
     void PushStyleButton(Colors color = Colors::Gray);
     void PopStyleButton();
     bool Button(const char* label, const ButtonOptions& options = {});
-    bool WindowButton(const char* label, const char* cvarName, std::shared_ptr<Ship::GuiWindow> windowPtr, const ButtonOptions& options = {});
+    bool WindowButton(const char* label, const char* cvarName, std::shared_ptr<Ship::GuiWindow> windowPtr, const WindowButtonOptions& options = {});
 
     void PushStyleCheckbox(const ImVec4& color);
     void PushStyleCheckbox(Colors color = Colors::LightBlue);

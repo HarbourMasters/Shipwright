@@ -136,7 +136,7 @@ bool Button(const char* label, const ButtonOptions& options) {
 }
 
 bool WindowButton(const char* label, const char* cvarName, std::shared_ptr<Ship::GuiWindow> windowPtr,
-                  const ButtonOptions& options) {
+                  const WindowButtonOptions& options) {
     ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
     std::string buttonText = label;
     bool dirty = false;
@@ -145,7 +145,8 @@ bool WindowButton(const char* label, const char* cvarName, std::shared_ptr<Ship:
     } else {
         buttonText = ICON_FA_EXTERNAL_LINK_SQUARE " " + buttonText;
     }
-    if (Button(buttonText.c_str(), options)) {
+    if (Button(buttonText.c_str(), {{ options.tooltip, options.disabled, options.disabledTooltip, options.color },
+                                      options.size, options.color })) {
         windowPtr->ToggleVisibility();
         dirty = true;
     }

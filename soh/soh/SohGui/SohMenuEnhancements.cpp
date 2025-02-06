@@ -16,7 +16,6 @@ void SohMenu::AddMenuEnhancements() {
 
     AddWidget(path, "filler", WIDGET_TEXT);
 
-
     // Cheats
     path.sidebarName = "Cheats";
     AddSidebarEntry("Enhancements", path.sidebarName, 3);
@@ -30,7 +29,7 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Popout Cosmetics Editor Window", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("CosmeticsEditor"))
         .WindowName("Cosmetics Editor")
-        .Options(ButtonOptions().Tooltip("Enables the separate Cosmetics Editor Window.").Size(Sizes::Inline));
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Cosmetics Editor Window."));
 
 
     // Audio Editor
@@ -39,7 +38,7 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Popout Audio Editor Window", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("AudioEditor"))
         .WindowName("Audio Editor")
-        .Options(ButtonOptions().Tooltip("Enables the separate Audio Editor Window.").Size(Sizes::Inline));
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Audio Editor Window."));
 
 
     // Gameplay Stats
@@ -48,7 +47,7 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Popout Gameplay Stats Window", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("GameplayStats"))
         .WindowName("Gameplay Stats")
-        .Options(ButtonOptions().Tooltip("Enables the separate Gameplay Stats Window.").Size(Sizes::Inline));
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Gameplay Stats Window."));
 
 
     // Time Splits
@@ -57,7 +56,7 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Popout Time Splits Window", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("TimeSplits"))
         .WindowName("Time Splits")
-        .Options(ButtonOptions().Tooltip("Enables the separate Time Splits Window.").Size(Sizes::Inline));
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Time Splits Window."));
 
 
     // Timers
@@ -66,7 +65,7 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Toggle Timers Window", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("AdditionalTimers"))
         .WindowName("Additional Timers")
-        .Options(ButtonOptions().Tooltip("Enables the separate Additional Timers Window.").Size(Sizes::Inline));
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Additional Timers Window."));
 }
 
 } // namespace SohGui

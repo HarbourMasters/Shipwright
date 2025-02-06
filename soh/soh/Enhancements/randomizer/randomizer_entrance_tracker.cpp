@@ -662,8 +662,6 @@ void EntranceTrackerSettingsWindow::DrawElement() {
     if (ImGui::BeginTable("entranceTrackerSettings", 1, ImGuiTableFlags_BordersInnerH)) {
 
         ImGui::TableNextColumn();
-
-        UIWidgets::Spacer(0);
         ImGui::TextWrapped("The entrance tracker will only track shuffled entrances");
         UIWidgets::Spacer(0);
 
@@ -732,23 +730,7 @@ void EntranceTrackerSettingsWindow::DrawElement() {
     }
 }
 
-void EntranceTrackerWindow::Draw() {
-    if (!IsVisible()) {
-        return;
-    }
-    DrawElement();
-    // Sync up the IsVisible flag if it was changed by ImGui
-    SyncVisibilityConsoleVariable();
-}
-
 void EntranceTrackerWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(600, 375), ImGuiCond_FirstUseEver);
-
-    if (!ImGui::Begin("Entrance Tracker", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::End();
-        return;
-    }
-
     static ImGuiTextFilter locationSearch;
 
     uint8_t nextTreeState = 0;
@@ -940,8 +922,6 @@ void EntranceTrackerWindow::DrawElement() {
         }
     }
     ImGui::EndChild();
-
-    ImGui::End();
 }
 
 void EntranceTrackerWindow::InitElement() {

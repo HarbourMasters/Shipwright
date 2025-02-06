@@ -92,7 +92,7 @@ void SohMenu::AddMenuDevTools() {
     AddWidget(path, "Popout Stats Window", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("Stats"))
         .WindowName("Stats")
-        .Options(ButtonOptions().Tooltip("Enables the separate Stats Window.").Size(Sizes::Inline));
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Stats Window."));
 
     // Console
     path.sidebarName = "Console";
@@ -100,7 +100,7 @@ void SohMenu::AddMenuDevTools() {
     AddWidget(path, "Popout Console", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("Console"))
         .WindowName("Console")
-        .Options(ButtonOptions().Tooltip("Enables the separate Console Window.").Size(Sizes::Inline));
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Console Window."));
 
     // Save Editor
     path.sidebarName = "Save Editor";
@@ -108,7 +108,7 @@ void SohMenu::AddMenuDevTools() {
     AddWidget(path, "Popout Save Editor", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("SaveEditor"))
         .WindowName("Save Editor")
-        .Options(ButtonOptions().Tooltip("Enables the separate Save Editor Window.").Size(Sizes::Inline));
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Save Editor Window."));
 
     // Hook Debugger
     path.sidebarName = "Hook Debugger";
@@ -116,7 +116,7 @@ void SohMenu::AddMenuDevTools() {
     AddWidget(path, "Popout Hook Debugger", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("HookDebugger"))
         .WindowName("Hook Debugger")
-        .Options(ButtonOptions().Tooltip("Enables the separate Hook Debugger Window.").Size(Sizes::Inline));
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Hook Debugger Window."));
 
     // Collision Viewer
     path.sidebarName = "Collision Viewer";
@@ -124,7 +124,7 @@ void SohMenu::AddMenuDevTools() {
     AddWidget(path, "Popout Collision Viewer", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("CollisionViewer"))
         .WindowName("Collision Viewer")
-        .Options(ButtonOptions().Tooltip("Enables the separate Collision Viewer Window.").Size(Sizes::Inline));
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Collision Viewer Window."));
 
     // Actor Viewer
     path.sidebarName = "Actor Viewer";
@@ -132,7 +132,7 @@ void SohMenu::AddMenuDevTools() {
     AddWidget(path, "Popout Actor Viewer", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("ActorViewer"))
         .WindowName("Actor Viewer")
-        .Options(ButtonOptions().Tooltip("Enables the separate Actor Viewer Window.").Size(Sizes::Inline));
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Actor Viewer Window."));
 
     // Display List Viewer
     path.sidebarName = "DList Viewer";
@@ -140,7 +140,7 @@ void SohMenu::AddMenuDevTools() {
     AddWidget(path, "Popout Display List Viewer", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("DisplayListViewer"))
         .WindowName("Display List Viewer")
-        .Options(ButtonOptions().Tooltip("Enables the separate Display List Viewer Window.").Size(Sizes::Inline));
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Display List Viewer Window."));
 
     // Value Viewer
     path.sidebarName = "Value Viewer";
@@ -148,7 +148,7 @@ void SohMenu::AddMenuDevTools() {
     AddWidget(path, "Popout Value Viewer", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("ValueViewer"))
         .WindowName("Value Viewer")
-        .Options(ButtonOptions().Tooltip("Enables the separate Value Viewer Window.").Size(Sizes::Inline));
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Value Viewer Window."));
 
     // Message Viewer
     path.sidebarName = "Message Viewer";
@@ -156,7 +156,7 @@ void SohMenu::AddMenuDevTools() {
     AddWidget(path, "Popout Message Viewer", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("MessageViewer"))
         .WindowName("Message Viewer")
-        .Options(ButtonOptions().Tooltip("Enables the separate Message Viewer Window.").Size(Sizes::Inline));
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Message Viewer Window."));
 
     // Gfx Debugger
     path.sidebarName = "Gfx Debugger";
@@ -164,7 +164,7 @@ void SohMenu::AddMenuDevTools() {
     AddWidget(path, "Popout Gfx Debugger", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("GfxDebugger"))
         .WindowName("Gfx Debugger")
-        .Options(ButtonOptions().Tooltip("Enables the separate Gfx Debugger Window.").Size(Sizes::Inline));
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Gfx Debugger Window."));
 }
 
 } // namespace SohGui

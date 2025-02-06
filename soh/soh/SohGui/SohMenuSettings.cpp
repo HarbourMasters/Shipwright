@@ -304,20 +304,20 @@ void SohMenu::AddMenuSettings() {
     AddWidget(path, "Popout Bindings Window", WIDGET_WINDOW_BUTTON)
         .CVar("gWindows.InputEditor")
         .WindowName("Input Editor")
-        .Options(ButtonOptions().Tooltip("Enables the separate Bindings Window.").Size(Sizes::Inline));
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Bindings Window."));
 
     path.column = SECTION_COLUMN_2;
     AddWidget(path, "Input Viewer", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Toggle Input Viewer", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("InputViewer"))
         .WindowName("Input Viewer")
-        .Options(ButtonOptions().Tooltip("Toggles the Input Viewer.").Size(Sizes::Inline));
+        .Options(WindowButtonOptions().Tooltip("Toggles the Input Viewer.").EmbedWindow(false));
 
     AddWidget(path, "Input Viewer Settings", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Popout Input Viewer Settings", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("InputViewerSettings"))
         .WindowName("Input Viewer Settings")
-        .Options(ButtonOptions().Tooltip("Enables the separate Input Viewer Settings Window.").Size(Sizes::Inline));
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Input Viewer Settings Window."));
 
     // Notifications
     path.sidebarName = "Notifications";
