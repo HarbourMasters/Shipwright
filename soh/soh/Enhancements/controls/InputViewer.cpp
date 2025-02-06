@@ -9,7 +9,7 @@
 #include <spdlog/spdlog.h>
 #include <cmath>
 
-#include "../../UIWidgets.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 
 // Text colors
 static ImVec4 textColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);

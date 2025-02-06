@@ -320,6 +320,20 @@ GameInteractionEffectBase* Sail::EffectFromJson(nlohmann::json payload) {
         return new GameInteractionEffect::PlayerInvincibility();
     } else if (name == "SlipperyFloor") {
         return new GameInteractionEffect::SlipperyFloor();
+    } else if (name == "SpawnEnemyWithOffset") {
+        auto effect = new GameInteractionEffect::SpawnEnemyWithOffset();
+        if (payload.contains("parameters")) {
+            effect->parameters[0] = payload["parameters"][0].get<int32_t>();
+            effect->parameters[1] = payload["parameters"][1].get<int32_t>();
+        }
+        return effect;
+    } else if (name == "SpawnActor") {
+        auto effect = new GameInteractionEffect::SpawnActor();
+        if (payload.contains("parameters")) {
+            effect->parameters[0] = payload["parameters"][0].get<int32_t>();
+            effect->parameters[1] = payload["parameters"][1].get<int32_t>();
+        }
+        return effect;
     } else {
         SPDLOG_INFO("[Sail] Unknown effect name: {}", name);
         return nullptr;

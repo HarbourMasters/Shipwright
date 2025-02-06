@@ -10,7 +10,7 @@
 #include <algorithm>
 #include <libultraship/libultraship.h>
 
-#include "soh/UIWidgets.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 
@@ -1969,6 +1969,7 @@ void CosmeticsEditorWindow::DrawElement() {
                 )
             ) {
                 CVarSetInteger(cosmeticOption.rainbowCvar, 1);
+                CVarSetInteger(cosmeticOption.changedCvar, 1);
             }
         }
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();

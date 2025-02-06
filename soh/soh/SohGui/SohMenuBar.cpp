@@ -6,45 +6,45 @@
 #include "UIWidgets.hpp"
 #include "include/z64audio.h"
 #include "graphic/Fast3D/gfx_rendering_api.h"
-#include "OTRGlobals.h"
-#include "SaveManager.h"
+#include "soh/OTRGlobals.h"
+#include "soh/SaveManager.h"
 #include "z64.h"
-#include "cvar_prefixes.h"
+#include "soh/cvar_prefixes.h"
 #include "macros.h"
 #include "functions.h"
 #include "variables.h"
-#include "Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/presets.h"
 #include "soh/Enhancements/mods.h"
 #include "soh/Notification/Notification.h"
-#include "Enhancements/cosmetics/authenticGfxPatches.h"
+#include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
 #ifdef ENABLE_REMOTE_CONTROL
 #include "soh/Network/CrowdControl/CrowdControl.h"
 #include "soh/Network/Sail/Sail.h"
 #endif
 
 
-#include "Enhancements/audio/AudioEditor.h"
-#include "Enhancements/controls/InputViewer.h"
-#include "Enhancements/cosmetics/CosmeticsEditor.h"
-#include "Enhancements/debugger/actorViewer.h"
-#include "Enhancements/debugger/colViewer.h"
-#include "Enhancements/debugger/debugSaveEditor.h"
-#include "Enhancements/debugger/hookDebugger.h"
-#include "Enhancements/debugger/dlViewer.h"
-#include "Enhancements/debugger/valueViewer.h"
-#include "Enhancements/gameplaystatswindow.h"
-#include "Enhancements/debugger/MessageViewer.h"
-#include "Enhancements/randomizer/randomizer_check_tracker.h"
-#include "Enhancements/randomizer/randomizer_entrance_tracker.h"
-#include "Enhancements/randomizer/randomizer_item_tracker.h"
-#include "Enhancements/randomizer/randomizer_settings_window.h"
-#include "Enhancements/resolution-editor/ResolutionEditor.h"
-#include "Enhancements/enemyrandomizer.h"
-#include "Enhancements/timesplits/TimeSplits.h"
-#include "Enhancements/randomizer/Plandomizer.h"
-#include "Enhancements/TimeDisplay/TimeDisplay.h"
-#include "AboutWindow.h"
+#include "soh/Enhancements/audio/AudioEditor.h"
+#include "soh/Enhancements/controls/InputViewer.h"
+#include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
+#include "soh/Enhancements/debugger/actorViewer.h"
+#include "soh/Enhancements/debugger/colViewer.h"
+#include "soh/Enhancements/debugger/debugSaveEditor.h"
+#include "soh/Enhancements/debugger/hookDebugger.h"
+#include "soh/Enhancements/debugger/dlViewer.h"
+#include "soh/Enhancements/debugger/valueViewer.h"
+#include "soh/Enhancements/gameplaystatswindow.h"
+#include "soh/Enhancements/debugger/MessageViewer.h"
+#include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
+#include "soh/Enhancements/randomizer/randomizer_item_tracker.h"
+#include "soh/Enhancements/randomizer/randomizer_settings_window.h"
+#include "soh/Enhancements/resolution-editor/ResolutionEditor.h"
+#include "soh/Enhancements/enemyrandomizer.h"
+#include "soh/Enhancements/timesplits/TimeSplits.h"
+#include "soh/Enhancements/randomizer/Plandomizer.h"
+#include "soh/Enhancements/TimeDisplay/TimeDisplay.h"
+#include "soh/AboutWindow.h"
 
 // FA icons are kind of wonky, if they worked how I expected them to the "+ 2.0f" wouldn't be needed, but
 // they don't work how I expect them to so I added that because it looked good when I eyeballed it
@@ -1460,6 +1460,8 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Shows what items you have collected in the file select screen, like in N64 randomizer");
             UIWidgets::PaddedEnhancementCheckbox("Better ammo rendering in pause menu", CVAR_ENHANCEMENT("BetterAmmoRendering"), true, false);
             UIWidgets::Tooltip("Ammo counts in the pause menu will work correctly regardless of the position of items in the inventory");
+            UIWidgets::PaddedEnhancementCheckbox("Remove spin attack darkness", CVAR_ENHANCEMENT("RemoveSpinAttackDarkness"), true, false);
+            UIWidgets::Tooltip("Remove the darkness that appears when charging a spin attack");
             ImGui::EndMenu();
         }
 

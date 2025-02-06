@@ -205,11 +205,6 @@ void Play_Destroy(GameState* thisx) {
 
     GameInteractor_ExecuteOnPlayDestroy();
 
-    // Only initialize the frame counter when exiting the title screen
-    if (gSaveContext.fileNum == 0xFF) {
-        play->gameplayFrames = 0;
-    }
-
     play->state.gfxCtx->callback = NULL;
     play->state.gfxCtx->callbackParam = 0;
 
