@@ -659,15 +659,15 @@ void InitEntranceTrackingData() {
 }
 
 void EntranceTrackerSettingsWindow::DrawElement() {
-    if (ImGui::BeginTable("entranceTrackerSettings", 1, ImGuiTableFlags_BordersInnerH)) {
-
-        ImGui::TableNextColumn();
+    
         ImGui::TextWrapped("The entrance tracker will only track shuffled entrances");
         UIWidgets::Spacer(0);
 
         ImGui::TableNextColumn();
 
         if (ImGui::BeginTable("entranceTrackerSubSettings", 2, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingStretchProp)) {
+            ImGui::TableSetupColumn("column 1", ImGuiTableColumnFlags_WidthStretch, 150.0f);
+            ImGui::TableSetupColumn("column 2", ImGuiTableColumnFlags_WidthStretch, 150.0f);
 
             ImGui::TableNextColumn();
 
@@ -714,8 +714,6 @@ void EntranceTrackerSettingsWindow::DrawElement() {
             ImGui::EndTable();
         }
 
-        ImGui::TableNextColumn();
-
         ImGui::SetNextItemOpen(false, ImGuiCond_Once);
         if (ImGui::TreeNode("Legend")) {
             ImGui::TextColored(ImColor(COLOR_ORANGE), "Last Entrance");
@@ -723,11 +721,6 @@ void EntranceTrackerSettingsWindow::DrawElement() {
             ImGui::TextColored(ImColor(COLOR_GRAY), "Undiscovered Entrances");
             ImGui::TreePop();
         }
-
-        UIWidgets::Spacer(0);
-
-        ImGui::EndTable();
-    }
 }
 
 void EntranceTrackerWindow::DrawElement() {

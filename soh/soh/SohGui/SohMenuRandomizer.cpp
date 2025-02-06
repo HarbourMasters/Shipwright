@@ -55,7 +55,7 @@ void SohMenu::AddMenuRandomizer() {
     AddWidget(path, "Popout Entrance Tracker Settings", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("EntranceTrackerSettings"))
         .WindowName("Entrance Tracker Settings")
-        .Options(WindowButtonOptions().Tooltip("Enables the separate Entrance Tracker Settings Window.").ShowButton(false));
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Entrance Tracker Settings Window."));
 
     // Check Tracker
     path.sidebarName = "Check Tracker";
