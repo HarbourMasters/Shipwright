@@ -312,6 +312,11 @@ typedef enum {
     VB_DOOR_BE_LOCKED,
     // Vanilla condition: ((doorActor->params >> 7) & 7) == 3
     VB_DOOR_PLAY_SCENE_TRANSITION,
+    // Vanilla condition: true
+    VB_HATCH_CUCCO_OR_CHICKEN,
+    // Vanilla condition: exchangeItemId == EXCH_ITEM_LETTER_ZELDA
+    // Opt: s32
+    VB_HEISHI2_ACCEPT_ITEM_AS_ZELDAS_LETTER,
 
     /*** Play Cutscenes ***/
 
@@ -385,7 +390,6 @@ typedef enum {
     // Vanilla condition: !Flags_GetInfTable(INFTABLE_145)
     // Opt: *EnRu1
     VB_RUTO_BE_CONSIDERED_NOT_KIDNAPPED,
-    
 
     /*** Give Items ***/
 
