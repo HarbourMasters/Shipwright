@@ -1974,6 +1974,9 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
         HintText(CustomMessage("They say that a #tree in Zora's Fountain# contains #[[1]]#.",
                                /*german*/ "",
                                /*french*/ "", { QM_RED, QM_GREEN }));
-
+    hintTextTable[RHT_TREE_LON_LON_RANCH] =
+        HintText(CustomMessage("They say that a #tree in Lon Lon Ranch# contains #[[1]]#.",
+                               /*german*/ "",
+                               /*french*/ "", { QM_RED, QM_GREEN }));
 }
 }
