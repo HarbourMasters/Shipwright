@@ -142,12 +142,6 @@ void EnWood02_RandomizerInit(void* actorRef) {
 void ShuffleTrees_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
     va_list args;
     va_copy(args, originalArgs);
-    if (id == VB_TREE_SETUP_DRAW)
-        LUSLOG_DEBUG("GIVanillaBehavior (DRAW): %d", id);
-
-    if (id == VB_TREE_DROP_ITEM)
-        LUSLOG_DEBUG("GIVanillaBehavior (ITEM): %d", id);
-
     // Hook drawing function, draw randomized tree.
     if (id == VB_TREE_SETUP_DRAW) {
         EnWood02* treeActor = va_arg(args, EnWood02*);
