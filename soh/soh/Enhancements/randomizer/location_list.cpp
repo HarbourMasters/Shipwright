@@ -146,7 +146,7 @@ std::vector<RandomizerCheck> Rando::StaticData::GetOverworldLocations() {
             location.GetRCType() != RCTYPE_FISH && // temp fix while locations are properly sorted out
             location.GetRCType() != RCTYPE_POT &&  // Same as fish
             location.GetRCType() != RCTYPE_CRATE && // Same as fish
-            location.GetRCType() != RCTYPE_NLCRATE &&       // Same as fish
+            location.GetRCType() != RCTYPE_NLCRATE && // Same as fish
             location.GetRCType() != RCTYPE_SMALL_CRATE && // Same as fish
             location.GetRCType() != RCTYPE_CHEST_GAME && //this is supposed to be excluded
             (ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) || location.GetRCType() != RCTYPE_ADULT_TRADE) && //trade is handled elsewhere in location pool
