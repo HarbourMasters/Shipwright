@@ -384,7 +384,9 @@ RandomizerCheckArea AreaFromEntranceGroup[] = {
     RCAREA_LON_LON_RANCH,
     RCAREA_LAKE_HYLIA,
     RCAREA_GERUDO_VALLEY,
+    RCAREA_GERUDO_FORTRESS,
     RCAREA_WASTELAND,
+    RCAREA_DESERT_COLOSSUS,
     RCAREA_MARKET,
     RCAREA_HYRULE_CASTLE,
 };
@@ -397,8 +399,6 @@ RandomizerCheckArea GetCheckArea() {
     if (ent != nullptr && !IsAreaScene(scene) && ent->type != ENTRANCE_TYPE_DUNGEON) {
         if (ent->source == "Desert Colossus" || ent->destination == "Desert Colossus") {
             area = RCAREA_DESERT_COLOSSUS;
-        } else if (ent->source == "Gerudo Fortress" || ent->destination == "Gerudo Fortress") {
-            area = RCAREA_GERUDO_FORTRESS;
         } else {
             area = AreaFromEntranceGroup[ent->dstGroup];
         }
