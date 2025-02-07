@@ -2104,7 +2104,7 @@ CrateIdentity Randomizer::IdentifyCrate(s32 sceneNum, s32 posX, s32 posZ) {
             } else if (posZ == -1770) {
                 posZ = -1782.0f;
             }
-        }
+    }
 
     crateIdentity.randomizerInf = RAND_INF_MAX;
     crateIdentity.randomizerCheck = RC_UNKNOWN_CHECK;

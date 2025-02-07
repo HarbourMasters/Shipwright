@@ -54,6 +54,7 @@ class StaticData {
       static void RegisterFairyLocations();
       static void RegisterPotLocations();
       static void RegisterFreestandingLocations();
+      static void RegisterCrateLocations();
       static void InitHashMaps();
       static std::array<std::pair<RandomizerCheck, RandomizerCheck>, 17> randomizerFishingPondFish;
       static std::unordered_map<int8_t, RandomizerCheck> randomizerGrottoFishMap;
