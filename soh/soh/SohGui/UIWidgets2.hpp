@@ -123,6 +123,10 @@ namespace UIWidgets2 {
             disabled = disabled_;
             return *this;
         }
+        WidgetOptions& DisabledTooltip(const char* disabledTooltip_) {
+            disabledTooltip = disabledTooltip_;
+            return *this;
+        }
     };
 
     struct ButtonOptions : WidgetOptions {
@@ -344,6 +348,23 @@ namespace UIWidgets2 {
             return *this;
         }
         FloatSliderOptions& Color(Colors color_) {
+            WidgetOptions::color = color = color_;
+            return *this;
+        }
+    };
+
+    struct RadioButtonsOptions : WidgetOptions {
+        std::unordered_map<int32_t, const char*> buttonMap;
+        
+        RadioButtonsOptions& ButtonMap(std::unordered_map<int32_t, const char*> buttonMap_) {
+            buttonMap = buttonMap_;
+            return *this;
+        }
+        RadioButtonsOptions& Tooltip(const char* tooltip_) {
+            WidgetOptions::tooltip = tooltip_;
+            return *this;
+        }
+        RadioButtonsOptions& Color(Colors color_) {
             WidgetOptions::color = color = color_;
             return *this;
         }
@@ -736,6 +757,8 @@ namespace UIWidgets2 {
     bool SliderFloat(const char* label, float* value, const FloatSliderOptions& options = {});
     bool CVarSliderFloat(const char* label, const char* cvarName, const FloatSliderOptions& options = {});
     bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaultColor);
+    bool RadioButton(const char* label, bool active);
+    bool CVarRadioButton(const char* text, const char* cvarName, int32_t id, UIWidgets2::Colors color);
     void DrawFlagArray32(const std::string& name, uint32_t& flags);
     void DrawFlagArray16(const std::string& name, uint16_t& flags);
     void DrawFlagArray8(const std::string& name, uint8_t& flags);

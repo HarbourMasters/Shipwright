@@ -1,7 +1,7 @@
 #include "randomizer_entrance_tracker.h"
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
-#include "soh/SohGui/UIWidgets.hpp"
+#include "soh/SohGui/SohMenu.h"
 
 #include <map>
 #include <string>
@@ -668,48 +668,44 @@ void EntranceTrackerSettingsWindow::DrawElement() {
         if (ImGui::BeginTable("entranceTrackerSubSettings", 2, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingStretchProp)) {
             ImGui::TableSetupColumn("column 1", ImGuiTableColumnFlags_WidthStretch, 150.0f);
             ImGui::TableSetupColumn("column 2", ImGuiTableColumnFlags_WidthStretch, 150.0f);
+            auto themeColor = static_cast<UIWidgets2::Colors>(CVarGetInteger(CVAR_SETTING("Menu.Theme"), UIWidgets2::Colors::LightBlue));
 
             ImGui::TableNextColumn();
 
             ImGui::Text("Sort By");
-            UIWidgets::EnhancementRadioButton("To", CVAR_TRACKER_ENTRANCE("SortBy"), 0);
+            UIWidgets2::CVarRadioButton("To", CVAR_TRACKER_ENTRANCE("SortBy"), 0, themeColor);
             UIWidgets::Tooltip("Sort entrances by the original source entrance");
-            UIWidgets::EnhancementRadioButton("From", CVAR_TRACKER_ENTRANCE("SortBy"), 1);
+            UIWidgets2::CVarRadioButton("From", CVAR_TRACKER_ENTRANCE("SortBy"), 1, themeColor);
             UIWidgets::Tooltip("Sort entrances by the overrided destination");
 
-            UIWidgets::Spacer(2.0f);
-
             ImGui::Text("List Items");
-            UIWidgets::PaddedEnhancementCheckbox("Auto scroll", CVAR_TRACKER_ENTRANCE("AutoScroll"), true, false);
-            UIWidgets::Tooltip("Automatically scroll to the first aviable entrance in the current scene");
-            UIWidgets::PaddedEnhancementCheckbox("Highlight previous", CVAR_TRACKER_ENTRANCE("HighlightPrevious"), true, false);
-            UIWidgets::Tooltip("Highlight the previous entrance that Link came from");
-            UIWidgets::PaddedEnhancementCheckbox("Highlight available", CVAR_TRACKER_ENTRANCE("HighlightAvailable"), true, false);
-            UIWidgets::Tooltip("Highlight available entrances in the current scene");
-            UIWidgets::PaddedEnhancementCheckbox("Hide undiscovered", CVAR_TRACKER_ENTRANCE("CollapseUndiscovered"), true, false);
-            UIWidgets::Tooltip("Collapse undiscovered entrances towards the bottom of each group");
+            UIWidgets2::CVarCheckbox("Auto scroll", CVAR_TRACKER_ENTRANCE("AutoScroll"),
+                UIWidgets2::CheckboxOptions().Tooltip("Automatically scroll to the first aviable entrance in the current scene").Color(themeColor));
+            UIWidgets2::CVarCheckbox("Highlight previous", CVAR_TRACKER_ENTRANCE("HighlightPrevious"),
+                 UIWidgets2::CheckboxOptions().Tooltip("Highlight the previous entrance that Link came from").Color(themeColor));
+            UIWidgets2::CVarCheckbox("Highlight available", CVAR_TRACKER_ENTRANCE("HighlightAvailable"),
+                 UIWidgets2::CheckboxOptions().Tooltip("Highlight available entrances in the current scene").Color(themeColor));
+            UIWidgets2::CVarCheckbox("Hide undiscovered", CVAR_TRACKER_ENTRANCE("CollapseUndiscovered"),
+                 UIWidgets2::CheckboxOptions().Tooltip("Collapse undiscovered entrances towards the bottom of each group").Color(themeColor));
             bool disableHideReverseEntrances = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_ON;
             static const char* disableHideReverseEntrancesText = "This option is disabled because \"Decouple Entrances\" is enabled.";
-            UIWidgets::PaddedEnhancementCheckbox("Hide reverse", CVAR_TRACKER_ENTRANCE("HideReverseEntrances"), true, false,
-                                          disableHideReverseEntrances, disableHideReverseEntrancesText, UIWidgets::CheckboxGraphics::Cross, true);
-            UIWidgets::Tooltip("Hide reverse entrance transitions when Decouple Entrances is off");
-            UIWidgets::Spacer(0);
+            UIWidgets2::CVarCheckbox("Hide reverse", CVAR_TRACKER_ENTRANCE("HideReverseEntrances"),
+                UIWidgets2::CheckboxOptions({ {.disabled = disableHideReverseEntrances, .disabledTooltip = disableHideReverseEntrancesText }})
+                    .Tooltip("Hide reverse entrance transitions when Decouple Entrances is off").DefaultValue(true).Color(themeColor));
 
             ImGui::TableNextColumn();
 
             ImGui::Text("Group By");
-            UIWidgets::EnhancementRadioButton("Area", CVAR_TRACKER_ENTRANCE("GroupBy"), 0);
+            UIWidgets2::CVarRadioButton("Area", CVAR_TRACKER_ENTRANCE("GroupBy"), 0, themeColor);
             UIWidgets::Tooltip("Group entrances by their area");
-            UIWidgets::EnhancementRadioButton("Type", CVAR_TRACKER_ENTRANCE("GroupBy"), 1);
+            UIWidgets2::CVarRadioButton("Type", CVAR_TRACKER_ENTRANCE("GroupBy"), 1, themeColor);
             UIWidgets::Tooltip("Group entrances by their entrance type");
 
-            UIWidgets::Spacer(2.0f);
-
             ImGui::Text("Spoiler Reveal");
-            UIWidgets::PaddedEnhancementCheckbox("Show Source", CVAR_TRACKER_ENTRANCE("ShowFrom"), true, false);
-            UIWidgets::Tooltip("Reveal the sourcefor undiscovered entrances");
-            UIWidgets::PaddedEnhancementCheckbox("Show Destination", CVAR_TRACKER_ENTRANCE("ShowTo"), true, false);
-            UIWidgets::Tooltip("Reveal the destination for undiscovered entrances");
+            UIWidgets2::CVarCheckbox("Show Source", CVAR_TRACKER_ENTRANCE("ShowFrom"),
+                 UIWidgets2::CheckboxOptions().Tooltip("Reveal the sourcefor undiscovered entrances").Color(themeColor));
+            UIWidgets2::CVarCheckbox("Show Destination", CVAR_TRACKER_ENTRANCE("ShowTo"),
+                 UIWidgets2::CheckboxOptions().Tooltip("Reveal the destination for undiscovered entrances").Color(themeColor));
 
             ImGui::EndTable();
         }

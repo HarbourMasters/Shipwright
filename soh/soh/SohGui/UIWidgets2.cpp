@@ -547,6 +547,77 @@ bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaul
     return changed;
 }
 
+bool RadioButton(const char* label, bool active) {
+    ImGuiWindow* window = ImGui::GetCurrentWindow();
+    if (window->SkipItems)
+        return false;
+
+    ImGuiContext& g = *GImGui;
+    const ImGuiStyle& style = g.Style;
+    const ImGuiID id = window->GetID(label);
+    const ImVec2 label_size = ImGui::CalcTextSize(label, NULL, true);
+
+    const float square_sz = ImGui::GetFrameHeight();
+    const ImVec2 pos = window->DC.CursorPos;
+    const ImRect check_bb(pos, pos + ImVec2(square_sz, square_sz));
+    const ImRect total_bb(pos, pos + ImVec2(square_sz + (label_size.x > 0.0f ? style.ItemInnerSpacing.x + label_size.x : 0.0f), label_size.y + style.FramePadding.y * 2.0f));
+    ImGui::ItemSize(total_bb, style.FramePadding.y);
+    if (!ImGui::ItemAdd(total_bb, id))
+        return false;
+
+    ImVec2 center = check_bb.GetCenter();
+    center.x = IM_ROUND(center.x);
+    center.y = IM_ROUND(center.y);
+    const float radius = (square_sz - 1.0f) * 0.5f;
+
+    bool hovered, held;
+    bool pressed = ImGui::ButtonBehavior(total_bb, id, &hovered, &held);
+    if (pressed)
+        ImGui::MarkItemEdited(id);
+
+    ImGui::RenderNavCursor(total_bb, id);
+    const int num_segment = window->DrawList->_CalcCircleAutoSegmentCount(radius);
+    window->DrawList->AddCircleFilled(center, radius, ImGui::GetColorU32((held && hovered) ? ImGuiCol_FrameBgActive : hovered ? ImGuiCol_FrameBgHovered : ImGuiCol_FrameBg), num_segment);
+    if (active)
+    {
+        const float pad = ImMax(1.0f, IM_TRUNC(square_sz / 6.0f));
+        window->DrawList->AddCircleFilled(center, radius - pad, ImGui::GetColorU32(ImGuiCol_CheckMark));
+    }
+
+    if (style.FrameBorderSize > 0.0f)
+    {
+        window->DrawList->AddCircle(center + ImVec2(1, 1), radius, ImGui::GetColorU32(ImGuiCol_BorderShadow), num_segment, style.FrameBorderSize);
+        window->DrawList->AddCircle(center, radius, ImGui::GetColorU32(ImGuiCol_Border), num_segment, style.FrameBorderSize);
+    }
+
+    ImVec2 label_pos = ImVec2(check_bb.Max.x + style.ItemInnerSpacing.x, check_bb.Min.y + style.FramePadding.y);
+    if (g.LogEnabled)
+        ImGui::LogRenderedText(&label_pos, active ? "(x)" : "( )");
+    if (label_size.x > 0.0f)
+        RenderText(label_pos, label, ImGui::FindRenderedTextEnd(label), true);
+
+    IMGUI_TEST_ENGINE_ITEM_INFO(id, label, g.LastItemData.StatusFlags);
+    return pressed;
+}
+
+bool CVarRadioButton(const char* text, const char* cvarName, int32_t id, UIWidgets2::Colors color) {
+    std::string make_invisible = "##" + std::string(text) + std::string(cvarName);
+
+    bool ret = false;
+    int val = CVarGetInteger(cvarName, 0);
+    PushStyleCombobox(color);
+    if (ImGui::RadioButton(make_invisible.c_str(), id == val)) {
+        CVarSetInteger(cvarName, id);
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        ret = true;
+    }
+    ImGui::SameLine();
+    ImGui::Text("%s", text);
+    PopStyleCombobox();
+        
+    return ret;
+}
+
 void DrawFlagArray32(const std::string& name, uint32_t& flags) {
     ImGui::PushID(name.c_str());
     for (int32_t flagIndex = 0; flagIndex < 32; flagIndex++) {
