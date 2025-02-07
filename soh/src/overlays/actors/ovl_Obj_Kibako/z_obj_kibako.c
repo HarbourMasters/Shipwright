@@ -68,12 +68,8 @@ static InitChainEntry sInitChain[] = {
 void ObjKibako_SpawnCollectible(ObjKibako* this, PlayState* play) {
     s16 collectible;
 
-    if (!GameInteractor_Should(VB_SMALL_CRATE_DROP_ITEM, false, this)) {
-        return;
-    }
-
     collectible = this->actor.params & 0x1F;
-    if ((collectible >= 0) && (collectible <= 0x19)) {
+    if (GameInteractor_Should(VB_SMALL_CRATE_DROP_ITEM,(collectible >= 0) && (collectible <= 0x19), this)) {
         Item_DropCollectible(play, &this->actor.world.pos,
                              collectible | (((this->actor.params >> 8) & 0x3F) << 8));
     }

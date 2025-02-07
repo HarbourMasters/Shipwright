@@ -109,13 +109,9 @@ void ObjKibako2_SpawnCollectible(ObjKibako2* this, PlayState* play) {
     s16 itemDropped;
     s16 collectibleFlagTemp;
 
-    if (!GameInteractor_Should(VB_CRATE_DROP_ITEM, false, this)) {
-        return;
-    }
-
     collectibleFlagTemp = this->collectibleFlag;
     itemDropped = this->dyna.actor.home.rot.x;
-    if (itemDropped >= 0 && itemDropped < 0x1A) {
+    if (GameInteractor_Should(VB_CRATE_DROP_ITEM,itemDropped >= 0 && itemDropped < 0x1A, this)) {
         Item_DropCollectible(play, &this->dyna.actor.world.pos, itemDropped | (collectibleFlagTemp << 8));
     }
 }
