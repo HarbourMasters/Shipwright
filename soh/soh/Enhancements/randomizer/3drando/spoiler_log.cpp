@@ -187,7 +187,7 @@ static void WriteEnabledTricks() {
   auto ctx = Rando::Context::GetInstance();
 
   for (const auto& setting : Rando::Settings::GetInstance()->GetOptionGroup(RSG_TRICKS).GetOptions()) {
-    if (ctx->GetOption(setting->GetKey()).IsNot(RO_GENERIC_ON)) {
+    if (ctx->GetTrickOption(static_cast<RandomizerTrick>(setting->GetKey())).IsNot(RO_GENERIC_ON)) {
       continue;
     }
     jsonData["enabledTricks"].push_back(RemoveLineBreaks(setting->GetName()).c_str());
