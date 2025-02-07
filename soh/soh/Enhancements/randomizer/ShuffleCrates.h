@@ -13,6 +13,4 @@ void ObjKibako_RandomizerInit(void* actorRef);
 };
 #endif
 
-bool GetOverworldCratesIncluded(Rando::Location* loc);
-
 #endif //ShuffleCrates_H

@@ -20,7 +20,6 @@
 #include "z64item.h"
 #include "randomizerTypes.h"
 #include "fishsanity.h"
-#include "ShuffleCrates.h"
 
 extern "C" {
 #include "variables.h"
@@ -1342,7 +1341,12 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                 (showOverworldPots && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea())) ||
                 (showDungeonPots && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))) &&
             (loc->GetRCType() != RCTYPE_CRATE ||
-                (showOverworldCrates && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea()) && GetOverworldCratesIncluded(loc)) ||
+                (showOverworldCrates && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea())) ||
+                (showDungeonCrates && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))) &&
+            (loc->GetRCType() != RCTYPE_NLCRATE ||
+                (showOverworldCrates && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea()) &&
+                 OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOGIC_RULES) ==
+                     RO_LOGIC_NO_LOGIC) ||
                 (showDungeonCrates && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))) &&
             (loc->GetRCType() != RCTYPE_SMALL_CRATE ||
                 (showOverworldCrates && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea())) ||

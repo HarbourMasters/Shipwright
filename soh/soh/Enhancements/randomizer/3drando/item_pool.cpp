@@ -934,10 +934,14 @@ void GenerateItemPool() {
   // Shuffle Crates
   bool overworldCratesActive = ctx->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_OVERWORLD) ||
                                ctx->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_ALL);
+  bool overworldNLCratesActive = ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC) &&
+                                     (ctx->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_OVERWORLD) ||
+                                 ctx->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_ALL));
   bool dungeonCratesActive = ctx->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_DUNGEONS) ||
                            ctx->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_ALL);
   if (overworldCratesActive || dungeonCratesActive) {
       PlaceItemsForType(RCTYPE_CRATE, overworldCratesActive, dungeonCratesActive, false);
+      PlaceItemsForType(RCTYPE_NLCRATE, overworldNLCratesActive, dungeonCratesActive, false);
       PlaceItemsForType(RCTYPE_SMALL_CRATE, overworldCratesActive, dungeonCratesActive, false);
   }
   
