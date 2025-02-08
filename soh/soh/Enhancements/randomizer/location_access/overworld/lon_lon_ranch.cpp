@@ -39,7 +39,7 @@ void RegionTable_Init_LonLonRanch() {
         LOCATION(RC_LLR_TALONS_HOUSE_POT_3, logic->CanBreakPots()),
     }, {
         //Exits
-        Entrance(RR_LON_LON_RANCH, []{return logic->CanOpenOverworldDoor(RG_TALONS_HOUSE_KEY);}),
+        Entrance(RR_LON_LON_RANCH, []{return true;}),
     });
 
     areaTable[RR_LLR_STABLES] = Region("LLR Stables", "LLR Stables", {}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -48,7 +48,7 @@ void RegionTable_Init_LonLonRanch() {
         LOCATION(RC_LLR_STABLES_RIGHT_COW, logic->CanUse(RG_EPONAS_SONG)),
     }, {
         //Exits
-        Entrance(RR_LON_LON_RANCH, []{return logic->CanOpenOverworldDoor(RG_STABLES_KEY);}),
+        Entrance(RR_LON_LON_RANCH, []{return true;}),
     });
 
     areaTable[RR_LLR_TOWER] = Region("LLR Tower", "LLR Tower", {}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -58,7 +58,7 @@ void RegionTable_Init_LonLonRanch() {
         LOCATION(RC_LLR_TOWER_RIGHT_COW,  logic->CanUse(RG_EPONAS_SONG)),
     }, {
         //Exits
-        Entrance(RR_LON_LON_RANCH, []{return logic->CanOpenOverworldDoor(RG_BACK_TOWER_KEY);}),
+        Entrance(RR_LON_LON_RANCH, []{return true;}),
     });
 
     areaTable[RR_LLR_GROTTO] = Region("LLR Grotto", "LLR Grotto", {}, NO_DAY_NIGHT_CYCLE, {}, {

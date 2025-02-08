@@ -153,8 +153,6 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("InstantScarecrow"),
     CVAR_ENHANCEMENT("BlueFireArrows"),
     CVAR_ENHANCEMENT("SunlightArrows"),
-    CVAR_ENHANCEMENT("PauseLiveLinkRotation"),
-    CVAR_ENHANCEMENT("PauseLiveLink"),
     CVAR_ENHANCEMENT("MinFrameCount"),
     CVAR_ENHANCEMENT("NewDrops"),
     CVAR_ENHANCEMENT("DisableBlackBars"),
@@ -240,7 +238,6 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("SceneSpecificDirtPathFix"),
     CVAR_Z_FIGHTING_MODE,
     CVAR_ENHANCEMENT("AuthenticLogo"),
-    CVAR_ENHANCEMENT("PauseLiveLinkRotationSpeed"),
     CVAR_ENHANCEMENT("BowReticle"),
     CVAR_ENHANCEMENT("BoomerangFirstPerson"),
     CVAR_ENHANCEMENT("BoomerangReticle"),
@@ -617,9 +614,6 @@ const std::vector<PresetEntry> vanillaPlusPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), 1),
 
-    // Pause link animation (0 to 16)
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("PauseLiveLink"), 1),
-
     // Dynamic Wallet Icon
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DynamicWalletIcon"), 1),
     // Always show dungeon entrances
@@ -691,9 +685,6 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), 1),
-
-    // Pause link animation (0 to 16)
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("PauseLiveLink"), 1),
 
     // Dynamic Wallet Icon
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DynamicWalletIcon"), 1),
@@ -951,8 +942,6 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     // Color Temple of Time's Medallions
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("ToTMedallionsColors"), 1),
 
-    // Pause link animation (0 to 16)
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("PauseLiveLink"), 16),
     // Frames to wait
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MinFrameCount"), 200),
 
@@ -1403,7 +1392,7 @@ const std::map<PresetType, PresetTypeDefinition> presetTypes = {
             "Spock Race",
             "Race preset used for the official Ship of Harkinian race on June 3rd 2023. The following settings are notable:\n" \
             "- Rainbow Bridge is set to Greg\n" \
-            "- Ganons Boss Key is 5 dungeon rewards\n" \
+            "- Ganon's Boss Key is 5 dungeon rewards\n" \
             "- Shopsanity and Scrubsanity enabled\n" \
             "- All locations reachable is off\n", \
             spockRacePresetEntries,
@@ -1413,7 +1402,7 @@ const std::map<PresetType, PresetTypeDefinition> presetTypes = {
                 "No Logic Race preset used for official Ship of Harkinian No Logic races. The following settings are "
                 "notable:\n"
                 "- Rainbow Bridge is set to Greg\n"
-                "- Ganons Boss Key is 5 dungeon rewards\n"
+                "- Ganon's Boss Key is 5 dungeon rewards\n"
                 "- Shopsanity and Scrubsanity enabled\n"
                 "- All locations reachable is off\n",
                 spockRaceNoLogicPresetEntries,

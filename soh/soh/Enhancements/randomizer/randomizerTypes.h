@@ -5388,6 +5388,7 @@ typedef enum {
 
 //Dungeon reward settings
 typedef enum {
+    RO_DUNGEON_REWARDS_VANILLA,
     RO_DUNGEON_REWARDS_END_OF_DUNGEON,
     RO_DUNGEON_REWARDS_ANY_DUNGEON,
     RO_DUNGEON_REWARDS_OVERWORLD,
@@ -5724,6 +5725,7 @@ typedef enum {
     RE_DINOLFOS,
     RE_TORCH_SLUG,
     RE_FREEZARD,
+    RE_SHELL_BLADE,
     RE_SPIKE,
     RE_WHITE_WOLFOS,
     RE_STINGER,
