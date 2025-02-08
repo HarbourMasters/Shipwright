@@ -5,7 +5,9 @@ extern "C" {
 #include "variables.h"
 }
 
-void DoBA(u8 itemOnCRight) {
+void DoBA() {
+    auto itemOnCRight = gSaveContext.equips.buttonItems[3];
+
     if (itemOnCRight >= ITEM_STICK && itemOnCRight <= ITEM_POTION_BLUE) {
         gSaveContext.equips.buttonItems[0] = gSaveContext.inventory.items[itemOnCRight];
     } else if (itemOnCRight >= ITEM_FAIRY && itemOnCRight <= ITEM_MASK_BUNNY) {
@@ -139,7 +141,9 @@ void DoBA(u8 itemOnCRight) {
     }
 }
 
-void DoRBA(uint8_t itemOnCRight, uint8_t itemToPutInBottle) {
+void DoRBA(uint8_t itemToPutInBottle) {
+    auto itemOnCRight = gSaveContext.equips.buttonItems[3];
+
     if (itemOnCRight >= ITEM_STICK && itemOnCRight <= ITEM_POTION_BLUE) {
         gSaveContext.inventory.items[itemOnCRight] = itemToPutInBottle;
     } else if (itemOnCRight >= ITEM_FAIRY && itemOnCRight <= ITEM_MASK_BUNNY) {
@@ -280,9 +284,7 @@ void RegisterBottleAdventure() {
         }
 
         *should = false;
-
-        auto itemOnCRight = gSaveContext.equips.buttonItems[3];
-        DoBA(itemOnCRight);
+        DoBA();
     });
 
     REGISTER_VB_SHOULD(VB_UPDATE_BOTTLE_ITEM, {
@@ -295,8 +297,7 @@ void RegisterBottleAdventure() {
         *should = false;
 
         auto itemToPutInBottle = static_cast<uint8_t>(va_arg(args, int32_t));
-        auto itemOnCRight = gSaveContext.equips.buttonItems[3];
-        DoRBA(itemOnCRight, itemToPutInBottle);
+        DoRBA(itemToPutInBottle);
     });
 }
 
