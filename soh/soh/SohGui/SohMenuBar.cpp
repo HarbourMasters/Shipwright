@@ -478,16 +478,6 @@ void DrawSettingsMenu() {
             }
             UIWidgets::Tooltip("Matches interpolation value to the game window's current refresh rate.");
 
-            if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::FAST3D_DXGI_DX11) {
-                UIWidgets::PaddedEnhancementSliderInt(CVarGetInteger(CVAR_SETTING("ExtraLatencyThreshold"), 80) == 0 ? "Jitter fix: Off" : "Jitter fix: >= %d FPS",
-                    "##ExtraLatencyThreshold", CVAR_SETTING("ExtraLatencyThreshold"), 0, 360, "", 80, true, true, false);
-                UIWidgets::Tooltip(
-                    "(For DirectX backend only)\n\n"
-                    "When Interpolation FPS (Frame Rate) setting is at least this threshold, add one frame of delay (e.g. 16.6 ms for 60 FPS) in order to avoid jitter."
-                    "This setting allows the CPU to work on one frame while GPU works on the previous frame.\n"
-                    "This setting should be used when your computer is too slow to do CPU + GPU work in time.");
-            }
-
             UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
 
             ImGui::Text("ImGui Menu Scale");

@@ -1438,9 +1438,6 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
         wnd->SetTargetFps(fps);
     }
 
-    int threshold = CVarGetInteger(CVAR_SETTING("ExtraLatencyThreshold"), 80);
-    wnd->SetMaximumFrameLatency(threshold > 0 && target_fps >= threshold ? 2 : 1);
-
     // When the gfx debugger is active, only run with the final mtx
     if (GfxDebuggerIsDebugging()) {
         mtx_replacements.clear();
