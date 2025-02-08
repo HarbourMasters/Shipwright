@@ -70,7 +70,8 @@ typedef enum {
 using CVarVariant = std::variant<int32_t, const char*, float, Color_RGBA8, Color_RGB8>;
 using OptionsVariant =
     std::variant<UIWidgets2::ButtonOptions, UIWidgets2::CheckboxOptions, UIWidgets2::ComboboxOptions,
-                 UIWidgets2::FloatSliderOptions, UIWidgets2::IntSliderOptions, UIWidgets2::WidgetOptions>;
+                 UIWidgets2::FloatSliderOptions, UIWidgets2::IntSliderOptions, UIWidgets2::WidgetOptions,
+                 UIWidgets2::WindowButtonOptions>;
 
 // All the info needed for display and search of all widgets in the menu.
 // `name` is the label displayed,
@@ -134,8 +135,10 @@ struct WidgetInfo {
                     std::make_shared<UIWidgets2::IntSliderOptions>(std::get<UIWidgets2::IntSliderOptions>(options_));
                 break;
             case WIDGET_BUTTON:
-            case WIDGET_WINDOW_BUTTON:
                 options = std::make_shared<UIWidgets2::ButtonOptions>(std::get<UIWidgets2::ButtonOptions>(options_));
+                break;
+            case WIDGET_WINDOW_BUTTON:
+                options = std::make_shared<UIWidgets2::WindowButtonOptions>(std::get<UIWidgets2::WindowButtonOptions>(options_));
                 break;
             case WIDGET_TEXT:
             case WIDGET_SEPARATOR_TEXT:

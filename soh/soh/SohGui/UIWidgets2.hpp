@@ -123,6 +123,10 @@ namespace UIWidgets2 {
             disabled = disabled_;
             return *this;
         }
+        WidgetOptions& DisabledTooltip(const char* disabledTooltip_) {
+            disabledTooltip = disabledTooltip_;
+            return *this;
+        }
     };
 
     struct ButtonOptions : WidgetOptions {
@@ -139,6 +143,34 @@ namespace UIWidgets2 {
         }
         ButtonOptions& Color(Colors color_) {
             WidgetOptions::color = color = color_;
+            return *this;
+        }
+    };
+
+    struct WindowButtonOptions : WidgetOptions {
+        ImVec2 size = Sizes::Inline;
+        Colors color = Colors::Gray;
+        bool showButton = true;
+        bool embedWindow = true;
+
+        WindowButtonOptions& Size(ImVec2 size_) {
+            size = size_;
+            return *this;
+        }
+        WindowButtonOptions& Tooltip(const char* tooltip_) {
+            WidgetOptions::tooltip = tooltip_;
+            return *this;
+        }
+        WindowButtonOptions& Color(Colors color_) {
+            WidgetOptions::color = color = color_;
+            return *this;
+        }
+        WindowButtonOptions& ShowButton(bool showButton_) {
+            showButton = showButton_;
+            return *this;
+        }
+        WindowButtonOptions& EmbedWindow(bool embedWindow_) {
+            embedWindow = embedWindow_;
             return *this;
         }
     };
@@ -321,6 +353,23 @@ namespace UIWidgets2 {
         }
     };
 
+    struct RadioButtonsOptions : WidgetOptions {
+        std::unordered_map<int32_t, const char*> buttonMap;
+        
+        RadioButtonsOptions& ButtonMap(std::unordered_map<int32_t, const char*> buttonMap_) {
+            buttonMap = buttonMap_;
+            return *this;
+        }
+        RadioButtonsOptions& Tooltip(const char* tooltip_) {
+            WidgetOptions::tooltip = tooltip_;
+            return *this;
+        }
+        RadioButtonsOptions& Color(Colors color_) {
+            WidgetOptions::color = color = color_;
+            return *this;
+        }
+    };
+
     void PushStyleMenu(const ImVec4& color);
     void PushStyleMenu(Colors color = Colors::LightBlue);
     void PopStyleMenu();
@@ -335,7 +384,7 @@ namespace UIWidgets2 {
     void PushStyleButton(Colors color = Colors::Gray);
     void PopStyleButton();
     bool Button(const char* label, const ButtonOptions& options = {});
-    bool WindowButton(const char* label, const char* cvarName, std::shared_ptr<Ship::GuiWindow> windowPtr, const ButtonOptions& options = {});
+    bool WindowButton(const char* label, const char* cvarName, std::shared_ptr<Ship::GuiWindow> windowPtr, const WindowButtonOptions& options = {});
 
     void PushStyleCheckbox(const ImVec4& color);
     void PushStyleCheckbox(Colors color = Colors::LightBlue);
@@ -447,6 +496,7 @@ namespace UIWidgets2 {
         ImGui::BeginDisabled(options.disabled);
         PushStyleCombobox(options.color);
         if (options.alignment == ComponentAlignment::Left) {
+            ImGui::NewLine();
             if (options.labelPosition == LabelPosition::Above) {
                 ImGui::Text("%s", label);
                 ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
@@ -456,8 +506,8 @@ namespace UIWidgets2 {
                 ImGui::SetNextItemWidth(ImGui::CalcTextSize(comboMap.at(*value)).x + ImGui::GetStyle().FramePadding.x * 4 + ImGui::GetStyle().ItemSpacing.x);
             }
         } else if (options.alignment == ComponentAlignment::Right) {
+            ImGui::NewLine();
             if (options.labelPosition == LabelPosition::Above) {
-                ImGui::NewLine();
                 ImGui::SameLine(ImGui::GetContentRegionAvail().x - ImGui::CalcTextSize(label).x);
                 ImGui::Text("%s", label);
                 ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
@@ -708,6 +758,8 @@ namespace UIWidgets2 {
     bool SliderFloat(const char* label, float* value, const FloatSliderOptions& options = {});
     bool CVarSliderFloat(const char* label, const char* cvarName, const FloatSliderOptions& options = {});
     bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaultColor);
+    bool RadioButton(const char* label, bool active);
+    bool CVarRadioButton(const char* text, const char* cvarName, int32_t id, UIWidgets2::Colors color);
     void DrawFlagArray32(const std::string& name, uint32_t& flags);
     void DrawFlagArray16(const std::string& name, uint16_t& flags);
     void DrawFlagArray8(const std::string& name, uint8_t& flags);

@@ -419,10 +419,12 @@ void Menu::MenuDrawItem(WidgetInfo& widget, uint32_t width, UIWidgets2::Colors m
                     SPDLOG_ERROR(msg.c_str());
                     break;
                 }
-                auto options = std::static_pointer_cast<UIWidgets2::ButtonOptions>(widget.options);
+                auto options = std::static_pointer_cast<UIWidgets2::WindowButtonOptions>(widget.options);
                 options->color = menuThemeIndex;
-                UIWidgets2::WindowButton(widget.name.c_str(), widget.cVar, window, *options);
-                if (!window->IsVisible()) {
+                if (options->showButton) {
+                    UIWidgets2::WindowButton(widget.name.c_str(), widget.cVar, window, *options);
+                }
+                if (!window->IsVisible() && options->embedWindow) {
                     window->DrawElement();
                 }
             } break;

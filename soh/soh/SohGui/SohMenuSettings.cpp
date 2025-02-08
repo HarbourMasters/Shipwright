@@ -47,28 +47,11 @@ const char* GetGameVersionString(uint32_t index) {
 void SohMenu::AddMenuSettings() {
     // Add Settings Menu
     AddMenuEntry("Settings", CVAR_SETTING("Menu.SettingsSidebarSection"));
-
-    // General - About
     AddSidebarEntry("Settings", "General", 3);
     WidgetPath path = { "Settings", "General", SECTION_COLUMN_1 };
 
-    AddWidget(path, "About", WIDGET_SEPARATOR_TEXT);
-    AddWidget(path, "Ship Of Harkinian", WIDGET_TEXT);
-    AddWidget(path, gBuildVersion, WIDGET_TEXT).PreFunc([](WidgetInfo& info) {
-        info.isHidden = (gGitCommitTag[0] == 0);
-    });
-    AddWidget(path, gGitBranch, WIDGET_TEXT).PreFunc([](WidgetInfo& info) {
-        info.isHidden = (gGitCommitTag[0] != 0);
-    });
-    AddWidget(path, gGitCommitHash, WIDGET_TEXT).PreFunc([](WidgetInfo& info) {
-        info.isHidden = (gGitCommitTag[0] != 0);
-    });
-    for (uint32_t i = 0; i < ResourceMgr_GetNumGameVersions(); i++) {
-        AddWidget(path, GetGameVersionString(i), WIDGET_TEXT);
-    }
-
     // General - Settings
-    AddWidget(path, "Settings", WIDGET_SEPARATOR_TEXT);
+    //AddWidget(path, "Settings", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Menu Theme", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_SETTING("Menu.Theme"))
         .Options(ComboboxOptions()
@@ -116,8 +99,27 @@ void SohMenu::AddMenuSettings() {
         })
         .Options(ButtonOptions().Tooltip("Opens the folder that contains the save and mods folders, etc."));
 
+    // General - About
+    path.column = SECTION_COLUMN_2;
+
+    AddWidget(path, "About", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Ship Of Harkinian", WIDGET_TEXT);
+    AddWidget(path, gBuildVersion, WIDGET_TEXT).PreFunc([](WidgetInfo& info) {
+        info.isHidden = (gGitCommitTag[0] == 0);
+        });
+    AddWidget(path, gGitBranch, WIDGET_TEXT).PreFunc([](WidgetInfo& info) {
+        info.isHidden = (gGitCommitTag[0] != 0);
+        });
+    AddWidget(path, gGitCommitHash, WIDGET_TEXT).PreFunc([](WidgetInfo& info) {
+        info.isHidden = (gGitCommitTag[0] != 0);
+        });
+    for (uint32_t i = 0; i < ResourceMgr_GetNumGameVersions(); i++) {
+        AddWidget(path, GetGameVersionString(i), WIDGET_TEXT);
+    }
+
     // Audio Settings
     path.sidebarName = "Audio";
+    path.column = SECTION_COLUMN_1;
     AddSidebarEntry("Settings", "Audio", 3);
 
     AddWidget(path, "Master Volume: %d %%", WIDGET_CVAR_SLIDER_INT)
@@ -304,20 +306,20 @@ void SohMenu::AddMenuSettings() {
     AddWidget(path, "Popout Bindings Window", WIDGET_WINDOW_BUTTON)
         .CVar("gWindows.InputEditor")
         .WindowName("Input Editor")
-        .Options(ButtonOptions().Tooltip("Enables the separate Bindings Window.").Size(Sizes::Inline));
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Bindings Window."));
 
     path.column = SECTION_COLUMN_2;
     AddWidget(path, "Input Viewer", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Toggle Input Viewer", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("InputViewer"))
         .WindowName("Input Viewer")
-        .Options(ButtonOptions().Tooltip("Toggles the Input Viewer.").Size(Sizes::Inline));
+        .Options(WindowButtonOptions().Tooltip("Toggles the Input Viewer.").EmbedWindow(false));
 
     AddWidget(path, "Input Viewer Settings", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Popout Input Viewer Settings", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("InputViewerSettings"))
         .WindowName("Input Viewer Settings")
-        .Options(ButtonOptions().Tooltip("Enables the separate Input Viewer Settings Window.").Size(Sizes::Inline));
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Input Viewer Settings Window."));
 
     // Notifications
     path.sidebarName = "Notifications";
