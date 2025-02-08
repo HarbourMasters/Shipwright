@@ -1335,52 +1335,7 @@ void DrawEnhancementsMenu() {
 
             UIWidgets::Spacer(0);
 
-            if (ImGui::BeginMenu("Animated Link in Pause Menu")) {
-                ImGui::Text("Rotation");
-                UIWidgets::EnhancementRadioButton("Disabled", CVAR_ENHANCEMENT("PauseLiveLinkRotation"), 0);
-                UIWidgets::EnhancementRadioButton("Rotate Link with D-pad", CVAR_ENHANCEMENT("PauseLiveLinkRotation"), 1);
-                UIWidgets::Tooltip("Allow you to rotate Link on the Equipment menu with the D-pad\nUse D-pad Up or D-pad Down to reset Link's rotation");
-                UIWidgets::EnhancementRadioButton("Rotate Link with C-buttons", CVAR_ENHANCEMENT("PauseLiveLinkRotation"), 2);
-                UIWidgets::Tooltip("Allow you to rotate Link on the Equipment menu with the C-buttons\nUse C-Up or C-Down to reset Link's rotation");
-                UIWidgets::EnhancementRadioButton("Rotate Link with Right Stick", CVAR_ENHANCEMENT("PauseLiveLinkRotation"), 3);
-                UIWidgets::Tooltip("Allow you to rotate Link on the Equipment menu with the Right Stick\nYou can zoom in by pointing up and reset Link's rotation by pointing down");
-                if (CVarGetInteger(CVAR_ENHANCEMENT("PauseLiveLinkRotation"), 0) != 0) {
-                    UIWidgets::EnhancementSliderInt("Rotation Speed: %d", "##MinRotationSpeed", CVAR_ENHANCEMENT("PauseLiveLinkRotationSpeed"), 1, 20, "", 1);
-                }
-                UIWidgets::PaddedSeparator();
-                ImGui::Text("Static loop");
-                UIWidgets::EnhancementRadioButton("Disabled", CVAR_ENHANCEMENT("PauseLiveLink"), 0);
-                UIWidgets::EnhancementRadioButton("Idle (standing)", CVAR_ENHANCEMENT("PauseLiveLink"), 1);
-                UIWidgets::EnhancementRadioButton("Idle (look around)", CVAR_ENHANCEMENT("PauseLiveLink"), 2);
-                UIWidgets::EnhancementRadioButton("Idle (belt)", CVAR_ENHANCEMENT("PauseLiveLink"), 3);
-                UIWidgets::EnhancementRadioButton("Idle (shield)", CVAR_ENHANCEMENT("PauseLiveLink"), 4);
-                UIWidgets::EnhancementRadioButton("Idle (test sword)", CVAR_ENHANCEMENT("PauseLiveLink"), 5);
-                UIWidgets::EnhancementRadioButton("Idle (yawn)", CVAR_ENHANCEMENT("PauseLiveLink"), 6);
-                UIWidgets::EnhancementRadioButton("Battle Stance", CVAR_ENHANCEMENT("PauseLiveLink"), 7);
-                UIWidgets::EnhancementRadioButton("Walking (no shield)", CVAR_ENHANCEMENT("PauseLiveLink"), 8);
-                UIWidgets::EnhancementRadioButton("Walking (holding shield)", CVAR_ENHANCEMENT("PauseLiveLink"), 9);
-                UIWidgets::EnhancementRadioButton("Running (no shield)", CVAR_ENHANCEMENT("PauseLiveLink"), 10);
-                UIWidgets::EnhancementRadioButton("Running (holding shield)", CVAR_ENHANCEMENT("PauseLiveLink"), 11);
-                UIWidgets::EnhancementRadioButton("Hand on hip", CVAR_ENHANCEMENT("PauseLiveLink"), 12);
-                UIWidgets::EnhancementRadioButton("Spin attack charge", CVAR_ENHANCEMENT("PauseLiveLink"), 13);
-                UIWidgets::EnhancementRadioButton("Look at hand", CVAR_ENHANCEMENT("PauseLiveLink"), 14);
-                UIWidgets::PaddedSeparator();
-                ImGui::Text("Randomize");
-                UIWidgets::EnhancementRadioButton("Random", CVAR_ENHANCEMENT("PauseLiveLink"), 15);
-                UIWidgets::Tooltip("Randomize the animation played each time you open the menu");
-                UIWidgets::EnhancementRadioButton("Random cycle", CVAR_ENHANCEMENT("PauseLiveLink"), 16);
-                UIWidgets::Tooltip("Randomize the animation played on the menu after a certain time");
-                UIWidgets::EnhancementRadioButton("Random cycle (Idle)", CVAR_ENHANCEMENT("PauseLiveLink"), 17);
-                UIWidgets::Tooltip("Randomize the animation played on the menu after a certain time (Idle animations only)");
-                if (CVarGetInteger(CVAR_ENHANCEMENT("PauseLiveLink"), 0) >= 16) {
-                    UIWidgets::EnhancementSliderInt("Frame to wait: %d", "##MinFrameCount", CVAR_ENHANCEMENT("MinFrameCount"), 1, 1000, "", 0);
-                }
-
-                ImGui::EndMenu();
-            }
-
-            UIWidgets::Spacer(0);
-
+            UIWidgets::PaddedEnhancementCheckbox("Animated Link in Pause Menu", CVAR_ENHANCEMENT("PauseMenuAnimatedLink"), false, false);
             UIWidgets::PaddedEnhancementCheckbox("Disable LOD", CVAR_ENHANCEMENT("DisableLOD"), true, false);
             UIWidgets::Tooltip(
                 "Turns off the Level of Detail setting, making models use their higher-poly variants at any distance");
