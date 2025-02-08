@@ -5,6 +5,140 @@ extern "C" {
 #include "variables.h"
 }
 
+void DoBA(u8 itemOnCRight) {
+    if (itemOnCRight >= ITEM_STICK && itemOnCRight <= ITEM_POTION_BLUE) {
+        gSaveContext.equips.buttonItems[0] = gSaveContext.inventory.items[itemOnCRight];
+    } else if (itemOnCRight >= ITEM_FAIRY && itemOnCRight <= ITEM_MASK_BUNNY) {
+        gSaveContext.equips.buttonItems[0] = gSaveContext.inventory.ammo[itemOnCRight - ITEM_FAIRY];
+    } else if (itemOnCRight == ITEM_MASK_GORON) {
+        gSaveContext.equips.buttonItems[0] = (gSaveContext.inventory.equipment >> 8) & 0xFF;
+    } else if (itemOnCRight == ITEM_MASK_ZORA) {
+        gSaveContext.equips.buttonItems[0] = gSaveContext.inventory.equipment & 0xFF;
+    } else if (itemOnCRight == ITEM_MASK_GERUDO || itemOnCRight == ITEM_MASK_TRUTH) {
+        // ITEM_MASK_GERUDO and ITEM_MASK_TRUTH land in padding bytes
+        gSaveContext.equips.buttonItems[0] = 0;
+    } else if (itemOnCRight == ITEM_SOLD_OUT) {
+        gSaveContext.equips.buttonItems[0] = (gSaveContext.inventory.upgrades >> 24) & 0xFF;
+    } else if (itemOnCRight == ITEM_POCKET_EGG) {
+        gSaveContext.equips.buttonItems[0] = (gSaveContext.inventory.upgrades >> 16) & 0xFF;
+    } else if (itemOnCRight == ITEM_POCKET_CUCCO) {
+        gSaveContext.equips.buttonItems[0] = (gSaveContext.inventory.upgrades >> 8) & 0xFF;
+    } else if (itemOnCRight == ITEM_COJIRO) {
+        gSaveContext.equips.buttonItems[0] = gSaveContext.inventory.upgrades & 0xFF;
+    } else if (itemOnCRight == ITEM_ODD_MUSHROOM) {
+        gSaveContext.equips.buttonItems[0] = (gSaveContext.inventory.questItems >> 24) & 0xFF;
+    } else if (itemOnCRight == ITEM_ODD_POTION) {
+        gSaveContext.equips.buttonItems[0] = (gSaveContext.inventory.questItems >> 16) & 0xFF;
+    } else if (itemOnCRight == ITEM_SAW) {
+        gSaveContext.equips.buttonItems[0] = (gSaveContext.inventory.questItems >> 8) & 0xFF;
+    } else if (itemOnCRight == ITEM_SWORD_BROKEN) {
+        gSaveContext.equips.buttonItems[0] = gSaveContext.inventory.questItems & 0xFF;
+    } else if (itemOnCRight >= ITEM_PRESCRIPTION && itemOnCRight <= ITEM_BULLET_BAG_30) {
+        gSaveContext.equips.buttonItems[0] = gSaveContext.inventory.dungeonItems[itemOnCRight - ITEM_PRESCRIPTION];
+    } else if (itemOnCRight >= ITEM_BULLET_BAG_40 && itemOnCRight <= ITEM_SWORD_KNIFE) {
+        gSaveContext.equips.buttonItems[0] = gSaveContext.inventory.dungeonKeys[itemOnCRight - ITEM_BULLET_BAG_40];
+    } else if (itemOnCRight == ITEM_SONG_BOLERO) {
+        gSaveContext.equips.buttonItems[0] = gSaveContext.inventory.defenseHearts;
+    } else if (itemOnCRight == ITEM_SONG_SERENADE) {
+        gSaveContext.equips.buttonItems[0] = (gSaveContext.inventory.gsTokens >> 8) & 0xFF;
+    } else if (itemOnCRight == ITEM_SONG_REQUIEM) {
+        gSaveContext.equips.buttonItems[0] = gSaveContext.inventory.gsTokens & 0xFF;
+    } else if (itemOnCRight == ITEM_SONG_NOCTURNE || itemOnCRight == ITEM_SONG_PRELUDE) {
+        // ITEM_SONG_NOCTURNE and ITEM_SONG_PRELUDE land in padding bytes
+        gSaveContext.equips.buttonItems[0] = 0;
+    } else if (itemOnCRight >= ITEM_SONG_LULLABY) {
+        // The rest of the items fall into the saved scene flags. Let's calculate the scene and which field it pulls from
+        u32 offset = itemOnCRight - ITEM_SONG_LULLABY;
+        u32 scene = offset / sizeof(SavedSceneFlags);
+        switch (offset % sizeof(SavedSceneFlags)) {
+        case 0:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].chest >> 24) & 0xFF;
+            break;
+        case 1:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].chest >> 16) & 0xFF;
+            break;
+        case 2:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].chest >> 8) & 0xFF;
+            break;
+        case 3:
+            gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].chest & 0xFF;
+            break;
+        case 4:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].swch >> 24) & 0xFF;
+            break;
+        case 5:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].swch >> 16) & 0xFF;
+            break;
+        case 6:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].swch >> 8) & 0xFF;
+            break;
+        case 7:
+            gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].swch & 0xFF;
+            break;
+        case 8:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].clear >> 24) & 0xFF;
+            break;
+        case 9:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].clear >> 16) & 0xFF;
+            break;
+        case 10:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].clear >> 8) & 0xFF;
+            break;
+        case 11:
+            gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].clear & 0xFF;
+            break;
+        case 12:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].collect >> 24) & 0xFF;
+            break;
+        case 13:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].collect >> 16) & 0xFF;
+            break;
+        case 14:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].collect >> 8) & 0xFF;
+            break;
+        case 15:
+            gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].collect & 0xFF;
+            break;
+        case 16:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].unk >> 24) & 0xFF;
+            break;
+        case 17:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].unk >> 16) & 0xFF;
+            break;
+        case 18:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].unk >> 8) & 0xFF;
+            break;
+        case 19:
+            gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].unk & 0xFF;
+            break;
+        case 20:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].rooms >> 24) & 0xFF;
+            break;
+        case 21:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].rooms >> 16) & 0xFF;
+            break;
+        case 22:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].rooms >> 8) & 0xFF;
+            break;
+        case 23:
+            gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].rooms & 0xFF;
+            break;
+        case 24:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].floors >> 24) & 0xFF;
+            break;
+        case 25:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].floors >> 16) & 0xFF;
+            break;
+        case 26:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].floors >> 8) & 0xFF;
+            break;
+        case 27:
+            gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].floors & 0xFF;
+            break;
+        }
+    }
+}
+
 void DoRBA(uint8_t itemOnCRight, uint8_t itemToPutInBottle) {
     if (itemOnCRight >= ITEM_STICK && itemOnCRight <= ITEM_POTION_BLUE) {
         gSaveContext.inventory.items[itemOnCRight] = itemToPutInBottle;
@@ -138,6 +272,19 @@ void DoRBA(uint8_t itemOnCRight, uint8_t itemToPutInBottle) {
 }
 
 void RegisterBottleAdventure() {
+    REGISTER_VB_SHOULD(VB_SET_BUTTON_ITEM_FROM_C_BUTTON_SLOT, {
+        // if we aren't dealing with the b button, early return
+        auto button = static_cast<int16_t>(va_arg(args, int32_t));
+        if (button != 0) {
+            return;
+        }
+
+        *should = false;
+
+        auto itemOnCRight = gSaveContext.equips.buttonItems[3];
+        DoBA(itemOnCRight);
+    });
+
     REGISTER_VB_SHOULD(VB_UPDATE_BOTTLE_ITEM, {
         // if we aren't dealing with a bottle on b, early return
         auto buttonBottleIsOn = static_cast<uint8_t>(va_arg(args, int32_t));
@@ -145,9 +292,10 @@ void RegisterBottleAdventure() {
             return;
         }
 
+        *should = false;
+
         auto itemToPutInBottle = static_cast<uint8_t>(va_arg(args, int32_t));
         auto itemOnCRight = gSaveContext.equips.buttonItems[3];
-
         DoRBA(itemOnCRight, itemToPutInBottle);
     });
 }

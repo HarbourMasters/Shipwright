@@ -1439,140 +1439,6 @@ Gfx* Gfx_TextureI8(Gfx* displayListHead, void* texture, s16 textureWidth, s16 te
     return displayListHead;
 }
 
-void Inventory_DoBA(u8 cRight) {
-    if (cRight >= ITEM_STICK && cRight <= ITEM_POTION_BLUE) {
-        gSaveContext.equips.buttonItems[0] = gSaveContext.inventory.items[cRight];
-    } else if (cRight >= ITEM_FAIRY && cRight <= ITEM_MASK_BUNNY) {
-        gSaveContext.equips.buttonItems[0] = gSaveContext.inventory.ammo[cRight - ITEM_FAIRY];
-    } else if (cRight == ITEM_MASK_GORON) {
-        gSaveContext.equips.buttonItems[0] = (gSaveContext.inventory.equipment >> 8) & 0xFF;
-    } else if (cRight == ITEM_MASK_ZORA) {
-        gSaveContext.equips.buttonItems[0] = gSaveContext.inventory.equipment & 0xFF;
-    } else if (cRight == ITEM_MASK_GERUDO || cRight == ITEM_MASK_TRUTH) {
-        // ITEM_MASK_GERUDO and ITEM_MASK_TRUTH land in padding bytes
-        gSaveContext.equips.buttonItems[0] = 0;
-    } else if (cRight == ITEM_SOLD_OUT) {
-        gSaveContext.equips.buttonItems[0] = (gSaveContext.inventory.upgrades >> 24) & 0xFF;
-    } else if (cRight == ITEM_POCKET_EGG) {
-        gSaveContext.equips.buttonItems[0] = (gSaveContext.inventory.upgrades >> 16) & 0xFF;
-    } else if (cRight == ITEM_POCKET_CUCCO) {
-        gSaveContext.equips.buttonItems[0] = (gSaveContext.inventory.upgrades >> 8) & 0xFF;
-    } else if (cRight == ITEM_COJIRO) {
-        gSaveContext.equips.buttonItems[0] = gSaveContext.inventory.upgrades & 0xFF;
-    } else if (cRight == ITEM_ODD_MUSHROOM) {
-        gSaveContext.equips.buttonItems[0] = (gSaveContext.inventory.questItems >> 24) & 0xFF;
-    } else if (cRight == ITEM_ODD_POTION) {
-        gSaveContext.equips.buttonItems[0] = (gSaveContext.inventory.questItems >> 16) & 0xFF;
-    } else if (cRight == ITEM_SAW) {
-        gSaveContext.equips.buttonItems[0] = (gSaveContext.inventory.questItems >> 8) & 0xFF;
-    } else if (cRight == ITEM_SWORD_BROKEN) {
-        gSaveContext.equips.buttonItems[0] = gSaveContext.inventory.questItems & 0xFF;
-    } else if (cRight >= ITEM_PRESCRIPTION && cRight <= ITEM_BULLET_BAG_30) {
-        gSaveContext.equips.buttonItems[0] = gSaveContext.inventory.dungeonItems[cRight - ITEM_PRESCRIPTION];
-    } else if (cRight >= ITEM_BULLET_BAG_40 && cRight <= ITEM_SWORD_KNIFE) {
-        gSaveContext.equips.buttonItems[0] = gSaveContext.inventory.dungeonKeys[cRight - ITEM_BULLET_BAG_40];
-    } else if (cRight == ITEM_SONG_BOLERO) {
-        gSaveContext.equips.buttonItems[0] = gSaveContext.inventory.defenseHearts;
-    } else if (cRight == ITEM_SONG_SERENADE) {
-        gSaveContext.equips.buttonItems[0] = (gSaveContext.inventory.gsTokens >> 8) & 0xFF;
-    } else if (cRight == ITEM_SONG_REQUIEM) {
-        gSaveContext.equips.buttonItems[0] = gSaveContext.inventory.gsTokens & 0xFF;
-    } else if (cRight == ITEM_SONG_NOCTURNE || cRight == ITEM_SONG_PRELUDE) {
-        // ITEM_SONG_NOCTURNE and ITEM_SONG_PRELUDE land in padding bytes
-        gSaveContext.equips.buttonItems[0] = 0;
-    } else if (cRight >= ITEM_SONG_LULLABY) {
-        // The rest of the items fall into the saved scene flags. Let's calculate the scene and which field it pulls from
-        u32 offset = cRight - ITEM_SONG_LULLABY;
-        u32 scene = offset / sizeof(SavedSceneFlags);
-        switch (offset % sizeof(SavedSceneFlags)) {
-        case 0:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].chest >> 24) & 0xFF;
-            break;
-        case 1:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].chest >> 16) & 0xFF;
-            break;
-        case 2:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].chest >> 8) & 0xFF;
-            break;
-        case 3:
-            gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].chest & 0xFF;
-            break;
-        case 4:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].swch >> 24) & 0xFF;
-            break;
-        case 5:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].swch >> 16) & 0xFF;
-            break;
-        case 6:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].swch >> 8) & 0xFF;
-            break;
-        case 7:
-            gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].swch & 0xFF;
-            break;
-        case 8:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].clear >> 24) & 0xFF;
-            break;
-        case 9:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].clear >> 16) & 0xFF;
-            break;
-        case 10:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].clear >> 8) & 0xFF;
-            break;
-        case 11:
-            gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].clear & 0xFF;
-            break;
-        case 12:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].collect >> 24) & 0xFF;
-            break;
-        case 13:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].collect >> 16) & 0xFF;
-            break;
-        case 14:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].collect >> 8) & 0xFF;
-            break;
-        case 15:
-            gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].collect & 0xFF;
-            break;
-        case 16:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].unk >> 24) & 0xFF;
-            break;
-        case 17:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].unk >> 16) & 0xFF;
-            break;
-        case 18:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].unk >> 8) & 0xFF;
-            break;
-        case 19:
-            gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].unk & 0xFF;
-            break;
-        case 20:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].rooms >> 24) & 0xFF;
-            break;
-        case 21:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].rooms >> 16) & 0xFF;
-            break;
-        case 22:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].rooms >> 8) & 0xFF;
-            break;
-        case 23:
-            gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].rooms & 0xFF;
-            break;
-        case 24:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].floors >> 24) & 0xFF;
-            break;
-        case 25:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].floors >> 16) & 0xFF;
-            break;
-        case 26:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].floors >> 8) & 0xFF;
-            break;
-        case 27:
-            gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].floors & 0xFF;
-            break;
-        }
-    }
-}
-
 void Rando_Inventory_SwapAgeEquipment(void) {
     s16 i;
     u16 shieldEquipValue;
@@ -1652,10 +1518,7 @@ void Rando_Inventory_SwapAgeEquipment(void) {
                      (gSaveContext.equips.buttonItems[i] <= ITEM_POE)) ||
                     ((gSaveContext.equips.buttonItems[i] >= ITEM_WEIRD_EGG) &&
                      (gSaveContext.equips.buttonItems[i] <= ITEM_CLAIM_CHECK))) {
-                    if (i == 0) {
-                        // If bottle is on B, it triggers BA, which we need to recreate
-                        Inventory_DoBA(gSaveContext.equips.buttonItems[3]);
-                    } else {
+                    if (GameInteractor_Should(VB_SET_BUTTON_ITEM_FROM_C_BUTTON_SLOT, true, i)) {
                         gSaveContext.equips.buttonItems[i] =
                             gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[i - 1]];
                     }
@@ -1814,10 +1677,7 @@ void Inventory_SwapAgeEquipment(void) {
                     ((gSaveContext.equips.buttonItems[i] >= ITEM_WEIRD_EGG) &&
                      (gSaveContext.equips.buttonItems[i] <= ITEM_CLAIM_CHECK))) {
                     osSyncPrintf("Register_Item_Pt(%d)=%d\n", i, gSaveContext.equips.cButtonSlots[i - 1]);
-                    if (i == 0) {
-                        // If bottle is on B, it triggers BA, which we need to recreate
-                        Inventory_DoBA(gSaveContext.equips.buttonItems[3]);
-                    } else {
+                    if (GameInteractor_Should(VB_SET_BUTTON_ITEM_FROM_C_BUTTON_SLOT, true, i)) {
                         gSaveContext.equips.buttonItems[i] =
                             gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[i - 1]];
                     }

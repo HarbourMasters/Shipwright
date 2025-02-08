@@ -1590,6 +1590,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `int32_t` (button - promoted from `s16`)
+    VB_SET_BUTTON_ITEM_FROM_C_BUTTON_SLOT,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*EnNiwLady`
     VB_SET_CUCCO_COUNT,
 
