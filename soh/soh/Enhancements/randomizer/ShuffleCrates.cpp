@@ -22,17 +22,16 @@ extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
 extern "C" void ObjKibako2_RandomizerDraw(Actor* thisx, PlayState* play) {
     GetItemCategory getItemCategory;
     auto crateActor = ((ObjKibako2*)thisx);
-    u8 hasCustomCrateDLs = 0;
     int csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED);
     int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
 
-    if (ResourceMgr_FileIsCustomByName(gLargeCrateDL)) {
-        hasCustomCrateDLs = 1;
+    int isVanilla = csmc == CSMC_DISABLED || csmc == CSMC_SIZE || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
+
+    if (isVanilla) {
+        Gfx_DrawDListOpa(play, (Gfx*)gLargeRandoCrateDL);
         return;
-    }
-
-    int isVanilla = csmc == CSMC_DISABLED || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
-
+    } 
+    
     GetItemEntry crateItem =
         Rando::Context::GetInstance()->GetFinalGIEntry(crateActor->crateIdentity.randomizerCheck, true, GI_NONE);
     getItemCategory = crateItem.getItemCategory;
@@ -54,8 +53,6 @@ extern "C" void ObjKibako2_RandomizerDraw(Actor* thisx, PlayState* play) {
 
         // Change texture
         // TODO: add heart texture when supported gLargeHeartCrateDL
-    if (!isVanilla && !hasCustomCrateDLs &&
-        (csmc == CSMC_BOTH || csmc == CSMC_TEXTURE)) {
         switch (getItemCategory) {
             case ITEM_CATEGORY_MAJOR:
                 Gfx_DrawDListOpa(play, (Gfx*)gLargeMajorCrateDL);
@@ -77,24 +74,20 @@ extern "C" void ObjKibako2_RandomizerDraw(Actor* thisx, PlayState* play) {
                 Gfx_DrawDListOpa(play, (Gfx*)gLargeJunkCrateDL);
                 break;
         }
-    } else {
-        Gfx_DrawDListOpa(play, (Gfx*)gLargeRandoCrateDL);
-    }
 }
 
 extern "C" void ObjKibako_RandomizerDraw(Actor* thisx, PlayState* play) {
     GetItemCategory getItemCategory;
     auto smallCrateActor = ((ObjKibako*)thisx);
-    u8 hasCustomSmallCrateDLs = 0;
     int csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED);
     int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
 
-    if (ResourceMgr_FileIsCustomByName(gSmallWoodenBoxDL)) {
-        hasCustomSmallCrateDLs = 1;
+    int isVanilla = csmc == CSMC_DISABLED || csmc == CSMC_SIZE || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
+    
+    if (isVanilla) {
+        Gfx_DrawDListOpa(play, (Gfx*)gSmallRandoCrateDL);
         return;
-    }
-
-    int isVanilla = csmc == CSMC_DISABLED || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
+    } 
 
     GetItemEntry smallCrateItem = Rando::Context::GetInstance()->GetFinalGIEntry(smallCrateActor->smallCrateIdentity.randomizerCheck, true, GI_NONE);
     getItemCategory = smallCrateItem.getItemCategory;
@@ -115,7 +108,6 @@ extern "C" void ObjKibako_RandomizerDraw(Actor* thisx, PlayState* play) {
 
     // Change texture
     // TODO: add heart texture when supported gSmallHeartCrateDL
-    if (!isVanilla && !hasCustomSmallCrateDLs && (csmc == CSMC_BOTH || csmc == CSMC_TEXTURE)) {
         switch (getItemCategory) {
             case ITEM_CATEGORY_MAJOR:
                 Gfx_DrawDListOpa(play, (Gfx*)gSmallMajorCrateDL);
@@ -137,9 +129,6 @@ extern "C" void ObjKibako_RandomizerDraw(Actor* thisx, PlayState* play) {
                 Gfx_DrawDListOpa(play, (Gfx*)gSmallJunkCrateDL);
                 break;
         }
-    } else {
-        Gfx_DrawDListOpa(play, (Gfx*)gSmallRandoCrateDL);
-    }
 }
 
 uint8_t ObjKibako2_RandomizerHoldsItem(ObjKibako2* crateActor, PlayState* play) {
