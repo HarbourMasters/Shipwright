@@ -1835,6 +1835,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // button != 0
+    // ```
+    // #### `args`
+    // - `int32_t` (item - promoted from `u8`)
+    VB_UPDATE_BOTTLE_ITEM,
+
+    // #### `result`
+    // ```c
     // INV_CONTENT(ITEM_ODD_MUSHROOM) == ITEM_EYEDROPS
     // ```
     // #### `args`
