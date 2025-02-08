@@ -2850,7 +2850,7 @@ void Inventory_UpdateBottleItem(PlayState* play, u8 item, u8 button) {
         item = ITEM_MILK_HALF;
     }
 
-    if (GameInteractor_Should(VB_UPDATE_BOTTLE_ITEM, button != 0, item)) {
+    if (GameInteractor_Should(VB_UPDATE_BOTTLE_ITEM, true, button, item)) {
         gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[button - 1]] = item;
     }
 

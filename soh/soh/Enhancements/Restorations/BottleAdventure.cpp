@@ -139,12 +139,9 @@ void DoRBA(uint8_t itemOnCRight, uint8_t itemToPutInBottle) {
 
 void RegisterBottleAdventure() {
     REGISTER_VB_SHOULD(VB_UPDATE_BOTTLE_ITEM, {
-        // vanilla condition is button != 0, meaning we use the vanilla
-        // logic to update the bottle item when the bottle isn't on b
-        // 
-        // if that's the case (should is true), we don't want to perform RBA
-        // so we early return
-        if (*should) {
+        // if we aren't dealing with a bottle on b, early return
+        auto buttonBottleIsOn = static_cast<uint8_t>(va_arg(args, int32_t));
+        if (buttonBottleIsOn != 0) {
             return;
         }
 
