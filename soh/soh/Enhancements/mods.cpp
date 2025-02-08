@@ -1161,30 +1161,6 @@ void RegisterCustomSkeletons() {
     });
 }
 
-#define FAIRY_FLAG_BIG (1 << 9)
-
-
-void RegisterFairyCustomization() {
-    REGISTER_VB_SHOULD(VB_FAIRY_HEAL, {
-        EnElf* enElf = va_arg(args, EnElf*);
-        // Don't trigger if fairy is shuffled
-        if (!IS_RANDO || !OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_FAIRIES) || enElf->sohFairyIdentity.randomizerInf == RAND_INF_MAX) {
-            if (CVarGetInteger(CVAR_ENHANCEMENT("FairyEffect"), 0) && !(enElf->fairyFlags & FAIRY_FLAG_BIG))
-            {
-                if (CVarGetInteger(CVAR_ENHANCEMENT("FairyPercentRestore"), 0))
-                {
-                    Health_ChangeBy(gPlayState, (gSaveContext.healthCapacity * CVarGetInteger(CVAR_ENHANCEMENT("FairyHealth"), 100) / 100 + 15) / 16 * 16);
-                }
-                else
-                {
-                    Health_ChangeBy(gPlayState, CVarGetInteger(CVAR_ENHANCEMENT("FairyHealth"), 8) * 16);
-                }
-                *should = false;
-            }
-        }
-    });
-}
-
 void InitMods() {
     BossRush_RegisterHooks();
     RandomizerRegisterHooks();
@@ -1217,6 +1193,5 @@ void InitMods() {
     RegisterHurtContainerModeHandler();
     RegisterPauseMenuHooks();
     RandoKaleido_RegisterHooks();
-    RegisterFairyCustomization();
     RegisterCustomSkeletons();
 }

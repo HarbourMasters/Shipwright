@@ -9468,16 +9468,7 @@ void func_80843AE8(PlayState* play, Player* this) {
                     LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_derth_rebirth, 1.0f, 99.0f,
                                          Animation_GetLastFrame(&gPlayerAnim_link_derth_rebirth), ANIMMODE_ONCE, 0.0f);
                 }
-                if (CVarGetInteger(CVAR_ENHANCEMENT("FairyReviveEffect"), 0)) {
-                    if (CVarGetInteger(CVAR_ENHANCEMENT("FairyRevivePercentRestore"), 0)) {
-                        gSaveContext.healthAccumulator =
-                            (gSaveContext.healthCapacity * CVarGetInteger(CVAR_ENHANCEMENT("FairyReviveHealth"), 100) / 100 + 15) / 16 * 16;
-                    } else {
-                        gSaveContext.healthAccumulator = CVarGetInteger(CVAR_ENHANCEMENT("FairyReviveHealth"), 20) * 16;
-                    }
-                } else {
-                    gSaveContext.healthAccumulator = 0x140;
-                }
+                gSaveContext.healthAccumulator = 0x140;
                 this->av2.actionVar2 = -1;
             }
         } else if (gSaveContext.healthAccumulator == 0) {
@@ -14481,13 +14472,13 @@ void Player_Action_8084E9AC(Player* this, PlayState* play) {
     }
 }
 
-static u8 D_808549FC[] = {
-    0x01, 0x03, 0x02, 0x04, 0x04,
-};
-
 void Player_Action_8084EAC0(Player* this, PlayState* play) {
     if (LinkAnimation_Update(play, &this->skelAnime)) {
         if (this->av2.actionVar2 == 0) {
+            static u8 D_808549FC[] = {
+                0x01, 0x03, 0x02, 0x04, 0x04,
+            };
+
             if (this->itemAction == PLAYER_IA_BOTTLE_POE) {
                 s32 rand = Rand_S16Offset(-1, 3);
 
@@ -14507,98 +14498,25 @@ void Player_Action_8084EAC0(Player* this, PlayState* play) {
             } else {
                 s32 sp28 = D_808549FC[this->itemAction - PLAYER_IA_BOTTLE_POTION_RED];
 
-                if (CVarGetInteger(CVAR_ENHANCEMENT("RedPotionEffect"), 0) && this->itemAction == PLAYER_IA_BOTTLE_POTION_RED) {
-                    if (CVarGetInteger(CVAR_ENHANCEMENT("RedPercentRestore"), 0)) {
-                        gSaveContext.healthAccumulator =
-                            (gSaveContext.healthCapacity * CVarGetInteger(CVAR_ENHANCEMENT("RedPotionHealth"), 100) / 100 + 15) / 16 * 16;
-                    } else {
-                        gSaveContext.healthAccumulator = CVarGetInteger(CVAR_ENHANCEMENT("RedPotionHealth"), 20) * 16;
-                    }
-                } else if (CVarGetInteger(CVAR_ENHANCEMENT("BluePotionEffects"), 0) &&
-                           this->itemAction == PLAYER_IA_BOTTLE_POTION_BLUE) {
-                    if (CVarGetInteger(CVAR_ENHANCEMENT("BlueHealthPercentRestore"), 0)) {
-                        gSaveContext.healthAccumulator =
-                            (gSaveContext.healthCapacity * CVarGetInteger(CVAR_ENHANCEMENT("BluePotionHealth"), 100) / 100 + 15) / 16 * 16;
-                    } else {
-                        gSaveContext.healthAccumulator = CVarGetInteger(CVAR_ENHANCEMENT("BluePotionHealth"), 20) * 16;
-                    }
+                if (sp28 & 1) {
+                    gSaveContext.healthAccumulator = 0x140;
+                }
 
-                    if (CVarGetInteger(CVAR_ENHANCEMENT("BlueManaPercentRestore"), 0)) {
-                        if (gSaveContext.magicState != MAGIC_STATE_ADD) {
-                            Magic_Fill(play);
-                        }
+                if (sp28 & 2) {
+                    Magic_Fill(play);
+                }
 
-                        Magic_RequestChange(play,
-                                      (gSaveContext.magicLevel * 48 * CVarGetInteger(CVAR_ENHANCEMENT("BluePotionMana"), 100) / 100 + 15) /
-                                          16 * 16,
-                                      MAGIC_ADD);
-                    } else {
-                        if (gSaveContext.magicState != MAGIC_STATE_ADD) {
-                            Magic_Fill(play);
-                        }
-
-                        Magic_RequestChange(play, CVarGetInteger(CVAR_ENHANCEMENT("BluePotionMana"), 100), MAGIC_ADD);
-                        ;
-                    }
-                } else if (CVarGetInteger(CVAR_ENHANCEMENT("GreenPotionEffect"), 0) &&
-                           this->itemAction == PLAYER_IA_BOTTLE_POTION_GREEN) {
-                    if (CVarGetInteger(CVAR_ENHANCEMENT("GreenPercentRestore"), 0)) {
-                        if (gSaveContext.magicState != MAGIC_STATE_ADD) {
-                            Magic_Fill(play);
-                        }
-
-                        Magic_RequestChange(play,
-                                      (gSaveContext.magicLevel * 48 * CVarGetInteger(CVAR_ENHANCEMENT("GreenPotionMana"), 100) / 100 + 15) /
-                                          16 * 16,
-                                      MAGIC_ADD);
-                    } else {
-                        if (gSaveContext.magicState != MAGIC_STATE_ADD) {
-                            Magic_Fill(play);
-                        }
-
-                        Magic_RequestChange(play, CVarGetInteger(CVAR_ENHANCEMENT("GreenPotionMana"), 100), MAGIC_ADD);
-                        ;
-                    }
-                } else if (CVarGetInteger(CVAR_ENHANCEMENT("MilkEffect"), 0) && (this->itemAction == PLAYER_IA_BOTTLE_MILK_FULL ||
-                                                             this->itemAction == PLAYER_IA_BOTTLE_MILK_HALF)) {
-                    if (CVarGetInteger(CVAR_ENHANCEMENT("MilkPercentRestore"), 0)) {
-                        gSaveContext.healthAccumulator =
-                            (gSaveContext.healthCapacity * CVarGetInteger(CVAR_ENHANCEMENT("MilkHealth"), 100) / 100 + 15) / 16 * 16;
-                    } else {
-                        gSaveContext.healthAccumulator = CVarGetInteger(CVAR_ENHANCEMENT("MilkHealth"), 5) * 16;
-                    }
-                    if (CVarGetInteger(CVAR_ENHANCEMENT("SeparateHalfMilkEffect"), 0) &&
-                        this->itemAction == PLAYER_IA_BOTTLE_MILK_HALF) {
-                        if (CVarGetInteger(CVAR_ENHANCEMENT("HalfMilkPercentRestore"), 0)) {
-                            gSaveContext.healthAccumulator =
-                                (gSaveContext.healthCapacity * CVarGetInteger(CVAR_ENHANCEMENT("HalfMilkHealth"), 100) / 100 + 15) / 16 *
-                                16;
-                        } else {
-                            gSaveContext.healthAccumulator = CVarGetInteger(CVAR_ENHANCEMENT("HalfMilkHealth"), 5) * 16;
-                        }
-                    }
-                } else {
-                    if (sp28 & 1) {
-                        gSaveContext.healthAccumulator = 0x140;
-                    }
-
-                    if (sp28 & 2) {
-                        Magic_Fill(play);
-                    }
-
-                    if (sp28 & 4) {
-                        gSaveContext.healthAccumulator = 0x50;
-                    }
+                if (sp28 & 4) {
+                    gSaveContext.healthAccumulator = 0x50;
                 }
             }
 
             Player_AnimPlayLoopAdjusted(play, this, &gPlayerAnim_link_bottle_drink_demo_wait);
             this->av2.actionVar2 = 1;
-            return;
+        } else {
+            func_8083C0E8(this, play);
+            func_8005B1A4(Play_GetCamera(play, 0));
         }
-
-        func_8083C0E8(this, play);
-        func_8005B1A4(Play_GetCamera(play, 0));
     } else if (this->av2.actionVar2 == 1) {
         if ((gSaveContext.healthAccumulator == 0) && (gSaveContext.magicState != MAGIC_STATE_FILL)) {
             Player_AnimChangeOnceMorphAdjusted(play, this, &gPlayerAnim_link_bottle_drink_demo_end);
@@ -14724,16 +14642,7 @@ void Player_Action_8084EED8(Player* this, PlayState* play) {
         Player_PlaySfx(this, NA_SE_EV_BOTTLE_CAP_OPEN);
         Player_PlaySfx(this, NA_SE_EV_FIATY_HEAL - SFX_FLAG);
     } else if (LinkAnimation_OnFrame(&this->skelAnime, 47.0f)) {
-        if (CVarGetInteger(CVAR_ENHANCEMENT("FairyEffect"), 0)) {
-            if (CVarGetInteger(CVAR_ENHANCEMENT("FairyPercentRestore"), 0)) {
-                gSaveContext.healthAccumulator =
-                    (gSaveContext.healthCapacity * CVarGetInteger(CVAR_ENHANCEMENT("FairyHealth"), 100) / 100 + 15) / 16 * 16;
-            } else {
-                gSaveContext.healthAccumulator = CVarGetInteger(CVAR_ENHANCEMENT("FairyHealth"), 8) * 16;
-            }
-        } else {
-            gSaveContext.healthAccumulator = 0x140;
-        }
+        gSaveContext.healthAccumulator = 0x140;
     }
 }
 
