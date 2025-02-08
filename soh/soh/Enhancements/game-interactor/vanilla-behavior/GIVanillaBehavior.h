@@ -273,6 +273,22 @@ typedef enum {
     // #### `args`
     // - `*EnDoor`
     VB_CONSUME_SMALL_KEY,
+    
+    // #### `result`
+    // ```c
+    // itemDropped >= 0 && itemDropped < 0x1A
+    // ```
+    // #### `args`
+    // - `*ObjKibako2`
+    VB_CRATE_DROP_ITEM,
+
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // #### `args`
+    // - `*ObjKibako2`
+    VB_CRATE_SETUP_DRAW,
 
     // #### `result`
     // ```c
@@ -1653,6 +1669,22 @@ typedef enum {
     // #### `args`
     // - None
     VB_SHOW_TITLE_CARD,
+
+    // #### `result`
+    // ```c
+    // (collectible >= 0) && (collectible <= 0x19
+    // ```
+    // #### `args`
+    // - `*ObjKibako`
+    VB_SMALL_CRATE_DROP_ITEM,
+
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // #### `args`
+    // - `*ObjKibako`
+    VB_SMALL_CRATE_SETUP_DRAW,
 
     // #### `result`
     // ```c
