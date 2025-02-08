@@ -19,7 +19,7 @@ void SohMenu::AddMenuRandomizer() {
 
     // Plandomizer
     path.sidebarName = "Plandomizer";
-    AddSidebarEntry("Randomizer", path.sidebarName, 1);
+    AddSidebarEntry("Randomizer", path.sidebarName, 2);
     AddWidget(path, "Popout Plandomizer Window", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("PlandomizerEditor"))
         .WindowName("Plandomizer Editor")
@@ -33,7 +33,7 @@ void SohMenu::AddMenuRandomizer() {
     AddWidget(path, "Toggle Item Tracker", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("ItemTracker"))
         .WindowName("Item Tracker")
-        .Options(WindowButtonOptions().Tooltip("Toggles the Item Tracker."));
+        .Options(WindowButtonOptions().Tooltip("Toggles the Item Tracker.").EmbedWindow(false));
 
     AddWidget(path, "Item Tracker Settings", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Popout Item Tracker Settings", WIDGET_WINDOW_BUTTON)
@@ -43,7 +43,7 @@ void SohMenu::AddMenuRandomizer() {
 
     // Entrance Tracker
     path.sidebarName = "Entrance Tracker";
-    AddSidebarEntry("Randomizer", path.sidebarName, 2);
+    AddSidebarEntry("Randomizer", path.sidebarName, 1);
 
     AddWidget(path, "Entrance Tracker", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Toggle Entrance Tracker", WIDGET_WINDOW_BUTTON)
@@ -65,7 +65,7 @@ void SohMenu::AddMenuRandomizer() {
     AddWidget(path, "Toggle Check Tracker", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("CheckTracker"))
         .WindowName("Check Tracker")
-        .Options(WindowButtonOptions().Tooltip("Toggles the Check Tracker."));
+        .Options(WindowButtonOptions().Tooltip("Toggles the Check Tracker.").EmbedWindow(false));
 
     AddWidget(path, "Check Tracker Settings", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Popout Check Tracker Settings", WIDGET_WINDOW_BUTTON)

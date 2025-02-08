@@ -496,6 +496,7 @@ namespace UIWidgets2 {
         ImGui::BeginDisabled(options.disabled);
         PushStyleCombobox(options.color);
         if (options.alignment == ComponentAlignment::Left) {
+            ImGui::NewLine();
             if (options.labelPosition == LabelPosition::Above) {
                 ImGui::Text("%s", label);
                 ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
@@ -505,8 +506,8 @@ namespace UIWidgets2 {
                 ImGui::SetNextItemWidth(ImGui::CalcTextSize(comboMap.at(*value)).x + ImGui::GetStyle().FramePadding.x * 4 + ImGui::GetStyle().ItemSpacing.x);
             }
         } else if (options.alignment == ComponentAlignment::Right) {
+            ImGui::NewLine();
             if (options.labelPosition == LabelPosition::Above) {
-                ImGui::NewLine();
                 ImGui::SameLine(ImGui::GetContentRegionAvail().x - ImGui::CalcTextSize(label).x);
                 ImGui::Text("%s", label);
                 ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);

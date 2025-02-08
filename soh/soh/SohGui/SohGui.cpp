@@ -198,7 +198,7 @@ namespace SohGui {
         gui->AddGuiWindow(mMessageViewerWindow);
         mGameplayStatsWindow = std::make_shared<GameplayStatsWindow>(CVAR_WINDOW("GameplayStats"), "Gameplay Stats", ImVec2(480, 550));
         gui->AddGuiWindow(mGameplayStatsWindow);
-        mCheckTrackerWindow = std::make_shared<CheckTracker::CheckTrackerWindow>(CVAR_WINDOW("CheckTracker"), "Check Tracker", ImVec2(400, 600));
+        mCheckTrackerWindow = std::make_shared<CheckTracker::CheckTrackerWindow>(CVAR_WINDOW("CheckTracker"), "Check Tracker", ImVec2(400, 540));
         gui->AddGuiWindow(mCheckTrackerWindow);
         mCheckTrackerSettingsWindow = std::make_shared<CheckTracker::CheckTrackerSettingsWindow>(CVAR_WINDOW("CheckTrackerSettings"), "Check Tracker Settings", ImVec2(600, 375));
         gui->AddGuiWindow(mCheckTrackerSettingsWindow);

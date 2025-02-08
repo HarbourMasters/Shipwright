@@ -702,7 +702,6 @@ namespace UIWidgets {
             RainbowColor(cvarName, &ColorRGBA);
         }
         DrawLockColorCheckbox(cvarName);
-        ImGui::NewLine();
         ImGui::PopItemWidth();
 
         return changed;

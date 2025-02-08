@@ -605,7 +605,7 @@ bool CVarRadioButton(const char* text, const char* cvarName, int32_t id, UIWidge
 
     bool ret = false;
     int val = CVarGetInteger(cvarName, 0);
-    PushStyleCombobox(color);
+    PushStyleCheckbox(color);
     if (ImGui::RadioButton(make_invisible.c_str(), id == val)) {
         CVarSetInteger(cvarName, id);
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
@@ -613,7 +613,7 @@ bool CVarRadioButton(const char* text, const char* cvarName, int32_t id, UIWidge
     }
     ImGui::SameLine();
     ImGui::Text("%s", text);
-    PopStyleCombobox();
+    PopStyleCheckbox();
         
     return ret;
 }
