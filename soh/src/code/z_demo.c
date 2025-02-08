@@ -626,8 +626,8 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 break;
             case 8:
                 if (CVarGetInteger(CVAR_ENHANCEMENT("BetterFarore"), 0)) {
-                    FaroresWindData tempFW = gSaveContext.backupFW;
-                    gSaveContext.backupFW = gSaveContext.fw;
+                    FaroresWindData tempFW = gSaveContext.ship.backupFW;
+                    gSaveContext.ship.backupFW = gSaveContext.fw;
                     gSaveContext.fw = tempFW;
                 } else {
                     gSaveContext.fw.set = 0;
@@ -1604,7 +1604,7 @@ void Cutscene_Command_Textbox(PlayState* play, CutsceneContext* csCtx, CsCmdText
                                 getItemEntry = Randomizer_GetItemFromKnownCheck(RC_BONGO_BONGO, RG_SHADOW_MEDALLION);
                                 break;
                             case 0x40:
-                                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GIFT_FROM_SAGES, RG_LIGHT_MEDALLION);
+                                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GIFT_FROM_RAURU, RG_LIGHT_MEDALLION);
                                 break;
                             case 0x72:
                                 getItemEntry = Randomizer_GetItemFromKnownCheck(RC_TOT_LIGHT_ARROWS_CUTSCENE, RG_LIGHT_ARROWS);
@@ -2176,7 +2176,7 @@ void Cutscene_HandleEntranceTriggers(PlayState* play) {
     for (i = 0; i < ARRAY_COUNT(sEntranceCutsceneTable); i++) {
         entranceCutscene = &sEntranceCutsceneTable[i];
         requiredAge = entranceCutscene->ageRestriction;
-        if (requiredAge == 2) {
+        if (GameInteractor_Should(VB_ALLOW_ENTRANCE_CS_FOR_EITHER_AGE, requiredAge == 2, entranceCutscene->entrance)) {
             requiredAge = gSaveContext.linkAge;
         }
 
@@ -2185,7 +2185,7 @@ void Cutscene_HandleEntranceTriggers(PlayState* play) {
             (gSaveContext.cutsceneIndex < 0xFFF0) && ((u8)gSaveContext.linkAge == requiredAge) &&
             (gSaveContext.respawnFlag <= 0)) {
             Flags_SetEventChkInf(entranceCutscene->flag);
-            if (GameInteractor_Should(VB_PLAY_ENTRANCE_CS, true, &entranceCutscene->flag)) {
+            if (GameInteractor_Should(VB_PLAY_ENTRANCE_CS, true, entranceCutscene->flag, entranceCutscene->entrance)) {
                 Cutscene_SetSegment(play, entranceCutscene->segAddr);
                 gSaveContext.cutsceneTrigger = 2;
                 gSaveContext.showTitleCard = false;

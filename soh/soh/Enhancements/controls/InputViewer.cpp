@@ -5,14 +5,11 @@
 #include "Context.h"
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
-#ifndef IMGUI_DEFINE_MATH_OPERATORS
-#define IMGUI_DEFINE_MATH_OPERATORS
-#endif
 #include <imgui.h>
 #include <spdlog/spdlog.h>
 #include <cmath>
 
-#include "../../UIWidgets.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 
 // Text colors
 static ImVec4 textColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -170,7 +167,7 @@ void InputViewer::DrawElement() {
         ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0, 0, 0, 0));
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0.0f, 0.0f));
 
-        OSContPad* pads = Ship::Context::GetInstance()->GetControlDeck()->GetPads();
+        OSContPad* pads = std::dynamic_pointer_cast<LUS::ControlDeck>(Ship::Context::GetInstance()->GetControlDeck())->GetPads();
 
         ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar |
             ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoBackground |

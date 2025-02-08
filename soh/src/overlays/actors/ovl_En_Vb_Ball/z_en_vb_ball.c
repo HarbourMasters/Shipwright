@@ -9,7 +9,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "overlays/actors/ovl_Boss_Fd/z_boss_fd.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void EnVbBall_Init(Actor* thisx, PlayState* play);
 void EnVbBall_Destroy(Actor* thisx, PlayState* play);
@@ -180,7 +180,7 @@ void EnVbBall_Update(Actor* thisx, PlayState* play2) {
     this->actor.shape.rot.y += (s16)this->yRotVel;
     this->actor.velocity.y += -1.0f;
     this->actor.gravity = -1.0f;
-    func_8002D7EC(&this->actor);
+    Actor_UpdatePos(&this->actor);
     if (this->actor.params >= 200) {
         EnVbBall_UpdateBones(this, play);
     } else {

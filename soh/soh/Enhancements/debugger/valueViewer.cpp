@@ -1,5 +1,5 @@
 #include "valueViewer.h"
-#include "../../UIWidgets.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include "soh/OTRGlobals.h"
 
 extern "C" {

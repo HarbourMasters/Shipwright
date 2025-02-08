@@ -8,7 +8,7 @@
 #include "z_bg_jya_goroiwa.h"
 #include "objects/object_goroiwa/object_goroiwa.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void BgJyaGoroiwa_Init(Actor* thisx, PlayState* play);
 void BgJyaGoroiwa_Destroy(Actor* thisx, PlayState* play);

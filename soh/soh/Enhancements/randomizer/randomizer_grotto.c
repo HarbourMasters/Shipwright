@@ -337,3 +337,14 @@ s16 Grotto_GetRenamedGrottoIndexFromOriginal(s8 content, s8 scene) {
 
     return ENTRANCE_GROTTO_LOAD_START;
 }
+
+s8 Grotto_CurrentGrotto() {
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES) || Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) || Randomizer_GetSettingValue(RSK_SHUFFLE_WARP_SONGS)) {
+        return grottoId;
+    } else {
+        s16 entrance = gSaveContext.respawn[RESPAWN_MODE_RETURN].entranceIndex;
+        s8 scene = gEntranceTable[entrance].scene;
+        s8 data = gSaveContext.respawn[RESPAWN_MODE_RETURN].data;
+        return Grotto_GetRenamedGrottoIndexFromOriginal(data, scene) & 0xFF;
+    }
+}

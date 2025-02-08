@@ -106,7 +106,7 @@ void EnIceHono_InitCapturableFlame(Actor* thisx, PlayState* play) {
 
     Actor_ProcessInitChain(&this->actor, sInitChainCapturableFlame);
     Actor_SetScale(&this->actor, 0.0074f);
-    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+    this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
     Actor_SetFocus(&this->actor, 10.0f);
 
     Collider_InitCylinder(play, &this->collider);
@@ -247,7 +247,7 @@ void EnIceHono_DropFlame(EnIceHono* this, PlayState* play) {
         }
         EnIceHono_SetupActionSpreadFlames(this);
     }
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 10.0f, this->actor.scale.x * 3500.0f, 0.0f, 5);
 
     Collider_UpdateCylinder(&this->actor, &this->collider);
@@ -275,7 +275,7 @@ void EnIceHono_SpreadFlames(EnIceHono* this, PlayState* play) {
         Math_StepToF(&this->actor.scale.y, 0.0001f, 0.00015f);
     }
     this->actor.scale.z = this->actor.scale.x;
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 10.0f, this->actor.scale.x * 3500.0f, 0.0f, 4);
     if (this->timer < 25) {
         this->alpha -= 10;
@@ -326,7 +326,7 @@ void EnIceHono_SmallFlameMove(EnIceHono* this, PlayState* play) {
     }
     this->actor.scale.z = this->actor.scale.x;
     Math_StepToF(&this->actor.speedXZ, 0, 0.06f);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 10.0f, 10.0f, 0.0f, 5);
 
     if (this->timer < 25) {

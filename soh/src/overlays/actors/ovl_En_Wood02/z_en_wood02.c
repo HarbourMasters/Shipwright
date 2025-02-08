@@ -291,7 +291,7 @@ void EnWood02_Init(Actor* thisx, PlayState* play2) {
             this->actor.world.pos.x += (sSpawnSin * sSpawnDistance[5]);
             this->actor.world.pos.z += (sSpawnCos * sSpawnDistance[5]);
         } else {
-            this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+            this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
         }
 
         // Snap to floor, or remove if over void
@@ -332,7 +332,7 @@ void EnWood02_Update(Actor* thisx, PlayState* play2) {
 
     // Despawn extra trees in a group if out of range
     if ((this->spawnType == WOOD_SPAWN_SPAWNED) && (this->actor.parent != NULL)) {
-        if (!(this->actor.flags & ACTOR_FLAG_ACTIVE)) {
+        if (!(this->actor.flags & ACTOR_FLAG_INSIDE_CULLING_VOLUME)) {
             new_var = this->unk_14E[0];
             phi_v0 = 0;
 
@@ -358,23 +358,21 @@ void EnWood02_Update(Actor* thisx, PlayState* play2) {
             dropsSpawnPt = this->actor.world.pos;
             dropsSpawnPt.y += 200.0f;
 
-            if ((this->unk_14C >= 0) && (this->unk_14C < 0x64) && (CVarGetInteger(CVAR_ENHANCEMENT("TreesDropSticks"), 0)) && !(INV_CONTENT(ITEM_STICK) == ITEM_NONE)) {
-                (numDrops = (Rand_ZeroOne() * 4));
-                for (i = 0; i < numDrops; ++i) {
-                    Item_DropCollectible(play, &dropsSpawnPt, ITEM00_STICK);
-                }
-            } else {
-                if ((this->unk_14C >= 0) && (this->unk_14C < 0x64)) {
-                Item_DropCollectibleRandom(play, &this->actor, &dropsSpawnPt, this->unk_14C << 4);
-            } else {
-                if (this->actor.home.rot.z != 0) {
-                    this->actor.home.rot.z &= 0x1FFF;
-                    this->actor.home.rot.z |= 0xE000;
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_SW, dropsSpawnPt.x, dropsSpawnPt.y,
-                                dropsSpawnPt.z, 0, this->actor.world.rot.y, 0, this->actor.home.rot.z, true);
-                    this->actor.home.rot.z = 0;
+            if ((this->unk_14C >= 0) && (this->unk_14C < 0x64)) { 
+                if (CVarGetInteger(CVAR_ENHANCEMENT("TreesDropSticks"), 0) && INV_CONTENT(ITEM_STICK) != ITEM_NONE) {
+                    numDrops = Rand_ZeroOne() * 4;
+                    for (i = 0; i < numDrops; ++i) {
+                        Item_DropCollectible(play, &dropsSpawnPt, ITEM00_STICK);
                     }
+                } else {
+                    Item_DropCollectibleRandom(play, &this->actor, &dropsSpawnPt, this->unk_14C << 4);
                 }
+            } else if (this->actor.home.rot.z != 0) {
+                this->actor.home.rot.z &= 0x1FFF;
+                this->actor.home.rot.z |= 0xE000;
+                Actor_Spawn(&play->actorCtx, play, ACTOR_EN_SW, dropsSpawnPt.x, dropsSpawnPt.y,
+                            dropsSpawnPt.z, 0, this->actor.world.rot.y, 0, this->actor.home.rot.z, true);
+                this->actor.home.rot.z = 0;
             }
 
             // Spawn falling leaves
@@ -421,7 +419,7 @@ void EnWood02_Update(Actor* thisx, PlayState* play2) {
         this->unk_14C++;
         Math_ApproachF(&this->actor.velocity.x, 0.0f, 1.0f, 5 * 0.01f);
         Math_ApproachF(&this->actor.velocity.z, 0.0f, 1.0f, 5 * 0.01f);
-        func_8002D7EC(&this->actor);
+        Actor_UpdatePos(&this->actor);
         this->actor.shape.rot.z = Math_SinS(3000 * this->unk_14C) * 0x4000;
         this->unk_14E[0]--;
 

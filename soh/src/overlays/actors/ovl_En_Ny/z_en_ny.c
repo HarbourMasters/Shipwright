@@ -3,7 +3,7 @@
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE)
 
 void EnNy_Init(Actor* thisx, PlayState* play);
 void EnNy_Destroy(Actor* thisx, PlayState* play);
@@ -334,7 +334,7 @@ s32 EnNy_CollisionCheck(EnNy* this, PlayState* play) {
             this->stoneTimer = 0;
             if (this->actor.colChkInfo.health == 0) {
                 this->actor.shape.shadowAlpha = 0;
-                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+                this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
                 this->unk_1D0 = sp3F;
                 Enemy_StartFinishingBlow(play, &this->actor);
                 return 1;
@@ -384,7 +384,7 @@ void EnNy_Update(Actor* thisx, PlayState* play) {
     temp_f22 = (24.0f * temp_f20) + 12.0f;
     this->actor.shape.rot.x += (s16)(this->unk_1E8 * 1000.0f);
     func_80ABD3B8(this, temp_f22 + 10.0f, temp_f22 - 10.0f);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Math_StepToF(&this->unk_1E4, this->unk_1E8, 0.1f);
     this->actionFunc(this, play);
     this->actor.prevPos.y -= temp_f22;
@@ -514,7 +514,7 @@ void EnNy_UpdateUnused(Actor* thisx, PlayState* play2) {
 
     CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
     CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Math_StepToF(&this->unk_1E4, this->unk_1E8, 0.1f);
 }
 static Vec3f sFireOffsets[] = {

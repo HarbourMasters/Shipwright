@@ -46,6 +46,8 @@ namespace LUS
 {
     class IResource;
     class Scene;
+};
+namespace Fast {
     class DisplayList;
 };
 #include <memory>
@@ -1595,6 +1597,9 @@ typedef struct {
     uint8_t bossRushOffset;
     int16_t bossRushUIAlpha;
     uint16_t bossRushArrowOffset;
+    uint8_t randomizerIndex;
+    int16_t randomizerUIAlpha;
+    uint16_t randomizerArrowOffset;
 } FileChooseContext; // size = 0x1CAE0
 
 // Macros for `EntranceInfo.field`

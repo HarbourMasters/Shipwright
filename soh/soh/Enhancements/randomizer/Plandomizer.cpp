@@ -1,5 +1,5 @@
 #include "Plandomizer.h"
-#include "soh/UIWidgets.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include "soh/util.h"
 #include <vector>
 #include "soh/Notification/Notification.h"
@@ -10,7 +10,7 @@
 #include <filesystem>
 
 #include "soh/OTRGlobals.h"
-#include "soh/ImGuiUtils.h"
+#include "soh/SohGui/ImGuiUtils.h"
 #include "soh/Enhancements/randomizer/logic.h"
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
 #include "soh/Enhancements/randomizer/rando_hash.h"
@@ -77,7 +77,7 @@ std::unordered_map<RandomizerGet, std::string> ocarinaButtonNames = {
     { RG_OCARINA_C_RIGHT_BUTTON,    "C-RHT" },
 };
 
-std::map<RandomizerGet, ImVec4> bossSoulMapping = {
+std::map<RandomizerGet, ImVec4> bossSoulColorMapping = {
     { RG_GOHMA_SOUL,          { 0.00f, 1.00f, 0.00f, 1.0f } },
     { RG_KING_DODONGO_SOUL,   { 1.00f, 0.00f, 0.39f, 1.0f } },
     { RG_BARINADE_SOUL,       { 0.20f, 1.00f, 1.00f, 1.0f } },
@@ -208,7 +208,7 @@ std::unordered_map<RandomizerGet, std::string> itemImageMap = {
     { RG_SPIRIT_TEMPLE_SMALL_KEY,   		"ITEM_KEY_SMALL" },
     { RG_SHADOW_TEMPLE_SMALL_KEY,   		"ITEM_KEY_SMALL" },
     { RG_BOTTOM_OF_THE_WELL_SMALL_KEY, 		"ITEM_KEY_SMALL" },
-    { RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, "ITEM_KEY_SMALL" },
+    { RG_GERUDO_TRAINING_GROUND_SMALL_KEY, "ITEM_KEY_SMALL" },
     { RG_GERUDO_FORTRESS_SMALL_KEY, 		"ITEM_KEY_SMALL" },
     { RG_GANONS_CASTLE_SMALL_KEY,   		"ITEM_KEY_SMALL" },
     { RG_TREASURE_GAME_SMALL_KEY,   		"ITEM_KEY_SMALL" },
@@ -302,8 +302,8 @@ ImVec4 plandomizerGetItemColor(Rando::Item randoItem) {
         } else if (randoItem.GetRandomizerGet() == RG_BOTTOM_OF_THE_WELL_SMALL_KEY || 
             randoItem.GetRandomizerGet() == RG_BOTTOM_OF_THE_WELL_KEY_RING) {
             itemColor = ImVec4( 0.89f, 0.43f, 1.0f, 1.0f );
-        } else if (randoItem.GetRandomizerGet() == RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY || 
-            randoItem.GetRandomizerGet() == RG_GERUDO_TRAINING_GROUNDS_KEY_RING) {
+        } else if (randoItem.GetRandomizerGet() == RG_GERUDO_TRAINING_GROUND_SMALL_KEY || 
+            randoItem.GetRandomizerGet() == RG_GERUDO_TRAINING_GROUND_KEY_RING) {
             itemColor = ImVec4( 1.0f, 1.0f, 0, 1.0f );
         } else if (randoItem.GetRandomizerGet() == RG_GERUDO_FORTRESS_SMALL_KEY || 
             randoItem.GetRandomizerGet() == RG_GERUDO_FORTRESS_KEY_RING) {
@@ -339,7 +339,7 @@ ImVec4 plandomizerGetItemColor(Rando::Item randoItem) {
     }
 
     if (randoItem.GetRandomizerGet() >= RG_GOHMA_SOUL && randoItem.GetRandomizerGet() <= RG_GANON_SOUL) {
-        itemColor = bossSoulMapping.at(randoItem.GetRandomizerGet());
+        itemColor = bossSoulColorMapping.at(randoItem.GetRandomizerGet());
     }
     
     return itemColor;
@@ -715,15 +715,18 @@ void PlandomizerDrawItemPopup(uint32_t index) {
             ImGui::PushID(item);
             ImGui::TableNextColumn();
             PlandomizerItemImageCorrection(plandomizerRandoRetrieveItem(item));
-            if (ImGui::ImageButton(textureID,
-                    imageSize, textureUV0, textureUV1, imagePadding, ImVec4(0, 0, 0, 0), itemColor)) {
+            auto name = plandomizerRandoRetrieveItem(item).GetName().english;
+            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(imagePadding, imagePadding));
+            auto ret = ImGui::ImageButton(name.c_str(), textureID, imageSize, textureUV0, textureUV1, ImVec4(0, 0, 0, 0), itemColor);
+            ImGui::PopStyleVar();
+            if (ret) {
                 if (std::find(infiniteItemList.begin(), infiniteItemList.end(), plandoLogData[index].checkRewardItem.GetRandomizerGet()) == infiniteItemList.end()) {
                     PlandomizerAddToItemList(plandoLogData[index].checkRewardItem);
                 }
                 plandoLogData[index].checkRewardItem = plandomizerRandoRetrieveItem(item);
                 ImGui::CloseCurrentPopup();
             }
-            UIWidgets::Tooltip(plandomizerRandoRetrieveItem(item).GetName().english.c_str());
+            UIWidgets::Tooltip(name.c_str());
             PlandomizerOverlayText(std::make_pair(plandomizerRandoRetrieveItem(item), 1));
             ImGui::PopID();
         }
@@ -741,8 +744,11 @@ void PlandomizerDrawItemPopup(uint32_t index) {
             ImGui::PushID(itemIndex);
             auto itemToDraw = drawSlots.first;
             PlandomizerItemImageCorrection(drawSlots.first);
-            if (ImGui::ImageButton(textureID,
-                    imageSize, textureUV0, textureUV1, imagePadding, ImVec4(0, 0, 0, 0), itemColor)) {
+            auto name = drawSlots.first.GetName().english;
+            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(imagePadding, imagePadding));
+            auto ret = ImGui::ImageButton(name.c_str(), textureID, imageSize, textureUV0, textureUV1, ImVec4(0, 0, 0, 0), itemColor);
+            ImGui::PopStyleVar();
+            if (ret) {
                 if (itemToDraw.GetRandomizerGet() >= RG_PROGRESSIVE_HOOKSHOT && 
                     itemToDraw.GetRandomizerGet() <= RG_PROGRESSIVE_GORONSWORD) {
                     plandoLogData[index].checkRewardItem = drawSlots.first;
@@ -757,7 +763,7 @@ void PlandomizerDrawItemPopup(uint32_t index) {
                 ImGui::CloseCurrentPopup();
             }
             if (!isClicked) {
-                UIWidgets::Tooltip(drawSlots.first.GetName().english.c_str());
+                UIWidgets::Tooltip(name.c_str());
             }
             ImGui::PopID();
 
@@ -786,12 +792,16 @@ void PlandomizerDrawIceTrapPopUp(uint32_t index) {
             }
             ImGui::TableNextColumn();
             ImGui::PushID(items.first);
+            auto name = Rando::StaticData::RetrieveItem(items.first).GetName().english;
             PlandomizerItemImageCorrection(Rando::StaticData::RetrieveItem(items.first));
-            if (ImGui::ImageButton(textureID, imageSize, textureUV0, textureUV1, imagePadding, ImVec4(0, 0, 0, 0), itemColor)) {
+            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(imagePadding, imagePadding));
+            auto ret = ImGui::ImageButton(name.c_str(), textureID, imageSize, textureUV0, textureUV1, ImVec4(0, 0, 0, 0), itemColor); 
+            ImGui::PopStyleVar();
+            if (ret) {
                 plandoLogData[index].iceTrapModel = Rando::StaticData::RetrieveItem(items.first);
                 ImGui::CloseCurrentPopup();
             };
-            UIWidgets::Tooltip(Rando::StaticData::RetrieveItem(items.first).GetName().english.c_str());
+            UIWidgets::Tooltip(name.c_str());
 
             auto itemObject = Rando::StaticData::RetrieveItem(items.first);
             PlandomizerOverlayText(std::make_pair(itemObject, 1));
@@ -808,13 +818,17 @@ void PlandomizerDrawItemSlots(uint32_t index) {
     ImGui::PushID(index);
     PlandoPushImageButtonStyle();
     PlandomizerItemImageCorrection(plandoLogData[index].checkRewardItem);
-    if (ImGui::ImageButton(textureID, imageSize, textureUV0, textureUV1, imagePadding, ImVec4(0, 0, 0, 0), itemColor)) {
+    auto name = plandoLogData[index].checkRewardItem.GetName().english;
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(imagePadding, imagePadding));
+    auto ret = ImGui::ImageButton(name.c_str(), textureID, imageSize, textureUV0, textureUV1, ImVec4(0, 0, 0, 0), itemColor);
+    ImGui::PopStyleVar();
+    if (ret) {
         shouldPopup = true;
         temporaryItem = plandoLogData[index].checkRewardItem;
         ImGui::OpenPopup("ItemList");
     };
     PlandoPopImageButtonStyle();
-    UIWidgets::Tooltip(plandoLogData[index].checkRewardItem.GetName().english.c_str());
+    UIWidgets::Tooltip(name.c_str());
     PlandomizerOverlayText(std::make_pair(plandoLogData[index].checkRewardItem, 1));
     PlandomizerDrawItemPopup(index);
     ImGui::PopID();
@@ -852,12 +866,16 @@ void PlandomizerDrawIceTrapSetup(uint32_t index) {
     ImGui::TableNextColumn();
     PlandomizerItemImageCorrection(plandoLogData[index].iceTrapModel);
     PlandoPushImageButtonStyle();
-    if (ImGui::ImageButton(textureID, imageSize, textureUV0, textureUV1, imagePadding, ImVec4(0, 0, 0, 0), itemColor)) {
+    auto name = plandoLogData[index].iceTrapModel.GetName().english;
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(imagePadding, imagePadding));
+    auto ret = ImGui::ImageButton(name.c_str(), textureID, imageSize, textureUV0, textureUV1, ImVec4(0, 0, 0, 0), itemColor);
+    ImGui::PopStyleVar();
+    if (ret) {
         shouldTrapPopup = true;
         ImGui::OpenPopup("TrapList");
     };
     PlandoPopImageButtonStyle();
-    UIWidgets::Tooltip(plandoLogData[index].iceTrapModel.GetName().english.c_str());
+    UIWidgets::Tooltip(name.c_str());
     PlandomizerDrawIceTrapPopUp(index);
     ImGui::SameLine();
     ImGui::TableNextColumn();
@@ -884,84 +902,96 @@ void PlandomizerDrawIceTrapSetup(uint32_t index) {
 }
 
 void PlandomizerDrawOptions() {
-    ImGui::BeginTable("LoadSpoiler", 2);
-    ImGui::TableNextColumn();
-    ImGui::SeparatorText("Load/Save Spoiler Log");
-    PlandomizerPopulateSeedList();
-    static size_t selectedList = 0;
-    if (existingSeedList.size() != 0) {
-        if (ImGui::BeginCombo("##JsonFiles", existingSeedList[selectedList].c_str())) {
-            for (size_t i = 0; i < existingSeedList.size(); i++) {
-                bool isSelected = (selectedList == i);
-                if (ImGui::Selectable(existingSeedList[i].c_str(), isSelected)) {
-                    selectedList = i;
-                }
-                if (isSelected) {
-                    ImGui::SetItemDefaultFocus();
-                }
-            }
-            ImGui::EndCombo();
-        }
-    } else {
-        ImGui::Text("No Spoiler Logs found.");
-    }
-    ImGui::BeginDisabled(existingSeedList.empty());
-    if (ImGui::Button("Load")) {
-        logTemp = existingSeedList[selectedList].c_str();
-        PlandomizerLoadSpoilerLog(logTemp.c_str());
-    }
-    ImGui::EndDisabled();
-    ImGui::BeginDisabled(spoilerLogData.empty());
-    ImGui::SameLine();
-    if (ImGui::Button("Save")) {
-        PlandomizerSaveSpoilerLog();
-    }
-    ImGui::EndDisabled();
-
-    ImGui::TableNextColumn();
-    ImGui::SeparatorText("Current Seed Hash");
-    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + (ImGui::GetContentRegionAvail().x * 0.5f) - (34.0f * 5.0f));
-    if (spoilerLogData.size() > 0) {
-        ImGui::BeginTable("HashIcons", 5);
-        for (int i = 0; i < 5; i++) {
-            ImGui::TableSetupColumn("Icon", ImGuiTableColumnFlags_WidthFixed, 34.0f);
-        }
+    if (ImGui::BeginTable("LoadSpoiler", 2)) {
         ImGui::TableNextColumn();
-    
-        size_t index = 0;
-        PlandoPushImageButtonStyle();
-        for (auto& hash : plandoHash) {
-            ImGui::PushID(index);
-            textureID = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(gSeedTextures[hash].tex);
-            if (ImGui::ImageButton(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("HASH_ARROW_UP"), 
-                ImVec2(35.0f, 18.0f), ImVec2(1, 1), ImVec2(0, 0), 2.0f, ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                if (hash + 1 >= gSeedTextures.size()) {
-                    hash = 0;
-                } else {
-                    hash++;
+        ImGui::SeparatorText("Load/Save Spoiler Log");
+        PlandomizerPopulateSeedList();
+        static size_t selectedList = 0;
+        if (existingSeedList.size() != 0) {
+            if (ImGui::BeginCombo("##JsonFiles", existingSeedList[selectedList].c_str())) {
+                for (size_t i = 0; i < existingSeedList.size(); i++) {
+                    bool isSelected = (selectedList == i);
+                    if (ImGui::Selectable(existingSeedList[i].c_str(), isSelected)) {
+                        selectedList = i;
+                    }
+                    if (isSelected) {
+                        ImGui::SetItemDefaultFocus();
+                    }
                 }
+                ImGui::EndCombo();
             }
-            ImGui::Image(textureID, ImVec2(35.0f, 35.0f));
-            if (ImGui::ImageButton(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("HASH_ARROW_DWN"), 
-                ImVec2(35.0f, 18.0f), ImVec2(0, 0), ImVec2(1, 1), 2.0f, ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                if (hash == 0) {
-                    hash = gSeedTextures.size() - 1;
-                } else {
-                    hash--;
-                }
-            }
-            if (index != spoilerHash.size() - 1) {
-                ImGui::TableNextColumn();
-            }
-            ImGui::PopID();
-            index++;
         }
-        PlandoPopImageButtonStyle();
+        else {
+            ImGui::Text("No Spoiler Logs found.");
+        }
+        ImGui::BeginDisabled(existingSeedList.empty());
+        if (ImGui::Button("Load")) {
+            logTemp = existingSeedList[selectedList].c_str();
+            PlandomizerLoadSpoilerLog(logTemp.c_str());
+        }
+        ImGui::EndDisabled();
+        ImGui::BeginDisabled(spoilerLogData.empty());
+        ImGui::SameLine();
+        if (ImGui::Button("Save")) {
+            PlandomizerSaveSpoilerLog();
+        }
+        ImGui::EndDisabled();
+
+        ImGui::TableNextColumn();
+        ImGui::SeparatorText("Current Seed Hash");
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + (ImGui::GetContentRegionAvail().x * 0.5f) - (34.0f * 5.0f));
+        if (spoilerLogData.size() > 0) {
+            if (ImGui::BeginTable("HashIcons", 5)) {
+                for (int i = 0; i < 5; i++) {
+                    ImGui::TableSetupColumn("Icon", ImGuiTableColumnFlags_WidthFixed, 34.0f);
+                }
+                ImGui::TableNextColumn();
+
+                size_t index = 0;
+                PlandoPushImageButtonStyle();
+                for (auto& hash : plandoHash) {
+                    ImGui::PushID(index);
+                    textureID = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(gSeedTextures[hash].tex);
+                    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2.0f, 2.0f));
+                    auto upRet = ImGui::ImageButton("HASH_ARROW_UP", Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("HASH_ARROW_UP"),
+                                                  ImVec2(35.0f, 18.0f), ImVec2(1, 1), ImVec2(0, 0), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1));
+                    ImGui::PopStyleVar();
+                    if (upRet) {
+                        if (hash + 1 >= gSeedTextures.size()) {
+                            hash = 0;
+                        }
+                        else {
+                            hash++;
+                        }
+                    }
+                    ImGui::Image(textureID, ImVec2(35.0f, 35.0f));
+                    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2.0f, 2.0f));
+                    auto downRet = ImGui::ImageButton("HASH_ARROW_DWN", Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("HASH_ARROW_DWN"),
+                                                  ImVec2(35.0f, 18.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1));
+                    ImGui::PopStyleVar();
+                    if (downRet) {
+                        if (hash == 0) {
+                            hash = gSeedTextures.size() - 1;
+                        }
+                        else {
+                            hash--;
+                        }
+                    }
+                    if (index != spoilerHash.size() - 1) {
+                        ImGui::TableNextColumn();
+                    }
+                    ImGui::PopID();
+                    index++;
+                }
+                PlandoPopImageButtonStyle();
+                ImGui::EndTable();
+            }
+        }
+        else {
+            ImGui::Text("No Spoiler Log Loaded");
+        }
         ImGui::EndTable();
-    } else {
-        ImGui::Text("No Spoiler Log Loaded");
     }
-    ImGui::EndTable();
     
     ImGui::SeparatorText("Options");
     if (plandoLogData.size() == 0) {
@@ -1019,81 +1049,85 @@ void PlandomizerDrawHintsWindow() {
     std::string hintInputText;
 
     ImGui::BeginChild("Hints");
-    ImGui::BeginTable("Hints Window", 1, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_ScrollY);
-    ImGui::TableSetupColumn("Hint Entries");
-    ImGui::TableSetupScrollFreeze(0, 1);
-    ImGui::TableHeadersRow();
-    
-    for (auto& hintData : spoilerHintData) {
-        ImGui::PushID(index);
-        ImGui::TableNextColumn();
-        ImGui::SeparatorText(hintData.hintName.c_str());
-        ImGui::Text("Current Hint: ");
-        ImGui::SameLine();
-        ImGui::TextWrapped(hintData.hintText.c_str());
+    if (ImGui::BeginTable("Hints Window", 1, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_ScrollY)) {
+        ImGui::TableSetupColumn("Hint Entries");
+        ImGui::TableSetupScrollFreeze(0, 1);
+        ImGui::TableHeadersRow();
 
-        if (spoilerHintData.size() > 0) {
-            hintInputText = plandoHintData[index].hintText.c_str();
+        for (auto& hintData : spoilerHintData) {
+            ImGui::PushID(index);
+            ImGui::TableNextColumn();
+            ImGui::SeparatorText(hintData.hintName.c_str());
+            ImGui::Text("Current Hint: ");
+            ImGui::SameLine();
+            ImGui::TextWrapped(hintData.hintText.c_str());
+
+            if (spoilerHintData.size() > 0) {
+                hintInputText = plandoHintData[index].hintText.c_str();
+            }
+            ImGui::Text("New Hint:     ");
+            ImGui::SameLine();
+            if (ImGui::Button(randomizeButton.c_str())) {
+                PlandomizerRandomizeHint(HINT_SINGLE, index);
+            }
+            UIWidgets::Tooltip("Randomize Hint");
+            ImGui::SameLine();
+            ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - 10);
+            if (UIWidgets::InputString("##HintMessage", &hintInputText)) {
+                plandoHintData[index].hintText = hintInputText.c_str();
+            }
+            UIWidgets::Tooltip(plandomizerHintsTooltip().c_str());
+            index++;
+            ImGui::PopID();
         }
-        ImGui::Text("New Hint:     ");
-        ImGui::SameLine();
-        if (ImGui::Button(randomizeButton.c_str())) {
-            PlandomizerRandomizeHint(HINT_SINGLE, index);
-        }
-        UIWidgets::Tooltip("Randomize Hint");
-        ImGui::SameLine();
-        ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - 10);
-        if (UIWidgets::InputString("##HintMessage", &hintInputText)) {
-            plandoHintData[index].hintText = hintInputText.c_str();
-        }
-        UIWidgets::Tooltip(plandomizerHintsTooltip().c_str());
-        index++;
-        ImGui::PopID();
+
+        ImGui::EndTable();
     }
-
-    ImGui::EndTable();
     ImGui::EndChild();
 }
 
 void PlandomizerDrawLocationsWindow(RandomizerCheckArea rcArea) {
     uint32_t index = 0;
     ImGui::BeginChild("Locations");
-    ImGui::BeginTable("Locations Window", 4, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_ScrollY);
-    ImGui::TableSetupColumn("Spoiler Log Check Name", ImGuiTableColumnFlags_WidthFixed, 250.0f);
-    ImGui::TableSetupColumn("Spoiler Log Reward", ImGuiTableColumnFlags_WidthFixed, 190.0f);
-    ImGui::TableSetupColumn("New Reward", ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_NoHeaderLabel, 34.0f);
-    ImGui::TableSetupColumn("Additional Options");
-    ImGui::TableSetupScrollFreeze(0, 1);
-    ImGui::TableHeadersRow();
+    if (ImGui::BeginTable("Locations Window", 4, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_ScrollY)) {
+        ImGui::TableSetupColumn("Spoiler Log Check Name", ImGuiTableColumnFlags_WidthFixed, 250.0f);
+        ImGui::TableSetupColumn("Spoiler Log Reward", ImGuiTableColumnFlags_WidthFixed, 190.0f);
+        ImGui::TableSetupColumn("New Reward", ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_NoHeaderLabel, 34.0f);
+        ImGui::TableSetupColumn("Additional Options");
+        ImGui::TableSetupScrollFreeze(0, 1);
+        ImGui::TableHeadersRow();
 
-    for (auto& spoilerData : spoilerLogData) {
-        auto checkID = Rando::StaticData::locationNameToEnum[spoilerData.checkName];
-        auto randoArea = Rando::StaticData::GetLocation(checkID)->GetArea();
-        if (rcArea == RCAREA_INVALID || rcArea == randoArea) {
-            ImGui::TableNextColumn();
-            ImGui::TextWrapped(spoilerData.checkName.c_str());
-            ImGui::TableNextColumn();
-            ImGui::TextWrapped(spoilerData.checkRewardItem.GetName().english.c_str());
-            ImGui::TableNextColumn();
-            PlandomizerDrawItemSlots(index);
-            if (plandoLogData[index].checkRewardItem.GetRandomizerGet() == RG_ICE_TRAP) {
+        for (auto& spoilerData : spoilerLogData) {
+            auto checkID = Rando::StaticData::locationNameToEnum[spoilerData.checkName];
+            auto randoArea = Rando::StaticData::GetLocation(checkID)->GetArea();
+            if (rcArea == RCAREA_INVALID || rcArea == randoArea) {
                 ImGui::TableNextColumn();
-                PlandomizerDrawIceTrapSetup(index);
-            } else if (spoilerData.shopPrice != -1) {
+                ImGui::TextWrapped(spoilerData.checkName.c_str());
                 ImGui::TableNextColumn();
-                ImGui::BeginTable("Shops", 1, ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersInner);
-                ImGui::TableSetupColumn("Shop Price");
-                ImGui::TableHeadersRow();
+                ImGui::TextWrapped(spoilerData.checkRewardItem.GetName().english.c_str());
                 ImGui::TableNextColumn();
-                PlandomizerDrawShopSlider(index);
-                ImGui::EndTable();
-            } else {
-                ImGui::TableNextColumn();
+                PlandomizerDrawItemSlots(index);
+                if (plandoLogData[index].checkRewardItem.GetRandomizerGet() == RG_ICE_TRAP) {
+                    ImGui::TableNextColumn();
+                    PlandomizerDrawIceTrapSetup(index);
+                }
+                else if (spoilerData.shopPrice != -1) {
+                    ImGui::TableNextColumn();
+                    ImGui::BeginTable("Shops", 1, ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersInner);
+                    ImGui::TableSetupColumn("Shop Price");
+                    ImGui::TableHeadersRow();
+                    ImGui::TableNextColumn();
+                    PlandomizerDrawShopSlider(index);
+                    ImGui::EndTable();
+                }
+                else {
+                    ImGui::TableNextColumn();
+                }
             }
+            index++;
         }
-        index++;
+        ImGui::EndTable();
     }
-    ImGui::EndTable();
     ImGui::EndChild();
 }
 

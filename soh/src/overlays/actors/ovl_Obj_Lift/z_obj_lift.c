@@ -8,7 +8,7 @@
 #include "objects/object_d_lift/object_d_lift.h"
 #include "overlays/effects/ovl_Effect_Ss_Kakera/z_eff_ss_kakera.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void ObjLift_Init(Actor* thisx, PlayState* play);
 void ObjLift_Destroy(Actor* thisx, PlayState* play);
@@ -138,7 +138,7 @@ void func_80B96560(ObjLift* this, PlayState* play) {
     s32 pad;
     s32 quakeIndex;
 
-    if (func_8004356C(&this->dyna)) {
+    if (DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
         if (this->timer <= 0) {
             if (((this->dyna.actor.params >> 8) & 7) == 7) {
                 func_80B967C0(this);
@@ -192,7 +192,7 @@ void func_80B96840(ObjLift* this, PlayState* play) {
     s32 bgId;
     Vec3f sp2C;
 
-    Actor_MoveForward(&this->dyna.actor);
+    Actor_MoveXZGravity(&this->dyna.actor);
     Math_Vec3f_Copy(&sp2C, &this->dyna.actor.prevPos);
     sp2C.y += sMaxFallDistances[(this->dyna.actor.params >> 1) & 1];
     this->dyna.actor.floorHeight =

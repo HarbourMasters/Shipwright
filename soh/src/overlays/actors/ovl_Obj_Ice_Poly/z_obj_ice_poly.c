@@ -7,7 +7,7 @@
 #include "z_obj_ice_poly.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void ObjIcePoly_Init(Actor* thisx, PlayState* play);
 void ObjIcePoly_Destroy(Actor* thisx, PlayState* play);

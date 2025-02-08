@@ -217,7 +217,7 @@ namespace GameInteractionEffect {
         void _Apply() override;
     };
 
-    class PressRandomButton: public GameInteractionEffectBase, public ParameterizedGameInteractionEffect {
+    class PressRandomButton: public RemovableGameInteractionEffect, public ParameterizedGameInteractionEffect {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
     };
@@ -261,6 +261,14 @@ namespace GameInteractionEffect {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
         void _Remove() override;
+    };
+    class SpawnEnemyWithOffset: public GameInteractionEffectBase, public ParameterizedGameInteractionEffect {
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void _Apply() override;
+    };
+    class SpawnActor: public GameInteractionEffectBase, public ParameterizedGameInteractionEffect {
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void _Apply() override;
     };
 }
 

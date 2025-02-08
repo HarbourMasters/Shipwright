@@ -153,8 +153,6 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("InstantScarecrow"),
     CVAR_ENHANCEMENT("BlueFireArrows"),
     CVAR_ENHANCEMENT("SunlightArrows"),
-    CVAR_ENHANCEMENT("PauseLiveLinkRotation"),
-    CVAR_ENHANCEMENT("PauseLiveLink"),
     CVAR_ENHANCEMENT("MinFrameCount"),
     CVAR_ENHANCEMENT("NewDrops"),
     CVAR_ENHANCEMENT("DisableBlackBars"),
@@ -240,7 +238,6 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("SceneSpecificDirtPathFix"),
     CVAR_Z_FIGHTING_MODE,
     CVAR_ENHANCEMENT("AuthenticLogo"),
-    CVAR_ENHANCEMENT("PauseLiveLinkRotationSpeed"),
     CVAR_ENHANCEMENT("BowReticle"),
     CVAR_ENHANCEMENT("BoomerangFirstPerson"),
     CVAR_ENHANCEMENT("BoomerangReticle"),
@@ -342,8 +339,6 @@ const std::vector<const char*> cheatCvars = {
     CVAR_CHEAT("EasyISG"),
     CVAR_CHEAT("EasyQPA"),
     CVAR_CHEAT("TimelessEquipment"),
-    CVAR_CHEAT("EasyPauseBuffer"),
-    CVAR_CHEAT("EasyInputBuffer"),
     CVAR_CHEAT("NoRestrictItems"),
     CVAR_CHEAT("FreezeTime"),
     CVAR_GENERAL("PrevTime"),
@@ -397,7 +392,7 @@ const std::vector<const char*> randomizerCvars = {
     CVAR_RANDOMIZER_SETTING("BigPoesHint"),
     CVAR_RANDOMIZER_SETTING("BiggoronHint"),
     CVAR_RANDOMIZER_SETTING("BlueFireArrows"),
-    CVAR_RANDOMIZER_SETTING("BombchusInLogic"),
+    CVAR_RANDOMIZER_SETTING("BombchuBag"),
     CVAR_RANDOMIZER_SETTING("BossKeysanity"),
     CVAR_RANDOMIZER_SETTING("BridgeRewardOptions"),
     CVAR_RANDOMIZER_SETTING("ChickensHint"),
@@ -408,18 +403,17 @@ const std::vector<const char*> randomizerCvars = {
     CVAR_RANDOMIZER_SETTING("DoorOfTime"),
     CVAR_RANDOMIZER_SETTING("DungeonCount"),
     CVAR_RANDOMIZER_SETTING("EnableBombchuDrops"),
-    CVAR_RANDOMIZER_SETTING("EnableGlitchCutscenes"),
     CVAR_RANDOMIZER_SETTING("FishingPoleHint"),
     CVAR_RANDOMIZER_SETTING("Fishsanity"),
     CVAR_RANDOMIZER_SETTING("FishsanityAgeSplit"),
     CVAR_RANDOMIZER_SETTING("FishsanityPondCount"),
-    CVAR_RANDOMIZER_SETTING("Forest"),
+    CVAR_RANDOMIZER_SETTING("ClosedForest"),
     CVAR_RANDOMIZER_SETTING("FrogsHint"),
     CVAR_RANDOMIZER_SETTING("FullWallets"),
     CVAR_RANDOMIZER_SETTING("GanonTrial"),
     CVAR_RANDOMIZER_SETTING("GanonTrialCount"),
     CVAR_RANDOMIZER_SETTING("GanondorfHint"),
-    CVAR_RANDOMIZER_SETTING("GerudoFortress"),
+    CVAR_RANDOMIZER_SETTING("FortressCarpenters"),
     CVAR_RANDOMIZER_SETTING("GerudoKeys"),
     CVAR_RANDOMIZER_SETTING("GossipStoneHints"),
     CVAR_RANDOMIZER_SETTING("GregHint"),
@@ -620,9 +614,6 @@ const std::vector<PresetEntry> vanillaPlusPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), 1),
 
-    // Pause link animation (0 to 16)
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("PauseLiveLink"), 1),
-
     // Dynamic Wallet Icon
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DynamicWalletIcon"), 1),
     // Always show dungeon entrances
@@ -694,9 +685,6 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), 1),
-
-    // Pause link animation (0 to 16)
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("PauseLiveLink"), 1),
 
     // Dynamic Wallet Icon
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DynamicWalletIcon"), 1),
@@ -954,8 +942,6 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     // Color Temple of Time's Medallions
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("ToTMedallionsColors"), 1),
 
-    // Pause link animation (0 to 16)
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("PauseLiveLink"), 16),
     // Frames to wait
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MinFrameCount"), 200),
 
@@ -1010,7 +996,6 @@ const std::vector<PresetEntry> spockRacePresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MinimumFishWeightChild"), 3),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("GoronPot"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("ForgeTime"), 0),
-    PRESET_ENTRY_S32(CVAR_CHEAT("EasyPauseBuffer"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DampeAllNight"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("10GSHint"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("20GSHint"), 1),
@@ -1019,7 +1004,7 @@ const std::vector<PresetEntry> spockRacePresetEntries = {
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("50GSHint"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("AllLocationsReachable"), 0),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BlueFireArrows"), 1),
-    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BombchusInLogic"), 1),
+    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BombchuBag"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("CompleteMaskQuest"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("CuccosToReturn"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("DampeHint"), 1),
@@ -1027,10 +1012,10 @@ const std::vector<PresetEntry> spockRacePresetEntries = {
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("EnableBombchuDrops"), 1),
     PRESET_ENTRY_CPP_STRING(CVAR_RANDOMIZER_SETTING("ExcludedLocations"), FormatLocations( 
         { RC_MARKET_10_BIG_POES, RC_KAK_40_GOLD_SKULLTULA_REWARD, RC_KAK_50_GOLD_SKULLTULA_REWARD, RC_ZR_FROGS_OCARINA_GAME })),
-    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("Forest"), RO_FOREST_OPEN),
+    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("ClosedForest"), RO_CLOSED_FOREST_OFF),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("FullWallets"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("GanonTrial"), RO_GANONS_TRIALS_SKIP),
-    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("GerudoFortress"), RO_GF_FAST),
+    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("FortressCarpenters"), RO_GF_CARPENTERS_FAST),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("GregHint"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("GsExpectSunsSong"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("KakarikoGate"), RO_KAK_GATE_OPEN),
@@ -1062,7 +1047,6 @@ const std::vector<PresetEntry> spockRaceNoLogicPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AdultMasks"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MinimumFishWeightAdult"), 6),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AssignableTunicsAndBoots"), 1),
-    PRESET_ENTRY_S32(CVAR_CHEAT("EasyPauseBuffer"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MinimumFishWeightChild"), 3),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("ClimbSpeed"), 4),
     PRESET_ENTRY_S32(CVAR_COSMETIC("Goron.NeckLength"), 1000),
@@ -1103,7 +1087,7 @@ const std::vector<PresetEntry> spockRaceNoLogicPresetEntries = {
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("50GSHint"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("AllLocationsReachable"), 0),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BlueFireArrows"), 1),
-    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BombchusInLogic"), 1),
+    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BombchuBag"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BossKeysanity"), RO_DUNGEON_ITEM_LOC_ANYWHERE),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("CompleteMaskQuest"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("CuccosToReturn"), 1),
@@ -1112,10 +1096,10 @@ const std::vector<PresetEntry> spockRaceNoLogicPresetEntries = {
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("EnableBombchuDrops"), 1),
     PRESET_ENTRY_CPP_STRING(CVAR_RANDOMIZER_SETTING("ExcludedLocations"), FormatLocations(
         { RC_MARKET_10_BIG_POES, RC_KAK_40_GOLD_SKULLTULA_REWARD, RC_KAK_50_GOLD_SKULLTULA_REWARD, RC_ZR_FROGS_OCARINA_GAME })),
-    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("Forest"), RO_FOREST_OPEN),
+    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("ClosedForest"), RO_CLOSED_FOREST_OFF),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("FullWallets"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("GanonTrial"), RO_GANONS_TRIALS_SKIP),
-    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("GerudoFortress"), RO_GF_FAST),
+    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("FortressCarpenters"), RO_GF_CARPENTERS_FAST),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("GerudoKeys"), RO_GERUDO_KEYS_ANYWHERE),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("GregHint"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("GsExpectSunsSong"), 0),
@@ -1162,9 +1146,9 @@ const std::vector<PresetEntry> s6PresetEntries = {
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("CuccosToReturn"), 4),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("DoorOfTime"), RO_DOOROFTIME_OPEN),
     PRESET_ENTRY_CPP_STRING(CVAR_RANDOMIZER_SETTING("ExcludedLocations"), FormatLocations({ RC_DEKU_THEATER_MASK_OF_TRUTH })),
-    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("Forest"), RO_FOREST_CLOSED_DEKU),
+    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("ClosedForest"), RO_CLOSED_FOREST_DEKU_ONLY),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("GanonTrial"), RO_GANONS_TRIALS_SKIP),
-    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("GerudoFortress"), RO_GF_FAST),
+    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("FortressCarpenters"), RO_GF_CARPENTERS_FAST),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("IceTraps"), RO_ICE_TRAPS_OFF),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("KakarikoGate"), RO_KAK_GATE_OPEN),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("MedallionCount"), 6),
@@ -1200,8 +1184,7 @@ const std::vector<PresetEntry> hellModePresetEntries = {
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("CuccosToReturn"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("DoorOfTime"), RO_DOOROFTIME_OPEN),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("EnableBombchuDrops"), 1),
-    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("EnableGlitchCutscenes"), 1),
-    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("Forest"), RO_FOREST_OPEN),
+    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("ClosedForest"), RO_CLOSED_FOREST_OFF),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("GanonTrial"), RO_GANONS_TRIALS_SET_NUMBER),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("GanonTrialCount"), 6),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("GerudoKeys"), RO_GERUDO_KEYS_ANYWHERE),
@@ -1248,12 +1231,12 @@ const std::vector<PresetEntry> hellModePresetEntries = {
 };
 
 const std::vector<PresetEntry> BenchmarkPresetEntries = {
-    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("Forest"), RO_FOREST_CLOSED_DEKU),
+    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("ClosedForest"), RO_CLOSED_FOREST_DEKU_ONLY),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("KakarikoGate"), RO_KAK_GATE_OPEN),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("DoorOfTime"), RO_DOOROFTIME_SONGONLY),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("SleepingWaterfall"), RO_WATERFALL_CLOSED),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("ZorasFountain"), RO_ZF_CLOSED),
-    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("GerudoFortress"), RO_GF_NORMAL),
+    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("FortressCarpenters"), RO_GF_CARPENTERS_NORMAL),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("RainbowBridge"), RO_BRIDGE_DUNGEON_REWARDS),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("RewardCount"), 5),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BridgeRewardOptions"), RO_BRIDGE_GREG_REWARD),
@@ -1409,7 +1392,7 @@ const std::map<PresetType, PresetTypeDefinition> presetTypes = {
             "Spock Race",
             "Race preset used for the official Ship of Harkinian race on June 3rd 2023. The following settings are notable:\n" \
             "- Rainbow Bridge is set to Greg\n" \
-            "- Ganons Boss Key is 5 dungeon rewards\n" \
+            "- Ganon's Boss Key is 5 dungeon rewards\n" \
             "- Shopsanity and Scrubsanity enabled\n" \
             "- All locations reachable is off\n", \
             spockRacePresetEntries,
@@ -1419,7 +1402,7 @@ const std::map<PresetType, PresetTypeDefinition> presetTypes = {
                 "No Logic Race preset used for official Ship of Harkinian No Logic races. The following settings are "
                 "notable:\n"
                 "- Rainbow Bridge is set to Greg\n"
-                "- Ganons Boss Key is 5 dungeon rewards\n"
+                "- Ganon's Boss Key is 5 dungeon rewards\n"
                 "- Shopsanity and Scrubsanity enabled\n"
                 "- All locations reachable is off\n",
                 spockRaceNoLogicPresetEntries,

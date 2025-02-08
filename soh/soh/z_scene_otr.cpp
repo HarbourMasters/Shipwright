@@ -107,7 +107,7 @@ bool Scene_CommandSpecialFiles(PlayState* play, SOH::ISceneCommand* cmd) {
 
     if (specialCmd->specialObjects.elfMessage != 0) {
         auto res = 
-            (LUS::Blob*)OTRPlay_LoadFile(play, sNaviMsgFiles[specialCmd->specialObjects.elfMessage - 1].fileName);
+            (Ship::Blob*)OTRPlay_LoadFile(play, sNaviMsgFiles[specialCmd->specialObjects.elfMessage - 1].fileName);
         play->cUpElfMsgs = (ElfMessage*)res->Data.data();
     }
 

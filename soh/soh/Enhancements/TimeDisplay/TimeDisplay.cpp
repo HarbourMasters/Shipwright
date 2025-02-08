@@ -4,7 +4,7 @@
 
 #include "assets/textures/parameter_static/parameter_static.h"
 #include "assets/soh_assets.h"
-#include "soh/ImGuiUtils.h"
+#include "soh/SohGui/ImGuiUtils.h"
 
 extern "C" {
 #include "macros.h"
@@ -196,7 +196,6 @@ void TimeDisplayWindow::Draw() {
                 uint16_t textureIndex = 0;
 
                 for (size_t i = 0; i < textLength; i++) {
-                    ImVec2 originalCursorPos = ImGui::GetCursorPos();
                     if (textToDecode[i] == ':' || textToDecode[i] == '.') {
                         textureIndex = 10;
                     } else {

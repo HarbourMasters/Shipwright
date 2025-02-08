@@ -353,7 +353,7 @@ void EnButte_FollowLink(EnButte* this, PlayState* play) {
 
 void EnButte_SetupTransformIntoFairy(EnButte* this) {
     this->timer = 9;
-    this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+    this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
     this->skelAnime.playSpeed = 1.0f;
     EnButte_ResetTransformationEffect();
     this->actionFunc = EnButte_TransformIntoFairy;
@@ -414,7 +414,7 @@ void EnButte_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
 
     if (this->actor.update != NULL) {
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
         Math_StepToF(&this->actor.world.pos.y, this->posYTarget, 0.6f);
         if (this->actor.xyzDistToPlayerSq < 5000.0f) {
             CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);

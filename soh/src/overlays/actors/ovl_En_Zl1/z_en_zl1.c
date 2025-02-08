@@ -7,7 +7,7 @@
 #include "z_en_zl1.h"
 #include "objects/object_zl1/object_zl1.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
 void EnZl1_Init(Actor* thisx, PlayState* play);
 void EnZl1_Destroy(Actor* thisx, PlayState* play);
@@ -556,7 +556,7 @@ void func_80B4BF2C(EnZl1* this, PlayState* play) {
             if (Actor_TextboxIsClosing(&this->actor, play)) {
                 Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
                 Interface_ChangeAlpha(50);
-                this->actor.flags &= ~ACTOR_FLAG_PLAYER_TALKED_TO;
+                this->actor.flags &= ~ACTOR_FLAG_TALK;
                 this->unk_1E2 = 4;
             }
             break;

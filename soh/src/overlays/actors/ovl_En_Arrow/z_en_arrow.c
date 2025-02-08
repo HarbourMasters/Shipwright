@@ -8,7 +8,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_gi_nuts/object_gi_nuts.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void EnArrow_Init(Actor* thisx, PlayState* play);
 void EnArrow_Destroy(Actor* thisx, PlayState* play);
@@ -193,7 +193,7 @@ void EnArrow_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyQuad(play, &this->collider);
 
     if ((this->hitActor != NULL) && (this->hitActor->update != NULL)) {
-        this->hitActor->flags &= ~ACTOR_FLAG_DRAGGED_BY_ARROW;
+        this->hitActor->flags &= ~ACTOR_FLAG_ATTACHED_TO_ARROW;
     }
 }
 
@@ -228,11 +228,11 @@ void EnArrow_Shoot(EnArrow* this, PlayState* play) {
         Math_Vec3f_Copy(&this->unk_210, &this->actor.world.pos);
 
         if (this->actor.params >= ARROW_SEED) {
-            func_8002D9A4(&this->actor, 80.0f);
+            Actor_SetProjectileSpeed(&this->actor, 80.0f);
             this->timer = 15;
             this->actor.shape.rot.x = this->actor.shape.rot.y = this->actor.shape.rot.z = 0;
         } else {
-            func_8002D9A4(&this->actor, 150.0f);
+            Actor_SetProjectileSpeed(&this->actor, 150.0f);
             this->timer = 12;
         }
     }
@@ -333,11 +333,11 @@ void EnArrow_Fly(EnArrow* this, PlayState* play) {
                 hitActor = this->collider.base.at;
 
                 if ((hitActor->update != NULL) && (!(this->collider.base.atFlags & AT_BOUNCED)) &&
-                    (hitActor->flags & ACTOR_FLAG_ARROW_DRAGGABLE)) {
+                    (hitActor->flags & ACTOR_FLAG_CAN_ATTACH_TO_ARROW)) {
                     this->hitActor = hitActor;
                     EnArrow_CarryActor(this, play);
                     Math_Vec3f_Diff(&hitActor->world.pos, &this->actor.world.pos, &this->unk_250);
-                    hitActor->flags |= ACTOR_FLAG_DRAGGED_BY_ARROW;
+                    hitActor->flags |= ACTOR_FLAG_ATTACHED_TO_ARROW;
                     this->collider.base.atFlags &= ~AT_HIT;
                     this->actor.speedXZ /= 2.0f;
                     this->actor.velocity.y /= 2.0f;
@@ -370,7 +370,7 @@ void EnArrow_Fly(EnArrow* this, PlayState* play) {
         }
     } else {
         Math_Vec3f_Copy(&this->unk_210, &this->actor.world.pos);
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
 
         if ((this->touchedPoly =
                  BgCheck_ProjectileLineTest(&play->colCtx, &this->actor.prevPos, &this->actor.world.pos, &hitPoint,
@@ -396,14 +396,14 @@ void EnArrow_Fly(EnArrow* this, PlayState* play) {
                 this->hitActor->world.pos.y = hitPoint.y + ((sp54.y <= hitPoint.y) ? 1.0f : -1.0f);
                 this->hitActor->world.pos.z = hitPoint.z + ((sp54.z <= hitPoint.z) ? 1.0f : -1.0f);
                 Math_Vec3f_Diff(&this->hitActor->world.pos, &this->actor.world.pos, &this->unk_250);
-                this->hitActor->flags &= ~ACTOR_FLAG_DRAGGED_BY_ARROW;
+                this->hitActor->flags &= ~ACTOR_FLAG_ATTACHED_TO_ARROW;
                 this->hitActor = NULL;
             } else {
                 Math_Vec3f_Sum(&this->actor.world.pos, &this->unk_250, &this->hitActor->world.pos);
             }
 
             if (this->touchedPoly && (this->hitActor != NULL)) {
-                this->hitActor->flags &= ~ACTOR_FLAG_DRAGGED_BY_ARROW;
+                this->hitActor->flags &= ~ACTOR_FLAG_ATTACHED_TO_ARROW;
                 this->hitActor = NULL;
             }
         } else {
@@ -422,7 +422,7 @@ void func_809B45E0(EnArrow* this, PlayState* play) {
 
 void func_809B4640(EnArrow* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 
     if (DECR(this->timer) == 0) {
         Actor_Kill(&this->actor);

@@ -7,7 +7,7 @@
 #include "z_bg_bdan_objects.h"
 #include "objects/object_bdan_objects/object_bdan_objects.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void BgBdanObjects_Init(Actor* thisx, PlayState* play);
 void BgBdanObjects_Destroy(Actor* thisx, PlayState* play);
@@ -115,7 +115,7 @@ void BgBdanObjects_Init(Actor* thisx, PlayState* play) {
     this->switchFlag = (thisx->params >> 8) & 0x3F;
     thisx->params &= 0xFF;
     if (thisx->params == 2) {
-        thisx->flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED;
+        thisx->flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED;
         play->colCtx.colHeader->waterBoxes[7].ySurface = thisx->world.pos.y;
         this->actionFunc = func_8086C9A8;
         return;
@@ -326,7 +326,7 @@ void func_8086C6EC(BgBdanObjects* this, PlayState* play) {
 }
 
 void func_8086C76C(BgBdanObjects* this, PlayState* play) {
-    if (func_8004356C(&this->dyna)) {
+    if (DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
         if (this->dyna.actor.xzDistToPlayer < 120.0f) {
             this->actionFunc = func_8086C7D0;
             OnePointCutscene_Init(play, 3090, -99, &this->dyna.actor, MAIN_CAM);
@@ -352,7 +352,7 @@ void func_8086C874(BgBdanObjects* this, PlayState* play) {
         this->timer--;
     }
     if (this->switchFlag == 0) {
-        if (func_8004356C(&this->dyna)) {
+        if (DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
             this->cameraSetting = play->cameraPtrs[MAIN_CAM]->setting;
             Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_NORMAL2);
             func_8005AD1C(play->cameraPtrs[MAIN_CAM], 4);
@@ -360,7 +360,7 @@ void func_8086C874(BgBdanObjects* this, PlayState* play) {
         }
     } else {
         Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_NORMAL2);
-        if (!func_8004356C(&this->dyna)) {
+        if (!DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
             if (this->switchFlag != 0) {
                 this->switchFlag--;
             }
@@ -411,7 +411,7 @@ void func_8086CABC(BgBdanObjects* this, PlayState* play) {
 }
 
 void func_8086CB10(BgBdanObjects* this, PlayState* play) {
-    if (func_8004356C(&this->dyna)) {
+    if (DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
         Flags_SetSwitch(play, this->switchFlag);
         this->timer = 50;
         this->actionFunc = func_8086CB8C;

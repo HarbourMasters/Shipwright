@@ -85,7 +85,7 @@ void SkipChildRutoInteractions_Register() {
         if (enRu1->action == 22) {
             enRu1->action = 27;
             enRu1->drawConfig = 1;
-            enRu1->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
+            enRu1->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY;
             Animation_Change(&enRu1->skelAnime, (AnimationHeader*)&gRutoChildSittingAnim, 1.0f, 0.0f,
                          Animation_GetLastFrame((void*)&gRutoChildSittingAnim), ANIMMODE_LOOP, 0.0f);
         }

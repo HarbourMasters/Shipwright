@@ -4,7 +4,7 @@
 #include "soh/cvar_prefixes.h"
 #include "soh/SaveManager.h"
 #include "soh/ResourceManagerHelpers.h"
-#include "soh/UIWidgets.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include "randomizerTypes.h"
 
 #include <map>
@@ -90,17 +90,15 @@ std::vector<ItemTrackerItem> triforcePieces = {
 };
 
 std::vector<ItemTrackerItem> bossSoulItems = {
-    //Hack for right now, just gonna draw souls as bottles/big poes.
-    //Will replace with other macro once we have a custom texture
-    ITEM_TRACKER_ITEM_CUSTOM(RG_GOHMA_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_KING_DODONGO_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_BARINADE_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_PHANTOM_GANON_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_VOLVAGIA_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_MORPHA_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_BONGO_BONGO_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_TWINROVA_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_GANON_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
+    ITEM_TRACKER_ITEM(RG_GOHMA_SOUL, 0, DrawItem),
+    ITEM_TRACKER_ITEM(RG_KING_DODONGO_SOUL, 0, DrawItem ),
+    ITEM_TRACKER_ITEM(RG_BARINADE_SOUL, 0, DrawItem ),
+    ITEM_TRACKER_ITEM(RG_PHANTOM_GANON_SOUL, 0, DrawItem ),
+    ITEM_TRACKER_ITEM(RG_VOLVAGIA_SOUL, 0, DrawItem ),
+    ITEM_TRACKER_ITEM(RG_MORPHA_SOUL, 0, DrawItem ),
+    ITEM_TRACKER_ITEM(RG_BONGO_BONGO_SOUL, 0, DrawItem ),
+    ITEM_TRACKER_ITEM(RG_TWINROVA_SOUL, 0, DrawItem ),
+    ITEM_TRACKER_ITEM(RG_GANON_SOUL, 0, DrawItem ),
 };
 
 std::vector<ItemTrackerItem> ocarinaButtonItems = {
@@ -411,17 +409,17 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
             break;
         case ITEM_HEART_CONTAINER:
             result.maxCapacity = result.currentCapacity = 8;
-            result.currentAmmo = gSaveContext.sohStats.heartContainers;
+            result.currentAmmo = gSaveContext.ship.stats.heartContainers;
             break;
         case ITEM_HEART_PIECE:
             result.maxCapacity = result.currentCapacity = 36;
-            result.currentAmmo = gSaveContext.sohStats.heartPieces;
+            result.currentAmmo = gSaveContext.ship.stats.heartPieces;
             break;
         case ITEM_KEY_SMALL:
             // Though the ammo/capacity naming doesn't really make sense for keys, we are
             // hijacking the same system to display key counts as there are enough similarities
             result.currentAmmo = MAX(gSaveContext.inventory.dungeonKeys[item.data], 0);
-            result.currentCapacity = gSaveContext.sohStats.dungeonKeys[item.data];
+            result.currentCapacity = gSaveContext.ship.stats.dungeonKeys[item.data];
             switch (item.data) {
                 case SCENE_FOREST_TEMPLE:
                     result.maxCapacity = FOREST_TEMPLE_SMALL_KEY_MAX;
@@ -442,7 +440,7 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
                     result.maxCapacity = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;
                     break;
                 case SCENE_GERUDO_TRAINING_GROUND:
-                    result.maxCapacity = GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX;
+                    result.maxCapacity = GERUDO_TRAINING_GROUND_SMALL_KEY_MAX;
                     break;
                 case SCENE_THIEVES_HIDEOUT:
                     result.maxCapacity = GERUDO_FORTRESS_SMALL_KEY_MAX;
@@ -582,11 +580,11 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         std::string maxString = "";
         uint8_t piecesRequired = (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1);
         uint8_t piecesTotal = (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL) + 1);
-        ImU32 currentColor = gSaveContext.triforcePiecesCollected >= piecesRequired ? IM_COL_GREEN : IM_COL_WHITE;
+        ImU32 currentColor = gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected >= piecesRequired ? IM_COL_GREEN : IM_COL_WHITE;
         ImU32 maxColor = IM_COL_GREEN;
         int32_t trackerTriforcePieceNumberDisplayMode = CVarGetInteger(CVAR_TRACKER_ITEM("TriforcePieceCounts"), TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX);
 
-        currentString += std::to_string(gSaveContext.triforcePiecesCollected);
+        currentString += std::to_string(gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected);
         currentString += "/";
         // gItemTrackerTriforcePieceTrack
         if (trackerTriforcePieceNumberDisplayMode == TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX) {
@@ -651,11 +649,11 @@ void DrawItem(ItemTrackerItem item) {
     switch (item.id) {
         case ITEM_HEART_CONTAINER:
             actualItemId = item.id;
-            hasItem = gSaveContext.sohStats.heartContainers > 0;
+            hasItem = gSaveContext.ship.stats.heartContainers > 0;
             break;
         case ITEM_HEART_PIECE:
             actualItemId = item.id;
-            hasItem = gSaveContext.sohStats.heartPieces > 0;
+            hasItem = gSaveContext.ship.stats.heartPieces > 0;
             break;
         case ITEM_MAGIC_SMALL:
         case ITEM_MAGIC_LARGE:
@@ -923,7 +921,11 @@ void DrawTotalChecks() {
     uint16_t totalChecksGotten = CheckTracker::GetTotalChecksGotten();
 
     ImGui::BeginGroup();
-    ImGui::SetWindowFontScale(2.5);
+    if (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING) {
+        ImGui::SetWindowFontScale(2.5);
+    } else {
+        ImGui::SetWindowFontScale(1);
+    }
     ImGui::Text("Checks: %d/%d", totalChecksGotten, totalChecks);
     ImGui::EndGroup();
 }
@@ -1224,7 +1226,7 @@ void ItemTrackerWindow::DrawElement() {
     int iconSpacing = CVarGetInteger(CVAR_TRACKER_ITEM("IconSpacing"), 12);
     int comboButton1Mask = buttonMap[CVarGetInteger(CVAR_TRACKER_ITEM("ComboButton1"), TRACKER_COMBO_BUTTON_L)];
     int comboButton2Mask = buttonMap[CVarGetInteger(CVAR_TRACKER_ITEM("ComboButton2"), TRACKER_COMBO_BUTTON_R)];
-    OSContPad* buttonsPressed = Ship::Context::GetInstance()->GetControlDeck()->GetPads();
+    OSContPad* buttonsPressed = std::dynamic_pointer_cast<LUS::ControlDeck>(Ship::Context::GetInstance()->GetControlDeck())->GetPads();
     bool comboButtonsHeld = buttonsPressed != nullptr && buttonsPressed[0].button & comboButton1Mask && buttonsPressed[0].button & comboButton2Mask;
     bool isPaused = CVarGetInteger(CVAR_TRACKER_ITEM("ShowOnlyPaused"), 0) == 0 || gPlayState != nullptr && gPlayState->pauseCtx.state > 0;
 
@@ -1342,7 +1344,7 @@ void ItemTrackerWindow::DrawElement() {
 
         if (CVarGetInteger("gTrackers.ItemTracker.TotalChecks.DisplayType", SECTION_DISPLAY_MINIMAL_HIDDEN) ==
             SECTION_DISPLAY_MINIMAL_SEPARATE) {
-            ImGui::SetNextWindowSize(ImVec2(400, 300), ImGuiCond_FirstUseEver);
+            ImGui::SetNextWindowSize(ImVec2(450, 300), ImGuiCond_FirstUseEver);
             BeginFloatingWindows("Total Checks");
             DrawTotalChecks();
             EndFloatingWindows();
@@ -1376,7 +1378,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
         CVarSetFloat(CVAR_TRACKER_ITEM("BgColorG"), ChromaKeyBackground.y);
         CVarSetFloat(CVAR_TRACKER_ITEM("BgColorB"), ChromaKeyBackground.z);
         CVarSetFloat(CVAR_TRACKER_ITEM("BgColorA"), ChromaKeyBackground.w);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
     ImGui::PopItemWidth();
 

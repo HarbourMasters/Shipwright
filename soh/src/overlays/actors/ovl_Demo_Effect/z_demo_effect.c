@@ -13,7 +13,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void DemoEffect_Init(Actor* thisx, PlayState* play);
 void DemoEffect_Destroy(Actor* thisx, PlayState* play);
@@ -464,7 +464,7 @@ void DemoEffect_Init(Actor* thisx, PlayState* play2) {
 
         case DEMO_EFFECT_TIMEWARP_TIMEBLOCK_LARGE:
         case DEMO_EFFECT_TIMEWARP_TIMEBLOCK_SMALL:
-            this->actor.flags |= ACTOR_FLAG_NO_FREEZE_OCARINA;
+            this->actor.flags |= ACTOR_FLAG_UPDATE_DURING_OCARINA;
         case DEMO_EFFECT_TIMEWARP_MASTERSWORD:
             this->initDrawFunc = DemoEffect_DrawTimeWarp;
             this->initUpdateFunc = DemoEffect_InitTimeWarp;
@@ -947,7 +947,7 @@ void DemoEffect_UpdateLightRingTriforce(DemoEffect* this, PlayState* play) {
 void DemoEffect_UpdateCreationFireball(DemoEffect* this, PlayState* play) {
     DemoEffect* effect;
 
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     this->actor.speedXZ = this->actor.speedXZ + (this->actor.gravity * 0.5f);
 
     if (this->fireBall.timer != 0) {
@@ -2128,7 +2128,7 @@ void DemoEffect_DrawGetItem(Actor* thisx, PlayState* play) {
                     rg = RG_SHADOW_MEDALLION;
                     break;
                 case DEMO_EFFECT_MEDAL_LIGHT:
-                    rc = RC_GIFT_FROM_SAGES;
+                    rc = RC_GIFT_FROM_RAURU;
                     rg = RG_LIGHT_MEDALLION;
                     break;
                 case DEMO_EFFECT_LIGHTARROW:
