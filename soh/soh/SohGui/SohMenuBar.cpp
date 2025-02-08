@@ -526,7 +526,11 @@ void DrawSettingsMenu() {
             }
 
             if (Ship::Context::GetInstance()->GetWindow()->SupportsWindowedFullscreen()) {
+#ifdef __APPLE__
+                UIWidgets::PaddedEnhancementCheckbox("Exclusive fullscreen", CVAR_SDL_WINDOWED_FULLSCREEN, true, false);
+#else
                 UIWidgets::PaddedEnhancementCheckbox("Windowed fullscreen", CVAR_SDL_WINDOWED_FULLSCREEN, true, false);
+#endif
             }
 
             if (Ship::Context::GetInstance()->GetWindow()->GetGui()->SupportsViewports()) {
