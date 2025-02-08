@@ -321,6 +321,7 @@ void SohMenu::AddMenuSettings() {
 
     // Notifications
     path.sidebarName = "Notifications";
+    path.column = SECTION_COLUMN_1;
     AddSidebarEntry("Settings", "Notifications", 3);
     AddWidget(path, "Position", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_SETTING("gNotifications.Position"))

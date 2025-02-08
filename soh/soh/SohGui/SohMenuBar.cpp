@@ -205,10 +205,6 @@ void DrawSettingsMenu() {
     }
 }
 
-extern std::shared_ptr<AudioEditor> mAudioEditorWindow;
-extern std::shared_ptr<CosmeticsEditorWindow> mCosmeticsEditorWindow;
-extern std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
-extern std::shared_ptr<TimeSplitWindow> mTimeSplitWindow;
 extern std::shared_ptr<TimeDisplayWindow> mTimeDisplayWindow;
 
 void DrawEnhancementsMenu() {
