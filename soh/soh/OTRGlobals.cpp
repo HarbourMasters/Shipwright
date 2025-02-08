@@ -393,7 +393,6 @@ OTRGlobals::OTRGlobals() {
     gRandoContext = Rando::Context::CreateInstance();
     Rando::Settings::GetInstance()->AssignContext(gRandoContext);
     Rando::StaticData::InitItemTable();//RANDOTODO make this not rely on context's logic so it can be initialised in InitStaticData
-    gRandoContext->AddExcludedOptions();
     Rando::Settings::GetInstance()->CreateOptions();
     gRandomizer = std::make_shared<Randomizer>();
 
@@ -1166,6 +1165,9 @@ extern "C" void InitOTR() {
 
     SohGui::SetupGuiElements();
     ShipInit::InitAll();
+
+    Rando::StaticData::InitHashMaps();
+    OTRGlobals::Instance->gRandoContext->AddExcludedOptions();
     AudioCollection::Instance = new AudioCollection();
     ActorDB::Instance = new ActorDB();
 #ifdef __APPLE__

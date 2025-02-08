@@ -4550,7 +4550,7 @@ void KaleidoScope_Update(PlayState* play)
             R_UPDATE_RATE = 3;
             R_PAUSE_MENU_MODE = 0;
 
-            CVarSetInteger(CVAR_GENERAL("PauseTriforce"), 0);
+            CVarSetInteger(CVAR_GENERAL("PauseMenuAnimatedLinkTriforce"), 0);
 
             func_800981B8(&play->objectCtx);
             func_800418D0(&play->colCtx, play);
