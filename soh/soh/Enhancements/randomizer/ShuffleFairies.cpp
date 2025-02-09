@@ -83,7 +83,7 @@ void ShuffleFairies_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should,
 
     va_end(args);
 
-    // Grant item when picking up fairy. If randomized, disable healing effect.
+    // Grant item when picking up fairy.
     if (id == VB_FAIRY_HEAL) {
         EnElf* enElf = (EnElf*)(actor);
         if (enElf->sohFairyIdentity.randomizerInf && enElf->sohFairyIdentity.randomizerInf != RAND_INF_MAX) {
