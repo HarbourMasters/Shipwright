@@ -398,6 +398,7 @@ typedef enum {
     // !(this->stateFlags3 & PLAYER_STATE3_PAUSE_ACTION_FUNC)
     // ```
     // #### `args`
+    // - `*Player`
     // - `*Input`
     VB_EXECUTE_PLAYER_ACTION_FUNC,
 
