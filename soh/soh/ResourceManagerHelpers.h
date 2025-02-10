@@ -25,6 +25,7 @@ extern "C" {
         TOD_Sunset,
         TOD_Night
     } TimeOfDay;
+    void ResourceMgr_ShutdownHelperThreadPool();
     uint32_t ResourceMgr_IsGameMasterQuest();
     uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
     uint32_t ResourceMgr_GameHasMasterQuest();

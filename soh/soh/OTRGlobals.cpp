@@ -1230,6 +1230,7 @@ extern "C" void SaveManager_ThreadPoolWait() {
 
 extern "C" void DeinitOTR() {
     SaveManager_ThreadPoolWait();
+    ResourceMgr_ShutdownHelperThreadPool();
     OTRAudio_Exit();
 #ifdef ENABLE_REMOTE_CONTROL
     if (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0)) {
@@ -1244,6 +1245,7 @@ extern "C" void DeinitOTR() {
     // Destroying gui here because we have shared ptrs to LUS objects which output to SPDLOG which is destroyed before these shared ptrs.
     SohGui::Destroy();
 
+    OTRGlobals::Instance->context->GetResourceManager()->ShutDownThreadPool();
     OTRGlobals::Instance->context = nullptr;
 }
 

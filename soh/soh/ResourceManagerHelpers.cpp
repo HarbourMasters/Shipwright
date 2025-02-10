@@ -26,6 +26,12 @@ std::shared_ptr<BS::thread_pool> helperThreads;
 
 extern "C" PlayState* gPlayState;
 
+extern "C" void ResourceMgr_ShutdownHelperThreadPool() {
+    helperThreads->pause();
+    helperThreads->wait_for(std::chrono::duration<double>(2));
+    helperThreads->purge();
+}
+
 extern "C" uint32_t ResourceMgr_GetNumGameVersions() {
     return Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions().size();
 }
