@@ -393,7 +393,6 @@ OTRGlobals::OTRGlobals() {
     gRandoContext = Rando::Context::CreateInstance();
     Rando::Settings::GetInstance()->AssignContext(gRandoContext);
     Rando::StaticData::InitItemTable();//RANDOTODO make this not rely on context's logic so it can be initialised in InitStaticData
-    gRandoContext->AddExcludedOptions();
     Rando::Settings::GetInstance()->CreateOptions();
     gRandomizer = std::make_shared<Randomizer>();
 
@@ -1167,6 +1166,9 @@ extern "C" void InitOTR() {
 
     SohGui::SetupGuiElements();
     ShipInit::InitAll();
+
+    Rando::StaticData::InitHashMaps();
+    OTRGlobals::Instance->gRandoContext->AddExcludedOptions();
     AudioCollection::Instance = new AudioCollection();
     ActorDB::Instance = new ActorDB();
 #ifdef __APPLE__
@@ -1441,9 +1443,6 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     if (wnd != nullptr) {
         wnd->SetTargetFps(fps);
     }
-
-    int threshold = CVarGetInteger(CVAR_SETTING("ExtraLatencyThreshold"), 80);
-    wnd->SetMaximumFrameLatency(threshold > 0 && target_fps >= threshold ? 2 : 1);
 
     // When the gfx debugger is active, only run with the final mtx
     if (GfxDebuggerIsDebugging()) {

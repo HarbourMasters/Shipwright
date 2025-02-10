@@ -125,26 +125,18 @@ void KaleidoScope_DrawAButton(PlayState* play, Vtx* vtx, int16_t xTranslate, int
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-Vec3s link_kaleido_rot = { 0, 32300, 0 }; // Default rotation link face us.
-
 void KaleidoScope_DrawPlayerWork(PlayState* play) {
     PauseContext* pauseCtx = &play->pauseCtx;
     Vec3f pos;
-    //Vec3s rot; // Removed for not having it use din the function
+    Vec3s rot;
     f32 scale;
-    Input* input = &play->state.input[0];
-    s16 RotationSpeed = 150 * CVarGetInteger(CVAR_ENHANCEMENT("PauseLiveLinkRotationSpeed"), 0);
-    u8 AllowStickRotation = (CVarGetInteger(CVAR_ENHANCEMENT("PauseLiveLinkRotation"), 0) == 3) ? true : false;
-    u8 AllowCRotation = (CVarGetInteger(CVAR_ENHANCEMENT("PauseLiveLinkRotation"), 0) == 2) ? true : false;
-    u8 AllowDPadRotation = (CVarGetInteger(CVAR_ENHANCEMENT("PauseLiveLinkRotation"), 0) == 1) ? true : false;
-
 
     if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
         pos.x = 2.0f;
         pos.y = -130.0f;
         pos.z = -150.0f;
         scale = 0.046f;
-    } else if (CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD) != EQUIP_VALUE_SWORD_MASTER && !CVarGetInteger(CVAR_GENERAL("PauseTriforce"), 0)) {
+    } else if (CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD) != EQUIP_VALUE_SWORD_MASTER && !CVarGetInteger(CVAR_GENERAL("PauseMenuAnimatedLinkTriforce"), 0)) {
         pos.x = 25.0f;
         pos.y = -228.0f;
         pos.z = 60.0f;
@@ -156,38 +148,10 @@ void KaleidoScope_DrawPlayerWork(PlayState* play) {
         scale = 0.047f;
     }
 
-    link_kaleido_rot.x = link_kaleido_rot.z = 0;
-
-    if ((AllowDPadRotation && CHECK_BTN_ALL(input->cur.button, BTN_DLEFT)) || // rotate
-        (AllowCRotation && CHECK_BTN_ALL(input->cur.button, BTN_CLEFT))) {
-        link_kaleido_rot.y = link_kaleido_rot.y - RotationSpeed;
-    } else if ((AllowDPadRotation && CHECK_BTN_ALL(input->cur.button, BTN_DRIGHT)) ||
-               (AllowCRotation && CHECK_BTN_ALL(input->cur.button, BTN_CRIGHT))) {
-        link_kaleido_rot.y = link_kaleido_rot.y + RotationSpeed;
-    } else if (AllowStickRotation && input->cur.right_stick_x * 10.0f != 0) {
-        link_kaleido_rot.y = link_kaleido_rot.y + (input->cur.right_stick_x * 10.0f * (((f32)RotationSpeed) / 600.0f));
-    }
-
-    if ((AllowDPadRotation && CHECK_BTN_ALL(input->press.button, BTN_DUP)) || // reset rotation
-        (AllowDPadRotation && CHECK_BTN_ALL(input->press.button, BTN_DDOWN))) {
-        link_kaleido_rot.y = 32300;
-    } else if ((AllowCRotation && CHECK_BTN_ALL(input->press.button, BTN_CUP)) ||
-               (AllowCRotation && CHECK_BTN_ALL(input->press.button, BTN_CDOWN))) {
-        link_kaleido_rot.y = 32300;
-    } else if (AllowStickRotation && input->cur.right_stick_y * 10.0f < -1200) {
-        link_kaleido_rot.y = 32300;
-    }
-
-    if (AllowStickRotation && input->cur.right_stick_y * 10.0f > 0) { // Zoom in
-        scale = scale + input->cur.right_stick_y * 10.0f * .00005f;
-        pos.y = pos.y - input->cur.right_stick_y * 10.0f * 0.25f;
-    }
-    
-
-    link_kaleido_rot.x = 0;
-
     gsSPSetFB(play->state.gfxCtx->polyOpa.p++, gPauseLinkFrameBuffer);
-    Player_DrawPause(play, pauseCtx->playerSegment, &pauseCtx->playerSkelAnime, &pos, &link_kaleido_rot, scale,
+    rot.y = 32300;
+    rot.x = rot.z = 0;
+    Player_DrawPause(play, pauseCtx->playerSegment, &pauseCtx->playerSkelAnime, &pos, &rot, scale,
                      SWORD_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD)),
                      TUNIC_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC)),
                      SHIELD_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD)),
