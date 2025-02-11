@@ -4,8 +4,8 @@
 #define GameInteractor_h
 
 #include "libultraship/libultraship.h"
-#include "GameInteractionEffect.h"
 #include "vanilla-behavior/GIVanillaBehavior.h"
+#include "GameInteractionEffect.h"
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 #include <z64.h>
 

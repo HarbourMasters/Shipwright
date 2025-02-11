@@ -2206,24 +2206,23 @@ void DrawRandomizerMenu() {
             UIWidgets::Tooltip(
                 "When obtaining rupees, randomize what the rupee is called in the textbox."
             );
-            
+
             UIWidgets::PaddedEnhancementCheckbox("Use Custom Key Models", CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), true, false);
             UIWidgets::Tooltip("Use Custom graphics for dungeon keys, Big and Small, so that they can be easily told apart");
 
-            bool disableCompassColors = !DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_SHUFFLE_MAPANDCOMPASS);
+            bool disableMapCompassColors = !DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_SHUFFLE_MAPANDCOMPASS);
 
-            static const char* disableCompassColorsText =
-                "This setting is disabled because a savefile is loaded without the compass\n"
+            static const char* disableMapCompassColorsText =
+                "This setting is disabled because a savefile is loaded without the map & compass\n"
                 "shuffle settings set to \"Any Dungeon\", \"Overworld\" or \"Anywhere\"";
 
-            if (UIWidgets::PaddedEnhancementCheckbox("Compass Colors Match Dungeon", CVAR_RANDOMIZER_ENHANCEMENT("MatchCompassColors"), true, false,
-                                                  disableCompassColors, disableCompassColorsText, UIWidgets::CheckboxGraphics::Cross, true)) {
-                PatchCompasses();
-            }
+            UIWidgets::PaddedEnhancementCheckbox("Maps & Compasses Colors Match Dungeon", CVAR_RANDOMIZER_ENHANCEMENT("ColoredMapsAndCompasses"), true, false,
+                                                 disableMapCompassColors, disableMapCompassColorsText, UIWidgets::CheckboxGraphics::Cross, true);
             UIWidgets::Tooltip(
                 "Matches the color of compasses to the dungeon they belong to. "
-                "This helps identify compasses from afar and adds a little bit of flair.\n\nThis only "
-                "applies to seeds with compasses shuffled to \"Any Dungeon\", \"Overworld\", or \"Anywhere\".");
+                "This helps identify maps & compasses from afar and adds a little bit of flair.\n\nThis only "
+                "applies to seeds with maps & compasses shuffled to \"Any Dungeon\", \"Overworld\", or \"Anywhere\"."
+            );
 
             UIWidgets::PaddedEnhancementCheckbox("Quest Item Fanfares", CVAR_RANDOMIZER_ENHANCEMENT("QuestItemFanfares"), true, false);
             UIWidgets::Tooltip(
