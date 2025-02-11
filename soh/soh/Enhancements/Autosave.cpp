@@ -1,8 +1,8 @@
 #include <libultraship/bridge.h>
-#include "AutoSave.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Notification/Notification.h"
 #include "soh/ShipInit.hpp"
+#include "soh/SaveManager.h"
 
 extern "C" {
 extern PlayState* gPlayState;
@@ -10,31 +10,24 @@ extern PlayState* gPlayState;
 #include "variables.h"
 }
 
-static uint32_t autosaveInterval = 0;
-static uint64_t currentTimestamp = 0;
 static uint64_t lastSaveTimestamp = GetUnixTimestamp();
 
 #define CVAR_AUTOSAVE_NAME CVAR_ENHANCEMENT("Autosave")
 #define CVAR_AUTOSAVE_DEFAULT AUTOSAVE_OFF
 #define CVAR_AUTOSAVE_VALUE CVarGetInteger(CVAR_AUTOSAVE_NAME, CVAR_AUTOSAVE_DEFAULT)
-#define CVAR_AUTOSAVE_INTERVAL_NAME CVAR_ENHANCEMENT("AutosaveInterval")
-#define CVAR_AUTOSAVE_INTERVAL_DEFAULT 5
-#define CVAR_AUTOSAVE_INTERVAL_VALUE CVarGetInteger(CVAR_AUTOSAVE_INTERVAL_NAME, CVAR_AUTOSAVE_INTERVAL_DEFAULT)
+#define THREE_MINUTES_IN_UNIX 3 * 60000
+
+typedef enum {
+    AUTOSAVE_OFF,
+    AUTOSAVE_ON,
+} AutosaveOptions;
 
 bool Autosave_CanSave() {
 
-    // Regular checks
-    if (!GameInteractor::IsSaveLoaded(true) || GameInteractor::IsGameplayPaused()) {
-        return false;
-    }
-
-    // Don't autosave in Ganon's fight to not have Master sword shenanigans
-    if (gPlayState->sceneNum == SCENE_GANON_BOSS) {
-        return false;
-    }
-
-    // Don't autosave immediately after buying items from shops to prevent getting them for free
-    if (gSaveContext.ship.pendingSale != ITEM_NONE) {
+    // Don't save when in title screen
+    // Don't autosave in Ganon's fight and chamber of sages because of master sword and remember save location issues.
+    if (!GameInteractor::IsSaveLoaded(true) || gPlayState->gameplayFrames < 60 ||
+        gPlayState->sceneNum == SCENE_GANON_BOSS || gPlayState->sceneNum == SCENE_CHAMBER_OF_THE_SAGES) {
         return false;
     }
 
@@ -42,30 +35,44 @@ bool Autosave_CanSave() {
 }
 
 void Autosave_PerformSave() {
+    // Non-threaded saving to avoid the save referencing non-existent data.
+    SaveManager::Instance->SaveSection(gSaveContext.fileNum, SECTION_ID_BASE, false);
+
+    // Send notification
+    Notification::Emit({
+        .message = "Game autosaved",
+    });
+}
+
+void Autosave_IntervalSave() {
     // Check if the interval has passed in minutes.
-    autosaveInterval = CVAR_AUTOSAVE_INTERVAL_VALUE * 60000;
-    currentTimestamp = GetUnixTimestamp();
-    if ((currentTimestamp - lastSaveTimestamp) < autosaveInterval) {
+    uint64_t currentTimestamp = GetUnixTimestamp();
+    if ((currentTimestamp - lastSaveTimestamp) < THREE_MINUTES_IN_UNIX) {
         return;
     }
 
     // If save available to create, do it and reset the interval.
-    if (Autosave_CanSave()) {
+    // Interval gets extra check for being paused to avoid rare issues like bypassing shop
+    // rupees draining after buying an item. Since the interval can just retry until it
+    // passes, it can use more conditions without hampering the player experience.
+    if (Autosave_CanSave() && !GameInteractor::IsGameplayPaused()) {
 
         // Reset timestamp, set icon timer to show autosave icon for 5 seconds (100 frames)
         lastSaveTimestamp = currentTimestamp;
 
-        Play_PerformSave(gPlayState);
+        Autosave_PerformSave();
+    }
+}
 
-        // Send notification
-        Notification::Emit({
-            .message = "Game autosaved",
-        });
+void Autosave_SoftResetSave() {
+    if (Autosave_CanSave()) {
+        Autosave_PerformSave();
     }
 }
 
 void RegisterAutosave() {
-    COND_HOOK(OnGameFrameUpdate, CVAR_AUTOSAVE_VALUE, Autosave_PerformSave);
+    COND_HOOK(GameInteractor::OnGameFrameUpdate, CVAR_AUTOSAVE_VALUE, Autosave_IntervalSave);
+    COND_HOOK(GameInteractor::OnExitGame, CVAR_AUTOSAVE_VALUE, [](int32_t fileNum) { Autosave_SoftResetSave(); });
 }
 
 static RegisterShipInitFunc initFunc(RegisterAutosave, { CVAR_AUTOSAVE_NAME });

@@ -1671,11 +1671,8 @@ void DrawEnhancementsMenu() {
         UIWidgets::PaddedSeparator();
 
         UIWidgets::EnhancementCheckbox("Autosave", CVAR_ENHANCEMENT("Autosave"));
-        if (CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), 0)) {
-            UIWidgets::Tooltip("Automatically save the game on the chosen interval.");
-            UIWidgets::PaddedEnhancementSliderInt("Autosave Interval: %d minute(s)", "##Autosave_Interval",
-                                                  CVAR_ENHANCEMENT("AutosaveInterval"), 1, 60, "", 5, true, true, true);
-        }
+        UIWidgets::Tooltip("Save the game automatically on a 3 minute interval and when soft-resetting the game.\n\n"
+                           "The interval autosave will wait if the game is paused in any way (dialogue, pause screen up, cutscenes).");
 
         UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
 
