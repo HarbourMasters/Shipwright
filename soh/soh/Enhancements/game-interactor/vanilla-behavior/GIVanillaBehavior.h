@@ -1547,7 +1547,7 @@ typedef enum {
     // true
     // ```
     // #### `args`
-    // - `**Gfx` (`&POLY_KAL_DISP`)
+    // - `**Gfx` (`&POLY_OPA_DISP`)
     VB_RENDER_YES_ON_CONTINUE_PROMPT,
 
     // #### `result`
