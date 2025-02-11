@@ -443,38 +443,20 @@ void DrawSettingsMenu() {
                 Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             #else
                 bool matchingRefreshRate =
-                    CVarGetInteger(CVAR_SETTING("MatchRefreshRate"), 0) && Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() != Ship::WindowBackend::FAST3D_DXGI_DX11;
+                    CVarGetInteger(CVAR_SETTING("MatchRefreshRate"), 0);
                 UIWidgets::PaddedEnhancementSliderInt(
                     (currentFps == 20) ? "Frame Rate: Original (20 fps)" : "Frame Rate: %d fps",
                     "##FPSInterpolation", CVAR_SETTING("InterpolationFPS"), minFps, maxFps, "", 20, true, true, false, matchingRefreshRate);
             #endif
-                if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::FAST3D_DXGI_DX11) {
                     UIWidgets::Tooltip(
                         "Uses Matrix Interpolation to create extra frames, resulting in smoother graphics.\n"
                         "This is purely visual and does not impact game logic, execution of glitches etc.\n"
                         "Higher frame rate settings may impact CPU performance."
                         "\n\n " ICON_FA_INFO_CIRCLE 
                         " There is no need to set this above your monitor's refresh rate. Doing so will waste resources and may give a worse result.");
-                } else {
-                    UIWidgets::Tooltip(
-                        "Uses Matrix Interpolation to create extra frames, resulting in smoother graphics.\n"
-                        "This is purely visual and does not impact game logic, execution of glitches etc.\n"
-                        "Higher frame rate settings may impact CPU performance.");
-                }
             } // END FPS Slider
 
-            if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::FAST3D_DXGI_DX11) {
-                UIWidgets::Spacer(0);
-                if (ImGui::Button("Match Frame Rate to Refresh Rate")) {
-                    int hz = Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
-                    if (hz >= 20 && hz <= 360) {
-                        CVarSetInteger(CVAR_SETTING("InterpolationFPS"), hz);
-                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-                    }
-                }
-            } else {
-                UIWidgets::PaddedEnhancementCheckbox("Match Frame Rate to Refresh Rate", CVAR_SETTING("MatchRefreshRate"), true, false);
-            }
+            UIWidgets::PaddedEnhancementCheckbox("Match Frame Rate to Refresh Rate", CVAR_SETTING("MatchRefreshRate"), true, false);
             UIWidgets::Tooltip("Matches interpolation value to the game window's current refresh rate.");
 
             UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
