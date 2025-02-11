@@ -8,6 +8,7 @@
 DEFINE_HOOK(OnZTitleInit, (void* gameState));
 DEFINE_HOOK(OnZTitleUpdate, (void* gameState));
 DEFINE_HOOK(OnLoadGame, (int32_t fileNum));
+DEFINE_HOOK(BeforeExitGame, ());
 DEFINE_HOOK(OnExitGame, (int32_t fileNum));
 DEFINE_HOOK(OnGameStateMainStart, ());
 DEFINE_HOOK(OnGameFrameUpdate, ());

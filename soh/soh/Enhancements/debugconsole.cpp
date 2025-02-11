@@ -209,6 +209,7 @@ static bool ResetHandler(std::shared_ptr<Ship::Console> Console, std::vector<std
         return 1;
     }
 
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::BeforeExitGame>();
     SET_NEXT_GAMESTATE(gGameState, TitleSetup_Init, GameState);
     gGameState->running = false;
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnExitGame>(gSaveContext.fileNum);

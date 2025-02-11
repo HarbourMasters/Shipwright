@@ -25,7 +25,7 @@ typedef enum {
 bool Autosave_CanSave() {
 
     // Don't save when in title screen
-    // Don't autosave in Ganon's fight and chamber of sages because of master sword and remember save location issues.
+    // Don't save in Ganon's fight and chamber of sages because of master sword and remember save location issues.
     if (!GameInteractor::IsSaveLoaded(true) || gPlayState->gameplayFrames < 60 ||
         gPlayState->sceneNum == SCENE_GANON_BOSS || gPlayState->sceneNum == SCENE_CHAMBER_OF_THE_SAGES) {
         return false;
@@ -36,7 +36,7 @@ bool Autosave_CanSave() {
 
 void Autosave_PerformSave() {
     // Non-threaded saving to avoid the save referencing non-existent data.
-    SaveManager::Instance->SaveSection(gSaveContext.fileNum, SECTION_ID_BASE, false);
+    Play_PerformSave(gPlayState);
 
     // Send notification
     Notification::Emit({
@@ -72,7 +72,7 @@ void Autosave_SoftResetSave() {
 
 void RegisterAutosave() {
     COND_HOOK(GameInteractor::OnGameFrameUpdate, CVAR_AUTOSAVE_VALUE, Autosave_IntervalSave);
-    COND_HOOK(GameInteractor::OnExitGame, CVAR_AUTOSAVE_VALUE, [](int32_t fileNum) { Autosave_SoftResetSave(); });
+    COND_HOOK(GameInteractor::BeforeExitGame, CVAR_AUTOSAVE_VALUE, Autosave_SoftResetSave);
 }
 
 static RegisterShipInitFunc initFunc(RegisterAutosave, { CVAR_AUTOSAVE_NAME });
