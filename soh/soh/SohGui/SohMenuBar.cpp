@@ -2216,7 +2216,7 @@ void DrawRandomizerMenu() {
                 "This setting is disabled because a savefile is loaded without the map & compass\n"
                 "shuffle settings set to \"Any Dungeon\", \"Overworld\" or \"Anywhere\"";
 
-            UIWidgets::PaddedEnhancementCheckbox("Maps & Compasses Colors Match Dungeon", CVAR_RANDOMIZER_ENHANCEMENT("ColoredMapsAndCompasses"), true, false,
+            UIWidgets::PaddedEnhancementCheckbox("Map & Compass Colors Match Dungeon", CVAR_RANDOMIZER_ENHANCEMENT("ColoredMapsAndCompasses"), true, false,
                                                  disableMapCompassColors, disableMapCompassColorsText, UIWidgets::CheckboxGraphics::Cross, true);
             UIWidgets::Tooltip(
                 "Matches the color of compasses to the dungeon they belong to. "
