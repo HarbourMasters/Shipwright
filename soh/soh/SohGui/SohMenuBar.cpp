@@ -374,13 +374,7 @@ void DrawSettingsMenu() {
             UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
             { // FPS Slider
                 const int minFps = 20;
-                static int maxFps;
-               // if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::FAST3D_DXGI_DX11) {
-                    maxFps = 360;
-               /* }
-                else {
-                    maxFps = Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
-                } */
+                static int maxFps = 360;                  
                 int currentFps = fmax(fmin(OTRGlobals::Instance->GetInterpolationFPS(), maxFps), minFps);
             #ifdef __WIIU__
                 UIWidgets::Spacer(0);
