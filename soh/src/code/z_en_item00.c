@@ -997,6 +997,12 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
     EnItem00* this = (EnItem00*)thisx;
     f32 mtxScale;
 
+    // Setup Hilites for 3D drops
+    if (CVarGetInteger(CVAR_ENHANCEMENT("NewDrops"), 0)) {
+        func_8002EBCC(&this->actor, play, 0);
+        func_8002ED80(&this->actor, play, 0);
+    }
+
     if (!(this->unk_156 & this->unk_158)) {
         switch (this->actor.params) {
             case ITEM00_RUPEE_GREEN:

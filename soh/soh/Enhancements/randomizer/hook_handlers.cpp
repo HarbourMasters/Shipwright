@@ -381,6 +381,7 @@ void EnExItem_DrawRandomizedItem(EnExItem* enExItem, PlayState* play) {
     if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
         randoGetItem = GET_ITEM_MYSTERY;
     }
+    func_8002EBCC(&enExItem->actor, play, 0);
     func_8002ED80(&enExItem->actor, play, 0);
     EnItem00_CustomItemsParticles(&enExItem->actor, play, randoGetItem);
     GetItemEntry_Draw(play, randoGetItem);
@@ -412,6 +413,8 @@ void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play) {
         enItem00->actor.params != ITEM00_SOH_GIVE_ITEM_ENTRY) {
         randoItem = GET_ITEM_MYSTERY;
     }
+    func_8002EBCC(&enItem00->actor, play, 0);
+    func_8002ED80(&enItem00->actor, play, 0);
     EnItem00_CustomItemsParticles(&enItem00->actor, play, randoItem);
     GetItemEntry_Draw(play, randoItem);
 }
@@ -421,6 +424,8 @@ void ItemBHeart_DrawRandomizedItem(ItemBHeart* itemBHeart, PlayState* play) {
     if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
         randoItem = GET_ITEM_MYSTERY;
     }
+    func_8002EBCC(&itemBHeart->actor, play, 0);
+    func_8002ED80(&itemBHeart->actor, play, 0);
     EnItem00_CustomItemsParticles(&itemBHeart->actor, play, randoItem);
     GetItemEntry_Draw(play, randoItem);
 }
