@@ -5879,6 +5879,7 @@ typedef struct FishIdentity {
 typedef struct SilverRupeeIdentity {
     RandomizerInf randomizerInf;
     RandomizerCheck randomizerCheck;
+    GetItemEntry itemEntry;
 } SilverRupeeIdentity;
 
 typedef enum {

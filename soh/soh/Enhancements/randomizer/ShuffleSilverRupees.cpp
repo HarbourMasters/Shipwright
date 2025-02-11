@@ -7,20 +7,63 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-void EnGSwitch_RandomizerInit(void* actorRef) {
-    Actor* actor = static_cast<Actor*>(actorRef);
-    int16_t sceneNum = gPlayState->sceneNum;
-    f32 param1 = actor->world.pos.x;
-    f32 param2 = actor->world.pos.z;
+extern "C" void EnGSwitch_RandomizerSilverRupeeIdle(EnGSwitch* self, PlayState *play) {
+    Player* player = GET_PLAYER(play);
 
-    //Two particular silver rupees in Master Quest Shadow Temple have
+    self->actor.shape.rot.y += 0x800;
+    if (self->actor.xyzDistToPlayerSq < 900.0f) {
+        Flags_SetRandomizerInf(self->srIdentity.randomizerInf);
+        self->killTimer = 0;
+        self->actionFunc = EnGSwitch_Kill;
+    }
+}
+
+extern "C" void EnGSwitch_RandomizerDraw(Actor* thisx, PlayState* play) {
+    EnGSwitch* srActor = static_cast<EnGSwitch*>(thisx);
+    Matrix_Push();
+    Matrix_Scale(17.5f, 17.5f, 17.5f, MTXMODE_APPLY);
+    if (srActor->type == ENGSWITCH_SILVER_RUPEE) {
+        if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
+            EnItem00_CustomItemsParticles(thisx, play, GET_ITEM_MYSTERY);
+            GetItemEntry_Draw(play, GET_ITEM_MYSTERY);
+        } else {
+            EnItem00_CustomItemsParticles(thisx, play, srActor->srIdentity.itemEntry);
+            GetItemEntry_Draw(play, srActor->srIdentity.itemEntry);
+        }
+        Matrix_Pop();
+    }
+}
+
+SilverRupeeIdentity IdentifySilverRupee(Vec3f_ pos) {
+    SilverRupeeIdentity srIdentity;
+    uint16_t sceneNum = gPlayState->sceneNum;
+    int16_t param1 = (int16_t)pos.x;
+    int16_t param2 = (int16_t)pos.z;
+    // Two particular silver rupees in Master Quest Shadow Temple have
     // the same X and Z coordinates. We have to make an exception here
     // and look them up by X and Y coordinates instead.
-    if (sceneNum == SCENE_SHADOW_TEMPLE && param1 == 2110.0f && param2 == 3372.0f) {
-        param2 = actor->world.pos.y;
+    if (sceneNum == SCENE_SHADOW_TEMPLE && param1 == 2110 && param2 == 3372) {
+        param2 =(int16_t)pos.y;
     }
+    Rando::Location* location = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_G_SWITCH, sceneNum, TWO_ACTOR_PARAMS(param1, param2));
+    if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
+        LUSLOG_WARN("SilverRupeeIdentity did not receive a valid RC value (%d).", location->GetRandomizerCheck());
+        assert(false);
+    } else {
+        srIdentity.randomizerCheck = location->GetRandomizerCheck();
+        srIdentity.itemEntry = OTRGlobals::Instance->gRandoContext->GetFinalGIEntry(srIdentity.randomizerCheck, true, GI_NONE);
+        srIdentity.randomizerInf = static_cast<RandomizerInf>(location->GetCollectionCheck().flag);
+    }
+    return srIdentity;
+}
+
+void EnGSwitch_RandomizerInit(void* actorRef) {
+    Actor* actor = static_cast<Actor*>(actorRef);
+
     EnGSwitch* srActor = static_cast<EnGSwitch*>(actorRef);
-    //srActor->srIdentity = IdentifySilverRupee(sceneNum, param1, param2);
+    if (srActor->type == ENGSWITCH_SILVER_RUPEE) {
+        srActor->srIdentity = IdentifySilverRupee(sceneNum, param1, param2);
+    }
 }
 
 void Rando::StaticData::RegisterSilverRupeeLocations() {
