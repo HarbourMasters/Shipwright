@@ -148,7 +148,10 @@ void KaleidoScope_DrawPlayerWork(PlayState* play) {
         scale = 0.047f;
     }
 
-    gsSPSetFB(play->state.gfxCtx->polyOpa.p++, gPauseLinkFrameBuffer);
+    // SOH [Port] Draw the pause Link on a separate framebuffer starting in the work buffer
+    OPEN_DISPS(play->state.gfxCtx);
+    gsSPSetFB(WORK_DISP++, gPauseLinkFrameBuffer);
+
     rot.y = 32300;
     rot.x = rot.z = 0;
     Player_DrawPause(play, pauseCtx->playerSegment, &pauseCtx->playerSkelAnime, &pos, &rot, scale,
@@ -156,7 +159,9 @@ void KaleidoScope_DrawPlayerWork(PlayState* play) {
                      TUNIC_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC)),
                      SHIELD_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD)),
                      BOOTS_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS)));
-    gsSPResetFB(play->state.gfxCtx->polyOpa.p++);
+
+    gsSPResetFB(WORK_DISP++);
+    CLOSE_DISPS(play->state.gfxCtx);
 }
 
 void KaleidoScope_DrawEquipment(PlayState* play) {
