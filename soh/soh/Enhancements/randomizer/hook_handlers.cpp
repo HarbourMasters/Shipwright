@@ -1467,6 +1467,18 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             }
             break;
         }
+        case VB_HAVE_OCARINA_NOTE_A4: {
+            if (!Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT)) {
+                *should = false;
+            }
+            break;
+        }
+        case VB_HAVE_OCARINA_NOTE_B4: {
+            if (!Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT)) {
+                *should = false;
+            }
+            break;
+        }
         case VB_HAVE_OCARINA_NOTE_D4: {
             if (!Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A)) {
                 *should = false;
@@ -1485,21 +1497,9 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             }
             break;
         }
-        case VB_HAVE_OCARINA_NOTE_B4: {
-            if (!Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT)) {
-                *should = false;
-            }
-            break;
-        }
-        case VB_HAVE_OCARINA_NOTE_A4: {
-            if (!Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT)) {
-                *should = false;
-            }
-            break;
-        }
         case VB_SKIP_SCARECROWS_SONG: {
             int ocarinaButtonCount = 0;
-            for (int i = VB_HAVE_OCARINA_NOTE_D4; i <= VB_HAVE_OCARINA_NOTE_A4; i++) {
+            for (int i = VB_HAVE_OCARINA_NOTE_A4; i <= VB_HAVE_OCARINA_NOTE_F4; i++) {
                 if (GameInteractor_Should((GIVanillaBehavior)i, true)) {
                     ocarinaButtonCount++;
                 }
