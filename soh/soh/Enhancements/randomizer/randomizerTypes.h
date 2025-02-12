@@ -5876,12 +5876,6 @@ typedef struct FishIdentity {
     RandomizerCheck randomizerCheck;
 } FishIdentity;
 
-typedef struct SilverRupeeIdentity {
-    RandomizerInf randomizerInf;
-    RandomizerCheck randomizerCheck;
-    GetItemEntry itemEntry;
-} SilverRupeeIdentity;
-
 typedef enum {
     TRACKER_WINDOW_FLOATING,
     TRACKER_WINDOW_WINDOW

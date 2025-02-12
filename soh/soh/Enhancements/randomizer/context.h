@@ -8,6 +8,7 @@
 #include "hint.h"
 #include "fishsanity.h"
 #include "trial.h"
+#include "ShuffleSilverRupees.h"
 
 #include <memory>
 #include <array>
@@ -162,12 +163,22 @@ class Context {
      */
     void SetHash(std::string hash);
 
+    /**
+     * @brief Gets a reference to the silver rupee counter corresponding to the 
+     * Given RandomizerGet value.
+     * 
+     * @param rg 
+     * @return SilverRupeeCounter& 
+     */
+    SilverRupeeCounter& GetSilverRupeeCounter(RandomizerGet rg);
+
   private:
     static std::weak_ptr<Context> mContext;
     std::array<Hint, RH_MAX> hintTable = {};
     std::array<ItemLocation, RC_MAX> itemLocationTable = {};
     std::array<OptionValue, RSK_MAX> mOptions;
     std::array<OptionValue, RT_MAX> mTrickOptions;
+    std::array<Rando::SilverRupeeCounter, 27> mSilverRupeeCounters;
     RandoOptionLACSCondition mLACSCondition = RO_LACS_VANILLA;
     std::shared_ptr<EntranceShuffler> mEntranceShuffler;
     std::shared_ptr<Dungeons> mDungeons;

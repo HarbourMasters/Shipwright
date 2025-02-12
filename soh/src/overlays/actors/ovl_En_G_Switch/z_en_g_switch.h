@@ -3,6 +3,7 @@
 
 #include <libultraship/libultra.h>
 #include "global.h"
+#include <soh/Enhancements/randomizer/ShuffleSilverRupees.h>
 
 struct EnGSwitch;
 
