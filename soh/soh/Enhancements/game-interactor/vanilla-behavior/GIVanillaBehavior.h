@@ -292,6 +292,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // !Flags_GetItemGetInf(ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE) && (Player_GetMask(play) != PLAYER_MASK_SKULL)
+    // ```
+    // #### `args`
+    // - None
+    VB_DEKU_SCRUBS_REACT_TO_MASK_OF_TRUTH,
+
+    // #### `result`
+    // ```c
     // CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST)
     // ```
     // #### `args`
@@ -1509,6 +1517,14 @@ typedef enum {
     // #### `args`
     // - `*DemoIm`
     VB_PLAY_ZELDAS_LULLABY_CS,
+
+    // #### `result`
+    // ```c
+    // item == ITEM_SAW
+    // ```
+    // #### `args`
+    // - None
+    VB_POACHERS_SAW_SET_DEKU_NUT_UPGRADE_FLAG,
 
     // #### `result`
     // ```c
