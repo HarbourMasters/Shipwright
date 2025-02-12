@@ -10,7 +10,6 @@ extern void Inventory_ChangeEquipment(s16, u16);
 extern void Player_SetEquipmentData(PlayState*, Player*);
 extern void func_808328EC(Player*, u16);
 extern PlayState* gPlayState;
-extern void Player_Action_808464B0(Player*, PlayState*);
 }
 
 static u16 sItemButtons[] = { BTN_B, BTN_CLEFT, BTN_CDOWN, BTN_CRIGHT, BTN_DUP, BTN_DDOWN, BTN_DLEFT, BTN_DRIGHT };
