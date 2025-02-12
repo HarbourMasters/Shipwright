@@ -14,13 +14,14 @@ extern PlayState* gPlayState;
 
 static u16 sItemButtons[] = { BTN_B, BTN_CLEFT, BTN_CDOWN, BTN_CRIGHT, BTN_DUP, BTN_DDOWN, BTN_DLEFT, BTN_DRIGHT };
 
-void UseTunicBoots(Player* player, PlayState* play, Input* input, bool* skipActionFunc) {
+// returns true if we used tunic/boots, returns false if we didn't
+bool UseTunicBoots(Player* player, PlayState* play, Input* input) {
     // Boots and tunics equip despite state
     if (
         player->stateFlags1 & (PLAYER_STATE1_INPUT_DISABLED | PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE | PLAYER_STATE1_TALKING | PLAYER_STATE1_DEAD) ||
         player->stateFlags2 & PLAYER_STATE2_OCARINA_PLAYING
     ) {
-        return;
+        return false;
     }
 
     s32 item = ITEM_NONE;
@@ -52,11 +53,10 @@ void UseTunicBoots(Player* player, PlayState* play, Input* input, bool* skipActi
             func_808328EC(player, NA_SE_PL_CHANGE_ARMS);
         }
 
-        // don't throw items
-        if ((player->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) && (player->heldActor != NULL)) {
-            *skipActionFunc = true;
-        }
+        return true;
     }
+
+    return false;
 }
 
 void ClearAssignedTunicsBoots(int32_t unused = 0) {
@@ -112,10 +112,7 @@ void RegisterAssignableTunicsBoots() {
 
         Input* input = va_arg(args, Input*);
 
-        bool skipActionFunc = false;
-        UseTunicBoots(player, gPlayState, input, &skipActionFunc);
-
-        if (skipActionFunc) {
+        if (UseTunicBoots(player, gPlayState, input)) {
             return;
         }
 
