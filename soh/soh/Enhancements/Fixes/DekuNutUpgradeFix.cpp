@@ -6,10 +6,9 @@
 #include "variables.h"
 #include "z64save.h"
 
-static constexpr int32_t CVAR_DEKU_NUT_UPGRADE_FIX_DEFAULT = 0;
-#define CVAR_DEKU_NUT_UPGRADE_FIX_NAME CVAR_ENHANCEMENT("DekuNutUpgradeFix")
-#define CVAR_DEKU_NUT_UPGRADE_FIX_VALUE \
-    IS_RANDO || CVarGetInteger(CVAR_DEKU_NUT_UPGRADE_FIX_NAME, CVAR_DEKU_NUT_UPGRADE_FIX_DEFAULT)
+static constexpr int32_t CVAR_NUT_UPGRADE_FIX_DEFAULT = 0;
+#define CVAR_NUT_UPGRADE_FIX_NAME CVAR_ENHANCEMENT("DekuNutUpgradeFix")
+#define CVAR_NUT_UPGRADE_FIX_VALUE CVarGetInteger(CVAR_NUT_UPGRADE_FIX_NAME, CVAR_NUT_UPGRADE_FIX_DEFAULT)
 
 void DekuNutUpgradeFixAtForestStage(bool* should) {
     s32 expectedNutUpgrades = (INV_CONTENT(ITEM_NUT) == ITEM_NUT ? 1 : 0) +
@@ -28,10 +27,10 @@ void DekuNutUpgradeSetByPoachersSaw(bool* should) {
 }
 
 void RegisterDekuNutUpgradeFix() {
-    COND_VB_SHOULD(VB_POACHERS_SAW_SET_DEKU_NUT_UPGRADE_FLAG, CVAR_DEKU_NUT_UPGRADE_FIX_VALUE,
+    COND_VB_SHOULD(VB_POACHERS_SAW_SET_DEKU_NUT_UPGRADE_FLAG, CVAR_NUT_UPGRADE_FIX_VALUE || IS_RANDO,
                    { DekuNutUpgradeSetByPoachersSaw(should); });
-    COND_VB_SHOULD(VB_DEKU_SCRUBS_REACT_TO_MASK_OF_TRUTH, CVAR_DEKU_NUT_UPGRADE_FIX_VALUE,
+    COND_VB_SHOULD(VB_DEKU_SCRUBS_REACT_TO_MASK_OF_TRUTH, CVAR_NUT_UPGRADE_FIX_VALUE || IS_RANDO,
                    { DekuNutUpgradeFixAtForestStage(should); });
 }
 
-static RegisterShipInitFunc initFunc(RegisterDekuNutUpgradeFix, { CVAR_DEKU_NUT_UPGRADE_FIX_NAME, "IS_RANDO" });
+static RegisterShipInitFunc initFunc(RegisterDekuNutUpgradeFix, { CVAR_NUT_UPGRADE_FIX_NAME, "IS_RANDO" });
