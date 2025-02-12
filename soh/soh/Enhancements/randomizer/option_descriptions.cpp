@@ -451,6 +451,7 @@ void Settings::CreateOptionDescriptions() {
         "Shuffle fairy locations.";
     mOptionDescriptions[RSK_SHUFFLE_DUNGEON_REWARDS] =
         "Shuffles the location of Spiritual Stones and medallions.\n"
+        "Vanilla - Spiritual Stones and medallions will be given from their respective boss.\n"
         "\n"
         "End of dungeons - Spiritual Stones and medallions will be given as rewards "
         "for beating major dungeons. Link will always start with one stone or medallion.\n"

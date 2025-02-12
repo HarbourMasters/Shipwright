@@ -54,10 +54,10 @@ void RegionTable_Init_WaterTemple() {
 
     areaTable[RR_WATER_TEMPLE_MAP_ROOM] = Region("Water Temple Map Room", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_WATER_TEMPLE_MAP_CHEST, (logic->CanUse(RG_MAGIC_SINGLE) && logic->CanUse(RG_KOKIRI_SWORD)) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_HOOKSHOT)),
+        LOCATION(RC_WATER_TEMPLE_MAP_CHEST, logic->CanKillEnemy(RE_SPIKE, ED_CLOSE, true, 3)),
     }, {
         //Exits
-        Entrance(RR_WATER_TEMPLE_EAST_LOWER, []{return (logic->CanUse(RG_MAGIC_SINGLE) && logic->CanUse(RG_KOKIRI_SWORD)) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_HOOKSHOT);}),
+        Entrance(RR_WATER_TEMPLE_EAST_LOWER, []{return logic->CanKillEnemy(RE_SPIKE, ED_CLOSE, true, 3);}),
     });
 
     areaTable[RR_WATER_TEMPLE_CRACKED_WALL] = Region("Water Temple Cracked Wall", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -70,10 +70,10 @@ void RegionTable_Init_WaterTemple() {
 
     areaTable[RR_WATER_TEMPLE_TORCH_ROOM] = Region("Water Temple Torch Room", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_WATER_TEMPLE_TORCHES_CHEST, (logic->CanUse(RG_MAGIC_SINGLE) && logic->CanUse(RG_KOKIRI_SWORD)) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_HOOKSHOT)),
+        LOCATION(RC_WATER_TEMPLE_TORCHES_CHEST, logic->CanKillEnemy(RE_SHELL_BLADE, ED_CLOSE, true, 3)),
     }, {
         //Exits
-        Entrance(RR_WATER_TEMPLE_EAST_LOWER, []{return (logic->CanUse(RG_MAGIC_SINGLE) && logic->CanUse(RG_KOKIRI_SWORD)) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_HOOKSHOT);}),
+        Entrance(RR_WATER_TEMPLE_EAST_LOWER, []{return logic->CanKillEnemy(RE_SHELL_BLADE, ED_CLOSE, true, 3);}),
     });
 
     areaTable[RR_WATER_TEMPLE_NORTH_LOWER] = Region("Water Temple North Lower", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
@@ -238,8 +238,8 @@ void RegionTable_Init_WaterTemple() {
 
     areaTable[RR_WATER_TEMPLE_DARK_LINK_ROOM] = Region("Water Temple Dark Link Room", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
-        Entrance(RR_WATER_TEMPLE_DRAGON_PILLARS_ROOM, []{return logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD);}),
-        Entrance(RR_WATER_TEMPLE_LONGSHOT_ROOM,       []{return logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD);}),
+        Entrance(RR_WATER_TEMPLE_DRAGON_PILLARS_ROOM, []{return logic->CanKillEnemy(RE_DARK_LINK);}),
+        Entrance(RR_WATER_TEMPLE_LONGSHOT_ROOM,       []{return logic->CanKillEnemy(RE_DARK_LINK);}),
     });
 
     areaTable[RR_WATER_TEMPLE_LONGSHOT_ROOM] = Region("Water Temple Longshot Room", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {

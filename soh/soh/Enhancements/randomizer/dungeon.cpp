@@ -1419,16 +1419,15 @@ std::array<DungeonInfo*, 12> Dungeons::GetDungeonList() {
 size_t Dungeons::GetDungeonListSize() const {
     return dungeonList.size();
 }
+
 void Dungeons::ParseJson(nlohmann::json spoilerFileJson) {
     nlohmann::json mqDungeonsJson = spoilerFileJson["masterQuestDungeons"];
-    for (auto it = mqDungeonsJson.begin(); it != mqDungeonsJson.end(); ++it) {
-        std::string dungeonName = it.value().get<std::string>();
-        for (auto& dungeon : dungeonList) {
-            if (dungeon.GetName() == dungeonName) {
-                dungeon.SetMQ();
-            } else {
-                dungeon.ClearMQ();
-            }
+
+    for (auto& dungeon : dungeonList) {
+        dungeon.ClearMQ();
+
+        if (std::find(mqDungeonsJson.begin(), mqDungeonsJson.end(), dungeon.GetName()) != mqDungeonsJson.end()) {
+            dungeon.SetMQ();
         }
     }
 }

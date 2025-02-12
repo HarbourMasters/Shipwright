@@ -900,7 +900,6 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
 //setting, or randomize one dungeon reward to Link's Pocket if that setting is on
 static void RandomizeDungeonRewards() {
   auto ctx = Rando::Context::GetInstance();
-  std::array<uint32_t, 9> rDungeonRewardOverrides{};
   //quest item bit mask of each stone/medallion for the savefile
   // static constexpr std::array<uint32_t, 9> bitMaskTable = {
   //   0x00040000, //Kokiri Emerald
@@ -916,34 +915,24 @@ static void RandomizeDungeonRewards() {
   int baseOffset = Rando::StaticData::RetrieveItem(RG_KOKIRI_EMERALD).GetItemID();
 
   //End of Dungeons includes Link's Pocket
-  if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
+  if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON) || ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_VANILLA)) {
     //get stones and medallions
     std::vector<RandomizerGet> rewards = FilterAndEraseFromPool(ItemPool, [](const auto i) {return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD;});
 
-    // If there are less than 9 dungeon rewards, prioritize the actual dungeons
-    // for placement instead of Link's Pocket
-    if (rewards.size() < 9) {
-      ctx->PlaceItemInLocation(RC_LINKS_POCKET, RG_GREEN_RUPEE);
-    }
-
-    if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) { //Place dungeon rewards in vanilla locations
+    if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA) || ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_VANILLA)) { // Place dungeon rewards in vanilla locations
       for (RandomizerCheck loc : Rando::StaticData::dungeonRewardLocations) {
         ctx->GetItemLocation(loc)->PlaceVanillaItem();
       }
-    } else { //Randomize dungeon rewards with assumed fill
-      AssumedFill(rewards, Rando::StaticData::dungeonRewardLocations);
-    }
-
-    for (size_t i = 0; i < Rando::StaticData::dungeonRewardLocations.size(); i++) {
-      const auto index = ctx->GetItemLocation(Rando::StaticData::dungeonRewardLocations[i])->GetPlacedItem().GetItemID() - baseOffset;
-      rDungeonRewardOverrides[i] = index;
-
-      //set the player's dungeon reward on file creation instead of pushing it to them at the start.
-      //This is done mainly because players are already familiar with seeing their dungeon reward
-      //before opening up their file
-      // if (i == Rando::StaticData::dungeonRewardLocations.size()-1) {
-      //   LinksPocketRewardBitMask = bitMaskTable[index];
-      // }
+      ctx->GetItemLocation(RC_GIFT_FROM_RAURU)->PlaceVanillaItem();
+    } else { // Randomize dungeon rewards with assumed fill
+      std::vector rewardLocations(Rando::StaticData::dungeonRewardLocations);
+      // If there are less than 9 dungeon rewards, prioritize actual dungeons for placement
+      if (rewards.size() < 9) {
+        ctx->PlaceItemInLocation(RC_LINKS_POCKET, RG_GREEN_RUPEE);
+      } else {
+        rewardLocations.push_back(RC_LINKS_POCKET);
+      }
+      AssumedFill(rewards, rewardLocations);
     }
   } else if (ctx->GetOption(RSK_LINKS_POCKET).Is(RO_LINKS_POCKET_DUNGEON_REWARD)) {
     //get 1 stone/medallion
