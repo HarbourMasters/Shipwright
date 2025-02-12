@@ -669,21 +669,6 @@ void RegisterBrokenGiantsKnifeFix() {
     });
 }
 
-void RegisterDekuNutUpgradeFix() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded(true)) return;
-        if (CVarGetInteger(CVAR_ENHANCEMENT("DekuNutUpgradeFix"), 0)) {
-            s32 expectedNutUpgrades = (INV_CONTENT(ITEM_NUT) == ITEM_NUT ? 1 : 0) +
-                                      (Flags_GetInfTable(INFTABLE_BOUGHT_NUT_UPGRADE) ? 1 : 0) +
-                                      (Flags_GetItemGetInf(ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE) ? 1 : 0);
-            s32 actualNutUpgrades = CUR_UPG_VALUE(UPG_NUTS);
-            if (expectedNutUpgrades != actualNutUpgrades) {
-                Flags_UnsetItemGetInf(ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE);
-            }
-        }
-    });
-}
-
 //this map is used for enemies that can be uniquely identified by their id
 //and that are always counted
 //enemies that can't be uniquely identified by their id
@@ -1196,7 +1181,6 @@ void InitMods() {
     RegisterMirrorModeHandler();
     RegisterResetNaviTimer();
     RegisterBrokenGiantsKnifeFix();
-    RegisterDekuNutUpgradeFix();
     RegisterEnemyDefeatCounts();
     RegisterBossDefeatTimestamps();
     RegisterRandomizedEnemySizes();
