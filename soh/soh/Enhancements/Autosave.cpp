@@ -35,7 +35,6 @@ bool Autosave_CanSave() {
 }
 
 void Autosave_PerformSave() {
-    // Non-threaded saving to avoid the save referencing non-existent data.
     Play_PerformSave(gPlayState);
 
     // Send notification
@@ -72,7 +71,7 @@ void Autosave_SoftResetSave() {
 
 void RegisterAutosave() {
     COND_HOOK(GameInteractor::OnGameFrameUpdate, CVAR_AUTOSAVE_VALUE, Autosave_IntervalSave);
-    COND_HOOK(GameInteractor::BeforeExitGame, CVAR_AUTOSAVE_VALUE, Autosave_SoftResetSave);
+    COND_HOOK(GameInteractor::OnExitGame, CVAR_AUTOSAVE_VALUE, [](int32_t fileNum) { Autosave_SoftResetSave(); });
 }
 
 static RegisterShipInitFunc initFunc(RegisterAutosave, { CVAR_AUTOSAVE_NAME });

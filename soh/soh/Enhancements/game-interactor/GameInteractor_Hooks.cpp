@@ -14,10 +14,6 @@ void GameInteractor_ExecuteOnLoadGame(int32_t fileNum) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnLoadGame>(fileNum);
 }
 
-void GameInteractor_ExecuteBeforeExitGame() {
-    GameInteractor::Instance->ExecuteHooks<GameInteractor::BeforeExitGame>();
-}
-
 void GameInteractor_ExecuteOnExitGame(int32_t fileNum) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnExitGame>(fileNum);
 }

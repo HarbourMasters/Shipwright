@@ -1384,7 +1384,9 @@ void UpdateAllAreas() {
 }
 
 void UpdateAreas(RandomizerCheckArea area) {
-    areasFullyChecked[area] = areaChecksGotten[area] == checksByArea.find(area)->second.size();
+    if (checksByArea.contains(area)) {
+        areasFullyChecked[area] = areaChecksGotten[area] == checksByArea.find(area)->second.size();
+    }
 }
 
 void UpdateAllOrdering() {

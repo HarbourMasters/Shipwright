@@ -393,7 +393,6 @@ void Play_Init(GameState* thisx) {
 
     // Invalid entrance, so immediately exit the game to opening title
     if (gSaveContext.entranceIndex == ENTR_LOAD_OPENING) {
-        GameInteractor_ExecuteBeforeExitGame();
         gSaveContext.entranceIndex = 0;
         play->state.running = false;
         SET_NEXT_GAMESTATE(&play->state, Opening_Init, OpeningContext);
