@@ -31,4 +31,4 @@ void RegisterDekuNutUpgradeFix() {
     COND_HOOK(OnGameFrameUpdate, CVAR_DEKU_NUT_UPGRADE_FIX_VALUE, OnGameFrameUpdateDekuNutUpgradeFix);
 }
 
-static RegisterShipInitFunc initFunc(RegisterDekuNutUpgradeFix, { CVAR_DEKU_NUT_UPGRADE_FIX_NAME });
+static RegisterShipInitFunc initFunc(RegisterDekuNutUpgradeFix, { CVAR_DEKU_NUT_UPGRADE_FIX_NAME, "IS_RANDO" });
