@@ -10,11 +10,12 @@ extern void Inventory_ChangeEquipment(s16, u16);
 extern void Player_SetEquipmentData(PlayState*, Player*);
 extern void func_808328EC(Player*, u16);
 extern PlayState* gPlayState;
+extern void Player_Action_808464B0(Player*, PlayState*);
 }
 
 static u16 sItemButtons[] = { BTN_B, BTN_CLEFT, BTN_CDOWN, BTN_CRIGHT, BTN_DUP, BTN_DDOWN, BTN_DLEFT, BTN_DRIGHT };
 
-void UseTunicBoots(Player* player, PlayState* play, Input* input) {
+void UseTunicBoots(Player* player, PlayState* play, Input* input, bool* skipActionFunc) {
     // Boots and tunics equip despite state
     if (
         player->stateFlags1 & (PLAYER_STATE1_INPUT_DISABLED | PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE | PLAYER_STATE1_TALKING | PLAYER_STATE1_DEAD) ||
@@ -50,6 +51,11 @@ void UseTunicBoots(Player* player, PlayState* play, Input* input) {
             }
             Player_SetEquipmentData(play, player);
             func_808328EC(player, NA_SE_PL_CHANGE_ARMS);
+        }
+
+        // don't throw items
+        if ((player->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) && (player->heldActor != NULL)) {
+            *skipActionFunc = true;
         }
     }
 }
@@ -107,8 +113,14 @@ void RegisterAssignableTunicsBoots() {
 
         Input* input = va_arg(args, Input*);
 
+        bool skipActionFunc = false;
+        UseTunicBoots(player, gPlayState, input, &skipActionFunc);
+
+        if (skipActionFunc) {
+            return;
+        }
+
         player->actionFunc(player, gPlayState);
-        UseTunicBoots(player, gPlayState, input);
     });
 
     // clear out assigned tunics/boots when the enhancement is toggled off
