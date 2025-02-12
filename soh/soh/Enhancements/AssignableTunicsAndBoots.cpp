@@ -87,7 +87,7 @@ void RegisterAssignableTunicsBoots() {
         }
     });
 
-    // make sure we don't crash because tunics/boots don't have assoicated item actions
+    // don't throw items when the pressed button is a tunic or boots 
     COND_VB_SHOULD(VB_THROW_OR_PUT_DOWN_HELD_ITEM, CVAR_TUNICBOOTS_VALUE != CVAR_TUNICBOOTS_DEFAULT, {
         // if the vanilla condition doesn't want us to throw/put down the item, early return
         if (!*should) {
