@@ -6,11 +6,18 @@
 #include "variables.h"
 #include "z64save.h"
 
+extern "C" PlayState* gPlayState;
+
 static constexpr int32_t CVAR_NUT_UPGRADE_FIX_DEFAULT = 0;
 #define CVAR_NUT_UPGRADE_FIX_NAME CVAR_ENHANCEMENT("DekuNutUpgradeFix")
 #define CVAR_NUT_UPGRADE_FIX_VALUE CVarGetInteger(CVAR_NUT_UPGRADE_FIX_NAME, CVAR_NUT_UPGRADE_FIX_DEFAULT)
 
 void DekuNutUpgradeFixAtForestStage(bool* should) {
+    // This check is needed because of an intentional fallthrough at the source
+    if (Player_GetMask(gPlayState) == PLAYER_MASK_SKULL) {
+        return;
+    }
+
     s32 expectedNutUpgrades = (INV_CONTENT(ITEM_NUT) == ITEM_NUT ? 1 : 0) +
                               (Flags_GetInfTable(INFTABLE_BOUGHT_NUT_UPGRADE) ? 1 : 0) +
                               (Flags_GetItemGetInf(ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE) ? 1 : 0);
