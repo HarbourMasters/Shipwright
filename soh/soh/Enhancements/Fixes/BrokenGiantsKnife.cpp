@@ -11,7 +11,7 @@ extern "C" SaveContext gSaveContext;
 
 static constexpr int32_t CVAR_BGS_FIX_DEFAULT = 0;
 #define CVAR_BGS_FIX_NAME CVAR_ENHANCEMENT("FixBrokenGiantsKnife")
-#define CVAR_BGS_FIX_VALUE IS_RANDO || CVarGetInteger(CVAR_BGS_FIX_NAME, CVAR_BGS_FIX_DEFAULT)
+#define CVAR_BGS_FIX_VALUE CVarGetInteger(CVAR_BGS_FIX_NAME, CVAR_BGS_FIX_DEFAULT)
 
 void OnReceiveBrokenGiantsKnife(GetItemEntry itemEntry) {
     if (itemEntry.itemId != ITEM_SWORD_BGS) {
@@ -42,7 +42,7 @@ void OnReceiveBrokenGiantsKnife(GetItemEntry itemEntry) {
 
 void RegisterBrokenGiantsKnifeFix() {
     // If enhancement is off, flag should be handled exclusively by vanilla behaviour
-    COND_HOOK(OnItemReceive, CVAR_BGS_FIX_VALUE, OnReceiveBrokenGiantsKnife);
+    COND_HOOK(OnItemReceive, CVAR_BGS_FIX_VALUE || IS_RANDO, OnReceiveBrokenGiantsKnife);
 }
 
 static RegisterShipInitFunc initFunc(RegisterBrokenGiantsKnifeFix, { CVAR_BGS_FIX_NAME, "IS_RANDO" });
