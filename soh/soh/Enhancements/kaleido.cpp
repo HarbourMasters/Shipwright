@@ -242,7 +242,7 @@ namespace Rando {
         }
 
         mEntryDl.push_back(gsSPEndDisplayList());
-        gSPDisplayList(POLY_KAL_DISP++, mEntryDl.data());
+        gSPDisplayList(POLY_OPA_DISP++, mEntryDl.data());
         CLOSE_DISPS(play->state.gfxCtx);
     }
 

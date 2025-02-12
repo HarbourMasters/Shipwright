@@ -98,6 +98,10 @@ ItemLocation* Context::GetItemLocation(size_t locKey) {
     return &itemLocationTable[static_cast<RandomizerCheck>(locKey)];
 }
 
+bool Context::IsLocationShuffled(const RandomizerCheck locKey) {
+    return itemLocationTable[locKey].GetPlacedRandomizerGet() != RG_NONE;
+}
+
 ItemOverride& Context::GetItemOverride(RandomizerCheck locKey) {
     if (!overrides.contains(locKey)) {
         overrides.emplace(locKey, ItemOverride());
@@ -156,36 +160,73 @@ void Context::GenerateLocationPool() {
     if (mOptions[RSK_TRIFORCE_HUNT]) {
         AddLocation(RC_TRIFORCE_COMPLETED);
     }
-    AddLocations(StaticData::GetOverworldLocations());
-
-    if (mOptions[RSK_FISHSANITY].IsNot(RO_FISHSANITY_OFF)) {
-        AddLocations(mFishsanity->GetFishsanityLocations().first);
+    for (Location& location : StaticData::GetLocationTable()) {
+        // skip RCs that shouldn't be in the pool for any reason (i.e. settings, unsupported check type, etc.)
+        // TODO: Exclude checks for some of the older shuffles from the pool too i.e. Frog Songs, Scrubs, etc.)
+        if (location.GetRandomizerCheck() == RC_UNKNOWN_CHECK ||
+            location.GetRandomizerCheck() == RC_TRIFORCE_COMPLETED || // already in pool
+            location.GetRCType() == RCTYPE_CHEST_GAME ||              // not supported yet
+            location.GetRCType() == RCTYPE_STATIC_HINT ||             // can't have items
+            location.GetRCType() == RCTYPE_GOSSIP_STONE ||            // can't have items
+            (location.GetRCType() == RCTYPE_SCRUB && mOptions[RSK_SHUFFLE_SCRUBS].Is(RO_SCRUBS_OFF)) ||
+            (location.GetRCType() == RCTYPE_SCRUB && mOptions[RSK_SHUFFLE_SCRUBS].Is(RO_SCRUBS_ONE_TIME_ONLY) && !(
+                location.GetRandomizerCheck() == RC_LW_DEKU_SCRUB_GROTTO_FRONT ||
+                location.GetRandomizerCheck() == RC_LW_DEKU_SCRUB_NEAR_BRIDGE ||
+                location.GetRandomizerCheck() == RC_HF_DEKU_SCRUB_GROTTO
+            )) ||
+            (location.GetRCType() == RCTYPE_COW && mOptions[RSK_SHUFFLE_COWS].Is(RO_GENERIC_OFF)) ||
+            (location.GetRCType() == RCTYPE_FISH && mOptions[RSK_FISHSANITY].Is(RO_FISHSANITY_OFF)) ||
+            (location.GetRCType() == RCTYPE_POT && mOptions[RSK_SHUFFLE_POTS].Is(RO_SHUFFLE_POTS_OFF)) ||
+            (location.GetRCType() == RCTYPE_FAIRY && !mOptions[RSK_SHUFFLE_FAIRIES]) ||
+            (location.GetRCType() == RCTYPE_FREESTANDING &&
+             mOptions[RSK_SHUFFLE_FREESTANDING].Is(RO_SHUFFLE_FREESTANDING_OFF)) ||
+            (location.GetRCType() == RCTYPE_BEEHIVE && !mOptions[RSK_SHUFFLE_BEEHIVES])) {
+            continue;
+        }
+        if (location.IsOverworld()) {
+            // Skip stuff that is shuffled to dungeon only, i.e. tokens, pots, etc., or other checks that
+            // should not have a shuffled item.
+            if ((location.GetRCType() == RCTYPE_FREESTANDING && mOptions[RSK_SHUFFLE_FREESTANDING].Is(RO_SHUFFLE_FREESTANDING_DUNGEONS)) ||
+                (location.GetRCType() == RCTYPE_POT && mOptions[RSK_SHUFFLE_POTS].Is(RO_SHUFFLE_POTS_DUNGEONS))) {
+                continue;
+            }
+            // If we've gotten past all the conditions where an overworld location should not be
+            // shuffled, add it to the pool.
+            AddLocation(location.GetRandomizerCheck());
+        } else { // is a dungeon check
+            auto* dungeon = GetDungeon(location.GetArea() - RCAREA_DEKU_TREE);
+            if (location.GetQuest() == RCQUEST_BOTH || (location.GetQuest() == RCQUEST_MQ) == dungeon->IsMQ()) {
+                if ((location.GetRCType() == RCTYPE_FREESTANDING &&
+                     mOptions[RSK_SHUFFLE_FREESTANDING].Is(RO_SHUFFLE_FREESTANDING_OVERWORLD)) ||
+                    (location.GetRCType() == RCTYPE_POT && mOptions[RSK_SHUFFLE_POTS].Is(RO_SHUFFLE_POTS_OVERWORLD))) {
+                    continue;
+                }
+                // also add to that dungeon's location list.
+                AddLocation(location.GetRandomizerCheck(), &dungeon->locations);
+                AddLocation(location.GetRandomizerCheck());
+            }
+        }
     }
-
-    if (mOptions[RSK_SHUFFLE_POTS].Is(RO_SHUFFLE_POTS_OVERWORLD) ||
-        mOptions[RSK_SHUFFLE_POTS].Is(RO_SHUFFLE_POTS_ALL)) {
-        AddLocations(StaticData::GetOverworldPotLocations());
-    }
-
-    AddLocations(StaticData::GetAllDungeonLocations());
 }
 
 void Context::AddExcludedOptions() {
-    AddLocations(StaticData::GetOverworldLocations(), &everyPossibleLocation);
-    for (const auto dungeon : mDungeons->GetDungeonList()) {
-        AddLocations(dungeon->GetEveryLocation(), &everyPossibleLocation);
-    }
-    for (const RandomizerCheck rc : everyPossibleLocation) {
+    for (auto& loc : StaticData::GetLocationTable()) {
+        // Checks of these types don't have items, skip them.
+        if (loc.GetRandomizerCheck() == RC_UNKNOWN_CHECK ||
+            loc.GetRandomizerCheck() == RC_TRIFORCE_COMPLETED || loc.GetRCType() == RCTYPE_CHEST_GAME ||
+            loc.GetRCType() == RCTYPE_STATIC_HINT || loc.GetRCType() == RCTYPE_GOSSIP_STONE) {
+            continue;
+        }
+        AddLocation(loc.GetRandomizerCheck(), &everyPossibleLocation);
         bool alreadyAdded = false;
-        Location* loc = StaticData::GetLocation(rc);
-        for (Option* location : Rando::Settings::GetInstance()->GetExcludeOptionsForArea(loc->GetArea()))
+        for (Option* location : Rando::Settings::GetInstance()->GetExcludeOptionsForArea(loc.GetArea()))
         {
-            if (location->GetName() == loc->GetExcludedOption()->GetName()) {
+            if (location->GetName() == loc.GetExcludedOption()->GetName()) {
                 alreadyAdded = true;
             }
         }
         if (!alreadyAdded) {
-            Rando::Settings::GetInstance()->GetExcludeOptionsForArea(loc->GetArea()).push_back(loc->GetExcludedOption());
+            Rando::Settings::GetInstance()->GetExcludeOptionsForArea(loc.GetArea()).push_back(loc.GetExcludedOption());
         }
     }
 }
