@@ -1105,10 +1105,10 @@ void TimeSaverOnFlagSetHandler(int16_t flagType, int16_t flag) {
             case FLAG_ITEM_GET_INF:
                 switch (flag) {
                     case ITEMGETINF_OBTAINED_STICK_UPGRADE_FROM_STAGE:
-                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_DEKU_STICK_CAPACITY_30).GetGIEntry_Copy();
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_PROGRESSIVE_STICK_UPGRADE).GetGIEntry_Copy();
                         break;
                     case ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE:
-                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_DEKU_NUT_CAPACITY_40).GetGIEntry_Copy();
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_PROGRESSIVE_NUT_UPGRADE).GetGIEntry_Copy();
                         break;
                 }
                 break;
