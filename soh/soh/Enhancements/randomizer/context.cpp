@@ -29,6 +29,37 @@ Context::Context() {
     mLogic = std::make_shared<Logic>();
     mTrials = std::make_shared<Trials>();
     mFishsanity = std::make_shared<Fishsanity>();
+    mSilverRupeeCounters = {
+        // Vanilla
+        SilverRupeeCounter(5, RG_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE),
+        SilverRupeeCounter(5, RG_ICE_CAVERN_SLIDING_SILVER_RUPEE),
+        SilverRupeeCounter(5, RG_BOTTOM_OF_THE_WELL_SILVER_RUPEE),
+        SilverRupeeCounter(5, RG_GERUDO_TRAINING_GROUNDS_BOULDER_SILVER_RUPEE),
+        SilverRupeeCounter(5, RG_GERUDO_TRAINING_GROUNDS_LAVA_SILVER_RUPEE),
+        SilverRupeeCounter(5, RG_GERUDO_TRAINING_GROUNDS_TOILET_SILVER_RUPEE),
+        SilverRupeeCounter(5, RG_SPIRIT_BEAMOS_SILVER_RUPEE),
+        SilverRupeeCounter(5, RG_SPIRIT_BOULDER_SILVER_RUPEE),
+        SilverRupeeCounter(5, RG_SHADOW_SCYTHE_SILVER_RUPEE),
+        SilverRupeeCounter(5, RG_SHADOW_OUTSIDE_SPIKE_RAIN_SILVER_RUPEE),
+        SilverRupeeCounter(5, RG_SHADOW_INVISIBLE_SPIKES_SILVER_RUPEE),
+        SilverRupeeCounter(5, RG_FOREST_TRIAL_SILVER_RUPEE),
+        SilverRupeeCounter(5, RG_FIRE_TRIAL_SILVER_RUPEE),
+        SilverRupeeCounter(5, RG_SPIRIT_TRIAL_SILVER_RUPEE),
+        SilverRupeeCounter(5, RG_LIGHT_TRIAL_SILVER_RUPEE),
+        // MQ
+        SilverRupeeCounter(5, RG_GERUDO_TRAINING_GROUNDS_MQ_BOULDER_SILVER_RUPEE),
+        SilverRupeeCounter(6, RG_GERUDO_TRAINING_GROUNDS_MQ_LAVA_SILVER_RUPEE),
+        SilverRupeeCounter(3, RG_GERUDO_TRAINING_GROUNDS_MQ_TOILET_SILVER_RUPEE),
+        SilverRupeeCounter(5, RG_DODONGOS_CAVERN_MQ_SILVER_RUPEE),
+        SilverRupeeCounter(5, RG_SPIRIT_MQ_LOBBY_SILVER_RUPEE),
+        SilverRupeeCounter(5, RG_SHADOW_MQ_SCYTHE_SILVER_RUPEE),
+        SilverRupeeCounter(10, RG_SHADOW_MQ_INVISIBLE_SCYTHE_SILVER_RUPEE),
+        SilverRupeeCounter(5, RG_SHADOW_MQ_OUTSIDE_SPIKE_RAIN_SILVER_RUPEE),
+        SilverRupeeCounter(10, RG_SHADOW_MQ_INVISIBLE_SPIKES_SILVER_RUPEE),
+        SilverRupeeCounter(5, RG_FIRE_TRIAL_SILVER_RUPEE),
+        SilverRupeeCounter(5, RG_WATER_TRIAL_MQ_SILVER_RUPEE),
+        SilverRupeeCounter(5, RG_SHADOW_TRIAL_MQ_SILVER_RUPEE),
+    };
     VanillaLogicDefaults = {
         // RANDOTODO check what this does
         &mOptions[RSK_LINKS_POCKET],
@@ -516,6 +547,11 @@ std::string Context::GetHash() const {
 
 void Context::SetHash(std::string hash) {
     mHash = std::move(hash);
+}
+
+SilverRupeeCounter& Context::GetSilverRupeeCounter(RandomizerGet rg) {
+    assert(rg >= RG_SILVER_RUPEE_FIRST && rg <= RG_SILVER_RUPEE_LAST);
+    return mSilverRupeeCounters[rg - RG_SILVER_RUPEE_FIRST];
 }
 
 const std::string& Context::GetSeedString() const {

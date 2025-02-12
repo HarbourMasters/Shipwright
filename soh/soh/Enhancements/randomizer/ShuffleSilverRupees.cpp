@@ -1,5 +1,7 @@
 #include "ShuffleSilverRupees.h"
 #include "static_data.h"
+#include <soh/OTRGlobals.h>
+#include "draw.h"
 
 extern "C" {
 #include "variables.h"
@@ -7,19 +9,8 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-extern "C" void EnGSwitch_RandomizerSilverRupeeIdle(EnGSwitch* self, PlayState *play) {
-    Player* player = GET_PLAYER(play);
-
-    self->actor.shape.rot.y += 0x800;
-    if (self->actor.xyzDistToPlayerSq < 900.0f) {
-        Flags_SetRandomizerInf(self->srIdentity.randomizerInf);
-        self->killTimer = 0;
-        self->actionFunc = EnGSwitch_Kill;
-    }
-}
-
 extern "C" void EnGSwitch_RandomizerDraw(Actor* thisx, PlayState* play) {
-    EnGSwitch* srActor = static_cast<EnGSwitch*>(thisx);
+    EnGSwitch* srActor = reinterpret_cast<EnGSwitch*>(thisx);
     Matrix_Push();
     Matrix_Scale(17.5f, 17.5f, 17.5f, MTXMODE_APPLY);
     if (srActor->type == ENGSWITCH_SILVER_RUPEE) {
@@ -50,8 +41,8 @@ SilverRupeeIdentity IdentifySilverRupee(Vec3f_ pos) {
         LUSLOG_WARN("SilverRupeeIdentity did not receive a valid RC value (%d).", location->GetRandomizerCheck());
         assert(false);
     } else {
-        srIdentity.randomizerCheck = location->GetRandomizerCheck();
-        srIdentity.itemEntry = OTRGlobals::Instance->gRandoContext->GetFinalGIEntry(srIdentity.randomizerCheck, true, GI_NONE);
+        srIdentity.index.randomizerCheck = location->GetRandomizerCheck();
+        srIdentity.itemEntry = OTRGlobals::Instance->gRandoContext->GetFinalGIEntry(srIdentity.index.randomizerCheck, true, GI_NONE);
         srIdentity.randomizerInf = static_cast<RandomizerInf>(location->GetCollectionCheck().flag);
     }
     return srIdentity;
@@ -59,11 +50,62 @@ SilverRupeeIdentity IdentifySilverRupee(Vec3f_ pos) {
 
 void EnGSwitch_RandomizerInit(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
+    if (actor->id != ACTOR_EN_G_SWITCH) return;
 
     EnGSwitch* srActor = static_cast<EnGSwitch*>(actorRef);
     if (srActor->type == ENGSWITCH_SILVER_RUPEE) {
-        srActor->srIdentity = IdentifySilverRupee(sceneNum, param1, param2);
+        srActor->srIdentity = IdentifySilverRupee(actor->world.pos);
+    } else {
+        srActor->srIdentity.index.randomizerGet = RG_SILVER_RUPEE_FIRST;
     }
+}
+
+void ShuffleSilverRupees_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
+    va_list args;
+    va_copy(args, originalArgs);
+    Actor* actor = va_arg(args, Actor*);
+    va_end(args);
+
+    EnGSwitch* srActor = reinterpret_cast<EnGSwitch*>(actor);
+
+    if (id == VB_SILVER_RUPEE_COLLECT) {
+        Flags_SetRandomizerInf(srActor->srIdentity.randomizerInf);
+        Actor_Kill(actor);
+        *should = false;
+    } else if (id == VB_SILVER_RUPEE_COUNT_CHECK) {
+        // check if all silver rupees for that room have been collected
+        // we run this every frame in case one of the rupees for a room
+        // is randomized into the same room. Without this we'd need to
+        // reload the scene after collecting it to unlock the door.
+        if (OTRGlobals::Instance->gRandoContext->GetSilverRupeeCounter(srActor->srIdentity.index.randomizerGet).AllCollected()) {
+            if ((gPlayState->sceneNum == SCENE_GERUDO_TRAINING_GROUND) && (srActor->actor.room == 2)) {
+                Flags_SetTempClear(gPlayState, srActor->actor.room);
+            } else {
+                Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
+                Flags_SetSwitch(gPlayState, srActor->switchFlag);
+            }
+            Actor_Kill(actor);
+        }
+        *should = false;
+    } else if (id == VB_SILVER_RUPEE_SETUP_DRAW) {
+        srActor->actor.draw = (ActorFunc)EnGSwitch_RandomizerDraw;
+        *should = false;
+    }
+}
+
+uint32_t onSRVanillaBehaviorHook = 0;
+uint32_t onSRActorInitHook = 0;
+
+void ShuffleSilverRupees_RegisterHooks() {
+    onSRActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(EnGSwitch_RandomizerInit);
+    onSRVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(ShuffleSilverRupees_OnVanillaBehaviorHandler);
+}
+
+void ShuffleSilverRupees_UnregisterHooks() {
+    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(onSRActorInitHook);
+    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(onSRVanillaBehaviorHook);
+    onSRVanillaBehaviorHook = 0;
+    onSRActorInitHook = 0;
 }
 
 void Rando::StaticData::RegisterSilverRupeeLocations() {
@@ -265,4 +307,8 @@ uint8_t Rando::SilverRupeeCounter::GetTotal() const {
 
 void Rando::SilverRupeeCounter::IncrementCollected(uint8_t amount) {
     mCollected += amount;
+}
+
+bool Rando::SilverRupeeCounter::AllCollected() {
+    return GetCollected() == GetTotal();
 }

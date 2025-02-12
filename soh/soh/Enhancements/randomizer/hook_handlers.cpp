@@ -2443,6 +2443,7 @@ void RandomizerRegisterHooks() {
         shuffleFreestandingOnVanillaBehaviorHook = 0;
 
         ShuffleFairies_UnregisterHooks();
+        ShuffleSilverRupees_UnregisterHooks();
 
         if (!IS_RANDO) return;
 
@@ -2494,5 +2495,7 @@ void RandomizerRegisterHooks() {
         if (RAND_GET_OPTION(RSK_SHUFFLE_FAIRIES)) {
             ShuffleFairies_RegisterHooks();
         }
+
+        ShuffleSilverRupees_RegisterHooks();
     });
 }

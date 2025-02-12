@@ -1865,4 +1865,28 @@ typedef enum {
     // #### `args`
     // - `*EnWonderTalk2`
     VB_WONDER_TALK,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnGSwitch`
+    VB_SILVER_RUPEE_COLLECT,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnGSwitch`
+    VB_SILVER_RUPEE_COUNT_CHECK,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnGSwitch`
+    VB_SILVER_RUPEE_SETUP_DRAW,
 } GIVanillaBehavior;
