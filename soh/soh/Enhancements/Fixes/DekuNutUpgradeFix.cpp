@@ -6,10 +6,8 @@
 #include "variables.h"
 #include "z64save.h"
 
-extern "C" SaveContext gSaveContext;
-
+static constexpr int32_t CVAR_DEKU_NUT_UPGRADE_FIX_DEFAULT = 0;
 #define CVAR_DEKU_NUT_UPGRADE_FIX_NAME CVAR_ENHANCEMENT("DekuNutUpgradeFix")
-#define CVAR_DEKU_NUT_UPGRADE_FIX_DEFAULT 0
 #define CVAR_DEKU_NUT_UPGRADE_FIX_VALUE \
     IS_RANDO || CVarGetInteger(CVAR_DEKU_NUT_UPGRADE_FIX_NAME, CVAR_DEKU_NUT_UPGRADE_FIX_DEFAULT)
 
