@@ -144,6 +144,11 @@ void RegionTable_Init_BottomOfTheWell() {
         LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_11,    logic->CanBreakPots()),
         LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_12,    logic->CanBreakPots()),
         LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_SUN_FAIRY, logic->CanUse(RG_SUNS_SONG)),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_SILVER_RUPEE_1,     true),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_SILVER_RUPEE_2,     true),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_SILVER_RUPEE_3,     true),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_SILVER_RUPEE_4,     true),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_SILVER_RUPEE_5,     true),
     }, {
         //Exits
         Entrance(RR_BOTTOM_OF_THE_WELL_SOUTHWEST_ROOM,               []{return logic->IsChild && logic->CanPassEnemy(RE_BIG_SKULLTULA);}),

@@ -302,6 +302,12 @@ void RegionTable_Init_DodongosCavern() {
         LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_POT_2, logic->CanBreakPots()),
         LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_POT_3, logic->CanBreakPots()),
         LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_POT_4, logic->CanBreakPots()),
+        // RANDOTODO some of these are lower but some of these are actually in upper.
+        LOCATION(RC_DODONGOS_CAVERN_MQ_SILVER_RUPEE_1,  true),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_SILVER_RUPEE_2,  true),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_SILVER_RUPEE_3,  true),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_SILVER_RUPEE_4,  true),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_SILVER_RUPEE_5,  true),
     }, {
         //Exits
         //This is possible with sticks and shield, igniting a first flower by "touch" then very quickly crouch stabbing in a way that cuts the corner to light the 3rd bomb on the other side, but that's a trick

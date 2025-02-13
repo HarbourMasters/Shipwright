@@ -24,9 +24,18 @@ void RegionTable_Init_GerudoTrainingGround() {
         LOCATION(RC_GERUDO_TRAINING_GROUND_ENTRANCE_STORMS_FAIRY, logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_GERUDO_TRAINING_GROUND_BEAMOS_SOUTH_HEART,    true),
         LOCATION(RC_GERUDO_TRAINING_GROUND_BEAMOS_EAST_HEART,     true),
+        // RANDOTODO move these to their own region, as one for the boulder maze
+        // currently does not exist.
+        LOCATION(RC_GERUDO_TRAINING_GROUNDS_BOULDER_SILVER_RUPEE_1, true),
+        LOCATION(RC_GERUDO_TRAINING_GROUNDS_BOULDER_SILVER_RUPEE_2, true),
+        LOCATION(RC_GERUDO_TRAINING_GROUNDS_BOULDER_SILVER_RUPEE_3, true),
+        LOCATION(RC_GERUDO_TRAINING_GROUNDS_BOULDER_SILVER_RUPEE_4, true),
+        LOCATION(RC_GERUDO_TRAINING_GROUNDS_BOULDER_SILVER_RUPEE_5, true),
     }, {
         //Exits
         Entrance(RR_GERUDO_TRAINING_GROUND_ENTRYWAY,         []{return true;}),
+        // RANDOTODO with silver rupees we can't necessarily get all the way to the heavy
+        // block room with this logic anymore, will likely need a middle region.
         Entrance(RR_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_ROOM, []{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2, true) && (logic->CanUse(RG_HOOKSHOT) || ctx->GetTrickOption(RT_GTG_WITHOUT_HOOKSHOT));}),
         Entrance(RR_GERUDO_TRAINING_GROUND_LAVA_ROOM,        []{return Here(RR_GERUDO_TRAINING_GROUND_LOBBY, []{return logic->CanKillEnemy(RE_BEAMOS) && logic->CanKillEnemy(RE_DINOLFOS, ED_CLOSE, true, 2, true);});}),
         Entrance(RR_GERUDO_TRAINING_GROUND_CENTRAL_MAZE,     []{return true;}),
@@ -58,6 +67,18 @@ void RegionTable_Init_GerudoTrainingGround() {
     areaTable[RR_GERUDO_TRAINING_GROUND_LAVA_ROOM] = Region("Gerudo Training Ground Lava Room", "Gerudo Training Ground", {RA_GERUDO_TRAINING_GROUND}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
         LOCATION(RC_GERUDO_TRAINING_GROUND_UNDERWATER_SILVER_RUPEE_CHEST, logic->CanUse(RG_HOOKSHOT) && logic->CanUse(RG_SONG_OF_TIME) && logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 24),
+        // RANDOTODO invidual silver rupee logic, and also moving the check above to another
+        // region to handle silver rupee puzzle access logic.
+        LOCATION(RC_GERUDO_TRAINING_GROUNDS_LAVA_SILVER_RUPEE_1, true),
+        LOCATION(RC_GERUDO_TRAINING_GROUNDS_LAVA_SILVER_RUPEE_2, true),
+        LOCATION(RC_GERUDO_TRAINING_GROUNDS_LAVA_SILVER_RUPEE_3, true),
+        LOCATION(RC_GERUDO_TRAINING_GROUNDS_LAVA_SILVER_RUPEE_4, true),
+        LOCATION(RC_GERUDO_TRAINING_GROUNDS_LAVA_SILVER_RUPEE_5, true),
+        LOCATION(RC_GERUDO_TRAINING_GROUNDS_TOILET_SILVER_RUPEE_1, true),
+        LOCATION(RC_GERUDO_TRAINING_GROUNDS_TOILET_SILVER_RUPEE_2, true),
+        LOCATION(RC_GERUDO_TRAINING_GROUNDS_TOILET_SILVER_RUPEE_3, true),
+        LOCATION(RC_GERUDO_TRAINING_GROUNDS_TOILET_SILVER_RUPEE_4, true),
+        LOCATION(RC_GERUDO_TRAINING_GROUNDS_TOILET_SILVER_RUPEE_5, true),
     }, {
         //Exits
         Entrance(RR_GERUDO_TRAINING_GROUND_CENTRAL_MAZE_RIGHT, []{return logic->CanUse(RG_SONG_OF_TIME) || logic->IsChild;}),
@@ -165,7 +186,15 @@ void RegionTable_Init_GerudoTrainingGround() {
         Entrance(RR_GERUDO_TRAINING_GROUND_MQ_LEFT_SIDE, []{return Here(RR_GERUDO_TRAINING_GROUND_MQ_SAND_ROOM, []{return logic->CanKillEnemy(RE_IRON_KNUCKLE);});}),
     });
 
-    areaTable[RR_GERUDO_TRAINING_GROUND_MQ_LEFT_SIDE] = Region("Gerudo Training Ground MQ Left Side", "Gerudo Training Ground", {RA_GERUDO_TRAINING_GROUND}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_GERUDO_TRAINING_GROUND_MQ_LEFT_SIDE] = Region("Gerudo Training Ground MQ Left Side", "Gerudo Training Ground", {RA_GERUDO_TRAINING_GROUND}, NO_DAY_NIGHT_CYCLE, {}, {
+        // RANDOTODO I think this is the silver rupee boulder room? Some of the entrance logic
+        // below might need to be changed to account for silver rupees.
+        LOCATION(RC_GERUDO_TRAINING_GROUNDS_MQ_BOULDER_SILVER_RUPEE_1, true),
+        LOCATION(RC_GERUDO_TRAINING_GROUNDS_MQ_BOULDER_SILVER_RUPEE_2, true),
+        LOCATION(RC_GERUDO_TRAINING_GROUNDS_MQ_BOULDER_SILVER_RUPEE_3, true),
+        LOCATION(RC_GERUDO_TRAINING_GROUNDS_MQ_BOULDER_SILVER_RUPEE_4, true),
+        LOCATION(RC_GERUDO_TRAINING_GROUNDS_MQ_BOULDER_SILVER_RUPEE_5, true),
+    }, {
         //Exits
         Entrance(RR_GERUDO_TRAINING_GROUND_MQ_SAND_ROOM,    []{return true;}),
         Entrance(RR_GERUDO_TRAINING_GROUND_MQ_STALFOS_ROOM, []{return Here(RR_GERUDO_TRAINING_GROUND_MQ_LEFT_SIDE, []{return logic->CanUse(RG_LONGSHOT) || ctx->GetTrickOption(RT_GTG_MQ_WIHTOUT_HOOKSHOT) || (ctx->GetTrickOption(RT_GTG_MQ_WITH_HOOKSHOT) && logic->IsAdult && logic->CanJumpslash() && logic->CanUse(RG_HOOKSHOT));});}),
@@ -250,7 +279,15 @@ void RegionTable_Init_GerudoTrainingGround() {
     //this region exists to place silver rupee items on later, normally it's all on fire and cannot be stood on without access from another area
     //This covers the platform that needs hover boots or the spawned targets to reach from any starting point other than RR_GERUDO_TRAINING_GROUND_MQ_MAZE_RIGHT
     //the unshuffled rupee collection is handled by the event GTGPlatformSilverRupees
-    areaTable[RR_GERUDO_TRAINING_GROUND_MQ_FURTHEST_PLATFORM] = Region("Gerudo Training Ground MQ Furthest Platform", "Gerudo Training Ground", {RA_GERUDO_TRAINING_GROUND}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_GERUDO_TRAINING_GROUND_MQ_FURTHEST_PLATFORM] = Region("Gerudo Training Ground MQ Furthest Platform", "Gerudo Training Ground", {RA_GERUDO_TRAINING_GROUND}, NO_DAY_NIGHT_CYCLE, {}, {
+        // RANDOTODO double check on these silver rupees, some may need to go to other regions
+        LOCATION(RC_GERUDO_TRAINING_GROUNDS_MQ_LAVA_SILVER_RUPEE_1, true),
+        LOCATION(RC_GERUDO_TRAINING_GROUNDS_MQ_LAVA_SILVER_RUPEE_2, true),
+        LOCATION(RC_GERUDO_TRAINING_GROUNDS_MQ_LAVA_SILVER_RUPEE_3, true),
+        LOCATION(RC_GERUDO_TRAINING_GROUNDS_MQ_LAVA_SILVER_RUPEE_4, true),
+        LOCATION(RC_GERUDO_TRAINING_GROUNDS_MQ_LAVA_SILVER_RUPEE_5, true),
+        LOCATION(RC_GERUDO_TRAINING_GROUNDS_MQ_LAVA_SILVER_RUPEE_6, true),
+    }, {
         //Exits
         //This is merely to extend this region's logic if you have hovers
         Entrance(RR_GERUDO_TRAINING_GROUND_MQ_LEDGE_SIDE_PLATFORMS, []{return logic->CanUse(RG_HOVER_BOOTS);}),
@@ -283,6 +320,10 @@ void RegionTable_Init_GerudoTrainingGround() {
         //Locations
         //it is possible to snipe the stingers with bow or sling before dropping in, or just get really lucky, and avoid needing to take damage, but that might be trick worthy
         LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_UNDERWATER_SILVER_RUPEE_CHEST, logic->HasFireSource() && logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 24 && logic->TakeDamage()),
+        // RANDOTODO double check this logic, might at least require Iron Boots.
+        LOCATION(RC_GERUDO_TRAINING_GROUNDS_MQ_TOILET_SILVER_RUPEE_1, true),
+        LOCATION(RC_GERUDO_TRAINING_GROUNDS_MQ_TOILET_SILVER_RUPEE_2, true),
+        LOCATION(RC_GERUDO_TRAINING_GROUNDS_MQ_TOILET_SILVER_RUPEE_3, true),
     }, {
         //Exits
         Entrance(RR_GERUDO_TRAINING_GROUND_MQ_PLATFORMS_UNLIT_TORCH, []{return true;}),
