@@ -77,6 +77,36 @@ static const ALIGN_ASSET(2) char gBossSoulSkullDL[] = dgBossSoulSkullDL;
 #define dgRandoPotDL "__OTR__objects/gameplay_dangeon_keep/gRandoPotDL"
 static const ALIGN_ASSET(2) char gRandoPotDL[] = dgRandoPotDL;
 
+#define dgRandoBushDL "__OTR__objects/gameplay_field_keep/gFieldBushRandomDL"
+static const ALIGN_ASSET(2) char gRandoBushDL[] = dgRandoBushDL;
+
+#define dgRandoBushMinorDL "__OTR__objects/gameplay_field_keep/gFieldBushMinorDL"
+static const ALIGN_ASSET(2) char gRandoBushMinorDL[] = dgRandoBushMinorDL;
+
+#define dgRandoBushMajorDL "__OTR__objects/gameplay_field_keep/gFieldBushMajorDL"
+static const ALIGN_ASSET(2) char gRandoBushMajorDL[] = dgRandoBushMajorDL;
+
+#define dgRandoBushSmallKeyDL "__OTR__objects/gameplay_field_keep/gFieldBushSmallKeyDL"
+static const ALIGN_ASSET(2) char gRandoBushSmallKeyDL[] = dgRandoBushSmallKeyDL;
+
+#define dgRandoBushBossKeyDL "__OTR__objects/gameplay_field_keep/gFieldBushBossKeyDL"
+static const ALIGN_ASSET(2) char gRandoBushBossKeyDL[] = dgRandoBushBossKeyDL;
+
+#define dgRandoBushTokenDL "__OTR__objects/gameplay_field_keep/gFieldBushTokenDL"
+static const ALIGN_ASSET(2) char gRandoBushTokenDL[] = dgRandoBushTokenDL;
+
+#define dgRandoBushMaskDL "__OTR__objects/gameplay_field_keep/gFieldBushMaskDL"
+static const ALIGN_ASSET(2) char gRandoBushMaskDL[] = dgRandoBushMaskDL;
+
+#define dgRandoBushFairyDL "__OTR__objects/gameplay_field_keep/gFieldBushFairyDL"
+static const ALIGN_ASSET(2) char gRandoBushFairyDL[] = dgRandoBushFairyDL;
+
+#define dgRandoBushHeartDL "__OTR__objects/gameplay_field_keep/gFieldBushHeartDL"
+static const ALIGN_ASSET(2) char gRandoBushHeartDL[] = dgRandoBushHeartDL;
+
+#define dgRandoBushJunkDL "__OTR__objects/gameplay_field_keep/gFieldBushJunkDL"
+static const ALIGN_ASSET(2) char gRandoBushJunkDL[] = dgRandoBushJunkDL;
+
 #define dgFishingPoleGiDL "__OTR__objects/object_gi_fishing_pole/gFishingPoleGiDL"
 static const ALIGN_ASSET(2) char gFishingPoleGiDL[] = dgFishingPoleGiDL;
 

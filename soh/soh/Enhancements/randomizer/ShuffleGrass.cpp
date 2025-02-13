@@ -1,6 +1,7 @@
 #include "ShuffleGrass.h"
 #include "soh_assets.h"
 #include "static_data.h"
+#include "soh/Enhancements/enhancementTypes.h"
 
 extern "C" {
 #include "variables.h"
@@ -15,25 +16,61 @@ extern PlayState* gPlayState;
 extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
 
 extern "C" void EnKusa_RandomizerDraw(Actor* thisx, PlayState* play) {
-    static Gfx* dLists[] = { (Gfx*)gFieldBushDL, (Gfx*)object_kusa_DL_000140, (Gfx*)object_kusa_DL_000140 };
+    static Gfx* dLists[] = { (Gfx*)gRandoBushDL, (Gfx*)object_kusa_DL_000140, (Gfx*)object_kusa_DL_000140 };
     auto grassActor = ((EnKusa*)thisx);
 
     OPEN_DISPS(play->state.gfxCtx);
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    gDPSetGrayscaleColor(POLY_OPA_DISP++, 175, 255, 0, 255);
 
-    if (grassActor->grassIdentity.randomizerCheck != RC_MAX &&
-        Flags_GetRandomizerInf(grassActor->grassIdentity.randomizerInf) == 0) {
-        gSPGrayscale(POLY_OPA_DISP++, true);
-    }
+    if (grassActor->grassIdentity.randomizerCheck != RC_MAX && Flags_GetRandomizerInf(grassActor->grassIdentity.randomizerInf) == 0) {
+        int csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED);
 
-    if (grassActor->actor.flags & ACTOR_FLAG_GRASS_DESTROYED) {
+        if (csmc == CSMC_BOTH || csmc == CSMC_TEXTURE) {
+            auto itemEntry = Rando::Context::GetInstance()->GetFinalGIEntry(grassActor->grassIdentity.randomizerCheck, true, GI_NONE);
+            GetItemCategory getItemCategory = itemEntry.getItemCategory;
+
+            switch (getItemCategory) {
+                case ITEM_CATEGORY_JUNK:
+                    Gfx_DrawDListOpa(play, (Gfx*)gRandoBushJunkDL);
+                    break;
+                case ITEM_CATEGORY_LESSER:
+                    switch (itemEntry.itemId) {
+                        case ITEM_FAIRY:
+                            Gfx_DrawDListOpa(play, (Gfx*)gRandoBushFairyDL);
+                            break;
+                        case ITEM_HEART_PIECE:
+                        case ITEM_HEART_PIECE_2:
+                        case ITEM_HEART_CONTAINER:
+                            Gfx_DrawDListOpa(play, (Gfx*)gRandoBushHeartDL);
+                            break;
+                        default:
+                            Gfx_DrawDListOpa(play, (Gfx*)gRandoBushMinorDL);
+                            break;
+                    }
+                    break;
+                case ITEM_CATEGORY_BOSS_KEY:
+                    Gfx_DrawDListOpa(play, (Gfx*)gRandoBushBossKeyDL);
+                    break;
+                case ITEM_CATEGORY_SMALL_KEY:
+                    Gfx_DrawDListOpa(play, (Gfx*)gRandoBushSmallKeyDL);
+                    break;
+                case ITEM_CATEGORY_SKULLTULA_TOKEN:
+                    Gfx_DrawDListOpa(play, (Gfx*)gRandoBushTokenDL);
+                    break;
+                case ITEM_CATEGORY_MAJOR:
+                    Gfx_DrawDListOpa(play, (Gfx*)gRandoBushMajorDL);
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            Gfx_DrawDListOpa(play, dLists[thisx->params & 3]);
+        }
+    } else if (grassActor->actor.flags & ACTOR_FLAG_GRASS_DESTROYED) {
         Gfx_DrawDListOpa(play, (Gfx*)object_kusa_DL_0002E0);
     } else {
-        Gfx_DrawDListOpa(play, dLists[grassActor->actor.params & 3]);
+        Gfx_DrawDListOpa(play, dLists[thisx->params & 3]);
     }
-
-    gSPGrayscale(POLY_OPA_DISP++, false);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
