@@ -52,7 +52,6 @@ extern "C" void ObjKibako2_RandomizerDraw(Actor* thisx, PlayState* play) {
     }
 
         // Change texture
-        // TODO: add heart texture when supported gLargeHeartCrateDL
         switch (getItemCategory) {
             case ITEM_CATEGORY_MAJOR:
                 Gfx_DrawDListOpa(play, (Gfx*)gLargeMajorCrateDL);
@@ -67,7 +66,16 @@ extern "C" void ObjKibako2_RandomizerDraw(Actor* thisx, PlayState* play) {
                 Gfx_DrawDListOpa(play, (Gfx*)gLargeBossKeyCrateDL);
                 break;
             case ITEM_CATEGORY_LESSER:
-                Gfx_DrawDListOpa(play, (Gfx*)gLargeMinorCrateDL);
+                switch (crateItem.itemId) {
+                    case ITEM_HEART_PIECE:
+                    case ITEM_HEART_PIECE_2:
+                    case ITEM_HEART_CONTAINER:
+                        Gfx_DrawDListOpa(play, (Gfx*)gLargeHeartCrateDL);
+                        break;
+                    default:
+                        Gfx_DrawDListOpa(play, (Gfx*)gLargeMinorCrateDL);
+                        break;
+                }
                 break;
             case ITEM_CATEGORY_JUNK:
             default:
@@ -92,6 +100,7 @@ extern "C" void ObjKibako_RandomizerDraw(Actor* thisx, PlayState* play) {
     GetItemEntry smallCrateItem = Rando::Context::GetInstance()->GetFinalGIEntry(smallCrateActor->smallCrateIdentity.randomizerCheck, true, GI_NONE);
     getItemCategory = smallCrateItem.getItemCategory;
 
+    // If they have bombchus, don't consider the bombchu item major
     if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU &&
         ((smallCrateItem.modIndex == MOD_RANDOMIZER && smallCrateItem.getItemId == RG_PROGRESSIVE_BOMBCHUS) ||
          (smallCrateItem.modIndex == MOD_NONE &&
@@ -107,7 +116,6 @@ extern "C" void ObjKibako_RandomizerDraw(Actor* thisx, PlayState* play) {
     }
 
     // Change texture
-    // TODO: add heart texture when supported gSmallHeartCrateDL
         switch (getItemCategory) {
             case ITEM_CATEGORY_MAJOR:
                 Gfx_DrawDListOpa(play, (Gfx*)gSmallMajorCrateDL);
@@ -122,7 +130,16 @@ extern "C" void ObjKibako_RandomizerDraw(Actor* thisx, PlayState* play) {
                 Gfx_DrawDListOpa(play, (Gfx*)gSmallBossKeyCrateDL);
                 break;
             case ITEM_CATEGORY_LESSER:
-                Gfx_DrawDListOpa(play, (Gfx*)gSmallMinorCrateDL);
+                switch (smallCrateItem.itemId) {
+                    case ITEM_HEART_PIECE:
+                    case ITEM_HEART_PIECE_2:
+                    case ITEM_HEART_CONTAINER:
+                        Gfx_DrawDListOpa(play, (Gfx*)gSmallHeartCrateDL);
+                        break;
+                    default:
+                        Gfx_DrawDListOpa(play, (Gfx*)gSmallMinorCrateDL);
+                        break;
+                }
                 break;
             case ITEM_CATEGORY_JUNK:
             default:
