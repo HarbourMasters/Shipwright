@@ -514,11 +514,11 @@ void DrawSettingsMenu() {
                 UIWidgets::PaddedEnhancementCheckbox("Enable Vsync", CVAR_VSYNC_ENABLED, true, false);
                 UIWidgets::Tooltip("Activate vertical sync, to prevent screen tearing.");
             }
-
-            if (Ship::Context::GetInstance()->GetWindow()->SupportsWindowedFullscreen()) {
 #ifdef __APPLE__
+            if (Ship::Context::GetInstance()->GetWindow()->SupportsWindowedFullscreen() && !Ship::Context::GetInstance()->GetWindow()->IsFullscreen()) {
                 UIWidgets::PaddedEnhancementCheckbox("Exclusive fullscreen", CVAR_SDL_WINDOWED_FULLSCREEN, true, false);
 #else
+            if (Ship::Context::GetInstance()->GetWindow()->SupportsWindowedFullscreen()) {
                 UIWidgets::PaddedEnhancementCheckbox("Windowed fullscreen", CVAR_SDL_WINDOWED_FULLSCREEN, true, false);
 #endif
             }
