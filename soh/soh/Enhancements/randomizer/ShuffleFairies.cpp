@@ -18,6 +18,8 @@ void ShuffleFairies_DrawRandomizedItem(EnElf* enElf, PlayState* play) {
     }
     Matrix_Push();
     Matrix_Scale(37.5, 37.5, 37.5, MTXMODE_APPLY);
+    func_8002EBCC(&enElf->actor, play, 0);
+    func_8002ED80(&enElf->actor, play, 0);
     EnItem00_CustomItemsParticles(&enElf->actor, play, randoGetItem);
     GetItemEntry_Draw(play, randoGetItem);
     Matrix_Pop();
