@@ -407,6 +407,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `int32_t` (startMode)
+    VB_EXECUTE_PLAYER_STARTMODE_FUNC,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*EnElf`
     VB_FAIRY_HEAL,
 
@@ -1555,7 +1563,7 @@ typedef enum {
     // true
     // ```
     // #### `args`
-    // - `**Gfx` (`&POLY_KAL_DISP`)
+    // - `**Gfx` (`&POLY_OPA_DISP`)
     VB_RENDER_YES_ON_CONTINUE_PROMPT,
 
     // #### `result`
@@ -1654,6 +1662,14 @@ typedef enum {
     // #### `args`
     // - `*VBFishingData`
     VB_SHOULD_SET_FISHING_RECORD,
+
+    // #### `result`
+    // ```c
+    // (interactedActor->id == ACTOR_BG_TOKI_SWD) && LINK_IS_ADULT
+    // ```
+    // #### `args`
+    // - None
+    VB_SHOW_MASTER_SWORD_TO_PLACE_IN_PEDESTAL,
 
     // #### `result`
     // ```c

@@ -2,6 +2,7 @@
 #include "textures/parameter_static/parameter_static.h"
 #include "soh/frame_interpolation.h"
 #include "soh/OTRGlobals.h"
+#include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 s16 Top_LM_Margin = 0;
@@ -343,15 +344,17 @@ s16 getHealthMeterXOffset() {
     else
         X_Margins = 0;
 
-    if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) != 0) {
-        if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) == 1) {//Anchor Left
-            return OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosX"), 0)+X_Margins+70.0f);
-        } else if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) == 2) {//Anchor Right
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) != ORIGINAL_LOCATION) {
+        if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) == ANCHOR_LEFT) {
+            return OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosX"), 0)+X_Margins +
+                                               70.0f);
+        } else if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) == ANCHOR_RIGHT) {
             X_Margins = Right_LM_Margin;
-            return OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosX"), 0)+X_Margins+70.0f);
-        } else if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) == 3) {//Anchor None
-            return CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosX"), 0)+70.0f;;
-        } else if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) == 4) {//Hidden
+            return OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosX"), 0)+X_Margins +
+                                                70.0f);
+        } else if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) == ANCHOR_NONE) {
+            return CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosX"), 0) + 70.0f;
+        } else if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) == HIDDEN) {
             return -9999;
         }
     } else {
@@ -366,8 +369,8 @@ s16 getHealthMeterYOffset() {
     else
         Y_Margins = 0;
 
-    f32 HeartsScale = 0.7f; 
-    if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) != 0) {
+    f32 HeartsScale = 0.7f;
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) != ORIGINAL_LOCATION) {
         HeartsScale = CVarGetFloat(CVAR_COSMETIC("HUD.HeartsCount.Scale"), 0.7f);
         return CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosY"), 0)+Y_Margins+(HeartsScale*15);
     } else {
@@ -398,8 +401,8 @@ void HealthMeter_Draw(PlayState* play) {
     s32 curCombineModeSet = 0;
     u8* curBgImgLoaded = NULL;
     s32 ddHeartCountMinusOne = gSaveContext.isDoubleDefenseAcquired ? totalHeartCount - 1 : -1;
-    f32 HeartsScale = 0.7f; 
-    if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) != 0) {
+    f32 HeartsScale = 0.7f;
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) != ORIGINAL_LOCATION) {
         HeartsScale = CVarGetFloat(CVAR_COSMETIC("HUD.HeartsCount.Scale"), 0.7f);
     }
     static u32 epoch = 0;
@@ -412,41 +415,41 @@ void HealthMeter_Draw(PlayState* play) {
     }
 
     curColorSet = -1;
-/*
-    s16 X_Margins;
-    s16 Y_Margins;
-    if (CVarGetInteger(CVAR_COSMETIC("HUD.Hearts.UseMargins"), 0) != 0) {
-        X_Margins = Left_LM_Margin;
-        Y_Margins = (Top_LM_Margin*-1);
-    } else {
-        X_Margins = 0;
-        Y_Margins = 0;
-    }
-    s16 PosX_original = OTRGetDimensionFromLeftEdge(0.0f)+X_Margins;
-    s16 PosY_original = 0.0f+Y_Margins;
-    if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) != 0) {
-        offsetY = CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosY"), 0)+Y_Margins+(HeartsScale*15);
-        if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) == 1) {//Anchor Left
-            offsetX = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosX"), 0)+X_Margins+70.0f);
-        } else if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) == 2) {//Anchor Right
-            X_Margins = Right_LM_Margin;
-            offsetX = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosX"), 0)+X_Margins+70.0f);
-        } else if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) == 3) {//Anchor None
-            offsetX = CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosX"), 0)+70.0f;
-        } else if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) == 4) {//Hidden
-            offsetX = -9999;
+    /*
+        s16 X_Margins;
+        s16 Y_Margins;
+        if (CVarGetInteger(CVAR_COSMETIC("HUD.Hearts.UseMargins"), 0) != 0) {
+            X_Margins = Left_LM_Margin;
+            Y_Margins = (Top_LM_Margin*-1);
+        } else {
+            X_Margins = 0;
+            Y_Margins = 0;
         }
-    } else {
-        offsetY = PosY_original;
-        offsetX = PosX_original;
-    }
-*/
+        s16 PosX_original = OTRGetDimensionFromLeftEdge(0.0f)+X_Margins;
+        s16 PosY_original = 0.0f+Y_Margins;
+        if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) != ORIGINAL_LOCATION) {
+            offsetY = CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosY"), 0)+Y_Margins+(HeartsScale*15);
+            if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) == ANCHOR_LEFT) {
+                offsetX = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosX"), 0)+X_Margins+70.0f);
+            } else if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) == ANCHOR_RIGHT) {
+                X_Margins = Right_LM_Margin;
+                offsetX = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosX"), 0)+X_Margins+70.0f); 
+            } else if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) == ANCHOR_NONE) {
+                offsetX = CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosX"), 0)+70.0f;
+            } else if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) == HIDDEN) {
+                offsetX = -9999;
+            }
+        } else {
+            offsetY = PosY_original;
+            offsetX = PosX_original;
+        }
+    */
     offsetX = PosX_anchor = getHealthMeterXOffset();
     offsetY = getHealthMeterYOffset();
 
     for (i = 0; i < totalHeartCount; i++) {
         FrameInterpolation_RecordOpenChild("HealthMeter Heart", i);
-        
+
         if ((ddHeartCountMinusOne < 0) || (i > ddHeartCountMinusOne)) {
             if (i < fullHeartCount) {
                 if (curColorSet != 0) {
@@ -574,7 +577,7 @@ void HealthMeter_Draw(PlayState* play) {
                                 (s32)((temp2 + temp1) * 4), (s32)((temp3 + temp1) * 4), G_TX_RENDERTILE, 0, 0,
                                 (s32)temp4, (s32)temp4);*/
             Mtx* matrix = Graph_Alloc(gfxCtx, sizeof(Mtx));
-            Matrix_SetTranslateScaleMtx2(matrix, 
+            Matrix_SetTranslateScaleMtx2(matrix,
                 HeartsScale, //Scale X
                 HeartsScale, //Scale Y
                 HeartsScale, //Scale Z
@@ -603,22 +606,22 @@ void HealthMeter_Draw(PlayState* play) {
 
             {
                 Mtx* matrix = Graph_Alloc(gfxCtx, sizeof(Mtx));
-                
+
                 if (CVarGetInteger(CVAR_ENHANCEMENT("NoHUDHeartAnimation"), 0)) {
                     Matrix_SetTranslateScaleMtx2(matrix,
-                        HeartsScale,          // Scale X
-                        HeartsScale,          // Scale Y
-                        HeartsScale,          // Scale Z
-                        -130 + offsetX,       // Pos X
-                        (-94 + offsetY) * -1, // Pos Y
-                        0.0f);
+                                                 HeartsScale,          // Scale X
+                                                 HeartsScale,          // Scale Y
+                                                 HeartsScale,          // Scale Z
+                                                 -130 + offsetX,       // Pos X
+                                                 (-94 + offsetY) * -1, // Pos Y
+                                                 0.0f);
                 } else {
                     Matrix_SetTranslateScaleMtx2(matrix, HeartsScale + (HeartsScale / 3) - ((HeartsScale / 3) * sp144),
-                        HeartsScale + (HeartsScale / 3) - ((HeartsScale / 3) * sp144),
-                        HeartsScale + (HeartsScale / 3) - ((HeartsScale / 3) * sp144),
-                        -130 + offsetX,       // Pos X
-                        (-94 + offsetY) * -1, // Pos Y
-                        0.0f);
+                                                 HeartsScale + (HeartsScale / 3) - ((HeartsScale / 3) * sp144),
+                                                 HeartsScale + (HeartsScale / 3) - ((HeartsScale / 3) * sp144),
+                                                 -130 + offsetX,       // Pos X
+                                                 (-94 + offsetY) * -1, // Pos Y
+                                                 0.0f);
                 }
 
                 gSPMatrix(OVERLAY_DISP++, matrix, G_MTX_MODELVIEW | G_MTX_LOAD);
@@ -633,7 +636,7 @@ void HealthMeter_Draw(PlayState* play) {
             offsetX = PosX_anchor;
             offsetY += 10.0f;
         }
-        
+
         FrameInterpolation_RecordCloseChild();
     }
 
