@@ -52,6 +52,17 @@ void RegionTable_Init_IceCavern() {
         LOCATION(RC_ICE_CAVERN_SLIDING_BLOCK_RUPEE_1,   logic->BlueFire() && (logic->CanUse(RG_SONG_OF_TIME) || logic->CanUse(RG_BOOMERANG))),
         LOCATION(RC_ICE_CAVERN_SLIDING_BLOCK_RUPEE_2,   logic->BlueFire() && (logic->CanUse(RG_SONG_OF_TIME) || logic->CanUse(RG_BOOMERANG))),
         LOCATION(RC_ICE_CAVERN_SLIDING_BLOCK_RUPEE_3,   logic->BlueFire() && (logic->CanUse(RG_SONG_OF_TIME) || logic->CanUse(RG_BOOMERANG))),
+        // RANDOTODO might need a new region here for everything past the bars.
+        LOCATION(RC_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_1, true),
+        LOCATION(RC_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_2, true),
+        LOCATION(RC_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_3, true),
+        LOCATION(RC_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_4, true),
+        LOCATION(RC_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_5, true),
+        LOCATION(RC_ICE_CAVERN_SLIDING_SILVER_RUPEE_1, true),
+        LOCATION(RC_ICE_CAVERN_SLIDING_SILVER_RUPEE_2, true),
+        LOCATION(RC_ICE_CAVERN_SLIDING_SILVER_RUPEE_3, true),
+        LOCATION(RC_ICE_CAVERN_SLIDING_SILVER_RUPEE_4, true),
+        LOCATION(RC_ICE_CAVERN_SLIDING_SILVER_RUPEE_5, true),
     }, {});
 
 #pragma endregion

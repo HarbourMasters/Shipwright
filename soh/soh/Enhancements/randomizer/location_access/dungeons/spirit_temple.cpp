@@ -34,6 +34,13 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_CHILD_BRIDGE_CHEST,        (logic->CanUse(RG_BOOMERANG) || logic->CanUse(RG_FAIRY_SLINGSHOT) || (logic->CanUse(RG_BOMBCHU_5) && ctx->GetTrickOption(RT_SPIRIT_CHILD_CHU))) && (logic->HasExplosives() || ((logic->CanUse(RG_NUTS) || logic->CanUse(RG_BOOMERANG)) && (logic->CanUse(RG_STICKS) || logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_FAIRY_SLINGSHOT))))),
         LOCATION(RC_SPIRIT_TEMPLE_CHILD_EARLY_TORCHES_CHEST, (logic->CanUse(RG_BOOMERANG) || logic->CanUse(RG_FAIRY_SLINGSHOT) || (logic->CanUse(RG_BOMBCHU_5) && ctx->GetTrickOption(RT_SPIRIT_CHILD_CHU))) && (logic->HasExplosives() || ((logic->CanUse(RG_NUTS) || logic->CanUse(RG_BOOMERANG)) && (logic->CanUse(RG_STICKS) || logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_FAIRY_SLINGSHOT)))) && (logic->CanUse(RG_STICKS) || logic->CanUse(RG_DINS_FIRE))),
         LOCATION(RC_SPIRIT_TEMPLE_GS_METAL_FENCE,            (logic->CanUse(RG_BOOMERANG) || logic->CanUse(RG_FAIRY_SLINGSHOT) || (logic->CanUse(RG_BOMBCHU_5) && ctx->GetTrickOption(RT_SPIRIT_CHILD_CHU))) && (logic->HasExplosives() || ((logic->CanUse(RG_NUTS) || logic->CanUse(RG_BOOMERANG)) && (logic->CanUse(RG_STICKS) || logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_FAIRY_SLINGSHOT))))),
+        // RANDOTODO silver rupee logic. Shouldn't need much here. Maybe could make each room a
+        // a region to simplify some of this other logic.
+        LOCATION(RC_SPIRIT_GATE_SILVER_RUPEE_1, true),
+        LOCATION(RC_SPIRIT_GATE_SILVER_RUPEE_2, true),
+        LOCATION(RC_SPIRIT_GATE_SILVER_RUPEE_3, true),
+        LOCATION(RC_SPIRIT_GATE_SILVER_RUPEE_4, true),
+        LOCATION(RC_SPIRIT_GATE_SILVER_RUPEE_5, true),
         LOCATION(RC_SPIRIT_TEMPLE_ANUBIS_POT_1,              (logic->CanUse(RG_BOOMERANG) || logic->CanUse(RG_FAIRY_SLINGSHOT) || (logic->CanUse(RG_BOMBCHU_5) && ctx->GetTrickOption(RT_SPIRIT_CHILD_CHU))) && (logic->HasExplosives() || ((logic->CanUse(RG_NUTS) || logic->CanUse(RG_BOOMERANG)) && (logic->CanUse(RG_STICKS) || logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_FAIRY_SLINGSHOT))))),
         LOCATION(RC_SPIRIT_TEMPLE_ANUBIS_POT_2,              (logic->CanUse(RG_BOOMERANG) || logic->CanUse(RG_FAIRY_SLINGSHOT) || (logic->CanUse(RG_BOMBCHU_5) && ctx->GetTrickOption(RT_SPIRIT_CHILD_CHU))) && (logic->HasExplosives() || ((logic->CanUse(RG_NUTS) || logic->CanUse(RG_BOOMERANG)) && (logic->CanUse(RG_STICKS) || logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_FAIRY_SLINGSHOT))))),
         LOCATION(RC_SPIRIT_TEMPLE_ANUBIS_POT_3,              (logic->CanUse(RG_BOOMERANG) || logic->CanUse(RG_FAIRY_SLINGSHOT) || (logic->CanUse(RG_BOMBCHU_5) && ctx->GetTrickOption(RT_SPIRIT_CHILD_CHU))) && (logic->HasExplosives() || ((logic->CanUse(RG_NUTS) || logic->CanUse(RG_BOOMERANG)) && (logic->CanUse(RG_STICKS) || logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_FAIRY_SLINGSHOT))))),
@@ -65,6 +72,13 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_FIRST_MIRROR_RIGHT_CHEST, logic->SmallKeys(RR_SPIRIT_TEMPLE, 3)),
         LOCATION(RC_SPIRIT_TEMPLE_GS_BOULDER_ROOM,          logic->CanUse(RG_SONG_OF_TIME) && (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_BOMBCHU_5) || (logic->CanUse(RG_BOMB_BAG) && ctx->GetTrickOption(RT_SPIRIT_LOWER_ADULT_SWITCH)))),
         LOCATION(RC_SPIRIT_TEMPLE_BOULDER_ROOM_SUN_FAIRY,   logic->CanUse(RG_SUNS_SONG) && (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOOMERANG) || logic->CanUse(RG_BOMBCHU_5) || (logic->CanUse(RG_BOMB_BAG) && logic->IsAdult && ctx->GetTrickOption(RT_SPIRIT_LOWER_ADULT_SWITCH))) && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanJumpslash())),
+        //RANDOTODO silver rupee logic. This one might actually be fine as is, other than maybe
+        // the chest after boulder room?
+        LOCATION(RC_SPIRIT_BOULDER_SILVER_RUPEE_1, true),
+        LOCATION(RC_SPIRIT_BOULDER_SILVER_RUPEE_2, true),
+        LOCATION(RC_SPIRIT_BOULDER_SILVER_RUPEE_3, true),
+        LOCATION(RC_SPIRIT_BOULDER_SILVER_RUPEE_4, true),
+        LOCATION(RC_SPIRIT_BOULDER_SILVER_RUPEE_5, true),
     }, {
         //Exits
         Entrance(RR_SPIRIT_TEMPLE_CENTRAL_CHAMBER, []{return logic->SmallKeys(RR_SPIRIT_TEMPLE, 1);}),
@@ -80,6 +94,12 @@ void RegionTable_Init_SpiritTemple() {
                                                                     (logic->CanUse(RG_DINS_FIRE) || ((logic->CanUse(RG_FIRE_ARROWS) || ctx->GetTrickOption(RT_SPIRIT_SUN_CHEST)) && logic->CanUse(RG_FAIRY_BOW) && logic->CanUse(RG_STICKS) ))) ||
                                                                     (logic->SmallKeys(RR_SPIRIT_TEMPLE, 5) && logic->HasExplosives() && logic->CanUse(RG_STICKS)) ||
                                                                     (logic->SmallKeys(RR_SPIRIT_TEMPLE, 3) && (logic->CanUse(RG_FIRE_ARROWS) || (ctx->GetTrickOption(RT_SPIRIT_SUN_CHEST) && logic->CanUse(RG_FAIRY_BOW))) && logic->CanUse(RG_SILVER_GAUNTLETS))),
+        // RANDOTODO silver rupee logic, may need some new regions here, not sure.
+        LOCATION(RC_SPIRIT_BEAMOS_SILVER_RUPEE_1, true),
+        LOCATION(RC_SPIRIT_BEAMOS_SILVER_RUPEE_2, true),
+        LOCATION(RC_SPIRIT_BEAMOS_SILVER_RUPEE_3, true),
+        LOCATION(RC_SPIRIT_BEAMOS_SILVER_RUPEE_4, true),
+        LOCATION(RC_SPIRIT_BEAMOS_SILVER_RUPEE_5, true),
         LOCATION(RC_SPIRIT_TEMPLE_STATUE_ROOM_HAND_CHEST,       logic->SmallKeys(RR_SPIRIT_TEMPLE, 3) && logic->CanUse(RG_SILVER_GAUNTLETS) && logic->CanUse(RG_ZELDAS_LULLABY)),
         LOCATION(RC_SPIRIT_TEMPLE_STATUE_ROOM_NORTHEAST_CHEST,  logic->SmallKeys(RR_SPIRIT_TEMPLE, 3) && logic->CanUse(RG_SILVER_GAUNTLETS) && logic->CanUse(RG_ZELDAS_LULLABY) && (logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_SPIRIT_LOBBY_JUMP))),
         LOCATION(RC_SPIRIT_TEMPLE_GS_HALL_AFTER_SUN_BLOCK_ROOM, (logic->HasExplosives() && logic->CanUse(RG_BOOMERANG) && logic->CanUse(RG_HOOKSHOT)) ||
@@ -159,6 +179,12 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_POT_2,             logic->CanBreakPots()),
         LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_POT_3,             logic->CanBreakPots()),
         LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_POT_4,             logic->CanBreakPots()),
+        // RANDOTODO silver rupee logic, a couple of these might need to be in 1f west region.
+        LOCATION(RC_SPIRIT_MQ_LOBBY_SILVER_RUPEE_1, true),
+        LOCATION(RC_SPIRIT_MQ_LOBBY_SILVER_RUPEE_2, true),
+        LOCATION(RC_SPIRIT_MQ_LOBBY_SILVER_RUPEE_3, true),
+        LOCATION(RC_SPIRIT_MQ_LOBBY_SILVER_RUPEE_4, true),
+        LOCATION(RC_SPIRIT_MQ_LOBBY_SILVER_RUPEE_5, true),
     }, {
         //Exits
         Entrance(RR_SPIRIT_TEMPLE_ENTRYWAY,                []{return true;}),
