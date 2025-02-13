@@ -352,6 +352,18 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 !(gPlayState->sceneNum == SCENE_ZORAS_RIVER && IS_RANDO && RAND_GET_OPTION(RSK_FROGS_HINT))) {
                 *should = false;
             }
+
+            // If it's near a jailed carpenter, skip it along with introduction of Gerudo mini-boss
+            if (gPlayState->sceneNum == SCENE_THIEVES_HIDEOUT &&
+                CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), 0)) {
+                EnWonderTalk2* enWonderTalk = va_arg(args, EnWonderTalk2*);
+                EnDaiku* enDaiku =
+                    (EnDaiku*)Actor_FindNearby(gPlayState, &enWonderTalk->actor, ACTOR_EN_DAIKU, ACTORCAT_NPC, 999.0f);
+                if (enDaiku != NULL) {
+                    Flags_SetSwitch(gPlayState, enDaiku->startFightSwitchFlag);
+                    *should = false;
+                }
+            }
             break;
         }
         case VB_NAVI_TALK: {
