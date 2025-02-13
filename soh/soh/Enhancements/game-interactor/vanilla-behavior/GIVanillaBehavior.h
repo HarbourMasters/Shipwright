@@ -1673,6 +1673,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // (Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)
+    // ```
+    // #### `args`
+    // - None
+    VB_SKIP_GERUDO_MEMBERSHIP_TALK,
+
+    // #### `result`
+    // ```c
     // false
     // ```
     // #### `args`
