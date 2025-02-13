@@ -212,9 +212,6 @@ typedef enum {
     // - None
     VB_BIGGORON_CONSIDER_TRADE_COMPLETE,
 
-    // # UNUSED
-    VB_BLUE_WARP_APPLY_ENTRANCE_AND_CUTSCENE,
-
     // #### `result`
     // Actor is ACTOR_EN_ELF, ACTOR_EN_FISH, ACTOR_EN_ICE_HONO, or ACTOR_EN_INSECT
     // ```c
