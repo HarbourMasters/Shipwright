@@ -1390,9 +1390,6 @@ typedef enum {
     // - None
     VB_PLAY_NABOORU_CAPTURED_CS,
 
-    // # UNUSED
-    VB_PLAY_ODD_POTION_ANIM,
-
     // #### `result`
     // ```c
     // true
