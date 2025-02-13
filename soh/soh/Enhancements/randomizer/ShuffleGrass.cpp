@@ -45,9 +45,6 @@ extern "C" void EnKusa_RandomizerDraw(Actor* thisx, PlayState* play) {
                     break;
                 case ITEM_CATEGORY_LESSER:
                     switch (itemEntry.itemId) {
-                        case ITEM_FAIRY:
-                            DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushFairyDL, (Gfx*)gRandoCuttableGrassFairyDL, play);
-                            break;
                         case ITEM_HEART_PIECE:
                         case ITEM_HEART_PIECE_2:
                         case ITEM_HEART_CONTAINER:
