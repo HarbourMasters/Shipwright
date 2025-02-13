@@ -15,8 +15,18 @@ extern PlayState* gPlayState;
 
 extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
 
+void DrawTypeOfGrass(EnKusa* grassActor, Gfx* bushDList, Gfx* grassDList, PlayState* play) {
+    // Actor params is -255 for regrowable grass.
+    if (grassActor->actor.params == -255) {
+        Gfx_DrawDListOpa(play, grassDList);
+    } else {
+        Gfx_DrawDListOpa(play, bushDList);
+    }
+}
+
 extern "C" void EnKusa_RandomizerDraw(Actor* thisx, PlayState* play) {
-    static Gfx* dLists[] = { (Gfx*)gRandoBushDL, (Gfx*)object_kusa_DL_000140, (Gfx*)object_kusa_DL_000140 };
+    //static Gfx* dLists[] = { (Gfx*)gRandoBushDL, (Gfx*)object_kusa_DL_000140, (Gfx*)object_kusa_DL_000140 };
+    static Gfx* dLists[] = { (Gfx*)gRandoBushJunkDL, (Gfx*)gRandoCuttableGrassJunkDL, (Gfx*)gRandoCuttableGrassJunkDL };
     auto grassActor = ((EnKusa*)thisx);
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -31,40 +41,41 @@ extern "C" void EnKusa_RandomizerDraw(Actor* thisx, PlayState* play) {
 
             switch (getItemCategory) {
                 case ITEM_CATEGORY_JUNK:
-                    Gfx_DrawDListOpa(play, (Gfx*)gRandoBushJunkDL);
+                    DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushJunkDL, (Gfx*)gRandoCuttableGrassJunkDL, play);
                     break;
                 case ITEM_CATEGORY_LESSER:
                     switch (itemEntry.itemId) {
                         case ITEM_FAIRY:
-                            Gfx_DrawDListOpa(play, (Gfx*)gRandoBushFairyDL);
+                            DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushFairyDL, (Gfx*)gRandoCuttableGrassFairyDL, play);
                             break;
                         case ITEM_HEART_PIECE:
                         case ITEM_HEART_PIECE_2:
                         case ITEM_HEART_CONTAINER:
-                            Gfx_DrawDListOpa(play, (Gfx*)gRandoBushHeartDL);
+                            DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushHeartDL, (Gfx*)gRandoCuttableGrassHeartDL, play);
                             break;
                         default:
-                            Gfx_DrawDListOpa(play, (Gfx*)gRandoBushMinorDL);
+                            DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushMinorDL, (Gfx*)gRandoCuttableGrassMinorDL, play);
                             break;
                     }
                     break;
                 case ITEM_CATEGORY_BOSS_KEY:
-                    Gfx_DrawDListOpa(play, (Gfx*)gRandoBushBossKeyDL);
+                    DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushBossKeyDL, (Gfx*)gRandoCuttableGrassBossKeyDL, play);
                     break;
                 case ITEM_CATEGORY_SMALL_KEY:
-                    Gfx_DrawDListOpa(play, (Gfx*)gRandoBushSmallKeyDL);
+                    DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushSmallKeyDL, (Gfx*)gRandoCuttableGrassSmallKeyDL, play);
                     break;
                 case ITEM_CATEGORY_SKULLTULA_TOKEN:
-                    Gfx_DrawDListOpa(play, (Gfx*)gRandoBushTokenDL);
+                    DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushTokenDL, (Gfx*)gRandoCuttableGrassTokenDL, play);
                     break;
                 case ITEM_CATEGORY_MAJOR:
-                    Gfx_DrawDListOpa(play, (Gfx*)gRandoBushMajorDL);
+                    DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushMajorDL, (Gfx*)gRandoCuttableGrassMajorDL, play);
                     break;
                 default:
+                    DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushDL, (Gfx*)gRandoCuttableGrassDL, play);
                     break;
             }
         } else {
-            Gfx_DrawDListOpa(play, dLists[thisx->params & 3]);
+            DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushDL, (Gfx*)gRandoCuttableGrassDL, play);
         }
     } else if (grassActor->actor.flags & ACTOR_FLAG_GRASS_DESTROYED) {
         Gfx_DrawDListOpa(play, (Gfx*)object_kusa_DL_0002E0);

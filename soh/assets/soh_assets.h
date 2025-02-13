@@ -107,6 +107,36 @@ static const ALIGN_ASSET(2) char gRandoBushHeartDL[] = dgRandoBushHeartDL;
 #define dgRandoBushJunkDL "__OTR__objects/gameplay_field_keep/gFieldBushJunkDL"
 static const ALIGN_ASSET(2) char gRandoBushJunkDL[] = dgRandoBushJunkDL;
 
+#define dgRandoCuttableGrassRandomDL "__OTR__objects/gameplay_keep/gRandoCuttableGrassRandomDL"
+static const ALIGN_ASSET(2) char gRandoCuttableGrassDL[] = dgRandoCuttableGrassRandomDL;
+
+#define dgRandoCuttableGrassMinorDL "__OTR__objects/gameplay_keep/gRandoCuttableGrassMinorDL"
+static const ALIGN_ASSET(2) char gRandoCuttableGrassMinorDL[] = dgRandoCuttableGrassMinorDL;
+
+#define dgRandoCuttableGrassMajorDL "__OTR__objects/gameplay_keep/gRandoCuttableGrassMajorDL"
+static const ALIGN_ASSET(2) char gRandoCuttableGrassMajorDL[] = dgRandoCuttableGrassMajorDL;
+
+#define dgRandoCuttableGrassSmallKeyDL "__OTR__objects/gameplay_keep/gRandoCuttableGrassSmallKeyDL"
+static const ALIGN_ASSET(2) char gRandoCuttableGrassSmallKeyDL[] = dgRandoCuttableGrassSmallKeyDL;
+
+#define dgRandoCuttableGrassBossKeyDL "__OTR__objects/gameplay_keep/gRandoCuttableGrassBossKeyDL"
+static const ALIGN_ASSET(2) char gRandoCuttableGrassBossKeyDL[] = dgRandoCuttableGrassBossKeyDL;
+
+#define dgRandoCuttableGrassTokenDL "__OTR__objects/gameplay_keep/gRandoCuttableGrassTokenDL"
+static const ALIGN_ASSET(2) char gRandoCuttableGrassTokenDL[] = dgRandoCuttableGrassTokenDL;
+
+#define dgRandoCuttableGrassMaskDL "__OTR__objects/gameplay_keep/gRandoCuttableGrassMaskDL"
+static const ALIGN_ASSET(2) char gRandoCuttableGrassMaskDL[] = dgRandoCuttableGrassMaskDL;
+
+#define dgRandoCuttableGrassFairyDL "__OTR__objects/gameplay_keep/gRandoCuttableGrassFairyDL"
+static const ALIGN_ASSET(2) char gRandoCuttableGrassFairyDL[] = dgRandoCuttableGrassFairyDL;
+
+#define dgRandoCuttableGrassHeartDL "__OTR__objects/gameplay_keep/gRandoCuttableGrassHeartDL"
+static const ALIGN_ASSET(2) char gRandoCuttableGrassHeartDL[] = dgRandoCuttableGrassHeartDL;
+
+#define dgRandoCuttableGrassJunkDL "__OTR__objects/gameplay_keep/gRandoCuttableGrassJunkDL"
+static const ALIGN_ASSET(2) char gRandoCuttableGrassJunkDL[] = dgRandoCuttableGrassJunkDL;
+
 #define dgFishingPoleGiDL "__OTR__objects/object_gi_fishing_pole/gFishingPoleGiDL"
 static const ALIGN_ASSET(2) char gFishingPoleGiDL[] = dgFishingPoleGiDL;
 
