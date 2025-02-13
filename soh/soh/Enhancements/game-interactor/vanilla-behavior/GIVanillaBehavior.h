@@ -727,12 +727,6 @@ typedef enum {
     // - None
     VB_GIVE_ITEM_GERUDO_MEMBERSHIP_CARD,
 
-    // # UNUSED
-    VB_GIVE_ITEM_GORON_RUBY,
-
-    // # UNUSED
-    VB_GIVE_ITEM_KOKIRI_EMERALD,
-
     // #### `result`
     // ```c
     // true
@@ -900,9 +894,6 @@ typedef enum {
     // #### `args`
     // - None
     VB_GIVE_ITEM_ZELDAS_LULLABY,
-
-    // # UNUSED
-    VB_GIVE_ITEM_ZORA_SAPPHIRE,
 
     // #### `result`
     // ```c
