@@ -451,6 +451,10 @@ void EnDaiku_InitSubCamera(EnDaiku* this, PlayState* play) {
     this->subCamActive = true;
     this->escapeSubCamTimer = sEscapeSubCamParams[this->actor.params & 3].maxFramesActive;
 
+    if (!GameInteractor_Should(VB_PLAY_CARPENTER_FREE_CS, true, this)) {
+        return;
+    }
+
     eyePosDeltaLocal.x = sEscapeSubCamParams[this->actor.params & 3].eyePosDeltaLocal.x;
     eyePosDeltaLocal.y = sEscapeSubCamParams[this->actor.params & 3].eyePosDeltaLocal.y;
     eyePosDeltaLocal.z = sEscapeSubCamParams[this->actor.params & 3].eyePosDeltaLocal.z;
@@ -477,6 +481,10 @@ void EnDaiku_InitSubCamera(EnDaiku* this, PlayState* play) {
 void EnDaiku_UpdateSubCamera(EnDaiku* this, PlayState* play) {
     s32 pad;
 
+    if (!GameInteractor_Should(VB_PLAY_CARPENTER_FREE_CS, true, this)) {
+        return;
+    }
+
     this->subCamAtTarget.x = this->actor.world.pos.x;
     this->subCamAtTarget.y = this->actor.world.pos.y + 60.0f;
     this->subCamAtTarget.z = this->actor.world.pos.z;
@@ -493,8 +501,10 @@ void EnDaiku_EscapeSuccess(EnDaiku* this, PlayState* play) {
     Actor* gerudoGuard;
     Vec3f vec;
 
-    Play_ClearCamera(play, this->subCamId);
-    Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
+    if (GameInteractor_Should(VB_PLAY_CARPENTER_FREE_CS, true, this)) {
+        Play_ClearCamera(play, this->subCamId);
+        Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
+    }
     this->subCamActive = false;
 
     if (GET_EVENTCHKINF_CARPENTERS_FREE_ALL()) {

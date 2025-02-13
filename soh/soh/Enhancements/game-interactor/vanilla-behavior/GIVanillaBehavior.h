@@ -1260,6 +1260,14 @@ typedef enum {
     VB_PLAY_BOLERO_OF_FIRE_CS,
 
     // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnDaiku`
+    VB_PLAY_CARPENTER_FREE_CS,
+
+    // #### `result`
     // Close enough & various cutscene checks
     // ```c
     // (func_80AEC5FC(this, play)) && (!Play_InCsMode(play)) && 
