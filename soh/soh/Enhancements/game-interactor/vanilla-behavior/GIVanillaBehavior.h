@@ -332,9 +332,6 @@ typedef enum {
     // - None
     VB_DEKU_STICK_BURN_OUT,
 
-    // # UNUSED
-    VB_DEKU_UPDATE_BURNING_DEKU_STICK,
-
     // #### `result`
     // ```c
     // Flags_GetItemGetInf(ITEMGETINF_30)
