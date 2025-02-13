@@ -1428,6 +1428,9 @@ void EnGirlA_Draw(Actor* thisx, PlayState* play) {
     }
 
     if (this->actor.params == SI_RANDOMIZED_ITEM) {
+        // Set all hilites for randomized items
+        func_80A3C498(&this->actor, play, 0);
+
         ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->randoSlotIndex);
         GetItemEntry getItemEntry = (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && this->actor.params == SI_RANDOMIZED_ITEM) ? GetItemMystery() : 
                                     Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);

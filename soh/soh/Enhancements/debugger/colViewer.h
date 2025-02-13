@@ -2,11 +2,6 @@
 
 #include <libultraship/libultraship.h>
 
-#ifdef __cplusplus
-extern "C"
-#endif
-void DrawColViewer();
-
 typedef enum {
   COLVIEW_DISABLED,
   COLVIEW_SOLID,
