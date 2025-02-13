@@ -11,14 +11,12 @@ DungeonInfo::DungeonInfo(std::string name_, const RandomizerHintTextKey hintKey_
     const RandomizerSettingKey mqSetting_,
     std::vector<RandomizerCheck> vanillaLocations_, std::vector<RandomizerCheck> mqLocations_,
     std::vector<RandomizerCheck> vanillaPots_, std::vector<RandomizerCheck> mqPots_,
-    std::vector<RandomizerCheck> vanillaCrates_, std::vector<RandomizerCheck> mqCrates_,
     std::vector<RandomizerCheck> sharedLocations_, std::vector<RandomizerCheck> bossRoomLocations_)
     : name(std::move(name_)), hintKey(hintKey_), map(map_), compass(compass_), smallKey(smallKey_), keyRing(keyRing_),
       bossKey(bossKey_), area(area_), vanillaKeyCount(vanillaKeyCount_), mqKeyCount(mqKeyCount_),
       mqSetting(mqSetting_),
       vanillaLocations(std::move(vanillaLocations_)), mqLocations(std::move(mqLocations_)),
       vanillaPots(std::move(vanillaPots_)), mqPots(std::move(mqPots_)),
-      vanillaCrates(std::move(vanillaCrates_)), mqCrates(std::move(mqCrates_)),
       sharedLocations(std::move(sharedLocations_)), bossRoomLocations(std::move(bossRoomLocations_)) {
 }
 DungeonInfo::DungeonInfo() : hintKey(RHT_NONE), map(RG_NONE), compass(RG_NONE), smallKey(RG_NONE), keyRing(RG_NONE),
@@ -155,11 +153,6 @@ std::vector<RandomizerCheck> DungeonInfo::GetDungeonLocations() const {
         auto potLocations = masterQuest ? mqPots : vanillaPots;
         AddElementsToPool(locations, potLocations);
     }
-    if (Context::GetInstance()->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_DUNGEONS) ||
-        Context::GetInstance()->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_ALL)) {
-        auto crateLocations = masterQuest ? mqCrates : vanillaCrates;
-        AddElementsToPool(locations, crateLocations);
-    }
     AddElementsToPool(locations, sharedLocations);
     AddElementsToPool(locations, bossRoomLocations);
     return locations;
@@ -171,8 +164,6 @@ std::vector<RandomizerCheck> DungeonInfo::GetEveryLocation() const {
     AddElementsToPool(locations, mqLocations);
     AddElementsToPool(locations, vanillaPots);
     AddElementsToPool(locations, mqPots);
-    AddElementsToPool(locations, vanillaCrates);
-    AddElementsToPool(locations, mqCrates);
     AddElementsToPool(locations, sharedLocations);
     AddElementsToPool(locations, bossRoomLocations);
     return locations;
@@ -222,14 +213,6 @@ Dungeons::Dungeons() {
                         RC_DEKU_TREE_MQ_BEFORE_BOSS_RIGHT_HEART,
                     },
                     {}, {}, 
-                    {},
-                    {
-                        // MQ Crates
-                        RC_DEKU_TREE_MQ_LOBBY_CRATE,
-                        RC_DEKU_TREE_MQ_SLINGSHOT_ROOM_CRATE_1,
-                        RC_DEKU_TREE_MQ_SLINGSHOT_ROOM_CRATE_2,
-
-                    },
                     {},
                     {
                         // Boss Room Locations
@@ -349,32 +332,6 @@ Dungeons::Dungeons() {
                                                },
                                                {},
                                                {
-                                                   // MQ Crates
-                                                   RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_1,
-                                                   RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_2,
-                                                   RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_3,
-                                                   RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_4,
-                                                   RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_5,
-                                                   RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_6,
-                                                   RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_7,
-                                                   RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_8,
-                                                   RC_DODONGOS_CAVERN_MQ_STAIRCASE_LOWER_CRATE_1,
-                                                   RC_DODONGOS_CAVERN_MQ_STAIRCASE_LOWER_CRATE_2, 
-                                                   RC_DODONGOS_CAVERN_MQ_STAIRCASE_UPPER_CRATE_1,
-                                                   RC_DODONGOS_CAVERN_MQ_STAIRCASE_UPPER_CRATE_2, 
-                                                   RC_DODONGOS_CAVERN_MQ_STAIRCASE_UPPER_CRATE_3,
-                                                   RC_DODONGOS_CAVERN_MQ_STAIRCASE_UPPER_CRATE_4, 
-                                                   RC_DODONGOS_CAVERN_MQ_TWO_FLAMES_CRATE_1,
-                                                   RC_DODONGOS_CAVERN_MQ_TWO_FLAMES_CRATE_2, 
-                                                   RC_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CRATE_1,
-                                                   RC_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CRATE_2,
-                                                   RC_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CRATE_3,
-                                                   RC_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CRATE_4,
-                                                   RC_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CRATE_5,
-                                                   RC_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CRATE_6,
-                                               },
-                                               {},
-                                               {
                                                    // Boss Room Locations
                                                    RC_DODONGOS_CAVERN_BOSS_ROOM_CHEST,
                                                    RC_DODONGOS_CAVERN_KING_DODONGO_HEART,
@@ -459,16 +416,6 @@ Dungeons::Dungeons() {
                                                     RC_JABU_JABUS_BELLY_BARINADE_POT_5,
                                                     RC_JABU_JABUS_BELLY_BARINADE_POT_6,
                                                 }, 
-                                                {
-                                                    // Vanilla Small Crates
-                                                    RC_JABU_JABUS_BELLY_PLATFORM_ROOM_SMALL_CRATE_1,
-                                                    RC_JABU_JABUS_BELLY_PLATFORM_ROOM_SMALL_CRATE_2,
-                                                },
-                                                {
-                                                    // MQ Small Crates
-                                                    RC_JABU_JABUS_BELLY_MQ_TRIPLE_HALLWAY_SMALL_CRATE_1,
-                                                    RC_JABU_JABUS_BELLY_MQ_TRIPLE_HALLWAY_SMALL_CRATE_2,                                                
-                                                },
                                                 {},
                                                 {
                                                     // Boss Room Locations
@@ -574,13 +521,6 @@ Dungeons::Dungeons() {
                         RC_FOREST_TEMPLE_MQ_BASEMENT_POT_2,
                         RC_FOREST_TEMPLE_MQ_BASEMENT_POT_3,
                         RC_FOREST_TEMPLE_MQ_BASEMENT_POT_4,
-                    },
-                    {},
-                    {
-                        // MQ Small Crates
-                        RC_FOREST_TEMPLE_MQ_FROZEN_EYE_SWITCH_SMALL_CRATE_1,
-                        RC_FOREST_TEMPLE_MQ_FROZEN_EYE_SWITCH_SMALL_CRATE_2,
-                        RC_FOREST_TEMPLE_MQ_FROZEN_EYE_SWITCH_SMALL_CRATE_3,
                     },
                     {},
                     {
@@ -696,46 +636,6 @@ Dungeons::Dungeons() {
                         RC_FIRE_TEMPLE_MQ_BEFORE_MINI_BOSS_POT_7,
                         RC_FIRE_TEMPLE_MQ_BEFORE_MINI_BOSS_POT_8,
                     },
-                    {
-                        // Vanilla Small Crates
-                        RC_FIRE_TEMPLE_AFTER_HAMMER_SMALL_CRATE_1,
-                        RC_FIRE_TEMPLE_AFTER_HAMMER_SMALL_CRATE_2,
-                    },
-                    {
-                        // MQ Crates
-                        RC_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_CRATE_1,
-                        RC_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_CRATE_2,
-                        RC_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_CRATE_3,
-                        RC_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_CRATE_4,
-                        RC_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_CRATE_5,
-                        RC_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_CRATE_6,
-                        RC_FIRE_TEMPLE_MQ_SHORTCUT_CRATE_1,
-                        RC_FIRE_TEMPLE_MQ_SHORTCUT_CRATE_2,
-                        RC_FIRE_TEMPLE_MQ_SHORTCUT_CRATE_3,
-                        RC_FIRE_TEMPLE_MQ_SHORTCUT_CRATE_4,
-                        RC_FIRE_TEMPLE_MQ_SHORTCUT_CRATE_5,
-                        RC_FIRE_TEMPLE_MQ_SHORTCUT_CRATE_6,
-                        RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_LOWER_CRATE_1,
-                        RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_LOWER_CRATE_2,
-                        RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_LOWER_CRATE_3,
-                        RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_CRATE_1,
-                        RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_CRATE_2,
-                        RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_CRATE_3,
-                        RC_FIRE_TEMPLE_MQ_LAVA_TORCH_CRATE_1,
-                        RC_FIRE_TEMPLE_MQ_LAVA_TORCH_CRATE_2,
-                        RC_FIRE_TEMPLE_MQ_LAVA_TORCH_CRATE_3,
-                        RC_FIRE_TEMPLE_MQ_LAVA_TORCH_CRATE_4,
-                        RC_FIRE_TEMPLE_MQ_LAVA_TORCH_CRATE_5,
-
-                        // MQ Small Crates
-                        RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_SMALL_CRATE_1,
-                        RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_SMALL_CRATE_2,
-                        RC_FIRE_TEMPLE_MQ_LAVA_TORCH_SMALL_CRATE_1,
-                        RC_FIRE_TEMPLE_MQ_LAVA_TORCH_SMALL_CRATE_2,
-                        RC_FIRE_TEMPLE_MQ_LAVA_TORCH_SMALL_CRATE_3,
-                        RC_FIRE_TEMPLE_MQ_LAVA_TORCH_SMALL_CRATE_4,
-                        RC_FIRE_TEMPLE_MQ_LAVA_TORCH_SMALL_CRATE_5,
-                    },
                     {},
                     {
                         // Boos Room Locations
@@ -843,106 +743,6 @@ Dungeons::Dungeons() {
                         RC_WATER_TEMPLE_MQ_LOWEST_GS_POT_3,
                         RC_WATER_TEMPLE_MQ_LOWEST_GS_POT_4,
                         RC_WATER_TEMPLE_MQ_BOSS_KEY_POT,
-                    },
-                    {},
-                    {
-                        // MQ Crates
-                        RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_UPPER_CRATE_1,
-                        RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_UPPER_CRATE_2,
-                        RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_1,
-                        RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_2,
-                        RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_3,
-                        RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_4,
-                        RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_5,
-                        RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_6,
-                        RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_7,
-                        RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_8,
-                        RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_9,
-                        RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_10,
-                        RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_11,
-                        RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_12,
-                        RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_13,
-                        RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_14,
-                        RC_WATER_TEMPLE_MQ_LIZALFOS_HALLWAY_CRATE_1,
-                        RC_WATER_TEMPLE_MQ_LIZALFOS_HALLWAY_CRATE_2,
-                        RC_WATER_TEMPLE_MQ_LIZALFOS_HALLWAY_CRATE_3,
-                        RC_WATER_TEMPLE_MQ_LIZALFOS_HALLWAY_ROOM_CRATE_1,
-                        RC_WATER_TEMPLE_MQ_LIZALFOS_HALLWAY_ROOM_CRATE_2,
-                        RC_WATER_TEMPLE_MQ_LIZALFOS_HALLWAY_ROOM_CRATE_3,
-                        RC_WATER_TEMPLE_MQ_LIZALFOS_HALLWAY_ROOM_CRATE_4,
-                        RC_WATER_TEMPLE_MQ_LIZALFOS_HALLWAY_ROOM_CRATE_5,
-                        RC_WATER_TEMPLE_MQ_LIZALFOS_HALLWAY_GATE_CRATE_1,
-                        RC_WATER_TEMPLE_MQ_LIZALFOS_HALLWAY_GATE_CRATE_2,
-                        RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_1,
-                        RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_2,
-                        RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_3,
-                        RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_4,
-                        RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_5,
-                        RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_6,
-                        RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_7,
-                        RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_CRATE_1,
-                        RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_CRATE_2,
-                        RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_CRATE_3,
-                        RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_CRATE_4,
-                        RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_CRATE_5,
-                        RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_CRATE_6,
-                        RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_UPPER_CRATE_1,
-                        RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_UPPER_CRATE_2,
-                        RC_WATER_TEMPLE_MQ_DRAGON_ROOM_TORCHES_CRATE_1,
-                        RC_WATER_TEMPLE_MQ_DRAGON_ROOM_TORCHES_CRATE_2,
-                        RC_WATER_TEMPLE_MQ_DRAGON_ROOM_SUBMERGED_CRATE_1,
-                        RC_WATER_TEMPLE_MQ_DRAGON_ROOM_SUBMERGED_CRATE_2,
-                        RC_WATER_TEMPLE_MQ_DRAGON_ROOM_SUBMERGED_CRATE_3,
-                        RC_WATER_TEMPLE_MQ_DRAGON_ROOM_SUBMERGED_CRATE_4,
-                        RC_WATER_TEMPLE_MQ_DRAGON_ROOM_DOOR_CRATE_1,
-                        RC_WATER_TEMPLE_MQ_DRAGON_ROOM_DOOR_CRATE_2,
-                        RC_WATER_TEMPLE_MQ_BK_ROOM_UPPER_CRATE,
-                        RC_WATER_TEMPLE_MQ_BK_ROOM_LOWER_CRATE_1,
-                        RC_WATER_TEMPLE_MQ_BK_ROOM_LOWER_CRATE_2,
-                        RC_WATER_TEMPLE_MQ_BK_ROOM_LOWER_CRATE_3,
-                        RC_WATER_TEMPLE_MQ_BK_ROOM_LOWER_CRATE_4,
-                        RC_WATER_TEMPLE_MQ_WHIRLPOOL_FRONT_CRATE_1,
-                        RC_WATER_TEMPLE_MQ_WHIRLPOOL_FRONT_CRATE_2,
-                        RC_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_1,
-                        RC_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_2,
-                        RC_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_3,
-                        RC_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_4,
-                        RC_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_5,
-                        RC_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_6,
-                        RC_WATER_TEMPLE_MQ_WHIRLPOOL_BEHIND_GATE_CRATE_1,
-                        RC_WATER_TEMPLE_MQ_WHIRLPOOL_BEHIND_GATE_CRATE_2,
-                        RC_WATER_TEMPLE_MQ_WHIRLPOOL_BEHIND_GATE_CRATE_3,
-                        RC_WATER_TEMPLE_MQ_WHIRLPOOL_BEHIND_GATE_CRATE_4,
-                        RC_WATER_TEMPLE_MQ_DODONGO_ROOM_UPPER_CRATE,
-                        RC_WATER_TEMPLE_MQ_DODONGO_ROOM_HALL_CRATE,
-                        RC_WATER_TEMPLE_MQ_DODONGO_ROOM_LOWER_CRATE_1,
-                        RC_WATER_TEMPLE_MQ_DODONGO_ROOM_LOWER_CRATE_2,
-                        RC_WATER_TEMPLE_MQ_DODONGO_ROOM_LOWER_CRATE_3,
-                        RC_WATER_TEMPLE_MQ_STORAGE_ROOM_B_CRATE_1,
-                        RC_WATER_TEMPLE_MQ_STORAGE_ROOM_B_CRATE_2,
-                        RC_WATER_TEMPLE_MQ_STORAGE_ROOM_B_CRATE_3,
-                        RC_WATER_TEMPLE_MQ_STORAGE_ROOM_B_CRATE_4,
-                        RC_WATER_TEMPLE_MQ_STORAGE_ROOM_B_CRATE_5,
-                        RC_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_SUBMERGED_CRATE_1,
-                        RC_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_SUBMERGED_CRATE_2,
-                        RC_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_SUBMERGED_CRATE_3,
-                        RC_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_SUBMERGED_CRATE_4,
-                        RC_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_SUBMERGED_CRATE_5,
-                        RC_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_SUBMERGED_CRATE_6,
-                        RC_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_GATE_CRATE_1,
-                        RC_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_GATE_CRATE_2,
-                        RC_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_GATE_CRATE_3,
-
-                        // MQ Small Crates
-                        RC_WATER_TEMPLE_MQ_DRAGON_ROOM_TORCHES_SMALL_CRATE_1,
-                        RC_WATER_TEMPLE_MQ_DRAGON_ROOM_TORCHES_SMALL_CRATE_2,
-                        RC_WATER_TEMPLE_MQ_DRAGON_ROOM_TORCHES_SMALL_CRATE_3,
-                        RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_SMALL_CRATE_1,
-                        RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_SMALL_CRATE_2,
-                        RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_SMALL_CRATE_3,
-                        RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_SMALL_CRATE_4,
-                        RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_SMALL_CRATE,
-                        RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_UPPER_SMALL_CRATE,
                     },
                     {},
                     {
@@ -1063,24 +863,6 @@ Dungeons::Dungeons() {
                         RC_SPIRIT_TEMPLE_MQ_BEFORE_MIRROR_POT_2,
                         RC_SPIRIT_TEMPLE_MQ_EARLY_ADULT_POT_1,
                         RC_SPIRIT_TEMPLE_MQ_EARLY_ADULT_POT_2,
-                    },
-                    {
-                        // Vanilla Small Crates
-                        RC_SPIRIT_TEMPLE_BEFORE_CHILD_CLIMB_SMALL_CRATE_1,
-                        RC_SPIRIT_TEMPLE_BEFORE_CHILD_CLIMB_SMALL_CRATE_2,
-                    },
-                    {
-                        // MQ Crates
-                        RC_SPIRIT_TEMPLE_MQ_STATUE_CRATE_1,
-                        RC_SPIRIT_TEMPLE_MQ_STATUE_CRATE_2,
-                        RC_SPIRIT_TEMPLE_MQ_BIG_MIRROR_CRATE_1,
-                        RC_SPIRIT_TEMPLE_MQ_BIG_MIRROR_CRATE_2,
-                        RC_SPIRIT_TEMPLE_MQ_BIG_MIRROR_CRATE_3,
-                        RC_SPIRIT_TEMPLE_MQ_BIG_MIRROR_CRATE_4,
-
-                        // MQ Small Crates
-                        RC_SPIRIT_TEMPLE_MQ_STATUE_SMALL_CRATE,
-                        RC_SPIRIT_TEMPLE_MQ_BEAMOS_SMALL_CRATE,
                     },
                     {
                         // Shared Locations
@@ -1214,14 +996,6 @@ Dungeons::Dungeons() {
                     },
                     {},
                     {
-                        // MQ Small Crates
-                        RC_SHADOW_TEMPLE_MQ_TRUTH_SPINNER_SMALL_CRATE_1,
-                        RC_SHADOW_TEMPLE_MQ_TRUTH_SPINNER_SMALL_CRATE_2,
-                        RC_SHADOW_TEMPLE_MQ_TRUTH_SPINNER_SMALL_CRATE_3,
-                        RC_SHADOW_TEMPLE_MQ_TRUTH_SPINNER_SMALL_CRATE_4,
-                    },
-                    {},
-                    {
                         // Boss Room Locations
                         RC_SHADOW_TEMPLE_BONGO_BONGO_HEART,
                         RC_BONGO_BONGO,
@@ -1309,8 +1083,6 @@ Dungeons::Dungeons() {
             RC_BOTTOM_OF_THE_WELL_MQ_EAST_INNER_ROOM_POT_2,
             RC_BOTTOM_OF_THE_WELL_MQ_EAST_INNER_ROOM_POT_3,
         },
-        {},
-        {},
         {}, {});
     dungeonList[ICE_CAVERN] = DungeonInfo("Ice Cavern", RHT_ICE_CAVERN, RG_ICE_CAVERN_MAP, RG_ICE_CAVERN_COMPASS,
                                           RG_NONE, RG_NONE, RG_NONE, RA_ICE_CAVERN, 0, 0, RSK_MQ_ICE_CAVERN,
@@ -1367,8 +1139,6 @@ Dungeons::Dungeons() {
                                               RC_ICE_CAVERN_MQ_COMPASS_POT_1,
                                               RC_ICE_CAVERN_MQ_COMPASS_POT_2,
                                           },
-                                          {},
-                                          {},
                                           {
                                               // Shared Locations
                                               RC_SHEIK_IN_ICE_CAVERN,
@@ -1432,11 +1202,6 @@ Dungeons::Dungeons() {
                         RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_LEFT_POT_2,
                         RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_POT_1,
                         RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_POT_2,
-                    },
-                    {},
-                    {
-                        // MQ Crates
-                        RC_GERUDO_TRAINING_GROUND_MQ_MAZE_CRATE,
                     },
                     {}, {});
     dungeonList[GANONS_CASTLE] =
@@ -1584,8 +1349,6 @@ Dungeons::Dungeons() {
                         RC_GANONS_CASTLE_GANONS_TOWER_POT_17,
                         RC_GANONS_CASTLE_GANONS_TOWER_POT_18,
                     },
-                    {},
-                    {},
                     {
                         // Shared Locations
                         RC_GANONS_TOWER_BOSS_KEY_CHEST,
