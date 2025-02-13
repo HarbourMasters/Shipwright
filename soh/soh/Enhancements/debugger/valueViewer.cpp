@@ -1,6 +1,7 @@
 #include "valueViewer.h"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/OTRGlobals.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include <z64.h>
@@ -13,6 +14,10 @@ void GfxPrint_SetColor(GfxPrint* printer, u32 r, u32 g, u32 b, u32 a);
 void GfxPrint_SetPos(GfxPrint* printer, s32 x, s32 y);
 s32 GfxPrint_Printf(GfxPrint* printer, const char* fmt, ...);
 }
+
+#define CVAR_NAME CVAR_DEVELOPER_TOOLS("ValueViewerEnablePrinting")
+#define CVAR_DEFAULT 0
+#define CVAR_VALUE CVarGetInteger(CVAR_NAME, CVAR_DEFAULT)
 
 ImVec4 WHITE = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -104,8 +109,40 @@ extern "C" void ValueViewer_Draw(GfxPrint* printer) {
     }
 }
 
+extern "C" void ValueViewer_SetupDraw() {
+    OPEN_DISPS(gGameState->gfxCtx);
+
+    Gfx* gfx;
+    Gfx* polyOpa;
+    GfxPrint printer;
+
+    polyOpa = POLY_OPA_DISP;
+    gfx = Graph_GfxPlusOne(polyOpa);
+    gSPDisplayList(OVERLAY_DISP++, gfx);
+
+    GfxPrint_Init(&printer);
+    GfxPrint_Open(&printer, gfx);
+
+    ValueViewer_Draw(&printer);
+
+    gfx = GfxPrint_Close(&printer);
+    GfxPrint_Destroy(&printer);
+
+    gSPEndDisplayList(gfx++);
+    Graph_BranchDlist(polyOpa, gfx);
+    POLY_OPA_DISP = gfx;
+
+    CLOSE_DISPS(gGameState->gfxCtx);
+}
+
+void RegisterValueViewerHooks() {
+    COND_HOOK(OnGameFrameUpdate, CVAR_VALUE, []() { ValueViewer_SetupDraw(); });
+}
+
+RegisterShipInitFunc initFunc(RegisterValueViewerHooks, { CVAR_NAME });
+
 void ValueViewerWindow::DrawElement() {
-    UIWidgets::PaddedEnhancementCheckbox("Enable Printing", CVAR_DEVELOPER_TOOLS("ValueViewerEnablePrinting"));
+    UIWidgets::PaddedEnhancementCheckbox("Enable Printing", CVAR_NAME);
 
     ImGui::BeginGroup();
     static int selectedElement = -1;

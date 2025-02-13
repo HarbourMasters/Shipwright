@@ -548,6 +548,8 @@ extern "C" {
         Matrix_Push();
         Matrix_Scale(30.0, 30.0, 30.0, MTXMODE_APPLY);
 
+        func_8002EBCC(actor, play, 0);
+        func_8002ED80(actor, play, 0);
         EnItem00_CustomItemsParticles(actor, play, randoItem);
         GetItemEntry_Draw(play, randoItem);
 
