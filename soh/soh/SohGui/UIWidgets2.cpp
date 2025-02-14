@@ -528,12 +528,23 @@ bool CVarSliderFloat(const char* label, const char* cvarName, const FloatSliderO
     return dirty;
 }
 
-bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaultColor) {
+bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaultColor, bool hasAlpha, uint8_t modifiers) {
     Color_RGBA8 color = CVarGetColor(cvarName, defaultColor);
     ImVec4 colorVec = ImVec4(color.r / 255.0f, color.g / 255.0f, color.b / 255.0f, color.a / 255.0f);
     bool changed = false;
-    PushStyleCombobox(Colors::Gray);
-    if (ImGui::ColorEdit3(label, (float*)&colorVec, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoBorder)) {
+    bool showReset = modifiers & ColorPickerResetButton;
+    bool showRandom = modifiers & ColorPickerRandomButton;
+    bool showRainbow = modifiers & ColorPickerRainbowCheck;
+    bool showLock = modifiers & ColorPickerLockCheck;
+    ImGuiColorEditFlags flags = ImGuiColorEditFlags_NoInputs;
+    PushStyleCombobox(colorVec);
+    if (hasAlpha) {
+        changed = ImGui::ColorEdit4(label, (float*)&colorVec, flags | ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_AlphaPreview);
+    } else {
+        changed = ImGui::ColorEdit3(label, (float*)&colorVec, flags | ImGuiColorEditFlags_NoAlpha);
+    }
+    PopStyleCombobox();
+    if (changed) {
         color.r = (uint8_t)(colorVec.x * 255.0f);
         color.g = (uint8_t)(colorVec.y * 255.0f);
         color.b = (uint8_t)(colorVec.z * 255.0f);
@@ -543,7 +554,7 @@ bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaul
         ShipInit::Init(cvarName);
         changed = true;
     }
-    PopStyleCombobox();
+
     return changed;
 }
 

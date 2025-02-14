@@ -37,6 +37,13 @@ namespace UIWidgets2 {
     std::string WrappedText(const std::string& text, unsigned int charactersPerLine = 60);
     void Tooltip(const char* text);
 
+    typedef enum ColorPickerModifiers {
+        ColorPickerResetButton = 1,
+        ColorPickerRandomButton = 2,
+        ColorPickerRainbowCheck = 4,
+        ColorPickerLockCheck = 8,
+    };
+
     // mostly in order for colors usable by the menu without custom text color
     enum Colors {
         Red,
@@ -757,7 +764,7 @@ namespace UIWidgets2 {
     bool CVarSliderInt(const char* label, const char* cvarName, const IntSliderOptions& options = {});
     bool SliderFloat(const char* label, float* value, const FloatSliderOptions& options = {});
     bool CVarSliderFloat(const char* label, const char* cvarName, const FloatSliderOptions& options = {});
-    bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaultColor);
+    bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaultColor, bool hasAlpha = false, uint8_t modifiers = 0);
     bool RadioButton(const char* label, bool active);
     bool CVarRadioButton(const char* text, const char* cvarName, int32_t id, UIWidgets2::Colors color);
     void DrawFlagArray32(const std::string& name, uint32_t& flags);

@@ -1743,13 +1743,7 @@ void CheckTrackerSettingsWindow::DrawElement() {
         ImGui::TableNextRow();
         ImGui::TableNextColumn();
         ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
-        if (UIWidgets::EnhancementColor("BG Color", CVAR_TRACKER_CHECK("BgColor"),
-            ImVec4(Color_Background.r, Color_Background.g, Color_Background.b, Color_Background.a),
-            ImVec4(Color_Bg_Default.r, Color_Bg_Default.g, Color_Bg_Default.b, Color_Bg_Default.a),
-            false, true))
-        {
-            Color_Background = CVarGetColor(CVAR_TRACKER_CHECK("BgColor"), Color_Bg_Default);
-        }
+        UIWidgets2::CVarColorPicker("BG Color", CVAR_TRACKER_CHECK("BgColor"), Color_Bg_Default, true);
         ImGui::PopItemWidth();
 
         UIWidgets2::CVarCombobox("Window Type", CVAR_TRACKER_CHECK("WindowType"), windowType,
