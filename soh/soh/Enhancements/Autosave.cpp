@@ -25,6 +25,7 @@ typedef enum {
 bool Autosave_CanSave() {
 
     // Don't save when in title screen
+    // Don't save the first 60 frames to not save the magic meter when it's still in the animation of filling it.
     // Don't save in Ganon's fight and chamber of sages because of master sword and remember save location issues.
     if (!GameInteractor::IsSaveLoaded(true) || gPlayState->gameplayFrames < 60 ||
         gPlayState->sceneNum == SCENE_GANON_BOSS || gPlayState->sceneNum == SCENE_CHAMBER_OF_THE_SAGES) {
