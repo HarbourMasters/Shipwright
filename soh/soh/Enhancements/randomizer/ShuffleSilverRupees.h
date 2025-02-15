@@ -26,6 +26,8 @@ void ShuffleSilverRupees_RegisterHooks();
 void ShuffleSilverRupees_UnregisterHooks();
 
 #ifdef __cplusplus
+#include <soh/Enhancements/custom-message/CustomMessageManager.h>
+CustomMessage GetSilverRupeeItemMessage(uint16_t rgid);
 namespace Rando {
 class SilverRupeeCounter {
 public:

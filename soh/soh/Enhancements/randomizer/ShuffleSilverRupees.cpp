@@ -55,6 +55,9 @@ void EnGSwitch_RandomizerInit(void* actorRef) {
     EnGSwitch* srActor = static_cast<EnGSwitch*>(actorRef);
     if (srActor->type == ENGSWITCH_SILVER_RUPEE) {
         srActor->srIdentity = IdentifySilverRupee(actor->world.pos);
+        if (Flags_GetRandomizerInf(srActor->srIdentity.randomizerInf)) {
+            Actor_Kill(actor);
+        }
     } else {
         srActor->srIdentity.index.randomizerGet = RG_SILVER_RUPEE_FIRST;
     }
