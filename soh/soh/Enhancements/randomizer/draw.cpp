@@ -32,6 +32,7 @@
 #include "soh_assets.h"
 #include "dungeon.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
+#include <objects/object_gi_rupy/object_gi_rupy.h>
 
 extern "C" {
 extern PlayState* gPlayState;
@@ -1242,5 +1243,25 @@ extern "C" void Randomizer_DrawOverworldKey(PlayState* play, GetItemEntry* getIt
 
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gHouseKeyDL);
 
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawSilverRupee(PlayState* play, GetItemEntry* getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+    Color_RGB8 silverRupeeColor =
+        CVarGetColor24(CVAR_COSMETIC("Consumable.SilverRupee.Value"), Color_RGB8({ 255, 255, 255 }));
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0x80, silverRupeeColor.r, silverRupeeColor.g, silverRupeeColor.b, 255);
+    gDPSetEnvColor(POLY_OPA_DISP++, silverRupeeColor.r / 5, silverRupeeColor.g / 5, silverRupeeColor.b / 5, 255);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiRupeeInnerDL);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+    gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, 255, 255, 255, 255);
+    gDPSetEnvColor(POLY_XLU_DISP++, silverRupeeColor.r * 0.75f, silverRupeeColor.g * 0.75f, silverRupeeColor.b * 0.75f,
+                   255);
+    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiRupeeOuterDL);
     CLOSE_DISPS(play->state.gfxCtx);
 }

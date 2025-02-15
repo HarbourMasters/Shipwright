@@ -2706,6 +2706,17 @@ void CreateGetItemMessages(const std::array<GetItemMessage, N>* messageEntries) 
             CustomMessage(messageEntry.english, messageEntry.german, messageEntry.french, TEXTBOX_TYPE_BLUE,
                           TEXTBOX_POS_BOTTOM));
     }
+    // Special Case for Silver Rupees
+    customMessageManager->CreateMessage(
+        Randomizer::getItemMessageTableID, RG_SILVER_RUPEE_FIRST,
+        CustomMessage("You got a %c[[rupee_name]]%w! [[count_text]]", TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM)
+    );
+
+    customMessageManager->CreateMessage(
+        Randomizer::getItemMessageTableID, RG_BOTTOMLESS_SILVER_RUPEE_POUCH,
+        CustomMessage("You found the %cBottomless Silver Rupee Pouch! All Silver Rupee Puzzles are Unlocked",
+        TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM)
+    );
 }
 
 void CreateRupeeMessages() {
@@ -4049,6 +4060,15 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         return Return_Item_Entry(giEntry, RG_NONE);
     } else if (item >= RG_GUARD_HOUSE_KEY && item <= RG_FISHING_HOLE_KEY) {
         Flags_SetRandomizerInf((RandomizerInf)((int)RAND_INF_GUARD_HOUSE_UNLOCKED + ((item - RG_GUARD_HOUSE_KEY) * 2) + 1));
+        return Return_Item_Entry(giEntry, RG_NONE);
+    } else if (item >= RG_SILVER_RUPEE_FIRST && item <= RG_SILVER_RUPEE_LAST) {
+        OTRGlobals::Instance->gRandoContext->GetSilverRupeeCounter(static_cast<RandomizerGet>(item)).IncrementCollected();
+        return Return_Item_Entry(giEntry, RG_NONE);
+    } else if (item == RG_BOTTOMLESS_SILVER_RUPEE_POUCH) {
+        for (int i = RG_SILVER_RUPEE_FIRST; i <= RG_SILVER_RUPEE_LAST; i++) {
+            int max = OTRGlobals::Instance->gRandoContext->GetSilverRupeeCounter(static_cast<RandomizerGet>(i)).GetTotal();
+            OTRGlobals::Instance->gRandoContext->GetSilverRupeeCounter(static_cast<RandomizerGet>(i)).IncrementCollected(max);
+        }
         return Return_Item_Entry(giEntry, RG_NONE);
     }
 
