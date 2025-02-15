@@ -595,7 +595,7 @@ extern "C" void ResourceMgr_UnloadSceneAssets() {
         helperThreads->submit_task(UnloadSceneAssetsProcess);
     }
 }
-static std::list<std::string> textureExcludes = { "alt/textures/vr_holy*", "alt/textures/vr_cloud*", "alt/textures/vr_fine*", "*.png" };
+static std::list<std::string> textureExcludes = { "alt/textures/vr_holy*", "alt/textures/vr_cloud*", "alt/textures/vr_fine*", "textures/buttons/*" };
 
 // Persisted assets never unload, generally because they're used in multiple places. These include things like
 // audio assets, icons, items, font, gameplay*keep objects, title cards, and interior assets (for now)
