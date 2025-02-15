@@ -597,7 +597,7 @@ extern "C" void ResourceMgr_UnloadSceneAssets() {
 void ResourceMgr_LoadDelayedPersistentAltAssets() {
     // Load sound effects first for title screen "Press Start" and pause sounds. These are loaded
     // before the alt assets to prevent load lock for the audio itself
-    static std::list<std::string> textureIncludes = { "textures/*", "overlays/*", "code/*", "misc/*", "text/*", "objects/*", "scenes/*",
+    static std::list<std::string> textureIncludes = { "overlays/*", "misc/*", "text/*", "objects/*", "scenes/*",
         "alt/textures/parameter*", "alt/textures/icon*", "alt/textures/item*", "alt/textures/font*",
         "alt/objects/gameplay_*", "alt/overlays/*", "alt/code/*", "alt/textures/*", 
         };
@@ -634,24 +634,21 @@ extern "C" void ResourceMgr_UnloadSkyBox(TimeOfDay timeIndex) {
 
 // Setup initial preload based on Fast File Select and Save Index options
 extern "C" void ResourceMgr_LoadPersistentAltAssets() {
-    bool skipTitle = CVarGetInteger(CVAR_DEVELOPER_TOOLS("SkipLogoTitle"), 0);
-    int fastFile = CVarGetInteger(CVAR_DEVELOPER_TOOLS("SaveFileID"), 0);
+    int skipTitle = CVarGetInteger(CVAR_ENHANCEMENT("BootSequence"), 0);
 
-    if (!skipTitle) {
-        ResourceLoadDirectoryAsync("alt/textures/nintendo_rogo_static/*");
+    ResourceLoadDirectory("textures/*");
+    ResourceLoadDirectory("code/*");
+    if (skipTitle < 2) {
+        ResourceLoadDirectory("alt/textures/nintendo_rogo_static/*");
         // Title screen/hyrule field
-        ResourceLoadDirectoryAsync("alt/scenes/*/spot00*");
+        ResourceLoadDirectory("alt/scenes/*/spot00*");
         // Title logos
-        ResourceLoadDirectoryAsync("alt/objects/object_mag/*");
-    } else if (skipTitle && fastFile == 4) {
-        Ship::Context::GetInstance()->GetResourceManager()->LoadResourcesAsync({
-            {"alt/overlays/ovl_file_choose/*", "alt/textures/title_static/*", "alt/objects/gameplay_keep/*", "alt/textures/vr_fine3*", "alt/textures/vr_fine0*"},
-            {}, 0, nullptr});
-    } else if (skipTitle && fastFile < 3) {
-        ResourceLoadDirectoryAsync("alt/textures/icon*");
-        ResourceLoadDirectoryAsync("alt/textures/do_action_static/*");
-        ResourceLoadDirectoryAsync("alt/textures/map*");
-        ResourceLoadDirectoryAsync("alt/textures/parameter_static/*");
+        ResourceLoadDirectory("alt/objects/object_mag/*");
+    } else {
+        ResourceLoadDirectory("alt/textures/icon*");
+        ResourceLoadDirectory("alt/textures/do_action_static/*");
+        ResourceLoadDirectory("alt/textures/map*");
+        ResourceLoadDirectory("alt/textures/parameter_static/*");
     }
     ResourceMgr_LoadDelayedPersistentAltAssets();
 }
