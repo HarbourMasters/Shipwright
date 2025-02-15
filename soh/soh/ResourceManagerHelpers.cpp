@@ -556,7 +556,7 @@ std::array<std::unordered_set<std::string>, SCENE_TESTROOM + 1> sceneObjects;
 void LoadSceneResourcesProcess(int16_t sceneNum) {
     auto play = gPlayState;
     for (auto objectName : sceneObjects[sceneNum]) {
-        if (!sceneObjects[play->sceneNum].contains(objectName)) {
+        if (play == nullptr || !sceneObjects[play->sceneNum].contains(objectName)) {
             OTRGlobals::Instance->context->GetResourceManager()->LoadResources("alt/objects/" + objectName + "/*");
         }
     }
@@ -565,7 +565,11 @@ void LoadSceneResourcesProcess(int16_t sceneNum) {
 
 // Iterate over scene object/actor commands if not already done so, and load the scene and object assets
 extern "C" void ResourceMgr_LoadAllSceneResources(int16_t sceneNum, bool now) {
-    helperThreads->submit_task(std::bind(LoadSceneResourcesProcess, sceneNum));
+    if (now) {
+        LoadSceneResourcesProcess(sceneNum);
+    } else {
+        helperThreads->submit_task(std::bind(LoadSceneResourcesProcess, sceneNum));
+    }
 }
 
 extern "C" void ResourceMgr_RegisterUnloadSceneAssets(s16 prevScene) {
@@ -591,17 +595,16 @@ extern "C" void ResourceMgr_UnloadSceneAssets() {
         helperThreads->submit_task(UnloadSceneAssetsProcess);
     }
 }
+static std::list<std::string> textureExcludes = { "alt/textures/vr_holy*", "alt/textures/vr_cloud*", "alt/textures/vr_fine*", "*.png" };
 
 // Persisted assets never unload, generally because they're used in multiple places. These include things like
 // audio assets, icons, items, font, gameplay*keep objects, title cards, and interior assets (for now)
 void ResourceMgr_LoadDelayedPersistentAltAssets() {
     // Load sound effects first for title screen "Press Start" and pause sounds. These are loaded
     // before the alt assets to prevent load lock for the audio itself
-    static std::list<std::string> textureIncludes = { "overlays/*", "misc/*", "text/*", "objects/*", "scenes/*",
-        "alt/textures/parameter*", "alt/textures/icon*", "alt/textures/item*", "alt/textures/font*",
+    static std::list<std::string> textureIncludes = { "alt/textures/parameter*", "alt/textures/icon*", "alt/textures/item*", "alt/textures/font*",
         "alt/objects/gameplay_*", "alt/overlays/*", "alt/code/*", "alt/textures/*", 
         };
-    static std::list<std::string> textureExcludes = { "alt/textures/vr_holy*", "alt/textures/vr_cloud*", "alt/textures/vr_fine*", "textures/buttons/*" };
     Ship::Context::GetInstance()->GetResourceManager()->LoadResourcesAsync({textureIncludes, textureExcludes, 0, nullptr});
 }
 
@@ -636,14 +639,15 @@ extern "C" void ResourceMgr_UnloadSkyBox(TimeOfDay timeIndex) {
 extern "C" void ResourceMgr_LoadPersistentAltAssets() {
     int skipTitle = CVarGetInteger(CVAR_ENHANCEMENT("BootSequence"), 0);
 
-    ResourceLoadDirectory("textures/*");
-    ResourceLoadDirectory("code/*");
+    Ship::Context::GetInstance()->GetResourceManager()->LoadResourcesAsync({
+        {"textures/*", "objects/*", "code/*", "overlays/*", "misc/*", "text/*", "scenes/*"}, textureExcludes, 0, nullptr});
     if (skipTitle < 2) {
         ResourceLoadDirectory("alt/textures/nintendo_rogo_static/*");
         // Title screen/hyrule field
-        ResourceLoadDirectory("alt/scenes/*/spot00*");
+        ResourceMgr_LoadAllSceneResources(SCENE_HYRULE_FIELD, true);
         // Title logos
         ResourceLoadDirectory("alt/objects/object_mag/*");
+        ResourceLoadDirectory("alt/objects/object_link*");
     } else {
         ResourceLoadDirectory("alt/textures/icon*");
         ResourceLoadDirectory("alt/textures/do_action_static/*");
