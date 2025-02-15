@@ -647,6 +647,7 @@ extern "C" void ResourceMgr_LoadPersistentAltAssets() {
         ResourceMgr_LoadAllSceneResources(SCENE_HYRULE_FIELD, true);
         // Title logos
         ResourceLoadDirectory("alt/objects/object_mag/*");
+        // Link
         ResourceLoadDirectory("alt/objects/object_link*");
     } else {
         ResourceLoadDirectory("alt/textures/icon*");
