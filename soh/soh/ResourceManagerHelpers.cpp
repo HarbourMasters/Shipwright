@@ -639,7 +639,7 @@ extern "C" void ResourceMgr_UnloadSkyBox(TimeOfDay timeIndex) {
 extern "C" void ResourceMgr_LoadPersistentAltAssets() {
     int skipTitle = CVarGetInteger(CVAR_ENHANCEMENT("BootSequence"), 0);
 
-    Ship::Context::GetInstance()->GetResourceManager()->LoadResourcesAsync({
+    Ship::Context::GetInstance()->GetResourceManager()->LoadResources({
         {"textures/*", "objects/*", "code/*", "overlays/*", "misc/*", "text/*", "scenes/*"}, textureExcludes, 0, nullptr});
     if (skipTitle < 2) {
         ResourceLoadDirectory("alt/textures/nintendo_rogo_static/*");
