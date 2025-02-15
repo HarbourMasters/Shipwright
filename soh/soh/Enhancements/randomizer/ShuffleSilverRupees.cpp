@@ -6,7 +6,27 @@
 extern "C" {
 #include "variables.h"
 #include "overlays/actors/ovl_En_G_Switch/z_en_g_switch.h"
+#include <soh/ResourceManagerHelpers.h>
 extern PlayState* gPlayState;
+}
+
+CustomMessage GetSilverRupeeItemMessage(uint16_t rgid) {
+    CustomMessage messageEntry;
+    if (rgid >= RG_SILVER_RUPEE_FIRST && rgid <= RG_SILVER_RUPEE_LAST) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::getItemMessageTableID, RG_SILVER_RUPEE_FIRST);
+        auto ctx = OTRGlobals::Instance->gRandoContext;
+        bool complete = ctx->GetSilverRupeeCounter(static_cast<RandomizerGet>(rgid)).AllCollected();
+        if (complete) {
+            messageEntry.Replace("[[count_text]]", "That's all of them");
+        } else {
+            int srCount = ctx->GetSilverRupeeCounter(static_cast<RandomizerGet>(rgid)).GetCollected() + 1;
+            messageEntry.Replace("[[count_text]]", CustomMessage("You have collected %g[[count]]%w of them so far"));
+            messageEntry.Replace("[[count]]", std::to_string(srCount));
+        }
+        messageEntry.Replace("[[rupee_name]]", CustomMessage(Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(rgid)).GetName()));
+        messageEntry.AutoFormat();
+    }
+    return messageEntry;
 }
 
 extern "C" void EnGSwitch_RandomizerDraw(Actor* thisx, PlayState* play) {
@@ -48,6 +68,38 @@ SilverRupeeIdentity IdentifySilverRupee(Vec3f_ pos) {
     return srIdentity;
 }
 
+std::unordered_map<Rando::Identifier, RandomizerGet> Rando::StaticData::silverTrackerMap = {
+    { { SCENE_ICE_CAVERN, RCQUEST_VANILLA, 328 }, RG_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE },
+    { { SCENE_ICE_CAVERN, RCQUEST_VANILLA, 329 }, RG_ICE_CAVERN_SLIDING_SILVER_RUPEE }, 
+    { { SCENE_BOTTOM_OF_THE_WELL, RCQUEST_VANILLA, 351 }, RG_BOTTOM_OF_THE_WELL_SILVER_RUPEE },
+    { { SCENE_GERUDO_TRAINING_GROUND, RCQUEST_VANILLA, 348 }, RG_GERUDO_TRAINING_GROUNDS_BOULDER_SILVER_RUPEE },
+    { { SCENE_GERUDO_TRAINING_GROUND, RCQUEST_VANILLA, 332 }, RG_GERUDO_TRAINING_GROUNDS_LAVA_SILVER_RUPEE },
+    { { SCENE_GERUDO_TRAINING_GROUND, RCQUEST_VANILLA, 347 }, RG_GERUDO_TRAINING_GROUNDS_TOILET_SILVER_RUPEE },
+    { { SCENE_SPIRIT_TEMPLE, RCQUEST_VANILLA, 325 }, RG_SPIRIT_GATE_SILVER_RUPEE },
+    { { SCENE_SPIRIT_TEMPLE, RCQUEST_VANILLA, 330 }, RG_SPIRIT_BEAMOS_SILVER_RUPEE },
+    { { SCENE_SPIRIT_TEMPLE, RCQUEST_VANILLA, 322 }, RG_SPIRIT_BOULDER_SILVER_RUPEE },
+    { { SCENE_SHADOW_TEMPLE, RCQUEST_VANILLA, 321 }, RG_SHADOW_SCYTHE_SILVER_RUPEE },
+    { { SCENE_SHADOW_TEMPLE, RCQUEST_VANILLA, 329 }, RG_SHADOW_OUTSIDE_SPIKE_RAIN_SILVER_RUPEE },
+    { { SCENE_SHADOW_TEMPLE, RCQUEST_VANILLA, 328 }, RG_SHADOW_INVISIBLE_SPIKES_SILVER_RUPEE },
+    { { SCENE_INSIDE_GANONS_CASTLE, RCQUEST_VANILLA, 334 }, RG_FOREST_TRIAL_SILVER_RUPEE },
+    { { SCENE_INSIDE_GANONS_CASTLE, RCQUEST_VANILLA, 329 }, RG_FIRE_TRIAL_SILVER_RUPEE },
+    { { SCENE_INSIDE_GANONS_CASTLE, RCQUEST_VANILLA, 331 }, RG_SPIRIT_TRIAL_SILVER_RUPEE },
+    { { SCENE_INSIDE_GANONS_CASTLE, RCQUEST_VANILLA, 338 }, RG_LIGHT_TRIAL_SILVER_RUPEE },
+    // MQ
+    { { SCENE_GERUDO_TRAINING_GROUND, RCQUEST_MQ, 348 }, RG_GERUDO_TRAINING_GROUNDS_MQ_BOULDER_SILVER_RUPEE },
+    { { SCENE_GERUDO_TRAINING_GROUND, RCQUEST_MQ, 396 }, RG_GERUDO_TRAINING_GROUNDS_MQ_LAVA_SILVER_RUPEE },
+    { { SCENE_GERUDO_TRAINING_GROUND, RCQUEST_MQ, 219 }, RG_GERUDO_TRAINING_GROUNDS_MQ_TOILET_SILVER_RUPEE },
+    { { SCENE_DODONGOS_CAVERN, RCQUEST_MQ, 357 }, RG_DODONGOS_CAVERN_MQ_SILVER_RUPEE },
+    { { SCENE_SHADOW_TEMPLE, RCQUEST_MQ, 321 }, RG_SHADOW_MQ_SCYTHE_SILVER_RUPEE },
+    { { SCENE_SHADOW_TEMPLE, RCQUEST_MQ, 643 }, RG_SHADOW_MQ_INVISIBLE_SCYTHE_SILVER_RUPEE },
+    { { SCENE_SHADOW_TEMPLE, RCQUEST_MQ, 337 }, RG_SHADOW_MQ_OUTSIDE_SPIKE_RAIN_SILVER_RUPEE },
+    { { SCENE_SHADOW_TEMPLE, RCQUEST_MQ, 648 }, RG_SHADOW_MQ_INVISIBLE_SPIKES_SILVER_RUPEE },
+    { { SCENE_SPIRIT_TEMPLE, RCQUEST_MQ, 375 }, RG_SPIRIT_MQ_LOBBY_SILVER_RUPEE },
+    { { SCENE_INSIDE_GANONS_CASTLE, RCQUEST_MQ, 322 }, RG_WATER_TRIAL_MQ_SILVER_RUPEE },
+    { { SCENE_INSIDE_GANONS_CASTLE, RCQUEST_MQ, 331 }, RG_SHADOW_TRIAL_MQ_SILVER_RUPEE },
+    { { SCENE_INSIDE_GANONS_CASTLE, RCQUEST_MQ, 321 }, RG_FIRE_TRIAL_MQ_SILVER_RUPEE },
+};
+
 void EnGSwitch_RandomizerInit(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
     if (actor->id != ACTOR_EN_G_SWITCH) return;
@@ -59,7 +111,8 @@ void EnGSwitch_RandomizerInit(void* actorRef) {
             Actor_Kill(actor);
         }
     } else {
-        srActor->srIdentity.index.randomizerGet = RG_SILVER_RUPEE_FIRST;
+        Rando::Identifier identifier = {static_cast<SceneID>(gPlayState->sceneNum), ResourceMgr_IsSceneMasterQuest(gPlayState->sceneNum) ? RCQUEST_MQ : RCQUEST_VANILLA, actor->params};
+        srActor->srIdentity.index.randomizerGet = Rando::StaticData::silverTrackerMap.at(identifier);
     }
 }
 
