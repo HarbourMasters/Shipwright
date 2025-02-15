@@ -997,10 +997,10 @@ void KaleidoScope_MoveCursorToSpecialPos(PlayState* play, u16 specialPos) {
 void KaleidoScope_DrawQuadTextureRGBA32(GraphicsContext* gfxCtx, void* texture, u16 width, u16 height, u16 point) {
     OPEN_DISPS(gfxCtx);
 
-    gDPLoadTextureBlock(POLY_KAL_DISP++, texture, G_IM_FMT_RGBA, G_IM_SIZ_32b, width, height, 0,
+    gDPLoadTextureBlock(POLY_OPA_DISP++, texture, G_IM_FMT_RGBA, G_IM_SIZ_32b, width, height, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
-    gSP1Quadrangle(POLY_KAL_DISP++, point, point + 2, point + 3, point + 1, 0);
+    gSP1Quadrangle(POLY_OPA_DISP++, point, point + 2, point + 3, point + 1, 0);
 
     CLOSE_DISPS(gfxCtx);
 }
@@ -1147,25 +1147,25 @@ void KaleidoScope_DrawCursor(PlayState* play, u16 pageIndex) {
             s16 i;
             s16 j;
 
-            gDPPipeSync(POLY_KAL_DISP++);
-            gDPSetCombineLERP(POLY_KAL_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
+            gDPPipeSync(POLY_OPA_DISP++);
+            gDPSetCombineLERP(POLY_OPA_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                               PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
-            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, sCursorColors[pauseCtx->cursorColorSet >> 2].r,
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sCursorColors[pauseCtx->cursorColorSet >> 2].r,
                             sCursorColors[pauseCtx->cursorColorSet >> 2].g,
                             sCursorColors[pauseCtx->cursorColorSet >> 2].b, 255);
-            gDPSetEnvColor(POLY_KAL_DISP++, D_8082AB8C, D_8082AB90, D_8082AB94, 255);
-            gSPVertex(POLY_KAL_DISP++, pauseCtx->cursorVtx, 16, 0);
+            gDPSetEnvColor(POLY_OPA_DISP++, D_8082AB8C, D_8082AB90, D_8082AB94, 255);
+            gSPVertex(POLY_OPA_DISP++, pauseCtx->cursorVtx, 16, 0);
 
             for (i = j = 0; i < 4; i++, j += 4) {
-                gDPLoadTextureBlock_4b(POLY_KAL_DISP++, sCursorTexs[i], G_IM_FMT_IA, 16, 16, 0,
+                gDPLoadTextureBlock_4b(POLY_OPA_DISP++, sCursorTexs[i], G_IM_FMT_IA, 16, 16, 0,
                                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                                        G_TX_NOLOD, G_TX_NOLOD);
-                gSP1Quadrangle(POLY_KAL_DISP++, j, j + 2, j + 3, j + 1, 0);
+                gSP1Quadrangle(POLY_OPA_DISP++, j, j + 2, j + 3, j + 1, 0);
             }
         }
 
-        gDPPipeSync(POLY_KAL_DISP++);
-        gDPSetEnvColor(POLY_KAL_DISP++, 0, 0, 0, 255);
+        gDPPipeSync(POLY_OPA_DISP++);
+        gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
     }
 
     CLOSE_DISPS(play->state.gfxCtx);
@@ -1381,78 +1381,78 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
             Matrix_Scale(0.78f, 0.78f, 0.78f, MTXMODE_APPLY);
             Matrix_RotateX(-pauseCtx->unk_1F4 / 100.0f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(gfxCtx),
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-            POLY_KAL_DISP = KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->itemPageVtx,
+            POLY_OPA_DISP = KaleidoScope_DrawPageSections(POLY_OPA_DISP, pauseCtx->itemPageVtx,
                                                           sSelectItemTexs[gSaveContext.language]);
 
             KaleidoScope_DrawItemSelect(play);
         }
 
         if (pauseCtx->pageIndex != PAUSE_EQUIP) {
-            gDPPipeSync(POLY_KAL_DISP++);
-            gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA, G_CC_MODULATEIA);
+            gDPPipeSync(POLY_OPA_DISP++);
+            gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA, G_CC_MODULATEIA);
 
             Matrix_Translate(-(f32)WREG(3) / 100.0f, (f32)WREG(2) / 100.0f, 0.0f, MTXMODE_NEW);
             Matrix_Scale(0.78f, 0.78f, 0.78f, MTXMODE_APPLY);
             Matrix_RotateZ(pauseCtx->unk_1F8 / 100.0f, MTXMODE_APPLY);
             Matrix_RotateY(1.57f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(gfxCtx),
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-            POLY_KAL_DISP = KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->equipPageVtx,
+            POLY_OPA_DISP = KaleidoScope_DrawPageSections(POLY_OPA_DISP, pauseCtx->equipPageVtx,
                                                           sEquipmentTexs[gSaveContext.language]);
 
             KaleidoScope_DrawEquipment(play);
         }
 
         if (pauseCtx->pageIndex != PAUSE_QUEST) {
-            gDPPipeSync(POLY_KAL_DISP++);
-            gDPSetTextureFilter(POLY_KAL_DISP++, G_TF_BILERP);
-            gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA, G_CC_MODULATEIA);
+            gDPPipeSync(POLY_OPA_DISP++);
+            gDPSetTextureFilter(POLY_OPA_DISP++, G_TF_BILERP);
+            gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA, G_CC_MODULATEIA);
 
             Matrix_Translate(0.0f, (f32)WREG(2) / 100.0f, (f32)WREG(3) / 100.0f, MTXMODE_NEW);
             Matrix_Scale(0.78f, 0.78f, 0.78f, MTXMODE_APPLY);
             Matrix_RotateX(pauseCtx->unk_200 / 100.0f, MTXMODE_APPLY);
             Matrix_RotateY(3.14f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(gfxCtx),
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             if (pauseCtx->randoQuestMode) {
-                POLY_KAL_DISP = KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->saveVtx,
+                POLY_OPA_DISP = KaleidoScope_DrawPageSections(POLY_OPA_DISP, pauseCtx->saveVtx,
                                                               sSaveTexs[gSaveContext.language]);
                 RandoKaleido_DrawMiscCollectibles(play);
             } else {
-                POLY_KAL_DISP = KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->questPageVtx,
+                POLY_OPA_DISP = KaleidoScope_DrawPageSections(POLY_OPA_DISP, pauseCtx->questPageVtx,
                                                               sQuestStatusTexs[gSaveContext.language]);
                 KaleidoScope_DrawQuestStatus(play, gfxCtx);
             }
         }
 
         if (pauseCtx->pageIndex != PAUSE_MAP) {
-            gDPPipeSync(POLY_KAL_DISP++);
+            gDPPipeSync(POLY_OPA_DISP++);
 
-            gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA, G_CC_MODULATEIA);
+            gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA, G_CC_MODULATEIA);
 
             Matrix_Translate((f32)WREG(3) / 100.0f, (f32)WREG(2) / 100.0f, 0.0f, MTXMODE_NEW);
             Matrix_Scale(0.78f, 0.78f, 0.78f, MTXMODE_APPLY);
             Matrix_RotateZ(-pauseCtx->unk_1FC / 100.0f, MTXMODE_APPLY);
             Matrix_RotateY(-1.57f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(gfxCtx),
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-            POLY_KAL_DISP =
-                KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->mapPageVtx, sMapTexs[gSaveContext.language]);
+            POLY_OPA_DISP =
+                KaleidoScope_DrawPageSections(POLY_OPA_DISP, pauseCtx->mapPageVtx, sMapTexs[gSaveContext.language]);
 
             if (sInDungeonScene) {
                 KaleidoScope_DrawDungeonMap(play, gfxCtx);
                 Gfx_SetupDL_42Opa(gfxCtx);
 
-                gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+                gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
 
                 if (CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, gSaveContext.mapIndex)) {
                     PauseMapMark_Draw(play);
@@ -1462,8 +1462,8 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
             }
         }
 
-        gDPPipeSync(POLY_KAL_DISP++);
-        gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA, G_CC_MODULATEIA);
+        gDPPipeSync(POLY_OPA_DISP++);
+        gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA, G_CC_MODULATEIA);
 
         switch (pauseCtx->pageIndex) {
             case PAUSE_ITEM:
@@ -1471,10 +1471,10 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
                 Matrix_Scale(0.78f, 0.78f, 0.78f, MTXMODE_APPLY);
                 Matrix_RotateX(-pauseCtx->unk_1F4 / 100.0f, MTXMODE_APPLY);
 
-                gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(gfxCtx),
+                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-                POLY_KAL_DISP = KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->itemPageVtx,
+                POLY_OPA_DISP = KaleidoScope_DrawPageSections(POLY_OPA_DISP, pauseCtx->itemPageVtx,
                                                               sSelectItemTexs[gSaveContext.language]);
 
                 KaleidoScope_DrawItemSelect(play);
@@ -1486,17 +1486,17 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
                 Matrix_RotateZ(-pauseCtx->unk_1FC / 100.0f, MTXMODE_APPLY);
                 Matrix_RotateY(-1.57f, MTXMODE_APPLY);
 
-                gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(gfxCtx),
+                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-                POLY_KAL_DISP =
-                    KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->mapPageVtx, sMapTexs[gSaveContext.language]);
+                POLY_OPA_DISP =
+                    KaleidoScope_DrawPageSections(POLY_OPA_DISP, pauseCtx->mapPageVtx, sMapTexs[gSaveContext.language]);
 
                 if (sInDungeonScene) {
                     KaleidoScope_DrawDungeonMap(play, gfxCtx);
                     Gfx_SetupDL_42Opa(gfxCtx);
 
-                    gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+                    gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
 
                     if (pauseCtx->cursorSpecialPos == 0) {
                         KaleidoScope_DrawCursor(play, PAUSE_MAP);
@@ -1511,22 +1511,22 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
                 break;
 
             case PAUSE_QUEST:
-                gDPSetTextureFilter(POLY_KAL_DISP++, G_TF_BILERP);
+                gDPSetTextureFilter(POLY_OPA_DISP++, G_TF_BILERP);
 
                 Matrix_Translate(0.0f, (f32)WREG(2) / 100.0f, (f32)WREG(3) / 100.0f, MTXMODE_NEW);
                 Matrix_Scale(0.78f, 0.78f, 0.78f, MTXMODE_APPLY);
                 Matrix_RotateX(pauseCtx->unk_200 / 100.0f, MTXMODE_APPLY);
                 Matrix_RotateY(3.14f, MTXMODE_APPLY);
 
-                gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(gfxCtx),
+                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
                 if (pauseCtx->randoQuestMode) {
-                    POLY_KAL_DISP = KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->saveVtx,
+                    POLY_OPA_DISP = KaleidoScope_DrawPageSections(POLY_OPA_DISP, pauseCtx->saveVtx,
                                                                   sSaveTexs[gSaveContext.language]);
                     RandoKaleido_DrawMiscCollectibles(play);
                 } else {
-                    POLY_KAL_DISP = KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->questPageVtx,
+                    POLY_OPA_DISP = KaleidoScope_DrawPageSections(POLY_OPA_DISP, pauseCtx->questPageVtx,
                                                                   sQuestStatusTexs[gSaveContext.language]);
                     KaleidoScope_DrawQuestStatus(play, gfxCtx);
                 }
@@ -1542,10 +1542,10 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
                 Matrix_RotateZ(pauseCtx->unk_1F8 / 100.0f, MTXMODE_APPLY);
                 Matrix_RotateY(1.57f, MTXMODE_APPLY);
 
-                gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(gfxCtx),
+                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-                POLY_KAL_DISP = KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->equipPageVtx,
+                POLY_OPA_DISP = KaleidoScope_DrawPageSections(POLY_OPA_DISP, pauseCtx->equipPageVtx,
                                                               sEquipmentTexs[gSaveContext.language]);
 
                 KaleidoScope_DrawEquipment(play);
@@ -1562,7 +1562,7 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
     if ((pauseCtx->state == 7) || ((pauseCtx->state >= 8) && (pauseCtx->state < 0x12))) {
         KaleidoScope_UpdatePrompt(play);
 
-        gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA, G_CC_MODULATEIA);
+        gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA, G_CC_MODULATEIA);
 
         if (!pauseCtx->pageIndex) { // pageIndex == PAUSE_ITEM
             pauseCtx->unk_1F4 = pauseCtx->unk_204 + 314.0f;
@@ -1593,81 +1593,81 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
             Matrix_RotateY(1.57f, MTXMODE_APPLY);
         }
 
-        gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(gfxCtx),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
         if ((pauseCtx->state >= 8) && (pauseCtx->state <= 0x11)) {
-            POLY_KAL_DISP = KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->saveVtx, sGameOverTexs);
+            POLY_OPA_DISP = KaleidoScope_DrawPageSections(POLY_OPA_DISP, pauseCtx->saveVtx, sGameOverTexs);
         } else {
-            POLY_KAL_DISP =
-                KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->saveVtx, sSaveTexs[gSaveContext.language]);
+            POLY_OPA_DISP =
+                KaleidoScope_DrawPageSections(POLY_OPA_DISP, pauseCtx->saveVtx, sSaveTexs[gSaveContext.language]);
         }
 
-        gSPVertex(POLY_KAL_DISP++, &pauseCtx->saveVtx[60], 32, 0);
+        gSPVertex(POLY_OPA_DISP++, &pauseCtx->saveVtx[60], 32, 0);
 
         if (((pauseCtx->state == 7) && (pauseCtx->unk_1EC < 4)) || (pauseCtx->state == 0xE)) {
-            POLY_KAL_DISP =
-                KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sSavePromptTexs[gSaveContext.language], 152, 16, 0);
+            POLY_OPA_DISP =
+                KaleidoScope_QuadTextureIA8(POLY_OPA_DISP, sSavePromptTexs[gSaveContext.language], 152, 16, 0);
 
-            gDPSetCombineLERP(POLY_KAL_DISP++, 1, 0, PRIMITIVE, 0, TEXEL0, 0, PRIMITIVE, 0, 1, 0, PRIMITIVE, 0, TEXEL0,
+            gDPSetCombineLERP(POLY_OPA_DISP++, 1, 0, PRIMITIVE, 0, TEXEL0, 0, PRIMITIVE, 0, 1, 0, PRIMITIVE, 0, TEXEL0,
                               0, PRIMITIVE, 0);
-            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, VREG(61)); //Save prompt cursor colour
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, VREG(61)); //Save prompt cursor colour
 
             if (pauseCtx->promptChoice == 0) {
-                gSPDisplayList(POLY_KAL_DISP++, gPromptCursorLeftDL);
+                gSPDisplayList(POLY_OPA_DISP++, gPromptCursorLeftDL);
             } else {
-                gSPDisplayList(POLY_KAL_DISP++, gPromptCursorRightDL);
+                gSPDisplayList(POLY_OPA_DISP++, gPromptCursorRightDL);
             }
 
-            gDPPipeSync(POLY_KAL_DISP++);
-            gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA, G_CC_MODULATEIA);
-            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
+            gDPPipeSync(POLY_OPA_DISP++);
+            gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA, G_CC_MODULATEIA);
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
 
-            POLY_KAL_DISP =
-                KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sPromptChoiceTexs[gSaveContext.language][0], 48, 16, 12);
+            POLY_OPA_DISP =
+                KaleidoScope_QuadTextureIA8(POLY_OPA_DISP, sPromptChoiceTexs[gSaveContext.language][0], 48, 16, 12);
 
-            POLY_KAL_DISP =
-                KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sPromptChoiceTexs[gSaveContext.language][1], 48, 16, 16);
+            POLY_OPA_DISP =
+                KaleidoScope_QuadTextureIA8(POLY_OPA_DISP, sPromptChoiceTexs[gSaveContext.language][1], 48, 16, 16);
         } else if (((pauseCtx->state == 7 && pauseCtx->unk_1EC >= 4) || pauseCtx->state == 0xF) &&
                    !CVarGetInteger(CVAR_ENHANCEMENT("SkipSaveConfirmation"), 0)) {
-            POLY_KAL_DISP =
-                KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sSaveConfirmationTexs[gSaveContext.language], 152, 16, 0);
+            POLY_OPA_DISP =
+                KaleidoScope_QuadTextureIA8(POLY_OPA_DISP, sSaveConfirmationTexs[gSaveContext.language], 152, 16, 0);
         } else if ((pauseCtx->state != 7) || (pauseCtx->unk_1EC < 4)) {
             if ((pauseCtx->state != 0xF) && ((pauseCtx->state == 0x10) || (pauseCtx->state == 0x11))) {
-                POLY_KAL_DISP =
-                    KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sContinuePromptTexs[gSaveContext.language], 152, 16, 0);
+                POLY_OPA_DISP =
+                    KaleidoScope_QuadTextureIA8(POLY_OPA_DISP, sContinuePromptTexs[gSaveContext.language], 152, 16, 0);
 
-                gDPSetCombineLERP(POLY_KAL_DISP++, 1, 0, PRIMITIVE, 0, TEXEL0, 0, PRIMITIVE, 0, 1, 0, PRIMITIVE, 0,
+                gDPSetCombineLERP(POLY_OPA_DISP++, 1, 0, PRIMITIVE, 0, TEXEL0, 0, PRIMITIVE, 0, 1, 0, PRIMITIVE, 0,
                                   TEXEL0, 0, PRIMITIVE, 0);
-                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, VREG(61)); //Continue prompt cursor colour
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, VREG(61)); //Continue prompt cursor colour
 
                 if (pauseCtx->promptChoice == 0) {
-                    gSPDisplayList(POLY_KAL_DISP++, gPromptCursorLeftDL);
+                    gSPDisplayList(POLY_OPA_DISP++, gPromptCursorLeftDL);
                 } else {
-                    gSPDisplayList(POLY_KAL_DISP++, gPromptCursorRightDL);
+                    gSPDisplayList(POLY_OPA_DISP++, gPromptCursorRightDL);
                 }
 
-                gDPPipeSync(POLY_KAL_DISP++);
-                gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA, G_CC_MODULATEIA);
-                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
+                gDPPipeSync(POLY_OPA_DISP++);
+                gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA, G_CC_MODULATEIA);
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
 
-                if (GameInteractor_Should(VB_RENDER_YES_ON_CONTINUE_PROMPT, true, &POLY_KAL_DISP)) {
-                    POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(
-                        POLY_KAL_DISP, sPromptChoiceTexs[gSaveContext.language][0], 48, 16, 12);
+                if (GameInteractor_Should(VB_RENDER_YES_ON_CONTINUE_PROMPT, true, &POLY_OPA_DISP)) {
+                    POLY_OPA_DISP = KaleidoScope_QuadTextureIA8(
+                        POLY_OPA_DISP, sPromptChoiceTexs[gSaveContext.language][0], 48, 16, 12);
                 }
 
-                POLY_KAL_DISP =
-                    KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sPromptChoiceTexs[gSaveContext.language][1], 48, 16, 16);
+                POLY_OPA_DISP =
+                    KaleidoScope_QuadTextureIA8(POLY_OPA_DISP, sPromptChoiceTexs[gSaveContext.language][1], 48, 16, 16);
             }
         }
 
-        gDPPipeSync(POLY_KAL_DISP++);
-        gDPSetCombineLERP(POLY_KAL_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
+        gDPPipeSync(POLY_OPA_DISP++);
+        gDPSetCombineLERP(POLY_OPA_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                           PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
 
         if ((pauseCtx->state != 0x10) && (pauseCtx->state != 0x11)) {
-            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 0, pauseCtx->alpha);
-            gDPSetEnvColor(POLY_KAL_DISP++, 0, 0, 0, 0);
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 0, pauseCtx->alpha);
+            gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
         }
     }
 
@@ -1882,49 +1882,49 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
     pauseCtx->infoPanelVtx[10].v.tc[1] = pauseCtx->infoPanelVtx[11].v.tc[1] = pauseCtx->infoPanelVtx[14].v.tc[1] =
         pauseCtx->infoPanelVtx[15].v.tc[1] = 0x400;
 
-    gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+    gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
 
     Matrix_Translate(0.0f, 0.0f, -144.0f, MTXMODE_NEW);
     Matrix_Scale(1.0f, 1.0f, 1.0f, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     const Color_RGBA8 namePanelColor = CVarGetColor(CVAR_COSMETIC("Kaleido.NamePanel.Value"), (Color_RGBA8){90,100,130,255});
     
-    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, namePanelColor.r, namePanelColor.g, namePanelColor.b, namePanelColor.a);
-    gSPVertex(POLY_KAL_DISP++, &pauseCtx->infoPanelVtx[0], 16, 0);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, namePanelColor.r, namePanelColor.g, namePanelColor.b, namePanelColor.a);
+    gSPVertex(POLY_OPA_DISP++, &pauseCtx->infoPanelVtx[0], 16, 0);
 
-    gSPDisplayList(POLY_KAL_DISP++, gItemNamePanelDL);
+    gSPDisplayList(POLY_OPA_DISP++, gItemNamePanelDL);
 
     if (CVarGetInteger(CVAR_ENHANCEMENT("FixMenuLR"), 0) == 0) { // Restore the misplace gDPSetPrimColor
-        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 90, 100, 130, 255);
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 90, 100, 130, 255);
     }
 
     if ((pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_LEFT) && (pauseCtx->unk_1E4 == 0)) {
-        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, D_808321A0, D_808321A2, D_808321A4, D_808321A6);
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, D_808321A0, D_808321A2, D_808321A4, D_808321A6);
     } else {
       if (CVarGetInteger(CVAR_ENHANCEMENT("FixMenuLR"), 0) != 0) {
-        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 180, 210, 255, 255);
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 180, 210, 255, 255);
       }
     }
     
 
-    gSPDisplayList(POLY_KAL_DISP++, gLButtonIconDL);
+    gSPDisplayList(POLY_OPA_DISP++, gLButtonIconDL);
 
     if (CVarGetInteger(CVAR_ENHANCEMENT("FixMenuLR"), 0) == 0) { //Restore the misplace gDPSetPrimColor
-      gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 180, 210, 255, 255);
+      gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 180, 210, 255, 255);
     }
 
     if ((pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_RIGHT) && (pauseCtx->unk_1E4 == 0)) {
-        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, D_808321A0, D_808321A2, D_808321A4, D_808321A6);
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, D_808321A0, D_808321A2, D_808321A4, D_808321A6);
     } else {
       if (CVarGetInteger(CVAR_ENHANCEMENT("FixMenuLR"), 0) != 0) {
-        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 180, 210, 255, 255);
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 180, 210, 255, 255);
       }
     }
 
-    gSPDisplayList(POLY_KAL_DISP++, gRButtonIconDL);
+    gSPDisplayList(POLY_OPA_DISP++, gRButtonIconDL);
 
     if (pauseCtx->cursorSpecialPos != 0) {
         j = (pauseCtx->cursorSpecialPos * 4) - 32;
@@ -1941,10 +1941,10 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
 
     pauseCtx->infoPanelVtx[18].v.tc[1] = pauseCtx->infoPanelVtx[19].v.tc[1] = 0x200;
 
-    gDPPipeSync(POLY_KAL_DISP++);
-    gDPSetCombineLERP(POLY_KAL_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE,
+    gDPPipeSync(POLY_OPA_DISP++);
+    gDPSetCombineLERP(POLY_OPA_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE,
                       ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
-    gDPSetEnvColor(POLY_KAL_DISP++, 20, 30, 40, 0);
+    gDPSetEnvColor(POLY_OPA_DISP++, 20, 30, 40, 0);
 
     if ((pauseCtx->state == 6) && (pauseCtx->namedItem != PAUSE_ITEM_NONE) && (pauseCtx->nameDisplayTimer < WREG(89)) &&
         (!pauseCtx->unk_1E4 || (pauseCtx->unk_1E4 == 2) || ((pauseCtx->unk_1E4 >= 4) && (pauseCtx->unk_1E4 <= 7)) ||
@@ -1959,15 +1959,15 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
 
             pauseCtx->infoPanelVtx[17].v.tc[0] = pauseCtx->infoPanelVtx[19].v.tc[0] = 0x1000;
 
-            gSPVertex(POLY_KAL_DISP++, &pauseCtx->infoPanelVtx[16], 4, 0);
+            gSPVertex(POLY_OPA_DISP++, &pauseCtx->infoPanelVtx[16], 4, 0);
 
             if (pauseCtx->nameColorSet == 1) {
-                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 70, 70, 70, 255);
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 70, 70, 70, 255);
             } else {
-                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, 255);
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
             }
 
-            POLY_KAL_DISP = KaleidoScope_QuadTextureIA4(POLY_KAL_DISP, pauseCtx->nameSegment, 128, 16, 0);
+            POLY_OPA_DISP = KaleidoScope_QuadTextureIA4(POLY_OPA_DISP, pauseCtx->nameSegment, 128, 16, 0);
         }
 
         if (pauseCtx->pageIndex == PAUSE_MAP && CVarGetInteger(CVAR_DEVELOPER_TOOLS("SkulltulaDebugEnabled"), 0) != 0) {
@@ -1999,13 +1999,13 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
 
                 pauseCtx->infoPanelVtx[25].v.tc[0] = pauseCtx->infoPanelVtx[27].v.tc[0] = 0x300;
 
-                gDPPipeSync(POLY_KAL_DISP++);
-                gSPVertex(POLY_KAL_DISP++, &pauseCtx->infoPanelVtx[24], 4, 0);
+                gDPPipeSync(POLY_OPA_DISP++);
+                gSPVertex(POLY_OPA_DISP++, &pauseCtx->infoPanelVtx[24], 4, 0);
 
-                gDPSetCombineLERP(POLY_KAL_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
+                gDPSetCombineLERP(POLY_OPA_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                                   PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
-                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
-                gDPSetEnvColor(POLY_KAL_DISP++, 0, 0, 0, 0);
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
+                gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
 
                 KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gQuestIconGoldSkulltulaTex, 24, 24, 0);
             }
@@ -2018,7 +2018,7 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
 
         pauseCtx->infoPanelVtx[22].v.tc[1] = pauseCtx->infoPanelVtx[23].v.tc[1] = 0x200;
 
-        gSPVertex(POLY_KAL_DISP++, &pauseCtx->infoPanelVtx[16], 8, 0);
+        gSPVertex(POLY_OPA_DISP++, &pauseCtx->infoPanelVtx[16], 8, 0);
 
         if (pauseCtx->state == 7) {
             pauseCtx->infoPanelVtx[16].v.ob[0] = pauseCtx->infoPanelVtx[18].v.ob[0] = WREG(61 + gSaveContext.language);
@@ -2036,15 +2036,15 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
 
             pauseCtx->infoPanelVtx[21].v.tc[0] = pauseCtx->infoPanelVtx[23].v.tc[0] = D_8082ADE0[gSaveContext.language]
                                                                                       << 5;
-            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, 255);
-            //gSPDisplayList(POLY_KAL_DISP++, gAButtonIconDL);//This is changed to load the texture only so we can prim color it.
-            gDPLoadTextureBlock(POLY_KAL_DISP++, gABtnSymbolTex, G_IM_FMT_IA, G_IM_SIZ_8b, 24, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 4, 4, G_TX_NOLOD, G_TX_NOLOD);
-            gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, 255);
+            //gSPDisplayList(POLY_OPA_DISP++, gAButtonIconDL);//This is changed to load the texture only so we can prim color it.
+            gDPLoadTextureBlock(POLY_OPA_DISP++, gABtnSymbolTex, G_IM_FMT_IA, G_IM_SIZ_8b, 24, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 4, 4, G_TX_NOLOD, G_TX_NOLOD);
+            gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
 
-            gDPPipeSync(POLY_KAL_DISP++);
-            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, 255);
+            gDPPipeSync(POLY_OPA_DISP++);
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
 
-            POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sToDecideTextures[gSaveContext.language],
+            POLY_OPA_DISP = KaleidoScope_QuadTextureIA8(POLY_OPA_DISP, sToDecideTextures[gSaveContext.language],
                                                         D_8082ADE0[gSaveContext.language], 16, 4);
         } else if (pauseCtx->cursorSpecialPos != 0) {
             if ((pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 0)) {
@@ -2055,15 +2055,15 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
 
                 pauseCtx->infoPanelVtx[17].v.tc[0] = pauseCtx->infoPanelVtx[19].v.tc[0] = 0x1000;
 
-                gDPPipeSync(POLY_KAL_DISP++);
-                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 200, 0, 255);
+                gDPPipeSync(POLY_OPA_DISP++);
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 200, 0, 255);
 
                 if (pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_LEFT) {
-                    POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(
-                        POLY_KAL_DISP, D_8082AD78[pauseCtx->pageIndex][gSaveContext.language], 128, 16, 0);
+                    POLY_OPA_DISP = KaleidoScope_QuadTextureIA8(
+                        POLY_OPA_DISP, D_8082AD78[pauseCtx->pageIndex][gSaveContext.language], 128, 16, 0);
                 } else {
-                    POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(
-                        POLY_KAL_DISP, D_8082ADA8[pauseCtx->pageIndex][gSaveContext.language], 128, 16, 0);
+                    POLY_OPA_DISP = KaleidoScope_QuadTextureIA8(
+                        POLY_OPA_DISP, D_8082ADA8[pauseCtx->pageIndex][gSaveContext.language], 128, 16, 0);
                 }
             }
         } else {
@@ -2106,25 +2106,25 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
                 int width_crop = icon_w_crop * 1.0f; //Adjust Width with scale
                 int height_factor = (1 << 10) * icon_h / height;
                 int width_factor = (1 << 10) * icon_w / width;
-                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cButtonsColor.r, cButtonsColor.g, cButtonsColor.b, 255);
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cButtonsColor.r, cButtonsColor.g, cButtonsColor.b, 255);
                 for (s16 i=0; i < 3; i++) {
                     if (i == 0) {
                         icon_x_offset = width_crop*3-3;
-                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cRightButtonColor.r, cRightButtonColor.g, cRightButtonColor.b, 255);
+                        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cRightButtonColor.r, cRightButtonColor.g, cRightButtonColor.b, 255);
                     } else if (i == 1) {
                         icon_x_offset = width_crop*2-3;
-                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cDownButtonColor.r, cDownButtonColor.g, cDownButtonColor.b, 255);
+                        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cDownButtonColor.r, cDownButtonColor.g, cDownButtonColor.b, 255);
                     } else if (i == 2) {
                         icon_x_offset = width_crop;
-                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cLeftButtonColor.r, cLeftButtonColor.g, cLeftButtonColor.b, 255);
+                        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cLeftButtonColor.r, cLeftButtonColor.g, cLeftButtonColor.b, 255);
                     }
-                    gDPLoadTextureBlock(POLY_KAL_DISP++, gCBtnSymbolsTex, G_IM_FMT_IA, G_IM_SIZ_8b, icon_w, icon_h, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-                    //gSPScisTextureRectangle(POLY_KAL_DISP++,PosX << 2, PosY << 2, (PosX + icon_x_offset) << 2, (PosY + height) << 2, G_TX_RENDERTILE, 0, 0, width_factor, height_factor);
-                    gSPWideTextureRectangle(POLY_KAL_DISP++, PosX << 2, PosY << 2, (PosX + icon_x_offset) << 2, (PosY + height) << 2, G_TX_WRAP, 0, 0, width_factor, height_factor);
+                    gDPLoadTextureBlock(POLY_OPA_DISP++, gCBtnSymbolsTex, G_IM_FMT_IA, G_IM_SIZ_8b, icon_w, icon_h, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                    //gSPScisTextureRectangle(POLY_OPA_DISP++,PosX << 2, PosY << 2, (PosX + icon_x_offset) << 2, (PosY + height) << 2, G_TX_RENDERTILE, 0, 0, width_factor, height_factor);
+                    gSPWideTextureRectangle(POLY_OPA_DISP++, PosX << 2, PosY << 2, (PosX + icon_x_offset) << 2, (PosY + height) << 2, G_TX_WRAP, 0, 0, width_factor, height_factor);
                 }
-                gDPPipeSync(POLY_KAL_DISP++);
-                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, 255);
-                POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sToEquipTextures[gSaveContext.language],
+                gDPPipeSync(POLY_OPA_DISP++);
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
+                POLY_OPA_DISP = KaleidoScope_QuadTextureIA8(POLY_OPA_DISP, sToEquipTextures[gSaveContext.language],
                                                             D_8082ADD8[gSaveContext.language], 16, 4);
             } else if ((pauseCtx->pageIndex == PAUSE_MAP) && sInDungeonScene) {
 
@@ -2153,15 +2153,15 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
                     pauseCtx->infoPanelVtx[21].v.tc[0] = pauseCtx->infoPanelVtx[23].v.tc[0] =
                         D_8082ADE8[gSaveContext.language] << 5;
 
-                    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, 255);
-                    //gSPDisplayList(POLY_KAL_DISP++, gAButtonIconDL);
-                    gDPLoadTextureBlock(POLY_KAL_DISP++, gABtnSymbolTex, G_IM_FMT_IA, G_IM_SIZ_8b, 24, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 4, 4, G_TX_NOLOD, G_TX_NOLOD);
-                    gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
+                    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, 255);
+                    //gSPDisplayList(POLY_OPA_DISP++, gAButtonIconDL);
+                    gDPLoadTextureBlock(POLY_OPA_DISP++, gABtnSymbolTex, G_IM_FMT_IA, G_IM_SIZ_8b, 24, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 4, 4, G_TX_NOLOD, G_TX_NOLOD);
+                    gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
 
-                    gDPPipeSync(POLY_KAL_DISP++);
-                    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, 255);
+                    gDPPipeSync(POLY_OPA_DISP++);
+                    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
 
-                    POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sPlayMelodyTextures[gSaveContext.language],
+                    POLY_OPA_DISP = KaleidoScope_QuadTextureIA8(POLY_OPA_DISP, sPlayMelodyTextures[gSaveContext.language],
                                                                 D_8082ADE8[gSaveContext.language], 16, 4);
                 }
             } else if (pauseCtx->pageIndex == PAUSE_EQUIP) {
@@ -2186,15 +2186,15 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
                     return;
                  }
 
-                //gSPDisplayList(POLY_KAL_DISP++, gAButtonIconDL);
-                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, 255);
-                gDPLoadTextureBlock(POLY_KAL_DISP++, gABtnSymbolTex, G_IM_FMT_IA, G_IM_SIZ_8b, 24, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 4, 4, G_TX_NOLOD, G_TX_NOLOD);
-                gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
+                //gSPDisplayList(POLY_OPA_DISP++, gAButtonIconDL);
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, 255);
+                gDPLoadTextureBlock(POLY_OPA_DISP++, gABtnSymbolTex, G_IM_FMT_IA, G_IM_SIZ_8b, 24, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 4, 4, G_TX_NOLOD, G_TX_NOLOD);
+                gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
 
-                gDPPipeSync(POLY_KAL_DISP++);
-                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, 255);
+                gDPPipeSync(POLY_OPA_DISP++);
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
 
-                POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sToEquipTextures[gSaveContext.language],
+                POLY_OPA_DISP = KaleidoScope_QuadTextureIA8(POLY_OPA_DISP, sToEquipTextures[gSaveContext.language],
                                                             D_8082ADD8[gSaveContext.language], 16, 4);
             }
         }
@@ -3188,39 +3188,39 @@ void KaleidoScope_DrawGameOver(PlayState* play) {
 
     Gfx_SetupDL_39Opa(gfxCtx);
 
-    gDPSetCycleType(POLY_KAL_DISP++, G_CYC_2CYCLE);
-    gDPSetRenderMode(POLY_KAL_DISP++, G_RM_PASS, G_RM_XLU_SURF2);
-    gDPSetCombineLERP(POLY_KAL_DISP++, TEXEL1, TEXEL0, PRIM_LOD_FRAC, TEXEL0, 0, 0, 0, TEXEL0, PRIMITIVE, ENVIRONMENT,
+    gDPSetCycleType(POLY_OPA_DISP++, G_CYC_2CYCLE);
+    gDPSetRenderMode(POLY_OPA_DISP++, G_RM_PASS, G_RM_XLU_SURF2);
+    gDPSetCombineLERP(POLY_OPA_DISP++, TEXEL1, TEXEL0, PRIM_LOD_FRAC, TEXEL0, 0, 0, 0, TEXEL0, PRIMITIVE, ENVIRONMENT,
                       COMBINED, ENVIRONMENT, COMBINED, 0, PRIMITIVE, 0);
 
-    gDPSetPrimColor(POLY_KAL_DISP++, 0, 80, D_8082AB8C, D_8082AB90, D_8082AB94, D_8082AB98);
-    gDPSetEnvColor(POLY_KAL_DISP++, D_8082AB9C, D_8082ABA0, D_8082ABA4, 255);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 80, D_8082AB8C, D_8082AB90, D_8082AB94, D_8082AB98);
+    gDPSetEnvColor(POLY_OPA_DISP++, D_8082AB9C, D_8082ABA0, D_8082ABA4, 255);
 
     VREG(89) -= 2;
 
-    gDPLoadMultiBlock(POLY_KAL_DISP++, gGameOverP1Tex, 0, 0, G_IM_FMT_IA, G_IM_SIZ_8b, 64, 32, 0,
+    gDPLoadMultiBlock(POLY_OPA_DISP++, gGameOverP1Tex, 0, 0, G_IM_FMT_IA, G_IM_SIZ_8b, 64, 32, 0,
                       G_TX_WRAP | G_TX_NOMIRROR, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                       G_TX_NOLOD);
 
-    gDPLoadMultiBlock(POLY_KAL_DISP++, gGameOverMaskTex, 256, 1, G_IM_FMT_IA, G_IM_SIZ_8b, 64, 32, 0,
+    gDPLoadMultiBlock(POLY_OPA_DISP++, gGameOverMaskTex, 256, 1, G_IM_FMT_IA, G_IM_SIZ_8b, 64, 32, 0,
                       G_TX_WRAP | G_TX_NOMIRROR, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    gDPSetTileSize(POLY_KAL_DISP++, 1, 0, VREG(89) & 0x7F, 252, (VREG(89) & 0x7F) + 0x7C);
+    gDPSetTileSize(POLY_OPA_DISP++, 1, 0, VREG(89) & 0x7F, 252, (VREG(89) & 0x7F) + 0x7C);
 
-    gSPTextureRectangle(POLY_KAL_DISP++, VREG(87) << 2, VREG(88) << 2, (VREG(87) + 64) << 2, (VREG(88) + 32) << 2,
+    gSPTextureRectangle(POLY_OPA_DISP++, VREG(87) << 2, VREG(88) << 2, (VREG(87) + 64) << 2, (VREG(88) + 32) << 2,
                         G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
 
-    gDPLoadMultiBlock(POLY_KAL_DISP++, gGameOverP2Tex, 0, 0, G_IM_FMT_IA, G_IM_SIZ_8b, 64, 32, 0,
+    gDPLoadMultiBlock(POLY_OPA_DISP++, gGameOverP2Tex, 0, 0, G_IM_FMT_IA, G_IM_SIZ_8b, 64, 32, 0,
                       G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                       G_TX_NOLOD);
 
-    gSPTextureRectangle(POLY_KAL_DISP++, (VREG(87) + 64) << 2, VREG(88) << 2, (VREG(87) + 128) << 2,
+    gSPTextureRectangle(POLY_OPA_DISP++, (VREG(87) + 64) << 2, VREG(88) << 2, (VREG(87) + 128) << 2,
                         (VREG(88) + 32) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
 
-    gDPLoadMultiBlock(POLY_KAL_DISP++, gGameOverP3Tex, 0, 0, G_IM_FMT_IA, G_IM_SIZ_8b, 64, 32, 0,
+    gDPLoadMultiBlock(POLY_OPA_DISP++, gGameOverP3Tex, 0, 0, G_IM_FMT_IA, G_IM_SIZ_8b, 64, 32, 0,
                       G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                       G_TX_NOLOD);
-    gSPTextureRectangle(POLY_KAL_DISP++, (VREG(87) + 128) << 2, VREG(88) << 2, (VREG(87) + 192) << 2,
+    gSPTextureRectangle(POLY_OPA_DISP++, (VREG(87) + 128) << 2, VREG(88) << 2, (VREG(87) + 192) << 2,
                         (VREG(88) + 32) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
 
     CLOSE_DISPS(gfxCtx);
@@ -3236,24 +3236,24 @@ void KaleidoScope_Draw(PlayState* play) {
     pauseCtx->stickRelX = input->rel.stick_x;
     pauseCtx->stickRelY = input->rel.stick_y;
 
-    //gSPSegment(POLY_KAL_DISP++, 0x02, interfaceCtx->parameterSegment);
-    gSPSegment(POLY_KAL_DISP++, 0x07, pauseCtx->playerSegment);
-    //gSPSegment(POLY_KAL_DISP++, 0x08, pauseCtx->iconItemSegment);
-    //gSPSegment(POLY_KAL_DISP++, 0x09, pauseCtx->iconItem24Segment);
-    gSPSegment(POLY_KAL_DISP++, 0x0A, pauseCtx->nameSegment);
-    //gSPSegment(POLY_KAL_DISP++, 0x0C, pauseCtx->iconItemAltSegment);
-    //gSPSegment(POLY_KAL_DISP++, 0x0D, pauseCtx->iconItemLangSegment);
+    //gSPSegment(POLY_OPA_DISP++, 0x02, interfaceCtx->parameterSegment);
+    gSPSegment(POLY_OPA_DISP++, 0x07, pauseCtx->playerSegment);
+    //gSPSegment(POLY_OPA_DISP++, 0x08, pauseCtx->iconItemSegment);
+    //gSPSegment(POLY_OPA_DISP++, 0x09, pauseCtx->iconItem24Segment);
+    gSPSegment(POLY_OPA_DISP++, 0x0A, pauseCtx->nameSegment);
+    //gSPSegment(POLY_OPA_DISP++, 0x0C, pauseCtx->iconItemAltSegment);
+    //gSPSegment(POLY_OPA_DISP++, 0x0D, pauseCtx->iconItemLangSegment);
 
     if (pauseCtx->debugState == 0)
     {
         KaleidoScope_SetView(pauseCtx, pauseCtx->eye.x, pauseCtx->eye.y, pauseCtx->eye.z);
 
-        Gfx_SetupDL_42Kal(play->state.gfxCtx);
+        Gfx_SetupDL_42Opa(play->state.gfxCtx);
         KaleidoScope_InitVertices(play, play->state.gfxCtx);
         KaleidoScope_DrawPages(play, play->state.gfxCtx);
 
-        Gfx_SetupDL_42Kal(play->state.gfxCtx);
-        gDPSetCombineLERP(POLY_KAL_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
+        Gfx_SetupDL_42Opa(play->state.gfxCtx);
+        gDPSetCombineLERP(POLY_OPA_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                           PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
 
         KaleidoScope_SetView(pauseCtx, 0.0f, 0.0f, 64.0f);

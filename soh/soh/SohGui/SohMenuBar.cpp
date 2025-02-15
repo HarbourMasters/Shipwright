@@ -45,6 +45,7 @@
 #include "soh/Enhancements/randomizer/Plandomizer.h"
 #include "soh/Enhancements/TimeDisplay/TimeDisplay.h"
 #include "soh/AboutWindow.h"
+#include "soh/Enhancements/Autosave.h"
 
 // FA icons are kind of wonky, if they worked how I expected them to the "+ 2.0f" wouldn't be needed, but
 // they don't work how I expect them to so I added that because it looked good when I eyeballed it
@@ -104,7 +105,6 @@ static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large
     static const char* subPowers[8] = { allPowers[0], allPowers[1], allPowers[2], allPowers[3], allPowers[4], allPowers[5], allPowers[6], allPowers[7] };
     static const char* subSubPowers[7] = { allPowers[0], allPowers[1], allPowers[2], allPowers[3], allPowers[4], allPowers[5], allPowers[6] };
     static const char* zFightingOptions[3] = { "Disabled", "Consistent Vanish", "No Vanish" };
-    static const char* autosaveLabels[6] = { "Off", "New Location + Major Item", "New Location + Any Item", "New Location", "Major Item", "Any Item" };
     static const char* bootSequenceLabels[3] = { "Default", "Authentic", "File Select" };
     static const char* DebugSaveFileModes[3] = { "Off", "Vanilla", "Maxed" };
     static const char* DekuStickCheat[3] = { "Normal", "Unbreakable", "Unbreakable + Always on Fire" };
@@ -1569,13 +1569,11 @@ void DrawEnhancementsMenu() {
             ImGui::EndMenu();
         }
 
-        UIWidgets::PaddedSeparator(false, true);
+        UIWidgets::PaddedSeparator();
 
-        // Autosave enum value of 1 is the default in presets and the old checkbox "on" state for backwards compatibility
-        UIWidgets::PaddedText("Autosave", false, true);
-        UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("Autosave"), autosaveLabels, AUTOSAVE_OFF);
-        UIWidgets::Tooltip("Automatically save the game when changing locations and/or obtaining items\n"
-            "Major items exclude rupees and health/magic/ammo refills (but include bombchus unless bombchu drops are enabled)");
+        UIWidgets::EnhancementCheckbox("Autosave", CVAR_ENHANCEMENT("Autosave"));
+        UIWidgets::Tooltip("Save the game automatically on a 3 minute interval and when soft-resetting the game.\n\n"
+                           "The interval autosave will wait if the game is paused in any way (dialogue, pause screen up, cutscenes).");
 
         UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
 
