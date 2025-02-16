@@ -551,11 +551,12 @@ bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaul
         changed = ImGui::ColorEdit3(label, (float*)&colorVec, flags | ImGuiColorEditFlags_NoAlpha);
     }
     PopStyleCombobox();
+    ImGui::AlignTextToFramePadding();
     if (showReset) {
         ImGui::SameLine();
         std::string uniqueTag = "Reset##" + std::string(label);
         if (UIWidgets2::Button(uniqueTag.c_str(), UIWidgets2::ButtonOptions({{ .tooltip = "Resets this color to its default value" }} ).Color(themeColor).Size(UIWidgets2::Sizes::Inline))) {
-            CVarSetColor(valueCVar.c_str(), defaultColor);
+            CVarClearBlock(valueCVar.c_str());
             Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         }
     }
