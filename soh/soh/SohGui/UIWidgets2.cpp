@@ -4,6 +4,8 @@
 #include <sstream>
 #include <libultraship/libultraship.h>
 #include <string>
+#include <random>
+#include <math.h>
 #include <unordered_map>
 #include <libultraship/libultra/types.h>
 #include <spdlog/fmt/fmt.h>
@@ -528,22 +530,74 @@ bool CVarSliderFloat(const char* label, const char* cvarName, const FloatSliderO
     return dirty;
 }
 
-bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaultColor) {
-    Color_RGBA8 color = CVarGetColor(cvarName, defaultColor);
+bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaultColor, bool hasAlpha, uint8_t modifiers, UIWidgets2::Colors themeColor ) {
+    std::string valueCVar = std::string(cvarName) + ".Value";
+    std::string rainbowCVar = std::string(cvarName) + ".Rainbow";
+    std::string lockedCVar = std::string(cvarName) + ".Locked";
+    Color_RGBA8 color = CVarGetColor(valueCVar.c_str(), defaultColor);
     ImVec4 colorVec = ImVec4(color.r / 255.0f, color.g / 255.0f, color.b / 255.0f, color.a / 255.0f);
     bool changed = false;
-    PushStyleCombobox(Colors::Gray);
-    if (ImGui::ColorEdit3(label, (float*)&colorVec, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoBorder)) {
+    bool showReset = modifiers & ColorPickerResetButton;
+    bool showRandom = modifiers & ColorPickerRandomButton;
+    bool showRainbow = modifiers & ColorPickerRainbowCheck;
+    bool showLock = modifiers & ColorPickerLockCheck;
+    bool locked = CVarGetInteger(lockedCVar.c_str(), 0);
+    ImGuiColorEditFlags flags = ImGuiColorEditFlags_NoInputs;
+    ImGui::BeginDisabled(locked);
+    PushStyleCombobox(colorVec);
+    if (hasAlpha) {
+        changed = ImGui::ColorEdit4(label, (float*)&colorVec, flags | ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_AlphaPreview);
+    } else {
+        changed = ImGui::ColorEdit3(label, (float*)&colorVec, flags | ImGuiColorEditFlags_NoAlpha);
+    }
+    PopStyleCombobox();
+    ImGui::AlignTextToFramePadding();
+    if (showReset) {
+        ImGui::SameLine();
+        std::string uniqueTag = "Reset##" + std::string(label);
+        if (UIWidgets2::Button(uniqueTag.c_str(), UIWidgets2::ButtonOptions({{ .tooltip = "Resets this color to its default value" }} ).Color(themeColor).Size(UIWidgets2::Sizes::Inline))) {
+            CVarClearBlock(valueCVar.c_str());
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        }
+    }
+    if (showRandom) {
+        ImGui::SameLine();
+        std::string uniqueTag = "Random##" + std::string(label);
+        if (UIWidgets2::Button(uniqueTag.c_str(), UIWidgets2::ButtonOptions({{ .tooltip = "Generates a random color value to use" }}).Color(themeColor).Size(UIWidgets2::Sizes::Inline))) {
+            colorVec = GetRandomValue();
+            color.r = fmin(fmax(colorVec.x * 255, 0), 255);
+            color.g = fmin(fmax(colorVec.y * 255, 0), 255);
+            color.b = fmin(fmax(colorVec.z * 255, 0), 255);
+            CVarSetColor(valueCVar.c_str(), color);
+            CVarSetInteger(rainbowCVar.c_str(), 0); // On click disable rainbow mode.
+            ShipInit::Init(rainbowCVar.c_str());
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        }
+    }
+    if (showRainbow) {
+        ImGui::SameLine();
+        std::string uniqueTag = "Rainbow##" + std::string(cvarName) + "Rainbow";
+
+        UIWidgets2::CVarCheckbox(uniqueTag.c_str(), rainbowCVar.c_str(), UIWidgets2::CheckboxOptions({{ .tooltip = "Cycles through colors on a timer\nOverwrites previously chosen color" }}).Color(themeColor));
+    }
+    ImGui::EndDisabled();
+    if (showLock) {
+        ImGui::SameLine();
+        std::string uniqueTag = "Lock##" + std::string(cvarName) + "Locked";
+
+        UIWidgets2::CVarCheckbox(uniqueTag.c_str(), lockedCVar.c_str(), UIWidgets2::CheckboxOptions({{ .tooltip = "Prevents this color from being changed" }}).Color(themeColor));
+    }
+    if (changed) {
         color.r = (uint8_t)(colorVec.x * 255.0f);
         color.g = (uint8_t)(colorVec.y * 255.0f);
         color.b = (uint8_t)(colorVec.z * 255.0f);
         color.a = (uint8_t)(colorVec.w * 255.0f);
-        CVarSetColor(cvarName, color);
+        CVarSetColor(valueCVar.c_str(), color);
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-        ShipInit::Init(cvarName);
+        ShipInit::Init(valueCVar.c_str());
         changed = true;
     }
-    PopStyleCombobox();
+
     return changed;
 }
 
@@ -710,3 +764,25 @@ void DrawFlagArray8Mask(const std::string& name, uint8_t& flags) {
     ImGui::PopID();
 }
 } // namespace UIWidgets
+
+ImVec4 GetRandomValue() {
+#if !defined(__SWITCH__) && !defined(__WIIU__)
+    std::random_device rd;
+    std::mt19937 rng(rd());
+#else
+    size_t seed = std::hash<std::string>{}(std::to_string(rand()));
+    std::mt19937_64 rng(seed);
+#endif
+    std::uniform_int_distribution<int> dist(0, 255 - 1);
+
+    ImVec4 NewColor;
+    NewColor.x = (float)(dist(rng)) / 255.0f;
+    NewColor.y = (float)(dist(rng)) / 255.0f;
+    NewColor.z = (float)(dist(rng)) / 255.0f;
+    return NewColor;
+}
+
+Color_RGBA8 RGBA8FromVec(ImVec4 vec) {
+    Color_RGBA8 color = { vec.x, vec.y, vec.z, vec.w };
+    return color;
+}
