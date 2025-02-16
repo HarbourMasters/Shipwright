@@ -8,7 +8,8 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/UIWidgets2.hpp"
-#include "soh/SohGui/Menu.h"
+#include "soh/SohGui/SohMenu.h"
+#include "soh/SohGui/SohGui.hpp"
 #include "dungeon.h"
 #include "location_access.h"
 
@@ -35,6 +36,7 @@ extern std::vector<ItemTrackerItem> dungeonRewardStones;
 extern std::vector<ItemTrackerItem> dungeonRewardMedallions;
 extern std::vector<ItemTrackerItem> songItems;
 extern std::vector<ItemTrackerItem> equipmentItems;
+extern std::shared_ptr<SohGui::SohMenu> mSohMenu;
 
 using json = nlohmann::json;
 
@@ -1743,7 +1745,8 @@ void CheckTrackerSettingsWindow::DrawElement() {
         ImGui::TableNextRow();
         ImGui::TableNextColumn();
         ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
-        UIWidgets2::CVarColorPicker("BG Color", CVAR_TRACKER_CHECK("BgColor"), Color_Bg_Default, true);
+        UIWidgets2::CVarColorPicker("BG Color", CVAR_TRACKER_CHECK("BgColor"), Color_Bg_Default, true,
+            UIWidgets2::ColorPickerResetButton | UIWidgets2::ColorPickerRandomButton, themeColor);
         ImGui::PopItemWidth();
 
         UIWidgets2::CVarCombobox("Window Type", CVAR_TRACKER_CHECK("WindowType"), windowType,
@@ -1777,7 +1780,7 @@ void CheckTrackerSettingsWindow::DrawElement() {
             alwaysShowGS = !alwaysShowGS;
             UpdateFilters();
         }
-        UIWidgets2::CVarCheckbox("Show Logic", "gCheckTrackerOptionShowLogic",
+        UIWidgets2::CVarCheckbox("Show Logic", CVAR_TRACKER_CHECK("ShowLogic"),
             UIWidgets2::CheckboxOptions().Tooltip("If enabled, will show a check's logic when hovering over it.").Color(themeColor));
 
         // Filtering settings
@@ -1818,25 +1821,25 @@ void CheckTrackerWindow::InitElement() {
 }
 
 void CheckTrackerWindow::UpdateElement() {
-    Color_Background            = CVarGetColor(CVAR_TRACKER_CHECK("BgColor"),                     Color_Bg_Default);
-    Color_Area_Incomplete_Main  = CVarGetColor(CVAR_TRACKER_CHECK("AreaIncomplete.MainColor"),    Color_Main_Default);
-    Color_Area_Incomplete_Extra = CVarGetColor(CVAR_TRACKER_CHECK("AreaIncomplete.ExtraColor"),   Color_Area_Incomplete_Extra_Default);
-    Color_Area_Complete_Main    = CVarGetColor(CVAR_TRACKER_CHECK("AreaComplete.MainColor"),      Color_Main_Default);
-    Color_Area_Complete_Extra   = CVarGetColor(CVAR_TRACKER_CHECK("AreaComplete.ExtraColor"),     Color_Area_Complete_Extra_Default);
-    Color_Unchecked_Main        = CVarGetColor(CVAR_TRACKER_CHECK("Unchecked.MainColor"),         Color_Main_Default);
-    Color_Unchecked_Extra       = CVarGetColor(CVAR_TRACKER_CHECK("Unchecked.ExtraColor"),        Color_Unchecked_Extra_Default);
-    Color_Skipped_Main          = CVarGetColor(CVAR_TRACKER_CHECK("Skipped.MainColor"),           Color_Main_Default);
-    Color_Skipped_Extra         = CVarGetColor(CVAR_TRACKER_CHECK("Skipped.ExtraColor"),          Color_Skipped_Extra_Default);
-    Color_Seen_Main             = CVarGetColor(CVAR_TRACKER_CHECK("Seen.MainColor"),              Color_Main_Default);
-    Color_Seen_Extra            = CVarGetColor(CVAR_TRACKER_CHECK("Seen.ExtraColor"),             Color_Seen_Extra_Default);
-    Color_Hinted_Main           = CVarGetColor(CVAR_TRACKER_CHECK("Hinted.MainColor"),            Color_Main_Default);
-    Color_Hinted_Extra          = CVarGetColor(CVAR_TRACKER_CHECK("Hinted.ExtraColor"),           Color_Hinted_Extra_Default);
-    Color_Collected_Main        = CVarGetColor(CVAR_TRACKER_CHECK("Collected.MainColor"),         Color_Main_Default);
-    Color_Collected_Extra       = CVarGetColor(CVAR_TRACKER_CHECK("Collected.ExtraColor"),        Color_Collected_Extra_Default);
-    Color_Scummed_Main          = CVarGetColor(CVAR_TRACKER_CHECK("Scummed.MainColor"),           Color_Main_Default);
-    Color_Scummed_Extra         = CVarGetColor(CVAR_TRACKER_CHECK("Scummed.ExtraColor"),          Color_Scummed_Extra_Default);
-    Color_Saved_Main            = CVarGetColor(CVAR_TRACKER_CHECK("Saved.MainColor"),             Color_Main_Default);
-    Color_Saved_Extra           = CVarGetColor(CVAR_TRACKER_CHECK("Saved.ExtraColor"),            Color_Saved_Extra_Default);
+    Color_Background            = CVarGetColor(CVAR_TRACKER_CHECK("BgColor.Value"),                     Color_Bg_Default);
+    Color_Area_Incomplete_Main  = CVarGetColor(CVAR_TRACKER_CHECK("AreaIncomplete.MainColor.Value"),    Color_Main_Default);
+    Color_Area_Incomplete_Extra = CVarGetColor(CVAR_TRACKER_CHECK("AreaIncomplete.ExtraColor.Value"),   Color_Area_Incomplete_Extra_Default);
+    Color_Area_Complete_Main    = CVarGetColor(CVAR_TRACKER_CHECK("AreaComplete.MainColor.Value"),      Color_Main_Default);
+    Color_Area_Complete_Extra   = CVarGetColor(CVAR_TRACKER_CHECK("AreaComplete.ExtraColor.Value"),     Color_Area_Complete_Extra_Default);
+    Color_Unchecked_Main        = CVarGetColor(CVAR_TRACKER_CHECK("Unchecked.MainColor.Value"),         Color_Main_Default);
+    Color_Unchecked_Extra       = CVarGetColor(CVAR_TRACKER_CHECK("Unchecked.ExtraColor.Value"),        Color_Unchecked_Extra_Default);
+    Color_Skipped_Main          = CVarGetColor(CVAR_TRACKER_CHECK("Skipped.MainColor.Value"),           Color_Main_Default);
+    Color_Skipped_Extra         = CVarGetColor(CVAR_TRACKER_CHECK("Skipped.ExtraColor.Value"),          Color_Skipped_Extra_Default);
+    Color_Seen_Main             = CVarGetColor(CVAR_TRACKER_CHECK("Seen.MainColor.Value"),              Color_Main_Default);
+    Color_Seen_Extra            = CVarGetColor(CVAR_TRACKER_CHECK("Seen.ExtraColor.Value"),             Color_Seen_Extra_Default);
+    Color_Hinted_Main           = CVarGetColor(CVAR_TRACKER_CHECK("Hinted.MainColor.Value"),            Color_Main_Default);
+    Color_Hinted_Extra          = CVarGetColor(CVAR_TRACKER_CHECK("Hinted.ExtraColor.Value"),           Color_Hinted_Extra_Default);
+    Color_Collected_Main        = CVarGetColor(CVAR_TRACKER_CHECK("Collected.MainColor.Value"),         Color_Main_Default);
+    Color_Collected_Extra       = CVarGetColor(CVAR_TRACKER_CHECK("Collected.ExtraColor.Value"),        Color_Collected_Extra_Default);
+    Color_Scummed_Main          = CVarGetColor(CVAR_TRACKER_CHECK("Scummed.MainColor.Value"),           Color_Main_Default);
+    Color_Scummed_Extra         = CVarGetColor(CVAR_TRACKER_CHECK("Scummed.ExtraColor.Value"),          Color_Scummed_Extra_Default);
+    Color_Saved_Main            = CVarGetColor(CVAR_TRACKER_CHECK("Saved.MainColor.Value"),             Color_Main_Default);
+    Color_Saved_Extra           = CVarGetColor(CVAR_TRACKER_CHECK("Saved.ExtraColor.Value"),            Color_Saved_Extra_Default);
     hideUnchecked               = CVarGetInteger(CVAR_TRACKER_CHECK("Unchecked.Hide"), 0);
     hideScummed                 = CVarGetInteger(CVAR_TRACKER_CHECK("Scummed.Hide"), 0);
     hideSeen                    = CVarGetInteger(CVAR_TRACKER_CHECK("Seen.Hide"), 0);
@@ -1845,7 +1848,7 @@ void CheckTrackerWindow::UpdateElement() {
     hideCollected               = CVarGetInteger(CVAR_TRACKER_CHECK("Collected.Hide"), 0);
     showHidden                  = CVarGetInteger(CVAR_TRACKER_CHECK("ShowHidden"), 0);
     mystery                     = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0);
-    showLogicTooltip            = CVarGetInteger("gCheckTrackerOptionShowLogic", 0);
+    showLogicTooltip            = CVarGetInteger(CVAR_TRACKER_CHECK("ShowLogic"), 0);
 
     hideShopUnshuffledChecks = CVarGetInteger(CVAR_TRACKER_CHECK("HideUnshuffledShopChecks"), 1);
     alwaysShowGS = CVarGetInteger(CVAR_TRACKER_CHECK("AlwaysShowGSLocs"), 0);

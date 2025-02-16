@@ -105,6 +105,10 @@ void Menu::UpdateWindowBackendObjects() {
     }
 }
 
+UIWidgets2::Colors Menu::GetMenuThemeColor() {
+    return menuThemeIndex;
+}
+
 Menu::Menu(const std::string& cVar, const std::string& name, uint8_t searchSidebarIndex_,
            UIWidgets2::Colors defaultThemeIndex_)
     : GuiWindow(cVar, name), searchSidebarIndex(searchSidebarIndex_), defaultThemeIndex(defaultThemeIndex_) {
@@ -116,6 +120,7 @@ void Menu::InitElement() {
     poppedSize.y = CVarGetInteger(CVAR_SETTING("Menu.PoppedHeight"), 800);
     poppedPos.x = CVarGetInteger(CVAR_SETTING("Menu.PoppedPos.x"), 0);
     poppedPos.y = CVarGetInteger(CVAR_SETTING("Menu.PoppedPos.y"), 0);
+    menuThemeIndex = static_cast<UIWidgets2::Colors>(CVarGetInteger(CVAR_SETTING("Menu.Theme"), defaultThemeIndex));
 
     UpdateWindowBackendObjects();
 }
@@ -172,7 +177,6 @@ bool ModernMenuHeaderEntry(std::string label) {
 }
 
 uint32_t Menu::DrawSearchResults(std::string& menuSearchText) {
-    auto menuThemeIndex = static_cast<UIWidgets2::Colors>(CVarGetInteger(CVAR_SETTING("Menu.Theme"), defaultThemeIndex));
     ImGui::BeginChild("Search Results");
     int searchCount = 0;
     for (auto& menuLabel : menuOrder) {
@@ -479,7 +483,6 @@ void Menu::DrawElement() {
     for (auto& [reason, info] : disabledMap) {
         info.active = info.evaluation(info);
     }
-    auto menuThemeIndex = static_cast<UIWidgets2::Colors>(CVarGetInteger(CVAR_SETTING("Menu.Theme"), defaultThemeIndex));
 
     windowHeight = ImGui::GetMainViewport()->WorkSize.y;
     windowWidth = ImGui::GetMainViewport()->WorkSize.x;

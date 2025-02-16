@@ -6,6 +6,7 @@
 //
 
 #include "UIWidgets.hpp"
+#include "UIWidgets2.hpp"
 
 #include <imgui.h>
 #include <imgui_internal.h>

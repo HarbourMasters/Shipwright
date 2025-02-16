@@ -23,6 +23,7 @@ class Menu : public GuiWindow {
     void InsertSidebarSearch();
     void RemoveSidebarSearch();
     void UpdateWindowBackendObjects();
+    UIWidgets2::Colors GetMenuThemeColor();
 
     void MenuDrawItem(WidgetInfo& widget, uint32_t width, UIWidgets2::Colors menuThemeIndex);
     void AddMenuEntry(std::string entryName, const char* entryCvar);
@@ -59,6 +60,7 @@ class Menu : public GuiWindow {
     ImVec2 poppedPos;
     float windowHeight;
     float windowWidth;
+    UIWidgets2::Colors menuThemeIndex;
 };
 } // namespace Ship
 

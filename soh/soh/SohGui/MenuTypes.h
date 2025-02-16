@@ -207,28 +207,6 @@ struct disabledInfo {
     int32_t value = 0;
 };
 
-// struct Sidebar {
-//     //std::unordered_map<std::string, SidebarEntry> entries;
-//     uint32_t columnCount;
-//     std::vector<std::vector<WidgetInfo>> columnWidgets;
-//
-//     void Insert(std::string entryName, WidgetInfo& entry, int32_t index = -1) {
-//         if (index == -1 || index >= entryOrder.size()) {
-//             entryOrder.push_back(entryName);
-//         } else {
-//             entryOrder.insert(entryOrder.begin() + index, entryName);
-//         }
-//         columnWidgets[entryName].push_back({entry});
-//     }
-//
-//     void Erase(std::string entryName) {
-//         if (columnWidgets.contains(entryName)) {
-//             columnWidgets.erase(entryName);
-//         }
-//         std::erase_if(entryOrder, [entryName](std::string name) { return name == entryName; });
-//     }
-// };
-
 // Contains the name displayed in the sidebar (label), the number of columns to use in drawing (columnCount; for visual
 // separation, 1-3), and nested vectors of the widgets, grouped by column (columnWidgets). The number of widget vectors
 // added to the column groups does not need to match the specified columnCount, e.g. you can have one vector added to

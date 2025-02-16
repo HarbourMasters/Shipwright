@@ -11,6 +11,8 @@
 #include <libultraship/libultraship.h>
 
 #include "soh/SohGui/UIWidgets.hpp"
+
+#include "soh/SohGui/UIWidgets2.hpp"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 
@@ -468,23 +470,6 @@ static const char* MarginCvarNonAnchor[] {
     CVAR_COSMETIC("HUD.TitleCard.Map"),
     CVAR_COSMETIC("HUD.TitleCard.Boss")
 };
-
-ImVec4 GetRandomValue() {
-#if !defined(__SWITCH__) && !defined(__WIIU__)
-    std::random_device rd;
-    std::mt19937 rng(rd());
-#else
-    size_t seed = std::hash<std::string>{}(std::to_string(rand()));
-    std::mt19937_64 rng(seed);
-#endif
-    std::uniform_int_distribution<int> dist(0, 255 - 1);
-
-    ImVec4 NewColor;
-    NewColor.x = (float)(dist(rng)) / 255.0f;
-    NewColor.y = (float)(dist(rng)) / 255.0f;
-    NewColor.z = (float)(dist(rng)) / 255.0f;
-    return NewColor;
-}
 
 void SetMarginAll(const char* ButtonName, bool SetActivated) {
     if (ImGui::Button(ButtonName)) {
