@@ -220,80 +220,80 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
         }
     }
 
-    gDPPipeSync(POLY_KAL_DISP++);
-    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
-    gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA, G_CC_MODULATEIA);
+    gDPPipeSync(POLY_OPA_DISP++);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
+    gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA, G_CC_MODULATEIA);
 
-    gSPVertex(POLY_KAL_DISP++, &pauseCtx->mapPageVtx[68], 16, 0);
+    gSPVertex(POLY_OPA_DISP++, &pauseCtx->mapPageVtx[68], 16, 0);
 
-    gDPLoadTextureBlock(POLY_KAL_DISP++, dungeonTitleTexs[gSaveContext.mapIndex+(10*gSaveContext.language)], G_IM_FMT_IA, G_IM_SIZ_8b, 96, 16, 0,
+    gDPLoadTextureBlock(POLY_OPA_DISP++, dungeonTitleTexs[gSaveContext.mapIndex+(10*gSaveContext.language)], G_IM_FMT_IA, G_IM_SIZ_8b, 96, 16, 0,
                         G_TX_WRAP | G_TX_NOMIRROR, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
 
-    gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
+    gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
 
-    gDPPipeSync(POLY_KAL_DISP++);
-    gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+    gDPPipeSync(POLY_OPA_DISP++);
+    gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
 
     for (i = 0, j = 4; i < 3; i++, j += 4) {
         if (CHECK_DUNGEON_ITEM(i, gSaveContext.mapIndex)) {
-            gDPLoadTextureBlock(POLY_KAL_DISP++, dungeonItemTexs[i], G_IM_FMT_RGBA, G_IM_SIZ_32b, 24, 24, 0,
+            gDPLoadTextureBlock(POLY_OPA_DISP++, dungeonItemTexs[i], G_IM_FMT_RGBA, G_IM_SIZ_32b, 24, 24, 0,
                                 G_TX_WRAP | G_TX_NOMIRROR, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOMASK,
                                 G_TX_NOLOD, G_TX_NOLOD);
 
-            gSP1Quadrangle(POLY_KAL_DISP++, j, j + 2, j + 3, j + 1, 0);
+            gSP1Quadrangle(POLY_OPA_DISP++, j, j + 2, j + 3, j + 1, 0);
         }
     }
 
-    gDPPipeSync(POLY_KAL_DISP++);
-    gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 200, pauseCtx->alpha);
+    gDPPipeSync(POLY_OPA_DISP++);
+    gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 200, pauseCtx->alpha);
 
-    gSPVertex(POLY_KAL_DISP++, &pauseCtx->mapPageVtx[84], 32, 0);
+    gSPVertex(POLY_OPA_DISP++, &pauseCtx->mapPageVtx[84], 32, 0);
 
     for (i = j = 0; i < 8; i++, j += 4) {
         if ((gSaveContext.sceneFlags[gSaveContext.mapIndex].floors & gBitFlags[i]) ||
             CHECK_DUNGEON_ITEM(DUNGEON_MAP, gSaveContext.mapIndex)) {
             if (i != (pauseCtx->dungeonMapSlot - 3)) {
-                gDPLoadTextureBlock(POLY_KAL_DISP++, floorIconTexs[gMapData->floorID[interfaceCtx->unk_25A][i]],
+                gDPLoadTextureBlock(POLY_OPA_DISP++, floorIconTexs[gMapData->floorID[interfaceCtx->unk_25A][i]],
                                     G_IM_FMT_IA, G_IM_SIZ_8b, 24, 16, 0, G_TX_WRAP | G_TX_NOMIRROR,
                                     G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-                gSP1Quadrangle(POLY_KAL_DISP++, j, j + 2, j + 3, j + 1, 0);
+                gSP1Quadrangle(POLY_OPA_DISP++, j, j + 2, j + 3, j + 1, 0);
             }
         }
     }
 
     j = (pauseCtx->dungeonMapSlot - 3) * 4;
 
-    gDPPipeSync(POLY_KAL_DISP++);
-    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 150, 150, 255, pauseCtx->alpha);
+    gDPPipeSync(POLY_OPA_DISP++);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 150, 150, 255, pauseCtx->alpha);
 
-    gDPLoadTextureBlock(POLY_KAL_DISP++,
+    gDPLoadTextureBlock(POLY_OPA_DISP++,
                         floorIconTexs[gMapData->floorID[interfaceCtx->unk_25A][pauseCtx->dungeonMapSlot - 3]],
                         G_IM_FMT_IA, G_IM_SIZ_8b, 24, 16, 0, G_TX_WRAP | G_TX_NOMIRROR, G_TX_WRAP | G_TX_NOMIRROR,
                         G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    gSP1Quadrangle(POLY_KAL_DISP++, j, j + 2, j + 3, j + 1, 0);
+    gSP1Quadrangle(POLY_OPA_DISP++, j, j + 2, j + 3, j + 1, 0);
 
     pauseCtx->mapPageVtx[124].v.ob[0] = pauseCtx->mapPageVtx[126].v.ob[0] = pauseCtx->mapPageVtx[124].v.ob[0] + 2;
     pauseCtx->mapPageVtx[125].v.ob[0] = pauseCtx->mapPageVtx[127].v.ob[0] = pauseCtx->mapPageVtx[124].v.ob[0] + 19;
     pauseCtx->mapPageVtx[124].v.ob[1] = pauseCtx->mapPageVtx[125].v.ob[1] = pauseCtx->mapPageVtx[124].v.ob[1] - 2;
     pauseCtx->mapPageVtx[126].v.ob[1] = pauseCtx->mapPageVtx[127].v.ob[1] = pauseCtx->mapPageVtx[124].v.ob[1] - 19;
 
-    gSPVertex(POLY_KAL_DISP++, &pauseCtx->mapPageVtx[116], 12, 0);
+    gSPVertex(POLY_OPA_DISP++, &pauseCtx->mapPageVtx[116], 12, 0);
 
-    gDPPipeSync(POLY_KAL_DISP++);
-    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
+    gDPPipeSync(POLY_OPA_DISP++);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
 
     pauseCtx->mapPageVtx[116].v.ob[1] = pauseCtx->mapPageVtx[117].v.ob[1] = pauseCtx->offsetY - (VREG(30) * 14) + 49;
     pauseCtx->mapPageVtx[118].v.ob[1] = pauseCtx->mapPageVtx[119].v.ob[1] = pauseCtx->mapPageVtx[116].v.ob[1] - 16;
 
-    gDPLoadTextureBlock(POLY_KAL_DISP++, gDungeonMapLinkHeadTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 16, 16, 0,
+    gDPLoadTextureBlock(POLY_OPA_DISP++, gDungeonMapLinkHeadTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 16, 16, 0,
                         G_TX_WRAP | G_TX_NOMIRROR, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
 
-    gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
+    gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
 
     if (CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, gSaveContext.mapIndex) &&
         (gMapData->skullFloorIconY[gSaveContext.mapIndex] != -99)) {
@@ -301,14 +301,14 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
             gMapData->skullFloorIconY[gSaveContext.mapIndex] + pauseCtx->offsetY;
         pauseCtx->mapPageVtx[122].v.ob[1] = pauseCtx->mapPageVtx[123].v.ob[1] = pauseCtx->mapPageVtx[120].v.ob[1] - 16;
 
-        gDPLoadTextureBlock(POLY_KAL_DISP++, gDungeonMapSkullTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 16, 16, 0,
+        gDPLoadTextureBlock(POLY_OPA_DISP++, gDungeonMapSkullTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 16, 16, 0,
                             G_TX_WRAP | G_TX_NOMIRROR, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
 
-        gSP1Quadrangle(POLY_KAL_DISP++, 4, 6, 7, 5, 0);
+        gSP1Quadrangle(POLY_OPA_DISP++, 4, 6, 7, 5, 0);
     }
 
-    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
 
     if (GET_GS_FLAGS(gSaveContext.mapIndex) == gAreaGsFlags[gSaveContext.mapIndex]) {
         KaleidoScope_DrawQuadTextureRGBA32(gfxCtx, gQuestIconGoldSkulltulaTex, 24, 24, 8);
@@ -339,13 +339,13 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
         }
     }
 
-    gDPPipeSync(POLY_KAL_DISP++);
-    gDPSetTextureFilter(POLY_KAL_DISP++, G_TF_POINT);
-    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
+    gDPPipeSync(POLY_OPA_DISP++);
+    gDPSetTextureFilter(POLY_OPA_DISP++, G_TF_POINT);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
 
     // Use a unique palette address per frame so the renderer/shader can cache all variations
-    gDPLoadTLUT_pal16(POLY_KAL_DISP++, 0, interfaceCtx->mapPalettesPulse[palettePulseIdx]);
-    gDPSetTextureLUT(POLY_KAL_DISP++, G_TT_RGBA16);
+    gDPLoadTLUT_pal16(POLY_OPA_DISP++, 0, interfaceCtx->mapPalettesPulse[palettePulseIdx]);
+    gDPSetTextureLUT(POLY_OPA_DISP++, G_TT_RGBA16);
 
     u8 mirroredWorld = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0);
     u8 mirrorMode = mirroredWorld ? G_TX_MIRROR : G_TX_NOMIRROR;
@@ -356,31 +356,31 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
         }
     }
 
-    gSPVertex(POLY_KAL_DISP++, &pauseCtx->mapPageVtx[60], 8, 0);
+    gSPVertex(POLY_OPA_DISP++, &pauseCtx->mapPageVtx[60], 8, 0);
 
-    gDPLoadTextureBlock_4b(POLY_KAL_DISP++, interfaceCtx->mapSegmentName[0], G_IM_FMT_CI, MAP_48x85_TEX_WIDTH,
+    gDPLoadTextureBlock_4b(POLY_OPA_DISP++, interfaceCtx->mapSegmentName[0], G_IM_FMT_CI, MAP_48x85_TEX_WIDTH,
                            MAP_48x85_TEX_HEIGHT, 0, G_TX_WRAP | mirrorMode, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK,
                            G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
     // Swap vertices to render left half on the right and vice-versa
     if (mirroredWorld) {
-        gSP1Quadrangle(POLY_KAL_DISP++, 4, 6, 7, 5, 0);
+        gSP1Quadrangle(POLY_OPA_DISP++, 4, 6, 7, 5, 0);
     } else {
-        gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
+        gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
     }
 
-    gDPLoadTextureBlock_4b(POLY_KAL_DISP++, interfaceCtx->mapSegmentName[1], G_IM_FMT_CI, MAP_48x85_TEX_WIDTH,
+    gDPLoadTextureBlock_4b(POLY_OPA_DISP++, interfaceCtx->mapSegmentName[1], G_IM_FMT_CI, MAP_48x85_TEX_WIDTH,
                            MAP_48x85_TEX_HEIGHT, 0, G_TX_WRAP | mirrorMode, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK,
                            G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
     if (mirroredWorld) {
-        gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
+        gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
     } else {
-        gSP1Quadrangle(POLY_KAL_DISP++, 4, 6, 7, 5, 0);
+        gSP1Quadrangle(POLY_OPA_DISP++, 4, 6, 7, 5, 0);
     }
 
-    gDPPipeSync(POLY_KAL_DISP++);
-    gDPSetTextureFilter(POLY_KAL_DISP++, G_TF_BILERP);
+    gDPPipeSync(POLY_OPA_DISP++);
+    gDPSetTextureFilter(POLY_OPA_DISP++, G_TF_BILERP);
 
     CLOSE_DISPS(gfxCtx);
 }
@@ -546,55 +546,55 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
     // Use matrix scaling to flip the entire overworld map for mirror world
     if (mirroredWorld) {
         // Invert culling to counter act the matrix flip
-        gSPSetExtraGeometryMode(POLY_KAL_DISP++, G_EX_INVERT_CULLING);
+        gSPSetExtraGeometryMode(POLY_OPA_DISP++, G_EX_INVERT_CULLING);
         Matrix_Push();
         Matrix_Scale(-1.0f, 1.0f, 1.0f, MTXMODE_APPLY);
-        gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         Matrix_Pop();
     }
 
-    gDPPipeSync(POLY_KAL_DISP++);
+    gDPPipeSync(POLY_OPA_DISP++);
 
     if (HREG(15) == 0) {
-        gDPSetTextureFilter(POLY_KAL_DISP++, G_TF_POINT);
+        gDPSetTextureFilter(POLY_OPA_DISP++, G_TF_POINT);
 
-        gDPLoadTLUT_pal256(POLY_KAL_DISP++, gWorldMapImageTLUT);
-        gDPSetTextureLUT(POLY_KAL_DISP++, G_TT_RGBA16);
+        gDPLoadTLUT_pal256(POLY_OPA_DISP++, gWorldMapImageTLUT);
+        gDPSetTextureLUT(POLY_OPA_DISP++, G_TT_RGBA16);
 
-        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
-        gSPVertex(POLY_KAL_DISP++, &pauseCtx->mapPageVtx[188], 32, 0);
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
+        gSPVertex(POLY_OPA_DISP++, &pauseCtx->mapPageVtx[188], 32, 0);
 
         for (j = t = i = 0; i < 8; i++, t++, j += 4) {
-            gDPLoadMultiTile(POLY_KAL_DISP++, gWorldMapImageTex, 0, G_TX_RENDERTILE, G_IM_FMT_CI, G_IM_SIZ_8b, 216, 128, 0, t * 9, 216 - 1,
+            gDPLoadMultiTile(POLY_OPA_DISP++, gWorldMapImageTex, 0, G_TX_RENDERTILE, G_IM_FMT_CI, G_IM_SIZ_8b, 216, 128, 0, t * 9, 216 - 1,
                              (t + 1) * 9 - 1, 0, G_TX_WRAP | G_TX_NOMIRROR, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOMASK,
                              G_TX_NOLOD, G_TX_NOLOD);
-            gDPSetTileSize(POLY_KAL_DISP++, G_TX_RENDERTILE, 0, 0, (216 - 1) << G_TEXTURE_IMAGE_FRAC, (9 - 1) << G_TEXTURE_IMAGE_FRAC);
+            gDPSetTileSize(POLY_OPA_DISP++, G_TX_RENDERTILE, 0, 0, (216 - 1) << G_TEXTURE_IMAGE_FRAC, (9 - 1) << G_TEXTURE_IMAGE_FRAC);
 
-            gSP1Quadrangle(POLY_KAL_DISP++, j, j + 2, j + 3, j + 1, 0);
+            gSP1Quadrangle(POLY_OPA_DISP++, j, j + 2, j + 3, j + 1, 0);
         }
 
-        gSPVertex(POLY_KAL_DISP++, &pauseCtx->mapPageVtx[220], 28, 0);
+        gSPVertex(POLY_OPA_DISP++, &pauseCtx->mapPageVtx[220], 28, 0);
 
         for (j = i = 0; i < 6; i++, t++, j += 4) 
         {
-            gDPLoadMultiTile(POLY_KAL_DISP++, gWorldMapImageTex, 0, G_TX_RENDERTILE, G_IM_FMT_CI, G_IM_SIZ_8b, 216, 128,
+            gDPLoadMultiTile(POLY_OPA_DISP++, gWorldMapImageTex, 0, G_TX_RENDERTILE, G_IM_FMT_CI, G_IM_SIZ_8b, 216, 128,
                              0, t * 9, 216 - 1, (t + 1) * 9 - 1, 0, G_TX_WRAP | G_TX_NOMIRROR,
                              G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-            gDPSetTileSize(POLY_KAL_DISP++, G_TX_RENDERTILE, 0, 0, (216 - 1) << G_TEXTURE_IMAGE_FRAC,
+            gDPSetTileSize(POLY_OPA_DISP++, G_TX_RENDERTILE, 0, 0, (216 - 1) << G_TEXTURE_IMAGE_FRAC,
                            (9 - 1) << G_TEXTURE_IMAGE_FRAC);
 
-            gSP1Quadrangle(POLY_KAL_DISP++, j, j + 2, j + 3, j + 1, 0);
+            gSP1Quadrangle(POLY_OPA_DISP++, j, j + 2, j + 3, j + 1, 0);
         }
 
-        gDPLoadMultiTile(POLY_KAL_DISP++, gWorldMapImageTex, 0, G_TX_RENDERTILE, G_IM_FMT_CI, G_IM_SIZ_8b, 216, 128, 0,
+        gDPLoadMultiTile(POLY_OPA_DISP++, gWorldMapImageTex, 0, G_TX_RENDERTILE, G_IM_FMT_CI, G_IM_SIZ_8b, 216, 128, 0,
                          t * 9, 216 - 1, (t * 9 + 2) - 1, 0, G_TX_WRAP | G_TX_NOMIRROR, G_TX_WRAP | G_TX_NOMIRROR,
                          G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-        gDPSetTileSize(POLY_KAL_DISP++, G_TX_RENDERTILE, 0, 0, (216 - 1) << G_TEXTURE_IMAGE_FRAC,
+        gDPSetTileSize(POLY_OPA_DISP++, G_TX_RENDERTILE, 0, 0, (216 - 1) << G_TEXTURE_IMAGE_FRAC,
                        (2 - 1) << G_TEXTURE_IMAGE_FRAC);
 
-        gSP1Quadrangle(POLY_KAL_DISP++, j, j + 2, j + 3, j + 1, 0);
+        gSP1Quadrangle(POLY_OPA_DISP++, j, j + 2, j + 3, j + 1, 0);
     } else if (HREG(15) == 1) {
-        Gfx* gfx = POLY_KAL_DISP;
+        Gfx* gfx = POLY_OPA_DISP;
 
         gSPLoadUcodeL(gfx++, ucode_s2dex);
 
@@ -603,7 +603,7 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
 
         gSPLoadUcode(gfx++, SysUcode_GetUCode());
 
-        POLY_KAL_DISP = gfx;
+        POLY_OPA_DISP = gfx;
     }
 
     if (HREG(15) == 2) {
@@ -613,33 +613,33 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
     }
 
     if (ZREG(38) == 0) {
-        gDPPipeSync(POLY_KAL_DISP++);
-        gDPSetTextureFilter(POLY_KAL_DISP++, G_TF_BILERP);
+        gDPPipeSync(POLY_OPA_DISP++);
+        gDPSetTextureFilter(POLY_OPA_DISP++, G_TF_BILERP);
 
         Gfx_SetupDL_42Opa(gfxCtx);
 
-        gDPSetCombineLERP(POLY_KAL_DISP++, 1, 0, PRIMITIVE, 0, TEXEL0, 0, PRIMITIVE, 0, 1, 0, PRIMITIVE, 0, TEXEL0, 0,
+        gDPSetCombineLERP(POLY_OPA_DISP++, 1, 0, PRIMITIVE, 0, TEXEL0, 0, PRIMITIVE, 0, 1, 0, PRIMITIVE, 0, TEXEL0, 0,
                           PRIMITIVE, 0);
-        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 235, 235, 235, pauseCtx->alpha);
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 235, 235, 235, pauseCtx->alpha);
 
         for (k = 0; k < 15; k += 8) {
-            gSPVertex(POLY_KAL_DISP++, &pauseCtx->mapPageVtx[60 + k * 4], 32, 0);
+            gSPVertex(POLY_OPA_DISP++, &pauseCtx->mapPageVtx[60 + k * 4], 32, 0);
 
             for (j = i = 0; i < 8; i++, j += 4) {
                 if (!(gSaveContext.worldMapAreaData & gBitFlags[cloudFlagNums[k + i]])) {
-                    gDPLoadTextureBlock_4b(POLY_KAL_DISP++, cloudTexs[k + i], G_IM_FMT_I, D_8082AAEC[k + i],
+                    gDPLoadTextureBlock_4b(POLY_OPA_DISP++, cloudTexs[k + i], G_IM_FMT_I, D_8082AAEC[k + i],
                                            D_8082AB2C[k + i], 0, G_TX_WRAP | G_TX_NOMIRROR, G_TX_WRAP | G_TX_NOMIRROR,
                                            G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-                    gSP1Quadrangle(POLY_KAL_DISP++, j, j + 2, j + 3, j + 1, 0);
+                    gSP1Quadrangle(POLY_OPA_DISP++, j, j + 2, j + 3, j + 1, 0);
                 }
             }
         }
     }
 
     if (gSaveContext.worldMapArea < 22) {
-        gDPPipeSync(POLY_KAL_DISP++);
-        gDPSetTextureFilter(POLY_KAL_DISP++, G_TF_POINT);
+        gDPPipeSync(POLY_OPA_DISP++);
+        gDPSetTextureFilter(POLY_OPA_DISP++, G_TF_POINT);
 
         pauseCtx->mapPageVtx[172].v.ob[0] = pauseCtx->mapPageVtx[174].v.ob[0] =
             areaBoxPosX[((void)0, gSaveContext.worldMapArea)];
@@ -659,20 +659,20 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
         pauseCtx->mapPageVtx[174].v.tc[1] = pauseCtx->mapPageVtx[175].v.tc[1] =
             areaBoxHeights[((void)0, gSaveContext.worldMapArea)] << 5;
 
-        gSPVertex(POLY_KAL_DISP++, &pauseCtx->mapPageVtx[172], 4, 0);
+        gSPVertex(POLY_OPA_DISP++, &pauseCtx->mapPageVtx[172], 4, 0);
 
-        gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 100, 255, 255, pauseCtx->alpha);
+        gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 100, 255, 255, pauseCtx->alpha);
 
-        gDPLoadTextureBlock_4b(POLY_KAL_DISP++, areaBoxTexs[((void)0, (gSaveContext.worldMapArea))], G_IM_FMT_IA,
+        gDPLoadTextureBlock_4b(POLY_OPA_DISP++, areaBoxTexs[((void)0, (gSaveContext.worldMapArea))], G_IM_FMT_IA,
                                areaBoxWidths[((void)0, (gSaveContext.worldMapArea))],
                                areaBoxHeights[((void)0, (gSaveContext.worldMapArea))], 0, G_TX_WRAP | G_TX_NOMIRROR,
                                G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-        gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
+        gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
 
-        gDPPipeSync(POLY_KAL_DISP++);
-        gDPSetTextureFilter(POLY_KAL_DISP++, G_TF_BILERP);
+        gDPPipeSync(POLY_OPA_DISP++);
+        gDPSetTextureFilter(POLY_OPA_DISP++, G_TF_BILERP);
     }
 
     stepR = ABS(pointPulsePrimColor[0] - pointPrimColors[pointPulseStage][0]) / pointPulseTimer;
@@ -727,29 +727,29 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
 
     Gfx_SetupDL_42Opa(gfxCtx);
 
-    gDPSetCombineLERP(POLY_KAL_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE,
+    gDPSetCombineLERP(POLY_OPA_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE,
                       ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
 
-    gDPLoadTextureBlock(POLY_KAL_DISP++, gWorldMapDotTex, G_IM_FMT_IA, G_IM_SIZ_8b, 8, 8, 0, G_TX_WRAP | G_TX_NOMIRROR,
+    gDPLoadTextureBlock(POLY_OPA_DISP++, gWorldMapDotTex, G_IM_FMT_IA, G_IM_SIZ_8b, 8, 8, 0, G_TX_WRAP | G_TX_NOMIRROR,
                         G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
     for (j = t = i = 0; i < 12; i++, t++, j += 4) {
         if (pauseCtx->worldMapPoints[i] != 0) {
-            gDPPipeSync(POLY_KAL_DISP++);
+            gDPPipeSync(POLY_OPA_DISP++);
 
             if (pauseCtx->worldMapPoints[i] == 1) {
-                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, pointPrimColors[0][0], pointPrimColors[0][1],
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, pointPrimColors[0][0], pointPrimColors[0][1],
                                 pointPrimColors[0][2], pauseCtx->alpha);
-                gDPSetEnvColor(POLY_KAL_DISP++, pointEnvColors[0][0], pointEnvColors[0][1], pointEnvColors[0][2], 0);
+                gDPSetEnvColor(POLY_OPA_DISP++, pointEnvColors[0][0], pointEnvColors[0][1], pointEnvColors[0][2], 0);
             } else {
-                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, pointPulsePrimColor[0], pointPulsePrimColor[1],
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, pointPulsePrimColor[0], pointPulsePrimColor[1],
                                 pointPulsePrimColor[2], pauseCtx->alpha);
-                gDPSetEnvColor(POLY_KAL_DISP++, pointPulseEnvColor[0], pointPulseEnvColor[1], pointPulseEnvColor[2], 0);
+                gDPSetEnvColor(POLY_OPA_DISP++, pointPulseEnvColor[0], pointPulseEnvColor[1], pointPulseEnvColor[2], 0);
             }
 
-            gSPVertex(POLY_KAL_DISP++, &pauseCtx->mapPageVtx[124 + i * 4], 4, 0);
+            gSPVertex(POLY_OPA_DISP++, &pauseCtx->mapPageVtx[124 + i * 4], 4, 0);
 
-            gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
+            gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
         }
     }
 
@@ -768,47 +768,47 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
         }
     }
 
-    gSPVertex(POLY_KAL_DISP++, &pauseCtx->mapPageVtx[176], 16, 0);
+    gSPVertex(POLY_OPA_DISP++, &pauseCtx->mapPageVtx[176], 16, 0);
 
     if (pauseCtx->tradeQuestLocation != 0xFF) {
-        gDPPipeSync(POLY_KAL_DISP++);
-        gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, pointPulsePrimColor[0], 0, pauseCtx->alpha);
+        gDPPipeSync(POLY_OPA_DISP++);
+        gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, pointPulsePrimColor[0], 0, pauseCtx->alpha);
 
-        gDPLoadTextureBlock(POLY_KAL_DISP++, gWorldMapArrowTex, G_IM_FMT_IA, G_IM_SIZ_8b, 8, 8, 0,
+        gDPLoadTextureBlock(POLY_OPA_DISP++, gWorldMapArrowTex, G_IM_FMT_IA, G_IM_SIZ_8b, 8, 8, 0,
                             G_TX_WRAP | G_TX_NOMIRROR, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
 
-        gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
+        gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
     }
 
     if (gSaveContext.worldMapArea < 22) {
-        gDPPipeSync(POLY_KAL_DISP++);
-        gDPSetCombineLERP(POLY_KAL_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
+        gDPPipeSync(POLY_OPA_DISP++);
+        gDPSetCombineLERP(POLY_OPA_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                           PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
-        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 150, 255, 255, pauseCtx->alpha);
-        gDPSetEnvColor(POLY_KAL_DISP++, 0, 0, 0, 0);
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 150, 255, 255, pauseCtx->alpha);
+        gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
 
 
-        POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, pauseCtx->nameSegment + 0x400, 80, 32, 4);
+        POLY_OPA_DISP = KaleidoScope_QuadTextureIA8(POLY_OPA_DISP, pauseCtx->nameSegment + 0x400, 80, 32, 4);
     }
 
-    gDPPipeSync(POLY_KAL_DISP++);
-    gDPSetCombineLERP(POLY_KAL_DISP++, 1, 0, PRIMITIVE, 0, TEXEL0, 0, PRIMITIVE, 0, 1, 0, PRIMITIVE, 0, TEXEL0, 0,
+    gDPPipeSync(POLY_OPA_DISP++);
+    gDPSetCombineLERP(POLY_OPA_DISP++, 1, 0, PRIMITIVE, 0, TEXEL0, 0, PRIMITIVE, 0, 1, 0, PRIMITIVE, 0, TEXEL0, 0,
                       PRIMITIVE, 0);
-    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 0, 0, 0, pauseCtx->alpha);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0, 0, 0, pauseCtx->alpha);
 
-    gDPLoadTextureBlock_4b(POLY_KAL_DISP++, currentPosTitleTexs[gSaveContext.language], G_IM_FMT_I, 64, 8, 0,
+    gDPLoadTextureBlock_4b(POLY_OPA_DISP++, currentPosTitleTexs[gSaveContext.language], G_IM_FMT_I, 64, 8, 0,
                            G_TX_WRAP | mirrorMode, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                            G_TX_NOLOD);
 
-    gSP1Quadrangle(POLY_KAL_DISP++, 8, 10, 11, 9, 0);
+    gSP1Quadrangle(POLY_OPA_DISP++, 8, 10, 11, 9, 0);
 
-    gDPPipeSync(POLY_KAL_DISP++);
+    gDPPipeSync(POLY_OPA_DISP++);
 
     if (mirroredWorld) {
         // Revert the inversion
-        gSPClearExtraGeometryMode(POLY_KAL_DISP++, G_EX_INVERT_CULLING);
+        gSPClearExtraGeometryMode(POLY_OPA_DISP++, G_EX_INVERT_CULLING);
     }
 
     CLOSE_DISPS(gfxCtx);

@@ -127,7 +127,7 @@ void SohMenu::AddMenuSettings() {
         .Options(IntSliderOptions()
                      .Min(0)
                      .Max(100)
-                     .DefaultValue(30)
+                     .DefaultValue(40)
                      .ShowButtons(true)
                      .Format(""));
     AddWidget(path, "Main Music Volume: %d %%", WIDGET_CVAR_SLIDER_INT)
@@ -266,17 +266,6 @@ void SohMenu::AddMenuSettings() {
         .CVar("gMatchRefreshRate")
         .PreFunc([](WidgetInfo& info) { info.isHidden = mSohMenu->disabledMap.at(DISABLE_FOR_DIRECTX).active; })
         .Options(CheckboxOptions().Tooltip("Matches interpolation value to the current game's window refresh rate."));
-    AddWidget(path, "Jitter fix : >= % d FPS", WIDGET_CVAR_SLIDER_INT)
-        .CVar("gExtraLatencyThreshold")
-        .PreFunc([](WidgetInfo& info) { info.isHidden = mSohMenu->disabledMap.at(DISABLE_FOR_NOT_DIRECTX).active; })
-        .Options(IntSliderOptions()
-                     .Tooltip("When Interpolation FPS setting is at least this threshold, add one frame of input "
-                              "lag (e.g. 16.6 ms for 60 FPS) in order to avoid jitter. This setting allows the "
-                              "CPU to work on one frame while GPU works on the previous frame.\nThis setting "
-                              "should be used when your computer is too slow to do CPU + GPU work in time.")
-                     .Min(0)
-                     .Max(360)
-                     .DefaultValue(80));
     AddWidget(path, "Renderer API (Needs reload)", WIDGET_VIDEO_BACKEND);
     AddWidget(path, "Enable Vsync", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_VSYNC_ENABLED)

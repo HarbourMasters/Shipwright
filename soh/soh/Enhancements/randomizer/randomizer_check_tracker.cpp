@@ -83,7 +83,6 @@ bool initialized;
 bool doAreaScroll;
 bool previousShowHidden = false;
 bool hideShopUnshuffledChecks = true;
-bool hideTriforceCompleted = true;
 bool alwaysShowGS = false;
 UIWidgets2::Colors themeColor = UIWidgets2::Colors::LightBlue;
 
@@ -1235,8 +1234,6 @@ void LoadSettings() {
     showLinksPocket = IS_RANDO ? // don't show Link's Pocket if not randomizer, or if rando and pocket is disabled
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING
         :false;
-    hideTriforceCompleted = IS_RANDO ?
-        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT) != RO_GENERIC_ON : false;
 
     if (IS_RANDO) {
         switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TOKENS)) {
@@ -1343,7 +1340,8 @@ bool IsCheckShuffled(RandomizerCheck rc) {
             OTRGlobals::Instance->gRandoContext->IsQuestOfLocationActive(rc) &&
             (loc->GetRCType() != RCTYPE_SHOP ||
                 (showShops && OTRGlobals::Instance->gRandomizer->IdentifyShopItem(loc->GetScene(), loc->GetActorParams() + 1).enGirlAShopItem == 50)) &&
-            (rc != RC_TRIFORCE_COMPLETED || !hideTriforceCompleted) &&
+            (rc != RC_TRIFORCE_COMPLETED) &&
+            (rc != RC_GANON) &&
             (loc->GetRCType() != RCTYPE_SCRUB ||
                 showScrubs ||
                 (showMajorScrubs && (rc == RC_LW_DEKU_SCRUB_NEAR_BRIDGE || // The 3 scrubs that are always randomized
@@ -1427,7 +1425,9 @@ void UpdateAllAreas() {
 }
 
 void UpdateAreas(RandomizerCheckArea area) {
-    areasFullyChecked[area] = areaChecksGotten[area] == checksByArea.find(area)->second.size();
+    if (checksByArea.contains(area)) {
+        areasFullyChecked[area] = areaChecksGotten[area] == checksByArea.find(area)->second.size();
+    }
 }
 
 void UpdateAllOrdering() {

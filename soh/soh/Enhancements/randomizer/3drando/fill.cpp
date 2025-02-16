@@ -602,7 +602,7 @@ void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAcce
           auto message = "Location " +
                          Rando::StaticData::GetLocation(ctx->GetItemLocation(loc)->GetRandomizerCheck())->GetName() +
                          " not reachable\n";
-          SPDLOG_DEBUG(message);
+          LUSLOG_DEBUG("%s", message.c_str());
         #ifndef ENABLE_DEBUG
           break;
         #endif

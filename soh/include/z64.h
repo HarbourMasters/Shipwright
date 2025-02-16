@@ -97,7 +97,6 @@ typedef struct {
     /* 0x00000 */ u16 headMagic; // GFXPOOL_HEAD_MAGIC
     /* 0x00008 */ Gfx polyOpaBuffer[0x2FC0];
     /* 0x0BF08 */ Gfx polyXluBuffer[0x1000];
-    /* 0x0BF08 */ Gfx polyKalBuffer[0x1000];
     /* 0x0FF08 */ Gfx overlayBuffer[0x800];
     /* 0x11F08 */ Gfx workBuffer[0x100];
     /* 0x11308 */ Gfx unusedBuffer[0x40];
@@ -144,7 +143,6 @@ typedef struct OSScTask {
 typedef struct GraphicsContext {
     /* 0x0000 */ Gfx* polyOpaBuffer; // Pointer to "Zelda 0"
     /* 0x0004 */ Gfx* polyXluBuffer; // Pointer to "Zelda 1"
-    /* 0xXXX */  Gfx* polyKalBuffer; // Pointer to "Rome"
     /* 0x0008 */ char unk_008[0x08]; // Unused, could this be pointers to "Zelda 2" / "Zelda 3"
     /* 0x0010 */ Gfx* overlayBuffer; // Pointer to "Zelda 4"
     /* 0x0014 */ u32 unk_014;
@@ -163,7 +161,6 @@ typedef struct GraphicsContext {
     /* 0x02A8 */ TwoHeadGfxArena overlay; // "Zelda 4"
     /* 0x02B8 */ TwoHeadGfxArena polyOpa; // "Zelda 0"
     /* 0x02C8 */ TwoHeadGfxArena polyXlu; // "Zelda 1"
-    /* 0x0XXX */ TwoHeadGfxArena polyKal; // When in Rome...
     /* 0x02D8 */ u32 gfxPoolIdx;
     /* 0x02DC */ u16* curFrameBuffer;
     /* 0x02E0 */ char unk_2E0[0x04];

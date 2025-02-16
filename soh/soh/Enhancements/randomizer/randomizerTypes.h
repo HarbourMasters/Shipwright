@@ -5342,7 +5342,7 @@ typedef enum {
 //Scrubsanity settings (off, affordable, expensive, random)
 typedef enum {
     RO_SCRUBS_OFF,
-    RO_SCRUBS_MAJOR_ONLY,
+    RO_SCRUBS_ONE_TIME_ONLY,
     RO_SCRUBS_ALL,
 } RandoOptionScrubsanity;
 

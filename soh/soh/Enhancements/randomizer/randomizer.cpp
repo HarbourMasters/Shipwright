@@ -39,6 +39,7 @@
 #include "soh/util.h"
 #include "fishsanity.h"
 #include "randomizerTypes.h"
+#include "soh/Notification/Notification.h"
 
 extern std::map<RandomizerCheckArea, std::string> rcAreaNames;
 
@@ -4105,6 +4106,9 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
                 gSaveContext.ship.stats.gameComplete = 1;
                 Flags_SetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY);
                 Play_PerformSave(play);
+                Notification::Emit({
+                    .message = "Game autosaved",
+                });
                 GameInteractor_SetTriforceHuntCreditsWarpActive(true);
             }
 
