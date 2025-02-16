@@ -6,6 +6,7 @@
 #include "Menu.h"
 #include "graphic/Fast3D/gfx_rendering_api.h"
 #include "soh/cvar_prefixes.h"
+#include "soh/Enhancements/enhancementTypes.h"
 
 extern "C" {
 #include "z64.h"
@@ -48,6 +49,13 @@ static const std::unordered_map<int32_t, const char*> logLevels = {
 static const std::unordered_map<int32_t, const char*> notificationPosition = {
     { 0, "Top Left" }, { 1, "Top Right" }, { 2, "Bottom Left" }, { 3, "Bottom Right" }, { 4, "Hidden" },
 };
+
+static const std::unordered_map<int32_t, const char*> dekuStickCheat = { 
+    { DEKU_STICK_NORMAL, "Normal" },
+    { DEKU_STICK_UNBREAKABLE, "Unbreakable" },
+    { DEKU_STICK_UNBREAKABLE_AND_ALWAYS_ON_FIRE, "Unbreakable + Always on Fire" }
+};
+
 
 static const std::unordered_map<int32_t, const char*> debugSaveFileModes = {
     { 0, "Off" }, { 1, "Vanilla" }, { 2, "Maxed" },
