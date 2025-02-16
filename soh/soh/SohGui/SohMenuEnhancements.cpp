@@ -21,9 +21,105 @@ void SohMenu::AddMenuEnhancements() {
 
     // Enhancements
     WidgetPath path = { "Enhancements", "Enhancements", SECTION_COLUMN_1 };
+    path.sidebarName = "Time Savers";
     AddSidebarEntry("Enhancements", path.sidebarName, 3);
 
-    AddWidget(path, "filler", WIDGET_TEXT);
+    AddWidget(path, "Cutscenes", WIDGET_SEPARATOR_TEXT);
+    bool allSkipsChecked = false;
+    AddWidget(path, "Skip All", WIDGET_CHECKBOX)
+        .ValuePointer(&allSkipsChecked)
+        .PreFunc([](WidgetInfo& info) {
+            *std::get<bool*>(info.valuePointer) =
+            CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), IS_RANDO) &&
+            CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"), IS_RANDO) &&
+            CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO) &&
+            CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), IS_RANDO) &&
+            CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), IS_RANDO) &&
+            CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), IS_RANDO) &&
+            CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), IS_RANDO) &&
+            CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), IS_RANDO) &&
+            CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO) &&
+            CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), IS_RANDO);
+        })
+        .Callback([](WidgetInfo& info) {
+            int32_t newValue = *std::get<bool*>(info.valuePointer) ? 1 : 0;
+
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), newValue);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"), newValue);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), newValue);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), newValue);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), newValue);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), newValue);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), newValue);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), newValue);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), newValue);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), newValue);
+
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        });
+    AddWidget(path, "Skip Intro", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"))
+        .Options(CheckboxOptions().DefaultValue(IS_RANDO));
+    AddWidget(path, "Skip Entrance Cutscenes", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"))
+        .Options(CheckboxOptions().DefaultValue(IS_RANDO));
+    AddWidget(path, "Skip Story Cutscenes", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"))
+        .Options(CheckboxOptions().DefaultValue(IS_RANDO));
+    AddWidget(path, "Skip Song Cutscenes", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"))
+        .Options(CheckboxOptions().DefaultValue(IS_RANDO));
+    AddWidget(path, "Skip Boss Introductions", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"))
+        .Options(CheckboxOptions().DefaultValue(IS_RANDO));
+    AddWidget(path, "Quick Boss Deaths", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"))
+        .Options(CheckboxOptions().DefaultValue(IS_RANDO));
+    AddWidget(path, "Skip One Point Cutscenes (Chests, Door Unlocks, etc.)", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"))
+        .Options(CheckboxOptions().DefaultValue(IS_RANDO));
+    AddWidget(path, "Skip Owl Interactions", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"))
+        .Options(CheckboxOptions().DefaultValue(IS_RANDO));
+    AddWidget(path, "Skip Misc Interactions", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"))
+        .Options(CheckboxOptions().DefaultValue(IS_RANDO));
+    AddWidget(path, "Disable Title Card", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"))
+        .Options(CheckboxOptions().DefaultValue(IS_RANDO));
+    AddWidget(path, "Exclude Glitch-Aiding Cutscenes", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"))
+        .Options(CheckboxOptions().Tooltip(
+            "Don't skip cutscenes that are associated wiht useful glitches. Currently, it is "
+            "only the Fire Temple Darunia CS, Forest Temple Poe Sisters CS, and the Box Skip One "
+            "Point in Jabu."
+        ));
+    AddWidget(path, "Skip Child Stealth", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipChildStealth"))
+        .Options(CheckboxOptions().Tooltip(
+            "The crawlspace into Hyrule Castle goes straight to Zelda, skipping the guards."
+        ));
+    AddWidget(path, "Skip Tower Escape", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipTowerEscape"))
+        .Options(CheckboxOptions().Tooltip(
+            "Skip the tower escape sequence between Ganondorf and Ganon."
+        ));
+    AddWidget(path, "Skip Get Item Animations", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"))
+        .Options(ComboboxOptions().ComboMap(skipGetItemAnimationOptions).DefaultIndex(SGIA_DISABLED));
+    AddWidget(path, "Item Scale: %.2f", WIDGET_CVAR_SLIDER_FLOAT)
+        .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipGetItemAnimationScale"))
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_DISABLED) == SGIA_DISABLED;
+        })
+        .Options(FloatSliderOptions()
+            .Min(5.0f)
+            .Max(15.0f)
+            .Format("%.2f")
+            .DefaultValue(10.0f)
+            .Tooltip(
+                "The size of the item when it is picked up"
+            ));
 
     // Cheats
     path.sidebarName = "Cheats";

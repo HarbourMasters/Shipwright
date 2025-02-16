@@ -65,6 +65,11 @@ static const std::unordered_map<int32_t, const char*> dekuStickCheat = {
     { DEKU_STICK_UNBREAKABLE_AND_ALWAYS_ON_FIRE, "Unbreakable + Always on Fire" }
 };
 
+static const std::unordered_map<int32_t, const char*> skipGetItemAnimationOptions = {
+    { SGIA_DISABLED, "Disabled" },
+    { SGIA_JUNK, "Junk Items" },
+    { SGIA_ALL, "All Items" }
+};
 
 static const std::unordered_map<int32_t, const char*> debugSaveFileModes = {
     { 0, "Off" }, { 1, "Vanilla" }, { 2, "Maxed" },
