@@ -2,6 +2,13 @@
 #include <soh/Enhancements/mods.h>
 #include <soh/Enhancements/game-interactor/GameInteractor.h>
 
+bool isBetaQuestEnabled = false;
+
+extern "C" {
+    void enableBetaQuest() { isBetaQuestEnabled = true; }
+    void disableBetaQuest() { isBetaQuestEnabled = false; }
+}
+
 namespace SohGui {
 
 extern std::shared_ptr<SohMenu> mSohMenu;
@@ -175,7 +182,42 @@ void SohMenu::AddMenuEnhancements() {
             "Keese and Guay no longer target you and simply ignore you as if you were wearing the "
             "Skull Mask."
         ));
-    
+    path.column = SECTION_COLUMN_3;
+    AddWidget(path, "Beta Quest", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Enable Beta Quest", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_CHEAT("EnableBetaQuest"))
+        .PreFunc([](WidgetInfo& info) {
+            info.options->disabled = !isBetaQuestEnabled;
+        })
+        .Callback([](WidgetInfo& info) {
+            if (CVarGetInteger(CVAR_CHEAT("EnableBetaQuest"), 0) == 0) {
+                CVarClear(CVAR_CHEAT("BetaQuestWorld"));
+            } else {
+                CVarSetInteger(CVAR_CHEAT("BetaQuestWorld"), 0);
+            }
+            std::reinterpret_pointer_cast<Ship::ConsoleWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch("reset");
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        })
+        .Options(CheckboxOptions().Tooltip(
+            "Turns on OoT Beta Quest. *WARNING* This will reset your game."
+        ));
+    AddWidget(path, "Beta Quest World: %d", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_CHEAT("BetaQuestWorld"))
+        .PreFunc([](WidgetInfo& info) {
+            info.options->disabled = info.isHidden = CVarGetInteger(CVAR_CHEAT("EnableBetaQuest"), 0) == 0;
+        })
+        .Callback([](WidgetInfo& info) {
+            std::reinterpret_pointer_cast<Ship::ConsoleWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch("reset");
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        })
+        .Options(IntSliderOptions()
+            .DefaultValue(0)
+            .Min(0)
+            .Max(8)
+            .Tooltip(
+                "Set the Beta Quest world to explore. *WARNING* Changing this will reset your game.\n"
+                "Ctrl+Click to type in a value."
+            ));
 
     // Cosmetics Editor
     path.sidebarName = "Cosmetics Editor";

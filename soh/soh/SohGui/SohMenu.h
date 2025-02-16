@@ -15,6 +15,15 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+    void enableBetaQuest();
+    void disableBetaQuest();
+#ifdef __cplusplus
+}
+#endif
+
 namespace SohGui {
 
 static const std::unordered_map<int32_t, const char*> menuThemeOptions = {
