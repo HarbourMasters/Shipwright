@@ -1145,6 +1145,9 @@ int EntranceShuffler::ShuffleAllEntrances() {
         { { EntranceType::AdultBoss, RR_SHADOW_TEMPLE_BOSS_ENTRYWAY,    RR_SHADOW_TEMPLE_BOSS_ROOM,        ENTR_SHADOW_TEMPLE_BOSS_ENTRANCE },
           { EntranceType::AdultBoss, RR_SHADOW_TEMPLE_BOSS_ROOM,        RR_SHADOW_TEMPLE_BOSS_ENTRYWAY,    ENTR_SHADOW_TEMPLE_BOSS_DOOR } },
 
+        { { EntranceType::GanonTower, RR_GANONS_TOWER_ENTRYWAY, RR_GANONS_TOWER_FLOOR_1,  ENTR_GANONS_TOWER_0 },
+          { EntranceType::GanonTower, RR_GANONS_TOWER_FLOOR_1,  RR_GANONS_TOWER_ENTRYWAY, ENTR_INSIDE_GANONS_CASTLE_1 } },
+
         { { EntranceType::BlueWarp, RR_DEKU_TREE_BOSS_ROOM,        RR_KF_OUTSIDE_DEKU_TREE,      ENTR_KOKIRI_FOREST_DEKU_TREE_BLUE_WARP },
           NO_RETURN_ENTRANCE },
         { { EntranceType::BlueWarp, RR_DODONGOS_CAVERN_BOSS_ROOM,  RR_DEATH_MOUNTAIN_TRAIL,      ENTR_DEATH_MOUNTAIN_TRAIL_DODONGO_BLUE_WARP },
@@ -1222,6 +1225,15 @@ int EntranceShuffler::ShuffleAllEntrances() {
                     entrancePools[EntranceType::BossReverse].push_back(entrance->GetReverse());
                 }
             }
+
+            if (ctx->GetOption(RSK_SHUFFLE_GANON_TOWER_ENTRANCE).IsNot(RO_GENERIC_OFF)) {
+                AddElementsToPool(entrancePools[EntranceType::Boss], GetShuffleableEntrances(EntranceType::GanonTower));
+                if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
+                    for (Entrance* entrance : GetShuffleableEntrances(EntranceType::GanonTower)) {
+                        entrancePools[EntranceType::BossReverse].push_back(entrance->GetReverse());
+                    }
+                }
+            }
         } else {
             entrancePools[EntranceType::ChildBoss] = GetShuffleableEntrances(EntranceType::ChildBoss);
             entrancePools[EntranceType::AdultBoss] = GetShuffleableEntrances(EntranceType::AdultBoss);
@@ -1239,6 +1251,15 @@ int EntranceShuffler::ShuffleAllEntrances() {
                 }
                 for (Entrance* entrance : entrancePools[EntranceType::AdultBoss]) {
                     entrancePools[EntranceType::AdultBossReverse].push_back(entrance->GetReverse());
+                }
+            }
+
+            if (ctx->GetOption(RSK_SHUFFLE_GANON_TOWER_ENTRANCE).IsNot(RO_GENERIC_OFF)) {
+                AddElementsToPool(entrancePools[EntranceType::AdultBoss], GetShuffleableEntrances(EntranceType::GanonTower));
+                if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
+                    for (Entrance* entrance : GetShuffleableEntrances(EntranceType::GanonTower)) {
+                        entrancePools[EntranceType::AdultBossReverse].push_back(entrance->GetReverse());
+                    }
                 }
             }
         }

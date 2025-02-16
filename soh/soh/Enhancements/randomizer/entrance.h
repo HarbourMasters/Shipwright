@@ -25,6 +25,7 @@ enum class EntranceType {
     ChildBossReverse,
     AdultBoss,
     AdultBossReverse,
+    GanonTower,
     Interior,
     InteriorReverse,
     SpecialInterior,
