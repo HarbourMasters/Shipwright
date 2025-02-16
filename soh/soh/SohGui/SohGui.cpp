@@ -38,14 +38,6 @@
 #include "soh/Notification/Notification.h"
 #include "soh/Enhancements/TimeDisplay/TimeDisplay.h"
 
-bool isBetaQuestEnabled = false;
-
-extern "C" {
-    void enableBetaQuest() { isBetaQuestEnabled = true; }
-    void disableBetaQuest() { isBetaQuestEnabled = false; }
-}
-
-
 namespace SohGui {
 
     // MARK: - Properties
