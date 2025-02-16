@@ -431,7 +431,7 @@ void RegionTable_Init_GanonsCastle() {
 
 #pragma region Tower and Escape
 
-    areaTable[RR_GANONS_TOWER_ENTRYWAY] = Region("Ganon's Tower MQ Decider", "Ganons Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_GANONS_TOWER_ENTRYWAY] = Region("Ganon's Tower Entryway", "Ganons Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_GANONS_CASTLE_LOBBY,   []{return ctx->GetDungeon(GANONS_CASTLE)->IsVanilla();}),
         Entrance(RR_GANONS_CASTLE_MQ_MAIN, []{return ctx->GetDungeon(GANONS_CASTLE)->IsMQ();}),
