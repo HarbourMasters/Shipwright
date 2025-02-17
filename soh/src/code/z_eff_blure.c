@@ -1,6 +1,6 @@
 #include "global.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
-#include "z64effect.h"
+
 #include "soh/frame_interpolation.h"
 #include <assert.h>
 

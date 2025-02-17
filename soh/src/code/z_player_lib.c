@@ -6,8 +6,6 @@
 #include "objects/object_triforce_spot/object_triforce_spot.h"
 #include "overlays/actors/ovl_Demo_Effect/z_demo_effect.h"
 
-#include "z64.h"
-
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/draw.h"
 #include "soh/ResourceManagerHelpers.h"
