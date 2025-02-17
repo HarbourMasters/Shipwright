@@ -12,6 +12,7 @@ extern "C" {
 #include "z64.h"
 #include "functions.h"
 #include "variables.h"
+#include "macros.h"
 extern PlayState* gPlayState;
 }
 
@@ -92,6 +93,18 @@ static const std::unordered_map<int32_t, const char*> sleepingWaterfallOptions =
 
 static const std::unordered_map<int32_t, const char*> debugSaveFileModes = {
     { 0, "Off" }, { 1, "Vanilla" }, { 2, "Maxed" },
+};
+
+static const char* itemCountMessageCVars[3] = {
+    CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"),
+    CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"),
+    CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"),
+};
+
+static const char* itemCountMessageOptions[ARRAY_COUNT(itemCountMessageCVars)] = {
+    "Gold Skulltula Tokens",
+    "Pieces of Heart",
+    "Heart Containers",
 };
 
 class SohMenu : public Ship::Menu {

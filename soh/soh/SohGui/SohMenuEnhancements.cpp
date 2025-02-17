@@ -389,6 +389,174 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Only change the size/texture of chests if you have the Stone of Agony."
         ));
+    
+    path.sidebarName = "Items";
+    AddSidebarEntry("Enhancements", path.sidebarName, 2);
+    path.column = SECTION_COLUMN_1;
+
+    AddWidget(path, "Controls", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Equip Items on D-Pad", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("DpadEquips"))
+        .Options(CheckboxOptions().Tooltip(
+            "Equip items and equipment on the D-Pad. If used with \"D-Pad on Pause Screen\", you must "
+            "hold C-Up to equip instead of navgiate."
+        ));
+    AddWidget(path, "Instant Putaway", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("InstantPutaway"))
+        .Options(CheckboxOptions().Tooltip(
+            "Allow Link to put items away without having to wait around."
+        ));
+    AddWidget(path, "Instant Boomerang Recall", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("FastBoomerang"))
+        .Options(CheckboxOptions().Tooltip(
+            "Instantly return the boomerang to Link by pressing its item button while "
+            "it's in the air."
+        ));
+    AddWidget(path, "Prevent Dropped Ocarina Inputs", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"))
+        .Options(CheckboxOptions().Tooltip(
+            "Prevent dropping inputs when playing the Ocarina too quickly."
+        ));
+    AddWidget(path, "Masks", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Bunny Hood Effect", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("MMBunnyHood"))
+        .Options(CheckboxOptions().Tooltip(
+            "Wearing the Bunny Hood grants a speed increase link in Majora's Mask. "
+            "The longer jump option is not accounted for in Randomizer logic.\n\n"
+            "Also disables NPC's reactions to wearing the Bunny Hood."
+        ));
+    AddWidget(path, "Masks Equippable as Adult", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("AdultMasks"))
+        .Options(CheckboxOptions().Tooltip(
+            "Allows masks to be equipped normally from the pause menu as adult."
+        ));
+    AddWidget(path, "Persistent Masks", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("PersistentMasks"))
+        .Options(CheckboxOptions().Tooltip(
+            "Stops masks from automatically unequipping on certain situations:\n"
+            "- When entering a new scene\n"
+            "- When not in any C button or the D-Pad\n"
+            "- When saving and quitting\n"
+            "- When dying\n"
+            "- When traveling thru time (if \"Masks Equippable as Adult\" is activated)."
+        ));
+    AddWidget(path, "Mask Select in Inventory", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("MaskSelect"))
+        .Options(CheckboxOptions().Tooltip(
+            "After completing the mask trading sub-quest, press A and any direction on the mask "
+            "slog to change masks"
+        ));
+    AddWidget(path, "Item Count Messages", WIDGET_SEPARATOR_TEXT);
+    int numOptions = ARRAY_COUNT(itemCountMessageCVars);
+    bool allItemCountsChecked = false;
+    AddWidget(path, "All", WIDGET_CHECKBOX)
+        .ValuePointer(&allItemCountsChecked)
+        .PreFunc([](WidgetInfo& info) {
+            int numOptions = ARRAY_COUNT(itemCountMessageCVars);
+            *std::get<bool*>(info.valuePointer) = std::all_of(itemCountMessageCVars, itemCountMessageCVars + numOptions,
+                [](const char* cvar) { return CVarGetInteger(cvar, 0); });
+        })
+        .Callback([](WidgetInfo& info) {
+            int32_t newValue = *std::get<bool*>(info.valuePointer) ? 1 : 0;
+            int numOptions = ARRAY_COUNT(itemCountMessageCVars);
+            std::for_each(itemCountMessageCVars, itemCountMessageCVars + numOptions,
+                            [newValue](const char* cvar) { CVarSetInteger(cvar, newValue); });
+
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        });
+    for (int i = 0; i < numOptions; i++) {
+        AddWidget(path, itemCountMessageOptions[i], WIDGET_CVAR_CHECKBOX)
+            .CVar(itemCountMessageCVars[i]);
+    }
+    path.column = SECTION_COLUMN_2;
+    AddWidget(path, "Equipment", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Deku Nuts Explode Bombs", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("NutsExplodeBombs"))
+        .Options(CheckboxOptions().Tooltip(
+            "Make Deku Nuts explode Bombs, similar to how they interact with Bombchus. "
+            "This does not affect Bombflowers."
+        ));
+    AddWidget(path, "Equip Multiple Arrows at Once", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("SeparateArrows"))
+        .Options(CheckboxOptions().Tooltip(
+            "Allow the Bow and Magic Arrows to be equipped at the same time on different slots. "
+            "NOTE: This will disable the behavior of the 'Equip Dupe' glitch."
+        ));
+    AddWidget(path, "Bow and Child/Slingshot as Adult", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("BowSlingshotAmmoFix"))
+        .Options(CheckboxOptions().Tooltip(
+            "Allows Child to use a Bow with Arrows.\n"
+            "Allows Adult to use a Slingshot with Seeds.\n\n"
+            "Requires glitches or the 'Timeless Equipment' cheat to equip."
+        ));
+    AddWidget(path, "Better Farore's Wind", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("BetterFarore"))
+        .Options(CheckboxOptions().Tooltip(
+            "Helps FW persist between ages, gives Child and Adult separate FW points, and can "
+            "be used in more places."
+        ));
+    AddWidget(path, "Remove Explosive Limit", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("RemoveExplosiveLimit"))
+        .Options(CheckboxOptions().Tooltip(
+            "Removes the cap of 3 active explosives being deployed at once."
+        ));
+    AddWidget(path, "Static Explosion Radius", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("StaticExplosionRadius"))
+        .Options(CheckboxOptions().Tooltip(
+            "Explosions are now a static size, like in Majora's Mask and OoT3D. Makes Bombchu "
+            "hovering much easier."
+        ));
+    AddWidget(path, "Prevent Bombchus Forcing Firs-Person", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("DisableFirstPersonChus"))
+        .Options(CheckboxOptions().Tooltip(
+            "Prevent Bombchus from forcing the camera into first-person mode when released."
+        ));
+    AddWidget(path, "Better Bombchu Shopping", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("BetterBombchuShopping"))
+        .PreFunc([](WidgetInfo& info) {
+            info.options->disabled = IS_RANDO;
+            info.options->disabledTooltip = "This setting is forcefully enabled when you are playing a randomizer.";
+        })
+        .Options(CheckboxOptions().Tooltip(
+            "Bombchus do not sell out when bought, and a 10 pack of Bombchus costs 99 rupees "
+            "instead of 100."
+        ));
+    AddWidget(path, "Aiming Reticle for the Bow/Slingshot", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("BowReticle"))
+        .Options(CheckboxOptions().Tooltip(
+            "Aiming with a Bow or Slingshot will display a reticle as with the Hookshot "
+            "when the projectile is ready to fire."
+        ));
+    AddWidget(path, "Aim Boomerang in First-Person Mode", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("BoomerangFirstPerson"))
+        .Callback([](WidgetInfo& info) {
+            if (!CVarGetInteger(CVAR_ENHANCEMENT("BoomerangFirstPerson"), 0)) {
+                CVarSetInteger(CVAR_ENHANCEMENT("BoomerangReticle"), 0);
+            }
+        })
+        .Options(CheckboxOptions().Tooltip(
+            "Change aiming for the Boomerang from Third-Person to First-Person to see past Link's head."
+        ));
+    AddWidget(path, "Aiming Reticle for Boomerang", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("BoomerangFirstPerson"))
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("BoomerangFirstPerson"), 0) != 0;
+        })
+        .Options(CheckboxOptions().Tooltip(
+            "Aiming with the Boomerang will display a reticle as with the Hookshot."
+        ));
+    AddWidget(path, "Allow Strength Equipement to be Toggled", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("ToggleStrength"))
+        .Callback([](WidgetInfo& info) {
+            if (!CVarGetInteger(CVAR_ENHANCEMENT("ToggleStrength"), 0)) {
+                CVarSetInteger(CVAR_ENHANCEMENT("StrengthDisabled"), 0);
+            }
+        })
+        .Options(CheckboxOptions().Tooltip(
+            "Allows Strength to be toggled on and off by pressing A on the Strength Upgrade "
+            "in the Equipment Subscreen of the Pause Menu. This allows performing some glitches "
+            "that require the player to not have Strength."
+        ));
 
     // Cheats
     path.sidebarName = "Cheats";
