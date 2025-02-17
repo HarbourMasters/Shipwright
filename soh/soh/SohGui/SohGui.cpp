@@ -44,29 +44,7 @@ namespace SohGui {
 
     static const char* chestSizeAndTextureMatchesContentsOptions[4] = { "Disabled", "Both", "Texture Only", "Size Only" };
     static const char* bunnyHoodOptions[3] = { "Disabled", "Faster Run & Longer Jump", "Faster Run" };
-    static const char* allPowers[9] = {
-                        "Vanilla (1x)",
-                        "Double (2x)",
-                        "Quadruple (4x)",
-                        "Octuple (8x)",
-                        "Foolish (16x)",
-                        "Ridiculous (32x)",
-                        "Merciless (64x)",
-                        "Pure Torture (128x)",
-                        "OHKO (256x)" };
-    static const char* subPowers[8] = { allPowers[0], allPowers[1], allPowers[2], allPowers[3], allPowers[4], allPowers[5], allPowers[6], allPowers[7] };
-    static const char* subSubPowers[7] = { allPowers[0], allPowers[1], allPowers[2], allPowers[3], allPowers[4], allPowers[5], allPowers[6] };
     static const char* zFightingOptions[3] = { "Disabled", "Consistent Vanish", "No Vanish" };
-    static const char* bonkDamageValues[8] = {
-        "No Damage",
-        "0.25 Heart",
-        "0.5 Heart",
-        "1 Heart",
-        "2 Hearts",
-        "4 Hearts",
-        "8 Hearts",
-        "OHKO"
-    };
 
     static const inline std::vector<std::pair<const char*, const char*>> audioBackends = {
 #ifdef _WIN32

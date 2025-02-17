@@ -91,6 +91,50 @@ static const std::unordered_map<int32_t, const char*> sleepingWaterfallOptions =
     { WATERFALL_NEVER, "Never" }
 };
 
+static const std::unordered_map<int32_t, const char*> allPowers = {
+    { DAMAGE_VANILLA, "Vanilla (1x)" },
+    { DAMAGE_DOUBLE, "Double (2x)" },
+    { DAMAGE_QUADRUPLE, "Quadruple (4x)" },
+    { DAMAGE_OCTUPLE, "Octuple (8x)" },
+    { DAMAGE_FOOLISH, "Foolish (16x)" },
+    { DAMAGE_RIDICULOUS, "Ridiculous (32x)" },
+    { DAMAGE_MERCILESS, "Merciless (64x)" },
+    { DAMAGE_TORTURE, "Pure Torture (128x)" },
+    { DAMAGE_OHKO, "OHKO (256x)" }
+};
+
+static const std::unordered_map<int32_t, const char*> subPowers = {
+    { DAMAGE_VANILLA, "Vanilla (1x)" },
+    { DAMAGE_DOUBLE, "Double (2x)" },
+    { DAMAGE_QUADRUPLE, "Quadruple (4x)" },
+    { DAMAGE_OCTUPLE, "Octuple (8x)" },
+    { DAMAGE_FOOLISH, "Foolish (16x)" },
+    { DAMAGE_RIDICULOUS, "Ridiculous (32x)" },
+    { DAMAGE_MERCILESS, "Merciless (64x)" },
+    { DAMAGE_TORTURE, "Pure Torture (128x)" },
+};
+
+static const std::unordered_map<int32_t, const char*> subSubPowers = {
+    { DAMAGE_VANILLA, "Vanilla (1x)" },
+    { DAMAGE_DOUBLE, "Double (2x)" },
+    { DAMAGE_QUADRUPLE, "Quadruple (4x)" },
+    { DAMAGE_OCTUPLE, "Octuple (8x)" },
+    { DAMAGE_FOOLISH, "Foolish (16x)" },
+    { DAMAGE_RIDICULOUS, "Ridiculous (32x)" },
+    { DAMAGE_MERCILESS, "Merciless (64x)" },
+};
+
+static const std::unordered_map<int32_t, const char*> bonkDamageValues = {
+    { BONK_DAMAGE_NONE, "No Damage" },
+    { BONK_DAMAGE_QUARTER_HEART, "0.25 Hearts" },
+    { BONK_DAMAGE_HALF_HEART, "0.5 Hearts" },
+    { BONK_DAMAGE_1_HEART, "1 Heart" },
+    { BONK_DAMAGE_2_HEARTS, "2 Hearts" },
+    { BONK_DAMAGE_4_HEARTS, "4 Hearts" },
+    { BONK_DAMAGE_8_HEARTS, "8 Hearts" },
+    { BONK_DAMAGE_OHKO, "OHKO" }
+};
+
 static const std::unordered_map<int32_t, const char*> debugSaveFileModes = {
     { 0, "Off" }, { 1, "Vanilla" }, { 2, "Maxed" },
 };

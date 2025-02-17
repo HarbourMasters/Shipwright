@@ -557,6 +557,438 @@ void SohMenu::AddMenuEnhancements() {
             "in the Equipment Subscreen of the Pause Menu. This allows performing some glitches "
             "that require the player to not have Strength."
         ));
+    
+    // Difficulty Options
+    path.sidebarName = "Difficulty";
+    AddSidebarEntry("Enhancements", path.sidebarName, 3);
+    path.column = SECTION_COLUMN_1;
+
+    AddWidget(path, "Shooting Gallery", WIDGET_SEPARATOR_TEXT);
+    auto shootingGalleryDisabledFunc = [](WidgetInfo& info) {
+        info.options->disabled = !CVarGetInteger(CVAR_ENHANCEMENT("CustomizeShootingGallery"), 0);
+        info.options->disabledTooltip = "This option is disabled because \"Customize Behavior\" is turned off.";
+    };
+    AddWidget(path, "Customize Behavior##Shooting", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("CustomizeShootingGallery"))
+        .Options(CheckboxOptions().Tooltip("Turn on/off changes to the shooting gallery behavior"));
+    AddWidget(path, "Instant Win", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("InstantShootingGalleryWin"))
+        .PreFunc(shootingGalleryDisabledFunc)
+        .Options(CheckboxOptions().Tooltip("Skips the Shooting Gallery minigame"));
+    AddWidget(path, "No Rupee Randomization", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("ConstantAdultGallery"))
+        .PreFunc(shootingGalleryDisabledFunc)
+        .Options(CheckboxOptions().Tooltip(
+            "Forces the rupee order to not be randomized as adult, making it the same as child."
+        ));
+    AddWidget(path, "Child Starting Ammunition: %d seeds", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_ENHANCEMENT("ShootingGalleryAmmoChild"))
+        .PreFunc(shootingGalleryDisabledFunc)
+        .Options(IntSliderOptions()
+            .Min(10)
+            .Max(30)
+            .DefaultValue(15)
+            .Format("%d seeds")
+            .Tooltip(
+                "The ammunition at the start of the Shooting Gallery minigame as Child."
+            )
+        );
+    AddWidget(path, "Adult Starting Ammunition: %d arrows", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_ENHANCEMENT("ShootingGalleryAmmoAdult"))
+        .PreFunc(shootingGalleryDisabledFunc)
+        .Options(IntSliderOptions()
+            .Min(10)
+            .Max(30)
+            .DefaultValue(15)
+            .Format("%d arrows")
+            .Tooltip(
+                "The ammunition at the start of the Shooting Gallery minigame as Adult."
+            )
+        );
+    
+    AddWidget(path, "Bombchu Bowling", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Customize Behavior##Bowling", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("CustomizeBombchuBowling"))
+        .Options(CheckboxOptions().Tooltip(
+            "Turn on/off changes to the Bombchu Bowling behavior."
+        ));
+    auto bombchuBowlingDisabledFunc = [](WidgetInfo& info) {
+        info.options->disabled = CVarGetInteger(CVAR_ENHANCEMENT("CustomizeBombchuBowling"), 0) == 0;
+        info.options->disabledTooltip = "This option is disabled because \"Customize Behavior\" is turned off";
+    };
+    AddWidget(path, "Remove Small Cucco", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("BombchuBowlingNoSmallCucco"))
+        .PreFunc(bombchuBowlingDisabledFunc)
+        .Options(CheckboxOptions().Tooltip(
+            "Prevents the small Cucco from appearing in the Bombchu Bowling minigame."
+        ));
+    AddWidget(path, "Remove Big Cucco", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("BombchuBowlingNoBigCucco"))
+        .PreFunc(bombchuBowlingDisabledFunc)
+        .Options(CheckboxOptions().Tooltip(
+            "Prevents the big Cucco from appearing in the Bombchu Bowling minigame."
+        ));
+    AddWidget(path, "Bombchu Count: %d bombchus", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_ENHANCEMENT("BombchuBowlingAmmo"))
+        .PreFunc(bombchuBowlingDisabledFunc)
+        .Options(IntSliderOptions()
+            .Min(3)
+            .Max(20)
+            .DefaultValue(10)
+            .Format("%d bombchus")
+            .Tooltip("The number of Bombchus available at the start of the Bombchu Bowling minigame.")
+        );
+    
+    AddWidget(path, "Fishing", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Customize Behavior##Fishing", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("CustomizeFishing"))
+        .Options(CheckboxOptions().Tooltip(
+            "Turn on/off changes to the Fishing behavior"
+        ));
+    auto fishingDisabledFunc = [](WidgetInfo& info) {
+        info.options->disabled = CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) == 0;
+        info.options->disabledTooltip = "This option is disabled because \"Customize Behavior\" is turned off.";
+    };
+    AddWidget(path, "Instant Fishing", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("InstantFishing"))
+        .PreFunc(fishingDisabledFunc)
+        .Options(CheckboxOptions().Tooltip(
+            "All fish will be caught instantly."
+        ));
+    AddWidget(path, "Guarantee Bite", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("GuaranteeFishingBite"))
+        .PreFunc(fishingDisabledFunc)
+        .Options(CheckboxOptions().Tooltip(
+            "When a line is stable, guarantee bite. Otherwise use Default logic."
+        ));
+    AddWidget(path, "Fish Never Escape", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("FishNeverEscape"))
+        .PreFunc(fishingDisabledFunc)
+        .Options(CheckboxOptions().Tooltip(
+            "Once a hook as been set, Fish will never let go while being reeled in."
+        ));
+    AddWidget(path, "Loaches Always Appear", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("LoachesAlwaysAppear"))
+        .PreFunc(fishingDisabledFunc)
+        .Options(CheckboxOptions().Tooltip(
+            "Loaches will always appear in the fishing pond instead of every four visits."
+        ));
+    AddWidget(path, "Skip Keep Confirmation", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("SkipKeepConfirmation"))
+        .PreFunc(fishingDisabledFunc)
+        .Options(CheckboxOptions().Tooltip(
+            "The Pond Owner will not ask to confirm if you want to keep a smaller Fish."
+        ));
+    AddWidget(path, "Child Minimum Weight: %d lbs.", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_ENHANCEMENT("MinimumFishWeightChild"))
+        .PreFunc(fishingDisabledFunc)
+        .Options(IntSliderOptions()
+            .Min(3)
+            .Max(10)
+            .DefaultValue(10)
+            .Format("%d lbs.")
+            .Tooltip(
+                "The minimum weight for the unique Fishing Reward as a Child."
+            )
+        );
+    AddWidget(path, "Adult Minimum Weight: %d lbs.", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_ENHANCEMENT("MinimumFishWeightAdult"))
+        .PreFunc(fishingDisabledFunc)
+        .Options(IntSliderOptions()
+            .Min(6)
+            .Max(13)
+            .DefaultValue(13)
+            .Format("%d lbs.")
+            .Tooltip(
+                "The minimum weight for the unique fishing reward as an Adult."
+            )
+        );
+    AddWidget(path, "All Fish are Hyrule Loaches", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_ENHANCEMENT("AllHyruleLoaches"))
+        .PreFunc(fishingDisabledFunc)
+        .Options(IntSliderOptions().Tooltip(
+            "Every fish in the Fishing Pond will always be a Hyrule Loach.\n\n"
+            "NOTE: This requires reloading the area."
+        ));
+    
+    path.column = SECTION_COLUMN_2;
+    AddWidget(path, "Lost Woods Ocarina Game", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Customize Behavior##LostWoods", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("CustomizeOcarinaGame"))
+        .Options(CheckboxOptions().Tooltip(
+            "Turn on/off changes to the Lost Woods Ocarina Game behavior."
+        ));
+    auto ocarinaMemoryGameDisabledFunc = [](WidgetInfo& info) {
+        info.options->disabled = CVarGetInteger(CVAR_ENHANCEMENT("CustomizeOcarinaGame"), 0) == 0;
+        info.options->disabledTooltip = "This options is disabled because \"Customize Behavior\" is turned off.";
+    };
+    AddWidget(path, "Instant Win##LostWoods", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("InstantOcarinaGameWin"))
+        .PreFunc(ocarinaMemoryGameDisabledFunc)
+        .Options(CheckboxOptions().Tooltip(
+            "Skips the Lost Woods Ocarina Memory Game."
+        ));
+    AddWidget(path, "Note Play Speed: %dx", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_ENHANCEMENT("OcarinaGame.NoteSpeed"))
+        .PreFunc(ocarinaMemoryGameDisabledFunc)
+        .Options(IntSliderOptions()
+            .Min(1)
+            .Max(5)
+            .DefaultValue(1)
+            .Format("%dx")
+            .Tooltip(
+                "Adjust the speed that the Skull Kids play the notes."
+            )
+        );
+    AddWidget(path, "Unlimited Playback Time##LostWoods", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("OcarinaUnlimitedFailTime"))
+        .PreFunc(ocarinaMemoryGameDisabledFunc)
+        .Options(CheckboxOptions().Tooltip(
+            "Removes the timer to play back the song."
+        ));
+    AddWidget(path, "Number of Starting Notes: %d notes", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_ENHANCEMENT("OcarinaGame.StartingNotes"))
+        .PreFunc(ocarinaMemoryGameDisabledFunc)
+        .Options(IntSliderOptions()
+            .Min(1)
+            .Max(8)
+            .DefaultValue(3)
+            .Format("%d notes")
+            .Tooltip(
+                "Adjust the number of notes the Skull Kids play to start the first round."
+            )
+        );
+    int roundMin = CVarGetInteger(CVAR_ENHANCEMENT("OcarinaGame.StartingNotes"), 3);
+    AddWidget(path, "Round One Notes: %d notes", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_ENHANCEMENT("OcarinaGame.RoundOneNotes"))
+        .PreFunc(ocarinaMemoryGameDisabledFunc)
+        .Options(IntSliderOptions()
+            .Min(roundMin)
+            .Max(8)
+            .DefaultValue(5)
+            .Format("%d notes")
+            .Tooltip(
+                "Adjust the number of notes you need to play to end the first round."
+            )
+        );
+    AddWidget(path, "Round Two Notes: %d notes", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_ENHANCEMENT("OcarinaGame.RoundTwoNotes"))
+        .PreFunc(ocarinaMemoryGameDisabledFunc)
+        .Options(IntSliderOptions()
+            .Min(roundMin)
+            .Max(8)
+            .DefaultValue(6)
+            .Format("%d notes")
+            .Tooltip(
+                "Adjust the number of notes you need to play to end the second round."
+            )
+        );
+    AddWidget(path, "Round Three Notes: %d notes", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_ENHANCEMENT("OcarinaGame.RoundThreeNotes"))
+        .PreFunc(ocarinaMemoryGameDisabledFunc)
+        .Options(IntSliderOptions()
+            .Min(roundMin)
+            .Max(8)
+            .DefaultValue(8)
+            .Format("%d notes")
+            .Tooltip(
+                "Adjust the number of notes you need to play to end the third round."
+            )
+        );
+    
+    AddWidget(path, "Frogs' Ocarina Game", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Customize Behavior##Frogs", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("CustomizeFrogsOcarinaGame"))
+        .Options(CheckboxOptions().Tooltip(
+            "Turn on/off changes to the Frogs' Ocarina Game behavior."
+        ));
+    auto frogsOcarinaGameDisabledFunc = [](WidgetInfo& info) {
+        info.options->disabled = CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFrogsOcarinaGame"), 0) == 0;
+        info.options->disabledTooltip = "This option is disabled because \"Customize Behavior\" is turned off.";
+    };
+    AddWidget(path, "Instant Win##Frogs", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("InstantFrogsGameWin"))
+        .PreFunc(frogsOcarinaGameDisabledFunc)
+        .Options(CheckboxOptions().Tooltip(
+            "Skips the Frogs' Ocarina Game."
+        ));
+    AddWidget(path, "Unlimited Playback Time##Frogs", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("FrogsUnlimitedFailTime"))
+        .PreFunc(frogsOcarinaGameDisabledFunc)
+        .Options(CheckboxOptions().Tooltip(
+            "Removes the timer to play back the song."
+        ));
+    AddWidget(path, "Modify note timer: %dx", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_ENHANCEMENT("FrogsModifyFailTime"))
+        .PreFunc([](WidgetInfo& info) {
+            info.options->disabled = !CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFrogsOcarinaGame"), 0) || CVarGetInteger(CVAR_ENHANCEMENT("FrogsUnlimitedFailTime"), 0);
+            info.options->disabledTooltip = "This option is disabled because \"Customize Behavior\" is turned off or \"Unlimited Playback Time\" is on";
+        })
+        .Options(IntSliderOptions()
+            .Min(1)
+            .Max(5)
+            .DefaultValue(1)
+            .Format("%dx")
+            .Tooltip(
+                "Adjusts the time allowed for playback before failing."
+            )
+        );
+    
+    AddWidget(path, "Health", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Permanent Heart Loss", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("PermanentHeartLoss"))
+        .Callback([](WidgetInfo& info) {
+            UpdatePermanentHeartLossState();
+        })
+        .Options(CheckboxOptions().Tooltip(
+            "When you lose 4 quarters of a heart you will permanently lose that Heart Container.\n\n"
+            "Disabling this after the fact will restore your Heart Containers."
+        ));
+    AddWidget(path, "Damage Multiplier", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_ENHANCEMENT("DamageMult"))
+        .Options(ComboboxOptions()
+            .ComboMap(allPowers)
+            .DefaultIndex(0)
+            .Tooltip(
+                "Modifies all sources of damage not affected by other sliders\n"
+                    "2x: Can survive all common attacks from the start of the game\n"
+                    "4x: Dies in 1 hit to any substantial attack from the start of the game\n"
+                    "8x: Can only survive trivial damage from the start of the game\n"
+                    "16x: Can survive all common attacks with max health without double defense\n"
+                    "32x: Can survive all common attacks with max health and double defense\n"
+                    "64x: Can survive trivial damage with max health without double defense\n"
+                    "128x: Can survive trivial damage with max health and double defense\n"
+                    "256x: Cannot survive damage"
+            )
+        );
+    AddWidget(path, "Fall Damage Multiplier", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_ENHANCEMENT("FallDamageMult"))
+        .Options(ComboboxOptions()
+            .ComboMap(subPowers)
+            .Tooltip(
+                "Modifies all fall damage\n"
+                    "2x: Can survive all fall damage from the start of the game\n"
+                    "4x: Can only survive short fall damage from the start of the game\n"
+                    "8x: Cannot survive any fall damage from the start of the game\n"
+                    "16x: Can survive all fall damage with max health without double defense\n"
+                    "32x: Can survive all fall damage with max health and double defense\n"
+                    "64x: Can survive short fall damage with double defense\n"
+                    "128x: Cannot survive fall damage"
+            )
+        );
+    AddWidget(path, "Void Damage Multiplier", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_ENHANCEMENT("VoidDamageMult"))
+        .Options(ComboboxOptions()
+            .ComboMap(subSubPowers)
+            .DefaultIndex(0)
+            .Tooltip(
+                "Modifies damage taken after falling into a void\n"
+                "2x: Can survive void damage from the start of the game\n"
+                "4x: Cannot survive void damage from the start of the game\n"
+                "8x: Can survive void damage twice with max health without double defense\n"
+                "16x: Can survive void damage with max health without double defense\n"
+                "32x: Can survive void damage with max health and double defense\n"
+                "64x: Cannot survive void damage"
+            )
+        );
+    AddWidget(path, "Bonk Damage Multiplier", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_ENHANCEMENT("BonkDamageMult"))
+        .Options(ComboboxOptions()
+            .ComboMap(bonkDamageValues)
+            .DefaultIndex(BONK_DAMAGE_NONE)
+            .Tooltip("Modifies Damage taken after Bonking.")
+        );
+    AddWidget(path, "Spawn with Full Health", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("FullHealthSpawn"))
+        .Options(CheckboxOptions().Tooltip(
+            "Respawn with Full Health instead of 3 hearts."
+        ));
+    AddWidget(path, "No Heart Drops", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("NoHeartDrops"))
+        .Options(CheckboxOptions().Tooltip(
+            "Disables Heart Drops, but not Heart Placements, like from a Deku Scrub running off.\n"
+            "This simulates Hero Mode from other games in the series."
+        ));
+    
+    path.column = SECTION_COLUMN_3;
+    AddWidget(path, "Drops", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "No Random Drops", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("NoRandomDrops"))
+        .Options(CheckboxOptions().Tooltip(
+            "Disables Random Drops, except from the Goron Pot, Dampe, and Bosses."
+        ));
+    AddWidget(path, "Enable Bombchu Drops", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("EnableBombchuDrops"))
+        .PreFunc([](WidgetInfo& info) {
+            info.options->disabled = OTRGlobals::Instance->gRandoContext->GetOption(RSK_ENABLE_BOMBCHU_DROPS).Is(RO_GENERIC_ON);
+            info.options->disabledTooltip = "This setting is forcefully enabled because a randomized savefile with "
+            "\"Enable Bombchu Drops\" is loaded.";
+        })
+        .Options(CheckboxOptions().Tooltip(
+            "Bombchus will sometimes drop in place of Bombs."
+        ));
+    AddWidget(path, "Trees Drop Sticks", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("TreesDropSticks"))
+        .Options(CheckboxOptions().Tooltip(
+            "Bonking into Trees will have a chance to drop up to 3 Sticks. Must have obtained sticks previously."
+        ));
+
+    AddWidget(path, "Miscellaneous", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Delete File on Death", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("DeleteFileOnDeath"))
+        .Options(CheckboxOptions().Tooltip(
+            "Dying will delete your file.\n\n"
+            ICON_FA_EXCLAMATION_TRIANGLE " WARNING " ICON_FA_EXCLAMATION_TRIANGLE
+            "\nTHIS IS NOT REVERSABLE\nUSE AT YOUR OWN RISK!"
+        ));
+    AddWidget(path, "Hyper Bosses", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("HyperBosses"))
+        .Options(CheckboxOptions().Tooltip(
+            "All Major Bosses move and act twice as fast."
+        ));
+    AddWidget(path, "Hyper Enemies", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("HyperEnemies"))
+        .Options(CheckboxOptions().Tooltip(
+            "All Regular Enemies and Mini-Bosses move and act twice as fast."
+        ));
+    AddWidget(path, "Always Win Goron Pot", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("GoronPot"))
+        .Options(CheckboxOptions().Tooltip(
+            "Always get the Heart Piece/Purple Rupee from the Spinning Goron Pot."
+        ));
+    AddWidget(path, "Always Win Dampe Digging Game", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("DampeWin"))
+        .Options(CheckboxOptions().Tooltip(
+            "Always win the Heart Piece/Purple Rupee on the first dig in Dampe's Grave Digging game. "
+            "In a Randomizer file, this is always enabled."
+        ));
+    AddWidget(path, "All Dogs are Richard", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("AllDogsRichard"))
+        .Options(CheckboxOptions().Tooltip(
+            "All dogs can be traded in and will count as Richard."
+        ));
+    AddWidget(path, "Cuccos Stay Put Multiplier: %dx", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_ENHANCEMENT("CuccoStayDurationMult"))
+        .Options(IntSliderOptions()
+            .Min(1)
+            .Max(5)
+            .DefaultValue(1)
+            .Format("%dx")
+            .Tooltip(
+                "Cuccos will stay in place longer after putting them down, by a multiple of the value of the slider."
+            )
+        );
+    AddWidget(path, "Leever Spawn Rate: %d seconds", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_ENHANCEMENT("LeeverSpawnRate"))
+        .Options(IntSliderOptions()
+            .Min(0)
+            .Max(10)
+            .DefaultValue(0)
+            .Format("%d seconds")
+            .Tooltip(
+                "The time between groups of Leevers spawning."
+            )
+        );
 
     // Cheats
     path.sidebarName = "Cheats";

@@ -652,45 +652,6 @@ void DrawEnhancementsMenu() {
                     UpdatePermanentHeartLossState();
                 }
                 UIWidgets::Tooltip("When you lose 4 quarters of a heart you will permanently lose that heart container.\n\nDisabling this after the fact will restore your heart containers.");
-                ImGui::Text("Damage Multiplier");
-                UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("DamageMult"), allPowers, 0);
-                UIWidgets::Tooltip(
-                    "Modifies all sources of damage not affected by other sliders\n"
-                    "2x: Can survive all common attacks from the start of the game\n"
-                    "4x: Dies in 1 hit to any substantial attack from the start of the game\n"
-                    "8x: Can only survive trivial damage from the start of the game\n"
-                    "16x: Can survive all common attacks with max health without double defense\n"
-                    "32x: Can survive all common attacks with max health and double defense\n"
-                    "64x: Can survive trivial damage with max health without double defense\n"
-                    "128x: Can survive trivial damage with max health and double defense\n"
-                    "256x: Cannot survive damage"
-                );
-                UIWidgets::PaddedText("Fall Damage Multiplier", true, false);
-                UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("FallDamageMult"), subPowers, 0);
-                UIWidgets::Tooltip(
-                    "Modifies all fall damage\n"
-                    "2x: Can survive all fall damage from the start of the game\n"
-                    "4x: Can only survive short fall damage from the start of the game\n"
-                    "8x: Cannot survive any fall damage from the start of the game\n"
-                    "16x: Can survive all fall damage with max health without double defense\n"
-                    "32x: Can survive all fall damage with max health and double defense\n"
-                    "64x: Can survive short fall damage with double defense\n"
-                    "128x: Cannot survive fall damage"
-                );
-                UIWidgets::PaddedText("Void Damage Multiplier", true, false);
-                UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("VoidDamageMult"), subSubPowers, 0);
-                UIWidgets::Tooltip(
-                    "Modifies damage taken after falling into a void\n"
-                    "2x: Can survive void damage from the start of the game\n"
-                    "4x: Cannot survive void damage from the start of the game\n"
-                    "8x: Can survive void damage twice with max health without double defense\n"
-                    "16x: Can survive void damage with max health without double defense\n"
-                    "32x: Can survive void damage with max health and double defense\n"
-                    "64x: Cannot survive void damage"
-                );
-                UIWidgets::PaddedText("Bonk Damage Multiplier", true, false);
-                UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("BonkDamageMult"), bonkDamageValues, BONK_DAMAGE_NONE);
-                UIWidgets::Tooltip("Modifies damage taken after bonking.");
                 UIWidgets::PaddedEnhancementCheckbox("Spawn with full health", CVAR_ENHANCEMENT("FullHealthSpawn"), true, false);
                 UIWidgets::Tooltip("Respawn with full health instead of 3 Hearts");
                 UIWidgets::PaddedEnhancementCheckbox("No Random Drops", CVAR_ENHANCEMENT("NoRandomDrops"), true, false);
