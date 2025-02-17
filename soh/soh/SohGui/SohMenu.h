@@ -71,6 +71,25 @@ static const std::unordered_map<int32_t, const char*> skipGetItemAnimationOption
     { SGIA_ALL, "All Items" }
 };
 
+static const std::unordered_map<int32_t, const char*> chestStyleMatchesContentsOptions = {
+    { CSMC_DISABLED, "Disabled" },
+    { CSMC_BOTH, "Both" },
+    { CSMC_TEXTURE, "Texture Only" },
+    { CSMC_SIZE, "Size Only" }
+};
+
+static const std::unordered_map<int32_t, const char*> timeTravelOptions = {
+    { TIME_TRAVEL_DISABLED, "Disabled" },
+    { TIME_TRAVEL_OOT, "Ocarina of Time" },
+    { TIME_TRAVEL_ANY, "Any Ocarina" }
+};
+
+static const std::unordered_map<int32_t, const char*> sleepingWaterfallOptions = {
+    { WATERFALL_ALWAYS, "Always" },
+    { WATERFALL_ONCE, "Once" },
+    { WATERFALL_NEVER, "Never" }
+};
+
 static const std::unordered_map<int32_t, const char*> debugSaveFileModes = {
     { 0, "Off" }, { 1, "Vanilla" }, { 2, "Maxed" },
 };

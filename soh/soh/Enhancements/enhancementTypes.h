@@ -87,4 +87,16 @@ typedef enum {
     SWORD_TOGGLE_BOTH_AGES,
 } SwordToggleMode;
 
+typedef enum {
+    TIME_TRAVEL_DISABLED,
+    TIME_TRAVEL_OOT,
+    TIME_TRAVEL_ANY
+} TimeTravelType;
+
+typedef enum {
+    WATERFALL_ALWAYS,
+    WATERFALL_ONCE,
+    WATERFALL_NEVER
+} SleepingWaterfallType;
+
 #endif
