@@ -4281,10 +4281,6 @@ s32 Player_CanSpinAttack(Player* this) {
         return false;
     }
 
-    sp3C[0] = 0;
-    sp3C[1] = 0;
-    sp3C[2] = 0;
-    sp3C[3] = 0;
     iter = &this->controlStickSpinAngles[0];
     iter2 = &sp3C[0];
 
