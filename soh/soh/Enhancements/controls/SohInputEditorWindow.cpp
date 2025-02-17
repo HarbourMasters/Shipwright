@@ -169,8 +169,8 @@ void SohInputEditorWindow::DrawAnalogPreview(const char* label, ImVec2 stick, fl
 #define BUTTON_COLOR_KEYBOARD_BEIGE ImVec4(0.651f, 0.482f, 0.357f, 0.5f)
 #define BUTTON_COLOR_KEYBOARD_BEIGE_HOVERED ImVec4(0.651f, 0.482f, 0.357f, 1.0f)
 
-#define BUTTON_COLOR_MOUSE_BEIGE ImVec4(0.5f, 0.5f, 0.5f, 0.5f)
-#define BUTTON_COLOR_MOUSE_BEIGE_HOVERED ImVec4(0.5f, 0.5f, 0.5f, 1.0f)
+#define BUTTON_COLOR_MOUSE_GRAY ImVec4(0.5f, 0.5f, 0.5f, 0.5f)
+#define BUTTON_COLOR_MOUSE_GRAY_HOVERED ImVec4(0.5f, 0.5f, 0.5f, 1.0f)
 
 #define BUTTON_COLOR_GAMEPAD_BLUE ImVec4(0.0f, 0.255f, 0.976f, 0.5f)
 #define BUTTON_COLOR_GAMEPAD_BLUE_HOVERED ImVec4(0.0f, 0.255f, 0.976f, 1.0f)
@@ -195,8 +195,8 @@ void SohInputEditorWindow::GetButtonColorsForDeviceType(Ship::PhysicalDeviceType
             buttonHoveredColor = BUTTON_COLOR_KEYBOARD_BEIGE_HOVERED;
             break;
         case Ship::PhysicalDeviceType::Mouse:
-            buttonColor = BUTTON_COLOR_MOUSE_BEIGE;
-            buttonHoveredColor = BUTTON_COLOR_MOUSE_BEIGE_HOVERED;
+            buttonColor = BUTTON_COLOR_MOUSE_GRAY;
+            buttonHoveredColor = BUTTON_COLOR_MOUSE_GRAY_HOVERED;
             break;
         case Ship::PhysicalDeviceType::SDLGamepad:
             buttonColor = BUTTON_COLOR_GAMEPAD_BLUE;
