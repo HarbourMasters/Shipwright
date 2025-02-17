@@ -53,21 +53,10 @@ typedef enum {
 } EnemyRandomizerMode;
 
 typedef enum {
-    FASTFILE_1,
-    FASTFILE_2,
-    FASTFILE_3,
-    FASTFILE_MAP_SELECT,
-    FASTFILE_FILE_SELECT
-} FastFileSelectTarget;
-
-typedef enum {
-    AUTOSAVE_OFF,
-    AUTOSAVE_LOCATION_AND_MAJOR_ITEMS,
-    AUTOSAVE_LOCATION_AND_ALL_ITEMS,
-    AUTOSAVE_LOCATION,
-    AUTOSAVE_MAJOR_ITEMS,
-    AUTOSAVE_ALL_ITEMS
-} AutosaveType;
+    BOOTSEQUENCE_DEFAULT,
+    BOOTSEQUENCE_AUTHENTIC,
+    BOOTSEQUENCE_FILESELECT
+} BootSequenceType;
 
 typedef enum {
     ZFIGHT_FIX_DISABLED,

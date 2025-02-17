@@ -8,7 +8,7 @@
 #include "objects/object_bombf/object_bombf.h"
 #include "overlays/effects/ovl_Effect_Ss_Dead_Sound/z_eff_ss_dead_sound.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
 void EnBombf_Init(Actor* thisx, PlayState* play);
 void EnBombf_Destroy(Actor* thisx, PlayState* play);
@@ -105,7 +105,7 @@ void EnBombf_Init(Actor* thisx, PlayState* play) {
     thisx->focus.pos = thisx->world.pos;
 
     if (Actor_FindNearby(play, thisx, ACTOR_BG_DDAN_KD, ACTORCAT_BG, 10000.0f) != NULL) {
-        thisx->flags |= ACTOR_FLAG_DRAW_WHILE_CULLED;
+        thisx->flags |= ACTOR_FLAG_DRAW_CULLING_DISABLED;
     }
 
     thisx->colChkInfo.cylRadius = 10.0f;
@@ -118,7 +118,7 @@ void EnBombf_Init(Actor* thisx, PlayState* play) {
         thisx->gravity = -1.5f;
         Actor_ChangeCategory(play, &play->actorCtx, thisx, ACTORCAT_EXPLOSIVE);
         thisx->colChkInfo.mass = 200;
-        thisx->flags &= ~ACTOR_FLAG_TARGETABLE;
+        thisx->flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
         EnBombf_SetupAction(this, EnBombf_Move);
     } else {
         thisx->colChkInfo.mass = MASS_IMMOVABLE;
@@ -158,7 +158,7 @@ void EnBombf_GrowBomb(EnBombf* this, PlayState* play) {
                 this->timer = 180;
                 this->flowerBombScale = 0.0f;
                 Audio_PlayActorSound2(&this->actor, NA_SE_PL_PULL_UP_ROCK);
-                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+                this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
             } else {
                 player->actor.child = NULL;
                 player->heldActor = NULL;
@@ -177,7 +177,7 @@ void EnBombf_GrowBomb(EnBombf* this, PlayState* play) {
                     bombFlower->isFuseEnabled = 1;
                     bombFlower->timer = 0;
                     this->timer = 180;
-                    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+                    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
                     this->flowerBombScale = 0.0f;
                 }
             }
@@ -189,7 +189,7 @@ void EnBombf_GrowBomb(EnBombf* this, PlayState* play) {
                 if (bombFlower != NULL) {
                     bombFlower->timer = 100;
                     this->timer = 180;
-                    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+                    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
                     this->flowerBombScale = 0.0f;
                 }
             } else {
@@ -209,7 +209,7 @@ void EnBombf_GrowBomb(EnBombf* this, PlayState* play) {
         if (this->timer == 0) {
             this->flowerBombScale += 0.05f;
             if (this->flowerBombScale >= 1.0f) {
-                this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+                this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
             }
         }
 
@@ -263,7 +263,7 @@ void EnBombf_Explode(EnBombf* this, PlayState* play) {
     Player* player;
 
     if (this->explosionCollider.elements[0].dim.modelSphere.radius == 0) {
-        this->actor.flags |= ACTOR_FLAG_DRAW_WHILE_CULLED;
+        this->actor.flags |= ACTOR_FLAG_DRAW_CULLING_DISABLED;
         func_800AA000(this->actor.xzDistToPlayer, 0xFF, 0x14, 0x96);
     }
 
@@ -430,7 +430,7 @@ void EnBombf_Update(Actor* thisx, PlayState* play) {
                 Camera_AddQuake(&play->mainCamera, 2, 0xB, 8);
                 thisx->params = BOMBFLOWER_EXPLOSION;
                 this->timer = 10;
-                thisx->flags |= ACTOR_FLAG_DRAW_WHILE_CULLED;
+                thisx->flags |= ACTOR_FLAG_DRAW_CULLING_DISABLED;
                 EnBombf_SetupAction(this, EnBombf_Explode);
             }
         }

@@ -90,9 +90,9 @@ void PauseMapMark_DrawForDungeon(PlayState* play) {
             Matrix_Translate(-36.0f, 21.0f, 0.0f, MTXMODE_APPLY);
         }
 
-        gDPPipeSync(POLY_KAL_DISP++);
-        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, 255);
-        gDPSetEnvColor(POLY_KAL_DISP++, 0, 0, 0, 255);
+        gDPPipeSync(POLY_OPA_DISP++);
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
+        gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
 
         markPoint = &mapMarkData->points[0];
         for (i = 0; i < mapMarkData->count; i++) {
@@ -125,8 +125,8 @@ void PauseMapMark_DrawForDungeon(PlayState* play) {
             if (display) {
                 markInfo = &sMapMarkInfoTable[mapMarkData->markType];
 
-                gDPPipeSync(POLY_KAL_DISP++);
-                gDPLoadTextureBlock(POLY_KAL_DISP++, markInfo->texture, markInfo->imageFormat, G_IM_SIZ_MARK,
+                gDPPipeSync(POLY_OPA_DISP++);
+                gDPLoadTextureBlock(POLY_OPA_DISP++, markInfo->texture, markInfo->imageFormat, G_IM_SIZ_MARK,
                                     markInfo->textureWidth, markInfo->textureHeight, 0, G_TX_NOMIRROR | G_TX_WRAP,
                                     G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
@@ -136,12 +136,12 @@ void PauseMapMark_DrawForDungeon(PlayState* play) {
                 Matrix_Push();
                 Matrix_Translate(GREG(92) + markPoint->x + mirrorOffset, GREG(93) + markPoint->y, 0.0f, MTXMODE_APPLY);
                 Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-                gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 Matrix_Pop();
 
-                gSPVertex(POLY_KAL_DISP++, mapMarkData->vtx, mapMarkData->vtxCount, 0);
-                gSP1Quadrangle(POLY_KAL_DISP++, 1, 3, 2, 0, 0);
+                gSPVertex(POLY_OPA_DISP++, mapMarkData->vtx, mapMarkData->vtxCount, 0);
+                gSP1Quadrangle(POLY_OPA_DISP++, 1, 3, 2, 0, 0);
             }
 
             markPoint++;

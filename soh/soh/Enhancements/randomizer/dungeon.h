@@ -12,11 +12,7 @@ class DungeonInfo {
   public:
     DungeonInfo(std::string name_, RandomizerHintTextKey hintKey_, RandomizerGet map_, RandomizerGet compass_,
                 RandomizerGet smallKey_, RandomizerGet keyRing_, RandomizerGet bossKey_, RandomizerArea area_, 
-                uint8_t vanillaKeyCount_, uint8_t mqKeyCount_, RandomizerSettingKey mqSetting_,
-                std::vector<RandomizerCheck> vanillaLocations_, std::vector<RandomizerCheck> mqLocations_,
-                std::vector<RandomizerCheck> vanillaPots_, std::vector<RandomizerCheck> mqPots_,
-                std::vector<RandomizerCheck> sharedLocations_,
-                std::vector<RandomizerCheck> bossRoomLocations_);
+                uint8_t vanillaKeyCount_, uint8_t mqKeyCount_, RandomizerSettingKey mqSetting_);
     DungeonInfo();
     ~DungeonInfo();
 
@@ -43,7 +39,7 @@ class DungeonInfo {
     void PlaceVanillaBossKey() const;
     void PlaceVanillaSmallKeys() const;
     std::vector<RandomizerCheck> GetDungeonLocations() const;
-    std::vector<RandomizerCheck> GetEveryLocation() const;
+    std::vector<RandomizerCheck> locations;
 
   private:
     std::string name;
@@ -60,12 +56,6 @@ class DungeonInfo {
     uint8_t mqKeyCount{};
     bool masterQuest = false;
     bool hasKeyRing = false;
-    std::vector<RandomizerCheck> vanillaLocations;
-    std::vector<RandomizerCheck> mqLocations;
-    std::vector<RandomizerCheck> vanillaPots;
-    std::vector<RandomizerCheck> mqPots;
-    std::vector<RandomizerCheck> sharedLocations;
-    std::vector<RandomizerCheck> bossRoomLocations;
 };
 
 typedef enum {
@@ -79,8 +69,8 @@ typedef enum {
     SHADOW_TEMPLE,
     BOTTOM_OF_THE_WELL,
     ICE_CAVERN,
-    GANONS_CASTLE,
-    GERUDO_TRAINING_GROUND
+    GERUDO_TRAINING_GROUND,
+    GANONS_CASTLE
 } DungeonKey;
 
 class Dungeons {

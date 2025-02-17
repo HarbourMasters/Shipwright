@@ -13,7 +13,7 @@ std::array<std::string, LANGUAGE_MAX> RandomizerSettingsMenuText[RSM_MAX] = {
         // German
         "Start Randomizer",
         // French
-        "Start Randomizer",
+        "Commencer le Randomizer",
     },
     {
         // English
@@ -21,7 +21,7 @@ std::array<std::string, LANGUAGE_MAX> RandomizerSettingsMenuText[RSM_MAX] = {
         // German
         "Generate New Randomizer Seed",
         // French
-        "Generate New Randomizer Seed",
+        "Générer une nouvelle seed pour le Randomizer",
     },
     {
         // English
@@ -29,7 +29,7 @@ std::array<std::string, LANGUAGE_MAX> RandomizerSettingsMenuText[RSM_MAX] = {
         // German
         "Open Randomizer Settings",
         // French
-        "Open Randomizer Settings",
+        "Ouvrir les paramètres du Randomizer",
     },
     {
         // English
@@ -37,7 +37,7 @@ std::array<std::string, LANGUAGE_MAX> RandomizerSettingsMenuText[RSM_MAX] = {
         // German
         "Generating...",
         // French
-        "Generating...",
+        "Génération en cours...",
     },
     {
         // English

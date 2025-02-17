@@ -8,7 +8,7 @@
 #include "objects/object_brob/object_brob.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE)
 
 void EnBrob_Init(Actor* thisx, PlayState* play);
 void EnBrob_Destroy(Actor* thisx, PlayState* play);
@@ -93,7 +93,7 @@ void EnBrob_Init(Actor* thisx, PlayState* play) {
     this->colliders[1].dim.height *= thisx->scale.y;
     this->colliders[1].dim.yShift *= thisx->scale.y;
     this->actionFunc = NULL;
-    thisx->flags &= ~ACTOR_FLAG_TARGETABLE;
+    thisx->flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     func_809CADDC(this, play);
 }
 

@@ -10,7 +10,7 @@
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "soh/OTRGlobals.h"
 
-#define FLAGS ACTOR_FLAG_NO_FREEZE_OCARINA
+#define FLAGS ACTOR_FLAG_UPDATE_DURING_OCARINA
 
 void DoorAna_Init(Actor* thisx, PlayState* play);
 void DoorAna_Destroy(Actor* thisx, PlayState* play);
@@ -77,7 +77,7 @@ void DoorAna_Init(Actor* thisx, PlayState* play) {
             Collider_InitCylinder(play, &this->collider);
             Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
         } else {
-            this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+            this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
         }
         Actor_SetScale(&this->actor, 0);
         DoorAna_SetupAction(this, DoorAna_WaitClosed);
@@ -104,7 +104,7 @@ void DoorAna_WaitClosed(DoorAna* this, PlayState* play) {
         // opening with song of storms
         if (this->actor.xyzDistToPlayerSq < 40000.0f && Flags_GetEnv(play, 5)) {
             openGrotto = true;
-            this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
+            this->actor.flags &= ~ACTOR_FLAG_UPDATE_CULLING_DISABLED;
         }
     } else {
         // bombing/hammering open a grotto

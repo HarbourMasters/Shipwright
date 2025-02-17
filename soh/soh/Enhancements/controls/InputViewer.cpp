@@ -5,14 +5,11 @@
 #include "Context.h"
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
-#ifndef IMGUI_DEFINE_MATH_OPERATORS
-#define IMGUI_DEFINE_MATH_OPERATORS
-#endif
 #include <imgui.h>
 #include <spdlog/spdlog.h>
 #include <cmath>
 
-#include "../../UIWidgets.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 
 // Text colors
 static ImVec4 textColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);

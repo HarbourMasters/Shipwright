@@ -188,8 +188,6 @@ void func_800AA550(View* view) {
     gDPSetScissor(POLY_OPA_DISP++, G_SC_NON_INTERLACE, ulx, uly, lrx, lry);
     gDPPipeSync(POLY_XLU_DISP++);
     gDPSetScissor(POLY_XLU_DISP++, G_SC_NON_INTERLACE, ulx, uly, lrx, lry);
-    gDPPipeSync(POLY_KAL_DISP++);
-    gDPSetScissor(POLY_KAL_DISP++, G_SC_NON_INTERLACE, ulx, uly, lrx, lry);
 
     CLOSE_DISPS(gfxCtx);
 }
@@ -312,7 +310,6 @@ s32 func_800AAA9C(View* view) {
 
     gSPViewport(POLY_OPA_DISP++, vp);
     gSPViewport(POLY_XLU_DISP++, vp);
-    gSPViewport(POLY_KAL_DISP++, vp);
 
     projection = Graph_Alloc(gfxCtx, sizeof(Mtx));
     projectionFlipped = Graph_Alloc(gfxCtx, sizeof(Mtx));
@@ -451,8 +448,6 @@ s32 func_800AAA9C(View* view) {
     gSPMatrix(POLY_OPA_DISP++, projection, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
     gSPPerspNormalize(POLY_XLU_DISP++, view->normal);
     gSPMatrix(POLY_XLU_DISP++, projection, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
-    gSPPerspNormalize(POLY_KAL_DISP++, view->normal);
-    gSPMatrix(POLY_KAL_DISP++, projection, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
 
     Matrix_MtxFToMtx(viewingF.mf, viewing);
 
@@ -478,7 +473,6 @@ s32 func_800AAA9C(View* view) {
     }
     gSPMatrix(POLY_OPA_DISP++, viewing, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
     gSPMatrix(POLY_XLU_DISP++, viewing, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
-    gSPMatrix(POLY_KAL_DISP++, viewing, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
     FrameInterpolation_RecordCloseChild();
 
     CLOSE_DISPS(gfxCtx);
@@ -502,7 +496,6 @@ s32 func_800AB0A8(View* view) {
 
     gSPViewport(POLY_OPA_DISP++, vp);
     gSPViewport(POLY_XLU_DISP++, vp);
-    gSPViewport(POLY_KAL_DISP++, vp);
     gSPViewport(OVERLAY_DISP++, vp);
 
     projection = Graph_Alloc(gfxCtx, sizeof(Mtx));
@@ -516,7 +509,6 @@ s32 func_800AB0A8(View* view) {
 
     gSPMatrix(POLY_OPA_DISP++, projection, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
     gSPMatrix(POLY_XLU_DISP++, projection, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
-    gSPMatrix(POLY_KAL_DISP++, projection, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
 
     CLOSE_DISPS(gfxCtx);
 

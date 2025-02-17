@@ -58,7 +58,7 @@ To develop using Visual Studio you only need to use cmake to generate the soluti
 To develop using Visual Studio Code or another editor you only need to open the repository in it.
 To build you'll need to follow the instructions from the building section.
 
-_Note: If you're using Visual Studio Code, the [cpack plugin](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) makes it very easy to just press run and debug._
+_Note: If you're using Visual Studio Code, the [CMake Tools plugin](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) makes it very easy to just press run and debug._
 
 _Experimental: You can also use another build system entirely rather than MSVC like [Ninja](https://ninja-build.org/) for possibly better performance._
 
@@ -177,7 +177,7 @@ Requires Xcode (or xcode-tools) && `sdl2, libpng, glew, ninja, cmake, tinyxml2, 
 
 **Important: For maximum performance make sure you have ninja build tools installed!**
 
-_Note: If you're using Visual Studio Code, the [cpack plugin](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) makes it very easy to just press run and debug._
+_Note: If you're using Visual Studio Code, the [CMake Tools plugin](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) makes it very easy to just press run and debug._
 
 ```bash
 # Clone the repo

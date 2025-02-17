@@ -291,7 +291,7 @@ void EnWood02_Init(Actor* thisx, PlayState* play2) {
             this->actor.world.pos.x += (sSpawnSin * sSpawnDistance[5]);
             this->actor.world.pos.z += (sSpawnCos * sSpawnDistance[5]);
         } else {
-            this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+            this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
         }
 
         // Snap to floor, or remove if over void
@@ -332,7 +332,7 @@ void EnWood02_Update(Actor* thisx, PlayState* play2) {
 
     // Despawn extra trees in a group if out of range
     if ((this->spawnType == WOOD_SPAWN_SPAWNED) && (this->actor.parent != NULL)) {
-        if (!(this->actor.flags & ACTOR_FLAG_ACTIVE)) {
+        if (!(this->actor.flags & ACTOR_FLAG_INSIDE_CULLING_VOLUME)) {
             new_var = this->unk_14E[0];
             phi_v0 = 0;
 

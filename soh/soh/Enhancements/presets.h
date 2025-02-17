@@ -105,29 +105,6 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("GoronPot"),
     CVAR_ENHANCEMENT("FullHealthSpawn"),
     CVAR_ENHANCEMENT("DampeWin"),
-    CVAR_ENHANCEMENT("RedPotionEffect"),
-    CVAR_ENHANCEMENT("RedPotionHealth"),
-    CVAR_ENHANCEMENT("RedPercentRestore"),
-    CVAR_ENHANCEMENT("GreenPotionEffect"),
-    CVAR_ENHANCEMENT("GreenPotionMana"),
-    CVAR_ENHANCEMENT("GreenPercentRestore"),
-    CVAR_ENHANCEMENT("BluePotionEffects"),
-    CVAR_ENHANCEMENT("BluePotionHealth"),
-    CVAR_ENHANCEMENT("BlueHealthPercentRestore"),
-    CVAR_ENHANCEMENT("BluePotionMana"),
-    CVAR_ENHANCEMENT("BlueManaPercentRestore"),
-    CVAR_ENHANCEMENT("MilkEffect"),
-    CVAR_ENHANCEMENT("MilkHealth"),
-    CVAR_ENHANCEMENT("MilkPercentRestore"),
-    CVAR_ENHANCEMENT("SeparateHalfMilkEffect"),
-    CVAR_ENHANCEMENT("HalfMilkHealth"),
-    CVAR_ENHANCEMENT("HalfMilkPercentRestore"),
-    CVAR_ENHANCEMENT("FairyEffect"),
-    CVAR_ENHANCEMENT("FairyHealth"),
-    CVAR_ENHANCEMENT("FairyPercentRestore"),
-    CVAR_ENHANCEMENT("FairyReviveEffect"),
-    CVAR_ENHANCEMENT("FairyReviveHealth"),
-    CVAR_ENHANCEMENT("FairyRevivePercentRestore"),
     CVAR_ENHANCEMENT("CustomizeFishing"),
     CVAR_ENHANCEMENT("InstantFishing"),
     CVAR_ENHANCEMENT("GuaranteeFishingBite"),
@@ -153,8 +130,6 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("InstantScarecrow"),
     CVAR_ENHANCEMENT("BlueFireArrows"),
     CVAR_ENHANCEMENT("SunlightArrows"),
-    CVAR_ENHANCEMENT("PauseLiveLinkRotation"),
-    CVAR_ENHANCEMENT("PauseLiveLink"),
     CVAR_ENHANCEMENT("MinFrameCount"),
     CVAR_ENHANCEMENT("NewDrops"),
     CVAR_ENHANCEMENT("DisableBlackBars"),
@@ -182,7 +157,6 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("GSCutscene"),
     CVAR_ENHANCEMENT("RestoreRBAValues"),
     CVAR_ENHANCEMENT("SkipSaveConfirmation"),
-    CVAR_ENHANCEMENT("Autosave"),
     CVAR_ENHANCEMENT("DisableCritWiggle"),
     CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"),
     CVAR_ENHANCEMENT("SkipArrowAnimation"),
@@ -240,7 +214,6 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("SceneSpecificDirtPathFix"),
     CVAR_Z_FIGHTING_MODE,
     CVAR_ENHANCEMENT("AuthenticLogo"),
-    CVAR_ENHANCEMENT("PauseLiveLinkRotationSpeed"),
     CVAR_ENHANCEMENT("BowReticle"),
     CVAR_ENHANCEMENT("BoomerangFirstPerson"),
     CVAR_ENHANCEMENT("BoomerangReticle"),
@@ -342,8 +315,6 @@ const std::vector<const char*> cheatCvars = {
     CVAR_CHEAT("EasyISG"),
     CVAR_CHEAT("EasyQPA"),
     CVAR_CHEAT("TimelessEquipment"),
-    CVAR_CHEAT("EasyPauseBuffer"),
-    CVAR_CHEAT("EasyInputBuffer"),
     CVAR_CHEAT("NoRestrictItems"),
     CVAR_CHEAT("FreezeTime"),
     CVAR_GENERAL("PrevTime"),
@@ -397,7 +368,7 @@ const std::vector<const char*> randomizerCvars = {
     CVAR_RANDOMIZER_SETTING("BigPoesHint"),
     CVAR_RANDOMIZER_SETTING("BiggoronHint"),
     CVAR_RANDOMIZER_SETTING("BlueFireArrows"),
-    CVAR_RANDOMIZER_SETTING("BombchusInLogic"),
+    CVAR_RANDOMIZER_SETTING("BombchuBag"),
     CVAR_RANDOMIZER_SETTING("BossKeysanity"),
     CVAR_RANDOMIZER_SETTING("BridgeRewardOptions"),
     CVAR_RANDOMIZER_SETTING("ChickensHint"),
@@ -408,7 +379,6 @@ const std::vector<const char*> randomizerCvars = {
     CVAR_RANDOMIZER_SETTING("DoorOfTime"),
     CVAR_RANDOMIZER_SETTING("DungeonCount"),
     CVAR_RANDOMIZER_SETTING("EnableBombchuDrops"),
-    CVAR_RANDOMIZER_SETTING("EnableGlitchCutscenes"),
     CVAR_RANDOMIZER_SETTING("FishingPoleHint"),
     CVAR_RANDOMIZER_SETTING("Fishsanity"),
     CVAR_RANDOMIZER_SETTING("FishsanityAgeSplit"),
@@ -620,9 +590,6 @@ const std::vector<PresetEntry> vanillaPlusPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), 1),
 
-    // Pause link animation (0 to 16)
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("PauseLiveLink"), 1),
-
     // Dynamic Wallet Icon
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DynamicWalletIcon"), 1),
     // Always show dungeon entrances
@@ -694,9 +661,6 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), 1),
-
-    // Pause link animation (0 to 16)
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("PauseLiveLink"), 1),
 
     // Dynamic Wallet Icon
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DynamicWalletIcon"), 1),
@@ -789,7 +753,7 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AnubisFix"), 1),
 
     // Autosave
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_LOCATION_AND_MAJOR_ITEMS),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("Autosave"), 1),
 
     // Bombchu shop doesn't sell out, and 10 bombchus cost 99 instead of 100
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("BetterBombchuShopping"), 1),
@@ -922,7 +886,7 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AnubisFix"), 1),
 
     // Autosave
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_LOCATION_AND_MAJOR_ITEMS),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("Autosave"), 1),
 
     // Customize Fishing Behaviour
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("CustomizeFishing"), 1),
@@ -954,8 +918,6 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     // Color Temple of Time's Medallions
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("ToTMedallionsColors"), 1),
 
-    // Pause link animation (0 to 16)
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("PauseLiveLink"), 16),
     // Frames to wait
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MinFrameCount"), 200),
 
@@ -1010,7 +972,6 @@ const std::vector<PresetEntry> spockRacePresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MinimumFishWeightChild"), 3),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("GoronPot"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("ForgeTime"), 0),
-    PRESET_ENTRY_S32(CVAR_CHEAT("EasyPauseBuffer"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DampeAllNight"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("10GSHint"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("20GSHint"), 1),
@@ -1019,7 +980,7 @@ const std::vector<PresetEntry> spockRacePresetEntries = {
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("50GSHint"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("AllLocationsReachable"), 0),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BlueFireArrows"), 1),
-    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BombchusInLogic"), 1),
+    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BombchuBag"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("CompleteMaskQuest"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("CuccosToReturn"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("DampeHint"), 1),
@@ -1062,7 +1023,6 @@ const std::vector<PresetEntry> spockRaceNoLogicPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AdultMasks"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MinimumFishWeightAdult"), 6),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AssignableTunicsAndBoots"), 1),
-    PRESET_ENTRY_S32(CVAR_CHEAT("EasyPauseBuffer"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MinimumFishWeightChild"), 3),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("ClimbSpeed"), 4),
     PRESET_ENTRY_S32(CVAR_COSMETIC("Goron.NeckLength"), 1000),
@@ -1103,7 +1063,7 @@ const std::vector<PresetEntry> spockRaceNoLogicPresetEntries = {
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("50GSHint"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("AllLocationsReachable"), 0),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BlueFireArrows"), 1),
-    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BombchusInLogic"), 1),
+    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BombchuBag"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BossKeysanity"), RO_DUNGEON_ITEM_LOC_ANYWHERE),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("CompleteMaskQuest"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("CuccosToReturn"), 1),
@@ -1200,7 +1160,6 @@ const std::vector<PresetEntry> hellModePresetEntries = {
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("CuccosToReturn"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("DoorOfTime"), RO_DOOROFTIME_OPEN),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("EnableBombchuDrops"), 1),
-    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("EnableGlitchCutscenes"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("ClosedForest"), RO_CLOSED_FOREST_OFF),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("GanonTrial"), RO_GANONS_TRIALS_SET_NUMBER),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("GanonTrialCount"), 6),
@@ -1409,7 +1368,7 @@ const std::map<PresetType, PresetTypeDefinition> presetTypes = {
             "Spock Race",
             "Race preset used for the official Ship of Harkinian race on June 3rd 2023. The following settings are notable:\n" \
             "- Rainbow Bridge is set to Greg\n" \
-            "- Ganons Boss Key is 5 dungeon rewards\n" \
+            "- Ganon's Boss Key is 5 dungeon rewards\n" \
             "- Shopsanity and Scrubsanity enabled\n" \
             "- All locations reachable is off\n", \
             spockRacePresetEntries,
@@ -1419,7 +1378,7 @@ const std::map<PresetType, PresetTypeDefinition> presetTypes = {
                 "No Logic Race preset used for official Ship of Harkinian No Logic races. The following settings are "
                 "notable:\n"
                 "- Rainbow Bridge is set to Greg\n"
-                "- Ganons Boss Key is 5 dungeon rewards\n"
+                "- Ganon's Boss Key is 5 dungeon rewards\n"
                 "- Shopsanity and Scrubsanity enabled\n"
                 "- All locations reachable is off\n",
                 spockRaceNoLogicPresetEntries,

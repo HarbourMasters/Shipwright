@@ -8,7 +8,7 @@
 #include "vt.h"
 #include "objects/object_fhg/object_fhg.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 typedef enum {
     /* 0x00 */ EXT_WAIT,

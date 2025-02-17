@@ -192,10 +192,6 @@ extern GraphicsContext* __gfxCtx;
 #define WORK_DISP          __gfxCtx->work.p
 #define POLY_OPA_DISP      __gfxCtx->polyOpa.p
 #define POLY_XLU_DISP      __gfxCtx->polyXlu.p
-// #region SOH [General]
-// Upstream TODO: Document reasoning for these only existing in SoH
-#define POLY_KAL_DISP      __gfxCtx->polyKal.p
-// #endregion
 #define OVERLAY_DISP       __gfxCtx->overlay.p
 
 // __gfxCtx shouldn't be used directly.
@@ -275,7 +271,12 @@ extern GraphicsContext* __gfxCtx;
                     : (((a2) >= (a3)) ? (a2) : (((a3) >= (a1)) ? (a1) : (a3))))
 
 #define MATRIX_TOMTX(dest) Matrix_ToMtx(dest, __FILE__, __LINE__)
+#ifdef __cplusplus
+#define MATRIX_NEWMTX(gfxCtx) Matrix_NewMtx(gfxCtx, const_cast<char*>(__FILE__), __LINE__)
+#else
 #define MATRIX_NEWMTX(gfxCtx) Matrix_NewMtx(gfxCtx, __FILE__, __LINE__)
+#endif
+
 #define MATRIX_CHECKFLOATS(mf) Matrix_CheckFloats(mf, __FILE__, __LINE__)
 
 #define ZELDA_ARENA_MALLOC_DEBUG(size) ZeldaArena_MallocDebug(size, __FILE__, __LINE__)

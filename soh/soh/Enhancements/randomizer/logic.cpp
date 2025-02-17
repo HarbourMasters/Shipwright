@@ -140,6 +140,31 @@ namespace Rando {
             case RG_TWINROVA_SOUL:
             case RG_GANON_SOUL:
             case RG_SKELETON_KEY:
+                // Overworld Keys
+            case RG_GUARD_HOUSE_KEY:
+            case RG_MARKET_BAZAAR_KEY:
+            case RG_MARKET_POTION_SHOP_KEY:
+            case RG_MASK_SHOP_KEY:
+            case RG_MARKET_SHOOTING_GALLERY_KEY:
+            case RG_BOMBCHU_BOWLING_KEY:
+            case RG_TREASURE_CHEST_GAME_BUILDING_KEY:
+            case RG_BOMBCHU_SHOP_KEY:
+            case RG_RICHARDS_HOUSE_KEY:
+            case RG_ALLEY_HOUSE_KEY:
+            case RG_KAK_BAZAAR_KEY:
+            case RG_KAK_POTION_SHOP_KEY:
+            case RG_BOSS_HOUSE_KEY:
+            case RG_GRANNYS_POTION_SHOP_KEY:
+            case RG_SKULLTULA_HOUSE_KEY:
+            case RG_IMPAS_HOUSE_KEY:
+            case RG_WINDMILL_KEY:
+            case RG_KAK_SHOOTING_GALLERY_KEY:
+            case RG_DAMPES_HUT_KEY:
+            case RG_TALONS_HOUSE_KEY:
+            case RG_STABLES_KEY:
+            case RG_BACK_TOWER_KEY:
+            case RG_HYLIA_LAB_KEY:
+            case RG_FISHING_HOLE_KEY:
                 return CheckRandoInf(RandoGetToRandInf.at(itemName));
                 // Boss Keys
             case RG_EPONA:
@@ -382,6 +407,18 @@ namespace Rando {
         }
     }
 
+    bool Logic::CanOpenOverworldDoor(RandomizerGet key) {
+        if (!ctx->GetOption(RSK_LOCK_OVERWORLD_DOORS)) {
+            return true;
+        }
+
+        if (HasItem(RG_SKELETON_KEY)) {
+            return true;
+        }
+
+        return HasItem(key);
+    }
+
     uint8_t GetDifficultyValueFromString(Rando::Option& glitchOption) {
         return 0;
     }
@@ -490,7 +527,7 @@ namespace Rando {
                 }
                 return killed;
             case RE_DODONGO:
-                return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || (quantity <= 5 && CanUse(RG_STICKS)) || HasExplosives() || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW);
+                return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_MEGATON_HAMMER) || (quantity <= 5 && CanUse(RG_STICKS)) || HasExplosives() || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW);
             case RE_LIZALFOS:
                 return CanJumpslash() || HasExplosives() || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW);
             case RE_KEESE:
@@ -600,6 +637,8 @@ namespace Rando {
                 return CanJumpslash() || HasExplosives() || CanUse(RG_FAIRY_BOW);
             case RE_FREEZARD:
                 return CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_STICKS) || HasExplosives() || CanUse(RG_HOOKSHOT) || CanUse(RG_DINS_FIRE) || CanUse(RG_FIRE_ARROWS);
+            case RE_SHELL_BLADE:
+                return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_STICKS) || HasExplosives() || CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_DINS_FIRE);
             case RE_SPIKE:
                 return CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_STICKS) || HasExplosives() || CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_DINS_FIRE);
             case RE_STINGER:
@@ -649,7 +688,7 @@ namespace Rando {
             //RANDOTODO Dark link is buggy right now, retest when he is not
                 return CanJumpslash() || CanUse(RG_FAIRY_BOW);
             case RE_ANUBIS:
-                //there's a restoration that allows beating them with mirror shield + some way to trigger thier attack
+                //there's a restoration that allows beating them with mirror shield + some way to trigger their attack
                 return HasFireSource();
             case RE_BEAMOS:
                 return HasExplosives();
@@ -757,6 +796,7 @@ namespace Rando {
         case RE_ARMOS:
         case RE_GREEN_BUBBLE:
         case RE_FREEZARD:
+        case RE_SHELL_BLADE:
         case RE_SPIKE:
         case RE_BIG_OCTO:
         case RE_GIBDO:
@@ -880,13 +920,26 @@ namespace Rando {
 
     uint8_t Logic::BottleCount() {
         uint8_t count = 0;
-        if (!CanEmptyBigPoes){
-            return 0;
-        }
-        for (int i = SLOT_BOTTLE_1; i <= SLOT_BOTTLE_4; i++) {
-            uint8_t item = GetSaveContext()->inventory.items[i];
-            if (item != ITEM_NONE && (item != ITEM_LETTER_RUTO || (item == ITEM_LETTER_RUTO && DeliverLetter))) {
-                count++;
+        if (CouldEmptyBigPoes){
+            for (int i = SLOT_BOTTLE_1; i <= SLOT_BOTTLE_4; i++) {
+                uint8_t item = GetSaveContext()->inventory.items[i];
+                switch (item) {
+                    case ITEM_LETTER_RUTO:
+                        if (DeliverLetter) {
+                            count++;
+                        }
+                        break;
+                    case ITEM_BIG_POE:
+                        if (CanEmptyBigPoes) {
+                            count++;
+                        }
+                        break;
+                    case ITEM_NONE:
+                        break;
+                    default:
+                        count++;
+                        break;
+                }
             }
         }
         return count;
@@ -951,7 +1004,7 @@ namespace Rando {
     }
 
     bool Logic::BombchusEnabled(){
-        return ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) ? CheckInventory(ITEM_BOMBCHU, true) : HasItem(RG_BOMB_BAG);
+        return ctx->GetOption(RSK_BOMBCHU_BAG) ? CheckInventory(ITEM_BOMBCHU, true) : HasItem(RG_BOMB_BAG);
     }
 
     // TODO: Implement Ammo Drop Setting in place of bombchu drops
@@ -1025,7 +1078,7 @@ namespace Rando {
         10 for OHKO.
         This is the number of shifts to apply, not a real multiplier
         */
-        uint8_t Multiplier = (ctx->GetOption(RSK_DAMAGE_MULTIPLIER).GetContextOptionIndex() < 6) ? ctx->GetOption(RSK_DAMAGE_MULTIPLIER).GetContextOptionIndex() : 10;
+        uint8_t Multiplier = (ctx->GetOption(RSK_DAMAGE_MULTIPLIER).Get() < 6) ? ctx->GetOption(RSK_DAMAGE_MULTIPLIER).Get() : 10;
         //(Hearts() << (2 + HasItem(RG_DOUBLE_DEFENSE))) is quarter hearts after DD
         //>> Multiplier halves on normal and does nothing on half, meaning we're working with half hearts on normal damage 
         return ((Hearts() << (2 + HasItem(RG_DOUBLE_DEFENSE))) >> Multiplier) + 
@@ -1155,21 +1208,21 @@ namespace Rando {
     bool Logic::CanBuildRainbowBridge(){
         return ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_ALWAYS_OPEN)      ||
                (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_VANILLA)         && HasItem(RG_SHADOW_MEDALLION) && HasItem(RG_SPIRIT_MEDALLION) && CanUse(RG_LIGHT_ARROWS)) ||
-               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_STONES)          && StoneCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG_REWARD)) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_STONE_COUNT).GetContextOptionIndex()) ||
-               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_MEDALLIONS)      && MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG_REWARD)) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT).GetContextOptionIndex()) ||
-               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEON_REWARDS) && StoneCount() + MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG_REWARD)) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).GetContextOptionIndex()) ||
-               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEONS)        && DungeonCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG_REWARD)) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).GetContextOptionIndex()) ||
-               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS)          && GetGSCount() >= ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).GetContextOptionIndex()) ||
+               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_STONES)          && StoneCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG_REWARD)) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_STONE_COUNT).Get()) ||
+               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_MEDALLIONS)      && MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG_REWARD)) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT).Get()) ||
+               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEON_REWARDS) && StoneCount() + MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG_REWARD)) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).Get()) ||
+               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEONS)        && DungeonCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG_REWARD)) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).Get()) ||
+               (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS)          && GetGSCount() >= ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).Get()) ||
                (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_GREG)            && HasItem(RG_GREG_RUPEE));
     }
 
     bool Logic::CanTriggerLACS(){
-        return (ctx->GetSettings()->LACSCondition() == RO_LACS_VANILLA    && HasItem(RG_SHADOW_MEDALLION) && HasItem(RG_SPIRIT_MEDALLION)) ||
-               (ctx->GetSettings()->LACSCondition() == RO_LACS_STONES     && StoneCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >= ctx->GetOption(RSK_LACS_STONE_COUNT).GetContextOptionIndex()) ||
-               (ctx->GetSettings()->LACSCondition() == RO_LACS_MEDALLIONS && MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >= ctx->GetOption(RSK_LACS_MEDALLION_COUNT).GetContextOptionIndex()) ||
-               (ctx->GetSettings()->LACSCondition() == RO_LACS_REWARDS    && StoneCount() + MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >= ctx->GetOption(RSK_LACS_REWARD_COUNT).GetContextOptionIndex()) ||
-               (ctx->GetSettings()->LACSCondition() == RO_LACS_DUNGEONS   && DungeonCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >= ctx->GetOption(RSK_LACS_DUNGEON_COUNT).GetContextOptionIndex()) ||
-               (ctx->GetSettings()->LACSCondition() == RO_LACS_TOKENS     && GetGSCount() >= ctx->GetOption(RSK_LACS_TOKEN_COUNT).GetContextOptionIndex());
+        return (ctx->LACSCondition() == RO_LACS_VANILLA    && HasItem(RG_SHADOW_MEDALLION) && HasItem(RG_SPIRIT_MEDALLION)) ||
+               (ctx->LACSCondition() == RO_LACS_STONES     && StoneCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >= ctx->GetOption(RSK_LACS_STONE_COUNT).Get()) ||
+               (ctx->LACSCondition() == RO_LACS_MEDALLIONS && MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >= ctx->GetOption(RSK_LACS_MEDALLION_COUNT).Get()) ||
+               (ctx->LACSCondition() == RO_LACS_REWARDS    && StoneCount() + MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >= ctx->GetOption(RSK_LACS_REWARD_COUNT).Get()) ||
+               (ctx->LACSCondition() == RO_LACS_DUNGEONS   && DungeonCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >= ctx->GetOption(RSK_LACS_DUNGEON_COUNT).Get()) ||
+               (ctx->LACSCondition() == RO_LACS_TOKENS     && GetGSCount() >= ctx->GetOption(RSK_LACS_TOKEN_COUNT).Get());
     }
 
     bool Logic::SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmount) {
@@ -1280,7 +1333,31 @@ namespace Rando {
         { RG_OCARINA_C_RIGHT_BUTTON, RAND_INF_HAS_OCARINA_C_RIGHT },
         { RG_SKELETON_KEY,           RAND_INF_HAS_SKELETON_KEY },
         { RG_GREG_RUPEE,             RAND_INF_GREG_FOUND },
-        { RG_FISHING_POLE,           RAND_INF_FISHING_POLE_FOUND }
+        { RG_FISHING_POLE,           RAND_INF_FISHING_POLE_FOUND },
+        { RG_GUARD_HOUSE_KEY,                  RAND_INF_GUARD_HOUSE_KEY_OBTAINED },
+        { RG_MARKET_BAZAAR_KEY,                RAND_INF_MARKET_BAZAAR_KEY_OBTAINED },
+        { RG_MARKET_POTION_SHOP_KEY,           RAND_INF_MARKET_POTION_SHOP_KEY_OBTAINED },
+        { RG_MASK_SHOP_KEY,                    RAND_INF_MASK_SHOP_KEY_OBTAINED },
+        { RG_MARKET_SHOOTING_GALLERY_KEY,      RAND_INF_MARKET_SHOOTING_GALLERY_KEY_OBTAINED },
+        { RG_BOMBCHU_BOWLING_KEY,              RAND_INF_BOMBCHU_BOWLING_KEY_OBTAINED },
+        { RG_TREASURE_CHEST_GAME_BUILDING_KEY, RAND_INF_TREASURE_CHEST_GAME_BUILDING_KEY_OBTAINED },
+        { RG_BOMBCHU_SHOP_KEY,                 RAND_INF_BOMBCHU_SHOP_KEY_OBTAINED },
+        { RG_RICHARDS_HOUSE_KEY,               RAND_INF_RICHARDS_HOUSE_KEY_OBTAINED },
+        { RG_ALLEY_HOUSE_KEY,                  RAND_INF_ALLEY_HOUSE_KEY_OBTAINED },
+        { RG_KAK_BAZAAR_KEY,                   RAND_INF_KAK_BAZAAR_KEY_OBTAINED },
+        { RG_KAK_POTION_SHOP_KEY,              RAND_INF_KAK_POTION_SHOP_KEY_OBTAINED },
+        { RG_BOSS_HOUSE_KEY,                   RAND_INF_BOSS_HOUSE_KEY_OBTAINED },
+        { RG_GRANNYS_POTION_SHOP_KEY,          RAND_INF_GRANNYS_POTION_SHOP_KEY_OBTAINED },
+        { RG_SKULLTULA_HOUSE_KEY,              RAND_INF_SKULLTULA_HOUSE_KEY_OBTAINED },
+        { RG_IMPAS_HOUSE_KEY,                  RAND_INF_IMPAS_HOUSE_KEY_OBTAINED },
+        { RG_WINDMILL_KEY,                     RAND_INF_WINDMILL_KEY_OBTAINED },
+        { RG_KAK_SHOOTING_GALLERY_KEY,         RAND_INF_KAK_SHOOTING_GALLERY_KEY_OBTAINED },
+        { RG_DAMPES_HUT_KEY,                   RAND_INF_DAMPES_HUT_KEY_OBTAINED },
+        { RG_TALONS_HOUSE_KEY,                 RAND_INF_TALONS_HOUSE_KEY_OBTAINED },
+        { RG_STABLES_KEY,                      RAND_INF_STABLES_KEY_OBTAINED },
+        { RG_BACK_TOWER_KEY,                   RAND_INF_BACK_TOWER_KEY_OBTAINED },
+        { RG_HYLIA_LAB_KEY,                    RAND_INF_HYLIA_LAB_KEY_OBTAINED },
+        { RG_FISHING_HOLE_KEY,                 RAND_INF_FISHING_HOLE_KEY_OBTAINED },
     };
 
     std::map<uint32_t, uint32_t> Logic::RandoGetToDungeonScene = {
@@ -1355,6 +1432,18 @@ namespace Rando {
         { RG_ZORA_SAPPHIRE,          QUEST_ZORA_SAPPHIRE },
         { RG_STONE_OF_AGONY,         QUEST_STONE_OF_AGONY },
         { RG_GERUDO_MEMBERSHIP_CARD, QUEST_GERUDO_CARD },
+    };
+
+    std::map<uint32_t, uint32_t> BottleRandomizerGetToItemID = {
+        { RG_BOTTLE_WITH_RED_POTION, ITEM_POTION_RED },
+        { RG_BOTTLE_WITH_GREEN_POTION, ITEM_POTION_GREEN },
+        { RG_BOTTLE_WITH_BLUE_POTION, ITEM_POTION_BLUE },
+        { RG_BOTTLE_WITH_FAIRY, ITEM_FAIRY },
+        { RG_BOTTLE_WITH_FISH, ITEM_FISH },
+        { RG_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE },
+        { RG_BOTTLE_WITH_BUGS, ITEM_BUG },
+        { RG_BOTTLE_WITH_POE, ITEM_POE },
+        { RG_BOTTLE_WITH_BIG_POE, ITEM_BIG_POE },
     };
 
     uint32_t HookshotLookup[3] = { ITEM_NONE, ITEM_HOOKSHOT, ITEM_LONGSHOT };
@@ -1601,7 +1690,11 @@ namespace Rando {
                     }
                     slot++;
                 }
-                mSaveContext->inventory.items[slot] = item.GetGIEntry()->itemId;
+                uint16_t itemId = item.GetGIEntry()->itemId;
+                if (BottleRandomizerGetToItemID.contains(randoGet)) {
+                    itemId = BottleRandomizerGetToItemID[randoGet];
+                }
+                mSaveContext->inventory.items[slot] = itemId;
             }   break;
             case RG_RUTOS_LETTER:
                 SetEventChkInf(EVENTCHKINF_OBTAINED_RUTOS_LETTER, state);
@@ -1622,10 +1715,34 @@ namespace Rando {
             case RG_OCARINA_C_RIGHT_BUTTON:
             case RG_GREG_RUPEE:
             case RG_FISHING_POLE:
+            case RG_GUARD_HOUSE_KEY:
+            case RG_MARKET_BAZAAR_KEY:
+            case RG_MARKET_POTION_SHOP_KEY:
+            case RG_MASK_SHOP_KEY:
+            case RG_MARKET_SHOOTING_GALLERY_KEY:
+            case RG_BOMBCHU_BOWLING_KEY:
+            case RG_TREASURE_CHEST_GAME_BUILDING_KEY:
+            case RG_BOMBCHU_SHOP_KEY:
+            case RG_RICHARDS_HOUSE_KEY:
+            case RG_ALLEY_HOUSE_KEY:
+            case RG_KAK_BAZAAR_KEY:
+            case RG_KAK_POTION_SHOP_KEY:
+            case RG_BOSS_HOUSE_KEY:
+            case RG_GRANNYS_POTION_SHOP_KEY:
+            case RG_SKULLTULA_HOUSE_KEY:
+            case RG_IMPAS_HOUSE_KEY:
+            case RG_WINDMILL_KEY:
+            case RG_KAK_SHOOTING_GALLERY_KEY:
+            case RG_DAMPES_HUT_KEY:
+            case RG_TALONS_HOUSE_KEY:
+            case RG_STABLES_KEY:
+            case RG_BACK_TOWER_KEY:
+            case RG_HYLIA_LAB_KEY:
+            case RG_FISHING_HOLE_KEY:
                 SetRandoInf(RandoGetToRandInf.at(randoGet), state);
                 break;
             case RG_TRIFORCE_PIECE:
-                mSaveContext->triforcePiecesCollected += (!state ? -1 : 1);
+                mSaveContext->ship.quest.data.randomizer.triforcePiecesCollected += (!state ? -1 : 1);
                 break;
             case RG_BOMBCHU_5:
             case RG_BOMBCHU_10:
@@ -1881,14 +1998,13 @@ namespace Rando {
         mSaveContext->sceneFlags[5].swch = 0x40000000;
 
         // SoH specific
-        mSaveContext->backupFW = mSaveContext->fw;
-        mSaveContext->pendingSale = ITEM_NONE;
-        mSaveContext->pendingSaleMod = MOD_NONE;
-        mSaveContext->isBossRushPaused = 0;
-        mSaveContext->pendingIceTrapCount = 0;
+        mSaveContext->ship.backupFW = mSaveContext->fw;
+        mSaveContext->ship.pendingSale = ITEM_NONE;
+        mSaveContext->ship.pendingSaleMod = MOD_NONE;
+        mSaveContext->ship.pendingIceTrapCount = 0;
 
         // Init with normal quest unless only an MQ rom is provided
-        mSaveContext->questId = OTRGlobals::Instance->HasOriginal() ? QUEST_NORMAL : QUEST_MASTER;
+        mSaveContext->ship.quest.id = OTRGlobals::Instance->HasOriginal() ? QUEST_NORMAL : QUEST_MASTER;
 
         //RANDOTODO (ADD ITEMLOCATIONS TO GSAVECONTEXT)
     }
@@ -1937,16 +2053,16 @@ namespace Rando {
 
     bool Logic::HasAdultTrade(uint32_t itemID) {
         int tradeIndex = itemID - ITEM_POCKET_EGG;
-        return mSaveContext->adultTradeItems & (1 << tradeIndex);
+        return mSaveContext->ship.quest.data.randomizer.adultTradeItems & (1 << tradeIndex);
     }
 
     void Logic::SetAdultTrade(uint32_t itemID, bool state) {
         int tradeIndex = itemID - ITEM_POCKET_EGG;
         if (!state) {
-            mSaveContext->adultTradeItems &= ~(1 << tradeIndex);
+            mSaveContext->ship.quest.data.randomizer.adultTradeItems &= ~(1 << tradeIndex);
         }
         else {
-            mSaveContext->adultTradeItems |= (1 << tradeIndex);
+            mSaveContext->ship.quest.data.randomizer.adultTradeItems |= (1 << tradeIndex);
         }
     }
 
@@ -1981,15 +2097,15 @@ namespace Rando {
     }
 
     bool Logic::CheckRandoInf(uint32_t flag) {
-        return mSaveContext->randomizerInf[flag >> 4] & (1 << (flag & 0xF));
+        return mSaveContext->ship.randomizerInf[flag >> 4] & (1 << (flag & 0xF));
     }
 
     void Logic::SetRandoInf(uint32_t flag, bool state) {
         if (!state) {
-            mSaveContext->randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
+            mSaveContext->ship.randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
         }
         else {
-            mSaveContext->randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
+            mSaveContext->ship.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
         }
     }
 
@@ -2104,7 +2220,7 @@ namespace Rando {
         //Bottle Count
         Bottles    = 0;
         NumBottles = 0;
-        CanEmptyBigPoes = true;
+        CanEmptyBigPoes = false;
 
         //Drops and Bottle Contents Access
         NutPot           = false;
@@ -2141,7 +2257,7 @@ namespace Rando {
         //CanPlantBean        = false;
         BigPoeKill            = false;
 
-        BaseHearts      = ctx->GetOption(RSK_STARTING_HEARTS).GetContextOptionIndex() + 1;
+        BaseHearts      = ctx->GetOption(RSK_STARTING_HEARTS).Get() + 1;
         
 
         //Bridge Requirements
@@ -2150,7 +2266,7 @@ namespace Rando {
         //Other
         AtDay         = false;
         AtNight       = false;
-        GetSaveContext()->linkAge = !ctx->GetSettings()->ResolvedStartingAge();
+        GetSaveContext()->linkAge = !ctx->GetOption(RSK_SELECTED_STARTING_AGE).Get();
 
         //Events
         ShowedMidoSwordAndShield  = false;

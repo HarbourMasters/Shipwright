@@ -6,9 +6,9 @@
 #include "soh/cvar_prefixes.h"
 #include "soh/SaveManager.h"
 #include "soh/ResourceManagerHelpers.h"
-#include "soh/UIWidgets.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include "dungeon.h"
-#include "3drando/location_access.hpp"
+#include "location_access.h"
 
 #include <string>
 #include <vector>
@@ -80,7 +80,6 @@ bool initialized;
 bool doAreaScroll;
 bool previousShowHidden = false;
 bool hideShopUnshuffledChecks = true;
-bool hideTriforceCompleted = true;
 bool alwaysShowGS = false;
 
 std::map<uint32_t, RandomizerCheck> startingShopItem = { { SCENE_KOKIRI_SHOP, RC_KF_SHOP_ITEM_1 },
@@ -381,7 +380,9 @@ RandomizerCheckArea AreaFromEntranceGroup[] = {
     RCAREA_LON_LON_RANCH,
     RCAREA_LAKE_HYLIA,
     RCAREA_GERUDO_VALLEY,
+    RCAREA_GERUDO_FORTRESS,
     RCAREA_WASTELAND,
+    RCAREA_DESERT_COLOSSUS,
     RCAREA_MARKET,
     RCAREA_HYRULE_CASTLE,
 };
@@ -394,8 +395,6 @@ RandomizerCheckArea GetCheckArea() {
     if (ent != nullptr && !IsAreaScene(scene) && ent->type != ENTRANCE_TYPE_DUNGEON) {
         if (ent->source == "Desert Colossus" || ent->destination == "Desert Colossus") {
             area = RCAREA_DESERT_COLOSSUS;
-        } else if (ent->source == "Gerudo Fortress" || ent->destination == "Gerudo Fortress") {
-            area = RCAREA_GERUDO_FORTRESS;
         } else {
             area = AreaFromEntranceGroup[ent->dstGroup];
         }
@@ -490,7 +489,7 @@ void CheckTrackerLoadGame(int32_t fileNum) {
         }
     }
     if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING && IS_RANDO) {
-        s8 startingAge = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_AGE);
+        uint8_t startingAge = OTRGlobals::Instance->gRandoContext->GetOption(RSK_SELECTED_STARTING_AGE).Get();
         RandomizerCheckArea startingArea;
         switch (startingAge) {
             case RO_AGE_CHILD:
@@ -699,10 +698,10 @@ void CheckTrackerFlagSet(int16_t flagType, int32_t flag) {
                 return;
             }
             if (!IS_RANDO) {
-                if (flag == INFTABLE_192) {
+                if (flag == INFTABLE_BOUGHT_STICK_UPGRADE) {
                     SetCheckCollected(RC_LW_DEKU_SCRUB_NEAR_BRIDGE);
                     return;
-                } else if (flag == INFTABLE_193) {
+                } else if (flag == INFTABLE_BOUGHT_NUT_UPGRADE) {
                     SetCheckCollected(RC_LW_DEKU_SCRUB_GROTTO_FRONT);
                     return;
                 }
@@ -716,7 +715,7 @@ void CheckTrackerFlagSet(int16_t flagType, int32_t flag) {
                 } else if (flag == ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE) {
                     SetCheckCollected(RC_DEKU_THEATER_MASK_OF_TRUTH);
                     return;
-                } else if (flag == ITEMGETINF_0B) {
+                } else if (flag == ITEMGETINF_DEKU_SCRUB_HEART_PIECE) {
                     SetCheckCollected(RC_HF_DEKU_SCRUB_GROTTO);
                     return;
                 }
@@ -1192,8 +1191,6 @@ void LoadSettings() {
     showLinksPocket = IS_RANDO ? // don't show Link's Pocket if not randomizer, or if rando and pocket is disabled
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING
         :false;
-    hideTriforceCompleted = IS_RANDO ?
-        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT) != RO_GENERIC_ON : false;
 
     if (IS_RANDO) {
         switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TOKENS)) {
@@ -1300,7 +1297,8 @@ bool IsCheckShuffled(RandomizerCheck rc) {
             OTRGlobals::Instance->gRandoContext->IsQuestOfLocationActive(rc) &&
             (loc->GetRCType() != RCTYPE_SHOP ||
                 (showShops && OTRGlobals::Instance->gRandomizer->IdentifyShopItem(loc->GetScene(), loc->GetActorParams() + 1).enGirlAShopItem == 50)) &&
-            (rc != RC_TRIFORCE_COMPLETED || !hideTriforceCompleted) &&
+            (rc != RC_TRIFORCE_COMPLETED) &&
+            (rc != RC_GANON) &&
             (loc->GetRCType() != RCTYPE_SCRUB ||
                 showScrubs ||
                 (showMajorScrubs && (rc == RC_LW_DEKU_SCRUB_NEAR_BRIDGE || // The 3 scrubs that are always randomized
@@ -1360,7 +1358,7 @@ bool IsVisibleInCheckTracker(RandomizerCheck rc) {
                 OTRGlobals::Instance->gRandoContext->IsQuestOfLocationActive(rc)
             ) || (loc->GetRCType() == RCTYPE_SHOP && showShops && !hideShopUnshuffledChecks);
     } else {
-        return loc->IsVanillaCompletion() && (!loc->IsDungeon() || (loc->IsDungeon() && loc->GetQuest() == gSaveContext.questId));
+        return loc->IsVanillaCompletion() && (!loc->IsDungeon() || (loc->IsDungeon() && loc->GetQuest() == gSaveContext.ship.quest.id));
     }
 }
 
@@ -1384,7 +1382,9 @@ void UpdateAllAreas() {
 }
 
 void UpdateAreas(RandomizerCheckArea area) {
-    areasFullyChecked[area] = areaChecksGotten[area] == checksByArea.find(area)->second.size();
+    if (checksByArea.contains(area)) {
+        areasFullyChecked[area] = areaChecksGotten[area] == checksByArea.find(area)->second.size();
+    }
 }
 
 void UpdateAllOrdering() {
@@ -1546,7 +1546,7 @@ void DrawLocation(RandomizerCheck rc) {
             SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionId, true);
         }
     } else {
-        ImGui::InvisibleButton("", ImVec2(20.0f, 10.0f));
+        ImGui::Dummy(ImVec2(20.0f, 10.0f));
     }
     ImGui::SameLine();
 
@@ -1757,7 +1757,7 @@ void CheckTrackerSettingsWindow::DrawElement() {
     }
     UIWidgets::EnhancementCheckbox("Vanilla/MQ Dungeon Spoilers", CVAR_TRACKER_CHECK("MQSpoilers"));
     UIWidgets::Tooltip("If enabled, Vanilla/MQ dungeons will show on the tracker immediately. Otherwise, Vanilla/MQ dungeon locations must be unlocked.");
-    if (UIWidgets::EnhancementCheckbox("Hide unshuffled shop item checks", CVAR_TRACKER_CHECK("HideUnshuffledShopChecks"), false, "", UIWidgets::CheckboxGraphics::Cross, true)) {
+    if (UIWidgets::EnhancementCheckbox("Hide unshuffled shop item checks", CVAR_TRACKER_CHECK("HideUnshuffledShopChecks"), false, "", UIWidgets::CheckboxGraphics::Cross, false)) {
         hideShopUnshuffledChecks = !hideShopUnshuffledChecks;
         UpdateFilters();
     }

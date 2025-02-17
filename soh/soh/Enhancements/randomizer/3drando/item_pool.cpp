@@ -471,72 +471,6 @@ void PlaceJunkInExcludedLocation(const RandomizerCheck il) {
   SPDLOG_ERROR("ERROR: No Junk to Place!!!");
 }
 
-static void PlaceVanillaDekuScrubItems(bool junkOneTimeScrubs) {
-    auto ctx = Rando::Context::GetInstance();
-    if (junkOneTimeScrubs){
-      ctx->PlaceItemInLocation(RC_LW_DEKU_SCRUB_GROTTO_FRONT,          RG_BLUE_RUPEE, false, true);
-      ctx->PlaceItemInLocation(RC_LW_DEKU_SCRUB_NEAR_BRIDGE,           RG_BLUE_RUPEE, false, true);
-      ctx->PlaceItemInLocation(RC_HF_DEKU_SCRUB_GROTTO,                RG_BLUE_RUPEE, false, true);
-    }
-
-    ctx->PlaceItemInLocation(RC_ZR_DEKU_SCRUB_GROTTO_REAR,             RG_RED_POTION_REFILL, false, true);
-    ctx->PlaceItemInLocation(RC_ZR_DEKU_SCRUB_GROTTO_FRONT,            RG_GREEN_POTION_REFILL, false, true);
-    ctx->PlaceItemInLocation(RC_SFM_DEKU_SCRUB_GROTTO_REAR,            RG_RED_POTION_REFILL, false, true);
-    ctx->PlaceItemInLocation(RC_SFM_DEKU_SCRUB_GROTTO_FRONT,           RG_GREEN_POTION_REFILL, false, true);
-    ctx->PlaceItemInLocation(RC_LH_DEKU_SCRUB_GROTTO_LEFT,             RG_BUY_DEKU_NUTS_5, false, true);
-    ctx->PlaceItemInLocation(RC_LH_DEKU_SCRUB_GROTTO_RIGHT,            RG_BUY_BOMBS_535, false, true);
-    ctx->PlaceItemInLocation(RC_LH_DEKU_SCRUB_GROTTO_CENTER,           RG_BUY_DEKU_SEEDS_30, false, true);
-    ctx->PlaceItemInLocation(RC_GV_DEKU_SCRUB_GROTTO_REAR,             RG_RED_POTION_REFILL, false, true);
-    ctx->PlaceItemInLocation(RC_GV_DEKU_SCRUB_GROTTO_FRONT,            RG_GREEN_POTION_REFILL, false, true);
-    ctx->PlaceItemInLocation(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT, RG_BUY_DEKU_NUTS_5, false, true);
-    ctx->PlaceItemInLocation(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_LEFT,  RG_BUY_DEKU_STICK_1, false, true);
-    ctx->PlaceItemInLocation(RC_LW_DEKU_SCRUB_GROTTO_REAR,             RG_BUY_DEKU_SEEDS_30, false, true);
-    ctx->PlaceItemInLocation(RC_COLOSSUS_DEKU_SCRUB_GROTTO_REAR,       RG_RED_POTION_REFILL, false, true);
-    ctx->PlaceItemInLocation(RC_COLOSSUS_DEKU_SCRUB_GROTTO_FRONT,      RG_GREEN_POTION_REFILL, false, true);
-    ctx->PlaceItemInLocation(RC_DMC_DEKU_SCRUB,                        RG_BUY_BOMBS_535, false, true);
-    ctx->PlaceItemInLocation(RC_DMC_DEKU_SCRUB_GROTTO_LEFT,            RG_BUY_DEKU_NUTS_5, false, true);
-    ctx->PlaceItemInLocation(RC_DMC_DEKU_SCRUB_GROTTO_RIGHT,           RG_BUY_BOMBS_535, false, true);
-    ctx->PlaceItemInLocation(RC_DMC_DEKU_SCRUB_GROTTO_CENTER,          RG_BUY_DEKU_SEEDS_30, false, true);
-    ctx->PlaceItemInLocation(RC_GC_DEKU_SCRUB_GROTTO_LEFT,             RG_BUY_DEKU_NUTS_5, false, true);
-    ctx->PlaceItemInLocation(RC_GC_DEKU_SCRUB_GROTTO_RIGHT,            RG_BUY_BOMBS_535, false, true);
-    ctx->PlaceItemInLocation(RC_GC_DEKU_SCRUB_GROTTO_CENTER,           RG_BUY_DEKU_SEEDS_30, false, true);
-    ctx->PlaceItemInLocation(RC_LLR_DEKU_SCRUB_GROTTO_LEFT,            RG_BUY_DEKU_NUTS_5, false, true);
-    ctx->PlaceItemInLocation(RC_LLR_DEKU_SCRUB_GROTTO_RIGHT,           RG_BUY_BOMBS_535, false, true);
-    ctx->PlaceItemInLocation(RC_LLR_DEKU_SCRUB_GROTTO_CENTER,          RG_BUY_DEKU_SEEDS_30, false, true);
-
-    //Dungeon Scrubs
-    if (ctx->GetDungeon(Rando::DEKU_TREE)->IsMQ()) {
-        ctx->PlaceItemInLocation(RC_DEKU_TREE_MQ_DEKU_SCRUB, RG_BUY_DEKU_SHIELD, false, true);
-    }
-    if (ctx->GetDungeon(Rando::DODONGOS_CAVERN)->IsMQ()) {
-        ctx->PlaceItemInLocation(RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_REAR, RG_BUY_DEKU_STICK_1, false, true);
-        ctx->PlaceItemInLocation(RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_FRONT, RG_BUY_DEKU_SEEDS_30, false, true);
-        ctx->PlaceItemInLocation(RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_STAIRCASE, RG_BUY_DEKU_SHIELD, false, true);
-        ctx->PlaceItemInLocation(RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_SIDE_ROOM_NEAR_LOWER_LIZALFOS, RG_RED_POTION_REFILL,
-                                 false, true);
-    } else {
-      ctx->PlaceItemInLocation(RC_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT,      RG_BUY_DEKU_NUTS_5, false, true);
-      ctx->PlaceItemInLocation(RC_DODONGOS_CAVERN_DEKU_SCRUB_SIDE_ROOM_NEAR_DODONGOS, RG_BUY_DEKU_STICK_1, false, true);
-      ctx->PlaceItemInLocation(RC_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_RIGHT,     RG_BUY_DEKU_SEEDS_30, false, true);
-      ctx->PlaceItemInLocation(RC_DODONGOS_CAVERN_DEKU_SCRUB_LOBBY,                   RG_BUY_DEKU_SHIELD, false, true);
-    }
-    if (ctx->GetDungeon(Rando::JABU_JABUS_BELLY)->IsVanilla()) {
-        ctx->PlaceItemInLocation(RC_JABU_JABUS_BELLY_DEKU_SCRUB, RG_BUY_DEKU_NUTS_5, false, true);
-    }
-    if (ctx->GetDungeon(Rando::GANONS_CASTLE)->IsMQ()) {
-      ctx->PlaceItemInLocation(RC_GANONS_CASTLE_MQ_DEKU_SCRUB_LEFT,         RG_GREEN_POTION_REFILL, false, true);
-      ctx->PlaceItemInLocation(RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER_LEFT,  RG_BUY_BOMBS_535, false, true);
-      ctx->PlaceItemInLocation(RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER,       RG_BUY_ARROWS_30, false, true);
-      ctx->PlaceItemInLocation(RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER_RIGHT, RG_RED_POTION_REFILL, false, true);
-      ctx->PlaceItemInLocation(RC_GANONS_CASTLE_MQ_DEKU_SCRUB_RIGHT,        RG_BUY_DEKU_NUTS_5, false, true);
-    } else {
-      ctx->PlaceItemInLocation(RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_LEFT,  RG_BUY_BOMBS_535, false, true);
-      ctx->PlaceItemInLocation(RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_RIGHT, RG_BUY_DEKU_SEEDS_30, false, true);
-      ctx->PlaceItemInLocation(RC_GANONS_CASTLE_DEKU_SCRUB_RIGHT,        RG_RED_POTION_REFILL, false, true);
-      ctx->PlaceItemInLocation(RC_GANONS_CASTLE_DEKU_SCRUB_LEFT,         RG_GREEN_POTION_REFILL, false, true);
-    }
-}
-
 static void PlaceVanillaMapsAndCompasses() {
   auto ctx = Rando::Context::GetInstance();
   for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
@@ -558,143 +492,11 @@ static void PlaceVanillaBossKeys() {
     dungeon->PlaceVanillaBossKey();
   }
 }
-// TODO: This feels like it could be moved to Dungeons class and probably shorten
-// a few function call chains. Needs investigation.
 
-static void PlaceVanillaBeehiveRupees() {
-  auto ctx = Rando::Context::GetInstance();
-  ctx->PlaceItemInLocation(RC_KF_STORMS_GROTTO_BEEHIVE_LEFT,         RG_BLUE_RUPEE, false, true);
-  ctx->PlaceItemInLocation(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_LEFT, RG_BLUE_RUPEE, false, true);
-  ctx->PlaceItemInLocation(RC_HF_NEAR_MARKET_GROTTO_BEEHIVE_LEFT,    RG_BLUE_RUPEE, false, true);
-  ctx->PlaceItemInLocation(RC_HF_OPEN_GROTTO_BEEHIVE_LEFT,           RG_BLUE_RUPEE, false, true);
-  ctx->PlaceItemInLocation(RC_HF_SOUTHEAST_GROTTO_BEEHIVE_LEFT,      RG_BLUE_RUPEE, false, true);
-  ctx->PlaceItemInLocation(RC_KAK_OPEN_GROTTO_BEEHIVE_LEFT,          RG_BLUE_RUPEE, false, true);
-  ctx->PlaceItemInLocation(RC_DMT_STORMS_GROTTO_BEEHIVE_LEFT,        RG_BLUE_RUPEE, false, true);
-  ctx->PlaceItemInLocation(RC_DMC_UPPER_GROTTO_BEEHIVE_LEFT,         RG_BLUE_RUPEE, false, true);
-  ctx->PlaceItemInLocation(RC_ZR_OPEN_GROTTO_BEEHIVE_LEFT,           RG_BLUE_RUPEE, false, true);
-
-  ctx->PlaceItemInLocation(RC_KF_STORMS_GROTTO_BEEHIVE_RIGHT,         RG_RED_RUPEE, false, true);
-  ctx->PlaceItemInLocation(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_RIGHT, RG_RED_RUPEE, false, true);
-  ctx->PlaceItemInLocation(RC_LW_DEKU_SCRUB_GROTTO_BEEHIVE,           RG_RED_RUPEE, false, true);
-  ctx->PlaceItemInLocation(RC_SFM_STORMS_GROTTO_BEEHIVE,              RG_RED_RUPEE, false, true);
-  ctx->PlaceItemInLocation(RC_HF_NEAR_MARKET_GROTTO_BEEHIVE_RIGHT,    RG_RED_RUPEE, false, true);
-  ctx->PlaceItemInLocation(RC_HF_OPEN_GROTTO_BEEHIVE_RIGHT,           RG_RED_RUPEE, false, true);
-  ctx->PlaceItemInLocation(RC_HF_SOUTHEAST_GROTTO_BEEHIVE_RIGHT,      RG_RED_RUPEE, false, true);
-  ctx->PlaceItemInLocation(RC_HF_INSIDE_FENCE_GROTTO_BEEHIVE,         RG_RED_RUPEE, false, true);
-  ctx->PlaceItemInLocation(RC_LLR_GROTTO_BEEHIVE,                     RG_RED_RUPEE, false, true);
-  ctx->PlaceItemInLocation(RC_KAK_OPEN_GROTTO_BEEHIVE_RIGHT,          RG_RED_RUPEE, false, true);
-  ctx->PlaceItemInLocation(RC_DMT_COW_GROTTO_BEEHIVE,                 RG_RED_RUPEE, false, true);
-  ctx->PlaceItemInLocation(RC_DMT_STORMS_GROTTO_BEEHIVE_RIGHT,        RG_RED_RUPEE, false, true);
-  ctx->PlaceItemInLocation(RC_GC_GROTTO_BEEHIVE,                      RG_RED_RUPEE, false, true);
-  ctx->PlaceItemInLocation(RC_DMC_UPPER_GROTTO_BEEHIVE_RIGHT,         RG_RED_RUPEE, false, true);
-  ctx->PlaceItemInLocation(RC_DMC_HAMMER_GROTTO_BEEHIVE,              RG_RED_RUPEE, false, true);
-  ctx->PlaceItemInLocation(RC_ZR_OPEN_GROTTO_BEEHIVE_RIGHT,           RG_RED_RUPEE, false, true);
-  ctx->PlaceItemInLocation(RC_ZR_STORMS_GROTTO_BEEHIVE,               RG_RED_RUPEE, false, true);
-  ctx->PlaceItemInLocation(RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_LEFT,  RG_RED_RUPEE, false, true);
-  ctx->PlaceItemInLocation(RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_RIGHT, RG_RED_RUPEE, false, true);
-  ctx->PlaceItemInLocation(RC_ZD_BEHIND_KING_ZORA_BEEHIVE,            RG_RED_RUPEE, false, true);
-  ctx->PlaceItemInLocation(RC_LH_GROTTO_BEEHIVE,                      RG_RED_RUPEE, false, true);
-  ctx->PlaceItemInLocation(RC_GV_DEKU_SCRUB_GROTTO_BEEHIVE,           RG_RED_RUPEE, false, true);
-  ctx->PlaceItemInLocation(RC_COLOSSUS_GROTTO_BEEHIVE,                RG_RED_RUPEE, false, true);
-}
-
-static void PlaceVanillaCowMilk() {
-  auto ctx = Rando::Context::GetInstance();
-  ctx->PlaceItemInLocation(RC_KF_LINKS_HOUSE_COW,    RG_MILK, false, true);
-  ctx->PlaceItemInLocation(RC_HF_COW_GROTTO_COW,     RG_MILK, false, true);
-  ctx->PlaceItemInLocation(RC_GV_COW,                RG_MILK, false, true);
-  ctx->PlaceItemInLocation(RC_KAK_IMPAS_HOUSE_COW,   RG_MILK, false, true);
-  ctx->PlaceItemInLocation(RC_DMT_COW_GROTTO_COW,    RG_MILK, false, true);
-  ctx->PlaceItemInLocation(RC_LLR_STABLES_LEFT_COW,  RG_MILK, false, true);
-  ctx->PlaceItemInLocation(RC_LLR_STABLES_RIGHT_COW, RG_MILK, false, true);
-  ctx->PlaceItemInLocation(RC_LLR_TOWER_LEFT_COW,    RG_MILK, false, true);
-  ctx->PlaceItemInLocation(RC_LLR_TOWER_RIGHT_COW,   RG_MILK, false, true);
-
-  if (ctx->GetDungeon(Rando::JABU_JABUS_BELLY)->IsMQ()) {
-    ctx->PlaceItemInLocation(RC_JABU_JABUS_BELLY_MQ_COW, RG_MILK, false, true);
+static void PlaceItemsForType(RandomizerCheckType rctype, bool overworldActive, bool dungeonActive) {
+  if (!(overworldActive || dungeonActive)) {
+    return;
   }
-}
-
-static void PlaceVanillaOverworldFish() {
-  auto ctx = Rando::Context::GetInstance();
-  for (auto rc : Rando::StaticData::GetOverworldFishLocations()) {
-    ctx->PlaceItemInLocation(rc, RG_FISH, false, true);
-  }
-}
-
-static void PlaceVanillaFairies() {
-  auto ctx = Rando::Context::GetInstance();
-  for (auto rc : Rando::StaticData::GetOverworldFairyLocations()) {
-    ctx->PlaceItemInLocation(rc, GetJunkItem(), false, true);
-  }
-  if (ctx->GetDungeon(Rando::GANONS_CASTLE)->IsMQ()) {
-    ctx->PlaceItemInLocation(RC_GANONS_CASTLE_MQ_SCRUBS_FAIRY_1, GetJunkItem(), false, true);
-    ctx->PlaceItemInLocation(RC_GANONS_CASTLE_MQ_SCRUBS_FAIRY_2, GetJunkItem(), false, true);
-    ctx->PlaceItemInLocation(RC_GANONS_CASTLE_MQ_SCRUBS_FAIRY_3, GetJunkItem(), false, true);
-    ctx->PlaceItemInLocation(RC_GANONS_CASTLE_MQ_SCRUBS_FAIRY_4, GetJunkItem(), false, true);
-    ctx->PlaceItemInLocation(RC_GANONS_CASTLE_MQ_SCRUBS_FAIRY_5, GetJunkItem(), false, true);
-    ctx->PlaceItemInLocation(RC_GANONS_CASTLE_MQ_SCRUBS_FAIRY_6, GetJunkItem(), false, true);
-    ctx->PlaceItemInLocation(RC_GANONS_CASTLE_MQ_SCRUBS_FAIRY_7, GetJunkItem(), false, true);
-    ctx->PlaceItemInLocation(RC_GANONS_CASTLE_MQ_SCRUBS_FAIRY_8, GetJunkItem(), false, true);
-  } else {
-    ctx->PlaceItemInLocation(RC_GANONS_CASTLE_SCRUBS_FAIRY_1, GetJunkItem(), false, true);
-    ctx->PlaceItemInLocation(RC_GANONS_CASTLE_SCRUBS_FAIRY_2, GetJunkItem(), false, true);
-    ctx->PlaceItemInLocation(RC_GANONS_CASTLE_SCRUBS_FAIRY_3, GetJunkItem(), false, true);
-    ctx->PlaceItemInLocation(RC_GANONS_CASTLE_SCRUBS_FAIRY_4, GetJunkItem(), false, true);
-    ctx->PlaceItemInLocation(RC_GANONS_CASTLE_SCRUBS_FAIRY_5, GetJunkItem(), false, true);
-    ctx->PlaceItemInLocation(RC_GANONS_CASTLE_SCRUBS_FAIRY_6, GetJunkItem(), false, true);
-    ctx->PlaceItemInLocation(RC_GANONS_CASTLE_SCRUBS_FAIRY_7, GetJunkItem(), false, true);
-    ctx->PlaceItemInLocation(RC_GANONS_CASTLE_SCRUBS_FAIRY_8, GetJunkItem(), false, true);
-  }
-  if (ctx->GetDungeon(Rando::DODONGOS_CAVERN)->IsMQ()) {
-    ctx->PlaceItemInLocation(RC_DODONGOS_CAVERN_MQ_GOSSIP_STONE_FAIRY, GetJunkItem(), false, true);
-    ctx->PlaceItemInLocation(RC_DODONGOS_CAVERN_MQ_GOSSIP_STONE_FAIRY_BIG, GetJunkItem(), false, true);
-  } else {
-    ctx->PlaceItemInLocation(RC_DODONGOS_CAVERN_GOSSIP_STONE_FAIRY, GetJunkItem(), false, true);
-    ctx->PlaceItemInLocation(RC_DODONGOS_CAVERN_GOSSIP_STONE_FAIRY_BIG, GetJunkItem(), false, true);
-  }
-  if (ctx->GetDungeon(Rando::FIRE_TEMPLE)->IsMQ()) {
-    ctx->PlaceItemInLocation(RC_FIRE_TEMPLE_MQ_LOOP_STALFOS_SUN_FAIRY, GetJunkItem(), false, true);
-    ctx->PlaceItemInLocation(RC_FIRE_TEMPLE_MQ_LOOP_KNUCKLE_SUN_FAIRY, GetJunkItem(), false, true);
-  }
-  if (ctx->GetDungeon(Rando::WATER_TEMPLE)->IsMQ()) {
-    ctx->PlaceItemInLocation(RC_WATER_TEMPLE_MQ_DARK_LINK_PILAR_SUN_FAIRY, GetJunkItem(), false, true);
-    ctx->PlaceItemInLocation(RC_WATER_TEMPLE_MQ_DARK_LINK_LEFT_STORM_FAIRY, GetJunkItem(), false, true);
-    ctx->PlaceItemInLocation(RC_WATER_TEMPLE_MQ_DARK_LINK_RIGHT_SUN_FAIRY, GetJunkItem(), false, true);
-  }
-  if (ctx->GetDungeon(Rando::SPIRIT_TEMPLE)->IsMQ()) {
-    ctx->PlaceItemInLocation(RC_SPIRIT_TEMPLE_MQ_DINALFOS_ROOM_SUN_FAIRY, GetJunkItem(), false, true);
-  } else {
-    ctx->PlaceItemInLocation(RC_SPIRIT_TEMPLE_BOULDER_ROOM_SUN_FAIRY, GetJunkItem(), false, true);
-    ctx->PlaceItemInLocation(RC_SPIRIT_TEMPLE_ARMOS_ROOM_SUN_FAIRY, GetJunkItem(), false, true);
-  }
-  if (ctx->GetDungeon(Rando::SHADOW_TEMPLE)->IsMQ()) {
-    ctx->PlaceItemInLocation(RC_SHADOW_TEMPLE_MQ_BEAMOS_STORM_FAIRY, GetJunkItem(), false, true);
-    ctx->PlaceItemInLocation(RC_SHADOW_TEMPLE_MQ_PIT_STORM_FAIRY, GetJunkItem(), false, true);
-    ctx->PlaceItemInLocation(RC_SHADOW_TEMPLE_MQ_WIND_HINT_SUN_FAIRY, GetJunkItem(), false, true);
-  } else {
-    ctx->PlaceItemInLocation(RC_SHADOW_TEMPLE_BEAMOS_STORM_FAIRY, GetJunkItem(), false, true);
-    ctx->PlaceItemInLocation(RC_SHADOW_TEMPLE_PIT_STORM_FAIRY, GetJunkItem(), false, true);
-    ctx->PlaceItemInLocation(RC_SHADOW_TEMPLE_WIND_HINT_SUN_FAIRY, GetJunkItem(), false, true);
-  }
-  if (ctx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsMQ()) {
-    ctx->PlaceItemInLocation(RC_BOTTOM_OF_THE_WELL_MQ_CELL_SUN_FAIRY, GetJunkItem(), false, true);
-    ctx->PlaceItemInLocation(RC_BOTTOM_OF_THE_WELL_MQ_BASEMENT_SUN_FAIRY, GetJunkItem(), false, true);
-  } else {
-    ctx->PlaceItemInLocation(RC_BOTTOM_OF_THE_WELL_BASEMENT_SUN_FAIRY, GetJunkItem(), false, true);
-  }
-  if (ctx->GetDungeon(Rando::ICE_CAVERN)->IsVanilla()) {
-    ctx->PlaceItemInLocation(RC_ICE_CAVERN_ENTRANCE_STORMS_FAIRY, GetJunkItem(), false, true);
-  }
-  if (ctx->GetDungeon(Rando::GERUDO_TRAINING_GROUND)->IsVanilla()) {
-    ctx->PlaceItemInLocation(RC_GERUDO_TRAINING_GROUND_ENTRANCE_STORMS_FAIRY, GetJunkItem(), false, true);
-  }
-  if (ctx->GetDungeon(Rando::GANONS_CASTLE)->IsVanilla()) {
-    ctx->PlaceItemInLocation(RC_GANONS_CASTLE_SPIRIT_TRIAL_SUN_FAIRY, GetJunkItem(), false, true);
-  }
-}
-
-static void PlaceItemsForType(RandomizerCheckType rctype, bool overworldActive, bool dungeonActive, bool placeVanilla) {
   for (RandomizerCheck rc : ctx->GetLocations(ctx->allLocations, rctype)) {
     auto loc = Rando::StaticData::GetLocation(rc);
 
@@ -702,8 +504,6 @@ static void PlaceItemsForType(RandomizerCheckType rctype, bool overworldActive, 
     if (loc->IsOverworld()) {
       if (overworldActive) {
         AddItemToMainPool(loc->GetVanillaItem());
-      } else if (placeVanilla) {
-        ctx->PlaceItemInLocation(rc, loc->GetVanillaItem(), false, true);
       }
     } else {
       if (dungeonActive) {
@@ -723,8 +523,6 @@ static void PlaceItemsForType(RandomizerCheckType rctype, bool overworldActive, 
             }
           }
         }
-      } else if (placeVanilla) {
-        ctx->PlaceItemInLocation(rc, loc->GetVanillaItem(), false, true);
       }
     }
   }
@@ -761,7 +559,7 @@ static void SetMinimalItemPool() {
   ReplaceMaxItem(RG_PROGRESSIVE_BOMB_BAG, 1);
   ReplaceMaxItem(RG_PIECE_OF_HEART, 0);
   // Need an extra heart container when starting with 1 heart to be able to reach 3 hearts
-  ReplaceMaxItem(RG_HEART_CONTAINER, (ctx->GetOption(RSK_STARTING_HEARTS).GetContextOptionIndex() == 18)? 1 : 0);
+  ReplaceMaxItem(RG_HEART_CONTAINER, (ctx->GetOption(RSK_STARTING_HEARTS).Get() == 18)? 1 : 0);
 }
 
 void GenerateItemPool() {
@@ -827,7 +625,7 @@ void GenerateItemPool() {
 
   if (ctx->GetOption(RSK_TRIFORCE_HUNT)) {
     ctx->possibleIceTrapModels.push_back(RG_TRIFORCE_PIECE);
-    AddItemToMainPool(RG_TRIFORCE_PIECE, (ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).GetContextOptionIndex() + 1));
+    AddItemToMainPool(RG_TRIFORCE_PIECE, (ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).Get() + 1));
     ctx->PlaceItemInLocation(RC_TRIFORCE_COMPLETED, RG_TRIFORCE); // Win condition
     ctx->PlaceItemInLocation(RC_GANON, GetJunkItem(), false, true);
   } else {
@@ -905,8 +703,6 @@ void GenerateItemPool() {
     //32 total beehive locations
     AddItemToMainPool(RG_RED_RUPEE, 23);
     AddItemToMainPool(RG_BLUE_RUPEE, 9);
-  } else {
-    PlaceVanillaBeehiveRupees();
   }
 
   if (ctx->GetOption(RSK_SHUFFLE_COWS)) {
@@ -918,8 +714,6 @@ void GenerateItemPool() {
     if (ctx->GetDungeon(Rando::JABU_JABUS_BELLY)->IsMQ()) {
       AddItemToMainPool(GetJunkItem());
     }
-  } else {
-    PlaceVanillaCowMilk();
   }
 
   // Shuffle Pots
@@ -927,15 +721,13 @@ void GenerateItemPool() {
                              ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_ALL);
   bool dungeonPotsActive = ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_DUNGEONS) ||
                            ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_ALL);
-  if (overworldPotsActive || dungeonPotsActive) {
-    PlaceItemsForType(RCTYPE_POT, overworldPotsActive, dungeonPotsActive, false);
-  }
+  PlaceItemsForType(RCTYPE_POT, overworldPotsActive, dungeonPotsActive);
   
   auto fsMode = ctx->GetOption(RSK_FISHSANITY);
   if (fsMode.IsNot(RO_FISHSANITY_OFF)) {
     if (fsMode.Is(RO_FISHSANITY_POND) || fsMode.Is(RO_FISHSANITY_BOTH)) {
       // 17 max child pond fish
-      uint8_t pondCt = ctx->GetOption(RSK_FISHSANITY_POND_COUNT).GetContextOptionIndex();
+      uint8_t pondCt = ctx->GetOption(RSK_FISHSANITY_POND_COUNT).Get();
       for (uint8_t i = 0; i < pondCt; i++) {
         AddItemToMainPool(GetJunkItem());
       }
@@ -953,8 +745,6 @@ void GenerateItemPool() {
     if (fsMode.Is(RO_FISHSANITY_OVERWORLD) || fsMode.Is(RO_FISHSANITY_BOTH)) {
       for (uint8_t i = 0; i < Rando::StaticData::GetOverworldFishLocations().size(); i++)
         AddItemToMainPool(GetJunkItem());
-    } else {
-      PlaceVanillaOverworldFish();
     }
 
     if (fsMode.Is(RO_FISHSANITY_HYRULE_LOACH)) {
@@ -962,9 +752,6 @@ void GenerateItemPool() {
     } else {
       ctx->PlaceItemInLocation(RC_LH_HYRULE_LOACH, RG_PURPLE_RUPEE, false, true);
     }
-  } else {
-    PlaceVanillaOverworldFish();
-    ctx->PlaceItemInLocation(RC_LH_HYRULE_LOACH, RG_PURPLE_RUPEE, false, true);
   }
 
   if (ctx->GetOption(RSK_SHUFFLE_FISHING_POLE)) {
@@ -998,7 +785,7 @@ void GenerateItemPool() {
     if (/*!ProgressiveGoronSword TODO: Implement Progressive Goron Sword*/true) {
       AddItemToMainPool(RG_GIANTS_KNIFE);
     }
-    if (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC)) {
+    if (ctx->GetOption(RSK_BOMBCHU_BAG)) {
       AddItemToMainPool(RG_PROGRESSIVE_BOMBCHUS);
     } else {
       AddItemToMainPool(RG_BOMBCHU_10);
@@ -1122,7 +909,7 @@ void GenerateItemPool() {
     AddItemToMainPool(RG_PROGRESSIVE_NUT_UPGRADE);
   }
 
-  if (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC)) {
+  if (ctx->GetOption(RSK_BOMBCHU_BAG)) {
     AddItemToMainPool(RG_PROGRESSIVE_BOMBCHUS, 5);
   } else {
     AddItemToMainPool(RG_BOMBCHU_5);
@@ -1153,7 +940,7 @@ void GenerateItemPool() {
       ctx->PlaceItemInLocation(RC_GF_SOUTH_F2_CARPENTER, RG_RECOVERY_HEART, false, true);
     } else {
       //Only add key ring if 4 Fortress keys necessary
-      if (ctx->GetOption(RSK_KEYRINGS_GERUDO_FORTRESS)) {
+      if (ctx->GetOption(RSK_KEYRINGS_GERUDO_FORTRESS) && ctx->GetOption(RSK_KEYRINGS)) {
         AddItemToMainPool(RG_GERUDO_FORTRESS_KEY_RING);
         //Add junk to make up for missing keys
         for (uint8_t i = 0; i < 3; i++) {
@@ -1164,7 +951,7 @@ void GenerateItemPool() {
       }
     }
     if (ctx->GetOption(RSK_ITEM_POOL).Is(RO_ITEM_POOL_PLENTIFUL)) {
-      if (ctx->GetOption(RSK_KEYRINGS_GERUDO_FORTRESS) && ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL)) {
+      if (ctx->GetOption(RSK_KEYRINGS_GERUDO_FORTRESS) && ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL) && ctx->GetOption(RSK_KEYRINGS) ) {
         AddItemToPool(PendingJunkPool, RG_GERUDO_FORTRESS_KEY_RING);
       } else {
         AddItemToPool(PendingJunkPool, RG_GERUDO_FORTRESS_SMALL_KEY);
@@ -1276,6 +1063,33 @@ void GenerateItemPool() {
     }
   }
 
+  if (ctx->GetOption(RSK_LOCK_OVERWORLD_DOORS)) {
+    AddItemToPool(ItemPool, RG_GUARD_HOUSE_KEY);
+    AddItemToPool(ItemPool, RG_MARKET_BAZAAR_KEY);
+    AddItemToPool(ItemPool, RG_MARKET_POTION_SHOP_KEY);
+    AddItemToPool(ItemPool, RG_MASK_SHOP_KEY);
+    AddItemToPool(ItemPool, RG_MARKET_SHOOTING_GALLERY_KEY);
+    AddItemToPool(ItemPool, RG_BOMBCHU_BOWLING_KEY);
+    AddItemToPool(ItemPool, RG_TREASURE_CHEST_GAME_BUILDING_KEY);
+    AddItemToPool(ItemPool, RG_BOMBCHU_SHOP_KEY);
+    AddItemToPool(ItemPool, RG_RICHARDS_HOUSE_KEY);
+    AddItemToPool(ItemPool, RG_ALLEY_HOUSE_KEY);
+    AddItemToPool(ItemPool, RG_KAK_BAZAAR_KEY);
+    AddItemToPool(ItemPool, RG_KAK_POTION_SHOP_KEY);
+    AddItemToPool(ItemPool, RG_BOSS_HOUSE_KEY);
+    AddItemToPool(ItemPool, RG_GRANNYS_POTION_SHOP_KEY);
+    AddItemToPool(ItemPool, RG_SKULLTULA_HOUSE_KEY);
+    AddItemToPool(ItemPool, RG_IMPAS_HOUSE_KEY);
+    AddItemToPool(ItemPool, RG_WINDMILL_KEY);
+    AddItemToPool(ItemPool, RG_KAK_SHOOTING_GALLERY_KEY);
+    AddItemToPool(ItemPool, RG_DAMPES_HUT_KEY);
+    AddItemToPool(ItemPool, RG_TALONS_HOUSE_KEY);
+    AddItemToPool(ItemPool, RG_STABLES_KEY);
+    AddItemToPool(ItemPool, RG_BACK_TOWER_KEY);
+    AddItemToPool(ItemPool, RG_HYLIA_LAB_KEY);
+    AddItemToPool(ItemPool, RG_FISHING_HOLE_KEY);
+  }
+
   //Shopsanity
   if (
     ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF) ||
@@ -1306,8 +1120,6 @@ void GenerateItemPool() {
     for (int i = 0; i < extra; i++) {
       AddItemToMainPool(GetJunkItem());
     }
-  } else {
-    PlaceVanillaFairies();
   }
 
   //Scrubsanity
@@ -1350,19 +1162,13 @@ void GenerateItemPool() {
         AddItemToMainPool(RG_DEKU_SEEDS_30);
       }
     }
-  } else {
-    PlaceVanillaDekuScrubItems(ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_OFF));
   }
 
-  // RANDOTODO: Don't add freestanding locations to the seed at all in the first place so this check
-  // can be put back in place, and not place the vanilla items in PlaceItemsForType.
   bool overworldFreeStandingActive = ctx->GetOption(RSK_SHUFFLE_FREESTANDING).Is(RO_SHUFFLE_FREESTANDING_OVERWORLD) ||
                              ctx->GetOption(RSK_SHUFFLE_FREESTANDING).Is(RO_SHUFFLE_FREESTANDING_ALL);
   bool dungeonFreeStandingActive = ctx->GetOption(RSK_SHUFFLE_FREESTANDING).Is(RO_SHUFFLE_FREESTANDING_DUNGEONS) ||
                            ctx->GetOption(RSK_SHUFFLE_FREESTANDING).Is(RO_SHUFFLE_FREESTANDING_ALL);
-  //if (overworldFreeStandingActive || dungeonFreeStandingActive) {
-    PlaceItemsForType(RCTYPE_FREESTANDING, overworldFreeStandingActive, dungeonFreeStandingActive, true);
-  //}
+  PlaceItemsForType(RCTYPE_FREESTANDING, overworldFreeStandingActive, dungeonFreeStandingActive);
 
   AddItemsToPool(ItemPool, alwaysItems);
   AddItemsToPool(ItemPool, dungeonRewards);
@@ -1491,7 +1297,7 @@ void GenerateItemPool() {
 
   if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_KAK_TOKENS)) {
     ctx->PlaceItemInLocation(RC_KAK_100_GOLD_SKULLTULA_REWARD, RG_GANONS_CASTLE_BOSS_KEY);
-  } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).GetContextOptionIndex() >= RO_GANON_BOSS_KEY_LACS_VANILLA && ctx->GetOption(RSK_GANONS_BOSS_KEY).IsNot(RO_GANON_BOSS_KEY_TRIFORCE_HUNT)) {
+  } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Get() >= RO_GANON_BOSS_KEY_LACS_VANILLA && ctx->GetOption(RSK_GANONS_BOSS_KEY).IsNot(RO_GANON_BOSS_KEY_TRIFORCE_HUNT)) {
     ctx->PlaceItemInLocation(RC_TOT_LIGHT_ARROWS_CUTSCENE, RG_GANONS_CASTLE_BOSS_KEY);
   } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_VANILLA)) {
     ctx->PlaceItemInLocation(RC_GANONS_TOWER_BOSS_KEY_CHEST, RG_GANONS_CASTLE_BOSS_KEY);

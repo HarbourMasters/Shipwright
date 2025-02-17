@@ -1876,7 +1876,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                     Matrix_Get(&sp14C);
                     Matrix_MtxFToYXZRotS(&sp14C, &spB8, 0);
 
-                    if (hookedActor->flags & ACTOR_FLAG_PILLAR_PICKUP) {
+                    if (hookedActor->flags & ACTOR_FLAG_CARRY_X_ROT_INFLUENCE) {
                         hookedActor->world.rot.x = hookedActor->shape.rot.x = spB8.x - this->unk_3BC.x;
                     } else {
                         hookedActor->world.rot.y = hookedActor->shape.rot.y = this->actor.shape.rot.y + this->unk_3BC.y;
@@ -2101,9 +2101,6 @@ s32 Player_OverrideLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Ve
         type = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_SHEATH];
         if ((type == PLAYER_MODELTYPE_SHEATH_18) || (type == PLAYER_MODELTYPE_SHEATH_19)) {
             dListOffset = playerSwordAndShield[1] * ptrSize;
-        } else if (type == PLAYER_MODELTYPE_SHEATH_16 && CVarGetInteger(CVAR_ENHANCEMENT("PauseLiveLink"), 0)) {
-            //if (playerSwordAndShield[0] == 1)
-                //dListOffset = 4;
         }
     } else if (limbIndex == PLAYER_LIMB_WAIST) {
         type = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_WAIST];
@@ -2144,12 +2141,11 @@ void Player_DrawPauseImpl(PlayState* play, void* gameplayKeep, void* linkObject,
     // Note: the viewport x and y values are overwritten below, before usage
     static Vp viewport = { (PAUSE_EQUIP_PLAYER_WIDTH / 2) << 2, (PAUSE_EQUIP_PLAYER_HEIGHT / 2) << 2, G_MAXZ / 2, 0,
                            (PAUSE_EQUIP_PLAYER_WIDTH / 2) << 2, (PAUSE_EQUIP_PLAYER_HEIGHT / 2) << 2, G_MAXZ / 2, 0 };
-    static Lights1 lights1 = gdSPDefLights1(80, 80, 80, 255, 255, 255, 84, 84, 172);
+    static Lights1 lights1 = gdSPDefLights1(80, 80, 80, 255, 255, 255, 84, 84, -84);
     static Vec3f lightDir = { 89.8f, 0.0f, 89.8f };
     u8 playerSwordAndShield[2];
     Gfx* opaRef;
     Gfx* xluRef;
-    Gfx* kalRef;
     u16 perspNorm;
     Mtx* perspMtx = Graph_Alloc(play->state.gfxCtx, sizeof(Mtx));
     Mtx* lookAtMtx = Graph_Alloc(play->state.gfxCtx, sizeof(Mtx));
@@ -2158,8 +2154,18 @@ void Player_DrawPauseImpl(PlayState* play, void* gameplayKeep, void* linkObject,
 
     OPEN_DISPS(play->state.gfxCtx);
 
+    opaRef = POLY_OPA_DISP;
+    POLY_OPA_DISP++;
+
+    xluRef = POLY_XLU_DISP;
+    POLY_XLU_DISP++;
+
+    gSPDisplayList(WORK_DISP++, POLY_OPA_DISP);
+    gSPDisplayList(WORK_DISP++, POLY_XLU_DISP);
+
     if (mirrorWorldActive) {
         gSPSetExtraGeometryMode(POLY_OPA_DISP++, G_EX_INVERT_CULLING);
+        gSPSetExtraGeometryMode(POLY_XLU_DISP++, G_EX_INVERT_CULLING);
     }
 
     gSPSegment(POLY_OPA_DISP++, 0x00, NULL);
@@ -2173,7 +2179,14 @@ void Player_DrawPauseImpl(PlayState* play, void* gameplayKeep, void* linkObject,
                     G_AD_DISABLE | G_CD_MAGICSQ | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TT_NONE | G_TL_TILE |
                         G_TD_CLAMP | G_TP_PERSP | G_CYC_FILL | G_PM_NPRIMITIVE,
                     G_AC_NONE | G_ZS_PIXEL | G_RM_NOOP | G_RM_NOOP2);
-    gSPLoadGeometryMode(POLY_OPA_DISP++, G_ZBUFFER | G_SHADE | G_CULL_BACK | G_LIGHTING | G_SHADING_SMOOTH);
+
+    // Also matches if some of the previous graphics commands are moved inside this block too. Possible macro?
+    if (1) {
+        s32 pad[2];
+
+        gSPLoadGeometryMode(POLY_OPA_DISP++, G_ZBUFFER | G_SHADE | G_CULL_BACK | G_LIGHTING | G_SHADING_SMOOTH);
+    }
+
     gDPSetScissor(POLY_OPA_DISP++, G_SC_NON_INTERLACE, 0, 0, width, height);
     gSPClipRatio(POLY_OPA_DISP++, FRUSTRATIO_1);
 
@@ -2195,8 +2208,8 @@ void Player_DrawPauseImpl(PlayState* play, void* gameplayKeep, void* linkObject,
 
     gDPSetDepthImage(POLY_OPA_DISP++, depthFrameBuffer);
 
-    viewport.vp.vscale[0] = viewport.vp.vtrans[0] = width * 2;
-    viewport.vp.vscale[1] = viewport.vp.vtrans[1] = height * 2;
+    viewport.vp.vscale[0] = viewport.vp.vtrans[0] = width * ((1 << 2) / 2);
+    viewport.vp.vscale[1] = viewport.vp.vtrans[1] = height * ((1 << 2) / 2);
     gSPViewport(POLY_OPA_DISP++, &viewport);
 
     guPerspective(perspMtx, &perspNorm, fovy, (f32)width / (f32)height, 10.0f, 4000.0f, 1.0f);
@@ -2211,8 +2224,8 @@ void Player_DrawPauseImpl(PlayState* play, void* gameplayKeep, void* linkObject,
     playerSwordAndShield[0] = sword;
     playerSwordAndShield[1] = shield;
 
-    Matrix_SetTranslateRotateYXZ(pos->x - ((CVarGetInteger(CVAR_ENHANCEMENT("PauseLiveLink"), 0) && LINK_AGE_IN_YEARS == YEARS_ADULT) ? 25 : 0),
-                                 pos->y - (CVarGetInteger(CVAR_GENERAL("PauseTriforce"), 0) ? 16 : 0), pos->z, rot);
+    Matrix_SetTranslateRotateYXZ(pos->x - ((CVarGetInteger(CVAR_ENHANCEMENT("PauseMenuAnimatedLink"), 0) && LINK_AGE_IN_YEARS == YEARS_ADULT) ? 25 : 0),
+                                 pos->y - (CVarGetInteger(CVAR_GENERAL("PauseMenuAnimatedLinkTriforce"), 0) ? 16 : 0), pos->z, rot);
     Matrix_Scale(scale * (mirrorWorldActive ? -1 : 1), scale, scale, MTXMODE_APPLY);
 
     gSPSegment(POLY_OPA_DISP++, 0x04, gameplayKeep);
@@ -2229,36 +2242,29 @@ void Player_DrawPauseImpl(PlayState* play, void* gameplayKeep, void* linkObject,
     gSPSegment(POLY_OPA_DISP++, 0x0C, gCullBackDList);
 
     Player_DrawImpl(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, 0, tunic, boots, 0,
-                  Player_OverrideLimbDrawPause, NULL, &playerSwordAndShield);
+                    Player_OverrideLimbDrawPause, NULL, &playerSwordAndShield);
 
-     if (CVarGetInteger(CVAR_GENERAL("PauseTriforce"), 0)) {
-
+    if (CVarGetInteger(CVAR_GENERAL("PauseMenuAnimatedLinkTriforce"), 0)) {
         Matrix_SetTranslateRotateYXZ(pos->x - (LINK_AGE_IN_YEARS == YEARS_ADULT ? 25 : 0),
                                       pos->y + 280 + (LINK_AGE_IN_YEARS == YEARS_ADULT ? 48 : 0), pos->z, rot);
         Matrix_Scale(scale * (mirrorWorldActive ? -1 : 1), scale * 1, scale * 1, MTXMODE_APPLY);
 
-        Gfx* ohNo = POLY_XLU_DISP;
-        POLY_XLU_DISP = POLY_OPA_DISP;
-
         Pause_DrawTriforceSpot(play, 1);
-
-        POLY_OPA_DISP = POLY_XLU_DISP;
-        POLY_XLU_DISP = ohNo;
     }
 
     if (mirrorWorldActive) {
         gSPClearExtraGeometryMode(POLY_OPA_DISP++, G_EX_INVERT_CULLING);
+        gSPClearExtraGeometryMode(POLY_XLU_DISP++, G_EX_INVERT_CULLING);
     }
 
-    POLY_OPA_DISP = Play_SetFog(play, POLY_OPA_DISP++);
+    gSPEndDisplayList(POLY_OPA_DISP++);
+    gSPEndDisplayList(POLY_XLU_DISP++);
+
+    gSPBranchList(opaRef, POLY_OPA_DISP);
+    gSPBranchList(xluRef, POLY_XLU_DISP);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
-
-uintptr_t SelectedAnim = 0; // Current Animaiton on the menu
-s16 EquipedStance; // Link's current mode (Two handed, One handed...)
-s16 FrameCountSinceLastAnim = 0; // Time since last animation
-s16 MinFrameCount; // Frame to wait before checking if we need to change the animation
 
 void Player_DrawPause(PlayState* play, u8* segment, SkelAnime* skelAnime, Vec3f* pos, Vec3s* rot, f32 scale,
                    s32 sword, s32 tunic, s32 shield, s32 boots) {
@@ -2269,35 +2275,19 @@ void Player_DrawPause(PlayState* play, u8* segment, SkelAnime* skelAnime, Vec3f*
     Vec3s* srcTable;
     s32 i;
     bool canswitchrnd = false;
-    s16 SelectedMode = CVarGetInteger(CVAR_ENHANCEMENT("PauseLiveLink"), 0);
-    MinFrameCount = CVarGetInteger(CVAR_ENHANCEMENT("MinFrameCount"), 200);
 
     gSegments[4] = VIRTUAL_TO_PHYSICAL(segment + 0x3800);
     gSegments[6] = VIRTUAL_TO_PHYSICAL(segment + 0x8800);
 
-    uintptr_t* PauseMenuAnimSet[15][4] = {
-        { 0, 0, 0, 0 }, // 0 = none
-        // IDLE               // Two Handed       // No shield        // Kid Hylian Shield
-        { gPlayerAnim_link_normal_wait, gPlayerAnim_link_fighter_wait_long, gPlayerAnim_link_normal_wait_free, gPlayerAnim_link_normal_wait_free }, // Idle
-        { gPlayerAnim_link_normal_waitF_typeA_20f, gPlayerAnim_link_normal_waitF_typeA_20f, gPlayerAnim_link_normal_waitF_typeA_20f, gPlayerAnim_link_normal_waitF_typeA_20f }, // Idle look around
-        { gPlayerAnim_link_waitF_itemA_20f, gPlayerAnim_link_waitF_itemA_20f, gPlayerAnim_link_waitF_itemA_20f, gPlayerAnim_link_waitF_itemA_20f }, // Idle Belt
-        { gPlayerAnim_link_wait_itemC_20f, gPlayerAnim_link_wait_itemC_20f, gPlayerAnim_link_wait_itemC_20f, gPlayerAnim_link_wait_itemC_20f }, // Idle shield adjust
-        { gPlayerAnim_link_wait_itemD1_20f, gPlayerAnim_link_wait_itemD2_20f, gPlayerAnim_link_wait_itemD1_20f, gPlayerAnim_link_wait_itemD1_20f }, // Idle test sword
-        { gPlayerAnim_link_waitF_typeD_20f, gPlayerAnim_link_waitF_typeD_20f, gPlayerAnim_link_waitF_typeD_20f, gPlayerAnim_link_waitF_typeD_20f }, // Idle yawn
-        { gPlayerAnim_link_anchor_waitR, gPlayerAnim_link_fighter_waitR_long, gPlayerAnim_link_anchor_waitR, gPlayerAnim_link_anchor_waitR }, // Battle Stance
-        { gPlayerAnim_link_normal_walk_free, gPlayerAnim_link_fighter_walk_long, gPlayerAnim_link_normal_walk_free, gPlayerAnim_link_normal_walk_free }, // Walking (No shield)
-        { gPlayerAnim_link_normal_walk, gPlayerAnim_link_fighter_walk_long, gPlayerAnim_link_normal_walk, gPlayerAnim_link_normal_walk }, // Walking (Holding shield)
-        { gPlayerAnim_link_normal_run, gPlayerAnim_link_fighter_run_long, gPlayerAnim_link_normal_run, gPlayerAnim_link_normal_run }, // Running (No shield)
-        { gPlayerAnim_link_normal_run_free, gPlayerAnim_link_fighter_run_long, gPlayerAnim_link_normal_run_free, gPlayerAnim_link_normal_run_free }, // Running (Holding shield)
-        { gPlayerAnim_link_normal_talk_free_wait, gPlayerAnim_link_normal_talk_free_wait, gPlayerAnim_link_normal_talk_free_wait, gPlayerAnim_link_normal_talk_free_wait }, // Hand on hip
-        { gPlayerAnim_link_fighter_power_kiru_wait, gPlayerAnim_link_fighter_Lpower_kiru_wait, gPlayerAnim_link_fighter_power_kiru_wait, gPlayerAnim_link_fighter_power_kiru_wait }, // Spin Charge
-        { gPlayerAnim_link_demo_look_hand_wait, gPlayerAnim_link_demo_look_hand_wait, gPlayerAnim_link_demo_look_hand_wait, gPlayerAnim_link_demo_look_hand_wait }, // Look at hand
+    uintptr_t* PauseMenuAnimSet[4] = {
+        // IDLE                       // Two Handed                       // No shield                       // Kid Hylian Shield
+        gPlayerAnim_link_normal_wait, gPlayerAnim_link_fighter_wait_long, gPlayerAnim_link_normal_wait_free, gPlayerAnim_link_normal_wait_free
     };
-    s16 AnimArraySize = ARRAY_COUNT(PauseMenuAnimSet);
 
-    if (CVarGetInteger(CVAR_ENHANCEMENT("PauseLiveLink"), 0) || CVarGetInteger(CVAR_GENERAL("PauseTriforce"), 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("PauseMenuAnimatedLink"), 0) || CVarGetInteger(CVAR_GENERAL("PauseMenuAnimatedLinkTriforce"), 0)) {
         uintptr_t anim = 0; // Initialise anim
 
+        s16 EquipedStance;
         if (CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD) >= EQUIP_VALUE_SWORD_BIGGORON) {
             EquipedStance = 1;
         } else if (CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD) == EQUIP_VALUE_SWORD_NONE) {
@@ -2308,159 +2298,17 @@ void Player_DrawPause(PlayState* play, u8* segment, SkelAnime* skelAnime, Vec3f*
             // Link is idle so revert to 0
             EquipedStance = 0;
         }
-        if (SelectedMode == 16) {
-            // Apply Random function
-            s16 SwitchAtFrame = 0;
-            s16 CurAnimDuration = 0;
-            if (FrameCountSinceLastAnim == 0) {
-                // When opening Kaleido this will be passed one time
-                SelectedAnim = rand() % (AnimArraySize - 0);
-                if (SelectedAnim == 0) {
-                    // prevent loading 0 that would result to a crash.
-                    SelectedAnim = 1;
-                }
-            } else if (FrameCountSinceLastAnim >= 1) {
-                SwitchAtFrame = Animation_GetLastFrame(PauseMenuAnimSet[SelectedAnim][EquipedStance]);
-                CurAnimDuration = Animation_GetLastFrame(PauseMenuAnimSet[SelectedAnim][EquipedStance]);
-                if (SwitchAtFrame < MinFrameCount) {
-                    // Animation frame count is lower than minimal wait time then we wait for another round.
-                    // This will be looped to always add current animation time if that still lower than minimum time
-                    while (SwitchAtFrame < MinFrameCount) {
-                        SwitchAtFrame = SwitchAtFrame + CurAnimDuration;
-                    }
-                } else if (CurAnimDuration >= MinFrameCount) {
-                    // Since we have more (or same) animation time than min duration we set the wait time to animation
-                    // time.
-                    SwitchAtFrame = CurAnimDuration;
-                }
-                if (FrameCountSinceLastAnim >= SwitchAtFrame) {
-                    SelectedAnim = rand() % (AnimArraySize - 0);
-                    if (SelectedAnim == 0) {
-                        // prevent loading 0 that would result to a crash.
-                        SelectedAnim = 1;
-                    }
-                    FrameCountSinceLastAnim = 1;
-                }
-                anim = PauseMenuAnimSet[SelectedAnim][EquipedStance];
-            }
-            FrameCountSinceLastAnim++;
-        } else if (SelectedMode == 17) {
-            // Apply Random function
-            s16 SwitchAtFrame = 0;
-            s16 CurAnimDuration = 0;
-            s16 LastAnim;
-            if (FrameCountSinceLastAnim == 0) {
-                // When opening Kaleido this will be passed one time
-                SelectedAnim = (rand() % (6 - 1 + 1)) + 1;
-                if (SelectedAnim == 0) {
-                    // prevent loading 0 that would result to a crash.
-                    SelectedAnim = 1;
-                }
-            } else if (FrameCountSinceLastAnim >= 1) {
-                SwitchAtFrame = Animation_GetLastFrame(PauseMenuAnimSet[SelectedAnim][EquipedStance]);
-                CurAnimDuration = Animation_GetLastFrame(PauseMenuAnimSet[SelectedAnim][EquipedStance]);
-                if (SwitchAtFrame < MinFrameCount) {
-                    // Animation frame count is lower than minimal wait time then we wait for another round.
-                    // This will be looped to always add current animation time if that still lower than minimum time
-                    while (SwitchAtFrame < MinFrameCount) {
-                        SwitchAtFrame = SwitchAtFrame + CurAnimDuration;
-                    }
-                } else if (CurAnimDuration >= MinFrameCount) {
-                    // Since we have more (or same) animation time than min duration we set the wait time to animation
-                    // time.
-                    SwitchAtFrame = CurAnimDuration;
-                }
-                if (FrameCountSinceLastAnim >= SwitchAtFrame) {
-                    LastAnim = SelectedAnim;
-                    if (LastAnim==1) {
-                        if ((CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD) != EQUIP_VALUE_SWORD_NONE) && (CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD) != EQUIP_VALUE_SHIELD_NONE)) { // if the player has a sword and shield equipped
-                            if ((LINK_AGE_IN_YEARS == YEARS_ADULT) || (CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD) == EQUIP_VALUE_SHIELD_DEKU)) { // if he's an adult or a kid with the deku shield
-                                SelectedAnim = (rand() % (6 - 2 + 1)) + 2; // select any 5 animations that aren't the default standing anim
-                            } else { //else if he's a child with a shield that isn't the deku shield
-                                s16 randval = (rand() % (5 - 2 + 1)) + 2; // 4 animations
-                                if (randval==4) { //if its the shield anim
-                                    SelectedAnim==6; // set to yawn anim
-                                } else {
-                                    SelectedAnim=randval;
-                                }
-                            }
-                        } else if ((CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD) != EQUIP_VALUE_SWORD_NONE) && (CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD) == EQUIP_VALUE_SHIELD_NONE)) { // if the player has a sword equipped but no shield
-                            s16 randval = (rand() % (5 - 2 + 1)) + 2; // 4 animations
-                            if (randval==4) { //if its the shield anim
-                                SelectedAnim==6; // set to yawn anim
-                            } else {
-                                SelectedAnim=randval;
-                            }
-                        } else if ((CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD) == EQUIP_VALUE_SWORD_NONE) && (CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD) != EQUIP_VALUE_SHIELD_NONE)) { //if the player has a shield equipped but no sword
-                            if ((LINK_AGE_IN_YEARS == YEARS_ADULT) || (CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD) == EQUIP_VALUE_SHIELD_DEKU)) {// if he's an adult or a kid with the deku shield
-                            s16 randval = (rand() % (5 - 2 + 1)) + 2; // 4 animations
-                            if (randval==5) { //if its the sword anim
-                                SelectedAnim==6; // set to yawn anim
-                            } else {
-                                SelectedAnim=randval;
-                            }
-                            } else {
-                                s16 randval = (rand() % (4 - 2 + 1)) + 2; // 3 animations
-                                if (randval==4) { //if its the shield anim
-                                    SelectedAnim==6; // set to yawn anim
-                                } else {
-                                    SelectedAnim=randval;
-                                }
-                            } 
-                        } else if ((CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD) == EQUIP_VALUE_SWORD_NONE) && (CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD) == EQUIP_VALUE_SHIELD_NONE)) { // if the player has no sword or shield equipped
-                            s16 randval = (rand() % (4 - 2 + 1)) + 2; // 3 animations
-                            if (randval==4) { //if its the shield anim
-                                SelectedAnim==6; // set to yawn anim
-                            } else {
-                                SelectedAnim=randval;
-                            }
-                        }
-                    } else {
-                        SelectedAnim = 1;
-                    }
-                    if (SelectedAnim == 0) {
-                        // prevent loading 0 that would result to a crash. Also makes sure default idle is every other anim
-                        SelectedAnim = 1;
-                    }
-                    FrameCountSinceLastAnim = 1;
-                }
-                anim = PauseMenuAnimSet[SelectedAnim][EquipedStance];
-            }
-            FrameCountSinceLastAnim++;
-        } else if (SelectedMode == 15) {
-            // When opening Kaleido this will be passed one time
-            if (FrameCountSinceLastAnim < 1) {
-                SelectedAnim = rand() % (AnimArraySize - 0);
-                FrameCountSinceLastAnim++;
-                if (SelectedAnim == 0) {
-                    // prevent loading 0 that would result to a crash.
-                    SelectedAnim = 1;
-                }
-                FrameCountSinceLastAnim = 1;
-            }
-            if (CHECK_BTN_ALL(p1Input->press.button, BTN_B) || CHECK_BTN_ALL(p1Input->press.button, BTN_START)) {
-                FrameCountSinceLastAnim = 0;
-            }
-            anim = PauseMenuAnimSet[SelectedAnim][EquipedStance];
-        } else if (SelectedMode < 16) {
-            // Not random so we place our CVar as SelectedAnim
-            SelectedAnim = SelectedMode;
-            anim = PauseMenuAnimSet[SelectedAnim][EquipedStance];
-        }
 
-        anim = PauseMenuAnimSet[SelectedAnim][EquipedStance];
-
-        //anim = gPlayerAnim_link_wait_itemD2_20f; // Use for biggoron sword?
-
-        if (CVarGetInteger(CVAR_GENERAL("PauseTriforce"), 0)) {
+        if (!CVarGetInteger(CVAR_GENERAL("PauseMenuAnimatedLinkTriforce"), 0)) {
+            anim = PauseMenuAnimSet[EquipedStance];
+        } else {
             anim = gPlayerAnim_link_magic_kaze2;
             sword = 0;
             shield = 0;
         }
 
         if (skelAnime->animation != anim) {
-            LinkAnimation_Change(play, skelAnime, anim, 1.0f, 0.0f, Animation_GetLastFrame(anim), ANIMMODE_LOOP,
-                                 -6.0f);
+            LinkAnimation_Change(play, skelAnime, anim, 1.0f, 0.0f, Animation_GetLastFrame(anim), ANIMMODE_LOOP, -6.0f);
         }
 
         LinkAnimation_Update(play, skelAnime);
