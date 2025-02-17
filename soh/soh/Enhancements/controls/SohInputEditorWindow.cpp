@@ -1345,6 +1345,8 @@ void SohInputEditorWindow::DrawCameraControlPanel() {
     ImVec2 cursor = ImGui::GetCursorPos();
     ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
     UIWidgets::PaddedEnhancementCheckbox("Enable Mouse", CVAR_SETTING("EnableMouse"));
+    UIWidgets::Tooltip("Allows for using the mouse to control the camera (must enable Free Look), "
+            "aim with the shield, and perform quickspin attacks (quickly rotate the mouse then press B)");
     Ship::GuiWindow::BeginGroupPanel("Aiming/First-Person Camera", ImGui::GetContentRegionAvail());
     UIWidgets::PaddedEnhancementCheckbox("Right Stick Aiming", CVAR_SETTING("Controls.RightStickAim"));
     UIWidgets::Tooltip("Allows for aiming with the right stick in:\n-First-Person/C-Up view\n-Weapon Aiming");
