@@ -52,14 +52,12 @@ void Mouse_HandleShield(f32* sp50, f32* sp54) {
     if (MOUSE_ENABLED) {
         s32 width = GetWindow()->GetWidth();
         s32 height = GetWindow()->GetHeight();
-        /*
-         * Y: -12800 ~ +12700
-         * X: -15360 ~ +15240
-         */
-        f32 xBound = 15360 / ((f32)width / 2);
-        f32 yBound = 12800 / ((f32)height / 2);
-        *sp54 += (mouseCoord.y - (height / 2)) * yBound;
+        f32 xBound = 7200 / ((f32)width / 2);
+        f32 yBound = 6000 / ((f32)height / 2);
         *sp50 += (mouseCoord.x - (width / 2)) * xBound * (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? 1 : -1);
+        *sp54 += (mouseCoord.y - (height / 2)) * yBound;
+        *sp50 = CLAMP(*sp50, -7200, 7200);
+        *sp54 = CLAMP(*sp54, -6000, 6000);
     }
 }
 
