@@ -79,35 +79,32 @@ bool Mouse_HandleQuickspin(s8* iter2, s8* sp3C) {
     s8 temp1;
     s8 temp2;
     s32 i;
-    if (MOUSE_ENABLED) { //mouse quickspin
-        s32 willSpin = 1;
-        for (i = 0; i < 4; i++, iter2++) {
-            f32 relY = mouseQuickspinY[i + 1] - mouseQuickspinY[i];
-            f32 relX = mouseQuickspinX[i + 1] - mouseQuickspinX[i];
-            s16 aTan = Math_Atan2S(relY, -relX);
-            iterMouse = (u16)(aTan + 0x2000) >> 9;
-            if ((*iter2 = iterMouse) < 0) {
-                willSpin = 0;
-                break;
-            }
-            *iter2 *= 2;
+    if (!MOUSE_ENABLED) {
+        return false;
+    }
+
+    for (i = 0; i < 4; i++, iter2++) {
+        f32 relY = mouseQuickspinY[i + 1] - mouseQuickspinY[i];
+        f32 relX = mouseQuickspinX[i + 1] - mouseQuickspinX[i];
+        s16 aTan = Math_Atan2S(relY, -relX);
+        iterMouse = (u16)(aTan + 0x2000) >> 9;
+        if ((*iter2 = iterMouse) < 0) {
+            return false;
         }
-        temp1 = sp3C[0] - sp3C[1];
-        if (ABS(temp1) < 10) {
-            willSpin = 0;
-        }
-        iter2 = &sp3C[1];
-        for (i = 1; i < 3; i++, iter2++) {
-            temp2 = *iter2 - *(iter2 + 1);
-            if ((ABS(temp2) < 10) || (temp2 * temp1 < 0)) {
-                willSpin = 0;
-                break;
-            } }
-        if (willSpin) {
-            return true;
+        *iter2 *= 2;
+    }
+    temp1 = sp3C[0] - sp3C[1];
+    if (ABS(temp1) < 10) {
+        return false;
+    }
+    iter2 = &sp3C[1];
+    for (i = 1; i < 3; i++, iter2++) {
+        temp2 = *iter2 - *(iter2 + 1);
+        if ((ABS(temp2) < 10) || (temp2 * temp1 < 0)) {
+            return false;
         }
     }
 
-    return false;
+    return true;
 }
 } //extern "C"
