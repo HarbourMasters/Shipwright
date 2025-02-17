@@ -271,7 +271,6 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
                 input->cur.button = 0;
                 input->cur.stick_x = 0;
                 input->cur.stick_y = 0;
-
                 input->cur.err_no = padnow1->err_no;
                 if (padMgr->ctrlrIsConnected[i]) {
                     padMgr->ctrlrIsConnected[i] = false;
@@ -299,7 +298,6 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
         input->press.right_stick_x += (s8)(input->cur.right_stick_x - input->prev.right_stick_x);
         input->press.right_stick_y += (s8)(input->cur.right_stick_y - input->prev.right_stick_y);
         // #endregion
-
     }
 
     uint8_t rumble = (padMgr->rumbleEnable[0] > 0);

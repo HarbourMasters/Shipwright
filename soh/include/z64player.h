@@ -946,7 +946,6 @@ typedef struct Player {
     /*        */ u8 ivanFloating;
     /*        */ u8 ivanDamageMultiplier;
     // #endregion
-
 } Player; // size = 0xA94
 
 #endif
