@@ -19,11 +19,26 @@ void SohMenu::AddMenuEnhancements() {
     // Add Enhancements Menu
     AddMenuEntry("Enhancements", CVAR_SETTING("Menu.EnhancementsSidebarSection"));
 
-
     // Enhancements
     WidgetPath path = { "Enhancements", "Enhancements", SECTION_COLUMN_1 };
+    path.sidebarName = "Gameplay";
+    AddSidebarEntry("Enhancements", path.sidebarName, 3);
+
+    AddWidget(path, "Audio", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Mute Low HP Alarm", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("LowHPAlarm"))
+        .Options(CheckboxOptions().Tooltip(
+            "Disable the low HP beeping sound."
+        ));
+    AddWidget(path, "Disable Navi Call Audio", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("DisableNaviCallAudio"))
+        .Options(CheckboxOptions().Tooltip(
+            "Disables the voice audio when Navi calls you."
+        ));
+
     path.sidebarName = "Time Savers";
     AddSidebarEntry("Enhancements", path.sidebarName, 3);
+    path.column = SECTION_COLUMN_1;
 
     AddWidget(path, "Cutscenes", WIDGET_SEPARATOR_TEXT);
     bool allSkipsChecked = false;
@@ -358,7 +373,28 @@ void SohMenu::AddMenuEnhancements() {
     path.sidebarName = "Graphics";
     AddSidebarEntry("Enhancements", path.sidebarName, 3);
     path.column = SECTION_COLUMN_1;
-    AddWidget(path, "Filler", WIDGET_SEPARATOR_TEXT);
+
+    AddWidget(path, "UI", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Minimal UI", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("MinimalUI"))
+        .Options(CheckboxOptions().Tooltip(
+            "Hides most of the UI when not needed.\n"
+            "NOTE: Doesn't activate until scene transition."
+        ));
+    AddWidget(path, "Disable Hot/Underwater Warning Text", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("DisableTunicWarningText"))
+        .Options(CheckboxOptions().Tooltip(
+            "Disables warning text when you don't have on the Goron/Zora Tunic "
+            "in Hot/Underwater conditions."
+        ));
+    AddWidget(path, "Remember Minimap State Between Areas", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("RememberMapToggleState"))
+        .Options(CheckboxOptions().Tooltip(
+            "Preverse the minimap visibility state when going between areas rather than default it to \"on\" "
+            "when going through loading zones."
+        ));
+
+    AddWidget(path, "Textures", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Chest Size & Texture Matches Contents", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"))
         .Callback([](WidgetInfo& info) {

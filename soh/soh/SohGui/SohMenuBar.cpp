@@ -217,24 +217,6 @@ void DrawEnhancementsMenu() {
 
         if (ImGui::BeginMenu("Gameplay"))
         {
-            if (ImGui::BeginMenu("Reduced Clutter"))
-            {
-                UIWidgets::EnhancementCheckbox("Mute Low HP Alarm", CVAR_ENHANCEMENT("LowHpAlarm"));
-                UIWidgets::Tooltip("Disable the low HP beeping sound");
-                UIWidgets::PaddedEnhancementCheckbox("Minimal UI", CVAR_ENHANCEMENT("MinimalUI"), true, false);
-                UIWidgets::Tooltip("Hides most of the UI when not needed\nNote: Doesn't activate until after loading a new scene");
-                UIWidgets::PaddedEnhancementCheckbox("Disable Navi Call Audio", CVAR_ENHANCEMENT("DisableNaviCallAudio"), true, false);
-                UIWidgets::Tooltip("Disables the voice audio when Navi calls you");
-                UIWidgets::PaddedEnhancementCheckbox("Disable Hot/Underwater Warning Text", CVAR_ENHANCEMENT("DisableTunicWarningText"), true, false);
-                UIWidgets::Tooltip("Disables warning text when you don't have on the Goron/Zora Tunic in Hot/Underwater conditions.");
-                UIWidgets::PaddedEnhancementCheckbox("Remember Minimap State Between Areas", CVAR_ENHANCEMENT("RememberMapToggleState"));
-                UIWidgets::Tooltip("Preserves the minimap visibility state when going between areas rather than defaulting it to \"on\" when going through loading zones.");
-
-                ImGui::EndMenu();
-            }
-
-            UIWidgets::Spacer(0);
-
             UIWidgets::EnhancementCheckbox("Visual Stone of Agony", CVAR_ENHANCEMENT("VisualAgony"));
             UIWidgets::Tooltip("Displays an icon and plays a sound when Stone of Agony should be activated, for those without rumble");
             static const char* cursorOnAnySlot[3] = { "Only in Rando", "Always", "Never" };
