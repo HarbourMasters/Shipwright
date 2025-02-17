@@ -110,4 +110,4 @@ bool Mouse_HandleQuickspin(s8* iter2, s8* sp3C) {
 
     return false;
 }
-}; //extern "C"
+} //extern "C"
