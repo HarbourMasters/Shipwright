@@ -1,4 +1,7 @@
 #include "Mouse.h"
+#include "soh/OTRGlobals.h"
+#include "z64player.h"
+#include "global.h"
 #include <Window.h>
 
 static Ship::Coords mouseCoord = {};
