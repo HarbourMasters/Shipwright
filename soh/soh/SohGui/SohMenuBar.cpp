@@ -45,7 +45,6 @@
 #include "soh/Enhancements/randomizer/Plandomizer.h"
 #include "soh/Enhancements/TimeDisplay/TimeDisplay.h"
 #include "soh/AboutWindow.h"
-#include "soh/Enhancements/Autosave.h"
 
 // FA icons are kind of wonky, if they worked how I expected them to the "+ 2.0f" wouldn't be needed, but
 // they don't work how I expect them to so I added that because it looked good when I eyeballed it
