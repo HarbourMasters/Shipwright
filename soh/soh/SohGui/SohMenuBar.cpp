@@ -737,7 +737,7 @@ void DrawEnhancementsMenu() {
                 UIWidgets::PaddedEnhancementCheckbox("Navi Timer Resets", CVAR_ENHANCEMENT("ResetNaviTimer"), true, false);
                 UIWidgets::Tooltip("Resets the Navi timer on scene change. If you have already talked to her, she will try and talk to you again, instead of needing a save warp or death. ");
                 UIWidgets::PaddedEnhancementCheckbox("No Skulltula Freeze", CVAR_ENHANCEMENT("SkulltulaFreeze"), true, false);
-                UIWidgets::Tooltip("Stops the game from freezing the player when picking up Gold Skulltulas");
+                UIWidgets::Tooltip("Stops the game from freezing the player when picking up Gold Skulltulas.\nDoes not currently work in randomizer.");
                 UIWidgets::PaddedEnhancementCheckbox("Nighttime GS Always Spawn", CVAR_ENHANCEMENT("NightGSAlwaysSpawn"), true, false);
                 UIWidgets::Tooltip("Nighttime Skulltulas will spawn during both day and night.");
                 UIWidgets::PaddedEnhancementCheckbox("Dampe Appears All Night", CVAR_ENHANCEMENT("DampeAllNight"), true, false);
