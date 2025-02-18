@@ -32,6 +32,11 @@ extern "C" void ResourceMgr_ShutdownHelperThreadPool() {
     helperThreads->purge();
 }
 
+extern "C" void ResourceMgr_ThreadPoolsWait() {
+    helperThreads->wait_for(std::chrono::duration<double>(5));
+    Ship::Context::GetInstance()->GetResourceManager()->ThreadPoolWait(std::chrono::duration<double>(5));
+}
+
 extern "C" uint32_t ResourceMgr_GetNumGameVersions() {
     return Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions().size();
 }
@@ -565,7 +570,7 @@ void LoadSceneResourcesProcess(int16_t sceneNum) {
 
 // Iterate over scene object/actor commands if not already done so, and load the scene and object assets
 extern "C" void ResourceMgr_LoadAllSceneResources(int16_t sceneNum, bool now) {
-    if (now) {
+    if (now || unloadScene == -1) {
         LoadSceneResourcesProcess(sceneNum);
     } else {
         helperThreads->submit_task(std::bind(LoadSceneResourcesProcess, sceneNum));
@@ -595,7 +600,7 @@ extern "C" void ResourceMgr_UnloadSceneAssets() {
         helperThreads->submit_task(UnloadSceneAssetsProcess);
     }
 }
-static std::list<std::string> textureExcludes = { "alt/textures/vr_holy*", "alt/textures/vr_cloud*", "alt/textures/vr_fine*", "textures/buttons/*" };
+static std::list<std::string> textureExcludes = { "alt/textures/vr_holy*", "alt/textures/vr_cloud*", "alt/textures/vr_fine*" };
 
 // Persisted assets never unload, generally because they're used in multiple places. These include things like
 // audio assets, icons, items, font, gameplay*keep objects, title cards, and interior assets (for now)
@@ -640,7 +645,7 @@ extern "C" void ResourceMgr_LoadPersistentAltAssets() {
     int skipTitle = CVarGetInteger(CVAR_ENHANCEMENT("BootSequence"), 0);
 
     Ship::Context::GetInstance()->GetResourceManager()->LoadResources({
-        {"textures/*", "objects/*", "code/*", "overlays/*", "misc/*", "text/*", "scenes/*"}, textureExcludes, 0, nullptr});
+        {"textures/*", "code/*", "overlays/*", "misc/*", "text/*", "objects/*", "scenes/*"}, {"textures/buttons/", "textures/icons/"}, 0, nullptr}, true);
     if (skipTitle < 2) {
         ResourceLoadDirectory("alt/textures/nintendo_rogo_static/*");
         // Title screen/hyrule field
