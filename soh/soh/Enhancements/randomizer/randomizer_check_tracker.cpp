@@ -901,9 +901,7 @@ void CheckTrackerWindow::DrawElement() {
     }
 
     ImGui::SetNextWindowSize(ImVec2(400, 540), ImGuiCond_FirstUseEver);
-    ImGui::PushStyleColor(ImGuiCol_TitleBgActive, UIWidgets2::ColorValues.at(themeColor));
     BeginFloatWindows("Check Tracker", mIsVisible, ImGuiWindowFlags_NoScrollbar);
-    ImGui::PopStyleColor();
 
     if (!GameInteractor::IsSaveLoaded() || !initialized) {
         ImGui::Text("Waiting for file load..."); //TODO Language
