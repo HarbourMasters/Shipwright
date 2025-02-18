@@ -901,8 +901,9 @@ void CheckTrackerWindow::DrawElement() {
     }
 
     ImGui::SetNextWindowSize(ImVec2(400, 540), ImGuiCond_FirstUseEver);
-
+    ImGui::PushStyleColor(ImGuiCol_TitleBgActive, UIWidgets2::ColorValues.at(themeColor));
     BeginFloatWindows("Check Tracker", mIsVisible, ImGuiWindowFlags_NoScrollbar);
+    ImGui::PopStyleColor();
 
     if (!GameInteractor::IsSaveLoaded() || !initialized) {
         ImGui::Text("Waiting for file load..."); //TODO Language
@@ -952,7 +953,7 @@ void CheckTrackerWindow::DrawElement() {
         UpdateFilters();
         doAreaScroll = true;
     }
-    UIWidgets2::PushStyleCombobox();
+    UIWidgets2::PushStyleCombobox(themeColor);
     if (checkSearch.Draw()) {
         UpdateFilters();
     }
@@ -1575,7 +1576,7 @@ void DrawLocation(RandomizerCheck rc) {
     }
 
     // Draw button - for Skipped/Seen/Scummed/Unchecked only
-    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, {6.0f, 4.0f});
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, {4.0f, 3.0f});
     float sz = ImGui::GetFrameHeight();
     if (status == RCSHOW_UNCHECKED || status == RCSHOW_SEEN || status == RCSHOW_IDENTIFIED || status == RCSHOW_SCUMMED || skipped) {
         if (UIWidgets2::StateButton(std::to_string(rc).c_str(), skipped ? ICON_FA_PLUS : ICON_FA_TIMES, ImVec2(sz, sz), UIWidgets2::ButtonOptions().Color(themeColor))) {
