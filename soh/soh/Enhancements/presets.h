@@ -837,8 +837,11 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FasterHeavyBlockLift"), 1),
     // No Forced Navi
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("NoForcedNavi"), 1),
+    // This doesn't work in randomizer so it shouldn't be set
+    #if 0
     // No Skulltula Freeze
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SkulltulaFreeze"), 1),
+    #endif
     // MM Bunny Hood
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_FAST_AND_JUMP),
     // Adult Bunny Hood
