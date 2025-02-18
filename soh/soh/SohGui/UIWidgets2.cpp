@@ -305,6 +305,53 @@ bool CVarCheckbox(const char* label, const char* cvarName, const CheckboxOptions
     return dirty;
 }
 
+bool StateButton(const char* str_id, const char* label, ImVec2 size, ButtonOptions options, ImGuiButtonFlags flags) {
+
+    ImGuiContext& g = *GImGui;
+    ImGuiWindow* window = ImGui::GetCurrentWindow();
+    if (window->SkipItems) {
+        return false;
+    }
+
+    const ImGuiStyle& style = g.Style;
+    const ImVec2 label_size = ImGui::CalcTextSize(label, NULL, true);
+
+    const ImGuiID id = window->GetID(str_id);
+    const ImRect bb(window->DC.CursorPos, window->DC.CursorPos + size);
+    const float default_size = ImGui::GetFrameHeight();
+    ImGui::ItemSize(size, (size.y >= default_size) ? g.Style.FramePadding.y : -1.0f);
+    if (!ImGui::ItemAdd(bb, id))
+        return false;
+
+    if (g.LastItemData.ItemFlags & ImGuiItemFlags_ButtonRepeat) {
+        ImGui::PushItemFlag(ImGuiItemFlags_ButtonRepeat, true);
+    }
+
+    bool hovered, held;
+    bool pressed = ImGui::ButtonBehavior(bb, id, &hovered, &held, flags);
+
+    if (g.LastItemData.ItemFlags & ImGuiItemFlags_ButtonRepeat) {
+        ImGui::PopItemFlag(); // ImGuiItemFlags_ButtonRepeat;
+    }
+    PushStyleButton(options.color);
+    // Render
+    const ImU32 bg_col = ImGui::GetColorU32((held && hovered) ? ImGuiCol_ButtonActive
+        : hovered         ? ImGuiCol_ButtonHovered
+        : ImGuiCol_Button);
+    //const ImU32 text_col = ImGui::GetColorU32(ImGuiCol_Text);
+    ImGui::RenderNavHighlight(bb, id);
+    ImGui::RenderFrame(bb.Min, bb.Max, bg_col, true, g.Style.FrameRounding);
+    ImGui::RenderTextClipped(bb.Min + (style.FramePadding * 0.35f), bb.Max - (style.FramePadding / 4), label, NULL, &label_size, style.ButtonTextAlign, &bb);
+    PopStyleButton();
+    /*ImGui::RenderArrow(window->DrawList,
+    bb.Min +
+    ImVec2(ImMax(0.0f, (size.x - g.FontSize) * 0.5f), ImMax(0.0f, (size.y - g.FontSize) * 0.5f)),
+    text_col, dir);*/
+
+    IMGUI_TEST_ENGINE_ITEM_INFO(id, str_id, g.LastItemData.StatusFlags);
+    return pressed;
+}
+
 void PushStyleCombobox(const ImVec4& color) {
     ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(color.x, color.y, color.z, 0.8f));
     ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(color.x, color.y, color.z, 0.6f));
