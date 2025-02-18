@@ -217,14 +217,6 @@ void DrawEnhancementsMenu() {
 
         if (ImGui::BeginMenu("Gameplay"))
         {
-            UIWidgets::EnhancementCheckbox("Visual Stone of Agony", CVAR_ENHANCEMENT("VisualAgony"));
-            UIWidgets::Tooltip("Displays an icon and plays a sound when Stone of Agony should be activated, for those without rumble");
-            static const char* cursorOnAnySlot[3] = { "Only in Rando", "Always", "Never" };
-            UIWidgets::PaddedText("Allow the cursor to be on any slot", true, false);
-            UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("PauseAnyCursor"), cursorOnAnySlot, PAUSE_ANY_CURSOR_RANDO_ONLY);
-            UIWidgets::Tooltip("Allows the cursor on the pause menu to be over any slot. Sometimes required in rando to select certain items.");
-            UIWidgets::PaddedEnhancementCheckbox("Assignable Tunics and Boots", CVAR_ENHANCEMENT("AssignableTunicsAndBoots"), true, false);
-            UIWidgets::Tooltip("Allows equipping the tunic and boots to c-buttons");
             UIWidgets::PaddedEnhancementCheckbox("Equipment Toggle", CVAR_ENHANCEMENT("EquipmentCanBeRemoved"), true, false);
             UIWidgets::Tooltip("Allows equipment to be removed by toggling it off on\nthe equipment subscreen.");
             if (CVarGetInteger(CVAR_ENHANCEMENT("EquipmentCanBeRemoved"), 0)) {

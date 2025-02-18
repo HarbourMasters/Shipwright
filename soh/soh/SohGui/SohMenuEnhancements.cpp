@@ -36,6 +36,23 @@ void SohMenu::AddMenuEnhancements() {
             "Disables the voice audio when Navi calls you."
         ));
 
+    AddWidget(path, "Pause Menu", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Allow the Cursor to be on any slot", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_ENHANCEMENT("PauseAnyCursor"))
+        .Options(ComboboxOptions()
+            .ComboMap(cursorAnywhereValues)
+            .DefaultIndex(PAUSE_ANY_CURSOR_RANDO_ONLY)
+            .Tooltip(
+                "Allows the cursor on the pause menu to be over any slot. Sometimes required in Randomizer "
+                "to select certain items."
+            )
+        );
+    AddWidget(path, "Assignable Tunics and Boots", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("AssignableTunicsAndBoots"))
+        .Options(CheckboxOptions().Tooltip(
+            "Allows equipping the Tunics and Boots to C-Buttons/D-Pad."
+        ));
+
     path.sidebarName = "Time Savers";
     AddSidebarEntry("Enhancements", path.sidebarName, 3);
     path.column = SECTION_COLUMN_1;
@@ -392,6 +409,11 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Preverse the minimap visibility state when going between areas rather than default it to \"on\" "
             "when going through loading zones."
+        ));
+    AddWidget(path, "Visual Stone of Agony", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("VisualAgony"))
+        .Options(CheckboxOptions().Tooltip(
+            "Displays an icon and plays a sound when Stone of Agony should be activated, for those without rumble."
         ));
 
     AddWidget(path, "Textures", WIDGET_SEPARATOR_TEXT);

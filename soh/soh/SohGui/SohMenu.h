@@ -135,6 +135,12 @@ static const std::unordered_map<int32_t, const char*> bonkDamageValues = {
     { BONK_DAMAGE_OHKO, "OHKO" }
 };
 
+static const std::unordered_map<int32_t, const char*> cursorAnywhereValues = {
+    { PAUSE_ANY_CURSOR_RANDO_ONLY, "Only in Rando" },
+    { PAUSE_ANY_CURSOR_ALWAYS_ON, "Always" },
+    { PAUSE_ANY_CURSOR_ALWAYS_OFF, "Never" }
+};
+
 static const std::unordered_map<int32_t, const char*> debugSaveFileModes = {
     { 0, "Off" }, { 1, "Vanilla" }, { 2, "Maxed" },
 };
