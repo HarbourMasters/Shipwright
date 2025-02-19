@@ -3,6 +3,7 @@
 #include <soh/Enhancements/game-interactor/GameInteractor.h>
 #include <soh/OTRGlobals.h>
 #include <soh/Enhancements/cosmetics/authenticGfxPatches.h>
+#include <soh/Enhancements/enemyrandomizer.h>
 
 bool isBetaQuestEnabled = false;
 
@@ -1622,6 +1623,195 @@ void SohMenu::AddMenuEnhancements() {
                 "The time between groups of Leevers spawning."
             )
         );
+    
+    path.sidebarName = "Extra Modes";
+    AddSidebarEntry("Enhancements", path.sidebarName, 2);
+    path.column = SECTION_COLUMN_1;
+
+    AddWidget(path, "Mirrored World", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_ENHANCEMENT("MirroredWorldMode"))
+        .Callback([](WidgetInfo& info) {
+            if (gPlayState != NULL) {
+                UpdateMirrorModeState(gPlayState->sceneNum);
+            }
+        })
+        .Options(ComboboxOptions()
+            .DefaultIndex(MIRRORED_WORLD_OFF)
+            .ComboMap(mirroredWorldModes)
+            .Tooltip(
+                "Mirrors the world horizontally\n\n"
+                " - Always: Always mirror the world\n"
+                " - Random: Randomly decide to mirror the world on each scene change\n"
+                " - Random (Seeded): Scenes are mirrored based on the current randomizer seed/file\n"
+                " - Dungeons: Mirror the world in Dungeons\n"
+                " - Dungeons (Vanilla): Mirror the world in vanilla Dungeons\n"
+                " - Dungeons (MQ): Mirror the world in MQ Dungeons\n"
+                " - Dungeons Random: Randomly decide to mirror the world in Dungeons\n"
+                " - Dungeons Random (Seeded): Dungeons are mirrored based on the current randomizer seed/file\n"
+            )
+        );
+    AddWidget(path, "Randomized Enemy Sizes", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("RandomizedEnemySizes"))
+        .Options(CheckboxOptions().Tooltip(
+            "Enemies and Bosses spawn with random sizes."
+        ));
+    AddWidget(path, "Scale Health with Size", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("EnemySizeScalesHealth"))
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemySizes"), 0) == 0;
+        })
+        .Options(CheckboxOptions().Tooltip(
+            "Scales normal enemies Health with their randomized size. *This will NOT affect bosses*"
+        ));
+    AddWidget(path, "Ivan the Fairy (Coop Mode)", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("IvanCoopModeEnabled"))
+        .Options(CheckboxOptions().Tooltip(
+            "Enables Ivan the Fairy upon the next map change. Player 2 can control Ivan and press the C-Buttons to "
+            "use items and mess with Player 1!"
+        ));
+    AddWidget(path, "Rupee Dash Mode", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("RupeeDash"))
+        .Options(CheckboxOptions().Tooltip(
+            "Rupees reduce over time, Link suffers damage when the count hits 0."
+        ));
+    AddWidget(path, "Rupee Dash Interval %d seconds", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_ENHANCEMENT("RupeeDashInterval"))
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("RupeeDash"), 0) == 0;
+        })
+        .Options(IntSliderOptions()
+            .Min(1)
+            .Max(10)
+            .DefaultValue(5)
+            .Format("%d seconds")
+            .Tooltip(
+                "Interval between Rupee reduction in Rupee Dash Mode."
+            )
+        );
+    AddWidget(path, "Shadow Tag Mode", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("ShadowTag"))
+        .Options(CheckboxOptions().Tooltip(
+            "A Wallmaster follows Link everywhere, don't get caught!"
+        ));
+    AddWidget(path, "Hurt Container Mode", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("HurtContainer"))
+        .Callback([](WidgetInfo& info) {
+            UpdateHurtContainerModeState(CVarGetInteger(CVAR_ENHANCEMENT("HurtContainer"), 0));
+        })
+        .Options(CheckboxOptions().Tooltip(
+            "Changes Heart Piece and Heart Container functionality.\n\n"
+            " - Each Heart Container or full Heart Piece reduces Link's Hearts by 1.\n"
+            " - Can be enabled retroactively after a File has already started."
+        ));
+    AddWidget(path, "Additional Traps", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("ExtraTraps.Enabled"))
+        .Options(CheckboxOptions().Tooltip(
+            "Enables additional Trap variants."
+        ));
+    AddWidget(path, "Trap Options", WIDGET_SEPARATOR_TEXT)
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
+        });
+    AddWidget(path, "Tier 1 Traps:", WIDGET_TEXT)
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
+        });
+    AddWidget(path, "Freeze Traps", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("ExtraTraps.Ice"))
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
+        });
+    AddWidget(path, "Burn Traps", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("ExtraTraps.Burn"))
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
+        });
+    AddWidget(path, "Shock Traps", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("ExtraTraps.Shock"))
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
+        });
+    AddWidget(path, "Tier 2 Traps:", WIDGET_TEXT)
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
+        });
+    AddWidget(path, "Knockback Traps", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("ExtraTraps.Knockback"))
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
+        });
+    AddWidget(path, "Speed Traps", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("ExtraTraps.Speed"))
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
+        });
+    AddWidget(path, "Bomb Traps", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("ExtraTraps.Bomb"))
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
+        });
+    AddWidget(path, "Tier 3 Traps:", WIDGET_TEXT)
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
+        });
+    AddWidget(path, "Void Traps", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("ExtraTraps.Void"))
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
+        });
+    AddWidget(path, "Ammo Traps", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("ExtraTraps.Ammo"))
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
+        });
+    AddWidget(path, "Death Traps", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("ExtraTraps.Kill"))
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
+        });
+    AddWidget(path, "Teleport Traps", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("ExtraTraps.Teleport"))
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
+        });
+    path.column = SECTION_COLUMN_2;
+    AddWidget(path, "Enemy Randomizer", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_ENHANCEMENT("RandomizedEnemies"))
+        .Callback([](WidgetInfo& info) {
+            GetSelectedEnemies();
+        })
+        .Options(ComboboxOptions()
+            .DefaultIndex(ENEMY_RANDOMIZER_OFF)
+            .ComboMap(enemyRandomizerModes)
+            .Tooltip(
+                "Replaces fixed enemies throughout the game with a random enemy. Bosses, mini-bosses and a few specific regular enemies are excluded.\n"
+                "Enemies that need more than Deku Nuts + either Deku Sticks or a sword to kill are excluded from spawning in \"clear enemy\" rooms.\n\n"
+                "- Random: Enemies are randomized every time you load a room\n"
+                "- Random (Seeded): Enemies are randomized based on the current randomizer seed/file\n"
+            )
+        );
+    AddWidget(path, "Enemy List", WIDGET_SEPARATOR_TEXT)
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) != ENEMY_RANDOMIZER_RANDOM;
+        });
+    AddWidget(path, "Select All Enemies", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("RandomizedEnemyList.All"))
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) != ENEMY_RANDOMIZER_RANDOM;
+        });
+    AddWidget(path, "Enemy List", WIDGET_SEPARATOR);
+    for (int i = 0; i < RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE; i++) {
+        AddWidget(path, enemyNameList[i], WIDGET_CVAR_CHECKBOX)
+            .CVar(enemyCVarList[i])
+            .PreFunc([](WidgetInfo& info) {
+                info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) != ENEMY_RANDOMIZER_RANDOM;
+                info.options->disabled = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemyList.All"), 0) == 1;
+                info.options->disabledTooltip = "These options are disabled because \"Select All Enemies\" is enabled.";
+            })
+            .Callback([](WidgetInfo& info) {
+                GetSelectedEnemies();
+            });
+    }
 
     // Cheats
     path.sidebarName = "Cheats";

@@ -153,6 +153,24 @@ static const std::unordered_map<int32_t, const char*> zFightingOptions = {
     { ZFIGHT_FIX_NO_VANISH, "No Vanish" }
 };
 
+static const std::unordered_map<int32_t, const char*> mirroredWorldModes = {
+    { MIRRORED_WORLD_OFF, "Disabled" },
+    { MIRRORED_WORLD_ALWAYS, "Always" },
+    { MIRRORED_WORLD_RANDOM, "Random" },
+    { MIRRORED_WORLD_RANDOM_SEEDED, "Random (Seeded)" },
+    { MIRRORED_WORLD_DUNGEONS_ALL, "Dungeons" },
+    { MIRRORED_WORLD_DUNGEONS_VANILLA, "Dungeons (Vanilla)" },
+    { MIRRORED_WORLD_DUNGEONS_MQ, "Dungeons (MQ)" },
+    { MIRRORED_WORLD_DUNGEONS_RANDOM, "Dungeons Random" },
+    { MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED, "Dungeons Random (Seeded)"}
+};
+
+static const std::unordered_map<int32_t, const char*> enemyRandomizerModes = {
+    { ENEMY_RANDOMIZER_OFF, "Disabled" },
+    { ENEMY_RANDOMIZER_RANDOM, "Random" },
+    { ENEMY_RANDOMIZER_RANDOM_SEEDED, "Random (Seeded)"}
+};
+
 static const std::unordered_map<int32_t, const char*> debugSaveFileModes = {
     { 0, "Off" }, { 1, "Vanilla" }, { 2, "Maxed" },
 };
