@@ -147,6 +147,12 @@ static const std::unordered_map<int32_t, const char*> swordToggleModes = {
     { SWORD_TOGGLE_BOTH_AGES, "Both Ages" }
 };
 
+static const std::unordered_map<int32_t, const char*> zFightingOptions = {
+    { ZFIGHT_FIX_DISABLED, "Disabled" },
+    { ZFIGHT_FIX_CONSISTENT_VANISH, "Consistent Vanish" },
+    { ZFIGHT_FIX_NO_VANISH, "No Vanish" }
+};
+
 static const std::unordered_map<int32_t, const char*> debugSaveFileModes = {
     { 0, "Off" }, { 1, "Vanilla" }, { 2, "Maxed" },
 };

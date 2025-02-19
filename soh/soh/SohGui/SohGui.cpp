@@ -41,10 +41,7 @@
 namespace SohGui {
 
     // MARK: - Properties
-
-    static const char* chestSizeAndTextureMatchesContentsOptions[4] = { "Disabled", "Both", "Texture Only", "Size Only" };
     static const char* bunnyHoodOptions[3] = { "Disabled", "Faster Run & Longer Jump", "Faster Run" };
-    static const char* zFightingOptions[3] = { "Disabled", "Consistent Vanish", "No Vanish" };
 
     static const inline std::vector<std::pair<const char*, const char*>> audioBackends = {
 #ifdef _WIN32

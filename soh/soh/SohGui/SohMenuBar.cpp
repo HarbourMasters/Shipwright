@@ -103,7 +103,6 @@ static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large
                         "OHKO (256x)" };
     static const char* subPowers[8] = { allPowers[0], allPowers[1], allPowers[2], allPowers[3], allPowers[4], allPowers[5], allPowers[6], allPowers[7] };
     static const char* subSubPowers[7] = { allPowers[0], allPowers[1], allPowers[2], allPowers[3], allPowers[4], allPowers[5], allPowers[6] };
-    static const char* zFightingOptions[3] = { "Disabled", "Consistent Vanish", "No Vanish" };
     static const char* bootSequenceLabels[3] = { "Default", "Authentic", "File Select" };
     static const char* DekuStickCheat[3] = { "Normal", "Unbreakable", "Unbreakable + Always on Fire" };
     static const char* bonkDamageValues[8] = {
@@ -212,112 +211,6 @@ void DrawEnhancementsMenu() {
         DrawPresetSelector(PRESET_TYPE_ENHANCEMENTS);
 
         UIWidgets::PaddedSeparator();
-        
-        if (ImGui::BeginMenu("Graphics"))
-        {
-            if (ImGui::BeginMenu("Mods")) {
-                UIWidgets::PaddedEnhancementCheckbox("Use Alternate Assets", CVAR_ENHANCEMENT("AltAssets"), false, false);
-                UIWidgets::Tooltip("Toggle between standard assets and alternate assets. Usually mods will indicate if this setting has to be used or not.");
-                UIWidgets::PaddedEnhancementCheckbox("Disable Bomb Billboarding", CVAR_ENHANCEMENT("DisableBombBillboarding"), true, false);
-                UIWidgets::Tooltip("Disables bombs always rotating to face the camera. To be used in conjunction with mods that want to replace bombs with 3D objects.");
-                UIWidgets::PaddedEnhancementCheckbox("Disable Grotto Fixed Rotation", CVAR_ENHANCEMENT("DisableGrottoRotation"), true, false);
-                UIWidgets::Tooltip("Disables grottos rotating with the camera. To be used in conjunction with mods that want to replace grottos with 3D objects.");
-                UIWidgets::PaddedEnhancementCheckbox("Invisible Bunny Hood", CVAR_ENHANCEMENT("HideBunnyHood"), true, false);
-                UIWidgets::Tooltip("Turns Bunny Hood invisible while still maintaining its effects.");
-                UIWidgets::PaddedEnhancementCheckbox("Disable HUD Heart animations", CVAR_ENHANCEMENT("NoHUDHeartAnimation"), true, false);
-                UIWidgets::Tooltip("Disables the beating animation of the hearts on the HUD.");
-
-                ImGui::EndMenu();
-            }
-
-            UIWidgets::Spacer(0);
-
-            UIWidgets::PaddedEnhancementCheckbox("Animated Link in Pause Menu", CVAR_ENHANCEMENT("PauseMenuAnimatedLink"), false, false);
-            UIWidgets::PaddedEnhancementCheckbox("Disable LOD", CVAR_ENHANCEMENT("DisableLOD"), true, false);
-            UIWidgets::Tooltip(
-                "Turns off the Level of Detail setting, making models use their higher-poly variants at any distance");
-            if (UIWidgets::EnhancementSliderInt("Increase Actor Draw Distance: %dx", "##IncreaseActorDrawDistance",
-                                                CVAR_ENHANCEMENT("DisableDrawDistance"), 1, 5, "", 1, true, false)) {
-                if (CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 1) <= 1) {
-                    CVarSetInteger(CVAR_ENHANCEMENT("DisableKokiriDrawDistance"), 0);
-                }
-            }
-            UIWidgets::Tooltip("Increases the range in which actors/objects are drawn");
-            if (CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 1) > 1) {
-                UIWidgets::PaddedEnhancementCheckbox("Kokiri Draw Distance",
-                                                     CVAR_ENHANCEMENT("DisableKokiriDrawDistance"), true, false);
-                UIWidgets::Tooltip("The Kokiri are mystical beings that fade into view when approached\nEnabling this "
-                                   "will remove their draw distance");
-            }
-            UIWidgets::PaddedEnhancementCheckbox("Widescreen Actor Culling", CVAR_ENHANCEMENT("WidescreenActorCulling"),
-                                                 true, false);
-            UIWidgets::Tooltip("Adjusts the horizontal culling plane to account for widescreen resolutions");
-            UIWidgets::PaddedEnhancementCheckbox(
-                "Cull Glitch Useful Actors", CVAR_ENHANCEMENT("ExtendedCullingExcludeGlitchActors"), true, false,
-                !CVarGetInteger(CVAR_ENHANCEMENT("WidescreenActorCulling"), 0) &&
-                    CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 1) <= 1,
-                "Requires Actor Draw Distance to be increased or Widescreen Actor Culling enabled");
-            UIWidgets::Tooltip(
-                "Exclude actors that are useful for glitches from the extended culling ranges.\n"
-                "Some actors may still draw in the extended ranges, but will not \"update\" so that certain "
-                "glitches that leverage the original culling requirements will still work.\n"
-                "\n"
-                "The following actors are excluded:\n"
-                "- White clothed Gerudos\n"
-                "- King Zora\n"
-                "- Gossip Stones\n"
-                "- Boulders\n"
-                "- Blue Warps\n"
-                "- Darunia\n"
-                "- Gold Skulltulas");
-            if (UIWidgets::PaddedEnhancementCheckbox("Show Age-Dependent Equipment", CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), true,
-                                                     false)) {
-                UpdatePatchHand();
-            }
-            UIWidgets::Tooltip("Makes all equipment visible, regardless of Age.");
-            if (CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0) == 1) {
-				UIWidgets::PaddedEnhancementCheckbox("Scale Adult Equipment as Child", CVAR_ENHANCEMENT("ScaleAdultEquipmentAsChild"), true, false);
-				UIWidgets::Tooltip("Scales all of the Adult Equipment, as well and moving some a bit, to fit on Child Link Better. May not work properly with some mods.");
-			}
-            UIWidgets::PaddedEnhancementCheckbox("N64 Mode", CVAR_LOW_RES_MODE, true, false);
-            UIWidgets::Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
-            UIWidgets::PaddedEnhancementCheckbox("Glitch line-up tick", CVAR_ENHANCEMENT("DrawLineupTick"), true, false);
-            UIWidgets::Tooltip("Displays a tick in the top center of the screen to help with glitch line-ups in SoH, as traditional UI based line-ups do not work outside of 4:3");
-            UIWidgets::PaddedEnhancementCheckbox("Enable 3D Dropped items/projectiles", CVAR_ENHANCEMENT("NewDrops"), true, false);
-            UIWidgets::Tooltip("Change most 2D items and projectiles on the overworld to their 3D versions");
-            UIWidgets::PaddedEnhancementCheckbox("Disable Black Bar Letterboxes", CVAR_ENHANCEMENT("DisableBlackBars"), true, false);
-            UIWidgets::Tooltip("Disables Black Bar Letterboxes during cutscenes and Z-targeting\nNote: there may be minor visual glitches that were covered up by the black bars\nPlease disable this setting before reporting a bug");
-            UIWidgets::PaddedEnhancementCheckbox("Dynamic Wallet Icon", CVAR_ENHANCEMENT("DynamicWalletIcon"), true, false);
-            UIWidgets::Tooltip("Changes the rupee in the wallet icon to match the wallet size you currently have");
-            UIWidgets::PaddedEnhancementCheckbox("Always show dungeon entrances", CVAR_ENHANCEMENT("AlwaysShowDungeonMinimapIcon"), true, false);
-            UIWidgets::Tooltip("Always shows dungeon entrance icons on the minimap");
-            UIWidgets::PaddedEnhancementCheckbox("Show Gauntlets in First Person", CVAR_ENHANCEMENT("FirstPersonGauntlets"), true, false);
-            UIWidgets::Tooltip("Renders Gauntlets when using the Bow and Hookshot like in OOT3D");
-            if (UIWidgets::PaddedEnhancementCheckbox("Color Temple of Time's Medallions", CVAR_ENHANCEMENT("ToTMedallionsColors"), true, false)) {
-                PatchToTMedallions();
-            }
-            UIWidgets::Tooltip("When medallions are collected, the medallion imprints around the Master Sword pedestal in the Temple of Time will become colored");
-            UIWidgets::PaddedEnhancementCheckbox("Show locked door chains on both sides of locked doors", CVAR_ENHANCEMENT("ShowDoorLocksOnBothSides"), true, false);
-            UIWidgets::PaddedText("Fix Vanishing Paths", true, false);
-            if (UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("SceneSpecificDirtPathFix"), zFightingOptions, ZFIGHT_FIX_DISABLED) && gPlayState != NULL) {
-                UpdateDirtPathFixState(gPlayState->sceneNum);
-            }
-            UIWidgets::Tooltip("Disabled: Paths vanish more the higher the resolution (Z-fighting is based on resolution)\n"
-                                "Consistent: Certain paths vanish the same way in all resolutions\n"
-                                "No Vanish: Paths do not vanish, Link seems to sink in to some paths\n"
-                                "This might affect other decal effects\n");
-            UIWidgets::PaddedEnhancementSliderInt("Text Spacing: %d", "##TEXTSPACING", CVAR_ENHANCEMENT("TextSpacing"), 4, 6, "", 6, true, true, true);
-            UIWidgets::Tooltip("Space between text characters (useful for HD font textures)");
-            UIWidgets::PaddedEnhancementCheckbox("More info in file select", CVAR_ENHANCEMENT("FileSelectMoreInfo"), true, false);
-            UIWidgets::Tooltip("Shows what items you have collected in the file select screen, like in N64 randomizer");
-            UIWidgets::PaddedEnhancementCheckbox("Better ammo rendering in pause menu", CVAR_ENHANCEMENT("BetterAmmoRendering"), true, false);
-            UIWidgets::Tooltip("Ammo counts in the pause menu will work correctly regardless of the position of items in the inventory");
-            UIWidgets::PaddedEnhancementCheckbox("Remove spin attack darkness", CVAR_ENHANCEMENT("RemoveSpinAttackDarkness"), true, false);
-            UIWidgets::Tooltip("Remove the darkness that appears when charging a spin attack");
-            ImGui::EndMenu();
-        }
-
-        UIWidgets::Spacer(0);
 
         if (ImGui::BeginMenu("Fixes"))
         {

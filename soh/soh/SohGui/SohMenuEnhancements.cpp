@@ -469,6 +469,27 @@ void SohMenu::AddMenuEnhancements() {
     AddSidebarEntry("Enhancements", path.sidebarName, 3);
     path.column = SECTION_COLUMN_1;
 
+    AddWidget(path, "Mods", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Use Alternate Assets", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("AltAssets"))
+        .Options(CheckboxOptions().Tooltip(
+            "Toggle between standard assets and alternate assets. Usually mods will indicate if "
+            "this setting has to be used or not."
+        ));
+    AddWidget(path, "Disable Bomb Billboarding", WIDGET_CVAR_CHECKBOX)
+        .CVar("DisableBombBillboarding")
+        .Options(CheckboxOptions().Tooltip(
+            "Disables bombs always rotating to face the camera. To be used in conjunction with mods that want to "
+            "replace bombs with 3D objects."
+        ));
+    AddWidget(path, "Disable Grotto Fixed Rotation", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("DisableGrottoRotation"))
+        .Options(CheckboxOptions().Tooltip(
+            "Disables Grottos rotating with the Camera. To be used in conjuction with mods that want to "
+            "replace grottos with 3D objects."
+        ));
+    
+
     AddWidget(path, "UI", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Minimal UI", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("MinimalUI"))
@@ -493,7 +514,87 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Displays an icon and plays a sound when Stone of Agony should be activated, for those without rumble."
         ));
-
+    AddWidget(path, "Disable HUD Heart Animations", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("NoHUDHeartAnimation"))
+        .Options(CheckboxOptions().Tooltip(
+            "Disables the Beating Animation of the Hearts on the HUD."
+        ));
+    AddWidget(path, "Glitch line-up tick", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("DrawLineupTick"))
+        .Options(CheckboxOptions().Tooltip(
+            "Displays a tick in the top center of the screen to help with glitch line-ups in SoH, since traditional "
+            "UI based line-ups do not work outside of 4:3"
+        ));
+    AddWidget(path, "Disable Black Bar Letterboxes", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("DisableBlackBars"))
+        .Options(CheckboxOptions().Tooltip(
+            "Disables Black Bar Letterboxes during cutscenes and Z-Targeting. NOTE: there may be minor visual "
+            "glitches that were covered up by the black bars. Please disable this setting before reporting a bug."
+        ));
+    AddWidget(path, "Dynamic Wallet Icon", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("DynamicWalletIcon"))
+        .Options(CheckboxOptions().Tooltip(
+            "Changes the Rupee in the Wallet icon to match the wallet size you currently have."
+        ));
+    AddWidget(path, "Always Show Dungeon Entrances", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("AlwaysShowDungeonMinimapIcon"))
+        .Options(CheckboxOptions().Tooltip(
+            "Always shows dungeon entrance icons on the Minimap."
+        ));
+    AddWidget(path, "More Info in File Select", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("FileSelectMoreInfo"))
+        .Options(CheckboxOptions().Tooltip(
+            "Shows what items you have collected in the File Select screen, like in N64 Randomizer."
+        ));
+    AddWidget(path, "Better Ammo Rendering in Pause Menu", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("BetterAmmoRendering"))
+        .Options(CheckboxOptions().Tooltip(
+            "Ammo counts in the pause menu will work correctly regardless of the position of items in the Inventory."
+        ));
+    
+    AddWidget(path, "Models", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Invisible Bunny Hood", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("HideBunnyHood"))
+        .Options(CheckboxOptions().Tooltip(
+            "Turns Bunny Hood Invisible while still maintaining its effects."
+        ));
+    AddWidget(path, "Animated Link in Pause Menu", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("PauseMenuAnimatedLink"))
+        .Options(CheckboxOptions().Tooltip(
+            "Turns the Static Image of Link in the Pause Menu's Equipment Subsceen "
+            "into a model cycling through his idle animations."
+        ));
+    AddWidget(path, "Show Age-Dependent Equipment", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"))
+        .Callback([](WidgetInfo& info) {
+            UpdatePatchHand();
+        })
+        .Options(CheckboxOptions().Tooltip(
+            "Makes all equipment visible, regardless of Age."
+        ));
+    AddWidget(path, "Scale Adult Equipment as Child", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("ScaleAdultEquipmentAsChild"))
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0) == 0;
+        })
+        .Options(CheckboxOptions().Tooltip(
+            "Scales all of the Adult Equipment, as well as moving some a bit, to fit on Child Link better. May "
+            "not work properly with some mods."
+        ));
+    AddWidget(path, "Enable 3D Dropped Items/Projectiles", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("NewDrops"))
+        .Options(CheckboxOptions().Tooltip(
+            "Replaces most 2D items and projectiles on the overworld with their equivalent 3D models."
+        ));
+    AddWidget(path, "Show Gauntlets in First Person", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("FirstPersonGauntlets"))
+        .Options(CheckboxOptions().Tooltip(
+            "Renders Guantlets when using the Bow and Hookshot like in OoT3D."
+        ));
+    AddWidget(path, "Show Chains on Both Sides of Locked Doors", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("ShowDoorLocksOnBothSides"));
+    
+    path.column = SECTION_COLUMN_2;
     AddWidget(path, "Textures", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Chest Size & Texture Matches Contents", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"))
@@ -524,6 +625,112 @@ void SohMenu::AddMenuEnhancements() {
         })
         .Options(CheckboxOptions().Tooltip(
             "Only change the size/texture of chests if you have the Stone of Agony."
+        ));
+    AddWidget(path, "Color Temple of Time's Medallions", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("ToTMedallionsColors"))
+        .Callback([](WidgetInfo& info) {
+            PatchToTMedallions();
+        })
+        .Options(CheckboxOptions().Tooltip(
+            "When Medallions are collected, the Medallion imprints around the Master Sword Pedestal in the Temple "
+            "of Time will become colored-in."
+        ));
+    AddWidget(path, "Fix Vanishing Paths", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_ENHANCEMENT("SceneSpecificDirtPathFix"))
+        .Callback([](WidgetInfo& info) {
+            if (gPlayState != NULL) {
+                UpdateDirtPathFixState(gPlayState->sceneNum);
+            }
+        })
+        .Options(ComboboxOptions()
+            .ComboMap(zFightingOptions)
+            .DefaultIndex(ZFIGHT_FIX_DISABLED)
+            .Tooltip(
+                "Disabled: Paths vanish more the higher the resolution (Z-fighting is based on resolution)\n"
+                "Consistent: Certain paths vanish the same way in all resolutions\n"
+                "No Vanish: Paths do not vanish, Link seems to sink in to some paths\n"
+                "This might affect other decal effects\n"
+            )
+        );
+    AddWidget(path, "Text Spacing: %d", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_ENHANCEMENT("TextSpacing"))
+        .Options(IntSliderOptions()
+            .Min(4)
+            .Max(6)
+            .DefaultValue(6)
+            .Tooltip(
+                "Space between text characters (useful for HD font textures)."
+            )
+        );
+
+    AddWidget(path, "Rendering", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Disable LOD", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("DisableLOD"))
+        .Options(CheckboxOptions().Tooltip(
+            "Turns off the Level of Detail setting, making models use their Higher-Poly variants at any distance."
+        ));
+    AddWidget(path, "Increase Actor Draw Distance: %dx", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_ENHANCEMENT("DisableDrawDistance"))
+        .Callback([](WidgetInfo& info) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 1) <= 1) {
+                CVarSetInteger(CVAR_ENHANCEMENT("DisableKokiriDrawDistance"), 0);
+            }
+        })
+        .Options(IntSliderOptions()
+            .Min(1)
+            .Max(5)
+            .DefaultValue(1)
+            .Format("%dx")
+            .Tooltip(
+                "Increases the range in which Actors/Objects are drawn."
+            )
+        );
+    AddWidget(path, "Kokiri Draw Distance", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("DisableKokiriDrawDistance"))
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 1) > 1;
+        })
+        .Options(CheckboxOptions().Tooltip(
+            "The Kokiri are mystical beings that fade into view when approached. Enabling this will remove their "
+            "draw distance."
+        ));
+    AddWidget(path, "Widescreen Actor Culling", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("WidescreenActorCulling"))
+        .Options(CheckboxOptions().Tooltip(
+            "Adjusts the Horizontal Culling Plane to account for Widescreen Resolutions."
+        ));
+    AddWidget(path, "Cull Glitch Useful Actors", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("ExtendedCullingExcludeGlitchActors"))
+        .PreFunc([](WidgetInfo& info) {
+            info.options->disabled = !CVarGetInteger(CVAR_ENHANCEMENT("WidescreenActorCulling"), 0) &&
+            CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 1) <= 1;
+            info.options->disabledTooltip = "Requires Actor Draw Distance to be increased or Widscreen Actor Culling to be enabled.";
+        })
+        .Options(CheckboxOptions().Tooltip(
+            "Exclude Actors that are useful for Glitches from the extended culling ranges. Some actors may still draw "
+            "in the extended ranges, but will not \"update\" so that certain glitches that leverage the original "
+            "culling requirements will still work.\n\nThe following actors are excluded:\n"
+            " - White clothed Gerudos\n"
+            " - King Zora\n"
+            " - Gossip Stones\n"
+            " - Boulders\n"
+            " - Blue Warps\n"
+            " - Darunia\n"
+            " - Gold SKulltulas\n"
+        ));
+
+    // TODO: Find a better home for these.
+    path.column = SECTION_COLUMN_3;
+    AddWidget(path, "Misc.", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "N64 Mode", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_LOW_RES_MODE)
+        .Options(CheckboxOptions().Tooltip(
+            "Sets the aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution."
+        ));
+    AddWidget(path, "Remove Spin Attack Darkness", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("RemoveSpinAttackDarkness"))
+        .Options(CheckboxOptions().Tooltip(
+            "Remove the Darkness that appears when charging a Spin Attack"
         ));
     
     path.sidebarName = "Items";
