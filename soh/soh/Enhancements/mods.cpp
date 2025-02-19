@@ -135,87 +135,6 @@ void RegisterOcarinaTimeTravel() {
     });
 }
 
-void AutoSave(GetItemEntry itemEntry) {
-    u8 item = itemEntry.itemId;
-    bool performSave = false;
-    // Don't autosave immediately after buying items from shops to prevent getting them for free!
-    // Don't autosave in the Chamber of Sages since resuming from that map breaks the game
-    // Don't autosave during the Ganon fight when picking up the Master Sword
-    if ((CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_OFF) != AUTOSAVE_OFF) && (gPlayState != NULL) && (gSaveContext.ship.pendingSale == ITEM_NONE) &&
-        (gPlayState->gameplayFrames > 60 && gSaveContext.cutsceneIndex < 0xFFF0) && (gPlayState->sceneNum != SCENE_GANON_BOSS) && (gPlayState->sceneNum != SCENE_CHAMBER_OF_THE_SAGES)) {
-        if (((CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_ALL_ITEMS) || (CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_OFF) == AUTOSAVE_ALL_ITEMS)) && (item != ITEM_NONE)) {
-            // Autosave for all items
-            performSave = true;
-
-        } else if (((CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_MAJOR_ITEMS) || (CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_OFF) == AUTOSAVE_MAJOR_ITEMS)) && (item != ITEM_NONE)) {
-            // Autosave for major items
-            if (itemEntry.modIndex == 0) {
-                switch (item) {
-                    case ITEM_STICK:
-                    case ITEM_NUT:
-                    case ITEM_BOMB:
-                    case ITEM_BOW:
-                    case ITEM_SEEDS:
-                    case ITEM_FISHING_POLE:
-                    case ITEM_MAGIC_SMALL:
-                    case ITEM_MAGIC_LARGE:
-                    case ITEM_INVALID_4:
-                    case ITEM_INVALID_5:
-                    case ITEM_INVALID_6:
-                    case ITEM_INVALID_7:
-                    case ITEM_HEART:
-                    case ITEM_RUPEE_GREEN:
-                    case ITEM_RUPEE_BLUE:
-                    case ITEM_RUPEE_RED:
-                    case ITEM_RUPEE_PURPLE:
-                    case ITEM_RUPEE_GOLD:
-                    case ITEM_INVALID_8:
-                    case ITEM_STICKS_5:
-                    case ITEM_STICKS_10:
-                    case ITEM_NUTS_5:
-                    case ITEM_NUTS_10:
-                    case ITEM_BOMBS_5:
-                    case ITEM_BOMBS_10:
-                    case ITEM_BOMBS_20:
-                    case ITEM_BOMBS_30:
-                    case ITEM_ARROWS_SMALL:
-                    case ITEM_ARROWS_MEDIUM:
-                    case ITEM_ARROWS_LARGE:
-                    case ITEM_SEEDS_30:
-                    case ITEM_NONE:
-                        break;
-                    case ITEM_BOMBCHU:
-                    case ITEM_BOMBCHUS_5:
-                    case ITEM_BOMBCHUS_20:
-                        if (!CVarGetInteger(CVAR_ENHANCEMENT("EnableBombchuDrops"), 0)) {
-                            performSave = true;
-                        }
-                        break;
-                    default:
-                        performSave = true;
-                        break;
-                }
-            } else if (itemEntry.modIndex == 1 && item != RG_ICE_TRAP) {
-                performSave = true;
-            }
-        } else if (CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_MAJOR_ITEMS ||
-                   CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_ALL_ITEMS ||
-                   CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_OFF) == AUTOSAVE_LOCATION) {
-            performSave = true;
-        }
-        if (performSave) {
-            Play_PerformSave(gPlayState);
-            performSave = false;
-        }
-    }
-}
-
-void RegisterAutoSave() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry itemEntry) { AutoSave(itemEntry); });
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSaleEnd>([](GetItemEntry itemEntry) { AutoSave(itemEntry); });
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>([](int32_t sceneNum) { AutoSave(GET_ITEM_NONE); });
-}
-
 void RegisterRupeeDash() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
         if (!CVarGetInteger(CVAR_ENHANCEMENT("RupeeDash"), 0)) {
@@ -1168,7 +1087,6 @@ void InitMods() {
     TimeSavers_Register();
     RegisterTTS();
     RegisterOcarinaTimeTravel();
-    RegisterAutoSave();
     RegisterDaytimeGoldSkultullas();
     RegisterRupeeDash();
     RegisterShadowTag();

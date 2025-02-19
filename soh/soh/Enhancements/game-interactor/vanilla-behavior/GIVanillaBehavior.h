@@ -212,9 +212,6 @@ typedef enum {
     // - None
     VB_BIGGORON_CONSIDER_TRADE_COMPLETE,
 
-    // # UNUSED
-    VB_BLUE_WARP_APPLY_ENTRANCE_AND_CUTSCENE,
-
     // #### `result`
     // Actor is ACTOR_EN_ELF, ACTOR_EN_FISH, ACTOR_EN_ICE_HONO, or ACTOR_EN_INSECT
     // ```c
@@ -350,9 +347,6 @@ typedef enum {
     // #### `args`
     // - None
     VB_DEKU_STICK_BURN_OUT,
-
-    // # UNUSED
-    VB_DEKU_UPDATE_BURNING_DEKU_STICK,
 
     // #### `result`
     // ```c
@@ -746,12 +740,6 @@ typedef enum {
     // - None
     VB_GIVE_ITEM_GERUDO_MEMBERSHIP_CARD,
 
-    // # UNUSED
-    VB_GIVE_ITEM_GORON_RUBY,
-
-    // # UNUSED
-    VB_GIVE_ITEM_KOKIRI_EMERALD,
-
     // #### `result`
     // ```c
     // true
@@ -919,9 +907,6 @@ typedef enum {
     // #### `args`
     // - None
     VB_GIVE_ITEM_ZELDAS_LULLABY,
-
-    // # UNUSED
-    VB_GIVE_ITEM_ZORA_SAPPHIRE,
 
     // #### `result`
     // ```c
@@ -1405,9 +1390,6 @@ typedef enum {
     // #### `args`
     // - None
     VB_PLAY_NABOORU_CAPTURED_CS,
-
-    // # UNUSED
-    VB_PLAY_ODD_POTION_ANIM,
 
     // #### `result`
     // ```c

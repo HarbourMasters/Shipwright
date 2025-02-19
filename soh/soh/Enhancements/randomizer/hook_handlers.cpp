@@ -1667,9 +1667,6 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_GIVE_ITEM_STRENGTH_1:
         case VB_GIVE_ITEM_ZELDAS_LETTER:
         case VB_GIVE_ITEM_OCARINA_OF_TIME:
-        case VB_GIVE_ITEM_KOKIRI_EMERALD:
-        case VB_GIVE_ITEM_GORON_RUBY:
-        case VB_GIVE_ITEM_ZORA_SAPPHIRE:
         case VB_GIVE_ITEM_LIGHT_MEDALLION:
         case VB_GIVE_ITEM_FOREST_MEDALLION:
         case VB_GIVE_ITEM_FIRE_MEDALLION:

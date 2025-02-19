@@ -157,7 +157,6 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("GSCutscene"),
     CVAR_ENHANCEMENT("RestoreRBAValues"),
     CVAR_ENHANCEMENT("SkipSaveConfirmation"),
-    CVAR_ENHANCEMENT("Autosave"),
     CVAR_ENHANCEMENT("DisableCritWiggle"),
     CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"),
     CVAR_ENHANCEMENT("SkipArrowAnimation"),
@@ -754,7 +753,7 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AnubisFix"), 1),
 
     // Autosave
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_LOCATION_AND_MAJOR_ITEMS),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("Autosave"), 1),
 
     // Bombchu shop doesn't sell out, and 10 bombchus cost 99 instead of 100
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("BetterBombchuShopping"), 1),
@@ -887,7 +886,7 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AnubisFix"), 1),
 
     // Autosave
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_LOCATION_AND_MAJOR_ITEMS),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("Autosave"), 1),
 
     // Customize Fishing Behaviour
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("CustomizeFishing"), 1),

@@ -2206,13 +2206,5 @@ void Play_PerformSave(PlayState* play) {
         // Restore temp B values back
         gSaveContext.equips.buttonItems[0] = prevB;
         gSaveContext.buttonStatus[0] = prevStatus;
-
-        uint8_t triforceHuntCompleted =
-            IS_RANDO &&
-            gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected == (Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1) &&
-            Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT);
-        if (CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_OFF) != AUTOSAVE_OFF || triforceHuntCompleted) {
-            Overlay_DisplayText(3.0f, "Game Saved");
-        }
     }
 }
