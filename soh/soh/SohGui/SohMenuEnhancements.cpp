@@ -26,6 +26,26 @@ void SohMenu::AddMenuEnhancements() {
     path.sidebarName = "Gameplay";
     AddSidebarEntry("Enhancements", path.sidebarName, 3);
 
+    AddWidget(path, "Boot Sequence", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_ENHANCEMENT("BootSequence"))
+        .Options(ComboboxOptions()
+            .DefaultIndex(BOOTSEQUENCE_DEFAULT)
+            .ComboMap(bootSequenceLabels)
+            .Tooltip(
+                "Configure what happens when starting or resetting the game.\n\n"
+                "Default: LUS logo -> N64 logo\n"
+                "Authentic: N64 logo only\n"
+                "File Select: Skip to file select menu"
+            )
+        );
+    AddWidget(path, "Autosave", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("Autosave"))
+        .Options(CheckboxOptions().Tooltip(
+            "Save the game automatically on a 3 minute interval and when soft-resetting the game. The interval "
+            "The interval autosave will wait if the game is paused in any way (dialogue, pause screen up, cutscenes, "
+        "etc.)."
+        ));
+
     AddWidget(path, "Audio", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Mute Low HP Alarm", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("LowHPAlarm"))

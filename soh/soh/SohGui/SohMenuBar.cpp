@@ -98,7 +98,6 @@ static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large
                         "OHKO (256x)" };
     static const char* subPowers[8] = { allPowers[0], allPowers[1], allPowers[2], allPowers[3], allPowers[4], allPowers[5], allPowers[6], allPowers[7] };
     static const char* subSubPowers[7] = { allPowers[0], allPowers[1], allPowers[2], allPowers[3], allPowers[4], allPowers[5], allPowers[6] };
-    static const char* bootSequenceLabels[3] = { "Default", "Authentic", "File Select" };
     static const char* DekuStickCheat[3] = { "Normal", "Unbreakable", "Unbreakable + Always on Fire" };
     static const char* bonkDamageValues[8] = {
         "No Damage",
@@ -204,24 +203,6 @@ void DrawEnhancementsMenu() {
         ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
 
         DrawPresetSelector(PRESET_TYPE_ENHANCEMENTS);
-
-        UIWidgets::PaddedSeparator();
-
-        UIWidgets::EnhancementCheckbox("Autosave", CVAR_ENHANCEMENT("Autosave"));
-        UIWidgets::Tooltip("Save the game automatically on a 3 minute interval and when soft-resetting the game.\n\n"
-                           "The interval autosave will wait if the game is paused in any way (dialogue, pause screen up, cutscenes).");
-
-        UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
-
-        UIWidgets::PaddedText("Boot Sequence", false, true);
-        UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("BootSequence"), bootSequenceLabels, BOOTSEQUENCE_DEFAULT);
-        UIWidgets::Tooltip("Configure what happens when starting or resetting the game\n\n"
-                           "Default: LUS logo -> N64 logo\n"
-                           "Authentic: N64 logo only\n"
-                           "File Select: Skip to file select menu"
-        );
-
-        UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
 
         ImGui::EndDisabled();
 
