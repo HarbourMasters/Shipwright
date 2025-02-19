@@ -52,6 +52,84 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Allows equipping the Tunics and Boots to C-Buttons/D-Pad."
         ));
+    // TODO: Revist strength toggle, it's currently separate but should probably go here and be locked behind the
+    // Equipment toggle settings. Also maybe these should all be in Items sidebar?
+    AddWidget(path, "Equipment Toggle", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("EquipmentCanBeRemoved"))
+        .Options(CheckboxOptions().Tooltip(
+            "Allows equipment to be removed by toggling it off on\n the equipment subscreen."
+        ));
+    AddWidget(path, "Sword Toggle Options", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_ENHANCEMENT("SwordToggle"))
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("EquipmentCanBeRemoved"), 0) == 0;
+        })
+        .Options(ComboboxOptions()
+            .ComboMap(swordToggleModes)
+            .DefaultIndex(SWORD_TOGGLE_NONE)
+            .Tooltip(
+                "Introduces Options for unequipping Link's sword\n\n"
+                "None: Only Biggoron's Sword/Giant's Knife can be toggled. Doing so will equip the Master Sword.\n\n"
+                "Child Toggle: This will allow for completely unequipping any sword as child link.\n\n"
+                "Both Ages: Any sword can be unequipped as either age. This may lead to swordless glitches as Adult."
+            )
+        );
+    
+    AddWidget(path, "Quality of Life", WIDGET_SEPARATOR_TEXT);
+    // Maybe should be in Timesavers somewhere?
+    AddWidget(path, "Link's Cow in Both Time Periods", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("CowOfTime"))
+        .Options(CheckboxOptions().Tooltip(
+            "Allows the Lon Lon Ranch Obstacle Course reward to be shared across time periods."
+        ));
+    // Maybe should be in Difficulty Options somewhere?
+    AddWidget(path, "Enable Visual Guard Vision", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("GuardVision"));
+    // Maybe should be in TImesavers somewhere?
+    AddWidget(path, "Pull Grave during the day", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("DayGravePull"))
+        .Options(CheckboxOptions().Tooltip(
+            "Allows graves to be pulled when child during the day."
+        ));
+    AddWidget(path, "Don't Require Input for Credits Sequence", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("NoInputForCredits"))
+        .Options(CheckboxOptions().Tooltip(
+            "Removes the Input Requirement on Text boxes after defeating Ganon, allowing the Credits "
+            "Sequence to continue to progress."
+        ));
+    AddWidget(path, "Answer Navi Prompt with L Button", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("NaviOnL"))
+        .Options(CheckboxOptions().Tooltip(
+            "Speak to Navi with L but enter First-Person Camera with C-Up"
+        ));
+    AddWidget(path, "Disable Crit Wiggle", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("DisableCritWiggle"))
+        .Options(CheckboxOptions().Tooltip(
+            "Disable Random Camera Wiggle at Low Health."
+        ));
+    AddWidget(path, "Targetable Hookshot Reticle", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("HookshotableReticle"))
+        .Options(CheckboxOptions().Tooltip(
+            "Makes the Hookshot Reticle use a different color when aiming at Hookshotable Collision."
+        ));
+    AddWidget(path, "Faster Rupee Accumulator", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("FasterRupeeAccumulator"))
+        .Options(CheckboxOptions().Tooltip(
+            "Causes your Wallet to fill and empty faster when you gain or lose money."
+        ));
+    AddWidget(path, "Fun/Aesthetic Options", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Enable Passage of Time on File Select", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("TimeFlowFileSelect"));
+    AddWidget(path, "Dogs Follow you Everywhere", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("DogFollowsEverywhere"))
+        .Options(CheckboxOptions().Tooltip(
+            "Allows dogs to follow you anywhere you go, even if you leave the Market."
+        ));
+    AddWidget(path, "Enemy Health Bars", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("EnemyHealthBar"))
+        .Options(CheckboxOptions().Tooltip(
+            "Renders a health bar for Enemies when Z-Targeted."
+        ));
 
     path.sidebarName = "Time Savers";
     AddSidebarEntry("Enhancements", path.sidebarName, 3);
@@ -292,7 +370,7 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Makes Dampe appear anytime during the night, not just his usual working hours."
         ));
-        AddWidget(path, "Exit Market at Night", WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "Exit Market at Night", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("MarketSneak"))
         .Options(CheckboxOptions().Tooltip(
             "Allows exiting Hyrule Castle Market Town to Hyrule Field at night by speaking to the guard "
@@ -614,6 +692,27 @@ void SohMenu::AddMenuEnhancements() {
             "Allows Strength to be toggled on and off by pressing A on the Strength Upgrade "
             "in the Equipment Subscreen of the Pause Menu. This allows performing some glitches "
             "that require the player to not have Strength."
+        ));
+    // TODO: See if a Callback could be registered to avoid the need to reload scenes for the next two options.
+    AddWidget(path, "Blue Fire Arrows", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("BlueFireArrows"))
+        .PreFunc([](WidgetInfo& info) {
+            info.options->disabled = OTRGlobals::Instance->gRandoContext->GetOption(RSK_BLUE_FIRE_ARROWS).Is(RO_GENERIC_ON);
+            info.options->disabledTooltip = "This setting is forcefully enabled because a randomized savefile with "
+            "\"Blue Fire Arrows\" is currently loaded.";
+        })
+        .Options(CheckboxOptions().Tooltip(
+            "Allows Ice Arrows to melt Red Ice. May require a room reload if toggled during gameplay."
+        ));
+    AddWidget(path, "Sunlight Arrows", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("SunlightArrows"))
+        .PreFunc([](WidgetInfo& info) {
+            info.options->disabled = OTRGlobals::Instance->gRandoContext->GetOption(RSK_SUNLIGHT_ARROWS).Is(RO_GENERIC_ON);
+            info.options->disabledTooltip = "This setting is forcefully enabled because a randomized savefile with "
+            "\"Sunlight Arrows\" enabled is currently loaded.";
+        })
+        .Options(CheckboxOptions().Tooltip(
+            "Allows Light Arrows to activate Sun Switches. May require a room reload if toggled during gameplay."
         ));
     
     // Difficulty Options

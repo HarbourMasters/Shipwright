@@ -116,8 +116,6 @@ static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large
         "8 Hearts",
         "OHKO"
     };
-    static const char* timeTravelOptions[3] = { "Disabled", "Ocarina of Time", "Any Ocarina" };
-    static const char* swordToggleModes[3] = { "Disabled", "Child Toggle", "Both Ages (May lead to unintended behaviour)"};
     static const char* itemCountMessageCVars[3] = {
         CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"),
         CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"),
@@ -214,69 +212,7 @@ void DrawEnhancementsMenu() {
         DrawPresetSelector(PRESET_TYPE_ENHANCEMENTS);
 
         UIWidgets::PaddedSeparator();
-
-        if (ImGui::BeginMenu("Gameplay"))
-        {
-            UIWidgets::PaddedEnhancementCheckbox("Equipment Toggle", CVAR_ENHANCEMENT("EquipmentCanBeRemoved"), true, false);
-            UIWidgets::Tooltip("Allows equipment to be removed by toggling it off on\nthe equipment subscreen.");
-            if (CVarGetInteger(CVAR_ENHANCEMENT("EquipmentCanBeRemoved"), 0)) {
-                UIWidgets::PaddedText("Sword Toggle Options", true, false);
-                UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("SwordToggle"), swordToggleModes, SWORD_TOGGLE_NONE);
-                UIWidgets::Tooltip(
-                    "Introduces Options for unequipping Link's sword\n\n"
-                    "None: Only Biggoron's Sword/Giant's Knife can be toggled. Doing so will equip the Master Sword.\n\n"
-                    "Child Toggle: This will allow for completely unequipping any sword as child link.\n\n"
-                    "Both Ages: Any sword can be unequipped as either age. This may lead to swordless glitches as Adult.\n"
-                );
-            }
-
-            UIWidgets::PaddedEnhancementCheckbox("Link's Cow in Both Time Periods", CVAR_ENHANCEMENT("CowOfTime"), true, false);
-            UIWidgets::Tooltip("Allows the Lon Lon Ranch obstacle course reward to be shared across time periods");
-            UIWidgets::PaddedEnhancementCheckbox("Enable visible guard vision", CVAR_ENHANCEMENT("GuardVision"), true, false);
-            UIWidgets::PaddedEnhancementCheckbox("Enable passage of time on file select", CVAR_ENHANCEMENT("TimeFlowFileSelect"), true, false);
-            UIWidgets::PaddedEnhancementCheckbox("Pull grave during the day", CVAR_ENHANCEMENT("DayGravePull"), true, false);
-            UIWidgets::Tooltip("Allows graves to be pulled when child during the day");
-            UIWidgets::PaddedEnhancementCheckbox("Dogs follow you everywhere", CVAR_ENHANCEMENT("DogFollowsEverywhere"), true, false);
-            UIWidgets::Tooltip("Allows dogs to follow you anywhere you go, even if you leave the market");
-            UIWidgets::PaddedEnhancementCheckbox("Don't require input for Credits sequence", CVAR_ENHANCEMENT("NoInputForCredits"), true, false);
-            UIWidgets::Tooltip("Removes the input requirement on textboxes after defeating Ganon, allowing Credits sequence to continue to progress");
-            UIWidgets::PaddedEnhancementCheckbox("Answer Navi Prompt with L Button", CVAR_ENHANCEMENT("NaviOnL"), true, false);
-            UIWidgets::Tooltip("Speak to Navi with L but enter first-person camera with C-Up");
-
-            // Blue Fire Arrows
-            bool forceEnableBlueFireArrows = IS_RANDO &&
-                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BLUE_FIRE_ARROWS);
-            static const char* forceEnableBlueFireArrowsText =
-                "This setting is forcefully enabled because a savefile\nwith \"Blue Fire Arrows\" is loaded.";
-            UIWidgets::PaddedEnhancementCheckbox("Blue Fire Arrows", CVAR_ENHANCEMENT("BlueFireArrows"), true, false, 
-                forceEnableBlueFireArrows, forceEnableBlueFireArrowsText, UIWidgets::CheckboxGraphics::Checkmark);
-            UIWidgets::Tooltip("Allows Ice Arrows to melt red ice.\nMay require a room reload if toggled during gameplay.");
-
-            // Sunlight Arrows
-            bool forceEnableSunLightArrows = IS_RANDO &&
-                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SUNLIGHT_ARROWS);
-            static const char* forceEnableSunLightArrowsText =
-                "This setting is forcefully enabled because a savefile\nwith \"Sunlight Arrows\" is loaded.";
-            UIWidgets::PaddedEnhancementCheckbox("Sunlight Arrows", CVAR_ENHANCEMENT("SunlightArrows"), true, false, 
-                forceEnableSunLightArrows, forceEnableSunLightArrowsText, UIWidgets::CheckboxGraphics::Checkmark);
-            UIWidgets::Tooltip("Allows Light Arrows to activate sun switches.\nMay require a room reload if toggled during gameplay.");
-
-            UIWidgets::PaddedEnhancementCheckbox("Disable Crit wiggle", CVAR_ENHANCEMENT("DisableCritWiggle"), true, false);
-            UIWidgets::Tooltip("Disable random camera wiggle at low health");
-            UIWidgets::PaddedEnhancementCheckbox("Enemy Health Bars", CVAR_ENHANCEMENT("EnemyHealthBar"), true, false);
-            UIWidgets::Tooltip("Renders a health bar for enemies when Z-Targeted");
-
-            UIWidgets::PaddedEnhancementCheckbox("Targetable Hookshot Reticle", CVAR_ENHANCEMENT("HookshotableReticle"), true, false);
-            UIWidgets::Tooltip("Use a different color when aiming at hookshotable collision");
-
-            UIWidgets::PaddedEnhancementCheckbox("Faster Rupee Accumulator", CVAR_ENHANCEMENT("TimeSavers.FasterRupeeAccumulator"), true, false);
-            UIWidgets::Tooltip("Causes your wallet to fill and empty faster when you gain or lose money.");
-
-            ImGui::EndMenu();
-        }
-
-        UIWidgets::Spacer(0);
-
+        
         if (ImGui::BeginMenu("Graphics"))
         {
             if (ImGui::BeginMenu("Mods")) {
