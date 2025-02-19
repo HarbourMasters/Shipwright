@@ -212,38 +212,6 @@ void DrawEnhancementsMenu() {
 
         UIWidgets::PaddedSeparator();
 
-        if (ImGui::BeginMenu("Restoration"))
-        {
-            UIWidgets::PaddedEnhancementCheckbox("Red Ganon blood", CVAR_ENHANCEMENT("RedGanonBlood"), true, false);
-            UIWidgets::Tooltip("Restore the original red blood from NTSC 1.0/1.1. Disable for green blood");
-            UIWidgets::PaddedEnhancementCheckbox("Fish while hovering", CVAR_ENHANCEMENT("HoverFishing"), true, false);
-            UIWidgets::Tooltip("Restore a bug from NTSC 1.0 that allows casting the Fishing Rod while using the Hover Boots");
-            UIWidgets::PaddedEnhancementCheckbox("N64 Weird Frames", CVAR_ENHANCEMENT("N64WeirdFrames"), true, false);
-            UIWidgets::Tooltip("Restores N64 Weird Frames allowing weirdshots to behave the same as N64");
-            UIWidgets::PaddedEnhancementCheckbox("Bombchus out of bounds", CVAR_ENHANCEMENT("BombchusOOB"), true, false);
-            UIWidgets::Tooltip("Allows bombchus to explode out of bounds\nSimilar to GameCube and Wii VC");
-            UIWidgets::PaddedEnhancementCheckbox("Quick Putaway", CVAR_ENHANCEMENT("QuickPutaway"), true, false);
-            UIWidgets::Tooltip("Restore a bug from NTSC 1.0 that allows putting away an item without an animation and performing Putaway Ocarina Items");
-            UIWidgets::PaddedEnhancementCheckbox("Restore old Gold Skulltula cutscene", CVAR_ENHANCEMENT("GSCutscene"), true, false);
-            UIWidgets::Tooltip("Restore pre-release behavior where defeating a Gold Skulltula will play a cutscene showing it die.");
-            UIWidgets::PaddedEnhancementCheckbox("Quick Bongo Kill", CVAR_ENHANCEMENT("QuickBongoKill"), true, false);
-            UIWidgets::Tooltip("Restore a bug from NTSC 1.0 that allows bypassing Bongo Bongo's intro cutscene to quickly kill him");
-            UIWidgets::PaddedEnhancementCheckbox("Original RBA Values", CVAR_ENHANCEMENT("RestoreRBAValues"), true, false);
-            UIWidgets::Tooltip("Restores the original outcomes when performing Reverse Bottle Adventure.");
-            UIWidgets::PaddedEnhancementCheckbox("Early Eyeball Frog", CVAR_ENHANCEMENT("EarlyEyeballFrog"), true, false);
-            UIWidgets::Tooltip("Restores a bug from NTSC 1.0/1.1 that allows you to obtain the eyeball frog from King Zora instead of the Zora Tunic by holding shield.");
-            UIWidgets::PaddedEnhancementCheckbox("Pulsate boss icon", CVAR_ENHANCEMENT("PulsateBossIcon"), true, false);
-            UIWidgets::Tooltip("Restores an unfinished feature to pulsate the boss room icon when you are in the boss room.");
-            UIWidgets::PaddedEnhancementSliderInt("Pause Buffer Input Window: %d", "##PauseBufferWindow", CVAR_ENHANCEMENT("PauseBufferWindow"), 0, 40, "", 0, true, true, false);
-            UIWidgets::PaddedEnhancementCheckbox("Include held inputs at start of Buffer Input Window", CVAR_ENHANCEMENT("IncludeHeldInputsBufferWindow"), true, false);
-            UIWidgets::Tooltip("Typically, inputs that are held prior to the buffer window are not included in the buffer. This setting changes that behavior to include them. This may cause some inputs to be re-triggered undesireably, for instance Z-Targetting something you might not want to.");
-            UIWidgets::PaddedEnhancementSliderInt("Simulated Input Lag: %d frames", "##SimulatedInputLag", CVAR_SIMULATED_INPUT_LAG, 0, 6, "", 0, true, true, false);
-            UIWidgets::Tooltip("Buffers your inputs to be executed a specified amount of frames later");
-            ImGui::EndMenu();
-        }
-
-        UIWidgets::Spacer(0);
-
         if (ImGui::BeginMenu("Extra Modes")) {
             UIWidgets::PaddedText("Mirrored World", true, false);
             if (UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("MirroredWorldMode"), mirroredWorldModes, MIRRORED_WORLD_OFF) && gPlayState != NULL) {

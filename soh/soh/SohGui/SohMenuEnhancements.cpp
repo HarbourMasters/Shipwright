@@ -312,6 +312,87 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Fixes the Broken Giant's Knife flag not being reset when Medigoron fixes it."
         ));
+    
+    path.column = SECTION_COLUMN_3;
+    AddWidget(path, "Restorations", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Red Ganon Blood", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("RedGanonBlood"))
+        .Options(CheckboxOptions().Tooltip(
+            "Restore the original red blood from NTSC 1.0/1.1. Disable for Green blood."
+        ));
+    AddWidget(path, "Fish while Hovering", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("HoverFishing"))
+        .Options(CheckboxOptions().Tooltip(
+            "Restore a bug from NSTC 1.0 that allows casting the Fishing Rod while using the Hover Boots."
+        ));
+    AddWidget(path, "N64 Weird Frames", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("N64WeirdFrames"))
+        .Options(CheckboxOptions().Tooltip(
+            "Restores N64 Weird Frames allwing weirdshots to behave the same as N64."
+        ));
+    AddWidget(path, "Bombchus Out of Bounds", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("BombchusOOB"))
+        .Options(CheckboxOptions().Tooltip(
+            "Allows Bombchus to explode out of bounds. Similar to Gamecube and Wii VC"
+        ));
+    AddWidget(path, "Quick Putaway", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("QuickPutaway"))
+        .Options(CheckboxOptions().Tooltip(
+            "Restore a bug from NTSC 1.0 that allows putting away an item without an animation and performing "
+            "Putaway Ocarina Items."
+        ));
+    AddWidget(path, "Restore Old Gold Skulltula Cutscene", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("GSCutscene"))
+        .Options(CheckboxOptions().Tooltip(
+            "Restore pre-release behavior where defeating a Gold Skulltula will play a cutscene showing it die."
+        ));
+    AddWidget(path, "Quick Bongo Kill", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("QuickBongoKill"))
+        .Options(CheckboxOptions().Tooltip(
+            "Restore a bug from NTSC 1.0 that allows bypassing Bongo Bongo's intro cutscene to quickly kill him."
+        ));
+    AddWidget(path, "Original RBA Values", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("RestoreRBAValues"))
+        .Options(CheckboxOptions().Tooltip(
+            "Restores the original outcomes when performing Reverse Bottle Adventure."
+        ));
+    AddWidget(path, "Early Eyeball Frog", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("EarlyEyeballFrog"))
+        .Options(CheckboxOptions().Tooltip(
+            "Restores a bug from NTSC 1.0/1.1 that allows you to obtain the eyeball frog from King Zora "
+            "instead of the Zora Tunic by Holding Shield."
+        ));
+    AddWidget(path, "Pulsate Boss Icon", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("Pulsate Boss Icon"))
+        .Options(CheckboxOptions().Tooltip(
+            "Restores an unfinished feature to pulsate the boss room icon when you are in the boss room."
+        ));
+    AddWidget(path, "Pause Buffer Input Window: %d frames", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_ENHANCEMENT("PauseBufferWindow"))
+        .Options(IntSliderOptions()
+            .Min(0)
+            .Max(40)
+            .DefaultValue(0)
+            .Format("%d frames")
+        );
+    AddWidget(path, "Include Held Inputs at the Start of Buffer Input Window", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("IncludeHeldInputsBufferWindow"))
+        .Options(CheckboxOptions().Tooltip(
+            "Typically, inputs that are held prior to the buffer window are not included in the buffer. This "
+            "setting changes that behavior to include them. This may cause some inputs to be re-triggered "
+            "undesireably, for instance Z-Targetting something you might not want to."
+        ));
+    AddWidget(path, "Simulated Input Lag: %d frames", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_SIMULATED_INPUT_LAG)
+        .Options(IntSliderOptions()
+            .Min(0)
+            .Max(6)
+            .DefaultValue(0)
+            .Format("%d frames")
+            .Tooltip(
+                "Buffers your inputs to be executed a specified amount of frames later."
+            )
+        );
 
     path.sidebarName = "Time Savers";
     AddSidebarEntry("Enhancements", path.sidebarName, 3);
