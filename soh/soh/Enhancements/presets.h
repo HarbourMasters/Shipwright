@@ -565,8 +565,6 @@ const std::vector<PresetEntry> vanillaPlusPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadEquips"), 1),
     // Prevent Dropped Ocarina Inputs
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"), 1),
-    // Right Stick Aiming
-    PRESET_ENTRY_S32(CVAR_SETTING("Controls.RightStickAim"), 1),
 
     // Text Speed (1 to 5)
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TextSpeed"), 5),
@@ -637,8 +635,6 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadEquips"), 1),
     // Prevent Dropped Ocarina Inputs
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"), 1),
-    // Right Stick Aiming
-    PRESET_ENTRY_S32(CVAR_SETTING("Controls.RightStickAim"), 1),
 
     // Text Speed (1 to 5)
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TextSpeed"), 5),
@@ -770,8 +766,6 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadEquips"), 1),
     // Prevent Dropped Ocarina Inputs
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"), 1),
-    // Right Stick Aiming
-    PRESET_ENTRY_S32(CVAR_SETTING("Controls.RightStickAim"), 1),
 
     // Text Speed (1 to 5)
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TextSpeed"), 5),
