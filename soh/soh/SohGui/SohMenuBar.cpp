@@ -166,63 +166,6 @@ void DrawRemoteControlMenu() {
 }
 #endif
 
-extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
-
-void DrawRandomizerMenu() {
-    if (ImGui::BeginMenu("Randomizer")) {
-
-        if (ImGui::BeginMenu("Rando Enhancements"))
-        {
-            UIWidgets::EnhancementCheckbox("Rando-Relevant Navi Hints", CVAR_RANDOMIZER_ENHANCEMENT("RandoRelevantNavi"), false, "", UIWidgets::CheckboxGraphics::Cross, true);
-            UIWidgets::Tooltip(
-                "Replace Navi's overworld quest hints with rando-related gameplay hints."
-            );
-            UIWidgets::PaddedEnhancementCheckbox("Random Rupee Names", CVAR_RANDOMIZER_ENHANCEMENT("RandomizeRupeeNames"), true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
-            UIWidgets::Tooltip(
-                "When obtaining rupees, randomize what the rupee is called in the textbox."
-            );
-            
-            UIWidgets::PaddedEnhancementCheckbox("Use Custom Key Models", CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), true, false);
-            UIWidgets::Tooltip("Use Custom graphics for dungeon keys, Big and Small, so that they can be easily told apart");
-
-            bool disableCompassColors = !DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_SHUFFLE_MAPANDCOMPASS);
-
-            static const char* disableCompassColorsText =
-                "This setting is disabled because a savefile is loaded without the compass\n"
-                "shuffle settings set to \"Any Dungeon\", \"Overworld\" or \"Anywhere\"";
-
-            if (UIWidgets::PaddedEnhancementCheckbox("Compass Colors Match Dungeon", CVAR_RANDOMIZER_ENHANCEMENT("MatchCompassColors"), true, false,
-                                                  disableCompassColors, disableCompassColorsText, UIWidgets::CheckboxGraphics::Cross, true)) {
-                PatchCompasses();
-            }
-            UIWidgets::Tooltip(
-                "Matches the color of compasses to the dungeon they belong to. "
-                "This helps identify compasses from afar and adds a little bit of flair.\n\nThis only "
-                "applies to seeds with compasses shuffled to \"Any Dungeon\", \"Overworld\", or \"Anywhere\".");
-
-            UIWidgets::PaddedEnhancementCheckbox("Quest Item Fanfares", CVAR_RANDOMIZER_ENHANCEMENT("QuestItemFanfares"), true, false);
-            UIWidgets::Tooltip(
-                "Play unique fanfares when obtaining quest items "
-                "(medallions/stones/songs). Note that these fanfares are longer than usual."
-            );
-            UIWidgets::PaddedEnhancementCheckbox("Mysterious Shuffled Items", CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), true, false);
-            UIWidgets::Tooltip(
-                "Displays a \"Mystery Item\" model in place of any freestanding/GS/shop items that were shuffled, "
-                "and replaces item names for them and scrubs and merchants, regardless of hint settings, "
-                "so you never know what you're getting.");
-            UIWidgets::PaddedEnhancementCheckbox("Simpler Boss Soul Models",
-                                                 CVAR_RANDOMIZER_ENHANCEMENT("SimplerBossSoulModels"), true, false);
-            UIWidgets::Tooltip(
-                "When shuffling boss souls, they'll appear as a simpler model instead of showing the boss' models."
-                "This might make boss souls more distinguishable from a distance, and can help with performance."
-            );
-            ImGui::EndMenu();
-        }
-
-        ImGui::EndMenu();
-    }
-}
-
 void SohMenuBar::InitElement() {
     
 }
@@ -242,8 +185,6 @@ void SohMenuBar::DrawElement() {
 
         ImGui::SetCursorPosY(0.0f);
         #endif
-
-        DrawRandomizerMenu();
 
         ImGui::PopStyleVar(1);
         ImGui::EndMenuBar();
