@@ -156,12 +156,6 @@ void DrawSettingsMenu() {
     }
 }
 
-extern std::shared_ptr<TimeDisplayWindow> mTimeDisplayWindow;
-
-void DrawEnhancementsMenu() {
-    
-}
-
 #ifdef ENABLE_REMOTE_CONTROL
 void DrawRemoteControlMenu() {
     if (ImGui::BeginMenu("Network")) {
@@ -240,10 +234,6 @@ void SohMenuBar::DrawElement() {
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, sWindowPadding);
 
         DrawSettingsMenu();
-
-        ImGui::SetCursorPosY(0.0f);
-
-        DrawEnhancementsMenu();
 
         ImGui::SetCursorPosY(0.0f);
 

@@ -28,7 +28,7 @@ void SohMenu::AddMenuEnhancements() {
     // Enhancements
     WidgetPath path = { "Enhancements", "Enhancements", SECTION_COLUMN_1 };
     path.sidebarName = "Presets";
-    AddSidebarEntry("Enhancements", path.sidebarName, 2);
+    AddSidebarEntry("Enhancements", path.sidebarName, 1);
 
     const PresetTypeDefinition presetTypeDef = presetTypes.at(PRESET_TYPE_ENHANCEMENTS);
     for (auto iter = presetTypeDef.presets.begin(); iter != presetTypeDef.presets.end(); ++iter) {
