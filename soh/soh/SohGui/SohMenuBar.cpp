@@ -81,45 +81,6 @@ static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large
             "Linear", "None"
     };
 
-    static const char* chestStyleMatchesContentsOptions[4] = { "Disabled", "Both", "Texture Only", "Size Only" };
-    static const char* skipGetItemAnimationOptions[3] = { "Disabled", "Junk Items", "All Items" };
-    static const char* skipForcedDialogOptions[4] = { "None", "Navi Only", "NPCs Only", "All" };
-    static const char* sleepingWaterfallOptions[3] = { "Always", "Once", "Never" };
-    static const char* bunnyHoodOptions[3] = { "Disabled", "Faster Run & Longer Jump", "Faster Run" };
-    static const char* allPowers[9] = {
-                        "Vanilla (1x)",
-                        "Double (2x)",
-                        "Quadruple (4x)",
-                        "Octuple (8x)",
-                        "Foolish (16x)",
-                        "Ridiculous (32x)",
-                        "Merciless (64x)",
-                        "Pure Torture (128x)",
-                        "OHKO (256x)" };
-    static const char* subPowers[8] = { allPowers[0], allPowers[1], allPowers[2], allPowers[3], allPowers[4], allPowers[5], allPowers[6], allPowers[7] };
-    static const char* subSubPowers[7] = { allPowers[0], allPowers[1], allPowers[2], allPowers[3], allPowers[4], allPowers[5], allPowers[6] };
-    static const char* DekuStickCheat[3] = { "Normal", "Unbreakable", "Unbreakable + Always on Fire" };
-    static const char* bonkDamageValues[8] = {
-        "No Damage",
-        "0.25 Heart",
-        "0.5 Heart",
-        "1 Heart",
-        "2 Hearts",
-        "4 Hearts",
-        "8 Hearts",
-        "OHKO"
-    };
-    static const char* itemCountMessageCVars[3] = {
-        CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"),
-        CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"),
-        CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"),
-    };
-    static const char* itemCountMessageOptions[ARRAY_COUNT(itemCountMessageCVars)] = {
-        "Gold Skulltula Tokens",
-        "Pieces of Heart",
-        "Heart Containers",
-    };
-
 extern "C" SaveContext gSaveContext;
 
 namespace SohGui {
