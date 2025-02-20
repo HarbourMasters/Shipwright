@@ -5,6 +5,7 @@
 #include <soh/Enhancements/cosmetics/authenticGfxPatches.h>
 #include <soh/Enhancements/enemyrandomizer.h>
 #include <soh/Enhancements/presets.h>
+#include <soh/Enhancements/TimeDisplay/TimeDisplay.h>
 
 std::string comboboxTooltip = "";
 int32_t enhancementPresetSelected = ENHANCEMENT_PRESET_DEFAULT;
@@ -2069,6 +2070,7 @@ void SohMenu::AddMenuEnhancements() {
     // Cosmetics Editor
     path.sidebarName = "Cosmetics Editor";
     AddSidebarEntry("Enhancements", path.sidebarName, 1);
+    path.column = SECTION_COLUMN_1;
     AddWidget(path, "Popout Cosmetics Editor Window", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("CosmeticsEditor"))
         .WindowName("Cosmetics Editor")
@@ -2106,9 +2108,32 @@ void SohMenu::AddMenuEnhancements() {
     path.sidebarName = "Timers";
     AddSidebarEntry("Enhancements", path.sidebarName, 1);
     AddWidget(path, "Toggle Timers Window", WIDGET_WINDOW_BUTTON)
-        .CVar(CVAR_WINDOW("AdditionalTimers"))
+        .CVar(CVAR_WINDOW("TimeDisplayEnabled"))
         .WindowName("Additional Timers")
         .Options(WindowButtonOptions().Tooltip("Enables the separate Additional Timers Window."));
+    AddWidget(path, "Font Scale: %.2fx", WIDGET_CVAR_SLIDER_FLOAT)
+        .CVar(CVAR_ENHANCEMENT("TimeDisplay.FontScale"))
+        .Callback([](WidgetInfo& info) {
+            TimeDisplayInitSettings();
+        })
+        .Options(FloatSliderOptions()
+            .Min(1.0f)
+            .Max(5.0f)
+            .DefaultValue(1.0f)
+            .Format("%.2fx")
+        );
+    AddWidget(path, "Hide Background", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("TimeDisplay.ShowWindowBG"))
+        .Callback([](WidgetInfo& info) {
+            TimeDisplayInitSettings();
+        });
+    for (auto& timer : timeDisplayList) {
+        AddWidget(path, timer.timeLabel, WIDGET_CVAR_CHECKBOX)
+            .CVar(timer.timeEnable)
+            .Callback([](WidgetInfo& info) {
+                TimeDisplayUpdateDisplayOptions();
+            });
+    }
 }
 
 } // namespace SohGui

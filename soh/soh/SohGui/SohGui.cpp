@@ -190,7 +190,7 @@ namespace SohGui {
         mNotificationWindow = std::make_shared<Notification::Window>(CVAR_WINDOW("Notifications"), "Notifications Window");
         gui->AddGuiWindow(mNotificationWindow);
         mNotificationWindow->Show();
-        mTimeDisplayWindow = std::make_shared<TimeDisplayWindow>(CVAR_WINDOW("AdditionalTimers"), "Additional Timers");
+        mTimeDisplayWindow = std::make_shared<TimeDisplayWindow>(CVAR_WINDOW("TimeDisplayEnabled"), "Additional Timers");
         gui->AddGuiWindow(mTimeDisplayWindow);
     }
 

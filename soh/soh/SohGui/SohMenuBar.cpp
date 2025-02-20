@@ -159,47 +159,7 @@ void DrawSettingsMenu() {
 extern std::shared_ptr<TimeDisplayWindow> mTimeDisplayWindow;
 
 void DrawEnhancementsMenu() {
-    if (ImGui::BeginMenu("Enhancements"))
-    {
-        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
-        ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
-        ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
-        ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
-
-        if (mTimeDisplayWindow) {
-            if (ImGui::Button(GetWindowButtonText("Additional Timers", CVarGetInteger(CVAR_WINDOW("TimeDisplayEnabled"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
-                mTimeDisplayWindow->ToggleVisibility();
-            }
-        }
-        if (mTimeDisplayWindow->IsVisible()) {
-            ImGui::SeparatorText("Timer Display Options");
-
-            if (!gPlayState) {
-                ImGui::Text("Additional Timer options\n"
-                            "available when a file is\n"
-                            "loaded...");
-            } else {
-                if (UIWidgets::PaddedEnhancementSliderFloat("Font Scale: %.2fx", "##FontScale", CVAR_ENHANCEMENT("TimeDisplay.FontScale"), 
-                    1.0f, 5.0f, "", 1.0f, false, true, false, true)) {
-                    TimeDisplayInitSettings();
-                }
-                if (UIWidgets::PaddedEnhancementCheckbox("Hide Background", CVAR_ENHANCEMENT("TimeDisplay.ShowWindowBG"), 
-                    false, false)) {
-                    TimeDisplayInitSettings();
-                }
-                ImGui::Separator();
-                for (auto& timer : timeDisplayList) {
-                    if (UIWidgets::PaddedEnhancementCheckbox(timer.timeLabel.c_str(), timer.timeEnable, false, false)) {
-                        TimeDisplayUpdateDisplayOptions();
-                    }
-                }
-            }
-        }
-        ImGui::PopStyleVar(3);
-        ImGui::PopStyleColor(1);
-
-        ImGui::EndMenu();
-    }
+    
 }
 
 #ifdef ENABLE_REMOTE_CONTROL
