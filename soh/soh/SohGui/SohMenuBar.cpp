@@ -161,12 +161,6 @@ extern std::shared_ptr<TimeDisplayWindow> mTimeDisplayWindow;
 void DrawEnhancementsMenu() {
     if (ImGui::BeginMenu("Enhancements"))
     {
-        ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
-
-        DrawPresetSelector(PRESET_TYPE_ENHANCEMENTS);
-
-        ImGui::EndDisabled();
-
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
         ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
         ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);

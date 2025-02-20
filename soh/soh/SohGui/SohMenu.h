@@ -7,6 +7,7 @@
 #include "graphic/Fast3D/gfx_rendering_api.h"
 #include "soh/cvar_prefixes.h"
 #include "soh/Enhancements/enhancementTypes.h"
+#include "soh/Enhancements/presets.h"
 
 extern "C" {
 #include "z64.h"
@@ -179,6 +180,13 @@ static const std::unordered_map<int32_t, const char*> bootSequenceLabels = {
     { BOOTSEQUENCE_DEFAULT, "Default" },
     { BOOTSEQUENCE_AUTHENTIC, "Authentic" },
     { BOOTSEQUENCE_FILESELECT, "File Select" }
+};
+
+static const std::unordered_map<int32_t, const char*> enhancementPresetList = {
+    { ENHANCEMENT_PRESET_DEFAULT, "Default" },
+    { ENHANCEMENT_PRESET_VANILLA_PLUS, "Vanilla Plus" },
+    { ENHANCEMENT_PRESET_ENHANCED, "Enhanced" },
+    { ENHANCEMENT_PRESET_RANDOMIZER, "Randomizer" }
 };
 
 static const char* itemCountMessageCVars[3] = {

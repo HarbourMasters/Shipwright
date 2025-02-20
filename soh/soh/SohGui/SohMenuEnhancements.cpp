@@ -4,7 +4,10 @@
 #include <soh/OTRGlobals.h>
 #include <soh/Enhancements/cosmetics/authenticGfxPatches.h>
 #include <soh/Enhancements/enemyrandomizer.h>
+#include <soh/Enhancements/presets.h>
 
+std::string comboboxTooltip = "";
+int32_t enhancementPresetSelected = ENHANCEMENT_PRESET_DEFAULT;
 bool isBetaQuestEnabled = false;
 
 extern "C" {
@@ -23,6 +26,41 @@ void SohMenu::AddMenuEnhancements() {
 
     // Enhancements
     WidgetPath path = { "Enhancements", "Enhancements", SECTION_COLUMN_1 };
+    path.sidebarName = "Presets";
+    AddSidebarEntry("Enhancements", path.sidebarName, 2);
+
+    const PresetTypeDefinition presetTypeDef = presetTypes.at(PRESET_TYPE_ENHANCEMENTS);
+    for (auto iter = presetTypeDef.presets.begin(); iter != presetTypeDef.presets.end(); ++iter) {
+        if (iter->first != 0) comboboxTooltip += "\n\n";
+        comboboxTooltip += std::string(iter->second.label) + " - " + std::string(iter->second.description);
+    }
+    AddWidget(path, "Enhancement Presets", WIDGET_COMBOBOX)
+        .ValuePointer(&enhancementPresetSelected)
+        .Callback([](WidgetInfo& info) {
+            const std::string presetTypeCvar = CVAR_GENERAL("SelectedPresets.") + std::to_string(PRESET_TYPE_ENHANCEMENTS);
+            CVarSetInteger(presetTypeCvar.c_str(), *std::get<int32_t*>(info.valuePointer));
+        })
+        .Options(ComboboxOptions()
+            .ComboMap(enhancementPresetList)
+            .DefaultIndex(ENHANCEMENT_PRESET_DEFAULT)
+            .Tooltip(comboboxTooltip.c_str())
+        );
+    AddWidget(path, "Apply Preset##Enhancemnts", WIDGET_BUTTON)
+        .Callback([](WidgetInfo& info) {
+            const std::string presetTypeCvar = CVAR_GENERAL("SelectedPresets.") + std::to_string(PRESET_TYPE_ENHANCEMENTS);
+            const PresetTypeDefinition presetTypeDef = presetTypes.at(PRESET_TYPE_ENHANCEMENTS);
+            clearCvars(presetTypeDef.cvarsToClear);
+            uint16_t selectedPresetId = CVarGetInteger(presetTypeCvar.c_str(), 0);
+            if(selectedPresetId >= presetTypeDef.presets.size()){
+                selectedPresetId = 0;
+            }
+            const PresetDefinition selectedPresetDef = presetTypeDef.presets.at(selectedPresetId);
+            if (selectedPresetId != 0) {
+                applyPreset(selectedPresetDef.entries);
+            }
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        });
+
     path.sidebarName = "Gameplay";
     AddSidebarEntry("Enhancements", path.sidebarName, 3);
 
