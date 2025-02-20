@@ -208,6 +208,10 @@ namespace UIWidgets2 {
             WidgetOptions::color = color = color_;
             return *this;
         }
+        CheckboxOptions& DisabledTooltip(const char* disabledTooltip_) {
+            WidgetOptions::disabledTooltip = disabledTooltip_;
+            return *this;
+        }
     };
 
     struct ComboboxOptions : WidgetOptions {

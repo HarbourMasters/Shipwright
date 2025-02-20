@@ -5,6 +5,8 @@
 #include <libultraship/bridge.h>
 #include "soh/SohGui/UIWidgets.hpp"
 #include <libultraship/libultraship.h>
+#include <soh/SohGui/MenuTypes.h>
+#include <soh/SohGui/SohMenu.h>
 
 void clearCvars(std::vector<const char*> cvarsToClear) {
     for(const char* cvar : cvarsToClear) {
