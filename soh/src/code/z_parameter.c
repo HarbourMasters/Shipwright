@@ -3215,7 +3215,7 @@ void Interface_UpdateMagicBar(PlayState* play) {
         case MAGIC_STATE_FILL:
             gSaveContext.magic += 4;
 
-            if (gSaveContext.gameMode == 0 && gSaveContext.sceneSetupIndex < 4) {
+            if (gSaveContext.gameMode == GAMEMODE_NORMAL && gSaveContext.sceneSetupIndex < 4) {
                 Audio_PlaySoundGeneral(NA_SE_SY_GAUGE_UP - SFX_FLAG, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
                                        &gSfxDefaultReverb);
             }

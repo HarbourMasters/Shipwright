@@ -10859,7 +10859,7 @@ void Player_Init(Actor* thisx, PlayState* play2) {
     }
 
     if (startMode != PLAYER_START_MODE_NOTHING) {
-        if ((gSaveContext.gameMode == 0) || (gSaveContext.gameMode == 3)) {
+        if ((gSaveContext.gameMode == GAMEMODE_NORMAL) || (gSaveContext.gameMode == GAMEMODE_END_CREDITS)) {
             this->naviActor = Player_SpawnFairy(play, this, &thisx->world.pos, &D_80854778, FAIRY_NAVI);
             if (gSaveContext.dogParams != 0) {
                 gSaveContext.dogParams |= 0x8000;
