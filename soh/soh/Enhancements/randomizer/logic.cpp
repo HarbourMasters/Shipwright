@@ -2146,6 +2146,10 @@ namespace Rando {
         inLogic[logicVal] = value;
     }
 
+    bool Logic::DoorUnlocked(TempleDoor door) {
+        return gSaveContext.sceneFlags[door >> 16].swch & (1 << (door & 0x3F));
+    }
+
     void Logic::Reset() {
         NewSaveContext();
         StartPerformanceTimer(PT_LOGIC_RESET);
