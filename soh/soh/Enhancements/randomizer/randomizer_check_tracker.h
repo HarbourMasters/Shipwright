@@ -1,8 +1,8 @@
 #pragma once
 #include <nlohmann/json.hpp>
 #include "randomizerTypes.h"
-#include "soh/SohGui/UIWidgets2.hpp"
 #include "randomizer_check_objects.h"
+#include "soh/SohGui/UIWidgets2.hpp"
 
 #include <libultraship/libultraship.h>
 

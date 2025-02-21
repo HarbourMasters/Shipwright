@@ -810,6 +810,22 @@ void DrawFlagArray8Mask(const std::string& name, uint8_t& flags) {
     }
     ImGui::PopID();
 }
+
+void SetLastItemHoverText(const std::string& text) {
+    if (ImGui::IsItemHovered()) {
+        ImGui::BeginTooltip();
+        ImGui::Text("%s", WrappedText(text, 60).c_str());
+        ImGui::EndTooltip();
+    }
+}
+
+void SetLastItemHoverText(const char* text) {
+    if (ImGui::IsItemHovered()) {
+        ImGui::BeginTooltip();
+        ImGui::Text("%s", WrappedText(text, 60).c_str());
+        ImGui::EndTooltip();
+    }
+}
 } // namespace UIWidgets
 
 ImVec4 GetRandomValue() {
@@ -830,6 +846,11 @@ ImVec4 GetRandomValue() {
 }
 
 Color_RGBA8 RGBA8FromVec(ImVec4 vec) {
-    Color_RGBA8 color = { vec.x, vec.y, vec.z, vec.w };
+    Color_RGBA8 color = { vec.x * 255, vec.y * 255, vec.z * 255, vec.w * 255 };
     return color;
+}
+
+ImVec4 VecFromRGBA8(Color_RGBA8 color) {
+    ImVec4 vec = { color.r / 255.0f, color.g / 255.0f, color.b / 255.0f, color.a / 255.0f };
+    return vec;
 }

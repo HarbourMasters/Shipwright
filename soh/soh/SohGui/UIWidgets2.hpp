@@ -772,9 +772,13 @@ namespace UIWidgets2 {
     void DrawFlagArray16(const std::string& name, uint16_t& flags);
     void DrawFlagArray8(const std::string& name, uint8_t& flags);
     void DrawFlagArray8Mask(const std::string& name, uint8_t& flags);
+
+    void SetLastItemHoverText(const std::string& text);
+    void SetLastItemHoverText(const char* text);
 }
 ImVec4 GetRandomValue();
 
 Color_RGBA8 RGBA8FromVec(ImVec4 vec);
+ImVec4 VecFromRGBA8(Color_RGBA8 color);
 
 #endif /* UIWidgets_hpp */
