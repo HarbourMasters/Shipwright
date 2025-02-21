@@ -337,6 +337,7 @@ void RandomizerOnItemReceiveHandler(GetItemEntry receivedItemEntry) {
         loc->SetCheckStatus(RCSHOW_COLLECTED);
         CheckTracker::SpoilAreaFromCheck(randomizerQueuedCheck);
         CheckTracker::RecalculateAllAreaTotals();
+        CheckTracker::RecalculateAccessibleChecks();
         SaveManager::Instance->SaveSection(gSaveContext.fileNum, SECTION_ID_TRACKER_DATA, true);
         randomizerQueuedCheck = RC_UNKNOWN_CHECK;
         randomizerQueuedItemEntry = GET_ITEM_NONE;

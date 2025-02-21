@@ -8,6 +8,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "dungeon.h"
+#include "entrance.h"
 #include "location_access.h"
 
 #include <string>
@@ -821,6 +822,16 @@ void LoadFile() {
     SaveManager::Instance->LoadData("areasSpoiled", areasSpoiled, (uint32_t)0);
     UpdateAllOrdering();
     UpdateAllAreas();
+
+    if (gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2) {
+        if (areaTable[RR_ROOT].regionName.empty()) {
+            RegionTable_Init();
+        }
+        if (Rando::Context::GetInstance() == nullptr) {
+            Rando::Context::CreateInstance();
+        }
+        RecalculateAccessibleChecks();
+    }
 }
 
 void Teardown() {
@@ -1623,7 +1634,13 @@ void DrawLocation(RandomizerCheck rc) {
                 if (conditionStr != "true") {
                     UIWidgets::InsertHelpHoverText(conditionStr);
                 }
-                return;
+                if (!itemLoc->HasObtained() && itemLoc->IsAccessible()) {
+                    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(extraColor.r / 255.0f, extraColor.g / 255.0f, extraColor.b / 255.0f, extraColor.a / 255.0f));
+                    ImGui::SameLine();
+                    ImGui::Text(" (Accessible)");
+                    ImGui::PopStyleColor();
+                }
+                break;
             }
         }
     }
@@ -1711,6 +1728,98 @@ void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, 
         ImGui::Text(" ?");
         UIWidgets::Tooltip(tooltip);
     }
+}
+
+void CalculateAccessibleEntrances(const Region& region,
+                                  bool isParentAccessible,
+                                  std::unordered_map<const Rando::Entrance*, bool>& entranceAccessible,
+                                  std::vector<RandomizerRegion>& visitedRegions,
+                                  std::stop_token stopToken) {
+    for (const auto& entranceInRegion : region.exits) {
+        if (stopToken.stop_requested()) {
+            return;
+        }
+
+        auto pair = entranceAccessible.find(&entranceInRegion);
+        bool isEntranceAccessible = true;
+        if (pair == entranceAccessible.end()) {
+            isEntranceAccessible = isParentAccessible && entranceInRegion.GetConditionsMet();
+            entranceAccessible[&entranceInRegion] = isEntranceAccessible;
+        } else if (!pair->second) {
+            isEntranceAccessible = isParentAccessible && entranceInRegion.GetConditionsMet();
+            pair->second = isEntranceAccessible;
+        }
+        else {
+            return;
+        }
+
+        if (std::find(visitedRegions.begin(), visitedRegions.end(), entranceInRegion.GetConnectedRegionKey()) == visitedRegions.end()) {
+            visitedRegions.emplace_back(entranceInRegion.GetConnectedRegionKey());
+            CalculateAccessibleEntrances(*entranceInRegion.GetConnectedRegion(),
+                                         isEntranceAccessible,
+                                         entranceAccessible,
+                                         visitedRegions,
+                                         stopToken);
+            visitedRegions.pop_back();
+        }
+    }
+}
+
+void _RecalculateAccessibleChecks(std::stop_token stopToken) {
+    logic->IsChild = logic->mSaveContext->linkAge == LinkAge::LINK_AGE_CHILD;
+    logic->IsAdult = logic->mSaveContext->linkAge == LinkAge::LINK_AGE_ADULT;
+    logic->AtDay = true;
+    logic->AtNight = true;
+
+    for (auto& region : areaTable) {
+        for (auto& event : region.events) {
+            if (!event.GetEvent() && event.ConditionsMet()) {
+                event.EventOccurred();
+            }
+        }
+    }
+
+    if (stopToken.stop_requested()) {
+        return;
+    }
+
+    std::vector<RandomizerRegion> visitedRegions;
+    visitedRegions.reserve(70);
+    std::unordered_map<const Rando::Entrance*, bool> entranceAccessible;
+    entranceAccessible.reserve(1450);
+    CalculateAccessibleEntrances(areaTable[RR_ROOT], true, entranceAccessible, visitedRegions, stopToken);
+
+    if (stopToken.stop_requested()) {
+        return;
+    }
+
+    for (auto& region : areaTable) {
+        for (auto& locationInRegion : region.locations) {
+            auto rc = locationInRegion.GetLocation();
+            auto itemLoc = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
+            if (!itemLoc->HasObtained()) {
+                bool regionAccessible = false;
+                for (auto& entranceInRegion : region.entrances) {
+                    if (entranceAccessible[entranceInRegion]) {
+                        regionAccessible = true;
+                        break;
+                    }
+                }
+                bool locationAccessible = locationInRegion.GetConditionsMet();
+                itemLoc->SetAccessible(regionAccessible && locationAccessible);
+            }
+        }
+    }
+}
+
+std::jthread recalculateAccessibleChecksThread;
+
+void RecalculateAccessibleChecks() {
+    if (recalculateAccessibleChecksThread.joinable()) {
+        recalculateAccessibleChecksThread.request_stop();
+        recalculateAccessibleChecksThread.join();
+    }
+    recalculateAccessibleChecksThread = std::jthread(_RecalculateAccessibleChecks);
 }
 
 void CheckTrackerWindow::Draw() {
