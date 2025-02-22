@@ -2147,7 +2147,7 @@ namespace Rando {
     }
 
     bool Logic::DoorUnlocked(TempleDoor door) {
-        return gSaveContext.sceneFlags[door >> 16].swch & (1 << (door & 0x3F));
+        return gSaveContext.sceneFlags[door >> 8].swch & (1 << (door & 0x3F));
     }
 
     void Logic::Reset() {

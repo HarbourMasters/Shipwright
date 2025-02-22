@@ -196,15 +196,9 @@ class Region {
             bool pastAdult = logic->IsAdult;
             bool pastChild = logic->IsChild;
 
-            if (logic->mSaveContext != nullptr) {
-                logic->IsChild = logic->mSaveContext->linkAge == LinkAge::LINK_AGE_CHILD;
-                logic->IsAdult = logic->mSaveContext->linkAge == LinkAge::LINK_AGE_ADULT;
-            }
-            else {
-                //set age access as this areas ages
-                logic->IsChild = Child();
-                logic->IsAdult = Adult();
-            }
+            //set age access as this areas ages
+            logic->IsChild = Child();
+            logic->IsAdult = Adult();
 
             //heck condition as well as having at least child or adult access
             bool hereVal = condition() && (logic->IsAdult || logic->IsChild);

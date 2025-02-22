@@ -10,6 +10,8 @@
 #include "dungeon.h"
 #include "entrance.h"
 #include "location_access.h"
+#include "3drando/fill.hpp"
+#include "soh/Enhancements/debugger/performanceTimer.h"
 
 #include <string>
 #include <vector>
@@ -826,9 +828,6 @@ void LoadFile() {
     if (gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2) {
         if (areaTable[RR_ROOT].regionName.empty()) {
             RegionTable_Init();
-        }
-        if (Rando::Context::GetInstance() == nullptr) {
-            Rando::Context::CreateInstance();
         }
         RecalculateAccessibleChecks();
     }
@@ -1765,62 +1764,30 @@ void CalculateAccessibleEntrances(const Region& region,
     }
 }
 
-void _RecalculateAccessibleChecks(std::stop_token stopToken) {
-    logic->IsChild = logic->mSaveContext->linkAge == LinkAge::LINK_AGE_CHILD;
-    logic->IsAdult = logic->mSaveContext->linkAge == LinkAge::LINK_AGE_ADULT;
-    logic->AtDay = true;
-    logic->AtNight = true;
-
-    for (auto& region : areaTable) {
-        for (auto& event : region.events) {
-            if (!event.GetEvent() && event.ConditionsMet()) {
-                event.EventOccurred();
-            }
-        }
-    }
-
-    if (stopToken.stop_requested()) {
-        return;
-    }
-
-    std::vector<RandomizerRegion> visitedRegions;
-    visitedRegions.reserve(70);
-    std::unordered_map<const Rando::Entrance*, bool> entranceAccessible;
-    entranceAccessible.reserve(1450);
-    CalculateAccessibleEntrances(areaTable[RR_ROOT], true, entranceAccessible, visitedRegions, stopToken);
-
-    if (stopToken.stop_requested()) {
-        return;
-    }
-
-    for (auto& region : areaTable) {
-        for (auto& locationInRegion : region.locations) {
-            auto rc = locationInRegion.GetLocation();
-            auto itemLoc = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
-            if (!itemLoc->HasObtained()) {
-                bool regionAccessible = false;
-                for (auto& entranceInRegion : region.entrances) {
-                    if (entranceAccessible[entranceInRegion]) {
-                        regionAccessible = true;
-                        break;
-                    }
-                }
-                bool locationAccessible = locationInRegion.GetConditionsMet();
-                itemLoc->SetAccessible(regionAccessible && locationAccessible);
-            }
-        }
-    }
-}
-
-std::jthread recalculateAccessibleChecksThread;
-
 void RecalculateAccessibleChecks() {
-    if (recalculateAccessibleChecksThread.joinable()) {
-        recalculateAccessibleChecksThread.request_stop();
-        recalculateAccessibleChecksThread.join();
+    StartPerformanceTimer(PT_RECALCULATE_ACCESSIBLE_CHECKS);
+
+    std::vector<RandomizerCheck> targetLocations;
+    targetLocations.reserve(RR_MAX);
+    for (auto& location : Rando::StaticData::GetLocationTable()) {
+        RandomizerCheck rc = location.GetRandomizerCheck();
+        Rando::ItemLocation* itemLocation = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
+        if (!itemLocation->HasObtained()) {
+            targetLocations.emplace_back(rc);
+            itemLocation->SetAccessible(false);
+        }
     }
-    recalculateAccessibleChecksThread = std::jthread(_RecalculateAccessibleChecks);
+
+    std::vector<RandomizerCheck> accessibleChecks = ReachabilitySearch(targetLocations, RG_NONE, true);
+    for (auto& rc : accessibleChecks) {
+        Rando::ItemLocation* itemLocation = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
+        itemLocation->SetAccessible(true);
+    }
+
+    StopPerformanceTimer(PT_RECALCULATE_ACCESSIBLE_CHECKS);
+    SPDLOG_DEBUG("Recalculate Accessible Checks Time: {}ms", GetPerformanceTimer(PT_RECALCULATE_ACCESSIBLE_CHECKS).count());
 }
+
 
 void CheckTrackerWindow::Draw() {
     if (!IsVisible()) {
