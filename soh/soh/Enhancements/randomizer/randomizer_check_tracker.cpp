@@ -826,9 +826,7 @@ void LoadFile() {
     UpdateAllAreas();
 
     if (gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2) {
-        if (areaTable[RR_ROOT].regionName.empty()) {
-            RegionTable_Init();
-        }
+        RegionTable_Init();
         RecalculateAccessibleChecks();
     }
 }
@@ -1726,41 +1724,6 @@ void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, 
         ImGui::SameLine();
         ImGui::Text(" ?");
         UIWidgets::Tooltip(tooltip);
-    }
-}
-
-void CalculateAccessibleEntrances(const Region& region,
-                                  bool isParentAccessible,
-                                  std::unordered_map<const Rando::Entrance*, bool>& entranceAccessible,
-                                  std::vector<RandomizerRegion>& visitedRegions,
-                                  std::stop_token stopToken) {
-    for (const auto& entranceInRegion : region.exits) {
-        if (stopToken.stop_requested()) {
-            return;
-        }
-
-        auto pair = entranceAccessible.find(&entranceInRegion);
-        bool isEntranceAccessible = true;
-        if (pair == entranceAccessible.end()) {
-            isEntranceAccessible = isParentAccessible && entranceInRegion.GetConditionsMet();
-            entranceAccessible[&entranceInRegion] = isEntranceAccessible;
-        } else if (!pair->second) {
-            isEntranceAccessible = isParentAccessible && entranceInRegion.GetConditionsMet();
-            pair->second = isEntranceAccessible;
-        }
-        else {
-            return;
-        }
-
-        if (std::find(visitedRegions.begin(), visitedRegions.end(), entranceInRegion.GetConnectedRegionKey()) == visitedRegions.end()) {
-            visitedRegions.emplace_back(entranceInRegion.GetConnectedRegionKey());
-            CalculateAccessibleEntrances(*entranceInRegion.GetConnectedRegion(),
-                                         isEntranceAccessible,
-                                         entranceAccessible,
-                                         visitedRegions,
-                                         stopToken);
-            visitedRegions.pop_back();
-        }
     }
 }
 

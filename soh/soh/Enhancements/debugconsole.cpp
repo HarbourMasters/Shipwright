@@ -1406,6 +1406,11 @@ static bool SfxHandler(std::shared_ptr<Ship::Console> Console, const std::vector
     return 0;
 }
 
+static bool RecalculateAccessibleChecksHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
+    CheckTracker::RecalculateAccessibleChecks();
+    return 0;
+}
+
 void DebugConsole_Init(void) {
     // Console
     CMD_REGISTER("file_select", {FileSelectHandler, "Returns to the file select."});
@@ -1594,6 +1599,8 @@ void DebugConsole_Init(void) {
             {"reset|randomize", Ship::ArgumentType::TEXT},
             {"group_name", Ship::ArgumentType::TEXT, true},
     }});
+
+    CMD_REGISTER("recalculate_accessible_checks", {RecalculateAccessibleChecksHandler, "Recalculate accessible checks."});
 
     Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 }
