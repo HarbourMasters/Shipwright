@@ -398,7 +398,7 @@ bool AddCheckToLogic(LocationAccess& locPair, GetAccessibleLocationsStruct& gals
   Rando::ItemLocation* location = ctx->GetItemLocation(loc);
   RandomizerGet locItem = location->GetPlacedRandomizerGet();
 
-  if (!location->IsAddedToPool() && locPair.ConditionsMet(parentRegion)) {
+  if (!location->IsAddedToPool() && locPair.ConditionsMet(parentRegion, gals.calculatingAccessibleChecks)) {
     location->AddToPool();
 
     if (gals.calculatingAccessibleChecks) {
