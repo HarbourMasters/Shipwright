@@ -238,7 +238,7 @@ void RandomizerOnFlagSetHandler(int16_t flagType, int16_t flag) {
     if (rc == RC_UNKNOWN_CHECK) return;
 
     auto loc = Rando::Context::GetInstance()->GetItemLocation(rc);
-    if (loc == nullptr || loc->HasObtained()) return;
+    if (loc == nullptr || loc->HasObtained() || loc->GetPlacedRandomizerGet() == RG_NONE) return;
 
     SPDLOG_INFO("Queuing RC: {}", static_cast<uint32_t>(rc));
     randomizerQueuedChecks.push(rc);
@@ -256,7 +256,7 @@ void RandomizerOnSceneFlagSetHandler(int16_t sceneNum, int16_t flagType, int16_t
     if (rc == RC_UNKNOWN_CHECK) return;
 
     auto loc = Rando::Context::GetInstance()->GetItemLocation(rc);
-    if (loc == nullptr || loc->HasObtained()) return;
+    if (loc == nullptr || loc->HasObtained() || loc->GetPlacedRandomizerGet() == RG_NONE) return;
 
     SPDLOG_INFO("Queuing RC: {}", static_cast<uint32_t>(rc));
     randomizerQueuedChecks.push(rc);
@@ -387,6 +387,7 @@ void EnExItem_DrawRandomizedItem(EnExItem* enExItem, PlayState* play) {
     if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
         randoGetItem = GET_ITEM_MYSTERY;
     }
+    func_8002EBCC(&enExItem->actor, play, 0);
     func_8002ED80(&enExItem->actor, play, 0);
     EnItem00_CustomItemsParticles(&enExItem->actor, play, randoGetItem);
     GetItemEntry_Draw(play, randoGetItem);
@@ -418,6 +419,8 @@ void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play) {
         enItem00->actor.params != ITEM00_SOH_GIVE_ITEM_ENTRY) {
         randoItem = GET_ITEM_MYSTERY;
     }
+    func_8002EBCC(&enItem00->actor, play, 0);
+    func_8002ED80(&enItem00->actor, play, 0);
     EnItem00_CustomItemsParticles(&enItem00->actor, play, randoItem);
     GetItemEntry_Draw(play, randoItem);
 }
@@ -427,6 +430,8 @@ void ItemBHeart_DrawRandomizedItem(ItemBHeart* itemBHeart, PlayState* play) {
     if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
         randoItem = GET_ITEM_MYSTERY;
     }
+    func_8002EBCC(&itemBHeart->actor, play, 0);
+    func_8002ED80(&itemBHeart->actor, play, 0);
     EnItem00_CustomItemsParticles(&itemBHeart->actor, play, randoItem);
     GetItemEntry_Draw(play, randoItem);
 }
@@ -814,7 +819,10 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_GIVE_ITEM_FROM_CHEST: {
             EnBox* chest = va_arg(args, EnBox*);
             RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(chest->dyna.actor.id, gPlayState->sceneNum, chest->dyna.actor.params);
-            
+            if (!OTRGlobals::Instance->gRandoContext->IsLocationShuffled(rc)) {
+                break;
+            }
+
             // if this is a treasure chest game chest then set the appropriate rando inf
             RandomizerSetChestGameRandomizerInf(rc);
 
@@ -1481,6 +1489,18 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             }
             break;
         }
+        case VB_HAVE_OCARINA_NOTE_A4: {
+            if (!Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT)) {
+                *should = false;
+            }
+            break;
+        }
+        case VB_HAVE_OCARINA_NOTE_B4: {
+            if (!Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT)) {
+                *should = false;
+            }
+            break;
+        }
         case VB_HAVE_OCARINA_NOTE_D4: {
             if (!Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A)) {
                 *should = false;
@@ -1499,21 +1519,9 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             }
             break;
         }
-        case VB_HAVE_OCARINA_NOTE_B4: {
-            if (!Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT)) {
-                *should = false;
-            }
-            break;
-        }
-        case VB_HAVE_OCARINA_NOTE_A4: {
-            if (!Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT)) {
-                *should = false;
-            }
-            break;
-        }
         case VB_SKIP_SCARECROWS_SONG: {
             int ocarinaButtonCount = 0;
-            for (int i = VB_HAVE_OCARINA_NOTE_D4; i <= VB_HAVE_OCARINA_NOTE_A4; i++) {
+            for (int i = VB_HAVE_OCARINA_NOTE_A4; i <= VB_HAVE_OCARINA_NOTE_F4; i++) {
                 if (GameInteractor_Should((GIVanillaBehavior)i, true)) {
                     ocarinaButtonCount++;
                 }
@@ -1680,9 +1688,6 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_GIVE_ITEM_STRENGTH_1:
         case VB_GIVE_ITEM_ZELDAS_LETTER:
         case VB_GIVE_ITEM_OCARINA_OF_TIME:
-        case VB_GIVE_ITEM_KOKIRI_EMERALD:
-        case VB_GIVE_ITEM_GORON_RUBY:
-        case VB_GIVE_ITEM_ZORA_SAPPHIRE:
         case VB_GIVE_ITEM_LIGHT_MEDALLION:
         case VB_GIVE_ITEM_FOREST_MEDALLION:
         case VB_GIVE_ITEM_FIRE_MEDALLION:

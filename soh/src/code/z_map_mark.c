@@ -3,6 +3,7 @@
 #include "textures/parameter_static/parameter_static.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 
 typedef struct {
     /* 0x00 */ void* texture;
@@ -72,9 +73,9 @@ void MapMark_Init(PlayState* play) {
     }
     //sLoadedMarkDataTable = gMapMarkDataTableVanilla;
     //sLoadedMarkDataTable = (void*)(uintptr_t)(
-        //(overlay->vramTable != NULL)
-            //? (void*)((uintptr_t)overlay->vramTable - ((intptr_t)overlay->vramStart - (intptr_t)overlay->loadedRamAddr))
-            //: NULL);
+    //(overlay->vramTable != NULL)
+    //? (void*)((uintptr_t)overlay->vramTable - ((intptr_t)overlay->vramStart - (intptr_t)overlay->loadedRamAddr))
+    //: NULL);
 }
 
 void MapMark_ClearPointers(PlayState* play) {
@@ -106,7 +107,7 @@ void MapMark_DrawForDungeon(PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     while (true) {
-       if (mapMarkIconData->markType == MAP_MARK_NONE) {
+        if (mapMarkIconData->markType == MAP_MARK_NONE) {
             break;
         }
 
@@ -123,7 +124,7 @@ void MapMark_DrawForDungeon(PlayState* play) {
         s32 X_Margins_Minimap_ic;
         s32 Y_Margins_Minimap_ic;
         if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {
-            if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == 0) {X_Margins_Minimap_ic = Right_MC_Margin;};
+            if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ORIGINAL_LOCATION) {X_Margins_Minimap_ic = Right_MC_Margin;};
             Y_Margins_Minimap_ic = Bottom_MC_Margin;
         } else {
             X_Margins_Minimap_ic = 0;
@@ -148,9 +149,9 @@ void MapMark_DrawForDungeon(PlayState* play) {
                 //Minimap chest / boss icon 
                 const s32 PosX_Minimap_ori = GREG(94) + OTRGetRectDimensionFromRightEdge(markPointX+X_Margins_Minimap_ic) + 204;
                 const s32 PosY_Minimap_ori = GREG(95) + markPoint->y + Y_Margins_Minimap_ic + 140;
-                if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) != 0) {
-                    rectTop = (markPoint->y + Y_Margins_Minimap_ic + 140 + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosY"), 0));
-                    if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == 1) {//Anchor Left
+                if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) != ORIGINAL_LOCATION) {
+                    rectTop = (markPoint->y + Y_Margins_Minimap_ic + 140+CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosY"), 0));
+                    if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_LEFT) { 
                         if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {X_Margins_Minimap_ic = Left_MC_Margin;};
                         if (play->sceneNum == SCENE_DEKU_TREE || play->sceneNum == SCENE_DODONGOS_CAVERN || play->sceneNum == SCENE_JABU_JABU || 
                             play->sceneNum == SCENE_FOREST_TEMPLE || play->sceneNum == SCENE_FIRE_TEMPLE || play->sceneNum == SCENE_WATER_TEMPLE || 
@@ -160,12 +161,12 @@ void MapMark_DrawForDungeon(PlayState* play) {
                         } else {
                             rectLeft = OTRGetRectDimensionFromLeftEdge(markPointX+CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0)+204+X_Margins_Minimap_ic);
                         }
-                    } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == 2) {//Anchor Right
+                    } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_RIGHT) {
                         if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {X_Margins_Minimap_ic = Right_MC_Margin;};
-                        rectLeft = OTRGetRectDimensionFromRightEdge(markPointX+CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0)+204+X_Margins_Minimap_ic);
-                    } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == 3) {//Anchor None
+                        rectLeft = OTRGetRectDimensionFromRightEdge(markPointX+CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) + 204 +X_Margins_Minimap_ic);
+                    } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_NONE) {
                         rectLeft = markPointX+CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0)+204+X_Margins_Minimap_ic;
-                    } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == 4) {//Hidden
+                    } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == HIDDEN) {
                         rectLeft = -9999;
                     }
                 } else {

@@ -105,29 +105,6 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("GoronPot"),
     CVAR_ENHANCEMENT("FullHealthSpawn"),
     CVAR_ENHANCEMENT("DampeWin"),
-    CVAR_ENHANCEMENT("RedPotionEffect"),
-    CVAR_ENHANCEMENT("RedPotionHealth"),
-    CVAR_ENHANCEMENT("RedPercentRestore"),
-    CVAR_ENHANCEMENT("GreenPotionEffect"),
-    CVAR_ENHANCEMENT("GreenPotionMana"),
-    CVAR_ENHANCEMENT("GreenPercentRestore"),
-    CVAR_ENHANCEMENT("BluePotionEffects"),
-    CVAR_ENHANCEMENT("BluePotionHealth"),
-    CVAR_ENHANCEMENT("BlueHealthPercentRestore"),
-    CVAR_ENHANCEMENT("BluePotionMana"),
-    CVAR_ENHANCEMENT("BlueManaPercentRestore"),
-    CVAR_ENHANCEMENT("MilkEffect"),
-    CVAR_ENHANCEMENT("MilkHealth"),
-    CVAR_ENHANCEMENT("MilkPercentRestore"),
-    CVAR_ENHANCEMENT("SeparateHalfMilkEffect"),
-    CVAR_ENHANCEMENT("HalfMilkHealth"),
-    CVAR_ENHANCEMENT("HalfMilkPercentRestore"),
-    CVAR_ENHANCEMENT("FairyEffect"),
-    CVAR_ENHANCEMENT("FairyHealth"),
-    CVAR_ENHANCEMENT("FairyPercentRestore"),
-    CVAR_ENHANCEMENT("FairyReviveEffect"),
-    CVAR_ENHANCEMENT("FairyReviveHealth"),
-    CVAR_ENHANCEMENT("FairyRevivePercentRestore"),
     CVAR_ENHANCEMENT("CustomizeFishing"),
     CVAR_ENHANCEMENT("InstantFishing"),
     CVAR_ENHANCEMENT("GuaranteeFishingBite"),
@@ -153,8 +130,6 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("InstantScarecrow"),
     CVAR_ENHANCEMENT("BlueFireArrows"),
     CVAR_ENHANCEMENT("SunlightArrows"),
-    CVAR_ENHANCEMENT("PauseLiveLinkRotation"),
-    CVAR_ENHANCEMENT("PauseLiveLink"),
     CVAR_ENHANCEMENT("MinFrameCount"),
     CVAR_ENHANCEMENT("NewDrops"),
     CVAR_ENHANCEMENT("DisableBlackBars"),
@@ -182,7 +157,6 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("GSCutscene"),
     CVAR_ENHANCEMENT("RestoreRBAValues"),
     CVAR_ENHANCEMENT("SkipSaveConfirmation"),
-    CVAR_ENHANCEMENT("Autosave"),
     CVAR_ENHANCEMENT("DisableCritWiggle"),
     CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"),
     CVAR_ENHANCEMENT("SkipArrowAnimation"),
@@ -240,7 +214,6 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("SceneSpecificDirtPathFix"),
     CVAR_Z_FIGHTING_MODE,
     CVAR_ENHANCEMENT("AuthenticLogo"),
-    CVAR_ENHANCEMENT("PauseLiveLinkRotationSpeed"),
     CVAR_ENHANCEMENT("BowReticle"),
     CVAR_ENHANCEMENT("BoomerangFirstPerson"),
     CVAR_ENHANCEMENT("BoomerangReticle"),
@@ -592,8 +565,6 @@ const std::vector<PresetEntry> vanillaPlusPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadEquips"), 1),
     // Prevent Dropped Ocarina Inputs
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"), 1),
-    // Right Stick Aiming
-    PRESET_ENTRY_S32(CVAR_SETTING("Controls.RightStickAim"), 1),
 
     // Text Speed (1 to 5)
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TextSpeed"), 5),
@@ -616,9 +587,6 @@ const std::vector<PresetEntry> vanillaPlusPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), 1),
-
-    // Pause link animation (0 to 16)
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("PauseLiveLink"), 1),
 
     // Dynamic Wallet Icon
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DynamicWalletIcon"), 1),
@@ -667,8 +635,6 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadEquips"), 1),
     // Prevent Dropped Ocarina Inputs
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"), 1),
-    // Right Stick Aiming
-    PRESET_ENTRY_S32(CVAR_SETTING("Controls.RightStickAim"), 1),
 
     // Text Speed (1 to 5)
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TextSpeed"), 5),
@@ -691,9 +657,6 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), 1),
-
-    // Pause link animation (0 to 16)
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("PauseLiveLink"), 1),
 
     // Dynamic Wallet Icon
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DynamicWalletIcon"), 1),
@@ -786,7 +749,7 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AnubisFix"), 1),
 
     // Autosave
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_LOCATION_AND_MAJOR_ITEMS),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("Autosave"), 1),
 
     // Bombchu shop doesn't sell out, and 10 bombchus cost 99 instead of 100
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("BetterBombchuShopping"), 1),
@@ -803,8 +766,6 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadEquips"), 1),
     // Prevent Dropped Ocarina Inputs
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"), 1),
-    // Right Stick Aiming
-    PRESET_ENTRY_S32(CVAR_SETTING("Controls.RightStickAim"), 1),
 
     // Text Speed (1 to 5)
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TextSpeed"), 5),
@@ -919,7 +880,7 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AnubisFix"), 1),
 
     // Autosave
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_LOCATION_AND_MAJOR_ITEMS),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("Autosave"), 1),
 
     // Customize Fishing Behaviour
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("CustomizeFishing"), 1),
@@ -951,8 +912,6 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     // Color Temple of Time's Medallions
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("ToTMedallionsColors"), 1),
 
-    // Pause link animation (0 to 16)
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("PauseLiveLink"), 16),
     // Frames to wait
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MinFrameCount"), 200),
 
@@ -1403,7 +1362,7 @@ const std::map<PresetType, PresetTypeDefinition> presetTypes = {
             "Spock Race",
             "Race preset used for the official Ship of Harkinian race on June 3rd 2023. The following settings are notable:\n" \
             "- Rainbow Bridge is set to Greg\n" \
-            "- Ganons Boss Key is 5 dungeon rewards\n" \
+            "- Ganon's Boss Key is 5 dungeon rewards\n" \
             "- Shopsanity and Scrubsanity enabled\n" \
             "- All locations reachable is off\n", \
             spockRacePresetEntries,
@@ -1413,7 +1372,7 @@ const std::map<PresetType, PresetTypeDefinition> presetTypes = {
                 "No Logic Race preset used for official Ship of Harkinian No Logic races. The following settings are "
                 "notable:\n"
                 "- Rainbow Bridge is set to Greg\n"
-                "- Ganons Boss Key is 5 dungeon rewards\n"
+                "- Ganon's Boss Key is 5 dungeon rewards\n"
                 "- Shopsanity and Scrubsanity enabled\n"
                 "- All locations reachable is off\n",
                 spockRaceNoLogicPresetEntries,

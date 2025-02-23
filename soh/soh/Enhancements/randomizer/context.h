@@ -41,11 +41,13 @@ class Context {
     void AddHint(const RandomizerHint hintId, const Hint hint);
     ItemLocation* GetItemLocation(RandomizerCheck locKey);
     ItemLocation* GetItemLocation(size_t locKey);
+    bool IsLocationShuffled(RandomizerCheck locKey);
     ItemOverride& GetItemOverride(RandomizerCheck locKey);
     ItemOverride& GetItemOverride(size_t locKey);
     void PlaceItemInLocation(RandomizerCheck locKey, RandomizerGet item, bool applyEffectImmediately = false,
                              bool setHidden = false);
     std::vector<RandomizerCheck> allLocations;
+    std::vector<RandomizerCheck> overworldLocations;
     void AddLocation(RandomizerCheck loc, std::vector<RandomizerCheck>* destination = nullptr);
     template <typename Container>
     void AddLocations(const Container& locations, std::vector<RandomizerCheck>* destination = nullptr);
