@@ -1439,7 +1439,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     if (prevAltAssets != curAltAssets) {
         prevAltAssets = curAltAssets;
         Ship::Context::GetInstance()->GetResourceManager()->SetAltAssetsEnabled(curAltAssets);
-        GfxPc::GetInstance()->TextureCacheClear();
+        gfx_texture_cache_clear();
         SOH::SkeletonPatcher::UpdateSkeletons();
         GameInteractor::Instance->ExecuteHooks<GameInteractor::OnAssetAltChange>();
     }
@@ -1790,7 +1790,7 @@ extern "C" void OTRControllerCallback(uint8_t rumble) {
 }
 
 extern "C" float OTRGetAspectRatio() {
-    return GfxPc::GetInstance()->mCurDimensions.aspect_ratio;
+    return Ship::Context::GetInstance()->GetWindow()->GetAspectRatio();
 }
 
 extern "C" float OTRGetDimensionFromLeftEdge(float v) {
@@ -1803,12 +1803,14 @@ extern "C" float OTRGetDimensionFromRightEdge(float v) {
 
 // Gets the width of the current render target area
 extern "C" uint32_t OTRGetGameRenderWidth() {
-    return GfxPc::GetInstance()->mCurDimensions.width;
+    return Ship::Context::GetInstance()->GetWindow()->GetWidth();
+    //return GfxPc::GetInstance()->mCurDimensions.width;
 }
 
 // Gets the height of the current render target area
 extern "C" uint32_t OTRGetGameRenderHeight() {
-    return GfxPc::GetInstance()->mCurDimensions.height;
+    return Ship::Context::GetInstance()->GetWindow()->GetHeight();
+   // return GfxPc::GetInstance()->mCurDimensions.height;
 }
 
 f32 floorf(f32 x);// RANDOTODO False positive error "allowing all exceptions is incompatible with previous function"
@@ -2373,11 +2375,19 @@ extern "C" void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex) {
 }
 
 extern "C" void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* replacement) {
-    GfxPc::GetInstance()->RegisterBlendedTexture(name, mask, replacement);
+    dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow())
+        ->GetGfxPcWeak()
+        .lock()
+        ->RegisterBlendedTexture(name, mask, replacement);
+    //GfxPc::GetInstance()->RegisterBlendedTexture(name, mask, replacement);
 }
 
 extern "C" void Gfx_UnregisterBlendedTexture(const char* name) {
-    GfxPc::GetInstance()->UnregisterBlendedTexture(name);
+    dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow())
+        ->GetGfxPcWeak()
+        .lock()
+        ->UnregisterBlendedTexture(name);
+    //GfxPc::GetInstance()->UnregisterBlendedTexture(name);
 }
 
 extern "C" void Gfx_TextureCacheDelete(const uint8_t* texAddr) {
@@ -2390,7 +2400,11 @@ extern "C" void Gfx_TextureCacheDelete(const uint8_t* texAddr) {
     if (ResourceMgr_OTRSigCheck(imgName)) {
         texAddr = (const uint8_t*)ResourceMgr_GetResourceDataByNameHandlingMQ(imgName);
     }
-    GfxPc::GetInstance()->TextureCacheDelete(texAddr);
+    dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow())
+        ->GetGfxPcWeak()
+        .lock()
+        ->TextureCacheDelete(texAddr);
+    //GfxPc::GetInstance()->TextureCacheDelete(texAddr);
 }
 
 void SoH_ProcessDroppedFiles(std::string filePath) {

@@ -4,6 +4,7 @@
 
 #include <soh/UIWidgets.hpp>
 #include <graphic/Fast3D/gfx_pc.h>
+#include <graphic/Fast3D/Fast3dWindow.h>
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
 
@@ -57,10 +58,11 @@ const ImVec4 messageColor[]{
 const float enhancementSpacerHeight = 19.0f;
 
 void AdvancedResolutionSettingsWindow::InitElement() {
+    mGfxPc = dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow())->GetGfxPcWeak();
 }
 
 void AdvancedResolutionSettingsWindow::DrawElement() {
-    GfxPc* gfxPc = GfxPc::GetInstance();
+    GfxPc* gfxPc = mGfxPc.lock().get();
     // Initialise update flags.
     bool update[3];
     for (uint8_t i = 0; i < sizeof(update); i++)
