@@ -203,6 +203,7 @@ void Context::GenerateLocationPool() {
             }
             // If we've gotten past all the conditions where an overworld location should not be
             // shuffled, add it to the pool.
+            AddLocation(location.GetRandomizerCheck(), &overworldLocations);
             AddLocation(location.GetRandomizerCheck());
         } else { // is a dungeon check
             auto* dungeon = GetDungeon(location.GetArea() - RCAREA_DEKU_TREE);

@@ -229,7 +229,7 @@ namespace Rando {
 
                 if (ageSplit && !IsFish(&mCurrPondFish.second) && tableEntry.second != RC_UNKNOWN_CHECK &&
                     (!Flags_GetRandomizerInf(OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(tableEntry.second)) || i == pondCount - 1)) {
-                    mCurrPondFish.second = mCurrPondFish.second = GetPondFish(params, true);
+                    mCurrPondFish.second = GetPondFish(params, true);
                 }
             }
         }
