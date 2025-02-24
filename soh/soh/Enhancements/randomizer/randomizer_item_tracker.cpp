@@ -1424,8 +1424,8 @@ void ItemTrackerSettingsWindow::DrawElement() {
     
     ImGui::NewLine();
     CVarCombobox("Ammo/Capacity Tracking", CVAR_TRACKER_ITEM("ItemCountType"), itemTrackerCapacityTrackOptions, ComboboxOptions()
-            .DefaultIndex(ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY).ComponentAlignment(ComponentAlignment::Right)
-            .LabelPosition(LabelPosition::Far).Color(themeColor)
+            .DefaultIndex(ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY).ComponentAlignment(ComponentAlignment::Left)
+            .LabelPosition(LabelPosition::Above).Color(themeColor)
             .Tooltip("Customize what the numbers under each item are tracking."
                          "\n\nNote: items without capacity upgrades will track ammo even in capacity mode"));
     if (CVarGetInteger(CVAR_TRACKER_ITEM("ItemCountType"), ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY) == ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY || CVarGetInteger(CVAR_TRACKER_ITEM("ItemCountType"), ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY) == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY) {
@@ -1435,13 +1435,13 @@ void ItemTrackerSettingsWindow::DrawElement() {
     }
 
     CVarCombobox("Key Count Tracking", CVAR_TRACKER_ITEM("KeyCounts"), itemTrackerKeyTrackOptions, ComboboxOptions()
-            .DefaultIndex(KEYS_COLLECTED_MAX).ComponentAlignment(ComponentAlignment::Right)
-            .LabelPosition(LabelPosition::Far).Color(themeColor)
+            .DefaultIndex(KEYS_COLLECTED_MAX).ComponentAlignment(ComponentAlignment::Left)
+            .LabelPosition(LabelPosition::Above).Color(themeColor)
             .Tooltip("Customize what numbers are shown for key tracking."));
 
     CVarCombobox("Triforce Piece Count Tracking", CVAR_TRACKER_ITEM("TriforcePieceCounts"), itemTrackerTriforcePieceTrackOptions, ComboboxOptions()
-            .DefaultIndex(TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX).ComponentAlignment(ComponentAlignment::Right)
-            .LabelPosition(LabelPosition::Far).Color(themeColor)
+            .DefaultIndex(TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX).ComponentAlignment(ComponentAlignment::Left)
+            .LabelPosition(LabelPosition::Above).Color(themeColor)
             .Tooltip("Customize what numbers are shown for triforce piece tracking."));
 
     ImGui::TableNextColumn();

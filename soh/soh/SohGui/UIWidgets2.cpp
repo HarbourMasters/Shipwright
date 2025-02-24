@@ -352,6 +352,20 @@ bool StateButton(const char* str_id, const char* label, ImVec2 size, ButtonOptio
     return pressed;
 }
 
+float CalcComboWidth(const char* preview_value, ImGuiComboFlags flags) {
+    ImGuiContext& g = *GImGui;
+
+    const ImGuiStyle& style = g.Style;
+    IM_ASSERT((flags & (ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_NoPreview)) != (ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_NoPreview)); // Can't use both flags together
+    if (flags & ImGuiComboFlags_WidthFitPreview)
+        IM_ASSERT((flags & (ImGuiComboFlags_NoPreview | (ImGuiComboFlags)ImGuiComboFlags_CustomPreview)) == 0);
+
+    const float arrow_size = (flags & ImGuiComboFlags_NoArrowButton) ? 0.0f : ImGui::GetFrameHeight();
+    const float preview_width = ImGui::CalcTextSize(preview_value, NULL, true).x;
+    float w = arrow_size + preview_width + (style.FramePadding.x * 2.0f);
+    return w;
+}
+
 void PushStyleCombobox(const ImVec4& color) {
     ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(color.x, color.y, color.z, 0.8f));
     ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(color.x, color.y, color.z, 0.6f));
