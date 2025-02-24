@@ -2,6 +2,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
 #include "soh/SohGui/SohMenu.h"
+#include "soh/SohGui/SohGui.hpp"
 
 #include <map>
 #include <string>
@@ -38,6 +39,9 @@ static const EntranceOverride emptyOverride = {0};
 static s16 lastEntranceIndex = -1;
 static s16 currentGrottoId = -1;
 static s16 lastSceneOrEntranceDetected = -1;
+namespace SohGui {
+extern std::shared_ptr<SohGui::SohMenu> mSohMenu;
+}
 
 static std::string spoilerEntranceGroupNames[] = {
     "Spawns/Warp Songs/Owls",
@@ -739,24 +743,26 @@ void EntranceTrackerWindow::DrawElement() {
     static ImGuiTextFilter locationSearch;
 
     uint8_t nextTreeState = 0;
-    if (ImGui::Button("Collapse All")) {
+    if (UIWidgets2::Button("Collapse All", UIWidgets2::ButtonOptions({{ .tooltip = "Collapse all entrance groups" }})
+        .Color(SohGui::mSohMenu->GetMenuThemeColor()).Size(UIWidgets2::Sizes::Inline))) {
         nextTreeState = 1;
     }
-    UIWidgets::Tooltip("Collapse all entrance groups");
     ImGui::SameLine();
-    if (ImGui::Button("Expand All")) {
+    if (UIWidgets2::Button("Expand All", UIWidgets2::ButtonOptions({{ .tooltip = "Expand all entrance groups" }})
+        .Color(SohGui::mSohMenu->GetMenuThemeColor()).Size(UIWidgets2::Sizes::Inline))) {
         nextTreeState = 2;
     }
-    UIWidgets::Tooltip("Expand all entrance groups");
     ImGui::SameLine();
-    if (ImGui::Button("Clear")) {
+    if (UIWidgets2::Button("Clear", UIWidgets2::ButtonOptions({{ .tooltip = "Clear the search field" }})
+        .Color(SohGui::mSohMenu->GetMenuThemeColor()).Size(UIWidgets2::Sizes::Inline))) {
         locationSearch.Clear();
     }
-    UIWidgets::Tooltip("Clear the search field");
 
+    UIWidgets2::PushStyleCombobox(SohGui::mSohMenu->GetMenuThemeColor());
     if (locationSearch.Draw()) {
         nextTreeState = 2;
     }
+    UIWidgets2::PopStyleCombobox();
 
     uint8_t destToggle = CVarGetInteger(CVAR_TRACKER_ENTRANCE("SortBy"), 0);
     uint8_t groupToggle = CVarGetInteger(CVAR_TRACKER_ENTRANCE("GroupBy"), 0);
