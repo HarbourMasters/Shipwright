@@ -62,6 +62,8 @@ namespace SohGui {
     extern std::shared_ptr<SohGui::SohMenu> mSohMenu;
 }
 
+#define IMAGE_SIZE 48.0f
+
 UIWidgets2::Colors themeIndex;
 ImVec4 themeColor;
 UIWidgets2::IntSliderOptions intSliderOptionsBase;
@@ -409,7 +411,7 @@ void DrawInfoTab() {
 
 void DrawBGSItemFlag(uint8_t itemID) {
     const ItemMapEntry& slotEntry = itemMapping[itemID];
-    ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1));
+    ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name), ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
     ImGui::SameLine();
     int tradeIndex = itemID - ITEM_POCKET_EGG;
     bool hasItem = (gSaveContext.ship.quest.data.randomizer.adultTradeItems & (1 << tradeIndex)) != 0;
@@ -453,14 +455,14 @@ void DrawInventoryTab() {
                 const ItemMapEntry& slotEntry = itemMapping.find(item)->second;
                 ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
                 auto ret = ImGui::ImageButton(slotEntry.name.c_str(), Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name),
-                                              ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1));
+                                              ImVec2(48.0f, 48.0f), ImVec2(0, 0), ImVec2(1, 1));
                 ImGui::PopStyleVar();
                 if (ret) {
                     selectedIndex = index;
                     ImGui::OpenPopup(itemPopupPicker);
                 }
             } else {
-                if (ImGui::Button("##itemNone", ImVec2(32.0f, 32.0f))) {
+                if (ImGui::Button("##itemNone", ImVec2(IMAGE_SIZE, IMAGE_SIZE))) {
                     selectedIndex = index;
                     ImGui::OpenPopup(itemPopupPicker);
                 }
@@ -470,7 +472,7 @@ void DrawInventoryTab() {
 
             ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
             if (ImGui::BeginPopup(itemPopupPicker)) {
-                if (ImGui::Button("##itemNonePicker", ImVec2(32.0f, 32.0f))) {
+                if (ImGui::Button("##itemNonePicker", ImVec2(IMAGE_SIZE, IMAGE_SIZE))) {
                     gSaveContext.inventory.items[selectedIndex] = ITEM_NONE;
                     if (selectedIndex == SLOT_TRADE_ADULT) {
                         gSaveContext.ship.quest.data.randomizer.adultTradeItems = 0;
@@ -504,7 +506,7 @@ void DrawInventoryTab() {
                     const ItemMapEntry& slotEntry = possibleItems[pickerIndex];
                     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
                     auto ret = ImGui::ImageButton(slotEntry.name.c_str(), Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name),
-                                                  ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1));
+                                                  ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
                     ImGui::PopStyleVar();
                     if (ret) {
                         gSaveContext.inventory.items[selectedIndex] = slotEntry.id;
@@ -540,10 +542,10 @@ void DrawInventoryTab() {
             drawnAmmoItems++;
 
             ImGui::PushID(ammoIndex);
-            ImGui::PushItemWidth(32.0f);
+            ImGui::PushItemWidth(IMAGE_SIZE);
             ImGui::BeginGroup();
 
-            ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(itemMapping[item].name), ImVec2(32.0f, 32.0f));
+            ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(itemMapping[item].name), ImVec2(IMAGE_SIZE, IMAGE_SIZE));
             ImGui::InputScalar("##ammoInput", ImGuiDataType_S8, &AMMO(item));
 
             ImGui::EndGroup();
@@ -990,13 +992,13 @@ void DrawUpgradeIcon(const std::string& categoryName, int32_t categoryId, const 
         const ItemMapEntry& slotEntry = itemMapping[item];
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
         auto ret = ImGui::ImageButton(slotEntry.name.c_str(), Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name),
-                                      ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1));
+                                      ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
         ImGui::PopStyleVar();
         if (ret) {
             ImGui::OpenPopup(upgradePopupPicker);
         }
     } else {
-        if (ImGui::Button("##itemNone", ImVec2(32.0f, 32.0f))) {
+        if (ImGui::Button("##itemNone", ImVec2(IMAGE_SIZE, IMAGE_SIZE))) {
             ImGui::OpenPopup(upgradePopupPicker);
         }
     }
@@ -1012,7 +1014,7 @@ void DrawUpgradeIcon(const std::string& categoryName, int32_t categoryId, const 
             }
 
             if (items[pickerIndex] == ITEM_NONE) {
-                if (ImGui::Button("##upgradePopupPicker", ImVec2(32.0f, 32.0f))) {
+                if (ImGui::Button("##upgradePopupPicker", ImVec2(IMAGE_SIZE, IMAGE_SIZE))) {
                     Inventory_ChangeUpgrade(categoryId, pickerIndex);
                     ImGui::CloseCurrentPopup();
                 }
@@ -1021,7 +1023,7 @@ void DrawUpgradeIcon(const std::string& categoryName, int32_t categoryId, const 
                 const ItemMapEntry& slotEntry = itemMapping[items[pickerIndex]];
                 ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
                 auto ret = ImGui::ImageButton(slotEntry.name.c_str(), Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name),
-                                              ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1));
+                                              ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
                 ImGui::PopStyleVar();
                 if (ret) {
                     Inventory_ChangeUpgrade(categoryId, pickerIndex);
@@ -1061,7 +1063,7 @@ void DrawEquipmentTab() {
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
         auto ret = ImGui::ImageButton(entry.name.c_str(), Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasEquip ? entry.name : entry.nameFaded),
-                                      ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1)); 
+                                      ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1)); 
         ImGui::PopStyleVar();
         if (ret) {
             if (hasEquip) {
@@ -1163,7 +1165,7 @@ void DrawQuestItemButton(uint32_t item) {
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
     auto ret = ImGui::ImageButton(entry.name.c_str(), Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasQuestItem ? entry.name : entry.nameFaded),
-                                  ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1)); 
+                                  ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1)); 
     ImGui::PopStyleVar();
     if (ret) {
         if (hasQuestItem) {
@@ -1184,7 +1186,7 @@ void DrawDungeonItemButton(uint32_t item, uint32_t scene) {
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
     auto ret = ImGui::ImageButton(entry.name.c_str(), Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasItem ? entry.name : entry.nameFaded),
-                                  ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1));
+                                  ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
     ImGui::PopStyleVar();
     if (ret) {
         if (hasItem) {
@@ -1234,7 +1236,7 @@ void DrawQuestStatusTab() {
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
         auto ret = ImGui::ImageButton(entry.name.c_str(), Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasQuestItem ? entry.name : entry.nameFaded),
-                                      ImVec2(16.0f, 24.0f), ImVec2(0, 0), ImVec2(1, 1));
+                                      ImVec2(32.0f, 48.0f), ImVec2(0, 0), ImVec2(1, 1));
         ImGui::PopStyleVar();
         if (ret) {
             if (hasQuestItem) {
