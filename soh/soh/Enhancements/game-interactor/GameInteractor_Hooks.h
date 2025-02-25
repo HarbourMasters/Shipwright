@@ -79,6 +79,9 @@ void GameInteractor_RegisterOnAssetAltChange(void (*fn)(void));
 //Mark: - Pause Menu
 void GameInteractor_ExecuteOnKaleidoUpdate();
 
+// MARK: - Messages
+void GameInteractor_ExecuteOnOpenText(uint16_t* textId, bool* loadFromMessageTable);
+
 #ifdef __cplusplus
 }
 #endif
