@@ -4,7 +4,6 @@
 #include "textures/do_action_static/do_action_static.h"
 #include "textures/icon_item_static/icon_item_static.h"
 #include "soh_assets.h"
-#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
 #include "libultraship/bridge.h"
@@ -2442,12 +2441,21 @@ u8 Item_Give(PlayState* play, u8 item) {
         }
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item >= ITEM_WEIRD_EGG) && (item <= ITEM_CLAIM_CHECK)) {
-        if ((item == ITEM_SAW) && CVarGetInteger(CVAR_ENHANCEMENT("DekuNutUpgradeFix"), 0) == 0) {
+        if (GameInteractor_Should(VB_POACHERS_SAW_SET_DEKU_NUT_UPGRADE_FLAG, item == ITEM_SAW)) {
             Flags_SetItemGetInf(ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE);
         }
 
-        if (item >= ITEM_POCKET_EGG) {
-            gSaveContext.ship.quest.data.randomizer.adultTradeItems |= ADULT_TRADE_FLAG(item);
+        if (IS_RANDO) {
+            if (item >= ITEM_POCKET_EGG) {
+                Flags_SetRandomizerInf(item - ITEM_POCKET_EGG + RAND_INF_ADULT_TRADES_HAS_POCKET_EGG);
+            } else if (item == ITEM_LETTER_ZELDA) {
+                //don't care about zelda's letter if it's already been shown to the guard
+                if (!Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD)) {
+                    Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_LETTER_ZELDA);
+                }
+            } else {
+                Flags_SetRandomizerInf(item - ITEM_WEIRD_EGG + RAND_INF_CHILD_TRADES_HAS_WEIRD_EGG);
+            }
         }
 
         temp = INV_CONTENT(item);
@@ -2759,12 +2767,12 @@ bool Inventory_HatchPocketCucco(PlayState* play) {
         return Inventory_ReplaceItem(play, ITEM_POCKET_EGG, ITEM_POCKET_CUCCO);
     }
 
-    if (!PLAYER_HAS_SHUFFLED_ADULT_TRADE_ITEM(ITEM_POCKET_EGG)) {
+    if (!Flags_GetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_POCKET_EGG)) {
         return 0;
     }
 
-    gSaveContext.ship.quest.data.randomizer.adultTradeItems &= ~ADULT_TRADE_FLAG(ITEM_POCKET_EGG);
-    gSaveContext.ship.quest.data.randomizer.adultTradeItems |= ADULT_TRADE_FLAG(ITEM_POCKET_CUCCO);
+    Flags_UnsetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_POCKET_EGG);
+    Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_POCKET_CUCCO);
     Inventory_ReplaceItem(play, ITEM_POCKET_EGG, ITEM_POCKET_CUCCO);
     return 1;
 }
@@ -3215,7 +3223,7 @@ void Interface_UpdateMagicBar(PlayState* play) {
         case MAGIC_STATE_FILL:
             gSaveContext.magic += 4;
 
-            if (gSaveContext.gameMode == 0 && gSaveContext.sceneSetupIndex < 4) {
+            if (gSaveContext.gameMode == GAMEMODE_NORMAL && gSaveContext.sceneSetupIndex < 4) {
                 Audio_PlaySoundGeneral(NA_SE_SY_GAUGE_UP - SFX_FLAG, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
                                        &gSfxDefaultReverb);
             }

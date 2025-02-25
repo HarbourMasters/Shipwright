@@ -21,12 +21,11 @@ extern "C" {
 #include "macros.h"
 #include "functions.h"
 #include "variables.h"
-#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
+#include "soh/Enhancements/randomizer/ShuffleTradeItems.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "src/overlays/actors/ovl_Bg_Treemouth/z_bg_treemouth.h"
 #include "src/overlays/actors/ovl_En_Si/z_en_si.h"
-#include "src/overlays/actors/ovl_En_Cow/z_en_cow.h"
 #include "src/overlays/actors/ovl_En_Shopnuts/z_en_shopnuts.h"
 #include "src/overlays/actors/ovl_En_Dns/z_en_dns.h"
 #include "src/overlays/actors/ovl_En_Gb/z_en_gb.h"
@@ -56,7 +55,6 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
 #include "src/overlays/actors/ovl_Fishing/z_fishing.h"
 #include "src/overlays/actors/ovl_En_Mk/z_en_mk.h"
-#include "adult_trade_shuffle.h"
 #include "draw.h"
 
 extern SaveContext gSaveContext;
@@ -220,12 +218,19 @@ void RandomizerOnFlagSetHandler(int16_t flagType, int16_t flag) {
     if (RAND_GET_OPTION(RSK_SHUFFLE_ADULT_TRADE) && flagType == FLAG_RANDOMIZER_INF) {
         switch (flag) {
             case RAND_INF_ADULT_TRADES_DMT_TRADE_BROKEN_SWORD:
-                Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_SWORD_BROKEN);
+                Flags_UnsetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_SWORD_BROKEN);
+                Inventory_ReplaceItem(gPlayState, ITEM_SWORD_BROKEN, Randomizer_GetNextAdultTradeItem());
                 break;
             case RAND_INF_ADULT_TRADES_DMT_TRADE_EYEDROPS:
-                Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_EYEDROPS);
+                Flags_UnsetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_EYEDROPS);
+                Inventory_ReplaceItem(gPlayState, ITEM_EYEDROPS, Randomizer_GetNextAdultTradeItem());
                 break;
         }
+    }
+
+    if (flagType == FLAG_EVENT_CHECK_INF && flag == EVENTCHKINF_TALON_WOKEN_IN_CASTLE) {
+        //remove chicken as this is the only use for it
+        Flags_UnsetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_CHICKEN);
     }
 
     RandomizerCheck rc = GetRandomizerCheckFromFlag(flagType, flag);
@@ -509,33 +514,6 @@ void ItemEtcetera_UpdateRandomizedFireArrow(ItemEtcetera* itemEtcetera, PlayStat
         itemEtcetera->actor.gravity = -0.1f;
         itemEtcetera->actor.minVelocityY = -4.0f;
         itemEtcetera->actionFunc = ItemEtcetera_MoveRandomizedFireArrowDown;
-    }
-}
-
-void EnCow_MoveForRandomizer(EnCow* enCow, PlayState* play) {
-    bool moved = false;
-
-    // Don't reposition the tail
-    if (enCow->actor.params != 0) {
-        return;
-    }
-
-    // Move left cow in lon lon tower
-    if (play->sceneNum == SCENE_LON_LON_BUILDINGS && enCow->actor.world.pos.x == -108 &&
-        enCow->actor.world.pos.z == -65) {
-        enCow->actor.world.pos.x = -229.0f;
-        enCow->actor.world.pos.z = 157.0f;
-        enCow->actor.shape.rot.y = 15783.0f;
-        moved = true;
-        // Move right cow in lon lon stable
-    } else if (play->sceneNum == SCENE_STABLE && enCow->actor.world.pos.x == -3 && enCow->actor.world.pos.z == -254) {
-        enCow->actor.world.pos.x += 119.0f;
-        moved = true;
-    }
-
-    if (moved) {
-        // Reposition collider
-        func_809DEE9C(enCow);
     }
 }
 
@@ -1060,23 +1038,6 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             *should = !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_SARIAS_SONG);
             break;
         }
-        case VB_GIVE_ITEM_FROM_COW: {
-            if (!RAND_GET_OPTION(RSK_SHUFFLE_COWS)) {
-                break;
-            }
-            EnCow* enCow = va_arg(args, EnCow*);
-            CowIdentity cowIdentity = OTRGlobals::Instance->gRandomizer->IdentifyCow(gPlayState->sceneNum, enCow->actor.world.pos.x, enCow->actor.world.pos.z);
-            // Has this cow already rewarded an item?
-            if (Flags_GetRandomizerInf(cowIdentity.randomizerInf)) {
-                break;
-            }
-            Flags_SetRandomizerInf(cowIdentity.randomizerInf);
-            // setting the ocarina mode here prevents intermittent issues
-            // with the item get not triggering until walking away
-            gPlayState->msgCtx.ocarinaMode = OCARINA_MODE_00;
-            *should = false;
-            break;
-        }
         case VB_GIVE_ITEM_FROM_GRANNYS_SHOP: {
             if (!EnDs_RandoCanGetGrannyItem()) {
                 break;
@@ -1178,7 +1139,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             EnFr* enFr = va_arg(args, EnFr*);
 
             if (
-                (enFr->songIndex >= FROG_STORMS && enFr->reward == GI_HEART_PIECE) || 
+                (enFr->songIndex >= FROG_STORMS && enFr->reward == GI_HEART_PIECE) ||
                 (enFr->songIndex < FROG_STORMS && enFr->reward == GI_RUPEE_PURPLE)
             ) {
                 *should = true;
@@ -1187,7 +1148,8 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         }
         case VB_TRADE_POCKET_CUCCO: {
             EnNiwLady* enNiwLady = va_arg(args, EnNiwLady*);
-            Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_POCKET_CUCCO);
+            Flags_UnsetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_POCKET_CUCCO);
+            Inventory_ReplaceItem(gPlayState, ITEM_POCKET_CUCCO, Randomizer_GetNextAdultTradeItem());
             // Trigger the reward now
             Flags_SetItemGetInf(ITEMGETINF_2E);
             enNiwLady->actionFunc = func_80ABA778;
@@ -1196,13 +1158,15 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_TRADE_COJIRO: {
-            Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_COJIRO);
+            Flags_UnsetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_COJIRO);
+            Inventory_ReplaceItem(gPlayState, ITEM_COJIRO, Randomizer_GetNextAdultTradeItem());
             *should = false;
             break;
         }
         case VB_TRADE_ODD_MUSHROOM: {
             EnDs* granny = va_arg(args, EnDs*);
-            Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_ODD_MUSHROOM);
+            Flags_UnsetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_ODD_MUSHROOM);
+            Inventory_ReplaceItem(gPlayState, ITEM_ODD_MUSHROOM, Randomizer_GetNextAdultTradeItem());
             // Trigger the reward now
             Flags_SetItemGetInf(ITEMGETINF_30);
             granny->actor.textId = 0x504F;
@@ -1213,14 +1177,16 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         }
         case VB_TRADE_ODD_POTION: {
             EnKo* enKo = va_arg(args, EnKo*);
-            Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_ODD_POTION);
+            Flags_UnsetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_ODD_POTION);
+            Inventory_ReplaceItem(gPlayState, ITEM_ODD_POTION, Randomizer_GetNextAdultTradeItem());
             // Trigger the reward now
             Flags_SetItemGetInf(ITEMGETINF_31);
             *should = false;
             break;
         }
         case VB_TRADE_SAW: {
-            Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_SAW);
+            Flags_UnsetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_SAW);
+            Inventory_ReplaceItem(gPlayState, ITEM_SAW, Randomizer_GetNextAdultTradeItem());
             *should = false;
             break;
         }
@@ -1237,14 +1203,16 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                 if (func_8002F368(gPlayState) == EXCH_ITEM_PRESCRIPTION ||
                     (hasShieldHoldingR && INV_CONTENT(ITEM_TRADE_ADULT) < ITEM_FROG)) {
                     Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_ZD_TRADE_PRESCRIPTION);
-                    Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_PRESCRIPTION);
+                    Flags_UnsetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_PRESCRIPTION);
+                    Inventory_ReplaceItem(gPlayState, ITEM_PRESCRIPTION, Randomizer_GetNextAdultTradeItem());
                 } else {
                     Flags_SetRandomizerInf(RAND_INF_KING_ZORA_THAWED);
                 }
             } else {
-                if (enKz->isTrading){ 
+                if (enKz->isTrading) {
                     Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_ZD_TRADE_PRESCRIPTION);
-                    Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_PRESCRIPTION);
+                    Flags_UnsetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_PRESCRIPTION);
+                    Inventory_ReplaceItem(gPlayState, ITEM_PRESCRIPTION, Randomizer_GetNextAdultTradeItem());
                 } else {
                     Flags_SetRandomizerInf(RAND_INF_KING_ZORA_THAWED);
                 }
@@ -1253,17 +1221,9 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_TRADE_FROG: {
-            Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_FROG);
+            Flags_UnsetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_FROG);
+            Inventory_ReplaceItem(gPlayState, ITEM_FROG, Randomizer_GetNextAdultTradeItem());
             *should = false;
-            break;
-        }
-        case VB_DESPAWN_HORSE_RACE_COW: {
-            if (!RAND_GET_OPTION(RSK_SHUFFLE_COWS)) {
-                break;
-            }
-            EnCow* enCow = va_arg(args, EnCow*);
-            // If this is a cow we have to move, then move it now.
-            EnCow_MoveForRandomizer(enCow, gPlayState);
             break;
         }
         case VB_BUSINESS_SCRUB_DESPAWN: {
@@ -1290,9 +1250,9 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             if (!RAND_GET_OPTION(RSK_SHUFFLE_ADULT_TRADE)) {
                 break;
             }
-            if (PLAYER_HAS_SHUFFLED_ADULT_TRADE_ITEM(ITEM_COJIRO)) {
+            if (Flags_GetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_COJIRO)) {
                 *should = false;
-            } else if (PLAYER_HAS_SHUFFLED_ADULT_TRADE_ITEM(ITEM_ODD_POTION)) {
+            } else if (Flags_GetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_ODD_POTION)) {
                 *should = true;
             } else {
                 *should = Flags_GetItemGetInf(ITEMGETINF_30); // Traded odd mushroom
@@ -1304,10 +1264,10 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                 break;
             }
 
-            if (PLAYER_HAS_SHUFFLED_ADULT_TRADE_ITEM(ITEM_COJIRO)) {
+            if (Flags_GetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_COJIRO)) {
                 *should = false;
             } else {
-                *should = PLAYER_HAS_SHUFFLED_ADULT_TRADE_ITEM(ITEM_ODD_POTION);
+                *should = Flags_GetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_ODD_POTION);
             }
 
             break;
@@ -1649,6 +1609,13 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             }
             break;
         }
+        case VB_HEISHI2_ACCEPT_ITEM_AS_ZELDAS_LETTER: {
+            if (*should) {
+                //remove zelda's letter as this is the only use for it
+                Flags_UnsetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_LETTER_ZELDA);
+            }
+            break;
+        }
         case VB_FREEZE_ON_SKULL_TOKEN:
         case VB_TRADE_TIMER_ODD_MUSHROOM:
         case VB_TRADE_TIMER_FROG:
@@ -1667,9 +1634,6 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_GIVE_ITEM_STRENGTH_1:
         case VB_GIVE_ITEM_ZELDAS_LETTER:
         case VB_GIVE_ITEM_OCARINA_OF_TIME:
-        case VB_GIVE_ITEM_KOKIRI_EMERALD:
-        case VB_GIVE_ITEM_GORON_RUBY:
-        case VB_GIVE_ITEM_ZORA_SAPPHIRE:
         case VB_GIVE_ITEM_LIGHT_MEDALLION:
         case VB_GIVE_ITEM_FOREST_MEDALLION:
         case VB_GIVE_ITEM_FIRE_MEDALLION:
@@ -2350,6 +2314,13 @@ void RandomizerOnKaleidoscopeUpdateHandler(int16_t inDungeonScene) {
     prevKaleidoState = gPlayState->pauseCtx.state;
 }
 
+void RandomizerOnCuccoOrChickenHatch() {
+    if (LINK_IS_CHILD) {
+        Flags_UnsetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_WEIRD_EGG);
+        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_CHICKEN);
+    }
+}
+
 void RandomizerRegisterHooks() {
     static uint32_t onFlagSetHook = 0;
     static uint32_t onSceneFlagSetHook = 0;
@@ -2367,6 +2338,7 @@ void RandomizerRegisterHooks() {
     static uint32_t onPlayDestroyHook = 0;
     static uint32_t onExitGameHook = 0;
     static uint32_t onKaleidoUpdateHook = 0;
+    static uint32_t onCuccoOrChickenHatchHook = 0;
 
     static uint32_t fishsanityOnActorInitHook = 0;
     static uint32_t fishsanityOnActorUpdateHook = 0;
@@ -2402,6 +2374,7 @@ void RandomizerRegisterHooks() {
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnPlayDestroy>(onPlayDestroyHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnExitGame>(onExitGameHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnKaleidoscopeUpdate>(onKaleidoUpdateHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnCuccoOrChickenHatch>(onCuccoOrChickenHatchHook);
 
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(fishsanityOnActorInitHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(fishsanityOnActorUpdateHook);
@@ -2430,6 +2403,7 @@ void RandomizerRegisterHooks() {
         onPlayDestroyHook = 0;
         onExitGameHook = 0;
         onKaleidoUpdateHook = 0;
+        onCuccoOrChickenHatchHook = 0;
 
         fishsanityOnActorInitHook = 0;
         fishsanityOnActorUpdateHook = 0;
@@ -2471,6 +2445,7 @@ void RandomizerRegisterHooks() {
         onPlayDestroyHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayDestroy>(RandomizerOnPlayDestroyHandler);
         onExitGameHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnExitGame>(RandomizerOnExitGameHandler);
         onKaleidoUpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnKaleidoscopeUpdate>(RandomizerOnKaleidoscopeUpdateHandler);
+        onCuccoOrChickenHatchHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnCuccoOrChickenHatch>(RandomizerOnCuccoOrChickenHatch);
 
         if (RAND_GET_OPTION(RSK_FISHSANITY) != RO_FISHSANITY_OFF) {
             OTRGlobals::Instance->gRandoContext->GetFishsanity()->InitializeFromSave();
