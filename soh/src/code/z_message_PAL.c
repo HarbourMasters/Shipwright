@@ -2713,6 +2713,9 @@ void Message_OpenText(PlayState* play, u16 textId) {
     Font* font = &msgCtx->font;
     s16 textBoxType;
 
+    bool loadFromMessageTable = false;
+    GameInteractor_ExecuteOnOpenText(&textId, &loadFromMessageTable);
+
     sDisplayNextMessageAsEnglish = false;
 
     if (msgCtx->msgMode == MSGMODE_NONE) {
@@ -2783,7 +2786,7 @@ void Message_OpenText(PlayState* play, u16 textId) {
     }
 
     // RANDOTODO: Use this for ice trap messages
-    if (CustomMessage_RetrieveIfExists(play)) {
+    if (!loadFromMessageTable) {
         osSyncPrintf("Found custom message");
         if (gSaveContext.language == LANGUAGE_JPN) {
             sDisplayNextMessageAsEnglish = true;
