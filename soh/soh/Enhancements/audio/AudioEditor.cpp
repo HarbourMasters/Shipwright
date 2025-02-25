@@ -618,7 +618,7 @@ void AudioEditor::DrawElement() {
                 {SEQ_SFX, true },                                     
                 {SEQ_VOICE, true },
                 {SEQ_INSTRUMENT, true},
-                {SEQ_BGM_CUSTOM, true}
+                {SEQ_BGM_CUSTOM, true},
             };
 
             // make temporary sets because removing from the set we're iterating through crashes ImGui
@@ -772,7 +772,7 @@ void AudioEditor::DrawElement() {
     UIWidgets::PopStyleTabs();
 }
 
-std::vector<SeqType> allTypes = { SEQ_BGM_WORLD, SEQ_BGM_EVENT, SEQ_BGM_BATTLE, SEQ_OCARINA, SEQ_FANFARE, SEQ_INSTRUMENT, SEQ_SFX, SEQ_VOICE };
+std::vector<SeqType> allTypes = { SEQ_BGM_WORLD, SEQ_BGM_EVENT, SEQ_BGM_BATTLE, SEQ_OCARINA, SEQ_FANFARE, SEQ_INSTRUMENT, SEQ_SFX, SEQ_VOICE, };
 
 void AudioEditor_RandomizeAll() {
     for (auto type : allTypes) {

@@ -5,6 +5,7 @@
 using namespace Rando;
 
 void RegionTable_Init_DekuTree() {
+    // clang-format off
     // Vanilla/MQ Decider
     areaTable[RR_DEKU_TREE_ENTRYWAY] = Region("Deku Tree Entryway", "Deku Tree", {RA_DEKU_TREE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
@@ -360,4 +361,6 @@ void RegionTable_Init_DekuTree() {
         Entrance(RR_DEKU_TREE_BOSS_ENTRYWAY, []{return true;}),
         Entrance(RR_KF_OUTSIDE_DEKU_TREE,    []{return logic->DekuTreeClear;}, false),
     });
+
+    // clang-format on
 }

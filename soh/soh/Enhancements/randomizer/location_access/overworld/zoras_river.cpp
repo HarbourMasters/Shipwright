@@ -4,6 +4,7 @@
 using namespace Rando;
 
 void RegionTable_Init_ZoraRiver() {
+    // clang-format off
     areaTable[RR_ZR_FRONT] = Region("ZR Front", "Zora River", {RA_ZORAS_RIVER}, DAY_NIGHT_CYCLE, {}, {
         //Locations
         LOCATION(RC_ZR_GS_TREE, logic->IsChild && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_CLOSE)),
@@ -104,4 +105,6 @@ void RegionTable_Init_ZoraRiver() {
         //Exits
         Entrance(RR_ZORAS_RIVER, []{return true;}),
     });
+
+    // clang-format on
 }

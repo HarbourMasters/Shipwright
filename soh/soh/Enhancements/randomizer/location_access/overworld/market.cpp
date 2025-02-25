@@ -4,6 +4,7 @@
 using namespace Rando;
 
 void RegionTable_Init_Market() {
+    // clang-format off
     areaTable[RR_MARKET_ENTRANCE] = Region("Market Entrance", "Market Entrance", {RA_THE_MARKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_HYRULE_FIELD,       []{return logic->IsAdult || logic->AtDay;}),
@@ -214,4 +215,6 @@ void RegionTable_Init_Market() {
         //Exits
         Entrance(RR_MARKET_BACK_ALLEY, []{return true;}),
     });
+
+    // clang-format on
 }

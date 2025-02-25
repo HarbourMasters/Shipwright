@@ -5,6 +5,7 @@
 using namespace Rando;
 
 void RegionTable_Init_WaterTemple() {
+    // clang-format off
     // Vanilla/MQ Decider
     areaTable[RR_WATER_TEMPLE_ENTRYWAY] = Region("Water Temple Entryway", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
@@ -735,4 +736,6 @@ void RegionTable_Init_WaterTemple() {
         Entrance(RR_WATER_TEMPLE_BOSS_ENTRYWAY, []{return false;}),
         Entrance(RR_LAKE_HYLIA,                 []{return logic->WaterTempleClear;}, false),
     });
+
+    // clang-format on
 }

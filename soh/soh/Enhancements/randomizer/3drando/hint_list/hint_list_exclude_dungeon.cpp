@@ -4,10 +4,12 @@
 
 namespace Rando {
 void StaticData::HintTable_Init_Exclude_Dungeon() {
-  /*--------------------------
-  |        DEKU TREE         |
-  ---------------------------*/
-   hintTextTable[RHT_DEKU_TREE_MAP_CHEST] = HintText(CustomMessage("They say that in the #center of the Deku Tree# lies #[[1]]#.",
+    // clang-format off
+
+    /*--------------------------
+    |        DEKU TREE         |
+    ---------------------------*/
+    hintTextTable[RHT_DEKU_TREE_MAP_CHEST] = HintText(CustomMessage("They say that in the #center of the Deku Tree# lies #[[1]]#.",
                                                          /*german*/ "Man erzählt sich, daß im #Zentrum des Deku-Baums# #[[1]]# läge.",
                                                          /*french*/ "Selon moi, #le centre de l'Arbre Mojo# recèle #[[1]]#.", {QM_RED, QM_GREEN}));
                                                       // /*spanish*/ Según dicen, al #centro del Gran Árbol Deku# yace #[[1]]#.
@@ -2173,5 +2175,6 @@ hintTextTable[RHT_SHADOW_TEMPLE_MAP_CHEST] = HintText(CustomMessage("They say th
                                                          /*german*/ "",
                                                          /*french*/ "Selon moi, un #coeur dans le Château de Ganon# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
+    // clang-format on
 }
 }

@@ -1,4 +1,4 @@
-﻿#include "OTRGlobals.h"
+#include "OTRGlobals.h"
 #include "OTRAudio.h"
 #include <iostream>
 #include <algorithm>
@@ -579,6 +579,7 @@ extern "C" void OTRAudio_Exit() {
 
 extern "C" void VanillaItemTable_Init() {
     static GetItemEntry getItemTable[] = {
+        // clang-format off
         GET_ITEM(ITEM_BOMBS_5,          OBJECT_GI_BOMB_1,        GID_BOMB,             0x32, 0x59, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_BOMBS_5),
         GET_ITEM(ITEM_NUTS_5,           OBJECT_GI_NUTS,          GID_NUTS,             0x34, 0x0C, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_NUTS_5),
         GET_ITEM(ITEM_BOMBCHU,          OBJECT_GI_BOMB_2,        GID_BOMBCHU,          0x33, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_BOMBCHUS_10),
@@ -705,6 +706,7 @@ extern "C" void VanillaItemTable_Init() {
         GET_ITEM_NONE,
         GET_ITEM_NONE,
         GET_ITEM_NONE // GI_MAX - if you need to add to this table insert it before this entry.
+        // clang-format on
     };
     ItemTableManager::Instance->AddItemTable(MOD_NONE);
     for (uint8_t i = 0; i < ARRAY_COUNT(getItemTable); i++) {
@@ -841,7 +843,7 @@ std::unordered_map<ItemID, GetItemID> ItemIDtoGetItemIDMap {
     { ITEM_TUNIC_ZORA, GI_TUNIC_ZORA },
     { ITEM_WALLET_ADULT, GI_WALLET_ADULT },
     { ITEM_WALLET_GIANT, GI_WALLET_GIANT },
-    { ITEM_WEIRD_EGG, GI_WEIRD_EGG }
+    { ITEM_WEIRD_EGG, GI_WEIRD_EGG },
 };
 
 extern "C" GetItemID RetrieveGetItemIDFromItemID(ItemID itemID) {
@@ -1523,7 +1525,7 @@ std::map<std::string, SoundFontSample*> cachedCustomSFs;
 
 extern "C" SoundFontSample* ReadCustomSample(const char* path) {
     return nullptr;
-/*
+    /*
     if (!ExtensionCache.contains(path))
         return nullptr;
 
@@ -1576,7 +1578,7 @@ extern "C" SoundFontSample* ReadCustomSample(const char* path) {
     }
 
     return nullptr;
-*/
+    */
 }
 
 ImFont* OTRGlobals::CreateFontWithSize(float size, std::string fontPath) {
@@ -2070,7 +2072,7 @@ extern "C" bool Randomizer_IsCheckShuffled(RandomizerCheck rc) {
 }
 
 extern "C" GetItemEntry GetItemMystery() {
-    return { ITEM_NONE_FE, 0, 0, 0, 0, 0, 0, ITEM_NONE_FE, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_JUNK, NULL, MOD_RANDOMIZER, (CustomDrawFunc)Randomizer_DrawMysteryItem };
+    return GET_ITEM_MYSTERY;
 }
 
 extern "C" uint8_t Randomizer_IsSeedGenerated() {

@@ -1659,7 +1659,7 @@ const std::vector<std::string> state1 = {
     "In Item Cutscene",
     "In Cutscene",
     "30", //Unknown
-    "Floor collision disabled"
+    "Floor collision disabled",
 };
 
 const std::vector<std::string> state2 = {
@@ -1694,7 +1694,7 @@ const std::vector<std::string> state2 = {
     "Idling",
     "Disabled draw func",
     "Sword Lunge",
-    "Void out"
+    "Void out",
 };
 
 const std::vector<std::string> state3 = {
@@ -1705,7 +1705,7 @@ const std::vector<std::string> state3 = {
     "Check Floor Water Collision",
     "Force Pull Ocarina",
     "Restore Nayru's Love",
-    "Travelling to Hook Target"
+    "Travelling to Hook Target",
 };
 
 class SaveEditorWindow : public Ship::GuiWindow {

@@ -4,6 +4,7 @@
 using namespace Rando;
 
 void RegionTable_Init_CastleGrounds() {
+    // clang-format off
     //With multi-area support {RA_CASTLE_GROUNDS} is not strictly required anymore, as any interior here could inherit both
     //{RA_HYRULE_CASTLE} and {RA_OUTSIDE_GANONS_CASTLE}, but a setting to merge the latter 2 into the former may be preferred
     areaTable[RR_CASTLE_GROUNDS] = Region("Castle Grounds", "Castle Grounds", {RA_CASTLE_GROUNDS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
@@ -114,4 +115,6 @@ void RegionTable_Init_CastleGrounds() {
         Entrance(RR_GANONS_CASTLE_GROUNDS,  []{return logic->BuiltRainbowBridge;}),
         Entrance(RR_GANONS_CASTLE_ENTRYWAY, []{return logic->IsAdult;}),
     });
+
+    // clang-format on
 }

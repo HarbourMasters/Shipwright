@@ -261,6 +261,7 @@ void RegionTable_Init() {
     //locations which appear in both MQ and Vanilla dungeons don't get set in both areas.
     areaTable.fill(Region("Invalid Region", "Invalid Region", {}, NO_DAY_NIGHT_CYCLE, {}, {}, {}));
 
+    // clang-format off
     areaTable[RR_ROOT] = Region("Root", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->KakarikoVillageGateOpen, []{return ctx->GetOption(RSK_KAK_GATE).Is(RO_KAK_GATE_OPEN);}),
@@ -325,6 +326,8 @@ void RegionTable_Init() {
         //Exits
         Entrance(RR_TEMPLE_OF_TIME, []{return true;}),
     });
+
+    // clang-format on
 
     // Overworld
     RegionTable_Init_KokiriForest();

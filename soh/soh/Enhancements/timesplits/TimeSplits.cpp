@@ -63,6 +63,7 @@ std::vector<SplitObject> splitList;
 std::vector<SplitObject> emptyList;
 
 std::vector<SplitObject> splitObjectList = {
+    // clang-format off
     { SPLIT_TYPE_ITEM,      ITEM_STICK,                           "Deku Stick",                       "ITEM_STICK",                   COLOR_WHITE },
     { SPLIT_TYPE_ITEM,      ITEM_NUT,                             "Deku Nut",                         "ITEM_NUT",                     COLOR_WHITE },
     { SPLIT_TYPE_ITEM,      ITEM_BOMB,                            "Bomb",                             "ITEM_BOMB",                    COLOR_WHITE },
@@ -205,9 +206,12 @@ std::vector<SplitObject> splitObjectList = {
     { SPLIT_TYPE_MISC,      SCENE_ZORAS_RIVER,                    "Lost Woods Escape",                "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
     { SPLIT_TYPE_MISC,      SCENE_LOST_WOODS,                     "Forest Escape",                    "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
     { SPLIT_TYPE_MISC,      SCENE_KAKARIKO_VILLAGE,               "Watchtower Death",                 "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
+
+    // clang-format on
 };
 
 std::map<uint32_t, std::vector<uint32_t>> popupList = {
+    // clang-format off
     { ITEM_STICK,           { ITEM_STICK, ITEM_STICK_UPGRADE_20, ITEM_STICK_UPGRADE_30 } },
     { ITEM_NUT,             { ITEM_NUT, ITEM_NUT_UPGRADE_30, ITEM_NUT_UPGRADE_40 } },
     { ITEM_BOMB,            { ITEM_BOMB_BAG_20, ITEM_BOMB_BAG_30, ITEM_BOMB_BAG_40 } },
@@ -229,6 +233,8 @@ std::map<uint32_t, std::vector<uint32_t>> popupList = {
     { ITEM_WALLET_ADULT,    { ITEM_WALLET_ADULT, ITEM_WALLET_GIANT } },
     { ITEM_SINGLE_MAGIC,    { ITEM_SINGLE_MAGIC, ITEM_DOUBLE_MAGIC } },
     { ITEM_SKULL_TOKEN,     { } }
+
+    // clang-format on
 };
 
 std::string removeSpecialCharacters(const std::string& str) {

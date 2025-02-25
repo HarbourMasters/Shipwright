@@ -100,7 +100,7 @@ static const char* englishRupeeNames[175] = {
     "Studs",              "Super Sea Snails",  "Talent",            "Teef",              "Telecrystals",
     "Tiberium",           "TokKul",            "Toys",              "Turnips",           "Upvotes",
     "V-Bucks",            "Vespene Gas",       "Watts",             "Widgets",           "Woolongs",
-    "World Dollars",      "Wumpa Fruit",       "Yen",               "Zenny",             "Zorkmids"
+    "World Dollars",      "Wumpa Fruit",       "Yen",               "Zenny",             "Zorkmids",
 };
 
 static const char* germanRupeeNames[65] = {
@@ -205,7 +205,7 @@ std::unordered_map<s16, s16> getItemIdToItemId = {
     { GI_PRESCRIPTION, ITEM_PRESCRIPTION },
     { GI_FROG, ITEM_FROG },
     { GI_EYEDROPS, ITEM_EYEDROPS },
-    { GI_CLAIM_CHECK, ITEM_CLAIM_CHECK } 
+    { GI_CLAIM_CHECK, ITEM_CLAIM_CHECK },
 };
 
 #pragma optimize("", off)
@@ -400,12 +400,12 @@ void Randomizer::LoadMerchantMessages() {
 }
 
 std::map<s32, TrialKey> trialFlagToTrialKey = {
-    { EVENTCHKINF_COMPLETED_LIGHT_TRIAL, TK_LIGHT_TRIAL, },
-    { EVENTCHKINF_COMPLETED_FOREST_TRIAL, TK_FOREST_TRIAL, },
-    { EVENTCHKINF_COMPLETED_FIRE_TRIAL, TK_FIRE_TRIAL, },
-    { EVENTCHKINF_COMPLETED_WATER_TRIAL, TK_WATER_TRIAL, },
-    { EVENTCHKINF_COMPLETED_SPIRIT_TRIAL, TK_SPIRIT_TRIAL, },
-    { EVENTCHKINF_COMPLETED_SHADOW_TRIAL, TK_SHADOW_TRIAL, }
+    { EVENTCHKINF_COMPLETED_LIGHT_TRIAL, TK_LIGHT_TRIAL },
+    { EVENTCHKINF_COMPLETED_FOREST_TRIAL, TK_FOREST_TRIAL },
+    { EVENTCHKINF_COMPLETED_FIRE_TRIAL, TK_FIRE_TRIAL },
+    { EVENTCHKINF_COMPLETED_WATER_TRIAL, TK_WATER_TRIAL },
+    { EVENTCHKINF_COMPLETED_SPIRIT_TRIAL, TK_SPIRIT_TRIAL },
+    { EVENTCHKINF_COMPLETED_SHADOW_TRIAL, TK_SHADOW_TRIAL },
 };
 
 bool Randomizer::IsTrialRequired(s32 trialFlag) {
@@ -2272,7 +2272,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 {RA_BOTTOM_OF_THE_WELL, true},
                 {RA_ICE_CAVERN, true},
                 {RA_GERUDO_TRAINING_GROUND, true},
-                {RA_GANONS_CASTLE, true}
+                {RA_GANONS_CASTLE, true},
             };
             static std::unordered_map<RandomizerArea, bool> areaTreeEnabled {
                 {RA_NONE, true},
@@ -2307,7 +2307,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 {RA_BOTTOM_OF_THE_WELL, true},
                 {RA_ICE_CAVERN, true},
                 {RA_GERUDO_TRAINING_GROUND, true},
-                {RA_GANONS_CASTLE, true}
+                {RA_GANONS_CASTLE, true},
             };
 
             static std::map<Rando::Tricks::Tag, bool> showTag {
