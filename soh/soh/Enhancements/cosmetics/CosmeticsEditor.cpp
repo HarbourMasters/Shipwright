@@ -196,7 +196,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Link.Hair",                    "Hair",                     COSMETICS_GROUP_LINK,         ColorRGBA8(255, 173,  27, 255), false, true, true),
     COSMETIC_OPTION("Link.Linen",                   "Linen",                    COSMETICS_GROUP_LINK,         ColorRGBA8(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("Link.Boots",                   "Boots",                    COSMETICS_GROUP_LINK,         ColorRGBA8( 93,  44,  18, 255), false, true, true),
-    
+
     COSMETIC_OPTION("MirrorShield.Body",            "Body",                     COSMETICS_GROUP_MIRRORSHIELD, ColorRGBA8(215,   0,   0, 255), false, true, false),
     COSMETIC_OPTION("MirrorShield.Mirror",          "Mirror",                   COSMETICS_GROUP_MIRRORSHIELD, ColorRGBA8(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("MirrorShield.Emblem",          "Emblem",                   COSMETICS_GROUP_MIRRORSHIELD, ColorRGBA8(205, 225, 255, 255), false, true, true),
@@ -214,7 +214,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Gloves.SilverGauntlets",       "Silver Gauntlets",         COSMETICS_GROUP_GLOVES,       ColorRGBA8(255, 255, 255, 255), false, true, false),
     COSMETIC_OPTION("Gloves.GoldenGauntlets",       "Golden Gauntlets",         COSMETICS_GROUP_GLOVES,       ColorRGBA8(254, 207,  15, 255), false, true, false),
     COSMETIC_OPTION("Gloves.GauntletsGem",          "Gauntlets Gem",            COSMETICS_GROUP_GLOVES,       ColorRGBA8(255,  60, 100, 255), false, true, true),
-    
+
     COSMETIC_OPTION("Equipment.BoomerangBody",      "Boomerang Body",           COSMETICS_GROUP_EQUIPMENT,    ColorRGBA8(160, 100,   0, 255), false, true, false),
     COSMETIC_OPTION("Equipment.BoomerangGem",       "Boomerang Gem",            COSMETICS_GROUP_EQUIPMENT,    ColorRGBA8(255,  50, 150, 255), false, true, true),
     /* Todo (Cosmetics): Broken, need a better way to grayscale
@@ -288,7 +288,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     //COSMETIC_OPTION("Key.ChestGameSmallBody",     "Chest Game Key",           COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(255, 255, 255, 255), false, true, false),
     //COSMETIC_OPTION("Key.ChestGameEmblem",        "Chest Game Key Emblem",    COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(255, 0,   0,   255), false, true, true),
     COSMETIC_OPTION("Key.Skeleton",                 "Skeleton Key",             COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(255, 255, 170, 255), false, true, false),
-    
+
     COSMETIC_OPTION("HUD.AButton",                  "A Button",                 COSMETICS_GROUP_HUD,          ColorRGBA8( 90,  90, 255, 255), false, true, false),
     COSMETIC_OPTION("HUD.BButton",                  "B Button",                 COSMETICS_GROUP_HUD,          ColorRGBA8(  0, 150,   0, 255), false, true, false),
     COSMETIC_OPTION("HUD.CButtons",                 "C Buttons",                COSMETICS_GROUP_HUD,          ColorRGBA8(255, 160,   0, 255), false, true, false),
@@ -329,7 +329,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     MESSAGE_COSMETIC_OPTION("Yellow.Wooden",                    "Message Yellow (Wooden) Color",             255, 255,  30),
     MESSAGE_COSMETIC_OPTION("Black",                            "Message Black Color",                         0,   0,   0),
 
-    #undef MESSAGE_COSMETIC_OPTION
+#undef MESSAGE_COSMETIC_OPTION
 
     COSMETIC_OPTION("Kaleido.ItemSelA",             "Item Select Color",        COSMETICS_GROUP_KALEIDO,      ColorRGBA8( 10,  50,  80, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.ItemSelB",             "Item Select Color B",      COSMETICS_GROUP_KALEIDO,      ColorRGBA8( 70, 100, 130, 255), false, true, true),
@@ -345,7 +345,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Kaleido.MapSelDunB",           "Map Dungeon Color B",      COSMETICS_GROUP_KALEIDO,      ColorRGBA8(140,  60,  60, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.MapSelDunC",           "Map Dungeon Color C",      COSMETICS_GROUP_KALEIDO,      ColorRGBA8(140,  60,  60, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.MapSelDunD",           "Map Dungeon Color D",      COSMETICS_GROUP_KALEIDO,      ColorRGBA8( 80,  40,  30, 255), false, true, true),
-    
+
     COSMETIC_OPTION("Kaleido.QuestStatusA",         "Quest Status Color",       COSMETICS_GROUP_KALEIDO,      ColorRGBA8( 80,  80,  50, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.QuestStatusB",         "Quest Status Color B",     COSMETICS_GROUP_KALEIDO,      ColorRGBA8(120, 120,  70, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.QuestStatusC",         "Quest Status Color C",     COSMETICS_GROUP_KALEIDO,      ColorRGBA8(120, 120,  70, 255), false, true, true),
@@ -355,14 +355,14 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Kaleido.MapSelectB",           "Map Color B",              COSMETICS_GROUP_KALEIDO,      ColorRGBA8(140,  60,  60, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.MapSelectC",           "Map Color C",              COSMETICS_GROUP_KALEIDO,      ColorRGBA8(140,  60,  60, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.MapSelectD",           "Map Color D",              COSMETICS_GROUP_KALEIDO,      ColorRGBA8( 80,  40,  30, 255), false, true, true),
-    
+
     COSMETIC_OPTION("Kaleido.SaveA",                "Save Color",               COSMETICS_GROUP_KALEIDO,      ColorRGBA8( 50,  50,  50, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.SaveB",                "Save Color B",             COSMETICS_GROUP_KALEIDO,      ColorRGBA8(110, 110, 110, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.SaveC",                "Save Color C",             COSMETICS_GROUP_KALEIDO,      ColorRGBA8(110, 110, 110, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.SaveD",                "Save Color D",             COSMETICS_GROUP_KALEIDO,      ColorRGBA8( 50,  50,  50, 255), false, true, true),
-    
+
     COSMETIC_OPTION("Kaleido.NamePanel",            "Name Panel",               COSMETICS_GROUP_KALEIDO,      ColorRGBA8( 90, 100, 130, 255), true,  true, true),
-    
+
     COSMETIC_OPTION("Title.FileChoose",             "File Choose",              COSMETICS_GROUP_TITLE,        ColorRGBA8(100, 150, 255, 255), false, true, false),
     COSMETIC_OPTION("Title.NintendoLogo",           "Nintendo Logo",            COSMETICS_GROUP_TITLE,        ColorRGBA8(  0,   0, 255, 255), false, true, true),
     COSMETIC_OPTION("Title.N64LogoRed",             "N64 Red",                  COSMETICS_GROUP_TITLE,        ColorRGBA8(150,   0,   0, 255), false, true, true),
@@ -375,7 +375,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Title.FireSecondary",          "Title Fire Secondary",     COSMETICS_GROUP_TITLE,        ColorRGBA8(255, 100,   0, 255), false, true, true),
     */
     COSMETIC_OPTION("Title.Copyright",              "Copyright Text",           COSMETICS_GROUP_TITLE,        ColorRGBA8(255, 255, 255, 255), true,  true, false),
-    
+
     COSMETIC_OPTION("Arrows.NormalPrimary",         "Normal Primary",           COSMETICS_GROUP_ARROWS,       ColorRGBA8(  0, 150,   0,   0), false, true, false),
     COSMETIC_OPTION("Arrows.NormalSecondary",       "Normal Secondary",         COSMETICS_GROUP_ARROWS,       ColorRGBA8(255, 255, 170, 255), false, true, true),
     COSMETIC_OPTION("Arrows.FirePrimary",           "Fire Primary",             COSMETICS_GROUP_ARROWS,       ColorRGBA8(255, 200,   0,   0), false, true, false),
@@ -384,14 +384,14 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Arrows.IceSecondary",          "Ice Secondary",            COSMETICS_GROUP_ARROWS,       ColorRGBA8(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("Arrows.LightPrimary",          "Light Primary",            COSMETICS_GROUP_ARROWS,       ColorRGBA8(255, 255,   0, 255), false, true, false),
     COSMETIC_OPTION("Arrows.LightSecondary",        "Light Secondary",          COSMETICS_GROUP_ARROWS,       ColorRGBA8(255, 255, 170,   0), false, true, true),
-    
+
     COSMETIC_OPTION("Magic.DinsPrimary",            "Din's Primary",            COSMETICS_GROUP_MAGIC,        ColorRGBA8(255, 200,   0, 255), false, true, false),
     COSMETIC_OPTION("Magic.DinsSecondary",          "Din's Secondary",          COSMETICS_GROUP_MAGIC,        ColorRGBA8(255,   0,   0, 255), false, true, true),
     COSMETIC_OPTION("Magic.FaroresPrimary",         "Farore's Primary",         COSMETICS_GROUP_MAGIC,        ColorRGBA8(255, 255,   0, 255), false, true, false),
     COSMETIC_OPTION("Magic.FaroresSecondary",       "Farore's Secondary",       COSMETICS_GROUP_MAGIC,        ColorRGBA8(100, 200,   0, 255), false, true, true),
     COSMETIC_OPTION("Magic.NayrusPrimary",          "Nayru's Primary",          COSMETICS_GROUP_MAGIC,        ColorRGBA8(170, 255, 255, 255), false, true, false),
     COSMETIC_OPTION("Magic.NayrusSecondary",        "Nayru's Secondary",        COSMETICS_GROUP_MAGIC,        ColorRGBA8(  0, 100, 255, 255), false, true, true),
-    
+
     COSMETIC_OPTION("SpinAttack.Level1Primary",     "Level 1 Primary",          COSMETICS_GROUP_SPIN_ATTACK,  ColorRGBA8(170, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("SpinAttack.Level1Secondary",   "Level 1 Secondary",        COSMETICS_GROUP_SPIN_ATTACK,  ColorRGBA8(  0, 100, 255, 255), false, true, false),
     COSMETIC_OPTION("SpinAttack.Level2Primary",     "Level 2 Primary",          COSMETICS_GROUP_SPIN_ATTACK,  ColorRGBA8(255, 255, 170, 255), false, true, true),
@@ -419,7 +419,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Navi.EnemySecondary",          "Enemy Secondary",          COSMETICS_GROUP_NAVI,         ColorRGBA8(200, 155,   0,   0), false, true, true),
     COSMETIC_OPTION("Navi.PropsPrimary",            "Props Primary",            COSMETICS_GROUP_NAVI,         ColorRGBA8(  0, 255,   0, 255), false, true, false),
     COSMETIC_OPTION("Navi.PropsSecondary",          "Props Secondary",          COSMETICS_GROUP_NAVI,         ColorRGBA8(  0, 255,   0,   0), false, true, true),
-    
+
     COSMETIC_OPTION("Ivan.IdlePrimary",             "Ivan Idle Primary",        COSMETICS_GROUP_IVAN,         ColorRGBA8(255, 255, 255, 255), false, true, false),
     COSMETIC_OPTION("Ivan.IdleSecondary",           "Ivan Idle Secondary",      COSMETICS_GROUP_IVAN,         ColorRGBA8(  0, 255,   0, 255), false, true, true),
 
@@ -493,11 +493,11 @@ void SetMarginAll(const char* ButtonName, bool SetActivated) {
         for (auto cvarName : MarginCvarList) {
             std::string cvarPosType = std::string(cvarName).append(".PosType");
             std::string cvarNameMargins = std::string(cvarName).append(".UseMargins");
-            if (CVarGetInteger(cvarPosType.c_str(),0) <= 2 && SetActivated) { //Our element is not Hidden or Non anchor
+            if (CVarGetInteger(cvarPosType.c_str(),0) <= ANCHOR_RIGHT && SetActivated) { //Our element is not Hidden or Non anchor
                 for (int i = 0; i < arrayLengthNonMargin; i++) {
-                    if ((strcmp(cvarName, MarginCvarNonAnchor[i]) == 0) && (CVarGetInteger(cvarPosType.c_str(), 0) == 0)) { //Our element is both in original position and do not have anchor by default so we skip it.
+                    if ((strcmp(cvarName, MarginCvarNonAnchor[i]) == 0) && (CVarGetInteger(cvarPosType.c_str(), 0) == ORIGINAL_LOCATION)) { //Our element is both in original position and do not have anchor by default so we skip it.
                         CVarSetInteger(cvarNameMargins.c_str(), false); //force set off
-                    } else if ((strcmp(cvarName, MarginCvarNonAnchor[i]) == 0) && (CVarGetInteger(cvarPosType.c_str(), 0) != 0)) { //Our element is not in original position regarless it has no anchor by default since player made it anchored we can toggle margins
+                    } else if ((strcmp(cvarName, MarginCvarNonAnchor[i]) == 0) && (CVarGetInteger(cvarPosType.c_str(), 0) != ORIGINAL_LOCATION)) { //Our element is not in original position regarless it has no anchor by default since player made it anchored we can toggle margins
                         CVarSetInteger(cvarNameMargins.c_str(), SetActivated);
                     } else if (strcmp(cvarName, MarginCvarNonAnchor[i]) != 0) { //Our elements has an anchor by default so regarless of it's position right now that okay to toggle margins.
                         CVarSetInteger(cvarNameMargins.c_str(), SetActivated);
@@ -548,7 +548,7 @@ void CosmeticsUpdateTick() {
             CVarSetColor(cosmeticOption.cvar, newColor);
         }
         // If we don't want the rainbow color on items to be synced, offset the index for each item in the loop.
-        // Technically this would work if you replaced "60" with 1 but the hue would be so close it's 
+        // Technically this would work if you replaced "60" with 1 but the hue would be so close it's
         // indistinguishable, 60 gives us a big enough gap to notice the difference.
         if (!CVarGetInteger(CVAR_COSMETIC("RainbowSync"), 0)) {
             index += static_cast<int>(60 * rainbowSpeed);
@@ -561,7 +561,7 @@ void CosmeticsUpdateTick() {
     }
 }
 
-/* 
+/*
     This is called every time a color is changed in the UI, and every frame to update colors that have rainbow mode enabled
     The columns/arguments for PATCH_GFX are as follows:
     1. Display List: This should be a valid display list pointer, if you have errors listing one here make sure to include the appropriate header file up top
@@ -577,7 +577,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
         PATCH_GFX(sInnerCylinderDL,                               "Magic_FaroresPrimary1",    magicFaroresPrimary.changedCvar,     24, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(sOuterCylinderDL,                               "Magic_FaroresPrimary2",    magicFaroresPrimary.changedCvar,     24, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     }
-    
+
     static CosmeticOption& magicFaroresSecondary = cosmeticOptions.at("Magic.FaroresSecondary");
     if (manualChange || CVarGetInteger(magicFaroresSecondary.rainbowCvar, 0)) {
         Color_RGBA8 color = CVarGetColor(magicFaroresSecondary.cvar, magicFaroresSecondary.defaultColor);
@@ -610,7 +610,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
         PATCH_GFX(gLinkChildHeadFarDL,                            "Link_Hair2",               linkHair.changedCvar,                10, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
         PATCH_GFX(gLinkAdultHeadNearDL,                           "Link_Hair3",               linkHair.changedCvar,                10, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
         PATCH_GFX(gLinkAdultHeadFarDL,                            "Link_Hair4",               linkHair.changedCvar,                10, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
-    
+
         if (manualChange) {
             PATCH_GFX(gLinkChildHeadNearDL,                       "Link_Hair5",               linkHair.changedCvar,                46, gsSPGrayscale(true));
             PATCH_GFX(gLinkChildHeadNearDL,                       "Link_Hair6",               linkHair.changedCvar,                54, gsSPGrayscale(false));
@@ -873,7 +873,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
             PATCH_GFX(gLinkAdultLeftHandHoldingBgsNearDL,         "Swords_BiggoronHilt10",    swordsBiggoronHilt.changedCvar,      38, gsSPGrayscale(true));
             PATCH_GFX(gLinkAdultLeftHandHoldingBgsNearDL,         "Swords_BiggoronHilt11",    swordsBiggoronHilt.changedCvar,     118, gsSPGrayscale(false));
         }
-    }   
+    }
     */
     static CosmeticOption& glovesGoronBracelet = cosmeticOptions.at("Gloves.GoronBracelet");
     if (manualChange || CVarGetInteger(glovesGoronBracelet.rainbowCvar, 0)) {
@@ -1015,7 +1015,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
         PATCH_GFX(gLinkAdultLeftHandHoldingHammerNearDL,          "Equipment_HammerHandle5",  equipmentHammerHandle.changedCvar,   18, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gLinkAdultLeftHandHoldingHammerFarDL,           "Equipment_HammerHandle6",  equipmentHammerHandle.changedCvar,   18, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     }
-    
+
     static CosmeticOption& equipmentHookshotChain = cosmeticOptions.at("Equipment.HookshotChain");
     if (manualChange || CVarGetInteger(equipmentHookshotChain.rainbowCvar, 0)) {
         Color_RGBA8 color = CVarGetColor(equipmentHookshotChain.cvar, equipmentHookshotChain.defaultColor);
@@ -1070,7 +1070,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
         PATCH_GFX(gGiGreenRupeeInnerColorDL,                      "Consumable_GreenRupee2",   consumableGreenRupee.changedCvar,     4, gsDPSetEnvColor(color.r / 5, color.g / 5, color.b / 5, 255));
         PATCH_GFX(gGiGreenRupeeOuterColorDL,                      "Consumable_GreenRupee3",   consumableGreenRupee.changedCvar,     3, gsDPSetPrimColor(0, 0, MIN(color.r + 100, 255), MIN(color.g + 100, 255), MIN(color.b + 100, 255), 255));
         PATCH_GFX(gGiGreenRupeeOuterColorDL,                      "Consumable_GreenRupee4",   consumableGreenRupee.changedCvar,     4, gsDPSetEnvColor(color.r * 0.75f, color.g * 0.75f, color.b * 0.75f, 255));
-    
+
         // Greg Bridge
         if (Randomizer_GetSettingValue(RSK_RAINBOW_BRIDGE) == RO_BRIDGE_GREG) {
             ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge_StartGrayscale", 2, gsSPGrayscale(true));
@@ -1215,8 +1215,8 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
 extern "C" Color_RGBA8 CosmeticsEditor_GetDefaultValue(const char* id) {
     return Color_RGBA8 {
         (uint8_t)(cosmeticOptions[id].defaultColor.r * 255.0f),
-        (uint8_t)(cosmeticOptions[id].defaultColor.g * 255.0f),
-        (uint8_t)(cosmeticOptions[id].defaultColor.b * 255.0f),
+                        (uint8_t)(cosmeticOptions[id].defaultColor.g * 255.0f),
+                        (uint8_t)(cosmeticOptions[id].defaultColor.b * 255.0f),
         (uint8_t)(cosmeticOptions[id].defaultColor.a * 255.0f)
     };
 }
@@ -1380,9 +1380,9 @@ void Draw_Placements(){
             DrawPositionsRadioBoxes(CVAR_COSMETIC("HUD.VisualSoA"));
             s16 Min_X_VSOA = 0;
             s16 Max_X_VSOA = static_cast<s16>(ImGui::GetWindowViewport()->Size.x / 2);
-            if(CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosType"), 0) == 2){
+            if (CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosType"), 0) == ANCHOR_RIGHT){
                 Max_X_VSOA = 290;
-            } else if(CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosType"), 0) == 4){
+            } else if (CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosType"), 0) == HIDDEN){
                 Min_X_VSOA = static_cast<s16>(ImGui::GetWindowViewport()->Size.x / 2) * -1;
             }
             DrawPositionSlider(CVAR_COSMETIC("HUD.VisualSoA"), 0, static_cast<s16>(ImGui::GetWindowViewport()->Size.y / 2), Min_X_VSOA, Max_X_VSOA);
@@ -1406,9 +1406,9 @@ void Draw_Placements(){
             DrawPositionsRadioBoxes(CVAR_COSMETIC("HUD.Dpad"));
             s16 Min_X_Dpad = 0;
             s16 Max_X_Dpad = static_cast<s16>(ImGui::GetWindowViewport()->Size.x / 2);
-            if(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosType"), 0) == 2){
+            if (CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosType"), 0) == ANCHOR_RIGHT) {
                 Max_X_Dpad = 290;
-            } else if(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosType"), 0) == 4){
+            } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosType"), 0) == HIDDEN) {
                 Min_X_Dpad = static_cast<s16>(ImGui::GetWindowViewport()->Size.x / 2) * -1;
             }
             DrawPositionSlider(CVAR_COSMETIC("HUD.Dpad"), 0, static_cast<s16>(ImGui::GetWindowViewport()->Size.y / 2), Min_X_Dpad, Max_X_Dpad);
@@ -1486,7 +1486,7 @@ void DrawSillyTab() {
     UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
 
     if (UIWidgets::EnhancementCheckbox("Let It Snow", CVAR_GENERAL("LetItSnow"))) {
-       Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
     UIWidgets::Tooltip("Makes snow fall, changes chest texture colors to red and green, etc, for December holidays.\nWill reset on restart outside of December 23-25.");
 
@@ -1873,7 +1873,7 @@ void CosmeticsEditorWindow::ApplyDungeonKeyColors() {
     CVarSetColor(cosmeticOptions["Key.GanonsBossGem"].cvar, { 255, 0, 0, 255 });
     CVarSetInteger(cosmeticOptions["Key.GanonsBossGem"].changedCvar, 1);
     cosmeticOptions["Key.GanonsBossGem"].currentColor = { 255 / 255.0f, 0, 0, 255 / 255.0f };
-    
+
     // Bottom of the Well
     CVarSetColor(cosmeticOptions["Key.WellSmallBody"].cvar, { 227, 110, 255, 255 });
     CVarSetInteger(cosmeticOptions["Key.WellSmallBody"].changedCvar, 1);
@@ -1885,7 +1885,7 @@ void CosmeticsEditorWindow::ApplyDungeonKeyColors() {
     CVarSetInteger(cosmeticOptions["Key.GTGSmallBody"].changedCvar, 1);
     cosmeticOptions["Key.GTGSmallBody"].currentColor = { 221 / 255.0f, 212 / 255.0f, 60 / 255.0f, 255 / 255.0f };
     ResetColor(cosmeticOptions.at("Key.GTGSmallEmblem"));
-    
+
     // Gerudo Fortress
     CVarSetColor(cosmeticOptions["Key.FortSmallBody"].cvar, { 255, 255, 255, 255 });
     CVarSetInteger(cosmeticOptions["Key.FortSmallBody"].changedCvar, 1);
@@ -1958,7 +1958,7 @@ void CosmeticsEditorWindow::DrawElement() {
         }
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
-    
+
     if (ImGui::Button("Rainbow All", ImVec2(ImGui::GetContentRegionAvail().x / 2, 30.0f))) {
         for (auto& [id, cosmeticOption] : cosmeticOptions) {
             if (

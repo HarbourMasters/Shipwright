@@ -42,10 +42,10 @@ void KaleidoScope_DrawEquipmentImage(PlayState* play, void* source, u32 width, u
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    gDPPipeSync(POLY_KAL_DISP++);
-    gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-    gDPSetTextureFilter(POLY_KAL_DISP++, G_TF_POINT);
-    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
+    gDPPipeSync(POLY_OPA_DISP++);
+    gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+    gDPSetTextureFilter(POLY_OPA_DISP++, G_TF_POINT);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
 
     curTexture = source;
     remainingSize = width * height * 2;
@@ -58,7 +58,7 @@ void KaleidoScope_DrawEquipmentImage(PlayState* play, void* source, u32 width, u
 
     vtxIndex = 80;
 
-    gDPSetTileCustom(POLY_KAL_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, width, textureHeight, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+    gDPSetTileCustom(POLY_OPA_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, width, textureHeight, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                      G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
     remainingSize -= textureSize;
@@ -70,15 +70,15 @@ void KaleidoScope_DrawEquipmentImage(PlayState* play, void* source, u32 width, u
     pauseCtx->equipVtx[vtxIndex + 3].v.ob[1] -= 80;
 
     for (i = 0; i < textureCount; i++) {
-        gSPVertex(POLY_KAL_DISP++, &pauseCtx->equipVtx[vtxIndex], 4, 0);
+        gSPVertex(POLY_OPA_DISP++, &pauseCtx->equipVtx[vtxIndex], 4, 0);
 
-        gDPSetTextureImage(POLY_KAL_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, width, curTexture);
+        gDPSetTextureImage(POLY_OPA_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, width, curTexture);
 
-        gDPLoadSync(POLY_KAL_DISP++);
-        gDPLoadTile(POLY_KAL_DISP++, G_TX_LOADTILE, 0, 0, (width - 1) << 2, (textureHeight - 1) << 2);
+        gDPLoadSync(POLY_OPA_DISP++);
+        gDPLoadTile(POLY_OPA_DISP++, G_TX_LOADTILE, 0, 0, (width - 1) << 2, (textureHeight - 1) << 2);
 
-        gDPSetTextureImageFB(POLY_KAL_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, width, gPauseLinkFrameBuffer);
-        gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
+        gDPSetTextureImageFB(POLY_OPA_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, width, gPauseLinkFrameBuffer);
+        gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
 
         curTexture += textureSize;
 
@@ -87,7 +87,7 @@ void KaleidoScope_DrawEquipmentImage(PlayState* play, void* source, u32 width, u
                 textureHeight = remainingSize / (s32)(width * 2);
                 remainingSize -= textureSize;
 
-                gDPSetTileCustom(POLY_KAL_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, width, textureHeight, 0,
+                gDPSetTileCustom(POLY_OPA_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, width, textureHeight, 0,
                                  G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                                  G_TX_NOLOD, G_TX_NOLOD);
             }
@@ -107,7 +107,7 @@ void KaleidoScope_DrawAButton(PlayState* play, Vtx* vtx, int16_t xTranslate, int
     Matrix_Push();
 
     Matrix_Translate(xTranslate, yTranslate, 0, MTXMODE_APPLY);
-    gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     Color_RGB8 aButtonColor = { 0, 100, 255 };
     if (CVarGetInteger(CVAR_COSMETIC("HUD.AButton.Changed"), 0)) {
         aButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.AButton.Value"), aButtonColor);
@@ -115,13 +115,13 @@ void KaleidoScope_DrawAButton(PlayState* play, Vtx* vtx, int16_t xTranslate, int
         aButtonColor = (Color_RGB8){ 0, 255, 100 };
     }
 
-    gSPVertex(POLY_KAL_DISP++, vtx, 4, 0);
-    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, pauseCtx->alpha);
-    gDPLoadTextureBlock(POLY_KAL_DISP++, gABtnSymbolTex, G_IM_FMT_IA, G_IM_SIZ_8b, 24, 16, 0,
+    gSPVertex(POLY_OPA_DISP++, vtx, 4, 0);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, pauseCtx->alpha);
+    gDPLoadTextureBlock(POLY_OPA_DISP++, gABtnSymbolTex, G_IM_FMT_IA, G_IM_SIZ_8b, 24, 16, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 4, 4, G_TX_NOLOD, G_TX_NOLOD);
-    gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
+    gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
     Matrix_Pop();
-    gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
@@ -148,7 +148,10 @@ void KaleidoScope_DrawPlayerWork(PlayState* play) {
         scale = 0.047f;
     }
 
-    gsSPSetFB(play->state.gfxCtx->polyOpa.p++, gPauseLinkFrameBuffer);
+    // SOH [Port] Draw the pause Link on a separate framebuffer starting in the work buffer
+    OPEN_DISPS(play->state.gfxCtx);
+    gsSPSetFB(WORK_DISP++, gPauseLinkFrameBuffer);
+
     rot.y = 32300;
     rot.x = rot.z = 0;
     Player_DrawPause(play, pauseCtx->playerSegment, &pauseCtx->playerSkelAnime, &pos, &rot, scale,
@@ -156,7 +159,9 @@ void KaleidoScope_DrawPlayerWork(PlayState* play) {
                      TUNIC_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC)),
                      SHIELD_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD)),
                      BOOTS_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS)));
-    gsSPResetFB(play->state.gfxCtx->polyOpa.p++);
+
+    gsSPResetFB(WORK_DISP++);
+    CLOSE_DISPS(play->state.gfxCtx);
 }
 
 void KaleidoScope_DrawEquipment(PlayState* play) {
@@ -183,16 +188,16 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    gDPPipeSync(POLY_KAL_DISP++);
-    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, ZREG(39), ZREG(40), ZREG(41), pauseCtx->alpha);
-    gDPSetEnvColor(POLY_KAL_DISP++, ZREG(43), ZREG(44), ZREG(45), 0);
+    gDPPipeSync(POLY_OPA_DISP++);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, ZREG(39), ZREG(40), ZREG(41), pauseCtx->alpha);
+    gDPSetEnvColor(POLY_OPA_DISP++, ZREG(43), ZREG(44), ZREG(45), 0);
 
     for (i = 0, j = 64; i < 4; i++, j += 4) {
         if (CUR_EQUIP_VALUE(i) != 0) {
-            gDPPipeSync(POLY_KAL_DISP++);
-            gSPVertex(POLY_KAL_DISP++, &pauseCtx->equipVtx[j], 4, 0);
+            gDPPipeSync(POLY_OPA_DISP++);
+            gSPVertex(POLY_OPA_DISP++, &pauseCtx->equipVtx[j], 4, 0);
 
-            POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, gEquippedItemOutlineTex, 32, 32, 0);
+            POLY_OPA_DISP = KaleidoScope_QuadTextureIA8(POLY_OPA_DISP, gEquippedItemOutlineTex, 32, 32, 0);
         }
     }
 
@@ -715,11 +720,11 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
 
     Gfx_SetupDL_42Opa(play->state.gfxCtx);
 
-    gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
+    gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
 
     for (rowStart = 0, j = 0, temp = 0, i = 0; i < 4; i++, rowStart += 4, j += 16) {
-        gSPVertex(POLY_KAL_DISP++, &pauseCtx->equipVtx[j], 16, 0);
+        gSPVertex(POLY_OPA_DISP++, &pauseCtx->equipVtx[j], 16, 0);
         bool drawGreyItems = !CVarGetInteger(CVAR_CHEAT("TimelessEquipment"), 0);
         if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
             point = CUR_UPG_VALUE(sChildUpgrades[i]);
@@ -730,20 +735,20 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                     ((sChildUpgradeItemBases[i] + CUR_UPG_VALUE(sChildUpgrades[i]) - 1) == ITEM_GAUNTLETS_SILVER || 
                     (sChildUpgradeItemBases[i] + CUR_UPG_VALUE(sChildUpgrades[i]) - 1) == ITEM_GAUNTLETS_GOLD)) ||
                     (CVarGetInteger(CVAR_ENHANCEMENT("ToggleStrength"), 0) && CVarGetInteger(CVAR_ENHANCEMENT("StrengthDisabled"), 0) && sChildUpgrades[i] == UPG_STRENGTH)) {
-                    gDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
-                    gSPGrayscale(POLY_KAL_DISP++, true);
+                    gDPSetGrayscaleColor(POLY_OPA_DISP++, 109, 109, 109, 255);
+                    gSPGrayscale(POLY_OPA_DISP++, true);
                 }
                 KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gItemIcons[sChildUpgradeItemBases[i] + point - 1], 32, 32, 0);
-                gSPGrayscale(POLY_KAL_DISP++, false);
+                gSPGrayscale(POLY_OPA_DISP++, false);
             }
         } else {
             if ((i == 0) && (CUR_UPG_VALUE(sAdultUpgrades[i]) == 0)) { // If the player doesn't have the bow, load the current slingshot ammo upgrade instead.
                 if (drawGreyItems) {
-                    gDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255); // Grey Out Slingshot Bullet Bags
-                    gSPGrayscale(POLY_KAL_DISP++, true);
+                    gDPSetGrayscaleColor(POLY_OPA_DISP++, 109, 109, 109, 255); // Grey Out Slingshot Bullet Bags
+                    gSPGrayscale(POLY_OPA_DISP++, true);
                 }
                 KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gItemIcons[sChildUpgradeItemBases[i] + CUR_UPG_VALUE(sChildUpgrades[i]) - 1], 32, 32, 0);
-                gSPGrayscale(POLY_KAL_DISP++, false);
+                gSPGrayscale(POLY_OPA_DISP++, false);
             } else if (CUR_UPG_VALUE(sAdultUpgrades[i]) != 0) {
                 // Grey Out the Goron Bracelet when Not Randomized and Toggle Strength Option is off
                 // Grey Out Strength Upgrades when Disabled and the Toggle Strength Option is on
@@ -751,11 +756,11 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                     (((sAdultUpgradeItemBases[i] + CUR_UPG_VALUE(sAdultUpgrades[i]) - 1) == ITEM_BRACELET &&
                         !(IS_RANDO) && !CVarGetInteger(CVAR_ENHANCEMENT("ToggleStrength"), 0)))) || 
                      (CVarGetInteger(CVAR_ENHANCEMENT("ToggleStrength"), 0) && CVarGetInteger(CVAR_ENHANCEMENT("StrengthDisabled"), 0) && sAdultUpgrades[i] == UPG_STRENGTH)) {
-                    gDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
-                    gSPGrayscale(POLY_KAL_DISP++, true);
+                    gDPSetGrayscaleColor(POLY_OPA_DISP++, 109, 109, 109, 255);
+                    gSPGrayscale(POLY_OPA_DISP++, true);
                 }
                 KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gItemIcons[sAdultUpgradeItemBases[i] + CUR_UPG_VALUE(sAdultUpgrades[i]) - 1], 32, 32, 0);
-                gSPGrayscale(POLY_KAL_DISP++, false);
+                gSPGrayscale(POLY_OPA_DISP++, false);
             }
         }
         // Draw inventory screen icons
@@ -764,8 +769,8 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
             int itemId = ITEM_SWORD_KOKIRI + temp;
             bool age_restricted = !CHECK_AGE_REQ_ITEM(itemId);
             if (age_restricted) {
-                gDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
-                gSPGrayscale(POLY_KAL_DISP++, true);
+                gDPSetGrayscaleColor(POLY_OPA_DISP++, 109, 109, 109, 255);
+                gSPGrayscale(POLY_OPA_DISP++, true);
             }
             if (((u32)i == 0) && (k == 2) && (gSaveContext.bgsFlag != 0)) {
                 KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gItemIconSwordBiggoronTex, 32, 32, point);
@@ -774,7 +779,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
             } else if (gBitFlags[bit] & gSaveContext.inventory.equipment) {
                 KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gItemIcons[itemId], 32, 32, point);
             }
-            gSPGrayscale(POLY_KAL_DISP++, false);
+            gSPGrayscale(POLY_OPA_DISP++, false);
         }
     }
 
@@ -803,19 +808,19 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
         //KaleidoScope_ProcessPlayerPreRender(play);
     }
 
-    // gSPInvalidateTexCache(POLY_KAL_DISP++, 0);
-    gSPInvalidateTexCache(POLY_KAL_DISP++, pauseCtx->iconItemSegment);
-    //gSPInvalidateTexCache(POLY_KAL_DISP++, pauseCtx->iconItem24Segment);
-    gSPInvalidateTexCache(POLY_KAL_DISP++, pauseCtx->nameSegment);
+    // gSPInvalidateTexCache(POLY_OPA_DISP++, 0);
+    gSPInvalidateTexCache(POLY_OPA_DISP++, pauseCtx->iconItemSegment);
+    //gSPInvalidateTexCache(POLY_OPA_DISP++, pauseCtx->iconItem24Segment);
+    gSPInvalidateTexCache(POLY_OPA_DISP++, pauseCtx->nameSegment);
 
-    //gSPSegment(POLY_KAL_DISP++, 0x07, pauseCtx->playerSegment);
-    gSPSegment(POLY_KAL_DISP++, 0x08, pauseCtx->iconItemSegment);
-    gSPSegment(POLY_KAL_DISP++, 0x09, pauseCtx->iconItem24Segment);
-    gSPSegment(POLY_KAL_DISP++, 0x0A, pauseCtx->nameSegment);
-    gSPSegment(POLY_KAL_DISP++, 0x0B, play->interfaceCtx.mapSegment);
-    //gSPSegment(POLY_KAL_DISP++, 0x0C, pauseCtx->iconItemAltSegment);
+    //gSPSegment(POLY_OPA_DISP++, 0x07, pauseCtx->playerSegment);
+    gSPSegment(POLY_OPA_DISP++, 0x08, pauseCtx->iconItemSegment);
+    gSPSegment(POLY_OPA_DISP++, 0x09, pauseCtx->iconItem24Segment);
+    gSPSegment(POLY_OPA_DISP++, 0x0A, pauseCtx->nameSegment);
+    gSPSegment(POLY_OPA_DISP++, 0x0B, play->interfaceCtx.mapSegment);
+    //gSPSegment(POLY_OPA_DISP++, 0x0C, pauseCtx->iconItemAltSegment);
 
-    Gfx_SetupDL_42Kal(play->state.gfxCtx);
+    Gfx_SetupDL_42Opa(play->state.gfxCtx);
     KaleidoScope_DrawEquipmentImage(play, pauseCtx->playerSegment, PAUSE_EQUIP_PLAYER_WIDTH, PAUSE_EQUIP_PLAYER_HEIGHT);
 
     if (gUpgradeMasks[0]) {}

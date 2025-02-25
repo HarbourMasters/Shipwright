@@ -104,7 +104,6 @@ static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large
     static const char* subPowers[8] = { allPowers[0], allPowers[1], allPowers[2], allPowers[3], allPowers[4], allPowers[5], allPowers[6], allPowers[7] };
     static const char* subSubPowers[7] = { allPowers[0], allPowers[1], allPowers[2], allPowers[3], allPowers[4], allPowers[5], allPowers[6] };
     static const char* zFightingOptions[3] = { "Disabled", "Consistent Vanish", "No Vanish" };
-    static const char* autosaveLabels[6] = { "Off", "New Location + Major Item", "New Location + Any Item", "New Location", "Major Item", "Any Item" };
     static const char* bootSequenceLabels[3] = { "Default", "Authentic", "File Select" };
     static const char* DebugSaveFileModes[3] = { "Off", "Vanilla", "Maxed" };
     static const char* DekuStickCheat[3] = { "Normal", "Unbreakable", "Unbreakable + Always on Fire" };
@@ -477,16 +476,6 @@ void DrawSettingsMenu() {
                 UIWidgets::PaddedEnhancementCheckbox("Match Frame Rate to Refresh Rate", CVAR_SETTING("MatchRefreshRate"), true, false);
             }
             UIWidgets::Tooltip("Matches interpolation value to the game window's current refresh rate.");
-
-            if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::FAST3D_DXGI_DX11) {
-                UIWidgets::PaddedEnhancementSliderInt(CVarGetInteger(CVAR_SETTING("ExtraLatencyThreshold"), 80) == 0 ? "Jitter fix: Off" : "Jitter fix: >= %d FPS",
-                    "##ExtraLatencyThreshold", CVAR_SETTING("ExtraLatencyThreshold"), 0, 360, "", 80, true, true, false);
-                UIWidgets::Tooltip(
-                    "(For DirectX backend only)\n\n"
-                    "When Interpolation FPS (Frame Rate) setting is at least this threshold, add one frame of delay (e.g. 16.6 ms for 60 FPS) in order to avoid jitter."
-                    "This setting allows the CPU to work on one frame while GPU works on the previous frame.\n"
-                    "This setting should be used when your computer is too slow to do CPU + GPU work in time.");
-            }
 
             UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
 
@@ -936,95 +925,6 @@ void DrawEnhancementsMenu() {
 
             if (ImGui::BeginMenu("Difficulty Options"))
             {
-                if (ImGui::BeginMenu("Potion Values"))
-                {
-                    UIWidgets::EnhancementCheckbox("Change Red Potion Effect", CVAR_ENHANCEMENT("RedPotionEffect"));
-                    UIWidgets::Tooltip("Enable the following changes to the amount of health restored by Red Potions");
-                    bool disabledRedPotion = !CVarGetInteger(CVAR_ENHANCEMENT("RedPotionEffect"), 0);
-                    static const char* disabledTooltipRedPotion = "This option is disabled because \"Change Red Potion Effect\" is turned off";
-                    UIWidgets::EnhancementSliderInt("Red Potion Health: %d", "##REDPOTIONHEALTH", CVAR_ENHANCEMENT("RedPotionHealth"), 1, 100, "", 0, true, disabledRedPotion, disabledTooltipRedPotion);
-                    UIWidgets::Tooltip("Changes the amount of health restored by Red Potions");
-                    UIWidgets::EnhancementCheckbox("Red Potion Percent Restore", CVAR_ENHANCEMENT("RedPercentRestore"), disabledRedPotion, disabledTooltipRedPotion);
-                    UIWidgets::Tooltip("Toggles from Red Potions restoring a fixed amount of health to a percent of the player's current max health");
-
-                    ImGui::Separator();
-
-                    UIWidgets::EnhancementCheckbox("Change Green Potion Effect", CVAR_ENHANCEMENT("GreenPotionEffect"));
-                    UIWidgets::Tooltip("Enable the following changes to the amount of mana restored by Green Potions");
-                    bool disabledGreenPotion = !CVarGetInteger(CVAR_ENHANCEMENT("GreenPotionEffect"), 0);
-                    static const char* disabledTooltipGreenPotion = "This option is disabled because \"Change Green Potion Effect\" is turned off";
-                    UIWidgets::EnhancementSliderInt("Green Potion Mana: %d", "##GREENPOTIONMANA", CVAR_ENHANCEMENT("GreenPotionMana"), 1, 100, "", 0, true, disabledGreenPotion, disabledTooltipGreenPotion);
-                    UIWidgets::Tooltip("Changes the amount of mana restored by Green Potions, base max mana is 48, max upgraded mana is 96");
-                    UIWidgets::EnhancementCheckbox("Green Potion Percent Restore", CVAR_ENHANCEMENT("GreenPercentRestore"), disabledGreenPotion, disabledTooltipGreenPotion);
-                    UIWidgets::Tooltip("Toggles from Green Potions restoring a fixed amount of mana to a percent of the player's current max mana");
-
-                    ImGui::Separator();
-
-                    UIWidgets::EnhancementCheckbox("Change Blue Potion Effects", CVAR_ENHANCEMENT("BluePotionEffects"));
-                    UIWidgets::Tooltip("Enable the following changes to the amount of health and mana restored by Blue Potions");
-                    bool disabledBluePotion = !CVarGetInteger(CVAR_ENHANCEMENT("BluePotionEffects"), 0);
-                    static const char* disabledTooltipBluePotion = "This option is disabled because \"Change Blue Potion Effects\" is turned off";
-                    UIWidgets::EnhancementSliderInt("Blue Potion Health: %d", "##BLUEPOTIONHEALTH", CVAR_ENHANCEMENT("BluePotionHealth"), 1, 100, "", 0, true, disabledBluePotion, disabledTooltipBluePotion);
-                    UIWidgets::Tooltip("Changes the amount of health restored by Blue Potions");
-                    UIWidgets::EnhancementCheckbox("Blue Potion Health Percent Restore", CVAR_ENHANCEMENT("BlueHealthPercentRestore"), disabledBluePotion, disabledTooltipBluePotion);
-                    UIWidgets::Tooltip("Toggles from Blue Potions restoring a fixed amount of health to a percent of the player's current max health");
-
-                    ImGui::Separator();
-
-                    UIWidgets::EnhancementSliderInt("Blue Potion Mana: %d", "##BLUEPOTIONMANA", CVAR_ENHANCEMENT("BluePotionMana"), 1, 100, "", 0, true, disabledBluePotion, disabledTooltipBluePotion);
-                    UIWidgets::Tooltip("Changes the amount of mana restored by Blue Potions, base max mana is 48, max upgraded mana is 96");
-                    UIWidgets::EnhancementCheckbox("Blue Potion Mana Percent Restore", CVAR_ENHANCEMENT("BlueManaPercentRestore"), disabledBluePotion, disabledTooltipBluePotion);
-                    UIWidgets::Tooltip("Toggles from Blue Potions restoring a fixed amount of mana to a percent of the player's current max mana");
-
-                    ImGui::Separator();
-
-                    UIWidgets::EnhancementCheckbox("Change Milk Effect", CVAR_ENHANCEMENT("MilkEffect"));
-                    UIWidgets::Tooltip("Enable the following changes to the amount of health restored by Milk");
-                    bool disabledMilk = !CVarGetInteger(CVAR_ENHANCEMENT("MilkEffect"), 0);
-                    static const char* disabledTooltipMilk = "This option is disabled because \"Change Milk Effect\" is turned off";
-                    UIWidgets::EnhancementSliderInt("Milk Health: %d", "##MILKHEALTH", CVAR_ENHANCEMENT("MilkHealth"), 1, 100, "", 0, true, disabledMilk, disabledTooltipMilk);
-                    UIWidgets::Tooltip("Changes the amount of health restored by Milk");
-                    UIWidgets::EnhancementCheckbox("Milk Percent Restore", CVAR_ENHANCEMENT("MilkPercentRestore"), disabledMilk, disabledTooltipMilk);
-                    UIWidgets::Tooltip("Toggles from Milk restoring a fixed amount of health to a percent of the player's current max health");
-
-                    ImGui::Separator();
-
-                    UIWidgets::EnhancementCheckbox("Separate Half Milk Effect", CVAR_ENHANCEMENT("SeparateHalfMilkEffect"), disabledMilk, disabledTooltipMilk);
-                    UIWidgets::Tooltip("Enable the following changes to the amount of health restored by Half Milk\nIf this is disabled, Half Milk will behave the same as Full Milk.");
-                    bool disabledHalfMilk = disabledMilk || !CVarGetInteger(CVAR_ENHANCEMENT("SeparateHalfMilkEffect"), 0);
-                    static const char* disabledTooltipHalfMilk = "This option is disabled because \"Separate Half Milk Effect\" is turned off";
-                    UIWidgets::EnhancementSliderInt("Half Milk Health: %d", "##HALFMILKHEALTH", CVAR_ENHANCEMENT("HalfMilkHealth"), 1, 100, "", 0, true, disabledHalfMilk, disabledTooltipHalfMilk);
-                    UIWidgets::Tooltip("Changes the amount of health restored by Half Milk");
-                    UIWidgets::EnhancementCheckbox("Half Milk Percent Restore", CVAR_ENHANCEMENT("HalfMilkPercentRestore"), disabledHalfMilk, disabledTooltipHalfMilk);
-                    UIWidgets::Tooltip("Toggles from Half Milk restoring a fixed amount of health to a percent of the player's current max health");
-
-                    ImGui::Separator();
-
-                    UIWidgets::EnhancementCheckbox("Change Fairy Effect", CVAR_ENHANCEMENT("FairyEffect"));
-                    UIWidgets::Tooltip("Enable the following changes to the amount of health restored by Fairies");
-                    bool disabledFairy = !CVarGetInteger(CVAR_ENHANCEMENT("FairyEffect"), 0);
-                    static const char* disabledTooltipFairy = "This option is disabled because \"Change Fairy Effect\" is turned off";
-                    UIWidgets::EnhancementSliderInt("Fairy: %d", "##FAIRYHEALTH", CVAR_ENHANCEMENT("FairyHealth"), 1, 100, "", 0, true, disabledFairy, disabledTooltipFairy);
-                    UIWidgets::Tooltip("Changes the amount of health restored by Fairies");
-                    UIWidgets::EnhancementCheckbox("Fairy Percent Restore", CVAR_ENHANCEMENT("FairyPercentRestore"), disabledFairy, disabledTooltipFairy);
-                    UIWidgets::Tooltip("Toggles from Fairies restoring a fixed amount of health to a percent of the player's current max health");
-
-                    ImGui::Separator();
-
-                    UIWidgets::EnhancementCheckbox("Change Fairy Revive Effect", CVAR_ENHANCEMENT("FairyReviveEffect"));
-                    UIWidgets::Tooltip("Enable the following changes to the amount of health restored by Fairy Revivals");
-                    bool disabledFairyRevive = !CVarGetInteger(CVAR_ENHANCEMENT("FairyReviveEffect"), 0);
-                    static const char* disabledTooltipFairyRevive = "This option is disabled because \"Change Fairy Revive Effect\" is turned off";
-                    UIWidgets::EnhancementSliderInt("Fairy Revival: %d", "##FAIRYREVIVEHEALTH", CVAR_ENHANCEMENT("FairyReviveHealth"), 1, 100, "", 0, true, disabledFairyRevive, disabledTooltipFairyRevive);
-                    UIWidgets::Tooltip("Changes the amount of health restored by Fairy Revivals");
-                    UIWidgets::EnhancementCheckbox("Fairy Revive Percent Restore", CVAR_ENHANCEMENT("FairyRevivePercentRestore"), disabledFairyRevive, disabledTooltipFairyRevive);
-                    UIWidgets::Tooltip("Toggles from Fairy Revivals restoring a fixed amount of health to a percent of the player's current max health");
-
-                    ImGui::EndMenu();
-                }
-
-                UIWidgets::Spacer(0);
-
                 if (ImGui::BeginMenu("Shooting Gallery")) {
                     UIWidgets::EnhancementCheckbox("Customize Behavior", CVAR_ENHANCEMENT("CustomizeShootingGallery"));
                     UIWidgets::Tooltip("Turn on/off changes to the shooting gallery behavior");
@@ -1435,7 +1335,10 @@ void DrawEnhancementsMenu() {
             UIWidgets::PaddedEnhancementCheckbox("Fix the Gravedigging Tour Glitch", CVAR_ENHANCEMENT("GravediggingTourFix"), true, false, SaveManager::Instance->IsRandoFile(),
                                                         "This setting is always enabled in randomizer files", UIWidgets::CheckboxGraphics::Checkmark);
             UIWidgets::Tooltip("Fixes a bug where the Gravedigging Tour Heart Piece disappears if the area reloads");
-            UIWidgets::PaddedEnhancementCheckbox("Fix Deku Nut upgrade", CVAR_ENHANCEMENT("DekuNutUpgradeFix"), true, false);
+            UIWidgets::PaddedEnhancementCheckbox(
+                "Fix Deku Nut upgrade", CVAR_ENHANCEMENT("DekuNutUpgradeFix"), true, false, IS_RANDO,
+                "This setting is forcefully enabled when you are playing a randomizer.",
+                UIWidgets::CheckboxGraphics::Checkmark);
             UIWidgets::Tooltip("Prevents the Forest Stage Deku Nut upgrade from becoming unobtainable after receiving the Poacher's Saw");
             UIWidgets::PaddedEnhancementCheckbox("Fix Navi text HUD position", CVAR_ENHANCEMENT("NaviTextFix"), true, false);
             UIWidgets::Tooltip("Correctly centers the Navi text prompt on the HUD's C-Up button");
@@ -1668,13 +1571,11 @@ void DrawEnhancementsMenu() {
             ImGui::EndMenu();
         }
 
-        UIWidgets::PaddedSeparator(false, true);
+        UIWidgets::PaddedSeparator();
 
-        // Autosave enum value of 1 is the default in presets and the old checkbox "on" state for backwards compatibility
-        UIWidgets::PaddedText("Autosave", false, true);
-        UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("Autosave"), autosaveLabels, AUTOSAVE_OFF);
-        UIWidgets::Tooltip("Automatically save the game when changing locations and/or obtaining items\n"
-            "Major items exclude rupees and health/magic/ammo refills (but include bombchus unless bombchu drops are enabled)");
+        UIWidgets::EnhancementCheckbox("Autosave", CVAR_ENHANCEMENT("Autosave"));
+        UIWidgets::Tooltip("Save the game automatically on a 3 minute interval and when soft-resetting the game.\n\n"
+                           "The interval autosave will wait if the game is paused in any way (dialogue, pause screen up, cutscenes).");
 
         UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
 

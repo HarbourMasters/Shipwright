@@ -5389,7 +5389,7 @@ typedef enum {
 //Scrubsanity settings (off, affordable, expensive, random)
 typedef enum {
     RO_SCRUBS_OFF,
-    RO_SCRUBS_MAJOR_ONLY,
+    RO_SCRUBS_ONE_TIME_ONLY,
     RO_SCRUBS_ALL,
 } RandoOptionScrubsanity;
 
@@ -5790,6 +5790,14 @@ typedef enum {
     RE_BIG_OCTO,
     RE_GERUDO_WARRIOR,
     RE_GIBDO,
+    RE_GOHMA,
+    RE_KING_DODONGO,
+    RE_BARINADE,
+    RE_PHANTOM_GANON,
+    RE_VOLVAGIA,
+    RE_MORPHA,
+    RE_BONGO_BONGO,
+    RE_TWINROVA,
     RE_GANONDORF,
     RE_GANON,
     RE_DARK_LINK,

@@ -50,7 +50,7 @@ void EnLight_Init(Actor* thisx, PlayState* play) {
     EnLight* this = (EnLight*)thisx;
     s16 yOffset;
 
-    if (gSaveContext.gameMode == 3) {
+    if (gSaveContext.gameMode == GAMEMODE_END_CREDITS) {
         // special case for the credits
         yOffset = (this->actor.params < 0) ? 1 : 40;
         Lights_PointNoGlowSetInfo(&this->lightInfo, this->actor.world.pos.x, yOffset + (s16)this->actor.world.pos.y,

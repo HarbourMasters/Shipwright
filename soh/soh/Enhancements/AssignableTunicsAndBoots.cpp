@@ -94,10 +94,19 @@ void RegisterAssignableTunicsBoots() {
             return;
         }
 
-        Input* input = va_arg(args, Input*);
-        Player* player = GET_PLAYER(gPlayState);
+        Player* player = va_arg(args, Player*);
+
+        // if we're not dealing with the actual player, we're probably
+        // dealing with dark link, don't do any tunics/boots stuff, just
+        // run the vanilla action func
+        if (player->actor.id != ACTOR_PLAYER) {
+            return;
+        }
 
         *should = false;
+
+        Input* input = va_arg(args, Input*);
+
         player->actionFunc(player, gPlayState);
         UseTunicBoots(player, gPlayState, input);
     });

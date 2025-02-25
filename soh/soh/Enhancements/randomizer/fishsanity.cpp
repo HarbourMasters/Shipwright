@@ -229,7 +229,7 @@ namespace Rando {
 
                 if (ageSplit && !IsFish(&mCurrPondFish.second) && tableEntry.second != RC_UNKNOWN_CHECK &&
                     (!Flags_GetRandomizerInf(OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(tableEntry.second)) || i == pondCount - 1)) {
-                    mCurrPondFish.second = mCurrPondFish.second = GetPondFish(params, true);
+                    mCurrPondFish.second = GetPondFish(params, true);
                 }
             }
         }
@@ -548,6 +548,8 @@ extern "C" {
         Matrix_Push();
         Matrix_Scale(30.0, 30.0, 30.0, MTXMODE_APPLY);
 
+        func_8002EBCC(actor, play, 0);
+        func_8002ED80(actor, play, 0);
         EnItem00_CustomItemsParticles(actor, play, randoItem);
         GetItemEntry_Draw(play, randoItem);
 

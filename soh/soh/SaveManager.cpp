@@ -218,8 +218,6 @@ void SaveManager::LoadRandomizerVersion1() {
     }
     randoContext->AddHint(RH_GANONDORF_JOKE, Rando::Hint(RH_GANONDORF_JOKE, {CustomMessage(ganonText)}));
 
-    SaveManager::Instance->LoadData("adultTradeItems", gSaveContext.ship.quest.data.randomizer.adultTradeItems);
-
     SaveManager::Instance->LoadData("triforcePiecesCollected", gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected);
 
     SaveManager::Instance->LoadData("pendingIceTrapCount", gSaveContext.ship.pendingIceTrapCount);
@@ -348,8 +346,6 @@ void SaveManager::LoadRandomizerVersion2() {
     SaveManager::Instance->LoadData("warpPreludeText", warpPreludeText);
     randoContext->AddHint(RH_PRELUDE_WARP_LOC, Rando::Hint(RH_PRELUDE_WARP_LOC, {CustomMessage(warpPreludeText)}));
 
-    SaveManager::Instance->LoadData("adultTradeItems", gSaveContext.ship.quest.data.randomizer.adultTradeItems);
-
     SaveManager::Instance->LoadData("triforcePiecesCollected", gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected);
 
     SaveManager::Instance->LoadData("pendingIceTrapCount", gSaveContext.ship.pendingIceTrapCount);
@@ -444,8 +440,6 @@ void SaveManager::LoadRandomizerVersion3() {
         SaveManager::Instance->LoadData("", json);
         randoContext->AddHint(hint, Rando::Hint(hint, json));
     });
-
-    SaveManager::Instance->LoadData("adultTradeItems", gSaveContext.ship.quest.data.randomizer.adultTradeItems);
 
     SaveManager::Instance->LoadData("triforcePiecesCollected", gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected);
 
@@ -581,8 +575,6 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
             }
         });
     });
-
-    SaveManager::Instance->SaveData("adultTradeItems", saveContext->ship.quest.data.randomizer.adultTradeItems);
 
     SaveManager::Instance->SaveData("triforcePiecesCollected", saveContext->ship.quest.data.randomizer.triforcePiecesCollected);
 

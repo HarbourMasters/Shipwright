@@ -42,12 +42,4 @@ class ValueViewerWindow : public Ship::GuiWindow {
     void UpdateElement() override {};
 };
 
-extern "C" {
-#include <z64.h>
-#endif
-
-void ValueViewer_Draw(GfxPrint* printer);
-
-#ifdef __cplusplus
-}
 #endif

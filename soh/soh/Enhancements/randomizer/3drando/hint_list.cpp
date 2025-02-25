@@ -2393,7 +2393,7 @@ void StaticData::HintTable_Init() {
                                                   /*french*/ "J'admire ce que tu as fait à l'Île Koholint... Toi et moi, nous devrions faire équipe!"));
                                                // /*spanish*/Después de lo que le hiciste a la Isla Koholint, ¿cómo te atreves a llamarme malvado?
 
-    hintTextTable[RHT_GANON_JOKE10] = HintText(CustomMessage("Today, let's begin down&'The Hero is Defeated' timeline.",
+    hintTextTable[RHT_GANON_JOKE11] = HintText(CustomMessage("Today, let's begin down&'The Hero is Defeated' timeline.",
                                                   /*german*/ "",
                                                   /*french*/ "Si tu me vaincs, Hyrule sera englouti... mais si tu meurs, on aura A Link to the Past, le meilleur opus "
                                                              "de la série!"));

@@ -521,6 +521,7 @@ void Play_Init(GameState* thisx) {
 
             if (Inventory_ReplaceItem(play, ITEM_WEIRD_EGG, ITEM_CHICKEN) ||
                 Inventory_HatchPocketCucco(play)) {
+                GameInteractor_ExecuteOnCuccoOrChickenHatch();
                 Message_StartTextbox(play, 0x3066, NULL);
             }
 
@@ -1365,7 +1366,6 @@ void Play_Draw(PlayState* play) {
     if ((HREG(80) != 10) || (HREG(82) != 0)) {
         POLY_OPA_DISP = Play_SetFog(play, POLY_OPA_DISP);
         POLY_XLU_DISP = Play_SetFog(play, POLY_XLU_DISP);
-        POLY_KAL_DISP = Play_SetFog(play, POLY_KAL_DISP);
 
         func_800AA460(&play->view, play->view.fovy, play->view.zNear, play->lightCtx.fogFar);
         func_800AAA50(&play->view, 15);
@@ -2207,13 +2207,5 @@ void Play_PerformSave(PlayState* play) {
         // Restore temp B values back
         gSaveContext.equips.buttonItems[0] = prevB;
         gSaveContext.buttonStatus[0] = prevStatus;
-
-        uint8_t triforceHuntCompleted =
-            IS_RANDO &&
-            gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected == (Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1) &&
-            Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT);
-        if (CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_OFF) != AUTOSAVE_OFF || triforceHuntCompleted) {
-            Overlay_DisplayText(3.0f, "Game Saved");
-        }
     }
 }
