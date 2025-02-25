@@ -663,64 +663,66 @@ void InitEntranceTrackingData() {
 }
 
 void EntranceTrackerSettingsWindow::DrawElement() {
-    
-        ImGui::TextWrapped("The entrance tracker will only track shuffled entrances");
-        UIWidgets::Spacer(0);
+
+    ImGui::PushFont(OTRGlobals::Instance->fontStandardLarger);
+    ImGui::TextWrapped("The entrance tracker will only track shuffled entrances");
+    UIWidgets::Spacer(0);
+
+    ImGui::TableNextColumn();
+
+    if (ImGui::BeginTable("entranceTrackerSubSettings", 2, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingStretchProp)) {
+        ImGui::TableSetupColumn("column 1", ImGuiTableColumnFlags_WidthStretch, 150.0f);
+        ImGui::TableSetupColumn("column 2", ImGuiTableColumnFlags_WidthStretch, 150.0f);
+        auto themeColor = static_cast<UIWidgets2::Colors>(CVarGetInteger(CVAR_SETTING("Menu.Theme"), UIWidgets2::Colors::LightBlue));
 
         ImGui::TableNextColumn();
 
-        if (ImGui::BeginTable("entranceTrackerSubSettings", 2, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingStretchProp)) {
-            ImGui::TableSetupColumn("column 1", ImGuiTableColumnFlags_WidthStretch, 150.0f);
-            ImGui::TableSetupColumn("column 2", ImGuiTableColumnFlags_WidthStretch, 150.0f);
-            auto themeColor = static_cast<UIWidgets2::Colors>(CVarGetInteger(CVAR_SETTING("Menu.Theme"), UIWidgets2::Colors::LightBlue));
+        ImGui::Text("Sort By");
+        UIWidgets2::CVarRadioButton("To", CVAR_TRACKER_ENTRANCE("SortBy"), 0, themeColor);
+        UIWidgets::Tooltip("Sort entrances by the original source entrance");
+        UIWidgets2::CVarRadioButton("From", CVAR_TRACKER_ENTRANCE("SortBy"), 1, themeColor);
+        UIWidgets::Tooltip("Sort entrances by the overrided destination");
 
-            ImGui::TableNextColumn();
+        ImGui::Text("List Items");
+        UIWidgets2::CVarCheckbox("Auto scroll", CVAR_TRACKER_ENTRANCE("AutoScroll"),
+            UIWidgets2::CheckboxOptions().Tooltip("Automatically scroll to the first aviable entrance in the current scene").Color(themeColor));
+        UIWidgets2::CVarCheckbox("Highlight previous", CVAR_TRACKER_ENTRANCE("HighlightPrevious"),
+                UIWidgets2::CheckboxOptions().Tooltip("Highlight the previous entrance that Link came from").Color(themeColor));
+        UIWidgets2::CVarCheckbox("Highlight available", CVAR_TRACKER_ENTRANCE("HighlightAvailable"),
+                UIWidgets2::CheckboxOptions().Tooltip("Highlight available entrances in the current scene").Color(themeColor));
+        UIWidgets2::CVarCheckbox("Hide undiscovered", CVAR_TRACKER_ENTRANCE("CollapseUndiscovered"),
+                UIWidgets2::CheckboxOptions().Tooltip("Collapse undiscovered entrances towards the bottom of each group").Color(themeColor));
+        bool disableHideReverseEntrances = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_ON;
+        static const char* disableHideReverseEntrancesText = "This option is disabled because \"Decouple Entrances\" is enabled.";
+        UIWidgets2::CVarCheckbox("Hide reverse", CVAR_TRACKER_ENTRANCE("HideReverseEntrances"),
+            UIWidgets2::CheckboxOptions({ {.disabled = disableHideReverseEntrances, .disabledTooltip = disableHideReverseEntrancesText }})
+                .Tooltip("Hide reverse entrance transitions when Decouple Entrances is off").DefaultValue(true).Color(themeColor));
 
-            ImGui::Text("Sort By");
-            UIWidgets2::CVarRadioButton("To", CVAR_TRACKER_ENTRANCE("SortBy"), 0, themeColor);
-            UIWidgets::Tooltip("Sort entrances by the original source entrance");
-            UIWidgets2::CVarRadioButton("From", CVAR_TRACKER_ENTRANCE("SortBy"), 1, themeColor);
-            UIWidgets::Tooltip("Sort entrances by the overrided destination");
+        ImGui::TableNextColumn();
 
-            ImGui::Text("List Items");
-            UIWidgets2::CVarCheckbox("Auto scroll", CVAR_TRACKER_ENTRANCE("AutoScroll"),
-                UIWidgets2::CheckboxOptions().Tooltip("Automatically scroll to the first aviable entrance in the current scene").Color(themeColor));
-            UIWidgets2::CVarCheckbox("Highlight previous", CVAR_TRACKER_ENTRANCE("HighlightPrevious"),
-                 UIWidgets2::CheckboxOptions().Tooltip("Highlight the previous entrance that Link came from").Color(themeColor));
-            UIWidgets2::CVarCheckbox("Highlight available", CVAR_TRACKER_ENTRANCE("HighlightAvailable"),
-                 UIWidgets2::CheckboxOptions().Tooltip("Highlight available entrances in the current scene").Color(themeColor));
-            UIWidgets2::CVarCheckbox("Hide undiscovered", CVAR_TRACKER_ENTRANCE("CollapseUndiscovered"),
-                 UIWidgets2::CheckboxOptions().Tooltip("Collapse undiscovered entrances towards the bottom of each group").Color(themeColor));
-            bool disableHideReverseEntrances = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_ON;
-            static const char* disableHideReverseEntrancesText = "This option is disabled because \"Decouple Entrances\" is enabled.";
-            UIWidgets2::CVarCheckbox("Hide reverse", CVAR_TRACKER_ENTRANCE("HideReverseEntrances"),
-                UIWidgets2::CheckboxOptions({ {.disabled = disableHideReverseEntrances, .disabledTooltip = disableHideReverseEntrancesText }})
-                    .Tooltip("Hide reverse entrance transitions when Decouple Entrances is off").DefaultValue(true).Color(themeColor));
+        ImGui::Text("Group By");
+        UIWidgets2::CVarRadioButton("Area", CVAR_TRACKER_ENTRANCE("GroupBy"), 0, themeColor);
+        UIWidgets::Tooltip("Group entrances by their area");
+        UIWidgets2::CVarRadioButton("Type", CVAR_TRACKER_ENTRANCE("GroupBy"), 1, themeColor);
+        UIWidgets::Tooltip("Group entrances by their entrance type");
 
-            ImGui::TableNextColumn();
+        ImGui::Text("Spoiler Reveal");
+        UIWidgets2::CVarCheckbox("Show Source", CVAR_TRACKER_ENTRANCE("ShowFrom"),
+                UIWidgets2::CheckboxOptions().Tooltip("Reveal the sourcefor undiscovered entrances").Color(themeColor));
+        UIWidgets2::CVarCheckbox("Show Destination", CVAR_TRACKER_ENTRANCE("ShowTo"),
+                UIWidgets2::CheckboxOptions().Tooltip("Reveal the destination for undiscovered entrances").Color(themeColor));
 
-            ImGui::Text("Group By");
-            UIWidgets2::CVarRadioButton("Area", CVAR_TRACKER_ENTRANCE("GroupBy"), 0, themeColor);
-            UIWidgets::Tooltip("Group entrances by their area");
-            UIWidgets2::CVarRadioButton("Type", CVAR_TRACKER_ENTRANCE("GroupBy"), 1, themeColor);
-            UIWidgets::Tooltip("Group entrances by their entrance type");
+        ImGui::EndTable();
+    }
 
-            ImGui::Text("Spoiler Reveal");
-            UIWidgets2::CVarCheckbox("Show Source", CVAR_TRACKER_ENTRANCE("ShowFrom"),
-                 UIWidgets2::CheckboxOptions().Tooltip("Reveal the sourcefor undiscovered entrances").Color(themeColor));
-            UIWidgets2::CVarCheckbox("Show Destination", CVAR_TRACKER_ENTRANCE("ShowTo"),
-                 UIWidgets2::CheckboxOptions().Tooltip("Reveal the destination for undiscovered entrances").Color(themeColor));
-
-            ImGui::EndTable();
-        }
-
-        ImGui::SetNextItemOpen(false, ImGuiCond_Once);
-        if (ImGui::TreeNode("Legend")) {
-            ImGui::TextColored(ImColor(COLOR_ORANGE), "Last Entrance");
-            ImGui::TextColored(ImColor(COLOR_GREEN), "Available Entrances");
-            ImGui::TextColored(ImColor(COLOR_GRAY), "Undiscovered Entrances");
-            ImGui::TreePop();
-        }
+    ImGui::SetNextItemOpen(false, ImGuiCond_Once);
+    if (ImGui::TreeNode("Legend")) {
+        ImGui::TextColored(ImColor(COLOR_ORANGE), "Last Entrance");
+        ImGui::TextColored(ImColor(COLOR_GREEN), "Available Entrances");
+        ImGui::TextColored(ImColor(COLOR_GRAY), "Undiscovered Entrances");
+        ImGui::TreePop();
+    }
+    ImGui::PopFont();
 }
 
 void EntranceTrackerWindow::Draw() {
@@ -733,6 +735,7 @@ void EntranceTrackerWindow::Draw() {
 }
 
 void EntranceTrackerWindow::DrawElement() {
+    ImGui::PushFont(OTRGlobals::Instance->fontStandardLarger);
     ImGui::SetNextWindowSize(ImVec2(600, 375), ImGuiCond_FirstUseEver);
 
     if (!ImGui::Begin("Entrance Tracker", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
@@ -934,6 +937,7 @@ void EntranceTrackerWindow::DrawElement() {
     }
     ImGui::EndChild();
     ImGui::End();
+    ImGui::PopFont();
 }
 
 void EntranceTrackerWindow::InitElement() {

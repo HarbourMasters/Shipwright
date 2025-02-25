@@ -3,6 +3,7 @@
 #include "soh/SohGui/ImGuiUtils.h"
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/UIWidgets.hpp"
+#include "soh/SohGui/SohMenu.h"
 
 #include <spdlog/fmt/fmt.h>
 #include <array>
@@ -57,6 +58,17 @@ extern "C" u8 gAreaGsFlags[];
 
 extern "C" u8 gAmmoItems[];
 
+namespace SohGui {
+    extern std::shared_ptr<SohGui::SohMenu> mSohMenu;
+}
+
+UIWidgets2::Colors themeIndex;
+ImVec4 themeColor;
+UIWidgets2::IntSliderOptions intSliderOptionsBase;
+UIWidgets2::ButtonOptions buttonOptionsBase;
+UIWidgets2::CheckboxOptions checkboxOptionsBase;
+UIWidgets2::ComboboxOptions comboboxOptionsBase;
+
 // Modification of gAmmoItems that replaces ITEM_NONE with the item in inventory slot it represents
 u8 gAllAmmoItems[] = {
     ITEM_STICK,     ITEM_NUT,          ITEM_BOMB,    ITEM_BOW,      ITEM_ARROW_FIRE, ITEM_DINS_FIRE,
@@ -109,6 +121,42 @@ char z2ASCII(int code) {
 
 }
 
+typedef enum MagicLevel {
+    MAGIC_LEVEL_NONE,
+    MAGIC_LEVEL_SINGLE,
+    MAGIC_LEVEL_DOUBLE
+};
+
+std::unordered_map<int8_t, const char*> magicLevelMap = {
+    { MAGIC_LEVEL_NONE,   "None" },
+    { MAGIC_LEVEL_SINGLE, "Single" },
+    { MAGIC_LEVEL_DOUBLE, "Double" },
+};
+
+typedef enum AudioOutput {
+    AUDIO_STEREO,
+    AUDIO_MONO,
+    AUDIO_HEADSET,
+    AUDIO_SURROUND,
+};
+
+std::unordered_map<uint8_t, const char*> audioMap = {
+    { AUDIO_STEREO, "Stereo" },
+    { AUDIO_MONO, "Mono" },
+    { AUDIO_HEADSET, "Headset" },
+    { AUDIO_SURROUND, "Surround" },
+};
+
+typedef enum ZTarget {
+    Z_TARGET_SWITCH,
+    Z_TARGET_HOLD,
+};
+
+std::unordered_map<uint8_t, const char*> zTargetMap = {
+    { Z_TARGET_SWITCH, "Switch" },
+    { Z_TARGET_HOLD, "Hold" },
+};
+
 void DrawInfoTab() {
     // TODO Needs a better method for name changing but for now this will work.
     std::string name;
@@ -122,200 +170,147 @@ void DrawInfoTab() {
     ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
 
     ImGui::Text("Name: %s", name.c_str());
-    UIWidgets::InsertHelpHoverText("Player Name");
+    UIWidgets2::Tooltip("Player Name");
     std::string nameID;
     for (int i = 0; i < 8; i++) {
         nameID = z2ASCII(i);
         if (i % 4 != 0) {
             ImGui::SameLine();
         }
+        UIWidgets2::PushStyleInput(themeColor);
         ImGui::InputScalar(nameID.c_str(), ImGuiDataType_U8, &gSaveContext.playerName[i], &one, NULL);
+        UIWidgets2::PopStyleInput();
     }
 
     // Use an intermediary to keep the health from updating (and potentially killing the player)
     // until it is done being edited
     int16_t healthIntermediary = gSaveContext.healthCapacity;
+    UIWidgets2::PushStyleInput(themeColor);
     ImGui::InputScalar("Max Health", ImGuiDataType_S16, &healthIntermediary);
+    UIWidgets2::PopStyleInput();
     if (ImGui::IsItemDeactivated()) {
         gSaveContext.healthCapacity = healthIntermediary;
     }
-    UIWidgets::InsertHelpHoverText("Maximum health. 16 units per full heart");
+    UIWidgets2::Tooltip("Maximum health. 16 units per full heart");
     if (gSaveContext.health > gSaveContext.healthCapacity) {
         gSaveContext.health = gSaveContext.healthCapacity; // Clamp health to new max
     }
-
-    const uint16_t healthMin = 0;
-    const uint16_t healthMax = gSaveContext.healthCapacity;
-    ImGui::SetNextItemWidth(ImGui::GetFontSize() * 15);
-    ImGui::SliderScalar("Health", ImGuiDataType_S16, &gSaveContext.health, &healthMin, &healthMax);
-    UIWidgets::InsertHelpHoverText("Current health. 16 units per full heart");
+    int32_t health = (int32_t)gSaveContext.health;
+    if (UIWidgets2::SliderInt("Health", &health, intSliderOptionsBase.Tooltip("Current health. 16 units per full heart")
+        .Min(0).Max(gSaveContext.healthCapacity))) {
+        gSaveContext.health = (int16_t)health;
+    }
 
     bool isDoubleDefenseAcquired = gSaveContext.isDoubleDefenseAcquired != 0;
-    if (ImGui::Checkbox("Double Defense", &isDoubleDefenseAcquired)) {
+    if (UIWidgets2::Checkbox("Double Defense", &isDoubleDefenseAcquired, checkboxOptionsBase.Tooltip("Is double defense unlocked?"))) {
         gSaveContext.isDoubleDefenseAcquired = isDoubleDefenseAcquired;
         gSaveContext.inventory.defenseHearts =
             gSaveContext.isDoubleDefenseAcquired ? 20 : 0; // Set to get the border drawn in the UI
     }
-    UIWidgets::InsertHelpHoverText("Is double defense unlocked?");
-
-    std::string magicName;
-    if (gSaveContext.magicLevel == 2) {
-        magicName = "Double";
-    } else if (gSaveContext.magicLevel == 1) {
-        magicName = "Single";
-    } else {
-        magicName = "None";
+    if (UIWidgets2::Combobox("Magic Level", &gSaveContext.magicLevel, magicLevelMap, comboboxOptionsBase.Tooltip("Current magic level"))) {
+        gSaveContext.isMagicAcquired = gSaveContext.magicLevel > 0;
+        gSaveContext.isDoubleMagicAcquired = gSaveContext.magicLevel == 2;
     }
-    ImGui::SetNextItemWidth(ImGui::GetFontSize() * 6);
-    if (ImGui::BeginCombo("Magic Level", magicName.c_str())) {
-        if (ImGui::Selectable("Double")) {
-            gSaveContext.magicLevel = 2;
-            gSaveContext.isMagicAcquired = true;
-            gSaveContext.isDoubleMagicAcquired = true;
-        }
-        if (ImGui::Selectable("Single")) {
-            gSaveContext.magicLevel = 1;
-            gSaveContext.isMagicAcquired = true;
-            gSaveContext.isDoubleMagicAcquired = false;
-        }
-        if (ImGui::Selectable("None")) {
-            gSaveContext.magicLevel = 0;
-            gSaveContext.isMagicAcquired = false;
-            gSaveContext.isDoubleMagicAcquired = false;
-        }
-
-        ImGui::EndCombo();
-    }
-    UIWidgets::InsertHelpHoverText("Current magic level");
     gSaveContext.magicCapacity = gSaveContext.magicLevel * 0x30; // Set to get the bar drawn in the UI
     if (gSaveContext.magic > gSaveContext.magicCapacity) {
         gSaveContext.magic = gSaveContext.magicCapacity; // Clamp magic to new max
     }
 
-    const uint8_t magicMin = 0;
-    const uint8_t magicMax = gSaveContext.magicCapacity;
-    ImGui::SetNextItemWidth(ImGui::GetFontSize() * 15);
-    ImGui::SliderScalar("Magic", ImGuiDataType_S8, &gSaveContext.magic, &magicMin, &magicMax);
-    UIWidgets::InsertHelpHoverText("Current magic. 48 units per magic level");
+    int32_t magic = (int32_t)gSaveContext.magic;
+    if (UIWidgets2::SliderInt("Magic", &magic, intSliderOptionsBase.Min(0).Max(gSaveContext.magicCapacity).Tooltip("Current magic. 48 units per magic level"))) {
+        gSaveContext.magic = (int8_t)magic;
+    }
 
+    UIWidgets2::PushStyleInput(themeColor);
     ImGui::InputScalar("Rupees", ImGuiDataType_S16, &gSaveContext.rupees);
-    UIWidgets::InsertHelpHoverText("Current rupees");
+    UIWidgets2::Tooltip("Current rupees");
+    UIWidgets2::PopStyleInput();
 
-    const uint16_t dayTimeMin = 0;
-    const uint16_t dayTimeMax = 0xFFFF;
-    ImGui::SetNextItemWidth(ImGui::GetFontSize() * 15);
-    ImGui::SliderScalar("Time", ImGuiDataType_U16, &gSaveContext.dayTime, &dayTimeMin, &dayTimeMax);
-    UIWidgets::InsertHelpHoverText("Time of day");
-    if (ImGui::Button("Dawn")) {
+    UIWidgets2::SliderInt("Time", (int32_t*) &gSaveContext.dayTime, intSliderOptionsBase.Min(0).Max(0xFFFF).Tooltip("Time of day"));
+    if (UIWidgets2::Button("Dawn", buttonOptionsBase)) {
         gSaveContext.dayTime = 0x4000;
     }
     ImGui::SameLine();
-    if (ImGui::Button("Noon")) {
+    if (UIWidgets2::Button("Noon", buttonOptionsBase)) {
         gSaveContext.dayTime = 0x8000;
     }
     ImGui::SameLine();
-    if (ImGui::Button("Sunset")) {
+    if (UIWidgets2::Button("Sunset", buttonOptionsBase)) {
         gSaveContext.dayTime = 0xC001;
     }
     ImGui::SameLine();
-    if (ImGui::Button("Midnight")) {
+    if (UIWidgets2::Button("Midnight", buttonOptionsBase)) {
         gSaveContext.dayTime = 0;
     }
 
+    UIWidgets2::PushStyleInput(themeColor);
     ImGui::InputScalar("Total Days", ImGuiDataType_S32, &gSaveContext.totalDays);
-    UIWidgets::InsertHelpHoverText("Total number of days elapsed since the start of the game");
+    UIWidgets2::Tooltip("Total number of days elapsed since the start of the game");
+    UIWidgets2::PopStyleInput();
 
+    UIWidgets2::PushStyleInput(themeColor);
     ImGui::InputScalar("Deaths", ImGuiDataType_U16, &gSaveContext.deaths);
-    UIWidgets::InsertHelpHoverText("Total number of deaths");
+    UIWidgets2::Tooltip("Total number of deaths");
+    UIWidgets2::PopStyleInput();
 
-    bool bgsFlag = gSaveContext.bgsFlag != 0;
-    if (ImGui::Checkbox("Has BGS", &bgsFlag)) {
-        gSaveContext.bgsFlag = bgsFlag;
-    }
-    UIWidgets::InsertHelpHoverText("Is Biggoron sword unlocked? Replaces Giant's knife");
+    UIWidgets2::Checkbox("Has BGS", (bool*) &gSaveContext.bgsFlag, checkboxOptionsBase.Tooltip("Is Biggoron sword unlocked? Replaces Giant's knife"));
 
+    UIWidgets2::PushStyleInput(themeColor);
     ImGui::InputScalar("Sword Health", ImGuiDataType_U16, &gSaveContext.swordHealth);
-    UIWidgets::InsertHelpHoverText("Giant's knife health. Default is 8. Must be >0 for Biggoron sword to work");
+    UIWidgets2::Tooltip("Giant's knife health. Default is 8. Must be >0 for Biggoron sword to work");
+    UIWidgets2::PopStyleInput();
 
+    UIWidgets2::PushStyleInput(themeColor);
     ImGui::InputScalar("Bgs Day Count", ImGuiDataType_S32, &gSaveContext.bgsDayCount);
-    UIWidgets::InsertHelpHoverText("Total number of days elapsed since giving Biggoron the claim check");
+    UIWidgets2::Tooltip("Total number of days elapsed since giving Biggoron the claim check");
+    UIWidgets2::PopStyleInput();
 
+    UIWidgets2::PushStyleInput(themeColor);
     ImGui::InputScalar("Entrance Index", ImGuiDataType_S32, &gSaveContext.entranceIndex);
-    UIWidgets::InsertHelpHoverText("From which entrance did Link arrive?");
+    UIWidgets2::Tooltip("From which entrance did Link arrive?");
+    UIWidgets2::PopStyleInput();
 
+    UIWidgets2::PushStyleInput(themeColor);
     ImGui::InputScalar("Cutscene Index", ImGuiDataType_S32, &gSaveContext.cutsceneIndex);
-    UIWidgets::InsertHelpHoverText("Which cutscene is this?");
+    UIWidgets2::Tooltip("Which cutscene is this?");
+    UIWidgets2::PopStyleInput();
 
+    UIWidgets2::PushStyleInput(themeColor);
     ImGui::InputScalar("Navi Timer", ImGuiDataType_U16, &gSaveContext.naviTimer);
-    UIWidgets::InsertHelpHoverText("Navi wants to talk at 600 units, decides not to at 3000.");
+    UIWidgets2::Tooltip("Navi wants to talk at 600 units, decides not to at 3000.");
+    UIWidgets2::PopStyleInput();
 
+    UIWidgets2::PushStyleInput(themeColor);
     ImGui::InputScalar("Timer 1 State", ImGuiDataType_S16, &gSaveContext.timer1State);
-    UIWidgets::InsertHelpHoverText("Heat timer, race timer, etc. Has white font");
+    UIWidgets2::Tooltip("Heat timer, race timer, etc. Has white font");
+    UIWidgets2::PopStyleInput();
 
+    UIWidgets2::PushStyleInput(themeColor);
     ImGui::InputScalar("Timer 1 Value", ImGuiDataType_S16, &gSaveContext.timer1Value, &one, NULL);
-    UIWidgets::InsertHelpHoverText("Time, in seconds");
+    UIWidgets2::Tooltip("Time, in seconds");
+    UIWidgets2::PopStyleInput();
 
+    UIWidgets2::PushStyleInput(themeColor);
     ImGui::InputScalar("Timer 2 State", ImGuiDataType_S16, &gSaveContext.timer2State);
-    UIWidgets::InsertHelpHoverText("Trade timer, Ganon collapse timer, etc. Has yellow font");
+    UIWidgets2::Tooltip("Trade timer, Ganon collapse timer, etc. Has yellow font");
+    UIWidgets2::PopStyleInput();
 
+    UIWidgets2::PushStyleInput(themeColor);
     ImGui::InputScalar("Timer 2 Value", ImGuiDataType_S16, &gSaveContext.timer2Value, &one, NULL);
-    UIWidgets::InsertHelpHoverText("Time, in seconds");
-     
-    const char* audioName;
-    switch (gSaveContext.audioSetting) { 
-        case 0:
-            audioName = "Stereo";
-            break;
-        case 1:
-            audioName = "Mono";
-            break;
-        case 2:
-            audioName = "Headset";
-            break;
-        case 3:
-            audioName = "Surround";
-            break;
-        default:
-            audioName = "?";
-    }
-    if (ImGui::BeginCombo("Audio", audioName)) {
-        if (ImGui::Selectable("Stereo")) {
-            gSaveContext.audioSetting = 0;
-        }
-        if (ImGui::Selectable("Mono")) {
-            gSaveContext.audioSetting = 1;
-        }
-        if (ImGui::Selectable("Headset")) {
-            gSaveContext.audioSetting = 2;
-        }
-        if (ImGui::Selectable("Surround")) {
-            gSaveContext.audioSetting = 3;
-        }
+    UIWidgets2::Tooltip("Time, in seconds");
+    UIWidgets2::PopStyleInput();
 
-        ImGui::EndCombo();
-    }
-    UIWidgets::InsertHelpHoverText("Sound setting");
+    UIWidgets2::Combobox("Audio", &gSaveContext.audioSetting, audioMap, comboboxOptionsBase.Tooltip("Sound setting"));
     
-    bool n64DDFlag = gSaveContext.n64ddFlag != 0;
-    if (ImGui::Checkbox("64 DD file?", &n64DDFlag)) {
-        gSaveContext.n64ddFlag = n64DDFlag;
-    }
-    UIWidgets::InsertHelpHoverText("WARNING! If you save, your file may be locked! Use caution!");
+    UIWidgets2::Checkbox("64 DD file?", (bool*) &gSaveContext.n64ddFlag, checkboxOptionsBase.Tooltip("WARNING! If you save, your file may be locked! Use caution!"));
     
-    if (ImGui::BeginCombo("Z Target Mode", gSaveContext.zTargetSetting ? "Hold" : "Switch")) {
-        if (ImGui::Selectable("Switch")) {
-            gSaveContext.zTargetSetting = 0;
-        }
-        if (ImGui::Selectable("Hold")) {
-            gSaveContext.zTargetSetting = 1;
-        }
-        ImGui::EndCombo();
-    }
-    UIWidgets::InsertHelpHoverText("Z-Targeting behavior");
+    UIWidgets2::Combobox("Z Target Mode", &gSaveContext.zTargetSetting, zTargetMap, comboboxOptionsBase.Tooltip("Z-Targeting behavior"));
 
     if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT)) {
+        UIWidgets2::PushStyleInput(themeColor);
         ImGui::InputScalar("Triforce Pieces", ImGuiDataType_U8, &gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected);
-        UIWidgets::InsertHelpHoverText("Currently obtained Triforce Pieces. For Triforce Hunt.");
+        UIWidgets2::Tooltip("Currently obtained Triforce Pieces. For Triforce Hunt.");
+        UIWidgets2::PopStyleInput();
     }
 
     ImGui::PushItemWidth(ImGui::GetFontSize() * 10);
@@ -331,78 +326,79 @@ void DrawInfoTab() {
         for (int i = 0; i < 7; i++) {
             if(i == 2 && ImGui::TreeNode("Fishing") ){ //fishing has a few more flags to it
                 u8 fishSize = gSaveContext.highScores[i] & 0x7F;
+                UIWidgets2::PushStyleInput(themeColor);
                 if(ImGui::InputScalar("Child Size Record",ImGuiDataType_U8,&fishSize)){
                     gSaveContext.highScores[i]&=~0x7F;
                     gSaveContext.highScores[i]|=fishSize & 0x7F;
                 }
                 char fishMsg[64];
                 std::sprintf(fishMsg,"Weight: %2.0f lbs",((SQ(fishSize)*.0036)+.5));
-                UIWidgets::InsertHelpHoverText(fishMsg);
+                UIWidgets2::Tooltip(fishMsg);
+                UIWidgets2::PopStyleInput();
                 bool FishBool = gSaveContext.highScores[i]&0x80;
-                if (ImGui::Checkbox("Cheated as Child", &FishBool)) {
+                if (UIWidgets2::Checkbox("Cheated as Child", &FishBool, checkboxOptionsBase.Tooltip("Used the Sinking lure to catch it."))) {
                         gSaveContext.highScores[i] &= ~0x80;
                         gSaveContext.highScores[i] |= (0x80 * FishBool);
                 }
-                UIWidgets::InsertHelpHoverText("Used the Sinking lure to catch it.");
                 fishSize=(gSaveContext.highScores[i] & 0x7F000000)>>0x18;
+                UIWidgets2::PushStyleInput(themeColor);
                 if(ImGui::InputScalar("Adult Size Record",ImGuiDataType_U8,&fishSize)){
                     gSaveContext.highScores[i]&=~0x7F000000;
                     gSaveContext.highScores[i]|=(fishSize & 0x7F) << 0x18;
                 }
                 std::sprintf(fishMsg,"Weight: %2.0f lbs",((SQ(fishSize)*.0036)+.5));
-                UIWidgets::InsertHelpHoverText(fishMsg);
+                UIWidgets2::Tooltip(fishMsg);
+                UIWidgets2::PopStyleInput();
                 FishBool = gSaveContext.highScores[i] & 0x80000000;
-                if (ImGui::Checkbox("Cheated as Adult", &FishBool)) {
+                if (UIWidgets2::Checkbox("Cheated as Adult", &FishBool, checkboxOptionsBase.Tooltip("Used the Sinking lure to catch it."))) {
                         gSaveContext.highScores[i] &= ~0x80000000;
                         gSaveContext.highScores[i] |= (0x80000000 * FishBool);
                 }
-                UIWidgets::InsertHelpHoverText("Used the Sinking lure to catch it.");
                 FishBool = gSaveContext.highScores[i]&0x100;
-                if (ImGui::Checkbox("Played as Child", &FishBool)) {
+                if (UIWidgets2::Checkbox("Played as Child", &FishBool, checkboxOptionsBase.Tooltip("Played at least one game as a child"))) {
                         gSaveContext.highScores[i] &= ~0x100;
                         gSaveContext.highScores[i] |= (0x100 * FishBool);
                 }
-                UIWidgets::InsertHelpHoverText("Played at least one game as a child");
                 FishBool = gSaveContext.highScores[i]&0x200;
-                if (ImGui::Checkbox("Played as Adult", &FishBool)) {
+                if (UIWidgets2::Checkbox("Played as Adult", &FishBool, checkboxOptionsBase.Tooltip("Played at least one game as an adult"))) {
                         gSaveContext.highScores[i] &= ~0x200;
                         gSaveContext.highScores[i] |= (0x200 * FishBool);
                 }
-                UIWidgets::InsertHelpHoverText("Played at least one game as an adult");
                 FishBool = gSaveContext.highScores[i]&0x400;
-                if (ImGui::Checkbox("Got Prize as Child", &FishBool)) {
+                if (UIWidgets2::Checkbox("Got Prize as Child", &FishBool, checkboxOptionsBase.Tooltip("Got the prize item (Heart Piece, unless rando.)\nunlocks Sinking Lure for Child Link."))) {
                         gSaveContext.highScores[i] &= ~0x400;
                         gSaveContext.highScores[i] |= (0x400 * FishBool);
                 }
-                UIWidgets::InsertHelpHoverText("Got the prize item (Heart Piece, unless rando.)\nunlocks Sinking Lure for Child Link.");
                 FishBool = gSaveContext.highScores[i]&0x800;
-                if (ImGui::Checkbox("Got Prize as Adult", &FishBool)) {
+                if (UIWidgets2::Checkbox("Got Prize as Adult", &FishBool, checkboxOptionsBase.Tooltip("Got the prize item (Golden Scale, unless rando.)\nUnlocks Sinking Lure for Adult Link."))) {
                         gSaveContext.highScores[i] &= ~0x800;
                         gSaveContext.highScores[i] |= (0x800 * FishBool);
                 }
-                UIWidgets::InsertHelpHoverText("Got the prize item (Golden Scale, unless rando.)\nUnlocks Sinking Lure for Adult Link.");
                 FishBool = gSaveContext.highScores[i] & 0x1000;
-                if (ImGui::Checkbox("Stole Owner's Hat", &FishBool)) {
+                if (UIWidgets2::Checkbox("Stole Owner's Hat", &FishBool, checkboxOptionsBase.Tooltip("The owner's now visibly bald when Adult Link."))) {
                         gSaveContext.highScores[i] &= ~0x1000;
                         gSaveContext.highScores[i] |= (0x1000 * FishBool);
                 }
-                UIWidgets::InsertHelpHoverText("The owner's now visibly bald when Adult Link.");
                 fishSize=(gSaveContext.highScores[i] & 0xFF0000)>>16;
+                UIWidgets2::PushStyleInput(themeColor);
                 if(ImGui::InputScalar("Times Played",ImGuiDataType_U8,&fishSize)){
                     gSaveContext.highScores[i]&=~0xFF0000;
                     gSaveContext.highScores[i]|=(fishSize) << 16;
                 }
-                UIWidgets::InsertHelpHoverText("Determines weather and school size during dawn/dusk.");
+                UIWidgets2::Tooltip("Determines weather and school size during dawn/dusk.");
+                UIWidgets2::PopStyleInput();
                 
                 ImGui::TreePop();
                 continue;
             }
             
-            if (i == 5) { //HS_UNK_05 is unused
+            if (i == 5 || i == 2) { //HS_UNK_05 is unused
                 continue;
             }
             std::string minigameLbl = minigameHS[i];
+            UIWidgets2::PushStyleInput(themeColor);
             ImGui::InputScalar(minigameLbl.c_str(), ImGuiDataType_S32, &gSaveContext.highScores[i], &one, NULL);
+            UIWidgets2::PopStyleInput();
         }
         
         ImGui::TreePop();
@@ -1600,6 +1596,13 @@ void DrawPlayerTab() {
 }
 
 void SaveEditorWindow::DrawElement() {
+    themeIndex = SohGui::mSohMenu->GetMenuThemeColor();
+    themeColor = UIWidgets2::ColorValues.at(themeIndex);
+    intSliderOptionsBase.Color(themeIndex).Size({320.0f, 0.0f});
+    buttonOptionsBase.Color(themeIndex).Size(UIWidgets2::Sizes::Inline);
+    checkboxOptionsBase.Color(themeIndex);
+    comboboxOptionsBase.Color(themeIndex).ComponentAlignment(UIWidgets2::ComponentAlignment::Left).LabelPosition(UIWidgets2::LabelPosition::Near);
+    UIWidgets2::PushStyleTabs(themeIndex);
     if (ImGui::BeginTabBar("SaveContextTabBar", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         if (ImGui::BeginTabItem("Info")) {
             DrawInfoTab();
@@ -1633,6 +1636,7 @@ void SaveEditorWindow::DrawElement() {
 
         ImGui::EndTabBar();
     }
+    UIWidgets2::PopStyleTabs();
 }
 
 void SaveEditorWindow::InitElement() {}

@@ -1222,6 +1222,7 @@ void ItemTrackerWindow::Draw() {
 }
 
 void ItemTrackerWindow::DrawElement() {
+    ImGui::PushFont(OTRGlobals::Instance->fontStandardLarger);
     UpdateVectors();
 
     int iconSize = CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36);
@@ -1352,6 +1353,7 @@ void ItemTrackerWindow::DrawElement() {
             EndFloatingWindows();
         }
     }
+    ImGui::PopFont();
 }
 
 static std::unordered_map<int32_t, const char*> itemTrackerCapacityTrackOptions = {
@@ -1373,6 +1375,7 @@ static std::unordered_map<int32_t, const char*> extendedDisplayTypes = {{ SECTIO
 static std::unordered_map<int32_t, const char*> minimalDisplayTypes = {{ SECTION_DISPLAY_MINIMAL_HIDDEN, "Hidden" }, { SECTION_DISPLAY_MINIMAL_SEPARATE, "Separate" }};
 
 void ItemTrackerSettingsWindow::DrawElement() {
+    ImGui::PushFont(OTRGlobals::Instance->fontStandardLarger);
     themeColor = static_cast<Colors>(CVarGetInteger(CVAR_SETTING("Menu.Theme"), Colors::LightBlue));
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
     ImGui::BeginTable("itemTrackerSettingsTable", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV);
@@ -1418,9 +1421,9 @@ void ItemTrackerSettingsWindow::DrawElement() {
         }
     }
     ImGui::Separator();
-    CVarSliderInt("Icon size : %dpx", CVAR_TRACKER_ITEM("IconSize"), IntSliderOptions().Min(25).Max(128).DefaultValue(36));
-    CVarSliderInt("Icon margins : %dpx", CVAR_TRACKER_ITEM("IconSpacing"), IntSliderOptions().Min(-5).Max(50).DefaultValue(12));
-    CVarSliderInt("Text size : %dpx", CVAR_TRACKER_ITEM("TextSize"), IntSliderOptions().Min(1).Max(30).DefaultValue(13));
+    CVarSliderInt("Icon size : %dpx", CVAR_TRACKER_ITEM("IconSize"), IntSliderOptions().Min(25).Max(128).DefaultValue(36).Color(themeColor));
+    CVarSliderInt("Icon margins : %dpx", CVAR_TRACKER_ITEM("IconSpacing"), IntSliderOptions().Min(-5).Max(50).DefaultValue(12).Color(themeColor));
+    CVarSliderInt("Text size : %dpx", CVAR_TRACKER_ITEM("TextSize"), IntSliderOptions().Min(1).Max(30).DefaultValue(13).Color(themeColor));
     
     ImGui::NewLine();
     CVarCombobox("Ammo/Capacity Tracking", CVAR_TRACKER_ITEM("ItemCountType"), itemTrackerCapacityTrackOptions, ComboboxOptions()
@@ -1539,6 +1542,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
 
     ImGui::PopStyleVar(1);
     ImGui::EndTable();
+    ImGui::PopFont();
 }
 
 void ItemTrackerWindow::InitElement() {

@@ -259,6 +259,7 @@ namespace UIWidgets2 {
         LabelPosition labelPosition = LabelPosition::Above;
         Colors color = Colors::Gray;
         ImGuiSliderFlags flags = 0;
+        ImVec2 size = {0,0};
 
         IntSliderOptions& ShowButtons(bool showButtons_) {
             showButtons = showButtons_;
@@ -298,6 +299,10 @@ namespace UIWidgets2 {
         }
         IntSliderOptions& Color(Colors color_) {
             WidgetOptions::color = color = color_;
+            return *this;
+        }
+        IntSliderOptions& Size(ImVec2 size_) {
+            size = size_;
             return *this;
         }
     };
@@ -407,6 +412,14 @@ namespace UIWidgets2 {
     void PushStyleCombobox(const ImVec4& color);
     void PushStyleCombobox(Colors color = Colors::LightBlue);
     void PopStyleCombobox();
+
+    void PushStyleTabs(const ImVec4& color);
+    void PushStyleTabs(Colors color = Colors::LightBlue);
+    void PopStyleTabs();
+
+    void PushStyleInput(const ImVec4& color);
+    void PushStyleInput(Colors color = Colors::LightBlue);
+    void PopStyleInput();
 
     void Spacer(float height);
 

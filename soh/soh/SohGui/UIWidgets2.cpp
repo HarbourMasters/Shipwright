@@ -122,6 +122,28 @@ void PopStyleButton() {
     ImGui::PopStyleColor(4);
 }
 
+void PushStyleInput(const ImVec4& color) {
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(color.x, color.y, color.z, 1.0f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(color.x, color.y, color.z, 0.8f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(color.x, color.y, color.z, 0.6f));
+    ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(color.x, color.y, color.z, 1.0f));
+    ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(color.x, color.y, color.z, 0.8f));
+    ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4(color.x, color.y, color.z, 0.6f));
+    ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.0f, 0.0f, 0.0f, 0.3f));
+    ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 3.0f);
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10.0f, 6.0f));
+    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 5.0f);
+}
+
+void PushStyleInput(Colors color) {
+    PushStyleInput(ColorValues.at(color));
+}
+
+void PopStyleInput() {
+    ImGui::PopStyleVar(3);
+    ImGui::PopStyleColor(7);
+}
+
 bool Button(const char* label, const ButtonOptions& options) {
     ImGui::BeginDisabled(options.disabled);
     PushStyleButton(options.color);
@@ -391,6 +413,28 @@ void PopStyleCombobox() {
     ImGui::PopStyleColor(9);
 }
 
+void PushStyleTabs(const ImVec4& color) {
+    ImGui::PushStyleColor(ImGuiCol_Tab, ImVec4(color.x, color.y, color.z, 0.8f));
+    ImGui::PushStyleColor(ImGuiCol_TabHovered, ImVec4(color.x, color.y, color.z, 0.6f));
+    ImGui::PushStyleColor(ImGuiCol_TabActive, ImVec4(color.x, color.y, color.z, 0.6f));
+    ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(color.x, color.y, color.z, 0.5f));
+    ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(color.x, color.y, color.z, 0.6f));
+    ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(color.x, color.y, color.z, 0.6f));
+    ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 3.0f);
+    ImGui::PushStyleVar(ImGuiStyleVar_PopupRounding, 3.0f);
+    ImGui::PushStyleVar(ImGuiStyleVar_PopupBorderSize, 0.0f);
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10.0f, 6.0f));
+}
+
+void PushStyleTabs(Colors color) {
+    PushStyleTabs(ColorValues.at(color));
+}
+
+void PopStyleTabs() {
+    ImGui::PopStyleColor(6);
+    ImGui::PopStyleVar(4);
+}
+
 void PushStyleSlider(Colors color_) {
     const ImVec4& color = ColorValues.at(color_);
     ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(color.x, color.y, color.z, 1.0f));
@@ -418,6 +462,7 @@ bool SliderInt(const char* label, int32_t* value, const IntSliderOptions& option
     ImGui::BeginGroup();
     ImGui::BeginDisabled(options.disabled);
     PushStyleSlider(options.color);
+    float width = (options.size == ImVec2(0,0)) ? ImGui::GetContentRegionAvail().x : options.size.x;
     if (options.alignment == ComponentAlignment::Left) {
         if (options.labelPosition == LabelPosition::Above) {
             ImGui::Text(label, *value);
@@ -437,9 +482,9 @@ bool SliderInt(const char* label, int32_t* value, const IntSliderOptions& option
             dirty = true;
         }
         ImGui::SameLine(0, 3.0f);
-        ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - (ImGui::CalcTextSize("+").x + 20.0f + 3.0f));
+        ImGui::SetNextItemWidth(width - (ImGui::CalcTextSize("+").x + 20.0f + 3.0f));
     } else {
-        ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+        ImGui::SetNextItemWidth(width);
     }
     if (ImGui::SliderScalar(invisibleLabel, ImGuiDataType_S32, value, &options.min, &options.max, options.format,
                             options.flags)) {
