@@ -3,10 +3,6 @@
 
 using namespace Rando;
 
-/*
- * Note: Thieves' Hideout pots are considered overworld pots
- */
-
 void RegionTable_Init_ThievesHideout() {
     areaTable[RR_TH_NORTH_F1_CARPENTER_AREA] = Region("Thieves Hideout North F1 Carpenter Area", "Thieves Hideout", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
         //Events
