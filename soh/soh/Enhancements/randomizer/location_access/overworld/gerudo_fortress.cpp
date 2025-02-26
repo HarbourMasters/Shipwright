@@ -11,41 +11,59 @@ void RegionTable_Init_GerudoFortress() {
         EventAccess(&logic->GtG_GateOpen,    []{return logic->GtG_GateOpen || (logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->HasItem(RG_CHILD_WALLET));}),
     }, {
         //Locations
-        LOCATION(RC_GF_NORTH_F1_CARPENTER,            logic->CanKillEnemy(RE_GERUDO_WARRIOR)),
         LOCATION(RC_GF_NORTH_F2_CARPENTER,            logic->CanKillEnemy(RE_GERUDO_WARRIOR) && (logic->CanPassEnemy(RE_GERUDO_GUARD) || logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_KITCHEN))),
-        LOCATION(RC_GF_SOUTH_F1_CARPENTER,            logic->CanKillEnemy(RE_GERUDO_WARRIOR)),
         LOCATION(RC_GF_SOUTH_F2_CARPENTER,            logic->CanKillEnemy(RE_GERUDO_WARRIOR)),
         LOCATION(RC_GF_GERUDO_MEMBERSHIP_CARD,        logic->CanFinishGerudoFortress()),
         LOCATION(RC_GF_BREAK_ROOM_POT_1,              logic->CanBreakPots()),
         LOCATION(RC_GF_BREAK_ROOM_POT_2,              logic->CanBreakPots()),
         LOCATION(RC_GF_KITCHEN_POT_1,                 logic->CanBreakPots() && logic->CanPassEnemy(RE_GERUDO_GUARD)),
         LOCATION(RC_GF_KITCHEN_POT_2,                 logic->CanBreakPots() && logic->CanPassEnemy(RE_GERUDO_GUARD)),
-        LOCATION(RC_GF_NORTH_F1_CARPENTER_POT_1,      logic->CanBreakPots()),
-        LOCATION(RC_GF_NORTH_F1_CARPENTER_POT_2,      logic->CanBreakPots()),
-        LOCATION(RC_GF_NORTH_F1_CARPENTER_POT_3,      logic->CanBreakPots()),
         LOCATION(RC_GF_NORTH_F2_CARPENTER_POT_1,      logic->CanBreakPots()),
         LOCATION(RC_GF_NORTH_F2_CARPENTER_POT_2,      logic->CanBreakPots()),
-        LOCATION(RC_GF_SOUTH_F1_CARPENTER_POT_1,      logic->CanBreakPots()),
-        LOCATION(RC_GF_SOUTH_F1_CARPENTER_POT_2,      logic->CanBreakPots()),
-        LOCATION(RC_GF_SOUTH_F1_CARPENTER_POT_3,      logic->CanBreakPots()),
-        LOCATION(RC_GF_SOUTH_F1_CARPENTER_CELL_POT_1, logic->CanBreakPots()),
-        LOCATION(RC_GF_SOUTH_F1_CARPENTER_CELL_POT_2, logic->CanBreakPots()),
-        LOCATION(RC_GF_SOUTH_F1_CARPENTER_CELL_POT_3, logic->CanBreakPots()),
-        LOCATION(RC_GF_SOUTH_F1_CARPENTER_CELL_POT_4, logic->CanBreakPots()),
         //RANDOTODO doublecheck when GF isn't a blob
         LOCATION(RC_GF_KITCHEN_SUN_FAIRY,             logic->CanPassEnemy(RE_GERUDO_GUARD) && logic->CanUse(RG_SUNS_SONG)),
     }, {
         //Exits
-        Entrance(RR_GV_FORTRESS_SIDE,                []{return true;}),
-        Entrance(RR_GF_OUTSIDE_GATE,                 []{return logic->GF_GateOpen;}),
-        Entrance(RR_GERUDO_TRAINING_GROUND_ENTRYWAY, []{return logic->GtG_GateOpen && (logic->IsAdult || ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES));}),
-        Entrance(RR_GF_STORMS_GROTTO,                []{return logic->IsAdult && logic->CanOpenStormsGrotto();}),
+        Entrance(RR_GV_FORTRESS_SIDE, []{return true;}),
+        Entrance(RR_GF_OUTSIDE_GATE,  []{return logic->GF_GateOpen;}),
         // RANDTODO: Add tricks for getting past the gerudo guarding the hba range
-        Entrance(RR_GF_HBA_RANGE,                    []{return logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}),
+        Entrance(RR_GF_HBA_RANGE,     []{return logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}),
         // Temporary:
-        Entrance(RR_GF_ROOFTOP_GREEN,                []{return logic->CanPassEnemy(RE_GERUDO_GUARD) || logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_KITCHEN) || ctx->GetTrickOption(RT_GF_JUMP);}),
-        Entrance(RR_GF_ROOFTOP_MAGENTA,              []{return logic->CanPassEnemy(RE_GERUDO_GUARD) || logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_KITCHEN) || ctx->GetTrickOption(RT_GF_JUMP);}),
-        Entrance(RR_GF_ROOFTOP_PURPLE,               []{return logic->CanPassEnemy(RE_GERUDO_GUARD) || logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_KITCHEN) || ctx->GetTrickOption(RT_GF_JUMP);}),
+        Entrance(RR_GF_GROUND_RED,    []{return true;}),
+        Entrance(RR_GF_ROOFTOP_GREEN, []{return logic->CanPassEnemy(RE_GERUDO_GUARD) || logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_KITCHEN) || ctx->GetTrickOption(RT_GF_JUMP);}),
+    });
+
+    areaTable[RR_GF_GROUND_RED] = Region("GF Ground Red", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+        //Exits
+        Entrance(RR_TH_NORTH_F1_CARPENTER_AREA, []{return true;}),
+        Entrance(RR_GF_GROUND_GREY,             []{return true;}),
+        Entrance(RR_GERUDO_FORTRESS,            []{return true;}),
+    });
+
+    areaTable[RR_GF_GROUND_GREY] = Region("GF Ground Grey", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+        //Exits
+        Entrance(RR_GF_GROUND_RED,    []{return logic->CanPassEnemy(RE_GERUDO_GUARD);}),
+        Entrance(RR_GF_GROUND_ORANGE, []{return logic->CanPassEnemy(RE_GERUDO_GUARD);}),
+        Entrance(RR_GF_GROUND_SALMON, []{return logic->CanPassEnemy(RE_GERUDO_GUARD);}),
+        Entrance(RR_GERUDO_FORTRESS,  []{return true;}),
+    });
+
+    areaTable[RR_GF_GROUND_ORANGE] = Region("GF Ground Orange", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+        //Exits
+        /*
+        Entrance(RR_TH_KITCHEN_BOTTOM,          []{return true;}),
+        */
+        Entrance(RR_TH_NORTH_F1_CARPENTER_AREA, []{return true;}),
+        Entrance(RR_TH_SOUTH_F1_CARPENTER_AREA, []{return true;}),
+        Entrance(RR_GF_STORMS_GROTTO,           []{return logic->IsAdult && logic->CanOpenStormsGrotto();}),
+        Entrance(RR_GF_GROUND_GREY,             []{return true;}),
+    });
+
+    areaTable[RR_GF_GROUND_SALMON] = Region("GF Ground Orange", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+        //Exits
+        Entrance(RR_GERUDO_TRAINING_GROUND_ENTRYWAY, []{return logic->GtG_GateOpen && (logic->IsAdult || ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES));}),
+        Entrance(RR_GF_GROUND_GREY,                  []{return true;}),
+        Entrance(RR_GERUDO_FORTRESS,                 []{return true;}),
     });
 
 #pragma region Rooftops
@@ -76,9 +94,7 @@ void RegionTable_Init_GerudoFortress() {
 
     areaTable[RR_GF_ROOFTOP_LIME] = Region("GF Rooftop Lime", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
-        /*
         Entrance(RR_TH_SOUTH_F1_CARPENTER_AREA, []{return true;}),
-        */
         Entrance(RR_GF_ROOFTOP_CYAN,            []{return true /* logic->CanClimb() */;}),
         Entrance(RR_GF_ROOFTOP_WHITE,           []{return true;}),
         Entrance(RR_GERUDO_FORTRESS,            []{return true;}),
@@ -107,7 +123,10 @@ void RegionTable_Init_GerudoFortress() {
         LOCATION(RC_GF_GS_TOP_FLOOR, logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_LONGSHOT) && logic->CanGetNightTimeGS()),
     }, {
         //Exits
-        Entrance(RR_GERUDO_FORTRESS, []{return true;}),
+        /*
+        Entrance(RR_TH_NORTH_F2_CARPENTER_AREA, []{return true;}),
+        */
+        Entrance(RR_GF_ROOFTOP_LIME,            []{return true;}),
     });
 
     areaTable[RR_GF_ROOFTOP_GREEN] = Region("GF Rooftop Green", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -118,6 +137,7 @@ void RegionTable_Init_GerudoFortress() {
         /*
         Entrance(RR_TH_KITCHEN_TOP,       []{return true;}),
         */
+        Entrance(RR_GF_ROOFTOP_MAGENTA,   []{return true;}),
         Entrance(RR_GF_ROOFTOP_LIMEGREEN, []{return logic->CanUse(RG_HOVER_BOOTS) /* || bunny hood jump */;}),
         Entrance(RR_GF_ROOFTOP_VIOLET,    []{return logic->IsAdult;}),
         Entrance(RR_GERUDO_FORTRESS,      []{return true;}),
@@ -134,6 +154,8 @@ void RegionTable_Init_GerudoFortress() {
         LOCATION(RC_GF_GS_TOP_FLOOR, logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_LONGSHOT) && logic->CanGetNightTimeGS()),
     }, {
         //Exits
+        Entrance(RR_GF_ROOFTOP_PURPLE,    []{return true;}),
+        Entrance(RR_GF_ROOFTOP_MAGENTA,   []{return true;}),
         Entrance(RR_GF_ROOFTOP_TURQUOISE, []{return logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->CanUse(RG_SCARECROW) && logic->CanUse(RG_HOOKSHOT)) || logic->CanUse(RG_LONGSHOT);}),
         Entrance(RR_GERUDO_FORTRESS,      []{return true;}),
     });
@@ -144,6 +166,7 @@ void RegionTable_Init_GerudoFortress() {
         LOCATION(RC_GF_GS_TOP_FLOOR, logic->IsAdult && (logic->CanJumpslashExceptHammer() || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOOMERANG) || logic->HasExplosives() || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_DINS_FIRE)) && logic->CanGetNightTimeGS()),
     }, {
         //Exits
+        Entrance(RR_GF_ROOFTOP_MAGENTA,   []{return true;}),
         Entrance(RR_GF_ROOFTOP_LIMEGREEN, []{return true;}),
         Entrance(RR_GERUDO_FORTRESS,      []{return true;}),
     });
