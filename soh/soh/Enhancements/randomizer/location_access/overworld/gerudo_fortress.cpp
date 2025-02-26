@@ -41,9 +41,7 @@ void RegionTable_Init_GerudoFortress() {
 
     areaTable[RR_GF_GROUND_ORANGE] = Region("GF Ground Orange", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
-        /*
         Entrance(RR_TH_KITCHEN_BOTTOM,          []{return true;}),
-        */
         Entrance(RR_TH_NORTH_F1_CARPENTER_AREA, []{return true;}),
         Entrance(RR_TH_SOUTH_F1_CARPENTER_AREA, []{return true;}),
         Entrance(RR_GF_STORMS_GROTTO,           []{return logic->IsAdult && logic->CanOpenStormsGrotto();}),
@@ -74,9 +72,7 @@ void RegionTable_Init_GerudoFortress() {
 
     areaTable[RR_GF_ROOFTOP_WHITE] = Region("GF Rooftop White", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
-        /*
         Entrance(RR_TH_KITCHEN_BOTTOM,          []{return true;}),
-        */
         // need to explicitly convert it into a bool
         Entrance(RR_GF_ROOFTOP_LIME,            []{return ctx->GetTrickOption(RT_GF_JUMP).Get() != 0;}),
         Entrance(RR_TH_SOUTH_F2_CARPENTER_AREA, []{return logic->CanPassEnemy(RE_GERUDO_GUARD);}),
@@ -97,9 +93,7 @@ void RegionTable_Init_GerudoFortress() {
 
     areaTable[RR_GF_ROOFTOP_CYAN] = Region("GF Rooftop Cyan", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
-        /*
         Entrance(RR_TH_KITCHEN_TOP,             []{return true;}),
-        */
         Entrance(RR_TH_SOUTH_F2_CARPENTER_AREA, []{return true;}),
         // need to explicitly convert it into a bool
         Entrance(RR_GF_ROOFTOP_PURPLE,          []{return ctx->GetTrickOption(RT_GF_JUMP).Get() != 0;}),
@@ -127,9 +121,7 @@ void RegionTable_Init_GerudoFortress() {
         LOCATION(RC_GF_GS_TOP_FLOOR, logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) && logic->CanGetNightTimeGS()),
     }, {
         //Exits
-        /*
         Entrance(RR_TH_KITCHEN_TOP,       []{return true;}),
-        */
         Entrance(RR_GF_ROOFTOP_LIME,      []{return true;}),
         Entrance(RR_GF_ROOFTOP_MAGENTA,   []{return true;}),
         Entrance(RR_GF_ROOFTOP_LIMEGREEN, []{return logic->CanUse(RG_HOVER_BOOTS) /* || bunny hood jump */;}),
