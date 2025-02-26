@@ -510,8 +510,8 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
     bool debugCsSkip = (CHECK_BTN_ALL(play->state.input[0].press.button, BTN_START) &&
                         (gSaveContext.fileNum != 0xFEDC) && CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0));
 
-    if ((gSaveContext.gameMode != 0) && (gSaveContext.gameMode != 3) && (play->sceneNum != SCENE_HYRULE_FIELD) &&
-        (csCtx->frames > 20) &&
+    if ((gSaveContext.gameMode != GAMEMODE_NORMAL) && (gSaveContext.gameMode != GAMEMODE_END_CREDITS) &&
+        (play->sceneNum != SCENE_HYRULE_FIELD) && (csCtx->frames > 20) &&
         (CHECK_BTN_ALL(play->state.input[0].press.button, BTN_A) ||
          CHECK_BTN_ALL(play->state.input[0].press.button, BTN_B) ||
          CHECK_BTN_ALL(play->state.input[0].press.button, BTN_START)) &&
@@ -575,7 +575,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
 
         osSyncPrintf("\n分岐先指定！！=[%d]番", cmd->base); // "Future fork designation=No. [%d]"
 
-        if ((gSaveContext.gameMode != 0) && (csCtx->frames != cmd->startFrame)) {
+        if ((gSaveContext.gameMode != GAMEMODE_NORMAL) && (csCtx->frames != cmd->startFrame)) {
             gSaveContext.unk_13E7 = 1;
         }
 
@@ -908,7 +908,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->transitionType = TRANS_TYPE_FADE_WHITE;
                 break;
             case 54:
-                gSaveContext.gameMode = 3;
+                gSaveContext.gameMode = GAMEMODE_END_CREDITS;
                 Audio_SetSoundBanksMute(0x6F);
                 play->linkAgeOnLoad = 1;
                 play->nextEntranceIndex = ENTR_GERUDO_VALLEY_EAST_EXIT;
@@ -1288,7 +1288,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
                 break;
             case 117:
-                gSaveContext.gameMode = 3;
+                gSaveContext.gameMode = GAMEMODE_END_CREDITS;
                 Audio_SetSoundBanksMute(0x6F);
                 play->linkAgeOnLoad = 0;
                 play->nextEntranceIndex = ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN;
@@ -2080,7 +2080,7 @@ void func_80068DC0(PlayState* play, CutsceneContext* csCtx) {
 
         osSyncPrintf("\n\n\n\n\nやっぱりここかいな"); // "Right here, huh"
         gSaveContext.cutsceneIndex = 0;
-        gSaveContext.gameMode = 0;
+        gSaveContext.gameMode = GAMEMODE_NORMAL;
 
         if (D_8015FCC8 != 0) {
             switch (gSaveContext.entranceIndex) {
@@ -2203,7 +2203,7 @@ void Cutscene_HandleConditionalTriggers(PlayState* play) {
         return;
     }
 
-    if ((gSaveContext.gameMode == 0) && (gSaveContext.respawnFlag <= 0) && (gSaveContext.cutsceneIndex < 0xFFF0)) {
+    if ((gSaveContext.gameMode == GAMEMODE_NORMAL) && (gSaveContext.respawnFlag <= 0) && (gSaveContext.cutsceneIndex < 0xFFF0)) {
         if ((gSaveContext.entranceIndex == ENTR_DESERT_COLOSSUS_OUTSIDE_TEMPLE) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT)) {
             Flags_SetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT);
             gSaveContext.entranceIndex = ENTR_DESERT_COLOSSUS_EAST_EXIT;

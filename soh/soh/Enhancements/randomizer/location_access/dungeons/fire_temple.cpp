@@ -705,7 +705,7 @@ void RegionTable_Init_FireTemple() {
 
     areaTable[RR_FIRE_TEMPLE_BOSS_ROOM] = Region("Fire Temple Boss Room", "Fire Temple", {}, NO_DAY_NIGHT_CYCLE, {
         // Events
-        EventAccess(&logic->FireTempleClear, []{return logic->FireTempleClear || (logic->HasBossSoul(RG_VOLVAGIA_SOUL) && (logic->FireTimer() >= 64 && logic->CanUse(RG_MEGATON_HAMMER)));}),
+        EventAccess(&logic->FireTempleClear, []{return logic->FireTempleClear || (logic->FireTimer() >= 64 && logic->CanKillEnemy(RE_VOLVAGIA));}),
     }, {
         // Locations
         LOCATION(RC_FIRE_TEMPLE_VOLVAGIA_HEART, logic->FireTempleClear),

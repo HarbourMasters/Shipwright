@@ -205,7 +205,7 @@ void OnZTitleUpdateSkipToFileSelect(void* gameState) {
 
     gSaveContext.seqId = (u8)NA_BGM_DISABLED;
     gSaveContext.natureAmbienceId = 0xFF;
-    gSaveContext.gameMode = GAMEMODE_TITLE_SCREEN;
+    gSaveContext.gameMode = GAMEMODE_FILE_SELECT;
     titleContext->state.running = false;
 
     SET_NEXT_GAMESTATE(&titleContext->state, FileChoose_Init, FileChooseContext);

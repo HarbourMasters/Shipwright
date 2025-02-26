@@ -371,6 +371,11 @@ typedef enum {
     // #### `args`
     // - `*Actor`
     VB_DOOR_PLAY_SCENE_TRANSITION,
+    // Vanilla condition: true
+    VB_HATCH_CUCCO_OR_CHICKEN,
+    // Vanilla condition: exchangeItemId == EXCH_ITEM_LETTER_ZELDA
+    // Opt: s32
+    VB_HEISHI2_ACCEPT_ITEM_AS_ZELDAS_LETTER,
 
     // #### `result`
     // In `Interface_DrawAmmoCount`:
