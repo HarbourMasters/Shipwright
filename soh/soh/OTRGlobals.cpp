@@ -2177,50 +2177,11 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         bool nonBeanMerchants = ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL_BUT_BEANS) ||
                                 ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL);
         Player* player = GET_PLAYER(play);
-        if (textId == TEXT_RANDOMIZER_CUSTOM_ITEM) {
-            if (player->getItemEntry.getItemId == RG_ICE_TRAP) {
-                messageEntry = Randomizer::GetIceTrapMessage();
-            } else if (player->getItemEntry.getItemId == RG_TRIFORCE_PIECE) {
-                messageEntry = Randomizer::GetTriforcePieceMessage();
-            } else {
-                messageEntry = Randomizer_GetCustomGetItemMessage(player);
-            }
-        } else if (textId == TEXT_ITEM_DUNGEON_MAP || textId == TEXT_ITEM_COMPASS) {
-            if (DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_SHUFFLE_MAPANDCOMPASS)) {
-                if (textId == TEXT_ITEM_DUNGEON_MAP) {
-                    messageEntry =
-                        OTRGlobals::Instance->gRandomizer->GetMapGetItemMessageWithHint(player->getItemEntry);
-                } else {
-                    messageEntry = Randomizer_GetCustomGetItemMessage(player);
-                }
-            }
-        } else if (textId == TEXT_ITEM_KEY_BOSS) {
-            if (player->getItemEntry.getItemId == RG_GANONS_CASTLE_BOSS_KEY) {
-                if (DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_GANONS_BOSS_KEY)) {
-                    messageEntry = Randomizer_GetCustomGetItemMessage(player);
-                }
-            } else {
-                if (DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_BOSS_KEYSANITY)) {
-                    messageEntry = Randomizer_GetCustomGetItemMessage(player);
-                }
-            }
-        } else if (textId == TEXT_ITEM_KEY_SMALL) {
-            if (player->getItemEntry.getItemId == RG_GERUDO_FORTRESS_SMALL_KEY) {
-                if (Randomizer_GetSettingValue(RSK_GERUDO_KEYS) != RO_GERUDO_KEYS_VANILLA) {
-                    messageEntry = Randomizer_GetCustomGetItemMessage(player);
-                }
-            } else {
-                if (DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_KEYSANITY)) {
-                    messageEntry = Randomizer_GetCustomGetItemMessage(player);
-                }
-            }
-        } else if (textId == TEXT_RANDOMIZER_GOSSIP_STONE_HINTS &&
-                   Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != RO_GOSSIP_STONES_NONE &&
-                   (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_NOTHING ||
-                    (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_TRUTH &&
-                     Player_GetMask(play) == PLAYER_MASK_TRUTH) ||
-                    (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_STONE &&
-                     CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
+        if (textId == TEXT_RANDOMIZER_GOSSIP_STONE_HINTS && Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != RO_GOSSIP_STONES_NONE &&
+            (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_NOTHING ||
+             (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_TRUTH &&
+              Player_GetMask(play) == PLAYER_MASK_TRUTH) ||
+             (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_STONE && CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
 
             Actor* stone = GET_PLAYER(play)->talkActor;
             RandomizerHint stoneHint = RH_NONE;
