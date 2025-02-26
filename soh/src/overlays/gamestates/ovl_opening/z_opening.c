@@ -9,7 +9,7 @@
 void Sram_InitDebugSave(void);
 
 void Opening_SetupTitleScreen(OpeningContext* this) {
-    gSaveContext.gameMode = 1;
+    gSaveContext.gameMode = GAMEMODE_TITLE_SCREEN;
     this->state.running = false;
     gSaveContext.linkAge = 0;
     gSaveContext.fileNum = 0xFF;
