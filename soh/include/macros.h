@@ -330,10 +330,12 @@ extern GraphicsContext* __gfxCtx;
 #define GANONS_CASTLE_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_INSIDE_GANONS_CASTLE) ? 3 : 2)
 #define TREASURE_GAME_SMALL_KEY_MAX 6
 
-#define DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(randomizerSettingsKey) \
-    (Randomizer_GetSettingValue(randomizerSettingsKey) != RO_DUNGEON_ITEM_LOC_STARTWITH && \
-     Randomizer_GetSettingValue(randomizerSettingsKey) != RO_DUNGEON_ITEM_LOC_VANILLA && \
-     Randomizer_GetSettingValue(randomizerSettingsKey) != RO_DUNGEON_ITEM_LOC_OWN_DUNGEON)
+#ifdef __cplusplus
+#define DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(rsk) \
+    (OTRGlobals::Instance->gRandoContext->GetOption(rsk).IsNot(RO_DUNGEON_ITEM_LOC_STARTWITH) && \
+    OTRGlobals::Instance->gRandoContext->GetOption(rsk).IsNot(RO_DUNGEON_ITEM_LOC_VANILLA) && \
+    OTRGlobals::Instance->gRandoContext->GetOption(rsk).IsNot(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON))
+#endif
 // #endregion
 
 #endif
