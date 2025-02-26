@@ -2107,40 +2107,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         auto ctx = Rando::Context::GetInstance();
         bool nonBeanMerchants = ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL_BUT_BEANS) || 
                                  ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL);
-        Player* player = GET_PLAYER(play);
-        if (textId == TEXT_RANDOMIZER_GOSSIP_STONE_HINTS && Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != RO_GOSSIP_STONES_NONE &&
-            (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_NOTHING ||
-             (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_TRUTH &&
-              Player_GetMask(play) == PLAYER_MASK_TRUTH) ||
-             (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_STONE && CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
-
-            Actor* stone = GET_PLAYER(play)->talkActor; 
-            RandomizerHint stoneHint = RH_NONE;
-            s16 hintParams = stone->params & 0xFF;
-            
-            if (Rando::StaticData::stoneParamsToHint.contains(hintParams)){
-                stoneHint = Rando::StaticData::stoneParamsToHint[hintParams];
-            } else if (hintParams == 0x18){
-                // look for the chest in the actorlist to determine
-                // which grotto we're in
-                int numOfActorLists =
-                    sizeof(play->actorCtx.actorLists) / sizeof(play->actorCtx.actorLists[0]);
-                for (int i = 0; i < numOfActorLists; i++) {
-                    if (play->actorCtx.actorLists[i].length) {
-                        if (play->actorCtx.actorLists[i].head->id == 10 && 
-                            Rando::StaticData::grottoChestParamsToHint.contains(play->actorCtx.actorLists[i].head->params)) {
-                            //use the chest params to find the stone hint
-                            stoneHint = Rando::StaticData::grottoChestParamsToHint[play->actorCtx.actorLists[i].head->params];
-                        }
-                    }
-                }
-            }
-            if (stoneHint == RH_NONE){
-                messageEntry = CustomMessage("INVALID STONE. PARAMS: " + std::to_string(hintParams));
-            } else {
-                messageEntry = ctx->GetHint(stoneHint)->GetHintMessage(MF_AUTO_FORMAT);
-            }
-        } else if ((textId == TEXT_ALTAR_CHILD || textId == TEXT_ALTAR_ADULT)) {
+        if ((textId == TEXT_ALTAR_CHILD || textId == TEXT_ALTAR_ADULT)) {
             // rando hints at altar
             messageEntry = (LINK_IS_ADULT) ? ctx->GetHint(RH_ALTAR_ADULT)->GetHintMessage() : ctx->GetHint(RH_ALTAR_CHILD)->GetHintMessage(MF_AUTO_FORMAT);
         } else if (textId == TEXT_GANONDORF) {
