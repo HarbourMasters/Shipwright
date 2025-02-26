@@ -1672,7 +1672,7 @@ void Message_OpenText(PlayState* play, u16 textId) {
     Font* font = &msgCtx->font;
     s16 textBoxType;
 
-    bool loadFromMessageTable = false;
+    bool loadFromMessageTable = true;
     GameInteractor_ExecuteOnOpenText(&textId, &loadFromMessageTable);
 
     if (msgCtx->msgMode == MSGMODE_NONE) {
