@@ -99,8 +99,6 @@ void RegionTable_Init_ThievesHideout() {
     }, {
         //Exits
         Entrance(RR_GF_ROOFTOP_YELLOW,  []{return true;}),
-        /*
         Entrance(RR_GF_TOP_OF_FORTRESS, []{return true;}),
-        */
     });
 }

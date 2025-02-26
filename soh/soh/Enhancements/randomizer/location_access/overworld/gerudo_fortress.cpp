@@ -4,22 +4,14 @@
 using namespace Rando;
 
 void RegionTable_Init_GerudoFortress() {
-    areaTable[RR_GERUDO_FORTRESS] = Region("Gerudo Fortress", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
+    areaTable[RR_GF_GROUND_BOTTOM] = Region("Gerudo Fortress", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->CarpenterRescue, []{return logic->CanFinishGerudoFortress();}),
-        EventAccess(&logic->GF_GateOpen,     []{return logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}),
-        EventAccess(&logic->GtG_GateOpen,    []{return logic->GtG_GateOpen || (logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->HasItem(RG_CHILD_WALLET));}),
-    }, {
-        //Locations
-        LOCATION(RC_GF_KITCHEN_POT_1,                 logic->CanBreakPots() && logic->CanPassEnemy(RE_GERUDO_GUARD)),
-        LOCATION(RC_GF_KITCHEN_POT_2,                 logic->CanBreakPots() && logic->CanPassEnemy(RE_GERUDO_GUARD)),
-        LOCATION(RC_GF_KITCHEN_SUN_FAIRY,             logic->CanPassEnemy(RE_GERUDO_GUARD) && logic->CanUse(RG_SUNS_SONG)),
-    }, {
+        EventAccess(&logic->GF_GateOpen,  []{return logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}),
+    }, {}, {
         //Exits
         Entrance(RR_GV_FORTRESS_SIDE, []{return true;}),
         Entrance(RR_GF_OUTSIDE_GATE,  []{return logic->GF_GateOpen;}),
         // RANDTODO: Add tricks for getting past the gerudo guarding the hba range
-        Entrance(RR_GF_HBA_RANGE,     []{return logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}),
         Entrance(RR_GF_GROUND_RED,    []{return true;}),
         Entrance(RR_GF_GROUND_GREY,   []{return true;}),
     });
@@ -28,7 +20,7 @@ void RegionTable_Init_GerudoFortress() {
         //Exits
         Entrance(RR_TH_NORTH_F1_CARPENTER_AREA, []{return true;}),
         Entrance(RR_GF_GROUND_GREY,             []{return true;}),
-        Entrance(RR_GERUDO_FORTRESS,            []{return true;}),
+        Entrance(RR_GF_GROUND_BOTTOM,           []{return true;}),
     });
 
     areaTable[RR_GF_GROUND_GREY] = Region("GF Ground Grey", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
@@ -36,7 +28,7 @@ void RegionTable_Init_GerudoFortress() {
         Entrance(RR_GF_GROUND_RED,    []{return logic->CanPassEnemy(RE_GERUDO_GUARD);}),
         Entrance(RR_GF_GROUND_ORANGE, []{return logic->CanPassEnemy(RE_GERUDO_GUARD);}),
         Entrance(RR_GF_GROUND_SALMON, []{return logic->CanPassEnemy(RE_GERUDO_GUARD);}),
-        Entrance(RR_GERUDO_FORTRESS,  []{return true;}),
+        Entrance(RR_GF_GROUND_BOTTOM, []{return true;}),
     });
 
     areaTable[RR_GF_GROUND_ORANGE] = Region("GF Ground Orange", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
@@ -48,11 +40,15 @@ void RegionTable_Init_GerudoFortress() {
         Entrance(RR_GF_GROUND_GREY,             []{return true;}),
     });
 
-    areaTable[RR_GF_GROUND_SALMON] = Region("GF Ground Orange", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_GF_GROUND_SALMON] = Region("GF Ground Orange", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
+        //Events
+        EventAccess(&logic->GtG_GateOpen, []{return logic->GtG_GateOpen || (logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->HasItem(RG_CHILD_WALLET));}),
+    }, {}, {
         //Exits
         Entrance(RR_GERUDO_TRAINING_GROUND_ENTRYWAY, []{return logic->GtG_GateOpen && (logic->IsAdult || ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES));}),
         Entrance(RR_GF_GROUND_GREY,                  []{return true;}),
-        Entrance(RR_GERUDO_FORTRESS,                 []{return true;}),
+        Entrance(RR_GF_HBA_RANGE,                    []{return logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}),
+        Entrance(RR_GF_GROUND_BOTTOM,                []{return true;}),
     });
 
 #pragma region Rooftops
@@ -185,7 +181,7 @@ void RegionTable_Init_GerudoFortress() {
         EventAccess(&logic->GF_GateOpen, []{return logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && (ctx->GetOption(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD) || ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) /*|| ShuffleSpecialIndoorEntrances*/);}),
     }, {}, {
         //Exits
-        Entrance(RR_GERUDO_FORTRESS,         []{return (logic->IsAdult && (logic->CanUse(RG_HOOKSHOT) || !ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES))) || logic->GF_GateOpen;}),
+        Entrance(RR_GF_GROUND_BOTTOM,        []{return (logic->IsAdult && (logic->CanUse(RG_HOOKSHOT) || !ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES))) || logic->GF_GateOpen;}),
         Entrance(RR_WASTELAND_NEAR_FORTRESS, []{return true;}),
     });
 

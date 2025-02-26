@@ -10,7 +10,7 @@ void RegionTable_Init_GerudoTrainingGround() {
         //Exits
         Entrance(RR_GERUDO_TRAINING_GROUND_LOBBY,    []{return ctx->GetDungeon(GERUDO_TRAINING_GROUND)->IsVanilla();}),
         Entrance(RR_GERUDO_TRAINING_GROUND_MQ_LOBBY, []{return ctx->GetDungeon(GERUDO_TRAINING_GROUND)->IsMQ();}),
-        Entrance(RR_GERUDO_FORTRESS,                 []{return true;}),
+        Entrance(RR_GF_GROUND_BOTTOM,                []{return true;}),
     });
 
 #pragma region Vanilla

@@ -68,7 +68,7 @@ void RegionTable_Init_GerudoValley() {
         LOCATION(RC_GV_GS_PILLAR,      logic->IsAdult && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
     }, {
         //Exits
-        Entrance(RR_GERUDO_FORTRESS,   []{return true;}),
+        Entrance(RR_GF_GROUND_BOTTOM,  []{return true;}),
         Entrance(RR_GV_UPPER_STREAM,   []{return true;}),
         Entrance(RR_GERUDO_VALLEY,     []{return logic->IsChild || logic->CanUse(RG_EPONA) || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->CarpenterRescue;}),
         Entrance(RR_GV_CARPENTER_TENT, []{return logic->IsAdult;}),
