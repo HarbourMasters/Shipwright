@@ -80,28 +80,17 @@ u8 gAllAmmoItems[] = {
 
 // Encapsulates what is drawn by the passed-in function within a border
 template<typename T>
-void DrawGroupWithBorder(T&& drawFunc) {
+void DrawGroupWithBorder(T&& drawFunc, std::string section) {
     // First group encapsulates the inner portion and border
+    ImGui::BeginChild(std::string("##" + section).c_str(), ImVec2(0, 0),
+        ImGuiChildFlags_AlwaysAutoResize | ImGuiChildFlags_Borders | ImGuiChildFlags_AutoResizeX | ImGuiChildFlags_AutoResizeY);
+
     ImGui::BeginGroup();
-
-    ImVec2 padding = ImGui::GetStyle().FramePadding;
-    ImVec2 p0 = ImGui::GetCursorScreenPos();
-    ImGui::SetCursorScreenPos(ImVec2(p0.x + padding.x, p0.y + padding.y));
-
-    // Second group encapsulates just the inner portion
-    ImGui::BeginGroup();
-
+    ImGui::AlignTextToFramePadding();
     drawFunc();
-
-    ImGui::Dummy(padding);
     ImGui::EndGroup();
 
-    ImVec2 p1 = ImGui::GetItemRectMax();
-    p1.x += padding.x;
-    ImVec4 borderCol = ImGui::GetStyle().Colors[ImGuiCol_Border];
-    ImGui::GetWindowDrawList()->AddRect(p0, p1, IM_COL32(borderCol.x * 255, borderCol.y * 255, borderCol.z * 255, borderCol.w * 255));
-
-    ImGui::EndGroup();
+    ImGui::EndChild();
 }
 
 char z2ASCII(int code) {
@@ -416,7 +405,7 @@ void DrawBGSItemFlag(uint8_t itemID) {
     int tradeIndex = itemID - ITEM_POCKET_EGG;
     bool hasItem = (gSaveContext.ship.quest.data.randomizer.adultTradeItems & (1 << tradeIndex)) != 0;
     bool shouldHaveItem = hasItem;
-    ImGui::Checkbox(("##adultTradeFlag" + std::to_string(itemID)).c_str(), &shouldHaveItem);
+    UIWidgets2::Checkbox(("##adultTradeFlag" + std::to_string(itemID)).c_str(), &shouldHaveItem, checkboxOptionsBase);
     if (hasItem != shouldHaveItem) {
         if (shouldHaveItem) {
             gSaveContext.ship.quest.data.randomizer.adultTradeItems |= (1 << tradeIndex);
@@ -433,8 +422,7 @@ void DrawBGSItemFlag(uint8_t itemID) {
 void DrawInventoryTab() {
     static bool restrictToValid = true;
 
-    ImGui::Checkbox("Restrict to valid items", &restrictToValid);
-    UIWidgets::InsertHelpHoverText("Restricts items and ammo to only what is possible to legally acquire in-game");
+    UIWidgets2::Checkbox("Restrict to valid items", &restrictToValid, checkboxOptionsBase.Tooltip("Restricts items and ammo to only what is possible to legally acquire in-game"));
 
     for (int32_t y = 0; y < 4; y++) {
         for (int32_t x = 0; x < 6; x++) {
@@ -546,7 +534,9 @@ void DrawInventoryTab() {
             ImGui::BeginGroup();
 
             ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(itemMapping[item].name), ImVec2(IMAGE_SIZE, IMAGE_SIZE));
+            UIWidgets2::PushStyleInput(themeColor);
             ImGui::InputScalar("##ammoInput", ImGuiDataType_S8, &AMMO(item));
+            UIWidgets2::PopStyleInput();
 
             ImGui::EndGroup();
             ImGui::PopItemWidth();
@@ -601,33 +591,32 @@ void DrawFlagsTab() {
             DrawGroupWithBorder([&]() {
                 ImGui::Text("stateFlags1");
                 UIWidgets::DrawFlagArray32("stateFlags1", player->stateFlags1);
-            });
+            }, "stateFlags1");
 
             ImGui::SameLine();
 
             DrawGroupWithBorder([&]() {
                 ImGui::Text("stateFlags2");
                 UIWidgets::DrawFlagArray32("stateFlags2", player->stateFlags2);
-            });
+            }, "stateFlags2");
 
             DrawGroupWithBorder([&]() {
                 ImGui::Text("stateFlags3");
                 UIWidgets::DrawFlagArray8("stateFlags3", player->stateFlags3);
-            });
+            }, "stateFlags3");
             
             ImGui::SameLine();
             
             DrawGroupWithBorder([&]() {
                 ImGui::Text("unk_6AE_rotFlags");
                 UIWidgets::DrawFlagArray16("unk_6AE_rotFlags", player->unk_6AE_rotFlags);
-            });
+            }, "unk_6AE_rotFlags");
         }
         ImGui::TreePop();
     }
     if (ImGui::TreeNode("Current Scene")) {
         if (gPlayState != nullptr) {
             ActorContext* act = &gPlayState->actorCtx;
-
             DrawGroupWithBorder([&]() {
                 ImGui::Text("Switch");
                 UIWidgets::InsertHelpHoverText("Permanently-saved switch flags");
@@ -640,7 +629,7 @@ void DrawFlagsTab() {
                     act->flags.swch = 0;
                 }
                 UIWidgets::DrawFlagArray32("Switch", act->flags.swch);
-            });
+            }, "Switch");
 
             ImGui::SameLine();
 
@@ -656,7 +645,7 @@ void DrawFlagsTab() {
                     act->flags.tempSwch = 0;
                 }
                 UIWidgets::DrawFlagArray32("Temp Switch", act->flags.tempSwch);
-            });
+            }, "Temp Switch");
 
             DrawGroupWithBorder([&]() {
                 ImGui::Text("Clear");
@@ -670,7 +659,7 @@ void DrawFlagsTab() {
                     act->flags.clear = 0;
                 }
                 UIWidgets::DrawFlagArray32("Clear", act->flags.clear);
-            });
+            }, "Clear");
 
             ImGui::SameLine();
 
@@ -686,7 +675,7 @@ void DrawFlagsTab() {
                     act->flags.tempClear = 0;
                 }
                 UIWidgets::DrawFlagArray32("Temp Clear", act->flags.tempClear);
-            });
+            }, "Temp Clear");
 
             DrawGroupWithBorder([&]() {
                 ImGui::Text("Collect");
@@ -700,7 +689,7 @@ void DrawFlagsTab() {
                     act->flags.collect = 0;
                 }
                 UIWidgets::DrawFlagArray32("Collect", act->flags.collect);
-            });
+            }, "Collect");
 
             ImGui::SameLine();
 
@@ -716,7 +705,7 @@ void DrawFlagsTab() {
                     act->flags.tempCollect = 0;
                 }
                 UIWidgets::DrawFlagArray32("Temp Collect", act->flags.tempCollect);
-            });
+            }, "Temp Collect");
 
             DrawGroupWithBorder([&]() {
                 ImGui::Text("Chest");
@@ -730,7 +719,7 @@ void DrawFlagsTab() {
                     act->flags.chest = 0;
                 }
                 UIWidgets::DrawFlagArray32("Chest", act->flags.chest);
-            });
+            }, "Chest");
 
             ImGui::SameLine();
 
@@ -796,7 +785,7 @@ void DrawFlagsTab() {
             ImGui::Text("Switch");
             UIWidgets::InsertHelpHoverText("Switch flags");
             UIWidgets::DrawFlagArray32("Switch", gSaveContext.sceneFlags[selectedSceneFlagMap].swch);
-        });
+        }, "Saved Switch");
 
         ImGui::SameLine();
 
@@ -804,13 +793,13 @@ void DrawFlagsTab() {
             ImGui::Text("Clear");
             UIWidgets::InsertHelpHoverText("Room-clear flags");
             UIWidgets::DrawFlagArray32("Clear", gSaveContext.sceneFlags[selectedSceneFlagMap].clear);
-        });
+        }, "Saved Clear");
 
         DrawGroupWithBorder([&]() {
             ImGui::Text("Collect");
             UIWidgets::InsertHelpHoverText("Collect flags");
             UIWidgets::DrawFlagArray32("Collect", gSaveContext.sceneFlags[selectedSceneFlagMap].collect);
-        });
+        }, "Saved Collect");
 
         ImGui::SameLine();
 
@@ -818,13 +807,13 @@ void DrawFlagsTab() {
             ImGui::Text("Chest");
             UIWidgets::InsertHelpHoverText("Chest flags");
             UIWidgets::DrawFlagArray32("Chest", gSaveContext.sceneFlags[selectedSceneFlagMap].chest);
-        });
+        }, "Saved Chest");
 
         DrawGroupWithBorder([&]() {
             ImGui::Text("Rooms");
             UIWidgets::InsertHelpHoverText("Flags for visted rooms");
             UIWidgets::DrawFlagArray32("Rooms", gSaveContext.sceneFlags[selectedSceneFlagMap].rooms);
-        });
+        }, "Saved Rooms");
 
         ImGui::SameLine();
 
@@ -832,7 +821,7 @@ void DrawFlagsTab() {
             ImGui::Text("Floors");
             UIWidgets::InsertHelpHoverText("Flags for visted floors");
             UIWidgets::DrawFlagArray32("Floors", gSaveContext.sceneFlags[selectedSceneFlagMap].floors);
-        });
+        }, "Saved Floors");
 
         ImGui::TreePop();
     }
@@ -895,7 +884,7 @@ void DrawFlagsTab() {
                 gSaveContext.inventory.gsTokens = gsCount;
             }
         }
-    });
+    }, "Gold Skulltulas");
 
     for (int i = 0; i < flagTables.size(); i++) {
         const FlagTable& flagTable = flagTables[i];
@@ -924,7 +913,7 @@ void DrawFlagsTab() {
                             DrawFlagTableArray16(flagTable, j, gSaveContext.ship.randomizerInf[j]);
                             break;
                     }
-                });
+                }, flagTable.name);
             }
 
             // make some buttons to help with fishsanity debugging
@@ -1309,7 +1298,7 @@ void DrawQuestStatusTab() {
             // dungeonItems is size 20 but dungeonKeys is size 19, so there are no keys for the last scene (Barinade's Lair)
             ImGui::Text("Barinade's Lair does not have small keys");
         }
-    });
+    }, "Dungeon Items");
 
     ImGui::PopItemWidth();
 }
@@ -1396,7 +1385,7 @@ void DrawPlayerTab() {
             ImGui::InputScalar("Y Pos", ImGuiDataType_Float, &player->actor.world.pos.y);
             ImGui::SameLine();
             ImGui::InputScalar("Z Pos", ImGuiDataType_Float, &player->actor.world.pos.z);
-        });
+        }, "Link's Position");
 
         DrawGroupWithBorder([&]() {
             ImGui::Text("Link's Rotation");
@@ -1406,7 +1395,7 @@ void DrawPlayerTab() {
             ImGui::InputScalar("Y Rot", ImGuiDataType_S16, &player->actor.world.rot.y);
             ImGui::SameLine();
             ImGui::InputScalar("Z Rot", ImGuiDataType_S16, &player->actor.world.rot.z);
-        });
+        }, "Link's Rotation");
 
         DrawGroupWithBorder([&]() {
             ImGui::Text("Link's Model Rotation");
@@ -1416,7 +1405,7 @@ void DrawPlayerTab() {
             ImGui::InputScalar("Y ModRot", ImGuiDataType_S16, &player->actor.shape.rot.y);
             ImGui::SameLine();
             ImGui::InputScalar("Z ModRot", ImGuiDataType_S16, &player->actor.shape.rot.z);
-        });
+        }, "Link's Model Rotation");
 
         ImGui::InputScalar("Linear Velocity", ImGuiDataType_Float, &player->linearVelocity);
         UIWidgets::InsertHelpHoverText("Link's speed along the XZ plane");
@@ -1567,7 +1556,7 @@ void DrawPlayerTab() {
                 ImGui::SameLine();
                 ImGui::InputScalar("D-pad Right", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[7], &one, NULL);
             }
-        });
+        }, "Current Equips");
 
         ImGui::Text("Player State");
         uint8_t bit[32] = {};
@@ -1575,8 +1564,9 @@ void DrawPlayerTab() {
         std::vector<std::vector<std::string>> flag_strs = { state1, state2, state3 };
 
         for (int j = 0; j <= 2; j++) {
+            std::string label = fmt::format("State Flags {}", j + 1);
             DrawGroupWithBorder([&]() {
-                ImGui::Text("State Flags %d", j + 1);
+                ImGui::Text("%s", label.c_str());
                 std::vector<std::string> state = flag_strs[j];
                 for (int i = 0; i <= 31; i++) {
                     bit[i] = ((flags[j] >> i) & 1);
@@ -1584,53 +1574,62 @@ void DrawPlayerTab() {
                         ImGui::Text("%s", state[i].c_str());
                     }
                 }
-            });
+            }, label.c_str());
             ImGui::SameLine();
         }
         DrawGroupWithBorder([&]() {
             ImGui::Text("Sword");
             ImGui::Text("  %d", player->meleeWeaponState);
-        });
+        }, "Sword");
 
     } else {
         ImGui::Text("Global Context needed for player info!");
     }
 }
 
+void ResetBaseOptions() {
+    intSliderOptionsBase.Color(themeIndex).Size({320.0f, 0.0f}).Tooltip("");
+    buttonOptionsBase.Color(themeIndex).Size(UIWidgets2::Sizes::Inline).Tooltip("");
+    checkboxOptionsBase.Color(themeIndex).Tooltip("");
+    comboboxOptionsBase.Color(themeIndex).ComponentAlignment(UIWidgets2::ComponentAlignment::Left).LabelPosition(UIWidgets2::LabelPosition::Near).Tooltip("");
+}
+
 void SaveEditorWindow::DrawElement() {
     themeIndex = SohGui::mSohMenu->GetMenuThemeColor();
     themeColor = UIWidgets2::ColorValues.at(themeIndex);
-    intSliderOptionsBase.Color(themeIndex).Size({320.0f, 0.0f});
-    buttonOptionsBase.Color(themeIndex).Size(UIWidgets2::Sizes::Inline);
-    checkboxOptionsBase.Color(themeIndex);
-    comboboxOptionsBase.Color(themeIndex).ComponentAlignment(UIWidgets2::ComponentAlignment::Left).LabelPosition(UIWidgets2::LabelPosition::Near);
     UIWidgets2::PushStyleTabs(themeIndex);
     if (ImGui::BeginTabBar("SaveContextTabBar", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
+        ResetBaseOptions();
         if (ImGui::BeginTabItem("Info")) {
             DrawInfoTab();
             ImGui::EndTabItem();
         }
 
+        ResetBaseOptions();
         if (ImGui::BeginTabItem("Inventory")) {
             DrawInventoryTab();
             ImGui::EndTabItem();
         }
 
+        ResetBaseOptions();
         if (ImGui::BeginTabItem("Flags")) {
             DrawFlagsTab();
             ImGui::EndTabItem();
         }
 
+        ResetBaseOptions();
         if (ImGui::BeginTabItem("Equipment")) {
             DrawEquipmentTab();
             ImGui::EndTabItem();
         }
 
+        ResetBaseOptions();
         if (ImGui::BeginTabItem("Quest Status")) {
             DrawQuestStatusTab();
             ImGui::EndTabItem();
         }
 
+        ResetBaseOptions();
         if (ImGui::BeginTabItem("Player")) {
             DrawPlayerTab();
             ImGui::EndTabItem();
