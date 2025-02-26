@@ -1741,20 +1741,6 @@ std::wstring StringToU16(const std::string& s) {
     return utf16;
 }
 
-int CopyStringToCharBuffer(const std::string& inputStr, char* buffer, const int maxBufferSize) {
-    if (!inputStr.empty()) {
-        // Prevent potential horrible overflow due to implicit conversion of maxBufferSize to an unsigned. Prevents
-        // negatives.
-        memset(buffer, 0, std::max<int>(0, maxBufferSize));
-        // Gaurentee that this value will be greater than 0, regardless of passed variables.
-        const int copiedCharLen = std::min<int>(std::max<int>(0, maxBufferSize - 1), inputStr.length());
-        memcpy(buffer, inputStr.c_str(), copiedCharLen);
-        return copiedCharLen;
-    }
-
-    return 0;
-}
-
 extern "C" void OTRGfxPrint(const char* str, void* printer, void (*printImpl)(void*, char)) {
     const std::vector<uint32_t> hira1 = {
         u'を', u'ぁ', u'ぃ', u'ぅ', u'ぇ', u'ぉ', u'ゃ', u'ゅ', u'ょ', u'っ', u'-',  u'あ', u'い',
@@ -2434,21 +2420,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                                                                        MF_FORMATTED);
     }
     if (textId == TEXT_FISHERMAN_LEAVE && CVarGetInteger(CVAR_ENHANCEMENT("QuitFishingAtDoor"), 0)) {
-        messageEntry =
-            CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_FISHERMAN_LEAVE, MF_FORMATTED);
-    }
-    font->charTexBuf[0] = (messageEntry.GetTextBoxType() << 4) | messageEntry.GetTextBoxPosition();
-    switch (gSaveContext.language) {
-        case LANGUAGE_FRA:
-            return msgCtx->msgLength = font->msgLength =
-                       CopyStringToCharBuffer(messageEntry.GetFrench(MF_RAW), buffer, maxBufferSize);
-        case LANGUAGE_GER:
-            return msgCtx->msgLength = font->msgLength =
-                       CopyStringToCharBuffer(messageEntry.GetGerman(MF_RAW), buffer, maxBufferSize);
-        case LANGUAGE_ENG:
-        default:
-            return msgCtx->msgLength = font->msgLength =
-                       CopyStringToCharBuffer(messageEntry.GetEnglish(MF_RAW), buffer, maxBufferSize);
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_FISHERMAN_LEAVE, MF_FORMATTED);
     }
     return false;
 }

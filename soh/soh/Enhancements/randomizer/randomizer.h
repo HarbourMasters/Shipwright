@@ -69,11 +69,8 @@ class Randomizer {
                                      bool mysterious = false);
     RandomizerCheck GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
     CustomMessage GetGoronMessage(u16 index);
-    CustomMessage GetMapGetItemMessageWithHint(GetItemEntry itemEntry);
     static void CreateCustomMessages();
     static CustomMessage GetRupeeMessage(u16 rupeeTextId);
-    static CustomMessage GetIceTrapMessage();
-    static CustomMessage GetTriforcePieceMessage();
 };
 
 #ifdef __cplusplus
