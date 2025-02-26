@@ -83,6 +83,8 @@ class CustomMessage {
     bool operator==(const std::string& operand) const;
     bool operator!=(const CustomMessage& right) const;
 
+    void LoadIntoFont();
+
     /**
      * @brief Finds an instance of oldStr in each language of the CustomMessage
      * and replaces it with newStr. Typically used for dynamic variable replacement

@@ -1,14 +1,12 @@
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include <soh/OTRGlobals.h>
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 #include "soh/ShipInit.hpp"
-#include "randomizer.h"
+#include <soh/ResourceManagerHelpers.h>
 
 extern "C" {
 #include <variables.h>
 #include <macros.h>
-#include <z64.h>
-#include <soh/OTRGlobals.h>
-#include <soh/ResourceManagerHelpers.h>
 extern PlayState* gPlayState;
 }
 
@@ -362,22 +360,23 @@ void BuildCustomItemMessage(Player* player, CustomMessage& msg) {
         rgid = player->getItemId;
     }
     CustomMessage name = CustomMessage(Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(rgid)).GetName(), TEXTBOX_TYPE_BLUE);
-    name.Replace("[[name]]", name);
-    name.AutoFormat();
+    msg.Replace("[[name]]", name);
+    msg.AutoFormat();
 }
 
 void BuildItemMessage(u16* textId, bool* loadFromMessageTable) {
     Player* player = GET_PLAYER(gPlayState);
-    CustomMessage messageEntry;
+    CustomMessage msg;
 
     if (player->getItemEntry.getItemId == RG_ICE_TRAP) {
-        BuildIceTrapMessage(messageEntry);
+        BuildIceTrapMessage(msg);
     } else if (player->getItemEntry.getItemId == RG_TRIFORCE_PIECE) {
-        BuildTriforcePieceMessage(messageEntry);
+        BuildTriforcePieceMessage(msg);
     } else {
-        BuildCustomItemMessage(player, messageEntry);
+        BuildCustomItemMessage(player, msg);
     }
     *loadFromMessageTable = false;
+    msg.LoadIntoFont();
 }
 
 void BuildMapMessage(uint16_t* textId, bool* loadFromMessageTable) {
@@ -434,6 +433,7 @@ void BuildMapMessage(uint16_t* textId, bool* loadFromMessageTable) {
         msg.Replace("[[typeHint]]", Rando::StaticData::hintTextTable[RHT_DUNGEON_ORDINARY].GetHintMessage());
     }
     *loadFromMessageTable = false;
+    msg.LoadIntoFont();
 }
 
 void BuildBossKeyMessage(uint16_t* textId, bool* loadFromMessageTable) {
@@ -447,6 +447,7 @@ void BuildBossKeyMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg;
     BuildCustomItemMessage(player, msg);
     *loadFromMessageTable = false;
+    msg.LoadIntoFont();
 }
 
 void BuildSmallKeyMessage(uint16_t* textId, bool* loadFromMessageTable) {
@@ -460,6 +461,7 @@ void BuildSmallKeyMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg;
     BuildCustomItemMessage(player, msg);
     *loadFromMessageTable = false;
+    msg.LoadIntoFont();
 }
 
 void RegisterItemMessages () {
