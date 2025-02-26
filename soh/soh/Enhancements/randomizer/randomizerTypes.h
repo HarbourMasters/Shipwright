@@ -5743,6 +5743,7 @@ typedef enum {
     RE_STINGER,
     RE_BIG_OCTO,
     RE_GERUDO_WARRIOR,
+    RE_GERUDO_GUARD,
     RE_GIBDO,
     RE_GOHMA,
     RE_KING_DODONGO,

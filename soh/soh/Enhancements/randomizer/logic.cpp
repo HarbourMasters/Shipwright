@@ -455,6 +455,8 @@ namespace Rando {
     bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wallOrFloor, uint8_t quantity, bool timer, bool inWater) {
         bool killed = false;
         switch(enemy) {
+            case RE_GERUDO_GUARD:
+                return false;
             case RE_GOLD_SKULLTULA:
                 switch (distance){
                     case ED_CLOSE:
@@ -772,6 +774,8 @@ namespace Rando {
             case RE_PURPLE_LEEVER:
             case RE_OCTOROK:
                 return true;
+            case RE_GERUDO_GUARD:
+                return logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT);
             case RE_BIG_SKULLTULA:
                 //hammer jumpslash can pass, but only on flat land where you can kill with hammer swing
                 return CanUse(RG_NUTS) || CanUse(RG_BOOMERANG);
