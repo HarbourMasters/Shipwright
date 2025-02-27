@@ -19,7 +19,6 @@
 
 #define MAX_SEED_STRING_SIZE 1024
 #define NUM_TRIFORCE_PIECE_MESSAGES 6
-#define NUM_GORON_MESSAGES 9
 
 class Randomizer {
   private:
@@ -57,8 +56,6 @@ class Randomizer {
     ItemObtainability GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
     ItemObtainability GetItemObtainabilityFromRandomizerGet(RandomizerGet randomizerCheck);
     RandomizerCheck GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
-    CustomMessage GetGoronMessage(u16 index);
-    static void CreateCustomMessages();
 };
 
 #ifdef __cplusplus
