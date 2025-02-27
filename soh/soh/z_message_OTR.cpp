@@ -136,11 +136,6 @@ extern "C" void OTRMessage_Init()
 
     CustomMessageManager::Instance->AddCustomMessageTable(customMessageTableID);
     CustomMessageManager::Instance->CreateMessage(
-        customMessageTableID, TEXT_MARKET_GUARD_NIGHT,
-        CustomMessage("You look bored. Wanna go out for a&walk?\x1B&%gYes&No%w",
-                      "Du siehst gelangweilt aus.&Willst Du einen Spaziergang machen?\x1B&%gJa&Nein%w",
-                      "Tu as l'air de t'ennuyer. Tu veux&aller faire un tour?\x1B&%gOui&Non%w"));
-    CustomMessageManager::Instance->CreateMessage(
         customMessageTableID, TEXT_FISHERMAN_LEAVE,
         CustomMessage("Hey! Hey!&You can't take the rod out of here!&I'm serious!^Do you want to quit?&\x1B&%gYes&No%w",
                       "Hey! Hey!&Du kannst die Angel doch nicht&einfach mitnehmen!&Ganz im Ernst!^Möchtest Du aufhören?&\x1B&%gJa&Nein%w",
