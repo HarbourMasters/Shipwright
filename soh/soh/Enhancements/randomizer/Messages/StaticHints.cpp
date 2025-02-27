@@ -225,6 +225,12 @@ void BuildBiggoronHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
     *loadFromMessageTable = false;
 }
 
+void BuildBigPoesHintMessage(uint16_t * textId, bool* loadFromMessageTable) {
+    CustomMessage msg = RAND_GET_HINT(RH_BIGGORON_HINT)->GetHintMessage(MF_AUTO_FORMAT);
+    msg.LoadIntoFont();
+    *loadFromMessageTable = false;
+}
+
 void RegisterStaticHints() {
     // Ganondorf
     COND_ID_HOOK(OnOpenText, TEXT_GANONDORF, RAND_GET_OPTION(RSK_GANONDORF_HINT), BuildGanondorfHint);
@@ -279,11 +285,14 @@ void RegisterStaticHints() {
     COND_ID_HOOK(OnOpenText, TEXT_SARIAS_SONG_GLAD_NOW, RAND_GET_OPTION(RSK_SARIA_HINT), BuildSariaMessage);
     COND_ID_HOOK(OnOpenText, TEXT_SARIAS_SONG_IMPRISON_GANONDORF, RAND_GET_OPTION(RSK_SARIA_HINT), BuildSariaMessage);
     COND_ID_HOOK(OnOpenText, TEXT_SARIAS_SONG_CHANNELING_POWER, RAND_GET_OPTION(RSK_SARIA_HINT), BuildSariaMessage);
-    //Biggoron
+    // Biggoron
     COND_ID_HOOK(OnOpenText, TEXT_BIGGORON_BETTER_AT_SMITHING, RAND_GET_OPTION(RSK_BIGGORON_HINT), BuildBiggoronHintMessage);
     COND_ID_HOOK(OnOpenText, TEXT_BIGGORON_WAITING_FOR_YOU, RAND_GET_OPTION(RSK_BIGGORON_HINT), BuildBiggoronHintMessage);
     COND_ID_HOOK(OnOpenText, TEXT_BIGGORON_RETURN_AFTER_A_FEW_DAYS, RAND_GET_OPTION(RSK_BIGGORON_HINT), BuildBiggoronHintMessage);
     COND_ID_HOOK(OnOpenText, TEXT_BIGGORON_I_MAAAADE_THISSSS, RAND_GET_OPTION(RSK_BIGGORON_HINT), BuildBiggoronHintMessage);
+    // Big Poes
+    COND_ID_HOOK(OnOpenText, TEXT_GHOST_SHOP_EXPLAINATION, RAND_GET_OPTION(RSK_BIG_POES_HINT), BuildBigPoesHintMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_GHOST_SHOP_CARD_HAS_POINTS, RAND_GET_OPTION(RSK_BIG_POES_HINT), BuildBigPoesHintMessage);
 }
 
 RegisterShipInitFunc initFunc(RegisterStaticHints, { "IS_RANDO" });
