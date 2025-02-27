@@ -1,3 +1,5 @@
+// RANDOTODO: Consider breaking this up into the different actors
+// That speak these hints, like 2Ship does with ActorBehavior
 #include <soh/OTRGlobals.h>
 
 extern "C" {
