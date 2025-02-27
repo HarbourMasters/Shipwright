@@ -399,13 +399,13 @@ bool AddCheckToLogic(LocationAccess& locPair, GetAccessibleLocationsStruct& gals
   RandomizerGet locItem = location->GetPlacedRandomizerGet();
 
   if (!location->IsAddedToPool() && locPair.ConditionsMet(parentRegion, gals.calculatingAccessibleChecks)) {
-    location->AddToPool();
-
     if (gals.calculatingAccessibleChecks) {
       gals.accessibleLocations.push_back(loc);
       StopPerformanceTimer(PT_LOCATION_LOGIC);
       return false;
     }
+
+    location->AddToPool();
 
     if (locItem == RG_NONE) {
       gals.accessibleLocations.push_back(loc); //Empty location, consider for placement
@@ -504,7 +504,7 @@ std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerChec
   auto ctx = Rando::Context::GetInstance();
   GetAccessibleLocationsStruct gals(0);
   gals.calculatingAccessibleChecks = calculatingAccessibleChecks;
-  ResetLogic(ctx, gals, true);
+  ResetLogic(ctx, gals, !calculatingAccessibleChecks);
   do {
     gals.InitLoop();
     for (size_t i = 0; i < gals.regionPool.size(); i++) {
