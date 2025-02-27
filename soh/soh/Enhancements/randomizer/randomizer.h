@@ -18,7 +18,6 @@
 #include "soh/Enhancements/randomizer/fishsanity.h"
 
 #define MAX_SEED_STRING_SIZE 1024
-#define NUM_TRIFORCE_PIECE_MESSAGES 6
 
 class Randomizer {
   private:
@@ -27,12 +26,7 @@ class Randomizer {
   public:
     Randomizer();
     ~Randomizer();
-
-    static const std::string getItemMessageTableID;
-    static const std::string hintMessageTableID;
-    static const std::string rupeeMessageTableID;
-    static const std::string NaviRandoMessageTableID;
-
+    
     static Sprite* GetSeedTexture(uint8_t index);
     bool SpoilerFileExists(const char* spoilerFileName);
     bool IsTrialRequired(s32 trialFlag);

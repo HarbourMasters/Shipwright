@@ -2084,13 +2084,6 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     const int maxBufferSize = sizeof(font->msgBuf);
     CustomMessage messageEntry;
     s16 actorParams = 0;
-    if (IS_RANDO) {
-        auto ctx = Rando::Context::GetInstance();
-        if (textId == TEXT_FIRE_TEMPLE_GORON_OWE_YOU_BIG_TIME || (textId >= TEXT_FIRE_TEMPLE_GORON_FALLING_DOORS_SECRET && textId <= TEXT_FIRE_TEMPLE_GORON_SOUNDS_DIFFERENT_SECRET)) {
-            u16 choice = Random(0, NUM_GORON_MESSAGES);
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetGoronMessage(choice);
-        }
-    }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {
         if (CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), 0) != 0) {
             // The freeze text cannot be manually dismissed and must be auto-dismissed.
