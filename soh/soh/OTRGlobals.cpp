@@ -2138,9 +2138,6 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     const int maxBufferSize = sizeof(font->msgBuf);
     CustomMessage messageEntry;
     s16 actorParams = 0;
-    if (textId == TEXT_MARKET_GUARD_NIGHT && CVarGetInteger(CVAR_ENHANCEMENT("MarketSneak"), 0) && play->sceneNum == SCENE_MARKET_ENTRANCE_NIGHT) {
-        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_MARKET_GUARD_NIGHT, MF_FORMATTED);
-    }
     if (textId == TEXT_FISHERMAN_LEAVE && CVarGetInteger(CVAR_ENHANCEMENT("QuitFishingAtDoor"), 0)) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_FISHERMAN_LEAVE, MF_FORMATTED);
     }
