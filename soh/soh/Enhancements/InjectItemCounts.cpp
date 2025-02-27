@@ -29,7 +29,18 @@ void BuildSkulltulaMessage(uint16_t* textId, bool* loadFromMessageTable) {
     int16_t gsCount = gSaveContext.inventory.gsTokens + (IS_RANDO ? 1 : 0);
     msg.Replace("[[gscount]]", std::to_string(gsCount));
     msg.AutoFormat(ITEM_SKULL_TOKEN);
-    msg.AutoFormat();
+    msg.LoadIntoFont();
+    *loadFromMessageTable = false;
+}
+
+void BuildHeartContainerMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    CustomMessage msg = CustomMessage(
+        "You got a %rHeart Container%w!&You've collected %r[[heartContainerCount]]%w containers&in total!",
+        "Ein %rHerzcontainer%w!&Du hast nun insgesamt %r[[heartContainerCount]]%w&Herzcontainer gesammelt!",
+        "Vous obtenez un %rCoeur&d'Energie%w! Vous en avez&collecté %r[[heartContainerCount]]%w en tout!"
+    );
+    msg.Replace("[[heartContainerCount]]", std::to_string(gSaveContext.ship.stats.heartContainers + 1));
+    msg.AutoFormat(ITEM_HEART_CONTAINER);
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
 }
@@ -37,8 +48,10 @@ void BuildSkulltulaMessage(uint16_t* textId, bool* loadFromMessageTable) {
 void InjectItemCounts_Register() {
     COND_ID_HOOK(OnOpenText, TEXT_GS_FREEZE, CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), 0), BuildSkulltulaMessage);
     COND_ID_HOOK(OnOpenText, TEXT_GS_NO_FREEZE, CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), 0), BuildSkulltulaMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_HEART_CONTAINER, CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), 0), BuildHeartContainerMessage);
 }
 
 RegisterShipInitFunc initFunc(InjectItemCounts_Register, { 
     CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"),
+    CVAR_ENHANCEMENT("InjectItemCounts.HeartContainers"),
 });

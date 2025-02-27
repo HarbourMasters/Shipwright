@@ -150,12 +150,6 @@ extern "C" void OTRMessage_Init()
                       "\x08Krabbelmine  10 Stück  99 Rubine\x09&&\x1B%gKaufen!&Nicht kaufen!%w",
                       "\x08Missiles  10 unités   99 Rubis\x09&&\x1B%gAcheter&Ne pas acheter%w"));
     CustomMessageManager::Instance->CreateGetItemMessage(
-        customMessageTableID, (GetItemID)TEXT_HEART_CONTAINER, ITEM_HEART_CONTAINER,
-        CustomMessage(
-            "You got a %rHeart Container%w!&You've collected %r[[heartContainerCount]]%w containers&in total!",
-            "Ein %rHerzcontainer%w!&Du hast nun insgesamt %r[[heartContainerCount]]%w&Herzcontainer gesammelt!",
-            "Vous obtenez un %rCoeur&d'Energie%w! Vous en avez&collecté %r[[heartContainerCount]]%w en tout!"));
-    CustomMessageManager::Instance->CreateGetItemMessage(
         customMessageTableID, (GetItemID)TEXT_HEART_PIECE, ITEM_HEART_PIECE,
         CustomMessage("You got a %rHeart Piece%w!&You've collected %r[[heartPieceCount]]%w pieces&in total!",
                       "Ein %rHerzteil%w!&Du hast nun insgesamt %r[[heartPieceCount]]%w&Herzteile gesammelt!",
