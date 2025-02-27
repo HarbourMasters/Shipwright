@@ -145,37 +145,76 @@ void BuildGregHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
     }
 }
 
+void BuildMysteriousWarpMessage() {
+    CustomMessage msg = CustomMessage(
+        "Warp to&%ra mysterious place?%w&" + CustomMessage::TWO_WAY_CHOICE() + "%gOK&No%w",
+        "Zu&%reinem mysteriösen Ort%w?&" + CustomMessage::TWO_WAY_CHOICE() + "%gOK&No%w",
+        "Se téléporter vers&%run endroit mystérieux%w?&" + CustomMessage::TWO_WAY_CHOICE() + "%rOK!&Non%w"
+    );
+    msg.LoadIntoFont();
+}
+
 void BuildMinuetWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    if (RAND_GET_OPTION(RSK_WARP_SONG_HINTS).Is(RO_GENERIC_OFF)) {
+        BuildMysteriousWarpMessage();
+        *loadFromMessageTable = false;
+        return;
+    }
     CustomMessage msg = RAND_GET_HINT(RH_MINUET_WARP_LOC)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
 }
 
 void BuildBoleroWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    if (RAND_GET_OPTION(RSK_WARP_SONG_HINTS).Is(RO_GENERIC_OFF)) {
+        BuildMysteriousWarpMessage();
+        *loadFromMessageTable = false;
+        return;
+    }
     CustomMessage msg = RAND_GET_HINT(RH_BOLERO_WARP_LOC)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
 }
 
 void BuildSerenadeWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    if (RAND_GET_OPTION(RSK_WARP_SONG_HINTS).Is(RO_GENERIC_OFF)) {
+        BuildMysteriousWarpMessage();
+        *loadFromMessageTable = false;
+        return;
+    }
     CustomMessage msg = RAND_GET_HINT(RH_SERENADE_WARP_LOC)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
 }
 
 void BuildRequiemWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    if (RAND_GET_OPTION(RSK_WARP_SONG_HINTS).Is(RO_GENERIC_OFF)) {
+        BuildMysteriousWarpMessage();
+        *loadFromMessageTable = false;
+        return;
+    }
     CustomMessage msg = RAND_GET_HINT(RH_REQUIEM_WARP_LOC)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
 }
 
 void BuildNocturneWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    if (RAND_GET_OPTION(RSK_WARP_SONG_HINTS).Is(RO_GENERIC_OFF)) {
+        BuildMysteriousWarpMessage();
+        *loadFromMessageTable = false;
+        return;
+    }
     CustomMessage msg = RAND_GET_HINT(RH_NOCTURNE_WARP_LOC)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
 }
 
 void BuildPreludeWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    if (RAND_GET_OPTION(RSK_WARP_SONG_HINTS).Is(RO_GENERIC_OFF)) {
+        BuildMysteriousWarpMessage();
+        *loadFromMessageTable = false;
+        return;
+    }
     CustomMessage msg = RAND_GET_HINT(RH_PRELUDE_WARP_LOC)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
