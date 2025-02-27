@@ -138,9 +138,11 @@ void BuildDampesDiaryMessage(uint16_t* textId, bool* loadFromMessageTable) {
 }
 
 void BuildGregHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
-    CustomMessage msg = RAND_GET_HINT(RH_GREG_RUPEE)->GetHintMessage(MF_AUTO_FORMAT);
-    msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    if (gPlayState->sceneNum == SCENE_TREASURE_BOX_SHOP) {
+        CustomMessage msg = RAND_GET_HINT(RH_GREG_RUPEE)->GetHintMessage(MF_AUTO_FORMAT);
+        msg.LoadIntoFont();
+        *loadFromMessageTable = false;
+    }
 }
 
 void BuildMinuetWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
