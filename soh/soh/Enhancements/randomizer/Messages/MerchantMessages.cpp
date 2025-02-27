@@ -128,7 +128,7 @@ void BuildScrubMessage(uint16_t* textId, bool* loadFromMessageTable) {
             "\x12\x38\x82" "In Ordnung! Du gewinnst! Im Austausch dafür, dass Du mich verschont hast, werde ich Dir einen %g[[1]]%w geben!\x07\x10\xA3",
             "\x12\x38\x82" "J'me rends! Laisse-moi partir et en échange, je te donne un %g[[1]]%w! Vas-y prends le!\x07\x10\xA3");
     } else {
-        msg = CustomMessage("\x12\x38\x82" "All right! You win! In return for sparing me, I will sell you a %g[[1]]%w! %g[[2]] Rupees%w it is!\x07\x10\xA3",
+        msg = CustomMessage("\x12\x38\x82" "All right! You win! In return for sparing me, I will sell you a %g[[1]]%w! %y[[2]] Rupees%w it is!\x07\x10\xA3",
             "\x12\x38\x82" "Ich gebe auf! Ich verkaufe Dir einen %g[[1]]%w für %y[[2]] Rubine%w!\x07\x10\xA3",
             "\x12\x38\x82" "J'abandonne! Tu veux bien m'acheter un %g[[1]]%w? Ça fera %y[[2]] Rubis%w!\x07\x10\xA3");
     }
