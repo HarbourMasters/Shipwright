@@ -45,13 +45,33 @@ void BuildHeartContainerMessage(uint16_t* textId, bool* loadFromMessageTable) {
     *loadFromMessageTable = false;
 }
 
+void BuildHeartPieceMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    CustomMessage msg = CustomMessage(
+        "You got a %rHeart Piece%w!&You've collected %r[[heartPieceCount]]%w pieces&in total!",
+        "Ein %rHerzteil%w!&Du hast nun insgesamt %r[[heartPieceCount]]%w&Herzteile gesammelt!",
+        "Vous obtenez un %rQuart de&Coeur%w! Vous en avez collecté&%r[[heartPieceCount]]%w en tout!",
+        TEXTBOX_TYPE_BLUE
+    );
+    msg.Replace("[[heartPieceCount]]", std::to_string(gSaveContext.ship.stats.heartPieces + 1));
+    msg.AutoFormat(ITEM_HEART_PIECE);
+    msg.LoadIntoFont();
+    *loadFromMessageTable = false;
+}
+
 void InjectItemCounts_Register() {
     COND_ID_HOOK(OnOpenText, TEXT_GS_FREEZE, CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), 0), BuildSkulltulaMessage);
     COND_ID_HOOK(OnOpenText, TEXT_GS_NO_FREEZE, CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), 0), BuildSkulltulaMessage);
     COND_ID_HOOK(OnOpenText, TEXT_HEART_CONTAINER, CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), 0), BuildHeartContainerMessage);
+    // Heart Pieces don't have documented text IDs after the first one, but
+    // there are 3 more in between TEXT_HEART_PIECE and TEXT_HEART_CONTAINER.
+    COND_ID_HOOK(OnOpenText, TEXT_HEART_PIECE, CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 0), BuildHeartPieceMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_HEART_PIECE + 1, CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 0), BuildHeartPieceMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_HEART_PIECE + 2, CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 0), BuildHeartPieceMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_HEART_PIECE + 3, CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 0), BuildHeartPieceMessage);
 }
 
 RegisterShipInitFunc initFunc(InjectItemCounts_Register, { 
     CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"),
-    CVAR_ENHANCEMENT("InjectItemCounts.HeartContainers"),
+    CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"),
+    CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece")
 });

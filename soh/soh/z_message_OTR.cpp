@@ -149,12 +149,6 @@ extern "C" void OTRMessage_Init()
                       "Bombchu  10 pieces   99 Rupees\x09&&\x1B%gBuy&Don't buy%w",
                       "\x08Krabbelmine  10 Stück  99 Rubine\x09&&\x1B%gKaufen!&Nicht kaufen!%w",
                       "\x08Missiles  10 unités   99 Rubis\x09&&\x1B%gAcheter&Ne pas acheter%w"));
-    CustomMessageManager::Instance->CreateGetItemMessage(
-        customMessageTableID, (GetItemID)TEXT_HEART_PIECE, ITEM_HEART_PIECE,
-        CustomMessage("You got a %rHeart Piece%w!&You've collected %r[[heartPieceCount]]%w pieces&in total!",
-                      "Ein %rHerzteil%w!&Du hast nun insgesamt %r[[heartPieceCount]]%w&Herzteile gesammelt!",
-                      "Vous obtenez un %rQuart de&Coeur%w! Vous en avez collecté&%r[[heartPieceCount]]%w en tout!",
-                      TEXTBOX_TYPE_BLUE));
     CustomMessageManager::Instance->CreateMessage(
         customMessageTableID, TEXT_MARKET_GUARD_NIGHT,
         CustomMessage("You look bored. Wanna go out for a&walk?\x1B&%gYes&No%w",
