@@ -28,14 +28,15 @@ void BuildSkulltulaMessage(uint16_t* textId, bool* loadFromMessageTable) {
     }
     int16_t gsCount = gSaveContext.inventory.gsTokens + (IS_RANDO ? 1 : 0);
     msg.Replace("[[gscount]]", std::to_string(gsCount));
+    msg.AutoFormat(ITEM_SKULL_TOKEN);
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
 }
 
 void InjectItemCounts_Register() {
-    COND_ID_HOOK(OnOpenText, TEXT_GS_FREEZE, CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), BuildSkulltulaMessage);
-    COND_ID_HOOK(OnOpenText, TEXT_GS_NO_FREEZE, CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), BuildSkulltulaMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_GS_FREEZE, CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), 0), BuildSkulltulaMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_GS_NO_FREEZE, CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), 0), BuildSkulltulaMessage);
 }
 
 RegisterShipInitFunc initFunc(InjectItemCounts_Register, { 
