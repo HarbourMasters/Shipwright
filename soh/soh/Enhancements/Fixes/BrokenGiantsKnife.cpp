@@ -7,7 +7,6 @@
 #include "z64save.h"
 
 extern "C" PlayState* gPlayState;
-extern "C" SaveContext gSaveContext;
 
 static constexpr int32_t CVAR_BGS_FIX_DEFAULT = 0;
 #define CVAR_BGS_FIX_NAME CVAR_ENHANCEMENT("FixBrokenGiantsKnife")
