@@ -33,16 +33,6 @@ std::vector<RandomizerCheck> Rando::StaticData::GetOverworldFishLocations() {
     return overworldFishLocations;
 }
 
-std::vector<RandomizerCheck> Rando::StaticData::GetOverworldPotLocations() {
-    std::vector<RandomizerCheck> overworldPotLocations = {};
-    for (Location& location : locationTable) {
-        if (location.GetRCType() == RCTYPE_POT && location.IsOverworld() && location.GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
-            overworldPotLocations.push_back(location.GetRandomizerCheck());
-        }
-    }
-    return overworldPotLocations;
-}
-
 std::vector<RandomizerCheck> Rando::StaticData::GetStaticHintLocations() {
     std::vector<RandomizerCheck> staticHintLocations = {};
     for (Location& location : locationTable) {
@@ -101,28 +91,6 @@ std::vector<RandomizerCheck> Rando::StaticData::GetShopLocations() {
         }
     }
     return shopLocations;
-}
-
-std::vector<RandomizerCheck> Rando::StaticData::GetOverworldLocations() {
-    //RANDOTODO better way of filling the initial location pool, among other things. 
-    std::vector<RandomizerCheck> overworldLocations = {};
-    auto ctx = Rando::Context::GetInstance();
-    for (Location& location : locationTable) {
-        if (
-            location.IsOverworld() &&
-            location.GetRandomizerCheck() != RC_UNKNOWN_CHECK &&
-            location.GetRandomizerCheck() != RC_TRIFORCE_COMPLETED && //not really an overworld check
-            location.GetRCType() != RCTYPE_FISH && // temp fix while locations are properly sorted out
-            location.GetRCType() != RCTYPE_POT &&  // Same as fish
-            location.GetRCType() != RCTYPE_CHEST_GAME && //this is supposed to be excluded
-            (ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) || location.GetRCType() != RCTYPE_ADULT_TRADE) && //trade is handled elsewhere in location pool
-            location.GetRCType() != RCTYPE_STATIC_HINT && 
-            location.GetRCType() != RCTYPE_GOSSIP_STONE  //don't put items on hints
-        ) {
-            overworldLocations.push_back(location.GetRandomizerCheck());
-        }
-    }
-    return overworldLocations;
 }
 
 std::vector<RandomizerCheck> Rando::StaticData::GetAllDungeonLocations() {
@@ -905,18 +873,6 @@ void Rando::StaticData::InitLocationTable() { //                                
     locationTable[RC_LH_GROTTO_BEEHIVE] =                                              Location::Base(RC_LH_GROTTO_BEEHIVE,                                            RCQUEST_BOTH,    RCTYPE_BEEHIVE,                     RCAREA_LAKE_HYLIA,                   ACTOR_OBJ_COMB,       SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(5144, 0xEF),       "Grotto Beehive",                              RHT_BEEHIVE_SCRUB_TRIO_GROTTO,                                   RG_RED_RUPEE,                                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_BEEHIVE_LH_GROTTO));
     locationTable[RC_GV_DEKU_SCRUB_GROTTO_BEEHIVE] =                                   Location::Base(RC_GV_DEKU_SCRUB_GROTTO_BEEHIVE,                                 RCQUEST_BOTH,    RCTYPE_BEEHIVE,                     RCAREA_GERUDO_VALLEY,                ACTOR_OBJ_COMB,       SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(2262, 0xF0),       "Deku Scrub Grotto Beehive",                   RHT_BEEHIVE_SCRUB_PAIR_GROTTO,                                   RG_RED_RUPEE,                                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_BEEHIVE_GV_DEKU_SCRUB_GROTTO));
     locationTable[RC_COLOSSUS_GROTTO_BEEHIVE] =                                        Location::Base(RC_COLOSSUS_GROTTO_BEEHIVE,                                      RCQUEST_BOTH,    RCTYPE_BEEHIVE,                     RCAREA_DESERT_COLOSSUS,              ACTOR_OBJ_COMB,       SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(2262, 0xFD),       "Grotto Beehive",                              RHT_BEEHIVE_SCRUB_PAIR_GROTTO,                                   RG_RED_RUPEE,                                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_BEEHIVE_COLOSSUS_GROTTO));
-
-    // Cows
-    locationTable[RC_KF_LINKS_HOUSE_COW] =                                             Location::Base(RC_KF_LINKS_HOUSE_COW,                                           RCQUEST_BOTH,    RCTYPE_COW,                                                              ACTOR_EN_COW,         SCENE_LINKS_HOUSE,                  0x00,                               "Links House Cow",                             RHT_KF_LINKS_HOUSE_COW,                                          RG_MILK,                                                SpoilerCollectionCheck::RandomizerInf(RAND_INF_COWS_MILKED_KF_LINKS_HOUSE_COW));
-    locationTable[RC_HF_COW_GROTTO_COW] =                                              Location::Base(RC_HF_COW_GROTTO_COW,                                            RCQUEST_BOTH,    RCTYPE_COW,                         RCAREA_HYRULE_FIELD,                 ACTOR_EN_COW,         SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(3485, -291),       "Cow Grotto Cow",                              RHT_HF_COW_GROTTO_COW,                                           RG_MILK,                                                SpoilerCollectionCheck::RandomizerInf(RAND_INF_COWS_MILKED_HF_COW_GROTTO_COW));
-    locationTable[RC_LLR_STABLES_LEFT_COW] =                                           Location::Base(RC_LLR_STABLES_LEFT_COW,                                         RCQUEST_BOTH,    RCTYPE_COW,                                                              ACTOR_EN_COW,         SCENE_STABLE,                       TWO_ACTOR_PARAMS(-122, -254),       "Stables Left Cow",                            RHT_LLR_STABLES_LEFT_COW,                                        RG_MILK,                                                SpoilerCollectionCheck::RandomizerInf(RAND_INF_COWS_MILKED_LLR_STABLES_LEFT_COW));
-    locationTable[RC_LLR_STABLES_RIGHT_COW] =                                          Location::Base(RC_LLR_STABLES_RIGHT_COW,                                        RCQUEST_BOTH,    RCTYPE_COW,                                                              ACTOR_EN_COW,         SCENE_STABLE,                       TWO_ACTOR_PARAMS(116, -254),        "Stables Right Cow",                           RHT_LLR_STABLES_RIGHT_COW,                                       RG_MILK,                                                SpoilerCollectionCheck::RandomizerInf(RAND_INF_COWS_MILKED_LLR_STABLES_RIGHT_COW));
-    locationTable[RC_LLR_TOWER_LEFT_COW] =                                             Location::Base(RC_LLR_TOWER_LEFT_COW,                                           RCQUEST_BOTH,    RCTYPE_COW,                                                              ACTOR_EN_COW,         SCENE_LON_LON_BUILDINGS,            TWO_ACTOR_PARAMS(-229, 157),        "Tower Left Cow",                              RHT_LLR_TOWER_LEFT_COW,                                          RG_MILK,                                                SpoilerCollectionCheck::RandomizerInf(RAND_INF_COWS_MILKED_LLR_TOWER_LEFT_COW));
-    locationTable[RC_LLR_TOWER_RIGHT_COW] =                                            Location::Base(RC_LLR_TOWER_RIGHT_COW,                                          RCQUEST_BOTH,    RCTYPE_COW,                                                              ACTOR_EN_COW,         SCENE_LON_LON_BUILDINGS,            TWO_ACTOR_PARAMS(-142, -140),       "Tower Right Cow",                             RHT_LLR_TOWER_RIGHT_COW,                                         RG_MILK,                                                SpoilerCollectionCheck::RandomizerInf(RAND_INF_COWS_MILKED_LLR_TOWER_RIGHT_COW));
-    locationTable[RC_KAK_IMPAS_HOUSE_COW] =                                            Location::Base(RC_KAK_IMPAS_HOUSE_COW,                                          RCQUEST_BOTH,    RCTYPE_COW,                                                              ACTOR_EN_COW,         SCENE_IMPAS_HOUSE,                  0x00,                               "Impas House Cow",                             RHT_KAK_IMPAS_HOUSE_COW,                                         RG_MILK,                                                SpoilerCollectionCheck::RandomizerInf(RAND_INF_COWS_MILKED_KAK_IMPAS_HOUSE_COW));
-    locationTable[RC_DMT_COW_GROTTO_COW] =                                             Location::Base(RC_DMT_COW_GROTTO_COW,                                           RCQUEST_BOTH,    RCTYPE_COW,                         RCAREA_DEATH_MOUNTAIN_TRAIL,         ACTOR_EN_COW,         SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(2444, -471),       "Cow Grotto Cow",                              RHT_DMT_COW_GROTTO_COW,                                          RG_MILK,                                                SpoilerCollectionCheck::RandomizerInf(RAND_INF_COWS_MILKED_DMT_COW_GROTTO_COW));
-    locationTable[RC_GV_COW] =                                                         Location::Base(RC_GV_COW,                                                       RCQUEST_BOTH,    RCTYPE_COW,                                                              ACTOR_EN_COW,         SCENE_GERUDO_VALLEY,                0x00,                               "Cow",                                         RHT_GV_COW,                                                      RG_MILK,                                                SpoilerCollectionCheck::RandomizerInf(RAND_INF_COWS_MILKED_GV_COW));
-    locationTable[RC_JABU_JABUS_BELLY_MQ_COW] =                                        Location::Base(RC_JABU_JABUS_BELLY_MQ_COW,                                      RCQUEST_MQ,      RCTYPE_COW,                                                              ACTOR_EN_COW,         SCENE_JABU_JABU,                    0x00,                               "MQ Cow",                                      RHT_JABU_JABUS_BELLY_MQ_COW,                                     RG_MILK,                                                SpoilerCollectionCheck::RandomizerInf(RAND_INF_COWS_MILKED_JABU_JABUS_BELLY_MQ_COW));
 
     /*-------------------------------
               --- SHOPS ---

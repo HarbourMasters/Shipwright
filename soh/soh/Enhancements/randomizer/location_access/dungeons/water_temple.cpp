@@ -725,7 +725,7 @@ void RegionTable_Init_WaterTemple() {
 
     areaTable[RR_WATER_TEMPLE_BOSS_ROOM] = Region("Water Temple Boss Room", "Water Temple", {}, NO_DAY_NIGHT_CYCLE, {
         // Events
-        EventAccess(&logic->WaterTempleClear, []{return logic->WaterTempleClear || (logic->HasBossSoul(RG_MORPHA_SOUL) && (logic->CanUse(RG_HOOKSHOT) && (logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD))));}),
+        EventAccess(&logic->WaterTempleClear, []{return logic->WaterTempleClear || logic->CanKillEnemy(RE_MORPHA);}),
     }, {
         // Locations
         LOCATION(RC_WATER_TEMPLE_MORPHA_HEART, logic->WaterTempleClear),

@@ -138,10 +138,15 @@ namespace UIWidgets2 {
 
     struct ButtonOptions : WidgetOptions {
         ImVec2 size = Sizes::Fill;
+        ImVec2 padding = ImVec2(10.0f, 8.0f);
         Colors color = Colors::Gray;
 
         ButtonOptions& Size(ImVec2 size_) {
             size = size_;
+            return *this;
+        }
+        ButtonOptions& Padding(ImVec2 padding_) {
+            padding = padding_;
             return *this;
         }
         ButtonOptions& Tooltip(const char* tooltip_) {
@@ -156,12 +161,17 @@ namespace UIWidgets2 {
 
     struct WindowButtonOptions : WidgetOptions {
         ImVec2 size = Sizes::Inline;
+        ImVec2 padding = ImVec2(10.0f, 8.0f);
         Colors color = Colors::Gray;
         bool showButton = true;
         bool embedWindow = true;
 
         WindowButtonOptions& Size(ImVec2 size_) {
             size = size_;
+            return *this;
+        }
+        WindowButtonOptions& Padding(ImVec2 padding_) {
+            padding = padding_;
             return *this;
         }
         WindowButtonOptions& Tooltip(const char* tooltip_) {
@@ -396,8 +406,8 @@ namespace UIWidgets2 {
     void PopStyleMenuItem();
     bool MenuItem(const char* label, const char* shortcut = NULL, Colors color = Colors::LightBlue);
 
-    void PushStyleButton(const ImVec4& color);
-    void PushStyleButton(Colors color = Colors::Gray);
+    void PushStyleButton(const ImVec4& color, ImVec2 padding = ImVec2(10.0f, 8.0f));
+    void PushStyleButton(Colors color = Colors::Gray, ImVec2 padding = ImVec2(10.0f, 8.0f));
     void PopStyleButton();
     bool Button(const char* label, const ButtonOptions& options = {});
     bool WindowButton(const char* label, const char* cvarName, std::shared_ptr<Ship::GuiWindow> windowPtr, const WindowButtonOptions& options = {});

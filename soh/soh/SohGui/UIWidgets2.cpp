@@ -103,18 +103,18 @@ bool MenuItem(const char* label, const char* shortcut, Colors color) {
     return dirty;
 }
 
-void PushStyleButton(const ImVec4& color) {
+void PushStyleButton(const ImVec4& color, const ImVec2 padding) {
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(color.x, color.y, color.z, 1.0f));
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(color.x, color.y, color.z, 0.8f));
     ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(color.x, color.y, color.z, 0.6f));
     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.0f, 0.0f, 0.0f, 0.3f));
     ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 3.0f);
-    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10.0f, 8.0f));
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, padding);
     ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 5.0f);
 }
 
-void PushStyleButton(Colors color) {
-    PushStyleButton(ColorValues.at(color));
+void PushStyleButton(Colors color, ImVec2 padding) {
+    PushStyleButton(ColorValues.at(color), padding);
 }
 
 void PopStyleButton() {
@@ -146,7 +146,7 @@ void PopStyleInput() {
 
 bool Button(const char* label, const ButtonOptions& options) {
     ImGui::BeginDisabled(options.disabled);
-    PushStyleButton(options.color);
+    PushStyleButton(options.color, options.padding);
     bool dirty = ImGui::Button(label, options.size);
     PopStyleButton();
     ImGui::EndDisabled();
@@ -170,7 +170,7 @@ bool WindowButton(const char* label, const char* cvarName, std::shared_ptr<Ship:
         buttonText = ICON_FA_EXTERNAL_LINK_SQUARE " " + buttonText;
     }
     if (Button(buttonText.c_str(), {{ options.tooltip, options.disabled, options.disabledTooltip, options.color },
-                                      options.size, options.color })) {
+                                      options.size, options.padding })) {
         windowPtr->ToggleVisibility();
         dirty = true;
     }
