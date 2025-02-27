@@ -56,14 +56,9 @@ std::set<RandomizerTrick> enabledGlitches;
 u8 generated;
 char* seedString;
 
-const std::string Randomizer::getItemMessageTableID = "Randomizer";
 const std::string Randomizer::hintMessageTableID = "RandomizerHints";
-const std::string Randomizer::merchantMessageTableID = "RandomizerMerchants";
 const std::string Randomizer::rupeeMessageTableID = "RandomizerRupees";
-const std::string Randomizer::triforcePieceMessageTableID = "RandomizerTriforcePiece";
 const std::string Randomizer::NaviRandoMessageTableID = "RandomizerNavi";
-const std::string Randomizer::IceTrapRandoMessageTableID = "RandomizerIceTrap";
-const std::string Randomizer::randoMiscHintsTableID = "RandomizerMiscHints";
 
 static const char* englishRupeeNames[175] = {
     "[P]",                "Bad RNG Rolls",     "Bananas",           "Beanbean Coins",    "Beans",
@@ -232,24 +227,12 @@ void Randomizer::LoadHintMessages() {
     CustomMessageManager::Instance->ClearMessageTable(Randomizer::hintMessageTableID);
     CustomMessageManager::Instance->AddCustomMessageTable(Randomizer::hintMessageTableID);
 
-    //Extra Hints
-    CustomMessageManager::Instance->ClearMessageTable(Randomizer::randoMiscHintsTableID);
-    CustomMessageManager::Instance->AddCustomMessageTable(Randomizer::randoMiscHintsTableID);
-
-
     // Bow Shooting Gallery reminder
     CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_SHOOTING_GALLERY_MAN_COME_BACK_WITH_BOW,
         CustomMessage("Come back when you have your own bow and you'll get a #different prize#!",
         "Komm wieder sobald Du Deinen eigenen Bogen hast, um einen #speziellen Preis# zu erhalten!",
         "J'aurai #une autre récompense# pour toi lorsque tu auras ton propre arc.",
         {QM_RED}));
-
-    // Warp Song Mysterious text
-    CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_WARP_MINUET_OF_FOREST,
-        CustomMessage("Warp to&#a mysterious place?#&" + CustomMessages::TWO_WAY_CHOICE() + "#OK&No#",
-            "Zu&#einem mysteriösen Ort#?&" + CustomMessages::TWO_WAY_CHOICE() + "#OK&No#",
-            "Se téléporter vers&#un endroit mystérieux#?&" + CustomMessages::TWO_WAY_CHOICE() + "#OK!&Non#",
-            {QM_RED, QM_GREEN}));
 
     // Lake Hylia water level system
     CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN,
