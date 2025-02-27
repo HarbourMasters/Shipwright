@@ -17,8 +17,7 @@ void OnReceiveBrokenGiantsKnife(GetItemEntry itemEntry) {
         return;
     }
 
-    // Flag wasn't reset because Kokiri or Master Sword was missing, so we need to
-    // bypass those checks
+    // Flag wasn't reset because Kokiri or Master Sword was missing, so we need to bypass those checks
     int32_t bypassEquipmentChecks = (1 << EQUIP_INV_SWORD_KOKIRI) | (1 << EQUIP_INV_SWORD_MASTER);
 
     int32_t allSwordsInEquipment = bypassEquipmentChecks | ALL_EQUIP_VALUE(EQUIP_TYPE_SWORD);
