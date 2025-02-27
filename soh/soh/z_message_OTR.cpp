@@ -163,13 +163,6 @@ extern "C" void OTRMessage_Init() {
     CustomMessageManager::Instance->CreateMessage(
         customMessageTableID, TEXT_FISHERMAN_LEAVE,
         CustomMessage("Hey! Hey!&You can't take the rod out of here!&I'm serious!^Do you want to quit?&\x1B&%gYes&No%w",
-                      "Hey! Hey!&Du kannst die Angel doch nicht&einfach mitnehmen!&Ganz im Ernst!^Möchtest Du "
-                      "aufhören?&\x1B&%gJa&Nein%w",
-                      "Holà! Holà!&Les cannes ne sortent pas d'ici!&Je suis sérieux!^Voulez-vous "
-                      "arrêter?&\x1B&%gOui&Non%w")); // TODO Used AI translation as placeholder
-    CustomMessageManager::Instance->CreateMessage(
-        customMessageTableID, TEXT_CARPET_SALESMAN_CUSTOM_FAIL_TO_BUY,
-        CustomMessage("I'm sorry I can't sell you these fine specimens, they need an #experienced owner#.^"
-                      "Come back when you have had #Bombchus# of your own.",
-                      { QM_RED, QM_GREEN }));
+                      "Hey! Hey!&Du kannst die Angel doch nicht&einfach mitnehmen!&Ganz im Ernst!^Möchtest Du aufhören?&\x1B&%gJa&Nein%w",
+                      "Holà! Holà!&Les cannes ne sortent pas d'ici!&Je suis sérieux!^Voulez-vous arrêter?&\x1B&%gOui&Non%w")); //TODO Used AI translation as placeholder
 }
