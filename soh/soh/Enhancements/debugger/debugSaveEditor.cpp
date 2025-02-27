@@ -29,7 +29,7 @@ extern PlayState* gPlayState;
 }
 
 // Maps entries in the GS flag array to the area name it represents
-std::vector<std::string> gsMapping = {
+std::vector<const char*> gsMapping = {
     "Deku Tree",
     "Dodongo's Cavern",
     "Inside Jabu-Jabu's Belly",
@@ -436,15 +436,12 @@ void DrawInventoryTab() {
                 ImGui::SameLine();
             }
 
-            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 1, 1, 0));
-            ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
             uint8_t item = gSaveContext.inventory.items[index];
+            UIWidgets2::PushStyleButton(UIWidgets2::Colors::DarkGray);
             if (item != ITEM_NONE) {
                 const ItemMapEntry& slotEntry = itemMapping.find(item)->second;
-                ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
                 auto ret = ImGui::ImageButton(slotEntry.name.c_str(), Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name),
                                               ImVec2(48.0f, 48.0f), ImVec2(0, 0), ImVec2(1, 1));
-                ImGui::PopStyleVar();
                 if (ret) {
                     selectedIndex = index;
                     ImGui::OpenPopup(itemPopupPicker);
@@ -455,18 +452,19 @@ void DrawInventoryTab() {
                     ImGui::OpenPopup(itemPopupPicker);
                 }
             }
-            ImGui::PopStyleVar();
-            ImGui::PopStyleColor();
+            UIWidgets2::PopStyleButton();
 
             ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
             if (ImGui::BeginPopup(itemPopupPicker)) {
-                if (ImGui::Button("##itemNonePicker", ImVec2(IMAGE_SIZE, IMAGE_SIZE))) {
+                UIWidgets2::PushStyleButton(UIWidgets2::Colors::DarkGray);
+                if (ImGui::Button("##itemNonePicker", ImVec2(IMAGE_SIZE, IMAGE_SIZE) + ImGui::GetStyle().FramePadding * 2)) {
                     gSaveContext.inventory.items[selectedIndex] = ITEM_NONE;
                     if (selectedIndex == SLOT_TRADE_ADULT) {
                         gSaveContext.ship.quest.data.randomizer.adultTradeItems = 0;
                     }
                     ImGui::CloseCurrentPopup();
                 }
+                UIWidgets2::PopStyleButton();
                 UIWidgets::SetLastItemHoverText("None");
 
                 std::vector<ItemMapEntry> possibleItems;
@@ -492,10 +490,10 @@ void DrawInventoryTab() {
                         ImGui::SameLine();
                     }
                     const ItemMapEntry& slotEntry = possibleItems[pickerIndex];
-                    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+                    UIWidgets2::PushStyleButton(UIWidgets2::Colors::DarkGray);
                     auto ret = ImGui::ImageButton(slotEntry.name.c_str(), Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name),
                                                   ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
-                    ImGui::PopStyleVar();
+                    UIWidgets2::PopStyleButton();
                     if (ret) {
                         gSaveContext.inventory.items[selectedIndex] = slotEntry.id;
                         // Set adult trade item flag if you're playing adult trade shuffle in rando  
@@ -563,7 +561,9 @@ void DrawFlagTableArray16(const FlagTable& flagTable, uint16_t row, uint16_t& fl
         ImGui::PushID(flagIndex);
         bool hasDescription = !!flagTable.flagDescriptions.contains(row * 16 + flagIndex);
         uint32_t bitMask = 1 << flagIndex;
-        ImGui::PushStyleColor(ImGuiCol_FrameBg, hasDescription ? ImVec4(0.16f, 0.29f, 0.48f, 0.54f) : ImVec4(0.16f, 0.29f, 0.48f, 0.24f));
+        ImVec4 colorDark = { themeColor.x * 0.4f, themeColor.y * 0.4f, themeColor.z * 0.4f , themeColor.z };
+        UIWidgets2::PushStyleCheckbox(hasDescription ? themeColor : colorDark);
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 3.0f));
         bool flag = (flags & bitMask) != 0;
         if (ImGui::Checkbox("##check", &flag)) {
             if (flag) {
@@ -572,7 +572,8 @@ void DrawFlagTableArray16(const FlagTable& flagTable, uint16_t row, uint16_t& fl
                 flags &= ~bitMask;
             }
         }
-        ImGui::PopStyleColor();
+        ImGui::PopStyleVar();
+        UIWidgets2::PopStyleCheckbox();
         if (ImGui::IsItemHovered() && hasDescription) {
             ImGui::BeginTooltip();
             ImGui::Text("%s", UIWidgets::WrappedText(flagTable.flagDescriptions.at(row * 16 + flagIndex), 60).c_str());
@@ -590,26 +591,26 @@ void DrawFlagsTab() {
 
             DrawGroupWithBorder([&]() {
                 ImGui::Text("stateFlags1");
-                UIWidgets::DrawFlagArray32("stateFlags1", player->stateFlags1);
+                UIWidgets2::DrawFlagArray32("stateFlags1", player->stateFlags1, themeIndex);
             }, "stateFlags1");
 
             ImGui::SameLine();
 
             DrawGroupWithBorder([&]() {
                 ImGui::Text("stateFlags2");
-                UIWidgets::DrawFlagArray32("stateFlags2", player->stateFlags2);
+                UIWidgets2::DrawFlagArray32("stateFlags2", player->stateFlags2, themeIndex);
             }, "stateFlags2");
 
             DrawGroupWithBorder([&]() {
                 ImGui::Text("stateFlags3");
-                UIWidgets::DrawFlagArray8("stateFlags3", player->stateFlags3);
+                UIWidgets2::DrawFlagArray8("stateFlags3", player->stateFlags3, themeIndex);
             }, "stateFlags3");
             
             ImGui::SameLine();
             
             DrawGroupWithBorder([&]() {
                 ImGui::Text("unk_6AE_rotFlags");
-                UIWidgets::DrawFlagArray16("unk_6AE_rotFlags", player->unk_6AE_rotFlags);
+                UIWidgets2::DrawFlagArray16("unk_6AE_rotFlags", player->unk_6AE_rotFlags, themeIndex);
             }, "unk_6AE_rotFlags");
         }
         ImGui::TreePop();
@@ -620,15 +621,14 @@ void DrawFlagsTab() {
             DrawGroupWithBorder([&]() {
                 ImGui::Text("Switch");
                 UIWidgets::InsertHelpHoverText("Permanently-saved switch flags");
-                ImGui::SameLine();
-                if (ImGui::Button("Set All##Switch")) {
+                if (UIWidgets2::Button("Set All##Switch", buttonOptionsBase.Tooltip(""))) {
                     act->flags.swch = UINT32_MAX;
                 }
                 ImGui::SameLine();
-                if (ImGui::Button("Clear All##Switch")) {
+                if (UIWidgets2::Button("Clear All##Switch", buttonOptionsBase.Tooltip(""))) {
                     act->flags.swch = 0;
                 }
-                UIWidgets::DrawFlagArray32("Switch", act->flags.swch);
+                UIWidgets2::DrawFlagArray32("Switch", act->flags.swch, themeIndex);
             }, "Switch");
 
             ImGui::SameLine();
@@ -636,29 +636,27 @@ void DrawFlagsTab() {
             DrawGroupWithBorder([&]() {
                 ImGui::Text("Temp Switch");
                 UIWidgets::InsertHelpHoverText("Temporary switch flags. Unset on scene transitions");
-                ImGui::SameLine();
-                if (ImGui::Button("Set All##Temp Switch")) {
+                if (UIWidgets2::Button("Set All##Temp Switch", buttonOptionsBase.Tooltip(""))) {
                     act->flags.tempSwch = UINT32_MAX;
                 }
                 ImGui::SameLine();
-                if (ImGui::Button("Clear All##Temp Switch")) {
+                if (UIWidgets2::Button("Clear All##Temp Switch", buttonOptionsBase.Tooltip(""))) {
                     act->flags.tempSwch = 0;
                 }
-                UIWidgets::DrawFlagArray32("Temp Switch", act->flags.tempSwch);
+                UIWidgets2::DrawFlagArray32("Temp Switch", act->flags.tempSwch, themeIndex);
             }, "Temp Switch");
 
             DrawGroupWithBorder([&]() {
                 ImGui::Text("Clear");
                 UIWidgets::InsertHelpHoverText("Permanently-saved room-clear flags");
-                ImGui::SameLine();
-                if (ImGui::Button("Set All##Clear")) {
+                if (UIWidgets2::Button("Set All##Clear", buttonOptionsBase.Tooltip(""))) {
                     act->flags.clear = UINT32_MAX;
                 }
                 ImGui::SameLine();
-                if (ImGui::Button("Clear All##Clear")) {
+                if (UIWidgets2::Button("Clear All##Clear", buttonOptionsBase.Tooltip(""))) {
                     act->flags.clear = 0;
                 }
-                UIWidgets::DrawFlagArray32("Clear", act->flags.clear);
+                UIWidgets2::DrawFlagArray32("Clear", act->flags.clear, themeIndex);
             }, "Clear");
 
             ImGui::SameLine();
@@ -666,29 +664,27 @@ void DrawFlagsTab() {
             DrawGroupWithBorder([&]() {
                 ImGui::Text("Temp Clear");
                 UIWidgets::InsertHelpHoverText("Temporary room-clear flags. Unset on scene transitions");
-                ImGui::SameLine();
-                if (ImGui::Button("Set All##Temp Clear")) {
+                if (UIWidgets2::Button("Set All##Temp Clear", buttonOptionsBase.Tooltip(""))) {
                     act->flags.tempClear = UINT32_MAX;
                 }
                 ImGui::SameLine();
-                if (ImGui::Button("Clear All##Temp Clear")) {
+                if (UIWidgets2::Button("Clear All##Temp Clear", buttonOptionsBase.Tooltip(""))) {
                     act->flags.tempClear = 0;
                 }
-                UIWidgets::DrawFlagArray32("Temp Clear", act->flags.tempClear);
+                UIWidgets2::DrawFlagArray32("Temp Clear", act->flags.tempClear, themeIndex);
             }, "Temp Clear");
 
             DrawGroupWithBorder([&]() {
                 ImGui::Text("Collect");
                 UIWidgets::InsertHelpHoverText("Permanently-saved collect flags");
-                ImGui::SameLine();
-                if (ImGui::Button("Set All##Collect")) {
+                if (UIWidgets2::Button("Set All##Collect", buttonOptionsBase.Tooltip(""))) {
                     act->flags.collect = UINT32_MAX;
                 }
                 ImGui::SameLine();
-                if (ImGui::Button("Clear All##Collect")) {
+                if (UIWidgets2::Button("Clear All##Collect", buttonOptionsBase.Tooltip(""))) {
                     act->flags.collect = 0;
                 }
-                UIWidgets::DrawFlagArray32("Collect", act->flags.collect);
+                UIWidgets2::DrawFlagArray32("Collect", act->flags.collect, themeIndex);
             }, "Collect");
 
             ImGui::SameLine();
@@ -696,58 +692,53 @@ void DrawFlagsTab() {
             DrawGroupWithBorder([&]() {
                 ImGui::Text("Temp Collect");
                 UIWidgets::InsertHelpHoverText("Temporary collect flags. Unset on scene transitions");
-                ImGui::SameLine();
-                if (ImGui::Button("Set All##Temp Collect")) {
+                if (UIWidgets2::Button("Set All##Temp Collect", buttonOptionsBase.Tooltip(""))) {
                     act->flags.tempCollect = UINT32_MAX;
                 }
                 ImGui::SameLine();
-                if (ImGui::Button("Clear All##Temp Collect")) {
+                if (UIWidgets2::Button("Clear All##Temp Collect", buttonOptionsBase.Tooltip(""))) {
                     act->flags.tempCollect = 0;
                 }
-                UIWidgets::DrawFlagArray32("Temp Collect", act->flags.tempCollect);
+                UIWidgets2::DrawFlagArray32("Temp Collect", act->flags.tempCollect, themeIndex);
             }, "Temp Collect");
 
             DrawGroupWithBorder([&]() {
                 ImGui::Text("Chest");
                 UIWidgets::InsertHelpHoverText("Permanently-saved chest flags");
-                ImGui::SameLine();
-                if (ImGui::Button("Set All##Chest")) {
+                if (UIWidgets2::Button("Set All##Chest", buttonOptionsBase.Tooltip(""))) {
                     act->flags.chest = UINT32_MAX;
                 }
                 ImGui::SameLine();
-                if (ImGui::Button("Clear All##Chest")) {
+                if (UIWidgets2::Button("Clear All##Chest", buttonOptionsBase.Tooltip(""))) {
                     act->flags.chest = 0;
                 }
-                UIWidgets::DrawFlagArray32("Chest", act->flags.chest);
+                UIWidgets2::DrawFlagArray32("Chest", act->flags.chest, themeIndex);
             }, "Chest");
 
             ImGui::SameLine();
 
             ImGui::BeginGroup();
 
-            if (ImGui::Button("Reload Flags")) {
+            if (UIWidgets2::Button("Reload Flags", buttonOptionsBase.Tooltip("Load flags from saved scene flags. Normally happens on scene load"))) {
                 act->flags.swch = gSaveContext.sceneFlags[gPlayState->sceneNum].swch;
                 act->flags.clear = gSaveContext.sceneFlags[gPlayState->sceneNum].clear;
                 act->flags.collect = gSaveContext.sceneFlags[gPlayState->sceneNum].collect;
                 act->flags.chest = gSaveContext.sceneFlags[gPlayState->sceneNum].chest;
             }
-            UIWidgets::SetLastItemHoverText("Load flags from saved scene flags. Normally happens on scene load");
 
-            if (ImGui::Button("Save Flags")) {
+            if (UIWidgets2::Button("Save Flags", buttonOptionsBase.Tooltip("Save current scene flags. Normally happens on scene exit"))) {
                 gSaveContext.sceneFlags[gPlayState->sceneNum].swch = act->flags.swch;
                 gSaveContext.sceneFlags[gPlayState->sceneNum].clear = act->flags.clear;
                 gSaveContext.sceneFlags[gPlayState->sceneNum].collect = act->flags.collect;
                 gSaveContext.sceneFlags[gPlayState->sceneNum].chest = act->flags.chest;
             }
-            UIWidgets::SetLastItemHoverText("Save current scene flags. Normally happens on scene exit");
             
-            if (ImGui::Button("Clear Flags")) {
+            if (UIWidgets2::Button("Clear Flags", buttonOptionsBase.Tooltip("Clear current scene flags. Reload scene to see changes"))) {
                 act->flags.swch = 0;
                 act->flags.clear = 0;
                 act->flags.collect = 0;
                 act->flags.chest = 0;
             }
-            UIWidgets::SetLastItemHoverText("Clear current scene flags. Reload scene to see changes");
 
 
             ImGui::EndGroup();
@@ -760,8 +751,10 @@ void DrawFlagsTab() {
 
     if (ImGui::TreeNode("Saved Scene Flags")) {
         static uint32_t selectedSceneFlagMap = 0;
+        ImGui::AlignTextToFramePadding();
         ImGui::Text("Map");
         ImGui::SameLine();
+        UIWidgets2::PushStyleCombobox(themeColor);
         if (ImGui::BeginCombo("##Map", SohUtils::GetSceneName(selectedSceneFlagMap).c_str())) {
             for (int32_t sceneIndex = 0; sceneIndex < SCENE_ID_MAX; sceneIndex++) {
                 if (ImGui::Selectable(SohUtils::GetSceneName(sceneIndex).c_str())) {
@@ -771,20 +764,20 @@ void DrawFlagsTab() {
 
             ImGui::EndCombo();
         }
+        UIWidgets2::PopStyleCombobox();
 
         // Don't show current scene button if there is no current scene
         if (gPlayState != nullptr) {
             ImGui::SameLine();
-            if (ImGui::Button("Current")) {
+            if (UIWidgets2::Button("Current", buttonOptionsBase.Tooltip("Open flags for current scene"))) {
                 selectedSceneFlagMap = gPlayState->sceneNum;
             }
-            UIWidgets::SetLastItemHoverText("Open flags for current scene");
         }
 
         DrawGroupWithBorder([&]() {
             ImGui::Text("Switch");
             UIWidgets::InsertHelpHoverText("Switch flags");
-            UIWidgets::DrawFlagArray32("Switch", gSaveContext.sceneFlags[selectedSceneFlagMap].swch);
+            UIWidgets2::DrawFlagArray32("Switch", gSaveContext.sceneFlags[selectedSceneFlagMap].swch, themeIndex);
         }, "Saved Switch");
 
         ImGui::SameLine();
@@ -792,13 +785,13 @@ void DrawFlagsTab() {
         DrawGroupWithBorder([&]() {
             ImGui::Text("Clear");
             UIWidgets::InsertHelpHoverText("Room-clear flags");
-            UIWidgets::DrawFlagArray32("Clear", gSaveContext.sceneFlags[selectedSceneFlagMap].clear);
+            UIWidgets2::DrawFlagArray32("Clear", gSaveContext.sceneFlags[selectedSceneFlagMap].clear, themeIndex);
         }, "Saved Clear");
 
         DrawGroupWithBorder([&]() {
             ImGui::Text("Collect");
             UIWidgets::InsertHelpHoverText("Collect flags");
-            UIWidgets::DrawFlagArray32("Collect", gSaveContext.sceneFlags[selectedSceneFlagMap].collect);
+            UIWidgets2::DrawFlagArray32("Collect", gSaveContext.sceneFlags[selectedSceneFlagMap].collect, themeIndex);
         }, "Saved Collect");
 
         ImGui::SameLine();
@@ -806,13 +799,13 @@ void DrawFlagsTab() {
         DrawGroupWithBorder([&]() {
             ImGui::Text("Chest");
             UIWidgets::InsertHelpHoverText("Chest flags");
-            UIWidgets::DrawFlagArray32("Chest", gSaveContext.sceneFlags[selectedSceneFlagMap].chest);
+            UIWidgets2::DrawFlagArray32("Chest", gSaveContext.sceneFlags[selectedSceneFlagMap].chest, themeIndex);
         }, "Saved Chest");
 
         DrawGroupWithBorder([&]() {
             ImGui::Text("Rooms");
             UIWidgets::InsertHelpHoverText("Flags for visted rooms");
-            UIWidgets::DrawFlagArray32("Rooms", gSaveContext.sceneFlags[selectedSceneFlagMap].rooms);
+            UIWidgets2::DrawFlagArray32("Rooms", gSaveContext.sceneFlags[selectedSceneFlagMap].rooms, themeIndex);
         }, "Saved Rooms");
 
         ImGui::SameLine();
@@ -820,28 +813,19 @@ void DrawFlagsTab() {
         DrawGroupWithBorder([&]() {
             ImGui::Text("Floors");
             UIWidgets::InsertHelpHoverText("Flags for visted floors");
-            UIWidgets::DrawFlagArray32("Floors", gSaveContext.sceneFlags[selectedSceneFlagMap].floors);
+            UIWidgets2::DrawFlagArray32("Floors", gSaveContext.sceneFlags[selectedSceneFlagMap].floors, themeIndex);
         }, "Saved Floors");
 
         ImGui::TreePop();
     }
 
     DrawGroupWithBorder([&]() {
-        static uint32_t selectedGsMap = 0;
+        size_t selectedGsMap = 0;
         ImGui::Text("Gold Skulltulas");
-        ImGui::Text("Map");
-        ImGui::SameLine();
-        if (ImGui::BeginCombo("##Gold Skulltula Map", gsMapping[selectedGsMap].c_str())) {
-            for (int32_t gsIndex = 0; gsIndex < gsMapping.size(); gsIndex++) {
-                if (ImGui::Selectable(gsMapping[gsIndex].c_str())) {
-                    selectedGsMap = gsIndex;
-                }
-            }
-
-            ImGui::EndCombo();
-        }
+        UIWidgets2::Combobox("Map##Gold Skulltulas", &selectedGsMap, gsMapping, comboboxOptionsBase.Tooltip(""));
 
         // TODO We should write out descriptions for each one... ugh
+        ImGui::AlignTextToFramePadding();
         ImGui::Text("Flags");
         uint32_t currentFlags = GET_GS_FLAGS(selectedGsMap);
         uint32_t allFlags = gAreaGsFlags[selectedGsMap];
@@ -852,6 +836,8 @@ void DrawFlagsTab() {
 
             ImGui::SameLine();
             ImGui::PushID(allFlags);
+            UIWidgets2::PushStyleCheckbox(themeColor);
+            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 3.0f));
             if (ImGui::Checkbox("##gs", &isThisSet)) {
                 if (isThisSet) {
                     SET_GS_FLAGS(selectedGsMap, setMask);
@@ -862,6 +848,8 @@ void DrawFlagsTab() {
                     SET_GS_FLAGS(selectedGsMap, currentFlagsBase & ~setMask);
                 }
             }
+            ImGui::PopStyleVar();
+            UIWidgets2::PopStyleCheckbox();
 
             ImGui::PopID();
 
@@ -874,8 +862,8 @@ void DrawFlagsTab() {
         // GS Token Count updated, since Gold Skulltulas killed will not correlate to GS Tokens Collected.
         if (!(IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TOKENS) != RO_TOKENSANITY_OFF)) {
             static bool keepGsCountUpdated = true;
-            ImGui::Checkbox("Keep GS Count Updated", &keepGsCountUpdated);
-            UIWidgets::InsertHelpHoverText("Automatically adjust the number of gold skulltula tokens acquired based on set flags.");
+            UIWidgets2::Checkbox("Keep GS Count Updated", &keepGsCountUpdated,
+                checkboxOptionsBase.Tooltip("Automatically adjust the number of gold skulltula tokens acquired based on set flags."));
             int32_t gsCount = 0;
             if (keepGsCountUpdated) {
                 for (int32_t gsFlagIndex = 0; gsFlagIndex < 6; gsFlagIndex++) {

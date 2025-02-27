@@ -778,7 +778,7 @@ bool CVarRadioButton(const char* text, const char* cvarName, int32_t id, UIWidge
     return ret;
 }
 
-void DrawFlagArray32(const std::string& name, uint32_t& flags) {
+void DrawFlagArray32(const std::string& name, uint32_t& flags, Colors color) {
     ImGui::PushID(name.c_str());
     for (int32_t flagIndex = 0; flagIndex < 32; flagIndex++) {
         if ((flagIndex % 8) != 0) {
@@ -787,21 +787,24 @@ void DrawFlagArray32(const std::string& name, uint32_t& flags) {
         ImGui::PushID(flagIndex);
         uint32_t bitMask = 1 << flagIndex;
         bool flag = (flags & bitMask) != 0;
-        std::string label = fmt::format("0x{:02X} ({})", flagIndex, flagIndex);
-        if (Checkbox(label.c_str(), &flag,
-                                CheckboxOptions{ { .tooltip = label.c_str() } }.LabelPosition(LabelPosition::None))) {
+        PushStyleCheckbox(color);
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 3.0f));
+        std::string id = fmt::format("##{}{}", name, flagIndex);
+        if (ImGui::Checkbox(id.c_str(), &flag)) {
             if (flag) {
                 flags |= bitMask;
             } else {
                 flags &= ~bitMask;
             }
         }
+        ImGui::PopStyleVar();
+        PopStyleCheckbox();
         ImGui::PopID();
     }
     ImGui::PopID();
 }
 
-void DrawFlagArray16(const std::string& name, uint16_t& flags) {
+void DrawFlagArray16(const std::string& name, uint16_t& flags, Colors color) {
     ImGui::PushID(name.c_str());
     for (int16_t flagIndex = 0; flagIndex < 16; flagIndex++) {
         if ((flagIndex % 8) != 0) {
@@ -810,21 +813,24 @@ void DrawFlagArray16(const std::string& name, uint16_t& flags) {
         ImGui::PushID(flagIndex);
         uint16_t bitMask = 1 << flagIndex;
         bool flag = (flags & bitMask) != 0;
-        std::string label = fmt::format("0x{:02X} ({})", flagIndex, flagIndex);
-        if (Checkbox(label.c_str(), &flag,
-                                CheckboxOptions{ { .tooltip = label.c_str() } }.LabelPosition(LabelPosition::None))) {
+        PushStyleCheckbox(color);
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 3.0f));
+        std::string id = fmt::format("##{}{}", name, flagIndex);
+        if (ImGui::Checkbox(id.c_str(), &flag)) {
             if (flag) {
                 flags |= bitMask;
             } else {
                 flags &= ~bitMask;
             }
         }
+        ImGui::PopStyleVar();
+        PopStyleCheckbox();
         ImGui::PopID();
     }
     ImGui::PopID();
 }
 
-void DrawFlagArray8(const std::string& name, uint8_t& flags) {
+void DrawFlagArray8(const std::string& name, uint8_t& flags, Colors color) {
     ImGui::PushID(name.c_str());
     for (int8_t flagIndex = 0; flagIndex < 8; flagIndex++) {
         if ((flagIndex % 8) != 0) {
@@ -833,21 +839,24 @@ void DrawFlagArray8(const std::string& name, uint8_t& flags) {
         ImGui::PushID(flagIndex);
         uint8_t bitMask = 1 << flagIndex;
         bool flag = (flags & bitMask) != 0;
-        std::string label = fmt::format("0x{:02X} ({})", flagIndex, flagIndex);
-        if (Checkbox(label.c_str(), &flag,
-                                CheckboxOptions{ { .tooltip = label.c_str() } }.LabelPosition(LabelPosition::None))) {
+        PushStyleCheckbox(color);
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 3.0f));
+        std::string id = fmt::format("##{}{}", name, flagIndex);
+        if (ImGui::Checkbox(id.c_str(), &flag)) {
             if (flag) {
                 flags |= bitMask;
             } else {
                 flags &= ~bitMask;
             }
         }
+        ImGui::PopStyleVar();
+        PopStyleCheckbox();
         ImGui::PopID();
     }
     ImGui::PopID();
 }
 
-void DrawFlagArray8Mask(const std::string& name, uint8_t& flags) {
+void DrawFlagArray8Mask(const std::string& name, uint8_t& flags, Colors color) {
     ImGui::PushID(name.c_str());
     for (int8_t flagIndex = 0; flagIndex < 8; flagIndex++) {
         if ((flagIndex % 8) != 0) {
@@ -856,15 +865,18 @@ void DrawFlagArray8Mask(const std::string& name, uint8_t& flags) {
         ImGui::PushID(flagIndex);
         uint8_t bitMask = 1 << flagIndex;
         bool flag = (flags & bitMask) != 0;
-        std::string label = fmt::format("0x{:02X} ({})", bitMask, flagIndex);
-        if (Checkbox(label.c_str(), &flag,
-                                CheckboxOptions{ { .tooltip = label.c_str() } }.LabelPosition(LabelPosition::None))) {
+        PushStyleCheckbox(color);
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 3.0f));
+        std::string id = fmt::format("##{}{}", name, flagIndex);
+        if (ImGui::Checkbox(id.c_str(), &flag)) {
             if (flag) {
                 flags |= bitMask;
             } else {
                 flags &= ~bitMask;
             }
         }
+        ImGui::PopStyleVar();
+        PopStyleCheckbox();
         ImGui::PopID();
     }
     ImGui::PopID();

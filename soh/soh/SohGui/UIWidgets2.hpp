@@ -795,10 +795,10 @@ namespace UIWidgets2 {
     bool RadioButton(const char* label, bool active);
     bool CVarRadioButton(const char* text, const char* cvarName, int32_t id, UIWidgets2::Colors color);
     bool StateButton(const char* str_id, const char* label, ImVec2 size, UIWidgets2::ButtonOptions options, ImGuiButtonFlags flags = ImGuiButtonFlags_None);
-    void DrawFlagArray32(const std::string& name, uint32_t& flags);
-    void DrawFlagArray16(const std::string& name, uint16_t& flags);
-    void DrawFlagArray8(const std::string& name, uint8_t& flags);
-    void DrawFlagArray8Mask(const std::string& name, uint8_t& flags);
+    void DrawFlagArray32(const std::string& name, uint32_t& flags, Colors color = Colors::LightBlue);
+    void DrawFlagArray16(const std::string& name, uint16_t& flags, Colors color = Colors::LightBlue);
+    void DrawFlagArray8(const std::string& name, uint8_t& flags, Colors color = Colors::LightBlue);
+    void DrawFlagArray8Mask(const std::string& name, uint8_t& flags, Colors color = Colors::LightBlue);
 
     void SetLastItemHoverText(const std::string& text);
     void SetLastItemHoverText(const char* text);
