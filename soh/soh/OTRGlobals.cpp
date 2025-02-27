@@ -2101,10 +2101,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     s16 actorParams = 0;
     if (IS_RANDO) {
         auto ctx = Rando::Context::GetInstance();
-        if ((textId == TEXT_ALTAR_CHILD || textId == TEXT_ALTAR_ADULT)) {
-            // rando hints at altar
-            messageEntry = (LINK_IS_ADULT) ? ctx->GetHint(RH_ALTAR_ADULT)->GetHintMessage() : ctx->GetHint(RH_ALTAR_CHILD)->GetHintMessage(MF_AUTO_FORMAT);
-        } else if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("RandomizeRupeeNames"), 1) &&
+        if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("RandomizeRupeeNames"), 1) &&
                    (textId == TEXT_BLUE_RUPEE || textId == TEXT_RED_RUPEE || textId == TEXT_PURPLE_RUPEE ||
                    textId == TEXT_HUGE_RUPEE)) {
             messageEntry = Randomizer::GetRupeeMessage(textId);
@@ -2113,20 +2110,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             u16 naviTextId = Random(0, NUM_NAVI_MESSAGES);
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::NaviRandoMessageTableID, naviTextId, MF_FORMATTED);
         }
-        else if (textId == TEXT_SKULLTULA_PEOPLE_IM_CURSED) {
-            actorParams = GET_PLAYER(play)->talkActor->params;
-            if (actorParams == 1 && ctx->GetOption(RSK_KAK_10_SKULLS_HINT)){
-                messageEntry = ctx->GetHint(RH_KAK_10_SKULLS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
-            } else if (actorParams == 2 && ctx->GetOption(RSK_KAK_20_SKULLS_HINT)){
-                messageEntry = ctx->GetHint(RH_KAK_20_SKULLS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
-            } else if (actorParams == 3 && ctx->GetOption(RSK_KAK_30_SKULLS_HINT)){
-                messageEntry = ctx->GetHint(RH_KAK_30_SKULLS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
-            } else if (actorParams == 4 && ctx->GetOption(RSK_KAK_40_SKULLS_HINT)){
-                messageEntry = ctx->GetHint(RH_KAK_40_SKULLS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
-            } else if (ctx->GetOption(RSK_KAK_50_SKULLS_HINT)){
-                messageEntry = ctx->GetHint(RH_KAK_50_SKULLS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
-            }
-        } else if (textId == TEXT_DAMPES_DIARY && ctx->GetOption(RSK_DAMPES_DIARY_HINT)) {
+        else if (textId == TEXT_DAMPES_DIARY && ctx->GetOption(RSK_DAMPES_DIARY_HINT)) {
             messageEntry = ctx->GetHint(RH_DAMPES_DIARY)->GetHintMessage(MF_AUTO_FORMAT);
         }
         else if ((textId == TEXT_CHEST_GAME_PROCEED || textId == TEXT_CHEST_GAME_REAL_GAMBLER || textId == TEXT_CHEST_GAME_THANKS_A_LOT) &&
@@ -2213,9 +2197,6 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         }
         else if (textId == TEXT_MALON_INGO_MUST_HAVE_BEEN_TEMPTED && ctx->GetOption(RSK_MALON_HINT)){
             messageEntry = ctx->GetHint(RH_MALON_HINT)->GetHintMessage(MF_AUTO_FORMAT, 3);
-        }
-        else if (ctx->GetOption(RSK_KAK_100_SKULLS_HINT) && textId == TEXT_SKULLTULA_PEOPLE_MAKE_YOU_VERY_RICH) {
-            messageEntry = ctx->GetHint(RH_KAK_100_SKULLS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
         }
         else if (textId == TEXT_GF_HBA_SIGN && ctx->GetOption(RSK_HBA_HINT)) {
             messageEntry = ctx->GetHint(RH_HBA_HINT)->GetHintMessage(MF_AUTO_FORMAT, 0);

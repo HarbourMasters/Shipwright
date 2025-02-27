@@ -10,6 +10,11 @@ extern PlayState* gPlayState;
 #define RAND_GET_OPTION(rsk) OTRGlobals::Instance->gRandoContext->GetOption(rsk)
 #define RAND_GET_HINT(rh) OTRGlobals::Instance->gRandoContext->GetHint(rh)
 #define RAND_GET_ITEM_LOC(rc) OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)
+#define ANY_SKULLTULA_HINTS RAND_GET_OPTION(RSK_KAK_10_SKULLS_HINT) || \
+    RAND_GET_OPTION(RSK_KAK_20_SKULLS_HINT) || \
+    RAND_GET_OPTION(RSK_KAK_30_SKULLS_HINT) || \
+    RAND_GET_OPTION(RSK_KAK_40_SKULLS_HINT) || \
+    RAND_GET_OPTION(RSK_KAK_50_SKULLS_HINT)
 
 void BuildGanondorfHint(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg;
@@ -78,10 +83,55 @@ void BuildSheikMessage(uint16_t* textId, bool* loadFromMessageTable) {
     *loadFromMessageTable = false;
 }
 
+void BuildChildAltarMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    CustomMessage msg = RAND_GET_HINT(RH_ALTAR_CHILD)->GetHintMessage();
+    msg.AutoFormat();
+    msg.LoadIntoFont();
+    *loadFromMessageTable = false;
+}
+
+void BuildAdultAltarMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    CustomMessage msg = RAND_GET_HINT(RH_ALTAR_ADULT)->GetHintMessage();
+    msg.AutoFormat();
+    msg.LoadIntoFont();
+    *loadFromMessageTable = false;
+}
+
+void BuildSkulltulaPeopleMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    CustomMessage msg;
+    int16_t actorParams = GET_PLAYER(gPlayState)->talkActor->params;
+    if (actorParams == 1 && RAND_GET_OPTION(RSK_KAK_10_SKULLS_HINT)) {
+        msg = RAND_GET_HINT(RH_KAK_10_SKULLS_HINT)->GetHintMessage();
+    } else if (actorParams == 2 && RAND_GET_OPTION(RSK_KAK_20_SKULLS_HINT)) {
+        msg = RAND_GET_HINT(RH_KAK_20_SKULLS_HINT)->GetHintMessage();
+    } else if (actorParams == 3 && RAND_GET_OPTION(RSK_KAK_30_SKULLS_HINT)) {
+        msg = RAND_GET_HINT(RH_KAK_30_SKULLS_HINT)->GetHintMessage();
+    } else if (actorParams == 4 && RAND_GET_OPTION(RSK_KAK_40_SKULLS_HINT)) {
+        msg = RAND_GET_HINT(RH_KAK_40_SKULLS_HINT)->GetHintMessage();
+    } else if (actorParams == 5 && RAND_GET_OPTION(RSK_KAK_50_SKULLS_HINT)) {
+        msg = RAND_GET_HINT(RH_KAK_50_SKULLS_HINT)->GetHintMessage();
+    } else {
+        return;
+    }
+    msg.AutoFormat();
+    msg.LoadIntoFont();
+    *loadFromMessageTable = false;
+}
+
+void Build100SkullsHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    CustomMessage msg = RAND_GET_HINT(RH_KAK_100_SKULLS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
+    msg.LoadIntoFont();
+    *loadFromMessageTable = false;
+}
+
 void RegisterStaticHints() {
     COND_ID_HOOK(OnOpenText, TEXT_GANONDORF, RAND_GET_OPTION(RSK_GANONDORF_HINT), BuildGanondorfHint);
     COND_ID_HOOK(OnOpenText, TEXT_SHEIK_NEED_HOOK, IS_RANDO, BuildSheikMessage);
     COND_ID_HOOK(OnOpenText, TEXT_SHEIK_HAVE_HOOK, IS_RANDO, BuildSheikMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_ALTAR_CHILD, IS_RANDO, BuildChildAltarMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_ALTAR_ADULT, IS_RANDO, BuildAdultAltarMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_SKULLTULA_PEOPLE_IM_CURSED, ANY_SKULLTULA_HINTS, BuildSkulltulaPeopleMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_SKULLTULA_PEOPLE_MAKE_YOU_VERY_RICH, RAND_GET_OPTION(RSK_KAK_100_SKULLS_HINT), Build100SkullsHintMessage);
 }
 
 RegisterShipInitFunc initFunc(RegisterStaticHints, { "IS_RANDO" });
