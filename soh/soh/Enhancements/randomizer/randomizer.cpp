@@ -359,14 +359,6 @@ void Randomizer::LoadHintMessages() {
 
     CustomMessageManager::Instance->ClearMessageTable(Randomizer::hintMessageTableID);
     CustomMessageManager::Instance->AddCustomMessageTable(Randomizer::hintMessageTableID);
-
-    // Bow Shooting Gallery reminder
-    CustomMessageManager::Instance->CreateMessage(
-        Randomizer::hintMessageTableID, TEXT_SHOOTING_GALLERY_MAN_COME_BACK_WITH_BOW,
-        CustomMessage("Come back when you have your own bow and you'll get a #different prize#!",
-        "Komm wieder sobald Du Deinen eigenen Bogen hast, um einen #speziellen Preis# zu erhalten!",
-        "J'aurai #une autre récompense# pour toi lorsque tu auras ton propre arc.",
-        {QM_RED}));
 }
 
 // Reference soh/src/overlays/actors/ovl_En_GirlA/z_en_girla.h

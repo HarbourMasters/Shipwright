@@ -31,7 +31,21 @@ void BuildWaterSwitchMessage(uint16_t* textId, bool* loadFromMessageTable) {
     *loadFromMessageTable = false;
 }
 
+void BuildShootingGalleryNoBowMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    CustomMessage msg = CustomMessage(
+        "Come back when you have your own bow and you'll get a %rdifferent prize%w!",
+        "Komm wieder sobald Du Deinen eigenen Bogen hast, um einen %rspeziellen Preis%w zu erhalten!",
+        "J'aurai %rune autre récompense%w pour toi lorsque tu auras ton propre arc."
+    );
+    msg.AutoFormat();
+    msg.LoadIntoFont();
+    *loadFromMessageTable = false;
+}
+
 void RegisterMiscellaneousMessages() {
     COND_ID_HOOK(OnOpenText, TEXT_LAKE_HYLIA_WATER_SWITCH_NAVI, IS_RANDO, BuildWaterSwitchMessage);
     COND_ID_HOOK(OnOpenText, TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN, IS_RANDO, BuildWaterSwitchMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_SHOOTING_GALLERY_MAN_COME_BACK_WITH_BOW, IS_RANDO, BuildShootingGalleryNoBowMessage);
 }
+
+RegisterShipInitFunc initFunc(RegisterMiscellaneousMessages, { "IS_RANDO" });
