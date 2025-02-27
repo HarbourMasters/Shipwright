@@ -136,20 +136,6 @@ extern "C" void OTRMessage_Init()
 
     CustomMessageManager::Instance->AddCustomMessageTable(customMessageTableID);
     CustomMessageManager::Instance->CreateMessage(
-        customMessageTableID, TEXT_BUY_BOMBCHUS_10_DESC,
-        CustomMessage("\x08%rBombchu  10 pieces  99 Rupees&%wThis looks like a toy mouse, but&it's actually a "
-                      "self-propelled time&bomb!\x09\x0A",
-                      "\x08%rKrabbelmine  10 Stück  99 Rubine&%wDas ist eine praktische Zeitbombe,&die Du als "
-                      "Distanzwaffe&einsetzen kannst!\x09\x0A",
-                      "\x08%rMissile  10 unités  99 Rubis&%wProfilée comme une souris&mécanique, cette arme est "
-                      "&destructrice!!!\x09\x0A"));
-    CustomMessageManager::Instance->CreateMessage(
-        customMessageTableID, TEXT_BUY_BOMBCHUS_10_PROMPT,
-        CustomMessage("\x08"
-                      "Bombchu  10 pieces   99 Rupees\x09&&\x1B%gBuy&Don't buy%w",
-                      "\x08Krabbelmine  10 Stück  99 Rubine\x09&&\x1B%gKaufen!&Nicht kaufen!%w",
-                      "\x08Missiles  10 unités   99 Rubis\x09&&\x1B%gAcheter&Ne pas acheter%w"));
-    CustomMessageManager::Instance->CreateMessage(
         customMessageTableID, TEXT_MARKET_GUARD_NIGHT,
         CustomMessage("You look bored. Wanna go out for a&walk?\x1B&%gYes&No%w",
                       "Du siehst gelangweilt aus.&Willst Du einen Spaziergang machen?\x1B&%gJa&Nein%w",
