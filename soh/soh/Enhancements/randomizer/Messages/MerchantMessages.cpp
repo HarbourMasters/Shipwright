@@ -108,6 +108,16 @@ void BuildCarpetGuyMessage(uint16_t* textId, bool* loadFromMessageTable) {
     *loadFromMessageTable = false;
 }
 
+void BuildCarpetGuyFailToBuyMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    CustomMessage msg = CustomMessage(
+        "I'm sorry I can't sell you these fine specimens, they need an %rexperienced owner%w.^"
+                      "Come back when you have had %gBombchus%w of your own."
+    );
+    msg.AutoFormat();
+    msg.LoadIntoFont();
+    *loadFromMessageTable = false;
+}
+
 void BuildScrubMessage(uint16_t* textId, bool* loadFromMessageTable) {
     EnDns* enDns = reinterpret_cast<EnDns*>(GET_PLAYER(gPlayState)->talkActor);
     RandomizerCheck rc = enDns->sohScrubIdentity.randomizerCheck;
@@ -165,6 +175,7 @@ void RegisterMerchantMessages() {
     COND_ID_HOOK(OnOpenText, TEXT_CARPET_SALESMAN_ARMS_DEALER, NON_BEAN_MERCHANTS, BuildCarpetGuyMessage);
     COND_ID_HOOK(OnOpenText, TEXT_SCRUB_RANDOM, IS_RANDO, BuildScrubMessage);
     COND_HOOK(OnOpenText, RAND_GET_OPTION(RSK_SHOPSANITY).IsNot(RO_SHOPSANITY_OFF), BuildShopMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_CARPET_SALESMAN_CUSTOM_FAIL_TO_BUY, IS_RANDO, BuildCarpetGuyFailToBuyMessage);
 }
 
 static RegisterShipInitFunc initFunc(RegisterMerchantMessages, { "IS_RANDO" });
