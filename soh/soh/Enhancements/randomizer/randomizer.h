@@ -60,7 +60,6 @@ class Randomizer {
     RandomizerCheck GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
     CustomMessage GetGoronMessage(u16 index);
     static void CreateCustomMessages();
-    static CustomMessage GetRupeeMessage(u16 rupeeTextId);
 };
 
 #ifdef __cplusplus
