@@ -37,7 +37,6 @@ class Randomizer {
 
     static Sprite* GetSeedTexture(uint8_t index);
     bool SpoilerFileExists(const char* spoilerFileName);
-    void LoadHintMessages();
     bool IsTrialRequired(s32 trialFlag);
     u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
     RandomizerCheck GetCheckFromRandomizerInf(RandomizerInf randomizerInf);

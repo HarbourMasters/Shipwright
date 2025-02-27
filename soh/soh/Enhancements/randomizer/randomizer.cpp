@@ -221,13 +221,6 @@ bool Randomizer::SpoilerFileExists(const char* spoilerFileName) {
 #pragma GCC pop_options
 #pragma optimize("", on)
 
-void Randomizer::LoadHintMessages() {
-    auto ctx = Rando::Context::GetInstance();
-
-    CustomMessageManager::Instance->ClearMessageTable(Randomizer::hintMessageTableID);
-    CustomMessageManager::Instance->AddCustomMessageTable(Randomizer::hintMessageTableID);
-}
-
 // Reference soh/src/overlays/actors/ovl_En_GirlA/z_en_girla.h
 std::unordered_map<RandomizerGet, EnGirlAShopItem> randomizerGetToEnGirlShopItem = {
     { RG_BUY_DEKU_NUTS_5,   SI_DEKU_NUTS_5 },
