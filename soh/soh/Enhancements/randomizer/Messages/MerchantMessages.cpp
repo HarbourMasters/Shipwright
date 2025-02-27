@@ -5,6 +5,7 @@ extern PlayState* gPlayState;
 #include <macros.h>
 #include <functions.h>
 #include <variables.h>
+#include <overlays/actors/ovl_En_Dns/z_en_dns.h>
 }
 
 #define RAND_GET_OPTION(rsk) OTRGlobals::Instance->gRandoContext->GetOption(rsk)
@@ -99,6 +100,48 @@ void BuildCarpetGuyMessage(uint16_t* textId, bool* loadFromMessageTable) {
     *loadFromMessageTable = false;
 }
 
+void BuildScrubMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    EnDns* enDns = reinterpret_cast<EnDns*>(GET_PLAYER(gPlayState)->talkActor);
+    RandomizerCheck rc = enDns->sohScrubIdentity.randomizerCheck;
+    uint16_t price = RAND_GET_ITEM(rc)->GetPrice();
+    CustomMessage msg;
+    if (price == 0) {
+        msg = CustomMessage("\x12\x38\x82" "All right! You win! In return for sparing me, I will give you a %g[[1]]%w!&Please, take it!\x07\x10\xA3",
+            "\x12\x38\x82" "In Ordnung! Du gewinnst! Im Austausch dafür, dass Du mich verschont hast, werde ich Dir einen %g[[1]]%w geben!\x07\x10\xA3",
+            "\x12\x38\x82" "J'me rends! Laisse-moi partir et en échange, je te donne un %g[[1]]%w! Vas-y prends le!\x07\x10\xA3");
+    } else {
+        msg = CustomMessage("\x12\x38\x82" "All right! You win! In return for sparing me, I will sell you a %g[[1]]%w! %g[[2]] Rupees%w it is!\x07\x10\xA3",
+            "\x12\x38\x82" "Ich gebe auf! Ich verkaufe Dir einen %g[[1]]%w für %y[[2]] Rubine%w!\x07\x10\xA3",
+            "\x12\x38\x82" "J'abandonne! Tu veux bien m'acheter un %g[[1]]%w? Ça fera %y[[2]] Rubis%w!\x07\x10\xA3");
+    }
+    BuildMerchantMessage(msg, rc);
+    msg.AutoFormat();
+    msg.LoadIntoFont();
+    *loadFromMessageTable = false;
+}
+
+void BuildShopMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    CustomMessage msg;
+    RandomizerCheck rc;
+    if (*textId >= TEXT_SHOP_ITEM_RANDOM && *textId < TEXT_SHOP_ITEM_RANDOM_CONFIRM) {
+        rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf(static_cast<RandomizerInf>((*textId - TEXT_SHOP_ITEM_RANDOM) + RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1));
+        msg = CustomMessage("\x08%g[[1]]%w  %y[[2]]_Rupees%w&Special deal! %rONE LEFT%w!\x0A\x02",
+            "\x08%g[[1]]%w  %y[[2]]_Rubine%w&Sonderangebot! %rNUR NOCH EINES VERFÜGBAR%w!\x0A\x02",
+            "\x08%g[[1]]%w  %y[[2]]_Rubis%w&Offre spéciale! %rDERNIER EN STOCK%w!\x0A\x02");
+    } else if (*textId >= TEXT_SHOP_ITEM_RANDOM_CONFIRM && *textId <= TEXT_SHOP_ITEM_RANDOM_CONFIRM_END) {
+        rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf(static_cast<RandomizerInf>((*textId - TEXT_SHOP_ITEM_RANDOM_CONFIRM) + RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1));
+        msg = CustomMessage("\x08%g[[1]]%w  %y[[2]]_Rupees%w\x09\x1B%gBuy&Don't buy%w\x09\x02",
+            "\x08%g[[1]]%w  %y[[2]]_Rubine%w\x09\x1B%gKaufen&Nicht kaufen%w\x09\x02",
+            "\x08%g[[1]]%w  %y[[2]]_Rubis%w\x09\x1B%gAcheter&Ne pas acheter%w\x09\x02");
+    } else {
+        return;
+    }
+    BuildMerchantMessage(msg, rc);
+    msg.AutoFormat();
+    msg.LoadIntoFont();
+    *loadFromMessageTable = false;
+}
+
 void RegisterMerchantMessages() {
     COND_ID_HOOK(OnOpenText, TEXT_BEAN_SALESMAN_BUY_FOR_10, 
         (RAND_GET_OPTION(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_BEANS_ONLY) ||
@@ -109,6 +152,8 @@ void RegisterMerchantMessages() {
     COND_ID_HOOK(OnOpenText, TEXT_GRANNYS_SHOP, NON_BEAN_MERCHANTS, BuildGrannyMessage);
     COND_ID_HOOK(OnOpenText, TEXT_CARPET_SALESMAN_1, NON_BEAN_MERCHANTS, BuildCarpetGuyMessage);
     COND_ID_HOOK(OnOpenText, TEXT_CARPET_SALESMAN_ARMS_DEALER, NON_BEAN_MERCHANTS, BuildCarpetGuyMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_SCRUB_RANDOM, IS_RANDO, BuildScrubMessage);
+    COND_HOOK(OnOpenText, RAND_GET_OPTION(RSK_SHOPSANITY).IsNot(RO_SHOPSANITY_OFF), BuildShopMessage);
 }
 
 static RegisterShipInitFunc initFunc(RegisterMerchantMessages, { "IS_RANDO" });

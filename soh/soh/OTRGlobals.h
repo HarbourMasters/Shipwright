@@ -134,7 +134,6 @@ CowIdentity Randomizer_IdentifyCow(s32 sceneNum, s32 posX, s32 posZ);
 FishIdentity Randomizer_IdentifyFish(s32 sceneNum, s32 actorParams);
 void Randomizer_ParseSpoiler(const char* fileLoc);
 void Randomizer_LoadHintMessages();
-void Randomizer_LoadMerchantMessages();
 bool Randomizer_IsTrialRequired(s32 trialFlag);
 GetItemEntry Randomizer_GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId);
 GetItemEntry Randomizer_GetItemFromActorWithoutObtainabilityCheck(s16 actorId, s16 sceneNum, s16 actorParams,

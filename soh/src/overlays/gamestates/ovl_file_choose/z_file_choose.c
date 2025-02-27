@@ -3336,7 +3336,6 @@ void FileChoose_LoadGame(GameState* thisx) {
     this->state.running = false;
 
     Randomizer_LoadHintMessages();
-    Randomizer_LoadMerchantMessages();
 
     gSaveContext.respawn[0].entranceIndex = ENTR_LOAD_OPENING;
     gSaveContext.respawnFlag = 0;
