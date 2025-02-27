@@ -56,10 +56,6 @@ std::set<RandomizerTrick> enabledGlitches;
 u8 generated;
 char* seedString;
 
-const std::string Randomizer::hintMessageTableID = "RandomizerHints";
-const std::string Randomizer::rupeeMessageTableID = "RandomizerRupees";
-const std::string Randomizer::NaviRandoMessageTableID = "RandomizerNavi";
-
 Randomizer::Randomizer() {
     Rando::StaticData::InitItemTable();
     Rando::StaticData::InitLocationTable();
