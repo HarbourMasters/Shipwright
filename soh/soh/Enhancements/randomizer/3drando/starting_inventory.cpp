@@ -65,6 +65,10 @@ void GenerateStartingInventory() {
     AddItemToInventory(RG_GERUDO_MEMBERSHIP_CARD);
   }
 
+  if (ctx->GetOption(RSK_SKIP_CHILD_ZELDA)) {
+      AddItemToInventory(RG_ZELDAS_LETTER);
+  }
+
   //Starting Inventory Menu
   //Values are associated so that the count of items matches the index of
   //the option selected. If None is selected, the value will be zero and

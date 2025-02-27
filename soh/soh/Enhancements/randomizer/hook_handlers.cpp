@@ -1650,6 +1650,11 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             }
             break;
         }
+        case VB_GIVE_ITEM_ZELDAS_LETTER: {
+            Flags_SetRandomizerInf(RAND_INF_ZELDAS_LETTER);
+            *should = false;
+            break;
+        }
         case VB_FREEZE_ON_SKULL_TOKEN:
         case VB_TRADE_TIMER_ODD_MUSHROOM:
         case VB_TRADE_TIMER_FROG:
@@ -1666,7 +1671,6 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_GIVE_ITEM_WEIRD_EGG:
         case VB_GIVE_ITEM_LIGHT_ARROW:
         case VB_GIVE_ITEM_STRENGTH_1:
-        case VB_GIVE_ITEM_ZELDAS_LETTER:
         case VB_GIVE_ITEM_OCARINA_OF_TIME:
         case VB_GIVE_ITEM_LIGHT_MEDALLION:
         case VB_GIVE_ITEM_FOREST_MEDALLION:

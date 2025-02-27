@@ -325,6 +325,7 @@ extern "C" void Randomizer_InitSaveFile() {
         // set this at the end to ensure we always start with the letter
         // this is for the off chance we got the weird egg from impa (which should never happen)
         INV_CONTENT(ITEM_LETTER_ZELDA) = ITEM_LETTER_ZELDA;
+        Flags_SetRandomizerInf(RAND_INF_ZELDAS_LETTER);
     }
 
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && startingAge == RO_AGE_ADULT) {
