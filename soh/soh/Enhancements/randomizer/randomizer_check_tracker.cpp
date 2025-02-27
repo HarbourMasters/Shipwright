@@ -901,7 +901,6 @@ void CheckTrackerWindow::DrawElement() {
     }
 
     ImGui::SetNextWindowSize(ImVec2(400, 540), ImGuiCond_FirstUseEver);
-
     BeginFloatWindows("Check Tracker", mIsVisible, ImGuiWindowFlags_NoScrollbar);
 
     if (!GameInteractor::IsSaveLoaded() || !initialized) {
@@ -952,7 +951,7 @@ void CheckTrackerWindow::DrawElement() {
         UpdateFilters();
         doAreaScroll = true;
     }
-    UIWidgets2::PushStyleCombobox();
+    UIWidgets2::PushStyleCombobox(themeColor);
     if (checkSearch.Draw()) {
         UpdateFilters();
     }
@@ -998,6 +997,7 @@ void CheckTrackerWindow::DrawElement() {
 
     bool shouldHideFilteredAreas = CVarGetInteger(CVAR_TRACKER_CHECK("HideFilteredAreas"), 1);
     
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 3.0f));
     for (auto& [rcArea, checks] : checksByArea) {
         RandomizerCheckArea thisArea = currentArea;
 
@@ -1081,6 +1081,7 @@ void CheckTrackerWindow::DrawElement() {
             }
         }
     }
+    ImGui::PopStyleVar();
 
     ImGui::EndTable(); //Checks Lead-out
     ImGui::EndTable(); //Quick Options Lead-out
@@ -1573,9 +1574,10 @@ void DrawLocation(RandomizerCheck rc) {
     }
 
     // Draw button - for Skipped/Seen/Scummed/Unchecked only
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, {4.0f, 3.0f});
+    float sz = ImGui::GetFrameHeight();
     if (status == RCSHOW_UNCHECKED || status == RCSHOW_SEEN || status == RCSHOW_IDENTIFIED || status == RCSHOW_SCUMMED || skipped) {
-        UIWidgets2::PushStyleButton();
-        if (UIWidgets::StateButton(std::to_string(rc).c_str(), skipped ? ICON_FA_PLUS : ICON_FA_TIMES)) {
+        if (UIWidgets2::StateButton(std::to_string(rc).c_str(), skipped ? ICON_FA_PLUS : ICON_FA_TIMES, ImVec2(sz, sz), UIWidgets2::ButtonOptions().Color(themeColor))) {
             if (skipped) {
                 OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->SetIsSkipped(false);
                 areaChecksGotten[loc->GetArea()]--;
@@ -1589,10 +1591,11 @@ void DrawLocation(RandomizerCheck rc) {
             UpdateInventoryChecks();
             SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionId, true);
         }
-        UIWidgets2::PopStyleButton();
     } else {
-        ImGui::Dummy(ImVec2(24.0f, 24.0f));
+        ImGui::Dummy(ImVec2(sz, sz));
     }
+    ImGui::PopStyleVar();
+
     ImGui::SameLine();
 
     //Draw
@@ -1765,6 +1768,7 @@ static std::unordered_map<int32_t, const char*> buttonStrings = {
     { TRACKER_COMBO_BUTTON_D_LEFT, "D-Left" }, { TRACKER_COMBO_BUTTON_D_RIGHT, "D-Right" }};
 
 void CheckTrackerSettingsWindow::DrawElement() {
+    ImGui::PushFont(OTRGlobals::Instance->fontStandardLarger);
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
     if (ImGui::BeginTable("CheckTrackerSettingsTable", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
         ImGui::TableSetupColumn("General settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -1831,6 +1835,7 @@ void CheckTrackerSettingsWindow::DrawElement() {
         ImGui::PopStyleVar(1);
     }
     ImGui::EndTable();
+    ImGui::PopFont();
 }
 
 void CheckTrackerWindow::InitElement() {
