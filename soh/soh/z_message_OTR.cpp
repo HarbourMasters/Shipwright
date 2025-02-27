@@ -133,11 +133,4 @@ extern "C" void OTRMessage_Init()
         // Assert staff credits start at the first credits ID
         assert(sStaffMessageEntryTablePtr[0].textId == 0x0500);
     }
-
-    CustomMessageManager::Instance->AddCustomMessageTable(customMessageTableID);
-    CustomMessageManager::Instance->CreateMessage(
-        customMessageTableID, TEXT_FISHERMAN_LEAVE,
-        CustomMessage("Hey! Hey!&You can't take the rod out of here!&I'm serious!^Do you want to quit?&\x1B&%gYes&No%w",
-                      "Hey! Hey!&Du kannst die Angel doch nicht&einfach mitnehmen!&Ganz im Ernst!^Möchtest Du aufhören?&\x1B&%gJa&Nein%w",
-                      "Holà! Holà!&Les cannes ne sortent pas d'ici!&Je suis sérieux!^Voulez-vous arrêter?&\x1B&%gOui&Non%w")); //TODO Used AI translation as placeholder
 }
