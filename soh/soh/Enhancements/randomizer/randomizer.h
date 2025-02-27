@@ -41,7 +41,6 @@ class Randomizer {
 
     static Sprite* GetSeedTexture(uint8_t index);
     bool SpoilerFileExists(const char* spoilerFileName);
-    void LoadMerchantMessages();
     void LoadHintMessages();
     bool IsTrialRequired(s32 trialFlag);
     u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
@@ -60,7 +59,6 @@ class Randomizer {
     ItemObtainability GetItemObtainabilityFromRandomizerGet(RandomizerGet randomizerCheck);
     CustomMessage GetSheikMessage(s16 scene, u16 originalTextId);
     CustomMessage GetFishingPondOwnerMessage(u16 originalTextId);
-    CustomMessage GetMerchantMessage(RandomizerCheck rc, TextIDs textId, TextIDs freeTextId = TEXT_NONE, bool mysterious = false);
     RandomizerCheck GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
     CustomMessage GetGoronMessage(u16 index);
     static void CreateCustomMessages();

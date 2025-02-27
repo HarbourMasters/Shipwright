@@ -295,47 +295,6 @@ std::unordered_map<RandomizerGet, EnGirlAShopItem> randomizerGetToEnGirlShopItem
     { RG_BUY_RED_POTION_50, SI_RED_POTION_R50 },
 };
 
-void Randomizer::LoadMerchantMessages() {
-    auto ctx = Rando::Context::GetInstance();
-    CustomMessageManager::Instance->ClearMessageTable(Randomizer::merchantMessageTableID);
-    CustomMessageManager::Instance->AddCustomMessageTable(Randomizer::merchantMessageTableID);
-
-    // Prices have a chance of being 0, and the "sell" message below doesn't really make sense for a free item, so adding a "free" variation here
-    CustomMessageManager::Instance->CreateMessage(Randomizer::merchantMessageTableID, TEXT_SCRUB_RANDOM_FREE,
-        CustomMessage("\x12\x38\x82" "All right! You win! In return for sparing me, I will give you a #[[1]]#!&Please, take it!\x07\x10\xA3",
-            "\x12\x38\x82" "In Ordnung! Du gewinnst! Im Austausch dafür, dass Du mich verschont hast, werde ich Dir einen #[[1]]# geben!\x07\x10\xA3",
-            "\x12\x38\x82" "J'me rends! Laisse-moi partir et en échange, je te donne un #[[1]]#! Vas-y prends le!\x07\x10\xA3",
-            {QM_GREEN}));
-    CustomMessageManager::Instance->CreateMessage(Randomizer::merchantMessageTableID, TEXT_SCRUB_RANDOM,
-        CustomMessage("\x12\x38\x82" "All right! You win! In return for sparing me, I will sell you a #[[1]]#! #[[2]] Rupees# it is!\x07\x10\xA3",
-            "\x12\x38\x82" "Ich gebe auf! Ich verkaufe Dir einen #[[1]]# für #[[2]] Rubine#!\x07\x10\xA3",
-            "\x12\x38\x82" "J'abandonne! Tu veux bien m'acheter un #[[1]]#? Ça fera #[[2]] Rubis#!\x07\x10\xA3",
-            {QM_GREEN, QM_YELLOW}));
-
-    // Each shop item has two messages, one for when the cursor is over it, and one for when you select it and are
-    // prompted buy/don't buy
-    CustomMessageManager::Instance->CreateMessage(
-        Randomizer::merchantMessageTableID, TEXT_SHOP_ITEM_RANDOM,
-        CustomMessage("\x08#[[1]]#  #[[2]]_Rupees#&Special deal! #ONE LEFT#!&Get it while it lasts!\x0A\x02",
-            "\x08#[[1]]#  #[[2]]_Rubine#&Sonderangebot! #NUR NOCH EINES VERFÜGBAR#!&Beeilen Sie sich!\x0A\x02",
-            "\x08#[[1]]#  #[[2]]_Rubis#&Offre spéciale! #DERNIER EN STOCK#!&Faites vite!\x0A\x02",
-            {QM_GREEN, QM_YELLOW, QM_RED}));
-
-    CustomMessageManager::Instance->CreateMessage(
-        Randomizer::merchantMessageTableID, TEXT_SHOP_ITEM_RANDOM_CONFIRM,
-        CustomMessage("\x08#[[1]]#  #[[2]]_Rupees#\x09\x1B#Buy&Don't buy#\x09\x02",
-            "\x08#[[1]]#  #[[2]]_Rubine#\x09\x1B#Kaufen&Nicht kaufen#\x09\x02",
-            "\x08#[[1]]#  #[[2]]_Rubis#\x09\x1B#Acheter&Ne pas acheter#\x09\x02",
-            {QM_GREEN, QM_YELLOW, QM_GREEN}));
-
-    CustomMessage firstCarpet = CustomMessage("Welcome!^I am selling stuff, strange and rare, from all over the world to everybody. Today's special is...^",
-                                   /*german*/ "Sei gegrüßt!^Ich verkaufe allerlei Kuriositäten. Stets sonderliche und seltene Ware aus "
-                                              "aller Welt für jedermann. Das heutige Angebot bleibt...^",
-                                   /*french*/ "Bienvenue!^Je vends des objets rares et merveilleux du monde entier. En spécial aujourd'hui...^");
-                               /*spanish*/ // ¡Acércate!^Vendo productos extraños y difíciles de encontrar... De todo el mundo a todo el mundo. La oferta de hoy es...^#¡
-    
-}
-
 std::map<s32, TrialKey> trialFlagToTrialKey = {
     { EVENTCHKINF_COMPLETED_LIGHT_TRIAL, TK_LIGHT_TRIAL, },
     { EVENTCHKINF_COMPLETED_FOREST_TRIAL, TK_FOREST_TRIAL, },
@@ -2605,34 +2564,6 @@ CustomMessage Randomizer::GetFishingPondOwnerMessage(u16 originalTextId) {
 
     messageEntry.Format(); //RANDOTODO why is this needed when it's not elsewhere....
 
-    return messageEntry;
-}
-
-CustomMessage Randomizer::GetMerchantMessage(RandomizerCheck rc, TextIDs textId, TextIDs freeTextId, bool mysterious) {
-    auto ctx = Rando::Context::GetInstance();
-    CustomMessage messageEntry;
-    RandomizerGet shopItemGet = ctx->GetItemLocation(rc)->GetPlacedRandomizerGet();
-    CustomMessage shopItemName;
-    u16 shopItemPrice = ctx->GetItemLocation(rc)->GetPrice();
-
-    if (mysterious || CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
-        shopItemName = Rando::StaticData::hintTextTable[RHT_MYSTERIOUS_ITEM_CAPITAL].GetHintMessage();
-    } else if (shopItemGet == RG_ICE_TRAP) {
-        shopItemGet = ctx->overrides[rc].LooksLike();
-        shopItemName = CustomMessage(ctx->overrides[rc].GetTrickName());
-    } else { 
-        auto shopItem = Rando::StaticData::RetrieveItem(shopItemGet);
-        shopItemName = {shopItem.GetName()};
-    }
-    
-    if (freeTextId != TEXT_NONE && shopItemPrice == 0) {
-        messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, freeTextId, MF_RAW);
-    } else {
-        messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, textId, MF_RAW);
-    }
-
-    messageEntry.InsertNames({shopItemName, {std::to_string(shopItemPrice)}});
-    messageEntry.AutoFormat();
     return messageEntry;
 }
 
