@@ -2104,20 +2104,6 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         if ((textId == TEXT_ALTAR_CHILD || textId == TEXT_ALTAR_ADULT)) {
             // rando hints at altar
             messageEntry = (LINK_IS_ADULT) ? ctx->GetHint(RH_ALTAR_ADULT)->GetHintMessage() : ctx->GetHint(RH_ALTAR_CHILD)->GetHintMessage(MF_AUTO_FORMAT);
-        } else if (textId == TEXT_GANONDORF) {
-            if (ctx->GetOption(RSK_GANONDORF_HINT)){
-                if (ctx->GetOption(RSK_SHUFFLE_MASTER_SWORD) && !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)){
-                    messageEntry = INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT ?
-                                   ctx->GetHint(RH_GANONDORF_HINT)->GetHintMessage(MF_AUTO_FORMAT, 1):
-                                   ctx->GetHint(RH_GANONDORF_HINT)->GetHintMessage(MF_AUTO_FORMAT, 2);
-                } else {
-                    messageEntry = INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT ?
-                                   ctx->GetHint(RH_GANONDORF_JOKE)->GetHintMessage(MF_AUTO_FORMAT):
-                                   ctx->GetHint(RH_GANONDORF_HINT)->GetHintMessage(MF_AUTO_FORMAT, 0);
-                }
-            }
-        } else if (textId == TEXT_SHEIK_NEED_HOOK || textId == TEXT_SHEIK_HAVE_HOOK) {
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetSheikMessage(gPlayState->sceneNum, textId);            
         } else if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("RandomizeRupeeNames"), 1) &&
                    (textId == TEXT_BLUE_RUPEE || textId == TEXT_RED_RUPEE || textId == TEXT_PURPLE_RUPEE ||
                    textId == TEXT_HUGE_RUPEE)) {
