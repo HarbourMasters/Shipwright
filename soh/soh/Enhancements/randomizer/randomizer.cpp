@@ -233,16 +233,6 @@ void Randomizer::LoadHintMessages() {
         "Komm wieder sobald Du Deinen eigenen Bogen hast, um einen #speziellen Preis# zu erhalten!",
         "J'aurai #une autre récompense# pour toi lorsque tu auras ton propre arc.",
         {QM_RED}));
-
-    // Lake Hylia water level system
-    CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN,
-        CustomMessage("Water level control system.&Keep away!",
-            "Wasserstand Kontrollsystem&Finger weg!",
-            "Système de contrôle du niveau&d'eau.&Ne pas toucher!"));
-    CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_LAKE_HYLIA_WATER_SWITCH_NAVI,
-        CustomMessage("%cThis switch is rustier than you think.^%cSomething must be wrong with the pipe system in the %bWater Temple%c.",
-            "%cDieser Schalter scheint rostiger zu sein als er aussieht.^%cEtwas muss mit dem Leitungssystem im %bWassertempel%c nicht stimmen.",
-            "%cCet interrupteur est très rouillé.^%cIl doit y avoir un problème avec la tuyauterie du %bTemple de l'Eau%c."));
 }
 
 // Reference soh/src/overlays/actors/ovl_En_GirlA/z_en_girla.h
