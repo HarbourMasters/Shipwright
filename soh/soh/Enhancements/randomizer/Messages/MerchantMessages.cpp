@@ -1,5 +1,11 @@
 // RANDOTODO: Consider breaking this up into the different actors
 // That speak these hints, like 2Ship does with ActorBehavior
+
+/**
+ * This file handles the custom messages for merchants,
+ * including both shops and one-off merchants (i.e. Medigoron, Bean Guy,
+ * and Carpet Salesman)
+ */
 #include <soh/OTRGlobals.h>
 
 extern "C" {

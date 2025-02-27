@@ -1,3 +1,10 @@
+// RANDOTODO: Consider putting Ice Traps in their own file.
+/**
+ * This file handles custom messages relating to Items,
+ * such as Get Item messages for non-vanilla items,
+ * Vanilla/MQ hints when collecting Maps, Ice Trap messages,
+ * etc.
+ */
 #include <soh/OTRGlobals.h>
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
