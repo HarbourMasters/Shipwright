@@ -51,7 +51,6 @@ void SohMenu::AddMenuSettings() {
     WidgetPath path = { "Settings", "General", SECTION_COLUMN_1 };
 
     // General - Settings
-    //AddWidget(path, "Settings", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Menu Theme", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_SETTING("Menu.Theme"))
         .Options(ComboboxOptions()
@@ -195,7 +194,6 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_SETTING("Fullscreen"))
         .Callback([](WidgetInfo& info) { Ship::Context::GetInstance()->GetWindow()->ToggleFullscreen(); })
         .Options(CheckboxOptions().Tooltip("Toggles Fullscreen On/Off."));
-#ifndef __APPLE__
     AddWidget(path, "Internal Resolution: %.0f%%", WIDGET_CVAR_SLIDER_FLOAT)
         .CVar(CVAR_INTERNAL_RESOLUTION)
         .Callback([](WidgetInfo& info) {
@@ -220,7 +218,6 @@ void SohMenu::AddMenuSettings() {
                 .Format("")
                 .Min(0.5f)
                 .Max(2.0f));
-#endif
 #ifndef __WIIU__
     AddWidget(path, "Anti-aliasing (MSAA): %d", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_MSAA_VALUE)

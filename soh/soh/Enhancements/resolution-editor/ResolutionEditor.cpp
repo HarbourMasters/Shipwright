@@ -103,13 +103,6 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
     const bool disabled_everything = !CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".Enabled", 0);
     const bool disabled_pixelCount = !CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".VerticalResolutionToggle", 0);
 
-#ifdef __APPLE__
-    // Display HiDPI warning. (Remove this once we can definitively say it's fixed.)
-    ImGui::TextColored(messageColor[MESSAGE_INFO],
-                        ICON_FA_INFO_CIRCLE " These settings may behave incorrectly on Retina displays.");
-    UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
-#endif
-
     if (ImGui::CollapsingHeader("Original Settings", ImGuiTreeNodeFlags_DefaultOpen)) {
         // The original resolution slider (for convenience)
         const bool disabled_resolutionSlider = (CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".VerticalResolutionToggle", 0) &&
