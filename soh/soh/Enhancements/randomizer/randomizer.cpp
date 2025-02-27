@@ -4218,60 +4218,6 @@ void RandomizerSettingsWindow::UpdateElement() {
     }
 }
 
-CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
-    auto ctx = Rando::Context::GetInstance();
-    CustomMessage messageEntry;
-    switch (scene) {
-        case SCENE_TEMPLE_OF_TIME:
-            if (ctx->GetOption(RSK_OOT_HINT) && !ctx->GetItemLocation(RC_SONG_FROM_OCARINA_OF_TIME)->HasObtained()) {
-                messageEntry = ctx->GetHint(RH_OOT_HINT)->GetHintMessage(MF_RAW);
-            } else if (!CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_GANONS_TOWER)) {
-                messageEntry = CustomMessage(
-                    "@, meet me at %gGanon's Castle%w once you obtain the %rkey to his lair%w.",
-                    "@, wir treffen uns bei %gGanons Schloß%w, sobald Du den %rSchlüssel zu seinem Verlies%w hast.",
-                    "Retrouve-moi au %gChâteau de Ganon%w une fois que tu auras obtenu la %rclé de son repaire%w.");
-            } else {
-                messageEntry =
-                    CustomMessage("The time has come. Prepare yourself.", "Die Zeit ist gekommen.&Mach Dich bereit.",
-                                  "Le moment est venu @.&Tu ferais bien de te préparer.");
-            }
-            break;
-        case SCENE_INSIDE_GANONS_CASTLE:
-            if (ctx->GetOption(RSK_SHEIK_LA_HINT) && INV_CONTENT(ITEM_ARROW_LIGHT) != ITEM_ARROW_LIGHT) {
-                messageEntry = ctx->GetHint(RH_SHEIK_HINT)->GetHintMessage(MF_RAW);
-            } else if (!(CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER) &&
-                         INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT && CUR_CAPACITY(UPG_QUIVER) >= 30 &&
-                         gSaveContext.isMagicAcquired)) {
-                messageEntry = CustomMessage(
-                    "You are still ill-equipped to face %rGanondorf%w."
-                    "^Seek out the %cMaster Sword%w, %rsomething to hold your arrows%w, and %gmagic%w to summon the "
-                    "%ylight%w.",
-                    "Du bist noch nicht gewappnet um Dich %rGanondorf%w stellen zu können.^"
-                    "Begib Dich auf die Suche nach dem %cMaster-Schwert%w, %retwas um Deinen Pfeilen einen Sinn zu "
-                    "geben%w,^sowie %gdie Magie%w, um das %yLicht%w herauf beschwören zu können.",
-                    "@, tu n'es toujours pas prêt à affronter %rGanondorf%w.^"
-                    "Cherche l'%cÉpée de Légende%w, %rquelque chose pour ranger tes flèches%w et de la %gmagie%w pour "
-                    "invoquer la %ylumière%w.");
-            } else if (!Flags_GetEventChkInf(EVENTCHKINF_DISPELLED_GANONS_TOWER_BARRIER) &&
-                       !ctx->GetOption(RSK_TRIAL_COUNT).Is(0)) {
-                messageEntry = CustomMessage(
-                    "You may have what you need to defeat %rthe Evil King%w, but the %cbarrier%w still "
-                    "stands.^Complete the remaining %gtrials%w to destroy it.",
-                    "Du magst das haben, was Du brauchst um %rden bösen König%w zu besiegen, aber die %cBarriere%w "
-                    "steht noch.^Absolviere die verbleibenden %gPrüfungen%w um sie zu zerstören.",
-                    "@, tu as peut-être ce qu'il te faut pour vaincre %rle Malin%w, mais les barrières sont toujours "
-                    "actives.^Termine les épreuves restantes pour les détruire.");
-            } else {
-                messageEntry = CustomMessage("If you're ready, then proceed.^Good luck.",
-                                             "Wenn Du bereit bist, so schreite&voran.^Viel Glück.",
-                                             "Si tu es prêt, tu peux y aller.^Bonne chance.");
-            }
-            break;
-    }
-    messageEntry.AutoFormat();
-    return messageEntry;
-}
-
 void CreateRupeeMessages() {
     CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
     customMessageManager->AddCustomMessageTable(Randomizer::rupeeMessageTableID);
