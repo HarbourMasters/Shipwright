@@ -353,6 +353,14 @@ void CustomMessage::AutoFormat() {
     }
 }
 
+void CustomMessage::AutoFormat(ItemID iid) {
+    for (std::string &str : messages) {
+        str.insert(0, ITEM_OBTAINED(iid));
+    }
+    AutoFormat();
+    Replace(WAIT_FOR_INPUT(), WAIT_FOR_INPUT() + ITEM_OBTAINED(iid));
+}
+
 void CustomMessage::Clean() {
     for (std::string& str : messages) {
         CleanString(str);
@@ -408,7 +416,7 @@ static size_t NextLineLength(const std::string* textStr, const size_t lastNewlin
     // Skip over control codes
     if (textStr->at(currentPos) == '%') {
       nextPosJump = 2;
-    } else if (textStr->at(currentPos) == '$') {
+    } else if (textStr->at(currentPos) == '\x13') {
       nextPosJump = 2;
     } else if (textStr->at(currentPos) == '@') {
       nextPosJump = 1;
@@ -512,7 +520,7 @@ void CustomMessage::AutoFormatString(std::string& str) const {
     ReplaceColors(str);
     // insert newlines either manually or when encountering a '&'
     size_t lastNewline = 0;
-    const bool hasIcon = str.find('$', 0) != std::string::npos;
+    const bool hasIcon = str.find('\x13') != std::string::npos;
     size_t lineLength = NextLineLength(&str, lastNewline, hasIcon);
     size_t lineCount = 1;
     size_t yesNo = str.find("\x1B"s[0], lastNewline);
