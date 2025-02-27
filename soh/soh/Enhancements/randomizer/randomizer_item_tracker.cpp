@@ -1385,7 +1385,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
     ImGui::TableNextRow();
     ImGui::TableNextColumn();
     ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
-    CVarColorPicker("BG Color##gItemTrackerBgColor", CVAR_TRACKER_ITEM("BgColor"), { 0, 0, 0, 0 }, true,
+    CVarColorPicker("Background Color##gItemTrackerBgColor", CVAR_TRACKER_ITEM("BgColor"), { 0, 0, 0, 0 }, true,
         ColorPickerRandomButton | ColorPickerResetButton, themeColor);
 
     ImGui::PopItemWidth();

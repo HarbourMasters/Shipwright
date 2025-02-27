@@ -26,9 +26,8 @@ void SohMenu::AddMenuEnhancements() {
     AddMenuEntry("Enhancements", CVAR_SETTING("Menu.EnhancementsSidebarSection"));
 
     // Enhancements
-    WidgetPath path = { "Enhancements", "Enhancements", SECTION_COLUMN_1 };
-    path.sidebarName = "Presets";
-    AddSidebarEntry("Enhancements", path.sidebarName, 1);
+    WidgetPath path = { "Enhancements", "Presets", SECTION_COLUMN_1 };
+    AddSidebarEntry("Enhancements", path.sidebarName, 3);
 
     const PresetTypeDefinition presetTypeDef = presetTypes.at(PRESET_TYPE_ENHANCEMENTS);
     for (auto iter = presetTypeDef.presets.begin(); iter != presetTypeDef.presets.end(); ++iter) {
@@ -81,8 +80,9 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("Autosave"))
         .Options(CheckboxOptions().Tooltip(
             "Save the game automatically on a 3 minute interval and when soft-resetting the game. The interval "
-            "The interval autosave will wait if the game is paused in any way (dialogue, pause screen up, cutscenes, "
-        "etc.)."
+            "autosave will wait if the game is paused in any way (dialogue, pause screen up, cutscenes, "
+            "etc.).\n\n"
+            "The soft-reset save will *not* trigger in cutscene maps like the Chamber of Sages!"
         ));
 
     AddWidget(path, "Audio", WIDGET_SEPARATOR_TEXT);
@@ -219,7 +219,7 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Fix the Gravedigging Tour Glitch", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("GravediggingTourFix"))
         .PreFunc([](WidgetInfo& info) {
-            info.options->disabled = IS_RANDO;
+            info.options->disabled = IS_RANDO && GameInteractor::IsSaveLoaded(true);
             info.options->disabledTooltip = "This setting is always enabled in randomized save files.";
         })
         .Options(CheckboxOptions().Tooltip(
@@ -357,7 +357,7 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Fix Broken Giant's Knife Bug", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FixGrokenGiantsKnife"))
         .PreFunc([](WidgetInfo& info) {
-            info.options->disabled = IS_RANDO;
+            info.options->disabled = IS_RANDO && GameInteractor::IsSaveLoaded(true);
             info.options->disabledTooltip = "This setting is forcefully enabled when you are playing a Randomizer.";
         })
         .Callback([](WidgetInfo& info) {
@@ -538,9 +538,6 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Skip the tower escape sequence between Ganondorf and Ganon."
         ));
-    AddWidget(path, "Skip Get Item Animations", WIDGET_CVAR_COMBOBOX)
-        .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"))
-        .Options(ComboboxOptions().ComboMap(skipGetItemAnimationOptions).DefaultIndex(SGIA_DISABLED));
     AddWidget(path, "Item Scale: %.2f", WIDGET_CVAR_SLIDER_FLOAT)
         .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipGetItemAnimationScale"))
         .PreFunc([](WidgetInfo& info) {
@@ -632,8 +629,15 @@ void SohMenu::AddMenuEnhancements() {
         ));
     AddWidget(path, "No Skulltula Freeze", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("SkulltulaFreeze"))
+        .PreFunc([](WidgetInfo& info) {
+            info.options->disabled = IS_RANDO && GameInteractor::IsSaveLoaded(true);
+            info.options->disabledTooltip = 
+                "This setting is disabled because a randomizer savefile is loaded. Please use the "
+                "\"Skip Get Item Animation\" option within the randomizer enhancements instead.";
+        })
         .Options(CheckboxOptions().Tooltip(
-            "Stops the game from freezing the player when picking up Gold Skulltula Tokens."
+            "Stops the game from freezing the player when picking up Gold Skulltula Tokens. Does not"
+            "apply in randomizer savefiles."
         ));
     AddWidget(path, "Ask to Equip New Items", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("AskToEquip"))
@@ -1180,7 +1184,7 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Better Bombchu Shopping", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("BetterBombchuShopping"))
         .PreFunc([](WidgetInfo& info) {
-            info.options->disabled = IS_RANDO;
+            info.options->disabled = IS_RANDO && GameInteractor::IsSaveLoaded(true);
             info.options->disabledTooltip = "This setting is forcefully enabled when you are playing a randomizer.";
         })
         .Options(CheckboxOptions().Tooltip(
