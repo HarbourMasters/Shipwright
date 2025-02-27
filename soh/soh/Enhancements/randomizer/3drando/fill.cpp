@@ -602,7 +602,7 @@ void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAcce
           auto message = "Location " +
                          Rando::StaticData::GetLocation(ctx->GetItemLocation(loc)->GetRandomizerCheck())->GetName() +
                          " not reachable\n";
-          SPDLOG_DEBUG(message);
+          LUSLOG_DEBUG("%s", message.c_str());
         #ifndef ENABLE_DEBUG
           break;
         #endif
@@ -1077,7 +1077,7 @@ static void RandomizeDungeonItems() {
 
   //Randomize Any Dungeon and Overworld pools
   AssumedFill(anyDungeonItems, anyDungeonLocations, true);
-  AssumedFill(overworldItems, Rando::StaticData::GetOverworldLocations(), true);
+  AssumedFill(overworldItems, ctx->overworldLocations, true);
 
   //Randomize maps and compasses after since they're not advancement items
   for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
@@ -1086,7 +1086,7 @@ static void RandomizeDungeonItems() {
       AssumedFill(mapAndCompassItems, anyDungeonLocations, true);
     } else if (ctx->GetOption(RSK_SHUFFLE_MAPANDCOMPASS).Is(RO_DUNGEON_ITEM_LOC_OVERWORLD)) {
       auto mapAndCompassItems = FilterAndEraseFromPool(ItemPool, [dungeon](const RandomizerGet i){return i == dungeon->GetMap() || i == dungeon->GetCompass();});
-      AssumedFill(mapAndCompassItems, Rando::StaticData::GetOverworldLocations(), true);
+      AssumedFill(mapAndCompassItems, ctx->overworldLocations, true);
     }
   }
 }
