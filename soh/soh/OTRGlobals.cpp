@@ -2134,18 +2134,6 @@ extern "C" void Randomizer_ShowRandomizerMenu() {
     SohGui::ShowRandomizerSettingsMenu();
 }
 
-CustomMessage Randomizer_GetCustomGetItemMessage(Player* player) {
-    s16 giid;
-    if (player->getItemEntry.objectId != OBJECT_INVALID) {
-        giid = player->getItemEntry.getItemId;
-    } else {
-        giid = player->getItemId;
-    }
-    const CustomMessage getItemText =
-        CustomMessageManager::Instance->RetrieveMessage(Randomizer::getItemMessageTableID, giid);
-    return getItemText;
-}
-
 extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     MessageContext* msgCtx = &play->msgCtx;
     uint16_t textId = msgCtx->textId;
