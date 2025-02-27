@@ -35,7 +35,6 @@ class StaticData {
       static std::unordered_map<std::string, uint32_t> PopulateTranslationMap(std::unordered_map<uint32_t, CustomMessage> input);
       static std::unordered_map<std::string, uint32_t> PopulateTranslationMap(std::unordered_map<uint32_t, RandomizerHintTextKey> input);
       static std::multimap<std::tuple<s16, s16, s32>, RandomizerCheck> CheckFromActorMultimap;
-      static std::vector<RandomizerCheck> GetOverworldLocations();
       static std::vector<RandomizerCheck> GetAllDungeonLocations();
       static std::vector<RandomizerCheck> dungeonRewardLocations;
       static std::vector<RandomizerCheck> GetShopLocations();
@@ -46,8 +45,8 @@ class StaticData {
       static std::vector<RandomizerCheck> GetStaticHintLocations();
       static std::vector<RandomizerCheck> GetPondFishLocations();
       static std::vector<RandomizerCheck> GetOverworldFishLocations();
-      static std::vector<RandomizerCheck> GetOverworldPotLocations();
       static std::vector<RandomizerCheck> GetOverworldFairyLocations();
+      static void RegisterCowLocations();
       static void RegisterFishLocations();
       static void RegisterFairyLocations();
       static void RegisterPotLocations();
