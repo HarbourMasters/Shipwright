@@ -461,13 +461,6 @@ void Randomizer::LoadMerchantMessages() {
                       "J'abandonne! Tu veux bien m'acheter un #[[1]]#? Ça fera #[[2]] Rubis#!\x07\x10\xA3",
                       { QM_GREEN, QM_YELLOW }));
 
-    // Carpet Salesman
-    CustomMessageManager::Instance->CreateMessage(
-        Randomizer::merchantMessageTableID, TEXT_CARPET_SALESMAN_ARMS_DEALER,
-        CustomMessage("Finally! Now I can go back to being an #arms dealer#!",
-                      /*german*/ "Endlich! Schon bald kann ich wieder #Krabbelminen-Händler# sein!",
-                      /*french*/ "Squalala! Je vais enfin pouvoir #prendre des vacances#!", { QM_RED }));
-
     // Each shop item has two messages, one for when the cursor is over it, and one for when you select it and are
     // prompted buy/don't buy
     CustomMessageManager::Instance->CreateMessage(
@@ -481,87 +474,16 @@ void Randomizer::LoadMerchantMessages() {
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_SHOP_ITEM_RANDOM_CONFIRM,
         CustomMessage("\x08#[[1]]#  #[[2]]_Rupees#\x09\x1B#Buy&Don't buy#\x09\x02",
-                      "\x08#[[1]]#  #[[2]]_Rubine#\x09\x1B#Kaufen&Nicht kaufen#\x09\x02",
-                      "\x08#[[1]]#  #[[2]]_Rubis#\x09\x1B#Acheter&Ne pas acheter#\x09\x02",
-                      { QM_GREEN, QM_YELLOW, QM_GREEN }));
+            "\x08#[[1]]#  #[[2]]_Rubine#\x09\x1B#Kaufen&Nicht kaufen#\x09\x02",
+            "\x08#[[1]]#  #[[2]]_Rubis#\x09\x1B#Acheter&Ne pas acheter#\x09\x02",
+            {QM_GREEN, QM_YELLOW, QM_GREEN}));
 
-    CustomMessageManager::Instance->CreateMessage(
-        Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN_BUY_FOR_10,
-        CustomMessage(
-            "I tried to be a #magic bean# salesman, but it turns out my marketing skills weren't worth "
-            "beans!^Anyway, want to buy #[[1]]# for #[[2]] Rupees#?\x1B#Yes&No#",
-            /*german*/ "Möchten Sie #[[1]]# für #[[2]] Rubine# kaufen?\x1B#Ja&Nein#",
-            /*french*/
-            "J'ai essayé d'être un vendeur de #haricots magiques#, mais j'étais mauvais au niveau du marketing et ça "
-            "me courait sur le haricot...^Enfin bref, ça te dirait de m'acheter #[[1]]# pour #[[2]] "
-            "Rubis#?\x1B#Oui&Non#",
-            { QM_RED, QM_GREEN, QM_YELLOW, QM_GREEN }));
-
-    CustomMessageManager::Instance->CreateMessage(
-        Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN_BUY_FOR_100,
-        CustomMessage(
-            "I never thought I'd say this, but I'm selling the last #Magic Bean#.^#99 Rupees#, no less.\x1B#Yes&No#",
-            "Ich hätte nie gedacht, daß ich das sage, aber ich verkaufe die letzte^#Wundererbse# für #99 "
-            "Rubine#.\x1B&#Ja&Nein#",
-            "Je te vends mon dernier #Haricot&magique# pour #99 Rubis#.\x1B&#AcheterNe pas acheter#",
-            { QM_RED, QM_YELLOW, QM_GREEN }));
-
-    CustomMessageManager::Instance->CreateMessage(
-        Randomizer::merchantMessageTableID, TEXT_MEDIGORON,
-        CustomMessage("How about buying #[[1]]# for #[[2]] Rupees#?\x1B#Buy&Don't buy#",
-                      /*german*/ "Möchtest Du #[[1]]# für #[[2]] Rubine# kaufen?\x1B#Klar!&Nie im Leben!#",
-                      /*french*/ "Veux-tu acheter #[[1]]# pour #[[2]] rubis#?\x1B#Acheter&Ne pas acheter#",
-                      { QM_GREEN, QM_YELLOW, QM_GREEN }));
-    /*spanish*/ // ¿Me compras #[[1]]# por #[[2]] rupias#?\x1B#Comprar&No comprar#
-
-    CustomMessage firstCarpet = CustomMessage(
-        "Welcome!^I am selling stuff, strange and rare, from all over the world to everybody. Today's special is...^",
-        /*german*/
-        "Sei gegrüßt!^Ich verkaufe allerlei Kuriositäten. Stets sonderliche und seltene Ware aus "
-        "aller Welt für jedermann. Das heutige Angebot bleibt...^",
-        /*french*/ "Bienvenue!^Je vends des objets rares et merveilleux du monde entier. En spécial aujourd'hui...^");
-    /*spanish*/ // ¡Acércate!^Vendo productos extraños y difíciles de encontrar... De todo el mundo a todo el mundo. La
-                // oferta de hoy es...^#¡
-
-    CustomMessageManager::Instance->CreateMessage(
-        Randomizer::merchantMessageTableID, TEXT_CARPET_SALESMAN_MYSTERIOUS,
-        firstCarpet +
-            CustomMessage(
-                "Terrifying! I won't tell you what it is until I see the #money#...^How about #[[2]] Rupees#?&&"
-                "\x1B#Buy&Don't buy#",
-                /*german*/
-                "Furchterregend, oder? Ich erzähle Euch mehr, wenn ich #Geld# sehe...^Wie wär's mit #[[2]] Rubinen#?&&"
-                "\x1B#Aber sicher!&Ich bin weg!#",
-                /*french*/
-                "Terrible! Mais montre tes #rubis# avant que je te dise ce que c'est...^Disons #[[2]] "
-                "rubis#?&&\x1B#Acheter&Ne pas acheter#",
-                { QM_RED, QM_YELLOW, QM_GREEN }));
-    /*spanish*/ // ¡Terrorífico! No te revelaré su nombre hasta que vea el #dinero#...^#[[2]] rupias#, ¿qué te
-                // parece?&&"
-                // "\x1B#Comprar&No comprar#
-
-    CustomMessageManager::Instance->CreateMessage(
-        Randomizer::merchantMessageTableID, TEXT_CARPET_SALESMAN_1,
-        firstCarpet +
-            CustomMessage(
-                "#[[1]]!# It's real, I promise! A lonely man such as myself wouldn't #lie# to you, hmm?^"
-                "How about #[[2]] Rupees#?\x1B#Buy&Don't buy#",
-                /*german*/
-                "#[[1]]#! Ich kann versichern, es ist ein aufrichtiges Angebot!^Ein einsamer Mann wie ich würde Dich "
-                "doch "
-                "nicht #anlügen#, oder?^Wie wär's mit #[[2]] Rubinen#?\x1B#Aber sicher!&Ich bin weg!#",
-                /*french*/
-                "#[[1]]!# C'est vrai! J'te jure! Un gars comme moi ne te #mentirai# pas tu ne crois pas?^Disons #[[2]] "
-                "rubis#?\x1B#Acheter&Ne pas acheter#",
-                { QM_GREEN, QM_RED, QM_YELLOW }));
-
-    CustomMessageManager::Instance->CreateMessage(
-        Randomizer::merchantMessageTableID, TEXT_GRANNYS_SHOP,
-        CustomMessage("#[[1]]#! How about #[[2]] Rupees#?\x1B#Buy&Don't buy#",
-                      /*german*/ "#[[1]]#! Sagen wir #[[2]] Rubine#?\x1B#Gerne!&Auf keinen Fall!#",
-                      /*french*/ "#[[1]]#! Que dis-tu de #[[2]] rubis#?\x1B#Acheter&Ne pas acheter#",
-                      { QM_GREEN, QM_YELLOW, QM_GREEN }, { true }));
-    // /*spanish*/#[[1]]#. Vendo por #[[2]] rupias#.&\x1B#Comprar&No comprar#
+    CustomMessage firstCarpet = CustomMessage("Welcome!^I am selling stuff, strange and rare, from all over the world to everybody. Today's special is...^",
+                                   /*german*/ "Sei gegrüßt!^Ich verkaufe allerlei Kuriositäten. Stets sonderliche und seltene Ware aus "
+                                              "aller Welt für jedermann. Das heutige Angebot bleibt...^",
+                                   /*french*/ "Bienvenue!^Je vends des objets rares et merveilleux du monde entier. En spécial aujourd'hui...^");
+                               /*spanish*/ // ¡Acércate!^Vendo productos extraños y difíciles de encontrar... De todo el mundo a todo el mundo. La oferta de hoy es...^#¡
+    
 }
 
 std::map<s32, TrialKey> trialFlagToTrialKey = {
