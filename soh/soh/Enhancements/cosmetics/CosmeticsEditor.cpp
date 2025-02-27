@@ -11,8 +11,8 @@
 #include <libultraship/libultraship.h>
 
 #include "soh/SohGui/UIWidgets.hpp"
-
 #include "soh/SohGui/UIWidgets2.hpp"
+#include "soh/SohGui/SohMenu.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 
@@ -56,6 +56,9 @@ void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const char* patchNa
 void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
 u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 }
+
+extern std::shared_ptr<SohGui::SohMenu> mSohMenu;
+UIWidgets2::Colors cosmeticsThemeColor = UIWidgets2::Colors::LightBlue;
 
 #define PATCH_GFX(path, name, cvar, index, instruction)             \
     if (CVarGetInteger(cvar, 0)) {                                  \
@@ -1220,8 +1223,10 @@ void Table_InitHeader(bool has_header = true) {
 void DrawUseMarginsSlider(const std::string ElementName, const std::string CvarName){
     std::string CvarLabel = CvarName + ".UseMargins";
     std::string Label = ElementName + " use margins";
-    UIWidgets::EnhancementCheckbox(Label.c_str(), CvarLabel.c_str());
-    UIWidgets::Tooltip("Using this allow you move the element with General margins sliders");
+    UIWidgets2::CVarCheckbox(Label.c_str(), CvarLabel.c_str(),
+                             UIWidgets2::CheckboxOptions()
+        .Color(cosmeticsThemeColor)
+        .Tooltip("Using this allow you move the element with General margins sliders"));
 }
 
 void DrawPositionsRadioBoxes(const std::string CvarName, bool NoAnchorEnabled = true){
@@ -1470,10 +1475,10 @@ void DrawSillyTab() {
 
     UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
 
-    if (UIWidgets::EnhancementCheckbox("Let It Snow", CVAR_GENERAL("LetItSnow"))) {
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    }
-    UIWidgets::Tooltip("Makes snow fall, changes chest texture colors to red and green, etc, for December holidays.\nWill reset on restart outside of December 23-25.");
+    UIWidgets2::CVarCheckbox("Let It Snow", CVAR_GENERAL("LetItSnow"),
+                             UIWidgets2::CheckboxOptions()
+                                 .Color(cosmeticsThemeColor)
+                                 .Tooltip("Makes snow fall, changes chest texture colors to red and green, etc, for December holidays.\nWill reset on restart outside of December 23-25."));
 
     UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
 
@@ -1879,6 +1884,8 @@ void CosmeticsEditorWindow::ApplyDungeonKeyColors() {
 }
 
 void CosmeticsEditorWindow::DrawElement() {
+    cosmeticsThemeColor = static_cast<UIWidgets2::Colors>(CVarGetInteger(CVAR_SETTING("Menu.Theme"), UIWidgets2::Colors::LightBlue));
+
     ImGui::Text("Color Scheme");
     ImGui::SameLine();
     UIWidgets::EnhancementCombobox(CVAR_COSMETIC("DefaultColorScheme"), colorSchemes, COLORSCHEME_N64);

@@ -1768,6 +1768,8 @@ static std::unordered_map<int32_t, const char*> buttonStrings = {
     { TRACKER_COMBO_BUTTON_D_LEFT, "D-Left" }, { TRACKER_COMBO_BUTTON_D_RIGHT, "D-Right" }};
 
 void CheckTrackerSettingsWindow::DrawElement() {
+    themeColor = static_cast<UIWidgets2::Colors>(CVarGetInteger(CVAR_SETTING("Menu.Theme"), UIWidgets2::Colors::LightBlue));
+
     ImGui::PushFont(OTRGlobals::Instance->fontStandardLarger);
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
     if (ImGui::BeginTable("CheckTrackerSettingsTable", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
