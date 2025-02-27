@@ -279,6 +279,12 @@ void BuildHorsebackArcheryMessage(uint16_t* textId, bool* loadFromMessageTable) 
     *loadFromMessageTable = false;
 }
 
+void BuildMaskShopSignMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    CustomMessage msg = RAND_GET_HINT(RH_MASK_SHOP_HINT)->GetHintMessage(MF_AUTO_FORMAT);
+    msg.LoadIntoFont();
+    *loadFromMessageTable = false;
+}
+
 void RegisterStaticHints() {
     // Ganondorf
     COND_ID_HOOK(OnOpenText, TEXT_GANONDORF, RAND_GET_OPTION(RSK_GANONDORF_HINT), BuildGanondorfHint);
@@ -358,6 +364,8 @@ void RegisterStaticHints() {
     COND_ID_HOOK(OnOpenText, TEXT_HBA_NOT_ON_HORSE, RAND_GET_OPTION(RSK_HBA_HINT), BuildHorsebackArcheryMessage);
     COND_ID_HOOK(OnOpenText, TEXT_HBA_INITIAL_EXPLAINATION, RAND_GET_OPTION(RSK_HBA_HINT), BuildHorsebackArcheryMessage);
     COND_ID_HOOK(OnOpenText, TEXT_HBA_ALREADY_HAVE_1000, RAND_GET_OPTION(RSK_HBA_HINT), BuildHorsebackArcheryMessage);
+    // Mask Shop Sign
+    COND_ID_HOOK(OnOpenText, TEXT_MASK_SHOP_SIGN, RAND_GET_OPTION(RSK_MASK_SHOP_HINT), BuildMaskShopSignMessage);
 }
 
 RegisterShipInitFunc initFunc(RegisterStaticHints, { "IS_RANDO" });
