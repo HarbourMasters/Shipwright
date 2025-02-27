@@ -800,6 +800,9 @@ namespace UIWidgets2 {
     void DrawFlagArray8(const std::string& name, uint8_t& flags, Colors color = Colors::LightBlue);
     void DrawFlagArray8Mask(const std::string& name, uint8_t& flags, Colors color = Colors::LightBlue);
 
+    void InsertHelpHoverText(const std::string& text);
+    void InsertHelpHoverText(const char* text);
+
     void SetLastItemHoverText(const std::string& text);
     void SetLastItemHoverText(const char* text);
 }

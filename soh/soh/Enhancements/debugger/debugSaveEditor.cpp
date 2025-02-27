@@ -620,7 +620,7 @@ void DrawFlagsTab() {
             ActorContext* act = &gPlayState->actorCtx;
             DrawGroupWithBorder([&]() {
                 ImGui::Text("Switch");
-                UIWidgets::InsertHelpHoverText("Permanently-saved switch flags");
+                UIWidgets2::InsertHelpHoverText("Permanently-saved switch flags");
                 if (UIWidgets2::Button("Set All##Switch", buttonOptionsBase.Tooltip(""))) {
                     act->flags.swch = UINT32_MAX;
                 }
@@ -635,7 +635,7 @@ void DrawFlagsTab() {
 
             DrawGroupWithBorder([&]() {
                 ImGui::Text("Temp Switch");
-                UIWidgets::InsertHelpHoverText("Temporary switch flags. Unset on scene transitions");
+                UIWidgets2::InsertHelpHoverText("Temporary switch flags. Unset on scene transitions");
                 if (UIWidgets2::Button("Set All##Temp Switch", buttonOptionsBase.Tooltip(""))) {
                     act->flags.tempSwch = UINT32_MAX;
                 }
@@ -648,7 +648,7 @@ void DrawFlagsTab() {
 
             DrawGroupWithBorder([&]() {
                 ImGui::Text("Clear");
-                UIWidgets::InsertHelpHoverText("Permanently-saved room-clear flags");
+                UIWidgets2::InsertHelpHoverText("Permanently-saved room-clear flags");
                 if (UIWidgets2::Button("Set All##Clear", buttonOptionsBase.Tooltip(""))) {
                     act->flags.clear = UINT32_MAX;
                 }
@@ -663,7 +663,7 @@ void DrawFlagsTab() {
 
             DrawGroupWithBorder([&]() {
                 ImGui::Text("Temp Clear");
-                UIWidgets::InsertHelpHoverText("Temporary room-clear flags. Unset on scene transitions");
+                UIWidgets2::InsertHelpHoverText("Temporary room-clear flags. Unset on scene transitions");
                 if (UIWidgets2::Button("Set All##Temp Clear", buttonOptionsBase.Tooltip(""))) {
                     act->flags.tempClear = UINT32_MAX;
                 }
@@ -676,7 +676,7 @@ void DrawFlagsTab() {
 
             DrawGroupWithBorder([&]() {
                 ImGui::Text("Collect");
-                UIWidgets::InsertHelpHoverText("Permanently-saved collect flags");
+                UIWidgets2::InsertHelpHoverText("Permanently-saved collect flags");
                 if (UIWidgets2::Button("Set All##Collect", buttonOptionsBase.Tooltip(""))) {
                     act->flags.collect = UINT32_MAX;
                 }
@@ -691,7 +691,7 @@ void DrawFlagsTab() {
 
             DrawGroupWithBorder([&]() {
                 ImGui::Text("Temp Collect");
-                UIWidgets::InsertHelpHoverText("Temporary collect flags. Unset on scene transitions");
+                UIWidgets2::InsertHelpHoverText("Temporary collect flags. Unset on scene transitions");
                 if (UIWidgets2::Button("Set All##Temp Collect", buttonOptionsBase.Tooltip(""))) {
                     act->flags.tempCollect = UINT32_MAX;
                 }
@@ -704,7 +704,7 @@ void DrawFlagsTab() {
 
             DrawGroupWithBorder([&]() {
                 ImGui::Text("Chest");
-                UIWidgets::InsertHelpHoverText("Permanently-saved chest flags");
+                UIWidgets2::InsertHelpHoverText("Permanently-saved chest flags");
                 if (UIWidgets2::Button("Set All##Chest", buttonOptionsBase.Tooltip(""))) {
                     act->flags.chest = UINT32_MAX;
                 }
@@ -776,7 +776,7 @@ void DrawFlagsTab() {
 
         DrawGroupWithBorder([&]() {
             ImGui::Text("Switch");
-            UIWidgets::InsertHelpHoverText("Switch flags");
+            UIWidgets2::InsertHelpHoverText("Switch flags");
             UIWidgets2::DrawFlagArray32("Switch", gSaveContext.sceneFlags[selectedSceneFlagMap].swch, themeIndex);
         }, "Saved Switch");
 
@@ -784,13 +784,13 @@ void DrawFlagsTab() {
 
         DrawGroupWithBorder([&]() {
             ImGui::Text("Clear");
-            UIWidgets::InsertHelpHoverText("Room-clear flags");
+            UIWidgets2::InsertHelpHoverText("Room-clear flags");
             UIWidgets2::DrawFlagArray32("Clear", gSaveContext.sceneFlags[selectedSceneFlagMap].clear, themeIndex);
         }, "Saved Clear");
 
         DrawGroupWithBorder([&]() {
             ImGui::Text("Collect");
-            UIWidgets::InsertHelpHoverText("Collect flags");
+            UIWidgets2::InsertHelpHoverText("Collect flags");
             UIWidgets2::DrawFlagArray32("Collect", gSaveContext.sceneFlags[selectedSceneFlagMap].collect, themeIndex);
         }, "Saved Collect");
 
@@ -798,13 +798,13 @@ void DrawFlagsTab() {
 
         DrawGroupWithBorder([&]() {
             ImGui::Text("Chest");
-            UIWidgets::InsertHelpHoverText("Chest flags");
+            UIWidgets2::InsertHelpHoverText("Chest flags");
             UIWidgets2::DrawFlagArray32("Chest", gSaveContext.sceneFlags[selectedSceneFlagMap].chest, themeIndex);
         }, "Saved Chest");
 
         DrawGroupWithBorder([&]() {
             ImGui::Text("Rooms");
-            UIWidgets::InsertHelpHoverText("Flags for visted rooms");
+            UIWidgets2::InsertHelpHoverText("Flags for visted rooms");
             UIWidgets2::DrawFlagArray32("Rooms", gSaveContext.sceneFlags[selectedSceneFlagMap].rooms, themeIndex);
         }, "Saved Rooms");
 
@@ -812,7 +812,7 @@ void DrawFlagsTab() {
 
         DrawGroupWithBorder([&]() {
             ImGui::Text("Floors");
-            UIWidgets::InsertHelpHoverText("Flags for visted floors");
+            UIWidgets2::InsertHelpHoverText("Flags for visted floors");
             UIWidgets2::DrawFlagArray32("Floors", gSaveContext.sceneFlags[selectedSceneFlagMap].floors, themeIndex);
         }, "Saved Floors");
 
@@ -1227,7 +1227,7 @@ void DrawQuestStatusTab() {
     }
 
     ImGui::InputScalar("GS Count", ImGuiDataType_S16, &gSaveContext.inventory.gsTokens);
-    UIWidgets::InsertHelpHoverText("Number of gold skulltula tokens aquired");
+    UIWidgets2::InsertHelpHoverText("Number of gold skulltula tokens aquired");
 
     uint32_t bitMask = 1 << QUEST_SKULL_TOKEN;
     bool gsUnlocked = (bitMask & gSaveContext.inventory.questItems) != 0;
@@ -1238,7 +1238,7 @@ void DrawQuestStatusTab() {
             gSaveContext.inventory.questItems &= ~bitMask;
         }
     }
-    UIWidgets::InsertHelpHoverText("If unlocked, enables showing the gold skulltula count in the quest status menu");
+    UIWidgets2::InsertHelpHoverText("If unlocked, enables showing the gold skulltula count in the quest status menu");
 
     int32_t pohCount = (gSaveContext.inventory.questItems & 0xF0000000) >> 28;
     if (ImGui::BeginCombo("PoH count", std::to_string(pohCount).c_str())) {
@@ -1250,7 +1250,7 @@ void DrawQuestStatusTab() {
         }
         ImGui::EndCombo();
     }
-    UIWidgets::InsertHelpHoverText("The number of pieces of heart acquired towards the next heart container");
+    UIWidgets2::InsertHelpHoverText("The number of pieces of heart acquired towards the next heart container");
 
     DrawGroupWithBorder([&]() {
         ImGui::Text("Dungeon Items");
@@ -1377,7 +1377,7 @@ void DrawPlayerTab() {
 
         DrawGroupWithBorder([&]() {
             ImGui::Text("Link's Rotation");
-            UIWidgets::InsertHelpHoverText("For Link's rotation in relation to the world");
+            UIWidgets2::InsertHelpHoverText("For Link's rotation in relation to the world");
             ImGui::InputScalar("X Rot", ImGuiDataType_S16, &player->actor.world.rot.x);
             ImGui::SameLine();
             ImGui::InputScalar("Y Rot", ImGuiDataType_S16, &player->actor.world.rot.y);
@@ -1387,7 +1387,7 @@ void DrawPlayerTab() {
 
         DrawGroupWithBorder([&]() {
             ImGui::Text("Link's Model Rotation");
-            UIWidgets::InsertHelpHoverText("For Link's actual model");
+            UIWidgets2::InsertHelpHoverText("For Link's actual model");
             ImGui::InputScalar("X ModRot", ImGuiDataType_S16, &player->actor.shape.rot.x);
             ImGui::SameLine();
             ImGui::InputScalar("Y ModRot", ImGuiDataType_S16, &player->actor.shape.rot.y);
@@ -1396,19 +1396,19 @@ void DrawPlayerTab() {
         }, "Link's Model Rotation");
 
         ImGui::InputScalar("Linear Velocity", ImGuiDataType_Float, &player->linearVelocity);
-        UIWidgets::InsertHelpHoverText("Link's speed along the XZ plane");
+        UIWidgets2::InsertHelpHoverText("Link's speed along the XZ plane");
 
         ImGui::InputScalar("Y Velocity", ImGuiDataType_Float, &player->actor.velocity.y);
-        UIWidgets::InsertHelpHoverText("Link's speed along the Y plane. Caps at -20");
+        UIWidgets2::InsertHelpHoverText("Link's speed along the Y plane. Caps at -20");
 
         ImGui::InputScalar("Wall Height", ImGuiDataType_Float, &player->yDistToLedge);
-        UIWidgets::InsertHelpHoverText("Height used to determine whether Link can climb or grab a ledge at the top");
+        UIWidgets2::InsertHelpHoverText("Height used to determine whether Link can climb or grab a ledge at the top");
 
         ImGui::InputScalar("Invincibility Timer", ImGuiDataType_S8, &player->invincibilityTimer);
-        UIWidgets::InsertHelpHoverText("Can't take damage while this is nonzero");
+        UIWidgets2::InsertHelpHoverText("Can't take damage while this is nonzero");
 
         ImGui::InputScalar("Gravity", ImGuiDataType_Float, &player->actor.gravity);
-        UIWidgets::InsertHelpHoverText("Rate at which Link falls. Default -4.0f");
+        UIWidgets2::InsertHelpHoverText("Rate at which Link falls. Default -4.0f");
 
         if (ImGui::BeginCombo("Link Age on Load", gPlayState->linkAgeOnLoad == 0 ? "Adult" : "Child")) {
             if (ImGui::Selectable("Adult")) {
@@ -1420,7 +1420,7 @@ void DrawPlayerTab() {
             ImGui::EndCombo();
         }
 
-        UIWidgets::InsertHelpHoverText("This will change Link's age when you load a map");
+        UIWidgets2::InsertHelpHoverText("This will change Link's age when you load a map");
 
         ImGui::Separator();
         
