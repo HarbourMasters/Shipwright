@@ -2541,32 +2541,6 @@ CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
     return messageEntry;
 }
 
-CustomMessage Randomizer::GetFishingPondOwnerMessage(u16 originalTextId) {
-    auto ctx = Rando::Context::GetInstance();
-    CustomMessage messageEntry = CustomMessage(
-      "Sorry, but the pond is closed.&I've lost my good %rfishing pole%w...&Can't go fishing without it!",
-      "Entschuldigung, aber der Teich ist zu.&Ich habe meine gute %rAngelrute%w verloren.&Ohne kann ich nicht fischen!",
-      "Désolé, mais l'étang est fermé.&J'ai perdu ma bonne %rCanne à Pêche%w...&Impossible de pêcher sans elle!"
-    );
-
-    if (Rando::Context::GetInstance()->GetOption(RSK_FISHING_POLE_HINT)) {
-        messageEntry = messageEntry + CustomMessage(ctx->GetHint(RH_FISHING_POLE)->GetHintMessage());
-    }
-
-    // if the fishing pond guy doesnt remember me i will cry :(
-    if (originalTextId == TEXT_FISHING_POND_START_MET) {
-        messageEntry = CustomMessage(
-            "Hey, mister! I remember you!&It's been a long time!^",
-            "Hallo, mein Herr! Ich erinnere mich an Sie!&Lang ist's her!",
-            "Hé, monsieur! Je me souviens de toi!&Ça fait longtemps!"
-        ) + messageEntry;
-    }
-
-    messageEntry.Format(); //RANDOTODO why is this needed when it's not elsewhere....
-
-    return messageEntry;
-}
-
 void CreateRupeeMessages() {
     CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
     customMessageManager->AddCustomMessageTable(Randomizer::rupeeMessageTableID);

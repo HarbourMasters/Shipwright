@@ -124,14 +124,156 @@ void Build100SkullsHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
     *loadFromMessageTable = false;
 }
 
+void BuildDampesDiaryMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    CustomMessage msg = RAND_GET_HINT(RH_DAMPES_DIARY)->GetHintMessage(MF_AUTO_FORMAT);
+    msg.LoadIntoFont();
+    *loadFromMessageTable = false;
+}
+
+void BuildGregHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    CustomMessage msg = RAND_GET_HINT(RH_GREG_RUPEE)->GetHintMessage(MF_AUTO_FORMAT);
+    msg.LoadIntoFont();
+    *loadFromMessageTable = false;
+}
+
+void BuildMinuetWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    CustomMessage msg = RAND_GET_HINT(RH_MINUET_WARP_LOC)->GetHintMessage(MF_AUTO_FORMAT);
+    msg.LoadIntoFont();
+    *loadFromMessageTable = false;
+}
+
+void BuildBoleroWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    CustomMessage msg = RAND_GET_HINT(RH_BOLERO_WARP_LOC)->GetHintMessage(MF_AUTO_FORMAT);
+    msg.LoadIntoFont();
+    *loadFromMessageTable = false;
+}
+
+void BuildSerenadeWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    CustomMessage msg = RAND_GET_HINT(RH_SERENADE_WARP_LOC)->GetHintMessage(MF_AUTO_FORMAT);
+    msg.LoadIntoFont();
+    *loadFromMessageTable = false;
+}
+
+void BuildRequiemWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    CustomMessage msg = RAND_GET_HINT(RH_REQUIEM_WARP_LOC)->GetHintMessage(MF_AUTO_FORMAT);
+    msg.LoadIntoFont();
+    *loadFromMessageTable = false;
+}
+
+void BuildNocturneWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    CustomMessage msg = RAND_GET_HINT(RH_NOCTURNE_WARP_LOC)->GetHintMessage(MF_AUTO_FORMAT);
+    msg.LoadIntoFont();
+    *loadFromMessageTable = false;
+}
+
+void BuildPreludeWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    CustomMessage msg = RAND_GET_HINT(RH_PRELUDE_WARP_LOC)->GetHintMessage(MF_AUTO_FORMAT);
+    msg.LoadIntoFont();
+    *loadFromMessageTable = false;
+}
+
+void BuildFrogsHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    CustomMessage msg = RAND_GET_HINT(RH_FROGS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
+    msg.LoadIntoFont();
+    *loadFromMessageTable = false;
+}
+
+void BuildLoachHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    CustomMessage msg = RAND_GET_HINT(RH_LOACH_HINT)->GetHintMessage(MF_AUTO_FORMAT);
+    msg.LoadIntoFont();
+    *loadFromMessageTable = false;
+}
+
+void BuildFishingPoleHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    if (Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND)) {
+        return;
+    }
+    CustomMessage msg = CustomMessage(
+        "Sorry, but the pond is closed.&I've lost my good %rfishing pole%w...&Can't go fishing without it!",
+      "Entschuldigung, aber der Teich ist zu.&Ich habe meine gute %rAngelrute%w verloren.&Ohne kann ich nicht fischen!",
+      "Désolé, mais l'étang est fermé.&J'ai perdu ma bonne %rCanne à Pêche%w...&Impossible de pêcher sans elle!"
+    );
+    if (RAND_GET_OPTION(RSK_FISHING_POLE_HINT)) {
+        msg = msg + RAND_GET_HINT(RH_FISHING_POLE)->GetHintMessage();
+    }
+    if (*textId == TEXT_FISHING_POND_START_MET) {
+        msg = CustomMessage(
+            "Hey, mister! I remember you!&It's been a long time!^",
+            "Hallo, mein Herr! Ich erinnere mich an Sie!&Lang ist's her!",
+            "Hé, monsieur! Je me souviens de toi!&Ça fait longtemps!"
+        ) + msg;
+    }
+    msg.AutoFormat();
+    msg.LoadIntoFont();
+    *loadFromMessageTable = false;
+}
+
+void BuildSariaMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    CustomMessage msg;
+    if (*textId == TEXT_SARIA_SFM) {
+        msg = RAND_GET_HINT(RH_SARIA_HINT)->GetHintMessage(MF_AUTO_FORMAT, 0);
+    } else {
+        msg = RAND_GET_HINT(RH_SARIA_HINT)->GetHintMessage(MF_AUTO_FORMAT, 1);
+    }
+    msg.LoadIntoFont();
+    *loadFromMessageTable = false;
+}
+
 void RegisterStaticHints() {
+    // Ganondorf
     COND_ID_HOOK(OnOpenText, TEXT_GANONDORF, RAND_GET_OPTION(RSK_GANONDORF_HINT), BuildGanondorfHint);
+    // Sheik
     COND_ID_HOOK(OnOpenText, TEXT_SHEIK_NEED_HOOK, IS_RANDO, BuildSheikMessage);
     COND_ID_HOOK(OnOpenText, TEXT_SHEIK_HAVE_HOOK, IS_RANDO, BuildSheikMessage);
+    // Altar
     COND_ID_HOOK(OnOpenText, TEXT_ALTAR_CHILD, IS_RANDO, BuildChildAltarMessage);
     COND_ID_HOOK(OnOpenText, TEXT_ALTAR_ADULT, IS_RANDO, BuildAdultAltarMessage);
+    //Skulltula
     COND_ID_HOOK(OnOpenText, TEXT_SKULLTULA_PEOPLE_IM_CURSED, ANY_SKULLTULA_HINTS, BuildSkulltulaPeopleMessage);
     COND_ID_HOOK(OnOpenText, TEXT_SKULLTULA_PEOPLE_MAKE_YOU_VERY_RICH, RAND_GET_OPTION(RSK_KAK_100_SKULLS_HINT), Build100SkullsHintMessage);
+    // Dampe's Diary
+    COND_ID_HOOK(OnOpenText, TEXT_DAMPES_DIARY, RAND_GET_OPTION(RSK_DAMPES_DIARY_HINT), BuildDampesDiaryMessage);
+    // Chest Game
+    COND_ID_HOOK(OnOpenText, TEXT_CHEST_GAME_PROCEED, RAND_GET_OPTION(RSK_GREG_HINT), BuildGregHintMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_CHEST_GAME_REAL_GAMBLER, RAND_GET_OPTION(RSK_GREG_HINT), BuildGregHintMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_CHEST_GAME_THANKS_A_LOT, RAND_GET_OPTION(RSK_GREG_HINT), BuildGregHintMessage);
+    // Warp
+    COND_ID_HOOK(OnOpenText, TEXT_WARP_MINUET_OF_FOREST, RAND_GET_OPTION(RSK_WARP_SONG_HINTS), BuildMinuetWarpMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_WARP_BOLERO_OF_FIRE, RAND_GET_OPTION(RSK_WARP_SONG_HINTS), BuildBoleroWarpMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_WARP_SERENADE_OF_WATER, RAND_GET_OPTION(RSK_WARP_SONG_HINTS), BuildSerenadeWarpMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_WARP_REQUIEM_OF_SPIRIT, RAND_GET_OPTION(RSK_WARP_SONG_HINTS), BuildRequiemWarpMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_WARP_NOCTURNE_OF_SHADOW, RAND_GET_OPTION(RSK_WARP_SONG_HINTS), BuildNocturneWarpMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_WARP_PRELUDE_OF_LIGHT, RAND_GET_OPTION(RSK_WARP_SONG_HINTS), BuildPreludeWarpMessage);
+    // Frogs
+    COND_ID_HOOK(OnOpenText, TEXT_FROGS_UNDERWATER, RAND_GET_OPTION(RSK_FROGS_HINT), BuildFrogsHintMessage);
+    // Loach
+    COND_ID_HOOK(OnOpenText, TEXT_FISHING_CLOUDY, RAND_GET_OPTION(RSK_LOACH_HINT), BuildLoachHintMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_FISHING_TRY_ANOTHER_LURE, RAND_GET_OPTION(RSK_LOACH_HINT), BuildLoachHintMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_FISHING_SECRETS, RAND_GET_OPTION(RSK_LOACH_HINT), BuildLoachHintMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_FISHING_GOOD_FISHERMAN, RAND_GET_OPTION(RSK_LOACH_HINT), BuildLoachHintMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_FISHING_DIFFERENT_POND, RAND_GET_OPTION(RSK_LOACH_HINT), BuildLoachHintMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_FISHING_SCRATCHING, RAND_GET_OPTION(RSK_LOACH_HINT), BuildLoachHintMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_FISHING_TRY_ANOTHER_LURE_WITH_SINKING_LURE, RAND_GET_OPTION(RSK_LOACH_HINT), BuildLoachHintMessage);
+    // Fishing Pole
+    COND_ID_HOOK(OnOpenText, TEXT_FISHING_POND_START, RAND_GET_OPTION(RSK_SHUFFLE_FISHING_POLE), BuildFishingPoleHintMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_FISHING_POND_START_MET, RAND_GET_OPTION(RSK_SHUFFLE_FISHING_POLE), BuildFishingPoleHintMessage);
+    // Saria
+    COND_ID_HOOK(OnOpenText, TEXT_SARIA_SFM, RAND_GET_OPTION(RSK_SARIA_HINT), BuildSariaMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_SARIAS_SONG_FACE_TO_FACE, RAND_GET_OPTION(RSK_SARIA_HINT), BuildSariaMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_SARIAS_SONG_FOREST_SOUNDS, RAND_GET_OPTION(RSK_SARIA_HINT), BuildSariaMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_SARIAS_SONG_MR_DARUNIA, RAND_GET_OPTION(RSK_SARIA_HINT), BuildSariaMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_SARIAS_SONG_SPIRITUAL_WATER, RAND_GET_OPTION(RSK_SARIA_HINT), BuildSariaMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_SARIAS_SONG_SPIRITUAL_FIRE, RAND_GET_OPTION(RSK_SARIA_HINT), BuildSariaMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_SARIAS_SONG_DREAD_CASTLE, RAND_GET_OPTION(RSK_SARIA_HINT), BuildSariaMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_SARIAS_SONG_DIFFERENT_OCARINA, RAND_GET_OPTION(RSK_SARIA_HINT), BuildSariaMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_SARIAS_SONG_EYES_DARKNESS_STORM, RAND_GET_OPTION(RSK_SARIA_HINT), BuildSariaMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_SARIAS_SONG_DESERT_GODDESS, RAND_GET_OPTION(RSK_SARIA_HINT), BuildSariaMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_SARIAS_SONG_TEMPLES, RAND_GET_OPTION(RSK_SARIA_HINT), BuildSariaMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_SARIAS_SONG_FOREST_TEMPLE, RAND_GET_OPTION(RSK_SARIA_HINT), BuildSariaMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_SARIAS_SONG_GLAD_NOW, RAND_GET_OPTION(RSK_SARIA_HINT), BuildSariaMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_SARIAS_SONG_IMPRISON_GANONDORF, RAND_GET_OPTION(RSK_SARIA_HINT), BuildSariaMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_SARIAS_SONG_CHANNELING_POWER, RAND_GET_OPTION(RSK_SARIA_HINT), BuildSariaMessage);
+
 }
 
 RegisterShipInitFunc initFunc(RegisterStaticHints, { "IS_RANDO" });
