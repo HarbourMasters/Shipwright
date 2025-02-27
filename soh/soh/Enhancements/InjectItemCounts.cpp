@@ -1,0 +1,43 @@
+#include <soh/OTRGlobals.h>
+
+extern "C" {
+#include "variables.h"
+}
+
+#define RAND_GET_OPTION(rsk) OTRGlobals::Instance->gRandoContext->GetOption(rsk)
+
+void BuildSkulltulaMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    CustomMessage msg = CustomMessage(
+        "You got a %rGold Skulltula Token%w!&You've collected %r[[gsCount]]%w tokens&in total!",
+        "Ein %rGoldenes Skulltula-Symbol%w!&Du hast nun insgesamt %r[[gsCount]]&%wGoldene "
+        "Skulltula-Symbole&gesammelt!",
+        "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collecté %r[[gsCount]]%w symboles en "
+        "tout!",
+        TEXTBOX_TYPE_BLUE);
+    // The freeze text cannot be manually dismissed and must be auto-dismissed.
+    // This is fine and even wanted when skull tokens are not shuffled, but when
+    // when they are shuffled we don't want to be able to manually dismiss the box.
+    // Otherwise if we get a token from a chest or an NPC we get stuck in the ItemGet
+    // animation until the text box auto-dismisses.
+    // RANDOTODO: Implement a way to determine if an item came from a skulltula and
+    // inject the auto-dismiss control code if it did.
+    if (CVarGetInteger(CVAR_ENHANCEMENT("SkulltulaFreeze"), 0) != 0 &&
+        !(IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_TOKENS).IsNot(RO_TOKENSANITY_OFF))) {
+        // Auto dismiss textbox after 0x3C (60) frames (about 3 seconds for OoT)
+        msg = msg + "\x0E\x3C";
+    }
+    int16_t gsCount = gSaveContext.inventory.gsTokens + (IS_RANDO ? 1 : 0);
+    msg.Replace("[[gscount]]", std::to_string(gsCount));
+    msg.AutoFormat();
+    msg.LoadIntoFont();
+    *loadFromMessageTable = false;
+}
+
+void InjectItemCounts_Register() {
+    COND_ID_HOOK(OnOpenText, TEXT_GS_FREEZE, CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), BuildSkulltulaMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_GS_NO_FREEZE, CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), BuildSkulltulaMessage);
+}
+
+RegisterShipInitFunc initFunc(InjectItemCounts_Register, { 
+    CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"),
+});

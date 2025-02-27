@@ -135,22 +135,6 @@ extern "C" void OTRMessage_Init()
     }
 
     CustomMessageManager::Instance->AddCustomMessageTable(customMessageTableID);
-    CustomMessageManager::Instance->CreateGetItemMessage(
-        customMessageTableID, (GetItemID)TEXT_GS_NO_FREEZE, ITEM_SKULL_TOKEN,
-        CustomMessage("You got a %rGold Skulltula Token%w!&You've collected %r[[gsCount]]%w tokens&in total!\x0E\x3C",
-                      "Ein %rGoldenes Skulltula-Symbol%w!&Du hast nun insgesamt %r[[gsCount]]&%wGoldene "
-                      "Skulltula-Symbole&gesammelt!\x0E\x3C",
-                      "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collecté %r[[gsCount]]%w symboles en "
-                      "tout!\x0E\x3C",
-                      TEXTBOX_TYPE_BLUE));
-    CustomMessageManager::Instance->CreateGetItemMessage(
-        customMessageTableID, (GetItemID)TEXT_GS_FREEZE, ITEM_SKULL_TOKEN,
-        CustomMessage(
-            "You got a %rGold Skulltula Token%w!&You've collected %r[[gsCount]]%w tokens&in total!",
-            "Ein %rGoldenes Skulltula-Symbol%w!&Du hast nun insgesamt %r[[gsCount]]&%wGoldene "
-            "Skulltula-Symbole&gesammelt!",
-            "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collecté %r[[gsCount]]%w symboles en tout!",
-            TEXTBOX_TYPE_BLUE));
     CustomMessageManager::Instance->CreateMessage(
         customMessageTableID, TEXT_BUY_BOMBCHUS_10_DESC,
         CustomMessage("\x08%rBombchu  10 pieces  99 Rupees&%wThis looks like a toy mouse, but&it's actually a "
