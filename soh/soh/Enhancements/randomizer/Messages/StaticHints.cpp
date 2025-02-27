@@ -1,5 +1,10 @@
 // RANDOTODO: Consider breaking this up into the different actors
 // That speak these hints, like 2Ship does with ActorBehavior
+
+/**
+ * File for registering hooks for "Static" hints, i.e. hints that
+ * are always given by a specific NPC and/or for a specific item.
+ */
 #include <soh/OTRGlobals.h>
 
 extern "C" {

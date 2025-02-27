@@ -1,3 +1,7 @@
+/**
+ * This file handles the custom messages for Gossip Stone
+ * hints.
+ */
 #include <soh/OTRGlobals.h>
 
 extern "C" {
