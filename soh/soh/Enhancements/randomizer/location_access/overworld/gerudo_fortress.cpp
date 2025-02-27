@@ -114,7 +114,7 @@ void RegionTable_Init_GerudoFortress() {
 
     areaTable[RR_GF_ROOFTOP_GREEN] = Region("GF Rooftop Green", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_GF_GS_TOP_FLOOR, logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) && logic->CanGetNightTimeGS()),
+        LOCATION(RC_GF_GS_TOP_FLOOR, logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOMB_THROW) && logic->CanGetNightTimeGS()),
     }, {
         //Exits
         Entrance(RR_TH_KITCHEN_TOP,       []{return true;}),
@@ -134,20 +134,21 @@ void RegionTable_Init_GerudoFortress() {
 
     areaTable[RR_GF_ROOFTOP_BLUE] = Region("GF Rooftop Blue", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_GF_GS_TOP_FLOOR, logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_LONGSHOT) && logic->CanGetNightTimeGS()),
+        LOCATION(RC_GF_GS_TOP_FLOOR, logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_LONG_JUMPSLASH) && logic->CanGetNightTimeGS()),
     }, {
         //Exits
         Entrance(RR_GF_ROOFTOP_CYAN,      []{return true;}),
         Entrance(RR_GF_ROOFTOP_PURPLE,    []{return true;}),
         Entrance(RR_GF_ROOFTOP_GREEN,     []{return true;}),
         Entrance(RR_GF_ROOFTOP_MAGENTA,   []{return true;}),
+        Entrance(RR_GF_ROOFTOP_VIOLET,    []{return true;}),
         Entrance(RR_GF_ROOFTOP_TURQUOISE, []{return logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->CanUse(RG_SCARECROW) && logic->CanUse(RG_HOOKSHOT)) || logic->CanUse(RG_LONGSHOT);}),
     });
 
     areaTable[RR_GF_ROOFTOP_TURQUOISE] = Region("GF Rooftop Turquoise", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
         LOCATION(RC_GF_CHEST,        true),
-        LOCATION(RC_GF_GS_TOP_FLOOR, logic->IsAdult && (logic->CanJumpslashExceptHammer() || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOOMERANG) || logic->HasExplosives() || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_DINS_FIRE)) && logic->CanGetNightTimeGS()),
+        LOCATION(RC_GF_GS_TOP_FLOOR, logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_LONG_JUMPSLASH) && logic->CanGetNightTimeGS()),
     }, {
         //Exits
         Entrance(RR_GF_ROOFTOP_GREEN,     []{return true;}),
