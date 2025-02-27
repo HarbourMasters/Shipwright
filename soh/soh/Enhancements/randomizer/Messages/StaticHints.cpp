@@ -233,6 +233,12 @@ void BuildBigPoesHintMessage(uint16_t * textId, bool* loadFromMessageTable) {
     *loadFromMessageTable = false;
 }
 
+void BuildChickensHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    CustomMessage msg = RAND_GET_HINT(RH_CHICKENS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
+    msg.LoadIntoFont();
+    *loadFromMessageTable = false;
+}
+
 void RegisterStaticHints() {
     // Ganondorf
     COND_ID_HOOK(OnOpenText, TEXT_GANONDORF, RAND_GET_OPTION(RSK_GANONDORF_HINT), BuildGanondorfHint);
@@ -295,6 +301,12 @@ void RegisterStaticHints() {
     // Big Poes
     COND_ID_HOOK(OnOpenText, TEXT_GHOST_SHOP_EXPLAINATION, RAND_GET_OPTION(RSK_BIG_POES_HINT), BuildBigPoesHintMessage);
     COND_ID_HOOK(OnOpenText, TEXT_GHOST_SHOP_CARD_HAS_POINTS, RAND_GET_OPTION(RSK_BIG_POES_HINT), BuildBigPoesHintMessage);
+    // Anju
+    COND_ID_HOOK(OnOpenText, TEXT_ANJU_PLEASE_BRING_MY_CUCCOS_BACK, RAND_GET_OPTION(RSK_CHICKENS_HINT), BuildChickensHintMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_ANJU_PLEASE_BRING_4_CUCCOS, RAND_GET_OPTION(RSK_CHICKENS_HINT), BuildChickensHintMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_ANJU_PLEASE_BRING_3_CUCCOS, RAND_GET_OPTION(RSK_CHICKENS_HINT), BuildChickensHintMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_ANJU_PLEASE_BRING_2_CUCCOS, RAND_GET_OPTION(RSK_CHICKENS_HINT), BuildChickensHintMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_ANJU_PLEASE_BRING_1_CUCCO, RAND_GET_OPTION(RSK_CHICKENS_HINT), BuildChickensHintMessage);
 }
 
 RegisterShipInitFunc initFunc(RegisterStaticHints, { "IS_RANDO" });
