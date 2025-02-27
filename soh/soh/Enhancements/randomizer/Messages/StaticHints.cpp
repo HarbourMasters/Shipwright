@@ -259,6 +259,26 @@ void BuildMalonHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
     *loadFromMessageTable = false;
 }
 
+void BuildHorsebackArcheryMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    CustomMessage msg;
+    int id;
+    if (*textId == TEXT_GF_HBA_SIGN) {
+        id = 0;
+    } else if (*textId == TEXT_HBA_NOT_ON_HORSE) {
+        id = 1;
+    } else if (*textId == TEXT_HBA_INITIAL_EXPLAINATION) {
+        id = 2;
+    } else if (*textId == TEXT_HBA_ALREADY_HAVE_1000) {
+        id = 3;
+    } else {
+        assert(!"This should not be reachable");
+        return;
+    }
+    msg = RAND_GET_HINT(RH_HBA_HINT)->GetHintMessage(MF_AUTO_FORMAT, id);
+    msg.LoadIntoFont();
+    *loadFromMessageTable = false;
+}
+
 void RegisterStaticHints() {
     // Ganondorf
     COND_ID_HOOK(OnOpenText, TEXT_GANONDORF, RAND_GET_OPTION(RSK_GANONDORF_HINT), BuildGanondorfHint);
@@ -333,6 +353,11 @@ void RegisterStaticHints() {
     COND_ID_HOOK(OnOpenText, TEXT_MALON_HOW_IS_EPONA_DOING, RAND_GET_OPTION(RSK_MALON_HINT), BuildMalonHintMessage);
     COND_ID_HOOK(OnOpenText, TEXT_MALON_OBSTICLE_COURSE, RAND_GET_OPTION(RSK_MALON_HINT), BuildMalonHintMessage);
     COND_ID_HOOK(OnOpenText, TEXT_MALON_INGO_MUST_HAVE_BEEN_TEMPTED, RAND_GET_OPTION(RSK_MALON_HINT), BuildMalonHintMessage);
+    // Horseback Archery
+    COND_ID_HOOK(OnOpenText, TEXT_GF_HBA_SIGN, RAND_GET_OPTION(RSK_HBA_HINT), BuildHorsebackArcheryMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_HBA_NOT_ON_HORSE, RAND_GET_OPTION(RSK_HBA_HINT), BuildHorsebackArcheryMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_HBA_INITIAL_EXPLAINATION, RAND_GET_OPTION(RSK_HBA_HINT), BuildHorsebackArcheryMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_HBA_ALREADY_HAVE_1000, RAND_GET_OPTION(RSK_HBA_HINT), BuildHorsebackArcheryMessage);
 }
 
 RegisterShipInitFunc initFunc(RegisterStaticHints, { "IS_RANDO" });
