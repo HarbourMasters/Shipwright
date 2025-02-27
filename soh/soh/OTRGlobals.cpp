@@ -2130,20 +2130,6 @@ extern "C" void Randomizer_ShowRandomizerMenu() {
     SohGui::ShowRandomizerSettingsMenu();
 }
 
-extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
-    MessageContext* msgCtx = &play->msgCtx;
-    uint16_t textId = msgCtx->textId;
-    Font* font = &msgCtx->font;
-    char* buffer = font->msgBuf;
-    const int maxBufferSize = sizeof(font->msgBuf);
-    CustomMessage messageEntry;
-    s16 actorParams = 0;
-    if (textId == TEXT_FISHERMAN_LEAVE && CVarGetInteger(CVAR_ENHANCEMENT("QuitFishingAtDoor"), 0)) {
-        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_FISHERMAN_LEAVE, MF_FORMATTED);
-    }
-    return false;
-}
-
 extern "C" void Overlay_DisplayText(float duration, const char* text) {
     Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(duration, true, text);
 }
