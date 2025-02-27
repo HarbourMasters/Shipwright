@@ -166,6 +166,7 @@ class CustomMessage {
      * textboxes, and use it's formatting.
      */
     void AutoFormat();
+    void AutoFormat(ItemID iid);
 
     /**
      * @brief Removes all OoT formatting from the message,
