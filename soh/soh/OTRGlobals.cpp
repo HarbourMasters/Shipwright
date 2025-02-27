@@ -2024,10 +2024,6 @@ extern "C" void Randomizer_ParseSpoiler(const char* fileLoc) {
     OTRGlobals::Instance->gRandoContext->ParseSpoiler(fileLoc);
 }
 
-extern "C" void Randomizer_LoadHintMessages() {
-    OTRGlobals::Instance->gRandomizer->LoadHintMessages();
-}
-
 extern "C" bool Randomizer_IsTrialRequired(s32 trialFlag) {
     return OTRGlobals::Instance->gRandomizer->IsTrialRequired(trialFlag);
 }

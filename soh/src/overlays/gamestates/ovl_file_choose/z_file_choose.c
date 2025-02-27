@@ -3335,8 +3335,6 @@ void FileChoose_LoadGame(GameState* thisx) {
 
     this->state.running = false;
 
-    Randomizer_LoadHintMessages();
-
     gSaveContext.respawn[0].entranceIndex = ENTR_LOAD_OPENING;
     gSaveContext.respawnFlag = 0;
     gSaveContext.seqId = (u8)NA_BGM_DISABLED;
