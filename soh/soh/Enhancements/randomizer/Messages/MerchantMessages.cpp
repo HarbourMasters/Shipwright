@@ -123,6 +123,9 @@ void BuildScrubMessage(uint16_t* textId, bool* loadFromMessageTable) {
 void BuildShopMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg;
     RandomizerCheck rc;
+    // Shop items each have two message entries, second one offset by NUM_SHOP_ITEMS
+    // textId: TEXT_SHOP_ITEM_RANDOM + (randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1)
+    // textId: TEXT_SHOP_ITEM_RANDOM + ((randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1) + NUM_SHOP_ITEMS)
     if (*textId >= TEXT_SHOP_ITEM_RANDOM && *textId < TEXT_SHOP_ITEM_RANDOM_CONFIRM) {
         rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf(static_cast<RandomizerInf>((*textId - TEXT_SHOP_ITEM_RANDOM) + RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1));
         msg = CustomMessage("\x08%g[[1]]%w  %y[[2]]_Rupees%w&Special deal! %rONE LEFT%w!\x0A\x02",
