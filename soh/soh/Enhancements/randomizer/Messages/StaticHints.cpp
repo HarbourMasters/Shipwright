@@ -239,6 +239,26 @@ void BuildChickensHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
     *loadFromMessageTable = false;
 }
 
+void BuildMalonHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    CustomMessage msg;
+    int id;
+    if (*textId == TEXT_MALON_EVERYONE_TURNING_EVIL || *textId == TEXT_MALON_I_SING_THIS_SONG) {
+        id = 0;
+    } else if (*textId == TEXT_MALON_HOW_IS_EPONA_DOING) {
+        id = 1;
+    } else if (*textId == TEXT_MALON_OBSTICLE_COURSE) {
+        id = 2;
+    } else if (*textId == TEXT_MALON_INGO_MUST_HAVE_BEEN_TEMPTED) {
+        id = 3;
+    } else {
+        assert(!"This should not be reachable");
+        return;
+    }
+    msg = RAND_GET_HINT(RH_MALON_HINT)->GetHintMessage(MF_AUTO_FORMAT, id);
+    msg.LoadIntoFont();
+    *loadFromMessageTable = false;
+}
+
 void RegisterStaticHints() {
     // Ganondorf
     COND_ID_HOOK(OnOpenText, TEXT_GANONDORF, RAND_GET_OPTION(RSK_GANONDORF_HINT), BuildGanondorfHint);
@@ -307,6 +327,12 @@ void RegisterStaticHints() {
     COND_ID_HOOK(OnOpenText, TEXT_ANJU_PLEASE_BRING_3_CUCCOS, RAND_GET_OPTION(RSK_CHICKENS_HINT), BuildChickensHintMessage);
     COND_ID_HOOK(OnOpenText, TEXT_ANJU_PLEASE_BRING_2_CUCCOS, RAND_GET_OPTION(RSK_CHICKENS_HINT), BuildChickensHintMessage);
     COND_ID_HOOK(OnOpenText, TEXT_ANJU_PLEASE_BRING_1_CUCCO, RAND_GET_OPTION(RSK_CHICKENS_HINT), BuildChickensHintMessage);
+    // Malon
+    COND_ID_HOOK(OnOpenText, TEXT_MALON_EVERYONE_TURNING_EVIL, RAND_GET_OPTION(RSK_MALON_HINT), BuildMalonHintMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_MALON_I_SING_THIS_SONG, RAND_GET_OPTION(RSK_MALON_HINT), BuildMalonHintMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_MALON_HOW_IS_EPONA_DOING, RAND_GET_OPTION(RSK_MALON_HINT), BuildMalonHintMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_MALON_OBSTICLE_COURSE, RAND_GET_OPTION(RSK_MALON_HINT), BuildMalonHintMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_MALON_INGO_MUST_HAVE_BEEN_TEMPTED, RAND_GET_OPTION(RSK_MALON_HINT), BuildMalonHintMessage);
 }
 
 RegisterShipInitFunc initFunc(RegisterStaticHints, { "IS_RANDO" });
