@@ -56,6 +56,7 @@ class CustomMessage {
     static std::string POINTS(std::string x) ;//HIGH_SCORE is also a macro
     static std::string WAIT_FOR_INPUT() ;
     static std::string PLAYER_NAME() ;
+    static std::string TWO_WAY_CHOICE();
 
     const std::string GetEnglish(MessageFormat format = MF_FORMATTED) const;
     const std::string GetFrench(MessageFormat format = MF_FORMATTED) const;

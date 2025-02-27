@@ -744,6 +744,10 @@ std::string CustomMessage::PLAYER_NAME() {
     return "\x0F"s;
 }
 
+std::string CustomMessage::TWO_WAY_CHOICE() {
+    return "\x1B"s;
+}
+
 bool CustomMessageManager::InsertCustomMessage(std::string tableID, uint16_t textID, CustomMessage messages) {
     auto foundMessageTable = messageTables.find(tableID);
     if (foundMessageTable == messageTables.end()) {
