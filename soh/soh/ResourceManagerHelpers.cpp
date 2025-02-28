@@ -281,7 +281,7 @@ extern "C" char* ResourceMgr_LoadPlayerAnimByName(const char* animPath) {
 }
 
 extern "C" void ResourceMgr_PushCurrentDirectory(char* path) {
-    gfx_push_current_dir(path);
+    Fast::gfx_push_current_dir(path);
 }
 
 extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path) {

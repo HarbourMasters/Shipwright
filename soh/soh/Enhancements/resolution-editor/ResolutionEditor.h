@@ -5,7 +5,7 @@ namespace AdvancedResolutionSettings {
 class AdvancedResolutionSettingsWindow : public Ship::GuiWindow {
   private:
     bool IsDroppingFrames();
-    std::weak_ptr<GfxPc> mGfxPc;
+    std::weak_ptr<Fast::GfxPc> mGfxPc;
 
   public:
     using GuiWindow::GuiWindow;

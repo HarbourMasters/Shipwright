@@ -62,7 +62,7 @@ void AdvancedResolutionSettingsWindow::InitElement() {
 }
 
 void AdvancedResolutionSettingsWindow::DrawElement() {
-    GfxPc* gfxPc = mGfxPc.lock().get();
+    Fast::GfxPc* gfxPc = mGfxPc.lock().get();
     // Initialise update flags.
     bool update[3];
     for (uint8_t i = 0; i < sizeof(update); i++)
