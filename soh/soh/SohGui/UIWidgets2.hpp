@@ -329,6 +329,7 @@ namespace UIWidgets2 {
         LabelPosition labelPosition = LabelPosition::Above;
         Colors color = Colors::Gray;
         ImGuiSliderFlags flags = 0;
+        ImVec2 size = {0,0};
 
         FloatSliderOptions& ShowButtons(bool showButtons_) {
             showButtons = showButtons_;
@@ -375,6 +376,10 @@ namespace UIWidgets2 {
         }
         FloatSliderOptions& Color(Colors color_) {
             WidgetOptions::color = color = color_;
+            return *this;
+        }
+        FloatSliderOptions& Size(ImVec2 size_) {
+            size = size_;
             return *this;
         }
     };

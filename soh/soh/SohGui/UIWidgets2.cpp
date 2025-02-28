@@ -595,6 +595,7 @@ bool SliderFloat(const char* label, float* value, const FloatSliderOptions& opti
     ImGui::BeginGroup();
     ImGui::BeginDisabled(options.disabled);
     PushStyleSlider(options.color);
+    float width = (options.size == ImVec2(0, 0)) ? ImGui::GetContentRegionAvail().x : options.size.x;
     if (options.alignment == ComponentAlignment::Left) {
         if (options.labelPosition == LabelPosition::Above) {
             ImGui::Text(label, valueToDisplay);
@@ -613,9 +614,9 @@ bool SliderFloat(const char* label, float* value, const FloatSliderOptions& opti
             dirty = true;
         }
         ImGui::SameLine(0, 3.0f);
-        ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - (ImGui::CalcTextSize("+").x + 20.0f + 3.0f));
+        ImGui::SetNextItemWidth(width - (ImGui::CalcTextSize("+").x + 20.0f + 3.0f));
     } else {
-        ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+        ImGui::SetNextItemWidth(width);
     }
     if (ImGui::SliderScalar(invisibleLabel, ImGuiDataType_Float, &valueToDisplay, &minToDisplay, &maxToDisplay,
                             options.format, options.flags)) {
