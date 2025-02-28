@@ -4,7 +4,7 @@
 #include "soh/cvar_prefixes.h"
 #include "soh/SaveManager.h"
 #include "soh/ResourceManagerHelpers.h"
-#include "soh/UIWidgets.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include "randomizerTypes.h"
 
 #include <map>
@@ -921,7 +921,11 @@ void DrawTotalChecks() {
     uint16_t totalChecksGotten = CheckTracker::GetTotalChecksGotten();
 
     ImGui::BeginGroup();
-    ImGui::SetWindowFontScale(2.5);
+    if (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING) {
+        ImGui::SetWindowFontScale(2.5);
+    } else {
+        ImGui::SetWindowFontScale(1);
+    }
     ImGui::Text("Checks: %d/%d", totalChecksGotten, totalChecks);
     ImGui::EndGroup();
 }
@@ -1340,7 +1344,7 @@ void ItemTrackerWindow::DrawElement() {
 
         if (CVarGetInteger("gTrackers.ItemTracker.TotalChecks.DisplayType", SECTION_DISPLAY_MINIMAL_HIDDEN) ==
             SECTION_DISPLAY_MINIMAL_SEPARATE) {
-            ImGui::SetNextWindowSize(ImVec2(400, 300), ImGuiCond_FirstUseEver);
+            ImGui::SetNextWindowSize(ImVec2(450, 300), ImGuiCond_FirstUseEver);
             BeginFloatingWindows("Total Checks");
             DrawTotalChecks();
             EndFloatingWindows();

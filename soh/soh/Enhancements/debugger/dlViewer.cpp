@@ -1,9 +1,9 @@
 #include "actorViewer.h"
-#include "../../util.h"
-#include "../../UIWidgets.hpp"
+#include "soh/util.h"
+#include "soh/SohGui/UIWidgets.hpp"
 #include "ResourceManager.h"
 #include "DisplayList.h"
-#include "../../OTRGlobals.h"
+#include "soh/OTRGlobals.h"
 
 #include <array>
 #include <bit>

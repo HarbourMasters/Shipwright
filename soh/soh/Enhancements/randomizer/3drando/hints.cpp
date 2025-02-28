@@ -695,19 +695,19 @@ std::vector<RandomizerCheck> FindItemsAndMarkHinted(std::vector<RandomizerGet> i
 
 void CreateChildAltarHint() {
   auto ctx = Rando::Context::GetInstance();
-  if (!ctx->GetHint(RH_ALTAR_CHILD)->IsEnabled()){
+  if (!ctx->GetHint(RH_ALTAR_CHILD)->IsEnabled() && ctx->GetOption(RSK_TOT_ALTAR_HINT)){
     std::vector<RandomizerCheck> stoneLocs = {};
-    if (ctx->GetOption(RSK_TOT_ALTAR_HINT)) {
-      //force marking the rewards as hinted if they are at the end of dungeons as they can be inffered
-      if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)){
-        stoneLocs = FindItemsAndMarkHinted({RG_KOKIRI_EMERALD, RG_GORON_RUBY, RG_ZORA_SAPPHIRE}, {});
-      } else {
-        stoneLocs = FindItemsAndMarkHinted({RG_KOKIRI_EMERALD, RG_GORON_RUBY, RG_ZORA_SAPPHIRE}, {RC_ALTAR_HINT_CHILD});
-      }
+    //force marking the rewards as hinted if they are at the end of dungeons as they can be inferred
+    if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON) || ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_VANILLA)) {
+      stoneLocs = FindItemsAndMarkHinted({RG_KOKIRI_EMERALD, RG_GORON_RUBY, RG_ZORA_SAPPHIRE}, {});
+    } else {
+      stoneLocs = FindItemsAndMarkHinted({RG_KOKIRI_EMERALD, RG_GORON_RUBY, RG_ZORA_SAPPHIRE}, {RC_ALTAR_HINT_CHILD});
     }
     std::vector<RandomizerArea> stoneAreas = {};
     for (auto loc : stoneLocs){
-      stoneAreas.push_back(ctx->GetItemLocation(loc)->GetRandomArea());
+      if (loc != RC_UNKNOWN_CHECK) {
+        stoneAreas.push_back(ctx->GetItemLocation(loc)->GetRandomArea());
+      }
     }
     ctx->AddHint(RH_ALTAR_CHILD, Hint(RH_ALTAR_CHILD, HINT_TYPE_ALTAR_CHILD, {}, stoneLocs, stoneAreas));
   }
@@ -718,9 +718,9 @@ void CreateAdultAltarHint() {
   if (!ctx->GetHint(RH_ALTAR_ADULT)->IsEnabled()){
     std::vector<RandomizerCheck> medallionLocs = {};
     if (ctx->GetOption(RSK_TOT_ALTAR_HINT)) {
-      //force marking the rewards as hinted if they are at the end of dungeons as they can be inffered
-      if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)){
-      medallionLocs = FindItemsAndMarkHinted({RG_LIGHT_MEDALLION, RG_FOREST_MEDALLION, RG_FIRE_MEDALLION, RG_WATER_MEDALLION, RG_SPIRIT_MEDALLION, RG_SHADOW_MEDALLION},
+      //force marking the rewards as hinted if they are at the end of dungeons as they can be inferred
+      if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON) || ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_VANILLA)) {
+        medallionLocs = FindItemsAndMarkHinted({RG_LIGHT_MEDALLION, RG_FOREST_MEDALLION, RG_FIRE_MEDALLION, RG_WATER_MEDALLION, RG_SPIRIT_MEDALLION, RG_SHADOW_MEDALLION},
                                               {});
       } else {
         medallionLocs = FindItemsAndMarkHinted({RG_LIGHT_MEDALLION, RG_FOREST_MEDALLION, RG_FIRE_MEDALLION, RG_WATER_MEDALLION, RG_SPIRIT_MEDALLION, RG_SHADOW_MEDALLION},
@@ -729,7 +729,9 @@ void CreateAdultAltarHint() {
     }
     std::vector<RandomizerArea> medallionAreas = {};
     for (auto loc : medallionLocs){
-      medallionAreas.push_back(ctx->GetItemLocation(loc)->GetRandomArea());
+      if (loc != RC_UNKNOWN_CHECK) {
+        medallionAreas.push_back(ctx->GetItemLocation(loc)->GetRandomArea());
+      }
     }
     ctx->AddHint(RH_ALTAR_ADULT, Hint(RH_ALTAR_ADULT, HINT_TYPE_ALTAR_ADULT, {}, medallionLocs, medallionAreas));
   }

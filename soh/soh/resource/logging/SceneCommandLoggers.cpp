@@ -24,8 +24,17 @@
 #include "soh/resource/type/scenecommand/SetTransitionActorList.h"
 #include "soh/resource/type/scenecommand/SetWindSettings.h"
 #include "spdlog/spdlog.h"
+#include <string.h>
 
 namespace SOH {
+
+const char* TrimOTRSignature(const char* fileName) {
+    static const char* sOTRSignature = "__OTR__";
+    if (strncmp(fileName, sOTRSignature, strlen(sOTRSignature)) == 0) {
+        return fileName + 7;
+    }
+    return fileName;
+}
 
 void LogEndMarkerAsXML(std::shared_ptr<Ship::IResource> resource) {
     std::shared_ptr<EndMarker> endMarker = std::static_pointer_cast<EndMarker>(resource);
@@ -292,12 +301,12 @@ void LogMeshAsXML(std::shared_ptr<Ship::IResource> resource) {
         for (int i = 0; i < setMesh->meshHeader.polygon0.num; i += 1) {
             tinyxml2::XMLElement* polygon = doc.NewElement("Polygon");
             polygon->SetAttribute("PolyType", "0");
-            polygon->SetAttribute("MeshOpa", setMesh->opaPaths[i].c_str());
-            polygon->SetAttribute("MeshXlu", setMesh->xluPaths[i].c_str());
+            polygon->SetAttribute("MeshOpa", TrimOTRSignature(dlist->opa ? (char*)dlist->opa : ""));
+            polygon->SetAttribute("MeshXlu", TrimOTRSignature(dlist->xlu ? (char*)dlist->xlu : ""));
 
             root->InsertEndChild(polygon);
+            dlist += 1;
         }
-        dlist += 1;
     } else if (setMesh->meshHeader.base.type == 1) {
         root->SetAttribute("PolyNum", "1");
         tinyxml2::XMLElement* polygon = doc.NewElement("Polygon");
@@ -313,8 +322,10 @@ void LogMeshAsXML(std::shared_ptr<Ship::IResource> resource) {
 
         polygon->SetAttribute("PolyType", "0");
 
-        polygon->SetAttribute("MeshOpa", setMesh->opaPaths[0].c_str());
-        polygon->SetAttribute("MeshXlu", setMesh->xluPaths[0].c_str());
+        PolygonDlist* dlist = (PolygonDlist*)setMesh->meshHeader.polygon1.dlist;
+
+        polygon->SetAttribute("MeshOpa", TrimOTRSignature(dlist->opa ? (char*)dlist->opa : ""));
+        polygon->SetAttribute("MeshXlu", TrimOTRSignature(dlist->xlu ? (char*)dlist->xlu : ""));
 
         root->InsertEndChild(polygon);
 
@@ -325,7 +336,7 @@ void LogMeshAsXML(std::shared_ptr<Ship::IResource> resource) {
             if (setMesh->meshHeader.polygon1.format == 1) {
                 bgImage->SetAttribute("Unknown_00", image->unk_00);
                 bgImage->SetAttribute("Id", image->id);
-                bgImage->SetAttribute("ImagePath", setMesh->imagePaths[i].c_str());
+                bgImage->SetAttribute("ImagePath", TrimOTRSignature((char*)setMesh->meshHeader.polygon1.single.source));
                 bgImage->SetAttribute("Unknown_0C", setMesh->meshHeader.polygon1.single.unk_0C);
                 bgImage->SetAttribute("TLUT", setMesh->meshHeader.polygon1.single.tlut);
                 bgImage->SetAttribute("Width", setMesh->meshHeader.polygon1.single.width);
@@ -337,7 +348,7 @@ void LogMeshAsXML(std::shared_ptr<Ship::IResource> resource) {
             } else {
                 bgImage->SetAttribute("Unknown_00", image->unk_00);
                 bgImage->SetAttribute("Id", image->id);
-                bgImage->SetAttribute("ImagePath", setMesh->imagePaths[i].c_str());
+                bgImage->SetAttribute("ImagePath", TrimOTRSignature((char*)image->source));
                 bgImage->SetAttribute("Unknown_0C", image->unk_0C);
                 bgImage->SetAttribute("TLUT", image->tlut);
                 bgImage->SetAttribute("Width", image->width);
@@ -363,8 +374,8 @@ void LogMeshAsXML(std::shared_ptr<Ship::IResource> resource) {
             polygon->SetAttribute("PosZ", dlist->pos.z);
             polygon->SetAttribute("Unknown", dlist->unk_06);
 
-            polygon->SetAttribute("MeshOpa", setMesh->opaPaths[i].c_str());
-            polygon->SetAttribute("MeshXlu", setMesh->xluPaths[i].c_str());
+            polygon->SetAttribute("MeshOpa", TrimOTRSignature(dlist->opa ? (char*)dlist->opa : ""));
+            polygon->SetAttribute("MeshXlu", TrimOTRSignature(dlist->xlu ? (char*)dlist->xlu : ""));
 
             root->InsertEndChild(polygon);
             dlist += 1;

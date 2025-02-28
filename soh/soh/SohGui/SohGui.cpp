@@ -25,15 +25,15 @@
 #include "include/global.h"
 #include "include/z64audio.h"
 #include "soh/SaveManager.h"
-#include "OTRGlobals.h"
+#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/presets.h"
 #include "soh/resource/type/Skeleton.h"
 #include "libultraship/libultraship.h"
 
-#include "Enhancements/game-interactor/GameInteractor.h"
-#include "Enhancements/cosmetics/authenticGfxPatches.h"
-#include "Enhancements/resolution-editor/ResolutionEditor.h"
-#include "Enhancements/debugger/MessageViewer.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
+#include "soh/Enhancements/resolution-editor/ResolutionEditor.h"
+#include "soh/Enhancements/debugger/MessageViewer.h"
 #include "soh/Notification/Notification.h"
 #include "soh/Enhancements/TimeDisplay/TimeDisplay.h"
 #include "soh/Enhancements/mod_menu.h"
@@ -65,7 +65,6 @@ namespace SohGui {
     static const char* subPowers[8] = { allPowers[0], allPowers[1], allPowers[2], allPowers[3], allPowers[4], allPowers[5], allPowers[6], allPowers[7] };
     static const char* subSubPowers[7] = { allPowers[0], allPowers[1], allPowers[2], allPowers[3], allPowers[4], allPowers[5], allPowers[6] };
     static const char* zFightingOptions[3] = { "Disabled", "Consistent Vanish", "No Vanish" };
-    static const char* autosaveLabels[6] = { "Off", "New Location + Major Item", "New Location + Any Item", "New Location", "Major Item", "Any Item" };
     static const char* bonkDamageValues[8] = {
         "No Damage",
         "0.25 Heart",

@@ -42,7 +42,6 @@
 #include "Fonts.h"
 #include <utils/StringHelper.h>
 #include "Enhancements/custom-message/CustomMessageManager.h"
-#include "ImGuiUtils.h"
 #include "Enhancements/presets.h"
 #include "util.h"
 #include <boost_custom/container_hash/hash_32.hpp>
@@ -70,7 +69,8 @@
 #include "Enhancements/custom-message/CustomMessageTypes.h"
 #include <functions.h>
 #include "Enhancements/item-tables/ItemTableManager.h"
-#include "SohGui.hpp"
+#include "soh/SohGui/SohGui.hpp"
+#include "soh/SohGui/ImGuiUtils.h"
 #include "ActorDB.h"
 #include "SaveManager.h"
 
@@ -370,7 +370,6 @@ OTRGlobals::OTRGlobals() {
     gRandoContext = Rando::Context::CreateInstance();
     Rando::Settings::GetInstance()->AssignContext(gRandoContext);
     Rando::StaticData::InitItemTable();//RANDOTODO make this not rely on context's logic so it can be initialised in InitStaticData
-    gRandoContext->AddExcludedOptions();
     Rando::Settings::GetInstance()->CreateOptions();
     gRandomizer = std::make_shared<Randomizer>();
 
@@ -1015,6 +1014,23 @@ bool PathTestCleanup(FILE* tfile) {
     return true;
 }
 
+void CheckAndCreateModFolder() {
+    try {
+        std::string modsPath = Ship::Context::LocateFileAcrossAppDirs("mods", appShortName);
+        if (!std::filesystem::exists(modsPath)) {
+            // Create mods folder relative to app dir
+            modsPath = Ship::Context::GetPathRelativeToAppDirectory("mods", appShortName);
+            std::string filePath = modsPath + "/custom_mod_files_go_here.txt";
+            if (std::filesystem::create_directories(modsPath)) {
+                std::ofstream(filePath).close();
+            }
+        }
+    } catch (std::filesystem::filesystem_error const& ex) {
+        // Couldn't make the folder, continue silently
+        return;
+    }
+}
+
 extern "C" void InitOTR() {
 
 #ifdef __SWITCH__
@@ -1058,6 +1074,10 @@ extern "C" void InitOTR() {
         Extractor::ShowErrorBox("Error", "SoH does not have proper file permissions. Please move it to a folder that does and run again.");
         exit(1);
     }
+#endif
+
+#if not defined(__SWITCH__) && not defined(__WIIU__)
+    CheckAndCreateModFolder();
 #endif
 
     CheckSoHOTRVersion(Ship::Context::GetPathRelativeToAppBundle("soh.otr"));
@@ -1122,6 +1142,9 @@ extern "C" void InitOTR() {
 
     SohGui::SetupGuiElements();
     ShipInit::InitAll();
+
+    Rando::StaticData::InitHashMaps();
+    OTRGlobals::Instance->gRandoContext->AddExcludedOptions();
     AudioCollection::Instance = new AudioCollection();
     ActorDB::Instance = new ActorDB();
 #ifdef __APPLE__
@@ -1391,9 +1414,6 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     if (wnd != nullptr) {
         wnd->SetTargetFps(fps);
     }
-
-    int threshold = CVarGetInteger(CVAR_SETTING("ExtraLatencyThreshold"), 80);
-    wnd->SetMaximumFrameLatency(threshold > 0 && target_fps >= threshold ? 2 : 1);
 
     // When the gfx debugger is active, only run with the final mtx
     if (GfxDebuggerIsDebugging()) {
@@ -2211,7 +2231,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetGoronMessage(choice);
         }
         else if (textId == TEXT_FROGS_UNDERWATER && ctx->GetOption(RSK_FROGS_HINT)) {
-           messageEntry = ctx->GetHint(RH_FROGS_HINT)->GetHintMessage(MF_AUTO_FORMAT), TEXTBOX_TYPE_BLUE;
+           messageEntry = ctx->GetHint(RH_FROGS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
         }
         else if (
             Randomizer_GetSettingValue(RSK_LOACH_HINT) &&
@@ -2394,9 +2414,11 @@ void SoH_ProcessDroppedFiles(std::string filePath) {
             return;
         }
 
-        clearCvars(enhancementsCvars);
-        clearCvars(cheatCvars);
-        clearCvars(randomizerCvars);
+        CVarClearBlock(CVAR_PREFIX_ENHANCEMENT);
+        CVarClearBlock(CVAR_PREFIX_CHEAT);
+        CVarClearBlock(CVAR_PREFIX_RANDOMIZER_SETTING);
+        CVarClearBlock(CVAR_PREFIX_RANDOMIZER_ENHANCEMENT);
+        CVarClearBlock(CVAR_PREFIX_DEVELOPER_TOOLS);
 
         // Flatten everything under CVars into a single array
         auto cvars = configJson["CVars"].flatten();

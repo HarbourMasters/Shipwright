@@ -159,7 +159,7 @@ static void WriteExcludedLocations() {
 
   for (size_t i = 1; i < Rando::Settings::GetInstance()->GetExcludeLocationsOptions().size(); i++) {
     for (const auto& location : Rando::Settings::GetInstance()->GetExcludeLocationsOptions()[i]) {
-      if (ctx->GetOption(location->GetKey()).Get() == RO_LOCATION_INCLUDE) {
+      if (ctx->GetLocationOption(static_cast<RandomizerCheck>(location->GetKey())).Get() == RO_LOCATION_INCLUDE) {
         continue;
       }
 
@@ -187,7 +187,7 @@ static void WriteEnabledTricks() {
   auto ctx = Rando::Context::GetInstance();
 
   for (const auto& setting : Rando::Settings::GetInstance()->GetOptionGroup(RSG_TRICKS).GetOptions()) {
-    if (ctx->GetOption(setting->GetKey()).IsNot(RO_GENERIC_ON)) {
+    if (ctx->GetTrickOption(static_cast<RandomizerTrick>(setting->GetKey())).IsNot(RO_GENERIC_ON)) {
       continue;
     }
     jsonData["enabledTricks"].push_back(RemoveLineBreaks(setting->GetName()).c_str());
