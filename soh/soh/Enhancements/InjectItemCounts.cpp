@@ -70,7 +70,7 @@ void InjectItemCounts_Register() {
     COND_ID_HOOK(OnOpenText, TEXT_HEART_PIECE + 3, CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 0), BuildHeartPieceMessage);
 }
 
-RegisterShipInitFunc initFunc(InjectItemCounts_Register, { 
+static RegisterShipInitFunc initFunc(InjectItemCounts_Register, { 
     CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"),
     CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"),
     CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece")
