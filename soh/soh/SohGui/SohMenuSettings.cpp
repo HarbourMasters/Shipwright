@@ -312,13 +312,13 @@ void SohMenu::AddMenuSettings() {
     path.column = SECTION_COLUMN_1;
     AddSidebarEntry("Settings", "Notifications", 3);
     AddWidget(path, "Position", WIDGET_CVAR_COMBOBOX)
-        .CVar(CVAR_SETTING("gNotifications.Position"))
+        .CVar(CVAR_SETTING("Notifications.Position"))
         .Options(ComboboxOptions()
                      .Tooltip("Which corner of the screen notifications appear in.")
                      .ComboMap(notificationPosition)
                      .DefaultIndex(3));
     AddWidget(path, "Duration: %.0f seconds", WIDGET_CVAR_SLIDER_FLOAT)
-        .CVar(CVAR_SETTING("gNotifications.Duration"))
+        .CVar(CVAR_SETTING("Notifications.Duration"))
         .Options(FloatSliderOptions()
                      .Tooltip("How long notifications are displayed for.")
                      .Format("%.1f")
@@ -327,13 +327,13 @@ void SohMenu::AddMenuSettings() {
                      .Max(30.0f)
                      .DefaultValue(10.0f));
     AddWidget(path, "Background Opacity: %.0f%%", WIDGET_CVAR_SLIDER_FLOAT)
-        .CVar(CVAR_SETTING("gNotifications.BgOpacity"))
+        .CVar(CVAR_SETTING("Notifications.BgOpacity"))
         .Options(FloatSliderOptions()
                      .Tooltip("How opaque the background of notifications is.")
                      .DefaultValue(0.5f)
                      .IsPercentage());
     AddWidget(path, "Size %.1f", WIDGET_CVAR_SLIDER_FLOAT)
-        .CVar(CVAR_SETTING("gNotifications.Size"))
+        .CVar(CVAR_SETTING("Notifications.Size"))
         .Options(FloatSliderOptions()
                      .Tooltip("How large notifications are.")
                      .Format("%.1f")
