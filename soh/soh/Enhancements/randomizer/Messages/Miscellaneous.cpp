@@ -48,4 +48,4 @@ void RegisterMiscellaneousMessages() {
     COND_ID_HOOK(OnOpenText, TEXT_SHOOTING_GALLERY_MAN_COME_BACK_WITH_BOW, IS_RANDO, BuildShootingGalleryNoBowMessage);
 }
 
-RegisterShipInitFunc initFunc(RegisterMiscellaneousMessages, { "IS_RANDO" });
+static RegisterShipInitFunc initFunc(RegisterMiscellaneousMessages, { "IS_RANDO" });

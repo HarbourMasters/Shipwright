@@ -23,4 +23,4 @@ void QuitFishingAtDoor_Register() {
     COND_ID_HOOK(OnOpenText, TEXT_FISHERMAN_LEAVE, CVarGetInteger(CVAR_ENHANCEMENT("QuitFishingAtDoor"), 0), BuildQuitFishingMessage);
 }
 
-RegisterShipInitFunc initFunc(QuitFishingAtDoor_Register, { CVAR_ENHANCEMENT("QuitFishingAtDoor") });
+static RegisterShipInitFunc initFunc(QuitFishingAtDoor_Register, { CVAR_ENHANCEMENT("QuitFishingAtDoor") });
