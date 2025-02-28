@@ -21,4 +21,4 @@ void MarketSneak_Register() {
     COND_ID_HOOK(OnOpenText, TEXT_MARKET_GUARD_NIGHT, CVarGetInteger(CVAR_ENHANCEMENT("MarketSneak"), 0), BuildNightGuardMessage);
 }
 
-RegisterShipInitFunc initFunc(MarketSneak_Register, { CVAR_ENHANCEMENT("MarketSneak") });
+static RegisterShipInitFunc initFunc(MarketSneak_Register, { CVAR_ENHANCEMENT("MarketSneak") });

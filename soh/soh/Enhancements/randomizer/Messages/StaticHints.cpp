@@ -414,4 +414,4 @@ void RegisterStaticHints() {
     COND_ID_HOOK(OnOpenText, TEXT_MASK_SHOP_SIGN, RAND_GET_OPTION(RSK_MASK_SHOP_HINT), BuildMaskShopSignMessage);
 }
 
-RegisterShipInitFunc initFunc(RegisterStaticHints, { "IS_RANDO" });
+static RegisterShipInitFunc initFunc(RegisterStaticHints, { "IS_RANDO" });

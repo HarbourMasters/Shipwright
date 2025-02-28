@@ -150,4 +150,4 @@ void RegisterNaviMessages() {
     COND_ID_HOOK(OnOpenText, TEXT_NAVI_TRY_TO_KEEP_MOVING, IS_RANDO && CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("RandoRelevantNavi"), 1), BuildNaviMessage);
 }
 
-RegisterShipInitFunc initFunc(RegisterNaviMessages, { CVAR_RANDOMIZER_ENHANCEMENT("RandoRelevantNavi") });
+static RegisterShipInitFunc initFunc(RegisterNaviMessages, { CVAR_RANDOMIZER_ENHANCEMENT("RandoRelevantNavi") });

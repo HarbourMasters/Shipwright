@@ -121,4 +121,4 @@ void RegisterRandomRupeeNames() {
     COND_ID_HOOK(OnOpenText, TEXT_HUGE_RUPEE, IS_RANDO && CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("RandomizeRupeeNames"), 1), BuildRupeeMessage);
 }
 
-RegisterShipInitFunc initFunc(RegisterRandomRupeeNames, { CVAR_RANDOMIZER_ENHANCEMENT("RandomizeRupeeNames") });
+static RegisterShipInitFunc initFunc(RegisterRandomRupeeNames, { CVAR_RANDOMIZER_ENHANCEMENT("RandomizeRupeeNames") });
