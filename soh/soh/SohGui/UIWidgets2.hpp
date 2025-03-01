@@ -436,7 +436,12 @@ namespace UIWidgets2 {
     void PushStyleInput(Colors color = Colors::LightBlue);
     void PopStyleInput();
 
-    void Spacer(float height);
+    void PushStyleHeader(const ImVec4& color);
+    void PushStyleHeader(Colors color = Colors::LightBlue);
+    void PopStyleHeader();
+
+    void Spacer(float height = 0.0f);
+    void Separator(bool padTop, bool padBottom, float extraVerticalTopPadding, float extraVerticalBottomPadding);
 
     /*using ComboVariant = std::variant<const std::unordered_map<int32_t, const char*>&, const std::vector<const char*>&>;
 
@@ -808,7 +813,7 @@ namespace UIWidgets2 {
     bool CVarSliderFloat(const char* label, const char* cvarName, const FloatSliderOptions& options = {});
     bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaultColor, bool hasAlpha = false, uint8_t modifiers = 0, UIWidgets2::Colors themeColor = UIWidgets2::Colors::LightBlue);
     bool RadioButton(const char* label, bool active);
-    bool CVarRadioButton(const char* text, const char* cvarName, int32_t id, UIWidgets2::Colors color);
+    bool CVarRadioButton(const char* text, const char* cvarName, int32_t id, const RadioButtonsOptions& options);
     bool StateButton(const char* str_id, const char* label, ImVec2 size, UIWidgets2::ButtonOptions options, ImGuiButtonFlags flags = ImGuiButtonFlags_None);
     void DrawFlagArray32(const std::string& name, uint32_t& flags, Colors color = Colors::LightBlue);
     void DrawFlagArray16(const std::string& name, uint16_t& flags, Colors color = Colors::LightBlue);
