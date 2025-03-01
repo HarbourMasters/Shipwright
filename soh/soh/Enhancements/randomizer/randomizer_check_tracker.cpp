@@ -7,7 +7,6 @@
 #include "soh/SaveManager.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/SohGui/UIWidgets.hpp"
-#include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
 #include "dungeon.h"
 #include "location_access.h"
@@ -35,7 +34,6 @@ extern std::vector<ItemTrackerItem> dungeonRewardStones;
 extern std::vector<ItemTrackerItem> dungeonRewardMedallions;
 extern std::vector<ItemTrackerItem> songItems;
 extern std::vector<ItemTrackerItem> equipmentItems;
-extern std::shared_ptr<SohGui::SohMenu> mSohMenu;
 
 using json = nlohmann::json;
 
@@ -84,7 +82,6 @@ bool doAreaScroll;
 bool previousShowHidden = false;
 bool hideShopUnshuffledChecks = true;
 bool alwaysShowGS = false;
-UIWidgets2::Colors themeColor = UIWidgets2::Colors::LightBlue;
 
 std::map<uint32_t, RandomizerCheck> startingShopItem = { { SCENE_KOKIRI_SHOP, RC_KF_SHOP_ITEM_1 },
                                                          { SCENE_BAZAAR, RC_MARKET_BAZAAR_ITEM_1 },
@@ -876,7 +873,6 @@ void CheckTrackerWindow::DrawElement() {
     showHidden                  = CVarGetInteger(CVAR_TRACKER_CHECK("ShowHidden"), 0);
     mystery                     = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0);
     showLogicTooltip            = CVarGetInteger(CVAR_TRACKER_CHECK("ShowLogic"), 0);
-    themeColor                  = static_cast<UIWidgets2::Colors>(CVarGetInteger(CVAR_SETTING("Menu.Theme"), UIWidgets2::Colors::LightBlue));
 
     hideShopUnshuffledChecks = CVarGetInteger(CVAR_TRACKER_CHECK("HideUnshuffledShopChecks"), 1);
     alwaysShowGS = CVarGetInteger(CVAR_TRACKER_CHECK("AlwaysShowGSLocs"), 0);
@@ -933,25 +929,25 @@ void CheckTrackerWindow::DrawElement() {
     ImGui::TableNextColumn();
     UIWidgets2::CVarCheckbox(
         "Show Hidden Items", CVAR_TRACKER_CHECK("ShowHidden"), UIWidgets2::CheckboxOptions({{ .tooltip = "When active, items will show hidden checks by default when updated to this state." }})
-        .Color(themeColor));
+        .Color(THEME_COLOR));
     UIWidgets::PaddedSeparator();
-    if (UIWidgets2::Button("Expand All", UIWidgets2::ButtonOptions().Color(themeColor).Size(UIWidgets2::Sizes::Inline))) {
+    if (UIWidgets2::Button("Expand All", UIWidgets2::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets2::Sizes::Inline))) {
         optCollapseAll = false;
         optExpandAll = true;
         doAreaScroll = true;
     }
     ImGui::SameLine();
-    if (UIWidgets2::Button("Collapse All", UIWidgets2::ButtonOptions().Color(themeColor).Size(UIWidgets2::Sizes::Inline))) {
+    if (UIWidgets2::Button("Collapse All", UIWidgets2::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets2::Sizes::Inline))) {
         optExpandAll = false;
         optCollapseAll = true;
     }
     ImGui::SameLine();
-    if (UIWidgets2::Button("Clear", UIWidgets2::ButtonOptions({{ .tooltip = "Clear the search field" }}).Color(themeColor).Size(UIWidgets2::Sizes::Inline))) {
+    if (UIWidgets2::Button("Clear", UIWidgets2::ButtonOptions({{ .tooltip = "Clear the search field" }}).Color(THEME_COLOR).Size(UIWidgets2::Sizes::Inline))) {
         checkSearch.Clear();
         UpdateFilters();
         doAreaScroll = true;
     }
-    UIWidgets2::PushStyleCombobox(themeColor);
+    UIWidgets2::PushStyleCombobox(THEME_COLOR);
     if (checkSearch.Draw()) {
         UpdateFilters();
     }
@@ -1577,7 +1573,7 @@ void DrawLocation(RandomizerCheck rc) {
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, {4.0f, 3.0f});
     float sz = ImGui::GetFrameHeight();
     if (status == RCSHOW_UNCHECKED || status == RCSHOW_SEEN || status == RCSHOW_IDENTIFIED || status == RCSHOW_SCUMMED || skipped) {
-        if (UIWidgets2::StateButton(std::to_string(rc).c_str(), skipped ? ICON_FA_PLUS : ICON_FA_TIMES, ImVec2(sz, sz), UIWidgets2::ButtonOptions().Color(themeColor))) {
+        if (UIWidgets2::StateButton(std::to_string(rc).c_str(), skipped ? ICON_FA_PLUS : ICON_FA_TIMES, ImVec2(sz, sz), UIWidgets2::ButtonOptions().Color(THEME_COLOR))) {
             if (skipped) {
                 OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->SetIsSkipped(false);
                 areaChecksGotten[loc->GetArea()]--;
@@ -1768,8 +1764,6 @@ static std::unordered_map<int32_t, const char*> buttonStrings = {
     { TRACKER_COMBO_BUTTON_D_LEFT, "D-Left" }, { TRACKER_COMBO_BUTTON_D_RIGHT, "D-Right" }};
 
 void CheckTrackerSettingsWindow::DrawElement() {
-    themeColor = static_cast<UIWidgets2::Colors>(CVarGetInteger(CVAR_SETTING("Menu.Theme"), UIWidgets2::Colors::LightBlue));
-
     ImGui::PushFont(OTRGlobals::Instance->fontStandardLarger);
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
     if (ImGui::BeginTable("CheckTrackerSettingsTable", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
@@ -1780,59 +1774,59 @@ void CheckTrackerSettingsWindow::DrawElement() {
         ImGui::TableNextColumn();
         ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
         UIWidgets2::CVarColorPicker("BG Color", CVAR_TRACKER_CHECK("BgColor"), Color_Bg_Default, true,
-            UIWidgets2::ColorPickerResetButton | UIWidgets2::ColorPickerRandomButton, themeColor);
+            UIWidgets2::ColorPickerResetButton | UIWidgets2::ColorPickerRandomButton, THEME_COLOR);
         ImGui::PopItemWidth();
 
         UIWidgets2::CVarCombobox("Window Type", CVAR_TRACKER_CHECK("WindowType"), windowType,
             UIWidgets2::ComboboxOptions().LabelPosition(UIWidgets2::LabelPosition::Far).ComponentAlignment(UIWidgets2::ComponentAlignment::Right)
-            .Color(themeColor).DefaultIndex(TRACKER_WINDOW_WINDOW));
+            .Color(THEME_COLOR).DefaultIndex(TRACKER_WINDOW_WINDOW));
         
         if (CVarGetInteger(CVAR_TRACKER_CHECK("WindowType"), TRACKER_WINDOW_WINDOW) == TRACKER_WINDOW_FLOATING) {
-            UIWidgets2::CVarCheckbox("Enable Dragging", CVAR_TRACKER_CHECK("Draggable"), UIWidgets2::CheckboxOptions().Color(themeColor));
-            UIWidgets2::CVarCheckbox("Only enable while paused", CVAR_TRACKER_CHECK("ShowOnlyPaused"), UIWidgets2::CheckboxOptions().Color(themeColor));
+            UIWidgets2::CVarCheckbox("Enable Dragging", CVAR_TRACKER_CHECK("Draggable"), UIWidgets2::CheckboxOptions().Color(THEME_COLOR));
+            UIWidgets2::CVarCheckbox("Only enable while paused", CVAR_TRACKER_CHECK("ShowOnlyPaused"), UIWidgets2::CheckboxOptions().Color(THEME_COLOR));
             UIWidgets2::CVarCombobox("Display Mode", CVAR_TRACKER_CHECK("DisplayType"), displayType,
                 UIWidgets2::ComboboxOptions().LabelPosition(UIWidgets2::LabelPosition::Far).ComponentAlignment(UIWidgets2::ComponentAlignment::Right)
-                .Color(themeColor).DefaultIndex(0));
+                .Color(THEME_COLOR).DefaultIndex(0));
             if (CVarGetInteger(CVAR_TRACKER_CHECK("DisplayType"), TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_COMBO_BUTTON) {
                 UIWidgets2::CVarCombobox("Combo Button 1", CVAR_TRACKER_CHECK("ComboButton1"), buttonStrings,
                     UIWidgets2::ComboboxOptions().LabelPosition(UIWidgets2::LabelPosition::Far).ComponentAlignment(UIWidgets2::ComponentAlignment::Right)
-                    .Color(themeColor).DefaultIndex(TRACKER_COMBO_BUTTON_L));
+                    .Color(THEME_COLOR).DefaultIndex(TRACKER_COMBO_BUTTON_L));
                 UIWidgets2::CVarCombobox("Combo Button 2", CVAR_TRACKER_CHECK("ComboButton2"), buttonStrings,
                     UIWidgets2::ComboboxOptions().LabelPosition(UIWidgets2::LabelPosition::Far).ComponentAlignment(UIWidgets2::ComponentAlignment::Right)
-                    .Color(themeColor).DefaultIndex(TRACKER_COMBO_BUTTON_L));
+                    .Color(THEME_COLOR).DefaultIndex(TRACKER_COMBO_BUTTON_L));
             }
         }
         UIWidgets2::CVarCheckbox("Vanilla/MQ Dungeon Spoilers", CVAR_TRACKER_CHECK("MQSpoilers"), UIWidgets2::CheckboxOptions()
-                .Tooltip("If enabled, Vanilla/MQ dungeons will show on the tracker immediately. Otherwise, Vanilla/MQ dungeon locations must be unlocked.").Color(themeColor));
+                .Tooltip("If enabled, Vanilla/MQ dungeons will show on the tracker immediately. Otherwise, Vanilla/MQ dungeon locations must be unlocked.").Color(THEME_COLOR));
         if (UIWidgets2::CVarCheckbox("Hide unshuffled shop item checks", CVAR_TRACKER_CHECK("HideUnshuffledShopChecks"),
-                UIWidgets2::CheckboxOptions().Tooltip("If enabled, will prevent the tracker from displaying slots with non-shop-item shuffles.").Color(themeColor))) {
+                UIWidgets2::CheckboxOptions().Tooltip("If enabled, will prevent the tracker from displaying slots with non-shop-item shuffles.").Color(THEME_COLOR))) {
             hideShopUnshuffledChecks = !hideShopUnshuffledChecks;
             UpdateFilters();
         }
         if (UIWidgets2::CVarCheckbox("Always show gold skulltulas", CVAR_TRACKER_CHECK("AlwaysShowGSLocs"),
-                UIWidgets2::CheckboxOptions().Tooltip("If enabled, will show GS locations in the tracker regardless of tokensanity settings.").Color(themeColor))) {
+                UIWidgets2::CheckboxOptions().Tooltip("If enabled, will show GS locations in the tracker regardless of tokensanity settings.").Color(THEME_COLOR))) {
             alwaysShowGS = !alwaysShowGS;
             UpdateFilters();
         }
         UIWidgets2::CVarCheckbox("Show Logic", CVAR_TRACKER_CHECK("ShowLogic"),
-            UIWidgets2::CheckboxOptions().Tooltip("If enabled, will show a check's logic when hovering over it.").Color(themeColor));
+            UIWidgets2::CheckboxOptions().Tooltip("If enabled, will show a check's logic when hovering over it.").Color(THEME_COLOR));
 
         // Filtering settings
         UIWidgets::PaddedSeparator();
         UIWidgets2::CVarCheckbox("Filter Empty Areas", CVAR_TRACKER_CHECK("HideFilteredAreas"),
-            UIWidgets2::CheckboxOptions().Tooltip("If enabled, will hide area headers that have no locations matching filter").Color(themeColor).DefaultValue(true));
+            UIWidgets2::CheckboxOptions().Tooltip("If enabled, will hide area headers that have no locations matching filter").Color(THEME_COLOR).DefaultValue(true));
 
         ImGui::TableNextColumn();
 
-        CheckTracker::ImGuiDrawTwoColorPickerSection("Area Incomplete",  CVAR_TRACKER_CHECK("AreaIncomplete.MainColor"),   CVAR_TRACKER_CHECK("AreaIncomplete.ExtraColor"),  Color_Area_Incomplete_Main,   Color_Area_Incomplete_Extra,  Color_Main_Default, Color_Area_Incomplete_Extra_Default, CVAR_TRACKER_CHECK("AreaIncomplete.Hide"), "", themeColor);
-        CheckTracker::ImGuiDrawTwoColorPickerSection("Area Complete",    CVAR_TRACKER_CHECK("AreaComplete.MainColor"),     CVAR_TRACKER_CHECK("AreaComplete.ExtraColor"),    Color_Area_Complete_Main,     Color_Area_Complete_Extra,    Color_Main_Default, Color_Area_Complete_Extra_Default,   CVAR_TRACKER_CHECK("AreaComplete.Hide"),   "", themeColor);
-        CheckTracker::ImGuiDrawTwoColorPickerSection("Unchecked",        CVAR_TRACKER_CHECK("Unchecked.MainColor"),        CVAR_TRACKER_CHECK("Unchecked.ExtraColor"),       Color_Unchecked_Main,         Color_Unchecked_Extra,        Color_Main_Default, Color_Unchecked_Extra_Default,       CVAR_TRACKER_CHECK("Unchecked.Hide"),      "Checks you have not interacted with at all.", themeColor);
-        CheckTracker::ImGuiDrawTwoColorPickerSection("Skipped",          CVAR_TRACKER_CHECK("Skipped.MainColor"),          CVAR_TRACKER_CHECK("Skipped.ExtraColor"),         Color_Skipped_Main,           Color_Skipped_Extra,          Color_Main_Default, Color_Skipped_Extra_Default,         CVAR_TRACKER_CHECK("Skipped.Hide"),        "", themeColor);
-        CheckTracker::ImGuiDrawTwoColorPickerSection("Seen",             CVAR_TRACKER_CHECK("Seen.MainColor"),             CVAR_TRACKER_CHECK("Seen.ExtraColor"),            Color_Seen_Main,              Color_Seen_Extra,             Color_Main_Default, Color_Seen_Extra_Default,            CVAR_TRACKER_CHECK("Seen.Hide"),           "Used for shops. Shows item names for shop slots when walking in, and prices when highlighting them in buy mode.", themeColor);
-        CheckTracker::ImGuiDrawTwoColorPickerSection("Scummed",          CVAR_TRACKER_CHECK("Scummed.MainColor"),          CVAR_TRACKER_CHECK("Scummed.ExtraColor"),         Color_Scummed_Main,           Color_Scummed_Extra,          Color_Main_Default, Color_Scummed_Extra_Default,         CVAR_TRACKER_CHECK("Scummed.Hide"),        "Checks you collect, but then reload before saving so you no longer have them.", themeColor);
-        //CheckTracker::ImGuiDrawTwoColorPickerSection("Hinted (WIP)",     CVAR_TRACKER_CHECK("Hinted.MainColor"),           CVAR_TRACKER_CHECK("Hinted.ExtraColor"),          Color_Hinted_Main,            Color_Hinted_Extra,           Color_Main_Default, Color_Hinted_Extra_Default,          CVAR_TRACKER_CHECK("Hinted.Hide"),         "", themeColor);
-        CheckTracker::ImGuiDrawTwoColorPickerSection("Collected",        CVAR_TRACKER_CHECK("Collected.MainColor"),        CVAR_TRACKER_CHECK("Collected.ExtraColor"),       Color_Collected_Main,         Color_Collected_Extra,        Color_Main_Default, Color_Collected_Extra_Default,       CVAR_TRACKER_CHECK("Collected.Hide"),      "Checks you have collected without saving or reloading yet.", themeColor);
-        CheckTracker::ImGuiDrawTwoColorPickerSection("Saved",            CVAR_TRACKER_CHECK("Saved.MainColor"),            CVAR_TRACKER_CHECK("Saved.ExtraColor"),           Color_Saved_Main,             Color_Saved_Extra,            Color_Main_Default, Color_Saved_Extra_Default,           CVAR_TRACKER_CHECK("Saved.Hide"),          "Checks that you saved the game while having collected.", themeColor);
+        CheckTracker::ImGuiDrawTwoColorPickerSection("Area Incomplete",  CVAR_TRACKER_CHECK("AreaIncomplete.MainColor"),   CVAR_TRACKER_CHECK("AreaIncomplete.ExtraColor"),  Color_Area_Incomplete_Main,   Color_Area_Incomplete_Extra,  Color_Main_Default, Color_Area_Incomplete_Extra_Default, CVAR_TRACKER_CHECK("AreaIncomplete.Hide"), "", THEME_COLOR);
+        CheckTracker::ImGuiDrawTwoColorPickerSection("Area Complete",    CVAR_TRACKER_CHECK("AreaComplete.MainColor"),     CVAR_TRACKER_CHECK("AreaComplete.ExtraColor"),    Color_Area_Complete_Main,     Color_Area_Complete_Extra,    Color_Main_Default, Color_Area_Complete_Extra_Default,   CVAR_TRACKER_CHECK("AreaComplete.Hide"),   "", THEME_COLOR);
+        CheckTracker::ImGuiDrawTwoColorPickerSection("Unchecked",        CVAR_TRACKER_CHECK("Unchecked.MainColor"),        CVAR_TRACKER_CHECK("Unchecked.ExtraColor"),       Color_Unchecked_Main,         Color_Unchecked_Extra,        Color_Main_Default, Color_Unchecked_Extra_Default,       CVAR_TRACKER_CHECK("Unchecked.Hide"),      "Checks you have not interacted with at all.", THEME_COLOR);
+        CheckTracker::ImGuiDrawTwoColorPickerSection("Skipped",          CVAR_TRACKER_CHECK("Skipped.MainColor"),          CVAR_TRACKER_CHECK("Skipped.ExtraColor"),         Color_Skipped_Main,           Color_Skipped_Extra,          Color_Main_Default, Color_Skipped_Extra_Default,         CVAR_TRACKER_CHECK("Skipped.Hide"),        "", THEME_COLOR);
+        CheckTracker::ImGuiDrawTwoColorPickerSection("Seen",             CVAR_TRACKER_CHECK("Seen.MainColor"),             CVAR_TRACKER_CHECK("Seen.ExtraColor"),            Color_Seen_Main,              Color_Seen_Extra,             Color_Main_Default, Color_Seen_Extra_Default,            CVAR_TRACKER_CHECK("Seen.Hide"),           "Used for shops. Shows item names for shop slots when walking in, and prices when highlighting them in buy mode.", THEME_COLOR);
+        CheckTracker::ImGuiDrawTwoColorPickerSection("Scummed",          CVAR_TRACKER_CHECK("Scummed.MainColor"),          CVAR_TRACKER_CHECK("Scummed.ExtraColor"),         Color_Scummed_Main,           Color_Scummed_Extra,          Color_Main_Default, Color_Scummed_Extra_Default,         CVAR_TRACKER_CHECK("Scummed.Hide"),        "Checks you collect, but then reload before saving so you no longer have them.", THEME_COLOR);
+        //CheckTracker::ImGuiDrawTwoColorPickerSection("Hinted (WIP)",     CVAR_TRACKER_CHECK("Hinted.MainColor"),           CVAR_TRACKER_CHECK("Hinted.ExtraColor"),          Color_Hinted_Main,            Color_Hinted_Extra,           Color_Main_Default, Color_Hinted_Extra_Default,          CVAR_TRACKER_CHECK("Hinted.Hide"),         "", THEME_COLOR);
+        CheckTracker::ImGuiDrawTwoColorPickerSection("Collected",        CVAR_TRACKER_CHECK("Collected.MainColor"),        CVAR_TRACKER_CHECK("Collected.ExtraColor"),       Color_Collected_Main,         Color_Collected_Extra,        Color_Main_Default, Color_Collected_Extra_Default,       CVAR_TRACKER_CHECK("Collected.Hide"),      "Checks you have collected without saving or reloading yet.", THEME_COLOR);
+        CheckTracker::ImGuiDrawTwoColorPickerSection("Saved",            CVAR_TRACKER_CHECK("Saved.MainColor"),            CVAR_TRACKER_CHECK("Saved.ExtraColor"),           Color_Saved_Main,             Color_Saved_Extra,            Color_Main_Default, Color_Saved_Extra_Default,           CVAR_TRACKER_CHECK("Saved.Hide"),          "Checks that you saved the game while having collected.", THEME_COLOR);
 
         ImGui::PopStyleVar(1);
     }
