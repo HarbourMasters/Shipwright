@@ -696,7 +696,7 @@ bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaul
     bool locked = CVarGetInteger(lockedCVar.c_str(), 0);
     ImGuiColorEditFlags flags = ImGuiColorEditFlags_NoInputs;
     ImGui::BeginDisabled(locked);
-    PushStyleCombobox(colorVec);
+    PushStyleCombobox(UIWidgets2::Colors::DarkGray);
     if (hasAlpha) {
         changed = ImGui::ColorEdit4(label, (float*)&colorVec, flags | ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_AlphaPreview);
     } else {

@@ -440,7 +440,7 @@ namespace UIWidgets2 {
     void PushStyleHeader(Colors color = Colors::LightBlue);
     void PopStyleHeader();
 
-    void Spacer(float height);
+    void Spacer(float height = 0.0f);
     void Separator(bool padTop, bool padBottom, float extraVerticalTopPadding, float extraVerticalBottomPadding);
 
     /*using ComboVariant = std::variant<const std::unordered_map<int32_t, const char*>&, const std::vector<const char*>&>;
