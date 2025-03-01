@@ -678,10 +678,13 @@ void EntranceTrackerSettingsWindow::DrawElement() {
         ImGui::TableNextColumn();
 
         ImGui::Text("Sort By");
-        UIWidgets2::CVarRadioButton("To", CVAR_TRACKER_ENTRANCE("SortBy"), 0, themeColor);
-        UIWidgets::Tooltip("Sort entrances by the original source entrance");
-        UIWidgets2::CVarRadioButton("From", CVAR_TRACKER_ENTRANCE("SortBy"), 1, themeColor);
-        UIWidgets::Tooltip("Sort entrances by the overrided destination");
+        UIWidgets2::CVarRadioButton("To", CVAR_TRACKER_ENTRANCE("SortBy"), 0,
+                                    UIWidgets2::RadioButtonsOptions()
+                                        .Color(themeColor)
+                                        .Tooltip("Sort entrances by the original source entrance"));
+        UIWidgets2::CVarRadioButton("From", CVAR_TRACKER_ENTRANCE("SortBy"), 1,
+                                    UIWidgets2::RadioButtonsOptions()
+                                        .Color(themeColor).Tooltip("Sort entrances by the overrided destination"));
 
         ImGui::Text("List Items");
         UIWidgets2::CVarCheckbox("Auto scroll", CVAR_TRACKER_ENTRANCE("AutoScroll"),
@@ -701,10 +704,12 @@ void EntranceTrackerSettingsWindow::DrawElement() {
         ImGui::TableNextColumn();
 
         ImGui::Text("Group By");
-        UIWidgets2::CVarRadioButton("Area", CVAR_TRACKER_ENTRANCE("GroupBy"), 0, themeColor);
-        UIWidgets::Tooltip("Group entrances by their area");
-        UIWidgets2::CVarRadioButton("Type", CVAR_TRACKER_ENTRANCE("GroupBy"), 1, themeColor);
-        UIWidgets::Tooltip("Group entrances by their entrance type");
+        UIWidgets2::CVarRadioButton(
+            "Area", CVAR_TRACKER_ENTRANCE("GroupBy"), 0,
+            UIWidgets2::RadioButtonsOptions().Color(themeColor).Tooltip("Group entrances by their area"));
+        UIWidgets2::CVarRadioButton(
+            "Type", CVAR_TRACKER_ENTRANCE("GroupBy"), 1,
+            UIWidgets2::RadioButtonsOptions().Color(themeColor).Tooltip("Group entrances by their entrance type"));
 
         ImGui::Text("Spoiler Reveal");
         UIWidgets2::CVarCheckbox("Show Source", CVAR_TRACKER_ENTRANCE("ShowFrom"),

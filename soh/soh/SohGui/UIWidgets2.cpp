@@ -144,6 +144,20 @@ void PopStyleInput() {
     ImGui::PopStyleColor(7);
 }
 
+void PushStyleHeader(const ImVec4& color) {
+    ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(color.x, color.y, color.z, 1.0f));
+    ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(color.x, color.y, color.z, 0.8f));
+    ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(color.x, color.y, color.z, 0.6f));
+}
+
+void PushStyleHeader(Colors color) {
+    PushStyleHeader(ColorValues.at(color));
+}
+
+void PopStyleHeader() {
+    ImGui::PopStyleColor(3);
+}
+
 bool Button(const char* label, const ButtonOptions& options) {
     ImGui::BeginDisabled(options.disabled);
     PushStyleButton(options.color, options.padding);
@@ -200,6 +214,16 @@ void PopStyleCheckbox() {
 
 void Spacer(float height) {
     ImGui::Dummy(ImVec2(0.0f, height));
+}
+
+void Separator(bool padTop, bool padBottom, float extraVerticalTopPadding, float extraVerticalBottomPadding) {
+    if (padTop) {
+        Spacer(extraVerticalTopPadding);
+    }
+    ImGui::Separator();
+    if (padBottom) {
+        Spacer(extraVerticalBottomPadding);
+    }
 }
 
 // Adds a "?" next to the previous ImGui item with a custom tooltip
@@ -658,7 +682,7 @@ bool CVarSliderFloat(const char* label, const char* cvarName, const FloatSliderO
     return dirty;
 }
 
-bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaultColor, bool hasAlpha, uint8_t modifiers, UIWidgets2::Colors themeColor ) {
+bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaultColor, bool hasAlpha, uint8_t modifiers, UIWidgets2::Colors themeColor) {
     std::string valueCVar = std::string(cvarName) + ".Value";
     std::string rainbowCVar = std::string(cvarName) + ".Rainbow";
     std::string lockedCVar = std::string(cvarName) + ".Locked";
@@ -729,7 +753,7 @@ bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaul
     return changed;
 }
 
-bool RadioButton(const char* label, bool active) {
+bool RadioButton(const char* label, bool active, const RadioButtonsOptions& options) {
     ImGuiWindow* window = ImGui::GetCurrentWindow();
     if (window->SkipItems)
         return false;
@@ -782,12 +806,12 @@ bool RadioButton(const char* label, bool active) {
     return pressed;
 }
 
-bool CVarRadioButton(const char* text, const char* cvarName, int32_t id, UIWidgets2::Colors color) {
+bool CVarRadioButton(const char* text, const char* cvarName, int32_t id, const RadioButtonsOptions& options) {
     std::string make_invisible = "##" + std::string(text) + std::string(cvarName);
 
     bool ret = false;
     int val = CVarGetInteger(cvarName, 0);
-    PushStyleCheckbox(color);
+    PushStyleCheckbox(options.color);
     if (ImGui::RadioButton(make_invisible.c_str(), id == val)) {
         CVarSetInteger(cvarName, id);
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
@@ -796,6 +820,9 @@ bool CVarRadioButton(const char* text, const char* cvarName, int32_t id, UIWidge
     ImGui::SameLine();
     ImGui::Text("%s", text);
     PopStyleCheckbox();
+    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !Ship_IsCStringEmpty(options.tooltip)) {
+        ImGui::SetTooltip("%s", WrappedText(options.tooltip).c_str());
+    }
         
     return ret;
 }
