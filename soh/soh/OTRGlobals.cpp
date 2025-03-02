@@ -1192,7 +1192,6 @@ extern "C" void InitOTR() {
     VanillaItemTable_Init();
     DebugConsole_Init();
 
-    InitMods();
     ActorDB::AddBuiltInCustomActors();
     // #region SOH [Randomizer] TODO: Remove these and refactor spoiler file handling for randomizer
     CVarClear(CVAR_GENERAL("RandomizerNewFileDropped"));

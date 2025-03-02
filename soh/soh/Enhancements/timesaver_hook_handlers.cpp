@@ -1232,3 +1232,5 @@ void TimeSaverRegisterHooks() {
         onItemReceiveHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>(TimeSaverOnItemReceiveHandler);
     });
 }
+
+static RegisterShipInitFunc initFunc(TimeSaverRegisterHooks);

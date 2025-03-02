@@ -1,4 +1,5 @@
 #include "TimeSavers.h"
+#include "soh/ShipInit.hpp"
 
 void TimeSavers_Register() {
     // SkipCutscene
@@ -16,3 +17,5 @@ void TimeSavers_Register() {
     FasterHeavyBlockLift_Register();
     FasterRupeeAccumulator_Register();
 }
+
+static RegisterShipInitFunc initFunc(TimeSavers_Register);

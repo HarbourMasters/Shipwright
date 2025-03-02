@@ -1,8 +1,6 @@
 #ifndef TIME_SAVERS_H
 #define TIME_SAVERS_H
 
-void TimeSavers_Register();
-
 // SkipCutscene
     // Story
         void SkipBlueWarp_Register();

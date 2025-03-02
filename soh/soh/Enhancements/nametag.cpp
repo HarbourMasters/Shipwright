@@ -313,3 +313,5 @@ void NameTag_RegisterHooks() {
     // Remove all name tags on play state destroy as all actors are removed anyways
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayDestroy>([]() { RemoveAllNameTags(); });
 }
+
+static RegisterShipInitFunc initFunc(NameTag_RegisterHooks);

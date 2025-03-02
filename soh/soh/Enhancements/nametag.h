@@ -8,9 +8,6 @@ typedef struct {
     Color_RGBA8 textColor; // Text color override. Global color is used if alpha is 0
 } NameTagOptions;
 
-// Register required hooks for nametags on startup
-void NameTag_RegisterHooks();
-
 #ifdef __cplusplus
 extern "C" {
 #endif

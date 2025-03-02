@@ -1048,9 +1048,7 @@ void DrawEnhancementsMenu() {
                 ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
                 UIWidgets::Tooltip("Dying will delete your file\n\n     " ICON_FA_EXCLAMATION_TRIANGLE " WARNING " ICON_FA_EXCLAMATION_TRIANGLE "\nTHIS IS NOT REVERSABLE\nUSE AT YOUR OWN RISK!");
                 ImGui::PopStyleColor();
-                if (UIWidgets::PaddedEnhancementCheckbox("Permanent heart loss", CVAR_ENHANCEMENT("PermanentHeartLoss"), true, false)) {
-                    UpdatePermanentHeartLossState();
-                }
+                UIWidgets::PaddedEnhancementCheckbox("Permanent heart loss", CVAR_ENHANCEMENT("PermanentHeartLoss"), true, false);
                 UIWidgets::Tooltip("When you lose 4 quarters of a heart you will permanently lose that heart container.\n\nDisabling this after the fact will restore your heart containers.");
                 ImGui::Text("Damage Multiplier");
                 UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("DamageMult"), allPowers, 0);
@@ -1106,13 +1104,9 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("Bonking into trees will have a chance to drop up to 3 sticks. Must already have obtained sticks.");
                 UIWidgets::PaddedEnhancementCheckbox("No Heart Drops", CVAR_ENHANCEMENT("NoHeartDrops"), true, false);
                 UIWidgets::Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off\nThis simulates Hero Mode from other games in the series");
-                if (UIWidgets::PaddedEnhancementCheckbox("Hyper Bosses", CVAR_ENHANCEMENT("HyperBosses"), true, false)) {
-                    UpdateHyperBossesState();
-                }
+                UIWidgets::PaddedEnhancementCheckbox("Hyper Bosses", CVAR_ENHANCEMENT("HyperBosses"), true, false);
                 UIWidgets::Tooltip("All major bosses move and act twice as fast.");
-                if (UIWidgets::PaddedEnhancementCheckbox("Hyper Enemies", CVAR_ENHANCEMENT("HyperEnemies"), true, false)) {
-                    UpdateHyperEnemiesState();
-                }
+                UIWidgets::PaddedEnhancementCheckbox("Hyper Enemies", CVAR_ENHANCEMENT("HyperEnemies"), true, false);
                 UIWidgets::Tooltip("All regular enemies and mini-bosses move and act twice as fast.");
                 UIWidgets::PaddedEnhancementCheckbox("Always Win Goron Pot", CVAR_ENHANCEMENT("GoronPot"), true, false);
                 UIWidgets::Tooltip("Always get the heart piece/purple rupee from the spinning Goron pot");
@@ -1302,9 +1296,7 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("When medallions are collected, the medallion imprints around the Master Sword pedestal in the Temple of Time will become colored");
             UIWidgets::PaddedEnhancementCheckbox("Show locked door chains on both sides of locked doors", CVAR_ENHANCEMENT("ShowDoorLocksOnBothSides"), true, false);
             UIWidgets::PaddedText("Fix Vanishing Paths", true, false);
-            if (UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("SceneSpecificDirtPathFix"), zFightingOptions, ZFIGHT_FIX_DISABLED) && gPlayState != NULL) {
-                UpdateDirtPathFixState(gPlayState->sceneNum);
-            }
+            UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("SceneSpecificDirtPathFix"), zFightingOptions, ZFIGHT_FIX_DISABLED);
             UIWidgets::Tooltip("Disabled: Paths vanish more the higher the resolution (Z-fighting is based on resolution)\n"
                                 "Consistent: Certain paths vanish the same way in all resolutions\n"
                                 "No Vanish: Paths do not vanish, Link seems to sink in to some paths\n"
@@ -1449,9 +1441,7 @@ void DrawEnhancementsMenu() {
 
         if (ImGui::BeginMenu("Extra Modes")) {
             UIWidgets::PaddedText("Mirrored World", true, false);
-            if (UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("MirroredWorldMode"), mirroredWorldModes, MIRRORED_WORLD_OFF) && gPlayState != NULL) {
-                UpdateMirrorModeState(gPlayState->sceneNum);
-            }
+            UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("MirroredWorldMode"), mirroredWorldModes, MIRRORED_WORLD_OFF);
             UIWidgets::Tooltip(
                 "Mirrors the world horizontally\n\n"
                 "- Always: Always mirror the world\n"
@@ -1561,9 +1551,7 @@ void DrawEnhancementsMenu() {
             }
 
             UIWidgets::Spacer(0);
-            if (UIWidgets::PaddedEnhancementCheckbox("Hurt Container Mode", CVAR_ENHANCEMENT("HurtContainer"), true, false)) {
-                UpdateHurtContainerModeState(CVarGetInteger(CVAR_ENHANCEMENT("HurtContainer"), 0));
-            }
+            UIWidgets::PaddedEnhancementCheckbox("Hurt Container Mode", CVAR_ENHANCEMENT("HurtContainer"), true, false);
             UIWidgets::Tooltip("Changes Heart Piece and Heart Container functionality.\n\n"
                 "- Each Heart Container or full Heart Piece reduces Links hearts by 1.\n"
                 "- Can be enabled retroactively after a File has already started.");

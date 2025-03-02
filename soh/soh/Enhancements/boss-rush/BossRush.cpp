@@ -708,3 +708,5 @@ void BossRush_RegisterHooks() {
         onActorUpdate = GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnActorUpdate>(ACTOR_DOOR_WARP1, BossRush_OnBlueWarpUpdate);
     });
 }
+
+static RegisterShipInitFunc initFunc(BossRush_RegisterHooks);

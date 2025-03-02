@@ -2471,3 +2471,5 @@ void RandomizerRegisterHooks() {
         }
     });
 }
+
+static RegisterShipInitFunc initFunc(RandomizerRegisterHooks);

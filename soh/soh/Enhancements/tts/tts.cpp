@@ -1077,3 +1077,5 @@ void RegisterTTS() {
     InitTTSBank();
     RegisterTTSModHooks();
 }
+
+static RegisterShipInitFunc initFunc(RegisterTTS);
