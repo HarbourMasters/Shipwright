@@ -13,6 +13,11 @@
 #include "macros.h"
 #include "variables.h"
 #include <spdlog/spdlog.h>
+#include "StringHelper.h"
+#include "soh/resource/type/Scene.h"
+#include "soh/resource/type/scenecommand/SetTransitionActorList.h"
+#include "src/overlays/actors/ovl_En_Door/z_en_door.h"
+#include "src/overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
 
 namespace Rando {
 
@@ -2075,8 +2080,104 @@ namespace Rando {
         }
     }
 
+    std::unordered_map<SceneID, DungeonKey> SceneToDungeon = {
+        { SceneID::SCENE_DEKU_TREE, DungeonKey::DEKU_TREE },
+        { SceneID::SCENE_DODONGOS_CAVERN, DungeonKey::DODONGOS_CAVERN },
+        { SceneID::SCENE_JABU_JABU, DungeonKey::JABU_JABUS_BELLY },
+        { SceneID::SCENE_FOREST_TEMPLE, DungeonKey::FOREST_TEMPLE },
+        { SceneID::SCENE_FIRE_TEMPLE, DungeonKey::FIRE_TEMPLE },
+        { SceneID::SCENE_WATER_TEMPLE, DungeonKey::WATER_TEMPLE },
+        { SceneID::SCENE_SPIRIT_TEMPLE, DungeonKey::SPIRIT_TEMPLE },
+        { SceneID::SCENE_SHADOW_TEMPLE, DungeonKey::SHADOW_TEMPLE },
+        { SceneID::SCENE_BOTTOM_OF_THE_WELL, DungeonKey::BOTTOM_OF_THE_WELL },
+        { SceneID::SCENE_ICE_CAVERN, DungeonKey::ICE_CAVERN },
+        { SceneID::SCENE_GERUDO_TRAINING_GROUND, DungeonKey::GERUDO_TRAINING_GROUND },
+        { SceneID::SCENE_INSIDE_GANONS_CASTLE, DungeonKey::GANONS_CASTLE },
+    };
+
+    // Get the swch bit positions for the dungeon
+    const std::vector<uint8_t>& GetDungeonSmallKeyDoors(SceneID sceneId) {
+        auto foundDungeon = SceneToDungeon.find(static_cast<SceneID>(sceneId));
+        if (foundDungeon == SceneToDungeon.end()) {
+            return {};
+        }
+
+        bool masterQuest = Rando::Context::GetInstance()->GetDungeon(foundDungeon->second)->IsMQ();
+
+        // Create a unique key for the dungeon and master quest 
+        uint8_t key = sceneId | (masterQuest << 7);
+
+        static std::unordered_map<uint8_t, std::vector<uint8_t>> dungeonSmallKeyDoors;
+        auto foundEntry = dungeonSmallKeyDoors.find(key);
+        if (foundEntry != dungeonSmallKeyDoors.end()) {
+            return foundEntry->second;
+        }
+        dungeonSmallKeyDoors[key] = {};
+
+        // Get the scene path
+        SceneTableEntry* sceneTableEntry = &gSceneTable[sceneId];
+        std::string scenePath = StringHelper::Sprintf("scenes/%s/%s/%s", masterQuest ? "mq" : "nonmq",
+            sceneTableEntry->sceneFile.fileName, sceneTableEntry->sceneFile.fileName);
+
+        // Load the scene
+        std::shared_ptr<SOH::Scene> scene = std::dynamic_pointer_cast<SOH::Scene>(
+            Ship::Context::GetInstance()->GetResourceManager()->LoadResource(scenePath));
+        if (scene == nullptr) {
+            return {};
+        }
+
+        // Find the SetTransitionActorList command
+        std::shared_ptr<SOH::SetTransitionActorList> transitionActorListCommand = nullptr;
+        for (auto& command : scene->commands) {
+            if (command->cmdId == SOH::SceneCommandID::SetTransitionActorList) {
+                transitionActorListCommand = std::dynamic_pointer_cast<SOH::SetTransitionActorList>(command);
+                break;
+            }
+        }
+        if (transitionActorListCommand == nullptr) {
+            return {};
+        }
+
+        // Find the bit position for the small key doors
+        for (auto& transitionActor : transitionActorListCommand->transitionActorList) {
+            if (transitionActor.id == ACTOR_EN_DOOR) {
+                uint8_t doorType = (transitionActor.params >> 7) & 7;
+                if (doorType == DOOR_LOCKED) {
+                    dungeonSmallKeyDoors[key].emplace_back(transitionActor.params & 0x3F);
+                }
+            } else if (transitionActor.id == ACTOR_DOOR_SHUTTER) {
+                uint8_t doorType = (transitionActor.params >> 7) & 15;
+                if (doorType == SHUTTER_BACK_LOCKED || doorType == SHUTTER_BOSS || doorType == SHUTTER_KEY_LOCKED) {
+                    dungeonSmallKeyDoors[key].emplace_back(transitionActor.params & 0x3F);
+                }
+            }
+        }
+
+        return dungeonSmallKeyDoors[key];
+    }
+
+    uint8_t GetUsedSmallKeyCount(SceneID sceneId) {
+        const auto& smallKeyDoors = GetDungeonSmallKeyDoors(sceneId);
+        
+        // Get the swch value for the scene
+        uint32_t swch;
+        if (gPlayState != nullptr && gPlayState->sceneNum == sceneId) {
+            swch = gPlayState->actorCtx.flags.swch;
+        } else {
+            swch = gSaveContext.sceneFlags[sceneId].swch;
+        }
+        
+        // Count the number of small keys doors unlocked
+        uint8_t unlockedSmallKeyDoors = 0;
+        for (auto& smallKeyDoor : smallKeyDoors) {
+            unlockedSmallKeyDoors += swch >> smallKeyDoor & 1;
+        }
+
+        return unlockedSmallKeyDoors;
+    }
+
     uint8_t Logic::GetSmallKeyCount(uint32_t dungeonIndex) {
-        return mSaveContext->inventory.dungeonKeys[dungeonIndex];
+        return mSaveContext->inventory.dungeonKeys[dungeonIndex] + GetUsedSmallKeyCount(SceneID(dungeonIndex));
     }
 
     void Logic::SetSmallKeyCount(uint32_t dungeonIndex, uint8_t count) {
