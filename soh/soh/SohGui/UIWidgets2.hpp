@@ -695,6 +695,84 @@ namespace UIWidgets2 {
         return dirty;
     }
 
+    template <typename T = size_t>
+    bool Combobox(const char* label, T* value, const std::vector<std::string>& comboVector, const ComboboxOptions& options = {}) {
+        bool dirty = false;
+        size_t currentValueIndex = static_cast<size_t>(*value);
+        std::string invisibleLabelStr = "##" + std::string(label);
+        const char* invisibleLabel = invisibleLabelStr.c_str();
+        ImGui::PushID(label);
+        ImGui::BeginGroup();
+        ImGui::BeginDisabled(options.disabled);
+        PushStyleCombobox(options.color);
+
+        const char* longest;
+        int length = 0;
+        for (auto& string : comboVector) {
+            int len = string.length();
+            if (len > length) {
+                longest = string.c_str();
+                length = len;
+            }
+        }
+        float comboWidth = CalcComboWidth(longest, options.flags);
+
+        ImGui::AlignTextToFramePadding();
+        if (options.alignment == ComponentAlignment::Right) {
+            ImGui::Text("%s", label);
+            if (options.labelPosition == LabelPosition::Above) {
+                ImGui::NewLine();
+                ImGui::SameLine(ImGui::GetContentRegionAvail().x - comboWidth);
+            } else if (options.labelPosition == LabelPosition::Near) {
+                ImGui::SameLine();
+            } else if (options.labelPosition == LabelPosition::Far || options.labelPosition == LabelPosition::None) {
+                ImGui::SameLine(ImGui::GetContentRegionAvail().x - comboWidth);
+            }
+        } else if (options.alignment == ComponentAlignment::Left) {
+            if (options.labelPosition == LabelPosition::Above) {
+                ImGui::Text("%s", label);
+            }
+        }
+
+        ImGui::SetNextItemWidth(comboWidth);
+        if (ImGui::BeginCombo(invisibleLabel, comboVector.at(currentValueIndex).c_str(), options.flags)) {
+            ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(10.0f, 10.0f));
+            for (size_t i = 0; i < comboVector.size(); ++i) {
+                auto newValue = static_cast<T>(i);
+                if (comboVector.at(i).length() > 1) {
+                    if (ImGui::Selectable(comboVector.at(i).c_str(), newValue == *value)) {
+                        *value = newValue;
+                        dirty = true;
+                    }
+                }
+            }
+            ImGui::PopStyleVar();
+            ImGui::EndCombo();
+        }
+
+        if (options.alignment == ComponentAlignment::Left) {
+            if (options.labelPosition == LabelPosition::Near) {
+                ImGui::SameLine();
+                ImGui::Text("%s", label);
+            } else if (options.labelPosition == LabelPosition::Far || options.labelPosition == LabelPosition::None) {
+                float width = ImGui::CalcTextSize(comboVector.at(*value).c_str()).x + ImGui::GetStyle().FramePadding.x * 2;
+                ImGui::SameLine(ImGui::GetContentRegionAvail().x - width);
+                ImGui::Text("%s", label);
+            }
+        }
+
+        PopStyleCombobox();
+        ImGui::EndDisabled();
+        ImGui::EndGroup();
+        if (options.disabled && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !Ship_IsCStringEmpty(options.disabledTooltip)) {
+            ImGui::SetTooltip("%s", WrappedText(options.disabledTooltip).c_str());
+        } else if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !Ship_IsCStringEmpty(options.tooltip)) {
+            ImGui::SetTooltip("%s", WrappedText(options.tooltip).c_str());
+        }
+        ImGui::PopID();
+        return dirty;
+    }
+
     template <typename T = size_t, size_t N>
     bool Combobox(const char* label, T* value, const char* (&comboArray)[N], const ComboboxOptions& options = {}) {
         bool dirty = false;
