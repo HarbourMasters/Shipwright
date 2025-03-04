@@ -132,11 +132,10 @@ void Option::Enable() {
     disabled = false;
 }
 
-void Option::Disable(std::string text, const UIWidgets::CheckboxGraphics graphic) {
-    if (!disabled || disabledText != text || disabledGraphic != graphic) {
+void Option::Disable(std::string text) {
+    if (!disabled || disabledText != text) {
         disabled = true;
         disabledText = std::move(text);
-        disabledGraphic = graphic;
     }
 }
 
@@ -161,7 +160,6 @@ bool Option::RenderImGui() {
             changed = RenderSlider();
             break;
     }
-    UIWidgets::Spacer(0);
     ImGui::EndGroup();
     return changed;
 }
@@ -407,7 +405,7 @@ bool OptionGroup::RenderImGui() const { // NOLINT(*-no-recursion)
                 ImGui::TableSetColumnIndex(i);
                 ImGui::TableHeader(mSubGroups[i]->GetName().c_str());
                 if (!mSubGroups[i]->GetDescription().empty()) {
-                    UIWidgets::SetLastItemHoverText(mSubGroups[i]->GetDescription().c_str());
+                    UIWidgets2::SetLastItemHoverText(mSubGroups[i]->GetDescription().c_str());
                 }
             }
             ImGui::PopItemFlag();
@@ -415,12 +413,10 @@ bool OptionGroup::RenderImGui() const { // NOLINT(*-no-recursion)
         }
     }
     if (mContainerType == WidgetContainerType::SECTION && !mName.empty()) {
-        UIWidgets2::Spacer(3.0f);
-        ImGui::Text("%s", mName.c_str());
+        ImGui::SeparatorText(mName.c_str());
         if (!mDescription.empty()) {
-            UIWidgets::InsertHelpHoverText(mDescription.c_str());
+            UIWidgets2::SetLastItemHoverText(mDescription.c_str());
         }
-        UIWidgets2::Spacer(3.0f);
     }
     if (mContainerType == WidgetContainerType::COLUMN) {
         ImGui::TableNextColumn();
@@ -448,9 +444,6 @@ bool OptionGroup::RenderImGui() const { // NOLINT(*-no-recursion)
             }
             if (option->HasFlag(IMFLAG_UNINDENT)) {
                 ImGui::Unindent();
-            }
-            if (option->HasFlag(IMFLAG_SEPARATOR_BOTTOM)) {
-                UIWidgets::PaddedSeparator(false, true);
             }
         }
     }

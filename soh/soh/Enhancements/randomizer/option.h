@@ -312,7 +312,7 @@ class Option {
      * @param graphic What graphic to display in a disabled checkbox. Defaults to an
      * "X" symbol.
      */
-    void Disable(std::string text, UIWidgets::CheckboxGraphics graphic = UIWidgets::CheckboxGraphics::Cross);
+    void Disable(std::string text);
     bool IsCategory(OptionCategory category) const;
 
     /**
