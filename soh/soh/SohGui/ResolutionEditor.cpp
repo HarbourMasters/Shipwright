@@ -397,15 +397,15 @@ void RegisterResolutionWidgets() {
     // Aspect Ratio
     mSohMenu->AddWidget(path, "AspectSep", WIDGET_SEPARATOR)
         .PreFunc([](WidgetInfo& info) {
-            info.isHidden = !mSohMenu->GetDisabledMap().at(DISABLE_FOR_ADVANCED_RESOLUTION_OFF).active;
+            info.isHidden = mSohMenu->GetDisabledMap().at(DISABLE_FOR_ADVANCED_RESOLUTION_OFF).active;
         });
     mSohMenu->AddWidget(path, "Force aspect ratio:", WIDGET_TEXT)
         .PreFunc([](WidgetInfo& info) {
-            info.isHidden = !mSohMenu->GetDisabledMap().at(DISABLE_FOR_ADVANCED_RESOLUTION_OFF).active;
+            info.isHidden = mSohMenu->GetDisabledMap().at(DISABLE_FOR_ADVANCED_RESOLUTION_OFF).active;
         });
     mSohMenu->AddWidget(path, "(Select \"Off\" to disable.)", WIDGET_TEXT)
         .PreFunc([](WidgetInfo& info) {
-            info.isHidden = !mSohMenu->GetDisabledMap().at(DISABLE_FOR_ADVANCED_RESOLUTION_OFF).active;
+            info.isHidden = mSohMenu->GetDisabledMap().at(DISABLE_FOR_ADVANCED_RESOLUTION_OFF).active;
         })
         .SameLine(true)
         .Options(WidgetOptions().Color(Colors::Gray));
@@ -413,7 +413,7 @@ void RegisterResolutionWidgets() {
     mSohMenu->AddWidget(path, "Aspect Ratio", WIDGET_COMBOBOX)
         .ValuePointer(&item_aspectRatio)
         .PreFunc([](WidgetInfo& info) {
-            info.isHidden = !mSohMenu->GetDisabledMap().at(DISABLE_FOR_ADVANCED_RESOLUTION_ON).active;
+            info.isHidden = mSohMenu->GetDisabledMap().at(DISABLE_FOR_ADVANCED_RESOLUTION_OFF).active;
         })
         .Callback([](WidgetInfo& info) {
             if (item_aspectRatio != default_aspectRatio) { // don't change anything if "Custom" is selected.
