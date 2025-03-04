@@ -360,6 +360,103 @@ bool Checkbox(const char* _label, bool* value, const CheckboxOptions& options) {
     return pressed;
 }
 
+bool TristateCheckbox(const char* _label, uint8_t* value, const CheckboxOptions& options) {
+    ImGuiWindow* window = ImGui::GetCurrentWindow();
+    if (window->SkipItems)
+        return false;
+
+    ImGui::BeginDisabled(options.disabled);
+
+    bool above = options.labelPosition == LabelPosition::Above;
+    bool lpFar = options.labelPosition == LabelPosition::Far;
+    bool right = options.alignment == ComponentAlignment::Right;
+    bool none = options.labelPosition == LabelPosition::None;
+
+    std::string labelStr = (none ? "##" : "");
+    labelStr.append(_label);
+
+    const char* label = labelStr.c_str();
+
+    ImGuiContext& g = *GImGui;
+    const ImGuiStyle& style = g.Style;
+    const ImGuiID id = window->GetID(label);
+    const ImVec2 label_size = ImGui::CalcTextSize(label, NULL, true);
+    const float square_sz = ImGui::GetFrameHeight();
+    ImVec2 pos = window->DC.CursorPos;
+
+    if (right) {
+        float labelOffsetX = (above ? 0 : (style.ItemInnerSpacing.x * 2.0f) + square_sz);
+        if (!lpFar) {
+            pos.x += ImGui::GetContentRegionAvail().x - (label_size.x + labelOffsetX);
+        }
+    }
+    float bbAboveX = lpFar ? ImGui::GetContentRegionAvail().x
+                           : (label_size.x + (above ? 0 : (style.ItemInnerSpacing.x * 2.0f) + square_sz));
+    float bbAboveY = label_size.y + (above ? square_sz : 0) + (style.FramePadding.y * 2.0f);
+    const ImRect total_bb(pos, pos + ImVec2(bbAboveX, bbAboveY));
+
+    ImGui::ItemSize(total_bb, style.FramePadding.y);
+    if (!ImGui::ItemAdd(total_bb, id)) {
+        ImGui::EndDisabled();
+        return false;
+    }
+    bool hovered, held, pressed;
+    ImGui::PushItemFlag(ImGuiItemFlags_MixedValue, *value == 1);
+    pressed = ImGui::ButtonBehavior(total_bb, id, &hovered, &held);
+    if (pressed) {
+        *value = *value + 1; 
+        if  (*value == 3) {
+            *value = 0;
+        }
+        ImGui::MarkItemEdited(id);
+    }
+    PushStyleCheckbox(options.color);
+    ImVec2 checkPos = pos;
+    ImVec2 labelPos = pos;
+    if (options.labelPosition == LabelPosition::Above) {
+        checkPos.y += label_size.y + (style.ItemInnerSpacing.y * 2.0f);
+    } else {
+        labelPos.y += (square_sz / 2) - (label_size.y / 2);
+    }
+    if (options.alignment == ComponentAlignment::Right) {
+        checkPos.x = total_bb.Max.x - square_sz;
+    } else {
+        float labelFarOffset = ImGui::GetContentRegionAvail().x - label_size.x;
+        float labelOffsetX = above ? 0 : (lpFar ? labelFarOffset : (style.ItemInnerSpacing.x * 2.0f) + square_sz);
+        labelPos.x += labelOffsetX;
+    }
+    const ImRect check_bb(checkPos, checkPos + ImVec2(square_sz, square_sz));
+    ImGui::RenderNavHighlight(total_bb, id);
+    ImGui::RenderFrame(check_bb.Min, check_bb.Max,
+                       ImGui::GetColorU32((held && hovered) ? ImGuiCol_FrameBgActive
+                                          : hovered         ? ImGuiCol_FrameBgHovered
+                                                            : ImGuiCol_FrameBg),
+                       true, style.FrameRounding);
+    ImU32 check_col = ImGui::GetColorU32(ImGuiCol_CheckMark);
+    if (*value == 1) {
+        // Undocumented tristate/mixed/indeterminate checkbox (#2644)
+        // This may seem awkwardly designed because the aim is to make ImGuiItemFlags_MixedValue supported by all
+        // widgets (not just checkbox)
+        ImVec2 pad(ImMax(1.0f, IM_TRUNC(square_sz / 3.6f)), ImMax(1.0f, IM_TRUNC(square_sz / 3.6f)));
+        window->DrawList->AddRectFilled(check_bb.Min + pad, check_bb.Max - pad, check_col, style.FrameRounding);
+    } else if (*value == 2
+    ) {
+        const float pad = ImMax(1.0f, IM_TRUNC(square_sz / 6.0f));
+        ImGui::RenderCheckMark(window->DrawList, check_bb.Min + ImVec2(pad, pad), check_col, square_sz - pad * 2.0f);
+    }
+    ImGui::PopItemFlag();
+    RenderText(labelPos, label, ImGui::FindRenderedTextEnd(label), true);
+    PopStyleCheckbox();
+    ImGui::EndDisabled();
+    if (options.disabled && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) &&
+        !Ship_IsCStringEmpty(options.disabledTooltip)) {
+        ImGui::SetTooltip("%s", WrappedText(options.disabledTooltip).c_str());
+    } else if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !Ship_IsCStringEmpty(options.tooltip)) {
+        ImGui::SetTooltip("%s", WrappedText(options.tooltip).c_str());
+    }
+    return pressed;
+}
+
 bool CVarCheckbox(const char* label, const char* cvarName, const CheckboxOptions& options) {
     bool dirty = false;
     bool value = (bool)CVarGetInteger(cvarName, options.defaultValue);
