@@ -1,4 +1,5 @@
 #include "tricks.h"
+#include "soh/SohGui/UIWidgets2.hpp"
 #include <unordered_map>
 
 namespace Rando {
@@ -78,25 +79,25 @@ namespace Rando {
         }
     }
 
-     UIWidgets2::Colors Tricks::GetTagColor(const Tag tag) {
+    const ImVec4 Tricks::GetTagColor(const Tag tag) {
         switch(tag) {
             case Tag::NOVICE:
-                return UIWidgets2::Colors::Green;
+                return UIWidgets2::ColorValues.at(UIWidgets2::Colors::Green);
             case Tag::INTERMEDIATE:
-                return UIWidgets2::Colors::Orange;
+                return UIWidgets2::ColorValues.at(UIWidgets2::Colors::Orange);
             case Tag::ADVANCED:
-                return UIWidgets2::Colors::Blue;
+                return UIWidgets2::ColorValues.at(UIWidgets2::Colors::Blue);
             case Tag::EXPERT:
-                return UIWidgets2::Colors::Red;
+                return UIWidgets2::ColorValues.at(UIWidgets2::Colors::Red);
             case Tag::EXTREME:
-                return UIWidgets2::Colors::Purple;
+                return UIWidgets2::ColorValues.at(UIWidgets2::Colors::Purple);
             case Tag::EXPERIMENTAL:
-                return UIWidgets2::Colors::LightBlue;
+                return UIWidgets2::ColorValues.at(UIWidgets2::Colors::LightBlue);
             case Tag::GLITCH:
-                return UIWidgets2::Colors::White;
+                return UIWidgets2::ColorValues.at(UIWidgets2::Colors::White);
             default:
                 assert(false);
-                return UIWidgets2::Colors::Gray;
+                return UIWidgets2::ColorValues.at(UIWidgets2::Colors::Gray);
         }
     }
 

@@ -2365,7 +2365,7 @@ void RandomizerSettingsWindow::DrawElement() {
                     } else {
                         ImGui::PushStyleColor(ImGuiCol_Text, { 1.0f, 1.0f, 1.0f, 1.0f });
                     }
-                    ImGui::PushStyleColor(ImGuiCol_Header, UIWidgets2::ColorValues.at(Rando::Tricks::GetTagColor(rtTag)));
+                    ImGui::PushStyleColor(ImGuiCol_Header, Rando::Tricks::GetTagColor(rtTag));
                     ImGui::Selectable(Rando::Tricks::GetTagName(rtTag).c_str(), &showTag[rtTag]);
                     ImGui::PopStyleColor(2);
                 }

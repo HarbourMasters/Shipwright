@@ -1,6 +1,7 @@
 #pragma once
 
-#include "soh/SohGui/UIWidgets.hpp"
+#ifndef RANDOPTION_H
+#define RANDOPTION_H
 
 #include <cstdint>
 #include <set>
@@ -357,7 +358,6 @@ protected:
     bool defaultHidden = false;
     int imFlags = IMFLAG_NONE;
     bool disabled = false;
-    UIWidgets::CheckboxGraphics disabledGraphic = UIWidgets::CheckboxGraphics::Cross;
     std::string disabledText;
     std::unordered_map<std::string, uint8_t> optionsTextToVar = {};
 };
@@ -547,3 +547,5 @@ class OptionGroup {
     bool mDisabled = false;
 };
 } // namespace Rando
+
+#endif //RANDOPTION_H
