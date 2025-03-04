@@ -1,6 +1,9 @@
 #include <libultraship/bridge.h>
+#include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
+
+extern "C" PlayState* gPlayState;
 
 #define CVAR_DIRT_PATH_FIX_NAME CVAR_ENHANCEMENT("SceneSpecificDirtPathFix")
 #define CVAR_DIRT_PATH_FIX_DEFAULT ZFIGHT_FIX_DISABLED
