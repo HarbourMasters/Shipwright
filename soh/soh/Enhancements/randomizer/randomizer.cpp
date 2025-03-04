@@ -12,9 +12,7 @@
 #include "3drando/random.hpp"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/SohGui/SohGui.hpp"
-#include "soh/SohGui/UIWidgets.hpp"
 #include "3drando/custom_messages.hpp"
-#include "soh/SohGui/UIWidgets.hpp"
 #include <imgui.h>
 #include <imgui_internal.h>
 #include "../custom-message/CustomMessageTypes.h"
@@ -1944,7 +1942,8 @@ void RandomizerSettingsWindow::DrawElement() {
     }
     bool disableEditingRandoSettings = CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
     if (disableEditingRandoSettings) {
-        UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
+        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+        ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
     }
 
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
@@ -2093,7 +2092,9 @@ void RandomizerSettingsWindow::DrawElement() {
                 window->DC.CurrLineTextBaseOffset = 0.0f;
 
                 static ImGuiTextFilter locationSearch;
+                UIWidgets2::PushStyleSlider(THEME_COLOR);
                 locationSearch.Draw();
+                UIWidgets2::PopStyleSlider();
 
                 ImGui::BeginChild("ChildIncludedLocations", ImVec2(0, -8));
                 for (auto& [rcArea, locations] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
@@ -2113,7 +2114,7 @@ void RandomizerSettingsWindow::DrawElement() {
                             for (auto& location : locations) {
                                 if (ctx->GetItemLocation(location)->IsVisible() && !excludedLocations.count(location) &&
                                     locationSearch.PassFilter(Rando::StaticData::GetLocation(location)->GetName().c_str())) {
-
+                                    UIWidgets2::PushStyleButton(THEME_COLOR);
                                     if (ImGui::ArrowButton(std::to_string(location).c_str(), ImGuiDir_Right)) {
                                         excludedLocations.insert(location);
                                         // todo: this efficently when we build out cvar array support
@@ -2125,6 +2126,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                         CVarSetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"), excludedLocationString.c_str());
                                         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                                     }
+                                    UIWidgets2::PopStyleButton();
                                     ImGui::SameLine();
                                     ImGui::Text("%s", Rando::StaticData::GetLocation(location)->GetShortName().c_str());
                                 }
@@ -2155,6 +2157,7 @@ void RandomizerSettingsWindow::DrawElement() {
                             for (auto& location : locations) {
                                 auto elfound = excludedLocations.find(location);
                                 if (ctx->GetItemLocation(location)->IsVisible() && elfound != excludedLocations.end()) {
+                                    UIWidgets2::PushStyleButton(THEME_COLOR);
                                     if (ImGui::ArrowButton(std::to_string(location).c_str(), ImGuiDir_Left)) {
                                         excludedLocations.erase(elfound);
                                         // todo: this efficently when we build out cvar array support
@@ -2170,6 +2173,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                         }
                                         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                                     }
+                                    UIWidgets2::PopStyleButton();
                                     ImGui::SameLine();
                                     ImGui::Text("%s", Rando::StaticData::GetLocation(location)->GetShortName().c_str());
                                 }
@@ -2317,10 +2321,12 @@ void RandomizerSettingsWindow::DrawElement() {
                 //{ Rando::Tricks::Tag::GLITCH, false },
             };
             static ImGuiTextFilter trickSearch;
+            UIWidgets2::PushStyleSlider(THEME_COLOR);
             trickSearch.Draw("Filter (inc,-exc)", 490.0f);
+            UIWidgets2::PopStyleSlider();
             if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
                 ImGui::SameLine();
-                if (ImGui::Button("Disable All")) {
+                if (UIWidgets2::Button("Disable All", UIWidgets2::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(250.f, 0.f)))) {
                     for (int i = 0; i < RT_MAX; i++) {
                         auto etfound = enabledTricks.find(static_cast<RandomizerTrick>(i));
                         if (etfound != enabledTricks.end()) {
@@ -2336,7 +2342,7 @@ void RandomizerSettingsWindow::DrawElement() {
                     Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                 }
                 ImGui::SameLine();
-                if (ImGui::Button("Enable All")) {
+                if (UIWidgets2::Button("Enable All", UIWidgets2::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(250.f, 0.f)))) {
                     for (int i = 0; i < RT_MAX; i++) {
                         if (!enabledTricks.count(static_cast<RandomizerTrick>(i))) {
                             enabledTricks.insert(static_cast<RandomizerTrick>(i));
@@ -2359,7 +2365,7 @@ void RandomizerSettingsWindow::DrawElement() {
                     } else {
                         ImGui::PushStyleColor(ImGuiCol_Text, { 1.0f, 1.0f, 1.0f, 1.0f });
                     }
-                    ImGui::PushStyleColor(ImGuiCol_Header, Rando::Tricks::GetTagColor(rtTag));
+                    ImGui::PushStyleColor(ImGuiCol_Header, UIWidgets2::ColorValues.at(Rando::Tricks::GetTagColor(rtTag)));
                     ImGui::Selectable(Rando::Tricks::GetTagName(rtTag).c_str(), &showTag[rtTag]);
                     ImGui::PopStyleColor(2);
                 }
@@ -2379,19 +2385,19 @@ void RandomizerSettingsWindow::DrawElement() {
                     ImGui::TableNextColumn();
                     window->DC.CurrLineTextBaseOffset = 0.0f;
 
-                    if (ImGui::Button("Collapse All##disabled")) {
+                    if (UIWidgets2::Button("Collapse All##disabled", UIWidgets2::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
                         for (int i = 0; i < RA_MAX; i++) {
                             areaTreeDisabled[static_cast<RandomizerArea>(i)] = false;
                         }
                     }
                     ImGui::SameLine();
-                    if (ImGui::Button("Open All##disabled")) {
+                    if (UIWidgets2::Button("Open All##disabled", UIWidgets2::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
                         for (int i = 0; i < RA_MAX; i++) {
                             areaTreeDisabled[static_cast<RandomizerArea>(i)] = true;
                         }
                     }
                     ImGui::SameLine();
-                    if (ImGui::Button("Enable Visible")) {
+                    if (UIWidgets2::Button("Enable Visible", UIWidgets2::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
                         for (int i = 0; i < RT_MAX; i++) {
                             auto option = mSettings->GetTrickOption(static_cast<RandomizerTrick>(i));
                             if (!enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
@@ -2432,6 +2438,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                         !enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                                         ImGui::TreeNodeSetOpen(ImGui::GetID((Rando::Tricks::GetAreaName(option.GetArea()) + "##disabled").c_str()), areaTreeDisabled[option.GetArea()]);
                                         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+                                        UIWidgets2::PushStyleButton(THEME_COLOR);
                                         if (ImGui::ArrowButton(std::to_string(rt).c_str(), ImGuiDir_Right)) {
                                             enabledTricks.insert(rt);
                                             std::string enabledTrickString = "";
@@ -2442,10 +2449,11 @@ void RandomizerSettingsWindow::DrawElement() {
                                             CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
                                             Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                                         }
-                                        Rando::Tricks::DrawTagChips(option.GetTags());
+                                        UIWidgets2::PopStyleButton();
+                                        Rando::Tricks::DrawTagChips(option.GetTags(), option.GetName());
                                         ImGui::SameLine();
                                         ImGui::Text("%s", option.GetName().c_str());
-                                        UIWidgets::InsertHelpHoverText(option.GetDescription().c_str());
+                                        UIWidgets2::InsertHelpHoverText(option.GetDescription().c_str());
                                     }
                                 }
                                 areaTreeDisabled[area] = true;
@@ -2461,19 +2469,19 @@ void RandomizerSettingsWindow::DrawElement() {
                     ImGui::TableNextColumn();
                     window->DC.CurrLineTextBaseOffset = 0.0f;
 
-                    if (ImGui::Button("Collapse All##enabled")) {
+                    if (UIWidgets2::Button("Collapse All##enabled", UIWidgets2::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
                         for (int i = 0; i < RA_MAX; i++) {
                             areaTreeEnabled[static_cast<RandomizerArea>(i)] = false;
                         }
                     }
                     ImGui::SameLine();
-                    if (ImGui::Button("Open All##enabled")) {
+                    if (UIWidgets2::Button("Open All##enabled", UIWidgets2::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
                         for (int i = 0; i < RA_MAX; i++) {
                             areaTreeEnabled[static_cast<RandomizerArea>(i)] = true;
                         }
                     }
                     ImGui::SameLine();
-                    if (ImGui::Button("Disable Visible")) {
+                    if (UIWidgets2::Button("Disable Visible", UIWidgets2::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
                         for (int i = 0; i < RT_MAX; i++) {
                             auto option = mSettings->GetTrickOption(static_cast<RandomizerTrick>(i));
                             if (enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
@@ -2518,6 +2526,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                         enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                                         ImGui::TreeNodeSetOpen(ImGui::GetID((Rando::Tricks::GetAreaName(option.GetArea()) + "##enabled").c_str()), areaTreeEnabled[option.GetArea()]);
                                         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+                                        UIWidgets2::PushStyleButton(THEME_COLOR);
                                         if (ImGui::ArrowButton(std::to_string(rt).c_str(), ImGuiDir_Left)) {
                                             enabledTricks.erase(rt);
                                             std::string enabledTrickString = "";
@@ -2532,10 +2541,11 @@ void RandomizerSettingsWindow::DrawElement() {
                                         }
                                         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                                     }
-                                    Rando::Tricks::DrawTagChips(option.GetTags());
+                                    UIWidgets2::PopStyleButton();
+                                    Rando::Tricks::DrawTagChips(option.GetTags(), option.GetName());
                                     ImGui::SameLine();
                                     ImGui::Text("%s", option.GetName().c_str());
-                                    UIWidgets::InsertHelpHoverText(option.GetDescription().c_str());
+                                    UIWidgets2::InsertHelpHoverText(option.GetDescription().c_str());
                                     }
                                 }
                                 areaTreeEnabled[area] = true;
@@ -2582,7 +2592,9 @@ void RandomizerSettingsWindow::DrawElement() {
     ImGui::EndDisabled();
 
     if (disableEditingRandoSettings) {
-        UIWidgets::ReEnableComponent("");
+        // End of disable region of previous component
+        ImGui::PopStyleVar(1);
+        ImGui::PopItemFlag();
     }
 }
 
