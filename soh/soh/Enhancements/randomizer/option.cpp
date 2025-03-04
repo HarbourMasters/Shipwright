@@ -228,20 +228,13 @@ bool Option::RenderCheckbox() {
 
 bool Option::RenderTristateCheckbox() {
     bool changed = false;
-    if (disabled) {
-        UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
-    }
-    int val = CVarGetInteger(cvarName.c_str(), defaultOption);
-    if (CustomCheckboxTristate(name.c_str(), &val, disabled, disabledGraphic)) {
+    uint8_t val = static_cast<uint8_t>(CVarGetInteger(cvarName.c_str(), defaultOption));
+    UIWidgets2::CheckboxOptions widgetOptions = static_cast<UIWidgets2::CheckboxOptions>(UIWidgets2::CheckboxOptions().Color(THEME_COLOR).Tooltip(description.c_str()));
+    widgetOptions.disabled = disabled;
+    if (UIWidgets2::TristateCheckbox(name.c_str(), &val, widgetOptions)) {
         CVarSetInteger(cvarName.c_str(), val);
         changed = true;
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    }
-    if (!description.empty()) {
-        UIWidgets::InsertHelpHoverText(description.c_str());
-    }
-    if (disabled) {
-        UIWidgets::ReEnableComponent(disabledText.c_str());
     }
     return changed;
 }
@@ -273,39 +266,10 @@ bool Option::RenderSlider() {
         CVarSetInteger(cvarName.c_str(), val);
         changed = true;
     }
-    if (disabled) {
-        UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
-    }
-    const std::string formatName = name + ": %s";
-    ImGui::Text(formatName.c_str(), options[val].c_str());
-    if (!description.empty()) {
-        UIWidgets::InsertHelpHoverText(description.c_str());
-    }
-    UIWidgets::Spacer(0);
-    ImGui::BeginGroup();
-    const std::string MinusBTNName = " - ##" + cvarName;
-    if (ImGui::Button(MinusBTNName.c_str())) {
-        val--;
+    UIWidgets2::IntSliderOptions widgetOptions = UIWidgets2::IntSliderOptions().Color(THEME_COLOR).Min(0).Max(options.size() - 1).Tooltip(description.c_str()).Format(options[val].c_str()).DefaultValue(defaultOption);
+    widgetOptions.disabled = disabled;
+    if (UIWidgets2::SliderInt(name.c_str(), &val, widgetOptions)) {
         changed = true;
-    }
-    ImGui::SameLine();
-    ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-    ImGui::PushItemWidth(std::min(ImGui::GetContentRegionAvail().x - 30.0f, 260.0f));
-    const std::string id = "##Slider" + cvarName;
-    if (ImGui::SliderInt(id.c_str(), &val, 0, static_cast<int>(options.size()) - 1, "", ImGuiSliderFlags_AlwaysClamp)) {
-        changed = true;
-    }
-    ImGui::PopItemWidth();
-    const std::string PlusBTNName = " + ##" + cvarName;
-    ImGui::SameLine();
-    ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-    if (ImGui::Button(PlusBTNName.c_str())) {
-        val++;
-        changed = true;
-    }
-    ImGui::EndGroup();
-    if (disabled) {
-        UIWidgets::ReEnableComponent(disabledText.c_str());
     }
     if (val < 0) {
         val = 0;
