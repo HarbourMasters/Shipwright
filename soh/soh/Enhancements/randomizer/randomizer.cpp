@@ -11,6 +11,7 @@
 #include "3drando/rando_main.hpp"
 #include "3drando/random.hpp"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/SohGui/SohGui.hpp"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "3drando/custom_messages.hpp"
 #include "soh/SohGui/UIWidgets.hpp"
@@ -27,6 +28,7 @@
 #include <tuple>
 #include <functional>
 #include "draw.h"
+#include "soh/SohGui/UIWidgets2.hpp"
 #include "static_data.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include <boost_custom/container_hash/hash_32.hpp>
@@ -1924,6 +1926,16 @@ bool GenerateRandomizer(std::string seed /*= ""*/) {
     return false;
 }
 
+static const std::unordered_map<int32_t, const char*> randomizerPresetList = {
+    { RANDOMIZER_PRESET_DEFAULT, "Default" },
+    { RANDOMIZER_PRESET_SPOCK_RACE, "Spock Race" },
+    { RANDOMIZER_PRESET_SPOCK_RACE_NO_LOGIC, "Spock Race (No Logic)" },
+    { RANDOMIZER_PRESET_S6, "S6" },
+    { RANDOMIZER_PRESET_HELL_MODE, "Hell Mode" },
+    { RANDOMIZER_PRESET_BENCHMARK, "Benchmark" }
+};
+static int32_t randomizerPresetSelected = RANDOMIZER_PRESET_DEFAULT;
+
 void RandomizerSettingsWindow::DrawElement() {
     auto ctx = Rando::Context::GetInstance();
     if (generated) {
@@ -1936,39 +1948,72 @@ void RandomizerSettingsWindow::DrawElement() {
     }
 
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
-    DrawPresetSelector(PRESET_TYPE_RANDOMIZER);
+    const PresetTypeDefinition presetTypeDef = presetTypes.at(PRESET_TYPE_RANDOMIZER);
+    std::string comboboxTooltip = "";
+    for (auto iter = presetTypeDef.presets.begin(); iter != presetTypeDef.presets.end(); ++iter) {
+        if (iter->first != 0) comboboxTooltip += "\n\n";
+        comboboxTooltip += std::string(iter->second.label) + " - " + std::string(iter->second.description);
+    }
+    const std::string presetTypeCvar = CVAR_GENERAL("SelectedPresets.") + std::to_string(PRESET_TYPE_RANDOMIZER);
+    randomizerPresetSelected = CVarGetInteger(presetTypeCvar.c_str(), RANDOMIZER_PRESET_DEFAULT);
+
+    if (UIWidgets2::Combobox("Randomizer Presets", &randomizerPresetSelected, randomizerPresetList, UIWidgets2::ComboboxOptions()
+        .DefaultIndex(RANDOMIZER_PRESET_DEFAULT)
+        .Tooltip(comboboxTooltip.c_str())
+        .Color(THEME_COLOR))
+    ) {
+        CVarSetInteger(presetTypeCvar.c_str(), randomizerPresetSelected);
+    }
+    if (UIWidgets2::Button("Apply Preset##Randomizer", UIWidgets2::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(250.f, 0.f)))) {
+        clearCvars(presetTypeDef.cvarsToClear);
+        if (randomizerPresetSelected >= presetTypeDef.presets.size()) {
+            randomizerPresetSelected = 0;
+        }
+        const PresetDefinition selectedPresetDef = presetTypeDef.presets.at(randomizerPresetSelected);
+        if (randomizerPresetSelected != 0) {
+            applyPreset(selectedPresetDef.entries);
+        }
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    }
+
     ImGui::EndDisabled();
 
-    UIWidgets::Spacer(0);
-    UIWidgets::EnhancementCheckbox("Manual seed entry", CVAR_RANDOMIZER_SETTING("ManualSeedEntry"), false, "");
+    UIWidgets2::Spacer(0);
+    UIWidgets2::CVarCheckbox("Manual seed entry", CVAR_RANDOMIZER_SETTING("ManualSeedEntry"), UIWidgets2::CheckboxOptions().Color(THEME_COLOR));
     if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ManualSeedEntry"), 0)) {
         ImGui::Text("Seed");
-        ImGui::InputText("##RandomizerSeed", seedString, MAX_SEED_STRING_SIZE, ImGuiInputTextFlags_CallbackCharFilter, UIWidgets::TextFilters::FilterAlphaNum);
-        UIWidgets::Tooltip(
+        if (UIWidgets2::Button("New Seed", UIWidgets2::ButtonOptions().Size(ImVec2(250.f, 0.f)).Color(THEME_COLOR).Tooltip(
+            "Creates a new random seed value to be used when generating a randomizer"
+        ))) {
+            SohUtils::CopyStringToCharArray(seedString, std::to_string(rand() & 0xFFFFFFFF), MAX_SEED_STRING_SIZE);
+        }
+        ImGui::SameLine();
+        if (UIWidgets2::Button("Clear Seed", UIWidgets2::ButtonOptions().Size(ImVec2(250.f, 0.f)).Color(THEME_COLOR))) {
+            memset(seedString, 0, MAX_SEED_STRING_SIZE);
+        }
+        UIWidgets2::PushStyleSlider(THEME_COLOR);
+        ImGui::InputText("##RandomizerSeed", seedString, MAX_SEED_STRING_SIZE, ImGuiInputTextFlags_CallbackCharFilter, UIWidgets2::TextFilters::FilterAlphaNum);
+        UIWidgets2::Tooltip(
             "Characters from a-z, A-Z, and 0-9 are supported.\n"
             "Character limit is 1023, after which the seed will be truncated.\n"
         );
-        ImGui::SameLine();
-        if (ImGui::Button("New Seed")) {
-            SohUtils::CopyStringToCharArray(seedString, std::to_string(rand() & 0xFFFFFFFF), MAX_SEED_STRING_SIZE);
+        if (strnlen(seedString, MAX_SEED_STRING_SIZE) == 0) {
+            ImGui::SameLine(17.0f);
+            ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 0.4f), "Leave blank for random seed");
         }
-        UIWidgets::Tooltip("Creates a new random seed value to be used when generating a randomizer");
-        ImGui::SameLine();
-        if (ImGui::Button("Clear Seed")) {
-            memset(seedString, 0, MAX_SEED_STRING_SIZE);
-        }
+        UIWidgets2::PopStyleSlider();
     }
 
-    UIWidgets::Spacer(0);
+    UIWidgets2::Spacer(0);
     ImGui::BeginDisabled((CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0) && gSaveContext.gameMode != GAMEMODE_FILE_SELECT) ||
                           GameInteractor::IsSaveLoaded());
-    if (ImGui::Button("Generate Randomizer")) {
+    if (UIWidgets2::Button("Generate Randomizer", UIWidgets2::ButtonOptions().Size(ImVec2(250.f, 0.f)).Color(THEME_COLOR))) {
         ctx->SetSpoilerLoaded(false);
         GenerateRandomizer(CVarGetInteger(CVAR_RANDOMIZER_SETTING("ManualSeedEntry"), 0) ? seedString : "");
     }
     ImGui::EndDisabled();
 
-    UIWidgets::Spacer(0);
+    UIWidgets2::Spacer(0);
     if (!CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
         std::string spoilerfilepath = CVarGetString(CVAR_GENERAL("SpoilerLog"), "");
         ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
@@ -1978,13 +2023,13 @@ void RandomizerSettingsWindow::DrawElement() {
     // std::string presetfilepath = CVarGetString(CVAR_RANDOMIZER_SETTING("LoadedPreset"), "");
     // ImGui::Text("Settings File: %s", presetfilepath.c_str());
 
-    UIWidgets::PaddedSeparator();
-
+    UIWidgets2::Separator(true, true, 0.f, 0.f);
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
 
     ImGuiWindow* window = ImGui::GetCurrentWindow();
     static ImVec2 cellPadding(8.0f, 8.0f);
 
+    UIWidgets2::PushStyleTabs(THEME_COLOR);
     if (ImGui::BeginTabBar("Randomizer Settings", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         if (ImGui::BeginTabItem("World")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
@@ -2532,6 +2577,7 @@ void RandomizerSettingsWindow::DrawElement() {
 
         ImGui::EndTabBar();
     }
+    UIWidgets2::PopStyleTabs();
 
     ImGui::EndDisabled();
 

@@ -7,8 +7,8 @@
 #include <soh/Enhancements/presets.h>
 #include <soh/Enhancements/TimeDisplay/TimeDisplay.h>
 
-std::string comboboxTooltip = "";
-int32_t enhancementPresetSelected = ENHANCEMENT_PRESET_DEFAULT;
+static std::string comboboxTooltip = "";
+static int32_t enhancementPresetSelected = ENHANCEMENT_PRESET_DEFAULT;
 bool isBetaQuestEnabled = false;
 
 extern "C" {
