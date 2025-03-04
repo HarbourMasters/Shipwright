@@ -158,7 +158,7 @@ namespace GameInteractionEffect {
         void _Remove() override;
     };
 
-    class ModifyRunSpeedModifier: public RemovableGameInteractionEffect, public ParameterizedGameInteractionEffect {
+    class ModifyMovementSpeedMultiplier: public RemovableGameInteractionEffect, public ParameterizedGameInteractionEffect {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
         void _Remove() override;
@@ -200,11 +200,6 @@ namespace GameInteractionEffect {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
         void _Remove() override;
-    };
-
-    class SetCosmeticsColor: public GameInteractionEffectBase, public ParameterizedGameInteractionEffect {
-        GameInteractionEffectQueryResult CanBeApplied() override;
-        void _Apply() override;
     };
 
     class RandomizeCosmetics: public GameInteractionEffectBase {
