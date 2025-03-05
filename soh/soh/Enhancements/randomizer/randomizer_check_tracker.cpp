@@ -130,8 +130,10 @@ bool areasFullyChecked[RCAREA_INVALID];
 u32 areasSpoiled = 0;
 bool showVOrMQ;
 s8 areaChecksGotten[RCAREA_INVALID]; //|     "Kokiri Forest (4/9)"
+s8 areaChecksAccessible[RCAREA_INVALID];
 s8 areaCheckTotals[RCAREA_INVALID];
 uint16_t totalChecks = 0;
+uint16_t totalChecksAccessible = 0;
 uint16_t totalChecksGotten = 0;
 bool optCollapseAll; // A bool that will collapse all checks once
 bool optExpandAll;       // A bool that will expand all checks once
@@ -233,10 +235,12 @@ void TrySetAreas() {
 
 void CalculateTotals() {
     totalChecks = 0;
+    totalChecksAccessible = 0;
     totalChecksGotten = 0;
 
     for (uint8_t i = 0; i < RCAREA_INVALID; i++) {
         totalChecks += areaCheckTotals[i];
+        totalChecksAccessible += areaChecksAccessible[i];
         totalChecksGotten += areaChecksGotten[i];
     }
 }
@@ -251,6 +255,7 @@ uint16_t GetTotalChecksGotten() {
 
 void RecalculateAreaTotals(RandomizerCheckArea rcArea) {
     areaChecksGotten[rcArea] = 0;
+    areaChecksAccessible[rcArea] = 0;
     areaCheckTotals[rcArea] = 0;
     for (auto rc : checksByArea.at(rcArea)) {
         if (!IsVisibleInCheckTracker(rc)) {
@@ -259,6 +264,8 @@ void RecalculateAreaTotals(RandomizerCheckArea rcArea) {
         areaCheckTotals[rcArea]++;
         if (OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->GetIsSkipped() || OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->HasObtained()) {
             areaChecksGotten[rcArea]++;
+        } else if (OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->IsAccessible()) {
+            areaChecksAccessible[rcArea]++;
         }
     }
     CalculateTotals();
@@ -306,6 +313,7 @@ void SetCheckCollected(RandomizerCheck rc) {
     if (IsVisibleInCheckTracker(rc)) {
         if (!OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->GetIsSkipped()) {
             areaChecksGotten[loc->GetArea()]++;
+            areaChecksAccessible[loc->GetArea()]--;
         } else {
             OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->SetIsSkipped(false);
         }
@@ -422,10 +430,12 @@ void ClearAreaChecksAndTotals() {
     for (auto& [rcArea, vec] : checksByArea) {
         vec.clear();
         areaChecksGotten[rcArea] = 0;
+        areaChecksAccessible[rcArea] = 0;
         areaCheckTotals[rcArea] = 0;
     }
     totalChecks = 0;
     totalChecksGotten = 0;
+    totalChecksAccessible = 0;
 }
 
 void SetShopSeen(uint32_t sceneNum, bool prices) {
@@ -466,6 +476,9 @@ void CheckTrackerLoadGame(int32_t fileNum) {
             areaCheckTotals[entry2->GetArea()]++;
             if (loc->GetCheckStatus() == RCSHOW_SAVED || loc->GetIsSkipped()) {
                 areaChecksGotten[entry2->GetArea()]++;
+            }
+            if (loc->IsAccessible()) {
+                areaChecksAccessible[entry2->GetArea()]++;
             }
         }
 
@@ -927,7 +940,7 @@ void CheckTrackerWindow::DrawElement() {
 
     UIWidgets::PaddedSeparator();
 
-    ImGui::Text("Total Checks: %d / %d", totalChecksGotten, totalChecks);
+    ImGui::Text("Total Checks: %d Accessible / %d Checked / %d Total", totalChecksAccessible, totalChecksGotten, totalChecks);
 
     UIWidgets::PaddedSeparator();
 
@@ -1018,12 +1031,16 @@ void CheckTrackerWindow::DrawElement() {
 
             if (isThisAreaSpoiled) {
                 if (showVOrMQ && RandomizerCheckObjects::AreaIsDungeon(rcArea)) {
-                    if (OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(DungeonSceneLookupByArea(rcArea))->IsMQ())
-                        ImGui::Text("(%d/%d) - MQ", areaChecksGotten[rcArea], areaCheckTotals[rcArea]);
-                    else
-                        ImGui::Text("(%d/%d) - Vanilla", areaChecksGotten[rcArea], areaCheckTotals[rcArea]);
+                    if (OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(DungeonSceneLookupByArea(rcArea))->IsMQ()) {
+                        ImGui::Text("(%d / %d / %d) - MQ", areaChecksAccessible[rcArea], areaChecksGotten[rcArea], areaCheckTotals[rcArea]);
+                        UIWidgets::Tooltip("Accessible / Checked / Total");
+                    } else {
+                        ImGui::Text("(%d / %d / %d) - Vanilla", areaChecksAccessible[rcArea], areaChecksGotten[rcArea], areaCheckTotals[rcArea]);
+                        UIWidgets::Tooltip("Accessible / Checked / Total");
+                    }
                 } else {
-                    ImGui::Text("(%d/%d)", areaChecksGotten[rcArea], areaCheckTotals[rcArea]);
+                    ImGui::Text("(%d / %d / %d)", areaChecksAccessible[rcArea], areaChecksGotten[rcArea], areaCheckTotals[rcArea]);
+                    UIWidgets::Tooltip("Accessible / Checked / Total");
                 }
             } else {
                 ImGui::Text("???");
@@ -1544,10 +1561,18 @@ void DrawLocation(RandomizerCheck rc) {
                 OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->SetIsSkipped(false);
                 areaChecksGotten[loc->GetArea()]--;
                 totalChecksGotten--;
+                if (itemLoc->IsAccessible()) {
+                    areaChecksAccessible[loc->GetArea()]++;
+                    totalChecksAccessible++;
+                }
             } else {
                 OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->SetIsSkipped(true);
                 areaChecksGotten[loc->GetArea()]++;
                 totalChecksGotten++;
+                if (itemLoc->IsAccessible()) {
+                    areaChecksAccessible[loc->GetArea()]--;
+                    totalChecksAccessible--;
+                }
             }
             UpdateOrdering(loc->GetArea());
             UpdateInventoryChecks();
@@ -1747,8 +1772,20 @@ void RecalculateAccessibleChecks() {
         itemLocation->SetAccessible(true);
     }
 
+    totalChecksAccessible = 0;
+    for (auto& [rcArea, vec] : checksByArea) {
+        areaChecksAccessible[rcArea] = 0;
+        for (auto& rc : vec) {
+            Rando::ItemLocation* itemLocation = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
+            if (itemLocation->IsAccessible() && !itemLocation->GetIsSkipped() && !itemLocation->HasObtained() && IsVisibleInCheckTracker(rc)) {
+                areaChecksAccessible[rcArea]++;
+            }
+        }
+        totalChecksAccessible += areaChecksAccessible[rcArea];
+    }
+
     StopPerformanceTimer(PT_RECALCULATE_ACCESSIBLE_CHECKS);
-    SPDLOG_DEBUG("Recalculate Accessible Checks Time: {}ms", GetPerformanceTimer(PT_RECALCULATE_ACCESSIBLE_CHECKS).count());
+    SPDLOG_INFO("Recalculate Accessible Checks Time: {}ms", GetPerformanceTimer(PT_RECALCULATE_ACCESSIBLE_CHECKS).count());
 }
 
 
