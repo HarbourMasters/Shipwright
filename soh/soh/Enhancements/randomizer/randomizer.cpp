@@ -1990,7 +1990,7 @@ void RandomizerSettingsWindow::DrawElement() {
         if (UIWidgets2::Button("Clear Seed", UIWidgets2::ButtonOptions().Size(ImVec2(250.f, 0.f)).Color(THEME_COLOR))) {
             memset(seedString, 0, MAX_SEED_STRING_SIZE);
         }
-        UIWidgets2::PushStyleSlider(THEME_COLOR);
+        UIWidgets2::PushStyleInput(THEME_COLOR);
         ImGui::InputText("##RandomizerSeed", seedString, MAX_SEED_STRING_SIZE, ImGuiInputTextFlags_CallbackCharFilter, UIWidgets2::TextFilters::FilterAlphaNum);
         UIWidgets2::Tooltip(
             "Characters from a-z, A-Z, and 0-9 are supported.\n"
@@ -2000,7 +2000,7 @@ void RandomizerSettingsWindow::DrawElement() {
             ImGui::SameLine(17.0f);
             ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 0.4f), "Leave blank for random seed");
         }
-        UIWidgets2::PopStyleSlider();
+        UIWidgets2::PopStyleInput();
     }
 
     UIWidgets2::Spacer(0);
@@ -2092,9 +2092,9 @@ void RandomizerSettingsWindow::DrawElement() {
                 window->DC.CurrLineTextBaseOffset = 0.0f;
 
                 static ImGuiTextFilter locationSearch;
-                UIWidgets2::PushStyleSlider(THEME_COLOR);
+                UIWidgets2::PushStyleInput(THEME_COLOR);
                 locationSearch.Draw();
-                UIWidgets2::PopStyleSlider();
+                UIWidgets2::PopStyleInput();
 
                 ImGui::BeginChild("ChildIncludedLocations", ImVec2(0, -8));
                 for (auto& [rcArea, locations] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
@@ -2321,9 +2321,9 @@ void RandomizerSettingsWindow::DrawElement() {
                 //{ Rando::Tricks::Tag::GLITCH, false },
             };
             static ImGuiTextFilter trickSearch;
-            UIWidgets2::PushStyleSlider(THEME_COLOR);
+            UIWidgets2::PushStyleInput(THEME_COLOR);
             trickSearch.Draw("Filter (inc,-exc)", 490.0f);
-            UIWidgets2::PopStyleSlider();
+            UIWidgets2::PopStyleInput();
             if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
                 ImGui::SameLine();
                 if (UIWidgets2::Button("Disable All", UIWidgets2::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(250.f, 0.f)))) {
