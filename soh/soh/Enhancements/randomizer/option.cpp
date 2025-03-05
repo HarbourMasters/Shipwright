@@ -150,9 +150,6 @@ bool Option::RenderImGui() {
         case WidgetType::Checkbox:
             changed = RenderCheckbox();
             break;
-        case WidgetType::TristateCheckbox:
-            changed = RenderTristateCheckbox();
-            break;
         case WidgetType::Combobox:
             changed = RenderCombobox();
             break;
@@ -217,19 +214,6 @@ bool Option::RenderCheckbox() {
     UIWidgets2::CheckboxOptions widgetOptions = static_cast<UIWidgets2::CheckboxOptions>(UIWidgets2::CheckboxOptions().Color(THEME_COLOR).Tooltip(description.c_str()));
     widgetOptions.disabled = disabled;
     if (UIWidgets2::Checkbox(name.c_str(), &val, widgetOptions)) {
-        CVarSetInteger(cvarName.c_str(), val);
-        changed = true;
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    }
-    return changed;
-}
-
-bool Option::RenderTristateCheckbox() {
-    bool changed = false;
-    uint8_t val = static_cast<uint8_t>(CVarGetInteger(cvarName.c_str(), defaultOption));
-    UIWidgets2::CheckboxOptions widgetOptions = static_cast<UIWidgets2::CheckboxOptions>(UIWidgets2::CheckboxOptions().Color(THEME_COLOR).Tooltip(description.c_str()));
-    widgetOptions.disabled = disabled;
-    if (UIWidgets2::TristateCheckbox(name.c_str(), &val, widgetOptions)) {
         CVarSetInteger(cvarName.c_str(), val);
         changed = true;
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
