@@ -265,6 +265,7 @@ namespace UIWidgets2 {
         int32_t min = 1;
         int32_t max = 10;
         int32_t defaultValue = 1;
+        bool clamp = true;
         ComponentAlignment alignment = ComponentAlignment::Left;
         LabelPosition labelPosition = LabelPosition::Above;
         Colors color = Colors::Gray;
@@ -315,6 +316,10 @@ namespace UIWidgets2 {
             size = size_;
             return *this;
         }
+        IntSliderOptions& Clamp(bool clamp_) {
+            clamp = clamp_;
+            return *this;
+        }
     };
 
     struct FloatSliderOptions : WidgetOptions {
@@ -324,6 +329,7 @@ namespace UIWidgets2 {
         float min = 0.01f;
         float max = 10.0f;
         float defaultValue = 1.0f;
+        bool clamp = true;
         bool isPercentage = false; // Multiplies visual value by 100
         ComponentAlignment alignment = ComponentAlignment::Left;
         LabelPosition labelPosition = LabelPosition::Above;
@@ -365,7 +371,7 @@ namespace UIWidgets2 {
         }
         FloatSliderOptions& IsPercentage(bool isPercentage_ = true) {
             isPercentage = isPercentage_;
-            format = "%.0f";
+            format = "%.0f%%";
             min = 0.0f;
             max = 1.0f;
             return *this;
@@ -380,6 +386,10 @@ namespace UIWidgets2 {
         }
         FloatSliderOptions& Size(ImVec2 size_) {
             size = size_;
+            return *this;
+        }
+        FloatSliderOptions& Clamp(bool clamp_) {
+            clamp = clamp_;
             return *this;
         }
     };

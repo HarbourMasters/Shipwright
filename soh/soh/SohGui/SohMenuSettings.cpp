@@ -2,6 +2,8 @@
 #include "soh/Notification/Notification.h"
 #include <soh/GameVersions.h>
 #include "soh/ResourceManagerHelpers.h"
+#include "UIWidgets2.hpp"
+#include <spdlog/fmt/fmt.h>
 
 extern "C" {
 #include "include/z64audio.h"
@@ -191,7 +193,7 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_SETTING("Fullscreen"))
         .Callback([](WidgetInfo& info) { Ship::Context::GetInstance()->GetWindow()->ToggleFullscreen(); })
         .Options(CheckboxOptions().Tooltip("Toggles Fullscreen On/Off."));
-    AddWidget(path, "Internal Resolution: %.0f%%", WIDGET_CVAR_SLIDER_FLOAT)
+    AddWidget(path, "Internal Resolution", WIDGET_CVAR_SLIDER_FLOAT)
         .CVar(CVAR_INTERNAL_RESOLUTION)
         .Callback([](WidgetInfo& info) {
             Ship::Context::GetInstance()->GetWindow()->SetResolutionMultiplier(
@@ -212,11 +214,10 @@ void SohMenu::AddMenuSettings() {
                          "form of anti-aliasing.")
                 .ShowButtons(false)
                 .IsPercentage()
-                .Format("")
                 .Min(0.5f)
                 .Max(2.0f));
 #ifndef __WIIU__
-    AddWidget(path, "Anti-aliasing (MSAA): %d", WIDGET_CVAR_SLIDER_INT)
+    AddWidget(path, "Anti-aliasing (MSAA)", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_MSAA_VALUE)
         .Callback([](WidgetInfo& info) {
             Ship::Context::GetInstance()->GetWindow()->SetMsaaLevel(CVarGetInteger(CVAR_MSAA_VALUE, 1));
@@ -230,22 +231,25 @@ void SohMenu::AddMenuSettings() {
                 .Max(8)
                 .DefaultValue(1));
 #endif
-
-    AddWidget(path, "Current FPS: %d", WIDGET_CVAR_SLIDER_INT)
+    auto fps = CVarGetInteger(CVAR_SETTING("InterpolationFPS"), 20);
+    const char* fpsFormat = fps == 20 ? "Original (%d)" : "%d";
+    AddWidget(path, "Current FPS", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_SETTING("InterpolationFPS"))
         .Callback([](WidgetInfo& info) {
-            int32_t defaultValue = std::static_pointer_cast<IntSliderOptions>(info.options)->defaultValue;
-            if (CVarGetInteger(info.cVar, defaultValue) == defaultValue) {
-                info.name = "Current FPS: Original (%d)";
-            } else {
-                info.name = "Current FPS: %d";
-            }
-        })
+        auto options = std::static_pointer_cast<IntSliderOptions>(info.options);
+        int32_t defaultValue = options->defaultValue;
+        if (CVarGetInteger(info.cVar, defaultValue) == defaultValue) {
+            options->format = "Original (%d)";
+        }
+        else {
+            options->format = "%d";
+        }
+            })
         .PreFunc([](WidgetInfo& info) {
-            if (mSohMenu->disabledMap.at(DISABLE_FOR_MATCH_REFRESH_RATE_ON).active)
-                info.activeDisables.push_back(DISABLE_FOR_MATCH_REFRESH_RATE_ON);
-        })
-        .Options(IntSliderOptions().Tooltip(tooltip).Min(20).Max(maxFps).DefaultValue(20));
+        if (mSohMenu->disabledMap.at(DISABLE_FOR_MATCH_REFRESH_RATE_ON).active)
+            info.activeDisables.push_back(DISABLE_FOR_MATCH_REFRESH_RATE_ON);
+            })
+        .Options(IntSliderOptions().Tooltip(tooltip).Min(20).Max(maxFps).DefaultValue(20).Format(fpsFormat));
     AddWidget(path, "Match Refresh Rate", WIDGET_BUTTON)
         .Callback([](WidgetInfo& info) {
             int hz = Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
