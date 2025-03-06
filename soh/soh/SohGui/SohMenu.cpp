@@ -143,6 +143,12 @@ void SohMenu::InitElement() {
         { DISABLE_FOR_FRAME_ADVANCE_OFF,
           { [](disabledInfo& info) -> bool { return !(gPlayState != nullptr && gPlayState->frameAdvCtx.enabled); },
             "Frame Advance is Disabled" } },
+        { DISABLE_FOR_ADVANCED_RESOLUTION_OFF,
+          { [](disabledInfo& info) -> bool { return !CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".Enabled", 0); },
+            "Advanced Resolution is Disabled" } },
+        { DISABLE_FOR_VERTICAL_RESOLUTION_OFF,
+          { [](disabledInfo& info) -> bool { return !CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".VerticalResolutionToggle", 0); },
+            "Vertical Resolution Toggle is Off" } },
     };
 }
 

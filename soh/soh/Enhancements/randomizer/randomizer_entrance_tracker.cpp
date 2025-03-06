@@ -1,7 +1,6 @@
 #include "randomizer_entrance_tracker.h"
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
-#include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
 
 #include <map>
@@ -39,9 +38,6 @@ static const EntranceOverride emptyOverride = {0};
 static s16 lastEntranceIndex = -1;
 static s16 currentGrottoId = -1;
 static s16 lastSceneOrEntranceDetected = -1;
-namespace SohGui {
-extern std::shared_ptr<SohGui::SohMenu> mSohMenu;
-}
 
 static std::string spoilerEntranceGroupNames[] = {
     "Spawns/Warp Songs/Owls",
@@ -673,49 +669,48 @@ void EntranceTrackerSettingsWindow::DrawElement() {
     if (ImGui::BeginTable("entranceTrackerSubSettings", 2, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingStretchProp)) {
         ImGui::TableSetupColumn("column 1", ImGuiTableColumnFlags_WidthStretch, 150.0f);
         ImGui::TableSetupColumn("column 2", ImGuiTableColumnFlags_WidthStretch, 150.0f);
-        auto themeColor = static_cast<UIWidgets2::Colors>(CVarGetInteger(CVAR_SETTING("Menu.Theme"), UIWidgets2::Colors::LightBlue));
 
         ImGui::TableNextColumn();
 
         ImGui::Text("Sort By");
         UIWidgets2::CVarRadioButton("To", CVAR_TRACKER_ENTRANCE("SortBy"), 0,
                                     UIWidgets2::RadioButtonsOptions()
-                                        .Color(themeColor)
+                                        .Color(THEME_COLOR)
                                         .Tooltip("Sort entrances by the original source entrance"));
         UIWidgets2::CVarRadioButton("From", CVAR_TRACKER_ENTRANCE("SortBy"), 1,
                                     UIWidgets2::RadioButtonsOptions()
-                                        .Color(themeColor).Tooltip("Sort entrances by the overrided destination"));
+                                        .Color(THEME_COLOR).Tooltip("Sort entrances by the overrided destination"));
 
         ImGui::Text("List Items");
         UIWidgets2::CVarCheckbox("Auto scroll", CVAR_TRACKER_ENTRANCE("AutoScroll"),
-            UIWidgets2::CheckboxOptions().Tooltip("Automatically scroll to the first aviable entrance in the current scene").Color(themeColor));
+            UIWidgets2::CheckboxOptions().Tooltip("Automatically scroll to the first aviable entrance in the current scene").Color(THEME_COLOR));
         UIWidgets2::CVarCheckbox("Highlight previous", CVAR_TRACKER_ENTRANCE("HighlightPrevious"),
-                UIWidgets2::CheckboxOptions().Tooltip("Highlight the previous entrance that Link came from").Color(themeColor));
+                UIWidgets2::CheckboxOptions().Tooltip("Highlight the previous entrance that Link came from").Color(THEME_COLOR));
         UIWidgets2::CVarCheckbox("Highlight available", CVAR_TRACKER_ENTRANCE("HighlightAvailable"),
-                UIWidgets2::CheckboxOptions().Tooltip("Highlight available entrances in the current scene").Color(themeColor));
+                UIWidgets2::CheckboxOptions().Tooltip("Highlight available entrances in the current scene").Color(THEME_COLOR));
         UIWidgets2::CVarCheckbox("Hide undiscovered", CVAR_TRACKER_ENTRANCE("CollapseUndiscovered"),
-                UIWidgets2::CheckboxOptions().Tooltip("Collapse undiscovered entrances towards the bottom of each group").Color(themeColor));
+                UIWidgets2::CheckboxOptions().Tooltip("Collapse undiscovered entrances towards the bottom of each group").Color(THEME_COLOR));
         bool disableHideReverseEntrances = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_ON;
         static const char* disableHideReverseEntrancesText = "This option is disabled because \"Decouple Entrances\" is enabled.";
         UIWidgets2::CVarCheckbox("Hide reverse", CVAR_TRACKER_ENTRANCE("HideReverseEntrances"),
             UIWidgets2::CheckboxOptions({ {.disabled = disableHideReverseEntrances, .disabledTooltip = disableHideReverseEntrancesText }})
-                .Tooltip("Hide reverse entrance transitions when Decouple Entrances is off").DefaultValue(true).Color(themeColor));
+                .Tooltip("Hide reverse entrance transitions when Decouple Entrances is off").DefaultValue(true).Color(THEME_COLOR));
 
         ImGui::TableNextColumn();
 
         ImGui::Text("Group By");
         UIWidgets2::CVarRadioButton(
             "Area", CVAR_TRACKER_ENTRANCE("GroupBy"), 0,
-            UIWidgets2::RadioButtonsOptions().Color(themeColor).Tooltip("Group entrances by their area"));
+            UIWidgets2::RadioButtonsOptions().Color(THEME_COLOR).Tooltip("Group entrances by their area"));
         UIWidgets2::CVarRadioButton(
             "Type", CVAR_TRACKER_ENTRANCE("GroupBy"), 1,
-            UIWidgets2::RadioButtonsOptions().Color(themeColor).Tooltip("Group entrances by their entrance type"));
+            UIWidgets2::RadioButtonsOptions().Color(THEME_COLOR).Tooltip("Group entrances by their entrance type"));
 
         ImGui::Text("Spoiler Reveal");
         UIWidgets2::CVarCheckbox("Show Source", CVAR_TRACKER_ENTRANCE("ShowFrom"),
-                UIWidgets2::CheckboxOptions().Tooltip("Reveal the sourcefor undiscovered entrances").Color(themeColor));
+                UIWidgets2::CheckboxOptions().Tooltip("Reveal the sourcefor undiscovered entrances").Color(THEME_COLOR));
         UIWidgets2::CVarCheckbox("Show Destination", CVAR_TRACKER_ENTRANCE("ShowTo"),
-                UIWidgets2::CheckboxOptions().Tooltip("Reveal the destination for undiscovered entrances").Color(themeColor));
+                UIWidgets2::CheckboxOptions().Tooltip("Reveal the destination for undiscovered entrances").Color(THEME_COLOR));
 
         ImGui::EndTable();
     }
@@ -752,21 +747,21 @@ void EntranceTrackerWindow::DrawElement() {
 
     uint8_t nextTreeState = 0;
     if (UIWidgets2::Button("Collapse All", UIWidgets2::ButtonOptions({{ .tooltip = "Collapse all entrance groups" }})
-        .Color(SohGui::mSohMenu->GetMenuThemeColor()).Size(UIWidgets2::Sizes::Inline))) {
+        .Color(THEME_COLOR).Size(UIWidgets2::Sizes::Inline))) {
         nextTreeState = 1;
     }
     ImGui::SameLine();
     if (UIWidgets2::Button("Expand All", UIWidgets2::ButtonOptions({{ .tooltip = "Expand all entrance groups" }})
-        .Color(SohGui::mSohMenu->GetMenuThemeColor()).Size(UIWidgets2::Sizes::Inline))) {
+        .Color(THEME_COLOR).Size(UIWidgets2::Sizes::Inline))) {
         nextTreeState = 2;
     }
     ImGui::SameLine();
     if (UIWidgets2::Button("Clear", UIWidgets2::ButtonOptions({{ .tooltip = "Clear the search field" }})
-        .Color(SohGui::mSohMenu->GetMenuThemeColor()).Size(UIWidgets2::Sizes::Inline))) {
+        .Color(THEME_COLOR).Size(UIWidgets2::Sizes::Inline))) {
         locationSearch.Clear();
     }
 
-    UIWidgets2::PushStyleCombobox(SohGui::mSohMenu->GetMenuThemeColor());
+    UIWidgets2::PushStyleCombobox(THEME_COLOR);
     if (locationSearch.Draw()) {
         nextTreeState = 2;
     }

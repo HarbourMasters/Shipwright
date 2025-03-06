@@ -3,7 +3,7 @@
 #include "soh/SohGui/ImGuiUtils.h"
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/UIWidgets.hpp"
-#include "soh/SohGui/SohMenu.h"
+#include "soh/SohGui/SohGui.hpp"
 
 #include <spdlog/fmt/fmt.h>
 #include <array>
@@ -57,14 +57,8 @@ extern "C" u8 gAreaGsFlags[];
 
 extern "C" u8 gAmmoItems[];
 
-namespace SohGui {
-    extern std::shared_ptr<SohGui::SohMenu> mSohMenu;
-}
-
 #define IMAGE_SIZE 48.0f
 
-UIWidgets2::Colors themeIndex;
-ImVec4 themeColor;
 UIWidgets2::IntSliderOptions intSliderOptionsBase;
 UIWidgets2::ButtonOptions buttonOptionsBase;
 UIWidgets2::CheckboxOptions checkboxOptionsBase;
@@ -167,7 +161,7 @@ void DrawInfoTab() {
         if (i % 4 != 0) {
             ImGui::SameLine();
         }
-        UIWidgets2::PushStyleInput(themeColor);
+        UIWidgets2::PushStyleInput(THEME_COLOR);
         ImGui::InputScalar(nameID.c_str(), ImGuiDataType_U8, &gSaveContext.playerName[i], &one, NULL);
         UIWidgets2::PopStyleInput();
     }
@@ -175,7 +169,7 @@ void DrawInfoTab() {
     // Use an intermediary to keep the health from updating (and potentially killing the player)
     // until it is done being edited
     int16_t healthIntermediary = gSaveContext.healthCapacity;
-    UIWidgets2::PushStyleInput(themeColor);
+    UIWidgets2::PushStyleInput(THEME_COLOR);
     ImGui::InputScalar("Max Health", ImGuiDataType_S16, &healthIntermediary);
     UIWidgets2::PopStyleInput();
     if (ImGui::IsItemDeactivated()) {
@@ -211,7 +205,7 @@ void DrawInfoTab() {
         gSaveContext.magic = (int8_t)magic;
     }
 
-    UIWidgets2::PushStyleInput(themeColor);
+    UIWidgets2::PushStyleInput(THEME_COLOR);
     ImGui::InputScalar("Rupees", ImGuiDataType_S16, &gSaveContext.rupees);
     UIWidgets2::Tooltip("Current rupees");
     UIWidgets2::PopStyleInput();
@@ -233,59 +227,59 @@ void DrawInfoTab() {
         gSaveContext.dayTime = 0;
     }
 
-    UIWidgets2::PushStyleInput(themeColor);
+    UIWidgets2::PushStyleInput(THEME_COLOR);
     ImGui::InputScalar("Total Days", ImGuiDataType_S32, &gSaveContext.totalDays);
     UIWidgets2::Tooltip("Total number of days elapsed since the start of the game");
     UIWidgets2::PopStyleInput();
 
-    UIWidgets2::PushStyleInput(themeColor);
+    UIWidgets2::PushStyleInput(THEME_COLOR);
     ImGui::InputScalar("Deaths", ImGuiDataType_U16, &gSaveContext.deaths);
     UIWidgets2::Tooltip("Total number of deaths");
     UIWidgets2::PopStyleInput();
 
     UIWidgets2::Checkbox("Has BGS", (bool*) &gSaveContext.bgsFlag, checkboxOptionsBase.Tooltip("Is Biggoron sword unlocked? Replaces Giant's knife"));
 
-    UIWidgets2::PushStyleInput(themeColor);
+    UIWidgets2::PushStyleInput(THEME_COLOR);
     ImGui::InputScalar("Sword Health", ImGuiDataType_U16, &gSaveContext.swordHealth);
     UIWidgets2::Tooltip("Giant's knife health. Default is 8. Must be >0 for Biggoron sword to work");
     UIWidgets2::PopStyleInput();
 
-    UIWidgets2::PushStyleInput(themeColor);
+    UIWidgets2::PushStyleInput(THEME_COLOR);
     ImGui::InputScalar("Bgs Day Count", ImGuiDataType_S32, &gSaveContext.bgsDayCount);
     UIWidgets2::Tooltip("Total number of days elapsed since giving Biggoron the claim check");
     UIWidgets2::PopStyleInput();
 
-    UIWidgets2::PushStyleInput(themeColor);
+    UIWidgets2::PushStyleInput(THEME_COLOR);
     ImGui::InputScalar("Entrance Index", ImGuiDataType_S32, &gSaveContext.entranceIndex);
     UIWidgets2::Tooltip("From which entrance did Link arrive?");
     UIWidgets2::PopStyleInput();
 
-    UIWidgets2::PushStyleInput(themeColor);
+    UIWidgets2::PushStyleInput(THEME_COLOR);
     ImGui::InputScalar("Cutscene Index", ImGuiDataType_S32, &gSaveContext.cutsceneIndex);
     UIWidgets2::Tooltip("Which cutscene is this?");
     UIWidgets2::PopStyleInput();
 
-    UIWidgets2::PushStyleInput(themeColor);
+    UIWidgets2::PushStyleInput(THEME_COLOR);
     ImGui::InputScalar("Navi Timer", ImGuiDataType_U16, &gSaveContext.naviTimer);
     UIWidgets2::Tooltip("Navi wants to talk at 600 units, decides not to at 3000.");
     UIWidgets2::PopStyleInput();
 
-    UIWidgets2::PushStyleInput(themeColor);
+    UIWidgets2::PushStyleInput(THEME_COLOR);
     ImGui::InputScalar("Timer 1 State", ImGuiDataType_S16, &gSaveContext.timer1State);
     UIWidgets2::Tooltip("Heat timer, race timer, etc. Has white font");
     UIWidgets2::PopStyleInput();
 
-    UIWidgets2::PushStyleInput(themeColor);
+    UIWidgets2::PushStyleInput(THEME_COLOR);
     ImGui::InputScalar("Timer 1 Value", ImGuiDataType_S16, &gSaveContext.timer1Value, &one, NULL);
     UIWidgets2::Tooltip("Time, in seconds");
     UIWidgets2::PopStyleInput();
 
-    UIWidgets2::PushStyleInput(themeColor);
+    UIWidgets2::PushStyleInput(THEME_COLOR);
     ImGui::InputScalar("Timer 2 State", ImGuiDataType_S16, &gSaveContext.timer2State);
     UIWidgets2::Tooltip("Trade timer, Ganon collapse timer, etc. Has yellow font");
     UIWidgets2::PopStyleInput();
 
-    UIWidgets2::PushStyleInput(themeColor);
+    UIWidgets2::PushStyleInput(THEME_COLOR);
     ImGui::InputScalar("Timer 2 Value", ImGuiDataType_S16, &gSaveContext.timer2Value, &one, NULL);
     UIWidgets2::Tooltip("Time, in seconds");
     UIWidgets2::PopStyleInput();
@@ -297,7 +291,7 @@ void DrawInfoTab() {
     UIWidgets2::Combobox("Z Target Mode", &gSaveContext.zTargetSetting, zTargetMap, comboboxOptionsBase.Tooltip("Z-Targeting behavior"));
 
     if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT)) {
-        UIWidgets2::PushStyleInput(themeColor);
+        UIWidgets2::PushStyleInput(THEME_COLOR);
         ImGui::InputScalar("Triforce Pieces", ImGuiDataType_U8, &gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected);
         UIWidgets2::Tooltip("Currently obtained Triforce Pieces. For Triforce Hunt.");
         UIWidgets2::PopStyleInput();
@@ -316,7 +310,7 @@ void DrawInfoTab() {
         for (int i = 0; i < 7; i++) {
             if(i == 2 && ImGui::TreeNode("Fishing") ){ //fishing has a few more flags to it
                 u8 fishSize = gSaveContext.highScores[i] & 0x7F;
-                UIWidgets2::PushStyleInput(themeColor);
+                UIWidgets2::PushStyleInput(THEME_COLOR);
                 if(ImGui::InputScalar("Child Size Record",ImGuiDataType_U8,&fishSize)){
                     gSaveContext.highScores[i]&=~0x7F;
                     gSaveContext.highScores[i]|=fishSize & 0x7F;
@@ -331,7 +325,7 @@ void DrawInfoTab() {
                         gSaveContext.highScores[i] |= (0x80 * FishBool);
                 }
                 fishSize=(gSaveContext.highScores[i] & 0x7F000000)>>0x18;
-                UIWidgets2::PushStyleInput(themeColor);
+                UIWidgets2::PushStyleInput(THEME_COLOR);
                 if(ImGui::InputScalar("Adult Size Record",ImGuiDataType_U8,&fishSize)){
                     gSaveContext.highScores[i]&=~0x7F000000;
                     gSaveContext.highScores[i]|=(fishSize & 0x7F) << 0x18;
@@ -370,7 +364,7 @@ void DrawInfoTab() {
                         gSaveContext.highScores[i] |= (0x1000 * FishBool);
                 }
                 fishSize=(gSaveContext.highScores[i] & 0xFF0000)>>16;
-                UIWidgets2::PushStyleInput(themeColor);
+                UIWidgets2::PushStyleInput(THEME_COLOR);
                 if(ImGui::InputScalar("Times Played",ImGuiDataType_U8,&fishSize)){
                     gSaveContext.highScores[i]&=~0xFF0000;
                     gSaveContext.highScores[i]|=(fishSize) << 16;
@@ -386,7 +380,7 @@ void DrawInfoTab() {
                 continue;
             }
             std::string minigameLbl = minigameHS[i];
-            UIWidgets2::PushStyleInput(themeColor);
+            UIWidgets2::PushStyleInput(THEME_COLOR);
             ImGui::InputScalar(minigameLbl.c_str(), ImGuiDataType_S32, &gSaveContext.highScores[i], &one, NULL);
             UIWidgets2::PopStyleInput();
         }
@@ -506,7 +500,7 @@ void DrawInventoryTab() {
             ImGui::BeginGroup();
 
             ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(itemMapping[item].name), ImVec2(IMAGE_SIZE, IMAGE_SIZE));
-            UIWidgets2::PushStyleInput(themeColor);
+            UIWidgets2::PushStyleInput(THEME_COLOR);
             ImGui::InputScalar("##ammoInput", ImGuiDataType_S8, &AMMO(item));
             UIWidgets2::PopStyleInput();
 
@@ -535,6 +529,7 @@ void DrawFlagTableArray16(const FlagTable& flagTable, uint16_t row, uint16_t& fl
         ImGui::PushID(flagIndex);
         bool hasDescription = !!flagTable.flagDescriptions.contains(row * 16 + flagIndex);
         uint32_t bitMask = 1 << flagIndex;
+        ImVec4 themeColor = UIWidgets2::ColorValues.at(THEME_COLOR);
         ImVec4 colorDark = { themeColor.x * 0.4f, themeColor.y * 0.4f, themeColor.z * 0.4f , themeColor.z };
         UIWidgets2::PushStyleCheckbox(hasDescription ? themeColor : colorDark);
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 3.0f));
@@ -565,26 +560,26 @@ void DrawFlagsTab() {
 
             DrawGroupWithBorder([&]() {
                 ImGui::Text("stateFlags1");
-                UIWidgets2::DrawFlagArray32("stateFlags1", player->stateFlags1, themeIndex);
+                UIWidgets2::DrawFlagArray32("stateFlags1", player->stateFlags1, THEME_COLOR);
             }, "stateFlags1");
 
             ImGui::SameLine();
 
             DrawGroupWithBorder([&]() {
                 ImGui::Text("stateFlags2");
-                UIWidgets2::DrawFlagArray32("stateFlags2", player->stateFlags2, themeIndex);
+                UIWidgets2::DrawFlagArray32("stateFlags2", player->stateFlags2, THEME_COLOR);
             }, "stateFlags2");
 
             DrawGroupWithBorder([&]() {
                 ImGui::Text("stateFlags3");
-                UIWidgets2::DrawFlagArray8("stateFlags3", player->stateFlags3, themeIndex);
+                UIWidgets2::DrawFlagArray8("stateFlags3", player->stateFlags3, THEME_COLOR);
             }, "stateFlags3");
             
             ImGui::SameLine();
             
             DrawGroupWithBorder([&]() {
                 ImGui::Text("unk_6AE_rotFlags");
-                UIWidgets2::DrawFlagArray16("unk_6AE_rotFlags", player->unk_6AE_rotFlags, themeIndex);
+                UIWidgets2::DrawFlagArray16("unk_6AE_rotFlags", player->unk_6AE_rotFlags, THEME_COLOR);
             }, "unk_6AE_rotFlags");
         }
         ImGui::TreePop();
@@ -602,7 +597,7 @@ void DrawFlagsTab() {
                 if (UIWidgets2::Button("Clear All##Switch", buttonOptionsBase.Tooltip(""))) {
                     act->flags.swch = 0;
                 }
-                UIWidgets2::DrawFlagArray32("Switch", act->flags.swch, themeIndex);
+                UIWidgets2::DrawFlagArray32("Switch", act->flags.swch, THEME_COLOR);
             }, "Switch");
 
             ImGui::SameLine();
@@ -617,7 +612,7 @@ void DrawFlagsTab() {
                 if (UIWidgets2::Button("Clear All##Temp Switch", buttonOptionsBase.Tooltip(""))) {
                     act->flags.tempSwch = 0;
                 }
-                UIWidgets2::DrawFlagArray32("Temp Switch", act->flags.tempSwch, themeIndex);
+                UIWidgets2::DrawFlagArray32("Temp Switch", act->flags.tempSwch, THEME_COLOR);
             }, "Temp Switch");
 
             DrawGroupWithBorder([&]() {
@@ -630,7 +625,7 @@ void DrawFlagsTab() {
                 if (UIWidgets2::Button("Clear All##Clear", buttonOptionsBase.Tooltip(""))) {
                     act->flags.clear = 0;
                 }
-                UIWidgets2::DrawFlagArray32("Clear", act->flags.clear, themeIndex);
+                UIWidgets2::DrawFlagArray32("Clear", act->flags.clear, THEME_COLOR);
             }, "Clear");
 
             ImGui::SameLine();
@@ -645,7 +640,7 @@ void DrawFlagsTab() {
                 if (UIWidgets2::Button("Clear All##Temp Clear", buttonOptionsBase.Tooltip(""))) {
                     act->flags.tempClear = 0;
                 }
-                UIWidgets2::DrawFlagArray32("Temp Clear", act->flags.tempClear, themeIndex);
+                UIWidgets2::DrawFlagArray32("Temp Clear", act->flags.tempClear, THEME_COLOR);
             }, "Temp Clear");
 
             DrawGroupWithBorder([&]() {
@@ -658,7 +653,7 @@ void DrawFlagsTab() {
                 if (UIWidgets2::Button("Clear All##Collect", buttonOptionsBase.Tooltip(""))) {
                     act->flags.collect = 0;
                 }
-                UIWidgets2::DrawFlagArray32("Collect", act->flags.collect, themeIndex);
+                UIWidgets2::DrawFlagArray32("Collect", act->flags.collect, THEME_COLOR);
             }, "Collect");
 
             ImGui::SameLine();
@@ -673,7 +668,7 @@ void DrawFlagsTab() {
                 if (UIWidgets2::Button("Clear All##Temp Collect", buttonOptionsBase.Tooltip(""))) {
                     act->flags.tempCollect = 0;
                 }
-                UIWidgets2::DrawFlagArray32("Temp Collect", act->flags.tempCollect, themeIndex);
+                UIWidgets2::DrawFlagArray32("Temp Collect", act->flags.tempCollect, THEME_COLOR);
             }, "Temp Collect");
 
             DrawGroupWithBorder([&]() {
@@ -686,7 +681,7 @@ void DrawFlagsTab() {
                 if (UIWidgets2::Button("Clear All##Chest", buttonOptionsBase.Tooltip(""))) {
                     act->flags.chest = 0;
                 }
-                UIWidgets2::DrawFlagArray32("Chest", act->flags.chest, themeIndex);
+                UIWidgets2::DrawFlagArray32("Chest", act->flags.chest, THEME_COLOR);
             }, "Chest");
 
             ImGui::SameLine();
@@ -728,7 +723,7 @@ void DrawFlagsTab() {
         ImGui::AlignTextToFramePadding();
         ImGui::Text("Map");
         ImGui::SameLine();
-        UIWidgets2::PushStyleCombobox(themeColor);
+        UIWidgets2::PushStyleCombobox(THEME_COLOR);
         if (ImGui::BeginCombo("##Map", SohUtils::GetSceneName(selectedSceneFlagMap).c_str())) {
             for (int32_t sceneIndex = 0; sceneIndex < SCENE_ID_MAX; sceneIndex++) {
                 if (ImGui::Selectable(SohUtils::GetSceneName(sceneIndex).c_str())) {
@@ -751,7 +746,7 @@ void DrawFlagsTab() {
         DrawGroupWithBorder([&]() {
             ImGui::Text("Switch");
             UIWidgets2::InsertHelpHoverText("Switch flags");
-            UIWidgets2::DrawFlagArray32("Switch", gSaveContext.sceneFlags[selectedSceneFlagMap].swch, themeIndex);
+            UIWidgets2::DrawFlagArray32("Switch", gSaveContext.sceneFlags[selectedSceneFlagMap].swch, THEME_COLOR);
         }, "Saved Switch");
 
         ImGui::SameLine();
@@ -759,13 +754,13 @@ void DrawFlagsTab() {
         DrawGroupWithBorder([&]() {
             ImGui::Text("Clear");
             UIWidgets2::InsertHelpHoverText("Room-clear flags");
-            UIWidgets2::DrawFlagArray32("Clear", gSaveContext.sceneFlags[selectedSceneFlagMap].clear, themeIndex);
+            UIWidgets2::DrawFlagArray32("Clear", gSaveContext.sceneFlags[selectedSceneFlagMap].clear, THEME_COLOR);
         }, "Saved Clear");
 
         DrawGroupWithBorder([&]() {
             ImGui::Text("Collect");
             UIWidgets2::InsertHelpHoverText("Collect flags");
-            UIWidgets2::DrawFlagArray32("Collect", gSaveContext.sceneFlags[selectedSceneFlagMap].collect, themeIndex);
+            UIWidgets2::DrawFlagArray32("Collect", gSaveContext.sceneFlags[selectedSceneFlagMap].collect, THEME_COLOR);
         }, "Saved Collect");
 
         ImGui::SameLine();
@@ -773,13 +768,13 @@ void DrawFlagsTab() {
         DrawGroupWithBorder([&]() {
             ImGui::Text("Chest");
             UIWidgets2::InsertHelpHoverText("Chest flags");
-            UIWidgets2::DrawFlagArray32("Chest", gSaveContext.sceneFlags[selectedSceneFlagMap].chest, themeIndex);
+            UIWidgets2::DrawFlagArray32("Chest", gSaveContext.sceneFlags[selectedSceneFlagMap].chest, THEME_COLOR);
         }, "Saved Chest");
 
         DrawGroupWithBorder([&]() {
             ImGui::Text("Rooms");
             UIWidgets2::InsertHelpHoverText("Flags for visted rooms");
-            UIWidgets2::DrawFlagArray32("Rooms", gSaveContext.sceneFlags[selectedSceneFlagMap].rooms, themeIndex);
+            UIWidgets2::DrawFlagArray32("Rooms", gSaveContext.sceneFlags[selectedSceneFlagMap].rooms, THEME_COLOR);
         }, "Saved Rooms");
 
         ImGui::SameLine();
@@ -787,7 +782,7 @@ void DrawFlagsTab() {
         DrawGroupWithBorder([&]() {
             ImGui::Text("Floors");
             UIWidgets2::InsertHelpHoverText("Flags for visted floors");
-            UIWidgets2::DrawFlagArray32("Floors", gSaveContext.sceneFlags[selectedSceneFlagMap].floors, themeIndex);
+            UIWidgets2::DrawFlagArray32("Floors", gSaveContext.sceneFlags[selectedSceneFlagMap].floors, THEME_COLOR);
         }, "Saved Floors");
 
         ImGui::TreePop();
@@ -810,7 +805,7 @@ void DrawFlagsTab() {
 
             ImGui::SameLine();
             ImGui::PushID(allFlags);
-            UIWidgets2::PushStyleCheckbox(themeColor);
+            UIWidgets2::PushStyleCheckbox(THEME_COLOR);
             ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 3.0f));
             if (ImGui::Checkbox("##gs", &isThisSet)) {
                 if (isThisSet) {
@@ -1550,16 +1545,14 @@ void DrawPlayerTab() {
 }
 
 void ResetBaseOptions() {
-    intSliderOptionsBase.Color(themeIndex).Size({320.0f, 0.0f}).Tooltip("");
-    buttonOptionsBase.Color(themeIndex).Size(UIWidgets2::Sizes::Inline).Tooltip("");
-    checkboxOptionsBase.Color(themeIndex).Tooltip("");
-    comboboxOptionsBase.Color(themeIndex).ComponentAlignment(UIWidgets2::ComponentAlignment::Left).LabelPosition(UIWidgets2::LabelPosition::Near).Tooltip("");
+    intSliderOptionsBase.Color(THEME_COLOR).Size({320.0f, 0.0f}).Tooltip("");
+    buttonOptionsBase.Color(THEME_COLOR).Size(UIWidgets2::Sizes::Inline).Tooltip("");
+    checkboxOptionsBase.Color(THEME_COLOR).Tooltip("");
+    comboboxOptionsBase.Color(THEME_COLOR).ComponentAlignment(UIWidgets2::ComponentAlignment::Left).LabelPosition(UIWidgets2::LabelPosition::Near).Tooltip("");
 }
 
 void SaveEditorWindow::DrawElement() {
-    themeIndex = SohGui::mSohMenu->GetMenuThemeColor();
-    themeColor = UIWidgets2::ColorValues.at(themeIndex);
-    UIWidgets2::PushStyleTabs(themeIndex);
+    UIWidgets2::PushStyleTabs(THEME_COLOR);
     if (ImGui::BeginTabBar("SaveContextTabBar", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         ResetBaseOptions();
         if (ImGui::BeginTabItem("Info")) {

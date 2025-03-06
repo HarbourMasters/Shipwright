@@ -66,7 +66,6 @@ namespace SohGui {
         return buttonText;
     }
 
-
     // MARK: - Delegates
 
     std::shared_ptr<SohMenuBar> mSohMenuBar;
@@ -102,6 +101,10 @@ namespace SohGui {
     std::shared_ptr<SohModalWindow> mModalWindow;
     std::shared_ptr<Notification::Window> mNotificationWindow;
     std::shared_ptr<TimeDisplayWindow> mTimeDisplayWindow;
+
+    UIWidgets2::Colors GetMenuThemeColor() {
+        return mSohMenu->GetMenuThemeColor();
+    }
 
     void SetupGuiElements() {
         auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
@@ -200,8 +203,8 @@ namespace SohGui {
         
         mNotificationWindow = nullptr;
         mModalWindow = nullptr;
-        mAdvancedResolutionSettingsWindow = nullptr;
         mRandomizerSettingsWindow = nullptr;
+        mAdvancedResolutionSettingsWindow = nullptr;
         mItemTrackerWindow = nullptr;
         mItemTrackerSettingsWindow = nullptr;
         mEntranceTrackerWindow = nullptr;

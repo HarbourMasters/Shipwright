@@ -94,7 +94,6 @@ void DrawSettingsMenu() {
     if (ImGui::BeginMenu("Settings"))
     {
         if (ImGui::BeginMenu("Graphics")) {
-        #ifndef __APPLE__
             if (mAdvancedResolutionSettingsWindow) {
                 ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
                 ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.0f));
@@ -107,7 +106,6 @@ void DrawSettingsMenu() {
                 ImGui::PopStyleColor(1);
                 ImGui::PopStyleVar(3);
             }
-        #endif
             ImGui::Text("ImGui Menu Scale");
             ImGui::SameLine();
             ImGui::TextColored({ 0.85f, 0.35f, 0.0f, 1.0f }, "(Experimental)");
