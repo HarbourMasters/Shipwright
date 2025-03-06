@@ -153,15 +153,6 @@ void DrawSettingsMenu() {
     }
 }
 
-#ifdef ENABLE_REMOTE_CONTROL
-void DrawRemoteControlMenu() {
-    if (ImGui::BeginMenu("Network")) {
-        CrowdControl::Instance->DrawMenu();
-        ImGui::EndMenu();
-    }
-}
-#endif
-
 void SohMenuBar::InitElement() {
     
 }

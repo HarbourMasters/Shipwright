@@ -3,6 +3,7 @@
 #include <soh/Network/Network.h>
 #include "SohGui.hpp"
 #include <soh/Network/Sail/Sail.h>
+#include <soh/Network/CrowdControl/CrowdControl.h>
 
 namespace SohGui {
 
@@ -40,22 +41,22 @@ void SohMenu::AddMenuNetwork() {
         .CustomFunction([](WidgetInfo& info) {
             ImGui::BeginDisabled(Sail::Instance->isEnabled);
             ImGui::Text("%s", info.name.c_str());
-            CVarInputString("##Host", CVAR_REMOTE_SAIL("Host"), InputOptions().Color(THEME_COLOR).PlaceholderText("127.0.0.1").DefaultValue("127.0.0.1").Size(ImVec2(ImGui::GetFontSize() * 15, 0)).LabelPosition(LabelPosition::None));
+            CVarInputString("##HostSail", CVAR_REMOTE_SAIL("Host"), InputOptions().Color(THEME_COLOR).PlaceholderText("127.0.0.1").DefaultValue("127.0.0.1").Size(ImVec2(ImGui::GetFontSize() * 15, 0)).LabelPosition(LabelPosition::None));
             ImGui::SameLine();
             ImGui::Text(":");
             ImGui::SameLine();
-            CVarInputInt("##Port", CVAR_REMOTE_SAIL("Port"), InputOptions().Color(THEME_COLOR).PlaceholderText("43384").DefaultValue("43384").Size(ImVec2(ImGui::GetFontSize() * 5, 0)).LabelPosition(LabelPosition::None));
+            CVarInputInt("##PortSail", CVAR_REMOTE_SAIL("Port"), InputOptions().Color(THEME_COLOR).PlaceholderText("43384").DefaultValue("43384").Size(ImVec2(ImGui::GetFontSize() * 5, 0)).LabelPosition(LabelPosition::None));
             ImGui::EndDisabled();
         });
-    AddWidget(path, "Enable", WIDGET_BUTTON)
+    AddWidget(path, "Enable##Sail", WIDGET_BUTTON)
         .PreFunc([](WidgetInfo& info) {
             std::string host = CVarGetString(CVAR_REMOTE_SAIL("Host"), "127.0.0.1");
             uint16_t port = CVarGetInteger(CVAR_REMOTE_SAIL("Port"), 43384);
             info.options->disabled = !(!SohUtils::IsStringEmpty(host) && port > 1024 && port < 65535);
             if (Sail::Instance->isEnabled) {
-                info.name = "Disable";
+                info.name = "Disable##Sail";
             } else {
-                info.name = "Enable";
+                info.name = "Enable##Sail";
             }
         })
         .Callback([](WidgetInfo& info) {
@@ -69,15 +70,77 @@ void SohMenu::AddMenuNetwork() {
                Sail::Instance->Enable();
             }
         });
-    AddWidget(path, "Connecting...", WIDGET_TEXT)
+    AddWidget(path, "Connecting...##Sail", WIDGET_TEXT)
         .PreFunc([](WidgetInfo& info) {
             info.isHidden = !Sail::Instance->isEnabled;
             if (Sail::Instance->isConnected) {
-                info.name = "Connected";
+                info.name = "Connected##Sail";
             } else {
-                info.name = "Connecting...";
+                info.name = "Connecting...##Sail";
             }
         });
+    
+    path.sidebarName = "Crowd Control";
+    AddSidebarEntry("Network", path.sidebarName, 3);
+    path.column = SECTION_COLUMN_1;
+
+    AddWidget(path, "Crowd Control is a platform that allows viewers to interact "
+        "with a streamer's game in real time.\n"
+        "\n"
+        "Click the question mark to copy the link to the Crowd Control "
+        "website to your clipboard.", WIDGET_TEXT);
+    AddWidget(path, ICON_FA_CLIPBOARD "##CrowdControl", WIDGET_BUTTON)
+    .Callback([](WidgetInfo& info) {
+        ImGui::SetClipboardText("https://crowdcontrol.live");
+        Notification::Emit({
+            .message = "Copied to clipboard",
+        });
+    })
+    .Options(ButtonOptions()
+        .Tooltip("https://crowdcontrol.live")
+    );
+    AddWidget(path, "Host & Port", WIDGET_CUSTOM)
+    .CustomFunction([](WidgetInfo& info) {
+        ImGui::BeginDisabled(CrowdControl::Instance->isEnabled);
+        ImGui::Text("%s", info.name.c_str());
+        CVarInputString("##HostCrowdControl", CVAR_REMOTE_CROWD_CONTROL("Host"), InputOptions().Color(THEME_COLOR).PlaceholderText("127.0.0.1").DefaultValue("127.0.0.1").Size(ImVec2(ImGui::GetFontSize() * 15, 0)).LabelPosition(LabelPosition::None));
+        ImGui::SameLine();
+        ImGui::Text(":");
+        ImGui::SameLine();
+        CVarInputInt("##PortCrowdControl", CVAR_REMOTE_CROWD_CONTROL("Port"), InputOptions().Color(THEME_COLOR).PlaceholderText("43384").DefaultValue("43384").Size(ImVec2(ImGui::GetFontSize() * 5, 0)).LabelPosition(LabelPosition::None));
+        ImGui::EndDisabled();
+    });
+    AddWidget(path, "Enable##CrowdControl", WIDGET_BUTTON)
+    .PreFunc([](WidgetInfo& info) {
+        std::string host = CVarGetString(CVAR_REMOTE_CROWD_CONTROL("Host"), "127.0.0.1");
+        uint16_t port = CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Port"), 43384);
+        info.options->disabled = !(!SohUtils::IsStringEmpty(host) && port > 1024 && port < 65535);
+        if (CrowdControl::Instance->isEnabled) {
+            info.name = "Disable##CrowdControl";
+        } else {
+            info.name = "Enable##CrowdControl";
+        }
+    })
+    .Callback([](WidgetInfo& info) {
+        if (CrowdControl::Instance->isEnabled) {
+            CVarClear(CVAR_REMOTE_CROWD_CONTROL("Enabled"));
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            CrowdControl::Instance->Disable();
+        } else {
+            CVarSetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 1);
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        CrowdControl::Instance->Enable();
+        }
+    });
+    AddWidget(path, "Connecting...##CrowdControl", WIDGET_TEXT)
+    .PreFunc([](WidgetInfo& info) {
+        info.isHidden = !CrowdControl::Instance->isEnabled;
+        if (CrowdControl::Instance->isConnected) {
+            info.name = "Connected##CrowdControl";
+        } else {
+            info.name = "Connecting...##CrowdControl";
+        }
+    });
 }
 
 } // namespace SohGui
