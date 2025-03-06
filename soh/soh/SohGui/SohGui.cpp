@@ -33,7 +33,6 @@
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
-#include "soh/Enhancements/resolution-editor/ResolutionEditor.h"
 #include "soh/Enhancements/debugger/MessageViewer.h"
 #include "soh/Notification/Notification.h"
 #include "soh/Enhancements/TimeDisplay/TimeDisplay.h"
@@ -97,7 +96,6 @@ namespace SohGui {
     std::shared_ptr<TimeSplitWindow> mTimeSplitWindow;
     std::shared_ptr<PlandomizerWindow> mPlandomizerWindow;
     std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
-    std::shared_ptr<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow> mAdvancedResolutionSettingsWindow;
     std::shared_ptr<SohModalWindow> mModalWindow;
     std::shared_ptr<Notification::Window> mNotificationWindow;
     std::shared_ptr<TimeDisplayWindow> mTimeDisplayWindow;
@@ -185,8 +183,6 @@ namespace SohGui {
         gui->AddGuiWindow(mTimeSplitWindow);
         mPlandomizerWindow = std::make_shared<PlandomizerWindow>(CVAR_WINDOW("PlandomizerEditor"), "Plandomizer Editor", ImVec2(850, 760));
         gui->AddGuiWindow(mPlandomizerWindow);
-        mAdvancedResolutionSettingsWindow = std::make_shared<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow>(CVAR_WINDOW("AdvancedResolutionEditor"), "Advanced Resolution Settings", ImVec2(497, 599));
-        gui->AddGuiWindow(mAdvancedResolutionSettingsWindow);
         mModalWindow = std::make_shared<SohModalWindow>(CVAR_WINDOW("ModalWindow"), "Modal Window");
         gui->AddGuiWindow(mModalWindow);
         mModalWindow->Show();
@@ -204,7 +200,6 @@ namespace SohGui {
         mNotificationWindow = nullptr;
         mModalWindow = nullptr;
         mRandomizerSettingsWindow = nullptr;
-        mAdvancedResolutionSettingsWindow = nullptr;
         mItemTrackerWindow = nullptr;
         mItemTrackerSettingsWindow = nullptr;
         mEntranceTrackerWindow = nullptr;
