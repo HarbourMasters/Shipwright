@@ -156,7 +156,6 @@ void DrawSettingsMenu() {
 #ifdef ENABLE_REMOTE_CONTROL
 void DrawRemoteControlMenu() {
     if (ImGui::BeginMenu("Network")) {
-        Sail::Instance->DrawMenu();
         CrowdControl::Instance->DrawMenu();
         ImGui::EndMenu();
     }
