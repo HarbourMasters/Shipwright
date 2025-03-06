@@ -167,12 +167,6 @@ void SohMenuBar::DrawElement() {
 
         ImGui::SetCursorPosY(0.0f);
 
-        #ifdef ENABLE_REMOTE_CONTROL
-        DrawRemoteControlMenu();
-
-        ImGui::SetCursorPosY(0.0f);
-        #endif
-
         ImGui::PopStyleVar(1);
         ImGui::EndMenuBar();
     }

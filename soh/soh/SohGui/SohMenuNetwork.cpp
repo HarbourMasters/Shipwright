@@ -1,3 +1,4 @@
+#ifdef ENABLE_REMOTE_CONTROL
 #include "SohMenu.h"
 #include <soh/Notification/Notification.h>
 #include <soh/Network/Network.h>
@@ -144,3 +145,4 @@ void SohMenu::AddMenuNetwork() {
 }
 
 } // namespace SohGui
+#endif
