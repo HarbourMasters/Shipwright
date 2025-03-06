@@ -70,6 +70,11 @@ namespace UIWidgets2 {
         NoColor
     };
 
+    enum InputTypes {
+        String,
+        Scalar
+    };
+
     const std::unordered_map<Colors, ImVec4> ColorValues = {
         { Colors::Pink, ImVec4(0.87f, 0.3f, 0.87f, 1.0f) },
         { Colors::Red, ImVec4(0.55f, 0.0f, 0.0f, 1.0f) },
@@ -407,6 +412,54 @@ namespace UIWidgets2 {
         }
         RadioButtonsOptions& Color(Colors color_) {
             WidgetOptions::color = color = color_;
+            return *this;
+        }
+    };
+
+    struct InputOptions : WidgetOptions {
+        ComponentAlignment alignment = ComponentAlignment::Left;
+        LabelPosition labelPosition = LabelPosition::Above;
+        Colors color = Colors::Gray;
+        ImVec2 size = {0,0};
+        std::string placeholder = "";
+        InputTypes type = InputTypes::String;
+        std::string defaultValue = "";
+
+        InputOptions& Tooltip(const char* tooltip_) {
+            WidgetOptions::tooltip = tooltip_;
+            return *this;
+        }
+        InputOptions& Color(Colors color_) {
+            WidgetOptions::color = color = color_;
+            return *this;
+        }
+        InputOptions& Size(ImVec2 size_) {
+            size = size_;
+            return *this;
+        }
+
+        InputOptions& LabelPosition(LabelPosition labelPosition_) {
+            labelPosition = labelPosition_;
+            return *this;
+        }
+
+        InputOptions& PlaceholderText(std::string&& placeholder_) {
+            placeholder = std::move(placeholder_);
+            return *this;
+        }
+
+        InputOptions& PlaceholderText(std::string& placeholder_) {
+            placeholder = placeholder_;
+            return *this;
+        }
+
+        InputOptions& InputType(InputTypes type_) {
+            type = type_;
+            return *this;
+        }
+
+        InputOptions& DefaultValue(std::string defaultValue_) {
+            defaultValue = defaultValue_;
             return *this;
         }
     };
@@ -899,6 +952,10 @@ namespace UIWidgets2 {
     bool CVarSliderInt(const char* label, const char* cvarName, const IntSliderOptions& options = {});
     bool SliderFloat(const char* label, float* value, const FloatSliderOptions& options = {});
     bool CVarSliderFloat(const char* label, const char* cvarName, const FloatSliderOptions& options = {});
+    bool InputString(const char* label, std::string* value, const InputOptions& options = {});
+    bool CVarInputString(const char* label, const char* cvarName, const InputOptions& options = {});
+    bool InputInt(const char* label, int32_t* value, const InputOptions& options = {});
+    bool CVarInputInt(const char* label, const char* cvarName, const InputOptions& options = {});
     bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaultColor, bool hasAlpha = false, uint8_t modifiers = 0, UIWidgets2::Colors themeColor = UIWidgets2::Colors::LightBlue);
     bool RadioButton(const char* label, bool active);
     bool CVarRadioButton(const char* text, const char* cvarName, int32_t id, const RadioButtonsOptions& options);

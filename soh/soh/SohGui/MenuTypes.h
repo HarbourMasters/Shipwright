@@ -39,6 +39,8 @@ typedef enum {
     WIDGET_CVAR_SLIDER_INT,
     WIDGET_CVAR_SLIDER_FLOAT,
     WIDGET_BUTTON,
+    WIDGET_INPUT,
+    WIDGET_CVAR_INPUT,
     WIDGET_COLOR_24, // color picker without alpha
     WIDGET_COLOR_32, // color picker with alpha
     WIDGET_SEARCH,

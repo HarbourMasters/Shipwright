@@ -153,16 +153,6 @@ void DrawSettingsMenu() {
     }
 }
 
-#ifdef ENABLE_REMOTE_CONTROL
-void DrawRemoteControlMenu() {
-    if (ImGui::BeginMenu("Network")) {
-        Sail::Instance->DrawMenu();
-        CrowdControl::Instance->DrawMenu();
-        ImGui::EndMenu();
-    }
-}
-#endif
-
 void SohMenuBar::InitElement() {
     
 }
@@ -176,12 +166,6 @@ void SohMenuBar::DrawElement() {
         DrawSettingsMenu();
 
         ImGui::SetCursorPosY(0.0f);
-
-        #ifdef ENABLE_REMOTE_CONTROL
-        DrawRemoteControlMenu();
-
-        ImGui::SetCursorPosY(0.0f);
-        #endif
 
         ImGui::PopStyleVar(1);
         ImGui::EndMenuBar();
