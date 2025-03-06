@@ -33,8 +33,8 @@ namespace UIWidgets2 {
         }
     };
 
-    std::string WrappedText(const char* text, unsigned int charactersPerLine = 60);
-    std::string WrappedText(const std::string& text, unsigned int charactersPerLine = 60);
+    std::string WrappedText(const char* text, unsigned int charactersPerLine = 80);
+    std::string WrappedText(const std::string& text, unsigned int charactersPerLine = 80);
     void Tooltip(const char* text);
 
     typedef enum ColorPickerModifiers {
@@ -832,9 +832,6 @@ namespace UIWidgets2 {
 
     void InsertHelpHoverText(const std::string& text);
     void InsertHelpHoverText(const char* text);
-
-    void SetLastItemHoverText(const std::string& text);
-    void SetLastItemHoverText(const char* text);
 }
 ImVec4 GetRandomValue();
 

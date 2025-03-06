@@ -636,59 +636,60 @@ void TimeSplitsDrawSplitsList() {
     uint32_t dragIndex = 0;
     ImGui::BeginChild("SplitTable", ImVec2(0.0f, ImGui::GetWindowHeight() - 128.0f));
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, ImVec2(4, 0));
-    ImGui::BeginTable("Splits", 5, ImGuiTableFlags_Hideable | ImGuiTableFlags_Reorderable);
-    ImGui::TableSetupColumn("Item Image", ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_NoHeaderLabel, 34.0f);
-    ImGui::TableSetupColumn("Item Name");
-    ImGui::TableSetupColumn("Current Time");
-    ImGui::TableSetupColumn("+/-");
-    ImGui::TableSetupColumn("Prev. Best");
-    ImGui::TableHeadersRow();
+    if (ImGui::BeginTable("Splits", 5, ImGuiTableFlags_Hideable | ImGuiTableFlags_Reorderable)) {
+        ImGui::TableSetupColumn("Item Image", ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_NoHeaderLabel, 34.0f);
+        ImGui::TableSetupColumn("Item Name");
+        ImGui::TableSetupColumn("Current Time");
+        ImGui::TableSetupColumn("+/-");
+        ImGui::TableSetupColumn("Prev. Best");
+        ImGui::TableHeadersRow();
 
 
-    SplitsPushImageButtonStyle();
-    for (auto& split : splitList) {
-        ImGui::TableNextColumn();
-        TimeSplitsSplitBestTimeDisplay(split);
-        
-        ImGui::PushID(split.splitID);
-        if (split.splitTimeStatus == SPLIT_STATUS_ACTIVE) {
-            ImGui::TableSetBgColor(ImGuiTableBgTarget_RowBg0, IM_COL32(47, 79, 90, 255));
+        SplitsPushImageButtonStyle();
+        for (auto& split : splitList) {
+            ImGui::TableNextColumn();
+            TimeSplitsSplitBestTimeDisplay(split);
+
+            ImGui::PushID(split.splitID);
+            if (split.splitTimeStatus == SPLIT_STATUS_ACTIVE) {
+                ImGui::TableSetBgColor(ImGuiTableBgTarget_RowBg0, IM_COL32(47, 79, 90, 255));
+            }
+            TimeSplitsGetImageSize(split.splitID);
+            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(imagePadding, imagePadding));
+            auto ret = ImGui::ImageButton(split.splitImage.c_str(), Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(split.splitImage),
+                imageSize, ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), split.splitTint);
+            ImGui::PopStyleVar();
+            if (ret) {
+                TimeSplitsSkipSplit(dragIndex);
+            }
+            HandleDragAndDrop(splitList, dragIndex, split.splitName);
+            ImGui::TableNextColumn();
+            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0.0f, 5.0f));
+            ImGui::AlignTextToFramePadding();
+            ImGui::TextWrapped("%s", split.splitName.c_str());
+            ImGui::TableNextColumn();
+            // Current Time
+            ImGui::Text("%s", (split.splitTimeStatus == SPLIT_STATUS_ACTIVE)
+                ? formatTimestampTimeSplit(GAMEPLAYSTAT_TOTAL_TIME).c_str() : (split.splitTimeStatus == SPLIT_STATUS_COLLECTED)
+                ? formatTimestampTimeSplit(split.splitTimeCurrent).c_str() : "--:--:-");
+            ImGui::TableNextColumn();
+            // +/- Difference
+            ImGui::TextColored(splitTimeColor, "%s", formatTimestampTimeSplit(splitBestTimeDisplay).c_str());
+            ImGui::TableNextColumn();
+            // Previous Best
+            ImGui::Text("%s", (split.splitTimePreviousBest != 0) ? formatTimestampTimeSplit(split.splitTimePreviousBest).c_str() : "--:--:-");
+            ImGui::PopID();
+            ImGui::PopStyleVar(1);
+
+            dragIndex++;
         }
-        TimeSplitsGetImageSize(split.splitID);
-        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(imagePadding, imagePadding));
-        auto ret = ImGui::ImageButton(split.splitImage.c_str(), Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(split.splitImage),
-                                      imageSize, ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), split.splitTint);
-        ImGui::PopStyleVar();
-        if (ret) {
-            TimeSplitsSkipSplit(dragIndex);
-        }
-        HandleDragAndDrop(splitList, dragIndex, split.splitName);
-        ImGui::TableNextColumn();
-        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0.0f, 5.0f));
-        ImGui::AlignTextToFramePadding();
-        ImGui::TextWrapped("%s", split.splitName.c_str());
-        ImGui::TableNextColumn();
-        // Current Time
-        ImGui::Text("%s", (split.splitTimeStatus == SPLIT_STATUS_ACTIVE)
-            ? formatTimestampTimeSplit(GAMEPLAYSTAT_TOTAL_TIME).c_str() : (split.splitTimeStatus == SPLIT_STATUS_COLLECTED) 
-            ? formatTimestampTimeSplit(split.splitTimeCurrent).c_str() : "--:--:-");
-        ImGui::TableNextColumn();
-        // +/- Difference
-        ImGui::TextColored(splitTimeColor, "%s", formatTimestampTimeSplit(splitBestTimeDisplay).c_str());
-        ImGui::TableNextColumn();
-        // Previous Best
-        ImGui::Text("%s", (split.splitTimePreviousBest != 0) ? formatTimestampTimeSplit(split.splitTimePreviousBest).c_str() : "--:--:-");
-        ImGui::PopID();
-        ImGui::PopStyleVar(1);
+        SplitsPopImageButtonStyle();
 
-        dragIndex++;
+        TimeSplitsPostDragAndDrop();
+
+        ImGui::EndTable();
     }
-    SplitsPopImageButtonStyle();
-
-    TimeSplitsPostDragAndDrop();
-
-    ImGui::PopStyleVar(1);
-    ImGui::EndTable();
+    ImGui::PopStyleVar();
     ImGui::EndChild();
 }
 

@@ -1065,7 +1065,7 @@ void SohMenu::AddMenuEnhancements() {
     path.column = SECTION_COLUMN_1;
 
     AddWidget(path, "Controls", WIDGET_SEPARATOR_TEXT);
-    AddWidget(path, "Equip Items on D-Pad", WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "Equip Items on Dpad", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("DpadEquips"))
         .Options(CheckboxOptions().Tooltip(
             "Equip items and equipment on the D-Pad. If used with \"D-Pad on Pause Screen\", you must "
