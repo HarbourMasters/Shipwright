@@ -1,3 +1,5 @@
+#pragma once
+
 #include <libultraship/libultraship.h>
 
 namespace Rando {

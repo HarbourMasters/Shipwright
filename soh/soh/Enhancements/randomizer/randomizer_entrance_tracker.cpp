@@ -662,7 +662,7 @@ void EntranceTrackerSettingsWindow::DrawElement() {
 
     ImGui::PushFont(OTRGlobals::Instance->fontStandardLarger);
     ImGui::TextWrapped("The entrance tracker will only track shuffled entrances");
-    UIWidgets::Spacer(0);
+    UIWidgets2::Spacer(0);
 
     ImGui::TableNextColumn();
 
@@ -924,13 +924,13 @@ void EntranceTrackerWindow::DrawElement() {
 
                 // Write collapsed undiscovered info
                 if (!locationSearch.IsActive() && undiscovered > 0) {
-                    UIWidgets::Spacer(0);
+                    UIWidgets2::Spacer(0);
                     ImGui::PushStyleColor(ImGuiCol_Text, COLOR_GRAY);
                     ImGui::TextWrapped("%d Undiscovered", undiscovered);
                     ImGui::PopStyleColor();
                 }
 
-                UIWidgets::Spacer(0);
+                UIWidgets2::Spacer(0);
                 ImGui::TreePop();
             }
         }
