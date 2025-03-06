@@ -451,7 +451,8 @@ namespace UIWidgets2 {
     void PopStyleHeader();
 
     void Spacer(float height = 0.0f);
-    void Separator(bool padTop, bool padBottom, float extraVerticalTopPadding, float extraVerticalBottomPadding);
+    void Separator(bool padTop = true, bool padBottom = true, float extraVerticalTopPadding = 0.0f,
+                   float extraVerticalBottomPadding = 0.0f);
 
     /*using ComboVariant = std::variant<const std::unordered_map<int32_t, const char*>&, const std::vector<const char*>&>;
 

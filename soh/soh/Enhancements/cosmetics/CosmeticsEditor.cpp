@@ -11,8 +11,7 @@
 #include <libultraship/libultraship.h>
 
 #include "soh/SohGui/UIWidgets.hpp"
-#include "soh/SohGui/UIWidgets2.hpp"
-#include "soh/SohGui/SohMenu.h"
+#include "soh/SohGui/SohGui.hpp"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 
@@ -56,9 +55,6 @@ void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const char* patchNa
 void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
 u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 }
-
-extern std::shared_ptr<SohGui::SohMenu> mSohMenu;
-UIWidgets2::Colors cosmeticsThemeColor = UIWidgets2::Colors::LightBlue;
 
 #define PATCH_GFX(path, name, cvar, index, instruction)             \
     if (CVarGetInteger(cvar, 0)) {                                  \
@@ -479,7 +475,7 @@ static const char* MarginCvarNonAnchor[] {
 void SetMarginAll(const char* ButtonName, bool SetActivated, const char* tooltip) {
     if (UIWidgets2::Button(ButtonName, UIWidgets2::ButtonOptions()
                                            .Size(ImVec2(200.0f, 0.0f))
-                                           .Color(cosmeticsThemeColor)
+                                           .Color(THEME_COLOR)
                                            .Tooltip(tooltip))) {
         // MarginCvarNonAnchor is an array that list every element that has No anchor by default, because if that the
         // case this function will not touch it with pose type 0.
@@ -518,7 +514,7 @@ void ResetPositionAll() {
     if (UIWidgets2::Button("Reset all positions",
                            UIWidgets2::ButtonOptions()
                                .Size(ImVec2(200.0f, 0.0f))
-                               .Color(cosmeticsThemeColor)
+                               .Color(THEME_COLOR)
                                .Tooltip("Revert every element to use their original position and no margins"))) {
         for (auto cvarName : MarginCvarList) {
             std::string cvarPosType = std::string(cvarName).append(".PosType");
@@ -1245,7 +1241,7 @@ void DrawUseMarginsSlider(const std::string ElementName, const std::string CvarN
     std::string Label = ElementName + " use margins";
     UIWidgets2::CVarCheckbox(Label.c_str(), CvarLabel.c_str(),
                              UIWidgets2::CheckboxOptions()
-        .Color(cosmeticsThemeColor)
+        .Color(THEME_COLOR)
         .Tooltip("Using this allow you move the element with General margins sliders"));
 }
 
@@ -1253,26 +1249,26 @@ void DrawPositionsRadioBoxes(const std::string CvarName, bool NoAnchorEnabled = 
     std::string CvarLabel = CvarName + ".PosType";
     UIWidgets2::CVarRadioButton("Original position", CvarLabel.c_str(), 0,
                                 UIWidgets2::RadioButtonsOptions()
-                                    .Color(cosmeticsThemeColor)
+                                    .Color(THEME_COLOR)
                                     .Tooltip("This will use original intended elements position"));
     UIWidgets2::CVarRadioButton("Anchor to the left", CvarLabel.c_str(), 1,
                                 UIWidgets2::RadioButtonsOptions()
-                                    .Color(cosmeticsThemeColor)
+                                    .Color(THEME_COLOR)
                                     .Tooltip("This will make your elements follow the left side of your game window"));
     UIWidgets2::CVarRadioButton("Anchor to the right", CvarLabel.c_str(), 2,
                                 UIWidgets2::RadioButtonsOptions()
-                                    .Color(cosmeticsThemeColor)
+                                    .Color(THEME_COLOR)
                                     .Tooltip("This will make your elements follow the right side of your game window"));
     if (NoAnchorEnabled) {
         UIWidgets2::CVarRadioButton(
             "No anchors", CvarLabel.c_str(), 3,
             UIWidgets2::RadioButtonsOptions()
-                .Color(cosmeticsThemeColor)
+                .Color(THEME_COLOR)
                 .Tooltip("This will make your elements to not follow any side\nBetter used for center elements"));
     }
     UIWidgets2::CVarRadioButton(
         "Hidden", CvarLabel.c_str(), 4,
-        UIWidgets2::RadioButtonsOptions().Color(cosmeticsThemeColor).Tooltip("This will make your elements hidden"));
+        UIWidgets2::RadioButtonsOptions().Color(THEME_COLOR).Tooltip("This will make your elements hidden"));
 }
 
 void DrawPositionSlider(const std::string CvarName, int MinY, int MaxY, int MinX, int MaxX){
@@ -1286,7 +1282,7 @@ void DrawPositionSlider(const std::string CvarName, int MinY, int MaxY, int MinX
                                   .Max(MaxY)
                                   .DefaultValue(0)
                                   .Size(ImVec2(300.0f, 0.0f))
-                                  .Color(cosmeticsThemeColor)
+                                  .Color(THEME_COLOR)
                                   .Tooltip("This slider is used to move Up and Down your elements."));
     UIWidgets2::CVarSliderInt("Left <-> Right : %d", PosXCvar.c_str(),
                               UIWidgets2::IntSliderOptions()
@@ -1294,7 +1290,7 @@ void DrawPositionSlider(const std::string CvarName, int MinY, int MaxY, int MinX
                                   .Max(MaxX)
                                   .DefaultValue(0)
                                   .Size(ImVec2(300.0f, 0.0f))
-                                  .Color(cosmeticsThemeColor)
+                                  .Color(THEME_COLOR)
                                   .Tooltip("This slider is used to move Left and Right your elements."));
 }
 
@@ -1306,7 +1302,7 @@ void DrawScaleSlider(const std::string CvarName, float DefaultValue){
 }
 
 void Draw_Table_Dropdown(const char* Header_Title, const char* Table_ID, const char* Column_Title, const char* Slider_Title, const char* Slider_ID, int MinY, int MaxY, int MinX, int MaxX, float Default_Value) {
-    UIWidgets2::PushStyleHeader(cosmeticsThemeColor);
+    UIWidgets2::PushStyleHeader(THEME_COLOR);
     if (ImGui::CollapsingHeader(Header_Title)) {
         if (ImGui::BeginTable(Table_ID, 1, FlagsTable)) {
             ImGui::TableSetupColumn(Column_Title, FlagsCell, TablesCellsWidth);
@@ -1322,7 +1318,7 @@ void Draw_Table_Dropdown(const char* Header_Title, const char* Table_ID, const c
 }
 
 void C_Button_Dropdown(const char* Header_Title, const char* Table_ID, const char* Column_Title, const char* Slider_Title, const char* Slider_ID, const char* Int_Type, float Slider_Scale_Value) {
-    UIWidgets2::PushStyleHeader(cosmeticsThemeColor);
+    UIWidgets2::PushStyleHeader(THEME_COLOR);
     if (ImGui::CollapsingHeader(Header_Title)) {
         if (ImGui::BeginTable(Table_ID, 1, FlagsTable)) {
             ImGui::TableSetupColumn(Column_Title, FlagsCell, TablesCellsWidth);
@@ -1360,7 +1356,7 @@ void C_Button_Dropdown(const char* Header_Title, const char* Table_ID, const cha
 }
 
 void Draw_Placements(){
-    UIWidgets2::PushStyleHeader(cosmeticsThemeColor);
+    UIWidgets2::PushStyleHeader(THEME_COLOR);
     ImGui::SeparatorText("General Margins Settings");
     UIWidgets2::CVarSliderInt("Top: %dpx", CVAR_COSMETIC("HUD.Margin.T"),
                                 UIWidgets2::IntSliderOptions()
@@ -1368,28 +1364,28 @@ void Draw_Placements(){
                                     .Max(25)
                                     .DefaultValue(0)
                                     .Size(ImVec2(300.0f, 0.0f))
-                                    .Color(cosmeticsThemeColor));
+                                    .Color(THEME_COLOR));
     UIWidgets2::CVarSliderInt("Left: %dpx", CVAR_COSMETIC("HUD.Margin.L"),
                                 UIWidgets2::IntSliderOptions()
                                     .Min(-25)
                                     .Max(static_cast<s16>(ImGui::GetWindowViewport()->Size.x))
                                     .DefaultValue(0)
                                     .Size(ImVec2(300.0f, 0.0f))
-                                    .Color(cosmeticsThemeColor));
+                                    .Color(THEME_COLOR));
     UIWidgets2::CVarSliderInt("Right: %dpx", CVAR_COSMETIC("HUD.Margin.R"),
                                 UIWidgets2::IntSliderOptions()
                                     .Min(static_cast<s16>(ImGui::GetWindowViewport()->Size.x) * -1)
                                     .Max(25)
                                     .DefaultValue(0)
                                     .Size(ImVec2(300.0f, 0.0f))
-                                    .Color(cosmeticsThemeColor));
+                                    .Color(THEME_COLOR));
     UIWidgets2::CVarSliderInt("Bottom: %dpx", CVAR_COSMETIC("HUD.Margin.B"),
                                 UIWidgets2::IntSliderOptions()
                                     .Min(static_cast<s16>(ImGui::GetWindowViewport()->Size.y / 2) * -1)
                                     .Max(25)
                                     .DefaultValue(0)
                                     .Size(ImVec2(300.0f, 0.0f))
-                                    .Color(cosmeticsThemeColor));
+                                    .Color(THEME_COLOR));
     SetMarginAll("All margins on", true,
                  "Set most of the elements to use margins\nSome elements with default position will not be "
                  "affected\nElements without Anchor or Hidden will not be turned on");
@@ -1412,7 +1408,7 @@ void Draw_Placements(){
                                           .Max(20)
                                           .DefaultValue(0)
                                           .Size(ImVec2(300.0f, 0.0f))
-                                          .Color(cosmeticsThemeColor)
+                                          .Color(THEME_COLOR)
                                           .Tooltip("This will set the length of a row of hearts. Set to 0 for unlimited length."));
             ImGui::EndTable();
         }
@@ -1426,7 +1422,7 @@ void Draw_Placements(){
             UIWidgets2::CVarRadioButton(
                 "Anchor to life bar", CVAR_COSMETIC("HUD.MagicBar.PosType"), 5,
                 UIWidgets2::RadioButtonsOptions()
-                    .Color(cosmeticsThemeColor)
+                    .Color(THEME_COLOR)
                     .Tooltip("This will make your elements follow the bottom of the life meter"));
             DrawPositionSlider(CVAR_COSMETIC("HUD.MagicBar"), 0, static_cast<s16>(ImGui::GetWindowViewport()->Size.y / 2), -5, static_cast<s16>(ImGui::GetWindowViewport()->Size.x / 2));
             DrawScaleSlider(CVAR_COSMETIC("HUD.MagicBar"), 1.0f);
@@ -1502,17 +1498,17 @@ void Draw_Placements(){
             UIWidgets2::CVarRadioButton("Anchor to Enemy", CVAR_COSMETIC("HUD.EnemyHealthBar.PosType"),
                                         ENEMYHEALTH_ANCHOR_ACTOR,
                                         UIWidgets2::RadioButtonsOptions()
-                                            .Color(cosmeticsThemeColor)
+                                            .Color(THEME_COLOR)
                                             .Tooltip("This will use enemy on screen position"));
             UIWidgets2::CVarRadioButton(
                 "Anchor to the top", CVAR_COSMETIC("HUD.EnemyHealthBar.PosType"), ENEMYHEALTH_ANCHOR_TOP,
                 UIWidgets2::RadioButtonsOptions()
-                    .Color(cosmeticsThemeColor)
+                    .Color(THEME_COLOR)
                     .Tooltip("This will make your elements follow the top edge of your game window"));
             UIWidgets2::CVarRadioButton(
                 "Anchor to the bottom", CVAR_COSMETIC("HUD.EnemyHealthBar.PosType"), ENEMYHEALTH_ANCHOR_BOTTOM,
                 UIWidgets2::RadioButtonsOptions()
-                    .Color(cosmeticsThemeColor)
+                    .Color(THEME_COLOR)
                     .Tooltip("This will make your elements follow the bottom edge of your game window"));
             DrawPositionSlider(CVAR_COSMETIC("HUD.EnemyHealthBar."), -SCREEN_HEIGHT, SCREEN_HEIGHT, -static_cast<int>(ImGui::GetWindowViewport()->Size.x / 2), static_cast<int>(ImGui::GetWindowViewport()->Size.x / 2));
             if (UIWidgets2::CVarSliderInt(
@@ -1522,7 +1518,7 @@ void Draw_Placements(){
                         .Max(128)
                         .DefaultValue(64)
                         .Size(ImVec2(300.0f, 0.0f))
-                        .Color(cosmeticsThemeColor)
+                        .Color(THEME_COLOR)
                         .Tooltip("This will change the width of the health bar"))) {
                 CVarSetInteger(CVAR_COSMETIC("HUD.EnemyHealthBar.Width.Changed"), 1);
             }
@@ -1565,7 +1561,7 @@ void DrawSillyTab() {
 
     UIWidgets2::CVarCheckbox("Let It Snow", CVAR_GENERAL("LetItSnow"),
                              UIWidgets2::CheckboxOptions()
-                                 .Color(cosmeticsThemeColor)
+                                 .Color(THEME_COLOR)
                                  .Tooltip("Makes snow fall, changes chest texture colors to red and green, etc, for December holidays.\nWill reset on restart outside of December 23-25."));
 
     UIWidgets2::Separator(true, true, 2.0f, 2.0f);
@@ -1578,7 +1574,7 @@ void DrawSillyTab() {
                                         .DefaultValue(0.01f)
                                         .Step(0.001f)
                                         .Size(ImVec2(300.0f, 0.0f))
-                                        .Color(cosmeticsThemeColor))) {
+                                        .Color(THEME_COLOR))) {
         CVarSetInteger(CVAR_COSMETIC("Link.BodySize.Changed"), 1);
     }
     ImGui::SameLine();
@@ -1604,7 +1600,7 @@ void DrawSillyTab() {
                                         .DefaultValue(1.0f)
                                         .Step(0.1f)
                                         .Size(ImVec2(300.0f, 0.0f))
-                                        .Color(cosmeticsThemeColor))) {
+                                        .Color(THEME_COLOR))) {
         CVarSetInteger(CVAR_COSMETIC("Link.HeadScale.Changed"), 1);
     }
     Reset_Option_Double("Reset##Link_HeadScale", CVAR_COSMETIC("Link.HeadScale"));
@@ -1619,7 +1615,7 @@ void DrawSillyTab() {
                                         .DefaultValue(1.0f)
                                         .Step(0.1f)
                                         .Size(ImVec2(300.0f, 0.0f))
-                                        .Color(cosmeticsThemeColor))) {
+                                        .Color(THEME_COLOR))) {
         CVarSetInteger(CVAR_COSMETIC("Link.SwordScale.Changed"), 1);
     }
     Reset_Option_Double("Reset##Link_SwordScale", CVAR_COSMETIC("Link.SwordScale"));
@@ -1634,7 +1630,7 @@ void DrawSillyTab() {
                                     .DefaultValue(0.0f)
                                     .Step(10.0f)
                                     .Size(ImVec2(300.0f, 0.0f))
-                                    .Color(cosmeticsThemeColor));
+                                    .Color(THEME_COLOR));
     Reset_Option_Single("Reset##BunnyHood_EarLength", CVAR_COSMETIC("BunnyHood.EarLength"));
 
     UIWidgets2::Separator(true, true, 2.0f, 2.0f);
@@ -1647,7 +1643,7 @@ void DrawSillyTab() {
                                     .DefaultValue(0.0f)
                                     .Step(10.0f)
                                     .Size(ImVec2(300.0f, 0.0f))
-                                    .Color(cosmeticsThemeColor));
+                                    .Color(THEME_COLOR));
     Reset_Option_Single("Reset##BunnyHood_EarSpread", CVAR_COSMETIC("BunnyHood.EarSpread"));
 
     UIWidgets2::Separator(true, true, 2.0f, 2.0f);
@@ -1660,14 +1656,14 @@ void DrawSillyTab() {
                                     .DefaultValue(0.0f)
                                     .Step(10.0f)
                                     .Size(ImVec2(300.0f, 0.0f))
-                                    .Color(cosmeticsThemeColor));
+                                    .Color(THEME_COLOR));
     Reset_Option_Single("Reset##Goron_NeckLength", CVAR_COSMETIC("Goron.NeckLength"));
 
     UIWidgets2::Separator(true, true, 2.0f, 2.0f);
 
     UIWidgets2::CVarCheckbox("Unfix Goron Spin", CVAR_COSMETIC("UnfixGoronSpin"),
                              UIWidgets2::CheckboxOptions()
-                                 .Color(cosmeticsThemeColor));
+                                 .Color(THEME_COLOR));
 
     UIWidgets2::Separator(true, true, 2.0f, 2.0f);
 
@@ -1679,7 +1675,7 @@ void DrawSillyTab() {
                                     .DefaultValue(1.0f)
                                     .Step(0.1f)
                                     .Size(ImVec2(300.0f, 0.0f))
-                                    .Color(cosmeticsThemeColor));
+                                    .Color(THEME_COLOR));
     Reset_Option_Single("Reset##Fairies_Size", CVAR_COSMETIC("Fairies.Size"));
 
     UIWidgets2::Separator(true, true, 2.0f, 2.0f);
@@ -1692,7 +1688,7 @@ void DrawSillyTab() {
                                     .DefaultValue(1.0f)
                                     .Step(0.1f)
                                     .Size(ImVec2(300.0f, 0.0f))
-                                    .Color(cosmeticsThemeColor));
+                                    .Color(THEME_COLOR));
     Reset_Option_Single("Reset##N64Logo_SpinSpeed", CVAR_COSMETIC("N64Logo.SpinSpeed"));
 
     UIWidgets2::Separator(true, true, 2.0f, 2.0f);
@@ -1705,7 +1701,7 @@ void DrawSillyTab() {
                                     .DefaultValue(1.0f)
                                     .Step(0.1f)
                                     .Size(ImVec2(300.0f, 0.0f))
-                                    .Color(cosmeticsThemeColor));
+                                    .Color(THEME_COLOR));
     Reset_Option_Single("Reset##Moon_Size", CVAR_COSMETIC("Moon.Size"));
 
     UIWidgets2::Separator(true, true, 2.0f, 2.0f);
@@ -1718,7 +1714,7 @@ void DrawSillyTab() {
                                         .DefaultValue(100.0f)
                                         .Step(10.0f)
                                         .Size(ImVec2(300.0f, 0.0f))
-                                        .Color(cosmeticsThemeColor))) {
+                                        .Color(THEME_COLOR))) {
         CVarSetInteger(CVAR_COSMETIC("Kak.Windmill_Speed.Changed"), 1);
     }
     Reset_Option_Double("Reset##Kak_Windmill_Speed", CVAR_COSMETIC("Kak.Windmill_Speed"));
@@ -1871,7 +1867,7 @@ void ResetColor(CosmeticOption& cosmeticOption) {
 void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
     if (UIWidgets2::CVarColorPicker(cosmeticOption.label.c_str(), cosmeticOption.cvar,
                                     cosmeticOption.defaultColor,
-        cosmeticOption.supportsAlpha, 0, cosmeticsThemeColor)) {
+        cosmeticOption.supportsAlpha, 0, THEME_COLOR)) {
         CVarSetInteger((cosmeticOption.rainbowCvar), 0);
         CVarSetInteger((cosmeticOption.changedCvar), 1);
         ApplySideEffects(cosmeticOption);
@@ -1882,7 +1878,7 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
     ImGui::SameLine((ImGui::CalcTextSize("Message Light Blue (None No Shadow)").x * 1.0f) + 60.0f);
     if (UIWidgets2::Button(
             ("Random##" + cosmeticOption.label).c_str(),
-            UIWidgets2::ButtonOptions().Size(ImVec2(80, 31)).Padding(ImVec2(2.0f, 0.0f)).Color(cosmeticsThemeColor))) {
+            UIWidgets2::ButtonOptions().Size(ImVec2(80, 31)).Padding(ImVec2(2.0f, 0.0f)).Color(THEME_COLOR))) {
         RandomizeColor(cosmeticOption);
         ApplyOrResetCustomGfxPatches();
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
@@ -1890,7 +1886,7 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
     if (cosmeticOption.supportsRainbow) {
         ImGui::SameLine();
         if (UIWidgets2::CVarCheckbox(("Rainbow##" + cosmeticOption.label).c_str(), cosmeticOption.rainbowCvar,
-                                     UIWidgets2::CheckboxOptions().Color(cosmeticsThemeColor))) {
+                                     UIWidgets2::CheckboxOptions().Color(THEME_COLOR))) {
             CVarSetInteger((cosmeticOption.changedCvar), 1);
             ApplySideEffects(cosmeticOption);
             ApplyOrResetCustomGfxPatches();
@@ -1900,7 +1896,7 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
     ImGui::SameLine();
 
     UIWidgets2::CVarCheckbox(("Locked##" + cosmeticOption.label).c_str(), cosmeticOption.lockedCvar,
-                                 UIWidgets2::CheckboxOptions().Color(cosmeticsThemeColor));
+                                 UIWidgets2::CheckboxOptions().Color(THEME_COLOR));
 
     if (CVarGetInteger((cosmeticOption.changedCvar), 0)) {
         ImGui::SameLine();
@@ -1919,7 +1915,7 @@ void DrawCosmeticGroup(CosmeticGroup cosmeticGroup) {
     // the longest option name
     ImGui::SameLine((ImGui::CalcTextSize("Message Light Blue (None No Shadow)").x * 1.0f) + 60.0f);
     if (UIWidgets2::Button(("Random##" + label).c_str(),
-            UIWidgets2::ButtonOptions().Size(ImVec2(80, 31)).Padding(ImVec2(2.0f, 0.0f)).Color(cosmeticsThemeColor))) {
+            UIWidgets2::ButtonOptions().Size(ImVec2(80, 31)).Padding(ImVec2(2.0f, 0.0f)).Color(THEME_COLOR))) {
         for (auto& [id, cosmeticOption] : cosmeticOptions) {
             if (cosmeticOption.group == cosmeticGroup &&
                 (!cosmeticOption.advancedOption || CVarGetInteger(CVAR_COSMETIC("AdvancedMode"), 0)) &&
@@ -2045,17 +2041,15 @@ void CosmeticsEditorWindow::ApplyDungeonKeyColors() {
 }
 
 void CosmeticsEditorWindow::DrawElement() {
-    cosmeticsThemeColor = static_cast<UIWidgets2::Colors>(CVarGetInteger(CVAR_SETTING("Menu.Theme"), UIWidgets2::Colors::LightBlue));
-
     UIWidgets2::CVarCombobox("Color Scheme", CVAR_COSMETIC("DefaultColorScheme"), colorSchemes,
                              UIWidgets2::ComboboxOptions()
                                  .DefaultIndex(COLORSCHEME_N64)
-                                 .Color(cosmeticsThemeColor)
+                                 .Color(THEME_COLOR)
                                  .LabelPosition(UIWidgets2::LabelPosition::Near)
                                  .ComponentAlignment(UIWidgets2::ComponentAlignment::Right));
     UIWidgets2::CVarCheckbox("Sync Rainbow colors", CVAR_COSMETIC("RainbowSync"),
                              UIWidgets2::CheckboxOptions()
-                                 .Color(cosmeticsThemeColor));
+                                 .Color(THEME_COLOR));
     UIWidgets2::CVarSliderFloat("Rainbow Speed", CVAR_COSMETIC("RainbowSpeed"),
                                 UIWidgets2::FloatSliderOptions()
                                     .Format("%.2f")
@@ -2064,15 +2058,15 @@ void CosmeticsEditorWindow::DrawElement() {
                                     .DefaultValue(0.6f)
                                     .Step(0.01f)
                                     .Size(ImVec2(300.0f, 0.0f))
-                                    .Color(cosmeticsThemeColor));
+                                    .Color(THEME_COLOR));
     UIWidgets2::CVarCheckbox("Randomize All on New Scene", CVAR_COSMETIC("RandomizeAllOnNewScene"),
                              UIWidgets2::CheckboxOptions()
-                                 .Color(cosmeticsThemeColor)
+                                 .Color(THEME_COLOR)
                                  .Tooltip("Enables randomizing all unlocked cosmetics when you enter a new scene."));
     UIWidgets2::CVarCheckbox(
         "Advanced Mode", CVAR_COSMETIC("AdvancedMode"),
         UIWidgets2::CheckboxOptions()
-            .Color(cosmeticsThemeColor)
+            .Color(THEME_COLOR)
             .Tooltip(
                 "Some cosmetic options may not apply if you have any mods that provide custom models for the cosmetic "
                 "option.\n\n"
@@ -2080,7 +2074,7 @@ void CosmeticsEditorWindow::DrawElement() {
                 "apply."));
     if (CVarGetInteger(CVAR_COSMETIC("AdvancedMode"), 0)) {
         if (UIWidgets2::Button("Lock All Advanced",
-                               UIWidgets2::ButtonOptions().Size(ImVec2(250.0f, 0.0f)).Color(cosmeticsThemeColor))) {
+                               UIWidgets2::ButtonOptions().Size(ImVec2(250.0f, 0.0f)).Color(THEME_COLOR))) {
             for (auto& [id, cosmeticOption] : cosmeticOptions) {
                 if (cosmeticOption.advancedOption) {
                     CVarSetInteger(cosmeticOption.lockedCvar, 1);
@@ -2089,7 +2083,7 @@ void CosmeticsEditorWindow::DrawElement() {
         }
         ImGui::SameLine();
         if (UIWidgets2::Button("Unlock All Advanced",
-                               UIWidgets2::ButtonOptions().Size(ImVec2(250.0f, 0.0f)).Color(cosmeticsThemeColor))) {
+                               UIWidgets2::ButtonOptions().Size(ImVec2(250.0f, 0.0f)).Color(THEME_COLOR))) {
             for (auto& [id, cosmeticOption] : cosmeticOptions) {
                 if (cosmeticOption.advancedOption) {
                     CVarSetInteger(cosmeticOption.lockedCvar, 0);
@@ -2098,17 +2092,17 @@ void CosmeticsEditorWindow::DrawElement() {
         }
     }
     if (UIWidgets2::Button("Randomize All",
-                           UIWidgets2::ButtonOptions().Size(ImVec2(250.0f, 0.0f)).Color(cosmeticsThemeColor))) {
+                           UIWidgets2::ButtonOptions().Size(ImVec2(250.0f, 0.0f)).Color(THEME_COLOR))) {
         CosmeticsEditor_RandomizeAll();
     }
     ImGui::SameLine();
     if (UIWidgets2::Button("Reset All",
-                           UIWidgets2::ButtonOptions().Size(ImVec2(250.0f, 0.0f)).Color(cosmeticsThemeColor))) {
+                           UIWidgets2::ButtonOptions().Size(ImVec2(250.0f, 0.0f)).Color(THEME_COLOR))) {
         CVarClearBlock("gCosmetics");
         ApplyOrResetCustomGfxPatches();
     }
     if (UIWidgets2::Button("Lock All",
-                           UIWidgets2::ButtonOptions().Size(ImVec2(250.0f, 0.0f)).Color(cosmeticsThemeColor))) {
+                           UIWidgets2::ButtonOptions().Size(ImVec2(250.0f, 0.0f)).Color(THEME_COLOR))) {
         for (auto& [id, cosmeticOption] : cosmeticOptions) {
             if (!cosmeticOption.advancedOption || CVarGetInteger(CVAR_COSMETIC("AdvancedMode"), 0)) {
                 CVarSetInteger(cosmeticOption.lockedCvar, 1);
@@ -2117,7 +2111,7 @@ void CosmeticsEditorWindow::DrawElement() {
     }
     ImGui::SameLine();
     if (UIWidgets2::Button("Unlock All",
-                           UIWidgets2::ButtonOptions().Size(ImVec2(250.0f, 0.0f)).Color(cosmeticsThemeColor))) {
+                           UIWidgets2::ButtonOptions().Size(ImVec2(250.0f, 0.0f)).Color(THEME_COLOR))) {
         for (auto& [id, cosmeticOption] : cosmeticOptions) {
             if (!cosmeticOption.advancedOption || CVarGetInteger(CVAR_COSMETIC("AdvancedMode"), 0)) {
                 CVarSetInteger(cosmeticOption.lockedCvar, 0);
@@ -2126,7 +2120,7 @@ void CosmeticsEditorWindow::DrawElement() {
     }
 
     if (UIWidgets2::Button("Rainbow All",
-                           UIWidgets2::ButtonOptions().Size(ImVec2(250.0f, 0.0f)).Color(cosmeticsThemeColor))) {
+                           UIWidgets2::ButtonOptions().Size(ImVec2(250.0f, 0.0f)).Color(THEME_COLOR))) {
         for (auto& [id, cosmeticOption] : cosmeticOptions) {
             if (!CVarGetInteger(cosmeticOption.lockedCvar, 0) &&
                 (!cosmeticOption.advancedOption || CVarGetInteger(CVAR_COSMETIC("AdvancedMode"), 0))) {
@@ -2137,7 +2131,7 @@ void CosmeticsEditorWindow::DrawElement() {
     }
     ImGui::SameLine();
     if (UIWidgets2::Button("Un-Rainbow All",
-                           UIWidgets2::ButtonOptions().Size(ImVec2(250.0f, 0.0f)).Color(cosmeticsThemeColor))) {
+                           UIWidgets2::ButtonOptions().Size(ImVec2(250.0f, 0.0f)).Color(THEME_COLOR))) {
         for (auto& [id, cosmeticOption] : cosmeticOptions) {
             if (!CVarGetInteger(cosmeticOption.lockedCvar, 0) &&
                 (!cosmeticOption.advancedOption || CVarGetInteger(CVAR_COSMETIC("AdvancedMode"), 0))) {
@@ -2148,7 +2142,7 @@ void CosmeticsEditorWindow::DrawElement() {
 
     UIWidgets2::Spacer(3.0f);
 
-    UIWidgets2::PushStyleTabs(cosmeticsThemeColor);
+    UIWidgets2::PushStyleTabs(THEME_COLOR);
     if (ImGui::BeginTabBar("CosmeticsContextTabBar", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         if (ImGui::BeginTabItem("Link & Items")) {
 
@@ -2169,7 +2163,7 @@ void CosmeticsEditorWindow::DrawElement() {
 
             if (UIWidgets2::Button(
                     "Give all keys dungeon-specific colors",
-                    UIWidgets2::ButtonOptions().Color(cosmeticsThemeColor).Size(UIWidgets2::Sizes::Inline))) {
+                    UIWidgets2::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets2::Sizes::Inline))) {
                 ApplyDungeonKeyColors();
             }
 
@@ -2196,7 +2190,7 @@ void CosmeticsEditorWindow::DrawElement() {
                                               .Max(20)
                                               .DefaultValue(4)
                                               .Size(ImVec2(300.0f, 0.0f))
-                                              .Color(cosmeticsThemeColor))) {
+                                              .Color(THEME_COLOR))) {
                 CVarSetInteger(CVAR_COSMETIC("Trails.Duration.Changed"), 1);
             }
             ImGui::SameLine();
