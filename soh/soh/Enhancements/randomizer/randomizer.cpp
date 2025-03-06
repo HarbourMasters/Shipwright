@@ -1941,12 +1941,7 @@ void RandomizerSettingsWindow::DrawElement() {
         randoThread.join();
     }
     bool disableEditingRandoSettings = CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
-    if (disableEditingRandoSettings) {
-        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-        ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
-    }
-
-    ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
+    ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings);
     const PresetTypeDefinition presetTypeDef = presetTypes.at(PRESET_TYPE_RANDOMIZER);
     std::string comboboxTooltip = "";
     for (auto iter = presetTypeDef.presets.begin(); iter != presetTypeDef.presets.end(); ++iter) {
@@ -1974,8 +1969,6 @@ void RandomizerSettingsWindow::DrawElement() {
         }
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
-
-    ImGui::EndDisabled();
 
     UIWidgets2::Spacer(0);
     UIWidgets2::CVarCheckbox("Manual seed entry", CVAR_RANDOMIZER_SETTING("ManualSeedEntry"), UIWidgets2::CheckboxOptions().Color(THEME_COLOR));
@@ -2453,7 +2446,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                         Rando::Tricks::DrawTagChips(option.GetTags(), option.GetName());
                                         ImGui::SameLine();
                                         ImGui::Text("%s", option.GetName().c_str());
-                                        UIWidgets2::InsertHelpHoverText(option.GetDescription().c_str());
+                                        UIWidgets2::Tooltip(option.GetDescription().c_str());
                                     }
                                 }
                                 areaTreeDisabled[area] = true;
@@ -2545,7 +2538,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                     Rando::Tricks::DrawTagChips(option.GetTags(), option.GetName());
                                     ImGui::SameLine();
                                     ImGui::Text("%s", option.GetName().c_str());
-                                    UIWidgets2::InsertHelpHoverText(option.GetDescription().c_str());
+                                    UIWidgets2::Tooltip(option.GetDescription().c_str());
                                     }
                                 }
                                 areaTreeEnabled[area] = true;
@@ -2590,12 +2583,7 @@ void RandomizerSettingsWindow::DrawElement() {
     UIWidgets2::PopStyleTabs();
 
     ImGui::EndDisabled();
-
-    if (disableEditingRandoSettings) {
-        // End of disable region of previous component
-        ImGui::PopStyleVar(1);
-        ImGui::PopItemFlag();
-    }
+    ImGui::EndDisabled();
 }
 
 void RandomizerSettingsWindow::UpdateElement() {

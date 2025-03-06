@@ -389,7 +389,7 @@ bool OptionGroup::RenderImGui() const { // NOLINT(*-no-recursion)
                 ImGui::TableSetColumnIndex(i);
                 ImGui::TableHeader(mSubGroups[i]->GetName().c_str());
                 if (!mSubGroups[i]->GetDescription().empty()) {
-                    UIWidgets2::SetLastItemHoverText(mSubGroups[i]->GetDescription().c_str());
+                    UIWidgets2::Tooltip(mSubGroups[i]->GetDescription().c_str());
                 }
             }
             ImGui::PopItemFlag();
@@ -399,7 +399,7 @@ bool OptionGroup::RenderImGui() const { // NOLINT(*-no-recursion)
     if (mContainerType == WidgetContainerType::SECTION && !mName.empty()) {
         ImGui::SeparatorText(mName.c_str());
         if (!mDescription.empty()) {
-            UIWidgets2::SetLastItemHoverText(mDescription.c_str());
+            UIWidgets2::Tooltip(mDescription.c_str());
         }
     }
     if (mContainerType == WidgetContainerType::COLUMN) {

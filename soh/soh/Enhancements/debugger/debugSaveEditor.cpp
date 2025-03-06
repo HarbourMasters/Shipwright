@@ -2,6 +2,7 @@
 #include "soh/util.h"
 #include "soh/SohGui/ImGuiUtils.h"
 #include "soh/OTRGlobals.h"
+#include <soh/SohGui/UIWidgets.hpp>
 #include "soh/SohGui/UIWidgets2.hpp"
 #include "soh/SohGui/SohGui.hpp"
 

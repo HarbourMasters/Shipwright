@@ -14,6 +14,7 @@
 #include "soh/Enhancements/debugger/debugSaveEditor.h"
 #include "soh_assets.h"
 #include "assets/textures/parameter_static/parameter_static.h"
+#include <soh/SohGui/UIWidgets.hpp>
 
 extern "C" {
     extern SaveContext gSaveContext;
