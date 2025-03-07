@@ -1363,6 +1363,8 @@ void GenerateItemPool() {
     }
   }
   PendingJunkPool.clear();
+
+  assert(ItemPool.size() <= ctx->allLocations.size() || !"Item Pool larger than Location Pool");
 }
 
 void AddJunk() {
