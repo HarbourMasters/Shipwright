@@ -42,7 +42,7 @@ namespace UIWidgets2 {
         ColorPickerRandomButton = 2,
         ColorPickerRainbowCheck = 4,
         ColorPickerLockCheck = 8,
-    };
+    } ColorPickerModifiers;
 
     // mostly in order for colors usable by the menu without custom text color
     enum Colors {
