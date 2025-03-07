@@ -13,10 +13,11 @@ void RegionTable_Init_GerudoValley() {
     }, {
         //Exits
         Entrance(RR_HYRULE_FIELD,     []{return true;}),
-        Entrance(RR_GV_UPPER_STREAM,  []{return true;}),
+        Entrance(RR_GV_UPPER_STREAM,  []{return logic->IsChild || logic->HasItem(RG_BRONZE_SCALE) || logic->TakeDamage();}),
         Entrance(RR_GV_CRATE_LEDGE,   []{return logic->IsChild || logic->CanUse(RG_LONGSHOT);}),
         Entrance(RR_GV_GROTTO_LEDGE,  []{return true;}),
         Entrance(RR_GV_FORTRESS_SIDE, []{return (logic->IsAdult && (logic->CanUse(RG_EPONA) || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->CarpenterRescue)) || (logic->IsChild && logic->CanUse(RG_HOOKSHOT));}),
+        Entrance(RR_LAKE_HYLIA,       []{return logic->IsChild;}), //can use cucco as child
     });
 
     areaTable[RR_GV_UPPER_STREAM] = Region("GV Upper Stream", "Gerudo Valley", {RA_GERUDO_VALLEY}, DAY_NIGHT_CYCLE, {
@@ -41,11 +42,12 @@ void RegionTable_Init_GerudoValley() {
 
     areaTable[RR_GV_LOWER_STREAM] = Region("GV Lower Stream", "Gerudo Valley", {RA_GERUDO_VALLEY}, DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
-        Entrance(RR_LAKE_HYLIA, []{return logic->IsChild || logic->HasItem(RG_BRONZE_SCALE);}),//can use cucco as child
+        Entrance(RR_LAKE_HYLIA, []{return logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS);}),
     });
 
     areaTable[RR_GV_GROTTO_LEDGE] = Region("GV Grotto Ledge", "Gerudo Valley", {RA_GERUDO_VALLEY}, DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
+        Entrance(RR_GV_UPPER_STREAM,   []{return ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives();}),
         Entrance(RR_GV_LOWER_STREAM,   []{return true;}),
         Entrance(RR_GV_OCTOROK_GROTTO, []{return logic->CanUse(RG_SILVER_GAUNTLETS);}),
         Entrance(RR_GV_CRATE_LEDGE,    []{return logic->CanUse(RG_LONGSHOT);}),

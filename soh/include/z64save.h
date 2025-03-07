@@ -160,7 +160,6 @@ typedef struct {
 #pragma region SoH
 
 typedef struct ShipRandomizerSaveContextData {
-    u16 adultTradeItems;
     u8 triforcePiecesCollected;
 } ShipRandomizerSaveContextData;
 
