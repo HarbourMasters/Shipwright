@@ -222,6 +222,7 @@ namespace Rando {
             case RG_GOLDEN_SCALE:
                 return CurrentUpgrade(UPG_SCALE) >= 2;
             case RG_POCKET_EGG:
+                return CheckRandoInf(RAND_INF_ADULT_TRADES_HAS_POCKET_EGG);
             case RG_COJIRO:
             case RG_ODD_MUSHROOM:
             case RG_ODD_POTION:
@@ -231,7 +232,7 @@ namespace Rando {
             case RG_EYEBALL_FROG:
             case RG_EYEDROPS:
             case RG_CLAIM_CHECK:
-                return CheckRandoInf(itemName - RG_POCKET_EGG + RAND_INF_ADULT_TRADES_HAS_POCKET_EGG);
+                return CheckRandoInf(itemName - RG_COJIRO + RAND_INF_ADULT_TRADES_HAS_COJIRO);
             case RG_BOTTLE_WITH_BIG_POE:
             case RG_BOTTLE_WITH_BLUE_FIRE:
             case RG_BOTTLE_WITH_BLUE_POTION:
@@ -1505,6 +1506,8 @@ namespace Rando {
                 mSaveContext->isDoubleDefenseAcquired = state;
                 break;
             case RG_POCKET_EGG:
+                SetRandoInf(RAND_INF_ADULT_TRADES_HAS_POCKET_EGG, state);
+                break;
             case RG_COJIRO:
             case RG_ODD_MUSHROOM:
             case RG_ODD_POTION:
@@ -1514,7 +1517,7 @@ namespace Rando {
             case RG_EYEBALL_FROG:
             case RG_EYEDROPS:
             case RG_CLAIM_CHECK:
-                SetRandoInf(randoGet - RG_POCKET_EGG + RAND_INF_ADULT_TRADES_HAS_POCKET_EGG, state);
+                SetRandoInf(randoGet - RG_COJIRO + RAND_INF_ADULT_TRADES_HAS_COJIRO, state);
                 break;
             case RG_PROGRESSIVE_HOOKSHOT:
             {
