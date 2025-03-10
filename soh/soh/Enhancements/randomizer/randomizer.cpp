@@ -2107,7 +2107,7 @@ void RandomizerSettingsWindow::DrawElement() {
                             for (auto& location : locations) {
                                 if (ctx->GetItemLocation(location)->IsVisible() && !excludedLocations.count(location) &&
                                     locationSearch.PassFilter(Rando::StaticData::GetLocation(location)->GetName().c_str())) {
-                                    UIWidgets2::PushStyleButton(THEME_COLOR);
+                                    UIWidgets2::PushStyleButton(THEME_COLOR, ImVec2(7.f, 5.f));
                                     if (ImGui::ArrowButton(std::to_string(location).c_str(), ImGuiDir_Right)) {
                                         excludedLocations.insert(location);
                                         // todo: this efficently when we build out cvar array support
@@ -2150,7 +2150,7 @@ void RandomizerSettingsWindow::DrawElement() {
                             for (auto& location : locations) {
                                 auto elfound = excludedLocations.find(location);
                                 if (ctx->GetItemLocation(location)->IsVisible() && elfound != excludedLocations.end()) {
-                                    UIWidgets2::PushStyleButton(THEME_COLOR);
+                                    UIWidgets2::PushStyleButton(THEME_COLOR, ImVec2(7.f, 5.f));
                                     if (ImGui::ArrowButton(std::to_string(location).c_str(), ImGuiDir_Left)) {
                                         excludedLocations.erase(elfound);
                                         // todo: this efficently when we build out cvar array support
@@ -2431,7 +2431,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                         !enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                                         ImGui::TreeNodeSetOpen(ImGui::GetID((Rando::Tricks::GetAreaName(option.GetArea()) + "##disabled").c_str()), areaTreeDisabled[option.GetArea()]);
                                         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                                        UIWidgets2::PushStyleButton(THEME_COLOR);
+                                        UIWidgets2::PushStyleButton(THEME_COLOR, ImVec2(7.f, 5.f));
                                         if (ImGui::ArrowButton(std::to_string(rt).c_str(), ImGuiDir_Right)) {
                                             enabledTricks.insert(rt);
                                             std::string enabledTrickString = "";
@@ -2519,7 +2519,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                         enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                                         ImGui::TreeNodeSetOpen(ImGui::GetID((Rando::Tricks::GetAreaName(option.GetArea()) + "##enabled").c_str()), areaTreeEnabled[option.GetArea()]);
                                         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                                        UIWidgets2::PushStyleButton(THEME_COLOR);
+                                        UIWidgets2::PushStyleButton(THEME_COLOR, ImVec2(7.f, 5.f));
                                         if (ImGui::ArrowButton(std::to_string(rt).c_str(), ImGuiDir_Left)) {
                                             enabledTricks.erase(rt);
                                             std::string enabledTrickString = "";
