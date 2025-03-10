@@ -510,7 +510,7 @@ bool SliderInt(const char* label, int32_t* value, const IntSliderOptions& option
     float width = (options.size == ImVec2(0,0)) ? ImGui::GetContentRegionAvail().x : options.size.x;
     ImGui::AlignTextToFramePadding();
     if (options.alignment == ComponentAlignment::Right) {
-        ImGui::Text("%s", label);
+        ImGui::Text(label, *value);
         if (options.labelPosition == LabelPosition::Above) {
             ImGui::NewLine();
             ImGui::SameLine(ImGui::GetContentRegionAvail().x - width);
@@ -521,7 +521,7 @@ bool SliderInt(const char* label, int32_t* value, const IntSliderOptions& option
         }
     } else if (options.alignment == ComponentAlignment::Left) {
         if (options.labelPosition == LabelPosition::Above) {
-            ImGui::Text("%s", label);
+            ImGui::Text(label, *value);
         }
     }
     if (options.showButtons) {
