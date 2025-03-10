@@ -619,7 +619,7 @@ void DrawEquip(ItemTrackerItem item) {
     ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasEquip && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
-    SetLastItemHoverText(SohUtils::GetItemName(item.id));
+    Tooltip(SohUtils::GetItemName(item.id).c_str());
 }
 
 void DrawQuest(ItemTrackerItem item) {
@@ -635,7 +635,7 @@ void DrawQuest(ItemTrackerItem item) {
 
     ImGui::EndGroup();
 
-    SetLastItemHoverText(SohUtils::GetQuestItemName(item.id));
+    Tooltip(SohUtils::GetQuestItemName(item.id).c_str());
 };
 
 void DrawItem(ItemTrackerItem item) {
@@ -803,7 +803,7 @@ void DrawItem(ItemTrackerItem item) {
         itemName = SohUtils::GetItemName(item.id);
     }
 
-    SetLastItemHoverText(itemName);
+    Tooltip(itemName.c_str());
 }
 
 void DrawBottle(ItemTrackerItem item) {
@@ -818,7 +818,7 @@ void DrawBottle(ItemTrackerItem item) {
     ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
-    SetLastItemHoverText(SohUtils::GetItemName(item.id));
+    Tooltip(SohUtils::GetItemName(item.id).c_str());
 };
 
 void DrawDungeonItem(ItemTrackerItem item) {
@@ -867,7 +867,7 @@ void DrawDungeonItem(ItemTrackerItem item) {
     }
     ImGui::EndGroup();
 
-    SetLastItemHoverText(SohUtils::GetItemName(item.id));
+    Tooltip(SohUtils::GetItemName(item.id).c_str());
 }
 
 void DrawSong(ItemTrackerItem item) {
@@ -877,7 +877,7 @@ void DrawSong(ItemTrackerItem item) {
     ImGui::SetCursorScreenPos(ImVec2(p.x + 6, p.y));
     ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasSong && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize / 1.5, iconSize), ImVec2(0, 0), ImVec2(1, 1));
-    SetLastItemHoverText(SohUtils::GetQuestItemName(item.id));
+    Tooltip(SohUtils::GetQuestItemName(item.id).c_str());
 }
 
 void DrawNotes(bool resizeable = false) {

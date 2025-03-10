@@ -733,6 +733,118 @@ bool CVarSliderFloat(const char* label, const char* cvarName, const FloatSliderO
     return dirty;
 }
 
+int InputTextResizeCallback(ImGuiInputTextCallbackData* data) {
+    std::string* value = (std::string*)data->UserData;
+    if (data->EventFlag == ImGuiInputTextFlags_CallbackResize) {
+        value->resize(data->BufTextLen);
+        data->Buf = (char*)value->c_str();
+    }
+    return 0;
+}
+
+bool InputString(const char* label, std::string* value, const InputOptions& options) {
+    bool dirty = false;
+    ImGui::PushID(label);
+    ImGui::BeginGroup();
+    ImGui::BeginDisabled(options.disabled);
+    PushStyleInput(options.color);
+    float width = (options.size == ImVec2(0, 0)) ? ImGui::GetContentRegionAvail().x : options.size.x;
+    if (options.alignment == ComponentAlignment::Left) {
+        if (options.labelPosition == LabelPosition::Above) {
+            ImGui::Text("%s", label);
+        }
+    } else if (options.alignment == ComponentAlignment::Right) {
+        if (options.labelPosition == LabelPosition::Above) {
+            ImGui::NewLine();
+            ImGui::SameLine(width - ImGui::CalcTextSize(label).x);
+            ImGui::Text("%s", label);
+        }
+    }
+    ImGui::SetNextItemWidth(width);
+    if (ImGui::InputText(label, (char*)value->c_str(), value->capacity() + 1, ImGuiInputTextFlags_CallbackResize, InputTextResizeCallback, value)) {
+        dirty = true;
+    }
+    if (value->empty() && !options.placeholder.empty()) {
+        ImGui::SameLine(17.0f);
+        ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 0.4f), "%s", options.placeholder.c_str());
+    }
+    PopStyleInput();
+    ImGui::EndDisabled();
+    ImGui::EndGroup();
+    if (options.disabled && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) &&
+        !Ship_IsCStringEmpty(options.disabledTooltip)) {
+        ImGui::SetTooltip("%s", WrappedText(options.disabledTooltip).c_str());
+    } else if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !Ship_IsCStringEmpty(options.tooltip)) {
+        ImGui::SetTooltip("%s", WrappedText(options.tooltip).c_str());
+    }
+    ImGui::PopID();
+    return dirty;
+}
+
+bool CVarInputString(const char* label, const char* cvarName, const InputOptions& options) {
+    bool dirty = false;
+    std::string value = CVarGetString(cvarName, options.defaultValue.c_str());
+    if (InputString(label, &value, options)) {
+        CVarSetString(cvarName, value.c_str());
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        ShipInit::Init(cvarName);
+        dirty = true;
+    }
+    return dirty;
+}
+
+bool InputInt(const char* label, int32_t* value, const InputOptions& options) {
+    bool dirty = false;
+    ImGui::PushID(label);
+    ImGui::BeginGroup();
+    ImGui::BeginDisabled(options.disabled);
+    PushStyleInput(options.color);
+    float width = (options.size == ImVec2(0, 0)) ? ImGui::GetContentRegionAvail().x : options.size.x;
+    if (options.alignment == ComponentAlignment::Left) {
+        if (options.labelPosition == LabelPosition::Above) {
+            ImGui::Text("%s", label);
+        }
+    } else if (options.alignment == ComponentAlignment::Right) {
+        if (options.labelPosition == LabelPosition::Above) {
+            ImGui::NewLine();
+            ImGui::SameLine(width - ImGui::CalcTextSize(label).x);
+            ImGui::Text("%s", label);
+        }
+    }
+    ImGui::SetNextItemWidth(width);
+    if (ImGui::InputScalar(label, ImGuiDataType_S32, value)) {
+        dirty = true;
+    }
+    if ((ImGui::GetItemStatusFlags() & ImGuiItemStatusFlags_Edited) && !options.placeholder.empty()) {
+        ImGui::SameLine(17.0f);
+        ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 0.4f), "%s", options.placeholder.c_str());
+    }
+    PopStyleInput();
+    ImGui::EndDisabled();
+    ImGui::EndGroup();
+    if (options.disabled && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) &&
+        !Ship_IsCStringEmpty(options.disabledTooltip)) {
+        ImGui::SetTooltip("%s", WrappedText(options.disabledTooltip).c_str());
+    } else if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !Ship_IsCStringEmpty(options.tooltip)) {
+        ImGui::SetTooltip("%s", WrappedText(options.tooltip).c_str());
+    }
+    ImGui::PopID();
+    return dirty;
+}
+
+bool CVarInputInt(const char* label, const char* cvarName, const InputOptions& options) {
+    bool dirty = false;
+    int32_t defaultValue = std::stoi(options.defaultValue);
+    int32_t value = CVarGetInteger(cvarName, defaultValue);
+    if (InputInt(label, &value, options)) {
+        CVarSetInteger(cvarName, value);
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        ShipInit::Init(cvarName);
+        dirty = true;
+    }
+    return dirty;
+}
+
 bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaultColor, bool hasAlpha, uint8_t modifiers, UIWidgets2::Colors themeColor) {
     std::string valueCVar = std::string(cvarName) + ".Value";
     std::string rainbowCVar = std::string(cvarName) + ".Rainbow";
@@ -980,22 +1092,6 @@ void DrawFlagArray8Mask(const std::string& name, uint8_t& flags, Colors color) {
         ImGui::PopID();
     }
     ImGui::PopID();
-}
-
-void SetLastItemHoverText(const std::string& text) {
-    if (ImGui::IsItemHovered()) {
-        ImGui::BeginTooltip();
-        ImGui::Text("%s", WrappedText(text, 60).c_str());
-        ImGui::EndTooltip();
-    }
-}
-
-void SetLastItemHoverText(const char* text) {
-    if (ImGui::IsItemHovered()) {
-        ImGui::BeginTooltip();
-        ImGui::Text("%s", WrappedText(text, 60).c_str());
-        ImGui::EndTooltip();
-    }
 }
 } // namespace UIWidgets
 

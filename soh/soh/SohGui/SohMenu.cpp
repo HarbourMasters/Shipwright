@@ -83,7 +83,9 @@ void SohMenu::InitElement() {
     AddMenuSettings();
     AddMenuEnhancements();
     AddMenuRandomizer();
+#ifdef ENABLE_REMOTE_CONTROL
     AddMenuNetwork();
+#endif
     AddMenuDevTools();
 
     if (CVarGetInteger(CVAR_SETTING("Menu.SidebarSearch"), 0)) {

@@ -33,8 +33,8 @@ namespace UIWidgets2 {
         }
     };
 
-    std::string WrappedText(const char* text, unsigned int charactersPerLine = 60);
-    std::string WrappedText(const std::string& text, unsigned int charactersPerLine = 60);
+    std::string WrappedText(const char* text, unsigned int charactersPerLine = 80);
+    std::string WrappedText(const std::string& text, unsigned int charactersPerLine = 80);
     void Tooltip(const char* text);
 
     typedef enum ColorPickerModifiers {
@@ -42,7 +42,7 @@ namespace UIWidgets2 {
         ColorPickerRandomButton = 2,
         ColorPickerRainbowCheck = 4,
         ColorPickerLockCheck = 8,
-    };
+    } ColorPickerModifiers;
 
     // mostly in order for colors usable by the menu without custom text color
     enum Colors {
@@ -68,6 +68,11 @@ namespace UIWidgets2 {
         LightGray,
         White,
         NoColor
+    };
+
+    enum InputTypes {
+        String,
+        Scalar
     };
 
     const std::unordered_map<Colors, ImVec4> ColorValues = {
@@ -411,6 +416,54 @@ namespace UIWidgets2 {
         }
     };
 
+    struct InputOptions : WidgetOptions {
+        ComponentAlignment alignment = ComponentAlignment::Left;
+        LabelPosition labelPosition = LabelPosition::Above;
+        Colors color = Colors::Gray;
+        ImVec2 size = {0,0};
+        std::string placeholder = "";
+        InputTypes type = InputTypes::String;
+        std::string defaultValue = "";
+
+        InputOptions& Tooltip(const char* tooltip_) {
+            WidgetOptions::tooltip = tooltip_;
+            return *this;
+        }
+        InputOptions& Color(Colors color_) {
+            WidgetOptions::color = color = color_;
+            return *this;
+        }
+        InputOptions& Size(ImVec2 size_) {
+            size = size_;
+            return *this;
+        }
+
+        InputOptions& LabelPosition(LabelPosition labelPosition_) {
+            labelPosition = labelPosition_;
+            return *this;
+        }
+
+        InputOptions& PlaceholderText(std::string&& placeholder_) {
+            placeholder = std::move(placeholder_);
+            return *this;
+        }
+
+        InputOptions& PlaceholderText(std::string& placeholder_) {
+            placeholder = placeholder_;
+            return *this;
+        }
+
+        InputOptions& InputType(InputTypes type_) {
+            type = type_;
+            return *this;
+        }
+
+        InputOptions& DefaultValue(std::string defaultValue_) {
+            defaultValue = defaultValue_;
+            return *this;
+        }
+    };
+
     void PushStyleMenu(const ImVec4& color);
     void PushStyleMenu(Colors color = Colors::LightBlue);
     void PopStyleMenu();
@@ -696,6 +749,84 @@ namespace UIWidgets2 {
         return dirty;
     }
 
+    template <typename T = size_t>
+    bool Combobox(const char* label, T* value, const std::vector<std::string>& comboVector, const ComboboxOptions& options = {}) {
+        bool dirty = false;
+        size_t currentValueIndex = static_cast<size_t>(*value);
+        std::string invisibleLabelStr = "##" + std::string(label);
+        const char* invisibleLabel = invisibleLabelStr.c_str();
+        ImGui::PushID(label);
+        ImGui::BeginGroup();
+        ImGui::BeginDisabled(options.disabled);
+        PushStyleCombobox(options.color);
+
+        const char* longest;
+        int length = 0;
+        for (auto& string : comboVector) {
+            int len = string.length();
+            if (len > length) {
+                longest = string.c_str();
+                length = len;
+            }
+        }
+        float comboWidth = CalcComboWidth(longest, options.flags);
+
+        ImGui::AlignTextToFramePadding();
+        if (options.alignment == ComponentAlignment::Right) {
+            ImGui::Text("%s", label);
+            if (options.labelPosition == LabelPosition::Above) {
+                ImGui::NewLine();
+                ImGui::SameLine(ImGui::GetContentRegionAvail().x - comboWidth);
+            } else if (options.labelPosition == LabelPosition::Near) {
+                ImGui::SameLine();
+            } else if (options.labelPosition == LabelPosition::Far || options.labelPosition == LabelPosition::None) {
+                ImGui::SameLine(ImGui::GetContentRegionAvail().x - comboWidth);
+            }
+        } else if (options.alignment == ComponentAlignment::Left) {
+            if (options.labelPosition == LabelPosition::Above) {
+                ImGui::Text("%s", label);
+            }
+        }
+
+        ImGui::SetNextItemWidth(comboWidth);
+        if (ImGui::BeginCombo(invisibleLabel, comboVector.at(currentValueIndex).c_str(), options.flags)) {
+            ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(10.0f, 10.0f));
+            for (size_t i = 0; i < comboVector.size(); ++i) {
+                auto newValue = static_cast<T>(i);
+                if (comboVector.at(i).length() > 1) {
+                    if (ImGui::Selectable(comboVector.at(i).c_str(), newValue == *value)) {
+                        *value = newValue;
+                        dirty = true;
+                    }
+                }
+            }
+            ImGui::PopStyleVar();
+            ImGui::EndCombo();
+        }
+
+        if (options.alignment == ComponentAlignment::Left) {
+            if (options.labelPosition == LabelPosition::Near) {
+                ImGui::SameLine();
+                ImGui::Text("%s", label);
+            } else if (options.labelPosition == LabelPosition::Far || options.labelPosition == LabelPosition::None) {
+                float width = ImGui::CalcTextSize(comboVector.at(*value).c_str()).x + ImGui::GetStyle().FramePadding.x * 2;
+                ImGui::SameLine(ImGui::GetContentRegionAvail().x - width);
+                ImGui::Text("%s", label);
+            }
+        }
+
+        PopStyleCombobox();
+        ImGui::EndDisabled();
+        ImGui::EndGroup();
+        if (options.disabled && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !Ship_IsCStringEmpty(options.disabledTooltip)) {
+            ImGui::SetTooltip("%s", WrappedText(options.disabledTooltip).c_str());
+        } else if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !Ship_IsCStringEmpty(options.tooltip)) {
+            ImGui::SetTooltip("%s", WrappedText(options.tooltip).c_str());
+        }
+        ImGui::PopID();
+        return dirty;
+    }
+
     template <typename T = size_t, size_t N>
     bool Combobox(const char* label, T* value, const char* (&comboArray)[N], const ComboboxOptions& options = {}) {
         bool dirty = false;
@@ -822,6 +953,10 @@ namespace UIWidgets2 {
     bool CVarSliderInt(const char* label, const char* cvarName, const IntSliderOptions& options = {});
     bool SliderFloat(const char* label, float* value, const FloatSliderOptions& options = {});
     bool CVarSliderFloat(const char* label, const char* cvarName, const FloatSliderOptions& options = {});
+    bool InputString(const char* label, std::string* value, const InputOptions& options = {});
+    bool CVarInputString(const char* label, const char* cvarName, const InputOptions& options = {});
+    bool InputInt(const char* label, int32_t* value, const InputOptions& options = {});
+    bool CVarInputInt(const char* label, const char* cvarName, const InputOptions& options = {});
     bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaultColor, bool hasAlpha = false, uint8_t modifiers = 0, UIWidgets2::Colors themeColor = UIWidgets2::Colors::LightBlue);
     bool RadioButton(const char* label, bool active);
     bool CVarRadioButton(const char* text, const char* cvarName, int32_t id, const RadioButtonsOptions& options);
@@ -833,9 +968,6 @@ namespace UIWidgets2 {
 
     void InsertHelpHoverText(const std::string& text);
     void InsertHelpHoverText(const char* text);
-
-    void SetLastItemHoverText(const std::string& text);
-    void SetLastItemHoverText(const char* text);
 }
 ImVec4 GetRandomValue();
 
