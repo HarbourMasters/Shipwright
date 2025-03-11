@@ -1958,7 +1958,9 @@ void RandomizerSettingsWindow::DrawElement() {
     ) {
         CVarSetInteger(presetTypeCvar.c_str(), randomizerPresetSelected);
     }
-    if (UIWidgets2::Button("Apply Preset##Randomizer", UIWidgets2::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(250.f, 0.f)))) {
+    ImGui::SameLine();
+    ImGui::SetCursorPosY(ImGui::GetCursorPos().y + 35.f);
+    if (UIWidgets2::Button("Apply Preset##Randomizer", UIWidgets2::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets2::Sizes::Inline).Padding(ImVec2(10.f, 6.f)))) {
         clearCvars(presetTypeDef.cvarsToClear);
         if (randomizerPresetSelected >= presetTypeDef.presets.size()) {
             randomizerPresetSelected = 0;
@@ -1973,16 +1975,6 @@ void RandomizerSettingsWindow::DrawElement() {
     UIWidgets2::Spacer(0);
     UIWidgets2::CVarCheckbox("Manual seed entry", CVAR_RANDOMIZER_SETTING("ManualSeedEntry"), UIWidgets2::CheckboxOptions().Color(THEME_COLOR));
     if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ManualSeedEntry"), 0)) {
-        ImGui::Text("Seed");
-        if (UIWidgets2::Button("New Seed", UIWidgets2::ButtonOptions().Size(ImVec2(250.f, 0.f)).Color(THEME_COLOR).Tooltip(
-            "Creates a new random seed value to be used when generating a randomizer"
-        ))) {
-            SohUtils::CopyStringToCharArray(seedString, std::to_string(rand() & 0xFFFFFFFF), MAX_SEED_STRING_SIZE);
-        }
-        ImGui::SameLine();
-        if (UIWidgets2::Button("Clear Seed", UIWidgets2::ButtonOptions().Size(ImVec2(250.f, 0.f)).Color(THEME_COLOR))) {
-            memset(seedString, 0, MAX_SEED_STRING_SIZE);
-        }
         UIWidgets2::PushStyleInput(THEME_COLOR);
         ImGui::InputText("##RandomizerSeed", seedString, MAX_SEED_STRING_SIZE, ImGuiInputTextFlags_CallbackCharFilter, UIWidgets2::TextFilters::FilterAlphaNum);
         UIWidgets2::Tooltip(
@@ -1994,6 +1986,16 @@ void RandomizerSettingsWindow::DrawElement() {
             ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 0.4f), "Leave blank for random seed");
         }
         UIWidgets2::PopStyleInput();
+        ImGui::SameLine(0.f, 50.f);
+        if (UIWidgets2::Button(ICON_FA_RANDOM, UIWidgets2::ButtonOptions().Size(UIWidgets2::Sizes::Inline).Color(THEME_COLOR).Padding(ImVec2(10.f, 6.f)).Tooltip(
+            "Creates a new random seed value to be used when generating a randomizer"
+        ))) {
+            SohUtils::CopyStringToCharArray(seedString, std::to_string(rand() & 0xFFFFFFFF), MAX_SEED_STRING_SIZE);
+        }
+        ImGui::SameLine();
+        if (UIWidgets2::Button(ICON_FA_ERASER, UIWidgets2::ButtonOptions().Size(UIWidgets2::Sizes::Inline).Color(THEME_COLOR).Padding(ImVec2(10.f, 6.f)))) {
+            memset(seedString, 0, MAX_SEED_STRING_SIZE);
+        }
     }
 
     UIWidgets2::Spacer(0);
@@ -2005,7 +2007,7 @@ void RandomizerSettingsWindow::DrawElement() {
     }
     ImGui::EndDisabled();
 
-    UIWidgets2::Spacer(0);
+    ImGui::SameLine();
     if (!CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
         std::string spoilerfilepath = CVarGetString(CVAR_GENERAL("SpoilerLog"), "");
         ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
@@ -2107,7 +2109,7 @@ void RandomizerSettingsWindow::DrawElement() {
                             for (auto& location : locations) {
                                 if (ctx->GetItemLocation(location)->IsVisible() && !excludedLocations.count(location) &&
                                     locationSearch.PassFilter(Rando::StaticData::GetLocation(location)->GetName().c_str())) {
-                                    UIWidgets2::PushStyleButton(THEME_COLOR);
+                                    UIWidgets2::PushStyleButton(THEME_COLOR, ImVec2(7.f, 5.f));
                                     if (ImGui::ArrowButton(std::to_string(location).c_str(), ImGuiDir_Right)) {
                                         excludedLocations.insert(location);
                                         // todo: this efficently when we build out cvar array support
@@ -2150,7 +2152,7 @@ void RandomizerSettingsWindow::DrawElement() {
                             for (auto& location : locations) {
                                 auto elfound = excludedLocations.find(location);
                                 if (ctx->GetItemLocation(location)->IsVisible() && elfound != excludedLocations.end()) {
-                                    UIWidgets2::PushStyleButton(THEME_COLOR);
+                                    UIWidgets2::PushStyleButton(THEME_COLOR, ImVec2(7.f, 5.f));
                                     if (ImGui::ArrowButton(std::to_string(location).c_str(), ImGuiDir_Left)) {
                                         excludedLocations.erase(elfound);
                                         // todo: this efficently when we build out cvar array support
@@ -2431,7 +2433,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                         !enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                                         ImGui::TreeNodeSetOpen(ImGui::GetID((Rando::Tricks::GetAreaName(option.GetArea()) + "##disabled").c_str()), areaTreeDisabled[option.GetArea()]);
                                         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                                        UIWidgets2::PushStyleButton(THEME_COLOR);
+                                        UIWidgets2::PushStyleButton(THEME_COLOR, ImVec2(7.f, 5.f));
                                         if (ImGui::ArrowButton(std::to_string(rt).c_str(), ImGuiDir_Right)) {
                                             enabledTricks.insert(rt);
                                             std::string enabledTrickString = "";
@@ -2519,7 +2521,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                         enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                                         ImGui::TreeNodeSetOpen(ImGui::GetID((Rando::Tricks::GetAreaName(option.GetArea()) + "##enabled").c_str()), areaTreeEnabled[option.GetArea()]);
                                         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                                        UIWidgets2::PushStyleButton(THEME_COLOR);
+                                        UIWidgets2::PushStyleButton(THEME_COLOR, ImVec2(7.f, 5.f));
                                         if (ImGui::ArrowButton(std::to_string(rt).c_str(), ImGuiDir_Left)) {
                                             enabledTricks.erase(rt);
                                             std::string enabledTrickString = "";
