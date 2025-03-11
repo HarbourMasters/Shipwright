@@ -508,6 +508,9 @@ bool SliderInt(const char* label, int32_t* value, const IntSliderOptions& option
     ImGui::BeginDisabled(options.disabled);
     PushStyleSlider(options.color);
     float width = (options.size == ImVec2(0,0)) ? ImGui::GetContentRegionAvail().x : options.size.x;
+    if (options.labelPosition == LabelPosition::Near || options.labelPosition == LabelPosition::Far) {
+        width = width - (ImGui::CalcTextSize(label).x + ImGui::GetStyle().FramePadding.x);
+    }
     ImGui::AlignTextToFramePadding();
     if (options.alignment == ComponentAlignment::Right) {
         ImGui::Text(label, *value);
@@ -648,6 +651,9 @@ bool SliderFloat(const char* label, float* value, const FloatSliderOptions& opti
     PushStyleSlider(options.color);
     float labelSpacing = ImGui::CalcTextSize(label).x + ImGui::GetStyle().ItemSpacing.x;
     float width = (options.size == ImVec2(0, 0)) ? ImGui::GetContentRegionAvail().x : options.size.x;
+    if (options.labelPosition == LabelPosition::Near || options.labelPosition == LabelPosition::Far) {
+        width = width - (ImGui::CalcTextSize(label).x + ImGui::GetStyle().FramePadding.x);
+    }
     ImGui::AlignTextToFramePadding();
     if (options.alignment == ComponentAlignment::Right) {
         ImGui::Text("%s", label);
