@@ -75,7 +75,7 @@ void SohMenu::AddMenuRandomizer() {
 
     // Plandomizer
     path.sidebarName = "Plandomizer";
-    AddSidebarEntry("Randomizer", path.sidebarName, 2);
+    AddSidebarEntry("Randomizer", path.sidebarName, 1);
     AddWidget(path, "Popout Plandomizer Window", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("PlandomizerEditor"))
         .WindowName("Plandomizer Editor")
