@@ -360,7 +360,7 @@ void BuildTriforcePieceMessage(CustomMessage& msg) {
 
 void BuildCustomItemMessage(Player* player, CustomMessage& msg) {
     int16_t rgid;
-    msg = CustomMessage("You found [[article]] %g[[name]]%w!", "Du erhältst [[article]] %g[[name]]%w gefunden!", "Vous avez trouvé [[article]] %g[[name]]%w!", TEXTBOX_TYPE_BLUE);
+    msg = CustomMessage("You found [[article]]%g[[name]]%w!", "Du erhältst [[article]]%g[[name]]%w gefunden!", "Vous avez trouvé [[article]]%g[[name]]%w!", TEXTBOX_TYPE_BLUE);
     if (player->getItemEntry.objectId != OBJECT_INVALID) {
         rgid = player->getItemEntry.getItemId;
     } else {
