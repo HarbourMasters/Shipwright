@@ -933,7 +933,7 @@ void PlandomizerDrawOptions() {
         PlandomizerPopulateSeedList();
         static size_t selectedList = 0;
         if (existingSeedList.size() != 0) {
-            UIWidgets2::Combobox("##JsonFiles", &selectedList, existingSeedList, UIWidgets2::ComboboxOptions().Color(THEME_COLOR));
+            UIWidgets2::Combobox("##JsonFiles", &selectedList, existingSeedList, UIWidgets2::ComboboxOptions().Color(THEME_COLOR).LabelPosition(UIWidgets2::LabelPosition::None));
         }
         else {
             ImGui::Text("No Spoiler Logs found.");
@@ -1025,23 +1025,6 @@ void PlandomizerDrawOptions() {
     if (getTabID == TAB_LOCATIONS) {
         if (plandoLogData.size() > 0) {
             UIWidgets2::Combobox("Filter by Area:##AreaFilter", &selectedArea, rcAreaNameMap, UIWidgets2::ComboboxOptions().Color(THEME_COLOR).LabelPosition(UIWidgets2::LabelPosition::Near).ComponentAlignment(UIWidgets2::ComponentAlignment::Right));
-            // if (ImGui::BeginCombo("##AreaFilter", comboLabel)) {
-            //     for (const auto& [area, name] : rcAreaNames) {
-            //         bool isSelected = (selectedArea == area);
-
-            //         const char* displayName = name.c_str();
-            //         if (area == RCAREA_INVALID) {
-            //             displayName = "All";
-            //         }
-            //         if (ImGui::Selectable(displayName, isSelected)) {
-            //             selectedArea = area;
-            //         }
-            //         if (isSelected) {
-            //             ImGui::SetItemDefaultFocus();
-            //         }
-            //     }
-            //     ImGui::EndCombo();
-            // }    
             ImGui::SameLine();
             if (UIWidgets2::Button("Empty All Rewards", UIWidgets2::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets2::Sizes::Inline).Padding(ImVec2(10.f, 6.f)))) {
                 PlandomizerRemoveAllItems();
