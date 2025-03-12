@@ -120,7 +120,7 @@ void BuildSkulltulaPeopleMessage(uint16_t* textId, bool* loadFromMessageTable) {
     } else {
         return;
     }
-    msg.AutoFormat();
+    // msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
 }

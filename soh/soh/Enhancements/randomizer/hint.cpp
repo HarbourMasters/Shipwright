@@ -516,7 +516,7 @@ const HintText Hint::GetItemHintText(uint8_t slot, bool mysterious) const {
   } else if (!ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_AMBIGUOUS) && targetRG == RG_ICE_TRAP) { //RANDOTODO store in item hint instead of item
       return HintText(CustomMessage({ctx->overrides[hintedCheck].GetTrickName()}));
   } else {
-    return ctx->GetItemLocation(hintedCheck)->GetPlacedItem().GetHint();
+    return HintText(ctx->GetItemLocation(hintedCheck)->GetPlacedItem().GetName());
   }
 }
 
