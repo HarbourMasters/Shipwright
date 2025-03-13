@@ -26,6 +26,7 @@ extern PlayState* gPlayState;
 
 #include "textures/icon_item_static/icon_item_static.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
+#include <soh/ActorExtension/ActorListIndex.h>
 }
 
 #define DEKUNUTS_FLOWER 10
@@ -924,6 +925,7 @@ void ActorViewerWindow::DrawElement() {
                     ImGui::Text("Category: %s", acMapping[display->category]);
                     ImGui::Text("ID: %d", display->id);
                     ImGui::Text("Parameters: %d", display->params);
+                    ImGui::Text("Actor List Index: %d", GetActorListIndex(display));
                 },
                 "Selected Actor");
             ImGui::SameLine();

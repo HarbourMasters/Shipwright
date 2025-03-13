@@ -60,7 +60,7 @@ void ActorExtension_Free(Actor* actor) {
         return;
     }
 
-    for (auto& [ id, size ] : sGlobalSizes) {
+    for (auto& [id, size] : sGlobalSizes) {
         auto it = sData.find(std::make_pair(actor, id));
         if (it != sData.end()) {
             free(it->second);

@@ -81,6 +81,7 @@
 #include "textures/place_title_cards/g_pn_56.h"
 #include "textures/place_title_cards/g_pn_57.h"
 #endif
+#include <soh/ActorExtension/ActorListIndex.h>
 
 static CollisionPoly* sCurCeilingPoly;
 static s32 sCurCeilingBgId;
@@ -2575,8 +2576,14 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
     if (play->numSetupActors != 0) {
         actorEntry = &play->setupActorList[0];
         for (i = 0; i < play->numSetupActors; i++) {
+            // #region SOH [ActorExtension] ActorListIndex tracking
+            currentActorListIndex = i;
+            // #endregion
             Actor_SpawnEntry(&play->actorCtx, actorEntry++, play);
         }
+        // #region SOH [ActorExtension] ActorListIndex tracking
+        currentActorListIndex = -1;
+        // #endregion
         play->numSetupActors = 0;
         GameInteractor_ExecuteOnSceneSpawnActors();
     }
@@ -3355,6 +3362,8 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
 
     // #region SOH [ActorExtension]
     ActorExtension_Alloc(actor, dbEntry->id);
+    SetActorListIndex(actor, currentActorListIndex);
+    currentActorListIndex = -1;
     // #endregion
 
     assert(dbEntry->numLoaded < 255);

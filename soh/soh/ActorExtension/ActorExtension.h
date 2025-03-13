@@ -5,7 +5,7 @@
 
 #ifdef __cplusplus
 extern "C" {
-    #include <z64actor.h>
+#include <z64actor.h>
 #endif
 
 typedef uint32_t ActorExtensionId;
@@ -24,4 +24,4 @@ void ActorExtension_Free(Actor* actor);
 }
 #endif
 
-#endif //ACTOR_EXTENSION_H
+#endif // ACTOR_EXTENSION_H
