@@ -1,4 +1,5 @@
 #include "global.h"
+#include "soh/ActorExtension/ActorExtension.h"
 #include "vt.h"
 
 #include "overlays/actors/ovl_Arms_Hook/z_arms_hook.h"
@@ -3352,6 +3353,10 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
         return NULL;
     }
 
+    // #region SOH [ActorExtension]
+    ActorExtension_Alloc(actor, dbEntry->id);
+    // #endregion
+
     assert(dbEntry->numLoaded < 255);
 
     dbEntry->numLoaded++;
@@ -3493,6 +3498,10 @@ Actor* Actor_Delete(ActorContext* actorCtx, Actor* actor, PlayState* play) {
     Actor_Destroy(actor, play);
 
     newHead = Actor_RemoveFromCategory(play, actorCtx, actor);
+
+    // #region SOH [ActorExtension]
+    ActorExtension_Free(actor);
+    // #endregion
 
     ZELDA_ARENA_FREE_DEBUG(actor);
 
