@@ -128,7 +128,7 @@ void SohMenu::AddMenuDevTools() {
 
     // Actor Viewer
     path.sidebarName = "Actor Viewer";
-    AddSidebarEntry("Dev Tools", path.sidebarName, 1);
+    AddSidebarEntry("Dev Tools", path.sidebarName, 2);
     AddWidget(path, "Popout Actor Viewer", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("ActorViewer"))
         .WindowName("Actor Viewer")
@@ -136,7 +136,7 @@ void SohMenu::AddMenuDevTools() {
 
     // Display List Viewer
     path.sidebarName = "DList Viewer";
-    AddSidebarEntry("Dev Tools", path.sidebarName, 1);
+    AddSidebarEntry("Dev Tools", path.sidebarName, 2);
     AddWidget(path, "Popout Display List Viewer", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("DisplayListViewer"))
         .WindowName("Display List Viewer")
@@ -144,7 +144,7 @@ void SohMenu::AddMenuDevTools() {
 
     // Value Viewer
     path.sidebarName = "Value Viewer";
-    AddSidebarEntry("Dev Tools", path.sidebarName, 1);
+    AddSidebarEntry("Dev Tools", path.sidebarName, 2);
     AddWidget(path, "Popout Value Viewer", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("ValueViewer"))
         .WindowName("Value Viewer")
@@ -152,7 +152,7 @@ void SohMenu::AddMenuDevTools() {
 
     // Message Viewer
     path.sidebarName = "Message Viewer";
-    AddSidebarEntry("Dev Tools", path.sidebarName, 1);
+    AddSidebarEntry("Dev Tools", path.sidebarName, 2);
     AddWidget(path, "Popout Message Viewer", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("MessageViewer"))
         .WindowName("Message Viewer")

@@ -20,12 +20,12 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-typedef enum ColRenderSetting { Disabled, Solid, Transparent };
+typedef enum ColRenderSetting { ColRenderDisabled, ColRenderSolid, ColRenderTransparent } ColRenderSetting ;
 
 static std::unordered_map<int32_t, const char*> ColRenderSettingNames = {
-    { Disabled, "Disabled" },
-    { Solid, "Solid" },
-    { Transparent, "Transparent" },
+    { ColRenderDisabled, "Disabled" },
+    { ColRenderSolid, "Solid" },
+    { ColRenderTransparent, "Transparent" },
 };
 
 ImVec4 scene_col;
@@ -312,7 +312,7 @@ void InitGfx(std::vector<Gfx>& gfx, ColRenderSetting setting) {
     uint64_t cm;
     uint32_t gm;
 
-    if (setting == ColRenderSetting::Transparent) {
+    if (setting == ColRenderTransparent) {
         rm = Z_CMP | IM_RD | CVG_DST_FULL | FORCE_BL;
         blc1 = GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA);
         blc2 = GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA);
@@ -326,7 +326,7 @@ void InitGfx(std::vector<Gfx>& gfx, ColRenderSetting setting) {
 
     if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Decal"), 1) != 0) {
         rm |= ZMODE_DEC;
-    } else if (setting == ColRenderSetting::Transparent) {
+    } else if (setting == ColRenderTransparent) {
         rm |= ZMODE_XLU;
     } else {
         rm |= ZMODE_OPA;
@@ -429,11 +429,11 @@ void DrawDynapoly(std::vector<Gfx>& dl, CollisionHeader* col, int32_t bgId) {
 void DrawSceneCollision() {
     ColRenderSetting showSceneColSetting = (ColRenderSetting)CVarGetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Scene"), COLVIEW_DISABLED);
 
-    if (showSceneColSetting == ColRenderSetting::Disabled || !CVarGetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Enabled"), 0)) {
+    if (showSceneColSetting == ColRenderDisabled || !CVarGetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Enabled"), 0)) {
         return;
     }
 
-    std::vector<Gfx>& dl = (showSceneColSetting == ColRenderSetting::Transparent) ? xluDl : opaDl;
+    std::vector<Gfx>& dl = (showSceneColSetting == ColRenderTransparent) ? xluDl : opaDl;
     InitGfx(dl, showSceneColSetting);
     dl.push_back(gsSPMatrix(&gMtxClear, G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH));
 
@@ -443,11 +443,11 @@ void DrawSceneCollision() {
 // Draws all Bg Actors
 void DrawBgActorCollision() {
     ColRenderSetting showBgActorSetting = (ColRenderSetting)CVarGetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.BGActors"), COLVIEW_DISABLED);
-    if (showBgActorSetting == ColRenderSetting::Disabled || !CVarGetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Enabled"), 0)) {
+    if (showBgActorSetting == ColRenderDisabled || !CVarGetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Enabled"), 0)) {
         return;
     }
 
-    std::vector<Gfx>& dl = (showBgActorSetting == ColRenderSetting::Transparent) ? xluDl : opaDl;
+    std::vector<Gfx>& dl = (showBgActorSetting == ColRenderTransparent) ? xluDl : opaDl;
     InitGfx(dl, showBgActorSetting);
     dl.push_back(gsSPMatrix(&gMtxClear, G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH));
 
@@ -568,11 +568,11 @@ void DrawColCheckList(std::vector<Gfx>& dl, Collider** objects, int32_t count) {
 // Draws all Col Check objects
 void DrawColCheckCollision() {
     ColRenderSetting showColCheckSetting = (ColRenderSetting)CVarGetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.ColCheck"), COLVIEW_DISABLED);
-    if (showColCheckSetting == ColRenderSetting::Disabled || !CVarGetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Enabled"), 0)) {
+    if (showColCheckSetting == ColRenderDisabled || !CVarGetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Enabled"), 0)) {
         return;
     }
 
-    std::vector<Gfx>& dl = (showColCheckSetting == ColRenderSetting::Transparent) ? xluDl : opaDl;
+    std::vector<Gfx>& dl = (showColCheckSetting == ColRenderTransparent) ? xluDl : opaDl;
     InitGfx(dl, showColCheckSetting);
     dl.push_back(gsSPMatrix(&gMtxClear, G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH));
 
@@ -620,11 +620,11 @@ extern "C" f32 zdWaterBoxMinY;
 // Draws all waterboxes
 void DrawWaterboxList() {
     ColRenderSetting showWaterboxSetting = (ColRenderSetting)CVarGetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Waterbox"), COLVIEW_DISABLED);
-    if (showWaterboxSetting == ColRenderSetting::Disabled || !CVarGetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Enabled"), 0)) {
+    if (showWaterboxSetting == ColRenderDisabled || !CVarGetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Enabled"), 0)) {
         return;
     }
 
-    std::vector<Gfx>& dl = (showWaterboxSetting == ColRenderSetting::Transparent) ? xluDl : opaDl;
+    std::vector<Gfx>& dl = (showWaterboxSetting == ColRenderTransparent) ? xluDl : opaDl;
     InitGfx(dl, showWaterboxSetting);
     dl.push_back(gsSPMatrix(&gMtxClear, G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH));
 
