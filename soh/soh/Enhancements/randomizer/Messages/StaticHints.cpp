@@ -105,28 +105,48 @@ void BuildAdultAltarMessage(uint16_t* textId, bool* loadFromMessageTable) {
 }
 
 void BuildSkulltulaPeopleMessage(uint16_t* textId, bool* loadFromMessageTable) {
-    CustomMessage msg;
+    uint8_t count = 0;
+    RandomizerCheck rc = RC_UNKNOWN_CHECK;
     int16_t actorParams = GET_PLAYER(gPlayState)->talkActor->params;
     if (actorParams == 1 && RAND_GET_OPTION(RSK_KAK_10_SKULLS_HINT)) {
-        msg = RAND_GET_HINT(RH_KAK_10_SKULLS_HINT)->GetHintMessage();
+        rc = RC_KAK_10_GOLD_SKULLTULA_REWARD;
+        count = 10;
     } else if (actorParams == 2 && RAND_GET_OPTION(RSK_KAK_20_SKULLS_HINT)) {
-        msg = RAND_GET_HINT(RH_KAK_20_SKULLS_HINT)->GetHintMessage();
+        rc = RC_KAK_20_GOLD_SKULLTULA_REWARD;
+        count = 20;
     } else if (actorParams == 3 && RAND_GET_OPTION(RSK_KAK_30_SKULLS_HINT)) {
-        msg = RAND_GET_HINT(RH_KAK_30_SKULLS_HINT)->GetHintMessage();
+        rc = RC_KAK_30_GOLD_SKULLTULA_REWARD;
+        count = 30;
     } else if (actorParams == 4 && RAND_GET_OPTION(RSK_KAK_40_SKULLS_HINT)) {
-        msg = RAND_GET_HINT(RH_KAK_40_SKULLS_HINT)->GetHintMessage();
+        rc = RC_KAK_40_GOLD_SKULLTULA_REWARD;
+        count = 40;
     } else if (actorParams == 5 && RAND_GET_OPTION(RSK_KAK_50_SKULLS_HINT)) {
-        msg = RAND_GET_HINT(RH_KAK_50_SKULLS_HINT)->GetHintMessage();
+        rc = RC_KAK_50_GOLD_SKULLTULA_REWARD;
+        count = 50;
     } else {
         return;
     }
-    // msg.AutoFormat();
+    Rando::Item& item = Rando::StaticData::RetrieveItem(RAND_GET_ITEM_LOC(rc)->GetPlacedRandomizerGet());
+    CustomMessage msg = CustomMessage(
+        "Yeaaarrgh! I'm cursed!!^Please save me by destroying %y[[d]] Spiders of the Curse%w and I will give you my [[color]][[1]]%w!",
+        /*german*/ "Yeaaarrgh! Ich bin verflucht!^Bitte rette mich, indem Du %y[[d]] Skulltulas%w zerstörst und ich werde Dir dafür [[color]][[1]]%w geben!",
+        /*french*/ "Yeaaarrgh! Je suis maudit!^Détruit encore %y[[d]] Araignées de la Malédiction%w et j'aurai quelque chose à te donner! [[color]]([[1]])%w");
+    msg.InsertNumber(count);
+    msg.Replace("[[color]]", item.GetColor());
+    msg.InsertNames({ item.GetName() });
+    msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
 }
 
 void Build100SkullsHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
-    CustomMessage msg = RAND_GET_HINT(RH_KAK_100_SKULLS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
+    CustomMessage msg = CustomMessage(
+        "Yeaaarrgh! I'm cursed!!^Please save me by destroying %y100 Spiders of the Curse%w and I will give you my [[color]][[1]]%w!",
+        /*german*/ "Yeaaarrgh! Ich bin verflucht!^Bitte rette mich, indem Du %y100 Skulltulas%w zerstörst und ich werde Dir dafür [[color]][[1]]%w geben!",
+        /*french*/ "Yeaaarrgh! Je suis maudit!^Détruit encore %y100 Araignées de la Malédiction%w et j'aurai quelque chose à te donner! [[color]]([[1]])%w");
+    msg.Replace("[[color]]", Rando::StaticData::RetrieveItem(RAND_GET_ITEM_LOC(RC_KAK_100_GOLD_SKULLTULA_REWARD)->GetPlacedRandomizerGet()).GetColor());
+    msg.InsertNames({ Rando::StaticData::RetrieveItem(RAND_GET_ITEM_LOC(RC_KAK_100_GOLD_SKULLTULA_REWARD)->GetPlacedRandomizerGet()).GetName() });
+    msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
 }

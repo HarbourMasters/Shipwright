@@ -17,10 +17,10 @@ Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_,
     const bool advancement_, LogicVal logicVal_, const RandomizerHintTextKey hintKey_, const uint16_t itemId_,
     const uint16_t objectId_, const uint16_t gid_, const uint16_t textId_, const uint16_t field_,
     const int16_t chestAnimation_, const GetItemCategory category_, const uint16_t modIndex_,
-    Text article_, const bool progressive_, const uint16_t price_)
+    Text article_, const std::string color_, const bool progressive_, const uint16_t price_)
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
     advancement(advancement_), logicVal(logicVal_), hintKey(hintKey_), article(std::move(article_)),
-    progressive(progressive_), price(price_) {
+    color(std::move(color_)), progressive(progressive_), price(price_) {
     if (modIndex_ == MOD_RANDOMIZER || getItemId > 0x7D) {
         giEntry = std::make_shared<GetItemEntry>(GetItemEntry{ itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_, objectId_, modIndex_, TABLE_RANDOMIZER, static_cast<int16_t>(randomizerGet_), gid_, true, ITEM_FROM_NPC, category_, static_cast<uint16_t>(randomizerGet_), MOD_RANDOMIZER, NULL });
     }
@@ -31,11 +31,10 @@ Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_,
 
 Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_, const int16_t getItemId_,
     const bool advancement_, LogicVal logicVal_, const RandomizerHintTextKey hintKey_, Text article_,
-    const bool progressive_,
-    const uint16_t price_)
+    const std::string color_, const bool progressive_, const uint16_t price_)
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
     advancement(advancement_), logicVal(logicVal_), hintKey(hintKey_), article(std::move(article_)),
-    progressive(progressive_), price(price_) {
+    color(std::move(color_)), progressive(progressive_), price(price_) {
 }
 
     Item::~Item() = default;
@@ -58,6 +57,10 @@ const Text& Item::GetName() const {
 
 const Text& Item::GetArticle() const {
     return article;
+}
+
+const std::string& Item::GetColor() const {
+    return color;
 }
 
 bool Item::IsAdvancement() const {

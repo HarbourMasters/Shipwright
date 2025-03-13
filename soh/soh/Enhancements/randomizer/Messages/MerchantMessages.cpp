@@ -26,16 +26,20 @@ void BuildMerchantMessage(CustomMessage& msg, RandomizerCheck rc) {
     RandomizerGet rgid = RAND_GET_ITEM(rc)->GetPlacedRandomizerGet();
     uint16_t price = RAND_GET_ITEM(rc)->GetPrice();
     CustomMessage itemName;
+    std::string color = Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(rgid)).GetColor();
     bool mysterious = RAND_GET_OPTION(RSK_MERCHANT_TEXT_HINT).Is(RO_GENERIC_OFF) ||
         CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0);
     if (mysterious) {
         itemName = Rando::StaticData::hintTextTable[RHT_MYSTERIOUS_ITEM_CAPITAL].GetHintMessage();
+        color = "%g";
     } else if (rgid == RG_ICE_TRAP) {
         rgid = RAND_GET_OVERRIDE(rc).LooksLike();
         itemName = CustomMessage(RAND_GET_OVERRIDE(rc).GetTrickName());
+        color = "%g";
     } else {
         itemName = CustomMessage(Rando::StaticData::RetrieveItem(rgid).GetName());
     }
+    msg.Replace("[[color]]", color);
     msg.InsertNames({ itemName , CustomMessage(std::to_string(price))});
 }
 
@@ -50,9 +54,9 @@ void BuildBeanGuyMessage(uint16_t* textId, bool* loadFromMessageTable) {
         msg.Format();
     } else if (*textId == TEXT_BEAN_SALESMAN_BUY_FOR_10) {
         msg = CustomMessage(
-            "Want to buy %g[[1]]%w for %y[[2]] Rupees%w?\x1B%gYes&No%w",
-            "Möchten Sie %g[[1]]%w für %y[[2]] Rubin%w kaufen?\x1B%gJa&Nein%w",
-            "Voulez-vous acheter %g[[1]]%w pour %y[[2]] Rubis%w?\x1B%gOui&Non%w"
+            "Want to buy [[color]][[1]]%w for %y[[2]] Rupees%w?\x1B%gYes&No%w",
+            "Möchten Sie [[color]][[1]]%w für %y[[2]] Rubin%w kaufen?\x1B%gJa&Nein%w",
+            "Voulez-vous acheter [[color]][[1]]%w pour %y[[2]] Rubis%w?\x1B%gOui&Non%w"
         );
         BuildMerchantMessage(msg, RC_ZR_MAGIC_BEAN_SALESMAN);
         msg.AutoFormat();
@@ -63,9 +67,9 @@ void BuildBeanGuyMessage(uint16_t* textId, bool* loadFromMessageTable) {
 
 void BuildMedigoronMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg = CustomMessage(
-        "Want to buy %g[[1]]%w for %y[[2]] Rupees%w?\x1B%gYes&No%w",
-        "Möchten Sie %g[[1]]%w für %y[[2]] Rubin%w kaufen?\x1B%gJa&Nein%w",
-        "Voulez-vous acheter %g[[1]]%w pour %y[[2]] Rubis%w?\x1B%gOui&Non%w"
+        "Want to buy [[color]][[1]]%w for %y[[2]] Rupees%w?\x1B%gYes&No%w",
+        "Möchten Sie [[color]][[1]]%w für %y[[2]] Rubin%w kaufen?\x1B%gJa&Nein%w",
+        "Voulez-vous acheter [[color]][[1]]%w pour %y[[2]] Rubis%w?\x1B%gOui&Non%w"
     );
     BuildMerchantMessage(msg, RC_GC_MEDIGORON);
     msg.AutoFormat();
@@ -78,9 +82,9 @@ void BuildGrannyMessage(uint16_t* textId, bool* loadFromMessageTable) {
         (RAND_GET_OPTION(RSK_SHUFFLE_ADULT_TRADE).Is(RO_GENERIC_ON) || 
         INV_CONTENT(ITEM_CLAIM_CHECK) == ITEM_CLAIM_CHECK)) {
         CustomMessage msg = CustomMessage(
-            "Want to buy %g[[1]]%w for %y[[2]] Rupees%w?\x1B%gYes&No%w",
-            "Möchten Sie %g[[1]]%w für %y[[2]] Rubin%w kaufen?\x1B%gJa&Nein%w",
-            "Voulez-vous acheter %g[[1]]%w pour %y[[2]] Rubis%w?\x1B%gOui&Non%w"
+            "Want to buy [[color]][[1]]%w for %y[[2]] Rupees%w?\x1B%gYes&No%w",
+            "Möchten Sie [[color]][[1]]%w für %y[[2]] Rubin%w kaufen?\x1B%gJa&Nein%w",
+            "Voulez-vous acheter [[color]][[1]]%w pour %y[[2]] Rubis%w?\x1B%gOui&Non%w"
         );
         BuildMerchantMessage(msg, RC_KAK_GRANNYS_SHOP);
         msg.AutoFormat();
@@ -97,9 +101,9 @@ void BuildCarpetGuyMessage(uint16_t* textId, bool* loadFromMessageTable) {
             /*french*/"Squalala! Je vais enfin pouvoir %rprendre des vacances%w!");
     } else if (!Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN)) {
         msg = CustomMessage(
-            "Want to buy %g[[1]]%w for %y[[2]] Rupees%w?\x1B%gYes&No%w",
-            "Möchten Sie %g[[1]]%w für %y[[2]] Rubin%w kaufen?\x1B%gJa&Nein%w",
-            "Voulez-vous acheter %g[[1]]%w pour %y[[2]] Rubis%w?\x1B%gOui&Non%w"
+            "Want to buy [[color]][[1]]%w for %y[[2]] Rupees%w?\x1B%gYes&No%w",
+            "Möchten Sie [[color]][[1]]%w für %y[[2]] Rubin%w kaufen?\x1B%gJa&Nein%w",
+            "Voulez-vous acheter [[color]][[1]]%w pour %y[[2]] Rubis%w?\x1B%gOui&Non%w"
         );
         BuildMerchantMessage(msg, RC_WASTELAND_BOMBCHU_SALESMAN);
     }
@@ -124,13 +128,13 @@ void BuildScrubMessage(uint16_t* textId, bool* loadFromMessageTable) {
     uint16_t price = RAND_GET_ITEM(rc)->GetPrice();
     CustomMessage msg;
     if (price == 0) {
-        msg = CustomMessage("\x12\x38\x82" "All right! You win! In return for sparing me, I will give you a %g[[1]]%w!&Please, take it!\x07\x10\xA3",
-            "\x12\x38\x82" "In Ordnung! Du gewinnst! Im Austausch dafür, dass Du mich verschont hast, werde ich Dir einen %g[[1]]%w geben!\x07\x10\xA3",
-            "\x12\x38\x82" "J'me rends! Laisse-moi partir et en échange, je te donne un %g[[1]]%w! Vas-y prends le!\x07\x10\xA3");
+        msg = CustomMessage("\x12\x38\x82" "All right! You win! In return for sparing me, I will give you a [[color]][[1]]%w!&Please, take it!\x07\x10\xA3",
+            "\x12\x38\x82" "In Ordnung! Du gewinnst! Im Austausch dafür, dass Du mich verschont hast, werde ich Dir einen [[color]][[1]]%w geben!\x07\x10\xA3",
+            "\x12\x38\x82" "J'me rends! Laisse-moi partir et en échange, je te donne un [[color]][[1]]%w! Vas-y prends le!\x07\x10\xA3");
     } else {
-        msg = CustomMessage("\x12\x38\x82" "All right! You win! In return for sparing me, I will sell you a %g[[1]]%w! %y[[2]] Rupees%w it is!\x07\x10\xA3",
-            "\x12\x38\x82" "Ich gebe auf! Ich verkaufe Dir einen %g[[1]]%w für %y[[2]] Rubine%w!\x07\x10\xA3",
-            "\x12\x38\x82" "J'abandonne! Tu veux bien m'acheter un %g[[1]]%w? Ça fera %y[[2]] Rubis%w!\x07\x10\xA3");
+        msg = CustomMessage("\x12\x38\x82" "All right! You win! In return for sparing me, I will sell you a [[color]][[1]]%w! %y[[2]] Rupees%w it is!\x07\x10\xA3",
+            "\x12\x38\x82" "Ich gebe auf! Ich verkaufe Dir einen [[color]][[1]]%w für %y[[2]] Rubine%w!\x07\x10\xA3",
+            "\x12\x38\x82" "J'abandonne! Tu veux bien m'acheter un [[color]][[1]]%w? Ça fera %y[[2]] Rubis%w!\x07\x10\xA3");
     }
     BuildMerchantMessage(msg, rc);
     msg.AutoFormat();
@@ -146,14 +150,14 @@ void BuildShopMessage(uint16_t* textId, bool* loadFromMessageTable) {
     // textId: TEXT_SHOP_ITEM_RANDOM + ((randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1) + NUM_SHOP_ITEMS)
     if (*textId >= TEXT_SHOP_ITEM_RANDOM && *textId < TEXT_SHOP_ITEM_RANDOM_CONFIRM) {
         rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf(static_cast<RandomizerInf>((*textId - TEXT_SHOP_ITEM_RANDOM) + RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1));
-        msg = CustomMessage("\x08%g[[1]]%w  %y[[2]]_Rupees%w&Special deal! %rONE LEFT%w!\x0A\x02",
-            "\x08%g[[1]]%w  %y[[2]]_Rubine%w&Sonderangebot! %rNUR NOCH EINES VERFÜGBAR%w!\x0A\x02",
-            "\x08%g[[1]]%w  %y[[2]]_Rubis%w&Offre spéciale! %rDERNIER EN STOCK%w!\x0A\x02");
+        msg = CustomMessage("\x08[[color]][[1]]%w  %y[[2]]_Rupees%w&Special deal! %rONE LEFT%w!\x0A\x02",
+            "\x08[[color]][[1]]%w  %y[[2]]_Rubine%w&Sonderangebot! %rNUR NOCH EINES VERFÜGBAR%w!\x0A\x02",
+            "\x08[[color]][[1]]%w  %y[[2]]_Rubis%w&Offre spéciale! %rDERNIER EN STOCK%w!\x0A\x02");
     } else if (*textId >= TEXT_SHOP_ITEM_RANDOM_CONFIRM && *textId <= TEXT_SHOP_ITEM_RANDOM_CONFIRM_END) {
         rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf(static_cast<RandomizerInf>((*textId - TEXT_SHOP_ITEM_RANDOM_CONFIRM) + RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1));
-        msg = CustomMessage("\x08%g[[1]]%w  %y[[2]]_Rupees%w\x09\x1B%gBuy&Don't buy%w\x09\x02",
-            "\x08%g[[1]]%w  %y[[2]]_Rubine%w\x09\x1B%gKaufen&Nicht kaufen%w\x09\x02",
-            "\x08%g[[1]]%w  %y[[2]]_Rubis%w\x09\x1B%gAcheter&Ne pas acheter%w\x09\x02");
+        msg = CustomMessage("\x08[[color]][[1]]%w  %y[[2]]_Rupees%w\x09\x1B%gBuy&Don't buy%w\x09\x02",
+            "\x08[[color]][[1]]%w  %y[[2]]_Rubine%w\x09\x1B%gKaufen&Nicht kaufen%w\x09\x02",
+            "\x08[[color]][[1]]%w  %y[[2]]_Rubis%w\x09\x1B%gAcheter&Ne pas acheter%w\x09\x02");
     } else {
         return;
     }
