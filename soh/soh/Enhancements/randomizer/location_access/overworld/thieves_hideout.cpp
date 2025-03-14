@@ -71,7 +71,7 @@ void RegionTable_Init_ThievesHideout() {
         //Exits
         Entrance(RR_GF_GROUND_ORANGE, []{return true;}),
         Entrance(RR_GF_ROOFTOP_WHITE, []{return true;}),
-        Entrance(RR_TH_KITCHEN_MAIN,  []{return logic->CanPassEnemy(RE_GERUDO_GUARD) || ctx->GetTrickOption(RT_GF_KITCHEN);}),
+        Entrance(RR_TH_KITCHEN_MAIN,  []{return logic->CanPassEnemy(RE_GERUDO_GUARD) || ctx->GetTrickOption(RT_TH_KITCHEN);}),
     });
 
     areaTable[RR_TH_KITCHEN_MAIN] = Region("Thieves Hideout Kitchen Bottom", "Thieves Hideout", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -82,14 +82,14 @@ void RegionTable_Init_ThievesHideout() {
     }, {
         //Exits
         Entrance(RR_TH_KITCHEN_BOTTOM, []{return logic->CanPassEnemy(RE_GERUDO_GUARD);}),
-        Entrance(RR_TH_KITCHEN_TOP,    []{return logic->CanPassEnemy(RE_GERUDO_GUARD) || ctx->GetTrickOption(RT_GF_KITCHEN);}),
+        Entrance(RR_TH_KITCHEN_TOP,    []{return logic->CanPassEnemy(RE_GERUDO_GUARD) || ctx->GetTrickOption(RT_TH_KITCHEN);}),
     });
 
     areaTable[RR_TH_KITCHEN_TOP] = Region("Thieves Hideout Kitchen Top", "Thieves Hideout", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_TH_KITCHEN_MAIN,  []{return true;}),
-        Entrance(RR_GF_ROOFTOP_GREEN, []{return logic->CanPassEnemy(RE_GERUDO_GUARD) || logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_KITCHEN);}),
-        Entrance(RR_GF_ROOFTOP_CYAN,  []{return logic->CanPassEnemy(RE_GERUDO_GUARD) || logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_KITCHEN);}),
+        Entrance(RR_GF_ROOFTOP_GREEN, []{return logic->CanPassEnemy(RE_GERUDO_GUARD) || logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_TH_KITCHEN);}),
+        Entrance(RR_GF_ROOFTOP_CYAN,  []{return logic->CanPassEnemy(RE_GERUDO_GUARD) || logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_TH_KITCHEN);}),
     });
 
     areaTable[RR_TH_BREAK_ROOM] = Region("Thieves Hideout Break Room", "Thieves Hideout", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -98,7 +98,7 @@ void RegionTable_Init_ThievesHideout() {
         LOCATION(RC_TH_BREAK_ROOM_POT_2, logic->CanBreakPots()),
     }, {
         //Exits
-        Entrance(RR_GF_ROOFTOP_YELLOW,  []{return true;}),
-        Entrance(RR_GF_TOP_OF_FORTRESS, []{return true;}),
+        Entrance(RR_GF_ROOFTOP_YELLOW, []{return true;}),
+        Entrance(RR_GF_TOP_LEDGE,      []{return true;}),
     });
 }
