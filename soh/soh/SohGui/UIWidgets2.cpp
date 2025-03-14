@@ -44,6 +44,16 @@ std::string WrappedText(const std::string& text, unsigned int charactersPerLine)
     return WrappedText(text.c_str(), charactersPerLine);
 }
 
+void PaddedSeparator(bool padTop, bool padBottom, float extraVerticalTopPadding, float extraVerticalBottomPadding) {
+    if (padTop) {
+        Spacer(extraVerticalTopPadding);
+    }
+    ImGui::Separator();
+    if (padBottom) {
+        Spacer(extraVerticalBottomPadding);
+    }
+}
+
 void Tooltip(const char* text) {
     if (ImGui::IsItemHovered()) {
         ImGui::SetTooltip("%s", WrappedText(text).c_str());

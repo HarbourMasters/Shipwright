@@ -35,6 +35,7 @@ namespace UIWidgets2 {
 
     std::string WrappedText(const char* text, unsigned int charactersPerLine = 80);
     std::string WrappedText(const std::string& text, unsigned int charactersPerLine = 80);
+    void PaddedSeparator(bool padTop = true, bool padBottom = true, float extraVerticalTopPadding = 0.0f, float extraVerticalBottomPadding = 0.0f);
     void Tooltip(const char* text);
 
     typedef enum ColorPickerModifiers {
