@@ -4,7 +4,7 @@
 #include "functions.h"
 #include "macros.h"
 #include "soh/cvar_prefixes.h"
-#include "soh/SohGui/UIWidgets.hpp"
+#include "soh/SohGui/UIWidgets2.hpp"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/util.h"
 

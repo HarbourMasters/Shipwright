@@ -10,7 +10,7 @@
 #include <algorithm>
 #include <libultraship/libultraship.h>
 
-#include "soh/SohGui/UIWidgets.hpp"
+#include "soh/SohGui/UIWidgets2.hpp"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
