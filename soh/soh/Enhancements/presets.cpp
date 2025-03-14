@@ -6,12 +6,6 @@
 #include "soh/SohGui/UIWidgets.hpp"
 #include <libultraship/libultraship.h>
 
-void clearCvars(std::vector<const char*> cvarsToClear) {
-    for(const char* cvar : cvarsToClear) {
-        CVarClear(cvar);
-    }
-}
-
 std::string FormatLocations(std::vector<RandomizerCheck> locs) {
     std::string locString = "";
     for (auto loc: locs) {
@@ -69,10 +63,13 @@ void DrawPresetSelector(PresetType presetTypeId) {
 
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(6.0f, 4.0f));
     if (ImGui::Button(("Apply Preset##" + presetTypeCvar).c_str())) {
-        clearCvars(presetTypeDef.cvarsToClear);
+        for(const char* block : presetTypeDef.blocksToClear) {
+            CVarClearBlock(block);
+        }
         if (selectedPresetId != 0) {
             applyPreset(selectedPresetDef.entries);
         }
+        CVarSetInteger(presetTypeCvar.c_str(), selectedPresetId);
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         if (presetTypeId == PRESET_TYPE_RANDOMIZER){
             Rando::Settings::GetInstance()->ReloadOptions();
