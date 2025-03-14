@@ -4,6 +4,8 @@
 using namespace Rando;
 
 void RegionTable_Init_GerudoFortress() {
+#pragma region Ground
+
     areaTable[RR_GF_GROUND_BOTTOM] = Region("Gerudo Fortress", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->GF_GateOpen,  []{return logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}),
@@ -50,6 +52,8 @@ void RegionTable_Init_GerudoFortress() {
         Entrance(RR_GF_HBA_RANGE,                    []{return logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}),
         Entrance(RR_GF_GROUND_BOTTOM,                []{return true;}),
     });
+
+#pragma endregion
 
 #pragma region Rooftops
 
