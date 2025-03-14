@@ -291,8 +291,8 @@ void SohMenu::AddMenuSettings() {
     AddSidebarEntry("Settings", "Controls", 2);
     AddWidget(path, "Controller Bindings", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Popout Bindings Window", WIDGET_WINDOW_BUTTON)
-        .CVar("gWindows.InputEditor")
-        .WindowName("Input Editor")
+        .CVar(CVAR_WINDOW("ControllerConfiguration"))
+        .WindowName("Configure Controller")
         .Options(WindowButtonOptions().Tooltip("Enables the separate Bindings Window."));
 
     path.column = SECTION_COLUMN_2;

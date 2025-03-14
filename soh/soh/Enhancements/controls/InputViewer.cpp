@@ -580,7 +580,7 @@ void InputViewerSettingsWindow::DrawElement() {
             .Tooltip("Determines the conditions under which the analog stick outline/background texture is visible."));
 
         // gInputViewer.AnalogStick.Movement
-        CVarSliderInt("Analog Stick Movement: %dpx", CVAR_INPUT_VIEWER("AnalogStick.Movement"), IntSliderOptions().Min(0).Max(200).DefaultValue(12).ShowButtons(true)
+        CVarSliderInt("Analog Stick Movement: %dpx", CVAR_INPUT_VIEWER("AnalogStick.Movement"), IntSliderOptions().Color(THEME_COLOR).Min(0).Max(200).DefaultValue(12).ShowButtons(true)
             .Tooltip("Sets the distance to move the analog stick in the input viewer. Useful for custom input viewers."));
         UIWidgets2::PaddedSeparator(true, true);
     }
@@ -597,7 +597,7 @@ void InputViewerSettingsWindow::DrawElement() {
             .Tooltip("Determines the conditions under which the right stick outline/background texture is visible."));
 
         // gInputViewer.RightStick.Movement
-        CVarSliderInt("Right Stick Movement: %dpx", CVAR_INPUT_VIEWER("RightStick.Movement"), IntSliderOptions().Min(0).Max(200).DefaultValue(7).ShowButtons(true)
+        CVarSliderInt("Right Stick Movement: %dpx", CVAR_INPUT_VIEWER("RightStick.Movement"), IntSliderOptions().Color(THEME_COLOR).Min(0).Max(200).DefaultValue(7).ShowButtons(true)
             .Tooltip("Sets the distance to move the right stick in the input viewer. Useful for custom input viewers."));
         UIWidgets2::PaddedSeparator(true, true);
     }
@@ -612,9 +612,9 @@ void InputViewerSettingsWindow::DrawElement() {
                             true, ColorPickerRandomButton | ColorPickerResetButton);
             // gAnalogAngleScale
             CVarSliderFloat("Angle Text Scale: %.2f%%", CVAR_INPUT_VIEWER("AnalogAngles.Scale"), 
-                FloatSliderOptions().IsPercentage().Min(0.1f).Max(5.0f).DefaultValue(1.0f).ShowButtons(true));
+                FloatSliderOptions().Color(THEME_COLOR).IsPercentage().Min(0.1f).Max(5.0f).DefaultValue(1.0f).ShowButtons(true));
             // gInputViewer.AnalogAngles.Offset
-            CVarSliderInt("Angle Text Offset: %dpx", CVAR_INPUT_VIEWER("AnalogAngles.Offset"), IntSliderOptions().Min(0).Max(400).DefaultValue(0).ShowButtons(true)
+            CVarSliderInt("Angle Text Offset: %dpx", CVAR_INPUT_VIEWER("AnalogAngles.Offset"), IntSliderOptions().Color(THEME_COLOR).Min(0).Max(400).DefaultValue(0).ShowButtons(true)
                 .Tooltip("Sets the distance to move the right stick in the input viewer. Useful for custom input viewers."));
             UIWidgets2::PaddedSeparator(true, true);
             // gInputViewer.AnalogAngles.Range1.Enabled
