@@ -1,7 +1,9 @@
 #include "MessageViewer.h"
 
-#include <soh/SohGui/UIWidgets2.hpp>
-#include <soh/SohGui/SohGui.hpp>
+#include "soh/SohGui/UIWidgets2.hpp"
+#include "soh/SohGui/SohGui.hpp"
+#include "soh/OTRGlobals.h"
+
 #include <textures/message_static/message_static.h>
 
 #include "../custom-message/CustomMessageManager.h"
@@ -24,6 +26,7 @@ void MessageViewer::InitElement() {
 }
 
 void MessageViewer::DrawElement() {
+    ImGui::PushFont(OTRGlobals::Instance->fontMonoLargest);
     ImGui::Text("Table ID");
     ImGui::SameLine();
     PushStyleInput(THEME_COLOR);
@@ -83,6 +86,7 @@ void MessageViewer::DrawElement() {
         mDisplayCustomMessageClicked = true;
     }
     PopStyleButton();
+    ImGui::PopFont();
 }
 
 void MessageViewer::UpdateElement() {
