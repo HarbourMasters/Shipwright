@@ -17,8 +17,8 @@ void RegionTable_Init_ThievesHideout() {
         LOCATION(RC_TH_GERUDO_MEMBERSHIP_CARD,   logic->TH_RescuedAllCarpenters),
     }, {
         //Exits
-        Entrance(RR_GF_GROUND_RED,    []{return true;}),
-        Entrance(RR_GF_GROUND_ORANGE, []{return true;}),
+        Entrance(RR_GF_GROUND_RED,         []{return true;}),
+        Entrance(RR_GF_GROUND_NEAR_GROTTO, []{return true;}),
     });
 
     areaTable[RR_TH_SOUTH_F1_CARPENTER_AREA] = Region("Thieves Hideout South F1 Carpenter Area", "Thieves Hideout", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
@@ -38,8 +38,8 @@ void RegionTable_Init_ThievesHideout() {
         LOCATION(RC_TH_GERUDO_MEMBERSHIP_CARD,        logic->TH_RescuedAllCarpenters),
     }, {
         //Exits
-        Entrance(RR_GF_GROUND_RED,    []{return true;}),
-        Entrance(RR_GF_GROUND_ORANGE, []{return true;}),
+        Entrance(RR_GF_GROUND_RED,         []{return true;}),
+        Entrance(RR_GF_GROUND_NEAR_GROTTO, []{return true;}),
     });
 
     areaTable[RR_TH_NORTH_F2_CARPENTER_AREA] = Region("Thieves Hideout North F2 Carpenter Area", "Thieves Hideout", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
@@ -54,7 +54,7 @@ void RegionTable_Init_ThievesHideout() {
         LOCATION(RC_TH_GERUDO_MEMBERSHIP_CARD,   logic->TH_RescuedAllCarpenters),
     }, {
         //Exits
-        Entrance(RR_GF_ROOFTOP_MAGENTA, []{return true;}),
+        Entrance(RR_GF_ROOFTOP_BELOW_GS, []{return true;}),
     });
 
     areaTable[RR_TH_SOUTH_F2_CARPENTER_AREA] = Region("Thieves Hideout South F2 Carpenter Area", "Thieves Hideout", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
@@ -67,15 +67,15 @@ void RegionTable_Init_ThievesHideout() {
         LOCATION(RC_TH_GERUDO_MEMBERSHIP_CARD, logic->TH_RescuedAllCarpenters),
     }, {
         //Exits
-        Entrance(RR_GF_ROOFTOP_WHITE, []{return true;}),
-        Entrance(RR_GF_ROOFTOP_CYAN,  []{return true;}),
+        Entrance(RR_GF_ROOFTOP_ABOVE_GTG,          []{return true;}),
+        Entrance(RR_GF_ROOFTOP_TOP_OF_LOWER_VINES, []{return true;}),
     });
 
     areaTable[RR_TH_KITCHEN_BOTTOM] = Region("Thieves Hideout Kitchen Bottom", "Thieves Hideout", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
-        Entrance(RR_GF_GROUND_ORANGE, []{return true;}),
-        Entrance(RR_GF_ROOFTOP_WHITE, []{return true;}),
-        Entrance(RR_TH_KITCHEN_MAIN,  []{return logic->CanPassEnemy(RE_GERUDO_GUARD) || ctx->GetTrickOption(RT_TH_KITCHEN);}),
+        Entrance(RR_GF_GROUND_NEAR_GROTTO, []{return true;}),
+        Entrance(RR_GF_ROOFTOP_ABOVE_GTG,  []{return true;}),
+        Entrance(RR_TH_KITCHEN_MAIN,       []{return logic->CanPassEnemy(RE_GERUDO_GUARD) || ctx->GetTrickOption(RT_TH_KITCHEN);}),
     });
 
     areaTable[RR_TH_KITCHEN_MAIN] = Region("Thieves Hideout Kitchen Bottom", "Thieves Hideout", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -91,9 +91,9 @@ void RegionTable_Init_ThievesHideout() {
 
     areaTable[RR_TH_KITCHEN_TOP] = Region("Thieves Hideout Kitchen Top", "Thieves Hideout", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
-        Entrance(RR_TH_KITCHEN_MAIN,  []{return true;}),
-        Entrance(RR_GF_ROOFTOP_GREEN, []{return logic->CanPassEnemy(RE_GERUDO_GUARD) || logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_TH_KITCHEN);}),
-        Entrance(RR_GF_ROOFTOP_CYAN,  []{return logic->CanPassEnemy(RE_GERUDO_GUARD) || logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_TH_KITCHEN);}),
+        Entrance(RR_TH_KITCHEN_MAIN,               []{return true;}),
+        Entrance(RR_GF_ROOFTOP_NEAR_GS,            []{return logic->CanPassEnemy(RE_GERUDO_GUARD) || logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_TH_KITCHEN);}),
+        Entrance(RR_GF_ROOFTOP_TOP_OF_LOWER_VINES, []{return logic->CanPassEnemy(RE_GERUDO_GUARD) || logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_TH_KITCHEN);}),
     });
 
     areaTable[RR_TH_BREAK_ROOM] = Region("Thieves Hideout Break Room", "Thieves Hideout", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {

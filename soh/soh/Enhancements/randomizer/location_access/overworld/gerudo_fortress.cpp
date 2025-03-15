@@ -27,13 +27,13 @@ void RegionTable_Init_GerudoFortress() {
 
     areaTable[RR_GF_GROUND_GREY] = Region("GF Ground Grey", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
-        Entrance(RR_GF_GROUND_RED,    []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
-        Entrance(RR_GF_GROUND_ORANGE, []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
-        Entrance(RR_GF_GROUND_SALMON, []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
-        Entrance(RR_GF_GROUND_BOTTOM, []{return true;}),
+        Entrance(RR_GF_GROUND_RED,         []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
+        Entrance(RR_GF_GROUND_NEAR_GROTTO, []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
+        Entrance(RR_GF_GROUND_OUTSIDE_GTG, []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
+        Entrance(RR_GF_GROUND_BOTTOM,      []{return true;}),
     });
 
-    areaTable[RR_GF_GROUND_ORANGE] = Region("GF Ground Orange", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_GF_GROUND_NEAR_GROTTO] = Region("GF Ground Near Grotto", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_TH_KITCHEN_BOTTOM,          []{return true;}),
         Entrance(RR_TH_NORTH_F1_CARPENTER_AREA, []{return true;}),
@@ -42,7 +42,7 @@ void RegionTable_Init_GerudoFortress() {
         Entrance(RR_GF_GROUND_GREY,             []{return true;}),
     });
 
-    areaTable[RR_GF_GROUND_SALMON] = Region("GF Ground Orange", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
+    areaTable[RR_GF_GROUND_OUTSIDE_GTG] = Region("GF Ground Outside GTG", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->GtG_GateOpen, []{return (logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->HasItem(RG_CHILD_WALLET));}),
     }, {}, {
@@ -51,7 +51,7 @@ void RegionTable_Init_GerudoFortress() {
         Entrance(RR_GF_GROUND_GREY,                  []{return true;}),
         Entrance(RR_GF_HBA_RANGE,                    []{return logic->IsChild || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}),
         Entrance(RR_GF_GROUND_BOTTOM,                []{return true;}),
-        Entrance(RR_GF_ROOFTOP_WHITE,                []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
+        Entrance(RR_GF_ROOFTOP_ABOVE_GTG,            []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
     });
 
 #pragma endregion
@@ -71,92 +71,92 @@ void RegionTable_Init_GerudoFortress() {
         Entrance(RR_GF_GROUND_GREY,    []{return true;}),
     });
 
-    areaTable[RR_GF_ROOFTOP_WHITE] = Region("GF Rooftop White", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_GF_ROOFTOP_ABOVE_GTG] = Region("GF Rooftop Above GTG", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_TH_KITCHEN_BOTTOM,          []{return true;}),
         // need to explicitly convert it into a bool
-        Entrance(RR_GF_ROOFTOP_LIME,            []{return ctx->GetTrickOption(RT_GF_JUMP).Get() != 0;}),
-        Entrance(RR_TH_SOUTH_F2_CARPENTER_AREA, []{return true;}),
-        Entrance(RR_GF_GROUND_GREY,             []{return true;}),
-        Entrance(RR_GF_GROUND_ORANGE,           []{return true;}),
-        Entrance(RR_GF_GROUND_SALMON,           []{return true;}),
+        Entrance(RR_GF_ROOFTOP_BOTTOM_OF_LOWER_VINES, []{return ctx->GetTrickOption(RT_GF_JUMP).Get() != 0;}),
+        Entrance(RR_TH_SOUTH_F2_CARPENTER_AREA,       []{return true;}),
+        Entrance(RR_GF_GROUND_GREY,                   []{return true;}),
+        Entrance(RR_GF_GROUND_NEAR_GROTTO,            []{return true;}),
+        Entrance(RR_GF_GROUND_OUTSIDE_GTG,            []{return true;}),
     });
 
-    areaTable[RR_GF_ROOFTOP_LIME] = Region("GF Rooftop Lime", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_GF_ROOFTOP_BOTTOM_OF_LOWER_VINES] = Region("GF Rooftop Bottom of Lower Vines", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
-        Entrance(RR_TH_SOUTH_F1_CARPENTER_AREA, []{return true;}),
-        Entrance(RR_GF_ROOFTOP_CYAN,            []{return true /* logic->CanClimb() */;}),
-        Entrance(RR_GF_ROOFTOP_WHITE,           []{return true;}),
-        Entrance(RR_GF_GROUND_GREY,             []{return true;}),
-        Entrance(RR_GF_GROUND_ORANGE,           []{return true;}),
+        Entrance(RR_TH_SOUTH_F1_CARPENTER_AREA,    []{return true;}),
+        Entrance(RR_GF_ROOFTOP_TOP_OF_LOWER_VINES, []{return true /* logic->CanClimb() */;}),
+        Entrance(RR_GF_ROOFTOP_ABOVE_GTG,          []{return true;}),
+        Entrance(RR_GF_GROUND_GREY,                []{return true;}),
+        Entrance(RR_GF_GROUND_NEAR_GROTTO,         []{return true;}),
     });
 
-    areaTable[RR_GF_ROOFTOP_CYAN] = Region("GF Rooftop Cyan", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_GF_ROOFTOP_TOP_OF_LOWER_VINES] = Region("GF Rooftop Top of Lower Vines", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_TH_KITCHEN_TOP,             []{return true;}),
         Entrance(RR_TH_SOUTH_F2_CARPENTER_AREA, []{return true;}),
         // need to explicitly convert it into a bool
-        Entrance(RR_GF_ROOFTOP_PURPLE,          []{return ctx->GetTrickOption(RT_GF_JUMP).Get() != 0;}),
-        Entrance(RR_GF_GROUND_ORANGE,           []{return true;}),
+        Entrance(RR_GF_ROOFTOP_BOTTOM_OF_UPPER_VINES, []{return ctx->GetTrickOption(RT_GF_JUMP).Get() != 0;}),
+        Entrance(RR_GF_GROUND_NEAR_GROTTO,            []{return true;}),
     });
 
-    areaTable[RR_GF_ROOFTOP_PURPLE] = Region("GF Rooftop Purple", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_GF_ROOFTOP_BOTTOM_OF_UPPER_VINES] = Region("GF Rooftop Bottom of Upper Vines", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
-        Entrance(RR_GF_ROOFTOP_BLUE,  []{return true /* logic->CanClimb() */;}),
-        Entrance(RR_GF_ROOFTOP_CYAN,  []{return true;}),
-        Entrance(RR_GF_GROUND_SALMON, []{return true;}),
+        Entrance(RR_GF_ROOFTOP_TOP_OF_UPPER_VINES, []{return true /* logic->CanClimb() */;}),
+        Entrance(RR_GF_ROOFTOP_TOP_OF_LOWER_VINES, []{return true;}),
+        Entrance(RR_GF_GROUND_OUTSIDE_GTG,         []{return true;}),
     });
 
-    areaTable[RR_GF_ROOFTOP_MAGENTA] = Region("GF Rooftop Magenta", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {
+    areaTable[RR_GF_ROOFTOP_BELOW_GS] = Region("GF Rooftop Below GS", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
         LOCATION(RC_GF_GS_TOP_FLOOR, logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_LONGSHOT) && logic->CanGetNightTimeGS()),
     }, {
         //Exits
         Entrance(RR_TH_NORTH_F2_CARPENTER_AREA, []{return true;}),
-        Entrance(RR_GF_ROOFTOP_LIME,            []{return true;}),
+        Entrance(RR_GF_ROOFTOP_BOTTOM_OF_LOWER_VINES,            []{return true;}),
     });
 
-    areaTable[RR_GF_ROOFTOP_GREEN] = Region("GF Rooftop Green", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {
+    areaTable[RR_GF_ROOFTOP_NEAR_GS] = Region("GF Rooftop Near GS", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
         LOCATION(RC_GF_GS_TOP_FLOOR, logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOMB_THROW) && logic->CanGetNightTimeGS()),
     }, {
         //Exits
         Entrance(RR_TH_KITCHEN_TOP,       []{return true;}),
-        Entrance(RR_GF_ROOFTOP_LIME,      []{return true;}),
-        Entrance(RR_GF_ROOFTOP_MAGENTA,   []{return true;}),
+        Entrance(RR_GF_ROOFTOP_BOTTOM_OF_LOWER_VINES,      []{return true;}),
+        Entrance(RR_GF_ROOFTOP_BELOW_GS,  []{return true;}),
         Entrance(RR_GF_ROOFTOP_LIMEGREEN, []{return logic->CanUse(RG_HOVER_BOOTS) /* || bunny hood jump */;}),
-        Entrance(RR_GF_ROOFTOP_VIOLET,    []{return logic->IsAdult;}),
+        Entrance(RR_GF_ROOFTOP_SLOPED,    []{return logic->IsAdult;}),
     });
 
-    areaTable[RR_GF_ROOFTOP_VIOLET] = Region("GF Rooftop Violet", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_GF_ROOFTOP_SLOPED] = Region("GF Rooftop Sloped", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
-        Entrance(RR_GF_ROOFTOP_BLUE,  []{return logic->IsAdult;}),
-        Entrance(RR_GF_ROOFTOP_CYAN,  []{return true;}),
-        Entrance(RR_GF_ROOFTOP_GREEN, []{return true;}),
-        Entrance(RR_GF_ROOFTOP_LIME,  []{return true;}),
+        Entrance(RR_GF_ROOFTOP_TOP_OF_UPPER_VINES, []{return logic->IsAdult;}),
+        Entrance(RR_GF_ROOFTOP_TOP_OF_LOWER_VINES, []{return true;}),
+        Entrance(RR_GF_ROOFTOP_NEAR_GS,            []{return true;}),
+        Entrance(RR_GF_ROOFTOP_BOTTOM_OF_LOWER_VINES,               []{return true;}),
     });
 
-    areaTable[RR_GF_ROOFTOP_BLUE] = Region("GF Rooftop Blue", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {
+    areaTable[RR_GF_ROOFTOP_TOP_OF_UPPER_VINES] = Region("GF Rooftop Top of Upper Vines", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
         LOCATION(RC_GF_GS_TOP_FLOOR, logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_SHORT_JUMPSLASH) /* && logic->CanClimb() (to get back up) */ && logic->CanGetNightTimeGS()),
     }, {
         //Exits
-        Entrance(RR_GF_ROOFTOP_CYAN,      []{return true;}),
-        Entrance(RR_GF_ROOFTOP_PURPLE,    []{return true;}),
-        Entrance(RR_GF_ROOFTOP_GREEN,     []{return true;}),
-        Entrance(RR_GF_ROOFTOP_MAGENTA,   []{return true;}),
-        Entrance(RR_GF_ROOFTOP_VIOLET,    []{return true;}),
-        Entrance(RR_GF_ROOFTOP_TURQUOISE, []{return logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->CanUse(RG_SCARECROW) && logic->CanUse(RG_HOOKSHOT)) || logic->CanUse(RG_LONGSHOT);}),
+        Entrance(RR_GF_ROOFTOP_TOP_OF_LOWER_VINES,    []{return true;}),
+        Entrance(RR_GF_ROOFTOP_BOTTOM_OF_UPPER_VINES, []{return true;}),
+        Entrance(RR_GF_ROOFTOP_NEAR_GS,               []{return true;}),
+        Entrance(RR_GF_ROOFTOP_BELOW_GS,              []{return true;}),
+        Entrance(RR_GF_ROOFTOP_SLOPED,                []{return true;}),
+        Entrance(RR_GF_ROOFTOP_CHEST,                 []{return logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->CanUse(RG_SCARECROW) && logic->CanUse(RG_HOOKSHOT)) || logic->CanUse(RG_LONGSHOT);}),
     });
 
-    areaTable[RR_GF_ROOFTOP_TURQUOISE] = Region("GF Rooftop Turquoise", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {
+    areaTable[RR_GF_ROOFTOP_CHEST] = Region("GF Rooftop Chest", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
         LOCATION(RC_GF_CHEST,        true),
         LOCATION(RC_GF_GS_TOP_FLOOR, logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_LONG_JUMPSLASH) && logic->CanGetNightTimeGS()),
     }, {
         //Exits
-        Entrance(RR_GF_ROOFTOP_GREEN,     []{return true;}),
-        Entrance(RR_GF_ROOFTOP_MAGENTA,   []{return true;}),
+        Entrance(RR_GF_ROOFTOP_NEAR_GS,   []{return true;}),
+        Entrance(RR_GF_ROOFTOP_BELOW_GS,  []{return true;}),
         Entrance(RR_GF_ROOFTOP_LIMEGREEN, []{return true;}),
         Entrance(RR_GF_ROOFTOP_YELLOW,    []{return true;}),
     });
@@ -178,7 +178,7 @@ void RegionTable_Init_GerudoFortress() {
         LOCATION(RC_GF_GS_ARCHERY_RANGE, logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) && logic->CanGetNightTimeGS()),
     }, {
         //Exits
-        Entrance(RR_GF_GROUND_SALMON, []{return logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}),
+        Entrance(RR_GF_GROUND_OUTSIDE_GTG, []{return logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}),
     });
 
     areaTable[RR_GF_OUTSIDE_GATE] = Region("GF Outside Gate", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
@@ -205,6 +205,6 @@ void RegionTable_Init_GerudoFortress() {
         LOCATION(RC_GF_FAIRY_GROTTO_FAIRY_8, true),
     }, {
         //Exits
-        Entrance(RR_GF_GROUND_ORANGE, []{return true;}),
+        Entrance(RR_GF_GROUND_NEAR_GROTTO, []{return true;}),
     });
 }
