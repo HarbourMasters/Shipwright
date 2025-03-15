@@ -49,15 +49,18 @@ void SohMenu::AddMenuEnhancements() {
         .Callback([](WidgetInfo& info) {
             const std::string presetTypeCvar = CVAR_GENERAL("SelectedPresets.") + std::to_string(PRESET_TYPE_ENHANCEMENTS);
             const PresetTypeDefinition presetTypeDef = presetTypes.at(PRESET_TYPE_ENHANCEMENTS);
-            clearCvars(presetTypeDef.cvarsToClear);
             uint16_t selectedPresetId = CVarGetInteger(presetTypeCvar.c_str(), 0);
             if(selectedPresetId >= presetTypeDef.presets.size()){
                 selectedPresetId = 0;
             }
             const PresetDefinition selectedPresetDef = presetTypeDef.presets.at(selectedPresetId);
+            for(const char* block : presetTypeDef.blocksToClear) {
+                CVarClearBlock(block);
+            }
             if (selectedPresetId != 0) {
                 applyPreset(selectedPresetDef.entries);
             }
+            CVarSetInteger(presetTypeCvar.c_str(), selectedPresetId);
             Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         });
 

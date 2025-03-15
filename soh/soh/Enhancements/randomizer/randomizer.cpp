@@ -1961,14 +1961,17 @@ void RandomizerSettingsWindow::DrawElement() {
     ImGui::SameLine();
     ImGui::SetCursorPosY(ImGui::GetCursorPos().y + 35.f);
     if (UIWidgets::Button("Apply Preset##Randomizer", UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline).Padding(ImVec2(10.f, 6.f)))) {
-        clearCvars(presetTypeDef.cvarsToClear);
         if (randomizerPresetSelected >= presetTypeDef.presets.size()) {
             randomizerPresetSelected = 0;
         }
         const PresetDefinition selectedPresetDef = presetTypeDef.presets.at(randomizerPresetSelected);
+        for(const char* block : presetTypeDef.blocksToClear) {
+            CVarClearBlock(block);
+        }
         if (randomizerPresetSelected != 0) {
             applyPreset(selectedPresetDef.entries);
         }
+        CVarSetInteger(presetTypeCvar.c_str(), randomizerPresetSelected);
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
 
