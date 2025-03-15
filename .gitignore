@@ -452,3 +452,4 @@ _packages
 
 soh/src/boot/build.c
 soh/properties.h
+custom/shaders
