@@ -1225,13 +1225,7 @@ namespace Rando {
                     TH_CouldRescueF2NorthCarpenter &&
                     TH_CouldRescueF2SouthCarpenter;
             case RO_GF_CARPENTERS_FAST:
-                return SmallKeys(RR_GF_GROUND_BOTTOM, 1) &&
-                    (
-                        TH_CouldRescueF1NorthCarpenter ||
-                        TH_CouldRescueF1SouthCarpenter ||
-                        TH_CouldRescueF2NorthCarpenter ||
-                        TH_CouldRescueF2SouthCarpenter
-                    );
+                return SmallKeys(RR_GF_GROUND_BOTTOM, 1) && TH_CouldRescueF1NorthCarpenter;
             case RO_GF_CARPENTERS_FREE:
                 return true;
             default:
