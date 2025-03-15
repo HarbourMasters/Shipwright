@@ -58,11 +58,11 @@ const ImVec4 messageColor[]{
 const float enhancementSpacerHeight = 19.0f;
 
 void AdvancedResolutionSettingsWindow::InitElement() {
-    mGfxPc = dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow())->GetGfxPcWeak();
+    mInterpreter = dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow())->GetInterpreterWeak();
 }
 
 void AdvancedResolutionSettingsWindow::DrawElement() {
-    Fast::Interpreter* gfxPc = mGfxPc.lock().get();
+    Fast::Interpreter* interpreter = mInterpreter.lock().get();
     // Initialise update flags.
     bool update[3];
     for (uint8_t i = 0; i < sizeof(update); i++)
@@ -74,13 +74,13 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
 
     short integerScale_maximumBounds = 1; // can change when window is resized
     // This is mostly just for UX purposes, as Fit Automatically logic is part of LUS.
-    if (((float)gfxPc->mGameWindowViewport.width / gfxPc->mGameWindowViewport.height) >
-        ((float)gfxPc->mCurDimensions.width / gfxPc->mCurDimensions.height)) {
+    if (((float)interpreter->mGameWindowViewport.width / interpreter->mGameWindowViewport.height) >
+        ((float)interpreter->mCurDimensions.width / interpreter->mCurDimensions.height)) {
         // Scale to window height
-        integerScale_maximumBounds = gfxPc->mGameWindowViewport.height / gfxPc->mCurDimensions.height;
+        integerScale_maximumBounds = interpreter->mGameWindowViewport.height / interpreter->mCurDimensions.height;
     } else {
         // Scale to window width
-        integerScale_maximumBounds = gfxPc->mGameWindowViewport.width / gfxPc->mCurDimensions.width;
+        integerScale_maximumBounds = interpreter->mGameWindowViewport.width / interpreter->mCurDimensions.width;
     }
     // Lower-clamping maximum bounds value to 1 is no-longer necessary as that's accounted for in LUS.
     // Letting it go below 1 in this Editor will even allow for checking if screen bounds are being exceeded.
@@ -164,9 +164,9 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         }
     }
     // Resolution visualiser
-    ImGui::Text("Viewport dimensions: %d x %d", gfxPc->mGameWindowViewport.width,
-                gfxPc->mGameWindowViewport.height);
-    ImGui::Text("Internal resolution: %d x %d", gfxPc->mCurDimensions.width, gfxPc->mCurDimensions.height);
+    ImGui::Text("Viewport dimensions: %d x %d", interpreter->mGameWindowViewport.width,
+                interpreter->mGameWindowViewport.height);
+    ImGui::Text("Internal resolution: %d x %d", interpreter->mCurDimensions.width, interpreter->mCurDimensions.height);
 
     UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
     if (disabled_everything) { // Hide aspect ratio controls.
@@ -206,7 +206,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
     } else if (showHorizontalResField) { // Show calculated aspect ratio
         if (item_aspectRatio) {
             UIWidgets::Spacer(2);
-            const float resolvedAspectRatio = (float)gfxPc->mCurDimensions.width / gfxPc->mCurDimensions.height;
+            const float resolvedAspectRatio = (float)interpreter->mCurDimensions.width / interpreter->mCurDimensions.height;
             ImGui::Text("Aspect ratio: %.2f:1", resolvedAspectRatio);
         } else {
             UIWidgets::Spacer(enhancementSpacerHeight);

@@ -2376,7 +2376,7 @@ extern "C" void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex) {
 
 extern "C" void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* replacement) {
     dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow())
-        ->GetGfxPcWeak()
+        ->GetInterpreterWeak()
         .lock()
         ->RegisterBlendedTexture(name, mask, replacement);
     //Interpreter::GetInstance()->RegisterBlendedTexture(name, mask, replacement);
@@ -2384,7 +2384,7 @@ extern "C" void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* repla
 
 extern "C" void Gfx_UnregisterBlendedTexture(const char* name) {
     dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow())
-        ->GetGfxPcWeak()
+        ->GetInterpreterWeak()
         .lock()
         ->UnregisterBlendedTexture(name);
     //Interpreter::GetInstance()->UnregisterBlendedTexture(name);
@@ -2401,7 +2401,7 @@ extern "C" void Gfx_TextureCacheDelete(const uint8_t* texAddr) {
         texAddr = (const uint8_t*)ResourceMgr_GetResourceDataByNameHandlingMQ(imgName);
     }
     dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow())
-        ->GetGfxPcWeak()
+        ->GetInterpreterWeak()
         .lock()
         ->TextureCacheDelete(texAddr);
     //Interpreter::GetInstance()->TextureCacheDelete(texAddr);
