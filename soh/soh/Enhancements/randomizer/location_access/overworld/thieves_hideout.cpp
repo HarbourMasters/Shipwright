@@ -7,13 +7,14 @@ void RegionTable_Init_ThievesHideout() {
     areaTable[RR_TH_NORTH_F1_CARPENTER_AREA] = Region("Thieves Hideout North F1 Carpenter Area", "Thieves Hideout", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->TH_CouldRescueF1NorthCarpenter, []{return logic->CanKillEnemy(RE_GERUDO_WARRIOR);}),
+        EventAccess(&logic->TH_RescuedAllCarpenters,        []{return ((ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST) && logic->SmallKeys(RR_GF_GROUND_BOTTOM, 1)) || (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL) && logic->SmallKeys(RR_GF_GROUND_BOTTOM, 4))) && logic->TH_CouldRescueF1NorthCarpenter && logic->TH_CouldRescueF1SouthCarpenter && logic->TH_CouldRescueF2NorthCarpenter && logic->TH_CouldRescueF2SouthCarpenter;}),
     }, {
         //Locations
         LOCATION(RC_TH_NORTH_F1_CARPENTER,       logic->CanKillEnemy(RE_GERUDO_WARRIOR)),
         LOCATION(RC_TH_NORTH_F1_CARPENTER_POT_1, logic->CanBreakPots()),
         LOCATION(RC_TH_NORTH_F1_CARPENTER_POT_2, logic->CanBreakPots()),
         LOCATION(RC_TH_NORTH_F1_CARPENTER_POT_3, logic->CanBreakPots()),
-        LOCATION(RC_TH_GERUDO_MEMBERSHIP_CARD,   logic->CanFinishGerudoFortress()),
+        LOCATION(RC_TH_GERUDO_MEMBERSHIP_CARD,   logic->TH_RescuedAllCarpenters),
     }, {
         //Exits
         Entrance(RR_GF_GROUND_RED,    []{return true;}),
@@ -23,6 +24,7 @@ void RegionTable_Init_ThievesHideout() {
     areaTable[RR_TH_SOUTH_F1_CARPENTER_AREA] = Region("Thieves Hideout South F1 Carpenter Area", "Thieves Hideout", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->TH_CouldRescueF1SouthCarpenter, []{return logic->CanKillEnemy(RE_GERUDO_WARRIOR);}),
+        EventAccess(&logic->TH_RescuedAllCarpenters,        []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL) && logic->SmallKeys(RR_GF_GROUND_BOTTOM, 4) && logic->TH_CouldRescueF1NorthCarpenter && logic->TH_CouldRescueF1SouthCarpenter && logic->TH_CouldRescueF2NorthCarpenter && logic->TH_CouldRescueF2SouthCarpenter;}),
     }, {
         //Locations
         LOCATION(RC_TH_SOUTH_F1_CARPENTER,            logic->CanKillEnemy(RE_GERUDO_WARRIOR)),
@@ -33,7 +35,7 @@ void RegionTable_Init_ThievesHideout() {
         LOCATION(RC_TH_SOUTH_F1_CARPENTER_CELL_POT_2, logic->CanBreakPots()),
         LOCATION(RC_TH_SOUTH_F1_CARPENTER_CELL_POT_3, logic->CanBreakPots()),
         LOCATION(RC_TH_SOUTH_F1_CARPENTER_CELL_POT_4, logic->CanBreakPots()),
-        LOCATION(RC_TH_GERUDO_MEMBERSHIP_CARD,        logic->CanFinishGerudoFortress()),
+        LOCATION(RC_TH_GERUDO_MEMBERSHIP_CARD,        logic->TH_RescuedAllCarpenters),
     }, {
         //Exits
         Entrance(RR_GF_GROUND_RED,    []{return true;}),
@@ -42,13 +44,14 @@ void RegionTable_Init_ThievesHideout() {
 
     areaTable[RR_TH_NORTH_F2_CARPENTER_AREA] = Region("Thieves Hideout North F2 Carpenter Area", "Thieves Hideout", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->TH_CouldRescueF2NorhCarpenter, []{return logic->CanKillEnemy(RE_GERUDO_WARRIOR);}),
+        EventAccess(&logic->TH_CouldRescueF2NorthCarpenter, []{return logic->CanKillEnemy(RE_GERUDO_WARRIOR);}),
+        EventAccess(&logic->TH_RescuedAllCarpenters,        []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL) && logic->SmallKeys(RR_GF_GROUND_BOTTOM, 4) && logic->TH_CouldRescueF1NorthCarpenter && logic->TH_CouldRescueF1SouthCarpenter && logic->TH_CouldRescueF2NorthCarpenter && logic->TH_CouldRescueF2SouthCarpenter;}),
     }, {
         //Locations
         LOCATION(RC_TH_NORTH_F2_CARPENTER,       logic->CanKillEnemy(RE_GERUDO_WARRIOR)),
         LOCATION(RC_TH_NORTH_F2_CARPENTER_POT_1, logic->CanBreakPots()),
         LOCATION(RC_TH_NORTH_F2_CARPENTER_POT_2, logic->CanBreakPots()),
-        LOCATION(RC_TH_GERUDO_MEMBERSHIP_CARD,   logic->CanFinishGerudoFortress()),
+        LOCATION(RC_TH_GERUDO_MEMBERSHIP_CARD,   logic->TH_RescuedAllCarpenters),
     }, {
         //Exits
         Entrance(RR_GF_ROOFTOP_MAGENTA, []{return true;}),
@@ -57,10 +60,11 @@ void RegionTable_Init_ThievesHideout() {
     areaTable[RR_TH_SOUTH_F2_CARPENTER_AREA] = Region("Thieves Hideout South F2 Carpenter Area", "Thieves Hideout", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->TH_CouldRescueF2SouthCarpenter, []{return logic->CanKillEnemy(RE_GERUDO_WARRIOR);}),
+        EventAccess(&logic->TH_RescuedAllCarpenters,        []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL) && logic->SmallKeys(RR_GF_GROUND_BOTTOM, 4) && logic->TH_CouldRescueF1NorthCarpenter && logic->TH_CouldRescueF1SouthCarpenter && logic->TH_CouldRescueF2NorthCarpenter && logic->TH_CouldRescueF2SouthCarpenter;}),
     }, {
         //Locations
         LOCATION(RC_TH_SOUTH_F2_CARPENTER,     logic->CanKillEnemy(RE_GERUDO_WARRIOR)),
-        LOCATION(RC_TH_GERUDO_MEMBERSHIP_CARD, logic->CanFinishGerudoFortress()),
+        LOCATION(RC_TH_GERUDO_MEMBERSHIP_CARD, logic->TH_RescuedAllCarpenters),
     }, {
         //Exits
         Entrance(RR_GF_ROOFTOP_WHITE, []{return true;}),

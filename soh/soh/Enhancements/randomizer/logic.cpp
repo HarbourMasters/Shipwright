@@ -1216,24 +1216,6 @@ namespace Rando {
         return hasState;
     }
 
-    bool Logic::CanFinishGerudoFortress() {
-        switch (ctx->GetOption(RSK_GERUDO_FORTRESS).Get()) {
-            case RO_GF_CARPENTERS_NORMAL:
-                return SmallKeys(RR_GF_GROUND_BOTTOM, 4) &&
-                    TH_CouldRescueF1NorthCarpenter &&
-                    TH_CouldRescueF1SouthCarpenter &&
-                    TH_CouldRescueF2NorthCarpenter &&
-                    TH_CouldRescueF2SouthCarpenter;
-            case RO_GF_CARPENTERS_FAST:
-                return SmallKeys(RR_GF_GROUND_BOTTOM, 1) && TH_CouldRescueF1NorthCarpenter;
-            case RO_GF_CARPENTERS_FREE:
-                return true;
-            default:
-                assert(false);
-                return true;
-        }
-    }
-
     bool Logic::CanStandingShield(){
         return CanUse(RG_MIRROR_SHIELD) || (IsAdult && HasItem(RG_HYLIAN_SHIELD)) || CanUse(RG_DEKU_SHIELD);
     }

@@ -116,6 +116,7 @@ class Logic {
     bool TH_CouldRescueF1SouthCarpenter = false;
     bool TH_CouldRescueF2NorthCarpenter = false;
     bool TH_CouldRescueF2SouthCarpenter = false;
+    bool TH_RescuedAllCarpenters = false;
     bool GF_GateOpen = false;
     bool GtG_GateOpen = false;
     bool DampesWindmillAccess = false;
@@ -244,7 +245,6 @@ class Logic {
     bool HasFireSource();
     bool HasFireSourceWithTorch();
     bool TradeQuestStep(RandomizerGet rg);
-    bool CanFinishGerudoFortress();
     bool CanStandingShield();
     bool CanShield();
     bool CanUseProjectile();
