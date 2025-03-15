@@ -6,7 +6,7 @@ using namespace Rando;
 void RegionTable_Init_ThievesHideout() {
     areaTable[RR_TH_NORTH_F1_CARPENTER_AREA] = Region("Thieves Hideout North F1 Carpenter Area", "Thieves Hideout", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->CarpenterRescue, []{return logic->CanFinishGerudoFortress();}),
+        EventAccess(&logic->TH_RescuedF1NorthCarpenter, []{return logic->CanKillEnemy(RE_GERUDO_WARRIOR);}),
     }, {
         //Locations
         LOCATION(RC_TH_NORTH_F1_CARPENTER,       logic->CanKillEnemy(RE_GERUDO_WARRIOR)),
@@ -22,7 +22,7 @@ void RegionTable_Init_ThievesHideout() {
 
     areaTable[RR_TH_SOUTH_F1_CARPENTER_AREA] = Region("Thieves Hideout South F1 Carpenter Area", "Thieves Hideout", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->CarpenterRescue, []{return logic->CanFinishGerudoFortress();}),
+        EventAccess(&logic->TH_RescuedF1SouthCarpenter, []{return logic->CanKillEnemy(RE_GERUDO_WARRIOR);}),
     }, {
         //Locations
         LOCATION(RC_TH_SOUTH_F1_CARPENTER,            logic->CanKillEnemy(RE_GERUDO_WARRIOR)),
@@ -42,7 +42,7 @@ void RegionTable_Init_ThievesHideout() {
 
     areaTable[RR_TH_NORTH_F2_CARPENTER_AREA] = Region("Thieves Hideout North F2 Carpenter Area", "Thieves Hideout", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->CarpenterRescue, []{return logic->CanFinishGerudoFortress();}),
+        EventAccess(&logic->TH_RescuedF2NorhCarpenter, []{return logic->CanKillEnemy(RE_GERUDO_WARRIOR);}),
     }, {
         //Locations
         LOCATION(RC_TH_NORTH_F2_CARPENTER,       logic->CanKillEnemy(RE_GERUDO_WARRIOR)),
@@ -56,7 +56,7 @@ void RegionTable_Init_ThievesHideout() {
 
     areaTable[RR_TH_SOUTH_F2_CARPENTER_AREA] = Region("Thieves Hideout South F2 Carpenter Area", "Thieves Hideout", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->CarpenterRescue, []{return logic->CanFinishGerudoFortress();}),
+        EventAccess(&logic->TH_RescuedF2SouthCarpenter, []{return logic->CanKillEnemy(RE_GERUDO_WARRIOR);}),
     }, {
         //Locations
         LOCATION(RC_TH_SOUTH_F2_CARPENTER,     logic->CanKillEnemy(RE_GERUDO_WARRIOR)),
