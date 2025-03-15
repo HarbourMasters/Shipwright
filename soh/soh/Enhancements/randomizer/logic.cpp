@@ -1220,17 +1220,17 @@ namespace Rando {
         switch (ctx->GetOption(RSK_GERUDO_FORTRESS).Get()) {
             case RO_GF_CARPENTERS_NORMAL:
                 return SmallKeys(RR_GF_GROUND_BOTTOM, 4) &&
-                    TH_RescuedF1NorthCarpenter &&
-                    TH_RescuedF1SouthCarpenter &&
-                    TH_RescuedF2NorthCarpenter &&
-                    TH_RescuedF2SouthCarpenter;
+                    TH_CouldRescueF1NorthCarpenter &&
+                    TH_CouldRescueF1SouthCarpenter &&
+                    TH_CouldRescueF2NorthCarpenter &&
+                    TH_CouldRescueF2SouthCarpenter;
             case RO_GF_CARPENTERS_FAST:
                 return SmallKeys(RR_GF_GROUND_BOTTOM, 1) &&
                     (
-                        TH_RescuedF1NorthCarpenter ||
-                        TH_RescuedF1SouthCarpenter ||
-                        TH_RescuedF2NorthCarpenter ||
-                        TH_RescuedF2SouthCarpenter
+                        TH_CouldRescueF1NorthCarpenter ||
+                        TH_CouldRescueF1SouthCarpenter ||
+                        TH_CouldRescueF2NorthCarpenter ||
+                        TH_CouldRescueF2SouthCarpenter
                     );
             case RO_GF_CARPENTERS_FREE:
                 return true;
@@ -2302,10 +2302,10 @@ namespace Rando {
 
         //Events
         ShowedMidoSwordAndShield   = false;
-        TH_RescuedF1NorthCarpenter = false;
-        TH_RescuedF1SouthCarpenter = false;
-        TH_RescuedF2NorthCarpenter = false;
-        TH_RescuedF2SouthCarpenter = false;
+        TH_CouldRescueF1NorthCarpenter = false;
+        TH_CouldRescueF1SouthCarpenter = false;
+        TH_CouldRescueF2NorthCarpenter = false;
+        TH_CouldRescueF2SouthCarpenter = false;
         GF_GateOpen                = false;
         GtG_GateOpen               = false;
         DampesWindmillAccess       = false;

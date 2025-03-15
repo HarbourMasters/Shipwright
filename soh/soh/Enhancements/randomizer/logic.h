@@ -112,10 +112,10 @@ class Logic {
 
     // Events
     bool ShowedMidoSwordAndShield = false;
-    bool TH_RescuedF1NorthCarpenter = false;
-    bool TH_RescuedF1SouthCarpenter = false;
-    bool TH_RescuedF2NorthCarpenter = false;
-    bool TH_RescuedF2SouthCarpenter = false;
+    bool TH_CouldRescueF1NorthCarpenter = false;
+    bool TH_CouldRescueF1SouthCarpenter = false;
+    bool TH_CouldRescueF2NorthCarpenter = false;
+    bool TH_CouldRescueF2SouthCarpenter = false;
     bool GF_GateOpen = false;
     bool GtG_GateOpen = false;
     bool DampesWindmillAccess = false;
