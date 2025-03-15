@@ -1,6 +1,6 @@
 #include "colViewer.h"
 #include "../../frame_interpolation.h"
-#include "soh/SohGui/UIWidgets2.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
 
 #include <vector>
@@ -54,7 +54,7 @@ static std::vector<Vtx> cylinderVtx;
 static std::vector<Gfx> sphereGfx;
 static std::vector<Vtx> sphereVtx;
 
-using namespace UIWidgets2;
+using namespace UIWidgets;
 
 // Draws the ImGui window for the collision viewer
 void ColViewerWindow::DrawElement() {
@@ -76,7 +76,7 @@ void ColViewerWindow::DrawElement() {
     const std::string colorHelpText = "View and change the colors used for collision display.";
     PushStyleHeader(THEME_COLOR);
     if (ImGui::TreeNode("Colors")) {
-        UIWidgets2::Tooltip(colorHelpText.c_str());
+        UIWidgets::Tooltip(colorHelpText.c_str());
 
         if (CVarColorPicker("Normal", CVAR_DEVELOPER_TOOLS("ColViewer.ColorNormal"), { 255, 255, 255, 255 }, false, ColorPickerResetButton | ColorPickerRandomButton, THEME_COLOR)) {
             scene_col = VecFromRGBA8(CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorNormal"), { 255, 255, 255, 255 }));
@@ -114,7 +114,7 @@ void ColViewerWindow::DrawElement() {
 
         ImGui::TreePop();
     } else {
-        UIWidgets2::Tooltip(colorHelpText.c_str());
+        UIWidgets::Tooltip(colorHelpText.c_str());
     }
     PopStyleHeader();
 }

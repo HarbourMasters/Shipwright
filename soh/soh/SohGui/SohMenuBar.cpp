@@ -89,54 +89,24 @@ Ship::WindowBackend configWindowBackend;
 extern std::shared_ptr<Ship::GuiWindow> mGfxDebuggerWindow;
 
 void DrawSettingsMenu() {
-    if (ImGui::BeginMenu("Settings"))
-    {
-        if (ImGui::BeginMenu("Graphics")) {
-            ImGui::Text("ImGui Menu Scale");
-            ImGui::SameLine();
-            ImGui::TextColored({ 0.85f, 0.35f, 0.0f, 1.0f }, "(Experimental)");
-            if (UIWidgets::EnhancementCombobox(CVAR_SETTING("ImGuiScale"), imguiScaleOptions, 1)) {
-                OTRGlobals::Instance->ScaleImGui();
-            }
-            UIWidgets::Tooltip("Changes the scaling of the ImGui menu elements.");
+    //if (ImGui::BeginMenu("Settings"))
+    //{
+    //    if (ImGui::BeginMenu("Graphics")) {
+    //        ImGui::Text("ImGui Menu Scale");
+    //        ImGui::SameLine();
+    //        ImGui::TextColored({ 0.85f, 0.35f, 0.0f, 1.0f }, "(Experimental)");
+    //        if (UIWidgets::EnhancementCombobox(CVAR_SETTING("ImGuiScale"), imguiScaleOptions, 1)) {
+    //            OTRGlobals::Instance->ScaleImGui();
+    //        }
+    //        UIWidgets::Tooltip("Changes the scaling of the ImGui menu elements.");
 
-            // Draw LUS settings menu (such as Overlays Text Font)
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->DrawSettings();
+    //        // Draw LUS settings menu (such as Overlays Text Font)
+    //        Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->DrawSettings();
 
-            ImGui::EndMenu();
-        }
-
-        UIWidgets::Spacer(0);
-
-        if (ImGui::BeginMenu("Languages")) {
-            UIWidgets::PaddedEnhancementCheckbox("Translate Title Screen", CVAR_SETTING("TitleScreenTranslation"));
-            if (UIWidgets::EnhancementRadioButton("English", CVAR_SETTING("Languages"), LANGUAGE_ENG)) {
-                GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
-            }
-            if (UIWidgets::EnhancementRadioButton("German", CVAR_SETTING("Languages"), LANGUAGE_GER)) {
-                GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
-            }
-            if (UIWidgets::EnhancementRadioButton("French", CVAR_SETTING("Languages"), LANGUAGE_FRA)) {
-                GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
-            }
-            ImGui::EndMenu();
-        }
-        
-        UIWidgets::Spacer(0);
-        
-        if (ImGui::BeginMenu("Accessibility")) {
-        #if defined(_WIN32) || defined(__APPLE__)
-            UIWidgets::PaddedEnhancementCheckbox("Text to Speech", CVAR_SETTING("A11yTTS"));
-            UIWidgets::Tooltip("Enables text to speech for in game dialog");
-        #endif
-            UIWidgets::PaddedEnhancementCheckbox("Disable Idle Camera Re-Centering", CVAR_SETTING("A11yDisableIdleCam"));
-            UIWidgets::Tooltip("Disables the automatic re-centering of the camera when idle.");
-            
-            ImGui::EndMenu();
-        }
-
-        ImGui::EndMenu();
-    }
+    //        ImGui::EndMenu();
+    //    }
+    //    ImGui::EndMenu();
+    //}
 }
 
 void SohMenuBar::InitElement() {

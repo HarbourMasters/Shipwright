@@ -927,31 +927,31 @@ void CheckTrackerWindow::DrawElement() {
 
     ImGui::TableNextRow(0, headerHeight);
     ImGui::TableNextColumn();
-    UIWidgets2::CVarCheckbox(
-        "Show Hidden Items", CVAR_TRACKER_CHECK("ShowHidden"), UIWidgets2::CheckboxOptions({{ .tooltip = "When active, items will show hidden checks by default when updated to this state." }})
+    UIWidgets::CVarCheckbox(
+        "Show Hidden Items", CVAR_TRACKER_CHECK("ShowHidden"), UIWidgets::CheckboxOptions({{ .tooltip = "When active, items will show hidden checks by default when updated to this state." }})
         .Color(THEME_COLOR));
     UIWidgets::PaddedSeparator();
-    if (UIWidgets2::Button("Expand All", UIWidgets2::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets2::Sizes::Inline))) {
+    if (UIWidgets::Button("Expand All", UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline))) {
         optCollapseAll = false;
         optExpandAll = true;
         doAreaScroll = true;
     }
     ImGui::SameLine();
-    if (UIWidgets2::Button("Collapse All", UIWidgets2::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets2::Sizes::Inline))) {
+    if (UIWidgets::Button("Collapse All", UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline))) {
         optExpandAll = false;
         optCollapseAll = true;
     }
     ImGui::SameLine();
-    if (UIWidgets2::Button("Clear", UIWidgets2::ButtonOptions({{ .tooltip = "Clear the search field" }}).Color(THEME_COLOR).Size(UIWidgets2::Sizes::Inline))) {
+    if (UIWidgets::Button("Clear", UIWidgets::ButtonOptions({{ .tooltip = "Clear the search field" }}).Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline))) {
         checkSearch.Clear();
         UpdateFilters();
         doAreaScroll = true;
     }
-    UIWidgets2::PushStyleCombobox(THEME_COLOR);
+    UIWidgets::PushStyleCombobox(THEME_COLOR);
     if (checkSearch.Draw()) {
         UpdateFilters();
     }
-    UIWidgets2::PopStyleCombobox();
+    UIWidgets::PopStyleCombobox();
 
     ImGui::Separator();
 
@@ -1573,7 +1573,7 @@ void DrawLocation(RandomizerCheck rc) {
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, {4.0f, 3.0f});
     float sz = ImGui::GetFrameHeight();
     if (status == RCSHOW_UNCHECKED || status == RCSHOW_SEEN || status == RCSHOW_IDENTIFIED || status == RCSHOW_SCUMMED || skipped) {
-        if (UIWidgets2::StateButton(std::to_string(rc).c_str(), skipped ? ICON_FA_PLUS : ICON_FA_TIMES, ImVec2(sz, sz), UIWidgets2::ButtonOptions().Color(THEME_COLOR))) {
+        if (UIWidgets::StateButton(std::to_string(rc).c_str(), skipped ? ICON_FA_PLUS : ICON_FA_TIMES, ImVec2(sz, sz), UIWidgets::ButtonOptions().Color(THEME_COLOR))) {
             if (skipped) {
                 OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->SetIsSkipped(false);
                 areaChecksGotten[loc->GetArea()]--;
@@ -1665,7 +1665,7 @@ void DrawLocation(RandomizerCheck rc) {
             if (locationInRegion.GetLocation() == rc) {
                 std::string conditionStr = locationInRegion.GetConditionStr();
                 if (conditionStr != "true") {
-                    UIWidgets::InsertHelpHoverText(conditionStr);
+                    UIWidgets::Tooltip(conditionStr.c_str());
                 }
                 return;
             }
@@ -1708,32 +1708,32 @@ void RainbowTick() {
 
 void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, const char* cvarExtraName,
                                  Color_RGBA8& main_color, Color_RGBA8& extra_color, Color_RGBA8& main_default_color,
-                                 Color_RGBA8& extra_default_color, const char* cvarHideName, const char* tooltip, UIWidgets2::Colors theme) {
+                                 Color_RGBA8& extra_default_color, const char* cvarHideName, const char* tooltip, UIWidgets::Colors theme) {
     Color_RGBA8 cvarMainColor = CVarGetColor(cvarMainName, main_default_color);
     Color_RGBA8 cvarExtraColor = CVarGetColor(cvarExtraName, extra_default_color);
     main_color = cvarMainColor;
     extra_color = cvarExtraColor;
 
-    UIWidgets2::PushStyleCombobox(theme);
+    UIWidgets::PushStyleCombobox(theme);
     if (ImGui::CollapsingHeader(text)) {
         if (*cvarHideName != '\0') {
             std::string label = cvarHideName;
             label += "##Hidden";
             ImGui::PushID(label.c_str());
-            UIWidgets2::CVarCheckbox("Hidden", cvarHideName,
-                UIWidgets2::CheckboxOptions({{ .tooltip = "When active, checks will hide by default when updated to this state. Can "
+            UIWidgets::CVarCheckbox("Hidden", cvarHideName,
+                UIWidgets::CheckboxOptions({{ .tooltip = "When active, checks will hide by default when updated to this state. Can "
                               "be overriden with the \"Show Hidden Items\" option." }}).Color(theme));
             ImGui::PopID();
         }
         std::string mainLabel = "Name##" + std::string(cvarMainName);
-        if (UIWidgets2::CVarColorPicker(mainLabel.c_str(), cvarMainName, main_default_color, false,
-            UIWidgets2::ColorPickerRandomButton | UIWidgets2::ColorPickerResetButton | UIWidgets2::ColorPickerRainbowCheck, theme)) {
+        if (UIWidgets::CVarColorPicker(mainLabel.c_str(), cvarMainName, main_default_color, false,
+            UIWidgets::ColorPickerRandomButton | UIWidgets::ColorPickerResetButton | UIWidgets::ColorPickerRainbowCheck, theme)) {
             main_color = CVarGetColor(cvarMainName, main_default_color);
         }
 
         std::string extraLabel = "Details##" + std::string(cvarExtraName);
-        if (UIWidgets2::CVarColorPicker(extraLabel.c_str(), cvarExtraName, extra_default_color, false,
-            UIWidgets2::ColorPickerRandomButton | UIWidgets2::ColorPickerResetButton | UIWidgets2::ColorPickerRainbowCheck, theme)) {
+        if (UIWidgets::CVarColorPicker(extraLabel.c_str(), cvarExtraName, extra_default_color, false,
+            UIWidgets::ColorPickerRandomButton | UIWidgets::ColorPickerResetButton | UIWidgets::ColorPickerRainbowCheck, theme)) {
             extra_color = CVarGetColor(cvarExtraName, extra_default_color);
         }
     }
@@ -1742,7 +1742,7 @@ void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, 
         ImGui::Text(" ?");
         UIWidgets::Tooltip(tooltip);
     }
-    UIWidgets2::PopStyleCombobox();
+    UIWidgets::PopStyleCombobox();
 }
 
 void CheckTrackerWindow::Draw() {
@@ -1773,48 +1773,48 @@ void CheckTrackerSettingsWindow::DrawElement() {
         ImGui::TableNextRow();
         ImGui::TableNextColumn();
         ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
-        UIWidgets2::CVarColorPicker("BG Color", CVAR_TRACKER_CHECK("BgColor"), Color_Bg_Default, true,
-            UIWidgets2::ColorPickerResetButton | UIWidgets2::ColorPickerRandomButton, THEME_COLOR);
+        UIWidgets::CVarColorPicker("BG Color", CVAR_TRACKER_CHECK("BgColor"), Color_Bg_Default, true,
+            UIWidgets::ColorPickerResetButton | UIWidgets::ColorPickerRandomButton, THEME_COLOR);
         ImGui::PopItemWidth();
 
-        UIWidgets2::CVarCombobox("Window Type", CVAR_TRACKER_CHECK("WindowType"), windowType,
-            UIWidgets2::ComboboxOptions().LabelPosition(UIWidgets2::LabelPosition::Far).ComponentAlignment(UIWidgets2::ComponentAlignment::Right)
+        UIWidgets::CVarCombobox("Window Type", CVAR_TRACKER_CHECK("WindowType"), windowType,
+            UIWidgets::ComboboxOptions().LabelPosition(UIWidgets::LabelPosition::Far).ComponentAlignment(UIWidgets::ComponentAlignment::Right)
             .Color(THEME_COLOR).DefaultIndex(TRACKER_WINDOW_WINDOW));
         
         if (CVarGetInteger(CVAR_TRACKER_CHECK("WindowType"), TRACKER_WINDOW_WINDOW) == TRACKER_WINDOW_FLOATING) {
-            UIWidgets2::CVarCheckbox("Enable Dragging", CVAR_TRACKER_CHECK("Draggable"), UIWidgets2::CheckboxOptions().Color(THEME_COLOR));
-            UIWidgets2::CVarCheckbox("Only enable while paused", CVAR_TRACKER_CHECK("ShowOnlyPaused"), UIWidgets2::CheckboxOptions().Color(THEME_COLOR));
-            UIWidgets2::CVarCombobox("Display Mode", CVAR_TRACKER_CHECK("DisplayType"), displayType,
-                UIWidgets2::ComboboxOptions().LabelPosition(UIWidgets2::LabelPosition::Far).ComponentAlignment(UIWidgets2::ComponentAlignment::Right)
+            UIWidgets::CVarCheckbox("Enable Dragging", CVAR_TRACKER_CHECK("Draggable"), UIWidgets::CheckboxOptions().Color(THEME_COLOR));
+            UIWidgets::CVarCheckbox("Only enable while paused", CVAR_TRACKER_CHECK("ShowOnlyPaused"), UIWidgets::CheckboxOptions().Color(THEME_COLOR));
+            UIWidgets::CVarCombobox("Display Mode", CVAR_TRACKER_CHECK("DisplayType"), displayType,
+                UIWidgets::ComboboxOptions().LabelPosition(UIWidgets::LabelPosition::Far).ComponentAlignment(UIWidgets::ComponentAlignment::Right)
                 .Color(THEME_COLOR).DefaultIndex(0));
             if (CVarGetInteger(CVAR_TRACKER_CHECK("DisplayType"), TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_COMBO_BUTTON) {
-                UIWidgets2::CVarCombobox("Combo Button 1", CVAR_TRACKER_CHECK("ComboButton1"), buttonStrings,
-                    UIWidgets2::ComboboxOptions().LabelPosition(UIWidgets2::LabelPosition::Far).ComponentAlignment(UIWidgets2::ComponentAlignment::Right)
+                UIWidgets::CVarCombobox("Combo Button 1", CVAR_TRACKER_CHECK("ComboButton1"), buttonStrings,
+                    UIWidgets::ComboboxOptions().LabelPosition(UIWidgets::LabelPosition::Far).ComponentAlignment(UIWidgets::ComponentAlignment::Right)
                     .Color(THEME_COLOR).DefaultIndex(TRACKER_COMBO_BUTTON_L));
-                UIWidgets2::CVarCombobox("Combo Button 2", CVAR_TRACKER_CHECK("ComboButton2"), buttonStrings,
-                    UIWidgets2::ComboboxOptions().LabelPosition(UIWidgets2::LabelPosition::Far).ComponentAlignment(UIWidgets2::ComponentAlignment::Right)
+                UIWidgets::CVarCombobox("Combo Button 2", CVAR_TRACKER_CHECK("ComboButton2"), buttonStrings,
+                    UIWidgets::ComboboxOptions().LabelPosition(UIWidgets::LabelPosition::Far).ComponentAlignment(UIWidgets::ComponentAlignment::Right)
                     .Color(THEME_COLOR).DefaultIndex(TRACKER_COMBO_BUTTON_L));
             }
         }
-        UIWidgets2::CVarCheckbox("Vanilla/MQ Dungeon Spoilers", CVAR_TRACKER_CHECK("MQSpoilers"), UIWidgets2::CheckboxOptions()
+        UIWidgets::CVarCheckbox("Vanilla/MQ Dungeon Spoilers", CVAR_TRACKER_CHECK("MQSpoilers"), UIWidgets::CheckboxOptions()
                 .Tooltip("If enabled, Vanilla/MQ dungeons will show on the tracker immediately. Otherwise, Vanilla/MQ dungeon locations must be unlocked.").Color(THEME_COLOR));
-        if (UIWidgets2::CVarCheckbox("Hide unshuffled shop item checks", CVAR_TRACKER_CHECK("HideUnshuffledShopChecks"),
-                UIWidgets2::CheckboxOptions().Tooltip("If enabled, will prevent the tracker from displaying slots with non-shop-item shuffles.").Color(THEME_COLOR))) {
+        if (UIWidgets::CVarCheckbox("Hide unshuffled shop item checks", CVAR_TRACKER_CHECK("HideUnshuffledShopChecks"),
+                UIWidgets::CheckboxOptions().Tooltip("If enabled, will prevent the tracker from displaying slots with non-shop-item shuffles.").Color(THEME_COLOR))) {
             hideShopUnshuffledChecks = !hideShopUnshuffledChecks;
             UpdateFilters();
         }
-        if (UIWidgets2::CVarCheckbox("Always show gold skulltulas", CVAR_TRACKER_CHECK("AlwaysShowGSLocs"),
-                UIWidgets2::CheckboxOptions().Tooltip("If enabled, will show GS locations in the tracker regardless of tokensanity settings.").Color(THEME_COLOR))) {
+        if (UIWidgets::CVarCheckbox("Always show gold skulltulas", CVAR_TRACKER_CHECK("AlwaysShowGSLocs"),
+                UIWidgets::CheckboxOptions().Tooltip("If enabled, will show GS locations in the tracker regardless of tokensanity settings.").Color(THEME_COLOR))) {
             alwaysShowGS = !alwaysShowGS;
             UpdateFilters();
         }
-        UIWidgets2::CVarCheckbox("Show Logic", CVAR_TRACKER_CHECK("ShowLogic"),
-            UIWidgets2::CheckboxOptions().Tooltip("If enabled, will show a check's logic when hovering over it.").Color(THEME_COLOR));
+        UIWidgets::CVarCheckbox("Show Logic", CVAR_TRACKER_CHECK("ShowLogic"),
+            UIWidgets::CheckboxOptions().Tooltip("If enabled, will show a check's logic when hovering over it.").Color(THEME_COLOR));
 
         // Filtering settings
         UIWidgets::PaddedSeparator();
-        UIWidgets2::CVarCheckbox("Filter Empty Areas", CVAR_TRACKER_CHECK("HideFilteredAreas"),
-            UIWidgets2::CheckboxOptions().Tooltip("If enabled, will hide area headers that have no locations matching filter").Color(THEME_COLOR).DefaultValue(true));
+        UIWidgets::CVarCheckbox("Filter Empty Areas", CVAR_TRACKER_CHECK("HideFilteredAreas"),
+            UIWidgets::CheckboxOptions().Tooltip("If enabled, will hide area headers that have no locations matching filter").Color(THEME_COLOR).DefaultValue(true));
 
         ImGui::TableNextColumn();
 

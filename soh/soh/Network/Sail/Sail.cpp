@@ -6,7 +6,6 @@
 #include <nlohmann/json.hpp>
 #include "soh/OTRGlobals.h"
 #include "soh/util.h"
-#include "soh/SohGui/UIWidgets.hpp"
 
 template <class DstType, class SrcType>
 bool IsType(const SrcType* src) {

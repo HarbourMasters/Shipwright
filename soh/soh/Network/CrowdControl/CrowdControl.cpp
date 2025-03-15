@@ -9,7 +9,6 @@
 #include <spdlog/fmt/fmt.h>
 #include <regex>
 #include "soh/OTRGlobals.h"
-#include "soh/SohGui/UIWidgets.hpp"
 
 extern "C" {
 #include <z64.h>

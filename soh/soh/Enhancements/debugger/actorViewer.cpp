@@ -1,6 +1,6 @@
 #include "actorViewer.h"
 #include "../../util.h"
-#include "soh/SohGui/UIWidgets2.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/ActorDB.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
@@ -60,7 +60,7 @@ std::array<const char*, 12> acMapping = {
     "Chest"
 };
 
-using namespace UIWidgets2;
+using namespace UIWidgets;
 
 typedef enum {
     ACTORVIEWER_NAMETAGS_NONE,
@@ -1024,19 +1024,19 @@ void ActorViewerWindow::DrawElement() {
                 PushStyleInput(THEME_COLOR);
                 ImGui::InputScalar("Enemy Health", ImGuiDataType_U8, &display->colChkInfo.health);
                 PopStyleInput();
-                UIWidgets2::InsertHelpHoverText("Some actors might not use this!");
+                UIWidgets::InsertHelpHoverText("Some actors might not use this!");
             }
 
             DrawGroupWithBorder([&]() {
                 ImGui::Text("flags");
-                UIWidgets2::DrawFlagArray32("flags", display->flags);
+                UIWidgets::DrawFlagArray32("flags", display->flags);
             }, "flags");
 
             ImGui::SameLine();
 
             DrawGroupWithBorder([&]() {
                 ImGui::Text("bgCheckFlags");
-                UIWidgets2::DrawFlagArray16("bgCheckFlags", display->bgCheckFlags);
+                UIWidgets::DrawFlagArray16("bgCheckFlags", display->bgCheckFlags);
             }, "bgCheckFlags");
 
             if (Button("Refresh", ButtonOptions().Color(THEME_COLOR))) {

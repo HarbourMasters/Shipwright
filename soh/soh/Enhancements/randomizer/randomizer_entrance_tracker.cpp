@@ -662,7 +662,7 @@ void EntranceTrackerSettingsWindow::DrawElement() {
 
     ImGui::PushFont(OTRGlobals::Instance->fontStandardLarger);
     ImGui::TextWrapped("The entrance tracker will only track shuffled entrances");
-    UIWidgets2::Spacer(0);
+    UIWidgets::Spacer(0);
 
     ImGui::TableNextColumn();
 
@@ -673,44 +673,44 @@ void EntranceTrackerSettingsWindow::DrawElement() {
         ImGui::TableNextColumn();
 
         ImGui::Text("Sort By");
-        UIWidgets2::CVarRadioButton("To", CVAR_TRACKER_ENTRANCE("SortBy"), 0,
-                                    UIWidgets2::RadioButtonsOptions()
+        UIWidgets::CVarRadioButton("To", CVAR_TRACKER_ENTRANCE("SortBy"), 0,
+                                    UIWidgets::RadioButtonsOptions()
                                         .Color(THEME_COLOR)
                                         .Tooltip("Sort entrances by the original source entrance"));
-        UIWidgets2::CVarRadioButton("From", CVAR_TRACKER_ENTRANCE("SortBy"), 1,
-                                    UIWidgets2::RadioButtonsOptions()
+        UIWidgets::CVarRadioButton("From", CVAR_TRACKER_ENTRANCE("SortBy"), 1,
+                                    UIWidgets::RadioButtonsOptions()
                                         .Color(THEME_COLOR).Tooltip("Sort entrances by the overrided destination"));
 
         ImGui::Text("List Items");
-        UIWidgets2::CVarCheckbox("Auto scroll", CVAR_TRACKER_ENTRANCE("AutoScroll"),
-            UIWidgets2::CheckboxOptions().Tooltip("Automatically scroll to the first aviable entrance in the current scene").Color(THEME_COLOR));
-        UIWidgets2::CVarCheckbox("Highlight previous", CVAR_TRACKER_ENTRANCE("HighlightPrevious"),
-                UIWidgets2::CheckboxOptions().Tooltip("Highlight the previous entrance that Link came from").Color(THEME_COLOR));
-        UIWidgets2::CVarCheckbox("Highlight available", CVAR_TRACKER_ENTRANCE("HighlightAvailable"),
-                UIWidgets2::CheckboxOptions().Tooltip("Highlight available entrances in the current scene").Color(THEME_COLOR));
-        UIWidgets2::CVarCheckbox("Hide undiscovered", CVAR_TRACKER_ENTRANCE("CollapseUndiscovered"),
-                UIWidgets2::CheckboxOptions().Tooltip("Collapse undiscovered entrances towards the bottom of each group").Color(THEME_COLOR));
+        UIWidgets::CVarCheckbox("Auto scroll", CVAR_TRACKER_ENTRANCE("AutoScroll"),
+            UIWidgets::CheckboxOptions().Tooltip("Automatically scroll to the first aviable entrance in the current scene").Color(THEME_COLOR));
+        UIWidgets::CVarCheckbox("Highlight previous", CVAR_TRACKER_ENTRANCE("HighlightPrevious"),
+                UIWidgets::CheckboxOptions().Tooltip("Highlight the previous entrance that Link came from").Color(THEME_COLOR));
+        UIWidgets::CVarCheckbox("Highlight available", CVAR_TRACKER_ENTRANCE("HighlightAvailable"),
+                UIWidgets::CheckboxOptions().Tooltip("Highlight available entrances in the current scene").Color(THEME_COLOR));
+        UIWidgets::CVarCheckbox("Hide undiscovered", CVAR_TRACKER_ENTRANCE("CollapseUndiscovered"),
+                UIWidgets::CheckboxOptions().Tooltip("Collapse undiscovered entrances towards the bottom of each group").Color(THEME_COLOR));
         bool disableHideReverseEntrances = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_ON;
         static const char* disableHideReverseEntrancesText = "This option is disabled because \"Decouple Entrances\" is enabled.";
-        UIWidgets2::CVarCheckbox("Hide reverse", CVAR_TRACKER_ENTRANCE("HideReverseEntrances"),
-            UIWidgets2::CheckboxOptions({ {.disabled = disableHideReverseEntrances, .disabledTooltip = disableHideReverseEntrancesText }})
+        UIWidgets::CVarCheckbox("Hide reverse", CVAR_TRACKER_ENTRANCE("HideReverseEntrances"),
+            UIWidgets::CheckboxOptions({ {.disabled = disableHideReverseEntrances, .disabledTooltip = disableHideReverseEntrancesText }})
                 .Tooltip("Hide reverse entrance transitions when Decouple Entrances is off").DefaultValue(true).Color(THEME_COLOR));
 
         ImGui::TableNextColumn();
 
         ImGui::Text("Group By");
-        UIWidgets2::CVarRadioButton(
+        UIWidgets::CVarRadioButton(
             "Area", CVAR_TRACKER_ENTRANCE("GroupBy"), 0,
-            UIWidgets2::RadioButtonsOptions().Color(THEME_COLOR).Tooltip("Group entrances by their area"));
-        UIWidgets2::CVarRadioButton(
+            UIWidgets::RadioButtonsOptions().Color(THEME_COLOR).Tooltip("Group entrances by their area"));
+        UIWidgets::CVarRadioButton(
             "Type", CVAR_TRACKER_ENTRANCE("GroupBy"), 1,
-            UIWidgets2::RadioButtonsOptions().Color(THEME_COLOR).Tooltip("Group entrances by their entrance type"));
+            UIWidgets::RadioButtonsOptions().Color(THEME_COLOR).Tooltip("Group entrances by their entrance type"));
 
         ImGui::Text("Spoiler Reveal");
-        UIWidgets2::CVarCheckbox("Show Source", CVAR_TRACKER_ENTRANCE("ShowFrom"),
-                UIWidgets2::CheckboxOptions().Tooltip("Reveal the sourcefor undiscovered entrances").Color(THEME_COLOR));
-        UIWidgets2::CVarCheckbox("Show Destination", CVAR_TRACKER_ENTRANCE("ShowTo"),
-                UIWidgets2::CheckboxOptions().Tooltip("Reveal the destination for undiscovered entrances").Color(THEME_COLOR));
+        UIWidgets::CVarCheckbox("Show Source", CVAR_TRACKER_ENTRANCE("ShowFrom"),
+                UIWidgets::CheckboxOptions().Tooltip("Reveal the sourcefor undiscovered entrances").Color(THEME_COLOR));
+        UIWidgets::CVarCheckbox("Show Destination", CVAR_TRACKER_ENTRANCE("ShowTo"),
+                UIWidgets::CheckboxOptions().Tooltip("Reveal the destination for undiscovered entrances").Color(THEME_COLOR));
 
         ImGui::EndTable();
     }
@@ -746,26 +746,26 @@ void EntranceTrackerWindow::DrawElement() {
     static ImGuiTextFilter locationSearch;
 
     uint8_t nextTreeState = 0;
-    if (UIWidgets2::Button("Collapse All", UIWidgets2::ButtonOptions({{ .tooltip = "Collapse all entrance groups" }})
-        .Color(THEME_COLOR).Size(UIWidgets2::Sizes::Inline))) {
+    if (UIWidgets::Button("Collapse All", UIWidgets::ButtonOptions({{ .tooltip = "Collapse all entrance groups" }})
+        .Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline))) {
         nextTreeState = 1;
     }
     ImGui::SameLine();
-    if (UIWidgets2::Button("Expand All", UIWidgets2::ButtonOptions({{ .tooltip = "Expand all entrance groups" }})
-        .Color(THEME_COLOR).Size(UIWidgets2::Sizes::Inline))) {
+    if (UIWidgets::Button("Expand All", UIWidgets::ButtonOptions({{ .tooltip = "Expand all entrance groups" }})
+        .Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline))) {
         nextTreeState = 2;
     }
     ImGui::SameLine();
-    if (UIWidgets2::Button("Clear", UIWidgets2::ButtonOptions({{ .tooltip = "Clear the search field" }})
-        .Color(THEME_COLOR).Size(UIWidgets2::Sizes::Inline))) {
+    if (UIWidgets::Button("Clear", UIWidgets::ButtonOptions({{ .tooltip = "Clear the search field" }})
+        .Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline))) {
         locationSearch.Clear();
     }
 
-    UIWidgets2::PushStyleCombobox(THEME_COLOR);
+    UIWidgets::PushStyleCombobox(THEME_COLOR);
     if (locationSearch.Draw()) {
         nextTreeState = 2;
     }
-    UIWidgets2::PopStyleCombobox();
+    UIWidgets::PopStyleCombobox();
 
     uint8_t destToggle = CVarGetInteger(CVAR_TRACKER_ENTRANCE("SortBy"), 0);
     uint8_t groupToggle = CVarGetInteger(CVAR_TRACKER_ENTRANCE("GroupBy"), 0);
@@ -924,13 +924,13 @@ void EntranceTrackerWindow::DrawElement() {
 
                 // Write collapsed undiscovered info
                 if (!locationSearch.IsActive() && undiscovered > 0) {
-                    UIWidgets2::Spacer(0);
+                    UIWidgets::Spacer(0);
                     ImGui::PushStyleColor(ImGuiCol_Text, COLOR_GRAY);
                     ImGui::TextWrapped("%d Undiscovered", undiscovered);
                     ImGui::PopStyleColor();
                 }
 
-                UIWidgets2::Spacer(0);
+                UIWidgets::Spacer(0);
                 ImGui::TreePop();
             }
         }

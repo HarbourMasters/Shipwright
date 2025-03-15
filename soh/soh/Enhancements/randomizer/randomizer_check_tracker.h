@@ -2,7 +2,7 @@
 #include <nlohmann/json.hpp>
 #include "randomizerTypes.h"
 #include "randomizer_check_objects.h"
-#include "soh/SohGui/UIWidgets2.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 
 #include <libultraship/libultraship.h>
 

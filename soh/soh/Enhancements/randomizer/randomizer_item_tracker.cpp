@@ -4,7 +4,7 @@
 #include "soh/cvar_prefixes.h"
 #include "soh/SaveManager.h"
 #include "soh/ResourceManagerHelpers.h"
-#include "soh/SohGui/UIWidgets2.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
 #include "randomizerTypes.h"
 
@@ -36,7 +36,7 @@ void DrawSong(ItemTrackerItem item);
 
 int itemTrackerSectionId;
 
-using namespace UIWidgets2;
+using namespace UIWidgets;
 
 bool shouldUpdateVectors = true;
 

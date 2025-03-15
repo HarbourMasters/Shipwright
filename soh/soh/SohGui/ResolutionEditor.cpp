@@ -3,7 +3,6 @@
 #include <libultraship/libultraship.h>
 
 #include "soh/SohGui/UIWidgets.hpp"
-#include "soh/SohGui/UIWidgets2.hpp"
 #include <graphic/Fast3D/gfx_pc.h>
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/SohMenu.h"
@@ -85,20 +84,18 @@ static int32_t horizontalPixelCount;
 static bool disabled_everything;
 static bool disabled_pixelCount;
 
-using namespace UIWidgets2;
+using namespace UIWidgets;
 
 void ResolutionCustomWidget(WidgetInfo& info) {
-        UIWidgets::Spacer(0);
-    
         ImGui::BeginDisabled(disabled_everything);
         // Vertical Resolution
-        UIWidgets2::CVarCheckbox("Set fixed vertical resolution (disables Resolution slider)", CVAR_PREFIX_ADVANCED_RESOLUTION ".VerticalResolutionToggle",
-            UIWidgets2::CheckboxOptions({ {.disabled = disabled_everything} }).Tooltip("Override the resolution scale slider and use the settings below, irrespective of window size.")
+        UIWidgets::CVarCheckbox("Set fixed vertical resolution (disables Resolution slider)", CVAR_PREFIX_ADVANCED_RESOLUTION ".VerticalResolutionToggle",
+            UIWidgets::CheckboxOptions({ {.disabled = disabled_everything} }).Tooltip("Override the resolution scale slider and use the settings below, irrespective of window size.")
                         .Color(THEME_COLOR));
         //if (disabled_pixelCount || disabled_everything) { // Hide pixel count controls.
         //    UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
         //}
-        UIWidgets2::PushStyleCombobox(THEME_COLOR);
+        UIWidgets::PushStyleCombobox(THEME_COLOR);
         if (ImGui::Combo("Pixel Count Presets", &item_pixelCount, pixelCountPresetLabels,
                             IM_ARRAYSIZE(pixelCountPresetLabels)) &&
             item_pixelCount != default_pixelCount) { // don't change anything if "Custom" is selected.
@@ -112,13 +109,13 @@ void ResolutionCustomWidget(WidgetInfo& info) {
             CVarSetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".UIComboItem.PixelCount", item_pixelCount);
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         }
-        UIWidgets2::PopStyleCombobox();
+        UIWidgets::PopStyleCombobox();
         // Horizontal Resolution, if visibility is enabled for it.
         if (showHorizontalResField) {
             // Only show the field if Aspect Ratio is being enforced.
             if ((aspectRatioX > 0.0f) && (aspectRatioY > 0.0f)) {
                 // So basically we're "faking" this one by setting aspectRatioX instead.
-                UIWidgets2::PushStyleInput(THEME_COLOR);
+                UIWidgets::PushStyleInput(THEME_COLOR);
                 if (ImGui::InputInt("Horiz. Pixel Count", &horizontalPixelCount, 8, 320)) {
                     item_aspectRatio = default_aspectRatio;
                     if (horizontalPixelCount < SCREEN_WIDTH) {
@@ -129,13 +126,13 @@ void ResolutionCustomWidget(WidgetInfo& info) {
                     update[UPDATE_aspectRatioX] = true;
                     update[UPDATE_aspectRatioY] = true;
                 }
-                UIWidgets2::PopStyleInput();
+                UIWidgets::PopStyleInput();
             } else { // Display a notice instead.
                 ImGui::TextColored(messageColor[MESSAGE_QUESTION],
                                     ICON_FA_QUESTION_CIRCLE " \"Force aspect ratio\" required.");
                 // ImGui::Text(" ");
                 ImGui::SameLine();
-                if (UIWidgets2::Button("Click to resolve", UIWidgets2::ButtonOptions().Color(THEME_COLOR))) {
+                if (UIWidgets::Button("Click to resolve", UIWidgets::ButtonOptions().Color(THEME_COLOR))) {
                     item_aspectRatio = default_aspectRatio; // Set it to Custom
                     aspectRatioX = aspectRatioPresetsX[2];  // but use the 4:3 defaults
                     aspectRatioY = aspectRatioPresetsY[2];
@@ -146,7 +143,7 @@ void ResolutionCustomWidget(WidgetInfo& info) {
             }
         }
         // Vertical Resolution part 2
-        UIWidgets2::PushStyleInput(THEME_COLOR);
+        UIWidgets::PushStyleInput(THEME_COLOR);
         if (ImGui::InputInt("Vertical Pixel Count", &verticalPixelCount, 8, 240)) {
             item_pixelCount = default_pixelCount;
             update[UPDATE_verticalPixelCount] = true;
@@ -162,19 +159,19 @@ void ResolutionCustomWidget(WidgetInfo& info) {
             }
         }
         ImGui::EndDisabled();
-        UIWidgets2::PopStyleInput();
+        UIWidgets::PopStyleInput();
     
         // Integer scaling settings group (Pixel-perfect Mode)
         static const ImGuiTreeNodeFlags IntegerScalingResolvedImGuiFlag =
             CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".PixelPerfectMode", 0) ? ImGuiTreeNodeFlags_DefaultOpen
                                                                         : ImGuiTreeNodeFlags_None;
-        UIWidgets2::PushStyleHeader(THEME_COLOR);
+        UIWidgets::PushStyleHeader(THEME_COLOR);
         if (ImGui::CollapsingHeader("Integer Scaling Settings", IntegerScalingResolvedImGuiFlag)) {
             const bool disabled_pixelPerfectMode =
                 !CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".PixelPerfectMode", 0) || disabled_everything;
             // Pixel-perfect Mode
-            UIWidgets2::CVarCheckbox("Pixel-perfect Mode", CVAR_PREFIX_ADVANCED_RESOLUTION ".PixelPerfectMode",
-                UIWidgets2::CheckboxOptions({{ .disabled = disabled_pixelCount || disabled_everything }}).Tooltip("Don't scale image to fill window.")
+            UIWidgets::CVarCheckbox("Pixel-perfect Mode", CVAR_PREFIX_ADVANCED_RESOLUTION ".PixelPerfectMode",
+                UIWidgets::CheckboxOptions({{ .disabled = disabled_pixelCount || disabled_everything }}).Tooltip("Don't scale image to fill window.")
                             .Color(THEME_COLOR));
             if (disabled_pixelCount && CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".PixelPerfectMode", 0)) {
                 CVarSetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".PixelPerfectMode", 0);
@@ -182,8 +179,8 @@ void ResolutionCustomWidget(WidgetInfo& info) {
             }
     
             // Integer Scaling
-            UIWidgets2::CVarSliderInt(fmt::format("Integer scale factor: {}", max_integerScaleFactor).c_str(), CVAR_PREFIX_ADVANCED_RESOLUTION ".IntegerScale.Factor",
-                UIWidgets2::IntSliderOptions({ {.disabled = disabled_pixelPerfectMode || CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".IntegerScale.FitAutomatically", 0)} })
+            UIWidgets::CVarSliderInt(fmt::format("Integer scale factor: {}", max_integerScaleFactor).c_str(), CVAR_PREFIX_ADVANCED_RESOLUTION ".IntegerScale.Factor",
+                UIWidgets::IntSliderOptions({ {.disabled = disabled_pixelPerfectMode || CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".IntegerScale.FitAutomatically", 0)} })
                 .Min(1).Max(max_integerScaleFactor).DefaultValue(1).Tooltip("Integer scales the image. Only available in pixel-perfect mode.").Color(THEME_COLOR));
             // Display warning if size is being clamped or if framebuffer is larger than viewport.
             if (!disabled_pixelPerfectMode &&
@@ -194,8 +191,8 @@ void ResolutionCustomWidget(WidgetInfo& info) {
                 ImGui::TextColored(messageColor[MESSAGE_WARNING], ICON_FA_EXCLAMATION_TRIANGLE " Window exceeded.");
             }
     
-            UIWidgets2::CVarCheckbox("Automatically scale image to fit viewport", CVAR_PREFIX_ADVANCED_RESOLUTION ".IntegerScale.FitAutomatically",
-                UIWidgets2::CheckboxOptions({ {.disabled = disabled_pixelPerfectMode} }).DefaultValue(true).Color(THEME_COLOR)
+            UIWidgets::CVarCheckbox("Automatically scale image to fit viewport", CVAR_PREFIX_ADVANCED_RESOLUTION ".IntegerScale.FitAutomatically",
+                UIWidgets::CheckboxOptions({ {.disabled = disabled_pixelPerfectMode} }).DefaultValue(true).Color(THEME_COLOR)
                             .Tooltip("Automatically sets scale factor to fit window. Only available in pixel-perfect mode."));
             if (CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".IntegerScale.FitAutomatically", 0)) {
                 // This is just here to update the value shown on the slider.
@@ -204,20 +201,20 @@ void ResolutionCustomWidget(WidgetInfo& info) {
                 Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             }
         } // End of integer scaling settings
-        UIWidgets2::PopStyleHeader();
+        UIWidgets::PopStyleHeader();
     
         // Collapsible panel for additional settings
-        UIWidgets2::PushStyleHeader(THEME_COLOR);
+        UIWidgets::PushStyleHeader(THEME_COLOR);
         if (ImGui::CollapsingHeader("Additional Settings")) {
     #if defined(__SWITCH__) || defined(__WIIU__)
             // Disable aspect correction, stretching the framebuffer to fill the viewport.
             // This option is only really needed on systems limited to 16:9 TV resolutions, such as consoles.
             // The associated cvar is still functional on PC platforms if you want to use it though.
-            UIWidgets2::CVarCheckbox("Disable aspect correction and stretch the output image.\n"
+            UIWidgets::CVarCheckbox("Disable aspect correction and stretch the output image.\n"
                                                     "(Might be useful for 4:3 televisions!)\n"
                                                     "Not available in Pixel Perfect Mode.",
                                                     CVAR_PREFIX_ADVANCED_RESOLUTION ".IgnoreAspectCorrection",
-                        UIWidgets2::CheckboxOptions({{ .disabled = CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".PixelPerfectMode", 0) || disabled_everything}})
+                        UIWidgets::CheckboxOptions({{ .disabled = CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".PixelPerfectMode", 0) || disabled_everything}})
                                     .Color(THEME_COLOR));
     #else
             if (CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".IgnoreAspectCorrection", 0)) {
@@ -235,8 +232,8 @@ void ResolutionCustomWidget(WidgetInfo& info) {
     #endif
     
             // A requested addition; an alternative way of displaying the resolution field.
-            if (UIWidgets2::Checkbox("Show a horizontal resolution field, instead of aspect ratio.",
-            &showHorizontalResField, UIWidgets2::CheckboxOptions().Color(THEME_COLOR))) {
+            if (UIWidgets::Checkbox("Show a horizontal resolution field, instead of aspect ratio.",
+            &showHorizontalResField, UIWidgets::CheckboxOptions().Color(THEME_COLOR))) {
                 if (!showHorizontalResField && (aspectRatioX > 0.0f)) { // when turning this setting off
                     // Refresh relevant values
                     aspectRatioX = aspectRatioY * horizontalPixelCount / verticalPixelCount;
@@ -261,9 +258,9 @@ void ResolutionCustomWidget(WidgetInfo& info) {
                     !CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".PixelPerfectMode", 0) ||
                     CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".IntegerScale.FitAutomatically", 0) ||
                     disabled_everything;
-                if (UIWidgets2::CVarCheckbox("Prevent integer scaling from exceeding screen bounds.\n"
+                if (UIWidgets::CVarCheckbox("Prevent integer scaling from exceeding screen bounds.\n"
                         "(Makes screen bounds take priority over specified factor.)",
-                        CVAR_PREFIX_ADVANCED_RESOLUTION ".IntegerScale.NeverExceedBounds", UIWidgets2::CheckboxOptions({{ .disabled = disabled_neverExceedBounds}})
+                        CVAR_PREFIX_ADVANCED_RESOLUTION ".IntegerScale.NeverExceedBounds", UIWidgets::CheckboxOptions({{ .disabled = disabled_neverExceedBounds}})
                         .Tooltip(
                             "Prevents integer scaling factor from exceeding screen bounds.\n\n"
                             "Enabled: Will clamp the scaling factor and display a gentle warning in the resolution editor.\n"
@@ -280,9 +277,9 @@ void ResolutionCustomWidget(WidgetInfo& info) {
     
                 // Integer Scaling - Exceed Bounds By 1x/Offset.
                 // A popular feature in some retro frontends/upscalers, sometimes called "crop overscan" or "1080p 5x".
-                UIWidgets2::CVarCheckbox("Allow integer scale factor to go +1 above maximum screen bounds.",
+                UIWidgets::CVarCheckbox("Allow integer scale factor to go +1 above maximum screen bounds.",
                     CVAR_PREFIX_ADVANCED_RESOLUTION ".IntegerScale.ExceedBoundsBy",
-                    UIWidgets2::CheckboxOptions({{ .disabled = !CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".PixelPerfectMode", 0) || disabled_everything }}).Color(THEME_COLOR));
+                    UIWidgets::CheckboxOptions({{ .disabled = !CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".PixelPerfectMode", 0) || disabled_everything }}).Color(THEME_COLOR));
                 
                 // It does actually function as expected, but exceeding the bottom of the screen shows a scroll bar.
                 // I've ended up commenting this one out because of the scroll bar, and for simplicity.
@@ -297,7 +294,7 @@ void ResolutionCustomWidget(WidgetInfo& info) {
                     // Another support helper button, to disable the unused "Exceed Bounds By" cvar.
                     // (Remove this button if uncommenting the checkbox.)
                     if (CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".IntegerScale.ExceedBoundsBy", 0)) {
-                        if (UIWidgets2::Button("Click to reset a console variable that may be causing this.", UIWidgets2::ButtonOptions().Color(THEME_COLOR))) {
+                        if (UIWidgets::Button("Click to reset a console variable that may be causing this.", UIWidgets::ButtonOptions().Color(THEME_COLOR))) {
                             CVarSetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".IntegerScale.ExceedBoundsBy", 0);
                             Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                         }
@@ -308,7 +305,7 @@ void ResolutionCustomWidget(WidgetInfo& info) {
             } // End of Integer Scaling additional settings.
     
         } // End of additional settings
-        UIWidgets2::PopStyleHeader();
+        UIWidgets::PopStyleHeader();
     
         // Clamp and update the cvars that don't use UIWidgets
         if (update[UPDATE_aspectRatioX] || update[UPDATE_aspectRatioY] || update[UPDATE_verticalPixelCount]) {
@@ -423,12 +420,12 @@ void RegisterResolutionWidgets() {
         // Hide aspect ratio input fields if using one of the presets.
         if (item_aspectRatio == default_aspectRatio && !showHorizontalResField) {
             // Declare input interaction bools outside of IF statement to prevent Y field from disappearing.
-            const bool input_X = UIWidgets2::SliderFloat("X", &aspectRatioX,
-                UIWidgets2::FloatSliderOptions({{ .disabled = disabled_everything }}).Min(0.1f).Max(32.0f).Step(0.001f).Format("%3f")
-                            .Color(THEME_COLOR).LabelPosition(UIWidgets2::LabelPosition::Near).ComponentAlignment(UIWidgets2::ComponentAlignment::Right));
-            const bool input_Y = UIWidgets2::SliderFloat("Y", &aspectRatioY,
-                UIWidgets2::FloatSliderOptions({{ .disabled = disabled_everything }}).Min(0.1f).Max(24.0f).Step(0.001f).Format("%3f")
-                            .Color(THEME_COLOR).LabelPosition(UIWidgets2::LabelPosition::Near).ComponentAlignment(UIWidgets2::ComponentAlignment::Right));
+            const bool input_X = UIWidgets::SliderFloat("X", &aspectRatioX,
+                UIWidgets::FloatSliderOptions({{ .disabled = disabled_everything }}).Min(0.1f).Max(32.0f).Step(0.001f).Format("%3f")
+                            .Color(THEME_COLOR).LabelPosition(UIWidgets::LabelPosition::Near).ComponentAlignment(UIWidgets::ComponentAlignment::Right));
+            const bool input_Y = UIWidgets::SliderFloat("Y", &aspectRatioY,
+                UIWidgets::FloatSliderOptions({{ .disabled = disabled_everything }}).Min(0.1f).Max(24.0f).Step(0.001f).Format("%3f")
+                            .Color(THEME_COLOR).LabelPosition(UIWidgets::LabelPosition::Near).ComponentAlignment(UIWidgets::ComponentAlignment::Right));
             if (input_X || input_Y) {
                 item_aspectRatio = default_aspectRatio;
                 update[UPDATE_aspectRatioX] = true;

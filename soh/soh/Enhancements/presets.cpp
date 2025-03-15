@@ -57,7 +57,7 @@ void DrawPresetSelector(PresetType presetTypeId) {
     }
 
     ImGui::Text("Presets", false, true);
-    UIWidgets2::PushStyleCombobox(THEME_COLOR);
+    UIWidgets::PushStyleCombobox(THEME_COLOR);
     if (ImGui::BeginCombo("##PresetsComboBox", selectedPresetDef.label)) {
         for ( auto iter = presetTypeDef.presets.begin(); iter != presetTypeDef.presets.end(); ++iter ) {
             if (ImGui::Selectable(iter->second.label, iter->first == selectedPresetId)) {
@@ -68,10 +68,10 @@ void DrawPresetSelector(PresetType presetTypeId) {
 
         ImGui::EndCombo();
     }
-    UIWidgets2::PopStyleCombobox();
-    UIWidgets2::Tooltip(comboboxTooltip.c_str());
+    UIWidgets::PopStyleCombobox();
+    UIWidgets::Tooltip(comboboxTooltip.c_str());
 
-    UIWidgets2::PushStyleButton(THEME_COLOR);
+    UIWidgets::PushStyleButton(THEME_COLOR);
     if (ImGui::Button(("Apply Preset##" + presetTypeCvar).c_str())) {
         clearCvars(presetTypeDef.cvarsToClear);
         if (selectedPresetId != 0) {
@@ -82,5 +82,5 @@ void DrawPresetSelector(PresetType presetTypeId) {
             Rando::Settings::GetInstance()->ReloadOptions();
         }
     }
-    UIWidgets2::PopStyleButton();
+    UIWidgets::PopStyleButton();
 }

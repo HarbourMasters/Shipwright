@@ -1,6 +1,6 @@
 #include "MessageViewer.h"
 
-#include "soh/SohGui/UIWidgets2.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/OTRGlobals.h"
 
@@ -16,7 +16,7 @@
 
 extern "C" u8 sMessageHasSetSfx;
 
-using namespace UIWidgets2;
+using namespace UIWidgets;
 
 void MessageViewer::InitElement() {
     CustomMessageManager::Instance->AddCustomMessageTable(TABLE_ID);
@@ -30,19 +30,19 @@ void MessageViewer::DrawElement() {
     ImGui::Text("Table ID");
     ImGui::SameLine();
     PushStyleInput(THEME_COLOR);
-    ImGui::InputText("##TableID", mTableIdBuf, MAX_STRING_SIZE, ImGuiInputTextFlags_CallbackCharFilter, UIWidgets2::TextFilters::FilterAlphaNum);
-    UIWidgets2::InsertHelpHoverText("Leave blank for vanilla table");
+    ImGui::InputText("##TableID", mTableIdBuf, MAX_STRING_SIZE, ImGuiInputTextFlags_CallbackCharFilter, UIWidgets::TextFilters::FilterAlphaNum);
+    UIWidgets::InsertHelpHoverText("Leave blank for vanilla table");
     ImGui::Text("Text ID");
     ImGui::SameLine();
     switch (mTextIdBase) {
         case DECIMAL:
             ImGui::InputText("##TextID", mTextIdBuf, MAX_STRING_SIZE, ImGuiInputTextFlags_CharsDecimal);
-            UIWidgets2::InsertHelpHoverText("Decimal Text ID of the message to load. Decimal digits only (0-9).");
+            UIWidgets::InsertHelpHoverText("Decimal Text ID of the message to load. Decimal digits only (0-9).");
             break;
         case HEXADECIMAL:
         default:
             ImGui::InputText("##TextID", mTextIdBuf, MAX_STRING_SIZE, ImGuiInputTextFlags_CharsHexadecimal);
-            UIWidgets2::InsertHelpHoverText("Hexadecimal Text ID of the message to load. Hexadecimal digits only (0-9/A-F).");
+            UIWidgets::InsertHelpHoverText("Hexadecimal Text ID of the message to load. Hexadecimal digits only (0-9/A-F).");
             break;
     }
     PopStyleInput();
@@ -70,13 +70,13 @@ void MessageViewer::DrawElement() {
         ImGui::EndCombo();
     }
     PopStyleCombobox();
-    UIWidgets2::InsertHelpHoverText("Which language to load from the selected text ID");
+    UIWidgets::InsertHelpHoverText("Which language to load from the selected text ID");
     PushStyleButton(THEME_COLOR);
     if (ImGui::Button("Display Message##ExistingMessage")) {
         mDisplayExistingMessageClicked = true;
     }
     ImGui::Text("Custom Message");
-    UIWidgets2::InsertHelpHoverText("Enter a string using Custom Message Syntax to preview it in-game. "
+    UIWidgets::InsertHelpHoverText("Enter a string using Custom Message Syntax to preview it in-game. "
                                    "Any newline (\\n) characters inserted by the Enter key will be stripped "
                                    "from the output.");
     PushStyleInput(THEME_COLOR);

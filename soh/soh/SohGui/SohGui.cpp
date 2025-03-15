@@ -20,8 +20,6 @@
 #ifdef __SWITCH__
 #include <port/switch/SwitchImpl.h>
 #endif
-
-#include "UIWidgets.hpp"
 #include "SohMenu.h"
 #include "include/global.h"
 #include "include/z64audio.h"
@@ -100,7 +98,7 @@ namespace SohGui {
     std::shared_ptr<Notification::Window> mNotificationWindow;
     std::shared_ptr<TimeDisplayWindow> mTimeDisplayWindow;
 
-    UIWidgets2::Colors GetMenuThemeColor() {
+    UIWidgets::Colors GetMenuThemeColor() {
         return mSohMenu->GetMenuThemeColor();
     }
 

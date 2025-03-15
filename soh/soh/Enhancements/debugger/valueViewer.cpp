@@ -1,5 +1,5 @@
 #include "valueViewer.h"
-#include "soh/SohGui/UIWidgets2.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/OTRGlobals.h"
 #include "soh/ShipInit.hpp"
@@ -144,14 +144,14 @@ RegisterShipInitFunc initFunc(RegisterValueViewerHooks, { CVAR_NAME });
 
 void ValueViewerWindow::DrawElement() {
     ImGui::PushFont(OTRGlobals::Instance->fontMonoLargest);
-    UIWidgets2::CVarCheckbox("Enable Printing", CVAR_NAME, UIWidgets2::CheckboxOptions().Color(THEME_COLOR));
+    UIWidgets::CVarCheckbox("Enable Printing", CVAR_NAME, UIWidgets::CheckboxOptions().Color(THEME_COLOR));
 
     ImGui::BeginGroup();
     static int selectedElement = -1;
     std::string selectedElementText = (selectedElement == -1) ? "Select a value" : (
         std::string(valueTable[selectedElement].name) + " (" + std::string(valueTable[selectedElement].path) + ")"
     );
-    UIWidgets2::PushStyleCombobox(THEME_COLOR);
+    UIWidgets::PushStyleCombobox(THEME_COLOR);
     if (ImGui::BeginCombo("##valueViewerElement", selectedElementText.c_str())) {
         for (int i = 0; i < valueTable.size(); i++) {
             if (valueTable[i].isActive) continue;
@@ -168,28 +168,28 @@ void ValueViewerWindow::DrawElement() {
         }
         ImGui::EndCombo();
     }
-    UIWidgets2::PopStyleCombobox();
+    UIWidgets::PopStyleCombobox();
     ImGui::SameLine();
-    UIWidgets2::PushStyleButton(THEME_COLOR);
+    UIWidgets::PushStyleButton(THEME_COLOR);
     if (selectedElement != -1 && ImGui::Button("+")) {
         valueTable[selectedElement].isActive = true;
         selectedElement = -1;
     }
-    UIWidgets2::PopStyleButton();
+    UIWidgets::PopStyleButton();
     ImGui::EndGroup();
 
     for (int i = 0; i < valueTable.size(); i++) {
         ValueTableElement& element = valueTable[i];
         if (!element.isActive || (gPlayState == NULL && element.requiresPlayState)) continue;
-        UIWidgets2::PushStyleButton(THEME_COLOR);
-        UIWidgets2::PushStyleCheckbox(THEME_COLOR);
+        UIWidgets::PushStyleButton(THEME_COLOR);
+        UIWidgets::PushStyleCheckbox(THEME_COLOR);
         ImGui::AlignTextToFramePadding();
         if (ImGui::Button((ICON_FA_TIMES + std::string("##") + std::string(element.name)).c_str())) {
             element.isActive = false;
             element.isPrinted = false;
         }
-        UIWidgets2::PopStyleCheckbox();
-        UIWidgets2::PopStyleButton();
+        UIWidgets::PopStyleCheckbox();
+        UIWidgets::PopStyleButton();
         ImGui::SameLine();
         ImGui::Text("%s:", element.name);
         ImGui::SameLine();
@@ -223,7 +223,7 @@ void ValueViewerWindow::DrawElement() {
                 break;
         }
         ImGui::SameLine();
-        UIWidgets2::PushStyleCheckbox(THEME_COLOR);
+        UIWidgets::PushStyleCheckbox(THEME_COLOR);
         if (element.type <= TYPE_U32) {
             ImGui::Checkbox(("Hex##" + std::string(element.name)).c_str(), &element.typeFormat);
             ImGui::SameLine();
@@ -231,30 +231,30 @@ void ValueViewerWindow::DrawElement() {
             ImGui::Checkbox(("Trim##" + std::string(element.name)).c_str(), &element.typeFormat);
             ImGui::SameLine();
         }
-        UIWidgets2::PopStyleCheckbox();
+        UIWidgets::PopStyleCheckbox();
 
         ImGui::BeginGroup();
         if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ValueViewerEnablePrinting"), 0)) {
-            UIWidgets2::PushStyleCheckbox(THEME_COLOR);
+            UIWidgets::PushStyleCheckbox(THEME_COLOR);
             ImGui::Checkbox(("Print##" + std::string(element.name)).c_str(), &element.isPrinted);
-            UIWidgets2::PopStyleCheckbox();
+            UIWidgets::PopStyleCheckbox();
             if (element.isPrinted) {
                 char* prefix = (char*)element.prefix.c_str();
                 ImGui::SameLine();
                 ImGui::SetNextItemWidth(80.0f);
-                UIWidgets2::PushStyleInput(THEME_COLOR);
+                UIWidgets::PushStyleInput(THEME_COLOR);
                 if (ImGui::InputText(("Prefix##" + std::string(element.name)).c_str(), prefix, 10)) {
                     element.prefix = prefix;
                 }
-                UIWidgets2::PopStyleInput();
+                UIWidgets::PopStyleInput();
                 ImGui::SameLine();
                 ImGui::ColorEdit3(("##color" + std::string(element.name)).c_str(), (float*)&element.color, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel);
                 ImGui::SameLine();
-                UIWidgets2::PushStyleCheckbox(THEME_COLOR);
+                UIWidgets::PushStyleCheckbox(THEME_COLOR);
                 if (ImGui::Button(("Position##" + std::string(element.name)).c_str())) {
                     ImGui::OpenPopup(("Position Picker##" + std::string(element.name)).c_str());
                 }
-                UIWidgets2::PopStyleCheckbox();
+                UIWidgets::PopStyleCheckbox();
                 if (ImGui::BeginPopup(("Position Picker##" + std::string(element.name)).c_str())) {
                     ImGui::DragInt("X", (int*)&element.x, 1.0f, 0, 44);
                     ImGui::DragInt("Y", (int*)&element.y, 1.0f, 0, 29);

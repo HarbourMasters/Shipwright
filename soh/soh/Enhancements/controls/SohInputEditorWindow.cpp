@@ -1,7 +1,7 @@
 #include "SohInputEditorWindow.h"
 #include <utils/StringHelper.h>
 #include "soh/OTRGlobals.h"
-#include "soh/SohGui/UIWidgets2.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
 #include "z64.h"
 #include "soh/cvar_prefixes.h"
@@ -11,7 +11,7 @@
 
 #define SCALE_IMGUI_SIZE(value) ((value / 13.0f) * ImGui::GetFontSize())
 
-using namespace UIWidgets2;
+using namespace UIWidgets;
 
 SohInputEditorWindow::~SohInputEditorWindow() {
 }
@@ -1069,14 +1069,14 @@ void SohInputEditorWindow::DrawLEDSection(uint8_t port) {
                     "Original Tunic Colors",          "Cosmetics Tunic Colors",          "Health Colors",
                     "Original Navi Targeting Colors", "Cosmetics Navi Targeting Colors", "Custom"
                 };
-                CVarCombobox("Source", CVAR_SETTING("LEDColorSource"), ledSources, UIWidgets2::ComboboxOptions().Color(THEME_COLOR).DefaultIndex(LED_SOURCE_TUNIC_ORIGINAL)
+                CVarCombobox("Source", CVAR_SETTING("LEDColorSource"), ledSources, UIWidgets::ComboboxOptions().Color(THEME_COLOR).DefaultIndex(LED_SOURCE_TUNIC_ORIGINAL)
                     .Tooltip("Health\n- Red when health critical (13-20% depending on max health)\n- Yellow when "
                                    "health < 40%. Green otherwise.\n\n"
                                    "Tunics: colors will mirror currently equipped tunic, whether original or the current "
                                    "values in Cosmetics Editor.\n\n"
                         "Custom: single, solid color"));
                 if (CVarGetInteger(CVAR_SETTING("LEDColorSource"), 1) == LED_SOURCE_CUSTOM) {
-                    UIWidgets2::Spacer(3);
+                    UIWidgets::Spacer(3);
                     auto port1Color = CVarGetColor24(CVAR_SETTING("LEDPort1Color"), { 255, 255, 255 });
                     ImVec4 colorVec = { port1Color.r / 255.0f, port1Color.g / 255.0f, port1Color.b / 255.0f, 1.0f };
                     if (ImGui::ColorEdit3("", (float*)&colorVec,
@@ -1535,7 +1535,7 @@ void SohInputEditorWindow::DrawLinkTab() {
             CVarCheckbox("Enable speed modifiers", CVAR_SETTING("WalkModifier.Enabled"), CheckboxOptions().Color(THEME_COLOR)
                 .Tooltip("Hold the assigned button to change the maximum walking or swimming speed"));
             if (CVarGetInteger(CVAR_SETTING("WalkModifier.Enabled"), 0)) {
-                UIWidgets2::Spacer(5);
+                UIWidgets::Spacer(5);
                 Ship::GuiWindow::BeginGroupPanel("Speed Modifier", ImGui::GetContentRegionAvail());
                 CVarCheckbox("Toggle modifier instead of holding", CVAR_SETTING("WalkModifier.SpeedToggle"), CheckboxOptions().Color(THEME_COLOR));
                 Ship::GuiWindow::BeginGroupPanel("Walk Modifier", ImGui::GetContentRegionAvail());

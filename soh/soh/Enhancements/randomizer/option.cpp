@@ -3,7 +3,7 @@
 #include <Context.h>
 #include <imgui.h>
 #include "soh/SohGui/SohGui.hpp"
-#include "soh/SohGui/UIWidgets2.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include <soh/cvar_prefixes.h>
 
 namespace Rando {
@@ -211,9 +211,9 @@ Option::Option(size_t key_, std::string name_, std::vector<std::string> options_
 bool Option::RenderCheckbox() {
     bool changed = false;
     bool val = static_cast<bool>(CVarGetInteger(cvarName.c_str(), defaultOption));
-    UIWidgets2::CheckboxOptions widgetOptions = static_cast<UIWidgets2::CheckboxOptions>(UIWidgets2::CheckboxOptions().Color(THEME_COLOR).Tooltip(description.c_str()));
+    UIWidgets::CheckboxOptions widgetOptions = static_cast<UIWidgets::CheckboxOptions>(UIWidgets::CheckboxOptions().Color(THEME_COLOR).Tooltip(description.c_str()));
     widgetOptions.disabled = disabled;
-    if (UIWidgets2::Checkbox(name.c_str(), &val, widgetOptions)) {
+    if (UIWidgets::Checkbox(name.c_str(), &val, widgetOptions)) {
         CVarSetInteger(cvarName.c_str(), val);
         changed = true;
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
@@ -230,12 +230,12 @@ bool Option::RenderCombobox() {
         changed = true;
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
-    UIWidgets2::ComboboxOptions widgetOptions = UIWidgets2::ComboboxOptions().Color(THEME_COLOR).Tooltip(description.c_str());
+    UIWidgets::ComboboxOptions widgetOptions = UIWidgets::ComboboxOptions().Color(THEME_COLOR).Tooltip(description.c_str());
     if (this->GetKey() == RSK_LOGIC_RULES) {
-        widgetOptions = widgetOptions.LabelPosition(UIWidgets2::LabelPosition::None).ComponentAlignment(UIWidgets2::ComponentAlignment::Right);
+        widgetOptions = widgetOptions.LabelPosition(UIWidgets::LabelPosition::None).ComponentAlignment(UIWidgets::ComponentAlignment::Right);
     }
     widgetOptions.disabled = disabled;
-    if(UIWidgets2::Combobox(name.c_str(), &selected, options, widgetOptions)) {
+    if(UIWidgets::Combobox(name.c_str(), &selected, options, widgetOptions)) {
         CVarSetInteger(cvarName.c_str(), static_cast<int>(selected));
         changed = true;
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
@@ -251,9 +251,9 @@ bool Option::RenderSlider() {
         CVarSetInteger(cvarName.c_str(), val);
         changed = true;
     }
-    UIWidgets2::IntSliderOptions widgetOptions = UIWidgets2::IntSliderOptions().Color(THEME_COLOR).Min(0).Max(options.size() - 1).Tooltip(description.c_str()).Format(options[val].c_str()).DefaultValue(defaultOption);
+    UIWidgets::IntSliderOptions widgetOptions = UIWidgets::IntSliderOptions().Color(THEME_COLOR).Min(0).Max(options.size() - 1).Tooltip(description.c_str()).Format(options[val].c_str()).DefaultValue(defaultOption);
     widgetOptions.disabled = disabled;
-    if (UIWidgets2::SliderInt(name.c_str(), &val, widgetOptions)) {
+    if (UIWidgets::SliderInt(name.c_str(), &val, widgetOptions)) {
         changed = true;
     }
     if (val < 0) {
@@ -392,7 +392,7 @@ bool OptionGroup::RenderImGui() const { // NOLINT(*-no-recursion)
                 ImGui::TableSetColumnIndex(i);
                 ImGui::TableHeader(mSubGroups[i]->GetName().c_str());
                 if (!mSubGroups[i]->GetDescription().empty()) {
-                    UIWidgets2::Tooltip(mSubGroups[i]->GetDescription().c_str());
+                    UIWidgets::Tooltip(mSubGroups[i]->GetDescription().c_str());
                 }
             }
             ImGui::PopItemFlag();
@@ -402,7 +402,7 @@ bool OptionGroup::RenderImGui() const { // NOLINT(*-no-recursion)
     if (mContainerType == WidgetContainerType::SECTION && !mName.empty()) {
         ImGui::SeparatorText(mName.c_str());
         if (!mDescription.empty()) {
-            UIWidgets2::Tooltip(mDescription.c_str());
+            UIWidgets::Tooltip(mDescription.c_str());
         }
     }
     if (mContainerType == WidgetContainerType::COLUMN) {

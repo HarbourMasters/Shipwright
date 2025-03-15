@@ -2,7 +2,7 @@
 #include "soh/util.h"
 #include "soh/SohGui/ImGuiUtils.h"
 #include "soh/OTRGlobals.h"
-#include "soh/SohGui/UIWidgets2.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
 
 #include <spdlog/fmt/fmt.h>
@@ -59,7 +59,7 @@ extern "C" u8 gAmmoItems[];
 
 #define IMAGE_SIZE 48.0f
 
-using namespace UIWidgets2;
+using namespace UIWidgets;
 
 IntSliderOptions intSliderOptionsBase;
 ButtonOptions buttonOptionsBase;
@@ -442,7 +442,7 @@ void DrawInventoryTab() {
                     ImGui::CloseCurrentPopup();
                 }
                 PopStyleButton();
-                UIWidgets2::Tooltip("None");
+                UIWidgets::Tooltip("None");
 
                 std::vector<ItemMapEntry> possibleItems;
                 if (restrictToValid) {
@@ -475,7 +475,7 @@ void DrawInventoryTab() {
                         gSaveContext.inventory.items[selectedIndex] = slotEntry.id;
                         ImGui::CloseCurrentPopup();
                     }
-                    UIWidgets2::Tooltip(SohUtils::GetItemName(slotEntry.id).c_str());
+                    UIWidgets::Tooltip(SohUtils::GetItemName(slotEntry.id).c_str());
                 }
 
                 ImGui::EndPopup();
@@ -547,7 +547,7 @@ void DrawFlagTableArray16(const FlagTable& flagTable, uint16_t row, uint16_t& fl
         PopStyleCheckbox();
         if (ImGui::IsItemHovered() && hasDescription) {
             ImGui::BeginTooltip();
-            ImGui::Text("%s", UIWidgets2::WrappedText(flagTable.flagDescriptions.at(row * 16 + flagIndex), 60).c_str());
+            ImGui::Text("%s", UIWidgets::WrappedText(flagTable.flagDescriptions.at(row * 16 + flagIndex), 60).c_str());
             ImGui::EndTooltip();
         }
         ImGui::PopID();
@@ -927,7 +927,7 @@ void DrawUpgrade(const std::string& categoryName, int32_t categoryId, const std:
     }
     PopStyleCombobox();
     ImGui::PopID();
-    UIWidgets2::Tooltip(categoryName.c_str());
+    UIWidgets::Tooltip(categoryName.c_str());
 }
 
 // Draws a combo that lets you choose and upgrade value from a popup grid of icons

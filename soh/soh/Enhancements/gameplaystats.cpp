@@ -4,7 +4,7 @@
 #include "functions.h"
 #include "macros.h"
 #include "soh/cvar_prefixes.h"
-#include "soh/SohGui/UIWidgets2.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/util.h"
 
@@ -610,34 +610,34 @@ void DrawGameplayStatsBreakdownTab() {
 }
 
 void DrawGameplayStatsOptionsTab() {
-    UIWidgets2::CVarCheckbox("Show in-game total timer", CVAR_ENHANCEMENT("GameplayStats.ShowIngameTimer"),
-                             UIWidgets2::CheckboxOptions()
+    UIWidgets::CVarCheckbox("Show in-game total timer", CVAR_ENHANCEMENT("GameplayStats.ShowIngameTimer"),
+                             UIWidgets::CheckboxOptions()
                                  .Tooltip("Keep track of the timer as an in-game HUD element. The position of the "
                                           "timer can be changed in the Cosmetics Editor.")
                                  .Color(THEME_COLOR));
-    UIWidgets2::CVarCheckbox("Show latest timestamps on top", CVAR_ENHANCEMENT("GameplayStats.ReverseTimestamps"),
-                             UIWidgets2::CheckboxOptions().Color(THEME_COLOR));
-    UIWidgets2::CVarCheckbox("Room Breakdown", CVAR_ENHANCEMENT("GameplayStats.RoomBreakdown"),
-                             UIWidgets2::CheckboxOptions()
+    UIWidgets::CVarCheckbox("Show latest timestamps on top", CVAR_ENHANCEMENT("GameplayStats.ReverseTimestamps"),
+                             UIWidgets::CheckboxOptions().Color(THEME_COLOR));
+    UIWidgets::CVarCheckbox("Room Breakdown", CVAR_ENHANCEMENT("GameplayStats.RoomBreakdown"),
+                             UIWidgets::CheckboxOptions()
                                  .Tooltip("Allows a more in-depth perspective of time spent in a certain map.")
                                  .Color(THEME_COLOR));
-    UIWidgets2::CVarCheckbox("RTA Timing on new files", CVAR_ENHANCEMENT("GameplayStats.RTATiming"),
-                             UIWidgets2::CheckboxOptions()
+    UIWidgets::CVarCheckbox("RTA Timing on new files", CVAR_ENHANCEMENT("GameplayStats.RTATiming"),
+                             UIWidgets::CheckboxOptions()
                                  .Tooltip("Timestamps are relative to starting timestamp rather than in game time, "
                                           "usually necessary for races/speedruns.\n\n"
                                           "Starting timestamp is on first non-c-up input after intro cutscene.\n\n"
                                           "NOTE: THIS NEEDS TO BE SET BEFORE CREATING A FILE TO TAKE EFFECT")
                                  .Color(THEME_COLOR));
-    UIWidgets2::CVarCheckbox("Show additional detail timers", CVAR_ENHANCEMENT("GameplayStats.ShowAdditionalTimers"),
-                             UIWidgets2::CheckboxOptions().Color(THEME_COLOR));
-    UIWidgets2::CVarCheckbox("Show Debug Info", CVAR_ENHANCEMENT("GameplayStats.ShowDebugInfo"),
-                             UIWidgets2::CheckboxOptions().Color(THEME_COLOR));
+    UIWidgets::CVarCheckbox("Show additional detail timers", CVAR_ENHANCEMENT("GameplayStats.ShowAdditionalTimers"),
+                             UIWidgets::CheckboxOptions().Color(THEME_COLOR));
+    UIWidgets::CVarCheckbox("Show Debug Info", CVAR_ENHANCEMENT("GameplayStats.ShowDebugInfo"),
+                             UIWidgets::CheckboxOptions().Color(THEME_COLOR));
 }
 
 void GameplayStatsWindow::DrawElement() {
     DrawGameplayStatsHeader();
 
-    UIWidgets2::PushStyleTabs(THEME_COLOR);
+    UIWidgets::PushStyleTabs(THEME_COLOR);
     if (ImGui::BeginTabBar("Stats", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         if (ImGui::BeginTabItem("Timestamps")) {
             DrawGameplayStatsTimestampsTab();
@@ -657,7 +657,7 @@ void GameplayStatsWindow::DrawElement() {
         }
         ImGui::EndTabBar();
     }
-    UIWidgets2::PopStyleTabs();
+    UIWidgets::PopStyleTabs();
 
     ImGui::Text("Note: Gameplay stats are saved to the current file and will be\nlost if you quit without saving.");
 }

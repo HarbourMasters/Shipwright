@@ -9,11 +9,11 @@
 #include <spdlog/spdlog.h>
 #include <cmath>
 
-#include "soh/SohGui/UIWidgets2.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
 
-using namespace UIWidgets2;
+using namespace UIWidgets;
 
 // Text colors
 static Color_RGBA8 textColorDefault = { 255, 255, 255, 255 };
@@ -436,12 +436,12 @@ void InputViewerSettingsWindow::DrawElement() {
     // gInputViewer.EnableDragging
     CVarCheckbox("Enable Dragging", CVAR_INPUT_VIEWER("EnableDragging"), CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
 
-    UIWidgets2::PaddedSeparator(true, true);
+    UIWidgets::PaddedSeparator(true, true);
 
     // gInputViewer.ShowBackground
     CVarCheckbox("Show Background Layer", CVAR_INPUT_VIEWER("ShowBackground"), CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
 
-    UIWidgets2::PaddedSeparator(true, true);
+    UIWidgets::PaddedSeparator(true, true);
 
     PushStyleHeader(THEME_COLOR);
     if (ImGui::CollapsingHeader("Buttons")) {
@@ -456,7 +456,7 @@ void InputViewerSettingsWindow::DrawElement() {
         // gInputViewer.UseGlobalButtonOutlineMode
         CVarCheckbox("Use for all buttons", CVAR_INPUT_VIEWER("UseGlobalButtonOutlineMode"), CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
 
-        UIWidgets2::PaddedSeparator();
+        UIWidgets::PaddedSeparator();
 
         bool useIndividualOutlines = !CVarGetInteger(CVAR_INPUT_VIEWER("UseGlobalButtonOutlineMode"), 1);
 
@@ -565,7 +565,7 @@ void InputViewerSettingsWindow::DrawElement() {
             ImGui::Unindent();
         }
 
-        UIWidgets2:PaddedSeparator(true, true);
+        UIWidgets:PaddedSeparator(true, true);
     }
 
     if (ImGui::CollapsingHeader("Analog Stick")) {
@@ -582,7 +582,7 @@ void InputViewerSettingsWindow::DrawElement() {
         // gInputViewer.AnalogStick.Movement
         CVarSliderInt("Analog Stick Movement: %dpx", CVAR_INPUT_VIEWER("AnalogStick.Movement"), IntSliderOptions().Color(THEME_COLOR).Min(0).Max(200).DefaultValue(12).ShowButtons(true)
             .Tooltip("Sets the distance to move the analog stick in the input viewer. Useful for custom input viewers."));
-        UIWidgets2::PaddedSeparator(true, true);
+        UIWidgets::PaddedSeparator(true, true);
     }
 
     if (ImGui::CollapsingHeader("Additional (\"Right\") Stick")) {
@@ -599,7 +599,7 @@ void InputViewerSettingsWindow::DrawElement() {
         // gInputViewer.RightStick.Movement
         CVarSliderInt("Right Stick Movement: %dpx", CVAR_INPUT_VIEWER("RightStick.Movement"), IntSliderOptions().Color(THEME_COLOR).Min(0).Max(200).DefaultValue(7).ShowButtons(true)
             .Tooltip("Sets the distance to move the right stick in the input viewer. Useful for custom input viewers."));
-        UIWidgets2::PaddedSeparator(true, true);
+        UIWidgets::PaddedSeparator(true, true);
     }
 
     if (ImGui::CollapsingHeader("Analog Angle Values")) {
@@ -616,7 +616,7 @@ void InputViewerSettingsWindow::DrawElement() {
             // gInputViewer.AnalogAngles.Offset
             CVarSliderInt("Angle Text Offset: %dpx", CVAR_INPUT_VIEWER("AnalogAngles.Offset"), IntSliderOptions().Color(THEME_COLOR).Min(0).Max(400).DefaultValue(0).ShowButtons(true)
                 .Tooltip("Sets the distance to move the right stick in the input viewer. Useful for custom input viewers."));
-            UIWidgets2::PaddedSeparator(true, true);
+            UIWidgets::PaddedSeparator(true, true);
             // gInputViewer.AnalogAngles.Range1.Enabled
             CVarCheckbox("Highlight ESS Position", CVAR_INPUT_VIEWER("AnalogAngles.Range1.Enabled"), CheckboxOptions().Color(THEME_COLOR)
                 .Tooltip("Highlights the angle value text when the analog stick is in ESS position (on flat ground)"));
@@ -626,7 +626,7 @@ void InputViewerSettingsWindow::DrawElement() {
                     true, ColorPickerRandomButton | ColorPickerResetButton);
             }
 
-            UIWidgets2::PaddedSeparator(true, true);
+            UIWidgets::PaddedSeparator(true, true);
             // gInputViewer.AnalogAngles.Range2.Enabled
             CVarCheckbox("Highlight Walking Speed Angles", CVAR_INPUT_VIEWER("AnalogAngles.Range2.Enabled"), CheckboxOptions().Color(THEME_COLOR)
                 .Tooltip("Highlights the angle value text when the analog stick is at an angle that would "

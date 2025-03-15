@@ -9,7 +9,7 @@
 namespace SohGui {
 
 extern std::shared_ptr<SohMenu> mSohMenu;
-using namespace UIWidgets2;
+using namespace UIWidgets;
 
 void SohMenu::AddMenuNetwork() {
     // Add Network Menu

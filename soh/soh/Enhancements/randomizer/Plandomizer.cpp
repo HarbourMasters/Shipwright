@@ -1,6 +1,6 @@
 #include "Plandomizer.h"
 #include <soh/SohGui/SohGui.hpp>
-#include "soh/SohGui/UIWidgets2.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include "soh/util.h"
 #include <vector>
 #include "soh/Notification/Notification.h"
@@ -727,7 +727,7 @@ void PlandomizerDrawItemPopup(uint32_t index) {
                 plandoLogData[index].checkRewardItem = plandomizerRandoRetrieveItem(item);
                 ImGui::CloseCurrentPopup();
             }
-            UIWidgets2::Tooltip(name.c_str());
+            UIWidgets::Tooltip(name.c_str());
             PlandomizerOverlayText(std::make_pair(plandomizerRandoRetrieveItem(item), 1));
             ImGui::PopID();
         }
@@ -764,7 +764,7 @@ void PlandomizerDrawItemPopup(uint32_t index) {
                 ImGui::CloseCurrentPopup();
             }
             if (!isClicked) {
-                UIWidgets2::Tooltip(name.c_str());
+                UIWidgets::Tooltip(name.c_str());
             }
             ImGui::PopID();
 
@@ -802,7 +802,7 @@ void PlandomizerDrawIceTrapPopUp(uint32_t index) {
                 plandoLogData[index].iceTrapModel = Rando::StaticData::RetrieveItem(items.first);
                 ImGui::CloseCurrentPopup();
             };
-            UIWidgets2::Tooltip(name.c_str());
+            UIWidgets::Tooltip(name.c_str());
 
             auto itemObject = Rando::StaticData::RetrieveItem(items.first);
             PlandomizerOverlayText(std::make_pair(itemObject, 1));
@@ -829,7 +829,7 @@ void PlandomizerDrawItemSlots(uint32_t index) {
         ImGui::OpenPopup("ItemList");
     };
     PlandoPopImageButtonStyle();
-    UIWidgets2::Tooltip(name.c_str());
+    UIWidgets::Tooltip(name.c_str());
     PlandomizerOverlayText(std::make_pair(plandoLogData[index].checkRewardItem, 1));
     PlandomizerDrawItemPopup(index);
     ImGui::PopID();
@@ -837,9 +837,9 @@ void PlandomizerDrawItemSlots(uint32_t index) {
 
 void PlandomizerDrawShopSlider(uint32_t index) {
     ImGui::PushID(index);
-    UIWidgets2::SliderInt("Price:", &plandoLogData[index].shopPrice, UIWidgets2::IntSliderOptions()
-        .Color(THEME_COLOR).Format("%d Rupees").Min(0).Max(999).LabelPosition(UIWidgets2::LabelPosition::Near)
-        .ComponentAlignment(UIWidgets2::ComponentAlignment::Right).Size(UIWidgets2::Sizes::Inline));
+    UIWidgets::SliderInt("Price:", &plandoLogData[index].shopPrice, UIWidgets::IntSliderOptions()
+        .Color(THEME_COLOR).Format("%d Rupees").Min(0).Max(999).LabelPosition(UIWidgets::LabelPosition::Near)
+        .ComponentAlignment(UIWidgets::ComponentAlignment::Right).Size(UIWidgets::Sizes::Inline));
     ImGui::PopID();
 }
 
@@ -864,7 +864,7 @@ void PlandomizerDrawIceTrapSetup(uint32_t index) {
         ImGui::OpenPopup("TrapList");
     };
     PlandoPopImageButtonStyle();
-    UIWidgets2::Tooltip(name.c_str());
+    UIWidgets::Tooltip(name.c_str());
     PlandomizerDrawIceTrapPopUp(index);
     ImGui::SameLine();
     ImGui::TableNextColumn();
@@ -872,13 +872,13 @@ void PlandomizerDrawIceTrapSetup(uint32_t index) {
     ImGui::SameLine();
     if (plandoLogData[index].iceTrapModel.GetRandomizerGet() != RG_NONE && 
         plandoLogData[index].iceTrapModel.GetRandomizerGet() != RG_SOLD_OUT) {
-        if (UIWidgets2::Button(randomizeButton.c_str(), UIWidgets2::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets2::Sizes::Inline).Padding(ImVec2(10.f, 6.f)))) {
+        if (UIWidgets::Button(randomizeButton.c_str(), UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline).Padding(ImVec2(10.f, 6.f)))) {
             plandoLogData[index].iceTrapName = 
                 GetIceTrapName(plandoLogData[index].iceTrapModel.GetRandomizerGet()).GetForLanguage(CVarGetInteger(CVAR_SETTING("Languages"), 0)).c_str();
         }
         ImGui::SameLine();
     }
-    if (UIWidgets2::InputString("##TrapName", &trapTextInput, UIWidgets2::InputOptions().Color(THEME_COLOR).LabelPosition(UIWidgets2::LabelPosition::None))) {
+    if (UIWidgets::InputString("##TrapName", &trapTextInput, UIWidgets::InputOptions().Color(THEME_COLOR).LabelPosition(UIWidgets::LabelPosition::None))) {
             plandoLogData[index].iceTrapName = trapTextInput.c_str();
         }
     
@@ -933,20 +933,20 @@ void PlandomizerDrawOptions() {
         PlandomizerPopulateSeedList();
         static size_t selectedList = 0;
         if (existingSeedList.size() != 0) {
-            UIWidgets2::Combobox("##JsonFiles", &selectedList, existingSeedList, UIWidgets2::ComboboxOptions().Color(THEME_COLOR).LabelPosition(UIWidgets2::LabelPosition::None));
+            UIWidgets::Combobox("##JsonFiles", &selectedList, existingSeedList, UIWidgets::ComboboxOptions().Color(THEME_COLOR).LabelPosition(UIWidgets::LabelPosition::None));
         }
         else {
             ImGui::Text("No Spoiler Logs found.");
         }
         ImGui::BeginDisabled(existingSeedList.empty());
-        if (UIWidgets2::Button("Load", UIWidgets2::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets2::Sizes::Inline))) {
+        if (UIWidgets::Button("Load", UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline))) {
             logTemp = existingSeedList[selectedList].c_str();
             PlandomizerLoadSpoilerLog(logTemp.c_str());
         }
         ImGui::EndDisabled();
         ImGui::BeginDisabled(spoilerLogData.empty());
         ImGui::SameLine();
-        if (UIWidgets2::Button("Save", UIWidgets2::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets2::Sizes::Inline))) {
+        if (UIWidgets::Button("Save", UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline))) {
             PlandomizerSaveSpoilerLog();
         }
         ImGui::EndDisabled();
@@ -1014,19 +1014,19 @@ void PlandomizerDrawOptions() {
     }
 
     if (getTabID == TAB_HINTS) {
-        if (UIWidgets2::Button("Clear All Hints", UIWidgets2::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets2::Sizes::Inline))) {
+        if (UIWidgets::Button("Clear All Hints", UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline))) {
             PlandomizerRemoveAllHints();
         }
         ImGui::SameLine();
-        if (UIWidgets2::Button("Randomize All Hints", UIWidgets2::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets2::Sizes::Inline))) {
+        if (UIWidgets::Button("Randomize All Hints", UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline))) {
             PlandomizerRandomizeHint(HINT_ALL, 0);
         }
     }
     if (getTabID == TAB_LOCATIONS) {
         if (plandoLogData.size() > 0) {
-            UIWidgets2::Combobox("Filter by Area:##AreaFilter", &selectedArea, rcAreaNameMap, UIWidgets2::ComboboxOptions().Color(THEME_COLOR).LabelPosition(UIWidgets2::LabelPosition::Near).ComponentAlignment(UIWidgets2::ComponentAlignment::Right));
+            UIWidgets::Combobox("Filter by Area:##AreaFilter", &selectedArea, rcAreaNameMap, UIWidgets::ComboboxOptions().Color(THEME_COLOR).LabelPosition(UIWidgets::LabelPosition::Near).ComponentAlignment(UIWidgets::ComponentAlignment::Right));
             ImGui::SameLine();
-            if (UIWidgets2::Button("Empty All Rewards", UIWidgets2::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets2::Sizes::Inline).Padding(ImVec2(10.f, 6.f)))) {
+            if (UIWidgets::Button("Empty All Rewards", UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline).Padding(ImVec2(10.f, 6.f)))) {
                 PlandomizerRemoveAllItems();
             }
         }
@@ -1056,12 +1056,12 @@ void PlandomizerDrawHintsWindow() {
             }
             ImGui::Text("New Hint:     ");
             ImGui::SameLine();
-            if (UIWidgets2::Button(randomizeButton.c_str(), UIWidgets2::ButtonOptions().Color(THEME_COLOR).Padding(ImVec2(10.f, 6.f)).Size(UIWidgets2::Sizes::Inline).Tooltip("Randomize Hint"))) {
+            if (UIWidgets::Button(randomizeButton.c_str(), UIWidgets::ButtonOptions().Color(THEME_COLOR).Padding(ImVec2(10.f, 6.f)).Size(UIWidgets::Sizes::Inline).Tooltip("Randomize Hint"))) {
                 PlandomizerRandomizeHint(HINT_SINGLE, index);
             }
             ImGui::SameLine();
             ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - 10);
-            if (UIWidgets2::InputString("##HintMessage", &hintInputText, UIWidgets2::InputOptions().Color(THEME_COLOR).LabelPosition(UIWidgets2::LabelPosition::None).Tooltip(plandomizerHintsTooltip().c_str()))) {
+            if (UIWidgets::InputString("##HintMessage", &hintInputText, UIWidgets::InputOptions().Color(THEME_COLOR).LabelPosition(UIWidgets::LabelPosition::None).Tooltip(plandomizerHintsTooltip().c_str()))) {
                 plandoHintData[index].hintText = hintInputText.c_str();
             }
             index++;
@@ -1120,7 +1120,7 @@ void PlandomizerDrawLocationsWindow(RandomizerCheckArea rcArea) {
 
 void PlandomizerDrawSpoilerTable() {
     ImGui::BeginChild("Main");
-    UIWidgets2::PushStyleTabs(THEME_COLOR);
+    UIWidgets::PushStyleTabs(THEME_COLOR);
     if (ImGui::BeginTabBar("Check Tabs")) {
         if (ImGui::BeginTabItem("Gossip Stones")) {
             getTabID = TAB_HINTS;
@@ -1134,13 +1134,13 @@ void PlandomizerDrawSpoilerTable() {
         }
     }
     ImGui::EndTabBar();
-    UIWidgets2::PopStyleTabs();
+    UIWidgets::PopStyleTabs();
     ImGui::EndChild();
 }
 
 void PlandomizerWindow::DrawElement() {
     PlandomizerDrawOptions();
-    UIWidgets2::Separator(true, true, 0.f, 0.f);
+    UIWidgets::Separator(true, true, 0.f, 0.f);
     PlandomizerDrawSpoilerTable();
 }
 

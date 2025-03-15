@@ -2,7 +2,6 @@
 #define MENU_H
 
 #include <libultraship/libultraship.h>
-#include "UIWidgets2.hpp"
 #include "graphic/Fast3D/gfx_rendering_api.h"
 #include "MenuTypes.h"
 
@@ -13,7 +12,7 @@ class Menu : public GuiWindow {
     using GuiWindow::GuiWindow;
 
     Menu(const std::string& cVar, const std::string& name, uint8_t searchSidebarIndex_ = 0,
-         UIWidgets2::Colors menuThemeIndex_ = UIWidgets2::Colors::LightBlue);
+         UIWidgets::Colors menuThemeIndex_ = UIWidgets::Colors::LightBlue);
 
     void InitElement() override;
     void DrawElement() override;
@@ -22,9 +21,9 @@ class Menu : public GuiWindow {
     void InsertSidebarSearch();
     void RemoveSidebarSearch();
     void UpdateWindowBackendObjects();
-    UIWidgets2::Colors GetMenuThemeColor();
+    UIWidgets::Colors GetMenuThemeColor();
 
-    void MenuDrawItem(WidgetInfo& widget, uint32_t width, UIWidgets2::Colors menuThemeIndex);
+    void MenuDrawItem(WidgetInfo& widget, uint32_t width, UIWidgets::Colors menuThemeIndex);
     void AddMenuEntry(std::string entryName, const char* entryCvar);
     std::unordered_map<uint32_t, disabledInfo>& GetDisabledMap();
 
@@ -37,7 +36,7 @@ class Menu : public GuiWindow {
     uint32_t DrawSearchResults(std::string& menuSearchText);
     ImGuiTextFilter menuSearch;
     uint8_t searchSidebarIndex;
-    UIWidgets2::Colors defaultThemeIndex;
+    UIWidgets::Colors defaultThemeIndex;
     std::shared_ptr<std::vector<Ship::WindowBackend>> availableWindowBackends;
     std::unordered_map<Ship::WindowBackend, const char*> availableWindowBackendsMap;
     Ship::WindowBackend configWindowBackend;
@@ -48,7 +47,7 @@ class Menu : public GuiWindow {
         .columnCount = 1,
         .columnWidgets = { { { .name = "Sidebar Search",
                                .type = WIDGET_SEARCH,
-                               .options = std::make_shared<UIWidgets2::WidgetOptions>(UIWidgets2::WidgetOptions{}.Tooltip(
+                               .options = std::make_shared<UIWidgets::WidgetOptions>(UIWidgets::WidgetOptions{}.Tooltip(
                                    "Searches all menus for the given text, including tooltips.")) } } }
     };
 
@@ -59,7 +58,7 @@ class Menu : public GuiWindow {
     ImVec2 poppedPos;
     float windowHeight;
     float windowWidth;
-    UIWidgets2::Colors menuThemeIndex;
+    UIWidgets::Colors menuThemeIndex;
 };
 } // namespace Ship
 

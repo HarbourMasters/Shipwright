@@ -1,5 +1,5 @@
 #include "tricks.h"
-#include "soh/SohGui/UIWidgets2.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 #include <unordered_map>
 
 namespace Rando {
@@ -82,22 +82,22 @@ namespace Rando {
     const ImVec4 Tricks::GetTagColor(const Tag tag) {
         switch(tag) {
             case Tag::NOVICE:
-                return UIWidgets2::ColorValues.at(UIWidgets2::Colors::Green);
+                return UIWidgets::ColorValues.at(UIWidgets::Colors::Green);
             case Tag::INTERMEDIATE:
-                return UIWidgets2::ColorValues.at(UIWidgets2::Colors::Orange);
+                return UIWidgets::ColorValues.at(UIWidgets::Colors::Orange);
             case Tag::ADVANCED:
-                return UIWidgets2::ColorValues.at(UIWidgets2::Colors::Blue);
+                return UIWidgets::ColorValues.at(UIWidgets::Colors::Blue);
             case Tag::EXPERT:
-                return UIWidgets2::ColorValues.at(UIWidgets2::Colors::Red);
+                return UIWidgets::ColorValues.at(UIWidgets::Colors::Red);
             case Tag::EXTREME:
-                return UIWidgets2::ColorValues.at(UIWidgets2::Colors::Purple);
+                return UIWidgets::ColorValues.at(UIWidgets::Colors::Purple);
             case Tag::EXPERIMENTAL:
-                return UIWidgets2::ColorValues.at(UIWidgets2::Colors::LightBlue);
+                return UIWidgets::ColorValues.at(UIWidgets::Colors::LightBlue);
             case Tag::GLITCH:
-                return UIWidgets2::ColorValues.at(UIWidgets2::Colors::White);
+                return UIWidgets::ColorValues.at(UIWidgets::Colors::White);
             default:
                 assert(false);
-                return UIWidgets2::ColorValues.at(UIWidgets2::Colors::Gray);
+                return UIWidgets::ColorValues.at(UIWidgets::Colors::Gray);
         }
     }
 
@@ -106,9 +106,9 @@ namespace Rando {
             std::string tagId = GetTagName(rtTag) + "##" + trickName;
             ImGui::SameLine();
             ImGui::BeginDisabled();
-            UIWidgets2::PushStyleButton(GetTagColor(rtTag));
+            UIWidgets::PushStyleButton(GetTagColor(rtTag));
             ImGui::SmallButton(tagId.c_str());
-            UIWidgets2::PopStyleButton();
+            UIWidgets::PopStyleButton();
             ImGui::EndDisabled();
         }
     }

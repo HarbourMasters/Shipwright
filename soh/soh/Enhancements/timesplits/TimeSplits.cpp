@@ -15,14 +15,13 @@
 #include "assets/textures/parameter_static/parameter_static.h"
 #include <soh/SohGui/SohGui.hpp>
 #include "soh/SohGui/UIWidgets.hpp"
-#include "soh/SohGui/UIWidgets2.hpp"
 
 extern "C" {
     extern SaveContext gSaveContext;
     extern PlayState* gPlayState;
 }
 
-using namespace UIWidgets2;
+using namespace UIWidgets;
 
 // ImVec4 Colors
 #define COLOR_WHITE ImVec4(1.00f, 1.00f, 1.00f, 1.00f)
@@ -824,7 +823,7 @@ void TimeSplitsDrawOptionsMenu() {
     if (Button("Delete List", ButtonOptions().Color(THEME_COLOR).Size(Sizes::Inline))) {
         TimeSplitsFileManagement(SPLIT_ACTION_DELETE, keys[selectedItem].c_str(), emptyList);
     }
-    UIWidgets2::Separator(true, true, ImGui::GetStyle().ItemSpacing.y, ImGui::GetStyle().ItemSpacing.y);
+    UIWidgets::Separator(true, true, ImGui::GetStyle().ItemSpacing.y, ImGui::GetStyle().ItemSpacing.y);
 
     if (Button("New Attempt", ButtonOptions().Color(THEME_COLOR).Size(Sizes::Inline))) {
         for (auto& data : splitList) {

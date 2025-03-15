@@ -4,7 +4,7 @@
 #include <string>
 #include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
-#include "UIWidgets2.hpp"
+#include "UIWidgets.hpp"
 #include "SohGui.hpp"
 #include "soh/OTRGlobals.h"
 #include "z64.h"
@@ -38,7 +38,7 @@ void SohModalWindow::DrawElement() {
         }
         if (ImGui::BeginPopupModal(curModal.title_.c_str(), NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoSavedSettings)) {
             ImGui::Text("%s", curModal.message_.c_str());
-            UIWidgets2::PushStyleButton(THEME_COLOR);
+            UIWidgets::PushStyleButton(THEME_COLOR);
             if (ImGui::Button(curModal.button1_.c_str())) {
                 if (curModal.button1callback_ != nullptr) {
                     curModal.button1callback_();
@@ -46,10 +46,10 @@ void SohModalWindow::DrawElement() {
                 ImGui::CloseCurrentPopup();
                 modals.erase(modals.begin());
             }
-            UIWidgets2::PopStyleButton();
+            UIWidgets::PopStyleButton();
             if (curModal.button2_ != "") {
                 ImGui::SameLine();
-                UIWidgets2::PushStyleButton(THEME_COLOR);
+                UIWidgets::PushStyleButton(THEME_COLOR);
                 if (ImGui::Button(curModal.button2_.c_str())) {
                     if (curModal.button2callback_ != nullptr) {
                         curModal.button2callback_();
@@ -57,7 +57,7 @@ void SohModalWindow::DrawElement() {
                     ImGui::CloseCurrentPopup();
                     modals.erase(modals.begin());
                 }
-                UIWidgets2::PopStyleButton();
+                UIWidgets::PopStyleButton();
             }
         }
         ImGui::EndPopup();

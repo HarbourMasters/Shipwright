@@ -2,7 +2,7 @@
 #include "soh/Notification/Notification.h"
 #include <soh/GameVersions.h>
 #include "soh/ResourceManagerHelpers.h"
-#include "UIWidgets2.hpp"
+#include "UIWidgets.hpp"
 #include <spdlog/fmt/fmt.h>
 
 extern "C" {
@@ -13,7 +13,8 @@ extern "C" {
 namespace SohGui {
 
 extern std::shared_ptr<SohMenu> mSohMenu;
-using namespace UIWidgets2;
+using namespace UIWidgets;
+static std::unordered_map<int32_t, const char*> languages = {{ LANGUAGE_ENG, "English" }, { LANGUAGE_GER, "German" }, { LANGUAGE_FRA, "French" }};
 
 const char* GetGameVersionString(uint32_t index) {
     uint32_t gameVersion = ResourceMgr_GetGameVersion(index);
@@ -99,6 +100,21 @@ void SohMenu::AddMenuSettings() {
             SDL_OpenURL(std::string("file:///" + std::filesystem::absolute(filesPath).string()).c_str());
         })
         .Options(ButtonOptions().Tooltip("Opens the folder that contains the save and mods folders, etc."));
+    AddWidget(path, "Languages", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Translate Title Screen", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_SETTING("TitleScreenTranslation"));
+    AddWidget(path, "Menu Language", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_SETTING("Languages"))
+        .Options(ComboboxOptions().LabelPosition(LabelPosition::Far).ComponentAlignment(ComponentAlignment::Right).ComboMap(languages).DefaultIndex(LANGUAGE_ENG));
+    AddWidget(path, "Accessibility", WIDGET_SEPARATOR_TEXT);
+    #if defined(_WIN32) || defined(__APPLE__)
+    AddWidget(path, "Text to Speech", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_SETTING("A11yTTS"))
+        .Options(CheckboxOptions().Tooltip("Enables text to speech for in game dialog"));
+    #endif
+    AddWidget(path, "Disable Idle Camera Re-Centering", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_SETTING("A11yDisableIdleCam"))
+        .Options(CheckboxOptions().Tooltip("Disables the automatic re-centering of the camera when idle."));
 
     // General - About
     path.column = SECTION_COLUMN_2;

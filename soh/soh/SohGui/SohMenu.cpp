@@ -13,7 +13,7 @@ extern std::unordered_map<s16, const char*> warpPointSceneList;
 namespace SohGui {
 extern std::shared_ptr<SohMenu> mSohMenu;
 
-using namespace UIWidgets2;
+using namespace UIWidgets;
 
 void SohMenu::AddSidebarEntry(std::string sectionName, std::string sidebarName, uint32_t columnCount) {
     assert(!sectionName.empty());
@@ -75,7 +75,7 @@ WidgetInfo& SohMenu::AddWidget(WidgetPath& pathInfo, std::string widgetName, Wid
 }
 
 SohMenu::SohMenu(const std::string& consoleVariable, const std::string& name)
-    : Menu(consoleVariable, name, 0, UIWidgets2::Colors::LightBlue) {
+    : Menu(consoleVariable, name, 0, UIWidgets::Colors::LightBlue) {
 }
 
 void SohMenu::InitElement() {
