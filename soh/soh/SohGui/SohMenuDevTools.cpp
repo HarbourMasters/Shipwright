@@ -163,7 +163,7 @@ void SohMenu::AddMenuDevTools() {
     AddSidebarEntry("Dev Tools", path.sidebarName, 1);
     AddWidget(path, "Popout Gfx Debugger", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("GfxDebugger"))
-        .WindowName("Gfx Debugger")
+        .WindowName("GfxDebuggerWindow")
         .Options(WindowButtonOptions().Tooltip("Enables the separate Gfx Debugger Window."));
 }
 

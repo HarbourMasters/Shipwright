@@ -105,7 +105,7 @@ namespace SohGui {
     void SetupGuiElements() {
         auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
 
-        mSohMenuBar = std::make_shared<SohMenuBar>(CVAR_MENU_BAR_OPEN, CVarGetInteger(CVAR_MENU_BAR_OPEN, 0));
+        /*mSohMenuBar = std::make_shared<SohMenuBar>(CVAR_MENU_BAR_OPEN, CVarGetInteger(CVAR_MENU_BAR_OPEN, 0));
         gui->SetMenuBar(std::reinterpret_pointer_cast<Ship::GuiMenuBar>(mSohMenuBar));
 
         if (!gui->GetMenuBar() && !CVarGetInteger("gSettings.DisableMenuShortcutNotify", 0)) {
@@ -114,7 +114,7 @@ namespace SohGui {
 #else
             gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Press F1 to access enhancements menu");
 #endif
-        }
+        }*/
 
         mSohMenu = std::make_shared<SohMenu>(CVAR_WINDOW("Menu"), "Port Menu");
         gui->SetMenu(mSohMenu);
