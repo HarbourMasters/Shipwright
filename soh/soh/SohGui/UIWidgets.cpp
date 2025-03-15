@@ -767,13 +767,13 @@ bool InputString(const char* label, std::string* value, const InputOptions& opti
     float width = (options.size == ImVec2(0, 0)) ? ImGui::GetContentRegionAvail().x : options.size.x;
     if (options.alignment == ComponentAlignment::Left) {
         if (options.labelPosition == LabelPosition::Above) {
-            ImGui::Text(label, *value);
+            ImGui::Text(label, *value->c_str());
         }
     } else if (options.alignment == ComponentAlignment::Right) {
         if (options.labelPosition == LabelPosition::Above) {
             ImGui::NewLine();
             ImGui::SameLine(width - ImGui::CalcTextSize(label).x);
-            ImGui::Text(label, *value);
+            ImGui::Text(label, *value->c_str());
         }
     }
     ImGui::SetNextItemWidth(width);
