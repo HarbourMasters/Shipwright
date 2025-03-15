@@ -7,7 +7,7 @@ void RegionTable_Init_ThievesHideout() {
     areaTable[RR_TH_NORTH_F1_CARPENTER_AREA] = Region("Thieves Hideout North F1 Carpenter Area", "Thieves Hideout", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->TH_CouldRescueF1NorthCarpenter, []{return logic->CanKillEnemy(RE_GERUDO_WARRIOR);}),
-        EventAccess(&logic->TH_RescuedAllCarpenters,        []{return ((ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST) && logic->SmallKeys(RR_GF_GROUND_BOTTOM, 1)) || (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL) && logic->SmallKeys(RR_GF_GROUND_BOTTOM, 4))) && logic->TH_CouldRescueF1NorthCarpenter && logic->TH_CouldRescueF1SouthCarpenter && logic->TH_CouldRescueF2NorthCarpenter && logic->TH_CouldRescueF2SouthCarpenter;}),
+        EventAccess(&logic->TH_RescuedAllCarpenters,        []{return logic->SmallKeys(RR_GF_GROUND_BOTTOM, ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL) ? 4 : 1) && logic->TH_CouldRescueF1NorthCarpenter && logic->TH_CouldRescueF1SouthCarpenter && logic->TH_CouldRescueF2NorthCarpenter && logic->TH_CouldRescueF2SouthCarpenter;}),
     }, {
         //Locations
         LOCATION(RC_TH_NORTH_F1_CARPENTER,       logic->CanKillEnemy(RE_GERUDO_WARRIOR)),
