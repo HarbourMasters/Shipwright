@@ -51,7 +51,7 @@
 #include "Extractor/Extract.h"
 #endif
 
-#include <Fast3D/gfx_pc.h>
+#include <Fast3D/interpreter.h>
 
 #ifdef __APPLE__
 #include <SDL_scancode.h>
@@ -1804,13 +1804,13 @@ extern "C" float OTRGetDimensionFromRightEdge(float v) {
 // Gets the width of the current render target area
 extern "C" uint32_t OTRGetGameRenderWidth() {
     return Ship::Context::GetInstance()->GetWindow()->GetWidth();
-    //return GfxPc::GetInstance()->mCurDimensions.width;
+    //return Interpreter::GetInstance()->mCurDimensions.width;
 }
 
 // Gets the height of the current render target area
 extern "C" uint32_t OTRGetGameRenderHeight() {
     return Ship::Context::GetInstance()->GetWindow()->GetHeight();
-   // return GfxPc::GetInstance()->mCurDimensions.height;
+   // return Interpreter::GetInstance()->mCurDimensions.height;
 }
 
 f32 floorf(f32 x);// RANDOTODO False positive error "allowing all exceptions is incompatible with previous function"
@@ -2379,7 +2379,7 @@ extern "C" void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* repla
         ->GetGfxPcWeak()
         .lock()
         ->RegisterBlendedTexture(name, mask, replacement);
-    //GfxPc::GetInstance()->RegisterBlendedTexture(name, mask, replacement);
+    //Interpreter::GetInstance()->RegisterBlendedTexture(name, mask, replacement);
 }
 
 extern "C" void Gfx_UnregisterBlendedTexture(const char* name) {
@@ -2387,7 +2387,7 @@ extern "C" void Gfx_UnregisterBlendedTexture(const char* name) {
         ->GetGfxPcWeak()
         .lock()
         ->UnregisterBlendedTexture(name);
-    //GfxPc::GetInstance()->UnregisterBlendedTexture(name);
+    //Interpreter::GetInstance()->UnregisterBlendedTexture(name);
 }
 
 extern "C" void Gfx_TextureCacheDelete(const uint8_t* texAddr) {
@@ -2404,7 +2404,7 @@ extern "C" void Gfx_TextureCacheDelete(const uint8_t* texAddr) {
         ->GetGfxPcWeak()
         .lock()
         ->TextureCacheDelete(texAddr);
-    //GfxPc::GetInstance()->TextureCacheDelete(texAddr);
+    //Interpreter::GetInstance()->TextureCacheDelete(texAddr);
 }
 
 void SoH_ProcessDroppedFiles(std::string filePath) {

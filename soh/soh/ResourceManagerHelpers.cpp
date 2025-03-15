@@ -11,7 +11,7 @@
 #include "resource/type/Array.h"
 #include "resource/type/Skeleton.h"
 #include "resource/type/PlayerAnimation.h"
-#include <Fast3D/gfx_pc.h>
+#include <Fast3D/interpreter.h>
 #include <DisplayList.h>
 
 extern "C" PlayState* gPlayState;

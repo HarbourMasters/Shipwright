@@ -3,7 +3,7 @@
 #include <libultraship/libultraship.h>
 
 #include <soh/UIWidgets.hpp>
-#include <graphic/Fast3D/gfx_pc.h>
+#include <graphic/Fast3D/interpreter.h>
 #include <graphic/Fast3D/Fast3dWindow.h>
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
@@ -62,7 +62,7 @@ void AdvancedResolutionSettingsWindow::InitElement() {
 }
 
 void AdvancedResolutionSettingsWindow::DrawElement() {
-    Fast::GfxPc* gfxPc = mGfxPc.lock().get();
+    Fast::Interpreter* gfxPc = mGfxPc.lock().get();
     // Initialise update flags.
     bool update[3];
     for (uint8_t i = 0; i < sizeof(update); i++)
