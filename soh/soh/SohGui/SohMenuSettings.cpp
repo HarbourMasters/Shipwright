@@ -15,6 +15,7 @@ namespace SohGui {
 extern std::shared_ptr<SohMenu> mSohMenu;
 using namespace UIWidgets;
 static std::unordered_map<int32_t, const char*> languages = {{ LANGUAGE_ENG, "English" }, { LANGUAGE_GER, "German" }, { LANGUAGE_FRA, "French" }};
+static std::unordered_map<int32_t, const char*> imguiScaleOptions = {{ 0, "Small" }, { 1, "Normal" }, { 2, "Large" }, { 3, "X-Large" }};
 
 const char* GetGameVersionString(uint32_t index) {
     uint32_t gameVersion = ResourceMgr_GetGameVersion(index);
@@ -115,6 +116,15 @@ void SohMenu::AddMenuSettings() {
     AddWidget(path, "Disable Idle Camera Re-Centering", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("A11yDisableIdleCam"))
         .Options(CheckboxOptions().Tooltip("Disables the automatic re-centering of the camera when idle."));
+    AddWidget(path, "EXPERIMENTAL", WIDGET_SEPARATOR_TEXT)
+        .Options(WidgetOptions().Color(Colors::Orange));
+    AddWidget(path, "ImGui Menu Scaling", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_SETTING("ImGuiScale"))
+        .Options(ComboboxOptions().ComboMap(imguiScaleOptions).Tooltip("Changes the scaling of the ImGui menu elements.").DefaultIndex(1)
+            .ComponentAlignment(ComponentAlignment::Right).LabelPosition(LabelPosition::Far))
+        .Callback([](WidgetInfo& info) {
+            OTRGlobals::Instance->ScaleImGui();
+        });
 
     // General - About
     path.column = SECTION_COLUMN_2;

@@ -68,8 +68,6 @@ static std::unordered_map<Ship::WindowBackend, const char*> windowBackendNames =
     { Ship::WindowBackend::FAST3D_SDL_METAL, "Metal" },
 };
 
-static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large" };
-
     static const char* filters[3] = {
 #ifdef __WIIU__
             "",
@@ -89,24 +87,6 @@ Ship::WindowBackend configWindowBackend;
 extern std::shared_ptr<Ship::GuiWindow> mGfxDebuggerWindow;
 
 void DrawSettingsMenu() {
-    //if (ImGui::BeginMenu("Settings"))
-    //{
-    //    if (ImGui::BeginMenu("Graphics")) {
-    //        ImGui::Text("ImGui Menu Scale");
-    //        ImGui::SameLine();
-    //        ImGui::TextColored({ 0.85f, 0.35f, 0.0f, 1.0f }, "(Experimental)");
-    //        if (UIWidgets::EnhancementCombobox(CVAR_SETTING("ImGuiScale"), imguiScaleOptions, 1)) {
-    //            OTRGlobals::Instance->ScaleImGui();
-    //        }
-    //        UIWidgets::Tooltip("Changes the scaling of the ImGui menu elements.");
-
-    //        // Draw LUS settings menu (such as Overlays Text Font)
-    //        Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->DrawSettings();
-
-    //        ImGui::EndMenu();
-    //    }
-    //    ImGui::EndMenu();
-    //}
 }
 
 void SohMenuBar::InitElement() {
