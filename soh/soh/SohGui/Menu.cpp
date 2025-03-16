@@ -558,14 +558,13 @@ void Menu::DrawElement() {
     }
 
     // Full screen menu with widths below 1280, heights below 800.
-    // Up to 100 pixel padding when up to 1700 width, 1050 height.
-    // Everything above that, fixed size of 1600x950.
+    // 5% of screen width/height padding on both sides above those resolutions.
     ImVec2 menuSize = { std::fminf(1280, windowWidth), std::fminf(800, windowHeight) };
-    if (windowWidth > 1380) {
-        menuSize.x = std::fminf(1600, windowWidth - 100);
+    if (windowWidth > 1280) {
+        menuSize.x = floor(windowWidth * 0.9);
     }
-    if (windowHeight > 900) {
-        menuSize.y = std::fminf(950, windowHeight - 100);
+    if (windowHeight > 800) {
+        menuSize.y = floor(windowHeight * 0.9);
     }
     
     pos += window->WorkRect.GetSize() / 2 - menuSize / 2;
