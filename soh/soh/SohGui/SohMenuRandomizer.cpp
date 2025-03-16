@@ -1,0 +1,133 @@
+#include "SohMenu.h"
+#include <macros.h>
+
+namespace SohGui {
+
+extern std::shared_ptr<SohMenu> mSohMenu;
+using namespace UIWidgets;
+
+void SohMenu::AddMenuRandomizer() {
+    // Add Randomizer Menu
+    AddMenuEntry("Randomizer", CVAR_SETTING("Menu.RandomizerSidebarSection"));
+
+    // Seed Settings
+    WidgetPath path = { "Randomizer", "Seed Settings", SECTION_COLUMN_1 };
+    AddSidebarEntry("Randomizer", path.sidebarName, 1);
+    AddWidget(path, "Popout Randomizer Settings Window", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("RandomizerSettings"))
+        .WindowName("Randomizer Settings")
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Randomizer Settings Window."));
+    path.sidebarName = "Enhancements";
+    AddSidebarEntry("Randomizer", path.sidebarName, 1);
+    AddWidget(path, "Rando-Relevant Navi Hints", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_RANDOMIZER_ENHANCEMENT("RandoRelevantNavi"))
+        .Options(CheckboxOptions().Tooltip(
+            "Replace Navi's overworld quest hints with rando-related gameplay hints."
+        ).DefaultValue(true));
+    AddWidget(path, "Random Rupee Names", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_RANDOMIZER_ENHANCEMENT("RandomizeRupeeNames"))
+        .Options(CheckboxOptions().Tooltip(
+            "When obtaining Rupees, randomize what the Rupee is called in the textbox."
+        ).DefaultValue(true));
+    AddWidget(path, "Use Custom Key Models", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"))
+        .Options(CheckboxOptions().Tooltip(
+            "Use Custom graphics for Dungeon Keys, Big and Small, so that they can be easily told apart."
+        ).DefaultValue(true));
+    AddWidget(path, "Compass Colors Match Dungeon", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_RANDOMIZER_ENHANCEMENT("MatchCompassColors"))
+        .PreFunc([](WidgetInfo& info) {
+            info.options->disabled = !(
+                OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_MAPANDCOMPASS).IsNot(RO_DUNGEON_ITEM_LOC_STARTWITH) &&
+                OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_MAPANDCOMPASS).IsNot(RO_DUNGEON_ITEM_LOC_VANILLA) &&
+                OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_MAPANDCOMPASS).IsNot(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON)
+            );
+            info.options->disabledTooltip = "This setting is disabled because a savefile is loaded without "
+            "the compass shuffle settings set to Any Dungeon, Overworld, or Anywhere.";
+        })
+        .Options(CheckboxOptions().Tooltip(
+            "Matches the color of compasses to the dungeon they belong to. "
+            "This helps identify compasses from afar and adds a little bit of flair.\n\nThis only "
+            "applies to seeds with compasses shuffled to \"Any Dungeon\", \"Overworld\", or \"Anywhere\"."
+        ).DefaultValue(true));
+    AddWidget(path, "Quest Item Fanfares", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_RANDOMIZER_ENHANCEMENT("QuestItemFanfares"))
+        .Options(CheckboxOptions().Tooltip(
+            "Play unique fanfares when obtaining quest items (medallions/stones/songs). Note that these "
+            "fanfares can be longer than usual."
+        ));
+    AddWidget(path, "Mysterious Shuffled Items", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"))
+        .Options(CheckboxOptions().Tooltip(
+            "Displays a \"Mystery Item\" model in place of any freestanding/GS/shop items that were shuffled, "
+            "and replaces item names for them and scrubs and merchants, regardless of hint settings, "
+            "so you never know what you're getting."
+        ));
+    AddWidget(path, "Simpler Boss Soul Models", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_RANDOMIZER_ENHANCEMENT("SimplerBossSoulModels"))
+        .Options(CheckboxOptions().Tooltip(
+            "When shuffling boss souls, they'll appear as a simpler model instead of showing the boss' models."
+            "This might make boss souls more distinguishable from a distance, and can help with performance."
+        ));
+    AddWidget(path, "Skip Get Item Animations", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"))
+        .Options(ComboboxOptions().ComboMap(skipGetItemAnimationOptions).DefaultIndex(SGIA_JUNK));
+
+    // Plandomizer
+    path.sidebarName = "Plandomizer";
+    AddSidebarEntry("Randomizer", path.sidebarName, 1);
+    AddWidget(path, "Popout Plandomizer Window", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("PlandomizerEditor"))
+        .WindowName("Plandomizer Editor")
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Randomizer Settings Window."));
+
+    // Item Tracker
+    path.sidebarName = "Item Tracker";
+    AddSidebarEntry("Randomizer", path.sidebarName, 1);
+
+    AddWidget(path, "Item Tracker", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Toggle Item Tracker", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("ItemTracker"))
+        .WindowName("Item Tracker")
+        .Options(WindowButtonOptions().Tooltip("Toggles the Item Tracker.").EmbedWindow(false));
+
+    AddWidget(path, "Item Tracker Settings", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Popout Item Tracker Settings", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("ItemTrackerSettings"))
+        .WindowName("Item Tracker Settings")
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Item Tracker Settings Window."));
+
+    // Entrance Tracker
+    path.sidebarName = "Entrance Tracker";
+    AddSidebarEntry("Randomizer", path.sidebarName, 1);
+
+    AddWidget(path, "Entrance Tracker", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Toggle Entrance Tracker", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("EntranceTracker"))
+        .WindowName("Entrance Tracker")
+        .Options(WindowButtonOptions().Tooltip("Toggles the Entrance Tracker.").EmbedWindow(false));
+
+    AddWidget(path, "Entrance Tracker Settings", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Popout Entrance Tracker Settings", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("EntranceTrackerSettings"))
+        .WindowName("Entrance Tracker Settings")
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Entrance Tracker Settings Window."));
+
+    // Check Tracker
+    path.sidebarName = "Check Tracker";
+    AddSidebarEntry("Randomizer", path.sidebarName, 1);
+
+    AddWidget(path, "Check Tracker", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Toggle Check Tracker", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("CheckTracker"))
+        .WindowName("Check Tracker")
+        .Options(WindowButtonOptions().Tooltip("Toggles the Check Tracker.").EmbedWindow(false));
+
+    AddWidget(path, "Check Tracker Settings", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Popout Check Tracker Settings", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("CheckTrackerSettings"))
+        .WindowName("Check Tracker Settings")
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Check Tracker Settings Window."));
+}
+
+} // namespace SohGui

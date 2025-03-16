@@ -5,6 +5,7 @@
 #include "soh/SaveManager.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/SohGui/UIWidgets.hpp"
+#include "soh/SohGui/SohGui.hpp"
 #include "randomizerTypes.h"
 
 #include <map>
@@ -34,6 +35,8 @@ void DrawQuest(ItemTrackerItem item);
 void DrawSong(ItemTrackerItem item);
 
 int itemTrackerSectionId;
+
+using namespace UIWidgets;
 
 bool shouldUpdateVectors = true;
 
@@ -616,7 +619,7 @@ void DrawEquip(ItemTrackerItem item) {
     ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasEquip && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
-    UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(item.id));
+    Tooltip(SohUtils::GetItemName(item.id).c_str());
 }
 
 void DrawQuest(ItemTrackerItem item) {
@@ -632,7 +635,7 @@ void DrawQuest(ItemTrackerItem item) {
 
     ImGui::EndGroup();
 
-    UIWidgets::SetLastItemHoverText(SohUtils::GetQuestItemName(item.id));
+    Tooltip(SohUtils::GetQuestItemName(item.id).c_str());
 };
 
 void DrawItem(ItemTrackerItem item) {
@@ -800,7 +803,7 @@ void DrawItem(ItemTrackerItem item) {
         itemName = SohUtils::GetItemName(item.id);
     }
 
-    UIWidgets::SetLastItemHoverText(itemName);
+    Tooltip(itemName.c_str());
 }
 
 void DrawBottle(ItemTrackerItem item) {
@@ -815,7 +818,7 @@ void DrawBottle(ItemTrackerItem item) {
     ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
-    UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(item.id));
+    Tooltip(SohUtils::GetItemName(item.id).c_str());
 };
 
 void DrawDungeonItem(ItemTrackerItem item) {
@@ -864,7 +867,7 @@ void DrawDungeonItem(ItemTrackerItem item) {
     }
     ImGui::EndGroup();
 
-    UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(item.id));
+    Tooltip(SohUtils::GetItemName(item.id).c_str());
 }
 
 void DrawSong(ItemTrackerItem item) {
@@ -874,7 +877,7 @@ void DrawSong(ItemTrackerItem item) {
     ImGui::SetCursorScreenPos(ImVec2(p.x + 6, p.y));
     ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasSong && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize / 1.5, iconSize), ImVec2(0, 0), ImVec2(1, 1));
-    UIWidgets::SetLastItemHoverText(SohUtils::GetQuestItemName(item.id));
+    Tooltip(SohUtils::GetQuestItemName(item.id).c_str());
 }
 
 void DrawNotes(bool resizeable = false) {
@@ -931,7 +934,6 @@ void DrawTotalChecks() {
 }
 
 // Windowing stuff
-ImVec4 ChromaKeyBackground = { 0, 0, 0, 0 }; // Float value, 1 = 255 in rgb value.
 void BeginFloatingWindows(std::string UniqueName, ImGuiWindowFlags flags = 0) {
     ImGuiWindowFlags windowFlags = flags;
 
@@ -947,7 +949,7 @@ void BeginFloatingWindows(std::string UniqueName, ImGuiWindowFlags flags = 0) {
             windowFlags |= ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoMove;
         }
     }
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, ChromaKeyBackground);
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, VecFromRGBA8(CVarGetColor(CVAR_TRACKER_ITEM("BgColor.Value"), {0, 0, 0, 0})));
     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 4.0f);
     ImGui::Begin(UniqueName.c_str(), nullptr, windowFlags);
@@ -1220,6 +1222,7 @@ void ItemTrackerWindow::Draw() {
 }
 
 void ItemTrackerWindow::DrawElement() {
+    ImGui::PushFont(OTRGlobals::Instance->fontStandardLarger);
     UpdateVectors();
 
     int iconSize = CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36);
@@ -1350,19 +1353,29 @@ void ItemTrackerWindow::DrawElement() {
             EndFloatingWindows();
         }
     }
+    ImGui::PopFont();
 }
 
-static const char* itemTrackerCapacityTrackOptions[5] = { "No Numbers", "Current Capacity", "Current Ammo", "Current Capacity / Max Capacity", "Current Ammo / Current Capacity" };
-static const char* itemTrackerKeyTrackOptions[3] = { "Collected / Max", "Current / Collected / Max", "Current / Max" };
-static const char* itemTrackerTriforcePieceTrackOptions[2] = { "Collected / Required", "Collected / Required / Max" };
-static const char* windowTypes[2] = { "Floating", "Window" };
-static const char* displayModes[2] = { "Always", "Combo Button Hold" };
-static const char* buttons[14] = { "A", "B", "C-Up", "C-Down", "C-Left", "C-Right", "L", "Z", "R", "Start", "D-Up", "D-Down", "D-Left", "D-Right" };
-static const char* displayTypes[3] = { "Hidden", "Main Window", "Separate" };
-static const char* extendedDisplayTypes[4] = { "Hidden", "Main Window", "Misc Window", "Separate" };
-static const char* minimalDisplayTypes[2] = { "Hidden", "Separate" };
+static std::unordered_map<int32_t, const char*> itemTrackerCapacityTrackOptions = {
+    { ITEM_TRACKER_NUMBER_NONE, "No Numbers" }, { ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY, "Current Capacity" }, { ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY, "Current Ammo" },
+    { ITEM_TRACKER_NUMBER_CAPACITY, "Current Capacity / Max Capacity" }, { ITEM_TRACKER_NUMBER_AMMO, "Current Ammo / Current Capacity" }};
+static std::unordered_map<int32_t, const char*> itemTrackerKeyTrackOptions = {
+    { KEYS_COLLECTED_MAX, "Collected / Max" }, { KEYS_CURRENT_COLLECTED_MAX, "Current / Collected / Max" }, { KEYS_CURRENT_MAX, "Current / Max" }};
+static std::unordered_map<int32_t, const char*> itemTrackerTriforcePieceTrackOptions = {
+    { TRIFORCE_PIECE_COLLECTED_REQUIRED, "Collected / Required" }, { TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX, "Collected / Required / Max" }};
+static std::unordered_map<int32_t, const char*> windowTypes = {{ TRACKER_WINDOW_FLOATING, "Floating" }, { TRACKER_WINDOW_WINDOW, "Window" }};
+static std::unordered_map<int32_t, const char*> displayModes = {{ TRACKER_DISPLAY_ALWAYS, "Always" }, { TRACKER_DISPLAY_COMBO_BUTTON, "Combo Button Hold" }};
+static std::unordered_map<int32_t, const char*> buttons = {{ TRACKER_COMBO_BUTTON_A, "A" }, { TRACKER_COMBO_BUTTON_B, "B"}, { TRACKER_COMBO_BUTTON_C_UP, "C-Up"}, 
+    { TRACKER_COMBO_BUTTON_C_DOWN, "C-Down" }, { TRACKER_COMBO_BUTTON_C_LEFT, "C-Left" }, { TRACKER_COMBO_BUTTON_C_RIGHT, "C-Right" }, { TRACKER_COMBO_BUTTON_L, "L" },
+    { TRACKER_COMBO_BUTTON_Z, "Z" }, { TRACKER_COMBO_BUTTON_R, "R" }, { TRACKER_COMBO_BUTTON_START, "Start" }, { TRACKER_COMBO_BUTTON_D_UP, "D-Up" },
+    { TRACKER_COMBO_BUTTON_D_DOWN, "D-Down" }, { TRACKER_COMBO_BUTTON_D_LEFT, "D-Left" }, { TRACKER_COMBO_BUTTON_D_RIGHT, "D-Right" }};
+static std::unordered_map<int32_t, const char*> displayTypes = {{ SECTION_DISPLAY_HIDDEN, "Hidden" }, { SECTION_DISPLAY_MAIN_WINDOW, "Main Window" }, { SECTION_DISPLAY_SEPARATE, "Separate" }};
+static std::unordered_map<int32_t, const char*> extendedDisplayTypes = {{ SECTION_DISPLAY_EXTENDED_HIDDEN, "Hidden" }, 
+        { SECTION_DISPLAY_EXTENDED_MAIN_WINDOW, "Main Window" }, { SECTION_DISPLAY_EXTENDED_MISC_WINDOW, "Misc Window" }, { SECTION_DISPLAY_EXTENDED_SEPARATE, "Separate" }};
+static std::unordered_map<int32_t, const char*> minimalDisplayTypes = {{ SECTION_DISPLAY_MINIMAL_HIDDEN, "Hidden" }, { SECTION_DISPLAY_MINIMAL_SEPARATE, "Separate" }};
 
 void ItemTrackerSettingsWindow::DrawElement() {
+    ImGui::PushFont(OTRGlobals::Instance->fontStandardLarger);
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
     ImGui::BeginTable("itemTrackerSettingsTable", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV);
     ImGui::TableSetupColumn("General settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -1370,154 +1383,168 @@ void ItemTrackerSettingsWindow::DrawElement() {
     ImGui::TableHeadersRow();
     ImGui::TableNextRow();
     ImGui::TableNextColumn();
-    ImGui::Text("BG Color");
-    ImGui::SameLine();
     ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
-    if (ImGui::ColorEdit4("BG Color##gItemTrackerBgColor", (float*)&ChromaKeyBackground, ImGuiColorEditFlags_AlphaPreview | ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_NoLabel)) {
-        CVarSetFloat(CVAR_TRACKER_ITEM("BgColorR"), ChromaKeyBackground.x);
-        CVarSetFloat(CVAR_TRACKER_ITEM("BgColorG"), ChromaKeyBackground.y);
-        CVarSetFloat(CVAR_TRACKER_ITEM("BgColorB"), ChromaKeyBackground.z);
-        CVarSetFloat(CVAR_TRACKER_ITEM("BgColorA"), ChromaKeyBackground.w);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    }
-    ImGui::PopItemWidth();
+    CVarColorPicker("Background Color##gItemTrackerBgColor", CVAR_TRACKER_ITEM("BgColor"), { 0, 0, 0, 0 }, true,
+        ColorPickerRandomButton | ColorPickerResetButton, THEME_COLOR);
 
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Window Type", CVAR_TRACKER_ITEM("WindowType"), windowTypes, TRACKER_WINDOW_FLOATING)) {
+    ImGui::PopItemWidth();
+    if (CVarCombobox("Window Type", CVAR_TRACKER_ITEM("WindowType"), windowTypes, ComboboxOptions()
+            .DefaultIndex(TRACKER_WINDOW_FLOATING).ComponentAlignment(ComponentAlignment::Right)
+            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
         shouldUpdateVectors = true;
     }
 
     if (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING) {
-        if (UIWidgets::PaddedEnhancementCheckbox("Enable Dragging", CVAR_TRACKER_ITEM("Draggable"))) {
+        if (CVarCheckbox("Enable Dragging", CVAR_TRACKER_ITEM("Draggable"), CheckboxOptions().Color(THEME_COLOR))) {
             shouldUpdateVectors = true;
         }
-        if (UIWidgets::PaddedEnhancementCheckbox("Only enable while paused", CVAR_TRACKER_ITEM("ShowOnlyPaused"))) {
+        if (CVarCheckbox("Only enable while paused", CVAR_TRACKER_ITEM("ShowOnlyPaused"), CheckboxOptions().Color(THEME_COLOR))) {
             shouldUpdateVectors = true;
         }
-        if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Display Mode", CVAR_TRACKER_ITEM("DisplayType.Main"), displayModes, TRACKER_DISPLAY_ALWAYS)) {
+        if (CVarCombobox("Display Mode", CVAR_TRACKER_ITEM("DisplayType.Main"), displayModes, ComboboxOptions()
+            .DefaultIndex(TRACKER_DISPLAY_ALWAYS).ComponentAlignment(ComponentAlignment::Right)
+            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
             shouldUpdateVectors = true;
         }
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_COMBO_BUTTON) {
-            if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 1", CVAR_TRACKER_ITEM("ComboButton1"), buttons, TRACKER_COMBO_BUTTON_L)) {
+            if (CVarCombobox("Combo Button 1", CVAR_TRACKER_ITEM("ComboButton1"), buttons, ComboboxOptions()
+            .DefaultIndex(TRACKER_COMBO_BUTTON_L).ComponentAlignment(ComponentAlignment::Right)
+            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
                 shouldUpdateVectors = true;
             }
-            if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 2", CVAR_TRACKER_ITEM("ComboButton2"), buttons, TRACKER_COMBO_BUTTON_R)) {
+            if (CVarCombobox("Combo Button 2", CVAR_TRACKER_ITEM("ComboButton2"), buttons, ComboboxOptions()
+            .DefaultIndex(TRACKER_COMBO_BUTTON_R).ComponentAlignment(ComponentAlignment::Right)
+            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
                 shouldUpdateVectors = true;
             }
         }
     }
-    UIWidgets::PaddedSeparator();
-    UIWidgets::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", CVAR_TRACKER_ITEM("IconSize"), 25, 128, "", 36);
-    UIWidgets::EnhancementSliderInt("Icon margins : %dpx", "##ITEMTRACKERSPACING", CVAR_TRACKER_ITEM("IconSpacing"), -5, 50, "", 12);
-    UIWidgets::EnhancementSliderInt("Text size : %dpx", "##ITEMTRACKERTEXTSIZE", CVAR_TRACKER_ITEM("TextSize"), 1, 30, "", 13);
+    ImGui::Separator();
+    CVarSliderInt("Icon size : %dpx", CVAR_TRACKER_ITEM("IconSize"), IntSliderOptions().Min(25).Max(128).DefaultValue(36).Color(THEME_COLOR));
+    CVarSliderInt("Icon margins : %dpx", CVAR_TRACKER_ITEM("IconSpacing"), IntSliderOptions().Min(-5).Max(50).DefaultValue(12).Color(THEME_COLOR));
+    CVarSliderInt("Text size : %dpx", CVAR_TRACKER_ITEM("TextSize"), IntSliderOptions().Min(1).Max(30).DefaultValue(13).Color(THEME_COLOR));
     
-    UIWidgets::Spacer(0);
-
-    ImGui::Text("Ammo/Capacity Tracking");
-    UIWidgets::EnhancementCombobox(CVAR_TRACKER_ITEM("ItemCountType"), itemTrackerCapacityTrackOptions, ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY);
-    UIWidgets::InsertHelpHoverText("Customize what the numbers under each item are tracking."
-                                    "\n\nNote: items without capacity upgrades will track ammo even in capacity mode");
+    ImGui::NewLine();
+    CVarCombobox("Ammo/Capacity Tracking", CVAR_TRACKER_ITEM("ItemCountType"), itemTrackerCapacityTrackOptions, ComboboxOptions()
+            .DefaultIndex(ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY).ComponentAlignment(ComponentAlignment::Left)
+            .LabelPosition(LabelPosition::Above).Color(THEME_COLOR)
+            .Tooltip("Customize what the numbers under each item are tracking."
+                         "\n\nNote: items without capacity upgrades will track ammo even in capacity mode"));
     if (CVarGetInteger(CVAR_TRACKER_ITEM("ItemCountType"), ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY) == ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY || CVarGetInteger(CVAR_TRACKER_ITEM("ItemCountType"), ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY) == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY) {
-        if (UIWidgets::PaddedEnhancementCheckbox("Align count to left side", CVAR_TRACKER_ITEM("ItemCountAlignLeft"))) {
+        if (CVarCheckbox("Align count to left side", CVAR_TRACKER_ITEM("ItemCountAlignLeft"), CheckboxOptions().Color(THEME_COLOR))) {
             shouldUpdateVectors = true;
         }
     }
 
-    UIWidgets::Spacer(0);
+    CVarCombobox("Key Count Tracking", CVAR_TRACKER_ITEM("KeyCounts"), itemTrackerKeyTrackOptions, ComboboxOptions()
+            .DefaultIndex(KEYS_COLLECTED_MAX).ComponentAlignment(ComponentAlignment::Left)
+            .LabelPosition(LabelPosition::Above).Color(THEME_COLOR)
+            .Tooltip("Customize what numbers are shown for key tracking."));
 
-    ImGui::Text("Key Count Tracking");
-    UIWidgets::EnhancementCombobox(CVAR_TRACKER_ITEM("KeyCounts"), itemTrackerKeyTrackOptions, KEYS_COLLECTED_MAX);
-    UIWidgets::InsertHelpHoverText("Customize what numbers are shown for key tracking.");
-
-    UIWidgets::Spacer(0);
-
-    ImGui::Text("Triforce Piece Count Tracking");
-    UIWidgets::EnhancementCombobox(CVAR_TRACKER_ITEM("TriforcePieceCounts"), itemTrackerTriforcePieceTrackOptions, TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX);
-    UIWidgets::InsertHelpHoverText("Customize what numbers are shown for triforce piece tracking.");
+    CVarCombobox("Triforce Piece Count Tracking", CVAR_TRACKER_ITEM("TriforcePieceCounts"), itemTrackerTriforcePieceTrackOptions, ComboboxOptions()
+            .DefaultIndex(TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX).ComponentAlignment(ComponentAlignment::Left)
+            .LabelPosition(LabelPosition::Above).Color(THEME_COLOR)
+            .Tooltip("Customize what numbers are shown for triforce piece tracking."));
 
     ImGui::TableNextColumn();
 
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Inventory", CVAR_TRACKER_ITEM("DisplayType.Inventory"), displayTypes, SECTION_DISPLAY_MAIN_WINDOW)) {
+    if (CVarCombobox("Inventory", CVAR_TRACKER_ITEM("DisplayType.Inventory"), displayTypes, ComboboxOptions()
+            .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW).ComponentAlignment(ComponentAlignment::Right)
+            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
         shouldUpdateVectors = true;
     }
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Equipment", CVAR_TRACKER_ITEM("DisplayType.Equipment"), displayTypes, SECTION_DISPLAY_MAIN_WINDOW)) {
+    if (CVarCombobox("Equipment", CVAR_TRACKER_ITEM("DisplayType.Equipment"), displayTypes, ComboboxOptions()
+            .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW).ComponentAlignment(ComponentAlignment::Right)
+            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
         shouldUpdateVectors = true;
     }
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Misc", CVAR_TRACKER_ITEM("DisplayType.Misc"), displayTypes, SECTION_DISPLAY_MAIN_WINDOW)) {
+    if (CVarCombobox("Misc", CVAR_TRACKER_ITEM("DisplayType.Misc"), displayTypes, ComboboxOptions()
+            .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW).ComponentAlignment(ComponentAlignment::Right)
+            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
         shouldUpdateVectors = true;
     }
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Dungeon Rewards", CVAR_TRACKER_ITEM("DisplayType.DungeonRewards"), displayTypes, SECTION_DISPLAY_MAIN_WINDOW)) {
+    if (CVarCombobox("Dungeon Rewards", CVAR_TRACKER_ITEM("DisplayType.DungeonRewards"), displayTypes, ComboboxOptions()
+            .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW).ComponentAlignment(ComponentAlignment::Right)
+            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
         shouldUpdateVectors = true;
     }
     if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonRewards"), SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_SEPARATE) {
-        if (UIWidgets::PaddedEnhancementCheckbox("Circle display", CVAR_TRACKER_ITEM("DungeonRewardsLayout"), true, true, false, "", UIWidgets::CheckboxGraphics::Cross, false)) {
+        if (CVarCheckbox("Circle display", CVAR_TRACKER_ITEM("DungeonRewardsLayout"))) {
             shouldUpdateVectors = true;
         }
     }
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Songs", CVAR_TRACKER_ITEM("DisplayType.Songs"), displayTypes, SECTION_DISPLAY_MAIN_WINDOW)) {
+    if (CVarCombobox("Songs", CVAR_TRACKER_ITEM("DisplayType.Songs"), displayTypes, ComboboxOptions()
+            .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW).ComponentAlignment(ComponentAlignment::Right)
+            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
         shouldUpdateVectors = true;
     }
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Dungeon Items", CVAR_TRACKER_ITEM("DisplayType.DungeonItems"), displayTypes, SECTION_DISPLAY_HIDDEN)) {
+    if (CVarCombobox("Dungeon Items", CVAR_TRACKER_ITEM("DisplayType.DungeonItems"), displayTypes, ComboboxOptions()
+            .DefaultIndex(SECTION_DISPLAY_HIDDEN).ComponentAlignment(ComponentAlignment::Right)
+            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
         shouldUpdateVectors = true;
     }
     if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonItems"), SECTION_DISPLAY_HIDDEN) != SECTION_DISPLAY_HIDDEN) {
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonItems"), SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_SEPARATE) {
-            if (UIWidgets::PaddedEnhancementCheckbox("Horizontal display", CVAR_TRACKER_ITEM("DungeonItems.Layout"), true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true)) {
+            if (CVarCheckbox("Horizontal display", CVAR_TRACKER_ITEM("DungeonItems.Layout"), CheckboxOptions().DefaultValue(true).Color(THEME_COLOR))) {
                 shouldUpdateVectors = true;
             }
         }
-        if (UIWidgets::PaddedEnhancementCheckbox("Maps and compasses", CVAR_TRACKER_ITEM("DungeonItems.DisplayMaps"), true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true)) {
+        if (CVarCheckbox("Maps and compasses", CVAR_TRACKER_ITEM("DungeonItems.DisplayMaps"), CheckboxOptions().DefaultValue(true).Color(THEME_COLOR))) {
             shouldUpdateVectors = true;
         }
     }
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Greg", CVAR_TRACKER_ITEM("DisplayType.Greg"), extendedDisplayTypes, SECTION_DISPLAY_EXTENDED_HIDDEN)) {
+    if (CVarCombobox("Greg", CVAR_TRACKER_ITEM("DisplayType.Greg"), extendedDisplayTypes, ComboboxOptions()
+            .DefaultIndex(SECTION_DISPLAY_EXTENDED_HIDDEN).ComponentAlignment(ComponentAlignment::Right)
+            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
         shouldUpdateVectors = true;
     }
 
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Triforce Pieces", CVAR_TRACKER_ITEM("DisplayType.TriforcePieces"), displayTypes, SECTION_DISPLAY_HIDDEN)) {
+    if (CVarCombobox("Triforce Pieces", CVAR_TRACKER_ITEM("DisplayType.TriforcePieces"), displayTypes, ComboboxOptions()
+            .DefaultIndex(SECTION_DISPLAY_HIDDEN).ComponentAlignment(ComponentAlignment::Right)
+            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
         shouldUpdateVectors = true;
     }
 
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Boss Souls", CVAR_TRACKER_ITEM("DisplayType.BossSouls"), displayTypes, SECTION_DISPLAY_HIDDEN)) {
+    if (CVarCombobox("Boss Souls", CVAR_TRACKER_ITEM("DisplayType.BossSouls"), displayTypes, ComboboxOptions()
+            .DefaultIndex(SECTION_DISPLAY_HIDDEN).ComponentAlignment(ComponentAlignment::Right)
+            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
         shouldUpdateVectors = true;
     }
 
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Ocarina Buttons", CVAR_TRACKER_ITEM("DisplayType.OcarinaButtons"), displayTypes, SECTION_DISPLAY_HIDDEN)) {
+    if (CVarCombobox("Ocarina Buttons", CVAR_TRACKER_ITEM("DisplayType.OcarinaButtons"), displayTypes, ComboboxOptions()
+            .DefaultIndex(SECTION_DISPLAY_HIDDEN).ComponentAlignment(ComponentAlignment::Right)
+            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
         shouldUpdateVectors = true;
     }
 
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Fishing Pole", CVAR_TRACKER_ITEM("DisplayType.FishingPole"), extendedDisplayTypes, SECTION_DISPLAY_EXTENDED_HIDDEN)) {
+    if (CVarCombobox("Fishing Pole", CVAR_TRACKER_ITEM("DisplayType.FishingPole"), extendedDisplayTypes, ComboboxOptions()
+            .DefaultIndex(SECTION_DISPLAY_EXTENDED_HIDDEN).ComponentAlignment(ComponentAlignment::Right)
+            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
         shouldUpdateVectors = true;
     }
 
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Total Checks", "gTrackers.ItemTracker.TotalChecks.DisplayType", minimalDisplayTypes, SECTION_DISPLAY_MINIMAL_HIDDEN)) {
+    if (CVarCombobox("Total Checks", "gTrackers.ItemTracker.TotalChecks.DisplayType", minimalDisplayTypes, ComboboxOptions()
+            .DefaultIndex(SECTION_DISPLAY_MINIMAL_HIDDEN).ComponentAlignment(ComponentAlignment::Right)
+            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
         shouldUpdateVectors = true;
     }
 
     if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_ALWAYS) {
-        if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Personal notes", CVAR_TRACKER_ITEM("DisplayType.Notes"), displayTypes, SECTION_DISPLAY_HIDDEN)) {
+        if (CVarCombobox("Personal notes", CVAR_TRACKER_ITEM("DisplayType.Notes"), displayTypes, ComboboxOptions()
+            .DefaultIndex(SECTION_DISPLAY_HIDDEN).ComponentAlignment(ComponentAlignment::Right)
+            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
             shouldUpdateVectors = true;
         }
     }
-    UIWidgets::EnhancementCheckbox("Show Hookshot Identifiers", CVAR_TRACKER_ITEM("HookshotIdentifier"));
-    UIWidgets::InsertHelpHoverText("Shows an 'H' or an 'L' to more easiely distinguish between Hookshot and Longshot.");
-
-    UIWidgets::Spacer(0);
+    CVarCheckbox("Show Hookshot Identifiers", CVAR_TRACKER_ITEM("HookshotIdentifier"), CheckboxOptions()
+        .Tooltip("Shows an 'H' or an 'L' to more easiely distinguish between Hookshot and Longshot.").Color(THEME_COLOR));
 
     ImGui::PopStyleVar(1);
     ImGui::EndTable();
+    ImGui::PopFont();
 }
 
 void ItemTrackerWindow::InitElement() {
-    float trackerBgR = CVarGetFloat(CVAR_TRACKER_ITEM("BgColorR"), 0);
-    float trackerBgG = CVarGetFloat(CVAR_TRACKER_ITEM("BgColorG"), 0);
-    float trackerBgB = CVarGetFloat(CVAR_TRACKER_ITEM("BgColorB"), 0);
-    float trackerBgA = CVarGetFloat(CVAR_TRACKER_ITEM("BgColorA"), 1);
-    ChromaKeyBackground = {
-        trackerBgR,
-        trackerBgG,
-        trackerBgB,
-        trackerBgA
-    }; // Float value, 1 = 255 in rgb value.
     // Crashes when the itemTrackerNotes is empty, so add an empty character to it
     if (itemTrackerNotes.empty()) {
         itemTrackerNotes.push_back(0);

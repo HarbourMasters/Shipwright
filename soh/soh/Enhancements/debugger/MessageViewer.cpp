@@ -1,6 +1,9 @@
 #include "MessageViewer.h"
 
-#include <soh/SohGui/UIWidgets.hpp>
+#include "soh/SohGui/UIWidgets.hpp"
+#include "soh/SohGui/SohGui.hpp"
+#include "soh/OTRGlobals.h"
+
 #include <textures/message_static/message_static.h>
 
 #include "../custom-message/CustomMessageManager.h"
@@ -13,6 +16,8 @@
 
 extern "C" u8 sMessageHasSetSfx;
 
+using namespace UIWidgets;
+
 void MessageViewer::InitElement() {
     CustomMessageManager::Instance->AddCustomMessageTable(TABLE_ID);
     mTableIdBuf = static_cast<char*>(calloc(MAX_STRING_SIZE, sizeof(char)));
@@ -21,8 +26,10 @@ void MessageViewer::InitElement() {
 }
 
 void MessageViewer::DrawElement() {
+    ImGui::PushFont(OTRGlobals::Instance->fontMonoLargest);
     ImGui::Text("Table ID");
     ImGui::SameLine();
+    PushStyleInput(THEME_COLOR);
     ImGui::InputText("##TableID", mTableIdBuf, MAX_STRING_SIZE, ImGuiInputTextFlags_CallbackCharFilter, UIWidgets::TextFilters::FilterAlphaNum);
     UIWidgets::InsertHelpHoverText("Leave blank for vanilla table");
     ImGui::Text("Text ID");
@@ -38,6 +45,8 @@ void MessageViewer::DrawElement() {
             UIWidgets::InsertHelpHoverText("Hexadecimal Text ID of the message to load. Hexadecimal digits only (0-9/A-F).");
             break;
     }
+    PopStyleInput();
+    PushStyleCheckbox(THEME_COLOR);
     if (ImGui::RadioButton("Hexadecimal", &mTextIdBase, HEXADECIMAL)) {
         memset(mTextIdBuf, 0, sizeof(char) * MAX_STRING_SIZE);
     }
@@ -45,8 +54,10 @@ void MessageViewer::DrawElement() {
     if (ImGui::RadioButton("Decimal", &mTextIdBase, DECIMAL)) {
         memset(mTextIdBuf, 0, sizeof(char) * MAX_STRING_SIZE);
     }
+    PopStyleCheckbox();
     ImGui::Text("Language");
     ImGui::SameLine();
+    PushStyleCombobox(THEME_COLOR);
     if (ImGui::BeginCombo("##Language", mLanguages[mLanguage])) {
         // ReSharper disable CppDFAUnreachableCode
         for (size_t i = 0; i < mLanguages.size(); i++) {
@@ -58,7 +69,9 @@ void MessageViewer::DrawElement() {
         }
         ImGui::EndCombo();
     }
+    PopStyleCombobox();
     UIWidgets::InsertHelpHoverText("Which language to load from the selected text ID");
+    PushStyleButton(THEME_COLOR);
     if (ImGui::Button("Display Message##ExistingMessage")) {
         mDisplayExistingMessageClicked = true;
     }
@@ -66,11 +79,14 @@ void MessageViewer::DrawElement() {
     UIWidgets::InsertHelpHoverText("Enter a string using Custom Message Syntax to preview it in-game. "
                                    "Any newline (\\n) characters inserted by the Enter key will be stripped "
                                    "from the output.");
+    PushStyleInput(THEME_COLOR);
     ImGui::InputTextMultiline("##CustomMessage", mCustomMessageBuf, MAX_STRING_SIZE);
+    PopStyleInput();
     if (ImGui::Button("Display Message##CustomMessage")) {
         mDisplayCustomMessageClicked = true;
     }
-    // ReSharper restore CppDFAUnreachableCode
+    PopStyleButton();
+    ImGui::PopFont();
 }
 
 void MessageViewer::UpdateElement() {

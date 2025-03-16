@@ -1,6 +1,7 @@
 #include "actorViewer.h"
 #include "soh/util.h"
 #include "soh/SohGui/UIWidgets.hpp"
+#include "soh/SohGui/SohGui.hpp"
 #include "ResourceManager.h"
 #include "DisplayList.h"
 #include "soh/OTRGlobals.h"
@@ -90,11 +91,14 @@ void PerformDisplayListSearch() {
 }
 
 void DLViewerWindow::DrawElement() {
+    ImGui::PushFont(OTRGlobals::Instance->fontMonoLarger);
     // Debounce the search field as listing otr files is expensive
+    UIWidgets::PushStyleInput(THEME_COLOR);
     if (ImGui::InputText("Search Display Lists", searchString, ARRAY_COUNT(searchString))) {
         doSearch = true;
         searchDebounceFrames = 30;
     }
+    UIWidgets::PopStyleInput();
 
     if (doSearch) {
         if (searchDebounceFrames == 0) {
@@ -105,6 +109,7 @@ void DLViewerWindow::DrawElement() {
         searchDebounceFrames--;
     }
 
+    UIWidgets::PushStyleCombobox(THEME_COLOR);
     if (ImGui::BeginCombo("Active Display List", activeDisplayList.c_str())) {
         for (size_t i = 0; i < displayListSearchResults.size(); i++) {
             if (ImGui::Selectable(displayListSearchResults[i].c_str())) {
@@ -114,8 +119,10 @@ void DLViewerWindow::DrawElement() {
         }
         ImGui::EndCombo();
     }
+    UIWidgets::PopStyleCombobox();
 
     if (activeDisplayList == "") {
+        ImGui::PopFont();
         return;
     }
 
@@ -124,6 +131,7 @@ void DLViewerWindow::DrawElement() {
 
         if (res->GetInitData()->Type != static_cast<uint32_t>(Fast::ResourceType::DisplayList)) {
             ImGui::Text("Resource type is not a Display List. Please choose another.");
+            ImGui::PopFont();
             return;
         }
 
@@ -144,6 +152,7 @@ void DLViewerWindow::DrawElement() {
             ImGui::SameLine();
             ImGui::PushItemWidth(175.0f);
 
+            UIWidgets::PushStyleCombobox(THEME_COLOR);
             if (ImGui::BeginCombo(("CMD" + id).c_str(), cmdLabel.c_str())) {
                 if (ImGui::Selectable("gsDPSetPrimColor") && cmd != G_SETPRIMCOLOR) {
                     *gfx = gsDPSetPrimColor(0, 0, 0, 0, 0, 255);
@@ -162,6 +171,7 @@ void DLViewerWindow::DrawElement() {
                 }
                 ImGui::EndCombo();
             }
+            UIWidgets::PopStyleCombobox();
 
             ImGui::PopItemWidth();
 
@@ -194,9 +204,11 @@ void DLViewerWindow::DrawElement() {
             if (cmd == G_SETGRAYSCALE) {
                 bool* state = (bool*)&gfx->words.w1;
                 ImGui::SameLine();
+                UIWidgets::PushStyleCheckbox(THEME_COLOR);
                 if (ImGui::Checkbox(("state" + id).c_str(), state)) {
                     // 
                 }
+                UIWidgets::PopStyleCheckbox();
             }
             if (cmd == G_SETTILE) {
                 ImGui::SameLine();
@@ -317,8 +329,10 @@ void DLViewerWindow::DrawElement() {
         }
     } catch (const std::exception& e) {
         ImGui::Text("Error displaying DL instructions.");
+        ImGui::PopFont();
         return;
     }
+    ImGui::PopFont();
 }
 
 void DLViewerWindow::InitElement() {
