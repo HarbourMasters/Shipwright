@@ -876,8 +876,6 @@ void CheckTrackerWindow::DrawElement() {
 
     hideShopUnshuffledChecks = CVarGetInteger(CVAR_TRACKER_CHECK("HideUnshuffledShopChecks"), 1);
     alwaysShowGS = CVarGetInteger(CVAR_TRACKER_CHECK("AlwaysShowGSLocs"), 0);
-
-    ImGui::PushFont(OTRGlobals::Instance->fontStandardLarger);
     if (CVarGetInteger(CVAR_TRACKER_CHECK("WindowType"), TRACKER_WINDOW_WINDOW) == TRACKER_WINDOW_FLOATING) {
         if (CVarGetInteger(CVAR_TRACKER_CHECK("ShowOnlyPaused"), 0) && (gPlayState == nullptr || gPlayState->pauseCtx.state == 0)) {
             return;
@@ -901,7 +899,6 @@ void CheckTrackerWindow::DrawElement() {
 
     if (!GameInteractor::IsSaveLoaded() || !initialized) {
         ImGui::Text("Waiting for file load..."); //TODO Language
-        ImGui::PopFont();
         EndFloatWindows();
         return;
     }
@@ -920,7 +917,6 @@ void CheckTrackerWindow::DrawElement() {
     ImVec2 size = ImGui::GetContentRegionMax();
     size.y -= headerHeight;
     if (!ImGui::BeginTable("Check Tracker", 1, 0, size)) {
-        ImGui::PopFont();
         EndFloatWindows();
         return;
     }
@@ -965,7 +961,6 @@ void CheckTrackerWindow::DrawElement() {
     size = ImGui::GetContentRegionAvail();
     if (!ImGui::BeginTable("CheckTracker##Checks", 1, ImGuiTableFlags_ScrollY, size)) {
         ImGui::EndTable();
-        ImGui::PopFont();
         EndFloatWindows();
         return;
     }
@@ -1081,7 +1076,6 @@ void CheckTrackerWindow::DrawElement() {
 
     ImGui::EndTable(); //Checks Lead-out
     ImGui::EndTable(); //Quick Options Lead-out
-    ImGui::PopFont();
     EndFloatWindows();
     if (doingCollapseOrExpand) {
         optCollapseAll = false;
@@ -1147,12 +1141,14 @@ void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flag
                                                     Color_Background.b / 255.0f, Color_Background.a / 255.0f));
     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 4.0f);
+    ImGui::PushFont(OTRGlobals::Instance->fontStandardLarger);
     ImGui::Begin(UniqueName.c_str(), &open, windowFlags);
 }
 void EndFloatWindows() {
     ImGui::PopStyleVar();
     ImGui::PopStyleColor();
     ImGui::PopStyleColor();
+    ImGui::PopFont();
     ImGui::End();
 }
 

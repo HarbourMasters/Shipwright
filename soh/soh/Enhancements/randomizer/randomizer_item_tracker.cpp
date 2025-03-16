@@ -952,12 +952,14 @@ void BeginFloatingWindows(std::string UniqueName, ImGuiWindowFlags flags = 0) {
     ImGui::PushStyleColor(ImGuiCol_WindowBg, VecFromRGBA8(CVarGetColor(CVAR_TRACKER_ITEM("BgColor.Value"), {0, 0, 0, 0})));
     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 4.0f);
+    ImGui::PushFont(OTRGlobals::Instance->fontStandardLarger);
     ImGui::Begin(UniqueName.c_str(), nullptr, windowFlags);
 }
 void EndFloatingWindows() {
     ImGui::PopStyleVar();
     ImGui::PopStyleColor();
     ImGui::PopStyleColor();
+    ImGui::PopFont();
     ImGui::End();
 }
 
@@ -1222,7 +1224,6 @@ void ItemTrackerWindow::Draw() {
 }
 
 void ItemTrackerWindow::DrawElement() {
-    ImGui::PushFont(OTRGlobals::Instance->fontStandardLarger);
     UpdateVectors();
 
     int iconSize = CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36);
@@ -1353,7 +1354,6 @@ void ItemTrackerWindow::DrawElement() {
             EndFloatingWindows();
         }
     }
-    ImGui::PopFont();
 }
 
 static std::unordered_map<int32_t, const char*> itemTrackerCapacityTrackOptions = {

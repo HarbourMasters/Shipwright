@@ -740,6 +740,7 @@ void EntranceTrackerWindow::DrawElement() {
 
     if (!ImGui::Begin("Entrance Tracker", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
+        ImGui::PopFont();
         return;
     }
 
