@@ -426,6 +426,7 @@ namespace UIWidgets {
         InputTypes type = InputTypes::String;
         std::string defaultValue = "";
         bool secret = false;
+        ImGuiInputFlags addedFlags = 0;
 
         InputOptions& Tooltip(const char* tooltip_) {
             WidgetOptions::tooltip = tooltip_;

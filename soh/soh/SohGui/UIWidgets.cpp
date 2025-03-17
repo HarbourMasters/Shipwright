@@ -781,7 +781,8 @@ bool InputString(const char* label, std::string* value, const InputOptions& opti
     if (options.secret) {
         flags |= ImGuiInputTextFlags_Password;
     }
-    if (ImGui::InputText(label, (char*)value->c_str(), value->capacity() + 1, ImGuiInputTextFlags_CallbackResize, InputTextResizeCallback, value)) {
+    flags |= options.addedFlags;
+    if (ImGui::InputText(label, (char*)value->c_str(), value->capacity() + 1, flags, InputTextResizeCallback, value)) {
         dirty = true;
     }
     if (value->empty() && !options.placeholder.empty()) {
@@ -832,7 +833,7 @@ bool InputInt(const char* label, int32_t* value, const InputOptions& options) {
         }
     }
     ImGui::SetNextItemWidth(width);
-    if (ImGui::InputScalar(label, ImGuiDataType_S32, value)) {
+    if (ImGui::InputScalar(label, ImGuiDataType_S32, value, nullptr, nullptr, nullptr, options.addedFlags)) {
         dirty = true;
     }
     if ((ImGui::GetItemStatusFlags() & ImGuiItemStatusFlags_Edited) && !options.placeholder.empty()) {
