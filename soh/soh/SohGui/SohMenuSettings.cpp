@@ -55,6 +55,7 @@ void SohMenu::AddMenuSettings() {
     WidgetPath path = { "Settings", "General", SECTION_COLUMN_1 };
 
     // General - Settings
+    AddWidget(path, "General Settings", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Menu Theme", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_SETTING("Menu.Theme"))
         .Options(ComboboxOptions()
@@ -215,6 +216,7 @@ void SohMenu::AddMenuSettings() {
     }
     path.sidebarName = "Graphics";
     AddSidebarEntry("Settings", "Graphics", 3);
+    AddWidget(path, "Graphics Options", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Toggle Fullscreen", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("Fullscreen"))
         .Callback([](WidgetInfo& info) { Ship::Context::GetInstance()->GetWindow()->ToggleFullscreen(); })
@@ -311,9 +313,12 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_TEXTURE_FILTER)
         .Options(ComboboxOptions().Tooltip("Sets the applied Texture Filtering.").ComboMap(textureFilteringMap));
 
+    path.column = SECTION_COLUMN_2;
+    AddWidget(path, "Advanced Graphics Options", WIDGET_SEPARATOR_TEXT);
 
     // Controls
     path.sidebarName = "Controls";
+    path.column = SECTION_COLUMN_1;
     AddSidebarEntry("Settings", "Controls", 2);
     AddWidget(path, "Controller Bindings", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Popout Bindings Window", WIDGET_WINDOW_BUTTON)
@@ -321,7 +326,9 @@ void SohMenu::AddMenuSettings() {
         .WindowName("Configure Controller")
         .Options(WindowButtonOptions().Tooltip("Enables the separate Bindings Window."));
 
-    path.column = SECTION_COLUMN_2;
+    // Input Viewer
+    path.sidebarName = "Input Viewer";
+    AddSidebarEntry("Settings", path.sidebarName, 3);
     AddWidget(path, "Input Viewer", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Toggle Input Viewer", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("InputViewer"))
@@ -337,7 +344,7 @@ void SohMenu::AddMenuSettings() {
     // Notifications
     path.sidebarName = "Notifications";
     path.column = SECTION_COLUMN_1;
-    AddSidebarEntry("Settings", "Notifications", 3);
+    AddSidebarEntry("Settings", path.sidebarName, 3);
     AddWidget(path, "Position", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_SETTING("Notifications.Position"))
         .Options(ComboboxOptions()

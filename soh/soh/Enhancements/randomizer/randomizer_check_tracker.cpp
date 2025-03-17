@@ -1141,14 +1141,12 @@ void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flag
                                                     Color_Background.b / 255.0f, Color_Background.a / 255.0f));
     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 4.0f);
-    ImGui::PushFont(OTRGlobals::Instance->fontStandardLarger);
     ImGui::Begin(UniqueName.c_str(), &open, windowFlags);
 }
 void EndFloatWindows() {
     ImGui::PopStyleVar();
     ImGui::PopStyleColor();
     ImGui::PopStyleColor();
-    ImGui::PopFont();
     ImGui::End();
 }
 
@@ -1760,7 +1758,6 @@ static std::unordered_map<int32_t, const char*> buttonStrings = {
     { TRACKER_COMBO_BUTTON_D_LEFT, "D-Left" }, { TRACKER_COMBO_BUTTON_D_RIGHT, "D-Right" }};
 
 void CheckTrackerSettingsWindow::DrawElement() {
-    ImGui::PushFont(OTRGlobals::Instance->fontStandardLarger);
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
     if (ImGui::BeginTable("CheckTrackerSettingsTable", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
         ImGui::TableSetupColumn("General settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -1827,7 +1824,6 @@ void CheckTrackerSettingsWindow::DrawElement() {
         ImGui::PopStyleVar(1);
     }
     ImGui::EndTable();
-    ImGui::PopFont();
 }
 
 void CheckTrackerWindow::InitElement() {

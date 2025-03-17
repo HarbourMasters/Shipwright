@@ -34,7 +34,8 @@ void SohMenu::AddMenuEnhancements() {
         if (iter->first != 0) comboboxTooltip += "\n\n";
         comboboxTooltip += std::string(iter->second.label) + " - " + std::string(iter->second.description);
     }
-    AddWidget(path, "Enhancement Presets", WIDGET_COMBOBOX)
+    AddWidget(path, "Enhancement Presets", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Select Preset", WIDGET_COMBOBOX)
         .ValuePointer(&enhancementPresetSelected)
         .Callback([](WidgetInfo& info) {
             const std::string presetTypeCvar = CVAR_GENERAL("SelectedPresets.") + std::to_string(PRESET_TYPE_ENHANCEMENTS);
@@ -46,6 +47,7 @@ void SohMenu::AddMenuEnhancements() {
             .Tooltip(comboboxTooltip.c_str())
         );
     AddWidget(path, "Apply Preset##Enhancemnts", WIDGET_BUTTON)
+        .Options(ButtonOptions().Size(UIWidgets::Sizes::Inline))
         .Callback([](WidgetInfo& info) {
             const std::string presetTypeCvar = CVAR_GENERAL("SelectedPresets.") + std::to_string(PRESET_TYPE_ENHANCEMENTS);
             const PresetTypeDefinition presetTypeDef = presetTypes.at(PRESET_TYPE_ENHANCEMENTS);
@@ -1051,7 +1053,7 @@ void SohMenu::AddMenuEnhancements() {
         ));
     
     path.sidebarName = "Items";
-    AddSidebarEntry("Enhancements", path.sidebarName, 2);
+    AddSidebarEntry("Enhancements", path.sidebarName, 3);
     path.column = SECTION_COLUMN_1;
 
     AddWidget(path, "Controls", WIDGET_SEPARATOR_TEXT);
@@ -1678,7 +1680,7 @@ void SohMenu::AddMenuEnhancements() {
         );
     
     path.sidebarName = "Extra Modes";
-    AddSidebarEntry("Enhancements", path.sidebarName, 2);
+    AddSidebarEntry("Enhancements", path.sidebarName, 3);
     path.column = SECTION_COLUMN_1;
 
     AddWidget(path, "Mirrored World", WIDGET_CVAR_COMBOBOX)
@@ -1703,19 +1705,6 @@ void SohMenu::AddMenuEnhancements() {
                 " - Dungeons Random (Seeded): Dungeons are mirrored based on the current randomizer seed/file\n"
             )
         );
-    AddWidget(path, "Randomized Enemy Sizes", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_ENHANCEMENT("RandomizedEnemySizes"))
-        .Options(CheckboxOptions().Tooltip(
-            "Enemies and Bosses spawn with random sizes."
-        ));
-    AddWidget(path, "Scale Health with Size", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_ENHANCEMENT("EnemySizeScalesHealth"))
-        .PreFunc([](WidgetInfo& info) {
-            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemySizes"), 0) == 0;
-        })
-        .Options(CheckboxOptions().Tooltip(
-            "Scales normal enemies Health with their randomized size. *This will NOT affect bosses*"
-        ));
     AddWidget(path, "Ivan the Fairy (Coop Mode)", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("IvanCoopModeEnabled"))
         .Options(CheckboxOptions().Tooltip(
@@ -1827,6 +1816,7 @@ void SohMenu::AddMenuEnhancements() {
         .PreFunc([](WidgetInfo& info) {
             info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
         });
+
     path.column = SECTION_COLUMN_2;
     AddWidget(path, "Enemy Randomizer", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("RandomizedEnemies"))
@@ -1843,6 +1833,15 @@ void SohMenu::AddMenuEnhancements() {
                 "- Random (Seeded): Enemies are randomized based on the current randomizer seed/file\n"
             )
         );
+    AddWidget(path, "Randomized Enemy Sizes", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("RandomizedEnemySizes"))
+        .Options(CheckboxOptions().Tooltip("Enemies and Bosses spawn with random sizes."));
+    AddWidget(path, "Scale Health with Size", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("EnemySizeScalesHealth"))
+        .PreFunc(
+            [](WidgetInfo& info) { info.options->disabled = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemySizes"), 0); })
+        .Options(CheckboxOptions().Tooltip(
+            "Scales normal enemies Health with their randomized size. *This will NOT affect bosses*"));
     AddWidget(path, "Enemy List", WIDGET_SEPARATOR_TEXT)
         .PreFunc([](WidgetInfo& info) {
             info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) != ENEMY_RANDOMIZER_RANDOM;
@@ -1852,13 +1851,15 @@ void SohMenu::AddMenuEnhancements() {
         .PreFunc([](WidgetInfo& info) {
             info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) != ENEMY_RANDOMIZER_RANDOM;
         });
-    AddWidget(path, "Enemy List", WIDGET_SEPARATOR);
+    AddWidget(path, "Enemy List", WIDGET_SEPARATOR).PreFunc([](WidgetInfo& info) {
+        info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) != ENEMY_RANDOMIZER_RANDOM;
+    });
     for (int i = 0; i < RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE; i++) {
         AddWidget(path, enemyNameList[i], WIDGET_CVAR_CHECKBOX)
             .CVar(enemyCVarList[i])
             .PreFunc([](WidgetInfo& info) {
                 info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) != ENEMY_RANDOMIZER_RANDOM;
-                info.options->disabled = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemyList.All"), 0) == 1;
+                info.options->disabled = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemyList.All"), 0);
                 info.options->disabledTooltip = "These options are disabled because \"Select All Enemies\" is enabled.";
             })
             .Callback([](WidgetInfo& info) {
@@ -1870,6 +1871,14 @@ void SohMenu::AddMenuEnhancements() {
     path.sidebarName = "Cheats";
     AddSidebarEntry("Enhancements", path.sidebarName, 3);
     path.column = SECTION_COLUMN_1;
+
+    AddWidget(path, "Infinite...", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Money", WIDGET_CVAR_CHECKBOX).CVar(CVAR_CHEAT("InfiniteMoney"));
+    AddWidget(path, "Health", WIDGET_CVAR_CHECKBOX).CVar(CVAR_CHEAT("InfiniteHealth"));
+    AddWidget(path, "Ammo", WIDGET_CVAR_CHECKBOX).CVar(CVAR_CHEAT("InfiniteAmmo"));
+    AddWidget(path, "Magic", WIDGET_CVAR_CHECKBOX).CVar(CVAR_CHEAT("InfiniteMagic"));
+    AddWidget(path, "Nayru's Love", WIDGET_CVAR_CHECKBOX).CVar(CVAR_CHEAT("InfiniteNayru"));
+    AddWidget(path, "Epona Boost", WIDGET_CVAR_CHECKBOX).CVar(CVAR_CHEAT("InfiniteEponaBoost"));
 
     AddWidget(path, "Inventory", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Super Tunic", WIDGET_CVAR_CHECKBOX)
@@ -1909,73 +1918,8 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "This allows you to put up for shield with any two-handed weapon in hand except for Deku Sticks."
         ));
-    AddWidget(path, "Deku Sticks:", WIDGET_CVAR_COMBOBOX)
-        .CVar(CVAR_CHEAT("DekuStick"))
-        .Options(ComboboxOptions().ComboMap(
-            dekuStickCheat
-        ).DefaultIndex(DEKU_STICK_NORMAL));
-    AddWidget(path, "Bomb Timer Multiplier: %.2fx", WIDGET_CVAR_SLIDER_FLOAT)
-        .CVar(CVAR_CHEAT("BombTimerMultiplier"))
-        .Options(FloatSliderOptions()
-            .Format("%.2f")
-            .Min(0.1f)
-            .Max(5.0f)
-            .DefaultValue(1.0f));
-    AddWidget(path, "Hookshot Everything", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_CHEAT("HookshotEverything"))
-        .Options(CheckboxOptions().Tooltip(
-            "Makes every surface in the game hookshot-able."
-        ));
-    AddWidget(path, "Hookshot Reach Multiplier: %.2fx", WIDGET_CVAR_SLIDER_FLOAT)
-        .CVar(CVAR_CHEAT("HookshotReachMultiplier"))
-        .Options(FloatSliderOptions()
-            .Format("%.2f")
-            .Min(1.0f)
-            .Max(5.0f));
-    AddWidget(path, "Change Age", WIDGET_BUTTON)
-        .Options(ButtonOptions().Tooltip("Switches Link's age and reloads the area."))
-        .Callback([](WidgetInfo& info){
-            SwitchAge();
-        });
-    AddWidget(path, "Clear Cutscene Pointer", WIDGET_BUTTON)
-        .Callback([](WidgetInfo& info) {
-            GameInteractor::RawAction::ClearCutscenePointer();
-        })
-        .Options(ButtonOptions().Tooltip(
-            "Clears the cutscene pointer to a value safe for wrong warps."
-        ));
 
     path.column = SECTION_COLUMN_2;
-    AddWidget(path, "Infinite...", WIDGET_SEPARATOR_TEXT);
-    AddWidget(path, "Money", WIDGET_CVAR_CHECKBOX).CVar(CVAR_CHEAT("InfiniteMoney"));
-    AddWidget(path, "Health", WIDGET_CVAR_CHECKBOX).CVar(CVAR_CHEAT("InfiniteHealth"));
-    AddWidget(path, "Ammo", WIDGET_CVAR_CHECKBOX).CVar(CVAR_CHEAT("InfiniteAmmo"));
-    AddWidget(path, "Magic", WIDGET_CVAR_CHECKBOX).CVar(CVAR_CHEAT("InfiniteMagic"));
-    AddWidget(path, "Nayru's Love", WIDGET_CVAR_CHECKBOX).CVar(CVAR_CHEAT("InfiniteNayru"));
-    AddWidget(path, "Epona Boost", WIDGET_CVAR_CHECKBOX).CVar(CVAR_CHEAT("InfiniteEponaBoost"));
-
-    AddWidget(path, "Save States", WIDGET_SEPARATOR_TEXT);
-    AddWidget(path, ICON_FA_EXCLAMATION_TRIANGLE " WARNING!!!! " ICON_FA_EXCLAMATION_TRIANGLE, WIDGET_TEXT)
-        .Options(WidgetOptions().Color(Colors::Orange));
-    AddWidget(path,
-        "These are NOT like emulator states. They do not save your game progress "
-        "and they WILL break across transitions and load zones (like doors). "
-        "Support for related issues will not be provided.", WIDGET_TEXT
-    );
-    AddWidget(path, "I promise I have read the warning", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_CHEAT("SaveStatePromise"))
-        .Callback([](WidgetInfo& info) {
-            CVarSetInteger(CVAR_CHEAT("SaveStatesEnabled"), 0);
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-        });
-    AddWidget(path, "I understand, enable save states", WIDGET_CVAR_CHECKBOX)
-        .PreFunc([](WidgetInfo& info) {
-            info.isHidden = CVarGetInteger(CVAR_CHEAT("SaveStatePromise"), 0) == 0;
-        })
-        .CVar(CVAR_CHEAT("SaveStatesEnabled"))
-        .Options(CheckboxOptions().Tooltip(
-            "F5 to save, F6 to change slots, F7 to load"
-        ));
     
     AddWidget(path, "Behavior", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "No Clip", WIDGET_CVAR_CHECKBOX)
@@ -2024,7 +1968,46 @@ void SohMenu::AddMenuEnhancements() {
             "Keese and Guay no longer target you and simply ignore you as if you were wearing the "
             "Skull Mask."
         ));
+
+    AddWidget(path, "Deku Sticks:", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_CHEAT("DekuStick"))
+        .Options(ComboboxOptions().ComboMap(dekuStickCheat).DefaultIndex(DEKU_STICK_NORMAL));
+    AddWidget(path, "Bomb Timer Multiplier: %.2fx", WIDGET_CVAR_SLIDER_FLOAT)
+        .CVar(CVAR_CHEAT("BombTimerMultiplier"))
+        .Options(FloatSliderOptions().Format("%.2f").Min(0.1f).Max(5.0f).DefaultValue(1.0f));
+    AddWidget(path, "Hookshot Everything", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_CHEAT("HookshotEverything"))
+        .Options(CheckboxOptions().Tooltip("Makes every surface in the game hookshot-able."));
+    AddWidget(path, "Hookshot Reach Multiplier: %.2fx", WIDGET_CVAR_SLIDER_FLOAT)
+        .CVar(CVAR_CHEAT("HookshotReachMultiplier"))
+        .Options(FloatSliderOptions().Format("%.2f").Min(1.0f).Max(5.0f));
+    AddWidget(path, "Change Age", WIDGET_BUTTON)
+        .Options(ButtonOptions().Tooltip("Switches Link's age and reloads the area."))
+        .Callback([](WidgetInfo& info) { SwitchAge(); });
+    AddWidget(path, "Clear Cutscene Pointer", WIDGET_BUTTON)
+        .Callback([](WidgetInfo& info) { GameInteractor::RawAction::ClearCutscenePointer(); })
+        .Options(ButtonOptions().Tooltip("Clears the cutscene pointer to a value safe for wrong warps."));
+
     path.column = SECTION_COLUMN_3;
+    AddWidget(path, "Save States", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, ICON_FA_EXCLAMATION_TRIANGLE " WARNING!!!! " ICON_FA_EXCLAMATION_TRIANGLE, WIDGET_TEXT)
+        .Options(WidgetOptions().Color(Colors::Orange));
+    AddWidget(path,
+              "These are NOT like emulator states. They do not save your game progress "
+              "and they WILL break across transitions and load zones (like doors). "
+              "Support for related issues will not be provided.",
+              WIDGET_TEXT);
+    AddWidget(path, "I promise I have read the warning", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_CHEAT("SaveStatePromise"))
+        .Callback([](WidgetInfo& info) {
+            CVarSetInteger(CVAR_CHEAT("SaveStatesEnabled"), 0);
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        });
+    AddWidget(path, "I understand, enable save states", WIDGET_CVAR_CHECKBOX)
+        .PreFunc([](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_CHEAT("SaveStatePromise"), 0) == 0; })
+        .CVar(CVAR_CHEAT("SaveStatesEnabled"))
+        .Options(CheckboxOptions().Tooltip("F5 to save, F6 to change slots, F7 to load"));
+
     AddWidget(path, "Beta Quest", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Enable Beta Quest", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_CHEAT("EnableBetaQuest"))
@@ -2100,7 +2083,7 @@ void SohMenu::AddMenuEnhancements() {
 
     // Timers
     path.sidebarName = "Timers";
-    AddSidebarEntry("Enhancements", path.sidebarName, 1);
+    AddSidebarEntry("Enhancements", path.sidebarName, 3);
     AddWidget(path, "Toggle Timers Window", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("TimeDisplayEnabled"))
         .WindowName("Additional Timers")

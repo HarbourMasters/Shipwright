@@ -407,7 +407,7 @@ OTRGlobals::OTRGlobals() {
     fontStandard = CreateFontWithSize(16.0f, "fonts/Montserrat-Regular.ttf");
     fontStandardLarger = CreateFontWithSize(20.0f, "fonts/Montserrat-Regular.ttf");
     fontStandardLargest = CreateFontWithSize(24.0f, "fonts/Montserrat-Regular.ttf");
-    ImGui::GetIO().FontDefault = fontMono;
+    ImGui::GetIO().FontDefault = fontStandardLarger;
     ScaleImGui();
 
     // Move the camera strings from read only memory onto the heap (writable memory)

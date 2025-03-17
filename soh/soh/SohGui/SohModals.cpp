@@ -30,7 +30,6 @@ void SohModalWindow::Draw() {
 }
 
 void SohModalWindow::DrawElement() {
-    ImGui::PushFont(OTRGlobals::Instance->fontMonoLarger);
     if (modals.size() > 0) {
         SohModal curModal = modals.at(0);
         if (!ImGui::IsPopupOpen(curModal.title_.c_str())) {
@@ -62,7 +61,6 @@ void SohModalWindow::DrawElement() {
         }
         ImGui::EndPopup();
     }
-    ImGui::PopFont();
 }
 
 void SohModalWindow::RegisterPopup(std::string title, std::string message, std::string button1, std::string button2, std::function<void()> button1callback, std::function<void()> button2callback) {

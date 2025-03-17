@@ -428,7 +428,6 @@ InputViewerSettingsWindow::~InputViewerSettingsWindow() {
 }
 
 void InputViewerSettingsWindow::DrawElement() {
-    ImGui::PushFont(OTRGlobals::Instance->fontMonoLarger);
     // gInputViewer.Scale
     CVarSliderFloat("Input Viewer Scale: %.2f", CVAR_INPUT_VIEWER("Scale"),
         FloatSliderOptions().Color(THEME_COLOR).DefaultValue(1.0f).Min(0.1f).Max(5.0f).ShowButtons(true).Tooltip("Sets the on screen size of the input viewer"));
@@ -640,5 +639,4 @@ void InputViewerSettingsWindow::DrawElement() {
         }
     }
     PopStyleHeader();
-    ImGui::PopFont();
 }

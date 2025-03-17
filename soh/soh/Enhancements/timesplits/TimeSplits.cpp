@@ -941,7 +941,6 @@ static bool initialized = false;
 
 void TimeSplitWindow::DrawElement() {
     ImGui::SetWindowFontScale(timeSplitsWindowSize);
-    ImGui::PushFont(OTRGlobals::Instance->fontMonoLargest);
     
     PushStyleTabs(THEME_COLOR);
     if (ImGui::BeginTabBar("Split Tabs")) {
@@ -960,7 +959,6 @@ void TimeSplitWindow::DrawElement() {
         ImGui::EndTabBar();
     }
     PopStyleTabs();
-    ImGui::PopFont();
 }
 
 void TimeSplitWindow::InitElement() {

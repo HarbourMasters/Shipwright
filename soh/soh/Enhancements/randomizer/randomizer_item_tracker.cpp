@@ -469,6 +469,7 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
     if (!GameInteractor::IsSaveLoaded()) {
         return;
     }
+    ImGui::PushFont(OTRGlobals::Instance->fontMono);
     int iconSize = CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36);
     int textSize = CVarGetInteger(CVAR_TRACKER_ITEM("TextSize"), 13);
     ItemTrackerNumbers currentAndMax = GetItemCurrentAndMax(item);
@@ -611,6 +612,7 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         ImGui::SetCursorScreenPos(ImVec2(p.x, p.y - 14));
         ImGui::Text("");
     }
+    ImGui::PopFont();
 }
 
 void DrawEquip(ItemTrackerItem item) {
@@ -952,14 +954,12 @@ void BeginFloatingWindows(std::string UniqueName, ImGuiWindowFlags flags = 0) {
     ImGui::PushStyleColor(ImGuiCol_WindowBg, VecFromRGBA8(CVarGetColor(CVAR_TRACKER_ITEM("BgColor.Value"), {0, 0, 0, 0})));
     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 4.0f);
-    ImGui::PushFont(OTRGlobals::Instance->fontStandardLarger);
     ImGui::Begin(UniqueName.c_str(), nullptr, windowFlags);
 }
 void EndFloatingWindows() {
     ImGui::PopStyleVar();
     ImGui::PopStyleColor();
     ImGui::PopStyleColor();
-    ImGui::PopFont();
     ImGui::End();
 }
 
@@ -1375,7 +1375,6 @@ static std::unordered_map<int32_t, const char*> extendedDisplayTypes = {{ SECTIO
 static std::unordered_map<int32_t, const char*> minimalDisplayTypes = {{ SECTION_DISPLAY_MINIMAL_HIDDEN, "Hidden" }, { SECTION_DISPLAY_MINIMAL_SEPARATE, "Separate" }};
 
 void ItemTrackerSettingsWindow::DrawElement() {
-    ImGui::PushFont(OTRGlobals::Instance->fontStandardLarger);
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
     ImGui::BeginTable("itemTrackerSettingsTable", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV);
     ImGui::TableSetupColumn("General settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -1541,7 +1540,6 @@ void ItemTrackerSettingsWindow::DrawElement() {
 
     ImGui::PopStyleVar(1);
     ImGui::EndTable();
-    ImGui::PopFont();
 }
 
 void ItemTrackerWindow::InitElement() {

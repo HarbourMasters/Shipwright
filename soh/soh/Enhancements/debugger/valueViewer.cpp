@@ -143,7 +143,6 @@ void RegisterValueViewerHooks() {
 RegisterShipInitFunc initFunc(RegisterValueViewerHooks, { CVAR_NAME });
 
 void ValueViewerWindow::DrawElement() {
-    ImGui::PushFont(OTRGlobals::Instance->fontMonoLargest);
     UIWidgets::CVarCheckbox("Enable Printing", CVAR_NAME, UIWidgets::CheckboxOptions().Color(THEME_COLOR));
 
     ImGui::BeginGroup();
@@ -264,7 +263,6 @@ void ValueViewerWindow::DrawElement() {
         }
         ImGui::EndGroup();
     }
-    ImGui::PopFont();
 }
 
 void ValueViewerWindow::InitElement() {

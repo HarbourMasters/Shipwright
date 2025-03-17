@@ -660,7 +660,6 @@ void InitEntranceTrackingData() {
 
 void EntranceTrackerSettingsWindow::DrawElement() {
 
-    ImGui::PushFont(OTRGlobals::Instance->fontStandardLarger);
     ImGui::TextWrapped("The entrance tracker will only track shuffled entrances");
     UIWidgets::Spacer(0);
 
@@ -722,7 +721,6 @@ void EntranceTrackerSettingsWindow::DrawElement() {
         ImGui::TextColored(ImColor(COLOR_GRAY), "Undiscovered Entrances");
         ImGui::TreePop();
     }
-    ImGui::PopFont();
 }
 
 void EntranceTrackerWindow::Draw() {
@@ -735,12 +733,10 @@ void EntranceTrackerWindow::Draw() {
 }
 
 void EntranceTrackerWindow::DrawElement() {
-    ImGui::PushFont(OTRGlobals::Instance->fontStandardLarger);
     ImGui::SetNextWindowSize(ImVec2(600, 375), ImGuiCond_FirstUseEver);
 
     if (!ImGui::Begin("Entrance Tracker", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
-        ImGui::PopFont();
         return;
     }
 
@@ -938,7 +934,6 @@ void EntranceTrackerWindow::DrawElement() {
     }
     ImGui::EndChild();
     ImGui::End();
-    ImGui::PopFont();
 }
 
 void EntranceTrackerWindow::InitElement() {

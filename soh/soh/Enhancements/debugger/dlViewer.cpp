@@ -91,7 +91,6 @@ void PerformDisplayListSearch() {
 }
 
 void DLViewerWindow::DrawElement() {
-    ImGui::PushFont(OTRGlobals::Instance->fontMonoLarger);
     // Debounce the search field as listing otr files is expensive
     UIWidgets::PushStyleInput(THEME_COLOR);
     if (ImGui::InputText("Search Display Lists", searchString, ARRAY_COUNT(searchString))) {
@@ -122,7 +121,6 @@ void DLViewerWindow::DrawElement() {
     UIWidgets::PopStyleCombobox();
 
     if (activeDisplayList == "") {
-        ImGui::PopFont();
         return;
     }
 
@@ -131,7 +129,6 @@ void DLViewerWindow::DrawElement() {
 
         if (res->GetInitData()->Type != static_cast<uint32_t>(Fast::ResourceType::DisplayList)) {
             ImGui::Text("Resource type is not a Display List. Please choose another.");
-            ImGui::PopFont();
             return;
         }
 
@@ -329,10 +326,8 @@ void DLViewerWindow::DrawElement() {
         }
     } catch (const std::exception& e) {
         ImGui::Text("Error displaying DL instructions.");
-        ImGui::PopFont();
         return;
     }
-    ImGui::PopFont();
 }
 
 void DLViewerWindow::InitElement() {
