@@ -777,6 +777,10 @@ bool InputString(const char* label, std::string* value, const InputOptions& opti
         }
     }
     ImGui::SetNextItemWidth(width);
+    ImGuiInputTextFlags flags = ImGuiInputTextFlags_CallbackResize;
+    if (options.secret) {
+        flags |= ImGuiInputTextFlags_Password;
+    }
     if (ImGui::InputText(label, (char*)value->c_str(), value->capacity() + 1, ImGuiInputTextFlags_CallbackResize, InputTextResizeCallback, value)) {
         dirty = true;
     }

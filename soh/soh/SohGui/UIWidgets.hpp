@@ -425,6 +425,7 @@ namespace UIWidgets {
         std::string placeholder = "";
         InputTypes type = InputTypes::String;
         std::string defaultValue = "";
+        bool secret = false;
 
         InputOptions& Tooltip(const char* tooltip_) {
             WidgetOptions::tooltip = tooltip_;
@@ -461,6 +462,11 @@ namespace UIWidgets {
 
         InputOptions& DefaultValue(std::string defaultValue_) {
             defaultValue = defaultValue_;
+            return *this;
+        }
+        
+        InputOptions& IsSecret(bool secret_ = false) {
+            secret = secret_;
             return *this;
         }
     };
