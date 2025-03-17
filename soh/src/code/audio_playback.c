@@ -95,7 +95,7 @@ void Audio_InitNoteSub(Note* note, NoteSubEu* sub, NoteSubAttributes* attrs) {
     vel = 0.0f > vel ? 0.0f : vel;
     vel = 1.0f < vel ? 1.0f : vel;
 
-    float master_vol = (float)CVarGetInteger(CVAR_SETTING("Volume.Master"), 100) / 100.0f;
+    float master_vol = (float)CVarGetInteger(CVAR_SETTING("Volume.Master"), 40) / 100.0f;
     sub->targetVolLeft = (s32)((vel * volLeft) * (0x1000 - 0.001f)) * master_vol;
     sub->targetVolRight = (s32)((vel * volRight) * (0x1000 - 0.001f)) * master_vol;
 

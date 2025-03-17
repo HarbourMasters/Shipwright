@@ -53,7 +53,10 @@ execute_process(
     OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 
-set(CMAKE_PROJECT_GIT_COMMIT_HASH "${GIT_COMMIT_HASH}" CACHE STRING "Git commit hash" FORCE)
+# Get only the first 7 characters of the hash
+string(SUBSTRING "${GIT_COMMIT_HASH}" 0 7 SHORT_COMMIT_HASH)
+
+set(CMAKE_PROJECT_GIT_COMMIT_HASH "${SHORT_COMMIT_HASH}" CACHE STRING "Git commit hash" FORCE)
 
 execute_process(
     COMMAND git describe --tags --abbrev=0 --exact-match HEAD

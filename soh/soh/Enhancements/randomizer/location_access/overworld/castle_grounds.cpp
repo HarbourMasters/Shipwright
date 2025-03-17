@@ -79,7 +79,7 @@ void RegionTable_Init_CastleGrounds() {
         LOCATION(RC_HC_STORMS_GROTTO_POT_4,                  logic->CanBreakPots()),
     }, {
         //Exits
-        Entrance(RR_CASTLE_GROUNDS, []{return true;}),
+        Entrance(RR_HC_STORMS_GROTTO, []{return true;}),
     });
 
     areaTable[RR_GANONS_CASTLE_GROUNDS] = Region("Ganon's Castle Grounds", "Castle Grounds", {RA_OUTSIDE_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {

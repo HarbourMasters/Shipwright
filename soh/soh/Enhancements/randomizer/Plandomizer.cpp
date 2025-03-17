@@ -1,4 +1,5 @@
 #include "Plandomizer.h"
+#include <soh/SohGui/SohGui.hpp>
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/util.h"
 #include <vector>
@@ -836,21 +837,9 @@ void PlandomizerDrawItemSlots(uint32_t index) {
 
 void PlandomizerDrawShopSlider(uint32_t index) {
     ImGui::PushID(index);
-    ImGui::Text("Price:");
-    ImGui::SameLine();
-    std::string MinusBTNName = " - ##Price";
-    if (ImGui::Button(MinusBTNName.c_str()) && plandoLogData[index].shopPrice > 0) {
-        plandoLogData[index].shopPrice--;
-    }
-    ImGui::SameLine();
-    ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x - 40.0f);
-    ImGui::SliderInt("", &plandoLogData[index].shopPrice, 0, 999, "%d Rupees");
-    ImGui::PopItemWidth();
-    ImGui::SameLine();
-    std::string PlusBTNName = " + ##Price";
-    if (ImGui::Button(PlusBTNName.c_str()) && plandoLogData[index].shopPrice < 999) {
-        plandoLogData[index].shopPrice++;
-    }
+    UIWidgets::SliderInt("Price:", &plandoLogData[index].shopPrice, UIWidgets::IntSliderOptions()
+        .Color(THEME_COLOR).Format("%d Rupees").Min(0).Max(999).LabelPosition(UIWidgets::LabelPosition::Near)
+        .ComponentAlignment(UIWidgets::ComponentAlignment::Right).Size(UIWidgets::Sizes::Inline));
     ImGui::PopID();
 }
 
@@ -883,13 +872,13 @@ void PlandomizerDrawIceTrapSetup(uint32_t index) {
     ImGui::SameLine();
     if (plandoLogData[index].iceTrapModel.GetRandomizerGet() != RG_NONE && 
         plandoLogData[index].iceTrapModel.GetRandomizerGet() != RG_SOLD_OUT) {
-        if (ImGui::Button(randomizeButton.c_str())) {
+        if (UIWidgets::Button(randomizeButton.c_str(), UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline).Padding(ImVec2(10.f, 6.f)))) {
             plandoLogData[index].iceTrapName = 
                 GetIceTrapName(plandoLogData[index].iceTrapModel.GetRandomizerGet()).GetForLanguage(CVarGetInteger(CVAR_SETTING("Languages"), 0)).c_str();
         }
         ImGui::SameLine();
     }
-    if (UIWidgets::InputString("##TrapName", &trapTextInput)) {
+    if (UIWidgets::InputString("##TrapName", &trapTextInput, UIWidgets::InputOptions().Color(THEME_COLOR).LabelPosition(UIWidgets::LabelPosition::None))) {
             plandoLogData[index].iceTrapName = trapTextInput.c_str();
         }
     
@@ -900,39 +889,64 @@ void PlandomizerDrawIceTrapSetup(uint32_t index) {
     
     ImGui::PopID();
 }
-
+static std::unordered_map<RandomizerCheckArea, const char*> rcAreaNameMap = {
+    { RCAREA_KOKIRI_FOREST, "Kokiri Forest" },
+    { RCAREA_LOST_WOODS, "Lost Woods" },
+    { RCAREA_SACRED_FOREST_MEADOW, "Sacred Forest Meadow" },
+    { RCAREA_HYRULE_FIELD, "Hyrule Field" },
+    { RCAREA_LAKE_HYLIA, "Lake Hylia" },
+    { RCAREA_GERUDO_VALLEY, "Gerudo Valley" },
+    { RCAREA_GERUDO_FORTRESS, "Gerudo Fortress" },
+    { RCAREA_WASTELAND, "Haunted Wasteland" },
+    { RCAREA_DESERT_COLOSSUS, "Desert Colossus" },
+    { RCAREA_MARKET, "Hyrule Market" },
+    { RCAREA_HYRULE_CASTLE, "Hyrule Castle" },
+    { RCAREA_KAKARIKO_VILLAGE, "Kakariko Village" },
+    { RCAREA_GRAVEYARD, "Graveyard" },
+    { RCAREA_DEATH_MOUNTAIN_TRAIL, "Death Mountain Trail" },
+    { RCAREA_GORON_CITY, "Goron City" },
+    { RCAREA_DEATH_MOUNTAIN_CRATER, "Death Mountain Crater" },
+    { RCAREA_ZORAS_RIVER, "Zora's River" },
+    { RCAREA_ZORAS_DOMAIN, "Zora's Domain" },
+    { RCAREA_ZORAS_FOUNTAIN, "Zora's Fountain" },
+    { RCAREA_LON_LON_RANCH, "Lon Lon Ranch" },
+    { RCAREA_DEKU_TREE, "Deku Tree" },
+    { RCAREA_DODONGOS_CAVERN, "Dodongo's Cavern" },
+    { RCAREA_JABU_JABUS_BELLY, "Jabu Jabu's Belly" },
+    { RCAREA_FOREST_TEMPLE, "Forest Temple" },
+    { RCAREA_FIRE_TEMPLE, "Fire Temple" },
+    { RCAREA_WATER_TEMPLE, "Water Temple" },
+    { RCAREA_SPIRIT_TEMPLE, "Spirit Temple" },
+    { RCAREA_SHADOW_TEMPLE, "Shadow Temple" },
+    { RCAREA_BOTTOM_OF_THE_WELL, "Bottom of the Well" },
+    { RCAREA_ICE_CAVERN, "Ice Cavern" },
+    { RCAREA_GERUDO_TRAINING_GROUND, "Gerudo Training Ground" },
+    { RCAREA_GANONS_CASTLE, "Ganon's Castle" },
+    { RCAREA_INVALID, "All" },
+};
 void PlandomizerDrawOptions() {
     if (ImGui::BeginTable("LoadSpoiler", 2)) {
+        ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch);
+        ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch);
         ImGui::TableNextColumn();
         ImGui::SeparatorText("Load/Save Spoiler Log");
         PlandomizerPopulateSeedList();
         static size_t selectedList = 0;
         if (existingSeedList.size() != 0) {
-            if (ImGui::BeginCombo("##JsonFiles", existingSeedList[selectedList].c_str())) {
-                for (size_t i = 0; i < existingSeedList.size(); i++) {
-                    bool isSelected = (selectedList == i);
-                    if (ImGui::Selectable(existingSeedList[i].c_str(), isSelected)) {
-                        selectedList = i;
-                    }
-                    if (isSelected) {
-                        ImGui::SetItemDefaultFocus();
-                    }
-                }
-                ImGui::EndCombo();
-            }
+            UIWidgets::Combobox("##JsonFiles", &selectedList, existingSeedList, UIWidgets::ComboboxOptions().Color(THEME_COLOR).LabelPosition(UIWidgets::LabelPosition::None));
         }
         else {
             ImGui::Text("No Spoiler Logs found.");
         }
         ImGui::BeginDisabled(existingSeedList.empty());
-        if (ImGui::Button("Load")) {
+        if (UIWidgets::Button("Load", UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline))) {
             logTemp = existingSeedList[selectedList].c_str();
             PlandomizerLoadSpoilerLog(logTemp.c_str());
         }
         ImGui::EndDisabled();
         ImGui::BeginDisabled(spoilerLogData.empty());
         ImGui::SameLine();
-        if (ImGui::Button("Save")) {
+        if (UIWidgets::Button("Save", UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline))) {
             PlandomizerSaveSpoilerLog();
         }
         ImGui::EndDisabled();
@@ -1000,44 +1014,19 @@ void PlandomizerDrawOptions() {
     }
 
     if (getTabID == TAB_HINTS) {
-        if (ImGui::Button("Clear All Hints")) {
+        if (UIWidgets::Button("Clear All Hints", UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline))) {
             PlandomizerRemoveAllHints();
         }
         ImGui::SameLine();
-        if (ImGui::Button("Randomize All Hints")) {
+        if (UIWidgets::Button("Randomize All Hints", UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline))) {
             PlandomizerRandomizeHint(HINT_ALL, 0);
         }
     }
     if (getTabID == TAB_LOCATIONS) {
         if (plandoLogData.size() > 0) {
-            const char* comboLabel = rcAreaNames[selectedArea].c_str();
-            if (selectedArea == RCAREA_INVALID) {
-                comboLabel = "All";
-            }
-            ImGui::Text("Filter by Area:");
+            UIWidgets::Combobox("Filter by Area:##AreaFilter", &selectedArea, rcAreaNameMap, UIWidgets::ComboboxOptions().Color(THEME_COLOR).LabelPosition(UIWidgets::LabelPosition::Near).ComponentAlignment(UIWidgets::ComponentAlignment::Right));
             ImGui::SameLine();
-            ImGui::PushItemWidth(300.0f);
-            if (ImGui::BeginCombo("##AreaFilter", comboLabel)) {
-                for (const auto& [area, name] : rcAreaNames) {
-                    bool isSelected = (selectedArea == area);
-
-                    const char* displayName = name.c_str();
-                    if (area == RCAREA_INVALID) {
-                        displayName = "All";
-                    }
-                    if (ImGui::Selectable(displayName, isSelected)) {
-                        selectedArea = area;
-                    }
-                    if (isSelected) {
-                        ImGui::SetItemDefaultFocus();
-                    }
-                }
-                ImGui::EndCombo();
-            }
-            ImGui::PopItemWidth();
-    
-            ImGui::SameLine();
-            if (ImGui::Button("Empty All Rewards")) {
+            if (UIWidgets::Button("Empty All Rewards", UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline).Padding(ImVec2(10.f, 6.f)))) {
                 PlandomizerRemoveAllItems();
             }
         }
@@ -1067,16 +1056,14 @@ void PlandomizerDrawHintsWindow() {
             }
             ImGui::Text("New Hint:     ");
             ImGui::SameLine();
-            if (ImGui::Button(randomizeButton.c_str())) {
+            if (UIWidgets::Button(randomizeButton.c_str(), UIWidgets::ButtonOptions().Color(THEME_COLOR).Padding(ImVec2(10.f, 6.f)).Size(UIWidgets::Sizes::Inline).Tooltip("Randomize Hint"))) {
                 PlandomizerRandomizeHint(HINT_SINGLE, index);
             }
-            UIWidgets::Tooltip("Randomize Hint");
             ImGui::SameLine();
             ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - 10);
-            if (UIWidgets::InputString("##HintMessage", &hintInputText)) {
+            if (UIWidgets::InputString("##HintMessage", &hintInputText, UIWidgets::InputOptions().Color(THEME_COLOR).LabelPosition(UIWidgets::LabelPosition::None).Tooltip(plandomizerHintsTooltip().c_str()))) {
                 plandoHintData[index].hintText = hintInputText.c_str();
             }
-            UIWidgets::Tooltip(plandomizerHintsTooltip().c_str());
             index++;
             ImGui::PopID();
         }
@@ -1133,6 +1120,7 @@ void PlandomizerDrawLocationsWindow(RandomizerCheckArea rcArea) {
 
 void PlandomizerDrawSpoilerTable() {
     ImGui::BeginChild("Main");
+    UIWidgets::PushStyleTabs(THEME_COLOR);
     if (ImGui::BeginTabBar("Check Tabs")) {
         if (ImGui::BeginTabItem("Gossip Stones")) {
             getTabID = TAB_HINTS;
@@ -1146,12 +1134,13 @@ void PlandomizerDrawSpoilerTable() {
         }
     }
     ImGui::EndTabBar();
+    UIWidgets::PopStyleTabs();
     ImGui::EndChild();
 }
 
 void PlandomizerWindow::DrawElement() {
     PlandomizerDrawOptions();
-    UIWidgets::PaddedSeparator();
+    UIWidgets::Separator(true, true, 0.f, 0.f);
     PlandomizerDrawSpoilerTable();
 }
 

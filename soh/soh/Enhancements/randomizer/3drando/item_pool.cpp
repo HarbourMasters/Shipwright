@@ -1363,6 +1363,11 @@ void GenerateItemPool() {
     }
   }
   PendingJunkPool.clear();
+
+  // RANDOTODO: Ideally this should be checking for equality, but that is not currently the case and has never been
+  // the case, and isn't even currently the case in the 3drando repo we inherited this from years ago, so it may
+  // be a large undertaking to fix.
+  assert(ItemPool.size() <= ctx->allLocations.size() || !"Item Pool larger than Location Pool");
 }
 
 void AddJunk() {

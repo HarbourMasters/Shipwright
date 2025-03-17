@@ -84,7 +84,6 @@ class CrowdControl : public Network {
         void OnIncomingJson(nlohmann::json payload);
         void OnConnected();
         void OnDisconnected();
-        void DrawMenu();
 };
 
 #endif // __cplusplus

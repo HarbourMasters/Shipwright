@@ -3,8 +3,10 @@
 #include <string>
 #include <cstdint>
 #include <libultraship/bridge.h>
-#include "soh/SohGui/UIWidgets.hpp"
 #include <libultraship/libultraship.h>
+#include "soh/SohGui/MenuTypes.h"
+#include "soh/SohGui/SohMenu.h"
+#include "soh/SohGui/SohGui.hpp"
 
 std::string FormatLocations(std::vector<RandomizerCheck> locs) {
     std::string locString = "";
@@ -30,6 +32,7 @@ void applyPreset(std::vector<PresetEntry> entries) {
                 CVarSetString(cvar, std::get<std::string>(value).c_str());
                 break;
         }
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
 }
 
@@ -47,21 +50,22 @@ void DrawPresetSelector(PresetType presetTypeId) {
         comboboxTooltip += std::string(iter->second.label) + " - " + std::string(iter->second.description);
     }
 
-    UIWidgets::PaddedText("Presets", false, true);
+    ImGui::Text("Presets", false, true);
+    UIWidgets::PushStyleCombobox(THEME_COLOR);
     if (ImGui::BeginCombo("##PresetsComboBox", selectedPresetDef.label)) {
         for ( auto iter = presetTypeDef.presets.begin(); iter != presetTypeDef.presets.end(); ++iter ) {
             if (ImGui::Selectable(iter->second.label, iter->first == selectedPresetId)) {
                 CVarSetInteger(presetTypeCvar.c_str(), iter->first);
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             }
         }
 
         ImGui::EndCombo();
     }
+    UIWidgets::PopStyleCombobox();
     UIWidgets::Tooltip(comboboxTooltip.c_str());
 
-    UIWidgets::Spacer(0);
-
-    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(6.0f, 4.0f));
+    UIWidgets::PushStyleButton(THEME_COLOR);
     if (ImGui::Button(("Apply Preset##" + presetTypeCvar).c_str())) {
         for(const char* block : presetTypeDef.blocksToClear) {
             CVarClearBlock(block);
@@ -75,5 +79,5 @@ void DrawPresetSelector(PresetType presetTypeId) {
             Rando::Settings::GetInstance()->ReloadOptions();
         }
     }
-    ImGui::PopStyleVar(1);
+    UIWidgets::PopStyleButton();
 }

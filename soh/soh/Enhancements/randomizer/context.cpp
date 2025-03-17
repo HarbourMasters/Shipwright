@@ -157,17 +157,17 @@ bool Context::IsQuestOfLocationActive(RandomizerCheck rc) {
 
 void Context::GenerateLocationPool() {
     allLocations.clear();
-    if (mOptions[RSK_TRIFORCE_HUNT]) {
-        AddLocation(RC_TRIFORCE_COMPLETED);
-    }
     for (Location& location : StaticData::GetLocationTable()) {
         // skip RCs that shouldn't be in the pool for any reason (i.e. settings, unsupported check type, etc.)
         // TODO: Exclude checks for some of the older shuffles from the pool too i.e. Frog Songs, Scrubs, etc.)
         if (location.GetRandomizerCheck() == RC_UNKNOWN_CHECK ||
             location.GetRandomizerCheck() == RC_TRIFORCE_COMPLETED || // already in pool
+            (location.GetRandomizerCheck() == RC_MASTER_SWORD_PEDESTAL && mOptions[RSK_SHUFFLE_MASTER_SWORD].Is(RO_GENERIC_OFF)) ||
+            (location.GetRandomizerCheck() == RC_KAK_100_GOLD_SKULLTULA_REWARD && mOptions[RSK_SHUFFLE_100_GS_REWARD].Is(RO_GENERIC_OFF)) ||
             location.GetRCType() == RCTYPE_CHEST_GAME ||              // not supported yet
             location.GetRCType() == RCTYPE_STATIC_HINT ||             // can't have items
             location.GetRCType() == RCTYPE_GOSSIP_STONE ||            // can't have items
+            (location.GetRCType() == RCTYPE_FROG_SONG && mOptions[RSK_SHUFFLE_FROG_SONG_RUPEES].Is(RO_GENERIC_OFF)) ||
             (location.GetRCType() == RCTYPE_SCRUB && mOptions[RSK_SHUFFLE_SCRUBS].Is(RO_SCRUBS_OFF)) ||
             (location.GetRCType() == RCTYPE_SCRUB && mOptions[RSK_SHUFFLE_SCRUBS].Is(RO_SCRUBS_ONE_TIME_ONLY) && !(
                 location.GetRandomizerCheck() == RC_LW_DEKU_SCRUB_GROTTO_FRONT ||
@@ -177,16 +177,7 @@ void Context::GenerateLocationPool() {
             (location.GetRCType() == RCTYPE_ADULT_TRADE && mOptions[RSK_SHUFFLE_ADULT_TRADE].Is(RO_GENERIC_OFF)) ||
             (location.GetRCType() == RCTYPE_COW && mOptions[RSK_SHUFFLE_COWS].Is(RO_GENERIC_OFF)) ||
             (location.GetRandomizerCheck() == RC_LH_HYRULE_LOACH && mOptions[RSK_FISHSANITY].IsNot(RO_FISHSANITY_HYRULE_LOACH)) ||
-            (location.GetRCType() == RCTYPE_FISH && (
-                mOptions[RSK_FISHSANITY].Is(RO_FISHSANITY_OFF) || mOptions[RSK_FISHSANITY].Is(RO_FISHSANITY_HYRULE_LOACH) ||
-                (mOptions[RSK_FISHSANITY].Is(RO_FISHSANITY_OVERWORLD) && location.GetScene() == SCENE_FISHING_POND) ||
-                (mOptions[RSK_FISHSANITY].Is(RO_FISHSANITY_POND) && location.GetScene() != SCENE_FISHING_POND) ||
-                ((mOptions[RSK_FISHSANITY].Is(RO_FISHSANITY_POND) || mOptions[RSK_FISHSANITY].Is(RO_FISHSANITY_BOTH)) &&
-                    (mOptions[RSK_FISHSANITY_AGE_SPLIT].Is(RO_GENERIC_OFF) && (
-                        location.GetRandomizerCheck() >= RC_LH_ADULT_FISH_1 && location.GetRandomizerCheck() <= RC_LH_ADULT_LOACH)
-                    )
-                )
-            )) ||
+            (location.GetRCType() == RCTYPE_FISH && !mFishsanity->GetFishLocationIncluded(&location)) ||
             (location.GetRCType() == RCTYPE_POT && mOptions[RSK_SHUFFLE_POTS].Is(RO_SHUFFLE_POTS_OFF)) ||
             (location.GetRCType() == RCTYPE_FAIRY && !mOptions[RSK_SHUFFLE_FAIRIES]) ||
             (location.GetRCType() == RCTYPE_FREESTANDING &&

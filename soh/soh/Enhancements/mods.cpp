@@ -463,7 +463,7 @@ void UpdateMirrorModeState(int32_t sceneNum) {
         mirroredMode == MIRRORED_WORLD_ALWAYS ||
         ((mirroredMode == MIRRORED_WORLD_RANDOM || mirroredMode == MIRRORED_WORLD_RANDOM_SEEDED) && randomMirror) ||
         // Dungeon modes
-        (inDungeon && (mirroredMode == MIRRORED_WORLD_DUNGEONS_All ||
+        (inDungeon && (mirroredMode == MIRRORED_WORLD_DUNGEONS_ALL ||
          (mirroredMode == MIRRORED_WORLD_DUNGEONS_VANILLA && !ResourceMgr_IsSceneMasterQuest(sceneNum)) ||
          (mirroredMode == MIRRORED_WORLD_DUNGEONS_MQ && ResourceMgr_IsSceneMasterQuest(sceneNum)) ||
          ((mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM || mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED) && randomMirror)))
