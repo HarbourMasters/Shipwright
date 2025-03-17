@@ -12,7 +12,7 @@
 #include "soh/frame_interpolation.h"
 #include <assert.h>
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED | ACTOR_FLAG_UPDATE_DURING_OCARINA)
 
 void ObjectKankyo_Init(Actor* thisx, PlayState* play);
 void ObjectKankyo_Destroy(Actor* thisx, PlayState* play);

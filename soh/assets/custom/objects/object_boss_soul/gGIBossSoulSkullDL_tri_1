@@ -1,26 +1,14 @@
 <DisplayList Version="0">
-	<LoadVertices Path="objects/object_boss_soul/gGIBossSoulSkullDL_vtx_1" VertexBufferIndex="0" VertexOffset="0" Count="16"/>
-	<Triangle1 V00="0" V01="1" V02="2"/>
-	<Triangle1 V00="0" V01="2" V02="3"/>
-	<Triangle1 V00="2" V01="4" V02="3"/>
-	<Triangle1 V00="3" V01="5" V02="0"/>
-	<Triangle1 V00="3" V01="6" V02="5"/>
-	<Triangle1 V00="5" V01="7" V02="0"/>
-	<Triangle1 V00="8" V01="9" V02="10"/>
-	<Triangle1 V00="8" V01="10" V02="11"/>
-	<Triangle1 V00="10" V01="12" V02="11"/>
-	<Triangle1 V00="11" V01="13" V02="8"/>
-	<Triangle1 V00="11" V01="14" V02="13"/>
-	<Triangle1 V00="13" V01="15" V02="8"/>
-	<LoadVertices Path="objects/object_boss_soul/gGIBossSoulSkullDL_vtx_1" VertexBufferIndex="0" VertexOffset="16" Count="8"/>
-	<Triangle1 V00="0" V01="1" V02="2"/>
-	<Triangle1 V00="3" V01="2" V02="1"/>
-	<Triangle1 V00="3" V01="4" V02="2"/>
-	<Triangle1 V00="5" V01="4" V02="3"/>
-	<Triangle1 V00="5" V01="6" V02="4"/>
-	<Triangle1 V00="5" V01="7" V02="6"/>
-	<Triangle1 V00="5" V01="0" V02="7"/>
-	<Triangle1 V00="0" V01="2" V02="7"/>
+	<LoadVertices Path="objects/object_boss_soul/gGIBossSoulSkullDL_vtx_1" VertexBufferIndex="0" VertexOffset="0" Count="32"/>
+	<Triangles2 V00="0" V01="1" V02="2" Flag0="0" V10="3" V11="4" V12="5" Flag1="0"/>
+	<Triangles2 V00="6" V01="7" V02="8" Flag0="0" V10="9" V11="10" V12="11" Flag1="0"/>
+	<Triangles2 V00="4" V01="0" V02="12" Flag0="0" V10="1" V11="9" V12="13" Flag1="0"/>
+	<Triangles2 V00="14" V01="15" V02="16" Flag0="0" V10="17" V11="18" V12="19" Flag1="0"/>
+	<Triangles2 V00="20" V01="21" V02="22" Flag0="0" V10="23" V11="24" V12="25" Flag1="0"/>
+	<Triangles2 V00="19" V01="26" V02="14" Flag0="0" V10="16" V11="27" V12="23" Flag1="0"/>
+	<Triangles2 V00="28" V01="29" V02="30" Flag0="0" V10="31" V11="30" V12="29" Flag1="0"/>
+	<LoadVertices Path="objects/object_boss_soul/gGIBossSoulSkullDL_vtx_1" VertexBufferIndex="0" VertexOffset="32" Count="4"/>
+	<Triangles2 V00="0" V01="1" V02="2" Flag0="0" V10="0" V11="2" V12="3" Flag1="0"/>
 	<EndDisplayList/>
 </DisplayList>
 

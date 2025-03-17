@@ -155,7 +155,7 @@ void ObjMure_SpawnActors0(ObjMure* this, PlayState* play) {
                     Actor_Spawn(ac, play, sSpawnActorIds[this->type], pos.x, pos.y, pos.z, this->actor.world.rot.x,
                                 this->actor.world.rot.y, this->actor.world.rot.z, sSpawnParams[this->type], true);
                 if (this->children[i] != NULL) {
-                    this->children[i]->flags |= ACTOR_FLAG_ENKUSA_CUT;
+                    this->children[i]->flags |= ACTOR_FLAG_GRASS_DESTROYED;
                     this->children[i]->room = this->actor.room;
                 } else {
                     osSyncPrintf("warning 発生失敗 (%s %d)\n", __FILE__, __LINE__);
@@ -255,7 +255,7 @@ void ObjMure_CheckChildren(ObjMure* this, PlayState* play) {
         if (this->children[i] != NULL) {
             if (this->childrenStates[i] == OBJMURE_CHILD_STATE_0) {
                 if (this->children[i]->update != NULL) {
-                    if (this->children[i]->flags & ACTOR_FLAG_ENKUSA_CUT) {
+                    if (this->children[i]->flags & ACTOR_FLAG_GRASS_DESTROYED) {
                         this->childrenStates[i] = OBJMURE_CHILD_STATE_2;
                     }
                 } else {
@@ -282,7 +282,7 @@ void ObjMure_CulledState(ObjMure* this, PlayState* play) {
     if (fabsf(this->actor.projectedPos.z) < sZClip[this->type] * distanceMultiplier) {
         // #endregion
         this->actionFunc = ObjMure_ActiveState;
-        this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+        this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
         ObjMure_SpawnActors(this, play);
     }
 }
@@ -411,7 +411,7 @@ void ObjMure_ActiveState(ObjMure* this, PlayState* play) {
     if ((sZClip[this->type] + 40.0f) * distanceMultiplier <= fabsf(this->actor.projectedPos.z)) {
         // #endregion
         this->actionFunc = ObjMure_CulledState;
-        this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
+        this->actor.flags &= ~ACTOR_FLAG_UPDATE_CULLING_DISABLED;
         ObjMure_KillActors(this, play);
     } else if (sTypeGroupBehaviorFunc[this->type] != NULL) {
         sTypeGroupBehaviorFunc[this->type](this, play);

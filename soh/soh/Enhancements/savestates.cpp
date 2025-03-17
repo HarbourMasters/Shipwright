@@ -1,6 +1,6 @@
 #include "savestates.h"
 
-#include <GameVersions.h>
+#include <soh/GameVersions.h>
 
 #include <cstdio> // std::sprintf
 

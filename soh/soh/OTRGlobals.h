@@ -28,7 +28,7 @@ struct ExtensionEntry {
 };
 
 extern std::unordered_map<std::string, ExtensionEntry> ExtensionCache;
-#include "Enhancements/randomizer/context.h"
+#include "Enhancements/randomizer/settings.h"
 
 const std::string customMessageTableID = "BaseGameOverrides";
 const std::string appShortName = "soh";
@@ -54,6 +54,13 @@ class OTRGlobals {
         ImFont* defaultFontLarger;
         ImFont* defaultFontLargest;
 
+        ImFont* fontStandard;
+        ImFont* fontStandardLarger;
+        ImFont* fontStandardLargest;
+        ImFont* fontMono;
+        ImFont* fontMonoLarger;
+        ImFont* fontMonoLargest;
+
         OTRGlobals();
         ~OTRGlobals();
 
@@ -69,6 +76,7 @@ class OTRGlobals {
         bool hasMasterQuest;
         bool hasOriginal;
         ImFont* CreateDefaultFontWithSize(float size);
+        ImFont* CreateFontWithSize(float size, std::string fontPath);
 };
 #endif
 
@@ -135,13 +143,12 @@ RandomizerInf Randomizer_GetRandomizerInfFromCheck(RandomizerCheck randomizerChe
 bool Randomizer_IsCheckShuffled(RandomizerCheck check);
 GetItemEntry GetItemMystery();
 ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
-void Randomizer_GenerateSeed();
 uint8_t Randomizer_IsSeedGenerated();
 void Randomizer_SetSeedGenerated(bool seedGenerated);
 uint8_t Randomizer_IsSpoilerLoaded();
 void Randomizer_SetSpoilerLoaded(bool spoilerLoaded);
-uint8_t Randomizer_IsPlandoLoaded();
-void Randomizer_SetPlandoLoaded(bool plandoLoaded);
+uint8_t Randomizer_GenerateRandomizer();
+void Randomizer_ShowRandomizerMenu();
 int CustomMessage_RetrieveIfExists(PlayState* play);
 void Overlay_DisplayText(float duration, const char* text);
 void Overlay_DisplayText_Seconds(int seconds, const char* text);

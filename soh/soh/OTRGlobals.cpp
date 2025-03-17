@@ -11,7 +11,7 @@
 #include <File.h>
 #include <DisplayList.h>
 #include <Window.h>
-#include <GameVersions.h>
+#include <soh/GameVersions.h>
 
 #include "Enhancements/gameconsole.h"
 #ifdef _WIN32
@@ -40,9 +40,9 @@
 #include "z64.h"
 #include "macros.h"
 #include "Fonts.h"
+#include "window/gui/resource/Font.h"
 #include <utils/StringHelper.h>
 #include "Enhancements/custom-message/CustomMessageManager.h"
-#include "ImGuiUtils.h"
 #include "Enhancements/presets.h"
 #include "util.h"
 #include <boost_custom/container_hash/hash_32.hpp>
@@ -70,7 +70,8 @@
 #include "Enhancements/custom-message/CustomMessageTypes.h"
 #include <functions.h>
 #include "Enhancements/item-tables/ItemTableManager.h"
-#include "SohGui.hpp"
+#include "soh/SohGui/SohGui.hpp"
+#include "soh/SohGui/ImGuiUtils.h"
 #include "ActorDB.h"
 #include "SaveManager.h"
 
@@ -127,6 +128,7 @@ Sail* Sail::Instance;
 #include "soh/resource/importer/BackgroundFactory.h"
 
 #include "soh/config/ConfigUpdaters.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "src/overlays/actors/ovl_En_Dns/z_en_dns.h"
@@ -327,7 +329,7 @@ OTRGlobals::OTRGlobals() {
     prevAltAssets = CVarGetInteger(CVAR_ENHANCEMENT("AltAssets"), 0);
     context->GetResourceManager()->SetAltAssetsEnabled(prevAltAssets);
 
-    context->InitControlDeck({
+    auto controlDeck = std::make_shared<LUS::ControlDeck>(std::vector<CONTROLLERBUTTONS_T>({
         BTN_CUSTOM_MODIFIER1,
         BTN_CUSTOM_MODIFIER2,
         BTN_CUSTOM_OCARINA_NOTE_D4,
@@ -338,33 +340,34 @@ OTRGlobals::OTRGlobals() {
         BTN_CUSTOM_OCARINA_DISABLE_SONGS,
         BTN_CUSTOM_OCARINA_PITCH_UP,
         BTN_CUSTOM_OCARINA_PITCH_DOWN,
-    });
-    context->GetControlDeck()->SetSinglePlayerMappingMode(true);
+    }));
+    context->InitControlDeck(controlDeck);
 
     context->InitCrashHandler();
     context->InitConsole();
 
-    auto sohInputEditorWindow = std::make_shared<SohInputEditorWindow>(CVAR_WINDOW("ControllerConfiguration"), "Controller Configuration");
-    context->InitWindow({ sohInputEditorWindow });
+    auto sohInputEditorWindow = std::make_shared<SohInputEditorWindow>(CVAR_WINDOW("ControllerConfiguration"), "Configure Controller");
+    auto sohFast3dWindow = std::make_shared<Fast::Fast3dWindow>(std::vector<std::shared_ptr<Ship::GuiWindow>>({sohInputEditorWindow}));
+    context->InitWindow(sohFast3dWindow);
 
     auto overlay = context->GetInstance()->GetWindow()->GetGui()->GetGameOverlay();
-    overlay->LoadFont("Press Start 2P", "fonts/PressStart2P-Regular.ttf", 12.0f);
-    overlay->LoadFont("Fipps", "fonts/Fipps-Regular.otf", 32.0f);
+    overlay->LoadFont("Press Start 2P", 12.0f, "fonts/PressStart2P-Regular.ttf");
+    overlay->LoadFont("Fipps", 32.0f, "fonts/Fipps-Regular.otf");
     overlay->SetCurrentFont(CVarGetString(CVAR_GAME_OVERLAY_FONT, "Press Start 2P"));
 
-    context->InitAudio({ .SampleRate = 44100, .SampleLength = 1024, .DesiredBuffered = 2480 });
+    context->InitAudio({ .SampleRate = 32000, .SampleLength = 1024, .DesiredBuffered = 1680 });
 
     SPDLOG_INFO("Starting Ship of Harkinian version {} (Branch: {} | Commit: {})", (char*)gBuildVersion, (char*)gGitBranch, (char*)gGitCommitHash);
 
     auto loader = context->GetResourceManager()->GetResourceLoader();
-    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryTextureV0>(), RESOURCE_FORMAT_BINARY, "Texture", static_cast<uint32_t>(LUS::ResourceType::Texture), 0);
-    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryTextureV1>(), RESOURCE_FORMAT_BINARY, "Texture", static_cast<uint32_t>(LUS::ResourceType::Texture), 1);
-    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryVertexV0>(), RESOURCE_FORMAT_BINARY, "Vertex", static_cast<uint32_t>(LUS::ResourceType::Vertex), 0);
-    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryXMLVertexV0>(), RESOURCE_FORMAT_XML, "Vertex", static_cast<uint32_t>(LUS::ResourceType::Vertex), 0);
-    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryDisplayListV0>(), RESOURCE_FORMAT_BINARY, "DisplayList", static_cast<uint32_t>(LUS::ResourceType::DisplayList), 0);
-    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryXMLDisplayListV0>(), RESOURCE_FORMAT_XML, "DisplayList", static_cast<uint32_t>(LUS::ResourceType::DisplayList), 0);
-    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryMatrixV0>(), RESOURCE_FORMAT_BINARY, "Matrix", static_cast<uint32_t>(LUS::ResourceType::Matrix), 0);
-    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryBlobV0>(), RESOURCE_FORMAT_BINARY, "Blob", static_cast<uint32_t>(LUS::ResourceType::Blob), 0);
+    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryBinaryTextureV0>(), RESOURCE_FORMAT_BINARY, "Texture", static_cast<uint32_t>(Fast::ResourceType::Texture), 0);
+    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryBinaryTextureV1>(), RESOURCE_FORMAT_BINARY, "Texture", static_cast<uint32_t>(Fast::ResourceType::Texture), 1);
+    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryBinaryVertexV0>(), RESOURCE_FORMAT_BINARY, "Vertex", static_cast<uint32_t>(Fast::ResourceType::Vertex), 0);
+    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryXMLVertexV0>(), RESOURCE_FORMAT_XML, "Vertex", static_cast<uint32_t>(Fast::ResourceType::Vertex), 0);
+    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryBinaryDisplayListV0>(), RESOURCE_FORMAT_BINARY, "DisplayList", static_cast<uint32_t>(Fast::ResourceType::DisplayList), 0);
+    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryXMLDisplayListV0>(), RESOURCE_FORMAT_XML, "DisplayList", static_cast<uint32_t>(Fast::ResourceType::DisplayList), 0);
+    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryBinaryMatrixV0>(), RESOURCE_FORMAT_BINARY, "Matrix", static_cast<uint32_t>(Fast::ResourceType::Matrix), 0);
+    loader->RegisterResourceFactory(std::make_shared<Ship::ResourceFactoryBinaryBlobV0>(), RESOURCE_FORMAT_BINARY, "Blob", static_cast<uint32_t>(Ship::ResourceType::Blob), 0);
     loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryArrayV0>(), RESOURCE_FORMAT_BINARY, "Array", static_cast<uint32_t>(SOH::ResourceType::SOH_Array), 0);
     loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryAnimationV0>(), RESOURCE_FORMAT_BINARY, "Animation", static_cast<uint32_t>(SOH::ResourceType::SOH_Animation), 0);
     loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryPlayerAnimationV0>(), RESOURCE_FORMAT_BINARY, "PlayerAnimation", static_cast<uint32_t>(SOH::ResourceType::SOH_PlayerAnimation), 0);
@@ -392,17 +395,22 @@ OTRGlobals::OTRGlobals() {
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     gRandoContext->InitStaticData();
     gRandoContext = Rando::Context::CreateInstance();
+    Rando::Settings::GetInstance()->AssignContext(gRandoContext);
     Rando::StaticData::InitItemTable();//RANDOTODO make this not rely on context's logic so it can be initialised in InitStaticData
-    gRandoContext->AddExcludedOptions();
-    gRandoContext->GetSettings()->CreateOptions();
+    Rando::Settings::GetInstance()->CreateOptions();
     gRandomizer = std::make_shared<Randomizer>();
 
     hasMasterQuest = hasOriginal = false;
 
     previousImGuiScale = defaultImGuiScale;
-    defaultFontSmaller = CreateDefaultFontWithSize(10.0f);
-    defaultFontLarger = CreateDefaultFontWithSize(16.0f);
-    defaultFontLargest = CreateDefaultFontWithSize(20.0f);
+
+    fontMono = CreateFontWithSize(16.0f, "fonts/Inconsolata-Regular.ttf");
+    fontMonoLarger = CreateFontWithSize(20.0f, "fonts/Inconsolata-Regular.ttf");
+    fontMonoLargest = CreateFontWithSize(24.0f, "fonts/Inconsolata-Regular.ttf");
+    fontStandard = CreateFontWithSize(16.0f, "fonts/Montserrat-Regular.ttf");
+    fontStandardLarger = CreateFontWithSize(20.0f, "fonts/Montserrat-Regular.ttf");
+    fontStandardLargest = CreateFontWithSize(24.0f, "fonts/Montserrat-Regular.ttf");
+    ImGui::GetIO().FontDefault = fontMono;
     ScaleImGui();
 
     // Move the camera strings from read only memory onto the heap (writable memory)
@@ -528,15 +536,8 @@ void OTRAudio_Thread() {
         //AudioMgr_ThreadEntry(&gAudioMgr);
         // 528 and 544 relate to 60 fps at 32 kHz 32000/60 = 533.333..
         // in an ideal world, one third of the calls should use num_samples=544 and two thirds num_samples=528
-        //#define SAMPLES_HIGH 560
-        //#define SAMPLES_LOW 528
-        // PAL values
-        //#define SAMPLES_HIGH 656
-        //#define SAMPLES_LOW 624
-
-        // 44KHZ values
-        #define SAMPLES_HIGH 752
-        #define SAMPLES_LOW 720
+        #define SAMPLES_HIGH 560
+        #define SAMPLES_LOW 528
 
         #define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1 )
         #define NUM_AUDIO_CHANNELS 2
@@ -911,9 +912,9 @@ OTRVersion ReadPortVersionFromOTR(std::string otrPath) {
     OTRVersion version = {};
 
     // Use a temporary archive instance to load the otr and read the version file
-    auto archive = Ship::OtrArchive(otrPath);
-    if (archive.Open()) {
-        auto t = archive.LoadFile("portVersion", std::make_shared<Ship::ResourceInitData>());
+    auto archive = std::make_shared<Ship::OtrArchive>(otrPath);
+    if (archive->Open()) {
+        auto t = archive->LoadFile("portVersion", std::make_shared<Ship::ResourceInitData>());
         if (t != nullptr && t->IsLoaded) {
             auto stream = std::make_shared<Ship::MemoryStream>(t->Buffer->data(), t->Buffer->size());
             auto reader = std::make_shared<Ship::BinaryReader>(stream);
@@ -923,7 +924,7 @@ OTRVersion ReadPortVersionFromOTR(std::string otrPath) {
             version.minor = reader->ReadUInt16();
             version.patch = reader->ReadUInt16();
         }
-        archive.Close();
+        archive->Close();
     }
 
     return version;
@@ -1045,6 +1046,23 @@ bool PathTestCleanup(FILE* tfile) {
     return true;
 }
 
+void CheckAndCreateModFolder() {
+    try {
+        std::string modsPath = Ship::Context::LocateFileAcrossAppDirs("mods", appShortName);
+        if (!std::filesystem::exists(modsPath)) {
+            // Create mods folder relative to app dir
+            modsPath = Ship::Context::GetPathRelativeToAppDirectory("mods", appShortName);
+            std::string filePath = modsPath + "/custom_mod_files_go_here.txt";
+            if (std::filesystem::create_directories(modsPath)) {
+                std::ofstream(filePath).close();
+            }
+        }
+    } catch (std::filesystem::filesystem_error const& ex) {
+        // Couldn't make the folder, continue silently
+        return;
+    }
+}
+
 extern "C" void InitOTR() {
 
 #ifdef __SWITCH__
@@ -1088,6 +1106,10 @@ extern "C" void InitOTR() {
         Extractor::ShowErrorBox("Error", "SoH does not have proper file permissions. Please move it to a folder that does and run again.");
         exit(1);
     }
+#endif
+
+#if not defined(__SWITCH__) && not defined(__WIIU__)
+    CheckAndCreateModFolder();
 #endif
 
     CheckSoHOTRVersion(Ship::Context::GetPathRelativeToAppBundle("soh.otr"));
@@ -1145,12 +1167,16 @@ extern "C" void InitOTR() {
     SaveManager::Instance = new SaveManager();
 
     std::shared_ptr<Ship::Config> conf = OTRGlobals::Instance->context->GetConfig();
-    conf->RegisterConfigVersionUpdater(std::make_shared<SOH::ConfigVersion1Updater>());
-    conf->RegisterConfigVersionUpdater(std::make_shared<SOH::ConfigVersion2Updater>());
-    conf->RegisterConfigVersionUpdater(std::make_shared<SOH::ConfigVersion3Updater>());
+    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion1Updater>());
+    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion2Updater>());
+    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion3Updater>());
     conf->RunVersionUpdates();
 
     SohGui::SetupGuiElements();
+    ShipInit::InitAll();
+
+    Rando::StaticData::InitHashMaps();
+    OTRGlobals::Instance->gRandoContext->AddExcludedOptions();
     AudioCollection::Instance = new AudioCollection();
     ActorDB::Instance = new ActorDB();
 #ifdef __APPLE__
@@ -1346,6 +1372,10 @@ extern "C" void Graph_StartFrame() {
             break;
         }
 #endif
+        case KbScancode::LUS_KB_F11: {
+            CVarSetInteger(CVAR_SETTING("Fullscreen"), !CVarGetInteger(CVAR_SETTING("Fullscreen"), 0));
+            break;
+        }
         case KbScancode::LUS_KB_TAB: {
             CVarSetInteger(CVAR_ENHANCEMENT("AltAssets"), !CVarGetInteger(CVAR_ENHANCEMENT("AltAssets"), 0));
             break;
@@ -1361,15 +1391,24 @@ extern "C" void Graph_StartFrame() {
         CVarClear(CVAR_NEW_FILE_DROPPED);
         CVarClear(CVAR_DROPPED_FILE);
     }
-
-    OTRGlobals::Instance->context->GetWindow()->StartFrame();
 }
 
 void RunCommands(Gfx* Commands, const std::vector<std::unordered_map<Mtx*, MtxF>>& mtx_replacements) {
-    for (const auto& m : mtx_replacements) {
-        gfx_run(Commands, m);
-        gfx_end_frame();
+    auto wnd = std::dynamic_pointer_cast<Fast::Fast3dWindow>(OTRGlobals::Instance->context->GetWindow());
+
+    if (wnd == nullptr) {
+        return;
     }
+
+    // Process window events for resize, mouse, keyboard events
+    wnd->HandleEvents();
+
+    UIWidgets::Colors themeColor = static_cast<UIWidgets::Colors>(CVarGetInteger(CVAR_SETTING("Menu.Theme"), UIWidgets::Colors::LightBlue));
+    ImGui::PushStyleColor(ImGuiCol_TitleBgActive, UIWidgets::ColorValues.at(themeColor));
+    for (const auto& m : mtx_replacements) {
+        wnd->DrawAndRunGraphicsCommands(Commands, m);
+    }
+    ImGui::PopStyleColor();
 }
 
 // C->C++ Bridge
@@ -1414,9 +1453,6 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     if (wnd != nullptr) {
         wnd->SetTargetFps(fps);
     }
-
-    int threshold = CVarGetInteger(CVAR_SETTING("ExtraLatencyThreshold"), 80);
-    wnd->SetMaximumFrameLatency(threshold > 0 && target_fps >= threshold ? 2 : 1);
 
     // When the gfx debugger is active, only run with the final mtx
     if (GfxDebuggerIsDebugging()) {
@@ -1477,6 +1513,37 @@ extern "C" Sprite* GetSeedTexture(uint8_t index) {
 
 extern "C" uint8_t GetSeedIconIndex(uint8_t index) {
     return OTRGlobals::Instance->gRandoContext->hashIconIndexes[index];
+}
+
+ImFont* OTRGlobals::CreateFontWithSize(float size, std::string fontPath) {
+    auto mImGuiIo = &ImGui::GetIO();
+    ImFont* font;
+    if (fontPath == "") {
+        ImFontConfig fontCfg = ImFontConfig();
+        fontCfg.OversampleH = fontCfg.OversampleV = 1;
+        fontCfg.PixelSnapH = true;
+        fontCfg.SizePixels = size;
+        font = mImGuiIo->Fonts->AddFontDefault(&fontCfg);
+    } else {
+        auto initData = std::make_shared<Ship::ResourceInitData>();
+        initData->Format = RESOURCE_FORMAT_BINARY;
+        initData->Type = static_cast<uint32_t>(RESOURCE_TYPE_FONT);
+        initData->ResourceVersion = 0;
+        initData->Path = fontPath;
+        std::shared_ptr<Ship::Font> fontData = std::static_pointer_cast<Ship::Font>(
+            Ship::Context::GetInstance()->GetResourceManager()->LoadResource(fontPath, false, initData));
+        font = mImGuiIo->Fonts->AddFontFromMemoryTTF(fontData->Data, fontData->DataSize, size);
+    }
+    // FontAwesome fonts need to have their sizes reduced by 2.0f/3.0f in order to align correctly
+    float iconFontSize = size * 2.0f / 3.0f;
+    static const ImWchar sIconsRanges[] = { ICON_MIN_FA, ICON_MAX_16_FA, 0 };
+    ImFontConfig iconsConfig;
+    iconsConfig.MergeMode = true;
+    iconsConfig.PixelSnapH = true;
+    iconsConfig.GlyphMinAdvanceX = iconFontSize;
+    mImGuiIo->Fonts->AddFontFromMemoryCompressedBase85TTF(fontawesome_compressed_data_base85, iconFontSize,
+        &iconsConfig, sIconsRanges);
+    return font;
 }
 
 std::filesystem::path GetSaveFile(std::shared_ptr<Ship::Config> Conf) {
@@ -1780,17 +1847,25 @@ extern "C" void Messagebox_ShowErrorBox(char* title, char* body) {
 }
 
 extern "C" int Controller_ShouldRumble(size_t slot) {
-    for (auto [id, mapping] : Ship::Context::GetInstance()
-                                  ->GetControlDeck()
-                                  ->GetControllerByPort(static_cast<uint8_t>(slot))
-                                  ->GetRumble()
-                                  ->GetAllRumbleMappings()) {
-        if (mapping->PhysicalDeviceIsConnected()) {
-            return 1;
-        }
+    // don't rumble if we don't have rumble mappings
+    if (Ship::Context::GetInstance()
+            ->GetControlDeck()
+            ->GetControllerByPort(static_cast<uint8_t>(slot))
+            ->GetRumble()
+            ->GetAllRumbleMappings().empty()) {
+        return 0;
     }
 
-    return 0;
+    // don't rumble if we don't have connected gamepads
+    if (Ship::Context::GetInstance()
+            ->GetControlDeck()
+            ->GetConnectedPhysicalDeviceManager()
+            ->GetConnectedSDLGamepadsForPort(slot).empty()) {
+        return 0;
+    }
+
+    // rumble
+    return 1;
 }
 
 extern "C" void* getN64WeirdFrame(s32 i) {
@@ -1847,7 +1922,7 @@ extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSi
 }
 
 extern "C" void Randomizer_ParseSpoiler(const char* fileLoc) {
-    OTRGlobals::Instance->gRandoContext->ParseSpoiler(fileLoc, CVarGetInteger(CVAR_GENERAL("PlandoMode"), 0));
+    OTRGlobals::Instance->gRandoContext->ParseSpoiler(fileLoc);
 }
 
 extern "C" void Randomizer_LoadHintMessages() {
@@ -1867,7 +1942,7 @@ extern "C" u32 SpoilerFileExists(const char* spoilerFileName) {
 }
 
 extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey) {
-    return OTRGlobals::Instance->gRandoContext->GetOption(randoSettingKey).GetSelectedOptionIndex();
+    return OTRGlobals::Instance->gRandoContext->GetOption(randoSettingKey).Get();
 }
 
 extern "C" RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams) {
@@ -1893,6 +1968,7 @@ extern "C" CowIdentity Randomizer_IdentifyCow(s32 sceneNum, s32 posX, s32 posZ) 
 extern "C" FishIdentity Randomizer_IdentifyFish(s32 sceneNum, s32 actorParams) {
     return OTRGlobals::Instance->gRandomizer->IdentifyFish(sceneNum, actorParams);
 }
+
 extern "C" GetItemEntry ItemTable_Retrieve(int16_t getItemID) {
     GetItemEntry giEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, getItemID);
     return giEntry;
@@ -1937,14 +2013,6 @@ extern "C" GetItemEntry GetItemMystery() {
     return { ITEM_NONE_FE, 0, 0, 0, 0, 0, 0, ITEM_NONE_FE, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_JUNK, NULL, MOD_RANDOMIZER, (CustomDrawFunc)Randomizer_DrawMysteryItem };
 }
 
-extern "C" void Randomizer_GenerateSeed() {
-    std::string seed = "";
-    if (OTRGlobals::Instance->gRandoContext->IsSpoilerLoaded()) {
-        seed = OTRGlobals::Instance->gRandoContext->GetSettings()->GetSeedString();
-    }
-    GenerateRandomizer(seed);
-}
-
 extern "C" uint8_t Randomizer_IsSeedGenerated() {
     return OTRGlobals::Instance->gRandoContext->IsSeedGenerated() ? 1 : 0;
 }
@@ -1961,12 +2029,12 @@ extern "C" void Randomizer_SetSpoilerLoaded(bool spoilerLoaded) {
     OTRGlobals::Instance->gRandoContext->SetSpoilerLoaded(spoilerLoaded);
 }
 
-extern "C" uint8_t Randomizer_IsPlandoLoaded() {
-    return OTRGlobals::Instance->gRandoContext->IsPlandoLoaded() ? 1 : 0;
+extern "C" uint8_t Randomizer_GenerateRandomizer() {
+    return GenerateRandomizer() ? 1 : 0;
 }
 
-extern "C" void Randomizer_SetPlandoLoaded(bool plandoLoaded) {
-    OTRGlobals::Instance->gRandoContext->SetPlandoLoaded(plandoLoaded);
+extern "C" void Randomizer_ShowRandomizerMenu() {
+    SohGui::ShowRandomizerSettingsMenu();
 }
 
 CustomMessage Randomizer_GetCustomGetItemMessage(Player* player) {
@@ -2087,7 +2155,6 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         } else if (textId >= TEXT_SHOP_ITEM_RANDOM_CONFIRM && textId <= TEXT_SHOP_ITEM_RANDOM_CONFIRM_END){
             RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf((RandomizerInf)((textId - TEXT_SHOP_ITEM_RANDOM_CONFIRM) + RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1));
             messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(rc, TEXT_SHOP_ITEM_RANDOM_CONFIRM);
-        // textId: TEXT_SCRUB_RANDOM + (randomizerInf - RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT)
         } else if (textId == TEXT_SCRUB_RANDOM) {
             EnDns* enDns = (EnDns*)GET_PLAYER(play)->talkActor;
             RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf((RandomizerInf)enDns->sohScrubIdentity.randomizerInf);
@@ -2178,7 +2245,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetGoronMessage(choice);
         }
         else if (textId == TEXT_FROGS_UNDERWATER && ctx->GetOption(RSK_FROGS_HINT)) {
-           messageEntry = ctx->GetHint(RH_FROGS_HINT)->GetHintMessage(MF_AUTO_FORMAT), TEXTBOX_TYPE_BLUE;
+           messageEntry = ctx->GetHint(RH_FROGS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
         }
         else if (
             Randomizer_GetSettingValue(RSK_LOACH_HINT) &&
@@ -2274,10 +2341,10 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId, MF_FORMATTED);
     } else if (textId == TEXT_HEART_CONTAINER && CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), 0)) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_CONTAINER, MF_FORMATTED);
-        messageEntry.Replace("[[heartContainerCount]]", std::to_string(gSaveContext.sohStats.heartContainers + 1));
+        messageEntry.Replace("[[heartContainerCount]]", std::to_string(gSaveContext.ship.stats.heartContainers + 1));
     } else if (textId >= TEXT_HEART_PIECE && textId < TEXT_HEART_CONTAINER && CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 0)) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_PIECE, MF_FORMATTED);
-        messageEntry.Replace("[[heartPieceCount]]", std::to_string(gSaveContext.sohStats.heartPieces + 1));
+        messageEntry.Replace("[[heartPieceCount]]", std::to_string(gSaveContext.ship.stats.heartPieces + 1));
     } else if (textId == TEXT_MARKET_GUARD_NIGHT && CVarGetInteger(CVAR_ENHANCEMENT("MarketSneak"), 0) && play->sceneNum == SCENE_MARKET_ENTRANCE_NIGHT) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_MARKET_GUARD_NIGHT, MF_FORMATTED);
     }
@@ -2361,9 +2428,11 @@ void SoH_ProcessDroppedFiles(std::string filePath) {
             return;
         }
 
-        clearCvars(enhancementsCvars);
-        clearCvars(cheatCvars);
-        clearCvars(randomizerCvars);
+        CVarClearBlock(CVAR_PREFIX_ENHANCEMENT);
+        CVarClearBlock(CVAR_PREFIX_CHEAT);
+        CVarClearBlock(CVAR_PREFIX_RANDOMIZER_SETTING);
+        CVarClearBlock(CVAR_PREFIX_RANDOMIZER_ENHANCEMENT);
+        CVarClearBlock(CVAR_PREFIX_DEVELOPER_TOOLS);
 
         // Flatten everything under CVars into a single array
         auto cvars = configJson["CVars"].flatten();
@@ -2384,6 +2453,9 @@ void SoH_ProcessDroppedFiles(std::string filePath) {
             }
         }
 
+        Rando::Settings::GetInstance()->UpdateOptionProperties();
+        Rando::Settings::GetInstance()->SetAllFromCVar();
+
         auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
         gui->GetGuiWindow("Console")->Hide();
         gui->GetGuiWindow("Actor Viewer")->Hide();
@@ -2393,7 +2465,7 @@ void SoH_ProcessDroppedFiles(std::string filePath) {
         gui->GetGuiWindow("Stats")->Hide();
         std::dynamic_pointer_cast<Ship::ConsoleWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->ClearBindings();
 
-        gui->SaveConsoleVariablesOnNextTick();
+        gui->SaveConsoleVariablesNextFrame();
 
         uint32_t finalHash = boost::hash_32<std::string>{}(configJson.dump());
         gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Configuration Loaded. Hash: %d", finalHash);

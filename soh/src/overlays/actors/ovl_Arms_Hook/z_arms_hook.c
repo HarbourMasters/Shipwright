@@ -1,7 +1,7 @@
 #include "z_arms_hook.h"
 #include "objects/object_link_boy/object_link_boy.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void ArmsHook_Init(Actor* thisx, PlayState* play);
 void ArmsHook_Destroy(Actor* thisx, PlayState* play);
@@ -88,7 +88,7 @@ void ArmsHook_Wait(ArmsHook* this, PlayState* play) {
         s32 length = ((player->heldItemAction == PLAYER_IA_HOOKSHOT) ? 13 : 26) * CVarGetFloat(CVAR_CHEAT("HookshotReachMultiplier"), 1.0f);
 
         ArmsHook_SetupAction(this, ArmsHook_Shoot);
-        func_8002D9A4(&this->actor, 20.0f);
+        Actor_SetProjectileSpeed(&this->actor, 20.0f);
         this->actor.parent = &GET_PLAYER(play)->actor;
         this->timer = length;
     }
@@ -121,7 +121,7 @@ s32 ArmsHook_CheckForCancel(ArmsHook* this) {
     Player* player = (Player*)this->actor.parent;
 
     if (Player_HoldsHookshot(player)) {
-        if ((player->itemAction != player->heldItemAction) || (player->actor.flags & ACTOR_FLAG_PLAYER_TALKED_TO) ||
+        if ((player->itemAction != player->heldItemAction) || (player->actor.flags & ACTOR_FLAG_TALK) ||
             ((player->stateFlags1 & (PLAYER_STATE1_DEAD | PLAYER_STATE1_DAMAGED)))) {
             this->timer = 0;
             ArmsHook_DetachHookFromActor(this);
@@ -172,10 +172,10 @@ void ArmsHook_Shoot(ArmsHook* this, PlayState* play) {
     if ((this->timer != 0) && (this->collider.base.atFlags & AT_HIT) &&
         (this->collider.info.atHitInfo->elemType != ELEMTYPE_UNK4)) {
         touchedActor = this->collider.base.at;
-        if ((touchedActor->update != NULL) && (touchedActor->flags & (ACTOR_FLAG_HOOKSHOT_DRAGS | ACTOR_FLAG_DRAGGED_BY_HOOKSHOT))) {
+        if ((touchedActor->update != NULL) && (touchedActor->flags & (ACTOR_FLAG_HOOKSHOT_PULLS_ACTOR | ACTOR_FLAG_HOOKSHOT_PULLS_PLAYER))) {
             if (this->collider.info.atHitInfo->bumperFlags & BUMP_HOOKABLE) {
                 ArmsHook_AttachHookToActor(this, touchedActor);
-                if (CHECK_FLAG_ALL(touchedActor->flags, ACTOR_FLAG_DRAGGED_BY_HOOKSHOT)) {
+                if (CHECK_FLAG_ALL(touchedActor->flags, ACTOR_FLAG_HOOKSHOT_PULLS_PLAYER)) {
                     func_80865044(this);
                 }
             }
@@ -250,7 +250,7 @@ void ArmsHook_Shoot(ArmsHook* this, PlayState* play) {
             }
         }
     } else {
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
         Math_Vec3f_Diff(&this->actor.world.pos, &this->actor.prevPos, &prevFrameDiff);
         Math_Vec3f_Sum(&this->unk_1E8, &prevFrameDiff, &this->unk_1E8);
         this->actor.shape.rot.x = Math_Atan2S(this->actor.speedXZ, -this->actor.velocity.y);

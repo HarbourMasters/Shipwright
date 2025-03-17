@@ -9,6 +9,9 @@ typedef enum {
     COSMETICS_GROUP_SWORDS,
     COSMETICS_GROUP_GLOVES,
     COSMETICS_GROUP_EQUIPMENT,
+    COSMETICS_GROUP_KEYRING,
+    COSMETICS_GROUP_SMALL_KEYS,
+    COSMETICS_GROUP_BOSS_KEYS,
     COSMETICS_GROUP_CONSUMABLE,
     COSMETICS_GROUP_HUD,
     COSMETICS_GROUP_KALEIDO,
@@ -49,7 +52,6 @@ static float TablesCellsWidth = 300.0f;
 static ImGuiTableColumnFlags FlagsTable = ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV;
 static ImGuiTableColumnFlags FlagsCell = ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort;
 
-ImVec4 GetRandomValue();
 void CosmeticsEditor_RandomizeAll();
 void CosmeticsEditor_RandomizeGroup(CosmeticGroup group);
 void CosmeticsEditor_ResetAll();
@@ -62,6 +64,7 @@ class CosmeticsEditorWindow : public Ship::GuiWindow {
 
     void InitElement() override;
     void DrawElement() override;
+    void ApplyDungeonKeyColors();
     void UpdateElement() override {};
 };
 #endif //__cplusplus

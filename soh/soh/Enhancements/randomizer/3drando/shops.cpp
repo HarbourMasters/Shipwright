@@ -1,5 +1,5 @@
 #include "item_pool.hpp"
-#include "location_access.hpp"
+#include "../location_access.h"
 #include "random.hpp"
 #include "shops.hpp"
 #include "../location.h"
@@ -156,7 +156,7 @@ int GetPriceFromMax(int max) {
 
 uint16_t GetPriceFromSettings(Rando::Location *loc, PriceSettingsStruct priceSettings) {
    auto ctx = Rando::Context::GetInstance();
-   switch (ctx->GetOption(priceSettings.main).Value<uint8_t>()){
+   switch (ctx->GetOption(priceSettings.main).Get()){
       case RO_PRICE_VANILLA: 
          return loc->GetVanillaPrice();
       case RO_PRICE_CHEAP_BALANCED:
@@ -172,19 +172,19 @@ uint16_t GetPriceFromSettings(Rando::Location *loc, PriceSettingsStruct priceSet
          return 150;
       }
       case RO_PRICE_FIXED:
-         return (uint16_t)ctx->GetOption(priceSettings.fixedPrice).Value<uint8_t>() * 5;
+         return (uint16_t)ctx->GetOption(priceSettings.fixedPrice).Get() * 5;
       case RO_PRICE_RANGE:{
-         uint16_t range1 = (uint16_t)ctx->GetOption(priceSettings.range1).Value<uint8_t>() * 5;
-         uint16_t range2 = (uint16_t)ctx->GetOption(priceSettings.range2).Value<uint8_t>() * 5;
+         uint16_t range1 = (uint16_t)ctx->GetOption(priceSettings.range1).Get() * 5;
+         uint16_t range2 = (uint16_t)ctx->GetOption(priceSettings.range2).Get() * 5;
          return range1 < range2 ? Random(range1, range2+1) : Random(range2, range1+1);
       }
       case RO_PRICE_SET_BY_WALLET:{
-         bool isTycoon = ctx->GetOption(RSK_INCLUDE_TYCOON_WALLET).Value<bool>();
-         uint16_t noWeight = ctx->GetOption(priceSettings.noWallet).Value<uint8_t>();
-         uint16_t childWeight = ctx->GetOption(priceSettings.childWallet).Value<uint8_t>();
-         uint16_t adultWeight = ctx->GetOption(priceSettings.adultWallet).Value<uint8_t>();
-         uint16_t giantWeight = ctx->GetOption(priceSettings.giantWallet).Value<uint8_t>();
-         uint16_t tycoonWeight = isTycoon ? ctx->GetOption(priceSettings.tycoonWallet).Value<uint8_t>() : 0;
+         bool isTycoon = ctx->GetOption(RSK_INCLUDE_TYCOON_WALLET).Get();
+         uint16_t noWeight = ctx->GetOption(priceSettings.noWallet).Get();
+         uint16_t childWeight = ctx->GetOption(priceSettings.childWallet).Get();
+         uint16_t adultWeight = ctx->GetOption(priceSettings.adultWallet).Get();
+         uint16_t giantWeight = ctx->GetOption(priceSettings.giantWallet).Get();
+         uint16_t tycoonWeight = isTycoon ? ctx->GetOption(priceSettings.tycoonWallet).Get() : 0;
          uint16_t totalWeight = noWeight + childWeight + adultWeight + giantWeight + tycoonWeight;
          if (totalWeight == 0){ //if no weight, return from sane range
             return Random(0, 501);

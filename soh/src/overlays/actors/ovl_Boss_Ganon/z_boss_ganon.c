@@ -16,7 +16,7 @@
 
 #include <string.h>
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void BossGanon_Init(Actor* thisx, PlayState* play);
 void BossGanon_Destroy(Actor* thisx, PlayState* play);
@@ -383,7 +383,7 @@ void BossGanon_Init(Actor* thisx, PlayState* play2) {
                                                  0.0f, 0.0f, 0, 0, 0, 1);
         Actor_ChangeCategory(play, &play->actorCtx, thisx, ACTORCAT_BOSS);
     } else {
-        thisx->flags &= ~ACTOR_FLAG_TARGETABLE;
+        thisx->flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
         this->fwork[GDF_FWORK_1] = 255.0f;
 
         if (thisx->params >= 0xC8) {
@@ -2582,7 +2582,7 @@ void BossGanon_Vulnerable(BossGanon* this, PlayState* play) {
     Vec3f sp40;
 
     if (this->timers[3] == 0) {
-        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
     }
 
     SkelAnime_Update(&this->skelAnime);
@@ -2631,7 +2631,7 @@ void BossGanon_Vulnerable(BossGanon* this, PlayState* play) {
                 this->fwork[GDF_FWORK_1] = Animation_GetLastFrame(&gGanondorfLandAnim);
                 Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfLandAnim, 0.0f);
                 this->timers[0] = 70;
-                this->actor.flags |= ACTOR_FLAG_DRAGGED_BY_HOOKSHOT;
+                this->actor.flags |= ACTOR_FLAG_HOOKSHOT_PULLS_PLAYER;
             }
             break;
 
@@ -2664,7 +2664,7 @@ void BossGanon_Vulnerable(BossGanon* this, PlayState* play) {
 
                 this->unk_2E6 = 80;
                 this->unk_2E8 = 0;
-                this->actor.flags &= ~ACTOR_FLAG_DRAGGED_BY_HOOKSHOT;
+                this->actor.flags &= ~ACTOR_FLAG_HOOKSHOT_PULLS_PLAYER;
             }
             break;
 
@@ -2732,7 +2732,7 @@ void BossGanon_SetupDamaged(BossGanon* this, PlayState* play) {
 }
 
 void BossGanon_Damaged(BossGanon* this, PlayState* play) {
-    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+    this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
 
     SkelAnime_Update(&this->skelAnime);
 
@@ -2894,7 +2894,7 @@ void BossGanon_Update(Actor* thisx, PlayState* play2) {
     this->collider.base.colType = 3;
     sBossGanonCape->gravity = -3.0f;
     this->shockGlow = false;
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->unk_1A2++;
     this->unk_1A4++;
 
@@ -4008,8 +4008,8 @@ void BossGanon_LightBall_Update(Actor* thisx, PlayState* play2) {
         yDistFromLink = (player->actor.world.pos.y + 40.0f) - this->actor.world.pos.y;
         zDistFromLink = player->actor.world.pos.z - this->actor.world.pos.z;
 
-        func_8002D908(&this->actor);
-        func_8002D7EC(&this->actor);
+        Actor_UpdateVelocityXYZ(&this->actor);
+        Actor_UpdatePos(&this->actor);
 
         switch (this->unk_1C2) {
             case 0:
@@ -4287,8 +4287,8 @@ void func_808E1EB4(Actor* thisx, PlayState* play2) {
         }
     }
 
-    func_8002D908(&this->actor);
-    func_8002D7EC(&this->actor);
+    Actor_UpdateVelocityXYZ(&this->actor);
+    Actor_UpdatePos(&this->actor);
 
     this->unk_1A6++;
 
@@ -4413,8 +4413,8 @@ void func_808E2544(Actor* thisx, PlayState* play) {
         }
     }
 
-    func_8002D908(&this->actor);
-    func_8002D7EC(&this->actor);
+    Actor_UpdateVelocityXYZ(&this->actor);
+    Actor_UpdatePos(&this->actor);
 
     this->unk_1A6++;
 
@@ -4501,8 +4501,8 @@ void func_808E2544(Actor* thisx, PlayState* play) {
             if ((player->meleeWeaponState != 0) && (player->meleeWeaponAnimation >= 0x18) && (this->actor.xzDistToPlayer < 80.0f)) {
                 this->unk_1C2 = 0xC;
                 this->actor.speedXZ = -30.0f;
-                func_8002D908(&this->actor);
-                func_8002D7EC(&this->actor);
+                Actor_UpdateVelocityXYZ(&this->actor);
+                Actor_UpdatePos(&this->actor);
                 this->unk_1F0 = dorf->unk_1FC;
                 numEffects = 10;
                 break;
@@ -4518,8 +4518,8 @@ void func_808E2544(Actor* thisx, PlayState* play) {
                     this->unk_1C2 = 0xC;
                     this->actor.speedXZ = -30.0f;
 
-                    func_8002D908(&this->actor);
-                    func_8002D7EC(&this->actor);
+                    Actor_UpdateVelocityXYZ(&this->actor);
+                    Actor_UpdatePos(&this->actor);
 
                     this->unk_1F0.x = Rand_CenteredFloat(700.0f) + dorf->unk_1FC.x;
                     this->unk_1F0.y = Rand_CenteredFloat(200.0f) + dorf->unk_1FC.y;

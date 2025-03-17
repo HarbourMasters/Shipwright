@@ -7,7 +7,7 @@
 #include "z_bg_jya_1flift.h"
 #include "objects/object_jya_obj/object_jya_obj.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void BgJya1flift_Init(Actor* thisx, PlayState* play);
 void BgJya1flift_Destroy(Actor* thisx, PlayState* play);
@@ -187,7 +187,7 @@ void BgJya1flift_Update(Actor* thisx, PlayState* play2) {
     // Room 0 is the first room and 6 is the room that the lift starts on
     if (play->roomCtx.curRoom.num == 6 || play->roomCtx.curRoom.num == 0) {
         this->actionFunc(this, play);
-        tempIsRiding = func_8004356C(&this->dyna) ? true : false;
+        tempIsRiding = DynaPolyActor_IsPlayerOnTop(&this->dyna) ? true : false;
         if ((this->actionFunc == BgJya1flift_Move) || (this->actionFunc == BgJya1flift_DelayMove)) {
             if (tempIsRiding) {
                 Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_FIRE_PLATFORM);

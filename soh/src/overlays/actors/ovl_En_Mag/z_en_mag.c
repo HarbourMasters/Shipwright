@@ -6,10 +6,10 @@
 
 #include "z_en_mag.h"
 #include "objects/object_mag/object_mag.h"
-#include <GameVersions.h>
+#include <soh/GameVersions.h>
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void EnMag_Init(Actor* thisx, PlayState* play);
 void EnMag_InitMq(Actor* thisx, PlayState* play);
@@ -251,7 +251,7 @@ void EnMag_UpdateMq(Actor* thisx, PlayState* play) {
                         Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
                                                &gSfxDefaultReverb);
 
-                        gSaveContext.gameMode = 2;
+                        gSaveContext.gameMode = GAMEMODE_FILE_SELECT;
                         play->transitionTrigger = TRANS_TRIGGER_START;
                         play->transitionType = TRANS_TYPE_FADE_BLACK;
                     }
@@ -411,7 +411,7 @@ void EnMag_UpdateVanilla(Actor* thisx, PlayState* play) {
                         Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
                                                &gSfxDefaultReverb);
 
-                        gSaveContext.gameMode = 2;
+                        gSaveContext.gameMode = GAMEMODE_FILE_SELECT;
                         play->transitionTrigger = TRANS_TRIGGER_START;
                         play->transitionType = TRANS_TYPE_FADE_BLACK;
                     }

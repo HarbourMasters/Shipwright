@@ -510,8 +510,8 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
     bool debugCsSkip = (CHECK_BTN_ALL(play->state.input[0].press.button, BTN_START) &&
                         (gSaveContext.fileNum != 0xFEDC) && CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0));
 
-    if ((gSaveContext.gameMode != 0) && (gSaveContext.gameMode != 3) && (play->sceneNum != SCENE_HYRULE_FIELD) &&
-        (csCtx->frames > 20) &&
+    if ((gSaveContext.gameMode != GAMEMODE_NORMAL) && (gSaveContext.gameMode != GAMEMODE_END_CREDITS) &&
+        (play->sceneNum != SCENE_HYRULE_FIELD) && (csCtx->frames > 20) &&
         (CHECK_BTN_ALL(play->state.input[0].press.button, BTN_A) ||
          CHECK_BTN_ALL(play->state.input[0].press.button, BTN_B) ||
          CHECK_BTN_ALL(play->state.input[0].press.button, BTN_START)) &&
@@ -575,7 +575,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
 
         osSyncPrintf("\n分岐先指定！！=[%d]番", cmd->base); // "Future fork designation=No. [%d]"
 
-        if ((gSaveContext.gameMode != 0) && (csCtx->frames != cmd->startFrame)) {
+        if ((gSaveContext.gameMode != GAMEMODE_NORMAL) && (csCtx->frames != cmd->startFrame)) {
             gSaveContext.unk_13E7 = 1;
         }
 
@@ -626,8 +626,8 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 break;
             case 8:
                 if (CVarGetInteger(CVAR_ENHANCEMENT("BetterFarore"), 0)) {
-                    FaroresWindData tempFW = gSaveContext.backupFW;
-                    gSaveContext.backupFW = gSaveContext.fw;
+                    FaroresWindData tempFW = gSaveContext.ship.backupFW;
+                    gSaveContext.ship.backupFW = gSaveContext.fw;
                     gSaveContext.fw = tempFW;
                 } else {
                     gSaveContext.fw.set = 0;
@@ -908,7 +908,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->transitionType = TRANS_TYPE_FADE_WHITE;
                 break;
             case 54:
-                gSaveContext.gameMode = 3;
+                gSaveContext.gameMode = GAMEMODE_END_CREDITS;
                 Audio_SetSoundBanksMute(0x6F);
                 play->linkAgeOnLoad = 1;
                 play->nextEntranceIndex = ENTR_GERUDO_VALLEY_EAST_EXIT;
@@ -1288,7 +1288,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
                 break;
             case 117:
-                gSaveContext.gameMode = 3;
+                gSaveContext.gameMode = GAMEMODE_END_CREDITS;
                 Audio_SetSoundBanksMute(0x6F);
                 play->linkAgeOnLoad = 0;
                 play->nextEntranceIndex = ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN;
@@ -1604,7 +1604,7 @@ void Cutscene_Command_Textbox(PlayState* play, CutsceneContext* csCtx, CsCmdText
                                 getItemEntry = Randomizer_GetItemFromKnownCheck(RC_BONGO_BONGO, RG_SHADOW_MEDALLION);
                                 break;
                             case 0x40:
-                                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GIFT_FROM_SAGES, RG_LIGHT_MEDALLION);
+                                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GIFT_FROM_RAURU, RG_LIGHT_MEDALLION);
                                 break;
                             case 0x72:
                                 getItemEntry = Randomizer_GetItemFromKnownCheck(RC_TOT_LIGHT_ARROWS_CUTSCENE, RG_LIGHT_ARROWS);
@@ -2080,7 +2080,7 @@ void func_80068DC0(PlayState* play, CutsceneContext* csCtx) {
 
         osSyncPrintf("\n\n\n\n\nやっぱりここかいな"); // "Right here, huh"
         gSaveContext.cutsceneIndex = 0;
-        gSaveContext.gameMode = 0;
+        gSaveContext.gameMode = GAMEMODE_NORMAL;
 
         if (D_8015FCC8 != 0) {
             switch (gSaveContext.entranceIndex) {
@@ -2176,7 +2176,7 @@ void Cutscene_HandleEntranceTriggers(PlayState* play) {
     for (i = 0; i < ARRAY_COUNT(sEntranceCutsceneTable); i++) {
         entranceCutscene = &sEntranceCutsceneTable[i];
         requiredAge = entranceCutscene->ageRestriction;
-        if (requiredAge == 2) {
+        if (GameInteractor_Should(VB_ALLOW_ENTRANCE_CS_FOR_EITHER_AGE, requiredAge == 2, entranceCutscene->entrance)) {
             requiredAge = gSaveContext.linkAge;
         }
 
@@ -2185,7 +2185,7 @@ void Cutscene_HandleEntranceTriggers(PlayState* play) {
             (gSaveContext.cutsceneIndex < 0xFFF0) && ((u8)gSaveContext.linkAge == requiredAge) &&
             (gSaveContext.respawnFlag <= 0)) {
             Flags_SetEventChkInf(entranceCutscene->flag);
-            if (GameInteractor_Should(VB_PLAY_ENTRANCE_CS, true, &entranceCutscene->flag)) {
+            if (GameInteractor_Should(VB_PLAY_ENTRANCE_CS, true, entranceCutscene->flag, entranceCutscene->entrance)) {
                 Cutscene_SetSegment(play, entranceCutscene->segAddr);
                 gSaveContext.cutsceneTrigger = 2;
                 gSaveContext.showTitleCard = false;
@@ -2203,7 +2203,7 @@ void Cutscene_HandleConditionalTriggers(PlayState* play) {
         return;
     }
 
-    if ((gSaveContext.gameMode == 0) && (gSaveContext.respawnFlag <= 0) && (gSaveContext.cutsceneIndex < 0xFFF0)) {
+    if ((gSaveContext.gameMode == GAMEMODE_NORMAL) && (gSaveContext.respawnFlag <= 0) && (gSaveContext.cutsceneIndex < 0xFFF0)) {
         if ((gSaveContext.entranceIndex == ENTR_DESERT_COLOSSUS_OUTSIDE_TEMPLE) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT)) {
             Flags_SetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT);
             gSaveContext.entranceIndex = ENTR_DESERT_COLOSSUS_EAST_EXIT;

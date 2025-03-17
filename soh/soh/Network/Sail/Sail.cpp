@@ -320,6 +320,20 @@ GameInteractionEffectBase* Sail::EffectFromJson(nlohmann::json payload) {
         return new GameInteractionEffect::PlayerInvincibility();
     } else if (name == "SlipperyFloor") {
         return new GameInteractionEffect::SlipperyFloor();
+    } else if (name == "SpawnEnemyWithOffset") {
+        auto effect = new GameInteractionEffect::SpawnEnemyWithOffset();
+        if (payload.contains("parameters")) {
+            effect->parameters[0] = payload["parameters"][0].get<int32_t>();
+            effect->parameters[1] = payload["parameters"][1].get<int32_t>();
+        }
+        return effect;
+    } else if (name == "SpawnActor") {
+        auto effect = new GameInteractionEffect::SpawnActor();
+        if (payload.contains("parameters")) {
+            effect->parameters[0] = payload["parameters"][0].get<int32_t>();
+            effect->parameters[1] = payload["parameters"][1].get<int32_t>();
+        }
+        return effect;
     } else {
         SPDLOG_INFO("[Sail] Unknown effect name: {}", name);
         return nullptr;
@@ -485,74 +499,6 @@ void Sail::RegisterHooks() {
 
         SendJsonToRemote(payload);
     });
-}
-
-void Sail::DrawMenu() {
-    ImGui::PushID("Sail");
-
-    static std::string host = CVarGetString(CVAR_REMOTE_SAIL("Host"), "127.0.0.1");
-    static uint16_t port = CVarGetInteger(CVAR_REMOTE_SAIL("Port"), 43384);
-    bool isFormValid = !SohUtils::IsStringEmpty(host) && port > 1024 && port < 65535;
-
-    ImGui::SeparatorText("Sail");
-    UIWidgets::Tooltip(
-        "Sail is a networking protocol designed to facilitate remote "
-        "control of the Ship of Harkinian client. It is intended to "
-        "be utilized alongside a Sail server, for which we provide a "
-        "few straightforward implementations on our GitHub. The current "
-        "implementations available allow integration with Twitch chat "
-        "and SAMMI Bot, feel free to contribute your own!\n"
-        "\n"
-        "Click the question mark to copy the link to the Sail Github "
-        "page to your clipboard."
-    );
-    if (ImGui::IsItemClicked()) {
-        ImGui::SetClipboardText("https://github.com/HarbourMasters/sail");
-    }
-
-    ImGui::BeginDisabled(isEnabled);
-    ImGui::Text("Host & Port");
-    if (UIWidgets::InputString("##Host", &host)) {
-        CVarSetString(CVAR_REMOTE_SAIL("Host"), host.c_str());
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-    }
-
-    ImGui::SameLine();
-    ImGui::PushItemWidth(ImGui::GetFontSize() * 5);
-    if (ImGui::InputScalar("##Port", ImGuiDataType_U16, &port)) {
-        CVarSetInteger(CVAR_REMOTE_SAIL("Port"), port);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-    }
-    ImGui::PopItemWidth();
-    ImGui::EndDisabled();
-
-    ImGui::Spacing();
-
-    ImGui::BeginDisabled(!isFormValid);
-    const char* buttonLabel = isEnabled ? "Disable" : "Enable";
-    if (ImGui::Button(buttonLabel, ImVec2(-1.0f, 0.0f))) {
-        if (isEnabled) {
-            CVarClear(CVAR_REMOTE_SAIL("Enabled"));
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            Disable();
-        } else {
-            CVarSetInteger(CVAR_REMOTE_SAIL("Enabled"), 1);
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            Enable();
-        }
-    }
-    ImGui::EndDisabled();
-
-    if (isEnabled) {
-        ImGui::Spacing();
-        if (isConnected) {
-            ImGui::Text("Connected");
-        } else {
-            ImGui::Text("Connecting...");
-        }
-    }
-
-    ImGui::PopID();
 }
 
 #endif // ENABLE_REMOTE_CONTROL

@@ -18,9 +18,6 @@
 
 #include <Window.h>
 #include <Context.h>
-#ifndef IMGUI_DEFINE_MATH_OPERATORS
-#define IMGUI_DEFINE_MATH_OPERATORS
-#endif
 #include <imgui.h>
 #include <imgui_internal.h>
 #undef PATH_HACK
@@ -149,7 +146,7 @@ static bool SetPlayerHealthHandler(std::shared_ptr<Ship::Console> Console, const
 static bool LoadSceneHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>&, std::string* output) {
     gSaveContext.respawnFlag = 0;
     gSaveContext.seqId = 0xFF;
-    gSaveContext.gameMode = 0;
+    gSaveContext.gameMode = GAMEMODE_NORMAL;
 
     return 0;
 }
@@ -207,14 +204,12 @@ static bool SetPosHandler(std::shared_ptr<Ship::Console> Console, const std::vec
 }
 
 static bool ResetHandler(std::shared_ptr<Ship::Console> Console, std::vector<std::string> args, std::string* output) {
-    if (gPlayState == nullptr) {
-        ERROR_MESSAGE("PlayState == nullptr");
+    if (gGameState == nullptr) {
+        ERROR_MESSAGE("gGameState == nullptr");
         return 1;
     }
-
-    gPlayState->gameplayFrames = 0;
-    SET_NEXT_GAMESTATE(&gPlayState->state, TitleSetup_Init, GameState);
-    gPlayState->state.running = false;
+    SET_NEXT_GAMESTATE(gGameState, TitleSetup_Init, GameState);
+    gGameState->running = false;
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnExitGame>(gSaveContext.fileNum);
     return 0;
 }
@@ -405,6 +400,7 @@ static bool EntranceHandler(std::shared_ptr<Ship::Console> Console, const std::v
     gPlayState->transitionTrigger = TRANS_TRIGGER_START;
     gPlayState->transitionType = TRANS_TYPE_INSTANT;
     gSaveContext.nextTransitionType = TRANS_TYPE_INSTANT;
+    return 0;
 }
 
 static bool VoidHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
@@ -473,7 +469,7 @@ static bool FWHandler(std::shared_ptr<Ship::Console> Console, const std::vector<
                 break;
             case 2: //backup
                 if (CVarGetInteger(CVAR_ENHANCEMENT("BetterFarore"), 0)) {
-                    gSaveContext.fw = gSaveContext.backupFW;
+                    gSaveContext.fw = gSaveContext.ship.backupFW;
                     gSaveContext.fw.set = 1;
                     INFO_MESSAGE("[SOH] Backup FW data copied! Reload scene to take effect.");
                     return 0;
@@ -493,13 +489,14 @@ static bool FWHandler(std::shared_ptr<Ship::Console> Console, const std::vector<
 }
 
 static bool FileSelectHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
-    if (gPlayState != nullptr) {
-        SET_NEXT_GAMESTATE(&gPlayState->state, FileChoose_Init, FileChooseContext);
-        gPlayState->state.running = 0;
-    } else {
-        ERROR_MESSAGE("gPlayState == nullptr");
+    if (gGameState == nullptr) {
+        ERROR_MESSAGE("gGameState == nullptr");
         return 1;
     }
+
+    gSaveContext.gameMode = GAMEMODE_FILE_SELECT;
+    SET_NEXT_GAMESTATE(gGameState, FileChoose_Init, FileChooseContext);
+    gGameState->running = false;
     return 0;
 }
 
@@ -1300,6 +1297,9 @@ static constexpr std::array<std::pair<const char*, CosmeticGroup>, COSMETICS_GRO
     {"swords", COSMETICS_GROUP_SWORDS},
     {"gloves", COSMETICS_GROUP_GLOVES},
     {"equipment", COSMETICS_GROUP_EQUIPMENT},
+    {"keyring", COSMETICS_GROUP_KEYRING},
+    {"small_keys", COSMETICS_GROUP_SMALL_KEYS },
+    {"boss_keys", COSMETICS_GROUP_BOSS_KEYS },
     {"consumable", COSMETICS_GROUP_CONSUMABLE},
     {"hud", COSMETICS_GROUP_HUD},
     {"kaleido", COSMETICS_GROUP_KALEIDO},
@@ -1596,5 +1596,5 @@ void DebugConsole_Init(void) {
             {"group_name", Ship::ArgumentType::TEXT, true},
     }});
 
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 }

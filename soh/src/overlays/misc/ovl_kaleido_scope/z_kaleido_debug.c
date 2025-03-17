@@ -84,10 +84,10 @@ extern const char* digitTextures[];
 void KaleidoScope_DrawDigit(PlayState* play, s32 digit, s32 rectLeft, s32 rectTop) {
     OPEN_DISPS(play->state.gfxCtx);
 
-    gDPLoadTextureBlock(POLY_KAL_DISP++, digitTextures[digit], G_IM_FMT_I, G_IM_SIZ_8b, 8, 16, 0,
+    gDPLoadTextureBlock(POLY_OPA_DISP++, digitTextures[digit], G_IM_FMT_I, G_IM_SIZ_8b, 8, 16, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
-    gSPTextureRectangle(POLY_KAL_DISP++, rectLeft << 2, rectTop << 2, (rectLeft + 8) << 2, (rectTop + 16) << 2,
+    gSPTextureRectangle(POLY_OPA_DISP++, rectLeft << 2, rectTop << 2, (rectLeft + 8) << 2, (rectTop + 16) << 2,
                         G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
 
     CLOSE_DISPS(play->state.gfxCtx);
@@ -115,17 +115,17 @@ void KaleidoScope_DrawDebugEditor(PlayState* play) {
     pauseCtx->stickRelX = input->rel.stick_x;
     pauseCtx->stickRelY = input->rel.stick_y;
 
-    Gfx_SetupDL_39Kal(play->state.gfxCtx);
+    Gfx_SetupDL_39Opa(play->state.gfxCtx);
 
-    gDPSetRenderMode(POLY_KAL_DISP++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
-    gDPSetCombineMode(POLY_KAL_DISP++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
-    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 0, 0, 0, 220);
-    gDPFillRectangle(POLY_KAL_DISP++, 24, 12, 298, 228);
-    gDPPipeSync(POLY_KAL_DISP++);
-    gDPSetCombineLERP(POLY_KAL_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0,
+    gDPSetRenderMode(POLY_OPA_DISP++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
+    gDPSetCombineMode(POLY_OPA_DISP++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0, 0, 0, 220);
+    gDPFillRectangle(POLY_OPA_DISP++, 24, 12, 298, 228);
+    gDPPipeSync(POLY_OPA_DISP++);
+    gDPSetCombineLERP(POLY_OPA_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0,
                       PRIMITIVE, 0);
 
-    gfxRef = POLY_KAL_DISP;
+    gfxRef = POLY_OPA_DISP;
     gfx = Graph_GfxPlusOne(gfxRef);
     gSPDisplayList(OVERLAY_DISP++, gfx);
 
@@ -133,17 +133,17 @@ void KaleidoScope_DrawDebugEditor(PlayState* play) {
 
     gSPEndDisplayList(gfx++);
     Graph_BranchDlist(gfxRef, gfx);
-    POLY_KAL_DISP = gfx;
+    POLY_OPA_DISP = gfx;
 
-    gDPPipeSync(POLY_KAL_DISP++);
-    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 0, 0, 255);
-    gDPSetEnvColor(POLY_KAL_DISP++, 0, 0, 0, 0);
+    gDPPipeSync(POLY_OPA_DISP++);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 0, 0, 255);
+    gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
 
     // Current Health Quarter (X / 4)
     KaleidoScope_DrawDigit(play, (gSaveContext.health % 0x10) / 4, 194, 15);
 
-    gDPPipeSync(POLY_KAL_DISP++);
-    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, 255);
+    gDPPipeSync(POLY_OPA_DISP++);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
 
     // Rupees
     spD8[0] = spD8[1] = spD8[2] = 0;
@@ -622,19 +622,19 @@ void KaleidoScope_DrawDebugEditor(PlayState* play) {
     }
 
     // Draws a highlight on the selected section
-    gDPPipeSync(POLY_KAL_DISP++);
-    gDPSetRenderMode(POLY_KAL_DISP++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
-    gDPSetCombineMode(POLY_KAL_DISP++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
-    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 0, 0, 200, 120);
+    gDPPipeSync(POLY_OPA_DISP++);
+    gDPSetRenderMode(POLY_OPA_DISP++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
+    gDPSetCombineMode(POLY_OPA_DISP++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0, 0, 200, 120);
 
     if (curSection == 0) {
-        gDPFillRectangle(POLY_KAL_DISP++, sSectionPositions[curSection][0], sSectionPositions[curSection][1],
+        gDPFillRectangle(POLY_OPA_DISP++, sSectionPositions[curSection][0], sSectionPositions[curSection][1],
                          sSectionPositions[curSection][0] + 45, sSectionPositions[curSection][1] + 16);
     } else if ((curSection >= 0x1B) || (curSection == 0x5B)) {
-        gDPFillRectangle(POLY_KAL_DISP++, sSectionPositions[curSection][0] - 2, sSectionPositions[curSection][1],
+        gDPFillRectangle(POLY_OPA_DISP++, sSectionPositions[curSection][0] - 2, sSectionPositions[curSection][1],
                          sSectionPositions[curSection][0] + 14, sSectionPositions[curSection][1] + 16);
     } else {
-        gDPFillRectangle(POLY_KAL_DISP++, sSectionPositions[curSection][0] - 4, sSectionPositions[curSection][1],
+        gDPFillRectangle(POLY_OPA_DISP++, sSectionPositions[curSection][0] - 4, sSectionPositions[curSection][1],
                          sSectionPositions[curSection][0] + 24, sSectionPositions[curSection][1] + 16);
     }
 

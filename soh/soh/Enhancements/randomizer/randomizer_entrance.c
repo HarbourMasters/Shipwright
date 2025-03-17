@@ -267,13 +267,6 @@ s16 Entrance_PeekNextIndexOverride(int16_t nextEntranceIndex) {
 }
 
 s16 Entrance_OverrideNextIndex(s16 nextEntranceIndex) {
-    // When entering Spirit Temple, clear temp flags so they don't carry over to the randomized dungeon
-    if (nextEntranceIndex == ENTR_SPIRIT_TEMPLE_ENTRANCE && Entrance_GetOverride(nextEntranceIndex) != nextEntranceIndex &&
-        gPlayState != NULL) {
-        gPlayState->actorCtx.flags.tempSwch = 0;
-        gPlayState->actorCtx.flags.tempCollect = 0;
-    }
-
     // Exiting through the crawl space from Hyrule Castle courtyard is the same exit as leaving Ganon's castle
     // Don't override the entrance if we came from the Castle courtyard (day and night scenes)
     if (gPlayState != NULL && (gPlayState->sceneNum == SCENE_CASTLE_COURTYARD_GUARDS_DAY || gPlayState->sceneNum == SCENE_CASTLE_COURTYARD_GUARDS_NIGHT) &&
@@ -400,8 +393,11 @@ void Entrance_SetSavewarpEntrance(void) {
         gSaveContext.entranceIndex = ENTR_GANONS_TOWER_0; // Inside Ganon's Castle -> Ganon's Tower Climb
     } else if (scene == SCENE_THIEVES_HIDEOUT) { // Theives hideout
         gSaveContext.entranceIndex = ENTR_THIEVES_HIDEOUT_0; // Gerudo Fortress -> Thieve's Hideout spawn 0
-    } else if (scene == SCENE_LINKS_HOUSE) {
-        gSaveContext.entranceIndex = Entrance_OverrideNextIndex(ENTR_LINKS_HOUSE_CHILD_SPAWN);
+    } else if (scene == SCENE_LINKS_HOUSE &&
+               Randomizer_GetSettingValue(RSK_SHUFFLE_INTERIOR_ENTRANCES) != RO_INTERIOR_ENTRANCE_SHUFFLE_ALL) {
+        // Save warping in Link's house keeps the player there if Link's house not shuffled,
+        // otherwise fallback to regular spawns
+        gSaveContext.entranceIndex = ENTR_LINKS_HOUSE_CHILD_SPAWN;
     } else if (CVarGetInteger(CVAR_ENHANCEMENT("RememberSaveLocation"), 0) && scene != SCENE_FAIRYS_FOUNTAIN && scene != SCENE_GROTTOS &&
                gSaveContext.entranceIndex != ENTR_LOAD_OPENING) {
         // Use the saved entrance value with remember save location, except when in grottos/fairy fountains or if
@@ -444,7 +440,7 @@ void Entrance_SetWarpSongEntrance(void) {
     // have to force the grotto return afterwards
     Grotto_ForceGrottoReturnOnSpecialEntrance();
 
-    if (gSaveContext.gameMode != 0) {
+    if (gSaveContext.gameMode != GAMEMODE_NORMAL) {
         // During DHWW the cutscene must play at the destination
         gSaveContext.respawnFlag = -3;
     } else if (gSaveContext.respawnFlag == -3) {
@@ -747,7 +743,7 @@ u8 Entrance_GetIsSceneDiscovered(u8 sceneNum) {
     u32 idx = sceneNum / bitsPerIndex;
     if (idx < SAVEFILE_SCENES_DISCOVERED_IDX_COUNT) {
         u32 sceneBit = 1 << (sceneNum - (idx * bitsPerIndex));
-        return (gSaveContext.sohStats.scenesDiscovered[idx] & sceneBit) != 0;
+        return (gSaveContext.ship.stats.scenesDiscovered[idx] & sceneBit) != 0;
     }
     return 0;
 }
@@ -761,7 +757,7 @@ void Entrance_SetSceneDiscovered(u8 sceneNum) {
     u32 idx = sceneNum / bitsPerIndex;
     if (idx < SAVEFILE_SCENES_DISCOVERED_IDX_COUNT) {
         u32 sceneBit = 1 << (sceneNum - (idx * bitsPerIndex));
-        gSaveContext.sohStats.scenesDiscovered[idx] |= sceneBit;
+        gSaveContext.ship.stats.scenesDiscovered[idx] |= sceneBit;
     }
     // Save scenesDiscovered
     Save_SaveSection(SECTION_ID_SCENES);
@@ -772,7 +768,7 @@ u8 Entrance_GetIsEntranceDiscovered(u16 entranceIndex) {
     u32 idx = entranceIndex / bitsPerIndex;
     if (idx < SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT) {
         u32 entranceBit = 1 << (entranceIndex - (idx * bitsPerIndex));
-        return (gSaveContext.sohStats.entrancesDiscovered[idx] & entranceBit) != 0;
+        return (gSaveContext.ship.stats.entrancesDiscovered[idx] & entranceBit) != 0;
     }
     return 0;
 }
@@ -789,7 +785,7 @@ void Entrance_SetEntranceDiscovered(u16 entranceIndex, u8 isReversedEntrance) {
     u32 idx = entranceIndex / bitsPerIndex;
     if (idx < SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT) {
         u32 entranceBit = 1 << (entranceIndex - (idx * bitsPerIndex));
-        gSaveContext.sohStats.entrancesDiscovered[idx] |= entranceBit;
+        gSaveContext.ship.stats.entrancesDiscovered[idx] |= entranceBit;
 
         // Set reverse entrance when not decoupled
         if (!Randomizer_GetSettingValue(RSK_DECOUPLED_ENTRANCES) && !isReversedEntrance) {

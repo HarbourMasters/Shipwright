@@ -2,7 +2,7 @@
 #ifdef __cplusplus
 
 #include "randomizerTypes.h"
-#include "3drando/location_access.hpp"
+#include "location_access.h"
 
 #include <nlohmann/json.hpp>
 
@@ -38,7 +38,7 @@ enum class EntranceType {
 
 class Entrance {
   public:
-    Entrance(RandomizerRegion connectedRegion_, std::vector<ConditionFn> conditions_met_, bool spreadsAreasWithPriority_ = true);
+    Entrance(RandomizerRegion connectedRegion_, ConditionFn condition_function_, bool spreadsAreasWithPriority_ = true);
     void SetCondition(ConditionFn newCondition);
     bool GetConditionsMet() const;
     std::string to_string() const;
@@ -83,7 +83,7 @@ class Entrance {
     RandomizerRegion parentRegion;
     RandomizerRegion connectedRegion;
     RandomizerRegion originalConnectedRegion;
-    std::vector<ConditionFn> conditions_met;
+    ConditionFn condition_function;
 
     EntranceType type = EntranceType::None;
     Entrance* target = nullptr;
@@ -98,7 +98,7 @@ class Entrance {
     std::string name = "";
     //If this is false, areas only spread to interiors through this entrance if there is no other choice
     //Set to false for owl drops, the windmill path between dampe's grave and windmill and blue warps
-    bool spreadsAreasWithPriority = true; 
+    bool spreadsAreasWithPriority = true;
 };
 
 typedef struct {

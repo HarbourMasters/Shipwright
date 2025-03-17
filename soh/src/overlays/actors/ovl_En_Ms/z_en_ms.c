@@ -10,7 +10,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
 
 void EnMs_Init(Actor* thisx, PlayState* play);
 void EnMs_Destroy(Actor* thisx, PlayState* play);
@@ -178,7 +178,7 @@ void EnMs_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
 
     if (gSaveContext.entranceIndex == ENTR_LON_LON_RANCH_ENTRANCE && gSaveContext.sceneSetupIndex == 8) { // ride carpet if in credits
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
         osSyncPrintf("OOOHHHHHH %f\n", this->actor.velocity.y);
         Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);
     }

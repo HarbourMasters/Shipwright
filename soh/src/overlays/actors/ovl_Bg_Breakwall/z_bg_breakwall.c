@@ -12,7 +12,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 typedef struct {
     /* 0x00 */ CollisionHeader* colHeader;
@@ -245,7 +245,7 @@ void BgBreakwall_WaitForObject(BgBreakwall* this, PlayState* play) {
 
         this->dyna.actor.objBankIndex = this->bankIndex;
         Actor_SetObjectDependency(play, &this->dyna.actor);
-        this->dyna.actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
+        this->dyna.actor.flags &= ~ACTOR_FLAG_UPDATE_CULLING_DISABLED;
         this->dyna.actor.draw = BgBreakwall_Draw;
         CollisionHeader_GetVirtual(sBombableWallInfo[wallType].colHeader, &colHeader);
         this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
@@ -302,8 +302,8 @@ void BgBreakwall_Wait(BgBreakwall* this, PlayState* play) {
 
         if ((wallType == BWALL_DC_ENTRANCE) && (!Flags_GetEventChkInf(EVENTCHKINF_ENTERED_DODONGOS_CAVERN))) {
             Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DODONGOS_CAVERN);
-            s32 flag = EVENTCHKINF_ENTERED_DODONGOS_CAVERN;
-            if (GameInteractor_Should(VB_PLAY_ENTRANCE_CS, true, &flag)) {
+            if (GameInteractor_Should(VB_PLAY_ENTRANCE_CS, true, EVENTCHKINF_ENTERED_DODONGOS_CAVERN,
+                                      gSaveContext.entranceIndex)) {
                 Cutscene_SetSegment(play, gDcOpeningCs);
                 gSaveContext.cutsceneTrigger = 1;
                 Player_SetCsActionWithHaltedActors(play, NULL, 0x31);

@@ -10,7 +10,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include <stdlib.h>
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void EnBom_Init(Actor* thisx, PlayState* play);
 void EnBom_Destroy(Actor* thisx, PlayState* play);
@@ -162,7 +162,7 @@ void EnBom_Move(EnBom* this, PlayState* play) {
             this->actor.world.rot.y = ((this->actor.wallYaw - this->actor.world.rot.y) + this->actor.wallYaw) - 0x8000;
         }
         Audio_PlayActorSound2(&this->actor, NA_SE_EV_BOMB_BOUND);
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
         this->actor.speedXZ *= 0.7f;
         this->actor.bgCheckFlags &= ~8;
     }
@@ -176,11 +176,11 @@ void EnBom_Move(EnBom* this, PlayState* play) {
             this->actor.velocity.y *= -0.3f;
             this->actor.bgCheckFlags &= ~2;
         } else if (this->timer >= 4) {
-            func_8002F580(&this->actor, play);
+            Actor_OfferCarry(&this->actor, play);
         }
     }
 
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 }
 
 void EnBom_WaitForRelease(EnBom* this, PlayState* play) {
@@ -195,7 +195,7 @@ void EnBom_Explode(EnBom* this, PlayState* play) {
     Player* player;
 
     if (this->explosionCollider.elements[0].dim.modelSphere.radius == 0) {
-        this->actor.flags |= ACTOR_FLAG_DRAW_WHILE_CULLED;
+        this->actor.flags |= ACTOR_FLAG_DRAW_CULLING_DISABLED;
         func_800AA000(this->actor.xzDistToPlayer, 0xFF, 0x14, 0x96);
     }
 
@@ -357,7 +357,7 @@ void EnBom_Update(Actor* thisx, PlayState* play2) {
             Camera_AddQuake(&play->mainCamera, 2, 0xB, 8);
             thisx->params = BOMB_EXPLOSION;
             this->timer = 10;
-            thisx->flags |= ACTOR_FLAG_DRAW_WHILE_CULLED;
+            thisx->flags |= ACTOR_FLAG_DRAW_CULLING_DISABLED;
             EnBom_SetupAction(this, EnBom_Explode);
         }
     }

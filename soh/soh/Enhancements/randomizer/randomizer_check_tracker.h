@@ -2,6 +2,7 @@
 #include <nlohmann/json.hpp>
 #include "randomizerTypes.h"
 #include "randomizer_check_objects.h"
+#include "soh/SohGui/UIWidgets.hpp"
 
 #include <libultraship/libultraship.h>
 
@@ -59,4 +60,5 @@ void UpdateAreas(RandomizerCheckArea area);
 void UpdateAllOrdering();
 void UpdateAllAreas();
 void RecalculateAllAreaTotals();
+void SpoilAreaFromCheck(RandomizerCheck rc);
 } // namespace CheckTracker

@@ -7,7 +7,7 @@
 #include "z_bg_spot17_funen.h"
 #include "objects/object_spot17_obj/object_spot17_obj.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void BgSpot17Funen_Init(Actor* thisx, PlayState* play);
 void BgSpot17Funen_Destroy(Actor* thisx, PlayState* play);

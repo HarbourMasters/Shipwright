@@ -14,7 +14,7 @@
 #include "objects/object_gi_rupy/object_gi_rupy.h"
 #include "soh/frame_interpolation.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 typedef enum {
     /* 0 */ MOVE_TARGET,
@@ -278,7 +278,7 @@ void EnGSwitch_GalleryRupee(EnGSwitch* this, PlayState* play) {
     if (this->delayTimer == 0) {
         switch (this->moveMode) {
             case GSWITCH_THROW:
-                Actor_MoveForward(&this->actor);
+                Actor_MoveXZGravity(&this->actor);
                 if ((this->actor.velocity.y < 0.0f) && (this->actor.world.pos.y < (this->actor.home.pos.y - 50.0f))) {
                     gallery = ((EnSyatekiItm*)this->actor.parent);
                     this->actor.velocity.y = 0.0f;
@@ -290,7 +290,7 @@ void EnGSwitch_GalleryRupee(EnGSwitch* this, PlayState* play) {
                 }
                 break;
             case GSWITCH_LEFT:
-                func_8002D7EC(&this->actor);
+                Actor_UpdatePos(&this->actor);
                 if ((this->actor.velocity.x < 0.0f) && (this->actor.world.pos.x < this->targetPos.x)) {
                     gallery = ((EnSyatekiItm*)this->actor.parent);
                     if (gallery->actor.update != NULL) {
@@ -300,7 +300,7 @@ void EnGSwitch_GalleryRupee(EnGSwitch* this, PlayState* play) {
                 }
                 break;
             case GSWITCH_RIGHT:
-                func_8002D7EC(&this->actor);
+                Actor_UpdatePos(&this->actor);
                 if (this->actor.world.pos.x > this->targetPos.x) {
                     gallery = ((EnSyatekiItm*)this->actor.parent);
                     if (gallery->actor.update != NULL) {
@@ -433,7 +433,7 @@ void EnGSwitch_Update(Actor* thisx, PlayState* play) {
     }
     if ((this->type != ENGSWITCH_SILVER_TRACKER) && (this->type != ENGSWITCH_SILVER_RUPEE) &&
         (this->type != ENGSWITCH_TARGET_RUPEE)) {
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
         Actor_UpdateBgCheckInfo(play, &this->actor, 50.0f, 50.0f, 100.0f, 0x1C);
     }
     if (this->actor.draw != NULL) {
@@ -481,6 +481,9 @@ void EnGSwitch_DrawRupee(Actor* thisx, PlayState* play) {
         OPEN_DISPS(play->state.gfxCtx);
 
         if (CVarGetInteger(CVAR_ENHANCEMENT("NewDrops"), 0)) {
+            func_8002EBCC(&this->actor, play, 0);
+            func_8002ED80(&this->actor, play, 0);
+
             // purple/gold/silver rupees need less scaling
             f32 mtxScale = this->colorIdx >= 3 ? 17.5f : 25.0f;
             Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
