@@ -1487,6 +1487,7 @@ void DrawLocation(RandomizerCheck rc) {
     Rando::ItemLocation* itemLoc = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
     RandomizerCheckStatus status = itemLoc->GetCheckStatus();
     bool skipped = itemLoc->GetIsSkipped();
+    bool accessible = itemLoc->IsAccessible();
     if (status == RCSHOW_COLLECTED) {
         if (!showHidden && hideCollected) {
             return;
@@ -1561,7 +1562,7 @@ void DrawLocation(RandomizerCheck rc) {
                 OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->SetIsSkipped(false);
                 areaChecksGotten[loc->GetArea()]--;
                 totalChecksGotten--;
-                if (itemLoc->IsAccessible()) {
+                if (accessible) {
                     areaChecksAccessible[loc->GetArea()]++;
                     totalChecksAccessible++;
                 }
@@ -1569,7 +1570,7 @@ void DrawLocation(RandomizerCheck rc) {
                 OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->SetIsSkipped(true);
                 areaChecksGotten[loc->GetArea()]++;
                 totalChecksGotten++;
-                if (itemLoc->IsAccessible()) {
+                if (accessible) {
                     areaChecksAccessible[loc->GetArea()]--;
                     totalChecksAccessible--;
                 }
@@ -1584,7 +1585,17 @@ void DrawLocation(RandomizerCheck rc) {
     ImGui::SameLine();
 
     //Draw
-    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(mainColor.r / 255.0f, mainColor.g / 255.0f, mainColor.b / 255.0f, mainColor.a / 255.0f));
+    ImVec4 styleColor(mainColor.r / 255.0f, mainColor.g / 255.0f, mainColor.b / 255.0f, mainColor.a / 255.0f);
+    if (itemLoc->HasObtained()) {
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 0, 0, 0));
+    } else {
+        ImGui::PushStyleColor(ImGuiCol_Text, styleColor);
+    }
+    ImGui::Text("%s", accessible ? ICON_FA_UNLOCK : ICON_FA_LOCK);
+    ImGui::PopStyleColor();
+    ImGui::SameLine();
+
+    ImGui::PushStyleColor(ImGuiCol_Text, styleColor);
     ImGui::Text("%s", txt.c_str());
     ImGui::PopStyleColor();
 
