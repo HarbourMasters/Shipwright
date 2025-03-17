@@ -541,19 +541,6 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Skip the tower escape sequence between Ganondorf and Ganon."
         ));
-    AddWidget(path, "Item Scale: %.2f", WIDGET_CVAR_SLIDER_FLOAT)
-        .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipGetItemAnimationScale"))
-        .PreFunc([](WidgetInfo& info) {
-            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_DISABLED) == SGIA_DISABLED;
-        })
-        .Options(FloatSliderOptions()
-            .Min(5.0f)
-            .Max(15.0f)
-            .Format("%.2f")
-            .DefaultValue(10.0f)
-            .Tooltip(
-                "The size of the item when it is picked up"
-            ));
     
     AddWidget(path, "Text", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Skip Forced Dialog", WIDGET_CVAR_CHECKBOX)
@@ -727,7 +714,7 @@ void SohMenu::AddMenuEnhancements() {
             .Format("%.2fx")
         );
     AddWidget(path, "Vine/Ladder Climb Speed +%d", WIDGET_CVAR_SLIDER_INT)
-        .CVar(CVAR_ENHANCEMENT("Climb Speed"))
+        .CVar(CVAR_ENHANCEMENT("ClimbSpeed"))
         .Options(IntSliderOptions()
             .Min(0)
             .Max(12)

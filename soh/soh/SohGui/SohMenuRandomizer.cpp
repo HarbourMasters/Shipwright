@@ -72,6 +72,19 @@ void SohMenu::AddMenuRandomizer() {
     AddWidget(path, "Skip Get Item Animations", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"))
         .Options(ComboboxOptions().ComboMap(skipGetItemAnimationOptions).DefaultIndex(SGIA_JUNK));
+    AddWidget(path, "Item Scale: %.2f", WIDGET_CVAR_SLIDER_FLOAT)
+        .CVar(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimationScale"))
+        .PreFunc([](WidgetInfo& info) {
+        info.isHidden = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_DISABLED) == SGIA_DISABLED;
+            })
+        .Options(FloatSliderOptions()
+            .Min(5.0f)
+            .Max(15.0f)
+            .Format("%.2f")
+            .DefaultValue(10.0f)
+            .Tooltip(
+                "The size of the item when it is picked up"
+            ));
 
     // Plandomizer
     path.sidebarName = "Plandomizer";
