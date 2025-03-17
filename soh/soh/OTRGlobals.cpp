@@ -1369,6 +1369,10 @@ extern "C" void Graph_StartFrame() {
             break;
         }
 #endif
+        case KbScancode::LUS_KB_F11: {
+            CVarSetInteger(CVAR_SETTING("Fullscreen"), !CVarGetInteger(CVAR_SETTING("Fullscreen"), 0));
+            break;
+        }
         case KbScancode::LUS_KB_TAB: {
             CVarSetInteger(CVAR_ENHANCEMENT("AltAssets"), !CVarGetInteger(CVAR_ENHANCEMENT("AltAssets"), 0));
             break;
