@@ -201,18 +201,10 @@ void SohMenu::AddMenuSettings() {
     AddWidget(path, "Audio API (Needs reload)", WIDGET_AUDIO_BACKEND);
 
     // Graphics Settings
-    static int32_t maxFps;
-    const char* tooltip = "";
-    if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::FAST3D_DXGI_DX11) {
-        maxFps = 360;
-        tooltip = "Uses Matrix Interpolation to create extra frames, resulting in smoother graphics. This is "
-                  "purely visual and does not impact game logic, execution of glitches etc.\n\nA higher target "
-                  "FPS than your monitor's refresh rate will waste resources, and might give a worse result.";
-    } else {
-        maxFps = Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
-        tooltip = "Uses Matrix Interpolation to create extra frames, resulting in smoother graphics. This is "
-                  "purely visual and does not impact game logic, execution of glitches etc.";
-    }
+    static int32_t maxFps = 360;
+    const char* tooltip = "Uses Matrix Interpolation to create extra frames, resulting in smoother graphics. This is "
+                          "purely visual and does not impact game logic, execution of glitches etc.\n\nA higher target "
+                          "FPS than your monitor's refresh rate will waste resources, and might give a worse result.";
     path.sidebarName = "Graphics";
     AddSidebarEntry("Settings", "Graphics", 3);
     AddWidget(path, "Toggle Fullscreen", WIDGET_CVAR_CHECKBOX)
