@@ -275,7 +275,7 @@ void SohMenu::AddMenuSettings() {
     AddWidget(path, "Enable Vsync", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_VSYNC_ENABLED)
         .PreFunc([](WidgetInfo& info) { info.isHidden = mSohMenu->disabledMap.at(DISABLE_FOR_NO_VSYNC).active; })
-        .Options(CheckboxOptions().Tooltip("Enables Vsync."));
+        .Options(CheckboxOptions().Tooltip("Removes tearing, but clamps your max FPS to your displays refresh rate."));
     AddWidget(path, "Windowed Fullscreen", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SDL_WINDOWED_FULLSCREEN)
         .PreFunc([](WidgetInfo& info) {
