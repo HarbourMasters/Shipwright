@@ -546,6 +546,7 @@ void CheckTrackerShopSlotChange(uint8_t cursorSlot, int16_t basePrice) {
     if (status == RCSHOW_SEEN) {
         OTRGlobals::Instance->gRandoContext->GetItemLocation(slot)->SetCheckStatus(RCSHOW_IDENTIFIED);
         SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionId, true);
+        RecalculateAccessibleChecks();
     }
 }
 
@@ -1667,12 +1668,6 @@ void DrawLocation(RandomizerCheck rc) {
                 if (conditionStr != "true") {
                     UIWidgets::InsertHelpHoverText(conditionStr);
                 }
-                if (!itemLoc->HasObtained() && itemLoc->IsAccessible()) {
-                    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(extraColor.r / 255.0f, extraColor.g / 255.0f, extraColor.b / 255.0f, extraColor.a / 255.0f));
-                    ImGui::SameLine();
-                    ImGui::Text(" (Accessible)");
-                    ImGui::PopStyleColor();
-                }
                 break;
             }
         }
@@ -1779,8 +1774,15 @@ void RecalculateAccessibleChecks() {
 
     std::vector<RandomizerCheck> accessibleChecks = ReachabilitySearch(targetLocations, RG_NONE, true);
     for (auto& rc : accessibleChecks) {
-        Rando::ItemLocation* itemLocation = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
-        itemLocation->SetAccessible(true);
+        const auto& location = Rando::StaticData::GetLocation(rc);
+        const auto& itemLocation = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
+        if (location->GetRCType() == RCTYPE_SHOP && itemLocation->GetCheckStatus() == RCSHOW_IDENTIFIED) {
+            if (CanBuyAnother(rc)) {
+                itemLocation->SetAccessible(true);
+            }
+        } else {
+            itemLocation->SetAccessible(true);
+        }
     }
 
     totalChecksAccessible = 0;
