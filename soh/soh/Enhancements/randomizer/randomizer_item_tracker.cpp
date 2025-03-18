@@ -469,7 +469,6 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
     if (!GameInteractor::IsSaveLoaded()) {
         return;
     }
-    ImGui::PushFont(OTRGlobals::Instance->fontMono);
     int iconSize = CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36);
     int textSize = CVarGetInteger(CVAR_TRACKER_ITEM("TextSize"), 13);
     ItemTrackerNumbers currentAndMax = GetItemCurrentAndMax(item);
@@ -612,7 +611,6 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         ImGui::SetCursorScreenPos(ImVec2(p.x, p.y - 14));
         ImGui::Text("");
     }
-    ImGui::PopFont();
 }
 
 void DrawEquip(ItemTrackerItem item) {
@@ -1218,9 +1216,11 @@ void ItemTrackerWindow::Draw() {
     if (!IsVisible()) {
         return;
     }
+    ImGui::PushFont(OTRGlobals::Instance->fontMono);
     DrawElement();
     // Sync up the IsVisible flag if it was changed by ImGui
     SyncVisibilityConsoleVariable();
+    ImGui::PopFont();
 }
 
 void ItemTrackerWindow::DrawElement() {

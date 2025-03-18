@@ -102,6 +102,20 @@ void SohMenu::AddMenuSettings() {
             SDL_OpenURL(std::string("file:///" + std::filesystem::absolute(filesPath).string()).c_str());
         })
         .Options(ButtonOptions().Tooltip("Opens the folder that contains the save and mods folders, etc."));
+
+    AddWidget(path, "Boot", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Boot Sequence", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_ENHANCEMENT("BootSequence"))
+        .Options(ComboboxOptions()
+                     .DefaultIndex(BOOTSEQUENCE_DEFAULT)
+                     .LabelPosition(LabelPosition::Far)
+                     .ComponentAlignment(ComponentAlignment::Right)
+                     .ComboMap(bootSequenceLabels)
+                     .Tooltip("Configure what happens when starting or resetting the game.\n\n"
+                              "Default: LUS logo -> N64 logo\n"
+                              "Authentic: N64 logo only\n"
+                              "File Select: Skip to file select menu"));
+
     AddWidget(path, "Languages", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Translate Title Screen", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("TitleScreenTranslation"));
