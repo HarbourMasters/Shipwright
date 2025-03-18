@@ -87,10 +87,11 @@ bool Mouse_HandleQuickspin(s8* iter2, s8* sp3C) {
     }
 
     for (i = 0; i < 4; i++, iter2++) {
+        // Calculating angles as per z_lib.c:func_80077D10()
         f32 relY = mouseQuickspinY[i + 1] - mouseQuickspinY[i];
         f32 relX = mouseQuickspinX[i + 1] - mouseQuickspinX[i];
         s16 aTan = Math_Atan2S(relY, -relX);
-        iterMouse = (u16)(aTan + 0x2000) >> 9;
+        iterMouse = (u16)(aTan + 0x2000) >> 9; // See z_player.c:Player_ProcessControlStick()
         if ((*iter2 = iterMouse) < 0) {
             return false;
         }
