@@ -1660,6 +1660,15 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // false
+    // ```
+    // #### `args`
+    // - `*s8 iter2`
+    // - `s8 sp3C[4]`
+    VB_SHOULD_QUICKSPIN,
+
+    // #### `result`
+    // ```c
     // (interactedActor->id == ACTOR_BG_TOKI_SWD) && LINK_IS_ADULT
     // ```
     // #### `args`

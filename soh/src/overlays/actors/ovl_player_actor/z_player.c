@@ -2083,7 +2083,7 @@ void Player_ProcessControlStick(PlayState* play, Player* this) {
         direction = (u16)((s16)(sControlStickWorldYaw - this->actor.shape.rot.y) + 0x2000) >> 14;
     }
 
-    Mouse_UpdateQuickspinCount();
+    GameInteractor_ExecuteOnPlayerProcessStick();
 
     this->controlStickSpinAngles[this->controlStickDataIndex] = spinAngle;
     this->controlStickDirections[this->controlStickDataIndex] = direction;
@@ -4284,7 +4284,7 @@ s32 Player_CanSpinAttack(Player* this) {
     iter = &this->controlStickSpinAngles[0];
     iter2 = &sp3C[0];
 
-    if (Mouse_HandleQuickspin(iter2, sp3C)) {
+    if (GameInteractor_Should(VB_SHOULD_QUICKSPIN, false, iter2, sp3C)) {
         return true;
     }
 

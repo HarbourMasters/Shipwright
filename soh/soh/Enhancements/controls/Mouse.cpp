@@ -77,20 +77,21 @@ static f32 mouseQuickspinY[5] = {};
 static u8 quickspinCount = 0;
 
 void Mouse_UpdateQuickspinCount() {
-    quickspinCount = (quickspinCount + 1) % 5;
-
     if (MOUSE_ENABLED) {
+        quickspinCount = (quickspinCount + 1) % 5;
         mouseQuickspinX[quickspinCount] = mouseCoord.x;
         mouseQuickspinY[quickspinCount] = mouseCoord.y;
+    } else {
+        quickspinCount = 0;
     }
 }
 
-bool Mouse_HandleQuickspin(s8* iter2, s8* sp3C) {
+bool Mouse_HandleQuickspin(bool* should, s8* iter2, s8* sp3C) {
     s8 temp1;
     s8 temp2;
     s32 i;
     if (!MOUSE_ENABLED) {
-        return false;
+        return *should = false;
     }
 
     for (i = 0; i < 4; i++, iter2++) {
@@ -100,34 +101,44 @@ bool Mouse_HandleQuickspin(s8* iter2, s8* sp3C) {
         s16 aTan = Math_Atan2S(relY, -relX);
         iterMouse = (u16)(aTan + 0x2000) >> 9; // See z_player.c:Player_ProcessControlStick()
         if ((*iter2 = iterMouse) < 0) {
-            return false;
+            return *should = false;
         }
         *iter2 *= 2;
     }
     temp1 = sp3C[0] - sp3C[1];
     if (ABS(temp1) < 10) {
-        return false;
+        return *should = false;
     }
     iter2 = &sp3C[1];
     for (i = 1; i < 3; i++, iter2++) {
         temp2 = *iter2 - *(iter2 + 1);
         if ((ABS(temp2) < 10) || (temp2 * temp1 < 0)) {
-            return false;
+            return *should = false;
         }
     }
 
-    return true;
+    return *should = true;
 }
 
 // Hook handlers
 void Mouse_RegisterRecenterCursorOnShield() {
-    COND_HOOK(OnPlayerHoldUpShield, MOUSE_ENABLED, Mouse_RecenterCursor);
+    COND_HOOK(OnPlayerHoldUpShield, true, Mouse_RecenterCursor);
 }
 
 void Mouse_RegisterHandleFirstPerson() {
-    COND_HOOK(OnPlayerFirstPersonControl, MOUSE_ENABLED, Mouse_HandleFirstPerson);
+    COND_HOOK(OnPlayerFirstPersonControl, true, Mouse_HandleFirstPerson);
+}
+
+void Mouse_RegisterUpdateQuickspinCount() {
+    COND_HOOK(OnPlayerProcessStick, true, Mouse_UpdateQuickspinCount);
+}
+
+void Mouse_RegisterHandleQuickspin() {
+    REGISTER_VB_SHOULD(VB_SHOULD_QUICKSPIN, { Mouse_HandleQuickspin(should, va_arg(args, s8*), va_arg(args, s8*)); } );
 }
 
 static RegisterShipInitFunc initFunc_shield(Mouse_RegisterRecenterCursorOnShield, {});
 static RegisterShipInitFunc initFunc_firstPerson(Mouse_RegisterHandleFirstPerson, {});
+static RegisterShipInitFunc initFunc_quickspinCount(Mouse_RegisterUpdateQuickspinCount, {});
+static RegisterShipInitFunc initFunc_quickspin(Mouse_RegisterHandleQuickspin, {});
 } //extern "C"
