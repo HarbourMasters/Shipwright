@@ -16,15 +16,13 @@ void DrawHookRegisteringInfos(const char* hookName) {
         return;
     }
 
-    if (ImGui::BeginTable(
-        ("Table##" + std::string(hookName)).c_str(),
-        4,
-        ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable | ImGuiTableFlags_Borders | ImGuiTableFlags_SizingFixedFit
-    )) {
+    if (ImGui::BeginTable(("Table##" + std::string(hookName)).c_str(), 4,
+                          ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable |
+                              ImGuiTableFlags_Borders | ImGuiTableFlags_SizingFixedFit)) {
         ImGui::TableSetupColumn("Id");
         ImGui::TableSetupColumn("Type");
         ImGui::TableSetupColumn("Registration Info");
-        //ImGui::TableSetupColumn("Stub");
+        // ImGui::TableSetupColumn("Stub");
         ImGui::TableSetupColumn("Number of Calls");
         ImGui::TableHeadersRow();
         for (auto& [id, hookInfo] : (*hookData[hookName])) {
@@ -54,12 +52,13 @@ void DrawHookRegisteringInfos(const char* hookName) {
 
             ImGui::TableNextColumn();
             if (hookInfo.registering.valid) {
-                ImGui::Text("%s(%d:%d) %s", hookInfo.registering.file, hookInfo.registering.line, hookInfo.registering.column, hookInfo.registering.function);
+                ImGui::Text("%s(%d:%d) %s", hookInfo.registering.file, hookInfo.registering.line,
+                            hookInfo.registering.column, hookInfo.registering.function);
             } else {
                 ImGui::TextColored(yellow, "[Unavaliable]");
             }
 
-            //TODO: not currently possible
+            // TODO: not currently possible
             /*
             ImGui::TableNextColumn();
 
@@ -84,12 +83,9 @@ void DrawHookRegisteringInfos(const char* hookName) {
 
 void HookDebuggerWindow::DrawElement() {
 #ifndef __cpp_lib_source_location
-    ImGui::TextColored(
-        yellow,
-        "Some features of the Hook Debugger are unavaliable because SoH was compiled "
-        "without \"<source_location>\" support "
-        "(\"__cpp_lib_source_location\" not defined in \"<version>\")."
-    );
+    ImGui::TextColored(yellow, "Some features of the Hook Debugger are unavaliable because SoH was compiled "
+                               "without \"<source_location>\" support "
+                               "(\"__cpp_lib_source_location\" not defined in \"<version>\").");
 #endif
 
     for (auto& [hookName, _] : hookData) {
@@ -101,9 +97,9 @@ void HookDebuggerWindow::DrawElement() {
 }
 
 void HookDebuggerWindow::InitElement() {
-    #define DEFINE_HOOK(name, _) hookData.insert({#name, GameInteractor::Instance->GetHookData<GameInteractor::name>()});
+#define DEFINE_HOOK(name, _) hookData.insert({ #name, GameInteractor::Instance->GetHookData<GameInteractor::name>() });
 
-    #include "../game-interactor/GameInteractor_HookTable.h"
+#include "../game-interactor/GameInteractor_HookTable.h"
 
-    #undef DEFINE_HOOK
+#undef DEFINE_HOOK
 }
