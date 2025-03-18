@@ -3,6 +3,8 @@
 #include "z64player.h"
 #include "global.h"
 #include <Window.h>
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ShipInit.hpp"
 
 static Ship::Coords mouseCoord = {};
 static Ship::Coords mouseCoordRel = {};
@@ -111,4 +113,11 @@ bool Mouse_HandleQuickspin(s8* iter2, s8* sp3C) {
 
     return true;
 }
+
+// Hook handlers
+void Mouse_RegisterRecenterCursorOnShield() {
+    COND_HOOK(OnPlayerHoldUpShield, MOUSE_ENABLED, Mouse_RecenterCursor);
+}
+
+static RegisterShipInitFunc initFunc_shield(Mouse_RegisterRecenterCursorOnShield, {});
 } //extern "C"

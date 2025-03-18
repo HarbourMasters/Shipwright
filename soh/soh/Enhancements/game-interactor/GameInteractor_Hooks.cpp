@@ -139,6 +139,10 @@ void GameInteractor_ExecuteOnPlayerBottleUpdate(int16_t contents) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerBottleUpdate>(contents);
 }
 
+void GameInteractor_ExecuteOnPlayerHoldUpShield() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerHoldUpShield>();
+}
+
 void GameInteractor_ExecuteOnPlayDestroy() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayDestroy>();
 }

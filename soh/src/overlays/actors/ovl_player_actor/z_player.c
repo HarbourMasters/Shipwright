@@ -6439,7 +6439,7 @@ s32 Player_ActionHandler_11(Player* this, PlayState* play) {
         Player_DetachHeldActor(play, this);
 
         if (Player_SetupAction(play, this, Player_Action_80843188, 0)) {
-            Mouse_RecenterCursor();
+            GameInteractor_ExecuteOnPlayerHoldUpShield();
 
             this->stateFlags1 |= PLAYER_STATE1_SHIELDING;
 
