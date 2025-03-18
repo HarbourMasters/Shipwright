@@ -1844,21 +1844,22 @@ void SohMenu::AddMenuEnhancements() {
             "Scales normal enemies Health with their randomized size. *This will NOT affect bosses*"));
     AddWidget(path, "Enemy List", WIDGET_SEPARATOR_TEXT)
         .PreFunc([](WidgetInfo& info) {
-            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) != ENEMY_RANDOMIZER_RANDOM;
+            info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0);
         });
     AddWidget(path, "Select All Enemies", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("RandomizedEnemyList.All"))
         .PreFunc([](WidgetInfo& info) {
-            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) != ENEMY_RANDOMIZER_RANDOM;
+            info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0);
         });
     AddWidget(path, "Enemy List", WIDGET_SEPARATOR).PreFunc([](WidgetInfo& info) {
-        info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) != ENEMY_RANDOMIZER_RANDOM;
+        info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0);
     });
     for (int i = 0; i < RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE; i++) {
         AddWidget(path, enemyNameList[i], WIDGET_CVAR_CHECKBOX)
             .CVar(enemyCVarList[i])
+            .Options(CheckboxOptions().DefaultValue(true))
             .PreFunc([](WidgetInfo& info) {
-                info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) != ENEMY_RANDOMIZER_RANDOM;
+                info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0);
                 info.options->disabled = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemyList.All"), 0);
                 info.options->disabledTooltip = "These options are disabled because \"Select All Enemies\" is enabled.";
             })

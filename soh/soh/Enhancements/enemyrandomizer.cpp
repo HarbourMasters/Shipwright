@@ -286,7 +286,7 @@ void GetSelectedEnemies() {
         for (int i = 0; i < 49; i++) {
             if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemyList.All"), 0)) {
                 selectedEnemyList.push_back(randomizedEnemySpawnTable[i]);
-            } else if (CVarGetInteger(enemyCVarList[i], 0)) {
+            } else if (CVarGetInteger(enemyCVarList[i], 1)) {
                 selectedEnemyList.push_back(randomizedEnemySpawnTable[i]);
             }
         }
