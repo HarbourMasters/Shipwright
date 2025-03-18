@@ -143,6 +143,9 @@ void GameInteractor_ExecuteOnPlayerHoldUpShield() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerHoldUpShield>();
 }
 
+void GameInteractor_ExecuteOnPlayerFirstPersonControl(Player* player){
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerFirstPersonControl>(player);
+}
 void GameInteractor_ExecuteOnPlayDestroy() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayDestroy>();
 }

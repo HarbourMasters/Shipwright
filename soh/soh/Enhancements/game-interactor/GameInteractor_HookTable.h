@@ -34,6 +34,7 @@ DEFINE_HOOK(OnPlayerBonk, ());
 DEFINE_HOOK(OnPlayerHealthChange, (int16_t amount));
 DEFINE_HOOK(OnPlayerBottleUpdate, (int16_t contents));
 DEFINE_HOOK(OnPlayerHoldUpShield, ());
+DEFINE_HOOK(OnPlayerFirstPersonControl, (Player* player));
 DEFINE_HOOK(OnPlayDestroy, ());
 DEFINE_HOOK(OnPlayDrawEnd, ());
 DEFINE_HOOK(OnVanillaBehavior, (GIVanillaBehavior flag, bool* result, va_list originalArgs));
