@@ -302,9 +302,12 @@ void RandomizerOnPlayerUpdateForRCQueueHandler() {
                 (
                     CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_DISABLED) == SGIA_JUNK &&
                     (
+                        //crude fix to ensure map hints are readable. Ideally replace with better hint tracking. 
+                        !(getItemEntry.getItemId >= RG_DEKU_TREE_MAP && getItemEntry.getItemId <= RG_ICE_CAVERN_MAP) && (
                         getItemEntry.getItemCategory == ITEM_CATEGORY_JUNK ||
                         getItemEntry.getItemCategory == ITEM_CATEGORY_SKULLTULA_TOKEN ||
-                        getItemEntry.getItemCategory == ITEM_CATEGORY_LESSER
+                        getItemEntry.getItemCategory == ITEM_CATEGORY_LESSER 
+                        )
                     )
                 )
             )
