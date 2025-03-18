@@ -1523,7 +1523,7 @@ void Draw_Placements(){
                 CVarSetInteger(CVAR_COSMETIC("HUD.EnemyHealthBar.Width.Changed"), 1);
             }
             ImGui::SameLine();
-            ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 40);
+            ImGui::SetCursorPosY(ImGui::GetCursorPosY() + (ImGui::CalcTextSize("g").y * 2));
             if (UIWidgets::Button("Reset##EnemyHealthBarWidth",
                                    UIWidgets::ButtonOptions().Size(ImVec2(80, 36)).Padding(ImVec2(5.0f, 0.0f)))) {
                 CVarClear(CVAR_COSMETIC("HUD.EnemyHealthBar.Width.Value"));
@@ -1537,7 +1537,7 @@ void Draw_Placements(){
 
 void Reset_Option_Single(const char* Button_Title, const char* name) {
     ImGui::SameLine();
-    ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 40);
+    ImGui::SetCursorPosY(ImGui::GetCursorPosY() + (ImGui::CalcTextSize("g").y * 2));
     if (UIWidgets::Button(Button_Title,
                            UIWidgets::ButtonOptions().Size(ImVec2(80, 36)).Padding(ImVec2(5.0f, 0.0f)))) {
         CVarClear(name);
@@ -1546,7 +1546,7 @@ void Reset_Option_Single(const char* Button_Title, const char* name) {
 
 void Reset_Option_Double(const char* Button_Title, const char* name) {
     ImGui::SameLine();
-    ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 40);
+    ImGui::SetCursorPosY(ImGui::GetCursorPosY() + (ImGui::CalcTextSize("g").y * 2));
     if (UIWidgets::Button(Button_Title,
                            UIWidgets::ButtonOptions().Size(ImVec2(80, 36)).Padding(ImVec2(5.0f, 0.0f)))) {
         CVarClear((std::string(name) + ".Value").c_str());
@@ -1578,7 +1578,7 @@ void DrawSillyTab() {
         CVarSetInteger(CVAR_COSMETIC("Link.BodySize.Changed"), 1);
     }
     ImGui::SameLine();
-    ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 40);
+    ImGui::SetCursorPosY(ImGui::GetCursorPosY() + (ImGui::CalcTextSize("g").y * 2));
     if (UIWidgets::Button("Reset##Link_BodySize",
                            UIWidgets::ButtonOptions().Size(ImVec2(80, 36)).Padding(ImVec2(5.0f, 0.0f)))) {
         CVarClear(CVAR_COSMETIC("Link.BodySize.Value"));
@@ -2194,7 +2194,7 @@ void CosmeticsEditorWindow::DrawElement() {
                 CVarSetInteger(CVAR_COSMETIC("Trails.Duration.Changed"), 1);
             }
             ImGui::SameLine();
-            ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 40);
+            ImGui::SetCursorPosY(ImGui::GetCursorPosY() + (ImGui::CalcTextSize("g").y * 2));
             if (UIWidgets::Button("Reset##Trails_Duration", UIWidgets::ButtonOptions()
                                                                  .Size(ImVec2(80, 36))
                                                                  .Padding(ImVec2(5.0f, 0.0f)))) {
