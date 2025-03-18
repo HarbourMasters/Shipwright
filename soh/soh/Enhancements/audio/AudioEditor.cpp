@@ -488,6 +488,85 @@ void AudioEditor::DrawElement() {
 
     UIWidgets::PushStyleTabs(THEME_COLOR);
     if (ImGui::BeginTabBar("SfxContextTabBar", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
+        
+        static ImVec2 cellPadding(8.0f, 8.0f);
+        if (ImGui::BeginTabItem("Audio Options")) {
+            ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
+            ImGui::BeginTable("Audio Options", 1, ImGuiTableFlags_SizingStretchSame);
+            ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch);
+            ImGui::TableNextRow();
+            ImGui::TableNextColumn();
+            if (ImGui::BeginChild("SfxOptions", ImVec2(0, -8))) {
+                UIWidgets::CVarCheckbox(
+                    "Mute Low HP Alarm", CVAR_AUDIO("LowHPAlarm"),
+                    UIWidgets::CheckboxOptions().Color(THEME_COLOR).Tooltip("Disable the low HP beeping sound."));
+                UIWidgets::CVarCheckbox("Disable Navi Call Audio", CVAR_AUDIO("DisableNaviCallAudio"),
+                                        UIWidgets::CheckboxOptions()
+                                            .Color(THEME_COLOR)
+                                            .Tooltip("Disables the voice audio when Navi calls you."));
+                UIWidgets::CVarCheckbox(
+                    "Disable Enemy Proximity Music", CVAR_AUDIO("EnemyBGMDisable"),
+                    UIWidgets::CheckboxOptions()
+                        .Color(THEME_COLOR)
+                        .Tooltip("Disables the music change when getting close to enemies. Useful for hearing "
+                                 "your custom music for each scene more often."));
+                UIWidgets::CVarCheckbox(
+                    "Disable Leading Music in Lost Woods", CVAR_AUDIO("LostWoodsConsistentVolume"),
+                    UIWidgets::CheckboxOptions()
+                        .Color(THEME_COLOR)
+                        .Tooltip("Disables the volume shifting in the Lost Woods. Useful for hearing "
+                                 "your custom music in the Lost Woods if you don't need the navigation assitance "
+                                 "the volume changing provides. If toggling this while in the Lost Woods, reload "
+                                 "the area for the effect to kick in."));
+                UIWidgets::CVarCheckbox(
+                    "Display Sequence Name on Overlay", CVAR_AUDIO("SeqNameOverlay"),
+                    UIWidgets::CheckboxOptions()
+                        .Color(THEME_COLOR)
+                        .Tooltip("Displays the name of the current sequence in the corner of the screen whenever a new "
+                                 "sequence "
+                                 "is loaded to the main sequence player (does not apply to fanfares or enemy BGM)."));
+                UIWidgets::CVarSliderInt("Overlay Duration: %d seconds", CVAR_AUDIO("SeqNameOverlayDuration"),
+                                         UIWidgets::IntSliderOptions()
+                                             .Min(1)
+                                             .Max(10)
+                                             .DefaultValue(5)
+                                             .Size(ImVec2(300.0f, 0.0f))
+                                             .Color(THEME_COLOR));
+                UIWidgets::CVarSliderFloat("Link's voice pitch multiplier", CVAR_AUDIO("LinkVoiceFreqMultiplier"),
+                                           UIWidgets::FloatSliderOptions()
+                                               .IsPercentage()
+                                               .Min(0.4f)
+                                               .Max(2.5f)
+                                               .DefaultValue(1.0f)
+                                               .Size(ImVec2(300.0f, 0.0f))
+                                               .Color(THEME_COLOR));
+                ImGui::SameLine();
+                ImGui::SetCursorPosY(ImGui::GetCursorPos().y + 40.f);
+                if (UIWidgets::Button("Reset##linkVoiceFreqMultiplier",
+                                      UIWidgets::ButtonOptions().Size(ImVec2(80, 36)).Padding(ImVec2(5.0f, 0.0f)))) {
+                    CVarSetFloat(CVAR_AUDIO("LinkVoiceFreqMultiplier"), 1.0f);
+                }
+                UIWidgets::CVarCheckbox(
+                    "Randomize All Music and Sound Effects on New Scene", CVAR_AUDIO("RandomizeAllOnNewScene"),
+                    UIWidgets::CheckboxOptions()
+                        .Color(THEME_COLOR)
+                        .Tooltip(
+                            "Enables randomizing all unlocked music and sound effects when you enter a new scene."));
+                UIWidgets::CVarCheckbox(
+                    "Lower Octaves of Unplayable High Notes", CVAR_AUDIO("ExperimentalOctaveDrop"),
+                    UIWidgets::CheckboxOptions()
+                        .Color(THEME_COLOR)
+                        .Tooltip("Some custom sequences may have notes that are too high for the game's audio "
+                                 "engine to play. Enabling this checkbox will cause these notes to drop a "
+                                 "couple of octaves so they can still harmonize with the other notes of the "
+                                 "sequence."));
+            }
+            ImGui::EndChild();
+            ImGui::EndTable();
+            ImGui::PopStyleVar(1);
+            ImGui::EndTabItem();
+        }
+
         if (ImGui::BeginTabItem("Background Music")) {
             Draw_SfxTab("backgroundMusic", SEQ_BGM_WORLD, "Background Music");
             ImGui::EndTabItem();
@@ -515,78 +594,6 @@ void AudioEditor::DrawElement() {
         }
         if (ImGui::BeginTabItem("Voices")) {
             Draw_SfxTab("voice", SEQ_VOICE, "Voices");
-            ImGui::EndTabItem();
-        }
-
-        static ImVec2 cellPadding(8.0f, 8.0f);
-        if (ImGui::BeginTabItem("Options")) {
-            ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-            ImGui::BeginTable("Options", 1, ImGuiTableFlags_SizingStretchSame);
-            ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch);
-            ImGui::TableNextRow();
-            ImGui::TableNextColumn();
-            if (ImGui::BeginChild("SfxOptions", ImVec2(0, -8))) {
-                UIWidgets::CVarCheckbox(
-                    "Disable Enemy Proximity Music", CVAR_AUDIO("EnemyBGMDisable"),
-                    UIWidgets::CheckboxOptions()
-                        .Color(THEME_COLOR)
-                        .Tooltip("Disables the music change when getting close to enemies. Useful for hearing "
-                                 "your custom music for each scene more often."));
-                UIWidgets::CVarCheckbox(
-                    "Disable Leading Music in Lost Woods", CVAR_AUDIO("LostWoodsConsistentVolume"),
-                    UIWidgets::CheckboxOptions()
-                        .Color(THEME_COLOR)
-                        .Tooltip("Disables the volume shifting in the Lost Woods. Useful for hearing "
-                                 "your custom music in the Lost Woods if you don't need the navigation assitance "
-                                 "the volume changing provides. If toggling this while in the Lost Woods, reload "
-                                 "the area for the effect to kick in."));
-                UIWidgets::CVarCheckbox(
-                    "Display Sequence Name on Overlay", CVAR_AUDIO("SeqNameOverlay"),
-                    UIWidgets::CheckboxOptions()
-                        .Color(THEME_COLOR)
-                        .Tooltip("Displays the name of the current sequence in the corner of the screen whenever a new "
-                                 "sequence "
-                                 "is loaded to the main sequence player (does not apply to fanfares or enemy BGM)."));
-                UIWidgets::CVarSliderInt("Overlay Duration: %d seconds", CVAR_AUDIO("SeqNameOverlayDuration"),
-                                          UIWidgets::IntSliderOptions()
-                                              .Min(1)
-                                              .Max(10)
-                                              .DefaultValue(5)
-                                              .Size(ImVec2(300.0f, 0.0f))
-                                              .Color(THEME_COLOR));
-                UIWidgets::CVarSliderFloat("Link's voice pitch multiplier",
-                                            CVAR_AUDIO("LinkVoiceFreqMultiplier"),
-                                            UIWidgets::FloatSliderOptions()
-                                                .IsPercentage()
-                                                .Min(0.4f)
-                                                .Max(2.5f)
-                                                .DefaultValue(1.0f)
-                                                .Size(ImVec2(300.0f, 0.0f))
-                                                .Color(THEME_COLOR));
-                ImGui::SameLine();
-                ImGui::SetCursorPosY(ImGui::GetCursorPos().y + 40.f);
-                if (UIWidgets::Button("Reset##linkVoiceFreqMultiplier",
-                                       UIWidgets::ButtonOptions().Size(ImVec2(80, 36)).Padding(ImVec2(5.0f, 0.0f)))) {
-                    CVarSetFloat(CVAR_AUDIO("LinkVoiceFreqMultiplier"), 1.0f);
-                }
-                UIWidgets::CVarCheckbox(
-                    "Randomize All Music and Sound Effects on New Scene", CVAR_AUDIO("RandomizeAllOnNewScene"),
-                    UIWidgets::CheckboxOptions()
-                        .Color(THEME_COLOR)
-                        .Tooltip(
-                            "Enables randomizing all unlocked music and sound effects when you enter a new scene."));
-                UIWidgets::CVarCheckbox(
-                    "Lower Octaves of Unplayable High Notes", CVAR_AUDIO("ExperimentalOctaveDrop"),
-                    UIWidgets::CheckboxOptions()
-                        .Color(THEME_COLOR)
-                        .Tooltip("Some custom sequences may have notes that are too high for the game's audio "
-                                 "engine to play. Enabling this checkbox will cause these notes to drop a "
-                                 "couple of octaves so they can still harmonize with the other notes of the "
-                                 "sequence."));
-            }
-            ImGui::EndChild();
-            ImGui::EndTable();
-            ImGui::PopStyleVar(1);
             ImGui::EndTabItem();
         }
 
