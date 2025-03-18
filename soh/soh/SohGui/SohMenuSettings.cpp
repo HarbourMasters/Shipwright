@@ -65,7 +65,7 @@ void SohMenu::AddMenuSettings() {
     AddWidget(path, "Menu Controller Navigation", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_IMGUI_CONTROLLER_NAV)
         .Options(CheckboxOptions().Tooltip(
-            "Allows controller navigation of the 2Ship menu (Settings, Enhancements,...)\nCAUTION: "
+            "Allows controller navigation of the port menu (Settings, Enhancements,...)\nCAUTION: "
             "This will disable game inputs while the menu is visible.\n\nD-pad to move between "
             "items, A to select, B to move up in scope."));
     AddWidget(path, "Cursor Always Visible", WIDGET_CVAR_CHECKBOX)
