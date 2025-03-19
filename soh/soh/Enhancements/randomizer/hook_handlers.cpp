@@ -2035,11 +2035,13 @@ void RandomizerOnActorInitHandler(void* actorRef) {
                 break;
         }
 
-        //Deletes all actors in the boss category if the soul isn't found.
-        //Some actors, like Dark Link, Arwings, and Zora's Sapphire...?, are in this category despite not being actual bosses,
-        //so ignore any "boss" if `currentBossSoulRandInf` doesn't change from RAND_INF_MAX.
+        // Deletes all actors in the boss category if the soul isn't found.
+        // Some actors, like Dark Link, Arwings, and Zora's Sapphire...?, are in this category despite not being actual bosses,
+        // so ignore any "boss" if `currentBossSoulRandInf` doesn't change from RAND_INF_MAX.
+        // Iron Knuckle (Nabooru) in Twinrova's room is a special exception, so exclude knuckles too.
         if (currentBossSoulRandInf != RAND_INF_MAX) {
-            if (!Flags_GetRandomizerInf(currentBossSoulRandInf) && actor->category == ACTORCAT_BOSS) {
+            if (!Flags_GetRandomizerInf(currentBossSoulRandInf) && actor->category == ACTORCAT_BOSS &&
+                actor->id != ACTOR_EN_IK) {
                 Actor_Delete(&gPlayState->actorCtx, actor, gPlayState);
             }
             //Special case for Phantom Ganon's horse (and fake), as they're considered "background actors",
