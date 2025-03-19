@@ -1855,9 +1855,8 @@ bool Message_DecodeName(PlayState* play, s16* decodedBufPosPtr, s32* charTexIdxP
                 }
             }
         }
-        (*decodedBufPosPtr)--;
-
     }
+    (*decodedBufPosPtr)--;
      
     return true;
 }
