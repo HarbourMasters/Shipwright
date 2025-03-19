@@ -17,8 +17,11 @@ void SohMenu::AddMenuRandomizer() {
         .CVar(CVAR_WINDOW("RandomizerSettings"))
         .WindowName("Randomizer Settings")
         .Options(WindowButtonOptions().Tooltip("Enables the separate Randomizer Settings Window."));
+
+    // Enhancements
     path.sidebarName = "Enhancements";
-    AddSidebarEntry("Randomizer", path.sidebarName, 1);
+    AddSidebarEntry("Randomizer", path.sidebarName, 3);
+    AddWidget(path, "Randomizer Enhancements", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Rando-Relevant Navi Hints", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("RandoRelevantNavi"))
         .Options(CheckboxOptions().Tooltip(
@@ -75,7 +78,9 @@ void SohMenu::AddMenuRandomizer() {
     AddWidget(path, "Item Scale: %.2f", WIDGET_CVAR_SLIDER_FLOAT)
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimationScale"))
         .PreFunc([](WidgetInfo& info) {
-        info.isHidden = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_DISABLED) == SGIA_DISABLED;
+            info.options->disabled =
+                !CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_DISABLED);
+            info.options->disabledTooltip = "This slider only applies when using the \"Skip Get Item Animations\" option.";
             })
         .Options(FloatSliderOptions()
             .Min(5.0f)
