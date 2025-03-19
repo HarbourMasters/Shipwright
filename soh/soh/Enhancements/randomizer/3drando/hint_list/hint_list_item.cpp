@@ -2070,23 +2070,23 @@ void StaticData::HintTable_Init_Item() {
                                                          CustomMessage("a rightward tone", /*german*/"ein rechtsseitiger Ton", /*french*/"une tonalité vers la droite")});
                                                           // /*spanish*/un tono hacia la derecha
 
-    hintTextTable[RHT_FISHING_POLE] = HintText(CustomMessage("a fishing pole", /*german*/"eine Angelrute", /*french*/"canne à pêche"),
+    hintTextTable[RHT_FISHING_POLE] = HintText(CustomMessage("a fishing pole", /*german*/"eine Angelrute", /*french*/"une canne à pêche"),
                                                // /*spanish*/caña de pescar
                                                {
-                                               CustomMessage("the pond owner's property", /*german*/"der Besitz des Teicheigners", /*french*/"(canne à pêche)")
+                                               CustomMessage("the pond owner's property", /*german*/"der Besitz des Teicheigners", /*french*/"(un truc qui appartient au propriétaire de l'étang)")
                                                 // /*spanish*/(caña de pescar)
                                                }, {
-                                               CustomMessage("a fish-puller", /*german*/"ein Fischzieher", /*french*/"(canne à pêche)")});
+                                               CustomMessage("a fish-puller", /*german*/"ein Fischzieher", /*french*/"(un aimant à poisson)")});
                                                 // /*spanish*/(caña de pescar)
 
-    hintTextTable[RHT_BOMBCHU_BAG] = HintText(CustomMessage("Bombchu Bag", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BOMBCHU_BAG] = HintText(CustomMessage("Bombchu Bag", /*german*/"!!!", /*french*/"un Sac de Missiles Teigneux"),
                                               {
                                              CustomMessage("explosives", /*german*/"ein Explosivpaket", /*french*/"un paquet d'explosifs"),
                                                   // /*spanish*/un montón de explosivos
                                              CustomMessage("something that can remove boulders", /*german*/"etwas, das Geröll entfernen kann", /*french*/"une chose qui enlève les rochers")
                                                   // /*spanish*/algo que pueda quitar rocas
                                               }, {
-                                              CustomMessage("sack of mice", /*german*/"!!!", /*french*/"!!!")});
+                                              CustomMessage("sack of mice", /*german*/"!!!", /*french*/"un Sac rempli de souris")});
 
     hintTextTable[RHT_SKELETON_KEY] = HintText(CustomMessage("a Skeleton Key", /*german*/ "ein Universalschlüssel", /*french*/ "une Clé Squelette"),
                                                // /*spanish*/una Llave Maestra
@@ -2096,49 +2096,49 @@ void StaticData::HintTable_Init_Item() {
                                                },
                                                { CustomMessage("a master unlocker", /*german*/ "ein Meisterentsperrer", /*french*/ "un Kit de Déverrouillage") });
                                                 // /*spanish*/un desbloqueador maestro
-    hintTextTable[RHT_QUIVER_INF] = HintText(CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_QUIVER_INF] = HintText(CustomMessage("an infinite Quiver", /*german*/"!!!", /*french*/"un Carquois Infini"),
                                              {
                                              CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
                                              }, {
                                              CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
 
-    hintTextTable[RHT_BOMB_BAG_INF] = HintText(CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BOMB_BAG_INF] = HintText(CustomMessage("an infinite Bomb Bag", /*german*/"!!!", /*french*/"un Sac de Bombe sans fond"),
                                                {
                                                CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
                                                }, {
                                                CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
 
-    hintTextTable[RHT_BULLET_BAG_INF] = HintText(CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BULLET_BAG_INF] = HintText(CustomMessage("an infinite Bullet Bag", /*german*/"!!!", /*french*/"un Sac de Graine sans fond"),
                                                  {
                                                  CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
                                                  }, {
                                                  CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
 
-    hintTextTable[RHT_STICK_UPGRADE_INF] = HintText(CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_STICK_UPGRADE_INF] = HintText(CustomMessage("infinite Deku Sticks", /*german*/"!!!", /*french*/" des Bâtons Mojo illimités"),
                                                     {
                                                     CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
                                                     }, {
                                                     CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
 
-    hintTextTable[RHT_NUT_UPGRADE_INF] = HintText(CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_NUT_UPGRADE_INF] = HintText(CustomMessage("infinite Deku Nut", /*german*/"!!!", /*french*/"des Noix Mojo illimitées"),
                                                   {
                                                   CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
                                                   }, {
                                                   CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
 
-    hintTextTable[RHT_MAGIC_INF] = HintText(CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_MAGIC_INF] = HintText(CustomMessage("unlimited Magic", /*german*/"!!!", /*french*/"de la Magie infinie"),
                                             {
                                             CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
                                             }, {
                                             CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
 
-    hintTextTable[RHT_BOMBCHU_INF] = HintText(CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BOMBCHU_INF] = HintText(CustomMessage("infinite Bombchus", /*german*/"!!!", /*french*/"des Missiles Teigneux illimités"),
                                               {
                                               CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
                                               }, {
                                               CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
 
-    hintTextTable[RHT_WALLET_INF] = HintText(CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_WALLET_INF] = HintText(CustomMessage("an infinite Wallet", /*german*/"!!!", /*french*/"une Bourse sans fond"),
                                              {
                                              CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
                                              }, {

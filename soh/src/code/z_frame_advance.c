@@ -18,10 +18,11 @@ s32 FrameAdvance_Update(FrameAdvanceContext* frameAdvCtx, Input* input) {
         frameAdvCtx->enabled = !frameAdvCtx->enabled;
     }
 
-    if (!frameAdvCtx->enabled || CVarGetInteger(CVAR_GENERAL("FrameAdvance"), 0) || (CHECK_BTN_ALL(input->cur.button, BTN_Z) &&
+    if (!frameAdvCtx->enabled || CVarGetInteger(CVAR_DEVELOPER_TOOLS("FrameAdvanceTick"), 0) ||
+        (CHECK_BTN_ALL(input->cur.button, BTN_Z) &&
                                   (CHECK_BTN_ALL(input->press.button, BTN_R) ||
                                    (CHECK_BTN_ALL(input->cur.button, BTN_R) && (++frameAdvCtx->timer >= 9))))) {
-        CVarClear(CVAR_GENERAL("FrameAdvance"));
+        CVarClear(CVAR_DEVELOPER_TOOLS("FrameAdvanceTick"));
         frameAdvCtx->timer = 0;
         return true;
     }

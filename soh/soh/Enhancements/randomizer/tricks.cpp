@@ -1,4 +1,5 @@
 #include "tricks.h"
+#include "soh/SohGui/UIWidgets.hpp"
 #include <unordered_map>
 
 namespace Rando {
@@ -71,7 +72,6 @@ namespace Rando {
 
     const ImVec4 Tricks::GetTextColor(const Tag tag) {
         switch(tag) {
-            case Tag::EXPERIMENTAL:
             case Tag::GLITCH:
                 return { 0.00f, 0.00f, 0.00f, 1.0f };
             default:
@@ -82,32 +82,33 @@ namespace Rando {
     const ImVec4 Tricks::GetTagColor(const Tag tag) {
         switch(tag) {
             case Tag::NOVICE:
-                return { 0.09f, 0.55f, 0.37f, 1.00f };
+                return UIWidgets::ColorValues.at(UIWidgets::Colors::Green);
             case Tag::INTERMEDIATE:
-                return { 0.95f, 0.52f, 0.00f, 1.00f };
+                return UIWidgets::ColorValues.at(UIWidgets::Colors::Orange);
             case Tag::ADVANCED:
-                return { 0.00f, 0.29f, 0.71f, 1.00f };
+                return UIWidgets::ColorValues.at(UIWidgets::Colors::Blue);
             case Tag::EXPERT:
-                return { 0.53f, 0.05f, 0.14f, 1.00f };
+                return UIWidgets::ColorValues.at(UIWidgets::Colors::Red);
             case Tag::EXTREME:
-                return { 0.27f, 0.00f, 0.27f, 1.00f };
+                return UIWidgets::ColorValues.at(UIWidgets::Colors::Purple);
             case Tag::EXPERIMENTAL:
-                return { 0.00f, 1.00f, 1.00f, 1.00f };
+                return UIWidgets::ColorValues.at(UIWidgets::Colors::LightBlue);
             case Tag::GLITCH:
-                return { 1.00f, 1.00f, 1.00f, 1.00f };
+                return UIWidgets::ColorValues.at(UIWidgets::Colors::White);
             default:
                 assert(false);
-                return { 0.50f, 0.50f, 0.50f, 1.00f };
+                return UIWidgets::ColorValues.at(UIWidgets::Colors::Gray);
         }
     }
 
-    void Tricks::DrawTagChips(const std::set<Tag>& rtTags) {
+    void Tricks::DrawTagChips(const std::set<Tag>& rtTags, std::string trickName) {
         for (const Tag rtTag : rtTags) {
+            std::string tagId = GetTagName(rtTag) + "##" + trickName;
             ImGui::SameLine();
             ImGui::BeginDisabled();
-            ImGui::PushStyleColor(ImGuiCol_Button, GetTagColor(rtTag));
-            ImGui::SmallButton(GetTagName(rtTag).c_str());
-            ImGui::PopStyleColor();
+            UIWidgets::PushStyleButton(GetTagColor(rtTag));
+            ImGui::SmallButton(tagId.c_str());
+            UIWidgets::PopStyleButton();
             ImGui::EndDisabled();
         }
     }

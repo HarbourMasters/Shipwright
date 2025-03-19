@@ -3112,7 +3112,7 @@ void FileChoose_LoadGame(GameState* thisx) {
 
     Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     gSaveContext.fileNum = this->buttonIndex;
-    gSaveContext.gameMode = 0;
+    gSaveContext.gameMode = GAMEMODE_NORMAL;
 
     if ((this->buttonIndex == FS_BTN_SELECT_FILE_1 && CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0)) || this->buttonIndex == 0xFF) {
         if (this->buttonIndex == 0xFF) {
@@ -3737,7 +3737,4 @@ void FileChoose_Init(GameState* thisx) {
     Font_LoadOrderedFont(&this->font);
     Audio_QueueSeqCmd(0xF << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0xA);
     func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_FILE_SELECT, 0, 7, 1);
-
-    // Originally this was only set when transitioning from the title screen, but gSkipLogoTitle skips that process so we're ensuring it's set here
-    gSaveContext.gameMode = GAMEMODE_FILE_SELECT;
 }
