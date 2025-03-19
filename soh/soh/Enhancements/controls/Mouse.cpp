@@ -129,6 +129,10 @@ void Mouse_RegisterHandleFirstPerson() {
     COND_HOOK(OnPlayerFirstPersonControl, true, Mouse_HandleFirstPerson);
 }
 
+void Mouse_RegisterHandleShield() {
+    COND_HOOK(OnPlayerShieldControl, true, Mouse_HandleShield);
+}
+
 void Mouse_RegisterUpdateQuickspinCount() {
     COND_HOOK(OnPlayerProcessStick, true, Mouse_UpdateQuickspinCount);
 }
@@ -137,8 +141,9 @@ void Mouse_RegisterHandleQuickspin() {
     REGISTER_VB_SHOULD(VB_SHOULD_QUICKSPIN, { Mouse_HandleQuickspin(should, va_arg(args, s8*), va_arg(args, s8*)); } );
 }
 
-static RegisterShipInitFunc initFunc_shield(Mouse_RegisterRecenterCursorOnShield, {});
+static RegisterShipInitFunc initFunc_shieldRecenter(Mouse_RegisterRecenterCursorOnShield, {});
 static RegisterShipInitFunc initFunc_firstPerson(Mouse_RegisterHandleFirstPerson, {});
 static RegisterShipInitFunc initFunc_quickspinCount(Mouse_RegisterUpdateQuickspinCount, {});
 static RegisterShipInitFunc initFunc_quickspin(Mouse_RegisterHandleQuickspin, {});
+static RegisterShipInitFunc initFunc_shieldMove(Mouse_RegisterHandleShield, {});
 } //extern "C"

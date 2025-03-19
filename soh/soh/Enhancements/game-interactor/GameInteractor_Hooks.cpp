@@ -147,6 +147,10 @@ void GameInteractor_ExecuteOnPlayerFirstPersonControl(Player* player) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerFirstPersonControl>(player);
 }
 
+void GameInteractor_ExecuteOnPlayerShieldControl(float_t* sp50, float_t* sp54) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerShieldControl>(sp50, sp54);
+}
+
 void GameInteractor_ExecuteOnPlayerProcessStick() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerProcessStick>();
 }
