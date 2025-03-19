@@ -55,7 +55,7 @@ void SohMenu::AddMenuSettings() {
     WidgetPath path = { "Settings", "General", SECTION_COLUMN_1 };
 
     // General - Settings
-    AddWidget(path, "General Settings", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Menu Settings", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Menu Theme", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_SETTING("Menu.Theme"))
         .Options(ComboboxOptions()
@@ -69,6 +69,14 @@ void SohMenu::AddMenuSettings() {
             "Allows controller navigation of the port menu (Settings, Enhancements,...)\nCAUTION: "
             "This will disable game inputs while the menu is visible.\n\nD-pad to move between "
             "items, A to select, B to move up in scope."));
+    AddWidget(path, "Menu Background Opacity", WIDGET_CVAR_SLIDER_FLOAT)
+        .CVar(CVAR_SETTING("Menu.BackgroundOpacity"))
+        .Options(FloatSliderOptions()
+                     .DefaultValue(0.85f)
+                     .IsPercentage()
+                     .Tooltip("Sets the opacity of the background of the port menu."));
+
+    AddWidget(path, "General Settings", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Cursor Always Visible", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("CursorVisibility"))
         .Callback([](WidgetInfo& info) {
