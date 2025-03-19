@@ -297,6 +297,8 @@ void RandomizerOnPlayerUpdateForRCQueueHandler() {
             rc != RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE &&
             // Always show ItemGet animation for ice traps
             !(getItemEntry.modIndex == MOD_RANDOMIZER && getItemEntry.getItemId == RG_ICE_TRAP) &&
+            // Always show ItemGet animation outside of randomizer to keep behaviour consistent in vanilla
+            IS_RANDO &&
             (
                 CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_DISABLED) == SGIA_ALL ||
                 (
