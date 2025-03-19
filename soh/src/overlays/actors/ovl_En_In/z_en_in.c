@@ -661,7 +661,7 @@ void func_80A7A568(EnIn* this, PlayState* play) {
     if (!Flags_GetEventChkInf(EVENTCHKINF_RENTED_HORSE_FROM_INGO) && (player->stateFlags1 & PLAYER_STATE1_ON_HORSE)) {
         Flags_SetInfTable(INFTABLE_AB);
     }
-    if (gSaveContext.timer1State == 10) {
+    if (gSaveContext.timerState == 10) {
         Audio_PlaySoundGeneral(NA_SE_SY_FOUND, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         func_80A79C78(this, play);
         this->actionFunc = func_80A7B024;

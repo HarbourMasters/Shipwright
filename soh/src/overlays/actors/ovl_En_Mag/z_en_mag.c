@@ -8,6 +8,7 @@
 #include "objects/object_mag/object_mag.h"
 #include <soh/GameVersions.h>
 #include "soh/ResourceManagerHelpers.h"
+#include <string.h>
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 

@@ -70,6 +70,11 @@ extern "C" uint32_t ResourceMgr_GetGameRegion(int index) {
     }
 }
 
+extern "C" char* _message_0xFFFC_nes;
+extern "C" bool ResourceMgr_IsPalLoaded() {
+    return _message_0xFFFC_nes != NULL;
+}
+
 u32 IsSceneMasterQuest(s16 sceneNum) {
     u8 mqMode = CVarGetInteger(CVAR_GENERAL("BetterDebugWarpScreenMQMode"), WARP_MODE_OVERRIDE_OFF);
     if (mqMode == WARP_MODE_OVERRIDE_MQ_AS_VANILLA) {

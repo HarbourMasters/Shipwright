@@ -74,21 +74,21 @@ static AnimationFrameCountInfo sAnimationInfo[] = {
 
 u16 func_80AA2AA0(PlayState* play, Actor* thisx) {
     Player* player = GET_PLAYER(play);
-    s16* timer1ValuePtr; // weirdness with this necessary to match
+    s16* timerSecondsPtr; // weirdness with this necessary to match
 
     if (!Flags_GetInfTable(INFTABLE_B8)) {
         return 0x2000;
     }
-    timer1ValuePtr = &gSaveContext.timerSeconds;
+    timerSecondsPtr = &gSaveContext.timerSeconds;
     if (gSaveContext.eventInf[0] & 0x400) {
-        gSaveContext.timer1Value = gSaveContext.timer1Value;
+        gSaveContext.timerSeconds = gSaveContext.timerSeconds;
         thisx->flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
-        if (gSaveContext.timer1Value >= 0xD3) {
+        if (gSaveContext.timerSeconds >= 0xD3) {
             return 0x208E;
         }
         if ((HIGH_SCORE(HS_HORSE_RACE) == 0) || (HIGH_SCORE(HS_HORSE_RACE) >= 0xB4)) {
             HIGH_SCORE(HS_HORSE_RACE) = 0xB4;
-            gSaveContext.timerSeconds = *timer1ValuePtr;
+            gSaveContext.timerSeconds = *timerSecondsPtr;
         }
         if (!Flags_GetEventChkInf(EVENTCHKINF_WON_COW_IN_MALONS_RACE) && (gSaveContext.timerSeconds < 0x32)) {
             return 0x208F;

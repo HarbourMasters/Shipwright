@@ -7,6 +7,7 @@
 #include "soh/Enhancements/randomizer/savefile.h"
 #include "soh/OTRGlobals.h"
 #include "soh/SaveManager.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define NUM_DUNGEONS 8
 #define NUM_COWS 10
@@ -239,9 +240,9 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
     gSaveContext.dayTime = 0x6AAB;
     gSaveContext.cutsceneIndex = 0xFFF1;
     if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
-        gSaveContext.filenameLanguage = NAME_LANGUAGE_PAL;
+        gSaveContext.ship.filenameLanguage = NAME_LANGUAGE_PAL;
     } else { // GAME_REGION_NTSC
-        gSaveContext.filenameLanguage = (gSaveContext.language == LANGUAGE_JPN) ? NAME_LANGUAGE_NTSC_JPN : NAME_LANGUAGE_NTSC_ENG;
+        gSaveContext.ship.filenameLanguage = (gSaveContext.language == LANGUAGE_JPN) ? NAME_LANGUAGE_NTSC_JPN : NAME_LANGUAGE_NTSC_ENG;
     }
 
     if ((fileChooseCtx->buttonIndex == 0 && CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0))) {
