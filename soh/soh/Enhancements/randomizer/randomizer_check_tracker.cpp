@@ -822,6 +822,7 @@ void LoadFile() {
     SaveManager::Instance->LoadData("areasSpoiled", areasSpoiled, (uint32_t)0);
     UpdateAllOrdering();
     UpdateAllAreas();
+    RegionTable_Init();
 }
 
 void Teardown() {
