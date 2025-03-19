@@ -14,7 +14,7 @@ namespace SohGui {
 
 extern std::shared_ptr<SohMenu> mSohMenu;
 using namespace UIWidgets;
-static std::unordered_map<int32_t, const char*> languages = {{ LANGUAGE_ENG, "English" }, { LANGUAGE_GER, "German" }, { LANGUAGE_FRA, "French" }};
+static const std::unordered_map<int32_t, const char*> languages = {{ LANGUAGE_ENG, "English" }, { LANGUAGE_GER, "German" }, { LANGUAGE_FRA, "French" }, { LANGUAGE_JPN, "Japanese"}};
 static std::unordered_map<int32_t, const char*> imguiScaleOptions = {{ 0, "Small" }, { 1, "Normal" }, { 2, "Large" }, { 3, "X-Large" }};
 
 const char* GetGameVersionString(uint32_t index) {
@@ -45,6 +45,28 @@ const char* GetGameVersionString(uint32_t index) {
             return "IQUE TW";
         default:
             return "UNKNOWN";
+    }
+}
+
+#include "message_data_static.h"
+extern "C" MessageTableEntry* sNesMessageEntryTablePtr;
+extern "C" MessageTableEntry* sGerMessageEntryTablePtr;
+extern "C" MessageTableEntry* sFraMessageEntryTablePtr;
+extern "C" MessageTableEntry* sJpnMessageEntryTablePtr;
+
+static const std::array<MessageTableEntry**, LANGUAGE_MAX> messageTables = {
+    &sNesMessageEntryTablePtr, &sGerMessageEntryTablePtr, &sFraMessageEntryTablePtr, &sJpnMessageEntryTablePtr
+};
+
+void SohMenu::UpdateLanguageMap(std::unordered_map<int32_t, const char*>& languageMap) {
+    for (int32_t i = LANGUAGE_ENG; i < LANGUAGE_MAX; i++) {
+        if (*messageTables.at(i) != NULL) {
+            if (!languageMap.contains(i)) {
+                languageMap.insert(std::make_pair(i, languages.at(i)));
+            }
+        } else {
+            languageMap.erase(i);
+        }
     }
 }
 
@@ -119,8 +141,12 @@ void SohMenu::AddMenuSettings() {
     AddWidget(path, "Languages", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Translate Title Screen", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("TitleScreenTranslation"));
-    AddWidget(path, "Menu Language", WIDGET_CVAR_COMBOBOX)
+    AddWidget(path, "Language", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_SETTING("Languages"))
+        .PreFunc([](WidgetInfo& info) {
+            auto options = std::static_pointer_cast<UIWidgets::ComboboxOptions>(info.options);
+            SohMenu::UpdateLanguageMap(options->comboMap);
+        })
         .Options(ComboboxOptions().LabelPosition(LabelPosition::Far).ComponentAlignment(ComponentAlignment::Right).ComboMap(languages).DefaultIndex(LANGUAGE_ENG));
     AddWidget(path, "Accessibility", WIDGET_SEPARATOR_TEXT);
     #if defined(_WIN32) || defined(__APPLE__)

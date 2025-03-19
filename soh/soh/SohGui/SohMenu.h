@@ -217,6 +217,7 @@ class SohMenu : public Ship::Menu {
     void AddMenuDevTools();
     void AddMenuRandomizer();
     void AddMenuNetwork();
+    static void UpdateLanguageMap(std::unordered_map<int32_t, const char*>& languageMap);
 
   private:
     char mGitCommitHashTruncated[8];
