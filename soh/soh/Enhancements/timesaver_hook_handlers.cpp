@@ -372,7 +372,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             break;
         }
         case VB_SKIP_GERUDO_MEMBERSHIP_TALK: {
-            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO)) {
+            if (ForcedDialogIsDisabled(FORCED_DIALOG_SKIP_NPC)) {
                 *should = true;
             }
             break;
