@@ -80,7 +80,7 @@ Color_RGB8 SmallEmblemDefaultValue[10] = {
 extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 
 extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEntry) {
-    s8 isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 0);
+    s8 isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 1);
     int slot = getItemEntry->drawItemId - RG_FOREST_TEMPLE_SMALL_KEY;
 
     Gfx* customIconDLs[] = {
@@ -247,7 +247,7 @@ extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEnt
 }
 
 extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEntry) {
-    s8 isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 0);
+    s8 isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 1);
     int slot = getItemEntry->drawItemId - RG_FOREST_TEMPLE_KEY_RING;
 
     Gfx* CustomIconDLs[] = {

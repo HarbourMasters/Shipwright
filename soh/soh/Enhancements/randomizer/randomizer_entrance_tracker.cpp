@@ -674,8 +674,7 @@ void EntranceTrackerSettingsWindow::DrawElement() {
         ImGui::Text("Sort By");
         UIWidgets::CVarRadioButton("To", CVAR_TRACKER_ENTRANCE("SortBy"), 0,
                                     UIWidgets::RadioButtonsOptions()
-                                        .Color(THEME_COLOR)
-                                        .Tooltip("Sort entrances by the original source entrance"));
+                                        .Color(THEME_COLOR).Tooltip("Sort entrances by the original source entrance"));
         UIWidgets::CVarRadioButton("From", CVAR_TRACKER_ENTRANCE("SortBy"), 1,
                                     UIWidgets::RadioButtonsOptions()
                                         .Color(THEME_COLOR).Tooltip("Sort entrances by the overrided destination"));

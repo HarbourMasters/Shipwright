@@ -564,7 +564,7 @@ void GameInteractor::RawAction::SetRandomWind(bool active) {
 void GameInteractor::RawAction::SetPlayerInvincibility(bool active) {
     Player* player = GET_PLAYER(gPlayState);
     if (active) {
-        player->invincibilityTimer = 1000;
+        player->invincibilityTimer = -20;
     } else {
         player->invincibilityTimer = 0;
     }

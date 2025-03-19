@@ -50,7 +50,7 @@ void DrawPresetSelector(PresetType presetTypeId) {
         comboboxTooltip += std::string(iter->second.label) + " - " + std::string(iter->second.description);
     }
 
-    ImGui::Text("Presets", false, true);
+    ImGui::Text("Presets");
     UIWidgets::PushStyleCombobox(THEME_COLOR);
     if (ImGui::BeginCombo("##PresetsComboBox", selectedPresetDef.label)) {
         for ( auto iter = presetTypeDef.presets.begin(); iter != presetTypeDef.presets.end(); ++iter ) {

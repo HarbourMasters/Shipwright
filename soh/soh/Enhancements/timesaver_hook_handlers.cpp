@@ -1106,12 +1106,18 @@ void TimeSaverOnFlagSetHandler(int16_t flagType, int16_t flag) {
                 break;
             case FLAG_ITEM_GET_INF:
                 switch (flag) {
-                    case ITEMGETINF_OBTAINED_STICK_UPGRADE_FROM_STAGE:
-                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_DEKU_STICK_CAPACITY_30).GetGIEntry_Copy();
+                    case ITEMGETINF_OBTAINED_STICK_UPGRADE_FROM_STAGE: {
+                        RandomizerGet stickUpgrade =
+                            CUR_UPG_VALUE(UPG_STICKS) == 2 ? RG_DEKU_STICK_CAPACITY_30 : RG_DEKU_STICK_CAPACITY_20;
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(stickUpgrade).GetGIEntry_Copy();
                         break;
-                    case ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE:
-                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_DEKU_NUT_CAPACITY_40).GetGIEntry_Copy();
+                    }
+                    case ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE: {
+                        RandomizerGet nutUpgrade =
+                            CUR_UPG_VALUE(UPG_NUTS) == 2 ? RG_DEKU_NUT_CAPACITY_40 : RG_DEKU_NUT_CAPACITY_30;
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(nutUpgrade).GetGIEntry_Copy();
                         break;
+                    }
                 }
                 break;
         }

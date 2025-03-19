@@ -1550,7 +1550,7 @@ void ResetBaseOptions() {
     intSliderOptionsBase.Color(THEME_COLOR).Size({320.0f, 0.0f}).Tooltip("");
     buttonOptionsBase.Color(THEME_COLOR).Size(Sizes::Inline).Tooltip("");
     checkboxOptionsBase.Color(THEME_COLOR).Tooltip("");
-    comboboxOptionsBase.Color(THEME_COLOR).ComponentAlignment(ComponentAlignment::Left).LabelPosition(LabelPosition::Near).Tooltip("");
+    comboboxOptionsBase.Color(THEME_COLOR).ComponentAlignment(ComponentAlignments::Left).LabelPosition(LabelPositions::Near).Tooltip("");
 }
 
 void SaveEditorWindow::DrawElement() {

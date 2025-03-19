@@ -564,7 +564,7 @@ void InputViewerSettingsWindow::DrawElement() {
             ImGui::Unindent();
         }
 
-        UIWidgets:PaddedSeparator(true, true);
+        UIWidgets::PaddedSeparator(true, true);
     }
 
     if (ImGui::CollapsingHeader("Analog Stick")) {

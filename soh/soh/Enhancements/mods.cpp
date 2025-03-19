@@ -810,8 +810,10 @@ void RegisterRandomizedEnemySizes() {
         Actor* actor = static_cast<Actor*>(refActor);
 
         // Exclude wobbly platforms in Jabu because they need to act like platforms.
+        // Exclude demo effect for Zora sapphire being re-categorized as a "boss".
         // Exclude Dead Hand hands and Bongo Bongo main body because they make the fights (near) impossible.
-        uint8_t excludedEnemy = actor->id == ACTOR_EN_BROB || actor->id == ACTOR_EN_DHA || (actor->id == ACTOR_BOSS_SST && actor->params == -1);
+        uint8_t excludedEnemy = actor->id == ACTOR_EN_BROB || actor->id == ACTOR_EN_DHA ||
+                                actor->id == ACTOR_DEMO_EFFECT || (actor->id == ACTOR_BOSS_SST && actor->params == -1);
 
         // Dodongo, Volvagia and Dead Hand are always smaller because they're impossible when bigger.
         uint8_t smallOnlyEnemy = actor->id == ACTOR_BOSS_DODONGO || actor->id == ACTOR_BOSS_FD ||

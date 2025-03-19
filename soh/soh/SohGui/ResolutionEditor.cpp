@@ -422,10 +422,10 @@ void RegisterResolutionWidgets() {
             // Declare input interaction bools outside of IF statement to prevent Y field from disappearing.
             const bool input_X = UIWidgets::SliderFloat("X", &aspectRatioX,
                 UIWidgets::FloatSliderOptions({{ .disabled = disabled_everything }}).Min(0.1f).Max(32.0f).Step(0.001f).Format("%3f")
-                            .Color(THEME_COLOR).LabelPosition(UIWidgets::LabelPosition::Near).ComponentAlignment(UIWidgets::ComponentAlignment::Right));
+                            .Color(THEME_COLOR).LabelPosition(UIWidgets::LabelPositions::Near).ComponentAlignment(UIWidgets::ComponentAlignments::Right));
             const bool input_Y = UIWidgets::SliderFloat("Y", &aspectRatioY,
                 UIWidgets::FloatSliderOptions({{ .disabled = disabled_everything }}).Min(0.1f).Max(24.0f).Step(0.001f).Format("%3f")
-                            .Color(THEME_COLOR).LabelPosition(UIWidgets::LabelPosition::Near).ComponentAlignment(UIWidgets::ComponentAlignment::Right));
+                            .Color(THEME_COLOR).LabelPosition(UIWidgets::LabelPositions::Near).ComponentAlignment(UIWidgets::ComponentAlignments::Right));
             if (input_X || input_Y) {
                 item_aspectRatio = default_aspectRatio;
                 update[UPDATE_aspectRatioX] = true;

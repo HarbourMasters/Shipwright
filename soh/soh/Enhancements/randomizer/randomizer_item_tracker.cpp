@@ -1388,8 +1388,8 @@ void ItemTrackerSettingsWindow::DrawElement() {
 
     ImGui::PopItemWidth();
     if (CVarCombobox("Window Type", CVAR_TRACKER_ITEM("WindowType"), windowTypes, ComboboxOptions()
-            .DefaultIndex(TRACKER_WINDOW_FLOATING).ComponentAlignment(ComponentAlignment::Right)
-            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
+            .DefaultIndex(TRACKER_WINDOW_FLOATING).ComponentAlignment(ComponentAlignments::Right)
+            .LabelPosition(LabelPositions::Far).Color(THEME_COLOR))) {
         shouldUpdateVectors = true;
     }
 
@@ -1401,19 +1401,19 @@ void ItemTrackerSettingsWindow::DrawElement() {
             shouldUpdateVectors = true;
         }
         if (CVarCombobox("Display Mode", CVAR_TRACKER_ITEM("DisplayType.Main"), displayModes, ComboboxOptions()
-            .DefaultIndex(TRACKER_DISPLAY_ALWAYS).ComponentAlignment(ComponentAlignment::Right)
-            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
+            .DefaultIndex(TRACKER_DISPLAY_ALWAYS).ComponentAlignment(ComponentAlignments::Right)
+            .LabelPosition(LabelPositions::Far).Color(THEME_COLOR))) {
             shouldUpdateVectors = true;
         }
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_COMBO_BUTTON) {
             if (CVarCombobox("Combo Button 1", CVAR_TRACKER_ITEM("ComboButton1"), buttons, ComboboxOptions()
-            .DefaultIndex(TRACKER_COMBO_BUTTON_L).ComponentAlignment(ComponentAlignment::Right)
-            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
+            .DefaultIndex(TRACKER_COMBO_BUTTON_L).ComponentAlignment(ComponentAlignments::Right)
+            .LabelPosition(LabelPositions::Far).Color(THEME_COLOR))) {
                 shouldUpdateVectors = true;
             }
             if (CVarCombobox("Combo Button 2", CVAR_TRACKER_ITEM("ComboButton2"), buttons, ComboboxOptions()
-            .DefaultIndex(TRACKER_COMBO_BUTTON_R).ComponentAlignment(ComponentAlignment::Right)
-            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
+            .DefaultIndex(TRACKER_COMBO_BUTTON_R).ComponentAlignment(ComponentAlignments::Right)
+            .LabelPosition(LabelPositions::Far).Color(THEME_COLOR))) {
                 shouldUpdateVectors = true;
             }
         }
@@ -1425,8 +1425,8 @@ void ItemTrackerSettingsWindow::DrawElement() {
     
     ImGui::NewLine();
     CVarCombobox("Ammo/Capacity Tracking", CVAR_TRACKER_ITEM("ItemCountType"), itemTrackerCapacityTrackOptions, ComboboxOptions()
-            .DefaultIndex(ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY).ComponentAlignment(ComponentAlignment::Left)
-            .LabelPosition(LabelPosition::Above).Color(THEME_COLOR)
+            .DefaultIndex(ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY).ComponentAlignment(ComponentAlignments::Left)
+            .LabelPosition(LabelPositions::Above).Color(THEME_COLOR)
             .Tooltip("Customize what the numbers under each item are tracking."
                          "\n\nNote: items without capacity upgrades will track ammo even in capacity mode"));
     if (CVarGetInteger(CVAR_TRACKER_ITEM("ItemCountType"), ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY) == ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY || CVarGetInteger(CVAR_TRACKER_ITEM("ItemCountType"), ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY) == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY) {
@@ -1436,35 +1436,35 @@ void ItemTrackerSettingsWindow::DrawElement() {
     }
 
     CVarCombobox("Key Count Tracking", CVAR_TRACKER_ITEM("KeyCounts"), itemTrackerKeyTrackOptions, ComboboxOptions()
-            .DefaultIndex(KEYS_COLLECTED_MAX).ComponentAlignment(ComponentAlignment::Left)
-            .LabelPosition(LabelPosition::Above).Color(THEME_COLOR)
+            .DefaultIndex(KEYS_COLLECTED_MAX).ComponentAlignment(ComponentAlignments::Left)
+            .LabelPosition(LabelPositions::Above).Color(THEME_COLOR)
             .Tooltip("Customize what numbers are shown for key tracking."));
 
     CVarCombobox("Triforce Piece Count Tracking", CVAR_TRACKER_ITEM("TriforcePieceCounts"), itemTrackerTriforcePieceTrackOptions, ComboboxOptions()
-            .DefaultIndex(TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX).ComponentAlignment(ComponentAlignment::Left)
-            .LabelPosition(LabelPosition::Above).Color(THEME_COLOR)
+            .DefaultIndex(TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX).ComponentAlignment(ComponentAlignments::Left)
+            .LabelPosition(LabelPositions::Above).Color(THEME_COLOR)
             .Tooltip("Customize what numbers are shown for triforce piece tracking."));
 
     ImGui::TableNextColumn();
 
     if (CVarCombobox("Inventory", CVAR_TRACKER_ITEM("DisplayType.Inventory"), displayTypes, ComboboxOptions()
-            .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW).ComponentAlignment(ComponentAlignment::Right)
-            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
+            .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW).ComponentAlignment(ComponentAlignments::Right)
+            .LabelPosition(LabelPositions::Far).Color(THEME_COLOR))) {
         shouldUpdateVectors = true;
     }
     if (CVarCombobox("Equipment", CVAR_TRACKER_ITEM("DisplayType.Equipment"), displayTypes, ComboboxOptions()
-            .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW).ComponentAlignment(ComponentAlignment::Right)
-            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
+            .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW).ComponentAlignment(ComponentAlignments::Right)
+            .LabelPosition(LabelPositions::Far).Color(THEME_COLOR))) {
         shouldUpdateVectors = true;
     }
     if (CVarCombobox("Misc", CVAR_TRACKER_ITEM("DisplayType.Misc"), displayTypes, ComboboxOptions()
-            .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW).ComponentAlignment(ComponentAlignment::Right)
-            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
+            .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW).ComponentAlignment(ComponentAlignments::Right)
+            .LabelPosition(LabelPositions::Far).Color(THEME_COLOR))) {
         shouldUpdateVectors = true;
     }
     if (CVarCombobox("Dungeon Rewards", CVAR_TRACKER_ITEM("DisplayType.DungeonRewards"), displayTypes, ComboboxOptions()
-            .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW).ComponentAlignment(ComponentAlignment::Right)
-            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
+            .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW).ComponentAlignment(ComponentAlignments::Right)
+            .LabelPosition(LabelPositions::Far).Color(THEME_COLOR))) {
         shouldUpdateVectors = true;
     }
     if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonRewards"), SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_SEPARATE) {
@@ -1473,13 +1473,13 @@ void ItemTrackerSettingsWindow::DrawElement() {
         }
     }
     if (CVarCombobox("Songs", CVAR_TRACKER_ITEM("DisplayType.Songs"), displayTypes, ComboboxOptions()
-            .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW).ComponentAlignment(ComponentAlignment::Right)
-            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
+            .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW).ComponentAlignment(ComponentAlignments::Right)
+            .LabelPosition(LabelPositions::Far).Color(THEME_COLOR))) {
         shouldUpdateVectors = true;
     }
     if (CVarCombobox("Dungeon Items", CVAR_TRACKER_ITEM("DisplayType.DungeonItems"), displayTypes, ComboboxOptions()
-            .DefaultIndex(SECTION_DISPLAY_HIDDEN).ComponentAlignment(ComponentAlignment::Right)
-            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
+            .DefaultIndex(SECTION_DISPLAY_HIDDEN).ComponentAlignment(ComponentAlignments::Right)
+            .LabelPosition(LabelPositions::Far).Color(THEME_COLOR))) {
         shouldUpdateVectors = true;
     }
     if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonItems"), SECTION_DISPLAY_HIDDEN) != SECTION_DISPLAY_HIDDEN) {
@@ -1493,45 +1493,45 @@ void ItemTrackerSettingsWindow::DrawElement() {
         }
     }
     if (CVarCombobox("Greg", CVAR_TRACKER_ITEM("DisplayType.Greg"), extendedDisplayTypes, ComboboxOptions()
-            .DefaultIndex(SECTION_DISPLAY_EXTENDED_HIDDEN).ComponentAlignment(ComponentAlignment::Right)
-            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
+            .DefaultIndex(SECTION_DISPLAY_EXTENDED_HIDDEN).ComponentAlignment(ComponentAlignments::Right)
+            .LabelPosition(LabelPositions::Far).Color(THEME_COLOR))) {
         shouldUpdateVectors = true;
     }
 
     if (CVarCombobox("Triforce Pieces", CVAR_TRACKER_ITEM("DisplayType.TriforcePieces"), displayTypes, ComboboxOptions()
-            .DefaultIndex(SECTION_DISPLAY_HIDDEN).ComponentAlignment(ComponentAlignment::Right)
-            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
+            .DefaultIndex(SECTION_DISPLAY_HIDDEN).ComponentAlignment(ComponentAlignments::Right)
+            .LabelPosition(LabelPositions::Far).Color(THEME_COLOR))) {
         shouldUpdateVectors = true;
     }
 
     if (CVarCombobox("Boss Souls", CVAR_TRACKER_ITEM("DisplayType.BossSouls"), displayTypes, ComboboxOptions()
-            .DefaultIndex(SECTION_DISPLAY_HIDDEN).ComponentAlignment(ComponentAlignment::Right)
-            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
+            .DefaultIndex(SECTION_DISPLAY_HIDDEN).ComponentAlignment(ComponentAlignments::Right)
+            .LabelPosition(LabelPositions::Far).Color(THEME_COLOR))) {
         shouldUpdateVectors = true;
     }
 
     if (CVarCombobox("Ocarina Buttons", CVAR_TRACKER_ITEM("DisplayType.OcarinaButtons"), displayTypes, ComboboxOptions()
-            .DefaultIndex(SECTION_DISPLAY_HIDDEN).ComponentAlignment(ComponentAlignment::Right)
-            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
+            .DefaultIndex(SECTION_DISPLAY_HIDDEN).ComponentAlignment(ComponentAlignments::Right)
+            .LabelPosition(LabelPositions::Far).Color(THEME_COLOR))) {
         shouldUpdateVectors = true;
     }
 
     if (CVarCombobox("Fishing Pole", CVAR_TRACKER_ITEM("DisplayType.FishingPole"), extendedDisplayTypes, ComboboxOptions()
-            .DefaultIndex(SECTION_DISPLAY_EXTENDED_HIDDEN).ComponentAlignment(ComponentAlignment::Right)
-            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
+            .DefaultIndex(SECTION_DISPLAY_EXTENDED_HIDDEN).ComponentAlignment(ComponentAlignments::Right)
+            .LabelPosition(LabelPositions::Far).Color(THEME_COLOR))) {
         shouldUpdateVectors = true;
     }
 
     if (CVarCombobox("Total Checks", "gTrackers.ItemTracker.TotalChecks.DisplayType", minimalDisplayTypes, ComboboxOptions()
-            .DefaultIndex(SECTION_DISPLAY_MINIMAL_HIDDEN).ComponentAlignment(ComponentAlignment::Right)
-            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
+            .DefaultIndex(SECTION_DISPLAY_MINIMAL_HIDDEN).ComponentAlignment(ComponentAlignments::Right)
+            .LabelPosition(LabelPositions::Far).Color(THEME_COLOR))) {
         shouldUpdateVectors = true;
     }
 
     if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_ALWAYS) {
         if (CVarCombobox("Personal notes", CVAR_TRACKER_ITEM("DisplayType.Notes"), displayTypes, ComboboxOptions()
-            .DefaultIndex(SECTION_DISPLAY_HIDDEN).ComponentAlignment(ComponentAlignment::Right)
-            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
+            .DefaultIndex(SECTION_DISPLAY_HIDDEN).ComponentAlignment(ComponentAlignments::Right)
+            .LabelPosition(LabelPositions::Far).Color(THEME_COLOR))) {
             shouldUpdateVectors = true;
         }
     }
