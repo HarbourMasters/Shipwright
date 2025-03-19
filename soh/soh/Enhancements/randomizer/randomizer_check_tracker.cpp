@@ -532,6 +532,7 @@ void CheckTrackerLoadGame(int32_t fileNum) {
     UpdateAllOrdering();
     UpdateInventoryChecks();
     UpdateFilters();
+    RecalculateAccessibleChecks();
 }
 
 void CheckTrackerShopSlotChange(uint8_t cursorSlot, int16_t basePrice) {
@@ -839,11 +840,7 @@ void LoadFile() {
     SaveManager::Instance->LoadData("areasSpoiled", areasSpoiled, (uint32_t)0);
     UpdateAllOrdering();
     UpdateAllAreas();
-
-    if (gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2) {
-        RegionTable_Init();
-        RecalculateAccessibleChecks();
-    }
+    RegionTable_Init();
 }
 
 void Teardown() {
