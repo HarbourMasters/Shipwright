@@ -13,20 +13,20 @@ class TimeDisplayWindow : public Ship::GuiWindow {
 void TimeDisplayUpdateDisplayOptions();
 void TimeDisplayInitSettings();
 
-typedef enum {
+typedef enum TimerDisplay {
     DISPLAY_IN_GAME_TIMER,
     DISPLAY_TIME_OF_DAY,
     DISPLAY_CONDITIONAL_TIMER,
     DISPLAY_NAVI_TIMER
-};
+} TimerDisplay;
 
-typedef enum {
+typedef enum NaviTimerValues {
     NAVI_PREPARE = 600,
     NAVI_ACTIVE = 3000,
     NAVI_COOLDOWN = 25800,
     DAY_BEGINS = 17759,
     NIGHT_BEGINS = 49155
-};
+} NaviTimerValues;
 
 typedef struct {
     uint32_t timeID;

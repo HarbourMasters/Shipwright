@@ -212,9 +212,6 @@ typedef enum {
     // - None
     VB_BIGGORON_CONSIDER_TRADE_COMPLETE,
 
-    // # UNUSED
-    VB_BLUE_WARP_APPLY_ENTRANCE_AND_CUTSCENE,
-
     // #### `result`
     // Actor is ACTOR_EN_ELF, ACTOR_EN_FISH, ACTOR_EN_ICE_HONO, or ACTOR_EN_INSECT
     // ```c
@@ -292,6 +289,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // !Flags_GetItemGetInf(ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE) && (Player_GetMask(play) != PLAYER_MASK_SKULL)
+    // ```
+    // #### `args`
+    // - None
+    VB_DEKU_SCRUBS_REACT_TO_MASK_OF_TRUTH,
+
+    // #### `result`
+    // ```c
     // CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST)
     // ```
     // #### `args`
@@ -335,9 +340,6 @@ typedef enum {
     // - None
     VB_DEKU_STICK_BURN_OUT,
 
-    // # UNUSED
-    VB_DEKU_UPDATE_BURNING_DEKU_STICK,
-
     // #### `result`
     // ```c
     // Flags_GetItemGetInf(ITEMGETINF_30)
@@ -369,6 +371,11 @@ typedef enum {
     // #### `args`
     // - `*Actor`
     VB_DOOR_PLAY_SCENE_TRANSITION,
+    // Vanilla condition: true
+    VB_HATCH_CUCCO_OR_CHICKEN,
+    // Vanilla condition: exchangeItemId == EXCH_ITEM_LETTER_ZELDA
+    // Opt: s32
+    VB_HEISHI2_ACCEPT_ITEM_AS_ZELDAS_LETTER,
 
     // #### `result`
     // In `Interface_DrawAmmoCount`:
@@ -730,12 +737,6 @@ typedef enum {
     // - None
     VB_GIVE_ITEM_GERUDO_MEMBERSHIP_CARD,
 
-    // # UNUSED
-    VB_GIVE_ITEM_GORON_RUBY,
-
-    // # UNUSED
-    VB_GIVE_ITEM_KOKIRI_EMERALD,
-
     // #### `result`
     // ```c
     // true
@@ -903,9 +904,6 @@ typedef enum {
     // #### `args`
     // - None
     VB_GIVE_ITEM_ZELDAS_LULLABY,
-
-    // # UNUSED
-    VB_GIVE_ITEM_ZORA_SAPPHIRE,
 
     // #### `result`
     // ```c
@@ -1390,9 +1388,6 @@ typedef enum {
     // - None
     VB_PLAY_NABOORU_CAPTURED_CS,
 
-    // # UNUSED
-    VB_PLAY_ODD_POTION_ANIM,
-
     // #### `result`
     // ```c
     // true
@@ -1517,6 +1512,14 @@ typedef enum {
     // #### `args`
     // - `*DemoIm`
     VB_PLAY_ZELDAS_LULLABY_CS,
+
+    // #### `result`
+    // ```c
+    // item == ITEM_SAW
+    // ```
+    // #### `args`
+    // - None
+    VB_POACHERS_SAW_SET_DEKU_NUT_UPGRADE_FLAG,
 
     // #### `result`
     // ```c

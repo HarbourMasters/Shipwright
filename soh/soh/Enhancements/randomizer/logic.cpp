@@ -226,7 +226,7 @@ namespace Rando {
             case RG_EYEBALL_FROG:
             case RG_EYEDROPS:
             case RG_CLAIM_CHECK:
-                return HasAdultTrade(StaticData::RetrieveItem(itemName).GetGIEntry()->itemId);
+                return CheckRandoInf(itemName - RG_POCKET_EGG + RAND_INF_ADULT_TRADES_HAS_POCKET_EGG);
             case RG_BOTTLE_WITH_BIG_POE:
             case RG_BOTTLE_WITH_BLUE_FIRE:
             case RG_BOTTLE_WITH_BLUE_POTION:
@@ -671,8 +671,33 @@ namespace Rando {
                 }
                 return killed;
             case RE_BIG_OCTO:
-                //If chasing octo is annoying but with rolls you can catch him, and you need rang to get into this room without shenanigains anyway. Bunny makes it free
+                //If chasing octo is annoying but with rolls you can catch him, and you need rang to get into this room without shenanigans anyway. Bunny makes it free
                 return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_STICKS) || CanUse(RG_MASTER_SWORD);
+            case RE_GOHMA:
+                return HasBossSoul(RG_GOHMA_SOUL) && CanJumpslash() &&
+                    (CanUse(RG_NUTS) || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW) || HookshotOrBoomerang());
+            case RE_KING_DODONGO:
+                return HasBossSoul(RG_KING_DODONGO_SOUL) && CanJumpslash() &&
+                    (CanUse(RG_BOMB_BAG) || HasItem(RG_GORONS_BRACELET));
+            case RE_BARINADE:
+                return HasBossSoul(RG_BARINADE_SOUL) && CanUse(RG_BOOMERANG) && CanJumpslashExceptHammer();
+            case RE_PHANTOM_GANON:
+                return HasBossSoul(RG_PHANTOM_GANON_SOUL) &&
+                    (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)) &&
+                    (CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT));
+            case RE_VOLVAGIA:
+                return HasBossSoul(RG_VOLVAGIA_SOUL) && CanUse(RG_MEGATON_HAMMER);
+            case RE_MORPHA:
+                return HasBossSoul(RG_MORPHA_SOUL) && CanUse(RG_HOOKSHOT) &&
+                    (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_MEGATON_HAMMER));
+            case RE_BONGO_BONGO:
+                return HasBossSoul(RG_BONGO_BONGO_SOUL) &&
+                    (CanUse(RG_LENS_OF_TRUTH) || ctx->GetTrickOption(RT_LENS_BONGO)) &&
+                    (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)) &&
+                    (CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || ctx->GetTrickOption(RT_SHADOW_BONGO));
+            case RE_TWINROVA:
+                return HasBossSoul(RG_TWINROVA_SOUL) && CanUse(RG_MIRROR_SHIELD) &&
+                    (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_MEGATON_HAMMER));
             case RE_GANONDORF:
                 // RANDOTODO: Trick to use hammer (no jumpslash) or stick (only jumpslash) instead of a sword to reflect the energy ball
                 // and either of them regardless of jumpslashing to damage and kill ganondorf
@@ -1484,7 +1509,7 @@ namespace Rando {
             case RG_EYEBALL_FROG:
             case RG_EYEDROPS:
             case RG_CLAIM_CHECK:
-                SetAdultTrade(item.GetGIEntry()->itemId, state);
+                SetRandoInf(randoGet - RG_POCKET_EGG + RAND_INF_ADULT_TRADES_HAS_POCKET_EGG, state);
                 break;
             case RG_PROGRESSIVE_HOOKSHOT:
             {
@@ -1694,6 +1719,9 @@ namespace Rando {
                 if (BottleRandomizerGetToItemID.contains(randoGet)) {
                     itemId = BottleRandomizerGetToItemID[randoGet];
                 }
+                if (randoGet == RG_BOTTLE_WITH_BIG_POE) {
+                    BigPoes++;
+                }
                 mSaveContext->inventory.items[slot] = itemId;
             }   break;
             case RG_RUTOS_LETTER:
@@ -1757,7 +1785,7 @@ namespace Rando {
         case ITEMTYPE_EQUIP:
         {
             RandomizerGet itemRG = item.GetRandomizerGet();
-            if (itemRG == RG_GIANTS_KNIFE) {
+            if (itemRG == RG_GIANTS_KNIFE || itemRG == RG_DEKU_SHIELD || itemRG == RG_HYLIAN_SHIELD) {
                 return;
             }
             uint32_t equipId = RandoGetToEquipFlag.find(itemRG)->second;
@@ -2051,26 +2079,10 @@ namespace Rando {
         return ((1 << item) & mSaveContext->inventory.questItems);
     }
 
-    bool Logic::HasAdultTrade(uint32_t itemID) {
-        int tradeIndex = itemID - ITEM_POCKET_EGG;
-        return mSaveContext->ship.quest.data.randomizer.adultTradeItems & (1 << tradeIndex);
-    }
-
-    void Logic::SetAdultTrade(uint32_t itemID, bool state) {
-        int tradeIndex = itemID - ITEM_POCKET_EGG;
-        if (!state) {
-            mSaveContext->ship.quest.data.randomizer.adultTradeItems &= ~(1 << tradeIndex);
-        }
-        else {
-            mSaveContext->ship.quest.data.randomizer.adultTradeItems |= (1 << tradeIndex);
-        }
-    }
-
     void Logic::SetQuestItem(uint32_t item, bool state) {
         if (!state) {
             mSaveContext->inventory.questItems &= ~(1 << item);
-        }
-        else {
+        } else {
             mSaveContext->inventory.questItems |= (1 << item);
         }
     }
@@ -2090,8 +2102,7 @@ namespace Rando {
     void Logic::SetDungeonItem(uint32_t item, uint32_t dungeonIndex, bool state) {
         if (!state) {
             mSaveContext->inventory.dungeonItems[dungeonIndex] &= ~gBitFlags[item];
-        }
-        else {
+        } else {
             mSaveContext->inventory.dungeonItems[dungeonIndex] |= gBitFlags[item];
         }
     }
@@ -2103,8 +2114,7 @@ namespace Rando {
     void Logic::SetRandoInf(uint32_t flag, bool state) {
         if (!state) {
             mSaveContext->ship.randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
-        }
-        else {
+        } else {
             mSaveContext->ship.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
         }
     }
@@ -2116,8 +2126,7 @@ namespace Rando {
     void Logic::SetEventChkInf(int32_t flag, bool state) {
         if (!state) {
             mSaveContext->eventChkInf[flag >> 4] &= ~(1 << (flag & 0xF));
-        }
-        else {
+        } else {
             mSaveContext->eventChkInf[flag >> 4] |= (1 << (flag & 0xF));
         }
     }
@@ -2255,7 +2264,8 @@ namespace Rando {
         IsChild          = false;
         IsAdult          = false;
         //CanPlantBean        = false;
-        BigPoeKill            = false;
+        BigPoeKill       = false;
+        BigPoes          = 0;
 
         BaseHearts      = ctx->GetOption(RSK_STARTING_HEARTS).Get() + 1;
         
@@ -2328,7 +2338,6 @@ namespace Rando {
         MQSpiritMapRoomEnemies    = false;
         MQSpirit3SunsEnemies      = false;
         Spirit1FSilverRupees      = false;
-        JabuRutoInB1              = false;
         JabuRutoIn1F              = false;
 
         StopPerformanceTimer(PT_LOGIC_RESET);
