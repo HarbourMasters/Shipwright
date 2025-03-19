@@ -5,7 +5,7 @@ using namespace Rando;
 
 void RegionTable_Init_CastleGrounds() {
     //With multi-area support {RA_CASTLE_GROUNDS} is not strictly required anymore, as any interior here could inherit both
-    //{RA_HYRULE_CASTLE} and {RA_OUTSIDE_GANONS_CASTLE}, but an setting to merge the latter 2 into the former may be preffered
+    //{RA_HYRULE_CASTLE} and {RA_OUTSIDE_GANONS_CASTLE}, but a setting to merge the latter 2 into the former may be preferred
     areaTable[RR_CASTLE_GROUNDS] = Region("Castle Grounds", "Castle Grounds", {RA_CASTLE_GROUNDS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_THE_MARKET,            []{return true;}),
@@ -79,7 +79,7 @@ void RegionTable_Init_CastleGrounds() {
         LOCATION(RC_HC_STORMS_GROTTO_POT_4,                  logic->CanBreakPots()),
     }, {
         //Exits
-        Entrance(RR_CASTLE_GROUNDS, []{return true;}),
+        Entrance(RR_HC_STORMS_GROTTO, []{return true;}),
     });
 
     areaTable[RR_GANONS_CASTLE_GROUNDS] = Region("Ganon's Castle Grounds", "Castle Grounds", {RA_OUTSIDE_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {

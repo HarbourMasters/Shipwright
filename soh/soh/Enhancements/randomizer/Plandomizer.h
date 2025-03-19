@@ -39,14 +39,14 @@ typedef struct {
     std::string hintText;
 } SpoilerHintObject;
 
-typedef enum {
+typedef enum PlandoTabs {
     TAB_HINTS,
     TAB_LOCATIONS
-};
+} PlandoTabs;
 
-typedef enum {
+typedef enum PlandoHints {
     HINT_SINGLE,
     HINT_ALL,
-};
+} PlandoHints;
 
 #endif

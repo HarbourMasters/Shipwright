@@ -339,9 +339,9 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
         }
     }
 
-    gDPPipeSync(POLY_KAL_DISP++);
-    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
-    gDPSetCombineLERP(POLY_KAL_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE,
+    gDPPipeSync(POLY_OPA_DISP++);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
+    gDPSetCombineLERP(POLY_OPA_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE,
                       ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
 
     D_8082A0FC--;
@@ -377,10 +377,10 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
         }
 
         if (CHECK_QUEST_ITEM(sp218)) {
-            gDPPipeSync(POLY_KAL_DISP++);
-            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
-            gDPSetEnvColor(POLY_KAL_DISP++, D_8082A0D8[sp218], D_8082A0E4[sp218], D_8082A0F0[sp218], 0);
-            gSPVertex(POLY_KAL_DISP++, &pauseCtx->questVtx[sp21A], 4, 0);
+            gDPPipeSync(POLY_OPA_DISP++);
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
+            gDPSetEnvColor(POLY_OPA_DISP++, D_8082A0D8[sp218], D_8082A0E4[sp218], D_8082A0F0[sp218], 0);
+            gSPVertex(POLY_OPA_DISP++, &pauseCtx->questVtx[sp21A], 4, 0);
 
             KaleidoScope_DrawQuadTextureRGBA32(gfxCtx, gItemIcons[ITEM_MEDALLION_FOREST + sp218], 24, 24, 0);
         }
@@ -393,11 +393,11 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
         }
     }
 
-    gDPPipeSync(POLY_KAL_DISP++);
-    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
-    gDPSetEnvColor(POLY_KAL_DISP++, 0, 0, 0, 255);
+    gDPPipeSync(POLY_OPA_DISP++);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
+    gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
 
-    gDPLoadTextureBlock(POLY_KAL_DISP++, gSongNoteTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 24, 0, G_TX_NOMIRROR | G_TX_WRAP,
+    gDPLoadTextureBlock(POLY_OPA_DISP++, gSongNoteTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 24, 0, G_TX_NOMIRROR | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
     for (sp218 = 0; sp218 < QUEST_KOKIRI_EMERALD - QUEST_SONG_MINUET; sp218++, sp21A += 4) {
@@ -416,31 +416,31 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
                     pauseCtx->questVtx[sp21A + 2].v.ob[1] - 4;
             }
 
-            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, D_8082A164[sp218], D_8082A17C[sp218], D_8082A194[sp218],
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, D_8082A164[sp218], D_8082A17C[sp218], D_8082A194[sp218],
                             pauseCtx->alpha);
-            gSPVertex(POLY_KAL_DISP++, &pauseCtx->questVtx[sp21A], 4, 0);
-            gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
+            gSPVertex(POLY_OPA_DISP++, &pauseCtx->questVtx[sp21A], 4, 0);
+            gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
         }
     }
 
-    gDPPipeSync(POLY_KAL_DISP++);
-    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
-    gDPSetEnvColor(POLY_KAL_DISP++, 0, 0, 0, 255);
+    gDPPipeSync(POLY_OPA_DISP++);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
+    gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
 
     for (sp218 = 0; sp218 < 3; sp218++, sp21A += 4) {
         if (CHECK_QUEST_ITEM(sp218 + 0x12)) {
-            gSPVertex(POLY_KAL_DISP++, &pauseCtx->questVtx[sp21A], 4, 0);
+            gSPVertex(POLY_OPA_DISP++, &pauseCtx->questVtx[sp21A], 4, 0);
             KaleidoScope_DrawQuadTextureRGBA32(gfxCtx, gItemIcons[ITEM_KOKIRI_EMERALD + sp218], 24, 24, 0);
         }
     }
 
-    gDPPipeSync(POLY_KAL_DISP++);
-    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
+    gDPPipeSync(POLY_OPA_DISP++);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
 
     for (sp218 = 0; sp218 < 3; sp218++, sp21A += 4) {
         if (CHECK_QUEST_ITEM(sp218 + 0x15)) {
-            gSPVertex(POLY_KAL_DISP++, &pauseCtx->questVtx[sp21A], 4, 0);
-            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
+            gSPVertex(POLY_OPA_DISP++, &pauseCtx->questVtx[sp21A], 4, 0);
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
             KaleidoScope_DrawQuadTextureRGBA32(gfxCtx, gItemIcons[ITEM_STONE_OF_AGONY + sp218], 24, 24, 0);
         }
     }
@@ -482,28 +482,28 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
     }
 
     if ((gSaveContext.inventory.questItems >> 0x1C) != 0) {
-        gDPPipeSync(POLY_KAL_DISP++);
-        gDPSetCombineLERP(POLY_KAL_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
+        gDPPipeSync(POLY_OPA_DISP++);
+        gDPSetCombineLERP(POLY_OPA_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                           PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
 
         if ((pauseCtx->state == 4) || (pauseCtx->state == 0x12)) {
-            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, D_8082A070[0][0], D_8082A070[0][1], D_8082A070[0][2],
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, D_8082A070[0][0], D_8082A070[0][1], D_8082A070[0][2],
                             pauseCtx->alpha);
         } else {
-            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, D_8082A104, D_8082A108, D_8082A10C, D_8082A110);
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, D_8082A104, D_8082A108, D_8082A10C, D_8082A110);
         }
 
-        gDPSetEnvColor(POLY_KAL_DISP++, 0, 0, 0, 255);
-        gSPVertex(POLY_KAL_DISP++, &pauseCtx->questVtx[sp21A], 4, 0);
+        gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
+        gSPVertex(POLY_OPA_DISP++, &pauseCtx->questVtx[sp21A], 4, 0);
 
-        POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(
-            POLY_KAL_DISP, gItemIcons[0x79 + (((gSaveContext.inventory.questItems & 0xF0000000) & 0xF0000000) >> 0x1C)],
+        POLY_OPA_DISP = KaleidoScope_QuadTextureIA8(
+            POLY_OPA_DISP, gItemIcons[0x79 + (((gSaveContext.inventory.questItems & 0xF0000000) & 0xF0000000) >> 0x1C)],
             48, 48, 0);
     }
 
     if (pauseCtx->state == 6) {
-        gDPPipeSync(POLY_KAL_DISP++);
-        gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+        gDPPipeSync(POLY_OPA_DISP++);
+        gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
 
         sp21A += 4;
         if ((pauseCtx->cursorSpecialPos == 0) && (sp216 >= 6) && (sp216 < 0x12)) {
@@ -544,33 +544,33 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
                     pauseCtx->questVtx[sp21A + 2].v.ob[1] = pauseCtx->questVtx[sp21A + 3].v.ob[1] =
                         pauseCtx->questVtx[sp21A + 0].v.ob[1] - 12;
 
-                    gDPPipeSync(POLY_KAL_DISP++);
+                    gDPPipeSync(POLY_OPA_DISP++);
 
                     s16 Notes_alpha = D_8082A150[sp218];
                     if (D_8082A124[sp218] == 0) {
-                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, Notes_alpha);
+                        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, Notes_alpha);
                     } else {
                         if (D_8082A124[sp218] == OCARINA_NOTE_D5) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cUpButtonColor.r, cUpButtonColor.g, cUpButtonColor.b, Notes_alpha);
+                            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cUpButtonColor.r, cUpButtonColor.g, cUpButtonColor.b, Notes_alpha);
                         } else if (D_8082A124[sp218] == OCARINA_NOTE_B4) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cLeftButtonColor.r, cLeftButtonColor.g, cLeftButtonColor.b, Notes_alpha);
+                            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cLeftButtonColor.r, cLeftButtonColor.g, cLeftButtonColor.b, Notes_alpha);
                         } else if (D_8082A124[sp218] == OCARINA_NOTE_A4) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cRightButtonColor.r, cRightButtonColor.g, cRightButtonColor.b, Notes_alpha);
+                            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cRightButtonColor.r, cRightButtonColor.g, cRightButtonColor.b, Notes_alpha);
                         } else if (D_8082A124[sp218] == OCARINA_NOTE_F4) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cDownButtonColor.r, cDownButtonColor.g, cDownButtonColor.b, Notes_alpha);
+                            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cDownButtonColor.r, cDownButtonColor.g, cDownButtonColor.b, Notes_alpha);
                         } else {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cButtonsColor.r, cButtonsColor.g, cButtonsColor.b, Notes_alpha);
+                            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cButtonsColor.r, cButtonsColor.g, cButtonsColor.b, Notes_alpha);
                         }
                     }
 
-                    gDPSetEnvColor(POLY_KAL_DISP++, 10, 10, 10, 0);
-                    gSPVertex(POLY_KAL_DISP++, &pauseCtx->questVtx[sp21A], 4, 0);
+                    gDPSetEnvColor(POLY_OPA_DISP++, 10, 10, 10, 0);
+                    gSPVertex(POLY_OPA_DISP++, &pauseCtx->questVtx[sp21A], 4, 0);
 
-                    gDPLoadTextureBlock(POLY_KAL_DISP++, D_8082A130[D_8082A124[sp218]], G_IM_FMT_IA, G_IM_SIZ_8b, 16,
+                    gDPLoadTextureBlock(POLY_OPA_DISP++, D_8082A130[D_8082A124[sp218]], G_IM_FMT_IA, G_IM_SIZ_8b, 16,
                                         16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                                         G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-                    gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
+                    gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
                 }
             }
         } else if (((pauseCtx->unk_1E4 >= 4) && (pauseCtx->unk_1E4 <= 6)) || (pauseCtx->unk_1E4 == 8)) {
@@ -584,38 +584,38 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
                 pauseCtx->questVtx[sp21A + 2].v.ob[1] = pauseCtx->questVtx[sp21A + 3].v.ob[1] =
                     pauseCtx->questVtx[sp21A + 0].v.ob[1] - 12;
 
-                gDPPipeSync(POLY_KAL_DISP++);
+                gDPPipeSync(POLY_OPA_DISP++);
 
                 if (pauseCtx->unk_1E4 == 8) {
                     s16 Notes_alpha = 200;
                     if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == 0) {
-                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, Notes_alpha);
+                        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, Notes_alpha);
                     } else {
                         if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_D5) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cUpButtonColor.r, cUpButtonColor.g, cUpButtonColor.b, Notes_alpha);
+                            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cUpButtonColor.r, cUpButtonColor.g, cUpButtonColor.b, Notes_alpha);
                         } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_B4) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cLeftButtonColor.r, cLeftButtonColor.g, cLeftButtonColor.b, Notes_alpha);
+                            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cLeftButtonColor.r, cLeftButtonColor.g, cLeftButtonColor.b, Notes_alpha);
                         } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_A4) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cRightButtonColor.r, cRightButtonColor.g, cRightButtonColor.b, Notes_alpha);
+                            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cRightButtonColor.r, cRightButtonColor.g, cRightButtonColor.b, Notes_alpha);
                         } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_F4) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cDownButtonColor.r, cDownButtonColor.g, cDownButtonColor.b, Notes_alpha);
+                            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cDownButtonColor.r, cDownButtonColor.g, cDownButtonColor.b, Notes_alpha);
                         } else {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cButtonsColor.r, cButtonsColor.g, cButtonsColor.b, Notes_alpha);
+                            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cButtonsColor.r, cButtonsColor.g, cButtonsColor.b, Notes_alpha);
                         }
                     }
                 } else {
-                    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 150, 150, 150, 150);
+                    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 150, 150, 150, 150);
                 }
 
-                gDPSetEnvColor(POLY_KAL_DISP++, 10, 10, 10, 0);
+                gDPSetEnvColor(POLY_OPA_DISP++, 10, 10, 10, 0);
 
-                gSPVertex(POLY_KAL_DISP++, &pauseCtx->questVtx[sp21A], 4, 0);
+                gSPVertex(POLY_OPA_DISP++, &pauseCtx->questVtx[sp21A], 4, 0);
 
-                gDPLoadTextureBlock(POLY_KAL_DISP++, D_8082A130[gOcarinaSongNotes[sp224].notesIdx[phi_s3]], G_IM_FMT_IA,
+                gDPLoadTextureBlock(POLY_OPA_DISP++, D_8082A130[gOcarinaSongNotes[sp224].notesIdx[phi_s3]], G_IM_FMT_IA,
                                     G_IM_SIZ_8b, 16, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                                     G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-                gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
+                gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
             }
 
             if (pauseCtx->unk_1E4 != 8) {
@@ -651,34 +651,34 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
                     pauseCtx->questVtx[sp21A + 2].v.ob[1] = pauseCtx->questVtx[sp21A + 3].v.ob[1] =
                         pauseCtx->questVtx[sp21A + 0].v.ob[1] - 12;
 
-                    gDPPipeSync(POLY_KAL_DISP++);
+                    gDPPipeSync(POLY_OPA_DISP++);
 
                     s16 Notes_alpha = D_8082A150[phi_s3];
                     if (D_8082A124[phi_s3] == 0) {
-                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, Notes_alpha);
+                        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, Notes_alpha);
                     } else {
                         if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_D5) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cUpButtonColor.r, cUpButtonColor.g, cUpButtonColor.b, Notes_alpha);
+                            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cUpButtonColor.r, cUpButtonColor.g, cUpButtonColor.b, Notes_alpha);
                         } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_B4) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cLeftButtonColor.r, cLeftButtonColor.g, cLeftButtonColor.b, Notes_alpha);
+                            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cLeftButtonColor.r, cLeftButtonColor.g, cLeftButtonColor.b, Notes_alpha);
                         } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_A4) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cRightButtonColor.r, cRightButtonColor.g, cRightButtonColor.b, Notes_alpha);
+                            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cRightButtonColor.r, cRightButtonColor.g, cRightButtonColor.b, Notes_alpha);
                         } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_F4) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cDownButtonColor.r, cDownButtonColor.g, cDownButtonColor.b, Notes_alpha);
+                            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cDownButtonColor.r, cDownButtonColor.g, cDownButtonColor.b, Notes_alpha);
                         } else {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cButtonsColor.r, cButtonsColor.g, cButtonsColor.b, Notes_alpha);
+                            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cButtonsColor.r, cButtonsColor.g, cButtonsColor.b, Notes_alpha);
                         }
                     }
 
-                    gDPSetEnvColor(POLY_KAL_DISP++, 10, 10, 10, 0);
+                    gDPSetEnvColor(POLY_OPA_DISP++, 10, 10, 10, 0);
 
-                    gSPVertex(POLY_KAL_DISP++, &pauseCtx->questVtx[sp21A], 4, 0);
+                    gSPVertex(POLY_OPA_DISP++, &pauseCtx->questVtx[sp21A], 4, 0);
 
-                    gDPLoadTextureBlock(POLY_KAL_DISP++, D_8082A130[D_8082A124[phi_s3]], G_IM_FMT_IA, G_IM_SIZ_8b, 16,
+                    gDPLoadTextureBlock(POLY_OPA_DISP++, D_8082A130[D_8082A124[phi_s3]], G_IM_FMT_IA, G_IM_SIZ_8b, 16,
                                         16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                                         G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-                    gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
+                    gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
                 }
 
                 if (pauseCtx->unk_1E4 == 4) {
@@ -700,10 +700,10 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
     }
 
     if (CHECK_QUEST_ITEM(QUEST_SKULL_TOKEN)) {
-        gDPPipeSync(POLY_KAL_DISP++);
-        gDPSetCombineLERP(POLY_KAL_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
+        gDPPipeSync(POLY_OPA_DISP++);
+        gDPSetCombineLERP(POLY_OPA_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                           PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
-        gDPSetEnvColor(POLY_KAL_DISP++, 0, 0, 0, 0);
+        gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
 
         sp208[0] = sp208[1] = 0;
         sp208[2] = gSaveContext.inventory.gsTokens;
@@ -718,25 +718,25 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
             sp208[2] -= 10;
         }
 
-        gSPVertex(POLY_KAL_DISP++, &pauseCtx->questVtx[164], 24, 0);
+        gSPVertex(POLY_OPA_DISP++, &pauseCtx->questVtx[164], 24, 0);
 
         for (phi_s3 = 0, sp218 = 0, sp21A = 0; phi_s3 < 2; phi_s3++) {
             if (phi_s3 == 0) {
-                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 0, 0, 0, pauseCtx->alpha);
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0, 0, 0, pauseCtx->alpha);
             } else if (gSaveContext.inventory.gsTokens == 100) {
-                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 200, 50, 50, pauseCtx->alpha);
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 200, 50, 50, pauseCtx->alpha);
             } else {
-                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
             }
 
             phi_s0 = 0;
             for (sp21A = 0; sp21A < 3; sp21A++, sp218 += 4) {
                 if ((sp21A >= 2) || (sp208[sp21A] != 0) || (phi_s0 != 0)) {
-                    gDPLoadTextureBlock(POLY_KAL_DISP++, digitTextures[sp208[sp21A]], G_IM_FMT_I,
+                    gDPLoadTextureBlock(POLY_OPA_DISP++, digitTextures[sp208[sp21A]], G_IM_FMT_I,
                                         G_IM_SIZ_8b, 8, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                                         G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-                    gSP1Quadrangle(POLY_KAL_DISP++, sp218, sp218 + 2, sp218 + 3, sp218 + 1, 0);
+                    gSP1Quadrangle(POLY_OPA_DISP++, sp218, sp218 + 2, sp218 + 3, sp218 + 1, 0);
 
                     phi_s0 = 1;
                 }

@@ -146,7 +146,7 @@ static bool SetPlayerHealthHandler(std::shared_ptr<Ship::Console> Console, const
 static bool LoadSceneHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>&, std::string* output) {
     gSaveContext.respawnFlag = 0;
     gSaveContext.seqId = 0xFF;
-    gSaveContext.gameMode = 0;
+    gSaveContext.gameMode = GAMEMODE_NORMAL;
 
     return 0;
 }
@@ -208,7 +208,6 @@ static bool ResetHandler(std::shared_ptr<Ship::Console> Console, std::vector<std
         ERROR_MESSAGE("gGameState == nullptr");
         return 1;
     }
-
     SET_NEXT_GAMESTATE(gGameState, TitleSetup_Init, GameState);
     gGameState->running = false;
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnExitGame>(gSaveContext.fileNum);
@@ -490,13 +489,14 @@ static bool FWHandler(std::shared_ptr<Ship::Console> Console, const std::vector<
 }
 
 static bool FileSelectHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
-    if (gPlayState != nullptr) {
-        SET_NEXT_GAMESTATE(&gPlayState->state, FileChoose_Init, FileChooseContext);
-        gPlayState->state.running = 0;
-    } else {
-        ERROR_MESSAGE("gPlayState == nullptr");
+    if (gGameState == nullptr) {
+        ERROR_MESSAGE("gGameState == nullptr");
         return 1;
     }
+
+    gSaveContext.gameMode = GAMEMODE_FILE_SELECT;
+    SET_NEXT_GAMESTATE(gGameState, FileChoose_Init, FileChooseContext);
+    gGameState->running = false;
     return 0;
 }
 

@@ -2,7 +2,9 @@
 #include "libultraship/bridge.h"
 #include <Context.h>
 #include <imgui.h>
+#include "soh/SohGui/SohGui.hpp"
 #include "soh/SohGui/UIWidgets.hpp"
+#include <soh/cvar_prefixes.h>
 
 namespace Rando {
 Option Option::Bool(RandomizerSettingKey key_, std::string name_, std::vector<std::string> options_,
@@ -130,11 +132,10 @@ void Option::Enable() {
     disabled = false;
 }
 
-void Option::Disable(std::string text, const UIWidgets::CheckboxGraphics graphic) {
-    if (!disabled || disabledText != text || disabledGraphic != graphic) {
+void Option::Disable(std::string text) {
+    if (!disabled || disabledText != text) {
         disabled = true;
         disabledText = std::move(text);
-        disabledGraphic = graphic;
     }
 }
 
@@ -149,9 +150,6 @@ bool Option::RenderImGui() {
         case WidgetType::Checkbox:
             changed = RenderCheckbox();
             break;
-        case WidgetType::TristateCheckbox:
-            changed = RenderTristateCheckbox();
-            break;
         case WidgetType::Combobox:
             changed = RenderCombobox();
             break;
@@ -159,7 +157,6 @@ bool Option::RenderImGui() {
             changed = RenderSlider();
             break;
     }
-    UIWidgets::Spacer(0);
     ImGui::EndGroup();
     return changed;
 }
@@ -213,50 +210,19 @@ Option::Option(size_t key_, std::string name_, std::vector<std::string> options_
 
 bool Option::RenderCheckbox() {
     bool changed = false;
-    if (disabled) {
-        UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
-    }
     bool val = static_cast<bool>(CVarGetInteger(cvarName.c_str(), defaultOption));
-    if (CustomCheckbox(name.c_str(), &val, disabled, disabledGraphic)) {
+    UIWidgets::CheckboxOptions widgetOptions = static_cast<UIWidgets::CheckboxOptions>(UIWidgets::CheckboxOptions().Color(THEME_COLOR).Tooltip(description.c_str()));
+    widgetOptions.disabled = disabled;
+    if (UIWidgets::Checkbox(name.c_str(), &val, widgetOptions)) {
         CVarSetInteger(cvarName.c_str(), val);
         changed = true;
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    }
-    if (!description.empty()) {
-        UIWidgets::InsertHelpHoverText(description.c_str());
-    }
-    if (disabled) {
-        UIWidgets::ReEnableComponent(disabledText.c_str());
-    }
-    return changed;
-}
-
-bool Option::RenderTristateCheckbox() {
-    bool changed = false;
-    if (disabled) {
-        UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
-    }
-    int val = CVarGetInteger(cvarName.c_str(), defaultOption);
-    if (CustomCheckboxTristate(name.c_str(), &val, disabled, disabledGraphic)) {
-        CVarSetInteger(cvarName.c_str(), val);
-        changed = true;
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    }
-    if (!description.empty()) {
-        UIWidgets::InsertHelpHoverText(description.c_str());
-    }
-    if (disabled) {
-        UIWidgets::ReEnableComponent(disabledText.c_str());
     }
     return changed;
 }
 
 bool Option::RenderCombobox() {
     bool changed = false;
-    if (disabled) {
-        UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
-    }
-    ImGui::Text("%s", name.c_str());
     uint8_t selected = CVarGetInteger(cvarName.c_str(), defaultOption);
     if (selected >= options.size()) {
         selected = options.size();
@@ -264,25 +230,15 @@ bool Option::RenderCombobox() {
         changed = true;
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
-    if (!description.empty()) {
-        UIWidgets::InsertHelpHoverText(description.c_str());
+    UIWidgets::ComboboxOptions widgetOptions = UIWidgets::ComboboxOptions().Color(THEME_COLOR).Tooltip(description.c_str());
+    if (this->GetKey() == RSK_LOGIC_RULES) {
+        widgetOptions = widgetOptions.LabelPosition(UIWidgets::LabelPosition::None).ComponentAlignment(UIWidgets::ComponentAlignment::Right);
     }
-    const std::string comboName = std::string("##") + std::string(cvarName);
-    if (ImGui::BeginCombo(comboName.c_str(), options[selected].c_str())) {
-        for (size_t i = 0; i < options.size(); i++) {
-            if (!options[i].empty()) {
-                if (ImGui::Selectable(options[i].c_str(), i == selected)) {
-                    CVarSetInteger(cvarName.c_str(), static_cast<int>(i));
-                    changed = true;
-                    selected = i;
-                    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-                }
-            }
-        }
-        ImGui::EndCombo();
-    }
-    if (disabled) {
-        UIWidgets::ReEnableComponent(disabledText.c_str());
+    widgetOptions.disabled = disabled;
+    if(UIWidgets::Combobox(name.c_str(), &selected, options, widgetOptions)) {
+        CVarSetInteger(cvarName.c_str(), static_cast<int>(selected));
+        changed = true;
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
     return changed;
 }
@@ -295,39 +251,10 @@ bool Option::RenderSlider() {
         CVarSetInteger(cvarName.c_str(), val);
         changed = true;
     }
-    if (disabled) {
-        UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
-    }
-    const std::string formatName = name + ": %s";
-    ImGui::Text(formatName.c_str(), options[val].c_str());
-    if (!description.empty()) {
-        UIWidgets::InsertHelpHoverText(description.c_str());
-    }
-    UIWidgets::Spacer(0);
-    ImGui::BeginGroup();
-    const std::string MinusBTNName = " - ##" + cvarName;
-    if (ImGui::Button(MinusBTNName.c_str())) {
-        val--;
+    UIWidgets::IntSliderOptions widgetOptions = UIWidgets::IntSliderOptions().Color(THEME_COLOR).Min(0).Max(options.size() - 1).Tooltip(description.c_str()).Format(options[val].c_str()).DefaultValue(defaultOption);
+    widgetOptions.disabled = disabled;
+    if (UIWidgets::SliderInt(name.c_str(), &val, widgetOptions)) {
         changed = true;
-    }
-    ImGui::SameLine();
-    ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-    ImGui::PushItemWidth(std::min(ImGui::GetContentRegionAvail().x - 30.0f, 260.0f));
-    const std::string id = "##Slider" + cvarName;
-    if (ImGui::SliderInt(id.c_str(), &val, 0, static_cast<int>(options.size()) - 1, "", ImGuiSliderFlags_AlwaysClamp)) {
-        changed = true;
-    }
-    ImGui::PopItemWidth();
-    const std::string PlusBTNName = " + ##" + cvarName;
-    ImGui::SameLine();
-    ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-    if (ImGui::Button(PlusBTNName.c_str())) {
-        val++;
-        changed = true;
-    }
-    ImGui::EndGroup();
-    if (disabled) {
-        UIWidgets::ReEnableComponent(disabledText.c_str());
     }
     if (val < 0) {
         val = 0;
@@ -465,7 +392,7 @@ bool OptionGroup::RenderImGui() const { // NOLINT(*-no-recursion)
                 ImGui::TableSetColumnIndex(i);
                 ImGui::TableHeader(mSubGroups[i]->GetName().c_str());
                 if (!mSubGroups[i]->GetDescription().empty()) {
-                    UIWidgets::SetLastItemHoverText(mSubGroups[i]->GetDescription().c_str());
+                    UIWidgets::Tooltip(mSubGroups[i]->GetDescription().c_str());
                 }
             }
             ImGui::PopItemFlag();
@@ -473,12 +400,10 @@ bool OptionGroup::RenderImGui() const { // NOLINT(*-no-recursion)
         }
     }
     if (mContainerType == WidgetContainerType::SECTION && !mName.empty()) {
-        UIWidgets::PaddedSeparator();
-        ImGui::Text("%s", mName.c_str());
+        ImGui::SeparatorText(mName.c_str());
         if (!mDescription.empty()) {
-            UIWidgets::InsertHelpHoverText(mDescription.c_str());
+            UIWidgets::Tooltip(mDescription.c_str());
         }
-        UIWidgets::PaddedSeparator();
     }
     if (mContainerType == WidgetContainerType::COLUMN) {
         ImGui::TableNextColumn();
@@ -506,9 +431,6 @@ bool OptionGroup::RenderImGui() const { // NOLINT(*-no-recursion)
             }
             if (option->HasFlag(IMFLAG_UNINDENT)) {
                 ImGui::Unindent();
-            }
-            if (option->HasFlag(IMFLAG_SEPARATOR_BOTTOM)) {
-                UIWidgets::PaddedSeparator(false, true);
             }
         }
     }

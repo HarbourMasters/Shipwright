@@ -201,12 +201,12 @@ void Entrance_Init(void) {
         }
 
         // Overwrite grotto related indices
-        if (originalIndex >= ENTRANCE_GROTTO_EXIT_START) {
+        if (originalIndex >= ENTRANCE_GROTTO_EXIT_START && originalIndex < ENTRANCE_GROTTO_EXIT_START + NUM_GROTTOS) {
             Grotto_SetExitOverride(originalIndex, overrideIndex);
             continue;
         }
 
-        if (originalIndex >= ENTRANCE_GROTTO_LOAD_START && originalIndex < ENTRANCE_GROTTO_EXIT_START) {
+        if (originalIndex >= ENTRANCE_GROTTO_LOAD_START && originalIndex < ENTRANCE_GROTTO_LOAD_START + NUM_GROTTOS) {
             Grotto_SetLoadOverride(originalIndex, overrideIndex);
             continue;
         }
@@ -440,7 +440,7 @@ void Entrance_SetWarpSongEntrance(void) {
     // have to force the grotto return afterwards
     Grotto_ForceGrottoReturnOnSpecialEntrance();
 
-    if (gSaveContext.gameMode != 0) {
+    if (gSaveContext.gameMode != GAMEMODE_NORMAL) {
         // During DHWW the cutscene must play at the destination
         gSaveContext.respawnFlag = -3;
     } else if (gSaveContext.respawnFlag == -3) {

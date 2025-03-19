@@ -522,13 +522,6 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             }
             break;
         }
-        // Replace the blue warp transitions with ones that lead back to the chamber of sages
-        case VB_BLUE_WARP_APPLY_ENTRANCE_AND_CUTSCENE: {
-            DoorWarp1* blueWarp = va_arg(args, DoorWarp1*);
-            BossRush_HandleBlueWarp(gPlayState, blueWarp->actor.world.pos.x, blueWarp->actor.world.pos.z);
-            *should = false;
-            break;
-        }
         // Spawn clean blue warps (no ruto, adult animation, etc)
         case VB_SPAWN_BLUE_WARP: {
             switch (gPlayState->sceneNum) {

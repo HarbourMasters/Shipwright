@@ -19,6 +19,9 @@ void GameInteractor_ExecuteOnExitGame(int32_t fileNum) {
 }
 
 void GameInteractor_ExecuteOnGameStateMainStart() {
+    // Cleanup all hooks at the start of each frame
+    GameInteractor::Instance->RemoveAllQueuedHooks();
+
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnGameStateMainStart>();
 }
 
@@ -78,6 +81,10 @@ void GameInteractor_ExecuteOnPlayerUpdate() {
 
 void GameInteractor_ExecuteOnOcarinaSongAction() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnOcarinaSongAction>();
+}
+
+void GameInteractor_ExecuteOnCuccoOrChickenHatch() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnCuccoOrChickenHatch>();
 }
 
 void GameInteractor_ExecuteOnShopSlotChangeHooks(uint8_t cursorIndex, int16_t price) {
