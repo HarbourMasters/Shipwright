@@ -7,7 +7,8 @@
 #include "textures/kanji/kanji.h"
 #include "textures/message_static/message_static.h"
 
-static const char* fntTbl[] =
+// #region SOH [Port] Asset tables we can pull from instead of from ROM
+const char* fontTbl[140] =
 {
     gMsgChar20SpaceTex,
     gMsgChar21ExclamationMarkTex,
@@ -4138,6 +4139,7 @@ const char* msgStaticTbl[] =
     gMessageEndSquareTex,
     gMessageArrowTex
 };
+// #endregion
 
 void func_8006EE50(Font* font, u16 character, u16 codePointIndex) {
     // #region SOH [NTSC]
@@ -4159,11 +4161,7 @@ void Font_LoadChar(Font* font, u8 character, u16 codePointIndex) {
                         //__FILE__, __LINE__);
 
     if (character < 0x8B)
-        memcpy(&font->charTexBuf[codePointIndex], fntTbl[character], strlen(fntTbl[character]) + 1);
-}
-
-void* Font_FetchCharTexture(u8 character) {
-    return fntTbl[character];
+        memcpy(&font->charTexBuf[codePointIndex], fontTbl[character], strlen(fontTbl[character]) + 1);
 }
 
 /**
@@ -4207,7 +4205,7 @@ void Font_LoadOrderedFont(Font* font) {
             osSyncPrintf("nes_mes_buf[%d]=%d\n", codePointIndex, font->msgBuf[codePointIndex]);
 
             offset = (font->msgBuf[codePointIndex] - '\x20') * FONT_CHAR_TEX_SIZE;
-            memcpy(fontBuf, fntTbl[offset / FONT_CHAR_TEX_SIZE], strlen(fntTbl[offset / FONT_CHAR_TEX_SIZE]) + 1);
+            memcpy(fontBuf, fontTbl[offset / FONT_CHAR_TEX_SIZE], strlen(fontTbl[offset / FONT_CHAR_TEX_SIZE]) + 1);
             //DmaMgr_SendRequest1(fontBuf, fontStatic + offset, FONT_CHAR_TEX_SIZE, __FILE__, __LINE__);
             fontBufIndex += FONT_CHAR_TEX_SIZE / 8;
         }

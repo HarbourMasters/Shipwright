@@ -831,10 +831,6 @@ f32 sFontWidths[144] = {
     14.0f, // ?
 };
 
-f32 Message_GetCharacterWidth(unsigned char characterIndex) {
-    return sFontWidths[characterIndex] * (R_TEXT_CHAR_SCALE / 100.0f);
-}
-
 u16 Message_DrawItemIcon(PlayState* play, u16 itemId, Gfx** p, u16 i) {
     s32 pad;
     Gfx* gfx = *p;

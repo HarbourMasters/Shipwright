@@ -903,7 +903,6 @@ void KaleidoSetup_Init(PlayState* play);
 void KaleidoSetup_Destroy(PlayState* play);
 void func_8006EE50(Font* font, u16 arg1, u16 arg2);
 void Font_LoadChar(Font* font, u8 character, u16 codePointIndex);
-void* Font_FetchCharTexture(u8 character);
 void Font_LoadMessageBoxIcon(Font* font, u16 icon);
 void Font_LoadOrderedFont(Font* font);
 s32 func_8006F0A0(s32 arg0);
@@ -2418,7 +2417,6 @@ u8 Message_GetState(MessageContext* msgCtx);
 void Message_Draw(PlayState* play);
 void Message_Update(PlayState* play);
 void Message_SetTables(void);
-f32 Message_GetCharacterWidth(unsigned char characterIndex);
 void GameOver_Init(PlayState* play);
 void GameOver_FadeInLights(PlayState* play);
 void GameOver_Update(PlayState* play);
@@ -2454,7 +2452,6 @@ void Font_LoadOrderedFontNTSC(Font* font);
 
 // #region SOH [General]
 
-void Interface_CreateQuadVertexGroup(Vtx* vtxList, s32 xStart, s32 yStart, s32 width, s32 height, u8 flippedH);
 void Interface_RandoRestoreSwordless(void);
 s32 Ship_CalcShouldDrawAndUpdate(PlayState* play, Actor* actor, Vec3f* projectedPos, f32 projectedW, bool* shouldDraw,
                                  bool* shouldUpdate);

@@ -12,6 +12,7 @@
 #include "soh/Enhancements/custom-message/CustomMessageInterfaceAddon.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/enhancementTypes.h"
+#include "soh/ShipUtils.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -3591,31 +3592,6 @@ void Interface_DrawMagicBar(PlayState* play) {
 static Vtx sEnemyHealthVtx[16];
 static Mtx sEnemyHealthMtx[2];
 
-// Build vertex coordinates for a quad command
-// In order of top left, top right, bottom left, then bottom right
-// Supports flipping the texture horizontally
-void Interface_CreateQuadVertexGroup(Vtx* vtxList, s32 xStart, s32 yStart, s32 width, s32 height, u8 flippedH) {
-    vtxList[0].v.ob[0] = xStart;
-    vtxList[0].v.ob[1] = yStart;
-    vtxList[0].v.tc[0] = (flippedH ? width : 0) << 5;
-    vtxList[0].v.tc[1] = 0 << 5;
-
-    vtxList[1].v.ob[0] = xStart + width;
-    vtxList[1].v.ob[1] = yStart;
-    vtxList[1].v.tc[0] = (flippedH ? width * 2 : width) << 5;
-    vtxList[1].v.tc[1] = 0 << 5;
-
-    vtxList[2].v.ob[0] = xStart;
-    vtxList[2].v.ob[1] = yStart + height;
-    vtxList[2].v.tc[0] = (flippedH ? width : 0) << 5;
-    vtxList[2].v.tc[1] = height << 5;
-
-    vtxList[3].v.ob[0] = xStart + width;
-    vtxList[3].v.ob[1] = yStart + height;
-    vtxList[3].v.tc[0] = (flippedH ? width * 2 : width) << 5;
-    vtxList[3].v.tc[1] = height << 5;
-}
-
 // Draws an enemy health bar using the magic bar textures and positions it in a similar way to Z-Targeting
 void Interface_DrawEnemyHealthBar(TargetContext* targetCtx, PlayState* play) {
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
@@ -3675,16 +3651,17 @@ void Interface_DrawEnemyHealthBar(TargetContext* targetCtx, PlayState* play) {
         }
 
         // Health bar border end left
-        Interface_CreateQuadVertexGroup(&sEnemyHealthVtx[0], -floorf(halfBarWidth), -texHeight / 2, endTexWidth, texHeight, 0);
+        Ship_CreateQuadVertexGroup(&sEnemyHealthVtx[0], -floorf(halfBarWidth), -texHeight / 2, endTexWidth, texHeight,
+                                   0);
         // Health bar border middle
-        Interface_CreateQuadVertexGroup(&sEnemyHealthVtx[4], -floorf(halfBarWidth) + endTexWidth, -texHeight / 2,
-                                        healthbar_fillWidth, texHeight, 0);
+        Ship_CreateQuadVertexGroup(&sEnemyHealthVtx[4], -floorf(halfBarWidth) + endTexWidth, -texHeight / 2,
+                                   healthbar_fillWidth, texHeight, 0);
         // Health bar border end right
-        Interface_CreateQuadVertexGroup(&sEnemyHealthVtx[8], ceilf(halfBarWidth) - endTexWidth, -texHeight / 2, endTexWidth,
-                                        texHeight, 1);
+        Ship_CreateQuadVertexGroup(&sEnemyHealthVtx[8], ceilf(halfBarWidth) - endTexWidth, -texHeight / 2, endTexWidth,
+                                   texHeight, 1);
         // Health bar fill
-        Interface_CreateQuadVertexGroup(&sEnemyHealthVtx[12], -floorf(halfBarWidth) + endTexWidth, (-texHeight / 2) + 3,
-                                        healthBarFill, 7, 0);
+        Ship_CreateQuadVertexGroup(&sEnemyHealthVtx[12], -floorf(halfBarWidth) + endTexWidth, (-texHeight / 2) + 3,
+                                   healthBarFill, 7, 0);
 
         if (((!(player->stateFlags1 & PLAYER_STATE1_TALKING)) || (actor != player->focusActor)) && targetCtx->unk_44 < 500.0f) {
             f32 slideInOffsetY = 0;
@@ -6713,11 +6690,12 @@ uint16_t Interface_DrawTextLine(GraphicsContext* gfx, char text[], int16_t x, in
             textureIndex = processedText[i] - 32;
 
             if (textureIndex != 0) {
-                texture = Font_FetchCharTexture(textureIndex);
+                texture = Ship_GetCharFontTexturePAL(processedText[i]);
                 Interface_DrawTextCharacter(gfx, x + kerningOffset, y + lineOffset, texture, colorR, colorG, colorB,
                                             colorA, textScale, textShadow);
             }
-            kerningOffset += (uint16_t)(Message_GetCharacterWidth(textureIndex) * textScale);
+            kerningOffset +=
+                (uint16_t)(Ship_GetCharFontWidthPAL(processedText[i]) * (R_TEXT_CHAR_SCALE / 100.0f) * textScale);
         }
     }
 
