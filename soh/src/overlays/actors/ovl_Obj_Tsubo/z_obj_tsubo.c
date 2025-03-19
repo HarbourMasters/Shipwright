@@ -8,8 +8,9 @@
 #include "overlays/effects/ovl_Effect_Ss_Kakera/z_eff_ss_kakera.h"
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 #include "objects/object_tsubo/object_tsubo.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_ALWAYS_THROWN)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_THROW_ONLY)
 
 void ObjTsubo_Init(Actor* thisx, PlayState* play);
 void ObjTsubo_Destroy(Actor* thisx, PlayState* play);
@@ -86,7 +87,7 @@ static InitChainEntry sInitChain[] = {
 void ObjTsubo_SpawnCollectible(ObjTsubo* this, PlayState* play) {
     s16 dropParams = this->actor.params & 0x1F;
 
-    if ((dropParams >= ITEM00_RUPEE_GREEN) && (dropParams <= ITEM00_BOMBS_SPECIAL)) {
+    if (GameInteractor_Should(VB_POT_DROP_ITEM, (dropParams >= ITEM00_RUPEE_GREEN) && (dropParams <= ITEM00_BOMBS_SPECIAL), this)) {
         Item_DropCollectible(play, &this->actor.world.pos,
                              (dropParams | (((this->actor.params >> 9) & 0x3F) << 8)));
     }
@@ -188,7 +189,7 @@ void ObjTsubo_AirBreak(ObjTsubo* this, PlayState* play) {
                              sObjectIds[(this->actor.params >> 8) & 1], D_80BA1B8C[(this->actor.params >> 8) & 1]);
     }
     func_80033480(play, &this->actor.world.pos, 30.0f, 4, 20, 50, 1);
-    gSaveContext.sohStats.count[COUNT_POTS_BROKEN]++;
+    gSaveContext.ship.stats.count[COUNT_POTS_BROKEN]++;
 }
 
 void ObjTsubo_WaterBreak(ObjTsubo* this, PlayState* play) {
@@ -217,7 +218,7 @@ void ObjTsubo_WaterBreak(ObjTsubo* this, PlayState* play) {
                              (Rand_ZeroOne() * 95.0f) + 15.0f, 0, 32, 70, KAKERA_COLOR_NONE,
                              sObjectIds[(this->actor.params >> 8) & 1], D_80BA1B8C[(this->actor.params >> 8) & 1]);
     }
-    gSaveContext.sohStats.count[COUNT_POTS_BROKEN]++;
+    gSaveContext.ship.stats.count[COUNT_POTS_BROKEN]++;
 }
 
 void ObjTsubo_SetupWaitForObject(ObjTsubo* this) {
@@ -226,10 +227,12 @@ void ObjTsubo_SetupWaitForObject(ObjTsubo* this) {
 
 void ObjTsubo_WaitForObject(ObjTsubo* this, PlayState* play) {
     if (Object_IsLoaded(&play->objectCtx, this->objTsuboBankIndex)) {
-        this->actor.draw = ObjTsubo_Draw;
+        if (GameInteractor_Should(VB_POT_SETUP_DRAW, true, this)) {
+            this->actor.draw = ObjTsubo_Draw;
+        }
         this->actor.objBankIndex = this->objTsuboBankIndex;
         ObjTsubo_SetupIdle(this);
-        this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
+        this->actor.flags &= ~ACTOR_FLAG_UPDATE_CULLING_DISABLED;
     }
 }
 
@@ -279,7 +282,7 @@ void ObjTsubo_SetupLiftedUp(ObjTsubo* this) {
     this->actionFunc = ObjTsubo_LiftedUp;
     this->actor.room = -1;
     Player_PlaySfx(&this->actor, NA_SE_PL_PULL_UP_POT);
-    this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+    this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
 }
 
 void ObjTsubo_LiftedUp(ObjTsubo* this, PlayState* play) {
@@ -287,7 +290,7 @@ void ObjTsubo_LiftedUp(ObjTsubo* this, PlayState* play) {
         this->actor.room = play->roomCtx.curRoom.num;
         ObjTsubo_SetupThrown(this);
         ObjTsubo_ApplyGravity(this);
-        func_8002D7EC(&this->actor);
+        Actor_UpdatePos(&this->actor);
         Actor_UpdateBgCheckInfo(play, &this->actor, 5.0f, 15.0f, 0.0f, 0x85);
     }
 }
@@ -318,7 +321,7 @@ void ObjTsubo_Thrown(ObjTsubo* this, PlayState* play) {
         Actor_Kill(&this->actor);
     } else {
         ObjTsubo_ApplyGravity(this);
-        func_8002D7EC(&this->actor);
+        Actor_UpdatePos(&this->actor);
         Math_StepToS(&D_80BA1B54, D_80BA1B50, 0x64);
         Math_StepToS(&D_80BA1B5C, D_80BA1B58, 0x64);
         this->actor.shape.rot.x += D_80BA1B54;

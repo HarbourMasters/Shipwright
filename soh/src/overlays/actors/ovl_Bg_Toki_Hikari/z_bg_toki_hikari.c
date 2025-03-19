@@ -7,7 +7,7 @@
 #include "z_bg_toki_hikari.h"
 #include "objects/object_toki_objects/object_toki_objects.h"
 
-#define FLAGS ACTOR_FLAG_DRAW_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_DRAW_CULLING_DISABLED
 
 void BgTokiHikari_Init(Actor* thisx, PlayState* play);
 void BgTokiHikari_Destroy(Actor* thisx, PlayState* play);
@@ -179,7 +179,8 @@ void func_808BA2CC(BgTokiHikari* this, PlayState* play) {
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gSPDisplayListOffset(POLY_XLU_DISP++, object_toki_objects_DL_0009C0, 10);
+    // SOH [Port] Index adjust 11 -> 14 (for LUS marker and gsSPVertex) to account for our extraction size changes
+    gSPDisplayListOffset(POLY_XLU_DISP++, object_toki_objects_DL_0009C0, 10 + 2 + 1);
     Matrix_Pop();
     CLOSE_DISPS(play->state.gfxCtx);
 }

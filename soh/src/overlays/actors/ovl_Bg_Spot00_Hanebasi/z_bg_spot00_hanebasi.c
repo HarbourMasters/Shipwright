@@ -9,7 +9,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "soh/frame_interpolation.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 typedef enum {
     /* -1 */ DT_DRAWBRIDGE = -1,
@@ -224,7 +224,7 @@ void BgSpot00Hanebasi_Update(Actor* thisx, PlayState* play) {
                     Flags_SetEventChkInf(EVENTCHKINF_DRAWBRIDGE_OPENED_AFTER_ZELDA_FLED);
                     this->actionFunc = BgSpot00Hanebasi_DoNothing;
                     Player_SetCsActionWithHaltedActors(play, &player->actor, 8);
-                    play->nextEntranceIndex = ENTR_HYRULE_FIELD_0;
+                    play->nextEntranceIndex = ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN;
                     gSaveContext.nextCutsceneIndex = 0xFFF1;
                     play->transitionTrigger = TRANS_TRIGGER_START;
                     play->transitionType = TRANS_TYPE_FADE_BLACK_FAST;

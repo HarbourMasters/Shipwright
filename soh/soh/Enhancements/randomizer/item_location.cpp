@@ -56,6 +56,7 @@ void ItemLocation::SetParentRegion(const RandomizerRegion region) {
     parentRegion = region;
 }
 
+//RANDOTODO only used in tracker now, could possibly be removed
 RandomizerRegion ItemLocation::GetParentRegionKey() const {
     return parentRegion;
 }
@@ -70,6 +71,26 @@ void ItemLocation::MergeAreas(std::set<RandomizerArea> newAreas) {
 
 std::set<RandomizerArea> ItemLocation::GetAreas() const {
     return areas;
+}
+
+RandomizerArea ItemLocation::GetFirstArea() const {
+    if (areas.empty()){
+        assert(false);
+        return RA_NONE;
+    } else {
+        return *areas.begin();
+    }
+}
+
+RandomizerArea ItemLocation::GetRandomArea() const {
+    if (areas.empty()){
+        SPDLOG_DEBUG("Attempted to get random area of location with no areas: ");
+        SPDLOG_DEBUG(Rando::StaticData::GetLocation(rc)->GetName());
+        assert(false);
+        return RA_NONE;
+    } else {
+        return RandomElementFromSet(areas);
+    }
 }
 
 void ItemLocation::PlaceVanillaItem() {
@@ -156,35 +177,16 @@ void ItemLocation::SetHidden(const bool hidden_) {
     hidden = hidden_;
 }
 
-bool ItemLocation::IsExcluded() const {
-    return excludedOption.Value<bool>();
+bool ItemLocation::IsExcluded() {
+    return excludedOption.Is(RO_LOCATION_EXCLUDE);
 }
 
-Option* ItemLocation::GetExcludedOption() {
-    return &excludedOption;
+OptionValue& ItemLocation::GetExcludedOption() {
+    return excludedOption;
 }
 
-void ItemLocation::AddExcludeOption() {
-    if (const std::string name = StaticData::GetLocation(rc)->GetName(); name.length() < 23) {
-        excludedOption = Option::Bool(name, {"Include", "Exclude"}, OptionCategory::Setting, "", "", WidgetType::Checkbox, RO_LOCATION_INCLUDE);
-    } else {
-        const size_t lastSpace = name.rfind(' ', 23);
-        std::string settingText = name;
-        settingText.replace(lastSpace, 1, "\n ");
-
-        excludedOption = Option::Bool(settingText, {"Include", "Exclude"}, OptionCategory::Setting, "", "", WidgetType::Checkbox, RO_LOCATION_INCLUDE);
-    }
-    // RANDOTODO: this without string compares and loops
-    bool alreadyAdded = false;
-    const Location* loc = StaticData::GetLocation(rc);
-    for (const Option* location : Context::GetInstance()->GetSettings()->GetExcludeOptionsForArea(loc->GetArea())) {
-        if (location->GetName() == excludedOption.GetName()) {
-            alreadyAdded = true;
-        }
-    }
-    if (!alreadyAdded) {
-        Context::GetInstance()->GetSettings()->GetExcludeOptionsForArea(loc->GetArea()).push_back(&excludedOption);
-    }
+void ItemLocation::SetExcludedOption(uint8_t val) {
+    excludedOption.Set(val);
 }
 
 bool ItemLocation::IsVisible() const {

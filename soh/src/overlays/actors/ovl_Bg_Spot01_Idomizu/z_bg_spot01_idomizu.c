@@ -7,14 +7,14 @@
 #include "z_bg_spot01_idomizu.h"
 #include "objects/object_spot01_objects/object_spot01_objects.h"
 
-#define FLAGS ACTOR_FLAG_DRAW_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_DRAW_CULLING_DISABLED
 
 void BgSpot01Idomizu_Init(Actor* thisx, PlayState* play);
 void BgSpot01Idomizu_Destroy(Actor* thisx, PlayState* play);
 void BgSpot01Idomizu_Update(Actor* thisx, PlayState* play);
 void BgSpot01Idomizu_Draw(Actor* thisx, PlayState* play);
 
-void func_808ABB84(BgSpot01Idomizu* this, PlayState* play);
+void BgSpot01Idomizu_UpdateWaterLevel(BgSpot01Idomizu* this, PlayState* play);
 
 const ActorInit Bg_Spot01_Idomizu_InitVars = {
     ACTOR_BG_SPOT01_IDOMIZU,
@@ -42,21 +42,21 @@ void BgSpot01Idomizu_Init(Actor* thisx, PlayState* play) {
     } else {
         this->waterHeight = 52.0f;
     }
-    this->actionFunc = func_808ABB84;
+    this->actionFunc = BgSpot01Idomizu_UpdateWaterLevel;
     this->actor.world.pos.y = this->waterHeight;
 }
 
 void BgSpot01Idomizu_Destroy(Actor* thisx, PlayState* play) {
 }
 
-void func_808ABB84(BgSpot01Idomizu* this, PlayState* play) {
+void BgSpot01Idomizu_UpdateWaterLevel(BgSpot01Idomizu* this, PlayState* play) {
     if (Flags_GetEventChkInf(EVENTCHKINF_DRAINED_WELL_IN_KAKARIKO)) {
         this->waterHeight = -550.0f;
     }
     play->colCtx.colHeader->waterBoxes[0].ySurface = this->actor.world.pos.y;
     if (this->waterHeight < this->actor.world.pos.y) {
-        Audio_PlaySoundGeneral(NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG, &D_801333D4, 4, &D_801333E0, &D_801333E0,
-                               &D_801333E8);
+        Audio_PlaySoundGeneral(NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultReverb);
     }
     Math_ApproachF(&this->actor.world.pos.y, this->waterHeight, 1.0f, 2.0f);
 }

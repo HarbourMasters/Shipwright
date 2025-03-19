@@ -7,7 +7,7 @@
 #include "z_en_eg.h"
 #include "vt.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void EnEg_Init(Actor* thisx, PlayState* play);
 void EnEg_Destroy(Actor* thisx, PlayState* play);
@@ -36,7 +36,7 @@ const ActorInit En_Eg_InitVars = {
 };
 
 void EnEg_PlayVoidOutSFX() {
-    func_800788CC(NA_SE_OC_ABYSS);
+    Sfx_PlaySfxCentered2(NA_SE_OC_ABYSS);
 }
 
 void EnEg_Destroy(Actor* thisx, PlayState* play) {

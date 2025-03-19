@@ -6,9 +6,10 @@
 
 #include "z_en_ma1.h"
 #include "objects/object_ma1/object_ma1.h"
+#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED | ACTOR_FLAG_UPDATE_DURING_OCARINA)
 
 void EnMa1_Init(Actor* thisx, PlayState* play);
 void EnMa1_Destroy(Actor* thisx, PlayState* play);
@@ -368,7 +369,7 @@ void func_80AA0F44(EnMa1* this, PlayState* play) {
             this->actor.textId = 0x2061;
             Message_StartTextbox(play, this->actor.textId, NULL);
             this->interactInfo.talkState = NPC_TALK_STATE_TALKING;
-            this->actor.flags |= ACTOR_FLAG_WILL_TALK;
+            this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
             this->actionFunc = func_80AA106C;
         } else if (this->actor.xzDistToPlayer < 30.0f + (f32)this->collider.dim.radius) {
             player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
@@ -381,7 +382,7 @@ void func_80AA106C(EnMa1* this, PlayState* play) {
     if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
         Audio_OcaSetInstrument(2);
         func_8010BD58(play, OCARINA_ACTION_TEACH_EPONA);
-        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+        this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         this->actionFunc = func_80AA10EC;
     }
 }
@@ -399,7 +400,7 @@ void func_80AA1150(EnMa1* this, PlayState* play) {
 
     if (play->msgCtx.ocarinaMode == OCARINA_MODE_03) {
         Flags_SetRandomizerInf(RAND_INF_LEARNED_EPONA_SONG);
-        play->nextEntranceIndex = ENTR_LON_LON_RANCH_0;
+        play->nextEntranceIndex = ENTR_LON_LON_RANCH_ENTRANCE;
         gSaveContext.nextCutsceneIndex = 0xFFF1;
         play->transitionType = TRANS_TYPE_CIRCLE(TCA_WAVE, TCC_WHITE, TCS_FAST);
         play->transitionTrigger = TRANS_TRIGGER_START;

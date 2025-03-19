@@ -75,7 +75,7 @@ void EnWonderItem_DropCollectible(EnWonderItem* this, PlayState* play, s32 autoC
     s32 i;
     s32 randomDrop;
 
-    func_80078884(NA_SE_SY_GET_ITEM);
+    Sfx_PlaySfxCentered(NA_SE_SY_GET_ITEM);
 
     if (this->dropCount == 0) {
         this->dropCount++;
@@ -116,7 +116,7 @@ void EnWonderItem_Init(Actor* thisx, PlayState* play) {
     osSyncPrintf("\n\n");
     // "Mysterious mystery, very mysterious"
     osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 不思議不思議まか不思議 \t   ☆☆☆☆☆ %x\n" VT_RST, this->actor.params);
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
 
     this->wonderMode = (this->actor.params >> 0xB) & 0x1F;
     this->itemDrop = (this->actor.params >> 6) & 0x1F;

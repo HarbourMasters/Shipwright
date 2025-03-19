@@ -8,9 +8,10 @@
 #include "overlays/actors/ovl_En_Bom_Bowl_Pit/z_en_bom_bowl_pit.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "vt.h"
+#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void EnExItem_Init(Actor* thisx, PlayState* play);
 void EnExItem_Destroy(Actor* thisx, PlayState* play);
@@ -53,7 +54,7 @@ void EnExItem_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     EnExItem* this = (EnExItem*)thisx;
 
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->type = this->actor.params & 0xFF;
     this->unusedParam = (this->actor.params >> 8) & 0xFF;
     osSyncPrintf("\n\n");
@@ -157,7 +158,7 @@ void EnExItem_WaitForObject(EnExItem* this, PlayState* play) {
                 this->prizeRotateTimer = 35;
                 this->scale = 0.5f;
                 if (!onCounter) {
-                    func_80078884(NA_SE_SY_PIECE_OF_HEART);
+                    Sfx_PlaySfxCentered(NA_SE_SY_PIECE_OF_HEART);
                     this->actionFunc = EnExItem_BowlPrize;
                 } else {
                     this->actionFunc = EnExItem_SetupBowlCounter;
@@ -336,7 +337,7 @@ void EnExItem_ExitChest(EnExItem* this, PlayState* play) {
             Actor_Kill(&this->actor);
         }
     }
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 }
 
 void EnExItem_FairyMagic(EnExItem* this, PlayState* play) {
@@ -389,7 +390,7 @@ void EnExItem_TargetPrizeApproach(EnExItem* this, PlayState* play) {
         this->actor.parent = NULL;
 
         if (!GameInteractor_Should(VB_PLAY_ONEPOINT_ACTOR_CS, true, &this->actor)) {
-            GET_PLAYER(play)->stateFlags1 &= ~(PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_ITEM_OVER_HEAD);
+            GET_PLAYER(play)->stateFlags1 &= ~(PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_CARRYING_ACTOR);
         }
 
         if (CUR_UPG_VALUE(UPG_BULLET_BAG) == 1) {

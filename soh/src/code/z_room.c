@@ -4,12 +4,13 @@
 
 #include "global.h"
 #include "vt.h"
-#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include <string.h>
 #include <assert.h>
 
 #include "public/bridge/gfxbridge.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 
 void func_80095AB4(PlayState* play, Room* room, u32 flags);
 void func_80095D04(PlayState* play, Room* room, u32 flags);
@@ -413,7 +414,7 @@ BgImage* func_80096A74(PolygonType1* polygon1, PlayState* play) {
 
     camera = GET_ACTIVE_CAM(play);
     camId = camera->camDataIdx;
-    if (camId == -1 && (CVarGetInteger(CVAR_CHEAT("NoRestrictItems"), 0) || (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL) == GI_SCHEME_CROWD_CONTROL && CVarGetInteger(CVAR_REMOTE("Enabled"), 0)))) {
+    if (camId == -1 && (CVarGetInteger(CVAR_CHEAT("NoRestrictItems"), 0) || (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0)))) {
         // This prevents a crash when using items that change the
         // camera (such as din's fire), voiding out or dying on 
         // scenes with prerendered backgrounds.
@@ -578,13 +579,6 @@ u32 func_80096FE8(PlayState* play, RoomContext* roomCtx) {
 
     frontRoom = gSaveContext.respawnFlag > 0 ? ((void)0, gSaveContext.respawn[gSaveContext.respawnFlag - 1].roomIndex)
                                              : play->setupEntranceList[play->curSpawn].room;
-
-    // In ER, override roomNum to load based on scene and spawn during scene init
-    if (IS_RANDO && gSaveContext.respawnFlag <= 0 &&
-        Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
-        frontRoom = Entrance_OverrideSpawnSceneRoom(play->sceneNum, play->curSpawn, frontRoom);
-    }
-
     func_8009728C(play, roomCtx, frontRoom);
 
     return maxRoomSize;
@@ -659,14 +653,14 @@ void func_80097534(PlayState* play, RoomContext* roomCtx) {
         Map_SavePlayerInitialInfo(play);
     }
     Audio_SetEnvReverb(play->roomCtx.curRoom.echo);
-    u8 idx = gSaveContext.sohStats.tsIdx;
-    gSaveContext.sohStats.sceneTimestamps[idx].scene = gSaveContext.sohStats.sceneNum;
-    gSaveContext.sohStats.sceneTimestamps[idx].room = gSaveContext.sohStats.roomNum;
-    gSaveContext.sohStats.sceneTimestamps[idx].roomTime = gSaveContext.sohStats.roomTimer / 2;
-    gSaveContext.sohStats.sceneTimestamps[idx].isRoom = 
-        gPlayState->sceneNum == gSaveContext.sohStats.sceneTimestamps[idx].scene &&
-        gPlayState->roomCtx.curRoom.num != gSaveContext.sohStats.sceneTimestamps[idx].room;
-    gSaveContext.sohStats.tsIdx++;
-    gSaveContext.sohStats.roomNum = roomCtx->curRoom.num;
-    gSaveContext.sohStats.roomTimer = 0;
+    u8 idx = gSaveContext.ship.stats.tsIdx;
+    gSaveContext.ship.stats.sceneTimestamps[idx].scene = gSaveContext.ship.stats.sceneNum;
+    gSaveContext.ship.stats.sceneTimestamps[idx].room = gSaveContext.ship.stats.roomNum;
+    gSaveContext.ship.stats.sceneTimestamps[idx].roomTime = gSaveContext.ship.stats.roomTimer / 2;
+    gSaveContext.ship.stats.sceneTimestamps[idx].isRoom = 
+        gPlayState->sceneNum == gSaveContext.ship.stats.sceneTimestamps[idx].scene &&
+        gPlayState->roomCtx.curRoom.num != gSaveContext.ship.stats.sceneTimestamps[idx].room;
+    gSaveContext.ship.stats.tsIdx++;
+    gSaveContext.ship.stats.roomNum = roomCtx->curRoom.num;
+    gSaveContext.ship.stats.roomTimer = 0;
 }

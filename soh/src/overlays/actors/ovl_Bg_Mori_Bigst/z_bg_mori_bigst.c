@@ -9,7 +9,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void BgMoriBigst_Init(Actor* thisx, PlayState* play);
 void BgMoriBigst_Destroy(Actor* thisx, PlayState* play);
@@ -162,7 +162,7 @@ void BgMoriBigst_SetupFall(BgMoriBigst* this, PlayState* play) {
 }
 
 void BgMoriBigst_Fall(BgMoriBigst* this, PlayState* play) {
-    Actor_MoveForward(&this->dyna.actor);
+    Actor_MoveXZGravity(&this->dyna.actor);
     if (this->dyna.actor.world.pos.y <= this->dyna.actor.home.pos.y) {
         this->dyna.actor.world.pos.y = this->dyna.actor.home.pos.y;
         BgMoriBigst_SetupLanding(this, play);
@@ -223,7 +223,7 @@ void BgMoriBigst_StalfosPairFight(BgMoriBigst* this, PlayState* play) {
     if ((this->dyna.actor.home.rot.z == 0 || 
         // Check if all enemies are defeated instead of the regular stalfos when enemy randomizer or crowd control is on.
         (Flags_GetTempClear(play, this->dyna.actor.room) && (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) || 
-            ((CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL) == GI_SCHEME_CROWD_CONTROL && CVarGetInteger(CVAR_REMOTE("Enabled"), 0)))))) && !Player_InCsMode(play)) {
+            ((CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0)))))) && !Player_InCsMode(play)) {
         Flags_SetSwitch(play, (this->dyna.actor.params >> 8) & 0x3F);
         BgMoriBigst_SetupDone(this, play);
     }
@@ -241,7 +241,7 @@ void BgMoriBigst_Update(Actor* thisx, PlayState* play) {
     if (this->waitTimer > 0) {
         this->waitTimer--;
     }
-    if (func_80043590(&this->dyna)) {
+    if (DynaPolyActor_IsPlayerAbove(&this->dyna)) {
         func_80074CE8(play, 6);
     }
     if (this->actionFunc != NULL) {

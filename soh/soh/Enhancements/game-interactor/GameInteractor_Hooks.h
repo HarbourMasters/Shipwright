@@ -1,3 +1,5 @@
+#pragma once
+
 #include "GameInteractor.h"
 #include <stdarg.h>
 
@@ -5,8 +7,11 @@
 extern "C" {
 #endif
 // MARK: - Gameplay
+void GameInteractor_ExecuteOnZTitleInit(void* gameState);
+void GameInteractor_ExecuteOnZTitleUpdate(void* gameState);
 void GameInteractor_ExecuteOnLoadGame(int32_t fileNum);
 void GameInteractor_ExecuteOnExitGame(int32_t fileNum);
+void GameInteractor_ExecuteOnGameStateMainStart();
 void GameInteractor_ExecuteOnGameFrameUpdate();
 void GameInteractor_ExecuteOnItemReceiveHooks(GetItemEntry itemEntry);
 void GameInteractor_ExecuteOnSaleEndHooks(GetItemEntry itemEntry);
@@ -19,13 +24,16 @@ void GameInteractor_ExecuteOnFlagUnset(int16_t flagType, int16_t flag);
 void GameInteractor_ExecuteOnSceneSpawnActors();
 void GameInteractor_ExecuteOnPlayerUpdate();
 void GameInteractor_ExecuteOnOcarinaSongAction();
+void GameInteractor_ExecuteOnCuccoOrChickenHatch();
 void GameInteractor_ExecuteOnActorInit(void* actor);
 void GameInteractor_ExecuteOnActorUpdate(void* actor);
 void GameInteractor_ExecuteOnActorKill(void* actor);
 void GameInteractor_ExecuteOnEnemyDefeat(void* actor);
 void GameInteractor_ExecuteOnBossDefeat(void* actor);
+void GameInteractor_ExecuteOnTimestamp (u8 item);
 void GameInteractor_ExecuteOnPlayerBonk();
-void GameInteractor_ExecuteOnOcarinaSongAction();
+void GameInteractor_ExecuteOnPlayerHealthChange(int16_t amount);
+void GameInteractor_ExecuteOnPlayerBottleUpdate(int16_t contents);
 void GameInteractor_ExecuteOnShopSlotChangeHooks(uint8_t cursorIndex, int16_t price);
 void GameInteractor_ExecuteOnPlayDestroy();
 void GameInteractor_ExecuteOnPlayDrawEnd();

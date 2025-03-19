@@ -35,8 +35,7 @@ class StaticData {
       static std::unordered_map<std::string, uint32_t> PopulateTranslationMap(std::unordered_map<uint32_t, CustomMessage> input);
       static std::unordered_map<std::string, uint32_t> PopulateTranslationMap(std::unordered_map<uint32_t, RandomizerHintTextKey> input);
       static std::multimap<std::tuple<s16, s16, s32>, RandomizerCheck> CheckFromActorMultimap;
-      static std::vector<RandomizerCheck> GetOverworldLocations();
-      static std::vector<RandomizerCheck> GetDungeonLocations();
+      static std::vector<RandomizerCheck> GetAllDungeonLocations();
       static std::vector<RandomizerCheck> dungeonRewardLocations;
       static std::vector<RandomizerCheck> GetShopLocations();
       static std::vector<RandomizerCheck> GetScrubLocations();
@@ -46,6 +45,13 @@ class StaticData {
       static std::vector<RandomizerCheck> GetStaticHintLocations();
       static std::vector<RandomizerCheck> GetPondFishLocations();
       static std::vector<RandomizerCheck> GetOverworldFishLocations();
+      static std::vector<RandomizerCheck> GetOverworldFairyLocations();
+      static void RegisterCowLocations();
+      static void RegisterFishLocations();
+      static void RegisterFairyLocations();
+      static void RegisterPotLocations();
+      static void RegisterFreestandingLocations();
+      static void InitHashMaps();
       static std::array<std::pair<RandomizerCheck, RandomizerCheck>, 17> randomizerFishingPondFish;
       static std::unordered_map<int8_t, RandomizerCheck> randomizerGrottoFishMap;
       static std::vector<RandomizerHint> oldVerHintOrder;
@@ -61,6 +67,7 @@ class StaticData {
       static std::unordered_map<std::string, uint32_t> areaNameToEnum;
       static std::unordered_map<uint32_t, RandomizerHintTextKey> trialData;
       static std::unordered_map<std::string, uint32_t> trialNameToEnum;
+      static std::unordered_map<std::string, RandomizerSettingKey> optionNameToEnum;
       static std::unordered_map<RandomizerHint, StaticHintInfo> staticHintInfoMap;
       static std::unordered_map<u32, RandomizerHint> stoneParamsToHint;
       static std::unordered_map<u32, RandomizerHint> grottoChestParamsToHint;

@@ -6,8 +6,9 @@
 
 #include "z_oceff_wipe4.h"
 #include "vt.h"
+#include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_UPDATE_DURING_OCARINA)
 
 void OceffWipe4_Init(Actor* thisx, PlayState* play);
 void OceffWipe4_Destroy(Actor* thisx, PlayState* play);
@@ -107,7 +108,8 @@ void OceffWipe4_Draw(Actor* thisx, PlayState* play) {
     gSPDisplayList(POLY_XLU_DISP++, sMaterial2DL);
     gSPDisplayList(POLY_XLU_DISP++, Gfx_TwoTexScroll(play->state.gfxCtx, 0, scroll * 2, scroll * (-2), 32, 64, 1,
                                                      scroll * (-1), scroll, 32, 32));
-    gSPDisplayListOffset(POLY_XLU_DISP++, sMaterial2DL, 11);
+    // SOH [Port] Index adjust 11 -> 14 (for LUS marker and load texture) to account for our extraction size changes
+    gSPDisplayListOffset(POLY_XLU_DISP++, sMaterial2DL, 11 + 2 + 1);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

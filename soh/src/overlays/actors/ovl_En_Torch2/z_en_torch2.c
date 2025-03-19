@@ -8,7 +8,7 @@
 #include "objects/object_torch2/object_torch2.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 typedef enum {
     /* 0 */ ENTORCH2_WAIT,
@@ -128,7 +128,7 @@ void EnTorch2_Init(Actor* thisx, PlayState* play2) {
 
     // Change Dark Link to regular enemy instead of boss with enemy randomizer and crowd control.
     // This way Dark Link will be considered for "clear enemy" rooms properly.
-    if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) || (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL) == GI_SCHEME_CROWD_CONTROL && CVarGetInteger(CVAR_REMOTE("Enabled"), 0))) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) || (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0))) {
         Actor_ChangeCategory(play, &play->actorCtx, thisx, ACTORCAT_ENEMY);
     }
 
@@ -136,7 +136,7 @@ void EnTorch2_Init(Actor* thisx, PlayState* play2) {
     sInput.cur.stick_x = sInput.cur.stick_y = 0;
     this->currentShield = PLAYER_SHIELD_HYLIAN;
     this->heldItemAction = this->heldItemId = PLAYER_IA_SWORD_MASTER;
-    Player_SetModelGroup(this, PLAYER_MODELGROUP_SWORD);
+    Player_SetModelGroup(this, PLAYER_MODELGROUP_SWORD_AND_SHIELD);
     play->playerInit(this, play, &gDarkLinkSkel);
     this->actor.naviEnemyId = 0x26;
     this->cylinder.base.acFlags = AC_ON | AC_TYPE_PLAYER;
@@ -374,7 +374,7 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
                         player->skelAnime.curFrame = 3.0f;
                         sStickAngle = this->actor.yawTowardsPlayer + 0x8000;
                         sSwordJumpTimer = sSwordJumpState = 0;
-                        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+                        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
                     } else if (sSwordJumpState == 1) {
                         if (sSwordJumpTimer < 16) {
                             EnTorch2_SwingSword(play, input, this);
@@ -405,7 +405,7 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
                                 sStickTilt = 0.0f;
                                 sSwordJumpState = 1;
                                 player->stateFlags3 |= PLAYER_STATE3_PAUSE_ACTION_FUNC;
-                                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+                                this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
                                 sSwordJumpTimer = 27;
                                 player->meleeWeaponState = 0;
                                 player->linearVelocity = 0.0f;
@@ -524,7 +524,7 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
             input->cur.stick_x = input->cur.stick_y = 0;
             if ((this->invincibilityTimer > 0) && (this->actor.world.pos.y < (this->actor.floorHeight - 160.0f))) {
                 this->stateFlags3 &= ~PLAYER_STATE3_IGNORE_CEILING_FLOOR_WATER;
-                this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+                this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
                 this->invincibilityTimer = 0;
                 this->actor.velocity.y = 0.0f;
                 this->actor.world.pos.y = sSpawnPoint.y + 40.0f;
@@ -604,21 +604,21 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
     if ((this->actor.colChkInfo.health == 0) && sDeathFlag) {
         this->csAction = 0x18;
         this->csActor = &player->actor;
-        this->doorBgCamIndex = 1;
+        this->cv.haltActorsDuringCsAction = true;
         sDeathFlag = false;
     }
     if ((this->invincibilityTimer == 0) && (this->actor.colChkInfo.health != 0) &&
-        (this->cylinder.base.acFlags & AC_HIT) && !(this->stateFlags1 & PLAYER_STATE1_SHIELDING) &&
+        (this->cylinder.base.acFlags & AC_HIT) && !(this->stateFlags1 & PLAYER_STATE1_DAMAGED) &&
         !(this->meleeWeaponQuads[0].base.atFlags & AT_HIT) && !(this->meleeWeaponQuads[1].base.atFlags & AT_HIT)) {
 
         if (!Actor_ApplyDamage(&this->actor)) {
             func_800F5B58();
-            this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE);
-            this->unk_8A1 = 2;
-            this->unk_8A4 = 6.0f;
-            this->unk_8A8 = 6.0f;
-            this->unk_8A0 = this->actor.colChkInfo.damage;
-            this->unk_8A2 = this->actor.yawTowardsPlayer + 0x8000;
+            this->actor.flags &= ~(ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE);
+            this->knockbackType = 2;
+            this->knockbackSpeed = 6.0f;
+            this->knockbackYVelocity = 6.0f;
+            this->knockbackDamage = this->actor.colChkInfo.damage;
+            this->knockbackRot = this->actor.yawTowardsPlayer + 0x8000;
             sDeathFlag++;
             sActionState = ENTORCH2_DEATH;
             Enemy_StartFinishingBlow(play, &this->actor);
@@ -633,12 +633,12 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
                     Actor_SetColorFilter(&this->actor, 0, 0xFF, 0x2000, 0x50);
                 }
             } else {
-                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
-                this->unk_8A0 = this->actor.colChkInfo.damage;
-                this->unk_8A1 = 1;
-                this->unk_8A8 = 6.0f;
-                this->unk_8A4 = 8.0f;
-                this->unk_8A2 = this->actor.yawTowardsPlayer + 0x8000;
+                this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
+                this->knockbackDamage = this->actor.colChkInfo.damage;
+                this->knockbackType = 1;
+                this->knockbackYVelocity = 6.0f;
+                this->knockbackSpeed = 8.0f;
+                this->knockbackRot = this->actor.yawTowardsPlayer + 0x8000;
                 Actor_SetDropFlag(&this->actor, &this->cylinder.info, 1);
                 this->stateFlags3 &= ~PLAYER_STATE3_PAUSE_ACTION_FUNC;
                 this->stateFlags3 |= PLAYER_STATE3_IGNORE_CEILING_FLOOR_WATER;
@@ -651,7 +651,7 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
             }
         }
         this->actor.colChkInfo.damage = 0;
-        this->unk_8A0 = 0;
+        this->knockbackDamage = 0;
     }
 
     // Handles being frozen by a deku nut
@@ -660,7 +660,7 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
         this->stateFlags3 &= ~PLAYER_STATE3_PAUSE_ACTION_FUNC;
     } else {
         this->stateFlags3 |= PLAYER_STATE3_PAUSE_ACTION_FUNC;
-        this->stateFlags1 &= ~PLAYER_STATE1_SHIELDING;
+        this->stateFlags1 &= ~PLAYER_STATE1_DAMAGED;
         this->invincibilityTimer = 0;
         input->press.stick_x = input->press.stick_y = 0;
         /*! @bug

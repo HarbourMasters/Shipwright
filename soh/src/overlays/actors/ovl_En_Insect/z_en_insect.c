@@ -7,6 +7,7 @@
 #include "z_en_insect.h"
 #include "vt.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS 0
 
@@ -189,7 +190,7 @@ void EnInsect_Init(Actor* thisx, PlayState* play2) {
 
     if (this->unk_314 & 4) {
         this->unk_31C = Rand_S16Offset(200, 40);
-        this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+        this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
     }
 
     if (temp_s2 == 2 || temp_s2 == 3) {
@@ -683,7 +684,7 @@ void func_80A7D460(EnInsect* this, PlayState* play) {
             if (this->soilActor != NULL) {
                 if (!(GET_GS_FLAGS(((this->soilActor->actor.params >> 8) & 0x1F) - 1) &
                       (this->soilActor->actor.params & 0xFF))) {
-                    func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
+                    Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
                 }
             }
             this->unk_314 |= 0x80;
@@ -744,7 +745,7 @@ void EnInsect_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
 
     if (this->actor.update != NULL) {
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
         if (this->unk_314 & 0x100) {
             if (this->unk_314 & 1) {
                 if (this->actor.bgCheckFlags & 1) {

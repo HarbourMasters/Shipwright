@@ -8,6 +8,7 @@
 extern "C" {
 #include "variables.h"
 #include "macros.h"
+#include "soh/cvar_prefixes.h"
 #include "functions.h"
 extern PlayState* gPlayState;
 }
@@ -237,7 +238,12 @@ void GameInteractor::RawAction::SetFlag(int16_t flagType, int16_t flag) {
             gSaveContext.eventInf[flag >> 4] |= (1 << (flag & 0xF));
             break;
         case FlagType::FLAG_RANDOMIZER_INF:
-            gSaveContext.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
+            if (!IS_RANDO) {
+                LUSLOG_ERROR("Tried to set randomizerInf flag outside of rando (%d)", flag);
+                assert(false);
+                break;
+            }
+            gSaveContext.ship.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
             break;
         case FlagType::FLAG_GS_TOKEN:
             SET_GS_FLAGS((flag & 0x1F00) >> 8, flag & 0xFF);
@@ -260,7 +266,12 @@ void GameInteractor::RawAction::UnsetFlag(int16_t flagType, int16_t flag) {
             gSaveContext.eventInf[flag >> 4] &= ~(1 << (flag & 0xF));
             break;
         case FlagType::FLAG_RANDOMIZER_INF:
-            gSaveContext.randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
+            if (!IS_RANDO) {
+                LUSLOG_ERROR("Tried to unset randomizerInf flag outside of rando (%d)", flag);
+                assert(false);
+                break;
+            }
+            gSaveContext.ship.randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
             break;
     }
 };
@@ -341,7 +352,7 @@ void GameInteractor::RawAction::UpdateActor(void* refActor) {
 }
 
 void GameInteractor::RawAction::TeleportPlayer(int32_t nextEntrance) {
-    Audio_PlaySoundGeneral(NA_SE_EN_GANON_LAUGH, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+    Audio_PlaySoundGeneral(NA_SE_EN_GANON_LAUGH, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     gPlayState->nextEntranceIndex = nextEntrance;
     gPlayState->transitionTrigger = TRANS_TRIGGER_START;
     gPlayState->transitionType = TRANS_TYPE_FADE_BLACK;
@@ -476,7 +487,7 @@ void GameInteractor::RawAction::SetCosmeticsColor(uint8_t cosmeticCategory, uint
             break;
     }
 
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     ApplyOrResetCustomGfxPatches();
 }
 

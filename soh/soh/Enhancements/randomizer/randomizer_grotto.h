@@ -2,6 +2,7 @@
 #define _RANDO_GROTTO_H_
 
 #include "z64math.h"
+#include "z64actor.h"
 
 #define NUM_GROTTOS GROTTO_OFFSET_MAX
 #define NOT_GROTTO 0
@@ -21,15 +22,23 @@ typedef struct {
     Vec3f pos;
 } GrottoReturnInfo;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 void Grotto_InitExitAndLoadLists(void);
 void Grotto_SetExitOverride(s16 originalIndex, s16 overrideIndex);
 void Grotto_SetLoadOverride(s16 originalIndex, s16 overrideIndex);
 s16 Grotto_GetEntranceValueHandlingGrottoRando(s16 nextEntranceIndex);
 s16 Grotto_OverrideSpecialEntrance(s16 nextEntranceIndex);
+void Grotto_OverrideActorEntrance(Actor* thisx);
 void Grotto_ForceGrottoReturnOnSpecialEntrance(void);
 void Grotto_ForceGrottoReturn(void);
 void Grotto_ForceRegularVoidOut(void);
 void Grotto_SanitizeEntranceType(void);
 s16 Grotto_GetRenamedGrottoIndexFromOriginal(s8 content, s8 scene);
+s8 Grotto_CurrentGrotto();
+#ifdef __cplusplus
+};
+#endif
 
 #endif //_RANDO_GROTTO_H_

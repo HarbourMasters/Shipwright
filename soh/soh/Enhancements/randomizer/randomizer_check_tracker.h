@@ -2,6 +2,7 @@
 #include <nlohmann/json.hpp>
 #include "randomizerTypes.h"
 #include "randomizer_check_objects.h"
+#include "soh/SohGui/UIWidgets.hpp"
 
 #include <libultraship/libultraship.h>
 
@@ -21,12 +22,13 @@ class CheckTrackerSettingsWindow : public Ship::GuiWindow {
 class CheckTrackerWindow : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
+    void Draw() override;
     ~CheckTrackerWindow() {};
 
   protected:
     void InitElement() override;
     void DrawElement() override;
-    void UpdateElement() override {};
+    void UpdateElement() override;
 };
 
 //Converts an index into a Little Endian bitmask, as follows:
@@ -58,4 +60,5 @@ void UpdateAreas(RandomizerCheckArea area);
 void UpdateAllOrdering();
 void UpdateAllAreas();
 void RecalculateAllAreaTotals();
+void SpoilAreaFromCheck(RandomizerCheck rc);
 } // namespace CheckTracker

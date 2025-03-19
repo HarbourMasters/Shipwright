@@ -7,7 +7,7 @@
 #include "z_en_bdfire.h"
 #include "objects/object_kingdodongo/object_kingdodongo.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void EnBdfire_Init(Actor* thisx, PlayState* play);
 void EnBdfire_Destroy(Actor* thisx, PlayState* play);
@@ -132,8 +132,8 @@ void func_809BC598(EnBdfire* this, PlayState* play) {
     this->unk_158 = bossDodongo->unk_1A2;
     phi_v1_2 = 0;
     if (this->actor.params == 0) {
-        Audio_PlaySoundGeneral(NA_SE_EN_DODO_K_FIRE - SFX_FLAG, &this->actor.projectedPos, 4, &D_801333E0, &D_801333E0,
-                               &D_801333E8);
+        Audio_PlaySoundGeneral(NA_SE_EN_DODO_K_FIRE - SFX_FLAG, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultReverb);
     }
     Math_SmoothStepToF(&this->actor.scale.x, this->unk_188, 0.3f, 0.5f, 0.0f);
     Actor_SetScale(&this->actor, this->actor.scale.x);
@@ -192,7 +192,7 @@ void EnBdfire_Update(Actor* thisx, PlayState* play) {
 
     this->unk_156++;
     this->actionFunc(this, play);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 }
 
 void EnBdfire_DrawFire(EnBdfire* this, PlayState* play) {

@@ -17,7 +17,7 @@ extern PlayState* gPlayState;
 
 #define FSi OTRGlobals::Instance->gRandoContext->GetFishsanity()
 
-#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetSelectedOptionIndex()
+#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).Get()
 
 /**
  * @brief Parallel list of pond fish checks for both ages
@@ -59,6 +59,7 @@ namespace Rando {
     const FishIdentity Fishsanity::defaultIdentity = { RAND_INF_MAX, RC_UNKNOWN_CHECK };
     bool Fishsanity::fishsanityHelpersInit = false;
     s16 Fishsanity::fishGroupCounter = 0;
+    bool Fishsanity::enableAdvance = false;
     std::unordered_map<RandomizerCheck, LinkAge> Fishsanity::pondFishAgeMap;
     std::vector<RandomizerCheck> Fishsanity::childPondFish;
     std::vector<RandomizerCheck> Fishsanity::adultPondFish;
@@ -228,7 +229,7 @@ namespace Rando {
 
                 if (ageSplit && !IsFish(&mCurrPondFish.second) && tableEntry.second != RC_UNKNOWN_CHECK &&
                     (!Flags_GetRandomizerInf(OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(tableEntry.second)) || i == pondCount - 1)) {
-                    mCurrPondFish.second = mCurrPondFish.second = GetPondFish(params, true);
+                    mCurrPondFish.second = GetPondFish(params, true);
                 }
             }
         }
@@ -395,22 +396,6 @@ namespace Rando {
         }
     }
 
-    void Fishsanity::OnFlagSetHandler(int16_t flagType, int16_t flag) {
-        if (flagType != FLAG_RANDOMIZER_INF) {
-            return;
-        }
-        RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf((RandomizerInf)flag);
-        FishsanityCheckType fsType = Rando::Fishsanity::GetCheckType(rc);
-        if (fsType == FSC_NONE) {
-            return;
-        }
-
-        // When a pond fish is caught, advance the pond.
-        if (fsType == FSC_POND) {
-            OTRGlobals::Instance->gRandoContext->GetFishsanity()->AdvancePond();
-        }
-    }
-
     void Fishsanity::OnActorUpdateHandler(void* refActor) {
         if (gPlayState->sceneNum != SCENE_GROTTOS && gPlayState->sceneNum != SCENE_ZORAS_DOMAIN && gPlayState->sceneNum != SCENE_FISHING_POND) {
             return;
@@ -428,6 +413,7 @@ namespace Rando {
                 FishIdentity identity = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
                 if (identity.randomizerCheck != RC_UNKNOWN_CHECK) {
                     Flags_SetRandomizerInf(identity.randomizerInf);
+                    enableAdvance = true;
                     // Remove uncaught effect
                     if (actor->shape.shadowDraw != NULL) {
                         actor->shape.shadowDraw = NULL;
@@ -454,7 +440,7 @@ namespace Rando {
 
         // Reset fish group counter when the group gets culled
         if (actor->id == ACTOR_OBJ_MURE && gPlayState->sceneNum == SCENE_ZORAS_DOMAIN && fishGroupCounter > 0 &&
-            !(actor->flags & ACTOR_FLAG_UPDATE_WHILE_CULLED) && fs->GetOverworldFishShuffled()) {
+            !(actor->flags & ACTOR_FLAG_UPDATE_CULLING_DISABLED) && fs->GetOverworldFishShuffled()) {
             fishGroupCounter = 0;
         }
     }
@@ -481,6 +467,13 @@ namespace Rando {
                 actor->parent = &GET_PLAYER(gPlayState)->actor;
                 *should = false;
             }
+        }
+    }
+
+    void Fishsanity::OnItemReceiveHandler(GetItemEntry itemEntry) {
+        if (enableAdvance) {
+            enableAdvance = false;
+            OTRGlobals::Instance->gRandoContext->GetFishsanity()->AdvancePond();
         }
     }
 } // namespace Rando
@@ -555,6 +548,8 @@ extern "C" {
         Matrix_Push();
         Matrix_Scale(30.0, 30.0, 30.0, MTXMODE_APPLY);
 
+        func_8002EBCC(actor, play, 0);
+        func_8002ED80(actor, play, 0);
         EnItem00_CustomItemsParticles(actor, play, randoItem);
         GetItemEntry_Draw(play, randoItem);
 
@@ -583,3 +578,58 @@ extern "C" {
         CLOSE_DISPS(play->state.gfxCtx);
     }
 }
+
+void Rando::StaticData::RegisterFishLocations() {
+    // Fishing Pond
+    locationTable[RC_LH_CHILD_FISH_1] =                                                Location::Fish(RC_LH_CHILD_FISH_1,                                              RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 100,      RAND_INF_CHILD_FISH_1,                         "Child Pond Fish 1",           RHT_LH_POND_FISH,                  RG_NONE);
+    locationTable[RC_LH_CHILD_FISH_2] =                                                Location::Fish(RC_LH_CHILD_FISH_2,                                              RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 101,      RAND_INF_CHILD_FISH_2,                         "Child Pond Fish 2",           RHT_LH_POND_FISH,                  RG_NONE);
+    locationTable[RC_LH_CHILD_FISH_3] =                                                Location::Fish(RC_LH_CHILD_FISH_3,                                              RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 102,      RAND_INF_CHILD_FISH_3,                         "Child Pond Fish 3",           RHT_LH_POND_FISH,                  RG_NONE);
+    locationTable[RC_LH_CHILD_FISH_4] =                                                Location::Fish(RC_LH_CHILD_FISH_4,                                              RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 103,      RAND_INF_CHILD_FISH_4,                         "Child Pond Fish 4",           RHT_LH_POND_FISH,                  RG_NONE);
+    locationTable[RC_LH_CHILD_FISH_5] =                                                Location::Fish(RC_LH_CHILD_FISH_5,                                              RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 104,      RAND_INF_CHILD_FISH_5,                         "Child Pond Fish 5",           RHT_LH_POND_FISH,                  RG_NONE);
+    locationTable[RC_LH_CHILD_FISH_6] =                                                Location::Fish(RC_LH_CHILD_FISH_6,                                              RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 105,      RAND_INF_CHILD_FISH_6,                         "Child Pond Fish 6",           RHT_LH_POND_FISH,                  RG_NONE);
+    locationTable[RC_LH_CHILD_FISH_7] =                                                Location::Fish(RC_LH_CHILD_FISH_7,                                              RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 106,      RAND_INF_CHILD_FISH_7,                         "Child Pond Fish 7",           RHT_LH_POND_FISH,                  RG_NONE);
+    locationTable[RC_LH_CHILD_FISH_8] =                                                Location::Fish(RC_LH_CHILD_FISH_8,                                              RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 107,      RAND_INF_CHILD_FISH_8,                         "Child Pond Fish 8",           RHT_LH_POND_FISH,                  RG_NONE);
+    locationTable[RC_LH_CHILD_FISH_9] =                                                Location::Fish(RC_LH_CHILD_FISH_9,                                              RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 108,      RAND_INF_CHILD_FISH_9,                         "Child Pond Fish 9",           RHT_LH_POND_FISH,                  RG_NONE);
+    locationTable[RC_LH_CHILD_FISH_10] =                                               Location::Fish(RC_LH_CHILD_FISH_10,                                             RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 109,      RAND_INF_CHILD_FISH_10,                        "Child Pond Fish 10",          RHT_LH_POND_FISH,                  RG_NONE);
+    locationTable[RC_LH_CHILD_FISH_11] =                                               Location::Fish(RC_LH_CHILD_FISH_11,                                             RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 110,      RAND_INF_CHILD_FISH_11,                        "Child Pond Fish 11",          RHT_LH_POND_FISH,                  RG_NONE);
+    locationTable[RC_LH_CHILD_FISH_12] =                                               Location::Fish(RC_LH_CHILD_FISH_12,                                             RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 111,      RAND_INF_CHILD_FISH_12,                        "Child Pond Fish 12",          RHT_LH_POND_FISH,                  RG_NONE);
+    locationTable[RC_LH_CHILD_FISH_13] =                                               Location::Fish(RC_LH_CHILD_FISH_13,                                             RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 112,      RAND_INF_CHILD_FISH_13,                        "Child Pond Fish 13",          RHT_LH_POND_FISH,                  RG_NONE);
+    locationTable[RC_LH_CHILD_FISH_14] =                                               Location::Fish(RC_LH_CHILD_FISH_14,                                             RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 113,      RAND_INF_CHILD_FISH_14,                        "Child Pond Fish 14",          RHT_LH_POND_FISH,                  RG_NONE);
+    locationTable[RC_LH_CHILD_FISH_15] =                                               Location::Fish(RC_LH_CHILD_FISH_15,                                             RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 114,      RAND_INF_CHILD_FISH_15,                        "Child Pond Fish 15",          RHT_LH_POND_FISH,                  RG_NONE);
+    locationTable[RC_LH_CHILD_LOACH_1] =                                               Location::Fish(RC_LH_CHILD_LOACH_1,                                             RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 115,      RAND_INF_CHILD_LOACH_1,                        "Child Pond Loach 1",          RHT_LH_HYRULE_LOACH,               RG_NONE);
+    locationTable[RC_LH_CHILD_LOACH_2] =                                               Location::Fish(RC_LH_CHILD_LOACH_2,                                             RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 116,      RAND_INF_CHILD_LOACH_2,                        "Child Pond Loach 2",          RHT_LH_HYRULE_LOACH,               RG_NONE);
+    locationTable[RC_LH_ADULT_FISH_1] =                                                Location::Fish(RC_LH_ADULT_FISH_1,                                              RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 100,      RAND_INF_ADULT_FISH_1,                         "Adult Pond Fish 1",           RHT_LH_POND_FISH,                  RG_NONE);
+    locationTable[RC_LH_ADULT_FISH_2] =                                                Location::Fish(RC_LH_ADULT_FISH_2,                                              RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 101,      RAND_INF_ADULT_FISH_2,                         "Adult Pond Fish 2",           RHT_LH_POND_FISH,                  RG_NONE);
+    locationTable[RC_LH_ADULT_FISH_3] =                                                Location::Fish(RC_LH_ADULT_FISH_3,                                              RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 102,      RAND_INF_ADULT_FISH_3,                         "Adult Pond Fish 3",           RHT_LH_POND_FISH,                  RG_NONE);
+    locationTable[RC_LH_ADULT_FISH_4] =                                                Location::Fish(RC_LH_ADULT_FISH_4,                                              RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 103,      RAND_INF_ADULT_FISH_4,                         "Adult Pond Fish 4",           RHT_LH_POND_FISH,                  RG_NONE);
+    locationTable[RC_LH_ADULT_FISH_5] =                                                Location::Fish(RC_LH_ADULT_FISH_5,                                              RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 104,      RAND_INF_ADULT_FISH_5,                         "Adult Pond Fish 5",           RHT_LH_POND_FISH,                  RG_NONE);
+    locationTable[RC_LH_ADULT_FISH_6] =                                                Location::Fish(RC_LH_ADULT_FISH_6,                                              RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 105,      RAND_INF_ADULT_FISH_6,                         "Adult Pond Fish 6",           RHT_LH_POND_FISH,                  RG_NONE);
+    locationTable[RC_LH_ADULT_FISH_7] =                                                Location::Fish(RC_LH_ADULT_FISH_7,                                              RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 106,      RAND_INF_ADULT_FISH_7,                         "Adult Pond Fish 7",           RHT_LH_POND_FISH,                  RG_NONE);
+    locationTable[RC_LH_ADULT_FISH_8] =                                                Location::Fish(RC_LH_ADULT_FISH_8,                                              RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 107,      RAND_INF_ADULT_FISH_8,                         "Adult Pond Fish 8",           RHT_LH_POND_FISH,                  RG_NONE);
+    locationTable[RC_LH_ADULT_FISH_9] =                                                Location::Fish(RC_LH_ADULT_FISH_9,                                              RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 108,      RAND_INF_ADULT_FISH_9,                         "Adult Pond Fish 9",           RHT_LH_POND_FISH,                  RG_NONE);
+    locationTable[RC_LH_ADULT_FISH_10] =                                               Location::Fish(RC_LH_ADULT_FISH_10,                                             RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 109,      RAND_INF_ADULT_FISH_10,                        "Adult Pond Fish 10",          RHT_LH_POND_FISH,                  RG_NONE);
+    locationTable[RC_LH_ADULT_FISH_11] =                                               Location::Fish(RC_LH_ADULT_FISH_11,                                             RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 110,      RAND_INF_ADULT_FISH_11,                        "Adult Pond Fish 11",          RHT_LH_POND_FISH,                  RG_NONE);
+    locationTable[RC_LH_ADULT_FISH_12] =                                               Location::Fish(RC_LH_ADULT_FISH_12,                                             RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 111,      RAND_INF_ADULT_FISH_12,                        "Adult Pond Fish 12",          RHT_LH_POND_FISH,                  RG_NONE);
+    locationTable[RC_LH_ADULT_FISH_13] =                                               Location::Fish(RC_LH_ADULT_FISH_13,                                             RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 112,      RAND_INF_ADULT_FISH_13,                        "Adult Pond Fish 13",          RHT_LH_POND_FISH,                  RG_NONE);
+    locationTable[RC_LH_ADULT_FISH_14] =                                               Location::Fish(RC_LH_ADULT_FISH_14,                                             RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 113,      RAND_INF_ADULT_FISH_14,                        "Adult Pond Fish 14",          RHT_LH_POND_FISH,                  RG_NONE);
+    locationTable[RC_LH_ADULT_FISH_15] =                                               Location::Fish(RC_LH_ADULT_FISH_15,                                             RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 114,      RAND_INF_ADULT_FISH_15,                        "Adult Pond Fish 15",          RHT_LH_POND_FISH,                  RG_NONE);
+    locationTable[RC_LH_ADULT_LOACH] =                                                 Location::Fish(RC_LH_ADULT_LOACH,                                               RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 115,      RAND_INF_ADULT_LOACH,                          "Adult Pond Loach",            RHT_LH_HYRULE_LOACH,               RG_NONE);
+    // Grotto fish
+    locationTable[RC_KF_STORMS_GROTTO_FISH] =                                          Location::GrottoFish(RC_KF_STORMS_GROTTO_FISH,                                  RCQUEST_BOTH,   RCAREA_KOKIRI_FOREST,                                                                          0x12C,    RAND_INF_GROTTO_FISH_KF_STORMS_GROTTO,         "Storms Grotto Fish",          RHT_KF_STORMS_GROTTO_FISH);
+    locationTable[RC_LW_NEAR_SHORTCUTS_GROTTO_FISH] =                                  Location::GrottoFish(RC_LW_NEAR_SHORTCUTS_GROTTO_FISH,                          RCQUEST_BOTH,   RCAREA_LOST_WOODS,                                                                             0x114,    RAND_INF_GROTTO_FISH_LW_NEAR_SHORTCUTS_GROTTO, "Near Shortcuts Grotto Fish",  RHT_LW_NEAR_SHORTCUTS_GROTTO_FISH);
+    locationTable[RC_HF_SOUTHEAST_GROTTO_FISH] =                                       Location::GrottoFish(RC_HF_SOUTHEAST_GROTTO_FISH,                               RCQUEST_BOTH,   RCAREA_HYRULE_FIELD,                                                                           0x122,    RAND_INF_GROTTO_FISH_HF_SOUTHEAST_GROTTO,      "Southeast Grotto Fish",       RHT_HF_SOUTHEAST_GROTTO_FISH);
+    locationTable[RC_HF_OPEN_GROTTO_FISH] =                                            Location::GrottoFish(RC_HF_OPEN_GROTTO_FISH,                                    RCQUEST_BOTH,   RCAREA_HYRULE_FIELD,                                                                           0x103,    RAND_INF_GROTTO_FISH_HF_OPEN_GROTTO,           "Open Grotto Fish",            RHT_HF_OPEN_GROTTO_FISH);
+    locationTable[RC_HF_NEAR_MARKET_GROTTO_FISH] =                                     Location::GrottoFish(RC_HF_NEAR_MARKET_GROTTO_FISH,                             RCQUEST_BOTH,   RCAREA_HYRULE_FIELD,                                                                           0x100,    RAND_INF_GROTTO_FISH_HF_NEAR_MARKET_GROTTO,    "Near Market Grotto Fish",     RHT_HF_NEAR_MARKET_GROTTO_FISH);
+    locationTable[RC_KAK_OPEN_GROTTO_FISH] =                                           Location::GrottoFish(RC_KAK_OPEN_GROTTO_FISH,                                   RCQUEST_BOTH,   RCAREA_KAKARIKO_VILLAGE,                                                                       0x128,    RAND_INF_GROTTO_FISH_KAK_OPEN_GROTTO,          "Open Grotto Fish",            RHT_KAK_OPEN_GROTTO_FISH);
+    locationTable[RC_DMT_STORMS_GROTTO_FISH] =                                         Location::GrottoFish(RC_DMT_STORMS_GROTTO_FISH,                                 RCQUEST_BOTH,   RCAREA_DEATH_MOUNTAIN_TRAIL,                                                                   0x157,    RAND_INF_GROTTO_FISH_DMT_STORMS_GROTTO,        "Storms Grotto Fish",          RHT_DMT_STORMS_GROTTO_FISH);
+    locationTable[RC_DMC_UPPER_GROTTO_FISH] =                                          Location::GrottoFish(RC_DMC_UPPER_GROTTO_FISH,                                  RCQUEST_BOTH,   RCAREA_DEATH_MOUNTAIN_CRATER,                                                                  0x17A,    RAND_INF_GROTTO_FISH_DMC_UPPER_GROTTO,         "Upper Grotto Fish",           RHT_DMC_UPPER_GROTTO_FISH);
+    locationTable[RC_ZR_OPEN_GROTTO_FISH] =                                            Location::GrottoFish(RC_ZR_OPEN_GROTTO_FISH,                                    RCQUEST_BOTH,   RCAREA_ZORAS_RIVER,                                                                            0x129,    RAND_INF_GROTTO_FISH_ZR_OPEN_GROTTO,           "Open Grotto Fish",            RHT_ZR_OPEN_GROTTO_FISH);
+    // Zora's Domain fish
+    locationTable[RC_ZD_FISH_1] =                                                      Location::Fish(RC_ZD_FISH_1,                                                    RCQUEST_BOTH,                                                                             ACTOR_EN_FISH,        SCENE_ZORAS_DOMAIN,                 -1 ^ 0,   RAND_INF_ZD_FISH_1,                            "Fish 1",                      RHT_ZD_FISH,                       RG_FISH);
+    locationTable[RC_ZD_FISH_2] =                                                      Location::Fish(RC_ZD_FISH_2,                                                    RCQUEST_BOTH,                                                                             ACTOR_EN_FISH,        SCENE_ZORAS_DOMAIN,                 -1 ^ 1,   RAND_INF_ZD_FISH_2,                            "Fish 2",                      RHT_ZD_FISH,                       RG_FISH);
+    locationTable[RC_ZD_FISH_3] =                                                      Location::Fish(RC_ZD_FISH_3,                                                    RCQUEST_BOTH,                                                                             ACTOR_EN_FISH,        SCENE_ZORAS_DOMAIN,                 -1 ^ 2,   RAND_INF_ZD_FISH_3,                            "Fish 3",                      RHT_ZD_FISH,                       RG_FISH);
+    locationTable[RC_ZD_FISH_4] =                                                      Location::Fish(RC_ZD_FISH_4,                                                    RCQUEST_BOTH,                                                                             ACTOR_EN_FISH,        SCENE_ZORAS_DOMAIN,                 -1 ^ 3,   RAND_INF_ZD_FISH_4,                            "Fish 4",                      RHT_ZD_FISH,                       RG_FISH);
+    locationTable[RC_ZD_FISH_5] =                                                      Location::Fish(RC_ZD_FISH_5,                                                    RCQUEST_BOTH,                                                                             ACTOR_EN_FISH,        SCENE_ZORAS_DOMAIN,                 -1 ^ 4,   RAND_INF_ZD_FISH_5,                            "Fish 5",                      RHT_ZD_FISH,                       RG_FISH);
+}
+
+static RegisterShipInitFunc initFunc(Rando::StaticData::RegisterFishLocations);
