@@ -2663,6 +2663,8 @@ void Message_OpenText(PlayState* play, u16 textId) {
     Font* font = &msgCtx->font;
     s16 textBoxType;
 
+    sDisplayNextMessageAsEnglish = false;
+
     if (msgCtx->msgMode == MSGMODE_NONE) {
         gSaveContext.unk_13EE = gSaveContext.unk_13EA;
     }

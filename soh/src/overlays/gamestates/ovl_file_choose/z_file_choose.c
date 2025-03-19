@@ -1492,7 +1492,11 @@ void FileChoose_UpdateRandomizerMenu(GameState* thisx) {
             if (Randomizer_IsSeedGenerated() || Randomizer_IsSpoilerLoaded()) {
                 Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
+                static u8 emptyNameNES[] = { 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
                 static u8 linkName[] = { 0x15, 0x2C, 0x31, 0x2E, 0x3E, 0x3E, 0x3E, 0x3E };
+                static u8 linkNameNES[] = { 0xB6, 0xB3, 0xB8, 0xB5, 0xDF, 0xDF, 0xDF, 0xDF };
+                u8* defaultName;
+
                 this->prevConfigMode = this->configMode;
                 this->configMode = CM_ROTATE_TO_NAME_ENTRY;
                 this->logoAlpha = 0;
@@ -1506,8 +1510,12 @@ void FileChoose_UpdateRandomizerMenu(GameState* thisx) {
                 this->newFileNameCharCount = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? 4 : 0;
                 this->nameEntryBoxPosX = 120;
                 this->nameEntryBoxAlpha = 0;
-                memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName,
-                       CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkName : &emptyName, 8);
+                if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+                    defaultName = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkName : &emptyName;
+                } else { // GAME_REGION_NTSC
+                    defaultName = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkNameNES : &emptyNameNES;
+                }
+                memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, defaultName, 8);
             } else {
                 Sfx_PlaySfxCentered(NA_SE_SY_OCARINA_ERROR);
             }
@@ -1714,6 +1722,9 @@ static void (*gConfigModeUpdateFuncsNES[])(GameState*) = {
     FileChoose_RotateToMain,       FileChoose_RotateToQuest,
     FileChoose_RotateToBossRush,   FileChoose_UpdateBossRushMenu,
     FileChoose_StartBossRushMenu,  FileChoose_RotateToQuest,
+    FileChoose_RotateToRandomizer, FileChoose_UpdateRandomizerMenu,
+    FileChoose_StartRandomizerMenu,FileChoose_RotateToQuest,
+    FileChoose_RotateToRandomizer
 };
 
 /**
@@ -2323,6 +2334,8 @@ const char* FileChoose_GetQuestChooseTitleTexName(Language lang) {
             return gFileSelPleaseChooseAQuestFRATex;
         case LANGUAGE_GER:
             return gFileSelPleaseChooseAQuestGERTex;
+        case LANGUAGE_JPN:
+            return gFileSelPleaseChooseAQuestJPNTex;
     }
 }
 
@@ -2335,6 +2348,8 @@ const char* FileChoose_GetSohOptionsTitleTexName(Language lang) {
             return gFileSelBossRushSettingsFRAText;
         case LANGUAGE_GER:
             return gFileSelBossRushSettingsGERText;
+        case LANGUAGE_JPN:
+            return gFileSelBossRushSettingsJPNText;
     }
 }
 
@@ -2453,7 +2468,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                 break;
         }
     } else if (this->configMode == CM_BOSS_RUSH_MENU) {
-
+        uint8_t language = (gSaveContext.language == LANGUAGE_JPN) ? LANGUAGE_ENG : gSaveContext.language;
         uint8_t listOffset = this->bossRushOffset;
         uint8_t textAlpha = this->bossRushUIAlpha;
 
@@ -2485,7 +2500,6 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
         // color and has arrows surrounding the option.
         for (uint8_t i = listOffset; i - listOffset < BOSSRUSH_MAX_OPTIONS_ON_SCREEN; i++) {
             uint16_t textYOffset = (i - listOffset) * 16;
-            uint8_t language = (gSaveContext.language == LANGUAGE_JPN) ? LANGUAGE_ENG : gSaveContext.language;
 
             // Option name.
             Interface_DrawTextLine(this->state.gfxCtx, BossRush_GetSettingName(i, language), 
@@ -2513,6 +2527,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
             }
         }
     } else if (this->configMode == CM_RANDOMIZER_SETTINGS_MENU) {
+        uint8_t language = (gSaveContext.language == LANGUAGE_JPN) ? LANGUAGE_ENG : gSaveContext.language;
         uint8_t textAlpha = this->randomizerUIAlpha;
 
         for (uint8_t index = 0; index <= RSM_OPEN_RANDOMIZER_SETTINGS; index++) {
@@ -2530,21 +2545,21 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                 textColorR = textColorG = textColorB = 100;
             }
 
-            Interface_DrawTextLine(this->state.gfxCtx, SohFileSelect_GetSettingText(index, gSaveContext.language), 70,
+            Interface_DrawTextLine(this->state.gfxCtx, SohFileSelect_GetSettingText(index, language), 70,
                                    (80 + (index * 16)), textColorR, textColorG, textColorB, textAlpha, 0.8f, true);
         }
 
         // Show text to indicate randomizer is being generated.
         if (generating) {
             Interface_DrawTextLine(this->state.gfxCtx,
-                                   SohFileSelect_GetSettingText(RSM_GENERATING, gSaveContext.language), 70,
+                                   SohFileSelect_GetSettingText(RSM_GENERATING, language), 70,
                                    (80 + 64), 255, 255, 255, textAlpha, 0.8f, true);
         }
 
         // If no randomizer is generated and "start randomizer" is selected, show text to explain why user can't start the randomizer.
         if (!Randomizer_IsSeedGenerated() && !Randomizer_IsSpoilerLoaded() && this->randomizerIndex == RSM_START_RANDOMIZER) {
             Interface_DrawTextLine(this->state.gfxCtx,
-                                   SohFileSelect_GetSettingText(RSM_NO_RANDOMIZER_GENERATED, gSaveContext.language), 70,
+                                   SohFileSelect_GetSettingText(RSM_NO_RANDOMIZER_GENERATED, language), 70,
                                    (80 + 64),
                                    240, 80, 80, textAlpha, 0.8f, true);
         }
