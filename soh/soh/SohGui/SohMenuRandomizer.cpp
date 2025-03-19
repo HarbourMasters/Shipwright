@@ -38,7 +38,7 @@ void SohMenu::AddMenuRandomizer() {
             "Use Custom graphics for Dungeon Keys, Big and Small, so that they can be easily told apart."
         ).DefaultValue(true));
     AddWidget(path, "Map & Compass Colors Match Dungeon", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_RANDOMIZER_ENHANCEMENT("MatchCompassColors"))
+        .CVar(CVAR_RANDOMIZER_ENHANCEMENT("ColoredMapsAndCompasses"))
         .PreFunc([](WidgetInfo& info) {
             info.options->disabled = !(
                 OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_MAPANDCOMPASS).IsNot(RO_DUNGEON_ITEM_LOC_STARTWITH) &&
