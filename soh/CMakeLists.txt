@@ -433,12 +433,14 @@ if(MSVC)
         target_compile_options(${PROJECT_NAME} PRIVATE
             $<$<CONFIG:Debug>:
                 /w;
-                /Od
+                /Od;
+                /bigobj
             >
             $<$<CONFIG:Release>:
                 /Oi;
                 /Gy;
-                /W3
+                /W3;
+                /bigobj
             >
             /sdl-;
             /permissive-;

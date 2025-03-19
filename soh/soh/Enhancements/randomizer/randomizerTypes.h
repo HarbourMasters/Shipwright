@@ -3368,6 +3368,8 @@ typedef enum {
     RG_HOOKSHOT,
     RG_LONGSHOT,
     RG_SCARECROW,
+
+    //Overworld keys
     RG_GUARD_HOUSE_KEY,
     RG_MARKET_BAZAAR_KEY,
     RG_MARKET_POTION_SHOP_KEY,
