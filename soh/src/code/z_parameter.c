@@ -6275,16 +6275,20 @@ void Interface_Update(PlayState* play) {
 
     if (CHECK_BTN_ALL(debugInput->press.button, BTN_DLEFT)) {
         gSaveContext.language = LANGUAGE_ENG;
+        CVarSetInteger(CVAR_SETTING("Languages"), LANGUAGE_ENG);
         osSyncPrintf("J_N=%x J_N=%x\n", gSaveContext.language, &gSaveContext.language);
     } else if (CHECK_BTN_ALL(debugInput->press.button, BTN_DUP) && sGerMessageEntryTablePtr != NULL) {
         gSaveContext.language = LANGUAGE_GER;
+        CVarSetInteger(CVAR_SETTING("Languages"), LANGUAGE_GER);
         osSyncPrintf("J_N=%x J_N=%x\n", gSaveContext.language, &gSaveContext.language);
     } else if (CHECK_BTN_ALL(debugInput->press.button, BTN_DRIGHT) && sFraMessageEntryTablePtr != NULL) {
         gSaveContext.language = LANGUAGE_FRA;
+        CVarSetInteger(CVAR_SETTING("Languages"), LANGUAGE_FRA);
         osSyncPrintf("J_N=%x J_N=%x\n", gSaveContext.language, &gSaveContext.language);
     } else if (CHECK_BTN_ALL(debugInput->press.button, BTN_DDOWN) && sJpnMessageEntryTablePtr != NULL) {
         // Add this in to have an equivalent ntsc language debugging feature
         gSaveContext.language = LANGUAGE_JPN;
+        CVarSetInteger(CVAR_SETTING("Languages"), LANGUAGE_JPN);
         osSyncPrintf("J_N=%x J_N=%x\n", gSaveContext.language, &gSaveContext.language);
     }
 
