@@ -949,6 +949,7 @@ void Message_DrawTextJPN(PlayState* play, Gfx** gfxP) {
     u16 i;
     u16 charTexIdx;
     Gfx* gfx = *gfxP;
+    int gTextSpeed, gSlowTextSpeed;
 
     play->msgCtx.textPosX = R_TEXT_INIT_XPOS;
     play->msgCtx.textPosY = R_TEXT_INIT_YPOS;
@@ -961,6 +962,9 @@ void Message_DrawTextJPN(PlayState* play, Gfx** gfxP) {
 
     msgCtx->unk_E3D0 = 0;
     charTexIdx = 0;
+
+    gTextSpeed = CVarGetInteger(CVAR_ENHANCEMENT("TextSpeed"), 1);
+    gSlowTextSpeed = CVarGetInteger(CVAR_ENHANCEMENT("SlowTextSpeed"), gTextSpeed);
 
     for (i = 0; i < msgCtx->textDrawPos; i++) {
         character = msgCtx->msgBufDecodedWide[i];
@@ -1160,6 +1164,9 @@ void Message_DrawTextJPN(PlayState* play, Gfx** gfxP) {
                 *gfxP = gfx;
                 return;
             case MESSAGE_OCARINA_JPN:
+                // #region SOH [General] Fixes softlock for higher text speeds
+                msgCtx->textDrawPos = i + 1;
+                // #endregion
                 if (i + 1 == msgCtx->textDrawPos) {
                     Message_HandleOcarina(play);
                     *gfxP = gfx;
@@ -1247,11 +1254,15 @@ void Message_DrawTextJPN(PlayState* play, Gfx** gfxP) {
         }
     }
 
-    if (msgCtx->textDelayTimer == 0) {
-        msgCtx->textDrawPos = i + CVarGetInteger(CVAR_ENHANCEMENT("TextSpeed"), 1);
+    if (msgCtx->textDelay == 0) {
+        msgCtx->textDrawPos = i + gTextSpeed;
+    } else if (msgCtx->textDelayTimer == 0) {
+        msgCtx->textDrawPos = i + 1;
         msgCtx->textDelayTimer = msgCtx->textDelay;
+    } else if (msgCtx->textDelayTimer <= gSlowTextSpeed) {
+        msgCtx->textDelayTimer = 0;
     } else {
-        msgCtx->textDelayTimer--;
+        msgCtx->textDelayTimer -= gSlowTextSpeed;
     }
     *gfxP = gfx;
 }
@@ -1514,7 +1525,9 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
                 *gfxP = gfx;
                 return;
             case MESSAGE_OCARINA:
+                // #region SOH [General] Fixes softlock for higher text speeds
                 msgCtx->textDrawPos = i + 1;
+                // #endregion
                 if (i + 1 == msgCtx->textDrawPos) {
                     Message_HandleOcarina(play);
                     *gfxP = gfx;
