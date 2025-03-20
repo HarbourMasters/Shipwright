@@ -23,6 +23,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_Bg_Ddan_Kd/z_bg_ddan_kd.h"
 #include "src/overlays/actors/ovl_En_Tk/z_en_tk.h"
 #include "src/overlays/actors/ovl_En_Fu/z_en_fu.h"
+#include "src/overlays/actors/ovl_En_Daiku/z_en_daiku.h"
 #include "src/overlays/actors/ovl_Bg_Spot02_Objects/z_bg_spot02_objects.h"
 #include "src/overlays/actors/ovl_Bg_Spot03_Taki/z_bg_spot03_taki.h"
 #include "src/overlays/actors/ovl_Bg_Hidan_Kousi/z_bg_hidan_kousi.h"
@@ -42,6 +43,8 @@ extern void BgSpot03Taki_ApplyOpeningAlpha(BgSpot03Taki* bgSpot03Taki, s32 buffe
 extern void EnGo2_CurledUp(EnGo2* enGo2, PlayState* play);
 
 extern void EnRu2_SetEncounterSwitchFlag(EnRu2* enRu2, PlayState* play);
+
+extern void EnDaiku_EscapeSuccess(EnDaiku* enDaiku, PlayState* play);
 }
 
 #define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).Get()
@@ -354,6 +357,18 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 !(gPlayState->sceneNum == SCENE_ZORAS_RIVER && IS_RANDO && RAND_GET_OPTION(RSK_FROGS_HINT))) {
                 *should = false;
             }
+
+            // If it's near a jailed carpenter, skip it along with introduction of Gerudo mini-boss
+            if (gPlayState->sceneNum == SCENE_THIEVES_HIDEOUT &&
+                CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), IS_RANDO)) {
+                EnWonderTalk2* enWonderTalk = va_arg(args, EnWonderTalk2*);
+                EnDaiku* enDaiku =
+                    (EnDaiku*)Actor_FindNearby(gPlayState, &enWonderTalk->actor, ACTOR_EN_DAIKU, ACTORCAT_NPC, 999.0f);
+                if (enDaiku != NULL) {
+                    Flags_SetSwitch(gPlayState, enDaiku->startFightSwitchFlag);
+                    *should = false;
+                }
+            }
             break;
         }
         case VB_NAVI_TALK: {
@@ -368,6 +383,12 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 }
                 Actor_Kill(&naviTalk->actor);
                 *should = false;
+            }
+            break;
+        }
+        case VB_END_GERUDO_MEMBERSHIP_TALK: {
+            if (ForcedDialogIsDisabled(FORCED_DIALOG_SKIP_NPC)) {
+                *should = true;
             }
             break;
         }
@@ -548,6 +569,17 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
         case VB_PLAY_ROYAL_FAMILY_TOMB_EXPLODE: {
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO)) {
                 *should = Flags_GetEventChkInf(EVENTCHKINF_DESTROYED_ROYAL_FAMILY_TOMB);
+            }
+            break;
+        }
+        case VB_PLAY_CARPENTER_FREE_CS: {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), IS_RANDO)) {
+                EnDaiku* enDaiku = va_arg(args, EnDaiku*);
+                if (enDaiku->subCamActive) {
+                    enDaiku->subCamActive = false;
+                    EnDaiku_EscapeSuccess(enDaiku, gPlayState);
+                }
+                *should = false;
             }
             break;
         }

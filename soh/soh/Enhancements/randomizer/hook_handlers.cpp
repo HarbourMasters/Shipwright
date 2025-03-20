@@ -2035,11 +2035,13 @@ void RandomizerOnActorInitHandler(void* actorRef) {
                 break;
         }
 
-        //Deletes all actors in the boss category if the soul isn't found.
-        //Some actors, like Dark Link, Arwings, and Zora's Sapphire...?, are in this category despite not being actual bosses,
-        //so ignore any "boss" if `currentBossSoulRandInf` doesn't change from RAND_INF_MAX.
+        // Deletes all actors in the boss category if the soul isn't found.
+        // Some actors, like Dark Link, Arwings, and Zora's Sapphire...?, are in this category despite not being actual bosses,
+        // so ignore any "boss" if `currentBossSoulRandInf` doesn't change from RAND_INF_MAX.
+        // Iron Knuckle (Nabooru) in Twinrova's room is a special exception, so exclude knuckles too.
         if (currentBossSoulRandInf != RAND_INF_MAX) {
-            if (!Flags_GetRandomizerInf(currentBossSoulRandInf) && actor->category == ACTORCAT_BOSS) {
+            if (!Flags_GetRandomizerInf(currentBossSoulRandInf) && actor->category == ACTORCAT_BOSS &&
+                actor->id != ACTOR_EN_IK) {
                 Actor_Delete(&gPlayState->actorCtx, actor, gPlayState);
             }
             //Special case for Phantom Ganon's horse (and fake), as they're considered "background actors",
@@ -2387,7 +2389,7 @@ void RandomizerRegisterHooks() {
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(fishsanityOnVanillaBehaviorHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnItemReceive>(fishsanityOnItemReceiveHook);
 
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(shufflePotsOnActorInitHook);
+        GameInteractor::Instance->UnregisterGameHookForID<GameInteractor::OnActorInit>(shufflePotsOnActorInitHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(shufflePotsOnVanillaBehaviorHook);
 
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(shuffleFreestandingOnVanillaBehaviorHook);
@@ -2463,7 +2465,7 @@ void RandomizerRegisterHooks() {
         }
 
         if (RAND_GET_OPTION(RSK_SHUFFLE_POTS) != RO_SHUFFLE_POTS_OFF) {
-            shufflePotsOnActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(ObjTsubo_RandomizerInit);
+            shufflePotsOnActorInitHook = GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnActorInit>(ACTOR_OBJ_TSUBO, ObjTsubo_RandomizerInit);
             shufflePotsOnVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(ShufflePots_OnVanillaBehaviorHandler);
         }
 
