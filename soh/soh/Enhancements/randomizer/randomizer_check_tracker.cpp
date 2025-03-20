@@ -822,6 +822,9 @@ void SaveTrackerData(SaveContext* saveContext, int sectionID, bool fullSave) {
 
 void SaveFile(SaveContext* saveContext, int sectionID, bool fullSave) {
     SaveTrackerData(saveContext, sectionID, fullSave);
+    if (fullSave) {
+        RecalculateAccessibleChecks();
+    }
 }
 
 void LoadFile() {
