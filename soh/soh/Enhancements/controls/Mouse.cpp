@@ -9,7 +9,10 @@
 static Ship::Coords mouseCoord = {};
 static Ship::Coords mouseCoordRel = {};
 
-#define MOUSE_ENABLED (CVarGetInteger(CVAR_SETTING("EnableMouse"), 0) && GetWindow()->IsMouseCaptured())
+#define CVAR_ENABLE_MOUSE_NAME CVAR_SETTING("EnableMouse")
+#define CVAR_ENABLE_MOUSE_DEFAULT 0
+#define CVAR_ENABLE_MOUSE_VALUE CVarGetInteger(CVAR_ENABLE_MOUSE_NAME, CVAR_ENABLE_MOUSE_DEFAULT)
+#define MOUSE_ENABLED (CVAR_ENABLE_MOUSE_VALUE && GetWindow()->IsMouseCaptured())
 
 std::shared_ptr<Ship::Window> GetWindow() {
     return OTRGlobals::Instance->context->GetWindow();
@@ -121,6 +124,7 @@ bool Mouse_HandleQuickspin(bool* should, s8* iter2, s8* sp3C) {
 }
 
 // Hook handlers
+
 void Mouse_RegisterRecenterCursorOnShield() {
     COND_HOOK(OnPlayerHoldUpShield, true, Mouse_RecenterCursor);
 }
@@ -141,9 +145,9 @@ void Mouse_RegisterHandleQuickspin() {
     REGISTER_VB_SHOULD(VB_SHOULD_QUICKSPIN, { Mouse_HandleQuickspin(should, va_arg(args, s8*), va_arg(args, s8*)); } );
 }
 
-static RegisterShipInitFunc initFunc_shieldRecenter(Mouse_RegisterRecenterCursorOnShield, {});
-static RegisterShipInitFunc initFunc_firstPerson(Mouse_RegisterHandleFirstPerson, {});
-static RegisterShipInitFunc initFunc_quickspinCount(Mouse_RegisterUpdateQuickspinCount, {});
-static RegisterShipInitFunc initFunc_quickspin(Mouse_RegisterHandleQuickspin, {});
-static RegisterShipInitFunc initFunc_shieldMove(Mouse_RegisterHandleShield, {});
+static RegisterShipInitFunc initFunc_shieldRecenter(Mouse_RegisterRecenterCursorOnShield, { CVAR_ENABLE_MOUSE_NAME });
+static RegisterShipInitFunc initFunc_firstPerson(Mouse_RegisterHandleFirstPerson, { CVAR_ENABLE_MOUSE_NAME });
+static RegisterShipInitFunc initFunc_quickspinCount(Mouse_RegisterUpdateQuickspinCount, { CVAR_ENABLE_MOUSE_NAME });
+static RegisterShipInitFunc initFunc_quickspin(Mouse_RegisterHandleQuickspin, { CVAR_ENABLE_MOUSE_NAME });
+static RegisterShipInitFunc initFunc_shieldMove(Mouse_RegisterHandleShield, { CVAR_ENABLE_MOUSE_NAME });
 } //extern "C"
