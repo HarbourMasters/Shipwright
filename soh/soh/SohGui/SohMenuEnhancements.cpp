@@ -330,9 +330,12 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Skip Pickup Messages", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FastDrops"))
         .Options(CheckboxOptions().Tooltip("Skip Pickup Messages for new Consumable Items and Bottle Swipes."));
-    AddWidget(path, "Skip Forced Dialog", WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "Skip Forced Dialog", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipForcedDialog"))
-        .Options(CheckboxOptions().Tooltip("Prevent forced conversations with Navi or other NPCs."));
+        .Options(ComboboxOptions()
+            .ComboMap(skipForcedDialogOptions)
+            .DefaultIndex(FORCED_DIALOG_SKIP_NONE)
+            .Tooltip("Prevent forced conversations with Navi and/or other NPCs."));
     AddWidget(path, "Skip Text", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("SkipText"))
         .Options(CheckboxOptions().Tooltip("Holding down B skips text."));
@@ -1592,7 +1595,7 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip("Allows any item to be equipped, regardless of age.\n"
                                            "Also allows Child to use Adult strength upgrades."));
     AddWidget(path, "Unrestricted Items", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_CHEAT("Unrestricted Items"))
+        .CVar(CVAR_CHEAT("NoRestrictItems"))
         .Options(CheckboxOptions().Tooltip("Allows you to use any item at any location"));
     AddWidget(path, "Super Tunic", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_CHEAT("SuperTunic"))
