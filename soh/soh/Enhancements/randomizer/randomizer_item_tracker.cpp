@@ -1721,8 +1721,8 @@ void ItemTrackerSettingsWindow::DrawElement() {
     }
 
     if (CVarCombobox("Overworld Keys", CVAR_TRACKER_ITEM("DisplayType.OverworldKeys"), displayTypes, ComboboxOptions()
-            .DefaultIndex(SECTION_DISPLAY_HIDDEN).ComponentAlignment(ComponentAlignment::Right)
-            .LabelPosition(LabelPosition::Far).Color(THEME_COLOR))) {
+            .DefaultIndex(SECTION_DISPLAY_HIDDEN).ComponentAlignment(ComponentAlignments::Right)
+            .LabelPosition(LabelPositions::Far).Color(THEME_COLOR))) {
         shouldUpdateVectors = true;
     }
 
