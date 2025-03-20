@@ -64,10 +64,12 @@ WidgetInfo& SohMenu::AddWidget(WidgetPath& pathInfo, std::string widgetName, Wid
         case WIDGET_COLOR_24:
         case WIDGET_COLOR_32:
             break;
-        case WIDGET_SEARCH:
-        case WIDGET_SEPARATOR:
         case WIDGET_SEPARATOR_TEXT:
         case WIDGET_TEXT:
+            widget.options = std::make_shared<TextOptions>();
+            break;
+        case WIDGET_SEARCH:
+        case WIDGET_SEPARATOR:
         default:
             widget.options = std::make_shared<WidgetOptions>();
     }
@@ -125,7 +127,7 @@ void SohMenu::InitElement() {
            },
             "Not Available on DirectX" } },
         { DISABLE_FOR_MATCH_REFRESH_RATE_ON,
-          { [](disabledInfo& info) -> bool { return CVarGetInteger(CVAR_SETTING("gMatchRefreshRate"), 0); },
+          { [](disabledInfo& info) -> bool { return CVarGetInteger(CVAR_SETTING("MatchRefreshRate"), 0); },
             "Match Refresh Rate is Enabled" } },
         { DISABLE_FOR_ADVANCED_RESOLUTION_ON,
           { [](disabledInfo& info) -> bool { return CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".Enabled", 0); },
@@ -140,7 +142,7 @@ void SohMenu::InitElement() {
         { DISABLE_FOR_NULL_PLAY_STATE,
           { [](disabledInfo& info) -> bool { return gPlayState == NULL; }, "Save Not Loaded" } },
         { DISABLE_FOR_DEBUG_MODE_OFF,
-          { [](disabledInfo& info) -> bool { return !CVarGetInteger("gDeveloperTools.DebugEnabled", 0); },
+          { [](disabledInfo& info) -> bool { return !CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0); },
             "Debug Mode is Disabled" } },
         { DISABLE_FOR_FRAME_ADVANCE_OFF,
           { [](disabledInfo& info) -> bool { return !(gPlayState != nullptr && gPlayState->frameAdvCtx.enabled); },

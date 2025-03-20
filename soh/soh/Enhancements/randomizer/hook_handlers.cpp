@@ -297,14 +297,19 @@ void RandomizerOnPlayerUpdateForRCQueueHandler() {
             rc != RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE &&
             // Always show ItemGet animation for ice traps
             !(getItemEntry.modIndex == MOD_RANDOMIZER && getItemEntry.getItemId == RG_ICE_TRAP) &&
+            // Always show ItemGet animation outside of randomizer to keep behaviour consistent in vanilla
+            IS_RANDO &&
             (
                 CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_DISABLED) == SGIA_ALL ||
                 (
                     CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_DISABLED) == SGIA_JUNK &&
                     (
+                        //crude fix to ensure map hints are readable. Ideally replace with better hint tracking. 
+                        !(getItemEntry.getItemId >= RG_DEKU_TREE_MAP && getItemEntry.getItemId <= RG_ICE_CAVERN_MAP) && (
                         getItemEntry.getItemCategory == ITEM_CATEGORY_JUNK ||
                         getItemEntry.getItemCategory == ITEM_CATEGORY_SKULLTULA_TOKEN ||
-                        getItemEntry.getItemCategory == ITEM_CATEGORY_LESSER
+                        getItemEntry.getItemCategory == ITEM_CATEGORY_LESSER 
+                        )
                     )
                 )
             )
@@ -2031,11 +2036,13 @@ void RandomizerOnActorInitHandler(void* actorRef) {
                 break;
         }
 
-        //Deletes all actors in the boss category if the soul isn't found.
-        //Some actors, like Dark Link, Arwings, and Zora's Sapphire...?, are in this category despite not being actual bosses,
-        //so ignore any "boss" if `currentBossSoulRandInf` doesn't change from RAND_INF_MAX.
+        // Deletes all actors in the boss category if the soul isn't found.
+        // Some actors, like Dark Link, Arwings, and Zora's Sapphire...?, are in this category despite not being actual bosses,
+        // so ignore any "boss" if `currentBossSoulRandInf` doesn't change from RAND_INF_MAX.
+        // Iron Knuckle (Nabooru) in Twinrova's room is a special exception, so exclude knuckles too.
         if (currentBossSoulRandInf != RAND_INF_MAX) {
-            if (!Flags_GetRandomizerInf(currentBossSoulRandInf) && actor->category == ACTORCAT_BOSS) {
+            if (!Flags_GetRandomizerInf(currentBossSoulRandInf) && actor->category == ACTORCAT_BOSS &&
+                actor->id != ACTOR_EN_IK) {
                 Actor_Delete(&gPlayState->actorCtx, actor, gPlayState);
             }
             //Special case for Phantom Ganon's horse (and fake), as they're considered "background actors",

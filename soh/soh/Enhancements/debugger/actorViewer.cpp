@@ -934,8 +934,6 @@ void ActorViewerWindow::DrawElement() {
     static s16 currentSelectedInDropdown;
     static std::vector<u16> actors;
 
-    ImGui::PushFont(OTRGlobals::Instance->fontMonoLargest);
-
     if (gPlayState != nullptr) {
         needs_reset = lastSceneId != gPlayState->sceneNum;
         if (needs_reset) {
@@ -1234,7 +1232,6 @@ void ActorViewerWindow::DrawElement() {
             actors.clear();
         }
     }
-    ImGui::PopFont();
 }
 
 void ActorViewerWindow::InitElement() {

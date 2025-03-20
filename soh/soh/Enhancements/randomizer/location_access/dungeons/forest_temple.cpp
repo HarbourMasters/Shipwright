@@ -28,7 +28,7 @@ void RegionTable_Init_ForestTemple() {
     areaTable[RR_FOREST_TEMPLE_SOUTH_CORRIDOR] = Region("Forest Temple South Corridor", "Forest Temple", {RA_FOREST_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_FOREST_TEMPLE_FIRST_ROOM, []{return true;}),
-        Entrance(RR_FOREST_TEMPLE_LOBBY,      []{return logic->CanAttack() || logic->CanUse(RG_NUTS);}),
+        Entrance(RR_FOREST_TEMPLE_LOBBY,      []{return logic->CanPassEnemy(RE_BIG_SKULLTULA);}),
     });
 
     areaTable[RR_FOREST_TEMPLE_LOBBY] = Region("Forest Temple Lobby", "Forest Temple", {RA_FOREST_TEMPLE}, NO_DAY_NIGHT_CYCLE, {

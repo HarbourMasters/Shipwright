@@ -838,8 +838,8 @@ void PlandomizerDrawItemSlots(uint32_t index) {
 void PlandomizerDrawShopSlider(uint32_t index) {
     ImGui::PushID(index);
     UIWidgets::SliderInt("Price:", &plandoLogData[index].shopPrice, UIWidgets::IntSliderOptions()
-        .Color(THEME_COLOR).Format("%d Rupees").Min(0).Max(999).LabelPosition(UIWidgets::LabelPosition::Near)
-        .ComponentAlignment(UIWidgets::ComponentAlignment::Right).Size(UIWidgets::Sizes::Inline));
+        .Color(THEME_COLOR).Format("%d Rupees").Min(0).Max(999).LabelPosition(UIWidgets::LabelPositions::Near)
+        .ComponentAlignment(UIWidgets::ComponentAlignments::Right).Size(UIWidgets::Sizes::Inline));
     ImGui::PopID();
 }
 
@@ -878,7 +878,7 @@ void PlandomizerDrawIceTrapSetup(uint32_t index) {
         }
         ImGui::SameLine();
     }
-    if (UIWidgets::InputString("##TrapName", &trapTextInput, UIWidgets::InputOptions().Color(THEME_COLOR).LabelPosition(UIWidgets::LabelPosition::None))) {
+    if (UIWidgets::InputString("##TrapName", &trapTextInput, UIWidgets::InputOptions().Color(THEME_COLOR).LabelPosition(UIWidgets::LabelPositions::None))) {
             plandoLogData[index].iceTrapName = trapTextInput.c_str();
         }
     
@@ -933,7 +933,7 @@ void PlandomizerDrawOptions() {
         PlandomizerPopulateSeedList();
         static size_t selectedList = 0;
         if (existingSeedList.size() != 0) {
-            UIWidgets::Combobox("##JsonFiles", &selectedList, existingSeedList, UIWidgets::ComboboxOptions().Color(THEME_COLOR).LabelPosition(UIWidgets::LabelPosition::None));
+            UIWidgets::Combobox("##JsonFiles", &selectedList, existingSeedList, UIWidgets::ComboboxOptions().Color(THEME_COLOR).LabelPosition(UIWidgets::LabelPositions::None));
         }
         else {
             ImGui::Text("No Spoiler Logs found.");
@@ -1024,7 +1024,7 @@ void PlandomizerDrawOptions() {
     }
     if (getTabID == TAB_LOCATIONS) {
         if (plandoLogData.size() > 0) {
-            UIWidgets::Combobox("Filter by Area:##AreaFilter", &selectedArea, rcAreaNameMap, UIWidgets::ComboboxOptions().Color(THEME_COLOR).LabelPosition(UIWidgets::LabelPosition::Near).ComponentAlignment(UIWidgets::ComponentAlignment::Right));
+            UIWidgets::Combobox("Filter by Area:##AreaFilter", &selectedArea, rcAreaNameMap, UIWidgets::ComboboxOptions().Color(THEME_COLOR).LabelPosition(UIWidgets::LabelPositions::Near).ComponentAlignment(UIWidgets::ComponentAlignments::Right));
             ImGui::SameLine();
             if (UIWidgets::Button("Empty All Rewards", UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline).Padding(ImVec2(10.f, 6.f)))) {
                 PlandomizerRemoveAllItems();
@@ -1061,7 +1061,7 @@ void PlandomizerDrawHintsWindow() {
             }
             ImGui::SameLine();
             ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - 10);
-            if (UIWidgets::InputString("##HintMessage", &hintInputText, UIWidgets::InputOptions().Color(THEME_COLOR).LabelPosition(UIWidgets::LabelPosition::None).Tooltip(plandomizerHintsTooltip().c_str()))) {
+            if (UIWidgets::InputString("##HintMessage", &hintInputText, UIWidgets::InputOptions().Color(THEME_COLOR).LabelPosition(UIWidgets::LabelPositions::None).Tooltip(plandomizerHintsTooltip().c_str()))) {
                 plandoHintData[index].hintText = hintInputText.c_str();
             }
             index++;

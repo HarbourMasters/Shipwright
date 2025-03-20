@@ -55,6 +55,7 @@ void SohMenu::AddMenuSettings() {
     WidgetPath path = { "Settings", "General", SECTION_COLUMN_1 };
 
     // General - Settings
+    AddWidget(path, "General Settings", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Menu Theme", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_SETTING("Menu.Theme"))
         .Options(ComboboxOptions()
@@ -65,7 +66,7 @@ void SohMenu::AddMenuSettings() {
     AddWidget(path, "Menu Controller Navigation", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_IMGUI_CONTROLLER_NAV)
         .Options(CheckboxOptions().Tooltip(
-            "Allows controller navigation of the 2Ship menu (Settings, Enhancements,...)\nCAUTION: "
+            "Allows controller navigation of the port menu (Settings, Enhancements,...)\nCAUTION: "
             "This will disable game inputs while the menu is visible.\n\nD-pad to move between "
             "items, A to select, B to move up in scope."));
     AddWidget(path, "Cursor Always Visible", WIDGET_CVAR_CHECKBOX)
@@ -101,12 +102,26 @@ void SohMenu::AddMenuSettings() {
             SDL_OpenURL(std::string("file:///" + std::filesystem::absolute(filesPath).string()).c_str());
         })
         .Options(ButtonOptions().Tooltip("Opens the folder that contains the save and mods folders, etc."));
+
+    AddWidget(path, "Boot", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Boot Sequence", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_ENHANCEMENT("BootSequence"))
+        .Options(ComboboxOptions()
+                     .DefaultIndex(BOOTSEQUENCE_DEFAULT)
+                     .LabelPosition(LabelPositions::Far)
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .ComboMap(bootSequenceLabels)
+                     .Tooltip("Configure what happens when starting or resetting the game.\n\n"
+                              "Default: LUS logo -> N64 logo\n"
+                              "Authentic: N64 logo only\n"
+                              "File Select: Skip to file select menu"));
+
     AddWidget(path, "Languages", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Translate Title Screen", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("TitleScreenTranslation"));
     AddWidget(path, "Menu Language", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_SETTING("Languages"))
-        .Options(ComboboxOptions().LabelPosition(LabelPosition::Far).ComponentAlignment(ComponentAlignment::Right).ComboMap(languages).DefaultIndex(LANGUAGE_ENG));
+        .Options(ComboboxOptions().LabelPosition(LabelPositions::Far).ComponentAlignment(ComponentAlignments::Right).ComboMap(languages).DefaultIndex(LANGUAGE_ENG));
     AddWidget(path, "Accessibility", WIDGET_SEPARATOR_TEXT);
     #if defined(_WIN32) || defined(__APPLE__)
     AddWidget(path, "Text to Speech", WIDGET_CVAR_CHECKBOX)
@@ -117,11 +132,11 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_SETTING("A11yDisableIdleCam"))
         .Options(CheckboxOptions().Tooltip("Disables the automatic re-centering of the camera when idle."));
     AddWidget(path, "EXPERIMENTAL", WIDGET_SEPARATOR_TEXT)
-        .Options(WidgetOptions().Color(Colors::Orange));
+        .Options(TextOptions().Color(Colors::Orange));
     AddWidget(path, "ImGui Menu Scaling", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_SETTING("ImGuiScale"))
         .Options(ComboboxOptions().ComboMap(imguiScaleOptions).Tooltip("Changes the scaling of the ImGui menu elements.").DefaultIndex(1)
-            .ComponentAlignment(ComponentAlignment::Right).LabelPosition(LabelPosition::Far))
+            .ComponentAlignment(ComponentAlignments::Right).LabelPosition(LabelPositions::Far))
         .Callback([](WidgetInfo& info) {
             OTRGlobals::Instance->ScaleImGui();
         });
@@ -201,20 +216,13 @@ void SohMenu::AddMenuSettings() {
     AddWidget(path, "Audio API (Needs reload)", WIDGET_AUDIO_BACKEND);
 
     // Graphics Settings
-    static int32_t maxFps;
-    const char* tooltip = "";
-    if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::FAST3D_DXGI_DX11) {
-        maxFps = 360;
-        tooltip = "Uses Matrix Interpolation to create extra frames, resulting in smoother graphics. This is "
-                  "purely visual and does not impact game logic, execution of glitches etc.\n\nA higher target "
-                  "FPS than your monitor's refresh rate will waste resources, and might give a worse result.";
-    } else {
-        maxFps = Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
-        tooltip = "Uses Matrix Interpolation to create extra frames, resulting in smoother graphics. This is "
-                  "purely visual and does not impact game logic, execution of glitches etc.";
-    }
+    static int32_t maxFps = 360;
+    const char* tooltip = "Uses Matrix Interpolation to create extra frames, resulting in smoother graphics. This is "
+                          "purely visual and does not impact game logic, execution of glitches etc.\n\nA higher target "
+                          "FPS than your monitor's refresh rate will waste resources, and might give a worse result.";
     path.sidebarName = "Graphics";
     AddSidebarEntry("Settings", "Graphics", 3);
+    AddWidget(path, "Graphics Options", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Toggle Fullscreen", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("Fullscreen"))
         .Callback([](WidgetInfo& info) { Ship::Context::GetInstance()->GetWindow()->ToggleFullscreen(); })
@@ -276,25 +284,14 @@ void SohMenu::AddMenuSettings() {
             info.activeDisables.push_back(DISABLE_FOR_MATCH_REFRESH_RATE_ON);
             })
         .Options(IntSliderOptions().Tooltip(tooltip).Min(20).Max(maxFps).DefaultValue(20).Format(fpsFormat));
-    AddWidget(path, "Match Refresh Rate", WIDGET_BUTTON)
-        .Callback([](WidgetInfo& info) {
-            int hz = Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
-            if (hz >= 20 && hz <= 360) {
-                CVarSetInteger(CVAR_SETTING("InterpolationFPS"), hz);
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-            }
-        })
-        .PreFunc([](WidgetInfo& info) { info.isHidden = mSohMenu->disabledMap.at(DISABLE_FOR_NOT_DIRECTX).active; })
-        .Options(ButtonOptions().Tooltip("Matches interpolation value to the current game's window refresh rate."));
     AddWidget(path, "Match Refresh Rate", WIDGET_CVAR_CHECKBOX)
-        .CVar("gMatchRefreshRate")
-        .PreFunc([](WidgetInfo& info) { info.isHidden = mSohMenu->disabledMap.at(DISABLE_FOR_DIRECTX).active; })
-        .Options(CheckboxOptions().Tooltip("Matches interpolation value to the current game's window refresh rate."));
+        .CVar(CVAR_SETTING("MatchRefreshRate"))
+        .Options(CheckboxOptions().Tooltip("Matches interpolation value to the refresh rate of your display."));
     AddWidget(path, "Renderer API (Needs reload)", WIDGET_VIDEO_BACKEND);
     AddWidget(path, "Enable Vsync", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_VSYNC_ENABLED)
         .PreFunc([](WidgetInfo& info) { info.isHidden = mSohMenu->disabledMap.at(DISABLE_FOR_NO_VSYNC).active; })
-        .Options(CheckboxOptions().Tooltip("Enables Vsync."));
+        .Options(CheckboxOptions().Tooltip("Removes tearing, but clamps your max FPS to your displays refresh rate."));
     AddWidget(path, "Windowed Fullscreen", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SDL_WINDOWED_FULLSCREEN)
         .PreFunc([](WidgetInfo& info) {
@@ -311,9 +308,12 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_TEXTURE_FILTER)
         .Options(ComboboxOptions().Tooltip("Sets the applied Texture Filtering.").ComboMap(textureFilteringMap));
 
+    path.column = SECTION_COLUMN_2;
+    AddWidget(path, "Advanced Graphics Options", WIDGET_SEPARATOR_TEXT);
 
     // Controls
     path.sidebarName = "Controls";
+    path.column = SECTION_COLUMN_1;
     AddSidebarEntry("Settings", "Controls", 2);
     AddWidget(path, "Controller Bindings", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Popout Bindings Window", WIDGET_WINDOW_BUTTON)
@@ -321,7 +321,9 @@ void SohMenu::AddMenuSettings() {
         .WindowName("Configure Controller")
         .Options(WindowButtonOptions().Tooltip("Enables the separate Bindings Window."));
 
-    path.column = SECTION_COLUMN_2;
+    // Input Viewer
+    path.sidebarName = "Input Viewer";
+    AddSidebarEntry("Settings", path.sidebarName, 3);
     AddWidget(path, "Input Viewer", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Toggle Input Viewer", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("InputViewer"))
@@ -337,7 +339,7 @@ void SohMenu::AddMenuSettings() {
     // Notifications
     path.sidebarName = "Notifications";
     path.column = SECTION_COLUMN_1;
-    AddSidebarEntry("Settings", "Notifications", 3);
+    AddSidebarEntry("Settings", path.sidebarName, 3);
     AddWidget(path, "Position", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_SETTING("Notifications.Position"))
         .Options(ComboboxOptions()

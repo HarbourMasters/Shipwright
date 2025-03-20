@@ -50,7 +50,7 @@ void RegionTable_Init_Graveyard() {
         LOCATION(RC_GRAVEYARD_SHIELD_GRAVE_FAIRY_8, true),
     }, {
         //Exits
-        Entrance(RR_THE_GRAVEYARD, []{return true;}),
+        Entrance(RR_GRAVEYARD_SHIELD_GRAVE, []{return true;}),
     });
 
     areaTable[RR_GRAVEYARD_HEART_PIECE_GRAVE] = Region("Graveyard Heart Piece Grave", "Graveyard Heart Piece Grave", {}, NO_DAY_NIGHT_CYCLE, {}, {

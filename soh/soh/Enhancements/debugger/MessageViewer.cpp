@@ -26,7 +26,6 @@ void MessageViewer::InitElement() {
 }
 
 void MessageViewer::DrawElement() {
-    ImGui::PushFont(OTRGlobals::Instance->fontMonoLargest);
     ImGui::Text("Table ID");
     ImGui::SameLine();
     PushStyleInput(THEME_COLOR);
@@ -86,7 +85,6 @@ void MessageViewer::DrawElement() {
         mDisplayCustomMessageClicked = true;
     }
     PopStyleButton();
-    ImGui::PopFont();
 }
 
 void MessageViewer::UpdateElement() {

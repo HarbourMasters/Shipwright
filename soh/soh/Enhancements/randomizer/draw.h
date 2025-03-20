@@ -10,6 +10,7 @@ typedef struct PlayState PlayState;
 extern "C" {
 #endif
 void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawMap(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawCompass(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEntry);

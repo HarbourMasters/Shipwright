@@ -61,7 +61,7 @@ void RegionTable_Init_GanonsCastle() {
         EventAccess(&logic->ForestTrialClear, []{return logic->CanUse(RG_LIGHT_ARROWS) && (logic->CanUse(RG_FIRE_ARROWS) || logic->CanUse(RG_DINS_FIRE));}),
     }, {
         //Locations
-        LOCATION(RC_GANONS_CASTLE_FOREST_TRIAL_CHEST, logic->CanDamage()),
+        LOCATION(RC_GANONS_CASTLE_FOREST_TRIAL_CHEST, logic->CanKillEnemy(RE_WOLFOS)),
         LOCATION(RC_GANONS_CASTLE_FOREST_TRIAL_POT_1, logic->CanBreakPots() && (logic->CanUse(RG_FIRE_ARROWS) || logic->CanUse(RG_DINS_FIRE))),
         LOCATION(RC_GANONS_CASTLE_FOREST_TRIAL_POT_2, logic->CanBreakPots() && (logic->CanUse(RG_FIRE_ARROWS) || logic->CanUse(RG_DINS_FIRE))),
     }, {});
@@ -78,7 +78,7 @@ void RegionTable_Init_GanonsCastle() {
 
     areaTable[RR_GANONS_CASTLE_WATER_TRIAL] = Region("Ganon's Castle Water Trial", "Ganon's Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->BlueFireAccess,  []{return logic->BlueFireAccess || logic->HasBottle();}),
+        EventAccess(&logic->BlueFireAccess,  []{return true;}),
         EventAccess(&logic->FairyPot,        []{return logic->FairyPot || (logic->BlueFire() && logic->CanKillEnemy(RE_FREEZARD));}),
         EventAccess(&logic->WaterTrialClear, []{return logic->BlueFire() && logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER) && logic->CanUse(RG_LIGHT_ARROWS);}),
     }, {
@@ -112,7 +112,7 @@ void RegionTable_Init_GanonsCastle() {
         EventAccess(&logic->SpiritTrialClear, []{return logic->CanUse(RG_LIGHT_ARROWS) && (logic->CanUse(RG_MIRROR_SHIELD) || ctx->GetOption(RSK_SUNLIGHT_ARROWS)) && logic->CanUse(RG_BOMBCHU_5) && ((ctx->GetTrickOption(RT_GANON_SPIRIT_TRIAL_HOOKSHOT) && logic->CanJumpslashExceptHammer()) || logic->CanUse(RG_HOOKSHOT));}),
     }, {
         //Locations
-        LOCATION(RC_GANONS_CASTLE_SPIRIT_TRIAL_CRYSTAL_SWITCH_CHEST, (ctx->GetTrickOption(RT_GANON_SPIRIT_TRIAL_HOOKSHOT) || logic->CanUse(RG_HOOKSHOT)) && logic->CanJumpslashExceptHammer()),
+        LOCATION(RC_GANONS_CASTLE_SPIRIT_TRIAL_CRYSTAL_SWITCH_CHEST, (ctx->GetTrickOption(RT_GANON_SPIRIT_TRIAL_HOOKSHOT) || logic->CanUse(RG_HOOKSHOT)) && (logic->CanJumpslashExceptHammer() || logic->CanUse(RG_BOMBCHU_5))),
         LOCATION(RC_GANONS_CASTLE_SPIRIT_TRIAL_INVISIBLE_CHEST,      (ctx->GetTrickOption(RT_GANON_SPIRIT_TRIAL_HOOKSHOT) || logic->CanUse(RG_HOOKSHOT)) && logic->CanUse(RG_BOMBCHU_5) && (ctx->GetTrickOption(RT_LENS_GANON) || logic->CanUse(RG_LENS_OF_TRUTH))),
         LOCATION(RC_GANONS_CASTLE_SPIRIT_TRIAL_POT_1,                ((ctx->GetTrickOption(RT_GANON_SPIRIT_TRIAL_HOOKSHOT) && logic->CanJumpslashExceptHammer()) || logic->CanUse(RG_HOOKSHOT)) && logic->CanUse(RG_BOMBCHU_5) && logic->CanUse(RG_FAIRY_BOW) && (logic->CanUse(RG_MIRROR_SHIELD) || (ctx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS)))),
         LOCATION(RC_GANONS_CASTLE_SPIRIT_TRIAL_POT_2,                ((ctx->GetTrickOption(RT_GANON_SPIRIT_TRIAL_HOOKSHOT) && logic->CanJumpslashExceptHammer()) || logic->CanUse(RG_HOOKSHOT)) && logic->CanUse(RG_BOMBCHU_5) && logic->CanUse(RG_FAIRY_BOW) && (logic->CanUse(RG_MIRROR_SHIELD) || (ctx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS)))),

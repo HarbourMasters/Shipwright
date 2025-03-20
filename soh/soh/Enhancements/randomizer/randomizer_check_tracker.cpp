@@ -1164,14 +1164,12 @@ void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flag
                                                     Color_Background.b / 255.0f, Color_Background.a / 255.0f));
     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 4.0f);
-    ImGui::PushFont(OTRGlobals::Instance->fontStandardLarger);
     ImGui::Begin(UniqueName.c_str(), &open, windowFlags);
 }
 void EndFloatWindows() {
     ImGui::PopStyleVar();
     ImGui::PopStyleColor();
     ImGui::PopStyleColor();
-    ImGui::PopFont();
     ImGui::End();
 }
 
@@ -1846,7 +1844,6 @@ static std::unordered_map<int32_t, const char*> buttonStrings = {
     { TRACKER_COMBO_BUTTON_D_LEFT, "D-Left" }, { TRACKER_COMBO_BUTTON_D_RIGHT, "D-Right" }};
 
 void CheckTrackerSettingsWindow::DrawElement() {
-    ImGui::PushFont(OTRGlobals::Instance->fontStandardLarger);
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
     if (ImGui::BeginTable("CheckTrackerSettingsTable", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
         ImGui::TableSetupColumn("General settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -1860,21 +1857,21 @@ void CheckTrackerSettingsWindow::DrawElement() {
         ImGui::PopItemWidth();
 
         UIWidgets::CVarCombobox("Window Type", CVAR_TRACKER_CHECK("WindowType"), windowType,
-            UIWidgets::ComboboxOptions().LabelPosition(UIWidgets::LabelPosition::Far).ComponentAlignment(UIWidgets::ComponentAlignment::Right)
+            UIWidgets::ComboboxOptions().LabelPosition(UIWidgets::LabelPositions::Far).ComponentAlignment(UIWidgets::ComponentAlignments::Right)
             .Color(THEME_COLOR).DefaultIndex(TRACKER_WINDOW_WINDOW));
         
         if (CVarGetInteger(CVAR_TRACKER_CHECK("WindowType"), TRACKER_WINDOW_WINDOW) == TRACKER_WINDOW_FLOATING) {
             UIWidgets::CVarCheckbox("Enable Dragging", CVAR_TRACKER_CHECK("Draggable"), UIWidgets::CheckboxOptions().Color(THEME_COLOR));
             UIWidgets::CVarCheckbox("Only enable while paused", CVAR_TRACKER_CHECK("ShowOnlyPaused"), UIWidgets::CheckboxOptions().Color(THEME_COLOR));
             UIWidgets::CVarCombobox("Display Mode", CVAR_TRACKER_CHECK("DisplayType"), displayType,
-                UIWidgets::ComboboxOptions().LabelPosition(UIWidgets::LabelPosition::Far).ComponentAlignment(UIWidgets::ComponentAlignment::Right)
+                UIWidgets::ComboboxOptions().LabelPosition(UIWidgets::LabelPositions::Far).ComponentAlignment(UIWidgets::ComponentAlignments::Right)
                 .Color(THEME_COLOR).DefaultIndex(0));
             if (CVarGetInteger(CVAR_TRACKER_CHECK("DisplayType"), TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_COMBO_BUTTON) {
                 UIWidgets::CVarCombobox("Combo Button 1", CVAR_TRACKER_CHECK("ComboButton1"), buttonStrings,
-                    UIWidgets::ComboboxOptions().LabelPosition(UIWidgets::LabelPosition::Far).ComponentAlignment(UIWidgets::ComponentAlignment::Right)
+                    UIWidgets::ComboboxOptions().LabelPosition(UIWidgets::LabelPositions::Far).ComponentAlignment(UIWidgets::ComponentAlignments::Right)
                     .Color(THEME_COLOR).DefaultIndex(TRACKER_COMBO_BUTTON_L));
                 UIWidgets::CVarCombobox("Combo Button 2", CVAR_TRACKER_CHECK("ComboButton2"), buttonStrings,
-                    UIWidgets::ComboboxOptions().LabelPosition(UIWidgets::LabelPosition::Far).ComponentAlignment(UIWidgets::ComponentAlignment::Right)
+                    UIWidgets::ComboboxOptions().LabelPosition(UIWidgets::LabelPositions::Far).ComponentAlignment(UIWidgets::ComponentAlignments::Right)
                     .Color(THEME_COLOR).DefaultIndex(TRACKER_COMBO_BUTTON_L));
             }
         }
@@ -1913,7 +1910,6 @@ void CheckTrackerSettingsWindow::DrawElement() {
         ImGui::PopStyleVar(1);
     }
     ImGui::EndTable();
-    ImGui::PopFont();
 }
 
 void CheckTrackerWindow::InitElement() {

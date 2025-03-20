@@ -17,8 +17,11 @@ void SohMenu::AddMenuRandomizer() {
         .CVar(CVAR_WINDOW("RandomizerSettings"))
         .WindowName("Randomizer Settings")
         .Options(WindowButtonOptions().Tooltip("Enables the separate Randomizer Settings Window."));
+
+    // Enhancements
     path.sidebarName = "Enhancements";
-    AddSidebarEntry("Randomizer", path.sidebarName, 1);
+    AddSidebarEntry("Randomizer", path.sidebarName, 3);
+    AddWidget(path, "Randomizer Enhancements", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Rando-Relevant Navi Hints", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("RandoRelevantNavi"))
         .Options(CheckboxOptions().Tooltip(
@@ -34,21 +37,21 @@ void SohMenu::AddMenuRandomizer() {
         .Options(CheckboxOptions().Tooltip(
             "Use Custom graphics for Dungeon Keys, Big and Small, so that they can be easily told apart."
         ).DefaultValue(true));
-    AddWidget(path, "Compass Colors Match Dungeon", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_RANDOMIZER_ENHANCEMENT("MatchCompassColors"))
+    AddWidget(path, "Map & Compass Colors Match Dungeon", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_RANDOMIZER_ENHANCEMENT("ColoredMapsAndCompasses"))
         .PreFunc([](WidgetInfo& info) {
             info.options->disabled = !(
                 OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_MAPANDCOMPASS).IsNot(RO_DUNGEON_ITEM_LOC_STARTWITH) &&
                 OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_MAPANDCOMPASS).IsNot(RO_DUNGEON_ITEM_LOC_VANILLA) &&
                 OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_MAPANDCOMPASS).IsNot(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON)
             );
-            info.options->disabledTooltip = "This setting is disabled because a savefile is loaded without "
-            "the compass shuffle settings set to Any Dungeon, Overworld, or Anywhere.";
+            info.options->disabledTooltip = "This setting is disabled because a savefile is loaded without the map & compass\n"
+            "shuffle settings set to \"Any Dungeon\", \"Overworld\" or \"Anywhere\"";
         })
         .Options(CheckboxOptions().Tooltip(
-            "Matches the color of compasses to the dungeon they belong to. "
-            "This helps identify compasses from afar and adds a little bit of flair.\n\nThis only "
-            "applies to seeds with compasses shuffled to \"Any Dungeon\", \"Overworld\", or \"Anywhere\"."
+            "Matches the color of maps & compasses to the dungeon they belong to. "
+            "This helps identify maps & compasses from afar and adds a little bit of flair.\n\nThis only "
+            "applies to seeds with maps & compasses shuffled to \"Any Dungeon\", \"Overworld\", or \"Anywhere\"."
         ).DefaultValue(true));
     AddWidget(path, "Quest Item Fanfares", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("QuestItemFanfares"))
@@ -75,7 +78,9 @@ void SohMenu::AddMenuRandomizer() {
     AddWidget(path, "Item Scale: %.2f", WIDGET_CVAR_SLIDER_FLOAT)
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimationScale"))
         .PreFunc([](WidgetInfo& info) {
-        info.isHidden = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_DISABLED) == SGIA_DISABLED;
+            info.options->disabled =
+                !CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_DISABLED);
+            info.options->disabledTooltip = "This slider only applies when using the \"Skip Get Item Animations\" option.";
             })
         .Options(FloatSliderOptions()
             .Min(5.0f)

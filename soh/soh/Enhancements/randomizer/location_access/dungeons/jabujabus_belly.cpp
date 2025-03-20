@@ -24,7 +24,6 @@ void RegionTable_Init_JabuJabusBelly() {
     //Combines Lift room middle and lower, 1F holes room, the forked corridor, and it's side rooms
     areaTable[RR_JABU_JABUS_BELLY_MAIN] = Region("Jabu Jabus Belly Main", "Jabu Jabus Belly", {RA_JABU_JABUS_BELLY}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->JabuRutoInB1,     []{return true;}),
         EventAccess(&logic->JabuWestTentacle, []{return logic->JabuRutoIn1F && logic->CanKillEnemy(RE_TENTACLE, ED_BOOMERANG);}),
     }, {
         //Locations
@@ -263,7 +262,7 @@ void RegionTable_Init_JabuJabusBelly() {
 
     areaTable[RR_JABU_JABUS_BELLY_MQ_WEST_FORKED_ROOMS] = Region("Jabu Jabus Belly MQ West Forked Rooms", "Jabu Jabus Belly", {RA_JABU_JABUS_BELLY}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->JabuWestTentacle, []{return logic->CanUse(RG_BOOMERANG);}),
+        EventAccess(&logic->JabuWestTentacle, []{return logic->CanKillEnemy(RE_TENTACLE, ED_BOOMERANG);}),
     }, {
         //Locations
         LOCATION(RC_JABU_JABUS_BELLY_MQ_GS_TAILPASARAN_ROOM, Here(RR_JABU_JABUS_BELLY_MQ_WEST_FORKED_ROOMS, []{return logic->HasExplosives();}) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),

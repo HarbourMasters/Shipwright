@@ -54,9 +54,6 @@ void ObjTsubo_RandomizerSpawnCollectible(ObjTsubo* potActor, PlayState* play) {
 void ObjTsubo_RandomizerInit(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
 
-    // Check for Lake Hylia specifically because the game spawns 2 pots out of bounds there for some reason.
-    if (actor->id != ACTOR_OBJ_TSUBO || gPlayState->sceneNum == SCENE_LAKE_HYLIA || gPlayState->sceneNum == SCENE_HYRULE_CASTLE) return;
-
     ObjTsubo* potActor = static_cast<ObjTsubo*>(actorRef);
 
     potActor->potIdentity = OTRGlobals::Instance->gRandomizer->IdentifyPot(gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);

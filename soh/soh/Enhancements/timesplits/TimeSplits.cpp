@@ -809,7 +809,7 @@ void TimeSplitsDrawOptionsMenu() {
     static uint32_t selectedItem = 0;
     ImGui::Text("Select List to Load: ");
     ImGui::PushItemWidth(150.0f);
-    Combobox("", &selectedItem, keys, ComboboxOptions().Color(THEME_COLOR).LabelPosition(LabelPosition::Near));
+    Combobox("", &selectedItem, keys, ComboboxOptions().Color(THEME_COLOR).LabelPosition(LabelPositions::Near));
     ImGui::PopItemWidth();
     ImGui::SameLine();
     if (Button("Load List", ButtonOptions().Color(THEME_COLOR).Size(Sizes::Inline))) {
@@ -941,7 +941,6 @@ static bool initialized = false;
 
 void TimeSplitWindow::DrawElement() {
     ImGui::SetWindowFontScale(timeSplitsWindowSize);
-    ImGui::PushFont(OTRGlobals::Instance->fontMonoLargest);
     
     PushStyleTabs(THEME_COLOR);
     if (ImGui::BeginTabBar("Split Tabs")) {
@@ -960,7 +959,6 @@ void TimeSplitWindow::DrawElement() {
         ImGui::EndTabBar();
     }
     PopStyleTabs();
-    ImGui::PopFont();
 }
 
 void TimeSplitWindow::InitElement() {

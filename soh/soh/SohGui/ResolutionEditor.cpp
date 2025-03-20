@@ -360,10 +360,10 @@ void RegisterResolutionWidgets() {
                     WIDGET_TEXT)
         .PreFunc(
             [](WidgetInfo& info) { info.isHidden = !(!CVarGetInteger(CVAR_LOW_RES_MODE, 0) && IsDroppingFrames()); })
-        .Options(WidgetOptions().Color(Colors::Orange));
+        .Options(TextOptions().Color(Colors::Orange));
     mSohMenu->AddWidget(path, ICON_FA_QUESTION_CIRCLE " \"N64 Mode\" is overriding these settings.", WIDGET_TEXT)
         .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_LOW_RES_MODE, 0); })
-        .Options(WidgetOptions().Color(Colors::LightBlue));
+        .Options(TextOptions().Color(Colors::LightBlue));
     mSohMenu->AddWidget(path, "Click to disable N64 mode", WIDGET_BUTTON)
         .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_LOW_RES_MODE, 0); })
         .Callback([](WidgetInfo& info) {
@@ -391,7 +391,7 @@ void RegisterResolutionWidgets() {
             }
         })
         .SameLine(true)
-        .Options(WidgetOptions().Color(Colors::Gray));
+        .Options(TextOptions().Color(Colors::Gray));
     // Presets
     mSohMenu->AddWidget(path, "Aspect Ratio", WIDGET_COMBOBOX)
         .ValuePointer(&item_aspectRatio)
@@ -422,10 +422,10 @@ void RegisterResolutionWidgets() {
             // Declare input interaction bools outside of IF statement to prevent Y field from disappearing.
             const bool input_X = UIWidgets::SliderFloat("X", &aspectRatioX,
                 UIWidgets::FloatSliderOptions({{ .disabled = disabled_everything }}).Min(0.1f).Max(32.0f).Step(0.001f).Format("%3f")
-                            .Color(THEME_COLOR).LabelPosition(UIWidgets::LabelPosition::Near).ComponentAlignment(UIWidgets::ComponentAlignment::Right));
+                            .Color(THEME_COLOR).LabelPosition(UIWidgets::LabelPositions::Near).ComponentAlignment(UIWidgets::ComponentAlignments::Right));
             const bool input_Y = UIWidgets::SliderFloat("Y", &aspectRatioY,
                 UIWidgets::FloatSliderOptions({{ .disabled = disabled_everything }}).Min(0.1f).Max(24.0f).Step(0.001f).Format("%3f")
-                            .Color(THEME_COLOR).LabelPosition(UIWidgets::LabelPosition::Near).ComponentAlignment(UIWidgets::ComponentAlignment::Right));
+                            .Color(THEME_COLOR).LabelPosition(UIWidgets::LabelPositions::Near).ComponentAlignment(UIWidgets::ComponentAlignments::Right));
             if (input_X || input_Y) {
                 item_aspectRatio = default_aspectRatio;
                 update[UPDATE_aspectRatioX] = true;
@@ -517,7 +517,7 @@ void UpdateResolutionVars() {
 bool IsDroppingFrames() {
     // a rather imprecise way of checking for frame drops.
     // but it's mostly there to inform the player of large drops.
-    const short targetFPS = CVarGetInteger("gInterpolationFPS", 20);
+    const short targetFPS = OTRGlobals::Instance->GetInterpolationFPS();
     const float threshold = targetFPS / 20.0f + 4.1f;
     return ImGui::GetIO().Framerate < targetFPS - threshold;
 }

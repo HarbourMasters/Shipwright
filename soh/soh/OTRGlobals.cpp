@@ -407,7 +407,7 @@ OTRGlobals::OTRGlobals() {
     fontStandard = CreateFontWithSize(16.0f, "fonts/Montserrat-Regular.ttf");
     fontStandardLarger = CreateFontWithSize(20.0f, "fonts/Montserrat-Regular.ttf");
     fontStandardLargest = CreateFontWithSize(24.0f, "fonts/Montserrat-Regular.ttf");
-    ImGui::GetIO().FontDefault = fontMono;
+    ImGui::GetIO().FontDefault = fontStandardLarger;
     ScaleImGui();
 
     // Move the camera strings from read only memory onto the heap (writable memory)
@@ -499,15 +499,12 @@ bool OTRGlobals::HasOriginal() {
 }
 
 uint32_t OTRGlobals::GetInterpolationFPS() {
-    if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::FAST3D_DXGI_DX11) {
-        return CVarGetInteger(CVAR_SETTING("InterpolationFPS"), 20);
-    }
-
     if (CVarGetInteger(CVAR_SETTING("MatchRefreshRate"), 0)) {
         return Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
+    } else if (CVarGetInteger(CVAR_VSYNC_ENABLED, 1) || !Ship::Context::GetInstance()->GetWindow()->CanDisableVerticalSync()) {
+        return std::min<uint32_t>(Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate(), CVarGetInteger(CVAR_SETTING("InterpolationFPS"), 20));
     }
-
-    return std::min<uint32_t>(Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate(), CVarGetInteger(CVAR_SETTING("InterpolationFPS"), 20));
+    return CVarGetInteger(CVAR_SETTING("InterpolationFPS"), 20);
 }
 
 extern "C" void OTRMessage_Init();
@@ -1296,6 +1293,11 @@ extern "C" void Graph_StartFrame() {
     OTRGlobals::Instance->context->GetWindow()->SetLastScancode(-1);
 
     switch (dwScancode) {
+        case KbScancode::LUS_KB_F1: {
+            std::shared_ptr<SohModalWindow> modal = static_pointer_cast<SohModalWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Modal Window"));
+            modal->RegisterPopup("Menu Moved", "The menubar, accessed by hitting F1, no longer exists.\nThe new menu can be accessed by hitting the Esc button instead.", "OK");
+            break;
+        }
         case KbScancode::LUS_KB_F5: {
             if (CVarGetInteger(CVAR_CHEAT("SaveStatesEnabled"), 0) == 0) {
                 Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->
@@ -1369,6 +1371,10 @@ extern "C" void Graph_StartFrame() {
             break;
         }
 #endif
+        case KbScancode::LUS_KB_F11: {
+            CVarSetInteger(CVAR_SETTING("Fullscreen"), !CVarGetInteger(CVAR_SETTING("Fullscreen"), 0));
+            break;
+        }
         case KbScancode::LUS_KB_TAB: {
             CVarSetInteger(CVAR_ENHANCEMENT("AltAssets"), !CVarGetInteger(CVAR_ENHANCEMENT("AltAssets"), 0));
             break;

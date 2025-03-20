@@ -283,13 +283,13 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Key.GanonsBossGem",            "Ganons Boss Key Gem",      COSMETICS_GROUP_BOSS_KEYS,    ColorRGBA8(255, 0,   0,   255), false, true, false),
 
     COSMETIC_OPTION("Key.WellSmallBody",            "Well Small Key",           COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(255, 255, 255, 255), false, true, false),
-    COSMETIC_OPTION("Key.WellSmallEmblem",          "Well Small Key Emblem",    COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(227, 110, 255, 255), false, true, true),
+    COSMETIC_OPTION("Key.WellSmallEmblem",          "Well Small Key Emblem",    COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(227, 110, 255, 255), false, true, false),
     COSMETIC_OPTION("Key.FortSmallBody",            "Fortress Small Key",       COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(255, 255, 255, 255), false, true, false),
-    COSMETIC_OPTION("Key.FortSmallEmblem",          "Fortress Small Key Emblem",COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("Key.FortSmallEmblem",          "Fortress Small Key Emblem",COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(255, 255, 255, 255), false, true, false),
     COSMETIC_OPTION("Key.GTGSmallBody",             "GTG Small Key",            COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(255, 255, 255, 255), false, true, false),
-    COSMETIC_OPTION("Key.GTGSmallEmblem",           "GTG Small Key Emblem",     COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(221, 212, 60,  255), false, true, true),
+    COSMETIC_OPTION("Key.GTGSmallEmblem",           "GTG Small Key Emblem",     COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(221, 212, 60,  255), false, true, false),
     //COSMETIC_OPTION("Key.ChestGameSmallBody",     "Chest Game Key",           COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(255, 255, 255, 255), false, true, false),
-    //COSMETIC_OPTION("Key.ChestGameEmblem",        "Chest Game Key Emblem",    COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(255, 0,   0,   255), false, true, true),
+    //COSMETIC_OPTION("Key.ChestGameEmblem",        "Chest Game Key Emblem",    COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(255, 0,   0,   255), false, true, false),
     COSMETIC_OPTION("Key.Skeleton",                 "Skeleton Key",             COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(255, 255, 170, 255), false, true, false),
 
     COSMETIC_OPTION("HUD.AButton",                  "A Button",                 COSMETICS_GROUP_HUD,          ColorRGBA8( 90,  90, 255, 255), false, true, false),
@@ -1523,7 +1523,7 @@ void Draw_Placements(){
                 CVarSetInteger(CVAR_COSMETIC("HUD.EnemyHealthBar.Width.Changed"), 1);
             }
             ImGui::SameLine();
-            ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 24);
+            ImGui::SetCursorPosY(ImGui::GetCursorPosY() + (ImGui::CalcTextSize("g").y * 2));
             if (UIWidgets::Button("Reset##EnemyHealthBarWidth",
                                    UIWidgets::ButtonOptions().Size(ImVec2(80, 36)).Padding(ImVec2(5.0f, 0.0f)))) {
                 CVarClear(CVAR_COSMETIC("HUD.EnemyHealthBar.Width.Value"));
@@ -1537,7 +1537,7 @@ void Draw_Placements(){
 
 void Reset_Option_Single(const char* Button_Title, const char* name) {
     ImGui::SameLine();
-    ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 24);
+    ImGui::SetCursorPosY(ImGui::GetCursorPosY() + (ImGui::CalcTextSize("g").y * 2));
     if (UIWidgets::Button(Button_Title,
                            UIWidgets::ButtonOptions().Size(ImVec2(80, 36)).Padding(ImVec2(5.0f, 0.0f)))) {
         CVarClear(name);
@@ -1546,7 +1546,7 @@ void Reset_Option_Single(const char* Button_Title, const char* name) {
 
 void Reset_Option_Double(const char* Button_Title, const char* name) {
     ImGui::SameLine();
-    ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 24);
+    ImGui::SetCursorPosY(ImGui::GetCursorPosY() + (ImGui::CalcTextSize("g").y * 2));
     if (UIWidgets::Button(Button_Title,
                            UIWidgets::ButtonOptions().Size(ImVec2(80, 36)).Padding(ImVec2(5.0f, 0.0f)))) {
         CVarClear((std::string(name) + ".Value").c_str());
@@ -1578,7 +1578,7 @@ void DrawSillyTab() {
         CVarSetInteger(CVAR_COSMETIC("Link.BodySize.Changed"), 1);
     }
     ImGui::SameLine();
-    ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 24);
+    ImGui::SetCursorPosY(ImGui::GetCursorPosY() + (ImGui::CalcTextSize("g").y * 2));
     if (UIWidgets::Button("Reset##Link_BodySize",
                            UIWidgets::ButtonOptions().Size(ImVec2(80, 36)).Padding(ImVec2(5.0f, 0.0f)))) {
         CVarClear(CVAR_COSMETIC("Link.BodySize.Value"));
@@ -2045,8 +2045,8 @@ void CosmeticsEditorWindow::DrawElement() {
                              UIWidgets::ComboboxOptions()
                                  .DefaultIndex(COLORSCHEME_N64)
                                  .Color(THEME_COLOR)
-                                 .LabelPosition(UIWidgets::LabelPosition::Near)
-                                 .ComponentAlignment(UIWidgets::ComponentAlignment::Right));
+                                 .LabelPosition(UIWidgets::LabelPositions::Near)
+                                 .ComponentAlignment(UIWidgets::ComponentAlignments::Right));
     UIWidgets::CVarCheckbox("Sync Rainbow colors", CVAR_COSMETIC("RainbowSync"),
                              UIWidgets::CheckboxOptions()
                                  .Color(THEME_COLOR));
@@ -2194,7 +2194,7 @@ void CosmeticsEditorWindow::DrawElement() {
                 CVarSetInteger(CVAR_COSMETIC("Trails.Duration.Changed"), 1);
             }
             ImGui::SameLine();
-            ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 24);
+            ImGui::SetCursorPosY(ImGui::GetCursorPosY() + (ImGui::CalcTextSize("g").y * 2));
             if (UIWidgets::Button("Reset##Trails_Duration", UIWidgets::ButtonOptions()
                                                                  .Size(ImVec2(80, 36))
                                                                  .Padding(ImVec2(5.0f, 0.0f)))) {
