@@ -11,12 +11,11 @@ void UpdateDirtPathFixState(int32_t sceneNum);
 void UpdateMirrorModeState(int32_t sceneNum);
 void UpdateHurtContainerModeState(bool newState);
 void PatchToTMedallions();
-void PatchCompasses();
 void UpdatePermanentHeartLossState();
 void UpdateHyperEnemiesState();
 void UpdateHyperBossesState();
 void InitMods();
-void UpdatePatchHand(); 
+void UpdatePatchHand();
 void SwitchAge();
 
 #ifdef __cplusplus

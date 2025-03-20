@@ -232,7 +232,7 @@ bool Option::RenderCombobox() {
     }
     UIWidgets::ComboboxOptions widgetOptions = UIWidgets::ComboboxOptions().Color(THEME_COLOR).Tooltip(description.c_str());
     if (this->GetKey() == RSK_LOGIC_RULES) {
-        widgetOptions = widgetOptions.LabelPosition(UIWidgets::LabelPosition::None).ComponentAlignment(UIWidgets::ComponentAlignment::Right);
+        widgetOptions = widgetOptions.LabelPosition(UIWidgets::LabelPositions::None).ComponentAlignment(UIWidgets::ComponentAlignments::Right);
     }
     widgetOptions.disabled = disabled;
     if(UIWidgets::Combobox(name.c_str(), &selected, options, widgetOptions)) {

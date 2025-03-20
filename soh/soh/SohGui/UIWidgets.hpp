@@ -105,7 +105,7 @@ namespace UIWidgets {
         const ImVec2 Fill = ImVec2(-1.0f, 0.0f);
     }
 
-    enum LabelPosition {
+    enum LabelPositions {
         Near,
         Far,
         Above,
@@ -113,7 +113,7 @@ namespace UIWidgets {
         Within,
     };
 
-    enum ComponentAlignment {
+    enum ComponentAlignments {
         Left,
         Right,
     };
@@ -204,19 +204,19 @@ namespace UIWidgets {
 
     struct CheckboxOptions : WidgetOptions {
         bool defaultValue = false; // Only applicable to CVarCheckbox
-        ComponentAlignment alignment = ComponentAlignment::Left;
-        LabelPosition labelPosition = LabelPosition::Near;
+        ComponentAlignments alignment = ComponentAlignments::Left;
+        LabelPositions labelPosition = LabelPositions::Near;
         Colors color = Colors::LightBlue;
 
         CheckboxOptions& DefaultValue(bool defaultValue_) {
             defaultValue = defaultValue_;
             return *this;
         }
-        CheckboxOptions& ComponentAlignment(ComponentAlignment alignment_) {
+        CheckboxOptions& ComponentAlignment(ComponentAlignments alignment_) {
             alignment = alignment_;
             return *this;
         }
-        CheckboxOptions& LabelPosition(LabelPosition labelPosition_) {
+        CheckboxOptions& LabelPosition(LabelPositions labelPosition_) {
             labelPosition = labelPosition_;
             return *this;
         }
@@ -237,8 +237,8 @@ namespace UIWidgets {
     struct ComboboxOptions : WidgetOptions {
         std::unordered_map<int32_t, const char*> comboMap = {};
         uint32_t defaultIndex = 0; // Only applicable to CVarCombobox
-        ComponentAlignment alignment = ComponentAlignment::Left;
-        LabelPosition labelPosition = LabelPosition::Above;
+        ComponentAlignments alignment = ComponentAlignments::Left;
+        LabelPositions labelPosition = LabelPositions::Above;
         ImGuiComboFlags flags = 0;
         Colors color = Colors::LightBlue;
 
@@ -250,11 +250,11 @@ namespace UIWidgets {
             defaultIndex = defaultIndex_;
             return *this;
         }
-        ComboboxOptions& ComponentAlignment(ComponentAlignment alignment_) {
+        ComboboxOptions& ComponentAlignment(ComponentAlignments alignment_) {
             alignment = alignment_;
             return *this;
         }
-        ComboboxOptions& LabelPosition(LabelPosition labelPosition_) {
+        ComboboxOptions& LabelPosition(LabelPositions labelPosition_) {
             labelPosition = labelPosition_;
             return *this;
         }
@@ -276,8 +276,8 @@ namespace UIWidgets {
         int32_t max = 10;
         int32_t defaultValue = 1;
         bool clamp = true;
-        ComponentAlignment alignment = ComponentAlignment::Left;
-        LabelPosition labelPosition = LabelPosition::Above;
+        ComponentAlignments alignment = ComponentAlignments::Left;
+        LabelPositions labelPosition = LabelPositions::Above;
         Colors color = Colors::Gray;
         ImGuiSliderFlags flags = 0;
         ImVec2 size = {0,0};
@@ -306,11 +306,11 @@ namespace UIWidgets {
             defaultValue = defaultValue_;
             return *this;
         }
-        IntSliderOptions& ComponentAlignment(ComponentAlignment alignment_) {
+        IntSliderOptions& ComponentAlignment(ComponentAlignments alignment_) {
             alignment = alignment_;
             return *this;
         }
-        IntSliderOptions& LabelPosition(LabelPosition labelPosition_) {
+        IntSliderOptions& LabelPosition(LabelPositions labelPosition_) {
             labelPosition = labelPosition_;
             return *this;
         }
@@ -341,8 +341,8 @@ namespace UIWidgets {
         float defaultValue = 1.0f;
         bool clamp = true;
         bool isPercentage = false; // Multiplies visual value by 100
-        ComponentAlignment alignment = ComponentAlignment::Left;
-        LabelPosition labelPosition = LabelPosition::Above;
+        ComponentAlignments alignment = ComponentAlignments::Left;
+        LabelPositions labelPosition = LabelPositions::Above;
         Colors color = Colors::Gray;
         ImGuiSliderFlags flags = 0;
         ImVec2 size = {0,0};
@@ -371,11 +371,11 @@ namespace UIWidgets {
             defaultValue = defaultValue_;
             return *this;
         }
-        FloatSliderOptions& ComponentAlignment(ComponentAlignment alignment_) {
+        FloatSliderOptions& ComponentAlignment(ComponentAlignments alignment_) {
             alignment = alignment_;
             return *this;
         }
-        FloatSliderOptions& LabelPosition(LabelPosition labelPosition_) {
+        FloatSliderOptions& LabelPosition(LabelPositions labelPosition_) {
             labelPosition = labelPosition_;
             return *this;
         }
@@ -423,8 +423,8 @@ namespace UIWidgets {
     };
 
     struct InputOptions : WidgetOptions {
-        ComponentAlignment alignment = ComponentAlignment::Left;
-        LabelPosition labelPosition = LabelPosition::Above;
+        ComponentAlignments alignment = ComponentAlignments::Left;
+        LabelPositions labelPosition = LabelPositions::Above;
         Colors color = Colors::Gray;
         ImVec2 size = {0,0};
         std::string placeholder = "";
@@ -446,7 +446,7 @@ namespace UIWidgets {
             return *this;
         }
 
-        InputOptions& LabelPosition(LabelPosition labelPosition_) {
+        InputOptions& LabelPosition(LabelPositions labelPosition_) {
             labelPosition = labelPosition_;
             return *this;
         }
@@ -545,20 +545,20 @@ namespace UIWidgets {
         float comboWidth = CalcComboWidth(longest, options.flags);
 
         ImGui::AlignTextToFramePadding();
-        if (options.labelPosition != LabelPosition::None) {
-            if (options.alignment == ComponentAlignment::Right) {
-                ImGui::Text(label);
-                if (options.labelPosition == LabelPosition::Above) {
+        if (options.labelPosition != LabelPositions::None) {
+            if (options.alignment == ComponentAlignments::Right) {
+                ImGui::Text("%s", label);
+                if (options.labelPosition == LabelPositions::Above) {
                     ImGui::NewLine();
                     ImGui::SameLine(ImGui::GetContentRegionAvail().x - comboWidth);
-                } else if (options.labelPosition == LabelPosition::Near) {
+                } else if (options.labelPosition == LabelPositions::Near) {
                     ImGui::SameLine();
-                } else if (options.labelPosition == LabelPosition::Far) {
+                } else if (options.labelPosition == LabelPositions::Far) {
                     ImGui::SameLine(ImGui::GetContentRegionAvail().x - comboWidth);
                 }
-            } else if (options.alignment == ComponentAlignment::Left) {
-                if (options.labelPosition == LabelPosition::Above) {
-                    ImGui::Text(label);
+            } else if (options.alignment == ComponentAlignments::Left) {
+                if (options.labelPosition == LabelPositions::Above) {
+                    ImGui::Text("%s", label);
                 }
             }
         }
@@ -578,12 +578,12 @@ namespace UIWidgets {
             ImGui::EndCombo();
         }
 
-        if (options.labelPosition != LabelPosition::None) {
-            if (options.alignment == ComponentAlignment::Left) {
-                if (options.labelPosition == LabelPosition::Near) {
+        if (options.labelPosition != LabelPositions::None) {
+            if (options.alignment == ComponentAlignments::Left) {
+                if (options.labelPosition == LabelPositions::Near) {
                     ImGui::SameLine();
                     ImGui::Text("%s", label);
-                } else if (options.labelPosition == LabelPosition::Far) {
+                } else if (options.labelPosition == LabelPositions::Far) {
                     float width = ImGui::CalcTextSize(comboMap.at(*value)).x + ImGui::GetStyle().FramePadding.x * 2;
                     ImGui::SameLine(ImGui::GetContentRegionAvail().x - width);
                     ImGui::Text("%s", label);
@@ -625,19 +625,19 @@ namespace UIWidgets {
         float comboWidth = CalcComboWidth(longest, options.flags);
 
         ImGui::AlignTextToFramePadding();
-        if (options.labelPosition != LabelPosition::None) {
-            if (options.alignment == ComponentAlignment::Right) {
+        if (options.labelPosition != LabelPositions::None) {
+            if (options.alignment == ComponentAlignments::Right) {
                 ImGui::Text("%s", label);
-                if (options.labelPosition == LabelPosition::Above) {
+                if (options.labelPosition == LabelPositions::Above) {
                     ImGui::NewLine();
                     ImGui::SameLine(ImGui::GetContentRegionAvail().x - comboWidth);
-                } else if (options.labelPosition == LabelPosition::Near) {
+                } else if (options.labelPosition == LabelPositions::Near) {
                     ImGui::SameLine();
-                } else if (options.labelPosition == LabelPosition::Far) {
+                } else if (options.labelPosition == LabelPositions::Far) {
                     ImGui::SameLine(ImGui::GetContentRegionAvail().x - comboWidth);
                 }
-            } else if (options.alignment == ComponentAlignment::Left) {
-                if (options.labelPosition == LabelPosition::Above) {
+            } else if (options.alignment == ComponentAlignments::Left) {
+                if (options.labelPosition == LabelPositions::Above) {
                     ImGui::Text("%s", label);
                 }
             }
@@ -659,12 +659,12 @@ namespace UIWidgets {
             ImGui::EndCombo();
         }
 
-        if (options.labelPosition != LabelPosition::None) {
-            if (options.alignment == ComponentAlignment::Left) {
-                if (options.labelPosition == LabelPosition::Near) {
+        if (options.labelPosition != LabelPositions::None) {
+            if (options.alignment == ComponentAlignments::Left) {
+                if (options.labelPosition == LabelPositions::Near) {
                     ImGui::SameLine();
                     ImGui::Text("%s", label);
-                } else if (options.labelPosition == LabelPosition::Far) {
+                } else if (options.labelPosition == LabelPositions::Far) {
                     float width = ImGui::CalcTextSize(comboVector.at(*value)).x + ImGui::GetStyle().FramePadding.x * 2;
                     ImGui::SameLine(ImGui::GetContentRegionAvail().x - width);
                     ImGui::Text("%s", label);
@@ -707,19 +707,19 @@ namespace UIWidgets {
         float comboWidth = CalcComboWidth(longest, options.flags);
 
         ImGui::AlignTextToFramePadding();
-        if (options.labelPosition != LabelPosition::None) {
-            if (options.alignment == ComponentAlignment::Right) {
+        if (options.labelPosition != LabelPositions::None) {
+            if (options.alignment == ComponentAlignments::Right) {
                 ImGui::Text("%s", label);
-                if (options.labelPosition == LabelPosition::Above) {
+                if (options.labelPosition == LabelPositions::Above) {
                     ImGui::NewLine();
                     ImGui::SameLine(ImGui::GetContentRegionAvail().x - comboWidth);
-                } else if (options.labelPosition == LabelPosition::Near) {
+                } else if (options.labelPosition == LabelPositions::Near) {
                     ImGui::SameLine();
-                } else if (options.labelPosition == LabelPosition::Far) {
+                } else if (options.labelPosition == LabelPositions::Far) {
                     ImGui::SameLine(ImGui::GetContentRegionAvail().x - comboWidth);
                 }
-            } else if (options.alignment == ComponentAlignment::Left) {
-                if (options.labelPosition == LabelPosition::Above) {
+            } else if (options.alignment == ComponentAlignments::Left) {
+                if (options.labelPosition == LabelPositions::Above) {
                     ImGui::Text("%s", label);
                 }
             }
@@ -741,12 +741,12 @@ namespace UIWidgets {
             ImGui::EndCombo();
         }
 
-        if (options.labelPosition != LabelPosition::None) {
-            if (options.alignment == ComponentAlignment::Left) {
-                if (options.labelPosition == LabelPosition::Near) {
+        if (options.labelPosition != LabelPositions::None) {
+            if (options.alignment == ComponentAlignments::Left) {
+                if (options.labelPosition == LabelPositions::Near) {
                     ImGui::SameLine();
                     ImGui::Text("%s", label);
-                } else if (options.labelPosition == LabelPosition::Far) {
+                } else if (options.labelPosition == LabelPositions::Far) {
                     float width = ImGui::CalcTextSize(comboVector.at(*value).c_str()).x + ImGui::GetStyle().FramePadding.x * 2;
                     ImGui::SameLine(ImGui::GetContentRegionAvail().x - width);
                     ImGui::Text("%s", label);
@@ -792,19 +792,19 @@ namespace UIWidgets {
         float comboWidth = CalcComboWidth(longest, options.flags);
 
         ImGui::AlignTextToFramePadding();
-        if (options.labelPosition != LabelPosition::None) {
-            if (options.alignment == ComponentAlignment::Right) {
+        if (options.labelPosition != LabelPositions::None) {
+            if (options.alignment == ComponentAlignments::Right) {
                 ImGui::Text("%s", label);
-                if (options.labelPosition == LabelPosition::Above) {
+                if (options.labelPosition == LabelPositions::Above) {
                     ImGui::NewLine();
                     ImGui::SameLine(ImGui::GetContentRegionAvail().x - comboWidth);
-                } else if (options.labelPosition == LabelPosition::Near) {
+                } else if (options.labelPosition == LabelPositions::Near) {
                     ImGui::SameLine();
-                } else if (options.labelPosition == LabelPosition::Far) {
+                } else if (options.labelPosition == LabelPositions::Far) {
                     ImGui::SameLine(ImGui::GetContentRegionAvail().x - comboWidth);
                 }
-            } else if (options.alignment == ComponentAlignment::Left) {
-                if (options.labelPosition == LabelPosition::Above) {
+            } else if (options.alignment == ComponentAlignments::Left) {
+                if (options.labelPosition == LabelPositions::Above) {
                     ImGui::Text("%s", label);
                 }
             }
@@ -826,12 +826,12 @@ namespace UIWidgets {
             ImGui::EndCombo();
         }
 
-        if (options.labelPosition != LabelPosition::None) {
-            if (options.alignment == ComponentAlignment::Left) {
-                if (options.labelPosition == LabelPosition::Near) {
+        if (options.labelPosition != LabelPositions::None) {
+            if (options.alignment == ComponentAlignments::Left) {
+                if (options.labelPosition == LabelPositions::Near) {
                     ImGui::SameLine();
                     ImGui::Text("%s", label);
-                } else if (options.labelPosition == LabelPosition::Far) {
+                } else if (options.labelPosition == LabelPositions::Far) {
                     float width = ImGui::CalcTextSize(comboArray[*value]).x + ImGui::GetStyle().FramePadding.x * 2;
                     ImGui::SameLine(ImGui::GetContentRegionAvail().x - width);
                     ImGui::Text("%s", label);

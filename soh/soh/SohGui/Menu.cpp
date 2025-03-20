@@ -4,6 +4,7 @@
 #include "soh/Enhancements/controls/SohInputEditorWindow.h"
 #include "window/gui/GuiMenuBar.h"
 #include "window/gui/GuiElement.h"
+#include "SohModals.h"
 #include <variant>
 #include <spdlog/fmt/fmt.h>
 #include "variables.h"
@@ -19,7 +20,9 @@ std::vector<ImVec2> windowTypeSizes = { {} };
 extern std::unordered_map<s16, const char*> warpPointSceneList;
 extern void Warp();
 
-namespace SohGui {}
+namespace SohGui {
+extern std::shared_ptr<SohModalWindow> mModalWindow;
+}
 
 namespace Ship {
 std::string disabledTempTooltip;
@@ -102,6 +105,10 @@ void Menu::UpdateWindowBackendObjects() {
     for (auto& backend : *availableWindowBackends) {
         availableWindowBackendsMap[backend] = windowBackendsMap.at(backend);
     }
+}
+
+bool Menu::IsMenuPopped() {
+    return popped;
 }
 
 UIWidgets::Colors Menu::GetMenuThemeColor() {
@@ -650,10 +657,13 @@ void Menu::DrawElement() {
     options3.size = UIWidgets::Sizes::Inline;
     options3.tooltip = "Quit SoH";
     if (UIWidgets::Button(ICON_FA_POWER_OFF, options3)) {
-        if (!popped) {
-            ToggleVisibility();
-        }
-        Ship::Context::GetInstance()->GetWindow()->Close();
+        SohGui::mModalWindow->RegisterPopup("Quit SoH", "Are you sure you want to quit SoH?", "Quit", "Cancel", []() {
+            std::shared_ptr<Menu> menu = static_pointer_cast<Menu>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetMenu());
+            if (!menu->IsMenuPopped()) {
+                menu->ToggleVisibility();
+            }
+            Ship::Context::GetInstance()->GetWindow()->Close();
+        }, nullptr);
     }
     ImGui::PopStyleVar();
     ImGui::SameLine();

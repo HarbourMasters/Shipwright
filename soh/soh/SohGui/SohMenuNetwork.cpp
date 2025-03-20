@@ -42,11 +42,11 @@ void SohMenu::AddMenuNetwork() {
         .CustomFunction([](WidgetInfo& info) {
             ImGui::BeginDisabled(Sail::Instance->isEnabled);
             ImGui::Text("%s", info.name.c_str());
-            CVarInputString("##HostSail", CVAR_REMOTE_SAIL("Host"), InputOptions().Color(THEME_COLOR).PlaceholderText("127.0.0.1").DefaultValue("127.0.0.1").Size(ImVec2(ImGui::GetFontSize() * 15, 0)).LabelPosition(LabelPosition::None));
+            CVarInputString("##HostSail", CVAR_REMOTE_SAIL("Host"), InputOptions().Color(THEME_COLOR).PlaceholderText("127.0.0.1").DefaultValue("127.0.0.1").Size(ImVec2(ImGui::GetFontSize() * 15, 0)).LabelPosition(LabelPositions::None));
             ImGui::SameLine();
             ImGui::Text(":");
             ImGui::SameLine();
-            CVarInputInt("##PortSail", CVAR_REMOTE_SAIL("Port"), InputOptions().Color(THEME_COLOR).PlaceholderText("43384").DefaultValue("43384").Size(ImVec2(ImGui::GetFontSize() * 5, 0)).LabelPosition(LabelPosition::None));
+            CVarInputInt("##PortSail", CVAR_REMOTE_SAIL("Port"), InputOptions().Color(THEME_COLOR).PlaceholderText("43384").DefaultValue("43384").Size(ImVec2(ImGui::GetFontSize() * 5, 0)).LabelPosition(LabelPositions::None));
             ImGui::EndDisabled();
         });
     AddWidget(path, "Enable##Sail", WIDGET_BUTTON)
@@ -104,11 +104,11 @@ void SohMenu::AddMenuNetwork() {
     .CustomFunction([](WidgetInfo& info) {
         ImGui::BeginDisabled(CrowdControl::Instance->isEnabled);
         ImGui::Text("%s", info.name.c_str());
-        CVarInputString("##HostCrowdControl", CVAR_REMOTE_CROWD_CONTROL("Host"), InputOptions().Color(THEME_COLOR).PlaceholderText("127.0.0.1").DefaultValue("127.0.0.1").Size(ImVec2(ImGui::GetFontSize() * 15, 0)).LabelPosition(LabelPosition::None));
+        CVarInputString("##HostCrowdControl", CVAR_REMOTE_CROWD_CONTROL("Host"), InputOptions().Color(THEME_COLOR).PlaceholderText("127.0.0.1").DefaultValue("127.0.0.1").Size(ImVec2(ImGui::GetFontSize() * 15, 0)).LabelPosition(LabelPositions::None));
         ImGui::SameLine();
         ImGui::Text(":");
         ImGui::SameLine();
-        CVarInputInt("##PortCrowdControl", CVAR_REMOTE_CROWD_CONTROL("Port"), InputOptions().Color(THEME_COLOR).PlaceholderText("43384").DefaultValue("43384").Size(ImVec2(ImGui::GetFontSize() * 5, 0)).LabelPosition(LabelPosition::None));
+        CVarInputInt("##PortCrowdControl", CVAR_REMOTE_CROWD_CONTROL("Port"), InputOptions().Color(THEME_COLOR).PlaceholderText("43384").DefaultValue("43384").Size(ImVec2(ImGui::GetFontSize() * 5, 0)).LabelPosition(LabelPositions::None));
         ImGui::EndDisabled();
     });
     AddWidget(path, "Enable##CrowdControl", WIDGET_BUTTON)

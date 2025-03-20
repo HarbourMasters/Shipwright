@@ -21,6 +21,7 @@ class Menu : public GuiWindow {
     void InsertSidebarSearch();
     void RemoveSidebarSearch();
     void UpdateWindowBackendObjects();
+    bool IsMenuPopped();
     UIWidgets::Colors GetMenuThemeColor();
 
     void MenuDrawItem(WidgetInfo& widget, uint32_t width, UIWidgets::Colors menuThemeIndex);

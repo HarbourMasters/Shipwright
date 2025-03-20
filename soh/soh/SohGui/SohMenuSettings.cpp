@@ -108,8 +108,8 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_ENHANCEMENT("BootSequence"))
         .Options(ComboboxOptions()
                      .DefaultIndex(BOOTSEQUENCE_DEFAULT)
-                     .LabelPosition(LabelPosition::Far)
-                     .ComponentAlignment(ComponentAlignment::Right)
+                     .LabelPosition(LabelPositions::Far)
+                     .ComponentAlignment(ComponentAlignments::Right)
                      .ComboMap(bootSequenceLabels)
                      .Tooltip("Configure what happens when starting or resetting the game.\n\n"
                               "Default: LUS logo -> N64 logo\n"
@@ -121,7 +121,7 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_SETTING("TitleScreenTranslation"));
     AddWidget(path, "Menu Language", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_SETTING("Languages"))
-        .Options(ComboboxOptions().LabelPosition(LabelPosition::Far).ComponentAlignment(ComponentAlignment::Right).ComboMap(languages).DefaultIndex(LANGUAGE_ENG));
+        .Options(ComboboxOptions().LabelPosition(LabelPositions::Far).ComponentAlignment(ComponentAlignments::Right).ComboMap(languages).DefaultIndex(LANGUAGE_ENG));
     AddWidget(path, "Accessibility", WIDGET_SEPARATOR_TEXT);
     #if defined(_WIN32) || defined(__APPLE__)
     AddWidget(path, "Text to Speech", WIDGET_CVAR_CHECKBOX)
@@ -136,7 +136,7 @@ void SohMenu::AddMenuSettings() {
     AddWidget(path, "ImGui Menu Scaling", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_SETTING("ImGuiScale"))
         .Options(ComboboxOptions().ComboMap(imguiScaleOptions).Tooltip("Changes the scaling of the ImGui menu elements.").DefaultIndex(1)
-            .ComponentAlignment(ComponentAlignment::Right).LabelPosition(LabelPosition::Far))
+            .ComponentAlignment(ComponentAlignments::Right).LabelPosition(LabelPositions::Far))
         .Callback([](WidgetInfo& info) {
             OTRGlobals::Instance->ScaleImGui();
         });
