@@ -513,8 +513,8 @@ void Menu::DrawElement() {
         ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
     }
 
-    float test = CVarGetFloat(CVAR_SETTING("Menu.BackgroundOpacity"), 0.85f);
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0, 0, 0, test));
+    ImGui::PushStyleColor(ImGuiCol_WindowBg,
+                          ImVec4(0, 0, 0, CVarGetFloat(CVAR_SETTING("Menu.BackgroundOpacity"), 0.85f)));
 
     if (!ImGui::Begin("Main Menu", NULL, windowFlags)) {
         if (!popout) {
