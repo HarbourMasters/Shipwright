@@ -1344,7 +1344,7 @@ void SohInputEditorWindow::DrawOcarinaControlPanel() {
 void SohInputEditorWindow::DrawCameraControlPanel() {
     ImVec2 cursor = ImGui::GetCursorPos();
     ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
-    CVarCheckbox("Enable Mouse", CVAR_SETTING("EnableMouse"), CheckboxOptions().Color(THEME_COLOR)
+    CVarCheckbox("Enable Mouse Controls", CVAR_SETTING("EnableMouse"), CheckboxOptions().Color(THEME_COLOR)
         .Tooltip("Allows for using the mouse to control the camera (must enable Free Look), "
                  "aim with the shield, and perform quickspin attacks (quickly rotate the mouse then press B)"));
     Ship::GuiWindow::BeginGroupPanel("Aiming/First-Person Camera", ImGui::GetContentRegionAvail());
