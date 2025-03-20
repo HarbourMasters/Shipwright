@@ -1925,11 +1925,10 @@ bool GenerateRandomizer(std::string seed /*= ""*/) {
 
 static const std::unordered_map<int32_t, const char*> randomizerPresetList = {
     { RANDOMIZER_PRESET_DEFAULT, "Default" },
-    { RANDOMIZER_PRESET_SPOCK_RACE, "Spock Race" },
-    { RANDOMIZER_PRESET_SPOCK_RACE_NO_LOGIC, "Spock Race (No Logic)" },
-    { RANDOMIZER_PRESET_S6, "S6" },
-    { RANDOMIZER_PRESET_HELL_MODE, "Hell Mode" },
-    { RANDOMIZER_PRESET_BENCHMARK, "Benchmark" }
+    { RANDOMIZER_PRESET_BEGINNER, "Beginner" },
+    { RANDOMIZER_PRESET_STANDARD, "Standard" },
+    { RANDOMIZER_PRESET_ADVANCED, "Advanced" },
+    { RANDOMIZER_PRESET_HELL_MODE, "Hell Mode" }
 };
 static int32_t randomizerPresetSelected = RANDOMIZER_PRESET_DEFAULT;
 
