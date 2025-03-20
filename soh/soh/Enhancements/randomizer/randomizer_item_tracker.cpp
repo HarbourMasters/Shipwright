@@ -701,7 +701,9 @@ void DrawItem(ItemTrackerItem item) {
     bool hasItem = actualItemId != ITEM_NONE;
     std::string itemName = "";
 
-    if (item.id == ITEM_NONE) {
+    // Hack fix as RG_MARKET_SHOOTING_GALLERY_KEY is RandomizerGet #255 which collides
+    // with ITEM_NONE (ItemId #255) due to the lack of a modid to separate them
+    if (item.name != "ITEM_KEY_SMALL" && item.id == ITEM_NONE) {
         return;
     }
 
