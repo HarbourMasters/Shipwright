@@ -741,107 +741,6 @@ void RegisterRandomizedEnemySizes() {
     });
 }
 
-void PatchToTMedallions() {
-    // TODO: Refactor the DemoEffect_UpdateJewelAdult and DemoEffect_UpdateJewelChild from z_demo_effect
-    // effects to take effect in there
-    if (CVarGetInteger(CVAR_ENHANCEMENT("ToTMedallionsColors"), 0)) {
-        ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_StartGrayscale", 7, gsSPGrayscale(true));
-        ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_StartGrayscale", 7, gsSPGrayscale(true));
-
-        if (CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER)) {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeBlue", 16,
-                                       gsDPSetGrayscaleColor(0, 161, 255, 255));
-        } else {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeBlue", 16,
-                                       gsDPSetGrayscaleColor(255, 255, 255, 255));
-        }
-
-        if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT)) {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeOrange", 45,
-                                       gsDPSetGrayscaleColor(255, 135, 0, 255));
-        } else {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeOrange", 45,
-                                       gsDPSetGrayscaleColor(255, 255, 255, 255));
-        }
-
-        if (CHECK_QUEST_ITEM(QUEST_MEDALLION_LIGHT)) {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeYellow", 69,
-                                       gsDPSetGrayscaleColor(255, 255, 0, 255));
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakeYellow", 16,
-                                       gsDPSetGrayscaleColor(255, 255, 0, 255));
-        } else {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeYellow", 69,
-                                       gsDPSetGrayscaleColor(255, 255, 255, 255));
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakeYellow", 16,
-                                       gsDPSetGrayscaleColor(255, 255, 255, 255));
-        }
-
-        if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST)) {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeGreen", 94,
-                                       gsDPSetGrayscaleColor(0, 255, 0, 255));
-        } else {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeGreen", 94,
-                                       gsDPSetGrayscaleColor(255, 255, 255, 255));
-        }
-
-        if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeRed", 118,
-                                       gsDPSetGrayscaleColor(255, 0, 0, 255));
-        } else {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeRed", 118,
-                                       gsDPSetGrayscaleColor(255, 255, 255, 255));
-        }
-
-        if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW)) {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakePurple", 142,
-                                       gsDPSetGrayscaleColor(212, 0, 255, 255));
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakePurple", 27,
-                                       gsDPSetGrayscaleColor(212, 0, 255, 255));
-        } else {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakePurple", 142,
-                                       gsDPSetGrayscaleColor(255, 255, 255, 255));
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakePurple", 27,
-                                       gsDPSetGrayscaleColor(255, 255, 255, 255));
-        }
-
-        ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_EndGrayscaleAndEndDlist", 160,
-                                   gsSPBranchListOTRFilePath(gEndGrayscaleAndEndDlistDL));
-        ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_EndGrayscaleAndEndDlist", 51,
-                                   gsSPBranchListOTRFilePath(gEndGrayscaleAndEndDlistDL));
-    } else {
-        // Unpatch everything
-        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_StartGrayscale");
-        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_StartGrayscale");
-
-        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeBlue");
-        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeOrange");
-        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeYellow");
-        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakeYellow");
-        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeRed");
-        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakePurple");
-        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakePurple");
-
-        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_EndGrayscaleAndEndDlist");
-        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_EndGrayscaleAndEndDlist");
-    }
-}
-
-void RegisterToTMedallions() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry _unused) {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("ToTMedallionsColors"), 0) || !gPlayState ||
-            gPlayState->sceneNum != SCENE_TEMPLE_OF_TIME) {
-            return;
-        }
-        PatchToTMedallions();
-    });
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("ToTMedallionsColors"), 0) || sceneNum != SCENE_TEMPLE_OF_TIME) {
-            return;
-        }
-        PatchToTMedallions();
-    });
-}
-
 void RegisterFloorSwitchesHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
         Actor* actor = static_cast<Actor*>(refActor);
@@ -913,7 +812,6 @@ void InitMods() {
     RegisterEnemyDefeatCounts();
     RegisterBossDefeatTimestamps();
     RegisterRandomizedEnemySizes();
-    RegisterToTMedallions();
     RegisterFloorSwitchesHook();
     RegisterPatchHandHandler();
     RegisterHurtContainerModeHandler();
