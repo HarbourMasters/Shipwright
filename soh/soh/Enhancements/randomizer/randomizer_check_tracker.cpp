@@ -167,6 +167,7 @@ bool hideCollected = false;
 bool showHidden = true;
 bool mystery = false;
 bool showLogicTooltip = false;
+bool onlyShowAvailable = false;
 
 SceneID DungeonSceneLookupByArea(RandomizerCheckArea area) {
     switch (area) {
@@ -895,6 +896,7 @@ void CheckTrackerWindow::DrawElement() {
     showHidden                  = CVarGetInteger(CVAR_TRACKER_CHECK("ShowHidden"), 0);
     mystery                     = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0);
     showLogicTooltip            = CVarGetInteger(CVAR_TRACKER_CHECK("ShowLogic"), 0);
+    onlyShowAvailable          = CVarGetInteger(CVAR_TRACKER_CHECK("OnlyShowAvailable"), 0);
 
     hideShopUnshuffledChecks = CVarGetInteger(CVAR_TRACKER_CHECK("HideUnshuffledShopChecks"), 1);
     alwaysShowGS = CVarGetInteger(CVAR_TRACKER_CHECK("AlwaysShowGSLocs"), 0);
@@ -948,6 +950,9 @@ void CheckTrackerWindow::DrawElement() {
     UIWidgets::CVarCheckbox(
         "Show Hidden Items", CVAR_TRACKER_CHECK("ShowHidden"), UIWidgets::CheckboxOptions({{ .tooltip = "When active, items will show hidden checks by default when updated to this state." }})
         .Color(THEME_COLOR));
+    UIWidgets::CVarCheckbox(
+        "Only Show Available Checks", CVAR_TRACKER_CHECK("OnlyShowAvailable"), UIWidgets::CheckboxOptions({{ .tooltip = "When active, unavailable checks will be hidden." }})
+        .Color(THEME_COLOR));
     UIWidgets::PaddedSeparator();
     if (UIWidgets::Button("Expand All", UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline))) {
         optCollapseAll = false;
@@ -973,7 +978,7 @@ void CheckTrackerWindow::DrawElement() {
 
     ImGui::Separator();
 
-    ImGui::Text("Total Checks: %d Accessible / %d Checked / %d Total", totalChecksAccessible, totalChecksGotten, totalChecks);
+    ImGui::Text("Total Checks: %d Available / %d Checked / %d Total", totalChecksAccessible, totalChecksGotten, totalChecks);
 
     UIWidgets::PaddedSeparator();
 
@@ -1025,7 +1030,8 @@ void CheckTrackerWindow::DrawElement() {
             doAreaScroll = true;
         }
         if ((shouldHideFilteredAreas && filterAreasHidden[rcArea]) ||
-            (!showHidden && ((hideComplete && thisAreaFullyChecked) || (hideIncomplete && !thisAreaFullyChecked)))
+            (!showHidden && ((hideComplete && thisAreaFullyChecked) || (hideIncomplete && !thisAreaFullyChecked))) ||
+            (onlyShowAvailable && areaChecksAccessible[rcArea] == 0)
         ) {
             doDraw = false;
         } else {
@@ -1067,14 +1073,14 @@ void CheckTrackerWindow::DrawElement() {
                 if (showVOrMQ && RandomizerCheckObjects::AreaIsDungeon(rcArea)) {
                     if (OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(DungeonSceneLookupByArea(rcArea))->IsMQ()) {
                         ImGui::Text("(%d / %d / %d) - MQ", areaChecksAccessible[rcArea], areaChecksGotten[rcArea], areaCheckTotals[rcArea]);
-                        UIWidgets::Tooltip("Accessible / Checked / Total");
+                        UIWidgets::Tooltip("Available / Checked / Total");
                     } else {
                         ImGui::Text("(%d / %d / %d) - Vanilla", areaChecksAccessible[rcArea], areaChecksGotten[rcArea], areaCheckTotals[rcArea]);
-                        UIWidgets::Tooltip("Accessible / Checked / Total");
+                        UIWidgets::Tooltip("Available / Checked / Total");
                     }
                 } else {
                     ImGui::Text("(%d / %d / %d)", areaChecksAccessible[rcArea], areaChecksGotten[rcArea], areaCheckTotals[rcArea]);
-                    UIWidgets::Tooltip("Accessible / Checked / Total");
+                    UIWidgets::Tooltip("Available / Checked / Total");
                 }
             } else {
                 ImGui::Text("???");
@@ -1088,7 +1094,8 @@ void CheckTrackerWindow::DrawElement() {
                 doAreaScroll = false;
             }
             for (auto rc : checks) {
-                if (doDraw && isThisAreaSpoiled && !filterChecksHidden[rc]) {
+                if (doDraw && isThisAreaSpoiled && !filterChecksHidden[rc] &&
+                    (!onlyShowAvailable || OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->IsAccessible())) {
                     DrawLocation(rc);
                 }
             }
@@ -1792,9 +1799,9 @@ void RecalculateAccessibleChecks() {
     for (auto& location : Rando::StaticData::GetLocationTable()) {
         RandomizerCheck rc = location.GetRandomizerCheck();
         Rando::ItemLocation* itemLocation = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
+        itemLocation->SetAccessible(false);
         if (!itemLocation->HasObtained()) {
             targetLocations.emplace_back(rc);
-            itemLocation->SetAccessible(false);
         }
     }
 

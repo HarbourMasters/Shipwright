@@ -509,9 +509,12 @@ std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerChec
       ProcessRegion(RegionTable(gals.regionPool[i]), gals, ignore);
     }
   } while (gals.logicUpdated);
-  erase_if(gals.accessibleLocations, [&targetLocations, ctx](RandomizerCheck loc){
+  erase_if(gals.accessibleLocations, [&targetLocations, ctx, calculatingAccessibleChecks](RandomizerCheck loc) {
+    if (ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() != RG_NONE && !calculatingAccessibleChecks) {
+      return false;
+    }
     for (RandomizerCheck allowedLocation : targetLocations) {
-      if (loc == allowedLocation || ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() != RG_NONE) {
+      if (loc == allowedLocation) {
         return false;
       }
     }
