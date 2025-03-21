@@ -1671,19 +1671,19 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                               /*french*/ "Selon moi, un #coeur dans le Puits# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_BOTTOM_OF_THE_WELL_RUPEE] = HintText(CustomMessage("They say that a #hidden path through the floor# in the well leads to #[[1]]#.",
-                                                              /*german*/ "",
+                                                              /*german*/ "Man erzählt sich, daß ein #versteckter Pfad durch den Grund# im Brunnen zu #[[1]]# führe.",
                                                               /*french*/ "Selon moi, un #passage caché sous le sol# dans le puits mène à #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_BOTTOM_OF_THE_WELL_BASEMENT_SUN_FAIRY] = HintText(CustomMessage("They say that an #calling the sun a dead end# within the well reveals #[[1]]#.",
-                                                                       /*german*/ "!!!",
+                                                                       /*german*/ "Man erzählt sich, daß das #Anrufen der Sonne in einer Sackgasse# innerhalb des Brunnens #[[1]]# enthülle.",
                                                                        /*french*/ "Selon moi, #appeler le soleil dans une impasse# à l’intérieur du puits révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_BOTTOM_OF_THE_WELL_MQ_CELL_SUN_FAIRY] = HintText(CustomMessage("They say that an #calling the sun in an empty cell# within the well reveals #[[1]]#.",
-                                                                       /*german*/ "!!!",
+                                                                       /*german*/ "Man erzählt sich, daß das #Anrufen der Sonne in einer leeren Zelle# innerhalb des Brunnens #[[1]]# enthülle.",
                                                                        /*french*/ "Selon moi, #appeler le soleil dans une cellule vide# à l’intérieur du puits révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_BOTTOM_OF_THE_WELL_MQ_BASEMENT_SUN_FAIRY] = HintText(CustomMessage("They say that an #calling the sun a dead end# within the well reveals #[[1]]#.",
-                                                                       /*german*/ "!!!",
+                                                                       /*german*/ "Man erzählt sich, daß das #Anrufen der Sonne in einer Sackgasse# innerhalb des Brunnens #[[1]]# enthülle.",
                                                                        /*french*/ "Selon moi, #appeler le soleil dans une impasse# à l’intérieur du puits révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
 
@@ -1769,11 +1769,11 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                       /*french*/ "Selon moi, ", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_ICE_CAVERN_RUPEE] = HintText(CustomMessage("They say that a #rupee in a frozen cavern# hides #[[1]]#.",
-                                                      /*german*/ "Man erzählt sich, daß ein #Rubin in der Eiskaverne# #[[1]]# verstecke.",
+                                                      /*german*/ "Man erzählt sich, daß ein #Rubin in einer gefrorenen Kaverne# #[[1]]# verstecke.",
                                                       /*french*/ "Selon moi, un #rubis dans la Caverne Polaire# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_ICE_CAVERN_ENTRANCE_STORMS_FAIRY] = HintText(CustomMessage("They say that #calling the rain near the entrance to a frozen cave# reveals #[[1]]#.",
-                                                              /*german*/ "!!!",
+                                                              /*german*/ "Man erzählt sich, daß das #Anrufen des Regens in der Nähe des Eingangs zu einer gefrorenen Kaverne# #[[1]]# enthülle.",
                                                               /*french*/ "Selon moi, #appeler la pluie près de l’entrée d’une grotte gelée# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
                                                            // /*spanish*/ Según dicen, una #Skulltula tras un ardiente hielo# otorga #[[1]]#.
 
@@ -1781,27 +1781,27 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
   | Gerudo Training Ground  |
   ---------------------------*/
     hintTextTable[RHT_GERUDO_TRAINING_GROUND_LOBBY_LEFT_CHEST] = HintText(CustomMessage("They say that a #blinded eye in the Gerudo Training Ground# drops #[[1]]#.",
-                                                                             /*german*/ "Man erzählt sich, daß ein #erblindetes Auge in der Gerudo-Trainingsarena# #[[1]]# fallen ließe.",
+                                                                             /*german*/ "Man erzählt sich, daß ein #erblindetes Auge auf dem Gerudo-Trainingsgelände# #[[1]]# fallen ließe.",
                                                                              /*french*/ "Selon moi, l'#Oeil dans le Gymnase Gerudo# voit #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                           // /*spanish*/ Según dicen, #cegar un ojo en el Centro de Instrucción Gerudo# revela #[[1]]#.
 
     hintTextTable[RHT_GERUDO_TRAINING_GROUND_LOBBY_RIGHT_CHEST] = HintText(CustomMessage("They say that a #blinded eye in the Gerudo Training Ground# drops #[[1]]#.",
-                                                                              /*german*/ "Man erzählt sich, daß ein #erblindetes Auge in der Gerudo-Trainingsarena# #[[1]]# fallen ließe.",
+                                                                              /*german*/ "Man erzählt sich, daß ein #erblindetes Auge auf dem Gerudo-Trainingsgelände# #[[1]]# fallen ließe.",
                                                                               /*french*/ "Selon moi, l'#Oeil dans le Gymnase Gerudo# voit #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                            // /*spanish*/ Según dicen, #cegar un ojo en el Centro de Instrucción Gerudo# revela #[[1]]#.
 
     hintTextTable[RHT_GERUDO_TRAINING_GROUND_STALFOS_CHEST] = HintText(CustomMessage("They say that #soldiers walking on shifting sands# in the Gerudo Training Ground guard #[[1]]#.",
-                                                                          /*german*/ "Man erzählt sich, daß #auf veränderlichen Sanden laufende Soldaten# in der Gerudo-Trainingsarena #[[1]]# bewachen würden.",
+                                                                          /*german*/ "Man erzählt sich, daß #auf veränderlichen Sanden laufende Soldaten# auf dem Gerudo-Trainingsgelände #[[1]]# bewachen würden.",
                                                                           /*french*/ "Selon moi, les #squelettes# du Gymnase Gerudo protègent #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                        // /*spanish*/ Según dicen, #soldados en resbaladizas arenas# del Centro de Instrucción Gerudo protegen #[[1]]#.
 
     hintTextTable[RHT_GERUDO_TRAINING_GROUND_BEAMOS_CHEST] = HintText(CustomMessage("They say that #reptilian warriors# in the Gerudo Training Ground protect #[[1]]#.",
-                                                                         /*german*/ "Man erzählt sich, daß #reptilienartige Krieger# in der Gerudo-Trainingsarena #[[1]]# schützen würden.",
+                                                                         /*german*/ "Man erzählt sich, daß #reptilienartige Krieger# auf dem Gerudo-Trainingsgelände #[[1]]# schützen würden.",
                                                                          /*french*/ "Selon moi, les #lézards# dans le Gymnase Gerudo protègent #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                       // /*spanish*/ Según dicen, #unos escamosos guerreros# del Centro de Instrucción Gerudo protegen #[[1]]#.
 
     hintTextTable[RHT_GERUDO_TRAINING_GROUND_HIDDEN_CEILING_CHEST] = HintText(CustomMessage("They say that the #Eye of Truth# in the Gerudo Training Ground reveals #[[1]]#.",
-                                                                                 /*german*/ "Man erzählt sich, daß das #Auge der Wahrheit# in der Gerudo-Trainingsarena #[[1]]# enthülle.",
+                                                                                 /*german*/ "Man erzählt sich, daß das #Auge der Wahrheit# auf dem Gerudo-Trainingsgelände #[[1]]# enthülle.",
                                                                                  /*french*/ "Selon moi, #bien caché# dans le Gymnase Gerudo gît #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                               // /*spanish*/ Según dicen, el #Ojo de la Verdad# en el Centro de Instrucción Gerudo revela #[[1]]#.
 
@@ -1821,17 +1821,17 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                                                // /*spanish*/ Según dicen, el tercer premio de la #instrucción bandida# se trata de #[[1]]#.
 
     hintTextTable[RHT_GERUDO_TRAINING_GROUND_MAZE_RIGHT_CENTRAL_CHEST] = HintText(CustomMessage("They say that the #Song of Time# in the Gerudo Training Ground leads to #[[1]]#.",
-                                                                                     /*german*/ "Man erzählt sich, daß die #Hymne der Zeit# in der Gerudo-Trainingsarena zu #[[1]]# führe.",
+                                                                                     /*german*/ "Man erzählt sich, daß die #Hymne der Zeit# auf dem Gerudo-Trainingsgelände zu #[[1]]# führe.",
                                                                                      /*french*/ "Selon moi, le #chant du temps# révèle dans le Gymnase Gerudo #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                                   // /*spanish*/ Según dicen, la #Canción del Tiempo# en el Centro de Instrucción Gerudo conduce a #[[1]]#.
 
     hintTextTable[RHT_GERUDO_TRAINING_GROUND_MAZE_RIGHT_SIDE_CHEST] = HintText(CustomMessage("They say that the #Song of Time# in the Gerudo Training Ground leads to #[[1]]#.",
-                                                                                  /*german*/ "Man erzählt sich, daß die #Hymne der Zeit# in der Gerudo-Trainingsarena zu #[[1]]# führe.",
+                                                                                  /*german*/ "Man erzählt sich, daß die #Hymne der Zeit# auf dem Gerudo-Trainingsgelände zu #[[1]]# führe.",
                                                                                   /*french*/ "Selon moi, le #chant du temps# révèle dans le Gymnase Gerudo #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                                // /*spanish*/ Según dicen, la #Canción del Tiempo# en el Centro de Instrucción Gerudo conduce a #[[1]]#.
 
     hintTextTable[RHT_GERUDO_TRAINING_GROUND_HAMMER_ROOM_CLEAR_CHEST] = HintText(CustomMessage("They say that #fiery foes# in the Gerudo Training Ground guard #[[1]]#.",
-                                                                                    /*german*/ "Man erzählt sich, daß #feurige Feinde# in der Gerudo-Trainingsarena #[[1]]# bewachen würden.",
+                                                                                    /*german*/ "Man erzählt sich, daß #feurige Feinde# auf dem Gerudo-Trainingsgelände #[[1]]# bewachen würden.",
                                                                                     /*french*/ "Selon moi, les #limaces de feu# du Gymnase Gerudo protègent #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                                  // /*spanish*/ Según dicen, unos #flamígeros enemigos# del Centro de Instrucción Gerudo guardan #[[1]]#.
 
@@ -1880,7 +1880,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                                                   /*french*/ "Selon moi, #appeler la pluie près de l’entrée du Gymnase Gerudo# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_GERUDO_TRAINING_GROUND_FREESTANDING_KEY] = HintText(CustomMessage("They say that the #Song of Time# in the Gerudo Training Ground leads to #[[1]]#.",
-                                                                             /*german*/ "Man erzählt sich, daß die #Hymne der Zeit# in der Gerudo-Trainingsarena zu #[[1]]# führe.",
+                                                                             /*german*/ "Man erzählt sich, daß die #Hymne der Zeit# auf dem Gerudo-Trainingsgelände zu #[[1]]# führe.",
                                                                              /*french*/ "Selon moi, le #chant du temps# révèle dans le Gymnase Gerudo #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                           // /*spanish*/ Según dicen, la #Canción del Tiempo# en el Centro de Instrucción Gerudo conduce a #[[1]]#.
 
@@ -1895,7 +1895,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                                              // /*spanish*/ Según dicen, las #bandidas se instruyen# con #[[1]]#.
 
     hintTextTable[RHT_GERUDO_TRAINING_GROUND_MQ_FIRST_IRON_KNUCKLE_CHEST] = HintText(CustomMessage("They say that #soldiers walking on shifting sands# in the Gerudo Training Ground guard #[[1]]#.",
-                                                                                        /*german*/ "Man erzählt sich, daß #auf veränderlichen Sanden laufende Soldaten# in der Gerudo-Trainingsarena #[[1]]# bewachen würden.",
+                                                                                        /*german*/ "Man erzählt sich, daß #auf veränderlichen Sanden laufende Soldaten# auf dem Gerudo-Trainingsgelände #[[1]]# bewachen würden.",
                                                                                         /*french*/ "Selon moi, les #squelettes# du Gymnase Gerudo protègent #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                                      // /*spanish*/ Según dicen, #soldados en resbaladizas arenas# del Centro de Instrucción Gerudo protegen #[[1]]#.
 
@@ -1950,7 +1950,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                                                    // /*spanish*/ Según dicen, el segundo premio de la #instrucción bandida# se trata de #[[1]]#.
 
     hintTextTable[RHT_GERUDO_TRAINING_GROUND_MQ_HIDDEN_CEILING_CHEST] = HintText(CustomMessage("They say that the #Eye of Truth# in the Gerudo Training Ground reveals #[[1]]#.",
-                                                                                    /*german*/ "Man erzählt sich, daß das #Auge der Wahrheit# in der Gerudo-Trainingsarena #[[1]]# enthülle.",
+                                                                                    /*german*/ "Man erzählt sich, daß das #Auge der Wahrheit# auf dem Gerudo-Trainingsgelände #[[1]]# enthülle.",
                                                                                     /*french*/ "Selon moi, #bien caché# dans le Gymnase Gerudo gît #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                                  // /*spanish*/ Según dicen, el #Ojo de la Verdad# en el Centro de Instrucción Gerudo revela #[[1]]#.
 
@@ -1960,7 +1960,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                                               // /*spanish*/ Según dicen, una #hazaña de fuerza# premia a las bandidas con #[[1]]#.
 
     hintTextTable[RHT_GERUDO_TRAINING_GROUNDS_HEART] = HintText(CustomMessage("They say that a watching a #trial with Dinolfos# is #[[1]]#.",
-                                                                   /*german*/ "Man erzählt sich, daß das Sehen einer #Prüfung mit Dinolfos# #[[1]]# enthülle.",
+                                                                   /*german*/ "Man erzählt sich, daß das Sehen einer #Prüfung mit Dinodorus# #[[1]]# enthülle.",
                                                                    /*french*/ "Selon moi, dans #une épreuve avec un Dinolfos# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
   /*--------------------------
@@ -2047,11 +2047,11 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                                           // /*spanish*/ Según dicen, la #música en la prueba del resplandor# revela #[[1]]#.
 
     hintTextTable[RHT_GANONS_CASTLE_SPIRIT_TRIAL_SUN_FAIRY] = HintText(CustomMessage("They say that #calling the sun for a sentry in the test of the sands# reveals #[[1]]#.",
-                                                                          /*german*/ "!!!",
+                                                                          /*german*/ "Man erzählt sich, daß das #Anrufen der Sonne für eine Wache in einer Prüfung der Sande# #[[1]]# enthülle.",
                                                                           /*french*/ "Selon moi, #appeler le soleil pour une sentinelle dans l’épreuve des sables# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_GANONS_CASTLE_SCRUBS_FAIRY] = HintText(CustomMessage("They say that within a #sanctuary before the final trial# rests #[[1]]#.",
-                                                                /*german*/ "!!!",
+                                                                /*german*/ "Man erzählt sich, daß innerhalb eines #Heiligtum vor der finalen Prüfung# #[[1]]# ruhe.",
                                                                 /*french*/ "Selon moi, #dans un sanctuaire avant l’épreuve finale# repose #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_GANONS_CASTLE_MQ_WATER_TRIAL_CHEST] = HintText(CustomMessage("They say that the #test of the seas# holds #[[1]]#.",
