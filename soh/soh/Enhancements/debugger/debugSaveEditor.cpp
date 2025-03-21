@@ -1555,6 +1555,8 @@ void ResetBaseOptions() {
 
 void SaveEditorWindow::DrawElement() {
     PushStyleTabs(THEME_COLOR);
+    ImGui::PushFont(OTRGlobals::Instance->fontMonoLarger);
+
     if (ImGui::BeginTabBar("SaveContextTabBar", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         ResetBaseOptions();
         if (ImGui::BeginTabItem("Info")) {
@@ -1594,6 +1596,8 @@ void SaveEditorWindow::DrawElement() {
 
         ImGui::EndTabBar();
     }
+
+    ImGui::PopFont();
     PopStyleTabs();
 }
 

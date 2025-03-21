@@ -1,6 +1,7 @@
 #include "hookDebugger.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/SohGui/UIWidgets.hpp"
+#include "soh/OTRGlobals.h"
 #include <string>
 #include <version>
 
@@ -82,12 +83,16 @@ void HookDebuggerWindow::DrawElement() {
                                "(\"__cpp_lib_source_location\" not defined in \"<version>\").");
 #endif
 
+    ImGui::PushFont(OTRGlobals::Instance->fontMonoLarger);
+
     for (auto& [hookName, _] : hookData) {
         if (ImGui::TreeNode(hookName)) {
             DrawHookRegisteringInfos(hookName);
             ImGui::TreePop();
         }
     }
+
+    ImGui::PopFont();
 }
 
 void HookDebuggerWindow::InitElement() {
