@@ -132,31 +132,6 @@ void RegisterOcarinaTimeTravel() {
     });
 }
 
-void RegisterRupeeDash() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("RupeeDash"), 0)) {
-            return;
-        }
-        
-        // Initialize Timer
-        static uint16_t rupeeDashTimer = 0;
-        uint16_t rdmTime = CVarGetInteger(CVAR_ENHANCEMENT("RupeeDashInterval"), 5) * 20;
-        
-        // Did time change by DashInterval?
-        if (rupeeDashTimer >= rdmTime) {
-            rupeeDashTimer = 0;
-            if (gSaveContext.rupees > 0) {
-                uint16_t walletSize = (CUR_UPG_VALUE(UPG_WALLET) + 1) * -1;
-                Rupees_ChangeBy(walletSize);
-            } else {
-                Health_ChangeBy(gPlayState, -16);
-            }
-        } else {
-            rupeeDashTimer++;
-        }
-    });
-}
-
 void RegisterShadowTag() {
     static bool shouldSpawn = false;
     static uint16_t delayTimer = 60;
@@ -1031,7 +1006,6 @@ void InitMods() {
     RegisterTTS();
     RegisterOcarinaTimeTravel();
     RegisterDaytimeGoldSkultullas();
-    RegisterRupeeDash();
     RegisterShadowTag();
     RegisterPermanentHeartLoss();
     RegisterDeleteFileOnDeath();
