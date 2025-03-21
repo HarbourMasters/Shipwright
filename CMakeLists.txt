@@ -297,3 +297,11 @@ endif()
 
 set(CPACK_PROJECT_CONFIG_FILE ${CMAKE_SOURCE_DIR}/CMake/Packaging-2.cmake)
 include(CMake/Packaging.cmake)
+
+# Add OpenVR
+find_package(OpenVR REQUIRED)
+include_directories(${OPENVR_INCLUDE_DIRS})
+
+target_link_libraries(soh PRIVATE
+    ${OPENVR_LIBRARIES}
+)

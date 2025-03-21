@@ -99,21 +99,22 @@ typedef enum {
     /* 0x04 */ CAM_MODE_BATTLE,
     /* 0x05 */ CAM_MODE_CLIMB,
     /* 0x06 */ CAM_MODE_FIRSTPERSON,  // "SUBJECT"
-    /* 0x07 */ CAM_MODE_BOWARROW,
-    /* 0x08 */ CAM_MODE_BOWARROWZ,
-    /* 0x09 */ CAM_MODE_HOOKSHOT, // "FOOKSHOT"
-    /* 0x0A */ CAM_MODE_BOOMERANG,
-    /* 0x0B */ CAM_MODE_SLINGSHOT, // "PACHINCO"
-    /* 0x0C */ CAM_MODE_CLIMBZ,
-    /* 0x0D */ CAM_MODE_JUMP,
-    /* 0x0E */ CAM_MODE_HANG,
-    /* 0x0F */ CAM_MODE_HANGZ,
-    /* 0x10 */ CAM_MODE_FREEFALL,
-    /* 0x11 */ CAM_MODE_CHARGE,
-    /* 0x12 */ CAM_MODE_STILL,
-    /* 0x13 */ CAM_MODE_PUSHPULL,
-    /* 0x14 */ CAM_MODE_FOLLOWBOOMERANG, // "BOOKEEPON"
-    /* 0x15 */ CAM_MODE_MAX
+    /* 0x07 */ CAM_MODE_VR,          // "VR"
+    /* 0x08 */ CAM_MODE_BOWARROW,
+    /* 0x09 */ CAM_MODE_BOWARROWZ,
+    /* 0x0A */ CAM_MODE_HOOKSHOT, // "FOOKSHOT"
+    /* 0x0B */ CAM_MODE_BOOMERANG,
+    /* 0x0C */ CAM_MODE_SLINGSHOT, // "PACHINCO"
+    /* 0x0D */ CAM_MODE_CLIMBZ,
+    /* 0x0E */ CAM_MODE_JUMP,
+    /* 0x0F */ CAM_MODE_HANG,
+    /* 0x10 */ CAM_MODE_HANGZ,
+    /* 0x11 */ CAM_MODE_FREEFALL,
+    /* 0x12 */ CAM_MODE_CHARGE,
+    /* 0x13 */ CAM_MODE_STILL,
+    /* 0x14 */ CAM_MODE_PUSHPULL,
+    /* 0x15 */ CAM_MODE_FOLLOWBOOMERANG, // "BOOKEEPON"
+    /* 0x16 */ CAM_MODE_MAX
 } CameraModeType;
 
 typedef enum {
@@ -761,7 +762,7 @@ typedef struct {
     { flags, CAM_DATA_FLAGS }
 
 typedef struct {
-    /* 0x0 */ f32 r;
+    /* 0x00 */ f32 r;
     /* 0x4 */ s16 yaw;
     /* 0x6 */ s16 pitch;
     /* 0x8 */ s16 animTimer;
@@ -835,10 +836,10 @@ typedef struct {
     { flags, CAM_DATA_FLAGS }
 
 typedef struct {
-    /* 0x0 */ f32 unk_00; // unused
-    /* 0x4 */ s16 yawTarget;
-    /* 0x6 */ s16 yawTargetAdj;
-    /* 0x8 */ s16 timer;
+    /* 0x00 */ f32 unk_00; // unused
+    /* 0x04 */ s16 yawTarget;
+    /* 0x06 */ s16 yawTargetAdj;
+    /* 0x08 */ s16 timer;
 } Unique1Anim; // size = 0xC
 
 typedef struct {

@@ -156,6 +156,9 @@ void SohMenu::AddMenuEnhancements() {
 
     path.column = SECTION_COLUMN_2;
     AddWidget(path, "Controls", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Enable VR Mode", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("EnableVR"))
+        .Options(CheckboxOptions().Tooltip("Enable VR mode when using first person view. Requires a VR headset to be connected."));
     AddWidget(path, "Answer Navi Prompt with L Button", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("NaviOnL"))
         .Options(CheckboxOptions().Tooltip("Speak to Navi with L but enter First-Person Camera with C-Up"));
@@ -921,7 +924,7 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Removes the Dungeon Entrance icon on the top-left corner of the screen when no dungeon is present on the "
             "current map."));
-    AddWidget(path, "Fix Two-Handled Idle Animations", WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "Fix Two-Handed Idle Animations", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("TwoHandedIdle"))
         .Options(CheckboxOptions().Tooltip(
             "Re-Enables the two-handed idle animation, a seemingly finished animation that was disabled on accident "
@@ -992,7 +995,7 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Restore pre-release behavior where defeating a Gold Skulltula will play a cutscene showing it die."));
     AddWidget(path, "Pulsate Boss Icon", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_ENHANCEMENT("Pulsate Boss Icon"))
+        .CVar(CVAR_ENHANCEMENT("PulsateBossIcon"))
         .Options(CheckboxOptions().Tooltip(
             "Restores an unfinished feature to pulsate the boss room icon when you are in the boss room."));
 

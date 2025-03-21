@@ -2145,6 +2145,7 @@ s32 Camera_Special6(Camera* camera);
 s32 Camera_Special7(Camera* camera);
 s32 Camera_Special8(Camera* camera);
 s32 Camera_Special9(Camera* camera);
+s32 Camera_VR(Camera* camera);
 
 s32 (*sCameraFunctions[])(Camera*) = {
     NULL,
@@ -2218,6 +2219,7 @@ s32 (*sCameraFunctions[])(Camera*) = {
     Camera_Special7,
     Camera_Special8,
     Camera_Special9,
+    Camera_VR,
 };
 
 s32 sInitRegs = 1;
@@ -2254,7 +2256,7 @@ char sCameraFunctionNames[][8] = {
     "DATA4()", "UNIQ0()", "UNIQ1()", "UNIQ2()", "UNIQ3()", "UNIQ4()", "UNIQ5()", "UNIQ6()", "UNIQ7()", "UNIQ8()",
     "UNIQ9()", "DEMO0()", "DEMO1()", "DEMO2()", "DEMO3()", "DEMO4()", "DEMO5()", "DEMO6()", "DEMO7()", "DEMO8()",
     "DEMO9()", "SPEC0()", "SPEC1()", "SPEC2()", "SPEC3()", "SPEC4()", "SPEC5()", "SPEC6()", "SPEC7()", "SPEC8()",
-    "SPEC9()", "",        "",        "",        "",        "",
+    "SPEC9()", "VR()", "", "", "", "",
 };
 
 VecSph D_8011D658[] = {

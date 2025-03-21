@@ -140,6 +140,33 @@ void View_SetViewport(View* view, Viewport* viewport) {
     view->flags |= 2;
 }
 
+void View_SetVRStereoView(View* view, VRManager* vrManager) {
+    if (!vrManager || !vrManager->IsHMDPresent())
+        return;
+
+    // Update HMD pose
+    vrManager->UpdateHMDMatrixPose();
+
+    // Set up stereo rendering
+    for (int eye = 0; eye < 2; eye++) {
+        vr::EVREye vrEye = (eye == 0) ? vr::Eye_Left : vr::Eye_Right;
+        
+        // Get projection and view matrices for this eye
+        Matrix4 projMat = vrManager->GetHMDMatrixProjectionEye(vrEye);
+        Matrix4 eyeMat = vrManager->GetHMDMatrixPoseEye(vrEye);
+        
+        // Set up viewport and scissor for this eye
+        view->viewport.vp.vscale[0] = SCREEN_WIDTH/4;
+        view->viewport.vp.vscale[1] = SCREEN_HEIGHT/2;
+        view->viewport.vp.vtrans[0] = (eye == 0) ? SCREEN_WIDTH/4 : (SCREEN_WIDTH*3)/4;
+        view->viewport.vp.vtrans[1] = SCREEN_HEIGHT/2;
+        
+        // Apply VR matrices
+        guMtxCatF(eyeMat.m, view->lookAt.m, view->lookAt.m);
+        guMtxCatF(projMat.m, view->projection.m, view->projection.m);
+    }
+}
+
 void View_GetViewport(View* view, Viewport* viewport) {
     *viewport = view->viewport;
 }
