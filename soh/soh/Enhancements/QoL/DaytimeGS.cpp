@@ -5,8 +5,8 @@
 #include "macros.h"
 
 extern "C" {
-PlayState* gPlayState;
-SaveContext gSaveContext;
+extern PlayState* gPlayState;
+extern SaveContext gSaveContext;
 }
 
 static constexpr int32_t CVAR_DAYTIME_GS_DEFAULT = 0;
