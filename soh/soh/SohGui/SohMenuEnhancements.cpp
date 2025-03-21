@@ -10,6 +10,7 @@
 static std::string comboboxTooltip = "";
 static int32_t enhancementPresetSelected = ENHANCEMENT_PRESET_DEFAULT;
 bool isBetaQuestEnabled = false;
+static std::unordered_map<int32_t, const char*> bunnyHoodEffectMap = {{ BUNNY_HOOD_VANILLA, "Vanilla" }, { BUNNY_HOOD_FAST, "Faster Run" }, { BUNNY_HOOD_FAST_AND_JUMP, "Faster + Longer Jump" }};
 
 extern "C" {
     void enableBetaQuest() { isBetaQuestEnabled = true; }
@@ -678,10 +679,11 @@ void SohMenu::AddMenuEnhancements() {
                               " - Not within range of Ocarina Playing spots."));
 
     AddWidget(path, "Masks", WIDGET_SEPARATOR_TEXT);
-    AddWidget(path, "Bunny Hood Effect", WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "Bunny Hood Effect", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("MMBunnyHood"))
-        .Options(CheckboxOptions().Tooltip("Wearing the Bunny Hood grants a speed increase link in Majora's Mask. "
-                                           "The longer jump option is not accounted for in Randomizer logic.\n\n"
+        .Options(ComboboxOptions().ComboMap(bunnyHoodEffectMap).Tooltip("Wearing the Bunny Hood grants a speed and jump boost like in Majora's Mask.\n"
+                                           "Can also be limited to only the speed boost.\n"
+                                           "The effects of either option are not accounted for in Randomizer logic.\n"
                                            "Also disables NPC's reactions to wearing the Bunny Hood."));
     AddWidget(path, "Masks Equippable as Adult", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("AdultMasks"))

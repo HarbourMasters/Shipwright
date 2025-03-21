@@ -401,6 +401,7 @@ OTRGlobals::OTRGlobals() {
 
     previousImGuiScale = defaultImGuiScale;
 
+    fontMonoSmall = CreateFontWithSize(14.0f, "fonts/Inconsolata-Regular.ttf");
     fontMono = CreateFontWithSize(16.0f, "fonts/Inconsolata-Regular.ttf");
     fontMonoLarger = CreateFontWithSize(20.0f, "fonts/Inconsolata-Regular.ttf");
     fontMonoLargest = CreateFontWithSize(24.0f, "fonts/Inconsolata-Regular.ttf");
@@ -1295,7 +1296,11 @@ extern "C" void Graph_StartFrame() {
     switch (dwScancode) {
         case KbScancode::LUS_KB_F1: {
             std::shared_ptr<SohModalWindow> modal = static_pointer_cast<SohModalWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Modal Window"));
-            modal->RegisterPopup("Menu Moved", "The menubar, accessed by hitting F1, no longer exists.\nThe new menu can be accessed by hitting the Esc button instead.", "OK");
+            if (modal->IsPopupOpen("Menu Moved")) {
+                modal->DismissPopup();
+            } else {
+                modal->RegisterPopup("Menu Moved", "The menubar, accessed by hitting F1, no longer exists.\nThe new menu can be accessed by hitting the Esc button instead.", "OK");
+            }
             break;
         }
         case KbScancode::LUS_KB_F5: {

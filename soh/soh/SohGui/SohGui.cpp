@@ -124,15 +124,11 @@ namespace SohGui {
             SPDLOG_ERROR("Could not find stats window");
         }
 
-        mConsoleWindow = gui->GetGuiWindow("Console");
-        if (mConsoleWindow == nullptr) {
-            SPDLOG_ERROR("Could not find console window");
-        }
+        mConsoleWindow = std::make_shared<SohConsoleWindow>(CVAR_WINDOW("Console"), "Console##SoH", ImVec2(820, 630));
+        gui->AddGuiWindow(mConsoleWindow);
 
-        mGfxDebuggerWindow = gui->GetGuiWindow("Gfx Debugger");
-        if (mGfxDebuggerWindow == nullptr) {
-            SPDLOG_ERROR("Could not find Gfx Debugger window");
-        }
+        mGfxDebuggerWindow = std::make_shared<SohGfxDebuggerWindow>(CVAR_WINDOW("GfxDebugger"), "GfxDebugger##SoH", ImVec2(820, 630));
+        gui->AddGuiWindow(mGfxDebuggerWindow);
 
         mInputEditorWindow = gui->GetGuiWindow("Controller Configuration");
         if (mInputEditorWindow == nullptr) {

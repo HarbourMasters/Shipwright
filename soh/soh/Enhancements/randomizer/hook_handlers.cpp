@@ -547,27 +547,6 @@ u8 EnGm_RandoCanGetMedigoronItem() {
             !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON);
 }
 
-RandomizerCheck EnFr_RandomizerCheckFromSongIndex(u16 songIndex) {
-    switch (songIndex) {
-        case FROG_ZL:
-            return RC_ZR_FROGS_ZELDAS_LULLABY;
-        case FROG_EPONA:
-            return RC_ZR_FROGS_EPONAS_SONG;
-        case FROG_SARIA:
-            return RC_ZR_FROGS_SARIAS_SONG;
-        case FROG_SUNS:
-            return RC_ZR_FROGS_SUNS_SONG;
-        case FROG_SOT:
-            return RC_ZR_FROGS_SONG_OF_TIME;
-        case FROG_STORMS:
-            return RC_ZR_FROGS_IN_THE_RAIN;
-        case FROG_CHOIR_SONG:
-            return RC_ZR_FROGS_OCARINA_GAME;
-        default:
-            return RC_UNKNOWN_CHECK;
-    }
-}
-
 void RandomizerSetChestGameRandomizerInf(RandomizerCheck rc) {
     switch (rc) {
         case RC_MARKET_TREASURE_CHEST_GAME_ITEM_1:
