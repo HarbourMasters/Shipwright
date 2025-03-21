@@ -386,6 +386,12 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             }
             break;
         }
+        case VB_END_GERUDO_MEMBERSHIP_TALK: {
+            if (ForcedDialogIsDisabled(FORCED_DIALOG_SKIP_NPC)) {
+                *should = true;
+            }
+            break;
+        }
         case VB_GORON_LINK_BE_SCARED: {
             if (ForcedDialogIsDisabled(FORCED_DIALOG_SKIP_NPC)) {
                 EnGo2* goronLink = va_arg(args, EnGo2*);
@@ -1060,6 +1066,11 @@ void TimeSaverOnSceneInitHandler(int16_t sceneNum) {
 static GetItemEntry vanillaQueuedItemEntry = GET_ITEM_NONE;
 
 void TimeSaverOnFlagSetHandler(int16_t flagType, int16_t flag) {
+    // Do nothing when in a boss rush
+    if (IS_BOSS_RUSH) {
+        return;
+    }
+
     if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
         switch (flagType) {
             case FLAG_EVENT_CHECK_INF:

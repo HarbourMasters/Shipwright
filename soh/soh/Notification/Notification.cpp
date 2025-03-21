@@ -20,7 +20,7 @@ void Window::Draw() {
     const float margin = 30.0f;
     const float padding = 10.0f;
 
-    int position = CVarGetInteger(CVAR_SETTING("Notifications.Position"), 0);
+    int position = CVarGetInteger(CVAR_SETTING("Notifications.Position"), 3);
 
     // Top Left
     ImVec2 basePosition;

@@ -498,7 +498,7 @@ void AudioEditor::DrawElement() {
             ImGui::TableNextColumn();
             if (ImGui::BeginChild("SfxOptions", ImVec2(0, -8))) {
                 UIWidgets::CVarCheckbox(
-                    "Mute Low HP Alarm", CVAR_AUDIO("LowHPAlarm"),
+                    "Mute Low HP Alarm", CVAR_AUDIO("LowHpAlarm"),
                     UIWidgets::CheckboxOptions().Color(THEME_COLOR).Tooltip("Disable the low HP beeping sound."));
                 UIWidgets::CVarCheckbox("Disable Navi Call Audio", CVAR_AUDIO("DisableNaviCallAudio"),
                                         UIWidgets::CheckboxOptions()
