@@ -16,14 +16,14 @@
 #include "AudioCollection.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
-Vec3f pos = { 0.0f, 0.0f, 0.0f };
-f32 freqScale = 1.0f;
-s8 reverbAdd = 0;
-
 extern "C" {
     #include "z64save.h"
     extern SaveContext gSaveContext;
 }
+
+Vec3f pos = { 0.0f, 0.0f, 0.0f };
+f32 freqScale = 1.0f;
+s8 reverbAdd = 0;
 
 // Authentic sequence counts
 // used to ensure we have enough to shuffle
