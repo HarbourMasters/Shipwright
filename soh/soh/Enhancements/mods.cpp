@@ -157,38 +157,6 @@ void RegisterRupeeDash() {
     });
 }
 
-void RegisterShadowTag() {
-    static bool shouldSpawn = false;
-    static uint16_t delayTimer = 60;
-
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("ShadowTag"), 0)) {
-            return;
-        }
-        if (gPlayState->sceneNum == SCENE_FOREST_TEMPLE &&  // Forest Temple Scene
-            gPlayState->roomCtx.curRoom.num == 16 ||        // Green Poe Room
-            gPlayState->roomCtx.curRoom.num == 13 ||        // Blue Poe Room
-            gPlayState->roomCtx.curRoom.num == 12) {        // Red Poe Room
-            return;
-        } else {
-            if (shouldSpawn && (delayTimer <= 0)) {
-                Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_WALLMAS, 0, 0, 0, 0, 0, 0, 3, false);
-                shouldSpawn = false;
-            } else {
-                delayTimer--;
-            }
-        }
-    });
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
-        shouldSpawn = true;
-        delayTimer = 60;
-    });
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
-        shouldSpawn = true;
-        delayTimer = 60;
-    });
-}
-
 static bool hasAffectedHealth = false;
 void UpdatePermanentHeartLossState() {
     if (!GameInteractor::IsSaveLoaded()) return;
@@ -1032,7 +1000,6 @@ void InitMods() {
     RegisterOcarinaTimeTravel();
     RegisterDaytimeGoldSkultullas();
     RegisterRupeeDash();
-    RegisterShadowTag();
     RegisterPermanentHeartLoss();
     RegisterDeleteFileOnDeath();
     RegisterHyperBosses();
