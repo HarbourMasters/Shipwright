@@ -677,7 +677,7 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Bunny Hood Effect", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("MMBunnyHood"))
         .Options(ComboboxOptions().ComboMap(bunnyHoodEffectMap).Tooltip("Wearing the Bunny Hood grants a speed and jump boost like in Majora's Mask.\n"
-                                           "Can also include grant only the speed boost.\n"
+                                           "Can also be limited to only the speed boost.\n"
                                            "The effects of either option are not accounted for in Randomizer logic.\n"
                                            "Also disables NPC's reactions to wearing the Bunny Hood."));
     AddWidget(path, "Masks Equippable as Adult", WIDGET_CVAR_CHECKBOX)
