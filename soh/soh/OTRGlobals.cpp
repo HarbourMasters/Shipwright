@@ -401,7 +401,7 @@ OTRGlobals::OTRGlobals() {
 
     previousImGuiScale = defaultImGuiScale;
 
-    fontMonoSmall = CreateFontWithSize(13.0f, "fonts/Inconsolata-Regular.ttf");
+    fontMonoSmall = CreateFontWithSize(14.0f, "fonts/Inconsolata-Regular.ttf");
     fontMono = CreateFontWithSize(16.0f, "fonts/Inconsolata-Regular.ttf");
     fontMonoLarger = CreateFontWithSize(20.0f, "fonts/Inconsolata-Regular.ttf");
     fontMonoLargest = CreateFontWithSize(24.0f, "fonts/Inconsolata-Regular.ttf");
