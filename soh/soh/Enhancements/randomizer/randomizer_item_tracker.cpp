@@ -1376,7 +1376,7 @@ void UpdateVectors() {
         mainWindowItems.insert(mainWindowItems.end(), ocarinaButtonItems.begin(), ocarinaButtonItems.end());
     }
 
-    //If we're adding ocarina buttons to the main window...
+    //If we're adding overworld keys to the main window...
     if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.OverworldKeys"), SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_MAIN_WINDOW) {
         //...add empty items on the main window to get the keys on their own row. (Too many to sit with Greg/Triforce pieces/boss souls/ocarina buttons)
         while (mainWindowItems.size() % 6) {
