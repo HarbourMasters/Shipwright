@@ -25,7 +25,7 @@
 #include "include/z64audio.h"
 #include "soh/SaveManager.h"
 #include "soh/OTRGlobals.h"
-#include "soh/Enhancements/presets.h"
+#include "soh/Enhancements/Presets/Presets.h"
 #include "soh/resource/type/Skeleton.h"
 #include "libultraship/libultraship.h"
 

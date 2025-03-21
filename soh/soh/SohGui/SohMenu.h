@@ -7,7 +7,7 @@
 #include "graphic/Fast3D/gfx_rendering_api.h"
 #include "soh/cvar_prefixes.h"
 #include "soh/Enhancements/enhancementTypes.h"
-#include "soh/Enhancements/presets.h"
+#include "soh/Enhancements/Presets/Presets.h"
 
 extern "C" {
 #include "z64.h"
