@@ -6,6 +6,7 @@
 #include <assert.h>
 
 #include "soh/frame_interpolation.h"
+#include "vr/vr_manager.h"
 
 vu32 D_8012ABF0 = true;
 
@@ -141,19 +142,20 @@ void View_SetViewport(View* view, Viewport* viewport) {
 }
 
 void View_SetVRStereoView(View* view, VRManager* vrManager) {
-    if (!vrManager || !vrManager->IsHMDPresent())
+    if (vrManager == NULL || !VRManager_IsHMDPresent()) {
         return;
+    }
 
     // Update HMD pose
-    vrManager->UpdateHMDMatrixPose();
+    VRManager_UpdateHMDMatrixPose(vrManager);
 
     // Set up stereo rendering
     for (int eye = 0; eye < 2; eye++) {
-        vr::EVREye vrEye = (eye == 0) ? vr::Eye_Left : vr::Eye_Right;
+        EVREye vrEye = (eye == 0) ? EVREye_Eye_Left : EVREye_Eye_Right;
         
         // Get projection and view matrices for this eye
-        Matrix4 projMat = vrManager->GetHMDMatrixProjectionEye(vrEye);
-        Matrix4 eyeMat = vrManager->GetHMDMatrixPoseEye(vrEye);
+        MtxF projMat = VRManager_GetHMDMatrixProjectionEye(vrManager, vrEye);
+        MtxF eyeMat = VRManager_GetHMDMatrixPoseEye(vrManager, vrEye);
         
         // Set up viewport and scissor for this eye
         view->viewport.vp.vscale[0] = SCREEN_WIDTH/4;
@@ -162,8 +164,8 @@ void View_SetVRStereoView(View* view, VRManager* vrManager) {
         view->viewport.vp.vtrans[1] = SCREEN_HEIGHT/2;
         
         // Apply VR matrices
-        guMtxCatF(eyeMat.m, view->lookAt.m, view->lookAt.m);
-        guMtxCatF(projMat.m, view->projection.m, view->projection.m);
+        guMtxCatF(eyeMat.mf, view->lookAt.m, view->lookAt.m);
+        guMtxCatF(projMat.mf, view->projection.m, view->projection.m);
     }
 }
 

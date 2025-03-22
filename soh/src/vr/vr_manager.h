@@ -3,7 +3,7 @@
 #include <stddef.h>     // for size_t
 #include <stdint.h>     // for standard integer types
 #include <stdlib.h>     // for standard library functions
-#include <openvr/openvr_capi.h>
+#include <openvr_capi.h>
 #include "global.h"
 
 // OpenVR constants
