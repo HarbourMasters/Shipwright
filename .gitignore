@@ -3,6 +3,9 @@ __pycache__/
 .pyc
 .DS_Store
 
+# ignoring this as it's just cursor context
+soh/openvr_capi.h
+
 # Text editor remnants
 .vscode/*
 !.vscode/tasks.json

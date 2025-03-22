@@ -27,25 +27,6 @@ void Camera_InitVR() {
     }
 }
 
-// Function to handle VR camera updates
-void Camera_UpdateVR(Camera* camera) {
-    if (gVRManager == NULL) {
-        return;
-    }
-
-    VRManager_UpdateHMDMatrixPose(gVRManager);
-    Vec3f rotation = VRManager_GetHMDRotation(gVRManager);
-    
-    // Update camera rotation based on HMD
-    camera->eye = rotation;
-    
-    // Handle controller input if needed
-    if (VRManager_IsControllerActive(gVRManager, ETrackedControllerRole_RightHand)) {
-        Vec3f controllerDir = VRManager_GetControllerDirection(gVRManager, ETrackedControllerRole_RightHand);
-        // Use controller direction as needed
-    }
-}
-
 s16 Camera_ChangeSettingFlags(Camera* camera, s16 setting, s16 flags);
 s32 Camera_ChangeModeFlags(Camera* camera, s16 mode, u8 flags);
 s32 Camera_QRegInit(void);
@@ -3652,62 +3633,24 @@ s32 Camera_KeepOn3(Camera* camera) {
 }
 
 s32 Camera_VR(Camera* camera) {
-    Vec3f* eye = &camera->eye;
-    Vec3f* at = &camera->at;
-    Vec3f* eyeNext = &camera->eyeNext;
-    VecSph spA8;
-
-    if (!gVRManager || !gVRManager->IsHMDPresent()) {
-        // Fall back to free camera if VR is not available
-        Camera_Free(camera);
-        return 1;
+    if (gVRManager == NULL) {
+        return Camera_Normal1(camera);
     }
 
-    sCameraInterfaceFlags = 1;
-    camera->animState = 0;
-
-    // Update HMD pose
-    gVRManager->UpdateHMDMatrixPose();
+    // Update VR tracking
+    VRManager_UpdateHMDMatrixPose(gVRManager);
 
     // Get HMD rotation and apply to camera
-    Vec3f hmdRotation = gVRManager->GetHMDRotation();
-    camera->play->camX = hmdRotation.x;
-    camera->play->camY = hmdRotation.y;
+    Vec3f hmdRot = VRManager_GetHMDRotation(gVRManager);
+    camera->eye.x = hmdRot.x;
+    camera->eye.y = hmdRot.y;
+    camera->eye.z = hmdRot.z;
 
-    // Handle controller movement if active
-    if (gVRManager->IsControllerActive()) {
-        Vec3f controllerDir = gVRManager->GetControllerDirection();
-        camera->dist += controllerDir.z * 2.0f; // Forward/back movement
-        camera->at.x += controllerDir.x * 2.0f; // Strafe left/right
-        camera->at.y += controllerDir.y * 2.0f; // Up/down movement
+    // Handle controller input if needed
+    if (VRManager_IsControllerActive(gVRManager, ETrackedControllerRole_RightHand)) {
+        Vec3f controllerDir = VRManager_GetControllerDirection(gVRManager, ETrackedControllerRole_RightHand);
+        // Use controller direction for additional camera control if needed
     }
-
-    // Clamp camera distance
-    if (camera->dist > 500.0f) {
-        camera->dist = 500.0f;
-    }
-    if (camera->dist < 10.0f) {
-        camera->dist = 10.0f;
-    }
-
-    OLib_Vec3fDiffToVecSphGeo(&spA8, at, eyeNext);
-    spA8.r = camera->dist;
-    spA8.yaw = camera->play->camX;
-    spA8.pitch = camera->play->camY;
-
-    Camera_Vec3fVecSphGeoAdd(eyeNext, at, &spA8);
-    if (camera->status == CAM_STAT_ACTIVE) {
-        CamColChk sp6C;
-        sp6C.pos = *eyeNext;
-        Camera_BGCheckInfo(camera, at, &sp6C);
-        *eye = sp6C.pos;
-    }
-
-    // Set stereo view for VR
-    View_SetVRStereoView(camera->play->view, gVRManager);
-
-    camera->fov = Camera_LERPCeilF(65.0f, camera->fov, camera->fovUpdateRate, 1.0f);
-    camera->roll = Camera_LERPCeilS(0, camera->roll, 0.5, 0xA);
 
     return 1;
 }
