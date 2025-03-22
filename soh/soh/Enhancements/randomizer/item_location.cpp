@@ -228,14 +228,14 @@ void ItemLocation::ResetVariables() {
     areas = {};
     status = RCSHOW_UNCHECKED;
     isSkipped = false;
-    isAccessible = false;
+    isAvailable = false;
 }
 
-bool ItemLocation::IsAccessible() const {
-    return isAccessible;
+bool ItemLocation::IsAvailable() const {
+    return isAvailable;
 }
 
-void ItemLocation::SetAccessible(bool isAccessible_) {
-    isAccessible = isAccessible_;
+void ItemLocation::SetAvailable(bool isAvailable_) {
+    isAvailable = isAvailable_;
 }
 }

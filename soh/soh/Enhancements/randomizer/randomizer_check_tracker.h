@@ -61,5 +61,5 @@ void UpdateAllOrdering();
 void UpdateAllAreas();
 void RecalculateAllAreaTotals();
 void SpoilAreaFromCheck(RandomizerCheck rc);
-void RecalculateAccessibleChecks();
+void RecalculateAvailableChecks();
 } // namespace CheckTracker

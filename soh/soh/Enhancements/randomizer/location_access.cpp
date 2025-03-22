@@ -32,7 +32,7 @@ bool LocationAccess::CheckConditionAtAgeTime(bool& age, bool& time) const {
     return GetConditionsMet();
 }
 
-bool LocationAccess::ConditionsMet(Region* parentRegion, bool calculatingAccessibleChecks) const {
+bool LocationAccess::ConditionsMet(Region* parentRegion, bool calculatingAvailableChecks) const {
     //WARNING enterance validation can run this after resetting the access for sphere 0 validation
     //When refactoring ToD access, either fix the above or do not assume that we
     //have any access at all just because this is being run
@@ -47,7 +47,7 @@ bool LocationAccess::ConditionsMet(Region* parentRegion, bool calculatingAccessi
         conditionsMet = true;
     }
 
-    return conditionsMet && (calculatingAccessibleChecks || CanBuy());
+    return conditionsMet && (calculatingAvailableChecks || CanBuy());
 }
 
 bool LocationAccess::CanBuy() const {

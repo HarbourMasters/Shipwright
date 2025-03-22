@@ -1408,8 +1408,8 @@ static bool SfxHandler(std::shared_ptr<Ship::Console> Console, const std::vector
     return 0;
 }
 
-static bool RecalculateAccessibleChecksHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
-    CheckTracker::RecalculateAccessibleChecks();
+static bool RecalculateAvailableChecksHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
+    CheckTracker::RecalculateAvailableChecks();
     return 0;
 }
 
@@ -1602,7 +1602,7 @@ void DebugConsole_Init(void) {
             {"group_name", Ship::ArgumentType::TEXT, true},
     }});
 
-    CMD_REGISTER("recalculate_accessible_checks", {RecalculateAccessibleChecksHandler, "Recalculate accessible checks."});
+    CMD_REGISTER("recalculate_available_checks", {RecalculateAvailableChecksHandler, "Recalculate available checks."});
 
     Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 }
