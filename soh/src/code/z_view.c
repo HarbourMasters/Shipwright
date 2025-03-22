@@ -158,14 +158,15 @@ void View_SetVRStereoView(View* view, VRManager* vrManager) {
         MtxF eyeMat = VRManager_GetHMDMatrixPoseEye(vrManager, vrEye);
         
         // Set up viewport and scissor for this eye
-        view->viewport.vp.vscale[0] = SCREEN_WIDTH/4;
-        view->viewport.vp.vscale[1] = SCREEN_HEIGHT/2;
-        view->viewport.vp.vtrans[0] = (eye == 0) ? SCREEN_WIDTH/4 : (SCREEN_WIDTH*3)/4;
-        view->viewport.vp.vtrans[1] = SCREEN_HEIGHT/2;
+        Vp* vp = &view->viewport;
+        vp->vscale[0] = SCREEN_WIDTH/4;
+        vp->vscale[1] = SCREEN_HEIGHT/2;
+        vp->vtrans[0] = (eye == 0) ? SCREEN_WIDTH/4 : (SCREEN_WIDTH*3)/4;
+        vp->vtrans[1] = SCREEN_HEIGHT/2;
         
         // Apply VR matrices
-        guMtxCatF(eyeMat.mf, view->lookAt.m, view->lookAt.m);
-        guMtxCatF(projMat.mf, view->projection.m, view->projection.m);
+        guMtxCatF(&eyeMat, &view->lookAt, &view->lookAt);
+        guMtxCatF(&projMat, &view->projection, &view->projection);
     }
 }
 
