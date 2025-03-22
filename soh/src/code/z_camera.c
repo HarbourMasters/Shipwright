@@ -11,16 +11,18 @@
 #include "vr/vr_manager.h"
 
 // Global VR manager instance
-VRManager* gVRManager = nullptr;
+VRManager* gVRManager = NULL;
 
 // Initialize VR if available
 void Camera_InitVR() {
-    if (vr::VR_IsHmdPresent()) {
-        gVRManager = new VRManager();
-        if (!gVRManager->InitVR()) {
-            delete gVRManager;
-            gVRManager = nullptr;
-            osSyncPrintf("VR initialization failed\n");
+    if (VR_IsHmdPresent()) {
+        gVRManager = (VRManager*)malloc(sizeof(VRManager));
+        if (gVRManager != NULL) {
+            if (!VRManager_InitVR(gVRManager)) {
+                free(gVRManager);
+                gVRManager = NULL;
+                osSyncPrintf("VR initialization failed\n");
+            }
         }
     }
 }
