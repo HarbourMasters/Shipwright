@@ -6,6 +6,9 @@
 #include <openvr/openvr_capi.h>
 #include "global.h"
 
+// OpenVR constants
+#define k_unMaxTrackedDeviceCount 64
+
 typedef struct {
     struct VR_IVRSystem_FnTable* pHMD;
     struct VR_IVRCompositor_FnTable* pCompositor;
