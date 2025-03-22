@@ -1,5 +1,8 @@
 #pragma once
 
+#include <stddef.h>     // for size_t
+#include <stdint.h>     // for standard integer types
+#include <stdlib.h>     // for standard library functions
 #include <openvr.h>
 #include "global.h"
 
