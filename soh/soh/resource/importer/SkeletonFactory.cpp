@@ -4,8 +4,8 @@
 #include <libultraship/libultraship.h>
 
 namespace SOH {
-std::shared_ptr<Ship::IResource> ResourceFactoryBinarySkeletonV0::ReadResource(std::shared_ptr<Ship::File> file) {
-    if (!FileHasValidFormatAndReader(file)) {
+std::shared_ptr<Ship::IResource> ResourceFactoryBinarySkeletonV0::ReadResource(std::shared_ptr<Ship::File> file, std::shared_ptr<Ship::ResourceInitData> initData) {
+    if (!FileHasValidFormatAndReader(file, initData)) {
         return nullptr;
     }
 
@@ -62,8 +62,8 @@ std::shared_ptr<Ship::IResource> ResourceFactoryBinarySkeletonV0::ReadResource(s
     return skeleton;
 }
 
-std::shared_ptr<Ship::IResource> ResourceFactoryXMLSkeletonV0::ReadResource(std::shared_ptr<Ship::File> file) {
-    if (!FileHasValidFormatAndReader(file)) {
+std::shared_ptr<Ship::IResource> ResourceFactoryXMLSkeletonV0::ReadResource(std::shared_ptr<Ship::File> file, std::shared_ptr<Ship::ResourceInitData> initData) {
+    if (!FileHasValidFormatAndReader(file, initData)) {
         return nullptr;
     }
 
