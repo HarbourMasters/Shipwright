@@ -8,7 +8,7 @@ std::shared_ptr<Ship::IResource> ResourceFactoryBinaryBackgroundV0::ReadResource
         return nullptr;
     }
 
-    auto background = std::make_shared<Background>(file->InitData);
+    auto background = std::make_shared<Background>(initData);
     auto reader = std::get<std::shared_ptr<Ship::BinaryReader>>(file->Reader);
 
     uint32_t dataSize = reader->ReadUInt32();

@@ -9,7 +9,7 @@ std::shared_ptr<Ship::IResource> ResourceFactoryBinaryArrayV0::ReadResource(std:
         return nullptr;
     }
 
-    auto array = std::make_shared<Array>(file->InitData);
+    auto array = std::make_shared<Array>(initData);
     auto reader = std::get<std::shared_ptr<Ship::BinaryReader>>(file->Reader);
 
     array->ArrayType = (ArrayResourceType)reader->ReadUInt32();

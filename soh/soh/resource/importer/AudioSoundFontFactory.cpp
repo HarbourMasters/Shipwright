@@ -9,7 +9,7 @@ std::shared_ptr<Ship::IResource> ResourceFactoryBinaryAudioSoundFontV2::ReadReso
         return nullptr;
     }
 
-    auto audioSoundFont = std::make_shared<AudioSoundFont>(file->InitData);
+    auto audioSoundFont = std::make_shared<AudioSoundFont>(initData);
     auto reader = std::get<std::shared_ptr<Ship::BinaryReader>>(file->Reader);
 
     audioSoundFont->soundFont.fntIndex = reader->ReadInt32();

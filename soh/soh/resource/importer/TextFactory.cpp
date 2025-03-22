@@ -8,7 +8,7 @@ std::shared_ptr<Ship::IResource> ResourceFactoryBinaryTextV0::ReadResource(std::
         return nullptr;
     }
 
-    auto text = std::make_shared<Text>(file->InitData);
+    auto text = std::make_shared<Text>(initData);
     auto reader = std::get<std::shared_ptr<Ship::BinaryReader>>(file->Reader);
 
     uint32_t msgCount = reader->ReadUInt32();
@@ -32,7 +32,7 @@ std::shared_ptr<Ship::IResource> ResourceFactoryXMLTextV0::ReadResource(std::sha
         return nullptr;
     }
 
-    auto txt = std::make_shared<Text>(file->InitData);
+    auto txt = std::make_shared<Text>(initData);
     auto child = std::get<std::shared_ptr<tinyxml2::XMLDocument>>(file->Reader)->FirstChildElement()->FirstChildElement();
 
     while (child != nullptr) {

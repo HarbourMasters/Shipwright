@@ -8,7 +8,7 @@ std::shared_ptr<Ship::IResource> ResourceFactoryBinaryAudioSequenceV2::ReadResou
         return nullptr;
     }
 
-    auto audioSequence = std::make_shared<AudioSequence>(file->InitData);
+    auto audioSequence = std::make_shared<AudioSequence>(initData);
     auto reader = std::get<std::shared_ptr<Ship::BinaryReader>>(file->Reader);
 
     audioSequence->sequence.seqDataSize = reader->ReadInt32();

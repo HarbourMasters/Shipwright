@@ -9,7 +9,7 @@ std::shared_ptr<Ship::IResource> ResourceFactoryBinaryPathV0::ReadResource(std::
         return nullptr;
     }
 
-    auto path = std::make_shared<Path>(file->InitData);
+    auto path = std::make_shared<Path>(initData);
     auto reader = std::get<std::shared_ptr<Ship::BinaryReader>>(file->Reader);
 
     path->numPaths = reader->ReadUInt32();
@@ -48,7 +48,7 @@ std::shared_ptr<Ship::IResource> ResourceFactoryXMLPathV0::ReadResource(std::sha
         return nullptr;
     }
 
-    auto path = std::make_shared<Path>(file->InitData);
+    auto path = std::make_shared<Path>(initData);
     auto reader = std::get<std::shared_ptr<tinyxml2::XMLDocument>>(file->Reader);
 
     auto pathElement = reader->RootElement();
