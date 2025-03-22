@@ -3648,7 +3648,7 @@ s32 Camera_VR(Camera* camera) {
 
     // Handle controller input if needed
     if (VRManager_IsControllerActive(gVRManager, ETrackedControllerRole_TrackedControllerRole_RightHand)) {
-        Vec3f controllerDir = VRManager_GetControllerDirection(gVRManager, TrackedControllerRole_RightHand);
+        Vec3f controllerDir = VRManager_GetControllerDirection(gVRManager, ETrackedControllerRole_TrackedControllerRole_RightHand);
         // Use controller direction for additional camera control if needed
     }
 
