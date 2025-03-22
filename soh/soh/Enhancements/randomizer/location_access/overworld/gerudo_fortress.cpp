@@ -35,11 +35,12 @@ void RegionTable_Init_GerudoFortress() {
 
     areaTable[RR_GF_GROUND_NEAR_GROTTO] = Region("GF Ground Near Grotto", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
-        Entrance(RR_TH_KITCHEN_BOTTOM,          []{return true;}),
-        Entrance(RR_TH_NORTH_F1_CARPENTER_AREA, []{return true;}),
-        Entrance(RR_TH_SOUTH_F1_CARPENTER_AREA, []{return true;}),
-        Entrance(RR_GF_STORMS_GROTTO,           []{return logic->IsAdult && logic->CanOpenStormsGrotto();}),
-        Entrance(RR_GF_GROUND_GREY,             []{return true;}),
+        Entrance(RR_TH_KITCHEN_BOTTOM,             []{return true;}),
+        Entrance(RR_TH_NORTH_F1_CARPENTER_AREA,    []{return true;}),
+        Entrance(RR_TH_SOUTH_F1_CARPENTER_AREA,    []{return true;}),
+        Entrance(RR_GF_STORMS_GROTTO,              []{return logic->IsAdult && logic->CanOpenStormsGrotto();}),
+        Entrance(RR_GF_GROUND_GREY,                []{return true;}),
+        Entrance(RR_GF_ROOFTOP_TOP_OF_UPPER_VINES, []{return logic->CanUse(RG_LONGSHOT);}),
     });
 
     areaTable[RR_GF_GROUND_OUTSIDE_GTG] = Region("GF Ground Outside GTG", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
@@ -52,6 +53,7 @@ void RegionTable_Init_GerudoFortress() {
         Entrance(RR_GF_HBA_RANGE,                    []{return logic->IsChild || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}),
         Entrance(RR_GF_GROUND_BOTTOM,                []{return true;}),
         Entrance(RR_GF_ROOFTOP_ABOVE_GTG,            []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
+        Entrance(RR_GF_ROOFTOP_TOP_OF_UPPER_VINES,   []{return logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->CanUse(RG_LONGSHOT);}),
     });
 
 #pragma endregion
