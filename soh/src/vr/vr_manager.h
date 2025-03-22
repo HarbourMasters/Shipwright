@@ -6,23 +6,22 @@
 #include <openvr.h>
 #include "global.h"
 
-class VRManager {
-private:
-    vr::IVRSystem* m_pHMD;
-    vr::TrackedDevicePose_t m_rTrackedDevicePose[vr::k_unMaxTrackedDeviceCount];
-    Matrix4 m_mat4ProjectionLeft;
-    Matrix4 m_mat4ProjectionRight;
-    Matrix4 m_mat4eyePosLeft;
-    Matrix4 m_mat4eyePosRight;
-    
-public:
-    bool InitVR();
-    void ShutdownVR();
-    void UpdateHMDMatrixPose();
-    Matrix4 GetHMDMatrixProjectionEye(vr::Hmd_Eye eye);
-    Matrix4 GetHMDMatrixPoseEye(vr::Hmd_Eye eye);
-    Vec3f GetHMDRotation();
-    bool IsHMDPresent() { return vr::VR_IsHMDPresent(); }
-    bool IsControllerActive(vr::ETrackedControllerRole role);
-    Vec3f GetControllerDirection(vr::ETrackedControllerRole role);
-}; 
+typedef struct {
+    vr::IVRSystem* pHMD;
+    vr::TrackedDevicePose_t rTrackedDevicePose[vr::k_unMaxTrackedDeviceCount];
+    Matrix4 mat4ProjectionLeft;
+    Matrix4 mat4ProjectionRight;
+    Matrix4 mat4eyePosLeft;
+    Matrix4 mat4eyePosRight;
+} VRManager;
+
+// Function declarations
+bool VRManager_InitVR(VRManager* manager);
+void VRManager_ShutdownVR(VRManager* manager);
+void VRManager_UpdateHMDMatrixPose(VRManager* manager);
+Matrix4 VRManager_GetHMDMatrixProjectionEye(VRManager* manager, vr::Hmd_Eye eye);
+Matrix4 VRManager_GetHMDMatrixPoseEye(VRManager* manager, vr::Hmd_Eye eye);
+Vec3f VRManager_GetHMDRotation(VRManager* manager);
+bool VRManager_IsHMDPresent(void);
+bool VRManager_IsControllerActive(VRManager* manager, vr::ETrackedControllerRole role);
+Vec3f VRManager_GetControllerDirection(VRManager* manager, vr::ETrackedControllerRole role); 
