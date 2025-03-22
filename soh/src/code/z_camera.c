@@ -7,6 +7,24 @@
 #include "overlays/actors/ovl_En_Horse/z_en_horse.h"
 
 #include "soh/frame_interpolation.h"
+#include "vr/vr_manager.h"
+
+// Global VR manager instance
+VRManager* gVRManager = NULL;
+
+// Initialize VR if available
+void Camera_InitVR() {
+    if (VR_IsHmdPresent()) {
+        gVRManager = (VRManager*)malloc(sizeof(VRManager));
+        if (gVRManager != NULL) {
+            if (!VRManager_InitVR(gVRManager)) {
+                free(gVRManager);
+                gVRManager = NULL;
+                osSyncPrintf("VR initialization failed\n");
+            }
+        }
+    }
+}
 
 s16 Camera_ChangeSettingFlags(Camera* camera, s16 setting, s16 flags);
 s32 Camera_ChangeModeFlags(Camera* camera, s16 mode, u8 flags);
@@ -3610,6 +3628,29 @@ s32 Camera_KeepOn3(Camera* camera) {
             camera->unk_14C &= ~8;
         }
     }
+    return 1;
+}
+
+s32 Camera_VR(Camera* camera) {
+    if (gVRManager == NULL) {
+        return Camera_Normal1(camera);
+    }
+
+    // Update VR tracking
+    VRManager_UpdateHMDMatrixPose(gVRManager);
+
+    // Get HMD rotation and apply to camera
+    Vec3f hmdRot = VRManager_GetHMDRotation(gVRManager);
+    camera->eye.x = hmdRot.x;
+    camera->eye.y = hmdRot.y;
+    camera->eye.z = hmdRot.z;
+
+    // Handle controller input if needed
+    if (VRManager_IsControllerActive(gVRManager, ETrackedControllerRole_TrackedControllerRole_RightHand)) {
+        Vec3f controllerDir = VRManager_GetControllerDirection(gVRManager, ETrackedControllerRole_TrackedControllerRole_RightHand);
+        // Use controller direction for additional camera control if needed
+    }
+
     return 1;
 }
 
