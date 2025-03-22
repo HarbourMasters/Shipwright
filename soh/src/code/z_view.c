@@ -366,7 +366,7 @@ s32 func_800AAA9C(View* view) {
 
     func_800ABE74(view->eye.x, view->eye.y, view->eye.z);
     MtxF viewingF;
-    guLookAtF(viewingF.mf, view->eye.x, view->eye.y, view->eye.z, view->lookAt.x, view->lookAt.y, view->lookAt.z, view->up.x,
+    guLookAtF(&viewingF, view->eye.x, view->eye.y, view->eye.z, view->lookAt.x, view->lookAt.y, view->lookAt.z, view->up.x,
              view->up.y, view->up.z);
 
     // Some heuristics to identify instant camera movements and skip interpolation in that case
@@ -458,7 +458,7 @@ s32 func_800AAA9C(View* view) {
         Matrix_MtxToMtxF(projection, &mf);
         osSyncPrintf("projection\n");
         for (i = 0; i < 4; i++) {
-            osSyncPrintf("	%f	%f	%f	%f\n", mf.mf[i][0], mf.mf[i][1], mf.mf[i][2], mf.mf[i][3]);
+            osSyncPrintf("	%f	%f	%f	%f\n", mf[i][0], mf[i][1], mf[i][2], mf[i][3]);
         }
         osSyncPrintf("\n");
     }
@@ -481,7 +481,7 @@ s32 func_800AAA9C(View* view) {
     gSPPerspNormalize(POLY_XLU_DISP++, view->normal);
     gSPMatrix(POLY_XLU_DISP++, projection, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
 
-    Matrix_MtxFToMtx(viewingF.mf, viewing);
+    Matrix_MtxFToMtx(&viewingF, viewing);
 
     view->viewing = *viewing;
 
@@ -499,7 +499,7 @@ s32 func_800AAA9C(View* view) {
         Matrix_MtxToMtxF(view->viewingPtr, &mf);
         osSyncPrintf("viewing\n");
         for (i = 0; i < 4; i++) {
-            osSyncPrintf("	%f	%f	%f	%f\n", mf.mf[i][0], mf.mf[i][1], mf.mf[i][2], mf.mf[i][3]);
+            osSyncPrintf("	%f	%f	%f	%f\n", mf[i][0], mf[i][1], mf[i][2], mf[i][3]);
         }
         osSyncPrintf("\n");
     }
