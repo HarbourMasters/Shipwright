@@ -192,19 +192,21 @@ void SohMenu::AddMenuEnhancements() {
 
     AddWidget(path, "Item Count Messages", WIDGET_SEPARATOR_TEXT);
     int numOptions = ARRAY_COUNT(itemCountMessageCVars);
-    bool allItemCountsChecked = false;
-    AddWidget(path, "All", WIDGET_CHECKBOX)
-        .ValuePointer(&allItemCountsChecked)
-        .PreFunc([](WidgetInfo& info) {
-            int numOptions = ARRAY_COUNT(itemCountMessageCVars);
-            *std::get<bool*>(info.valuePointer) = std::all_of(itemCountMessageCVars, itemCountMessageCVars + numOptions,
-                                                              [](const char* cvar) { return CVarGetInteger(cvar, 0); });
-        })
+    AddWidget(path, "All##ItemCounts", WIDGET_BUTTON)
+        .Options(ButtonOptions().Size(Sizes::Inline))
         .Callback([](WidgetInfo& info) {
-            int32_t newValue = *std::get<bool*>(info.valuePointer) ? 1 : 0;
             int numOptions = ARRAY_COUNT(itemCountMessageCVars);
             std::for_each(itemCountMessageCVars, itemCountMessageCVars + numOptions,
-                          [newValue](const char* cvar) { CVarSetInteger(cvar, newValue); });
+                          [](const char* cvar) { CVarSetInteger(cvar, true); });
+
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        });
+    AddWidget(path, "None##ItemCounts", WIDGET_BUTTON).SameLine(true)
+        .Options(ButtonOptions().Size(Sizes::Inline))
+        .Callback([](WidgetInfo& info) {
+            int numOptions = ARRAY_COUNT(itemCountMessageCVars);
+            std::for_each(itemCountMessageCVars, itemCountMessageCVars + numOptions,
+                [](const char* cvar) { CVarSetInteger(cvar, false); });
 
             Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         });
@@ -266,35 +268,35 @@ void SohMenu::AddMenuEnhancements() {
     path.column = SECTION_COLUMN_1;
 
     AddWidget(path, "Cutscenes", WIDGET_SEPARATOR_TEXT);
-    bool allSkipsChecked = false;
-    AddWidget(path, "Skip All", WIDGET_CHECKBOX)
-        .ValuePointer(&allSkipsChecked)
-        .PreFunc([](WidgetInfo& info) {
-            *std::get<bool*>(info.valuePointer) =
-                CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), IS_RANDO) &&
-                CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"), IS_RANDO) &&
-                CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO) &&
-                CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), IS_RANDO) &&
-                CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), IS_RANDO) &&
-                CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), IS_RANDO) &&
-                CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), IS_RANDO) &&
-                CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), IS_RANDO) &&
-                CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO) &&
-                CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), IS_RANDO);
-        })
+    AddWidget(path, "All##Skips", WIDGET_BUTTON)
+        .Options(ButtonOptions().Size(Sizes::Inline))
         .Callback([](WidgetInfo& info) {
-            int32_t newValue = *std::get<bool*>(info.valuePointer) ? 1 : 0;
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), true);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"), true);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), true);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), true);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), true);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), true);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), true);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), true);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), true);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), true);
 
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), newValue);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"), newValue);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), newValue);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), newValue);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), newValue);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), newValue);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), newValue);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), newValue);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), newValue);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), newValue);
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        });
+    AddWidget(path, "None##Skips", WIDGET_BUTTON).SameLine(true)
+        .Options(ButtonOptions().Size(Sizes::Inline))
+        .Callback([](WidgetInfo& info) {
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), false);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"), false);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), false);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), false);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), false);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), false);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), false);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), false);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), false);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), false);
 
             Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         });
