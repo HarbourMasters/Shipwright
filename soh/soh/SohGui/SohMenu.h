@@ -196,18 +196,6 @@ static const std::unordered_map<int32_t, const char*> enhancementPresetList = {
     { ENHANCEMENT_PRESET_RANDOMIZER, "Randomizer" }
 };
 
-static const char* itemCountMessageCVars[3] = {
-    CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"),
-    CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"),
-    CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"),
-};
-
-static const char* itemCountMessageOptions[ARRAY_COUNT(itemCountMessageCVars)] = {
-    "Gold Skulltula Tokens",
-    "Pieces of Heart",
-    "Heart Containers",
-};
-
 class SohMenu : public Ship::Menu {
   public:
     SohMenu(const std::string& consoleVariable, const std::string& name);

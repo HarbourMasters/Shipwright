@@ -191,28 +191,9 @@ void SohMenu::AddMenuEnhancements() {
                      .Tooltip("Buffers your inputs to be executed a specified amount of frames later."));
 
     AddWidget(path, "Item Count Messages", WIDGET_SEPARATOR_TEXT);
-    int numOptions = ARRAY_COUNT(itemCountMessageCVars);
-    AddWidget(path, "All##ItemCounts", WIDGET_BUTTON)
-        .Options(ButtonOptions().Size(Sizes::Inline))
-        .Callback([](WidgetInfo& info) {
-            int numOptions = ARRAY_COUNT(itemCountMessageCVars);
-            std::for_each(itemCountMessageCVars, itemCountMessageCVars + numOptions,
-                          [](const char* cvar) { CVarSetInteger(cvar, true); });
-
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-        });
-    AddWidget(path, "None##ItemCounts", WIDGET_BUTTON).SameLine(true)
-        .Options(ButtonOptions().Size(Sizes::Inline))
-        .Callback([](WidgetInfo& info) {
-            int numOptions = ARRAY_COUNT(itemCountMessageCVars);
-            std::for_each(itemCountMessageCVars, itemCountMessageCVars + numOptions,
-                [](const char* cvar) { CVarSetInteger(cvar, false); });
-
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-        });
-    for (int i = 0; i < numOptions; i++) {
-        AddWidget(path, itemCountMessageOptions[i], WIDGET_CVAR_CHECKBOX).CVar(itemCountMessageCVars[i]);
-    }
+    AddWidget(path, "Gold Skulltula Tokens", WIDGET_CVAR_CHECKBOX).CVar(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"));
+    AddWidget(path, "Pieces of Heart", WIDGET_CVAR_CHECKBOX).CVar(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"));
+    AddWidget(path, "Heart Containers", WIDGET_CVAR_CHECKBOX).CVar(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"));
 
     path.column = SECTION_COLUMN_3;
     AddWidget(path, "Misc", WIDGET_SEPARATOR_TEXT);
