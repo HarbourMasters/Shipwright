@@ -3647,7 +3647,7 @@ s32 Camera_VR(Camera* camera) {
     camera->eye.z = hmdRot.z;
 
     // Handle controller input if needed
-    if (VRManager_IsControllerActive(gVRManager, TrackedControllerRole_RightHand)) {
+    if (VRManager_IsControllerActive(gVRManager, ETrackedControllerRole_TrackedControllerRole_RightHand)) {
         Vec3f controllerDir = VRManager_GetControllerDirection(gVRManager, TrackedControllerRole_RightHand);
         // Use controller direction for additional camera control if needed
     }
