@@ -163,9 +163,9 @@ void View_SetVRStereoView(View* view, VRManager* vrManager) {
         view->viewport.topY = 0;
         view->viewport.bottomY = SCREEN_HEIGHT;
         
-        // Apply VR matrices using the matrix fields
-        guMtxCatF(projMat.mf, view->projection.m, view->projection.m);
-        guMtxCatF(eyeMat.mf, view->viewing.m, view->viewing.m);
+        // Apply VR matrices
+        guMtxCatF(projMat.mf, view->projection.mf, view->projection.mf);
+        guMtxCatF(eyeMat.mf, view->viewing.mf, view->viewing.mf);
     }
     
     // Mark view as needing update

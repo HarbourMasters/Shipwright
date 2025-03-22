@@ -1,9 +1,8 @@
-#include "vr/vr_manager.h"
-#include <string.h>
-#include <math.h>
+#include "vr_manager.h"
+#include "global.h"
 
 // Global VR manager instance
-static VRManager* sVrManager = NULL;
+VRManager* gVRManager = NULL;
 
 bool VRManager_InitVR(VRManager* manager) {
     EVRInitError eError = EVRInitError_VRInitError_None;
@@ -13,81 +12,98 @@ bool VRManager_InitVR(VRManager* manager) {
     if (eError != EVRInitError_VRInitError_None) {
         return false;
     }
-
-    // Get system interface
-    manager->pHMD = (struct VR_IVRSystem_FnTable*)VR_GetGenericInterface(IVRSystem_Version, &eError);
-    if (eError != EVRInitError_VRInitError_None || manager->pHMD == NULL) {
+    
+    // Get system and compositor interfaces
+    manager->pHMD = VR_GetGenericInterface(IVRSystem_Version, &eError);
+    manager->pCompositor = VR_GetGenericInterface(IVRCompositor_Version, &eError);
+    
+    if (eError != EVRInitError_VRInitError_None || !manager->pHMD || !manager->pCompositor) {
         VR_ShutdownInternal();
         return false;
     }
-
-    // Get compositor interface
-    manager->pCompositor = (struct VR_IVRCompositor_FnTable*)VR_GetGenericInterface(IVRCompositor_Version, &eError);
-    if (eError != EVRInitError_VRInitError_None || manager->pCompositor == NULL) {
-        VR_ShutdownInternal();
-        return false;
-    }
-
+    
+    // Store the global instance
+    gVRManager = manager;
     return true;
 }
 
 void VRManager_ShutdownVR(VRManager* manager) {
-    if (manager->pHMD != NULL) {
+    if (manager) {
         VR_ShutdownInternal();
-        manager->pHMD = NULL;
-        manager->pCompositor = NULL;
+        gVRManager = NULL;
     }
 }
 
 void VRManager_UpdateHMDMatrixPose(VRManager* manager) {
-    if (manager->pCompositor != NULL) {
-        manager->pCompositor->GetLastPoses(manager->rTrackedDevicePose, k_unMaxTrackedDeviceCount, NULL, 0);
-    }
+    if (!manager || !manager->pCompositor) return;
+    
+    // Get latest poses
+    manager->pCompositor->GetLastPoses(manager->rTrackedDevicePose, k_unMaxTrackedDeviceCount, NULL, 0);
 }
 
 MtxF VRManager_GetHMDMatrixProjectionEye(VRManager* manager, EVREye eye) {
     MtxF result;
-    memset(&result, 0, sizeof(MtxF));
     
-    if (manager->pHMD == NULL) {
+    if (!manager || !manager->pHMD) {
+        // Return identity matrix if no HMD
+        guMtxIdentF(&result);
         return result;
     }
-
-    HmdMatrix44_t mat = manager->pHMD->GetProjectionMatrix(eye, 0.1f, 100.0f);
-    memcpy(&result, &mat.m[0][0], sizeof(MtxF));
+    
+    // Get projection matrix from OpenVR
+    HmdMatrix44_t proj = manager->pHMD->GetProjectionMatrix(eye, 0.1f, 100.0f);
+    
+    // Convert to MtxF format
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            result.mf[i][j] = proj.m[i][j];
+        }
+    }
+    
     return result;
 }
 
 MtxF VRManager_GetHMDMatrixPoseEye(VRManager* manager, EVREye eye) {
     MtxF result;
-    memset(&result, 0, sizeof(MtxF));
     
-    if (manager->pHMD == NULL) {
+    if (!manager || !manager->pHMD) {
+        // Return identity matrix if no HMD
+        guMtxIdentF(&result);
         return result;
     }
-
-    HmdMatrix34_t mat = manager->pHMD->GetEyeToHeadTransform(eye);
-    // Convert 3x4 matrix to 4x4
-    result.xx = mat.m[0][0]; result.xy = mat.m[0][1]; result.xz = mat.m[0][2]; result.xw = mat.m[0][3];
-    result.yx = mat.m[1][0]; result.yy = mat.m[1][1]; result.yz = mat.m[1][2]; result.yw = mat.m[1][3];
-    result.zx = mat.m[2][0]; result.zy = mat.m[2][1]; result.zz = mat.m[2][2]; result.zw = mat.m[2][3];
-    result.wx = 0.0f;        result.wy = 0.0f;        result.wz = 0.0f;        result.ww = 1.0f;
+    
+    // Get eye-to-head transform from OpenVR
+    HmdMatrix34_t eyeMatrix = manager->pHMD->GetEyeToHeadTransform(eye);
+    
+    // Convert to MtxF format (3x4 to 4x4)
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 4; j++) {
+            result.mf[i][j] = eyeMatrix.m[i][j];
+        }
+    }
+    // Set bottom row to [0 0 0 1]
+    result.mf[3][0] = 0.0f;
+    result.mf[3][1] = 0.0f;
+    result.mf[3][2] = 0.0f;
+    result.mf[3][3] = 1.0f;
+    
     return result;
 }
 
 Vec3f VRManager_GetHMDRotation(VRManager* manager) {
     Vec3f rotation = {0.0f, 0.0f, 0.0f};
     
-    if (manager->pHMD == NULL || !manager->rTrackedDevicePose[k_unTrackedDeviceIndex_Hmd].bPoseIsValid) {
+    if (!manager || !manager->rTrackedDevicePose[k_unTrackedDeviceIndex_Hmd].bPoseIsValid) {
         return rotation;
     }
-
-    HmdMatrix34_t mat = manager->rTrackedDevicePose[k_unTrackedDeviceIndex_Hmd].mDeviceToAbsoluteTracking;
     
-    // Convert rotation matrix to Euler angles
-    rotation.y = atan2f(mat.m[0][2], mat.m[2][2]); // Yaw
-    rotation.x = -asinf(mat.m[1][2]); // Pitch
-    rotation.z = atan2f(mat.m[1][0], mat.m[1][1]); // Roll
+    // Get rotation from pose matrix
+    HmdMatrix34_t& pose = manager->rTrackedDevicePose[k_unTrackedDeviceIndex_Hmd].mDeviceToAbsoluteTracking;
+    
+    // Convert matrix to Euler angles (simplified)
+    rotation.y = atan2f(pose.m[0][2], pose.m[2][2]); // Yaw
+    rotation.x = -asinf(pose.m[1][2]); // Pitch
+    rotation.z = atan2f(pose.m[1][0], pose.m[1][1]); // Roll
     
     return rotation;
 }
@@ -97,30 +113,33 @@ bool VRManager_IsHMDPresent(void) {
 }
 
 bool VRManager_IsControllerActive(VRManager* manager, ETrackedControllerRole role) {
-    if (manager->pHMD == NULL) {
-        return false;
-    }
-
+    if (!manager || !manager->pHMD) return false;
+    
+    // Get the device index for the controller role
     TrackedDeviceIndex_t deviceIndex = manager->pHMD->GetTrackedDeviceIndexForControllerRole(role);
-    return deviceIndex != k_unTrackedDeviceIndexInvalid && 
+    
+    return deviceIndex != k_unTrackedDeviceIndexInvalid &&
            manager->rTrackedDevicePose[deviceIndex].bPoseIsValid;
 }
 
 Vec3f VRManager_GetControllerDirection(VRManager* manager, ETrackedControllerRole role) {
-    Vec3f direction = {0.0f, 0.0f, -1.0f};  // Default forward direction
+    Vec3f direction = {0.0f, 0.0f, -1.0f}; // Forward by default
     
-    if (manager->pHMD == NULL) {
-        return direction;
-    }
-
+    if (!manager || !manager->pHMD) return direction;
+    
+    // Get the device index for the controller role
     TrackedDeviceIndex_t deviceIndex = manager->pHMD->GetTrackedDeviceIndexForControllerRole(role);
+    
     if (deviceIndex != k_unTrackedDeviceIndexInvalid && 
         manager->rTrackedDevicePose[deviceIndex].bPoseIsValid) {
-        HmdMatrix34_t mat = manager->rTrackedDevicePose[deviceIndex].mDeviceToAbsoluteTracking;
-        // Forward vector is -Z in OpenVR
-        direction.x = -mat.m[0][2];
-        direction.y = -mat.m[1][2];
-        direction.z = -mat.m[2][2];
+        // Get direction from pose matrix
+        HmdMatrix34_t& pose = manager->rTrackedDevicePose[deviceIndex].mDeviceToAbsoluteTracking;
+        
+        // Forward vector is -Z axis of the transform matrix
+        direction.x = -pose.m[0][2];
+        direction.y = -pose.m[1][2];
+        direction.z = -pose.m[2][2];
     }
+    
     return direction;
 } 

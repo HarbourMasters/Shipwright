@@ -86,3 +86,24 @@ void guNormalize(f32* x, f32* y, f32* z) {
     *y = *y * tmp;
     *z = *z * tmp;
 }
+
+// Matrix concatenation: dest = mf1 * mf2
+void guMtxCatF(float mf1[4][4], float mf2[4][4], float dest[4][4]) {
+    int i, j, k;
+    float temp[4][4];
+    
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 4; j++) {
+            temp[i][j] = 0.0f;
+            for (k = 0; k < 4; k++) {
+                temp[i][j] += mf1[i][k] * mf2[k][j];
+            }
+        }
+    }
+    
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 4; j++) {
+            dest[i][j] = temp[i][j];
+        }
+    }
+}
