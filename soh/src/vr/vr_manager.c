@@ -98,12 +98,12 @@ Vec3f VRManager_GetHMDRotation(VRManager* manager) {
     }
     
     // Get rotation from pose matrix
-    HmdMatrix34_t& pose = manager->rTrackedDevicePose[k_unTrackedDeviceIndex_Hmd].mDeviceToAbsoluteTracking;
+    HmdMatrix34_t* pose = &manager->rTrackedDevicePose[k_unTrackedDeviceIndex_Hmd].mDeviceToAbsoluteTracking;
     
     // Convert matrix to Euler angles (simplified)
-    rotation.y = atan2f(pose.m[0][2], pose.m[2][2]); // Yaw
-    rotation.x = -asinf(pose.m[1][2]); // Pitch
-    rotation.z = atan2f(pose.m[1][0], pose.m[1][1]); // Roll
+    rotation.y = atan2f(pose->m[0][2], pose->m[2][2]); // Yaw
+    rotation.x = -asinf(pose->m[1][2]); // Pitch
+    rotation.z = atan2f(pose->m[1][0], pose->m[1][1]); // Roll
     
     return rotation;
 }
@@ -133,12 +133,12 @@ Vec3f VRManager_GetControllerDirection(VRManager* manager, ETrackedControllerRol
     if (deviceIndex != k_unTrackedDeviceIndexInvalid && 
         manager->rTrackedDevicePose[deviceIndex].bPoseIsValid) {
         // Get direction from pose matrix
-        HmdMatrix34_t& pose = manager->rTrackedDevicePose[deviceIndex].mDeviceToAbsoluteTracking;
+        HmdMatrix34_t* pose = &manager->rTrackedDevicePose[deviceIndex].mDeviceToAbsoluteTracking;
         
         // Forward vector is -Z axis of the transform matrix
-        direction.x = -pose.m[0][2];
-        direction.y = -pose.m[1][2];
-        direction.z = -pose.m[2][2];
+        direction.x = -pose->m[0][2];
+        direction.y = -pose->m[1][2];
+        direction.z = -pose->m[2][2];
     }
     
     return direction;
