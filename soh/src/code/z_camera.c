@@ -9,9 +9,6 @@
 #include "soh/frame_interpolation.h"
 #include "vr/vr_manager.h"
 
-// Global VR manager instance
-VRManager* gVRManager = NULL;
-
 // Initialize VR if available
 void Camera_InitVR() {
     if (VR_IsHmdPresent()) {

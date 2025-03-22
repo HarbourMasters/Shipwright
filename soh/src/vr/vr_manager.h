@@ -21,6 +21,8 @@ typedef struct {
     MtxF mat4eyePosRight;
 } VRManager;
 
+extern VRManager *gVRManager;
+
 // Function declarations
 bool VRManager_InitVR(VRManager* manager);
 void VRManager_ShutdownVR(VRManager* manager);
