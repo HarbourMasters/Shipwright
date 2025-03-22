@@ -1,5 +1,6 @@
 #pragma once
 
+#include "vanilla-behavior/GIVanillaBehavior.h"
 #include "GameInteractor.h"
 #include <stdarg.h>
 

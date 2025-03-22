@@ -71,8 +71,8 @@ void RegionTable_Init_DekuTree() {
     }, {
         //Locations
         LOCATION(RC_DEKU_TREE_BASEMENT_CHEST,    true),
-        LOCATION(RC_DEKU_TREE_GS_BASEMENT_GATE,  logic->CanJumpslashExceptHammer() || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOOMERANG) || logic->HasExplosives() || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_DINS_FIRE)),
-        LOCATION(RC_DEKU_TREE_GS_BASEMENT_VINES, logic->CanUseProjectile() || logic->CanUse(RG_DINS_FIRE) || (ctx->GetTrickOption(RT_DEKU_MQ_COMPASS_GS) && logic->CanJumpslashExceptHammer())),
+        LOCATION(RC_DEKU_TREE_GS_BASEMENT_GATE,  logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_SHORT_JUMPSLASH)),
+        LOCATION(RC_DEKU_TREE_GS_BASEMENT_VINES, logic->CanKillEnemy(RE_GOLD_SKULLTULA, ctx->GetTrickOption(RT_DEKU_MQ_COMPASS_GS) ? ED_SHORT_JUMPSLASH : ED_BOMB_THROW)),
     }, {
         //Exits
         Entrance(RR_DEKU_TREE_LOBBY,               []{return true;}),
@@ -84,7 +84,7 @@ void RegionTable_Init_DekuTree() {
     areaTable[RR_DEKU_TREE_BASEMENT_SCRUB_ROOM] = Region("Deku Tree Basement Scrub Room", "Deku Tree", {RA_DEKU_TREE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_DEKU_TREE_BASEMENT_LOWER,            []{return true;}),
-        Entrance(RR_DEKU_TREE_BASEMENT_WATER_ROOM_FRONT, []{return Here(RR_DEKU_TREE_BASEMENT_SCRUB_ROOM, []{return logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW);});}),
+        Entrance(RR_DEKU_TREE_BASEMENT_WATER_ROOM_FRONT, []{return Here(RR_DEKU_TREE_BASEMENT_SCRUB_ROOM, []{return logic->CanHitEyeTargets();});}),
     });
 
     areaTable[RR_DEKU_TREE_BASEMENT_WATER_ROOM_FRONT] = Region("Deku Tree Basement Water Room Front", "Deku Tree", {RA_DEKU_TREE}, NO_DAY_NIGHT_CYCLE, {}, {}, {

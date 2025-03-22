@@ -587,6 +587,10 @@ CustomMessage Hint::GetGanonBossKeyText() {
   auto ctx = Rando::Context::GetInstance();
   CustomMessage ganonBossKeyMessage;
 
+  if (ctx->GetOption(RSK_TRIFORCE_HUNT)) {
+    return StaticData::hintTextTable[RHT_GANON_BK_TRIFORCE_HINT].GetHintMessage();
+  }
+
   if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_STARTWITH)) {
     return StaticData::hintTextTable[RHT_GANON_BK_START_WITH_HINT].GetHintMessage();
   } 
@@ -630,9 +634,6 @@ CustomMessage Hint::GetGanonBossKeyText() {
   else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_TOKENS)) {
     ganonBossKeyMessage = StaticData::hintTextTable[RHT_LACS_TOKENS_HINT].GetHintMessage();
     ganonBossKeyMessage.InsertNumber(ctx->GetOption(RSK_LACS_TOKEN_COUNT).Get());
-  }
-  else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_TRIFORCE_HUNT)) {
-    return StaticData::hintTextTable[RHT_GANON_BK_TRIFORCE_HINT].GetHintMessage();
   }
   return ganonBossKeyMessage;
 }

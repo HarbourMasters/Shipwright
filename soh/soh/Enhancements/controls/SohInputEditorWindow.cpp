@@ -2,6 +2,7 @@
 #include <utils/StringHelper.h>
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/UIWidgets.hpp"
+#include "soh/SohGui/SohGui.hpp"
 #include "z64.h"
 #include "soh/cvar_prefixes.h"
 #ifndef __WIIU__
@@ -9,6 +10,8 @@
 #endif
 
 #define SCALE_IMGUI_SIZE(value) ((value / 13.0f) * ImGui::GetFontSize())
+
+using namespace UIWidgets;
 
 SohInputEditorWindow::~SohInputEditorWindow() {
 }
@@ -1062,17 +1065,16 @@ void SohInputEditorWindow::DrawLEDSection(uint8_t port) {
             }
             // todo: clean this up, probably just hardcode to LED_COLOR_SOURCE_GAME and use SoH options only here
             if (mapping->GetColorSource() == LED_COLOR_SOURCE_GAME) {
-                static const char* ledSources[] = {
+                static std::vector<const char*> ledSources = {
                     "Original Tunic Colors",          "Cosmetics Tunic Colors",          "Health Colors",
                     "Original Navi Targeting Colors", "Cosmetics Navi Targeting Colors", "Custom"
                 };
-                UIWidgets::PaddedText("Source");
-                UIWidgets::EnhancementCombobox(CVAR_SETTING("LEDColorSource"), ledSources, LED_SOURCE_TUNIC_ORIGINAL);
-                UIWidgets::Tooltip("Health\n- Red when health critical (13-20% depending on max health)\n- Yellow when "
+                CVarCombobox("Source", CVAR_SETTING("LEDColorSource"), ledSources, UIWidgets::ComboboxOptions().Color(THEME_COLOR).DefaultIndex(LED_SOURCE_TUNIC_ORIGINAL)
+                    .Tooltip("Health\n- Red when health critical (13-20% depending on max health)\n- Yellow when "
                                    "health < 40%. Green otherwise.\n\n"
                                    "Tunics: colors will mirror currently equipped tunic, whether original or the current "
                                    "values in Cosmetics Editor.\n\n"
-                                   "Custom: single, solid color");
+                        "Custom: single, solid color"));
                 if (CVarGetInteger(CVAR_SETTING("LEDColorSource"), 1) == LED_SOURCE_CUSTOM) {
                     UIWidgets::Spacer(3);
                     auto port1Color = CVarGetColor24(CVAR_SETTING("LEDPort1Color"), { 255, 255, 255 });
@@ -1090,14 +1092,13 @@ void SohInputEditorWindow::DrawLEDSection(uint8_t port) {
                     ImGui::SameLine();
                     ImGui::Text("Custom Color");
                 }
-                UIWidgets::PaddedEnhancementSliderFloat("Brightness: %.1f %%", "##LED_Brightness", CVAR_SETTING("LEDBrightness"), 0.0f,
-                                                        1.0f, "", 1.0f, true, true);
-                UIWidgets::Tooltip("Sets the brightness of controller LEDs. 0% brightness = LEDs off.");
-                UIWidgets::PaddedEnhancementCheckbox(
-                    "Critical Health Override", CVAR_SETTING("LEDCriticalOverride"), true, true,
-                    CVarGetInteger(CVAR_SETTING("LEDColorSource"), LED_SOURCE_TUNIC_ORIGINAL) == LED_SOURCE_HEALTH,
-                    "Override redundant for health source.", UIWidgets::CheckboxGraphics::Cross, true);
-                UIWidgets::Tooltip("Shows red color when health is critical, otherwise displays according to color source.");
+                CVarSliderFloat("Brightness: %.1f %%", CVAR_SETTING("LEDBrightness"),
+                    FloatSliderOptions().IsPercentage().Min(0.0f).Max(1.0f).DefaultValue(1.0f).ShowButtons(true)
+                    .Tooltip("Sets the brightness of controller LEDs. 0% brightness = LEDs off."));
+                CVarCheckbox("Critical Health Override", CVAR_SETTING("LEDCriticalOverride"), 
+                    CheckboxOptions({{ .disabled = CVarGetInteger(CVAR_SETTING("LEDColorSource"), LED_SOURCE_TUNIC_ORIGINAL) == LED_SOURCE_HEALTH,
+                                       .disabledTooltip = "Override redundant for health source."}}).DefaultValue(true)
+                        .Tooltip("Shows red color when health is critical, otherwise displays according to color source."));
             }
             ImGui::TreePop();
         }
@@ -1281,7 +1282,6 @@ void SohInputEditorWindow::DrawMapping(CustomButtonMap& mapping, float labelWidt
         preview = "Unknown";
     }
 
-    UIWidgets::Spacer(0);
     ImVec2 cursorPos = ImGui::GetCursorPos();
     ImVec2 textSize = ImGui::CalcTextSize(mapping.label);
     ImGui::SetCursorPosY(cursorPos.y + textSize.y / 4);
@@ -1303,16 +1303,16 @@ void SohInputEditorWindow::DrawMapping(CustomButtonMap& mapping, float labelWidt
         }
         ImGui::EndCombo();
     }
-    UIWidgets::Spacer(0);
 }
 
 void SohInputEditorWindow::DrawOcarinaControlPanel() {
     ImVec2 cursor = ImGui::GetCursorPos();
     ImGui::SetCursorPos(ImVec2(cursor.x, cursor.y + 5));
     
-    UIWidgets::EnhancementCheckbox("Dpad Ocarina Playback", CVAR_SETTING("CustomOcarina.Dpad"));
-    UIWidgets::EnhancementCheckbox("Right Stick Ocarina Playback", CVAR_SETTING("CustomOcarina.RightStick"));
-    UIWidgets::EnhancementCheckbox("Customize Ocarina Controls", CVAR_SETTING("CustomOcarina.Enabled"));
+    CheckboxOptions checkOpt = CheckboxOptions().Color(THEME_COLOR);
+    CVarCheckbox("Dpad Ocarina Playback", CVAR_SETTING("CustomOcarina.Dpad"), checkOpt);
+    CVarCheckbox("Right Stick Ocarina Playback", CVAR_SETTING("CustomOcarina.RightStick"), checkOpt);
+    CVarCheckbox("Customize Ocarina Controls", CVAR_SETTING("CustomOcarina.Enabled"), checkOpt);
 
     if (!CVarGetInteger(CVAR_SETTING("CustomOcarina.Enabled"), 0)) {
         ImGui::BeginDisabled();
@@ -1344,60 +1344,56 @@ void SohInputEditorWindow::DrawCameraControlPanel() {
     ImVec2 cursor = ImGui::GetCursorPos();
     ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
     Ship::GuiWindow::BeginGroupPanel("Aiming/First-Person Camera", ImGui::GetContentRegionAvail());
-    UIWidgets::PaddedEnhancementCheckbox("Right Stick Aiming", CVAR_SETTING("Controls.RightStickAim"));
-    UIWidgets::Tooltip("Allows for aiming with the right stick in:\n-First-Person/C-Up view\n-Weapon Aiming");
+    CVarCheckbox("Right Stick Aiming", CVAR_SETTING("Controls.RightStickAim"), CheckboxOptions().Color(THEME_COLOR)
+        .Tooltip("Allows for aiming with the right stick in:\n-First-Person/C-Up view\n-Weapon Aiming"));
     if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0)) {
-        UIWidgets::PaddedEnhancementCheckbox("Allow moving while in first person mode", CVAR_SETTING("MoveInFirstPerson"));
-        UIWidgets::Tooltip("Changes the left stick to move the player while in first person mode");
+        CVarCheckbox("Allow moving while in first person mode", CVAR_SETTING("MoveInFirstPerson"), CheckboxOptions().Color(THEME_COLOR)
+            .Tooltip("Changes the left stick to move the player while in first person mode"));
     }
-    UIWidgets::PaddedEnhancementCheckbox("Invert Aiming X Axis", CVAR_SETTING("Controls.InvertAimingXAxis"));
-    UIWidgets::Tooltip("Inverts the Camera X Axis in:\n-First-Person/C-Up view\n-Weapon Aiming");
-    UIWidgets::PaddedEnhancementCheckbox("Invert Aiming Y Axis", CVAR_SETTING("Controls.InvertAimingYAxis"), true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
-    UIWidgets::Tooltip("Inverts the Camera Y Axis in:\n-First-Person/C-Up view\n-Weapon Aiming");
-    UIWidgets::PaddedEnhancementCheckbox("Invert Shield Aiming X Axis", CVAR_SETTING("Controls.InvertShieldAimingXAxis"), true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
-    UIWidgets::Tooltip("Inverts the Shield Aiming X Axis");
-    UIWidgets::PaddedEnhancementCheckbox("Invert Shield Aiming Y Axis", CVAR_SETTING("Controls.InvertShieldAimingYAxis"));
-    UIWidgets::Tooltip("Inverts the Shield Aiming Y Axis");
-    UIWidgets::PaddedEnhancementCheckbox("Invert Z-Weapon Aiming Y Axis", CVAR_SETTING("Controls.InvertZAimingYAxis"), true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
-    UIWidgets::Tooltip("Inverts the Camera Y Axis in:\n-Z-Weapon Aiming");
-    UIWidgets::PaddedEnhancementCheckbox("Disable Auto-Centering in First-Person View", CVAR_SETTING("DisableFirstPersonAutoCenterView"));
-    UIWidgets::Tooltip("Prevents the C-Up view from auto-centering, allowing for Gyro Aiming");
-    if (UIWidgets::PaddedEnhancementCheckbox("Enable Custom Aiming/First-Person sensitivity", CVAR_SETTING("FirstPersonCameraSensitivity.Enabled"), true, false)) {
+    CVarCheckbox("Invert Aiming X Axis", CVAR_SETTING("Controls.InvertAimingXAxis"), CheckboxOptions().Color(THEME_COLOR)
+        .Tooltip("Inverts the Camera X Axis in:\n-First-Person/C-Up view\n-Weapon Aiming"));
+    CVarCheckbox("Invert Aiming Y Axis", CVAR_SETTING("Controls.InvertAimingYAxis"), CheckboxOptions().Color(THEME_COLOR).DefaultValue(true)
+        .Tooltip("Inverts the Camera Y Axis in:\n-First-Person/C-Up view\n-Weapon Aiming"));
+    CVarCheckbox("Invert Shield Aiming X Axis", CVAR_SETTING("Controls.InvertShieldAimingXAxis"), CheckboxOptions().Color(THEME_COLOR).DefaultValue(true)
+        .Tooltip("Inverts the Shield Aiming X Axis"));
+    CVarCheckbox("Invert Shield Aiming Y Axis", CVAR_SETTING("Controls.InvertShieldAimingYAxis"), CheckboxOptions().Color(THEME_COLOR)
+        .Tooltip("Inverts the Shield Aiming Y Axis"));
+    CVarCheckbox("Invert Z-Weapon Aiming Y Axis", CVAR_SETTING("Controls.InvertZAimingYAxis"), CheckboxOptions().Color(THEME_COLOR).DefaultValue(true)
+        .Tooltip("Inverts the Camera Y Axis in:\n-Z-Weapon Aiming"));
+    CVarCheckbox("Disable Auto-Centering in First-Person View", CVAR_SETTING("DisableFirstPersonAutoCenterView"), CheckboxOptions().Color(THEME_COLOR)
+        .Tooltip("Prevents the C-Up view from auto-centering, allowing for Gyro Aiming"));
+    if (CVarCheckbox("Enable Custom Aiming/First-Person sensitivity", CVAR_SETTING("FirstPersonCameraSensitivity.Enabled"), CheckboxOptions().Color(THEME_COLOR))) {
         if (!CVarGetInteger(CVAR_SETTING("FirstPersonCameraSensitivity.Enabled"), 0)) {
             CVarClear(CVAR_SETTING("FirstPersonCameraSensitivity.X"));
             CVarClear(CVAR_SETTING("FirstPersonCameraSensitivity.Y"));
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         }
     }
     if (CVarGetInteger(CVAR_SETTING("FirstPersonCameraSensitivity.Enabled"), 0)) {
-        UIWidgets::EnhancementSliderFloat("Aiming/First-Person Horizontal Sensitivity: %.0f %%", "##FirstPersonSensitivity Horizontal",
-                                            CVAR_SETTING("FirstPersonCameraSensitivity.X"), 0.01f, 5.0f, "", 1.0f, true);
-        UIWidgets::EnhancementSliderFloat("Aiming/First-Person Vertical Sensitivity: %.0f %%", "##FirstPersonSensitivity Vertical",
-                                          CVAR_SETTING("FirstPersonCameraSensitivity.Y"), 0.01f, 5.0f, "", 1.0f, true);
+        CVarSliderFloat("Aiming/First-Person Horizontal Sensitivity: %.0f %%", CVAR_SETTING("FirstPersonCameraSensitivity.X"),
+            FloatSliderOptions().Color(THEME_COLOR).IsPercentage().Min(0.01f).Max(5.0f).DefaultValue(1.0f).ShowButtons(true));
+        CVarSliderFloat("Aiming/First-Person Vertical Sensitivity: %.0f %%", CVAR_SETTING("FirstPersonCameraSensitivity.Y"),
+            FloatSliderOptions().Color(THEME_COLOR).IsPercentage().Min(0.01f).Max(5.0f).DefaultValue(1.0f).ShowButtons(true));
     }
-    UIWidgets::Spacer(0);
     Ship::GuiWindow::EndGroupPanel(0);
 
-    UIWidgets::Spacer(0);
     cursor = ImGui::GetCursorPos();
     ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
     Ship::GuiWindow::BeginGroupPanel("Third-Person Camera", ImGui::GetContentRegionAvail());
 
-    UIWidgets::PaddedEnhancementCheckbox("Free Look", CVAR_SETTING("FreeLook.Enabled"));
-    UIWidgets::Tooltip("Enables free look camera control\nNote: You must remap C buttons off of the right stick in the "
-                            "controller config menu, and map the camera stick to the right stick.");
-    UIWidgets::PaddedEnhancementCheckbox("Invert Camera X Axis", CVAR_SETTING("FreeLook.InvertXAxis"));
-    UIWidgets::Tooltip("Inverts the Camera X Axis in:\n-Free look");
-    UIWidgets::PaddedEnhancementCheckbox("Invert Camera Y Axis", CVAR_SETTING("FreeLook.InvertYAxis"), true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
-    UIWidgets::Tooltip("Inverts the Camera Y Axis in:\n-Free look");
-    UIWidgets::Spacer(0);
-    UIWidgets::PaddedEnhancementSliderFloat("Third-Person Horizontal Sensitivity: %.0f %%", "##ThirdPersonSensitivity Horizontal",
-                                            CVAR_SETTING("FreeLook.CameraSensitivity.X"), 0.01f, 5.0f, "", 1.0f, true, true, false, true);
-    UIWidgets::PaddedEnhancementSliderFloat("Third-Person Vertical Sensitivity: %.0f %%", "##ThirdPersonSensitivity Vertical",
-                                            CVAR_SETTING("FreeLook.CameraSensitivity.Y"), 0.01f, 5.0f, "", 1.0f, true, true, false, true);
-    UIWidgets::PaddedEnhancementSliderInt("Camera Distance: %d", "##CamDist",
-                                    CVAR_SETTING("FreeLook.MaxCameraDistance"), 100, 900, "", 185, true, false, true);
-    UIWidgets::PaddedEnhancementSliderInt("Camera Transition Speed: %d", "##CamTranSpeed",
-                                    CVAR_SETTING("FreeLook.TransitionSpeed"), 0, 900, "", 25, true, false, true);
+    CVarCheckbox("Free Look", CVAR_SETTING("FreeLook.Enabled"), CheckboxOptions().Color(THEME_COLOR)
+        .Tooltip("Enables free look camera control\nNote: You must remap C buttons off of the right stick in the "
+                            "controller config menu, and map the camera stick to the right stick."));
+    CVarCheckbox("Invert Camera X Axis", CVAR_SETTING("FreeLook.InvertXAxis"), CheckboxOptions().Color(THEME_COLOR)
+        .Tooltip("Inverts the Camera X Axis in:\n-Free look"));
+    CVarCheckbox("Invert Camera Y Axis", CVAR_SETTING("FreeLook.InvertYAxis"), CheckboxOptions().Color(THEME_COLOR).DefaultValue(true)
+        .Tooltip("Inverts the Camera Y Axis in:\n-Free look"));
+    CVarSliderFloat("Third-Person Horizontal Sensitivity: %.0f %%", CVAR_SETTING("FreeLook.CameraSensitivity.X"), 
+        FloatSliderOptions().Color(THEME_COLOR).IsPercentage().Min(0.01f).Max(5.0f).DefaultValue(1.0f).ShowButtons(true));
+    CVarSliderFloat("Third-Person Vertical Sensitivity: %.0f %%", CVAR_SETTING("FreeLook.CameraSensitivity.Y"), 
+        FloatSliderOptions().Color(THEME_COLOR).IsPercentage().Min(0.01f).Max(5.0f).DefaultValue(1.0f).ShowButtons(true));
+    CVarSliderInt("Camera Distance: %d", CVAR_SETTING("FreeLook.MaxCameraDistance"), IntSliderOptions().Color(THEME_COLOR).Min(100).Max(900).DefaultValue(185).ShowButtons(true));
+    CVarSliderInt("Camera Transition Speed: %d", CVAR_SETTING("FreeLook.TransitionSpeed"), IntSliderOptions().Color(THEME_COLOR).Min(0).Max(900).DefaultValue(25).ShowButtons(true));
     Ship::GuiWindow::EndGroupPanel(0);
 }
 
@@ -1405,17 +1401,17 @@ void SohInputEditorWindow::DrawDpadControlPanel() {
     ImVec2 cursor = ImGui::GetCursorPos();
     ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
     Ship::GuiWindow::BeginGroupPanel("D-Pad Options", ImGui::GetContentRegionAvail());
-    UIWidgets::PaddedEnhancementCheckbox("D-pad Support on Pause Screen", CVAR_SETTING("DPadOnPause"));
-    UIWidgets::Tooltip("Navigate Pause with the D-pad\nIf used with \"D-pad as Equip Items\", you must hold C-Up to equip instead of navigate");
-    UIWidgets::PaddedEnhancementCheckbox("D-pad Support in Text Boxes", CVAR_SETTING("DpadInText"));
-    UIWidgets::Tooltip("Navigate choices in text boxes, shop item selection, and the file select / name entry screens with the D-pad");
+    CVarCheckbox("D-pad Support on Pause Screen", CVAR_SETTING("DPadOnPause"), CheckboxOptions().Color(THEME_COLOR)
+        .Tooltip("Navigate Pause with the D-pad\nIf used with \"D-pad as Equip Items\", you must hold C-Up to equip instead of navigate"));
+    CVarCheckbox("D-pad Support in Text Boxes", CVAR_SETTING("DpadInText"), CheckboxOptions().Color(THEME_COLOR)
+        .Tooltip("Navigate choices in text boxes, shop item selection, and the file select / name entry screens with the D-pad"));
 
     if (!CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0) && !CVarGetInteger(CVAR_SETTING("DpadInText"), 0)) {
         ImGui::BeginDisabled();
     }
 
-    UIWidgets::PaddedEnhancementCheckbox("D-pad hold change", CVAR_SETTING("DpadHoldChange"), true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
-    UIWidgets::Tooltip("The cursor will only move a single space no matter how long a D-pad direction is held");
+    CVarCheckbox("D-pad hold change", CVAR_SETTING("DpadHoldChange"), CheckboxOptions().Color(THEME_COLOR).DefaultValue(true)
+        .Tooltip("The cursor will only move a single space no matter how long a D-pad direction is held"));
 
     if (!CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0) && !CVarGetInteger(CVAR_SETTING("DpadInText"), 0)) {
         ImGui::EndDisabled();
@@ -1505,10 +1501,10 @@ void SohInputEditorWindow::DrawLinkTab() {
         }
 
         if (ImGui::CollapsingHeader("D-Pad", NULL, ImGuiTreeNodeFlags_DefaultOpen)) {
-            DrawButtonLine(StringHelper::Sprintf("%s", ICON_FA_ARROW_UP).c_str(), portIndex, BTN_DUP);
-            DrawButtonLine(StringHelper::Sprintf("%s", ICON_FA_ARROW_DOWN).c_str(), portIndex, BTN_DDOWN);
-            DrawButtonLine(StringHelper::Sprintf("%s", ICON_FA_ARROW_LEFT).c_str(), portIndex, BTN_DLEFT);
-            DrawButtonLine(StringHelper::Sprintf("%s", ICON_FA_ARROW_RIGHT).c_str(), portIndex, BTN_DRIGHT);
+            DrawButtonLine(StringHelper::Sprintf("D %s", ICON_FA_ARROW_UP).c_str(), portIndex, BTN_DUP);
+            DrawButtonLine(StringHelper::Sprintf("D %s", ICON_FA_ARROW_DOWN).c_str(), portIndex, BTN_DDOWN);
+            DrawButtonLine(StringHelper::Sprintf("D %s", ICON_FA_ARROW_LEFT).c_str(), portIndex, BTN_DLEFT);
+            DrawButtonLine(StringHelper::Sprintf("D %s", ICON_FA_ARROW_RIGHT).c_str(), portIndex, BTN_DRIGHT);
         }
 
         if (ImGui::CollapsingHeader("Analog Stick", NULL, ImGuiTreeNodeFlags_DefaultOpen)) {
@@ -1536,30 +1532,24 @@ void SohInputEditorWindow::DrawLinkTab() {
             DrawButtonLine("M2", portIndex, BTN_CUSTOM_MODIFIER2);
 
             ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
-            UIWidgets::PaddedEnhancementCheckbox("Enable speed modifiers", CVAR_SETTING("WalkModifier.Enabled"), true, false);
-            UIWidgets::Tooltip("Hold the assigned button to change the maximum walking or swimming speed");
+            CVarCheckbox("Enable speed modifiers", CVAR_SETTING("WalkModifier.Enabled"), CheckboxOptions().Color(THEME_COLOR)
+                .Tooltip("Hold the assigned button to change the maximum walking or swimming speed"));
             if (CVarGetInteger(CVAR_SETTING("WalkModifier.Enabled"), 0)) {
                 UIWidgets::Spacer(5);
                 Ship::GuiWindow::BeginGroupPanel("Speed Modifier", ImGui::GetContentRegionAvail());
-                UIWidgets::PaddedEnhancementCheckbox("Toggle modifier instead of holding",
-                                                     CVAR_SETTING("WalkModifier.SpeedToggle"), true, false);
+                CVarCheckbox("Toggle modifier instead of holding", CVAR_SETTING("WalkModifier.SpeedToggle"), CheckboxOptions().Color(THEME_COLOR));
                 Ship::GuiWindow::BeginGroupPanel("Walk Modifier", ImGui::GetContentRegionAvail());
-                UIWidgets::PaddedEnhancementCheckbox("Don't affect jump distance/velocity",
-                                                     CVAR_SETTING("WalkModifier.DoesntChangeJump"), true, false);
-                UIWidgets::PaddedEnhancementSliderFloat("Walk Modifier 1: %.0f %%", "##WalkMod1",
-                                                        CVAR_SETTING("WalkModifier.Mapping1"), 0.0f, 5.0f, "", 1.0f,
-                                                        true, true, false, true);
-                UIWidgets::PaddedEnhancementSliderFloat("Walk Modifier 2: %.0f %%", "##WalkMod2",
-                                                        CVAR_SETTING("WalkModifier.Mapping2"), 0.0f, 5.0f, "", 1.0f,
-                                                        true, true, false, true);
+                CVarCheckbox("Don't affect jump distance/velocity", CVAR_SETTING("WalkModifier.DoesntChangeJump"), CheckboxOptions().Color(THEME_COLOR));
+                CVarSliderFloat("Walk Modifier 1: %.0f %%", CVAR_SETTING("WalkModifier.Mapping1"), 
+                    FloatSliderOptions().Color(THEME_COLOR).IsPercentage().Min(0.0f).Max(5.0f).DefaultValue(1.0f).ShowButtons(true));
+                CVarSliderFloat("Walk Modifier 2: %.0f %%", CVAR_SETTING("WalkModifier.Mapping2"), 
+                    FloatSliderOptions().Color(THEME_COLOR).IsPercentage().Min(0.0f).Max(5.0f).DefaultValue(1.0f).ShowButtons(true));
                 Ship::GuiWindow::EndGroupPanel(0);
                 Ship::GuiWindow::BeginGroupPanel("Swim Modifier", ImGui::GetContentRegionAvail());
-                UIWidgets::PaddedEnhancementSliderFloat("Swim Modifier 1: %.0f %%", "##SwimMod1",
-                                                        CVAR_SETTING("WalkModifier.SwimMapping1"), 0.0f, 5.0f, "", 1.0f,
-                                                        true, true, false, true);
-                UIWidgets::PaddedEnhancementSliderFloat("Swim Modifier 2: %.0f %%", "##SwimMod2",
-                                                        CVAR_SETTING("WalkModifier.SwimMapping2"), 0.0f, 5.0f, "", 1.0f,
-                                                        true, true, false, true);
+                CVarSliderFloat("Swim Modifier 1: %.0f %%", CVAR_SETTING("WalkModifier.SwimMapping1"), 
+                    FloatSliderOptions().Color(THEME_COLOR).IsPercentage().Min(0.0f).Max(5.0f).DefaultValue(1.0f).ShowButtons(true));
+                CVarSliderFloat("Swim Modifier 2: %.0f %%", CVAR_SETTING("WalkModifier.SwimMapping2"), 
+                    FloatSliderOptions().Color(THEME_COLOR).IsPercentage().Min(0.0f).Max(5.0f).DefaultValue(1.0f).ShowButtons(true));
                 Ship::GuiWindow::EndGroupPanel(0);
                 Ship::GuiWindow::EndGroupPanel(0);
             }
@@ -1659,9 +1649,7 @@ void SohInputEditorWindow::DrawDebugPortTab(uint8_t portIndex, std::string custo
         UpdateBitmaskToMappingIds(portIndex);
         UpdateStickDirectionToMappingIds(portIndex);
 
-        ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.133f, 0.133f, 0.133f, 1.0f));
-        ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
-        ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+        PushStyleHeader(THEME_COLOR);
 
         if (ImGui::CollapsingHeader("Buttons", NULL, ImGuiTreeNodeFlags_DefaultOpen)) {
             DrawButtonLine("A", portIndex, BTN_A, CHIP_COLOR_N64_BLUE);
@@ -1690,19 +1678,20 @@ void SohInputEditorWindow::DrawDebugPortTab(uint8_t portIndex, std::string custo
             DrawStickSection(portIndex, Ship::LEFT, 0);
         }
 
-        ImGui::PopStyleColor();
-        ImGui::PopStyleColor();
-        ImGui::PopStyleColor();
+        PopStyleHeader();
         ImGui::EndTabItem();
     }
 }
 
 void SohInputEditorWindow::DrawClearAllButton(uint8_t portIndex) {
+    PushStyleButton(THEME_COLOR);
     if (ImGui::Button("Clear All", ImGui::CalcTextSize("Clear All") * 2)) {
         ImGui::OpenPopup("Clear All##clearAllPopup");
     }
+    PopStyleButton();
     if (ImGui::BeginPopupModal("Clear All##clearAllPopup", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
         ImGui::Text("This will clear all mappings for port %d.\n\nContinue?", portIndex + 1);
+        PushStyleButton(THEME_COLOR);
         if (ImGui::Button("Cancel")) {
             ImGui::CloseCurrentPopup();
         }
@@ -1710,6 +1699,7 @@ void SohInputEditorWindow::DrawClearAllButton(uint8_t portIndex) {
             Ship::Context::GetInstance()->GetControlDeck()->GetControllerByPort(portIndex)->ClearAllMappings();
             ImGui::CloseCurrentPopup();
         }
+        PopStyleButton();
         ImGui::EndPopup();
     }
 }
@@ -1717,22 +1707,23 @@ void SohInputEditorWindow::DrawClearAllButton(uint8_t portIndex) {
 void SohInputEditorWindow::DrawSetDefaultsButton(uint8_t portIndex) {
     ImGui::SameLine();
     auto popupId = StringHelper::Sprintf("setDefaultsPopup##%d", portIndex);
+    PushStyleButton(THEME_COLOR);
     if (ImGui::Button(StringHelper::Sprintf("Set Defaults##%d", portIndex).c_str(),
                       ImVec2(ImGui::CalcTextSize("Set Defaults") * 2))) {
         ImGui::OpenPopup(popupId.c_str());
     }
+    PopStyleButton();
 
     if (ImGui::BeginPopup(popupId.c_str())) {
         bool shouldClose = false;
-        ImGui::PushStyleColor(ImGuiCol_Button, BUTTON_COLOR_KEYBOARD_BEIGE);
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, BUTTON_COLOR_KEYBOARD_BEIGE_HOVERED);
+        PushStyleButton(BUTTON_COLOR_KEYBOARD_BEIGE);
         if (ImGui::Button(StringHelper::Sprintf("%s Keyboard", ICON_FA_KEYBOARD_O).c_str())) {
             ImGui::OpenPopup("Set Defaults for Keyboard");
         }
-        ImGui::PopStyleColor();
-        ImGui::PopStyleColor();
+        PopStyleButton();
         if (ImGui::BeginPopupModal("Set Defaults for Keyboard", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
             ImGui::Text("This will clear all existing mappings for\nKeyboard on port %d.\n\nContinue?", portIndex + 1);
+            PushStyleButton(THEME_COLOR);
             if (ImGui::Button("Cancel")) {
                 shouldClose = true;
                 ImGui::CloseCurrentPopup();
@@ -1747,21 +1738,21 @@ void SohInputEditorWindow::DrawSetDefaultsButton(uint8_t portIndex) {
                 shouldClose = true;
                 ImGui::CloseCurrentPopup();
             }
+            PopStyleButton();
             ImGui::EndPopup();
         }
 
         auto buttonColor = ImGui::GetStyleColorVec4(ImGuiCol_Button);
         auto buttonHoveredColor = ImGui::GetStyleColorVec4(ImGuiCol_ButtonHovered);
         GetButtonColorsForDeviceType(Ship::PhysicalDeviceType::SDLGamepad, buttonColor, buttonHoveredColor);
-        ImGui::PushStyleColor(ImGuiCol_Button, buttonColor);
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, buttonHoveredColor);
+        PushStyleButton(buttonColor);
         if (ImGui::Button(StringHelper::Sprintf("%s %s", ICON_FA_GAMEPAD, "Gamepad (SDL)").c_str())) {
             ImGui::OpenPopup("Set Defaults for Gamepad (SDL)");
         }
-        ImGui::PopStyleColor();
-        ImGui::PopStyleColor();
+        PopStyleButton();
         if (ImGui::BeginPopupModal("Set Defaults for Gamepad (SDL)", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
             ImGui::Text("This will clear all existing mappings for\nGamepad (SDL) on port %d.\n\nContinue?", portIndex + 1);
+            PushStyleButton(THEME_COLOR);
             if (ImGui::Button("Cancel")) {
                 shouldClose = true;
                 ImGui::CloseCurrentPopup();
@@ -1776,18 +1767,26 @@ void SohInputEditorWindow::DrawSetDefaultsButton(uint8_t portIndex) {
                 shouldClose = true;
                 ImGui::CloseCurrentPopup();
             }
+            PopStyleButton();
             ImGui::EndPopup();
         }
 
+        PushStyleButton(THEME_COLOR);
         if (ImGui::Button("Cancel") || shouldClose) {
             ImGui::CloseCurrentPopup();
         }
+        PopStyleButton();
 
         ImGui::EndPopup();
     }
 }
 
 void SohInputEditorWindow::DrawElement() {
+    ImGui::PushFont(OTRGlobals::Instance->fontMonoLarger);
+    ImVec4 themeColor = ColorValues.at(THEME_COLOR);
+    ImGui::PushStyleColor(ImGuiCol_Tab, ImVec4(themeColor.x, themeColor.y, themeColor.z, 0.8f));
+    ImGui::PushStyleColor(ImGuiCol_TabHovered, ImVec4(themeColor.x, themeColor.y, themeColor.z, 0.6f));
+    ImGui::PushStyleColor(ImGuiCol_TabActive, ImVec4(themeColor.x, themeColor.y, themeColor.z, 0.6f));
     ImGui::BeginTabBar("##ControllerConfigPortTabs");
     DrawLinkTab();
     DrawIvanTab();
@@ -1796,4 +1795,6 @@ void SohInputEditorWindow::DrawElement() {
         DrawDebugPortTab(3);
     }
     ImGui::EndTabBar();
+    ImGui::PopStyleColor(3);
+    ImGui::PopFont();
 }

@@ -1,11 +1,11 @@
 #include "gameplaystats.h"
-#include "gameplaystatswindow.h"
 
 #include "soh/SaveManager.h"
 #include "functions.h"
 #include "macros.h"
 #include "soh/cvar_prefixes.h"
 #include "soh/SohGui/UIWidgets.hpp"
+#include "soh/SohGui/SohGui.hpp"
 #include "soh/util.h"
 
 #include <vector>
@@ -376,14 +376,18 @@ void SaveStats(SaveContext* saveContext, int sectionID, bool fullSave) {
     });
 }
 
-void GameplayStatsRow(const char* label, const std::string& value, ImVec4 color = COLOR_WHITE) {
+void GameplayStatsRow(const char* label, const std::string& value, ImVec4 color = COLOR_WHITE,
+                      const char* tooltip = "") {
     ImGui::PushStyleColor(ImGuiCol_Text, color);
     ImGui::TableNextRow();
     ImGui::TableNextColumn();
     ImGui::Text("%s", label);
-    ImGui::SameLine(ImGui::GetContentRegionAvail().x - (ImGui::CalcTextSize(value.c_str()).x - 8.0f));
+    ImGui::SameLine(ImGui::GetContentRegionAvail().x - (ImGui::CalcTextSize(value.c_str()).x));
     ImGui::Text("%s", value.c_str());
     ImGui::PopStyleColor();
+    if (tooltip != "" && ImGui::IsItemHovered()) {
+        ImGui::SetTooltip("%s", tooltip);
+    }
 }
 
 bool compareTimestampInfoByTime(const TimestampInfo& a, const TimestampInfo& b) {
@@ -527,8 +531,8 @@ void DrawGameplayStatsCountsTab() {
             }
         }
     }
-    GameplayStatsRow("Rupees Collected:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_RUPEES_COLLECTED]));
-    UIWidgets::Tooltip("Includes rupees collected with a full wallet.");
+    GameplayStatsRow("Rupees Collected:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_RUPEES_COLLECTED]),
+                     COLOR_WHITE, "Includes rupees collected with a full wallet.");
     GameplayStatsRow("Rupees Spent:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_RUPEES_SPENT]));
     GameplayStatsRow("Chests Opened:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_CHESTS_OPENED]));
     GameplayStatsRow("Ammo Used:", formatIntGameplayStat(ammoUsed));
@@ -606,25 +610,35 @@ void DrawGameplayStatsBreakdownTab() {
 }
 
 void DrawGameplayStatsOptionsTab() {
-    UIWidgets::PaddedEnhancementCheckbox("Show in-game total timer", CVAR_ENHANCEMENT("GameplayStats.ShowIngameTimer"), true, false);
-    UIWidgets::InsertHelpHoverText("Keep track of the timer as an in-game HUD element. The position of the timer can be changed in the Cosmetics Editor.");
-    UIWidgets::PaddedEnhancementCheckbox("Show latest timestamps on top", CVAR_ENHANCEMENT("GameplayStats.ReverseTimestamps"), true, false);
-    UIWidgets::PaddedEnhancementCheckbox("Room Breakdown", CVAR_ENHANCEMENT("GameplayStats.RoomBreakdown"), true, false);
-    ImGui::SameLine();
-    UIWidgets::InsertHelpHoverText("Allows a more in-depth perspective of time spent in a certain map.");
-    UIWidgets::PaddedEnhancementCheckbox("RTA Timing on new files", CVAR_ENHANCEMENT("GameplayStats.RTATiming"), true, false);
-    ImGui::SameLine();
-    UIWidgets::InsertHelpHoverText(
-        "Timestamps are relative to starting timestamp rather than in game time, usually necessary for races/speedruns.\n\n"
-        "Starting timestamp is on first non-c-up input after intro cutscene.\n\n"
-        "NOTE: THIS NEEDS TO BE SET BEFORE CREATING A FILE TO TAKE EFFECT"
-    );
-    UIWidgets::PaddedEnhancementCheckbox("Show additional detail timers", CVAR_ENHANCEMENT("GameplayStats.ShowAdditionalTimers"), true, false);
-    UIWidgets::PaddedEnhancementCheckbox("Show Debug Info", CVAR_ENHANCEMENT("GameplayStats.ShowDebugInfo"));
+    UIWidgets::CVarCheckbox("Show in-game total timer", CVAR_ENHANCEMENT("GameplayStats.ShowIngameTimer"),
+                             UIWidgets::CheckboxOptions()
+                                 .Tooltip("Keep track of the timer as an in-game HUD element. The position of the "
+                                          "timer can be changed in the Cosmetics Editor.")
+                                 .Color(THEME_COLOR));
+    UIWidgets::CVarCheckbox("Show latest timestamps on top", CVAR_ENHANCEMENT("GameplayStats.ReverseTimestamps"),
+                             UIWidgets::CheckboxOptions().Color(THEME_COLOR));
+    UIWidgets::CVarCheckbox("Room Breakdown", CVAR_ENHANCEMENT("GameplayStats.RoomBreakdown"),
+                             UIWidgets::CheckboxOptions()
+                                 .Tooltip("Allows a more in-depth perspective of time spent in a certain map.")
+                                 .Color(THEME_COLOR));
+    UIWidgets::CVarCheckbox("RTA Timing on new files", CVAR_ENHANCEMENT("GameplayStats.RTATiming"),
+                             UIWidgets::CheckboxOptions()
+                                 .Tooltip("Timestamps are relative to starting timestamp rather than in game time, "
+                                          "usually necessary for races/speedruns.\n\n"
+                                          "Starting timestamp is on first non-c-up input after intro cutscene.\n\n"
+                                          "NOTE: THIS NEEDS TO BE SET BEFORE CREATING A FILE TO TAKE EFFECT")
+                                 .Color(THEME_COLOR));
+    UIWidgets::CVarCheckbox("Show additional detail timers", CVAR_ENHANCEMENT("GameplayStats.ShowAdditionalTimers"),
+                             UIWidgets::CheckboxOptions().Color(THEME_COLOR));
+    UIWidgets::CVarCheckbox("Show Debug Info", CVAR_ENHANCEMENT("GameplayStats.ShowDebugInfo"),
+                             UIWidgets::CheckboxOptions().Color(THEME_COLOR));
 }
 
 void GameplayStatsWindow::DrawElement() {
+    ImGui::PushFont(OTRGlobals::Instance->fontMonoLarger);
     DrawGameplayStatsHeader();
+
+    UIWidgets::PushStyleTabs(THEME_COLOR);
 
     if (ImGui::BeginTabBar("Stats", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         if (ImGui::BeginTabItem("Timestamps")) {
@@ -645,6 +659,9 @@ void GameplayStatsWindow::DrawElement() {
         }
         ImGui::EndTabBar();
     }
+
+    UIWidgets::PopStyleTabs();
+    ImGui::PopFont();
 
     ImGui::Text("Note: Gameplay stats are saved to the current file and will be\nlost if you quit without saving.");
 }

@@ -242,7 +242,7 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SeparateArrows"), 1),
 
     // Disable Navi Call Audio
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DisableNaviCallAudio"), 1),
+    PRESET_ENTRY_S32(CVAR_AUDIO("DisableNaviCallAudio"), 1),
 
     // Equipment Toggle
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("EquipmentCanBeRemoved"), 1),
@@ -373,7 +373,7 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SeparateArrows"), 1),
 
     // Disable Navi Call Audio
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DisableNaviCallAudio"), 1),
+    PRESET_ENTRY_S32(CVAR_AUDIO("DisableNaviCallAudio"), 1),
 
     // Equipment Toggle
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("EquipmentCanBeRemoved"), 1),
@@ -436,7 +436,7 @@ const std::vector<PresetEntry> spockRacePresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FasterBlockPush"), 5),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FasterHeavyBlockLift"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("NoForcedNavi"), 1),
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DisableNaviCallAudio"), 1),
+    PRESET_ENTRY_S32(CVAR_AUDIO("DisableNaviCallAudio"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastChests"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastDrops"), 1),
     PRESET_ENTRY_S32(CVAR_SETTING("DpadInText"), 1),
@@ -531,7 +531,7 @@ const std::vector<PresetEntry> spockRaceNoLogicPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("CustomizeFishing"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DampeAllNight"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DayGravePull"), 1),
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DisableNaviCallAudio"), 1),
+    PRESET_ENTRY_S32(CVAR_AUDIO("DisableNaviCallAudio"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("EquipmentCanBeRemoved"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastBoomerang"), 1),

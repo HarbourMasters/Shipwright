@@ -357,7 +357,7 @@ void RegionTable_Init_FireTemple() {
     areaTable[RR_FIRE_TEMPLE_MQ_FIRST_ROOM_UPPER] = Region("Fire Temple MQ First Room Upper", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_LOWER, []{return true;}),
-        Entrance(RR_FIRE_TEMPLE_NEAR_BOSS_ROOM,      []{return logic->HasFireSource();}),
+        Entrance(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_ROOM,   []{return logic->HasFireSource();}),
         Entrance(RR_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM,    []{return Here(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_UPPER, []{return logic->CanUse(RG_MEGATON_HAMMER);});}),
     });
 

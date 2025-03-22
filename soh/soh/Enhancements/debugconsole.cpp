@@ -79,6 +79,7 @@ static bool ActorSpawnHandler(std::shared_ptr<Ship::Console> Console, const std:
             if (args[8][0] != ',') {
                 spawnPoint.rot.z = std::stoi(args[8]);
             }
+            [[fallthrough]];
         case 6:
             if (args[3][0] != ',') {
                 spawnPoint.pos.x = std::stoi(args[3]);

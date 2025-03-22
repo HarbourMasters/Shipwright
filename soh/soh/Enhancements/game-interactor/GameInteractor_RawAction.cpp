@@ -220,6 +220,9 @@ bool GameInteractor::RawAction::CheckFlag(int16_t flagType, int16_t flag) {
             return Flags_GetRandomizerInf(static_cast<RandomizerInf>(flag));
         case FlagType::FLAG_GS_TOKEN:
             return GET_GS_FLAGS((flag & 0x1F00) >> 8);
+        default:
+            assert(false);
+            return false;
     }
 }
 
@@ -564,7 +567,7 @@ void GameInteractor::RawAction::SetRandomWind(bool active) {
 void GameInteractor::RawAction::SetPlayerInvincibility(bool active) {
     Player* player = GET_PLAYER(gPlayState);
     if (active) {
-        player->invincibilityTimer = 1000;
+        player->invincibilityTimer = -20;
     } else {
         player->invincibilityTimer = 0;
     }

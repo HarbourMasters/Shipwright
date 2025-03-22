@@ -17,8 +17,8 @@ void RegionTable_Init_GerudoTrainingGround() {
 
     areaTable[RR_GERUDO_TRAINING_GROUND_LOBBY] = Region("Gerudo Training Ground Lobby", "Gerudo Training Ground", {RA_GERUDO_TRAINING_GROUND}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_GERUDO_TRAINING_GROUND_LOBBY_LEFT_CHEST,      logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT)),
-        LOCATION(RC_GERUDO_TRAINING_GROUND_LOBBY_RIGHT_CHEST,     logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_GERUDO_TRAINING_GROUND_LOBBY_LEFT_CHEST,      logic->CanHitEyeTargets()),
+        LOCATION(RC_GERUDO_TRAINING_GROUND_LOBBY_RIGHT_CHEST,     logic->CanHitEyeTargets()),
         LOCATION(RC_GERUDO_TRAINING_GROUND_STALFOS_CHEST,         logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2, true)),
         LOCATION(RC_GERUDO_TRAINING_GROUND_BEAMOS_CHEST,          logic->CanKillEnemy(RE_BEAMOS) && logic->CanKillEnemy(RE_DINOLFOS, ED_CLOSE, true, 2, true)),
         LOCATION(RC_GERUDO_TRAINING_GROUND_ENTRANCE_STORMS_FAIRY, logic->CanUse(RG_SONG_OF_STORMS)),

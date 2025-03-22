@@ -673,7 +673,7 @@ namespace Rando {
                 }
                 return killed;
             case RE_BIG_OCTO:
-                //If chasing octo is annoying but with rolls you can catch him, and you need rang to get into this room without shenanigains anyway. Bunny makes it free
+                //If chasing octo is annoying but with rolls you can catch him, and you need rang to get into this room without shenanigans anyway. Bunny makes it free
                 return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_STICKS) || CanUse(RG_MASTER_SWORD);
             case RE_GOHMA:
                 return HasBossSoul(RG_GOHMA_SOUL) && CanJumpslash() &&
@@ -1783,7 +1783,7 @@ namespace Rando {
         case ITEMTYPE_EQUIP:
         {
             RandomizerGet itemRG = item.GetRandomizerGet();
-            if (itemRG == RG_GIANTS_KNIFE) {
+            if (itemRG == RG_GIANTS_KNIFE || itemRG == RG_DEKU_SHIELD || itemRG == RG_HYLIAN_SHIELD) {
                 return;
             }
             uint32_t equipId = RandoGetToEquipFlag.find(itemRG)->second;
@@ -2277,70 +2277,69 @@ namespace Rando {
         GetSaveContext()->linkAge = !ctx->GetOption(RSK_SELECTED_STARTING_AGE).Get();
 
         //Events
-        ShowedMidoSwordAndShield   = false;
+        ShowedMidoSwordAndShield       = false;
         TH_CouldRescueF1NorthCarpenter = false;
         TH_CouldRescueF1SouthCarpenter = false;
         TH_CouldRescueF2NorthCarpenter = false;
         TH_CouldRescueF2SouthCarpenter = false;
-        GF_GateOpen                = false;
-        GtG_GateOpen               = false;
-        DampesWindmillAccess       = false;
-        DrainWell                  = false;
-        GoronCityChildFire         = false;
-        GCWoodsWarpOpen            = false;
-        GCDaruniasDoorOpenChild    = false;
-        StopGCRollingGoronAsAdult  = false;
-        CanWaterTempleLowFromHigh  = false;
-        CanWaterTempleLowFromMid   = false;
-        CanWaterTempleMiddle       = false;
-        CanWaterTempleHigh         = false;
-        KakarikoVillageGateOpen    = false;
-        KingZoraThawed             = false;
-        ForestTempleJoelle         = false;
-        ForestTempleBeth           = false;
-        ForestTempleAmy            = false;
-        ForestTempleMeg            = false;
-        FireLoopSwitch             = false;
-        LinksCow                   = false;
-        DeliverLetter              = false;
-        ClearMQDCUpperLobbyRocks   = false;
-        LoweredWaterInsideBotw     = false;
-        OpenedWestRoomMQBotw       = false;
-        OpenedMiddleHoleMQBotw     = false;
-        BrokeDeku1FWeb             = false;
-        ClearedMQDekuSERoom        = false;
-        MQDekuWaterRoomTorches     = false;
-        PushedDekuBasementBlock    = false;
-        OpenedLowestGoronCage      = false;
-        OpenedUpperFireShortcut    = false;
-        HitFireTemplePlatform      = false;
-        OpenedFireMQFireMazeDoor   = false;
-        MQForestBlockRoomTargets   = false;
-        ForestCanTwistHallway      = false;
-        ForestClearBelowBowChest   = false;
-        ForestOpenBossCorridor     = false;
-        ShadowTrialFirstChest      = false;
-        MQGTGMazeSwitch            = false;
-        GTGPlatformSilverRupees    = false;
-        MQJabuHolesRoomDoor        = false;
-        JabuWestTentacle           = false;
-        JabuEastTentacle           = false;
-        JabuNorthTentacle          = false;
-        LoweredJabuPath            = false;
-        MQJabuLiftRoomCow          = false;
-        MQShadowFloorSpikeRupees   = false;
-        ShadowShortcutBlock        = false;
-        MQWaterStalfosPit          = false;
-        MQWaterDragonTorches       = false;
-        MQWaterB1Switch            = false;
-        //MQWaterPillarSoTBlock      = false;
-        MQWaterOpenedPillarB1      = false;
-        MQSpiritCrawlBoulder       = false;
-        MQSpiritMapRoomEnemies     = false;
-        MQSpirit3SunsEnemies       = false;
-        Spirit1FSilverRupees       = false;
-        JabuRutoInB1               = false;
-        JabuRutoIn1F               = false;
+        GF_GateOpen                    = false;
+        GtG_GateOpen                   = false;
+        DampesWindmillAccess           = false;
+        DrainWell                      = false;
+        GoronCityChildFire             = false;
+        GCWoodsWarpOpen                = false;
+        GCDaruniasDoorOpenChild        = false;
+        StopGCRollingGoronAsAdult      = false;
+        CanWaterTempleLowFromHigh      = false;
+        CanWaterTempleLowFromMid       = false;
+        CanWaterTempleMiddle           = false;
+        CanWaterTempleHigh             = false;
+        KakarikoVillageGateOpen        = false;
+        KingZoraThawed                 = false;
+        ForestTempleJoelle             = false;
+        ForestTempleBeth               = false;
+        ForestTempleAmy                = false;
+        ForestTempleMeg                = false;
+        FireLoopSwitch                 = false;
+        LinksCow                       = false;
+        DeliverLetter                  = false;
+        ClearMQDCUpperLobbyRocks       = false;
+        LoweredWaterInsideBotw         = false;
+        OpenedWestRoomMQBotw           = false;
+        OpenedMiddleHoleMQBotw         = false;
+        BrokeDeku1FWeb                 = false;
+        ClearedMQDekuSERoom            = false;
+        MQDekuWaterRoomTorches         = false;
+        PushedDekuBasementBlock        = false;
+        OpenedLowestGoronCage          = false;
+        OpenedUpperFireShortcut        = false;
+        HitFireTemplePlatform          = false;
+        OpenedFireMQFireMazeDoor       = false;
+        MQForestBlockRoomTargets       = false;
+        ForestCanTwistHallway          = false;
+        ForestClearBelowBowChest       = false;
+        ForestOpenBossCorridor         = false;
+        ShadowTrialFirstChest          = false;
+        MQGTGMazeSwitch                = false;
+        GTGPlatformSilverRupees        = false;
+        MQJabuHolesRoomDoor            = false;
+        JabuWestTentacle               = false;
+        JabuEastTentacle               = false;
+        JabuNorthTentacle              = false;
+        LoweredJabuPath                = false;
+        MQJabuLiftRoomCow              = false;
+        MQShadowFloorSpikeRupees       = false;
+        ShadowShortcutBlock            = false;
+        MQWaterStalfosPit              = false;
+        MQWaterDragonTorches           = false;
+        MQWaterB1Switch                = false;
+        //MQWaterPillarSoTBlock          = false;
+        MQWaterOpenedPillarB1          = false;
+        MQSpiritCrawlBoulder           = false;
+        MQSpiritMapRoomEnemies         = false;
+        MQSpirit3SunsEnemies           = false;
+        Spirit1FSilverRupees           = false;
+        JabuRutoIn1F                   = false;
 
         StopPerformanceTimer(PT_LOGIC_RESET);
     }
