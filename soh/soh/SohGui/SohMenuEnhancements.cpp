@@ -22,6 +22,8 @@ void disableBetaQuest() {
 }
 }
 
+extern void UpdateHyperEnemiesState();
+
 namespace SohGui {
 
 extern std::shared_ptr<SohMenu> mSohMenu;

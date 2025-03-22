@@ -200,34 +200,6 @@ void RegisterHyperBosses() {
         [](int16_t fileNum) { UpdateHyperBossesState(); });
 }
 
-void UpdateHyperEnemiesState() {
-    static uint32_t actorUpdateHookId = 0;
-    if (actorUpdateHookId != 0) {
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(actorUpdateHookId);
-        actorUpdateHookId = 0;
-    }
-
-    if (CVarGetInteger(CVAR_ENHANCEMENT("HyperEnemies"), 0)) {
-        actorUpdateHookId =
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
-                // Run the update function a second time to make enemies and minibosses move and act twice as fast.
-
-                Player* player = GET_PLAYER(gPlayState);
-                Actor* actor = static_cast<Actor*>(refActor);
-
-                // Some enemies are not in the ACTORCAT_ENEMY category, and some are that aren't really enemies.
-                bool isEnemy = actor->category == ACTORCAT_ENEMY || actor->id == ACTOR_EN_TORCH2;
-                bool isExcludedEnemy = actor->id == ACTOR_EN_FIRE_ROCK || actor->id == ACTOR_EN_ENCOUNT2;
-
-                // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some cutscenes.
-                if (CVarGetInteger(CVAR_ENHANCEMENT("HyperEnemies"), 0) && isEnemy && !isExcludedEnemy &&
-                    !Player_InBlockingCsMode(gPlayState, player)) {
-                    GameInteractor::RawAction::UpdateActor(actor);
-                }
-            });
-    }
-}
-
 void UpdatePatchHand() {
     if ((CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0)) && LINK_IS_CHILD) {
         ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer1", 92,
@@ -568,7 +540,6 @@ void InitMods() {
     RegisterTTS();
     RegisterOcarinaTimeTravel();
     RegisterHyperBosses();
-    UpdateHyperEnemiesState();
     RegisterEnemyDefeatCounts();
     RegisterRandomizedEnemySizes();
     RegisterPatchHandHandler();
