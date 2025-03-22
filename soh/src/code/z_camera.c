@@ -27,6 +27,25 @@ void Camera_InitVR() {
     }
 }
 
+// Function to handle VR camera updates
+void Camera_UpdateVR(Camera* camera) {
+    if (gVRManager == NULL) {
+        return;
+    }
+
+    VRManager_UpdateHMDMatrixPose(gVRManager);
+    Vec3f rotation = VRManager_GetHMDRotation(gVRManager);
+    
+    // Update camera rotation based on HMD
+    camera->eye = rotation;
+    
+    // Handle controller input if needed
+    if (VRManager_IsControllerActive(gVRManager, ETrackedControllerRole_RightHand)) {
+        Vec3f controllerDir = VRManager_GetControllerDirection(gVRManager, ETrackedControllerRole_RightHand);
+        // Use controller direction as needed
+    }
+}
+
 s16 Camera_ChangeSettingFlags(Camera* camera, s16 setting, s16 flags);
 s32 Camera_ChangeModeFlags(Camera* camera, s16 mode, u8 flags);
 s32 Camera_QRegInit(void);

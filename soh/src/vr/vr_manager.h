@@ -11,17 +11,6 @@
 #define k_unTrackedDeviceIndex_Hmd 0
 #define k_unTrackedDeviceIndexInvalid 0xFFFFFFFF
 
-// Make sure we have the matrix type defined
-#ifndef MtxF_DEFINED
-typedef struct {
-    float xx, xy, xz, xw;
-    float yx, yy, yz, yw;
-    float zx, zy, zz, zw;
-    float wx, wy, wz, ww;
-} MtxF;
-#define MtxF_DEFINED
-#endif
-
 typedef struct {
     struct VR_IVRSystem_FnTable* pHMD;
     struct VR_IVRCompositor_FnTable* pCompositor;

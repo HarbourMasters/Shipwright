@@ -163,9 +163,9 @@ void View_SetVRStereoView(View* view, VRManager* vrManager) {
         view->viewport.topY = 0;
         view->viewport.bottomY = SCREEN_HEIGHT;
         
-        // Apply VR matrices
-        guMtxCatF(&eyeMat, &view->viewing, &view->viewing);
-        guMtxCatF(&projMat, &view->projection, &view->projection);
+        // Apply VR matrices using the mf field
+        guMtxCatF(projMat.mf, view->projection.mf, view->projection.mf);
+        guMtxCatF(eyeMat.mf, view->viewing.mf, view->viewing.mf);
     }
     
     // Mark view as needing update
@@ -456,6 +456,11 @@ s32 func_800AAA9C(View* view) {
                      view->scale, aspect, view->normal);
 
         Matrix_MtxToMtxF(projection, &mf);
+        osSyncPrintf("projection\n");
+        for (i = 0; i < 4; i++) {
+            osSyncPrintf("	%f	%f	%f	%f\n", mf.mf[i][0], mf.mf[i][1], mf.mf[i][2], mf.mf[i][3]);
+        }
+        osSyncPrintf("\n");
     }
     if (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) {
         MtxF flipF;
@@ -492,6 +497,11 @@ s32 func_800AAA9C(View* view) {
         MtxF mf;
 
         Matrix_MtxToMtxF(view->viewingPtr, &mf);
+        osSyncPrintf("viewing\n");
+        for (i = 0; i < 4; i++) {
+            osSyncPrintf("	%f	%f	%f	%f\n", mf.mf[i][0], mf.mf[i][1], mf.mf[i][2], mf.mf[i][3]);
+        }
+        osSyncPrintf("\n");
     }
     gSPMatrix(POLY_OPA_DISP++, viewing, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
     gSPMatrix(POLY_XLU_DISP++, viewing, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
