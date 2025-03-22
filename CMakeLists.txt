@@ -305,3 +305,18 @@ include_directories(${OPENVR_INCLUDE_DIRS})
 target_link_libraries(soh PRIVATE
     ${OPENVR_LIBRARIES}
 )
+
+# OpenVR
+if(ENABLE_VR)
+    find_library(OPENVR_LIBRARY
+        NAMES openvr_api
+        PATHS ${CMAKE_SOURCE_DIR}/lib
+    )
+    if(NOT OPENVR_LIBRARY)
+        message(FATAL_ERROR "OpenVR library not found. Please make sure openvr_api.lib is in the lib directory.")
+    endif()
+    
+    add_definitions(-DENABLE_VR)
+    include_directories(${CMAKE_SOURCE_DIR}/include/openvr)
+    target_link_libraries(${PROJECT_NAME} ${OPENVR_LIBRARY})
+endif()
