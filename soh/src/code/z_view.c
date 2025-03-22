@@ -456,11 +456,6 @@ s32 func_800AAA9C(View* view) {
                      view->scale, aspect, view->normal);
 
         Matrix_MtxToMtxF(projection, &mf);
-        osSyncPrintf("projection\n");
-        for (i = 0; i < 4; i++) {
-            osSyncPrintf("	%f	%f	%f	%f\n", mf[i][0], mf[i][1], mf[i][2], mf[i][3]);
-        }
-        osSyncPrintf("\n");
     }
     if (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) {
         MtxF flipF;
@@ -497,11 +492,6 @@ s32 func_800AAA9C(View* view) {
         MtxF mf;
 
         Matrix_MtxToMtxF(view->viewingPtr, &mf);
-        osSyncPrintf("viewing\n");
-        for (i = 0; i < 4; i++) {
-            osSyncPrintf("	%f	%f	%f	%f\n", mf[i][0], mf[i][1], mf[i][2], mf[i][3]);
-        }
-        osSyncPrintf("\n");
     }
     gSPMatrix(POLY_OPA_DISP++, viewing, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
     gSPMatrix(POLY_XLU_DISP++, viewing, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
