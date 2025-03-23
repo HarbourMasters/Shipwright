@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef RANDODUNGEON_H
+#define RANDODUNGEON_H
+
 #include "randomizerTypes.h"
 
 #include <array>
@@ -94,3 +97,4 @@ class Dungeons {
     std::array<DungeonInfo, 12> dungeonList;
 };
 }
+#endif //RANDODUNGEON_H

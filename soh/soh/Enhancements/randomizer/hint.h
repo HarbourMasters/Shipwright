@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef RANDOHINT_H
+#define RANDOHINT_H
+
 #include "3drando/text.hpp"
 #include "3drando/hints.hpp"
 #include "../custom-message/CustomMessageManager.h"
@@ -80,3 +83,4 @@ class Hint {
      std::vector<uint8_t> areaNamesChosen = {};
 };
 }
+#endif //RANDOHINT_H

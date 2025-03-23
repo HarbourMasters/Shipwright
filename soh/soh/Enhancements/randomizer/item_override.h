@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef RANDOITEMOVERRIDE_H
+#define RANDOITEMOVERRIDE_H
+
 #include "randomizerTypes.h"
 #include "3drando/text.hpp"
 
@@ -21,3 +24,4 @@ class ItemOverride {
     Text mTrickName;
 };
 } // namespace Rando
+#endif //RANDOITEMOVERRIDE_H

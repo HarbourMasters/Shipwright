@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef RANDOFILL_H
+#define RANDOFILL_H
+
 #include "../randomizerTypes.h"
 #include "../location_access.h"
 #include "../entrance.h"
@@ -69,3 +72,4 @@ void GeneratePlaythrough();
 bool CheckBeatable(RandomizerGet ignore=RG_NONE);
 
 void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAccess);
+#endif //RANDOFILL_H

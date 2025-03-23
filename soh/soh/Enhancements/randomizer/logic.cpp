@@ -9,7 +9,7 @@
 
 #include "soh/OTRGlobals.h"
 #include "dungeon.h"
-#include "context.h"
+#include "SeedContext.h"
 #include "macros.h"
 #include "variables.h"
 #include <spdlog/spdlog.h>

@@ -2,7 +2,7 @@
 #include "functions.h"
 #include "macros.h"
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
-#include "soh/Enhancements/randomizer/context.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "variables.h"
 #include "soh/OTRGlobals.h"

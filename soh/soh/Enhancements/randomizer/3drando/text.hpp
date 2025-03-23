@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef RANDOTEXT_H
+#define RANDOTEXT_H
+
 #include <string>
 #include <stdint.h>
 
@@ -160,3 +163,4 @@ public:
     std::string spanish = "";
     std::string german = "";
 };
+#endif //RANDOTEXT_H

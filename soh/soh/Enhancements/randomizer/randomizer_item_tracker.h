@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef RANDOITEMTRACKER_H
+#define RANDOITEMTRACKER_H
+
 #include <string>
 #include <vector>
 #include <cstdint>
@@ -54,3 +57,4 @@ protected:
     void DrawElement() override;
     void UpdateElement() override {};
 };
+#endif //RANDOITEMTRACKER_H

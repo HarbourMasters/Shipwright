@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef RANDOTYPES_H
+#define RANDOTYPES_H
+
 #include <stdint.h>
 #include "z64item.h"
 #include "randomizer_inf.h"
@@ -5819,3 +5822,4 @@ typedef enum {
     /* 0x20 */ GROTTO_LW_DEKU_THEATRE_OFFSET,
     /* 0x21 */ GROTTO_OFFSET_MAX,
 } GrottoEntranceOffsets;
+#endif //RANDOOTYPES_H

@@ -17,6 +17,9 @@ void SohMenu::AddMenuRandomizer() {
         .CVar(CVAR_WINDOW("RandomizerSettings"))
         .WindowName("Randomizer Settings")
         .Options(WindowButtonOptions().Tooltip("Enables the separate Randomizer Settings Window."));
+    
+    auto randoSettings = Rando::Settings::GetInstance();
+    randoSettings->GetOptionGroup(RSG_WORLD_IMGUI_TABLE).AddWidgets(path);
 
     // Enhancements
     path.sidebarName = "Enhancements";

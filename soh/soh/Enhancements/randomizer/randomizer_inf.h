@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef RANDOMIZERINF_H
+#define RANDOMIZERINF_H
+
 typedef enum {
     RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE,
     RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE,
@@ -1353,3 +1356,4 @@ typedef enum {
 
     RAND_INF_MAX,
 } RandomizerInf;
+#endif //RANDOMIZERINF_H

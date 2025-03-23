@@ -1,4 +1,8 @@
 #pragma once
+
+#ifndef ITEMTABLETYPES_H
+#define ITEMTABLETYPES_H
+
 #ifdef __cplusplus
 #include <stdint.h>
 #endif
@@ -60,3 +64,4 @@ typedef struct GetItemEntry {
     /* 0x11 */ uint16_t drawModIndex; // Will be a copy of modIndex unless the item is an ice trap. Needed for particles to function on ice traps.
     CustomDrawFunc drawFunc;
 } GetItemEntry; // size = 0x11
+#endif //ITEMTABLETYPES_H

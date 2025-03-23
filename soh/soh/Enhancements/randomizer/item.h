@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef RANDOITEM_H
+#define RANDOITEM_H
+
 #include <string>
 #include <variant>
 #include <memory>
@@ -76,3 +79,4 @@ class Item {
     std::shared_ptr<GetItemEntry> giEntry;
 };
 }
+#endif //RANDOITEM_H

@@ -1,4 +1,8 @@
 #pragma once
+
+#ifndef RANDOENTRANCE_H
+#define RANDOENTRANCE_H
+
 #ifdef __cplusplus
 
 #include "randomizerTypes.h"
@@ -154,3 +158,4 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
+#endif //RANDOENTRANCE_H

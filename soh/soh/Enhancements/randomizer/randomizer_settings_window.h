@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef RANDOSETTINGSWINDOW_H
+#define RANDOSETTINGSWINDOW_H
+
 #include <libultraship/libultraship.h>
 
 namespace Rando {
@@ -18,3 +21,4 @@ class RandomizerSettingsWindow : public Ship::GuiWindow {
     bool mNeedsUpdate = false;
     std::shared_ptr<Rando::Settings> mSettings;
 };
+#endif //RANDOSETTINGSWINDOW_H

@@ -1,4 +1,8 @@
 #pragma once
+
+#ifndef RANDOCHECKOBJECTS_H
+#define RANDOCHECKOBJECTS_H
+
 #include "randomizerTypes.h"
 #include "z64actor_enum.h"
 #include "z64scene.h"
@@ -15,3 +19,4 @@ namespace RandomizerCheckObjects {
     RandomizerCheckArea GetRCAreaBySceneID(SceneID sceneId);
     void UpdateImGuiVisibility();
 }
+#endif //RANDOCHECKOBJECTS_H

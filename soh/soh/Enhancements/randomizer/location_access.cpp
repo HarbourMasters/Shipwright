@@ -2,7 +2,7 @@
 
 #include "soh/Enhancements/randomizer/dungeon.h"
 #include "soh/Enhancements/randomizer/static_data.h"
-#include "soh/Enhancements/randomizer/context.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/randomizer/3drando/item_pool.hpp"
 #include "soh/Enhancements/randomizer/3drando/spoiler_log.hpp"
 #include "soh/Enhancements/randomizer/trial.h"

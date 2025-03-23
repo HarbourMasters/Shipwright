@@ -1,7 +1,7 @@
 #include "item.h"
 #include "item_location.h"
 
-#include "context.h"
+#include "SeedContext.h"
 #include "logic.h"
 #include "3drando/item_pool.hpp"
 #include "z64item.h"

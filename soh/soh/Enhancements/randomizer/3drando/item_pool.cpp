@@ -3,7 +3,7 @@
 #include "../dungeon.h"
 #include "fill.hpp"
 #include "../static_data.h"
-#include "../context.h"
+#include "../SeedContext.h"
 #include "pool_functions.hpp"
 #include "random.hpp"
 #include "spoiler_log.hpp"

@@ -1,35 +1,43 @@
 #include "option.h"
 #include "libultraship/bridge.h"
-#include <Context.h>
 #include <imgui.h>
 #include "soh/SohGui/SohGui.hpp"
+#include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/UIWidgets.hpp"
 #include <soh/cvar_prefixes.h>
+
+namespace SohGui{
+    extern std::shared_ptr<SohMenu> mSohMenu;
+}
 
 namespace Rando {
 Option Option::Bool(RandomizerSettingKey key_, std::string name_, std::vector<std::string> options_,
                     const OptionCategory category_, std::string cvarName_, std::string description_,
-                    WidgetType widgetType_, const uint8_t defaultOption_, const bool defaultHidden_, int imFlags_) {
+                    WidgetType widgetType_, const uint8_t defaultOption_, const bool defaultHidden_,
+                    WidgetFunc callback_, int imFlags_) {
     return {static_cast<size_t>(key_), std::move(name_), std::move(options_), category_,
-            std::move(cvarName_), std::move(description_), widgetType_, defaultOption_, defaultHidden_, imFlags_};
+            std::move(cvarName_), std::move(description_), widgetType_, defaultOption_, defaultHidden_,
+            callback_, imFlags_};
 }
 
 Option Option::Bool(RandomizerSettingKey key_, std::string name_, std::string cvarName_, std::string description_,
-                    const int imFlags_, const WidgetType widgetType_, const bool defaultOption_) {
+                    const int imFlags_, const WidgetType widgetType_, const bool defaultOption_,
+                    WidgetFunc callback_) {
     return Option(key_, std::move(name_), {"Off", "On"}, OptionCategory::Setting, std::move(cvarName_),
-                  std::move(description_), widgetType_, defaultOption_, false, imFlags_);
+                  std::move(description_), widgetType_, defaultOption_, false, callback_, imFlags_);
 }
 
 Option Option::U8(RandomizerSettingKey key_, std::string name_, std::vector<std::string> options_,
                   const OptionCategory category_, std::string cvarName_, std::string description_,
-                  WidgetType widgetType_, const uint8_t defaultOption_, const bool defaultHidden_, int imFlags_) {
+                  WidgetType widgetType_, const uint8_t defaultOption_, const bool defaultHidden_,
+                  WidgetFunc callback_, int imFlags_) {
     return {static_cast<size_t>(key_), std::move(name_), std::move(options_), category_, std::move(cvarName_),
-                  std::move(description_), widgetType_, defaultOption_, defaultHidden_, imFlags_};
+                  std::move(description_), widgetType_, defaultOption_, defaultHidden_, callback_, imFlags_};
 }
 
 Option Option::LogicTrick(RandomizerTrick rt_, std::string name_) {
     return Option(rt_, std::move(name_), { "Disabled", "Enabled" }, OptionCategory::Setting, "",
-                  "", WidgetType::Checkbox, 0, false, IMFLAG_NONE);
+                  "", WIDGET_CVAR_CHECKBOX, 0, false, nullptr, IMFLAG_NONE);
 }
 
 OptionValue::OptionValue(uint8_t val) : mVal(val) {}
@@ -128,14 +136,16 @@ bool Option::RenderImGui() {
     bool changed = false;
     ImGui::BeginGroup();
     switch (widgetType) {
-        case WidgetType::Checkbox:
+        case WIDGET_CVAR_CHECKBOX:
             changed = RenderCheckbox();
             break;
-        case WidgetType::Combobox:
+        case WIDGET_CVAR_COMBOBOX:
             changed = RenderCombobox();
             break;
-        case WidgetType::Slider:
+        case WIDGET_CVAR_SLIDER_INT:
             changed = RenderSlider();
+            break;
+        default:
             break;
     }
     ImGui::EndGroup();
@@ -179,12 +189,40 @@ void Option::SetContextIndexFromText(const std::string text) {
 
 Option::Option(size_t key_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
                std::string cvarName_, std::string description_, WidgetType widgetType_, uint8_t defaultOption_,
-               bool defaultHidden_, int imFlags_)
+               bool defaultHidden_, WidgetFunc callback_, int imFlags_)
     : key(key_), name(std::move(name_)), options(std::move(options_)), category(category_),
       cvarName(std::move(cvarName_)), description(std::move(description_)), widgetType(widgetType_),
-      defaultOption(defaultOption_), defaultHidden(defaultHidden_), imFlags(imFlags_) {
+      defaultOption(defaultOption_), defaultHidden(defaultHidden_), callback(callback_), imFlags(imFlags_) {
     contextSelection = defaultOption;
     hidden = defaultHidden;
+    switch (widgetType) {
+        case WIDGET_CVAR_CHECKBOX:
+            widgetOptions = std::make_shared<UIWidgets::WidgetOptions>(UIWidgets::CheckboxOptions()
+                .DefaultValue(defaultOption)
+                .Tooltip(description.c_str()));
+            break;
+        case WIDGET_CVAR_COMBOBOX: {
+            std::unordered_map<int32_t, const char*> optionsMap = {};
+            for (int i = 0; i < options.size(); i++) {
+                optionsMap.emplace(i, options[i].c_str());
+            }
+            widgetOptions = std::make_shared<UIWidgets::WidgetOptions>(UIWidgets::ComboboxOptions()
+                .DefaultIndex(defaultOption)
+                .ComboMap(optionsMap)
+                .Tooltip(description.c_str()));
+            }
+            break;
+        case WIDGET_CVAR_SLIDER_INT:
+            widgetOptions = std::make_shared<UIWidgets::WidgetOptions>(UIWidgets::IntSliderOptions()
+                .DefaultValue(defaultOption)
+                .Tooltip(description.c_str())
+                .Min(0)
+                .Max(options.size() - 1)
+                .Format(options[defaultOption].c_str()));
+            break;
+        default:
+            break;
+    }
     PopulateTextToNum();
 }
 
@@ -250,6 +288,13 @@ bool Option::RenderSlider() {
     return changed;
 }
 
+void Option::AddWidget(WidgetPath& path) const {
+    SohGui::mSohMenu->AddWidget(path, name, widgetType)
+        .Callback(callback)
+        .CVar(cvarName.c_str())
+        .Options(widgetOptions);
+}
+
 void Option::PopulateTextToNum(){
     for (uint8_t count = 0; count < options.size(); count++){
         optionsTextToVar[options[count]] = count;
@@ -257,8 +302,8 @@ void Option::PopulateTextToNum(){
 }
 
 LocationOption::LocationOption(RandomizerCheck key_, const std::string& name_) : 
-    Option(key_, name_, {"Included", "Excluded"}, OptionCategory::Setting, "", "", WidgetType::Checkbox,
-           RO_LOCATION_INCLUDE, false, IMFLAG_NONE) {}
+    Option(key_, name_, {"Included", "Excluded"}, OptionCategory::Setting, "", "", WIDGET_CVAR_CHECKBOX,
+           RO_LOCATION_INCLUDE, false, nullptr, IMFLAG_NONE) {}
 
 RandomizerCheck LocationOption::GetKey() const {
     return static_cast<RandomizerCheck>(key);
@@ -266,7 +311,7 @@ RandomizerCheck LocationOption::GetKey() const {
 
 TrickOption::TrickOption(RandomizerTrick key_, const RandomizerCheckQuest quest_, const RandomizerArea area_, std::set<Tricks::Tag> tags_, const std::string& name_, std::string description_) :
     Option(key_, name_, {"Disabled", "Enabled"}, OptionCategory::Setting, "",
-        std::move(description_), WidgetType::Checkbox, 0, false, IMFLAG_NONE),
+        std::move(description_), WIDGET_CVAR_CHECKBOX, 0, false, nullptr, IMFLAG_NONE),
     mQuest(quest_), mArea(area_), mTags(std::move(tags_)) {}
 
 TrickOption TrickOption::LogicTrick(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_, std::set<Tricks::Tag> tags_, const std::string& name_, std::string description_) {
@@ -351,6 +396,29 @@ void OptionGroup::Enable() {
 
 void OptionGroup::Disable() {
     mDisabled = true;
+}
+
+void OptionGroup::AddWidgets(WidgetPath& path) const {
+    if (mContainerType == WidgetContainerType::TABLE) {
+        path.column = SECTION_COLUMN_1;
+        SohGui::mSohMenu->AddSidebarEntry("Randomizer", mName, 3);
+    }
+    if (mContainerType == WidgetContainerType::COLUMN) {
+        assert(path.column < 4);
+        path.column = static_cast<SectionColumns>(path.column + 1);
+    }
+    if (mContainerType == WidgetContainerType::SECTION) {
+        SohGui::mSohMenu->AddWidget(path, mName.c_str(), WIDGET_SEPARATOR_TEXT);
+    }
+    if (mContainsType == OptionGroupType::SUBGROUP) {
+        for (const auto optionGroup : mSubGroups) {
+            optionGroup->AddWidgets(path);
+        }
+    } else {
+        for (const auto option : mOptions) {
+            option->AddWidget(path);
+        }
+    }
 }
 
 bool OptionGroup::RenderImGui() const { // NOLINT(*-no-recursion)

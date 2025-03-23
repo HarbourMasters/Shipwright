@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef RANDOMENU_H
+#define RANDOMENU_H
+
 #include <string>
 #include <unordered_map>
 #include <set>
@@ -14,3 +17,4 @@
 #define RESET_TO_DEFAULTS 8
 
 bool GenerateRandomizer(std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks, std::string seedInput);
+#endif //RANDMENU_H

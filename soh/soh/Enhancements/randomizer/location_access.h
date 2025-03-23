@@ -1,12 +1,15 @@
 #pragma once
 
+#ifndef RANDOLOCATIONACCESS_H
+#define RANDOLOCATIONACCESS_H
+
 #include <string>
 #include <vector>
 #include <list>
 #include <set>
 
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
-#include "soh/Enhancements/randomizer/context.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/randomizer/logic.h"
 
 typedef bool (*ConditionFn)();
@@ -357,3 +360,4 @@ void RegionTable_Init_BottomOfTheWell();
 void RegionTable_Init_IceCavern();
 void RegionTable_Init_GerudoTrainingGround();
 void RegionTable_Init_GanonsCastle();
+#endif //RANDOLOCATIONACCESS_H

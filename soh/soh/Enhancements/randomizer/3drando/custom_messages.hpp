@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef RANDOCM_H
+#define RANDOCM_H
+
 #include <string>
 #include <cstdint>
 
@@ -31,3 +34,4 @@ namespace CustomMessages {
     std::string MQ_ELSE();
     std::string MQ_END();
 }
+#endif //RANDOCM_H

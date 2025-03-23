@@ -1,6 +1,6 @@
 #include "randomizer_check_objects.h"
 #include "static_data.h"
-#include "context.h"
+#include "SeedContext.h"
 #include <map>
 #include <string>
 #include <libultraship/bridge.h>

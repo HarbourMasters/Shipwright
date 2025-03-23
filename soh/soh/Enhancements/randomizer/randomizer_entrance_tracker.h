@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef RANDOENTRANCETRACKER_H
+#define RANDOENTRANCETRACKER_H
+
 #include <string>
 #include <vector>
 #include <cstdint>
@@ -106,3 +109,4 @@ class EntranceTrackerWindow : public Ship::GuiWindow {
     void DrawElement() override;
     void UpdateElement() override {};
 };
+#endif //RANDOENTRANCETRACKER_H

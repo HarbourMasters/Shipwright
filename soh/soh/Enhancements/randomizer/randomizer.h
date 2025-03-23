@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef RANDOMIZER_H
+#define RANDOMIZER_H
+
 #include <unordered_map>
 #include <unordered_set>
 #include <string>
@@ -7,7 +10,7 @@
 #include <libultraship/libultra.h>
 #include "z64item.h"
 #include <memory>
-#include "context.h"
+#include "SeedContext.h"
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
 #include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
@@ -79,4 +82,4 @@ bool GenerateRandomizer(std::string seed = "");
 #ifdef __cplusplus
 }
 #endif
-
+#endif //RANDOMIZER_H

@@ -1,7 +1,10 @@
 #pragma once
 
+#ifndef RANDOLOGIC_H
+#define RANDOLOGIC_H
+
 #include "randomizerTypes.h"
-#include "context.h"
+#include "SeedContext.h"
 #include <cstdint>
 
 namespace Rando {
@@ -285,3 +288,4 @@ class Logic {
     bool inLogic[LOGIC_MAX];
 }; // class Logic
 } // namespace Rando
+#endif //RANDOLOGIC_H

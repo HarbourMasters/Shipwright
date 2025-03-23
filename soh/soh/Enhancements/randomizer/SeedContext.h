@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef RANDOCONTEXT_H
+#define RANDOCONTEXT_H
+
 #include "randomizerTypes.h"
 #include "z64save.h"
 #include "item_location.h"
@@ -182,3 +185,4 @@ class Context {
     uint32_t mFinalSeed = 0;
 };
 } // namespace Rando
+#endif //RANDOCONTEXT_H

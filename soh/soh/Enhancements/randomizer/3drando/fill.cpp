@@ -1,7 +1,7 @@
 #include "fill.hpp"
 
 #include "../dungeon.h"
-#include "../context.h"
+#include "../SeedContext.h"
 #include "item_pool.hpp"
 #include "random.hpp"
 #include "spoiler_log.hpp"

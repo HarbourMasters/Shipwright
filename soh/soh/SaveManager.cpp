@@ -1,7 +1,7 @@
 #include "SaveManager.h"
 #include "OTRGlobals.h"
 #include "Enhancements/game-interactor/GameInteractor.h"
-#include "Enhancements/randomizer/context.h"
+#include "Enhancements/randomizer/SeedContext.h"
 #include "Enhancements/randomizer/entrance.h"
 #include "Enhancements/randomizer/dungeon.h"
 #include "Enhancements/randomizer/trial.h"
