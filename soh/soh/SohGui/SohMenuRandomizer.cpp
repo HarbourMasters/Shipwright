@@ -19,10 +19,16 @@ void SohMenu::AddMenuRandomizer() {
         .Options(WindowButtonOptions().Tooltip("Enables the separate Randomizer Settings Window."));
     
     auto randoSettings = Rando::Settings::GetInstance();
+    randoSettings->CreateOptions();
     randoSettings->GetOptionGroup(RSG_WORLD_IMGUI_TABLE).AddWidgets(path);
+    randoSettings->GetOptionGroup(RSG_ITEMS_IMGUI_TABLE).AddWidgets(path);
+    randoSettings->GetOptionGroup(RSG_GAMEPLAY_IMGUI_TABLE).AddWidgets(path);
+    randoSettings->GetOptionGroup(RSG_STARTING_INVENTORY_IMGUI_TABLE).AddWidgets(path);
+
 
     // Enhancements
     path.sidebarName = "Enhancements";
+    path.column = SECTION_COLUMN_1;
     AddSidebarEntry("Randomizer", path.sidebarName, 3);
     AddWidget(path, "Randomizer Enhancements", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Rando-Relevant Navi Hints", WIDGET_CVAR_CHECKBOX)

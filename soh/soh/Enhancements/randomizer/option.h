@@ -335,6 +335,7 @@ protected:
     std::unordered_map<std::string, uint8_t> optionsTextToVar = {};
     std::shared_ptr<UIWidgets::WidgetOptions> widgetOptions;
     WidgetFunc callback;
+    std::unordered_map<int32_t, const char*> optionsMap = {};
 };
 
 class LocationOption : public Option {

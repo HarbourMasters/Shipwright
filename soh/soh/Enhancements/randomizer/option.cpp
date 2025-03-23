@@ -195,25 +195,23 @@ Option::Option(size_t key_, std::string name_, std::vector<std::string> options_
       defaultOption(defaultOption_), defaultHidden(defaultHidden_), callback(callback_), imFlags(imFlags_) {
     contextSelection = defaultOption;
     hidden = defaultHidden;
+    for (int i = 0; i < options.size(); i++) {
+        optionsMap.emplace(i, options[i].c_str());
+    }
     switch (widgetType) {
         case WIDGET_CVAR_CHECKBOX:
-            widgetOptions = std::make_shared<UIWidgets::WidgetOptions>(UIWidgets::CheckboxOptions()
+            widgetOptions = std::make_shared<UIWidgets::CheckboxOptions>(UIWidgets::CheckboxOptions()
                 .DefaultValue(defaultOption)
                 .Tooltip(description.c_str()));
             break;
-        case WIDGET_CVAR_COMBOBOX: {
-            std::unordered_map<int32_t, const char*> optionsMap = {};
-            for (int i = 0; i < options.size(); i++) {
-                optionsMap.emplace(i, options[i].c_str());
-            }
-            widgetOptions = std::make_shared<UIWidgets::WidgetOptions>(UIWidgets::ComboboxOptions()
+        case WIDGET_CVAR_COMBOBOX:
+           widgetOptions = std::make_shared<UIWidgets::ComboboxOptions>(UIWidgets::ComboboxOptions()
                 .DefaultIndex(defaultOption)
                 .ComboMap(optionsMap)
                 .Tooltip(description.c_str()));
-            }
             break;
         case WIDGET_CVAR_SLIDER_INT:
-            widgetOptions = std::make_shared<UIWidgets::WidgetOptions>(UIWidgets::IntSliderOptions()
+            widgetOptions = std::make_shared<UIWidgets::IntSliderOptions>(UIWidgets::IntSliderOptions()
                 .DefaultValue(defaultOption)
                 .Tooltip(description.c_str())
                 .Min(0)
@@ -401,14 +399,13 @@ void OptionGroup::Disable() {
 void OptionGroup::AddWidgets(WidgetPath& path) const {
     if (mContainerType == WidgetContainerType::TABLE) {
         path.column = SECTION_COLUMN_1;
-        SohGui::mSohMenu->AddSidebarEntry("Randomizer", mName, 3);
+        path.sidebarName = mName;
+        SohGui::mSohMenu->AddSidebarEntry("Randomizer", path.sidebarName, 3);
     }
-    if (mContainerType == WidgetContainerType::COLUMN) {
-        assert(path.column < 4);
-        path.column = static_cast<SectionColumns>(path.column + 1);
-    }
-    if (mContainerType == WidgetContainerType::SECTION) {
-        SohGui::mSohMenu->AddWidget(path, mName.c_str(), WIDGET_SEPARATOR_TEXT);
+    if (mContainerType == WidgetContainerType::SECTION || mContainerType == WidgetContainerType::COLUMN) {
+        if (!mName.empty()) {
+            SohGui::mSohMenu->AddWidget(path, mName.c_str(), WIDGET_SEPARATOR_TEXT);
+        }
     }
     if (mContainsType == OptionGroupType::SUBGROUP) {
         for (const auto optionGroup : mSubGroups) {
@@ -418,6 +415,10 @@ void OptionGroup::AddWidgets(WidgetPath& path) const {
         for (const auto option : mOptions) {
             option->AddWidget(path);
         }
+    }
+    if (mContainerType == WidgetContainerType::COLUMN) {
+        assert(path.column < 3);
+        path.column = static_cast<SectionColumns>(path.column + 1);
     }
 }
 
