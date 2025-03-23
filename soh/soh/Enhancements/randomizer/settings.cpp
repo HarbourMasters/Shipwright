@@ -1268,7 +1268,8 @@ void Settings::UpdateOptionProperties() {
         mOptions[RSK_GANONS_TRIALS].Enable();
         mOptions[RSK_TRIAL_COUNT].Enable();
         // Only show the trial count slider if Trials is set to Set Number
-        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("GanonTrial"), RO_GANONS_TRIALS_SKIP) == RO_GANONS_TRIALS_SET_NUMBER) {
+        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("GanonTrial"), RO_GANONS_TRIALS_SET_NUMBER) ==
+            RO_GANONS_TRIALS_SET_NUMBER) {
             mOptions[RSK_GANONS_TRIALS].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
             mOptions[RSK_TRIAL_COUNT].Unhide();
         } else {
