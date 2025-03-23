@@ -727,7 +727,7 @@ void Menu::DrawElement() {
 
     std::string sectionIndex = CVarGetString(sidebarCvar, "");
     if (!sidebar->contains(sectionIndex)) {
-        sectionIndex = sidebar->begin()->first;
+        sectionIndex = menuEntries.at(headerIndex).sidebarOrder.at(0);
     }
     float sectionCenterX = pos.x + (sidebarWidth / 2);
     float topY = pos.y;
