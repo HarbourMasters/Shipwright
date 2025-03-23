@@ -113,7 +113,7 @@ void SohMenu::AddMenuSettings() {
 
     AddWidget(path, "Boot", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Boot Sequence", WIDGET_CVAR_COMBOBOX)
-        .CVar(CVAR_ENHANCEMENT("BootSequence"))
+        .CVar(CVAR_SETTING("BootSequence"))
         .Options(ComboboxOptions()
                      .DefaultIndex(BOOTSEQUENCE_DEFAULT)
                      .LabelPosition(LabelPositions::Far)
