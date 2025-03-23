@@ -52,7 +52,7 @@ const char* enemyNameList[] = {
     "Like-Like",            "Lizalfos",            "Mad Scrub",            "Wolfos (Normal)",
     "Peahat Larva",         "Redead",              "Red Tektite",          "Shabom",
     "Shell Blade",          "Skulltula",           "Small Deku Baba",      "Stalchild (Small)",
-    "Spike",                "Stalfos",             "Stinger",              "Tailparasan",
+    "Spike",                "Stalfos",             "Stinger",              "Tailpasaran",
     "Torch Slug",           "Wallmaster",          "Iron Knuckle (White)", "Wolfos (White)",
     "Withered Deku Baba",
 };
@@ -102,7 +102,7 @@ static EnemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] =
     { ACTOR_EN_NY, 0 },         // Spike (rolling enemy)
     { ACTOR_EN_TEST, 2 },       // Stalfos
     { ACTOR_EN_EIYER, 10 },     // Stinger (land) (One in formation, sink under floor and do not activate)
-    { ACTOR_EN_TP, -1 },        // Electric Tailparasan
+    { ACTOR_EN_TP, -1 },        // Electric Tailpasaran
     { ACTOR_EN_BW, 0 },         // Torch Slug
     { ACTOR_EN_WALLMAS, 1 },    // Wallmaster
     { ACTOR_EN_WF, 1 },         // Wolfos (white)
@@ -132,7 +132,7 @@ static int enemiesToRandomize[] = {
     ACTOR_EN_DODOJR,    // Baby Dodongo
     ACTOR_EN_TORCH2,    // Dark Link
     ACTOR_EN_BILI,      // Biri (small jellyfish)
-    ACTOR_EN_TP,        // Electric Tailparasan
+    ACTOR_EN_TP,        // Electric Tailpasaran
     ACTOR_EN_ST,        // Skulltula (normal, big, invisible)
     ACTOR_EN_BW,        // Torch Slug
     ACTOR_EN_EIYER,     // Stinger (land)
