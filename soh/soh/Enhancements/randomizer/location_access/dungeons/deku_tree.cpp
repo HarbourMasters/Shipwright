@@ -84,6 +84,8 @@ void RegionTable_Init_DekuTree() {
         LOCATION(RC_DEKU_TREE_BASEMENT_CHEST,    true),
         LOCATION(RC_DEKU_TREE_GS_BASEMENT_GATE,  logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_SHORT_JUMPSLASH)),
         LOCATION(RC_DEKU_TREE_GS_BASEMENT_VINES, logic->CanKillEnemy(RE_GOLD_SKULLTULA, ctx->GetTrickOption(RT_DEKU_MQ_COMPASS_GS) ? ED_SHORT_JUMPSLASH : ED_BOMB_THROW)),
+        LOCATION(RC_DEKU_TREE_BASEMENT_GRASS_1,  logic->CanCutShrubs()),
+        LOCATION(RC_DEKU_TREE_BASEMENT_GRASS_2,  logic->CanCutShrubs()),
     }, {
         //Exits
         Entrance(RR_DEKU_TREE_LOBBY,               []{return true;}),
