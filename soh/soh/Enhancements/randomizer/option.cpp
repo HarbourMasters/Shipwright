@@ -62,8 +62,8 @@ const std::string& Option::GetDescription() const {
     return description;
 }
 
-uint8_t Option::GetMenuOptionIndex() const {
-    return menuSelection;
+uint8_t Option::GetOptionIndex() const {
+    return CVarGetInteger(cvarName.c_str(), defaultOption);
 }
 
 const std::string& Option::GetOptionText(size_t index) const {
@@ -74,31 +74,12 @@ const std::string& Option::GetCVarName() const {
     return cvarName;
 }
 
-void Option::SaveCVar() const {
-    if (!cvarName.empty()) {
-        CVarSetInteger(cvarName.c_str(), GetMenuOptionIndex());
-    }
-}
-
-void Option::SetFromCVar() {
-    if (!cvarName.empty()) {
-        SetMenuIndex(CVarGetInteger(cvarName.c_str(), defaultOption));
-    }
-}
-
 void Option::SetDelayedOption() {
     delayedSelection = contextSelection;
 }
 
 void Option::RestoreDelayedOption() {
     contextSelection = delayedSelection;
-}
-
-void Option::SetMenuIndex(size_t idx) {
-    menuSelection = idx;
-    if (menuSelection > options.size() - 1) {
-        menuSelection = options.size() - 1;
-    }
 }
 
 void Option::SetContextIndex(size_t idx) {
@@ -122,8 +103,8 @@ bool Option::IsHidden() const {
 }
 
 void Option::ChangeOptions(std::vector<std::string> opts) {
-    if (menuSelection >= opts.size()) {
-        menuSelection = opts.size() - 1;
+    if (GetOptionIndex() >= opts.size()) {
+        CVarSetInteger(cvarName.c_str(), opts.size() - 1);
     }
     options = std::move(opts);
 }
@@ -202,10 +183,9 @@ Option::Option(size_t key_, std::string name_, std::vector<std::string> options_
     : key(key_), name(std::move(name_)), options(std::move(options_)), category(category_),
       cvarName(std::move(cvarName_)), description(std::move(description_)), widgetType(widgetType_),
       defaultOption(defaultOption_), defaultHidden(defaultHidden_), imFlags(imFlags_) {
-    menuSelection = contextSelection = defaultOption;
+    contextSelection = defaultOption;
     hidden = defaultHidden;
     PopulateTextToNum();
-    SetFromCVar();
 }
 
 bool Option::RenderCheckbox() {
@@ -245,10 +225,9 @@ bool Option::RenderCombobox() {
 
 bool Option::RenderSlider() {
     bool changed = false;
-    int val = GetMenuOptionIndex();
+    int val = CVarGetInteger(cvarName.c_str(), defaultOption);
     if (val > options.size() - 1) {
         val = options.size() - 1;
-        CVarSetInteger(cvarName.c_str(), val);
         changed = true;
     }
     UIWidgets::IntSliderOptions widgetOptions = UIWidgets::IntSliderOptions().Color(THEME_COLOR).Min(0).Max(options.size() - 1).Tooltip(description.c_str()).Format(options[val].c_str()).DefaultValue(defaultOption);
@@ -266,7 +245,6 @@ bool Option::RenderSlider() {
     }
     if (changed) {
         CVarSetInteger(cvarName.c_str(), val);
-        SetFromCVar();
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
     return changed;

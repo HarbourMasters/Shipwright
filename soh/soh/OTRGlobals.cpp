@@ -2514,7 +2514,6 @@ void SoH_ProcessDroppedFiles(std::string filePath) {
         }
 
         Rando::Settings::GetInstance()->UpdateOptionProperties();
-        Rando::Settings::GetInstance()->SetAllFromCVar();
 
         auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
         gui->GetGuiWindow("Console")->Hide();

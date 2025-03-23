@@ -1871,7 +1871,6 @@ void GenerateRandomizerImgui(std::string seed = "") {
     CVarSave();
     auto ctx = Rando::Context::GetInstance();
     //RANDOTODO proper UI for selecting if a spoiler loaded should be used for settings
-    Rando::Settings::GetInstance()->SetAllFromCVar();
     Rando::Settings::GetInstance()->SetAllToContext();
     
     // todo: this efficently when we build out cvar array support
@@ -1972,6 +1971,7 @@ void RandomizerSettingsWindow::DrawElement() {
         }
         CVarSetInteger(presetTypeCvar.c_str(), randomizerPresetSelected);
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        mSettings->UpdateOptionProperties();
     }
 
     UIWidgets::Spacer(0);
