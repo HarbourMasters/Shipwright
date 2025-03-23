@@ -16,7 +16,6 @@
 #include "soh/Enhancements/timesaver_hook_handlers.h"
 #include "soh/Enhancements/TimeSavers/TimeSavers.h"
 #include "soh/Enhancements/randomizer/hook_handlers.h"
-#include "objects/object_gi_compass/object_gi_compass.h"
 
 #include "src/overlays/actors/ovl_En_Bb/z_en_bb.h"
 #include "src/overlays/actors/ovl_En_Dekubaba/z_en_dekubaba.h"
@@ -35,7 +34,6 @@
 #include "src/overlays/actors/ovl_Obj_Switch/z_obj_switch.h"
 #include "src/overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
 #include "src/overlays/actors/ovl_Door_Gerudo/z_door_gerudo.h"
-#include "src/overlays/actors/ovl_En_Door/z_en_door.h"
 #include "src/overlays/actors/ovl_En_Elf/z_en_elf.h"
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
@@ -47,7 +45,6 @@ extern "C" {
 #include "align_asset_macro.h"
 #include "macros.h"
 #include "soh/cvar_prefixes.h"
-#include "functions.h"
 #include "variables.h"
 #include "functions.h"
 #include "src/overlays/actors/ovl_En_Door/z_en_door.h"
@@ -465,7 +462,7 @@ void UpdateMirrorModeState(int32_t sceneNum) {
         mirroredMode == MIRRORED_WORLD_ALWAYS ||
         ((mirroredMode == MIRRORED_WORLD_RANDOM || mirroredMode == MIRRORED_WORLD_RANDOM_SEEDED) && randomMirror) ||
         // Dungeon modes
-        (inDungeon && (mirroredMode == MIRRORED_WORLD_DUNGEONS_All ||
+        (inDungeon && (mirroredMode == MIRRORED_WORLD_DUNGEONS_ALL ||
          (mirroredMode == MIRRORED_WORLD_DUNGEONS_VANILLA && !ResourceMgr_IsSceneMasterQuest(sceneNum)) ||
          (mirroredMode == MIRRORED_WORLD_DUNGEONS_MQ && ResourceMgr_IsSceneMasterQuest(sceneNum)) ||
          ((mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM || mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED) && randomMirror)))
@@ -550,42 +547,6 @@ void RegisterResetNaviTimer() {
 			gSaveContext.naviTimer = 0;
 		}
 	});
-}
-
-void RegisterBrokenGiantsKnifeFix() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry itemEntry) {
-        if (itemEntry.itemId != ITEM_SWORD_BGS) {
-            return;
-        }
-
-        int32_t bypassEquipmentChecks = 0;
-
-        if (IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("FixBrokenGiantsKnife"), 0)) {
-            // Flag wasn't reset because Kokiri or Master Sword was missing, so we need to
-            // bypass those checks
-            bypassEquipmentChecks |= (1 << EQUIP_INV_SWORD_KOKIRI) | (1 << EQUIP_INV_SWORD_MASTER);
-        } else {
-            // If enhancement is off, flag should be handled exclusively by vanilla behaviour
-            return;
-        }
-
-        int32_t allSwordsInEquipment = bypassEquipmentChecks | ALL_EQUIP_VALUE(EQUIP_TYPE_SWORD);
-        int32_t allSwordFlags = (1 << EQUIP_INV_SWORD_KOKIRI) | (1 << EQUIP_INV_SWORD_MASTER) |
-                                (1 << EQUIP_INV_SWORD_BIGGORON) | (1 << EQUIP_INV_SWORD_BROKENGIANTKNIFE);
-
-        if (allSwordsInEquipment != allSwordFlags) {
-            return;
-        }
-
-        gSaveContext.inventory.equipment ^= OWNED_EQUIP_FLAG_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BROKENGIANTKNIFE);
-
-        if (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KNIFE) {
-            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_BGS;
-            if (gPlayState != NULL) {
-                Interface_LoadItemIcon1(gPlayState, 0);
-            }
-        }
-    });
 }
 
 //this map is used for enemies that can be uniquely identified by their id
@@ -848,8 +809,10 @@ void RegisterRandomizedEnemySizes() {
         Actor* actor = static_cast<Actor*>(refActor);
 
         // Exclude wobbly platforms in Jabu because they need to act like platforms.
+        // Exclude demo effect for Zora sapphire being re-categorized as a "boss".
         // Exclude Dead Hand hands and Bongo Bongo main body because they make the fights (near) impossible.
-        uint8_t excludedEnemy = actor->id == ACTOR_EN_BROB || actor->id == ACTOR_EN_DHA || (actor->id == ACTOR_BOSS_SST && actor->params == -1);
+        uint8_t excludedEnemy = actor->id == ACTOR_EN_BROB || actor->id == ACTOR_EN_DHA ||
+                                actor->id == ACTOR_DEMO_EFFECT || (actor->id == ACTOR_BOSS_SST && actor->params == -1);
 
         // Dodongo, Volvagia and Dead Hand are always smaller because they're impossible when bigger.
         uint8_t smallOnlyEnemy = actor->id == ACTOR_BOSS_DODONGO || actor->id == ACTOR_BOSS_FD ||
@@ -1036,26 +999,6 @@ void RegisterPauseMenuHooks() {
     });
 }
 
-extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
-
-void PatchCompasses() {
-    s8 compassesCanBeOutsideDungeon = IS_RANDO && DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_SHUFFLE_MAPANDCOMPASS);
-    s8 isColoredCompassesEnabled = compassesCanBeOutsideDungeon && CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MatchCompassColors"), 1);
-    if (isColoredCompassesEnabled) {
-        ResourceMgr_PatchGfxByName(gGiCompassDL, "Compass_PrimColor", 5, gsDPNoOp());
-        ResourceMgr_PatchGfxByName(gGiCompassDL, "Compass_EnvColor", 6, gsDPNoOp());
-    } else {
-        ResourceMgr_UnpatchGfxByName(gGiCompassDL, "Compass_PrimColor");
-        ResourceMgr_UnpatchGfxByName(gGiCompassDL, "Compass_EnvColor");
-    }
-}
-
-void RegisterRandomizerCompasses() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadFile>([](int32_t _unused) {
-        PatchCompasses();
-    });
-}
-
 void RegisterCustomSkeletons() {
     static int8_t previousTunic = -1;
 
@@ -1098,13 +1041,11 @@ void InitMods() {
     RegisterMenuPathFix();
     RegisterMirrorModeHandler();
     RegisterResetNaviTimer();
-    RegisterBrokenGiantsKnifeFix();
     RegisterEnemyDefeatCounts();
     RegisterBossDefeatTimestamps();
     RegisterRandomizedEnemySizes();
     RegisterOpenAllHours();
     RegisterToTMedallions();
-    RegisterRandomizerCompasses();
     NameTag_RegisterHooks();
     RegisterFloorSwitchesHook();
     RegisterPatchHandHandler();

@@ -152,7 +152,8 @@ void EnGe3_WaitTillCardGiven(EnGe3* this, PlayState* play) {
 }
 
 void EnGe3_GiveCard(EnGe3* this, PlayState* play) {
-    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
+    if (GameInteractor_Should(VB_END_GERUDO_MEMBERSHIP_TALK,
+                              (Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play))) {
         Message_CloseTextbox(play);
         this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         this->actionFunc = EnGe3_WaitTillCardGiven;

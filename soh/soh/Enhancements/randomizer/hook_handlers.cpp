@@ -297,14 +297,19 @@ void RandomizerOnPlayerUpdateForRCQueueHandler() {
             rc != RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE &&
             // Always show ItemGet animation for ice traps
             !(getItemEntry.modIndex == MOD_RANDOMIZER && getItemEntry.getItemId == RG_ICE_TRAP) &&
+            // Always show ItemGet animation outside of randomizer to keep behaviour consistent in vanilla
+            IS_RANDO &&
             (
-                CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_DISABLED) == SGIA_ALL ||
+                CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_DISABLED) == SGIA_ALL ||
                 (
-                    CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_DISABLED) == SGIA_JUNK &&
+                    CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_DISABLED) == SGIA_JUNK &&
                     (
+                        //crude fix to ensure map hints are readable. Ideally replace with better hint tracking. 
+                        !(getItemEntry.getItemId >= RG_DEKU_TREE_MAP && getItemEntry.getItemId <= RG_ICE_CAVERN_MAP) && (
                         getItemEntry.getItemCategory == ITEM_CATEGORY_JUNK ||
                         getItemEntry.getItemCategory == ITEM_CATEGORY_SKULLTULA_TOKEN ||
-                        getItemEntry.getItemCategory == ITEM_CATEGORY_LESSER
+                        getItemEntry.getItemCategory == ITEM_CATEGORY_LESSER 
+                        )
                     )
                 )
             )
@@ -411,7 +416,7 @@ void EnExItem_WaitForObjectRandomized(EnExItem* enExItem, PlayState* play) {
 }
 
 void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play) {
-    f32 mtxScale = CVarGetFloat(CVAR_ENHANCEMENT("TimeSavers.SkipGetItemAnimationScale"), 10.0f);
+    f32 mtxScale = CVarGetFloat(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimationScale"), 10.0f);
     Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
     GetItemEntry randoItem = enItem00->itemEntry;
     if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) &&
@@ -540,27 +545,6 @@ u8 EnGm_RandoCanGetMedigoronItem() {
              RAND_GET_OPTION(RSK_SHUFFLE_MERCHANTS) == RO_SHUFFLE_MERCHANTS_ALL_BUT_BEANS) &&
             // If the rando check has already been awarded, use vanilla behavior.
             !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON);
-}
-
-RandomizerCheck EnFr_RandomizerCheckFromSongIndex(u16 songIndex) {
-    switch (songIndex) {
-        case FROG_ZL:
-            return RC_ZR_FROGS_ZELDAS_LULLABY;
-        case FROG_EPONA:
-            return RC_ZR_FROGS_EPONAS_SONG;
-        case FROG_SARIA:
-            return RC_ZR_FROGS_SARIAS_SONG;
-        case FROG_SUNS:
-            return RC_ZR_FROGS_SUNS_SONG;
-        case FROG_SOT:
-            return RC_ZR_FROGS_SONG_OF_TIME;
-        case FROG_STORMS:
-            return RC_ZR_FROGS_IN_THE_RAIN;
-        case FROG_CHOIR_SONG:
-            return RC_ZR_FROGS_OCARINA_GAME;
-        default:
-            return RC_UNKNOWN_CHECK;
-    }
 }
 
 void RandomizerSetChestGameRandomizerInf(RandomizerCheck rc) {
@@ -783,7 +767,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         }
         case VB_PLAY_SLOW_CHEST_CS: {
             // We force fast chests if SkipGetItemAnimation is enabled because the camera in the CS looks pretty wonky otherwise
-            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_DISABLED)) {
+            if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_DISABLED)) {
                 *should = false;
             }
             break;
@@ -2030,11 +2014,13 @@ void RandomizerOnActorInitHandler(void* actorRef) {
                 break;
         }
 
-        //Deletes all actors in the boss category if the soul isn't found.
-        //Some actors, like Dark Link, Arwings, and Zora's Sapphire...?, are in this category despite not being actual bosses,
-        //so ignore any "boss" if `currentBossSoulRandInf` doesn't change from RAND_INF_MAX.
+        // Deletes all actors in the boss category if the soul isn't found.
+        // Some actors, like Dark Link, Arwings, and Zora's Sapphire...?, are in this category despite not being actual bosses,
+        // so ignore any "boss" if `currentBossSoulRandInf` doesn't change from RAND_INF_MAX.
+        // Iron Knuckle (Nabooru) in Twinrova's room is a special exception, so exclude knuckles too.
         if (currentBossSoulRandInf != RAND_INF_MAX) {
-            if (!Flags_GetRandomizerInf(currentBossSoulRandInf) && actor->category == ACTORCAT_BOSS) {
+            if (!Flags_GetRandomizerInf(currentBossSoulRandInf) && actor->category == ACTORCAT_BOSS &&
+                actor->id != ACTOR_EN_IK) {
                 Actor_Delete(&gPlayState->actorCtx, actor, gPlayState);
             }
             //Special case for Phantom Ganon's horse (and fake), as they're considered "background actors",
@@ -2382,7 +2368,7 @@ void RandomizerRegisterHooks() {
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(fishsanityOnVanillaBehaviorHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnItemReceive>(fishsanityOnItemReceiveHook);
 
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(shufflePotsOnActorInitHook);
+        GameInteractor::Instance->UnregisterGameHookForID<GameInteractor::OnActorInit>(shufflePotsOnActorInitHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(shufflePotsOnVanillaBehaviorHook);
 
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(shuffleFreestandingOnVanillaBehaviorHook);
@@ -2458,7 +2444,7 @@ void RandomizerRegisterHooks() {
         }
 
         if (RAND_GET_OPTION(RSK_SHUFFLE_POTS) != RO_SHUFFLE_POTS_OFF) {
-            shufflePotsOnActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(ObjTsubo_RandomizerInit);
+            shufflePotsOnActorInitHook = GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnActorInit>(ACTOR_OBJ_TSUBO, ObjTsubo_RandomizerInit);
             shufflePotsOnVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(ShufflePots_OnVanillaBehaviorHandler);
         }
 

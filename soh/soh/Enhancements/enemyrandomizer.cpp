@@ -186,7 +186,7 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t *actorId, f32 *po
     // Lengthen timer in non-MQ Jabu Jabu bubble room.
     if (!isMQ && *actorId == ACTOR_OBJ_ROOMTIMER && *params == 30760 && play->sceneNum == SCENE_JABU_JABU &&
         play->roomCtx.curRoom.num == 12) {
-        *params = 92280;
+        *params = (*params & ~0x3FF) | 120;
     }
 
     if (IsEnemyFoundToRandomize(play->sceneNum, play->roomCtx.curRoom.num, *actorId, *params, *posX)) {
@@ -286,7 +286,7 @@ void GetSelectedEnemies() {
         for (int i = 0; i < 49; i++) {
             if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemyList.All"), 0)) {
                 selectedEnemyList.push_back(randomizedEnemySpawnTable[i]);
-            } else if (CVarGetInteger(enemyCVarList[i], 0)) {
+            } else if (CVarGetInteger(enemyCVarList[i], 1)) {
                 selectedEnemyList.push_back(randomizedEnemySpawnTable[i]);
             }
         }
