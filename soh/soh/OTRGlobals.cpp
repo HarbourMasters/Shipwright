@@ -401,6 +401,7 @@ OTRGlobals::OTRGlobals() {
 
     previousImGuiScale = defaultImGuiScale;
 
+    fontMonoSmall = CreateFontWithSize(14.0f, "fonts/Inconsolata-Regular.ttf");
     fontMono = CreateFontWithSize(16.0f, "fonts/Inconsolata-Regular.ttf");
     fontMonoLarger = CreateFontWithSize(20.0f, "fonts/Inconsolata-Regular.ttf");
     fontMonoLargest = CreateFontWithSize(24.0f, "fonts/Inconsolata-Regular.ttf");
@@ -1293,6 +1294,15 @@ extern "C" void Graph_StartFrame() {
     OTRGlobals::Instance->context->GetWindow()->SetLastScancode(-1);
 
     switch (dwScancode) {
+        case KbScancode::LUS_KB_F1: {
+            std::shared_ptr<SohModalWindow> modal = static_pointer_cast<SohModalWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Modal Window"));
+            if (modal->IsPopupOpen("Menu Moved")) {
+                modal->DismissPopup();
+            } else {
+                modal->RegisterPopup("Menu Moved", "The menubar, accessed by hitting F1, no longer exists.\nThe new menu can be accessed by hitting the Esc button instead.", "OK");
+            }
+            break;
+        }
         case KbScancode::LUS_KB_F5: {
             if (CVarGetInteger(CVAR_CHEAT("SaveStatesEnabled"), 0) == 0) {
                 Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->
@@ -2504,7 +2514,6 @@ void SoH_ProcessDroppedFiles(std::string filePath) {
         }
 
         Rando::Settings::GetInstance()->UpdateOptionProperties();
-        Rando::Settings::GetInstance()->SetAllFromCVar();
 
         auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
         gui->GetGuiWindow("Console")->Hide();

@@ -1,3 +1,8 @@
+#pragma once
+
+#ifndef GI_VANILLA_BEHAVIOR_H
+#define GI_VANILLA_BEHAVIOR_H
+
 typedef enum {
     // #### `result`
     // ```c
@@ -95,10 +100,10 @@ typedef enum {
     // #### `args`
     // - `*BgDyYoseizo`
     VB_BE_ELIGIBLE_FOR_GREAT_FAIRY_REWARD,
-    
+
     // #### `result`
     // ```c
-    // CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && 
+    // CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) &&
     // CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
     // LINK_IS_ADULT &&
     // !Flags_GetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS) &&
@@ -118,11 +123,11 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // (gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_FRONT_GATE) && 
+    // (gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_FRONT_GATE) &&
     // LINK_IS_ADULT &&
-    // Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP) && 
+    // Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP) &&
     // Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP) &&
-    // Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP) && 
+    // Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP) &&
     // !Flags_GetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL)
     // ```
     // #### `args`
@@ -402,6 +407,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // (Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)
+    // ```
+    // #### `args`
+    // - None
+    VB_END_GERUDO_MEMBERSHIP_TALK,
+
+    // #### `result`
+    // ```c
     // !(this->stateFlags3 & PLAYER_STATE3_PAUSE_ACTION_FUNC)
     // ```
     // #### `args`
@@ -473,7 +486,7 @@ typedef enum {
     // and
     // ```c
     // EnGe2_CheckCarpentersFreed()
-    // ``` 
+    // ```
     // #### `args`
     // - None
     VB_GERUDOS_BE_FRIENDLY,
@@ -1266,9 +1279,17 @@ typedef enum {
     VB_PLAY_BOLERO_OF_FIRE_CS,
 
     // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnDaiku`
+    VB_PLAY_CARPENTER_FREE_CS,
+
+    // #### `result`
     // Close enough & various cutscene checks
     // ```c
-    // (func_80AEC5FC(this, play)) && (!Play_InCsMode(play)) && 
+    // (func_80AEC5FC(this, play)) && (!Play_InCsMode(play)) &&
     // (!(player->stateFlags1 & (PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE | PLAYER_STATE1_CLIMBING_LADDER))) &&
     // (player->actor.bgCheckFlags & 1)
     // ```
@@ -1697,25 +1718,25 @@ typedef enum {
     // #### `args`
     // ##### In `z_boss_dodongo.c`:
     // - `*BossDodongo`
-    // 
+    //
     // ##### In `z_boss_fd2.c`
     // - `*BossFd2`
-    // 
+    //
     // ##### In `z_boss_ganondrof.c`:
     // - `*BossGanondrof`
-    // 
+    //
     // ##### In `z_boss_goma.c`:
     // - `*BossGoma`
-    // 
+    //
     // ##### In `z_boss_mo.c`:
     // - `*BossMo`
-    // 
+    //
     // ##### In `z_boss_sst.c`:
     // - `*BossSst`
-    // 
+    //
     // ##### In `z_boss_tw.c`:
     // - `*BossTw`
-    // 
+    //
     // ##### In `z_boss_va.c`:
     // - `*BossVa`
     VB_SPAWN_BLUE_WARP,
@@ -1860,7 +1881,7 @@ typedef enum {
     // #### `args`
     // - `*EnMk`
     VB_USE_EYEDROP_DIALOGUE,
-    
+
     // #### `result`
     // ```c
     // true
@@ -1869,3 +1890,5 @@ typedef enum {
     // - `*EnWonderTalk2`
     VB_WONDER_TALK,
 } GIVanillaBehavior;
+
+#endif

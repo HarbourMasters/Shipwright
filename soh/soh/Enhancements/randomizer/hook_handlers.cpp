@@ -547,27 +547,6 @@ u8 EnGm_RandoCanGetMedigoronItem() {
             !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON);
 }
 
-RandomizerCheck EnFr_RandomizerCheckFromSongIndex(u16 songIndex) {
-    switch (songIndex) {
-        case FROG_ZL:
-            return RC_ZR_FROGS_ZELDAS_LULLABY;
-        case FROG_EPONA:
-            return RC_ZR_FROGS_EPONAS_SONG;
-        case FROG_SARIA:
-            return RC_ZR_FROGS_SARIAS_SONG;
-        case FROG_SUNS:
-            return RC_ZR_FROGS_SUNS_SONG;
-        case FROG_SOT:
-            return RC_ZR_FROGS_SONG_OF_TIME;
-        case FROG_STORMS:
-            return RC_ZR_FROGS_IN_THE_RAIN;
-        case FROG_CHOIR_SONG:
-            return RC_ZR_FROGS_OCARINA_GAME;
-        default:
-            return RC_UNKNOWN_CHECK;
-    }
-}
-
 void RandomizerSetChestGameRandomizerInf(RandomizerCheck rc) {
     switch (rc) {
         case RC_MARKET_TREASURE_CHEST_GAME_ITEM_1:
@@ -2035,11 +2014,13 @@ void RandomizerOnActorInitHandler(void* actorRef) {
                 break;
         }
 
-        //Deletes all actors in the boss category if the soul isn't found.
-        //Some actors, like Dark Link, Arwings, and Zora's Sapphire...?, are in this category despite not being actual bosses,
-        //so ignore any "boss" if `currentBossSoulRandInf` doesn't change from RAND_INF_MAX.
+        // Deletes all actors in the boss category if the soul isn't found.
+        // Some actors, like Dark Link, Arwings, and Zora's Sapphire...?, are in this category despite not being actual bosses,
+        // so ignore any "boss" if `currentBossSoulRandInf` doesn't change from RAND_INF_MAX.
+        // Iron Knuckle (Nabooru) in Twinrova's room is a special exception, so exclude knuckles too.
         if (currentBossSoulRandInf != RAND_INF_MAX) {
-            if (!Flags_GetRandomizerInf(currentBossSoulRandInf) && actor->category == ACTORCAT_BOSS) {
+            if (!Flags_GetRandomizerInf(currentBossSoulRandInf) && actor->category == ACTORCAT_BOSS &&
+                actor->id != ACTOR_EN_IK) {
                 Actor_Delete(&gPlayState->actorCtx, actor, gPlayState);
             }
             //Special case for Phantom Ganon's horse (and fake), as they're considered "background actors",
@@ -2387,7 +2368,7 @@ void RandomizerRegisterHooks() {
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(fishsanityOnVanillaBehaviorHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnItemReceive>(fishsanityOnItemReceiveHook);
 
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(shufflePotsOnActorInitHook);
+        GameInteractor::Instance->UnregisterGameHookForID<GameInteractor::OnActorInit>(shufflePotsOnActorInitHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(shufflePotsOnVanillaBehaviorHook);
 
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(shuffleFreestandingOnVanillaBehaviorHook);
@@ -2463,7 +2444,7 @@ void RandomizerRegisterHooks() {
         }
 
         if (RAND_GET_OPTION(RSK_SHUFFLE_POTS) != RO_SHUFFLE_POTS_OFF) {
-            shufflePotsOnActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(ObjTsubo_RandomizerInit);
+            shufflePotsOnActorInitHook = GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnActorInit>(ACTOR_OBJ_TSUBO, ObjTsubo_RandomizerInit);
             shufflePotsOnVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(ShufflePots_OnVanillaBehaviorHandler);
         }
 

@@ -330,7 +330,8 @@ bool Checkbox(const char* _label, bool* value, const CheckboxOptions& options) {
     if (options.labelPosition == LabelPositions::Above) {
         checkPos.y += label_size.y + (style.ItemInnerSpacing.y * 2.0f);
     } else {
-        labelPos.y += (square_sz / 2) - (label_size.y / 2);
+        // Center with checkbox automatically
+        labelPos.y += ImGui::CalcTextSize("g").y / 8;
     }
     if (options.alignment == ComponentAlignments::Right) {
         checkPos.x = total_bb.Max.x - square_sz;

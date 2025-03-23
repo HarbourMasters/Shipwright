@@ -67,6 +67,13 @@ static const std::unordered_map<int32_t, const char*> dekuStickCheat = {
     { DEKU_STICK_UNBREAKABLE_AND_ALWAYS_ON_FIRE, "Unbreakable + Always on Fire" }
 };
 
+static const std::unordered_map<int32_t, const char*> skipForcedDialogOptions = {
+    { FORCED_DIALOG_SKIP_NONE, "None" },
+    { FORCED_DIALOG_SKIP_NAVI, "Navi" },
+    { FORCED_DIALOG_SKIP_NPC, "NPCs" },
+    { FORCED_DIALOG_SKIP_ALL, "All" }
+};
+
 static const std::unordered_map<int32_t, const char*> skipGetItemAnimationOptions = {
     { SGIA_DISABLED, "Disabled" },
     { SGIA_JUNK, "Junk Items" },
@@ -187,18 +194,6 @@ static const std::unordered_map<int32_t, const char*> enhancementPresetList = {
     { ENHANCEMENT_PRESET_VANILLA_PLUS, "Vanilla Plus" },
     { ENHANCEMENT_PRESET_ENHANCED, "Enhanced" },
     { ENHANCEMENT_PRESET_RANDOMIZER, "Randomizer" }
-};
-
-static const char* itemCountMessageCVars[3] = {
-    CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"),
-    CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"),
-    CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"),
-};
-
-static const char* itemCountMessageOptions[ARRAY_COUNT(itemCountMessageCVars)] = {
-    "Gold Skulltula Tokens",
-    "Pieces of Heart",
-    "Heart Containers",
 };
 
 class SohMenu : public Ship::Menu {

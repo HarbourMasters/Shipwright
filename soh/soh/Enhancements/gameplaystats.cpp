@@ -635,9 +635,11 @@ void DrawGameplayStatsOptionsTab() {
 }
 
 void GameplayStatsWindow::DrawElement() {
+    ImGui::PushFont(OTRGlobals::Instance->fontMonoLarger);
     DrawGameplayStatsHeader();
 
     UIWidgets::PushStyleTabs(THEME_COLOR);
+
     if (ImGui::BeginTabBar("Stats", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         if (ImGui::BeginTabItem("Timestamps")) {
             DrawGameplayStatsTimestampsTab();
@@ -657,7 +659,9 @@ void GameplayStatsWindow::DrawElement() {
         }
         ImGui::EndTabBar();
     }
+
     UIWidgets::PopStyleTabs();
+    ImGui::PopFont();
 
     ImGui::Text("Note: Gameplay stats are saved to the current file and will be\nlost if you quit without saving.");
 }

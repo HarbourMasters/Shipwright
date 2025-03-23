@@ -20,6 +20,11 @@ static bool sEnteredBlueWarp = false;
  * should also account for the difference between your first and following visits to the blue warp.
  */
 void SkipBlueWarp_ShouldPlayTransitionCS(GIVanillaBehavior _, bool* should, va_list originalArgs) {
+    // Do nothing when in a boss rush
+    if (IS_BOSS_RUSH) {
+        return;
+    }
+    
     bool overrideBlueWarpDestinations =
         IS_RANDO && (RAND_GET_OPTION(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF ||
                      RAND_GET_OPTION(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);

@@ -275,6 +275,9 @@ int GetShopsanityReplaceAmount() {
             return 7;
         } else if (ctx->GetOption(RSK_SHOPSANITY_COUNT).Is(RO_SHOPSANITY_COUNT_EIGHT_ITEMS)) {
             return 8; //temporarily unreachable due to logic limitations
+        } else {
+            assert(false);
+            return 0;
         }
     } else { //Random, get number in [1, 7]
         return Random(1, 8);

@@ -42,7 +42,7 @@ void SohMenu::AddMenuDevTools() {
     AddWidget(path, "Better Debug Warp Screen", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("BetterDebugWarpScreen"))
         .Options(CheckboxOptions().Tooltip(
-            "Optimized debug warp screen, with the added ability to chose entrances and time of day"));
+            "Optimized debug warp screen, with the added ability to chose entrances and time of day").DefaultValue(true));
     AddWidget(path, "Debug Warp Screen Translation", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"))
         .Options(CheckboxOptions()
@@ -99,7 +99,7 @@ void SohMenu::AddMenuDevTools() {
     AddSidebarEntry("Dev Tools", path.sidebarName, 1);
     AddWidget(path, "Popout Console", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("Console"))
-        .WindowName("Console")
+        .WindowName("Console##SoH")
         .Options(WindowButtonOptions().Tooltip("Enables the separate Console Window."));
 
     // Save Editor
@@ -163,7 +163,7 @@ void SohMenu::AddMenuDevTools() {
     AddSidebarEntry("Dev Tools", path.sidebarName, 1);
     AddWidget(path, "Popout Gfx Debugger", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("GfxDebugger"))
-        .WindowName("GfxDebuggerWindow")
+        .WindowName("GfxDebugger##SoH")
         .Options(WindowButtonOptions().Tooltip("Enables the separate Gfx Debugger Window."));
 }
 
