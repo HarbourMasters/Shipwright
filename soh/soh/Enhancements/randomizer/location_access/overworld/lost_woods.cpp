@@ -32,10 +32,8 @@ void RegionTable_Init_LostWoods() {
         LOCATION(RC_LW_TARGET_IN_WOODS,                 logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT)),
         LOCATION(RC_LW_DEKU_SCRUB_NEAR_BRIDGE,          logic->IsChild && logic->CanStunDeku()),
         LOCATION(RC_LW_GS_BEAN_PATCH_NEAR_BRIDGE,       logic->CanSpawnSoilSkull() && logic->CanAttack()),
-        //RANDOTODO handle collecting some of these as you leave the shortcut from the other side
         LOCATION(RC_LW_SHORTCUT_RUPEE_1,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
         LOCATION(RC_LW_SHORTCUT_RUPEE_2,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
-        LOCATION(RC_LW_SHORTCUT_RUPEE_3,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
         LOCATION(RC_LW_SHORTCUT_RUPEE_4,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
         LOCATION(RC_LW_SHORTCUT_RUPEE_5,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
         LOCATION(RC_LW_SHORTCUT_RUPEE_6,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
@@ -80,11 +78,13 @@ void RegionTable_Init_LostWoods() {
         Entrance(RR_LW_SCRUBS_GROTTO, []{return Here(RR_LW_BEYOND_MIDO, []{return logic->BlastOrSmash();});}),
     });
 
-    areaTable[RR_LW_UNDERWATER_SHORTCUT] = Region("LW Shortcut", "Lost Woods", {RA_ZORAS_RIVER}, DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_LW_UNDERWATER_SHORTCUT] = Region("LW Shortcut", "Lost Woods", {RA_ZORAS_RIVER}, DAY_NIGHT_CYCLE, {}, {
+        LOCATION(RC_LW_SHORTCUT_RUPEE_3,    logic->IsChild && logic->HasItem(RG_BRONZE_SCALE)),
+    }, {
         //Exits
         Entrance(RR_THE_LOST_WOODS,         []{return logic->HasItem(RG_BRONZE_SCALE);}),
         Entrance(RR_ZR_UNDERWATER_SHORTCUT, []{return true;}),
-        });
+    });
 
     areaTable[RR_LW_NEAR_SHORTCUTS_GROTTO] = Region("LW Near Shortcuts Grotto", "LW Near Shortcuts Grotto", {}, NO_DAY_NIGHT_CYCLE, grottoEvents, {
         //Locations
