@@ -30,8 +30,8 @@ typedef enum {
 
 typedef enum {
     BUNNY_HOOD_VANILLA,
-    BUNNY_HOOD_FAST_AND_JUMP,
-    BUNNY_HOOD_FAST
+    BUNNY_HOOD_FAST,
+    BUNNY_HOOD_FAST_AND_JUMP
 } BunnyHoodMode;
 
 typedef enum {

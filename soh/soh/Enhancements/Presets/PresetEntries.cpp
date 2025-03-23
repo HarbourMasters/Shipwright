@@ -5,65 +5,313 @@
 // Enhancement presets
 const std::vector<PresetEntry> vanillaPlusPresetEntries = {
     // Quality of Life
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("Autosave"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("BetterOwl"), 1),
 
     // Skips & Speed-ups
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SkipText"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TextSpeed"), 5),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FasterRupeeAccumulator"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SkipSaveConfirmation"), 1),
 
     // Graphics
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DisableLOD"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("RememberMapToggleState"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("VisualAgony"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DynamicWalletIcon"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TimeFlowFileSelect"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("WidescreenActorCulling"), 1),
 
     // Items
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadEquips"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AssignableTunicsAndBoots"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"), 1),
 
     // Fixes
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("GravediggingTourFix"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FixFloorSwitches"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FixZoraHintDialogue"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FixVineFall"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("EnemySpawnsOverWaterboxes"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FixSawSoftlock"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DekuNutUpgradeFix"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FixGrokenGiantsKnife"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FixMenuLR"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FixDungeonMinimapIcon"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TwoHandedIdle"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("NaviTextFix"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("GerudoWarriorClothingFix"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FixTexturesOOB"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FixEyesOpenWhileSleeping"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FixHammerHand"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SceneSpecificDirtPathFix"), ZFIGHT_FIX_CONSISTENT_VANISH),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SilverRupeeJingleExtend"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FixDaruniaDanceSpeed"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("CreditsFix"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("RedGanonBlood"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("PulsateBossIcon"), 1),
 
     // Difficulty
+    // NONE
 
     // Minigames
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("CustomizeFrogsOcarinaGame"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FrogsModifyFailTime"), 2),
 
     // Extra Modes
+    // NONE
 
     // Cheats
-
+    // NONE
 };
 
 const std::vector<PresetEntry> enhancedPresetEntries = {
     // Quality of Life
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("Autosave"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("PauseWarp"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("NoInputForCredits"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DisableCritWiggle"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("BetterOwl"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("QuitFishingAtDoor"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InstantPutaway"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TimeSavers.SleepingWaterfall"), 1),
 
     // Skips & Speed-ups
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SkipText"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TextSpeed"), 5),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SlowTextSpeed"), 5),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FasterHeavyBlockLift"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SkipSwimDeepEndAnim"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("ClimbSpeed"), 3),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FasterBlockPush"), 5),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("CrawlSpeed"), 2),
+    PRESET_ENTRY_FLOAT(CVAR_ENHANCEMENT("MweepSpeed"), 5.0f),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InstantScarecrow"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FasterRupeeAccumulator"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SkulltulaFreeze"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SkipSaveConfirmation"), 1),
 
     // Graphics
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DisableLOD"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("NewDrops"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("PauseMenuAnimatedLink"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("ShowDoorLocksOnBothSides"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("ToTMedallionsColors"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("RememberMapToggleState"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("VisualAgony"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DynamicWalletIcon"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("BetterAmmoRendering"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TimeFlowFileSelect"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("WidescreenActorCulling"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("ExtendedCullingExcludeGlitchActors"), 1),
 
     // Items
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadEquips"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AssignableTunicsAndBoots"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastOcarinaPlayback"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_FAST),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("PersistentMasks"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("NutsExplodeBombs"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DisableFirstPersonChus"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("BetterBombchuShopping"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SeparateArrows"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SkipArrowAnimation"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastBoomerang"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("BetterFarore"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastFarores"), 1),
 
     // Fixes
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("GravediggingTourFix"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FixFloorSwitches"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FixZoraHintDialogue"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FixVineFall"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("EnemySpawnsOverWaterboxes"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FixSawSoftlock"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DekuNutUpgradeFix"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FixGrokenGiantsKnife"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FixMenuLR"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FixDungeonMinimapIcon"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TwoHandedIdle"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("NaviTextFix"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("GerudoWarriorClothingFix"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FixTexturesOOB"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FixEyesOpenWhileSleeping"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FixHammerHand"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SceneSpecificDirtPathFix"), ZFIGHT_FIX_CONSISTENT_VANISH),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SilverRupeeJingleExtend"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FixDaruniaDanceSpeed"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("CreditsFix"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("RedGanonBlood"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("PulsateBossIcon"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("HoverFishing"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("N64WeirdFrames"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("BombchusOOB"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("QuickPutaway"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("QuickBongoKill"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("RestoreRBAValues"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 1),
 
     // Difficulty
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("EnableBombchuDrops"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DampeWin"), 1),
 
     // Minigames
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("CustomizeFrogsOcarinaGame"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FrogsModifyFailTime"), 2),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("CustomizeOcarinaGame"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("OcarinaGame.StartingNotes"), 5),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("CustomizeFishing"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("GuaranteeFishingBite"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FishNeverEscape"), 1),
 
     // Extra Modes
+    // NONE
 
     // Cheats
-
+    // NONE
 };
 
 const std::vector<PresetEntry> randomizerPresetEntries = {
     // Quality of Life
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("Autosave"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DayGravePull"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DampeAllNight"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MarketSneak"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("PauseWarp"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("NoInputForCredits"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("IncludeHeldInputsBufferWindow"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DisableCritWiggle"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("BetterOwl"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("QuitFishingAtDoor"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InstantPutaway"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TimeSavers.SleepingWaterfall"), 1),
 
     // Skips & Speed-ups
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastDrops"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TimeSavers.SkipForcedDialog"), FORCED_DIALOG_SKIP_ALL),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SkipText"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TextSpeed"), 5),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SlowTextSpeed"), 5),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FasterHeavyBlockLift"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastChests"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SkipSwimDeepEndAnim"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("ClimbSpeed"), 3),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FasterBlockPush"), 5),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("CrawlSpeed"), 2),
+    PRESET_ENTRY_FLOAT(CVAR_ENHANCEMENT("MweepSpeed"), 5.0f),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TimeSavers.SkipChildStealth"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TimeSavers.SkipTowerEscape"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InstantScarecrow"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FasterRupeeAccumulator"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SkipSaveConfirmation"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("ForgeTime"), 0),
 
     // Graphics
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DisableLOD"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("NewDrops"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("PauseMenuAnimatedLink"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("ShowDoorLocksOnBothSides"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("ToTMedallionsColors"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("RememberMapToggleState"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("VisualAgony"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DynamicWalletIcon"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FileSelectMoreInfo"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("BetterAmmoRendering"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TimeFlowFileSelect"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("WidescreenActorCulling"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("ExtendedCullingExcludeGlitchActors"), 1),
 
     // Items
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadEquips"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AssignableTunicsAndBoots"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("EquipmentCanBeRemoved"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("ToggleStrength"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SwordToggle"), SWORD_TOGGLE_CHILD),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastOcarinaPlayback"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_FAST),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AdultMasks"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("PersistentMasks"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MaskSelect"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("NutsExplodeBombs"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DisableFirstPersonChus"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("BetterBombchuShopping"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SeparateArrows"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SkipArrowAnimation"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastBoomerang"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("BetterFarore"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastFarores"), 1),
 
     // Fixes
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("GravediggingTourFix"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FixFloorSwitches"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FixZoraHintDialogue"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FixVineFall"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("EnemySpawnsOverWaterboxes"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FixSawSoftlock"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DekuNutUpgradeFix"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FixGrokenGiantsKnife"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FixMenuLR"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FixDungeonMinimapIcon"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TwoHandedIdle"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("NaviTextFix"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("GerudoWarriorClothingFix"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FixTexturesOOB"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FixHammerHand"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SceneSpecificDirtPathFix"), ZFIGHT_FIX_CONSISTENT_VANISH),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SilverRupeeJingleExtend"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FixDaruniaDanceSpeed"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("CreditsFix"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("RedGanonBlood"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("PulsateBossIcon"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("HoverFishing"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("N64WeirdFrames"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("BombchusOOB"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("QuickPutaway"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("QuickBongoKill"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("RestoreRBAValues"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 1),
 
     // Difficulty
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("GoronPot"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DampeWin"), 1),
 
     // Minigames
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("CustomizeFrogsOcarinaGame"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FrogsModifyFailTime"), 2),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("CustomizeOcarinaGame"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("OcarinaGame.StartingNotes"), 5),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("CustomizeFishing"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("GuaranteeFishingBite"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FishNeverEscape"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MinimumFishWeightChild"), 3),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MinimumFishWeightAdult"), 6),
 
     // Extra Modes
+    // NONE
 
     // Cheats
-
+    PRESET_ENTRY_S32(CVAR_CHEAT("EasyFrameAdvance"), 1),
 };
 
 // Randomizer presets
@@ -118,7 +366,6 @@ const std::vector<PresetEntry> hellModePresetEntries = {
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("KakarikoGate"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("DoorOfTime"), 2),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("LockOverworldDoors"), 1),
-    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("FortressCarpenters"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("RainbowBridge"), RO_BRIDGE_GREG),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("StartingAge"), RO_AGE_RANDOM),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("ShuffleDungeonsEntrances"), RO_DUNGEON_ENTRANCE_SHUFFLE_ON_PLUS_GANON),
@@ -175,7 +422,8 @@ const std::vector<PresetEntry> hellModePresetEntries = {
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("GerudoKeys"), RO_GERUDO_KEYS_ANYWHERE),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BossKeysanity"), RO_DUNGEON_ITEM_LOC_ANYWHERE),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("ShuffleGanonBossKey"), RO_GANON_BOSS_KEY_LACS_REWARDS),
-    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("LacsRewardCount"), 9),
+    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("LacsRewardCount"), 10),
+    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("LacsRewardOptions"), RO_LACS_GREG_REWARD),
 
     // Gamplay tab
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("CuccosToReturn"), 1),
@@ -208,8 +456,8 @@ const std::map<PresetType, PresetTypeDefinition> presetTypes = {
             { ENHANCEMENT_PRESET_VANILLA_PLUS,
               {
                   "Vanilla Plus",
-                  "Adds quality of life features that enhance your experience, but don't alter gameplay. Recommended "
-                  "for a first playthrough of OoT.",
+                  "Adds some quality of life features, but don't alter gameplay and aims to "
+                  "preserve the authentic experience. Recommended for a first playthrough of OoT.",
                   vanillaPlusPresetEntries,
               } },
             { ENHANCEMENT_PRESET_ENHANCED,
