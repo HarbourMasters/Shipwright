@@ -458,7 +458,7 @@ void SaveManager::LoadRandomizerVersion3() {
     });
 
     randoContext->GetTrials()->SkipAll();
-    SaveManager::Instance->LoadArray("requiredTrials", randoContext->GetOption(RSK_TRIAL_COUNT).Get() + 1, [&](size_t i) {
+    SaveManager::Instance->LoadArray("requiredTrials", randoContext->GetOption(RSK_TRIAL_COUNT).Get(), [&](size_t i) {
         size_t trialId;
         SaveManager::Instance->LoadData("", trialId);
         randoContext->GetTrial(trialId)->SetAsRequired();
