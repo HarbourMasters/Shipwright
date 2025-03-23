@@ -83,7 +83,7 @@ bool fishsanityAgeSplit;
 bool initialized;
 bool doAreaScroll;
 bool previousShowHidden = false;
-bool hideShopUnshuffledChecks = true;
+bool hideShopUnshuffledChecks = false;
 bool alwaysShowGS = false;
 
 std::map<uint32_t, RandomizerCheck> startingShopItem = { { SCENE_KOKIRI_SHOP, RC_KF_SHOP_ITEM_1 },
@@ -900,7 +900,7 @@ void CheckTrackerWindow::DrawElement() {
     enableAvailableChecks       = CVarGetInteger(CVAR_TRACKER_CHECK("EnableAvailableChecks"), 0);
     onlyShowAvailable           = CVarGetInteger(CVAR_TRACKER_CHECK("OnlyShowAvailable"), 0);
 
-    hideShopUnshuffledChecks = CVarGetInteger(CVAR_TRACKER_CHECK("HideUnshuffledShopChecks"), 1);
+    hideShopUnshuffledChecks = CVarGetInteger(CVAR_TRACKER_CHECK("HideUnshuffledShopChecks"), 0);
     alwaysShowGS = CVarGetInteger(CVAR_TRACKER_CHECK("AlwaysShowGSLocs"), 0);
     if (CVarGetInteger(CVAR_TRACKER_CHECK("WindowType"), TRACKER_WINDOW_WINDOW) == TRACKER_WINDOW_FLOATING) {
         if (CVarGetInteger(CVAR_TRACKER_CHECK("ShowOnlyPaused"), 0) && (gPlayState == nullptr || gPlayState->pauseCtx.state == 0)) {
@@ -1915,7 +1915,7 @@ void CheckTrackerSettingsWindow::DrawElement() {
                 .Tooltip("If enabled, Vanilla/MQ dungeons will show on the tracker immediately. Otherwise, Vanilla/MQ dungeon locations must be unlocked.").Color(THEME_COLOR));
         if (UIWidgets::CVarCheckbox("Hide unshuffled shop item checks", CVAR_TRACKER_CHECK("HideUnshuffledShopChecks"),
                 UIWidgets::CheckboxOptions().Tooltip("If enabled, will prevent the tracker from displaying slots with non-shop-item shuffles.").Color(THEME_COLOR))) {
-            hideShopUnshuffledChecks = !hideShopUnshuffledChecks;
+            hideShopUnshuffledChecks = CVarGetInteger(CVAR_TRACKER_CHECK("HideUnshuffledShopChecks"), 0);
             UpdateFilters();
         }
         if (UIWidgets::CVarCheckbox("Always show gold skulltulas", CVAR_TRACKER_CHECK("AlwaysShowGSLocs"),
