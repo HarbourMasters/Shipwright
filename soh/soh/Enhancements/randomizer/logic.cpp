@@ -2171,7 +2171,7 @@ namespace Rando {
         return dungeonSmallKeyDoors[key];
     }
 
-    uint8_t GetUsedSmallKeyCount(SceneID sceneId) {
+    int8_t GetUsedSmallKeyCount(SceneID sceneId) {
         const auto& smallKeyDoors = GetDungeonSmallKeyDoors(sceneId);
         
         // Get the swch value for the scene
@@ -2183,7 +2183,7 @@ namespace Rando {
         }
         
         // Count the number of small keys doors unlocked
-        uint8_t unlockedSmallKeyDoors = 0;
+        int8_t unlockedSmallKeyDoors = 0;
         for (auto& smallKeyDoor : smallKeyDoors) {
             unlockedSmallKeyDoors += swch >> smallKeyDoor & 1;
         }
@@ -2191,11 +2191,11 @@ namespace Rando {
         return unlockedSmallKeyDoors;
     }
 
-    uint8_t Logic::GetSmallKeyCount(uint32_t dungeonIndex) {
+    int8_t Logic::GetSmallKeyCount(uint32_t dungeonIndex) {
         return mSaveContext->inventory.dungeonKeys[dungeonIndex] + GetUsedSmallKeyCount(SceneID(dungeonIndex));
     }
 
-    void Logic::SetSmallKeyCount(uint32_t dungeonIndex, uint8_t count) {
+    void Logic::SetSmallKeyCount(uint32_t dungeonIndex, int8_t count) {
         mSaveContext->inventory.dungeonKeys[dungeonIndex] = count;
     }
 
