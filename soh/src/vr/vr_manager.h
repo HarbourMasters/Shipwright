@@ -3,8 +3,10 @@
 #include <stddef.h>     // for size_t
 #include <stdint.h>     // for standard integer types
 #include <stdlib.h>     // for standard library functions
+#include <math.h>       // for math functions
 #include <openvr_capi.h>
 #include "global.h"
+#include <GL/gl.h>      // for OpenGL
 
 // OpenVR constants
 #define k_unMaxTrackedDeviceCount 64
@@ -32,4 +34,5 @@ MtxF VRManager_GetHMDMatrixPoseEye(VRManager* manager, EVREye eye);
 Vec3f VRManager_GetHMDRotation(VRManager* manager);
 bool VRManager_IsHMDPresent(void);
 bool VRManager_IsControllerActive(VRManager* manager, ETrackedControllerRole role);
-Vec3f VRManager_GetControllerDirection(VRManager* manager, ETrackedControllerRole role); 
+Vec3f VRManager_GetControllerDirection(VRManager* manager, ETrackedControllerRole role);
+void VRManager_SubmitTestFrame(VRManager* manager); 

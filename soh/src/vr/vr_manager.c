@@ -43,6 +43,10 @@ bool VRManager_InitVR(VRManager* manager) {
     // Store the global instance
     gVRManager = manager;
     osSyncPrintf("VR manager stored globally\n");
+    
+    // Submit initial test frame
+    VRManager_SubmitTestFrame(manager);
+    
     return true;
 }
 
@@ -108,65 +112,55 @@ void VRManager_UpdateHMDMatrixPose(VRManager* manager) {
 MtxF VRManager_GetHMDMatrixProjectionEye(VRManager* manager, EVREye eye) {
     MtxF result;
     
-    if (!manager || !manager->pHMD) {
-        osSyncPrintf("GetHMDMatrixProjectionEye: No HMD, returning identity\n");
-        // Return identity matrix if no HMD
-        guMtxIdentF(&result);
-        return result;
-    }
-    
     osSyncPrintf("Getting projection matrix for eye %d\n", eye);
     
-    // Set up default projection values
+    // Default stereo projection values
     float nearZ = 0.1f;
     float farZ = 100.0f;
+    float fov = 90.0f * (M_PI / 180.0f); // 90 degrees in radians
+    float aspect = 1.0f;
     
-    // Get projection matrix from OpenVR
-    osSyncPrintf("Calling GetProjectionMatrix...\n");
-    HmdMatrix44_t proj = manager->pHMD->GetProjectionMatrix(eye, nearZ, farZ);
-    osSyncPrintf("Got projection matrix\n");
+    // Offset IPD for each eye
+    float ipd = 0.064f; // Average human IPD in meters
+    float eyeOffset = (eye == EVREye_Eye_Left) ? -ipd/2 : ipd/2;
     
-    // Convert to MtxF format
+    // Create perspective projection matrix
+    float f = 1.0f / tanf(fov / 2.0f);
+    
+    // Zero out the matrix first
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
-            result.mf[i][j] = proj.m[i][j];
+            result.mf[i][j] = 0.0f;
         }
     }
     
-    osSyncPrintf("Converted projection matrix to MtxF format\n");
+    result.mf[0][0] = f / aspect;
+    result.mf[1][1] = f;
+    result.mf[2][2] = -(farZ + nearZ) / (farZ - nearZ);
+    result.mf[2][3] = -1.0f;
+    result.mf[3][2] = -(2.0f * farZ * nearZ) / (farZ - nearZ);
+    
+    // Add eye offset
+    result.mf[0][3] = eyeOffset;
+    
+    osSyncPrintf("Created default projection matrix for eye %d\n", eye);
     return result;
 }
 
 MtxF VRManager_GetHMDMatrixPoseEye(VRManager* manager, EVREye eye) {
     MtxF result;
     
-    if (!manager || !manager->pHMD) {
-        osSyncPrintf("GetHMDMatrixPoseEye: No HMD, returning identity\n");
-        // Return identity matrix if no HMD
-        guMtxIdentF(&result);
-        return result;
-    }
-    
     osSyncPrintf("Getting eye-to-head transform for eye %d\n", eye);
     
-    // Get eye-to-head transform from OpenVR
-    osSyncPrintf("Calling GetEyeToHeadTransform...\n");
-    HmdMatrix34_t eyeMatrix = manager->pHMD->GetEyeToHeadTransform(eye);
-    osSyncPrintf("Got eye-to-head transform\n");
+    // Create identity matrix
+    guMtxIdentF(&result);
     
-    // Convert to MtxF format (3x4 to 4x4)
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 4; j++) {
-            result.mf[i][j] = eyeMatrix.m[i][j];
-        }
-    }
-    // Set bottom row to [0 0 0 1]
-    result.mf[3][0] = 0.0f;
-    result.mf[3][1] = 0.0f;
-    result.mf[3][2] = 0.0f;
-    result.mf[3][3] = 1.0f;
+    // Add eye offset
+    float ipd = 0.064f; // Average human IPD in meters
+    float eyeOffset = (eye == EVREye_Eye_Left) ? -ipd/2 : ipd/2;
+    result.mf[0][3] = eyeOffset;
     
-    osSyncPrintf("Converted eye-to-head transform to MtxF format\n");
+    osSyncPrintf("Created default eye-to-head transform\n");
     return result;
 }
 
@@ -222,4 +216,70 @@ Vec3f VRManager_GetControllerDirection(VRManager* manager, ETrackedControllerRol
     }
     
     return direction;
+}
+
+// New function to submit test frames to VR
+void VRManager_SubmitTestFrame(VRManager* manager) {
+    if (!manager || !manager->pCompositor) {
+        return;
+    }
+    
+    osSyncPrintf("Submitting test frame to VR...\n");
+    
+    // Create a simple colored texture for each eye
+    uint32_t width = 1024;
+    uint32_t height = 1024;
+    uint32_t* leftEyeData = malloc(width * height * sizeof(uint32_t));
+    uint32_t* rightEyeData = malloc(width * height * sizeof(uint32_t));
+    
+    if (!leftEyeData || !rightEyeData) {
+        osSyncPrintf("Failed to allocate test frame buffers\n");
+        return;
+    }
+    
+    // Fill left eye with red, right eye with blue
+    for (uint32_t i = 0; i < width * height; i++) {
+        leftEyeData[i] = 0xFF0000FF;  // Red
+        rightEyeData[i] = 0xFFFF0000;  // Blue
+    }
+    
+    // Create OpenGL textures
+    GLuint leftTexture, rightTexture;
+    glGenTextures(1, &leftTexture);
+    glGenTextures(1, &rightTexture);
+    
+    // Set up left eye texture
+    glBindTexture(GL_TEXTURE_2D, leftTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, leftEyeData);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    
+    // Set up right eye texture
+    glBindTexture(GL_TEXTURE_2D, rightTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rightEyeData);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    
+    // Submit to compositor
+    Texture_t leftEyeTexture = {(void*)(uintptr_t)leftTexture, ETextureType_TextureType_OpenGL, EColorSpace_ColorSpace_Auto};
+    Texture_t rightEyeTexture = {(void*)(uintptr_t)rightTexture, ETextureType_TextureType_OpenGL, EColorSpace_ColorSpace_Auto};
+    
+    EVRCompositorError error;
+    error = manager->pCompositor->Submit(EVREye_Eye_Left, &leftEyeTexture, NULL, EVRSubmitFlags_Submit_Default);
+    if (error != EVRCompositorError_VRCompositorError_None) {
+        osSyncPrintf("Failed to submit left eye texture: %d\n", error);
+    }
+    
+    error = manager->pCompositor->Submit(EVREye_Eye_Right, &rightEyeTexture, NULL, EVRSubmitFlags_Submit_Default);
+    if (error != EVRCompositorError_VRCompositorError_None) {
+        osSyncPrintf("Failed to submit right eye texture: %d\n", error);
+    }
+    
+    // Cleanup
+    glDeleteTextures(1, &leftTexture);
+    glDeleteTextures(1, &rightTexture);
+    free(leftEyeData);
+    free(rightEyeData);
+    
+    osSyncPrintf("Test frame submitted\n");
 } 
