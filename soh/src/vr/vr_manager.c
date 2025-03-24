@@ -80,16 +80,8 @@ void VRManager_UpdateHMDMatrixPose(VRManager* manager) {
     
     osSyncPrintf("Getting latest poses from compositor...\n");
     
-    // Ensure pose array is valid
-    if (!manager->rTrackedDevicePose) {
-        osSyncPrintf("Pose array is NULL\n");
-        return;
-    }
-    
-    // Get latest poses with error checking
-    EVRCompositorError compositorError;
     osSyncPrintf("About to call GetLastPoses...\n");
-    compositorError = manager->pCompositor->GetLastPoses(manager->rTrackedDevicePose, k_unMaxTrackedDeviceCount, NULL, 0);
+    EVRCompositorError compositorError = manager->pCompositor->GetLastPoses(manager->rTrackedDevicePose, k_unMaxTrackedDeviceCount, NULL, 0);
     osSyncPrintf("GetLastPoses returned with error: %d\n", compositorError);
     
     if (compositorError != EVRCompositorError_VRCompositorError_None) {
