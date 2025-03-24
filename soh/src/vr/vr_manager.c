@@ -243,41 +243,24 @@ void VRManager_SubmitTestFrame(VRManager* manager) {
         rightEyeData[i] = 0xFFFF0000;  // Blue
     }
     
-    // Create OpenGL textures
-    GLuint leftTexture, rightTexture;
-    glGenTextures(1, &leftTexture);
-    glGenTextures(1, &rightTexture);
-    
-    // Set up left eye texture
-    glBindTexture(GL_TEXTURE_2D, leftTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, leftEyeData);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    
-    // Set up right eye texture
-    glBindTexture(GL_TEXTURE_2D, rightTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rightEyeData);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    
     // Submit to compositor
-    Texture_t leftEyeTexture = {(void*)(uintptr_t)leftTexture, ETextureType_TextureType_OpenGL, EColorSpace_ColorSpace_Auto};
-    Texture_t rightEyeTexture = {(void*)(uintptr_t)rightTexture, ETextureType_TextureType_OpenGL, EColorSpace_ColorSpace_Auto};
+    Texture_t leftEyeTexture = {leftEyeData, ETextureType_TextureType_D3D12, EColorSpace_ColorSpace_Auto};
+    Texture_t rightEyeTexture = {rightEyeData, ETextureType_TextureType_D3D12, EColorSpace_ColorSpace_Auto};
+    
+    VRTextureBounds_t bounds = {0.0f, 0.0f, 1.0f, 1.0f};  // Full texture bounds
     
     EVRCompositorError error;
-    error = manager->pCompositor->Submit(EVREye_Eye_Left, &leftEyeTexture, NULL, EVRSubmitFlags_Submit_Default);
+    error = manager->pCompositor->Submit(EVREye_Eye_Left, &leftEyeTexture, &bounds, EVRSubmitFlags_Submit_Default);
     if (error != EVRCompositorError_VRCompositorError_None) {
         osSyncPrintf("Failed to submit left eye texture: %d\n", error);
     }
     
-    error = manager->pCompositor->Submit(EVREye_Eye_Right, &rightEyeTexture, NULL, EVRSubmitFlags_Submit_Default);
+    error = manager->pCompositor->Submit(EVREye_Eye_Right, &rightEyeTexture, &bounds, EVRSubmitFlags_Submit_Default);
     if (error != EVRCompositorError_VRCompositorError_None) {
         osSyncPrintf("Failed to submit right eye texture: %d\n", error);
     }
     
     // Cleanup
-    glDeleteTextures(1, &leftTexture);
-    glDeleteTextures(1, &rightTexture);
     free(leftEyeData);
     free(rightEyeData);
     

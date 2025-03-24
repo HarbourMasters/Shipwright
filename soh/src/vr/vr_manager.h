@@ -6,7 +6,6 @@
 #include <math.h>       // for math functions
 #include <openvr_capi.h>
 #include "global.h"
-#include <GL/gl.h>      // for OpenGL
 
 // OpenVR constants
 #define k_unMaxTrackedDeviceCount 64
