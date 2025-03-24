@@ -300,12 +300,12 @@ void RandomizerOnPlayerUpdateForRCQueueHandler() {
             // Always show ItemGet animation outside of randomizer to keep behaviour consistent in vanilla
             IS_RANDO &&
             (
-                CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_DISABLED) == SGIA_ALL ||
+                CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_JUNK) == SGIA_ALL ||
                 (
-                    CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_DISABLED) == SGIA_JUNK &&
+                    CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_JUNK) == SGIA_JUNK &&
                     (
                         //crude fix to ensure map hints are readable. Ideally replace with better hint tracking. 
-                        !(getItemEntry.getItemId >= RG_DEKU_TREE_MAP && getItemEntry.getItemId <= RG_ICE_CAVERN_MAP) && (
+                        !(getItemEntry.getItemId >= RG_DEKU_TREE_MAP && getItemEntry.getItemId <= RG_ICE_CAVERN_MAP && getItemEntry.modIndex == MOD_RANDOMIZER) && (
                         getItemEntry.getItemCategory == ITEM_CATEGORY_JUNK ||
                         getItemEntry.getItemCategory == ITEM_CATEGORY_SKULLTULA_TOKEN ||
                         getItemEntry.getItemCategory == ITEM_CATEGORY_LESSER 
@@ -767,7 +767,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         }
         case VB_PLAY_SLOW_CHEST_CS: {
             // We force fast chests if SkipGetItemAnimation is enabled because the camera in the CS looks pretty wonky otherwise
-            if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_DISABLED)) {
+            if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_JUNK)) {
                 *should = false;
             }
             break;
