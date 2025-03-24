@@ -118,11 +118,10 @@ void VRManager_UpdateHMDMatrixPose(VRManager* manager) {
     if (!manager->rTrackedDevicePose[k_unTrackedDeviceIndex_Hmd].bPoseIsValid) {
         osSyncPrintf("HMD pose is not valid - using default pose for null driver\n");
         // Set up a default pose for null driver
-        HmdMatrix34_t* pose = &manager->rTrackedDevicePose[k_unTrackedDeviceIndex_Hmd].mDeviceToAbsoluteTracking;
         // Set to identity matrix
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 4; j++) {
-                pose->m[i][j] = (i == j) ? 1.0f : 0.0f;
+                manager->rTrackedDevicePose[k_unTrackedDeviceIndex_Hmd].mDeviceToAbsoluteTracking.m[i][j] = (i == j) ? 1.0f : 0.0f;
             }
         }
         manager->rTrackedDevicePose[k_unTrackedDeviceIndex_Hmd].bPoseIsValid = true;
@@ -130,7 +129,7 @@ void VRManager_UpdateHMDMatrixPose(VRManager* manager) {
     
     osSyncPrintf("HMD pose is valid\n");
     // Log the pose matrix for debugging
-    HmdMatrix34_t* pose = &manager->rTrackedDevicePose[k_unTrackedDeviceIndex_Hmd].mDeviceToAbsoluteTracking;
+    const HmdMatrix34_t* pose = &manager->rTrackedDevicePose[k_unTrackedDeviceIndex_Hmd].mDeviceToAbsoluteTracking;
     if (!pose) {
         osSyncPrintf("Pose matrix is NULL\n");
         return;
