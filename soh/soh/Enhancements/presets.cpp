@@ -75,9 +75,6 @@ void DrawPresetSelector(PresetType presetTypeId) {
         }
         CVarSetInteger(presetTypeCvar.c_str(), selectedPresetId);
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-        if (presetTypeId == PRESET_TYPE_RANDOMIZER){
-            Rando::Settings::GetInstance()->ReloadOptions();
-        }
     }
     UIWidgets::PopStyleButton();
 }

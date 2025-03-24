@@ -93,12 +93,12 @@ std::shared_ptr<ISceneCommand> ResourceFactoryBinarySceneV0::ParseSceneCommand(s
     return result;
 }
 
-std::shared_ptr<Ship::IResource> ResourceFactoryBinarySceneV0::ReadResource(std::shared_ptr<Ship::File> file) {
-    if (!FileHasValidFormatAndReader(file)) {
+std::shared_ptr<Ship::IResource> ResourceFactoryBinarySceneV0::ReadResource(std::shared_ptr<Ship::File> file, std::shared_ptr<Ship::ResourceInitData> initData) {
+    if (!FileHasValidFormatAndReader(file, initData)) {
         return nullptr;
     }
 
-    auto scene = std::make_shared<Scene>(file->InitData);
+    auto scene = std::make_shared<Scene>(initData);
     auto reader = std::get<std::shared_ptr<Ship::BinaryReader>>(file->Reader);
 
     ParseSceneCommands(scene, reader);
@@ -216,12 +216,12 @@ std::shared_ptr<ISceneCommand> ResourceFactoryXMLSceneV0::ParseSceneCommand(std:
     return result;
 }
 
-std::shared_ptr<Ship::IResource> ResourceFactoryXMLSceneV0::ReadResource(std::shared_ptr<Ship::File> file) {
-    if (!FileHasValidFormatAndReader(file)) {
+std::shared_ptr<Ship::IResource> ResourceFactoryXMLSceneV0::ReadResource(std::shared_ptr<Ship::File> file, std::shared_ptr<Ship::ResourceInitData> initData) {
+    if (!FileHasValidFormatAndReader(file, initData)) {
         return nullptr;
     }
 
-    auto scene = std::make_shared<Scene>(file->InitData);
+    auto scene = std::make_shared<Scene>(initData);
     auto reader = std::get<std::shared_ptr<tinyxml2::XMLDocument>>(file->Reader);
 
     ParseSceneCommands(scene, reader);

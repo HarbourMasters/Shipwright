@@ -7436,8 +7436,10 @@ s32 Player_ActionHandler_9(Player* this, PlayState* play) {
     if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) {
         buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
     }
-    if ((this->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) && (this->heldActor != NULL) &&
-        CHECK_BTN_ANY(sControlInput->press.button, buttonsToCheck)) {
+    if (GameInteractor_Should(VB_THROW_OR_PUT_DOWN_HELD_ITEM, (
+        (this->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) && (this->heldActor != NULL) &&
+        CHECK_BTN_ANY(sControlInput->press.button, buttonsToCheck)
+    ), sControlInput)) {
         if (!func_80835644(play, this, this->heldActor)) {
             if (!func_8083EAF0(this, this->heldActor)) {
                 Player_SetupAction(play, this, Player_Action_808464B0, 1);

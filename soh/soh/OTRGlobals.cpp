@@ -909,7 +909,7 @@ OTRVersion ReadPortVersionFromOTR(std::string otrPath) {
     // Use a temporary archive instance to load the otr and read the version file
     auto archive = std::make_shared<Ship::OtrArchive>(otrPath);
     if (archive->Open()) {
-        auto t = archive->LoadFile("portVersion", std::make_shared<Ship::ResourceInitData>());
+        auto t = archive->LoadFile("portVersion");
         if (t != nullptr && t->IsLoaded) {
             auto stream = std::make_shared<Ship::MemoryStream>(t->Buffer->data(), t->Buffer->size());
             auto reader = std::make_shared<Ship::BinaryReader>(stream);
@@ -2514,7 +2514,6 @@ void SoH_ProcessDroppedFiles(std::string filePath) {
         }
 
         Rando::Settings::GetInstance()->UpdateOptionProperties();
-        Rando::Settings::GetInstance()->SetAllFromCVar();
 
         auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
         gui->GetGuiWindow("Console")->Hide();

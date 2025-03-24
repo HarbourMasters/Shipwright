@@ -21,7 +21,7 @@ void RegionTable_Init_CastleGrounds() {
     }, {
         //Locations
         LOCATION(RC_HC_MALON_EGG,                        true),
-        LOCATION(RC_HC_GS_TREE,                          logic->IsChild && logic->CanAttack()),
+        LOCATION(RC_HC_GS_TREE,                          logic->IsChild && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_CLOSE)),
         LOCATION(RC_HC_MALON_GOSSIP_STONE_FAIRY,         logic->CallGossipFairy()),
         LOCATION(RC_HC_MALON_GOSSIP_STONE_FAIRY_BIG,     logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_HC_ROCK_WALL_GOSSIP_STONE_FAIRY,     logic->CallGossipFairy()),
