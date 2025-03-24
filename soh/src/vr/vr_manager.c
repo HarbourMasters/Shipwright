@@ -109,13 +109,22 @@ MtxF VRManager_GetHMDMatrixProjectionEye(VRManager* manager, EVREye eye) {
     MtxF result;
     
     if (!manager || !manager->pHMD) {
+        osSyncPrintf("GetHMDMatrixProjectionEye: No HMD, returning identity\n");
         // Return identity matrix if no HMD
         guMtxIdentF(&result);
         return result;
     }
     
+    osSyncPrintf("Getting projection matrix for eye %d\n", eye);
+    
+    // Set up default projection values
+    float nearZ = 0.1f;
+    float farZ = 100.0f;
+    
     // Get projection matrix from OpenVR
-    HmdMatrix44_t proj = manager->pHMD->GetProjectionMatrix(eye, 0.1f, 100.0f);
+    osSyncPrintf("Calling GetProjectionMatrix...\n");
+    HmdMatrix44_t proj = manager->pHMD->GetProjectionMatrix(eye, nearZ, farZ);
+    osSyncPrintf("Got projection matrix\n");
     
     // Convert to MtxF format
     for (int i = 0; i < 4; i++) {
@@ -124,6 +133,7 @@ MtxF VRManager_GetHMDMatrixProjectionEye(VRManager* manager, EVREye eye) {
         }
     }
     
+    osSyncPrintf("Converted projection matrix to MtxF format\n");
     return result;
 }
 
@@ -131,13 +141,18 @@ MtxF VRManager_GetHMDMatrixPoseEye(VRManager* manager, EVREye eye) {
     MtxF result;
     
     if (!manager || !manager->pHMD) {
+        osSyncPrintf("GetHMDMatrixPoseEye: No HMD, returning identity\n");
         // Return identity matrix if no HMD
         guMtxIdentF(&result);
         return result;
     }
     
+    osSyncPrintf("Getting eye-to-head transform for eye %d\n", eye);
+    
     // Get eye-to-head transform from OpenVR
+    osSyncPrintf("Calling GetEyeToHeadTransform...\n");
     HmdMatrix34_t eyeMatrix = manager->pHMD->GetEyeToHeadTransform(eye);
+    osSyncPrintf("Got eye-to-head transform\n");
     
     // Convert to MtxF format (3x4 to 4x4)
     for (int i = 0; i < 3; i++) {
@@ -151,6 +166,7 @@ MtxF VRManager_GetHMDMatrixPoseEye(VRManager* manager, EVREye eye) {
     result.mf[3][2] = 0.0f;
     result.mf[3][3] = 1.0f;
     
+    osSyncPrintf("Converted eye-to-head transform to MtxF format\n");
     return result;
 }
 
