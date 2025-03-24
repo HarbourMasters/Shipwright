@@ -51,10 +51,29 @@ void VRManager_ShutdownVR(VRManager* manager) {
 }
 
 void VRManager_UpdateHMDMatrixPose(VRManager* manager) {
-    if (!manager || !manager->pCompositor) return;
+    osSyncPrintf("VRManager_UpdateHMDMatrixPose called\n");
     
+    if (!manager) {
+        osSyncPrintf("VR manager is NULL\n");
+        return;
+    }
+    
+    if (!manager->pCompositor) {
+        osSyncPrintf("VR compositor is NULL\n");
+        return;
+    }
+    
+    osSyncPrintf("Getting latest poses from compositor...\n");
     // Get latest poses
     manager->pCompositor->GetLastPoses(manager->rTrackedDevicePose, k_unMaxTrackedDeviceCount, NULL, 0);
+    osSyncPrintf("Got poses from compositor\n");
+    
+    // Check if HMD pose is valid
+    if (!manager->rTrackedDevicePose[k_unTrackedDeviceIndex_Hmd].bPoseIsValid) {
+        osSyncPrintf("HMD pose is not valid\n");
+    } else {
+        osSyncPrintf("HMD pose is valid\n");
+    }
 }
 
 MtxF VRManager_GetHMDMatrixProjectionEye(VRManager* manager, EVREye eye) {
