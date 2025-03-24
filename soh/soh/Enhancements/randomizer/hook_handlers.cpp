@@ -236,6 +236,7 @@ void RandomizerOnFlagSetHandler(int16_t flagType, int16_t flag) {
     RandomizerCheck rc = GetRandomizerCheckFromFlag(flagType, flag);
     if (rc == RC_UNKNOWN_CHECK) return;
 
+    if (flagType == FLAG_GS_TOKEN && Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_TOKENS).Is(RO_TOKENSANITY_OFF)) return;
     auto loc = Rando::Context::GetInstance()->GetItemLocation(rc);
     if (loc == nullptr || loc->HasObtained() || loc->GetPlacedRandomizerGet() == RG_NONE) return;
 
@@ -1610,7 +1611,6 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_GIVE_ITEM_FROM_LAB_DIVE:
         case VB_GIVE_ITEM_FROM_SKULL_KID_SARIAS_SONG:
         case VB_GIVE_ITEM_FROM_MAN_ON_ROOF:
-        case VB_GIVE_ITEM_SKULL_TOKEN:
         case VB_GIVE_ITEM_FROM_BLUE_WARP:
         case VB_GIVE_ITEM_FAIRY_OCARINA:
         case VB_GIVE_ITEM_WEIRD_EGG:
@@ -1625,6 +1625,9 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_GIVE_ITEM_SPIRIT_MEDALLION:
         case VB_GIVE_ITEM_SHADOW_MEDALLION:
             *should = false;
+            break;
+        case VB_GIVE_ITEM_SKULL_TOKEN:
+            *should = (Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_TOKENS).Is(RO_TOKENSANITY_OFF));
             break;
         default:
             break;

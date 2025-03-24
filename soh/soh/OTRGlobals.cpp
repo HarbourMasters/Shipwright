@@ -2376,7 +2376,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {
-        if (IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), 0) != 0) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), 0) != 0) {
             // The freeze text cannot be manually dismissed and must be auto-dismissed.
             // This is fine and even wanted when skull tokens are not shuffled, but when
             // when they are shuffled we want to be able to manually dismiss the box.
@@ -2395,7 +2395,11 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             s16 gsCount = gSaveContext.inventory.gsTokens + (IS_RANDO ? 1 : 0);
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId, MF_FORMATTED);
             messageEntry.Replace("[[gsCount]]", std::to_string(gsCount));
-        } 
+        } else if (CVarGetInteger(CVAR_ENHANCEMENT("SkulltulaFreeze"), 0) != 0 && (!IS_RANDO || Randomizer_GetSettingValue(RSK_SHUFFLE_TOKENS) == RO_TOKENSANITY_OFF)) {
+            messageEntry = CustomMessage::LoadVanillaMessageTableEntry(TEXT_GS_FREEZE);
+            messageEntry.Replace(CustomMessage::MESSAGE_END(), "\x0E\x3C");
+            messageEntry += CustomMessage::MESSAGE_END();
+        }
     } else if ((IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("BetterBombchuShopping"), 0)) &&
                 (textId == TEXT_BUY_BOMBCHUS_10_DESC || textId == TEXT_BUY_BOMBCHUS_10_PROMPT)) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId, MF_FORMATTED);
