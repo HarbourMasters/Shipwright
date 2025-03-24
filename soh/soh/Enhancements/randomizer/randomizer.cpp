@@ -1939,6 +1939,7 @@ void RandomizerSettingsWindow::DrawElement() {
         randoThread.join();
     }
     static bool locationsTabOpen = false;
+    static bool tricksTabOpen = false;
     bool disableEditingRandoSettings = CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings);
     const PresetTypeDefinition presetTypeDef = presetTypes.at(PRESET_TYPE_RANDOMIZER);
@@ -1969,8 +1970,9 @@ void RandomizerSettingsWindow::DrawElement() {
         }
         if (randomizerPresetSelected != 0) {
             applyPreset(selectedPresetDef.entries);
-            // force excluded location list update if tab is open.
+            // force excluded location list and trick list update if tab is open.
             locationsTabOpen = false;
+            tricksTabOpen = false;
         }
         CVarSetInteger(presetTypeCvar.c_str(), randomizerPresetSelected);
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
@@ -2192,7 +2194,6 @@ void RandomizerSettingsWindow::DrawElement() {
         }
         ImGui::EndDisabled();
 
-        static bool tricksTabOpen = false;
         if (ImGui::BeginTabItem("Tricks/Glitches")) {
             if (!tricksTabOpen) {
                 tricksTabOpen = true;
