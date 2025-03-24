@@ -28,12 +28,6 @@ bool VRManager_InitVR(VRManager* manager) {
     }
     osSyncPrintf("Successfully got VR system interface\n");
     
-    // Log VR system info
-    char driverName[128];
-    uint32_t driverNameLen = sizeof(driverName);
-    manager->pHMD->GetStringTrackedDeviceProperty(k_unTrackedDeviceIndex_Hmd, ETrackedDeviceProperty_Prop_TrackingSystemName_String, driverName, driverNameLen, &eError);
-    osSyncPrintf("VR Driver: %s\n", driverName);
-    
     osSyncPrintf("Getting VR compositor interface...\n");
     manager->pCompositor = VR_GetGenericInterface(IVRCompositor_Version, &eError);
     if (eError != EVRInitError_VRInitError_None || !manager->pCompositor) {
