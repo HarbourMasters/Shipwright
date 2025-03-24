@@ -11,14 +11,23 @@
 
 // Initialize VR if available
 void Camera_InitVR() {
-    if (VR_IsHmdPresent()) {
+    // Always try to initialize VR if enabled
+    if (CVarGetInteger(CVAR_ENHANCEMENT("EnableVR"), 0)) {
         gVRManager = (VRManager*)malloc(sizeof(VRManager));
         if (gVRManager != NULL) {
             if (!VRManager_InitVR(gVRManager)) {
                 free(gVRManager);
                 gVRManager = NULL;
-                osSyncPrintf("VR initialization failed\n");
+                osSyncPrintf("VR initialization failed - OpenVR not available\n");
+            } else {
+                osSyncPrintf("VR initialized successfully\n");
+                // Force camera into VR mode immediately
+                if (gPlayState != NULL && gPlayState->cameraPtrs[0] != NULL) {
+                    Camera_ChangeModeFlags(gPlayState->cameraPtrs[0], CAM_MODE_VR, 0);
+                }
             }
+        } else {
+            osSyncPrintf("Failed to allocate VR manager\n");
         }
     }
 }
