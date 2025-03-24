@@ -142,7 +142,13 @@ void View_SetViewport(View* view, Viewport* viewport) {
 }
 
 void View_SetVRStereoView(View* view, VRManager* vrManager) {
-    if (vrManager == NULL || !VRManager_IsHMDPresent()) {
+    if (vrManager == NULL) {
+        osSyncPrintf("VR Manager not available for stereo view\n");
+        return;
+    }
+
+    if (!VRManager_IsHMDPresent()) {
+        osSyncPrintf("No HMD detected for stereo view\n");
         return;
     }
 

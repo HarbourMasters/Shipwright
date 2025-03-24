@@ -14,20 +14,22 @@ void Camera_InitVR() {
     // Always try to initialize VR if enabled
     if (CVarGetInteger(CVAR_ENHANCEMENT("EnableVR"), 0)) {
         gVRManager = (VRManager*)malloc(sizeof(VRManager));
-        if (gVRManager != NULL) {
-            if (!VRManager_InitVR(gVRManager)) {
-                free(gVRManager);
-                gVRManager = NULL;
-                osSyncPrintf("VR initialization failed - OpenVR not available\n");
-            } else {
-                osSyncPrintf("VR initialized successfully\n");
-                // Force camera into VR mode immediately
-                if (gPlayState != NULL && gPlayState->cameraPtrs[0] != NULL) {
-                    Camera_ChangeModeFlags(gPlayState->cameraPtrs[0], CAM_MODE_VR, 0);
-                }
-            }
-        } else {
-            osSyncPrintf("Failed to allocate VR manager\n");
+        if (gVRManager == NULL) {
+            osSyncPrintf("Failed to allocate VR manager - crashing\n");
+            exit(1);
+        }
+        
+        if (!VRManager_InitVR(gVRManager)) {
+            free(gVRManager);
+            gVRManager = NULL;
+            osSyncPrintf("VR initialization failed - OpenVR not available - crashing\n");
+            exit(1);
+        }
+        
+        osSyncPrintf("VR initialized successfully\n");
+        // Force camera into VR mode immediately
+        if (gPlayState != NULL && gPlayState->cameraPtrs[0] != NULL) {
+            Camera_ChangeModeFlags(gPlayState->cameraPtrs[0], CAM_MODE_VR, 0);
         }
     }
 }
@@ -3289,7 +3291,7 @@ s32 Camera_KeepOn1(Camera* camera) {
         anim->unk_12 = spC0.yaw;
         anim->unk_14 = spC0.pitch;
         anim->unk_00 = spC0.r;
-        anim->unk_08 = playerPosRot->pos.y - camera->playerPosDelta.y;
+        anim->unk_08 = spC0.r;
     }
     if (camera->status == 7) {
         sUpdateCameraDirection = 1;
@@ -3330,7 +3332,7 @@ s32 Camera_KeepOn1(Camera* camera) {
         cont:
             if (camera->playerGroundY == camera->playerPosRot.pos.y || camera->player->actor.gravity > -0.1f ||
                 camera->player->stateFlags1 & PLAYER_STATE1_CLIMBING_LADDER) {
-                anim->unk_08 = playerPosRot->pos.y;
+                anim->unk_08 = playerPosRot->pos.y - camera->playerPosDelta.y;
                 sp80 = 0;
             } else {
                 sp80 = 1;
@@ -3639,7 +3641,12 @@ s32 Camera_KeepOn3(Camera* camera) {
 
 s32 Camera_VR(Camera* camera) {
     if (gVRManager == NULL) {
-        return Camera_Normal1(camera);
+        // Try to reinitialize VR if it failed before
+        Camera_InitVR();
+        if (gVRManager == NULL) {
+            osSyncPrintf("VR not available - falling back to normal camera\n");
+            return Camera_Normal1(camera);
+        }
     }
 
     // Update VR tracking
@@ -3647,9 +3654,14 @@ s32 Camera_VR(Camera* camera) {
 
     // Get HMD rotation and apply to camera
     Vec3f hmdRot = VRManager_GetHMDRotation(gVRManager);
+    
+    // Apply HMD rotation to camera eye position
     camera->eye.x = hmdRot.x;
     camera->eye.y = hmdRot.y;
     camera->eye.z = hmdRot.z;
+
+    // Set up VR stereo view immediately
+    View_SetVRStereoView(&camera->play->view, gVRManager);
 
     // Handle controller input if needed
     if (VRManager_IsControllerActive(gVRManager, ETrackedControllerRole_TrackedControllerRole_RightHand)) {
@@ -4342,6 +4354,11 @@ s32 Camera_Subj2(Camera* camera) {
  * First person view
  */
 s32 Camera_Subj3(Camera* camera) {
+    // If VR is enabled, use VR camera mode
+    if (gVRManager != NULL) {
+        return Camera_VR(camera);
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
