@@ -78,6 +78,16 @@ void VRManager_UpdateHMDMatrixPose(VRManager* manager) {
     }
     osSyncPrintf("HMD is present\n");
     
+    // Set up a default pose for basic stereo display
+    // This gives us a fixed forward-facing view
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 4; j++) {
+            manager->rTrackedDevicePose[k_unTrackedDeviceIndex_Hmd].mDeviceToAbsoluteTracking.m[i][j] = (i == j) ? 1.0f : 0.0f;
+        }
+    }
+    manager->rTrackedDevicePose[k_unTrackedDeviceIndex_Hmd].bPoseIsValid = true;
+    
+    /* Commented out pose tracking for now
     osSyncPrintf("Getting latest poses from compositor...\n");
     
     osSyncPrintf("About to call GetLastPoses...\n");
@@ -90,39 +100,9 @@ void VRManager_UpdateHMDMatrixPose(VRManager* manager) {
     }
     
     osSyncPrintf("Got poses from compositor\n");
+    */
     
-    // Check array bounds before accessing HMD pose
-    if (k_unTrackedDeviceIndex_Hmd >= k_unMaxTrackedDeviceCount) {
-        osSyncPrintf("HMD index out of bounds\n");
-        return;
-    }
-    
-    // For null driver, we need to handle the case where pose might not be valid
-    if (!manager->rTrackedDevicePose[k_unTrackedDeviceIndex_Hmd].bPoseIsValid) {
-        osSyncPrintf("HMD pose is not valid - using default pose for null driver\n");
-        // Set up a default pose for null driver
-        // Set to identity matrix
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 4; j++) {
-                manager->rTrackedDevicePose[k_unTrackedDeviceIndex_Hmd].mDeviceToAbsoluteTracking.m[i][j] = (i == j) ? 1.0f : 0.0f;
-            }
-        }
-        manager->rTrackedDevicePose[k_unTrackedDeviceIndex_Hmd].bPoseIsValid = true;
-    }
-    
-    osSyncPrintf("HMD pose is valid\n");
-    // Log the pose matrix for debugging
-    const HmdMatrix34_t* pose = &manager->rTrackedDevicePose[k_unTrackedDeviceIndex_Hmd].mDeviceToAbsoluteTracking;
-    if (!pose) {
-        osSyncPrintf("Pose matrix is NULL\n");
-        return;
-    }
-    
-    osSyncPrintf("HMD Pose Matrix:\n");
-    for (int i = 0; i < 3; i++) {
-        osSyncPrintf("[%f %f %f %f]\n", 
-            pose->m[i][0], pose->m[i][1], pose->m[i][2], pose->m[i][3]);
-    }
+    osSyncPrintf("Using fixed forward-facing pose for basic stereo display\n");
 }
 
 MtxF VRManager_GetHMDMatrixProjectionEye(VRManager* manager, EVREye eye) {
