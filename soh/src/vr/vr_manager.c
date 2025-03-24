@@ -27,6 +27,12 @@ bool VRManager_InitVR(VRManager* manager) {
         return false;
     }
     
+    // Log VR system info
+    char driverName[128];
+    uint32_t driverNameLen = sizeof(driverName);
+    manager->pHMD->GetStringTrackedDeviceProperty(k_unTrackedDeviceIndex_Hmd, ETrackedDeviceProperty_Prop_DriverName_String, driverName, driverNameLen, &eError);
+    osSyncPrintf("VR Driver: %s\n", driverName);
+    
     osSyncPrintf("Getting VR compositor interface...\n");
     manager->pCompositor = VR_GetGenericInterface(IVRCompositor_Version, &eError);
     if (eError != EVRInitError_VRInitError_None || !manager->pCompositor) {
@@ -76,26 +82,58 @@ void VRManager_UpdateHMDMatrixPose(VRManager* manager) {
     osSyncPrintf("HMD is present\n");
     
     osSyncPrintf("Getting latest poses from compositor...\n");
-    // Get latest poses
-    EVRCompositorError compositorError = manager->pCompositor->GetLastPoses(manager->rTrackedDevicePose, k_unMaxTrackedDeviceCount, NULL, 0);
+    
+    // Ensure pose array is valid
+    if (!manager->rTrackedDevicePose) {
+        osSyncPrintf("Pose array is NULL\n");
+        return;
+    }
+    
+    // Get latest poses with error checking
+    EVRCompositorError compositorError;
+    osSyncPrintf("About to call GetLastPoses...\n");
+    compositorError = manager->pCompositor->GetLastPoses(manager->rTrackedDevicePose, k_unMaxTrackedDeviceCount, NULL, 0);
+    osSyncPrintf("GetLastPoses returned with error: %d\n", compositorError);
+    
     if (compositorError != EVRCompositorError_VRCompositorError_None) {
         osSyncPrintf("GetLastPoses failed with error: %d\n", compositorError);
         return;
     }
+    
     osSyncPrintf("Got poses from compositor\n");
     
-    // Check if HMD pose is valid
+    // Check array bounds before accessing HMD pose
+    if (k_unTrackedDeviceIndex_Hmd >= k_unMaxTrackedDeviceCount) {
+        osSyncPrintf("HMD index out of bounds\n");
+        return;
+    }
+    
+    // For null driver, we need to handle the case where pose might not be valid
     if (!manager->rTrackedDevicePose[k_unTrackedDeviceIndex_Hmd].bPoseIsValid) {
-        osSyncPrintf("HMD pose is not valid\n");
-    } else {
-        osSyncPrintf("HMD pose is valid\n");
-        // Log the pose matrix for debugging
+        osSyncPrintf("HMD pose is not valid - using default pose for null driver\n");
+        // Set up a default pose for null driver
         HmdMatrix34_t* pose = &manager->rTrackedDevicePose[k_unTrackedDeviceIndex_Hmd].mDeviceToAbsoluteTracking;
-        osSyncPrintf("HMD Pose Matrix:\n");
+        // Set to identity matrix
         for (int i = 0; i < 3; i++) {
-            osSyncPrintf("[%f %f %f %f]\n", 
-                pose->m[i][0], pose->m[i][1], pose->m[i][2], pose->m[i][3]);
+            for (int j = 0; j < 4; j++) {
+                pose->m[i][j] = (i == j) ? 1.0f : 0.0f;
+            }
         }
+        manager->rTrackedDevicePose[k_unTrackedDeviceIndex_Hmd].bPoseIsValid = true;
+    }
+    
+    osSyncPrintf("HMD pose is valid\n");
+    // Log the pose matrix for debugging
+    HmdMatrix34_t* pose = &manager->rTrackedDevicePose[k_unTrackedDeviceIndex_Hmd].mDeviceToAbsoluteTracking;
+    if (!pose) {
+        osSyncPrintf("Pose matrix is NULL\n");
+        return;
+    }
+    
+    osSyncPrintf("HMD Pose Matrix:\n");
+    for (int i = 0; i < 3; i++) {
+        osSyncPrintf("[%f %f %f %f]\n", 
+            pose->m[i][0], pose->m[i][1], pose->m[i][2], pose->m[i][3]);
     }
 }
 
