@@ -7,23 +7,39 @@ VRManager* gVRManager = NULL;
 bool VRManager_InitVR(VRManager* manager) {
     EVRInitError eError = EVRInitError_VRInitError_None;
     
+    osSyncPrintf("Initializing OpenVR...\n");
+    
     // Initialize OpenVR
     VR_InitInternal(&eError, EVRApplicationType_VRApplication_Scene);
     if (eError != EVRInitError_VRInitError_None) {
+        osSyncPrintf("OpenVR initialization failed with error: %d\n", eError);
         return false;
     }
     
-    // Get system and compositor interfaces
-    manager->pHMD = VR_GetGenericInterface(IVRSystem_Version, &eError);
-    manager->pCompositor = VR_GetGenericInterface(IVRCompositor_Version, &eError);
+    osSyncPrintf("OpenVR initialized successfully\n");
     
-    if (eError != EVRInitError_VRInitError_None || !manager->pHMD || !manager->pCompositor) {
+    // Get system and compositor interfaces
+    osSyncPrintf("Getting VR system interface...\n");
+    manager->pHMD = VR_GetGenericInterface(IVRSystem_Version, &eError);
+    if (eError != EVRInitError_VRInitError_None || !manager->pHMD) {
+        osSyncPrintf("Failed to get VR system interface, error: %d\n", eError);
         VR_ShutdownInternal();
         return false;
     }
     
+    osSyncPrintf("Getting VR compositor interface...\n");
+    manager->pCompositor = VR_GetGenericInterface(IVRCompositor_Version, &eError);
+    if (eError != EVRInitError_VRInitError_None || !manager->pCompositor) {
+        osSyncPrintf("Failed to get VR compositor interface, error: %d\n", eError);
+        VR_ShutdownInternal();
+        return false;
+    }
+    
+    osSyncPrintf("VR interfaces initialized successfully\n");
+    
     // Store the global instance
     gVRManager = manager;
+    osSyncPrintf("VR manager stored globally\n");
     return true;
 }
 
