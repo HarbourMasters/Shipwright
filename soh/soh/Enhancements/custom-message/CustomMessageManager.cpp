@@ -114,6 +114,44 @@ CustomMessage::CustomMessage(Text text, TextBoxType type_,TextBoxPosition positi
     messages[LANGUAGE_FRA] = text.GetFrench();
 }
 
+typedef struct {
+    u16 textId;
+    u8 typePos;
+    const char* segment;
+    u32 msgSize;
+} MessageTableEntry;
+
+extern "C" MessageTableEntry* sNesMessageEntryTablePtr;
+extern "C" MessageTableEntry* sGerMessageEntryTablePtr;
+extern "C" MessageTableEntry* sFraMessageEntryTablePtr;
+
+CustomMessage CustomMessage::LoadVanillaMessageTableEntry(uint16_t textId) {
+    const char* foundSeg;
+    const char* nextSeg;
+    MessageTableEntry* msgEntry = sNesMessageEntryTablePtr;
+    u16 bufferId = textId;
+    CustomMessage msg;
+    if (gSaveContext.language == LANGUAGE_GER) {
+        msgEntry = sGerMessageEntryTablePtr;
+    } else if (gSaveContext.language == LANGUAGE_FRA) {
+        msgEntry = sFraMessageEntryTablePtr;
+    }
+    while (msgEntry->textId != 0xFFFF) {
+        if (msgEntry->textId == bufferId) {
+            TextBoxPosition position = static_cast<TextBoxPosition>(msgEntry->typePos & 0xF);
+            TextBoxType type = static_cast<TextBoxType>(msgEntry->typePos >> 4);
+            // uint8_t icon = msgEntry->segment[1];
+            std::string message = std::string(msgEntry->segment , msgEntry->msgSize);
+            msg = CustomMessage(message, type, position);
+            // msg.Format(static_cast<ItemID>(icon));
+            return msg;
+        }
+        msgEntry++;
+    }
+    return CustomMessage();
+}
+
+
 const std::string CustomMessage::GetEnglish(MessageFormat format) const {
     return GetForLanguage(LANGUAGE_ENG, format);
 }
