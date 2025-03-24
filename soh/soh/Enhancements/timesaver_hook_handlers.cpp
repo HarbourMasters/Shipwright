@@ -880,23 +880,12 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
                 return;
             }
 
-            bool shouldKeepOpen;
-            switch (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SleepingWaterfall"), 0)) {
-                case 1:
-                    shouldKeepOpen = Flags_GetEventChkInf(EVENTCHKINF_OPENED_ZORAS_DOMAIN);
-                    break;
-                case 2:
-                    if (IS_RANDO && RAND_GET_OPTION(RSK_SLEEPING_WATERFALL) == RO_WATERFALL_OPEN) {
-                        shouldKeepOpen = true;
-                    } else {
-                        shouldKeepOpen = CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) &&
-                                         (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME ||
-                                          INV_CONTENT(ITEM_OCARINA_FAIRY) == ITEM_OCARINA_FAIRY);
-                    }
-                    break;
-                default:
-                    shouldKeepOpen = false;
-                    break;
+            bool shouldKeepOpen = RAND_GET_OPTION(RSK_SLEEPING_WATERFALL) && IS_RANDO;
+            if (!shouldKeepOpen) {
+                bool enhancement = CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SleepingWaterfall"), 0);
+                shouldKeepOpen = (enhancement == 2 && ((CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) &&
+                                (INV_CONTENT(ITEM_OCARINA_TIME) != ITEM_NONE))))
+                    || (enhancement == 1 && Flags_GetEventChkInf(EVENTCHKINF_OPENED_ZORAS_DOMAIN));
             }
 
             if (!shouldKeepOpen) {
