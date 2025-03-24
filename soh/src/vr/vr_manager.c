@@ -37,6 +37,14 @@ bool VRManager_InitVR(VRManager* manager) {
     
     osSyncPrintf("VR interfaces initialized successfully\n");
     
+    // Initialize tracked device poses array
+    manager->rTrackedDevicePose = malloc(sizeof(TrackedDevicePose_t) * k_unMaxTrackedDeviceCount);
+    if (!manager->rTrackedDevicePose) {
+        osSyncPrintf("Failed to allocate memory for tracked device poses\n");
+        exit(1);
+    }
+    memset(manager->rTrackedDevicePose, 0, sizeof(TrackedDevicePose_t) * k_unMaxTrackedDeviceCount);
+    
     // Store the global instance
     gVRManager = manager;
     osSyncPrintf("VR manager stored globally\n");
@@ -45,6 +53,10 @@ bool VRManager_InitVR(VRManager* manager) {
 
 void VRManager_ShutdownVR(VRManager* manager) {
     if (manager) {
+        if (manager->rTrackedDevicePose) {
+            free(manager->rTrackedDevicePose);
+            manager->rTrackedDevicePose = NULL;
+        }
         VR_ShutdownInternal();
         gVRManager = NULL;
     }
