@@ -1,14 +1,9 @@
 #pragma once
 
-#include <map>
 #include <string>
 #include <vector>
 #include <variant>
-#include <cstdint>
-#include "soh/Enhancements/randomizer/randomizerTypes.h"
-#include "soh/Enhancements/enhancementTypes.h"
 #include "soh/OTRGlobals.h"
-#include "soh/cvar_prefixes.h"
 
 enum PresetEntryType {
     PRESET_ENTRY_TYPE_S32,
@@ -44,15 +39,6 @@ typedef struct PresetEntry {
 } PresetEntry;
 
 std::string FormatLocations(std::vector<RandomizerCheck> locs);
-
-#define PRESET_ENTRY_S32(cvar, value) \
-    { cvar,    PRESET_ENTRY_TYPE_S32, value }
-#define PRESET_ENTRY_FLOAT(cvar, value) \
-    { cvar,  PRESET_ENTRY_TYPE_FLOAT, value }
-#define PRESET_ENTRY_STRING(cvar, value) \
-    { cvar, PRESET_ENTRY_TYPE_STRING, value }
-#define PRESET_ENTRY_CPP_STRING(cvar, value) \
-    { cvar, PRESET_ENTRY_TYPE_CPP_STRING, value }
 
 void DrawPresetSelector(PresetType presetType);
 void clearCvars(std::vector<const char*> cvarsToClear);

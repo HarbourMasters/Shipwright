@@ -1,4 +1,12 @@
 #include "Presets.h"
+#include <map>
+#include "soh/cvar_prefixes.h"
+#include "soh/Enhancements/enhancementTypes.h"
+
+#define PRESET_ENTRY_S32(cvar, value) { cvar, PRESET_ENTRY_TYPE_S32, value }
+#define PRESET_ENTRY_FLOAT(cvar, value) { cvar, PRESET_ENTRY_TYPE_FLOAT, value }
+#define PRESET_ENTRY_STRING(cvar, value) { cvar, PRESET_ENTRY_TYPE_STRING, value }
+#define PRESET_ENTRY_CPP_STRING(cvar, value) { cvar, PRESET_ENTRY_TYPE_CPP_STRING, value }
 
 // TODO: Ideally everything in this file will come from one/many JSON files
 
