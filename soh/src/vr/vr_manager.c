@@ -244,8 +244,8 @@ void VRManager_SubmitTestFrame(VRManager* manager) {
     }
     
     // Submit to compositor
-    Texture_t leftEyeTexture = {leftEyeData, ETextureType_TextureType_D3D12, EColorSpace_ColorSpace_Auto};
-    Texture_t rightEyeTexture = {rightEyeData, ETextureType_TextureType_D3D12, EColorSpace_ColorSpace_Auto};
+    Texture_t leftEyeTexture = {leftEyeData, ETextureType_TextureType_DirectX12, EColorSpace_ColorSpace_Auto};
+    Texture_t rightEyeTexture = {rightEyeData, ETextureType_TextureType_DirectX12, EColorSpace_ColorSpace_Auto};
     
     VRTextureBounds_t bounds = {0.0f, 0.0f, 1.0f, 1.0f};  // Full texture bounds
     
