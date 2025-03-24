@@ -882,7 +882,7 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
 
             bool shouldKeepOpen = RAND_GET_OPTION(RSK_SLEEPING_WATERFALL) && IS_RANDO;
             if (!shouldKeepOpen) {
-                bool enhancement = CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SleepingWaterfall"), 0);
+                int enhancement = CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SleepingWaterfall"), 0);
                 shouldKeepOpen = (enhancement == 2 && ((CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) &&
                                 (INV_CONTENT(ITEM_OCARINA_TIME) != ITEM_NONE))))
                     || (enhancement == 1 && Flags_GetEventChkInf(EVENTCHKINF_OPENED_ZORAS_DOMAIN));
