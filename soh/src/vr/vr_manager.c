@@ -62,10 +62,26 @@ void VRManager_UpdateHMDMatrixPose(VRManager* manager) {
         osSyncPrintf("VR compositor is NULL\n");
         return;
     }
+
+    if (!manager->pHMD) {
+        osSyncPrintf("VR HMD interface is NULL\n");
+        return;
+    }
+    
+    osSyncPrintf("Checking if HMD is present...\n");
+    if (!VR_IsHmdPresent()) {
+        osSyncPrintf("No HMD detected\n");
+        return;
+    }
+    osSyncPrintf("HMD is present\n");
     
     osSyncPrintf("Getting latest poses from compositor...\n");
     // Get latest poses
-    manager->pCompositor->GetLastPoses(manager->rTrackedDevicePose, k_unMaxTrackedDeviceCount, NULL, 0);
+    EVRCompositorError compositorError = manager->pCompositor->GetLastPoses(manager->rTrackedDevicePose, k_unMaxTrackedDeviceCount, NULL, 0);
+    if (compositorError != EVRCompositorError_VRCompositorError_None) {
+        osSyncPrintf("GetLastPoses failed with error: %d\n", compositorError);
+        return;
+    }
     osSyncPrintf("Got poses from compositor\n");
     
     // Check if HMD pose is valid
@@ -73,6 +89,13 @@ void VRManager_UpdateHMDMatrixPose(VRManager* manager) {
         osSyncPrintf("HMD pose is not valid\n");
     } else {
         osSyncPrintf("HMD pose is valid\n");
+        // Log the pose matrix for debugging
+        HmdMatrix34_t* pose = &manager->rTrackedDevicePose[k_unTrackedDeviceIndex_Hmd].mDeviceToAbsoluteTracking;
+        osSyncPrintf("HMD Pose Matrix:\n");
+        for (int i = 0; i < 3; i++) {
+            osSyncPrintf("[%f %f %f %f]\n", 
+                pose->m[i][0], pose->m[i][1], pose->m[i][2], pose->m[i][3]);
+        }
     }
 }
 
