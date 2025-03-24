@@ -1970,13 +1970,13 @@ void RandomizerSettingsWindow::DrawElement() {
         }
         if (randomizerPresetSelected != 0) {
             applyPreset(selectedPresetDef.entries);
-            // force excluded location list and trick list update if tab is open.
-            locationsTabOpen = false;
-            tricksTabOpen = false;
         }
         CVarSetInteger(presetTypeCvar.c_str(), randomizerPresetSelected);
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         mSettings->UpdateOptionProperties();
+        // force excluded location list and trick list update if tab is open.
+        locationsTabOpen = false;
+        tricksTabOpen = false;
     }
 
     UIWidgets::Spacer(0);
