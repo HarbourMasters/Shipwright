@@ -11,26 +11,24 @@
 
 // Initialize VR if available
 void Camera_InitVR() {
-    // Always try to initialize VR if enabled
-    if (CVarGetInteger(CVAR_ENHANCEMENT("EnableVR"), 0)) {
-        gVRManager = (VRManager*)malloc(sizeof(VRManager));
-        if (gVRManager == NULL) {
-            osSyncPrintf("Failed to allocate VR manager - crashing\n");
-            exit(1);
-        }
-        
-        if (!VRManager_InitVR(gVRManager)) {
-            free(gVRManager);
-            gVRManager = NULL;
-            osSyncPrintf("VR initialization failed - OpenVR not available - crashing\n");
-            exit(1);
-        }
-        
-        osSyncPrintf("VR initialized successfully\n");
-        // Force camera into VR mode immediately
-        if (gPlayState != NULL && gPlayState->cameraPtrs[0] != NULL) {
-            Camera_ChangeModeFlags(gPlayState->cameraPtrs[0], CAM_MODE_VR, 0);
-        }
+    // Always try to initialize VR
+    gVRManager = (VRManager*)malloc(sizeof(VRManager));
+    if (gVRManager == NULL) {
+        osSyncPrintf("Failed to allocate VR manager - crashing\n");
+        exit(1);
+    }
+    
+    if (!VRManager_InitVR(gVRManager)) {
+        free(gVRManager);
+        gVRManager = NULL;
+        osSyncPrintf("VR initialization failed - OpenVR not available - crashing\n");
+        exit(1);
+    }
+    
+    osSyncPrintf("VR initialized successfully\n");
+    // Force camera into VR mode immediately
+    if (gPlayState != NULL && gPlayState->cameraPtrs[0] != NULL) {
+        Camera_ChangeModeFlags(gPlayState->cameraPtrs[0], CAM_MODE_VR, 0);
     }
 }
 
@@ -836,7 +834,7 @@ Vec3f* Camera_BGCheckCorner(Vec3f* dst, Vec3f* linePointA, Vec3f* linePointB, Ca
  * Checks collision between at and eyeNext, if `checkEye` is set, if there is no collsion between
  * eyeNext->at, then eye->at is also checked.
  * Returns:
- * 0 if no collsion is found between at->eyeNext
+ * 0 if no collsion is found between at->eye
  * 2 if the angle between the polys is between 60 degrees and 120 degrees
  * 3 ?
  * 6 if the angle between the polys is greater than 120 degrees
@@ -3641,12 +3639,8 @@ s32 Camera_KeepOn3(Camera* camera) {
 
 s32 Camera_VR(Camera* camera) {
     if (gVRManager == NULL) {
-        // Try to reinitialize VR if it failed before
-        Camera_InitVR();
-        if (gVRManager == NULL) {
-            osSyncPrintf("VR not available - falling back to normal camera\n");
-            return Camera_Normal1(camera);
-        }
+        osSyncPrintf("VR not available - crashing\n");
+        exit(1);
     }
 
     // Update VR tracking
@@ -6104,9 +6098,9 @@ s32 Camera_Demo5(Camera* camera) {
         ONEPOINT_CS_INFO(camera)->keyFrameCnt = ARRAY_COUNT(D_8011D79C);
         if ((sp78.yaw < 0x15) || (sp78.yaw >= 0x12C) || (sp78.pitch < 0x29) || (sp78.pitch >= 0xC8)) {
             D_8011D79C[0].actionFlags = 0x41;
-            D_8011D79C[0].atTargetInit.y = -30.0f;
-            D_8011D79C[0].atTargetInit.x = 0.0f;
             D_8011D79C[0].atTargetInit.z = 0.0f;
+            D_8011D79C[0].atTargetInit.x = 0.0f;
+            D_8011D79C[0].atTargetInit.y = -30.0f;
             D_8011D79C[0].eyeTargetInit.y = 0.0f;
             D_8011D79C[0].eyeTargetInit.x = 10.0f;
             D_8011D79C[0].eyeTargetInit.z = -50.0f;

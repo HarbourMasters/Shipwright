@@ -429,6 +429,10 @@ void Play_Init(GameState* thisx) {
     play->cameraPtrs[MAIN_CAM]->uid = 0;
     play->activeCamera = MAIN_CAM;
     func_8005AC48(&play->mainCamera, 0xFF);
+
+    // Initialize VR - will crash if VR is not available
+    Camera_InitVR();
+
     // Sram_Init(this, &this->sramCtx);
     Regs_InitData(play);
     Message_Init(play);
