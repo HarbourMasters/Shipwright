@@ -1938,6 +1938,7 @@ void RandomizerSettingsWindow::DrawElement() {
         generated = 0;
         randoThread.join();
     }
+    static bool locationsTabOpen = false;
     bool disableEditingRandoSettings = CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings);
     const PresetTypeDefinition presetTypeDef = presetTypes.at(PRESET_TYPE_RANDOMIZER);
@@ -1968,6 +1969,8 @@ void RandomizerSettingsWindow::DrawElement() {
         }
         if (randomizerPresetSelected != 0) {
             applyPreset(selectedPresetDef.entries);
+            // force excluded location list update if tab is open.
+            locationsTabOpen = false;
         }
         CVarSetInteger(presetTypeCvar.c_str(), randomizerPresetSelected);
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
@@ -2061,7 +2064,6 @@ void RandomizerSettingsWindow::DrawElement() {
         ImGui::EndDisabled();
 
         ImGui::BeginDisabled(CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
-        static bool locationsTabOpen = false;
         if (ImGui::BeginTabItem("Locations")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (!locationsTabOpen) {
