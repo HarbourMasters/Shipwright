@@ -1147,12 +1147,6 @@ const OptionGroup& Settings::GetOptionGroup(const RandomizerSettingGroupKey key)
     return mOptionGroups[key];
 }
 
-void Settings::SetAllFromCVar() {
-    for (auto& option : mOptions) {
-        option.SetFromCVar();
-    }
-}
-
 void Settings::UpdateOptionProperties() {
     // Default to hiding bridge opts and the extra sliders.
     mOptions[RSK_RAINBOW_BRIDGE].AddFlag(IMFLAG_SEPARATOR_BOTTOM);
@@ -1274,7 +1268,8 @@ void Settings::UpdateOptionProperties() {
         mOptions[RSK_GANONS_TRIALS].Enable();
         mOptions[RSK_TRIAL_COUNT].Enable();
         // Only show the trial count slider if Trials is set to Set Number
-        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("GanonTrial"), RO_GANONS_TRIALS_SKIP) == RO_GANONS_TRIALS_SET_NUMBER) {
+        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("GanonTrial"), RO_GANONS_TRIALS_SET_NUMBER) ==
+            RO_GANONS_TRIALS_SET_NUMBER) {
             mOptions[RSK_GANONS_TRIALS].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
             mOptions[RSK_TRIAL_COUNT].Unhide();
         } else {
@@ -2222,11 +2217,6 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
     }
 }
 
-void Settings::ReloadOptions() {
-    for (int i = 0; i < RSK_MAX; i++) {
-        mOptions[i].SetFromCVar();
-    }
-}
 void Settings::AssignContext(std::shared_ptr<Context> ctx) {
     mContext = ctx;
 }
@@ -2237,13 +2227,13 @@ void Settings::ClearContext() {
 
 void Settings::SetAllToContext() {
     for (int i = 0; i < RSK_MAX; i++) {
-        mContext->GetOption(static_cast<RandomizerSettingKey>(i)).Set(mOptions[i].GetMenuOptionIndex());
+        mContext->GetOption(static_cast<RandomizerSettingKey>(i)).Set(mOptions[i].GetOptionIndex());
     }
     for (int i = 0; i < RT_MAX; i++) {
-        mContext->GetTrickOption(static_cast<RandomizerTrick>(i)).Set(mTrickOptions[i].GetMenuOptionIndex());
+        mContext->GetTrickOption(static_cast<RandomizerTrick>(i)).Set(mTrickOptions[i].GetOptionIndex());
     }
     for (int i = 0; i < RC_MAX; i++) {
-        mContext->GetItemLocation(i)->SetExcludedOption(StaticData::GetLocation(static_cast<RandomizerCheck>(i))->GetExcludedOption()->GetMenuOptionIndex());
+        mContext->GetItemLocation(i)->SetExcludedOption(StaticData::GetLocation(static_cast<RandomizerCheck>(i))->GetExcludedOption()->GetOptionIndex());
     }
 }
 

@@ -5,6 +5,7 @@
 using namespace Rando;
 
 void RegionTable_Init_DodongosCavern() {
+    // clang-format off
     // Vanilla/MQ Decider
     areaTable[RR_DODONGOS_CAVERN_ENTRYWAY] = Region("Dodongos Cavern Entryway", "Dodongos Cavern", {RA_DODONGOS_CAVERN}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
@@ -541,4 +542,6 @@ void RegionTable_Init_DodongosCavern() {
         Entrance(RR_DODONGOS_CAVERN_BOSS_ENTRYWAY, []{return true;}),
         Entrance(RR_DEATH_MOUNTAIN_TRAIL,          []{return logic->DodongosCavernClear;}, false),
     });
+
+    // clang-format on
 }

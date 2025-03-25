@@ -5,6 +5,7 @@
 using namespace Rando;
 
 void RegionTable_Init_JabuJabusBelly() {
+    // clang-format off
     // Vanilla/MQ Decider
     areaTable[RR_JABU_JABUS_BELLY_ENTRYWAY] = Region("Jabu Jabus Belly Entryway", "Jabu Jabus Belly", {RA_JABU_JABUS_BELLY}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
@@ -356,4 +357,6 @@ void RegionTable_Init_JabuJabusBelly() {
         Entrance(RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY, []{return false;}),
         Entrance(RR_ZORAS_FOUNTAIN,                 []{return logic->JabuJabusBellyClear;}, false),
     });
+
+    // clang-format on
 }

@@ -5,6 +5,7 @@
 using namespace Rando;
 
 void RegionTable_Init_DekuTree() {
+    // clang-format off
     // Vanilla/MQ Decider
     areaTable[RR_DEKU_TREE_ENTRYWAY] = Region("Deku Tree Entryway", "Deku Tree", {RA_DEKU_TREE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
@@ -216,7 +217,7 @@ void RegionTable_Init_DekuTree() {
         LOCATION(RC_DEKU_TREE_MQ_COMPASS_CHEST, true),
     }, {
         //Exits
-        Entrance(RR_DEKU_TREE_MQ_EYE_TARGET_ROOM,    []{return true;}),
+        Entrance(RR_DEKU_TREE_MQ_EYE_TARGET_ROOM,    []{return logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_HOVER_BOOTS);}),
         Entrance(RR_DEKU_TREE_MQ_PAST_BOULDER_VINES, []{return Here(RR_DEKU_TREE_MQ_COMPASS_ROOM, []{return logic->CanUse(RG_BOMBCHU_5) || (logic->CanUse(RG_BOMB_BAG) && (logic->CanUse(RG_SONG_OF_TIME) || logic->IsAdult || logic->CanUse(RG_HOVER_BOOTS))) || (logic->CanUse(RG_MEGATON_HAMMER) && (logic->CanUse(RG_SONG_OF_TIME) || ctx->GetTrickOption(RT_DEKU_MQ_COMPASS_GS)));});}),
     });
 
@@ -360,4 +361,6 @@ void RegionTable_Init_DekuTree() {
         Entrance(RR_DEKU_TREE_BOSS_ENTRYWAY, []{return true;}),
         Entrance(RR_KF_OUTSIDE_DEKU_TREE,    []{return logic->DekuTreeClear;}, false),
     });
+
+    // clang-format on
 }

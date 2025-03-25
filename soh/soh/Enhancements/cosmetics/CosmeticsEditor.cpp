@@ -119,6 +119,7 @@ Color_RGBA8 ColorRGBA8(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
         supportsAlpha, supportsRainbow, advancedOption                                                                                     \
     } }
 
+// clang-format off
 /*
     So, you would like to add a new cosmetic option? BUCKLE UP
 
@@ -439,6 +440,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("NPC.MetalTrap",                "Metal Trap",               COSMETICS_GROUP_NPC,          ColorRGBA8(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("NPC.IronKnuckles",             "Iron Knuckles",            COSMETICS_GROUP_NPC,          ColorRGBA8(245, 255, 205, 255), false, true, false),
 };
+// clang-format on
 
 static const char* MarginCvarList[] {
     CVAR_COSMETIC("HUD.Hearts"),
@@ -461,7 +463,7 @@ static const char* MarginCvarList[] {
     CVAR_COSMETIC("HUD.ArcheryScore"),
     CVAR_COSMETIC("HUD.TitleCard.Map"),
     CVAR_COSMETIC("HUD.TitleCard.Boss"),
-    CVAR_COSMETIC("HUD.IGT")
+    CVAR_COSMETIC("HUD.IGT"),
 };
 
 static const char* MarginCvarNonAnchor[] {
@@ -469,7 +471,7 @@ static const char* MarginCvarNonAnchor[] {
     CVAR_COSMETIC("HUD.Timers"),
     CVAR_COSMETIC("HUD.ArcheryScore"),
     CVAR_COSMETIC("HUD.TitleCard.Map"),
-    CVAR_COSMETIC("HUD.TitleCard.Boss")
+    CVAR_COSMETIC("HUD.TitleCard.Boss"),
 };
 
 void SetMarginAll(const char* ButtonName, bool SetActivated, const char* tooltip) {

@@ -14,7 +14,7 @@
 #include "functions.h"
 #include "variables.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/presets.h"
+#include "soh/Enhancements/Presets/Presets.h"
 #include "soh/Enhancements/mods.h"
 #include "soh/Notification/Notification.h"
 #include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
@@ -83,8 +83,6 @@ namespace SohGui {
 
 std::unordered_map<Ship::WindowBackend, const char*> availableWindowBackendsMap;
 Ship::WindowBackend configWindowBackend;
-
-extern std::shared_ptr<Ship::GuiWindow> mGfxDebuggerWindow;
 
 void DrawSettingsMenu() {
 }

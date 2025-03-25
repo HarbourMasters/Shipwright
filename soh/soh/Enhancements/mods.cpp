@@ -715,7 +715,8 @@ void RegisterEnemyDefeatCounts() {
                     break;
 
                 case ACTOR_EN_TP:
-                    if (actor->params == TAILPASARAN_HEAD) {  // Only count the head, otherwise each body segment will increment
+                    // Only count the head, otherwise each body segment will increment
+                    if (actor->params == TAILPASARAN_HEAD) {
                         gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_TAILPASARAN]++;
                     }
                     break;
@@ -833,8 +834,8 @@ void RegisterRandomizedEnemySizes() {
             randomNumber = rand() % 200;
             // Between 100% and 300% size.
             randomScale = 1.0f + (randomNumber / 100);
-        // Small actor
         } else {
+            // Small actor
             randomNumber = rand() % 90;
             // Between 10% and 100% size.
             randomScale = 0.1f + (randomNumber / 100);

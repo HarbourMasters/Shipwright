@@ -5,3 +5,4 @@
 *.vtx.inc
 *.dlist.inc
 !*.png
+custom/shaders

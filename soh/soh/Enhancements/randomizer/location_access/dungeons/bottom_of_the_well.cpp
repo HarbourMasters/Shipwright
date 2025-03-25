@@ -5,6 +5,7 @@
 using namespace Rando;
 
 void RegionTable_Init_BottomOfTheWell() {
+    // clang-format off
     // Vanilla/MQ Decider
     areaTable[RR_BOTTOM_OF_THE_WELL_ENTRYWAY] = Region("Bottom of the Well Entryway", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
@@ -293,4 +294,5 @@ void RegionTable_Init_BottomOfTheWell() {
     });
 
 #pragma endregion
+    // clang-format on
 }

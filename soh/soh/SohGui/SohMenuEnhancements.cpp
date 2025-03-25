@@ -4,7 +4,7 @@
 #include <soh/OTRGlobals.h>
 #include <soh/Enhancements/cosmetics/authenticGfxPatches.h>
 #include <soh/Enhancements/enemyrandomizer.h>
-#include <soh/Enhancements/presets.h>
+#include <soh/Enhancements/Presets/Presets.h>
 #include <soh/Enhancements/TimeDisplay/TimeDisplay.h>
 
 static std::string comboboxTooltip = "";
@@ -191,26 +191,9 @@ void SohMenu::AddMenuEnhancements() {
                      .Tooltip("Buffers your inputs to be executed a specified amount of frames later."));
 
     AddWidget(path, "Item Count Messages", WIDGET_SEPARATOR_TEXT);
-    int numOptions = ARRAY_COUNT(itemCountMessageCVars);
-    bool allItemCountsChecked = false;
-    AddWidget(path, "All", WIDGET_CHECKBOX)
-        .ValuePointer(&allItemCountsChecked)
-        .PreFunc([](WidgetInfo& info) {
-            int numOptions = ARRAY_COUNT(itemCountMessageCVars);
-            *std::get<bool*>(info.valuePointer) = std::all_of(itemCountMessageCVars, itemCountMessageCVars + numOptions,
-                                                              [](const char* cvar) { return CVarGetInteger(cvar, 0); });
-        })
-        .Callback([](WidgetInfo& info) {
-            int32_t newValue = *std::get<bool*>(info.valuePointer) ? 1 : 0;
-            int numOptions = ARRAY_COUNT(itemCountMessageCVars);
-            std::for_each(itemCountMessageCVars, itemCountMessageCVars + numOptions,
-                          [newValue](const char* cvar) { CVarSetInteger(cvar, newValue); });
-
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-        });
-    for (int i = 0; i < numOptions; i++) {
-        AddWidget(path, itemCountMessageOptions[i], WIDGET_CVAR_CHECKBOX).CVar(itemCountMessageCVars[i]);
-    }
+    AddWidget(path, "Gold Skulltula Tokens", WIDGET_CVAR_CHECKBOX).CVar(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"));
+    AddWidget(path, "Pieces of Heart", WIDGET_CVAR_CHECKBOX).CVar(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"));
+    AddWidget(path, "Heart Containers", WIDGET_CVAR_CHECKBOX).CVar(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"));
 
     path.column = SECTION_COLUMN_3;
     AddWidget(path, "Misc", WIDGET_SEPARATOR_TEXT);
@@ -266,35 +249,35 @@ void SohMenu::AddMenuEnhancements() {
     path.column = SECTION_COLUMN_1;
 
     AddWidget(path, "Cutscenes", WIDGET_SEPARATOR_TEXT);
-    bool allSkipsChecked = false;
-    AddWidget(path, "Skip All", WIDGET_CHECKBOX)
-        .ValuePointer(&allSkipsChecked)
-        .PreFunc([](WidgetInfo& info) {
-            *std::get<bool*>(info.valuePointer) =
-                CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), IS_RANDO) &&
-                CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"), IS_RANDO) &&
-                CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO) &&
-                CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), IS_RANDO) &&
-                CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), IS_RANDO) &&
-                CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), IS_RANDO) &&
-                CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), IS_RANDO) &&
-                CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), IS_RANDO) &&
-                CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO) &&
-                CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), IS_RANDO);
-        })
+    AddWidget(path, "All##Skips", WIDGET_BUTTON)
+        .Options(ButtonOptions().Size(Sizes::Inline))
         .Callback([](WidgetInfo& info) {
-            int32_t newValue = *std::get<bool*>(info.valuePointer) ? 1 : 0;
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), true);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"), true);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), true);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), true);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), true);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), true);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), true);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), true);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), true);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), true);
 
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), newValue);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"), newValue);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), newValue);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), newValue);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), newValue);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), newValue);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), newValue);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), newValue);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), newValue);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), newValue);
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        });
+    AddWidget(path, "None##Skips", WIDGET_BUTTON).SameLine(true)
+        .Options(ButtonOptions().Size(Sizes::Inline))
+        .Callback([](WidgetInfo& info) {
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), false);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"), false);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), false);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), false);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), false);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), false);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), false);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), false);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), false);
+            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), false);
 
             Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         });
@@ -900,16 +883,16 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Fix Camera Drift", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FixCameraDrift"))
         .Options(CheckboxOptions().Tooltip(
-            "Fixes camera slightly drifting to the left when standing still due to a math error."));
+            "Fixes camera slightly drifting to the left when standing still due to a math error. May impact certain glitches."));
     AddWidget(path, "Fix Camera Swing", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FixCameraSwing"))
         .Options(CheckboxOptions().Tooltip(
             "Fixes camera getting stuck on collision when standing still. Also fixes slight shift "
-            "back in camera when Link stops moving."));
+            "back in camera when Link stops moving. May impact certain glitches."));
     AddWidget(path, "Fix Hanging Ledge Swing Rate", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FixHangingLedgeSwingRate"))
         .Options(CheckboxOptions().Tooltip(
-            "Fixes camera swing rate when the player falls off a ledge and the camera swings around."));
+            "Fixes camera swing rate when the player falls off a ledge and the camera swings around. May impact certain glitches."));
     
     path.column = SECTION_COLUMN_2;
     AddWidget(path, "Graphical Fixes", WIDGET_SEPARATOR_TEXT);
@@ -921,7 +904,7 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Removes the Dungeon Entrance icon on the top-left corner of the screen when no dungeon is present on the "
             "current map."));
-    AddWidget(path, "Fix Two-Handled Idle Animations", WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "Fix Two-Handed Idle Animations", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("TwoHandedIdle"))
         .Options(CheckboxOptions().Tooltip(
             "Re-Enables the two-handed idle animation, a seemingly finished animation that was disabled on accident "
@@ -992,7 +975,7 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Restore pre-release behavior where defeating a Gold Skulltula will play a cutscene showing it die."));
     AddWidget(path, "Pulsate Boss Icon", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_ENHANCEMENT("Pulsate Boss Icon"))
+        .CVar(CVAR_ENHANCEMENT("PulsateBossIcon"))
         .Options(CheckboxOptions().Tooltip(
             "Restores an unfinished feature to pulsate the boss room icon when you are in the boss room."));
 
@@ -1377,6 +1360,11 @@ void SohMenu::AddMenuEnhancements() {
         .PreFunc(fishingDisabledFunc)
         .Options(
             CheckboxOptions().Tooltip("The Pond Owner will not ask to confirm if you want to keep a smaller Fish."));
+    AddWidget(path, "All Fish are Hyrule Loaches", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("AllHyruleLoaches"))
+        .PreFunc(fishingDisabledFunc)
+        .Options(CheckboxOptions().Tooltip("Every fish in the Fishing Pond will always be a Hyrule Loach.\n\n"
+                                           "NOTE: This requires reloading the area."));
     AddWidget(path, "Child Minimum Weight: %d lbs.", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_ENHANCEMENT("MinimumFishWeightChild"))
         .PreFunc(fishingDisabledFunc)
@@ -1387,11 +1375,6 @@ void SohMenu::AddMenuEnhancements() {
         .PreFunc(fishingDisabledFunc)
         .Options(IntSliderOptions().Min(6).Max(13).DefaultValue(13).Format("%d lbs.").Tooltip(
             "The minimum weight for the unique fishing reward as an Adult."));
-    AddWidget(path, "All Fish are Hyrule Loaches", WIDGET_CVAR_SLIDER_INT)
-        .CVar(CVAR_ENHANCEMENT("AllHyruleLoaches"))
-        .PreFunc(fishingDisabledFunc)
-        .Options(IntSliderOptions().Tooltip("Every fish in the Fishing Pond will always be a Hyrule Loach.\n\n"
-                                            "NOTE: This requires reloading the area."));
 
     // Extra Modes
     path.sidebarName = "Extra Modes";

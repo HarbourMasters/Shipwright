@@ -4,6 +4,7 @@
 using namespace Rando;
 
 void RegionTable_Init_LostWoods() {
+    // clang-format off
     areaTable[RR_LW_FOREST_EXIT] = Region("LW Forest Exit", "Lost Woods", {RA_THE_LOST_WOODS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_KOKIRI_FOREST, []{return true;})
@@ -128,4 +129,6 @@ void RegionTable_Init_LostWoods() {
         Entrance(RR_HYRULE_FIELD,   []{return true;}),
         Entrance(RR_THE_LOST_WOODS, []{return logic->CanUse(RG_LONGSHOT);}),
     });
+
+    // clang-format on
 }

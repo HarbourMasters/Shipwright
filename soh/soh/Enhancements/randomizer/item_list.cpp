@@ -10,6 +10,8 @@ std::array<Item, RG_MAX> Rando::StaticData::itemTable;
 std::unordered_map<std::string, RandomizerGet> Rando::StaticData::itemNameToEnum;
 
 void Rando::StaticData::InitItemTable() {
+
+    // clang-format off
     itemTable[RG_NONE] =                      Item(RG_NONE,                    ITEMTYPE_EVENT,         GI_RUPEE_GREEN,       false, LOGIC_NONE,                         RHT_NONE,                              ITEM_NONE,                            0,                       0,                   0,                           0,    0,                ITEM_CATEGORY_JUNK,   MOD_NONE);
     //        Randomizer Get                       Randomizer Get              Type                    Get Item ID           Adv.   Logic Value                         Hint Text Key                          Item ID                               Object ID                Draw ID              Text ID                      field Chest Animation   Item Category         Mod Index
     itemTable[RG_KOKIRI_SWORD] =              Item(RG_KOKIRI_SWORD,            ITEMTYPE_EQUIP,         GI_SWORD_KOKIRI,      true,  LOGIC_KOKIRI_SWORD,                 RHT_KOKIRI_SWORD,                      ITEM_SWORD_KOKIRI,                    OBJECT_GI_SWORD_1,       GID_SWORD_KOKIRI,    0xA4,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,  MOD_NONE);
@@ -397,6 +399,8 @@ void Rando::StaticData::InitItemTable() {
     itemTable[RG_MAGIC_SINGLE] =              Item(RG_MAGIC_SINGLE,            ITEMTYPE_ITEM,          0x8A,                 true,  LOGIC_PROGRESSIVE_MAGIC,            RHT_MAGIC_SINGLE,                      RG_MAGIC_SINGLE,                      OBJECT_GI_MAGICPOT,     GID_MAGIC_SMALL,      0xE4,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,  MOD_RANDOMIZER);
     itemTable[RG_MAGIC_DOUBLE] =              Item(RG_MAGIC_DOUBLE,            ITEMTYPE_ITEM,          0x8A,                 true,  LOGIC_PROGRESSIVE_MAGIC,            RHT_MAGIC_DOUBLE,                      RG_MAGIC_DOUBLE,                      OBJECT_GI_MAGICPOT,     GID_MAGIC_LARGE,      0xE8,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
     itemTable[RG_TRIFORCE_PIECE] =            Item(RG_TRIFORCE_PIECE,          ITEMTYPE_ITEM,          0xDF,                 true,  LOGIC_TRIFORCE_PIECES,              RHT_TRIFORCE_PIECE,                    RG_TRIFORCE_PIECE,                    OBJECT_GI_BOMB_2,       GID_TRIFORCE_PIECE,   TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,  MOD_RANDOMIZER);
+
+    // clang-format on
 
     // Init itemNameToEnum
     for (auto& item : itemTable) {

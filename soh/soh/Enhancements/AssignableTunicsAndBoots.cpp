@@ -87,6 +87,28 @@ void RegisterAssignableTunicsBoots() {
         }
     });
 
+    // don't throw items when the pressed button is a tunic or boots 
+    COND_VB_SHOULD(VB_THROW_OR_PUT_DOWN_HELD_ITEM, CVAR_TUNICBOOTS_VALUE != CVAR_TUNICBOOTS_DEFAULT, {
+        // if the vanilla condition doesn't want us to throw/put down the item, early return
+        if (!*should) {
+            return;
+        }
+
+        Input* input = va_arg(args, Input*);
+
+        s32 item = ITEM_NONE;
+        for (s32 i = 0; i < ARRAY_COUNT(sItemButtons); i++) {
+            if (CHECK_BTN_ALL(input->press.button, sItemButtons[i])) {
+                item = Player_GetItemOnButton(gPlayState, i);
+                break;
+            }
+        }
+    
+        if (item >= ITEM_TUNIC_KOKIRI && item <= ITEM_BOOTS_HOVER) {
+            *should = false;
+        }
+    });
+
     // do something when the player presses a button to use the tunics/boots
     COND_VB_SHOULD(VB_EXECUTE_PLAYER_ACTION_FUNC, CVAR_TUNICBOOTS_VALUE != CVAR_TUNICBOOTS_DEFAULT, {
         // if the vanilla condition doesn't want us to run the actionFunc, don't do any of this

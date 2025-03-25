@@ -149,7 +149,7 @@ const std::array<RandomizerGet, 44> easyItems = {
   RG_PIECE_OF_HEART,
 };
 const std::array<RandomizerGet, 43> normalItems = {
-  RG_PIECE_OF_HEART,   //35 pieces of heart
+  // 35 pieces of heart
   RG_PIECE_OF_HEART,
   RG_PIECE_OF_HEART,
   RG_PIECE_OF_HEART,
@@ -184,7 +184,9 @@ const std::array<RandomizerGet, 43> normalItems = {
   RG_PIECE_OF_HEART,
   RG_PIECE_OF_HEART,
   RG_PIECE_OF_HEART,
-  RG_HEART_CONTAINER, //8 heart containers
+  RG_PIECE_OF_HEART,
+  // 8 heart containers
+  RG_HEART_CONTAINER,
   RG_HEART_CONTAINER,
   RG_HEART_CONTAINER,
   RG_HEART_CONTAINER,

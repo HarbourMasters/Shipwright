@@ -1,6 +1,6 @@
 typedef enum {
     COLORSCHEME_N64,
-    COLORSCHEME_GAMECUBE
+    COLORSCHEME_GAMECUBE,
 } DefaultColorScheme;
 
 typedef enum {
@@ -15,5 +15,5 @@ typedef enum {
     ANCHOR_RIGHT, 
     ANCHOR_NONE, 
     HIDDEN, 
-    ANCHOR_TO_LIFE_METER 
+    ANCHOR_TO_LIFE_METER,
 } PosType;
