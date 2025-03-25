@@ -354,7 +354,7 @@ void SohMenu::AddMenuSettings() {
                      .Tooltip("Which corner of the screen notifications appear in.")
                      .ComboMap(notificationPosition)
                      .DefaultIndex(3));
-    AddWidget(path, "Duration: %.0f seconds", WIDGET_CVAR_SLIDER_FLOAT)
+    AddWidget(path, "Duration (seconds):", WIDGET_CVAR_SLIDER_FLOAT)
         .CVar(CVAR_SETTING("Notifications.Duration"))
         .Options(FloatSliderOptions()
                      .Tooltip("How long notifications are displayed for.")
@@ -363,13 +363,13 @@ void SohMenu::AddMenuSettings() {
                      .Min(3.0f)
                      .Max(30.0f)
                      .DefaultValue(10.0f));
-    AddWidget(path, "Background Opacity: %.0f%%", WIDGET_CVAR_SLIDER_FLOAT)
+    AddWidget(path, "Background Opacity", WIDGET_CVAR_SLIDER_FLOAT)
         .CVar(CVAR_SETTING("Notifications.BgOpacity"))
         .Options(FloatSliderOptions()
                      .Tooltip("How opaque the background of notifications is.")
                      .DefaultValue(0.5f)
                      .IsPercentage());
-    AddWidget(path, "Size %.1f", WIDGET_CVAR_SLIDER_FLOAT)
+    AddWidget(path, "Size:", WIDGET_CVAR_SLIDER_FLOAT)
         .CVar(CVAR_SETTING("Notifications.Size"))
         .Options(FloatSliderOptions()
                      .Tooltip("How large notifications are.")
