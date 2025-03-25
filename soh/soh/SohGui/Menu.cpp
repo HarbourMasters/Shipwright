@@ -527,6 +527,7 @@ void Menu::DrawElement() {
         if (!popout) {
             ImGui::PopStyleVar();
         }
+        ImGui::PopStyleColor();
         ImGui::End();
         return;
     }
