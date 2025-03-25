@@ -21,6 +21,9 @@ static const ALIGN_ASSET(2) char gHilite1Tex[] = dgHilite1Tex;
 #define dgHilite2Tex "__OTR__objects/gameplay_keep/gHilite2Tex"
 static const ALIGN_ASSET(2) char gHilite2Tex[] = dgHilite2Tex;
 
+#define dgHilite2Tex_Overflow "__OTR__objects/gameplay_keep/gHilite2Tex_Overflow"
+static const ALIGN_ASSET(2) char gHilite2Tex_Overflow[] = dgHilite2Tex_Overflow;
+
 #define dgHylianShieldDesignTex "__OTR__objects/gameplay_keep/gHylianShieldDesignTex"
 static const ALIGN_ASSET(2) char gHylianShieldDesignTex[] = dgHylianShieldDesignTex;
 

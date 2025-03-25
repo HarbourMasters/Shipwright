@@ -17,7 +17,7 @@
 #include <imgui_internal.h>
 #include "../custom-message/CustomMessageTypes.h"
 #include "../item-tables/ItemTableManager.h"
-#include "../presets.h"
+#include "../Presets/Presets.h"
 #include "../../../src/overlays/actors/ovl_En_GirlA/z_en_girla.h"
 #include <stdexcept>
 #include "randomizer_check_objects.h"
@@ -100,7 +100,7 @@ static const char* englishRupeeNames[175] = {
     "Studs",              "Super Sea Snails",  "Talent",            "Teef",              "Telecrystals",
     "Tiberium",           "TokKul",            "Toys",              "Turnips",           "Upvotes",
     "V-Bucks",            "Vespene Gas",       "Watts",             "Widgets",           "Woolongs",
-    "World Dollars",      "Wumpa Fruit",       "Yen",               "Zenny",             "Zorkmids"
+    "World Dollars",      "Wumpa Fruit",       "Yen",               "Zenny",             "Zorkmids",
 };
 
 static const char* germanRupeeNames[65] = {
@@ -205,7 +205,7 @@ std::unordered_map<s16, s16> getItemIdToItemId = {
     { GI_PRESCRIPTION, ITEM_PRESCRIPTION },
     { GI_FROG, ITEM_FROG },
     { GI_EYEDROPS, ITEM_EYEDROPS },
-    { GI_CLAIM_CHECK, ITEM_CLAIM_CHECK } 
+    { GI_CLAIM_CHECK, ITEM_CLAIM_CHECK },
 };
 
 #pragma optimize("", off)
@@ -400,12 +400,12 @@ void Randomizer::LoadMerchantMessages() {
 }
 
 std::map<s32, TrialKey> trialFlagToTrialKey = {
-    { EVENTCHKINF_COMPLETED_LIGHT_TRIAL, TK_LIGHT_TRIAL, },
-    { EVENTCHKINF_COMPLETED_FOREST_TRIAL, TK_FOREST_TRIAL, },
-    { EVENTCHKINF_COMPLETED_FIRE_TRIAL, TK_FIRE_TRIAL, },
-    { EVENTCHKINF_COMPLETED_WATER_TRIAL, TK_WATER_TRIAL, },
-    { EVENTCHKINF_COMPLETED_SPIRIT_TRIAL, TK_SPIRIT_TRIAL, },
-    { EVENTCHKINF_COMPLETED_SHADOW_TRIAL, TK_SHADOW_TRIAL, }
+    { EVENTCHKINF_COMPLETED_LIGHT_TRIAL, TK_LIGHT_TRIAL },
+    { EVENTCHKINF_COMPLETED_FOREST_TRIAL, TK_FOREST_TRIAL },
+    { EVENTCHKINF_COMPLETED_FIRE_TRIAL, TK_FIRE_TRIAL },
+    { EVENTCHKINF_COMPLETED_WATER_TRIAL, TK_WATER_TRIAL },
+    { EVENTCHKINF_COMPLETED_SPIRIT_TRIAL, TK_SPIRIT_TRIAL },
+    { EVENTCHKINF_COMPLETED_SHADOW_TRIAL, TK_SHADOW_TRIAL },
 };
 
 bool Randomizer::IsTrialRequired(s32 trialFlag) {
@@ -2336,11 +2336,10 @@ bool GenerateRandomizer(std::string seed /*= ""*/) {
 
 static const std::unordered_map<int32_t, const char*> randomizerPresetList = {
     { RANDOMIZER_PRESET_DEFAULT, "Default" },
-    { RANDOMIZER_PRESET_SPOCK_RACE, "Spock Race" },
-    { RANDOMIZER_PRESET_SPOCK_RACE_NO_LOGIC, "Spock Race (No Logic)" },
-    { RANDOMIZER_PRESET_S6, "S6" },
-    { RANDOMIZER_PRESET_HELL_MODE, "Hell Mode" },
-    { RANDOMIZER_PRESET_BENCHMARK, "Benchmark" }
+    { RANDOMIZER_PRESET_BEGINNER, "Beginner" },
+    { RANDOMIZER_PRESET_STANDARD, "Standard" },
+    { RANDOMIZER_PRESET_ADVANCED, "Advanced" },
+    { RANDOMIZER_PRESET_HELL_MODE, "Hell Mode" }
 };
 static int32_t randomizerPresetSelected = RANDOMIZER_PRESET_DEFAULT;
 
@@ -2350,6 +2349,8 @@ void RandomizerSettingsWindow::DrawElement() {
         generated = 0;
         randoThread.join();
     }
+    static bool locationsTabOpen = false;
+    static bool tricksTabOpen = false;
     bool disableEditingRandoSettings = CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings);
     const PresetTypeDefinition presetTypeDef = presetTypes.at(PRESET_TYPE_RANDOMIZER);
@@ -2384,6 +2385,9 @@ void RandomizerSettingsWindow::DrawElement() {
         CVarSetInteger(presetTypeCvar.c_str(), randomizerPresetSelected);
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         mSettings->UpdateOptionProperties();
+        // force excluded location list and trick list update if tab is open.
+        locationsTabOpen = false;
+        tricksTabOpen = false;
     }
 
     UIWidgets::Spacer(0);
@@ -2473,7 +2477,6 @@ void RandomizerSettingsWindow::DrawElement() {
         ImGui::EndDisabled();
 
         ImGui::BeginDisabled(CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
-        static bool locationsTabOpen = false;
         if (ImGui::BeginTabItem("Locations")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (!locationsTabOpen) {
@@ -2602,7 +2605,6 @@ void RandomizerSettingsWindow::DrawElement() {
         }
         ImGui::EndDisabled();
 
-        static bool tricksTabOpen = false;
         if (ImGui::BeginTabItem("Tricks/Glitches")) {
             if (!tricksTabOpen) {
                 tricksTabOpen = true;
@@ -2682,7 +2684,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 {RA_BOTTOM_OF_THE_WELL, true},
                 {RA_ICE_CAVERN, true},
                 {RA_GERUDO_TRAINING_GROUND, true},
-                {RA_GANONS_CASTLE, true}
+                {RA_GANONS_CASTLE, true},
             };
             static std::unordered_map<RandomizerArea, bool> areaTreeEnabled {
                 {RA_NONE, true},
@@ -2717,7 +2719,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 {RA_BOTTOM_OF_THE_WELL, true},
                 {RA_ICE_CAVERN, true},
                 {RA_GERUDO_TRAINING_GROUND, true},
-                {RA_GANONS_CASTLE, true}
+                {RA_GANONS_CASTLE, true},
             };
 
             static std::map<Rando::Tricks::Tag, bool> showTag {

@@ -37,28 +37,28 @@ typedef enum {
 typedef enum {
     BR_CHOICE_AMMO_LIMITED,
     BR_CHOICE_AMMO_FULL,
-    BR_CHOICE_AMMO_MAXED
+    BR_CHOICE_AMMO_MAXED,
 } BossRushAmmoChoices;
 
 typedef enum {
     BR_CHOICE_HEAL_GANONDORF,
     BR_CHOICE_HEAL_EVERYBOSS,
-    BR_CHOICE_HEAL_NEVER
+    BR_CHOICE_HEAL_NEVER,
 } BossRushHealChoices;
 
 typedef enum {
     BR_CHOICE_HYPERBOSSES_NO,
-    BR_CHOICE_HYPERBOSSES_YES
+    BR_CHOICE_HYPERBOSSES_YES,
 } BossRushHyperBossesChoices;
 
 typedef enum {
     BR_CHOICE_MAGIC_SINGLE,
-    BR_CHOICE_MAGIC_DOUBLE
+    BR_CHOICE_MAGIC_DOUBLE,
 } BossRushMagicChoices;
 
 typedef enum {
     BR_CHOICE_BGS_NO,
-    BR_CHOICE_BGS_YES
+    BR_CHOICE_BGS_YES,
 } BossRushBgsChoices;
 
 typedef enum {
@@ -72,20 +72,20 @@ typedef enum {
 
 typedef enum {
     BR_CHOICE_LONGSHOT_NO,
-    BR_CHOICE_LONGSHOT_YES
+    BR_CHOICE_LONGSHOT_YES,
 } BossRushLongshotChoices;
 
 typedef enum {
     BR_CHOICE_HOVERBOOTS_NO,
-    BR_CHOICE_HOVERBOOTS_YES
+    BR_CHOICE_HOVERBOOTS_YES,
 } BossRushHoverBootsChoices;
 
 typedef enum {
     BR_CHOICE_BUNNYHOOD_NO,
-    BR_CHOICE_BUNNYHOOD_YES
+    BR_CHOICE_BUNNYHOOD_YES,
 } BossRushBunnyHoodChoices;
 
 typedef enum {
     BR_CHOICE_TIMER_YES,
-    BR_CHOICE_TIMER_NO
+    BR_CHOICE_TIMER_NO,
 } BossRushTimerChoices;

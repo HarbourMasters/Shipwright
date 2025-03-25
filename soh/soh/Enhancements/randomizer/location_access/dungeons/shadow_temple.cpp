@@ -5,6 +5,7 @@
 using namespace Rando;
 
 void RegionTable_Init_ShadowTemple() {
+    // clang-format off
     // Vanilla/MQ Decider
     areaTable[RR_SHADOW_TEMPLE_ENTRYWAY] = Region("Shadow Temple Entryway", "Shadow Temple", {RA_SHADOW_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
@@ -409,4 +410,6 @@ void RegionTable_Init_ShadowTemple() {
         Entrance(RR_SHADOW_TEMPLE_BOSS_ENTRYWAY, []{return false;}),
         Entrance(RR_GRAVEYARD_WARP_PAD_REGION,   []{return logic->ShadowTempleClear;}, false),
     });
+
+    // clang-format on
 }

@@ -142,6 +142,22 @@ void GameInteractor_ExecuteOnPlayerBottleUpdate(int16_t contents) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerBottleUpdate>(contents);
 }
 
+void GameInteractor_ExecuteOnPlayerHoldUpShield() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerHoldUpShield>();
+}
+
+void GameInteractor_ExecuteOnPlayerFirstPersonControl(Player* player) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerFirstPersonControl>(player);
+}
+
+void GameInteractor_ExecuteOnPlayerShieldControl(float_t* sp50, float_t* sp54) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerShieldControl>(sp50, sp54);
+}
+
+void GameInteractor_ExecuteOnPlayerProcessStick() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerProcessStick>();
+}
+
 void GameInteractor_ExecuteOnPlayDestroy() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayDestroy>();
 }

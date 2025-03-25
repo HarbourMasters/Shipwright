@@ -14,7 +14,7 @@ typedef struct {
 
 typedef enum {
     FSO_SOURCE_RANDO,
-    FSO_SOURCE_CVARS
+    FSO_SOURCE_CVARS,
 } FishsanityOptionsSource;
 
 typedef enum {

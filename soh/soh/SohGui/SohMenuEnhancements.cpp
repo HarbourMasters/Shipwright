@@ -4,7 +4,7 @@
 #include <soh/OTRGlobals.h>
 #include <soh/Enhancements/cosmetics/authenticGfxPatches.h>
 #include <soh/Enhancements/enemyrandomizer.h>
-#include <soh/Enhancements/presets.h>
+#include <soh/Enhancements/Presets/Presets.h>
 #include <soh/Enhancements/TimeDisplay/TimeDisplay.h>
 
 static std::string comboboxTooltip = "";
@@ -883,16 +883,16 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Fix Camera Drift", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FixCameraDrift"))
         .Options(CheckboxOptions().Tooltip(
-            "Fixes camera slightly drifting to the left when standing still due to a math error."));
+            "Fixes camera slightly drifting to the left when standing still due to a math error. May impact certain glitches."));
     AddWidget(path, "Fix Camera Swing", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FixCameraSwing"))
         .Options(CheckboxOptions().Tooltip(
             "Fixes camera getting stuck on collision when standing still. Also fixes slight shift "
-            "back in camera when Link stops moving."));
+            "back in camera when Link stops moving. May impact certain glitches."));
     AddWidget(path, "Fix Hanging Ledge Swing Rate", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FixHangingLedgeSwingRate"))
         .Options(CheckboxOptions().Tooltip(
-            "Fixes camera swing rate when the player falls off a ledge and the camera swings around."));
+            "Fixes camera swing rate when the player falls off a ledge and the camera swings around. May impact certain glitches."));
     
     path.column = SECTION_COLUMN_2;
     AddWidget(path, "Graphical Fixes", WIDGET_SEPARATOR_TEXT);
@@ -1360,6 +1360,11 @@ void SohMenu::AddMenuEnhancements() {
         .PreFunc(fishingDisabledFunc)
         .Options(
             CheckboxOptions().Tooltip("The Pond Owner will not ask to confirm if you want to keep a smaller Fish."));
+    AddWidget(path, "All Fish are Hyrule Loaches", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("AllHyruleLoaches"))
+        .PreFunc(fishingDisabledFunc)
+        .Options(CheckboxOptions().Tooltip("Every fish in the Fishing Pond will always be a Hyrule Loach.\n\n"
+                                           "NOTE: This requires reloading the area."));
     AddWidget(path, "Child Minimum Weight: %d lbs.", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_ENHANCEMENT("MinimumFishWeightChild"))
         .PreFunc(fishingDisabledFunc)
@@ -1370,11 +1375,6 @@ void SohMenu::AddMenuEnhancements() {
         .PreFunc(fishingDisabledFunc)
         .Options(IntSliderOptions().Min(6).Max(13).DefaultValue(13).Format("%d lbs.").Tooltip(
             "The minimum weight for the unique fishing reward as an Adult."));
-    AddWidget(path, "All Fish are Hyrule Loaches", WIDGET_CVAR_SLIDER_INT)
-        .CVar(CVAR_ENHANCEMENT("AllHyruleLoaches"))
-        .PreFunc(fishingDisabledFunc)
-        .Options(IntSliderOptions().Tooltip("Every fish in the Fishing Pond will always be a Hyrule Loach.\n\n"
-                                            "NOTE: This requires reloading the area."));
 
     // Extra Modes
     path.sidebarName = "Extra Modes";

@@ -13,11 +13,11 @@
 // which doesn't exist yet.
 typedef enum {
     MOD_NONE,
-    MOD_RANDOMIZER
+    MOD_RANDOMIZER,
 } ModIndex;
 typedef enum {
     TABLE_VANILLA = MOD_NONE,
-    TABLE_RANDOMIZER = MOD_RANDOMIZER
+    TABLE_RANDOMIZER = MOD_RANDOMIZER,
 } TableIndex;
 
 typedef struct {
@@ -6048,12 +6048,12 @@ typedef struct GrassIdentity {
 
 typedef enum {
     TRACKER_WINDOW_FLOATING,
-    TRACKER_WINDOW_WINDOW
+    TRACKER_WINDOW_WINDOW,
 } TrackerWindowType;
 
 typedef enum {
     TRACKER_DISPLAY_ALWAYS,
-    TRACKER_DISPLAY_COMBO_BUTTON
+    TRACKER_DISPLAY_COMBO_BUTTON,
 } TrackerDisplayType;
 
 typedef enum {
@@ -6156,7 +6156,7 @@ typedef enum {
     WL_MID,
     WL_HIGH,
     WL_LOW_OR_MID,
-    WL_HIGH_OR_MID
+    WL_HIGH_OR_MID,
 } RandoWaterLevel;
 
 #define ENTRANCE_GROTTO_LOAD_START 0x0700

@@ -25,7 +25,7 @@ typedef enum {
     COSMETICS_GROUP_NAVI,
     COSMETICS_GROUP_IVAN,
     COSMETICS_GROUP_MESSAGE,
-    COSMETICS_GROUP_MAX
+    COSMETICS_GROUP_MAX,
 } CosmeticGroup;
 
 #ifdef __cplusplus
