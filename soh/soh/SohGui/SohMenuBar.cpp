@@ -84,8 +84,6 @@ namespace SohGui {
 std::unordered_map<Ship::WindowBackend, const char*> availableWindowBackendsMap;
 Ship::WindowBackend configWindowBackend;
 
-extern std::shared_ptr<Ship::GuiWindow> mGfxDebuggerWindow;
-
 void DrawSettingsMenu() {
 }
 

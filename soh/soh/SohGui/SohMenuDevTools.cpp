@@ -98,7 +98,7 @@ void SohMenu::AddMenuDevTools() {
     path.sidebarName = "Console";
     AddSidebarEntry("Dev Tools", path.sidebarName, 1);
     AddWidget(path, "Popout Console", WIDGET_WINDOW_BUTTON)
-        .CVar(CVAR_WINDOW("Console"))
+        .CVar(CVAR_WINDOW("SohConsole"))
         .WindowName("Console##SoH")
         .Options(WindowButtonOptions().Tooltip("Enables the separate Console Window."));
 
@@ -162,7 +162,7 @@ void SohMenu::AddMenuDevTools() {
     path.sidebarName = "Gfx Debugger";
     AddSidebarEntry("Dev Tools", path.sidebarName, 1);
     AddWidget(path, "Popout Gfx Debugger", WIDGET_WINDOW_BUTTON)
-        .CVar(CVAR_WINDOW("GfxDebugger"))
+        .CVar(CVAR_WINDOW("SohGfxDebugger"))
         .WindowName("GfxDebugger##SoH")
         .Options(WindowButtonOptions().Tooltip("Enables the separate Gfx Debugger Window."));
 }
