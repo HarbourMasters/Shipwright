@@ -4,6 +4,7 @@
 
 namespace Rando {
 void StaticData::HintTable_Init_Exclude_Overworld() {
+    // clang-format off
 
    hintTextTable[RHT_KF_KOKIRI_SWORD_CHEST] = HintText(CustomMessage("They say that the #hidden treasure of the Kokiri# is #[[1]]#.",
                                                            /*german*/ "Man erzählt sich, daß der #versteckte Schatz der Kokiri# #[[1]]# sei.",
@@ -1954,5 +1955,6 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
 
     hintTextTable[RHT_GRAVEYARD_ROYAL_FAMILYS_TOMB_SUN_FAIRY] = HintText(CustomMessage("They say that #calling the sun in a royal tomb# reveals #[[1]]#.", { QM_RED, QM_GREEN }));
 
+    // clang-format on
 }
 }

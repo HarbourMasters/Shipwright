@@ -12,6 +12,7 @@ extern PlayState* gPlayState;
 
 // Information necessary for entering each grotto
 static const GrottoLoadInfo grottoLoadTable[NUM_GROTTOS] = {
+    // clang-format off
     {.entranceIndex = ENTR_GROTTOS_10,        .content = 0xFD, .scene = SCENE_DESERT_COLOSSUS},       // Desert Colossus -> Colossus Grotto
     {.entranceIndex = ENTR_GROTTOS_4,         .content = 0xEF, .scene = SCENE_LAKE_HYLIA},            // Lake Hylia -> LH Grotto
     {.entranceIndex = ENTR_GROTTOS_10,        .content = 0xEB, .scene = SCENE_ZORAS_RIVER},           // Zora River -> ZR Storms Grotto
@@ -45,10 +46,13 @@ static const GrottoLoadInfo grottoLoadTable[NUM_GROTTOS] = {
     {.entranceIndex = ENTR_GROTTOS_10,        .content = 0xF0, .scene = SCENE_GERUDO_VALLEY},         // GV Fortress Side -> GV Storms Grotto
     {.entranceIndex = ENTR_GROTTOS_6,         .content = 0xF2, .scene = SCENE_GERUDO_VALLEY},         // GV Grotto Ledge -> GV Octorok Grotto
     {.entranceIndex = ENTR_GROTTOS_12,        .content = 0xF3, .scene = SCENE_LOST_WOODS},            // LW Beyond Mido -> Deku Theater
+
+    // clang-format on
 };
 
 // Information necessary for setting up returning from a grotto
 static const GrottoReturnInfo grottoReturnTable[NUM_GROTTOS] = {
+    // clang-format off
     {.entranceIndex = ENTR_DESERT_COLOSSUS_EAST_EXIT,       .room = 0x00, .angle = 0xA71C, .pos = {.x =    62.5078f, .y =   -32.0f, .z = -1296.2f}},   // Colossus Grotto -> Desert Colossus
     {.entranceIndex = ENTR_LAKE_HYLIA_NORTH_EXIT,            .room = 0x00, .angle = 0x0000, .pos = {.x = -3039.34f,   .y = -1033.0f, .z =  6080.74f}},  // LH Grotto -> Lake Hylia
     {.entranceIndex = ENTR_ZORAS_RIVER_WEST_EXIT,           .room = 0x00, .angle = 0x0000, .pos = {.x = -1630.05f,   .y =   100.0f, .z =  -132.104f}}, // ZR Storms Grotto -> Zora River
@@ -82,6 +86,8 @@ static const GrottoReturnInfo grottoReturnTable[NUM_GROTTOS] = {
     {.entranceIndex = ENTR_GERUDO_VALLEY_WEST_EXIT,         .room = 0x00, .angle = 0x9555, .pos = {.x = -1326.34f,   .y =    15.0f, .z =  -983.994f}}, // GV Storms Grotto -> GV Fortress Side
     {.entranceIndex = ENTR_GERUDO_VALLEY_EAST_EXIT,         .room = 0x00, .angle = 0x8000, .pos = {.x =   291.513f,  .y =  -555.0f, .z =  1478.39f}},  // GV Octorok Grotto -> GV Grotto Ledge
     {.entranceIndex = ENTR_LOST_WOODS_NORTH_EXIT,            .room = 0x06, .angle = 0x4000, .pos = {.x =   109.281f,  .y =   -20.0f, .z = -1601.42f}},  // Deku Theater -> LW Beyond Mido
+
+    // clang-format on
 };
 
 static s16 grottoExitList[NUM_GROTTOS] = {0};

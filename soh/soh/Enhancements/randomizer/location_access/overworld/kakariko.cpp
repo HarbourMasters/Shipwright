@@ -4,6 +4,7 @@
 using namespace Rando;
 
 void RegionTable_Init_Kakariko() {
+    // clang-format off
     areaTable[RR_KAKARIKO_VILLAGE] = Region("Kakariko Village", "Kakariko Village", {RA_KAKARIKO_VILLAGE}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->BugRock,                 []{return true;}),
@@ -239,4 +240,6 @@ void RegionTable_Init_Kakariko() {
         Entrance(RR_KAKARIKO_VILLAGE,            []{return logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->DrainWell;}),
         Entrance(RR_BOTTOM_OF_THE_WELL_ENTRYWAY, []{return logic->IsChild || (logic->DrainWell && ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF));}),
     });
+
+    // clang-format on
 }

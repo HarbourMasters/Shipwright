@@ -1681,6 +1681,15 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // false
+    // ```
+    // #### `args`
+    // - `*s8 iter2`
+    // - `s8 sp3C[4]`
+    VB_SHOULD_QUICKSPIN,
+
+    // #### `result`
+    // ```c
     // (interactedActor->id == ACTOR_BG_TOKI_SWD) && LINK_IS_ADULT
     // ```
     // #### `args`
@@ -1793,6 +1802,15 @@ typedef enum {
     // #### `args`
     // - `*ShotSun`
     VB_SPAWN_SONG_FAIRY,
+
+    // #### `result`
+    // ```c
+    // (this->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) && (this->heldActor != NULL) &&
+    // CHECK_BTN_ANY(sControlInput->press.button, buttonsToCheck)
+    // ```
+    // #### `args`
+    // - `*Input`
+    VB_THROW_OR_PUT_DOWN_HELD_ITEM,
 
     // #### `result`
     // ```c

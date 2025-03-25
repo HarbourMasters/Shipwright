@@ -9,6 +9,7 @@ using namespace Rando;
  */
 
 void RegionTable_Init_GerudoFortress() {
+    // clang-format off
     areaTable[RR_GERUDO_FORTRESS] = Region("Gerudo Fortress", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->CarpenterRescue, []{return logic->CanFinishGerudoFortress();}),
@@ -78,4 +79,6 @@ void RegionTable_Init_GerudoFortress() {
         //Exits
         Entrance(RR_GERUDO_FORTRESS, []{return true;}),
     });
+
+    // clang-format on
 }

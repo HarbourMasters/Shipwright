@@ -709,6 +709,7 @@ void SetupDisplayNames() {
     // To add a timestamp for an item or event, add it to this list and ensure
     // it has a corresponding entry in the enum (see gameplaystats.h)
 
+    // clang-format off
     strcpy(itemTimestampDisplayName[ITEM_BOW],              "Fairy Bow:          ");
     strcpy(itemTimestampDisplayName[ITEM_ARROW_FIRE],       "Fire Arrows:        ");
     strcpy(itemTimestampDisplayName[ITEM_DINS_FIRE],        "Din's Fire:         ");
@@ -799,6 +800,7 @@ void SetupDisplayNames() {
     strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_FINISH],      "Boss Rush Finished: ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_GREG],           "Greg Found:         ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_TRIFORCE_COMPLETED],   "Triforce Completed: ");
+    // clang-format on
 }
 
 void SetupDisplayColors() {

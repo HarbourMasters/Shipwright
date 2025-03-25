@@ -12,7 +12,7 @@ class ResourceFactoryBinarySceneV0 : public Ship::ResourceFactoryBinary {
   public:
     ResourceFactoryBinarySceneV0();
 
-    std::shared_ptr<Ship::IResource> ReadResource(std::shared_ptr<Ship::File> file) override;
+    std::shared_ptr<Ship::IResource> ReadResource(std::shared_ptr<Ship::File> file, std::shared_ptr<Ship::ResourceInitData> initData) override;
     void ParseSceneCommands(std::shared_ptr<Scene> scene, std::shared_ptr<Ship::BinaryReader> reader);
 
     // Doing something very similar to what we do on the ResourceLoader.
@@ -28,7 +28,7 @@ class ResourceFactoryXMLSceneV0 : public Ship::ResourceFactoryXML {
   public:
     ResourceFactoryXMLSceneV0();
 
-    std::shared_ptr<Ship::IResource> ReadResource(std::shared_ptr<Ship::File> file) override;
+    std::shared_ptr<Ship::IResource> ReadResource(std::shared_ptr<Ship::File> file, std::shared_ptr<Ship::ResourceInitData> initData) override;
     void ParseSceneCommands(std::shared_ptr<Scene> scene, std::shared_ptr<tinyxml2::XMLDocument> reader);
 
     // Doing something very similar to what we do on the ResourceLoader.

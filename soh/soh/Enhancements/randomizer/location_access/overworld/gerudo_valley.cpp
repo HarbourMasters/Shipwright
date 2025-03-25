@@ -4,6 +4,7 @@
 using namespace Rando;
 
 void RegionTable_Init_GerudoValley() {
+    // clang-format off
     areaTable[RR_GERUDO_VALLEY] = Region("Gerudo Valley", "Gerudo Valley", {RA_GERUDO_VALLEY}, DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->BugRock, []{return logic->BugRock || logic->IsChild;}),
@@ -108,4 +109,6 @@ void RegionTable_Init_GerudoValley() {
         //Exits
         Entrance(RR_GV_FORTRESS_SIDE, []{return true;}),
     });
+
+    // clang-format on
 }

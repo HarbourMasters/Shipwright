@@ -22,6 +22,7 @@ s32 GfxPrint_Printf(GfxPrint* printer, const char* fmt, ...);
 
 ImVec4 WHITE = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 
+// clang-format off
 std::vector<ValueTableElement> valueTable = {
     { "Time",               "gSaveContext.dayTime",                 "TIME:",   TYPE_U16,   false, []() -> void* { return &gSaveContext.dayTime; },                      WHITE },
     { "Age",                "gSaveContext.linkAge",                 "AGE:",    TYPE_S32,   false, []() -> void* { return &gSaveContext.linkAge; },                      WHITE },
@@ -71,6 +72,7 @@ std::vector<ValueTableElement> valueTable = {
     "Deku Tree Warp Timer" u16 0x801F83A2
     */
 };
+// clang-format on
 
 extern "C" void ValueViewer_Draw(GfxPrint* printer) {
     for (int i = 0; i < valueTable.size(); i++) {

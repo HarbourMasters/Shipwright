@@ -74,6 +74,7 @@ static std::string groupTypeNames[] = {
 // Entrance data for the tracker taken from the 3ds rando entrance tracker, and supplemented with scene/spawn info and meta search tags
 // ENTR_HYRULE_FIELD_10 and ENTR_POTION_SHOP_KAKARIKO_1 have been repurposed for entrance randomizer
 const EntranceData entranceData[] = {
+    // clang-format off
     //index,                reverse, scenes (and spawns),     source name,   destination name, source group,           destination group,      type,                 metaTag, oneExit
     { ENTR_LINKS_HOUSE_CHILD_SPAWN,   -1,      SINGLE_SCENE_INFO(SCENE_LINKS_HOUSE), "Child Spawn", "Link's House",   ENTRANCE_GROUP_ONE_WAY, ENTRANCE_GROUP_ONE_WAY, ENTRANCE_TYPE_ONE_WAY},
     { ENTR_HYRULE_FIELD_10, -1,      SINGLE_SCENE_INFO(SCENE_TEMPLE_OF_TIME), "Adult Spawn", "Temple of Time", ENTRANCE_GROUP_ONE_WAY, ENTRANCE_GROUP_ONE_WAY, ENTRANCE_TYPE_ONE_WAY},
@@ -380,6 +381,8 @@ const EntranceData entranceData[] = {
     { ENTR_INSIDE_GANONS_CASTLE_ENTRANCE,            ENTR_CASTLE_GROUNDS_RAINBOW_BRIDGE_EXIT,       SINGLE_SCENE_INFO(SCENE_OUTSIDE_GANONS_CASTLE),                                     "OGC Rainbow Bridge Exit",        "Inside Ganon's Castle Entrance", ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_DUNGEON,   "outside ganon's castle,gc", 1},
     { ENTR_POTION_SHOP_KAKARIKO_1,                   ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_OGC_DD,       {{ SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC, 0x02 }},                                      "OGC Great Fairy Fountain",       "OGC Behind Pillar",              ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_INTERIOR,  "outside ganon's castle"},
     { ENTR_CASTLE_GROUNDS_RAINBOW_BRIDGE_EXIT,       ENTR_INSIDE_GANONS_CASTLE_ENTRANCE,            SINGLE_SCENE_INFO(SCENE_INSIDE_GANONS_CASTLE),                                      "Inside Ganon's Castle Entrance", "OGC Rainbow Bridge Exit",        ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_DUNGEON,   "outside ganon's castle,gc"}
+
+    // clang-format on
 };
 
 // Check if Link is in the area and return that scene/entrance for tracking

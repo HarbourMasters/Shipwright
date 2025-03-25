@@ -42,7 +42,7 @@ typedef enum {
     LIST,
     TARGET,
     HELD,
-    INTERACT
+    INTERACT,
 } RetrievalMethod;
 
 std::array<const char*, 12> acMapping = { 
@@ -230,7 +230,7 @@ static std::vector<u16> noParamsActors = {
     ACTOR_UNSET_15D,
     ACTOR_UNSET_161,
     ACTOR_UNSET_180,
-    ACTOR_UNSET_1AA
+    ACTOR_UNSET_1AA,
 };
 
 static std::unordered_map<u16, std::function<s16(s16)>> actorSpecificData;
@@ -402,7 +402,7 @@ void CreateActorSpecificData() {
             "Zora Tunic",
             "Goron Tunic",
             "Bombs (Special)",
-            "Bombchus"
+            "Bombchus",
         };
 
         int selectedItem = params & 0xFF;
@@ -439,7 +439,7 @@ void CreateActorSpecificData() {
             "Zora Tunic",
             "Goron Tunic",
             "Bombs (Special)",
-            "Bombchus"
+            "Bombchus",
         };
 
         int selectedItem = params & 0xFF;
@@ -519,7 +519,7 @@ void CreateActorSpecificData() {
             "Bombs (5) (35 Rupees)",
             "Red Potion (40 Rupees)",
             "Red Potion (50 Rupees)",
-            "Randomizer Item"
+            "Randomizer Item",
         };
         int selectedItem = params;
         if (ImGui::Combo("Type", &selectedItem, items, IM_ARRAYSIZE(items))) {
@@ -537,7 +537,7 @@ void CreateActorSpecificData() {
             "Spawned Falling (2)",
             //"INVALID",
             "Ceiling Spot Spawner",
-            "On Floor"
+            "On Floor",
         };
         int selectedItem = params > 3 ? params - 1 : params;
         if (ImGui::Combo("Type", &selectedItem, items, IM_ARRAYSIZE(items))) {
@@ -568,7 +568,7 @@ void CreateActorSpecificData() {
             "Magic Fire",
             "Magic Wind",
             "Magic Dark",
-            "Bullet Bag"
+            "Bullet Bag",
         };
         int selectedItem = params;
         if (ImGui::Combo("Type", &selectedItem, items, IM_ARRAYSIZE(items))) {
@@ -587,7 +587,7 @@ void CreateActorSpecificData() {
             "Spawner",
             "Revive Death",
             "Heal",
-            "Heal Big"
+            "Heal Big",
         };
         int selectedItem = params;
         if (ImGui::Combo("Type", &selectedItem, items, IM_ARRAYSIZE(items))) {
@@ -601,7 +601,7 @@ void CreateActorSpecificData() {
         static const char* items[] = {
             "Cutscene", //0
             "Normal",   //1
-            "Laser"     //100
+            "Laser",    //100
         };
         int selectedItem = params == 100 ? 2 : params;
         if (ImGui::Combo("Type", &selectedItem, items, IM_ARRAYSIZE(items))) {
@@ -647,7 +647,7 @@ void CreateActorSpecificData() {
             "UNK 7",
             "Orange",
             "Green",
-            "Red"
+            "Red",
         };
         int selectedItem = params + 2;
         if (ImGui::Combo("Type", &selectedItem, items, IM_ARRAYSIZE(items))) {
@@ -716,7 +716,7 @@ void CreateActorSpecificData() {
             "Switch Flag Fall Small",
             "9",
             "10",
-            "Switch Flag Big"
+            "Switch Flag Big",
         };
 
         int type = (params >> 12) & 0xF;
