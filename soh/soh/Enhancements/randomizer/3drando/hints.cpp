@@ -13,7 +13,6 @@
 #include "../hint.h"
 #include "../static_data.h"
 
-
 using namespace Rando;
 
 HintDistributionSetting::HintDistributionSetting(std::string _name, 
@@ -32,11 +31,16 @@ HintDistributionSetting::HintDistributionSetting(std::string _name,
     dungeonLimit = _dungeonLimit;
   }
 
-HintText::HintText(CustomMessage clearText_, std::vector<CustomMessage> ambiguousText_, std::vector<CustomMessage> obscureText_)
-: clearText(std::move(clearText_)), ambiguousText(std::move(ambiguousText_)), obscureText(std::move(obscureText_)){}
+//RANDOTODO rearrange once all HintText's have names
+HintText::HintText(CustomMessage clearText_, std::vector<CustomMessage> ambiguousText_, std::vector<CustomMessage> obscureText_, CustomMessage name_)
+: clearText(std::move(clearText_)), ambiguousText(std::move(ambiguousText_)), obscureText(std::move(obscureText_)), name(std::move(name_)){}
 
 const CustomMessage& HintText::GetClear() const {
     return clearText;
+}
+
+const CustomMessage& HintText::GetName() const {
+    return name.GetEnglish() == "" ? name : clearText;
 }
 
 const CustomMessage& HintText::GetObscure() const {
@@ -450,7 +454,7 @@ static RandomizerCheck CreateRandomHint(std::vector<RandomizerCheck>& possibleHi
     SPDLOG_DEBUG("\n");
 
     SPDLOG_DEBUG("\tItem: ");
-    SPDLOG_DEBUG(ctx->GetItemLocation(hintedLocation)->GetPlacedItemName().GetEnglish());
+    SPDLOG_DEBUG(ctx->GetItemLocation(hintedLocation)->GetPlacedItemName().GetForCurrentLanguage());
     SPDLOG_DEBUG("\n");
 
     placed = CreateHint(hintedLocation, copies, type, distributionName);

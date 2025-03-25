@@ -16,8 +16,10 @@ void StaticData::HintTable_Init_Item() {
                                                 // /*spanish*/un ágil puñal
                                                CustomMessage("a starter slasher", /*german*/"ein Anfängerschwert", /*french*/"une arme de débutant"),
                                                 // /*spanish*/una hoja de principiantes
-                                               CustomMessage("a switchblade", /*german*/"ein Stellmesser", /*french*/"un canif")});
-                                                // /*spanish*/una navaja
+                                               CustomMessage("a switchblade", /*german*/"ein Stellmesser", /*french*/"un canif")
+                                               // /*spanish*/una navaja
+                                               },
+                                               CustomMessage("the Kokiri Sword", /*german*/"das Kokiri-Schwert", /*french*/"l'Épée Kokiri"));
 
     hintTextTable[RHT_MASTER_SWORD] = HintText(CustomMessage("the Master Sword", /*german*/"das Master-Schwert", /*french*/"l'Épée de Légende"),
                                                // /*spanish*/la Espada Maestra
@@ -27,8 +29,10 @@ void StaticData::HintTable_Init_Item() {
                                                }, {
                                                CustomMessage("evil's bane", /*german*/"der böse Fluch", /*french*/"le fléau du mal"),
                                                 // /*spanish*/la destructora del mal
-                                               CustomMessage("a seven year limbo", /*german*/"eine siebenjährige Erwartung", /*french*/"une stase de sept ans")});
-                                                // /*spanish*/unos siete años de espera
+                                               CustomMessage("a seven year limbo", /*german*/"eine siebenjährige Erwartung", /*french*/"une stase de sept ans")
+                                               // /*spanish*/unos siete años de espera
+                                               },
+                                               CustomMessage("Master Sword", "Master-Schwert", "Épée de Legende"));
 
     hintTextTable[RHT_GIANTS_KNIFE] = HintText(CustomMessage("the Giant's Knife", /*german*/"das Langschwert", /*french*/"la Lame des Géants"),
                                                // /*spanish*/la daga gigante
@@ -38,8 +42,10 @@ void StaticData::HintTable_Init_Item() {
                                                }, {
                                                CustomMessage("a fragile blade", /*german*/"ein fragiles Schwert", /*french*/"une lame fragile"),
                                                 // /*spanish*/una frágil hoja
-                                               CustomMessage("a breakable cleaver", /*german*/"ein brüchiger Spalter", /*french*/"un espadon de verre")});
-                                                // /*spanish*/un rompible acero
+                                               CustomMessage("a breakable cleaver", /*german*/"ein brüchiger Spalter", /*french*/"un espadon de verre")
+                                               // /*spanish*/un rompible acero
+                                               },
+                                               CustomMessage("Giant's Knife", "Langschwert", "Lame des Géants"));
 
     hintTextTable[RHT_BIGGORON_SWORD] = HintText(CustomMessage("the Biggoron Sword", /*german*/"das Biggoron-Schwert", /*french*/"l'Épée de Biggoron"),
                                                  // /*spanish*/la Espada de Biggoron
@@ -49,8 +55,10 @@ void StaticData::HintTable_Init_Item() {
                                                  }, {
                                                  CustomMessage("the biggest blade", /*german*/"das größte Schwert", /*french*/"une lame gigantesque"),
                                                   // /*spanish*/el mayor mandoble
-                                                 CustomMessage("a colossal cleaver", /*german*/"ein kolossaler Spalter", /*french*/"un espadon colossal")});
-                                                  // /*spanish*/un estoque colosal
+                                                 CustomMessage("a colossal cleaver", /*german*/"ein kolossaler Spalter", /*french*/"un espadon colossal")
+                                                 // /*spanish*/un estoque colosal
+                                               },
+                                                 CustomMessage("Biggoron's Sword", "Biggoron-Schwert", "Épée de Biggoron"));
 
     hintTextTable[RHT_DEKU_SHIELD] = HintText(CustomMessage("a Deku Shield", /*german*/"ein Deku-Schild", /*french*/"un Bouclier Mojo"),
                                               // /*spanish*/un escudo deku
@@ -60,8 +68,10 @@ void StaticData::HintTable_Init_Item() {
                                               }, {
                                               CustomMessage("a wooden ward", /*german*/"eine hölzerne Abwehr", /*french*/"un écu d'écorce"),
                                                // /*spanish*/una protección del bosque
-                                              CustomMessage("a burnable barrier", /*german*/"eine brennbare Barriere", /*french*/"une protection inflammable")});
-                                               // /*spanish*/una barrera quemable
+                                              CustomMessage("a burnable barrier", /*german*/"eine brennbare Barriere", /*french*/"une protection inflammable")
+                                              // /*spanish*/una barrera quemable
+                                              },
+                                              CustomMessage("Deku Shield", "Deku-Schild", "Bouclier Mojo"));
 
     hintTextTable[RHT_HYLIAN_SHIELD] = HintText(CustomMessage("a Hylian Shield", /*german*/"ein Hylia-Schild", /*french*/"un Bouclier Hylien"),
                                                 // /*spanish*/un escudo hyliano
@@ -71,8 +81,10 @@ void StaticData::HintTable_Init_Item() {
                                                 }, {
                                                 CustomMessage("a steel safeguard", /*german*/"ein eiserner Schutz", /*french*/"une carapace d'acier"),
                                                  // /*spanish*/una protección de acero
-                                                CustomMessage("Like Like's metal meal", /*german*/"Raubschleims Metallmahlzeit", /*french*/"un amuse-gueule de Pudding")});
-                                                 // /*spanish*/un alimento de Like Like
+                                                CustomMessage("Like Like's metal meal", /*german*/"Raubschleims Metallmahlzeit", /*french*/"un amuse-gueule de Pudding")
+                                                // /*spanish*/un alimento de Like Like
+                                                },
+                                                CustomMessage("Hylian Shield", "Hylia-Schild", "Bouclier Hylien"));
 
     hintTextTable[RHT_MIRROR_SHIELD] = HintText(CustomMessage("the Mirror Shield", /*german*/"das Spiegelschild", /*french*/"le Bouclier Miroir"),
                                                 // /*spanish*/el escudo espejo
@@ -84,8 +96,10 @@ void StaticData::HintTable_Init_Item() {
                                                  // /*spanish*/una muralla reflectora
                                                 CustomMessage("Medusa's weakness", /*german*/"Medusas Schwäche", /*french*/"la faiblesse de Méduse"),
                                                  // /*spanish*/la debilidad de Medusa
-                                                CustomMessage("a silvered surface", /*german*/"eine silberne Oberfläche", /*french*/"une surface argentée")});
-                                                 // /*spanish*/una superficie plateada
+                                                CustomMessage("a silvered surface", /*german*/"eine silberne Oberfläche", /*french*/"une surface argentée")
+                                                // /*spanish*/una superficie plateada
+                                                },
+                                                CustomMessage("Mirror Shield", "Spiegelschild", "Bouclier Miroir"));
 
     hintTextTable[RHT_GORON_TUNIC] = HintText(CustomMessage("a Goron Tunic", /*german*/"eine Goronen-Tunika", /*french*/"une Tunique Goron"),
                                               // /*spanish*/un sayo goron
@@ -97,8 +111,10 @@ void StaticData::HintTable_Init_Item() {
                                                // /*spanish*/una vestimenta rubí
                                               CustomMessage("fireproof fabric", /*german*/"feuerfestes Gewebe", /*french*/"un trésor anti-flamme"),
                                                // /*spanish*/una ignífuga prenda
-                                              CustomMessage("cooking clothes", /*german*/"Kochschürze", /*french*/"une tenue de cuisine")});
-                                               // /*spanish*/unos abrasantes ropajes
+                                              CustomMessage("cooking clothes", /*german*/"Kochschürze", /*french*/"une tenue de cuisine")
+                                              // /*spanish*/unos abrasantes ropajes
+                                              },
+                                              CustomMessage("Goron Tunic", "Goronen-Tunika", "Tunique Goron"));
 
     hintTextTable[RHT_ZORA_TUNIC] = HintText(CustomMessage("a Zora Tunic", /*german*/"eine Zora-Tunika", /*french*/"une Tunique Zora"),
                                              // /*spanish*/un sayo zora
@@ -112,8 +128,10 @@ void StaticData::HintTable_Init_Item() {
                                               // /*spanish*/una vestidura zafiro
                                              CustomMessage("scuba gear", /*german*/"eine Taucherausrüstung", /*french*/"un habit de plongée"),
                                               // /*spanish*/un traje impermeable
-                                             CustomMessage("a swimsuit", /*german*/"ein Badeanzug", /*french*/"un costume de baignade")});
-                                              // /*spanish*/unos ropajes sumergibles
+                                             CustomMessage("a swimsuit", /*german*/"ein Badeanzug", /*french*/"un costume de baignade")
+                                             // /*spanish*/unos ropajes sumergibles
+                                             },
+                                             CustomMessage("Zora Tunic", "Zora-Tunika", "Tunique Zora"));
 
     hintTextTable[RHT_IRON_BOOTS] = HintText(CustomMessage("the Iron Boots", /*german*/"die Eisenstiefel", /*french*/"une paire de Bottes de plomb"),
                                              // /*spanish*/las botas de hierro
@@ -127,8 +145,10 @@ void StaticData::HintTable_Init_Item() {
                                              }, {
                                              CustomMessage("sink shoes", /*german*/"Sinkschuhe", /*french*/"un boulet de fer"),
                                               // /*spanish*/un calzado de las profundidades
-                                             CustomMessage("clank cleats", /*german*/"klirrende Knacken", /*french*/"une paire de talons bruyants")});
-                                              // /*spanish*/unas suelas férreas
+                                             CustomMessage("clank cleats", /*german*/"klirrende Knacken", /*french*/"une paire de talons bruyants")
+                                             // /*spanish*/unas suelas férreas
+                                             },
+                                             CustomMessage("Iron Boots", "Eisenstiefel", "Bottes de plomb"));
 
     hintTextTable[RHT_HOVER_BOOTS] = HintText(CustomMessage("the Hover Boots", /*german*/"die Gleitstiefel", /*french*/"une paire de Bottes des airs"),
                                               // /*spanish*/las botas voladoras
@@ -140,8 +160,10 @@ void StaticData::HintTable_Init_Item() {
                                                // /*spanish*/unas suelas resvaladizas
                                               CustomMessage("sacred slippers", /*german*/"heilige Pantoffeln", /*french*/"une paire de pantoufles sacrées"),
                                                // /*spanish*/unos escurridizos botines
-                                              CustomMessage("spacewalkers", /*german*/"Weltraumstiefel", /*french*/"une paire de bottes spatiales")});
-                                               // /*spanish*/un calzado antigravitatorio
+                                              CustomMessage("spacewalkers", /*german*/"Weltraumstiefel", /*french*/"une paire de bottes spatiales")
+                                              // /*spanish*/un calzado antigravitatorio
+                                              },
+                                              CustomMessage("Hover Boots", "Gleitstiefel", "Bottes de airs"));
 
     hintTextTable[RHT_ZELDAS_LETTER] = HintText(CustomMessage("Zelda's Letter", /*german*/"Zeldas Brief", /*french*/"la Lettre de Zelda"),
                                                 // /*spanish*/la carta de Zelda
@@ -150,8 +172,10 @@ void StaticData::HintTable_Init_Item() {
                                                  // /*spanish*/un autógrafo
                                                 CustomMessage("royal stationery", /*german*/"royales Briefpapier", /*french*/"du papier royal"),
                                                  // /*spanish*/un escrito real
-                                                CustomMessage("royal snail mail", /*german*/"ein royaler Umschlag", /*french*/"une enveloppe royale")});
-                                                 // /*spanish*/correo de la realeza
+                                                CustomMessage("royal snail mail", /*german*/"ein royaler Umschlag", /*french*/"une enveloppe royale")
+                                                // /*spanish*/correo de la realeza
+                                                },
+                                                CustomMessage("Zelda's Letter", "Zeldas Brief", "Lettre de Zelda"));
 
     hintTextTable[RHT_WEIRD_EGG] = HintText(CustomMessage("the Weird Egg", /*german*/"ein seltsames Ei", /*french*/"l'Oeuf Curieux"),
                                             // /*spanish*/el huevo extraño
@@ -159,8 +183,10 @@ void StaticData::HintTable_Init_Item() {
                                             CustomMessage("an egg", /*german*/"ein Ei", /*french*/"un oeuf")
                                              // /*spanish*/un huevo
                                             }, {
-                                            CustomMessage("a chicken dilemma", /*german*/"ein Hühnerdilemma", /*french*/"un drôle d'ovale")});
-                                             // /*spanish*/el dilema de la gallina
+                                            CustomMessage("a chicken dilemma", /*german*/"ein Hühnerdilemma", /*french*/"un drôle d'ovale")
+                                            // /*spanish*/el dilema de la gallina
+                                            },
+                                            CustomMessage("Weird Egg", "Seltsames Ei", "Oeuf Curieux"));
 
     hintTextTable[RHT_BOOMERANG] = HintText(CustomMessage("the Boomerang", /*german*/"ein Bumerang", /*french*/"le Boomerang"),
                                             // /*spanish*/el bumerán
@@ -174,8 +200,10 @@ void StaticData::HintTable_Init_Item() {
                                              // /*spanish*/un plátano
                                             CustomMessage("a stun stick", /*german*/"ein paralysierender Stab", /*french*/"un bâton étourdissant"),
                                              // /*spanish*/un palo aturdidor
-                                            CustomMessage("a yellow angle", /*german*/"ein gelber Winkel", /*french*/"un angle jaune")});
-                                             // /*spanish*/un ángulo amarillo
+                                            CustomMessage("a yellow angle", /*german*/"ein gelber Winkel", /*french*/"un angle jaune")
+                                            // /*spanish*/un ángulo amarillo
+                                            },
+                                            CustomMessage("Boomerang", "Bumerang", "Boomerang"));
 
     hintTextTable[RHT_LENS_OF_TRUTH] = HintText(CustomMessage("the Lens of Truth", /*german*/"das Auge der Wahrheit", /*french*/"le Monocle de Vérité"),
                                                 // /*spanish*/la Lupa de la Verdad
@@ -189,8 +217,10 @@ void StaticData::HintTable_Init_Item() {
                                                  // /*spanish*/el rastreador paranormal
                                                 CustomMessage("true sight", /*german*/"wahre Sicht", /*french*/"le troisième il"),
                                                  // /*spanish*/el ojo que todo ve
-                                                CustomMessage("a detective's tool", /*german*/"ein Detektivwerkzeug", /*french*/"un trésor Sheikah")});
-                                                 // /*spanish*/la revelación verdadera
+                                                CustomMessage("a detective's tool", /*german*/"ein Detektivwerkzeug", /*french*/"un trésor Sheikah")
+                                                // /*spanish*/la revelación verdadera
+                                                },
+                                                CustomMessage("Lens of Truth", "Auge der Wahrheit", "Monocle de Vérité"));
 
     hintTextTable[RHT_MEGATON_HAMMER] = HintText(CustomMessage("the Megaton Hammer", /*german*/"der Stahlhammer", /*french*/"la Masse des Titans"),
                                                  // /*spanish*/el martillo Megatón
@@ -202,8 +232,10 @@ void StaticData::HintTable_Init_Item() {
                                                   // /*spanish*/un destructor de dragones
                                                  CustomMessage("the metal mallet", /*german*/"ein stählerner Schlägel", /*french*/"un outil de construction"),
                                                   // /*spanish*/un mazo de metal
-                                                 CustomMessage("the heavy hitter", /*german*/"ein schwerer Schläger", /*french*/"un poids lourd")});
-                                                  // /*spanish*/un machacador
+                                                 CustomMessage("the heavy hitter", /*german*/"ein schwerer Schläger", /*french*/"un poids lourd")
+                                                 // /*spanish*/un machacador
+                                                 },
+                                                 CustomMessage("Megaton Hammer", "Stahlhammer", "Masse des Titans"));
 
     hintTextTable[RHT_STONE_OF_AGONY] = HintText(CustomMessage("the Stone of Agony", /*german*/"der Stein des Wissens", /*french*/"la Pierre de Souffrance"),
                                                  // /*spanish*/la Piedra de la Agonía
@@ -215,8 +247,10 @@ void StaticData::HintTable_Init_Item() {
                                                  }, {
                                                  CustomMessage("the shake stone", /*german*/"der Schüttelstein", /*french*/"le fragment vibrant"),
                                                   // /*spanish*/el fragmento tintineante
-                                                 CustomMessage("a gray alarm", /*german*/"der graue Alarm", /*french*/"une alerte bleue")});
-                                                  // /*spanish*/una azul alarma
+                                                 CustomMessage("a gray alarm", /*german*/"der graue Alarm", /*french*/"une alerte bleue")
+                                                 // /*spanish*/una azul alarma
+                                                 },
+                                                 CustomMessage("Stone of Agony", "Stein des Wissens", "Pierre de Souffrance"));
 
     hintTextTable[RHT_DINS_FIRE] = HintText(CustomMessage("Din's Fire", /*german*/"Dins Feuerinferno", /*french*/"le Feu de Din"),
                                             // /*spanish*/el Fuego de Din
@@ -228,8 +262,10 @@ void StaticData::HintTable_Init_Item() {
                                              // /*spanish*/un incendio
                                             CustomMessage("a heat wave", /*german*/"eine Hitzewelle", /*french*/"une vague de chaleur"),
                                              // /*spanish*/una onda de calor
-                                            CustomMessage("a red ball", /*german*/"ein roter Ball", /*french*/"une explosion de flammes")});
-                                             // /*spanish*/una roja esfera
+                                            CustomMessage("a red ball", /*german*/"ein roter Ball", /*french*/"une explosion de flammes")
+                                            // /*spanish*/una roja esfera
+                                            },
+                                            CustomMessage("Din's Fire", "Dins Feuerinferno", "Feu de Din"));
 
     hintTextTable[RHT_FARORES_WIND] = HintText(CustomMessage("Farore's Wind", /*german*/"Farores Donnersturm", /*french*/"le Vent de Farore"),
                                                // /*spanish*/el Viento de Farore
@@ -241,8 +277,10 @@ void StaticData::HintTable_Init_Item() {
                                                 // /*spanish*/un teletransportador
                                                CustomMessage("a relocation rune", /*german*/"eine Umzugsrune", /*french*/"une rune de relocation"),
                                                 // /*spanish*/una runa de transporte
-                                               CustomMessage("a green ball", /*german*/"ein grüner Ball", /*french*/"une boule verte")});
-                                                // /*spanish*/una verde esfera
+                                               CustomMessage("a green ball", /*german*/"ein grüner Ball", /*french*/"une boule verte")
+                                               // /*spanish*/una verde esfera
+                                               },
+                                               CustomMessage("Farore's Wind", "Farores Donnersturm", "Vent de Farore"));
 
     hintTextTable[RHT_NAYRUS_LOVE] = HintText(CustomMessage("Nayru's Love", /*german*/"Nayrus Umarmung", /*french*/"l'Amour de Nayru"),
                                               // /*spanish*/el Amor de Nayru
@@ -254,8 +292,10 @@ void StaticData::HintTable_Init_Item() {
                                                // /*spanish*/una seguridad temporal
                                               CustomMessage("an impregnable aura", /*german*/"eine undurchdringliche Aura", /*french*/"un aura impénétrable"),
                                                // /*spanish*/un aura impenetrable
-                                              CustomMessage("a blue barrier", /*german*/"eine blaue Barriere", /*french*/"une toison bleu")});
-                                               // /*spanish*/una barrera azul
+                                              CustomMessage("a blue barrier", /*german*/"eine blaue Barriere", /*french*/"une toison bleu")
+                                              // /*spanish*/una barrera azul
+                                              },
+                                              CustomMessage("Nayru's Love", "Nayrus Umarmung", "Amour de Nayru"));
 
     hintTextTable[RHT_FIRE_ARROWS] = HintText(CustomMessage("the Fire Arrows", /*german*/"die Feuerpfeile", /*french*/"les Flèches de Feu"),
                                               // /*spanish*/la flecha de fuego
@@ -267,8 +307,10 @@ void StaticData::HintTable_Init_Item() {
                                                // /*spanish*/el ardiente aguijón
                                               CustomMessage("the burning bolts", /*german*/"die Brennstifte", /*french*/"un obus enflammé"),
                                                // /*spanish*/las puntas ígneas
-                                              CustomMessage("a magma missile", /*german*/"eine vulkanische Rakete", /*french*/"un missile volcanique")});
-                                               // /*spanish*/el misil abrasador
+                                              CustomMessage("a magma missile", /*german*/"eine vulkanische Rakete", /*french*/"un missile volcanique")
+                                              // /*spanish*/el misil abrasador
+                                              },
+                                              CustomMessage("Fire Arrow", "Feuerpfeil", "Flèche de Feu"));
 
     hintTextTable[RHT_ICE_ARROWS] = HintText(CustomMessage("the Ice Arrows", /*german*/"die Eispfeile", /*french*/"les Flèches de Glace"),
                                              // /*spanish*/la flecha de hielo
@@ -282,8 +324,10 @@ void StaticData::HintTable_Init_Item() {
                                               // /*spanish*/el misil congelador
                                              CustomMessage("the frostbite bolts", /*german*/"die Froststifte", /*french*/"un froid mordant"),
                                               // /*spanish*/las puntas gélidas
-                                             CustomMessage("an iceberg maker", /*german*/"ein Eisbergmacher", /*french*/"une aiguille glaciale")});
-                                              // /*spanish*/el control de escarcha
+                                             CustomMessage("an iceberg maker", /*german*/"ein Eisbergmacher", /*french*/"une aiguille glaciale")
+                                             // /*spanish*/el control de escarcha
+                                             },
+                                             CustomMessage("Ice Arrow", "Eispfeil", "Flèche de Glace"));
 
     hintTextTable[RHT_LIGHT_ARROWS] = HintText(CustomMessage("the Light Arrows", /*german*/"die Lichtpfeile", /*french*/"les Flèches de Lumière"),
                                                // /*spanish*/la flecha de luz
@@ -297,8 +341,10 @@ void StaticData::HintTable_Init_Item() {
                                                 // /*spanish*/el disparo luminoso
                                                CustomMessage("Ganondorf's bane", /*german*/"Ganondorfs Verderben", /*french*/"le fléau de Ganondorf"),
                                                 // /*spanish*/la perdición de Ganondorf
-                                               CustomMessage("the lighting bolts", /*german*/"die Lichtstifte", /*french*/"l'éclair sacré")});
-                                                // /*spanish*/las puntas resplandecientes
+                                               CustomMessage("the lighting bolts", /*german*/"die Lichtstifte", /*french*/"l'éclair sacré")
+                                               // /*spanish*/las puntas resplandecientes
+                                               },
+                                               CustomMessage("Light Arrow", "Lichtpfeil", "Flèche de Lumière"));
 
     hintTextTable[RHT_GERUDO_MEMBERSHIP_CARD] = HintText(CustomMessage("the Gerudo Membership Card", /*german*/"der Gerudo-Pass", /*french*/"la Carte Gerudo"),
                                                          // /*spanish*/el pase de socio gerudo
@@ -308,8 +354,10 @@ void StaticData::HintTable_Init_Item() {
                                                          }, {
                                                          CustomMessage("a girl club membership", /*german*/"eine Mitgliedskarte", /*french*/"une carte de membre"),
                                                           // /*spanish*/una fémina membresía
-                                                         CustomMessage("a desert tribe's pass", /*german*/"ein Pass eines Wüstenstammes", /*french*/"un laissez-passer")});
-                                                          // /*spanish*/el vale del desierto
+                                                         CustomMessage("a desert tribe's pass", /*german*/"ein Pass eines Wüstenstammes", /*french*/"un laissez-passer")
+                                                         // /*spanish*/el vale del desierto
+                                                         },
+                                                         CustomMessage("Gerudo Membership Card", "Gerudo-Pass", "Carte Gerudo"));
 
     hintTextTable[RHT_MAGIC_BEAN] = HintText(CustomMessage("a Magic Bean", /*german*/"eine Wundererbse", /*french*/"un Haricot Magique"),
                                              // /*spanish*/una judía mágica
@@ -317,8 +365,10 @@ void StaticData::HintTable_Init_Item() {
                                              CustomMessage("something sometimes buried", /*german*/"etwas, das manchmal begraben ist", /*french*/"une chose parfois enterrée")
                                               // /*spanish*/algo a veces enterrado
                                              }, {
-                                             CustomMessage("a wizardly legume", /*german*/"eine zauberhafte Hülse", /*french*/"un légume ensorcelé")});
-                                              // /*spanish*/una legumbre hechizada
+                                             CustomMessage("a wizardly legume", /*german*/"eine zauberhafte Hülse", /*french*/"un légume ensorcelé")
+                                             // /*spanish*/una legumbre hechizada
+                                             },
+                                             CustomMessage("Magic Bean", "Wundererbse", "Haricots Magiques"));
 
     hintTextTable[RHT_MAGIC_BEAN_PACK] = HintText(CustomMessage("Magic Beans", /*german*/"Wundererbsen", /*french*/"un Paquet de Haricots Magiques"),
                                                   // /*spanish*/unas judías mágicas
@@ -326,8 +376,10 @@ void StaticData::HintTable_Init_Item() {
                                                   CustomMessage("something sometimes buried", /*german*/"etwas, das manchmal begraben ist", /*french*/"une chose parfois enterrée")
                                                    // /*spanish*/algo a veces enterrado
                                                   }, {
-                                                  CustomMessage("wizardly legumes", /*german*/"zauberhafte Hülsen", /*french*/"un paquet de légumes ensorcelés")});
-                                                   // /*spanish*/unas legumbres hechizadas
+                                                  CustomMessage("wizardly legumes", /*german*/"zauberhafte Hülsen", /*french*/"un paquet de légumes ensorcelés")
+                                                  // /*spanish*/unas legumbres hechizadas
+                                                  },
+                                                  CustomMessage("Magic Bean Pack", "Wundererbsen-Packung", "Paquet de Haricots Magiques"));
 
     hintTextTable[RHT_DOUBLE_DEFENSE] = HintText(CustomMessage("Double Defense", /*german*/"Doppelte Verteidigung", /*french*/"la Double Défence"),
                                                  // /*spanish*/la doble defensa
@@ -341,8 +393,10 @@ void StaticData::HintTable_Init_Item() {
                                                   // /*spanish*/un contorno blanco
                                                  CustomMessage("damage decrease", /*german*/"Schadensverringerung", /*french*/"une protection supplémentaire"),
                                                   // /*spanish*/una reducción de daño
-                                                 CustomMessage("strengthened love", /*german*/"gestärkte Liebe", /*french*/"un amour coriace")});
-                                                  // /*spanish*/un amor fortalecido
+                                                 CustomMessage("strengthened love", /*german*/"gestärkte Liebe", /*french*/"un amour coriace")
+                                                 // /*spanish*/un amor fortalecido
+                                                 },
+                                                 CustomMessage("Double Defense", "Doppelte Verteidigung", "Double Défence"));
 
     hintTextTable[RHT_GOLD_SKULLTULA_TOKEN] = HintText(CustomMessage("a Gold Skulltula Token", /*german*/"ein goldenes Skulltula-Symbol", /*french*/"un Symbole de Skulltula d'or"),
                                                        // /*spanish*/un símbolo de skulltula dorada
@@ -358,8 +412,10 @@ void StaticData::HintTable_Init_Item() {
                                                         // /*spanish*/una figura arácnida
                                                        CustomMessage("spider remains", /*german*/"Spinnenüberreste", /*french*/"une dépouille dorée"),
                                                         // /*spanish*/unos restos dorados
-                                                       CustomMessage("one percent of a curse", /*german*/"ein Prozent eines Fluchs", /*french*/"un centième de malédiction")});
-                                                        // /*spanish*/una centésima de una maldición
+                                                       CustomMessage("one percent of a curse", /*german*/"ein Prozent eines Fluchs", /*french*/"un centième de malédiction")
+                                                       // /*spanish*/una centésima de una maldición
+                                                       },
+                                                       CustomMessage("Gold Skulltula Token", "Goldenes Skulltula-Symbol", "Symbole de Skulltula d'Or"));
 
     hintTextTable[RHT_POCKET_EGG] = HintText(CustomMessage("the Pocket Egg", /*german*/"das Ei", /*french*/"l'Oeuf de Poche"),
                                              // /*spanish*/el huevo de bolsillo
@@ -373,8 +429,10 @@ void StaticData::HintTable_Init_Item() {
                                               // /*spanish*/cuco contenido
                                              CustomMessage("a Cucco, eventually", /*german*/"schlussendlich ein Huhn", /*french*/"un poussin éventuel"),
                                               // /*spanish*/un futuro cuco
-                                             CustomMessage("a fowl youth", /*german*/"ein junges Geflügel", /*french*/"une omelette crue")});
-                                              // /*spanish*/una dulce juventud
+                                             CustomMessage("a fowl youth", /*german*/"ein junges Geflügel", /*french*/"une omelette crue")
+                                             // /*spanish*/una dulce juventud
+                                             },
+                                             CustomMessage("Pocket Egg", "Ei", "Oeuf de poche"));
 
     hintTextTable[RHT_POCKET_CUCCO] = HintText(CustomMessage("the Pocket Cucco", /*german*/"Kiki", /*french*/"la Cocotte de Poche"),
                                                // /*spanish*/el cuco de bolsillo
@@ -382,8 +440,10 @@ void StaticData::HintTable_Init_Item() {
                                                CustomMessage("a trade quest item", /*german*/"ein Gegenstand einer Handelsmission", /*french*/"un objet de quête d'échanges")
                                                 // /*spanish*/un objeto de una misión secundaria
                                                }, {
-                                               CustomMessage("a little clucker", /*german*/"ein kleiner Gackerer", /*french*/"un petit glousseur")});
-                                                // /*spanish*/un pollito chiquito
+                                               CustomMessage("a little clucker", /*german*/"ein kleiner Gackerer", /*french*/"un petit glousseur")
+                                               // /*spanish*/un pollito chiquito
+                                               },
+                                               CustomMessage("Pocket Cucco", "!!!", "!!!"));
 
     hintTextTable[RHT_COJIRO] = HintText(CustomMessage("Cojiro", /*german*/"Henni", /*french*/"le p'tit poulet"),
                                          // /*spanish*/a Cojiro
@@ -391,8 +451,10 @@ void StaticData::HintTable_Init_Item() {
                                          CustomMessage("a trade quest item", /*german*/"ein Gegenstand einer Handelsmission", /*french*/"un objet de quête d'échanges")
                                           // /*spanish*/un objeto de una misión secundaria
                                          }, {
-                                         CustomMessage("a cerulean capon", /*german*/"ein coelinblaues Kapaun", /*french*/"un paon azur")});
-                                          // /*spanish*/un cerúleo capón
+                                         CustomMessage("a cerulean capon", /*german*/"ein coelinblaues Kapaun", /*french*/"un paon azur")
+                                         // /*spanish*/un cerúleo capón
+                                         },
+                                         CustomMessage("Cojiro", "Henni", "P'tit Poulet"));
 
     hintTextTable[RHT_ODD_MUSHROOM] = HintText(CustomMessage("an Odd Mushroom", /*german*/"ein Schimmelpilz", /*french*/"un Champignon Suspect"),
                                                // /*spanish*/un champiñón extraño
@@ -400,8 +462,10 @@ void StaticData::HintTable_Init_Item() {
                                                CustomMessage("a trade quest item", /*german*/"ein Gegenstand einer Handelsmission", /*french*/"un objet de quête d'échanges")
                                                 // /*spanish*/un objeto de una misión secundaria
                                                }, {
-                                               CustomMessage("a powder ingredient", /*german*/"eine Puderingredienz", /*french*/"un ingrédient à poudre")});
-                                                // /*spanish*/un oloroso ingrediente
+                                               CustomMessage("a powder ingredient", /*german*/"eine Puderingredienz", /*french*/"un ingrédient à poudre")
+                                               // /*spanish*/un oloroso ingrediente
+                                               },
+                                               CustomMessage("Odd Mushroom", "Schimmelpilz", "Champigon Suspect"));
 
     hintTextTable[RHT_ODD_POTION] = HintText(CustomMessage("an Odd Potion", /*german*/"ein Modertrank", /*french*/"une Mixture Suspecte"),
                                              // /*spanish*/una medicina rara
@@ -413,8 +477,10 @@ void StaticData::HintTable_Init_Item() {
                                              CustomMessage("a trade quest item", /*german*/"ein Gegenstand einer Handelsmission", /*french*/"un objet de quête d'échanges")
                                               // /*spanish*/un objeto de una misión secundaria
                                              }, {
-                                             CustomMessage("Granny's goodies", /*german*/"Omas Zuckerwerk", /*french*/"la confiserie de mamie")});
-                                              // /*spanish*/la especialidad de la abuela
+                                             CustomMessage("Granny's goodies", /*german*/"Omas Zuckerwerk", /*french*/"la confiserie de mamie")
+                                             // /*spanish*/la especialidad de la abuela
+                                             },
+                                             CustomMessage("Odd Potion", "Modertrank", "Mixture Suspecte"));
 
     hintTextTable[RHT_POACHERS_SAW] = HintText(CustomMessage("the Poacher's Saw", /*german*/"eine Säge", /*french*/"la Scie du Chasseur"),
                                                // /*spanish*/la sierra del furtivo
@@ -422,8 +488,10 @@ void StaticData::HintTable_Init_Item() {
                                                CustomMessage("a trade quest item", /*german*/"ein Gegenstand einer Handelsmission", /*french*/"un objet de quête d'échanges")
                                                 // /*spanish*/un objeto de una misión secundaria
                                                }, {
-                                               CustomMessage("a tree killer", /*german*/"ein Baumtöter", /*french*/"un coupeur d'arbres")});
-                                                // /*spanish*/un destructor de árboles
+                                               CustomMessage("a tree killer", /*german*/"ein Baumtöter", /*french*/"un coupeur d'arbres")
+                                               // /*spanish*/un destructor de árboles
+                                               },
+                                               CustomMessage("Poacher's Saw", "Säge", "Scie du Chasseur"));
 
     hintTextTable[RHT_BROKEN_SWORD] = HintText(CustomMessage("the Broken Goron's Sword", /*german*/"das zerbrochene Goronen-Schwert", /*french*/"l'Épée Brisée de Goron"),
                                                // /*spanish*/la espada goron rota
@@ -433,8 +501,10 @@ void StaticData::HintTable_Init_Item() {
                                                CustomMessage("a sword", /*german*/"ein Schwert", /*french*/"une épée")
                                                 // /*spanish*/una espada
                                                }, {
-                                               CustomMessage("a shattered slicer", /*german*/"ein zersplitterter Schneider", /*french*/"une arme cassée")});
-                                                // /*spanish*/una rebanadora rota
+                                               CustomMessage("a shattered slicer", /*german*/"ein zersplitterter Schneider", /*french*/"une arme cassée")
+                                               // /*spanish*/una rebanadora rota
+                                               },
+                                               CustomMessage("Broken Goron's Sword", "Zerbrochenes Goronen-Schwert", "Épée Brisée de Goron"));
 
     hintTextTable[RHT_PRESCRIPTION] = HintText(CustomMessage("the Prescription", /*german*/"ein Rezept", /*french*/"une Ordonnance"),
                                                // /*spanish*/la receta
@@ -444,8 +514,10 @@ void StaticData::HintTable_Init_Item() {
                                                }, {
                                                CustomMessage("a pill pamphlet", /*german*/"ein Pillenpamphlet", /*french*/"un document urgent"),
                                                 // /*spanish*/un instructivo medicinal
-                                               CustomMessage("a doctor's note", /*german*/"eine Notiz eines Doktors", /*french*/"un papier médical")});
-                                                // /*spanish*/unas notas del doctor
+                                               CustomMessage("a doctor's note", /*german*/"eine Notiz eines Doktors", /*french*/"un papier médical")
+                                               // /*spanish*/unas notas del doctor
+                                               },
+                                               CustomMessage("Prescription", "Rezept", "Ordonnance"));
 
     hintTextTable[RHT_EYEBALL_FROG] = HintText(CustomMessage("the Eyeball Frog", /*german*/"der Glotzfrosch", /*french*/"le Crapaud-qui-louche"),
                                                // /*spanish*/la rana de ojos saltones
@@ -453,8 +525,10 @@ void StaticData::HintTable_Init_Item() {
                                                CustomMessage("a trade quest item", /*german*/"ein Gegenstand einer Handelsmission", /*french*/"un objet de quête d'échanges")
                                                 // /*spanish*/un objeto de una misión secundaria
                                                }, {
-                                               CustomMessage("a perceiving polliwog", /*german*/"eine wahrnehmende Kaulquappe", /*french*/"un amphibien")});
-                                                // /*spanish*/un variopinto batracio
+                                               CustomMessage("a perceiving polliwog", /*german*/"eine wahrnehmende Kaulquappe", /*french*/"un amphibien")
+                                               // /*spanish*/un variopinto batracio
+                                               },
+                                               CustomMessage("Eyeball Frog", "Glotzfrosch", "Crapaud-qui-louche"));
 
     hintTextTable[RHT_EYEDROPS] = HintText(CustomMessage("the Eyedrops", /*german*/"die Augentropfen", /*french*/"une phiole de Super-Gouttes"),
                                            // /*spanish*/las supergotas oculares
@@ -462,8 +536,10 @@ void StaticData::HintTable_Init_Item() {
                                            CustomMessage("a trade quest item", /*german*/"ein Gegenstand einer Handelsmission", /*french*/"un objet de quête d'échanges")
                                             // /*spanish*/un objeto de una misión secundaria
                                            }, {
-                                           CustomMessage("a vision vial", /*german*/"eine Sichtphiole", /*french*/"une solution oculaire")});
-                                            // /*spanish*/un remedio para la vista
+                                           CustomMessage("a vision vial", /*german*/"eine Sichtphiole", /*french*/"une solution oculaire")
+                                           // /*spanish*/un remedio para la vista
+                                           },
+                                           CustomMessage("World's Finest Eyedrops", "Augentropfen", "Super Gouttes"));
 
     hintTextTable[RHT_CLAIM_CHECK] = HintText(CustomMessage("the Claim Check", /*german*/"ein Zertifikat", /*french*/"un Certificat"),
                                               // /*spanish*/el recibo
@@ -471,8 +547,10 @@ void StaticData::HintTable_Init_Item() {
                                               CustomMessage("a trade quest item", /*german*/"ein Gegenstand einer Handelsmission", /*french*/"un objet de quête d'échanges")
                                                // /*spanish*/un objeto de una misión secundaria
                                               }, {
-                                              CustomMessage("a three day wait", /*german*/"eine dreitägige Erwartung", /*french*/"un rendez-vous dans trois jours")});
-                                               // /*spanish*/unos tres días de espera
+                                              CustomMessage("a three day wait", /*german*/"eine dreitägige Erwartung", /*french*/"un rendez-vous dans trois jours")
+                                              },
+                                              // /*spanish*/unos tres días de espera
+                                              CustomMessage("Claim Check", "Zertifikat", "Certificat"));
 
     hintTextTable[RHT_PROGRESSIVE_HOOKSHOT] = HintText(CustomMessage("a Hookshot", /*german*/"ein Enterhaken", /*french*/"un Grappin"),
                                                        // /*spanish*/un gancho
@@ -486,8 +564,10 @@ void StaticData::HintTable_Init_Item() {
                                                         // /*spanish*/un recuerdo de Dampé
                                                        CustomMessage("the Grapple Beam", /*german*/"der Greifstrahl", /*french*/"le rayon grippeur"),
                                                         // /*spanish*/una garra metálica
-                                                       CustomMessage("the RHT_BOING! chain", /*german*/"die Kette des RHT_BOING!", /*french*/"la chaîne de RHT_BOING!")});
-                                                        // /*spanish*/una cadena retráctil
+                                                       CustomMessage("the RHT_BOING! chain", /*german*/"die Kette des RHT_BOING!", /*french*/"la chaîne de RHT_BOING!")
+                                                       // /*spanish*/una cadena retráctil
+                                                       },
+                                                       CustomMessage("Progressive Hookshot", "Progressiver Fanghaken", "Grappin (prog.)"));
 
     hintTextTable[RHT_PROGRESSIVE_STRENGTH] = HintText(CustomMessage("a Strength Upgrade", /*german*/"eine Stärkeverbesserung", /*french*/"une Amélioration de Force"),
                                                        // /*spanish*/un aumento de fuerza
@@ -499,8 +579,10 @@ void StaticData::HintTable_Init_Item() {
                                                         // /*spanish*/unos poderosos guanteletes
                                                        CustomMessage("metal mittens", /*german*/"Metallfäustlinge", /*french*/"une paire de mitaines"),
                                                         // /*spanish*/unas manoplas metálicas
-                                                       CustomMessage("the heavy lifty", /*german*/"der Schwerlastheber", /*french*/"la puissance de dix hommes")});
-                                                        // /*spanish*/un levantamiento pesado
+                                                       CustomMessage("the heavy lifty", /*german*/"der Schwerlastheber", /*french*/"la puissance de dix hommes")
+                                                       // /*spanish*/un levantamiento pesado
+                                                       },
+                                                       CustomMessage("Strength Upgrade", "Progressives Kraft-Upgrade", "Amélioration de Force (prog.)"));
 
     hintTextTable[RHT_PROGRESSIVE_BOMB_BAG] = HintText(CustomMessage("a Bomb Bag", /*german*/"ein Bombenbeutel", /*french*/"un Sac de Bombes"),
                                                        // /*spanish*/un saco de bombas
@@ -512,8 +594,10 @@ void StaticData::HintTable_Init_Item() {
                                                        }, {
                                                        CustomMessage("an explosive container", /*german*/"ein Explosivbehälter", /*french*/"un porte-grenade"),
                                                         // /*spanish*/un recipiente explosivo
-                                                       CustomMessage("a blast bag", /*german*/"ein Dodongomagen", /*french*/"un estomac de Dodongo")});
-                                                        // /*spanish*/un zurrón de estallidos
+                                                       CustomMessage("a blast bag", /*german*/"ein Dodongomagen", /*french*/"un estomac de Dodongo")
+                                                       // /*spanish*/un zurrón de estallidos
+                                                       },
+                                                       CustomMessage("Progressive Bomb Bag", "Progressive Bombentasche", "Sac de Bombes (prog.)"));
 
     hintTextTable[RHT_PROGRESSIVE_BOW] = HintText(CustomMessage("a Fairy Bow", /*german*/"ein Feen-Bogen", /*french*/"l'Arc des Fées"),
                                                   // /*spanish*/un arco de las hadas
@@ -523,8 +607,10 @@ void StaticData::HintTable_Init_Item() {
                                                   }, {
                                                   CustomMessage("an archery enabler", /*german*/"ein Bogenschussermöglicher", /*french*/"un facilitateur de tir"),
                                                    // /*spanish*/un tiro al blanco
-                                                  CustomMessage("a danger dart launcher", /*german*/"ein Pfeilwerfer", /*french*/"un tire-fléchette")});
-                                                   // /*spanish*/un peligroso lanzadardos
+                                                  CustomMessage("a danger dart launcher", /*german*/"ein Pfeilwerfer", /*french*/"un tire-fléchette")
+                                                  // /*spanish*/un peligroso lanzadardos
+                                                  },
+                                                  CustomMessage("Progressive Bow", "Progressiver Bogen", "Arc (prog.)"));
 
     hintTextTable[RHT_PROGRESSIVE_SLINGSHOT] = HintText(CustomMessage("a Slingshot", /*german*/"eine Schleuder", /*french*/"un Lance-Pierre"),
                                                         // /*spanish*/una resortera de las hadas
@@ -536,8 +622,10 @@ void StaticData::HintTable_Init_Item() {
                                                          // /*spanish*/un lanzasemillas
                                                         CustomMessage("a rubberband", /*german*/"ein Gummiband", /*french*/"un élastique"),
                                                          // /*spanish*/un tirachinas
-                                                        CustomMessage("a child's catapult", /*german*/"ein Kinderkatapult", /*french*/"un jouet d'enfant")});
+                                                        CustomMessage("a child's catapult", /*german*/"ein Kinderkatapult", /*french*/"un jouet d'enfant")
                                                          // /*spanish*/una catapulta infantil
+                                                        },
+                                                        CustomMessage("Progressive Slingshot", "Progressive Steinschleuder", "Lance-Pierre (prog.)"));
 
     hintTextTable[RHT_PROGRESSIVE_WALLET] = HintText(CustomMessage("a Wallet", /*german*/"eine Börse", /*french*/"une Bourse"),
                                                      // /*spanish*/una bolsa de rupias
@@ -549,8 +637,10 @@ void StaticData::HintTable_Init_Item() {
                                                       // /*spanish*/una cartera de dinero
                                                      CustomMessage("a gem purse", /*german*/"ein Edelsteinportemonnaie", /*french*/"une sacoche"),
                                                       // /*spanish*/un zurrón de gemas
-                                                     CustomMessage("a portable bank", /*german*/"eine tragbare Bank", /*french*/"une petite banque")});
-                                                      // /*spanish*/un banco portable
+                                                     CustomMessage("a portable bank", /*german*/"eine tragbare Bank", /*french*/"une petite banque")
+                                                     // /*spanish*/un banco portable
+                                                     },
+                                                     CustomMessage("Progressive Wallet", "Progressive Geldbörse", "Bourse (prog.)"));
 
     hintTextTable[RHT_PROGRESSIVE_SCALE] = HintText(CustomMessage("a Zora Scale", /*german*/"eine Zora-Schuppe", /*french*/"une Écaille Zora"),
                                                     // /*spanish*/una escama Zora
@@ -560,8 +650,10 @@ void StaticData::HintTable_Init_Item() {
                                                     }, {
                                                     CustomMessage("a deeper dive", /*german*/"eine Tauchblase", /*french*/"une bulle de plongée"),
                                                      // /*spanish*/un profundo buceo
-                                                    CustomMessage("a piece of Zora", /*german*/"ein Zora-Fragment", /*french*/"un morceau de Zora")});
-                                                     // /*spanish*/un fragmento de Zora
+                                                    CustomMessage("a piece of Zora", /*german*/"ein Zora-Fragment", /*french*/"un morceau de Zora")
+                                                    // /*spanish*/un fragmento de Zora
+                                                    },
+                                                    CustomMessage("Progressive Scale", "Progressive Schuppe", "Écaille (prog.)"));
 
     hintTextTable[RHT_PROGRESSIVE_NUT_UPGRADE] = HintText(CustomMessage("Deku Nut Capacity", /*german*/"Deku-Nuß-Kapazität", /*french*/"une Augmentation de Noix Mojo"),
                                                           // /*spanish*/un aumento de nueces deku
@@ -573,8 +665,10 @@ void StaticData::HintTable_Init_Item() {
                                                           }, {
                                                           CustomMessage("more nuts", /*german*/"mehr Nüsse", /*french*/"encore plus de noix"),
                                                            // /*spanish*/más semillas de nogal
-                                                          CustomMessage("flashbang storage", /*german*/"Blendgranatenvorrat", /*french*/"un sac à noix")});
-                                                           // /*spanish*/más frutos aturdidores
+                                                          CustomMessage("flashbang storage", /*german*/"Blendgranatenvorrat", /*french*/"un sac à noix")
+                                                          // /*spanish*/más frutos aturdidores
+                                                          },
+                                                          CustomMessage("Progressive Nut Capacity", "Progressive Nuß-Kapazität", "Capacité de Noix (prog.)"));
 
     hintTextTable[RHT_PROGRESSIVE_STICK_UPGRADE] = HintText(CustomMessage("Deku Stick Capacity", /*german*/"Deku-Stab-Kapazität", /*french*/"une augmentation de bâtons Mojo"),
                                                             // /*spanish*/un aumento de palos deku
@@ -584,8 +678,10 @@ void StaticData::HintTable_Init_Item() {
                                                             }, {
                                                             CustomMessage("lumber racks", /*german*/"Holzgestelle", /*french*/"un paquet de bois"),
                                                              // /*spanish*/más bastones
-                                                            CustomMessage("more flammable twigs", /*german*/"mehr entflammbare Zweige", /*french*/"beaucoup de branches")});
-                                                             // /*spanish*/más varas
+                                                            CustomMessage("more flammable twigs", /*german*/"mehr entflammbare Zweige", /*french*/"beaucoup de branches")
+                                                            // /*spanish*/más varas
+                                                            },
+                                                            CustomMessage("Progressive Stick Capacity", "Progressive Stab-Kapazität", "Capacité de Bâtons (prog.)"));
 
     hintTextTable[RHT_PROGRESSIVE_MAGIC_METER] = HintText(CustomMessage("a Magic Meter", /*german*/"ein Magieabmaß", /*french*/"une Jauge de Magie"),
                                                           // /*spanish*/un aumento de poder mágico
@@ -597,8 +693,10 @@ void StaticData::HintTable_Init_Item() {
                                                            // /*spanish*/una maestría mística
                                                           CustomMessage("pixie dust", /*german*/"Feenstaub", /*french*/"de la poudre de fée"),
                                                            // /*spanish*/un polvo de hada
-                                                          CustomMessage("a green rectangle", /*german*/"ein grünes Rechteck", /*french*/"un rectangle vert")});
-                                                           // /*spanish*/una verduzca barra
+                                                          CustomMessage("a green rectangle", /*german*/"ein grünes Rechteck", /*french*/"un rectangle vert")
+                                                          // /*spanish*/una verduzca barra
+                                                          },
+                                                          CustomMessage("Progressive Magic Meter", "Progressives Magisches Maß", "Jauge de Magie (prog.)"));
 
     hintTextTable[RHT_PROGRESSIVE_OCARINA] = HintText(CustomMessage("an Ocarina", /*german*/"eine Okarina", /*french*/"un ocarina"),
                                                       // /*spanish*/una ocarina
@@ -610,8 +708,10 @@ void StaticData::HintTable_Init_Item() {
                                                       }, {
                                                       CustomMessage("a flute", /*german*/"eine Flöte", /*french*/"un bec musical"),
                                                        // /*spanish*/un utensilio musical
-                                                      CustomMessage("a music maker", /*german*/"ein Musikmacher", /*french*/"un porteur de chansons")});
-                                                       // /*spanish*/un instrumento
+                                                      CustomMessage("a music maker", /*german*/"ein Musikmacher", /*french*/"un porteur de chansons")
+                                                      // /*spanish*/un instrumento
+                                                      },
+                                                      CustomMessage("Progressive Ocarina", "Progressive Okarina", "Ocarina (prog.)"));
 
     hintTextTable[RHT_PROGRESSIVE_BOMBCHUS] = HintText(CustomMessage("Bombchus", /*german*/"Krabbelminen", /*french*/"un paquet de Missiles"),
                                                        // /*spanish*/unos bombchus
@@ -627,8 +727,10 @@ void StaticData::HintTable_Init_Item() {
                                                         // /*spanish*/unos explosivos ratoncitos
                                                        CustomMessage("wall crawlers", /*german*/"Wandkrabbler", /*french*/"un rapide grimpeur"),
                                                         // /*spanish*/unos trepaparedes
-                                                       CustomMessage("trail blazers", /*german*/"Vorreiter", /*french*/"un zigzag éclatant")});
-                                                        // /*spanish*/unas ratas propulsadas
+                                                       CustomMessage("trail blazers", /*german*/"Vorreiter", /*french*/"un zigzag éclatant")
+                                                       // /*spanish*/unas ratas propulsadas
+                                                       },
+                                                       CustomMessage("Progressive Bombchu", "Progressive Krabbelminen", "Missiles (prog.)"));
 
     hintTextTable[RHT_PROGRESSIVE_GORONSWORD] = HintText(CustomMessage("a Goron Sword", /*german*/"ein Goronen-Schwert", /*french*/"une épée Goron"),
                                                          // /*spanish*/una espada goron
@@ -638,8 +740,10 @@ void StaticData::HintTable_Init_Item() {
                                                          }, {
                                                          CustomMessage("a long blade", /*german*/"eine lange Klinge", /*french*/"une longue lame"),
                                                           // /*spanish*/una gran hoja
-                                                         CustomMessage("a Goron weapon", /*german*/"eine Goronenwaffe", /*french*/"une arme Goron")});
-                                                          // /*spanish*/un arma goron
+                                                         CustomMessage("a Goron weapon", /*german*/"eine Goronenwaffe", /*french*/"une arme Goron")
+                                                         // /*spanish*/un arma goron
+                                                         },
+                                                         CustomMessage("Progressive Goron Sword", "Progressives Goronen-Schwert", "Épée Goron (prog.)"));
 
     hintTextTable[RHT_EMPTY_BOTTLE] = HintText(CustomMessage("a bottle", /*german*/"eine Flasche", /*french*/"un flacon vide"),
                                                // /*spanish*/una botella
@@ -651,8 +755,10 @@ void StaticData::HintTable_Init_Item() {
                                                 // /*spanish*/un recipiente de cristal
                                                CustomMessage("an empty jar", /*german*/"ein leerer Krug", /*french*/"une jarre incassable"),
                                                 // /*spanish*/un frasco vacío
-                                               CustomMessage("encased air", /*german*/"eingeschlossene Luft", /*french*/"un bocal d'air")});
-                                                // /*spanish*/aire a presión
+                                               CustomMessage("encased air", /*german*/"eingeschlossene Luft", /*french*/"un bocal d'air")
+                                               // /*spanish*/aire a presión
+                                               },
+                                               CustomMessage("Empty Bottle", "Leere Flasche", "Bouteille Vide"));
 
     hintTextTable[RHT_BOTTLE_WITH_MILK] = HintText(CustomMessage("a Milk Bottle", /*german*/"eine Milchflasche", /*french*/"un flacon de lait"),
                                                    // /*spanish*/una botella de leche
@@ -664,8 +770,10 @@ void StaticData::HintTable_Init_Item() {
                                                     // /*spanish*/una fuente de calcio
                                                    CustomMessage("a white liquid", /*german*/"eine weiße Flüssigkeit", /*french*/"un liquide blanc"),
                                                     // /*spanish*/una bebida nutritiva
-                                                   CustomMessage("a baby's breakfast", /*german*/"ein Babyfrühstück", /*french*/"du jus pour bébé")});
-                                                    // /*spanish*/un trago para bebés
+                                                   CustomMessage("a baby's breakfast", /*german*/"ein Babyfrühstück", /*french*/"du jus pour bébé")
+                                                   // /*spanish*/un trago para bebés
+                                                   },
+                                                   CustomMessage("Bottle with Milk", "Flasche mit Milch", "Bouteille avec du Lait"));
 
     hintTextTable[RHT_BOTTLE_WITH_RED_POTION] = HintText(CustomMessage("a Red Potion Bottle", /*german*/"eine Flasche mit rotem Elixier", /*french*/"un flacon de potion rouge"),
                                                          // /*spanish*/una botella de poción roja
@@ -675,8 +783,10 @@ void StaticData::HintTable_Init_Item() {
                                                          }, {
                                                          CustomMessage("a vitality vial", /*german*/"eine Vitalitätsphiole", /*french*/"un mélange de vitalité"),
                                                           // /*spanish*/una pócima vitalicia
-                                                         CustomMessage("a red liquid", /*german*/"eine rote Flüssigkeit", /*french*/"un liquide rouge")});
-                                                          // /*spanish*/un remedio rojizo
+                                                         CustomMessage("a red liquid", /*german*/"eine rote Flüssigkeit", /*french*/"un liquide rouge")
+                                                         // /*spanish*/un remedio rojizo
+                                                         },
+                                                         CustomMessage("Bottle with Red Potion", "Flasche mit rotem Elixier", "Bouteille avec une Potion Rouge"));
 
     hintTextTable[RHT_BOTTLE_WITH_GREEN_POTION] = HintText(CustomMessage("a Green Potion Bottle", /*german*/"eine Flasche mit grünem Elixier", /*french*/"un flacon de potion verte"),
                                                            // /*spanish*/una botella de poción verde
@@ -686,8 +796,10 @@ void StaticData::HintTable_Init_Item() {
                                                            }, {
                                                            CustomMessage("a magic mixture", /*german*/"eine magische Mixtur", /*french*/"une réserve magique"),
                                                             // /*spanish*/un potingue mágico
-                                                           CustomMessage("a green liquid", /*german*/"eine grüne Flüssigkeit", /*french*/"un liquide vert")});
-                                                            // /*spanish*/un remedio verduzco
+                                                           CustomMessage("a green liquid", /*german*/"eine grüne Flüssigkeit", /*french*/"un liquide vert")
+                                                           // /*spanish*/un remedio verduzco
+                                                           },
+                                                           CustomMessage("Bottle with Green Potion", "Flasche mit grünem Elixier", "Bouteille avec une Potion Verte"));
 
     hintTextTable[RHT_BOTTLE_WITH_BLUE_POTION] = HintText(CustomMessage("a Blue Potion Bottle", /*german*/"eine Flasche mit blauem Elixier", /*french*/"un flacon de potion bleue"),
                                                           // /*spanish*/una botella de poción azul
@@ -697,8 +809,10 @@ void StaticData::HintTable_Init_Item() {
                                                           }, {
                                                           CustomMessage("an ailment antidote", /*german*/"ein Krankheitsantidot", /*french*/"l'élixir ultime"),
                                                            // /*spanish*/un antídoto para el dolor
-                                                          CustomMessage("a blue liquid", /*german*/"eine blaue Flüssigkeit", /*french*/"un liquide bleu")});
-                                                           // /*spanish*/un remedio índigo
+                                                          CustomMessage("a blue liquid", /*german*/"eine blaue Flüssigkeit", /*french*/"un liquide bleu")
+                                                          // /*spanish*/un remedio índigo
+                                                          },
+                                                          CustomMessage("Bottle with Blue Potion", "Flasche mit blauem Elixier", "Bouteille avec une Potion Bleue"));
 
     hintTextTable[RHT_BOTTLE_WITH_FAIRY] = HintText(CustomMessage("a Fairy Bottle", /*german*/"eine Feenflasche", /*french*/"une fée en flacon"),
                                                     // /*spanish*/un hada en una botella
@@ -710,8 +824,10 @@ void StaticData::HintTable_Init_Item() {
                                                      // /*spanish*/un hada atrapada
                                                     CustomMessage("an extra life", /*german*/"ein Extraleben", /*french*/"une vie de rechange"),
                                                      // /*spanish*/una oportunidad más
-                                                    CustomMessage("Navi's cousin", /*german*/"Navis Vetter", /*french*/"le cousin de Navi")});
-                                                     // /*spanish*/una prima de Navi
+                                                    CustomMessage("Navi's cousin", /*german*/"Navis Vetter", /*french*/"le cousin de Navi")
+                                                    // /*spanish*/una prima de Navi
+                                                    },
+                                                    CustomMessage("Bottle with Fairy", "Flasche mit Fee", "Bouteille avec une Fée"));
 
     hintTextTable[RHT_BOTTLE_WITH_FISH] = HintText(CustomMessage("a Fish Bottle", /*german*/"eine Fischflasche", /*french*/"un poisson en flacon"),
                                                    // /*spanish*/un pez en una botella
@@ -721,8 +837,10 @@ void StaticData::HintTable_Init_Item() {
                                                    }, {
                                                    CustomMessage("an aquarium", /*german*/"ein Aquarium", /*french*/"un aquarium"),
                                                     // /*spanish*/un escamado ser
-                                                   CustomMessage("a deity's snack", /*german*/"ein Gottheitssnack", /*french*/"le repas d'un dieu marin")});
-                                                    // /*spanish*/un tentempié de cierta deidad
+                                                   CustomMessage("a deity's snack", /*german*/"ein Gottheitssnack", /*french*/"le repas d'un dieu marin")
+                                                   // /*spanish*/un tentempié de cierta deidad
+                                                   },
+                                                   CustomMessage("Bottle with Fish", "Flasche mit Fisch", "Bouteille avec un Poisson"));
 
     hintTextTable[RHT_BOTTLE_WITH_BLUE_FIRE] = HintText(CustomMessage("a Blue Fire Bottle", /*german*/"eine Flasche mit blauem Feuer", /*french*/"une flamme bleue en flacon"),
                                                         // /*spanish*/una botella de fuego azul
@@ -732,8 +850,10 @@ void StaticData::HintTable_Init_Item() {
                                                         }, {
                                                         CustomMessage("a conflagration canteen", /*german*/"eine Brandfeldflasche", /*french*/"une mystérieuse flamme"),
                                                          // /*spanish*/un incendio retenido
-                                                        CustomMessage("an icemelt jar", /*german*/"ein eisschmelzender Krug", /*french*/"un brasier glacial")});
-                                                         // /*spanish*/unas brasas enfrascadas
+                                                        CustomMessage("an icemelt jar", /*german*/"ein eisschmelzender Krug", /*french*/"un brasier glacial")
+                                                        // /*spanish*/unas brasas enfrascadas
+                                                        },
+                                                        CustomMessage("Bottle with Blue Fire", "Flasche mit blauem Feuer", "Bouteille avec une Flamme Bleue"));
 
     hintTextTable[RHT_BOTTLE_WITH_BUGS] = HintText(CustomMessage("a Bug Bottle", /*german*/"eine Wanzenflasche", /*french*/"un insecte en flacon"),
                                                    // /*spanish*/unos insectos en una botella
@@ -743,8 +863,10 @@ void StaticData::HintTable_Init_Item() {
                                                    }, {
                                                    CustomMessage("an insectarium", /*german*/"ein Insektarium", /*french*/"un insectarium"),
                                                     // /*spanish*/unos invertebrados seres
-                                                   CustomMessage("Skulltula finders", /*german*/"Skulltula-Finder", /*french*/"une poignée de trouve-Skulltula")});
-                                                    // /*spanish*/unos rastreadores de skulltulas
+                                                   CustomMessage("Skulltula finders", /*german*/"Skulltula-Finder", /*french*/"une poignée de trouve-Skulltula")
+                                                   // /*spanish*/unos rastreadores de skulltulas
+                                                   },
+                                                   CustomMessage("Bottle with Bugs", "Flasche mit Wanzen", "Bouteille avec des Insectes"));
 
     hintTextTable[RHT_BOTTLE_WITH_POE] = HintText(CustomMessage("a Poe Bottle", /*german*/"eine Irrlichtflasche", /*french*/"un Esprit en flacon"),
                                                   // /*spanish*/un Poe en una botella
@@ -754,8 +876,10 @@ void StaticData::HintTable_Init_Item() {
                                                   }, {
                                                   CustomMessage("a spooky ghost", /*german*/"ein spukhafter Geist", /*french*/"un effroyable fantôme"),
                                                    // /*spanish*/un espantoso espectro
-                                                  CustomMessage("a face in the jar", /*german*/"ein Gesicht im Krug", /*french*/"un visage dans un bocal")});
-                                                   // /*spanish*/una expresión enfrascada
+                                                  CustomMessage("a face in the jar", /*german*/"ein Gesicht im Krug", /*french*/"un visage dans un bocal")
+                                                  // /*spanish*/una expresión enfrascada
+                                                  },
+                                                  CustomMessage("Bottle with Poe", "Flasche mit einem Geist", "Bouteille avec un Esprit"));
 
     hintTextTable[RHT_BOTTLE_WITH_BIG_POE] = HintText(CustomMessage("a Big Poe Bottle", /*german*/"eine Nachtschwärmerflasche", /*french*/"une Ame en flacon"),
                                                       // /*spanish*/un Gran Poe en una botella
@@ -765,8 +889,10 @@ void StaticData::HintTable_Init_Item() {
                                                       }, {
                                                       CustomMessage("the spookiest ghost", /*german*/"der spukhafteste Geist", /*french*/"un épouvantable spectre"),
                                                        // /*spanish*/el espectro más espeluznante
-                                                      CustomMessage("a sidequest spirit", /*german*/"ein Nebenmissionsgeist", /*french*/"un précieux esprit")});
-                                                       // /*spanish*/un buen valorado espíritu
+                                                      CustomMessage("a sidequest spirit", /*german*/"ein Nebenmissionsgeist", /*french*/"un précieux esprit")
+                                                      // /*spanish*/un buen valorado espíritu
+                                                      },
+                                                      CustomMessage("Bottle with Big Poe", "Flasche mit Seele", "Bouteille avec une Âme"));
 
     hintTextTable[RHT_RUTOS_LETTER] = HintText(CustomMessage("Ruto's Letter", /*german*/"Rutos Brief", /*french*/"la lettre de Ruto"),
                                                // /*spanish*/la carta de Ruto
@@ -780,8 +906,10 @@ void StaticData::HintTable_Init_Item() {
                                                 // /*spanish*/un escrito mweep
                                                CustomMessage("an RHT_SOS call", /*german*/"ein RHT_SOS Signal", /*french*/"un signal RHT_SOS"),
                                                 // /*spanish*/una nota de socorro
-                                               CustomMessage("a fishy stationery", /*german*/"ein nasses Papier", /*french*/"un papier mouillé")});
-                                                // /*spanish*/un mensaje de ayuda
+                                               CustomMessage("a fishy stationery", /*german*/"ein nasses Papier", /*french*/"un papier mouillé")
+                                               // /*spanish*/un mensaje de ayuda
+                                               },
+                                               CustomMessage("Bottle with Ruto's Letter", "Flasche mit Rutos Brief", "Bouteille avec la Lettre de Ruto"));
 
     hintTextTable[RHT_ZELDAS_LULLABY] = HintText(CustomMessage("Zelda's Lullaby", /*german*/"Zeldas Wiegenlied", /*french*/"la berceuse de Zelda"),
                                                  // /*spanish*/la Nana de Zelda
@@ -793,8 +921,10 @@ void StaticData::HintTable_Init_Item() {
                                                  }, {
                                                  CustomMessage("a song of royal slumber", /*german*/"ein royales Lied", /*french*/"une chanson royale"),
                                                   // /*spanish*/la canción real
-                                                 CustomMessage("a triforce tune", /*german*/"eine heilige Musik", /*french*/"la musique sacrée")});
-                                                  // /*spanish*/la melodía de la trifuerza
+                                                 CustomMessage("a triforce tune", /*german*/"eine heilige Musik", /*french*/"la musique sacrée")
+                                                 // /*spanish*/la melodía de la trifuerza
+                                                 },
+                                                 CustomMessage("Zelda's Lullaby", "Zeldas Wiegenlied", "Berceuse de Zelda"));
 
     hintTextTable[RHT_EPONAS_SONG] = HintText(CustomMessage("Epona's Song", /*german*/"Eponas Lied", /*french*/"le chant d'Epona"),
                                               // /*spanish*/la Canción de Epona
@@ -806,8 +936,10 @@ void StaticData::HintTable_Init_Item() {
                                                // /*spanish*/una copla ecuestre
                                               CustomMessage("Malon's melody", /*german*/"Malons Melodie", /*french*/"la mélodie des vaches"),
                                                // /*spanish*/la sonata de Malon
-                                              CustomMessage("a ranch song", /*german*/"ein Lied des Ackers", /*french*/"le chant des champs")});
-                                               // /*spanish*/un canto rupestre
+                                              CustomMessage("a ranch song", /*german*/"ein Lied des Ackers", /*french*/"le chant des champs")
+                                              // /*spanish*/un canto rupestre
+                                              },
+                                              CustomMessage("Epona's Song", "Eponas Lied", "Chant d'Epona"));
 
     hintTextTable[RHT_SARIAS_SONG] = HintText(CustomMessage("Saria's Song", /*german*/"Salias Lied", /*french*/"le chant de Saria"),
                                               // /*spanish*/la Canción de Saria
@@ -819,8 +951,10 @@ void StaticData::HintTable_Init_Item() {
                                               }, {
                                               CustomMessage("a song of dancing Gorons", /*german*/"ein Lied der tanzenden Goronen", /*french*/"une chanson danceuse"),
                                                // /*spanish*/un pegadizo tono goron
-                                              CustomMessage("Saria's phone number", /*german*/"Salias Telefonnummer", /*french*/"le téléphone d'une amie")});
-                                               // /*spanish*/una consulta de asistencia
+                                              CustomMessage("Saria's phone number", /*german*/"Salias Telefonnummer", /*french*/"le téléphone d'une amie")
+                                              // /*spanish*/una consulta de asistencia
+                                              },
+                                              CustomMessage("Saria's Song", "Salias Lied", "Chant de Saria"));
 
     hintTextTable[RHT_SUNS_SONG] = HintText(CustomMessage("the Sun's Song", /*german*/"Hymne der Sonne", /*french*/"le chant du soleil"),
                                             // /*spanish*/la Canción del Sol
@@ -834,8 +968,10 @@ void StaticData::HintTable_Init_Item() {
                                              // /*spanish*/un día soleado
                                             CustomMessage("the ReDead's bane", /*german*/"das Verderben der Remorts", /*french*/"le fléau des Éffrois"),
                                              // /*spanish*/la destructora de Redeads
-                                            CustomMessage("the Gibdo's bane", /*german*/"das Verderben der Gibdos", /*french*/"le fléau des Gibdo")});
+                                            CustomMessage("the Gibdo's bane", /*german*/"das Verderben der Gibdos", /*french*/"le fléau des Gibdo")
                                              // /*spanish*/la destructora de Gibdos
+                                            },
+                                            CustomMessage("Sun's Song", "Hymne der Sonne", "Chant du Soleil"));
 
     hintTextTable[RHT_SONG_OF_TIME] = HintText(CustomMessage("the Song of Time", /*german*/"Hymne der Zeit", /*french*/"le chant du temps"),
                                                // /*spanish*/la Canción del tiempo
@@ -845,8 +981,10 @@ void StaticData::HintTable_Init_Item() {
                                                }, {
                                                CustomMessage("a song 7 years long", /*german*/"ein sieben Jahre langes Lied", /*french*/"le flot du temps"),
                                                 // /*spanish*/la setenada canción
-                                               CustomMessage("the tune of ages", /*german*/"Hymne des Äons", /*french*/"le Chant des Âges")});
-                                                // /*spanish*/la melodía eónica
+                                               CustomMessage("the tune of ages", /*german*/"Hymne des Äons", /*french*/"le Chant des Âges")
+                                               // /*spanish*/la melodía eónica
+                                               },
+                                               CustomMessage("Song of Time", "Hymne der Zeit", "Chant du Temps"));
 
     hintTextTable[RHT_SONG_OF_STORMS] = HintText(CustomMessage("the Song of Storms", /*german*/"Hymne des Sturms", /*french*/"le chant des tempêtes"),
                                                  // /*spanish*/la Canción de la Tormenta
@@ -858,8 +996,10 @@ void StaticData::HintTable_Init_Item() {
                                                   // /*spanish*/la danza de la lluvia
                                                  CustomMessage("a thunderstorm tune", /*german*/"eine Gewitterhymne", /*french*/"une hymne foudroyante"),
                                                   // /*spanish*/una sonata tormentosa
-                                                 CustomMessage("windmill acceleration", /*german*/"Windmühlenbeschleunigung", /*french*/"l'accélérateur de moulins")});
+                                                 CustomMessage("windmill acceleration", /*german*/"Windmühlenbeschleunigung", /*french*/"l'accélérateur de moulins")
+                                                 },
                                                   // /*spanish*/el arranque de molinos
+                                                 CustomMessage("Song of Storms", "Hymne des Sturms", "Chant des Tempêtes"));
 
     hintTextTable[RHT_MINUET_OF_FOREST] = HintText(CustomMessage("the Minuet of Forest", /*german*/"Menuett des Waldes", /*french*/"le menuet de la forêt"),
                                                    // /*spanish*/el Minueto del bosque
@@ -871,8 +1011,10 @@ void StaticData::HintTable_Init_Item() {
                                                     // /*spanish*/la canción de las copas
                                                    CustomMessage("an arboreal anthem", /*german*/"eine baumartige Hymne", /*french*/"l'hymne sylvestre"),
                                                     // /*spanish*/el himno forestal
-                                                   CustomMessage("a green spark trail", /*german*/"ein grüner Komet", /*french*/"une comète verte")});
+                                                   CustomMessage("a green spark trail", /*german*/"ein grüner Komet", /*french*/"une comète verte")
+                                                   },
                                                     // /*spanish*/el sendero esmeralda
+                                                   CustomMessage("Minuet of Forest", "Menuett des Waldes", "Menuet des Bois"));
 
     hintTextTable[RHT_BOLERO_OF_FIRE] = HintText(CustomMessage("the Bolero of Fire", /*german*/"Bolero des Feuers", /*french*/"le boléro du feu"),
                                                  // /*spanish*/el Bolero del fuego
@@ -884,8 +1026,10 @@ void StaticData::HintTable_Init_Item() {
                                                   // /*spanish*/la canción de la lava
                                                  CustomMessage("a red spark trail", /*german*/"ein roter Komet", /*french*/"une comète rouge"),
                                                   // /*spanish*/el sendero rubí
-                                                 CustomMessage("a volcanic verse", /*german*/"ein vulkanischer Vers", /*french*/"le souffle du volcan")});
+                                                 CustomMessage("a volcanic verse", /*german*/"ein vulkanischer Vers", /*french*/"le souffle du volcan")
                                                   // /*spanish*/el verso volcánico
+                                                 },
+                                                 CustomMessage("Bolero of Fire", "Bolero des Feuers", "Boléro du Feu"));
 
     hintTextTable[RHT_SERENADE_OF_WATER] = HintText(CustomMessage("the Serenade of Water", /*german*/"Serenade des Wassers", /*french*/"la sérénade de l'eau"),
                                                     // /*spanish*/la Serenata del agua
@@ -897,8 +1041,10 @@ void StaticData::HintTable_Init_Item() {
                                                      // /*spanish*/la canción del estanque
                                                     CustomMessage("a blue spark trail", /*german*/"ein blauer Komet", /*french*/"une comète bleue"),
                                                      // /*spanish*/el sendero zafiro
-                                                    CustomMessage("the lake's lyric", /*german*/"die Lyrik des Sees", /*french*/"la voix du lac")});
-                                                     // /*spanish*/la letra del lago
+                                                    CustomMessage("the lake's lyric", /*german*/"die Lyrik des Sees", /*french*/"la voix du lac")
+                                                    // /*spanish*/la letra del lago
+                                                    },
+                                                    CustomMessage("Serenade of Water", "Serenade des Wassers", "Sérénade de l'Eau"));
 
     hintTextTable[RHT_REQUIEM_OF_SPIRIT] = HintText(CustomMessage("the Requiem of Spirit", /*german*/"Requiem der Geister", /*french*/"le requiem des esprits"),
                                                     // /*spanish*/el Réquiem del espíritu
@@ -910,8 +1056,10 @@ void StaticData::HintTable_Init_Item() {
                                                      // /*spanish*/la canción de la gran estatua
                                                     CustomMessage("an orange spark trail", /*german*/"ein oranger Komet", /*french*/"une comète orange"),
                                                      // /*spanish*/el sendero ámbar
-                                                    CustomMessage("the desert ditty", /*german*/"der Wind der Wüste", /*french*/"le vent du désert")});
-                                                     // /*spanish*/la estrofa del desierto
+                                                    CustomMessage("the desert ditty", /*german*/"der Wind der Wüste", /*french*/"le vent du désert")
+                                                    // /*spanish*/la estrofa del desierto
+                                                    },
+                                                    CustomMessage("Requiem of Spirit", "Requiem der Geister", "Requiem des Esprits"));
 
     hintTextTable[RHT_NOCTURNE_OF_SHADOW] = HintText(CustomMessage("the Nocturne of Shadow", /*german*/"Nocturne des Schattens", /*french*/"le nocturne de l'ombre"),
                                                      // /*spanish*/el Nocturno de la sombra
@@ -925,8 +1073,10 @@ void StaticData::HintTable_Init_Item() {
                                                       // /*spanish*/una honra fúnebre
                                                      CustomMessage("a haunted hymn", /*german*/"eine Spukhymne", /*french*/"une chanson lugubre"),
                                                       // /*spanish*/una estrofa encantada
-                                                     CustomMessage("a purple spark trail", /*german*/"ein violetter Komet", /*french*/"une comète mauve")});
+                                                     CustomMessage("a purple spark trail", /*german*/"ein violetter Komet", /*french*/"une comète mauve")
                                                       // /*spanish*/el sendero malva
+                                                     },
+                                                     CustomMessage("Nocturne of Shadow", "Nocturne des Schattens", "Nocturne de l'Ombre"));
 
     hintTextTable[RHT_PRELUDE_OF_LIGHT] = HintText(CustomMessage("the Prelude of Light", /*german*/"Kantate des Lichts", /*french*/"le prélude de la lumière"),
                                                    // /*spanish*/el Preludio de la luz
@@ -938,8 +1088,10 @@ void StaticData::HintTable_Init_Item() {
                                                     // /*spanish*/la melodía refulgente
                                                    CustomMessage("a yellow spark trail", /*german*/"ein gelber Komet", /*french*/"une comète jaune"),
                                                     // /*spanish*/el sendero resplandeciente
-                                                   CustomMessage("the temple traveler", /*german*/"ein Tempelreisender", /*french*/"un chant de sanctuaire")});
+                                                   CustomMessage("the temple traveler", /*german*/"ein Tempelreisender", /*french*/"un chant de sanctuaire")
                                                     // /*spanish*/la ruta del templo
+                                                   },
+                                                   CustomMessage("Prelude of Light", "Kantate des Lichts", "Prélude de la Lumière"));
 
     hintTextTable[RHT_DEKU_TREE_MAP] = HintText(CustomMessage("the Deku Tree Map", /*german*/"die Karte des Deku-Baums", /*french*/"la carte de l'Arbre Mojo"),
                                                 // /*spanish*/el mapa del Gran Árbol Deku
@@ -949,8 +1101,10 @@ void StaticData::HintTable_Init_Item() {
                                                 }, {
                                                 CustomMessage("a mossy atlas", /*german*/"ein moosiger Atlas", /*french*/"un atlas boisé"),
                                                  // /*spanish*/un atlas musgoso
-                                                CustomMessage("some mossy blueprints", /*german*/"einige moosige Blaupausen", /*french*/"un plan boisé")});
+                                                CustomMessage("some mossy blueprints", /*german*/"einige moosige Blaupausen", /*french*/"un plan boisé")
                                                  // /*spanish*/unos planos musgosos
+                                                },
+                                                CustomMessage("Great Deku Tree Map", "Karte des Deku-Baums", "Carte de l'Arbre Mojo"));
 
     hintTextTable[RHT_DODONGOS_CAVERN_MAP] = HintText(CustomMessage("the Dodongo's Cavern Map", /*german*/"die Karte der Dodongo-Höhle", /*french*/"la carte de la Caverne Dodongo"),
                                                       // /*spanish*/el mapa de la Cueva de los Dodongos
@@ -960,8 +1114,10 @@ void StaticData::HintTable_Init_Item() {
                                                       }, {
                                                       CustomMessage("a rocky atlas", /*german*/"eine felsiger Atlas", /*french*/"un atlas rocheux"),
                                                        // /*spanish*/un atlas rocoso
-                                                      CustomMessage("some rocky blueprints", /*german*/"einige felsige Blaupausen", /*french*/"un plan rocheux")});
+                                                      CustomMessage("some rocky blueprints", /*german*/"einige felsige Blaupausen", /*french*/"un plan rocheux")
                                                        // /*spanish*/unos planos rocosos
+                                                      },
+                                                      CustomMessage("Dodongo's Cavern Map", "Karte der Dodongo-Höhle", "Carte de la Caverne Dodongo"));
 
     hintTextTable[RHT_JABU_JABUS_BELLY_MAP] = HintText(CustomMessage("the Jabu-Jabu's Belly Map", /*german*/"die Karte des Jabu-Jabu-Bauchs", /*french*/"la carte de Jabu-Jabu"),
                                                        // /*spanish*/el mapa de la Tripa de Jabu-Jabu
@@ -971,8 +1127,10 @@ void StaticData::HintTable_Init_Item() {
                                                        }, {
                                                        CustomMessage("a fishy atlas", /*german*/"ein fischiger Atlas", /*french*/"un atlas digéré"),
                                                         // /*spanish*/un atlas digesto
-                                                       CustomMessage("some fishy blueprints", /*german*/"einige fischige Blaupausen", /*french*/"un plan digéré")});
+                                                       CustomMessage("some fishy blueprints", /*german*/"einige fischige Blaupausen", /*french*/"un plan digéré")
                                                         // /*spanish*/unos planos digestos
+                                                       },
+                                                       CustomMessage("Jabu-Jabu's Belly Map", "Karte des Jabu-Jabu-Bauchs", "Carte du Ventre de Jabu-Jabu"));
 
     hintTextTable[RHT_FOREST_TEMPLE_MAP] = HintText(CustomMessage("the Forest Temple Map", /*german*/"die Karte des Waldtempels", /*french*/"la carte du Temple de la Forêt"),
                                                     // /*spanish*/el mapa del Templo del Bosque
@@ -982,8 +1140,10 @@ void StaticData::HintTable_Init_Item() {
                                                     }, {
                                                     CustomMessage("a sylvan atlas", /*german*/"ein waldiger Atlas", /*french*/"un atlas sylvestre"),
                                                      // /*spanish*/un atlas enselvado
-                                                    CustomMessage("some sylvan blueprints", /*german*/"einige waldige Blaupausen", /*french*/"un plan sylvestre")});
+                                                    CustomMessage("some sylvan blueprints", /*german*/"einige waldige Blaupausen", /*french*/"un plan sylvestre")
                                                      // /*spanish*/unos planos enselvados
+                                                    },
+                                                    CustomMessage("Forest Temple Map", "Karte des Waldtempels", "Carte du Temple de la Forêt"));
 
     hintTextTable[RHT_FIRE_TEMPLE_MAP] = HintText(CustomMessage("the Fire Temple Map", /*german*/"die Karte des Feuertempels", /*french*/"la carte du Temple du Feu"),
                                                   // /*spanish*/el mapa del Templo del Fuego
@@ -993,8 +1153,10 @@ void StaticData::HintTable_Init_Item() {
                                                   }, {
                                                   CustomMessage("a molten atlas", /*german*/"ein geschmolzener Atlas", /*french*/"un atlas fondu"),
                                                    // /*spanish*/un atlas fundido
-                                                  CustomMessage("some molten blueprints", /*german*/"einige geschmolzene Blaupausen", /*french*/"un plan fondu")});
+                                                  CustomMessage("some molten blueprints", /*german*/"einige geschmolzene Blaupausen", /*french*/"un plan fondu")
                                                    // /*spanish*/unos planos fundidos
+                                                  },
+                                                  CustomMessage("Fire Temple Map", "Karte des Feuertempels", "Carte due Temple de Feu"));
 
     hintTextTable[RHT_WATER_TEMPLE_MAP] = HintText(CustomMessage("the Water Temple Map", /*german*/"die Karte des Wassertempels", /*french*/"la carte du Temple de l'Eau"),
                                                    // /*spanish*/el mapa del Templo del Agua
@@ -1004,8 +1166,10 @@ void StaticData::HintTable_Init_Item() {
                                                    }, {
                                                    CustomMessage("a wet atlas", /*german*/"ein nasser Atlas", /*french*/"un atlas humide"),
                                                     // /*spanish*/un atlas mojado
-                                                   CustomMessage("some wet blueprints", /*german*/"einige nasse Blaupausen", /*french*/"un plan humide")});
+                                                   CustomMessage("some wet blueprints", /*german*/"einige nasse Blaupausen", /*french*/"un plan humide")
                                                     // /*spanish*/unos planos mojados
+                                                   },
+                                                   CustomMessage("Water Temple Map", "Karte des Wassertempels", "Carte du Temple de l'Eau"));
 
     hintTextTable[RHT_SPIRIT_TEMPLE_MAP] = HintText(CustomMessage("the Spirit Temple Map", /*german*/"die Karte des Geistertempels", /*french*/"la carte du Temple de l'Esprit"),
                                                     // /*spanish*/el mapa del Templo del Espíritu
@@ -1015,8 +1179,10 @@ void StaticData::HintTable_Init_Item() {
                                                     }, {
                                                     CustomMessage("a sandy atlas", /*german*/"ein sandiger Atlas", /*french*/"un atlas sableux"),
                                                      // /*spanish*/un atlas arenoso
-                                                    CustomMessage("some sandy blueprints", /*german*/"einige sandige Blaupausen", /*french*/"un plan sableux")});
+                                                    CustomMessage("some sandy blueprints", /*german*/"einige sandige Blaupausen", /*french*/"un plan sableux")
                                                      // /*spanish*/unos planos arenosos
+                                                    },
+                                                    CustomMessage("Spirit Temple Map", "Karte des Geistertempels", "Carte due Temple de l'Esprit"));
 
     hintTextTable[RHT_SHADOW_TEMPLE_MAP] = HintText(CustomMessage("the Shadow Temple Map", /*german*/"die Karte des Schattentempels", /*french*/"la carte du Temple de l'Ombre"),
                                                     // /*spanish*/el mapa del Templo de las Sombras
@@ -1026,10 +1192,12 @@ void StaticData::HintTable_Init_Item() {
                                                     }, {
                                                     CustomMessage("a creepy atlas", /*german*/"eine gruseliger Atlas", /*french*/"un atlas sinistre"),
                                                      // /*spanish*/un atlas siniestra
-                                                    CustomMessage("some creepy blueprints", /*german*/"einige gruselige Blaupausen", /*french*/"un plan sinistre")});
+                                                    CustomMessage("some creepy blueprints", /*german*/"einige gruselige Blaupausen", /*french*/"un plan sinistre")
                                                      // /*spanish*/unos planos siniestras
+                                                    },
+                                                    CustomMessage("Shadow Temple Map", "Karte des Schattentempels", "Carte du Temple de l'Ombre"));
 
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_MAP] = HintText(CustomMessage("the Bottom of the Well Map", /*german*/"die Karte des Grund des Brunnens", /*french*/"la carte du fond du Puits"),
+    hintTextTable[RHT_BOTW_MAP] = HintText(CustomMessage("the Bottom of the Well Map", /*german*/"die Karte des Grund des Brunnens", /*french*/"la carte du fond du Puits"),
                                                          // /*spanish*/el mapa del Fondo del pozo
                                                          {
                                                          CustomMessage("a dungeon map", /*german*/"eine Karte", /*french*/"une carte")
@@ -1037,8 +1205,10 @@ void StaticData::HintTable_Init_Item() {
                                                          }, {
                                                          CustomMessage("a moldy atlas", /*german*/"ein schimmeliger Atlas", /*french*/"un atlas moisi"),
                                                           // /*spanish*/un atlas mohoso
-                                                         CustomMessage("some moldy blueprints", /*german*/"einige schimmelige Blaupausen", /*french*/"un plan moisi")});
-                                                          // /*spanish*/unos planos mohosos
+                                                         CustomMessage("some moldy blueprints", /*german*/"einige schimmelige Blaupausen", /*french*/"un plan moisi")
+                                                         // /*spanish*/unos planos mohosos
+                                                         },
+                                                         CustomMessage("Bottom of the Well Map", "Karte des Grund des Brunnens", "Carte du Puits"));
 
     hintTextTable[RHT_ICE_CAVERN_MAP] = HintText(CustomMessage("the Ice Cavern Map", /*german*/"die Karte der Eishöhle", /*french*/"la carte de la Caverne Polaire"),
                                                  // /*spanish*/el mapa de la Caverna de hielo
@@ -1048,8 +1218,10 @@ void StaticData::HintTable_Init_Item() {
                                                  }, {
                                                  CustomMessage("a polar atlas", /*german*/"ein polarer Atlas", /*french*/"un atlas polaire"),
                                                   // /*spanish*/un atlas polar
-                                                 CustomMessage("some polar blueprints", /*german*/"einige polare Blaupausen", /*french*/"un plan polaire")});
+                                                 CustomMessage("some polar blueprints", /*german*/"einige polare Blaupausen", /*french*/"un plan polaire")
                                                   // /*spanish*/unos planos polars
+                                                 },
+                                                 CustomMessage("Ice Cavern Map", "Karte der Eishöhle", "Carte de la Caverne Polaire"));
 
     hintTextTable[RHT_DEKU_TREE_COMPASS] = HintText(CustomMessage("the Deku Tree Compass", /*german*/"der Kompaß des Deku-Baums", /*french*/"la boussole de l'Arbre Mojo"),
                                                     // /*spanish*/la brújula del Gran Árbol Deku
@@ -1059,8 +1231,10 @@ void StaticData::HintTable_Init_Item() {
                                                     }, {
                                                     CustomMessage("a mossy treasure tracker", /*german*/"ein moosiger Schatzfinder", /*french*/"un cherche-trésor boisé"),
                                                      // /*spanish*/un zahorí musgoso
-                                                    CustomMessage("a mossy magnetic needle", /*german*/"eine moosige Magnetnadel", /*french*/"une aimant boisée")});
+                                                    CustomMessage("a mossy magnetic needle", /*german*/"eine moosige Magnetnadel", /*french*/"une aimant boisée")
                                                      // /*spanish*/un imán musgoso
+                                                    },
+                                                    CustomMessage("Great Deku Tree Compass", "Kompaß des Deku-Baums", "Boussole de l'Arbre Mojo"));
 
     hintTextTable[RHT_DODONGOS_CAVERN_COMPASS] = HintText(CustomMessage("the Dodongo's Cavern Compass", /*german*/"der Kompaß der Dodongo-Höhle", /*french*/"la boussole de la Caverne Dodongo"),
                                                           // /*spanish*/la brújula de la Cueva de los Dodongos
@@ -1070,8 +1244,10 @@ void StaticData::HintTable_Init_Item() {
                                                           }, {
                                                           CustomMessage("a rocky treasure tracker", /*german*/"ein felsiger Schatzfinder", /*french*/"un cherche-trésor rocheux"),
                                                            // /*spanish*/un zahorí rocoso
-                                                          CustomMessage("a rocky magnetic needle", /*german*/"eine felsige Magnetnadel", /*french*/"une aimant rocheux")});
+                                                          CustomMessage("a rocky magnetic needle", /*german*/"eine felsige Magnetnadel", /*french*/"une aimant rocheux")
                                                            // /*spanish*/un imán rocoso
+                                                          },
+                                                          CustomMessage("Dodongo's Cavern Compass", "Kompaß der Dodongo-Höhle", "Boussole de la Caverne Dodongo"));
 
     hintTextTable[RHT_JABU_JABUS_BELLY_COMPASS] = HintText(CustomMessage("the Jabu-Jabu's Belly Compass", /*german*/"der Kompaß des Jabu-Jabu-Bauchs", /*french*/"la boussole de Jabu-Jabu"),
                                                            // /*spanish*/la brújula de la Tripa de Jabu-Jabu
@@ -1081,8 +1257,10 @@ void StaticData::HintTable_Init_Item() {
                                                            }, {
                                                            CustomMessage("a fishy treasure tracker", /*german*/"ein fischiger Schatzfinder", /*french*/"un cherche-trésor digéré"),
                                                             // /*spanish*/un zahorí digesto
-                                                           CustomMessage("a fishy magnetic needle", /*german*/"eine fischige Magnetnadel", /*french*/"une aimant digéré")});
-                                                            // /*spanish*/un imán digesto
+                                                           CustomMessage("a fishy magnetic needle", /*german*/"eine fischige Magnetnadel", /*french*/"une aimant digéré")
+                                                           // /*spanish*/un imán digesto
+                                                           },
+                                                           CustomMessage("Jabu-Jabu's Belly Compass", "Kompaß des Jabu-Jabu-Bauchs", "Boussole du Ventre de Jabu-Jabu"));
 
     hintTextTable[RHT_FOREST_TEMPLE_COMPASS] = HintText(CustomMessage("the Forest Temple Compass", /*german*/"der Kompaß des Waldtempels", /*french*/"la boussole du Temple de la Forêt"),
                                                         // /*spanish*/la brújula del Templo del Bosque
@@ -1092,8 +1270,10 @@ void StaticData::HintTable_Init_Item() {
                                                         }, {
                                                         CustomMessage("a sylvan treasure tracker", /*german*/"ein waldiger Schatzfinder", /*french*/"un cherche-trésor sylvestre"),
                                                          // /*spanish*/un zahorí enselvado
-                                                        CustomMessage("a sylvan magnetic needle", /*german*/"eine waldige Magnetnadel", /*french*/"une aimant sylvestre")});
+                                                        CustomMessage("a sylvan magnetic needle", /*german*/"eine waldige Magnetnadel", /*french*/"une aimant sylvestre")
                                                          // /*spanish*/un imán enselvado
+                                                        },
+                                                        CustomMessage("Forest Temple Compass", "Kompaß des Waldtempels", "Boussole du Temple de la Forêt"));
 
     hintTextTable[RHT_FIRE_TEMPLE_COMPASS] = HintText(CustomMessage("the Fire Temple Compass", /*german*/"der Kompaß des Feuertempels", /*french*/"la boussole du Temple du Feu"),
                                                       // /*spanish*/la brújula del Templo del Fuego
@@ -1103,8 +1283,10 @@ void StaticData::HintTable_Init_Item() {
                                                       }, {
                                                       CustomMessage("a molten treasure tracker", /*german*/"ein geschmolzener Schatzfinder", /*french*/"un cherche-trésor fondu"),
                                                        // /*spanish*/un zahorí fundido
-                                                      CustomMessage("a molten magnetic needle", /*german*/"eine geschmolzene Magnetnadel", /*french*/"une aimant fondu")});
-                                                       // /*spanish*/un imán fundido
+                                                      CustomMessage("a molten magnetic needle", /*german*/"eine geschmolzene Magnetnadel", /*french*/"une aimant fondu")
+                                                      // /*spanish*/un imán fundido
+                                                      },
+                                                      CustomMessage("Fire Temple Compass", "Kompaß des Feuertempels", "Boussole du Temple du Feu"));
 
     hintTextTable[RHT_WATER_TEMPLE_COMPASS] = HintText(CustomMessage("the Water Temple Compass", /*german*/"der Kompaß des Wassertempels", /*french*/"la boussole du Temple de l'Eau"),
                                                        // /*spanish*/la brújula del Templo del Agua
@@ -1114,8 +1296,10 @@ void StaticData::HintTable_Init_Item() {
                                                        }, {
                                                        CustomMessage("a wet treasure tracker", /*german*/"ein nasser Schatzfinder", /*french*/"un cherche-trésor humide"),
                                                         // /*spanish*/un zahorí mojado
-                                                       CustomMessage("a wet magnetic needle", /*german*/"eine nasse Magnetnadel", /*french*/"une aimant humide")});
+                                                       CustomMessage("a wet magnetic needle", /*german*/"eine nasse Magnetnadel", /*french*/"une aimant humide")
                                                         // /*spanish*/un imán mojado
+                                                       },
+                                                       CustomMessage("Water Temple Compass", "Kompaß des Wassertempels", "Boussole du Temple de l'Eau"));
 
     hintTextTable[RHT_SPIRIT_TEMPLE_COMPASS] = HintText(CustomMessage("the Spirit Temple Compass", /*german*/"der Kompaß des Geistertempels", /*french*/"la boussole du Temple de l'Esprit"),
                                                         // /*spanish*/la brújula del Templo del Espíritu
@@ -1125,8 +1309,10 @@ void StaticData::HintTable_Init_Item() {
                                                         }, {
                                                         CustomMessage("a sandy treasure tracker", /*german*/"ein sandiger Schatzfinder", /*french*/"un cherche-trésor sableux"),
                                                          // /*spanish*/un zahorí arenoso
-                                                        CustomMessage("a sandy magnetic needle", /*german*/"eine sandige Magnetnadel", /*french*/"une aimant sableux")});
+                                                        CustomMessage("a sandy magnetic needle", /*german*/"eine sandige Magnetnadel", /*french*/"une aimant sableux")
                                                          // /*spanish*/un imán arenoso
+                                                        },
+                                                        CustomMessage("Spirit Temple Compass", "Kompaß des Geistertempels", "Boussole due Temple de l'Esprit"));
 
     hintTextTable[RHT_SHADOW_TEMPLE_COMPASS] = HintText(CustomMessage("the Shadow Temple Compass", /*german*/"der Kompaß des Schattentempels", /*french*/"la boussole du Temple de l'Ombre"),
                                                         // /*spanish*/la brújula del Templo de las Sombras
@@ -1136,10 +1322,12 @@ void StaticData::HintTable_Init_Item() {
                                                         }, {
                                                         CustomMessage("a creepy treasure tracker", /*german*/"ein gruseliger Schatzfinder", /*french*/"un cherche-trésor sinistre"),
                                                          // /*spanish*/un zahorí siniestra
-                                                        CustomMessage("a creepy magnetic needle", /*german*/"eine gruselige Magnetnadel", /*french*/"une aimant sinistre")});
+                                                        CustomMessage("a creepy magnetic needle", /*german*/"eine gruselige Magnetnadel", /*french*/"une aimant sinistre")
                                                          // /*spanish*/un imán siniestra
+                                                        },
+                                                        CustomMessage("Shadow Temple Compass", "Kompaß des Schattentempels", "Boussole du Temple de l'Ombre"));
 
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_COMPASS] = HintText(CustomMessage("the Bottom of the Well Compass", /*german*/"der Kompaß des Grund des Brunnens", /*french*/"la boussole du fond du Puits"),
+    hintTextTable[RHT_BOTW_COMPASS] = HintText(CustomMessage("the Bottom of the Well Compass", /*german*/"der Kompaß des Grund des Brunnens", /*french*/"la boussole du fond du Puits"),
                                                              // /*spanish*/la brújula del Fondo del pozo
                                                              {
                                                              CustomMessage("a compass", /*german*/"ein Kompaß", /*french*/"une boussole")
@@ -1147,8 +1335,10 @@ void StaticData::HintTable_Init_Item() {
                                                              }, {
                                                              CustomMessage("a dank treasure tracker", /*german*/"ein feuchter Schatzfinder", /*french*/"un cherche-trésor moisi"),
                                                               // /*spanish*/un zahorí mohoso
-                                                             CustomMessage("a dank magnetic needle", /*german*/"eine feuchte Magnetnadel", /*french*/"une aimant moisi")});
+                                                             CustomMessage("a dank magnetic needle", /*german*/"eine feuchte Magnetnadel", /*french*/"une aimant moisi")
                                                               // /*spanish*/un imán mohoso
+                                                             },
+                                                             CustomMessage("Bottom of the Well Compass", "Kompaß des Grund des Brunnens", "Boussole du Puits"));
 
     hintTextTable[RHT_ICE_CAVERN_COMPASS] = HintText(CustomMessage("the Ice Cavern Compass", /*german*/"der Kompaß der Eishöhle", /*french*/"la Boussole de la Caverne Polaire"),
                                                      // /*spanish*/la brújula de la Caverna de hielo
@@ -1158,8 +1348,10 @@ void StaticData::HintTable_Init_Item() {
                                                      }, {
                                                      CustomMessage("a polar treasure tracker", /*german*/"ein polarer Schatzfinder", /*french*/"un cherche-trésor polaire"),
                                                       // /*spanish*/un zahorí polar
-                                                     CustomMessage("a polar magnetic needle", /*german*/"eine polare Magnetnadel", /*french*/"une aimant polaire")});
+                                                     CustomMessage("a polar magnetic needle", /*german*/"eine polare Magnetnadel", /*french*/"une aimant polaire")
                                                       // /*spanish*/un imán polar
+                                                     },
+                                                     CustomMessage("Ice Cavern Compass", "Kompaß der Eishöhle", "Boussole de la Caverne Polaire"));
 
     hintTextTable[RHT_FOREST_TEMPLE_BOSS_KEY] = HintText(CustomMessage("the Forest Temple Boss Key", /*german*/"der Waldtempel-Master-Schlüssel", /*french*/"la Clé d'Or du Temple de la Forêt"),
                                                          // /*spanish*/la gran llave del Templo del Bosque
@@ -1169,8 +1361,10 @@ void StaticData::HintTable_Init_Item() {
                                                          }, {
                                                          CustomMessage("a sylvan master of unlocking", /*german*/"ein waldiger Meister des Entschlüsselns", /*french*/"un anti-grosse porte sylvestre"),
                                                           // /*spanish*/la clave enselvada de un jefe
-                                                         CustomMessage("a sylvan dungeon's master pass", /*german*/"ein waldiger Dungeon-Meisterpass", /*french*/"une clé maléfique sylvestre")});
+                                                         CustomMessage("a sylvan dungeon's master pass", /*german*/"ein waldiger Dungeon-Meisterpass", /*french*/"une clé maléfique sylvestre")
                                                           // /*spanish*/el pase maestro enselvado
+                                                         },
+                                                         CustomMessage("Forest Temple Boss Key", "Master-Schlüssel des Waldtempels", "Clé d'Or du Temple de la Forêt"));
 
     hintTextTable[RHT_FIRE_TEMPLE_BOSS_KEY] = HintText(CustomMessage("the Fire Temple Boss Key", /*german*/"der Feuertempel-Master-Schlüssel", /*french*/"la Clé d'Or du Temple du Feu"),
                                                        // /*spanish*/la gran llave del Templo del Fuego
@@ -1180,8 +1374,10 @@ void StaticData::HintTable_Init_Item() {
                                                        }, {
                                                        CustomMessage("a molten master of unlocking", /*german*/"ein geschmolzener Meister des Entschlüsselns", /*french*/"un anti-grosse porte fondu"),
                                                         // /*spanish*/la clave fundido de un jefe
-                                                       CustomMessage("a molten dungeon's master pass", /*german*/"ein geschmolzener Dungeon-Meisterpass", /*french*/"une clé maléfique fondu")});
-                                                        // /*spanish*/el pase maestro fundido
+                                                       CustomMessage("a molten dungeon's master pass", /*german*/"ein geschmolzener Dungeon-Meisterpass", /*french*/"une clé maléfique fondu")
+                                                       // /*spanish*/el pase maestro fundido
+                                                       },
+                                                       CustomMessage("Fire Temple Boss Key", "Master-Schlüssel des Feuertempels", "Clé d'Or du Temple du Feu"));
 
     hintTextTable[RHT_WATER_TEMPLE_BOSS_KEY] = HintText(CustomMessage("the Water Temple Boss Key", /*german*/"der Wassertempel-Master-Schlüssel", /*french*/"la Clé d'Or du Temple de l'Eau"),
                                                         // /*spanish*/la gran llave del Templo del Agua
@@ -1191,8 +1387,10 @@ void StaticData::HintTable_Init_Item() {
                                                         }, {
                                                         CustomMessage("a wet master of unlocking", /*german*/"ein nasser Meister des Entschlüsselns", /*french*/"un anti-grosse porte humide"),
                                                          // /*spanish*/la clave mojado de un jefe
-                                                        CustomMessage("a wet dungeon's master pass", /*german*/"ein nasser Dungeon-Meisterpass", /*french*/"une clé maléfique humide")});
+                                                        CustomMessage("a wet dungeon's master pass", /*german*/"ein nasser Dungeon-Meisterpass", /*french*/"une clé maléfique humide")
                                                          // /*spanish*/el pase maestro mojado
+                                                        },
+                                                        CustomMessage("Water Temple Boss Key", "Master-Schlüssel des Wassertempels", "Clé d'Or du Temple de l'Eau"));
 
     hintTextTable[RHT_SPIRIT_TEMPLE_BOSS_KEY] = HintText(CustomMessage("the Spirit Temple Boss Key", /*german*/"der Geistertempel-Master-Schlüssel", /*french*/"la Clé d'Or du Temple de l'Esprit"),
                                                          // /*spanish*/la gran llave del Templo del Espíritu
@@ -1202,8 +1400,10 @@ void StaticData::HintTable_Init_Item() {
                                                          }, {
                                                          CustomMessage("a sandy master of unlocking", /*german*/"ein sandiger Meister des Entschlüsselns", /*french*/"un anti-grosse porte sableux"),
                                                           // /*spanish*/la clave arenoso de un jefe
-                                                         CustomMessage("a sandy dungeon's master pass", /*german*/"ein sandiger Dungeon-Meisterpass", /*french*/"une clé maléfique sableux")});
+                                                         CustomMessage("a sandy dungeon's master pass", /*german*/"ein sandiger Dungeon-Meisterpass", /*french*/"une clé maléfique sableux")
                                                           // /*spanish*/el pase maestro arenoso
+                                                         },
+                                                         CustomMessage("Spirit Temple Boss Key", "Master-Schlüssel des Geistertempels", "Clé d'Or du Temple de l'Esprit"));
 
     hintTextTable[RHT_SHADOW_TEMPLE_BOSS_KEY] = HintText(CustomMessage("the Shadow Temple Boss Key", /*german*/"der Schattentempel-Master-Schlüssel", /*french*/"la Clé d'Or du Temple de l'Ombre"),
                                                          // /*spanish*/la gran llave del Templo de las Sombras
@@ -1213,8 +1413,10 @@ void StaticData::HintTable_Init_Item() {
                                                          }, {
                                                          CustomMessage("a creepy master of unlocking", /*german*/"ein gruseliger Meister des Entschlüsselns", /*french*/"un anti-grosse porte sinistre"),
                                                           // /*spanish*/la clave siniestra de un jefe
-                                                         CustomMessage("a creepy dungeon's master pass", /*german*/"ein gruseliger Dungeon-Meisterpass", /*french*/"une clé maléfique sinistre")});
+                                                         CustomMessage("a creepy dungeon's master pass", /*german*/"ein gruseliger Dungeon-Meisterpass", /*french*/"une clé maléfique sinistre")
                                                           // /*spanish*/el pase maestro siniestra
+                                                         },
+                                                         CustomMessage("Shadow Temple Boss Key", "Master-Schlüssel des Schattentempels", "Clé d'Or du Temple de l'Ombre"));
 
     hintTextTable[RHT_GANONS_CASTLE_BOSS_KEY] = HintText(CustomMessage("the Ganon's Castle Boss Key", /*german*/"der Master-Schlüssel für Ganons Schloß", /*french*/"la Clé d'Or du Château de Ganon"),
                                                          // /*spanish*/la gran llave del Castillo de Ganon
@@ -1224,8 +1426,10 @@ void StaticData::HintTable_Init_Item() {
                                                          }, {
                                                          CustomMessage("a final master of unlocking", /*german*/"ein finaler Meister des Entschlüsselns", /*french*/"un anti-grosse porte final"),
                                                           // /*spanish*/la clave final de un jefe
-                                                         CustomMessage("a final dungeon's master pass", /*german*/"ein finaler Dungeon-Meisterpass", /*french*/"une clé maléfique final")});
+                                                         CustomMessage("a final dungeon's master pass", /*german*/"ein finaler Dungeon-Meisterpass", /*french*/"une clé maléfique final")
                                                           // /*spanish*/el pase maestro final
+                                                         },
+                                                         CustomMessage("Ganon's Castle Boss Key", "Master-Schlüssel von Ganons Schloß", "Clé d'Or du Château de Ganon"));
 
     hintTextTable[RHT_FOREST_TEMPLE_SMALL_KEY] = HintText(CustomMessage("a Forest Temple Small Key", /*german*/"ein kleiner Waldtempel-Schlüssel", /*french*/"une petite clé du Temple de la Forêt"),
                                                           // /*spanish*/una llave pequeña del Templo del Bosque
@@ -1239,8 +1443,10 @@ void StaticData::HintTable_Init_Item() {
                                                            // /*spanish*/un pase de una mazmorra enselvada
                                                           CustomMessage("a sylvan lock remover", /*german*/"ein waldiger Schlossentferner", /*french*/"un efface-serrure sylvestre"),
                                                            // /*spanish*/un destructor de cerraduras enselvada
-                                                          CustomMessage("a sylvan lockpick", /*german*/"ein waldiger Dietrich", /*french*/"un crochet à porte sylvestre")});
+                                                          CustomMessage("a sylvan lockpick", /*german*/"ein waldiger Dietrich", /*french*/"un crochet à porte sylvestre")
                                                            // /*spanish*/una apertura portentosa enselvada
+                                                          },
+                                                          CustomMessage("Forest Temple Small Key", "Kleiner Schlüssel für den Waldtempel", "Petite Clé du Temple de la Forêt"));
 
     hintTextTable[RHT_FIRE_TEMPLE_SMALL_KEY] = HintText(CustomMessage("a Fire Temple Small Key", /*german*/"ein kleiner Feuertempel-Schlüssel", /*french*/"une petite clé du Temple du Feu"),
                                                         // /*spanish*/una llave pequeña del Templo del Fuego
@@ -1254,8 +1460,10 @@ void StaticData::HintTable_Init_Item() {
                                                          // /*spanish*/un pase de una mazmorra fundida
                                                         CustomMessage("a molten lock remover", /*german*/"ein geschmolzener Schlossentferner", /*french*/"un efface-serrure fondu"),
                                                          // /*spanish*/un destructor de cerraduras fundida
-                                                        CustomMessage("a molten lockpick", /*german*/"ein geschmolzener Dietrich", /*french*/"un crochet à porte fondu")});
-                                                         // /*spanish*/una apertura portentosa fundida
+                                                        CustomMessage("a molten lockpick", /*german*/"ein geschmolzener Dietrich", /*french*/"un crochet à porte fondu")
+                                                        // /*spanish*/una apertura portentosa fundida
+                                                        },
+                                                        CustomMessage("Fire Temple Small Key", "Kleiner Schlüssel für den Feuertempel", "Petite Clé du Temple du Feu"));
 
     hintTextTable[RHT_WATER_TEMPLE_SMALL_KEY] = HintText(CustomMessage("a Water Temple Small Key", /*german*/"ein kleiner Wassertempel-Schlüssel", /*french*/"une petite clé du Temple de l'Eau"),
                                                          // /*spanish*/una llave pequeña del Templo del Agua
@@ -1269,8 +1477,10 @@ void StaticData::HintTable_Init_Item() {
                                                           // /*spanish*/un pase de una mazmorra mojada
                                                          CustomMessage("a wet lock remover", /*german*/"ein nasser Schlossentferner", /*french*/"un efface-serrure humide"),
                                                           // /*spanish*/un destructor de cerraduras mojada
-                                                         CustomMessage("a wet lockpick", /*german*/"ein nasser Dietrich", /*french*/"un crochet à porte humide")});
+                                                         CustomMessage("a wet lockpick", /*german*/"ein nasser Dietrich", /*french*/"un crochet à porte humide")
                                                           // /*spanish*/una apertura portentosa mojada
+                                                         },
+                                                         CustomMessage("Water Temple Small Key", "Kleiner Schlüssel für den Wassertempel", "Petite Clé du Temple de l'Eau"));
 
     hintTextTable[RHT_SPIRIT_TEMPLE_SMALL_KEY] = HintText(CustomMessage("a Spirit Temple Small Key", /*german*/"ein kleiner Geistertempel-Schlüssel", /*french*/"une petite clé du Temple de l'Esprit"),
                                                           // /*spanish*/una llave pequeña del Templo del Espíritu
@@ -1284,8 +1494,10 @@ void StaticData::HintTable_Init_Item() {
                                                            // /*spanish*/un pase de una mazmorra arenosa
                                                           CustomMessage("a sandy lock remover", /*german*/"ein sandiger Schlossentferner", /*french*/"un efface-serrure sableux"),
                                                            // /*spanish*/un destructor de cerraduras arenosa
-                                                          CustomMessage("a sandy lockpick", /*german*/"ein sandiger Dietrich", /*french*/"un crochet à porte sableux")});
+                                                          CustomMessage("a sandy lockpick", /*german*/"ein sandiger Dietrich", /*french*/"un crochet à porte sableux")
                                                            // /*spanish*/una apertura portentosa arenosa
+                                                          },
+                                                          CustomMessage("Spirit Temple Small Key", "Kleiner Schlüssel für den Geistertempel", "Petite Clé du Temple de l'Esprit"));
 
     hintTextTable[RHT_SHADOW_TEMPLE_SMALL_KEY] = HintText(CustomMessage("a Shadow Temple Small Key", /*german*/"ein kleiner Schattentempel-Schlüssel", /*french*/"une petite clé du Temple de l'Ombre"),
                                                           // /*spanish*/una llave pequeña del Templo de las Sombras
@@ -1299,10 +1511,12 @@ void StaticData::HintTable_Init_Item() {
                                                            // /*spanish*/un pase de una mazmorra siniestra:a
                                                           CustomMessage("a creepy lock remover", /*german*/"ein gruseliger Schlossentferner", /*french*/"un efface-serrure sinistre"),
                                                            // /*spanish*/un destructor de cerraduras siniestra:a
-                                                          CustomMessage("a creepy lockpick", /*german*/"ein gruseliger Dietrich", /*french*/"un crochet à porte sinistre")});
+                                                          CustomMessage("a creepy lockpick", /*german*/"ein gruseliger Dietrich", /*french*/"un crochet à porte sinistre")
                                                            // /*spanish*/una apertura portentosa siniestra:a
+                                                          },
+                                                          CustomMessage("Shadow Temple Small Key", "Petite Clé du Temple de l'Ombre", "Kleiner Schlüssel für den Schattentempel"));
 
-    hintTextTable[RHT_GERUDO_TRAINING_GROUND_SMALL_KEY] = HintText(CustomMessage("a Gerudo Training Ground Small Key", /*german*/"ein kleiner Schlüssel des Gerudo-Trainingsgeländes", /*french*/"une petite clé du Gymnase Gerudo"),
+    hintTextTable[RHT_GTG_SMALL_KEY] = HintText(CustomMessage("a Gerudo Training Ground Small Key", /*german*/"ein kleiner Schlüssel des Gerudo-Trainingsgeländes", /*french*/"une petite clé du Gymnase Gerudo"),
                                                                     // /*spanish*/una llave pequeña del Centro de Instrucción Gerudo
                                                                     {
                                                                     CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
@@ -1314,8 +1528,10 @@ void StaticData::HintTable_Init_Item() {
                                                                      // /*spanish*/un pase de una mazmorra laberíntica
                                                                     CustomMessage("a labyrinthian lock remover", /*german*/"ein labyrinthischer Schlossentferner", /*french*/"un efface-serrure labyrinthique"),
                                                                      // /*spanish*/un destructor de cerraduras laberíntica
-                                                                    CustomMessage("a labyrinthian lockpick", /*german*/"ein labyrinthischer Dietrich", /*french*/"un crochet à porte labyrinthique")});
+                                                                    CustomMessage("a labyrinthian lockpick", /*german*/"ein labyrinthischer Dietrich", /*french*/"un crochet à porte labyrinthique")
                                                                      // /*spanish*/una apertura portentosa laberíntica
+                                                                    },
+                                                                    CustomMessage("Training Ground Small Key", "Kleiner Schlüssel für das Gerudo-Trainingsgelände", "Petite Clé du Gymnase Gerudo"));
 
     hintTextTable[RHT_GERUDO_FORTRESS_SMALL_KEY] = HintText(CustomMessage("a Gerudo Fortress Small Key", /*german*/"ein kleiner Schlüssel für die Gerudo-Festung", /*french*/"une petite clé de la Repaire des Voleurs"),
                                                             // /*spanish*/una llave pequeña de la Fortaleza Gerudo
@@ -1329,10 +1545,12 @@ void StaticData::HintTable_Init_Item() {
                                                              // /*spanish*/un pase de una mazmorra encarcelada
                                                             CustomMessage("an imprisoned lock remover", /*german*/"ein gefangener Schlossentferner", /*french*/"un efface-serrure emprisonné"),
                                                              // /*spanish*/un destructor de cerraduras encarcelada
-                                                            CustomMessage("an imprisoned lockpick", /*german*/"ein gefangener Dietrich", /*french*/"un crochet à porte emprisonné")});
-                                                             // /*spanish*/una apertura portentosa encarcelada
+                                                            CustomMessage("an imprisoned lockpick", /*german*/"ein gefangener Dietrich", /*french*/"un crochet à porte emprisonné")
+                                                            // /*spanish*/una apertura portentosa encarcelada
+                                                            },
+                                                            CustomMessage("Gerudo Fortress Small Key", "Kleiner Schlüssel für die Gerudo-Festung", "Petite Clé du Repaire des Voleurs"));
 
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_SMALL_KEY] = HintText(CustomMessage("a Bottom of the Well Small Key", /*german*/"ein kleiner Schlüssel des Grund des Brunnens", /*french*/"une petite clé du fond du Puits"),
+    hintTextTable[RHT_BOTW_SMALL_KEY] = HintText(CustomMessage("a Bottom of the Well Small Key", /*german*/"ein kleiner Schlüssel des Grund des Brunnens", /*french*/"une petite clé du fond du Puits"),
                                                                // /*spanish*/una llave pequeña del Fondo del pozo
                                                                {
                                                                CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
@@ -1344,35 +1562,262 @@ void StaticData::HintTable_Init_Item() {
                                                                 // /*spanish*/un pase de una mazmorra mohosa
                                                                CustomMessage("a moldy lock remover", /*german*/"ein schimmeliger Schlossentferner", /*french*/"un efface-serrure moisi"),
                                                                 // /*spanish*/un destructor de cerraduras mohosa
-                                                               CustomMessage("a moldy lockpick", /*german*/"ein schimmeliger Dietrich", /*french*/"un crochet à porte moisi")});
-                                                                // /*spanish*/una apertura portentosa mohosa
+                                                               CustomMessage("a moldy lockpick", /*german*/"ein schimmeliger Dietrich", /*french*/"un crochet à porte moisi")
+                                                               // /*spanish*/una apertura portentosa mohosa
+                                                               },
+                                                               CustomMessage("Bottom of the Well Small Key", "Kleiner Schlüssel für den Grund des Brunnens", "Petite Clé du Puits"));
 
-    hintTextTable[RHT_GANONS_CASTLE_SMALL_KEY] = HintText(CustomMessage("a Ganon's Castle Small Key", /*german*/"ein kleiner Schlüssel für Ganons Schloß", /*french*/"une petite clé du Château de Ganon"),
-                                                          // /*spanish*/una llave pequeña del Castillo de Ganon
-                                                          {
-                                                          CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
-                                                           // /*spanish*/una llave pequeña
-                                                          }, {
-                                                          CustomMessage("a final tool for unlocking", /*german*/"ein finales Werkzeug zur Entschlüsselung", /*french*/"un anti-porte final"),
-                                                           // /*spanish*/una clave de una entrada final
-                                                          CustomMessage("a final dungeon pass", /*german*/"ein finaler Dungeon-Pass", /*french*/"le rêve final d'un prisonnier"),
-                                                           // /*spanish*/un pase de una mazmorra final
-                                                          CustomMessage("a final lock remover", /*german*/"ein finaler Schlossentferner", /*french*/"un efface-serrure final"),
-                                                           // /*spanish*/un destructor de cerraduras final
-                                                          CustomMessage("a final lockpick", /*german*/"ein finaler Dietrich", /*french*/"un crochet à porte final")});
-                                                           // /*spanish*/una apertura portentosa final
-    hintTextTable[RHT_OVERWORLD_KEY] = HintText(CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld"),
-                                                // /*spanish*/una llave del mundo exterior
+                                                               hintTextTable[RHT_GANONS_CASTLE_SMALL_KEY] = HintText(CustomMessage("a Ganon's Castle Small Key", /*german*/"ein kleiner Schlüssel für Ganons Schloß", /*french*/"une petite clé du Château de Ganon"),
+                                                               // /*spanish*/una llave pequeña del Castillo de Ganon
+                                                               {
+                                                               CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
+                                                                // /*spanish*/una llave pequeña
+                                                               }, {
+                                                               CustomMessage("a final tool for unlocking", /*german*/"ein finales Werkzeug zur Entschlüsselung", /*french*/"un anti-porte final"),
+                                                                // /*spanish*/una clave de una entrada final
+                                                               CustomMessage("a final dungeon pass", /*german*/"ein finaler Dungeon-Pass", /*french*/"le rêve final d'un prisonnier"),
+                                                                // /*spanish*/un pase de una mazmorra final
+                                                               CustomMessage("a final lock remover", /*german*/"ein finaler Schlossentferner", /*french*/"un efface-serrure final"),
+                                                                // /*spanish*/un destructor de cerraduras final
+                                                               CustomMessage("a final lockpick", /*german*/"ein finaler Dietrich", /*french*/"un crochet à porte final")
+                                                                // /*spanish*/una apertura portentosa final
+                                                               },
+                                                               CustomMessage("Ganon's Castle Small Key", "Kleiner Schlüssel für Ganons Schloß", "Petite Clé du Château de Ganon"));
+
+     
+    hintTextTable[RHT_TCG_SMALL_KEY] = HintText(CustomMessage("a Treasure Chest Shop Small Key", /*german*/"ein kleiner Schlüssel des Schatztruhenladens", /*french*/"une petite clé de la chasse aux trésors"),
+                                                                        // /*spanish*/una llave pequeña del Cofre del Tesoro
+                                                                       {
+                                                                       CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
+                                                                        // /*spanish*/una llave pequeña
+                                                                       }, {
+                                                                       CustomMessage("a gambler's tool for unlocking", /*german*/"ein Spieler-Werkzeug zur Entschlüsselung", /*french*/"un anti-porte de parieur"),
+                                                                        // /*spanish*/una clave de un juego de azar
+                                                                       CustomMessage("a gambler's dungeon pass", /*german*/"ein Spieler-Dungeon-Pass", /*french*/"le rêve d'un prisonnier parieur"),
+                                                                        // /*spanish*/un pase de un juego de azar
+                                                                       CustomMessage("a gambler's lock remover", /*german*/"ein Spieler-Schlossentferner", /*french*/"un efface-serrure de parieur"),
+                                                                        // /*spanish*/un destructor de cerraduras del juego de azar
+                                                                       CustomMessage("a gambler's lockpick", /*german*/"ein Spieler-Dietrich", /*french*/"un crochet à serrure de parieur")
+                                                                        // /*spanish*/una apertura portentosa del juego de azar
+                                                                      },
+                                                                       CustomMessage("Chest Game Small Key", "Kleiner Schlüssel für das Truhenspiel", "Petite Clé du jeu la Chasse-aux-Trésors"));
+
+    hintTextTable[RHT_GUARD_HOUSE_KEY] = HintText(CustomMessage("the Guard House's key"),
                                                 {
-                                                CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
-                                                 // /*spanish*/una llave
+                                                CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
+                                                 // /*spanish*/una llave del mundo exterior
                                                 }, {
-                                                CustomMessage("a key to the world", /*german*/"ein Schlüssel zur Welt", /*french*/"une clé du monde"),
-                                                 // /*spanish*/una llave al mundo
-                                                CustomMessage("a key to the kingdom", /*german*/"ein Schlüssel zum Königreich", /*french*/"une clé du royaume"),
-                                                 // /*spanish*/una llave al reino
-                                                CustomMessage("a key to the universe", /*german*/"ein Schlüssel zum Universum", /*french*/"une clé de l'univers")});
-                                                 // /*spanish*/una llave al universo
+                                                CustomMessage("a key to pots", /*german*/"!!!", /*french*/"!!!")
+                                                },
+                                                CustomMessage("Guard House Key", "Schlüssel für das Haus der Wachen", "!!!"));
+
+   hintTextTable[RHT_MARKET_BAZAAR_KEY] = HintText(CustomMessage("Market Bazaar's key"),
+                                                {
+                                                CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
+                                                 // /*spanish*/una llave del mundo exterior
+                                                }, {
+                                                CustomMessage("a child's shopping key", /*german*/"!!!", /*french*/"!!!")
+                                                },
+                                                CustomMessage("Market Bazaar Key", "Schlüssel für den Basar des Marktes", ""));
+
+   hintTextTable[RHT_MARKET_POTION_SHOP_KEY] = HintText(CustomMessage("the Market Potion Shop's key"),
+                                                {
+                                                CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
+                                                 // /*spanish*/una llave del mundo exterior
+                                                }, {
+                                                CustomMessage("past potion's key", /*german*/"!!!", /*french*/"!!!")
+                                                },
+                                                CustomMessage("Market Potion Shop Key", "Schlüssel für den Magie-Laden des Marktes", ""));
+
+   hintTextTable[RHT_MASK_SHOP_KEY] = HintText(CustomMessage("the Mask Shop's key"),
+                                                {
+                                                CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
+                                                 // /*spanish*/una llave del mundo exterior
+                                                }, {
+                                                CustomMessage("the masqurade's key", /*german*/"!!!", /*french*/"!!!")
+                                                },
+                                                CustomMessage("Mask Shop Key", "Schlüssel für den Maskenladen", ""));
+
+   hintTextTable[RHT_MARKET_SHOOTING_KEY] = HintText(CustomMessage("Market Shooting Gallery's key"),
+                                                    {
+                                                    CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
+                                                     // /*spanish*/una llave del mundo exterior
+                                                    }, {
+                                                    CustomMessage("the slingshot range's key", /*german*/"!!!", /*french*/"!!!")
+                                                    },
+                                                    CustomMessage("Market Shooting Gallery Key", "Schlüssel für die Schießbude des Marktes", ""));
+
+   hintTextTable[RHT_BOMBCHU_BOWLING_KEY] = HintText(CustomMessage("Bombchu Bowling's key"),
+                                                {
+                                                CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
+                                                 // /*spanish*/una llave del mundo exterior
+                                                }, {
+                                                CustomMessage("mouse golf's key", /*german*/"!!!", /*french*/"!!!")
+                                                },
+                                                CustomMessage("Bombchu Bowling Alley Key", "Schlüssel für die Minenbowlingbahn", ""));
+
+   hintTextTable[RHT_TCG_BUILDING_KEY] = HintText(CustomMessage("Treasure Chest Game Building's key"),
+                                                {
+                                                CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
+                                                 // /*spanish*/una llave del mundo exterior
+                                                }, {
+                                                CustomMessage("the gambling game's key", /*german*/"!!!", /*french*/"!!!")
+                                                },
+                                                CustomMessage("Treasure Chest Game Building Key", "Schlüssel für das Haus des Schatzkisten-Pokers", ""));
+
+   hintTextTable[RHT_BOMBCHU_SHOP_KEY] = HintText(CustomMessage("the Bombchu Shop's key"),
+                                                {
+                                                CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
+                                                 // /*spanish*/una llave del mundo exterior
+                                                }, {
+                                                CustomMessage("a mouse merchant's key", /*german*/"!!!", /*french*/"!!!")
+                                                },
+                                                CustomMessage("Bombchu Shop Key", "Schlüssel für den Krabbelminenladen", ""));
+
+   hintTextTable[RHT_RICHARDS_HOUSE_KEY] = HintText(CustomMessage("Richard's House Key"),
+                                                {
+                                                CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
+                                                 // /*spanish*/una llave del mundo exterior
+                                                }, {
+                                                CustomMessage("a lost puppy's key", /*german*/"!!!", /*french*/"!!!")
+                                                },
+                                                CustomMessage("Richard's House Key", "Schlüssel für das Haus von Richard", ""));
+
+   hintTextTable[RHT_ALLEY_HOUSE_KEY] = HintText(CustomMessage("the Alley House's key"),
+                                                {
+                                                CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
+                                                 // /*spanish*/una llave del mundo exterior
+                                                }, {
+                                                CustomMessage("a townhouse's key", /*german*/"!!!", /*french*/"!!!")
+                                                },
+                                                CustomMessage("Alley House Key", "Schlüssel für das Gäßchenhaus", ""));
+
+   hintTextTable[RHT_KAK_BAZAAR_KEY] = HintText(CustomMessage("Kakariko Bazaar's key"),
+                                                {
+                                                CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
+                                                 // /*spanish*/una llave del mundo exterior
+                                                }, {
+                                                CustomMessage("adult's shopping key", /*german*/"!!!", /*french*/"!!!")
+                                                },
+                                                CustomMessage("Kakariko Bazaar Key", "Schlüssel für den Basar von Kakariko", ""));
+
+   hintTextTable[RHT_KAK_POTION_SHOP_KEY] = HintText(CustomMessage("the Kakariko Potion Shop's key"),
+                                                {
+                                                CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
+                                                 // /*spanish*/una llave del mundo exterior
+                                                }, {
+                                                CustomMessage("future's potion key", /*german*/"!!!", /*french*/"!!!")
+                                                },
+                                                CustomMessage("Kakariko Potion Shop Key", "Schlüssel für den Magie-Laden von Kakariko", ""));
+
+   hintTextTable[RHT_BOSS_HOUSE_KEY] = HintText(CustomMessage("the Boss's House's key"),
+                                                {
+                                                CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
+                                                 // /*spanish*/una llave del mundo exterior
+                                                }, {
+                                                CustomMessage("the carpenter's key", /*german*/"!!!", /*french*/"!!!")
+                                                },
+                                                CustomMessage("Boss's House Key", "Schlüssel für das Haus des Chefs", ""));
+
+   hintTextTable[RHT_GRANNYS_POTION_SHOP_KEY] = HintText(CustomMessage("Granny's Potion Shop's key"),
+                                                {
+                                                CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
+                                                 // /*spanish*/una llave del mundo exterior
+                                                }, {
+                                                CustomMessage("the old woman's key", /*german*/"!!!", /*french*/"!!!")
+                                                },
+                                                CustomMessage("Granny's Potion Shop Key", "Schlüssel für Asas Hexenladen", ""));
+
+   hintTextTable[RHT_SKULLTULA_HOUSE_KEY] = HintText(CustomMessage("the Skulltula House's key"),
+                                                {
+                                                CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
+                                                 // /*spanish*/una llave del mundo exterior
+                                                }, {
+                                                CustomMessage("the cursed place's key", /*german*/"!!!", /*french*/"!!!")
+                                                },
+                                                CustomMessage("Skulltula House Key", "Schlüssel für das Skulltula-Haus", ""));
+
+   hintTextTable[RHT_IMPAS_HOUSE_KEY] = HintText(CustomMessage("Impa's House's key"),
+                                                {
+                                                CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
+                                                 // /*spanish*/una llave del mundo exterior
+                                                }, {
+                                                CustomMessage("the Shadow Sage's key", /*german*/"!!!", /*french*/"!!!")
+                                                },
+                                                CustomMessage("Impa's House Key", "Schlüssel für das Haus von Impa", ""));
+
+   hintTextTable[RHT_WINDMILL_KEY] = HintText(CustomMessage("the Windmill's key"),
+                                                {
+                                                CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
+                                                 // /*spanish*/una llave del mundo exterior
+                                                }, {
+                                                CustomMessage("the pinwheel's key", /*german*/"!!!", /*french*/"!!!")
+                                                },
+                                                CustomMessage("Windmill Key", "Schlüssel für die Windmühle", ""));
+
+   hintTextTable[RHT_KAK_SHOOTING_KEY] = HintText(CustomMessage("Kakariko Shooting Gallery's key"),
+                                                {
+                                                CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
+                                                 // /*spanish*/una llave del mundo exterior
+                                                }, {
+                                                CustomMessage("the archery range's key", /*german*/"!!!", /*french*/"!!!")
+                                                },
+                                                CustomMessage("Kakariko Shooting Gallery Key", "Schlüssel für die Schießbude von Kakariko", ""));
+
+   hintTextTable[RHT_DAMPES_HUT_KEY] = HintText(CustomMessage("Dampe's Hut's key"),
+                                                {
+                                                CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
+                                                 // /*spanish*/una llave del mundo exterior
+                                                }, {
+                                                CustomMessage("the small hut's key", /*german*/"!!!", /*french*/"!!!")
+                                                },
+                                                CustomMessage("Dampe's Hut Key", "Schlüssel für die Hütte von Boris", ""));
+
+   hintTextTable[RHT_TALONS_HOUSE_KEY] = HintText(CustomMessage("Talon's House's key"),
+                                                {
+                                                CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
+                                                 // /*spanish*/una llave del mundo exterior
+                                                }, {
+                                                CustomMessage("the layabout's key", /*german*/"!!!", /*french*/"!!!")
+                                                },
+                                                CustomMessage("Talon's House Key", "Schlüssel für das Haus von Talon", ""));
+
+   hintTextTable[RHT_STABLES_KEY] = HintText(CustomMessage("the Stables' key"),
+                                                {
+                                                CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
+                                                 // /*spanish*/una llave del mundo exterior
+                                                }, {
+                                                CustomMessage("the key to the farm", /*german*/"!!!", /*french*/"!!!")
+                                                },
+                                                CustomMessage("Stables Key", "Schlüssel für die Ställe", ""));
+
+   hintTextTable[RHT_BACK_TOWER_KEY] = HintText(CustomMessage("the Back Tower's key"),
+                                                {
+                                                CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
+                                                 // /*spanish*/una llave del mundo exterior
+                                                }, {
+                                                CustomMessage("the cowshed's key", /*german*/"!!!", /*french*/"!!!")
+                                                },
+                                                CustomMessage("Back Tower Key", "Schlüssel für den hinteren Turm", ""));
+
+   hintTextTable[RHT_HYLIA_LAB_KEY] = HintText(CustomMessage("the Hylia Laboratory's key"),
+                                                {
+                                                CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
+                                                 // /*spanish*/una llave del mundo exterior
+                                                }, {
+                                                CustomMessage("the key to science", /*german*/"!!!", /*french*/"!!!")
+                                                },
+                                                CustomMessage("Hylia Laboratory Key", "Schlüssel für das Hylia-Labor", ""));
+
+   hintTextTable[RHT_FISHING_HOLE_KEY] = HintText(CustomMessage("the Fishing Hole's key"),
+                                                {
+                                                CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
+                                                 // /*spanish*/una llave del mundo exterior
+                                                }, {
+                                                CustomMessage("the fisherman's key", /*german*/"!!!", /*french*/"!!!")
+                                                },
+                                                CustomMessage("Fishing Hole Key", "Schlüssel für den Fischweiher", ""));
+
     hintTextTable[RHT_FOREST_TEMPLE_KEY_RING] = HintText(CustomMessage("a Forest Temple Key Ring", /*german*/"ein Schlüsselbund des Waldtempels", /*french*/"un trousseau de clés du Temple de la Forêt"),
                                                          // /*spanish*/un llavero del Templo del Bosque
                                                          {
@@ -1385,8 +1830,10 @@ void StaticData::HintTable_Init_Item() {
                                                           // /*spanish*/un pase vip de mazmorras silvestre
                                                          CustomMessage("a sylvan jingling ring", /*german*/"ein waldiger Multifunktionsschlüssel", /*french*/"des efface-serrures sylvestres"),
                                                           // /*spanish*/una cadena multiusos silvestre
-                                                         CustomMessage("a sylvan skeleton key", /*german*/"ein waldiger Skelettschlüssel", /*french*/"des crochets à porte sylvestres")});
+                                                         CustomMessage("a sylvan skeleton key", /*german*/"ein waldiger Skelettschlüssel", /*french*/"des crochets à porte sylvestres")
                                                           // /*spanish*/un anillo silvestre contra cerrojos
+                                                         },
+                                                         CustomMessage("Forest Temple Key Ring", "Schlüsselbund für den Waldtempel", "Trousseau du Temple de la Forêt"));
 
     hintTextTable[RHT_FIRE_TEMPLE_KEY_RING] = HintText(CustomMessage("a Fire Temple Key Ring", /*german*/"ein Schlüsselbund des Feuertempels", /*french*/"un trousseau de clés du Temple du Feu"),
                                                        // /*spanish*/un llavero del Templo del Fuego
@@ -1400,8 +1847,10 @@ void StaticData::HintTable_Init_Item() {
                                                         // /*spanish*/un pase vip de mazmorras fundido
                                                        CustomMessage("a molten jingling ring", /*german*/"ein geschmolzener Multifunktionsschlüssel", /*french*/"des efface-serrures fondus"),
                                                         // /*spanish*/una cadena multiusos fundida
-                                                       CustomMessage("a molten skeleton key", /*german*/"ein geschmolzener Skelettschlüssel", /*french*/"des crochets à porte fondus")});
-                                                        // /*spanish*/un anillo fundido contra cerrojos
+                                                       CustomMessage("a molten skeleton key", /*german*/"ein geschmolzener Skelettschlüssel", /*french*/"des crochets à porte fondus")
+                                                       // /*spanish*/un anillo fundido contra cerrojos
+                                                       },
+                                                       CustomMessage("Fire Temple Key Ring", "Schlüsselbund für den Feuertempel", "Trousseau du Temple du Feu"));
 
     hintTextTable[RHT_WATER_TEMPLE_KEY_RING] = HintText(CustomMessage("a Water Temple Key Ring", /*german*/"ein Schlüsselbund des Wassertempels", /*french*/"un trousseau de clés du Temple de l'Eau"),
                                                         // /*spanish*/un llavero del Templo del Agua
@@ -1415,8 +1864,10 @@ void StaticData::HintTable_Init_Item() {
                                                          // /*spanish*/un pase vip de mazmorras abisal
                                                         CustomMessage("a wet jingling ring", /*german*/"ein nasser Multifunktionsschlüssel", /*french*/"des efface-serrures humides"),
                                                          // /*spanish*/una cadena multiusos abisal
-                                                        CustomMessage("a wet skeleton key", /*german*/"ein nasser Skelettschlüssel", /*french*/"des crochets à porte humides")});
+                                                        CustomMessage("a wet skeleton key", /*german*/"ein nasser Skelettschlüssel", /*french*/"des crochets à porte humides")
                                                          // /*spanish*/un anillo abisal contra cerrojos
+                                                        },
+                                                        CustomMessage("Water Temple Key Ring", "Schlüsselbund für den Wassertempel", "Trousseau du Temple de l'Eau"));
 
     hintTextTable[RHT_SPIRIT_TEMPLE_KEY_RING] = HintText(CustomMessage("a Spirit Temple Key Ring", /*german*/"ein Schlüsselbund des Geistertempels", /*french*/"un trousseau de clés du Temple de l'Esprit"),
                                                          // /*spanish*/un llavero del Templo del Espíritu
@@ -1430,8 +1881,10 @@ void StaticData::HintTable_Init_Item() {
                                                           // /*spanish*/un pase vip de mazmorras arenoso
                                                          CustomMessage("a sandy jingling ring", /*german*/"ein sandiger Multifunktionsschlüssel", /*french*/"des efface-serrures sableux"),
                                                           // /*spanish*/una cadena multiusos arenosa
-                                                         CustomMessage("a sandy skeleton key", /*german*/"ein sandiger Skelettschlüssel", /*french*/"des crochets à porte sableux")});
+                                                         CustomMessage("a sandy skeleton key", /*german*/"ein sandiger Skelettschlüssel", /*french*/"des crochets à porte sableux")
                                                           // /*spanish*/un anillo arenoso contra cerrojos
+                                                         },
+                                                         CustomMessage("Spirit Temple Key Ring", "Schlüsselbund für den Geistertempel", "Trousseau du Temple de l'Esprit"));
 
     hintTextTable[RHT_SHADOW_TEMPLE_KEY_RING] = HintText(CustomMessage("a Shadow Temple Key Ring", /*german*/"ein Schlüsselbund des Schattentempels", /*french*/"un trousseau de clés du Temple de l'Ombre"),
                                                          // /*spanish*/un llavero del Templo de las Sombras
@@ -1445,10 +1898,12 @@ void StaticData::HintTable_Init_Item() {
                                                           // /*spanish*/un pase vip de mazmorras tenebroso
                                                          CustomMessage("a creepy jingling ring", /*german*/"ein gruseliger Multifunktionsschlüssel", /*french*/"des efface-serrures sinistres"),
                                                           // /*spanish*/una cadena multiusos tenebrosa
-                                                         CustomMessage("a creepy skeleton key", /*german*/"ein gruseliger Skelettschlüssel", /*french*/"des crochets à porte sinistres")});
+                                                         CustomMessage("a creepy skeleton key", /*german*/"ein gruseliger Skelettschlüssel", /*french*/"des crochets à porte sinistres")
                                                           // /*spanish*/un anillo tenebroso contra cerrojos
+                                                         },
+                                                         CustomMessage("Shadow Temple Key Ring", "Schlüsselbund für den Schattentempel", "Trousseau du Temple de l'Ombre"));
 
-    hintTextTable[RHT_GERUDO_TRAINING_GROUND_KEY_RING] = HintText(CustomMessage("a Gerudo Training Ground Key Ring", /*german*/"ein Schlüsselbund des Gerudo-Trainingsgeländes", /*french*/"un trousseau de clés du Gymnase Gerudo"),
+    hintTextTable[RHT_GTG_KEY_RING] = HintText(CustomMessage("a Gerudo Training Ground Key Ring", /*german*/"ein Schlüsselbund des Gerudo-Trainingsgeländes", /*french*/"un trousseau de clés du Gymnase Gerudo"),
                                                                    // /*spanish*/un llavero del Centro de Instrucción Gerudo
                                                                    {
                                                                    CustomMessage("a key ring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
@@ -1460,8 +1915,10 @@ void StaticData::HintTable_Init_Item() {
                                                                     // /*spanish*/un pase vip de mazmorras laberíntico
                                                                    CustomMessage("a labyrinthian jingling ring", /*german*/"ein labyrinthischer Multifunktionsschlüssel", /*french*/"des efface-serrures labyrinthiques"),
                                                                     // /*spanish*/una cadena multiusos laberíntica
-                                                                   CustomMessage("a labyrinthian skeleton key", /*german*/"ein labyrinthischer Skelettschlüssel", /*french*/"des crochets à porte labyrinthiques")});
+                                                                   CustomMessage("a labyrinthian skeleton key", /*german*/"ein labyrinthischer Skelettschlüssel", /*french*/"des crochets à porte labyrinthiques")
                                                                     // /*spanish*/un anillo laberíntico contra cerrojos
+                                                                   },
+                                                                   CustomMessage("Training Ground Key Ring", "Schlüsselbund für das Gerudo-Trainingsgelände", "Trousseau du Gymnase Gerudo"));
 
     hintTextTable[RHT_GERUDO_FORTRESS_KEY_RING] = HintText(CustomMessage("a Gerudo Fortress Key Ring", /*german*/"ein Schlüsselbund der Gerudo-Festung", /*french*/"un trousseau de clés de la Repaire des Voleurs"),
                                                            // /*spanish*/un llavero de la Fortaleza Gerudo
@@ -1475,10 +1932,12 @@ void StaticData::HintTable_Init_Item() {
                                                             // /*spanish*/un pase vip de una mazmorra enjaulado
                                                            CustomMessage("an imprisoned jingling ring", /*german*/"ein gefangener Multifunktionsschlüssel", /*french*/"des efface-serrures emprisonnés"),
                                                             // /*spanish*/una cadena multiusos enjaulada
-                                                           CustomMessage("an imprisoned skeleton key", /*german*/"ein gefangener Skelettschlüssel", /*french*/"des crochets à porte emprisonnés")});
+                                                           CustomMessage("an imprisoned skeleton key", /*german*/"ein gefangener Skelettschlüssel", /*french*/"des crochets à porte emprisonnés")
                                                             // /*spanish*/un anillo enjaulado contra cerrojos
+                                                           },
+                                                           CustomMessage("Gerudo Fortress Key Ring", "Schlüsselbund für die Gerudo-Festung", "Trousseau du Repaire des Voleurs"));
 
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_KEY_RING] = HintText(CustomMessage("a Bottom of the Well Key Ring", /*german*/"ein Schlüsselbund des Grund des Brunnens", /*french*/"un trousseau de clés du fond du Puits"),
+    hintTextTable[RHT_BOTW_KEY_RING] = HintText(CustomMessage("a Bottom of the Well Key Ring", /*german*/"ein Schlüsselbund des Grund des Brunnens", /*french*/"un trousseau de clés du fond du Puits"),
                                                               // /*spanish*/un llavero del Fondo del pozo
                                                               {
                                                               CustomMessage("a key ring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
@@ -1490,8 +1949,10 @@ void StaticData::HintTable_Init_Item() {
                                                                // /*spanish*/un pase vip de una mazmorra subterráneo
                                                               CustomMessage("a moldy jingling ring", /*german*/"ein schimmeliger Multifunktionsschlüssel", /*french*/"des efface-serrures moisis"),
                                                                // /*spanish*/una cadena multiusos subterránea
-                                                              CustomMessage("a moldy skeleton key", /*german*/"ein schimmeliger Skelettschlüssel", /*french*/"des crochets à porte moisis")});
+                                                              CustomMessage("a moldy skeleton key", /*german*/"ein schimmeliger Skelettschlüssel", /*french*/"des crochets à porte moisis")
                                                                // /*spanish*/un anillo subterráneo contra cerrojos
+                                                              },
+                                                              CustomMessage("Bottom of the Well Key Ring", "Schlüsselbund für den Grund des Brunnens", "Trousseau du Puits"));
 
     hintTextTable[RHT_GANONS_CASTLE_KEY_RING] = HintText(CustomMessage("a Ganon's Castle Key Ring", /*german*/"ein Schlüsselbund von Ganons Schloß", /*french*/"un trousseau de clés du Château de Ganon"),
                                                          // /*spanish*/un llavero del Castillo de Ganon
@@ -1505,25 +1966,12 @@ void StaticData::HintTable_Init_Item() {
                                                           // /*spanish*/un pase vip de una mazmorra decisivo
                                                          CustomMessage("a final jingling ring", /*german*/"ein finaler Multifunktionsschlüssel", /*french*/"des efface-serrures finaux"),
                                                           // /*spanish*/una cadena multiusos decisiva
-                                                         CustomMessage("a final skeleton key", /*german*/"ein finaler Skelettschlüssel", /*french*/"des crochets à porte finaux")});
+                                                         CustomMessage("a final skeleton key", /*german*/"ein finaler Skelettschlüssel", /*french*/"des crochets à porte finaux")
                                                           // /*spanish*/un anillo decisivo multiusos
+                                                         },
+                                                         CustomMessage("Ganon's Castle Key Ring", "Schlüsselbund für Ganons Schloß", "Trousseau du Château de Ganon"));
 
-    hintTextTable[RHT_TREASURE_GAME_SMALL_KEY] = HintText(CustomMessage("a Treasure Chest Shop Small Key", /*german*/"ein kleiner Schlüssel des Schatztruhenladens", /*french*/"une petite clé de la chasse aux trésors"),
-                                                          // /*spanish*/una llave pequeña del Cofre del Tesoro
-                                                          {
-                                                          CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
-                                                           // /*spanish*/una llave pequeña
-                                                          }, {
-                                                          CustomMessage("a gambler's tool for unlocking", /*german*/"ein Spieler-Werkzeug zur Entschlüsselung", /*french*/"un anti-porte de parieur"),
-                                                           // /*spanish*/una clave de un juego de azar
-                                                          CustomMessage("a gambler's dungeon pass", /*german*/"ein Spieler-Dungeon-Pass", /*french*/"le rêve d'un prisonnier parieur"),
-                                                           // /*spanish*/un pase de un juego de azar
-                                                          CustomMessage("a gambler's lock remover", /*german*/"ein Spieler-Schlossentferner", /*french*/"un efface-serrure de parieur"),
-                                                           // /*spanish*/un destructor de cerraduras del juego de azar
-                                                          CustomMessage("a gambler's lockpick", /*german*/"ein Spieler-Dietrich", /*french*/"un crochet à serrure de parieur")});
-                                                           // /*spanish*/una apertura portentosa del juego de azar
-
-     hintTextTable[RHT_TREASURE_GAME_KEY_RING] = HintText(CustomMessage("a Chest Game Key Ring"),
+     hintTextTable[RHT_TCG_KEY_RING] = HintText(CustomMessage("a Chest Game Key Ring"),
                                                          {
                                                          CustomMessage("a key ring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
                                                           // /*spanish*/un llavero
@@ -1531,7 +1979,9 @@ void StaticData::HintTable_Init_Item() {
                                                          CustomMessage("a gambler's toolbox for unlocking"),
                                                          CustomMessage("a gambler's season pass"),
                                                          CustomMessage("a gambler's jingling ring"),
-                                                         CustomMessage("a gambler's skeleton key")});
+                                                         CustomMessage("a gambler's skeleton key")
+                                                         },
+                                                         CustomMessage("Chest Game Key Ring", "Trousseau du jeu la Chasse-aux-Trésors", "Schlüsselbund für das Truhenspiel"));
 
     hintTextTable[RHT_KOKIRI_EMERALD] = HintText(CustomMessage("the Kokiri Emerald", /*german*/"der Kokiri-Smaragd", /*french*/"l'Émeraude Kokiri"),
                                                  // /*spanish*/la Esmeralda de los Kokiri
@@ -1541,8 +1991,10 @@ void StaticData::HintTable_Init_Item() {
                                                  }, {
                                                  CustomMessage("a green stone", /*german*/"ein grüner Stein", /*french*/"une pierre verte"),
                                                   // /*spanish*/una piedra verde
-                                                 CustomMessage("a gift before death", /*german*/"ein Geschenk vor dem Tod", /*french*/"le dernier souffle d'un arbre")});
+                                                 CustomMessage("a gift before death", /*german*/"ein Geschenk vor dem Tod", /*french*/"le dernier souffle d'un arbre")
                                                   // /*spanish*/un obsequio testamentario
+                                                 },
+                                                 CustomMessage("Kokiri's Emerald", "Kokiri-Smaragd", "Émeraude Kokiri"));
 
     hintTextTable[RHT_GORON_RUBY] = HintText(CustomMessage("the Goron Ruby", /*german*/"der Goronen-Rubin", /*french*/"le Rubis Goron"),
                                              // /*spanish*/el Rubí de los Goron
@@ -1552,8 +2004,10 @@ void StaticData::HintTable_Init_Item() {
                                              }, {
                                              CustomMessage("a red stone", /*german*/"ein roter Stein", /*french*/"une pierre rouge"),
                                               // /*spanish*/una piedra carmín
-                                             CustomMessage("sworn brotherhood", /*german*/"verschworene Bruderschaft", /*french*/"un serment de fraternité")});
+                                             CustomMessage("sworn brotherhood", /*german*/"verschworene Bruderschaft", /*french*/"un serment de fraternité")
                                               // /*spanish*/el juramento de hermanos de sangre
+                                             },
+                                             CustomMessage("Goron's Ruby", "Goronen-Rubin", "Rubis Goron"));
 
     hintTextTable[RHT_ZORA_SAPPHIRE] = HintText(CustomMessage("the Zora Sapphire", /*german*/"der Zora-Saphir", /*french*/"le Saphir Zora"),
                                                 // /*spanish*/el Zafiro de los Zora
@@ -1563,8 +2017,10 @@ void StaticData::HintTable_Init_Item() {
                                                 }, {
                                                 CustomMessage("a blue stone", /*german*/"ein blauer Stein", /*french*/"une pierre bleue"),
                                                  // /*spanish*/una piedra celeste
-                                                CustomMessage("an engagement gift", /*german*/"ein Verlobungsgeschenk", /*french*/"un cadeau de mariage")});
+                                                CustomMessage("an engagement gift", /*german*/"ein Verlobungsgeschenk", /*french*/"un cadeau de mariage")
+                                                },
                                                  // /*spanish*/un regalo de compromiso
+                                                CustomMessage("Zora's Sapphire", "Zora-Saphir", "Saphir Zora"));
 
     hintTextTable[RHT_FOREST_MEDALLION] = HintText(CustomMessage("the Forest Medallion", /*german*/"Amulett des Waldes", /*french*/"le Médaillon de la Forêt"),
                                                    // /*spanish*/el Medallón del Bosque
@@ -1574,8 +2030,10 @@ void StaticData::HintTable_Init_Item() {
                                                    }, {
                                                    CustomMessage("a green coin", /*german*/"eine grüne Münze", /*french*/"une pièce verte"),
                                                     // /*spanish*/una moneda esmeralda
-                                                   CustomMessage("Saria's friendship", /*german*/"Salias Freundschaft", /*french*/"l'amitié de Saria")});
+                                                   CustomMessage("Saria's friendship", /*german*/"Salias Freundschaft", /*french*/"l'amitié de Saria")
                                                     // /*spanish*/la amistad de Saria
+                                                   },
+                                                   CustomMessage("Forest Medallion", "Amulett des Waldes", "Médaillon de la Forêt"));
 
     hintTextTable[RHT_FIRE_MEDALLION] = HintText(CustomMessage("the Fire Medallion", /*german*/"Amulett des Feuers", /*french*/"le Médaillon du Feu"),
                                                  // /*spanish*/el Medallón del Fuego
@@ -1585,8 +2043,10 @@ void StaticData::HintTable_Init_Item() {
                                                  }, {
                                                  CustomMessage("a red coin", /*german*/"eine rote Münze", /*french*/"une pièce rouge"),
                                                   // /*spanish*/una moneda rubí
-                                                 CustomMessage("Darunia's power", /*german*/"Darunias Kraft", /*french*/"la fraternité de Darunia")});
+                                                 CustomMessage("Darunia's power", /*german*/"Darunias Kraft", /*french*/"la fraternité de Darunia")
                                                   // /*spanish*/la fraternidad de Darunia
+                                                 },
+                                                 CustomMessage("Fire Medallion", "Amulett des Feuers", "Médaillon du Feu"));
 
     hintTextTable[RHT_WATER_MEDALLION] = HintText(CustomMessage("the Water Medallion", /*german*/"Amulett des Wassers", /*french*/"le Médaillon de l'Eau"),
                                                   // /*spanish*/el Medallón del Agua
@@ -1596,8 +2056,10 @@ void StaticData::HintTable_Init_Item() {
                                                   }, {
                                                   CustomMessage("a blue coin", /*german*/"eine blaue Münze", /*french*/"une pièce bleue"),
                                                    // /*spanish*/una moneda zafiro
-                                                  CustomMessage("Ruto's power", /*german*/"Rutos Macht", /*french*/"l'amour de Ruto")});
+                                                  CustomMessage("Ruto's power", /*german*/"Rutos Macht", /*french*/"l'amour de Ruto")
                                                    // /*spanish*/el amor de Ruto
+                                                  },
+                                                  CustomMessage("Water Medallion", "Amulett des Wassers", "Médaillon de l'Eau"));
 
     hintTextTable[RHT_SPIRIT_MEDALLION] = HintText(CustomMessage("the Spirit Medallion", /*german*/"Amulett der Geister", /*french*/"le Médaillon de l'Esprit"),
                                                    // /*spanish*/el Medallón del Espíritu
@@ -1607,8 +2069,10 @@ void StaticData::HintTable_Init_Item() {
                                                    }, {
                                                    CustomMessage("an orange coin", /*german*/"eine orange Münze", /*french*/"une pièce orange"),
                                                     // /*spanish*/una moneda ámbar
-                                                   CustomMessage("Nabooru's power", /*german*/"Naborus Macht", /*french*/"le respect de Nabooru")});
+                                                   CustomMessage("Nabooru's power", /*german*/"Naborus Macht", /*french*/"le respect de Nabooru")
                                                     // /*spanish*/el respeto de Nabooru
+                                                   },
+                                                   CustomMessage("Spirit Medallion", "Amulett der Geister", "Médaillon de l'Esprit"));
 
     hintTextTable[RHT_SHADOW_MEDALLION] = HintText(CustomMessage("the Shadow Medallion", /*german*/"Amulett des Schattens", /*french*/"le Médaillon de l'Ombre"),
                                                    // /*spanish*/el Medallón de la Sombra
@@ -1618,8 +2082,10 @@ void StaticData::HintTable_Init_Item() {
                                                    }, {
                                                    CustomMessage("a purple coin", /*german*/"eine violette Münze", /*french*/"une pièce pourpre"),
                                                     // /*spanish*/una moneda malva
-                                                   CustomMessage("Impa's power", /*german*/"Impas Macht", /*french*/"la confiance d'Impa")});
+                                                   CustomMessage("Impa's power", /*german*/"Impas Macht", /*french*/"la confiance d'Impa")
                                                     // /*spanish*/la confianza de Impa
+                                                   },
+                                                   CustomMessage("Shadow Medallion", "Amulett des Schattens", "Médaillon de l'Ombre"));
 
     hintTextTable[RHT_LIGHT_MEDALLION] = HintText(CustomMessage("the Light Medallion", /*german*/"Amulett des Lichts", /*french*/"le Médaillon de la Lumière"),
                                                   // /*spanish*/el Medallón de la Luz
@@ -1629,8 +2095,10 @@ void StaticData::HintTable_Init_Item() {
                                                   }, {
                                                   CustomMessage("a yellow coin", /*german*/"eine gelbe Münze", /*french*/"une pièce jaune"),
                                                    // /*spanish*/una moneda resplandeciente
-                                                  CustomMessage("Rauru's power", /*german*/"Raurus Macht", /*french*/"la foi de Rauru")});
+                                                  CustomMessage("Rauru's power", /*german*/"Raurus Macht", /*french*/"la foi de Rauru")
                                                    // /*spanish*/la fe de Rauru
+                                                  },
+                                                  CustomMessage("Light Medallion", "Amulett des Lichts", "Médaillon de la Lumière"));
 
     hintTextTable[RHT_RECOVERY_HEART] = HintText(CustomMessage("a Recovery Heart", /*german*/"ein Herz", /*french*/"un coeur de vie"),
                                                  // /*spanish*/un corazón
@@ -1642,8 +2110,10 @@ void StaticData::HintTable_Init_Item() {
                                                   // /*spanish*/una cura de regalo
                                                  CustomMessage("a hearty meal", /*german*/"ein herzhaftes Mahl", /*french*/"un petit amour"),
                                                   // /*spanish*/una sanación romántica
-                                                 CustomMessage("a Band-Aid", /*german*/"ein Wundpflaster", /*french*/"un diachylon")});
+                                                 CustomMessage("a Band-Aid", /*german*/"ein Wundpflaster", /*french*/"un diachylon")
                                                   // /*spanish*/un corazoncito sanador
+                                                 },
+                                                 CustomMessage("Recovery Heart", "Herz", "Coeur de Vie"));
 
     hintTextTable[RHT_GREEN_RUPEE] = HintText(CustomMessage("a Green Rupee", /*german*/"ein grüner Rubin", /*french*/"un rubis vert"),
                                               // /*spanish*/una rupia verde
@@ -1655,8 +2125,10 @@ void StaticData::HintTable_Init_Item() {
                                                // /*spanish*/una singular moneda
                                               CustomMessage("a penny", /*german*/"ein Pfennig", /*french*/"un sou"),
                                                // /*spanish*/un peso hyliano
-                                              CustomMessage("a green gem", /*german*/"ein grüner Edelstein", /*french*/"un joyau vert")});
+                                              CustomMessage("a green gem", /*german*/"ein grüner Edelstein", /*french*/"un joyau vert")
                                                // /*spanish*/una gema verde
+                                              },
+                                              CustomMessage("Green Rupee", "Grüner Rubin", "Rubis Vert"));
 
     hintTextTable[RHT_GREG_RUPEE] = HintText(CustomMessage("Greg", /*german*/"Greg", /*french*/"Greg"),
                                              // /*spanish*/Greg
@@ -1666,8 +2138,10 @@ void StaticData::HintTable_Init_Item() {
                                              }, {
                                              CustomMessage("an old friend", /*german*/"ein alter Freund", /*french*/"Greg"),
                                               // /*spanish*/Greg
-                                             CustomMessage("a glorious gem", /*german*/"ein glorioser Edelstein", /*french*/"Greg")});
+                                             CustomMessage("a glorious gem", /*german*/"ein glorioser Edelstein", /*french*/"Greg")
                                               // /*spanish*/Greg
+                                             },
+                                             CustomMessage("Greg the Green Rupee", "Greg Rubin", "Rubis Greg"));
 
     hintTextTable[RHT_BLUE_RUPEE] = HintText(CustomMessage("a Blue Rupee", /*german*/"ein blauer Rubin", /*french*/"un rubis bleu"),
                                              // /*spanish*/una rupia azul
@@ -1677,8 +2151,10 @@ void StaticData::HintTable_Init_Item() {
                                              }, {
                                              CustomMessage("a common coin", /*german*/"eine gewöhnliche Münze", /*french*/"quelques sous"),
                                               // /*spanish*/una moneda usual
-                                             CustomMessage("a blue gem", /*german*/"ein blauer Edelstein", /*french*/"un joyau bleu")});
+                                             CustomMessage("a blue gem", /*german*/"ein blauer Edelstein", /*french*/"un joyau bleu")
                                               // /*spanish*/una gema azul
+                                             },
+                                             CustomMessage("Blue Rupee", "Blauer Rubin", "Rubis Bleu"));
 
     hintTextTable[RHT_RED_RUPEE] = HintText(CustomMessage("a Red Rupee", /*german*/"ein roter Rubin", /*french*/"un rubis rouge"),
                                             // /*spanish*/una rupia roja
@@ -1688,8 +2164,10 @@ void StaticData::HintTable_Init_Item() {
                                             }, {
                                             CustomMessage("couch cash", /*german*/"ein wenig Zaster", /*french*/"un peu de fric"),
                                              // /*spanish*/una buena moneda
-                                            CustomMessage("a red gem", /*german*/"ein roter Edelstein", /*french*/"un joyau rouge")});
+                                            CustomMessage("a red gem", /*german*/"ein roter Edelstein", /*french*/"un joyau rouge")
                                              // /*spanish*/una gema roja
+                                            },
+                                            CustomMessage("Red Rupee", "Roter Rubin", "Rubis Rouge"));
 
     hintTextTable[RHT_PURPLE_RUPEE] = HintText(CustomMessage("a Purple Rupee", /*german*/"ein violetter Rubin", /*french*/"un rubis pourpre"),
                                                // /*spanish*/una rupia morada
@@ -1701,8 +2179,10 @@ void StaticData::HintTable_Init_Item() {
                                                 // /*spanish*/plata de calidad
                                                CustomMessage("a purple gem", /*german*/"ein violetter Edelstein", /*french*/"un joyau mauve"),
                                                 // /*spanish*/una gema morada
-                                               CustomMessage("wealth", /*german*/"Wohlstand", /*french*/"la richesse")});
+                                               CustomMessage("wealth", /*german*/"Wohlstand", /*french*/"la richesse")
                                                 // /*spanish*/una buena riqueza
+                                               },
+                                               CustomMessage("Purple Rupee", "Violetter Rubin", "Rubis Pourpre"));
 
     hintTextTable[RHT_HUGE_RUPEE] = HintText(CustomMessage("a Huge Rupee", /*german*/"ein riesiger Rubin", /*french*/"un énorme rubis"),
                                              // /*spanish*/una rupia gigante
@@ -1716,8 +2196,10 @@ void StaticData::HintTable_Init_Item() {
                                               // /*spanish*/una gema amarilla
                                              CustomMessage("a giant gem", /*german*/"ein riesiger Edelstein", /*french*/"un gros joyau"),
                                               // /*spanish*/una gema descomunal
-                                             CustomMessage("great wealth", /*german*/"großer Wohlstand", /*french*/"l'aisance financière")});
+                                             CustomMessage("great wealth", /*german*/"großer Wohlstand", /*french*/"l'aisance financière")
                                               // /*spanish*/dinero a caudales
+                                             },
+                                             CustomMessage("Huge Rupee", "Riesiger Rubin", "Énorme Rubis"));
 
     hintTextTable[RHT_PIECE_OF_HEART] = HintText(CustomMessage("a Piece of Heart", /*german*/"ein Herzteil", /*french*/"un Quart de Coeur"),
                                                  // /*spanish*/una pieza de corazón
@@ -1727,8 +2209,10 @@ void StaticData::HintTable_Init_Item() {
                                                  }, {
                                                  CustomMessage("a little love", /*german*/"ein wenig Liebe", /*french*/"un peu plus d'amour"),
                                                   // /*spanish*/un cuarto de amor
-                                                 CustomMessage("a broken heart", /*german*/"ein gebrochenes Herz", /*french*/"un coeur brisé")});
+                                                 CustomMessage("a broken heart", /*german*/"ein gebrochenes Herz", /*french*/"un coeur brisé")
                                                   // /*spanish*/un corazón roto
+                                                 },
+                                                 CustomMessage("Piece of Heart", "Herzstück", "Quart de Coeur"));
 
     hintTextTable[RHT_HEART_CONTAINER] = HintText(CustomMessage("a Heart Container", /*german*/"ein Herzcontainer", /*french*/"un Réceptacle de Coeur"),
                                                   // /*spanish*/un contenedor de corazón
@@ -1740,8 +2224,10 @@ void StaticData::HintTable_Init_Item() {
                                                    // /*spanish*/amor por doquier
                                                   CustomMessage("a Valentine's gift", /*german*/"ein Valentinsgeschenk", /*french*/"un cadeau de Saint-Valentin"),
                                                    // /*spanish*/un contenedor de afección
-                                                  CustomMessage("a boss's organ", /*german*/"ein monströses Organ", /*french*/"un organe de monstre")});
+                                                  CustomMessage("a boss's organ", /*german*/"ein monströses Organ", /*french*/"un organe de monstre")
                                                    // /*spanish*/los órganos de un jefe
+                                                  },
+                                                  CustomMessage("Heart Container", "Herzcontainer", "Réceptacle de Coeur"));
 
     hintTextTable[RHT_ICE_TRAP] = HintText(CustomMessage("an Ice Trap", /*german*/"eine Eisfalle", /*french*/"un Piège de Glace"),
                                            // /*spanish*/una trampa de hielo
@@ -1761,8 +2247,19 @@ void StaticData::HintTable_Init_Item() {
                                             // /*spanish*/un regalo de Ganon
                                            CustomMessage("a chilling discovery", /*german*/"eine fröstelnde Entdeckung", /*french*/"une frissonante découverte"),
                                             // /*spanish*/un escalofriante hallazgo
-                                           CustomMessage("frosty fun", /*german*/"frostiger Spaß", /*french*/"une engelure")});
+                                           CustomMessage("frosty fun", /*german*/"frostiger Spaß", /*french*/"une engelure")
                                             // /*spanish*/una gélida diversión
+                                           },
+                                           CustomMessage("Ice Trap", "Eisfalle", "Piège de Glace"));
+
+    
+    hintTextTable[RHT_MILK] = HintText(CustomMessage("some Milk", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Milk", "Milch", "Lait"));
+    
+    hintTextTable[RHT_FISH] = HintText(CustomMessage("a Fish", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Fish", "Fisch", "Poisson"));
 
     hintTextTable[RHT_BOMBS_5] = HintText(CustomMessage("Bombs (5 pieces)", /*german*/"Bomben (5 Stück)", /*french*/"une demi-dizaine de bombes"),
                                           // /*spanish*/unas (5) bombas
@@ -1772,8 +2269,10 @@ void StaticData::HintTable_Init_Item() {
                                           }, {
                                           CustomMessage("a few explosives", /*german*/"ein paar Explosivbehälter", /*french*/"une poignée de pétards"),
                                            // /*spanish*/un par de explosivos
-                                          CustomMessage("a few blast balls", /*german*/"ein paar Explosionsbälle", /*french*/"une poignée de boules bleues")});
+                                          CustomMessage("a few blast balls", /*german*/"ein paar Explosionsbälle", /*french*/"une poignée de boules bleues")
                                            // /*spanish*/un par de estallidos
+                                          },
+                                          CustomMessage("Bombs (5)", "Bomben (5)", "Bombes (5)"));
 
     hintTextTable[RHT_BOMBS_10] = HintText(CustomMessage("Bombs (10 pieces)", /*german*/"Bomben (10 Stück)", /*french*/"une dizaine de bombes"),
                                            // /*spanish*/unas (10) bombas
@@ -1783,8 +2282,10 @@ void StaticData::HintTable_Init_Item() {
                                            }, {
                                            CustomMessage("some explosives", /*german*/"einige Explosivbehälter", /*french*/"un paquet de pétards"),
                                             // /*spanish*/unos cuantos explosivos
-                                           CustomMessage("some blast balls", /*german*/"einige Explosionsbälle", /*french*/"un paquet de boules bleues")});
+                                           CustomMessage("some blast balls", /*german*/"einige Explosionsbälle", /*french*/"un paquet de boules bleues")
                                             // /*spanish*/unos cuantos estallidos
+                                           },
+                                           CustomMessage("Bombs (10)", "Bomben (10)", "Bombes (10)"));
 
     hintTextTable[RHT_BOMBS_20] = HintText(CustomMessage("Bombs (20 pieces)", /*german*/"Bomben (20 Stück)", /*french*/"une vingtaine de bombes"),
                                            // /*spanish*/unas (20) bombas
@@ -1794,8 +2295,10 @@ void StaticData::HintTable_Init_Item() {
                                            }, {
                                            CustomMessage("lots-o-explosives", /*german*/"viele Explosivbehälter", /*french*/"une abondance de pétards"),
                                             // /*spanish*/un puñado de explosivos
-                                           CustomMessage("plenty of blast balls", /*german*/"viele Explosionsbälle", /*french*/"une abondance de boules bleues")});
+                                           CustomMessage("plenty of blast balls", /*german*/"viele Explosionsbälle", /*french*/"une abondance de boules bleues")
                                             // /*spanish*/bastantes estallidos
+                                           },
+                                           CustomMessage("Bombs (20)", "Bomben (20)", "Bombes (20)"));
 
     hintTextTable[RHT_BOMBCHUS_5] = HintText(CustomMessage("Bombchus (5 pieces)", /*german*/"Krabbelminen (5 Stück)", /*french*/"une demi-dizaine de Missiles"),
                                             // /*spanish*/unos (5) bombchus
@@ -1811,8 +2314,10 @@ void StaticData::HintTable_Init_Item() {
                                              // /*spanish*/un par de explosivos ratoncitos
                                             CustomMessage("a few wall crawlers", /*german*/"ein paar Wandkrabbler", /*french*/"une poignée de rapides grimpeurs"),
                                              // /*spanish*/un par de trepaparedes
-                                            CustomMessage("a few trail blazers", /*german*/"ein paar Vorreiter", /*french*/"une poignée de zigzags éclatants")});
+                                            CustomMessage("a few trail blazers", /*german*/"ein paar Vorreiter", /*french*/"une poignée de zigzags éclatants")
                                              // /*spanish*/un par de ratas propulsadas
+                                            },
+                                            CustomMessage("Bombchus (5)", "Krabbelminen (5)", "Missiles (5)"));
 
     hintTextTable[RHT_BOMBCHUS_10] = HintText(CustomMessage("Bombchus (10 pieces)", /*german*/"Krabbelminen (10 Stück)", /*french*/"une dizaine de Missiles"),
                                              // /*spanish*/unos (10) bombchus
@@ -1828,8 +2333,10 @@ void StaticData::HintTable_Init_Item() {
                                               // /*spanish*/unos cuantos explosivos ratoncitos
                                              CustomMessage("some wall crawlers", /*german*/"einige Wandkrabbler", /*french*/"un paquet de rapides grimpeurs"),
                                               // /*spanish*/unos cuantos trepaparedes
-                                             CustomMessage("some trail blazers", /*german*/"einige Vorreiter", /*french*/"un paquet de zigzags éclatants")});
+                                             CustomMessage("some trail blazers", /*german*/"einige Vorreiter", /*french*/"un paquet de zigzags éclatants")
                                               // /*spanish*/unas cuantas ratas propulsadas
+                                             },
+                                             CustomMessage("Bombchus (10)", "Krabbelminen (10)", "Missiles (10)"));
 
     hintTextTable[RHT_BOMBCHUS_20] = HintText(CustomMessage("Bombchus (20 pieces)", /*german*/"Krabbelminen (20 Stück)", /*french*/"une vingtaine de Missiles"),
                                              // /*spanish*/unos (20) bombchus
@@ -1845,8 +2352,10 @@ void StaticData::HintTable_Init_Item() {
                                               // /*spanish*/bastantes explosivos ratoncitos
                                              CustomMessage("plenty of wall crawlers", /*german*/"viele Wandkrabbler", /*french*/"une abondance de rapides grimpeurs"),
                                               // /*spanish*/bastantes trepaparedes
-                                             CustomMessage("plenty of trail blazers", /*german*/"viele Vorreiter", /*french*/"une abondance de zigzags éclatants")});
+                                             CustomMessage("plenty of trail blazers", /*german*/"viele Vorreiter", /*french*/"une abondance de zigzags éclatants")
                                               // /*spanish*/bastantes ratas propulsadas
+                                             },
+                                             CustomMessage("Bombchus (20)", "Krabbelminen (20)", "Missiles (20)"));
 
     hintTextTable[RHT_ARROWS_5] = HintText(CustomMessage("Arrows (5 pieces)", /*german*/"Pfeile (5 Stück)", /*french*/"une demi-dizaine de flèches"),
                                            // /*spanish*/unas (5) flechas
@@ -1856,8 +2365,10 @@ void StaticData::HintTable_Init_Item() {
                                            }, {
                                            CustomMessage("a few danger darts", /*german*/"ein paar gefährliche Spitzen", /*french*/"une poignée d'obus"),
                                             // /*spanish*/un par de peligrosos dardos
-                                           CustomMessage("a few sharp shafts", /*german*/"ein paar scharfe Stifte", /*french*/"une poignée de piquets")});
+                                           CustomMessage("a few sharp shafts", /*german*/"ein paar scharfe Stifte", /*french*/"une poignée de piquets")
                                             // /*spanish*/un par de puntas afiladas
+                                           },
+                                           CustomMessage("Arrows (5)", "Pfeile (5)", "Flèches (5)"));
 
     hintTextTable[RHT_ARROWS_10] = HintText(CustomMessage("Arrows (10 pieces)", /*german*/"Pfeile (10 Stück)", /*french*/"une dizaine de flèches"),
                                             // /*spanish*/unas (10) flechas
@@ -1867,8 +2378,10 @@ void StaticData::HintTable_Init_Item() {
                                             }, {
                                             CustomMessage("some danger darts", /*german*/"einige gefährliche Spitzen", /*french*/"un paquet d'obus"),
                                              // /*spanish*/unos cuantos peligrosos dardos
-                                            CustomMessage("some sharp shafts", /*german*/"einige scharfe Stifte", /*french*/"un paquet de piquets")});
+                                            CustomMessage("some sharp shafts", /*german*/"einige scharfe Stifte", /*french*/"un paquet de piquets")
                                              // /*spanish*/unas cuantas puntas afiladas
+                                            },
+                                            CustomMessage("Arrows (10)", "Pfeile (10)", "Flèches (10)"));
 
     hintTextTable[RHT_ARROWS_30] = HintText(CustomMessage("Arrows (30 pieces)", /*german*/"Pfeile (30 Stück)", /*french*/"une trentaine de flèches"),
                                             // /*spanish*/unas (30) flechas
@@ -1878,8 +2391,10 @@ void StaticData::HintTable_Init_Item() {
                                             }, {
                                             CustomMessage("plenty of danger darts", /*german*/"viele gefährliche Spitzen", /*french*/"une abondance d'obus"),
                                              // /*spanish*/bastantes peligrosos dardos
-                                            CustomMessage("plenty of sharp shafts", /*german*/"viele scharfe Stifte", /*french*/"une abondance de piquets")});
+                                            CustomMessage("plenty of sharp shafts", /*german*/"viele scharfe Stifte", /*french*/"une abondance de piquets")
                                              // /*spanish*/bastantes puntas afiladas
+                                            },
+                                            CustomMessage("Arrows (30)", "Pfeile (30)", "Flèches (30)"));
 
     hintTextTable[RHT_DEKU_NUTS_5] = HintText(CustomMessage("Deku Nuts (5 pieces)", /*german*/"Deku-Nüsse (5 Stück)", /*french*/"une demi-dizaine de noix Mojo"),
                                               // /*spanish*/unas (5) nueces deku
@@ -1893,8 +2408,10 @@ void StaticData::HintTable_Init_Item() {
                                                // /*spanish*/un par de nueces
                                               CustomMessage("some flashbangs", /*german*/"ein paar Blendgranaten", /*french*/"une poignée d'éclats"),
                                                // /*spanish*/un par de semillas aturdidoras
-                                              CustomMessage("some scrub spit", /*german*/"ein wenig Buschspucke", /*french*/"une poignée de crachats Mojo")});
+                                              CustomMessage("some scrub spit", /*german*/"ein wenig Buschspucke", /*french*/"une poignée de crachats Mojo")
                                                // /*spanish*/un par de escupitajos deku
+                                              },
+                                              CustomMessage("Deku Nuts (5)", "Deku-Nüsse (5)", "Noix Mojo (5)"));
 
     hintTextTable[RHT_DEKU_NUTS_10] = HintText(CustomMessage("Deku Nuts (10 pieces)", /*german*/"Deku-Nüsse (10 Stück)", /*french*/"une dizaine de noix Mojo"),
                                                // /*spanish*/unas (10) nueces deku
@@ -1908,8 +2425,10 @@ void StaticData::HintTable_Init_Item() {
                                                 // /*spanish*/un puñado de nueces
                                                CustomMessage("plenty of flashbangs", /*german*/"einige Blendgranaten", /*french*/"un paquet d'éclats"),
                                                 // /*spanish*/unas cuantas semillas aturdidoras
-                                               CustomMessage("plenty of scrub spit", /*german*/"einige Buschspucke", /*french*/"un paquet de crachats Mojo")});
+                                               CustomMessage("plenty of scrub spit", /*german*/"einige Buschspucke", /*french*/"un paquet de crachats Mojo")
                                                 // /*spanish*/unos cuantos escupitajos deku
+                                               },
+                                               CustomMessage("Deku Nuts (10)", "Deku-Nüsse (10)", "Noix Mojo (10)"));
 
     hintTextTable[RHT_DEKU_SEEDS_30] = HintText(CustomMessage("Deku Seeds (30 pieces)", /*german*/"Deku-Samen (30 Stück)", /*french*/"une trentaine de graines Mojo"),
                                                 // /*spanish*/unas (30) semillas deku
@@ -1921,8 +2440,10 @@ void StaticData::HintTable_Init_Item() {
                                                 }, {
                                                 CustomMessage("catapult ammo", /*german*/"Katapultmunition", /*french*/"un paquet de délicieuses munitions"),
                                                  // /*spanish*/un par de munición infantil
-                                                CustomMessage("lots-o-seeds", /*german*/"viele Samen", /*french*/"un paquet de germes séchés")});
+                                                CustomMessage("lots-o-seeds", /*german*/"viele Samen", /*french*/"un paquet de germes séchés")
                                                  // /*spanish*/un puñado de semillas
+                                                },
+                                                CustomMessage("Deku Seeds (30)", "Deku-Samen (30)", "Graines Mojo (30)"));
 
     hintTextTable[RHT_DEKU_STICK_1] = HintText(CustomMessage("a Deku Stick", /*german*/"ein Deku-Stab", /*french*/"un bâton Mojo"),
                                                // /*spanish*/un palo deku
@@ -1930,26 +2451,164 @@ void StaticData::HintTable_Init_Item() {
                                                CustomMessage("some Deku munitions", /*german*/"ein wenig Deku-Munition", /*french*/"un paquet de munitions Mojo")
                                                 // /*spanish*/un montón de municiones Deku
                                                }, {
-                                               CustomMessage("a breakable branch", /*german*/"ein brüchiger Zweig", /*french*/"un bout de bois")});
+                                               CustomMessage("a breakable branch", /*german*/"ein brüchiger Zweig", /*french*/"un bout de bois")
                                                 // /*spanish*/un pequeño báculo
+                                               },
+                                               CustomMessage("Deku Stick (1)", "Deku-Stab (1)", "Bâton Mojo (1)"));
 
-    hintTextTable[RHT_TREASURE_GAME_HEART] = HintText(CustomMessage("a Piece of Heart", /*german*/"ein Herzteil", /*french*/"un Quart de Coeur"),
+    hintTextTable[RHT_RED_POTION_REFILL] = HintText(CustomMessage("some Red Potion", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Red Potion Refill", "Nachfüllpackung des roten Elixiers", "Recharge de Potion Rouge"));
+    
+    hintTextTable[RHT_GREEN_POTION_REFILL] = HintText(CustomMessage("some Green Potion", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Green Potion Refill", "Nachfüllpackung des grünen Elixiers", "Recharge de Potion Verte"));
+    
+    hintTextTable[RHT_BLUE_POTION_REFILL] = HintText(CustomMessage("some Blue Potion", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Blue Potion Refill", "Nachfüllpackung des blauen Elixiers", "Recharge de Potion Bleue"));
+
+    hintTextTable[RHT_TCG_PIECE_OF_HEART] = HintText(CustomMessage("a Piece of Heart", /*german*/"ein Herzteil", /*french*/"un Quart de Coeur"),
                                                       // /*spanish*/el amor de la victoria
                                                       {
                                                       CustomMessage("something heart-shaped", /*german*/"etwas Herzförmiges", /*french*/"une chose en forme de coeur")
                                                        // /*spanish*/algo con forma de corazón
                                                       }, {
-                                                      CustomMessage("a victory valentine", /*german*/"ein siegreicher Valentin", /*french*/"un amour gagnant")});
+                                                      CustomMessage("a victory valentine", /*german*/"ein siegreicher Valentin", /*french*/"un amour gagnant")
                                                        // /*spanish*/el amor victorioso
+                                                      },
+                                                      CustomMessage("Piece of Heart (WINNER)", "Herzstück (Schatztruhenminispiel)", "Quart de Coeur (Chasse-aux-Trésors)"));
 
-    hintTextTable[RHT_TREASURE_GAME_GREEN_RUPEE] = HintText(CustomMessage("a Green Rupee", /*german*/"ein grüner Rubin", /*french*/"un rubis vert"),
+    hintTextTable[RHT_LOSER_GREEN_RUPEE] = HintText(CustomMessage("a Green Rupee", /*german*/"ein grüner Rubin", /*french*/"un rubis vert"),
                                                             // /*spanish*/una rupia verde
                                                             {
                                                             CustomMessage("some rupees", /*german*/"einige Rubine", /*french*/"une quantité de rubis")
                                                              // /*spanish*/una cantidad de rupias
                                                             }, {
-                                                            CustomMessage("the dollar of defeat", /*german*/"der Rubin der Niederlage", /*french*/"le rubis de la défaite")});
+                                                            CustomMessage("the dollar of defeat", /*german*/"der Rubin der Niederlage", /*french*/"le rubis de la défaite")
                                                              // /*spanish*/el peso de la derrota
+                                                            },
+                                                            CustomMessage("Green Rupee (LOSER)", "Grüner Rubin (Schatztruhenminispiel)", "Rubis Vert (Chasse-aux-Trésors)"));
+
+    hintTextTable[RHT_BUY_DEKU_NUTS_5] = HintText(CustomMessage("Deku Nuts", /*german*/"!!!", /*french*/"!!!"),
+                                                  {}, {},
+                                                  CustomMessage("Buy Deku Nut (5)", "Deku-Nuß kaufen (5)", "Acheter: Noix Mojo (5)"));
+
+    hintTextTable[RHT_BUY_ARROWS_30] = HintText(CustomMessage("Arrows", /*german*/"!!!", /*french*/"!!!"),
+                                                  {}, {},
+                                                  CustomMessage("Buy Arrows (30)", "Pfeile kaufen (30)", "Acheter: Flèches (30)"));
+
+    hintTextTable[RHT_BUY_ARROWS_50] = HintText(CustomMessage("Arrows", /*german*/"!!!", /*french*/"!!!"),
+                                                  {}, {},
+                                                  CustomMessage("Buy Arrows (50)", "Pfeile kaufen (50)", "Acheter: Flèches (50)"));
+
+    hintTextTable[RHT_BUY_BOMBS_525] = HintText(CustomMessage("cheap Bombs", /*german*/"!!!", /*french*/"!!!"),
+                                                  {}, {},
+                                                  CustomMessage("Buy Bombs (5) [25]", "Bomben kaufen (5) [25]", "Acheter: Bombes (5) [25]"));
+
+    hintTextTable[RHT_BUY_DEKU_NUTS_10] = HintText(CustomMessage("Deku Nuts", /*german*/"!!!", /*french*/"!!!"),
+                                                  {}, {},
+                                                  CustomMessage("Buy Deku Nut (10)", "Deku-Nuß kaufen (10)", "Acheter: Noix Mojo (10)"));
+
+    hintTextTable[RHT_BUY_DEKU_STICK_1] = HintText(CustomMessage("Deku Sticks", /*german*/"!!!", /*french*/"!!!"),
+                                                  {}, {},
+                                                  CustomMessage("Buy Deku Stick (1)", "Acheter: Bâton Mojo (1)", "Deku-Stab kaufen (1)"));
+
+    hintTextTable[RHT_BUY_BOMBS_10] = HintText(CustomMessage("Bombs", /*german*/"!!!", /*french*/"!!!"),
+                                                  {}, {},
+                                                  CustomMessage("Buy Bombs (10)", "Bomben kaufen (10)", "Acheter: Bombes (10)"));
+
+    hintTextTable[RHT_BUY_FISH] = HintText(CustomMessage("Fish", /*german*/"!!!", /*french*/"!!!"),
+                                                  {}, {},
+                                                  CustomMessage("Buy Fish", "Fisch kaufen", "Acheter: Poisson"));
+
+    hintTextTable[RHT_BUY_RED_POTION_30] = HintText(CustomMessage("cheap Red Potion", /*german*/"!!!", /*french*/"!!!"),
+                                                  {}, {},
+                                                  CustomMessage("Buy Red Potion [30]", "Rotes Elixier kaufen [30]", "Acheter: Potion Rouge [30]"));
+
+    hintTextTable[RHT_BUY_GREEN_POTION] = HintText(CustomMessage("Green Potion", /*german*/"!!!", /*french*/"!!!"),
+                                                  {}, {},
+                                                  CustomMessage("Buy Green Potion", "Grünes Elixier kaufen", "Acheter: Potion Verte"));
+
+    hintTextTable[RHT_BUY_BLUE_POTION] = HintText(CustomMessage("Blue Potion", /*german*/"!!!", /*french*/"!!!"),
+                                                  {}, {},
+                                                  CustomMessage("Buy Blue Potion", "Blaues Elixier kaufen", "Acheter: Potion Bleue"));
+
+    hintTextTable[RHT_BUY_HYLIAN_SHIELD] = HintText(CustomMessage("Hylian Shields", /*german*/"!!!", /*french*/"!!!"),
+                                                  {}, {},
+                                                  CustomMessage("Buy Hylian Shield", "Hylia-Schild kaufen", "Acheter: Bouclier Hylien"));
+
+    hintTextTable[RHT_BUY_DEKU_SHIELD] = HintText(CustomMessage("Deku Shields", /*german*/"!!!", /*french*/"!!!"),
+                                                  {}, {},
+                                                  CustomMessage("Buy Deku Shield", "Deku-Schild kaufen", "Acheter: Bouclier Mojo"));
+
+    hintTextTable[RHT_BUY_GORON_TUNIC] = HintText(CustomMessage("Goron Tunics", /*german*/"!!!", /*french*/"!!!"),
+                                                  {}, {},
+                                                  CustomMessage("Buy Goron Tunic", "Goronen-Tunika kaufen", "Acheter: Tunique Goron"));
+
+    hintTextTable[RHT_BUY_ZORA_TUNIC] = HintText(CustomMessage("Zora Tunics", /*german*/"!!!", /*french*/"!!!"),
+                                                  {}, {},
+                                                  CustomMessage("Buy Zora Tunic", "Zora-Tunika kaufen", "Acheter: Tunique Zora"));
+
+    hintTextTable[RHT_BUY_HEART] = HintText(CustomMessage("Recovery Hearts", /*german*/"!!!", /*french*/"!!!"),
+                                                  {}, {},
+                                                  CustomMessage("Buy Heart", "Herz kaufen", "Acheter: Coeur de Vie"));
+
+    hintTextTable[RHT_BUY_BOMBCHUS_10] = HintText(CustomMessage("Bombchus", /*german*/"!!!", /*french*/"!!!"),
+                                                  {}, {},
+                                                  CustomMessage("Buy Bombchu (10)", "Krabbelminen kaufen (10)", "Acheter: Missiles (10)"));
+
+    hintTextTable[RHT_BUY_BOMBCHUS_20] = HintText(CustomMessage("Bulk Bombchus", /*german*/"!!!", /*french*/"!!!"),
+                                                  {}, {},
+                                                  CustomMessage("Buy Bombchu (20)", "Krabbelminen kaufen (20)", "Acheter: Missiles (20)"));
+
+    hintTextTable[RHT_BUY_DEKU_SEEDS_30] = HintText(CustomMessage("Deku Seeds", /*german*/"!!!", /*french*/"!!!"),
+                                                  {}, {},
+                                                  CustomMessage("Buy Deku Seeds (30)", "Deku-Samen kaufen (30)", "Acheter: Graines Mojo (30)"));
+
+    hintTextTable[RHT_SOLD_OUT] = HintText(CustomMessage("Nothing", /*german*/"!!!", /*french*/"!!!"),
+                                                  {}, {},
+                                                  CustomMessage("Sold Out", "Ausverkauft", "Rupture de stock"));
+
+    hintTextTable[RHT_BUY_BLUE_FIRE] = HintText(CustomMessage("Blue Fire", /*german*/"!!!", /*french*/"!!!"),
+                                                  {}, {},
+                                                  CustomMessage("Buy Blue Fire", "Blaues Feuer kaufen", "Acheter: Flamme Bleue"));
+
+    hintTextTable[RHT_BUY_BOTTLE_BUG] = HintText(CustomMessage("Bugs", /*german*/"!!!", /*french*/"!!!"),
+                                                  {}, {},
+                                                  CustomMessage("Buy Bottle Bug", "Flaschenkäfer kaufen", "Acheter: Insecte en bouteille"));
+
+    hintTextTable[RHT_BUY_POE] = HintText(CustomMessage("Poes", /*german*/"!!!", /*french*/"!!!"),
+                                                  {}, {},
+                                                  CustomMessage("Buy Poe", "Geist kaufen", "Acheter: Esprit"));
+
+    hintTextTable[RHT_BUY_FAIRYS_SPIRIT] = HintText(CustomMessage("Fairies", /*german*/"!!!", /*french*/"!!!"),
+                                                  {}, {},
+                                                  CustomMessage("Buy Fairy's Spirit", "Feengeist kaufen", "Acheter: Esprit de Fée"));
+
+    hintTextTable[RHT_BUY_ARROWS_10] = HintText(CustomMessage("Arrows", /*german*/"!!!", /*french*/"!!!"),
+                                                  {}, {},
+                                                  CustomMessage("Buy Arrows (10)", "Pfeile kaufen (10)", "Acheter: Flèches (10)"));
+
+    hintTextTable[RHT_BUY_BOMBS_20] = HintText(CustomMessage("Bombs", /*german*/"!!!", /*french*/"!!!"),
+                                                  {}, {},
+                                                  CustomMessage("Buy Bombs (20)", "Bomben kaufen (20)", "Acheter: Bombes (20)"));
+
+    hintTextTable[RHT_BUY_BOMBS_30] = HintText(CustomMessage("bulk Bombs", /*german*/"!!!", /*french*/"!!!"),
+                                                  {}, {},
+                                                  CustomMessage("Buy Bombs (30)", "Bomben kaufen (30)", "Acheter: Bombes (30)"));
+
+    hintTextTable[RHT_BUY_BOMBS_535] = HintText(CustomMessage("pricy Bombs", /*german*/"!!!", /*french*/"!!!"),
+                                                  {}, {},
+                                                  CustomMessage("Buy Bombs (5) [35]", "Bomben kaufen (5) [35]", "Acheter: Bombes (5) [35]"));
+
+    hintTextTable[RHT_BUY_RED_POTION_40] = HintText(CustomMessage("Red Potion", /*german*/"!!!", /*french*/"!!!"),
+                                                  {}, {},
+                                                  CustomMessage("Buy Red Potion [40]", "Rotes Elixier kaufen [40]", "Acheter: Potion Rouge [40]"));
+
+    hintTextTable[RHT_BUY_RED_POTION_50] = HintText(CustomMessage("pricy Red Potion", /*german*/"!!!", /*french*/"!!!"),
+                                                  {}, {},
+                                                  CustomMessage("Buy Red Potion [50]", "Rotes Elixier kaufen [50]", "Acheter: Potion Rouge [50]"));
 
     hintTextTable[RHT_TRIFORCE_PIECE] = HintText(CustomMessage("a Piece of the Triforce", /*german*/"ein Triforce-Fragment", /*french*/"un fragment de la Triforce"),
                                                  // /*spanish*/un fragmento de la Trifuerza
@@ -1958,29 +2617,37 @@ void StaticData::HintTable_Init_Item() {
                                                   // /*spanish*/un trígono del triunfo
                                                  CustomMessage("cheese", /*german*/"Käse", /*french*/"du fromage"),
                                                   // /*spanish*/un porción de queso
-                                                 CustomMessage("a gold fragment", /*german*/"ein goldenes Fragment", /*french*/"un fragment d'or")});
+                                                 CustomMessage("a gold fragment", /*german*/"ein goldenes Fragment", /*french*/"un fragment d'or")
                                                   // /*spanish*/un fragmento dorado
+                                                 },
+                                                 CustomMessage("Triforce Piece", "Triforce-Fragment", "Triforce Piece"));
 
     hintTextTable[RHT_GOHMA_SOUL] = HintText(CustomMessage("the soul of Gohma", /*german*/"die Seele Gohmas", /*french*/""),
                                              {
                                              CustomMessage("something webbed", /*german*/"etwas Verwobenes", /*french*/"")
                                              }, {
                                              CustomMessage("an invasive soul", /*german*/"eine invasive Seele", /*french*/""),
-                                             CustomMessage("some spider essence", /*german*/"etwas spinnenartige Essenz", /*french*/"")});
+                                             CustomMessage("some spider essence", /*german*/"etwas spinnenartige Essenz", /*french*/"")
+                                             },
+                                             CustomMessage("Gohma's Soul", "Gohmas Seele", "Âme de Gohma"));
 
     hintTextTable[RHT_KING_DODONGO_SOUL] = HintText(CustomMessage("the soul of King Dodongo", /*german*/"die Seele König Dodongos", /*french*/""),
                                                     {
                                                     CustomMessage("something explosive", /*german*/"etwas Explosives", /*french*/"")
                                                     }, {
                                                     CustomMessage("a royal soul", /*german*/"eine royale Seele", /*french*/""),
-                                                    CustomMessage("some reptile essence", /*german*/"etwas reptilienartige Essenz", /*french*/"")});
+                                                    CustomMessage("some reptile essence", /*german*/"etwas reptilienartige Essenz", /*french*/"")
+                                                    },
+                                                    CustomMessage("King Dodongo's Soul", "König Dodongos Seele", "Âme du Roi Dodongo"));
 
     hintTextTable[RHT_BARINADE_SOUL] = HintText(CustomMessage("the soul of Barinade", /*german*/"die Seele Barinades", /*french*/""),
                                                 {
                                                 CustomMessage("something fishy", /*german*/"etwas Fischiges", /*french*/"")
                                                 }, {
                                                 CustomMessage("an infectuous soul", /*german*/"eine infektiöse Seele", /*french*/""),
-                                                CustomMessage("some parasitic essence", /*german*/"etwas parasitäre Essenz", /*french*/"")});
+                                                CustomMessage("some parasitic essence", /*german*/"etwas parasitäre Essenz", /*french*/"")
+                                                },
+                                                CustomMessage("Barinade's Soul", "Barinades Seele", "Âme de Barinade"));
 
     hintTextTable[RHT_PHANTOM_GANON_SOUL] = HintText(CustomMessage("the soul of Phantom Ganon", /*german*/"die Seele Phantom-Ganons", /*french*/""),
                                                      {
@@ -1988,87 +2655,54 @@ void StaticData::HintTable_Init_Item() {
                                                      }, {
                                                      CustomMessage("a duplicate soul", /*german*/"eine duplizierte Seele", /*french*/""),
 
-                                                     CustomMessage("some illusionary essence", /*german*/"etwas illusionäre Essenz", /*french*/"")});
+                                                     CustomMessage("some illusionary essence", /*german*/"etwas illusionäre Essenz", /*french*/"")
+                                                     },
+                                                     CustomMessage("Phantom Ganon's Soul", "Phantom-Ganons Seele", "Âme de Ganon Spectral"));
 
     hintTextTable[RHT_VOLVAGIA_SOUL] = HintText(CustomMessage("the soul of Volvagia", /*german*/"die Seele Volvagias", /*french*/""),
                                                 {
                                                 CustomMessage("something hot", /*german*/"etwas Heißes", /*french*/"")
                                                 }, {
                                                 CustomMessage("a draconic soul", /*german*/"eine drakonische Seele", /*french*/""),
-                                                CustomMessage("some magmatic essence", /*german*/"etwas magmatische Essenz", /*french*/"")});
+                                                CustomMessage("some magmatic essence", /*german*/"etwas magmatische Essenz", /*french*/"")
+                                                },
+                                                CustomMessage("Volvagia's Soul", "Volvagias Seele", "Âme de Vulcania"));
 
     hintTextTable[RHT_MORPHA_SOUL] = HintText(CustomMessage("the soul of Morpha", /*german*/"die Seele Morphas", /*french*/""),
                                               {
                                               CustomMessage("something wet", /*german*/"etwas Nasses", /*french*/"")
                                               }, {
                                               CustomMessage("an aquatic soul", /*german*/"eine aquatische Seele", /*french*/""),
-                                              CustomMessage("some liquid essence", /*german*/"etwas flüssige Essenz", /*french*/"")});
+                                              CustomMessage("some liquid essence", /*german*/"etwas flüssige Essenz", /*french*/"")
+                                              },
+                                              CustomMessage("Morpha's Soul", "Morphas Seele", "Âme de Morpha"));
 
     hintTextTable[RHT_BONGO_BONGO_SOUL] = HintText(CustomMessage("the soul of Bongo Bongo", /*german*/"die Seele Bongo Bongos", /*french*/""),
                                                    {
                                                    CustomMessage("something dark", /*german*/"etwas Dunkles", /*french*/"")
                                                    }, {
                                                    CustomMessage("a shadowy soul", /*german*/"eine schattige Seele", /*french*/""),
-                                                   CustomMessage("some handy essence", /*german*/"etwas praktische Essenz", /*french*/"")});
+                                                   CustomMessage("some handy essence", /*german*/"etwas praktische Essenz", /*french*/"")
+                                                   },
+                                                   CustomMessage("Bongo Bongo's Soul", "Bongo Bongos Seele", "Âme de Bongo Bongo"));
 
     hintTextTable[RHT_TWINROVA_SOUL] = HintText(CustomMessage("the soul of Twinrova", /*german*/"die Seele Twinrovas", /*french*/""),
                                                 {
                                                 CustomMessage("something spiritual", /*german*/"etwas Spirituelles", /*french*/"")
                                                 }, {
                                                 CustomMessage("old souls", /*german*/"alte Seelen", /*french*/""),
-                                                CustomMessage("twin essences", /*german*/"Zwillingsessenzen", /*french*/"")});
+                                                CustomMessage("twin essences", /*german*/"Zwillingsessenzen", /*french*/"")
+                                                },
+                                                CustomMessage("Twinrova's Soul", "Twinrovas Seele", "Âme du Duo Maléfique"));
 
     hintTextTable[RHT_GANON_SOUL] = HintText(CustomMessage("the soul of Ganon", /*german*/"die Seele Ganons", /*french*/""),
                                              {
                                              CustomMessage("something strong", /*german*/"etwas Starkes", /*french*/"")
                                              }, {
                                              CustomMessage("an evil soul", /*german*/"eine böse Seele", /*french*/""),
-                                             CustomMessage("some powerful essence", /*german*/"etwas mächtige Essenz", /*french*/"")});
-
-    hintTextTable[RHT_OCARINA_A_BUTTON] = HintText(CustomMessage("an Ocarina A Button", /*german*/"eine Okarina A Taste", /*french*/"la Touche A de l'Ocarina"),
-                                                   // /*spanish*/un botón A de Ocarina
-                                                   {
-                                                   CustomMessage("something melodic", /*german*/"etwas Melodisches", /*french*/"quelque chose de mélodieux")
-                                                    // /*spanish*/algo melódico
-                                                   }, {
-                                                   CustomMessage("a musical letter", /*german*/"ein musikalischer Brief", /*french*/"une lettre musicale")});
-                                                    // /*spanish*/una letra musical
-
-    hintTextTable[RHT_OCARINA_C_UP_BUTTON] = HintText(CustomMessage("an Ocarina C Up Button", /*german*/"eine Okarina C-Oben Taste", /*french*/"la Touche C-Haut de l'Ocarina"),
-                                                      // /*spanish*/un botón C superior de Ocarina
-                                                      {
-                                                      CustomMessage("something melodic", /*german*/"etwas Melodisches", /*french*/"quelque chose de mélodieux")
-                                                       // /*spanish*/algo melódico
-                                                      }, {
-                                                      CustomMessage("a high tone", /*german*/"ein hoher Ton", /*french*/"une tonalité élevée")});
-                                                       // /*spanish*/un tono alto
-
-    hintTextTable[RHT_OCARINA_C_DOWN_BUTTON] = HintText(CustomMessage("an Ocarina C Down Button", /*german*/"eine Okarina C-Unten Taste", /*french*/"la Touche C-Bas de l'Ocarina"),
-                                                        // /*spanish*/un botón C inferior de Ocarina
-                                                        {
-                                                        CustomMessage("something melodic", /*german*/"etwas Melodisches", /*french*/"quelque chose de mélodieux")
-                                                         // /*spanish*/algo melódico
-                                                        }, {
-                                                        CustomMessage("a low tone", /*german*/"ein tiefer Ton", /*french*/"une tonalité basse")});
-                                                         // /*spanish*/un tono bajo
-
-    hintTextTable[RHT_OCARINA_C_LEFT_BUTTON] = HintText(CustomMessage("an Ocarina C Left Button", /*german*/"eine Okarina C-Links Taste", /*french*/"la Touche C-Gauche de l'Ocarina"),
-                                                        // /*spanish*/un botón C izquierdo de Ocarina
-                                                        {
-                                                        CustomMessage("something melodic", /*german*/"etwas Melodisches", /*french*/"quelque chose de mélodieux")
-                                                         // /*spanish*/algo melódico
-                                                        }, {
-                                                        CustomMessage("a leftward tone", /*german*/"ein linksseitiger Ton", /*french*/"une tonalité vers la gauche")});
-                                                         // /*spanish*/un tono hacia la izquierda
-
-    hintTextTable[RHT_OCARINA_C_RIGHT_BUTTON] = HintText(CustomMessage("an Ocarina C Right Button", /*german*/"eine Okarina C-Rechts Taste", /*french*/"la Touche C-Droit de l'Ocarina"),
-                                                         // /*spanish*/un botón C derecho de Ocarina
-                                                         {
-                                                         CustomMessage("something melodic", /*german*/"etwas Melodisches", /*french*/"quelque chose de mélodieux")
-                                                          // /*spanish*/algo melódico
-                                                         }, {
-                                                         CustomMessage("a rightward tone", /*german*/"ein rechtsseitiger Ton", /*french*/"une tonalité vers la droite")});
-                                                          // /*spanish*/un tono hacia la derecha
+                                             CustomMessage("some powerful essence", /*german*/"etwas mächtige Essenz", /*french*/"")
+                                             },
+                                             CustomMessage("Ganon's Soul", "Ganons Seele", "Âme de Ganon"));
 
     hintTextTable[RHT_FISHING_POLE] = HintText(CustomMessage("a fishing pole", /*german*/"eine Angelrute", /*french*/"une canne à pêche"),
                                                // /*spanish*/caña de pescar
@@ -2076,8 +2710,65 @@ void StaticData::HintTable_Init_Item() {
                                                CustomMessage("the pond owner's property", /*german*/"der Besitz des Teicheigners", /*french*/"(un truc qui appartient au propriétaire de l'étang)")
                                                 // /*spanish*/(caña de pescar)
                                                }, {
-                                               CustomMessage("a fish-puller", /*german*/"ein Fischzieher", /*french*/"(un aimant à poisson)")});
+                                               CustomMessage("a fish-puller", /*german*/"ein Fischzieher", /*french*/"(un aimant à poisson)")
                                                 // /*spanish*/(caña de pescar)
+                                               },
+                                               CustomMessage("Fishing Pole", "Angelrute", "Canne à Pêche"));
+
+    hintTextTable[RHT_OCARINA_A_BUTTON] = HintText(CustomMessage("an Ocarina A Button", /*german*/"eine Okarina A Taste", /*french*/"la Touche A de l'Ocarina"),
+                                                   // /*spanish*/un botón A de Ocarina
+                                                   {
+                                                   CustomMessage("something melodic", /*german*/"etwas Melodisches", /*french*/"quelque chose de mélodieux")
+                                                    // /*spanish*/algo melódico
+                                                   }, {
+                                                   CustomMessage("a musical letter", /*german*/"ein musikalischer Brief", /*french*/"une lettre musicale")
+                                                    // /*spanish*/una letra musical
+                                                   },
+                                                   CustomMessage("Ocarina A Button", "Taste A der Okarina", "Touche A de l'Ocarina"));
+
+    hintTextTable[RHT_OCARINA_C_UP_BUTTON] = HintText(CustomMessage("an Ocarina C Up Button", /*german*/"eine Okarina C-Oben Taste", /*french*/"la Touche C-Haut de l'Ocarina"),
+                                                      // /*spanish*/un botón C superior de Ocarina
+                                                      {
+                                                      CustomMessage("something melodic", /*german*/"etwas Melodisches", /*french*/"quelque chose de mélodieux")
+                                                       // /*spanish*/algo melódico
+                                                      }, {
+                                                      CustomMessage("a high tone", /*german*/"ein hoher Ton", /*french*/"une tonalité élevée")
+                                                       // /*spanish*/un tono alto
+                                                      },
+                                                      CustomMessage("Ocarina C Up Button", "Taste C-Oben der Okarina", "Touche C-Haut de l'Ocarina"));
+
+    hintTextTable[RHT_OCARINA_C_DOWN_BUTTON] = HintText(CustomMessage("an Ocarina C Down Button", /*german*/"eine Okarina C-Unten Taste", /*french*/"la Touche C-Bas de l'Ocarina"),
+                                                        // /*spanish*/un botón C inferior de Ocarina
+                                                        {
+                                                        CustomMessage("something melodic", /*german*/"etwas Melodisches", /*french*/"quelque chose de mélodieux")
+                                                         // /*spanish*/algo melódico
+                                                        }, {
+                                                        CustomMessage("a low tone", /*german*/"ein tiefer Ton", /*french*/"une tonalité basse")
+                                                         // /*spanish*/un tono bajo
+                                                        },
+                                                        CustomMessage("Ocarina C Down Button", "Taste C-Unten der Okarina", "Touche C-Bas de l'Ocarina"));
+
+    hintTextTable[RHT_OCARINA_C_LEFT_BUTTON] = HintText(CustomMessage("an Ocarina C Left Button", /*german*/"eine Okarina C-Links Taste", /*french*/"la Touche C-Gauche de l'Ocarina"),
+                                                        // /*spanish*/un botón C izquierdo de Ocarina
+                                                        {
+                                                        CustomMessage("something melodic", /*german*/"etwas Melodisches", /*french*/"quelque chose de mélodieux")
+                                                         // /*spanish*/algo melódico
+                                                        }, {
+                                                        CustomMessage("a leftward tone", /*german*/"ein linksseitiger Ton", /*french*/"une tonalité vers la gauche")
+                                                         // /*spanish*/un tono hacia la izquierda
+                                                        },
+                                                        CustomMessage("Ocarina C Left Button", "Taste C-Links der Okarina", "Touche C-Gauche de l'Ocarina"));
+
+    hintTextTable[RHT_OCARINA_C_RIGHT_BUTTON] = HintText(CustomMessage("an Ocarina C Right Button", /*german*/"eine Okarina C-Rechts Taste", /*french*/"la Touche C-Droit de l'Ocarina"),
+                                                         // /*spanish*/un botón C derecho de Ocarina
+                                                         {
+                                                         CustomMessage("something melodic", /*german*/"etwas Melodisches", /*french*/"quelque chose de mélodieux")
+                                                          // /*spanish*/algo melódico
+                                                         }, {
+                                                         CustomMessage("a rightward tone", /*german*/"ein rechtsseitiger Ton", /*french*/"une tonalité vers la droite")
+                                                          // /*spanish*/un tono hacia la derecha
+                                                         },
+                                                         CustomMessage("Ocarina C Right Button", "Taste C-Rechts der Okarina", "Touche C-Droit de l'Ocarina"));
 
     hintTextTable[RHT_BOMBCHU_BAG] = HintText(CustomMessage("Bombchu Bag", /*german*/"!!!", /*french*/"un Sac de Missiles Teigneux"),
                                               {
@@ -2086,63 +2777,52 @@ void StaticData::HintTable_Init_Item() {
                                              CustomMessage("something that can remove boulders", /*german*/"etwas, das Geröll entfernen kann", /*french*/"une chose qui enlève les rochers")
                                                   // /*spanish*/algo que pueda quitar rocas
                                               }, {
-                                              CustomMessage("sack of mice", /*german*/"!!!", /*french*/"un Sac rempli de souris")});
+                                              CustomMessage("sack of mice", /*german*/"!!!", /*french*/"un Sac rempli de souris")
+                                              },
+                                              CustomMessage("Bombchu Bag", "Sac de Missiles Teigneux", "!!!"));
 
     hintTextTable[RHT_SKELETON_KEY] = HintText(CustomMessage("a Skeleton Key", /*german*/ "ein Universalschlüssel", /*french*/ "une Clé Squelette"),
                                                // /*spanish*/una Llave Maestra
                                                {
                                                CustomMessage("a key", /*german*/ "ein Schlüssel", /*french*/ "une clé")
                                                 // /*spanish*/una llave
-                                               },
-                                               { CustomMessage("a master unlocker", /*german*/ "ein Meisterentsperrer", /*french*/ "un Kit de Déverrouillage") });
+                                               }, { 
+                                               CustomMessage("a master unlocker", /*german*/ "ein Meisterentsperrer", /*french*/ "un Kit de Déverrouillage")
                                                 // /*spanish*/un desbloqueador maestro
+                                               },
+                                               CustomMessage("Skeleton Key", "Skelettschlüssel", "Clé Squelette"));
+
     hintTextTable[RHT_QUIVER_INF] = HintText(CustomMessage("an infinite Quiver", /*german*/"!!!", /*french*/"un Carquois Infini"),
-                                             {
-                                             CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
-                                             }, {
-                                             CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
+                                             {}, {},
+                                             CustomMessage("Infinite Quiver", "Unendlicher Köcher", "Carquois Infini"));
 
     hintTextTable[RHT_BOMB_BAG_INF] = HintText(CustomMessage("an infinite Bomb Bag", /*german*/"!!!", /*french*/"un Sac de Bombe sans fond"),
-                                               {
-                                               CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
-                                               }, {
-                                               CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
+                                               {}, {},
+                                               CustomMessage("Infinite Bomb Bag", "Unendliche Bombentasche", "Sac de Bombes Infini"));
 
     hintTextTable[RHT_BULLET_BAG_INF] = HintText(CustomMessage("an infinite Bullet Bag", /*german*/"!!!", /*french*/"un Sac de Graine sans fond"),
-                                                 {
-                                                 CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
-                                                 }, {
-                                                 CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
+                                                 {}, {},
+                                                 CustomMessage("Infinite Bullet Bag", "Unendliche Samentasche", "Sac de Graines Infinis"));
 
     hintTextTable[RHT_STICK_UPGRADE_INF] = HintText(CustomMessage("infinite Deku Sticks", /*german*/"!!!", /*french*/" des Bâtons Mojo illimités"),
-                                                    {
-                                                    CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
-                                                    }, {
-                                                    CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
+                                                    {}, {},
+                                                    CustomMessage("Infinite Stick Capacity", "Unendliche Stab-Kapazität", "Bâtons Mojo Infinis"));
 
-    hintTextTable[RHT_NUT_UPGRADE_INF] = HintText(CustomMessage("infinite Deku Nut", /*german*/"!!!", /*french*/"des Noix Mojo illimitées"),
-                                                  {
-                                                  CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
-                                                  }, {
-                                                  CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
+    hintTextTable[RHT_NUT_UPGRADE_INF] = HintText(CustomMessage("infinite Deku Nuts", /*german*/"!!!", /*french*/"des Noix Mojo illimitées"),
+                                                  {}, {},
+                                                  CustomMessage("Infinite Nut Capacity", "Unendliche Nuß-Kapazität", "Noix Mojo Infinies"));
 
     hintTextTable[RHT_MAGIC_INF] = HintText(CustomMessage("unlimited Magic", /*german*/"!!!", /*french*/"de la Magie infinie"),
-                                            {
-                                            CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
-                                            }, {
-                                            CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
+                                            {}, {},
+                                            CustomMessage("Infinite Magic Meter", "Unendliches Magisches Maß", "Magie Infinie"));
 
     hintTextTable[RHT_BOMBCHU_INF] = HintText(CustomMessage("infinite Bombchus", /*german*/"!!!", /*french*/"des Missiles Teigneux illimités"),
-                                              {
-                                              CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
-                                              }, {
-                                              CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
+                                              {}, {},
+                                              CustomMessage("Infinite Bombchus", "Unendliche Krabbelminen", "Missiles Teigneux Infinis"));
 
     hintTextTable[RHT_WALLET_INF] = HintText(CustomMessage("an infinite Wallet", /*german*/"!!!", /*french*/"une Bourse sans fond"),
-                                             {
-                                             CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
-                                             }, {
-                                             CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
+                                             {}, {},
+                                             CustomMessage("Infinite Wallet", "Unendliche Geldbörse", "Bourse Infinie"));
 
     hintTextTable[RHT_EPONA] = HintText(CustomMessage("Epona", /*german*/"Epona", /*french*/"Epona"),
                                     // /*spanish*/a Epona
@@ -2159,7 +2839,141 @@ void StaticData::HintTable_Init_Item() {
                                     CustomMessage("a four legged friend", /*german*/"ein vierbeiniger Freund", /*french*/"un puissant animal")});
                                          // /*spanish*/una amiga cuadrúpeda
 
+    hintTextTable[RG_TRIFORCE] = HintText(CustomMessage("the Triforce", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Triforce", "Triforce", "Triforce"));
+
+    hintTextTable[RHT_HINT] = HintText(CustomMessage("a Hint", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Hint", "Hinweis", "Indice"));
+
+    hintTextTable[RHT_HOOKSHOT] = HintText(CustomMessage("the Hookshot", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Hookshot", "Fanghaken", "Grappin"));
+
+    hintTextTable[RHT_LONGSHOT] = HintText(CustomMessage("the Longshot", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Longshot", "Enterhaken", "Super-Grappin"));
+
+    hintTextTable[RHT_FAIRY_OCARINA] = HintText(CustomMessage("the Fairy Ocarina", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Fairy Ocarina", "Feen-Okarina", "Ocarina des fées"));
+
+    hintTextTable[RHT_OCARINA_OF_TIME] = HintText(CustomMessage("the Ocarina of Time", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Ocarina of Time", "Okarina der Zeit", "Ocarina du Temps"));
+
+    hintTextTable[RHT_BOMB_BAG] = HintText(CustomMessage("the Bomb Bag", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Bomb Bag", "Bombentasche", "Sac de Bombes"));
+
+    hintTextTable[RHT_BIG_BOMB_BAG] = HintText(CustomMessage("the Big Bomb Bag", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Big Bomb Bag", "Große Bombentasche", "Grand Sac de Bombes"));
+
+    hintTextTable[RHT_BIGGEST_BOMB_BAG] = HintText(CustomMessage("the Biggest Bomb Bag", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Biggest Bomb Bag", "Größte Bombentasche", "Énorme Sac de Bombes"));
+
+    hintTextTable[RHT_FAIRY_BOW] = HintText(CustomMessage("the Fairy Bow", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Fairy Bow", "Feen-Bogen", "Arc des Fées"));
+
+    hintTextTable[RHT_BIG_QUIVER] = HintText(CustomMessage("a Big Quiver", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Big Quiver", "Großer Köcher", "Grand carquois"));
+
+    hintTextTable[RHT_BIGGEST_QUIVER] = HintText(CustomMessage("the Biggest Quiver", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Biggest Quiver", "Größter Köcher", "Énorme carquois"));
+
+    hintTextTable[RHT_FAIRY_SLINGSHOT] = HintText(CustomMessage("the Fairy Slingshot", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Fairy Slingshot", "Feen-Schleuder", "Lance-Pierre des Fées"));
+
+    hintTextTable[RHT_BIG_BULLET_BAG] = HintText(CustomMessage("a Big Bullet Bag", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Big Deku Seed Bullet Bag", "Große Deku-Samentasche", "Grand sac de graines mojo"));
+
+    hintTextTable[RHT_BIGGEST_BULLET_BAG] = HintText(CustomMessage("the Biggest Bullet Bag", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Biggest Deku Seed Bullet Bag", "Größte Deku-Samentasche", "Énorme sac de graines mojo"));
+
+    hintTextTable[RHT_GORONS_BRACELET] = HintText(CustomMessage("the Goron's Bracelet", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Goron's Bracelet", "Goronen-Armband", "Bracelet Goron"));
+
+    hintTextTable[RHT_SILVER_GAUNTLETS] = HintText(CustomMessage("the Silver Gauntlets", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Silver Gauntlets", "Silberhandschuhe", "Gantelets d'argent"));
+
+    hintTextTable[RHT_GOLDEN_GAUNTLETS] = HintText(CustomMessage("the Golden Gauntlets", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Golden Gauntlets", "Goldhandschuhe", "Gantelets d'or"));
+
+    hintTextTable[RHT_BRONZE_SCALE] = HintText(CustomMessage("a Bronze Scale", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Bronze Scale", "Bronzene Schuppe", "Écaille de Bronze"));
+
+    hintTextTable[RHT_SILVER_SCALE] = HintText(CustomMessage("a Silver Scale", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Silver Scale", "Silberne Schuppe", "Écaille d'argent"));
+
+    hintTextTable[RHT_GOLDEN_SCALE] = HintText(CustomMessage("a Golden Scale", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Golden Scale", "Goldene Schuppe", "Écaille d'or"));
+
+    hintTextTable[RHT_CHILD_WALLET] = HintText(CustomMessage("a Child's Wallet", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Child Wallet", "Kindergeldbörse", "Petite Bourse"));
+
+    hintTextTable[RHT_ADULT_WALLET] = HintText(CustomMessage("an Adult's Wallet", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Adult Wallet", "Erwachsenengeldbörse", "Grande Bourse"));
+
+    hintTextTable[RHT_GIANT_WALLET] = HintText(CustomMessage("a Giant Wallet", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Giant Wallet", "Riesige Geldbörse", "Bourse de Géant"));
+
+    hintTextTable[RHT_TYCOON_WALLET] = HintText(CustomMessage("the Tycoon Wallet", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Tycoon Wallet", "Goldene Geldbörse", "Bourse de Magnat"));
+
+    hintTextTable[RHT_DEKU_NUT_BAG] = HintText(CustomMessage("a Deku Nut Bag", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Deku Nut Bag", "Deku-Nuß-Tasche", "Sac de Noix Mojo"));
+
+    hintTextTable[RHT_DEKU_NUT_CAPACITY_30] = HintText(CustomMessage("Deku Nut Capacity (30)", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Deku Nut Capacity (30)", "Deku-Nuß-Kapazität (30)", "Capacité de noix Mojo (30)"));
+
+    hintTextTable[RHT_DEKU_NUT_CAPACITY_40] = HintText(CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Deku Nut Capacity (40)", "Deku-Nuß-Kapazität (40)", "Capacité de noix Mojo (40)"));
+
+    hintTextTable[RHT_DEKU_STICK_BAG] = HintText(CustomMessage("a Deku Stick Bag", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Deku Stick Bag", "Deku-Stab-Tasche", "Sac de Bâton Mojo"));
+                                             
+    hintTextTable[RHT_DEKU_STICK_CAPACITY_20] = HintText(CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Deku Stick Capacity (20)", "Deku-Stab-Kapazität (20)", "Capacité de Bâtons Mojo (20)"));
+                                             
+    hintTextTable[RHT_DEKU_STICK_CAPACITY_30] = HintText(CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Deku Stick Capacity (30)", "Deku-Stab-Kapazität (30)", "Capacité de Bâtons Mojo (30)"));
+                                             
+    hintTextTable[RHT_MAGIC_SINGLE] = HintText(CustomMessage("a Small Magic Meter", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Magic Meter", "Magisches Maß", "Jauge de Magie"));
+                                             
+    hintTextTable[RHT_MAGIC_DOUBLE] = HintText(CustomMessage("a Large Magic Meter", /*german*/"!!!", /*french*/"!!!"),
+                                             {}, {},
+                                             CustomMessage("Enhanced Magic Meter", "Verbessertes Magisches Maß", "Jauge de Magie améliorée"));
+                                             
+
     //What is this used for?
+    //This was meant for the mysterious items mode IIRC, but that stopped applying to hints
     hintTextTable[RHT_HINT_MYSTERIOUS] = HintText(CustomMessage("something mysterious", /*german*/"etwas Mysteriöses", /*french*/"un sacré mystère"));
                                                   // /*spanish*/algo misterioso
 

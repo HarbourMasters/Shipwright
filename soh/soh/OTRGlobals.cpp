@@ -393,7 +393,6 @@ OTRGlobals::OTRGlobals() {
     gRandoContext->InitStaticData();
     gRandoContext = Rando::Context::CreateInstance();
     Rando::Settings::GetInstance()->AssignContext(gRandoContext);
-    Rando::StaticData::InitItemTable();//RANDOTODO make this not rely on context's logic so it can be initialised in InitStaticData
     Rando::Settings::GetInstance()->CreateOptions();
     gRandomizer = std::make_shared<Randomizer>();
 
@@ -2148,7 +2147,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                 }
             }
         } else if (textId == TEXT_ITEM_KEY_SMALL) {
-            if (player->getItemEntry.getItemId == RG_GERUDO_FORTRESS_SMALL_KEY) {
+            if (player->getItemEntry.getItemId == RG_TH_SMALL_KEY) {
                 if (Randomizer_GetSettingValue(RSK_GERUDO_KEYS) != RO_GERUDO_KEYS_VANILLA) {
                     messageEntry = Randomizer_GetCustomGetItemMessage(player);
                 }

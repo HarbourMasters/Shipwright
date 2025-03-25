@@ -38,7 +38,7 @@ void RegionTable_Init_Kakariko() {
         Entrance(RR_KAK_IMPAS_HOUSE,          []{return logic->CanOpenOverworldDoor(RG_IMPAS_HOUSE_KEY);}),
         Entrance(RR_KAK_WINDMILL,             []{return logic->CanOpenOverworldDoor(RG_WINDMILL_KEY);}),
         Entrance(RR_KAK_BAZAAR,               []{return logic->IsAdult && logic->AtDay && logic->CanOpenOverworldDoor(RG_KAK_BAZAAR_KEY);}),
-        Entrance(RR_KAK_SHOOTING_GALLERY,     []{return logic->IsAdult && logic->AtDay && logic->CanOpenOverworldDoor(RG_KAK_SHOOTING_GALLERY_KEY);}),
+        Entrance(RR_KAK_SHOOTING_GALLERY,     []{return logic->IsAdult && logic->AtDay && logic->CanOpenOverworldDoor(RG_KAK_SHOOTING_KEY);}),
         Entrance(RR_KAK_WELL,                 []{return logic->IsAdult || logic->DrainWell || logic->CanUse(RG_IRON_BOOTS);}),
         Entrance(RR_KAK_POTION_SHOP_FRONT,    []{return (logic->AtDay || logic->IsChild) && logic->CanOpenOverworldDoor(RG_KAK_POTION_SHOP_KEY);}),
         Entrance(RR_KAK_REDEAD_GROTTO,        []{return logic->CanOpenBombGrotto();}),

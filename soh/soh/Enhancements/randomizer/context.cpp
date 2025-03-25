@@ -61,6 +61,7 @@ RandomizerArea Context::GetAreaFromString(std::string str) {
 
 void Context::InitStaticData() {
     StaticData::HintTable_Init();
+    StaticData::InitItemTable();
     StaticData::trialNameToEnum = StaticData::PopulateTranslationMap(StaticData::trialData);
     StaticData::hintNameToEnum = StaticData::PopulateTranslationMap(StaticData::hintNames);
     StaticData::hintTypeNameToEnum = StaticData::PopulateTranslationMap(StaticData::hintTypeNames);
@@ -293,7 +294,7 @@ void Context::CreateItemOverrides() {
         }
         SPDLOG_DEBUG(loc->GetName());
         SPDLOG_DEBUG(": ");
-        SPDLOG_DEBUG(itemLoc->GetPlacedItemName().GetEnglish());
+        SPDLOG_DEBUG(itemLoc->GetPlacedItemName().GetForCurrentLanguage());
         SPDLOG_DEBUG("\n");
     }
     SPDLOG_DEBUG("Overrides Created: ");

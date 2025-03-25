@@ -121,9 +121,9 @@ std::vector<ItemTrackerItem> overworldKeyItems = {
     ITEM_TRACKER_ITEM_CUSTOM(RG_MARKET_BAZAAR_KEY,                ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
     ITEM_TRACKER_ITEM_CUSTOM(RG_MARKET_POTION_SHOP_KEY,           ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
     ITEM_TRACKER_ITEM_CUSTOM(RG_MASK_SHOP_KEY,                    ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_MARKET_SHOOTING_GALLERY_KEY,      ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_MARKET_SHOOTING_KEY,      ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
     ITEM_TRACKER_ITEM_CUSTOM(RG_BOMBCHU_BOWLING_KEY,              ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_TREASURE_CHEST_GAME_BUILDING_KEY, ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_TCG_BUILDING_KEY, ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
     ITEM_TRACKER_ITEM_CUSTOM(RG_BOMBCHU_SHOP_KEY,                 ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
     ITEM_TRACKER_ITEM_CUSTOM(RG_RICHARDS_HOUSE_KEY,               ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
     ITEM_TRACKER_ITEM_CUSTOM(RG_ALLEY_HOUSE_KEY,                  ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
@@ -134,7 +134,7 @@ std::vector<ItemTrackerItem> overworldKeyItems = {
     ITEM_TRACKER_ITEM_CUSTOM(RG_SKULLTULA_HOUSE_KEY,              ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
     ITEM_TRACKER_ITEM_CUSTOM(RG_IMPAS_HOUSE_KEY,                  ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
     ITEM_TRACKER_ITEM_CUSTOM(RG_WINDMILL_KEY,                     ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_KAK_SHOOTING_GALLERY_KEY,         ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_KAK_SHOOTING_KEY,         ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
     ITEM_TRACKER_ITEM_CUSTOM(RG_DAMPES_HUT_KEY,                   ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
     ITEM_TRACKER_ITEM_CUSTOM(RG_TALONS_HOUSE_KEY,                 ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
     ITEM_TRACKER_ITEM_CUSTOM(RG_STABLES_KEY,                      ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
@@ -242,9 +242,9 @@ std::map<uint16_t, std::string> itemTrackerOverworldKeyShortNames = {
     { RG_MARKET_BAZAAR_KEY, "MKBAZ" },
     { RG_MARKET_POTION_SHOP_KEY, "MKPOT" },
     { RG_MASK_SHOP_KEY, "MASK" },
-    { RG_MARKET_SHOOTING_GALLERY_KEY, "MKSHO" },
+    { RG_MARKET_SHOOTING_KEY, "MKSHO" },
     { RG_BOMBCHU_BOWLING_KEY, "BOWL" },
-    { RG_TREASURE_CHEST_GAME_BUILDING_KEY, "TREASU" },
+    { RG_TCG_BUILDING_KEY, "TREASU" },
     { RG_BOMBCHU_SHOP_KEY, "CHUSHO" },
     { RG_RICHARDS_HOUSE_KEY, "RICH" },
     { RG_ALLEY_HOUSE_KEY, "ALLEY" },
@@ -255,7 +255,7 @@ std::map<uint16_t, std::string> itemTrackerOverworldKeyShortNames = {
     { RG_SKULLTULA_HOUSE_KEY, "SKULL" },
     { RG_IMPAS_HOUSE_KEY, "IMPAS" },
     { RG_WINDMILL_KEY, "WIND" },
-    { RG_KAK_SHOOTING_GALLERY_KEY, "KAKSHO" },
+    { RG_KAK_SHOOTING_KEY, "KAKSHO" },
     { RG_DAMPES_HUT_KEY, "DAMPES" },
     { RG_TALONS_HOUSE_KEY, "TALONS" },
     { RG_STABLES_KEY, "STABLE" },
@@ -701,7 +701,7 @@ void DrawItem(ItemTrackerItem item) {
     bool hasItem = actualItemId != ITEM_NONE;
     std::string itemName = "";
 
-    // Hack fix as RG_MARKET_SHOOTING_GALLERY_KEY is RandomizerGet #255 which collides
+    // Hack fix as RG_MARKET_SHOOTING_KEY is RandomizerGet #255 which collides
     // with ITEM_NONE (ItemId #255) due to the lack of a modid to separate them
     if (item.name != "ITEM_KEY_SMALL" && item.id == ITEM_NONE) {
         return;
@@ -844,7 +844,7 @@ void DrawItem(ItemTrackerItem item) {
             hasItem = Flags_GetRandomizerInf(RAND_INF_MASK_SHOP_KEY_OBTAINED);
             itemName = "Mask Shop Key";
             break;
-        case RG_MARKET_SHOOTING_GALLERY_KEY:
+        case RG_MARKET_SHOOTING_KEY:
             actualItemId = item.id;
             hasItem = Flags_GetRandomizerInf(RAND_INF_MARKET_SHOOTING_GALLERY_KEY_OBTAINED);
             itemName = "Market Shooting Gallery Key";
@@ -854,7 +854,7 @@ void DrawItem(ItemTrackerItem item) {
             hasItem = Flags_GetRandomizerInf(RAND_INF_BOMBCHU_BOWLING_KEY_OBTAINED);
             itemName = "Bombchu Bowling Key";
             break;
-        case RG_TREASURE_CHEST_GAME_BUILDING_KEY:
+        case RG_TCG_BUILDING_KEY:
             actualItemId = item.id;
             hasItem = Flags_GetRandomizerInf(RAND_INF_TREASURE_CHEST_GAME_BUILDING_KEY_OBTAINED);
             itemName = "Treasure Chest Game Building Key";
@@ -909,7 +909,7 @@ void DrawItem(ItemTrackerItem item) {
             hasItem = Flags_GetRandomizerInf(RAND_INF_WINDMILL_KEY_OBTAINED);
             itemName = "Windmill Key";
             break;
-        case RG_KAK_SHOOTING_GALLERY_KEY:
+        case RG_KAK_SHOOTING_KEY:
             actualItemId = item.id;
             hasItem = Flags_GetRandomizerInf(RAND_INF_KAK_SHOOTING_GALLERY_KEY_OBTAINED);
             itemName = "Kak Shooting Gallery Key";

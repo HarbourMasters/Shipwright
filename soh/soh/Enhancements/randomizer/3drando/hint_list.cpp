@@ -25,7 +25,7 @@ void StaticData::HintTable_Init() {
     /*--------------------------
     |       GENERAL TEXT        |
     ---------------------------*/
-    hintTextTable[RHT_NONE] = HintText(CustomMessage("No Hint", "Kein Hinweis", "Pas d'Indice" ));
+    hintTextTable[RHT_NONE] = HintText(CustomMessage("No Hint", "Kein Hinweis", "Pas d'Indice" ), {}, {}, CustomMessage("No Item", "Rien", "Kein Artikel"));
     hintTextTable[RHT_WAY_OF_THE_HERO] =
         HintText(CustomMessage( "They say that #[[1]]# is on #the way of the hero#.", 
                                 "Man erzählt sich, daß #[[1]]# auf #dem Weg des Helden# sei.",
@@ -999,7 +999,7 @@ void StaticData::HintTable_Init() {
     
     hintTextTable[RHT_CASTLE_GROUNDS] = HintText(CustomMessage("the Castle Grounds",
                                                     /*german*/ "Anlage von Schloß Hyrule",
-                                                    /*french*/ "le Château d'Hyrule"));
+                                                    /*french*/ "le Château d'Hyrule")); //RANDOTODO name differently to RHT_HYRULE_CASTLE
                                                  // /*spanish*/
     
     hintTextTable[RHT_HYRULE_CASTLE] = HintText(CustomMessage("Hyrule Castle",
@@ -1012,11 +1012,6 @@ void StaticData::HintTable_Init() {
                                                            /*french*/ "les alentours du Château de Ganon"));
                                                         // /*spanish*/el exterior del Castillo de Ganon
 
-    hintTextTable[RHT_CASTLE_GROUNDS] = HintText(CustomMessage("the Castle Grounds",
-                                                    /*german*/ "Anlage von Schloß Hyrule",
-                                                    /*french*/ "le Château d'Hyrule"));
-                                                 // /*spanish*/
-    
     hintTextTable[RHT_KAKARIKO_VILLAGE] = HintText(CustomMessage("Kakariko Village",
                                                       /*german*/ "Kakariko",
                                                       /*french*/ "le Village Cocorico"));

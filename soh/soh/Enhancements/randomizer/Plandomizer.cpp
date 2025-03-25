@@ -145,10 +145,10 @@ std::unordered_map<RandomizerGet, std::string> itemImageMap = {
     { RG_PROGRESSIVE_SLINGSHOT,     		"ITEM_SLINGSHOT" },
     { RG_PROGRESSIVE_WALLET,        		"ITEM_WALLET_ADULT" },
     { RG_PROGRESSIVE_SCALE,         		"ITEM_SCALE_SILVER" },
-    { RG_PROGRESSIVE_NUT_UPGRADE,   		"ITEM_NUT" },
-    { RG_PROGRESSIVE_STICK_UPGRADE, 		"ITEM_STICK" },
+    { RG_PROGRESSIVE_NUT_BAG,   		"ITEM_NUT" },
+    { RG_PROGRESSIVE_STICK_BAG, 		"ITEM_STICK" },
     { RG_PROGRESSIVE_BOMBCHUS,      		"ITEM_BOMBCHU" },
-    { RG_PROGRESSIVE_MAGIC_METER,   		"ITEM_MAGIC_SMALL" },
+    { RG_PROGRESSIVE_MAGIC,   		"ITEM_MAGIC_SMALL" },
     { RG_MAGIC_SINGLE,              		"ITEM_MAGIC_SMALL" },
     { RG_MAGIC_DOUBLE,              		"ITEM_MAGIC_LARGE" },
     { RG_PROGRESSIVE_OCARINA,       		"ITEM_OCARINA_FAIRY" },
@@ -185,7 +185,7 @@ std::unordered_map<RandomizerGet, std::string> itemImageMap = {
     { RG_WATER_TEMPLE_MAP,          		"ITEM_DUNGEON_MAP" },
     { RG_SPIRIT_TEMPLE_MAP,         		"ITEM_DUNGEON_MAP" },
     { RG_SHADOW_TEMPLE_MAP,         		"ITEM_DUNGEON_MAP" },
-    { RG_BOTTOM_OF_THE_WELL_MAP,    		"ITEM_DUNGEON_MAP" },
+    { RG_BOTW_MAP,    		"ITEM_DUNGEON_MAP" },
     { RG_ICE_CAVERN_MAP,            		"ITEM_DUNGEON_MAP" },
     { RG_DEKU_TREE_COMPASS,         		"ITEM_COMPASS" },
     { RG_DODONGOS_CAVERN_COMPASS,   		"ITEM_COMPASS" },
@@ -195,7 +195,7 @@ std::unordered_map<RandomizerGet, std::string> itemImageMap = {
     { RG_WATER_TEMPLE_COMPASS,      		"ITEM_COMPASS" },
     { RG_SPIRIT_TEMPLE_COMPASS,     		"ITEM_COMPASS" },
     { RG_SHADOW_TEMPLE_COMPASS,     		"ITEM_COMPASS" },
-    { RG_BOTTOM_OF_THE_WELL_COMPASS,		"ITEM_COMPASS" },
+    { RG_BOTW_COMPASS,		"ITEM_COMPASS" },
     { RG_ICE_CAVERN_COMPASS,        		"ITEM_COMPASS" },
     { RG_FOREST_TEMPLE_BOSS_KEY,    		"ITEM_KEY_BOSS" },
     { RG_FIRE_TEMPLE_BOSS_KEY,      		"ITEM_KEY_BOSS" },
@@ -208,9 +208,9 @@ std::unordered_map<RandomizerGet, std::string> itemImageMap = {
     { RG_WATER_TEMPLE_SMALL_KEY,    		"ITEM_KEY_SMALL" },
     { RG_SPIRIT_TEMPLE_SMALL_KEY,   		"ITEM_KEY_SMALL" },
     { RG_SHADOW_TEMPLE_SMALL_KEY,   		"ITEM_KEY_SMALL" },
-    { RG_BOTTOM_OF_THE_WELL_SMALL_KEY, 		"ITEM_KEY_SMALL" },
-    { RG_GERUDO_TRAINING_GROUND_SMALL_KEY, "ITEM_KEY_SMALL" },
-    { RG_GERUDO_FORTRESS_SMALL_KEY, 		"ITEM_KEY_SMALL" },
+    { RG_BOTW_SMALL_KEY, 		"ITEM_KEY_SMALL" },
+    { RG_GTG_SMALL_KEY, "ITEM_KEY_SMALL" },
+    { RG_TH_SMALL_KEY, 		"ITEM_KEY_SMALL" },
     { RG_GANONS_CASTLE_SMALL_KEY,   		"ITEM_KEY_SMALL" },
     { RG_TREASURE_GAME_SMALL_KEY,   		"ITEM_KEY_SMALL" },
     { RG_KOKIRI_EMERALD,            		"ITEM_KOKIRI_EMERALD" },
@@ -229,7 +229,7 @@ std::unordered_map<RandomizerGet, std::string> itemImageMap = {
     { RG_RED_RUPEE,                 		"ITEM_RUPEE_GRAYSCALE" },
     { RG_PURPLE_RUPEE,              		"ITEM_RUPEE_GRAYSCALE" },
     { RG_HUGE_RUPEE,                		"ITEM_RUPEE_GRAYSCALE" },
-    { RG_TREASURE_GAME_GREEN_RUPEE,         "ITEM_RUPEE_GRAYSCALE" },
+    { RG_LOSER_GREEN_RUPEE,         "ITEM_RUPEE_GRAYSCALE" },
     { RG_PIECE_OF_HEART,            		"ITEM_HEART_PIECE" },
     { RG_HEART_CONTAINER,           		"ITEM_HEART_CONTAINER" },
     { RG_ICE_TRAP,                  		"ITEM_ICE_TRAP" },
@@ -256,7 +256,7 @@ std::unordered_map<RandomizerGet, std::string> itemImageMap = {
     { RG_BUY_ARROWS_30,                 	"ITEM_ARROWS_MEDIUM" },
     { RG_ARROWS_30,                 		"ITEM_ARROWS_LARGE" },
     { RG_BUY_ARROWS_50,                 	"ITEM_ARROWS_LARGE" },
-    { RG_TREASURE_GAME_HEART,       		"ITEM_HEART_PIECE" },
+    { RG_TCG_PIECE_OF_HEART,       		"ITEM_HEART_PIECE" },
     { RG_DEKU_SEEDS_30,             		"ITEM_SEEDS" },
     { RG_BUY_DEKU_SEEDS_30,             	"ITEM_SEEDS" },
     { RG_BUY_HEART,                         "ITEM_HEART_GRAYSCALE" },
@@ -283,7 +283,7 @@ void PlandoPopImageButtonStyle(){
 
 ImVec4 plandomizerGetItemColor(Rando::Item randoItem) {
     itemColor = ImVec4( 1.0f, 1.0f, 1.0f, 1.0f );
-    if (randoItem.GetItemType() == ITEMTYPE_SMALLKEY || randoItem.GetItemType() == ITEMTYPE_FORTRESS_SMALLKEY
+    if (randoItem.GetItemType() == ITEMTYPE_SMALLKEY || randoItem.GetItemType() == ITEMTYPE_TH_SMALLKEY
         || randoItem.GetItemType() == ITEMTYPE_BOSSKEY) {
         if (randoItem.GetRandomizerGet() == RG_FOREST_TEMPLE_SMALL_KEY || 
             randoItem.GetRandomizerGet() == RG_FOREST_TEMPLE_KEY_RING) {
@@ -300,14 +300,14 @@ ImVec4 plandomizerGetItemColor(Rando::Item randoItem) {
         } else if (randoItem.GetRandomizerGet() == RG_SHADOW_TEMPLE_SMALL_KEY || 
             randoItem.GetRandomizerGet() == RG_SHADOW_TEMPLE_KEY_RING) {
             itemColor = ImVec4( 0.49f, 0.06f, 0.69f, 1.0f );
-        } else if (randoItem.GetRandomizerGet() == RG_BOTTOM_OF_THE_WELL_SMALL_KEY || 
-            randoItem.GetRandomizerGet() == RG_BOTTOM_OF_THE_WELL_KEY_RING) {
+        } else if (randoItem.GetRandomizerGet() == RG_BOTW_SMALL_KEY || 
+            randoItem.GetRandomizerGet() == RG_BOTW_KEY_RING) {
             itemColor = ImVec4( 0.89f, 0.43f, 1.0f, 1.0f );
-        } else if (randoItem.GetRandomizerGet() == RG_GERUDO_TRAINING_GROUND_SMALL_KEY || 
-            randoItem.GetRandomizerGet() == RG_GERUDO_TRAINING_GROUND_KEY_RING) {
+        } else if (randoItem.GetRandomizerGet() == RG_GTG_SMALL_KEY || 
+            randoItem.GetRandomizerGet() == RG_GTG_KEY_RING) {
             itemColor = ImVec4( 1.0f, 1.0f, 0, 1.0f );
-        } else if (randoItem.GetRandomizerGet() == RG_GERUDO_FORTRESS_SMALL_KEY || 
-            randoItem.GetRandomizerGet() == RG_GERUDO_FORTRESS_KEY_RING) {
+        } else if (randoItem.GetRandomizerGet() == RG_TH_SMALL_KEY || 
+            randoItem.GetRandomizerGet() == RG_TH_KEY_RING) {
             itemColor = ImVec4( 1.0f, 1.0f, 1.0f, 1.0f );
         } else if (randoItem.GetRandomizerGet() == RG_GANONS_CASTLE_SMALL_KEY || 
             randoItem.GetRandomizerGet() == RG_GANONS_CASTLE_KEY_RING) {
@@ -325,7 +325,7 @@ ImVec4 plandomizerGetItemColor(Rando::Item randoItem) {
     }
     if (randoItem.GetRandomizerGet() >= RG_GREEN_RUPEE && randoItem.GetRandomizerGet() <= RG_HUGE_RUPEE) {
         if (randoItem.GetRandomizerGet() == RG_GREG_RUPEE || randoItem.GetRandomizerGet() == RG_GREEN_RUPEE 
-            || randoItem.GetRandomizerGet() == RG_TREASURE_GAME_GREEN_RUPEE) {
+            || randoItem.GetRandomizerGet() == RG_LOSER_GREEN_RUPEE) {
             itemColor = ImVec4( 0.02f, 0.76f, 0.18f, 1.0f );
         } else if (randoItem.GetRandomizerGet() == RG_BLUE_RUPEE) {
             itemColor = ImVec4( 0.33f, 0.71f, 0.87f, 1.0f );
@@ -391,7 +391,7 @@ void PlandomizerItemImageCorrection(Rando::Item randoItem) {
 
     itemColor = plandomizerGetItemColor(randoItem);
 
-    if (randoItem.GetItemType() == ITEMTYPE_SMALLKEY || randoItem.GetItemType() == ITEMTYPE_FORTRESS_SMALLKEY) {
+    if (randoItem.GetItemType() == ITEMTYPE_SMALLKEY || randoItem.GetItemType() == ITEMTYPE_TH_SMALLKEY) {
         textureID = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_KEY_SMALL");
         return;
     }
@@ -542,8 +542,8 @@ void PlandomizerSaveSpoilerLog() {
     for (auto& import : plandoLogData) {
         if (import.checkRewardItem.GetRandomizerGet() == RG_ICE_TRAP) {
             spoilerSave["locations"][import.checkName] = {
-                { "item", import.checkRewardItem.GetName().english },
-                { "model", import.iceTrapModel.GetName().english },
+                { "item", import.checkRewardItem.GetName().GetForCurrentLanguage() },
+                { "model", import.iceTrapModel.GetName().GetForCurrentLanguage() },
                 { "trickName", import.iceTrapName.c_str() }
             };
             if (import.shopPrice > -1) {
@@ -551,11 +551,11 @@ void PlandomizerSaveSpoilerLog() {
             }
         } else if (import.shopPrice > -1) {
             spoilerSave["locations"][import.checkName] = {
-                { "item", import.checkRewardItem.GetName().english },
+                { "item", import.checkRewardItem.GetName().GetForCurrentLanguage() },
                 { "price", import.shopPrice }
             };
         } else {
-            spoilerSave["locations"][import.checkName] = import.checkRewardItem.GetName().english;
+            spoilerSave["locations"][import.checkName] = import.checkRewardItem.GetName().GetForCurrentLanguage();
         }
     }
 
@@ -635,7 +635,7 @@ void PlandomizerLoadSpoilerLog(std::string logFile) {
                         checkObject.checkRewardItem = plandomizerRandoRetrieveItem(Rando::StaticData::itemNameToEnum[value.get<std::string>()]);
                         checkObject.shopPrice = -1;
                         if (checkObject.shopPrice == -1 
-                            && checkObject.checkRewardItem.GetName().english.find("Buy") != std::string::npos) {
+                            && checkObject.checkRewardItem.GetItemType() == ITEMTYPE_SHOP) {
                             checkObject.shopPrice = checkObject.checkRewardItem.GetPrice();
                         }
                     }
@@ -669,14 +669,13 @@ void PlandomizerOverlayText(std::pair<Rando::Item, uint32_t> drawObject ) {
         ImGui::SetCursorScreenPos(textPos);
         ImGui::Text("+");
     }
-    if (extractNumberInParentheses(drawObject.first.GetName().english.c_str()) != "" && 
-        extractNumberInParentheses(drawObject.first.GetName().english.c_str()) != "WINNER" && 
-        extractNumberInParentheses(drawObject.first.GetName().english.c_str()) != "LOSER") {
+    std::string parenthesesNum = extractNumberInParentheses(drawObject.first.GetName().GetEnglish().c_str());
+    if (parenthesesNum != "" && parenthesesNum != "WINNER" && parenthesesNum != "LOSER") {
         textPos = ImVec2(imageMin.x + 2, imageMin.y + 2);
 
         ImGui::SetCursorScreenPos(textPos);
         std::string overlayText = "+";
-        overlayText += extractNumberInParentheses(drawObject.first.GetName().english.c_str());
+        overlayText += parenthesesNum;
         ImGui::Text(overlayText.c_str());
     }
     if (drawObject.first.GetRandomizerGet() >= RG_FOREST_TEMPLE_BOSS_KEY && 
@@ -716,7 +715,7 @@ void PlandomizerDrawItemPopup(uint32_t index) {
             ImGui::PushID(item);
             ImGui::TableNextColumn();
             PlandomizerItemImageCorrection(plandomizerRandoRetrieveItem(item));
-            auto name = plandomizerRandoRetrieveItem(item).GetName().english;
+            auto name = plandomizerRandoRetrieveItem(item).GetName().GetForCurrentLanguage();
             ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(imagePadding, imagePadding));
             auto ret = ImGui::ImageButton(name.c_str(), textureID, imageSize, textureUV0, textureUV1, ImVec4(0, 0, 0, 0), itemColor);
             ImGui::PopStyleVar();
@@ -745,7 +744,7 @@ void PlandomizerDrawItemPopup(uint32_t index) {
             ImGui::PushID(itemIndex);
             auto itemToDraw = drawSlots.first;
             PlandomizerItemImageCorrection(drawSlots.first);
-            auto name = drawSlots.first.GetName().english;
+            auto name = drawSlots.first.GetName().GetForCurrentLanguage();
             ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(imagePadding, imagePadding));
             auto ret = ImGui::ImageButton(name.c_str(), textureID, imageSize, textureUV0, textureUV1, ImVec4(0, 0, 0, 0), itemColor);
             ImGui::PopStyleVar();
@@ -793,7 +792,7 @@ void PlandomizerDrawIceTrapPopUp(uint32_t index) {
             }
             ImGui::TableNextColumn();
             ImGui::PushID(items.first);
-            auto name = Rando::StaticData::RetrieveItem(items.first).GetName().english;
+            auto name = Rando::StaticData::RetrieveItem(items.first).GetName().GetForCurrentLanguage();
             PlandomizerItemImageCorrection(Rando::StaticData::RetrieveItem(items.first));
             ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(imagePadding, imagePadding));
             auto ret = ImGui::ImageButton(name.c_str(), textureID, imageSize, textureUV0, textureUV1, ImVec4(0, 0, 0, 0), itemColor); 
@@ -819,7 +818,7 @@ void PlandomizerDrawItemSlots(uint32_t index) {
     ImGui::PushID(index);
     PlandoPushImageButtonStyle();
     PlandomizerItemImageCorrection(plandoLogData[index].checkRewardItem);
-    auto name = plandoLogData[index].checkRewardItem.GetName().english;
+    auto name = plandoLogData[index].checkRewardItem.GetName().GetForCurrentLanguage();
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(imagePadding, imagePadding));
     auto ret = ImGui::ImageButton(name.c_str(), textureID, imageSize, textureUV0, textureUV1, ImVec4(0, 0, 0, 0), itemColor);
     ImGui::PopStyleVar();
@@ -855,7 +854,7 @@ void PlandomizerDrawIceTrapSetup(uint32_t index) {
     ImGui::TableNextColumn();
     PlandomizerItemImageCorrection(plandoLogData[index].iceTrapModel);
     PlandoPushImageButtonStyle();
-    auto name = plandoLogData[index].iceTrapModel.GetName().english;
+    auto name = plandoLogData[index].iceTrapModel.GetName().GetForCurrentLanguage();
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(imagePadding, imagePadding));
     auto ret = ImGui::ImageButton(name.c_str(), textureID, imageSize, textureUV0, textureUV1, ImVec4(0, 0, 0, 0), itemColor);
     ImGui::PopStyleVar();
@@ -1091,7 +1090,7 @@ void PlandomizerDrawLocationsWindow(RandomizerCheckArea rcArea) {
                 ImGui::TableNextColumn();
                 ImGui::TextWrapped(spoilerData.checkName.c_str());
                 ImGui::TableNextColumn();
-                ImGui::TextWrapped(spoilerData.checkRewardItem.GetName().english.c_str());
+                ImGui::TextWrapped(spoilerData.checkRewardItem.GetName().GetForCurrentLanguage().c_str());
                 ImGui::TableNextColumn();
                 PlandomizerDrawItemSlots(index);
                 if (plandoLogData[index].checkRewardItem.GetRandomizerGet() == RG_ICE_TRAP) {

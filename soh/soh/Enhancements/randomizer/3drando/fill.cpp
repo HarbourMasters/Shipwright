@@ -68,7 +68,7 @@ static void RemoveStartingItemsFromPool() {
       } else if (startingItem == ItemPool[i] || (Rando::StaticData::RetrieveItem(startingItem).IsBottleItem() &&
                                                  Rando::StaticData::RetrieveItem(ItemPool[i]).IsBottleItem())) {
         if (AdditionalHeartContainers > 0 && 
-          (startingItem == RG_PIECE_OF_HEART || startingItem == RG_TREASURE_GAME_HEART)) {
+          (startingItem == RG_PIECE_OF_HEART || startingItem == RG_TCG_PIECE_OF_HEART)) {
           ItemPool[i] = RG_HEART_CONTAINER;
           AdditionalHeartContainers--;
         } else {
@@ -1056,10 +1056,10 @@ static void RandomizeDungeonItems() {
   }
 
   if (ctx->GetOption(RSK_GERUDO_KEYS).Is(RO_GERUDO_KEYS_ANY_DUNGEON)) {
-      auto gerudoKeys = FilterAndEraseFromPool(ItemPool, [](const auto i) { return i == RG_GERUDO_FORTRESS_SMALL_KEY || i == RG_GERUDO_FORTRESS_KEY_RING; });
+      auto gerudoKeys = FilterAndEraseFromPool(ItemPool, [](const auto i) { return i == RG_TH_SMALL_KEY || i == RG_TH_KEY_RING; });
     AddElementsToPool(anyDungeonItems, gerudoKeys);
   } else if (ctx->GetOption(RSK_GERUDO_KEYS).Is(RO_GERUDO_KEYS_OVERWORLD)) {
-      auto gerudoKeys = FilterAndEraseFromPool(ItemPool, [](const auto i) { return i == RG_GERUDO_FORTRESS_SMALL_KEY || i == RG_GERUDO_FORTRESS_KEY_RING; });
+      auto gerudoKeys = FilterAndEraseFromPool(ItemPool, [](const auto i) { return i == RG_TH_SMALL_KEY || i == RG_TH_KEY_RING; });
     AddElementsToPool(overworldItems, gerudoKeys);
   }
 

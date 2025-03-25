@@ -38,7 +38,7 @@ namespace Rando {
                 return CheckInventory(ITEM_HOOKSHOT, false);
             case RG_LONGSHOT:
                 return CheckInventory(ITEM_LONGSHOT, true);
-            case RG_PROGRESSIVE_STICK_UPGRADE:
+            case RG_PROGRESSIVE_STICK_BAG:
             case RG_STICKS:
                 return CurrentUpgrade(UPG_STICKS);
             case RG_FIRE_ARROWS:
@@ -56,7 +56,7 @@ namespace Rando {
                 return CheckInventory(ITEM_SLINGSHOT, true);
             case RG_BOOMERANG:
                 return CheckInventory(ITEM_BOOMERANG, true);
-            case RG_PROGRESSIVE_NUT_UPGRADE:
+            case RG_PROGRESSIVE_NUT_BAG:
             case RG_NUTS:
                 return CurrentUpgrade(UPG_NUTS);
             //RANDOTODO handle cases where the scarecrow is persistent between age better when OI is added
@@ -145,9 +145,9 @@ namespace Rando {
             case RG_MARKET_BAZAAR_KEY:
             case RG_MARKET_POTION_SHOP_KEY:
             case RG_MASK_SHOP_KEY:
-            case RG_MARKET_SHOOTING_GALLERY_KEY:
+            case RG_MARKET_SHOOTING_KEY:
             case RG_BOMBCHU_BOWLING_KEY:
-            case RG_TREASURE_CHEST_GAME_BUILDING_KEY:
+            case RG_TCG_BUILDING_KEY:
             case RG_BOMBCHU_SHOP_KEY:
             case RG_RICHARDS_HOUSE_KEY:
             case RG_ALLEY_HOUSE_KEY:
@@ -158,7 +158,7 @@ namespace Rando {
             case RG_SKULLTULA_HOUSE_KEY:
             case RG_IMPAS_HOUSE_KEY:
             case RG_WINDMILL_KEY:
-            case RG_KAK_SHOOTING_GALLERY_KEY:
+            case RG_KAK_SHOOTING_KEY:
             case RG_DAMPES_HUT_KEY:
             case RG_TALONS_HOUSE_KEY:
             case RG_STABLES_KEY:
@@ -185,7 +185,7 @@ namespace Rando {
             case RG_WATER_TEMPLE_MAP:
             case RG_SPIRIT_TEMPLE_MAP:
             case RG_SHADOW_TEMPLE_MAP:
-            case RG_BOTTOM_OF_THE_WELL_MAP:
+            case RG_BOTW_MAP:
             case RG_ICE_CAVERN_MAP:
                 return CheckDungeonItem(DUNGEON_MAP, RandoGetToDungeonScene.at(itemName));
                 // Compasses
@@ -197,7 +197,7 @@ namespace Rando {
             case RG_WATER_TEMPLE_COMPASS:
             case RG_SPIRIT_TEMPLE_COMPASS:
             case RG_SHADOW_TEMPLE_COMPASS:
-            case RG_BOTTOM_OF_THE_WELL_COMPASS:
+            case RG_BOTW_COMPASS:
             case RG_ICE_CAVERN_COMPASS:
                 return CheckDungeonItem(DUNGEON_COMPASS, RandoGetToDungeonScene.at(itemName));
                 // Wallets
@@ -1363,9 +1363,9 @@ namespace Rando {
         { RG_MARKET_BAZAAR_KEY,                RAND_INF_MARKET_BAZAAR_KEY_OBTAINED },
         { RG_MARKET_POTION_SHOP_KEY,           RAND_INF_MARKET_POTION_SHOP_KEY_OBTAINED },
         { RG_MASK_SHOP_KEY,                    RAND_INF_MASK_SHOP_KEY_OBTAINED },
-        { RG_MARKET_SHOOTING_GALLERY_KEY,      RAND_INF_MARKET_SHOOTING_GALLERY_KEY_OBTAINED },
+        { RG_MARKET_SHOOTING_KEY,      RAND_INF_MARKET_SHOOTING_GALLERY_KEY_OBTAINED },
         { RG_BOMBCHU_BOWLING_KEY,              RAND_INF_BOMBCHU_BOWLING_KEY_OBTAINED },
-        { RG_TREASURE_CHEST_GAME_BUILDING_KEY, RAND_INF_TREASURE_CHEST_GAME_BUILDING_KEY_OBTAINED },
+        { RG_TCG_BUILDING_KEY, RAND_INF_TREASURE_CHEST_GAME_BUILDING_KEY_OBTAINED },
         { RG_BOMBCHU_SHOP_KEY,                 RAND_INF_BOMBCHU_SHOP_KEY_OBTAINED },
         { RG_RICHARDS_HOUSE_KEY,               RAND_INF_RICHARDS_HOUSE_KEY_OBTAINED },
         { RG_ALLEY_HOUSE_KEY,                  RAND_INF_ALLEY_HOUSE_KEY_OBTAINED },
@@ -1376,7 +1376,7 @@ namespace Rando {
         { RG_SKULLTULA_HOUSE_KEY,              RAND_INF_SKULLTULA_HOUSE_KEY_OBTAINED },
         { RG_IMPAS_HOUSE_KEY,                  RAND_INF_IMPAS_HOUSE_KEY_OBTAINED },
         { RG_WINDMILL_KEY,                     RAND_INF_WINDMILL_KEY_OBTAINED },
-        { RG_KAK_SHOOTING_GALLERY_KEY,         RAND_INF_KAK_SHOOTING_GALLERY_KEY_OBTAINED },
+        { RG_KAK_SHOOTING_KEY,         RAND_INF_KAK_SHOOTING_GALLERY_KEY_OBTAINED },
         { RG_DAMPES_HUT_KEY,                   RAND_INF_DAMPES_HUT_KEY_OBTAINED },
         { RG_TALONS_HOUSE_KEY,                 RAND_INF_TALONS_HOUSE_KEY_OBTAINED },
         { RG_STABLES_KEY,                      RAND_INF_STABLES_KEY_OBTAINED },
@@ -1391,18 +1391,18 @@ namespace Rando {
         { RG_WATER_TEMPLE_SMALL_KEY,            SCENE_WATER_TEMPLE },
         { RG_SPIRIT_TEMPLE_SMALL_KEY,           SCENE_SPIRIT_TEMPLE },
         { RG_SHADOW_TEMPLE_SMALL_KEY,           SCENE_SHADOW_TEMPLE },
-        { RG_BOTTOM_OF_THE_WELL_SMALL_KEY,      SCENE_BOTTOM_OF_THE_WELL },
-        { RG_GERUDO_TRAINING_GROUND_SMALL_KEY, SCENE_GERUDO_TRAINING_GROUND },
-        { RG_GERUDO_FORTRESS_SMALL_KEY,         SCENE_THIEVES_HIDEOUT },
+        { RG_BOTW_SMALL_KEY,      SCENE_BOTTOM_OF_THE_WELL },
+        { RG_GTG_SMALL_KEY, SCENE_GERUDO_TRAINING_GROUND },
+        { RG_TH_SMALL_KEY,         SCENE_THIEVES_HIDEOUT },
         { RG_GANONS_CASTLE_SMALL_KEY,           SCENE_INSIDE_GANONS_CASTLE },
         { RG_FOREST_TEMPLE_KEY_RING,            SCENE_FOREST_TEMPLE },
         { RG_FIRE_TEMPLE_KEY_RING,              SCENE_FIRE_TEMPLE },
         { RG_WATER_TEMPLE_KEY_RING,             SCENE_WATER_TEMPLE },
         { RG_SPIRIT_TEMPLE_KEY_RING,            SCENE_SPIRIT_TEMPLE },
         { RG_SHADOW_TEMPLE_KEY_RING,            SCENE_SHADOW_TEMPLE },
-        { RG_BOTTOM_OF_THE_WELL_KEY_RING,       SCENE_BOTTOM_OF_THE_WELL },
-        { RG_GERUDO_TRAINING_GROUND_KEY_RING,  SCENE_GERUDO_TRAINING_GROUND },
-        { RG_GERUDO_FORTRESS_KEY_RING,          SCENE_THIEVES_HIDEOUT },
+        { RG_BOTW_KEY_RING,       SCENE_BOTTOM_OF_THE_WELL },
+        { RG_GTG_KEY_RING,  SCENE_GERUDO_TRAINING_GROUND },
+        { RG_TH_KEY_RING,          SCENE_THIEVES_HIDEOUT },
         { RG_GANONS_CASTLE_KEY_RING,            SCENE_INSIDE_GANONS_CASTLE },
         { RG_FOREST_TEMPLE_BOSS_KEY,            SCENE_FOREST_TEMPLE },
         { RG_FIRE_TEMPLE_BOSS_KEY,              SCENE_FIRE_TEMPLE },
@@ -1418,7 +1418,7 @@ namespace Rando {
         { RG_WATER_TEMPLE_MAP,                  SCENE_WATER_TEMPLE },
         { RG_SPIRIT_TEMPLE_MAP,                 SCENE_SPIRIT_TEMPLE },
         { RG_SHADOW_TEMPLE_MAP,                 SCENE_SHADOW_TEMPLE },
-        { RG_BOTTOM_OF_THE_WELL_MAP,            SCENE_BOTTOM_OF_THE_WELL },
+        { RG_BOTW_MAP,            SCENE_BOTTOM_OF_THE_WELL },
         { RG_ICE_CAVERN_MAP,                    SCENE_ICE_CAVERN },
         { RG_DEKU_TREE_COMPASS,                 SCENE_DEKU_TREE },
         { RG_DODONGOS_CAVERN_COMPASS,           SCENE_DODONGOS_CAVERN },
@@ -1428,7 +1428,7 @@ namespace Rando {
         { RG_WATER_TEMPLE_COMPASS,              SCENE_WATER_TEMPLE },
         { RG_SPIRIT_TEMPLE_COMPASS,             SCENE_SPIRIT_TEMPLE },
         { RG_SHADOW_TEMPLE_COMPASS,             SCENE_SHADOW_TEMPLE },
-        { RG_BOTTOM_OF_THE_WELL_COMPASS,        SCENE_BOTTOM_OF_THE_WELL },
+        { RG_BOTW_COMPASS,        SCENE_BOTTOM_OF_THE_WELL },
         { RG_ICE_CAVERN_COMPASS,                SCENE_ICE_CAVERN },
         { RG_TREASURE_GAME_SMALL_KEY,           SCENE_TREASURE_BOX_SHOP }
     };
@@ -1609,7 +1609,7 @@ namespace Rando {
                     SetUpgrade(UPG_SCALE, newLevel);
                 }
             }   break;
-            case RG_PROGRESSIVE_NUT_UPGRADE:
+            case RG_PROGRESSIVE_NUT_BAG:
             {
                 auto realGI = item.GetGIEntry();
                 if (realGI->itemId == RG_NUT_UPGRADE_INF && realGI->modIndex == MOD_RANDOMIZER) {
@@ -1623,7 +1623,7 @@ namespace Rando {
                 }
                 SetUpgrade(UPG_NUTS, newLevel);
             }   break;
-            case RG_PROGRESSIVE_STICK_UPGRADE:
+            case RG_PROGRESSIVE_STICK_BAG:
             {
                 auto realGI = item.GetGIEntry();
                 if (realGI->itemId == RG_STICK_UPGRADE_INF && realGI->modIndex == MOD_RANDOMIZER) {
@@ -1646,7 +1646,7 @@ namespace Rando {
                 }
                 SetInventory(ITEM_BOMBCHU, (!state ? ITEM_NONE : ITEM_BOMBCHU));
             } break;
-            case RG_PROGRESSIVE_MAGIC_METER:
+            case RG_PROGRESSIVE_MAGIC:
             {
                 auto realGI = item.GetGIEntry();
                 if (realGI->itemId == RG_MAGIC_INF && realGI->modIndex == MOD_RANDOMIZER) {
@@ -1747,9 +1747,9 @@ namespace Rando {
             case RG_MARKET_BAZAAR_KEY:
             case RG_MARKET_POTION_SHOP_KEY:
             case RG_MASK_SHOP_KEY:
-            case RG_MARKET_SHOOTING_GALLERY_KEY:
+            case RG_MARKET_SHOOTING_KEY:
             case RG_BOMBCHU_BOWLING_KEY:
-            case RG_TREASURE_CHEST_GAME_BUILDING_KEY:
+            case RG_TCG_BUILDING_KEY:
             case RG_BOMBCHU_SHOP_KEY:
             case RG_RICHARDS_HOUSE_KEY:
             case RG_ALLEY_HOUSE_KEY:
@@ -1760,7 +1760,7 @@ namespace Rando {
             case RG_SKULLTULA_HOUSE_KEY:
             case RG_IMPAS_HOUSE_KEY:
             case RG_WINDMILL_KEY:
-            case RG_KAK_SHOOTING_GALLERY_KEY:
+            case RG_KAK_SHOOTING_KEY:
             case RG_DAMPES_HUT_KEY:
             case RG_TALONS_HOUSE_KEY:
             case RG_STABLES_KEY:
@@ -1816,7 +1816,7 @@ namespace Rando {
         case ITEMTYPE_BOSSKEY:
             SetDungeonItem(DUNGEON_KEY_BOSS, RandoGetToDungeonScene.find(item.GetRandomizerGet())->second, state);
             break;
-        case ITEMTYPE_FORTRESS_SMALLKEY:
+        case ITEMTYPE_TH_SMALLKEY:
         case ITEMTYPE_SMALLKEY:
         {
             auto randoGet = item.GetRandomizerGet();

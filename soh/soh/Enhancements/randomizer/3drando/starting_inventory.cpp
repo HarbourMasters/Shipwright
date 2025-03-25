@@ -70,8 +70,8 @@ void GenerateStartingInventory() {
   //the option selected. If None is selected, the value will be zero and
   //zero of the item will be added to the starting inventory.
   // TODO: Uncomment when these options are implemented.
-  // AddItemToInventory(RG_PROGRESSIVE_STICK_UPGRADE, StartingStickCapacity.Value<uint8_t>());
-  // AddItemToInventory(RG_PROGRESSIVE_NUT_UPGRADE, StartingNutCapacity.Value<uint8_t>());
+  // AddItemToInventory(RG_PROGRESSIVE_STICK_BAG, StartingStickCapacity.Value<uint8_t>());
+  // AddItemToInventory(RG_PROGRESSIVE_NUT_BAG, StartingNutCapacity.Value<uint8_t>());
   // AddItemToInventory(RG_PROGRESSIVE_BOMB_BAG, StartingBombBag.Value<uint8_t>());
   // AddItemToInventory((BombchuBag ? RG_PROGRESSIVE_BOMBCHUS : RG_BOMBCHU_20), StartingBombchus.Value<uint8_t>());
   // AddItemToInventory(RG_PROGRESSIVE_BOW, StartingBow.Value<uint8_t>());
@@ -138,7 +138,7 @@ void GenerateStartingInventory() {
   // AddItemToInventory(RG_MIRROR_SHIELD,             StartingMirrorShield.Value<uint8_t>());
   // AddItemToInventory(RG_GORON_TUNIC,               StartingGoronTunic.Value<uint8_t>());
   // AddItemToInventory(RG_ZORA_TUNIC,                StartingZoraTunic.Value<uint8_t>());
-  // AddItemToInventory(RG_PROGRESSIVE_MAGIC_METER,   StartingMagicMeter.Value<uint8_t>());
+  // AddItemToInventory(RG_PROGRESSIVE_MAGIC,   StartingMagicMeter.Value<uint8_t>());
   // AddItemToInventory(RG_PROGRESSIVE_STRENGTH,      StartingStrength.Value<uint8_t>());
   // AddItemToInventory(RG_PROGRESSIVE_SCALE,         StartingScale.Value<uint8_t>());
   // AddItemToInventory(RG_PROGRESSIVE_WALLET,        StartingWallet.Value<uint8_t>());
@@ -161,7 +161,7 @@ void GenerateStartingInventory() {
     AddItemToInventory(RG_PIECE_OF_HEART, 4);
     // Plentiful and minimal have less than 4 standard pieces of heart so also replace the winner heart
     if (ctx->GetOption(RSK_ITEM_POOL).Get() == 0 || ctx->GetOption(RSK_ITEM_POOL).Get() == 3) {
-      AddItemToInventory(RG_TREASURE_GAME_HEART);
+      AddItemToInventory(RG_TCG_PIECE_OF_HEART);
     }
 
     AdditionalHeartContainers = 1 - hearts;
@@ -177,7 +177,7 @@ void GenerateStartingInventory() {
     }
 
     if (hearts == 17) {
-      AddItemToInventory(RG_TREASURE_GAME_HEART);
+      AddItemToInventory(RG_TCG_PIECE_OF_HEART);
     }
   }
 }
@@ -189,7 +189,7 @@ bool StartingInventoryHasBottle() {
 
 void ApplyStartingInventory() {
     for (RandomizerGet item : StartingInventory) {
-    if (item == RG_PIECE_OF_HEART || item == RG_HEART_CONTAINER || item == RG_TREASURE_GAME_HEART)
+    if (item == RG_PIECE_OF_HEART || item == RG_HEART_CONTAINER || item == RG_TCG_PIECE_OF_HEART)
       continue;
 
     Rando::StaticData::RetrieveItem(item).ApplyEffect();

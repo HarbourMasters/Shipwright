@@ -30,7 +30,7 @@ RandomizerGet& ItemLocation::RefPlacedItem() {
     return placedItem;
 }
 
-const Text& ItemLocation::GetPlacedItemName() const {
+const CustomMessage& ItemLocation::GetPlacedItemName() const {
     return StaticData::RetrieveItem(placedItem).GetName();
 }
 

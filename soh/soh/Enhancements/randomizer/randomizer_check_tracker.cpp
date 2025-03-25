@@ -271,7 +271,7 @@ std::map<RandomizerGet, RandomizerCheckArea> MapRGtoRandomizerCheckArea = {
     { RG_WATER_TEMPLE_MAP, RCAREA_WATER_TEMPLE },
     { RG_SPIRIT_TEMPLE_MAP, RCAREA_SPIRIT_TEMPLE },
     { RG_SHADOW_TEMPLE_MAP, RCAREA_SHADOW_TEMPLE },
-    { RG_BOTTOM_OF_THE_WELL_MAP, RCAREA_BOTTOM_OF_THE_WELL },
+    { RG_BOTW_MAP, RCAREA_BOTTOM_OF_THE_WELL },
     { RG_ICE_CAVERN_MAP, RCAREA_ICE_CAVERN }
 };
 
@@ -1111,11 +1111,11 @@ bool ShouldShowCheck(RandomizerCheck check) {
         RandomizerCheckObjects::GetRCAreaName(Rando::StaticData::GetLocation(check)->GetArea()));
     if (itemLoc->HasObtained() || itemLoc->GetCheckStatus() == RCSHOW_SCUMMED || 
         (!mystery && (itemLoc->GetCheckStatus() == RCSHOW_IDENTIFIED || itemLoc->GetCheckStatus() == RCSHOW_SEEN) && itemLoc->GetPlacedRandomizerGet() != RG_ICE_TRAP)) {
-        search += " " + itemLoc->GetPlacedItemName().GetForLanguage(gSaveContext.language);
+        search += " " + itemLoc->GetPlacedItemName().GetForCurrentLanguage();
     } else if (itemLoc->GetCheckStatus() == RCSHOW_IDENTIFIED && !mystery) {
         search += OTRGlobals::Instance->gRandoContext->overrides[check].GetTrickName().GetForLanguage(gSaveContext.language);
     } else if (itemLoc->GetCheckStatus() == RCSHOW_SEEN && !mystery) {
-        search += Rando::StaticData::RetrieveItem(OTRGlobals::Instance->gRandoContext->overrides[check].LooksLike()).GetName().GetForLanguage(gSaveContext.language);
+        search += Rando::StaticData::RetrieveItem(OTRGlobals::Instance->gRandoContext->overrides[check].LooksLike()).GetName().GetForCurrentLanguage();
     }
     return (
         IsVisibleInCheckTracker(check) &&
@@ -1607,14 +1607,10 @@ void DrawLocation(RandomizerCheck rc) {
             case RCSHOW_COLLECTED:
             case RCSHOW_SCUMMED:
                 if (IS_RANDO) {
-                    txt = itemLoc->GetPlacedItem().GetName().GetForLanguage(gSaveContext.language);
+                    txt = itemLoc->GetPlacedItem().GetName().GetForCurrentLanguage();
                 } else {
                     if (IsHeartPiece((GetItemID)Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetItemID())) {
-                        if (gSaveContext.language == LANGUAGE_ENG || gSaveContext.language == LANGUAGE_GER) {
-                            txt = Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetName().english;
-                        } else if (gSaveContext.language == LANGUAGE_FRA) {
-                            txt = Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetName().french;
-                        }
+                        txt = Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetName().GetForCurrentLanguage();
                     }
                 }
                 break;
@@ -1625,10 +1621,10 @@ void DrawLocation(RandomizerCheck rc) {
                         if (status == RCSHOW_IDENTIFIED) {
                             txt = OTRGlobals::Instance->gRandoContext->overrides[rc].GetTrickName().GetForLanguage(gSaveContext.language);
                         } else {
-                            txt = Rando::StaticData::RetrieveItem(OTRGlobals::Instance->gRandoContext->overrides[rc].LooksLike()).GetName().GetForLanguage(gSaveContext.language);
+                            txt = Rando::StaticData::RetrieveItem(OTRGlobals::Instance->gRandoContext->overrides[rc].LooksLike()).GetName().GetForCurrentLanguage();
                         }
                     } else if (!mystery && !itemLoc->IsAddedToPool()) {
-                        txt = itemLoc->GetPlacedItem().GetName().GetForLanguage(gSaveContext.language);
+                        txt = itemLoc->GetPlacedItem().GetName().GetForCurrentLanguage();
                     }
                     if (IsVisibleInCheckTracker(rc) && status == RCSHOW_IDENTIFIED && !mystery && !itemLoc->IsAddedToPool()) {
                         auto price = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->GetPrice();
@@ -1638,11 +1634,7 @@ void DrawLocation(RandomizerCheck rc) {
                     }
                 } else {
                     if (IsHeartPiece((GetItemID)Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetItemID())) {
-                        if (gSaveContext.language == LANGUAGE_ENG || gSaveContext.language == LANGUAGE_GER) {
-                            txt = Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetName().english;
-                        } else if (gSaveContext.language == LANGUAGE_FRA) {
-                            txt = Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetName().french;
-                        }
+                        txt = Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetName().GetForCurrentLanguage();
                     }
                 }
             break;

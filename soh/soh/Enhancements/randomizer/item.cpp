@@ -13,12 +13,12 @@
 namespace Rando {
 Item::Item() : randomizerGet(RG_NONE), type(ITEMTYPE_ITEM), getItemId(GI_NONE), advancement(false), hintKey(RHT_NONE),
                progressive(false), price(0) {}
-Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_, const int16_t getItemId_,
+Item::Item(const RandomizerGet randomizerGet_, const ItemType type_, const int16_t getItemId_,
     const bool advancement_, LogicVal logicVal_, const RandomizerHintTextKey hintKey_, const uint16_t itemId_,
     const uint16_t objectId_, const uint16_t gid_, const uint16_t textId_, const uint16_t field_,
     const int16_t chestAnimation_, const GetItemCategory category_, const uint16_t modIndex_,
     const bool progressive_, const uint16_t price_)
-    : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
+    : randomizerGet(randomizerGet_), type(type_), getItemId(getItemId_),
     advancement(advancement_), logicVal(logicVal_), hintKey(hintKey_), progressive(progressive_), price(price_) {
     if (modIndex_ == MOD_RANDOMIZER || getItemId > 0x7D) {
         giEntry = std::make_shared<GetItemEntry>(GetItemEntry{ itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_, objectId_, modIndex_, TABLE_RANDOMIZER, static_cast<int16_t>(randomizerGet_), gid_, true, ITEM_FROM_NPC, category_, static_cast<uint16_t>(randomizerGet_), MOD_RANDOMIZER, NULL });
@@ -28,10 +28,10 @@ Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_,
     }
 }
 
-Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_, const int16_t getItemId_,
+Item::Item(const RandomizerGet randomizerGet_, const ItemType type_, const int16_t getItemId_,
     const bool advancement_, LogicVal logicVal_, const RandomizerHintTextKey hintKey_, const bool progressive_,
     const uint16_t price_)
-    : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
+    : randomizerGet(randomizerGet_), type(type_), getItemId(getItemId_),
     advancement(advancement_), logicVal(logicVal_), hintKey(hintKey_), progressive(progressive_), price(price_) {
 }
 
@@ -49,8 +49,8 @@ void Item::UndoEffect() const {
     ctx->GetLogic()->SetInLogic(logicVal, false);
 }
 
-const Text& Item::GetName() const {
-    return name;
+const CustomMessage& Item::GetName() const {
+    return StaticData::hintTextTable[hintKey].GetName();
 }
 
 bool Item::IsAdvancement() const {
@@ -87,7 +87,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
     const bool tycoonWallet = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_INCLUDE_TYCOON_WALLET);
     const u8 infiniteUpgrades = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_INFINITE_UPGRADES);
     switch (randomizerGet) {
-        case RG_PROGRESSIVE_STICK_UPGRADE:
+        case RG_PROGRESSIVE_STICK_BAG:
             switch (logic->CurrentUpgrade(UPG_STICKS)) {
                 case 0:
                     if (ctx->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG)) {
@@ -117,7 +117,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
                     break;
             }
             break;
-        case RG_PROGRESSIVE_NUT_UPGRADE:
+        case RG_PROGRESSIVE_NUT_BAG:
             switch (logic->CurrentUpgrade(UPG_NUTS)) {
                 case 0:
                     if (ctx->GetOption(RSK_SHUFFLE_DEKU_NUT_BAG)) {
@@ -317,7 +317,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
                     break;
             }
             break;
-        case RG_PROGRESSIVE_MAGIC_METER:
+        case RG_PROGRESSIVE_MAGIC:
             switch (logic->GetSaveContext()->magicLevel) {
                 case 0:
                     actual = RG_MAGIC_SINGLE;
@@ -403,7 +403,7 @@ bool Item::IsMajorItem() const {
     }
 
     if (randomizerGet == RG_HEART_CONTAINER || randomizerGet == RG_PIECE_OF_HEART ||
-        randomizerGet == RG_TREASURE_GAME_HEART) {
+        randomizerGet == RG_TCG_PIECE_OF_HEART) {
         return false;
     }
 
@@ -411,7 +411,7 @@ bool Item::IsMajorItem() const {
         return false;
     }
 
-    if (type == ITEMTYPE_FORTRESS_SMALLKEY && ctx->GetOption(RSK_GERUDO_KEYS).Is(RO_GERUDO_KEYS_VANILLA)) {
+    if (type == ITEMTYPE_TH_SMALLKEY && ctx->GetOption(RSK_GERUDO_KEYS).Is(RO_GERUDO_KEYS_VANILLA)) {
         return false;
     }
 

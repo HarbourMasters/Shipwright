@@ -33,7 +33,8 @@ struct HintSetting {
 class HintText {
 public:
     HintText() = default;
-    HintText(CustomMessage clearText_, std::vector<CustomMessage> ambiguousText_ = {}, std::vector<CustomMessage> obscureText_ = {});
+    explicit HintText(CustomMessage clearText_, std::vector<CustomMessage> ambiguousText_ = {}, std::vector<CustomMessage> obscureText_ = {}, CustomMessage name_ = {""});
+    const CustomMessage& GetName() const;
     const CustomMessage& GetClear() const;
     const CustomMessage& GetObscure() const;
     const CustomMessage& GetObscure(uint8_t selection) const;
@@ -47,9 +48,10 @@ public:
     bool operator!=(const HintText& right) const;
 
 private:
-    CustomMessage clearText;
+    CustomMessage clearText; //RANDOTODO proper system to define use of articles instead of having the name and name with articles repeated
     std::vector<CustomMessage> ambiguousText = {};
     std::vector<CustomMessage> obscureText = {};
+    CustomMessage name;
 };
 
 struct StaticHintInfo{

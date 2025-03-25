@@ -75,15 +75,7 @@ static void WriteLocation(
   Rando::Location* location = Rando::StaticData::GetLocation(locationKey);
   Rando::ItemLocation* itemLocation = Rando::Context::GetInstance()->GetItemLocation(locationKey);
 
-  switch (gSaveContext.language) {
-        case LANGUAGE_ENG:
-        default:
-            jsonData["playthrough"][sphere][location->GetName()] = itemLocation->GetPlacedItemName().GetEnglish();
-            break;
-        case LANGUAGE_FRA:
-            jsonData["playthrough"][sphere][location->GetName()] = itemLocation->GetPlacedItemName().GetFrench();
-            break;
-    }
+  jsonData["playthrough"][sphere][location->GetName()] = itemLocation->GetPlacedItemName().GetForCurrentLanguage();
 }
 
 //Writes a shuffled entrance to the specified node
@@ -262,17 +254,7 @@ static void WriteAllLocations() {
     auto ctx = Rando::Context::GetInstance();
     for (const RandomizerCheck key : ctx->allLocations) {
         Rando::ItemLocation* location = ctx->GetItemLocation(key);
-        std::string placedItemName;
-
-        switch (gSaveContext.language) {
-          case 0:
-          default:
-            placedItemName = location->GetPlacedItemName().english;
-            break;
-          case 2:
-            placedItemName = location->GetPlacedItemName().french;
-            break;
-        }
+        std::string placedItemName = location->GetPlacedItemName().GetForCurrentLanguage();
 
         // If it's a simple item (not an ice trap, doesn't have a price)
         // just add the name of the item and move on
@@ -295,17 +277,15 @@ static void WriteAllLocations() {
         }
 
         if (location->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
+          jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["model"] =
+          Rando::StaticData::RetrieveItem(ctx->overrides[location->GetRandomizerCheck()].LooksLike()).GetName().GetForCurrentLanguage();
           switch (gSaveContext.language) {
               case 0:
               default:
-                  jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["model"] =
-                      Rando::StaticData::RetrieveItem(ctx->overrides[location->GetRandomizerCheck()].LooksLike()).GetName().english;
                   jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["trickName"] = 
                       ctx->overrides[location->GetRandomizerCheck()].GetTrickName().english;
                   break;
               case 2:
-                  jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["model"] =
-                      Rando::StaticData::RetrieveItem(ctx->overrides[location->GetRandomizerCheck()].LooksLike()).GetName().french;
                   jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["trickName"] =
                       ctx->overrides[location->GetRandomizerCheck()].GetTrickName().french;
                   break;

@@ -79,13 +79,13 @@ const std::array<RandomizerGet, 59> alwaysItems = {
   RG_PROGRESSIVE_BOMB_BAG,
   RG_PROGRESSIVE_WALLET, //2 progressive wallets
   RG_PROGRESSIVE_WALLET,
-  RG_PROGRESSIVE_MAGIC_METER,  //2 progressive magic meters
-  RG_PROGRESSIVE_MAGIC_METER,
+  RG_PROGRESSIVE_MAGIC,  //2 progressive magic meters
+  RG_PROGRESSIVE_MAGIC,
   RG_DOUBLE_DEFENSE,
-  RG_PROGRESSIVE_STICK_UPGRADE, //2 stick upgrades
-  RG_PROGRESSIVE_STICK_UPGRADE,
-  RG_PROGRESSIVE_NUT_UPGRADE,   //2 nut upgrades
-  RG_PROGRESSIVE_NUT_UPGRADE,
+  RG_PROGRESSIVE_STICK_BAG, //2 stick upgrades
+  RG_PROGRESSIVE_STICK_BAG,
+  RG_PROGRESSIVE_NUT_BAG,   //2 nut upgrades
+  RG_PROGRESSIVE_NUT_BAG,
   RG_RECOVERY_HEART,  //6 recovery hearts
   RG_RECOVERY_HEART,
   RG_RECOVERY_HEART,
@@ -100,7 +100,7 @@ const std::array<RandomizerGet, 59> alwaysItems = {
   RG_ARROWS_10, //5
   RG_ARROWS_10,
   RG_ARROWS_10,
-  RG_TREASURE_GAME_HEART,
+  RG_TCG_PIECE_OF_HEART,
 };
 const std::array<RandomizerGet, 44> easyItems = {
   RG_BIGGORON_SWORD,
@@ -121,9 +121,9 @@ const std::array<RandomizerGet, 44> easyItems = {
   RG_PROGRESSIVE_STRENGTH,
   RG_PROGRESSIVE_SCALE,
   RG_PROGRESSIVE_WALLET,
-  RG_PROGRESSIVE_MAGIC_METER,
-  RG_PROGRESSIVE_STICK_UPGRADE,
-  RG_PROGRESSIVE_NUT_UPGRADE,
+  RG_PROGRESSIVE_MAGIC,
+  RG_PROGRESSIVE_STICK_BAG,
+  RG_PROGRESSIVE_NUT_BAG,
   RG_PROGRESSIVE_BOW,
   RG_PROGRESSIVE_SLINGSHOT,
   RG_PROGRESSIVE_BOMB_BAG,
@@ -268,8 +268,8 @@ const std::array<RandomizerGet, 4> GTG_Vanilla = {
   RG_HUGE_RUPEE,
 };
 const std::array<RandomizerGet, 5> GTG_MQ = {
-  RG_TREASURE_GAME_GREEN_RUPEE,
-  RG_TREASURE_GAME_GREEN_RUPEE,
+  RG_LOSER_GREEN_RUPEE,
+  RG_LOSER_GREEN_RUPEE,
   RG_ARROWS_10,
   RG_GREEN_RUPEE,
   RG_PURPLE_RUPEE,
@@ -533,10 +533,10 @@ static void SetScarceItemPool() {
   ReplaceMaxItem(RG_BOMBCHU_5, 1);
   ReplaceMaxItem(RG_BOMBCHU_10, 2);
   ReplaceMaxItem(RG_BOMBCHU_20, 0);
-  ReplaceMaxItem(RG_PROGRESSIVE_MAGIC_METER, 1);
+  ReplaceMaxItem(RG_PROGRESSIVE_MAGIC, 1);
   ReplaceMaxItem(RG_DOUBLE_DEFENSE, 0);
-  ReplaceMaxItem(RG_PROGRESSIVE_STICK_UPGRADE, ctx->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG) ? 2 : 1);
-  ReplaceMaxItem(RG_PROGRESSIVE_NUT_UPGRADE, ctx->GetOption(RSK_SHUFFLE_DEKU_NUT_BAG) ? 2 : 1);
+  ReplaceMaxItem(RG_PROGRESSIVE_STICK_BAG, ctx->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG) ? 2 : 1);
+  ReplaceMaxItem(RG_PROGRESSIVE_NUT_BAG, ctx->GetOption(RSK_SHUFFLE_DEKU_NUT_BAG) ? 2 : 1);
   ReplaceMaxItem(RG_PROGRESSIVE_BOW, 2);
   ReplaceMaxItem(RG_PROGRESSIVE_SLINGSHOT, 2);
   ReplaceMaxItem(RG_PROGRESSIVE_BOMB_BAG, 2);
@@ -550,10 +550,10 @@ static void SetMinimalItemPool() {
   ReplaceMaxItem(RG_BOMBCHU_10, 0);
   ReplaceMaxItem(RG_BOMBCHU_20, 0);
   ReplaceMaxItem(RG_NAYRUS_LOVE, 0);
-  ReplaceMaxItem(RG_PROGRESSIVE_MAGIC_METER, 1);
+  ReplaceMaxItem(RG_PROGRESSIVE_MAGIC, 1);
   ReplaceMaxItem(RG_DOUBLE_DEFENSE, 0);
-  ReplaceMaxItem(RG_PROGRESSIVE_STICK_UPGRADE, ctx->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG) ? 1 : 0);
-  ReplaceMaxItem(RG_PROGRESSIVE_NUT_UPGRADE, ctx->GetOption(RSK_SHUFFLE_DEKU_NUT_BAG) ? 1 : 0);
+  ReplaceMaxItem(RG_PROGRESSIVE_STICK_BAG, ctx->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG) ? 1 : 0);
+  ReplaceMaxItem(RG_PROGRESSIVE_NUT_BAG, ctx->GetOption(RSK_SHUFFLE_DEKU_NUT_BAG) ? 1 : 0);
   ReplaceMaxItem(RG_PROGRESSIVE_BOW, 1);
   ReplaceMaxItem(RG_PROGRESSIVE_SLINGSHOT, 1);
   ReplaceMaxItem(RG_PROGRESSIVE_BOMB_BAG, 1);
@@ -592,7 +592,7 @@ void GenerateItemPool() {
     RG_PROGRESSIVE_SLINGSHOT,
     RG_PROGRESSIVE_WALLET,
     RG_PROGRESSIVE_SCALE,
-    RG_PROGRESSIVE_MAGIC_METER,
+    RG_PROGRESSIVE_MAGIC,
   };
   //Check song shuffle and dungeon reward shuffle just for ice traps
   if (ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_ANYWHERE)) {
@@ -762,10 +762,10 @@ void GenerateItemPool() {
   if (ctx->GetOption(RSK_INFINITE_UPGRADES).Is(RO_INF_UPGRADES_PROGRESSIVE)) {
     AddItemToMainPool(RG_PROGRESSIVE_BOMB_BAG);
     AddItemToMainPool(RG_PROGRESSIVE_BOW);
-    AddItemToMainPool(RG_PROGRESSIVE_NUT_UPGRADE);
+    AddItemToMainPool(RG_PROGRESSIVE_NUT_BAG);
     AddItemToMainPool(RG_PROGRESSIVE_SLINGSHOT);
-    AddItemToMainPool(RG_PROGRESSIVE_STICK_UPGRADE);
-    AddItemToMainPool(RG_PROGRESSIVE_MAGIC_METER);
+    AddItemToMainPool(RG_PROGRESSIVE_STICK_BAG);
+    AddItemToMainPool(RG_PROGRESSIVE_MAGIC);
     AddItemToMainPool(RG_PROGRESSIVE_WALLET);
   }
 
@@ -902,11 +902,11 @@ void GenerateItemPool() {
   }
 
   if (ctx->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG)) {
-    AddItemToMainPool(RG_PROGRESSIVE_STICK_UPGRADE);
+    AddItemToMainPool(RG_PROGRESSIVE_STICK_BAG);
   }
 
   if (ctx->GetOption(RSK_SHUFFLE_DEKU_NUT_BAG)) {
-    AddItemToMainPool(RG_PROGRESSIVE_NUT_UPGRADE);
+    AddItemToMainPool(RG_PROGRESSIVE_NUT_BAG);
   }
 
   if (ctx->GetOption(RSK_BOMBCHU_BAG)) {
@@ -934,40 +934,40 @@ void GenerateItemPool() {
     ctx->PlaceItemInLocation(RC_GF_SOUTH_F2_CARPENTER, RG_RECOVERY_HEART, false, true);
   } else if (ctx->GetOption(RSK_GERUDO_KEYS).IsNot(RO_GERUDO_KEYS_VANILLA)) {
     if (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST)) {
-      AddItemToMainPool(RG_GERUDO_FORTRESS_SMALL_KEY);
+      AddItemToMainPool(RG_TH_SMALL_KEY);
       ctx->PlaceItemInLocation(RC_GF_NORTH_F2_CARPENTER, RG_RECOVERY_HEART, false, true);
       ctx->PlaceItemInLocation(RC_GF_SOUTH_F1_CARPENTER, RG_RECOVERY_HEART, false, true);
       ctx->PlaceItemInLocation(RC_GF_SOUTH_F2_CARPENTER, RG_RECOVERY_HEART, false, true);
     } else {
       //Only add key ring if 4 Fortress keys necessary
       if (ctx->GetOption(RSK_KEYRINGS_GERUDO_FORTRESS) && ctx->GetOption(RSK_KEYRINGS)) {
-        AddItemToMainPool(RG_GERUDO_FORTRESS_KEY_RING);
+        AddItemToMainPool(RG_TH_KEY_RING);
         //Add junk to make up for missing keys
         for (uint8_t i = 0; i < 3; i++) {
           AddItemToMainPool(GetJunkItem());
         }
       } else {
-        AddItemToMainPool(RG_GERUDO_FORTRESS_SMALL_KEY, 4);
+        AddItemToMainPool(RG_TH_SMALL_KEY, 4);
       }
     }
     if (ctx->GetOption(RSK_ITEM_POOL).Is(RO_ITEM_POOL_PLENTIFUL)) {
       if (ctx->GetOption(RSK_KEYRINGS_GERUDO_FORTRESS) && ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL) && ctx->GetOption(RSK_KEYRINGS) ) {
-        AddItemToPool(PendingJunkPool, RG_GERUDO_FORTRESS_KEY_RING);
+        AddItemToPool(PendingJunkPool, RG_TH_KEY_RING);
       } else {
-        AddItemToPool(PendingJunkPool, RG_GERUDO_FORTRESS_SMALL_KEY);
+        AddItemToPool(PendingJunkPool, RG_TH_SMALL_KEY);
       }
     }
   } else {
     if (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST)) {
-      ctx->PlaceItemInLocation(RC_GF_NORTH_F1_CARPENTER, RG_GERUDO_FORTRESS_SMALL_KEY, false, true);
+      ctx->PlaceItemInLocation(RC_GF_NORTH_F1_CARPENTER, RG_TH_SMALL_KEY, false, true);
       ctx->PlaceItemInLocation(RC_GF_NORTH_F2_CARPENTER, RG_RECOVERY_HEART, false, true);
       ctx->PlaceItemInLocation(RC_GF_SOUTH_F1_CARPENTER, RG_RECOVERY_HEART, false, true);
       ctx->PlaceItemInLocation(RC_GF_SOUTH_F2_CARPENTER, RG_RECOVERY_HEART, false, true);
     } else {
-      ctx->PlaceItemInLocation(RC_GF_NORTH_F1_CARPENTER, RG_GERUDO_FORTRESS_SMALL_KEY, false, true);
-      ctx->PlaceItemInLocation(RC_GF_NORTH_F2_CARPENTER, RG_GERUDO_FORTRESS_SMALL_KEY, false, true);
-      ctx->PlaceItemInLocation(RC_GF_SOUTH_F1_CARPENTER, RG_GERUDO_FORTRESS_SMALL_KEY, false, true);
-      ctx->PlaceItemInLocation(RC_GF_SOUTH_F2_CARPENTER, RG_GERUDO_FORTRESS_SMALL_KEY, false, true);
+      ctx->PlaceItemInLocation(RC_GF_NORTH_F1_CARPENTER, RG_TH_SMALL_KEY, false, true);
+      ctx->PlaceItemInLocation(RC_GF_NORTH_F2_CARPENTER, RG_TH_SMALL_KEY, false, true);
+      ctx->PlaceItemInLocation(RC_GF_SOUTH_F1_CARPENTER, RG_TH_SMALL_KEY, false, true);
+      ctx->PlaceItemInLocation(RC_GF_SOUTH_F2_CARPENTER, RG_TH_SMALL_KEY, false, true);
     }
   }
 
@@ -1009,9 +1009,9 @@ void GenerateItemPool() {
     //Plentiful small keys
     if (ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) || ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANY_DUNGEON) || ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_OVERWORLD)) {
       if (ctx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->HasKeyRing()) {
-        AddItemToPool(PendingJunkPool, RG_BOTTOM_OF_THE_WELL_KEY_RING);
+        AddItemToPool(PendingJunkPool, RG_BOTW_KEY_RING);
       } else {
-        AddItemToPool(PendingJunkPool, RG_BOTTOM_OF_THE_WELL_SMALL_KEY);
+        AddItemToPool(PendingJunkPool, RG_BOTW_SMALL_KEY);
       }
       if (ctx->GetDungeon(Rando::FOREST_TEMPLE)->HasKeyRing()) {
         AddItemToPool(PendingJunkPool, RG_FOREST_TEMPLE_KEY_RING);
@@ -1039,9 +1039,9 @@ void GenerateItemPool() {
         AddItemToPool(PendingJunkPool, RG_SHADOW_TEMPLE_SMALL_KEY);
       }
       if (ctx->GetDungeon(Rando::GERUDO_TRAINING_GROUND)->HasKeyRing()) {
-        AddItemToPool(PendingJunkPool, RG_GERUDO_TRAINING_GROUND_KEY_RING);
+        AddItemToPool(PendingJunkPool, RG_GTG_KEY_RING);
       } else {
-        AddItemToPool(PendingJunkPool, RG_GERUDO_TRAINING_GROUND_SMALL_KEY);
+        AddItemToPool(PendingJunkPool, RG_GTG_SMALL_KEY);
       }
       if (ctx->GetDungeon(Rando::GANONS_CASTLE)->HasKeyRing()) {
         AddItemToPool(PendingJunkPool, RG_GANONS_CASTLE_KEY_RING);
@@ -1068,9 +1068,9 @@ void GenerateItemPool() {
     AddItemToPool(ItemPool, RG_MARKET_BAZAAR_KEY);
     AddItemToPool(ItemPool, RG_MARKET_POTION_SHOP_KEY);
     AddItemToPool(ItemPool, RG_MASK_SHOP_KEY);
-    AddItemToPool(ItemPool, RG_MARKET_SHOOTING_GALLERY_KEY);
+    AddItemToPool(ItemPool, RG_MARKET_SHOOTING_KEY);
     AddItemToPool(ItemPool, RG_BOMBCHU_BOWLING_KEY);
-    AddItemToPool(ItemPool, RG_TREASURE_CHEST_GAME_BUILDING_KEY);
+    AddItemToPool(ItemPool, RG_TCG_BUILDING_KEY);
     AddItemToPool(ItemPool, RG_BOMBCHU_SHOP_KEY);
     AddItemToPool(ItemPool, RG_RICHARDS_HOUSE_KEY);
     AddItemToPool(ItemPool, RG_ALLEY_HOUSE_KEY);
@@ -1081,7 +1081,7 @@ void GenerateItemPool() {
     AddItemToPool(ItemPool, RG_SKULLTULA_HOUSE_KEY);
     AddItemToPool(ItemPool, RG_IMPAS_HOUSE_KEY);
     AddItemToPool(ItemPool, RG_WINDMILL_KEY);
-    AddItemToPool(ItemPool, RG_KAK_SHOOTING_GALLERY_KEY);
+    AddItemToPool(ItemPool, RG_KAK_SHOOTING_KEY);
     AddItemToPool(ItemPool, RG_DAMPES_HUT_KEY);
     AddItemToPool(ItemPool, RG_TALONS_HOUSE_KEY);
     AddItemToPool(ItemPool, RG_STABLES_KEY);

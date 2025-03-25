@@ -470,7 +470,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
             return !CHECK_OWNED_EQUIP(EQUIP_TYPE_BOOTS, EQUIP_INV_BOOTS_HOVER) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
 
         // Inventory Items
-        case RG_PROGRESSIVE_STICK_UPGRADE:
+        case RG_PROGRESSIVE_STICK_BAG:
             return infiniteUpgrades != RO_INF_UPGRADES_OFF ?
                 (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_STICK_UPGRADE) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN) :
                 (CUR_UPG_VALUE(UPG_STICKS) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE);
@@ -478,7 +478,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_BUY_DEKU_STICK_1:
             return CUR_UPG_VALUE(UPG_STICKS) || !OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG).Get()
                  ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
-        case RG_PROGRESSIVE_NUT_UPGRADE:
+        case RG_PROGRESSIVE_NUT_BAG:
             return infiniteUpgrades != RO_INF_UPGRADES_OFF ?
                 (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_NUT_UPGRADE) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN) :
                 (CUR_UPG_VALUE(UPG_NUTS) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE);
@@ -631,7 +631,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
             return CUR_UPG_VALUE(UPG_WALLET) < numWallets ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_PROGRESSIVE_SCALE:
             return CUR_UPG_VALUE(UPG_SCALE) < 2 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
-        case RG_PROGRESSIVE_MAGIC_METER:
+        case RG_PROGRESSIVE_MAGIC:
         case RG_MAGIC_SINGLE:
         case RG_MAGIC_DOUBLE:
             return infiniteUpgrades != RO_INF_UPGRADES_OFF ?
@@ -683,7 +683,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
             return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_SPIRIT_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_SHADOW_TEMPLE_MAP:
             return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_SHADOW_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
-        case RG_BOTTOM_OF_THE_WELL_MAP:
+        case RG_BOTW_MAP:
             return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_BOTTOM_OF_THE_WELL) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_ICE_CAVERN_MAP:
             return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_ICE_CAVERN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
@@ -703,7 +703,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
             return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_SPIRIT_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_SHADOW_TEMPLE_COMPASS:
             return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_SHADOW_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
-        case RG_BOTTOM_OF_THE_WELL_COMPASS:
+        case RG_BOTW_COMPASS:
             return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_BOTTOM_OF_THE_WELL) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_ICE_CAVERN_COMPASS:
             return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_ICE_CAVERN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
@@ -729,11 +729,11 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
             return gSaveContext.inventory.dungeonKeys[SCENE_SPIRIT_TEMPLE] < SPIRIT_TEMPLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_SHADOW_TEMPLE_SMALL_KEY:
             return gSaveContext.inventory.dungeonKeys[SCENE_SHADOW_TEMPLE] < SHADOW_TEMPLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
-        case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
+        case RG_BOTW_SMALL_KEY:
             return gSaveContext.inventory.dungeonKeys[SCENE_BOTTOM_OF_THE_WELL] < BOTTOM_OF_THE_WELL_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
-        case RG_GERUDO_TRAINING_GROUND_SMALL_KEY:
+        case RG_GTG_SMALL_KEY:
             return gSaveContext.inventory.dungeonKeys[SCENE_GERUDO_TRAINING_GROUND] < GERUDO_TRAINING_GROUND_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
-        case RG_GERUDO_FORTRESS_SMALL_KEY:
+        case RG_TH_SMALL_KEY:
             return gSaveContext.inventory.dungeonKeys[SCENE_THIEVES_HIDEOUT] < GERUDO_FORTRESS_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_GANONS_CASTLE_SMALL_KEY:
             return gSaveContext.inventory.dungeonKeys[SCENE_INSIDE_GANONS_CASTLE] < GANONS_CASTLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
@@ -782,8 +782,8 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_PIECE_OF_HEART:
         case RG_HEART_CONTAINER:
         case RG_ICE_TRAP:
-        case RG_TREASURE_GAME_HEART:
-        case RG_TREASURE_GAME_GREEN_RUPEE:
+        case RG_TCG_PIECE_OF_HEART:
+        case RG_LOSER_GREEN_RUPEE:
         case RG_BUY_HEART:
         case RG_TRIFORCE_PIECE:
         default:
@@ -2683,7 +2683,7 @@ CustomMessage Randomizer::GetMerchantMessage(RandomizerCheck rc, TextIDs textId,
         shopItemName = CustomMessage(ctx->overrides[rc].GetTrickName());
     } else { 
         auto shopItem = Rando::StaticData::RetrieveItem(shopItemGet);
-        shopItemName = {shopItem.GetName()};
+        shopItemName = shopItem.GetName();
     }
     
     if (freeTextId != TEXT_NONE && shopItemPrice == 0) {
@@ -2725,7 +2725,7 @@ CustomMessage Randomizer::GetMapGetItemMessageWithHint(GetItemEntry itemEntry) {
         case RG_SHADOW_TEMPLE_MAP:
             sceneNum = SCENE_SHADOW_TEMPLE;
             break;
-        case RG_BOTTOM_OF_THE_WELL_MAP:
+        case RG_BOTW_MAP:
             sceneNum = SCENE_BOTTOM_OF_THE_WELL;
             break;
         case RG_ICE_CAVERN_MAP:
@@ -3429,7 +3429,7 @@ void Randomizer::CreateCustomMessages() {
 			"Du hast jetzt ein %rIrrlicht in einer&Flasche%w! Der %rGespenstermarkt%w&interessiert sich für vielleicht&dafür...",
             "Vous obtenez une %rBouteille avec&un Esprit%w! Ça intéresserait&peut-être le vendeur d'Âme "),
 
-        GIMESSAGE(RG_GERUDO_FORTRESS_SMALL_KEY, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_TH_SMALL_KEY, ITEM_KEY_SMALL,
 			"You found a %yThieves Hideout &%wSmall Key!",
 			"Du erhältst einen %rkleinen&Schlüssel%w für das %yDiebesversteck%w!",
 			"Vous obtenez une %rPetite Clé %w&du %yRepaire des Voleurs%w!"),
@@ -3453,11 +3453,11 @@ void Randomizer::CreateCustomMessages() {
 			"You found a %pShadow Temple &%wSmall Key!",
 			"Du erhältst einen %rkleinen&Schlüssel%w für den %pSchattentempel%w!",
 			"Vous obtenez une %rPetite Clé %w&du %pTemple de l'Ombre%w!"),
-        GIMESSAGE(RG_BOTTOM_OF_THE_WELL_SMALL_KEY, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_BOTW_SMALL_KEY, ITEM_KEY_SMALL,
 			"You found a %pBottom of the &Well %wSmall Key!",
 			"Du erhältst einen %rkleinen&Schlüssel%w für den %pGrund des Brunnens%w!",
 			"Vous obtenez une %rPetite Clé %w&du %pPuits%w!"),
-        GIMESSAGE(RG_GERUDO_TRAINING_GROUND_SMALL_KEY, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_GTG_SMALL_KEY, ITEM_KEY_SMALL,
 			"You found a %yGerudo Training &Grounds %wSmall Key!",
 			"Du erhältst einen %rkleinen&Schlüssel%w für die %yGerudo-Trainingsarena%w!",
 			"Vous obtenez une %rPetite Clé %w&du %yGymnase Gerudo%w!"),
@@ -3481,7 +3481,7 @@ void Randomizer::CreateCustomMessages() {
             "You found the key to the&%gMask Shop%w!",
             "Du erhältst einen %rkleinen&Schlüssel%w für den %gMaskenladen%w!",
             "Vous obtenez la %rClé %wde la&%gFoire aux Masques%w!"),
-        GIMESSAGE(RG_MARKET_SHOOTING_GALLERY_KEY, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_MARKET_SHOOTING_KEY, ITEM_KEY_SMALL,
             "You found the key to the&%gMarket Shooting Gallery%w!",
             "Du erhältst einen %rkleinen&Schlüssel%w für die %gSchießbude des Marktes%w!",
             "Vous obtenez la %rClé %wdu %gStand de&Tir de la Place du Marché%w!"),
@@ -3489,7 +3489,7 @@ void Randomizer::CreateCustomMessages() {
             "You found the key to the&%gBombchu Bowling Alley%w!",
             "Du erhältst einen %rkleinen&Schlüssel%w für die %gMinenbowlingbahn%w!",
             "Vous obtenez la %rClé %wdu %gBowling&Teigneux%w!"),
-        GIMESSAGE(RG_TREASURE_CHEST_GAME_BUILDING_KEY, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_TCG_BUILDING_KEY, ITEM_KEY_SMALL,
             "You found the key to the&%gTreasure Chest Game Building%w!",
             "Du erhältst einen %rkleinen&Schlüssel%w für das %gHaus des Schatzkisten-Pokers%w!",
             "Vous obtenez la %rClé  %wdu %gJeu de la&Chasse au Trésor%w!"),
@@ -3533,7 +3533,7 @@ void Randomizer::CreateCustomMessages() {
             "You found the key to the&%gWindmill%w!",
             "Du erhältst einen %rkleinen&Schlüssel%w für die %gWindmühle%w!",
             "Vous obtenez la %rClé %w du %gMoulin%w!"),
-        GIMESSAGE(RG_KAK_SHOOTING_GALLERY_KEY, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_KAK_SHOOTING_KEY, ITEM_KEY_SMALL,
             "You found the key to the&%gKakariko Shooting Gallery%w!",
             "Du erhältst einen %rkleinen&Schlüssel%w für die %gSchießbude von Kakariko%w!",
             "Vous obtenez la %rClé %w du %gStand de&Tir de Cocorico%w!"),
@@ -3562,7 +3562,7 @@ void Randomizer::CreateCustomMessages() {
             "Du erhältst einen %rkleinen&Schlüssel%w für den %gFischweiher%w!",
             "Vous obtenez la %rClé %wde l'%gÉtang%w!"),
 
-        GIMESSAGE(RG_GERUDO_FORTRESS_KEY_RING, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_TH_KEY_RING, ITEM_KEY_SMALL,
 			"You found a %yThieves Hideout&%wKeyring!",
 			"Du erhältst ein %rSchlüsselbund%w&für das %yDiebesversteck%w!",
 			"Vous obtenez le trousseau de&clés du %yRepaire des Voleurs%w!"),
@@ -3586,11 +3586,11 @@ void Randomizer::CreateCustomMessages() {
 			"You found a %pShadow Temple&%wKeyring!",
 			"Du erhältst ein %rSchlüsselbund%w&für den %pSchattentempel%w!",
 			"Vous obtenez le trousseau de&clés du %pTemple de l'Ombre%w!"),
-        GIMESSAGE(RG_BOTTOM_OF_THE_WELL_KEY_RING, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_BOTW_KEY_RING, ITEM_KEY_SMALL,
 			"You found a %pBottom of the&Well %wKeyring!",
 			"Du erhältst ein %rSchlüsselbund%w&für den %pGrund des Brunnens%w!",
 			"Vous obtenez le trousseau de&clés du %pPuits%w!"),
-        GIMESSAGE(RG_GERUDO_TRAINING_GROUND_KEY_RING, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_GTG_KEY_RING, ITEM_KEY_SMALL,
 			"You found a %yGerudo Training&Grounds %wKeyring!",
 			"Du erhältst ein %rSchlüsselbund%w&für die %yGerudo-Trainingsarena%w!",
 			"Vous obtenez le trousseau de&clés du %yGymnase Gerudo%w!"),
@@ -3660,7 +3660,7 @@ void Randomizer::CreateCustomMessages() {
 			"You found the %pShadow Temple&%wMap![[typeHint]]",
 			"Du erhältst die %rKarte%w für den&%pSchattentempel%w![[typeHint]]",
 			"Vous obtenez la %rCarte %wdu&%pTemple de l'Ombre%w![[typeHint]]"),
-        GIMESSAGE(RG_BOTTOM_OF_THE_WELL_MAP, ITEM_DUNGEON_MAP,
+        GIMESSAGE(RG_BOTW_MAP, ITEM_DUNGEON_MAP,
 			"You found the %pBottom of the&Well %wMap![[typeHint]]",
 			"Du erhältst die %rKarte%w für den&%pGrund des Brunnens%w![[typeHint]]",
 			"Vous obtenez la %rCarte %wdu&%pPuits%w![[typeHint]]"),
@@ -3701,7 +3701,7 @@ void Randomizer::CreateCustomMessages() {
 			"You found the %pShadow Temple&%wCompass!",
 			"Du erhältst den %rKompaß%w für den&%pSchattentempel%w!",
 			"Vous obtenez la %rBoussole %wdu&%pTemple de l'Ombre%w!"),
-        GIMESSAGE(RG_BOTTOM_OF_THE_WELL_COMPASS, ITEM_COMPASS,
+        GIMESSAGE(RG_BOTW_COMPASS, ITEM_COMPASS,
 			"You found the %pBottom of the&Well %wCompass!",
 			"Du erhältst den %rKompaß%w für den&%pGrund des Brunnens%w!",
 			"Vous obtenez la %rBoussole %wdu&%pPuits%w!"),
@@ -4034,10 +4034,10 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
                 mapIndex = SCENE_SHADOW_TEMPLE;
                 numOfKeysOnKeyring = SHADOW_TEMPLE_SMALL_KEY_MAX;
                 break;
-            case RG_BOTTOM_OF_THE_WELL_MAP:
-            case RG_BOTTOM_OF_THE_WELL_COMPASS:
-            case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
-            case RG_BOTTOM_OF_THE_WELL_KEY_RING:
+            case RG_BOTW_MAP:
+            case RG_BOTW_COMPASS:
+            case RG_BOTW_SMALL_KEY:
+            case RG_BOTW_KEY_RING:
                 mapIndex = SCENE_BOTTOM_OF_THE_WELL;
                 numOfKeysOnKeyring = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;
                 break;
@@ -4048,13 +4048,13 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             case RG_GANONS_CASTLE_BOSS_KEY:
                 mapIndex = SCENE_GANONS_TOWER;
                 break;
-            case RG_GERUDO_TRAINING_GROUND_SMALL_KEY:
-            case RG_GERUDO_TRAINING_GROUND_KEY_RING:
+            case RG_GTG_SMALL_KEY:
+            case RG_GTG_KEY_RING:
                 mapIndex = SCENE_GERUDO_TRAINING_GROUND;
                 numOfKeysOnKeyring = GERUDO_TRAINING_GROUND_SMALL_KEY_MAX;
                 break;
-            case RG_GERUDO_FORTRESS_SMALL_KEY:
-            case RG_GERUDO_FORTRESS_KEY_RING:
+            case RG_TH_SMALL_KEY:
+            case RG_TH_KEY_RING:
                 mapIndex = SCENE_THIEVES_HIDEOUT;
                 numOfKeysOnKeyring = GERUDO_FORTRESS_SMALL_KEY_MAX;
                 break;

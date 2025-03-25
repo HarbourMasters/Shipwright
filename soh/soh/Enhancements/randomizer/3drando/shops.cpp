@@ -569,14 +569,14 @@ void InitTrickNames() {
         Text{"Progressive Pearl", "Perle (prog.)", "Perla progresiva"},
         Text{"Progressive Scute", "Bulle (prog.)", "Fragmento Zora progresivo"}
     };
-    trickNameTable[RG_PROGRESSIVE_NUT_UPGRADE] = {
+    trickNameTable[RG_PROGRESSIVE_NUT_BAG] = {
         Text{"Progressive Nut Pack", "Paquet de noix (prog.)", "Mayor capacidad de semillas"},
         Text{"Progressive Bait Bag", "Sac à Appâts (prog.)", "Bolsa de cebo progresiva"},
         Text{"Progressive Pear Capacity", "Capacité de poire (prog.)", "Capacidad progresiva de pera"},
         Text{"Progressive Nut Bag", "Sac de noix (prog.)", "Bolsa de nueces progresiva"},
         Text{"Progressive Husk Capacity", "Capacité de noisettes (prog.)", "Mayor capacidad de castañas"}
     };
-    trickNameTable[RG_PROGRESSIVE_STICK_UPGRADE] = {
+    trickNameTable[RG_PROGRESSIVE_STICK_BAG] = {
         Text{"Progressive Stick Bag", "Sac de bâtons (prog.)", "Mayor capacidad de ramas deku"},
         Text{"Progressive Stick Pack", "Paquet de bâtons Mojo (prog.)", "Mayor capacidad de bastones"},
         Text{"Progressive Branch Capacity", "Capacité de la succursale (prog.)", "Capacidad progresiva de la sucursal"},
@@ -589,7 +589,7 @@ void InitTrickNames() {
         Text{"Progressive Missiles", "Missiles (prog.)", "Misiles progresivos"},
         Text{"Progressive Bombchu Bag", "Sac à Bombchu (prog.)", "Bombachus progresivos"}
     };
-    trickNameTable[RG_PROGRESSIVE_MAGIC_METER] = {
+    trickNameTable[RG_PROGRESSIVE_MAGIC] = {
         Text{"Progressive Stamina Meter", "Jauge d'endurance (prog.)", "Medidor de vigor progresivo"},
         Text{"Progressive Energy Gauge", "Jauge d'énergie (prog.)", "Medidor de energía progresivo"},
         Text{"Progressive Magic Powder", "Poudre magique (prog.)", "Medidor de carga progresivo"}

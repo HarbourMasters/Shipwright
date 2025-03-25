@@ -18,9 +18,9 @@ void RegionTable_Init_Market() {
         Entrance(RR_CASTLE_GROUNDS,             []{return true;}),
         Entrance(RR_MARKET_BAZAAR,              []{return logic->IsChild && logic->AtDay && logic->CanOpenOverworldDoor(RG_MARKET_BAZAAR_KEY);}),
         Entrance(RR_MARKET_MASK_SHOP,           []{return logic->IsChild && logic->AtDay && logic->CanOpenOverworldDoor(RG_MASK_SHOP_KEY);}),
-        Entrance(RR_MARKET_SHOOTING_GALLERY,    []{return logic->IsChild && logic->AtDay && logic->CanOpenOverworldDoor(RG_MARKET_SHOOTING_GALLERY_KEY);}),
+        Entrance(RR_MARKET_SHOOTING_GALLERY,    []{return logic->IsChild && logic->AtDay && logic->CanOpenOverworldDoor(RG_MARKET_SHOOTING_KEY);}),
         Entrance(RR_MARKET_BOMBCHU_BOWLING,     []{return logic->IsChild && logic->CanOpenOverworldDoor(RG_BOMBCHU_BOWLING_KEY);}),
-        Entrance(RR_MARKET_TREASURE_CHEST_GAME, []{return logic->IsChild && logic->AtNight && logic->CanOpenOverworldDoor(RG_TREASURE_CHEST_GAME_BUILDING_KEY);}),
+        Entrance(RR_MARKET_TREASURE_CHEST_GAME, []{return logic->IsChild && logic->AtNight && logic->CanOpenOverworldDoor(RG_TCG_BUILDING_KEY);}),
         Entrance(RR_MARKET_POTION_SHOP,         []{return logic->IsChild && logic->AtDay && logic->CanOpenOverworldDoor(RG_MARKET_POTION_SHOP_KEY);}),
         Entrance(RR_MARKET_BACK_ALLEY,          []{return logic->IsChild;}),
     });

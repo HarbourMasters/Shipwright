@@ -15,7 +15,7 @@ class ItemLocation {
     void AddToPool();
     void RemoveFromPool();
     const Item& GetPlacedItem() const;
-    const Text& GetPlacedItemName() const;
+    const CustomMessage& GetPlacedItemName() const;
     RandomizerGet GetPlacedRandomizerGet() const;
     void SetPlacedItem(RandomizerGet item);
     RandomizerGet& RefPlacedItem();

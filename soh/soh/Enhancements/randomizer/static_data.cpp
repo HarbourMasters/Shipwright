@@ -194,7 +194,7 @@ std::unordered_map<RandomizerHint, StaticHintInfo> StaticData::staticHintInfoMap
   {RH_SHEIK_HINT,          StaticHintInfo(HINT_TYPE_AREA,     {RHT_SHEIK_HINT_LA_ONLY},            RSK_SHEIK_LA_HINT,       true, {}, {RG_LIGHT_ARROWS},            {RC_SHEIK_HINT_GC, RC_SHEIK_HINT_MQ_GC}, true)},
   {RH_DAMPES_DIARY,        StaticHintInfo(HINT_TYPE_AREA,     {RHT_DAMPE_DIARY},                   RSK_DAMPES_DIARY_HINT,   true, {}, {RG_PROGRESSIVE_HOOKSHOT},    {RC_DAMPE_HINT})},
   {RH_GREG_RUPEE,          StaticHintInfo(HINT_TYPE_AREA,     {RHT_GREG_HINT},                     RSK_GREG_HINT,           true, {}, {RG_GREG_RUPEE},              {RC_GREG_HINT})},
-  {RH_SARIA_HINT,          StaticHintInfo(HINT_TYPE_AREA,     {RHT_SARIA_TALK_HINT, RHT_SARIA_SONG_HINT}, RSK_SARIA_HINT,   true, {}, {RG_PROGRESSIVE_MAGIC_METER}, {RC_SARIA_SONG_HINT, RC_SONG_FROM_SARIA}, true)},
+  {RH_SARIA_HINT,          StaticHintInfo(HINT_TYPE_AREA,     {RHT_SARIA_TALK_HINT, RHT_SARIA_SONG_HINT}, RSK_SARIA_HINT,   true, {}, {RG_PROGRESSIVE_MAGIC}, {RC_SARIA_SONG_HINT, RC_SONG_FROM_SARIA}, true)},
   {RH_LOACH_HINT,          StaticHintInfo(HINT_TYPE_ITEM,     {RHT_LOACH_HINT},                    RSK_LOACH_HINT,          true, {RC_LH_HYRULE_LOACH})},
   {RH_FISHING_POLE,        StaticHintInfo(HINT_TYPE_AREA,     {RHT_FISHING_POLE_HINT},             RSK_FISHING_POLE_HINT,   true, {}, {RG_FISHING_POLE},            {RC_FISHING_POLE_HINT}, true)},
   {RH_HBA_HINT,            StaticHintInfo(HINT_TYPE_ITEM,     {RHT_HBA_HINT_SIGN, RHT_HBA_HINT_NOT_ON_HORSE, RHT_HBA_HINT_INITIAL, RHT_HBA_HINT_HAVE_1000}, RSK_HBA_HINT, true, {RC_GF_HBA_1000_POINTS, RC_GF_HBA_1500_POINTS})},
@@ -219,7 +219,7 @@ std::unordered_map<std::string, uint32_t> StaticData::PopulateTranslationMap(std
     std::vector<std::string> strings = message.GetAllMessages();
     for (std::string string: strings){
       if (output.contains(string)){
-        if (output[string] != key){
+        if (output[string] != key && string != ""){
           SPDLOG_DEBUG("\tREPEATED STRING IN " + message.GetEnglish(MF_CLEAN) + "\n\n"); //RANDOTODO should this cause an error of some kind?
         }
       } else {
@@ -236,8 +236,8 @@ std::unordered_map<std::string, uint32_t> StaticData::PopulateTranslationMap(std
     std::vector<std::string> strings = hintTextTable[text].GetClear().GetAllMessages();
     for (std::string string: strings){
       if (output.contains(string)){
-        if (output[string] != key){
-          SPDLOG_DEBUG("\tREPEATED STRING WITH " + string + "\n\n"); //RANDOTODO should this cause an error of some kind?
+        if (output[string] != key && string != ""){
+          SPDLOG_DEBUG("\tREPEATED STRING WITH " + string + "\n\n");
         }
       } else {
         output[string] = key;
