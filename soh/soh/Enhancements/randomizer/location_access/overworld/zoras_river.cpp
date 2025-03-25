@@ -7,7 +7,7 @@ void RegionTable_Init_ZoraRiver() {
     // clang-format off
     areaTable[RR_ZR_FRONT] = Region("ZR Front", "Zora River", {RA_ZORAS_RIVER}, DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_ZR_GS_TREE,  logic->IsChild && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_CLOSE)),
+        LOCATION(RC_ZR_GS_TREE,  logic->IsChild && logic->CanAttack()),
         LOCATION(RC_ZR_GRASS_1,  logic->CanCutShrubs()),
         LOCATION(RC_ZR_GRASS_2,  logic->CanCutShrubs()),
         LOCATION(RC_ZR_GRASS_3,  logic->CanCutShrubs()),
