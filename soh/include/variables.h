@@ -45,12 +45,12 @@ extern "C"
 	extern OSViContext* __osViNext;
 	extern OSViMode osViModeFpalLan1;
 	extern u32 __additional_scanline;
-	extern u8 gBuildVersion[];
+	extern const char gBuildVersion[];
 	extern u16 gBuildVersionMajor;
 	extern u16 gBuildVersionMinor;
 	extern u16 gBuildVersionPatch;
-	extern u8 gGitBranch[];
-	extern u8 gGitCommitHash[];
+	extern const char gGitBranch[];
+    extern const char gGitCommitHash[];
 	extern u8 gGitCommitTag[];
 	extern u8 gBuildTeam[];
 	extern u8 gBuildDate[];

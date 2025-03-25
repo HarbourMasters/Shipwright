@@ -4,12 +4,12 @@
 #include "spdlog/spdlog.h"
 
 namespace SOH {
-std::shared_ptr<Ship::IResource> ResourceFactoryBinaryPathV0::ReadResource(std::shared_ptr<Ship::File> file) {
-    if (!FileHasValidFormatAndReader(file)) {
+std::shared_ptr<Ship::IResource> ResourceFactoryBinaryPathV0::ReadResource(std::shared_ptr<Ship::File> file, std::shared_ptr<Ship::ResourceInitData> initData) {
+    if (!FileHasValidFormatAndReader(file, initData)) {
         return nullptr;
     }
 
-    auto path = std::make_shared<Path>(file->InitData);
+    auto path = std::make_shared<Path>(initData);
     auto reader = std::get<std::shared_ptr<Ship::BinaryReader>>(file->Reader);
 
     path->numPaths = reader->ReadUInt32();
@@ -43,12 +43,12 @@ std::shared_ptr<Ship::IResource> ResourceFactoryBinaryPathV0::ReadResource(std::
     return path;
 }
 
-std::shared_ptr<Ship::IResource> ResourceFactoryXMLPathV0::ReadResource(std::shared_ptr<Ship::File> file) {
-    if (!FileHasValidFormatAndReader(file)) {
+std::shared_ptr<Ship::IResource> ResourceFactoryXMLPathV0::ReadResource(std::shared_ptr<Ship::File> file, std::shared_ptr<Ship::ResourceInitData> initData) {
+    if (!FileHasValidFormatAndReader(file, initData)) {
         return nullptr;
     }
 
-    auto path = std::make_shared<Path>(file->InitData);
+    auto path = std::make_shared<Path>(initData);
     auto reader = std::get<std::shared_ptr<tinyxml2::XMLDocument>>(file->Reader);
 
     auto pathElement = reader->RootElement();

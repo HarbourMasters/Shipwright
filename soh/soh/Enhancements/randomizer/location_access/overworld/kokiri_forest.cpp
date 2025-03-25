@@ -4,6 +4,7 @@
 using namespace Rando;
 
 void RegionTable_Init_KokiriForest() {
+    // clang-format off
     areaTable[RR_KOKIRI_FOREST] = Region("Kokiri Forest", "Kokiri Forest", {RA_KOKIRI_FOREST}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->BeanPlantFairy,           []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}),
@@ -149,4 +150,6 @@ void RegionTable_Init_KokiriForest() {
         //Exits
         Entrance(RR_KOKIRI_FOREST, []{return true;})
     });
+
+    // clang-format on
 }

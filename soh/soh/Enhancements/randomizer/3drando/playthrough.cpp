@@ -2,7 +2,6 @@
 
 #include <libultraship/libultraship.h>
 #include <boost_custom/container_hash/hash_32.hpp>
-#include "custom_messages.hpp"
 #include "fill.hpp"
 #include "../location_access.h"
 #include "random.hpp"
@@ -23,7 +22,6 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
 
     auto ctx = Rando::Context::GetInstance();
     ctx->overrides.clear();
-    CustomMessages::ClearMessages();
     ctx->ItemReset();
     ctx->HintReset();
     ctx->GetLogic()->Reset();

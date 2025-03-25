@@ -13,11 +13,11 @@
 // which doesn't exist yet.
 typedef enum {
     MOD_NONE,
-    MOD_RANDOMIZER
+    MOD_RANDOMIZER,
 } ModIndex;
 typedef enum {
     TABLE_VANILLA = MOD_NONE,
-    TABLE_RANDOMIZER = MOD_RANDOMIZER
+    TABLE_RANDOMIZER = MOD_RANDOMIZER,
 } TableIndex;
 
 typedef struct {
@@ -991,7 +991,6 @@ typedef enum {
     RR_GANONS_CASTLE_SHADOW_TRIAL,
     RR_GANONS_CASTLE_SPIRIT_TRIAL,
     RR_GANONS_CASTLE_LIGHT_TRIAL,
-    RR_GANONS_CASTLE_TOWER,
 
     RR_GANONS_CASTLE_MQ_LOBBY,
     RR_GANONS_CASTLE_MQ_MAIN,
@@ -1020,6 +1019,7 @@ typedef enum {
     RR_GANONS_CASTLE_MQ_LIGHT_TRIAL_BOULDER_ROOM_BACK,
     RR_GANONS_CASTLE_MQ_LIGHT_TRIAL_FINAL_ROOM,
 
+    RR_GANONS_TOWER_ENTRYWAY,
     RR_GANONS_TOWER_FLOOR_1,
     RR_GANONS_TOWER_FLOOR_2,
     RR_GANONS_TOWER_FLOOR_3,
@@ -3631,6 +3631,8 @@ typedef enum {
     RG_HOOKSHOT,
     RG_LONGSHOT,
     RG_SCARECROW,
+
+    //Overworld keys
     RG_GUARD_HOUSE_KEY,
     RG_MARKET_BAZAAR_KEY,
     RG_MARKET_POTION_SHOP_KEY,
@@ -5712,7 +5714,6 @@ typedef enum {
     RO_GANON_BOSS_KEY_LACS_DUNGEONS,
     RO_GANON_BOSS_KEY_LACS_TOKENS,
     RO_GANON_BOSS_KEY_KAK_TOKENS,
-    RO_GANON_BOSS_KEY_TRIFORCE_HUNT,
 } RandoOptionGanonsBossKey;
 
 typedef enum {
@@ -5970,12 +5971,12 @@ typedef struct SmallCrateIdentity {
 
 typedef enum {
     TRACKER_WINDOW_FLOATING,
-    TRACKER_WINDOW_WINDOW
+    TRACKER_WINDOW_WINDOW,
 } TrackerWindowType;
 
 typedef enum {
     TRACKER_DISPLAY_ALWAYS,
-    TRACKER_DISPLAY_COMBO_BUTTON
+    TRACKER_DISPLAY_COMBO_BUTTON,
 } TrackerDisplayType;
 
 typedef enum {
@@ -6037,6 +6038,14 @@ typedef enum {
     RE_BIG_OCTO,
     RE_GERUDO_WARRIOR,
     RE_GIBDO,
+    RE_GOHMA,
+    RE_KING_DODONGO,
+    RE_BARINADE,
+    RE_PHANTOM_GANON,
+    RE_VOLVAGIA,
+    RE_MORPHA,
+    RE_BONGO_BONGO,
+    RE_TWINROVA,
     RE_GANONDORF,
     RE_GANON,
     RE_DARK_LINK,
@@ -6070,7 +6079,7 @@ typedef enum {
     WL_MID,
     WL_HIGH,
     WL_LOW_OR_MID,
-    WL_HIGH_OR_MID
+    WL_HIGH_OR_MID,
 } RandoWaterLevel;
 
 #define ENTRANCE_GROTTO_LOAD_START 0x0700

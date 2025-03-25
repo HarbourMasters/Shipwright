@@ -94,6 +94,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
                         actual = RG_DEKU_STICK_BAG;
                         break;
                     }
+                    [[fallthrough]];
                 case 1:
                     if (infiniteUpgrades == RO_INF_UPGRADES_CONDENSED_PROGRESSIVE) {
                         actual = RG_STICK_UPGRADE_INF;
@@ -123,6 +124,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
                         actual = RG_DEKU_NUT_BAG;
                         break;
                     }
+                    [[fallthrough]];
                 case 1:
                     if (infiniteUpgrades == RO_INF_UPGRADES_CONDENSED_PROGRESSIVE) {
                         actual = RG_NUT_UPGRADE_INF;

@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/controls/Mouse.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 
@@ -316,6 +317,8 @@ void PadMgr_HandleRetraceMsg(PadMgr* padMgr) {
     }
     osRecvMesg(queue, NULL, OS_MESG_BLOCK);
     osContGetReadData(padMgr->pads);
+
+    Mouse_UpdateAll();
 
     for (i = 0; i < __osMaxControllers; i++) {
         padMgr->padStatus[i].status = Controller_ShouldRumble(i);

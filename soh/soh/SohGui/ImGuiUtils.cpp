@@ -125,7 +125,7 @@ std::map<uint32_t, ItemMapEntry> itemMapping = {
     ITEM_MAP_ENTRY(ITEM_DUNGEON_MAP),
     ITEM_MAP_ENTRY(ITEM_KEY_SMALL),
     ITEM_MAP_ENTRY(ITEM_MAGIC_SMALL),
-    ITEM_MAP_ENTRY(ITEM_MAGIC_LARGE)
+    ITEM_MAP_ENTRY(ITEM_MAGIC_LARGE),
 };
 
 std::map<uint32_t, ItemMapEntry> gregMapping = {

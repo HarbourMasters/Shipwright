@@ -4,6 +4,7 @@
 using namespace Rando;
 
 void RegionTable_Init_ZorasDomain() {
+    // clang-format off
     areaTable[RR_ZORAS_DOMAIN] = Region("Zoras Domain", "Zoras Domain", {RA_ZORAS_DOMAIN}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairyExceptSuns();}),
@@ -90,4 +91,6 @@ void RegionTable_Init_ZorasDomain() {
         //Exits
         Entrance(RR_ZORAS_DOMAIN_ISLAND, []{return true;}),
     });
+
+    // clang-format on
 }

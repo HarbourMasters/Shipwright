@@ -10,6 +10,12 @@ void Custom_EnMThunder_Update(Actor* thisx, PlayState* play) {
     f32 blueRadius;
     s32 redGreen;
 
+    // If thunder effect doesn't exist (aka player doesn't have magic),
+    // don't do anything.
+    if (enMThunder->actionFunc == nullptr) {
+        return;
+    }
+
     enMThunder->actionFunc(enMThunder, play);
     // don't call this part, it's what makes the spin attack darkness happen
     // func_80A9F314(play, this->unk_1BC);

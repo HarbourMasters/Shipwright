@@ -5,6 +5,7 @@
 using namespace Rando;
 
 void RegionTable_Init_FireTemple() {
+    // clang-format off
     // Vanilla/MQ Decider
     areaTable[RR_FIRE_TEMPLE_ENTRYWAY] = Region("Fire Temple Entryway", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
@@ -363,7 +364,7 @@ void RegionTable_Init_FireTemple() {
     areaTable[RR_FIRE_TEMPLE_MQ_FIRST_ROOM_UPPER] = Region("Fire Temple MQ First Room Upper", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_LOWER, []{return true;}),
-        Entrance(RR_FIRE_TEMPLE_NEAR_BOSS_ROOM,      []{return logic->HasFireSource();}),
+        Entrance(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_ROOM,   []{return logic->HasFireSource();}),
         Entrance(RR_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM,    []{return Here(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_UPPER, []{return logic->CanUse(RG_MEGATON_HAMMER);});}),
     });
 
@@ -744,7 +745,7 @@ void RegionTable_Init_FireTemple() {
 
     areaTable[RR_FIRE_TEMPLE_BOSS_ROOM] = Region("Fire Temple Boss Room", "Fire Temple", {}, NO_DAY_NIGHT_CYCLE, {
         // Events
-        EventAccess(&logic->FireTempleClear, []{return logic->FireTempleClear || (logic->HasBossSoul(RG_VOLVAGIA_SOUL) && (logic->FireTimer() >= 64 && logic->CanUse(RG_MEGATON_HAMMER)));}),
+        EventAccess(&logic->FireTempleClear, []{return logic->FireTempleClear || (logic->FireTimer() >= 64 && logic->CanKillEnemy(RE_VOLVAGIA));}),
     }, {
         // Locations
         LOCATION(RC_FIRE_TEMPLE_VOLVAGIA_HEART, logic->FireTempleClear),
@@ -754,4 +755,6 @@ void RegionTable_Init_FireTemple() {
         Entrance(RR_FIRE_TEMPLE_BOSS_ENTRYWAY, []{return false;}),
         Entrance(RR_DMC_CENTRAL_LOCAL,         []{return logic->FireTempleClear;}, false),
     });
+
+    // clang-format on
 }

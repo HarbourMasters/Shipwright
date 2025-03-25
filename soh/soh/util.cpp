@@ -4,6 +4,8 @@
 #include <vector>
 #include <algorithm>
 #include <array>
+#include <assert.h>
+#include <spdlog/spdlog.h>
 #include "Enhancements/randomizer/randomizerTypes.h"
 
 std::vector<std::string> sceneNames = {
@@ -341,18 +343,42 @@ std::array<std::string, RA_MAX> rcareaPrefixes = {
 };
 
 const std::string& SohUtils::GetSceneName(int32_t scene) {
+    if (scene > sceneNames.size()) {
+        SPDLOG_WARN("Passed invalid scene id to SohUtils::GetSceneName: ({})", scene);
+        assert(false);
+        return "";
+    }
+
     return sceneNames[scene];
 }
 
 const std::string& SohUtils::GetItemName(int32_t item) {
+    if (item > itemNames.size()) {
+        SPDLOG_WARN("Passed invalid item id to SohUtils::GetItemName: ({})", item);
+        assert(false);
+        return "";
+    }
+
     return itemNames[item];
 }
 
 const std::string& SohUtils::GetQuestItemName(int32_t item) {
+    if (item > questItemNames.size()) {
+        SPDLOG_WARN("Passed invalid quest item id to SohUtils::GetQuestItemName: ({})", item);
+        assert(false);
+        return "";
+    }
+
     return questItemNames[item];
 }
 
 const std::string& SohUtils::GetRandomizerCheckAreaPrefix(int32_t rcarea) {
+    if (rcarea > rcareaPrefixes.size()) {
+        SPDLOG_WARN("Passed invalid rcarea to SohUtils::GetRandomizerCheckAreaPrefix: ({})", rcarea);
+        assert(false);
+        return "";
+    }
+
     return rcareaPrefixes[rcarea];
 }
 

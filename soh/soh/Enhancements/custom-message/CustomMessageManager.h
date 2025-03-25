@@ -47,6 +47,8 @@ class CustomMessage {
     CustomMessage(std::string english_, std::vector<std::string> colors_, std::vector<bool> capital_ = {}, TextBoxType type_ = TEXTBOX_TYPE_BLACK, TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
     CustomMessage(Text text, TextBoxType type_ = TEXTBOX_TYPE_BLACK, TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
 
+    static CustomMessage LoadVanillaMessageTableEntry(uint16_t textId);
+
     static std::string MESSAGE_END() ;
     static std::string ITEM_OBTAINED(uint8_t x) ;
     static std::string NEWLINE() ;

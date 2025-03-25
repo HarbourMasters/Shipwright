@@ -150,17 +150,13 @@ bool Scene_CommandObjectList(PlayState* play, SOH::ISceneCommand* cmd) {
     s32 i;
     s32 j;
     s32 k;
-    ObjectStatus* status;
     ObjectStatus* status2;
-    ObjectStatus* firstStatus;
     // s16* objectEntry = SEGMENTED_TO_VIRTUAL(cmd->objectList.segment);
     s16* objectEntry = (s16*)cmdObj->GetRawPointer();
     void* nextPtr;
 
     k = 0;
     i = play->objectCtx.unk_09;
-    firstStatus = &play->objectCtx.status[0];
-    status = &play->objectCtx.status[i];
 
     // Loop until a mismatch in the object lists
     // Then clear all object ids past that in the context object list and kill actors for those objects
