@@ -542,8 +542,8 @@ void PlandomizerSaveSpoilerLog() {
     for (auto& import : plandoLogData) {
         if (import.checkRewardItem.GetRandomizerGet() == RG_ICE_TRAP) {
             spoilerSave["locations"][import.checkName] = {
-                { "item", import.checkRewardItem.GetName().GetForCurrentLanguage() },
-                { "model", import.iceTrapModel.GetName().GetForCurrentLanguage() },
+                { "item", import.checkRewardItem.GetName().GetForCurrentLanguage(MF_RAW) },
+                { "model", import.iceTrapModel.GetName().GetForCurrentLanguage(MF_RAW) },
                 { "trickName", import.iceTrapName.c_str() }
             };
             if (import.shopPrice > -1) {
@@ -551,11 +551,11 @@ void PlandomizerSaveSpoilerLog() {
             }
         } else if (import.shopPrice > -1) {
             spoilerSave["locations"][import.checkName] = {
-                { "item", import.checkRewardItem.GetName().GetForCurrentLanguage() },
+                { "item", import.checkRewardItem.GetName().GetForCurrentLanguage(MF_RAW) },
                 { "price", import.shopPrice }
             };
         } else {
-            spoilerSave["locations"][import.checkName] = import.checkRewardItem.GetName().GetForCurrentLanguage();
+            spoilerSave["locations"][import.checkName] = import.checkRewardItem.GetName().GetForCurrentLanguage(MF_RAW);
         }
     }
 
@@ -669,7 +669,7 @@ void PlandomizerOverlayText(std::pair<Rando::Item, uint32_t> drawObject ) {
         ImGui::SetCursorScreenPos(textPos);
         ImGui::Text("+");
     }
-    std::string parenthesesNum = extractNumberInParentheses(drawObject.first.GetName().GetEnglish().c_str());
+    std::string parenthesesNum = extractNumberInParentheses(drawObject.first.GetName().GetEnglish(MF_RAW).c_str());
     if (parenthesesNum != "" && parenthesesNum != "WINNER" && parenthesesNum != "LOSER") {
         textPos = ImVec2(imageMin.x + 2, imageMin.y + 2);
 
@@ -715,7 +715,7 @@ void PlandomizerDrawItemPopup(uint32_t index) {
             ImGui::PushID(item);
             ImGui::TableNextColumn();
             PlandomizerItemImageCorrection(plandomizerRandoRetrieveItem(item));
-            auto name = plandomizerRandoRetrieveItem(item).GetName().GetForCurrentLanguage();
+            auto name = plandomizerRandoRetrieveItem(item).GetName().GetForCurrentLanguage(MF_RAW);
             ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(imagePadding, imagePadding));
             auto ret = ImGui::ImageButton(name.c_str(), textureID, imageSize, textureUV0, textureUV1, ImVec4(0, 0, 0, 0), itemColor);
             ImGui::PopStyleVar();
@@ -744,7 +744,7 @@ void PlandomizerDrawItemPopup(uint32_t index) {
             ImGui::PushID(itemIndex);
             auto itemToDraw = drawSlots.first;
             PlandomizerItemImageCorrection(drawSlots.first);
-            auto name = drawSlots.first.GetName().GetForCurrentLanguage();
+            auto name = drawSlots.first.GetName().GetForCurrentLanguage(MF_RAW);
             ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(imagePadding, imagePadding));
             auto ret = ImGui::ImageButton(name.c_str(), textureID, imageSize, textureUV0, textureUV1, ImVec4(0, 0, 0, 0), itemColor);
             ImGui::PopStyleVar();
@@ -792,7 +792,7 @@ void PlandomizerDrawIceTrapPopUp(uint32_t index) {
             }
             ImGui::TableNextColumn();
             ImGui::PushID(items.first);
-            auto name = Rando::StaticData::RetrieveItem(items.first).GetName().GetForCurrentLanguage();
+            auto name = Rando::StaticData::RetrieveItem(items.first).GetName().GetForCurrentLanguage(MF_RAW);
             PlandomizerItemImageCorrection(Rando::StaticData::RetrieveItem(items.first));
             ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(imagePadding, imagePadding));
             auto ret = ImGui::ImageButton(name.c_str(), textureID, imageSize, textureUV0, textureUV1, ImVec4(0, 0, 0, 0), itemColor); 
@@ -818,7 +818,7 @@ void PlandomizerDrawItemSlots(uint32_t index) {
     ImGui::PushID(index);
     PlandoPushImageButtonStyle();
     PlandomizerItemImageCorrection(plandoLogData[index].checkRewardItem);
-    auto name = plandoLogData[index].checkRewardItem.GetName().GetForCurrentLanguage();
+    auto name = plandoLogData[index].checkRewardItem.GetName().GetForCurrentLanguage(MF_RAW);
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(imagePadding, imagePadding));
     auto ret = ImGui::ImageButton(name.c_str(), textureID, imageSize, textureUV0, textureUV1, ImVec4(0, 0, 0, 0), itemColor);
     ImGui::PopStyleVar();
@@ -854,7 +854,7 @@ void PlandomizerDrawIceTrapSetup(uint32_t index) {
     ImGui::TableNextColumn();
     PlandomizerItemImageCorrection(plandoLogData[index].iceTrapModel);
     PlandoPushImageButtonStyle();
-    auto name = plandoLogData[index].iceTrapModel.GetName().GetForCurrentLanguage();
+    auto name = plandoLogData[index].iceTrapModel.GetName().GetForCurrentLanguage(MF_RAW);
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(imagePadding, imagePadding));
     auto ret = ImGui::ImageButton(name.c_str(), textureID, imageSize, textureUV0, textureUV1, ImVec4(0, 0, 0, 0), itemColor);
     ImGui::PopStyleVar();
@@ -1090,7 +1090,7 @@ void PlandomizerDrawLocationsWindow(RandomizerCheckArea rcArea) {
                 ImGui::TableNextColumn();
                 ImGui::TextWrapped(spoilerData.checkName.c_str());
                 ImGui::TableNextColumn();
-                ImGui::TextWrapped(spoilerData.checkRewardItem.GetName().GetForCurrentLanguage().c_str());
+                ImGui::TextWrapped(spoilerData.checkRewardItem.GetName().GetForCurrentLanguage(MF_RAW).c_str());
                 ImGui::TableNextColumn();
                 PlandomizerDrawItemSlots(index);
                 if (plandoLogData[index].checkRewardItem.GetRandomizerGet() == RG_ICE_TRAP) {

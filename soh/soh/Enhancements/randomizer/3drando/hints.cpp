@@ -40,7 +40,7 @@ const CustomMessage& HintText::GetClear() const {
 }
 
 const CustomMessage& HintText::GetName() const {
-    return name.GetEnglish() == "" ? name : clearText;
+    return name.GetEnglish() == "" ? clearText : name;
 }
 
 const CustomMessage& HintText::GetObscure() const {
@@ -454,7 +454,7 @@ static RandomizerCheck CreateRandomHint(std::vector<RandomizerCheck>& possibleHi
     SPDLOG_DEBUG("\n");
 
     SPDLOG_DEBUG("\tItem: ");
-    SPDLOG_DEBUG(ctx->GetItemLocation(hintedLocation)->GetPlacedItemName().GetForCurrentLanguage());
+    SPDLOG_DEBUG(ctx->GetItemLocation(hintedLocation)->GetPlacedItemName().GetForCurrentLanguage(MF_RAW));
     SPDLOG_DEBUG("\n");
 
     placed = CreateHint(hintedLocation, copies, type, distributionName);

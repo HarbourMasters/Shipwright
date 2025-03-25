@@ -792,7 +792,7 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
         // NOLINTNEXTLINE(clang-diagnostic-unused-variable)
         for (const RandomizerGet item : items) {
             SPDLOG_DEBUG("\t");
-            SPDLOG_DEBUG(Rando::StaticData::RetrieveItem(item).GetName().GetEnglish());
+            SPDLOG_DEBUG(Rando::StaticData::RetrieveItem(item).GetName().GetForCurrentLanguage(MF_RAW));
             SPDLOG_DEBUG("\n");
         }
         SPDLOG_DEBUG("\nAllowed Locations:\n");
@@ -851,7 +851,7 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
             if (accessibleLocations.empty()) {
 
                 SPDLOG_DEBUG("\nCANNOT PLACE ");
-                SPDLOG_DEBUG(Rando::StaticData::RetrieveItem(item).GetName().GetEnglish());
+                SPDLOG_DEBUG(Rando::StaticData::RetrieveItem(item).GetName().GetForCurrentLanguage(MF_RAW));
                 SPDLOG_DEBUG(". TRYING AGAIN...\n");
 
                 // reset any locations that got an item

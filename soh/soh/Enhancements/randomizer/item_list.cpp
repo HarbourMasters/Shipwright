@@ -409,9 +409,9 @@ void Rando::StaticData::InitItemTable() {
             if (itemNameToEnum.contains(string) && string != ""){
                 if (itemNameToEnum[string] != item.GetRandomizerGet()){
                     SPDLOG_DEBUG("\tREPEATED STRING WITH " + string + "\n\n");
-                } else {
-                    itemNameToEnum[string] = item.GetRandomizerGet();
-                }
+                } 
+            } else {
+                itemNameToEnum[string] = item.GetRandomizerGet();
             }
         }
     }

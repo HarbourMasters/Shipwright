@@ -411,11 +411,11 @@ oJson Hint::toJSON() {
       if (!(StaticData::staticHintInfoMap.contains(ownKey) &&
           StaticData::staticHintInfoMap[ownKey].targetItems.size() > 0)){
         if (items.size() == 1){
-          log["item"] = StaticData::GetItemTable()[items[0]].GetName().GetForCurrentLanguage();
+          log["item"] = StaticData::GetItemTable()[items[0]].GetName().GetForCurrentLanguage(MF_RAW);
         } else if (items.size() > 1){
           std::vector<std::string> itemStrings = {};
           for (size_t c = 0; c < items.size(); c++){
-            itemStrings.push_back(StaticData::GetItemTable()[items[c]].GetName().GetForCurrentLanguage());
+            itemStrings.push_back(StaticData::GetItemTable()[items[c]].GetName().GetForCurrentLanguage(MF_RAW));
           }
           log["items"] = itemStrings;
         }

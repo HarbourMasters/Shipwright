@@ -1000,7 +1000,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                 } else if (item00->itemEntry.modIndex == MOD_RANDOMIZER) {
                     Notification::Emit({
                         .message = "You found ",//RANDOTODO change based on language
-                        .suffix = Rando::StaticData::RetrieveItem((RandomizerGet)item00->itemEntry.getItemId).GetName().GetForCurrentLanguage(),
+                        .suffix = Rando::StaticData::RetrieveItem((RandomizerGet)item00->itemEntry.getItemId).GetName().GetForCurrentLanguage(MF_RAW),
                     });
                 }
 

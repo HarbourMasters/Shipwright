@@ -75,7 +75,7 @@ static void WriteLocation(
   Rando::Location* location = Rando::StaticData::GetLocation(locationKey);
   Rando::ItemLocation* itemLocation = Rando::Context::GetInstance()->GetItemLocation(locationKey);
 
-  jsonData["playthrough"][sphere][location->GetName()] = itemLocation->GetPlacedItemName().GetForCurrentLanguage();
+  jsonData["playthrough"][sphere][location->GetName()] = itemLocation->GetPlacedItemName().GetForCurrentLanguage(MF_RAW);
 }
 
 //Writes a shuffled entrance to the specified node
@@ -254,7 +254,7 @@ static void WriteAllLocations() {
     auto ctx = Rando::Context::GetInstance();
     for (const RandomizerCheck key : ctx->allLocations) {
         Rando::ItemLocation* location = ctx->GetItemLocation(key);
-        std::string placedItemName = location->GetPlacedItemName().GetForCurrentLanguage();
+        std::string placedItemName = location->GetPlacedItemName().GetForCurrentLanguage(MF_RAW);
 
         // If it's a simple item (not an ice trap, doesn't have a price)
         // just add the name of the item and move on
@@ -278,7 +278,7 @@ static void WriteAllLocations() {
 
         if (location->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
           jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["model"] =
-          Rando::StaticData::RetrieveItem(ctx->overrides[location->GetRandomizerCheck()].LooksLike()).GetName().GetForCurrentLanguage();
+          Rando::StaticData::RetrieveItem(ctx->overrides[location->GetRandomizerCheck()].LooksLike()).GetName().GetForCurrentLanguage(MF_RAW);
           switch (gSaveContext.language) {
               case 0:
               default:

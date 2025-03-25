@@ -120,7 +120,7 @@ ItemOverride& Context::GetItemOverride(size_t locKey) {
 void Context::PlaceItemInLocation(const RandomizerCheck locKey, const RandomizerGet item, const bool applyEffectImmediately,
                                   const bool setHidden) {
     const auto loc = GetItemLocation(locKey);
-    SPDLOG_DEBUG(StaticData::RetrieveItem(item).GetName().GetEnglish() + " placed at " + StaticData::GetLocation(locKey)->GetName() + "\n");
+    SPDLOG_DEBUG(StaticData::RetrieveItem(item).GetName().GetForCurrentLanguage(MF_RAW) + " placed at " + StaticData::GetLocation(locKey)->GetName() + "\n");
     
     if (applyEffectImmediately || mOptions[RSK_LOGIC_RULES].Is(RO_LOGIC_GLITCHLESS) || mOptions[RSK_LOGIC_RULES].Is(RO_LOGIC_VANILLA)) {
         StaticData::RetrieveItem(item).ApplyEffect();
@@ -294,7 +294,7 @@ void Context::CreateItemOverrides() {
         }
         SPDLOG_DEBUG(loc->GetName());
         SPDLOG_DEBUG(": ");
-        SPDLOG_DEBUG(itemLoc->GetPlacedItemName().GetForCurrentLanguage());
+        SPDLOG_DEBUG(itemLoc->GetPlacedItemName().GetForCurrentLanguage(MF_RAW));
         SPDLOG_DEBUG("\n");
     }
     SPDLOG_DEBUG("Overrides Created: ");
