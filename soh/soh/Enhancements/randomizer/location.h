@@ -200,17 +200,17 @@ class Location {
                         SpoilerCollectionCheck collectionCheck);
 
     static Location Crate(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, SceneID scene_,
-                        int32_t actorParams_, std::string&& shortName_, std::string&& spoilerName_,
+                        int32_t actorParams_, std::string&& shortName_,
                         RandomizerHintTextKey hintKey, RandomizerGet vanillaItem,
                         SpoilerCollectionCheck collectionCheck);
 
     static Location NLCrate(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, SceneID scene_,
-                        int32_t actorParams_, std::string&& shortName_, std::string&& spoilerName_,
+                        int32_t actorParams_, std::string&& shortName_,
                         RandomizerHintTextKey hintKey, RandomizerGet vanillaItem,
                         SpoilerCollectionCheck collectionCheck);
 
     static Location SmallCrate(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, SceneID scene_,
-                        int32_t actorParams_, std::string&& shortName_, std::string&& spoilerName_,
+                        int32_t actorParams_, std::string&& shortName_,
                         RandomizerHintTextKey hintKey, RandomizerGet vanillaItem,
                         SpoilerCollectionCheck collectionCheck);
 
