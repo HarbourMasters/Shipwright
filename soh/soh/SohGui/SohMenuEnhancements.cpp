@@ -999,9 +999,6 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("QuickBongoKill"))
         .Options(CheckboxOptions().Tooltip(
             "Restore a bug from NTSC 1.0 that allows bypassing Bongo Bongo's intro cutscene to quickly kill him."));
-    AddWidget(path, "Original RBA Values", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_ENHANCEMENT("RestoreRBAValues"))
-        .Options(CheckboxOptions().Tooltip("Restores the original outcomes when performing Reverse Bottle Adventure."));
     AddWidget(path, "Early Eyeball Frog", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("EarlyEyeballFrog"))
         .Options(CheckboxOptions().Tooltip(

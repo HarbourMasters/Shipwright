@@ -163,7 +163,6 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("BombchusOOB"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("QuickPutaway"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("QuickBongoKill"), 1),
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("RestoreRBAValues"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 1),
 
     // Difficulty
@@ -297,7 +296,6 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("BombchusOOB"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("QuickPutaway"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("QuickBongoKill"), 1),
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("RestoreRBAValues"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 1),
 
     // Difficulty
