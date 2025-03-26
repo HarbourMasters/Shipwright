@@ -157,6 +157,7 @@ void RegisterShuffleGrass() {
 
 
 void Rando::StaticData::RegisterGrassLocations() {
+    // clang-format off
     // Overworld Grass
     //            Randomizer Check                                 	       Randomizer Check                                           Quest         Area                          Scene ID                           Params                          Short Name                    	      Spoiler Name                         Hint Text Key                     Vanilla             Spoiler Collection Check
     locationTable[RC_KF_CHILD_GRASS_1]                                 =   Location::Grass(RC_KF_CHILD_GRASS_1,                       RCQUEST_BOTH, RCAREA_KOKIRI_FOREST,         SCENE_KOKIRI_FOREST,               TWO_ACTOR_PARAMS(678, 596),     "Child Grass 1",                     "Child Grass 1",                     RHT_KF_GRASS,                     RG_GREEN_RUPEE,     SpoilerCollectionCheck::RandomizerInf(RAND_INF_KF_CHILD_GRASS_1));
@@ -508,6 +509,7 @@ void Rando::StaticData::RegisterGrassLocations() {
     locationTable[RC_DEKU_TREE_QUEEN_GOHMA_GRASS_7]                    =   Location::Grass(RC_DEKU_TREE_QUEEN_GOHMA_GRASS_7,                    RCQUEST_BOTH, RCAREA_DEKU_TREE,           SCENE_DEKU_TREE_BOSS,              TWO_ACTOR_PARAMS(480, -681),    "Deku Tree Queen Gohma Grass 7",                 "Deku Tree Queen Gohma Grass 7",                 RHT_DEKU_TREE_GRASS,                    RG_BLUE_RUPEE,     SpoilerCollectionCheck::RandomizerInf(RAND_INF_DEKU_TREE_QUEEN_GOHMA_GRASS_7));
     locationTable[RC_DEKU_TREE_QUEEN_GOHMA_GRASS_8]                    =   Location::Grass(RC_DEKU_TREE_QUEEN_GOHMA_GRASS_8,                    RCQUEST_BOTH, RCAREA_DEKU_TREE,           SCENE_DEKU_TREE_BOSS,              TWO_ACTOR_PARAMS(194, -974),    "Deku Tree Queen Gohma Grass 8",                 "Deku Tree Queen Gohma Grass 8",                 RHT_DEKU_TREE_GRASS,                    RG_BLUE_RUPEE,     SpoilerCollectionCheck::RandomizerInf(RAND_INF_DEKU_TREE_QUEEN_GOHMA_GRASS_8));
     // End Grass
+    // clang-format on
 }
 
 static RegisterShipInitFunc registerShuffleGrass(RegisterShuffleGrass, { "IS_RANDO" });
