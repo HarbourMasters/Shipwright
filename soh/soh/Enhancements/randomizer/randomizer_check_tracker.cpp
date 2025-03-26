@@ -1290,7 +1290,8 @@ void LoadSettings() {
             default:
                 showOverworldGrass = false;
                 showDungeonGrass = false;
-				break;
+                break;
+        }
 
         switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_CRATES)) {
             case RO_SHUFFLE_CRATES_ALL:
