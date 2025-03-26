@@ -2013,7 +2013,7 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
 
     hintTextTable[RHT_CRATE_LAKESIDE_LABORATORY] = HintText(CustomMessage("They say that a #crate in the Laboratory# contains #[[1]]#.",
                             /*german*/ "",
-                            /*french*/ "Selon moi, une #caisse dans un laboratoire# contient #[[1]]#.", { QM_RED, QM_GREEN }));	
+                            /*french*/ "Selon moi, une #caisse dans un laboratoire# contient #[[1]]#.", { QM_RED, QM_GREEN }));
 
     // clang-format on
 }
