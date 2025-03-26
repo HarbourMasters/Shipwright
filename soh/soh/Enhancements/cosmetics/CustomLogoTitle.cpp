@@ -117,7 +117,7 @@ extern "C" void CustomLogoTitle_Draw(TitleContext* titleContext, uint8_t logoToD
     CLOSE_DISPS(titleContext->state.gfxCtx);
 }
 
-#define CVAR_BOOTSEQUENCE_NAME CVAR_ENHANCEMENT("BootSequence")
+#define CVAR_BOOTSEQUENCE_NAME CVAR_SETTING("BootSequence")
 #define CVAR_BOOTSEQUENCE_DEFAULT BOOTSEQUENCE_DEFAULT
 #define CVAR_BOOTSEQUENCE_VALUE CVarGetInteger(CVAR_BOOTSEQUENCE_NAME, CVAR_BOOTSEQUENCE_DEFAULT)
 

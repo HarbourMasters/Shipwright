@@ -18,11 +18,11 @@ static const std::unordered_map<std::string, char> textBoxSpecialCharacters = {
 };
 static const std::unordered_map<std::string, std::string> percentColors = { { "w", QM_WHITE },  { "r", QM_RED },   { "g", QM_GREEN },
                                                               { "b", QM_BLUE },   { "c", QM_LBLUE }, { "p", QM_PINK },
-                                                              { "y", QM_YELLOW }, { "B", QM_BLACK } };
+                                                              { "y", QM_YELLOW }, { "B", QM_BLACK }, };
 
 static const std::unordered_map<std::string, std::string> colorToPercent = { { QM_WHITE, "%w" },  { QM_RED, "%r"},   { QM_GREEN, "%g" },
                                                               { QM_BLUE, "%b" },   { QM_LBLUE, "%c"}, { QM_PINK, "%p" },
-                                                              { QM_YELLOW, "%y" }, { QM_BLACK, "%B" } };
+                                                              { QM_YELLOW, "%y" }, { QM_BLACK, "%B" }, };
 
 static const std::unordered_map<std::string, ItemID> altarIcons = {
     { "0", ITEM_KOKIRI_EMERALD },
@@ -44,7 +44,7 @@ static const std::unordered_map<std::string, ItemID> altarIcons = {
     { "m", ITEM_DUNGEON_MAP },
     { "C", ITEM_COMPASS },
     { "s", ITEM_SKULL_TOKEN },
-    { "g", ITEM_MASK_GORON }
+    { "g", ITEM_MASK_GORON },
 };
 
 static std::map<std::string, int> pixelWidthTable = {
@@ -72,7 +72,7 @@ static std::map<std::string, int> pixelWidthTable = {
     { "í", 5 },  { "î", 5 },  { "ï", 5 },      { "ð", 7 },  { "ñ", 7 },  { "ò", 7 },  { "ó", 7 },  { "ô", 7 },
     { "õ", 7 },  { "ö", 7 },  { "÷", 11 },     { "ø", 9 },  { "ù", 7 },  { "ú", 7 },  { "û", 7 },  { "ü", 7 },
     { "ý", 8 },  { "þ", 8 },  { "ÿ", 8 },      { "Œ", 11 }, { "œ", 11 }, { "„", 5 },  { "”", 5 },  { "€", 10 },
-    { "Ÿ", 10 }, { "~", 8 }
+    { "Ÿ", 10 }, { "~", 8 },
 };
 
 CustomMessage::CustomMessage(std::string english_, std::string german_, std::string french_, TextBoxType type_,
@@ -113,6 +113,44 @@ CustomMessage::CustomMessage(Text text, TextBoxType type_,TextBoxPosition positi
     messages[LANGUAGE_GER] = text.GetGerman();
     messages[LANGUAGE_FRA] = text.GetFrench();
 }
+
+typedef struct {
+    u16 textId;
+    u8 typePos;
+    const char* segment;
+    u32 msgSize;
+} MessageTableEntry;
+
+extern "C" MessageTableEntry* sNesMessageEntryTablePtr;
+extern "C" MessageTableEntry* sGerMessageEntryTablePtr;
+extern "C" MessageTableEntry* sFraMessageEntryTablePtr;
+
+CustomMessage CustomMessage::LoadVanillaMessageTableEntry(uint16_t textId) {
+    const char* foundSeg;
+    const char* nextSeg;
+    MessageTableEntry* msgEntry = sNesMessageEntryTablePtr;
+    u16 bufferId = textId;
+    CustomMessage msg;
+    if (gSaveContext.language == LANGUAGE_GER) {
+        msgEntry = sGerMessageEntryTablePtr;
+    } else if (gSaveContext.language == LANGUAGE_FRA) {
+        msgEntry = sFraMessageEntryTablePtr;
+    }
+    while (msgEntry->textId != 0xFFFF) {
+        if (msgEntry->textId == bufferId) {
+            TextBoxPosition position = static_cast<TextBoxPosition>(msgEntry->typePos & 0xF);
+            TextBoxType type = static_cast<TextBoxType>(msgEntry->typePos >> 4);
+            // uint8_t icon = msgEntry->segment[1];
+            std::string message = std::string(msgEntry->segment , msgEntry->msgSize);
+            msg = CustomMessage(message, type, position);
+            // msg.Format(static_cast<ItemID>(icon));
+            return msg;
+        }
+        msgEntry++;
+    }
+    return CustomMessage();
+}
+
 
 const std::string CustomMessage::GetEnglish(MessageFormat format) const {
     return GetForLanguage(LANGUAGE_ENG, format);

@@ -1054,6 +1054,14 @@ namespace Rando {
         return true;
     }
 
+    bool Logic::CanBreakCrates() {
+        return true;
+    }
+
+    bool Logic::CanBreakSmallCrates() {
+        return true;
+    }
+
     bool Logic::HasExplosives(){
         return CanUse(RG_BOMB_BAG) || CanUse(RG_BOMBCHU_5);
     }

@@ -534,9 +534,9 @@ namespace UIWidgets {
         PushStyleCombobox(options.color);
 
         const char* longest;
-        int length = 0;
+        size_t length = 0;
         for (auto& [index, string] : comboMap) {
-            int len = strlen(string);
+            size_t len = strlen(string);
             if (len > length) {
                 longest = string;
                 length = len;
@@ -781,9 +781,9 @@ namespace UIWidgets {
         PushStyleCombobox(options.color);
 
         const char* longest;
-        int length = 0;
+        size_t length = 0;
         for (size_t i = 0; i < N; i++) {
-            int len = strlen(comboArray[i]);
+            size_t len = strlen(comboArray[i]);
             if (len > length) {
                 longest = comboArray[i];
                 length = len;

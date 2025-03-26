@@ -25,7 +25,7 @@
 #include "include/z64audio.h"
 #include "soh/SaveManager.h"
 #include "soh/OTRGlobals.h"
-#include "soh/Enhancements/presets.h"
+#include "soh/Enhancements/Presets/Presets.h"
 #include "soh/resource/type/Skeleton.h"
 #include "libultraship/libultraship.h"
 
@@ -113,6 +113,7 @@ namespace SohGui {
             gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Press - to access enhancements menu");
 #else
             gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Press F1 to access enhancements menu");
+            gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Press F2 to enable the mouse cursor");
 #endif
         }*/
 
@@ -124,15 +125,11 @@ namespace SohGui {
             SPDLOG_ERROR("Could not find stats window");
         }
 
-        mConsoleWindow = gui->GetGuiWindow("Console");
-        if (mConsoleWindow == nullptr) {
-            SPDLOG_ERROR("Could not find console window");
-        }
+        mConsoleWindow = std::make_shared<SohConsoleWindow>(CVAR_WINDOW("SohConsole"), "Console##SoH", ImVec2(820, 630));
+        gui->AddGuiWindow(mConsoleWindow);
 
-        mGfxDebuggerWindow = gui->GetGuiWindow("Gfx Debugger");
-        if (mGfxDebuggerWindow == nullptr) {
-            SPDLOG_ERROR("Could not find Gfx Debugger window");
-        }
+        mGfxDebuggerWindow = std::make_shared<SohGfxDebuggerWindow>(CVAR_WINDOW("SohGfxDebugger"), "GfxDebugger##SoH", ImVec2(820, 630));
+        gui->AddGuiWindow(mGfxDebuggerWindow);
 
         mInputEditorWindow = gui->GetGuiWindow("Controller Configuration");
         if (mInputEditorWindow == nullptr) {

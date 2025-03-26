@@ -177,7 +177,7 @@ static const char* msgStaticTbl[] =
     gFadingMessageBackgroundTex,
     gMessageContinueTriangleTex,
     gMessageEndSquareTex,
-    gMessageArrowTex
+    gMessageArrowTex,
 };
 
 void MessageDebug_StartTextBox(const char* tableId, uint16_t textId, uint8_t language) {

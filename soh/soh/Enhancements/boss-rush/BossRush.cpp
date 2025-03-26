@@ -1,4 +1,4 @@
-﻿#include "BossRush.h"
+#include "BossRush.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
@@ -34,7 +34,7 @@ BossRushSetting BossRushOptions[BR_OPTIONS_MAX] = {
             { "All", "Alle", "Tous" },
             { "Child", "Kind", "Enfant" },
             { "Adult", "Erwachsener", "Adulte" },
-            { "Ganondorf & Ganon", "Ganondorf & Ganon", "Ganondorf & Ganon" }
+            { "Ganondorf & Ganon", "Ganondorf & Ganon", "Ganondorf & Ganon" },
         }
     },
     {
@@ -45,7 +45,7 @@ BossRushSetting BossRushOptions[BR_OPTIONS_MAX] = {
             { "20", "20", "20" },
             { "3", "3", "3" },
             { "5", "5", "5" },
-            { "7", "7", "7" }
+            { "7", "7", "7" },
         }
     },
     {
@@ -53,7 +53,7 @@ BossRushSetting BossRushOptions[BR_OPTIONS_MAX] = {
         {
             { "Limited", "Limitiert", "Limitées" },
             { "Full", "Voll", "Pleines" },
-            { "Maxed", "Maximum", "Maximum" }
+            { "Maxed", "Maximum", "Maximum" },
         }
     },
     {
@@ -61,28 +61,28 @@ BossRushSetting BossRushOptions[BR_OPTIONS_MAX] = {
         {
             { "Before Ganondorf", "Vor Ganondorf", "Avant Ganondorf" },
             { "Every Boss", "Bei jedem Boss", "Tous les Boss" },
-            { "Never", "Niemals", "Jamais" }
+            { "Never", "Niemals", "Jamais" },
         }
     },
     {
         { "HYPER BOSSES:", "HYPER-BOSSE:", "HYPER BOSS:" },
         {
             { "No", "Nein", "Non" },
-            { "Yes", "Ja", "Oui" }
+            { "Yes", "Ja", "Oui" },
         }
     },
     {
         { "MAGIC:", "MAGIE:", "MAGIE:" },
         {
             { "Single", "Einzel", "Simple" },
-            { "Double", "Doppel", "Double" }
+            { "Double", "Doppel", "Double" },
         }
     },
     {
         { "BIG. SWORD:", "BIG.-SCHWERT:", "EPÉE DE BIG.:" },
         {
             { "No", "Nein", "Non" },
-            { "Yes", "Ja", "Oui" }
+            { "Yes", "Ja", "Oui" },
         }
     },
     {
@@ -93,35 +93,35 @@ BossRushSetting BossRushOptions[BR_OPTIONS_MAX] = {
             { "Fairy", "Fee", "Fée" },
             { "Red Potion", "Rotes Elixier", "Potion Rouge" },
             { "Green Potion", "Grünes Elixier", "Potion Verte" },
-            { "Blue Potion", "Blaues Elixier", "Potion Bleue" }
+            { "Blue Potion", "Blaues Elixier", "Potion Bleue" },
         }
     },
     {
         { "LONGSHOT:", "ENTERHAKEN:", "SUPER GRAPPIN:" },
         {
             { "No", "Nein", "Non" },
-            { "Yes", "Ja", "Oui" }
+            { "Yes", "Ja", "Oui" },
         }
     },
     {
         { "HOVER BOOTS:", "GLEITSTIEFEL:", "BOTTES DES AIRS:" },
         {
             { "No", "Nein", "Non" },
-            { "Yes", "Ja", "Oui" }
+            { "Yes", "Ja", "Oui" },
         }
     },
     {
         { "BUNNY HOOD:", "HASENOHREN:", "MASQUE DU LAPIN:" },
         {
             { "No", "Nein", "Non" },
-            { "Yes", "Ja", "Oui" }
+            { "Yes", "Ja", "Oui" },
         }
     },
     {
         { "TIMER:", "TIMER:", "TIMER:" },
         {
             { "Yes", "Ja", "Oui" },
-            { "No", "Nein", "Non" }
+            { "No", "Nein", "Non" },
         }
     }
 };
@@ -507,7 +507,7 @@ void BossRush_InitSave() {
 static void* sSavePromptNoChoiceTexs[] = {
     (void*)gPauseNoENGTex,
     (void*)gPauseNoGERTex,
-    (void*)gPauseNoFRATex
+    (void*)gPauseNoFRATex,
 };
 
 void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {

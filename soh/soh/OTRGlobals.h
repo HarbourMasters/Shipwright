@@ -54,6 +54,7 @@ class OTRGlobals {
         ImFont* defaultFontLarger;
         ImFont* defaultFontLargest;
 
+        ImFont* fontMonoSmall;
         ImFont* fontStandard;
         ImFont* fontStandardLarger;
         ImFont* fontStandardLargest;

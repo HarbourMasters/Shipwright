@@ -4,6 +4,7 @@
 using namespace Rando;
 
 void RegionTable_Init_DesertColossus() {
+    // clang-format off
     areaTable[RR_DESERT_COLOSSUS] = Region("Desert Colossus", "Desert Colossus", {RA_DESERT_COLOSSUS}, DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->FairyPond, []{return logic->FairyPond || logic->CanUse(RG_SONG_OF_STORMS);}),
@@ -74,4 +75,6 @@ void RegionTable_Init_DesertColossus() {
         //Exits
         Entrance(RR_DESERT_COLOSSUS, []{return true;}),
     });
+
+    // clang-format on
 }

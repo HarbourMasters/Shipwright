@@ -35,7 +35,7 @@ const char* const sceneMappings[] = {
     "Ice Cavern",
     "Ganon's Tower",
     "Gerudo Training Ground",
-    "Theives' Hideout",
+    "Thieves' Hideout",
     "Inside Ganon's Castle",
     "Tower Collapse",
     "Castle Collapse",
@@ -189,7 +189,7 @@ const char* const countMappings[] = {
     "Poe Sisters:",
     "Redead:",
     "Shabom:",
-    "Shellblade:",
+    "Shell Blade:",
     "Skull Kid:",
     "Skulltula:",
     "Skulltula (Big):",
@@ -251,8 +251,8 @@ typedef struct {
 }TimestampInfo;
 
 // Timestamps are an array of structs, each with a name, time, and color
-// Names and colors are set up at the bottom of this file
-// Times are stored in gSaveContext.ship.stats.itemTimestamp
+// Names and colors are set up at the bottom of this file.
+// Times are stored in gSaveContext.ship.stats.itemTimestamp.
 TimestampInfo itemTimestampDisplay[TIMESTAMP_MAX];
 TimestampInfo sceneTimestampDisplay[8191];
 //std::vector<TimestampInfo> sceneTimestampDisplay;
@@ -427,7 +427,7 @@ const char* ResolveSceneID(int sceneID, int roomID){
                 return "Big Skulltula Grotto";
         };
     } else if (sceneID == SCENE_WINDMILL_AND_DAMPES_GRAVE) {
-        //Only the last room of Dampe's Grave (rm 6) is considered the windmill
+        //Only the last room of Dampe's Grave (rm 6) is considered the windmill.
         return roomID == 6 ? "Windmill" : "Dampe's Grave";
     } else if (sceneID < SCENE_ID_MAX) {
         return sceneMappings[sceneID];
@@ -625,7 +625,7 @@ void DrawGameplayStatsOptionsTab() {
                              UIWidgets::CheckboxOptions()
                                  .Tooltip("Timestamps are relative to starting timestamp rather than in game time, "
                                           "usually necessary for races/speedruns.\n\n"
-                                          "Starting timestamp is on first non-c-up input after intro cutscene.\n\n"
+                                          "Starting timestamp is on first non-C-up input after intro cutscene.\n\n"
                                           "NOTE: THIS NEEDS TO BE SET BEFORE CREATING A FILE TO TAKE EFFECT")
                                  .Color(THEME_COLOR));
     UIWidgets::CVarCheckbox("Show additional detail timers", CVAR_ENHANCEMENT("GameplayStats.ShowAdditionalTimers"),
@@ -635,9 +635,11 @@ void DrawGameplayStatsOptionsTab() {
 }
 
 void GameplayStatsWindow::DrawElement() {
+    ImGui::PushFont(OTRGlobals::Instance->fontMonoLarger);
     DrawGameplayStatsHeader();
 
     UIWidgets::PushStyleTabs(THEME_COLOR);
+
     if (ImGui::BeginTabBar("Stats", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         if (ImGui::BeginTabItem("Timestamps")) {
             DrawGameplayStatsTimestampsTab();
@@ -657,7 +659,9 @@ void GameplayStatsWindow::DrawElement() {
         }
         ImGui::EndTabBar();
     }
+
     UIWidgets::PopStyleTabs();
+    ImGui::PopFont();
 
     ImGui::Text("Note: Gameplay stats are saved to the current file and will be\nlost if you quit without saving.");
 }
@@ -705,6 +709,7 @@ void SetupDisplayNames() {
     // To add a timestamp for an item or event, add it to this list and ensure
     // it has a corresponding entry in the enum (see gameplaystats.h)
 
+    // clang-format off
     strcpy(itemTimestampDisplayName[ITEM_BOW],              "Fairy Bow:          ");
     strcpy(itemTimestampDisplayName[ITEM_ARROW_FIRE],       "Fire Arrows:        ");
     strcpy(itemTimestampDisplayName[ITEM_DINS_FIRE],        "Din's Fire:         ");
@@ -795,6 +800,7 @@ void SetupDisplayNames() {
     strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_FINISH],      "Boss Rush Finished: ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_GREG],           "Greg Found:         ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_TRIFORCE_COMPLETED],   "Triforce Completed: ");
+    // clang-format on
 }
 
 void SetupDisplayColors() {
@@ -863,9 +869,9 @@ void GameplayStatsWindow::InitElement() {
     SetupDisplayColors();
 
     SaveManager::Instance->AddLoadFunction("sohStats", 1, LoadStatsVersion1);
-    // Add main section save, no parent
+    // Add main section save, no parent.
     SaveManager::Instance->AddSaveFunction("sohStats", 1, SaveStats, true, SECTION_PARENT_NONE);
-    // Add subsections, parent of "sohStats". Not sure how to do this without the redundant references to "SaveStats"
+    // Add subsections, parent of "sohStats". Not sure how to do this without the redundant references to "SaveStats".
     SaveManager::Instance->AddSaveFunction("entrances", 1, SaveStats, false, SECTION_ID_STATS);
     SaveManager::Instance->AddSaveFunction("scenes", 1, SaveStats, false, SECTION_ID_STATS);
     SaveManager::Instance->AddInitFunction(InitStats);

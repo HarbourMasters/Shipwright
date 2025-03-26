@@ -18,6 +18,8 @@
 #include "soh/Enhancements/debugger/debugSaveEditor.h"
 #include "soh/Enhancements/debugger/hookDebugger.h"
 #include "soh/Enhancements/debugger/dlViewer.h"
+#include "soh/Enhancements/debugger/sohConsole.h"
+#include "soh/Enhancements/debugger/sohGfxDebugger.h"
 #include "soh/Enhancements/debugger/valueViewer.h"
 #include "soh/Enhancements/gameplaystatswindow.h"
 #include "soh/Enhancements/randomizer/randomizer_check_tracker.h"

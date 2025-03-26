@@ -16,6 +16,11 @@
 #include "AudioCollection.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
+extern "C" {
+    #include "z64save.h"
+    extern SaveContext gSaveContext;
+}
+
 Vec3f pos = { 0.0f, 0.0f, 0.0f };
 f32 freqScale = 1.0f;
 s8 reverbAdd = 0;
@@ -440,7 +445,7 @@ void DrawTypeChip(SeqType type, std::string sequenceName) {
 
 void AudioEditorRegisterOnSceneInitHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
-        if (CVarGetInteger(CVAR_AUDIO("RandomizeAllOnNewScene"), 0)) {
+        if (gSaveContext.gameMode != GAMEMODE_END_CREDITS && CVarGetInteger(CVAR_AUDIO("RandomizeAllOnNewScene"), 0)) {
             AudioEditor_RandomizeAll();
         }
     });
@@ -498,7 +503,7 @@ void AudioEditor::DrawElement() {
             ImGui::TableNextColumn();
             if (ImGui::BeginChild("SfxOptions", ImVec2(0, -8))) {
                 UIWidgets::CVarCheckbox(
-                    "Mute Low HP Alarm", CVAR_AUDIO("LowHPAlarm"),
+                    "Mute Low HP Alarm", CVAR_AUDIO("LowHpAlarm"),
                     UIWidgets::CheckboxOptions().Color(THEME_COLOR).Tooltip("Disable the low HP beeping sound."));
                 UIWidgets::CVarCheckbox("Disable Navi Call Audio", CVAR_AUDIO("DisableNaviCallAudio"),
                                         UIWidgets::CheckboxOptions()
@@ -613,7 +618,7 @@ void AudioEditor::DrawElement() {
                 {SEQ_SFX, true },                                     
                 {SEQ_VOICE, true },
                 {SEQ_INSTRUMENT, true},
-                {SEQ_BGM_CUSTOM, true}
+                {SEQ_BGM_CUSTOM, true},
             };
 
             // make temporary sets because removing from the set we're iterating through crashes ImGui
@@ -767,7 +772,7 @@ void AudioEditor::DrawElement() {
     UIWidgets::PopStyleTabs();
 }
 
-std::vector<SeqType> allTypes = { SEQ_BGM_WORLD, SEQ_BGM_EVENT, SEQ_BGM_BATTLE, SEQ_OCARINA, SEQ_FANFARE, SEQ_INSTRUMENT, SEQ_SFX, SEQ_VOICE };
+std::vector<SeqType> allTypes = { SEQ_BGM_WORLD, SEQ_BGM_EVENT, SEQ_BGM_BATTLE, SEQ_OCARINA, SEQ_FANFARE, SEQ_INSTRUMENT, SEQ_SFX, SEQ_VOICE, };
 
 void AudioEditor_RandomizeAll() {
     for (auto type : allTypes) {

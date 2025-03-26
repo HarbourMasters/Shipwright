@@ -1523,8 +1523,10 @@ void Rando_Inventory_SwapAgeEquipment(void) {
                      (gSaveContext.equips.buttonItems[i] <= ITEM_POE)) ||
                     ((gSaveContext.equips.buttonItems[i] >= ITEM_WEIRD_EGG) &&
                      (gSaveContext.equips.buttonItems[i] <= ITEM_CLAIM_CHECK))) {
-                    gSaveContext.equips.buttonItems[i] =
-                        gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[i - 1]];
+                    if (GameInteractor_Should(VB_SET_BUTTON_ITEM_FROM_C_BUTTON_SLOT, true, i)) {
+                        gSaveContext.equips.buttonItems[i] =
+                            gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[i - 1]];
+                    }
                 }
             }
 
@@ -1680,8 +1682,10 @@ void Inventory_SwapAgeEquipment(void) {
                     ((gSaveContext.equips.buttonItems[i] >= ITEM_WEIRD_EGG) &&
                      (gSaveContext.equips.buttonItems[i] <= ITEM_CLAIM_CHECK))) {
                     osSyncPrintf("Register_Item_Pt(%d)=%d\n", i, gSaveContext.equips.cButtonSlots[i - 1]);
-                    gSaveContext.equips.buttonItems[i] =
-                        gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[i - 1]];
+                    if (GameInteractor_Should(VB_SET_BUTTON_ITEM_FROM_C_BUTTON_SLOT, true, i)) {
+                        gSaveContext.equips.buttonItems[i] =
+                            gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[i - 1]];
+                    }
                 }
             }
 
@@ -2709,13 +2713,6 @@ s32 Inventory_HasSpecificBottle(u8 bottleItem) {
     }
 }
 
-void byteSwapInventory() {
-    gSaveContext.inventory.equipment = BE16SWAP(gSaveContext.inventory.equipment);
-    gSaveContext.inventory.upgrades = BE32SWAP(gSaveContext.inventory.upgrades);
-    gSaveContext.inventory.questItems = BE32SWAP(gSaveContext.inventory.questItems);
-    gSaveContext.inventory.gsTokens = BE16SWAP(gSaveContext.inventory.gsTokens);
-}
-
 void Inventory_UpdateBottleItem(PlayState* play, u8 item, u8 button) {
     osSyncPrintf("item_no=%x,  c_no=%x,  Pt=%x  Item_Register=%x\n", item, button,
                  gSaveContext.equips.cButtonSlots[button - 1],
@@ -2727,11 +2724,7 @@ void Inventory_UpdateBottleItem(PlayState* play, u8 item, u8 button) {
         item = ITEM_MILK_HALF;
     }
 
-    if (CVarGetInteger(CVAR_ENHANCEMENT("RestoreRBAValues"),0)) {
-        byteSwapInventory();
-        gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[button - 1]] = item;
-        byteSwapInventory();
-    } else {
+    if (GameInteractor_Should(VB_UPDATE_BOTTLE_ITEM, true, button, item)) {
         gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[button - 1]] = item;
     }
 
