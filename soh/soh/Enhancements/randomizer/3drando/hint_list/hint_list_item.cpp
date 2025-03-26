@@ -1610,7 +1610,7 @@ void StaticData::HintTable_Init_Item() {
                                                 }, {
                                                 CustomMessage("a key to pots", /*german*/"!!!", /*french*/"!!!")
                                                 },
-                                                CustomMessage("Guard House Key", "Schlüssel für das Haus der Wachen", "!!!"));
+                                                CustomMessage("Guard House Key", "Schlüssel für das Haus der Wachen", ""/*!!!*/));
 
    hintTextTable[RHT_MARKET_BAZAAR_KEY] = HintText(CustomMessage("Market Bazaar's key"),
                                                 {
