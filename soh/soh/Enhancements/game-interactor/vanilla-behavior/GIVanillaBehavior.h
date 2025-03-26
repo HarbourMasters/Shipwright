@@ -286,7 +286,7 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // false
+    // true
     // ```
     // #### `args`
     // - `*ObjKibako2`
@@ -1746,7 +1746,7 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // false
+    // true
     // ```
     // #### `args`
     // - `*ObjKibako`
