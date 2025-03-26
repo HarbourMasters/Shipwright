@@ -177,7 +177,8 @@ void ObjKibako2_Update(Actor* thisx, PlayState* play) {
 }
 
 void ObjKibako2_Draw(Actor* thisx, PlayState* play) {
-    if (!GameInteractor_Should(VB_CRATE_SETUP_DRAW, false, thisx)) {
+    if (!GameInteractor_Should(VB_CRATE_SETUP_DRAW, true, thisx)) {
+        return;
         }
 
     Gfx_DrawDListOpa(play, gLargeCrateDL);

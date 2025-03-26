@@ -242,8 +242,6 @@ void RegisterShuffleCrates() {
         if (ObjKibako2_RandomizerHoldsItem(crateActor, gPlayState)) {
             crateActor->dyna.actor.draw = (ActorFunc)ObjKibako2_RandomizerDraw;
             *should = false;
-        } else {
-            *should = true;
         }
     });
 
@@ -264,8 +262,6 @@ void RegisterShuffleCrates() {
         if (ObjKibako_RandomizerHoldsItem(smallCrateActor, gPlayState)) {
             smallCrateActor->actor.draw = (ActorFunc)ObjKibako_RandomizerDraw;
             *should = false;
-        } else {
-            *should = true;
         }
     });
 

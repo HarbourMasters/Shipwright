@@ -285,7 +285,9 @@ void ObjKibako_Draw(Actor* thisx, PlayState* play) {
     s32 pad;
     ObjKibako* this = (ObjKibako*)thisx;
 
-    if (!GameInteractor_Should(VB_SMALL_CRATE_SETUP_DRAW, false, thisx)) {}
+    if (!GameInteractor_Should(VB_SMALL_CRATE_SETUP_DRAW, true, thisx)) {
+        return;
+    }
 
     Gfx_DrawDListOpa(play, gSmallWoodenBoxDL);
 }
