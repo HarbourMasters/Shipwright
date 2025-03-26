@@ -1,6 +1,7 @@
 #pragma once
 
-#include "soh/SohGui/UIWidgets.hpp"
+#ifndef RANDOPTION_H
+#define RANDOPTION_H
 
 #include <cstdint>
 #include <set>
@@ -35,7 +36,6 @@ enum class OptionCategory {
  */
 enum class WidgetType {
   Checkbox, /** Default for Bools, not compatible if options.size() > 2. */
-  TristateCheckbox, /** Compatible with U8s, not compatible if options.size() != 3. */
   Combobox, /** Default for U8s, works with U8s and Bools. */
   Slider, /** Compatible with U8s. If constructed with NumOpts, consider using this. Technically can be used for Bool or non-NumOpts options but it would be a bit weird semantically. */
 };
@@ -225,19 +225,7 @@ class Option {
      *
      * @return uint8_t
      */
-    uint8_t GetMenuOptionIndex() const;
-
-    /**
-     * @brief Sets the CVar corresponding to the property `cvarName` equal to the value
-     * of the property `selectedValue`.
-    */
-    void SaveCVar() const;
-
-    /**
-     * @brief Sets the value of property `selectedValue` equal to the CVar corresponding
-     * to the property `cvarName`.
-    */
-    void SetFromCVar();
+    uint8_t GetOptionIndex() const;
 
     /**
      * @brief Set the delayedOption to the currently selected index so it can be restored later.
@@ -248,13 +236,6 @@ class Option {
      * @brief Restores the delayedOption back to the selected index.
      */
     void RestoreDelayedOption();
-
-    /**
-     * @brief Set the menu index for this Option. Also calls `SetVariable()`.
-     *
-     * @param idx the index to set as the selected index.
-     */
-    void SetMenuIndex(size_t idx);
 
     /**
      * @brief Set the rando context index for this Option. Also calls `SetVariable()`.
@@ -312,7 +293,7 @@ class Option {
      * @param graphic What graphic to display in a disabled checkbox. Defaults to an
      * "X" symbol.
      */
-    void Disable(std::string text, UIWidgets::CheckboxGraphics graphic = UIWidgets::CheckboxGraphics::Cross);
+    void Disable(std::string text);
     bool IsCategory(OptionCategory category) const;
 
     /**
@@ -339,13 +320,11 @@ protected:
 
   private:
     bool RenderCheckbox();
-    bool RenderTristateCheckbox();
     bool RenderCombobox();
     bool RenderSlider();
     void PopulateTextToNum();
     std::string name;
     std::vector<std::string> options;
-    uint8_t menuSelection = 0;
     uint8_t contextSelection = 0;
     uint8_t delayedSelection = 0;
     bool hidden = false;
@@ -357,7 +336,6 @@ protected:
     bool defaultHidden = false;
     int imFlags = IMFLAG_NONE;
     bool disabled = false;
-    UIWidgets::CheckboxGraphics disabledGraphic = UIWidgets::CheckboxGraphics::Cross;
     std::string disabledText;
     std::unordered_map<std::string, uint8_t> optionsTextToVar = {};
 };
@@ -547,3 +525,5 @@ class OptionGroup {
     bool mDisabled = false;
 };
 } // namespace Rando
+
+#endif //RANDOPTION_H

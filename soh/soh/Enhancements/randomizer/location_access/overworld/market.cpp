@@ -4,6 +4,7 @@
 using namespace Rando;
 
 void RegionTable_Init_Market() {
+    // clang-format off
     areaTable[RR_MARKET_ENTRANCE] = Region("Market Entrance", "Market Entrance", {RA_THE_MARKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_HYRULE_FIELD,       []{return logic->IsAdult || logic->AtDay;}),
@@ -39,7 +40,7 @@ void RegionTable_Init_Market() {
         EventAccess(&logic->CanEmptyBigPoes,   []{return logic->IsAdult;}),
     }, {
         //Locations
-        LOCATION(RC_MARKET_10_BIG_POES,          logic->IsAdult && logic->BigPoeKill),
+        LOCATION(RC_MARKET_10_BIG_POES,          logic->IsAdult && (logic->BigPoeKill || logic->BigPoes > ctx->GetOption(RSK_BIG_POE_COUNT).Get())),
         LOCATION(RC_MARKET_GS_GUARD_HOUSE,       logic->IsChild),
         LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_1,  logic->IsChild && logic->CanBreakPots()),
         LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_2,  logic->IsChild && logic->CanBreakPots()),
@@ -214,4 +215,6 @@ void RegionTable_Init_Market() {
         //Exits
         Entrance(RR_MARKET_BACK_ALLEY, []{return true;}),
     });
+
+    // clang-format on
 }

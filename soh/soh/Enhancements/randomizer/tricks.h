@@ -28,7 +28,7 @@ namespace Rando {
             static const std::string GetTagName(Tag tag);
             static const ImVec4 GetTextColor(Tag tag);
             static const ImVec4 GetTagColor(Tag tag);
-            static void DrawTagChips(const std::set<Tag>& rtTags);
+            static void DrawTagChips(const std::set<Tag>& rtTags, std::string trickName = "");
     };
 }
 

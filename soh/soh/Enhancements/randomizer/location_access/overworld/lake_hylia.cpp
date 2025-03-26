@@ -4,6 +4,7 @@
 using namespace Rando;
 
 void RegionTable_Init_LakeHylia() {
+    // clang-format off
     areaTable[RR_LAKE_HYLIA] = Region("Lake Hylia", "Lake Hylia", {RA_LAKE_HYLIA}, DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairy();}),
@@ -128,4 +129,6 @@ void RegionTable_Init_LakeHylia() {
         //Exits
         Entrance(RR_LAKE_HYLIA, []{return true;}),
     });
+
+    // clang-format on
 }

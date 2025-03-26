@@ -4,6 +4,7 @@
 using namespace Rando;
 
 void RegionTable_Init_Graveyard() {
+    // clang-format off
     areaTable[RR_THE_GRAVEYARD] = Region("The Graveyard", "The Graveyard", {RA_THE_GRAVEYARD}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->ButterflyFairy, []{return logic->ButterflyFairy || (logic->CanUse(RG_STICKS) && logic->AtDay);}),
@@ -50,7 +51,7 @@ void RegionTable_Init_Graveyard() {
         LOCATION(RC_GRAVEYARD_SHIELD_GRAVE_FAIRY_8, true),
     }, {
         //Exits
-        Entrance(RR_THE_GRAVEYARD, []{return true;}),
+        Entrance(RR_GRAVEYARD_SHIELD_GRAVE, []{return true;}),
     });
 
     areaTable[RR_GRAVEYARD_HEART_PIECE_GRAVE] = Region("Graveyard Heart Piece Grave", "Graveyard Heart Piece Grave", {}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -120,4 +121,6 @@ void RegionTable_Init_Graveyard() {
         Entrance(RR_THE_GRAVEYARD,          []{return true;}),
         Entrance(RR_SHADOW_TEMPLE_ENTRYWAY, []{return logic->CanUse(RG_DINS_FIRE) || (ctx->GetTrickOption(RT_GY_SHADOW_FIRE_ARROWS) && logic->IsAdult && logic->CanUse(RG_FIRE_ARROWS));}),
     });
+
+    // clang-format on
 }

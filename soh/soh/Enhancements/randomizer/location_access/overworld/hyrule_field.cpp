@@ -4,6 +4,7 @@
 using namespace Rando;
 
 void RegionTable_Init_HyruleField() {
+    // clang-format off
     areaTable[RR_HYRULE_FIELD] = Region("Hyrule Field", "Hyrule Field", {RA_HYRULE_FIELD}, DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->BigPoeKill, []{return logic->CanUse(RG_FAIRY_BOW) && logic->CanUse(RG_EPONA) && logic->HasBottle();}),
@@ -140,4 +141,6 @@ void RegionTable_Init_HyruleField() {
         //Exits
         Entrance(RR_HYRULE_FIELD, []{return true;}),
     });
+
+    // clang-format on
 }

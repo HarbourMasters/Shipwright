@@ -4,6 +4,7 @@
 using namespace Rando;
 
 void RegionTable_Init_HauntedWasteland() {
+    // clang-format off
     areaTable[RR_WASTELAND_NEAR_FORTRESS] = Region("Wasteland Near Fortress", "Haunted Wasteland", {RA_HAUNTED_WASTELAND}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_GF_OUTSIDE_GATE,   []{return true;}),
@@ -35,4 +36,6 @@ void RegionTable_Init_HauntedWasteland() {
         Entrance(RR_DESERT_COLOSSUS,   []{return true;}),
         Entrance(RR_HAUNTED_WASTELAND, []{return ctx->GetTrickOption(RT_HW_REVERSE) || false;}),
     });
+
+    // clang-format on
 }

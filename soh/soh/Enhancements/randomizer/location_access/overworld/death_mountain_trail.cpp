@@ -4,6 +4,7 @@
 using namespace Rando;
 
 void RegionTable_Init_DeathMountainTrail() {
+    // clang-format off
     areaTable[RR_DEATH_MOUNTAIN_TRAIL] = Region("Death Mountain", "Death Mountain", {RA_DEATH_MOUNTAIN_TRAIL}, DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->BeanPlantFairy, []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET));}),
@@ -98,4 +99,6 @@ void RegionTable_Init_DeathMountainTrail() {
         //Exits
         Entrance(RR_DEATH_MOUNTAIN_SUMMIT, []{return true;}),
     });
+
+    // clang-format on
 }
