@@ -1,14 +1,14 @@
 <Root>
     <File Name="ovl_file_choose" BaseAddress="0x80803880" RangeStart="0xEC50" RangeEnd="0xF330">
-        <Array Name="D_80811BB0" Count="24" Offset="0xEC50" Static="Off">
+        <Array Name="D_80811BB0_NTSC" Count="24" Offset="0xEC50" Static="Off">
             <Vtx/>
         </Array>
         <!-- German headers vertices are combined into one array -->
-        <Array Name="D_80811D30" Count="24" Offset="0xEF70" Static="Off">
+        <Array Name="D_80811D30_NTSC" Count="24" Offset="0xEF70" Static="Off">
             <Vtx/>
         </Array>
         <!-- German options vertices are combined into one array -->
-        <Array Name="D_80811F30" Count="52" Offset="0xF070" Static="Off">
+        <Array Name="D_80811F30_NTSC" Count="52" Offset="0xF070" Static="Off">
             <Vtx/>
         </Array>
         <!-- Not used for NTSC N64, instead these vertices are apart of D_80811F30 -->

@@ -423,6 +423,9 @@ static const ALIGN_ASSET(2) char gFileSelHoldFRATex[] = dgFileSelHoldFRATex;
 #define dgFileSelCheckBrightnessENGTex "__OTR__textures/title_static/gFileSelCheckBrightnessENGTex"
 static const ALIGN_ASSET(2) char gFileSelCheckBrightnessENGTex[] = dgFileSelCheckBrightnessENGTex;
 
+#define dgFileSelCheckBrightnessENGNTSCTex "__OTR__textures/title_static/gFileSelCheckBrightnessENGNTSCTex"
+static const ALIGN_ASSET(2) char gFileSelCheckBrightnessENGNTSCTex[] = dgFileSelCheckBrightnessENGNTSCTex;
+
 #define dgFileSelCheckBrightnessGERTex "__OTR__textures/title_static/gFileSelCheckBrightnessGERTex"
 static const ALIGN_ASSET(2) char gFileSelCheckBrightnessGERTex[] = dgFileSelCheckBrightnessGERTex;
 

@@ -239,7 +239,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
     gSaveContext.linkAge = 1;
     gSaveContext.dayTime = 0x6AAB;
     gSaveContext.cutsceneIndex = 0xFFF1;
-    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
         gSaveContext.ship.filenameLanguage = NAME_LANGUAGE_PAL;
     } else { // GAME_REGION_NTSC
         gSaveContext.ship.filenameLanguage = (gSaveContext.language == LANGUAGE_JPN) ? NAME_LANGUAGE_NTSC_JPN : NAME_LANGUAGE_NTSC_ENG;

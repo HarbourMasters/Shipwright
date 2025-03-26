@@ -725,7 +725,7 @@ void SaveManager::InitFileNormal() {
     gSaveContext.bgsDayCount = 0;
 
     gSaveContext.deaths = 0;
-    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = 0x3E;
         }
@@ -890,7 +890,7 @@ void SaveManager::InitFileDebug() {
     gSaveContext.bgsDayCount = 0;
 
     gSaveContext.deaths = 0;
-    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
         const static std::array<char, 8> sPlayerName = { 0x15, 0x12, 0x17, 0x14, 0x3E, 0x3E, 0x3E, 0x3E };
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = sPlayerName[i];
@@ -1000,7 +1000,7 @@ void SaveManager::InitFileMaxed() {
     gSaveContext.bgsDayCount = 0;
 
     gSaveContext.deaths = 0;
-    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
         const static std::array<char, 8> sPlayerName = { 0x15, 0x12, 0x17, 0x14, 0x3E, 0x3E, 0x3E, 0x3E };
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = sPlayerName[i];

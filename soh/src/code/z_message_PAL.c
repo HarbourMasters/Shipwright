@@ -1651,7 +1651,7 @@ bool Message_DecodeName(PlayState* play, s16* decodedBufPosPtr, s32* charTexIdxP
         }
     }
 
-    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
         if (gSaveContext.ship.filenameLanguage == NAME_LANGUAGE_PAL) {
             for (i = 0; i < playerNameLen; i++) {
                 curChar2 = gSaveContext.playerName[i];

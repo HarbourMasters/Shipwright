@@ -158,7 +158,7 @@ void Message_Init(PlayState* play) {
     osSyncPrintf("吹き出しgame_alloc=%x\n", 0x2200); // "Textbox game_alloc=%x"
     assert(msgCtx->textboxSegment != NULL);
 
-    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
         Font_LoadOrderedFont(&play->msgCtx.font);
     } else { // GAME_REGION_NTSC
         Font_LoadOrderedFontNTSC(&play->msgCtx.font);

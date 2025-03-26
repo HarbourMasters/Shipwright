@@ -53,7 +53,7 @@ static OptionsMenuTextureInfoNES sOptionsMenuHeaders[] = {
         64, 16,
     },
     {
-        { gFileSelCheckBrightnessJPNTex, gFileSelCheckBrightnessENGTex },
+        { gFileSelCheckBrightnessJPNTex, gFileSelCheckBrightnessENGNTSCTex },
         96, 16,
     }
 };
@@ -169,7 +169,7 @@ void FileChoose_SetNameEntryVtxNES(GameState* thisx) {
     
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
 
-    gSPVertex(POLY_OPA_DISP++, D_80811BB0, 24, 0);
+    gSPVertex(POLY_OPA_DISP++, D_80811BB0_NTSC, 24, 0);
 
     gDPLoadTextureBlock(POLY_OPA_DISP++, sNameLabelTexturesNES[NTSC_LANGUAGE_INDEX], G_IM_FMT_IA, G_IM_SIZ_8b, 56, 16, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
@@ -1115,7 +1115,7 @@ void FileChoose_DrawOptionsImplNES(GameState* thisx) {
         }
     }
 
-    gSPVertex(POLY_OPA_DISP++, D_80811D30, 32, 0);
+    gSPVertex(POLY_OPA_DISP++, D_80811D30_NTSC, 32, 0);
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetCombineLERP(POLY_OPA_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE,
@@ -1131,12 +1131,12 @@ void FileChoose_DrawOptionsImplNES(GameState* thisx) {
         gSP1Quadrangle(POLY_OPA_DISP++, vtx, vtx + 2, vtx + 3, vtx + 1, 0);
     }
 
-    gSPVertex(POLY_OPA_DISP++, D_80811F30, 32, 0);
+    gSPVertex(POLY_OPA_DISP++, D_80811F30_NTSC, 32, 0);
 
     for (i = 0, vtx = 0; i < 4; i++, vtx += 4) {
         gDPPipeSync(POLY_OPA_DISP++);
         if (i == gSaveContext.audioSetting) {
-            if (sSelectedSetting == 0) {
+            if (sSelectedSetting == FS_SETTING_AUDIO) {
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cursorPrimRed, cursorPrimGreen, cursorPrimBlue,
                                 this->titleAlpha[0]);
                 gDPSetEnvColor(POLY_OPA_DISP++, cursorEnvRed, cursorEnvGreen, cursorEnvBlue, 255);
@@ -1162,7 +1162,7 @@ void FileChoose_DrawOptionsImplNES(GameState* thisx) {
         gDPPipeSync(POLY_OPA_DISP++);
 
         if (i == (gSaveContext.zTargetSetting + 4)) {
-            if (sSelectedSetting != 0) {
+            if (sSelectedSetting != FS_SETTING_AUDIO) {
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cursorPrimRed, cursorPrimGreen, cursorPrimBlue,
                                 this->titleAlpha[0]);
                 gDPSetEnvColor(POLY_OPA_DISP++, cursorEnvRed, cursorEnvGreen, cursorEnvBlue, 0xFF);

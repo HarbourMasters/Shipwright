@@ -1328,7 +1328,7 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
             this->newFileNameCharCount = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? 4 : 0;
             this->nameEntryBoxPosX = 120;
             this->nameEntryBoxAlpha = 0;
-            if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+            if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
                 defaultName = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkName : &emptyName;
             } else { // GAME_REGION_NTSC
                 defaultName = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkNameNES : &emptyNameNES;
@@ -1510,7 +1510,7 @@ void FileChoose_UpdateRandomizerMenu(GameState* thisx) {
                 this->newFileNameCharCount = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? 4 : 0;
                 this->nameEntryBoxPosX = 120;
                 this->nameEntryBoxAlpha = 0;
-                if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+                if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
                     defaultName = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkName : &emptyName;
                 } else { // GAME_REGION_NTSC
                     defaultName = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkNameNES : &emptyNameNES;
@@ -1756,7 +1756,7 @@ void FileChoose_PulsateCursor(GameState* thisx) {
 void FileChoose_ConfigModeUpdate(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
 
-    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
         gConfigModeUpdateFuncs[this->configMode](&this->state);
     } else { // GAME_REGION_NTSC
         gConfigModeUpdateFuncsNES[this->configMode](&this->state);
@@ -2155,7 +2155,7 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
         u8 filenameLanguage = Save_GetSaveMetaInfo(fileIndex)->filenameLanguage;
         for (i = 0, vtxOffset = 0; vtxOffset < 0x20; i++, vtxOffset += 4) {
             u8 curChar = Save_GetSaveMetaInfo(fileIndex)->playerName[i];
-            if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+            if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
                 if (filenameLanguage != NAME_LANGUAGE_PAL) {
                     // Remove JPN Characters from the pool (set them to ' ')
                     if (curChar >= 0x0A && curChar < 0xAB) {
@@ -2892,7 +2892,7 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
 
         gDPPipeSync(POLY_OPA_DISP++);
 
-        if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+        if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
             FileChoose_DrawNameEntry(&this->state);
         } else { // GAME_REGION_NTSC
             FileChoose_DrawNameEntryNES(&this->state);
@@ -2925,7 +2925,7 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
 
         gDPPipeSync(POLY_OPA_DISP++);
 
-        if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+        if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
             FileChoose_DrawOptions(&this->state);
         } else { // GAME_REGION_NTSC
             FileChoose_DrawOptionsNES(&this->state);
@@ -3845,7 +3845,7 @@ void FileChoose_Init(GameState* thisx) {
     this->state.main = FileChoose_Main;
     this->state.destroy = FileChoose_Destroy;
     FileChoose_InitContext(&this->state);
-    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
         Font_LoadOrderedFont(&this->font);
     } else { // GAME_REGION_NTSC
         Font_LoadOrderedFontNTSC(&this->font);
