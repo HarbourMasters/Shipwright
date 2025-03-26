@@ -1393,7 +1393,7 @@ namespace Rando {
         { RG_SHADOW_TEMPLE_SMALL_KEY,           SCENE_SHADOW_TEMPLE },
         { RG_BOTW_SMALL_KEY,      SCENE_BOTTOM_OF_THE_WELL },
         { RG_GTG_SMALL_KEY, SCENE_GERUDO_TRAINING_GROUND },
-        { RG_TH_SMALL_KEY,         SCENE_THIEVES_HIDEOUT },
+        { RG_HIDEOUT_SMALL_KEY,         SCENE_THIEVES_HIDEOUT },
         { RG_GANONS_CASTLE_SMALL_KEY,           SCENE_INSIDE_GANONS_CASTLE },
         { RG_FOREST_TEMPLE_KEY_RING,            SCENE_FOREST_TEMPLE },
         { RG_FIRE_TEMPLE_KEY_RING,              SCENE_FIRE_TEMPLE },
@@ -1402,7 +1402,7 @@ namespace Rando {
         { RG_SHADOW_TEMPLE_KEY_RING,            SCENE_SHADOW_TEMPLE },
         { RG_BOTW_KEY_RING,       SCENE_BOTTOM_OF_THE_WELL },
         { RG_GTG_KEY_RING,  SCENE_GERUDO_TRAINING_GROUND },
-        { RG_TH_KEY_RING,          SCENE_THIEVES_HIDEOUT },
+        { RG_HIDEOUT_KEY_RING,          SCENE_THIEVES_HIDEOUT },
         { RG_GANONS_CASTLE_KEY_RING,            SCENE_INSIDE_GANONS_CASTLE },
         { RG_FOREST_TEMPLE_BOSS_KEY,            SCENE_FOREST_TEMPLE },
         { RG_FIRE_TEMPLE_BOSS_KEY,              SCENE_FIRE_TEMPLE },
@@ -1430,7 +1430,7 @@ namespace Rando {
         { RG_SHADOW_TEMPLE_COMPASS,             SCENE_SHADOW_TEMPLE },
         { RG_BOTW_COMPASS,        SCENE_BOTTOM_OF_THE_WELL },
         { RG_ICE_CAVERN_COMPASS,                SCENE_ICE_CAVERN },
-        { RG_TREASURE_GAME_SMALL_KEY,           SCENE_TREASURE_BOX_SHOP }
+        { RG_TCG_SMALL_KEY,           SCENE_TREASURE_BOX_SHOP }
     };
 
     std::map<uint32_t, uint32_t> Logic::RandoGetToQuestItem = {
@@ -1816,7 +1816,7 @@ namespace Rando {
         case ITEMTYPE_BOSSKEY:
             SetDungeonItem(DUNGEON_KEY_BOSS, RandoGetToDungeonScene.find(item.GetRandomizerGet())->second, state);
             break;
-        case ITEMTYPE_TH_SMALLKEY:
+        case ITEMTYPE_HIDEOUT_KEY:
         case ITEMTYPE_SMALLKEY:
         {
             auto randoGet = item.GetRandomizerGet();

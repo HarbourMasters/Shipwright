@@ -1534,7 +1534,7 @@ void StaticData::HintTable_Init_Item() {
                                                                     },
                                                                     CustomMessage("Training Ground Small Key", "Kleiner Schlüssel für das Gerudo-Trainingsgelände", "Petite Clé du Gymnase Gerudo"));
 
-    hintTextTable[RHT_GERUDO_FORTRESS_SMALL_KEY] = HintText(CustomMessage("a Gerudo Fortress Small Key", /*german*/"ein kleiner Schlüssel für die Gerudo-Festung", /*french*/"une petite clé de la Repaire des Voleurs"),
+    hintTextTable[RHT_HIDEOUT_SMALL_KEY] = HintText(CustomMessage("a Gerudo Fortress Small Key", /*german*/"ein kleiner Schlüssel für die Gerudo-Festung", /*french*/"une petite clé de la Repaire des Voleurs"),
                                                             // /*spanish*/una llave pequeña de la Fortaleza Gerudo
                                                             {
                                                             CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
@@ -1921,7 +1921,7 @@ void StaticData::HintTable_Init_Item() {
                                                                    },
                                                                    CustomMessage("Training Ground Key Ring", "Schlüsselbund für das Gerudo-Trainingsgelände", "Trousseau du Gymnase Gerudo"));
 
-    hintTextTable[RHT_GERUDO_FORTRESS_KEY_RING] = HintText(CustomMessage("a Gerudo Fortress Key Ring", /*german*/"ein Schlüsselbund der Gerudo-Festung", /*french*/"un trousseau de clés de la Repaire des Voleurs"),
+    hintTextTable[RHT_HIDEOUT_KEY_RING] = HintText(CustomMessage("a Gerudo Fortress Key Ring", /*german*/"ein Schlüsselbund der Gerudo-Festung", /*french*/"un trousseau de clés de la Repaire des Voleurs"),
                                                            // /*spanish*/un llavero de la Fortaleza Gerudo
                                                            {
                                                            CustomMessage("a key ring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")

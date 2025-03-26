@@ -2149,7 +2149,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                 }
             }
         } else if (textId == TEXT_ITEM_KEY_SMALL) {
-            if (player->getItemEntry.getItemId == RG_TH_SMALL_KEY) {
+            if (player->getItemEntry.getItemId == RG_HIDEOUT_SMALL_KEY) {
                 if (Randomizer_GetSettingValue(RSK_GERUDO_KEYS) != RO_GERUDO_KEYS_VANILLA) {
                     messageEntry = Randomizer_GetCustomGetItemMessage(player);
                 }

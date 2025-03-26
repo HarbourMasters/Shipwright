@@ -822,20 +822,20 @@ void GenerateItemPool() {
   AddItemToMainPool(RG_CLAIM_CHECK);
 
   if (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS)) {
-    AddItemToMainPool(RG_TREASURE_GAME_SMALL_KEY, 6); // 6 individual keys
+    AddItemToMainPool(RG_TCG_SMALL_KEY, 6); // 6 individual keys
   } else if (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK)) {
-    AddItemToMainPool(RG_TREASURE_GAME_SMALL_KEY); // 1 key which will behave as a pack of 6
+    AddItemToMainPool(RG_TCG_SMALL_KEY); // 1 key which will behave as a pack of 6
   } else {
     ctx->PlaceItemInLocation(RC_MARKET_TREASURE_CHEST_GAME_ITEM_1, RG_GREEN_RUPEE, false, true);
     ctx->PlaceItemInLocation(RC_MARKET_TREASURE_CHEST_GAME_ITEM_2, RG_GREEN_RUPEE, false, true);
     ctx->PlaceItemInLocation(RC_MARKET_TREASURE_CHEST_GAME_ITEM_3, RG_BLUE_RUPEE, false, true);
     ctx->PlaceItemInLocation(RC_MARKET_TREASURE_CHEST_GAME_ITEM_4, RG_BLUE_RUPEE, false, true);
     ctx->PlaceItemInLocation(RC_MARKET_TREASURE_CHEST_GAME_ITEM_5, RG_RED_RUPEE, false, true);
-    ctx->PlaceItemInLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_1, RG_TREASURE_GAME_SMALL_KEY, false, true);
-    ctx->PlaceItemInLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_2, RG_TREASURE_GAME_SMALL_KEY, false, true);
-    ctx->PlaceItemInLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_3, RG_TREASURE_GAME_SMALL_KEY, false, true);
-    ctx->PlaceItemInLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_4, RG_TREASURE_GAME_SMALL_KEY, false, true);
-    ctx->PlaceItemInLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_5, RG_TREASURE_GAME_SMALL_KEY, false, true);
+    ctx->PlaceItemInLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_1, RG_TCG_SMALL_KEY, false, true);
+    ctx->PlaceItemInLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_2, RG_TCG_SMALL_KEY, false, true);
+    ctx->PlaceItemInLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_3, RG_TCG_SMALL_KEY, false, true);
+    ctx->PlaceItemInLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_4, RG_TCG_SMALL_KEY, false, true);
+    ctx->PlaceItemInLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_5, RG_TCG_SMALL_KEY, false, true);
   };
 
   if (ctx->GetOption(RSK_SHUFFLE_TOKENS).Is(RO_TOKENSANITY_OFF)) {
@@ -936,40 +936,40 @@ void GenerateItemPool() {
     ctx->PlaceItemInLocation(RC_GF_SOUTH_F2_CARPENTER, RG_RECOVERY_HEART, false, true);
   } else if (ctx->GetOption(RSK_GERUDO_KEYS).IsNot(RO_GERUDO_KEYS_VANILLA)) {
     if (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST)) {
-      AddItemToMainPool(RG_TH_SMALL_KEY);
+      AddItemToMainPool(RG_HIDEOUT_SMALL_KEY);
       ctx->PlaceItemInLocation(RC_GF_NORTH_F2_CARPENTER, RG_RECOVERY_HEART, false, true);
       ctx->PlaceItemInLocation(RC_GF_SOUTH_F1_CARPENTER, RG_RECOVERY_HEART, false, true);
       ctx->PlaceItemInLocation(RC_GF_SOUTH_F2_CARPENTER, RG_RECOVERY_HEART, false, true);
     } else {
       //Only add key ring if 4 Fortress keys necessary
       if (ctx->GetOption(RSK_KEYRINGS_GERUDO_FORTRESS) && ctx->GetOption(RSK_KEYRINGS)) {
-        AddItemToMainPool(RG_TH_KEY_RING);
+        AddItemToMainPool(RG_HIDEOUT_KEY_RING);
         //Add junk to make up for missing keys
         for (uint8_t i = 0; i < 3; i++) {
           AddItemToMainPool(GetJunkItem());
         }
       } else {
-        AddItemToMainPool(RG_TH_SMALL_KEY, 4);
+        AddItemToMainPool(RG_HIDEOUT_SMALL_KEY, 4);
       }
     }
     if (ctx->GetOption(RSK_ITEM_POOL).Is(RO_ITEM_POOL_PLENTIFUL)) {
       if (ctx->GetOption(RSK_KEYRINGS_GERUDO_FORTRESS) && ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL) && ctx->GetOption(RSK_KEYRINGS) ) {
-        AddItemToPool(PendingJunkPool, RG_TH_KEY_RING);
+        AddItemToPool(PendingJunkPool, RG_HIDEOUT_KEY_RING);
       } else {
-        AddItemToPool(PendingJunkPool, RG_TH_SMALL_KEY);
+        AddItemToPool(PendingJunkPool, RG_HIDEOUT_SMALL_KEY);
       }
     }
   } else {
     if (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST)) {
-      ctx->PlaceItemInLocation(RC_GF_NORTH_F1_CARPENTER, RG_TH_SMALL_KEY, false, true);
+      ctx->PlaceItemInLocation(RC_GF_NORTH_F1_CARPENTER, RG_HIDEOUT_SMALL_KEY, false, true);
       ctx->PlaceItemInLocation(RC_GF_NORTH_F2_CARPENTER, RG_RECOVERY_HEART, false, true);
       ctx->PlaceItemInLocation(RC_GF_SOUTH_F1_CARPENTER, RG_RECOVERY_HEART, false, true);
       ctx->PlaceItemInLocation(RC_GF_SOUTH_F2_CARPENTER, RG_RECOVERY_HEART, false, true);
     } else {
-      ctx->PlaceItemInLocation(RC_GF_NORTH_F1_CARPENTER, RG_TH_SMALL_KEY, false, true);
-      ctx->PlaceItemInLocation(RC_GF_NORTH_F2_CARPENTER, RG_TH_SMALL_KEY, false, true);
-      ctx->PlaceItemInLocation(RC_GF_SOUTH_F1_CARPENTER, RG_TH_SMALL_KEY, false, true);
-      ctx->PlaceItemInLocation(RC_GF_SOUTH_F2_CARPENTER, RG_TH_SMALL_KEY, false, true);
+      ctx->PlaceItemInLocation(RC_GF_NORTH_F1_CARPENTER, RG_HIDEOUT_SMALL_KEY, false, true);
+      ctx->PlaceItemInLocation(RC_GF_NORTH_F2_CARPENTER, RG_HIDEOUT_SMALL_KEY, false, true);
+      ctx->PlaceItemInLocation(RC_GF_SOUTH_F1_CARPENTER, RG_HIDEOUT_SMALL_KEY, false, true);
+      ctx->PlaceItemInLocation(RC_GF_SOUTH_F2_CARPENTER, RG_HIDEOUT_SMALL_KEY, false, true);
     }
   }
 

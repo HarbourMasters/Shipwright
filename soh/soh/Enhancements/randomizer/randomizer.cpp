@@ -733,11 +733,11 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
             return gSaveContext.inventory.dungeonKeys[SCENE_BOTTOM_OF_THE_WELL] < BOTTOM_OF_THE_WELL_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_GTG_SMALL_KEY:
             return gSaveContext.inventory.dungeonKeys[SCENE_GERUDO_TRAINING_GROUND] < GERUDO_TRAINING_GROUND_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
-        case RG_TH_SMALL_KEY:
+        case RG_HIDEOUT_SMALL_KEY:
             return gSaveContext.inventory.dungeonKeys[SCENE_THIEVES_HIDEOUT] < GERUDO_FORTRESS_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_GANONS_CASTLE_SMALL_KEY:
             return gSaveContext.inventory.dungeonKeys[SCENE_INSIDE_GANONS_CASTLE] < GANONS_CASTLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
-        case RG_TREASURE_GAME_SMALL_KEY:
+        case RG_TCG_SMALL_KEY:
             return gSaveContext.inventory.dungeonKeys[SCENE_TREASURE_BOX_SHOP] < TREASURE_GAME_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
 
         // Dungeon Rewards
@@ -3431,7 +3431,7 @@ void Randomizer::CreateCustomMessages() {
 			"Du hast jetzt ein %rIrrlicht in einer&Flasche%w! Der %rGespenstermarkt%w&interessiert sich für vielleicht&dafür...",
             "Vous obtenez une %rBouteille avec&un Esprit%w! Ça intéresserait&peut-être le vendeur d'Âme "),
 
-        GIMESSAGE(RG_TH_SMALL_KEY, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_HIDEOUT_SMALL_KEY, ITEM_KEY_SMALL,
 			"You found a %yThieves Hideout &%wSmall Key!",
 			"Du erhältst einen %rkleinen&Schlüssel%w für das %yDiebesversteck%w!",
 			"Vous obtenez une %rPetite Clé %w&du %yRepaire des Voleurs%w!"),
@@ -3564,7 +3564,7 @@ void Randomizer::CreateCustomMessages() {
             "Du erhältst einen %rkleinen&Schlüssel%w für den %gFischweiher%w!",
             "Vous obtenez la %rClé %wde l'%gÉtang%w!"),
 
-        GIMESSAGE(RG_TH_KEY_RING, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_HIDEOUT_KEY_RING, ITEM_KEY_SMALL,
 			"You found a %yThieves Hideout&%wKeyring!",
 			"Du erhältst ein %rSchlüsselbund%w&für das %yDiebesversteck%w!",
 			"Vous obtenez le trousseau de&clés du %yRepaire des Voleurs%w!"),
@@ -3600,7 +3600,7 @@ void Randomizer::CreateCustomMessages() {
 			"You found a %rGanon's Castle&%wKeyring!",
 			"Du erhältst ein %rSchlüsselbund%w&für %rGanons Schloß%w!",
 			"Vous obtenez le trousseau de&clés du %rChâteau de Ganon%w!"),
-        GIMESSAGE(RG_TREASURE_GAME_KEY_RING, ITEM_KEY_SMALL, 
+        GIMESSAGE(RG_TCG_KEY_RING, ITEM_KEY_SMALL, 
 			"You found a %rTreasure Chest Game&%wKeyring!",
 			"!!!",
 			"Vous obtenez le trousseau de&clés du %rJeu de la Chasse au Trésor%w!"),
@@ -4055,8 +4055,8 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
                 mapIndex = SCENE_GERUDO_TRAINING_GROUND;
                 numOfKeysOnKeyring = GERUDO_TRAINING_GROUND_SMALL_KEY_MAX;
                 break;
-            case RG_TH_SMALL_KEY:
-            case RG_TH_KEY_RING:
+            case RG_HIDEOUT_SMALL_KEY:
+            case RG_HIDEOUT_KEY_RING:
                 mapIndex = SCENE_THIEVES_HIDEOUT;
                 numOfKeysOnKeyring = GERUDO_FORTRESS_SMALL_KEY_MAX;
                 break;

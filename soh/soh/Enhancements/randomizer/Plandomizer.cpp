@@ -210,9 +210,9 @@ std::unordered_map<RandomizerGet, std::string> itemImageMap = {
     { RG_SHADOW_TEMPLE_SMALL_KEY,   		"ITEM_KEY_SMALL" },
     { RG_BOTW_SMALL_KEY, 		"ITEM_KEY_SMALL" },
     { RG_GTG_SMALL_KEY, "ITEM_KEY_SMALL" },
-    { RG_TH_SMALL_KEY, 		"ITEM_KEY_SMALL" },
+    { RG_HIDEOUT_SMALL_KEY, 		"ITEM_KEY_SMALL" },
     { RG_GANONS_CASTLE_SMALL_KEY,   		"ITEM_KEY_SMALL" },
-    { RG_TREASURE_GAME_SMALL_KEY,   		"ITEM_KEY_SMALL" },
+    { RG_TCG_SMALL_KEY,   		"ITEM_KEY_SMALL" },
     { RG_KOKIRI_EMERALD,            		"ITEM_KOKIRI_EMERALD" },
     { RG_GORON_RUBY,                		"ITEM_GORON_RUBY" },
     { RG_ZORA_SAPPHIRE,             		"ITEM_ZORA_SAPPHIRE" },
@@ -283,7 +283,7 @@ void PlandoPopImageButtonStyle(){
 
 ImVec4 plandomizerGetItemColor(Rando::Item randoItem) {
     itemColor = ImVec4( 1.0f, 1.0f, 1.0f, 1.0f );
-    if (randoItem.GetItemType() == ITEMTYPE_SMALLKEY || randoItem.GetItemType() == ITEMTYPE_TH_SMALLKEY
+    if (randoItem.GetItemType() == ITEMTYPE_SMALLKEY || randoItem.GetItemType() == ITEMTYPE_HIDEOUT_KEY
         || randoItem.GetItemType() == ITEMTYPE_BOSSKEY) {
         if (randoItem.GetRandomizerGet() == RG_FOREST_TEMPLE_SMALL_KEY || 
             randoItem.GetRandomizerGet() == RG_FOREST_TEMPLE_KEY_RING) {
@@ -306,8 +306,8 @@ ImVec4 plandomizerGetItemColor(Rando::Item randoItem) {
         } else if (randoItem.GetRandomizerGet() == RG_GTG_SMALL_KEY || 
             randoItem.GetRandomizerGet() == RG_GTG_KEY_RING) {
             itemColor = ImVec4( 1.0f, 1.0f, 0, 1.0f );
-        } else if (randoItem.GetRandomizerGet() == RG_TH_SMALL_KEY || 
-            randoItem.GetRandomizerGet() == RG_TH_KEY_RING) {
+        } else if (randoItem.GetRandomizerGet() == RG_HIDEOUT_SMALL_KEY || 
+            randoItem.GetRandomizerGet() == RG_HIDEOUT_KEY_RING) {
             itemColor = ImVec4( 1.0f, 1.0f, 1.0f, 1.0f );
         } else if (randoItem.GetRandomizerGet() == RG_GANONS_CASTLE_SMALL_KEY || 
             randoItem.GetRandomizerGet() == RG_GANONS_CASTLE_KEY_RING) {
@@ -391,7 +391,7 @@ void PlandomizerItemImageCorrection(Rando::Item randoItem) {
 
     itemColor = plandomizerGetItemColor(randoItem);
 
-    if (randoItem.GetItemType() == ITEMTYPE_SMALLKEY || randoItem.GetItemType() == ITEMTYPE_TH_SMALLKEY) {
+    if (randoItem.GetItemType() == ITEMTYPE_SMALLKEY || randoItem.GetItemType() == ITEMTYPE_HIDEOUT_KEY) {
         textureID = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_KEY_SMALL");
         return;
     }
