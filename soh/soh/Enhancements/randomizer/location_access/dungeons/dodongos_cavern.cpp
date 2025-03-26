@@ -153,6 +153,8 @@ void RegionTable_Init_DodongosCavern() {
         //Locations
         LOCATION(RC_DODONGOS_CAVERN_BOMB_FLOWER_PLATFORM_CHEST, true),
         LOCATION(RC_DODONGOS_CAVERN_BLADE_ROOM_HEART,           true),
+        LOCATION(RC_DODONGOS_CAVERN_FIRST_BRIDGE_GRASS,         logic->CanCutShrubs()),
+        LOCATION(RC_DODONGOS_CAVERN_BLADE_GRASS,                logic->CanCutShrubs()),
     }, {
         //Exits
         Entrance(RR_DODONGOS_CAVERN_ARMOS_ROOM,           []{return true;}),
@@ -174,6 +176,7 @@ void RegionTable_Init_DodongosCavern() {
         //Locations
         LOCATION(RC_DODONGOS_CAVERN_SINGLE_EYE_POT_1, logic->CanBreakPots()),
         LOCATION(RC_DODONGOS_CAVERN_SINGLE_EYE_POT_2, logic->CanBreakPots()),
+        LOCATION(RC_DODONGOS_CAVERN_SINGLE_EYE_GRASS, logic->CanCutShrubs()),
     }, {
         //Exits
         Entrance(RR_DODONGOS_CAVERN_BOMB_ROOM_LOWER, []{return true;}),
@@ -226,7 +229,10 @@ void RegionTable_Init_DodongosCavern() {
     areaTable[RR_DODONGOS_CAVERN_BOSS_AREA] = Region("Dodongos Cavern Boss Region", "Dodongos Cavern", {RA_DODONGOS_CAVERN}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->FairyPot, []{return true;}),
-    }, {}, {
+    }, {
+        //Location
+        LOCATION(RC_DODONGOS_CAVERN_BEFORE_BOSS_GRASS, logic->CanCutShrubs()),
+    }, {
         //Exits
         Entrance(RR_DODONGOS_CAVERN_LOBBY,         []{return true;}),
         Entrance(RR_DODONGOS_CAVERN_BACK_ROOM,     []{return Here(RR_DODONGOS_CAVERN_BOSS_AREA, []{return logic->CanBreakMudWalls();});}),
@@ -352,7 +358,11 @@ void RegionTable_Init_DodongosCavern() {
 
     areaTable[RR_DODONGOS_CAVERN_MQ_DODONGO_ROOM] = Region("Dodongos Cavern MQ Dodongo Room", "Dodongos Cavern", {RA_DODONGOS_CAVERN}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_DODONGOS_CAVERN_MQ_COMPASS_CHEST, logic->CanKillEnemy(RE_DODONGO) || logic->HasItem(RG_GORONS_BRACELET)),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_COMPASS_CHEST,   logic->CanKillEnemy(RE_DODONGO) || logic->HasItem(RG_GORONS_BRACELET)),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_COMPASS_GRASS_1, logic->CanCutShrubs()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_COMPASS_GRASS_2, logic->CanCutShrubs()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_COMPASS_GRASS_3, logic->CanCutShrubs()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_COMPASS_GRASS_4, logic->CanCutShrubs()),
     }, {
         //Exits
         Entrance(RR_DODONGOS_CAVERN_MQ_STAIRS_PAST_BIG_SKULLTULAS, []{return true;}),
@@ -494,6 +504,8 @@ void RegionTable_Init_DodongosCavern() {
         //Locations
         LOCATION(RC_DODONGOS_CAVERN_MQ_GS_SCRUB_ROOM, (logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG, true))), //Implies you can avoid/kill the enemies with what you use on the skull, if this assumption is broken, add
                                                                                                     //&& (Here(RR_DODONGOS_CAVERN_MQ_POES_ROOM, []{return logic->CanKillEnemy(RE_FIRE_KEESE) && logic->CanKillEnemy(RE_MAD_SCRUB);}) || (logic->CanAvoidEnemy(RE_FIRE_KEESE) && logic->CanAvoidEnemy(RE_MAD_SCRUB)))
+        LOCATION(RC_DODONGOS_CAVERN_MQ_SCRUB_GRASS_1, logic->CanCutShrubs()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_SCRUB_GRASS_2, logic->CanCutShrubs()),
     }, {
         //Exits
         Entrance(RR_DODONGOS_CAVERN_MQ_POES_ROOM, []{return Here(RR_DODONGOS_CAVERN_MQ_MAD_SCRUB_ROOM, []{return logic->CanKillEnemy(RE_FIRE_KEESE) && logic->CanKillEnemy(RE_MAD_SCRUB);});}),
@@ -519,6 +531,7 @@ void RegionTable_Init_DodongosCavern() {
         LOCATION(RC_DODONGOS_CAVERN_MQ_UNDER_GRAVE_CHEST, true), //pulling the grave isn't required, as you can open the chest through it
         LOCATION(RC_DODONGOS_CAVERN_MQ_BACKROOM_POT_1,    logic->CanBreakPots()),
         LOCATION(RC_DODONGOS_CAVERN_MQ_BACKROOM_POT_2,    logic->CanBreakPots()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_BACK_POE_GRASS,    logic->CanCutShrubs()),
     }, {
         //Exits
         Entrance(RR_DODONGOS_CAVERN_MQ_BEHIND_MOUTH,      []{return logic->CanAttack();}),
@@ -535,6 +548,7 @@ void RegionTable_Init_DodongosCavern() {
                                                                                                         Here(RR_DODONGOS_CAVERN_MQ_BEHIND_MOUTH, []{return (logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)) || (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS) /* || bunny jumps*/);})),
         LOCATION(RC_DODONGOS_CAVERN_MQ_ARMOS_ROOM_NW_POT, logic->CanBreakPots()),
         LOCATION(RC_DODONGOS_CAVERN_MQ_ARMOS_ROOM_NE_POT, logic->CanBreakPots()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_ARMOS_GRASS,       logic->CanCutShrubs()),
     }, {
         //Exits
         Entrance(RR_DODONGOS_CAVERN_MQ_BACK_BEHIND_FIRE, []{return true;}),

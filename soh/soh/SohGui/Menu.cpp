@@ -527,6 +527,7 @@ void Menu::DrawElement() {
         if (!popout) {
             ImGui::PopStyleVar();
         }
+        ImGui::PopStyleColor();
         ImGui::End();
         return;
     }
@@ -537,6 +538,7 @@ void Menu::DrawElement() {
         if (!popout) {
             ImGui::PopStyleVar();
         }
+        ImGui::PopStyleColor();
         CVarSetInteger(CVAR_SETTING("Menu.Popout"), popped);
         CVarSetFloat(CVAR_SETTING("Menu.PoppedWidth"), poppedSize.x);
         CVarSetFloat(CVAR_SETTING("Menu.PoppedHeight"), poppedSize.y);

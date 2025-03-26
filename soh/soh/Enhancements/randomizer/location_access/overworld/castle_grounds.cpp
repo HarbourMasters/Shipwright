@@ -29,6 +29,8 @@ void RegionTable_Init_CastleGrounds() {
         LOCATION(RC_HC_ROCK_WALL_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_HC_MALON_GOSSIP_STONE,               true),
         LOCATION(RC_HC_ROCK_WALL_GOSSIP_STONE,           true),
+        LOCATION(RC_HC_GRASS_1,                          logic->CanCutShrubs()),
+        LOCATION(RC_HC_GRASS_2,                          logic->CanCutShrubs()),
     }, {
         //Exits
         Entrance(RR_CASTLE_GROUNDS,          []{return true;}),

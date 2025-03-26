@@ -42,18 +42,18 @@ const char* enemyCVarList[] = {
 };
 
 const char* enemyNameList[] = {
-    "Armos",    			"Arwing",    			"Baby Dodongo",    		"Bari",
-    "Beamos",    			"Big Skulltula",    	"Stalchild (Big)",    	"Biri",
-    "Iron Knuckle (Black)",	"Blue Tektite",    		"Bubble",    			"Club Moblin",
-    "Dark Link",    		"Dinolfos",    			"Dodongo",    			"Fire Keese",
-    "Floor Tile",    		"Floormaster",    		"Flying Peahat",    	"Flying Pot",
-    "Freezard",    			"Gibdo",    			"Gohma Larva",    		"Guay",
-    "Ice Keese",    		"Invisible Skulltula",  "Keese",    			"Large Deku Baba",
-    "Like-Like",    		"Lizalfos",    			"Mad Scrub",    		"Wolfos (Normal)",
-    "Peahat Larva",    		"Redead",    			"Red Tektite",    		"Shabom",
-    "ShellBlade",    		"Skulltula",    		"Small Deku Baba",    	"Stalchild (Small)",
-    "Spike",    			"Stalfos",    			"Stinger",    			"Tailparasan",
-    "Torch Slug",    		"Wallmaster",    		"Iron Knuckle (White)", "Wolfos (White)",
+    "Armos",                "Arwing",              "Baby Dodongo",         "Bari",
+    "Beamos",               "Big Skulltula",       "Stalchild (Big)",      "Biri",
+    "Iron Knuckle (Black)", "Blue Tektite",        "Bubble",               "Club Moblin",
+    "Dark Link",            "Dinolfos",            "Dodongo",              "Fire Keese",
+    "Floor Tile",           "Floormaster",         "Flying Peahat",        "Flying Pot",
+    "Freezard",             "Gibdo",               "Gohma Larva",          "Guay",
+    "Ice Keese",            "Invisible Skulltula", "Keese",                "Large Deku Baba",
+    "Like-Like",            "Lizalfos",            "Mad Scrub",            "Wolfos (Normal)",
+    "Peahat Larva",         "Redead",              "Red Tektite",          "Shabom",
+    "Shell Blade",          "Skulltula",           "Small Deku Baba",      "Stalchild (Small)",
+    "Spike",                "Stalfos",             "Stinger",              "Tailpasaran",
+    "Torch Slug",           "Wallmaster",          "Iron Knuckle (White)", "Wolfos (White)",
     "Withered Deku Baba",
 };
 
@@ -80,7 +80,7 @@ static EnemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] =
     { ACTOR_EN_TUBO_TRAP, 0 },  // Flying pot
     { ACTOR_EN_FZ, 0 },         // Freezard
     { ACTOR_EN_RD, 32766 },     // Gibdo (standing)
-    { ACTOR_EN_GOMA, 7 },       // Gohma larva (non-gohma rooms)
+    { ACTOR_EN_GOMA, 7 },       // Gohma Larva (Non-Gohma rooms)
     { ACTOR_EN_CROW, 0 },       // Guay
     { ACTOR_EN_FIREFLY, 4 },    // Ice Keese
     { ACTOR_EN_ST, 2 },         // Skulltula (invisible)
@@ -102,7 +102,7 @@ static EnemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] =
     { ACTOR_EN_NY, 0 },         // Spike (rolling enemy)
     { ACTOR_EN_TEST, 2 },       // Stalfos
     { ACTOR_EN_EIYER, 10 },     // Stinger (land) (One in formation, sink under floor and do not activate)
-    { ACTOR_EN_TP, -1 },        // Electric Tailparasan
+    { ACTOR_EN_TP, -1 },        // Electric Tailpasaran
     { ACTOR_EN_BW, 0 },         // Torch Slug
     { ACTOR_EN_WALLMAS, 1 },    // Wallmaster
     { ACTOR_EN_WF, 1 },         // Wolfos (white)
@@ -120,19 +120,19 @@ static int enemiesToRandomize[] = {
     ACTOR_EN_FIREFLY,   // Keese (including fire/ice)
     ACTOR_EN_TEST,      // Stalfos
     ACTOR_EN_TITE,      // Tektite
-    ACTOR_EN_POH,       // Poe (normal, blue rupee, composers
+    ACTOR_EN_POH,       // Poe (normal, blue rupee, composers)
     ACTOR_EN_OKUTA,     // Octorok
     ACTOR_EN_WALLMAS,   // Wallmaster
     ACTOR_EN_DODONGO,   // Dodongo
     // ACTOR_EN_REEBA,  // Leever (reliant on spawner (z_e_encount1.c)
     ACTOR_EN_PEEHAT,    // Flying Peahat, big one spawning larva, larva
-    ACTOR_EN_ZF,        // Lizalfos, dinolfos
-    ACTOR_EN_GOMA,      // Gohma larva (normal, eggs, gohma eggs)
+    ACTOR_EN_ZF,        // Lizalfos, Dinolfos
+    ACTOR_EN_GOMA,      // Gohma Larva (normal, eggs, gohma eggs)
     ACTOR_EN_BUBBLE,    // Shabom (bubble)
     ACTOR_EN_DODOJR,    // Baby Dodongo
     ACTOR_EN_TORCH2,    // Dark Link
     ACTOR_EN_BILI,      // Biri (small jellyfish)
-    ACTOR_EN_TP,        // Electric Tailparasan
+    ACTOR_EN_TP,        // Electric Tailpasaran
     ACTOR_EN_ST,        // Skulltula (normal, big, invisible)
     ACTOR_EN_BW,        // Torch Slug
     ACTOR_EN_EIYER,     // Stinger (land)
@@ -147,7 +147,7 @@ static int enemiesToRandomize[] = {
     ACTOR_EN_FLOORMAS,  // Floormaster
     ACTOR_EN_RD,        // Redead, Gibdo
     ACTOR_EN_SW,        // Skullwalltula
-    // ACTOR_EN_FD,     // Flare Dancer (can be randomized, but not randomized to, so keeping it in vanilla locations means it atleast shows up in the game
+    // ACTOR_EN_FD,     // Flare Dancer (can be randomized, but not randomized to, so keeping it in vanilla locations means it at least shows up in the game)
     ACTOR_EN_SB,        // Shell Blade
     ACTOR_EN_KAREBABA,  // Withered Deku Baba
     ACTOR_EN_RR,        // Like-Like
@@ -156,7 +156,7 @@ static int enemiesToRandomize[] = {
     ACTOR_EN_TUBO_TRAP, // Flying pot
     ACTOR_EN_FZ,        // Freezard
     ACTOR_EN_WEIYER,    // Stinger (Water)
-    ACTOR_EN_HINTNUTS,  // Hint deku scrubs
+    ACTOR_EN_HINTNUTS,  // Hint Deku Scrubs
     ACTOR_EN_WF,        // Wolfos
     ACTOR_EN_SKB,       // Stalchild
     ACTOR_EN_CROW       // Guay
@@ -169,8 +169,8 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t *actorId, f32 *po
 
     // Hack to remove enemies that wrongfully spawn because of bypassing object dependency with enemy randomizer on.
     // This should probably be handled on OTR generation in the future when object dependency is fully removed.
-    // Remove bats and skulltulas from graveyard.
-    // Remove octorok in lost woods.
+    // Remove bats and Skulltulas from graveyard.
+    // Remove Octorok in Lost Woods.
     if (((*actorId == ACTOR_EN_FIREFLY || (*actorId == ACTOR_EN_SW && *params == 0)) && play->sceneNum == SCENE_GRAVEYARD) ||
         (*actorId == ACTOR_EN_OKUTA && play->sceneNum == SCENE_LOST_WOODS)) {
         return 0;
@@ -251,13 +251,13 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t *actorId, f32 *po
             case ACTOR_EN_VALI:
                 *posY = *posY + 300;
                 break;
-            // Spawn peahat off the ground, otherwise it kills itself by colliding with the ground.
+            // Spawn Peahat off the ground, otherwise it kills itself by colliding with the ground.
             case ACTOR_EN_PEEHAT:
                 if (*params == 1) {
                     *posY = *posY + 100;
                 }
                 break;
-            // Spawn skulltulas off the ground.
+            // Spawn Skulltulas off the ground.
             case ACTOR_EN_ST:
                 *posY = *posY + 200;
                 break;
@@ -327,14 +327,14 @@ bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, 
                 // Only randomize the main component of Electric Tailparasans, not the tail segments they spawn.
                 case ACTOR_EN_TP:
                     return (params == -1);
-                // Only randomize the initial deku scrub actor (single and triple attack), not the flower they spawn.
+                // Only randomize the initial Deku Scrub actor (single and triple attack), not the flower they spawn.
                 case ACTOR_EN_DEKUNUTS:
                     return (params == -256 || params == 768);
-                // Don't randomize the OoB wallmaster in the silver rupee room because it's only there to
+                // Don't randomize the OoB wallmaster in the Silver Rupee room because it's only there to
                 // not trigger unlocking the door after killing the other wallmaster in authentic gameplay.
                 case ACTOR_EN_WALLMAS:
                     return (!(!isMQ && sceneNum == SCENE_GERUDO_TRAINING_GROUND && roomNum == 2 && posX == -2345));
-                // Only randomize initial floormaster actor (it can split and does some spawning on init).
+                // Only randomize initial Floormaster actor (it can split and does some spawning on init).
                 case ACTOR_EN_FLOORMAS:
                     return (params == 0 || params == -32768);
                 // Only randomize the initial eggs, not the enemies that spawn from them.
@@ -348,10 +348,10 @@ bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, 
                 // break the thrones in the room to access a button.
                 case ACTOR_EN_IK:
                     return (params != 1280 && !(isMQ && sceneNum == SCENE_INSIDE_GANONS_CASTLE && roomNum == 17));
-                // Only randomize the intitial spawn of the huge jellyfish. It spawns another copy when hit with a sword.
+                // Only randomize the initial spawn of the huge jellyfish. It spawns another copy when hit with a sword.
                 case ACTOR_EN_VALI:
                     return (params == -1);
-                // Don't randomize lizalfos in Doodong's Cavern because the gates won't work correctly otherwise.
+                // Don't randomize Lizalfos in Dodongo's Cavern because the gates won't work correctly otherwise.
                 case ACTOR_EN_ZF:
                     return (params != 1280 && params != 1281 && params != 1536 && params != 1537);
                 // Don't randomize the Wolfos in SFM because it's needed to open the gate.
@@ -363,7 +363,7 @@ bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, 
                 case ACTOR_EN_TEST:
                     return (params != 1 && !(sceneNum == SCENE_SHADOW_TEMPLE && roomNum == 21));
                 // Only randomize the enemy variant of Armos Statue.
-                // Leave one Armos unrandomized in the Spirit Temple room where an armos is needed to push down a button
+                // Leave one Armos unrandomized in the Spirit Temple room where an armos is needed to push down a button.
                 case ACTOR_EN_AM:
                     return ((params == -1 || params == 255) && !(sceneNum == SCENE_SPIRIT_TEMPLE && posX == 2141));
                 // Don't randomize Shell Blades and Spikes in the underwater portion in Water Temple as it's impossible to kill
@@ -385,9 +385,9 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
 
     uint32_t isMQ = ResourceMgr_IsSceneMasterQuest(sceneNum);
 
-    // Freezard - Child Link can only kill this with jump slash deku sticks or other equipment like bombs.
+    // Freezard - Child Link can only kill this with jump slash Deku Sticks or other equipment like bombs.
     // Beamos - Needs bombs.
-    // Shell Blade & Spike - Child link can't kill these with sword or deku stick.
+    // Shell Blade & Spike - Child Link can't kill these with sword or Deku Stick.
     // Arwing & Dark Link - Both go out of bounds way too easily, softlocking the player.
     // Wallmaster - Not easily visible, often makes players think they're softlocked and that there's no enemies left.
     // Club Moblin - Many issues with them falling or placing out of bounds. Maybe fixable in the future?
@@ -454,7 +454,7 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
                     !(!isMQ && enemiesToExcludeClearRooms && (roomNum == 3 || roomNum == 5 || roomNum == 10)) &&
                     !(isMQ && enemiesToExcludeTimedRooms && (roomNum == 1 || roomNum == 3 || roomNum == 5 || roomNum == 7)) &&
                     !(isMQ && enemiesToExcludeClearRooms && roomNum == 10));
-        // Don't allow certain enemies in Ganon's Tower because they would spawn up on the ceilling,
+        // Don't allow certain enemies in Ganon's Tower because they would spawn up on the ceiling,
         // becoming impossible to kill.
         // Ganon's Tower.
         case SCENE_GANONS_TOWER:
@@ -462,8 +462,8 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
         // Ganon's Tower Escape.
         case SCENE_GANONS_TOWER_COLLAPSE_INTERIOR:
             return (!((enemiesToExcludeTimedRooms || (enemy.id == ACTOR_EN_ZF && enemy.params == -1)) && roomNum == 1));
-        // Don't allow big stalchildren, big peahats and the large Bari (jellyfish) during the Gohma fight because they can clip into Gohma
-        // and it crashes the game. Likely because Gohma on the ceilling can't handle collision with other enemies.
+        // Don't allow big Stalchildren, big Peahats and the large Bari (jellyfish) during the Gohma fight because they can clip into Gohma
+        // and it crashes the game. Likely because Gohma on the ceiling can't handle collision with other enemies.
         case SCENE_DEKU_TREE_BOSS:
             return (!enemiesToExcludeTimedRooms && !(enemy.id == ACTOR_EN_SKB && enemy.params == 20) &&
                     !(enemy.id == ACTOR_EN_PEEHAT && enemy.params == -1));

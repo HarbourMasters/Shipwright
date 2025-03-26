@@ -116,6 +116,10 @@ void RegionTable_Init_DeathMountainCrater() {
         LOCATION(RC_DMC_UPPER_GROTTO_GOSSIP_STONE,           true),
         LOCATION(RC_DMC_UPPER_GROTTO_BEEHIVE_LEFT,           logic->CanBreakLowerBeehives()),
         LOCATION(RC_DMC_UPPER_GROTTO_BEEHIVE_RIGHT,          logic->CanBreakLowerBeehives()),
+        LOCATION(RC_DMC_UPPER_GROTTO_GRASS_1,                logic->CanCutShrubs()),
+        LOCATION(RC_DMC_UPPER_GROTTO_GRASS_2,                logic->CanCutShrubs()),
+        LOCATION(RC_DMC_UPPER_GROTTO_GRASS_3,                logic->CanCutShrubs()),
+        LOCATION(RC_DMC_UPPER_GROTTO_GRASS_4,                logic->CanCutShrubs()),
     }, {
         //Exits
         Entrance(RR_DMC_UPPER_LOCAL, []{return true;}),

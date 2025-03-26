@@ -28,21 +28,21 @@ void SohMenu::AddMenuDevTools() {
         .CVar(CVAR_DEVELOPER_TOOLS("DebugSaveFileMode"))
         .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0); })
         .Options(ComboboxOptions()
-                     .Tooltip("Changes the behaviour of debug file select creation (creating a save file on slot 1 "
-                              "with debug mode on)\n"
-                              "- Off: The debug save file will be a normal savefile\n"
-                              "- Vanilla: The debug save file will be the debug save file from the original game\n"
-                              "- Maxed: The debug save file will be a save file with all of the items & upgrades")
+                     .Tooltip("Changes the behavior of debug file select creation (creating a save file on slot 1 "
+                              "with debug mode on):\n"
+                              "- Off: The debug save file will be a normal savefile.\n"
+                              "- Vanilla: The debug save file will be the debug save file from the original game.\n"
+                              "- Maxed: The debug save file will be a save file with all of the items & upgrades.")
                      .ComboMap(debugSaveFileModes));
     AddWidget(path, "OoT Skulltula Debug", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("SkulltulaDebugEnabled"))
         .Options(CheckboxOptions().Tooltip("Enables Skulltula Debug, when moving the cursor in the menu above various "
-                                           "map icons (boss key, compass, map screen locations, etc) will set the GS "
-                                           "bits in that area.\nUSE WITH CAUTION AS IT DOES NOT UPDATE THE GS COUNT."));
+                                           "map icons (boss key, compass, map screen locations, etc.) will set the GS "
+                                           "bits in that area.\nUSE WITH CAUTION AS IT DOES NOT UPDATE THE GS COUNT!"));
     AddWidget(path, "Better Debug Warp Screen", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("BetterDebugWarpScreen"))
         .Options(CheckboxOptions().Tooltip(
-            "Optimized debug warp screen, with the added ability to chose entrances and time of day").DefaultValue(true));
+            "Optimized Debug Warp Screen, with the added ability to chose entrances and time of day.").DefaultValue(true));
     AddWidget(path, "Debug Warp Screen Translation", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"))
         .Options(CheckboxOptions()
@@ -50,7 +50,7 @@ void SohMenu::AddMenuDevTools() {
             .DefaultValue(true));
     AddWidget(path, "Resource logging", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("ResourceLogging"))
-        .Options(CheckboxOptions().Tooltip("Logs some resources as XML when they're loaded in binary format"));
+        .Options(CheckboxOptions().Tooltip("Logs some resources as XML when they're loaded in binary format."));
 
     AddWidget(path, "Frame Advance", WIDGET_CHECKBOX)
         .Options(CheckboxOptions().Tooltip(

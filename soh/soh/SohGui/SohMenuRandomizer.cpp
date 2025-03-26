@@ -45,8 +45,8 @@ void SohMenu::AddMenuRandomizer() {
                 OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_MAPANDCOMPASS).IsNot(RO_DUNGEON_ITEM_LOC_VANILLA) &&
                 OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_MAPANDCOMPASS).IsNot(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON)
             );
-            info.options->disabledTooltip = "This setting is disabled because a savefile is loaded without the map & compass\n"
-            "shuffle settings set to \"Any Dungeon\", \"Overworld\" or \"Anywhere\"";
+            info.options->disabledTooltip = "This setting is disabled because a savefile is loaded without the map & compass.\n"
+            "Shuffle settings set to \"Any Dungeon\", \"Overworld\" or \"Anywhere\".";
         })
         .Options(CheckboxOptions().Tooltip(
             "Matches the color of maps & compasses to the dungeon they belong to. "
@@ -88,7 +88,7 @@ void SohMenu::AddMenuRandomizer() {
             .Format("%.2f")
             .DefaultValue(10.0f)
             .Tooltip(
-                "The size of the item when it is picked up"
+                "The size of the item when it is picked up."
             ));
 
     // Plandomizer

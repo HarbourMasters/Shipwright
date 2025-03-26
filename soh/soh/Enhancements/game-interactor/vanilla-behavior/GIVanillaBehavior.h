@@ -990,6 +990,22 @@ typedef enum {
     // - `*EnDs`
     VB_GRANNY_TAKE_MONEY,
 
+    // ### `result`
+    // ```c
+    // false
+    // ```
+    // ### `args`
+    // - `*EnKusa`
+    VB_GRASS_DROP_ITEM,
+
+    // ### `result`
+    // ```c
+    // true
+    // ```
+    // ### `args`
+    // - `*EnKusa`
+    VB_GRASS_SETUP_DRAW,
+
     // #### `result`
     // ```c
     // Flags_GetSwitch(play, this->dyna.actor.params & 0x3F)

@@ -49,6 +49,9 @@ void RegionTable_Init_LostWoods() {
         LOCATION(RC_LW_GOSSIP_STONE_FAIRY_BIG,          logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_LW_SHORTCUT_STORMS_FAIRY,           logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_LW_GOSSIP_STONE,                    true),
+        LOCATION(RC_LW_GRASS_1,                         logic->CanCutShrubs()),
+        LOCATION(RC_LW_GRASS_2,                         logic->CanCutShrubs()),
+        LOCATION(RC_LW_GRASS_3,                         logic->CanCutShrubs()),
     }, {
         //Exits
         Entrance(RR_LW_FOREST_EXIT,           []{return true;}),
@@ -72,6 +75,12 @@ void RegionTable_Init_LostWoods() {
         LOCATION(RC_LW_BEAN_SPROUT_NEAR_THEATER_FAIRY_1,   logic->IsChild && logic->HasItem(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_LW_BEAN_SPROUT_NEAR_THEATER_FAIRY_2,   logic->IsChild && logic->HasItem(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_LW_BEAN_SPROUT_NEAR_THEATER_FAIRY_3,   logic->IsChild && logic->HasItem(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_LW_GRASS_4,                            logic->CanCutShrubs()),
+        LOCATION(RC_LW_GRASS_5,                            logic->CanCutShrubs()),
+        LOCATION(RC_LW_GRASS_6,                            logic->CanCutShrubs()),
+        LOCATION(RC_LW_GRASS_7,                            logic->CanCutShrubs()),
+        LOCATION(RC_LW_GRASS_8,                            logic->CanCutShrubs()),
+        LOCATION(RC_LW_GRASS_9,                            logic->CanCutShrubs()),
     }, {
         //Exits
         Entrance(RR_LW_FOREST_EXIT,   []{return true;}),
@@ -90,6 +99,10 @@ void RegionTable_Init_LostWoods() {
         LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE,           true),
         LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_LEFT,           logic->CanBreakLowerBeehives()),
         LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_RIGHT,          logic->CanBreakLowerBeehives()),
+        LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_GRASS_1,                logic->CanCutShrubs()),
+        LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_GRASS_2,                logic->CanCutShrubs()),
+        LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_GRASS_3,                logic->CanCutShrubs()),
+        LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_GRASS_4,                logic->CanCutShrubs()),
     }, {
         //Exits
         Entrance(RR_THE_LOST_WOODS, []{return true;}),
