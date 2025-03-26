@@ -33,6 +33,8 @@ void RegionTable_Init_GoronCity() {
         LOCATION(RC_GC_UPPER_STAIRCASE_POT_1,       logic->CanBreakPots()),
         LOCATION(RC_GC_UPPER_STAIRCASE_POT_2,       logic->CanBreakPots()),
         LOCATION(RC_GC_UPPER_STAIRCASE_POT_3,       logic->CanBreakPots()),
+        LOCATION(RC_GC_MAZE_CRATE,                  logic->BlastOrSmash()  || (logic->CanUse(RG_SILVER_GAUNTLETS) && logic->CanBreakCrates())),
+
     }, {
         //Exits
         Entrance(RR_DEATH_MOUNTAIN_TRAIL, []{return true;}),

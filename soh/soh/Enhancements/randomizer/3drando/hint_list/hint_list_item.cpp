@@ -2771,14 +2771,14 @@ void StaticData::HintTable_Init_Item() {
                                                          },
                                                          CustomMessage("Ocarina C Right Button", "Taste C-Rechts der Okarina", "Touche C-Droit de l'Ocarina"));
 
-    hintTextTable[RHT_BOMBCHU_BAG] = HintText(CustomMessage("Bombchu Bag", /*german*/"!!!", /*french*/"un Sac de Missiles Teigneux"),
+    hintTextTable[RHT_BOMBCHU_BAG] = HintText(CustomMessage("a Bombchu Bag", /*german*/"eine Krabbelminentasche", /*french*/"un Sac de Missiles Teigneux"),
                                               {
                                              CustomMessage("explosives", /*german*/"ein Explosivpaket", /*french*/"un paquet d'explosifs"),
                                                   // /*spanish*/un montón de explosivos
                                              CustomMessage("something that can remove boulders", /*german*/"etwas, das Geröll entfernen kann", /*french*/"une chose qui enlève les rochers")
                                                   // /*spanish*/algo que pueda quitar rocas
                                               }, {
-                                              CustomMessage("sack of mice", /*german*/"!!!", /*french*/"un Sac rempli de souris")
+                                              CustomMessage("sack of mice", /*german*/"ein Sack Mäuse", /*french*/"un Sac rempli de souris")
                                               },
                                               CustomMessage("Bombchu Bag", "Sac de Missiles Teigneux", "!!!"));
 
@@ -2793,35 +2793,36 @@ void StaticData::HintTable_Init_Item() {
                                                },
                                                CustomMessage("Skeleton Key", "Skelettschlüssel", "Clé Squelette"));
 
-    hintTextTable[RHT_QUIVER_INF] = HintText(CustomMessage("an infinite Quiver", /*german*/"!!!", /*french*/"un Carquois Infini"),
+    
+    hintTextTable[RHT_QUIVER_INF] = HintText(CustomMessage("an infinite Quiver", /*german*/"ein unendlicher Köcher", /*french*/"un Carquois Infini"),
                                              {}, {},
                                              CustomMessage("Infinite Quiver", "Unendlicher Köcher", "Carquois Infini"));
 
-    hintTextTable[RHT_BOMB_BAG_INF] = HintText(CustomMessage("an infinite Bomb Bag", /*german*/"!!!", /*french*/"un Sac de Bombe sans fond"),
+    hintTextTable[RHT_BOMB_BAG_INF] = HintText(CustomMessage("an infinite Bomb Bag", /*german*/"eine unendliche Bombentasche", /*french*/"un Sac de Bombe sans fond"),
                                                {}, {},
                                                CustomMessage("Infinite Bomb Bag", "Unendliche Bombentasche", "Sac de Bombes Infini"));
 
-    hintTextTable[RHT_BULLET_BAG_INF] = HintText(CustomMessage("an infinite Bullet Bag", /*german*/"!!!", /*french*/"un Sac de Graine sans fond"),
+    hintTextTable[RHT_BULLET_BAG_INF] = HintText(CustomMessage("an infinite Bullet Bag", /*german*/"eine unendliche Samentasche", /*french*/"un Sac de Graine sans fond"),
                                                  {}, {},
                                                  CustomMessage("Infinite Bullet Bag", "Unendliche Samentasche", "Sac de Graines Infinis"));
 
-    hintTextTable[RHT_STICK_UPGRADE_INF] = HintText(CustomMessage("infinite Deku Sticks", /*german*/"!!!", /*french*/" des Bâtons Mojo illimités"),
+    hintTextTable[RHT_STICK_UPGRADE_INF] = HintText(CustomMessage("infinite Deku Sticks", /*german*/"unendliche Deku-Stäbe", /*french*/"des Bâtons Mojo illimités"),
                                                     {}, {},
                                                     CustomMessage("Infinite Stick Capacity", "Unendliche Stab-Kapazität", "Bâtons Mojo Infinis"));
 
-    hintTextTable[RHT_NUT_UPGRADE_INF] = HintText(CustomMessage("infinite Deku Nuts", /*german*/"!!!", /*french*/"des Noix Mojo illimitées"),
+    hintTextTable[RHT_NUT_UPGRADE_INF] = HintText(CustomMessage("infinite Deku Nutss", /*german*/"unendliche Deku-Nüsse", /*french*/"des Noix Mojo illimitées"),
                                                   {}, {},
                                                   CustomMessage("Infinite Nut Capacity", "Unendliche Nuß-Kapazität", "Noix Mojo Infinies"));
 
-    hintTextTable[RHT_MAGIC_INF] = HintText(CustomMessage("unlimited Magic", /*german*/"!!!", /*french*/"de la Magie infinie"),
+    hintTextTable[RHT_MAGIC_INF] = HintText(CustomMessage("unlimited Magic", /*german*/"unendliche Magie", /*french*/"de la Magie infinie"),
                                             {}, {},
                                             CustomMessage("Infinite Magic Meter", "Unendliches Magisches Maß", "Magie Infinie"));
 
-    hintTextTable[RHT_BOMBCHU_INF] = HintText(CustomMessage("infinite Bombchus", /*german*/"!!!", /*french*/"des Missiles Teigneux illimités"),
+    hintTextTable[RHT_BOMBCHU_INF] = HintText(CustomMessage("infinite Bombchus", /*german*/"unendliche Krabbelminen", /*french*/"des Missiles Teigneux illimités"),
                                               {}, {},
                                               CustomMessage("Infinite Bombchus", "Unendliche Krabbelminen", "Missiles Teigneux Infinis"));
 
-    hintTextTable[RHT_WALLET_INF] = HintText(CustomMessage("an infinite Wallet", /*german*/"!!!", /*french*/"une Bourse sans fond"),
+    hintTextTable[RHT_WALLET_INF] = HintText(CustomMessage("an infinite Wallet", /*german*/"eine unendliche Geldbörse", /*french*/"une Bourse sans fond"),
                                              {}, {},
                                              CustomMessage("Infinite Wallet", "Unendliche Geldbörse", "Bourse Infinie"));
 

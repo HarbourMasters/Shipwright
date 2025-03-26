@@ -271,6 +271,16 @@ void Settings::CreateOptionDescriptions() {
                                               "Overworld - Only shuffle pots that are outside of dungeons.\n"
                                               "\n"
                                               "All pots - Shuffle all pots.";
+    mOptionDescriptions[RSK_SHUFFLE_CRATES] = "Crates will drop a randomized item the first time they're broken and collected. "
+                                              "Crates will have a different appearance when they hold a randomized item.\n"
+                                              "\n"
+                                              "Off - Crates will not be shuffled.\n"
+                                              "\n"
+                                              "Dungeons - Only shuffle crates that are within dungeons.\n"
+                                              "\n"
+                                              "Overworld - Only shuffle crates that are outside of dungeons.\n"
+                                              "\n"
+                                              "All Crates - Shuffle all crates.";
     mOptionDescriptions[RSK_SHUFFLE_FISHING_POLE] = "Shuffles the fishing pole into the item pool.\n"
         "\n"
         "The fishing pole is required to play the fishing pond minigame.";
@@ -449,6 +459,17 @@ void Settings::CreateOptionDescriptions() {
                                               "All Items - Shuffle all freestanding rupees & hearts.";
     mOptionDescriptions[RSK_SHUFFLE_FAIRIES] =
         "Shuffle fairy locations.";
+    mOptionDescriptions[RSK_SHUFFLE_GRASS] =
+        "Grass/Bushes will drop a randomized item the first time they're cut and collected. "
+        "Grass/Bushes will have a different appearance when they hold a randomized item.\n"
+        "\n"
+        "Off - Grass/Bushes will not be shuffled.\n"
+        "\n"
+        "Dungeons - Only shuffle grass/bushes that are within dungeons.\n"
+        "\n"
+        "Overworld - Only shuffle grass/bushes that are outside of dungeons.\n"
+        "\n"
+        "All Grass/Bushes - Shuffle all grass/bushes.";
     mOptionDescriptions[RSK_SHUFFLE_DUNGEON_REWARDS] =
         "Shuffles the location of Spiritual Stones and medallions.\n"
         "Vanilla - Spiritual Stones and medallions will be given from their respective boss.\n"

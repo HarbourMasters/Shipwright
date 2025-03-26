@@ -89,7 +89,7 @@ using namespace UIWidgets;
 void ResolutionCustomWidget(WidgetInfo& info) {
         ImGui::BeginDisabled(disabled_everything);
         // Vertical Resolution
-        UIWidgets::CVarCheckbox("Set fixed vertical resolution (disables Resolution slider)", CVAR_PREFIX_ADVANCED_RESOLUTION ".VerticalResolutionToggle",
+        UIWidgets::CVarCheckbox("Set fixed vertical resolution (disables resolution slider)", CVAR_PREFIX_ADVANCED_RESOLUTION ".VerticalResolutionToggle",
             UIWidgets::CheckboxOptions({ {.disabled = disabled_everything} }).Tooltip("Override the resolution scale slider and use the settings below, irrespective of window size.")
                         .Color(THEME_COLOR));
         //if (disabled_pixelCount || disabled_everything) { // Hide pixel count controls.
@@ -161,7 +161,7 @@ void ResolutionCustomWidget(WidgetInfo& info) {
         ImGui::EndDisabled();
         UIWidgets::PopStyleInput();
     
-        // Integer scaling settings group (Pixel-perfect Mode)
+        // Integer scaling settings group (Pixel Perfect Mode)
         static const ImGuiTreeNodeFlags IntegerScalingResolvedImGuiFlag =
             CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".PixelPerfectMode", 0) ? ImGuiTreeNodeFlags_DefaultOpen
                                                                         : ImGuiTreeNodeFlags_None;
@@ -169,8 +169,8 @@ void ResolutionCustomWidget(WidgetInfo& info) {
         if (ImGui::CollapsingHeader("Integer Scaling Settings", IntegerScalingResolvedImGuiFlag)) {
             const bool disabled_pixelPerfectMode =
                 !CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".PixelPerfectMode", 0) || disabled_everything;
-            // Pixel-perfect Mode
-            UIWidgets::CVarCheckbox("Pixel-perfect Mode", CVAR_PREFIX_ADVANCED_RESOLUTION ".PixelPerfectMode",
+            // Pixel Perfect Mode
+            UIWidgets::CVarCheckbox("Pixel Perfect Mode", CVAR_PREFIX_ADVANCED_RESOLUTION ".PixelPerfectMode",
                 UIWidgets::CheckboxOptions({{ .disabled = disabled_pixelCount || disabled_everything }}).Tooltip("Don't scale image to fill window.")
                             .Color(THEME_COLOR));
             if (disabled_pixelCount && CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".PixelPerfectMode", 0)) {
@@ -181,7 +181,7 @@ void ResolutionCustomWidget(WidgetInfo& info) {
             // Integer Scaling
             UIWidgets::CVarSliderInt(fmt::format("Integer scale factor: {}", max_integerScaleFactor).c_str(), CVAR_PREFIX_ADVANCED_RESOLUTION ".IntegerScale.Factor",
                 UIWidgets::IntSliderOptions({ {.disabled = disabled_pixelPerfectMode || CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".IntegerScale.FitAutomatically", 0)} })
-                .Min(1).Max(max_integerScaleFactor).DefaultValue(1).Tooltip("Integer scales the image. Only available in pixel-perfect mode.").Color(THEME_COLOR));
+                .Min(1).Max(max_integerScaleFactor).DefaultValue(1).Tooltip("Integer scales the image. Only available in Pixel Perfect Mode.").Color(THEME_COLOR));
             // Display warning if size is being clamped or if framebuffer is larger than viewport.
             if (!disabled_pixelPerfectMode &&
                 (CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".IntegerScale.NeverExceedBounds", 1) &&
@@ -193,7 +193,7 @@ void ResolutionCustomWidget(WidgetInfo& info) {
     
             UIWidgets::CVarCheckbox("Automatically scale image to fit viewport", CVAR_PREFIX_ADVANCED_RESOLUTION ".IntegerScale.FitAutomatically",
                 UIWidgets::CheckboxOptions({ {.disabled = disabled_pixelPerfectMode} }).DefaultValue(true).Color(THEME_COLOR)
-                            .Tooltip("Automatically sets scale factor to fit window. Only available in pixel-perfect mode."));
+                            .Tooltip("Automatically sets scale factor to fit window. Only available in Pixel Perfect Mode."));
             if (CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".IntegerScale.FitAutomatically", 0)) {
                 // This is just here to update the value shown on the slider.
                 // The function in LUS to handle this setting will ignore IntegerScaleFactor while active.

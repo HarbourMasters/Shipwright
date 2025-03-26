@@ -7,7 +7,19 @@ void RegionTable_Init_ZoraRiver() {
     // clang-format off
     areaTable[RR_ZR_FRONT] = Region("ZR Front", "Zora River", {RA_ZORAS_RIVER}, DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_ZR_GS_TREE, logic->IsChild && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_CLOSE)),
+        LOCATION(RC_ZR_GS_TREE,  logic->IsChild && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_CLOSE)),
+        LOCATION(RC_ZR_GRASS_1,  logic->CanCutShrubs()),
+        LOCATION(RC_ZR_GRASS_2,  logic->CanCutShrubs()),
+        LOCATION(RC_ZR_GRASS_3,  logic->CanCutShrubs()),
+        LOCATION(RC_ZR_GRASS_4,  logic->CanCutShrubs()),
+        LOCATION(RC_ZR_GRASS_5,  logic->CanCutShrubs()),
+        LOCATION(RC_ZR_GRASS_6,  logic->CanCutShrubs()),
+        LOCATION(RC_ZR_GRASS_7,  logic->CanCutShrubs()),
+        LOCATION(RC_ZR_GRASS_8,  logic->CanCutShrubs()),
+        LOCATION(RC_ZR_GRASS_9,  logic->CanCutShrubs()),
+        LOCATION(RC_ZR_GRASS_10, logic->CanCutShrubs()),
+        LOCATION(RC_ZR_GRASS_11, logic->CanCutShrubs()),
+        LOCATION(RC_ZR_GRASS_12, logic->CanCutShrubs()),
     }, {
         //Exits
         Entrance(RR_ZORAS_RIVER,  []{return logic->IsAdult || logic->BlastOrSmash();}),
@@ -48,6 +60,7 @@ void RegionTable_Init_ZoraRiver() {
         LOCATION(RC_ZR_BENEATH_WATERFALL_RIGHT_RUPEE,        logic->IsAdult && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG))),
         LOCATION(RC_ZR_NEAR_GROTTOS_GOSSIP_STONE,            true),
         LOCATION(RC_ZR_NEAR_DOMAIN_GOSSIP_STONE,             true),
+        LOCATION(RC_ZR_NEAR_FREESTANDING_POH_GRASS,          logic->CanCutShrubs()),
     }, {
         //Exits
         Entrance(RR_ZR_FRONT,            []{return true;}),
@@ -73,6 +86,10 @@ void RegionTable_Init_ZoraRiver() {
         LOCATION(RC_ZR_OPEN_GROTTO_GOSSIP_STONE,           true),
         LOCATION(RC_ZR_OPEN_GROTTO_BEEHIVE_LEFT,           logic->CanBreakLowerBeehives()),
         LOCATION(RC_ZR_OPEN_GROTTO_BEEHIVE_RIGHT,          logic->CanBreakLowerBeehives()),
+        LOCATION(RC_ZR_OPEN_GROTTO_GRASS_1,                logic->CanCutShrubs()),
+        LOCATION(RC_ZR_OPEN_GROTTO_GRASS_2,                logic->CanCutShrubs()),
+        LOCATION(RC_ZR_OPEN_GROTTO_GRASS_3,                logic->CanCutShrubs()),
+        LOCATION(RC_ZR_OPEN_GROTTO_GRASS_4,                logic->CanCutShrubs()),
     }, {
         //Exits
         Entrance(RR_ZORAS_RIVER, []{return true;}),

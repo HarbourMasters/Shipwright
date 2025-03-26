@@ -126,7 +126,15 @@ void RegionTable_Init_ShadowTemple() {
         Entrance(RR_SHADOW_TEMPLE_MQ_SPINNER_ROOM,  []{return logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT);}),
     });
 
-    areaTable[RR_SHADOW_TEMPLE_MQ_SPINNER_ROOM] = Region("Shadow Temple MQ Spinner Room", "Shadow Temple", {RA_SHADOW_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_SHADOW_TEMPLE_MQ_SPINNER_ROOM] = Region("Shadow Temple MQ Spinner Room", "Shadow Temple", {RA_SHADOW_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, 
+    {
+        // Locations
+        LOCATION(RC_SHADOW_TEMPLE_MQ_TRUTH_SPINNER_SMALL_CRATE_1, logic->CanBreakSmallCrates()),
+        LOCATION(RC_SHADOW_TEMPLE_MQ_TRUTH_SPINNER_SMALL_CRATE_2, logic->CanBreakSmallCrates()),
+        LOCATION(RC_SHADOW_TEMPLE_MQ_TRUTH_SPINNER_SMALL_CRATE_3, logic->CanBreakSmallCrates()),
+        LOCATION(RC_SHADOW_TEMPLE_MQ_TRUTH_SPINNER_SMALL_CRATE_4, logic->CanBreakSmallCrates()),
+    }, 
+    {
         //Exits
         Entrance(RR_SHADOW_TEMPLE_ENTRYWAY,          []{return true;}),
         Entrance(RR_SHADOW_TEMPLE_MQ_FIRST_BEAMOS,   []{return Here(RR_SHADOW_TEMPLE_MQ_SPINNER_ROOM, []{return logic->CanUse(RG_HOVER_BOOTS) || (ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH));}) && (logic->CanUse(RG_HOVER_BOOTS) || Here(RR_SHADOW_TEMPLE_MQ_SPINNER_ROOM, []{return logic->CanUse(RG_FIRE_ARROWS);}) || (ctx->GetTrickOption(RT_SHADOW_MQ_GAP) && logic->CanUse(RG_LONGSHOT) && logic->CanJumpslashExceptHammer()));}),
