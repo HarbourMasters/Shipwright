@@ -129,7 +129,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
 													 
     hintTextTable[RHT_CRATE_DEKU_TREE] = HintText(CustomMessage("They say that a #crate in the Deku Tree# contains #[[1]]#.",
                                                      /*german*/ "",
-                                                     /*french*/ "Selon moi, une #caisse dans l'Arbre Mojo# contient #[[1]]#.", {QM_RED, QM_GREEN}));													 
+                                                     /*french*/ "Selon moi, une #caisse dans l'Arbre Mojo# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
   /*--------------------------
   |     DODONGOS CAVERN      |
@@ -311,7 +311,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
 																			
     hintTextTable[RHT_CRATE_DODONGOS_CAVERN] = HintText(CustomMessage("They say that a #crate in Dodongo's Cavern# contains #[[1]]#.",
                                                      /*german*/ "",
-                                                     /*french*/ "Selon moi, une #caisse dans la Caverne Dodongo# contient #[[1]]#.", {QM_RED, QM_GREEN}));																			
+                                                     /*french*/ "Selon moi, une #caisse dans la Caverne Dodongo# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
   /*--------------------------
   |     JABU JABUS BELLY     |
@@ -478,7 +478,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
 													 
     hintTextTable[RHT_CRATE_JABU_JABU] = HintText(CustomMessage("They say that a #crate in Jabu Jabu's Belly# contains #[[1]]#.",
                                                      /*german*/ "",
-                                                     /*french*/ "Selon moi, une #caisse dans le Ventre de Jabu-Jabu# contient #[[1]]#.", {QM_RED, QM_GREEN}));													
+                                                     /*french*/ "Selon moi, une #caisse dans le Ventre de Jabu-Jabu# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
   /*--------------------------
   |      FOREST TEMPLE       |

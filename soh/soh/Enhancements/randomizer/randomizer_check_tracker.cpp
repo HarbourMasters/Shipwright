@@ -1308,7 +1308,7 @@ void LoadSettings() {
                 break;
             default:
                 showOverworldCrates = false;
-                showDungeonCrates = false;				
+                showDungeonCrates = false;
                 break;
         }
     } else { // Vanilla
@@ -1319,7 +1319,7 @@ void LoadSettings() {
         showOverworldGrass = false;
         showDungeonGrass = false;
         showOverworldCrates = false;
-        showDungeonCrates = false;		
+        showDungeonCrates = false;
     }
 
     fortressFast = false;
@@ -1413,7 +1413,7 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                 (showDungeonCrates && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))) &&
             (loc->GetRCType() != RCTYPE_SMALL_CRATE ||
                 (showOverworldCrates && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea())) ||
-                (showDungeonCrates && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))) &&				
+                (showDungeonCrates && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))) &&
             (loc->GetRCType() != RCTYPE_COW || showCows) &&
             (loc->GetRCType() != RCTYPE_FISH || OTRGlobals::Instance->gRandoContext->GetFishsanity()->GetFishLocationIncluded(loc)) &&
             (loc->GetRCType() != RCTYPE_FREESTANDING ||
