@@ -126,7 +126,7 @@ namespace SohGui {
         mGfxDebuggerWindow = std::make_shared<SohGfxDebuggerWindow>(CVAR_WINDOW("SohGfxDebugger"), "GfxDebugger##SoH", ImVec2(820, 630));
         gui->AddGuiWindow(mGfxDebuggerWindow);
 
-        mStatsWindow = std::make_shared<SohStatsWindow>(CVAR_WINDOW("SohStats"), "SohStats", ImVec2(400, 100));
+        mStatsWindow = std::make_shared<SohStatsWindow>(CVAR_WINDOW("SohStats"), "Stats##Soh", ImVec2(400, 100));
         gui->AddGuiWindow(mStatsWindow);
 
         mInputEditorWindow = gui->GetGuiWindow("Controller Configuration");
