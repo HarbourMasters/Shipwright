@@ -1691,7 +1691,7 @@ void StaticData::HintTable_Init_Item() {
                                                 }, {
                                                 CustomMessage("a townhouse's key", /*german*/"!!!", /*french*/"!!!")
                                                 },
-                                                CustomMessage("Alley House Key", "Schlüssel für das Gäßchenhaus", ""));
+                                                CustomMessage("Alley House Key", "Schlüssel für das Gassenhaus", ""));
 
    hintTextTable[RHT_KAK_BAZAAR_KEY] = HintText(CustomMessage("Kakariko Bazaar's key"),
                                                 {
@@ -2667,7 +2667,7 @@ void StaticData::HintTable_Init_Item() {
                                                 CustomMessage("a draconic soul", /*german*/"eine drakonische Seele", /*french*/""),
                                                 CustomMessage("some magmatic essence", /*german*/"etwas magmatische Essenz", /*french*/"")
                                                 },
-                                                CustomMessage("Volvagia's Soul", "Volvagias Seele", "Âme de Vulcania"));
+                                                CustomMessage("Volvagia's Soul", "Volvagias Seele", "Âme de Volcania"));
 
     hintTextTable[RHT_MORPHA_SOUL] = HintText(CustomMessage("the soul of Morpha", /*german*/"die Seele Morphas", /*french*/""),
                                               {
@@ -2780,7 +2780,7 @@ void StaticData::HintTable_Init_Item() {
                                               }, {
                                               CustomMessage("sack of mice", /*german*/"ein Sack Mäuse", /*french*/"un Sac rempli de souris")
                                               },
-                                              CustomMessage("Bombchu Bag", "Sac de Missiles Teigneux", "!!!"));
+                                              CustomMessage("Bombchu Bag", "Krabbelminentasche", "!!!"));
 
     hintTextTable[RHT_SKELETON_KEY] = HintText(CustomMessage("a Skeleton Key", /*german*/ "ein Universalschlüssel", /*french*/ "une Clé Squelette"),
                                                // /*spanish*/una Llave Maestra
