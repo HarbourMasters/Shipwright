@@ -1,4 +1,4 @@
-#include "sohGfxDebugger.h"
+#include "SohGfxDebuggerWindow.h"
 #include "soh/OTRGlobals.h"
 
 void SohGfxDebuggerWindow::InitElement() {

@@ -1,4 +1,4 @@
-#include "sohConsole.h"
+#include "SohConsoleWindow.h"
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
@@ -14,7 +14,7 @@ void SohConsoleWindow::UpdateElement() {
 void SohConsoleWindow::DrawElement() {
     UIWidgets::PushStyleInput(THEME_COLOR);
     // Small font (13) to match hardcoded width values in the LUS window.. set large font after below TODO addressed
-    ImGui::PushFont(OTRGlobals::Instance->fontMonoSmall);
+    ImGui::PushFont(OTRGlobals::Instance->fontMonoLarger);
 
     // TODO: This can be removed after the LUS console window is designed better without hardcoding widths
     ImGui::BeginChild("##Console Wrapper", ImVec2(0, 0), ImGuiChildFlags_None,
