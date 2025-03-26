@@ -303,12 +303,12 @@ void EnPart_Draw(Actor* thisx, PlayState* play) {
         // for equality. Additionally, we added a fallback for checking the parent actor ID to account for mods the
         // override the Tektite skelton
     } else if ((thisx->params == 9) && ((strcmp((const char*)this->displayList, object_tite_DL_002FF0) == 0) ||
-                                        (thisx->parent && thisx->parent->id == ACTOR_EN_TITE))) {
+                                        (thisx->parent != NULL && thisx->parent->id == ACTOR_EN_TITE))) {
         gSPSegment(POLY_OPA_DISP++, 0x08, object_tite_Tex_001300);
         gSPSegment(POLY_OPA_DISP++, 0x09, object_tite_Tex_001700);
         gSPSegment(POLY_OPA_DISP++, 0x0A, object_tite_Tex_001900);
     } else if ((thisx->params == 10) && ((strcmp((const char*)this->displayList, object_tite_DL_002FF0) == 0) ||
-                                         (thisx->parent && thisx->parent->id == ACTOR_EN_TITE))) {
+                                         (thisx->parent != NULL && thisx->parent->id == ACTOR_EN_TITE))) {
         // #endregion
         gSPSegment(POLY_OPA_DISP++, 0x08, object_tite_Tex_001B00);
         gSPSegment(POLY_OPA_DISP++, 0x09, object_tite_Tex_001F00);
