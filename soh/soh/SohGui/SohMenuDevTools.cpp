@@ -90,8 +90,8 @@ void SohMenu::AddMenuDevTools() {
     path.sidebarName = "Stats";
     AddSidebarEntry("Dev Tools", path.sidebarName, 1);
     AddWidget(path, "Popout Stats Window", WIDGET_WINDOW_BUTTON)
-        .CVar(CVAR_WINDOW("Stats"))
-        .WindowName("Stats")
+        .CVar(CVAR_WINDOW("SohStats"))
+        .WindowName("Stats##Soh")
         .Options(WindowButtonOptions().Tooltip("Enables the separate Stats Window."));
 
     // Console

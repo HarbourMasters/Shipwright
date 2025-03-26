@@ -68,7 +68,7 @@ namespace SohGui {
     std::shared_ptr<SohMenuBar> mSohMenuBar;
 
     std::shared_ptr<Ship::GuiWindow> mConsoleWindow;
-    std::shared_ptr<Ship::GuiWindow> mStatsWindow;
+    std::shared_ptr<SohStatsWindow> mStatsWindow;
     std::shared_ptr<Ship::GuiWindow> mGfxDebuggerWindow;
     std::shared_ptr<Ship::GuiWindow> mInputEditorWindow;
     
@@ -120,16 +120,14 @@ namespace SohGui {
         mSohMenu = std::make_shared<SohMenu>(CVAR_WINDOW("Menu"), "Port Menu");
         gui->SetMenu(mSohMenu);
 
-        mStatsWindow = gui->GetGuiWindow("Stats");
-        if (mStatsWindow == nullptr) {
-            SPDLOG_ERROR("Could not find stats window");
-        }
-
         mConsoleWindow = std::make_shared<SohConsoleWindow>(CVAR_WINDOW("SohConsole"), "Console##SoH", ImVec2(820, 630));
         gui->AddGuiWindow(mConsoleWindow);
 
         mGfxDebuggerWindow = std::make_shared<SohGfxDebuggerWindow>(CVAR_WINDOW("SohGfxDebugger"), "GfxDebugger##SoH", ImVec2(820, 630));
         gui->AddGuiWindow(mGfxDebuggerWindow);
+
+        mStatsWindow = std::make_shared<SohStatsWindow>(CVAR_WINDOW("SohStats"), "Stats##Soh", ImVec2(400, 100));
+        gui->AddGuiWindow(mStatsWindow);
 
         mInputEditorWindow = gui->GetGuiWindow("Controller Configuration");
         if (mInputEditorWindow == nullptr) {
