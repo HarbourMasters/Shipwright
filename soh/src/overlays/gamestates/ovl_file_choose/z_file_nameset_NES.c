@@ -449,7 +449,7 @@ void FileChoose_DrawNameEntryNES(GameState* thisx) {
     FileChoose_SetNameEntryVtxNES(&this->state);
     FileChoose_PulsateCursor(&this->state);
 
-    Vtx* vertices = ResourceMgr_LoadVtxByName(D_80811BB0);
+    Vtx* vertices = ResourceMgr_LoadVtxByName(D_80811BB0_NTSC);
 
     tmp = (this->newFileNameCharCount * 4) + 4;
     

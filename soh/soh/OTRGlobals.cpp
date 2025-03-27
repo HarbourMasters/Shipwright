@@ -509,7 +509,6 @@ uint32_t OTRGlobals::GetInterpolationFPS() {
 }
 
 extern "C" void OTRMessage_Init();
-extern "C" uint32_t ResourceMgr_GetGameRegion(int index);
 extern "C" void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
 extern "C" int AudioPlayer_Buffered(void);

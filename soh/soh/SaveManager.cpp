@@ -27,12 +27,6 @@
 #include <mutex>
 
 extern "C" SaveContext gSaveContext;
-extern "C" uint32_t ResourceMgr_GetGameRegion(int index);
-#include "message_data_static.h"
-extern "C" MessageTableEntry* sNesMessageEntryTablePtr;
-extern "C" MessageTableEntry* sGerMessageEntryTablePtr;
-extern "C" MessageTableEntry* sFraMessageEntryTablePtr;
-extern "C" MessageTableEntry* sJpnMessageEntryTablePtr;
 using namespace std::string_literals;
 
 void SaveManager::WriteSaveFile(const std::filesystem::path& savePath, const uintptr_t addr, void* dramAddr,
