@@ -14,18 +14,18 @@ void RegionTable_Init_Market() {
 
     areaTable[RR_THE_MARKET] = Region("Market", "Market", {RA_THE_MARKET}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_MARKET_GRASS_1, 				logic->IsChild && logic->CanCutShrubs()),
-        LOCATION(RC_MARKET_GRASS_2, 				logic->IsChild && logic->CanCutShrubs()),
-        LOCATION(RC_MARKET_GRASS_3, 				logic->IsChild && logic->CanCutShrubs()),
-        LOCATION(RC_MARKET_GRASS_4, 				logic->IsChild && logic->CanCutShrubs()),
-        LOCATION(RC_MARKET_GRASS_5, 				logic->IsChild && logic->CanCutShrubs()),
-        LOCATION(RC_MARKET_GRASS_6, 				logic->IsChild && logic->CanCutShrubs()),
-        LOCATION(RC_MARKET_GRASS_7, 				logic->IsChild && logic->CanCutShrubs()),
-        LOCATION(RC_MARKET_GRASS_8, 				logic->IsChild && logic->CanCutShrubs()),
-        LOCATION(RC_MK_NEAR_BAZAAR_CRATE_1,      	logic->IsChild && logic->CanBreakCrates()),
-        LOCATION(RC_MK_NEAR_BAZAAR_CRATE_2,      	logic->IsChild && logic->CanBreakCrates()),
-        LOCATION(RC_MK_SHOOTING_GALLERY_CRATE_1, 	logic->IsChild && logic->CanBreakCrates()),
-        LOCATION(RC_MK_SHOOTING_GALLERY_CRATE_2, 	logic->IsChild && logic->CanBreakCrates()),
+        LOCATION(RC_MARKET_GRASS_1,              logic->IsChild && logic->CanCutShrubs()),
+        LOCATION(RC_MARKET_GRASS_2,              logic->IsChild && logic->CanCutShrubs()),
+        LOCATION(RC_MARKET_GRASS_3,              logic->IsChild && logic->CanCutShrubs()),
+        LOCATION(RC_MARKET_GRASS_4,              logic->IsChild && logic->CanCutShrubs()),
+        LOCATION(RC_MARKET_GRASS_5,              logic->IsChild && logic->CanCutShrubs()),
+        LOCATION(RC_MARKET_GRASS_6,              logic->IsChild && logic->CanCutShrubs()),
+        LOCATION(RC_MARKET_GRASS_7,              logic->IsChild && logic->CanCutShrubs()),
+        LOCATION(RC_MARKET_GRASS_8,              logic->IsChild && logic->CanCutShrubs()),
+        LOCATION(RC_MK_NEAR_BAZAAR_CRATE_1,      logic->IsChild && logic->CanBreakCrates()),
+        LOCATION(RC_MK_NEAR_BAZAAR_CRATE_2,      logic->IsChild && logic->CanBreakCrates()),
+        LOCATION(RC_MK_SHOOTING_GALLERY_CRATE_1, logic->IsChild && logic->CanBreakCrates()),
+        LOCATION(RC_MK_SHOOTING_GALLERY_CRATE_2, logic->IsChild && logic->CanBreakCrates()),
     }, {
         //Exits
         Entrance(RR_MARKET_ENTRANCE,            []{return true;}),

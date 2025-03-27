@@ -1079,7 +1079,7 @@ namespace Rando {
     }
 
     bool Logic::CanCutShrubs(){
-        return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_BOOMERANG) || HasExplosives() || CanUse(RG_MASTER_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_BIGGORON_SWORD);
+        return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_BOOMERANG) || HasExplosives() || CanUse(RG_MASTER_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_BIGGORON_SWORD) || HasItem(RG_GORONS_BRACELET);
     }
 
     bool Logic::CanStunDeku(){

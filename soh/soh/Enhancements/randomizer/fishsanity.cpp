@@ -53,7 +53,7 @@ std::unordered_map<int8_t, RandomizerCheck> Rando::StaticData::randomizerGrottoF
 
 ActorFunc drawFishing = NULL;
 ActorFunc drawEnFish = NULL;
-Color_RGBA16 fsPulseColor = { 30, 240, 200 };
+Color_RGB8 fsPulseColor = { 30, 240, 200 };
 
 namespace Rando {
     const FishIdentity Fishsanity::defaultIdentity = { RAND_INF_MAX, RC_UNKNOWN_CHECK };
@@ -562,7 +562,7 @@ extern "C" {
         Fishsanity_CloseGreyscaleColor(play);
     }
 
-    void Fishsanity_OpenGreyscaleColor(PlayState* play, Color_RGBA16* color, int16_t frameOffset) {
+    void Fishsanity_OpenGreyscaleColor(PlayState* play, Color_RGB8* color, int16_t frameOffset) {
         OPEN_DISPS(play->state.gfxCtx);
         gDPSetGrayscaleColor(
             POLY_OPA_DISP++, color->r, color->g, color->b,

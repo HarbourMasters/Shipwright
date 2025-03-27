@@ -684,7 +684,7 @@ void EntranceTrackerSettingsWindow::DrawElement() {
 
         ImGui::Text("List Items");
         UIWidgets::CVarCheckbox("Auto scroll", CVAR_TRACKER_ENTRANCE("AutoScroll"),
-            UIWidgets::CheckboxOptions().Tooltip("Automatically scroll to the first aviable entrance in the current scene").Color(THEME_COLOR));
+            UIWidgets::CheckboxOptions().Tooltip("Automatically scroll to the first available entrance in the current scene").Color(THEME_COLOR));
         UIWidgets::CVarCheckbox("Highlight previous", CVAR_TRACKER_ENTRANCE("HighlightPrevious"),
                 UIWidgets::CheckboxOptions().Tooltip("Highlight the previous entrance that Link came from").Color(THEME_COLOR));
         UIWidgets::CVarCheckbox("Highlight available", CVAR_TRACKER_ENTRANCE("HighlightAvailable"),
