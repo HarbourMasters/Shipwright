@@ -1346,8 +1346,8 @@ namespace Rando {
     };
 
     std::map<RandomizerGet, uint32_t> Logic::RandoGetToRandInf = {
-        { RG_ZELDAS_LETTER,          RAND_INF_CHILD_TRADES_HAS_LETTER_ZELDA },
-        { RG_WEIRD_EGG,              RAND_INF_CHILD_TRADES_HAS_WEIRD_EGG },
+        { RG_ZELDAS_LETTER,          RAND_INF_ZELDAS_LETTER },
+        { RG_WEIRD_EGG,              RAND_INF_WEIRD_EGG },
         { RG_GOHMA_SOUL,             RAND_INF_GOHMA_SOUL },
         { RG_KING_DODONGO_SOUL,      RAND_INF_KING_DODONGO_SOUL },
         { RG_BARINADE_SOUL,          RAND_INF_BARINADE_SOUL },
@@ -1497,10 +1497,10 @@ namespace Rando {
                 SetQuestItem(RandoGetToQuestItem.at(randoGet), state);
                 break;
             case RG_WEIRD_EGG:
-                SetRandoInf(RAND_INF_CHILD_TRADES_HAS_WEIRD_EGG, state);
+                SetRandoInf(RAND_INF_WEIRD_EGG, state);
                 break;
             case RG_ZELDAS_LETTER:
-                SetRandoInf(RAND_INF_CHILD_TRADES_HAS_LETTER_ZELDA, state);
+                SetRandoInf(RAND_INF_ZELDAS_LETTER, state);
                 break;
             case RG_DOUBLE_DEFENSE:
                 mSaveContext->isDoubleDefenseAcquired = state;
