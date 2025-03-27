@@ -256,6 +256,24 @@ uint16_t GetTotalChecksGotten() {
     return totalChecksGotten;
 }
 
+bool IsCheckHidden(RandomizerCheck rc) {
+    Rando::ItemLocation* itemLocation = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
+    RandomizerCheckStatus status = itemLocation->GetCheckStatus();
+    bool available = itemLocation->IsAvailable();
+    bool skipped = itemLocation->GetIsSkipped();
+    bool obtained = itemLocation->HasObtained();
+    bool seen = status == RCSHOW_SEEN || status == RCSHOW_IDENTIFIED;
+    bool scummed = status == RCSHOW_SCUMMED;
+    bool unchecked = status == RCSHOW_UNCHECKED;
+
+    return !showHidden && (
+        (skipped && hideSkipped) ||
+        (seen && hideSeen) ||
+        (scummed && hideScummed) ||
+        (unchecked && hideUnchecked)
+    );
+}
+
 void RecalculateAreaTotals(RandomizerCheckArea rcArea) {
     areaChecksGotten[rcArea] = 0;
     areaChecksAvailable[rcArea] = 0;
@@ -265,9 +283,14 @@ void RecalculateAreaTotals(RandomizerCheckArea rcArea) {
             continue;
         }
         areaCheckTotals[rcArea]++;
-        if (OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->GetIsSkipped() || OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->HasObtained()) {
+
+        Rando::ItemLocation* itemLoc = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
+
+        if (itemLoc->GetIsSkipped() || itemLoc->HasObtained()) {
             areaChecksGotten[rcArea]++;
-        } else if (OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->IsAvailable()) {
+        }
+
+        if (itemLoc->IsAvailable() && !IsCheckHidden(rc)) {
             areaChecksAvailable[rcArea]++;
         }
     }
@@ -949,13 +972,20 @@ void CheckTrackerWindow::DrawElement() {
 
     ImGui::TableNextRow(0, headerHeight);
     ImGui::TableNextColumn();
-    UIWidgets::CVarCheckbox(
-        "Show Hidden Items", CVAR_TRACKER_CHECK("ShowHidden"), UIWidgets::CheckboxOptions({{ .tooltip = "When active, items will show hidden checks by default when updated to this state." }})
-        .Color(THEME_COLOR));
+    if (UIWidgets::CVarCheckbox(
+        "Show Hidden Items", CVAR_TRACKER_CHECK("ShowHidden"), UIWidgets::CheckboxOptions({{.tooltip = "When active, items will show hidden checks by default when updated to this state." }})
+        .Color(THEME_COLOR))) {
+        doAreaScroll = true;
+        showHidden = CVarGetInteger(CVAR_TRACKER_CHECK("ShowHidden"), 0);
+        RecalculateAllAreaTotals();
+    }
     if (enableAvailableChecks) {
-        UIWidgets::CVarCheckbox(
+        if (UIWidgets::CVarCheckbox(
             "Only Show Available Checks", CVAR_TRACKER_CHECK("OnlyShowAvailable"), UIWidgets::CheckboxOptions({{ .tooltip = "When active, unavailable checks will be hidden." }})
-            .Color(THEME_COLOR));
+            .Color(THEME_COLOR))) {
+            doAreaScroll = true;
+            RecalculateAllAreaTotals();
+        }
     }
     UIWidgets::PaddedSeparator();
     if (UIWidgets::Button("Expand All", UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline))) {
@@ -1113,8 +1143,7 @@ void CheckTrackerWindow::DrawElement() {
                 doAreaScroll = false;
             }
             for (auto rc : checks) {
-                if (doDraw && isThisAreaSpoiled && !filterChecksHidden[rc] &&
-                    (!enableAvailableChecks || !onlyShowAvailable || OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->IsAvailable())) {
+                if (doDraw && isThisAreaSpoiled && !filterChecksHidden[rc]) {
                     DrawLocation(rc);
                 }
             }
@@ -1549,6 +1578,11 @@ void DrawLocation(RandomizerCheck rc) {
     RandomizerCheckStatus status = itemLoc->GetCheckStatus();
     bool skipped = itemLoc->GetIsSkipped();
     bool available = itemLoc->IsAvailable();
+
+    if (enableAvailableChecks && onlyShowAvailable && !available) {
+        return;
+    }
+
     if (status == RCSHOW_COLLECTED) {
         if (!showHidden && hideCollected) {
             return;
@@ -1849,7 +1883,7 @@ void RecalculateAvailableChecks() {
         areaChecksAvailable[rcArea] = 0;
         for (auto& rc : vec) {
             Rando::ItemLocation* itemLocation = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
-            if (itemLocation->IsAvailable() && !itemLocation->GetIsSkipped() && !itemLocation->HasObtained() && IsVisibleInCheckTracker(rc)) {
+            if (itemLocation->IsAvailable() && IsVisibleInCheckTracker(rc) && !IsCheckHidden(rc)) {
                 areaChecksAvailable[rcArea]++;
             }
         }
