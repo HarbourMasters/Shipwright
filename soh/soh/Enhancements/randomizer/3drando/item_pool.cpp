@@ -149,7 +149,7 @@ const std::array<RandomizerGet, 44> easyItems = {
   RG_PIECE_OF_HEART,
 };
 const std::array<RandomizerGet, 43> normalItems = {
-  RG_PIECE_OF_HEART,   //35 pieces of heart
+  // 35 pieces of heart
   RG_PIECE_OF_HEART,
   RG_PIECE_OF_HEART,
   RG_PIECE_OF_HEART,
@@ -184,7 +184,9 @@ const std::array<RandomizerGet, 43> normalItems = {
   RG_PIECE_OF_HEART,
   RG_PIECE_OF_HEART,
   RG_PIECE_OF_HEART,
-  RG_HEART_CONTAINER, //8 heart containers
+  RG_PIECE_OF_HEART,
+  // 8 heart containers
+  RG_HEART_CONTAINER,
   RG_HEART_CONTAINER,
   RG_HEART_CONTAINER,
   RG_HEART_CONTAINER,
@@ -451,7 +453,7 @@ static void ReplaceMaxItem(const RandomizerGet itemToReplace, int max) {
   for (size_t i = 0; i < ItemPool.size(); i++) {
     if (ItemPool[i] == itemToReplace) {
       if (itemCount >= max) {
-        ItemPool[i] = GetJunkItem();
+        ItemPool[i] = RG_NONE;
       }
       itemCount++;
     }
@@ -701,19 +703,8 @@ void GenerateItemPool() {
 
   if (ctx->GetOption(RSK_SHUFFLE_BEEHIVES)) {
     //32 total beehive locations
-    AddItemToMainPool(RG_RED_RUPEE, 23);
-    AddItemToMainPool(RG_BLUE_RUPEE, 9);
-  }
-
-  if (ctx->GetOption(RSK_SHUFFLE_COWS)) {
-    //9 total cow locations
-    for (uint8_t i = 0; i < 9; i++) {
-      AddItemToMainPool(GetJunkItem());
-    }
-    //extra location for Jabu MQ
-    if (ctx->GetDungeon(Rando::JABU_JABUS_BELLY)->IsMQ()) {
-      AddItemToMainPool(GetJunkItem());
-    }
+    AddItemToPool(PendingJunkPool, RG_RED_RUPEE, 23);
+    AddItemToPool(PendingJunkPool, RG_BLUE_RUPEE, 9);
   }
 
   // Shuffle Pots
@@ -722,6 +713,18 @@ void GenerateItemPool() {
   bool dungeonPotsActive = ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_DUNGEONS) ||
                            ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_ALL);
   PlaceItemsForType(RCTYPE_POT, overworldPotsActive, dungeonPotsActive);
+
+  // Shuffle Crates
+  bool overworldCratesActive = ctx->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_OVERWORLD) ||
+                               ctx->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_ALL);
+  bool overworldNLCratesActive = ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC) &&
+                                     (ctx->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_OVERWORLD) ||
+                                 ctx->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_ALL));
+  bool dungeonCratesActive = ctx->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_DUNGEONS) ||
+                           ctx->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_ALL);
+  PlaceItemsForType(RCTYPE_CRATE, overworldCratesActive, dungeonCratesActive);
+  PlaceItemsForType(RCTYPE_NLCRATE, overworldNLCratesActive, dungeonCratesActive);
+  PlaceItemsForType(RCTYPE_SMALL_CRATE, overworldCratesActive, dungeonCratesActive);
   
   auto fsMode = ctx->GetOption(RSK_FISHSANITY);
   if (fsMode.IsNot(RO_FISHSANITY_OFF)) {
@@ -1295,14 +1298,16 @@ void GenerateItemPool() {
     AddItemToMainPool(RG_SHADOW_TEMPLE_BOSS_KEY);
   }
 
-  if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_KAK_TOKENS)) {
-    ctx->PlaceItemInLocation(RC_KAK_100_GOLD_SKULLTULA_REWARD, RG_GANONS_CASTLE_BOSS_KEY);
-  } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Get() >= RO_GANON_BOSS_KEY_LACS_VANILLA && ctx->GetOption(RSK_GANONS_BOSS_KEY).IsNot(RO_GANON_BOSS_KEY_TRIFORCE_HUNT)) {
-    ctx->PlaceItemInLocation(RC_TOT_LIGHT_ARROWS_CUTSCENE, RG_GANONS_CASTLE_BOSS_KEY);
-  } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_VANILLA)) {
-    ctx->PlaceItemInLocation(RC_GANONS_TOWER_BOSS_KEY_CHEST, RG_GANONS_CASTLE_BOSS_KEY);
-  } else {
-    AddItemToMainPool(RG_GANONS_CASTLE_BOSS_KEY);
+  if (!ctx->GetOption(RSK_TRIFORCE_HUNT)) { // Don't add GBK to the pool at all for Triforce Hunt.
+    if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_KAK_TOKENS)) {
+      ctx->PlaceItemInLocation(RC_KAK_100_GOLD_SKULLTULA_REWARD, RG_GANONS_CASTLE_BOSS_KEY);
+    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Get() >= RO_GANON_BOSS_KEY_LACS_VANILLA) {
+      ctx->PlaceItemInLocation(RC_TOT_LIGHT_ARROWS_CUTSCENE, RG_GANONS_CASTLE_BOSS_KEY);
+    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_VANILLA)) {
+      ctx->PlaceItemInLocation(RC_GANONS_TOWER_BOSS_KEY_CHEST, RG_GANONS_CASTLE_BOSS_KEY);
+    } else {
+      AddItemToMainPool(RG_GANONS_CASTLE_BOSS_KEY);
+    }
   }
 
   if (ctx->GetOption(RSK_ITEM_POOL).Is(RO_ITEM_POOL_PLENTIFUL)) {
@@ -1333,6 +1338,7 @@ void GenerateItemPool() {
   }
   //Replace all junk items with ice traps for onslaught mode
   else if (ctx->GetOption(RSK_ICE_TRAPS).Is(RO_ICE_TRAPS_ONSLAUGHT)) {
+    PendingJunkPool.clear();
     for (uint8_t i = 0; i < JunkPoolItems.size() - 3; i++) { // -3 Omits Huge Rupees and Deku Nuts 10
       ReplaceMaxItem(JunkPoolItems[i], 0);
     }
@@ -1346,26 +1352,30 @@ void GenerateItemPool() {
     ReplaceMaxItem(RG_DOUBLE_DEFENSE, 0);
   }
 
-  //this feels ugly and there's probably a better way, but
-  //it replaces random junk with pending junk.
-  bool junkSet;
-  for (RandomizerGet pendingJunk : PendingJunkPool) {
-    junkSet = false;
-    for (RandomizerGet& item : ItemPool) {
-      for (RandomizerGet junk : JunkPoolItems) {
-        if (item == junk && item != RG_HUGE_RUPEE && item != RG_DEKU_NUTS_10) {
-          item = pendingJunk;
-          junkSet = true;
+  std::erase(ItemPool, RG_NONE);
+
+  if (ItemPool.size() < ctx->allLocations.size()) {
+    Shuffle(PendingJunkPool);
+    size_t junkNeeded = std::min(PendingJunkPool.size(), ctx->allLocations.size() - ItemPool.size());
+    ItemPool.insert(ItemPool.end(), PendingJunkPool.begin(), PendingJunkPool.begin() + junkNeeded);
+    PendingJunkPool.erase(PendingJunkPool.begin(), PendingJunkPool.begin() + junkNeeded);
+  } else if (ItemPool.size() > ctx->allLocations.size()) {
+    // RANDOTODO: all junk should be put in PendingJunkPool so this is never needed
+    size_t remove = ItemPool.size() - ctx->allLocations.size();
+    for (size_t i = 0; remove > 0 && i < ItemPool.size(); i++) {
+      for (size_t j = 0; j < JunkPoolItems.size(); j++) {
+        if (ItemPool[i] == JunkPoolItems[j]) {
+          ItemPool[i] = RG_NONE;
+          remove--;
           break;
         }
       }
-      if (junkSet) break;
     }
+    std::erase(ItemPool, RG_NONE);
   }
-  PendingJunkPool.clear();
-}
 
-void AddJunk() {
-  SPDLOG_DEBUG("HAD TO PLACE EXTRA JUNK ");
-  AddItemToMainPool(GetPendingJunkItem());
+  // RANDOTODO: Ideally this should be checking for equality, but that is not currently the case and has never been
+  // the case, and isn't even currently the case in the 3drando repo we inherited this from years ago, so it may
+  // be a large undertaking to fix.
+  assert(ItemPool.size() <= ctx->allLocations.size() || !"Item Pool larger than Location Pool");
 }

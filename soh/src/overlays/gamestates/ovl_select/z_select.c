@@ -1535,7 +1535,7 @@ void Select_Draw(SelectContext* this) {
 void Select_Main(GameState* thisx) {
     SelectContext* this = (SelectContext*)thisx;
 
-    if (this->isBetterWarp != CVarGetInteger(CVAR_DEVELOPER_TOOLS("BetterDebugWarpScreen"), 0)) {
+    if (this->isBetterWarp != CVarGetInteger(CVAR_DEVELOPER_TOOLS("BetterDebugWarpScreen"), 1)) {
         Select_SwitchBetterWarpMode(this, !this->isBetterWarp);
     }
 
@@ -1641,5 +1641,5 @@ void Select_Init(GameState* thisx) {
 
     CVarClear(CVAR_GENERAL("BetterDebugWarpScreenMQMode"));
     CVarClear(CVAR_GENERAL("BetterDebugWarpScreenMQModeScene"));
-    Select_SwitchBetterWarpMode(this, CVarGetInteger(CVAR_DEVELOPER_TOOLS("BetterDebugWarpScreen"), 0));
+    Select_SwitchBetterWarpMode(this, CVarGetInteger(CVAR_DEVELOPER_TOOLS("BetterDebugWarpScreen"), 1));
 }

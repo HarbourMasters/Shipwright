@@ -89,12 +89,6 @@ class Settings {
     const OptionGroup& GetOptionGroup(RandomizerSettingGroupKey key);
 
     /**
-     * @brief sets the `selectedOption` of all Options to the value of the CVar
-     * corresponding to their `cvarName`s.
-    */
-    void SetAllFromCVar();
-
-    /**
      * @brief Updates various properties of options based on the value of other options.
      * Used to update visibility, whether or not interaction is disabled, and what the
      * actual option values are. Actually changing option values should be handled in
@@ -113,7 +107,6 @@ class Settings {
      */
     void ParseJson(nlohmann::json spoilerFileJson);
     std::map<RandomizerArea, std::vector<RandomizerTrick>> mTricksByArea = {};
-    void ReloadOptions();
 
     /**
      * @brief Assigns a Rando::Context instance to this settings instance

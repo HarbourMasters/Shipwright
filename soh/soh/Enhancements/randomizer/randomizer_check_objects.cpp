@@ -172,6 +172,10 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
             (location.GetRCType() != RCTYPE_BEEHIVE || CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleBeehives"), RO_GENERIC_NO)) &&
             (location.GetRCType() != RCTYPE_COW || CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleCows"), RO_GENERIC_NO)) &&
             (location.GetRCType() != RCTYPE_POT || CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShufflePots"), RO_GENERIC_NO)) &&
+            (location.GetRCType() != RCTYPE_GRASS || CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGrass"), RO_GENERIC_NO)) &&
+            (location.GetRCType() != RCTYPE_CRATE || CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleCrates"), RO_GENERIC_NO)) &&
+            (location.GetRCType() != RCTYPE_NLCRATE || CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleCrates"), RO_GENERIC_NO)) &&
+            (location.GetRCType() != RCTYPE_SMALL_CRATE || CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleCrates"), RO_GENERIC_NO)) &&			
             (location.GetRCType() != RCTYPE_FISH || ctx->GetFishsanity()->GetFishLocationIncluded(&location, FSO_SOURCE_CVARS)) &&
             (location.GetRCType() != RCTYPE_ADULT_TRADE ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleAdultTrade"), RO_GENERIC_NO)) &&

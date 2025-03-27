@@ -376,10 +376,33 @@ Rando::Location Rando::Location::GrottoFish(RandomizerCheck rc, RandomizerCheckQ
 }
 
 Rando::Location Rando::Location::Pot(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
+    SceneID scene_, int32_t actorParams_, std::string&& shortName_, RandomizerHintTextKey hintKey,
+    RandomizerGet vanillaItem, SpoilerCollectionCheck collectionCheck) {
+    return {rc, quest_, RCTYPE_POT, area_, ACTOR_OBJ_TSUBO, scene_, actorParams_, std::move(shortName_), hintKey, vanillaItem, false,
+        collectionCheck };
+}
+
+Rando::Location Rando::Location::Crate(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
                                      SceneID scene_, int32_t actorParams_, std::string&& shortName_,
-                                     std::string&& spoilerName_, RandomizerHintTextKey hintKey,
+                                     RandomizerHintTextKey hintKey,
                                      RandomizerGet vanillaItem, SpoilerCollectionCheck collectionCheck) {
-    return {rc, quest_, RCTYPE_POT, area_, ACTOR_OBJ_TSUBO, scene_, actorParams_, std::move(shortName_), std::move(spoilerName_), hintKey, vanillaItem, false,
+    return {rc, quest_, RCTYPE_CRATE, area_, ACTOR_OBJ_KIBAKO2, scene_, actorParams_, std::move(shortName_), hintKey, vanillaItem, false,
+            collectionCheck };
+}
+
+Rando::Location Rando::Location::NLCrate(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
+                                     SceneID scene_, int32_t actorParams_, std::string&& shortName_,
+                                     RandomizerHintTextKey hintKey,
+                                     RandomizerGet vanillaItem, SpoilerCollectionCheck collectionCheck) {
+    return {rc, quest_, RCTYPE_NLCRATE, area_, ACTOR_OBJ_KIBAKO2, scene_, actorParams_, std::move(shortName_), hintKey, vanillaItem, false,
+            collectionCheck };
+}
+
+Rando::Location Rando::Location::SmallCrate(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
+                                     SceneID scene_, int32_t actorParams_, std::string&& shortName_,
+                                     RandomizerHintTextKey hintKey,
+                                     RandomizerGet vanillaItem, SpoilerCollectionCheck collectionCheck) {
+    return {rc, quest_, RCTYPE_SMALL_CRATE, area_, ACTOR_OBJ_KIBAKO, scene_, actorParams_, std::move(shortName_), hintKey, vanillaItem, false,
             collectionCheck };
 }
 
@@ -388,8 +411,15 @@ Rando::Location Rando::Location::HintStone(RandomizerCheck rc, RandomizerCheckQu
 }
 
 Rando::Location Rando::Location::Fairy(RandomizerCheck rc, RandomizerCheckQuest quest_,
-                                        RandomizerCheckArea area_, SceneID scene_,
-                                        int32_t actorParams_, std::string&& shortName_, std::string&& spoilerName_,
-                                        RandomizerHintTextKey hintKey, SpoilerCollectionCheck collectionCheck) {
-    return {rc, quest_, RCTYPE_FAIRY, area_, ACTOR_EN_ELF, scene_, actorParams_, std::move(shortName_), std::move(spoilerName_), hintKey, RG_NONE, false, collectionCheck};
+    RandomizerCheckArea area_, SceneID scene_,
+    int32_t actorParams_, std::string&& shortName_,
+    RandomizerHintTextKey hintKey, SpoilerCollectionCheck collectionCheck) {
+    return {rc, quest_, RCTYPE_FAIRY, area_, ACTOR_EN_ELF, scene_, actorParams_, std::move(shortName_), hintKey, RG_NONE, false, collectionCheck};
+}
+
+Rando::Location Rando::Location::Grass(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
+                                     SceneID scene_, int32_t actorParams_, std::string&& shortName_,
+                                     std::string&& spoilerName_, RandomizerHintTextKey hintKey,
+                                     RandomizerGet vanillaItem, SpoilerCollectionCheck collectionCheck) {
+    return { rc, quest_, RCTYPE_GRASS, area_, ACTOR_EN_KUSA, scene_, actorParams_, std::move(shortName_), std::move(spoilerName_), hintKey, vanillaItem, false, collectionCheck };
 }

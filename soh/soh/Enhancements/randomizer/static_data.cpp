@@ -187,6 +187,7 @@ std::unordered_map<uint32_t, RandomizerHintTextKey> StaticData::trialData = {
 };
 
 std::unordered_map<RandomizerHint, StaticHintInfo> StaticData::staticHintInfoMap = {
+  // clang-format off
   // RH_GANONDORF_HINT is special cased due to being different based on master sword shuffle
   // Altar hints are special cased due to special hint marking rules
   // warp song hints are special cased due to entrances not being done properly yet
@@ -211,6 +212,8 @@ std::unordered_map<RandomizerHint, StaticHintInfo> StaticData::staticHintInfoMap
   {RH_KAK_50_SKULLS_HINT,  StaticHintInfo(HINT_TYPE_ITEM,     {RHT_SKULLS_HINT},                   RSK_KAK_50_SKULLS_HINT,  true, {RC_KAK_50_GOLD_SKULLTULA_REWARD},  {}, {}, false, 50)},
   {RH_KAK_100_SKULLS_HINT, StaticHintInfo(HINT_TYPE_ITEM,     {RHT_SKULLS_HINT},                   RSK_KAK_100_SKULLS_HINT, true, {RC_KAK_100_GOLD_SKULLTULA_REWARD}, {}, {}, false, 100)},
   {RH_MASK_SHOP_HINT,      StaticHintInfo(HINT_TYPE_ITEM,     {RHT_MASK_SHOP_HINT},                RSK_MASK_SHOP_HINT,      true, {RC_DEKU_THEATER_SKULL_MASK, RC_DEKU_THEATER_MASK_OF_TRUTH}, {}, {RC_MASK_SHOP_HINT})}
+
+  // clang-format on
 };
 
 std::unordered_map<std::string, uint32_t> StaticData::PopulateTranslationMap(std::unordered_map<uint32_t, CustomMessage> input){
@@ -220,7 +223,8 @@ std::unordered_map<std::string, uint32_t> StaticData::PopulateTranslationMap(std
     for (std::string string: strings){
       if (output.contains(string)){
         if (output[string] != key){
-          SPDLOG_DEBUG("\tREPEATED STRING IN " + message.GetEnglish(MF_CLEAN) + "\n\n"); //RANDOTODO should this cause an error of some kind?
+          //RANDOTODO should this cause an error of some kind?
+          SPDLOG_DEBUG("\tREPEATED STRING IN " + message.GetEnglish(MF_CLEAN) + "\n\n");
         }
       } else {
         output[string] = key;
@@ -237,7 +241,8 @@ std::unordered_map<std::string, uint32_t> StaticData::PopulateTranslationMap(std
     for (std::string string: strings){
       if (output.contains(string)){
         if (output[string] != key){
-          SPDLOG_DEBUG("\tREPEATED STRING WITH " + string + "\n\n"); //RANDOTODO should this cause an error of some kind?
+          //RANDOTODO should this cause an error of some kind?
+          SPDLOG_DEBUG("\tREPEATED STRING WITH " + string + "\n\n");
         }
       } else {
         output[string] = key;

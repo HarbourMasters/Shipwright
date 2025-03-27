@@ -54,6 +54,14 @@ class OTRGlobals {
         ImFont* defaultFontLarger;
         ImFont* defaultFontLargest;
 
+        ImFont* fontMonoSmall;
+        ImFont* fontStandard;
+        ImFont* fontStandardLarger;
+        ImFont* fontStandardLargest;
+        ImFont* fontMono;
+        ImFont* fontMonoLarger;
+        ImFont* fontMonoLargest;
+
         OTRGlobals();
         ~OTRGlobals();
 
@@ -69,6 +77,7 @@ class OTRGlobals {
         bool hasMasterQuest;
         bool hasOriginal;
         ImFont* CreateDefaultFontWithSize(float size);
+        ImFont* CreateFontWithSize(float size, std::string fontPath);
 };
 #endif
 

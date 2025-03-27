@@ -18,6 +18,9 @@
 #include "soh/Enhancements/debugger/debugSaveEditor.h"
 #include "soh/Enhancements/debugger/hookDebugger.h"
 #include "soh/Enhancements/debugger/dlViewer.h"
+#include "soh/Enhancements/debugger/SohConsoleWindow.h"
+#include "soh/Enhancements/debugger/SohGfxDebuggerWindow.h"
+#include "soh/Enhancements/debugger/SohStatsWindow.h"
 #include "soh/Enhancements/debugger/valueViewer.h"
 #include "soh/Enhancements/gameplaystatswindow.h"
 #include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
@@ -26,17 +29,7 @@
 #include "soh/Enhancements/randomizer/randomizer_settings_window.h"
 #include "soh/Enhancements/timesplits/TimeSplits.h"
 #include "soh/Enhancements/randomizer/Plandomizer.h"
-#include "soh/AboutWindow.h"
 #include "SohModals.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-    void enableBetaQuest();
-    void disableBetaQuest();
-#ifdef __cplusplus
-}
-#endif
 
 namespace SohGui {
     void SetupHooks();
@@ -45,6 +38,9 @@ namespace SohGui {
     void Destroy();
     void RegisterPopup(std::string title, std::string message, std::string button1 = "OK", std::string button2 = "", std::function<void()> button1callback = nullptr, std::function<void()> button2callback = nullptr);
     void ShowRandomizerSettingsMenu();
+    UIWidgets::Colors GetMenuThemeColor();
 }
+
+#define THEME_COLOR SohGui::GetMenuThemeColor()
 
 #endif /* SohGui_hpp */

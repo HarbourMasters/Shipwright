@@ -53,7 +53,7 @@ std::unordered_map<int8_t, RandomizerCheck> Rando::StaticData::randomizerGrottoF
 
 ActorFunc drawFishing = NULL;
 ActorFunc drawEnFish = NULL;
-Color_RGBA16 fsPulseColor = { 30, 240, 200 };
+Color_RGB8 fsPulseColor = { 30, 240, 200 };
 
 namespace Rando {
     const FishIdentity Fishsanity::defaultIdentity = { RAND_INF_MAX, RC_UNKNOWN_CHECK };
@@ -229,7 +229,7 @@ namespace Rando {
 
                 if (ageSplit && !IsFish(&mCurrPondFish.second) && tableEntry.second != RC_UNKNOWN_CHECK &&
                     (!Flags_GetRandomizerInf(OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(tableEntry.second)) || i == pondCount - 1)) {
-                    mCurrPondFish.second = mCurrPondFish.second = GetPondFish(params, true);
+                    mCurrPondFish.second = GetPondFish(params, true);
                 }
             }
         }
@@ -562,7 +562,7 @@ extern "C" {
         Fishsanity_CloseGreyscaleColor(play);
     }
 
-    void Fishsanity_OpenGreyscaleColor(PlayState* play, Color_RGBA16* color, int16_t frameOffset) {
+    void Fishsanity_OpenGreyscaleColor(PlayState* play, Color_RGB8* color, int16_t frameOffset) {
         OPEN_DISPS(play->state.gfxCtx);
         gDPSetGrayscaleColor(
             POLY_OPA_DISP++, color->r, color->g, color->b,
@@ -580,6 +580,7 @@ extern "C" {
 }
 
 void Rando::StaticData::RegisterFishLocations() {
+    // clang-format off
     // Fishing Pond
     locationTable[RC_LH_CHILD_FISH_1] =                                                Location::Fish(RC_LH_CHILD_FISH_1,                                              RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 100,      RAND_INF_CHILD_FISH_1,                         "Child Pond Fish 1",           RHT_LH_POND_FISH,                  RG_NONE);
     locationTable[RC_LH_CHILD_FISH_2] =                                                Location::Fish(RC_LH_CHILD_FISH_2,                                              RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 101,      RAND_INF_CHILD_FISH_2,                         "Child Pond Fish 2",           RHT_LH_POND_FISH,                  RG_NONE);
@@ -630,6 +631,7 @@ void Rando::StaticData::RegisterFishLocations() {
     locationTable[RC_ZD_FISH_3] =                                                      Location::Fish(RC_ZD_FISH_3,                                                    RCQUEST_BOTH,                                                                             ACTOR_EN_FISH,        SCENE_ZORAS_DOMAIN,                 -1 ^ 2,   RAND_INF_ZD_FISH_3,                            "Fish 3",                      RHT_ZD_FISH,                       RG_FISH);
     locationTable[RC_ZD_FISH_4] =                                                      Location::Fish(RC_ZD_FISH_4,                                                    RCQUEST_BOTH,                                                                             ACTOR_EN_FISH,        SCENE_ZORAS_DOMAIN,                 -1 ^ 3,   RAND_INF_ZD_FISH_4,                            "Fish 4",                      RHT_ZD_FISH,                       RG_FISH);
     locationTable[RC_ZD_FISH_5] =                                                      Location::Fish(RC_ZD_FISH_5,                                                    RCQUEST_BOTH,                                                                             ACTOR_EN_FISH,        SCENE_ZORAS_DOMAIN,                 -1 ^ 4,   RAND_INF_ZD_FISH_5,                            "Fish 5",                      RHT_ZD_FISH,                       RG_FISH);
+    // clang-format on
 }
 
 static RegisterShipInitFunc initFunc(Rando::StaticData::RegisterFishLocations);

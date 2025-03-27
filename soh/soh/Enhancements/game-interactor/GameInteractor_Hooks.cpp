@@ -19,6 +19,9 @@ void GameInteractor_ExecuteOnExitGame(int32_t fileNum) {
 }
 
 void GameInteractor_ExecuteOnGameStateMainStart() {
+    // Cleanup all hooks at the start of each frame
+    GameInteractor::Instance->RemoveAllQueuedHooks();
+
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnGameStateMainStart>();
 }
 
@@ -80,6 +83,10 @@ void GameInteractor_ExecuteOnOcarinaSongAction() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnOcarinaSongAction>();
 }
 
+void GameInteractor_ExecuteOnCuccoOrChickenHatch() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnCuccoOrChickenHatch>();
+}
+
 void GameInteractor_ExecuteOnShopSlotChangeHooks(uint8_t cursorIndex, int16_t price) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnShopSlotChange>(cursorIndex, price);
 }
@@ -133,6 +140,22 @@ void GameInteractor_ExecuteOnPlayerHealthChange(int16_t amount) {
 
 void GameInteractor_ExecuteOnPlayerBottleUpdate(int16_t contents) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerBottleUpdate>(contents);
+}
+
+void GameInteractor_ExecuteOnPlayerHoldUpShield() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerHoldUpShield>();
+}
+
+void GameInteractor_ExecuteOnPlayerFirstPersonControl(Player* player) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerFirstPersonControl>(player);
+}
+
+void GameInteractor_ExecuteOnPlayerShieldControl(float_t* sp50, float_t* sp54) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerShieldControl>(sp50, sp54);
+}
+
+void GameInteractor_ExecuteOnPlayerProcessStick() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerProcessStick>();
 }
 
 void GameInteractor_ExecuteOnPlayDestroy() {

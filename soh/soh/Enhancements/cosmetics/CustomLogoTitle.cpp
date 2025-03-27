@@ -117,7 +117,7 @@ extern "C" void CustomLogoTitle_Draw(TitleContext* titleContext, uint8_t logoToD
     CLOSE_DISPS(titleContext->state.gfxCtx);
 }
 
-#define CVAR_BOOTSEQUENCE_NAME CVAR_ENHANCEMENT("BootSequence")
+#define CVAR_BOOTSEQUENCE_NAME CVAR_SETTING("BootSequence")
 #define CVAR_BOOTSEQUENCE_DEFAULT BOOTSEQUENCE_DEFAULT
 #define CVAR_BOOTSEQUENCE_VALUE CVarGetInteger(CVAR_BOOTSEQUENCE_NAME, CVAR_BOOTSEQUENCE_DEFAULT)
 
@@ -205,7 +205,7 @@ void OnZTitleUpdateSkipToFileSelect(void* gameState) {
 
     gSaveContext.seqId = (u8)NA_BGM_DISABLED;
     gSaveContext.natureAmbienceId = 0xFF;
-    gSaveContext.gameMode = GAMEMODE_TITLE_SCREEN;
+    gSaveContext.gameMode = GAMEMODE_FILE_SELECT;
     titleContext->state.running = false;
 
     SET_NEXT_GAMESTATE(&titleContext->state, FileChoose_Init, FileChooseContext);

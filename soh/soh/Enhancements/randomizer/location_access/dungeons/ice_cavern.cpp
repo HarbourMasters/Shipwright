@@ -5,6 +5,7 @@
 using namespace Rando;
 
 void RegionTable_Init_IceCavern() {
+    // clang-format off
     // Vanilla/MQ Decider
     areaTable[RR_ICE_CAVERN_ENTRYWAY] = Region("Ice Cavern Entryway", "Ice Cavern", {RA_ICE_CAVERN}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
@@ -21,18 +22,18 @@ void RegionTable_Init_IceCavern() {
     }, {
         //Exits
         Entrance(RR_ICE_CAVERN_ENTRYWAY, []{return true;}),
-        Entrance(RR_ICE_CAVERN_MAIN,     []{return Here(RR_ICE_CAVERN_BEGINNING, []{return (logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD)) || logic->CanUse(RG_MEGATON_HAMMER) || logic->HasExplosives() || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_DINS_FIRE);});}),
+        Entrance(RR_ICE_CAVERN_MAIN,     []{return Here(RR_ICE_CAVERN_BEGINNING, []{return logic->CanKillEnemy(RE_FREEZARD, ED_CLOSE, true, 4);});}),
     });
 
     areaTable[RR_ICE_CAVERN_MAIN] = Region("Ice Cavern", "Ice Cavern", {RA_ICE_CAVERN}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->BlueFireAccess, []{return logic->BlueFireAccess || (logic->IsAdult && logic->HasBottle());}),
+        EventAccess(&logic->BlueFireAccess, []{return logic->IsAdult;}),
     }, {
         //Locations
         LOCATION(RC_ICE_CAVERN_MAP_CHEST,               logic->BlueFire() && logic->IsAdult),
         LOCATION(RC_ICE_CAVERN_COMPASS_CHEST,           logic->BlueFire()),
-        LOCATION(RC_ICE_CAVERN_IRON_BOOTS_CHEST,        logic->BlueFire() && (logic->CanJumpslash() || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_DINS_FIRE))),
-        LOCATION(RC_SHEIK_IN_ICE_CAVERN,                logic->BlueFire() && (logic->CanJumpslash() || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_DINS_FIRE)) && logic->IsAdult),
+        LOCATION(RC_ICE_CAVERN_IRON_BOOTS_CHEST,        logic->BlueFire() && logic->CanKillEnemy(RE_WOLFOS)),
+        LOCATION(RC_SHEIK_IN_ICE_CAVERN,                logic->BlueFire() && logic->CanKillEnemy(RE_WOLFOS) && logic->IsAdult),
         LOCATION(RC_ICE_CAVERN_FREESTANDING_POH,        logic->BlueFire()),
         LOCATION(RC_ICE_CAVERN_GS_SPINNING_SCYTHE_ROOM, logic->HookshotOrBoomerang()),
         LOCATION(RC_ICE_CAVERN_GS_HEART_PIECE_ROOM,     logic->BlueFire() && logic->HookshotOrBoomerang()),
@@ -125,8 +126,8 @@ void RegionTable_Init_IceCavern() {
         LOCATION(RC_SHEIK_IN_ICE_CAVERN,            logic->CanKillEnemy(RE_STALFOS)),
     }, {
         //Exits
-        Entrance(RR_ICE_CAVERN_MQ_SCARECROW_ROOM, []{return logic->BlueFire() && Here(RR_ICE_CAVERN_MQ_STALFOS_ROOM, []{return logic->CanKillEnemy(RE_STALFOS);});}),
-        Entrance(RR_ICE_CAVERN_MQ_BEGINNING,      []{return logic->CanUse(RG_IRON_BOOTS) && Here(RR_ICE_CAVERN_MQ_STALFOS_ROOM, []{return logic->CanKillEnemy(RE_STALFOS);});}),
+        Entrance(RR_ICE_CAVERN_MQ_WEST_CORRIDOR, []{return Here(RR_ICE_CAVERN_MQ_STALFOS_ROOM, []{return logic->CanKillEnemy(RE_STALFOS);});}),
+        Entrance(RR_ICE_CAVERN_MQ_BEGINNING,     []{return logic->CanUse(RG_IRON_BOOTS) && Here(RR_ICE_CAVERN_MQ_STALFOS_ROOM, []{return logic->CanKillEnemy(RE_STALFOS);});}),
     });
 
     areaTable[RR_ICE_CAVERN_MQ_COMPASS_ROOM] = Region("Ice Cavern MQ Compass Room", "Ice Cavern", {RA_ICE_CAVERN}, NO_DAY_NIGHT_CYCLE, {
@@ -144,4 +145,5 @@ void RegionTable_Init_IceCavern() {
     }, {});
 
 #pragma endregion
+    // clang-format on
 }

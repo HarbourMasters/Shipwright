@@ -1,7 +1,7 @@
 #include "randomizer_entrance_tracker.h"
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
-#include "soh/SohGui/UIWidgets.hpp"
+#include "soh/SohGui/SohGui.hpp"
 
 #include <map>
 #include <string>
@@ -74,6 +74,7 @@ static std::string groupTypeNames[] = {
 // Entrance data for the tracker taken from the 3ds rando entrance tracker, and supplemented with scene/spawn info and meta search tags
 // ENTR_HYRULE_FIELD_10 and ENTR_POTION_SHOP_KAKARIKO_1 have been repurposed for entrance randomizer
 const EntranceData entranceData[] = {
+    // clang-format off
     //index,                reverse, scenes (and spawns),     source name,   destination name, source group,           destination group,      type,                 metaTag, oneExit
     { ENTR_LINKS_HOUSE_CHILD_SPAWN,   -1,      SINGLE_SCENE_INFO(SCENE_LINKS_HOUSE), "Child Spawn", "Link's House",   ENTRANCE_GROUP_ONE_WAY, ENTRANCE_GROUP_ONE_WAY, ENTRANCE_TYPE_ONE_WAY},
     { ENTR_HYRULE_FIELD_10, -1,      SINGLE_SCENE_INFO(SCENE_TEMPLE_OF_TIME), "Adult Spawn", "Temple of Time", ENTRANCE_GROUP_ONE_WAY, ENTRANCE_GROUP_ONE_WAY, ENTRANCE_TYPE_ONE_WAY},
@@ -380,6 +381,8 @@ const EntranceData entranceData[] = {
     { ENTR_INSIDE_GANONS_CASTLE_ENTRANCE,            ENTR_CASTLE_GROUNDS_RAINBOW_BRIDGE_EXIT,       SINGLE_SCENE_INFO(SCENE_OUTSIDE_GANONS_CASTLE),                                     "OGC Rainbow Bridge Exit",        "Inside Ganon's Castle Entrance", ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_DUNGEON,   "outside ganon's castle,gc", 1},
     { ENTR_POTION_SHOP_KAKARIKO_1,                   ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_OGC_DD,       {{ SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC, 0x02 }},                                      "OGC Great Fairy Fountain",       "OGC Behind Pillar",              ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_INTERIOR,  "outside ganon's castle"},
     { ENTR_CASTLE_GROUNDS_RAINBOW_BRIDGE_EXIT,       ENTR_INSIDE_GANONS_CASTLE_ENTRANCE,            SINGLE_SCENE_INFO(SCENE_INSIDE_GANONS_CASTLE),                                      "Inside Ganon's Castle Entrance", "OGC Rainbow Bridge Exit",        ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_DUNGEON,   "outside ganon's castle,gc"}
+
+    // clang-format on
 };
 
 // Check if Link is in the area and return that scene/entrance for tracking
@@ -659,76 +662,66 @@ void InitEntranceTrackingData() {
 }
 
 void EntranceTrackerSettingsWindow::DrawElement() {
-    if (ImGui::BeginTable("entranceTrackerSettings", 1, ImGuiTableFlags_BordersInnerH)) {
+
+    ImGui::TextWrapped("The entrance tracker will only track shuffled entrances");
+    UIWidgets::Spacer(0);
+
+    ImGui::TableNextColumn();
+
+    if (ImGui::BeginTable("entranceTrackerSubSettings", 2, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingStretchProp)) {
+        ImGui::TableSetupColumn("column 1", ImGuiTableColumnFlags_WidthStretch, 150.0f);
+        ImGui::TableSetupColumn("column 2", ImGuiTableColumnFlags_WidthStretch, 150.0f);
 
         ImGui::TableNextColumn();
 
-        UIWidgets::Spacer(0);
-        ImGui::TextWrapped("The entrance tracker will only track shuffled entrances");
-        UIWidgets::Spacer(0);
+        ImGui::Text("Sort By");
+        UIWidgets::CVarRadioButton("To", CVAR_TRACKER_ENTRANCE("SortBy"), 0,
+                                    UIWidgets::RadioButtonsOptions()
+                                        .Color(THEME_COLOR).Tooltip("Sort entrances by the original source entrance"));
+        UIWidgets::CVarRadioButton("From", CVAR_TRACKER_ENTRANCE("SortBy"), 1,
+                                    UIWidgets::RadioButtonsOptions()
+                                        .Color(THEME_COLOR).Tooltip("Sort entrances by the overrided destination"));
+
+        ImGui::Text("List Items");
+        UIWidgets::CVarCheckbox("Auto scroll", CVAR_TRACKER_ENTRANCE("AutoScroll"),
+            UIWidgets::CheckboxOptions().Tooltip("Automatically scroll to the first available entrance in the current scene").Color(THEME_COLOR));
+        UIWidgets::CVarCheckbox("Highlight previous", CVAR_TRACKER_ENTRANCE("HighlightPrevious"),
+                UIWidgets::CheckboxOptions().Tooltip("Highlight the previous entrance that Link came from").Color(THEME_COLOR));
+        UIWidgets::CVarCheckbox("Highlight available", CVAR_TRACKER_ENTRANCE("HighlightAvailable"),
+                UIWidgets::CheckboxOptions().Tooltip("Highlight available entrances in the current scene").Color(THEME_COLOR));
+        UIWidgets::CVarCheckbox("Hide undiscovered", CVAR_TRACKER_ENTRANCE("CollapseUndiscovered"),
+                UIWidgets::CheckboxOptions().Tooltip("Collapse undiscovered entrances towards the bottom of each group").Color(THEME_COLOR));
+        bool disableHideReverseEntrances = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_ON;
+        static const char* disableHideReverseEntrancesText = "This option is disabled because \"Decouple Entrances\" is enabled.";
+        UIWidgets::CVarCheckbox("Hide reverse", CVAR_TRACKER_ENTRANCE("HideReverseEntrances"),
+            UIWidgets::CheckboxOptions({ {.disabled = disableHideReverseEntrances, .disabledTooltip = disableHideReverseEntrancesText }})
+                .Tooltip("Hide reverse entrance transitions when Decouple Entrances is off").DefaultValue(true).Color(THEME_COLOR));
 
         ImGui::TableNextColumn();
 
-        if (ImGui::BeginTable("entranceTrackerSubSettings", 2, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingStretchProp)) {
+        ImGui::Text("Group By");
+        UIWidgets::CVarRadioButton(
+            "Area", CVAR_TRACKER_ENTRANCE("GroupBy"), 0,
+            UIWidgets::RadioButtonsOptions().Color(THEME_COLOR).Tooltip("Group entrances by their area"));
+        UIWidgets::CVarRadioButton(
+            "Type", CVAR_TRACKER_ENTRANCE("GroupBy"), 1,
+            UIWidgets::RadioButtonsOptions().Color(THEME_COLOR).Tooltip("Group entrances by their entrance type"));
 
-            ImGui::TableNextColumn();
-
-            ImGui::Text("Sort By");
-            UIWidgets::EnhancementRadioButton("To", CVAR_TRACKER_ENTRANCE("SortBy"), 0);
-            UIWidgets::Tooltip("Sort entrances by the original source entrance");
-            UIWidgets::EnhancementRadioButton("From", CVAR_TRACKER_ENTRANCE("SortBy"), 1);
-            UIWidgets::Tooltip("Sort entrances by the overrided destination");
-
-            UIWidgets::Spacer(2.0f);
-
-            ImGui::Text("List Items");
-            UIWidgets::PaddedEnhancementCheckbox("Auto scroll", CVAR_TRACKER_ENTRANCE("AutoScroll"), true, false);
-            UIWidgets::Tooltip("Automatically scroll to the first aviable entrance in the current scene");
-            UIWidgets::PaddedEnhancementCheckbox("Highlight previous", CVAR_TRACKER_ENTRANCE("HighlightPrevious"), true, false);
-            UIWidgets::Tooltip("Highlight the previous entrance that Link came from");
-            UIWidgets::PaddedEnhancementCheckbox("Highlight available", CVAR_TRACKER_ENTRANCE("HighlightAvailable"), true, false);
-            UIWidgets::Tooltip("Highlight available entrances in the current scene");
-            UIWidgets::PaddedEnhancementCheckbox("Hide undiscovered", CVAR_TRACKER_ENTRANCE("CollapseUndiscovered"), true, false);
-            UIWidgets::Tooltip("Collapse undiscovered entrances towards the bottom of each group");
-            bool disableHideReverseEntrances = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_ON;
-            static const char* disableHideReverseEntrancesText = "This option is disabled because \"Decouple Entrances\" is enabled.";
-            UIWidgets::PaddedEnhancementCheckbox("Hide reverse", CVAR_TRACKER_ENTRANCE("HideReverseEntrances"), true, false,
-                                          disableHideReverseEntrances, disableHideReverseEntrancesText, UIWidgets::CheckboxGraphics::Cross, true);
-            UIWidgets::Tooltip("Hide reverse entrance transitions when Decouple Entrances is off");
-            UIWidgets::Spacer(0);
-
-            ImGui::TableNextColumn();
-
-            ImGui::Text("Group By");
-            UIWidgets::EnhancementRadioButton("Area", CVAR_TRACKER_ENTRANCE("GroupBy"), 0);
-            UIWidgets::Tooltip("Group entrances by their area");
-            UIWidgets::EnhancementRadioButton("Type", CVAR_TRACKER_ENTRANCE("GroupBy"), 1);
-            UIWidgets::Tooltip("Group entrances by their entrance type");
-
-            UIWidgets::Spacer(2.0f);
-
-            ImGui::Text("Spoiler Reveal");
-            UIWidgets::PaddedEnhancementCheckbox("Show Source", CVAR_TRACKER_ENTRANCE("ShowFrom"), true, false);
-            UIWidgets::Tooltip("Reveal the sourcefor undiscovered entrances");
-            UIWidgets::PaddedEnhancementCheckbox("Show Destination", CVAR_TRACKER_ENTRANCE("ShowTo"), true, false);
-            UIWidgets::Tooltip("Reveal the destination for undiscovered entrances");
-
-            ImGui::EndTable();
-        }
-
-        ImGui::TableNextColumn();
-
-        ImGui::SetNextItemOpen(false, ImGuiCond_Once);
-        if (ImGui::TreeNode("Legend")) {
-            ImGui::TextColored(ImColor(COLOR_ORANGE), "Last Entrance");
-            ImGui::TextColored(ImColor(COLOR_GREEN), "Available Entrances");
-            ImGui::TextColored(ImColor(COLOR_GRAY), "Undiscovered Entrances");
-            ImGui::TreePop();
-        }
-
-        UIWidgets::Spacer(0);
+        ImGui::Text("Spoiler Reveal");
+        UIWidgets::CVarCheckbox("Show Source", CVAR_TRACKER_ENTRANCE("ShowFrom"),
+                UIWidgets::CheckboxOptions().Tooltip("Reveal the sourcefor undiscovered entrances").Color(THEME_COLOR));
+        UIWidgets::CVarCheckbox("Show Destination", CVAR_TRACKER_ENTRANCE("ShowTo"),
+                UIWidgets::CheckboxOptions().Tooltip("Reveal the destination for undiscovered entrances").Color(THEME_COLOR));
 
         ImGui::EndTable();
+    }
+
+    ImGui::SetNextItemOpen(false, ImGuiCond_Once);
+    if (ImGui::TreeNode("Legend")) {
+        ImGui::TextColored(ImColor(COLOR_ORANGE), "Last Entrance");
+        ImGui::TextColored(ImColor(COLOR_GREEN), "Available Entrances");
+        ImGui::TextColored(ImColor(COLOR_GRAY), "Undiscovered Entrances");
+        ImGui::TreePop();
     }
 }
 
@@ -752,24 +745,26 @@ void EntranceTrackerWindow::DrawElement() {
     static ImGuiTextFilter locationSearch;
 
     uint8_t nextTreeState = 0;
-    if (ImGui::Button("Collapse All")) {
+    if (UIWidgets::Button("Collapse All", UIWidgets::ButtonOptions({{ .tooltip = "Collapse all entrance groups" }})
+        .Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline))) {
         nextTreeState = 1;
     }
-    UIWidgets::Tooltip("Collapse all entrance groups");
     ImGui::SameLine();
-    if (ImGui::Button("Expand All")) {
+    if (UIWidgets::Button("Expand All", UIWidgets::ButtonOptions({{ .tooltip = "Expand all entrance groups" }})
+        .Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline))) {
         nextTreeState = 2;
     }
-    UIWidgets::Tooltip("Expand all entrance groups");
     ImGui::SameLine();
-    if (ImGui::Button("Clear")) {
+    if (UIWidgets::Button("Clear", UIWidgets::ButtonOptions({{ .tooltip = "Clear the search field" }})
+        .Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline))) {
         locationSearch.Clear();
     }
-    UIWidgets::Tooltip("Clear the search field");
 
+    UIWidgets::PushStyleCombobox(THEME_COLOR);
     if (locationSearch.Draw()) {
         nextTreeState = 2;
     }
+    UIWidgets::PopStyleCombobox();
 
     uint8_t destToggle = CVarGetInteger(CVAR_TRACKER_ENTRANCE("SortBy"), 0);
     uint8_t groupToggle = CVarGetInteger(CVAR_TRACKER_ENTRANCE("GroupBy"), 0);
@@ -940,7 +935,6 @@ void EntranceTrackerWindow::DrawElement() {
         }
     }
     ImGui::EndChild();
-
     ImGui::End();
 }
 

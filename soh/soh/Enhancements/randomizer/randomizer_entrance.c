@@ -59,6 +59,7 @@ typedef struct {
 } DungeonEntranceInfo;
 
 static DungeonEntranceInfo dungeons[] = {
+    // clang-format off
     //entryway                       exit,                                              boss,                               reverse,                        bluewarp,                                          dungeon scene,         boss scene
     { ENTR_DEKU_TREE_ENTRANCE,       ENTR_KOKIRI_FOREST_OUTSIDE_DEKU_TREE,              ENTR_DEKU_TREE_BOSS_ENTRANCE,       ENTR_DEKU_TREE_BOSS_DOOR,       ENTR_KOKIRI_FOREST_DEKU_TREE_BLUE_WARP,            SCENE_DEKU_TREE,       SCENE_DEKU_TREE_BOSS },
     { ENTR_DODONGOS_CAVERN_ENTRANCE, ENTR_DEATH_MOUNTAIN_TRAIL_OUTSIDE_DODONGOS_CAVERN, ENTR_DODONGOS_CAVERN_BOSS_ENTRANCE, ENTR_DODONGOS_CAVERN_BOSS_DOOR, ENTR_DEATH_MOUNTAIN_TRAIL_DODONGO_BLUE_WARP,       SCENE_DODONGOS_CAVERN, SCENE_DODONGOS_CAVERN_BOSS },
@@ -68,6 +69,8 @@ static DungeonEntranceInfo dungeons[] = {
     { ENTR_WATER_TEMPLE_ENTRANCE,    ENTR_LAKE_HYLIA_OUTSIDE_TEMPLE,                    ENTR_WATER_TEMPLE_BOSS_ENTRANCE,    ENTR_WATER_TEMPLE_BOSS_DOOR,    ENTR_LAKE_HYLIA_WATER_TEMPLE_BLUE_WARP,            SCENE_WATER_TEMPLE,    SCENE_WATER_TEMPLE_BOSS },
     { ENTR_SPIRIT_TEMPLE_ENTRANCE,   ENTR_DESERT_COLOSSUS_OUTSIDE_TEMPLE,               ENTR_SPIRIT_TEMPLE_BOSS_ENTRANCE,   ENTR_SPIRIT_TEMPLE_BOSS_DOOR,   ENTR_DESERT_COLOSSUS_SPIRIT_TEMPLE_BLUE_WARP,      SCENE_SPIRIT_TEMPLE,   SCENE_SPIRIT_TEMPLE_BOSS },
     { ENTR_SHADOW_TEMPLE_ENTRANCE,   ENTR_GRAVEYARD_OUTSIDE_TEMPLE,                     ENTR_SHADOW_TEMPLE_BOSS_ENTRANCE,   ENTR_SHADOW_TEMPLE_BOSS_DOOR,   ENTR_GRAVEYARD_SHADOW_TEMPLE_BLUE_WARP,            SCENE_SHADOW_TEMPLE,   SCENE_SHADOW_TEMPLE_BOSS },
+
+    // clang-format on
 };
 
 static s8 hasCopiedEntranceTable = 0;
@@ -201,12 +204,12 @@ void Entrance_Init(void) {
         }
 
         // Overwrite grotto related indices
-        if (originalIndex >= ENTRANCE_GROTTO_EXIT_START) {
+        if (originalIndex >= ENTRANCE_GROTTO_EXIT_START && originalIndex < ENTRANCE_GROTTO_EXIT_START + NUM_GROTTOS) {
             Grotto_SetExitOverride(originalIndex, overrideIndex);
             continue;
         }
 
-        if (originalIndex >= ENTRANCE_GROTTO_LOAD_START && originalIndex < ENTRANCE_GROTTO_EXIT_START) {
+        if (originalIndex >= ENTRANCE_GROTTO_LOAD_START && originalIndex < ENTRANCE_GROTTO_LOAD_START + NUM_GROTTOS) {
             Grotto_SetLoadOverride(originalIndex, overrideIndex);
             continue;
         }
@@ -440,7 +443,7 @@ void Entrance_SetWarpSongEntrance(void) {
     // have to force the grotto return afterwards
     Grotto_ForceGrottoReturnOnSpecialEntrance();
 
-    if (gSaveContext.gameMode != 0) {
+    if (gSaveContext.gameMode != GAMEMODE_NORMAL) {
         // During DHWW the cutscene must play at the destination
         gSaveContext.respawnFlag = -3;
     } else if (gSaveContext.respawnFlag == -3) {
