@@ -1004,6 +1004,11 @@ void Message_DrawTextJPN(PlayState* play, Gfx** gfxP) {
                 msgCtx->textPosX += msgCtx->msgBufDecodedWide[++i];
                 break;
             case MESSAGE_TEXTID_JPN:
+                // #region SOH [General] Fixes softlock for higher text speeds
+                if (gTextSpeed > 1) {
+                    msgCtx->textDrawPos = i + 1;
+                }
+                // #endregion
                 msgCtx->textboxEndType = TEXTBOX_ENDTYPE_HAS_NEXT;
                 if (msgCtx->msgMode == MSGMODE_TEXT_DISPLAYING) {
                     Audio_PlaySoundGeneral(0, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
@@ -1013,9 +1018,9 @@ void Message_DrawTextJPN(PlayState* play, Gfx** gfxP) {
                 *gfxP = gfx;
                 return;
             case MESSAGE_QUICKTEXT_ENABLE_JPN:
-                if (i + 1 == msgCtx->textDrawPos && i + gTextSpeed >= msgCtx->textDrawPos && (msgCtx->msgMode == MSGMODE_TEXT_DISPLAYING ||
-                                                                                              (msgCtx->msgMode >= MSGMODE_OCARINA_STARTING &&
-                                                                                               msgCtx->msgMode < MSGMODE_SCARECROW_LONG_RECORDING_START))) {
+                if (i < msgCtx->textDrawPos && i + gTextSpeed >= msgCtx->textDrawPos && (msgCtx->msgMode == MSGMODE_TEXT_DISPLAYING ||
+                                                                                         (msgCtx->msgMode >= MSGMODE_OCARINA_STARTING &&
+                                                                                          msgCtx->msgMode < MSGMODE_SCARECROW_LONG_RECORDING_START))) {
                     j = i;
                     while (true) {
                         character = msgCtx->msgBufDecodedWide[j];
@@ -1167,7 +1172,9 @@ void Message_DrawTextJPN(PlayState* play, Gfx** gfxP) {
                 return;
             case MESSAGE_OCARINA_JPN:
                 // #region SOH [General] Fixes softlock for higher text speeds
-                msgCtx->textDrawPos = i + 1;
+                if (gTextSpeed > 1) {
+                    msgCtx->textDrawPos = i + 1;
+                }
                 // #endregion
                 if (i + 1 == msgCtx->textDrawPos) {
                     Message_HandleOcarina(play);
@@ -1258,6 +1265,9 @@ void Message_DrawTextJPN(PlayState* play, Gfx** gfxP) {
 
     if (msgCtx->textDelay == 0) {
         msgCtx->textDrawPos = i + gTextSpeed;
+        if (msgCtx->textDrawPos > msgCtx->decodedTextLen) {
+            msgCtx->textDrawPos = msgCtx->decodedTextLen + 1;
+        }
     } else if (msgCtx->textDelayTimer == 0) {
         msgCtx->textDrawPos = i + 1;
         msgCtx->textDelayTimer = msgCtx->textDelay;
@@ -1528,7 +1538,9 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
                 return;
             case MESSAGE_OCARINA:
                 // #region SOH [General] Fixes softlock for higher text speeds
-                msgCtx->textDrawPos = i + 1;
+                if (gTextSpeed > 1) {
+                    msgCtx->textDrawPos = i + 1;
+                }
                 // #endregion
                 if (i + 1 == msgCtx->textDrawPos) {
                     Message_HandleOcarina(play);
