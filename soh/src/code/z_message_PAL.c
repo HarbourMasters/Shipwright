@@ -1012,27 +1012,29 @@ void Message_DrawTextJPN(PlayState* play, Gfx** gfxP) {
                 }
                 *gfxP = gfx;
                 return;
-            case MESSAGE_QUICKTEXT_DISABLE_JPN:
-                if (i + 1 == msgCtx->textDrawPos && (msgCtx->msgMode == MSGMODE_TEXT_DISPLAYING ||
-                                                     (msgCtx->msgMode >= MSGMODE_OCARINA_STARTING &&
-                                                      msgCtx->msgMode < MSGMODE_SCARECROW_LONG_RECORDING_START))) {
+            case MESSAGE_QUICKTEXT_ENABLE_JPN:
+                if (i + 1 == msgCtx->textDrawPos && i + gTextSpeed >= msgCtx->textDrawPos && (msgCtx->msgMode == MSGMODE_TEXT_DISPLAYING ||
+                                                                                              (msgCtx->msgMode >= MSGMODE_OCARINA_STARTING &&
+                                                                                               msgCtx->msgMode < MSGMODE_SCARECROW_LONG_RECORDING_START))) {
                     j = i;
                     while (true) {
                         character = msgCtx->msgBufDecodedWide[j];
-                        if ((character != 0x818A) && (character != 0x86C8) &&
-                                   (character != 0x819F) && (character != 0x81A3) &&
-                                   (character != 0x81A4) && (character != 0x81A5) &&
-                                   (character != 0x8170)) {
+                        if ((character != MESSAGE_QUICKTEXT_DISABLE_JPN) && (character != MESSAGE_PERSISTENT_JPN) &&
+                                   (character != MESSAGE_EVENT_JPN) && (character != MESSAGE_BOX_BREAK_DELAYED_JPN) &&
+                                   (character != MESSAGE_AWAIT_BUTTON_PRESS_JPN) && (character != MESSAGE_BOX_BREAK_JPN) &&
+                                   (character != MESSAGE_END_JPN)) {
                             j++;
                         } else {
                             break;
                         }
                     }
-                    i = j - 1;
-                    msgCtx->textDrawPos = i + 1;
+                    if (j > msgCtx->textDrawPos) {
+                        i = j - 1;
+                        msgCtx->textDrawPos = j;
+                    }
                 }
                 /* fallthrough */
-            case MESSAGE_QUICKTEXT_ENABLE_JPN:
+            case MESSAGE_QUICKTEXT_DISABLE_JPN:
                 break;
             case MESSAGE_AWAIT_BUTTON_PRESS_JPN:
                 if (i + 1 == msgCtx->textDrawPos) {
@@ -2205,7 +2207,7 @@ void Message_DecodeJPN(PlayState* play) {
             msgCtx->msgBufDecodedWide[++decodedBufPos] = font->msgBufWide[++msgCtx->msgBufPos] & 0xF;
         } else if (curChar == MESSAGE_NEWLINE_JPN) {
             numLines++;
-        } else if (curChar != MESSAGE_QUICKTEXT_DISABLE_JPN && curChar != MESSAGE_QUICKTEXT_ENABLE_JPN && 
+        } else if (curChar != MESSAGE_QUICKTEXT_ENABLE_JPN && curChar != MESSAGE_QUICKTEXT_DISABLE_JPN && 
                    curChar != MESSAGE_AWAIT_BUTTON_PRESS_JPN && curChar != MESSAGE_OCARINA_JPN && 
                    curChar != MESSAGE_PERSISTENT_JPN && curChar != MESSAGE_UNSKIPPABLE_JPN) {
             if (curChar == MESSAGE_FADE_JPN) {
