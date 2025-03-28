@@ -187,6 +187,7 @@ void ShuffleFairies_UnregisterHooks() {
 void Rando::StaticData::RegisterFairyLocations() {
     static bool registered = false;
     if (registered) return;
+    registered = true;
     // clang-format off
     locationTable[RC_SFM_FAIRY_GROTTO_FAIRY_1] =                        Location::Fairy(RC_SFM_FAIRY_GROTTO_FAIRY_1,                        RCQUEST_BOTH,   RCAREA_SACRED_FOREST_MEADOW,  SCENE_FAIRYS_FOUNTAIN,              0x1800,                          "Grotto Fairy 1",                                     RHT_SFM_FAIRY_GROTTO_FAIRY,                          SpoilerCollectionCheck::RandomizerInf(RAND_INF_SFM_FAIRY_GROTTO_FAIRY_1));
     locationTable[RC_SFM_FAIRY_GROTTO_FAIRY_2] =                        Location::Fairy(RC_SFM_FAIRY_GROTTO_FAIRY_2,                        RCQUEST_BOTH,   RCAREA_SACRED_FOREST_MEADOW,  SCENE_FAIRYS_FOUNTAIN,              0x1801,                          "Grotto Fairy 2",                                     RHT_SFM_FAIRY_GROTTO_FAIRY,                          SpoilerCollectionCheck::RandomizerInf(RAND_INF_SFM_FAIRY_GROTTO_FAIRY_2));
@@ -409,7 +410,6 @@ void Rando::StaticData::RegisterFairyLocations() {
     locationTable[RC_BOTTOM_OF_THE_WELL_MQ_BASEMENT_SUN_FAIRY] =        Location::Fairy(RC_BOTTOM_OF_THE_WELL_MQ_BASEMENT_SUN_FAIRY,        RCQUEST_MQ,     RCAREA_BOTTOM_OF_THE_WELL,    SCENE_BOTTOM_OF_THE_WELL,           TWO_ACTOR_PARAMS(0x1000, -1458), "MQ Basement Sun's Song Fairy",                       RHT_BOTTOM_OF_THE_WELL_MQ_BASEMENT_SUN_FAIRY,        SpoilerCollectionCheck::RandomizerInf(RAND_INF_BOTTOM_OF_THE_WELL_MQ_BASEMENT_SUN_FAIRY));
 
     // clang-format on
-    registered = true;
 }
 
 static RegisterShipInitFunc initFunc(Rando::StaticData::RegisterFairyLocations);
