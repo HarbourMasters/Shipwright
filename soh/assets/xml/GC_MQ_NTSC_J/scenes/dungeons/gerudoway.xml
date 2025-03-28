@@ -11,7 +11,7 @@
         <Texture Name="gerudoway_sceneTex_00D120" OutName="gerudoway_sceneTex_00D120" Format="rgba16" Width="32" Height="32" Offset="0xD120" AddedByScript="true"/>
         <Texture Name="gThievesHideoutNightEntranceTex" OutName="night_entrance" Format="ia16" Width="128" Height="4" Offset="0xB920"/>
         <Texture Name="gThievesHideoutDayEntranceTex" OutName="day_entrance" Format="ia16" Width="128" Height="4" Offset="0xBD20"/>
-        <Path Name="gGerudowayPath_002AC" Offset="0x2AC" NumPaths="4"/>
+        <Path Name="gerudoway_scenePathList_0002AC" Offset="0x02AC" NumPaths="4"/>
         <Scene Name="gerudoway_scene" Offset="0x0"/>
     </File>
     <File Name="gerudoway_room_0" Segment="3">

@@ -1,5 +1,5 @@
 <Root>
-    <File Name="ovl_file_choose" BaseAddress="0x80803880" RangeStart="0xEC40" RangeEnd="0xF320">
+    <File Name="ovl_file_choose" BaseAddress="0x80803630" RangeStart="0xEC40" RangeEnd="0xF320">
         <Array Name="D_80811BB0_NTSC" Count="24" Offset="0xEC40" Static="Off">
             <Vtx/>
         </Array>

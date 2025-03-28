@@ -25,7 +25,7 @@
         <Texture Name="ganon_final_sceneTex_010580" OutName="ganon_final_sceneTex_010580" Format="i8" Width="32" Height="32" Offset="0x10580" AddedByScript="true"/>
         <Texture Name="ganon_final_sceneTex_010980" OutName="ganon_final_sceneTex_010980" Format="rgba16" Width="16" Height="64" Offset="0x10980" AddedByScript="true"/>
         <Texture Name="ganon_final_sceneTex_011180" OutName="ganon_final_sceneTex_011180" Format="i8" Width="16" Height="256" Offset="0x11180" AddedByScript="true"/>
-        <Path Name="gGanonFinalPath_001F4" Offset="0x1F4" NumPaths="4"/>
+        <Path Name="ganon_final_scenePathList_0001F4" Offset="0x01F4" NumPaths="4"/>
         <Scene Name="ganon_final_scene" Offset="0x0"/>
     </File>
     <File Name="ganon_final_room_0" Segment="3">

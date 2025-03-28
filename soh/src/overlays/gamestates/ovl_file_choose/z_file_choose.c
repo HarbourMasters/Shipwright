@@ -2448,7 +2448,25 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                 FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024, 1024);
                 FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 154, 163, 96, 8, 1024, 1024);
                 FileChoose_DrawImageRGBA32(this->state.gfxCtx, 160, 135, gTitleZeldaShieldLogoMQTex, 160, 160);
-                FileChoose_DrawImageRGBA32(this->state.gfxCtx, 182, 180, gTitleMasterQuestSubtitleTex, 128, 32);
+                if (gSaveContext.language == LANGUAGE_JPN || ResourceMgr_GetGameVersion(0) == OOT_NTSC_JP_MQ) {
+                    FileChoose_DrawImageRGBA32(this->state.gfxCtx, 243, 184, gTitleUraLogoTex, 40, 40);
+                    gDPPipeSync(POLY_OPA_DISP++);
+                    gDPSetCycleType(POLY_OPA_DISP++, G_CYC_2CYCLE);
+                    gDPSetRenderMode(POLY_OPA_DISP++, G_RM_PASS, G_RM_XLU_SURF2);
+                    gDPSetCombineLERP(POLY_OPA_DISP++, TEXEL1, PRIMITIVE, PRIM_LOD_FRAC, TEXEL0, 0, 0, 0, TEXEL0, PRIMITIVE, ENVIRONMENT, COMBINED, ENVIRONMENT, COMBINED, 0, PRIMITIVE, 0);
+
+                    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0x80, 170, 255, 255, 255);
+                    gDPSetEnvColor(POLY_OPA_DISP++, ZREG(34), 100 + ZREG(35), 255 + ZREG(36), 255);
+
+                    gDPLoadTextureBlock(POLY_OPA_DISP++, gTitleTitleJPNTex, G_IM_FMT_I, G_IM_SIZ_8b, 128, 16, 0,
+                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD);
+                    gDPLoadMultiBlock(POLY_OPA_DISP++, gTitleFlameEffectTex, 0x100, 1, G_IM_FMT_I, G_IM_SIZ_8b, 32, 32, 0,
+                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 2, 1);
+                    gDPSetTileSize(POLY_OPA_DISP++, 1, 0 & 0x7F, 0 & 0x7F, (0 & 0x7F) + ((32 - 1) << 2), (0 & 0x7F) + ((32 - 1) << 2));
+                    gSPTextureRectangle(POLY_OPA_DISP++, 114 << 2, 179 << 2, (114 + 128) << 2, (179 + 16) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+                } else {
+                    FileChoose_DrawImageRGBA32(this->state.gfxCtx, 182, 180, gTitleMasterQuestSubtitleTex, 128, 32);
+                }
                 break;
             
             case QUEST_RANDOMIZER:
