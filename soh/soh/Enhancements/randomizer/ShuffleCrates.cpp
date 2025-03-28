@@ -278,6 +278,8 @@ void RegisterShuffleCrates() {
 }
 
 void Rando::StaticData::RegisterCrateLocations() {
+    static bool registered = false;
+    if (registered) return;
     // clang-format off
     // Overworld Crates
     //            Randomizer Check                                 	            Randomizer Check                                                                Quest            Area                           Scene ID                        Params                              Short Name                    	                Hint Text Key                       Vanilla                 Spoiler Collection Check
@@ -542,6 +544,7 @@ void Rando::StaticData::RegisterCrateLocations() {
     locationTable[RC_SPIRIT_TEMPLE_MQ_BEAMOS_SMALL_CRATE]                       = Location::SmallCrate(RC_SPIRIT_TEMPLE_MQ_BEAMOS_SMALL_CRATE,                  RCQUEST_MQ,      RCAREA_SPIRIT_TEMPLE,          SCENE_SPIRIT_TEMPLE,            TWO_ACTOR_PARAMS(1382, 190),        "MQ Beamos Small Crate",                        RHT_CRATE_SPIRIT_TEMPLE,            RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_SPIRIT_TEMPLE_MQ_BEAMOS_SMALL_CRATE));
 
     // clang-format on
+    registered = true;
 }
 
 static RegisterShipInitFunc initFunc(RegisterShuffleCrates, { "IS_RANDO" });

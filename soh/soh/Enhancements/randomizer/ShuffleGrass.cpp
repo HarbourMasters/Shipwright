@@ -157,6 +157,8 @@ void RegisterShuffleGrass() {
 
 
 void Rando::StaticData::RegisterGrassLocations() {
+    static bool registered = false;
+    if (registered) return;
     // clang-format off
     // Overworld Grass
     //            Randomizer Check                                 	       Randomizer Check                                           Quest         Area                          Scene ID                           Params                          Short Name                    	      Spoiler Name                         Hint Text Key                     Vanilla             Spoiler Collection Check
@@ -510,6 +512,7 @@ void Rando::StaticData::RegisterGrassLocations() {
     locationTable[RC_DEKU_TREE_QUEEN_GOHMA_GRASS_8]                    =   Location::Grass(RC_DEKU_TREE_QUEEN_GOHMA_GRASS_8,                    RCQUEST_BOTH, RCAREA_DEKU_TREE,           SCENE_DEKU_TREE_BOSS,              TWO_ACTOR_PARAMS(194, -974),    "Deku Tree Queen Gohma Grass 8",                 "Deku Tree Queen Gohma Grass 8",                 RHT_DEKU_TREE_GRASS,                    RG_BLUE_RUPEE,     SpoilerCollectionCheck::RandomizerInf(RAND_INF_DEKU_TREE_QUEEN_GOHMA_GRASS_8));
     // End Grass
     // clang-format on
+    registered = true;
 }
 
 static RegisterShipInitFunc registerShuffleGrass(RegisterShuffleGrass, { "IS_RANDO" });

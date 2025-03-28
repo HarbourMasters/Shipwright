@@ -580,6 +580,8 @@ extern "C" {
 }
 
 void Rando::StaticData::RegisterFishLocations() {
+    static bool registered = false;
+    if (registered) return;
     // clang-format off
     // Fishing Pond
     locationTable[RC_LH_CHILD_FISH_1] =                                                Location::Fish(RC_LH_CHILD_FISH_1,                                              RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 100,      RAND_INF_CHILD_FISH_1,                         "Child Pond Fish 1",           RHT_LH_POND_FISH,                  RG_NONE);
@@ -632,6 +634,7 @@ void Rando::StaticData::RegisterFishLocations() {
     locationTable[RC_ZD_FISH_4] =                                                      Location::Fish(RC_ZD_FISH_4,                                                    RCQUEST_BOTH,                                                                             ACTOR_EN_FISH,        SCENE_ZORAS_DOMAIN,                 -1 ^ 3,   RAND_INF_ZD_FISH_4,                            "Fish 4",                      RHT_ZD_FISH,                       RG_FISH);
     locationTable[RC_ZD_FISH_5] =                                                      Location::Fish(RC_ZD_FISH_5,                                                    RCQUEST_BOTH,                                                                             ACTOR_EN_FISH,        SCENE_ZORAS_DOMAIN,                 -1 ^ 4,   RAND_INF_ZD_FISH_5,                            "Fish 5",                      RHT_ZD_FISH,                       RG_FISH);
     // clang-format on
+    registered = true;
 }
 
 static RegisterShipInitFunc initFunc(Rando::StaticData::RegisterFishLocations);

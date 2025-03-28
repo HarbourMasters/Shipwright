@@ -45,6 +45,8 @@ void ShuffleFreestanding_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* sh
 }
 
 void Rando::StaticData::RegisterFreestandingLocations() {
+    static bool registered = false;
+    if (registered) return;
     // clang-format off
     locationTable[RC_KF_BOULDER_RUPEE_2] =                                    Location::Collectable(RC_KF_BOULDER_RUPEE_2,                                    RCQUEST_BOTH,    RCTYPE_FREESTANDING,                                                     ACTOR_EN_ITEM00,      SCENE_KOKIRI_FOREST,                TWO_ACTOR_PARAMS(-712, 1857),        "Boulder Maze Second Rupee",                   RHT_KOKIRI_FOREST_RUPEE,                                         RG_BLUE_RUPEE,        SpoilerCollectionCheck::RandomizerInf(RAND_INF_KF_BOULDER_RUPEE_2));
     locationTable[RC_KF_BOULDER_RUPEE_1] =                                    Location::Collectable(RC_KF_BOULDER_RUPEE_1,                                    RCQUEST_BOTH,    RCTYPE_FREESTANDING,                                                     ACTOR_EN_ITEM00,      SCENE_KOKIRI_FOREST,                TWO_ACTOR_PARAMS(-1009, 1556),       "Boulder Maze First Rupee",                    RHT_KOKIRI_FOREST_RUPEE,                                         RG_BLUE_RUPEE,        SpoilerCollectionCheck::RandomizerInf(RAND_INF_KF_BOULDER_RUPEE_1));
@@ -278,6 +280,7 @@ void Rando::StaticData::RegisterFreestandingLocations() {
     locationTable[RC_GANONS_CASTLE_MQ_LIGHT_TRIAL_LEFT_HEART] =               Location::Collectable(RC_GANONS_CASTLE_MQ_LIGHT_TRIAL_LEFT_HEART,               RCQUEST_MQ,      RCTYPE_FREESTANDING,                                                     ACTOR_EN_ITEM00,      SCENE_INSIDE_GANONS_CASTLE,         TWO_ACTOR_PARAMS(-2655, -549),       "MQ Light Trial Left Heart",                   RHT_GANONS_CASTLE_HEART,                                         RG_RECOVERY_HEART,    SpoilerCollectionCheck::RandomizerInf(RAND_INF_GANONS_CASTLE_MQ_LIGHT_TRIAL_LEFT_HEART));
 
     // clang-format on
+    registered = true;
 }
 
 static RegisterShipInitFunc initFunc(Rando::StaticData::RegisterFreestandingLocations);
