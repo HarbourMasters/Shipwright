@@ -419,21 +419,21 @@ void StaticData::HintTable_Init_Item() {
                                                        CustomMessage("Gold Skulltula Token", "Goldenes Skulltula-Symbol", "Symbole de Skulltula d'Or"));
 
     hintTextTable[RHT_POCKET_EGG] = HintText(CustomMessage("the Pocket Egg", /*german*/"das Ei", /*french*/"l'Oeuf de Poche"),
-                                             // /*spanish*/el huevo de bolsillo
-                                             {
-                                             CustomMessage("a trade quest item", /*german*/"ein Gegenstand einer Handelsmission", /*french*/"un objet de quête d'échanges"),
-                                              // /*spanish*/un objeto de una misión secundaria
-                                             CustomMessage("an egg", /*german*/"ein Ei", /*french*/"un oeuf")
-                                              // /*spanish*/un huevo
-                                             }, {
-                                             CustomMessage("a Cucco container", /*german*/"ein Hühnerbehälter", /*french*/"un réservoir à Cocotte"),
-                                              // /*spanish*/cuco contenido
-                                             CustomMessage("a Cucco, eventually", /*german*/"schlussendlich ein Huhn", /*french*/"un poussin éventuel"),
-                                              // /*spanish*/un futuro cuco
-                                             CustomMessage("a fowl youth", /*german*/"ein junges Geflügel", /*french*/"une omelette crue")
-                                             // /*spanish*/una dulce juventud
-                                             },
-                                             CustomMessage("Pocket Egg", "Ei", "Oeuf de poche"));
+                                                           // /*spanish*/el huevo de bolsillo
+                                                          {
+                                                          CustomMessage("a trade quest item", /*german*/"ein Gegenstand einer Handelsmission", /*french*/"un objet de quête d'échanges"),
+                                                           // /*spanish*/un objeto de una misión secundaria
+                                                          CustomMessage("an egg", /*german*/"ein Ei", /*french*/"un oeuf")
+                                                           // /*spanish*/un huevo
+                                                          }, {
+                                                          CustomMessage("a Cucco container", /*german*/"ein Hühnerbehälter", /*french*/"un réservoir à Cocotte"),
+                                                           // /*spanish*/cuco contenido
+                                                          CustomMessage("a Cucco, eventually", /*german*/"schlussendlich ein Huhn", /*french*/"un poussin éventuel"),
+                                                           // /*spanish*/un futuro cuco
+                                                          CustomMessage("a fowl youth", /*german*/"ein junges Geflügel", /*french*/"une omelette crue")
+                                                           // /*spanish*/una dulce juventud
+                                                          },
+                                                          CustomMessage("Pocket Egg", "Ei", "Oeuf de poche"));
 
     hintTextTable[RHT_POCKET_CUCCO] = HintText(CustomMessage("the Pocket Cucco", /*german*/"Kiki", /*french*/"la Cocotte de Poche"),
                                                // /*spanish*/el cuco de bolsillo
@@ -1199,17 +1199,17 @@ void StaticData::HintTable_Init_Item() {
                                                     CustomMessage("Shadow Temple Map", "Karte des Schattentempels", "Carte du Temple de l'Ombre"));
 
     hintTextTable[RHT_BOTW_MAP] = HintText(CustomMessage("the Bottom of the Well Map", /*german*/"die Karte des Grund des Brunnens", /*french*/"la carte du fond du Puits"),
-                                                         // /*spanish*/el mapa del Fondo del pozo
-                                                         {
-                                                         CustomMessage("a dungeon map", /*german*/"eine Karte", /*french*/"une carte")
-                                                          // /*spanish*/un mapa
-                                                         }, {
-                                                         CustomMessage("a moldy atlas", /*german*/"ein schimmeliger Atlas", /*french*/"un atlas moisi"),
-                                                          // /*spanish*/un atlas mohoso
-                                                         CustomMessage("some moldy blueprints", /*german*/"einige schimmelige Blaupausen", /*french*/"un plan moisi")
-                                                         // /*spanish*/unos planos mohosos
-                                                         },
-                                                         CustomMessage("Bottom of the Well Map", "Karte des Grund des Brunnens", "Carte du Puits"));
+                                           // /*spanish*/el mapa del Fondo del pozo
+                                          {
+                                          CustomMessage("a dungeon map", /*german*/"eine Karte", /*french*/"une carte")
+                                           // /*spanish*/un mapa
+                                          }, {
+                                          CustomMessage("a moldy atlas", /*german*/"ein schimmeliger Atlas", /*french*/"un atlas moisi"),
+                                           // /*spanish*/un atlas mohoso
+                                          CustomMessage("some moldy blueprints", /*german*/"einige schimmelige Blaupausen", /*french*/"un plan moisi")
+                                           // /*spanish*/unos planos mohosos
+                                          },
+                                          CustomMessage("Bottom of the Well Map", "Karte des Grund des Brunnens", "Carte du Puits"));
 
     hintTextTable[RHT_ICE_CAVERN_MAP] = HintText(CustomMessage("the Ice Cavern Map", /*german*/"die Karte der Eishöhle", /*french*/"la carte de la Caverne Polaire"),
                                                  // /*spanish*/el mapa de la Caverna de hielo
@@ -1329,17 +1329,17 @@ void StaticData::HintTable_Init_Item() {
                                                         CustomMessage("Shadow Temple Compass", "Kompaß des Schattentempels", "Boussole du Temple de l'Ombre"));
 
     hintTextTable[RHT_BOTW_COMPASS] = HintText(CustomMessage("the Bottom of the Well Compass", /*german*/"der Kompaß des Grund des Brunnens", /*french*/"la boussole du fond du Puits"),
-                                                             // /*spanish*/la brújula del Fondo del pozo
-                                                             {
-                                                             CustomMessage("a compass", /*german*/"ein Kompaß", /*french*/"une boussole")
-                                                              // /*spanish*/una brújula
-                                                             }, {
-                                                             CustomMessage("a dank treasure tracker", /*german*/"ein feuchter Schatzfinder", /*french*/"un cherche-trésor moisi"),
-                                                              // /*spanish*/un zahorí mohoso
-                                                             CustomMessage("a dank magnetic needle", /*german*/"eine feuchte Magnetnadel", /*french*/"une aimant moisi")
-                                                              // /*spanish*/un imán mohoso
-                                                             },
-                                                             CustomMessage("Bottom of the Well Compass", "Kompaß des Grund des Brunnens", "Boussole du Puits"));
+                                               // /*spanish*/la brújula del Fondo del pozo
+                                              {
+                                              CustomMessage("a compass", /*german*/"ein Kompaß", /*french*/"une boussole")
+                                               // /*spanish*/una brújula
+                                              }, {
+                                              CustomMessage("a dank treasure tracker", /*german*/"ein feuchter Schatzfinder", /*french*/"un cherche-trésor moisi"),
+                                               // /*spanish*/un zahorí mohoso
+                                              CustomMessage("a dank magnetic needle", /*german*/"eine feuchte Magnetnadel", /*french*/"une aimant moisi")
+                                               // /*spanish*/un imán mohoso
+                                              },
+                                              CustomMessage("Bottom of the Well Compass", "Kompaß des Grund des Brunnens", "Boussole du Puits"));
 
     hintTextTable[RHT_ICE_CAVERN_COMPASS] = HintText(CustomMessage("the Ice Cavern Compass", /*german*/"der Kompaß der Eishöhle", /*french*/"la Boussole de la Caverne Polaire"),
                                                      // /*spanish*/la brújula de la Caverna de hielo
@@ -1518,144 +1518,144 @@ void StaticData::HintTable_Init_Item() {
                                                           CustomMessage("Shadow Temple Small Key", "Petite Clé du Temple de l'Ombre", "Kleiner Schlüssel für den Schattentempel"));
 
     hintTextTable[RHT_GTG_SMALL_KEY] = HintText(CustomMessage("a Gerudo Training Ground Small Key", /*german*/"ein kleiner Schlüssel des Gerudo-Trainingsgeländes", /*french*/"une petite clé du Gymnase Gerudo"),
-                                                                    // /*spanish*/una llave pequeña del Centro de Instrucción Gerudo
-                                                                    {
-                                                                    CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
-                                                                     // /*spanish*/una llave pequeña
-                                                                    }, {
-                                                                    CustomMessage("a labyrinthian tool for unlocking", /*german*/"ein labyrinthisches Werkzeug zur Entschlüsselung", /*french*/"un anti-porte labyrinthique"),
-                                                                     // /*spanish*/una clave de una entrada laberíntica
-                                                                    CustomMessage("a labyrinthian dungeon pass", /*german*/"ein labyrinthischer Dungeon-Pass", /*french*/"le rêve labyrinthique d'un prisonnier"),
-                                                                     // /*spanish*/un pase de una mazmorra laberíntica
-                                                                    CustomMessage("a labyrinthian lock remover", /*german*/"ein labyrinthischer Schlossentferner", /*french*/"un efface-serrure labyrinthique"),
-                                                                     // /*spanish*/un destructor de cerraduras laberíntica
-                                                                    CustomMessage("a labyrinthian lockpick", /*german*/"ein labyrinthischer Dietrich", /*french*/"un crochet à porte labyrinthique")
-                                                                     // /*spanish*/una apertura portentosa laberíntica
-                                                                    },
-                                                                    CustomMessage("Training Ground Small Key", "Kleiner Schlüssel für das Gerudo-Trainingsgelände", "Petite Clé du Gymnase Gerudo"));
+                                                // /*spanish*/una llave pequeña del Centro de Instrucción Gerudo
+                                               {
+                                               CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
+                                                // /*spanish*/una llave pequeña
+                                               }, {
+                                               CustomMessage("a labyrinthian tool for unlocking", /*german*/"ein labyrinthisches Werkzeug zur Entschlüsselung", /*french*/"un anti-porte labyrinthique"),
+                                                // /*spanish*/una clave de una entrada laberíntica
+                                               CustomMessage("a labyrinthian dungeon pass", /*german*/"ein labyrinthischer Dungeon-Pass", /*french*/"le rêve labyrinthique d'un prisonnier"),
+                                                // /*spanish*/un pase de una mazmorra laberíntica
+                                               CustomMessage("a labyrinthian lock remover", /*german*/"ein labyrinthischer Schlossentferner", /*french*/"un efface-serrure labyrinthique"),
+                                                // /*spanish*/un destructor de cerraduras laberíntica
+                                               CustomMessage("a labyrinthian lockpick", /*german*/"ein labyrinthischer Dietrich", /*french*/"un crochet à porte labyrinthique")
+                                                // /*spanish*/una apertura portentosa laberíntica
+                                               },
+                                               CustomMessage("Training Ground Small Key", "Kleiner Schlüssel für das Gerudo-Trainingsgelände", "Petite Clé du Gymnase Gerudo"));
 
     hintTextTable[RHT_HIDEOUT_SMALL_KEY] = HintText(CustomMessage("a Gerudo Fortress Small Key", /*german*/"ein kleiner Schlüssel für die Gerudo-Festung", /*french*/"une petite clé de la Repaire des Voleurs"),
-                                                            // /*spanish*/una llave pequeña de la Fortaleza Gerudo
-                                                            {
-                                                            CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
-                                                             // /*spanish*/una llave pequeña
-                                                            }, {
-                                                            CustomMessage("an imprisoned tool for unlocking", /*german*/"ein gefangenes Werkzeug zur Entschlüsselung", /*french*/"un anti-porte emprisonné"),
-                                                             // /*spanish*/una clave de una entrada encarcelada
-                                                            CustomMessage("an imprisoned dungeon pass", /*german*/"ein gefangener Dungeon-Pass", /*french*/"le rêve emprisonné d'un prisonnier"),
-                                                             // /*spanish*/un pase de una mazmorra encarcelada
-                                                            CustomMessage("an imprisoned lock remover", /*german*/"ein gefangener Schlossentferner", /*french*/"un efface-serrure emprisonné"),
-                                                             // /*spanish*/un destructor de cerraduras encarcelada
-                                                            CustomMessage("an imprisoned lockpick", /*german*/"ein gefangener Dietrich", /*french*/"un crochet à porte emprisonné")
-                                                            // /*spanish*/una apertura portentosa encarcelada
-                                                            },
-                                                            CustomMessage("Gerudo Fortress Small Key", "Kleiner Schlüssel für die Gerudo-Festung", "Petite Clé du Repaire des Voleurs"));
+                                                    // /*spanish*/una llave pequeña de la Fortaleza Gerudo
+                                                   {
+                                                   CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
+                                                     // /*spanish*/una llave pequeña
+                                                   }, {
+                                                   CustomMessage("an imprisoned tool for unlocking", /*german*/"ein gefangenes Werkzeug zur Entschlüsselung", /*french*/"un anti-porte emprisonné"),
+                                                       // /*spanish*/una clave de una entrada encarcelada
+                                                   CustomMessage("an imprisoned dungeon pass", /*german*/"ein gefangener Dungeon-Pass", /*french*/"le rêve emprisonné d'un prisonnier"),
+                                                       // /*spanish*/un pase de una mazmorra encarcelada
+                                                   CustomMessage("an imprisoned lock remover", /*german*/"ein gefangener Schlossentferner", /*french*/"un efface-serrure emprisonné"),
+                                                       // /*spanish*/un destructor de cerraduras encarcelada
+                                                   CustomMessage("an imprisoned lockpick", /*german*/"ein gefangener Dietrich", /*french*/"un crochet à porte emprisonné")
+                                                    // /*spanish*/una apertura portentosa encarcelada
+                                                   },
+                                                   CustomMessage("Gerudo Fortress Small Key", "Kleiner Schlüssel für die Gerudo-Festung", "Petite Clé du Repaire des Voleurs"));
 
     hintTextTable[RHT_BOTW_SMALL_KEY] = HintText(CustomMessage("a Bottom of the Well Small Key", /*german*/"ein kleiner Schlüssel des Grund des Brunnens", /*french*/"une petite clé du fond du Puits"),
-                                                               // /*spanish*/una llave pequeña del Fondo del pozo
-                                                               {
-                                                               CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
-                                                                // /*spanish*/una llave pequeña
-                                                               }, {
-                                                               CustomMessage("a moldy tool for unlocking", /*german*/"ein schimmeliges Werkzeug zur Entschlüsselung", /*french*/"un anti-porte moisi"),
-                                                                // /*spanish*/una clave de una entrada mohosa
-                                                               CustomMessage("a moldy dungeon pass", /*german*/"ein schimmeliger Dungeon-Pass", /*french*/"le rêve moisi d'un prisonnier"),
-                                                                // /*spanish*/un pase de una mazmorra mohosa
-                                                               CustomMessage("a moldy lock remover", /*german*/"ein schimmeliger Schlossentferner", /*french*/"un efface-serrure moisi"),
-                                                                // /*spanish*/un destructor de cerraduras mohosa
-                                                               CustomMessage("a moldy lockpick", /*german*/"ein schimmeliger Dietrich", /*french*/"un crochet à porte moisi")
-                                                               // /*spanish*/una apertura portentosa mohosa
-                                                               },
-                                                               CustomMessage("Bottom of the Well Small Key", "Kleiner Schlüssel für den Grund des Brunnens", "Petite Clé du Puits"));
-
-                                                               hintTextTable[RHT_GANONS_CASTLE_SMALL_KEY] = HintText(CustomMessage("a Ganon's Castle Small Key", /*german*/"ein kleiner Schlüssel für Ganons Schloß", /*french*/"une petite clé du Château de Ganon"),
-                                                               // /*spanish*/una llave pequeña del Castillo de Ganon
-                                                               {
-                                                               CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
-                                                                // /*spanish*/una llave pequeña
-                                                               }, {
-                                                               CustomMessage("a final tool for unlocking", /*german*/"ein finales Werkzeug zur Entschlüsselung", /*french*/"un anti-porte final"),
-                                                                // /*spanish*/una clave de una entrada final
-                                                               CustomMessage("a final dungeon pass", /*german*/"ein finaler Dungeon-Pass", /*french*/"le rêve final d'un prisonnier"),
-                                                                // /*spanish*/un pase de una mazmorra final
-                                                               CustomMessage("a final lock remover", /*german*/"ein finaler Schlossentferner", /*french*/"un efface-serrure final"),
-                                                                // /*spanish*/un destructor de cerraduras final
-                                                               CustomMessage("a final lockpick", /*german*/"ein finaler Dietrich", /*french*/"un crochet à porte final")
-                                                                // /*spanish*/una apertura portentosa final
-                                                               },
-                                                               CustomMessage("Ganon's Castle Small Key", "Kleiner Schlüssel für Ganons Schloß", "Petite Clé du Château de Ganon"));
+                                                  // /*spanish*/una llave pequeña del Fondo del pozo
+                                                 {
+                                                 CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
+                                                  // /*spanish*/una llave pequeña
+                                                 }, {
+                                                 CustomMessage("a moldy tool for unlocking", /*german*/"ein schimmeliges Werkzeug zur Entschlüsselung", /*french*/"un anti-porte moisi"),
+                                                  // /*spanish*/una clave de una entrada mohosa
+                                                 CustomMessage("a moldy dungeon pass", /*german*/"ein schimmeliger Dungeon-Pass", /*french*/"le rêve moisi d'un prisonnier"),
+                                                  // /*spanish*/un pase de una mazmorra mohosa
+                                                 CustomMessage("a moldy lock remover", /*german*/"ein schimmeliger Schlossentferner", /*french*/"un efface-serrure moisi"),
+                                                  // /*spanish*/un destructor de cerraduras mohosa
+                                                 CustomMessage("a moldy lockpick", /*german*/"ein schimmeliger Dietrich", /*french*/"un crochet à porte moisi")
+                                                  // /*spanish*/una apertura portentosa mohosa
+                                                 },
+                                                 CustomMessage("Bottom of the Well Small Key", "Kleiner Schlüssel für den Grund des Brunnens", "Petite Clé du Puits"));
+    
+    hintTextTable[RHT_GANONS_CASTLE_SMALL_KEY] = HintText(CustomMessage("a Ganon's Castle Small Key", /*german*/"ein kleiner Schlüssel für Ganons Schloß", /*french*/"une petite clé du Château de Ganon"),
+                                                          // /*spanish*/una llave pequeña del Castillo de Ganon
+                                                         {
+                                                         CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
+                                                          // /*spanish*/una llave pequeña
+                                                         }, {
+                                                         CustomMessage("a final tool for unlocking", /*german*/"ein finales Werkzeug zur Entschlüsselung", /*french*/"un anti-porte final"),
+                                                          // /*spanish*/una clave de una entrada final
+                                                         CustomMessage("a final dungeon pass", /*german*/"ein finaler Dungeon-Pass", /*french*/"le rêve final d'un prisonnier"),
+                                                          // /*spanish*/un pase de una mazmorra final
+                                                         CustomMessage("a final lock remover", /*german*/"ein finaler Schlossentferner", /*french*/"un efface-serrure final"),
+                                                          // /*spanish*/un destructor de cerraduras final
+                                                         CustomMessage("a final lockpick", /*german*/"ein finaler Dietrich", /*french*/"un crochet à porte final")
+                                                          // /*spanish*/una apertura portentosa final
+                                                         },
+                                                         CustomMessage("Ganon's Castle Small Key", "Kleiner Schlüssel für Ganons Schloß", "Petite Clé du Château de Ganon"));
 
      
     hintTextTable[RHT_TCG_SMALL_KEY] = HintText(CustomMessage("a Treasure Chest Shop Small Key", /*german*/"ein kleiner Schlüssel des Schatztruhenladens", /*french*/"une petite clé de la chasse aux trésors"),
-                                                                        // /*spanish*/una llave pequeña del Cofre del Tesoro
-                                                                       {
-                                                                       CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
-                                                                        // /*spanish*/una llave pequeña
-                                                                       }, {
-                                                                       CustomMessage("a gambler's tool for unlocking", /*german*/"ein Spieler-Werkzeug zur Entschlüsselung", /*french*/"un anti-porte de parieur"),
-                                                                        // /*spanish*/una clave de un juego de azar
-                                                                       CustomMessage("a gambler's dungeon pass", /*german*/"ein Spieler-Dungeon-Pass", /*french*/"le rêve d'un prisonnier parieur"),
-                                                                        // /*spanish*/un pase de un juego de azar
-                                                                       CustomMessage("a gambler's lock remover", /*german*/"ein Spieler-Schlossentferner", /*french*/"un efface-serrure de parieur"),
-                                                                        // /*spanish*/un destructor de cerraduras del juego de azar
-                                                                       CustomMessage("a gambler's lockpick", /*german*/"ein Spieler-Dietrich", /*french*/"un crochet à serrure de parieur")
-                                                                        // /*spanish*/una apertura portentosa del juego de azar
-                                                                      },
-                                                                       CustomMessage("Chest Game Small Key", "Kleiner Schlüssel für das Truhenspiel", "Petite Clé du jeu la Chasse-aux-Trésors"));
+                                                // /*spanish*/una llave pequeña del Cofre del Tesoro
+                                               {
+                                               CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
+                                                // /*spanish*/una llave pequeña
+                                               }, {
+                                               CustomMessage("a gambler's tool for unlocking", /*german*/"ein Spieler-Werkzeug zur Entschlüsselung", /*french*/"un anti-porte de parieur"),
+                                                // /*spanish*/una clave de un juego de azar
+                                               CustomMessage("a gambler's dungeon pass", /*german*/"ein Spieler-Dungeon-Pass", /*french*/"le rêve d'un prisonnier parieur"),
+                                                // /*spanish*/un pase de un juego de azar
+                                               CustomMessage("a gambler's lock remover", /*german*/"ein Spieler-Schlossentferner", /*french*/"un efface-serrure de parieur"),
+                                                // /*spanish*/un destructor de cerraduras del juego de azar
+                                               CustomMessage("a gambler's lockpick", /*german*/"ein Spieler-Dietrich", /*french*/"un crochet à serrure de parieur")
+                                                // /*spanish*/una apertura portentosa del juego de azar
+                                               },
+                                               CustomMessage("Chest Game Small Key", "Kleiner Schlüssel für das Truhenspiel", "Petite Clé du jeu la Chasse-aux-Trésors"));
 
     hintTextTable[RHT_GUARD_HOUSE_KEY] = HintText(CustomMessage("the Guard House's key"),
-                                                {
-                                                CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
-                                                 // /*spanish*/una llave del mundo exterior
-                                                }, {
-                                                CustomMessage("a key to pots", /*german*/"!!!", /*french*/"!!!")
-                                                },
-                                                CustomMessage("Guard House Key", "Schlüssel für das Haus der Wachen", ""/*!!!*/));
+                                                 {
+                                                 CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
+                                                  // /*spanish*/una llave del mundo exterior
+                                                 }, {
+                                                 CustomMessage("a key to pots", /*german*/"!!!", /*french*/"!!!")
+                                                 },
+                                                 CustomMessage("Guard House Key", "Schlüssel für das Haus der Wachen", ""/*!!!*/));
 
    hintTextTable[RHT_MARKET_BAZAAR_KEY] = HintText(CustomMessage("Market Bazaar's key"),
-                                                {
-                                                CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
-                                                 // /*spanish*/una llave del mundo exterior
-                                                }, {
-                                                CustomMessage("a child's shopping key", /*german*/"!!!", /*french*/"!!!")
-                                                },
-                                                CustomMessage("Market Bazaar Key", "Schlüssel für den Basar des Marktes", ""));
+                                                  {
+                                                  CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
+                                                   // /*spanish*/una llave del mundo exterior
+                                                  }, {
+                                                  CustomMessage("a child's shopping key", /*german*/"!!!", /*french*/"!!!")
+                                                  },
+                                                  CustomMessage("Market Bazaar Key", "Schlüssel für den Basar des Marktes", ""));
 
    hintTextTable[RHT_MARKET_POTION_SHOP_KEY] = HintText(CustomMessage("the Market Potion Shop's key"),
-                                                {
-                                                CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
-                                                 // /*spanish*/una llave del mundo exterior
-                                                }, {
-                                                CustomMessage("past potion's key", /*german*/"!!!", /*french*/"!!!")
-                                                },
-                                                CustomMessage("Market Potion Shop Key", "Schlüssel für den Magie-Laden des Marktes", ""));
+                                                       {
+                                                       CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
+                                                        // /*spanish*/una llave del mundo exterior
+                                                       }, {
+                                                       CustomMessage("past potion's key", /*german*/"!!!", /*french*/"!!!")
+                                                       },
+                                                       CustomMessage("Market Potion Shop Key", "Schlüssel für den Magie-Laden des Marktes", ""));
 
    hintTextTable[RHT_MASK_SHOP_KEY] = HintText(CustomMessage("the Mask Shop's key"),
-                                                {
-                                                CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
-                                                 // /*spanish*/una llave del mundo exterior
-                                                }, {
-                                                CustomMessage("the masqurade's key", /*german*/"!!!", /*french*/"!!!")
-                                                },
-                                                CustomMessage("Mask Shop Key", "Schlüssel für den Maskenladen", ""));
+                                               {
+                                               CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
+                                                // /*spanish*/una llave del mundo exterior
+                                               }, {
+                                               CustomMessage("the masqurade's key", /*german*/"!!!", /*french*/"!!!")
+                                               },
+                                               CustomMessage("Mask Shop Key", "Schlüssel für den Maskenladen", ""));
 
    hintTextTable[RHT_MARKET_SHOOTING_KEY] = HintText(CustomMessage("Market Shooting Gallery's key"),
                                                     {
                                                     CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
                                                      // /*spanish*/una llave del mundo exterior
                                                     }, {
-                                                    CustomMessage("the slingshot range's key", /*german*/"!!!", /*french*/"!!!")
+                                                    CustomMessage("slingshot shooting's key", /*german*/"!!!", /*french*/"!!!")
                                                     },
                                                     CustomMessage("Market Shooting Gallery Key", "Schlüssel für die Schießbude des Marktes", ""));
 
    hintTextTable[RHT_BOMBCHU_BOWLING_KEY] = HintText(CustomMessage("Bombchu Bowling's key"),
-                                                {
-                                                CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
-                                                 // /*spanish*/una llave del mundo exterior
-                                                }, {
-                                                CustomMessage("mouse golf's key", /*german*/"!!!", /*french*/"!!!")
-                                                },
-                                                CustomMessage("Bombchu Bowling Alley Key", "Schlüssel für die Minenbowlingbahn", ""));
+                                                    {
+                                                    CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
+                                                     // /*spanish*/una llave del mundo exterior
+                                                    }, {
+                                                    CustomMessage("mouse golf's key", /*german*/"!!!", /*french*/"!!!")
+                                                    },
+                                                    CustomMessage("Bombchu Bowling Alley Key", "Schlüssel für die Minenbowlingbahn", ""));
 
    hintTextTable[RHT_TCG_BUILDING_KEY] = HintText(CustomMessage("Treasure Chest Game Building's key"),
                                                 {
@@ -1752,7 +1752,7 @@ void StaticData::HintTable_Init_Item() {
                                                 CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
                                                  // /*spanish*/una llave del mundo exterior
                                                 }, {
-                                                CustomMessage("the pinwheel's key", /*german*/"!!!", /*french*/"!!!")
+                                                CustomMessage("the grain grinder's key", /*german*/"!!!", /*french*/"!!!")
                                                 },
                                                 CustomMessage("Windmill Key", "Schlüssel für die Windmühle", ""));
 
@@ -1761,7 +1761,7 @@ void StaticData::HintTable_Init_Item() {
                                                 CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
                                                  // /*spanish*/una llave del mundo exterior
                                                 }, {
-                                                CustomMessage("the archery range's key", /*german*/"!!!", /*french*/"!!!")
+                                                CustomMessage("bow shooting's key", /*german*/"!!!", /*french*/"!!!")
                                                 },
                                                 CustomMessage("Kakariko Shooting Gallery Key", "Schlüssel für die Schießbude von Kakariko", ""));
 
@@ -1905,55 +1905,55 @@ void StaticData::HintTable_Init_Item() {
                                                          CustomMessage("Shadow Temple Key Ring", "Schlüsselbund für den Schattentempel", "Trousseau du Temple de l'Ombre"));
 
     hintTextTable[RHT_GTG_KEY_RING] = HintText(CustomMessage("a Gerudo Training Ground Key Ring", /*german*/"ein Schlüsselbund des Gerudo-Trainingsgeländes", /*french*/"un trousseau de clés du Gymnase Gerudo"),
-                                                                   // /*spanish*/un llavero del Centro de Instrucción Gerudo
-                                                                   {
-                                                                   CustomMessage("a key ring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
-                                                                    // /*spanish*/un llavero
-                                                                   }, {
-                                                                   CustomMessage("a labyrinthian toolbox for unlocking", /*german*/"eine labyrinthische Werkzeugkiste zur Entschlüsselung", /*french*/"des anti-portes labyrinthiques"),
-                                                                    // /*spanish*/un conjunto laberíntico de cerrajero
-                                                                   CustomMessage("a labyrinthian dungeon season pass", /*german*/"ein labyrinthischer Dungeon-Season-Pass", /*french*/"les rêves labyrinthiques d'un prisonnier"),
-                                                                    // /*spanish*/un pase vip de mazmorras laberíntico
-                                                                   CustomMessage("a labyrinthian jingling ring", /*german*/"ein labyrinthischer Multifunktionsschlüssel", /*french*/"des efface-serrures labyrinthiques"),
-                                                                    // /*spanish*/una cadena multiusos laberíntica
-                                                                   CustomMessage("a labyrinthian skeleton key", /*german*/"ein labyrinthischer Skelettschlüssel", /*french*/"des crochets à porte labyrinthiques")
-                                                                    // /*spanish*/un anillo laberíntico contra cerrojos
-                                                                   },
-                                                                   CustomMessage("Training Ground Key Ring", "Schlüsselbund für das Gerudo-Trainingsgelände", "Trousseau du Gymnase Gerudo"));
+                                               // /*spanish*/un llavero del Centro de Instrucción Gerudo
+                                              {
+                                              CustomMessage("a key ring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
+                                               // /*spanish*/un llavero
+                                              }, {
+                                              CustomMessage("a labyrinthian toolbox for unlocking", /*german*/"eine labyrinthische Werkzeugkiste zur Entschlüsselung", /*french*/"des anti-portes labyrinthiques"),
+                                               // /*spanish*/un conjunto laberíntico de cerrajero
+                                              CustomMessage("a labyrinthian dungeon season pass", /*german*/"ein labyrinthischer Dungeon-Season-Pass", /*french*/"les rêves labyrinthiques d'un prisonnier"),
+                                               // /*spanish*/un pase vip de mazmorras laberíntico
+                                              CustomMessage("a labyrinthian jingling ring", /*german*/"ein labyrinthischer Multifunktionsschlüssel", /*french*/"des efface-serrures labyrinthiques"),
+                                               // /*spanish*/una cadena multiusos laberíntica
+                                              CustomMessage("a labyrinthian skeleton key", /*german*/"ein labyrinthischer Skelettschlüssel", /*french*/"des crochets à porte labyrinthiques")
+                                               // /*spanish*/un anillo laberíntico contra cerrojos
+                                              },
+                                              CustomMessage("Training Ground Key Ring", "Schlüsselbund für das Gerudo-Trainingsgelände", "Trousseau du Gymnase Gerudo"));
 
     hintTextTable[RHT_HIDEOUT_KEY_RING] = HintText(CustomMessage("a Gerudo Fortress Key Ring", /*german*/"ein Schlüsselbund der Gerudo-Festung", /*french*/"un trousseau de clés de la Repaire des Voleurs"),
-                                                           // /*spanish*/un llavero de la Fortaleza Gerudo
-                                                           {
-                                                           CustomMessage("a key ring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
-                                                            // /*spanish*/un llavero
-                                                           }, {
-                                                           CustomMessage("an imprisoned toolbox for unlocking", /*german*/"eine gefangene Werkzeugkiste zur Entschlüsselung", /*french*/"des anti-portes emprisonnés"),
-                                                            // /*spanish*/un conjunto enjaulado de cerrajero
-                                                           CustomMessage("an imprisoned dungeon season pass", /*german*/"ein gefangener Dungeon-Season-Pass", /*french*/"les rêves emprisonnés d'un prisonnier"),
-                                                            // /*spanish*/un pase vip de una mazmorra enjaulado
-                                                           CustomMessage("an imprisoned jingling ring", /*german*/"ein gefangener Multifunktionsschlüssel", /*french*/"des efface-serrures emprisonnés"),
-                                                            // /*spanish*/una cadena multiusos enjaulada
-                                                           CustomMessage("an imprisoned skeleton key", /*german*/"ein gefangener Skelettschlüssel", /*french*/"des crochets à porte emprisonnés")
-                                                            // /*spanish*/un anillo enjaulado contra cerrojos
-                                                           },
-                                                           CustomMessage("Gerudo Fortress Key Ring", "Schlüsselbund für die Gerudo-Festung", "Trousseau du Repaire des Voleurs"));
+                                                   // /*spanish*/un llavero de la Fortaleza Gerudo
+                                                  {
+                                                  CustomMessage("a key ring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
+                                                   // /*spanish*/un llavero
+                                                  }, {
+                                                  CustomMessage("an imprisoned toolbox for unlocking", /*german*/"eine gefangene Werkzeugkiste zur Entschlüsselung", /*french*/"des anti-portes emprisonnés"),
+                                                   // /*spanish*/un conjunto enjaulado de cerrajero
+                                                  CustomMessage("an imprisoned dungeon season pass", /*german*/"ein gefangener Dungeon-Season-Pass", /*french*/"les rêves emprisonnés d'un prisonnier"),
+                                                   // /*spanish*/un pase vip de una mazmorra enjaulado
+                                                  CustomMessage("an imprisoned jingling ring", /*german*/"ein gefangener Multifunktionsschlüssel", /*french*/"des efface-serrures emprisonnés"),
+                                                   // /*spanish*/una cadena multiusos enjaulada
+                                                  CustomMessage("an imprisoned skeleton key", /*german*/"ein gefangener Skelettschlüssel", /*french*/"des crochets à porte emprisonnés")
+                                                   // /*spanish*/un anillo enjaulado contra cerrojos
+                                                  },
+                                                  CustomMessage("Gerudo Fortress Key Ring", "Schlüsselbund für die Gerudo-Festung", "Trousseau du Repaire des Voleurs"));
 
     hintTextTable[RHT_BOTW_KEY_RING] = HintText(CustomMessage("a Bottom of the Well Key Ring", /*german*/"ein Schlüsselbund des Grund des Brunnens", /*french*/"un trousseau de clés du fond du Puits"),
-                                                              // /*spanish*/un llavero del Fondo del pozo
-                                                              {
-                                                              CustomMessage("a key ring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
-                                                               // /*spanish*/un llavero
-                                                              }, {
-                                                              CustomMessage("a moldy toolbox for unlocking", /*german*/"eine schimmelige Werkzeugkiste zur Entschlüsselung", /*french*/"des anti-portes moisis"),
-                                                               // /*spanish*/un conjunto subterráneo de cerrajero
-                                                              CustomMessage("a moldy dungeon season pass", /*german*/"ein schimmeliger Dungeon-Season-Pass", /*french*/"les rêves moisis d'un prisonnier"),
-                                                               // /*spanish*/un pase vip de una mazmorra subterráneo
-                                                              CustomMessage("a moldy jingling ring", /*german*/"ein schimmeliger Multifunktionsschlüssel", /*french*/"des efface-serrures moisis"),
-                                                               // /*spanish*/una cadena multiusos subterránea
-                                                              CustomMessage("a moldy skeleton key", /*german*/"ein schimmeliger Skelettschlüssel", /*french*/"des crochets à porte moisis")
-                                                               // /*spanish*/un anillo subterráneo contra cerrojos
-                                                              },
-                                                              CustomMessage("Bottom of the Well Key Ring", "Schlüsselbund für den Grund des Brunnens", "Trousseau du Puits"));
+                                                // /*spanish*/un llavero del Fondo del pozo
+                                               {
+                                               CustomMessage("a key ring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
+                                                // /*spanish*/un llavero
+                                               }, {
+                                               CustomMessage("a moldy toolbox for unlocking", /*german*/"eine schimmelige Werkzeugkiste zur Entschlüsselung", /*french*/"des anti-portes moisis"),
+                                                // /*spanish*/un conjunto subterráneo de cerrajero
+                                               CustomMessage("a moldy dungeon season pass", /*german*/"ein schimmeliger Dungeon-Season-Pass", /*french*/"les rêves moisis d'un prisonnier"),
+                                                // /*spanish*/un pase vip de una mazmorra subterráneo
+                                               CustomMessage("a moldy jingling ring", /*german*/"ein schimmeliger Multifunktionsschlüssel", /*french*/"des efface-serrures moisis"),
+                                                // /*spanish*/una cadena multiusos subterránea
+                                               CustomMessage("a moldy skeleton key", /*german*/"ein schimmeliger Skelettschlüssel", /*french*/"des crochets à porte moisis")
+                                                // /*spanish*/un anillo subterráneo contra cerrojos
+                                               },
+                                               CustomMessage("Bottom of the Well Key Ring", "Schlüsselbund für den Grund des Brunnens", "Trousseau du Puits"));
 
     hintTextTable[RHT_GANONS_CASTLE_KEY_RING] = HintText(CustomMessage("a Ganon's Castle Key Ring", /*german*/"ein Schlüsselbund von Ganons Schloß", /*french*/"un trousseau de clés du Château de Ganon"),
                                                          // /*spanish*/un llavero del Castillo de Ganon
@@ -1973,16 +1973,16 @@ void StaticData::HintTable_Init_Item() {
                                                          CustomMessage("Ganon's Castle Key Ring", "Schlüsselbund für Ganons Schloß", "Trousseau du Château de Ganon"));
 
      hintTextTable[RHT_TCG_KEY_RING] = HintText(CustomMessage("a Chest Game Key Ring"),
-                                                         {
-                                                         CustomMessage("a key ring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
-                                                          // /*spanish*/un llavero
-                                                         }, {
-                                                         CustomMessage("a gambler's toolbox for unlocking"),
-                                                         CustomMessage("a gambler's season pass"),
-                                                         CustomMessage("a gambler's jingling ring"),
-                                                         CustomMessage("a gambler's skeleton key")
-                                                         },
-                                                         CustomMessage("Chest Game Key Ring", "Trousseau du jeu la Chasse-aux-Trésors", "Schlüsselbund für das Truhenspiel"));
+                                               {
+                                               CustomMessage("a key ring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
+                                                // /*spanish*/un llavero
+                                               }, {
+                                               CustomMessage("a gambler's toolbox for unlocking"),//"!!!"
+                                               CustomMessage("a gambler's season pass"),
+                                               CustomMessage("a gambler's jingling ring"),
+                                               CustomMessage("a gambler's skeleton key")
+                                               },
+                                               CustomMessage("Chest Game Key Ring", "Trousseau du jeu la Chasse-aux-Trésors", "Schlüsselbund für das Truhenspiel"));
 
     hintTextTable[RHT_KOKIRI_EMERALD] = HintText(CustomMessage("the Kokiri Emerald", /*german*/"der Kokiri-Smaragd", /*french*/"l'Émeraude Kokiri"),
                                                  // /*spanish*/la Esmeralda de los Kokiri
@@ -2481,15 +2481,15 @@ void StaticData::HintTable_Init_Item() {
                                                       CustomMessage("Piece of Heart (WINNER)", "Herzstück (Schatztruhenminispiel)", "Quart de Coeur (Chasse-aux-Trésors)"));
 
     hintTextTable[RHT_LOSER_GREEN_RUPEE] = HintText(CustomMessage("a Green Rupee", /*german*/"ein grüner Rubin", /*french*/"un rubis vert"),
-                                                            // /*spanish*/una rupia verde
-                                                            {
-                                                            CustomMessage("some rupees", /*german*/"einige Rubine", /*french*/"une quantité de rubis")
-                                                             // /*spanish*/una cantidad de rupias
-                                                            }, {
-                                                            CustomMessage("the dollar of defeat", /*german*/"der Rubin der Niederlage", /*french*/"le rubis de la défaite")
-                                                             // /*spanish*/el peso de la derrota
-                                                            },
-                                                            CustomMessage("Green Rupee (LOSER)", "Grüner Rubin (Schatztruhenminispiel)", "Rubis Vert (Chasse-aux-Trésors)"));
+                                                    // /*spanish*/una rupia verde
+                                                   {
+                                                   CustomMessage("some rupees", /*german*/"einige Rubine", /*french*/"une quantité de rubis")
+                                                    // /*spanish*/una cantidad de rupias
+                                                   }, {
+                                                   CustomMessage("the dollar of defeat", /*german*/"der Rubin der Niederlage", /*french*/"le rubis de la défaite")
+                                                       // /*spanish*/el peso de la derrota
+                                                   },
+                                                   CustomMessage("Green Rupee (LOSER)", "Grüner Rubin (Schatztruhenminispiel)", "Rubis Vert (Chasse-aux-Trésors)"));
 
     hintTextTable[RHT_BUY_DEKU_NUTS_5] = HintText(CustomMessage("Deku Nuts", /*german*/"!!!", /*french*/"!!!"),
                                                   {}, {},
@@ -2773,9 +2773,9 @@ void StaticData::HintTable_Init_Item() {
 
     hintTextTable[RHT_BOMBCHU_BAG] = HintText(CustomMessage("a Bombchu Bag", /*german*/"eine Krabbelminentasche", /*french*/"un Sac de Missiles Teigneux"),
                                               {
-                                             CustomMessage("explosives", /*german*/"ein Explosivpaket", /*french*/"un paquet d'explosifs"),
+                                              CustomMessage("explosives", /*german*/"ein Explosivpaket", /*french*/"un paquet d'explosifs"),
                                                   // /*spanish*/un montón de explosivos
-                                             CustomMessage("something that can remove boulders", /*german*/"etwas, das Geröll entfernen kann", /*french*/"une chose qui enlève les rochers")
+                                              CustomMessage("something that can remove boulders", /*german*/"etwas, das Geröll entfernen kann", /*french*/"une chose qui enlève les rochers")
                                                   // /*spanish*/algo que pueda quitar rocas
                                               }, {
                                               CustomMessage("sack of mice", /*german*/"ein Sack Mäuse", /*french*/"un Sac rempli de souris")
