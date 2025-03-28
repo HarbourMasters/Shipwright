@@ -1,0 +1,44 @@
+<Root>
+    <File Name="nakaniwa_scene" Segment="2">
+        <Cutscene Name="gZeldasCourtyardGanonCs" Offset="0x104"/>
+        <Cutscene Name="gZeldasCourtyardWindowCs" Offset="0x444"/>
+        <Cutscene Name="gZeldasCourtyardMeetCs" Offset="0x3994"/>
+        <Cutscene Name="gZeldasCourtyardLullabyCs" Offset="0x2524"/>
+
+        <Scene Name="nakaniwa_scene" Offset="0x0"/>
+    </File>
+    <File Name="nakaniwa_room_0" Segment="3">
+        <Texture Name="nakaniwa_room_0Tex_007218" OutName="nakaniwa_room_0Tex_007218" Format="rgba16" Width="16" Height="16" Offset="0x7218" AddedByScript="true"/>
+        <Texture Name="nakaniwa_room_0Tex_007418" OutName="nakaniwa_room_0Tex_007418" Format="rgba16" Width="16" Height="16" Offset="0x7418" AddedByScript="true"/>
+        <Texture Name="nakaniwa_room_0Tex_007618" OutName="nakaniwa_room_0Tex_007618" Format="rgba16" Width="16" Height="16" Offset="0x7618" AddedByScript="true"/>
+        <Texture Name="nakaniwa_room_0Tex_007818" OutName="nakaniwa_room_0Tex_007818" Format="rgba16" Width="16" Height="16" Offset="0x7818" AddedByScript="true"/>
+        <Texture Name="nakaniwa_room_0Tex_007A18" OutName="nakaniwa_room_0Tex_007A18" Format="rgba16" Width="32" Height="32" Offset="0x7A18" AddedByScript="true"/>
+        <Texture Name="nakaniwa_room_0Tex_008218" OutName="nakaniwa_room_0Tex_008218" Format="rgba16" Width="16" Height="16" Offset="0x8218" AddedByScript="true"/>
+        <Texture Name="nakaniwa_room_0Tex_008418" OutName="nakaniwa_room_0Tex_008418" Format="rgba16" Width="16" Height="16" Offset="0x8418" AddedByScript="true"/>
+        <Texture Name="nakaniwa_room_0Tex_008618" OutName="nakaniwa_room_0Tex_008618" Format="rgba16" Width="32" Height="32" Offset="0x8618" AddedByScript="true"/>
+        <Texture Name="nakaniwa_room_0Tex_008E18" OutName="nakaniwa_room_0Tex_008E18" Format="rgba16" Width="32" Height="64" Offset="0x8E18" AddedByScript="true"/>
+        <Texture Name="nakaniwa_room_0Tex_009E18" OutName="nakaniwa_room_0Tex_009E18" Format="rgba16" Width="32" Height="32" Offset="0x9E18" AddedByScript="true"/>
+        <Texture Name="nakaniwa_room_0Tex_00A618" OutName="nakaniwa_room_0Tex_00A618" Format="rgba16" Width="32" Height="64" Offset="0xA618" AddedByScript="true"/>
+        <Texture Name="nakaniwa_room_0Tex_00B618" OutName="nakaniwa_room_0Tex_00B618" Format="rgba16" Width="32" Height="64" Offset="0xB618" AddedByScript="true"/>
+        <Texture Name="nakaniwa_room_0Tex_00C618" OutName="nakaniwa_room_0Tex_00C618" Format="i4" Width="64" Height="64" Offset="0xC618" AddedByScript="true"/>
+        <Texture Name="nakaniwa_room_0Tex_00CE18" OutName="nakaniwa_room_0Tex_00CE18" Format="rgba16" Width="32" Height="64" Offset="0xCE18" AddedByScript="true"/>
+        <Texture Name="nakaniwa_room_0Tex_00DE18" OutName="nakaniwa_room_0Tex_00DE18" Format="rgba16" Width="32" Height="32" Offset="0xDE18" AddedByScript="true"/>
+        <Texture Name="nakaniwa_room_0Tex_00E618" OutName="nakaniwa_room_0Tex_00E618" Format="rgba16" Width="16" Height="64" Offset="0xE618" AddedByScript="true"/>
+        <Texture Name="nakaniwa_room_0Tex_00EE18" OutName="nakaniwa_room_0Tex_00EE18" Format="rgba16" Width="32" Height="32" Offset="0xEE18" AddedByScript="true"/>
+        <Texture Name="nakaniwa_room_0Tex_00F618" OutName="nakaniwa_room_0Tex_00F618" Format="rgba16" Width="32" Height="32" Offset="0xF618" AddedByScript="true"/>
+        <Texture Name="nakaniwa_room_0Tex_00FE18" OutName="nakaniwa_room_0Tex_00FE18" Format="rgba16" Width="32" Height="32" Offset="0xFE18" AddedByScript="true"/>
+        <Texture Name="nakaniwa_room_0Tex_010618" OutName="nakaniwa_room_0Tex_010618" Format="rgba16" Width="32" Height="32" Offset="0x10618" AddedByScript="true"/>
+        <Texture Name="nakaniwa_room_0Tex_010E18" OutName="nakaniwa_room_0Tex_010E18" Format="rgba16" Width="32" Height="32" Offset="0x10E18" AddedByScript="true"/>
+        <Texture Name="nakaniwa_room_0Tex_011618" OutName="nakaniwa_room_0Tex_011618" Format="rgba16" Width="32" Height="32" Offset="0x11618" AddedByScript="true"/>
+        <Texture Name="nakaniwa_room_0Tex_011E18" OutName="nakaniwa_room_0Tex_011E18" Format="rgba16" Width="32" Height="32" Offset="0x11E18" AddedByScript="true"/>
+        <Texture Name="nakaniwa_room_0Tex_012618" OutName="nakaniwa_room_0Tex_012618" Format="rgba16" Width="32" Height="32" Offset="0x12618" AddedByScript="true"/>
+        <Texture Name="nakaniwa_room_0Tex_012E18" OutName="nakaniwa_room_0Tex_012E18" Format="rgba16" Width="64" Height="16" Offset="0x12E18" AddedByScript="true"/>
+        <Texture Name="nakaniwa_room_0Tex_013618" OutName="nakaniwa_room_0Tex_013618" Format="rgba16" Width="32" Height="32" Offset="0x13618" AddedByScript="true"/>
+        <Texture Name="nakaniwa_room_0Tex_013E18" OutName="nakaniwa_room_0Tex_013E18" Format="i4" Width="32" Height="32" Offset="0x13E18" AddedByScript="true"/>
+        <Texture Name="nakaniwa_room_0Tex_014EC0" OutName="nakaniwa_room_0Tex_014EC0" Format="ia16" Width="32" Height="32" Offset="0x14EC0" AddedByScript="true"/>
+        <Texture Name="nakaniwa_room_0Tex_0156C0" OutName="nakaniwa_room_0Tex_0156C0" Format="ia16" Width="64" Height="32" Offset="0x156C0" AddedByScript="true"/>
+        <Texture Name="nakaniwa_room_0Tex_0166C0" OutName="nakaniwa_room_0Tex_0166C0" Format="rgba16" Width="32" Height="32" Offset="0x166C0" AddedByScript="true"/>
+        <Texture Name="nakaniwa_room_0Tex_016EC0" OutName="nakaniwa_room_0Tex_016EC0" Format="ia16" Width="32" Height="64" Offset="0x16EC0" AddedByScript="true"/>
+        <Room Name="nakaniwa_room_0" Offset="0x0"/>
+    </File>
+</Root>

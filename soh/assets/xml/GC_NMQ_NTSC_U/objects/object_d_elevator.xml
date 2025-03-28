@@ -1,0 +1,7 @@
+<Root>
+    <File Name="object_d_elevator" Segment="6">
+        <DList Name="object_d_elevator_DL_000180" Offset="0x180"/>
+        <Collision Name="object_d_elevator_Col_000360" Offset="0x360"/>
+        <Texture Name="object_d_elevator_Tex_000390" OutName="tex_00000390" Format="i8" Width="64" Height="64" Offset="0x390"/>
+    </File>
+</Root>

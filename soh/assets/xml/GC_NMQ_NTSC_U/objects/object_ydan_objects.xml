@@ -1,0 +1,34 @@
+<Root>
+    <File Name="object_ydan_objects" Segment="6">
+
+        <Texture Name="gYdanDoor1Tex" OutName="door_tex1" Format="rgba16" Width="32" Height="64" Offset="0x2800"/>
+        <Texture Name="gYdanWebTex" OutName="web_tex" Format="ia16" Width="32" Height="64" Offset="0x1000"/>
+        <Texture Name="gYdanHasiFloatingBlockSideTex" OutName="floating_block_side" Format="rgba16" Width="32" Height="32" Offset="0x0"/>
+        <Texture Name="gYdanHasiFloatingBlockBottomTex" OutName="floating_block_bottom" Format="rgba16" Width="32" Height="32" Offset="0x800"/>
+        <Texture Name="gYdanUnused1Tex" OutName="unused_1" Format="ci8" Width="32" Height="64" Offset="0x6BC8" TlutOffset="0x69C0"/>
+        <Texture Name="gYdanHasi2TLUT" OutName="tlut_2" Format="rgba16" Width="16" Height="16" Offset="0x69C0"/>
+        <Texture Name="gYdanHasi3BlocksTopTex" OutName="three_blocks_top" Format="ci8" Width="32" Height="64" Offset="0x3AF8" TlutOffset="0x38F0"/>
+        <Texture Name="gYdanTLUT_38F0" OutName="tlut_3" Format="rgba16" Width="16" Height="16" Offset="0x38F0"/> <!--3Blocks Palette?-->
+        <Texture Name="gYdanHasi3BlocksSideTex" OutName="three_blocks_side" Format="ci8" Width="32" Height="64" Offset="0x42F8" TlutOffset="0x38F0"/>
+        <Texture Name="gYdanHasiWaterTex" OutName="water_tex" Format="ci8" Width="32" Height="32" Offset="0x5950" TlutOffset="0x57B0"/>
+        <Texture Name="gYdanHasiWaterTLUT" OutName="water_tlut" Format="rgba16" Width="208" Height="1" Offset="0x57B0"/>
+        <Texture Name="gYdanMarutaUnused1Tex" OutName="maruta_unused_1" Format="rgba16" Width="32" Height="32" Offset="0x2000"/>
+        <Texture Name="gYdanMarutaUnused2Tex" OutName="maruta_unused_2" Format="ci8" Width="32" Height="64" Offset="0x79D8" TlutOffset="0x77D0"/>
+        <Texture Name="gYdanMaruta1TLUT" OutName="maruta_tlut" Format="rgba16" Width="16" Height="16" Offset="0x77D0"/>
+        <DList Name="gDTUnknownWebDL" Offset="0x3850"/>
+        <DList Name="gDTRisingPlatformsDL" Offset="0x5018"/>
+        <DList Name="gDTWaterPlaneDL" Offset="0x5DE0"/>
+        <DList Name="gDTWebWallDL" Offset="0x5F40"/>
+        <DList Name="gDTWebFloorDL" Offset="0x61B0"/>
+        <DList Name="gDTFallingLadderDL" Offset="0x6570"/>
+        <DList Name="gDTDungeonDoor1DL" Offset="0x67A0"/>
+        <DList Name="gDTDungeonDoor2DL" Offset="0x6910"/>
+        <DList Name="gDTSlidingPlatformDL" Offset="0x7508"/>
+        <DList Name="gDTRollingSpikeTrapDL" Offset="0x8D88"/>
+        <Collision Name="gDTRisingPlatformsCol" Offset="0x5780"/>
+        <Collision Name="gDTWebWallCol" Offset="0x6050"/>
+        <Collision Name="gDTWebFloorCol" Offset="0x6460"/>
+        <Collision Name="gDTFallingLadderCol" Offset="0x66A8"/>
+        <Collision Name="gDTSlidingPlatformCol" Offset="0x7798"/>
+    </File>
+</Root>
