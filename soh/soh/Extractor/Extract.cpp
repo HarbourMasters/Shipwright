@@ -58,6 +58,7 @@ static constexpr uint32_t OOT_PAL_GC_DBG2 = 0x87121EFE; // 03-13-2002 build
 static constexpr uint32_t OOT_PAL_GC_MQ_DBG = 0x917D18F6;
 static constexpr uint32_t OOT_PAL_10 = 0xB044B569;
 static constexpr uint32_t OOT_PAL_11 = 0xB2055FBD;
+static constexpr uint32_t OOT_NTSC_GC_U = 0xF3DD35BA;
 static constexpr uint32_t OOT_NTSC_10 = 0xEC7011B7;
 static constexpr uint32_t OOT_NTSC_11 = 0xD43DA81F;
 static constexpr uint32_t OOT_NTSC_12 = 0x693BA2AE;
@@ -70,13 +71,14 @@ static const std::unordered_map<uint32_t, const char*> verMap = {
     { OOT_PAL_GC_MQ_DBG, "PAL MQ Debug" },
     { OOT_PAL_10, "PAL N64 1.0" },
     { OOT_PAL_11, "PAL N64 1.1" },
+    { OOT_NTSC_GC_U, "NTSC Gamecube US" },
     { OOT_NTSC_10, "NTSC N64 1.0" },
     { OOT_NTSC_11, "NTSC N64 1.1" },
     { OOT_NTSC_12, "NTSC N64 1.2" },
 };
 
 // TODO only check the first 54MB of the rom.
-static constexpr std::array<const uint32_t, 16> goodCrcs = {
+static constexpr std::array<const uint32_t, 17> goodCrcs = {
     0xfa8c0555, // MQ DBG 64MB (Original overdump)
     0x8652ac4c, // MQ DBG 64MB
     0x5B8A1EB7, // MQ DBG 64MB (Empty overdump)
@@ -93,6 +95,7 @@ static constexpr std::array<const uint32_t, 16> goodCrcs = {
     0xA25D1262, // N64 NTSC JP 1.1
     0x15736A58, // N64 NTSC US 1.2
     0x83B8967D, // N64 NTSC JP 1.2
+    0xD61453DE, // GC NTSC US
 };
 
 enum class ButtonId : int {
@@ -523,6 +526,7 @@ bool Extractor::IsMasterQuest() const {
         case OOT_NTSC_10:
         case OOT_NTSC_11:
         case OOT_NTSC_12:
+        case OOT_NTSC_GC_U:
         case OOT_PAL_10:
         case OOT_PAL_11:
         case OOT_PAL_GC:
@@ -547,6 +551,8 @@ const char* Extractor::GetZapdVerStr() const {
             return "N64_PAL_10";
         case OOT_PAL_11:
             return "N64_PAL_11";
+        case OOT_NTSC_GC_U:
+            return "GC_NMQ_NTSC_U";
         case OOT_NTSC_10:
             return "N64_NTSC_10";
         case OOT_NTSC_11:
