@@ -1,0 +1,8 @@
+<Root>
+    <File Name="object_mjin" Segment="6">
+        <DList Name="gWarpPadBaseDL" Offset="0x330"/>
+        <Collision Name="gWarpPadCol" Offset="0x658"/>
+        <Texture Name="gWarpPadSideTex" OutName="side" Format="rgba16" Width="64" Height="16" Offset="0x690"/>
+        <Texture Name="gWarpPadTopTex" OutName="top" Format="i8" Width="32" Height="32" Offset="0xE90"/>
+    </File>
+</Root>

@@ -1,0 +1,96 @@
+<Root>
+    <File Name="object_mu" Segment="6">
+        <Animation Name="object_mu_Anim_0003F4" Offset="0x3F4"/>
+        <Texture Name="object_mu_TLUT_000410" OutName="tlut_00000410" Format="rgba16" Width="16" Height="16" Offset="0x410"/>
+        <Texture Name="object_mu_Tex_000610" OutName="tex_00000610" Format="i8" Width="8" Height="8" Offset="0x610"/>
+        <Texture Name="object_mu_Tex_000650" OutName="tex_00000650" Format="i8" Width="8" Height="8" Offset="0x650"/>
+        <Texture Name="object_mu_Tex_000690" OutName="tex_00000690" Format="i8" Width="8" Height="8" Offset="0x690"/>
+        <Texture Name="object_mu_Tex_0006D0" OutName="tex_000006D0" Format="i8" Width="8" Height="8" Offset="0x6D0"/>
+        <Texture Name="object_mu_Tex_000710" OutName="tex_00000710" Format="ci8" Width="8" Height="16" Offset="0x710" TlutOffset="0x410"/>
+        <Texture Name="object_mu_Tex_000790" OutName="tex_00000790" Format="ci8" Width="8" Height="8" Offset="0x790" TlutOffset="0x410"/>
+        <Texture Name="object_mu_Tex_0007D0" OutName="tex_000007D0" Format="ci8" Width="8" Height="8" Offset="0x7D0" TlutOffset="0x410"/>
+        <Texture Name="object_mu_Tex_000810" OutName="tex_00000810" Format="ci8" Width="8" Height="8" Offset="0x810" TlutOffset="0x410"/>
+        <Texture Name="object_mu_Tex_000850" OutName="tex_00000850" Format="ci8" Width="8" Height="8" Offset="0x850" TlutOffset="0x410"/>
+        <Texture Name="object_mu_Tex_000890" OutName="tex_00000890" Format="ci8" Width="8" Height="8" Offset="0x890" TlutOffset="0x410"/>
+        <DList Name="object_mu_DL_003110" Offset="0x3110"/>
+        <DList Name="object_mu_DL_0035E8" Offset="0x35E8"/>
+        <DList Name="object_mu_DL_0037B0" Offset="0x37B0"/>
+        <DList Name="object_mu_DL_003B08" Offset="0x3B08"/>
+        <DList Name="object_mu_DL_003DB0" Offset="0x3DB0"/>
+        <DList Name="object_mu_DL_004108" Offset="0x4108"/>
+        <DList Name="object_mu_DL_0043E0" Offset="0x43E0"/>
+        <DList Name="object_mu_DL_0044C8" Offset="0x44C8"/>
+        <DList Name="object_mu_DL_0045F0" Offset="0x45F0"/>
+        <DList Name="object_mu_DL_004798" Offset="0x4798"/>
+        <DList Name="object_mu_DL_004958" Offset="0x4958"/>
+        <DList Name="object_mu_DL_004C68" Offset="0x4C68"/>
+        <DList Name="object_mu_DL_004D80" Offset="0x4D80"/>
+        <Limb Name="object_mu_Limb_004E80" LimbType="Standard" Offset="0x4E80"/>
+        <Limb Name="object_mu_Limb_004E8C" LimbType="Standard" Offset="0x4E8C"/>
+        <Limb Name="object_mu_Limb_004E98" LimbType="Standard" Offset="0x4E98"/>
+        <Limb Name="object_mu_Limb_004EA4" LimbType="Standard" Offset="0x4EA4"/>
+        <Limb Name="object_mu_Limb_004EB0" LimbType="Standard" Offset="0x4EB0"/>
+        <Limb Name="object_mu_Limb_004EBC" LimbType="Standard" Offset="0x4EBC"/>
+        <Limb Name="object_mu_Limb_004EC8" LimbType="Standard" Offset="0x4EC8"/>
+        <Limb Name="object_mu_Limb_004ED4" LimbType="Standard" Offset="0x4ED4"/>
+        <Limb Name="object_mu_Limb_004EE0" LimbType="Standard" Offset="0x4EE0"/>
+        <Limb Name="object_mu_Limb_004EEC" LimbType="Standard" Offset="0x4EEC"/>
+        <Limb Name="object_mu_Limb_004EF8" LimbType="Standard" Offset="0x4EF8"/>
+        <Limb Name="object_mu_Limb_004F04" LimbType="Standard" Offset="0x4F04"/>
+        <Limb Name="object_mu_Limb_004F10" LimbType="Standard" Offset="0x4F10"/>
+        <Limb Name="object_mu_Limb_004F1C" LimbType="Standard" Offset="0x4F1C"/>
+        <Limb Name="object_mu_Limb_004F28" LimbType="Standard" Offset="0x4F28"/>
+        <Skeleton Name="object_mu_Skel_004F70" Type="Flex" LimbType="Standard" Offset="0x4F70"/>
+        <Animation Name="gDancingCoupleAnim" Offset="0x5040"/>
+        <Texture Name="object_mu_TLUT_005050" OutName="tlut_00005050" Format="rgba16" Width="16" Height="16" Offset="0x5050"/>
+        <Texture Name="object_mu_Tex_005250" OutName="tex_00005250" Format="i8" Width="16" Height="16" Offset="0x5250"/>
+        <Texture Name="object_mu_Tex_005350" OutName="tex_00005350" Format="ci8" Width="16" Height="16" Offset="0x5350" TlutOffset="0x5050"/>
+        <Texture Name="object_mu_Tex_005450" OutName="tex_00005450" Format="i8" Width="8" Height="8" Offset="0x5450"/>
+        <Texture Name="object_mu_Tex_005490" OutName="tex_00005490" Format="ci8" Width="8" Height="8" Offset="0x5490" TlutOffset="0x5050"/>
+        <Texture Name="object_mu_Tex_0054D0" OutName="tex_000054D0" Format="ci8" Width="16" Height="16" Offset="0x54D0" TlutOffset="0x5050"/>
+        <Texture Name="object_mu_Tex_0055D0" OutName="tex_000055D0" Format="ci8" Width="8" Height="8" Offset="0x55D0" TlutOffset="0x5050"/>
+        <Texture Name="object_mu_Tex_005610" OutName="tex_00005610" Format="ci8" Width="32" Height="16" Offset="0x5610" TlutOffset="0x5050"/>
+        <Texture Name="object_mu_Tex_005810" OutName="tex_00005810" Format="ci8" Width="32" Height="32" Offset="0x5810" TlutOffset="0x5050"/>
+        <Texture Name="object_mu_Tex_005C10" OutName="tex_00005C10" Format="ci8" Width="8" Height="8" Offset="0x5C10" TlutOffset="0x5050"/>
+        <Texture Name="object_mu_Tex_005C50" OutName="tex_00005C50" Format="ci8" Width="8" Height="16" Offset="0x5C50" TlutOffset="0x5050"/>
+        <Texture Name="object_mu_Tex_005CD0" OutName="tex_00005CD0" Format="ci8" Width="32" Height="32" Offset="0x5CD0" TlutOffset="0x5050"/>
+        <DList Name="object_mu_DL_008FD0" Offset="0x8FD0"/>
+        <DList Name="object_mu_DL_009328" Offset="0x9328"/>
+        <DList Name="object_mu_DL_009828" Offset="0x9828"/>
+        <DList Name="object_mu_DL_009970" Offset="0x9970"/>
+        <DList Name="object_mu_DL_009A70" Offset="0x9A70"/>
+        <DList Name="object_mu_DL_009B70" Offset="0x9B70"/>
+        <DList Name="object_mu_DL_009CB8" Offset="0x9CB8"/>
+        <DList Name="object_mu_DL_009DB8" Offset="0x9DB8"/>
+        <DList Name="object_mu_DL_009EB8" Offset="0x9EB8"/>
+        <DList Name="object_mu_DL_00A028" Offset="0xA028"/>
+        <DList Name="object_mu_DL_00A170" Offset="0xA170"/>
+        <DList Name="object_mu_DL_00A670" Offset="0xA670"/>
+        <DList Name="object_mu_DL_00A770" Offset="0xA770"/>
+        <DList Name="object_mu_DL_00A870" Offset="0xA870"/>
+        <DList Name="object_mu_DL_00A9B8" Offset="0xA9B8"/>
+        <DList Name="object_mu_DL_00AAB8" Offset="0xAAB8"/>
+        <DList Name="object_mu_DL_00ABB8" Offset="0xABB8"/>
+        <Limb Name="object_mu_Limb_00AD00" LimbType="Standard" Offset="0xAD00"/>
+        <Limb Name="object_mu_Limb_00AD0C" LimbType="Standard" Offset="0xAD0C"/>
+        <Limb Name="object_mu_Limb_00AD18" LimbType="Standard" Offset="0xAD18"/>
+        <Limb Name="object_mu_Limb_00AD24" LimbType="Standard" Offset="0xAD24"/>
+        <Limb Name="object_mu_Limb_00AD30" LimbType="Standard" Offset="0xAD30"/>
+        <Limb Name="object_mu_Limb_00AD3C" LimbType="Standard" Offset="0xAD3C"/>
+        <Limb Name="object_mu_Limb_00AD48" LimbType="Standard" Offset="0xAD48"/>
+        <Limb Name="object_mu_Limb_00AD54" LimbType="Standard" Offset="0xAD54"/>
+        <Limb Name="object_mu_Limb_00AD60" LimbType="Standard" Offset="0xAD60"/>
+        <Limb Name="object_mu_Limb_00AD6C" LimbType="Standard" Offset="0xAD6C"/>
+        <Limb Name="object_mu_Limb_00AD78" LimbType="Standard" Offset="0xAD78"/>
+        <Limb Name="object_mu_Limb_00AD84" LimbType="Standard" Offset="0xAD84"/>
+        <Limb Name="object_mu_Limb_00AD90" LimbType="Standard" Offset="0xAD90"/>
+        <Limb Name="object_mu_Limb_00AD9C" LimbType="Standard" Offset="0xAD9C"/>
+        <Limb Name="object_mu_Limb_00ADA8" LimbType="Standard" Offset="0xADA8"/>
+        <Limb Name="object_mu_Limb_00ADB4" LimbType="Standard" Offset="0xADB4"/>
+        <Limb Name="object_mu_Limb_00ADC0" LimbType="Standard" Offset="0xADC0"/>
+        <Limb Name="object_mu_Limb_00ADCC" LimbType="Standard" Offset="0xADCC"/>
+        <Limb Name="object_mu_Limb_00ADD8" LimbType="Standard" Offset="0xADD8"/>
+        <Limb Name="object_mu_Limb_00ADE4" LimbType="Standard" Offset="0xADE4"/>
+        <Skeleton Name="gDancingCoupleSkel" Type="Flex" LimbType="Standard" Offset="0xAE40"/>
+    </File>
+</Root>

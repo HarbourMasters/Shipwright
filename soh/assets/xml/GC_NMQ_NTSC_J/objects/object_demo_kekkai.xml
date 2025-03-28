@@ -1,0 +1,57 @@
+<Root>
+    <File Name="object_demo_kekkai" Segment="6">
+        <Texture Name="object_demo_kekkaiTex_000000" OutName="object_demo_kekkaiTex_000000" Format="i8" Width="32" Height="64" Offset="0x0" AddedByScript="true"/>
+        <Texture Name="object_demo_kekkaiTex_000800" OutName="object_demo_kekkaiTex_000800" Format="i8" Width="32" Height="64" Offset="0x800" AddedByScript="true"/>
+        <Texture Name="object_demo_kekkaiTex_001000" OutName="object_demo_kekkaiTex_001000" Format="rgba16" Width="32" Height="64" Offset="0x1000" AddedByScript="true"/>
+        <Texture Name="object_demo_kekkaiTex_002450" OutName="object_demo_kekkaiTex_002450" Format="rgba16" Width="32" Height="64" Offset="0x2450" AddedByScript="true"/>
+        <Texture Name="object_demo_kekkaiTex_0036A0" OutName="object_demo_kekkaiTex_0036A0" Format="rgba16" Width="32" Height="32" Offset="0x36A0" AddedByScript="true"/>
+        <Texture Name="object_demo_kekkaiTex_003EA0" OutName="object_demo_kekkaiTex_003EA0" Format="i8" Width="32" Height="32" Offset="0x3EA0" AddedByScript="true"/>
+        <Texture Name="object_demo_kekkaiTex_004AC0" OutName="object_demo_kekkaiTex_004AC0" Format="i8" Width="32" Height="32" Offset="0x4AC0" AddedByScript="true"/>
+        <Texture Name="object_demo_kekkaiTex_006140" OutName="object_demo_kekkaiTex_006140" Format="ia16" Width="8" Height="128" Offset="0x6140" AddedByScript="true"/>
+        <Texture Name="object_demo_kekkaiTex_006940" OutName="object_demo_kekkaiTex_006940" Format="ia8" Width="64" Height="64" Offset="0x6940" AddedByScript="true"/>
+        <Texture Name="object_demo_kekkaiTex_007DB0" OutName="object_demo_kekkaiTex_007DB0" Format="rgba16" Width="32" Height="32" Offset="0x7DB0" AddedByScript="true"/>
+        <Texture Name="object_demo_kekkaiTex_0089D0" OutName="object_demo_kekkaiTex_0089D0" Format="rgba16" Width="32" Height="32" Offset="0x89D0" AddedByScript="true"/>
+        <Texture Name="object_demo_kekkaiTex_0092D0" OutName="object_demo_kekkaiTex_0092D0" Format="rgba16" Width="32" Height="64" Offset="0x92D0" AddedByScript="true"/>
+        <Texture Name="object_demo_kekkaiTex_00A440" OutName="object_demo_kekkaiTex_00A440" Format="rgba16" Width="64" Height="32" Offset="0xA440" AddedByScript="true"/>
+        <Texture Name="object_demo_kekkaiTex_00B540" OutName="object_demo_kekkaiTex_00B540" Format="ia16" Width="32" Height="32" Offset="0xB540" AddedByScript="true"/>
+        <Texture Name="object_demo_kekkaiTex_00C0B0" OutName="object_demo_kekkaiTex_00C0B0" Format="rgba16" Width="32" Height="32" Offset="0xC0B0" AddedByScript="true"/>
+        <Texture Name="object_demo_kekkaiTex_00C8B0" OutName="object_demo_kekkaiTex_00C8B0" Format="rgba16" Width="32" Height="64" Offset="0xC8B0" AddedByScript="true"/>
+        <!-- Demo_Kekkai -->
+        <DList Name="gTowerBarrierDL" Offset="0x4930"/>
+        <DList Name="gTrialBarrierFloorDL" Offset="0x4F00"/>
+        <Array Name="gTrialBarrierEnergyVtx" Count="102" Offset="0x4FD0">
+            <Vtx/>
+        </Array>
+        <DList Name="gTrialBarrierEnergyDL" Offset="0x5A30"/>
+        <DList Name="gTrialBarrierOrbDL" Offset="0x5CB0"/>
+
+        <!-- Bg_Gnd_Darkmeiro -->
+        <DList Name="gShadowTrialPathDL" Offset="0x88B0"/>
+        <DList Name="gClearBlockDL" Offset="0xBEC0"/>
+        <Collision Name="gClearBlockCol" Offset="0xC080"/>
+
+        <!-- Bg_Gnd_Firemeiro -->
+        <DList Name="gFireTrialPlatformDL" Offset="0xE210"/>
+        <Collision Name="gFireTrialPlatformCol" Offset="0xECD8"/>
+
+        <!-- Bg_Gnd_Iceblock -->
+        <DList Name="gWaterTrialIceBlockDL" Offset="0x4420"/>
+        <Collision Name="gWaterTrialIceBlockCol" Offset="0x4618"/>
+
+        <!-- Bg_Gnd_Nisekabe -->
+        <DList Name="gLightTrialFakeWallDL" Offset="0x9230"/>
+        <DList Name="gGanonsCastleUnusedFakeWallDL" Offset="0xA390"/>
+        <DList Name="gGanonsCastleScrubsFakeWallDL" Offset="0xB4A0"/>
+
+        <!-- Bg_Gnd_Soulmeiro -->
+        <DList Name="gSpiritTrialWebDL" Offset="0x7C00"/>
+        <DList Name="gSpiritTrialLightSourceDL" Offset="0x2320"/>
+        <DList Name="gSpiritTrialLightFloorDL" Offset="0x35A0"/>
+
+        <!-- Object_Kankyo -->
+        <DList Name="gDemoKekkaiDL_005FF0" Offset="0x5FF0"/>
+
+        <!-- Door_Shutter -->
+        <DList Name="gGanonsCastleDoorDL" Offset="0x20D0"/>
+    </File>
+</Root>
