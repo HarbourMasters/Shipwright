@@ -65,6 +65,7 @@ void SohMenu::AddMenuEnhancements() {
             }
             CVarSetInteger(presetTypeCvar.c_str(), selectedPresetId);
             Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            ShipInit::Init("*");
         });
 
     // Quality of Life

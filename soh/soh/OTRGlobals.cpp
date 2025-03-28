@@ -2538,6 +2538,7 @@ void SoH_ProcessDroppedFiles(std::string filePath) {
         std::dynamic_pointer_cast<Ship::ConsoleWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->ClearBindings();
 
         gui->SaveConsoleVariablesNextFrame();
+        ShipInit::Init("*");
 
         uint32_t finalHash = boost::hash_32<std::string>{}(configJson.dump());
         gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Configuration Loaded. Hash: %d", finalHash);
