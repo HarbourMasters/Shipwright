@@ -1,0 +1,11 @@
+<Root>
+	<File Name="jpn_message_data_static">
+		<Text Name="jpn_message_data_static" CodeOffset="0xF8FCC" Language="Japanese"/>
+	</File>
+	<File Name="nes_message_data_static">
+		<Text Name="ntsc_nes_message_data_static" CodeOffset="0xFD10C"/>
+	</File>
+	<File Name="staff_message_data_static">
+		<Text Name="staff_message_data_static" CodeOffset="0x10132C"/>
+	</File>
+</Root>
