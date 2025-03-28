@@ -107,11 +107,40 @@ std::vector<ItemTrackerItem> bossSoulItems = {
 std::vector<ItemTrackerItem> ocarinaButtonItems = {
     //Hack for right now, just gonna draw ocarina buttons as ocarinas.
     //Will replace with other macro once we have a custom texture
-    ITEM_TRACKER_ITEM_CUSTOM(RG_OCARINA_A_BUTTON, ITEM_OCARINA_TIME, ITEM_OCARINA_TIME, 0, DrawItem ),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_OCARINA_C_UP_BUTTON, ITEM_OCARINA_TIME, ITEM_OCARINA_TIME, 0, DrawItem ),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_OCARINA_C_DOWN_BUTTON, ITEM_OCARINA_TIME, ITEM_OCARINA_TIME, 0, DrawItem ),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_OCARINA_C_LEFT_BUTTON, ITEM_OCARINA_TIME, ITEM_OCARINA_TIME, 0, DrawItem ),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_OCARINA_C_RIGHT_BUTTON, ITEM_OCARINA_TIME, ITEM_OCARINA_TIME, 0, DrawItem ),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_OCARINA_A_BUTTON,       ITEM_OCARINA_TIME, ITEM_OCARINA_TIME, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_OCARINA_C_UP_BUTTON,    ITEM_OCARINA_TIME, ITEM_OCARINA_TIME, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_OCARINA_C_DOWN_BUTTON,  ITEM_OCARINA_TIME, ITEM_OCARINA_TIME, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_OCARINA_C_LEFT_BUTTON,  ITEM_OCARINA_TIME, ITEM_OCARINA_TIME, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_OCARINA_C_RIGHT_BUTTON, ITEM_OCARINA_TIME, ITEM_OCARINA_TIME, 0, DrawItem),
+};
+
+std::vector<ItemTrackerItem> overworldKeyItems = {
+    // Hack for right now, just gonna overworld keys as dungeon keys.
+    // Will replace with other macro once we have a custom texture
+    ITEM_TRACKER_ITEM_CUSTOM(RG_GUARD_HOUSE_KEY,                  ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_MARKET_BAZAAR_KEY,                ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_MARKET_POTION_SHOP_KEY,           ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_MASK_SHOP_KEY,                    ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_MARKET_SHOOTING_GALLERY_KEY,      ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_BOMBCHU_BOWLING_KEY,              ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_TREASURE_CHEST_GAME_BUILDING_KEY, ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_BOMBCHU_SHOP_KEY,                 ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_RICHARDS_HOUSE_KEY,               ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_ALLEY_HOUSE_KEY,                  ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_KAK_BAZAAR_KEY,                   ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_KAK_POTION_SHOP_KEY,              ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_BOSS_HOUSE_KEY,                   ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_GRANNYS_POTION_SHOP_KEY,          ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_SKULLTULA_HOUSE_KEY,              ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_IMPAS_HOUSE_KEY,                  ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_WINDMILL_KEY,                     ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_KAK_SHOOTING_GALLERY_KEY,         ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_DAMPES_HUT_KEY,                   ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_TALONS_HOUSE_KEY,                 ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_STABLES_KEY,                      ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_BACK_TOWER_KEY,                   ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_HYLIA_LAB_KEY,                    ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_FISHING_HOLE_KEY,                 ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
 };
 
 std::vector<ItemTrackerItem> fishingPoleItems = {
@@ -206,6 +235,33 @@ std::map<uint16_t, std::string> itemTrackerOcarinaButtonShortNames = {
     { RG_OCARINA_C_DOWN_BUTTON, "C-D" },
     { RG_OCARINA_C_LEFT_BUTTON, "C-L"},
     { RG_OCARINA_C_RIGHT_BUTTON, "C-R"},
+};
+
+std::map<uint16_t, std::string> itemTrackerOverworldKeyShortNames = {
+    { RG_GUARD_HOUSE_KEY, "GUARD" },
+    { RG_MARKET_BAZAAR_KEY, "MKBAZ" },
+    { RG_MARKET_POTION_SHOP_KEY, "MKPOT" },
+    { RG_MASK_SHOP_KEY, "MASK" },
+    { RG_MARKET_SHOOTING_GALLERY_KEY, "MKSHO" },
+    { RG_BOMBCHU_BOWLING_KEY, "BOWL" },
+    { RG_TREASURE_CHEST_GAME_BUILDING_KEY, "TREASU" },
+    { RG_BOMBCHU_SHOP_KEY, "CHUSHO" },
+    { RG_RICHARDS_HOUSE_KEY, "RICH" },
+    { RG_ALLEY_HOUSE_KEY, "ALLEY" },
+    { RG_KAK_BAZAAR_KEY, "KAKBAZ" },
+    { RG_KAK_POTION_SHOP_KEY, "KAKPO" },
+    { RG_BOSS_HOUSE_KEY, "BOSS" },
+    { RG_GRANNYS_POTION_SHOP_KEY, "GRANNY" },
+    { RG_SKULLTULA_HOUSE_KEY, "SKULL" },
+    { RG_IMPAS_HOUSE_KEY, "IMPAS" },
+    { RG_WINDMILL_KEY, "WIND" },
+    { RG_KAK_SHOOTING_GALLERY_KEY, "KAKSHO" },
+    { RG_DAMPES_HUT_KEY, "DAMPES" },
+    { RG_TALONS_HOUSE_KEY, "TALONS" },
+    { RG_STABLES_KEY, "STABLE" },
+    { RG_BACK_TOWER_KEY, "TOWER" },
+    { RG_HYLIA_LAB_KEY, "LAB" },
+    { RG_FISHING_HOLE_KEY, "FISH" },
 };
 
 std::vector<ItemTrackerItem> dungeonItems = {};
@@ -645,7 +701,9 @@ void DrawItem(ItemTrackerItem item) {
     bool hasItem = actualItemId != ITEM_NONE;
     std::string itemName = "";
 
-    if (item.id == ITEM_NONE) {
+    // Hack fix as RG_MARKET_SHOOTING_GALLERY_KEY is RandomizerGet #255 which collides
+    // with ITEM_NONE (ItemId #255) due to the lack of a modid to separate them
+    if (item.name != "ITEM_KEY_SMALL" && item.id == ITEM_NONE) {
         return;
     }
 
@@ -732,7 +790,6 @@ void DrawItem(ItemTrackerItem item) {
             actualItemId = item.id;
             hasItem = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BOSS_SOULS) == RO_BOSS_SOULS_ON_PLUS_GANON ? 
                 Flags_GetRandomizerInf(RAND_INF_GANON_SOUL) : true;
-                
             itemName = "Ganon's Soul";
             break;
 
@@ -766,6 +823,127 @@ void DrawItem(ItemTrackerItem item) {
             hasItem = IS_RANDO && Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND);
             itemName = "Fishing Pole";
             break;
+
+        case RG_GUARD_HOUSE_KEY:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_GUARD_HOUSE_KEY_OBTAINED);
+            itemName = "Guard House Key";
+            break;
+        case RG_MARKET_BAZAAR_KEY:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_MARKET_BAZAAR_KEY_OBTAINED);
+            itemName = "Market Bazaar Key";
+            break;
+        case RG_MARKET_POTION_SHOP_KEY:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_MARKET_POTION_SHOP_KEY_OBTAINED);
+            itemName = "Market Potion Shop Key";
+            break;
+        case RG_MASK_SHOP_KEY:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_MASK_SHOP_KEY_OBTAINED);
+            itemName = "Mask Shop Key";
+            break;
+        case RG_MARKET_SHOOTING_GALLERY_KEY:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_MARKET_SHOOTING_GALLERY_KEY_OBTAINED);
+            itemName = "Market Shooting Gallery Key";
+            break;
+        case RG_BOMBCHU_BOWLING_KEY:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_BOMBCHU_BOWLING_KEY_OBTAINED);
+            itemName = "Bombchu Bowling Key";
+            break;
+        case RG_TREASURE_CHEST_GAME_BUILDING_KEY:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_TREASURE_CHEST_GAME_BUILDING_KEY_OBTAINED);
+            itemName = "Treasure Chest Game Building Key";
+            break;
+        case RG_BOMBCHU_SHOP_KEY:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_BOMBCHU_SHOP_KEY_OBTAINED);
+            itemName = "Bombchu Shop Key";
+            break;
+        case RG_RICHARDS_HOUSE_KEY:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_RICHARDS_HOUSE_KEY_OBTAINED);
+            itemName = "Richards House Key";
+            break;
+        case RG_ALLEY_HOUSE_KEY:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_ALLEY_HOUSE_KEY_OBTAINED);
+            itemName = "Alley House Key";
+            break;
+        case RG_KAK_BAZAAR_KEY:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_KAK_BAZAAR_KEY_OBTAINED);
+            itemName = "Kak Bazaar Key";
+            break;
+        case RG_KAK_POTION_SHOP_KEY:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_KAK_POTION_SHOP_KEY_OBTAINED);
+            itemName = "Kak Potion Shop Key";
+            break;
+        case RG_BOSS_HOUSE_KEY:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_BOSS_HOUSE_KEY_OBTAINED);
+            itemName = "Boss House Key";
+            break;
+        case RG_GRANNYS_POTION_SHOP_KEY:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_GRANNYS_POTION_SHOP_KEY_OBTAINED);
+            itemName = "Granny's Potion Shop Key";
+            break;
+        case RG_SKULLTULA_HOUSE_KEY:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_SKULLTULA_HOUSE_KEY_OBTAINED);
+            itemName = "Skulltula House Key";
+            break;
+        case RG_IMPAS_HOUSE_KEY:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_IMPAS_HOUSE_KEY_OBTAINED);
+            itemName = "Impa's House Key";
+            break;
+        case RG_WINDMILL_KEY:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_WINDMILL_KEY_OBTAINED);
+            itemName = "Windmill Key";
+            break;
+        case RG_KAK_SHOOTING_GALLERY_KEY:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_KAK_SHOOTING_GALLERY_KEY_OBTAINED);
+            itemName = "Kak Shooting Gallery Key";
+            break;
+        case RG_DAMPES_HUT_KEY:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_DAMPES_HUT_KEY_OBTAINED);
+            itemName = "Dampé's Hut Key";
+            break;
+        case RG_TALONS_HOUSE_KEY:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_TALONS_HOUSE_KEY_OBTAINED);
+            itemName = "Talon's House Key";
+            break;
+        case RG_STABLES_KEY:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_STABLES_KEY_OBTAINED);
+            itemName = "Stables Key";
+            break;
+        case RG_BACK_TOWER_KEY:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_BACK_TOWER_KEY_OBTAINED);
+            itemName = "Back Tower Key";
+            break;
+        case RG_HYLIA_LAB_KEY:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_HYLIA_LAB_KEY_OBTAINED);
+            itemName = "Hylia Lab Key";
+            break;
+        case RG_FISHING_HOLE_KEY:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_FISHING_HOLE_KEY_OBTAINED);
+            itemName = "Fishing Hole Key";
+            break;
     }
 
     if (GameInteractor::IsSaveLoaded() && (hasItem && item.id != actualItemId && actualItemTrackerItemMap.find(actualItemId) != actualItemTrackerItemMap.end())) {
@@ -794,6 +972,15 @@ void DrawItem(ItemTrackerItem item) {
         ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(ocarinaButtonName.c_str()).x / 2), p.y - (iconSize + 13)));
         ImGui::PushStyleColor(ImGuiCol_Text, IM_COL_WHITE);
         ImGui::Text("%s", ocarinaButtonName.c_str());
+        ImGui::PopStyleColor();
+    }
+
+    if (item.id >= RG_GUARD_HOUSE_KEY && item.id <= RG_FISHING_HOLE_KEY) {
+        ImVec2 p = ImGui::GetCursorScreenPos();
+        std::string overworldKeyName = itemTrackerOverworldKeyShortNames[item.id];
+        ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(overworldKeyName.c_str()).x / 2), p.y - (iconSize + 13)));
+        ImGui::PushStyleColor(ImGuiCol_Text, IM_COL_WHITE);
+        ImGui::Text("%s", overworldKeyName.c_str());
         ImGui::PopStyleColor();
     }
 
@@ -1189,6 +1376,17 @@ void UpdateVectors() {
         mainWindowItems.insert(mainWindowItems.end(), ocarinaButtonItems.begin(), ocarinaButtonItems.end());
     }
 
+    //If we're adding overworld keys to the main window...
+    if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.OverworldKeys"), SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_MAIN_WINDOW) {
+        //...add empty items on the main window to get the keys on their own row. (Too many to sit with Greg/Triforce pieces/boss souls/ocarina buttons)
+        while (mainWindowItems.size() % 6) {
+            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+        }
+
+        //Add overworld keys
+        mainWindowItems.insert(mainWindowItems.end(), overworldKeyItems.begin(), overworldKeyItems.end());
+    }
+
     shouldUpdateVectors = false;
 }
 
@@ -1330,6 +1528,12 @@ void ItemTrackerWindow::DrawElement() {
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.OcarinaButtons"), SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Ocarina Button Tracker");
             DrawItemsInRows(ocarinaButtonItems);
+            EndFloatingWindows();
+        }
+
+        if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.OverworldKeys"), SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_SEPARATE) {
+            BeginFloatingWindows("Overworld Key Tracker");
+            DrawItemsInRows(overworldKeyItems);
             EndFloatingWindows();
         }
 
@@ -1511,6 +1715,12 @@ void ItemTrackerSettingsWindow::DrawElement() {
     }
 
     if (CVarCombobox("Ocarina Buttons", CVAR_TRACKER_ITEM("DisplayType.OcarinaButtons"), displayTypes, ComboboxOptions()
+            .DefaultIndex(SECTION_DISPLAY_HIDDEN).ComponentAlignment(ComponentAlignments::Right)
+            .LabelPosition(LabelPositions::Far).Color(THEME_COLOR))) {
+        shouldUpdateVectors = true;
+    }
+
+    if (CVarCombobox("Overworld Keys", CVAR_TRACKER_ITEM("DisplayType.OverworldKeys"), displayTypes, ComboboxOptions()
             .DefaultIndex(SECTION_DISPLAY_HIDDEN).ComponentAlignment(ComponentAlignments::Right)
             .LabelPosition(LabelPositions::Far).Color(THEME_COLOR))) {
         shouldUpdateVectors = true;

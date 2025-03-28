@@ -856,6 +856,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
     mCurNumRandomizedEntrances = 0;
 
     std::vector<EntranceInfoPair> entranceShuffleTable = {
+        // clang-format off
         // Type                         Parent Region                        Connected Region                      Index
         { { EntranceType::Dungeon,      RR_KF_OUTSIDE_DEKU_TREE,             RR_DEKU_TREE_ENTRYWAY,                ENTR_DEKU_TREE_ENTRANCE },
           { EntranceType::Dungeon,      RR_DEKU_TREE_ENTRYWAY,               RR_KF_OUTSIDE_DEKU_TREE,              ENTR_KOKIRI_FOREST_OUTSIDE_DEKU_TREE } },
@@ -1161,6 +1162,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
           NO_RETURN_ENTRANCE },
         { { EntranceType::BlueWarp, RR_SHADOW_TEMPLE_BOSS_ROOM,    RR_GRAVEYARD_WARP_PAD_REGION, ENTR_GRAVEYARD_SHADOW_TEMPLE_BLUE_WARP },
           NO_RETURN_ENTRANCE },
+        // clang-format on
     };
 
     std::map<std::string, PriorityEntrance> priorityEntranceTable = {

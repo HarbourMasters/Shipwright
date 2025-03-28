@@ -20,6 +20,7 @@ typedef struct EnKusa {
     /* 0x0150 */ ColliderCylinder collider;
     /* 0x019C */ s16 timer;
     /* 0x019E */ s8 objBankIndex;
+    /*        */ GrassIdentity grassIdentity;
 } EnKusa; // size = 0x01A0
 
 #endif

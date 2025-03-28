@@ -14,6 +14,7 @@
     { sequenceId, { sequenceId, label, sfxKey, category, canBeReplaced, canBeUsedAsReplacement } }
 
 AudioCollection::AudioCollection() {
+    // clang-format off
     //                    (originalSequenceId,                  label,                                      sfxKey,                           category,    canBeReplaced, canBeUsedAsReplacement),
     sequenceMap = {
 
@@ -328,7 +329,7 @@ AudioCollection::AudioCollection() {
         //SEQUENCE_MAP_ENTRY(NA_SE_VO_DUMMY_0x88_YOBI,     "NA_SE_VO_DUMMY_0x88_YOBI",            "NA_SE_VO_DUMMY_0x88_YOBI",       SEQ_VOICE, true, false), // ..
         //SEQUENCE_MAP_ENTRY(NA_SE_VO_DUMMY_0x89_YOBI,     "NA_SE_VO_DUMMY_0x89_YOBI",            "NA_SE_VO_DUMMY_0x89_YOBI",       SEQ_VOICE, true, false), // ..
     };
-
+    // clang-format on
 }
 
 std::string AudioCollection::GetCvarKey(std::string sfxKey) {

@@ -11,14 +11,14 @@ typedef enum {
     CSMC_DISABLED,
     CSMC_BOTH,
     CSMC_TEXTURE,
-    CSMC_SIZE
+    CSMC_SIZE,
 } ChestStyleMatchesContentsType;
 
 typedef enum {
     SGIA_DISABLED,
     SGIA_JUNK,
     SGIA_ALL,
-    SGIA_SIZE
+    SGIA_SIZE,
 } SkipGetItemAnimationType;
 
 typedef enum {
@@ -30,8 +30,8 @@ typedef enum {
 
 typedef enum {
     BUNNY_HOOD_VANILLA,
+    BUNNY_HOOD_FAST,
     BUNNY_HOOD_FAST_AND_JUMP,
-    BUNNY_HOOD_FAST
 } BunnyHoodMode;
 
 typedef enum {
@@ -55,7 +55,7 @@ typedef enum {
 typedef enum {
     BOOTSEQUENCE_DEFAULT,
     BOOTSEQUENCE_AUTHENTIC,
-    BOOTSEQUENCE_FILESELECT
+    BOOTSEQUENCE_FILESELECT,
 } BootSequenceType;
 
 typedef enum {

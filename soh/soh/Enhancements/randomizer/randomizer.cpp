@@ -17,7 +17,7 @@
 #include <imgui_internal.h>
 #include "../custom-message/CustomMessageTypes.h"
 #include "../item-tables/ItemTableManager.h"
-#include "../presets.h"
+#include "../Presets/Presets.h"
 #include "../../../src/overlays/actors/ovl_En_GirlA/z_en_girla.h"
 #include <stdexcept>
 #include "randomizer_check_objects.h"
@@ -100,7 +100,7 @@ static const char* englishRupeeNames[175] = {
     "Studs",              "Super Sea Snails",  "Talent",            "Teef",              "Telecrystals",
     "Tiberium",           "TokKul",            "Toys",              "Turnips",           "Upvotes",
     "V-Bucks",            "Vespene Gas",       "Watts",             "Widgets",           "Woolongs",
-    "World Dollars",      "Wumpa Fruit",       "Yen",               "Zenny",             "Zorkmids"
+    "World Dollars",      "Wumpa Fruit",       "Yen",               "Zenny",             "Zorkmids",
 };
 
 static const char* germanRupeeNames[65] = {
@@ -205,7 +205,7 @@ std::unordered_map<s16, s16> getItemIdToItemId = {
     { GI_PRESCRIPTION, ITEM_PRESCRIPTION },
     { GI_FROG, ITEM_FROG },
     { GI_EYEDROPS, ITEM_EYEDROPS },
-    { GI_CLAIM_CHECK, ITEM_CLAIM_CHECK } 
+    { GI_CLAIM_CHECK, ITEM_CLAIM_CHECK },
 };
 
 #pragma optimize("", off)
@@ -400,12 +400,12 @@ void Randomizer::LoadMerchantMessages() {
 }
 
 std::map<s32, TrialKey> trialFlagToTrialKey = {
-    { EVENTCHKINF_COMPLETED_LIGHT_TRIAL, TK_LIGHT_TRIAL, },
-    { EVENTCHKINF_COMPLETED_FOREST_TRIAL, TK_FOREST_TRIAL, },
-    { EVENTCHKINF_COMPLETED_FIRE_TRIAL, TK_FIRE_TRIAL, },
-    { EVENTCHKINF_COMPLETED_WATER_TRIAL, TK_WATER_TRIAL, },
-    { EVENTCHKINF_COMPLETED_SPIRIT_TRIAL, TK_SPIRIT_TRIAL, },
-    { EVENTCHKINF_COMPLETED_SHADOW_TRIAL, TK_SHADOW_TRIAL, }
+    { EVENTCHKINF_COMPLETED_LIGHT_TRIAL, TK_LIGHT_TRIAL },
+    { EVENTCHKINF_COMPLETED_FOREST_TRIAL, TK_FOREST_TRIAL },
+    { EVENTCHKINF_COMPLETED_FIRE_TRIAL, TK_FIRE_TRIAL },
+    { EVENTCHKINF_COMPLETED_WATER_TRIAL, TK_WATER_TRIAL },
+    { EVENTCHKINF_COMPLETED_SPIRIT_TRIAL, TK_SPIRIT_TRIAL },
+    { EVENTCHKINF_COMPLETED_SHADOW_TRIAL, TK_SHADOW_TRIAL },
 };
 
 bool Randomizer::IsTrialRequired(s32 trialFlag) {
@@ -1007,6 +1007,356 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_ZD_FISH_3,                                                   RAND_INF_ZD_FISH_3 },
     { RC_ZD_FISH_4,                                                   RAND_INF_ZD_FISH_4 },
     { RC_ZD_FISH_5,                                                   RAND_INF_ZD_FISH_5 },
+    // Grass
+    { RC_KF_CHILD_GRASS_1,                                 RAND_INF_KF_CHILD_GRASS_1 },
+    { RC_KF_CHILD_GRASS_2,                                 RAND_INF_KF_CHILD_GRASS_2 },
+    { RC_KF_CHILD_GRASS_3,                                 RAND_INF_KF_CHILD_GRASS_3 },
+    { RC_KF_CHILD_GRASS_4,                                 RAND_INF_KF_CHILD_GRASS_4 },
+    { RC_KF_CHILD_GRASS_5,                                 RAND_INF_KF_CHILD_GRASS_5 },
+    { RC_KF_CHILD_GRASS_6,                                 RAND_INF_KF_CHILD_GRASS_6 },
+    { RC_KF_CHILD_GRASS_7,                                 RAND_INF_KF_CHILD_GRASS_7 },
+    { RC_KF_CHILD_GRASS_8,                                 RAND_INF_KF_CHILD_GRASS_8 },
+    { RC_KF_CHILD_GRASS_9,                                 RAND_INF_KF_CHILD_GRASS_9 },
+    { RC_KF_CHILD_GRASS_10,                                RAND_INF_KF_CHILD_GRASS_10 },
+    { RC_KF_CHILD_GRASS_11,                                RAND_INF_KF_CHILD_GRASS_11 },
+    { RC_KF_CHILD_GRASS_12,                                RAND_INF_KF_CHILD_GRASS_12 },
+    { RC_KF_CHILD_GRASS_MAZE_1,                            RAND_INF_KF_CHILD_GRASS_MAZE_1 },
+    { RC_KF_CHILD_GRASS_MAZE_2,                            RAND_INF_KF_CHILD_GRASS_MAZE_2 },
+    { RC_KF_CHILD_GRASS_MAZE_3,                            RAND_INF_KF_CHILD_GRASS_MAZE_3 },
+    { RC_KF_ADULT_GRASS_1,                                 RAND_INF_KF_ADULT_GRASS_1 },
+    { RC_KF_ADULT_GRASS_2,                                 RAND_INF_KF_ADULT_GRASS_2 },
+    { RC_KF_ADULT_GRASS_3,                                 RAND_INF_KF_ADULT_GRASS_3 },
+    { RC_KF_ADULT_GRASS_4,                                 RAND_INF_KF_ADULT_GRASS_4 },
+    { RC_KF_ADULT_GRASS_5,                                 RAND_INF_KF_ADULT_GRASS_5 },
+    { RC_KF_ADULT_GRASS_6,                                 RAND_INF_KF_ADULT_GRASS_6 },
+    { RC_KF_ADULT_GRASS_7,                                 RAND_INF_KF_ADULT_GRASS_7 },
+    { RC_KF_ADULT_GRASS_8,                                 RAND_INF_KF_ADULT_GRASS_8 },
+    { RC_KF_ADULT_GRASS_9,                                 RAND_INF_KF_ADULT_GRASS_9 },
+    { RC_KF_ADULT_GRASS_10,                                RAND_INF_KF_ADULT_GRASS_10 },
+    { RC_KF_ADULT_GRASS_11,                                RAND_INF_KF_ADULT_GRASS_11 },
+    { RC_KF_ADULT_GRASS_12,                                RAND_INF_KF_ADULT_GRASS_12 },
+    { RC_KF_ADULT_GRASS_13,                                RAND_INF_KF_ADULT_GRASS_13 },
+    { RC_KF_ADULT_GRASS_14,                                RAND_INF_KF_ADULT_GRASS_14 },
+    { RC_KF_ADULT_GRASS_15,                                RAND_INF_KF_ADULT_GRASS_15 },
+    { RC_KF_ADULT_GRASS_16,                                RAND_INF_KF_ADULT_GRASS_16 },
+    { RC_KF_ADULT_GRASS_17,                                RAND_INF_KF_ADULT_GRASS_17 },
+    { RC_KF_ADULT_GRASS_18,                                RAND_INF_KF_ADULT_GRASS_18 },
+    { RC_KF_ADULT_GRASS_19,                                RAND_INF_KF_ADULT_GRASS_19 },
+    { RC_KF_ADULT_GRASS_20,                                RAND_INF_KF_ADULT_GRASS_20 },
+    { RC_LW_GRASS_1,                                       RAND_INF_LW_GRASS_1 },
+    { RC_LW_GRASS_2,                                       RAND_INF_LW_GRASS_2 },
+    { RC_LW_GRASS_3,                                       RAND_INF_LW_GRASS_3 },
+    { RC_LW_GRASS_4,                                       RAND_INF_LW_GRASS_4 },
+    { RC_LW_GRASS_5,                                       RAND_INF_LW_GRASS_5 },
+    { RC_LW_GRASS_6,                                       RAND_INF_LW_GRASS_6 },
+    { RC_LW_GRASS_7,                                       RAND_INF_LW_GRASS_7 },
+    { RC_LW_GRASS_8,                                       RAND_INF_LW_GRASS_8 },
+    { RC_LW_GRASS_9,                                       RAND_INF_LW_GRASS_9 },
+    { RC_MARKET_GRASS_1,                                   RAND_INF_MARKET_GRASS_1 },
+    { RC_MARKET_GRASS_2,                                   RAND_INF_MARKET_GRASS_2 },
+    { RC_MARKET_GRASS_3,                                   RAND_INF_MARKET_GRASS_3 },
+    { RC_MARKET_GRASS_4,                                   RAND_INF_MARKET_GRASS_4 },
+    { RC_MARKET_GRASS_5,                                   RAND_INF_MARKET_GRASS_5 },
+    { RC_MARKET_GRASS_6,                                   RAND_INF_MARKET_GRASS_6 },
+    { RC_MARKET_GRASS_7,                                   RAND_INF_MARKET_GRASS_7 },
+    { RC_MARKET_GRASS_8,                                   RAND_INF_MARKET_GRASS_8 },
+    { RC_HC_GRASS_1,                                       RAND_INF_HC_GRASS_1 },
+    { RC_HC_GRASS_2,                                       RAND_INF_HC_GRASS_2 },
+    { RC_KAK_GRASS_1,                                      RAND_INF_KAK_GRASS_1 },
+    { RC_KAK_GRASS_2,                                      RAND_INF_KAK_GRASS_2 },
+    { RC_KAK_GRASS_3,                                      RAND_INF_KAK_GRASS_3 },
+    { RC_KAK_GRASS_4,                                      RAND_INF_KAK_GRASS_4 },
+    { RC_KAK_GRASS_5,                                      RAND_INF_KAK_GRASS_5 },
+    { RC_KAK_GRASS_6,                                      RAND_INF_KAK_GRASS_6 },
+    { RC_KAK_GRASS_7,                                      RAND_INF_KAK_GRASS_7 },
+    { RC_KAK_GRASS_8,                                      RAND_INF_KAK_GRASS_8 },
+    { RC_GY_GRASS_1,                                       RAND_INF_GY_GRASS_1 },
+    { RC_GY_GRASS_2,                                       RAND_INF_GY_GRASS_2 },
+    { RC_GY_GRASS_3,                                       RAND_INF_GY_GRASS_3 },
+    { RC_GY_GRASS_4,                                       RAND_INF_GY_GRASS_4 },
+    { RC_GY_GRASS_5,                                       RAND_INF_GY_GRASS_5 },
+    { RC_GY_GRASS_6,                                       RAND_INF_GY_GRASS_6 },
+    { RC_GY_GRASS_7,                                       RAND_INF_GY_GRASS_7 },
+    { RC_GY_GRASS_8,                                       RAND_INF_GY_GRASS_8 },
+    { RC_GY_GRASS_9,                                       RAND_INF_GY_GRASS_9 },
+    { RC_GY_GRASS_10,                                      RAND_INF_GY_GRASS_10 },
+    { RC_GY_GRASS_11,                                      RAND_INF_GY_GRASS_11 },
+    { RC_GY_GRASS_12,                                      RAND_INF_GY_GRASS_12 },
+    { RC_LH_GRASS_1,                                       RAND_INF_LH_GRASS_1 },
+    { RC_LH_GRASS_2,                                       RAND_INF_LH_GRASS_2 },
+    { RC_LH_GRASS_3,                                       RAND_INF_LH_GRASS_3 },
+    { RC_LH_GRASS_4,                                       RAND_INF_LH_GRASS_4 },
+    { RC_LH_GRASS_5,                                       RAND_INF_LH_GRASS_5 },
+    { RC_LH_GRASS_6,                                       RAND_INF_LH_GRASS_6 },
+    { RC_LH_GRASS_7,                                       RAND_INF_LH_GRASS_7 },
+    { RC_LH_GRASS_8,                                       RAND_INF_LH_GRASS_8 },
+    { RC_LH_GRASS_9,                                       RAND_INF_LH_GRASS_9 },
+    { RC_LH_GRASS_10,                                      RAND_INF_LH_GRASS_10 },
+    { RC_LH_GRASS_11,                                      RAND_INF_LH_GRASS_11 },
+    { RC_LH_GRASS_12,                                      RAND_INF_LH_GRASS_12 },
+    { RC_LH_GRASS_13,                                      RAND_INF_LH_GRASS_13 },
+    { RC_LH_GRASS_14,                                      RAND_INF_LH_GRASS_14 },
+    { RC_LH_GRASS_15,                                      RAND_INF_LH_GRASS_15 },
+    { RC_LH_GRASS_16,                                      RAND_INF_LH_GRASS_16 },
+    { RC_LH_GRASS_17,                                      RAND_INF_LH_GRASS_17 },
+    { RC_LH_GRASS_18,                                      RAND_INF_LH_GRASS_18 },
+    { RC_LH_GRASS_19,                                      RAND_INF_LH_GRASS_19 },
+    { RC_LH_GRASS_20,                                      RAND_INF_LH_GRASS_20 },
+    { RC_LH_GRASS_21,                                      RAND_INF_LH_GRASS_21 },
+    { RC_LH_GRASS_22,                                      RAND_INF_LH_GRASS_22 },
+    { RC_LH_GRASS_23,                                      RAND_INF_LH_GRASS_23 },
+    { RC_LH_GRASS_24,                                      RAND_INF_LH_GRASS_24 },
+    { RC_LH_GRASS_25,                                      RAND_INF_LH_GRASS_25 },
+    { RC_LH_GRASS_26,                                      RAND_INF_LH_GRASS_26 },
+    { RC_LH_GRASS_27,                                      RAND_INF_LH_GRASS_27 },
+    { RC_LH_GRASS_28,                                      RAND_INF_LH_GRASS_28 },
+    { RC_LH_GRASS_29,                                      RAND_INF_LH_GRASS_29 },
+    { RC_LH_GRASS_30,                                      RAND_INF_LH_GRASS_30 },
+    { RC_LH_GRASS_31,                                      RAND_INF_LH_GRASS_31 },
+    { RC_LH_GRASS_32,                                      RAND_INF_LH_GRASS_32 },
+    { RC_LH_GRASS_33,                                      RAND_INF_LH_GRASS_33 },
+    { RC_LH_GRASS_34,                                      RAND_INF_LH_GRASS_34 },
+    { RC_LH_GRASS_35,                                      RAND_INF_LH_GRASS_35 },
+    { RC_LH_GRASS_36,                                      RAND_INF_LH_GRASS_36 },
+    { RC_LH_CHILD_GRASS_1,                                 RAND_INF_LH_CHILD_GRASS_1 },
+    { RC_LH_CHILD_GRASS_2,                                 RAND_INF_LH_CHILD_GRASS_2 },
+    { RC_LH_CHILD_GRASS_3,                                 RAND_INF_LH_CHILD_GRASS_3 },
+    { RC_LH_CHILD_GRASS_4,                                 RAND_INF_LH_CHILD_GRASS_4 },
+    { RC_LH_WARP_PAD_GRASS_1,                              RAND_INF_LH_WARP_PAD_GRASS_1 },
+    { RC_LH_WARP_PAD_GRASS_2,                              RAND_INF_LH_WARP_PAD_GRASS_2 },
+    { RC_HF_NEAR_KF_GRASS_1,                               RAND_INF_HF_NEAR_KF_GRASS_1 },
+    { RC_HF_NEAR_KF_GRASS_2,                               RAND_INF_HF_NEAR_KF_GRASS_2 },
+    { RC_HF_NEAR_KF_GRASS_3,                               RAND_INF_HF_NEAR_KF_GRASS_3 },
+    { RC_HF_NEAR_KF_GRASS_4,                               RAND_INF_HF_NEAR_KF_GRASS_4 },
+    { RC_HF_NEAR_KF_GRASS_5,                               RAND_INF_HF_NEAR_KF_GRASS_5 },
+    { RC_HF_NEAR_KF_GRASS_6,                               RAND_INF_HF_NEAR_KF_GRASS_6 },
+    { RC_HF_NEAR_KF_GRASS_7,                               RAND_INF_HF_NEAR_KF_GRASS_7 },
+    { RC_HF_NEAR_KF_GRASS_8,                               RAND_INF_HF_NEAR_KF_GRASS_8 },
+    { RC_HF_NEAR_KF_GRASS_9,                               RAND_INF_HF_NEAR_KF_GRASS_9 },
+    { RC_HF_NEAR_KF_GRASS_10,                              RAND_INF_HF_NEAR_KF_GRASS_10 },
+    { RC_HF_NEAR_KF_GRASS_11,                              RAND_INF_HF_NEAR_KF_GRASS_11 },
+    { RC_HF_NEAR_KF_GRASS_12,                              RAND_INF_HF_NEAR_KF_GRASS_12 },
+    { RC_HF_NEAR_MARKET_GRASS_1,                           RAND_INF_HF_NEAR_MARKET_GRASS_1 },
+    { RC_HF_NEAR_MARKET_GRASS_2,                           RAND_INF_HF_NEAR_MARKET_GRASS_2 },
+    { RC_HF_NEAR_MARKET_GRASS_3,                           RAND_INF_HF_NEAR_MARKET_GRASS_3 },
+    { RC_HF_NEAR_MARKET_GRASS_4,                           RAND_INF_HF_NEAR_MARKET_GRASS_4 },
+    { RC_HF_NEAR_MARKET_GRASS_5,                           RAND_INF_HF_NEAR_MARKET_GRASS_5 },
+    { RC_HF_NEAR_MARKET_GRASS_6,                           RAND_INF_HF_NEAR_MARKET_GRASS_6 },
+    { RC_HF_NEAR_MARKET_GRASS_7,                           RAND_INF_HF_NEAR_MARKET_GRASS_7 },
+    { RC_HF_NEAR_MARKET_GRASS_8,                           RAND_INF_HF_NEAR_MARKET_GRASS_8 },
+    { RC_HF_NEAR_MARKET_GRASS_9,                           RAND_INF_HF_NEAR_MARKET_GRASS_9 },
+    { RC_HF_NEAR_MARKET_GRASS_10,                          RAND_INF_HF_NEAR_MARKET_GRASS_10 },
+    { RC_HF_NEAR_MARKET_GRASS_11,                          RAND_INF_HF_NEAR_MARKET_GRASS_11 },
+    { RC_HF_NEAR_MARKET_GRASS_12,                          RAND_INF_HF_NEAR_MARKET_GRASS_12 },
+    { RC_HF_SOUTH_GRASS_1,                                 RAND_INF_HF_SOUTH_GRASS_1 },
+    { RC_HF_SOUTH_GRASS_2,                                 RAND_INF_HF_SOUTH_GRASS_2 },
+    { RC_HF_SOUTH_GRASS_3,                                 RAND_INF_HF_SOUTH_GRASS_3 },
+    { RC_HF_SOUTH_GRASS_4,                                 RAND_INF_HF_SOUTH_GRASS_4 },
+    { RC_HF_SOUTH_GRASS_5,                                 RAND_INF_HF_SOUTH_GRASS_5 },
+    { RC_HF_SOUTH_GRASS_6,                                 RAND_INF_HF_SOUTH_GRASS_6 },
+    { RC_HF_SOUTH_GRASS_7,                                 RAND_INF_HF_SOUTH_GRASS_7 },
+    { RC_HF_SOUTH_GRASS_8,                                 RAND_INF_HF_SOUTH_GRASS_8 },
+    { RC_HF_SOUTH_GRASS_9,                                 RAND_INF_HF_SOUTH_GRASS_9 },
+    { RC_HF_SOUTH_GRASS_10,                                RAND_INF_HF_SOUTH_GRASS_10 },
+    { RC_HF_SOUTH_GRASS_11,                                RAND_INF_HF_SOUTH_GRASS_11 },
+    { RC_HF_SOUTH_GRASS_12,                                RAND_INF_HF_SOUTH_GRASS_12 },
+    { RC_HF_CENTRAL_GRASS_1,                               RAND_INF_HF_CENTRAL_GRASS_1 },
+    { RC_HF_CENTRAL_GRASS_2,                               RAND_INF_HF_CENTRAL_GRASS_2 },
+    { RC_HF_CENTRAL_GRASS_3,                               RAND_INF_HF_CENTRAL_GRASS_3 },
+    { RC_HF_CENTRAL_GRASS_4,                               RAND_INF_HF_CENTRAL_GRASS_4 },
+    { RC_HF_CENTRAL_GRASS_5,                               RAND_INF_HF_CENTRAL_GRASS_5 },
+    { RC_HF_CENTRAL_GRASS_6,                               RAND_INF_HF_CENTRAL_GRASS_6 },
+    { RC_HF_CENTRAL_GRASS_7,                               RAND_INF_HF_CENTRAL_GRASS_7 },
+    { RC_HF_CENTRAL_GRASS_8,                               RAND_INF_HF_CENTRAL_GRASS_8 },
+    { RC_HF_CENTRAL_GRASS_9,                               RAND_INF_HF_CENTRAL_GRASS_9 },
+    { RC_HF_CENTRAL_GRASS_10,                              RAND_INF_HF_CENTRAL_GRASS_10 },
+    { RC_HF_CENTRAL_GRASS_11,                              RAND_INF_HF_CENTRAL_GRASS_11 },
+    { RC_HF_CENTRAL_GRASS_12,                              RAND_INF_HF_CENTRAL_GRASS_12 },
+    { RC_ZR_GRASS_1,                                       RAND_INF_ZR_GRASS_1 },
+    { RC_ZR_GRASS_2,                                       RAND_INF_ZR_GRASS_2 },
+    { RC_ZR_GRASS_3,                                       RAND_INF_ZR_GRASS_3 },
+    { RC_ZR_GRASS_4,                                       RAND_INF_ZR_GRASS_4 },
+    { RC_ZR_GRASS_5,                                       RAND_INF_ZR_GRASS_5 },
+    { RC_ZR_GRASS_6,                                       RAND_INF_ZR_GRASS_6 },
+    { RC_ZR_GRASS_7,                                       RAND_INF_ZR_GRASS_7 },
+    { RC_ZR_GRASS_8,                                       RAND_INF_ZR_GRASS_8 },
+    { RC_ZR_GRASS_9,                                       RAND_INF_ZR_GRASS_9 },
+    { RC_ZR_GRASS_10,                                      RAND_INF_ZR_GRASS_10 },
+    { RC_ZR_GRASS_11,                                      RAND_INF_ZR_GRASS_11 },
+    { RC_ZR_GRASS_12,                                      RAND_INF_ZR_GRASS_12 },
+    { RC_ZR_NEAR_FREESTANDING_POH_GRASS,                   RAND_INF_ZR_NEAR_FREESTANDING_POH_GRASS },
+    // Grotto Grass
+    { RC_KF_STORMS_GROTTO_GRASS_1,                         RAND_INF_KF_STORMS_GROTTO_GRASS_1 },
+    { RC_KF_STORMS_GROTTO_GRASS_2,                         RAND_INF_KF_STORMS_GROTTO_GRASS_2 },
+    { RC_KF_STORMS_GROTTO_GRASS_3,                         RAND_INF_KF_STORMS_GROTTO_GRASS_3 },
+    { RC_KF_STORMS_GROTTO_GRASS_4,                         RAND_INF_KF_STORMS_GROTTO_GRASS_4 },
+    { RC_LW_NEAR_SHORTCUTS_GROTTO_GRASS_1,                 RAND_INF_LW_NEAR_SHORTCUTS_GROTTO_GRASS_1 },
+    { RC_LW_NEAR_SHORTCUTS_GROTTO_GRASS_2,                 RAND_INF_LW_NEAR_SHORTCUTS_GROTTO_GRASS_2 },
+    { RC_LW_NEAR_SHORTCUTS_GROTTO_GRASS_3,                 RAND_INF_LW_NEAR_SHORTCUTS_GROTTO_GRASS_3 },
+    { RC_LW_NEAR_SHORTCUTS_GROTTO_GRASS_4,                 RAND_INF_LW_NEAR_SHORTCUTS_GROTTO_GRASS_4 },
+    { RC_HF_NEAR_MARKET_GROTTO_GRASS_1,                    RAND_INF_HF_NEAR_MARKET_GROTTO_GRASS_1 },
+    { RC_HF_NEAR_MARKET_GROTTO_GRASS_2,                    RAND_INF_HF_NEAR_MARKET_GROTTO_GRASS_2 },
+    { RC_HF_NEAR_MARKET_GROTTO_GRASS_3,                    RAND_INF_HF_NEAR_MARKET_GROTTO_GRASS_3 },
+    { RC_HF_NEAR_MARKET_GROTTO_GRASS_4,                    RAND_INF_HF_NEAR_MARKET_GROTTO_GRASS_4 },
+    { RC_HF_OPEN_GROTTO_GRASS_1,                           RAND_INF_HF_OPEN_GROTTO_GRASS_1 },
+    { RC_HF_OPEN_GROTTO_GRASS_2,                           RAND_INF_HF_OPEN_GROTTO_GRASS_2 },
+    { RC_HF_OPEN_GROTTO_GRASS_3,                           RAND_INF_HF_OPEN_GROTTO_GRASS_3 },
+    { RC_HF_OPEN_GROTTO_GRASS_4,                           RAND_INF_HF_OPEN_GROTTO_GRASS_4 },
+    { RC_HF_SOUTHEAST_GROTTO_GRASS_1,                      RAND_INF_HF_SOUTHEAST_GROTTO_GRASS_1 },
+    { RC_HF_SOUTHEAST_GROTTO_GRASS_2,                      RAND_INF_HF_SOUTHEAST_GROTTO_GRASS_2 },
+    { RC_HF_SOUTHEAST_GROTTO_GRASS_3,                      RAND_INF_HF_SOUTHEAST_GROTTO_GRASS_3 },
+    { RC_HF_SOUTHEAST_GROTTO_GRASS_4,                      RAND_INF_HF_SOUTHEAST_GROTTO_GRASS_4 },
+    { RC_HF_COW_GROTTO_GRASS_1,                            RAND_INF_HF_COW_GROTTO_GRASS_1 },
+    { RC_HF_COW_GROTTO_GRASS_2,                            RAND_INF_HF_COW_GROTTO_GRASS_2 },
+    { RC_KAK_OPEN_GROTTO_GRASS_1,                          RAND_INF_KAK_OPEN_GROTTO_GRASS_1 },
+    { RC_KAK_OPEN_GROTTO_GRASS_2,                          RAND_INF_KAK_OPEN_GROTTO_GRASS_2 },
+    { RC_KAK_OPEN_GROTTO_GRASS_3,                          RAND_INF_KAK_OPEN_GROTTO_GRASS_3 },
+    { RC_KAK_OPEN_GROTTO_GRASS_4,                          RAND_INF_KAK_OPEN_GROTTO_GRASS_4 },
+    { RC_DMT_STORMS_GROTTO_GRASS_1,                        RAND_INF_DMT_STORMS_GROTTO_GRASS_1 },
+    { RC_DMT_STORMS_GROTTO_GRASS_2,                        RAND_INF_DMT_STORMS_GROTTO_GRASS_2 },
+    { RC_DMT_STORMS_GROTTO_GRASS_3,                        RAND_INF_DMT_STORMS_GROTTO_GRASS_3 },
+    { RC_DMT_STORMS_GROTTO_GRASS_4,                        RAND_INF_DMT_STORMS_GROTTO_GRASS_4 },
+    { RC_DMT_COW_GROTTO_GRASS_1,                           RAND_INF_DMT_COW_GROTTO_GRASS_1 },
+    { RC_DMT_COW_GROTTO_GRASS_2,                           RAND_INF_DMT_COW_GROTTO_GRASS_2 },
+    { RC_DMC_UPPER_GROTTO_GRASS_1,                         RAND_INF_DMC_UPPER_GROTTO_GRASS_1 },
+    { RC_DMC_UPPER_GROTTO_GRASS_2,                         RAND_INF_DMC_UPPER_GROTTO_GRASS_2 },
+    { RC_DMC_UPPER_GROTTO_GRASS_3,                         RAND_INF_DMC_UPPER_GROTTO_GRASS_3 },
+    { RC_DMC_UPPER_GROTTO_GRASS_4,                         RAND_INF_DMC_UPPER_GROTTO_GRASS_4 },
+    { RC_ZR_OPEN_GROTTO_GRASS_1,                           RAND_INF_ZR_OPEN_GROTTO_GRASS_1 },
+    { RC_ZR_OPEN_GROTTO_GRASS_2,                           RAND_INF_ZR_OPEN_GROTTO_GRASS_2 },
+    { RC_ZR_OPEN_GROTTO_GRASS_3,                           RAND_INF_ZR_OPEN_GROTTO_GRASS_3 },
+    { RC_ZR_OPEN_GROTTO_GRASS_4,                           RAND_INF_ZR_OPEN_GROTTO_GRASS_4 },
+    // Dungeon Grass
+    { RC_DEKU_TREE_LOBBY_GRASS_1,                          RAND_INF_DEKU_TREE_LOBBY_GRASS_1 },
+    { RC_DEKU_TREE_LOBBY_GRASS_2,                          RAND_INF_DEKU_TREE_LOBBY_GRASS_2 },
+    { RC_DEKU_TREE_LOBBY_GRASS_3,                          RAND_INF_DEKU_TREE_LOBBY_GRASS_3 },
+    { RC_DEKU_TREE_LOBBY_GRASS_4,                          RAND_INF_DEKU_TREE_LOBBY_GRASS_4 },
+    { RC_DEKU_TREE_LOBBY_GRASS_5,                          RAND_INF_DEKU_TREE_LOBBY_GRASS_5 },
+    { RC_DEKU_TREE_SLINGSHOT_GRASS_1,                      RAND_INF_DEKU_TREE_SLINGSHOT_GRASS_1 },
+    { RC_DEKU_TREE_SLINGSHOT_GRASS_2,                      RAND_INF_DEKU_TREE_SLINGSHOT_GRASS_2 },
+    { RC_DEKU_TREE_SLINGSHOT_GRASS_3,                      RAND_INF_DEKU_TREE_SLINGSHOT_GRASS_3 },
+    { RC_DEKU_TREE_SLINGSHOT_GRASS_4,                      RAND_INF_DEKU_TREE_SLINGSHOT_GRASS_4 },
+    { RC_DEKU_TREE_COMPASS_GRASS_1,                        RAND_INF_DEKU_TREE_COMPASS_GRASS_1 },
+    { RC_DEKU_TREE_COMPASS_GRASS_2,                        RAND_INF_DEKU_TREE_COMPASS_GRASS_2 },
+    { RC_DEKU_TREE_BASEMENT_GRASS_1,                       RAND_INF_DEKU_TREE_BASEMENT_GRASS_1 },
+    { RC_DEKU_TREE_BASEMENT_GRASS_2,                       RAND_INF_DEKU_TREE_BASEMENT_GRASS_2 },
+    { RC_DEKU_TREE_BASEMENT_SCRUB_ROOM_GRASS_1,            RAND_INF_DEKU_TREE_BASEMENT_SCRUB_ROOM_GRASS_1 },
+    { RC_DEKU_TREE_BASEMENT_SCRUB_ROOM_GRASS_2,            RAND_INF_DEKU_TREE_BASEMENT_SCRUB_ROOM_GRASS_2 },
+    { RC_DEKU_TREE_BASEMENT_SCRUB_ROOM_GRASS_3,            RAND_INF_DEKU_TREE_BASEMENT_SCRUB_ROOM_GRASS_3 },
+    { RC_DEKU_TREE_BASEMENT_SCRUB_ROOM_GRASS_4,            RAND_INF_DEKU_TREE_BASEMENT_SCRUB_ROOM_GRASS_4 },
+    { RC_DEKU_TREE_BASEMENT_SPIKE_ROLLER_GRASS_1,          RAND_INF_DEKU_TREE_BASEMENT_SPIKE_ROLLER_GRASS_1 },
+    { RC_DEKU_TREE_BASEMENT_SPIKE_ROLLER_GRASS_2,          RAND_INF_DEKU_TREE_BASEMENT_SPIKE_ROLLER_GRASS_2 },
+    { RC_DEKU_TREE_BASEMENT_TORCHES_GRASS_1,               RAND_INF_DEKU_TREE_BASEMENT_TORCHES_GRASS_1 },
+    { RC_DEKU_TREE_BASEMENT_TORCHES_GRASS_2,               RAND_INF_DEKU_TREE_BASEMENT_TORCHES_GRASS_2 },
+    { RC_DEKU_TREE_BASEMENT_LARVAE_GRASS_1,                RAND_INF_DEKU_TREE_BASEMENT_LARVAE_GRASS_1 },
+    { RC_DEKU_TREE_BASEMENT_LARVAE_GRASS_2,                RAND_INF_DEKU_TREE_BASEMENT_LARVAE_GRASS_2 },
+    { RC_DEKU_TREE_BEFORE_BOSS_GRASS_1,                    RAND_INF_DEKU_TREE_BEFORE_BOSS_GRASS_1 },
+    { RC_DEKU_TREE_BEFORE_BOSS_GRASS_2,                    RAND_INF_DEKU_TREE_BEFORE_BOSS_GRASS_2 },
+    { RC_DEKU_TREE_BEFORE_BOSS_GRASS_3,                    RAND_INF_DEKU_TREE_BEFORE_BOSS_GRASS_3 },
+    { RC_DODONGOS_CAVERN_FIRST_BRIDGE_GRASS,               RAND_INF_DODONGOS_CAVERN_FIRST_BRIDGE_GRASS },
+    { RC_DODONGOS_CAVERN_BLADE_GRASS,                      RAND_INF_DODONGOS_CAVERN_BLADE_GRASS },
+    { RC_DODONGOS_CAVERN_SINGLE_EYE_GRASS,                 RAND_INF_DODONGOS_CAVERN_SINGLE_EYE_GRASS },
+    { RC_DODONGOS_CAVERN_BEFORE_BOSS_GRASS,                RAND_INF_DODONGOS_CAVERN_BEFORE_BOSS_GRASS },
+    { RC_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_1, RAND_INF_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_1 },
+    { RC_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_2, RAND_INF_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_2 },
+    { RC_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_3, RAND_INF_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_3 },
+    { RC_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_4, RAND_INF_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_4 },
+    { RC_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_5, RAND_INF_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_5 },
+    { RC_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_6, RAND_INF_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_6 },
+    { RC_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_7, RAND_INF_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_7 },
+    { RC_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_8, RAND_INF_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_8 },
+    { RC_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_9, RAND_INF_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_9 },
+    { RC_BOTTOM_OF_THE_WELL_BASEMENT_GRASS_1,              RAND_INF_BOTTOM_OF_THE_WELL_BASEMENT_GRASS_1 },
+    { RC_BOTTOM_OF_THE_WELL_BASEMENT_GRASS_2,              RAND_INF_BOTTOM_OF_THE_WELL_BASEMENT_GRASS_2 },
+    { RC_BOTTOM_OF_THE_WELL_BASEMENT_GRASS_3,              RAND_INF_BOTTOM_OF_THE_WELL_BASEMENT_GRASS_3 },
+    // MQ Dungeon Grass
+    { RC_DEKU_TREE_MQ_LOBBY_GRASS_1,                       RAND_INF_DEKU_TREE_MQ_LOBBY_GRASS_1 },
+    { RC_DEKU_TREE_MQ_LOBBY_GRASS_2,                       RAND_INF_DEKU_TREE_MQ_LOBBY_GRASS_2 },
+    { RC_DEKU_TREE_MQ_LOBBY_GRASS_3,                       RAND_INF_DEKU_TREE_MQ_LOBBY_GRASS_3 },
+    { RC_DEKU_TREE_MQ_LOBBY_GRASS_4,                       RAND_INF_DEKU_TREE_MQ_LOBBY_GRASS_4 },
+    { RC_DEKU_TREE_MQ_LOBBY_GRASS_5,                       RAND_INF_DEKU_TREE_MQ_LOBBY_GRASS_5 },
+    { RC_DEKU_TREE_MQ_LOBBY_GRASS_6,                       RAND_INF_DEKU_TREE_MQ_LOBBY_GRASS_6 },
+    { RC_DEKU_TREE_MQ_LOBBY_GRASS_7,                       RAND_INF_DEKU_TREE_MQ_LOBBY_GRASS_7 },
+    { RC_DEKU_TREE_MQ_SLINGSHOT_GRASS_1,                   RAND_INF_DEKU_TREE_MQ_SLINGSHOT_GRASS_1 },
+    { RC_DEKU_TREE_MQ_SLINGSHOT_GRASS_2,                   RAND_INF_DEKU_TREE_MQ_SLINGSHOT_GRASS_2 },
+    { RC_DEKU_TREE_MQ_SLINGSHOT_GRASS_3,                   RAND_INF_DEKU_TREE_MQ_SLINGSHOT_GRASS_3 },
+    { RC_DEKU_TREE_MQ_SLINGSHOT_GRASS_4,                   RAND_INF_DEKU_TREE_MQ_SLINGSHOT_GRASS_4 },
+    { RC_DEKU_TREE_MQ_BEFORE_COMPASS_GRASS_1,              RAND_INF_DEKU_TREE_MQ_BEFORE_COMPASS_GRASS_1 },
+    { RC_DEKU_TREE_MQ_BEFORE_COMPASS_GRASS_2,              RAND_INF_DEKU_TREE_MQ_BEFORE_COMPASS_GRASS_2 },
+    { RC_DEKU_TREE_MQ_BEFORE_COMPASS_GRASS_3,              RAND_INF_DEKU_TREE_MQ_BEFORE_COMPASS_GRASS_3 },
+    { RC_DEKU_TREE_MQ_BEFORE_COMPASS_GRASS_4,              RAND_INF_DEKU_TREE_MQ_BEFORE_COMPASS_GRASS_4 },
+    { RC_DEKU_TREE_MQ_BEFORE_COMPASS_GRASS_5,              RAND_INF_DEKU_TREE_MQ_BEFORE_COMPASS_GRASS_5 },
+    { RC_DEKU_TREE_MQ_BEFORE_COMPASS_GRASS_6,              RAND_INF_DEKU_TREE_MQ_BEFORE_COMPASS_GRASS_6 },
+    { RC_DEKU_TREE_MQ_BEFORE_COMPASS_GRASS_7,              RAND_INF_DEKU_TREE_MQ_BEFORE_COMPASS_GRASS_7 },
+    { RC_DEKU_TREE_MQ_COMPASS_GRASS_1,                     RAND_INF_DEKU_TREE_MQ_COMPASS_GRASS_1 },
+    { RC_DEKU_TREE_MQ_COMPASS_GRASS_2,                     RAND_INF_DEKU_TREE_MQ_COMPASS_GRASS_2 },
+    { RC_DEKU_TREE_MQ_COMPASS_GRASS_3,                     RAND_INF_DEKU_TREE_MQ_COMPASS_GRASS_3 },
+    { RC_DEKU_TREE_MQ_COMPASS_GRASS_4,                     RAND_INF_DEKU_TREE_MQ_COMPASS_GRASS_4 },
+    { RC_DEKU_TREE_MQ_BASEMENT_LOWER_GRASS_1,              RAND_INF_DEKU_TREE_MQ_BASEMENT_LOWER_GRASS_1 },
+    { RC_DEKU_TREE_MQ_BASEMENT_LOWER_GRASS_2,              RAND_INF_DEKU_TREE_MQ_BASEMENT_LOWER_GRASS_2 },
+    { RC_DEKU_TREE_MQ_BASEMENT_LOWER_GRASS_3,              RAND_INF_DEKU_TREE_MQ_BASEMENT_LOWER_GRASS_3 },
+    { RC_DEKU_TREE_MQ_BASEMENT_LOWER_GRASS_4,              RAND_INF_DEKU_TREE_MQ_BASEMENT_LOWER_GRASS_4 },
+    { RC_DEKU_TREE_MQ_BASEMENT_UPPER_GRASS_1,              RAND_INF_DEKU_TREE_MQ_BASEMENT_UPPER_GRASS_1 },
+    { RC_DEKU_TREE_MQ_BASEMENT_UPPER_GRASS_2,              RAND_INF_DEKU_TREE_MQ_BASEMENT_UPPER_GRASS_2 },
+    { RC_DEKU_TREE_MQ_BASEMENT_UPPER_GRASS_3,              RAND_INF_DEKU_TREE_MQ_BASEMENT_UPPER_GRASS_3 },
+    { RC_DEKU_TREE_MQ_BASEMENT_SPIKE_ROLLER_FRONT_GRASS_1, RAND_INF_DEKU_TREE_MQ_BASEMENT_SPIKE_ROLLER_FRONT_GRASS_1 },
+    { RC_DEKU_TREE_MQ_BASEMENT_SPIKE_ROLLER_FRONT_GRASS_2, RAND_INF_DEKU_TREE_MQ_BASEMENT_SPIKE_ROLLER_FRONT_GRASS_2 },
+    { RC_DEKU_TREE_MQ_BASEMENT_SPIKE_ROLLER_FRONT_GRASS_3, RAND_INF_DEKU_TREE_MQ_BASEMENT_SPIKE_ROLLER_FRONT_GRASS_3 },
+    { RC_DEKU_TREE_MQ_BASEMENT_SPIKE_ROLLER_BACK_GRASS_1,  RAND_INF_DEKU_TREE_MQ_BASEMENT_SPIKE_ROLLER_BACK_GRASS_1 },
+    { RC_DEKU_TREE_MQ_BASEMENT_SPIKE_ROLLER_BACK_GRASS_2,  RAND_INF_DEKU_TREE_MQ_BASEMENT_SPIKE_ROLLER_BACK_GRASS_2 },
+    { RC_DEKU_TREE_MQ_BASEMENT_TORCHES_GRASS_1,            RAND_INF_DEKU_TREE_MQ_BASEMENT_TORCHES_GRASS_1 },
+    { RC_DEKU_TREE_MQ_BASEMENT_TORCHES_GRASS_2,            RAND_INF_DEKU_TREE_MQ_BASEMENT_TORCHES_GRASS_2 },
+    { RC_DEKU_TREE_MQ_BASEMENT_TORCHES_GRASS_3,            RAND_INF_DEKU_TREE_MQ_BASEMENT_TORCHES_GRASS_3 },
+    { RC_DEKU_TREE_MQ_BASEMENT_TORCHES_GRASS_4,            RAND_INF_DEKU_TREE_MQ_BASEMENT_TORCHES_GRASS_4 },
+    { RC_DEKU_TREE_MQ_BASEMENT_LARVAE_GRASS_1,             RAND_INF_DEKU_TREE_MQ_BASEMENT_LARVAE_GRASS_1 },
+    { RC_DEKU_TREE_MQ_BASEMENT_LARVAE_GRASS_2,             RAND_INF_DEKU_TREE_MQ_BASEMENT_LARVAE_GRASS_2 },
+    { RC_DEKU_TREE_MQ_BASEMENT_GRAVES_GRASS_1,             RAND_INF_DEKU_TREE_MQ_BASEMENT_GRAVES_GRASS_1 },
+    { RC_DEKU_TREE_MQ_BASEMENT_GRAVES_GRASS_2,             RAND_INF_DEKU_TREE_MQ_BASEMENT_GRAVES_GRASS_2 },
+    { RC_DEKU_TREE_MQ_BASEMENT_GRAVES_GRASS_3,             RAND_INF_DEKU_TREE_MQ_BASEMENT_GRAVES_GRASS_3 },
+    { RC_DEKU_TREE_MQ_BASEMENT_GRAVES_GRASS_4,             RAND_INF_DEKU_TREE_MQ_BASEMENT_GRAVES_GRASS_4 },
+    { RC_DEKU_TREE_MQ_BASEMENT_GRAVES_GRASS_5,             RAND_INF_DEKU_TREE_MQ_BASEMENT_GRAVES_GRASS_5 },
+    { RC_DEKU_TREE_MQ_BASEMENT_BACK_GRASS_1,               RAND_INF_DEKU_TREE_MQ_BASEMENT_BACK_GRASS_1 },
+    { RC_DEKU_TREE_MQ_BASEMENT_BACK_GRASS_2,               RAND_INF_DEKU_TREE_MQ_BASEMENT_BACK_GRASS_2 },
+    { RC_DEKU_TREE_MQ_BASEMENT_BACK_GRASS_3,               RAND_INF_DEKU_TREE_MQ_BASEMENT_BACK_GRASS_3 },
+    { RC_DEKU_TREE_MQ_BEFORE_BOSS_GRASS_1,                 RAND_INF_DEKU_TREE_MQ_BEFORE_BOSS_GRASS_1 },
+    { RC_DEKU_TREE_MQ_BEFORE_BOSS_GRASS_2,                 RAND_INF_DEKU_TREE_MQ_BEFORE_BOSS_GRASS_2 },
+    { RC_DEKU_TREE_MQ_BEFORE_BOSS_GRASS_3,                 RAND_INF_DEKU_TREE_MQ_BEFORE_BOSS_GRASS_3 },
+    { RC_DODONGOS_CAVERN_MQ_COMPASS_GRASS_1,               RAND_INF_DODONGOS_CAVERN_MQ_COMPASS_GRASS_1 },
+    { RC_DODONGOS_CAVERN_MQ_COMPASS_GRASS_2,               RAND_INF_DODONGOS_CAVERN_MQ_COMPASS_GRASS_2 },
+    { RC_DODONGOS_CAVERN_MQ_COMPASS_GRASS_3,               RAND_INF_DODONGOS_CAVERN_MQ_COMPASS_GRASS_3 },
+    { RC_DODONGOS_CAVERN_MQ_COMPASS_GRASS_4,               RAND_INF_DODONGOS_CAVERN_MQ_COMPASS_GRASS_4 },
+    { RC_DODONGOS_CAVERN_MQ_ARMOS_GRASS,                   RAND_INF_DODONGOS_CAVERN_MQ_ARMOS_GRASS },
+    { RC_DODONGOS_CAVERN_MQ_BACK_POE_GRASS,                RAND_INF_DODONGOS_CAVERN_MQ_BACK_POE_GRASS },
+    { RC_DODONGOS_CAVERN_MQ_SCRUB_GRASS_1,                 RAND_INF_DODONGOS_CAVERN_MQ_SCRUB_GRASS_1 },
+    { RC_DODONGOS_CAVERN_MQ_SCRUB_GRASS_2,                 RAND_INF_DODONGOS_CAVERN_MQ_SCRUB_GRASS_2 },
+    { RC_JABU_JABUS_BELLY_MQ_FIRST_GRASS_1,                RAND_INF_JABU_JABUS_BELLY_MQ_FIRST_GRASS_1 },
+    { RC_JABU_JABUS_BELLY_MQ_FIRST_GRASS_2,                RAND_INF_JABU_JABUS_BELLY_MQ_FIRST_GRASS_2 },
+    { RC_JABU_JABUS_BELLY_MQ_PIT_GRASS_1,                  RAND_INF_JABU_JABUS_BELLY_MQ_PIT_GRASS_1 },
+    { RC_JABU_JABUS_BELLY_MQ_PIT_GRASS_2,                  RAND_INF_JABU_JABUS_BELLY_MQ_PIT_GRASS_2 },
+    { RC_JABU_JABUS_BELLY_MQ_BASEMENT_GRASS_1,             RAND_INF_JABU_JABUS_BELLY_MQ_BASEMENT_GRASS_1 },
+    { RC_JABU_JABUS_BELLY_MQ_BASEMENT_GRASS_2,             RAND_INF_JABU_JABUS_BELLY_MQ_BASEMENT_GRASS_2 },
+    { RC_JABU_JABUS_BELLY_MQ_BASEMENT_GRASS_3,             RAND_INF_JABU_JABUS_BELLY_MQ_BASEMENT_GRASS_3 },
+    { RC_JABU_JABUS_BELLY_MQ_WIGGLERS_GRASS,               RAND_INF_JABU_JABUS_BELLY_MQ_WIGGLERS_GRASS },
+    { RC_JABU_JABUS_BELLY_MQ_AFTER_BIG_OCTO_GRASS_1,       RAND_INF_JABU_JABUS_BELLY_MQ_AFTER_BIG_OCTO_GRASS_1 },
+    { RC_JABU_JABUS_BELLY_MQ_AFTER_BIG_OCTO_GRASS_2,       RAND_INF_JABU_JABUS_BELLY_MQ_AFTER_BIG_OCTO_GRASS_2 },
+    { RC_JABU_JABUS_BELLY_MQ_FALLING_LIKE_LIKE_GRASS,      RAND_INF_JABU_JABUS_BELLY_MQ_FALLING_LIKE_LIKE_GRASS },
+    { RC_JABU_JABUS_BELLY_MQ_BASEMENT_BOOMERANG_GRASS,     RAND_INF_JABU_JABUS_BELLY_MQ_BASEMENT_BOOMERANG_GRASS },
+    { RC_JABU_JABUS_BELLY_MQ_BEFORE_BOSS_GRASS_1,          RAND_INF_JABU_JABUS_BELLY_MQ_BEFORE_BOSS_GRASS_1 },
+    { RC_JABU_JABUS_BELLY_MQ_BEFORE_BOSS_GRASS_2,          RAND_INF_JABU_JABUS_BELLY_MQ_BEFORE_BOSS_GRASS_2 },
+    { RC_BOTTOM_OF_THE_WELL_MQ_DEAD_HAND_GRASS_1,          RAND_INF_BOTTOM_OF_THE_WELL_MQ_DEAD_HAND_GRASS_1 },
+    { RC_BOTTOM_OF_THE_WELL_MQ_DEAD_HAND_GRASS_2,          RAND_INF_BOTTOM_OF_THE_WELL_MQ_DEAD_HAND_GRASS_2 },
+    { RC_BOTTOM_OF_THE_WELL_MQ_DEAD_HAND_GRASS_3,          RAND_INF_BOTTOM_OF_THE_WELL_MQ_DEAD_HAND_GRASS_3 },
+    { RC_BOTTOM_OF_THE_WELL_MQ_DEAD_HAND_GRASS_4,          RAND_INF_BOTTOM_OF_THE_WELL_MQ_DEAD_HAND_GRASS_4 },
+    // Shared Dungeon Grass
+    { RC_DEKU_TREE_QUEEN_GOHMA_GRASS_1,                    RAND_INF_DEKU_TREE_QUEEN_GOHMA_GRASS_1 },
+    { RC_DEKU_TREE_QUEEN_GOHMA_GRASS_2,                    RAND_INF_DEKU_TREE_QUEEN_GOHMA_GRASS_2 },
+    { RC_DEKU_TREE_QUEEN_GOHMA_GRASS_3,                    RAND_INF_DEKU_TREE_QUEEN_GOHMA_GRASS_3 },
+    { RC_DEKU_TREE_QUEEN_GOHMA_GRASS_4,                    RAND_INF_DEKU_TREE_QUEEN_GOHMA_GRASS_4 },
+    { RC_DEKU_TREE_QUEEN_GOHMA_GRASS_5,                    RAND_INF_DEKU_TREE_QUEEN_GOHMA_GRASS_5 },
+    { RC_DEKU_TREE_QUEEN_GOHMA_GRASS_6,                    RAND_INF_DEKU_TREE_QUEEN_GOHMA_GRASS_6 },
+    { RC_DEKU_TREE_QUEEN_GOHMA_GRASS_7,                    RAND_INF_DEKU_TREE_QUEEN_GOHMA_GRASS_7 },
+    { RC_DEKU_TREE_QUEEN_GOHMA_GRASS_8,                    RAND_INF_DEKU_TREE_QUEEN_GOHMA_GRASS_8 },
+    // End Grass 
     
     { RC_KF_LINKS_HOUSE_POT,                                            RAND_INF_KF_LINKS_HOUSE_POT },
     { RC_KF_TWINS_HOUSE_POT_1,                                          RAND_INF_KF_TWINS_HOUSE_POT_1 },
@@ -1549,6 +1899,261 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_LEFT_POT_2,                   RAND_INF_GERUDO_TRAINING_GROUND_MQ_LOBBY_LEFT_POT_2 },
     { RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_POT_1,                  RAND_INF_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_POT_1 },
     { RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_POT_2,                  RAND_INF_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_POT_2 },
+    // Crates
+    { RC_GV_FREESTANDING_POH_CRATE,                                     RAND_INF_GV_FREESTANDING_POH_CRATE, },
+    { RC_GV_NEAR_COW_CRATE,                                             RAND_INF_GV_NEAR_COW_CRATE, },
+    { RC_GV_CRATE_BRIDGE_1,                                             RAND_INF_GV_CRATE_BRIDGE_1, },
+    { RC_GV_CRATE_BRIDGE_2,                                             RAND_INF_GV_CRATE_BRIDGE_2, },
+    { RC_GV_CRATE_BRIDGE_3,                                             RAND_INF_GV_CRATE_BRIDGE_3, },
+    { RC_GV_CRATE_BRIDGE_4,                                             RAND_INF_GV_CRATE_BRIDGE_4, },
+    { RC_GF_ABOVE_JAIL_CRATE,                                           RAND_INF_GF_ABOVE_JAIL_CRATE, },
+    { RC_GF_OUTSIDE_CENTER_CRATE_1,                                     RAND_INF_GF_OUTSIDE_CENTER_CRATE_1, },
+    { RC_GF_OUTSIDE_CENTER_CRATE_2,                                     RAND_INF_GF_OUTSIDE_CENTER_CRATE_2, },
+    { RC_GF_OUTSIDE_CENTER_CRATE_3,                                     RAND_INF_GF_OUTSIDE_CENTER_CRATE_3, },
+    { RC_GF_OUTSIDE_CENTER_CRATE_4,                                     RAND_INF_GF_OUTSIDE_CENTER_CRATE_4, },
+    { RC_GF_OUTSIDE_LEFT_CRATE_1,                                       RAND_INF_GF_OUTSIDE_LEFT_CRATE_1, },
+    { RC_GF_OUTSIDE_LEFT_CRATE_2,                                       RAND_INF_GF_OUTSIDE_LEFT_CRATE_2, },
+    { RC_GF_ARCHERY_RANGE_CRATE_1,                                      RAND_INF_GF_ARCHERY_RANGE_CRATE_1, },
+    { RC_GF_ARCHERY_RANGE_CRATE_2,                                      RAND_INF_GF_ARCHERY_RANGE_CRATE_2, },
+    { RC_GF_ARCHERY_RANGE_CRATE_3,                                      RAND_INF_GF_ARCHERY_RANGE_CRATE_3, },
+    { RC_GF_ARCHERY_RANGE_CRATE_4,                                      RAND_INF_GF_ARCHERY_RANGE_CRATE_4, },
+    { RC_GF_ARCHERY_RANGE_CRATE_5,                                      RAND_INF_GF_ARCHERY_RANGE_CRATE_5, },
+    { RC_GF_ARCHERY_RANGE_CRATE_6,                                      RAND_INF_GF_ARCHERY_RANGE_CRATE_6, },
+    { RC_GF_ARCHERY_RANGE_CRATE_7,                                      RAND_INF_GF_ARCHERY_RANGE_CRATE_7, },
+    { RC_GF_ARCHERY_START_CRATE_1,                                      RAND_INF_GF_ARCHERY_START_CRATE_1, },
+    { RC_GF_ARCHERY_START_CRATE_2,                                      RAND_INF_GF_ARCHERY_START_CRATE_2, },
+    { RC_GF_ARCHERY_LEFT_END_CRATE_1,                                   RAND_INF_GF_ARCHERY_LEFT_END_CRATE_1, },
+    { RC_GF_ARCHERY_LEFT_END_CRATE_2,                                   RAND_INF_GF_ARCHERY_LEFT_END_CRATE_2, },
+    { RC_GF_ARCHERY_LEFT_END_CHILD_CRATE,                               RAND_INF_GF_ARCHERY_LEFT_END_CHILD_CRATE, },
+    { RC_GF_ARCHERY_RIGHT_END_CRATE_1,                                  RAND_INF_GF_ARCHERY_RIGHT_END_CRATE_1, },
+    { RC_GF_ARCHERY_RIGHT_END_CRATE_2,                                  RAND_INF_GF_ARCHERY_RIGHT_END_CRATE_2, },
+    { RC_GF_KITCHEN_CRATE_1,                                            RAND_INF_GF_KITCHEN_CRATE_1, },
+    { RC_GF_KITCHEN_CRATE_2,                                            RAND_INF_GF_KITCHEN_CRATE_2, },
+    { RC_GF_KITCHEN_CRATE_3,                                            RAND_INF_GF_KITCHEN_CRATE_3, },
+    { RC_GF_KITCHEN_CRATE_4,                                            RAND_INF_GF_KITCHEN_CRATE_4, },
+    { RC_GF_KITCHEN_CRATE_5,                                            RAND_INF_GF_KITCHEN_CRATE_5, },
+    { RC_GF_BREAK_ROOM_CRATE_1,                                         RAND_INF_GF_BREAK_ROOM_CRATE_1, },
+    { RC_GF_BREAK_ROOM_CRATE_2,                                         RAND_INF_GF_BREAK_ROOM_CRATE_2, },
+    { RC_GF_BREAK_ROOM_CRATE_3,                                         RAND_INF_GF_BREAK_ROOM_CRATE_3, },
+    { RC_GF_BREAK_ROOM_CRATE_4,                                         RAND_INF_GF_BREAK_ROOM_CRATE_4, },
+    { RC_GF_NORTH_F1_CARPENTER_CRATE,                                   RAND_INF_GF_NORTH_F1_CARPENTER_CRATE, },
+    { RC_GF_NORTH_F3_CARPENTER_CRATE,                                   RAND_INF_GF_NORTH_F3_CARPENTER_CRATE, },
+    { RC_GF_SOUTH_F2_CARPENTER_CRATE_1,                                 RAND_INF_GF_SOUTH_F2_CARPENTER_CRATE_1, },
+    { RC_GF_SOUTH_F2_CARPENTER_CRATE_2,                                 RAND_INF_GF_SOUTH_F2_CARPENTER_CRATE_2, },
+    { RC_HW_BEFORE_QUICKSAND_CRATE,                                     RAND_INF_HW_BEFORE_QUICKSAND_CRATE, },
+    { RC_HW_AFTER_QUICKSAND_CRATE_1,                                    RAND_INF_HW_AFTER_QUICKSAND_CRATE_1, },
+    { RC_HW_AFTER_QUICKSAND_CRATE_2,                                    RAND_INF_HW_AFTER_QUICKSAND_CRATE_2, },
+    { RC_HW_AFTER_QUICKSAND_CRATE_3,                                    RAND_INF_HW_AFTER_QUICKSAND_CRATE_3, },
+    { RC_HW_NEAR_COLOSSUS_CRATE,                                        RAND_INF_HW_NEAR_COLOSSUS_CRATE, },
+    { RC_MK_NEAR_BAZAAR_CRATE_1,                                        RAND_INF_MK_NEAR_BAZAAR_CRATE_1, },
+    { RC_MK_NEAR_BAZAAR_CRATE_2,                                        RAND_INF_MK_NEAR_BAZAAR_CRATE_2, },
+    { RC_MK_SHOOTING_GALLERY_CRATE_1,                                   RAND_INF_MK_SHOOTING_GALLERY_CRATE_1, },
+    { RC_MK_SHOOTING_GALLERY_CRATE_2,                                   RAND_INF_MK_SHOOTING_GALLERY_CRATE_2, },
+    { RC_MK_LOST_DOG_HOUSE_CRATE,                                       RAND_INF_MK_LOST_DOG_HOUSE_CRATE, },
+    { RC_MK_GUARD_HOUSE_CRATE_1,                                        RAND_INF_MK_GUARD_HOUSE_CRATE_1, },
+    { RC_MK_GUARD_HOUSE_CRATE_2,                                        RAND_INF_MK_GUARD_HOUSE_CRATE_2, },
+    { RC_MK_GUARD_HOUSE_CRATE_3,                                        RAND_INF_MK_GUARD_HOUSE_CRATE_3, },
+    { RC_MK_GUARD_HOUSE_CRATE_4,                                        RAND_INF_MK_GUARD_HOUSE_CRATE_4, },
+    { RC_MK_GUARD_HOUSE_CRATE_5,                                        RAND_INF_MK_GUARD_HOUSE_CRATE_5, },
+    { RC_KAK_NEAR_OPEN_GROTTO_ADULT_CRATE_1,                            RAND_INF_KAK_NEAR_OPEN_GROTTO_ADULT_CRATE_1, },
+    { RC_KAK_NEAR_OPEN_GROTTO_ADULT_CRATE_2,                            RAND_INF_KAK_NEAR_OPEN_GROTTO_ADULT_CRATE_2, },
+    { RC_KAK_NEAR_OPEN_GROTTO_ADULT_CRATE_3,                            RAND_INF_KAK_NEAR_OPEN_GROTTO_ADULT_CRATE_3, },
+    { RC_KAK_NEAR_OPEN_GROTTO_ADULT_CRATE_4,                            RAND_INF_KAK_NEAR_OPEN_GROTTO_ADULT_CRATE_4, },
+    { RC_KAK_NEAR_POTION_SHOP_ADULT_CRATE,                              RAND_INF_KAK_NEAR_POTION_SHOP_ADULT_CRATE, },
+    { RC_KAK_NEAR_SHOOTING_GALLERY_ADULT_CRATE,                         RAND_INF_KAK_NEAR_SHOOTING_GALLERY_ADULT_CRATE, },
+    { RC_KAK_NEAR_BOARDING_HOUSE_ADULT_CRATE_1,                         RAND_INF_KAK_NEAR_BOARDING_HOUSE_ADULT_CRATE_1, },
+    { RC_KAK_NEAR_BOARDING_HOUSE_ADULT_CRATE_2,                         RAND_INF_KAK_NEAR_BOARDING_HOUSE_ADULT_CRATE_2, },
+    { RC_KAK_NEAR_IMPAS_HOUSE_ADULT_CRATE_1,                            RAND_INF_KAK_NEAR_IMPAS_HOUSE_ADULT_CRATE_1, },
+    { RC_KAK_NEAR_IMPAS_HOUSE_ADULT_CRATE_2,                            RAND_INF_KAK_NEAR_IMPAS_HOUSE_ADULT_CRATE_2, },
+    { RC_KAK_NEAR_BAZAAR_ADULT_CRATE_1,                                 RAND_INF_KAK_NEAR_BAZAAR_ADULT_CRATE_1, },
+    { RC_KAK_NEAR_BAZAAR_ADULT_CRATE_2,                                 RAND_INF_KAK_NEAR_BAZAAR_ADULT_CRATE_2, },
+    { RC_KAK_BEHIND_GS_HOUSE_ADULT_CRATE,                               RAND_INF_KAK_BEHIND_GS_HOUSE_ADULT_CRATE, },
+    { RC_KAK_NEAR_GY_CHILD_CRATE,                                       RAND_INF_KAK_NEAR_GY_CHILD_CRATE, },
+    { RC_KAK_NEAR_WINDMILL_CHILD_CRATE,                                 RAND_INF_KAK_NEAR_WINDMILL_CHILD_CRATE, },
+    { RC_KAK_NEAR_FENCE_CHILD_CRATE,                                    RAND_INF_KAK_NEAR_FENCE_CHILD_CRATE, },
+    { RC_KAK_NEAR_BOARDING_HOUSE_CHILD_CRATE,                           RAND_INF_KAK_NEAR_BOARDING_HOUSE_CHILD_CRATE, },
+    { RC_KAK_NEAR_BAZAAR_CHILD_CRATE,                                   RAND_INF_KAK_NEAR_BAZAAR_CHILD_CRATE, },
+    { RC_GRAVEYARD_CRATE,                                               RAND_INF_GRAVEYARD_CRATE, },
+    { RC_GC_MAZE_CRATE,                                                 RAND_INF_GC_MAZE_CRATE, },
+    { RC_DMC_CRATE,                                                     RAND_INF_DMC_CRATE, },
+    { RC_LLR_NEAR_TREE_CRATE,                                           RAND_INF_LLR_NEAR_TREE_CRATE, },
+    { RC_LH_LAB_CRATE,                                                  RAND_INF_LH_LAB_CRATE, },
+
+    { RC_DEKU_TREE_MQ_LOBBY_CRATE,                                      RAND_INF_DEKU_TREE_MQ_LOBBY_CRATE, },
+    { RC_DEKU_TREE_MQ_SLINGSHOT_ROOM_CRATE_1,                           RAND_INF_DEKU_TREE_MQ_SLINGSHOT_ROOM_CRATE_1, },
+    { RC_DEKU_TREE_MQ_SLINGSHOT_ROOM_CRATE_2,                           RAND_INF_DEKU_TREE_MQ_SLINGSHOT_ROOM_CRATE_2, },
+    { RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_1,                           RAND_INF_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_1, },
+    { RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_2,                           RAND_INF_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_2, },
+    { RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_3,                           RAND_INF_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_3, },
+    { RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_4,                           RAND_INF_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_4, },
+    { RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_5,                           RAND_INF_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_5, },
+    { RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_6,                           RAND_INF_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_6, },
+    { RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_7,                           RAND_INF_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_7, },
+    { RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_8,                           RAND_INF_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_8, },
+    { RC_DODONGOS_CAVERN_MQ_STAIRCASE_LOWER_CRATE_1,                    RAND_INF_DODONGOS_CAVERN_MQ_STAIRCASE_LOWER_CRATE_1, },
+    { RC_DODONGOS_CAVERN_MQ_STAIRCASE_LOWER_CRATE_2,                    RAND_INF_DODONGOS_CAVERN_MQ_STAIRCASE_LOWER_CRATE_2, },
+    { RC_DODONGOS_CAVERN_MQ_STAIRCASE_UPPER_CRATE_1,                    RAND_INF_DODONGOS_CAVERN_MQ_STAIRCASE_UPPER_CRATE_1, },
+    { RC_DODONGOS_CAVERN_MQ_STAIRCASE_UPPER_CRATE_2,                    RAND_INF_DODONGOS_CAVERN_MQ_STAIRCASE_UPPER_CRATE_2, },
+    { RC_DODONGOS_CAVERN_MQ_STAIRCASE_UPPER_CRATE_3,                    RAND_INF_DODONGOS_CAVERN_MQ_STAIRCASE_UPPER_CRATE_3, },
+    { RC_DODONGOS_CAVERN_MQ_STAIRCASE_UPPER_CRATE_4,                    RAND_INF_DODONGOS_CAVERN_MQ_STAIRCASE_UPPER_CRATE_4, },
+    { RC_DODONGOS_CAVERN_MQ_TWO_FLAMES_CRATE_1,                         RAND_INF_DODONGOS_CAVERN_MQ_TWO_FLAMES_CRATE_1, },
+    { RC_DODONGOS_CAVERN_MQ_TWO_FLAMES_CRATE_2,                         RAND_INF_DODONGOS_CAVERN_MQ_TWO_FLAMES_CRATE_2, },
+    { RC_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CRATE_1,                        RAND_INF_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CRATE_1, },
+    { RC_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CRATE_2,                        RAND_INF_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CRATE_2, },
+    { RC_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CRATE_3,                        RAND_INF_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CRATE_3, },
+    { RC_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CRATE_4,                        RAND_INF_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CRATE_4, },
+    { RC_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CRATE_5,                        RAND_INF_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CRATE_5, },
+    { RC_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CRATE_6,                        RAND_INF_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CRATE_6, },
+    { RC_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_CRATE_1,                           RAND_INF_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_CRATE_1, },
+    { RC_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_CRATE_2,                           RAND_INF_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_CRATE_2, },
+    { RC_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_CRATE_3,                           RAND_INF_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_CRATE_3, },
+    { RC_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_CRATE_4,                           RAND_INF_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_CRATE_4, },
+    { RC_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_CRATE_5,                           RAND_INF_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_CRATE_5, },
+    { RC_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_CRATE_6,                           RAND_INF_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_CRATE_6, },
+    { RC_FIRE_TEMPLE_MQ_SHORTCUT_CRATE_1,                               RAND_INF_FIRE_TEMPLE_MQ_SHORTCUT_CRATE_1, },
+    { RC_FIRE_TEMPLE_MQ_SHORTCUT_CRATE_2,                               RAND_INF_FIRE_TEMPLE_MQ_SHORTCUT_CRATE_2, },
+    { RC_FIRE_TEMPLE_MQ_SHORTCUT_CRATE_3,                               RAND_INF_FIRE_TEMPLE_MQ_SHORTCUT_CRATE_3, },
+    { RC_FIRE_TEMPLE_MQ_SHORTCUT_CRATE_4,                               RAND_INF_FIRE_TEMPLE_MQ_SHORTCUT_CRATE_4, },
+    { RC_FIRE_TEMPLE_MQ_SHORTCUT_CRATE_5,                               RAND_INF_FIRE_TEMPLE_MQ_SHORTCUT_CRATE_5, },
+    { RC_FIRE_TEMPLE_MQ_SHORTCUT_CRATE_6,                               RAND_INF_FIRE_TEMPLE_MQ_SHORTCUT_CRATE_6, },
+    { RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_LOWER_CRATE_1,                    RAND_INF_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_LOWER_CRATE_1, },
+    { RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_LOWER_CRATE_2,                    RAND_INF_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_LOWER_CRATE_2, },
+    { RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_LOWER_CRATE_3,                    RAND_INF_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_LOWER_CRATE_3, },
+    { RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_CRATE_1,                    RAND_INF_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_CRATE_1, },
+    { RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_CRATE_2,                    RAND_INF_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_CRATE_2, },
+    { RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_CRATE_3,                    RAND_INF_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_CRATE_3, },
+    { RC_FIRE_TEMPLE_MQ_LAVA_TORCH_CRATE_1,                             RAND_INF_FIRE_TEMPLE_MQ_LAVA_TORCH_CRATE_1, },
+    { RC_FIRE_TEMPLE_MQ_LAVA_TORCH_CRATE_2,                             RAND_INF_FIRE_TEMPLE_MQ_LAVA_TORCH_CRATE_2, },
+    { RC_FIRE_TEMPLE_MQ_LAVA_TORCH_CRATE_3,                             RAND_INF_FIRE_TEMPLE_MQ_LAVA_TORCH_CRATE_3, },
+    { RC_FIRE_TEMPLE_MQ_LAVA_TORCH_CRATE_4,                             RAND_INF_FIRE_TEMPLE_MQ_LAVA_TORCH_CRATE_4, },
+    { RC_FIRE_TEMPLE_MQ_LAVA_TORCH_CRATE_5,                             RAND_INF_FIRE_TEMPLE_MQ_LAVA_TORCH_CRATE_5, },
+    { RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_UPPER_CRATE_1,                  RAND_INF_WATER_TEMPLE_MQ_CENTRAL_PILLAR_UPPER_CRATE_1, },
+    { RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_UPPER_CRATE_2,                  RAND_INF_WATER_TEMPLE_MQ_CENTRAL_PILLAR_UPPER_CRATE_2, },
+    { RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_1,                  RAND_INF_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_1, },
+    { RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_2,                  RAND_INF_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_2, },
+    { RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_3,                  RAND_INF_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_3, },
+    { RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_4,                  RAND_INF_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_4, },
+    { RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_5,                  RAND_INF_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_5, },
+    { RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_6,                  RAND_INF_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_6, },
+    { RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_7,                  RAND_INF_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_7, },
+    { RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_8,                  RAND_INF_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_8, },
+    { RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_9,                  RAND_INF_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_9, },
+    { RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_10,                 RAND_INF_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_10, },
+    { RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_11,                 RAND_INF_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_11, },
+    { RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_12,                 RAND_INF_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_12, },
+    { RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_13,                 RAND_INF_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_13, },
+    { RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_14,                 RAND_INF_WATER_TEMPLE_MQ_CENTRAL_PILLAR_LOWER_CRATE_14, },
+    { RC_WATER_TEMPLE_MQ_LIZALFOS_HALLWAY_CRATE_1,                      RAND_INF_WATER_TEMPLE_MQ_LIZALFOS_HALLWAY_CRATE_1, },
+    { RC_WATER_TEMPLE_MQ_LIZALFOS_HALLWAY_CRATE_2,                      RAND_INF_WATER_TEMPLE_MQ_LIZALFOS_HALLWAY_CRATE_2, },
+    { RC_WATER_TEMPLE_MQ_LIZALFOS_HALLWAY_CRATE_3,                      RAND_INF_WATER_TEMPLE_MQ_LIZALFOS_HALLWAY_CRATE_3, },
+    { RC_WATER_TEMPLE_MQ_LIZALFOS_HALLWAY_ROOM_CRATE_1,                 RAND_INF_WATER_TEMPLE_MQ_LIZALFOS_HALLWAY_ROOM_CRATE_1, },
+    { RC_WATER_TEMPLE_MQ_LIZALFOS_HALLWAY_ROOM_CRATE_2,                 RAND_INF_WATER_TEMPLE_MQ_LIZALFOS_HALLWAY_ROOM_CRATE_2, },
+    { RC_WATER_TEMPLE_MQ_LIZALFOS_HALLWAY_ROOM_CRATE_3,                 RAND_INF_WATER_TEMPLE_MQ_LIZALFOS_HALLWAY_ROOM_CRATE_3, },
+    { RC_WATER_TEMPLE_MQ_LIZALFOS_HALLWAY_ROOM_CRATE_4,                 RAND_INF_WATER_TEMPLE_MQ_LIZALFOS_HALLWAY_ROOM_CRATE_4, },
+    { RC_WATER_TEMPLE_MQ_LIZALFOS_HALLWAY_ROOM_CRATE_5,                 RAND_INF_WATER_TEMPLE_MQ_LIZALFOS_HALLWAY_ROOM_CRATE_5, },
+    { RC_WATER_TEMPLE_MQ_LIZALFOS_HALLWAY_GATE_CRATE_1,                 RAND_INF_WATER_TEMPLE_MQ_LIZALFOS_HALLWAY_GATE_CRATE_1, },
+    { RC_WATER_TEMPLE_MQ_LIZALFOS_HALLWAY_GATE_CRATE_2,                 RAND_INF_WATER_TEMPLE_MQ_LIZALFOS_HALLWAY_GATE_CRATE_2, },
+    { RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_1,                        RAND_INF_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_1, },
+    { RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_2,                        RAND_INF_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_2, },
+    { RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_3,                        RAND_INF_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_3, },
+    { RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_4,                        RAND_INF_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_4, },
+    { RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_5,                        RAND_INF_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_5, },
+    { RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_6,                        RAND_INF_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_6, },
+    { RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_7,                        RAND_INF_WATER_TEMPLE_MQ_STORAGE_ROOM_A_CRATE_7, },
+    { RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_CRATE_1,                 RAND_INF_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_CRATE_1, },
+    { RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_CRATE_2,                 RAND_INF_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_CRATE_2, },
+    { RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_CRATE_3,                 RAND_INF_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_CRATE_3, },
+    { RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_CRATE_4,                 RAND_INF_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_CRATE_4, },
+    { RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_CRATE_5,                 RAND_INF_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_CRATE_5, },
+    { RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_CRATE_6,                 RAND_INF_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_CRATE_6, },
+    { RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_UPPER_CRATE_1,                 RAND_INF_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_UPPER_CRATE_1, },
+    { RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_UPPER_CRATE_2,                 RAND_INF_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_UPPER_CRATE_2, },
+    { RC_WATER_TEMPLE_MQ_DRAGON_ROOM_TORCHES_CRATE_1,                   RAND_INF_WATER_TEMPLE_MQ_DRAGON_ROOM_TORCHES_CRATE_1, },
+    { RC_WATER_TEMPLE_MQ_DRAGON_ROOM_TORCHES_CRATE_2,                   RAND_INF_WATER_TEMPLE_MQ_DRAGON_ROOM_TORCHES_CRATE_2, },
+    { RC_WATER_TEMPLE_MQ_DRAGON_ROOM_SUBMERGED_CRATE_1,                 RAND_INF_WATER_TEMPLE_MQ_DRAGON_ROOM_SUBMERGED_CRATE_1, },
+    { RC_WATER_TEMPLE_MQ_DRAGON_ROOM_SUBMERGED_CRATE_2,                 RAND_INF_WATER_TEMPLE_MQ_DRAGON_ROOM_SUBMERGED_CRATE_2, },
+    { RC_WATER_TEMPLE_MQ_DRAGON_ROOM_SUBMERGED_CRATE_3,                 RAND_INF_WATER_TEMPLE_MQ_DRAGON_ROOM_SUBMERGED_CRATE_3, },
+    { RC_WATER_TEMPLE_MQ_DRAGON_ROOM_SUBMERGED_CRATE_4,                 RAND_INF_WATER_TEMPLE_MQ_DRAGON_ROOM_SUBMERGED_CRATE_4, },
+    { RC_WATER_TEMPLE_MQ_DRAGON_ROOM_DOOR_CRATE_1,                      RAND_INF_WATER_TEMPLE_MQ_DRAGON_ROOM_DOOR_CRATE_1, },
+    { RC_WATER_TEMPLE_MQ_DRAGON_ROOM_DOOR_CRATE_2,                      RAND_INF_WATER_TEMPLE_MQ_DRAGON_ROOM_DOOR_CRATE_2, },
+    { RC_WATER_TEMPLE_MQ_BK_ROOM_UPPER_CRATE,                           RAND_INF_WATER_TEMPLE_MQ_BK_ROOM_UPPER_CRATE, },
+    { RC_WATER_TEMPLE_MQ_BK_ROOM_LOWER_CRATE_1,                         RAND_INF_WATER_TEMPLE_MQ_BK_ROOM_LOWER_CRATE_1, },
+    { RC_WATER_TEMPLE_MQ_BK_ROOM_LOWER_CRATE_2,                         RAND_INF_WATER_TEMPLE_MQ_BK_ROOM_LOWER_CRATE_2, },
+    { RC_WATER_TEMPLE_MQ_BK_ROOM_LOWER_CRATE_3,                         RAND_INF_WATER_TEMPLE_MQ_BK_ROOM_LOWER_CRATE_3, },
+    { RC_WATER_TEMPLE_MQ_BK_ROOM_LOWER_CRATE_4,                         RAND_INF_WATER_TEMPLE_MQ_BK_ROOM_LOWER_CRATE_4, },
+    { RC_WATER_TEMPLE_MQ_WHIRLPOOL_FRONT_CRATE_1,                       RAND_INF_WATER_TEMPLE_MQ_WHIRLPOOL_FRONT_CRATE_1, },
+    { RC_WATER_TEMPLE_MQ_WHIRLPOOL_FRONT_CRATE_2,                       RAND_INF_WATER_TEMPLE_MQ_WHIRLPOOL_FRONT_CRATE_2, },
+    { RC_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_1,                   RAND_INF_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_1, },
+    { RC_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_2,                   RAND_INF_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_2, },
+    { RC_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_3,                   RAND_INF_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_3, },
+    { RC_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_4,                   RAND_INF_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_4, },
+    { RC_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_5,                   RAND_INF_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_5, },
+    { RC_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_6,                   RAND_INF_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_6, },
+    { RC_WATER_TEMPLE_MQ_WHIRLPOOL_BEHIND_GATE_CRATE_1,                 RAND_INF_WATER_TEMPLE_MQ_WHIRLPOOL_BEHIND_GATE_CRATE_1, },
+    { RC_WATER_TEMPLE_MQ_WHIRLPOOL_BEHIND_GATE_CRATE_2,                 RAND_INF_WATER_TEMPLE_MQ_WHIRLPOOL_BEHIND_GATE_CRATE_2, },
+    { RC_WATER_TEMPLE_MQ_WHIRLPOOL_BEHIND_GATE_CRATE_3,                 RAND_INF_WATER_TEMPLE_MQ_WHIRLPOOL_BEHIND_GATE_CRATE_3, },
+    { RC_WATER_TEMPLE_MQ_WHIRLPOOL_BEHIND_GATE_CRATE_4,                 RAND_INF_WATER_TEMPLE_MQ_WHIRLPOOL_BEHIND_GATE_CRATE_4, },
+    { RC_WATER_TEMPLE_MQ_DODONGO_ROOM_UPPER_CRATE,                      RAND_INF_WATER_TEMPLE_MQ_DODONGO_ROOM_UPPER_CRATE, },
+    { RC_WATER_TEMPLE_MQ_DODONGO_ROOM_HALL_CRATE,                       RAND_INF_WATER_TEMPLE_MQ_DODONGO_ROOM_HALL_CRATE, },
+    { RC_WATER_TEMPLE_MQ_DODONGO_ROOM_LOWER_CRATE_1,                    RAND_INF_WATER_TEMPLE_MQ_DODONGO_ROOM_LOWER_CRATE_1, },
+    { RC_WATER_TEMPLE_MQ_DODONGO_ROOM_LOWER_CRATE_2,                    RAND_INF_WATER_TEMPLE_MQ_DODONGO_ROOM_LOWER_CRATE_2, },
+    { RC_WATER_TEMPLE_MQ_DODONGO_ROOM_LOWER_CRATE_3,                    RAND_INF_WATER_TEMPLE_MQ_DODONGO_ROOM_LOWER_CRATE_3, },
+    { RC_WATER_TEMPLE_MQ_STORAGE_ROOM_B_CRATE_1,                        RAND_INF_WATER_TEMPLE_MQ_STORAGE_ROOM_B_CRATE_1, },
+    { RC_WATER_TEMPLE_MQ_STORAGE_ROOM_B_CRATE_2,                        RAND_INF_WATER_TEMPLE_MQ_STORAGE_ROOM_B_CRATE_2, },
+    { RC_WATER_TEMPLE_MQ_STORAGE_ROOM_B_CRATE_3,                        RAND_INF_WATER_TEMPLE_MQ_STORAGE_ROOM_B_CRATE_3, },
+    { RC_WATER_TEMPLE_MQ_STORAGE_ROOM_B_CRATE_4,                        RAND_INF_WATER_TEMPLE_MQ_STORAGE_ROOM_B_CRATE_4, },
+    { RC_WATER_TEMPLE_MQ_STORAGE_ROOM_B_CRATE_5,                        RAND_INF_WATER_TEMPLE_MQ_STORAGE_ROOM_B_CRATE_5, },
+    { RC_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_SUBMERGED_CRATE_1,           RAND_INF_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_SUBMERGED_CRATE_1, },
+    { RC_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_SUBMERGED_CRATE_2,           RAND_INF_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_SUBMERGED_CRATE_2, },
+    { RC_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_SUBMERGED_CRATE_3,           RAND_INF_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_SUBMERGED_CRATE_3, },
+    { RC_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_SUBMERGED_CRATE_4,           RAND_INF_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_SUBMERGED_CRATE_4, },
+    { RC_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_SUBMERGED_CRATE_5,           RAND_INF_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_SUBMERGED_CRATE_5, },
+    { RC_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_SUBMERGED_CRATE_6,           RAND_INF_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_SUBMERGED_CRATE_6, },
+    { RC_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_GATE_CRATE_1,                RAND_INF_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_GATE_CRATE_1, },
+    { RC_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_GATE_CRATE_2,                RAND_INF_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_GATE_CRATE_2, },
+    { RC_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_GATE_CRATE_3,                RAND_INF_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_GATE_CRATE_3, },
+    { RC_SPIRIT_TEMPLE_MQ_STATUE_CRATE_1,                               RAND_INF_SPIRIT_TEMPLE_MQ_STATUE_CRATE_1, },
+    { RC_SPIRIT_TEMPLE_MQ_STATUE_CRATE_2,                               RAND_INF_SPIRIT_TEMPLE_MQ_STATUE_CRATE_2, },
+    { RC_SPIRIT_TEMPLE_MQ_BIG_MIRROR_CRATE_1,                           RAND_INF_SPIRIT_TEMPLE_MQ_BIG_MIRROR_CRATE_1, },
+    { RC_SPIRIT_TEMPLE_MQ_BIG_MIRROR_CRATE_2,                           RAND_INF_SPIRIT_TEMPLE_MQ_BIG_MIRROR_CRATE_2, },
+    { RC_SPIRIT_TEMPLE_MQ_BIG_MIRROR_CRATE_3,                           RAND_INF_SPIRIT_TEMPLE_MQ_BIG_MIRROR_CRATE_3, },
+    { RC_SPIRIT_TEMPLE_MQ_BIG_MIRROR_CRATE_4,                           RAND_INF_SPIRIT_TEMPLE_MQ_BIG_MIRROR_CRATE_4, },
+    { RC_GERUDO_TRAINING_GROUND_MQ_MAZE_CRATE,                          RAND_INF_GERUDO_TRAINING_GROUND_MQ_MAZE_CRATE, },
+
+    { RC_JABU_JABUS_BELLY_PLATFORM_ROOM_SMALL_CRATE_1,                  RAND_INF_JABU_JABUS_BELLY_PLATFORM_ROOM_SMALL_CRATE_1, },
+    { RC_JABU_JABUS_BELLY_PLATFORM_ROOM_SMALL_CRATE_2,                  RAND_INF_JABU_JABUS_BELLY_PLATFORM_ROOM_SMALL_CRATE_2, },
+    { RC_FIRE_TEMPLE_AFTER_HAMMER_SMALL_CRATE_1,                        RAND_INF_FIRE_TEMPLE_AFTER_HAMMER_SMALL_CRATE_1, },
+    { RC_FIRE_TEMPLE_AFTER_HAMMER_SMALL_CRATE_2,                        RAND_INF_FIRE_TEMPLE_AFTER_HAMMER_SMALL_CRATE_2, },
+    { RC_SPIRIT_TEMPLE_BEFORE_CHILD_CLIMB_SMALL_CRATE_1,                RAND_INF_SPIRIT_TEMPLE_BEFORE_CHILD_CLIMB_SMALL_CRATE_1, },
+    { RC_SPIRIT_TEMPLE_BEFORE_CHILD_CLIMB_SMALL_CRATE_2,                RAND_INF_SPIRIT_TEMPLE_BEFORE_CHILD_CLIMB_SMALL_CRATE_2, },
+
+    { RC_JABU_JABUS_BELLY_MQ_TRIPLE_HALLWAY_SMALL_CRATE_1,              RAND_INF_JABU_JABUS_BELLY_MQ_TRIPLE_HALLWAY_SMALL_CRATE_1, },
+    { RC_JABU_JABUS_BELLY_MQ_TRIPLE_HALLWAY_SMALL_CRATE_2,              RAND_INF_JABU_JABUS_BELLY_MQ_TRIPLE_HALLWAY_SMALL_CRATE_2, },
+    { RC_FOREST_TEMPLE_MQ_FROZEN_EYE_SWITCH_SMALL_CRATE_1,              RAND_INF_FOREST_TEMPLE_MQ_FROZEN_EYE_SWITCH_SMALL_CRATE_1, },
+    { RC_FOREST_TEMPLE_MQ_FROZEN_EYE_SWITCH_SMALL_CRATE_2,              RAND_INF_FOREST_TEMPLE_MQ_FROZEN_EYE_SWITCH_SMALL_CRATE_2, },
+    { RC_FOREST_TEMPLE_MQ_FROZEN_EYE_SWITCH_SMALL_CRATE_3,              RAND_INF_FOREST_TEMPLE_MQ_FROZEN_EYE_SWITCH_SMALL_CRATE_3, },
+    { RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_SMALL_CRATE_1,              RAND_INF_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_SMALL_CRATE_1, },
+    { RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_SMALL_CRATE_2,              RAND_INF_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_SMALL_CRATE_2, },
+    { RC_FIRE_TEMPLE_MQ_LAVA_TORCH_SMALL_CRATE_1,                       RAND_INF_FIRE_TEMPLE_MQ_LAVA_TORCH_SMALL_CRATE_1, },
+    { RC_FIRE_TEMPLE_MQ_LAVA_TORCH_SMALL_CRATE_2,                       RAND_INF_FIRE_TEMPLE_MQ_LAVA_TORCH_SMALL_CRATE_2, },
+    { RC_FIRE_TEMPLE_MQ_LAVA_TORCH_SMALL_CRATE_3,                       RAND_INF_FIRE_TEMPLE_MQ_LAVA_TORCH_SMALL_CRATE_3, },
+    { RC_FIRE_TEMPLE_MQ_LAVA_TORCH_SMALL_CRATE_4,                       RAND_INF_FIRE_TEMPLE_MQ_LAVA_TORCH_SMALL_CRATE_4, },
+    { RC_FIRE_TEMPLE_MQ_LAVA_TORCH_SMALL_CRATE_5,                       RAND_INF_FIRE_TEMPLE_MQ_LAVA_TORCH_SMALL_CRATE_5, },
+    { RC_WATER_TEMPLE_MQ_DRAGON_ROOM_TORCHES_SMALL_CRATE_1,             RAND_INF_WATER_TEMPLE_MQ_DRAGON_ROOM_TORCHES_SMALL_CRATE_1, },
+    { RC_WATER_TEMPLE_MQ_DRAGON_ROOM_TORCHES_SMALL_CRATE_2,             RAND_INF_WATER_TEMPLE_MQ_DRAGON_ROOM_TORCHES_SMALL_CRATE_2, },
+    { RC_WATER_TEMPLE_MQ_DRAGON_ROOM_TORCHES_SMALL_CRATE_3,             RAND_INF_WATER_TEMPLE_MQ_DRAGON_ROOM_TORCHES_SMALL_CRATE_3, },
+    { RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_SMALL_CRATE_1,                  RAND_INF_WATER_TEMPLE_MQ_STORAGE_ROOM_A_SMALL_CRATE_1, },
+    { RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_SMALL_CRATE_2,                  RAND_INF_WATER_TEMPLE_MQ_STORAGE_ROOM_A_SMALL_CRATE_2, },
+    { RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_SMALL_CRATE_3,                  RAND_INF_WATER_TEMPLE_MQ_STORAGE_ROOM_A_SMALL_CRATE_3, },
+    { RC_WATER_TEMPLE_MQ_STORAGE_ROOM_A_SMALL_CRATE_4,                  RAND_INF_WATER_TEMPLE_MQ_STORAGE_ROOM_A_SMALL_CRATE_4, },
+    { RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_SMALL_CRATE,             RAND_INF_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_LOWER_SMALL_CRATE, },
+    { RC_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_UPPER_SMALL_CRATE,             RAND_INF_WATER_TEMPLE_MQ_GS_STORAGE_ROOM_UPPER_SMALL_CRATE, },
+    { RC_SHADOW_TEMPLE_MQ_TRUTH_SPINNER_SMALL_CRATE_1,                  RAND_INF_SHADOW_TEMPLE_MQ_TRUTH_SPINNER_SMALL_CRATE_1, },
+    { RC_SHADOW_TEMPLE_MQ_TRUTH_SPINNER_SMALL_CRATE_2,                  RAND_INF_SHADOW_TEMPLE_MQ_TRUTH_SPINNER_SMALL_CRATE_2, },
+    { RC_SHADOW_TEMPLE_MQ_TRUTH_SPINNER_SMALL_CRATE_3,                  RAND_INF_SHADOW_TEMPLE_MQ_TRUTH_SPINNER_SMALL_CRATE_3, },
+    { RC_SHADOW_TEMPLE_MQ_TRUTH_SPINNER_SMALL_CRATE_4,                  RAND_INF_SHADOW_TEMPLE_MQ_TRUTH_SPINNER_SMALL_CRATE_4, },
+    { RC_SPIRIT_TEMPLE_MQ_STATUE_SMALL_CRATE,                           RAND_INF_SPIRIT_TEMPLE_MQ_STATUE_SMALL_CRATE, },
+    { RC_SPIRIT_TEMPLE_MQ_BEAMOS_SMALL_CRATE,                           RAND_INF_SPIRIT_TEMPLE_MQ_BEAMOS_SMALL_CRATE, },
 };
 
 BeehiveIdentity Randomizer::IdentifyBeehive(s32 sceneNum, s16 xPosition, s32 respawnData) {
@@ -1836,6 +2441,124 @@ FishIdentity Randomizer::IdentifyFish(s32 sceneNum, s32 actorParams) {
     return fishIdentity;
 }
 
+GrassIdentity Randomizer::IdentifyGrass(s32 sceneNum, s32 posX, s32 posZ, s32 respawnData, s32 linkAge) {
+    struct GrassIdentity grassIdentity;
+
+    grassIdentity.randomizerInf = RAND_INF_MAX;
+    grassIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+
+    if (sceneNum == SCENE_GROTTOS) {
+        respawnData = TWO_ACTOR_PARAMS(posX, respawnData);
+    } else {
+        // We'll just pretend it's always daytime for our market bushes.
+        if (sceneNum == SCENE_MARKET_NIGHT) {
+            sceneNum = SCENE_MARKET_DAY;
+
+            /*
+                The two bushes by the tree are not in the same spot
+                between night and day. We'll assume the coordinates
+                of the daytime bushes so that we can count them as
+                the same locations.
+            */
+            if (posX == -74) {
+                posX = -106;
+                posZ = 277;
+            }
+            if (posX == -87) {
+                posX = -131;
+                posZ = 225;
+            }
+        }
+
+        /*
+            Same as with Market. ZR has a bush slightly off pos
+            between Child and Adult. This is to merge them into
+            a single location.
+        */
+        if (sceneNum == SCENE_ZORAS_RIVER) {
+            if (posX == 233) {
+                posX = 231;
+                posZ = -1478;
+            }
+        }
+
+        // The two bushes behind the sign in KF should be separate
+        // locations between Child and Adult.
+        if (sceneNum == SCENE_KOKIRI_FOREST && linkAge == 0) {
+            if (posX == -498 || posX == -523) {
+                posZ = 0xFF;
+            }
+        }
+
+        respawnData = TWO_ACTOR_PARAMS(posX, posZ);
+    }
+
+    Rando::Location* location = GetCheckObjectFromActor(ACTOR_EN_KUSA, sceneNum, respawnData);
+
+    if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+        grassIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        grassIdentity.randomizerCheck = location->GetRandomizerCheck();
+    }
+
+    return grassIdentity;
+	
+}
+
+CrateIdentity Randomizer::IdentifyCrate(s32 sceneNum, s32 posX, s32 posZ) {
+    struct CrateIdentity crateIdentity;
+    uint32_t crateSceneNum = sceneNum;
+
+    // pretend night is day to align crates in market and align GF child/adult crates
+    if (sceneNum == SCENE_MARKET_NIGHT) {
+        crateSceneNum = SCENE_MARKET_DAY;
+    } else if (sceneNum == SCENE_GERUDOS_FORTRESS && gPlayState->linkAgeOnLoad == 1 && posX == 310) {
+            if (posZ == -1830) {
+                posZ = -1842.0f;
+            } else if (posZ == -1770) {
+                posZ = -1782.0f;
+            }
+    }
+
+    crateIdentity.randomizerInf = RAND_INF_MAX;
+    crateIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+
+    s32 actorParams = TWO_ACTOR_PARAMS(posX, posZ);
+
+    Rando::Location* location = GetCheckObjectFromActor(ACTOR_OBJ_KIBAKO2, crateSceneNum, actorParams);
+
+    if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
+        LUSLOG_WARN("IdentifyCrate did not receive a valid RC value (%d).", location->GetRandomizerCheck());
+        assert(false);
+    } else {
+        crateIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        crateIdentity.randomizerCheck = location->GetRandomizerCheck();
+    }
+
+    return crateIdentity;
+}
+
+SmallCrateIdentity Randomizer::IdentifySmallCrate(s32 sceneNum, s32 posX, s32 posZ) {
+    struct SmallCrateIdentity smallCrateIdentity;
+    uint32_t smallCrateSceneNum = sceneNum;
+
+    smallCrateIdentity.randomizerInf = RAND_INF_MAX;
+    smallCrateIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+
+    s32 actorParams = TWO_ACTOR_PARAMS(posX, posZ);
+
+    Rando::Location* location = GetCheckObjectFromActor(ACTOR_OBJ_KIBAKO, smallCrateSceneNum, actorParams);
+
+    if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
+        LUSLOG_WARN("IdentifyCrate did not receive a valid RC value (%d).", location->GetRandomizerCheck());
+        assert(false);
+    } else {
+        smallCrateIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        smallCrateIdentity.randomizerCheck = location->GetRandomizerCheck();
+    }
+
+    return smallCrateIdentity;
+}
+
 u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
     return Rando::Context::GetInstance()->GetOption(randoSettingKey).Get();
 }
@@ -1871,7 +2594,6 @@ void GenerateRandomizerImgui(std::string seed = "") {
     CVarSave();
     auto ctx = Rando::Context::GetInstance();
     //RANDOTODO proper UI for selecting if a spoiler loaded should be used for settings
-    Rando::Settings::GetInstance()->SetAllFromCVar();
     Rando::Settings::GetInstance()->SetAllToContext();
     
     // todo: this efficently when we build out cvar array support
@@ -1925,11 +2647,10 @@ bool GenerateRandomizer(std::string seed /*= ""*/) {
 
 static const std::unordered_map<int32_t, const char*> randomizerPresetList = {
     { RANDOMIZER_PRESET_DEFAULT, "Default" },
-    { RANDOMIZER_PRESET_SPOCK_RACE, "Spock Race" },
-    { RANDOMIZER_PRESET_SPOCK_RACE_NO_LOGIC, "Spock Race (No Logic)" },
-    { RANDOMIZER_PRESET_S6, "S6" },
-    { RANDOMIZER_PRESET_HELL_MODE, "Hell Mode" },
-    { RANDOMIZER_PRESET_BENCHMARK, "Benchmark" }
+    { RANDOMIZER_PRESET_BEGINNER, "Beginner" },
+    { RANDOMIZER_PRESET_STANDARD, "Standard" },
+    { RANDOMIZER_PRESET_ADVANCED, "Advanced" },
+    { RANDOMIZER_PRESET_HELL_MODE, "Hell Mode" }
 };
 static int32_t randomizerPresetSelected = RANDOMIZER_PRESET_DEFAULT;
 
@@ -1939,6 +2660,8 @@ void RandomizerSettingsWindow::DrawElement() {
         generated = 0;
         randoThread.join();
     }
+    static bool locationsTabOpen = false;
+    static bool tricksTabOpen = false;
     bool disableEditingRandoSettings = CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings);
     const PresetTypeDefinition presetTypeDef = presetTypes.at(PRESET_TYPE_RANDOMIZER);
@@ -1972,6 +2695,10 @@ void RandomizerSettingsWindow::DrawElement() {
         }
         CVarSetInteger(presetTypeCvar.c_str(), randomizerPresetSelected);
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        mSettings->UpdateOptionProperties();
+        // force excluded location list and trick list update if tab is open.
+        locationsTabOpen = false;
+        tricksTabOpen = false;
     }
 
     UIWidgets::Spacer(0);
@@ -2061,7 +2788,6 @@ void RandomizerSettingsWindow::DrawElement() {
         ImGui::EndDisabled();
 
         ImGui::BeginDisabled(CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
-        static bool locationsTabOpen = false;
         if (ImGui::BeginTabItem("Locations")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (!locationsTabOpen) {
@@ -2190,7 +2916,6 @@ void RandomizerSettingsWindow::DrawElement() {
         }
         ImGui::EndDisabled();
 
-        static bool tricksTabOpen = false;
         if (ImGui::BeginTabItem("Tricks/Glitches")) {
             if (!tricksTabOpen) {
                 tricksTabOpen = true;
@@ -2270,7 +2995,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 {RA_BOTTOM_OF_THE_WELL, true},
                 {RA_ICE_CAVERN, true},
                 {RA_GERUDO_TRAINING_GROUND, true},
-                {RA_GANONS_CASTLE, true}
+                {RA_GANONS_CASTLE, true},
             };
             static std::unordered_map<RandomizerArea, bool> areaTreeEnabled {
                 {RA_NONE, true},
@@ -2305,7 +3030,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 {RA_BOTTOM_OF_THE_WELL, true},
                 {RA_ICE_CAVERN, true},
                 {RA_GERUDO_TRAINING_GROUND, true},
-                {RA_GANONS_CASTLE, true}
+                {RA_GANONS_CASTLE, true},
             };
 
             static std::map<Rando::Tricks::Tag, bool> showTag {
@@ -3458,8 +4183,8 @@ void Randomizer::CreateCustomMessages() {
 			"Du erhältst einen %rkleinen&Schlüssel%w für den %pGrund des Brunnens%w!",
 			"Vous obtenez une %rPetite Clé %w&du %pPuits%w!"),
         GIMESSAGE(RG_GERUDO_TRAINING_GROUND_SMALL_KEY, ITEM_KEY_SMALL,
-			"You found a %yGerudo Training &Grounds %wSmall Key!",
-			"Du erhältst einen %rkleinen&Schlüssel%w für die %yGerudo-Trainingsarena%w!",
+			"You found a %yGerudo Training &Ground %wSmall Key!",
+			"Du erhältst einen %rkleinen&Schlüssel%w für das %yGerudo-Trainingsgelände%w!",
 			"Vous obtenez une %rPetite Clé %w&du %yGymnase Gerudo%w!"),
         GIMESSAGE(RG_GANONS_CASTLE_SMALL_KEY, ITEM_KEY_SMALL,
 			"You found a %rGanon's Castle &%wSmall Key!",
@@ -3591,8 +4316,8 @@ void Randomizer::CreateCustomMessages() {
 			"Du erhältst ein %rSchlüsselbund%w&für den %pGrund des Brunnens%w!",
 			"Vous obtenez le trousseau de&clés du %pPuits%w!"),
         GIMESSAGE(RG_GERUDO_TRAINING_GROUND_KEY_RING, ITEM_KEY_SMALL,
-			"You found a %yGerudo Training&Grounds %wKeyring!",
-			"Du erhältst ein %rSchlüsselbund%w&für die %yGerudo-Trainingsarena%w!",
+			"You found a %yGerudo Training&Ground %wKeyring!",
+			"Du erhältst ein %rSchlüsselbund%w&für das %yGerudo-Trainingsgelände%w!",
 			"Vous obtenez le trousseau de&clés du %yGymnase Gerudo%w!"),
         GIMESSAGE(RG_GANONS_CASTLE_KEY_RING, ITEM_KEY_SMALL,
 			"You found a %rGanon's Castle&%wKeyring!",
@@ -3600,7 +4325,7 @@ void Randomizer::CreateCustomMessages() {
 			"Vous obtenez le trousseau de&clés du %rChâteau de Ganon%w!"),
         GIMESSAGE(RG_TREASURE_GAME_KEY_RING, ITEM_KEY_SMALL, 
 			"You found a %rTreasure Chest Game&%wKeyring!",
-			"!!!",
+			"Du erhältst ein %rSchlüsselbund%w& für das %rSchatztruhen-Poker&%w!",
 			"Vous obtenez le trousseau de&clés du %rJeu de la Chasse au Trésor%w!"),
 
         GIMESSAGE(RG_FOREST_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS,
@@ -3723,32 +4448,41 @@ void Randomizer::CreateCustomMessages() {
 			"Du erhältst die %rKindergeldbörse%w!&Jetzt kannst Du bis&zu %y99 Rubine%w mit Dir führen!",
 			"Vous obtenez la %rPetite Bourse%w!&Elle peut contenir jusqu'à %y99 rubis%w!"),
 
-        GIMESSAGE_NO_GERMAN(RG_GOHMA_SOUL, ITEM_BIG_POE,
+        GIMESSAGE(RG_GOHMA_SOUL, ITEM_BIG_POE,
             "You found the soul for %gGohma%w!",
+	    "Du hast die Seele von %gGohma%w gefunden!",
             "Vous obtenez l'âme de %gGohma%w!"),
-        GIMESSAGE_NO_GERMAN(RG_KING_DODONGO_SOUL, ITEM_BIG_POE,
+        GIMESSAGE(RG_KING_DODONGO_SOUL, ITEM_BIG_POE,
             "You found the soul for %rKing&Dodongo%w!",
+	    "Du hast die Seele von %rKönig&Dodongo%w gefunden!",
             "Vous obtenez l'âme du %rRoi Dodongo%w!"),
-        GIMESSAGE_NO_GERMAN(RG_BARINADE_SOUL, ITEM_BIG_POE,
+        GIMESSAGE(RG_BARINADE_SOUL, ITEM_BIG_POE,
             "You found the soul for %bBarinade%w!",
+	    "Du hast die Seele von %bBarinade%w gefunden!",
             "Vous obtenez l'âme de %bBarinade%w!"),
-        GIMESSAGE_NO_GERMAN(RG_PHANTOM_GANON_SOUL, ITEM_BIG_POE,
+        GIMESSAGE(RG_PHANTOM_GANON_SOUL, ITEM_BIG_POE,
             "You found the soul for %gPhantom&Ganon%w!",
+	    "Du hast die Seele von %gPhantom-&Ganon%w gefunden!",
             "Vous obtenez l'âme de %gGanon&Spectral%w!"),
-        GIMESSAGE_NO_GERMAN(RG_VOLVAGIA_SOUL, ITEM_BIG_POE,
+        GIMESSAGE(RG_VOLVAGIA_SOUL, ITEM_BIG_POE,
             "You found the soul for %rVolvagia%w!",
-            "Vous obtenez l'âme de %rVulcania%w!"),
-        GIMESSAGE_NO_GERMAN(RG_MORPHA_SOUL, ITEM_BIG_POE,
+	    "Du hast die Seele von %rVolvagia%w gefunden!",
+            "Vous obtenez l'âme de %rVolcania%w!"),
+        GIMESSAGE(RG_MORPHA_SOUL, ITEM_BIG_POE,
             "You found the soul for %bMorpha%w!",
+	    "Du hast die Seele von %bMorpha%w gefunden!",
             "Vous obtenez l'âme de %bMorpha%w!"),
-        GIMESSAGE_NO_GERMAN(RG_BONGO_BONGO_SOUL, ITEM_BIG_POE,
+        GIMESSAGE(RG_BONGO_BONGO_SOUL, ITEM_BIG_POE,
             "You found the soul for %pBongo&Bongo%w!",
+	    "Du hast die Seele von %pBongo&Bongo%w gefunden!",
             "Vous obtenez l'âme de %pBongo&Bongo%w!"),
-        GIMESSAGE_NO_GERMAN(RG_TWINROVA_SOUL, ITEM_BIG_POE,
+        GIMESSAGE(RG_TWINROVA_SOUL, ITEM_BIG_POE,
             "You found the soul for %yTwinrova%w!",
+	    "Du hast die Seele von %yTwinrova%w gefunden!",
             "Vous obtenez l'âme du %yDuo&Maléfique%w!"),
-        GIMESSAGE_NO_GERMAN(RG_GANON_SOUL, ITEM_BIG_POE,
+        GIMESSAGE(RG_GANON_SOUL, ITEM_BIG_POE,
             "You found the soul for %cGanon%w!",
+	    "Du hast die Seele von %cGanon%w gefunden!",
             "Vous obtenez l'âme de %cGanon%w!"),
 
         GIMESSAGE(RG_OCARINA_A_BUTTON, ITEM_OCARINA_TIME,
@@ -3772,47 +4506,61 @@ void Randomizer::CreateCustomMessages() {
 			"Der %y\xa6%r Knopf%w!&Du kannst ihn nun zum Spielen&von Liedern auf der %rOkarina%w&verwenden!",
 			"Vous obtenez la %rtouche %y\xa6%r de&l'Ocarina%w! Vous pouvez&maintenant l'utiliser lorsque&vous en jouez!"),
         
-        GIMESSAGE_NO_GERMAN(RG_BRONZE_SCALE, ITEM_SCALE_SILVER,
+        GIMESSAGE(RG_BRONZE_SCALE, ITEM_SCALE_SILVER,
             "You got the %rBronze Scale%w!&The power of buoyancy is yours!",
+	    "Du hast die %rBronzene Schuppe%w erhalten!&Die Macht der Schwungkraft ist dein!",
             "Vous obtenez l'%rÉcaille de Bronze%w!&Le pouvoir de la flottabilité est&à vous!"),
-        GIMESSAGE_NO_GERMAN(RG_FISHING_POLE, ITEM_FISHING_POLE,
+        GIMESSAGE(RG_FISHING_POLE, ITEM_FISHING_POLE,
             "You found a lost %rFishing Pole%w!&Time to hit the pond!",
+	    "Du hast eine verlorene %rAngelrute%w gefunden!&Zeit, im Teich zu angeln!",
             "Vous obtenez une %rCanne à pêche%w&perdue!&Il est temps d'aller à %gl'étang%w!"),
-        GIMESSAGE_NO_GERMAN(RG_BOMBCHU_BAG, ITEM_BOMBCHU,
+        GIMESSAGE(RG_BOMBCHU_BAG, ITEM_BOMBCHU,
             "You found the %rBombchu Bag%w!",
+	    "Du hast die %rKrabbelminentasche%w&gefunden!",
             "Vous obtenez un %rSac de Missiles&Teigneux%w!"),
-        GIMESSAGE_NO_GERMAN(RG_BOMB_BAG_INF, ITEM_BOMB_BAG_40,
+        GIMESSAGE(RG_BOMB_BAG_INF, ITEM_BOMB_BAG_40,
             "You got an %rInfinite Bomb Bag%w!&Now you have %yinfinite bombs%w!",
+	    "Du hast eine %runendliche Bombentasche%w&gefunden! Nun hast Du &%yunendliche Bomben%w!",
             "Vous obtenez un %rSac de Bombes&sans fond%w!&Vous avez maintenant des %ybombes&en quantité illimitée%w!"),
-        GIMESSAGE_NO_GERMAN(RG_QUIVER_INF, ITEM_QUIVER_50,
+        GIMESSAGE(RG_QUIVER_INF, ITEM_QUIVER_50,
             "You got an %rInfinite Quiver%w!&Now you have %yinfinite arrows%w!",
+	    "Du hast einen %runendlichen Köcher%w&gefunden! Nun hast Du &%yunendliche Pfeile%w!",
             "Vous obtenez un %rCarquois Infini%w!&Vous avez maintenant des %yflèches&de manière illimitée%w!"),
-        GIMESSAGE_NO_GERMAN(RG_BULLET_BAG_INF, ITEM_BULLET_BAG_50,
+        GIMESSAGE(RG_BULLET_BAG_INF, ITEM_BULLET_BAG_50,
             "You got an %rInfinite Bullet Bag%w!&Now you have %yinfinite&slingshot seeds%w!",
+	    "Du hast eine %runendliche Samentasche%w&gefunden! Nun hast Du &%yunendliche Samen%w!",
             "Vous obtenez un %rSac de Graines&sans fond%w!&Vous avez maintenant des %ygraines&de lance-pierres à l'infini%w!"),
-        GIMESSAGE_NO_GERMAN(RG_STICK_UPGRADE_INF, ITEM_STICK,
+        GIMESSAGE(RG_STICK_UPGRADE_INF, ITEM_STICK,
             "You now have %yinfinite%w %rDeku Sticks%w!",
+	    "Du hast nun %yrunendliche%w %rDeku-Stäbe%w!",
             "Vous avez maintenant des %yBâtons&Mojo de manière illimitée%w!"),
-        GIMESSAGE_NO_GERMAN(RG_NUT_UPGRADE_INF, ITEM_NUT,
+        GIMESSAGE(RG_NUT_UPGRADE_INF, ITEM_NUT,
             "You now have %yinfinite%w %rDeku Nuts%w!",
+	    "Du hast nun %yunendliche%w %rDeku-Nüsse%w!",
             "Vous avez maintenant des %yNoix&Mojo de manière illimitée%w!"),
-        GIMESSAGE_NO_GERMAN(RG_MAGIC_INF, ITEM_MAGIC_LARGE,
+        GIMESSAGE(RG_MAGIC_INF, ITEM_MAGIC_LARGE,
             "You now have %yinfinite%w %rMagic%w!",
+	    "Du hast nun %yunendliche%w %rMagiew!",
             "Vous avez maintenant une quantité&de %ymagie illimitée%w!"),
-        GIMESSAGE_NO_GERMAN(RG_BOMBCHU_INF, ITEM_BOMBCHU,
+        GIMESSAGE(RG_BOMBCHU_INF, ITEM_BOMBCHU,
             "You now have %yinfinite%w %rBombchus%w!",
+	    "Du hast nun %yunendliche%w %rKrabbelminen%w!",
             "Vous avez maintenant des %yMissiles&Teigneux en quantité illimités%w!"),
-        GIMESSAGE_NO_GERMAN(RG_WALLET_INF, ITEM_WALLET_GIANT,
+        GIMESSAGE(RG_WALLET_INF, ITEM_WALLET_GIANT,
             "You now have %yinfinite%w %rmoney%w!",
+	    "Du hast nun %yunendliche%w %rRubinew!",
             "Vous avez maintenant des %yRubis en& quantité illimitée%w!"),
-        GIMESSAGE_NO_GERMAN(RG_SKELETON_KEY, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_SKELETON_KEY, ITEM_KEY_SMALL,
             "You found the %rSkeleton Key%w!",
+	    "Du hast den %rSkelettschlüssel%w gefunden!",
             "Vous avez trouvé la %rClé Squelette%w!"),
-        GIMESSAGE_NO_GERMAN(RG_DEKU_STICK_BAG, ITEM_STICK,
-            "You found the %rDeku Stick Bag%w!&You can now hold deku sticks!",
+        GIMESSAGE(RG_DEKU_STICK_BAG, ITEM_STICK,
+            "You found the %rDeku Stick Bag%w!&You can now hold Deku Sticks!",
+	    "Du hast eine %rDeku-Stab-Tasche%w&gefunden! Nun kannst Du &%yDeku-Stäbe%w halten!",
             "Vous avez trouvé le %rSac de Bâtons&Mojo%w!&Vous pouvez maintenant porter des&Bâtons Mojo!"),
-        GIMESSAGE_NO_GERMAN(RG_DEKU_NUT_BAG, ITEM_NUT,
-            "You found the %rDeku Nut Bag%w!&You can now hold deku nuts!",
+        GIMESSAGE(RG_DEKU_NUT_BAG, ITEM_NUT,
+            "You found the %rDeku Nut Bag%w!&You can now hold Deku Nuts!",
+	    "Du hast eine %rDeku-Nuß-Tasche%w&gefunden! Nun kannst Du &%yDeku-Nüsse%w halten!",
             "Vous avez trouvé le %rSac de Noix& Mojo%w!&Vous pouvez maintenant porter des&Noix Mojo!"),
     }};
     CreateGetItemMessages(getItemMessages);

@@ -4,6 +4,7 @@
 using namespace Rando;
 
 void RegionTable_Init_TempleOfTime() {
+    // clang-format off
     areaTable[RR_TOT_ENTRANCE] = Region("ToT Entrance", "ToT Entrance", {RA_THE_MARKET}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairyExceptSuns();}),
@@ -51,4 +52,6 @@ void RegionTable_Init_TempleOfTime() {
         //Exits
         Entrance(RR_TEMPLE_OF_TIME, []{return true;}),
     });
+
+    // clang-format on
 }

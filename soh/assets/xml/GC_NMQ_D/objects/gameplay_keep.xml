@@ -7,6 +7,8 @@
         <Texture Name="gameplay_keepTex_04CF40" OutName="gameplay_keepTex_04CF40" Format="i8" Width="64" Height="17" Offset="0x4CF40" AddedByScript="true"/>
         <Texture Name="gHilite1Tex" OutName="hilite_1" Format="rgba16" Width="16" Height="16" Offset="0x0"/>
         <Texture Name="gHilite2Tex" OutName="hilite_2" Format="rgba16" Width="16" Height="16" Offset="0x200"/>
+         <!-- SOH [Port] Additional entry for authentic overflowed texture usage. This entry has its offset off by "one pixel" due to ZAPD not allowing duplicates -->
+        <Texture Name="gHilite2Tex_Overflow" OutName="hilite_2_overflow" Format="rgba16" Width="32" Height="32" Offset="0x1FE" />
         <Texture Name="gHylianShieldDesignTex" OutName="hylian_shield_design" Format="rgba16" Width="32" Height="64" Offset="0x400"/>
         <Texture Name="gOcarinaofTimeDesignTex" OutName="ocarina_of_time_design" Format="rgba16" Width="32" Height="16" Offset="0x1400"/>
         <Texture Name="gBottleGlassTex" OutName="bottle_glass" Format="rgba16" Width="16" Height="16" Offset="0x1800"/>

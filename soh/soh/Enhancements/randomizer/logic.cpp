@@ -1060,6 +1060,14 @@ namespace Rando {
         return true;
     }
 
+    bool Logic::CanBreakCrates() {
+        return true;
+    }
+
+    bool Logic::CanBreakSmallCrates() {
+        return true;
+    }
+
     bool Logic::HasExplosives(){
         return CanUse(RG_BOMB_BAG) || CanUse(RG_BOMBCHU_5);
     }
@@ -1077,7 +1085,7 @@ namespace Rando {
     }
 
     bool Logic::CanCutShrubs(){
-        return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_BOOMERANG) || HasExplosives() || CanUse(RG_MASTER_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_BIGGORON_SWORD);
+        return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_BOOMERANG) || HasExplosives() || CanUse(RG_MASTER_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_BIGGORON_SWORD) || HasItem(RG_GORONS_BRACELET);
     }
 
     bool Logic::CanStunDeku(){

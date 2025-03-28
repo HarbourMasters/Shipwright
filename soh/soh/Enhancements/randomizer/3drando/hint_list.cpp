@@ -22,6 +22,7 @@ using namespace std::literals::string_literals;
 namespace Rando {
 
 void StaticData::HintTable_Init() {
+    // clang-format off
     /*--------------------------
     |       GENERAL TEXT        |
     ---------------------------*/
@@ -46,12 +47,13 @@ void StaticData::HintTable_Init() {
                                 "Man erzählt sich, daß #[[2]]# #[[1]]# horte.",
                      /*french*/ "Selon moi, #[[2]]# recèle #[[1]]#.", {QM_RED, QM_GREEN}));
                     // /*spanish*/ "Según dicen, #[[2]]# acapara #[[1]]#."
+    // clang-format on
 
     HintTable_Init_Item();
     HintTable_Init_Exclude_Overworld();
     HintTable_Init_Exclude_Dungeon();
 
-
+    // clang-format off
     /*--------------------------
     |    SOMETIMES HINT TEXT   |
     ---------------------------*/
@@ -2418,5 +2420,6 @@ void StaticData::HintTable_Init() {
                                                        /*german*/ "&Man kann darauf die Worte&%r\"Master Quest\"%w entziffern...",
                                                        /*french*/ "&Étrange... les mots %r\"Master&Quest\"%w sont gravés dessus."));
 
+    // clang-format on
 }
 }
