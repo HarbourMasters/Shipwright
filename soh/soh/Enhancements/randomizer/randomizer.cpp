@@ -2695,7 +2695,6 @@ void RandomizerSettingsWindow::DrawElement() {
         }
         CVarSetInteger(presetTypeCvar.c_str(), randomizerPresetSelected);
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-        ShipInit::Init("*");
         mSettings->UpdateOptionProperties();
         // force excluded location list and trick list update if tab is open.
         locationsTabOpen = false;
