@@ -28,6 +28,10 @@ const char* GetGameVersionString(uint32_t index) {
             return "NTSC-U 1.2";
         case OOT_NTSC_US_GC:
             return "NTSC-U GC";
+        case OOT_NTSC_JP_GC:
+            return "NTSC-J GC";
+        case OOT_NTSC_JP_GC_CE:
+            return "NTSC-J GC (Collector's Edition)";
         case OOT_PAL_10:
             return "PAL 1.0";
         case OOT_PAL_11:

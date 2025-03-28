@@ -140,6 +140,5 @@
         <Texture Name="gMsgCharA8ButtonCRightTex" OutName="msg_char_a8_button_c_right" Format="i4" Width="16" Height="16" Offset="0x4400"/>
         <Texture Name="gMsgCharA9ZTargetSignTex" OutName="msg_char_a9_z_target_sign" Format="i4" Width="16" Height="16" Offset="0x4480"/>
         <Texture Name="gMsgCharAAControlStickTex" OutName="msg_char_aa_control_stick" Format="i4" Width="16" Height="16" Offset="0x4500"/>
-        <Texture Name="gMsgCharABControlPadTex" OutName="msg_char_ab_control_pad" Format="i4" Width="16" Height="16" Offset="0x4580"/>
      </File>
 </Root>
