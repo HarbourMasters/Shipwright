@@ -306,11 +306,13 @@ extern "C" void Randomizer_InitSaveFile() {
 
         // malon/talon back at ranch
         Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG);
+        Flags_SetRandomizerInf(RAND_INF_WEIRD_EGG);
         Flags_SetEventChkInf(EVENTCHKINF_TALON_WOKEN_IN_CASTLE);
         Flags_SetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE);
 
         // Set "Got Zelda's Letter" flag. Also ensures Saria is back at SFM.
         Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER);
+        Flags_SetRandomizerInf(RAND_INF_ZELDAS_LETTER);
         Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_LETTER_ZELDA);
 
         // Got item from impa
