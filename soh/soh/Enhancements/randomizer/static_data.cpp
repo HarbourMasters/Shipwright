@@ -174,7 +174,7 @@ std::unordered_map<uint32_t, RandomizerHintTextKey> StaticData::areaNames = { //
     {RA_BOTTOM_OF_THE_WELL, RHT_BOTTOM_OF_THE_WELL},
     {RA_ICE_CAVERN, RHT_ICE_CAVERN},
     {RA_GERUDO_TRAINING_GROUND, RHT_GERUDO_TRAINING_GROUND},
-    {RA_GANONS_CASTLE, RHT_GANONS_CASTLE}
+    {RA_GANONS_CASTLE, RHT_GANONS_CASTLE},
 };
 
 std::unordered_map<uint32_t, RandomizerHintTextKey> StaticData::trialData = {
@@ -183,7 +183,7 @@ std::unordered_map<uint32_t, RandomizerHintTextKey> StaticData::trialData = {
     {TK_FIRE_TRIAL, RHT_FIRE_TRIAL},
     {TK_WATER_TRIAL, RHT_WATER_TRIAL},
     {TK_SHADOW_TRIAL, RHT_SHADOW_TRIAL},
-    {TK_SPIRIT_TRIAL, RHT_SPIRIT_TRIAL}
+    {TK_SPIRIT_TRIAL, RHT_SPIRIT_TRIAL},
 };
 
 std::unordered_map<RandomizerHint, StaticHintInfo> StaticData::staticHintInfoMap = {
@@ -303,7 +303,7 @@ std::unordered_map<u32, RandomizerHint> StaticData::grottoChestParamsToHint{
   {22984, RH_KAK_OPEN_GROTTO_GOSSIP_STONE},
   {22985, RH_ZR_OPEN_GROTTO_GOSSIP_STONE},
   {23802, RH_DMC_UPPER_GROTTO_GOSSIP_STONE},
-  {22988, RH_KF_STORMS_GROTTO_GOSSIP_STONE}
+  {22988, RH_KF_STORMS_GROTTO_GOSSIP_STONE},
 };
 
 std::array<HintText, RHT_MAX> StaticData::hintTextTable = {};

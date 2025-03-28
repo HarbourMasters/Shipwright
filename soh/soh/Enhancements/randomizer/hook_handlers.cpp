@@ -1090,9 +1090,8 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
 
-        case VB_GIVE_ITEM_FROM_MEDIGORON: {
-            // fallthrough
-        case VB_BE_ELIGIBLE_FOR_GIANTS_KNIFE_PURCHASE:
+        case VB_GIVE_ITEM_FROM_MEDIGORON:
+        case VB_BE_ELIGIBLE_FOR_GIANTS_KNIFE_PURCHASE: {
             if (EnGm_RandoCanGetMedigoronItem()) {
                 if (id == VB_GIVE_ITEM_FROM_MEDIGORON) {
                     EnGm* enGm = va_arg(args, EnGm*);

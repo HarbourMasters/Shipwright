@@ -27,39 +27,50 @@ static DListPatchInfo freezardBodyDListPatchInfos[] = {
 };
 
 static DListPatchInfo ironKnuckleDListPatchInfos[] = {
+    // VambraceLeft
     { object_ik_DL_01BE98, 39 },
     { object_ik_DL_01BE98, 59 },
 
+    // ArmLeft
     { object_ik_DL_01C130, 38 },
 
+    // VambraceRight
     { object_ik_DL_01C2B8, 39 },
     { object_ik_DL_01C2B8, 59 },
 
+    // ArmRight
     { object_ik_DL_01C550, 38 },
 
+    // Waist
     { object_ik_DL_01C7B8, 8 },
     { object_ik_DL_01C7B8, 28 },
 
+    // PauldronLeft
     { object_ik_DL_01CB58, 8 },
     { object_ik_DL_01CB58, 31 },
 
+    // BootTipLeft
     { object_ik_DL_01CCA0, 15 },
     { object_ik_DL_01CCA0, 37 },
     { object_ik_DL_01CCA0, 52 },
     { object_ik_DL_01CCA0, 68 },
 
+    // WaistArmorLeft
     { object_ik_DL_01CEE0, 27 },
     { object_ik_DL_01CEE0, 46 },
     { object_ik_DL_01CEE0, 125 },
 
+    // PauldronRight
     { object_ik_DL_01D2B0, 8 },
     { object_ik_DL_01D2B0, 32 },
-    
+
+    // BootTipRight
     { object_ik_DL_01D3F8, 15 },
     { object_ik_DL_01D3F8, 37 },
     { object_ik_DL_01D3F8, 52 },
     { object_ik_DL_01D3F8, 68 },
 
+    // WaistArmorRight
     { object_ik_DL_01D638, 23 },
     { object_ik_DL_01D638, 42 },
     { object_ik_DL_01D638, 110 },
@@ -336,7 +347,7 @@ void PatchMirroredSunSongEtching() {
     // Only need to patch over the two SetTile commands to get the MIRROR effect
     Gfx mirroredSunSongTex[] = {
         gsDPLoadTextureBlock("", G_IM_FMT_IA, G_IM_SIZ_8b, 128, 32, 0, G_TX_MIRROR | G_TX_WRAP,
-                             G_TX_NOMIRROR | G_TX_CLAMP, 7, 5, G_TX_NOLOD, G_TX_NOLOD)
+                             G_TX_NOMIRROR | G_TX_CLAMP, 7, 5, G_TX_NOLOD, G_TX_NOLOD),
     };
 
     if (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) {

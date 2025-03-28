@@ -45,7 +45,7 @@ const char* altTrapTypeCvars[] = {
     CVAR_ENHANCEMENT("ExtraTraps.Void"),
     CVAR_ENHANCEMENT("ExtraTraps.Ammo"),
     CVAR_ENHANCEMENT("ExtraTraps.Kill"),
-    CVAR_ENHANCEMENT("ExtraTraps.Teleport")
+    CVAR_ENHANCEMENT("ExtraTraps.Teleport"),
 };
 
 std::vector<AltTrapType> getEnabledAddTraps () {

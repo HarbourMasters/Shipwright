@@ -10,7 +10,7 @@
 static std::string comboboxTooltip = "";
 static int32_t enhancementPresetSelected = ENHANCEMENT_PRESET_DEFAULT;
 bool isBetaQuestEnabled = false;
-static std::unordered_map<int32_t, const char*> bunnyHoodEffectMap = {{ BUNNY_HOOD_VANILLA, "Vanilla" }, { BUNNY_HOOD_FAST, "Faster Run" }, { BUNNY_HOOD_FAST_AND_JUMP, "Faster + Longer Jump" }};
+static std::unordered_map<int32_t, const char*> bunnyHoodEffectMap = {{ BUNNY_HOOD_VANILLA, "Vanilla" }, { BUNNY_HOOD_FAST, "Faster Run" }, { BUNNY_HOOD_FAST_AND_JUMP, "Faster + Longer Jump" },};
 
 extern "C" {
     void enableBetaQuest() { isBetaQuestEnabled = true; }

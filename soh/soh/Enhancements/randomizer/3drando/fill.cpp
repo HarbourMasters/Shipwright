@@ -33,7 +33,7 @@ PriceSettingsStruct shopsanityPrices = {RSK_SHOPSANITY_PRICES,
                                         RSK_SHOPSANITY_PRICES_ADULT_WALLET_WEIGHT,
                                         RSK_SHOPSANITY_PRICES_GIANT_WALLET_WEIGHT,
                                         RSK_SHOPSANITY_PRICES_TYCOON_WALLET_WEIGHT,
-                                        RSK_SHOPSANITY_PRICES_AFFORDABLE};
+                                        RSK_SHOPSANITY_PRICES_AFFORDABLE, };
   
 PriceSettingsStruct scrubPrices = {RSK_SCRUBS_PRICES, 
                                    RSK_SCRUBS_PRICES_FIXED_PRICE,
@@ -44,7 +44,7 @@ PriceSettingsStruct scrubPrices = {RSK_SCRUBS_PRICES,
                                    RSK_SCRUBS_PRICES_ADULT_WALLET_WEIGHT,
                                    RSK_SCRUBS_PRICES_GIANT_WALLET_WEIGHT,
                                    RSK_SCRUBS_PRICES_TYCOON_WALLET_WEIGHT,
-                                   RSK_SCRUBS_PRICES_AFFORDABLE};
+                                   RSK_SCRUBS_PRICES_AFFORDABLE, };
 
 PriceSettingsStruct merchantPrices = {RSK_MERCHANT_PRICES, 
                                       RSK_MERCHANT_PRICES_FIXED_PRICE,
@@ -55,7 +55,7 @@ PriceSettingsStruct merchantPrices = {RSK_MERCHANT_PRICES,
                                       RSK_MERCHANT_PRICES_ADULT_WALLET_WEIGHT,
                                       RSK_MERCHANT_PRICES_GIANT_WALLET_WEIGHT,
                                       RSK_MERCHANT_PRICES_TYCOON_WALLET_WEIGHT,
-                                      RSK_MERCHANT_PRICES_AFFORDABLE};
+                                      RSK_MERCHANT_PRICES_AFFORDABLE, };
 
 static void RemoveStartingItemsFromPool() {
   for (RandomizerGet startingItem : StartingInventory) {

@@ -57,7 +57,7 @@ std::array<const char*, 12> acMapping = {
     "Misc.",
     "Boss",
     "Door",
-    "Chest"
+    "Chest",
 };
 
 using namespace UIWidgets;

@@ -314,7 +314,7 @@ OTRGlobals::OTRGlobals() {
         OOT_NTSC_US_GC,
         OOT_PAL_GC,
         OOT_PAL_GC_DBG1,
-        OOT_PAL_GC_DBG2
+        OOT_PAL_GC_DBG2,
     };
 
     context = Ship::Context::CreateUninitializedInstance("Ship of Harkinian", appShortName, "shipofharkinian.json");
