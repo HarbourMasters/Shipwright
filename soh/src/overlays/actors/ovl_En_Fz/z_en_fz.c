@@ -720,6 +720,15 @@ void EnFz_Draw(Actor* thisx, PlayState* play) {
 
     index = (6 - this->actor.colChkInfo.health) >> 1;
 
+    // SOH [Enhancement] - With enemy health scaling, the Freezards health could cause an index out of bounds for the
+    // displayLists, so we need to recompute the index based on the scaled health (using the maximum health value) and
+    // clamp the final result for safety.
+    if (CVarGetInteger(CVAR_ENHANCEMENT("EnemySizeScalesHealth"), 0)) {
+        u8 scaledHealth = (u8)(((f32)this->actor.colChkInfo.health / this->actor.maximumHealth) * 6);
+        index = (6 - scaledHealth) >> 1;
+        index = CLAMP(index, 0, 2);
+    }
+
     OPEN_DISPS(play->state.gfxCtx);
 
     if (this->actor.colChkInfo.health == 0) {
