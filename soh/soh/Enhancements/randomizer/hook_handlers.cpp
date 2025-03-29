@@ -55,6 +55,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
 #include "src/overlays/actors/ovl_Fishing/z_fishing.h"
 #include "src/overlays/actors/ovl_En_Mk/z_en_mk.h"
+#include "src/overlays/actors/ovl_En_Ge1/z_en_ge1.h"
 #include "draw.h"
 
 extern SaveContext gSaveContext;
@@ -65,6 +66,8 @@ extern s32 Player_SetupWaitForPutAway(PlayState* play, Player* player, AfterPutA
 extern void Play_InitEnvironment(PlayState * play, s16 skyboxId);
 extern void EnMk_Wait(EnMk* enMk, PlayState* play);
 extern void func_80ABA778(EnNiwLady* enNiwLady, PlayState* play);
+extern void EnGe1_Wait_Archery(EnGe1* enGe1, PlayState* play);
+extern void EnGe1_SetAnimationIdle(EnGe1* enGe1);
 }
 
 #define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).Get()
@@ -1317,10 +1320,18 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_GIVE_ITEM_FROM_HORSEBACK_ARCHERY: {
+            EnGe1* enGe1 = va_arg(args, EnGe1*);
             // give both rewards at the same time
+            if (gSaveContext.minigameScore >= 1000) {
+                Flags_SetInfTable(INFTABLE_190);
+            }
             if (gSaveContext.minigameScore >= 1500) {
                 Flags_SetItemGetInf(ITEMGETINF_0F);
             }
+            //move gerudo actor onto her wait loop
+            enGe1->actionFunc = EnGe1_Wait_Archery;
+            EnGe1_SetAnimationIdle(enGe1);
+            //skip the vanilla gives.
             *should = false;
             break;
         }
