@@ -534,11 +534,15 @@ bool Extractor::IsMasterQuest() const {
     switch (GetRomVerCrc()) {
         case OOT_PAL_MQ:
         case OOT_PAL_GC_MQ_DBG:
+        case OOT_NTSC_US_MQ:
+        case OOT_NTSC_JP_MQ:
             return true;
         case OOT_NTSC_10:
         case OOT_NTSC_11:
         case OOT_NTSC_12:
         case OOT_NTSC_US_GC:
+        case OOT_NTSC_JP_GC:
+        case OOT_NTSC_JP_GC_CE:
         case OOT_PAL_10:
         case OOT_PAL_11:
         case OOT_PAL_GC:
