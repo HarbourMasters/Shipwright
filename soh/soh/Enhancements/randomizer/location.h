@@ -200,7 +200,7 @@ class Location {
                         SpoilerCollectionCheck collectionCheck);
 
     static Location Grass(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, SceneID scene_,
-                        int32_t actorParams_, std::string&& shortName_, std::string&& spoilerName_,
+                        int32_t actorParams_, std::string&& shortName_,
                         RandomizerHintTextKey hintKey, RandomizerGet vanillaItem,
                         SpoilerCollectionCheck collectionCheck);
 
