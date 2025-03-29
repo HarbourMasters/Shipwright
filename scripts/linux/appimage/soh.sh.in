@@ -92,6 +92,24 @@ while [[ (! -e "$SHIP_HOME"/oot.otr) || (! -e "$SHIP_HOME"/oot-mq.otr) ]]; do
                 166c02770d67fcc3954c443eb400a6a3573d3fc0) # n64
                     ROMHASH=517bd9714c73cb96c21e7c2ef640d7b55186102f
                     ;;
+                79a4f053d34018e59279e6d4b83c7daccd985c87) # v64
+                    ROMHASH=ad69c91157f6705e8ab06c79fe08aad47bb57ba7
+                    ;;
+                82fafee9c6ac7946739282958364ce606077ac65) # n64
+                    ROMHASH=ad69c91157f6705e8ab06c79fe08aad47bb57ba7
+                    ;;
+                18cd0eb65914a21d8fa08dfe71c29d865e9d728a) # v64
+                    ROMHASH=d3ecb253776cd847a5aa63d859d8c89a2f37b364
+                    ;;
+                07940d5609e04b7caac63570731e01189129212e) # n64
+                    ROMHASH=d3ecb253776cd847a5aa63d859d8c89a2f37b364
+                    ;;
+                3ac86253e0c0d55486d212e647350c1527b9c92d) # v64
+                    ROMHASH=41b3bdc48d98c48529219919015a1af22f5057c2
+                    ;;
+                70bf30a9980026e615a1ae8d2735a773cf9fcc94) # n64
+                    ROMHASH=41b3bdc48d98c48529219919015a1af22f5057c2
+                    ;;
                 esac
 
                 case "$ROMHASH" in
