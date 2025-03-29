@@ -146,6 +146,10 @@ static void ValidateOtherEntrance(GetAccessibleLocationsStruct& gals) {
        ApplyStartingInventory(); // RANDOTODO when proper ammo logic is done, this could be moved to the start
     }
   }
+  //If we are not shuffling the guard house, add the key so we can properly check for poe merchant access
+  if (gals.validatedStartingRegion && gals.foundTempleOfTime && !ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL)){
+    Rando::StaticData::RetrieveItem(RG_GUARD_HOUSE_KEY).ApplyEffect();
+  }
 }
 
 // Apply all items that are necessary for checking all location access
@@ -162,7 +166,9 @@ static void ApplyAllAdvancmentItems(){
 static void ValidateSphereZero(GetAccessibleLocationsStruct& gals){
   auto ctx = Rando::Context::GetInstance();
   // Condition for verifying everything required for sphere 0, expanding search to all locations
-  if (logic->CouldEmptyBigPoes && gals.validatedStartingRegion && gals.foundTempleOfTime && gals.haveTimeAccess) {
+  if ((!logic->AreCheckingBigPoes || logic->CanEmptyBigPoes) && gals.validatedStartingRegion && gals.foundTempleOfTime && gals.haveTimeAccess) {
+    //stop checking for big poes
+    logic->AreCheckingBigPoes = false;
     // Apply all items that are necessary for checking all location access
     ApplyAllAdvancmentItems();
     // Reset access as the non-starting age
@@ -563,7 +569,7 @@ void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAcce
 
   ctx->allLocationsReachable = false;
   if (checkPoeCollectorAccess){
-    logic->CouldEmptyBigPoes = false;
+    logic->AreCheckingBigPoes = true;
   }
 
   if (checkOtherEntranceAccess){
@@ -580,6 +586,11 @@ void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAcce
     RegionTable(RR_ROOT)->adultNight = true;
     RegionTable(RR_ROOT)->childDay = true;
     RegionTable(RR_ROOT)->adultDay = true;
+  } else if (checkPoeCollectorAccess){
+    //If we are not shuffling the guard house, add the key so we can properly check for poe merchant access
+    if (!ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL)){
+      Rando::StaticData::RetrieveItem(RG_GUARD_HOUSE_KEY).ApplyEffect();
+    }
   } else {
     ApplyAllAdvancmentItems();
   }
