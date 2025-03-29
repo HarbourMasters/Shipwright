@@ -92,7 +92,7 @@ namespace Rando {
             case RG_BOMB_BAG:
                 return CurrentUpgrade(UPG_BOMB_BAG);
             case RG_MAGIC_SINGLE:
-                return GetSaveContext()->magicLevel >= 1;
+                return GetSaveContext()->magicLevel >= 1 || GetSaveContext()->isMagicAcquired;
                 // Songs
             case RG_ZELDAS_LULLABY:
             case RG_EPONAS_SONG:
