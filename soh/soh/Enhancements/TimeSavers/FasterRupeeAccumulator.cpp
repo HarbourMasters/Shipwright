@@ -14,7 +14,7 @@ extern "C" {
 
 void FasterRupeeAccumulator_Register() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnInterfaceUpdate>([]() {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.FasterRupeeAccumulator"), 0)) return;
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("FasterRupeeAccumulator"), 0)) return;
 
         if (gSaveContext.rupeeAccumulator == 0) {
             return;
