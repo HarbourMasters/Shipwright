@@ -96,7 +96,7 @@ namespace Rando {
                 vtxGroup++;
             }
 
-            auto texture = reinterpret_cast<uintptr_t>(Ship_GetCharFontTexturePAL(mText[i]));
+            auto texture = reinterpret_cast<uintptr_t>(Ship_GetCharFontTexture(mText[i]));
             auto vertexStart = static_cast<int16_t>(4 * (i % 16));
 
             Gfx charTexture[] = { gsDPLoadTextureBlock_4b(
@@ -301,7 +301,7 @@ namespace Rando {
         Ship_CreateQuadVertexGroup(vertices, offsetX, offsetY, mIconWidth, mIconHeight, 0);
         offsetX += 18;
         for (size_t i = 0; i < mText.length(); i++) {
-            int charWidth = static_cast<int>(Ship_GetCharFontWidthPAL(mText[i]));
+            int charWidth = static_cast<int>(Ship_GetCharFontWidth(mText[i]));
             Ship_CreateQuadVertexGroup(&(vertices)[(i + 1) * 4], offsetX, offsetY, charWidth, 16, 0);
             offsetX += charWidth;
         }
@@ -437,7 +437,7 @@ namespace Rando {
                 vtxGroup++;
             }
 
-            auto texture = reinterpret_cast<uintptr_t>(Ship_GetCharFontTexturePAL(mText[i]));
+            auto texture = reinterpret_cast<uintptr_t>(Ship_GetCharFontTexture(mText[i]));
             auto vertexStart = static_cast<int16_t>(4 * (i % 16));
 
             Gfx charTexture[] = { gsDPLoadTextureBlock_4b(

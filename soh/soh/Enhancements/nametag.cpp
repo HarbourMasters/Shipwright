@@ -126,7 +126,7 @@ void DrawNameTag(PlayState* play, const NameTag* nameTag) {
             vtxGroup++;
         }
 
-        uintptr_t texture = (uintptr_t)Ship_GetCharFontTexturePAL(nameTag->processedText[i]);
+        uintptr_t texture = (uintptr_t)Ship_GetCharFontTexture(nameTag->processedText[i]);
         int16_t vertexStart = 4 * (i % 16);
 
         // Multi-instruction macro, need to insert all to the dl buffer
@@ -216,7 +216,7 @@ extern "C" void NameTag_RegisterForActorWithOptions(Actor* actor, const char* te
             numLines++;
         }
 
-        int16_t charWidth = (int16_t)(Ship_GetCharFontWidthPAL(processedText[i]));
+        int16_t charWidth = (int16_t)(Ship_GetCharFontWidth(processedText[i]));
 
         Ship_CreateQuadVertexGroup(&(vertices)[(i + 1) * 4], offsetX, (numLines - 1) * 16, charWidth, 16, 0);
         offsetX += charWidth;

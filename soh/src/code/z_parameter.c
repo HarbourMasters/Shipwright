@@ -6690,12 +6690,12 @@ uint16_t Interface_DrawTextLine(GraphicsContext* gfx, char text[], int16_t x, in
             textureIndex = processedText[i] - 32;
 
             if (textureIndex != 0) {
-                texture = Ship_GetCharFontTexturePAL(processedText[i]);
+                texture = Ship_GetCharFontTexture(processedText[i]);
                 Interface_DrawTextCharacter(gfx, x + kerningOffset, y + lineOffset, texture, colorR, colorG, colorB,
                                             colorA, textScale, textShadow);
             }
             kerningOffset +=
-                (uint16_t)(Ship_GetCharFontWidthPAL(processedText[i]) * (R_TEXT_CHAR_SCALE / 100.0f) * textScale);
+                (uint16_t)(Ship_GetCharFontWidth(processedText[i]) * (R_TEXT_CHAR_SCALE / 100.0f) * textScale);
         }
     }
 

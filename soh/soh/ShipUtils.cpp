@@ -77,7 +77,7 @@ extern "C" void Ship_CreateQuadVertexGroup(Vtx* vtxList, s32 xStart, s32 yStart,
     vtxList[3].v.tc[1] = height << 5;
 }
 
-extern "C" f32 Ship_GetCharFontWidthPAL(u8 character) {
+extern "C" f32 Ship_GetCharFontWidth(u8 character) {
    u8 adjustedChar = character - ' ';
 
    if (adjustedChar >= ARRAY_COUNTU(sFontWidths)) {
@@ -87,7 +87,7 @@ extern "C" f32 Ship_GetCharFontWidthPAL(u8 character) {
    return sFontWidths[adjustedChar];
 }
 
-extern "C" void* Ship_GetCharFontTexturePAL(u8 character) {
+extern "C" void* Ship_GetCharFontTexture(u8 character) {
    u8 adjustedChar = character - ' ';
 
    if (adjustedChar >= ARRAY_COUNTU(fontTbl)) {
