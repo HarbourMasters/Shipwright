@@ -374,9 +374,7 @@ void func_80ACA7E0(EnOwl* this, PlayState* play) {
 
 void EnOwl_ConfirmKokiriMessage(EnOwl* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
-        // swap the order of the responses if better owl is enabled
-        uint8_t index = CVarGetInteger(CVAR_ENHANCEMENT("BetterOwl"), 0) == 0 ? play->msgCtx.choiceIndex : (1 - play->msgCtx.choiceIndex);
-        switch (index) {
+        switch (play->msgCtx.choiceIndex) {
             case OWL_REPEAT:
                 Message_ContinueTextbox(play, 0x2065);
                 break;
@@ -404,8 +402,7 @@ void EnOwl_WaitOutsideKokiri(EnOwl* this, PlayState* play) {
 void func_80ACA998(EnOwl* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
         // swap the order of the responses if better owl is enabled
-        uint8_t index = CVarGetInteger(CVAR_ENHANCEMENT("BetterOwl"), 0) == 0 ? play->msgCtx.choiceIndex : (1 - play->msgCtx.choiceIndex);
-        switch (index) {
+        switch (play->msgCtx.choiceIndex) {
             case OWL_REPEAT:
                 Message_ContinueTextbox(play, 0x2069);
                 this->actionFunc = func_80ACAA54;
@@ -449,9 +446,7 @@ void EnOwl_WaitHyruleCastle(EnOwl* this, PlayState* play) {
 
 void func_80ACAB88(EnOwl* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
-        // swap the order of the responses if better owl is enabled
-        uint8_t index = CVarGetInteger(CVAR_ENHANCEMENT("BetterOwl"), 0) == 0 ? play->msgCtx.choiceIndex : (1 - play->msgCtx.choiceIndex);
-        switch (index) {
+        switch (play->msgCtx.choiceIndex) {
             case OWL_REPEAT:
                 // obtained zelda's letter
                 if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
@@ -492,9 +487,7 @@ void EnOwl_WaitKakariko(EnOwl* this, PlayState* play) {
 
 void func_80ACAD34(EnOwl* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
-        // swap the order of the responses if better owl is enabled
-        uint8_t index = CVarGetInteger(CVAR_ENHANCEMENT("BetterOwl"), 0) == 0 ? play->msgCtx.choiceIndex : (1 - play->msgCtx.choiceIndex);
-        switch (index) {
+        switch (play->msgCtx.choiceIndex) {
             case OWL_REPEAT:
                 Message_ContinueTextbox(play, 0x206F);
                 this->actionFunc = func_80ACADF0;
@@ -530,9 +523,7 @@ void EnOwl_WaitGerudo(EnOwl* this, PlayState* play) {
 
 void func_80ACAEB8(EnOwl* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
-        // swap the order of the responses if better owl is enabled
-        uint8_t index = CVarGetInteger(CVAR_ENHANCEMENT("BetterOwl"), 0) == 0 ? play->msgCtx.choiceIndex : (1 - play->msgCtx.choiceIndex);
-        switch (index) {
+        switch (play->msgCtx.choiceIndex) {
             case OWL_REPEAT:
                 Message_ContinueTextbox(play, 0x2071);
                 this->actionFunc = func_80ACAF74;
@@ -652,9 +643,7 @@ void EnOwl_WaitDeathMountainShortcut(EnOwl* this, PlayState* play) {
 
 void func_80ACB344(EnOwl* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
-        // swap the order of the responses if better owl is enabled
-        uint8_t index = CVarGetInteger(CVAR_ENHANCEMENT("BetterOwl"), 0) == 0 ? play->msgCtx.choiceIndex : (1 - play->msgCtx.choiceIndex);
-        switch (index) {
+        switch (play->msgCtx.choiceIndex) {
             case OWL_REPEAT:
                 Message_ContinueTextbox(play, 0x607A);
                 break;
@@ -677,9 +666,7 @@ void func_80ACB3E0(EnOwl* this, PlayState* play) {
 
 void func_80ACB440(EnOwl* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
-        // swap the order of the responses if better owl is enabled
-        uint8_t index = CVarGetInteger(CVAR_ENHANCEMENT("BetterOwl"), 0) == 0 ? play->msgCtx.choiceIndex : (1 - play->msgCtx.choiceIndex);
-        switch (index) {
+        switch (play->msgCtx.choiceIndex) {
             case OWL_REPEAT:
                 Message_ContinueTextbox(play, 0x10C1);
                 this->actionFunc = func_80ACB4FC;
@@ -714,9 +701,7 @@ void EnOwl_WaitLWPreSaria(EnOwl* this, PlayState* play) {
 
 void func_80ACB5C4(EnOwl* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
-        // swap the order of the responses if better owl is enabled
-        uint8_t index = CVarGetInteger(CVAR_ENHANCEMENT("BetterOwl"), 0) == 0 ? play->msgCtx.choiceIndex : (1 - play->msgCtx.choiceIndex);
-        switch (index) {
+        switch (play->msgCtx.choiceIndex) {
             case OWL_REPEAT:
                 Message_ContinueTextbox(play, 0x10C5);
                 this->actionFunc = func_80ACB680;

@@ -74,25 +74,25 @@ static AnimationFrameCountInfo sAnimationInfo[] = {
 
 u16 func_80AA2AA0(PlayState* play, Actor* thisx) {
     Player* player = GET_PLAYER(play);
-    s16* timer1ValuePtr; // weirdness with this necessary to match
+    s16* timerSecondsPtr; // weirdness with this necessary to match
 
     if (!Flags_GetInfTable(INFTABLE_B8)) {
         return 0x2000;
     }
-    timer1ValuePtr = &gSaveContext.timer1Value;
+    timerSecondsPtr = &gSaveContext.timerSeconds;
     if (gSaveContext.eventInf[0] & 0x400) {
-        gSaveContext.timer1Value = gSaveContext.timer1Value;
+        gSaveContext.timerSeconds = gSaveContext.timerSeconds;
         thisx->flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
-        if (gSaveContext.timer1Value >= 0xD3) {
+        if (gSaveContext.timerSeconds >= 0xD3) {
             return 0x208E;
         }
         if ((HIGH_SCORE(HS_HORSE_RACE) == 0) || (HIGH_SCORE(HS_HORSE_RACE) >= 0xB4)) {
             HIGH_SCORE(HS_HORSE_RACE) = 0xB4;
-            gSaveContext.timer1Value = *timer1ValuePtr;
+            gSaveContext.timerSeconds = *timerSecondsPtr;
         }
-        if (!Flags_GetEventChkInf(EVENTCHKINF_WON_COW_IN_MALONS_RACE) && (gSaveContext.timer1Value < 0x32)) {
+        if (!Flags_GetEventChkInf(EVENTCHKINF_WON_COW_IN_MALONS_RACE) && (gSaveContext.timerSeconds < 0x32)) {
             return 0x208F;
-        } else if (gSaveContext.timer1Value < HIGH_SCORE(HS_HORSE_RACE)) {
+        } else if (gSaveContext.timerSeconds < HIGH_SCORE(HS_HORSE_RACE)) {
             return 0x2012;
         } else {
             return 0x2004;
@@ -120,7 +120,7 @@ s16 func_80AA2BD4(PlayState* play, Actor* thisx) {
                 play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST);
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.eventInf[0] |= 0x400;
-                gSaveContext.timer1State = 0xF;
+                gSaveContext.timerState = 0xF;
             }
             break;
         case TEXT_STATE_CHOICE:
@@ -147,14 +147,14 @@ s16 func_80AA2BD4(PlayState* play, Actor* thisx) {
                     Flags_SetEventChkInf(EVENTCHKINF_WON_COW_IN_MALONS_RACE);
                 case 0x2004:
                 case 0x2012:
-                    if (HIGH_SCORE(HS_HORSE_RACE) > gSaveContext.timer1Value) {
-                        HIGH_SCORE(HS_HORSE_RACE) = gSaveContext.timer1Value;
+                    if (HIGH_SCORE(HS_HORSE_RACE) > gSaveContext.timerSeconds) {
+                        HIGH_SCORE(HS_HORSE_RACE) = gSaveContext.timerSeconds;
                     }
                 case 0x208E:
                     gSaveContext.eventInf[0] &= ~0x400;
                     thisx->flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
                     ret = NPC_TALK_STATE_IDLE;
-                    gSaveContext.timer1State = 0xA;
+                    gSaveContext.timerState = 0xA;
                     break;
                 case 0x2002:
                     Flags_SetInfTable(INFTABLE_B9);

@@ -1,0 +1,5 @@
+<Root>
+    <File Name="object_gi_brokensword" Segment="6">
+        <DList Name="gGiBrokenGoronSwordDL" Offset="0x06E0"/>
+    </File>
+</Root>

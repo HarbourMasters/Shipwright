@@ -100,16 +100,16 @@ static void* sBackspaceEndTextures[][2] = {
 
 static u16 sBackspaceEndWidths[] = { 28, 44 };
 
-static s16 D_808125EC[] = {
+s16 D_808125EC[] = {
     0xFFE2, 0xFFF0, 0xFFFA, 0x0004, 0x000E, 0x0018, 0x0022, 0x002C, 0x0036, 0xFFF0, 0xFFF0,
 };
 
-static s16 D_80812604[] = {
+s16 D_80812604[] = {
     0x0048, 0x0045, 0x0045, 0x0045, 0x0045, 0x0045, 0x0045, 0x0045, 0x0045, 0x0045, 0x0045,
 };
 
-static s16 sLastCharIndex = -1;
-static s16 sLastKbdX = -1;
+s16 sLastCharIndex = -1;
+s16 sLastKbdX = -1;
 
 /**
  * Set vertices used by all elements of the name entry screen that are NOT the keyboard.
@@ -677,7 +677,7 @@ void FileChoose_StartOptions(GameState* thisx) {
 }
 
 static u8 sSelectedSetting;
-static s8 sLastOptionButtonIndex = -1;
+s8 sLastOptionButtonIndex = -1;
 
 /**
  * Update the cursor and appropriate settings for the options menu.

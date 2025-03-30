@@ -121,6 +121,7 @@ void MessageViewer::DisplayCustomMessage() const {
 extern "C" MessageTableEntry* sNesMessageEntryTablePtr;
 extern "C" MessageTableEntry* sGerMessageEntryTablePtr;
 extern "C" MessageTableEntry* sFraMessageEntryTablePtr;
+extern "C" MessageTableEntry* sJpnMessageEntryTablePtr;
 extern "C" MessageTableEntry* sStaffMessageEntryTablePtr;
 
 void FindMessage(PlayState* play, const uint16_t textId, const uint8_t language) {
@@ -128,18 +129,13 @@ void FindMessage(PlayState* play, const uint16_t textId, const uint8_t language)
     const char* nextSeg;
     MessageTableEntry* messageTableEntry = sNesMessageEntryTablePtr;
     Font* font;
-    u16 bufferId = textId;
-    // Use the better owl message if better owl is enabled
-    if (CVarGetInteger(CVAR_ENHANCEMENT("BetterOwl"), 0) != 0 && (bufferId == 0x2066 || bufferId == 0x607B ||
-        bufferId == 0x10C2 || bufferId == 0x10C6 || bufferId == 0x206A))
-    {
-        bufferId = 0x71B3;
-    }
 
     if (language == LANGUAGE_GER)
         messageTableEntry = sGerMessageEntryTablePtr;
     else if (language == LANGUAGE_FRA)
         messageTableEntry = sFraMessageEntryTablePtr;
+    else if (language == LANGUAGE_JPN)
+        messageTableEntry = sJpnMessageEntryTablePtr;
 
     // If PAL languages are not present in the OTR file, default to English
     if (messageTableEntry == nullptr)
@@ -150,7 +146,7 @@ void FindMessage(PlayState* play, const uint16_t textId, const uint8_t language)
     while (messageTableEntry->textId != 0xFFFF) {
         font = &play->msgCtx.font;
 
-        if (messageTableEntry->textId == bufferId) {
+        if (messageTableEntry->textId == textId) {
             foundSeg = messageTableEntry->segment;
             font->charTexBuf[0] = messageTableEntry->typePos;
 

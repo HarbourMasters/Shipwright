@@ -869,7 +869,7 @@ void EnGo_BiggoronActionFunc(EnGo* this, PlayState* play) {
                 this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
                 EnGo_SetupAction(this, EnGo_Eyedrops);
                 play->msgCtx.msgMode = MSGMODE_PAUSED;
-                gSaveContext.timer2State = 0;
+                gSaveContext.subTimerState = 0;
                 OnePointCutscene_Init(play, 4190, -99, &this->actor, MAIN_CAM);
             } else {
                 this->interactInfo.talkState = NPC_TALK_STATE_IDLE;

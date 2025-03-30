@@ -418,8 +418,7 @@ Rando::Location Rando::Location::Fairy(RandomizerCheck rc, RandomizerCheckQuest 
 }
 
 Rando::Location Rando::Location::Grass(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
-                                     SceneID scene_, int32_t actorParams_, std::string&& shortName_,
-                                     std::string&& spoilerName_, RandomizerHintTextKey hintKey,
+                                     SceneID scene_, int32_t actorParams_, std::string&& shortName_, RandomizerHintTextKey hintKey,
                                      RandomizerGet vanillaItem, SpoilerCollectionCheck collectionCheck) {
-    return { rc, quest_, RCTYPE_GRASS, area_, ACTOR_EN_KUSA, scene_, actorParams_, std::move(shortName_), std::move(spoilerName_), hintKey, vanillaItem, false, collectionCheck };
+    return { rc, quest_, RCTYPE_GRASS, area_, ACTOR_EN_KUSA, scene_, actorParams_, std::move(shortName_), hintKey, vanillaItem, false, collectionCheck };
 }

@@ -1,6 +1,7 @@
 #include "kaleido.h"
 
 #include "soh/frame_interpolation.h"
+#include "soh/ShipUtils.h"
 
 extern "C" {
 #include "z64.h"
@@ -86,8 +87,6 @@ namespace Rando {
         // text
         mEntryDl->push_back(gsDPSetPrimColor(0, 0, textColor.r, textColor.g, textColor.b, textColor.a));
         for (size_t i = 0, vtxGroup = 0; i < numChar; i++) {
-            uint16_t texIndex = mText[i] - 32;
-
             // A maximum of 64 Vtx can be loaded at once by gSPVertex, or basically 16 characters
             // handle loading groups of 16 chars at a time until there are no more left to load.
             // By this point 4 vertices have already been loaded for the preceding icon.
@@ -97,18 +96,14 @@ namespace Rando {
                 vtxGroup++;
             }
 
-            if (texIndex != 0) {
-                auto texture = reinterpret_cast<uintptr_t>(Font_FetchCharTexture(texIndex));
-                auto vertexStart = static_cast<int16_t>(4 * (i % 16));
+            auto texture = reinterpret_cast<uintptr_t>(Ship_GetCharFontTexture(mText[i]));
+            auto vertexStart = static_cast<int16_t>(4 * (i % 16));
 
-                Gfx charTexture[] = {gsDPLoadTextureBlock_4b(texture, G_IM_FMT_I, FONT_CHAR_TEX_WIDTH,
-                                                             FONT_CHAR_TEX_HEIGHT, 0, G_TX_NOMIRROR | G_TX_CLAMP,
-                                                             G_TX_NOMIRROR | G_TX_CLAMP,
-                                                             G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD)};
-                mEntryDl->insert(mEntryDl->end(), std::begin(charTexture), std::end(charTexture));
-                mEntryDl->push_back(
-                        gsSP1Quadrangle(vertexStart, vertexStart + 2, vertexStart + 3, vertexStart + 1, 0));
-            }
+            Gfx charTexture[] = { gsDPLoadTextureBlock_4b(
+                texture, G_IM_FMT_I, FONT_CHAR_TEX_WIDTH, FONT_CHAR_TEX_HEIGHT, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+                G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD) };
+            mEntryDl->insert(mEntryDl->end(), std::begin(charTexture), std::end(charTexture));
+            mEntryDl->push_back(gsSP1Quadrangle(vertexStart, vertexStart + 2, vertexStart + 3, vertexStart + 1, 0));
         }
         mEntryDl->push_back(gsSPPopMatrix(G_MTX_MODELVIEW));
     }
@@ -303,15 +298,11 @@ namespace Rando {
         // 4 vertices per character, plus one for the preceding icon.
         Vtx* vertices = (Vtx*)calloc(sizeof(Vtx[4]), mText.length() + 1);
         // Vertex for the preceding icon.
-        Interface_CreateQuadVertexGroup(vertices, offsetX, offsetY, mIconWidth, mIconHeight, 0);
+        Ship_CreateQuadVertexGroup(vertices, offsetX, offsetY, mIconWidth, mIconHeight, 0);
         offsetX += 18;
         for (size_t i = 0; i < mText.length(); i++) {
-            auto charIndex = static_cast<uint16_t>(mText[i] - 32);
-            int charWidth = 0;
-            if (charIndex >= 0) {
-                charWidth = static_cast<int>(Message_GetCharacterWidth(charIndex) * (100.0f / R_TEXT_CHAR_SCALE));
-            }
-            Interface_CreateQuadVertexGroup(&(vertices)[(i + 1) * 4], offsetX, offsetY, charWidth, 16, 0);
+            int charWidth = static_cast<int>(Ship_GetCharFontWidth(mText[i]));
+            Ship_CreateQuadVertexGroup(&(vertices)[(i + 1) * 4], offsetX, offsetY, charWidth, 16, 0);
             offsetX += charWidth;
         }
         offsetY += FONT_CHAR_TEX_HEIGHT;
@@ -436,7 +427,6 @@ namespace Rando {
         // text
         for (size_t i = 0, vtxGroup = 0; i < numChar; i++) {
             mEntryDl->push_back(gsDPSetPrimColor(0, 0, mButtonColors[i].r, mButtonColors[i].g, mButtonColors[i].b, mButtonColors[i].a));
-            uint16_t texIndex = mText[i] - 32;
 
             // A maximum of 64 Vtx can be loaded at once by gSPVertex, or basically 16 characters
             // handle loading groups of 16 chars at a time until there are no more left to load.
@@ -447,18 +437,14 @@ namespace Rando {
                 vtxGroup++;
             }
 
-            if (texIndex != 0) {
-                auto texture = reinterpret_cast<uintptr_t>(Font_FetchCharTexture(texIndex));
-                auto vertexStart = static_cast<int16_t>(4 * (i % 16));
+            auto texture = reinterpret_cast<uintptr_t>(Ship_GetCharFontTexture(mText[i]));
+            auto vertexStart = static_cast<int16_t>(4 * (i % 16));
 
-                Gfx charTexture[] = {gsDPLoadTextureBlock_4b(texture, G_IM_FMT_I, FONT_CHAR_TEX_WIDTH,
-                                                             FONT_CHAR_TEX_HEIGHT, 0, G_TX_NOMIRROR | G_TX_CLAMP,
-                                                             G_TX_NOMIRROR | G_TX_CLAMP,
-                                                             G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD)};
-                mEntryDl->insert(mEntryDl->end(), std::begin(charTexture), std::end(charTexture));
-                mEntryDl->push_back(
-                        gsSP1Quadrangle(vertexStart, vertexStart + 2, vertexStart + 3, vertexStart + 1, 0));
-            }
+            Gfx charTexture[] = { gsDPLoadTextureBlock_4b(
+                texture, G_IM_FMT_I, FONT_CHAR_TEX_WIDTH, FONT_CHAR_TEX_HEIGHT, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+                G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD) };
+            mEntryDl->insert(mEntryDl->end(), std::begin(charTexture), std::end(charTexture));
+            mEntryDl->push_back(gsSP1Quadrangle(vertexStart, vertexStart + 2, vertexStart + 3, vertexStart + 1, 0));
         }
         mEntryDl->push_back(gsSPPopMatrix(G_MTX_MODELVIEW));
     }

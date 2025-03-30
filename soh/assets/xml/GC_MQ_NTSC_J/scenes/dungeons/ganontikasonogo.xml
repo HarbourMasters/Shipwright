@@ -1,0 +1,36 @@
+<Root>
+    <File Name="ganontikasonogo_scene" Segment="2">
+        <Texture Name="ganontikasonogo_sceneTex_002B00" OutName="ganontikasonogo_sceneTex_002B00" Format="rgba16" Width="32" Height="64" Offset="0x2B00" AddedByScript="true"/>
+        <Texture Name="ganontikasonogo_sceneTex_003B00" OutName="ganontikasonogo_sceneTex_003B00" Format="rgba16" Width="64" Height="32" Offset="0x3B00" AddedByScript="true"/>
+        <Path Name="ganontikasonogo_scenePathList_000184" Offset="0x0184" NumPaths="2"/>
+        <Scene Name="ganontikasonogo_scene" Offset="0x0"/>
+    </File>
+    <File Name="ganontikasonogo_room_0" Segment="3">
+        <Texture Name="ganontikasonogo_room_0Tex_0092D8" OutName="ganontikasonogo_room_0Tex_0092D8" Format="rgba16" Width="64" Height="32" Offset="0x92D8" AddedByScript="true"/>
+        <Texture Name="ganontikasonogo_room_0Tex_00A2D8" OutName="ganontikasonogo_room_0Tex_00A2D8" Format="rgba16" Width="64" Height="32" Offset="0xA2D8" AddedByScript="true"/>
+        <Texture Name="ganontikasonogo_room_0Tex_00B2D8" OutName="ganontikasonogo_room_0Tex_00B2D8" Format="rgba16" Width="32" Height="64" Offset="0xB2D8" AddedByScript="true"/>
+        <Texture Name="ganontikasonogo_room_0Tex_00C2D8" OutName="ganontikasonogo_room_0Tex_00C2D8" Format="rgba16" Width="64" Height="32" Offset="0xC2D8" AddedByScript="true"/>
+        <Texture Name="ganontikasonogo_room_0Tex_00D2D8" OutName="ganontikasonogo_room_0Tex_00D2D8" Format="rgba16" Width="64" Height="32" Offset="0xD2D8" AddedByScript="true"/>
+        <Texture Name="ganontikasonogo_room_0Tex_00E2D8" OutName="ganontikasonogo_room_0Tex_00E2D8" Format="rgba16" Width="64" Height="32" Offset="0xE2D8" AddedByScript="true"/>
+        <Texture Name="ganontikasonogo_room_0Tex_00F2D8" OutName="ganontikasonogo_room_0Tex_00F2D8" Format="rgba16" Width="32" Height="32" Offset="0xF2D8" AddedByScript="true"/>
+        <Texture Name="ganontikasonogo_room_0Tex_00FAD8" OutName="ganontikasonogo_room_0Tex_00FAD8" Format="rgba16" Width="32" Height="64" Offset="0xFAD8" AddedByScript="true"/>
+        <Texture Name="ganontikasonogo_room_0Tex_010AD8" OutName="ganontikasonogo_room_0Tex_010AD8" Format="ci4" Width="64" Height="64" Offset="0x10AD8" TlutOffset="0x92B8" AddedByScript="true"/>
+        <Texture Name="ganontikasonogo_room_0Tex_0112D8" OutName="ganontikasonogo_room_0Tex_0112D8" Format="ci4" Width="64" Height="64" Offset="0x112D8" TlutOffset="0x92B8" AddedByScript="true"/>
+        <Texture Name="ganontikasonogo_room_0Tex_011AD8" OutName="ganontikasonogo_room_0Tex_011AD8" Format="ci4" Width="64" Height="64" Offset="0x11AD8" TlutOffset="0x92B8" AddedByScript="true"/>
+        <Texture Name="ganontikasonogo_room_0Tex_0122D8" OutName="ganontikasonogo_room_0Tex_0122D8" Format="ci4" Width="64" Height="64" Offset="0x122D8" TlutOffset="0x92B8" AddedByScript="true"/>
+        <Texture Name="ganontikasonogo_room_0Tex_012AD8" OutName="ganontikasonogo_room_0Tex_012AD8" Format="ci4" Width="64" Height="64" Offset="0x12AD8" TlutOffset="0x92B8" AddedByScript="true"/>
+        <Texture Name="ganontikasonogo_room_0Tex_0132D8" OutName="ganontikasonogo_room_0Tex_0132D8" Format="rgba16" Width="64" Height="32" Offset="0x132D8" AddedByScript="true"/>
+        <Texture Name="ganontikasonogo_room_0Tex_0142D8" OutName="ganontikasonogo_room_0Tex_0142D8" Format="rgba16" Width="64" Height="16" Offset="0x142D8" AddedByScript="true"/>
+        <Texture Name="ganontikasonogo_room_0Tex_014AD8" OutName="ganontikasonogo_room_0Tex_014AD8" Format="rgba16" Width="64" Height="32" Offset="0x14AD8" AddedByScript="true"/>
+        <Texture Name="ganontikasonogo_room_0Tex_016B78" OutName="ganontikasonogo_room_0Tex_016B78" Format="ia8" Width="64" Height="64" Offset="0x16B78" AddedByScript="true"/>
+        <Texture Name="ganontikasonogo_room_0TLUT_0092B8" OutName="ganontikasonogo_room_0TLUT_0092B8" Format="rgba16" Width="4" Height="4" Offset="0x92B8" AddedByScript="true"/>
+        <Room Name="ganontikasonogo_room_0" Offset="0x0"/>
+    </File>
+    <File Name="ganontikasonogo_room_1" Segment="3">
+        <Texture Name="ganontikasonogo_room_1Tex_006C60" OutName="ganontikasonogo_room_1Tex_006C60" Format="rgba16" Width="32" Height="32" Offset="0x6C60" AddedByScript="true"/>
+        <Texture Name="ganontikasonogo_room_1Tex_007460" OutName="ganontikasonogo_room_1Tex_007460" Format="rgba16" Width="64" Height="32" Offset="0x7460" AddedByScript="true"/>
+        <Texture Name="ganontikasonogo_room_1Tex_008460" OutName="ganontikasonogo_room_1Tex_008460" Format="rgba16" Width="32" Height="64" Offset="0x8460" AddedByScript="true"/>
+        <Texture Name="ganontikasonogo_room_1Tex_009720" OutName="ganontikasonogo_room_1Tex_009720" Format="ia16" Width="8" Height="128" Offset="0x9720" AddedByScript="true"/>
+        <Room Name="ganontikasonogo_room_1" Offset="0x0"/>
+    </File>
+</Root>

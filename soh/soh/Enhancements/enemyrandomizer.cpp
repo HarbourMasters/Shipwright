@@ -159,7 +159,7 @@ static int enemiesToRandomize[] = {
     ACTOR_EN_HINTNUTS,  // Hint Deku Scrubs
     ACTOR_EN_WF,        // Wolfos
     ACTOR_EN_SKB,       // Stalchild
-    ACTOR_EN_CROW       // Guay
+    ACTOR_EN_CROW,      // Guay
 };
 
 extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t *actorId, f32 *posX, f32 *posY, f32 *posZ, int16_t *rotX,

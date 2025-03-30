@@ -50,7 +50,6 @@ void RegionTable_Init_Market() {
 
     areaTable[RR_MARKET_GUARD_HOUSE] = Region("Market Guard House", "Market Guard House", {}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->CouldEmptyBigPoes, []{return logic->IsAdult;}),
         EventAccess(&logic->CanEmptyBigPoes,   []{return logic->IsAdult;}),
     }, {
         //Locations

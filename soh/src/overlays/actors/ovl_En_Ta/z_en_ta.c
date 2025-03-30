@@ -240,7 +240,7 @@ void EnTa_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyCylinder(play, &this->collider);
 
     if (this->actor.params != 1 && this->actor.params != 2 && play->sceneNum == SCENE_LON_LON_BUILDINGS) {
-        gSaveContext.timer1State = 0;
+        gSaveContext.timerState = 0;
     }
 
     if (this->unk_2E0 & 0x200) {
@@ -708,7 +708,7 @@ void EnTa_RunCuccoGame(EnTa* this, PlayState* play) {
 
                     switch (EnTa_GetSuperCuccosCount(this, play)) {
                         case 1:
-                            gSaveContext.timer1State = 0;
+                            gSaveContext.timerState = 0;
                             Player_SetCsActionWithHaltedActors(play, &this->actor, 1);
 
                             Message_StartTextbox(play, 0x2084, &this->actor);
@@ -742,15 +742,15 @@ void EnTa_RunCuccoGame(EnTa* this, PlayState* play) {
         }
     }
 
-    if (gSaveContext.timer1Value == 10) {
+    if (gSaveContext.timerSeconds == 10) {
         func_800F5918();
     }
 
-    if (gSaveContext.timer1Value == 0 && !Play_InCsMode(play)) {
+    if (gSaveContext.timerSeconds == 0 && !Play_InCsMode(play)) {
         Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_STOP);
         this->unk_2E0 &= ~0x200;
         Sfx_PlaySfxCentered(NA_SE_SY_FOUND);
-        gSaveContext.timer1State = 0;
+        gSaveContext.timerState = 0;
         Player_SetCsActionWithHaltedActors(play, &this->actor, 1);
         Message_StartTextbox(play, 0x2081, &this->actor);
         this->actionFunc = func_80B15424;

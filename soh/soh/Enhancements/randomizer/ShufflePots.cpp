@@ -95,6 +95,9 @@ void ShufflePots_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va
 }
 
 void Rando::StaticData::RegisterPotLocations() {
+    static bool registered = false;
+    if (registered) return;
+    registered = true;
     // clang-format off
     // Overworld Pots
     //            Randomizer Check                                 	Randomizer Check                                           Quest         Area                          Scene ID                           Params                          Short Name                    	  Hint Text Key                     Vanilla             Spoiler Collection Check

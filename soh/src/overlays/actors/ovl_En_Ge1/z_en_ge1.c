@@ -521,7 +521,10 @@ void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, PlayState* play) {
     GetItemEntry getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     s32 getItemId;
 
-    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_HORSEBACK_ARCHERY, true, this)) {
+    if (!GameInteractor_Should(VB_GIVE_ITEM_FROM_HORSEBACK_ARCHERY, true, this)){
+        return;
+    }
+    if (Actor_HasParent(&this->actor, play)) {
         this->actionFunc = EnGe1_SetupWait_Archery;
 
         if (this->stateFlags & GE1_STATE_GIVE_QUIVER) {
@@ -543,10 +546,7 @@ void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, PlayState* play) {
         } else {
             getItemId = GI_HEART_PIECE;
         }
-
-        if (GameInteractor_Should(VB_GIVE_ITEM_FROM_HORSEBACK_ARCHERY, true, this)) {
-            Actor_OfferGetItem(&this->actor, play, getItemId, 10000.0f, 50.0f);
-        }
+        Actor_OfferGetItem(&this->actor, play, getItemId, 10000.0f, 50.0f);
     }
 }
 
@@ -561,7 +561,10 @@ void EnGe1_BeginGiveItem_Archery(EnGe1* this, PlayState* play) {
 
     if (this->stateFlags & GE1_STATE_GIVE_QUIVER) {
         switch (CUR_UPG_VALUE(UPG_QUIVER)) {
-            //! @bug Asschest. See next function for details
+            //! @bug Asschest: the compiler inserts a default assigning *(sp+0x24) to getItemId, which is junk data left
+            //! over from the previous function run in EnGe1_Update, namely EnGe1_CueUpAnimation. The top stack variable
+            //! in that function is &this->skelAnime = thisx + 198, and depending on where this loads in memory, the
+            //! getItemId changes.
             case 1:
                 getItemId = GI_QUIVER_40;
                 break;

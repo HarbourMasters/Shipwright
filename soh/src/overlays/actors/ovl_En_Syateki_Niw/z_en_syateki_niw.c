@@ -496,7 +496,7 @@ void func_80B12460(EnSyatekiNiw* this, PlayState* play) {
 
 void func_80B128D8(EnSyatekiNiw* this, PlayState* play) {
     if (this->unk_25E == 1) {
-        gSaveContext.timer1State = 0;
+        gSaveContext.timerState = 0;
     }
 }
 

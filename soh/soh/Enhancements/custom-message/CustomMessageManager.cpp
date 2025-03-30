@@ -165,7 +165,7 @@ const std::string CustomMessage::GetFrench(MessageFormat format) const {
 }
 
 const std::string CustomMessage::GetForCurrentLanguage(MessageFormat format) const {
-    return GetForLanguage(gSaveContext.language, format);
+    return GetForLanguage((gSaveContext.language == LANGUAGE_JPN) ? LANGUAGE_ENG : gSaveContext.language, format);
 }
 
 const std::string CustomMessage::GetForLanguage(uint8_t language, MessageFormat format) const {
@@ -281,7 +281,7 @@ void CustomMessage::Replace(std::string&& oldStr, std::string&& newStr) {
 }
 
 void CustomMessage::Replace(std::string&& oldStr, CustomMessage newMessage) {
-    for (uint8_t language = 0; language < LANGUAGE_MAX; language++) {
+    for (uint8_t language = 0; language < LANGUAGE_MAX - 1; language++) {
         size_t position = messages[language].find(oldStr);
         while (position != std::string::npos) {
             messages[language].replace(position, oldStr.length(), newMessage.messages[language]);

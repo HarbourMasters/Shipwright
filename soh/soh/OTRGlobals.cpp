@@ -314,7 +314,7 @@ OTRGlobals::OTRGlobals() {
         OOT_NTSC_US_GC,
         OOT_PAL_GC,
         OOT_PAL_GC_DBG1,
-        OOT_PAL_GC_DBG2
+        OOT_PAL_GC_DBG2,
     };
 
     context = Ship::Context::CreateUninitializedInstance("Ship of Harkinian", appShortName, "shipofharkinian.json");
@@ -1384,10 +1384,6 @@ extern "C" void Graph_StartFrame() {
             break;
         }
 #endif
-        case KbScancode::LUS_KB_F11: {
-            CVarSetInteger(CVAR_SETTING("Fullscreen"), !CVarGetInteger(CVAR_SETTING("Fullscreen"), 0));
-            break;
-        }
         case KbScancode::LUS_KB_TAB: {
             CVarSetInteger(CVAR_ENHANCEMENT("AltAssets"), !CVarGetInteger(CVAR_ENHANCEMENT("AltAssets"), 0));
             break;
@@ -2537,6 +2533,7 @@ void SoH_ProcessDroppedFiles(std::string filePath) {
         std::dynamic_pointer_cast<Ship::ConsoleWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->ClearBindings();
 
         gui->SaveConsoleVariablesNextFrame();
+        ShipInit::Init("*");
 
         uint32_t finalHash = boost::hash_32<std::string>{}(configJson.dump());
         gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Configuration Loaded. Hash: %d", finalHash);

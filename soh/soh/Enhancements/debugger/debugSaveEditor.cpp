@@ -267,22 +267,22 @@ void DrawInfoTab() {
     PopStyleInput();
 
     PushStyleInput(THEME_COLOR);
-    ImGui::InputScalar("Timer 1 State", ImGuiDataType_S16, &gSaveContext.timer1State);
+    ImGui::InputScalar("Timer State", ImGuiDataType_S16, &gSaveContext.timerState);
     Tooltip("Heat timer, race timer, etc. Has white font");
     PopStyleInput();
 
     PushStyleInput(THEME_COLOR);
-    ImGui::InputScalar("Timer 1 Value", ImGuiDataType_S16, &gSaveContext.timer1Value, &one, NULL);
+    ImGui::InputScalar("Timer Seconds", ImGuiDataType_S16, &gSaveContext.timerSeconds, &one, NULL);
     Tooltip("Time, in seconds");
     PopStyleInput();
 
     PushStyleInput(THEME_COLOR);
-    ImGui::InputScalar("Timer 2 State", ImGuiDataType_S16, &gSaveContext.timer2State);
+    ImGui::InputScalar("Sub-Timer State", ImGuiDataType_S16, &gSaveContext.subTimerState);
     Tooltip("Trade timer, Ganon collapse timer, etc. Has yellow font");
     PopStyleInput();
 
     PushStyleInput(THEME_COLOR);
-    ImGui::InputScalar("Timer 2 Value", ImGuiDataType_S16, &gSaveContext.timer2Value, &one, NULL);
+    ImGui::InputScalar("Sub-Timer Seconds", ImGuiDataType_S16, &gSaveContext.subTimerSeconds, &one, NULL);
     Tooltip("Time, in seconds");
     PopStyleInput();
 

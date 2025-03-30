@@ -10,7 +10,7 @@
 static std::string comboboxTooltip = "";
 static int32_t enhancementPresetSelected = ENHANCEMENT_PRESET_DEFAULT;
 bool isBetaQuestEnabled = false;
-static std::unordered_map<int32_t, const char*> bunnyHoodEffectMap = {{ BUNNY_HOOD_VANILLA, "Vanilla" }, { BUNNY_HOOD_FAST, "Faster Run" }, { BUNNY_HOOD_FAST_AND_JUMP, "Faster + Longer Jump" }};
+static std::unordered_map<int32_t, const char*> bunnyHoodEffectMap = {{ BUNNY_HOOD_VANILLA, "Vanilla" }, { BUNNY_HOOD_FAST, "Faster Run" }, { BUNNY_HOOD_FAST_AND_JUMP, "Faster + Longer Jump" },};
 
 extern "C" {
     void enableBetaQuest() { isBetaQuestEnabled = true; }
@@ -959,10 +959,10 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("FixDaruniaDanceSpeed"))
         .Options(CheckboxOptions().Tooltip(
             "Fixes Darunia's dancing speed so he dances to the beat of Saria's Song, like in the Original Game."));
-    AddWidget(path, "Fix Credits Timing", WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "Fix Credits Timing (PAL)", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("CreditsFix"))
         .Options(CheckboxOptions().Tooltip(
-            "Extend certain credits scenes so the music lines up properly with the visuals."));
+            "Extend certain credits scenes so the music lines up properly with the visuals. (PAL only)"));
 
     path.column = SECTION_COLUMN_3;
     AddWidget(path, "Graphical Restorations", WIDGET_SEPARATOR_TEXT);

@@ -580,6 +580,9 @@ extern "C" {
 }
 
 void Rando::StaticData::RegisterFishLocations() {
+    static bool registered = false;
+    if (registered) return;
+    registered = true;
     // clang-format off
     // Fishing Pond
     locationTable[RC_LH_CHILD_FISH_1] =                                                Location::Fish(RC_LH_CHILD_FISH_1,                                              RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,                 100,      RAND_INF_CHILD_FISH_1,                         "Child Pond Fish 1",           RHT_LH_POND_FISH,                  RG_NONE);

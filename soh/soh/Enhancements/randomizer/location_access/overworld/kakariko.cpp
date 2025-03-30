@@ -8,7 +8,7 @@ void RegionTable_Init_Kakariko() {
     areaTable[RR_KAKARIKO_VILLAGE] = Region("Kakariko Village", "Kakariko Village", {RA_KAKARIKO_VILLAGE}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->BugRock,                 []{return true;}),
-        //Open Gate setting is applies in RR_ROOT
+        //Open Gate setting is applied in RR_ROOT
         EventAccess(&logic->KakarikoVillageGateOpen, []{return logic->IsChild && logic->HasItem(RG_ZELDAS_LETTER);}),
     }, {
         //Locations

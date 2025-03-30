@@ -93,7 +93,7 @@ std::map<uint32_t, RandomizerCheck> startingShopItem = { { SCENE_KOKIRI_SHOP, RC
                                                          { SCENE_BOMBCHU_SHOP, RC_MARKET_BOMBCHU_SHOP_ITEM_1 },
                                                          { SCENE_POTION_SHOP_KAKARIKO, RC_KAK_POTION_SHOP_ITEM_1 },
                                                          { SCENE_ZORA_SHOP, RC_ZD_SHOP_ITEM_1 },
-                                                         { SCENE_GORON_SHOP, RC_GC_SHOP_ITEM_1 } };
+                                                         { SCENE_GORON_SHOP, RC_GC_SHOP_ITEM_1 }, };
 
 std::map<SceneID, RandomizerCheckArea> DungeonRCAreasBySceneID = {
     {SCENE_DEKU_TREE,              RCAREA_DEKU_TREE},
@@ -124,7 +124,7 @@ std::vector<uint32_t> spoilingEntrances = {
     ENTR_SHADOW_TEMPLE_BOSS_DOOR,
     ENTR_ICE_CAVERN_ENTRANCE,
     ENTR_GERUDO_TRAINING_GROUND_ENTRANCE,
-    ENTR_INSIDE_GANONS_CASTLE_ENTRANCE
+    ENTR_INSIDE_GANONS_CASTLE_ENTRANCE,
 };
 
 std::map<RandomizerCheckArea, std::vector<RandomizerCheck>> checksByArea;
@@ -418,7 +418,7 @@ bool vector_contains_scene(std::vector<SceneID> vec, const int16_t scene) {
     return std::any_of(vec.begin(), vec.end(), [&](const auto& x) { return x == scene; });
 }
 
-std::vector<SceneID> skipScenes = {SCENE_GANON_BOSS, SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR, SCENE_GANON_BOSS, SCENE_INSIDE_GANONS_CASTLE_COLLAPSE, SCENE_GANONS_TOWER_COLLAPSE_INTERIOR};
+std::vector<SceneID> skipScenes = {SCENE_GANON_BOSS, SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR, SCENE_GANON_BOSS, SCENE_INSIDE_GANONS_CASTLE_COLLAPSE, SCENE_GANONS_TOWER_COLLAPSE_INTERIOR,};
 
 void ClearAreaChecksAndTotals() {
     for (auto& [rcArea, vec] : checksByArea) {

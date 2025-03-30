@@ -8,7 +8,7 @@
 #include "textures/icon_item_nes_static/icon_item_nes_static.h"
 #include "textures/icon_item_ger_static/icon_item_ger_static.h"
 #include "textures/icon_item_fra_static/icon_item_fra_static.h"
-#include "textures/icon_item_gameover_static/icon_item_gameover_static.h"
+#include "textures/icon_item_jpn_static/icon_item_jpn_static.h"
 #include "textures/icon_item_gameover_static/icon_item_gameover_static.h"
 #include "textures/map_name_static/map_name_static.h"
 #include "textures/map_48x85_static/map_48x85_static.h"
@@ -108,6 +108,34 @@ static void* sSaveENGTexs[] = {
     gPauseSave20Tex,    gPauseSave21Tex, gPauseSave22Tex, gPauseSave23Tex, gPauseSave24Tex,
 };
 
+static void* sEquipmentJPNTexs[] = {
+    gPauseEquipment00Tex,    gPauseEquipment01Tex, gPauseEquipment02Tex, gPauseEquipment03Tex, gPauseEquipment04Tex,
+    gPauseEquipment10JPNTex, gPauseEquipment11Tex, gPauseEquipment12Tex, gPauseEquipment13Tex, gPauseEquipment14Tex,
+    gPauseEquipment20Tex,    gPauseEquipment21Tex, gPauseEquipment22Tex, gPauseEquipment23Tex, gPauseEquipment24Tex,
+};
+static void* sSelectItemJPNTexs[] = {
+    gPauseSelectItem00JPNTex, gPauseSelectItem01Tex,    gPauseSelectItem02Tex,    gPauseSelectItem03Tex,
+    gPauseSelectItem04Tex,    gPauseSelectItem10JPNTex, gPauseSelectItem11Tex,    gPauseSelectItem12Tex,
+    gPauseSelectItem13Tex,    gPauseSelectItem14Tex,    gPauseSelectItem20JPNTex, gPauseSelectItem21Tex,
+    gPauseSelectItem22Tex,    gPauseSelectItem23Tex,    gPauseSelectItem24Tex,
+};
+static void* sMapJPNTexs[] = {
+    gPauseMap00Tex,    gPauseMap01Tex, gPauseMap02Tex, gPauseMap03Tex, gPauseMap04Tex,
+    gPauseMap10JPNTex, gPauseMap11Tex, gPauseMap12Tex, gPauseMap13Tex, gPauseMap14Tex,
+    gPauseMap20Tex,    gPauseMap21Tex, gPauseMap22Tex, gPauseMap23Tex, gPauseMap24Tex,
+};
+static void* sQuestStatusJPNTexs[] = {
+    gPauseQuestStatus00JPNTex, gPauseQuestStatus01Tex,    gPauseQuestStatus02Tex,    gPauseQuestStatus03Tex,
+    gPauseQuestStatus04Tex,    gPauseQuestStatus10JPNTex, gPauseQuestStatus11Tex,    gPauseQuestStatus12Tex,
+    gPauseQuestStatus13Tex,    gPauseQuestStatus14Tex,    gPauseQuestStatus20JPNTex, gPauseQuestStatus21Tex,
+    gPauseQuestStatus22Tex,    gPauseQuestStatus23Tex,    gPauseQuestStatus24Tex,
+};
+static void* sSaveJPNTexs[] = {
+    gPauseSave00Tex,    gPauseSave01Tex, gPauseSave02Tex, gPauseSave03Tex, gPauseSave04Tex,
+    gPauseSave10JPNTex, gPauseSave11Tex, gPauseSave12Tex, gPauseSave13Tex, gPauseSave14Tex,
+    gPauseSave20Tex,    gPauseSave21Tex, gPauseSave22Tex, gPauseSave23Tex, gPauseSave24Tex,
+};
+
 static void* sGameOverTexs[] = {
     gPauseSave00Tex,     gPauseSave01Tex, gPauseSave02Tex, gPauseSave03Tex, gPauseSave04Tex,
     gPauseGameOver10Tex, gPauseSave11Tex, gPauseSave12Tex, gPauseSave13Tex, gPauseSave14Tex,
@@ -189,34 +217,40 @@ static void* sEquipmentTexs[] = {
     sEquipmentENGTexs,
     sEquipmentGERTexs,
     sEquipmentFRATexs,
+    sEquipmentJPNTexs,
 };
 
 static void* sSelectItemTexs[] = {
     sSelectItemENGTexs,
     sSelectItemGERTexs,
     sSelectItemFRATexs,
+    sSelectItemJPNTexs,
 };
 
 static void* sMapTexs[] = {
     sMapENGTexs,
     sMapGERTexs,
     sMapFRATexs,
+    sMapJPNTexs,
 };
 
 static void* sQuestStatusTexs[] = {
     sQuestStatusENGTexs,
     sQuestStatusGERTexs,
     sQuestStatusFRATexs,
+    sQuestStatusJPNTexs,
 };
 
 static void* sSaveTexs[] = {
     sSaveENGTexs,
     sSaveGERTexs,
     sSaveFRATexs,
+    sSaveJPNTexs,
 };
 
 static void* iconNameTextures[] =
 {
+    // LANGUAGE_ENG
     gDekuStickItemNameENGTex,
     gDekuNutItemNameENGTex,
     gBombItemNameENGTex,
@@ -340,6 +374,7 @@ static void* iconNameTextures[] =
     gUnusedBossKeyItemName6JPNTex,
     gUnusedBossKeyItemName7JPNTex,
     gBiggoronsSwordItemNameENGTex,
+    // LANGUAGE_GER
     gDekuStickItemNameGERTex,
     gDekuNutItemNameGERTex,
     gBombItemNameItemNameGERTex,
@@ -463,6 +498,7 @@ static void* iconNameTextures[] =
     gUnusedBossKeyItemName13JPNTex,
     gUnusedBossKeyItemName14JPNTex,
     gBiggoronsSwordItemNameGERTex,
+    // LANGUAGE_FRA
     gDekuStickItemNameFRATex,
     gDekuNutItemNameFRATex,
     gBombItemNameFRATex,
@@ -586,113 +622,279 @@ static void* iconNameTextures[] =
     gUnusedBossKeyItemName20JPNTex,
     gUnusedBossKeyItemName21JPNTex,
     gBiggoronsSwordItemNameFRATex,
-    gBiggoronsSwordItemNameFRATex,
+    // LANGUAGE_JPN
+    gDekuStickItemNameJPNTex,
+    gDekuNutItemNameJPNTex,
+    gBombItemNameJPNTex,
+    gFairyBowItemNameJPNTex,
+    gFireArrowItemNameJPNTex,
+    gDinsFireItemNameJPNTex,
+    gFairySlingshotItemNameJPNTex,
+    gFairyOcarinaItemNameJPNTex,
+    gOcarinaOfTimeItemNameJPNTex,
+    gBombchuItemNameJPNTex,
+    gHookshotItemNameJPNTex,
+    gLongshotItemNameJPNTex,
+    gIceArrowItemNameJPNTex,
+    gFaroresWindItemNameJPNTex,
+    gBoomerangItemNameJPNTex,
+    gLensItemNameJPNTex,
+    gMagicBeansItemNameJPNTex,
+    gMegatonHammerItemNameJPNTex,
+    gLightArrowItemNameJPNTex,
+    gNayrusLoveItemNameJPNTex,
+    gEmptyBottleItemNameJPNTex,
+    gRedPotionItemNameJPNTex,
+    gGreenPotionItemNameJPNTex,
+    gBluePotionItemNameJPNTex,
+    gBottledFairyItemNameJPNTex,
+    gFishItemNameJPNTex,
+    gFullMilkItemNameJPNTex,
+    gRutosLetterItemNameJPNTex,
+    gBlueFireItemNameJPNTex,
+    gBugItemNameJPNTex,
+    gBigPoeItemNameJPNTex,
+    gHalfMilkItemNameJPNTex,
+    gPoeItemNameJPNTex,
+    gWeirdEggItemNameJPNTex,
+    gCuccoItemNameJPNTex,
+    gZeldasLetterItemNameJPNTex,
+    gKeatonMaskItemNameJPNTex,
+    gSkullMaskItemNameJPNTex,
+    gSpookyMaskItemNameJPNTex,
+    gBunnyHoodItemNameJPNTex,
+    gGoronMaskItemNameJPNTex,
+    gZoraMaskItemNameJPNTex,
+    gGerudoMaskItemNameJPNTex,
+    gMaskofTruthItemNameJPNTex,
+    gSOLDOUTItemNameJPNTex,
+    gPocketEggItemNameJPNTex,
+    gPocketCuccoItemNameJPNTex,
+    gCojiroItemNameJPNTex,
+    gOddMushroomItemNameJPNTex,
+    gOddPotionItemNameJPNTex,
+    gPoachersSawItemNameJPNTex,
+    gBrokenGoronsSwordItemNameJPNTex,
+    gPrescriptionItemNameJPNTex,
+    gEyeBallFrogItemNameJPNTex,
+    gEyeDropsItemNameJPNTex,
+    gClaimCheckItemNameJPNTex,
+    gUnusedWindMedallionItemName1JPNTex,
+    gUnusedFireMedallionItemName1JPNTex,
+    gUnusedIceMedallionItemName1JPNTex,
+    gKokiriSwordItemNameJPNTex,
+    gMasterSwordItemNameJPNTex,
+    gGiantsKnifeItemNameJPNTex,
+    gDekuShieldItemNameJPNTex,
+    gHylianShieldItemNameJPNTex,
+    gMirrorShieldItemNameJPNTex,
+    gKokiriTunicItemNameJPNTex,
+    gGoronTunicItemNameJPNTex,
+    gZoraTunicItemNameJPNTex,
+    gKokiriBootsItemNameJPNTex,
+    gIronBootsItemNameJPNTex,
+    gHoverBootsItemNameJPNTex,
+    gBulletBag30ItemNameJPNTex,
+    gBulletBag40ItemNameJPNTex,
+    gBulletBag50ItemNameJPNTex,
+    gQuiver30ItemNameJPNTex,
+    gQuiver40ItemNameJPNTex,
+    gQuiver50ItemNameJPNTex,
+    gBombBag20ItemNameJPNTex,
+    gBombBag30ItemNameJPNTex,
+    gBombBag40ItemNameJPNTex,
+    gGoronsBraceletItemNameJPNTex,
+    gSilverGauntletsItemNameJPNTex,
+    gGoldenGauntletsItemNameJPNTex,
+    gSilverScaleItemNameJPNTex,
+    gGoldenScaleItemNameJPNTex,
+    gBrokenGiantsKnifeItemNameJPNTex,
+    gUnusedBossKeyItemName1JPNTex,
+    gUnusedBossKeyItemName2JPNTex,
+    gUnusedBossKeyItemName3JPNTex,
+    gUnusedBossKeyItemName4JPNTex,
+    gMinuetOfForestItemNameJPNTex,
+    gBoleroOfFireItemNameJPNTex,
+    gSerenadeOfWaterItemNameJPNTex,
+    gRequiemOfSpiritItemNameJPNTex,
+    gNocturneOfShadowItemNameJPNTex,
+    gPreludeOfLightItemNameJPNTex,
+    gZeldasLullabyItemNameJPNTex,
+    gEponasSongItemNameJPNTex,
+    gSariasSongItemNameJPNTex,
+    gSunsSongItemNameJPNTex,
+    gSongOfTimeItemNameJPNTex,
+    gSongOfStormsItemNameJPNTex,
+    gForestMedallionItemNameJPNTex,
+    gFireMedallionItemNameJPNTex,
+    gWaterMedallionItemNameJPNTex,
+    gSpiritMedallionItemNameJPNTex,
+    gShadowMedallionItemNameJPNTex,
+    gLightMedallionItemNameJPNTex,
+    gKokiriEmeraldItemNameJPNTex,
+    gGoronsRubyItemNameJPNTex,
+    gZorasSapphireItemNameJPNTex,
+    gStoneofAgonyItemNameJPNTex,
+    gGerudosCardItemNameJPNTex,
+    gGoldSkulltulaItemNameJPNTex,
+    gPieceOfHeartItemNameJPNTex,
+    gUnusedPieceOfHeartItemName1JPNTex,
+    gUnusedBigKeyItemNameJPNTex,
+    gCompassItemNameJPNTex,
+    gDungeonMapItemNameJPNTex,
+    gUnusedBossKeyItemName5JPNTex,
+    gUnusedBossKeyItemName6JPNTex,
+    gUnusedBossKeyItemName7JPNTex,
+    gBiggoronsSwordItemNameJPNTex,
 };
 
+// SOH [NTSC] - Fit in JPN textures, resulting in changes to offsets when indexed
 static void* mapNameTextures[] =
 {
-    gHauntedWastelandPointNameENGTex,
-    gGerudosFortressPointNameENGTex,
-    gGerudoValleyPointNameENGTex,
-    gHyliaLakesidePointNameENGTex,
-    gLonLonRanchPointNameENGTex,
-    gMarketPointNameENGTex,
-    gHyruleFieldPointNameENGTex,
-    gDeathMountainPointNameENGTex,
-    gKakarikoVillagePointNameENGTex,
-    gLostWoodsPointNameENGTex,
-    gKokiriForestPointNameENGTex,
-    gZorasDomainPointNameENGTex,
-    gHauntedWastelandPointNameGERTex,
-    gGerudosFortressPointNameGERTex,
-    gGerudoValleyPointNameGERTex,
-    gHyliaLakesidePointNameGERTex,
-    gLonLonRanchPointNameGERTex,
-    gMarketPointNameGERTex,
-    gHyruleFieldPointNameGERTex,
-    gDeathMountainPointNameGERTex,
-    gKakarikoVillagePointNameGERTex,
-    gLostWoodsPointNameGERTex,
-    gKokiriForestPointNameGERTex,
-    gZorasDomainPointNameGERTex,
-    gHauntedWastelandPointNameFRATex,
-    gGerudosFortressPointNameFRATex,
-    gGerudoValleyPointNameFRATex,
-    gHyliaLakesidePointNameFRATex,
-    gLonLonRanchPointNameFRATex,
-    gMarketPointNameFRATex,
-    gHyruleFieldPointNameFRATex,
-    gDeathMountainPointNameFRATex,
-    gKakarikoVillagePointNameFRATex,
-    gLostWoodsPointNameFRATex,
-    gKokiriForestPointNameFRATex,
-    gZorasDomainPointNameFRATex,
-    gHyruleFieldPositionNameENGTex,
-    gKakarikoVillagePositionNameENGTex,
-    gGraveyardPositionNameENGTex,
-    gZorasRiverPositionNameENGTex,
-    gKokiriForestPositionNameENGTex,
-    gSacredForestMeadowPositionNameENGTex,
-    gLakeHyliaPositionNameENGTex,
-    gZorasDomainPositionNameENGTex,
-    gZorasFountainPositionNameENGTex,
-    gGerudoValleyPositionNameENGTex,
-    gLostWoodsPositionNameENGTex,
-    gDesertColossusPositionNameENGTex,
-    gGerudosFortressPositionNameENGTex,
-    gHauntedWastelandPositionNameENGTex,
-    gMarketPositionNameENGTex,
-    gHyruleCastlePositionNameENGTex,
-    gDeathMountainTrailPositionNameENGTex,
-    gDeathMountainCraterPositionNameENGTex,
-    gGoronCityPositionNameENGTex,
-    gLonLonRanchPositionNameENGTex,
-    gQuestionMarkPositionNameENGTex,
-    gGanonsCastlePositionNameENGTex,
-    gHyruleFieldPositionNameGERTex,
-    gKakarikoVillagePositionNameGERTex,
-    gGraveyardPositionNameGERTex,
-    gZorasRiverPositionNameGERTex,
-    gKokiriForestPositionNameGERTex,
-    gSacredForestMeadowPositionNameGERTex,
-    gLakeHyliaPositionNameGERTex,
-    gZorasDomainPositionNameGERTex,
-    gZorasFountainPositionNameGERTex,
-    gGerudoValleyPositionNameGERTex,
-    gLostWoodsPositionNameGERTex,
-    gDesertColossusPositionNameGERTex,
-    gGerudosFortressPositionNameGERTex,
-    gHauntedWastelandPositionNameGERTex,
-    gMarketPositionNameGERTex,
-    gHyruleCastlePositionNameGERTex,
-    gDeathMountainTrailPositionNameGERTex,
-    gDeathMountainCraterPositionNameGERTex,
-    gGoronCityPositionNameGERTex,
-    gLonLonRanchPositionNameGERTex,
-    gQuestionMarkPositionNameGERTex,
-    gGanonsCastlePositionNameGERTex,
-    gHyruleFieldPositionNameFRATex,
-    gKakarikoVillagePositionNameFRATex,
-    gGraveyardPositionNameFRATex,
-    gZorasRiverPositionNameFRATex,
-    gKokiriForestPositionNameFRATex,
-    gSacredForestMeadowPositionNameFRATex,
-    gLakeHyliaPositionNameFRATex,
-    gZorasDomainPositionNameFRATex,
-    gZorasFountainPositionNameFRATex,
-    gGerudoValleyPositionNameFRATex,
-    gLostWoodsPositionNameFRATex,
-    gDesertColossusPositionNameFRATex,
-    gGerudosFortressPositionNameFRATex,
-    gHauntedWastelandPositionNameFRATex,
-    gMarketPositionNameFRATex,
-    gHyruleCastlePositionNameFRATex,
-    gDeathMountainTrailPositionNameFRATex,
-    gDeathMountainCraterPositionNameFRATex,
-    gGoronCityPositionNameFRATex,
-    gLonLonRanchPositionNameFRATex,
-    gQuestionMarkPositionNameFRATex,
-    gGanonsCastlePositionNameFRATex,
+    // LANGUAGE_ENG
+    /*  0 */ gHauntedWastelandPointNameENGTex,
+    /*  1 */ gGerudosFortressPointNameENGTex,
+    /*  2 */ gGerudoValleyPointNameENGTex,
+    /*  3 */ gHyliaLakesidePointNameENGTex,
+    /*  4 */ gLonLonRanchPointNameENGTex,
+    /*  5 */ gMarketPointNameENGTex,
+    /*  6 */ gHyruleFieldPointNameENGTex,
+    /*  7 */ gDeathMountainPointNameENGTex,
+    /*  8 */ gKakarikoVillagePointNameENGTex,
+    /*  9 */ gLostWoodsPointNameENGTex,
+    /* 10 */ gKokiriForestPointNameENGTex,
+    /* 11 */ gZorasDomainPointNameENGTex,
+    // LANGUAGE_GER
+    /*  0 */ gHauntedWastelandPointNameGERTex,
+    /*  1 */ gGerudosFortressPointNameGERTex,
+    /*  2 */ gGerudoValleyPointNameGERTex,
+    /*  3 */ gHyliaLakesidePointNameGERTex,
+    /*  4 */ gLonLonRanchPointNameGERTex,
+    /*  5 */ gMarketPointNameGERTex,
+    /*  6 */ gHyruleFieldPointNameGERTex,
+    /*  7 */ gDeathMountainPointNameGERTex,
+    /*  8 */ gKakarikoVillagePointNameGERTex,
+    /*  9 */ gLostWoodsPointNameGERTex,
+    /* 10 */ gKokiriForestPointNameGERTex,
+    /* 11 */ gZorasDomainPointNameGERTex,
+    // LANGUAGE_FRA
+    /*  0 */ gHauntedWastelandPointNameFRATex,
+    /*  1 */ gGerudosFortressPointNameFRATex,
+    /*  2 */ gGerudoValleyPointNameFRATex,
+    /*  3 */ gHyliaLakesidePointNameFRATex,
+    /*  4 */ gLonLonRanchPointNameFRATex,
+    /*  5 */ gMarketPointNameFRATex,
+    /*  6 */ gHyruleFieldPointNameFRATex,
+    /*  7 */ gDeathMountainPointNameFRATex,
+    /*  8 */ gKakarikoVillagePointNameFRATex,
+    /*  9 */ gLostWoodsPointNameFRATex,
+    /* 10 */ gKokiriForestPointNameFRATex,
+    /* 11 */ gZorasDomainPointNameFRATex,
+    // LANGUAGE_JPN
+    /*  0 */ gHauntedWastelandPointNameJPNTex,
+    /*  1 */ gGerudosFortressPointNameJPNTex,
+    /*  2 */ gGerudoValleyPointNameJPNTex,
+    /*  3 */ gHyliaLakesidePointNameJPNTex,
+    /*  4 */ gLonLonRanchPointNameJPNTex,
+    /*  5 */ gMarketPointNameJPNTex,
+    /*  6 */ gHyruleFieldPointNameJPNTex,
+    /*  7 */ gDeathMountainPointNameJPNTex,
+    /*  8 */ gKakarikoVillagePointNameJPNTex,
+    /*  9 */ gLostWoodsPointNameJPNTex,
+    /* 10 */ gKokiriForestPointNameJPNTex,
+    /* 11 */ gZorasDomainPointNameJPNTex,
+    // LANGUAGE_ENG
+    /*  0 */ gHyruleFieldPositionNameENGTex,
+    /*  1 */ gKakarikoVillagePositionNameENGTex,
+    /*  2 */ gGraveyardPositionNameENGTex,
+    /*  3 */ gZorasRiverPositionNameENGTex,
+    /*  4 */ gKokiriForestPositionNameENGTex,
+    /*  5 */ gSacredForestMeadowPositionNameENGTex,
+    /*  6 */ gLakeHyliaPositionNameENGTex,
+    /*  7 */ gZorasDomainPositionNameENGTex,
+    /*  8 */ gZorasFountainPositionNameENGTex,
+    /*  9 */ gGerudoValleyPositionNameENGTex,
+    /* 10 */ gLostWoodsPositionNameENGTex,
+    /* 11 */ gDesertColossusPositionNameENGTex,
+    /* 12 */ gGerudosFortressPositionNameENGTex,
+    /* 13 */ gHauntedWastelandPositionNameENGTex,
+    /* 14 */ gMarketPositionNameENGTex,
+    /* 15 */ gHyruleCastlePositionNameENGTex,
+    /* 16 */ gDeathMountainTrailPositionNameENGTex,
+    /* 17 */ gDeathMountainCraterPositionNameENGTex,
+    /* 18 */ gGoronCityPositionNameENGTex,
+    /* 19 */ gLonLonRanchPositionNameENGTex,
+    /* 20 */ gQuestionMarkPositionNameENGTex,
+    /* 21 */ gGanonsCastlePositionNameENGTex,
+    // LANGUAGE_GER
+    /*  0 */ gHyruleFieldPositionNameGERTex,
+    /*  1 */ gKakarikoVillagePositionNameGERTex,
+    /*  2 */ gGraveyardPositionNameGERTex,
+    /*  3 */ gZorasRiverPositionNameGERTex,
+    /*  4 */ gKokiriForestPositionNameGERTex,
+    /*  5 */ gSacredForestMeadowPositionNameGERTex,
+    /*  6 */ gLakeHyliaPositionNameGERTex,
+    /*  7 */ gZorasDomainPositionNameGERTex,
+    /*  8 */ gZorasFountainPositionNameGERTex,
+    /*  9 */ gGerudoValleyPositionNameGERTex,
+    /* 10 */ gLostWoodsPositionNameGERTex,
+    /* 11 */ gDesertColossusPositionNameGERTex,
+    /* 12 */ gGerudosFortressPositionNameGERTex,
+    /* 13 */ gHauntedWastelandPositionNameGERTex,
+    /* 14 */ gMarketPositionNameGERTex,
+    /* 15 */ gHyruleCastlePositionNameGERTex,
+    /* 16 */ gDeathMountainTrailPositionNameGERTex,
+    /* 17 */ gDeathMountainCraterPositionNameGERTex,
+    /* 18 */ gGoronCityPositionNameGERTex,
+    /* 19 */ gLonLonRanchPositionNameGERTex,
+    /* 20 */ gQuestionMarkPositionNameGERTex,
+    /* 21 */ gGanonsCastlePositionNameGERTex,
+    // LANGUAGE_FRA
+    /*  0 */ gHyruleFieldPositionNameFRATex,
+    /*  1 */ gKakarikoVillagePositionNameFRATex,
+    /*  2 */ gGraveyardPositionNameFRATex,
+    /*  3 */ gZorasRiverPositionNameFRATex,
+    /*  4 */ gKokiriForestPositionNameFRATex,
+    /*  5 */ gSacredForestMeadowPositionNameFRATex,
+    /*  6 */ gLakeHyliaPositionNameFRATex,
+    /*  7 */ gZorasDomainPositionNameFRATex,
+    /*  8 */ gZorasFountainPositionNameFRATex,
+    /*  9 */ gGerudoValleyPositionNameFRATex,
+    /* 10 */ gLostWoodsPositionNameFRATex,
+    /* 11 */ gDesertColossusPositionNameFRATex,
+    /* 12 */ gGerudosFortressPositionNameFRATex,
+    /* 13 */ gHauntedWastelandPositionNameFRATex,
+    /* 14 */ gMarketPositionNameFRATex,
+    /* 15 */ gHyruleCastlePositionNameFRATex,
+    /* 16 */ gDeathMountainTrailPositionNameFRATex,
+    /* 17 */ gDeathMountainCraterPositionNameFRATex,
+    /* 18 */ gGoronCityPositionNameFRATex,
+    /* 19 */ gLonLonRanchPositionNameFRATex,
+    /* 20 */ gQuestionMarkPositionNameFRATex,
+    /* 21 */ gGanonsCastlePositionNameFRATex,
+    // LANGUAGE_JPN
+    /*  0 */ gHyruleFieldPositionNameJPNTex,
+    /*  1 */ gKakarikoVillagePositionNameJPNTex,
+    /*  2 */ gGraveyardPositionNameJPNTex,
+    /*  3 */ gZorasRiverPositionNameJPNTex,
+    /*  4 */ gKokiriForestPositionNameJPNTex,
+    /*  5 */ gSacredForestMeadowPositionNameJPNTex,
+    /*  6 */ gLakeHyliaPositionNameJPNTex,
+    /*  7 */ gZorasDomainPositionNameJPNTex,
+    /*  8 */ gZorasFountainPositionNameJPNTex,
+    /*  9 */ gGerudoValleyPositionNameJPNTex,
+    /* 10 */ gLostWoodsPositionNameJPNTex,
+    /* 11 */ gDesertColossusPositionNameJPNTex,
+    /* 12 */ gGerudosFortressPositionNameJPNTex,
+    /* 13 */ gHauntedWastelandPositionNameJPNTex,
+    /* 14 */ gMarketPositionNameJPNTex,
+    /* 15 */ gHyruleCastlePositionNameJPNTex,
+    /* 16 */ gDeathMountainTrailPositionNameJPNTex,
+    /* 17 */ gDeathMountainCraterPositionNameJPNTex,
+    /* 18 */ gGoronCityPositionNameJPNTex,
+    /* 19 */ gLonLonRanchPositionNameJPNTex,
+    /* 20 */ gQuestionMarkPositionNameJPNTex,
+    /* 21 */ gGanonsCastlePositionNameJPNTex,
 };
 
 s16 D_8082AAEC[] = {
@@ -908,24 +1110,28 @@ static void* sSavePromptTexs[] = {
     gPauseSavePromptENGTex,
     gPauseSavePromptGERTex,
     gPauseSavePromptFRATex,
+    gPauseSavePromptJPNTex,
 };
 
 static void* sSaveConfirmationTexs[] = {
     gPauseSaveConfirmationENGTex,
     gPauseSaveConfirmationGERTex,
     gPauseSaveConfirmationFRATex,
+    gPauseSaveConfirmationJPNTex,
 };
 
 static void* sContinuePromptTexs[] = {
     gContinuePlayingENGTex,
     gContinuePlayingGERTex,
     gContinuePlayingFRATex,
+    gContinuePlayingJPNTex,
 };
 
 static void* sPromptChoiceTexs[][2] = {
     { gPauseYesENGTex, gPauseNoENGTex },
     { gPauseYesGERTex, gPauseNoGERTex },
     { gPauseYesFRATex, gPauseNoFRATex },
+    { gPauseYesJPNTex, gPauseNoJPNTex },
 };
 
 static u8 sButtonStatusSave[ARRAY_COUNT(gSaveContext.buttonStatus)];
@@ -1704,36 +1910,39 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
         cRightButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CRightButton.Value"), cRightButtonColor);
     }
 
-    static const void* sToEquipTextures[3] = {
+    static const void* sToEquipTextures[4] = {
         gPauseToEquipENGTex,
         gPauseToEquipGERTex,
         gPauseToEquipFRATex,
+        gPauseToEquipJPNTex,
     };
-    static const void* sToDecideTextures[3] = {
+    static const void* sToDecideTextures[4] = {
         gPauseToDecideENGTex,
         gPauseToDecideGERTex,
         gPauseToDecideFRATex,
+        gPauseToDecideJPNTex,
     };
-    static const void* sPlayMelodyTextures[3] = {
+    static const void* sPlayMelodyTextures[4] = {
         gPauseToPlayMelodyENGTex,
         gPauseToPlayMelodyGERTex,
         gPauseToPlayMelodyFRATex,
+        gPauseToPlayMelodyJPNTex,
     };
-    static const void* D_8082AD78[][3] = {
-        { gPauseToEquipmentENGTex, gPauseToEquipmentGERTex, gPauseToEquipmentFRATex },
-        { gPauseToSelectItemENGTex, gPauseToSelectItemGERTex, gPauseToSelectItemFRATex },
-        { gPauseToMapENGTex, gPauseToMapGERTex, gPauseToMapFRATex },
-        { gPauseToQuestStatusENGTex, gPauseToQuestStatusGERTex, gPauseToQuestStatusFRATex },
+    static const void* D_8082AD78[][4] = {
+        { gPauseToEquipmentENGTex, gPauseToEquipmentGERTex, gPauseToEquipmentFRATex, gPauseToEquipmentJPNTex },
+        { gPauseToSelectItemENGTex, gPauseToSelectItemGERTex, gPauseToSelectItemFRATex, gPauseToSelectItemJPNTex },
+        { gPauseToMapENGTex, gPauseToMapGERTex, gPauseToMapFRATex, gPauseToMapJPNTex },
+        { gPauseToQuestStatusENGTex, gPauseToQuestStatusGERTex, gPauseToQuestStatusFRATex, gPauseToQuestStatusJPNTex },
     };
-    static void* D_8082ADA8[][3] = {
-        { gPauseToMapENGTex, gPauseToMapGERTex, gPauseToMapFRATex },
-        { gPauseToQuestStatusENGTex, gPauseToQuestStatusGERTex, gPauseToQuestStatusFRATex },
-        { gPauseToEquipmentENGTex, gPauseToEquipmentGERTex, gPauseToEquipmentFRATex },
-        { gPauseToSelectItemENGTex, gPauseToSelectItemGERTex, gPauseToSelectItemFRATex },
+    static void* D_8082ADA8[][4] = {
+        { gPauseToMapENGTex, gPauseToMapGERTex, gPauseToMapFRATex, gPauseToMapJPNTex },
+        { gPauseToQuestStatusENGTex, gPauseToQuestStatusGERTex, gPauseToQuestStatusFRATex, gPauseToQuestStatusJPNTex },
+        { gPauseToEquipmentENGTex, gPauseToEquipmentGERTex, gPauseToEquipmentFRATex, gPauseToEquipmentJPNTex },
+        { gPauseToSelectItemENGTex, gPauseToSelectItemGERTex, gPauseToSelectItemFRATex, gPauseToSelectItemJPNTex },
     };
-    static u16 D_8082ADD8[3] = { 56, 88, 80 };
-    static u16 D_8082ADE0[3] = { 64, 88, 72 };
-    static u16 D_8082ADE8[3] = { 80, 104, 112 };
+    static u16 D_8082ADD8[4] = { 56, 88, 80, 56 };
+    static u16 D_8082ADE0[4] = { 64, 88, 72, 48 };
+    static u16 D_8082ADE8[4] = { 80, 104, 112, 80 };
     static s16 D_8082ADF0[][4] = {
         { 180, 210, 255, 220 },
         { 100, 100, 150, 220 },
@@ -1758,6 +1967,13 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
     s16 temp;
     s16 i;
     s16 j;
+
+    // #region SOH [NTSC] - register access assumes 3 languages, make jpn use same as eng
+    s32 languageOffset = gSaveContext.language;
+    if (languageOffset == LANGUAGE_JPN) {
+        languageOffset = LANGUAGE_ENG;
+    }
+    // #endregion
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -2021,13 +2237,13 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
         gSPVertex(POLY_OPA_DISP++, &pauseCtx->infoPanelVtx[16], 8, 0);
 
         if (pauseCtx->state == 7) {
-            pauseCtx->infoPanelVtx[16].v.ob[0] = pauseCtx->infoPanelVtx[18].v.ob[0] = WREG(61 + gSaveContext.language);
+            pauseCtx->infoPanelVtx[16].v.ob[0] = pauseCtx->infoPanelVtx[18].v.ob[0] = WREG(61 + languageOffset);
 
             pauseCtx->infoPanelVtx[17].v.ob[0] = pauseCtx->infoPanelVtx[19].v.ob[0] =
                 pauseCtx->infoPanelVtx[16].v.ob[0] + 24;
 
             pauseCtx->infoPanelVtx[20].v.ob[0] = pauseCtx->infoPanelVtx[22].v.ob[0] =
-                pauseCtx->infoPanelVtx[16].v.ob[0] + WREG(52 + gSaveContext.language);
+                pauseCtx->infoPanelVtx[16].v.ob[0] + WREG(52 + languageOffset);
 
             pauseCtx->infoPanelVtx[21].v.ob[0] = pauseCtx->infoPanelVtx[23].v.ob[0] =
                 pauseCtx->infoPanelVtx[20].v.ob[0] + D_8082ADE0[gSaveContext.language];
@@ -2072,13 +2288,13 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
                 (CVarGetInteger(CVAR_ENHANCEMENT("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_ALWAYS_ON);
             if (!pauseCtx->pageIndex && (!pauseAnyCursor || (gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE))) { // pageIndex == PAUSE_ITEM
                 pauseCtx->infoPanelVtx[16].v.ob[0] = pauseCtx->infoPanelVtx[18].v.ob[0] =
-                    WREG(49 + gSaveContext.language);
+                    WREG(49 + languageOffset);
 
                 pauseCtx->infoPanelVtx[17].v.ob[0] = pauseCtx->infoPanelVtx[19].v.ob[0] =
                     pauseCtx->infoPanelVtx[16].v.ob[0] + 48;
 
                 pauseCtx->infoPanelVtx[20].v.ob[0] = pauseCtx->infoPanelVtx[22].v.ob[0] =
-                    pauseCtx->infoPanelVtx[16].v.ob[0] + WREG(58 + gSaveContext.language);
+                    pauseCtx->infoPanelVtx[16].v.ob[0] + WREG(58 + languageOffset);
 
                 pauseCtx->infoPanelVtx[21].v.ob[0] = pauseCtx->infoPanelVtx[23].v.ob[0] =
                     pauseCtx->infoPanelVtx[20].v.ob[0] + D_8082ADD8[gSaveContext.language];
@@ -2089,7 +2305,7 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
                     D_8082ADD8[gSaveContext.language] << 5;
 
                 s16 PosX; // General Pos of C button icon
-                if (gSaveContext.language == LANGUAGE_ENG) {
+                if (gSaveContext.language == LANGUAGE_ENG || gSaveContext.language == LANGUAGE_JPN) {
                     PosX = 112;
                 } else if (gSaveContext.language == LANGUAGE_GER) {
                     PosX = 175;
@@ -2132,13 +2348,13 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
                        (pauseCtx->cursorSlot[PAUSE_QUEST] <= 0x11)) {
                 if (pauseCtx->namedItem != PAUSE_ITEM_NONE) {
                     pauseCtx->infoPanelVtx[16].v.ob[0] = pauseCtx->infoPanelVtx[18].v.ob[0] =
-                        WREG(55 + gSaveContext.language);
+                        WREG(55 + languageOffset);
 
                     pauseCtx->infoPanelVtx[17].v.ob[0] = pauseCtx->infoPanelVtx[19].v.ob[0] =
                         pauseCtx->infoPanelVtx[16].v.ob[0] + 24;
 
                     pauseCtx->infoPanelVtx[20].v.ob[0] = pauseCtx->infoPanelVtx[22].v.ob[0] =
-                        pauseCtx->infoPanelVtx[16].v.ob[0] + WREG(52 + gSaveContext.language);
+                        pauseCtx->infoPanelVtx[16].v.ob[0] + WREG(52 + languageOffset);
 
                     if (gSaveContext.language == LANGUAGE_GER) {
                         pauseCtx->infoPanelVtx[20].v.ob[0] = pauseCtx->infoPanelVtx[22].v.ob[0] =
@@ -2166,13 +2382,13 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
                 }
             } else if (pauseCtx->pageIndex == PAUSE_EQUIP) {
                 pauseCtx->infoPanelVtx[16].v.ob[0] = pauseCtx->infoPanelVtx[18].v.ob[0] =
-                    WREG(64 + gSaveContext.language);
+                    WREG(64 + languageOffset);
 
                 pauseCtx->infoPanelVtx[17].v.ob[0] = pauseCtx->infoPanelVtx[19].v.ob[0] =
                     pauseCtx->infoPanelVtx[16].v.ob[0] + 24;
 
                 pauseCtx->infoPanelVtx[20].v.ob[0] = pauseCtx->infoPanelVtx[22].v.ob[0] =
-                    pauseCtx->infoPanelVtx[16].v.ob[0] + WREG(52 + gSaveContext.language);
+                    pauseCtx->infoPanelVtx[16].v.ob[0] + WREG(52 + languageOffset);
 
                 pauseCtx->infoPanelVtx[21].v.ob[0] = pauseCtx->infoPanelVtx[23].v.ob[0] =
                     pauseCtx->infoPanelVtx[20].v.ob[0] + D_8082ADD8[gSaveContext.language];
@@ -2225,22 +2441,34 @@ void KaleidoScope_UpdateNamePanel(PlayState* play) {
 
         if (pauseCtx->namedItem != PAUSE_ITEM_NONE) {
             if ((pauseCtx->pageIndex == PAUSE_MAP) && !sInDungeonScene) {
-                if (gSaveContext.language) {
+                // #region SOH [NTSC] - There's a lot of OOB/Incorrect accesses that can occur so make sure sp2A selects something valid
+                sp2A %= 12;
+                // #endregion
+                if (gSaveContext.language >= LANGUAGE_GER) {
                     sp2A += 12;
                 }
-                if (gSaveContext.language == LANGUAGE_FRA) {
+                if (gSaveContext.language >= LANGUAGE_FRA) {
+                    sp2A += 12;
+                }
+                if (gSaveContext.language >= LANGUAGE_JPN) {
                     sp2A += 12;
                 }
 
                 const char* textureName = mapNameTextures[sp2A];
                 memcpy(pauseCtx->nameSegment, textureName, strlen(textureName) + 1);
             } else {
+                // #region SOH [NTSC] - There's a lot of OOB/Incorrect accesses that can occur so make sure sp2A selects something valid
+                sp2A %= 123;
+                // #endregion
                 osSyncPrintf("zoom_name=%d\n", pauseCtx->namedItem);
 
-                if (gSaveContext.language) {
+                if (gSaveContext.language >= LANGUAGE_GER) {
                     sp2A += 123;
                 }
-                if (gSaveContext.language == LANGUAGE_FRA) {
+                if (gSaveContext.language >= LANGUAGE_FRA) {
+                    sp2A += 123;
+                }
+                if (gSaveContext.language >= LANGUAGE_JPN) {
                     sp2A += 123;
                 }
 
@@ -3714,7 +3942,8 @@ void KaleidoScope_Update(PlayState* play)
             osSyncPrintf("サイズ＝%x\n", size2 + size1 + size0 + size + 0x800);
 
             if (((void)0, gSaveContext.worldMapArea) < 22) {
-                const uint8_t offsets[] = { 36, 58, 80 };
+                // SOH [NTSC] - change offsets to fit jpn textures
+                const uint8_t offsets[] = { 48, 70, 92, 114 };
                 const char* textureName = mapNameTextures[offsets[gSaveContext.language] + gSaveContext.worldMapArea];
                 memcpy(pauseCtx->nameSegment + 0x400, textureName, strlen(textureName) + 1);
             }

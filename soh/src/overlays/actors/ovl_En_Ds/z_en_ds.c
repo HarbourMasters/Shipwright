@@ -95,7 +95,7 @@ void EnDs_GiveOddPotion(EnDs* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_TRADE_ODD_MUSHROOM, true, this)) {
         this->actor.parent = NULL;
         this->actionFunc = EnDs_DisplayOddPotionText;
-        gSaveContext.timer2State = 0;
+        gSaveContext.subTimerState = 0;
     } else {
         Actor_OfferGetItem(&this->actor, play, GI_ODD_POTION, 10000.0f, 50.0f);
     }

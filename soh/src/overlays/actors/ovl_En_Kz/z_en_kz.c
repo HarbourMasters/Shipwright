@@ -125,23 +125,23 @@ u16 EnKz_GetText(PlayState* play, Actor* thisx) {
 
 s16 func_80A9C6C0(PlayState* play, Actor* thisx) {
     EnKz* this = (EnKz*)thisx;
-    s16 ret = NPC_TALK_STATE_TALKING;
+    s16 talkState = NPC_TALK_STATE_TALKING;
 
     switch (Message_GetState(&play->msgCtx)) {
         case TEXT_STATE_DONE:
             if (CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
                 if (Message_ShouldAdvance(play)) {
-                    ret = NPC_TALK_STATE_ITEM_GIVEN;
+                    talkState = NPC_TALK_STATE_ITEM_GIVEN;
                 }
             } else {
-                ret = NPC_TALK_STATE_IDLE;
+                talkState = NPC_TALK_STATE_IDLE;
                 switch (this->actor.textId) {
                     case 0x4012:
                         Flags_SetInfTable(INFTABLE_139);
-                        ret = NPC_TALK_STATE_ACTION;
+                        talkState = NPC_TALK_STATE_ACTION;
                         break;
                     case 0x401B:
-                        ret = !Message_ShouldAdvance(play) ? NPC_TALK_STATE_TALKING : NPC_TALK_STATE_ACTION;
+                        talkState = !Message_ShouldAdvance(play) ? NPC_TALK_STATE_TALKING : NPC_TALK_STATE_ACTION;
                         break;
                     case 0x401F:
                         Flags_SetInfTable(INFTABLE_139);
@@ -151,14 +151,13 @@ s16 func_80A9C6C0(PlayState* play, Actor* thisx) {
             break;
         case TEXT_STATE_CLOSING:
             if (CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
-                ret = NPC_TALK_STATE_IDLE;
+                talkState = NPC_TALK_STATE_IDLE;
                 switch (this->actor.textId) {
                     case 0x4012:
                         Flags_SetInfTable(INFTABLE_139);
-                        ret = NPC_TALK_STATE_ACTION;
-                        break;
+                        FALLTHROUGH;
                     case 0x401B:
-                        ret = !Message_ShouldAdvance(play) ? NPC_TALK_STATE_TALKING : NPC_TALK_STATE_ACTION;
+                        talkState = NPC_TALK_STATE_ACTION;
                         break;
                     case 0x401F:
                         Flags_SetInfTable(INFTABLE_139);
@@ -187,7 +186,7 @@ s16 func_80A9C6C0(PlayState* play, Actor* thisx) {
                     if (!CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
                         EnKz_SetupGetItem(this, play);
                     }
-                    ret = NPC_TALK_STATE_ACTION;
+                    talkState = NPC_TALK_STATE_ACTION;
                 } else {
                     this->actor.textId = 0x4016;
                     Message_ContinueTextbox(play, this->actor.textId);
@@ -196,7 +195,7 @@ s16 func_80A9C6C0(PlayState* play, Actor* thisx) {
             break;
         case TEXT_STATE_EVENT:
             if (Message_ShouldAdvance(play)) {
-                ret = NPC_TALK_STATE_ACTION;
+                talkState = NPC_TALK_STATE_ACTION;
             }
             break;
         case TEXT_STATE_NONE:
@@ -206,7 +205,7 @@ s16 func_80A9C6C0(PlayState* play, Actor* thisx) {
         case TEXT_STATE_9:
             break;
     }
-    return ret;
+    return talkState;
 }
 
 void EnKz_UpdateEyes(EnKz* this) {

@@ -118,8 +118,6 @@ void DrawNameTag(PlayState* play, const NameTag* nameTag) {
     }
 
     for (size_t i = 0, vtxGroup = 0; i < numChar; i++) {
-        uint16_t texIndex = nameTag->processedText[i] - 32;
-
         // A maximum of 64 Vtx can be loaded at once by gSPVertex, or basically 16 characters
         // handle loading groups of 16 chars at a time until there are no more left to load
         if (i % 16 == 0) {
@@ -128,18 +126,16 @@ void DrawNameTag(PlayState* play, const NameTag* nameTag) {
             vtxGroup++;
         }
 
-        if (texIndex != 0 && nameTag->processedText[i] != '\n') {
-            uintptr_t texture = (uintptr_t)Font_FetchCharTexture(texIndex);
-            int16_t vertexStart = 4 * (i % 16);
+        uintptr_t texture = (uintptr_t)Ship_GetCharFontTexture(nameTag->processedText[i]);
+        int16_t vertexStart = 4 * (i % 16);
 
-            // Multi-instruction macro, need to insert all to the dl buffer
-            Gfx charTexture[] = { gsDPLoadTextureBlock_4b(
-                texture, G_IM_FMT_I, FONT_CHAR_TEX_WIDTH, FONT_CHAR_TEX_HEIGHT, 0, G_TX_NOMIRROR | G_TX_CLAMP,
-                G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD) };
-            nameTagDl.insert(nameTagDl.end(), std::begin(charTexture), std::end(charTexture));
+        // Multi-instruction macro, need to insert all to the dl buffer
+        Gfx charTexture[] = { gsDPLoadTextureBlock_4b(
+            texture, G_IM_FMT_I, FONT_CHAR_TEX_WIDTH, FONT_CHAR_TEX_HEIGHT, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD) };
+        nameTagDl.insert(nameTagDl.end(), std::begin(charTexture), std::end(charTexture));
 
-            nameTagDl.push_back(gsSP1Quadrangle(vertexStart, vertexStart + 2, vertexStart + 3, vertexStart + 1, 0));
-        }
+        nameTagDl.push_back(gsSP1Quadrangle(vertexStart, vertexStart + 2, vertexStart + 3, vertexStart + 1, 0));
     }
 
     nameTagDl.push_back(gsSPPopMatrix(G_MTX_MODELVIEW));
@@ -220,14 +216,9 @@ extern "C" void NameTag_RegisterForActorWithOptions(Actor* actor, const char* te
             numLines++;
         }
 
-        int16_t charIndex = processedText[i] - 32;
-        int16_t charWidth = 0;
-        // Don't add width for newline chars
-        if (charIndex >= 0) {
-            charWidth = (int16_t)(Message_GetCharacterWidth(charIndex) * (100.0f / R_TEXT_CHAR_SCALE));
-        }
+        int16_t charWidth = (int16_t)(Ship_GetCharFontWidth(processedText[i]));
 
-        Interface_CreateQuadVertexGroup(&(vertices)[(i + 1) * 4], offsetX, (numLines - 1) * 16, charWidth, 16, 0);
+        Ship_CreateQuadVertexGroup(&(vertices)[(i + 1) * 4], offsetX, (numLines - 1) * 16, charWidth, 16, 0);
         offsetX += charWidth;
 
         if (offsetX > maxOffsetX) {
@@ -238,7 +229,7 @@ extern "C" void NameTag_RegisterForActorWithOptions(Actor* actor, const char* te
     // Vtx for textbox, add +/- 4 in all directions
     int16_t height = (numLines * 16) + 8;
     int16_t width = maxOffsetX + 8;
-    Interface_CreateQuadVertexGroup(vertices, -4, -4, width, height, 0);
+    Ship_CreateQuadVertexGroup(vertices, -4, -4, width, height, 0);
 
     // Update the texture coordinates to consume the full textbox texture size (including mirror region)
     vertices[1].v.tc[0] = 256 << 5;

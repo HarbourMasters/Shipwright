@@ -1,0 +1,17 @@
+<Root>
+    <File Name="object_door_killer" Segment="6">
+        <DList Name="object_door_killer_DL_000A20" Offset="0xA20"/>
+        <DList Name="object_door_killer_DL_000AD8" Offset="0xAD8"/>
+        <DList Name="object_door_killer_DL_000BB0" Offset="0xBB0"/>
+        <DList Name="object_door_killer_DL_000C88" Offset="0xC88"/>
+        <DList Name="object_door_killer_DL_000D60" Offset="0xD60"/>
+        <DList Name="object_door_killer_DL_000E38" Offset="0xE38"/>
+        <DList Name="object_door_killer_DL_000F10" Offset="0xF10"/>
+        <DList Name="object_door_killer_DL_000FE8" Offset="0xFE8"/>
+        <DList Name="object_door_killer_DL_001250" Offset="0x1250"/>
+        <DList Name="object_door_killer_DL_001550" Offset="0x1550"/>
+        <DList Name="object_door_killer_DL_0017B8" Offset="0x17B8"/>
+        <DList Name="object_door_killer_DL_001A58" Offset="0x1A58"/>
+        <Skeleton Name="object_door_killer_Skel_001BC8" Type="Flex" LimbType="Standard" Offset="0x1BC8"/>
+    </File>
+</Root>

@@ -1,0 +1,45 @@
+<Root>
+    <File Name="object_gj" Segment="6">
+        <Texture Name="object_gjTex_003B20" OutName="object_gjTex_003B20" Format="ia8" Width="16" Height="16" Offset="0x3B20" AddedByScript="true"/>
+        <Texture Name="object_gjTex_003C20" OutName="object_gjTex_003C20" Format="i4" Width="16" Height="32" Offset="0x3C20" AddedByScript="true"/>
+        <Texture Name="object_gjTex_003D20" OutName="object_gjTex_003D20" Format="rgba16" Width="16" Height="16" Offset="0x3D20" AddedByScript="true"/>
+        <Texture Name="object_gjTex_003F20" OutName="object_gjTex_003F20" Format="i8" Width="64" Height="64" Offset="0x3F20" AddedByScript="true"/>
+        <Texture Name="object_gjTex_004F20" OutName="object_gjTex_004F20" Format="i8" Width="64" Height="64" Offset="0x4F20" AddedByScript="true"/>
+        <Texture Name="object_gjTex_005F20" OutName="object_gjTex_005F20" Format="i8" Width="64" Height="64" Offset="0x5F20" AddedByScript="true"/>
+        <Texture Name="object_gjTex_006F20" OutName="object_gjTex_006F20" Format="i4" Width="32" Height="64" Offset="0x6F20" AddedByScript="true"/>
+        <Texture Name="object_gjTex_007320" OutName="object_gjTex_007320" Format="i8" Width="64" Height="16" Offset="0x7320" AddedByScript="true"/>
+        <Texture Name="object_gjTex_007720" OutName="object_gjTex_007720" Format="ia8" Width="32" Height="32" Offset="0x7720" AddedByScript="true"/>
+        <Texture Name="object_gjTex_007B20" OutName="object_gjTex_007B20" Format="i8" Width="128" Height="32" Offset="0x7B20" AddedByScript="true"/>
+        <!-- This is the decorative rubble around the fight arena -->
+        <DList Name="gGanonsCastleRubbleAroundArenaDL" Offset="0xDC0"/>
+        <Collision Name="gGanonsCastleRubbleAroundArenaCol" Offset="0x1B70"/>
+
+        <!-- Those four are used as the pile of rubble from where Ganondorf rises to transform into Ganon -->
+        <DList Name="gGanonsCastleRubble4DL" Offset="0x2600"/>
+        <Collision Name="gGanonsCastleRubble4Col" Offset="0x2850"/>
+
+        <DList Name="gGanonsCastleRubble5DL" Offset="0x2A40"/>
+        <Collision Name="gGanonsCastleRubble5Col" Offset="0x2D28"/>
+
+        <DList Name="gGanonsCastleRubble6DL" Offset="0x2E80"/>
+        <Collision Name="gGanonsCastleRubble6Col" Offset="0x2FE4"/>
+
+        <DList Name="gGanonsCastleRubble7DL" Offset="0x3190"/>
+        <Collision Name="gGanonsCastleRubble7Col" Offset="0x33E0"/>
+
+        <!-- This three rubbles are the ones that Ganon can destroy during the fight -->
+        <DList Name="gGanonsCastleRubble2DL" Offset="0x1D20"/>
+        <Collision Name="gGanonsCastleRubble2Col" Offset="0x1F70"/>
+
+        <DList Name="gGanonsCastleRubble3DL" Offset="0x2160"/>
+        <Collision Name="gGanonsCastleRubble3Col" Offset="0x2448"/>
+
+        <DList Name="gGanonsCastleRubbleTallDL" Offset="0x3710"/>
+        <Collision Name="gGanonsCastleRubbleTallCol" Offset="0x3AF0"/>
+
+        <!-- The following are unused -->
+        <Texture Name="gGanonsCastleUnusedSpikeVariantTex" OutName="ganons_castle_unused_spike_variant" Format="ia16" Width="64" Height="32" Offset="0x8B20"/>
+        <Texture Name="gGanonsCastleUnusedWallTex" OutName="ganons_castle_unused_wall" Format="rgba16" Width="32" Height="32" Offset="0x9B20"/>
+        <Texture Name="gGanonsCastleUnusedTex_00A320" OutName="ganons_castle_unused_00A320" Format="ia16" Width="16" Height="32" Offset="0xA320"/>
+    </File>
+</Root>

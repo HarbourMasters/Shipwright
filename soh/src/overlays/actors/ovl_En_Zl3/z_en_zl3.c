@@ -2492,7 +2492,7 @@ s32 func_80B59698(EnZl3* this, PlayState* play) {
         u8 curSpawn = play->curSpawn;
 
         if ((func_80B54DB4(this) == 0x20) && (curSpawn == 0) &&
-            ((gSaveContext.timer2Value <= 0) || (gSaveContext.timer2State == 0))) {
+            ((gSaveContext.subTimerSeconds <= 0) || (gSaveContext.subTimerState == 0))) {
             return 1;
         }
     }
@@ -2507,7 +2507,7 @@ s32 func_80B59768(EnZl3* this, PlayState* play) {
     if (cond) {
         u8 curSpawn = play->curSpawn;
 
-        if ((func_80B54DB4(this) == 0x20) && (curSpawn == 0) && (gSaveContext.timer2Value <= 0)) {
+        if ((func_80B54DB4(this) == 0x20) && (curSpawn == 0) && (gSaveContext.subTimerSeconds <= 0)) {
             return 1;
         }
     }
@@ -2666,7 +2666,7 @@ void EnZl3_Init(Actor* thisx, PlayState* play) {
 
     switch (func_80B54DD4(this)) {
         case 1:
-            gSaveContext.timer2State = 0;
+            gSaveContext.subTimerState = 0;
             break;
         case 3:
             func_80B59A80(this, play);

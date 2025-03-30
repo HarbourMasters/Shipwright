@@ -8,6 +8,7 @@
 #include "soh/util.h"
 #include "Enhancements/randomizer/hint.h"
 #include "Enhancements/randomizer/item.h"
+#include "ResourceManagerHelpers.h"
 
 #include "z64.h"
 #include "cvar_prefixes.h"
@@ -675,6 +676,7 @@ void SaveManager::InitMeta(int fileNum) {
     fileMetaInfo[fileNum].gsTokens = gSaveContext.inventory.gsTokens;
     fileMetaInfo[fileNum].isDoubleDefenseAcquired = gSaveContext.isDoubleDefenseAcquired;
     fileMetaInfo[fileNum].gregFound = Flags_GetRandomizerInf(RAND_INF_GREG_FOUND);
+    fileMetaInfo[fileNum].filenameLanguage = gSaveContext.ship.filenameLanguage;
     fileMetaInfo[fileNum].hasWallet = Flags_GetRandomizerInf(RAND_INF_HAS_WALLET) || !IS_RANDO;
     fileMetaInfo[fileNum].defense = gSaveContext.inventory.defenseHearts;
     fileMetaInfo[fileNum].health = gSaveContext.health;
@@ -717,8 +719,16 @@ void SaveManager::InitFileNormal() {
     gSaveContext.bgsDayCount = 0;
 
     gSaveContext.deaths = 0;
-    for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
-        gSaveContext.playerName[i] = 0x3E;
+    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
+        for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
+            gSaveContext.playerName[i] = 0x3E;
+        }
+        gSaveContext.ship.filenameLanguage = NAME_LANGUAGE_PAL;
+    } else { // GAME_REGION_NTSC
+        for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
+            gSaveContext.playerName[i] = 0xDF;
+        }
+        gSaveContext.ship.filenameLanguage = (gSaveContext.language == LANGUAGE_JPN) ? NAME_LANGUAGE_NTSC_JPN : NAME_LANGUAGE_NTSC_ENG;
     }
     gSaveContext.n64ddFlag = 0;
     gSaveContext.healthCapacity = 0x30;
@@ -876,9 +886,18 @@ void SaveManager::InitFileDebug() {
     gSaveContext.bgsDayCount = 0;
 
     gSaveContext.deaths = 0;
-    static std::array<char, 8> sPlayerName = { 0x15, 0x12, 0x17, 0x14, 0x3E, 0x3E, 0x3E, 0x3E };
-    for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
-        gSaveContext.playerName[i] = sPlayerName[i];
+    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
+        const static std::array<char, 8> sPlayerName = { 0x15, 0x12, 0x17, 0x14, 0x3E, 0x3E, 0x3E, 0x3E };
+        for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
+            gSaveContext.playerName[i] = sPlayerName[i];
+        }
+        gSaveContext.ship.filenameLanguage = NAME_LANGUAGE_PAL;
+    } else { // GAME_REGION_NTSC
+        const static std::array<char, 8> sPlayerName = { 0xB6, 0xB3, 0xB8, 0xB5, 0xDF, 0xDF, 0xDF, 0xDF };
+        for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
+            gSaveContext.playerName[i] = sPlayerName[i];
+        }
+        gSaveContext.ship.filenameLanguage = (gSaveContext.language == LANGUAGE_JPN) ? NAME_LANGUAGE_NTSC_JPN : NAME_LANGUAGE_NTSC_ENG;
     }
     gSaveContext.n64ddFlag = 0;
     gSaveContext.healthCapacity = 0xE0;
@@ -979,9 +998,18 @@ void SaveManager::InitFileMaxed() {
     gSaveContext.bgsDayCount = 0;
 
     gSaveContext.deaths = 0;
-    static std::array<char, 8> sPlayerName = { 0x15, 0x12, 0x17, 0x14, 0x3E, 0x3E, 0x3E, 0x3E };
-    for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
-        gSaveContext.playerName[i] = sPlayerName[i];
+    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
+        const static std::array<char, 8> sPlayerName = { 0x15, 0x12, 0x17, 0x14, 0x3E, 0x3E, 0x3E, 0x3E };
+        for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
+            gSaveContext.playerName[i] = sPlayerName[i];
+        }
+        gSaveContext.ship.filenameLanguage = NAME_LANGUAGE_PAL;
+    } else { // GAME_REGION_NTSC
+        const static std::array<char, 8> sPlayerName = { 0xB6, 0xB3, 0xB8, 0xB5, 0xDF, 0xDF, 0xDF, 0xDF };
+        for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
+            gSaveContext.playerName[i] = sPlayerName[i];
+        }
+        gSaveContext.ship.filenameLanguage = (gSaveContext.language == LANGUAGE_JPN) ? NAME_LANGUAGE_NTSC_JPN : NAME_LANGUAGE_NTSC_ENG;
     }
     gSaveContext.n64ddFlag = 0;
     gSaveContext.healthCapacity = 0x140;
@@ -2172,6 +2200,7 @@ void SaveManager::LoadBaseVersion4() {
         SaveManager::Instance->LoadData("tempCollectFlags", gSaveContext.ship.backupFW.tempCollectFlags);
     });
     SaveManager::Instance->LoadData("dogParams", gSaveContext.dogParams);
+    SaveManager::Instance->LoadData("filenameLanguage", gSaveContext.ship.filenameLanguage);
     SaveManager::Instance->LoadData("maskMemory", gSaveContext.ship.maskMemory);
 }
 
@@ -2342,6 +2371,7 @@ void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSav
         SaveManager::Instance->SaveData("tempCollectFlags", saveContext->ship.backupFW.tempCollectFlags);
     });
     SaveManager::Instance->SaveData("dogParams", saveContext->dogParams);
+    SaveManager::Instance->SaveData("filenameLanguage", saveContext->ship.filenameLanguage);
     SaveManager::Instance->SaveData("maskMemory", saveContext->ship.maskMemory);
 }
 
@@ -2449,6 +2479,7 @@ void SaveManager::CopyZeldaFile(int from, int to) {
     fileMetaInfo[to].buildVersionMajor = fileMetaInfo[from].buildVersionMajor;
     fileMetaInfo[to].buildVersionMinor = fileMetaInfo[from].buildVersionMinor;
     fileMetaInfo[to].buildVersionPatch = fileMetaInfo[from].buildVersionPatch;
+    fileMetaInfo[to].filenameLanguage = fileMetaInfo[from].filenameLanguage;
     SohUtils::CopyStringToCharArray(fileMetaInfo[to].buildVersion, fileMetaInfo[from].buildVersion,
                                     ARRAY_COUNT(fileMetaInfo[to].buildVersion));
 }
@@ -2609,17 +2640,17 @@ typedef struct {
     /* 0x13C8 */ s16 nayrusLoveTimer;
     /* 0x13CA */ char unk_13CA[0x0002];
     /* 0x13CC */ s16 rupeeAccumulator;
-    /* 0x13CE */ s16 timer1State;
-    /* 0x13D0 */ s16 timer1Value;
-    /* 0x13D2 */ s16 timer2State;
-    /* 0x13D4 */ s16 timer2Value;
+    /* 0x13CE */ s16 timerState;
+    /* 0x13D0 */ s16 timerSeconds;
+    /* 0x13D2 */ s16 subTimerState;
+    /* 0x13D4 */ s16 subTimerSeconds;
     /* 0x13D6 */ s16 timerX[2];
     /* 0x13DA */ s16 timerY[2];
     /* 0x13DE */ char unk_13DE[0x0002];
     /* 0x13E0 */ u8 seqId;
     /* 0x13E1 */ u8 natureAmbienceId;
     /* 0x13E2 */ u8 buttonStatus[5];
-    /* 0x13E7 */ u8 unk_13E7;     // alpha related
+    /* 0x13E7 */ u8 forceRisingButtonAlphas;     // alpha related
     /* 0x13E8 */ u16 unk_13E8;    // alpha type?
     /* 0x13EA */ u16 unk_13EA;    // also alpha type?
     /* 0x13EC */ u16 unk_13EC;    // alpha type counter?

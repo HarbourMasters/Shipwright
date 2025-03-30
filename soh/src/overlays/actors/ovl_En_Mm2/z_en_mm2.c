@@ -107,14 +107,14 @@ void func_80AAEF70(EnMm2* this, PlayState* play) {
     } else if (Flags_GetInfTable(INFTABLE_17F)) {
         if (gSaveContext.eventInf[1] & 1) {
             this->actor.textId = 0x6082;
-        } else if (gSaveContext.timer2State != 0) {
+        } else if (gSaveContext.subTimerState != 0) {
             this->actor.textId = 0x6076;
         } else if (HIGH_SCORE(HS_MARATHON) == 158) {
             this->actor.textId = 0x607E;
         } else {
             this->actor.textId = 0x6081;
         }
-    } else if (gSaveContext.timer2State) {
+    } else if (gSaveContext.subTimerState) {
         this->actor.textId = 0x6076;
     } else {
         this->actor.textId = 0x607D;
@@ -197,7 +197,7 @@ void func_80AAF330(EnMm2* this, PlayState* play) {
         if (!(this->unk_1F4 & 2)) {
             Message_CloseTextbox(play);
         }
-        gSaveContext.timer2State = 0;
+        gSaveContext.subTimerState = 0;
         gSaveContext.eventInf[1] &= ~1;
     }
 }
@@ -269,15 +269,15 @@ void func_80AAF668(EnMm2* this, PlayState* play) {
     this->actor.world.rot.y = -0x3E80;
     this->actor.shape.rot.y = this->actor.world.rot.y;
     SkelAnime_Update(&this->skelAnime);
-    if (((void)0, gSaveContext.timer2Value) < HIGH_SCORE(HS_MARATHON)) {
+    if (((void)0, gSaveContext.subTimerSeconds) < HIGH_SCORE(HS_MARATHON)) {
         this->actor.textId = 0x6085;
     } else {
         this->actor.textId = 0x6084;
     }
     if (func_80AAF224(this, play, func_80AAF5EC)) {
         this->unk_1F6 = 0;
-        if (((void)0, gSaveContext.timer2Value) < HIGH_SCORE(HS_MARATHON)) {
-            HIGH_SCORE(HS_MARATHON) = gSaveContext.timer2Value;
+        if (((void)0, gSaveContext.subTimerSeconds) < HIGH_SCORE(HS_MARATHON)) {
+            HIGH_SCORE(HS_MARATHON) = gSaveContext.subTimerSeconds;
         }
     } else {
         LOG_HEX("((z_common_data.event_inf[1]) & (0x0001))", gSaveContext.eventInf[1] & 1);

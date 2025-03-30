@@ -186,6 +186,7 @@ typedef struct ShipSaveContextData {
     FaroresWindData backupFW;
     ShipQuestSaveContextData quest;
     u8 maskMemory;
+    u8 filenameLanguage;
     //TODO: Move non-rando specific flags to a new sohInf and move the remaining randomizerInf to ShipRandomizerSaveContextData
     u16 randomizerInf[(RAND_INF_MAX + 15) / 16];
 } ShipSaveContextData;
@@ -202,7 +203,7 @@ typedef struct {
     /* 0x0018 */ s32 bgsDayCount; // increments with totalDays, can be cleared with `Environment_ClearBgsDayCount`
     /* 0x001C */ char newf[6]; // string "ZELDAZ". start of `info` substruct, originally called "information"
     /* 0x0022 */ u16 deaths;
-    /* 0x0024 */ char playerName[8];
+    /* 0x0024 */ u8 playerName[8];
     /* 0x002C */ s16 n64ddFlag;
     /* 0x002E */ s16 healthCapacity; // "max_life"
     /* 0x0030 */ s16 health; // "now_life"
@@ -260,17 +261,17 @@ typedef struct {
     /* 0x13C8 */ s16 nayrusLoveTimer;
     /* 0x13CA */ char unk_13CA[0x0002];
     /* 0x13CC */ s16 rupeeAccumulator;
-    /* 0x13CE */ s16 timer1State;
-    /* 0x13D0 */ s16 timer1Value;
-    /* 0x13D2 */ s16 timer2State;
-    /* 0x13D4 */ s16 timer2Value;
+    /* 0x13CE */ s16 timerState;
+    /* 0x13D0 */ s16 timerSeconds;
+    /* 0x13D2 */ s16 subTimerState;
+    /* 0x13D4 */ s16 subTimerSeconds;
     /* 0x13D6 */ s16 timerX[2];
     /* 0x13DA */ s16 timerY[2];
     /* 0x13DE */ char unk_13DE[0x0002];
     /* 0x13E0 */ u8 seqId;
     /* 0x13E1 */ u8 natureAmbienceId;
     /* 0x13E2 */ u8 buttonStatus[9]; // SOH [Enhancements] Changed from 5 to 9 to support Dpad equips
-    /* 0x13E7 */ u8 unk_13E7; // alpha related
+    /* 0x13E7 */ u8 forceRisingButtonAlphas; // alpha related
     /* 0x13E8 */ u16 unk_13E8; // alpha type?
     /* 0x13EA */ u16 unk_13EA; // also alpha type?
     /* 0x13EC */ u16 unk_13EC; // alpha type counter?

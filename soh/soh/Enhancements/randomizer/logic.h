@@ -66,8 +66,11 @@ class Logic {
     uint8_t NumBottles = 0;
     //this event covers if the player can currently empty big poes in logic
     bool CanEmptyBigPoes = false;
-    //this check covers if the generation has confirmed that it's possible to empty big poes if needed as adult
-    bool CouldEmptyBigPoes = true;
+    //this event covers if the player could, if they filled their bottle with big poes in field, empty them at the poe merchant. 
+    //Works in tandem with the big poes safety check during entrance validation
+    bool CouldEmptyBigPoes = false;
+    //this check is used to tell logic that we are checking big poes accessibility in logic, to ensure it's not bottle-locked.
+    bool AreCheckingBigPoes = false;
 
     // Drops and Bottle Contents Access
     bool NutPot = false;

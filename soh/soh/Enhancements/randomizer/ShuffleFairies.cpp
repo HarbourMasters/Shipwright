@@ -185,6 +185,9 @@ void ShuffleFairies_UnregisterHooks() {
 }
 
 void Rando::StaticData::RegisterFairyLocations() {
+    static bool registered = false;
+    if (registered) return;
+    registered = true;
     // clang-format off
     locationTable[RC_SFM_FAIRY_GROTTO_FAIRY_1] =                        Location::Fairy(RC_SFM_FAIRY_GROTTO_FAIRY_1,                        RCQUEST_BOTH,   RCAREA_SACRED_FOREST_MEADOW,  SCENE_FAIRYS_FOUNTAIN,              0x1800,                          "Grotto Fairy 1",                                     RHT_SFM_FAIRY_GROTTO_FAIRY,                          SpoilerCollectionCheck::RandomizerInf(RAND_INF_SFM_FAIRY_GROTTO_FAIRY_1));
     locationTable[RC_SFM_FAIRY_GROTTO_FAIRY_2] =                        Location::Fairy(RC_SFM_FAIRY_GROTTO_FAIRY_2,                        RCQUEST_BOTH,   RCAREA_SACRED_FOREST_MEADOW,  SCENE_FAIRYS_FOUNTAIN,              0x1801,                          "Grotto Fairy 2",                                     RHT_SFM_FAIRY_GROTTO_FAIRY,                          SpoilerCollectionCheck::RandomizerInf(RAND_INF_SFM_FAIRY_GROTTO_FAIRY_2));

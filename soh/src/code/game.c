@@ -6,6 +6,12 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
+#include "message_data_static.h"
+extern MessageTableEntry* sNesMessageEntryTablePtr;
+extern MessageTableEntry* sGerMessageEntryTablePtr;
+extern MessageTableEntry* sFraMessageEntryTablePtr;
+extern MessageTableEntry* sJpnMessageEntryTablePtr;
+
 SpeedMeter D_801664D0;
 VisCvg sVisCvg;
 VisZBuf sVisZBuf;
@@ -338,6 +344,14 @@ void GameState_Update(GameState* gameState) {
     }
 
     gSaveContext.language = CVarGetInteger(CVAR_SETTING("Languages"), LANGUAGE_ENG);
+
+    if (gSaveContext.language == LANGUAGE_JPN && sJpnMessageEntryTablePtr == NULL) {
+        gSaveContext.language = LANGUAGE_ENG;
+    } else if (gSaveContext.language == LANGUAGE_GER && sGerMessageEntryTablePtr == NULL) {
+        gSaveContext.language = LANGUAGE_ENG;
+    } else if (gSaveContext.language == LANGUAGE_FRA && sFraMessageEntryTablePtr == NULL) {
+        gSaveContext.language = LANGUAGE_ENG;
+    }
 
     GameInteractor_ExecuteOnGameFrameUpdate();
     gameState->frames++;

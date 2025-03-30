@@ -219,7 +219,7 @@ const static std::map<std::string, uint16_t> ammoItems{
     { "sticks", ITEM_STICK }, { "nuts", ITEM_NUT },
     { "bombs", ITEM_BOMB },   { "seeds", ITEM_SLINGSHOT },
     { "arrows", ITEM_BOW },   { "bombchus", ITEM_BOMBCHU },
-    { "beans", ITEM_BEAN }
+    { "beans", ITEM_BEAN },
 };
 
 static bool AddAmmoHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
@@ -1418,17 +1418,17 @@ void DebugConsole_Init(void) {
     CMD_REGISTER("save_state", {SaveStateHandler, "Save a state."});
     CMD_REGISTER("load_state", {LoadStateHandler, "Load a state."});
     CMD_REGISTER("set_slot", {StateSlotSelectHandler, "Selects a SaveState slot", {
-            {"Slot number", Ship::ArgumentType::NUMBER,}
+            {"Slot number", Ship::ArgumentType::NUMBER},
     }});
 
     // Map & Location
     CMD_REGISTER("void", {VoidHandler, "Voids out of the current map."});
     CMD_REGISTER("reload", {ReloadHandler, "Reloads the current map."});
     CMD_REGISTER("fw", {FWHandler, "Spawns the player where Farore's Wind is set.", {
-            {"clear|warp|backup", Ship::ArgumentType::TEXT}
+            {"clear|warp|backup", Ship::ArgumentType::TEXT},
     }});
     CMD_REGISTER("entrance", {EntranceHandler, "Sends player to the entered entrance (hex)", {
-            {"entrance", Ship::ArgumentType::NUMBER}
+            {"entrance", Ship::ArgumentType::NUMBER},
     }});
 
     // Gameplay
@@ -1437,11 +1437,11 @@ void DebugConsole_Init(void) {
     CMD_REGISTER("map", {LoadSceneHandler, "Load up kak?"});
 
     CMD_REGISTER("rupee", {RupeeHandler, "Set your rupee counter.", {
-            {"amount", Ship::ArgumentType::NUMBER}
+            {"amount", Ship::ArgumentType::NUMBER},
     }});
 
     CMD_REGISTER("bItem", {BHandler, "Set an item to the B button.", {
-            {"Item ID", Ship::ArgumentType::NUMBER}
+            {"Item ID", Ship::ArgumentType::NUMBER},
     }});
 
     CMD_REGISTER("spawn", { ActorSpawnHandler, "Spawn an actor.", { { "actor name/id", Ship::ArgumentType::NUMBER }, // TODO there should be an actor_id arg type
@@ -1451,50 +1451,50 @@ void DebugConsole_Init(void) {
                                                                   {"z", Ship::ArgumentType::NUMBER, true},
                                                                   {"rx", Ship::ArgumentType::NUMBER, true},
                                                                   {"ry", Ship::ArgumentType::NUMBER, true},
-                                                                  {"rz", Ship::ArgumentType::NUMBER, true}
+                                                                  {"rz", Ship::ArgumentType::NUMBER, true},
     }});
 
     CMD_REGISTER("pos", {SetPosHandler, "Sets the position of the player.", {
             {"x", Ship::ArgumentType::NUMBER, true},
             {"y", Ship::ArgumentType::NUMBER, true},
-            {"z", Ship::ArgumentType::NUMBER, true}
+            {"z", Ship::ArgumentType::NUMBER, true},
     }});
 
     CMD_REGISTER("addammo", {AddAmmoHandler, "Adds ammo of an item.", {
             {"sticks|nuts|bombs|seeds|arrows|bombchus|beans", Ship::ArgumentType::TEXT},
-            {"count", Ship::ArgumentType::NUMBER}
+            {"count", Ship::ArgumentType::NUMBER},
     }});
 
     CMD_REGISTER("takeammo", {TakeAmmoHandler, "Removes ammo of an item.", {
             {"sticks|nuts|bombs|seeds|arrows|bombchus|beans", Ship::ArgumentType::TEXT},
-            {"count", Ship::ArgumentType::NUMBER}
+            {"count", Ship::ArgumentType::NUMBER},
     }});
 
     CMD_REGISTER("bottle", {BottleHandler, "Changes item in a bottle slot.", {
             {"item", Ship::ArgumentType::TEXT},
-            {"slot", Ship::ArgumentType::NUMBER}
+            {"slot", Ship::ArgumentType::NUMBER},
     }});
 
     CMD_REGISTER("give_item", {GiveItemHandler, "Gives an item to the player as if it was given from an actor", {
             {"vanilla|randomizer", Ship::ArgumentType::TEXT},
-            {"giveItemID", Ship::ArgumentType::NUMBER}
+            {"giveItemID", Ship::ArgumentType::NUMBER},
     }});
 
     CMD_REGISTER("item", {ItemHandler, "Sets item ID in arg 1 into slot arg 2. No boundary checks. Use with caution.", {
             {"slot", Ship::ArgumentType::NUMBER},
-            {"item id", Ship::ArgumentType::NUMBER}
+            {"item id", Ship::ArgumentType::NUMBER},
     }});
 
     CMD_REGISTER("invisible", {InvisibleHandler, "Activate Link's Elvish cloak, making him appear invisible.", {
-            {"value", Ship::ArgumentType::NUMBER}
+            {"value", Ship::ArgumentType::NUMBER},
     }});
 
     CMD_REGISTER("giant_link", {GiantLinkHandler, "Turn Link into a giant Lonky boi.", {
-            {"value", Ship::ArgumentType::NUMBER}
+            {"value", Ship::ArgumentType::NUMBER},
     }});
 
     CMD_REGISTER("minish_link", {MinishLinkHandler, "Turn Link into a minish boi.", {
-            {"value", Ship::ArgumentType::NUMBER}
+            {"value", Ship::ArgumentType::NUMBER},
     }});
 
     CMD_REGISTER("add_heart_container",
@@ -1504,25 +1504,25 @@ void DebugConsole_Init(void) {
                  {RemoveHeartContainerHandler, "Remove a heart from Link. The minimal amount of hearts is 3."});
 
     CMD_REGISTER("gravity", {GravityHandler, "Set gravity level.", {
-            {"value", Ship::ArgumentType::NUMBER}
+            {"value", Ship::ArgumentType::NUMBER},
     }});
 
     CMD_REGISTER("no_ui", {NoUIHandler, "Disables the UI.", {
-            {"value", Ship::ArgumentType::NUMBER}
+            {"value", Ship::ArgumentType::NUMBER},
     }});
 
     CMD_REGISTER("freeze", {FreezeHandler, "Freezes Link in place"});
 
     CMD_REGISTER("defense_modifier", {DefenseModifierHandler, "Sets the defense modifier.", {
-            {"value", Ship::ArgumentType::NUMBER}
+            {"value", Ship::ArgumentType::NUMBER},
     }});
 
     CMD_REGISTER("damage", {DamageHandler, "Deal damage to Link.", {
-            {"value", Ship::ArgumentType::NUMBER}
+            {"value", Ship::ArgumentType::NUMBER},
     }});
 
     CMD_REGISTER("heal", {HealHandler, "Heals Link.", {
-            {"value", Ship::ArgumentType::NUMBER}
+            {"value", Ship::ArgumentType::NUMBER},
     }});
 
     CMD_REGISTER("fill_magic", {FillMagicHandler, "Fills magic."});
@@ -1530,34 +1530,34 @@ void DebugConsole_Init(void) {
     CMD_REGISTER("empty_magic", {EmptyMagicHandler, "Empties magic."});
 
     CMD_REGISTER("no_z", {NoZHandler, "Disables Z-button presses.", {
-            {"value", Ship::ArgumentType::NUMBER}
+            {"value", Ship::ArgumentType::NUMBER},
     }});
 
     CMD_REGISTER("ohko", {OneHitKOHandler,
                           "Activates one hit KO. Any damage kills Link and he cannot gain health in this mode.", {
-                                  {"value", Ship::ArgumentType::NUMBER}
+                                  {"value", Ship::ArgumentType::NUMBER},
                           }});
 
     CMD_REGISTER("pacifist", {PacifistHandler, "Activates pacifist mode. Prevents Link from using his weapon.", {
-            {"value", Ship::ArgumentType::NUMBER}
+            {"value", Ship::ArgumentType::NUMBER},
     }});
 
     CMD_REGISTER("paper_link", {PaperLinkHandler, "Link but made out of paper.", {
-            {"value", Ship::ArgumentType::NUMBER}
+            {"value", Ship::ArgumentType::NUMBER},
     }});
 
     CMD_REGISTER("rainstorm", {RainstormHandler, "Activates rainstorm."});
 
     CMD_REGISTER("reverse_controls", {ReverseControlsHandler, "Reverses the controls.", {
-            {"value", Ship::ArgumentType::NUMBER}
+            {"value", Ship::ArgumentType::NUMBER},
     }});
 
     CMD_REGISTER("update_rupees", {UpdateRupeesHandler, "Adds rupees.", {
-            {"value", Ship::ArgumentType::NUMBER}
+            {"value", Ship::ArgumentType::NUMBER},
     }});
 
     CMD_REGISTER("speed_modifier", {SpeedModifierHandler, "Sets the speed modifier.", {
-            {"value", Ship::ArgumentType::NUMBER}
+            {"value", Ship::ArgumentType::NUMBER},
     }});
 
     CMD_REGISTER("boots", {BootsHandler, "Activates boots.", {
@@ -1573,7 +1573,7 @@ void DebugConsole_Init(void) {
     }});
 
     CMD_REGISTER("knockback", {KnockbackHandler, "Knocks Link back.", {
-            {"value", Ship::ArgumentType::NUMBER}
+            {"value", Ship::ArgumentType::NUMBER},
     }});
 
     CMD_REGISTER("electrocute", {ElectrocuteHandler, "Electrocutes Link."});

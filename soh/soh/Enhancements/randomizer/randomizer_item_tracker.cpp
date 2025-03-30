@@ -340,7 +340,7 @@ std::vector<uint32_t> buttonMap = {
     BTN_DUP,
     BTN_DDOWN,
     BTN_DLEFT,
-    BTN_DRIGHT
+    BTN_DRIGHT,
 };
 
 typedef enum {
@@ -354,18 +354,18 @@ typedef enum {
 typedef enum {
     KEYS_COLLECTED_MAX,
     KEYS_CURRENT_COLLECTED_MAX,
-    KEYS_CURRENT_MAX
+    KEYS_CURRENT_MAX,
 } ItemTrackerKeysNumberOption;
 
 typedef enum {
     TRIFORCE_PIECE_COLLECTED_REQUIRED,
-    TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX
+    TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX,
 } ItemTrackerTriforcePieceNumberOption;
 
 typedef enum {
     SECTION_DISPLAY_HIDDEN,
     SECTION_DISPLAY_MAIN_WINDOW,
-    SECTION_DISPLAY_SEPARATE
+    SECTION_DISPLAY_SEPARATE,
 } ItemTrackerDisplayType;
 
 typedef enum {
@@ -377,7 +377,7 @@ typedef enum {
 
 typedef enum {
     SECTION_DISPLAY_MINIMAL_HIDDEN,
-    SECTION_DISPLAY_MINIMAL_SEPARATE
+    SECTION_DISPLAY_MINIMAL_SEPARATE,
 } ItemTrackerMinimalDisplayType;
 
 struct ItemTrackerNumbers {
@@ -1562,20 +1562,20 @@ void ItemTrackerWindow::DrawElement() {
 
 static std::unordered_map<int32_t, const char*> itemTrackerCapacityTrackOptions = {
     { ITEM_TRACKER_NUMBER_NONE, "No Numbers" }, { ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY, "Current Capacity" }, { ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY, "Current Ammo" },
-    { ITEM_TRACKER_NUMBER_CAPACITY, "Current Capacity / Max Capacity" }, { ITEM_TRACKER_NUMBER_AMMO, "Current Ammo / Current Capacity" }};
+    { ITEM_TRACKER_NUMBER_CAPACITY, "Current Capacity / Max Capacity" }, { ITEM_TRACKER_NUMBER_AMMO, "Current Ammo / Current Capacity" },};
 static std::unordered_map<int32_t, const char*> itemTrackerKeyTrackOptions = {
-    { KEYS_COLLECTED_MAX, "Collected / Max" }, { KEYS_CURRENT_COLLECTED_MAX, "Current / Collected / Max" }, { KEYS_CURRENT_MAX, "Current / Max" }};
+    { KEYS_COLLECTED_MAX, "Collected / Max" }, { KEYS_CURRENT_COLLECTED_MAX, "Current / Collected / Max" }, { KEYS_CURRENT_MAX, "Current / Max" },};
 static std::unordered_map<int32_t, const char*> itemTrackerTriforcePieceTrackOptions = {
-    { TRIFORCE_PIECE_COLLECTED_REQUIRED, "Collected / Required" }, { TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX, "Collected / Required / Max" }};
-static std::unordered_map<int32_t, const char*> windowTypes = {{ TRACKER_WINDOW_FLOATING, "Floating" }, { TRACKER_WINDOW_WINDOW, "Window" }};
-static std::unordered_map<int32_t, const char*> displayModes = {{ TRACKER_DISPLAY_ALWAYS, "Always" }, { TRACKER_DISPLAY_COMBO_BUTTON, "Combo Button Hold" }};
+    { TRIFORCE_PIECE_COLLECTED_REQUIRED, "Collected / Required" }, { TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX, "Collected / Required / Max" },};
+static std::unordered_map<int32_t, const char*> windowTypes = {{ TRACKER_WINDOW_FLOATING, "Floating" }, { TRACKER_WINDOW_WINDOW, "Window" },};
+static std::unordered_map<int32_t, const char*> displayModes = {{ TRACKER_DISPLAY_ALWAYS, "Always" }, { TRACKER_DISPLAY_COMBO_BUTTON, "Combo Button Hold" },};
 static std::unordered_map<int32_t, const char*> buttons = {{ TRACKER_COMBO_BUTTON_A, "A" }, { TRACKER_COMBO_BUTTON_B, "B"}, { TRACKER_COMBO_BUTTON_C_UP, "C-Up"}, 
     { TRACKER_COMBO_BUTTON_C_DOWN, "C-Down" }, { TRACKER_COMBO_BUTTON_C_LEFT, "C-Left" }, { TRACKER_COMBO_BUTTON_C_RIGHT, "C-Right" }, { TRACKER_COMBO_BUTTON_L, "L" },
     { TRACKER_COMBO_BUTTON_Z, "Z" }, { TRACKER_COMBO_BUTTON_R, "R" }, { TRACKER_COMBO_BUTTON_START, "Start" }, { TRACKER_COMBO_BUTTON_D_UP, "D-Up" },
-    { TRACKER_COMBO_BUTTON_D_DOWN, "D-Down" }, { TRACKER_COMBO_BUTTON_D_LEFT, "D-Left" }, { TRACKER_COMBO_BUTTON_D_RIGHT, "D-Right" }};
-static std::unordered_map<int32_t, const char*> displayTypes = {{ SECTION_DISPLAY_HIDDEN, "Hidden" }, { SECTION_DISPLAY_MAIN_WINDOW, "Main Window" }, { SECTION_DISPLAY_SEPARATE, "Separate" }};
+    { TRACKER_COMBO_BUTTON_D_DOWN, "D-Down" }, { TRACKER_COMBO_BUTTON_D_LEFT, "D-Left" }, { TRACKER_COMBO_BUTTON_D_RIGHT, "D-Right" },};
+static std::unordered_map<int32_t, const char*> displayTypes = {{ SECTION_DISPLAY_HIDDEN, "Hidden" }, { SECTION_DISPLAY_MAIN_WINDOW, "Main Window" }, { SECTION_DISPLAY_SEPARATE, "Separate" },};
 static std::unordered_map<int32_t, const char*> extendedDisplayTypes = {{ SECTION_DISPLAY_EXTENDED_HIDDEN, "Hidden" }, 
-        { SECTION_DISPLAY_EXTENDED_MAIN_WINDOW, "Main Window" }, { SECTION_DISPLAY_EXTENDED_MISC_WINDOW, "Misc Window" }, { SECTION_DISPLAY_EXTENDED_SEPARATE, "Separate" }};
+        { SECTION_DISPLAY_EXTENDED_MAIN_WINDOW, "Main Window" }, { SECTION_DISPLAY_EXTENDED_MISC_WINDOW, "Misc Window" }, { SECTION_DISPLAY_EXTENDED_SEPARATE, "Separate" },};
 static std::unordered_map<int32_t, const char*> minimalDisplayTypes = {{ SECTION_DISPLAY_MINIMAL_HIDDEN, "Hidden" }, { SECTION_DISPLAY_MINIMAL_SEPARATE, "Separate" }};
 
 void ItemTrackerSettingsWindow::DrawElement() {
