@@ -521,34 +521,32 @@ void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, PlayState* play) {
     GetItemEntry getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     s32 getItemId;
 
-    if (GameInteractor_Should(VB_GIVE_ITEM_FROM_HORSEBACK_ARCHERY, true, this)){
-        if (Actor_HasParent(&this->actor, play)) {
-            this->actionFunc = EnGe1_SetupWait_Archery;
+    if (!GameInteractor_Should(VB_GIVE_ITEM_FROM_HORSEBACK_ARCHERY, true, this)){
+        return;
+    }
+    if (Actor_HasParent(&this->actor, play)) {
+        this->actionFunc = EnGe1_SetupWait_Archery;
 
-            if (this->stateFlags & GE1_STATE_GIVE_QUIVER) {
-                Flags_SetItemGetInf(ITEMGETINF_0F);
-            } else {
-                Flags_SetInfTable(INFTABLE_190);
+        if (this->stateFlags & GE1_STATE_GIVE_QUIVER) {
+            Flags_SetItemGetInf(ITEMGETINF_0F);
+        } else {
+            Flags_SetInfTable(INFTABLE_190);
+        }
+    } else {
+        if (this->stateFlags & GE1_STATE_GIVE_QUIVER) {
+            switch (CUR_UPG_VALUE(UPG_QUIVER)) {
+                //! @bug Asschest. See next function for details
+                case 1:
+                    getItemId = GI_QUIVER_40;
+                    break;
+                case 2:
+                    getItemId = GI_QUIVER_50;
+                    break;
             }
         } else {
-            if (this->stateFlags & GE1_STATE_GIVE_QUIVER) {
-                switch (CUR_UPG_VALUE(UPG_QUIVER)) {
-                    //! @bug Asschest. See next function for details
-                    case 1:
-                        getItemId = GI_QUIVER_40;
-                        break;
-                    case 2:
-                        getItemId = GI_QUIVER_50;
-                        break;
-                }
-            } else {
-                getItemId = GI_HEART_PIECE;
-            }
-
-            if (GameInteractor_Should(VB_GIVE_ITEM_FROM_HORSEBACK_ARCHERY, true, this)) {
-                Actor_OfferGetItem(&this->actor, play, getItemId, 10000.0f, 50.0f);
-            }
+            getItemId = GI_HEART_PIECE;
         }
+        Actor_OfferGetItem(&this->actor, play, getItemId, 10000.0f, 50.0f);
     }
 }
 
