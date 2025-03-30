@@ -412,6 +412,7 @@ ReleaseObj/*
 .tags
 tags
 *.otr
+*.o2r
 *.sav
 shipofharkinian.ini
 shipofharkinian.json

@@ -263,15 +263,15 @@ const char* constCameraStrings[] = {
 
 OTRGlobals::OTRGlobals() {
     std::vector<std::string> OTRFiles;
-    std::string mqPath = Ship::Context::LocateFileAcrossAppDirs("oot-mq.otr", appShortName);
+    std::string mqPath = Ship::Context::LocateFileAcrossAppDirs("oot-mq.o2r", appShortName);
     if (std::filesystem::exists(mqPath)) {
         OTRFiles.push_back(mqPath);
     }
-    std::string ootPath = Ship::Context::LocateFileAcrossAppDirs("oot.otr", appShortName);
+    std::string ootPath = Ship::Context::LocateFileAcrossAppDirs("oot.o2r", appShortName);
     if (std::filesystem::exists(ootPath)) {
         OTRFiles.push_back(ootPath);
     }
-    std::string sohOtrPath = Ship::Context::GetPathRelativeToAppBundle("soh.otr");
+    std::string sohOtrPath = Ship::Context::GetPathRelativeToAppBundle("soh.o2r");
     if (std::filesystem::exists(sohOtrPath)) {
         OTRFiles.push_back(sohOtrPath);
     }
@@ -945,7 +945,7 @@ OTRVersion ReadPortVersionFromOTR(std::string otrPath) {
     OTRVersion version = {};
 
     // Use a temporary archive instance to load the otr and read the version file
-    auto archive = std::make_shared<Ship::OtrArchive>(otrPath);
+    auto archive = std::make_shared<Ship::O2rArchive>(otrPath);
     if (archive->Open()) {
         auto t = archive->LoadFile("portVersion");
         if (t != nullptr && t->IsLoaded) {
@@ -963,7 +963,7 @@ OTRVersion ReadPortVersionFromOTR(std::string otrPath) {
     return version;
 }
 
-// Check that a soh.otr exists and matches the version of soh running
+// Check that a soh.o2r exists and matches the version of soh running
 // Otherwise show a message and exit
 void CheckSoHOTRVersion(std::string otrPath) {
     std::string msg;
@@ -972,20 +972,20 @@ void CheckSoHOTRVersion(std::string otrPath) {
     msg = "\x1b[4;2HPlease re-extract it from the download."
           "\x1b[6;2HPress the Home button to exit...";
 #elif defined(__WIIU__)
-    msg = "Please extract the soh.otr from the Ship of Harkinian download\nto your folder.\n\nPress and hold the power "
+    msg = "Please extract the soh.o2r from the Ship of Harkinian download\nto your folder.\n\nPress and hold the power "
           "button to shutdown...";
 #else
-    msg = "Please extract the soh.otr from the Ship of Harkinian download to your folder.\n\nExiting...";
+    msg = "Please extract the soh.o2r from the Ship of Harkinian download to your folder.\n\nExiting...";
 #endif
 
     if (!std::filesystem::exists(otrPath)) {
 #if not defined(__SWITCH__) && not defined(__WIIU__)
-        Extractor::ShowErrorBox("soh.otr file is missing", msg.c_str());
+        Extractor::ShowErrorBox("soh.o2r file is missing", msg.c_str());
         exit(1);
 #elif defined(__SWITCH__)
-        Ship::Switch::PrintErrorMessageToScreen(("\x1b[2;2HYou are missing the soh.otr file." + msg).c_str());
+        Ship::Switch::PrintErrorMessageToScreen(("\x1b[2;2HYou are missing the soh.o2r file." + msg).c_str());
 #elif defined(__WIIU__)
-        OSFatal(("You are missing the soh.otr file\n\n" + msg).c_str());
+        OSFatal(("You are missing the soh.o2r file\n\n" + msg).c_str());
 #endif
     }
 
@@ -994,12 +994,12 @@ void CheckSoHOTRVersion(std::string otrPath) {
     if (otrVersion.major != gBuildVersionMajor || otrVersion.minor != gBuildVersionMinor ||
         otrVersion.patch != gBuildVersionPatch) {
 #if not defined(__SWITCH__) && not defined(__WIIU__)
-        Extractor::ShowErrorBox("soh.otr file version does not match", msg.c_str());
+        Extractor::ShowErrorBox("soh.o2r file version does not match", msg.c_str());
         exit(1);
 #elif defined(__SWITCH__)
-        Ship::Switch::PrintErrorMessageToScreen(("\x1b[2;2HYou have an old soh.otr file." + msg).c_str());
+        Ship::Switch::PrintErrorMessageToScreen(("\x1b[2;2HYou have an old soh.o2r file." + msg).c_str());
 #elif defined(__WIIU__)
-        OSFatal(("You have an old soh.otr file\n\n" + msg).c_str());
+        OSFatal(("You have an old soh.o2r file\n\n" + msg).c_str());
 #endif
     }
 }
@@ -1151,10 +1151,13 @@ extern "C" void InitOTR() {
     CheckAndCreateModFolder();
 #endif
 
-    CheckSoHOTRVersion(Ship::Context::GetPathRelativeToAppBundle("soh.otr"));
+    CheckSoHOTRVersion(Ship::Context::GetPathRelativeToAppBundle("soh.o2r"));
+    const bool ootO2RExists = std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs("oot-mq.o2r", appShortName)) ||
+        std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs("oot.o2r", appShortName));
+    const bool ootOTRExists = std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs("oot-mq.otr", appShortName)) ||
+        std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs("oot.otr", appShortName));
 
-    if (!std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs("oot-mq.otr", appShortName)) &&
-        !std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs("oot.otr", appShortName))) {
+    if (!ootOTRExists && !ootO2RExists) {
 
 #if not defined(__SWITCH__) && not defined(__WIIU__)
         std::string installPath = Ship::Context::GetAppBundlePath();
@@ -1200,8 +1203,8 @@ extern "C" void InitOTR() {
 #endif
     }
 
-    DetectOTRVersion("oot.otr", false);
-    DetectOTRVersion("oot-mq.otr", true);
+    DetectOTRVersion("oot.o2r", false);
+    DetectOTRVersion("oot-mq.o2r", true);
 
     OTRGlobals::Instance = new OTRGlobals();
     CustomMessageManager::Instance = new CustomMessageManager();
