@@ -2120,9 +2120,10 @@ namespace Rando {
 
     // Get the swch bit positions for the dungeon
     const std::vector<uint8_t>& GetDungeonSmallKeyDoors(SceneID sceneId) {
+        static const std::vector<uint8_t> emptyVector;
         auto foundDungeon = SceneToDungeon.find(static_cast<SceneID>(sceneId));
         if (foundDungeon == SceneToDungeon.end()) {
-            return {};
+            return emptyVector;
         }
 
         bool masterQuest = Rando::Context::GetInstance()->GetDungeon(foundDungeon->second)->IsMQ();
@@ -2146,7 +2147,7 @@ namespace Rando {
         std::shared_ptr<SOH::Scene> scene = std::dynamic_pointer_cast<SOH::Scene>(
             Ship::Context::GetInstance()->GetResourceManager()->LoadResource(scenePath));
         if (scene == nullptr) {
-            return {};
+            return emptyVector;
         }
 
         // Find the SetTransitionActorList command
@@ -2158,7 +2159,7 @@ namespace Rando {
             }
         }
         if (transitionActorListCommand == nullptr) {
-            return {};
+            return emptyVector;
         }
 
         // Find the bit position for the small key doors
