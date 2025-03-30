@@ -3010,8 +3010,9 @@ void Message_StartOcarina(PlayState* play, u16 ocarinaActionId) {
         gSaveContext.unk_13EA = 0;
         Interface_ChangeAlpha(1);
     }
-    for (k = 0, j = 0; j < 48; j++, k += 0x80) {
+    for (k = 0, j = 0; j < 48; j++) {
         func_8006EE50(&play->msgCtx.font, 0x8140, k);
+        k += FONT_CHAR_TEX_SIZE;
     }
 }
 
@@ -3326,8 +3327,9 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                 break;
             case MSGMODE_TEXT_CONTINUING:
                 if (msgCtx->stateTimer == 1) {
-                    for (j = 0, i = 0; i < 48; i++, j += 0x80) {
+                    for (j = 0, i = 0; i < 48; i++) {
                         func_8006EE50(&play->msgCtx.font, 0x8140, j);
+                        j += FONT_CHAR_TEX_SIZE;
                     }
                     if (gSaveContext.language == LANGUAGE_JPN && !sTextIsCredits && !sDisplayNextMessageAsEnglish) {
                         Message_DrawTextJPN(play, &gfx);

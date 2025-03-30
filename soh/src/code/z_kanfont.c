@@ -7,6 +7,9 @@
 #include "textures/kanji/kanji.h"
 #include "textures/message_static/message_static.h"
 
+// SOH [NTSC]
+extern MessageTableEntry* sJpnMessageEntryTablePtr;
+
 // #region SOH [Port] Asset tables we can pull from instead of from ROM
 const char* fontTbl[140] =
 {
@@ -4142,8 +4145,15 @@ const char* msgStaticTbl[] =
 // #endregion
 
 void func_8006EE50(Font* font, u16 character, u16 codePointIndex) {
-    // #region SOH [NTSC]
     // DmaMgr_RequestSync(&font->charTexBuf[codePointIndex], _kanjiSegmentStart + Kanji_OffsetFromShiftJIS(character), 0x80);
+
+    // #region SOH [NTSC]
+    // This function is called even for non-nstc, but this function would be empty for non-ntsc.
+    // To simulate that, we check if the jpn message table is loaded and if not immediately return.
+    if (sJpnMessageEntryTablePtr == NULL) {
+        return;
+    }
+
     s32 charIndex = Kanji_OffsetFromShiftJIS(character);
     charIndex /= FONT_CHAR_TEX_SIZE;
     if (charIndex < ARRAY_COUNT(kanjiFontTbl))
@@ -4213,8 +4223,6 @@ void Font_LoadOrderedFont(Font* font) {
 }
 
 // #region SOH [NTSC]
-extern MessageTableEntry* sJpnMessageEntryTablePtr;
-
 void Font_LoadOrderedFontNTSC(Font* font) {
     s32 len;
     s32 size;
