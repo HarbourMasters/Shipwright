@@ -128,6 +128,36 @@ while [[ (! -e "$SHIP_HOME"/oot.otr) || (! -e "$SHIP_HOME"/oot-mq.otr) ]]; do
                 d90bbe422ac728ac54ac6a2c9fec942f7ff04df9)  # n64
                     ROMHASH=fa5f5942b27480d60243c2d52c0e93e26b9e6b86
                     ;;
+                44c75962911e13bdfdc31b35e0b8e3be6a6a49ab)  # v64
+                    b82710ba2bd3b4c6ee8aa1a7e9acf787dfc72e9b
+                    ;;
+                5d47025581060af5ba19e6719c25fea7398e87cf)  # n64
+                    b82710ba2bd3b4c6ee8aa1a7e9acf787dfc72e9b
+                    ;;
+                e1d070ad7b017de9f992b362164dcd9d7f820f7e)  # v64
+                    8b5d13aac69bfbf989861cfdc50b1d840945fc1d
+                    ;;
+                a8c04cd5aa94a6a32198f36ff2069d43342d18a8)  # n64
+                    8b5d13aac69bfbf989861cfdc50b1d840945fc1d
+                    ;;
+                245410280d152f28d5b1c0c0fc37f384db0020cd)  # v64
+                    0769c84615422d60f16925cd859593cdfa597f84
+                    ;;
+                fbdc9e444807f9b881e3432cedf66f38746b81d8)  # n64
+                    0769c84615422d60f16925cd859593cdfa597f84
+                    ;;
+                b6d33d6bf5d6700c64b6a873ab8b06ff039619bc)  # v64
+                    2ce2d1a9f0534c9cd9fa04ea5317b80da21e5e73
+                    ;;
+                2c7113d20044f93c82ec888c19aa09ea7797396d)  # n64
+                    2ce2d1a9f0534c9cd9fa04ea5317b80da21e5e73
+                    ;;
+                06c3c098f0e14ed61811dfaf0e8e4519d7d7a826)  # v64
+                    dd14e143c4275861fe93ea79d0c02e36ae8c6c2f
+                    ;;
+                bb3f85bfaad9ae7a20afbf618fc9fe126c8c1b4f)  # n64
+                    dd14e143c4275861fe93ea79d0c02e36ae8c6c2f
+                    ;;
                 esac
 
                 case "$ROMHASH" in
@@ -220,6 +250,46 @@ while [[ (! -e "$SHIP_HOME"/oot.otr) || (! -e "$SHIP_HOME"/oot-mq.otr) ]]; do
                 517bd9714c73cb96c21e7c2ef640d7b55186102f)
                     if [[ ! -e "$SHIP_HOME"/oot-mq.otr ]]; then
                         ROM=GC_MQ_D
+                        OTRNAME="oot-mq.otr"
+                    else
+                        continue
+                    fi
+                    ;;
+                b82710ba2bd3b4c6ee8aa1a7e9acf787dfc72e9b)
+                    if [[ ! -e "$SHIP_HOME"/oot.otr ]]; then
+                        ROM=GC_NMQ_NTSC_U
+                        OTRNAME="oot.otr"
+                    else
+                        continue
+                    fi
+                    ;;
+                8b5d13aac69bfbf989861cfdc50b1d840945fc1d)
+                    if [[ ! -e "$SHIP_HOME"/oot-mq.otr ]]; then
+                        ROM=GC_MQ_NTSC_U
+                        OTRNAME="oot-mq.otr"
+                    else
+                        continue
+                    fi
+                    ;;
+                0769c84615422d60f16925cd859593cdfa597f84)
+                    if [[ ! -e "$SHIP_HOME"/oot.otr ]]; then
+                        ROM=GC_NMQ_NTSC_J
+                        OTRNAME="oot.otr"
+                    else
+                        continue
+                    fi
+                    ;;
+                2ce2d1a9f0534c9cd9fa04ea5317b80da21e5e73)
+                    if [[ ! -e "$SHIP_HOME"/oot.otr ]]; then
+                        ROM=GC_NMQ_NTSC_J_CE
+                        OTRNAME="oot.otr"
+                    else
+                        continue
+                    fi
+                    ;;
+                dd14e143c4275861fe93ea79d0c02e36ae8c6c2f)
+                    if [[ ! -e "$SHIP_HOME"/oot-mq.otr ]]; then
+                        ROM=GC_MQ_NTSC_J
                         OTRNAME="oot-mq.otr"
                     else
                         continue
