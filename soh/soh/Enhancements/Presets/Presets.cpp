@@ -34,6 +34,7 @@ void applyPreset(std::vector<PresetEntry> entries) {
         }
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
+    ShipInit::Init("*");
 }
 
 void DrawPresetSelector(PresetType presetTypeId) {
