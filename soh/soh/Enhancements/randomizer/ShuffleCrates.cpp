@@ -278,6 +278,9 @@ void RegisterShuffleCrates() {
 }
 
 void Rando::StaticData::RegisterCrateLocations() {
+    static bool registered = false;
+    if (registered) return;
+    registered = true;
     // clang-format off
     // Overworld Crates
     //            Randomizer Check                                 	            Randomizer Check                                                                Quest            Area                           Scene ID                        Params                              Short Name                    	                Hint Text Key                       Vanilla                 Spoiler Collection Check

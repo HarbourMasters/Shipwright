@@ -826,18 +826,7 @@ void GenerateItemPool() {
     AddItemToMainPool(RG_TREASURE_GAME_SMALL_KEY, 6); // 6 individual keys
   } else if (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK)) {
     AddItemToMainPool(RG_TREASURE_GAME_SMALL_KEY); // 1 key which will behave as a pack of 6
-  } else {
-    ctx->PlaceItemInLocation(RC_MARKET_TREASURE_CHEST_GAME_ITEM_1, RG_GREEN_RUPEE, false, true);
-    ctx->PlaceItemInLocation(RC_MARKET_TREASURE_CHEST_GAME_ITEM_2, RG_GREEN_RUPEE, false, true);
-    ctx->PlaceItemInLocation(RC_MARKET_TREASURE_CHEST_GAME_ITEM_3, RG_BLUE_RUPEE, false, true);
-    ctx->PlaceItemInLocation(RC_MARKET_TREASURE_CHEST_GAME_ITEM_4, RG_BLUE_RUPEE, false, true);
-    ctx->PlaceItemInLocation(RC_MARKET_TREASURE_CHEST_GAME_ITEM_5, RG_RED_RUPEE, false, true);
-    ctx->PlaceItemInLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_1, RG_TREASURE_GAME_SMALL_KEY, false, true);
-    ctx->PlaceItemInLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_2, RG_TREASURE_GAME_SMALL_KEY, false, true);
-    ctx->PlaceItemInLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_3, RG_TREASURE_GAME_SMALL_KEY, false, true);
-    ctx->PlaceItemInLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_4, RG_TREASURE_GAME_SMALL_KEY, false, true);
-    ctx->PlaceItemInLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_5, RG_TREASURE_GAME_SMALL_KEY, false, true);
-  };
+  }
 
   if (ctx->GetOption(RSK_SHUFFLE_TOKENS).Is(RO_TOKENSANITY_OFF)) {
     for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, RCTYPE_SKULL_TOKEN)) {

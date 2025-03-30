@@ -157,6 +157,9 @@ void RegisterShuffleGrass() {
 
 
 void Rando::StaticData::RegisterGrassLocations() {
+    static bool registered = false;
+    if (registered) return;
+    registered = true;
     // clang-format off
     // Overworld Grass
     //            Randomizer Check                                 	       Randomizer Check                                           Quest         Area                          Scene ID                           Params                          Short Name                    	      Spoiler Name                         Hint Text Key                     Vanilla             Spoiler Collection Check

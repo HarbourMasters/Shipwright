@@ -59,6 +59,9 @@ void RegisterShuffleCows() {
 static RegisterShipInitFunc initFunc(RegisterShuffleCows, { "IS_RANDO" });
 
 void Rando::StaticData::RegisterCowLocations() {
+    static bool registered = false;
+    if (registered) return;
+    registered = true;
     // clang-format-off
     locationTable[RC_KF_LINKS_HOUSE_COW] =      Location::Base(RC_KF_LINKS_HOUSE_COW,      RCQUEST_BOTH, RCTYPE_COW,                              ACTOR_EN_COW, SCENE_LINKS_HOUSE,       0x00,                               "Links House Cow",   RHT_KF_LINKS_HOUSE_COW,      RG_MILK, SpoilerCollectionCheck::RandomizerInf(RAND_INF_COWS_MILKED_KF_LINKS_HOUSE_COW));
     locationTable[RC_HF_COW_GROTTO_COW] =       Location::Base(RC_HF_COW_GROTTO_COW,       RCQUEST_BOTH, RCTYPE_COW, RCAREA_HYRULE_FIELD,         ACTOR_EN_COW, SCENE_GROTTOS,           TWO_ACTOR_PARAMS(3485, -291),       "Cow Grotto Cow",    RHT_HF_COW_GROTTO_COW,       RG_MILK, SpoilerCollectionCheck::RandomizerInf(RAND_INF_COWS_MILKED_HF_COW_GROTTO_COW));
