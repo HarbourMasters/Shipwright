@@ -137,14 +137,14 @@ s16 func_80A9C6C0(PlayState* play, Actor* thisx) {
                 talkState = NPC_TALK_STATE_IDLE;
                 switch (this->actor.textId) {
                     case 0x4012:
-                        SET_INFTABLE(INFTABLE_139);
+                        Flags_SetInfTable(INFTABLE_139);
                         talkState = NPC_TALK_STATE_ACTION;
                         break;
                     case 0x401B:
                         talkState = !Message_ShouldAdvance(play) ? NPC_TALK_STATE_TALKING : NPC_TALK_STATE_ACTION;
                         break;
                     case 0x401F:
-                        SET_INFTABLE(INFTABLE_139);
+                        Flags_SetInfTable(INFTABLE_139);
                         break;
                 }
             }
@@ -154,13 +154,13 @@ s16 func_80A9C6C0(PlayState* play, Actor* thisx) {
                 talkState = NPC_TALK_STATE_IDLE;
                 switch (this->actor.textId) {
                     case 0x4012:
-                        SET_INFTABLE(INFTABLE_139);
+                        Flags_SetInfTable(INFTABLE_139);
                         FALLTHROUGH;
                     case 0x401B:
                         talkState = NPC_TALK_STATE_ACTION;
                         break;
                     case 0x401F:
-                        SET_INFTABLE(INFTABLE_139);
+                        Flags_SetInfTable(INFTABLE_139);
                         break;
                 }
             }
