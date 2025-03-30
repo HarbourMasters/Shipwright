@@ -1018,7 +1018,7 @@ void Message_DrawTextJPN(PlayState* play, Gfx** gfxP) {
                 *gfxP = gfx;
                 return;
             case MESSAGE_QUICKTEXT_ENABLE_JPN:
-                if (i < msgCtx->textDrawPos && i + gTextSpeed >= msgCtx->textDrawPos && (msgCtx->msgMode == MSGMODE_TEXT_DISPLAYING ||
+                if ((i + 1 == msgCtx->textDrawPos || (gTextSpeed > 1 && i + gTextSpeed >= msgCtx->textDrawPos)) && (msgCtx->msgMode == MSGMODE_TEXT_DISPLAYING ||
                                                                                          (msgCtx->msgMode >= MSGMODE_OCARINA_STARTING &&
                                                                                           msgCtx->msgMode < MSGMODE_SCARECROW_LONG_RECORDING_START))) {
                     j = i;
@@ -1364,7 +1364,7 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
                 *gfxP = gfx;
                 return;
             case MESSAGE_QUICKTEXT_ENABLE:
-                if (i < msgCtx->textDrawPos && i + gTextSpeed >= msgCtx->textDrawPos && (msgCtx->msgMode == MSGMODE_TEXT_DISPLAYING ||
+                if ((i + 1 == msgCtx->textDrawPos || (gTextSpeed > 1 && i + gTextSpeed >= msgCtx->textDrawPos)) && (msgCtx->msgMode == MSGMODE_TEXT_DISPLAYING ||
                                                                                          (msgCtx->msgMode >= MSGMODE_OCARINA_STARTING &&
                                                                                           msgCtx->msgMode < MSGMODE_SCARECROW_LONG_RECORDING_START))) {
                     j = i;

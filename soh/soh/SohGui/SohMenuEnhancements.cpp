@@ -959,10 +959,10 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("FixDaruniaDanceSpeed"))
         .Options(CheckboxOptions().Tooltip(
             "Fixes Darunia's dancing speed so he dances to the beat of Saria's Song, like in the Original Game."));
-    AddWidget(path, "Fix Credits Timing", WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "Fix Credits Timing (PAL)", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("CreditsFix"))
         .Options(CheckboxOptions().Tooltip(
-            "Extend certain credits scenes so the music lines up properly with the visuals."));
+            "Extend certain credits scenes so the music lines up properly with the visuals. (PAL only)"));
 
     path.column = SECTION_COLUMN_3;
     AddWidget(path, "Graphical Restorations", WIDGET_SEPARATOR_TEXT);
