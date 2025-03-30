@@ -4144,7 +4144,11 @@ const char* msgStaticTbl[] =
 };
 // #endregion
 
-void func_8006EE50(Font* font, u16 character, u16 codePointIndex) {
+/**
+ * Loads a texture from kanji for the requested `character` into the character texture buffer
+ * at `codePointIndex`. The value of `character` is the SHIFT-JIS encoding of the character.
+ */
+void Font_LoadCharWide(Font* font, u16 character, u16 codePointIndex) {
     // DmaMgr_RequestSync(&font->charTexBuf[codePointIndex], _kanjiSegmentStart + Kanji_OffsetFromShiftJIS(character), 0x80);
 
     // #region SOH [NTSC]

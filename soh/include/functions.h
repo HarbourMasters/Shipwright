@@ -901,7 +901,7 @@ s32 Jpeg_Decode(void* data, void* zbuffer, void* workBuff, u32 workSize);
 void KaleidoSetup_Update(PlayState* play);
 void KaleidoSetup_Init(PlayState* play);
 void KaleidoSetup_Destroy(PlayState* play);
-void func_8006EE50(Font* font, u16 arg1, u16 arg2);
+void Font_LoadCharWide(Font* font, u16 arg1, u16 arg2);
 void Font_LoadChar(Font* font, u8 character, u16 codePointIndex);
 void Font_LoadMessageBoxIcon(Font* font, u16 icon);
 void Font_LoadOrderedFont(Font* font);
