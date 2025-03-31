@@ -2197,6 +2197,7 @@ namespace Rando {
             unlockedSmallKeyDoors += swch >> smallKeyDoor & 1;
         }
 
+        // RANDOTODO: Account for MQ Water trick that causes the basement lock to unlock when the player clears the stalfos pit.
         return unlockedSmallKeyDoors;
     }
 
