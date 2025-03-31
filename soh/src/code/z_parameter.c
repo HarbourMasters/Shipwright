@@ -6123,7 +6123,7 @@ void Interface_DrawTotalGameplayTimer(PlayState* play) {
     // Draw timer based on the Gameplay Stats total time.
 
     if ((IS_BOSS_RUSH && gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_TIMER] == BR_CHOICE_TIMER_YES) ||
-        (CVarGetInteger(CVAR_ENHANCEMENT("GameplayStats.ShowIngameTimer"), 0) && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2)) {
+        (CVarGetInteger(CVAR_GAMEPLAY_STATS("ShowIngameTimer"), 0) && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2)) {
 
         s32 X_Margins_Timer = 0;
         if (CVarGetInteger(CVAR_COSMETIC("HUD.IGT.UseMargins"), 0) != 0) {
