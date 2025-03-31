@@ -35,6 +35,7 @@ extern "C" uint32_t ResourceMgr_GetGamePlatform(int index) {
         case OOT_PAL_11:
             return GAME_PLATFORM_N64;
         case OOT_NTSC_JP_GC:
+        case OOT_NTSC_JP_GC_CE:
         case OOT_NTSC_US_GC:
         case OOT_PAL_GC:
         case OOT_NTSC_JP_MQ:
@@ -55,6 +56,7 @@ extern "C" uint32_t ResourceMgr_GetGameRegion(int index) {
         case OOT_NTSC_US_11:
         case OOT_NTSC_US_12:
         case OOT_NTSC_JP_GC:
+        case OOT_NTSC_JP_GC_CE:
         case OOT_NTSC_US_GC:
         case OOT_NTSC_JP_MQ:
         case OOT_NTSC_US_MQ:

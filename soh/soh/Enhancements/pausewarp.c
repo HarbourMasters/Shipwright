@@ -10,7 +10,7 @@ static const int songMessageMap[] = {
     TEXT_WARP_SERENADE_OF_WATER,
     TEXT_WARP_REQUIEM_OF_SPIRIT,
     TEXT_WARP_NOCTURNE_OF_SHADOW,
-    TEXT_WARP_PRELUDE_OF_LIGHT
+    TEXT_WARP_PRELUDE_OF_LIGHT,
 };
 
 static const int ocarinaSongMap[] = {
@@ -19,7 +19,7 @@ static const int ocarinaSongMap[] = {
     OCARINA_SONG_SERENADE,
     OCARINA_SONG_REQUIEM,
     OCARINA_SONG_NOCTURNE,
-    OCARINA_SONG_PRELUDE
+    OCARINA_SONG_PRELUDE,
 };
 
 static const int entranceIndexMap[] = {
@@ -28,7 +28,7 @@ static const int entranceIndexMap[] = {
     ENTR_LAKE_HYLIA_WARP_PAD, // Serenade
     ENTR_DESERT_COLOSSUS_WARP_PAD, // Requiem
     ENTR_GRAVEYARD_WARP_PAD, // Nocturne
-    ENTR_TEMPLE_OF_TIME_WARP_PAD // Prelude
+    ENTR_TEMPLE_OF_TIME_WARP_PAD, // Prelude
 };
 
 static const int songAudioMap[] = { 
@@ -37,7 +37,7 @@ static const int songAudioMap[] = {
     NA_BGM_OCA_SERENADE,
     NA_BGM_OCA_REQUIEM,
     NA_BGM_OCA_NOCTURNE,
-    NA_BGM_OCA_LIGHT
+    NA_BGM_OCA_LIGHT,
 };
 
 static bool isWarpActive = false; 

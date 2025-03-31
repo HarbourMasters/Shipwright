@@ -1995,17 +1995,17 @@ void Message_DecodeJPN(PlayState* play) {
             }
 
             for (i = 0; i < 4; i++) {
-                func_8006EE50(font, digits[i] + 0x824F, charTexIdx);
+                Font_LoadCharWide(font, digits[i] + 0x824F, charTexIdx);
                 charTexIdx += FONT_CHAR_TEX_SIZE;
                 msgCtx->msgBufDecodedWide[decodedBufPos] = digits[i] + 0x824F;
                 decodedBufPos++;
                 if (i == 1) {
-                    func_8006EE50(font, 0x95AA, charTexIdx);
+                    Font_LoadCharWide(font, 0x95AA, charTexIdx);
                     charTexIdx += FONT_CHAR_TEX_SIZE;
                     msgCtx->msgBufDecodedWide[decodedBufPos] = 0x95AA;
                     decodedBufPos++;
                 } else if (i == 3) {
-                    func_8006EE50(font, 0x9562, charTexIdx);
+                    Font_LoadCharWide(font, 0x9562, charTexIdx);
                     charTexIdx += FONT_CHAR_TEX_SIZE;
                     msgCtx->msgBufDecodedWide[decodedBufPos] = 0x9562;
                 }
@@ -2032,7 +2032,7 @@ void Message_DecodeJPN(PlayState* play) {
                     loadChar = true;
                 }
                 if (loadChar) {
-                    func_8006EE50(font, digits[i] + 0x824F, charTexIdx);
+                    Font_LoadCharWide(font, digits[i] + 0x824F, charTexIdx);
                     charTexIdx += FONT_CHAR_TEX_SIZE;
                     msgCtx->msgBufDecodedWide[decodedBufPos] = digits[i] + 0x824F;
                     decodedBufPos++;
@@ -2058,7 +2058,7 @@ void Message_DecodeJPN(PlayState* play) {
                     loadChar = true;
                 }
                 if (loadChar) {
-                    func_8006EE50(font, digits[i] + 0x824F, charTexIdx);
+                    Font_LoadCharWide(font, digits[i] + 0x824F, charTexIdx);
                     charTexIdx += FONT_CHAR_TEX_SIZE;
                     msgCtx->msgBufDecodedWide[decodedBufPos] = digits[i] + 0x824F;
                     decodedBufPos++;
@@ -2076,7 +2076,7 @@ void Message_DecodeJPN(PlayState* play) {
 
             for (i = 0; i < 2; i++) {
                 if (i == 1 || digits[i] != 0) {
-                    func_8006EE50(font, digits[i] + 0x824F, charTexIdx);
+                    Font_LoadCharWide(font, digits[i] + 0x824F, charTexIdx);
                     charTexIdx += FONT_CHAR_TEX_SIZE;
                     msgCtx->msgBufDecodedWide[decodedBufPos] = digits[i] + 0x824F;
                     decodedBufPos++;
@@ -2118,7 +2118,7 @@ void Message_DecodeJPN(PlayState* play) {
                             loadChar = true;
                         }
                         if (loadChar) {
-                            func_8006EE50(font, digits[i] + 0x824F, charTexIdx);
+                            Font_LoadCharWide(font, digits[i] + 0x824F, charTexIdx);
                             charTexIdx += FONT_CHAR_TEX_SIZE;
                             msgCtx->msgBufDecodedWide[decodedBufPos] = digits[i] + 0x824F;
                             decodedBufPos++;
@@ -2148,17 +2148,17 @@ void Message_DecodeJPN(PlayState* play) {
                     }
 
                     for (i = 0; i < 4; i++) {
-                        func_8006EE50(font, digits[i] + 0x824F, charTexIdx);
+                        Font_LoadCharWide(font, digits[i] + 0x824F, charTexIdx);
                         charTexIdx += FONT_CHAR_TEX_SIZE;
                         msgCtx->msgBufDecodedWide[decodedBufPos] = digits[i] + 0x824F;
                         decodedBufPos++;
                         if (i == 1) {
-                            func_8006EE50(font, 0x95AA, charTexIdx);
+                            Font_LoadCharWide(font, 0x95AA, charTexIdx);
                             charTexIdx += FONT_CHAR_TEX_SIZE;
                             msgCtx->msgBufDecodedWide[decodedBufPos] = 0x95AA;
                             decodedBufPos++;
                         } else if (i == 3) {
-                            func_8006EE50(font, 0x9562, charTexIdx);
+                            Font_LoadCharWide(font, 0x9562, charTexIdx);
                             charTexIdx += FONT_CHAR_TEX_SIZE;
                             msgCtx->msgBufDecodedWide[decodedBufPos] = 0x9562;
                         }
@@ -2182,17 +2182,17 @@ void Message_DecodeJPN(PlayState* play) {
             }
 
             for (i = 0; i < 4; i++) {
-                func_8006EE50(font, digits[i] + 0x824F, charTexIdx);
+                Font_LoadCharWide(font, digits[i] + 0x824F, charTexIdx);
                 charTexIdx += FONT_CHAR_TEX_SIZE;
                 msgCtx->msgBufDecodedWide[decodedBufPos] = digits[i] + 0x824F;
                 decodedBufPos++;
                 if (i == 1) {
-                    func_8006EE50(font, 0x8E9E, charTexIdx);
+                    Font_LoadCharWide(font, 0x8E9E, charTexIdx);
                     charTexIdx += FONT_CHAR_TEX_SIZE;
                     msgCtx->msgBufDecodedWide[decodedBufPos] = 0x8E9E;
                     decodedBufPos++;
                 } else if (i == 3) {
-                    func_8006EE50(font, 0x95AA, charTexIdx);
+                    Font_LoadCharWide(font, 0x95AA, charTexIdx);
                     charTexIdx += FONT_CHAR_TEX_SIZE;
                     msgCtx->msgBufDecodedWide[decodedBufPos] = 0x95AA;
                 }
@@ -2231,7 +2231,7 @@ void Message_DecodeJPN(PlayState* play) {
                 msgCtx->choiceNum = 3;
                 R_TEXT_INIT_XPOS += 32;
             } else if (curChar != MESSAGE_SPACE_JPN) {
-                func_8006EE50(font, curChar, charTexIdx);
+                Font_LoadCharWide(font, curChar, charTexIdx);
                 charTexIdx += FONT_CHAR_TEX_SIZE;
             }
         }
@@ -3010,8 +3010,9 @@ void Message_StartOcarina(PlayState* play, u16 ocarinaActionId) {
         gSaveContext.unk_13EA = 0;
         Interface_ChangeAlpha(1);
     }
-    for (k = 0, j = 0; j < 48; j++, k += 0x80) {
-        func_8006EE50(&play->msgCtx.font, 0x8140, k);
+    for (k = 0, j = 0; j < 48; j++) {
+        Font_LoadCharWide(&play->msgCtx.font, 0x8140, k);
+        k += FONT_CHAR_TEX_SIZE;
     }
 }
 
@@ -3326,8 +3327,9 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                 break;
             case MSGMODE_TEXT_CONTINUING:
                 if (msgCtx->stateTimer == 1) {
-                    for (j = 0, i = 0; i < 48; i++, j += 0x80) {
-                        func_8006EE50(&play->msgCtx.font, 0x8140, j);
+                    for (j = 0, i = 0; i < 48; i++) {
+                        Font_LoadCharWide(&play->msgCtx.font, 0x8140, j);
+                        j += FONT_CHAR_TEX_SIZE;
                     }
                     if (gSaveContext.language == LANGUAGE_JPN && !sTextIsCredits && !sDisplayNextMessageAsEnglish) {
                         Message_DrawTextJPN(play, &gfx);

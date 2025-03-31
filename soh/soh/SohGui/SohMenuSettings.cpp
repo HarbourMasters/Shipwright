@@ -14,8 +14,8 @@ namespace SohGui {
 
 extern std::shared_ptr<SohMenu> mSohMenu;
 using namespace UIWidgets;
-static const std::unordered_map<int32_t, const char*> languages = {{ LANGUAGE_ENG, "English" }, { LANGUAGE_GER, "German" }, { LANGUAGE_FRA, "French" }, { LANGUAGE_JPN, "Japanese"}};
-static std::unordered_map<int32_t, const char*> imguiScaleOptions = {{ 0, "Small" }, { 1, "Normal" }, { 2, "Large" }, { 3, "X-Large" }};
+static const std::unordered_map<int32_t, const char*> languages = {{ LANGUAGE_ENG, "English" }, { LANGUAGE_GER, "German" }, { LANGUAGE_FRA, "French" }, { LANGUAGE_JPN, "Japanese"}, };
+static std::unordered_map<int32_t, const char*> imguiScaleOptions = {{ 0, "Small" }, { 1, "Normal" }, { 2, "Large" }, { 3, "X-Large" }, };
 
 const char* GetGameVersionString(uint32_t index) {
     uint32_t gameVersion = ResourceMgr_GetGameVersion(index);
@@ -26,6 +26,16 @@ const char* GetGameVersionString(uint32_t index) {
             return "NTSC 1.1";
         case OOT_NTSC_US_12:
             return "NTSC 1.2";
+        case OOT_NTSC_US_GC:
+            return "NTSC-U GC";
+        case OOT_NTSC_JP_GC:
+            return "NTSC-J GC";
+        case OOT_NTSC_JP_GC_CE:
+            return "NTSC-J GC (Collector's Edition)";
+        case OOT_NTSC_US_MQ:
+            return "NTSC-U MQ";
+        case OOT_NTSC_JP_MQ:
+            return "NTSC-J MQ";
         case OOT_PAL_10:
             return "PAL 1.0";
         case OOT_PAL_11:
@@ -324,7 +334,9 @@ void SohMenu::AddMenuSettings() {
     AddWidget(path, "Enable Vsync", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_VSYNC_ENABLED)
         .PreFunc([](WidgetInfo& info) { info.isHidden = mSohMenu->disabledMap.at(DISABLE_FOR_NO_VSYNC).active; })
-        .Options(CheckboxOptions().Tooltip("Removes tearing, but clamps your max FPS to your displays refresh rate."));
+        .Options(CheckboxOptions()
+                     .Tooltip("Removes tearing, but clamps your max FPS to your displays refresh rate.")
+                     .DefaultValue(true));
     AddWidget(path, "Windowed Fullscreen", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SDL_WINDOWED_FULLSCREEN)
         .PreFunc([](WidgetInfo& info) {

@@ -54,5 +54,25 @@
     {
         "name": "NTSC 1.2 (JP)",
         "sha1": "fa5f5942b27480d60243c2d52c0e93e26b9e6b86"
+    },
+    {
+        "name": "NTSC GC (US)",
+        "sha1": "b82710ba2bd3b4c6ee8aa1a7e9acf787dfc72e9b"
+    },
+    {
+        "name": "NTSC MQ (US)",
+        "sha1": "8b5d13aac69bfbf989861cfdc50b1d840945fc1d"
+    },
+    {
+        "name": "NTSC GC (JP)",
+        "sha1": "0769c84615422d60f16925cd859593cdfa597f84"
+    },
+    {
+        "name": "NTSC GC (JP) (Collector's Edition)",
+        "sha1": "2ce2d1a9f0534c9cd9fa04ea5317b80da21e5e73"
+    },
+    {
+        "name": "NTSC MQ (JP)",
+        "sha1": "dd14e143c4275861fe93ea79d0c02e36ae8c6c2f"
     }
 ]

@@ -1,0 +1,6 @@
+<Root>
+     <File Name="message_texture_static" Segment="9">
+        <Texture Name="gRedMessageXLeftTex" OutName="red_message_x_left" Format="i4" Width="96" Height="48" Offset="0x0"/>
+        <Texture Name="gRedMessageXRightTex" OutName="red_message_x_right" Format="i4" Width="96" Height="48" Offset="0x900"/>
+     </File>
+</Root>

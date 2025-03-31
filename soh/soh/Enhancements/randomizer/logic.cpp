@@ -407,6 +407,7 @@ namespace Rando {
         }
     }
 
+    //RANDOMISERTODO intergrate into HasItem
     bool Logic::CanOpenOverworldDoor(RandomizerGet key) {
         if (!ctx->GetOption(RSK_LOCK_OVERWORLD_DOORS)) {
             return true;
@@ -945,7 +946,7 @@ namespace Rando {
 
     uint8_t Logic::BottleCount() {
         uint8_t count = 0;
-        if (CouldEmptyBigPoes){
+        if (CouldEmptyBigPoes && !AreCheckingBigPoes){
             for (int i = SLOT_BOTTLE_1; i <= SLOT_BOTTLE_4; i++) {
                 uint8_t item = GetSaveContext()->inventory.items[i];
                 switch (item) {
@@ -2237,7 +2238,8 @@ namespace Rando {
         //Bottle Count
         Bottles    = 0;
         NumBottles = 0;
-        CanEmptyBigPoes = false;
+        CanEmptyBigPoes   = false;
+        CouldEmptyBigPoes = false;
 
         //Drops and Bottle Contents Access
         NutPot           = false;
