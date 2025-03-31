@@ -10,7 +10,7 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-#define CVAR_SEQOVERLAY_NAME CVAR_AUDIO("SeqNameOverlay")
+#define CVAR_SEQOVERLAY_NAME CVAR_AUDIO("SeqNameNotification")
 #define CVAR_SEQOVERLAY_DEFAULT 0
 #define CVAR_SEQOVERLAY_VALUE CVarGetInteger(CVAR_SEQOVERLAY_NAME, CVAR_SEQOVERLAY_DEFAULT)
 

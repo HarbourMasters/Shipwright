@@ -524,19 +524,11 @@ void AudioEditor::DrawElement() {
                                  "the volume changing provides. If toggling this while in the Lost Woods, reload "
                                  "the area for the effect to kick in."));
                 UIWidgets::CVarCheckbox(
-                    "Display Sequence Name on Overlay", CVAR_AUDIO("SeqNameOverlay"),
+                    "Display Sequence Name in Notifications", CVAR_AUDIO("SeqNameNotification"),
                     UIWidgets::CheckboxOptions()
                         .Color(THEME_COLOR)
-                        .Tooltip("Displays the name of the current sequence in the corner of the screen whenever a new "
-                                 "sequence "
-                                 "is loaded to the main sequence player (does not apply to fanfares or enemy BGM)."));
-                UIWidgets::CVarSliderInt("Overlay Duration: %d seconds", CVAR_AUDIO("SeqNameOverlayDuration"),
-                                         UIWidgets::IntSliderOptions()
-                                             .Min(1)
-                                             .Max(10)
-                                             .DefaultValue(5)
-                                             .Size(ImVec2(300.0f, 0.0f))
-                                             .Color(THEME_COLOR));
+                        .Tooltip("Emits a notification with the current song name whenever it changes. "
+                                 "(does not apply to fanfares or enemy BGM)."));
                 UIWidgets::CVarSliderFloat("Link's voice pitch multiplier", CVAR_AUDIO("LinkVoiceFreqMultiplier"),
                                            UIWidgets::FloatSliderOptions()
                                                .IsPercentage()
