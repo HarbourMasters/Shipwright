@@ -262,8 +262,8 @@ class Logic {
     bool CheckEquipment(uint32_t item);
     bool CheckQuestItem(uint32_t item);
     void SetQuestItem(uint32_t item, bool state);
-    int8_t GetSmallKeyCount(uint32_t dungeonIndex);
-    void SetSmallKeyCount(uint32_t dungeonIndex, int8_t count);
+    uint8_t GetSmallKeyCount(uint32_t dungeonIndex);
+    void SetSmallKeyCount(uint32_t dungeonIndex, uint8_t count);
     bool CheckDungeonItem(uint32_t item, uint32_t dungeonIndex);
     void SetDungeonItem(uint32_t item, uint32_t dungeonIndex, bool state);
     bool CheckRandoInf(uint32_t flag);

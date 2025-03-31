@@ -2200,11 +2200,16 @@ namespace Rando {
         return unlockedSmallKeyDoors;
     }
 
-    int8_t Logic::GetSmallKeyCount(uint32_t dungeonIndex) {
-        return mSaveContext->inventory.dungeonKeys[dungeonIndex] + GetUsedSmallKeyCount(SceneID(dungeonIndex));
+    uint8_t Logic::GetSmallKeyCount(uint32_t dungeonIndex) {
+        int8_t dungeonKeys = mSaveContext->inventory.dungeonKeys[dungeonIndex];
+        if (dungeonKeys == -1) {
+            // never got keys, so can't have used keys
+            return 0;
+        }
+        return dungeonKeys + GetUsedSmallKeyCount(SceneID(dungeonIndex));
     }
 
-    void Logic::SetSmallKeyCount(uint32_t dungeonIndex, int8_t count) {
+    void Logic::SetSmallKeyCount(uint32_t dungeonIndex, uint8_t count) {
         mSaveContext->inventory.dungeonKeys[dungeonIndex] = count;
     }
 
