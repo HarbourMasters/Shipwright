@@ -441,12 +441,14 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
     }
 
     bool checkPoeCollectorAccess =
+        ctx->GetOption(RSK_LOCK_OVERWORLD_DOORS) ||
         (ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) ||
          ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL)) &&
-        (entrancePlaced == nullptr || ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS) || type == EntranceType::Interior ||
-         type == EntranceType::SpecialInterior || type == EntranceType::Overworld || type == EntranceType::Spawn ||
-         type == EntranceType::WarpSong || type == EntranceType::OwlDrop);
+        (entrancePlaced == nullptr || ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS) || 
+         type == EntranceType::Interior || type == EntranceType::SpecialInterior || type == EntranceType::Overworld || 
+         type == EntranceType::Spawn || type == EntranceType::WarpSong || type == EntranceType::OwlDrop);
     bool checkOtherEntranceAccess =
+        ctx->GetOption(RSK_LOCK_OVERWORLD_DOORS) ||
         (ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) ||
          ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL) ||
          ctx->GetOption(RSK_SHUFFLE_OVERWORLD_SPAWNS)) &&
