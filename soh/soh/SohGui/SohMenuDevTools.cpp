@@ -85,6 +85,17 @@ void SohMenu::AddMenuDevTools() {
             }
         })
         .SameLine(true);
+    AddWidget(path, "Log Level", WIDGET_CVAR_COMBOBOX)
+        .CVar("gDeveloperTools.LogLevel")
+        .Options(ComboboxOptions()
+            .Tooltip("The log level determines which messages are printed to the "
+                "console. This does not affect the log file output")
+            .ComboMap(logLevels))
+        .Callback([](WidgetInfo& info) {
+            Ship::Context::GetInstance()->GetLogger()->set_level(
+                (spdlog::level::level_enum)CVarGetInteger(CVAR_DEVELOPER_TOOLS("LogLevel"), 1));
+        })
+        .PreFunc([](WidgetInfo& info) { info.isHidden = mSohMenu->disabledMap.at(DISABLE_FOR_DEBUG_MODE_OFF).active; });
 
     // Stats
     path.sidebarName = "Stats";
