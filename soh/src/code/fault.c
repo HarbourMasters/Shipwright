@@ -822,6 +822,7 @@ void Fault_DrawMemDump(u32 pc, u32 sp, u32 unk0, u32 unk1)
 }
 
 void Fault_WalkStack(u32* spPtr, u32* pcPtr, u32* raPtr) {
+#if 0
     u32 sp = *spPtr;
     u32 pc = *pcPtr;
     u32 ra = *raPtr;
@@ -882,6 +883,7 @@ end:
     *spPtr = sp;
     *pcPtr = pc;
     *raPtr = ra;
+#endif
 }
 
 void Fault_DrawStackTrace(OSThread* thread, s32 x, s32 y, s32 height) {

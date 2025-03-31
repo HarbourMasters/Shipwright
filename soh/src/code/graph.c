@@ -362,7 +362,7 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
         }
 
         if (HREG(81) < 0) {
-            LogUtils_LogHexDump((void*)&HW_REG(SP_MEM_ADDR_REG, u32), 0x20);
+            //LogUtils_LogHexDump((void*)&HW_REG(SP_MEM_ADDR_REG, u32), 0x20);
             LogUtils_LogHexDump((void*)&DPC_START_REG, 0x20);
         }
 
