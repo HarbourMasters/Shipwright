@@ -318,7 +318,7 @@ void KaleidoScope_HandleItemCycleExtras(PlayState* play, u8 slot, bool canCycle,
 bool CanMaskSelect() {
     if (IS_RANDO) {
         return CVarGetInteger(CVAR_ENHANCEMENT("MaskSelect"), 0) 
-               && Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER);/* || Randomizer_GetSettingValue(RSK_SHUFFLE_CHILD_TRADE) */
+               && Flags_GetRandomizerInf(RAND_INF_ZELDAS_LETTER);/* || Randomizer_GetSettingValue(RSK_SHUFFLE_CHILD_TRADE) */
     }
 
     // only allow mask select when:
