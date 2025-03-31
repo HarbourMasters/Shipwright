@@ -28,8 +28,7 @@ void NotifySequenceName(int32_t playerIdx, int32_t seqId) {
         const char* sequenceName = AudioCollection::Instance->GetSequenceName(seqId);
         if (sequenceName != NULL) {
             Notification::Emit({
-                .itemIcon = GetTextureForItemId(ITEM_SONG_LULLABY),
-                .message = sequenceName,
+                .message = ICON_FA_MUSIC " " + std::string(sequenceName),
                 .mute = true,
             });
         }
