@@ -46,8 +46,8 @@ bool LocationAccess::ConditionsMet(Region* parentRegion, bool calculatingAvailab
     ) {
         conditionsMet = true;
     }
-
-    return conditionsMet && (calculatingAvailableChecks || CanBuy());
+    
+    return conditionsMet && (calculatingAvailableChecks || CanBuy()); // TODO: run CanBuy when price is known due to settings
 }
 
 bool LocationAccess::CanBuy() const {
