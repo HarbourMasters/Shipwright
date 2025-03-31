@@ -36,8 +36,8 @@ void NotifySequenceName(int32_t playerIdx, int32_t seqId) {
     }
 }
 
-void RegisterAudioHooks() {
+void RegisterAudioNotificationHooks() {
     COND_HOOK(OnSeqPlayerInit, CVAR_SEQOVERLAY_VALUE, NotifySequenceName);
 }
 
-static RegisterShipInitFunc initFunc(RegisterAudioHooks, { CVAR_SEQOVERLAY_NAME });
+static RegisterShipInitFunc notifInitFunc(RegisterAudioNotificationHooks, { CVAR_SEQOVERLAY_NAME });
