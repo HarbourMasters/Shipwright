@@ -373,8 +373,7 @@ namespace SOH {
         { MigrationAction::Rename, "gGfxPrintCharSpacing", "gDeveloperTools.GfxPrintChar.Spacing" },
         { MigrationAction::Rename, "gEnemyBGMDisable", "gAudioEditor.EnemyBGMDisable" },
         { MigrationAction::Rename, "gLostWoodsConsistentVolume", "gAudioEditor.LostWoodsConsistentVolume" },
-        { MigrationAction::Rename, "gSeqNameOverlay", "gAudioEditor.SeqNameOverlay" },
-        { MigrationAction::Rename, "gSeqNameOverlayDuration", "gAudioEditor.SeqNameOverlayDuration" },
+        { MigrationAction::Rename, "gSeqNameOverlay", "gAudioEditor.SeqNameNotification" },
         { MigrationAction::Rename, "gLinkVoiceFreqMultiplier", "gAudioEditor.LinkVoiceFreqMultiplier" },
         { MigrationAction::Rename, "gExperimentalOctaveDrop", "gAudioEditor.ExperimentalOctaveDrop" },
         { MigrationAction::Rename, "gCosmetics.Hud_AButton", "gCosmetics.HUD.AButton" },
@@ -1434,5 +1433,6 @@ namespace SOH {
         { MigrationAction::Remove, "gGameControlEditorEnabled" },
         { MigrationAction::Remove, "gPreset0" },
         { MigrationAction::Remove, "gPreset1" },
+        { MigrationAction::Remove, "gSeqNameOverlayDuration" },
     };
 }
