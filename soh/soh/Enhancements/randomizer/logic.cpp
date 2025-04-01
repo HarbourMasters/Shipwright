@@ -2122,12 +2122,13 @@ namespace Rando {
     // Get the swch bit positions for the dungeon
     const std::vector<uint8_t>& GetDungeonSmallKeyDoors(SceneID sceneId) {
         static const std::vector<uint8_t> emptyVector;
-        auto foundDungeon = SceneToDungeon.find(static_cast<SceneID>(sceneId));
-        if (foundDungeon == SceneToDungeon.end()) {
+
+        auto dungeonInfo = Rando::Context::GetInstance()->GetDungeons()->GetDungeonFromScene(sceneId);
+        if (dungeonInfo == nullptr) {
             return emptyVector;
         }
 
-        bool masterQuest = Rando::Context::GetInstance()->GetDungeon(foundDungeon->second)->IsMQ();
+        bool masterQuest = dungeonInfo->IsMQ();
 
         // Create a unique key for the dungeon and master quest 
         uint8_t key = sceneId | (masterQuest << 7);
