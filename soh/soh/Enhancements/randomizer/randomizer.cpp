@@ -2710,12 +2710,7 @@ void RandomizerSettingsWindow::DrawElement() {
             "Characters from a-z, A-Z, and 0-9 are supported.\n"
             "Character limit is 1023, after which the seed will be truncated.\n"
         );
-        if (strnlen(seedString, MAX_SEED_STRING_SIZE) == 0) {
-            ImGui::SameLine(17.0f);
-            ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 0.4f), "Leave blank for random seed");
-        }
-        UIWidgets::PopStyleInput();
-        ImGui::SameLine(0.f, 50.f);
+        ImGui::SameLine();
         if (UIWidgets::Button(ICON_FA_RANDOM, UIWidgets::ButtonOptions().Size(UIWidgets::Sizes::Inline).Color(THEME_COLOR).Padding(ImVec2(10.f, 6.f)).Tooltip(
             "Creates a new random seed value to be used when generating a randomizer"
         ))) {
@@ -2725,6 +2720,11 @@ void RandomizerSettingsWindow::DrawElement() {
         if (UIWidgets::Button(ICON_FA_ERASER, UIWidgets::ButtonOptions().Size(UIWidgets::Sizes::Inline).Color(THEME_COLOR).Padding(ImVec2(10.f, 6.f)))) {
             memset(seedString, 0, MAX_SEED_STRING_SIZE);
         }
+        if (strnlen(seedString, MAX_SEED_STRING_SIZE) == 0) {
+            ImGui::SameLine(17.0f);
+            ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 0.4f), "Leave blank for random seed");
+        }
+        UIWidgets::PopStyleInput();
     }
 
     UIWidgets::Spacer(0);
