@@ -16,7 +16,7 @@ void guLookAtF(f32 mf[4][4], f32 xEye, f32 yEye, f32 zEye, f32 xAt, f32 yAt, f32
     zLook = zAt - zEye;
     length = -1.0 / sqrtf(SQ(xLook) + SQ(yLook) + SQ(zLook));
     xLook *= length;
-    //xLook = 2.0f;
+    // xLook = 2.0f;
     yLook *= length;
     zLook *= length;
 
@@ -62,6 +62,6 @@ void guLookAt(Mtx* m, f32 xEye, f32 yEye, f32 zEye, f32 xAt, f32 yAt, f32 zAt, f
 
     guLookAtF(mf, xEye, yEye, zEye, xAt, yAt, zAt, xUp, yUp, zUp);
 
-    //guMtxF2L((MtxF*)mf, m);
+    // guMtxF2L((MtxF*)mf, m);
     Matrix_MtxFToMtx((MtxF*)mf, m);
 }

@@ -77,8 +77,7 @@ void EnHeishi1_Init(Actor* thisx, PlayState* play) {
     s32 i;
 
     Actor_SetScale(&this->actor, 0.01f);
-    SkelAnime_Init(play, &this->skelAnime, &gEnHeishiSkel, &gEnHeishiIdleAnim, this->jointTable, this->morphTable,
-                   17);
+    SkelAnime_Init(play, &this->skelAnime, &gEnHeishiSkel, &gEnHeishiIdleAnim, this->jointTable, this->morphTable, 17);
 
     this->type = (this->actor.params >> 8) & 0xFF;
     this->path = this->actor.params & 0xFF;
@@ -121,20 +120,19 @@ void EnHeishi1_Init(Actor* thisx, PlayState* play) {
     // eventChkInf[4] & 1 = Got Zelda's Letter
     // eventChkInf[5] & 0x200 = Got item from impa
     // eventChkInf[8] & 1 = Ocarina thrown in moat
-    bool metZelda = (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) && (Flags_GetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY));
+    bool metZelda = (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) &&
+                    (Flags_GetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY));
 
     if (this->type != 5) {
         if ((gSaveContext.dayTime < 0xB888 || IS_DAY) &&
-            ((!IS_RANDO && !Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) ||
-             (IS_RANDO && !metZelda))) {
+            ((!IS_RANDO && !Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) || (IS_RANDO && !metZelda))) {
             this->actionFunc = EnHeishi1_SetupWalk;
         } else {
             Actor_Kill(&this->actor);
         }
     } else {
         if ((gSaveContext.dayTime >= 0xB889) || !IS_DAY ||
-            (!IS_RANDO && Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) || 
-            (IS_RANDO && metZelda)) {
+            (!IS_RANDO && Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) || (IS_RANDO && metZelda)) {
             this->actionFunc = EnHeishi1_SetupWaitNight;
         } else {
             Actor_Kill(&this->actor);
@@ -489,8 +487,7 @@ void EnHeishi1_Update(Actor* thisx, PlayState* play) {
     }
 }
 
-s32 EnHeishi1_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                               void* thisx) {
+s32 EnHeishi1_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnHeishi1* this = (EnHeishi1*)thisx;
 
     // turn the guards head to match the direction he is looking
@@ -507,9 +504,7 @@ void EnHeishi1_Draw(Actor* thisx, PlayState* play) {
     Vec3f matrixScale = { 0.3f, 0.3f, 0.3f };
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnHeishi1_OverrideLimbDraw,
-                              NULL,
-                      this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnHeishi1_OverrideLimbDraw, NULL, this);
     func_80033C30(&this->actor.world.pos, &matrixScale, 0xFF, play);
 
     if ((this->path == BREG(1)) && (BREG(0) != 0)) {

@@ -67,12 +67,9 @@ static u8 sEnergyColors[] = {
 
 s32 DemoKekkai_CheckEventFlag(s32 params) {
     static s32 eventFlags[] = {
-        EVENTCHKINF_DISPELLED_GANONS_TOWER_BARRIER,
-        EVENTCHKINF_COMPLETED_WATER_TRIAL,
-        EVENTCHKINF_COMPLETED_LIGHT_TRIAL,
-        EVENTCHKINF_COMPLETED_FIRE_TRIAL,
-        EVENTCHKINF_COMPLETED_SHADOW_TRIAL,
-        EVENTCHKINF_COMPLETED_SPIRIT_TRIAL,
+        EVENTCHKINF_DISPELLED_GANONS_TOWER_BARRIER, EVENTCHKINF_COMPLETED_WATER_TRIAL,
+        EVENTCHKINF_COMPLETED_LIGHT_TRIAL,          EVENTCHKINF_COMPLETED_FIRE_TRIAL,
+        EVENTCHKINF_COMPLETED_SHADOW_TRIAL,         EVENTCHKINF_COMPLETED_SPIRIT_TRIAL,
         EVENTCHKINF_COMPLETED_FOREST_TRIAL,
     };
 
@@ -300,15 +297,13 @@ void DemoKekkai_DrawTrialBarrier(Actor* thisx, PlayState* play2) {
         Matrix_Translate(0.0f, 1200.0f, 0.0f, MTXMODE_APPLY);
         Matrix_Scale(this->orbScale, this->orbScale, this->orbScale, MTXMODE_APPLY);
         Matrix_Translate(0.0f, -1200.0f, 0.0f, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPSegment(POLY_XLU_DISP++, 0x09,
                    Gfx_TwoTexScroll(play->state.gfxCtx, 0, frames * 5, frames * -10, 0x20, 0x20, 1, frames * 5,
                                     frames * -10, 0x20, 0x20));
         gSPDisplayList(POLY_XLU_DISP++, gTrialBarrierOrbDL);
         Matrix_Pop();
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gDPPipeSync(POLY_XLU_DISP++);
         gDPSetPrimColor(POLY_XLU_DISP++, 0x00, 0x80, 50, 0, 100, 255);
         gSPSegment(POLY_XLU_DISP++, 0x0A,
@@ -335,12 +330,11 @@ void DemoKekkai_DrawTowerBarrier(Actor* thisx, PlayState* play) {
     scroll = (s32)this->barrierScroll & 0xFFFF;
     OPEN_DISPS(play->state.gfxCtx);
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gDPSetPrimColor(POLY_XLU_DISP++, 0x00, 0x80, 255, 170, 255, 255);
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, scroll * 2, scroll * -4, 0x20, 0x40, 1, scroll * 2,
-                                scroll * -4, 0x20, 0x40));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, scroll * 2, scroll * -4, 0x20, 0x40, 1, scroll * 2, scroll * -4,
+                                0x20, 0x40));
     gSPDisplayList(POLY_XLU_DISP++, gTowerBarrierDL);
     CLOSE_DISPS(play->state.gfxCtx);
 }

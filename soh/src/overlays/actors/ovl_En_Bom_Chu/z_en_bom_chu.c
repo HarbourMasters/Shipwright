@@ -107,8 +107,8 @@ void EnBomChu_Explode(EnBomChu* this, PlayState* play) {
     EnBom* bomb;
     s32 i;
 
-    bomb = (EnBom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x,
-                               this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, BOMB_BODY, true);
+    bomb = (EnBom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x, this->actor.world.pos.y,
+                               this->actor.world.pos.z, 0, 0, 0, BOMB_BODY, true);
     if (bomb != NULL) {
         bomb->timer = 0;
     }
@@ -177,7 +177,6 @@ void EnBomChu_UpdateFloorPoly(EnBomChu* this, CollisionPoly* floorPoly, PlayStat
             this->axisForwards.z *= 1.0f / magnitude;
 
             this->axisUp = normal;
-
 
             // mf = (axisLeft | axisUp | axisForwards)
 
@@ -456,8 +455,8 @@ void EnBomChu_Update(Actor* thisx, PlayState* play2) {
 
         waterY = this->actor.world.pos.y;
 
-        if (WaterBox_GetSurface1(play, &play->colCtx, this->actor.world.pos.x, this->actor.world.pos.z,
-                                 &waterY, &waterBox)) {
+        if (WaterBox_GetSurface1(play, &play->colCtx, this->actor.world.pos.x, this->actor.world.pos.z, &waterY,
+                                 &waterBox)) {
             this->actor.yDistToWater = waterY - this->actor.world.pos.y;
 
             if (this->actor.yDistToWater < 0.0f) {
@@ -481,7 +480,6 @@ void EnBomChu_Update(Actor* thisx, PlayState* play2) {
         }
     }
 }
-
 
 const Color_RGB8 BombchuColorOriginal = { 209, 34, -35 };
 
@@ -516,17 +514,17 @@ void EnBomChu_Draw(Actor* thisx, PlayState* play) {
     colorIntensity = blinkTime / (f32)blinkHalfPeriod;
 
     if (CVarGetInteger(CVAR_COSMETIC("Equipment.ChuBody.Changed"), 0)) {
-        Color_RGB8 color = CVarGetColor24(CVAR_COSMETIC("Equipment.ChuBody.Value"), (Color_RGB8){ 209.0f, 34.0f, -35.0f });
+        Color_RGB8 color =
+            CVarGetColor24(CVAR_COSMETIC("Equipment.ChuBody.Value"), (Color_RGB8){ 209.0f, 34.0f, -35.0f });
         gDPSetEnvColor(POLY_OPA_DISP++, (colorIntensity * color.r), (colorIntensity * color.g),
-                   (colorIntensity * color.b), 255);
+                       (colorIntensity * color.b), 255);
     } else {
         gDPSetEnvColor(POLY_OPA_DISP++, 9.0f + (colorIntensity * 209.0f), 9.0f + (colorIntensity * 34.0f),
-                   35.0f + (colorIntensity * -35.0f), 255);
+                       35.0f + (colorIntensity * -35.0f), 255);
     }
 
     Matrix_Translate(this->visualJitter * (1.0f / BOMBCHU_SCALE), 0.0f, 0.0f, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gBombchuDL);
 
     CLOSE_DISPS(play->state.gfxCtx);

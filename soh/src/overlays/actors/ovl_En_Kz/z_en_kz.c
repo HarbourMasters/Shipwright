@@ -75,9 +75,7 @@ static AnimationInfo sAnimationInfo[] = {
 u16 EnKz_GetTextNoMaskChild(PlayState* play, EnKz* this) {
     Player* player = GET_PLAYER(play);
 
-    if (GameInteractor_Should(VB_KING_ZORA_THANK_CHILD, (
-        CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE)
-    ), this)) {
+    if (GameInteractor_Should(VB_KING_ZORA_THANK_CHILD, (CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE)), this)) {
         return 0x402B;
     } else if (Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)) {
         return 0x401C;
@@ -168,12 +166,13 @@ s16 func_80A9C6C0(PlayState* play, Actor* thisx) {
         case TEXT_STATE_DONE_FADING:
             if (this->actor.textId != 0x4014) {
                 if (this->actor.textId == 0x401B && !this->sfxPlayed) {
-                    Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultReverb);
+                    Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     this->sfxPlayed = true;
                 }
             } else if (!this->sfxPlayed) {
-                Audio_PlaySoundGeneral(NA_SE_SY_TRE_BOX_APPEAR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                Audio_PlaySoundGeneral(NA_SE_SY_TRE_BOX_APPEAR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 this->sfxPlayed = true;
             }
             break;
@@ -288,8 +287,7 @@ void func_80A9CB18(EnKz* this, PlayState* play) {
 
     if (func_80A9C95C(play, this, &this->interactInfo.talkState, 340.0f, EnKz_GetText, func_80A9C6C0)) {
         if (GameInteractor_Should(VB_BE_ABLE_TO_EXCHANGE_RUTOS_LETTER, (this->actor.textId == 0x401A), this) &&
-            !Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED))
-        {
+            !Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)) {
             if (func_8002F368(play) == EXCH_ITEM_LETTER_RUTO) {
                 this->actor.textId = 0x401B;
                 this->sfxPlayed = false;
@@ -390,17 +388,14 @@ void EnKz_Init(Actor* thisx, PlayState* play) {
     this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
     Animation_ChangeByInfo(&this->skelanime, sAnimationInfo, ENKZ_ANIM_0);
 
-    if (GameInteractor_Should(VB_KING_ZORA_BE_MOVED, (
-        Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)
-    ), this)) {
+    if (GameInteractor_Should(VB_KING_ZORA_BE_MOVED, (Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)), this)) {
         EnKz_SetMovedPos(this, play);
     }
 
     if (LINK_IS_ADULT) {
         if (!Flags_GetInfTable(INFTABLE_138)) {
-            Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_BG_ICE_SHELTER,
-                               this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0,
-                               0x04FF);
+            Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_BG_ICE_SHELTER, this->actor.world.pos.x,
+                               this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0x04FF);
         }
         this->actionFunc = EnKz_Wait;
     } else {

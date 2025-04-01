@@ -75,8 +75,8 @@ void EnHeishi4_Init(Actor* thisx, PlayState* play) {
     } else {
         this->height = 60.0f;
         ActorShape_Init(&thisx->shape, 0.0f, ActorShadow_DrawCircle, 30.0f);
-        SkelAnime_Init(play, &this->skelAnime, &gEnHeishiSkel, &gEnHeishiIdleAnim, this->jointTable,
-                       this->morphTable, 17);
+        SkelAnime_Init(play, &this->skelAnime, &gEnHeishiSkel, &gEnHeishiIdleAnim, this->jointTable, this->morphTable,
+                       17);
     }
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, thisx, &sCylinderInit);
@@ -358,18 +358,20 @@ at night.
 void EnHeishi4_MarketSneak(EnHeishi4* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
         switch (play->msgCtx.choiceIndex) {
-            case 0: //yes
-                if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES) != RO_GENERIC_OFF){
-                    play->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_HYRULE_FIELD_ON_BRIDGE_SPAWN); // Market Entrance -> HF
+            case 0: // yes
+                if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES) != RO_GENERIC_OFF) {
+                    play->nextEntranceIndex =
+                        Entrance_OverrideNextIndex(ENTR_HYRULE_FIELD_ON_BRIDGE_SPAWN); // Market Entrance -> HF
                 } else {
-                    play->nextEntranceIndex = ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN; // HF Near bridge (OoT cutscene entrance) to not fall in the water
-                } 
+                    play->nextEntranceIndex = ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN; // HF Near bridge (OoT cutscene
+                                                                                   // entrance) to not fall in the water
+                }
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_WHITE, TCS_FAST);
                 gSaveContext.nextTransitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_WHITE, TCS_FAST);
                 this->actionFunc = func_80A56614;
                 break;
-            case 1: //no
+            case 1: // no
                 this->actionFunc = func_80A56614;
                 break;
         }
@@ -402,8 +404,7 @@ void EnHeishi4_Update(Actor* thisx, PlayState* play) {
     CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
 }
 
-s32 EnHeishi_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                              void* thisx) {
+s32 EnHeishi_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnHeishi4* this = (EnHeishi4*)thisx;
 
     if (limbIndex == 9) {

@@ -136,7 +136,8 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT) && Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)
+    // !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT) &&
+    // Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)
     // ```
     // #### `args`
     // - None
@@ -163,7 +164,8 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // CHECK_OWNED_EQUIP(EQUIP_TYPE_BOOTS, EQUIP_INV_BOOTS_IRON) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_SERENADE_OF_WATER)
+    // CHECK_OWNED_EQUIP(EQUIP_TYPE_BOOTS, EQUIP_INV_BOOTS_IRON) &&
+    // !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_SERENADE_OF_WATER)
     // ```
     // #### `args`
     // - None
@@ -275,7 +277,7 @@ typedef enum {
     // #### `args`
     // - `*EnDoor`
     VB_CONSUME_SMALL_KEY,
-    
+
     // #### `result`
     // ```c
     // itemDropped >= 0 && itemDropped < 0x1A
@@ -302,7 +304,8 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // gSaveContext.dayTime <= 0xC000 || gSaveContext.dayTime >= 0xE000 || LINK_IS_ADULT || play->sceneNum != SCENE_GRAVEYARD
+    // gSaveContext.dayTime <= 0xC000 || gSaveContext.dayTime >= 0xE000 || LINK_IS_ADULT || play->sceneNum !=
+    // SCENE_GRAVEYARD
     // ```
     // #### `args`
     // - `*EnTk`
@@ -371,7 +374,8 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // play->sceneNum == SCENE_LINKS_HOUSE && (!LINK_IS_ADULT || !Flags_GetEventChkInf(EVENTCHKINF_WON_COW_IN_MALONS_RACE)
+    // play->sceneNum == SCENE_LINKS_HOUSE && (!LINK_IS_ADULT ||
+    // !Flags_GetEventChkInf(EVENTCHKINF_WON_COW_IN_MALONS_RACE)
     // ```
     // #### `args`
     // - `*EnCow`
@@ -1322,7 +1326,8 @@ typedef enum {
     // Close enough & various cutscene checks
     // ```c
     // (func_80AEC5FC(this, play)) && (!Play_InCsMode(play)) &&
-    // (!(player->stateFlags1 & (PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE | PLAYER_STATE1_CLIMBING_LADDER))) &&
+    // (!(player->stateFlags1 & (PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE |
+    // PLAYER_STATE1_CLIMBING_LADDER))) &&
     // (player->actor.bgCheckFlags & 1)
     // ```
     // #### `args`
@@ -1676,7 +1681,8 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // (!CHECK_OWNED_EQUIP(EQUIP_TYPE_BOOTS, EQUIP_INV_BOOTS_IRON) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_SERENADE_OF_WATER)) && LINK_IS_ADULT
+    // (!CHECK_OWNED_EQUIP(EQUIP_TYPE_BOOTS, EQUIP_INV_BOOTS_IRON) &&
+    // !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_SERENADE_OF_WATER)) && LINK_IS_ADULT
     // ```
     // #### `args`
     // - None

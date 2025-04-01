@@ -209,7 +209,7 @@ typedef enum {
     LOGIC_OCARINA_C_UP_BUTTON,
     LOGIC_OCARINA_C_DOWN_BUTTON,
     LOGIC_OCARINA_C_LEFT_BUTTON,
-    LOGIC_OCARINA_C_RIGHT_BUTTON,  
+    LOGIC_OCARINA_C_RIGHT_BUTTON,
     LOGIC_TRIFORCE_PIECES,
     LOGIC_MAX
 } LogicVal;
@@ -2336,7 +2336,7 @@ typedef enum {
     RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_POT_1,
     RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_POT_2,
     // End Pots
-    
+
     // Overworld Crates
     RC_GV_FREESTANDING_POH_CRATE,
     RC_GV_NEAR_COW_CRATE,
@@ -3467,12 +3467,13 @@ typedef enum {
     RC_MAX
 } RandomizerCheck;
 
-// Randomizer tricks and glitches (beta) based on knowledge of what is achievable in Ship of Harkinian randomizer, excludes Item manipulation (e.g. RBA/GIM/SRM) and Wrong Warping and Ganon BK Skip
-// TODO Fill and alphabetize (area based tricks must have area in name and come alphetized after general tricks) 
+// Randomizer tricks and glitches (beta) based on knowledge of what is achievable in Ship of Harkinian randomizer,
+// excludes Item manipulation (e.g. RBA/GIM/SRM) and Wrong Warping and Ganon BK Skip
+// TODO Fill and alphabetize (area based tricks must have area in name and come alphetized after general tricks)
 // TODO test commented out tricks to see if consistent with console on SoH
 // TODO add area specific tricks
 typedef enum {
-    RT_VISIBLE_COLLISION,                          // -- general tricks
+    RT_VISIBLE_COLLISION, // -- general tricks
     RT_GROTTOS_WITHOUT_AGONY,
     RT_FEWER_TUNIC_REQUIREMENTS,
     RT_RUSTED_SWITCHES,
@@ -3482,7 +3483,7 @@ typedef enum {
     RT_HOVER_BOOST_SIMPLE,
     RT_BOMBCHU_BEEHIVES,
     RT_BLUE_FIRE_MUD_WALLS,
-    RT_KF_ADULT_GS,                            // -- location tricks
+    RT_KF_ADULT_GS, // -- location tricks
     RT_LW_BRIDGE,
     RT_LW_MIDO_BACKFLIP,
     RT_LW_GS_BEAN,
@@ -3490,7 +3491,7 @@ typedef enum {
     RT_KAK_MAN_ON_ROOF,
     RT_KAK_TOWER_GS,
     RT_KAK_ADULT_WINDMILL_POH,
-    RT_KAK_CHILD_WINDMILL_POH, 
+    RT_KAK_CHILD_WINDMILL_POH,
     RT_KAK_ROOFTOP_GS,
     RT_GY_POH,
     RT_GY_CHILD_DAMPE_RACE_POH,
@@ -3649,7 +3650,7 @@ typedef enum {
     RT_GANON_MQ_FIRE_TRIAL,
     RT_GANON_MQ_SHADOW_TRIAL,
     RT_GANON_MQ_LIGHT_TRIAL,
-    //RT_ROCS_FEATHER                       --if implemented with main branch
+    // RT_ROCS_FEATHER                       --if implemented with main branch
     RT_FOREST_TEMPLE_BK_SKIP,
     RT_FIRE_TEMPLE_BK_SKIP,
     RT_WATER_TEMPLE_BK_SKIP,
@@ -3704,11 +3705,11 @@ typedef enum {
     RT_WEIRDSHOT,
     RT_WEIRDSHOT_CHU,
     RT_WEIRDSHOT_ENEMY,
-    //RT_FW_VOID_WARP_FAST_TEXT,                      --untested tricks:
-    //RT_ACTION_SWAP,
-    //RT_ACTOR_GLITCH,
-    //RT_ADULT_TRADE_TTG,
-    RT_TOT_DOT_SKIP_SWORDLESS,           //AREA SPECIFIC GLITCHES
+    // RT_FW_VOID_WARP_FAST_TEXT,                      --untested tricks:
+    // RT_ACTION_SWAP,
+    // RT_ACTOR_GLITCH,
+    // RT_ADULT_TRADE_TTG,
+    RT_TOT_DOT_SKIP_SWORDLESS, // AREA SPECIFIC GLITCHES
     RT_TOT_DOT_SKIP_SWORD,
     RT_LLR_STEAL_EPONA,
     RT_KF_POKEY_SKIP,
@@ -3724,7 +3725,7 @@ typedef enum {
     RT_ZF_JABU_ADULT_HOVERBOOT_BOMB,
     RT_FOREST_TEMPLE_FOUR_POE_SKIP,
     RT_FOREST_TEMPLE_JUNGLE_JUMP,
-    //RT_DARUNIA_CUTSCENE,
+    // RT_DARUNIA_CUTSCENE,
     RT_BOTTOM_OF_THE_WELL_SKULL_PUSH,
     RT_GANONS_CASTLE_BARRIER_SKIP_HOVER,
     RT_GANONS_CASTLE_GOLD_GAUNTLET_SKIP,
@@ -3985,7 +3986,7 @@ typedef enum {
     RG_LONGSHOT,
     RG_SCARECROW,
 
-    //Overworld keys
+    // Overworld keys
     RG_GUARD_HOUSE_KEY,
     RG_MARKET_BAZAAR_KEY,
     RG_MARKET_POTION_SHOP_KEY,
@@ -5405,7 +5406,7 @@ typedef enum {
     RHT_CRATE_WATER_TEMPLE,
     RHT_CRATE_SPIRIT_TEMPLE,
     RHT_CRATE_SHADOW_TEMPLE,
-    RHT_CRATE_GERUDO_TRAINING_GROUND,   
+    RHT_CRATE_GERUDO_TRAINING_GROUND,
     // Ganon Line
     RHT_GANON_JOKE01,
     RHT_GANON_JOKE02,
@@ -5589,7 +5590,6 @@ typedef enum {
     RHT_MAX,
 } RandomizerHintTextKey;
 
-
 typedef struct {
     RandomizerGet rgID;
     RandomizerGet fakeRgID;
@@ -5698,16 +5698,16 @@ typedef enum {
     RSK_STARTING_KOKIRI_SWORD,
     RSK_STARTING_MASTER_SWORD,
     RSK_STARTING_ZELDAS_LULLABY,
-    RSK_STARTING_EPONAS_SONG, 
-    RSK_STARTING_SARIAS_SONG, 
+    RSK_STARTING_EPONAS_SONG,
+    RSK_STARTING_SARIAS_SONG,
     RSK_STARTING_SUNS_SONG,
     RSK_STARTING_SONG_OF_TIME,
     RSK_STARTING_SONG_OF_STORMS,
-    RSK_STARTING_MINUET_OF_FOREST, 
+    RSK_STARTING_MINUET_OF_FOREST,
     RSK_STARTING_BOLERO_OF_FIRE,
     RSK_STARTING_SERENADE_OF_WATER,
-    RSK_STARTING_REQUIEM_OF_SPIRIT, 
-    RSK_STARTING_NOCTURNE_OF_SHADOW, 
+    RSK_STARTING_REQUIEM_OF_SPIRIT,
+    RSK_STARTING_NOCTURNE_OF_SHADOW,
     RSK_STARTING_PRELUDE_OF_LIGHT,
     RSK_SHUFFLE_KOKIRI_SWORD,
     RSK_SHUFFLE_MASTER_SWORD,
@@ -5882,8 +5882,8 @@ typedef enum {
     RSK_MAX
 } RandomizerSettingKey;
 
-//Generic Settings (any binary option can use this)
-// off/on
+// Generic Settings (any binary option can use this)
+//  off/on
 typedef enum {
     RO_GENERIC_OFF,
     RO_GENERIC_ON,
@@ -5901,54 +5901,54 @@ typedef enum {
     RO_GENERIC_SKIP,
 } RandoOptionGenericSkip;
 
-//Closed Forest settings (On, Deku Only, Off)
+// Closed Forest settings (On, Deku Only, Off)
 typedef enum {
     RO_CLOSED_FOREST_ON,
     RO_CLOSED_FOREST_DEKU_ONLY,
     RO_CLOSED_FOREST_OFF,
 } RandoOptionForest;
 
-//Door of Time settings (closed, song only, open)
+// Door of Time settings (closed, song only, open)
 typedef enum {
     RO_DOOROFTIME_CLOSED,
     RO_DOOROFTIME_SONGONLY,
     RO_DOOROFTIME_OPEN,
 } RandoOptionDoorOfTime;
 
-//Zora's Fountain settings (closed, closed as child, open)
+// Zora's Fountain settings (closed, closed as child, open)
 typedef enum {
     RO_ZF_CLOSED,
     RO_ZF_CLOSED_CHILD,
     RO_ZF_OPEN,
 } RandoOptionZorasFountain;
 
-//Sleeping Waterfall settings (closed, open)
+// Sleeping Waterfall settings (closed, open)
 typedef enum {
     RO_WATERFALL_CLOSED,
     RO_WATERFALL_OPEN,
 } RandoOptionSleepingWaterfall;
 
-//Starting Age settings (child, adult, random)
+// Starting Age settings (child, adult, random)
 typedef enum {
     RO_AGE_CHILD,
     RO_AGE_ADULT,
     RO_AGE_RANDOM,
 } RandoOptionStartingAge;
 
-//Fortress Carpenters settings (normal, fast, free)
+// Fortress Carpenters settings (normal, fast, free)
 typedef enum {
     RO_GF_CARPENTERS_NORMAL,
     RO_GF_CARPENTERS_FAST,
     RO_GF_CARPENTERS_FREE,
 } RandoOptionGerudoFortress;
 
-//Kakariko Gate settings (closed/open)
+// Kakariko Gate settings (closed/open)
 typedef enum {
     RO_KAK_GATE_CLOSED,
     RO_KAK_GATE_OPEN,
 } RandoOptionKakarikoGate;
 
-//Rainbow Bridge settings (vanilla, always open, stones, medallions, dungeon rewards, dungeons, tokens)
+// Rainbow Bridge settings (vanilla, always open, stones, medallions, dungeon rewards, dungeons, tokens)
 typedef enum {
     RO_BRIDGE_VANILLA = 0,
     RO_BRIDGE_ALWAYS_OPEN,
@@ -5967,14 +5967,14 @@ typedef enum {
     RO_BRIDGE_WILDCARD_REWARD,
 } RandoOptionBridgeRewards;
 
-//Shopsanity settings (off, specific count, random)
+// Shopsanity settings (off, specific count, random)
 typedef enum {
     RO_SHOPSANITY_OFF,
     RO_SHOPSANITY_SPECIFIC_COUNT,
     RO_SHOPSANITY_RANDOM,
 } RandoOptionShopsanity;
 
-//Shopsanity count settings (0-7 items)
+// Shopsanity count settings (0-7 items)
 typedef enum {
     RO_SHOPSANITY_COUNT_ZERO_ITEMS,
     RO_SHOPSANITY_COUNT_ONE_ITEM,
@@ -5987,27 +5987,27 @@ typedef enum {
     RO_SHOPSANITY_COUNT_EIGHT_ITEMS,
 } RandoOptionShopsanityCount;
 
-//Shopsanity price ranges
+// Shopsanity price ranges
 typedef enum {
     RO_PRICE_VANILLA,
-    RO_PRICE_CHEAP_BALANCED, //Balanced random from 0-95, favoring lower numbers
-    RO_PRICE_BALANCED, //Random from 0-300, favoring lower numbers
+    RO_PRICE_CHEAP_BALANCED, // Balanced random from 0-95, favoring lower numbers
+    RO_PRICE_BALANCED,       // Random from 0-300, favoring lower numbers
     RO_PRICE_FIXED,
     RO_PRICE_RANGE,
     RO_PRICE_SET_BY_WALLET,
 } RandoOptionPrices;
 
-//Scrubsanity settings (off, affordable, expensive, random)
+// Scrubsanity settings (off, affordable, expensive, random)
 typedef enum {
     RO_SCRUBS_OFF,
     RO_SCRUBS_ONE_TIME_ONLY,
     RO_SCRUBS_ALL,
 } RandoOptionScrubsanity;
 
-//Ammo drop settings (on, "on+bombchu", off)
+// Ammo drop settings (on, "on+bombchu", off)
 typedef enum {
     RO_AMMO_DROPS_OFF,
-    //RO_AMMO_DROPS_ON_PLUS_BOMBCHU,
+    // RO_AMMO_DROPS_ON_PLUS_BOMBCHU,
     RO_AMMO_DROPS_ON,
 } RandoOptionAmmoDrops;
 
@@ -6017,7 +6017,7 @@ typedef enum {
     RO_BOSS_SOULS_ON_PLUS_GANON,
 } RandoOptionBossSouls;
 
-//Fishsanity settings (off, loach only, pond only, grottos only, both)
+// Fishsanity settings (off, loach only, pond only, grottos only, both)
 typedef enum {
     RO_FISHSANITY_OFF,
     RO_FISHSANITY_HYRULE_LOACH,
@@ -6026,15 +6026,15 @@ typedef enum {
     RO_FISHSANITY_BOTH
 } RandoOptionsFishsanity;
 
-//Infinite Upgrades settings (off, progressive, condensed progressive)
+// Infinite Upgrades settings (off, progressive, condensed progressive)
 typedef enum {
     RO_INF_UPGRADES_OFF,
     RO_INF_UPGRADES_PROGRESSIVE,
     RO_INF_UPGRADES_CONDENSED_PROGRESSIVE,
 } RandoOptionInfiniteUpgrades;
 
-//Any Dungeon Item (start with, vanilla, own dungeon, any dungeon,
-//overworld, anywhere)
+// Any Dungeon Item (start with, vanilla, own dungeon, any dungeon,
+// overworld, anywhere)
 typedef enum {
     RO_DUNGEON_ITEM_LOC_STARTWITH,
     RO_DUNGEON_ITEM_LOC_VANILLA,
@@ -6044,7 +6044,7 @@ typedef enum {
     RO_DUNGEON_ITEM_LOC_ANYWHERE,
 } RandoOptionDungeonItemLocation;
 
-//Dungeon reward settings
+// Dungeon reward settings
 typedef enum {
     RO_DUNGEON_REWARDS_VANILLA,
     RO_DUNGEON_REWARDS_END_OF_DUNGEON,
@@ -6053,7 +6053,7 @@ typedef enum {
     RO_DUNGEON_REWARDS_ANYWHERE,
 } RandoOptionDungeonRewards;
 
-//Keyring Settings
+// Keyring Settings
 typedef enum {
     RO_KEYRINGS_OFF,
     RO_KEYRINGS_RANDOM,
@@ -6067,8 +6067,8 @@ typedef enum {
     RO_KEYRING_FOR_DUNGEON_ON,
 } RandoOptionKeyringForDungeon;
 
-//Ganon's Boss Key Settings (vanilla, own dungeon, start with,
-//overworld, anywhere, 100 GS reward)
+// Ganon's Boss Key Settings (vanilla, own dungeon, start with,
+// overworld, anywhere, 100 GS reward)
 typedef enum {
     RO_GANON_BOSS_KEY_VANILLA,
     RO_GANON_BOSS_KEY_OWN_DUNGEON,
@@ -6101,42 +6101,42 @@ typedef enum {
     RO_LACS_WILDCARD_REWARD,
 } RandoOptionLACSRewards;
 
-//Ganon's Trials
+// Ganon's Trials
 typedef enum {
     RO_GANONS_TRIALS_SKIP,
     RO_GANONS_TRIALS_SET_NUMBER,
     RO_GANONS_TRIALS_RANDOM_NUMBER,
 } RandoOptionGanonsTrials;
 
-//Shuffle Dungeon Entrance Settings (Off, on, plus ganon)
+// Shuffle Dungeon Entrance Settings (Off, on, plus ganon)
 typedef enum {
     RO_DUNGEON_ENTRANCE_SHUFFLE_OFF,
     RO_DUNGEON_ENTRANCE_SHUFFLE_ON,
     RO_DUNGEON_ENTRANCE_SHUFFLE_ON_PLUS_GANON,
 } RandoOptionDungeonEntranceShuffle;
 
-//Shuffle Boss Room Entrance Settings (Off, Age Restricted, Full)
+// Shuffle Boss Room Entrance Settings (Off, Age Restricted, Full)
 typedef enum {
     RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF,
     RO_BOSS_ROOM_ENTRANCE_SHUFFLE_AGE_RESTRICTED,
     RO_BOSS_ROOM_ENTRANCE_SHUFFLE_FULL,
 } RandoOptionBossRoomEntranceShuffle;
 
-//Shuffle Interior Entrance Settings (Off, simple, all)
+// Shuffle Interior Entrance Settings (Off, simple, all)
 typedef enum {
     RO_INTERIOR_ENTRANCE_SHUFFLE_OFF,
     RO_INTERIOR_ENTRANCE_SHUFFLE_SIMPLE,
     RO_INTERIOR_ENTRANCE_SHUFFLE_ALL,
 } RandoOptionInteriorEntranceShuffle;
 
-//Song shuffle Settings (Song locations, Dungeon rewards, anywhere)
+// Song shuffle Settings (Song locations, Dungeon rewards, anywhere)
 typedef enum {
     RO_SONG_SHUFFLE_SONG_LOCATIONS,
     RO_SONG_SHUFFLE_DUNGEON_REWARDS,
     RO_SONG_SHUFFLE_ANYWHERE,
 } RandoOptionSongShuffle;
 
-//Shuffle Merchants Settings (Off, Beans Only, All but Beans, All)
+// Shuffle Merchants Settings (Off, Beans Only, All but Beans, All)
 typedef enum {
     RO_SHUFFLE_MERCHANTS_OFF,
     RO_SHUFFLE_MERCHANTS_BEANS_ONLY,
@@ -6144,14 +6144,14 @@ typedef enum {
     RO_SHUFFLE_MERCHANTS_ALL
 } RandoOptionShuffleMerchants;
 
-//Starting Ocarina Settings (off, fairy)
+// Starting Ocarina Settings (off, fairy)
 typedef enum {
     RO_STARTING_OCARINA_OFF,
     RO_STARTING_OCARINA_FAIRY,
     RO_STARTING_OCARINA_TIME,
 } RandoOptionStartingOcarina;
 
-//Item Pool Settings
+// Item Pool Settings
 typedef enum {
     RO_ITEM_POOL_PLENTIFUL,
     RO_ITEM_POOL_BALANCED,
@@ -6159,7 +6159,7 @@ typedef enum {
     RO_ITEM_POOL_MINIMAL,
 } RandoOptionItemPool;
 
-//Ice Trap Settings
+// Ice Trap Settings
 typedef enum {
     RO_ICE_TRAPS_OFF,
     RO_ICE_TRAPS_NORMAL,
@@ -6168,8 +6168,8 @@ typedef enum {
     RO_ICE_TRAPS_ONSLAUGHT,
 } RandoOptionIceTraps;
 
-//Gossip Stone Hint Settings (no hints, needs nothing,
-//needs mask of truth, needs stone of agony)
+// Gossip Stone Hint Settings (no hints, needs nothing,
+// needs mask of truth, needs stone of agony)
 typedef enum {
     RO_GOSSIP_STONES_NONE,
     RO_GOSSIP_STONES_NEED_NOTHING,
@@ -6177,14 +6177,14 @@ typedef enum {
     RO_GOSSIP_STONES_NEED_STONE,
 } RandoOptionGossipStones;
 
-//Hint Clarity Settings (obscure, ambiguous, clear)
+// Hint Clarity Settings (obscure, ambiguous, clear)
 typedef enum {
     RO_HINT_CLARITY_OBSCURE,
     RO_HINT_CLARITY_AMBIGUOUS,
     RO_HINT_CLARITY_CLEAR,
 } RandoOptionHintClarity;
 
-//Hint Distribution Settings (useless, balanced, strong, very strong)
+// Hint Distribution Settings (useless, balanced, strong, very strong)
 typedef enum {
     RO_HINT_DIST_USELESS,
     RO_HINT_DIST_BALANCED,
@@ -6192,8 +6192,8 @@ typedef enum {
     RO_HINT_DIST_VERY_STRONG,
 } RandoOptionHintDistribution;
 
-//Gerudo Fortress Key Settings (vanilla, any dungeon, overworld,
-//anywhere)
+// Gerudo Fortress Key Settings (vanilla, any dungeon, overworld,
+// anywhere)
 typedef enum {
     RO_GERUDO_KEYS_VANILLA,
     RO_GERUDO_KEYS_ANY_DUNGEON,
@@ -6201,7 +6201,7 @@ typedef enum {
     RO_GERUDO_KEYS_ANYWHERE,
 } RandoOptionGerudoKeys;
 
-//Tokensanity settings (off, dungeons, overworld, all)
+// Tokensanity settings (off, dungeons, overworld, all)
 typedef enum {
     RO_TOKENSANITY_OFF,
     RO_TOKENSANITY_DUNGEONS,
@@ -6209,7 +6209,7 @@ typedef enum {
     RO_TOKENSANITY_ALL,
 } RandoOptionTokensanity;
 
-//Freestanding Hearts/Rupees settings (off, dungeons, overworld, all)
+// Freestanding Hearts/Rupees settings (off, dungeons, overworld, all)
 typedef enum {
     RO_SHUFFLE_FREESTANDING_OFF,
     RO_SHUFFLE_FREESTANDING_DUNGEONS,
@@ -6241,7 +6241,7 @@ typedef enum {
     RO_SHUFFLE_CRATES_ALL,
 } RandoOptionShuffleCrates;
 
-//Link's Pocket Settings (dungeon reward, advancement, anything, nothing)
+// Link's Pocket Settings (dungeon reward, advancement, anything, nothing)
 typedef enum {
     RO_LINKS_POCKET_DUNGEON_REWARD,
     RO_LINKS_POCKET_ADVANCEMENT,
@@ -6441,13 +6441,13 @@ typedef enum {
     RE_OCTOROK,
 } RandomizerEnemy;
 
-//RANDOTODO compare child long jumpslash range with adult short
+// RANDOTODO compare child long jumpslash range with adult short
 typedef enum {
     ED_CLOSE,
-    //hammer or kokiri sword
+    // hammer or kokiri sword
     ED_SHORT_JUMPSLASH,
     ED_MASTER_SWORD_JUMPSLASH,
-    //sticks or BGS
+    // sticks or BGS
     ED_LONG_JUMPSLASH,
     ED_BOMB_THROW,
     ED_BOOMERANG,

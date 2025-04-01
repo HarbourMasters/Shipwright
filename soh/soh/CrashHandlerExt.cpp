@@ -22,7 +22,7 @@ static std::array<const char*, ACTORCAT_MAX> sCatToStrArray{
 #define DEFINE_SCENE(_1, _2, enumName, _4, _5, _6) #enumName
 
 static std::array<const char*, SCENE_ID_MAX> sSceneIdToStrArray{
-    #include "tables/scene_table.h"
+#include "tables/scene_table.h"
 };
 
 #undef DEFINE_SCENE
@@ -46,7 +46,7 @@ static void CrashHandler_WriteActorData(char* buffer, size_t* pos) {
         ActorListEntry* entry = &gPlayState->actorCtx.actorLists[i];
         Actor* cur;
 
-        if(entry->length == 0) {
+        if (entry->length == 0) {
             continue;
         }
         WRITE_VAR_LINE(buffer, pos, "Actor Cat: ", sCatToStrArray[i]);
@@ -76,7 +76,7 @@ extern "C" void CrashHandler_PrintSohData(char* buffer, size_t* pos) {
     if (gPlayState != nullptr) {
         append_line(buffer, pos, "Actors:");
         CrashHandler_WriteActorData(buffer, pos);
-        
+
         WRITE_VAR_LINE(buffer, pos, "Scene: ", sSceneIdToStrArray[gPlayState->sceneNum]);
 
         snprintf(intCharBuffer, sizeof(intCharBuffer), "%i", gPlayState->roomCtx.curRoom.num);

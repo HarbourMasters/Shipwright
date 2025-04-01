@@ -24,54 +24,56 @@ void SohMenu::AddMenuRandomizer() {
     AddWidget(path, "Randomizer Enhancements", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Rando-Relevant Navi Hints", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("RandoRelevantNavi"))
-        .Options(CheckboxOptions().Tooltip(
-            "Replace Navi's overworld quest hints with rando-related gameplay hints."
-        ).DefaultValue(true));
+        .Options(CheckboxOptions()
+                     .Tooltip("Replace Navi's overworld quest hints with rando-related gameplay hints.")
+                     .DefaultValue(true));
     AddWidget(path, "Random Rupee Names", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("RandomizeRupeeNames"))
-        .Options(CheckboxOptions().Tooltip(
-            "When obtaining Rupees, randomize what the Rupee is called in the textbox."
-        ).DefaultValue(true));
+        .Options(CheckboxOptions()
+                     .Tooltip("When obtaining Rupees, randomize what the Rupee is called in the textbox.")
+                     .DefaultValue(true));
     AddWidget(path, "Use Custom Key Models", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"))
-        .Options(CheckboxOptions().Tooltip(
-            "Use Custom graphics for Dungeon Keys, Big and Small, so that they can be easily told apart."
-        ).DefaultValue(true));
+        .Options(
+            CheckboxOptions()
+                .Tooltip("Use Custom graphics for Dungeon Keys, Big and Small, so that they can be easily told apart.")
+                .DefaultValue(true));
     AddWidget(path, "Map & Compass Colors Match Dungeon", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("ColoredMapsAndCompasses"))
         .PreFunc([](WidgetInfo& info) {
-            info.options->disabled = !(
-                OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_MAPANDCOMPASS).IsNot(RO_DUNGEON_ITEM_LOC_STARTWITH) &&
-                OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_MAPANDCOMPASS).IsNot(RO_DUNGEON_ITEM_LOC_VANILLA) &&
-                OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_MAPANDCOMPASS).IsNot(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON)
-            );
-            info.options->disabledTooltip = "This setting is disabled because a savefile is loaded without the map & compass.\n"
-            "Shuffle settings set to \"Any Dungeon\", \"Overworld\" or \"Anywhere\".";
+            info.options->disabled = !(OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_MAPANDCOMPASS)
+                                           .IsNot(RO_DUNGEON_ITEM_LOC_STARTWITH) &&
+                                       OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_MAPANDCOMPASS)
+                                           .IsNot(RO_DUNGEON_ITEM_LOC_VANILLA) &&
+                                       OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_MAPANDCOMPASS)
+                                           .IsNot(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON));
+            info.options->disabledTooltip =
+                "This setting is disabled because a savefile is loaded without the map & compass.\n"
+                "Shuffle settings set to \"Any Dungeon\", \"Overworld\" or \"Anywhere\".";
         })
-        .Options(CheckboxOptions().Tooltip(
-            "Matches the color of maps & compasses to the dungeon they belong to. "
-            "This helps identify maps & compasses from afar and adds a little bit of flair.\n\nThis only "
-            "applies to seeds with maps & compasses shuffled to \"Any Dungeon\", \"Overworld\", or \"Anywhere\"."
-        ).DefaultValue(true));
+        .Options(
+            CheckboxOptions()
+                .Tooltip("Matches the color of maps & compasses to the dungeon they belong to. "
+                         "This helps identify maps & compasses from afar and adds a little bit of flair.\n\nThis only "
+                         "applies to seeds with maps & compasses shuffled to \"Any Dungeon\", \"Overworld\", or "
+                         "\"Anywhere\".")
+                .DefaultValue(true));
     AddWidget(path, "Quest Item Fanfares", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("QuestItemFanfares"))
         .Options(CheckboxOptions().Tooltip(
             "Play unique fanfares when obtaining quest items (medallions/stones/songs). Note that these "
-            "fanfares can be longer than usual."
-        ));
+            "fanfares can be longer than usual."));
     AddWidget(path, "Mysterious Shuffled Items", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"))
         .Options(CheckboxOptions().Tooltip(
             "Displays a \"Mystery Item\" model in place of any freestanding/GS/shop items that were shuffled, "
             "and replaces item names for them and scrubs and merchants, regardless of hint settings, "
-            "so you never know what you're getting."
-        ));
+            "so you never know what you're getting."));
     AddWidget(path, "Simpler Boss Soul Models", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("SimplerBossSoulModels"))
         .Options(CheckboxOptions().Tooltip(
             "When shuffling boss souls, they'll appear as a simpler model instead of showing the boss' models."
-            "This might make boss souls more distinguishable from a distance, and can help with performance."
-        ));
+            "This might make boss souls more distinguishable from a distance, and can help with performance."));
     AddWidget(path, "Skip Get Item Animations", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"))
         .Options(ComboboxOptions().ComboMap(skipGetItemAnimationOptions).DefaultIndex(SGIA_JUNK));
@@ -80,16 +82,11 @@ void SohMenu::AddMenuRandomizer() {
         .PreFunc([](WidgetInfo& info) {
             info.options->disabled =
                 !CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_JUNK);
-            info.options->disabledTooltip = "This slider only applies when using the \"Skip Get Item Animations\" option.";
-            })
-        .Options(FloatSliderOptions()
-            .Min(5.0f)
-            .Max(15.0f)
-            .Format("%.2f")
-            .DefaultValue(10.0f)
-            .Tooltip(
-                "The size of the item when it is picked up."
-            ));
+            info.options->disabledTooltip =
+                "This slider only applies when using the \"Skip Get Item Animations\" option.";
+        })
+        .Options(FloatSliderOptions().Min(5.0f).Max(15.0f).Format("%.2f").DefaultValue(10.0f).Tooltip(
+            "The size of the item when it is picked up."));
 
     // Plandomizer
     path.sidebarName = "Plandomizer";

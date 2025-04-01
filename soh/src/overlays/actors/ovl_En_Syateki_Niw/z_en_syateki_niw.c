@@ -459,8 +459,8 @@ void func_80B12460(EnSyatekiNiw* this, PlayState* play) {
             }
 
             if ((this->unk_25A == 0) && ((player->actor.world.pos.z - 30.0f) < this->actor.world.pos.z)) {
-                Audio_PlaySoundGeneral(NA_SE_VO_LI_DOWN, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                       &gSfxDefaultReverb);
+                Audio_PlaySoundGeneral(NA_SE_VO_LI_DOWN, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 this->unk_25E = 0x14;
                 this->unk_29A = 6;
                 this->actor.speedXZ = 0.0f;
@@ -670,8 +670,7 @@ void EnSyatekiNiw_Update(Actor* thisx, PlayState* play) {
     }
 }
 
-s32 SyatekiNiw_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                                void* thisx) {
+s32 SyatekiNiw_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnSyatekiNiw* this = (EnSyatekiNiw*)thisx;
     Vec3f sp0 = { 0.0f, 0.0f, 0.0f };
 
@@ -784,8 +783,7 @@ void func_80B13464(EnSyatekiNiw* this, PlayState* play) {
             Matrix_RotateZ(ptr->unk_30, MTXMODE_APPLY);
             Matrix_Translate(0.0f, -1000.0f, 0.0f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gCuccoEffectFeatherModelDL);
             FrameInterpolation_RecordCloseChild();
         }

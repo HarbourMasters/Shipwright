@@ -141,7 +141,7 @@ void EnWallmas_Init(Actor* thisx, PlayState* play) {
             Actor_Kill(thisx);
             return;
         }
-        
+
         EnWallmas_ProximityOrSwitchInit(this);
     } else if (thisx->params == WMT_PROXIMITY) {
         EnWallmas_ProximityOrSwitchInit(this);
@@ -255,8 +255,8 @@ void EnWallmas_SetupDie(EnWallmas* this, PlayState* play) {
     this->actor.speedXZ = 0.0f;
     this->actor.velocity.y = 0.0f;
 
-    EffectSsDeadDb_Spawn(play, &this->actor.world.pos, &zeroVec, &zeroVec, 250, -10, 255, 255, 255, 255, 0, 0, 255,
-                         1, 9, true);
+    EffectSsDeadDb_Spawn(play, &this->actor.world.pos, &zeroVec, &zeroVec, 250, -10, 255, 255, 255, 255, 0, 0, 255, 1,
+                         9, true);
 
     Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0xC0);
     this->actionFunc = EnWallmas_Die;
@@ -314,15 +314,17 @@ void EnWallmas_WaitToDrop(EnWallmas* this, PlayState* play) {
     }
 
     if (this->actor.params == WMT_SHADOWTAG) {
-        if ((player->stateFlags1 & PLAYER_STATE1_FIRST_PERSON) || (player->stateFlags1 & PLAYER_STATE1_IN_WATER) || !(player->actor.bgCheckFlags & 1)) {
+        if ((player->stateFlags1 & PLAYER_STATE1_FIRST_PERSON) || (player->stateFlags1 & PLAYER_STATE1_IN_WATER) ||
+            !(player->actor.bgCheckFlags & 1)) {
             Audio_StopSfxById(NA_SE_EN_FALL_AIM);
             this->timer = 0x82;
         }
-    } else if ((player->stateFlags1 & PLAYER_STATE1_FIRST_PERSON) || (player->stateFlags1 & PLAYER_STATE1_IN_WATER) || !(player->actor.bgCheckFlags & 1) ||
-        ((this->actor.params == 1) && (320.0f < Math_Vec3f_DistXZ(&this->actor.home.pos, playerPos)))) {
+    } else if ((player->stateFlags1 & PLAYER_STATE1_FIRST_PERSON) || (player->stateFlags1 & PLAYER_STATE1_IN_WATER) ||
+               !(player->actor.bgCheckFlags & 1) ||
+               ((this->actor.params == 1) && (320.0f < Math_Vec3f_DistXZ(&this->actor.home.pos, playerPos)))) {
         Audio_StopSfxById(NA_SE_EN_FALL_AIM);
         this->timer = 0x82;
-        }
+    }
 
     if (this->timer == 0x50) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_FALL_AIM);
@@ -340,9 +342,9 @@ void EnWallmas_WaitToDrop(EnWallmas* this, PlayState* play) {
 void EnWallmas_Drop(EnWallmas* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    if (!Player_InCsMode(play) && !(player->stateFlags2 & PLAYER_STATE2_MOVING_DYNAPOLY) && (player->invincibilityTimer >= 0) &&
-        (this->actor.xzDistToPlayer < 30.0f) && (this->actor.yDistToPlayer < -5.0f) &&
-        (-(f32)(player->cylinder.dim.height + 10) < this->actor.yDistToPlayer)) {
+    if (!Player_InCsMode(play) && !(player->stateFlags2 & PLAYER_STATE2_MOVING_DYNAPOLY) &&
+        (player->invincibilityTimer >= 0) && (this->actor.xzDistToPlayer < 30.0f) &&
+        (this->actor.yDistToPlayer < -5.0f) && (-(f32)(player->cylinder.dim.height + 10) < this->actor.yDistToPlayer)) {
         EnWallmas_SetupTakePlayer(this, play);
     }
 }
@@ -408,7 +410,7 @@ void EnWallmas_ReturnToCeiling(EnWallmas* this, PlayState* play) {
     if (this->actor.params == WMT_SHADOWTAG) {
         if (!CVarGetInteger(CVAR_ENHANCEMENT("ShadowTag"), 0)) {
             Actor_Kill(&this->actor);
-        } 
+        }
     }
 }
 
@@ -639,8 +641,7 @@ void EnWallmas_DrawXlu(EnWallmas* this, PlayState* play) {
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-s32 EnWallMas_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                               void* thisx) {
+s32 EnWallMas_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnWallmas* this = (EnWallmas*)thisx;
 
     if (limbIndex == 1) {

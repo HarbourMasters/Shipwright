@@ -77,27 +77,35 @@ std::vector<ValueTableElement> valueTable = {
 extern "C" void ValueViewer_Draw(GfxPrint* printer) {
     for (int i = 0; i < valueTable.size(); i++) {
         ValueTableElement& element = valueTable[i];
-        if (!element.isActive || !element.isPrinted || (gPlayState == NULL && element.requiresPlayState)) continue;
-        GfxPrint_SetColor(printer, element.color.x * 255, element.color.y * 255, element.color.z * 255, element.color.w * 255);
+        if (!element.isActive || !element.isPrinted || (gPlayState == NULL && element.requiresPlayState))
+            continue;
+        GfxPrint_SetColor(printer, element.color.x * 255, element.color.y * 255, element.color.z * 255,
+                          element.color.w * 255);
         GfxPrint_SetPos(printer, element.x, element.y);
         switch (element.type) {
             case TYPE_S8:
-                GfxPrint_Printf(printer, (element.typeFormat ? "%s0x%x" : "%s%d"), element.prefix.c_str(), *(s8*)element.valueFn());
+                GfxPrint_Printf(printer, (element.typeFormat ? "%s0x%x" : "%s%d"), element.prefix.c_str(),
+                                *(s8*)element.valueFn());
                 break;
             case TYPE_U8:
-                GfxPrint_Printf(printer, (element.typeFormat ? "%s0x%x" : "%s%u"), element.prefix.c_str(), *(u8*)element.valueFn());
+                GfxPrint_Printf(printer, (element.typeFormat ? "%s0x%x" : "%s%u"), element.prefix.c_str(),
+                                *(u8*)element.valueFn());
                 break;
             case TYPE_S16:
-                GfxPrint_Printf(printer, (element.typeFormat ? "%s0x%x" : "%s%d"), element.prefix.c_str(), *(s16*)element.valueFn());
+                GfxPrint_Printf(printer, (element.typeFormat ? "%s0x%x" : "%s%d"), element.prefix.c_str(),
+                                *(s16*)element.valueFn());
                 break;
             case TYPE_U16:
-                GfxPrint_Printf(printer, (element.typeFormat ? "%s0x%x" : "%s%u"), element.prefix.c_str(), *(u16*)element.valueFn());
+                GfxPrint_Printf(printer, (element.typeFormat ? "%s0x%x" : "%s%u"), element.prefix.c_str(),
+                                *(u16*)element.valueFn());
                 break;
             case TYPE_S32:
-                GfxPrint_Printf(printer, (element.typeFormat ? "%s0x%x" : "%s%d"), element.prefix.c_str(), *(s32*)element.valueFn());
+                GfxPrint_Printf(printer, (element.typeFormat ? "%s0x%x" : "%s%d"), element.prefix.c_str(),
+                                *(s32*)element.valueFn());
                 break;
             case TYPE_U32:
-                GfxPrint_Printf(printer, (element.typeFormat ? "%s0x%x" : "%s%u"), element.prefix.c_str(), *(u32*)element.valueFn());
+                GfxPrint_Printf(printer, (element.typeFormat ? "%s0x%x" : "%s%u"), element.prefix.c_str(),
+                                *(u32*)element.valueFn());
                 break;
             case TYPE_CHAR:
                 GfxPrint_Printf(printer, "%s%c", element.prefix.c_str(), *(char*)element.valueFn());
@@ -106,7 +114,8 @@ extern "C" void ValueViewer_Draw(GfxPrint* printer) {
                 GfxPrint_Printf(printer, "%s%s", element.prefix.c_str(), (char*)element.valueFn());
                 break;
             case TYPE_FLOAT:
-                GfxPrint_Printf(printer, (element.typeFormat ? "%s%4.1f" : "%s%f"), element.prefix.c_str(), *(float*)element.valueFn());
+                GfxPrint_Printf(printer, (element.typeFormat ? "%s%4.1f" : "%s%f"), element.prefix.c_str(),
+                                *(float*)element.valueFn());
                 break;
         }
     }
@@ -149,17 +158,16 @@ void ValueViewerWindow::DrawElement() {
 
     ImGui::BeginGroup();
     static int selectedElement = -1;
-    std::string selectedElementText = (selectedElement == -1) ? "Select a value" : (
-        std::string(valueTable[selectedElement].name) + " (" + std::string(valueTable[selectedElement].path) + ")"
-    );
+    std::string selectedElementText = (selectedElement == -1) ? "Select a value"
+                                                              : (std::string(valueTable[selectedElement].name) + " (" +
+                                                                 std::string(valueTable[selectedElement].path) + ")");
     UIWidgets::PushStyleCombobox(THEME_COLOR);
     if (ImGui::BeginCombo("##valueViewerElement", selectedElementText.c_str())) {
         for (int i = 0; i < valueTable.size(); i++) {
-            if (valueTable[i].isActive) continue;
+            if (valueTable[i].isActive)
+                continue;
             bool isSelected = (selectedElement == i);
-            std::string elementText = (
-                std::string(valueTable[i].name) + " (" + std::string(valueTable[i].path) + ")"
-            );
+            std::string elementText = (std::string(valueTable[i].name) + " (" + std::string(valueTable[i].path) + ")");
             if (ImGui::Selectable(elementText.c_str(), isSelected)) {
                 selectedElement = i;
             }
@@ -181,7 +189,8 @@ void ValueViewerWindow::DrawElement() {
 
     for (int i = 0; i < valueTable.size(); i++) {
         ValueTableElement& element = valueTable[i];
-        if (!element.isActive || (gPlayState == NULL && element.requiresPlayState)) continue;
+        if (!element.isActive || (gPlayState == NULL && element.requiresPlayState))
+            continue;
         UIWidgets::PushStyleButton(THEME_COLOR);
         UIWidgets::PushStyleCheckbox(THEME_COLOR);
         ImGui::AlignTextToFramePadding();
@@ -249,7 +258,8 @@ void ValueViewerWindow::DrawElement() {
                 }
                 UIWidgets::PopStyleInput();
                 ImGui::SameLine();
-                ImGui::ColorEdit3(("##color" + std::string(element.name)).c_str(), (float*)&element.color, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel);
+                ImGui::ColorEdit3(("##color" + std::string(element.name)).c_str(), (float*)&element.color,
+                                  ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel);
                 ImGui::SameLine();
                 UIWidgets::PushStyleCheckbox(THEME_COLOR);
                 if (ImGui::Button(("Position##" + std::string(element.name)).c_str())) {

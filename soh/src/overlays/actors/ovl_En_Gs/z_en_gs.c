@@ -152,17 +152,17 @@ void func_80A4E470(EnGs* this, PlayState* play) {
             }
         } else if (GameInteractor_Should(VB_SPAWN_GOSSIP_STONE_FAIRY, this->unk_19D & 1, this)) {
             if (play->msgCtx.ocarinaMode == OCARINA_MODE_04) {
-                if ((play->msgCtx.unk_E3F2 == OCARINA_SONG_SARIAS) ||
-                    (play->msgCtx.unk_E3F2 == OCARINA_SONG_EPONAS) ||
-                    (play->msgCtx.unk_E3F2 == OCARINA_SONG_LULLABY) ||
-                    (play->msgCtx.unk_E3F2 == OCARINA_SONG_SUNS) ||
+                if ((play->msgCtx.unk_E3F2 == OCARINA_SONG_SARIAS) || (play->msgCtx.unk_E3F2 == OCARINA_SONG_EPONAS) ||
+                    (play->msgCtx.unk_E3F2 == OCARINA_SONG_LULLABY) || (play->msgCtx.unk_E3F2 == OCARINA_SONG_SUNS) ||
                     (play->msgCtx.unk_E3F2 == OCARINA_SONG_TIME)) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, this->actor.world.pos.x,
-                                this->actor.world.pos.y + 40.0f, this->actor.world.pos.z, 0, 0, 0, FAIRY_HEAL_TIMED, true);
+                                this->actor.world.pos.y + 40.0f, this->actor.world.pos.z, 0, 0, 0, FAIRY_HEAL_TIMED,
+                                true);
                     Audio_PlayActorSound2(&this->actor, NA_SE_EV_BUTTERFRY_TO_FAIRY);
                 } else if (play->msgCtx.unk_E3F2 == OCARINA_SONG_STORMS) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, this->actor.world.pos.x,
-                                this->actor.world.pos.y + 40.0f, this->actor.world.pos.z, 0, 0, 0, FAIRY_HEAL_BIG, true);
+                                this->actor.world.pos.y + 40.0f, this->actor.world.pos.z, 0, 0, 0, FAIRY_HEAL_BIG,
+                                true);
                     Audio_PlayActorSound2(&this->actor, NA_SE_EV_BUTTERFRY_TO_FAIRY);
                 }
                 this->unk_19D = 0;
@@ -204,8 +204,8 @@ void func_80A4E648(EnGs* this, PlayState* play) {
     }
 }
 
-f32 func_80A4E754(EnGs* this, PlayState* play, f32* arg2, f32* arg3, u16* arg4, f32 arg5, f32 arg6, f32 arg7,
-                  s32 arg8, s32 arg9) {
+f32 func_80A4E754(EnGs* this, PlayState* play, f32* arg2, f32* arg3, u16* arg4, f32 arg5, f32 arg6, f32 arg7, s32 arg8,
+                  s32 arg9) {
     f32 sp2C = Math_SmoothStepToF(arg2, *arg3, arg5, arg6, arg7);
 
     if (arg9 == 0) {
@@ -224,8 +224,8 @@ void func_80A4E910(EnGs* this, PlayState* play) {
         this->unk_19F = 1;
         this->unk_1E8 = 0.5f;
         this->unk_1EC = 0.0f;
-    } else if ((this->unk_19F == 1) && (func_80A4E754(this, play, &this->unk_1E8, &this->unk_1EC, &this->unk_200,
-                                                      0.8f, 0.007f, 0.001f, 7, 0) == 0.0f)) {
+    } else if ((this->unk_19F == 1) && (func_80A4E754(this, play, &this->unk_1E8, &this->unk_1EC, &this->unk_200, 0.8f,
+                                                      0.007f, 0.001f, 7, 0) == 0.0f)) {
         if (!Play_InCsMode(play)) {
             Message_StartTextbox(play, 0x71B1, NULL);
         }
@@ -244,8 +244,8 @@ void func_80A4EA08(EnGs* this, PlayState* play) {
     } else if (this->unk_19F == 1) {
         this->unk_1A0[0].z = (((this->unk_200 % 8) / 8.0f) * 360.0f) * (0x10000 / 360.0f);
         this->unk_1A0[1].z = -this->unk_1A0[0].z;
-        if (func_80A4E754(this, play, &this->unk_1E8, &this->unk_1EC, &this->unk_200, 0.8f, 0.005f, 0.001f, 7,
-                          0) == 0.0f) {
+        if (func_80A4E754(this, play, &this->unk_1E8, &this->unk_1EC, &this->unk_200, 0.8f, 0.005f, 0.001f, 7, 0) ==
+            0.0f) {
             this->unk_19C = 0;
             this->actionFunc = func_80A4F734;
         }
@@ -326,14 +326,14 @@ void func_80A4ED34(EnGs* this, PlayState* play) {
             if (this->unk_200 < 20) {
                 Color_RGBA8_Copy(&this->flashColor, &flashRed);
                 if ((this->unk_200 % 20) == 7) {
-                    Audio_PlaySoundGeneral(NA_SE_SY_WARNING_COUNT_E, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultReverb);
+                    Audio_PlaySoundGeneral(NA_SE_SY_WARNING_COUNT_E, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 }
             } else {
                 Color_RGBA8_Copy(&this->flashColor, &flashBlue);
                 if ((this->unk_200 % 20) == 7) {
-                    Audio_PlaySoundGeneral(NA_SE_SY_WARNING_COUNT_N, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultReverb);
+                    Audio_PlaySoundGeneral(NA_SE_SY_WARNING_COUNT_N, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 }
             }
         }
@@ -586,8 +586,7 @@ void EnGs_Draw(Actor* thisx, PlayState* play) {
             Matrix_RotateZ(this->unk_1A0[1].z * (M_PI / 0x8000), MTXMODE_APPLY);
         }
 
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gGossipStoneMaterialDL);
 
         if (this->unk_19E & 4) {
@@ -595,7 +594,8 @@ void EnGs_Draw(Actor* thisx, PlayState* play) {
                             this->flashColor.a);
         } else {
             if (CVarGetInteger(CVAR_COSMETIC("World.GossipStone.Changed"), 0)) {
-                Color_RGB8 color = CVarGetColor24(CVAR_COSMETIC("World.GossipStone.Value"), (Color_RGB8){255, 255, 255});
+                Color_RGB8 color =
+                    CVarGetColor24(CVAR_COSMETIC("World.GossipStone.Value"), (Color_RGB8){ 255, 255, 255 });
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, color.r, color.g, color.b, 255);
             } else {
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
@@ -611,11 +611,9 @@ void EnGs_Draw(Actor* thisx, PlayState* play) {
             Matrix_ReplaceRotation(&play->billboardMtxF);
             Matrix_Scale(0.05f, -0.05f, 1.0f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-            gSPSegment(
-                POLY_XLU_DISP++, 0x08,
-                Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0, -frames * 0x14, 0x20, 0x80));
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPSegment(POLY_XLU_DISP++, 0x08,
+                       Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0, -frames * 0x14, 0x20, 0x80));
             gDPSetPrimColor(POLY_XLU_DISP++, 128, 128, 255, 255, 0, 255);
             gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, 0);
             gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);

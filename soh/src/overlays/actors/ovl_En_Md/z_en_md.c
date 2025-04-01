@@ -10,7 +10,9 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_UPDATE_DURING_OCARINA)
+#define FLAGS                                                                                  \
+    (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
+     ACTOR_FLAG_UPDATE_DURING_OCARINA)
 
 void EnMd_Init(Actor* thisx, PlayState* play);
 void EnMd_Destroy(Actor* thisx, PlayState* play);
@@ -485,13 +487,15 @@ s16 func_80AAAF04(PlayState* play, Actor* thisx) {
 
 u8 EnMd_ShouldSpawn(EnMd* this, PlayState* play) {
     if (play->sceneNum == SCENE_KOKIRI_FOREST) {
-        if (!Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) && !Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
+        if (!Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) &&
+            !Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
             return 1;
         }
     }
 
     if (play->sceneNum == SCENE_MIDOS_HOUSE) {
-        if (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) || Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
+        if (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) ||
+            Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
             if (!LINK_IS_ADULT) {
                 return 1;
             }
@@ -619,16 +623,18 @@ void func_80AAB5A4(EnMd* this, PlayState* play) {
     if (play->sceneNum != SCENE_MIDOS_HOUSE) {
         if (CVarGetInteger(CVAR_ENHANCEMENT("DisableKokiriDrawDistance"), 0) != 0) {
             temp = (GameInteractor_Should(VB_MIDO_CONSIDER_DEKU_TREE_DEAD, CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) &&
-                    !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) && (play->sceneNum == SCENE_KOKIRI_FOREST))
+                    !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) &&
+                    (play->sceneNum == SCENE_KOKIRI_FOREST))
                        ? 100.0f
                        : 32767.0f;
         } else {
             temp = (GameInteractor_Should(VB_MIDO_CONSIDER_DEKU_TREE_DEAD, CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) &&
-                    !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) && (play->sceneNum == SCENE_KOKIRI_FOREST))
+                    !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) &&
+                    (play->sceneNum == SCENE_KOKIRI_FOREST))
                        ? 100.0f
                        : 400.0f;
         }
-        
+
         this->alpha = Actor_UpdateAlphaByDistance(&this->actor, play, this->alpha, temp);
         this->actor.shape.shadowAlpha = this->alpha;
     } else {
@@ -662,7 +668,8 @@ void EnMd_Init(Actor* thisx, PlayState* play) {
     if (((play->sceneNum == SCENE_KOKIRI_FOREST) && !Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD)) ||
         ((play->sceneNum == SCENE_KOKIRI_FOREST) && Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD) &&
          GameInteractor_Should(VB_MIDO_CONSIDER_DEKU_TREE_DEAD, CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD))) ||
-        ((play->sceneNum == SCENE_LOST_WOODS) && !Flags_GetEventChkInf(EVENTCHKINF_PLAYED_SARIAS_SONG_FOR_MIDO_AS_ADULT))) {
+        ((play->sceneNum == SCENE_LOST_WOODS) &&
+         !Flags_GetEventChkInf(EVENTCHKINF_PLAYED_SARIAS_SONG_FOR_MIDO_AS_ADULT))) {
         this->actor.home.pos = this->actor.world.pos;
         this->actionFunc = func_80AAB948;
         return;
@@ -723,12 +730,13 @@ void func_80AAB948(EnMd* this, PlayState* play) {
         this->skelAnime.playSpeed = CLAMP(temp, 1.0f, 3.0f);
     }
 
-    if (
-        (GameInteractor_Should(VB_MOVE_MIDO_IN_KOKIRI_FOREST, this->interactInfo.talkState == NPC_TALK_STATE_ACTION, this) && play->sceneNum == SCENE_KOKIRI_FOREST) ||
-        this->interactInfo.talkState == NPC_TALK_STATE_ACTION
-    ) {
+    if ((GameInteractor_Should(VB_MOVE_MIDO_IN_KOKIRI_FOREST, this->interactInfo.talkState == NPC_TALK_STATE_ACTION,
+                               this) &&
+         play->sceneNum == SCENE_KOKIRI_FOREST) ||
+        this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
         if (GameInteractor_Should(VB_MIDO_CONSIDER_DEKU_TREE_DEAD, CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) &&
-            !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) && (play->sceneNum == SCENE_KOKIRI_FOREST)) {
+            !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) &&
+            (play->sceneNum == SCENE_KOKIRI_FOREST)) {
             play->msgCtx.msgMode = MSGMODE_PAUSED;
         }
 
@@ -774,7 +782,8 @@ void func_80AABC10(EnMd* this, PlayState* play) {
         this->actionFunc = func_80AAB948;
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
     } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_03) {
-        Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         this->actor.textId = 0x1067;
         func_8002F2CC(&this->actor, play, this->collider.dim.radius + 30.0f);
 
@@ -794,10 +803,9 @@ void func_80AABD0C(EnMd* this, PlayState* play) {
         return;
     }
 
-    if (
-        GameInteractor_Should(VB_MIDO_CONSIDER_DEKU_TREE_DEAD, CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) &&
-        !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) && (play->sceneNum == SCENE_KOKIRI_FOREST)
-    ) {
+    if (GameInteractor_Should(VB_MIDO_CONSIDER_DEKU_TREE_DEAD, CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) &&
+        !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) &&
+        (play->sceneNum == SCENE_KOKIRI_FOREST)) {
         Message_CloseTextbox(play);
         Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH);
         Actor_Kill(&this->actor);
@@ -827,8 +835,7 @@ void EnMd_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
 }
 
-s32 EnMd_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx,
-                          Gfx** gfx) {
+s32 EnMd_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx, Gfx** gfx) {
     EnMd* this = (EnMd*)thisx;
     Vec3s vec;
 

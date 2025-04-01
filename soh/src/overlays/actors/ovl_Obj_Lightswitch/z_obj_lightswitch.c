@@ -124,7 +124,8 @@ void ObjLightswitch_InitCollider(ObjLightswitch* this, PlayState* play) {
     s32 pad;
 
     // Initialize this with the sun switch, so it can't be affected by toggling while the actor is loaded
-    sunLightArrowsEnabledOnSunSwitchLoad = CVarGetInteger(CVAR_ENHANCEMENT("SunlightArrows"), 0) || (IS_RANDO && Randomizer_GetSettingValue(RSK_SUNLIGHT_ARROWS));
+    sunLightArrowsEnabledOnSunSwitchLoad = CVarGetInteger(CVAR_ENHANCEMENT("SunlightArrows"), 0) ||
+                                           (IS_RANDO && Randomizer_GetSettingValue(RSK_SUNLIGHT_ARROWS));
 
     Collider_InitJntSph(play, &this->collider);
     // If "Sunlight Arrows" is enabled, set up the collider to allow Light Arrow hits
@@ -195,8 +196,7 @@ void ObjLightswitch_SpawnDisappearEffects(ObjLightswitch* this, PlayState* play)
         pos.x = this->actor.world.pos.x + ((z * s) + (x * c));
         pos.y = this->actor.world.pos.y + y + 10.0f;
         pos.z = this->actor.world.pos.z + ((z * c) - (x * s));
-        EffectSsDeadDb_Spawn(play, &pos, &D_80B97F74, &D_80B97F74, 100, 0, 255, 255, 160, 160, 255, 0, 0, 1, 9,
-                             true);
+        EffectSsDeadDb_Spawn(play, &pos, &D_80B97F74, &D_80B97F74, 100, 0, 255, 255, 160, 160, 255, 0, 0, 1, 9, true);
     }
 }
 
@@ -226,13 +226,12 @@ void ObjLightswitch_Init(Actor* thisx, PlayState* play) {
         this->actor.world.rot.x = this->actor.home.rot.x = this->actor.shape.rot.x;
         this->actor.world.rot.z = this->actor.home.rot.z = this->actor.shape.rot.z;
         this->actor.flags |= ACTOR_FLAG_DRAW_CULLING_DISABLED;
-        if (Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_OBJ_OSHIHIKI,
-                               this->actor.home.pos.x, this->actor.home.pos.y, this->actor.home.pos.z, 0,
-                               this->actor.home.rot.y, 0, (0xFF << 8) | PUSHBLOCK_SMALL_START_ON) == NULL) {
+        if (Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_OBJ_OSHIHIKI, this->actor.home.pos.x,
+                               this->actor.home.pos.y, this->actor.home.pos.z, 0, this->actor.home.rot.y, 0,
+                               (0xFF << 8) | PUSHBLOCK_SMALL_START_ON) == NULL) {
             osSyncPrintf(VT_COL(RED, WHITE));
             // "Push-pull block occurrence failure"
-            osSyncPrintf("押引ブロック発生失敗(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
-                         this->actor.params);
+            osSyncPrintf("押引ブロック発生失敗(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__, this->actor.params);
             osSyncPrintf(VT_RST);
             removeSelf = true;
         }
@@ -250,7 +249,7 @@ void ObjLightswitch_Destroy(Actor* thisx, PlayState* play2) {
     PlayState* play = play2;
     ObjLightswitch* this = (ObjLightswitch*)thisx;
 
-    // Unset the switch flag on room exit to prevent the rock in the wall from 
+    // Unset the switch flag on room exit to prevent the rock in the wall from
     // vanishing on its own after activating the sun switch by Light Arrow
     // Also prevents the cobra mirror from rotating to face the sun on its own
     // Makes sun switches temporary when activated by Light Arrows (will turn off on room exit)
@@ -505,8 +504,7 @@ void ObjLightswitch_DrawOpa(ObjLightswitch* this, PlayState* play) {
         pos.z = this->actor.world.pos.z;
     }
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sFaceTextures[this->faceTextureIndex]));
     gSPDisplayList(POLY_OPA_DISP++, object_lightswitch_DL_000260);
 
@@ -515,15 +513,13 @@ void ObjLightswitch_DrawOpa(ObjLightswitch* this, PlayState* play) {
     rot.z = this->actor.shape.rot.z + this->flameRingRot;
     Matrix_SetTranslateRotateYXZ(pos.x, pos.y, pos.z, &rot);
     Matrix_Scale(this->actor.scale.x, this->actor.scale.y, this->actor.scale.z, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, object_lightswitch_DL_000398);
 
     rot.z = this->actor.shape.rot.z - this->flameRingRot;
     Matrix_SetTranslateRotateYXZ(pos.x, pos.y, pos.z, &rot);
     Matrix_Scale(this->actor.scale.x, this->actor.scale.y, this->actor.scale.z, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, object_lightswitch_DL_000408);
 
     CLOSE_DISPS(play->state.gfxCtx);
@@ -545,8 +541,7 @@ void ObjLightswitch_DrawXlu(ObjLightswitch* this, PlayState* play) {
     sp68.y = this->actor.world.pos.y + (this->actor.shape.yOffset * this->actor.scale.y);
     sp68.z = this->actor.world.pos.z;
 
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sFaceTextures[this->faceTextureIndex]));
     gSPDisplayList(POLY_XLU_DISP++, object_lightswitch_DL_000260);
 
@@ -556,15 +551,13 @@ void ObjLightswitch_DrawXlu(ObjLightswitch* this, PlayState* play) {
 
     Matrix_SetTranslateRotateYXZ(sp68.x, sp68.y, sp68.z, &sp60);
     Matrix_Scale(this->actor.scale.x, this->actor.scale.y, this->actor.scale.z, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, object_lightswitch_DL_000398);
 
     sp60.z = this->actor.shape.rot.z - this->flameRingRot;
     Matrix_SetTranslateRotateYXZ(sp68.x, sp68.y, sp68.z, &sp60);
     Matrix_Scale(this->actor.scale.x, this->actor.scale.y, this->actor.scale.z, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, object_lightswitch_DL_000408);
 
     CLOSE_DISPS(play->state.gfxCtx);

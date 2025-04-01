@@ -6,6 +6,6 @@ RoomBehavior* SetRoomBehavior::GetPointer() {
 }
 
 size_t SetRoomBehavior::GetPointerSize() {
-	return sizeof(RoomBehavior);
+    return sizeof(RoomBehavior);
 }
 } // namespace SOH

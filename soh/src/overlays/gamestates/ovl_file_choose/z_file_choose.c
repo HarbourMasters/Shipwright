@@ -45,12 +45,28 @@ typedef struct {
     IconSize size;
 } ItemData;
 
-#define CREATE_SPRITE_24(iconTex, spriteId) { iconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b, spriteId }, {0xFF, 0xFF, 0xFF, 0xFF}
-#define CREATE_SPRITE_32(iconTex, spriteId) { iconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, spriteId }, {0xFF, 0xFF, 0xFF, 0xFF}
-#define CREATE_SPRITE_SONG(colorR, colorG, colorB) { dgSongNoteTex, 16, 24, G_IM_FMT_IA, G_IM_SIZ_8b, 100 }, {colorR, colorG, colorB, 0xFF}
-#define CREATE_SPRITE_RUPEE(colorR, colorG, colorB) { dgRupeeCounterIconTex, 16, 16, G_IM_FMT_IA, G_IM_SIZ_8b, 102 }, {colorR, colorG, colorB, 0xFF}
-#define CREATE_SPRITE_SKULL { dgDungeonMapSkullTex, 16, 16, G_IM_FMT_RGBA, G_IM_SIZ_16b, 104 }, {0xFF, 0xFF, 0xFF, 0xFF}
-#define CREATE_SPRITE_COUNTER_DIGIT(i) { dgAmmoDigit##i##Tex, 8, 8, G_IM_FMT_IA, G_IM_SIZ_8b, 105+i }
+#define CREATE_SPRITE_24(iconTex, spriteId)                       \
+    { iconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b, spriteId }, { \
+        0xFF, 0xFF, 0xFF, 0xFF                                    \
+    }
+#define CREATE_SPRITE_32(iconTex, spriteId)                       \
+    { iconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, spriteId }, { \
+        0xFF, 0xFF, 0xFF, 0xFF                                    \
+    }
+#define CREATE_SPRITE_SONG(colorR, colorG, colorB)              \
+    { dgSongNoteTex, 16, 24, G_IM_FMT_IA, G_IM_SIZ_8b, 100 }, { \
+        colorR, colorG, colorB, 0xFF                            \
+    }
+#define CREATE_SPRITE_RUPEE(colorR, colorG, colorB)                     \
+    { dgRupeeCounterIconTex, 16, 16, G_IM_FMT_IA, G_IM_SIZ_8b, 102 }, { \
+        colorR, colorG, colorB, 0xFF                                    \
+    }
+#define CREATE_SPRITE_SKULL                                               \
+    { dgDungeonMapSkullTex, 16, 16, G_IM_FMT_RGBA, G_IM_SIZ_16b, 104 }, { \
+        0xFF, 0xFF, 0xFF, 0xFF                                            \
+    }
+#define CREATE_SPRITE_COUNTER_DIGIT(i) \
+    { dgAmmoDigit##i##Tex, 8, 8, G_IM_FMT_IA, G_IM_SIZ_8b, 105 + i }
 
 #define ICON_SIZE 12
 #define COUNTER_SIZE 16
@@ -58,121 +74,129 @@ typedef struct {
 #define SONG_HEIGHT 12
 
 #define LEFT_OFFSET (int)0x37
-#define TOP_OFFSET  (int)0x5C
+#define TOP_OFFSET (int)0x5C
 
 #define COUNTER_DIGITS_LEFT_OFFSET COUNTER_SIZE / 2 - 3
 #define COUNTER_DIGITS_TOP_OFFSET COUNTER_SIZE - 3
 
-#define SIZE_NORMAL {ICON_SIZE, ICON_SIZE}
-#define SIZE_COUNTER {COUNTER_SIZE, COUNTER_SIZE}
-#define SIZE_SONG {SONG_WIDTH, SONG_HEIGHT}
+#define SIZE_NORMAL \
+    { ICON_SIZE, ICON_SIZE }
+#define SIZE_COUNTER \
+    { COUNTER_SIZE, COUNTER_SIZE }
+#define SIZE_SONG \
+    { SONG_WIDTH, SONG_HEIGHT }
 
-#define INV_IC_POS(x, y) {0x4E + ICON_SIZE * x, 0x00 + ICON_SIZE * y}
-#define EQP_IC_POS(x, y) {0x7E + ICON_SIZE * x, 0x2A + ICON_SIZE * y}
-#define SNG_IC_POS(x, y) {0x49 + SONG_WIDTH * x, 0x45 + SONG_HEIGHT * y}
-#define UPG_IC_POS(x, y) {0x5A + ICON_SIZE * x, 0x2A + ICON_SIZE * y}
-#define STN_IC_POS(i) {0x29 + ICON_SIZE * i, 0x31}
+#define INV_IC_POS(x, y) \
+    { 0x4E + ICON_SIZE *x, 0x00 + ICON_SIZE *y }
+#define EQP_IC_POS(x, y) \
+    { 0x7E + ICON_SIZE *x, 0x2A + ICON_SIZE *y }
+#define SNG_IC_POS(x, y) \
+    { 0x49 + SONG_WIDTH *x, 0x45 + SONG_HEIGHT *y }
+#define UPG_IC_POS(x, y) \
+    { 0x5A + ICON_SIZE *x, 0x2A + ICON_SIZE *y }
+#define STN_IC_POS(i) \
+    { 0x29 + ICON_SIZE *i, 0x31 }
 
 static ItemData itemData[88] = {
-    {CREATE_SPRITE_32(dgItemIconDekuStickTex, 1),          ITEM_STICK,            INV_IC_POS(0, 0), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconDekuNutTex, 0),            ITEM_NUT,              INV_IC_POS(1, 0), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconBombTex, 2),               ITEM_BOMB,             INV_IC_POS(2, 0), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconBowTex, 3),                ITEM_BOW,              INV_IC_POS(3, 0), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconArrowFireTex, 4),          ITEM_ARROW_FIRE,       INV_IC_POS(4, 0), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconDinsFireTex, 5),           ITEM_DINS_FIRE,        INV_IC_POS(5, 0), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconBottleEmptyTex, 20),       ITEM_BOTTLE,           INV_IC_POS(6, 0), SIZE_NORMAL},
+    { CREATE_SPRITE_32(dgItemIconDekuStickTex, 1), ITEM_STICK, INV_IC_POS(0, 0), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconDekuNutTex, 0), ITEM_NUT, INV_IC_POS(1, 0), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconBombTex, 2), ITEM_BOMB, INV_IC_POS(2, 0), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconBowTex, 3), ITEM_BOW, INV_IC_POS(3, 0), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconArrowFireTex, 4), ITEM_ARROW_FIRE, INV_IC_POS(4, 0), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconDinsFireTex, 5), ITEM_DINS_FIRE, INV_IC_POS(5, 0), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconBottleEmptyTex, 20), ITEM_BOTTLE, INV_IC_POS(6, 0), SIZE_NORMAL },
 
-    {CREATE_SPRITE_32(dgItemIconSlingshotTex, 6),          ITEM_SLINGSHOT,        INV_IC_POS(0, 1), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconOcarinaFairyTex, 7),       ITEM_OCARINA_FAIRY,    INV_IC_POS(1, 1), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconOcarinaOfTimeTex, 7),      ITEM_OCARINA_TIME,     INV_IC_POS(1, 1), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconBombchuTex, 9),            ITEM_BOMBCHU,          INV_IC_POS(2, 1), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconHookshotTex, 10),          ITEM_HOOKSHOT,         INV_IC_POS(3, 1), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconLongshotTex, 10),          ITEM_LONGSHOT,         INV_IC_POS(3, 1), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconArrowIceTex, 12),          ITEM_ARROW_ICE,        INV_IC_POS(4, 1), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconFaroresWindTex, 13),       ITEM_FARORES_WIND,     INV_IC_POS(5, 1), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconWeirdEggTex, 37),          ITEM_WEIRD_EGG,        INV_IC_POS(6, 1), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconChickenTex, 37),           ITEM_CHICKEN,          INV_IC_POS(6, 1), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconZeldasLetterTex, 37),      ITEM_LETTER_ZELDA,     INV_IC_POS(6, 1), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconMaskKeatonTex, 37),        ITEM_MASK_KEATON,      INV_IC_POS(6, 1), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconMaskSkullTex, 37),         ITEM_MASK_SKULL,       INV_IC_POS(6, 1), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconMaskSpookyTex, 37),        ITEM_MASK_SPOOKY,      INV_IC_POS(6, 1), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconMaskBunnyHoodTex, 37),     ITEM_MASK_BUNNY,       INV_IC_POS(6, 1), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconMaskGoronTex, 37),         ITEM_MASK_GORON,       INV_IC_POS(6, 1), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconMaskZoraTex, 37),          ITEM_MASK_ZORA,        INV_IC_POS(6, 1), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconMaskGerudoTex, 37),        ITEM_MASK_GERUDO,      INV_IC_POS(6, 1), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconMaskTruthTex, 37),         ITEM_MASK_TRUTH,       INV_IC_POS(6, 1), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconSoldOutTex, 37),           ITEM_SOLD_OUT,         INV_IC_POS(6, 1), SIZE_NORMAL},
+    { CREATE_SPRITE_32(dgItemIconSlingshotTex, 6), ITEM_SLINGSHOT, INV_IC_POS(0, 1), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconOcarinaFairyTex, 7), ITEM_OCARINA_FAIRY, INV_IC_POS(1, 1), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconOcarinaOfTimeTex, 7), ITEM_OCARINA_TIME, INV_IC_POS(1, 1), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconBombchuTex, 9), ITEM_BOMBCHU, INV_IC_POS(2, 1), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconHookshotTex, 10), ITEM_HOOKSHOT, INV_IC_POS(3, 1), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconLongshotTex, 10), ITEM_LONGSHOT, INV_IC_POS(3, 1), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconArrowIceTex, 12), ITEM_ARROW_ICE, INV_IC_POS(4, 1), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconFaroresWindTex, 13), ITEM_FARORES_WIND, INV_IC_POS(5, 1), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconWeirdEggTex, 37), ITEM_WEIRD_EGG, INV_IC_POS(6, 1), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconChickenTex, 37), ITEM_CHICKEN, INV_IC_POS(6, 1), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconZeldasLetterTex, 37), ITEM_LETTER_ZELDA, INV_IC_POS(6, 1), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconMaskKeatonTex, 37), ITEM_MASK_KEATON, INV_IC_POS(6, 1), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconMaskSkullTex, 37), ITEM_MASK_SKULL, INV_IC_POS(6, 1), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconMaskSpookyTex, 37), ITEM_MASK_SPOOKY, INV_IC_POS(6, 1), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconMaskBunnyHoodTex, 37), ITEM_MASK_BUNNY, INV_IC_POS(6, 1), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconMaskGoronTex, 37), ITEM_MASK_GORON, INV_IC_POS(6, 1), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconMaskZoraTex, 37), ITEM_MASK_ZORA, INV_IC_POS(6, 1), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconMaskGerudoTex, 37), ITEM_MASK_GERUDO, INV_IC_POS(6, 1), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconMaskTruthTex, 37), ITEM_MASK_TRUTH, INV_IC_POS(6, 1), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconSoldOutTex, 37), ITEM_SOLD_OUT, INV_IC_POS(6, 1), SIZE_NORMAL },
 
-    {CREATE_SPRITE_32(dgItemIconBoomerangTex, 14),         ITEM_BOOMERANG,        INV_IC_POS(0, 2), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconLensOfTruthTex, 15),       ITEM_LENS,             INV_IC_POS(1, 2), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconMagicBeanTex, 16),         ITEM_BEAN,             INV_IC_POS(2, 2), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconHammerTex, 17),            ITEM_HAMMER,           INV_IC_POS(3, 2), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconArrowLightTex, 18),        ITEM_ARROW_LIGHT,      INV_IC_POS(4, 2), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconNayrusLoveTex, 19),        ITEM_NAYRUS_LOVE,      INV_IC_POS(5, 2), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconPocketEggTex, 53),         ITEM_POCKET_EGG,       INV_IC_POS(6, 2), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconPocketCuccoTex, 53),       ITEM_POCKET_CUCCO,     INV_IC_POS(6, 2), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconCojiroTex, 53),            ITEM_COJIRO,           INV_IC_POS(6, 2), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconOddMushroomTex, 53),       ITEM_ODD_MUSHROOM,     INV_IC_POS(6, 2), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconOddPotionTex, 53),         ITEM_ODD_POTION,       INV_IC_POS(6, 2), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconPoachersSawTex, 53),       ITEM_SAW,              INV_IC_POS(6, 2), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconBrokenGoronsSwordTex, 53), ITEM_SWORD_BROKEN,     INV_IC_POS(6, 2), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconPrescriptionTex, 53),      ITEM_PRESCRIPTION,     INV_IC_POS(6, 2), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconEyeballFrogTex, 53),       ITEM_FROG,             INV_IC_POS(6, 2), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconEyeDropsTex, 53),          ITEM_EYEDROPS,         INV_IC_POS(6, 2), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconClaimCheckTex, 53),        ITEM_CLAIM_CHECK,      INV_IC_POS(6, 2), SIZE_NORMAL},
+    { CREATE_SPRITE_32(dgItemIconBoomerangTex, 14), ITEM_BOOMERANG, INV_IC_POS(0, 2), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconLensOfTruthTex, 15), ITEM_LENS, INV_IC_POS(1, 2), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconMagicBeanTex, 16), ITEM_BEAN, INV_IC_POS(2, 2), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconHammerTex, 17), ITEM_HAMMER, INV_IC_POS(3, 2), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconArrowLightTex, 18), ITEM_ARROW_LIGHT, INV_IC_POS(4, 2), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconNayrusLoveTex, 19), ITEM_NAYRUS_LOVE, INV_IC_POS(5, 2), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconPocketEggTex, 53), ITEM_POCKET_EGG, INV_IC_POS(6, 2), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconPocketCuccoTex, 53), ITEM_POCKET_CUCCO, INV_IC_POS(6, 2), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconCojiroTex, 53), ITEM_COJIRO, INV_IC_POS(6, 2), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconOddMushroomTex, 53), ITEM_ODD_MUSHROOM, INV_IC_POS(6, 2), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconOddPotionTex, 53), ITEM_ODD_POTION, INV_IC_POS(6, 2), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconPoachersSawTex, 53), ITEM_SAW, INV_IC_POS(6, 2), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconBrokenGoronsSwordTex, 53), ITEM_SWORD_BROKEN, INV_IC_POS(6, 2), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconPrescriptionTex, 53), ITEM_PRESCRIPTION, INV_IC_POS(6, 2), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconEyeballFrogTex, 53), ITEM_FROG, INV_IC_POS(6, 2), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconEyeDropsTex, 53), ITEM_EYEDROPS, INV_IC_POS(6, 2), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconClaimCheckTex, 53), ITEM_CLAIM_CHECK, INV_IC_POS(6, 2), SIZE_NORMAL },
 
-    {CREATE_SPRITE_32(dgItemIconSwordKokiriTex, 54),       ITEM_SWORD_KOKIRI,     EQP_IC_POS(0, 0), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconSwordMasterTex, 55),       ITEM_SWORD_MASTER,     EQP_IC_POS(1, 0), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconSwordBiggoronTex, 56),     ITEM_SWORD_BGS,        EQP_IC_POS(2, 0), SIZE_NORMAL},
+    { CREATE_SPRITE_32(dgItemIconSwordKokiriTex, 54), ITEM_SWORD_KOKIRI, EQP_IC_POS(0, 0), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconSwordMasterTex, 55), ITEM_SWORD_MASTER, EQP_IC_POS(1, 0), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconSwordBiggoronTex, 56), ITEM_SWORD_BGS, EQP_IC_POS(2, 0), SIZE_NORMAL },
 
-    {CREATE_SPRITE_32(dgItemIconShieldDekuTex, 57),        ITEM_SHIELD_DEKU,      EQP_IC_POS(0, 1), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconShieldHylianTex, 58),      ITEM_SHIELD_HYLIAN,    EQP_IC_POS(1, 1), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconShieldMirrorTex, 59),      ITEM_SHIELD_MIRROR,    EQP_IC_POS(2, 1), SIZE_NORMAL},
+    { CREATE_SPRITE_32(dgItemIconShieldDekuTex, 57), ITEM_SHIELD_DEKU, EQP_IC_POS(0, 1), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconShieldHylianTex, 58), ITEM_SHIELD_HYLIAN, EQP_IC_POS(1, 1), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconShieldMirrorTex, 59), ITEM_SHIELD_MIRROR, EQP_IC_POS(2, 1), SIZE_NORMAL },
 
-    {CREATE_SPRITE_32(dgItemIconTunicKokiriTex, 60),       ITEM_TUNIC_KOKIRI,     EQP_IC_POS(0, 2), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconTunicGoronTex, 61),        ITEM_TUNIC_GORON,      EQP_IC_POS(1, 2), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconTunicZoraTex, 62),         ITEM_TUNIC_ZORA,       EQP_IC_POS(2, 2), SIZE_NORMAL},
+    { CREATE_SPRITE_32(dgItemIconTunicKokiriTex, 60), ITEM_TUNIC_KOKIRI, EQP_IC_POS(0, 2), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconTunicGoronTex, 61), ITEM_TUNIC_GORON, EQP_IC_POS(1, 2), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconTunicZoraTex, 62), ITEM_TUNIC_ZORA, EQP_IC_POS(2, 2), SIZE_NORMAL },
 
-    {CREATE_SPRITE_32(dgItemIconBootsKokiriTex, 63),       ITEM_BOOTS_KOKIRI,     EQP_IC_POS(0, 3), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconBootsIronTex, 64),         ITEM_BOOTS_IRON,       EQP_IC_POS(1, 3), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconBootsHoverTex, 65),        ITEM_BOOTS_HOVER,      EQP_IC_POS(2, 3), SIZE_NORMAL},
+    { CREATE_SPRITE_32(dgItemIconBootsKokiriTex, 63), ITEM_BOOTS_KOKIRI, EQP_IC_POS(0, 3), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconBootsIronTex, 64), ITEM_BOOTS_IRON, EQP_IC_POS(1, 3), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconBootsHoverTex, 65), ITEM_BOOTS_HOVER, EQP_IC_POS(2, 3), SIZE_NORMAL },
 
-    {CREATE_SPRITE_24(dgQuestIconKokiriEmeraldTex, 87),    ITEM_KOKIRI_EMERALD,   STN_IC_POS(-1),   SIZE_NORMAL},
-    {CREATE_SPRITE_24(dgQuestIconGoronRubyTex, 88),        ITEM_GORON_RUBY,       STN_IC_POS(0),    SIZE_NORMAL},
-    {CREATE_SPRITE_24(dgQuestIconZoraSapphireTex, 89),     ITEM_ZORA_SAPPHIRE,    STN_IC_POS(1),    SIZE_NORMAL},
+    { CREATE_SPRITE_24(dgQuestIconKokiriEmeraldTex, 87), ITEM_KOKIRI_EMERALD, STN_IC_POS(-1), SIZE_NORMAL },
+    { CREATE_SPRITE_24(dgQuestIconGoronRubyTex, 88), ITEM_GORON_RUBY, STN_IC_POS(0), SIZE_NORMAL },
+    { CREATE_SPRITE_24(dgQuestIconZoraSapphireTex, 89), ITEM_ZORA_SAPPHIRE, STN_IC_POS(1), SIZE_NORMAL },
 
-    {CREATE_SPRITE_24(dgQuestIconMedallionForestTex, 81),  ITEM_MEDALLION_FOREST, {0x37, 0x0A},     SIZE_NORMAL},
-    {CREATE_SPRITE_24(dgQuestIconMedallionFireTex, 82),    ITEM_MEDALLION_FIRE,   {0x37, 0x1A},     SIZE_NORMAL},
-    {CREATE_SPRITE_24(dgQuestIconMedallionWaterTex, 83),   ITEM_MEDALLION_WATER,  {0x29, 0x22},     SIZE_NORMAL},
-    {CREATE_SPRITE_24(dgQuestIconMedallionSpiritTex, 84),  ITEM_MEDALLION_SPIRIT, {0x1B, 0x1A},     SIZE_NORMAL},
-    {CREATE_SPRITE_24(dgQuestIconMedallionShadowTex, 85),  ITEM_MEDALLION_SHADOW, {0x1B, 0x0A},     SIZE_NORMAL},
-    {CREATE_SPRITE_24(dgQuestIconMedallionLightTex, 86),   ITEM_MEDALLION_LIGHT,  {0x29, 0x02},     SIZE_NORMAL},
+    { CREATE_SPRITE_24(dgQuestIconMedallionForestTex, 81), ITEM_MEDALLION_FOREST, { 0x37, 0x0A }, SIZE_NORMAL },
+    { CREATE_SPRITE_24(dgQuestIconMedallionFireTex, 82), ITEM_MEDALLION_FIRE, { 0x37, 0x1A }, SIZE_NORMAL },
+    { CREATE_SPRITE_24(dgQuestIconMedallionWaterTex, 83), ITEM_MEDALLION_WATER, { 0x29, 0x22 }, SIZE_NORMAL },
+    { CREATE_SPRITE_24(dgQuestIconMedallionSpiritTex, 84), ITEM_MEDALLION_SPIRIT, { 0x1B, 0x1A }, SIZE_NORMAL },
+    { CREATE_SPRITE_24(dgQuestIconMedallionShadowTex, 85), ITEM_MEDALLION_SHADOW, { 0x1B, 0x0A }, SIZE_NORMAL },
+    { CREATE_SPRITE_24(dgQuestIconMedallionLightTex, 86), ITEM_MEDALLION_LIGHT, { 0x29, 0x02 }, SIZE_NORMAL },
 
-    {CREATE_SPRITE_32(dgItemIconGoronsBraceletTex, 71),    ITEM_BRACELET,         UPG_IC_POS(0, 0), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconSilverGauntletsTex, 71),   ITEM_GAUNTLETS_SILVER, UPG_IC_POS(0, 0), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconGoldenGauntletsTex, 71),   ITEM_GAUNTLETS_GOLD,   UPG_IC_POS(0, 0), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconScaleSilverTex, 74),       ITEM_SCALE_SILVER,     UPG_IC_POS(1, 0), SIZE_NORMAL},
-    {CREATE_SPRITE_32(dgItemIconScaleGoldenTex, 74),       ITEM_SCALE_GOLDEN,     UPG_IC_POS(1, 0), SIZE_NORMAL},
-    {CREATE_SPRITE_24(dgQuestIconMagicJarSmallTex, 97),    ITEM_SINGLE_MAGIC,     UPG_IC_POS(2, 0), SIZE_NORMAL},
-    {CREATE_SPRITE_24(dgQuestIconMagicJarBigTex, 97),      ITEM_DOUBLE_MAGIC,     UPG_IC_POS(2, 0), SIZE_NORMAL},
-    {CREATE_SPRITE_RUPEE(0xC8, 0xFF, 0x64),                ITEM_RUPEE_GREEN,      UPG_IC_POS(0, 1), SIZE_NORMAL},
-    {CREATE_SPRITE_24(dgQuestIconGerudosCardTex, 91),      ITEM_GERUDO_CARD,      UPG_IC_POS(1, 1), SIZE_NORMAL},
-    {CREATE_SPRITE_24(dgQuestIconStoneOfAgonyTex, 90),     ITEM_STONE_OF_AGONY,   UPG_IC_POS(2, 1), SIZE_NORMAL},
+    { CREATE_SPRITE_32(dgItemIconGoronsBraceletTex, 71), ITEM_BRACELET, UPG_IC_POS(0, 0), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconSilverGauntletsTex, 71), ITEM_GAUNTLETS_SILVER, UPG_IC_POS(0, 0), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconGoldenGauntletsTex, 71), ITEM_GAUNTLETS_GOLD, UPG_IC_POS(0, 0), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconScaleSilverTex, 74), ITEM_SCALE_SILVER, UPG_IC_POS(1, 0), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconScaleGoldenTex, 74), ITEM_SCALE_GOLDEN, UPG_IC_POS(1, 0), SIZE_NORMAL },
+    { CREATE_SPRITE_24(dgQuestIconMagicJarSmallTex, 97), ITEM_SINGLE_MAGIC, UPG_IC_POS(2, 0), SIZE_NORMAL },
+    { CREATE_SPRITE_24(dgQuestIconMagicJarBigTex, 97), ITEM_DOUBLE_MAGIC, UPG_IC_POS(2, 0), SIZE_NORMAL },
+    { CREATE_SPRITE_RUPEE(0xC8, 0xFF, 0x64), ITEM_RUPEE_GREEN, UPG_IC_POS(0, 1), SIZE_NORMAL },
+    { CREATE_SPRITE_24(dgQuestIconGerudosCardTex, 91), ITEM_GERUDO_CARD, UPG_IC_POS(1, 1), SIZE_NORMAL },
+    { CREATE_SPRITE_24(dgQuestIconStoneOfAgonyTex, 90), ITEM_STONE_OF_AGONY, UPG_IC_POS(2, 1), SIZE_NORMAL },
 
-    {CREATE_SPRITE_SONG(224, 107, 255),                    ITEM_SONG_LULLABY,     SNG_IC_POS(0, 0), SIZE_SONG},
-    {CREATE_SPRITE_SONG(255, 195, 60),                     ITEM_SONG_EPONA,       SNG_IC_POS(1, 0), SIZE_SONG},
-    {CREATE_SPRITE_SONG(127, 255, 137),                    ITEM_SONG_SARIA,       SNG_IC_POS(2, 0), SIZE_SONG},
-    {CREATE_SPRITE_SONG(255, 255, 60),                     ITEM_SONG_SUN,         SNG_IC_POS(3, 0), SIZE_SONG},
-    {CREATE_SPRITE_SONG(119, 236, 255),                    ITEM_SONG_TIME,        SNG_IC_POS(4, 0), SIZE_SONG},
-    {CREATE_SPRITE_SONG(165, 165, 165),                    ITEM_SONG_STORMS,      SNG_IC_POS(5, 0), SIZE_SONG},
-    {CREATE_SPRITE_SONG(150, 255, 100),                    ITEM_SONG_MINUET,      SNG_IC_POS(0, 1), SIZE_SONG},
-    {CREATE_SPRITE_SONG(255, 80,  40),                     ITEM_SONG_BOLERO,      SNG_IC_POS(1, 1), SIZE_SONG},
-    {CREATE_SPRITE_SONG(100, 150, 255),                    ITEM_SONG_SERENADE,    SNG_IC_POS(2, 1), SIZE_SONG},
-    {CREATE_SPRITE_SONG(255, 160, 0),                      ITEM_SONG_REQUIEM,     SNG_IC_POS(3, 1), SIZE_SONG},
-    {CREATE_SPRITE_SONG(255, 100, 255),                    ITEM_SONG_NOCTURNE,    SNG_IC_POS(4, 1), SIZE_SONG},
-    {CREATE_SPRITE_SONG(255, 240, 100),                    ITEM_SONG_PRELUDE,     SNG_IC_POS(5, 1), SIZE_SONG},
+    { CREATE_SPRITE_SONG(224, 107, 255), ITEM_SONG_LULLABY, SNG_IC_POS(0, 0), SIZE_SONG },
+    { CREATE_SPRITE_SONG(255, 195, 60), ITEM_SONG_EPONA, SNG_IC_POS(1, 0), SIZE_SONG },
+    { CREATE_SPRITE_SONG(127, 255, 137), ITEM_SONG_SARIA, SNG_IC_POS(2, 0), SIZE_SONG },
+    { CREATE_SPRITE_SONG(255, 255, 60), ITEM_SONG_SUN, SNG_IC_POS(3, 0), SIZE_SONG },
+    { CREATE_SPRITE_SONG(119, 236, 255), ITEM_SONG_TIME, SNG_IC_POS(4, 0), SIZE_SONG },
+    { CREATE_SPRITE_SONG(165, 165, 165), ITEM_SONG_STORMS, SNG_IC_POS(5, 0), SIZE_SONG },
+    { CREATE_SPRITE_SONG(150, 255, 100), ITEM_SONG_MINUET, SNG_IC_POS(0, 1), SIZE_SONG },
+    { CREATE_SPRITE_SONG(255, 80, 40), ITEM_SONG_BOLERO, SNG_IC_POS(1, 1), SIZE_SONG },
+    { CREATE_SPRITE_SONG(100, 150, 255), ITEM_SONG_SERENADE, SNG_IC_POS(2, 1), SIZE_SONG },
+    { CREATE_SPRITE_SONG(255, 160, 0), ITEM_SONG_REQUIEM, SNG_IC_POS(3, 1), SIZE_SONG },
+    { CREATE_SPRITE_SONG(255, 100, 255), ITEM_SONG_NOCTURNE, SNG_IC_POS(4, 1), SIZE_SONG },
+    { CREATE_SPRITE_SONG(255, 240, 100), ITEM_SONG_PRELUDE, SNG_IC_POS(5, 1), SIZE_SONG },
 
-    {CREATE_SPRITE_24(dgQuestIconHeartContainerTex, 101),  ITEM_DOUBLE_DEFENSE,   {0x05, -0x04},    SIZE_COUNTER},
+    { CREATE_SPRITE_24(dgQuestIconHeartContainerTex, 101), ITEM_DOUBLE_DEFENSE, { 0x05, -0x04 }, SIZE_COUNTER },
 };
 
 static u8 color_product(u8 c1, u8 c2) {
@@ -181,7 +205,7 @@ static u8 color_product(u8 c1, u8 c2) {
     return (u8)div255;
 }
 
-static const Color_RGBA8 DIM = {0x40, 0x40, 0x40, 0x90};
+static const Color_RGBA8 DIM = { 0x40, 0x40, 0x40, 0x90 };
 
 void SpriteLoad(FileChooseContext* this, Sprite* sprite);
 void SpriteDraw(FileChooseContext* this, Sprite* sprite, int left, int top, int width, int height);
@@ -231,30 +255,35 @@ u8 HasItem(s16 fileIndex, u8 item) {
     }
 
     if (item == ITEM_BRACELET) {
-        return ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_STRENGTH]) >> gUpgradeShifts[UPG_STRENGTH]) == 1;
+        return ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_STRENGTH]) >>
+                gUpgradeShifts[UPG_STRENGTH]) == 1;
     }
 
     if (item == ITEM_GAUNTLETS_SILVER) {
-        return ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_STRENGTH]) >> gUpgradeShifts[UPG_STRENGTH]) == 2;
+        return ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_STRENGTH]) >>
+                gUpgradeShifts[UPG_STRENGTH]) == 2;
     }
 
     if (item == ITEM_GAUNTLETS_GOLD) {
-        return ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_STRENGTH]) >> gUpgradeShifts[UPG_STRENGTH]) == 3;
+        return ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_STRENGTH]) >>
+                gUpgradeShifts[UPG_STRENGTH]) == 3;
     }
 
     if (item == ITEM_SCALE_SILVER) {
-        return ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_SCALE]) >> gUpgradeShifts[UPG_SCALE]) == 1;
+        return ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_SCALE]) >> gUpgradeShifts[UPG_SCALE]) ==
+               1;
     }
 
     if (item == ITEM_SCALE_GOLDEN) {
-        return ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_SCALE]) >> gUpgradeShifts[UPG_SCALE]) == 2;
+        return ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_SCALE]) >> gUpgradeShifts[UPG_SCALE]) ==
+               2;
     }
 
     if (item == ITEM_DOUBLE_DEFENSE) {
         return Save_GetSaveMetaInfo(fileIndex)->isDoubleDefenseAcquired;
     }
 
-    //greg
+    // greg
     if (item == ITEM_RUPEE_GREEN) {
         return Save_GetSaveMetaInfo(fileIndex)->gregFound;
     }
@@ -263,8 +292,9 @@ u8 HasItem(s16 fileIndex, u8 item) {
 }
 
 u8 ShouldRenderItem(s16 fileIndex, u8 item) {
-    //strength
-    if (item == ITEM_BRACELET && (HasItem(fileIndex, ITEM_GAUNTLETS_SILVER) || HasItem(fileIndex, ITEM_GAUNTLETS_GOLD))) {
+    // strength
+    if (item == ITEM_BRACELET &&
+        (HasItem(fileIndex, ITEM_GAUNTLETS_SILVER) || HasItem(fileIndex, ITEM_GAUNTLETS_GOLD))) {
         return 0;
     }
 
@@ -276,7 +306,7 @@ u8 ShouldRenderItem(s16 fileIndex, u8 item) {
         return 0;
     }
 
-    //magic
+    // magic
     if (item == ITEM_SINGLE_MAGIC && HasItem(fileIndex, ITEM_DOUBLE_MAGIC)) {
         return 0;
     }
@@ -285,7 +315,7 @@ u8 ShouldRenderItem(s16 fileIndex, u8 item) {
         return 0;
     }
 
-    //scales
+    // scales
     if (item == ITEM_SCALE_SILVER && HasItem(fileIndex, ITEM_SCALE_GOLDEN)) {
         return 0;
     }
@@ -294,7 +324,7 @@ u8 ShouldRenderItem(s16 fileIndex, u8 item) {
         return 0;
     }
 
-    //hookshot/longshot
+    // hookshot/longshot
     if (item == ITEM_HOOKSHOT && HasItem(fileIndex, ITEM_LONGSHOT)) {
         return 0;
     }
@@ -303,7 +333,7 @@ u8 ShouldRenderItem(s16 fileIndex, u8 item) {
         return 0;
     }
 
-    //ocarinas
+    // ocarinas
     if (item == ITEM_OCARINA_FAIRY && HasItem(fileIndex, ITEM_OCARINA_TIME)) {
         return 0;
     }
@@ -312,7 +342,7 @@ u8 ShouldRenderItem(s16 fileIndex, u8 item) {
         return 0;
     }
 
-    //trade child
+    // trade child
     if (item == ITEM_WEIRD_EGG && !HasItem(fileIndex, ITEM_WEIRD_EGG)) {
         return 0;
     }
@@ -325,22 +355,12 @@ u8 ShouldRenderItem(s16 fileIndex, u8 item) {
         return 0;
     }
 
-    if (
-        item == ITEM_MASK_KEATON &&
-        (
-            HasItem(fileIndex, ITEM_WEIRD_EGG) ||
-            HasItem(fileIndex, ITEM_CHICKEN) ||
-            HasItem(fileIndex, ITEM_LETTER_ZELDA) ||
-            HasItem(fileIndex, ITEM_MASK_SKULL) ||
-            HasItem(fileIndex, ITEM_MASK_SPOOKY) ||
-            HasItem(fileIndex, ITEM_MASK_BUNNY) ||
-            HasItem(fileIndex, ITEM_MASK_GORON) ||
-            HasItem(fileIndex, ITEM_MASK_ZORA) ||
-            HasItem(fileIndex, ITEM_MASK_GERUDO) ||
-            HasItem(fileIndex, ITEM_MASK_TRUTH) ||
-            HasItem(fileIndex, ITEM_SOLD_OUT)
-        )
-    ) {
+    if (item == ITEM_MASK_KEATON && (HasItem(fileIndex, ITEM_WEIRD_EGG) || HasItem(fileIndex, ITEM_CHICKEN) ||
+                                     HasItem(fileIndex, ITEM_LETTER_ZELDA) || HasItem(fileIndex, ITEM_MASK_SKULL) ||
+                                     HasItem(fileIndex, ITEM_MASK_SPOOKY) || HasItem(fileIndex, ITEM_MASK_BUNNY) ||
+                                     HasItem(fileIndex, ITEM_MASK_GORON) || HasItem(fileIndex, ITEM_MASK_ZORA) ||
+                                     HasItem(fileIndex, ITEM_MASK_GERUDO) || HasItem(fileIndex, ITEM_MASK_TRUTH) ||
+                                     HasItem(fileIndex, ITEM_SOLD_OUT))) {
         return 0;
     }
 
@@ -376,22 +396,12 @@ u8 ShouldRenderItem(s16 fileIndex, u8 item) {
         return 0;
     }
 
-    //trade adult
-    if (
-        item == ITEM_POCKET_EGG &&
-        (
-            HasItem(fileIndex, ITEM_POCKET_CUCCO) ||
-            HasItem(fileIndex, ITEM_COJIRO) ||
-            HasItem(fileIndex, ITEM_ODD_MUSHROOM) ||
-            HasItem(fileIndex, ITEM_ODD_POTION) ||
-            HasItem(fileIndex, ITEM_SAW) ||
-            HasItem(fileIndex, ITEM_SWORD_BROKEN) ||
-            HasItem(fileIndex, ITEM_PRESCRIPTION) ||
-            HasItem(fileIndex, ITEM_FROG) ||
-            HasItem(fileIndex, ITEM_EYEDROPS) ||
-            HasItem(fileIndex, ITEM_CLAIM_CHECK)
-        )
-    ) {
+    // trade adult
+    if (item == ITEM_POCKET_EGG &&
+        (HasItem(fileIndex, ITEM_POCKET_CUCCO) || HasItem(fileIndex, ITEM_COJIRO) ||
+         HasItem(fileIndex, ITEM_ODD_MUSHROOM) || HasItem(fileIndex, ITEM_ODD_POTION) || HasItem(fileIndex, ITEM_SAW) ||
+         HasItem(fileIndex, ITEM_SWORD_BROKEN) || HasItem(fileIndex, ITEM_PRESCRIPTION) ||
+         HasItem(fileIndex, ITEM_FROG) || HasItem(fileIndex, ITEM_EYEDROPS) || HasItem(fileIndex, ITEM_CLAIM_CHECK))) {
         return 0;
     }
 
@@ -439,7 +449,7 @@ u8 ShouldRenderItem(s16 fileIndex, u8 item) {
         return 0;
     }
 
-    //greg
+    // greg
     if (item == ITEM_RUPEE_GREEN) {
         return Save_GetSaveMetaInfo(fileIndex)->randoSave;
     }
@@ -457,13 +467,17 @@ static void DrawItems(FileChooseContext* this, s16 fileIndex, u8 alpha) {
 
         if (ShouldRenderItem(fileIndex, data->item)) {
             if (HasItem(fileIndex, data->item)) {
-                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, data->color.r, data->color.g, data->color.b, color_product(data->color.a, alpha));
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, data->color.r, data->color.g, data->color.b,
+                                color_product(data->color.a, alpha));
             } else {
-                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, color_product(data->color.r, DIM.r), color_product(data->color.g, DIM.g), color_product(data->color.b, DIM.b), color_product(color_product(data->color.a, DIM.a), alpha));
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, color_product(data->color.r, DIM.r),
+                                color_product(data->color.g, DIM.g), color_product(data->color.b, DIM.b),
+                                color_product(color_product(data->color.a, DIM.a), alpha));
             }
 
             SpriteLoad(this, &(data->sprite));
-            SpriteDraw(this, &(data->sprite), LEFT_OFFSET + data->pos.left, TOP_OFFSET + data->pos.top, data->size.width, data->size.height);
+            SpriteDraw(this, &(data->sprite), LEFT_OFFSET + data->pos.left, TOP_OFFSET + data->pos.top,
+                       data->size.width, data->size.height);
         }
     }
 
@@ -491,26 +505,20 @@ typedef struct {
 } CounterData;
 
 static CounterData counterData[8] = {
-    {CREATE_SPRITE_24(dgQuestIconHeartContainerTex, 101), COUNTER_HEALTH,        {0x05, 0x00}, SIZE_COUNTER},
-    {CREATE_SPRITE_RUPEE(0x32, 0x40, 0x19),               COUNTER_WALLET_NONE,   {0x05, 0x15}, SIZE_COUNTER},
-    {CREATE_SPRITE_RUPEE(0xC8, 0xFF, 0x64),               COUNTER_WALLET_CHILD,  {0x05, 0x15}, SIZE_COUNTER},
-    {CREATE_SPRITE_RUPEE(0x82, 0x82, 0xFF),               COUNTER_WALLET_ADULT,  {0x05, 0x15}, SIZE_COUNTER},
-    {CREATE_SPRITE_RUPEE(0xFF, 0x64, 0x64),               COUNTER_WALLET_GIANT,  {0x05, 0x15}, SIZE_COUNTER},
-    {CREATE_SPRITE_RUPEE(0xFF, 0x5A, 0xFF),               COUNTER_WALLET_TYCOON, {0x05, 0x15}, SIZE_COUNTER},
-    {CREATE_SPRITE_24(dgQuestIconGoldSkulltulaTex, 103),  COUNTER_SKULLTULLAS,   {0x05, 0x2A}, SIZE_COUNTER},
-    {CREATE_SPRITE_SKULL,                                 COUNTER_DEATHS,        {0x48, 0x2A}, SIZE_COUNTER},
+    { CREATE_SPRITE_24(dgQuestIconHeartContainerTex, 101), COUNTER_HEALTH, { 0x05, 0x00 }, SIZE_COUNTER },
+    { CREATE_SPRITE_RUPEE(0x32, 0x40, 0x19), COUNTER_WALLET_NONE, { 0x05, 0x15 }, SIZE_COUNTER },
+    { CREATE_SPRITE_RUPEE(0xC8, 0xFF, 0x64), COUNTER_WALLET_CHILD, { 0x05, 0x15 }, SIZE_COUNTER },
+    { CREATE_SPRITE_RUPEE(0x82, 0x82, 0xFF), COUNTER_WALLET_ADULT, { 0x05, 0x15 }, SIZE_COUNTER },
+    { CREATE_SPRITE_RUPEE(0xFF, 0x64, 0x64), COUNTER_WALLET_GIANT, { 0x05, 0x15 }, SIZE_COUNTER },
+    { CREATE_SPRITE_RUPEE(0xFF, 0x5A, 0xFF), COUNTER_WALLET_TYCOON, { 0x05, 0x15 }, SIZE_COUNTER },
+    { CREATE_SPRITE_24(dgQuestIconGoldSkulltulaTex, 103), COUNTER_SKULLTULLAS, { 0x05, 0x2A }, SIZE_COUNTER },
+    { CREATE_SPRITE_SKULL, COUNTER_DEATHS, { 0x48, 0x2A }, SIZE_COUNTER },
 };
 
 static Sprite counterDigitSprites[10] = {
-    CREATE_SPRITE_COUNTER_DIGIT(0),
-    CREATE_SPRITE_COUNTER_DIGIT(1),
-    CREATE_SPRITE_COUNTER_DIGIT(2),
-    CREATE_SPRITE_COUNTER_DIGIT(3),
-    CREATE_SPRITE_COUNTER_DIGIT(4),
-    CREATE_SPRITE_COUNTER_DIGIT(5),
-    CREATE_SPRITE_COUNTER_DIGIT(6),
-    CREATE_SPRITE_COUNTER_DIGIT(7),
-    CREATE_SPRITE_COUNTER_DIGIT(8),
+    CREATE_SPRITE_COUNTER_DIGIT(0), CREATE_SPRITE_COUNTER_DIGIT(1), CREATE_SPRITE_COUNTER_DIGIT(2),
+    CREATE_SPRITE_COUNTER_DIGIT(3), CREATE_SPRITE_COUNTER_DIGIT(4), CREATE_SPRITE_COUNTER_DIGIT(5),
+    CREATE_SPRITE_COUNTER_DIGIT(6), CREATE_SPRITE_COUNTER_DIGIT(7), CREATE_SPRITE_COUNTER_DIGIT(8),
     CREATE_SPRITE_COUNTER_DIGIT(9),
 };
 
@@ -520,26 +528,34 @@ u8 ShouldRenderCounter(s16 fileIndex, u8 counterId) {
     }
 
     if (counterId == COUNTER_WALLET_CHILD) {
-        return Save_GetSaveMetaInfo(fileIndex)->hasWallet && ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_WALLET]) >> gUpgradeShifts[UPG_WALLET]) == 0;
+        return Save_GetSaveMetaInfo(fileIndex)->hasWallet &&
+               ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_WALLET]) >>
+                gUpgradeShifts[UPG_WALLET]) == 0;
     }
 
     if (counterId == COUNTER_WALLET_ADULT) {
-        return Save_GetSaveMetaInfo(fileIndex)->hasWallet && ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_WALLET]) >> gUpgradeShifts[UPG_WALLET]) == 1;
+        return Save_GetSaveMetaInfo(fileIndex)->hasWallet &&
+               ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_WALLET]) >>
+                gUpgradeShifts[UPG_WALLET]) == 1;
     }
 
     if (counterId == COUNTER_WALLET_GIANT) {
-        return Save_GetSaveMetaInfo(fileIndex)->hasWallet && ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_WALLET]) >> gUpgradeShifts[UPG_WALLET]) == 2;
+        return Save_GetSaveMetaInfo(fileIndex)->hasWallet &&
+               ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_WALLET]) >>
+                gUpgradeShifts[UPG_WALLET]) == 2;
     }
 
     if (counterId == COUNTER_WALLET_TYCOON) {
-        return Save_GetSaveMetaInfo(fileIndex)->hasWallet && ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_WALLET]) >> gUpgradeShifts[UPG_WALLET]) == 3;
+        return Save_GetSaveMetaInfo(fileIndex)->hasWallet &&
+               ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_WALLET]) >>
+                gUpgradeShifts[UPG_WALLET]) == 3;
     }
 
     return 1;
 }
 
 u16 GetCurrentCounterValue(s16 fileIndex, u8 counter) {
-    //one heart is 16 healthCapacity
+    // one heart is 16 healthCapacity
     if (counter == COUNTER_HEALTH) {
         return Save_GetSaveMetaInfo(fileIndex)->healthCapacity / 16;
     }
@@ -600,7 +616,7 @@ void DrawCounterValue(FileChooseContext* this, s16 fileIndex, u8 alpha, CounterD
     currentValue = GetCurrentCounterValue(fileIndex, data->id);
     maxValue = GetMaxCounterValue(fileIndex, data->id);
 
-    //to prevent crashes if you use the save editor
+    // to prevent crashes if you use the save editor
     if (currentValue > 999) {
         currentValue = 999;
     }
@@ -627,22 +643,30 @@ void DrawCounterValue(FileChooseContext* this, s16 fileIndex, u8 alpha, CounterD
 
     if (hundreds != 0) {
         SpriteLoad(this, &counterDigitSprites[hundreds]);
-        SpriteDraw(this, &counterDigitSprites[hundreds], LEFT_OFFSET + COUNTER_DIGITS_LEFT_OFFSET - 6 + data->pos.left, TOP_OFFSET + COUNTER_DIGITS_TOP_OFFSET + data->pos.top, 8, 8);
+        SpriteDraw(this, &counterDigitSprites[hundreds], LEFT_OFFSET + COUNTER_DIGITS_LEFT_OFFSET - 6 + data->pos.left,
+                   TOP_OFFSET + COUNTER_DIGITS_TOP_OFFSET + data->pos.top, 8, 8);
 
         SpriteLoad(this, &counterDigitSprites[tens]);
-        SpriteDraw(this, &counterDigitSprites[tens], LEFT_OFFSET + COUNTER_DIGITS_LEFT_OFFSET + data->pos.left, TOP_OFFSET + COUNTER_DIGITS_TOP_OFFSET + data->pos.top, 8, 8);
+        SpriteDraw(this, &counterDigitSprites[tens], LEFT_OFFSET + COUNTER_DIGITS_LEFT_OFFSET + data->pos.left,
+                   TOP_OFFSET + COUNTER_DIGITS_TOP_OFFSET + data->pos.top, 8, 8);
 
         SpriteLoad(this, &counterDigitSprites[currentValue]);
-        SpriteDraw(this, &counterDigitSprites[currentValue], LEFT_OFFSET + COUNTER_DIGITS_LEFT_OFFSET + 6 + data->pos.left, TOP_OFFSET + COUNTER_DIGITS_TOP_OFFSET + data->pos.top, 8, 8);
+        SpriteDraw(this, &counterDigitSprites[currentValue],
+                   LEFT_OFFSET + COUNTER_DIGITS_LEFT_OFFSET + 6 + data->pos.left,
+                   TOP_OFFSET + COUNTER_DIGITS_TOP_OFFSET + data->pos.top, 8, 8);
     } else if (tens != 0) {
         SpriteLoad(this, &counterDigitSprites[tens]);
-        SpriteDraw(this, &counterDigitSprites[tens], LEFT_OFFSET + COUNTER_DIGITS_LEFT_OFFSET - 3 + data->pos.left, TOP_OFFSET + COUNTER_DIGITS_TOP_OFFSET + data->pos.top, 8, 8);
+        SpriteDraw(this, &counterDigitSprites[tens], LEFT_OFFSET + COUNTER_DIGITS_LEFT_OFFSET - 3 + data->pos.left,
+                   TOP_OFFSET + COUNTER_DIGITS_TOP_OFFSET + data->pos.top, 8, 8);
 
         SpriteLoad(this, &counterDigitSprites[currentValue]);
-        SpriteDraw(this, &counterDigitSprites[currentValue], LEFT_OFFSET + COUNTER_DIGITS_LEFT_OFFSET + 3 + data->pos.left, TOP_OFFSET + COUNTER_DIGITS_TOP_OFFSET + data->pos.top, 8, 8);
+        SpriteDraw(this, &counterDigitSprites[currentValue],
+                   LEFT_OFFSET + COUNTER_DIGITS_LEFT_OFFSET + 3 + data->pos.left,
+                   TOP_OFFSET + COUNTER_DIGITS_TOP_OFFSET + data->pos.top, 8, 8);
     } else {
         SpriteLoad(this, &counterDigitSprites[currentValue]);
-        SpriteDraw(this, &counterDigitSprites[currentValue], LEFT_OFFSET + COUNTER_DIGITS_LEFT_OFFSET + data->pos.left, TOP_OFFSET + COUNTER_DIGITS_TOP_OFFSET + data->pos.top, 8, 8);
+        SpriteDraw(this, &counterDigitSprites[currentValue], LEFT_OFFSET + COUNTER_DIGITS_LEFT_OFFSET + data->pos.left,
+                   TOP_OFFSET + COUNTER_DIGITS_TOP_OFFSET + data->pos.top, 8, 8);
     }
 
     gDPPipeSync(POLY_OPA_DISP++);
@@ -658,10 +682,12 @@ static void DrawCounters(FileChooseContext* this, s16 fileIndex, u8 alpha) {
         CounterData* data = &counterData[i];
 
         if (ShouldRenderCounter(fileIndex, data->id)) {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, data->color.r, data->color.g, data->color.b, color_product(data->color.a, alpha));
-        
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, data->color.r, data->color.g, data->color.b,
+                            color_product(data->color.a, alpha));
+
             SpriteLoad(this, &(data->sprite));
-            SpriteDraw(this, &(data->sprite), LEFT_OFFSET + data->pos.left, TOP_OFFSET + data->pos.top, data->size.width, data->size.height);
+            SpriteDraw(this, &(data->sprite), LEFT_OFFSET + data->pos.left, TOP_OFFSET + data->pos.top,
+                       data->size.width, data->size.height);
 
             DrawCounterValue(this, fileIndex, alpha, data);
         }
@@ -682,19 +708,21 @@ static void DrawMoreInfo(FileChooseContext* this, s16 fileIndex, u8 alpha) {
 void Sram_InitDebugSave(void);
 void Sram_InitBossRushSave();
 
-void FileChoose_DrawTextureI8(GraphicsContext* gfxCtx, const void* texture, s16 texWidth, s16 texHeight, s16 rectLeft, s16 rectTop,
-                         s16 rectWidth, s16 rectHeight, s16 dsdx, s16 dtdy) {
+void FileChoose_DrawTextureI8(GraphicsContext* gfxCtx, const void* texture, s16 texWidth, s16 texHeight, s16 rectLeft,
+                              s16 rectTop, s16 rectWidth, s16 rectHeight, s16 dsdx, s16 dtdy) {
     OPEN_DISPS(gfxCtx);
-    gDPLoadTextureBlock(POLY_OPA_DISP++, texture, G_IM_FMT_I, G_IM_SIZ_8b, texWidth, texHeight, 0, G_TX_NOMIRROR | G_TX_WRAP,
-                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    gDPLoadTextureBlock(POLY_OPA_DISP++, texture, G_IM_FMT_I, G_IM_SIZ_8b, texWidth, texHeight, 0,
+                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
+                        G_TX_NOLOD);
 
-    gSPTextureRectangle(POLY_OPA_DISP++, rectLeft << 2, rectTop << 2, (rectLeft + rectWidth) << 2, (rectTop + rectHeight) << 2,
-                        G_TX_RENDERTILE, 0, 0, dsdx, dtdy);
+    gSPTextureRectangle(POLY_OPA_DISP++, rectLeft << 2, rectTop << 2, (rectLeft + rectWidth) << 2,
+                        (rectTop + rectHeight) << 2, G_TX_RENDERTILE, 0, 0, dsdx, dtdy);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void FileChoose_DrawImageRGBA32(GraphicsContext* gfxCtx, s16 centerX, s16 centerY, const char* source, u32 width, u32 height) {
+void FileChoose_DrawImageRGBA32(GraphicsContext* gfxCtx, s16 centerX, s16 centerY, const char* source, u32 width,
+                                u32 height) {
     u8* curTexture;
     s32 textureCount;
     u32 rectLeft;
@@ -709,22 +737,22 @@ void FileChoose_DrawImageRGBA32(GraphicsContext* gfxCtx, s16 centerX, s16 center
 
     rectLeft = centerX - (width / 2);
     rectTop = centerY - (height / 2);
-    
+
     gDPSetTileCustom(POLY_OPA_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_32b, width, height, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                      G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-    
+
     gDPSetTextureImage(POLY_OPA_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_32b, width, source);
-    
+
     gDPLoadSync(POLY_OPA_DISP++);
     gDPLoadTile(POLY_OPA_DISP++, G_TX_LOADTILE, 0, 0, (width - 1) << 2, (height - 1) << 2);
-    
+
     gSPTextureRectangle(POLY_OPA_DISP++, rectLeft << 2, rectTop << 2, (rectLeft + (s32)width) << 2,
                         (rectTop + height) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
     CLOSE_DISPS(gfxCtx);
 }
 
 void FileChoose_DrawTextRec(GraphicsContext* gfxCtx, s32 r, s32 g, s32 b, s32 a, f32 x, f32 y, f32 z, s32 s, s32 t,
-                         f32 dx, f32 dy) {
+                            f32 dx, f32 dy) {
     f32 unk;
     s32 ulx, uly, lrx, lry;
     f32 w, h;
@@ -799,8 +827,7 @@ void FileChoose_SetView(FileChooseContext* this, f32 eyeX, f32 eyeY, f32 eyeZ) {
     func_800AAA50(&this->view, 0x7F);
 }
 
-Gfx* FileChoose_QuadTextureIA8(Gfx* gfx, void* texture, s16 width, s16 height, s16 point)
-{
+Gfx* FileChoose_QuadTextureIA8(Gfx* gfx, void* texture, s16 width, s16 height, s16 point) {
     gDPLoadTextureBlock(gfx++, texture, G_IM_FMT_IA, G_IM_SIZ_8b, width, height, 0, G_TX_NOMIRROR | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
@@ -924,20 +951,17 @@ void SpriteLoad(FileChooseContext* this, Sprite* sprite) {
      */
 
     if (sprite->im_siz == G_IM_SIZ_8b) {
-        gDPLoadTextureBlock(POLY_OPA_DISP++, sprite->tex, sprite->im_fmt,
-                            G_IM_SIZ_8b,
-                            sprite->width, sprite->height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
-                            G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureBlock(POLY_OPA_DISP++, sprite->tex, sprite->im_fmt, G_IM_SIZ_8b, sprite->width, sprite->height, 0,
+                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
+                            G_TX_NOLOD);
     } else if (sprite->im_siz == G_IM_SIZ_16b) {
-        gDPLoadTextureBlock(POLY_OPA_DISP++, sprite->tex, sprite->im_fmt,
-                            G_IM_SIZ_16b,
-                            sprite->width, sprite->height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
-                            G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureBlock(POLY_OPA_DISP++, sprite->tex, sprite->im_fmt, G_IM_SIZ_16b, sprite->width, sprite->height,
+                            0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                            G_TX_NOLOD, G_TX_NOLOD);
     } else {
-        gDPLoadTextureBlock(POLY_OPA_DISP++, sprite->tex, sprite->im_fmt,
-                            G_IM_SIZ_32b,
-                            sprite->width, sprite->height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
-                            G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureBlock(POLY_OPA_DISP++, sprite->tex, sprite->im_fmt, G_IM_SIZ_32b, sprite->width, sprite->height,
+                            0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                            G_TX_NOLOD, G_TX_NOLOD);
     }
 
     CLOSE_DISPS(this->state.gfxCtx);
@@ -955,17 +979,18 @@ void SpriteDraw(FileChooseContext* this, Sprite* sprite, int left, int top, int 
     CLOSE_DISPS(this->state.gfxCtx);
 }
 
-
 void DrawSeedHashSprites(FileChooseContext* this) {
     OPEN_DISPS(this->state.gfxCtx);
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
 
-    // Draw icons on the main menu, when a rando file is selected, and on name entry when quest selection is set to rando
+    // Draw icons on the main menu, when a rando file is selected, and on name entry when quest selection is set to
+    // rando
     if (this->configMode == CM_MAIN_MENU &&
-         (this->selectMode != SM_CONFIRM_FILE || Save_GetSaveMetaInfo(this->selectedFileIndex)->randoSave == 1)) {
+        (this->selectMode != SM_CONFIRM_FILE || Save_GetSaveMetaInfo(this->selectedFileIndex)->randoSave == 1)) {
 
-        if (this->fileInfoAlpha[this->selectedFileIndex] > 0 && Save_GetSaveMetaInfo(this->selectedFileIndex)->randoSave) {
+        if (this->fileInfoAlpha[this->selectedFileIndex] > 0 &&
+            Save_GetSaveMetaInfo(this->selectedFileIndex)->randoSave) {
             // Use file info alpha to match fading
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0xFF, 0xFF, 0xFF, this->fileInfoAlpha[this->selectedFileIndex]);
 
@@ -974,7 +999,7 @@ void DrawSeedHashSprites(FileChooseContext* this) {
             for (unsigned int i = 0; i < 5; i++) {
                 SpriteLoad(this, GetSeedTexture(Save_GetSaveMetaInfo(this->selectedFileIndex)->seedHash[i]));
                 SpriteDraw(this, GetSeedTexture(Save_GetSaveMetaInfo(this->selectedFileIndex)->seedHash[i]),
-                            xStart + (40 * i), 10, 24, 24);
+                           xStart + (40 * i), 10, 24, 24);
             }
         }
     }
@@ -1008,42 +1033,45 @@ bool fileSelectSpoilerFileLoaded = false;
 
 void FileChoose_UpdateRandomizer() {
     if (CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) != 0 && generating == 0) {
-            generating = 1;
-            func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_HORSE, 0, 7, 1);
-            return;
+        generating = 1;
+        func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_HORSE, 0, 7, 1);
+        return;
     } else if (CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) == 0 && generating) {
-            if (Randomizer_IsSeedGenerated()) {
-                Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
-                retries = 0;
-            } else {
-                Sfx_PlaySfxCentered(NA_SE_SY_OCARINA_ERROR);
-            }
-            func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_FILE_SELECT, 0, 7, 1);
-            generating = 0;
-            return;
+        if (Randomizer_IsSeedGenerated()) {
+            Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
+            retries = 0;
+        } else {
+            Sfx_PlaySfxCentered(NA_SE_SY_OCARINA_ERROR);
+        }
+        func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_FILE_SELECT, 0, 7, 1);
+        generating = 0;
+        return;
     } else if (generating) {
-            return;
+        return;
     }
 
-    if (!SpoilerFileExists(CVarGetString(CVAR_GENERAL("SpoilerLog"), "")) && !CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
-            CVarSetString(CVAR_GENERAL("SpoilerLog"), "");
+    if (!SpoilerFileExists(CVarGetString(CVAR_GENERAL("SpoilerLog"), "")) &&
+        !CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
+        CVarSetString(CVAR_GENERAL("SpoilerLog"), "");
     }
 
-    if (CVarGetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 0) != 0 || !(Randomizer_IsSeedGenerated() || Randomizer_IsSpoilerLoaded()) &&
-        SpoilerFileExists(CVarGetString(CVAR_GENERAL("SpoilerLog"), "")) && !fileSelectSpoilerFileLoaded) {
-            if (CVarGetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 0) != 0) {
-                CVarSetString(CVAR_GENERAL("SpoilerLog"), CVarGetString(CVAR_GENERAL("RandomizerDroppedFile"), ""));
-                Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
-            }
-            const char* fileLoc = CVarGetString(CVAR_GENERAL("SpoilerLog"), "");
-            CVarSetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 0);
-            CVarSetString(CVAR_GENERAL("RandomizerDroppedFile"), "");
-            Randomizer_ParseSpoiler(fileLoc);
-            fileSelectSpoilerFileLoaded = true;
+    if (CVarGetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 0) != 0 ||
+        !(Randomizer_IsSeedGenerated() || Randomizer_IsSpoilerLoaded()) &&
+            SpoilerFileExists(CVarGetString(CVAR_GENERAL("SpoilerLog"), "")) && !fileSelectSpoilerFileLoaded) {
+        if (CVarGetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 0) != 0) {
+            CVarSetString(CVAR_GENERAL("SpoilerLog"), CVarGetString(CVAR_GENERAL("RandomizerDroppedFile"), ""));
+            Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
+        }
+        const char* fileLoc = CVarGetString(CVAR_GENERAL("SpoilerLog"), "");
+        CVarSetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 0);
+        CVarSetString(CVAR_GENERAL("RandomizerDroppedFile"), "");
+        Randomizer_ParseSpoiler(fileLoc);
+        fileSelectSpoilerFileLoaded = true;
 
-            if (SpoilerFileExists(CVarGetString(CVAR_GENERAL("SpoilerLog"), "")) && CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
-                remove(fileLoc);
-            }
+        if (SpoilerFileExists(CVarGetString(CVAR_GENERAL("SpoilerLog"), "")) &&
+            CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
+            remove(fileLoc);
+        }
     }
 }
 
@@ -1071,25 +1099,30 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
     if (CHECK_BTN_ALL(input->press.button, BTN_START) || CHECK_BTN_ALL(input->press.button, BTN_A)) {
         if (this->buttonIndex <= FS_BTN_MAIN_FILE_3) {
             if (!Save_GetSaveMetaInfo(this->buttonIndex)->valid) {
-                Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 this->prevConfigMode = this->configMode;
                 this->configMode = CM_ROTATE_TO_QUEST_MENU;
                 this->logoAlpha = 0;
-            } else if(!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(this->buttonIndex))) {
-                Audio_PlaySoundGeneral(NA_SE_SY_FSEL_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+            } else if (!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(this->buttonIndex))) {
+                Audio_PlaySoundGeneral(NA_SE_SY_FSEL_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             } else if (this->n64ddFlags[this->buttonIndex] == this->n64ddFlag) {
-                Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 this->actionTimer = 8;
                 this->selectMode = SM_FADE_MAIN_TO_SELECT;
                 this->selectedFileIndex = this->buttonIndex;
                 this->menuMode = FS_MENU_MODE_SELECT;
                 this->nextTitleLabel = FS_TITLE_OPEN_FILE;
             } else if (!this->n64ddFlags[this->buttonIndex]) {
-                Audio_PlaySoundGeneral(NA_SE_SY_FSEL_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                Audio_PlaySoundGeneral(NA_SE_SY_FSEL_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             }
         } else {
             if (this->warningLabel == FS_WARNING_NONE) {
-                Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 this->prevConfigMode = this->configMode;
 
                 if (this->buttonIndex == FS_BTN_MAIN_COPY) {
@@ -1112,12 +1145,14 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
 
                 this->actionTimer = 8;
             } else {
-                Audio_PlaySoundGeneral(NA_SE_SY_FSEL_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                Audio_PlaySoundGeneral(NA_SE_SY_FSEL_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             }
         }
     } else {
         if ((ABS(this->stickRelY) > 30) || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
-            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
 
             if ((this->stickRelY > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DUP))) {
                 this->buttonIndex--;
@@ -1296,7 +1331,8 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
             this->questType[this->buttonIndex] = MAX_QUEST;
         }
 
-        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
 
         GameInteractor_ExecuteOnUpdateFileQuestSelection(this->questType[this->buttonIndex]);
     }
@@ -1305,16 +1341,19 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
         gSaveContext.ship.quest.id = this->questType[this->buttonIndex];
 
         if (this->questType[this->buttonIndex] == QUEST_BOSSRUSH) {
-            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             this->prevConfigMode = this->configMode;
             this->configMode = CM_ROTATE_TO_BOSS_RUSH_MENU;
             return;
         } else if (this->questType[this->buttonIndex] == QUEST_RANDOMIZER) {
-            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             this->prevConfigMode = this->configMode;
             this->configMode = CM_ROTATE_TO_RANDOMIZER_SETTINGS_MENU;
         } else {
-            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             osSyncPrintf("Selected Dungeon Quest: %d\n", IS_MASTER_QUEST);
             this->prevConfigMode = this->configMode;
             this->configMode = CM_ROTATE_TO_NAME_ENTRY;
@@ -1365,7 +1404,7 @@ void FileChoose_UpdateBossRushMenu(GameState* thisx) {
     if (this->bossRushArrowOffset >= 30) {
         this->bossRushArrowOffset = 0;
     }
-    
+
     // Move menu selection up or down.
     if (ABS(this->stickRelY) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
         // Move down
@@ -1382,7 +1421,8 @@ void FileChoose_UpdateBossRushMenu(GameState* thisx) {
                 }
             }
         } else if (this->stickRelY > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DUP))) {
-            // When selecting past the first option, cycle back to the last option and offset the list to view it properly.
+            // When selecting past the first option, cycle back to the last option and offset the list to view it
+            // properly.
             if ((this->bossRushIndex - 1) < 0) {
                 this->bossRushIndex = BR_OPTIONS_MAX - 1;
                 this->bossRushOffset = this->bossRushIndex - BOSSRUSH_MAX_OPTIONS_ON_SCREEN + 1;
@@ -1395,14 +1435,16 @@ void FileChoose_UpdateBossRushMenu(GameState* thisx) {
             }
         }
 
-        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 
     // Cycle through choices for currently selected option.
     if (ABS(this->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
         if (this->stickRelX > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT))) {
             // If exceeding the amount of choices for the selected option, cycle back to the first.
-            if ((gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex] + 1) == BossRush_GetSettingOptionsAmount(this->bossRushIndex)) {
+            if ((gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex] + 1) ==
+                BossRush_GetSettingOptionsAmount(this->bossRushIndex)) {
                 gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex] = 0;
             } else {
                 gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex]++;
@@ -1410,18 +1452,21 @@ void FileChoose_UpdateBossRushMenu(GameState* thisx) {
         } else if (this->stickRelX < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT))) {
             // If cycling back when already at the first choice for the selected option, cycle back to the last choice.
             if ((gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex] - 1) < 0) {
-                gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex] = BossRush_GetSettingOptionsAmount(this->bossRushIndex) - 1;
+                gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex] =
+                    BossRush_GetSettingOptionsAmount(this->bossRushIndex) - 1;
             } else {
                 gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex]--;
             }
         }
 
-        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 
     if (sLastBossRushOptionIndex != this->bossRushIndex ||
         sLastBossRushOptionValue != gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex]) {
-        GameInteractor_ExecuteOnUpdateFileBossRushOptionSelection(this->bossRushIndex, gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex]);
+        GameInteractor_ExecuteOnUpdateFileBossRushOptionSelection(
+            this->bossRushIndex, gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex]);
         sLastBossRushOptionIndex = this->bossRushIndex;
         sLastBossRushOptionValue = gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex];
     }
@@ -1433,7 +1478,8 @@ void FileChoose_UpdateBossRushMenu(GameState* thisx) {
 
     // Load into the game.
     if (CHECK_BTN_ALL(input->press.button, BTN_START) || CHECK_BTN_ALL(input->press.button, BTN_A)) {
-        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         this->buttonIndex = 0xFE;
         this->menuMode = FS_MENU_MODE_SELECT;
         this->selectMode = SM_FADE_OUT;
@@ -1459,7 +1505,7 @@ void FileChoose_UpdateRandomizerMenu(GameState* thisx) {
     if (this->randomizerUIAlpha > 255) {
         this->randomizerUIAlpha = 255;
     }
-    
+
     // Move menu selection up or down.
     if (ABS(this->stickRelY) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
         // Move down
@@ -1471,7 +1517,8 @@ void FileChoose_UpdateRandomizerMenu(GameState* thisx) {
                 this->randomizerIndex++;
             }
         } else if (this->stickRelY > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DUP))) {
-            // When selecting past the first option, cycle back to the last option and offset the list to view it properly.
+            // When selecting past the first option, cycle back to the last option and offset the list to view it
+            // properly.
             if ((this->randomizerIndex - 1) < RSM_START_RANDOMIZER) {
                 this->randomizerIndex = RSM_OPEN_RANDOMIZER_SETTINGS;
             } else {
@@ -1479,7 +1526,8 @@ void FileChoose_UpdateRandomizerMenu(GameState* thisx) {
             }
         }
 
-        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 
     if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
@@ -1490,7 +1538,8 @@ void FileChoose_UpdateRandomizerMenu(GameState* thisx) {
     if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
         if (this->randomizerIndex == RSM_START_RANDOMIZER) {
             if (Randomizer_IsSeedGenerated() || Randomizer_IsSpoilerLoaded()) {
-                Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
                 static u8 emptyNameNES[] = { 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
                 static u8 linkName[] = { 0x15, 0x2C, 0x31, 0x2E, 0x3E, 0x3E, 0x3E, 0x3E };
@@ -1522,7 +1571,8 @@ void FileChoose_UpdateRandomizerMenu(GameState* thisx) {
         } else if (this->randomizerIndex == RSM_GENERATE_RANDOMIZER) {
             Randomizer_GenerateRandomizer();
         } else if (this->randomizerIndex == RSM_OPEN_RANDOMIZER_SETTINGS) {
-            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             Randomizer_ShowRandomizerMenu();
         }
     }
@@ -1666,65 +1716,65 @@ void FileChoose_RotateToRandomizer(GameState* thisx) {
 }
 
 static void (*gConfigModeUpdateFuncs[])(GameState*) = {
-    FileChoose_StartFadeIn,        FileChoose_FinishFadeIn,
-    FileChoose_UpdateMainMenu,     FileChoose_SetupCopySource,
-    FileChoose_SelectCopySource,   FileChoose_SetupCopyDest1,
-    FileChoose_SetupCopyDest2,     FileChoose_SelectCopyDest,
-    FileChoose_ExitToCopySource1,  FileChoose_ExitToCopySource2,
-    FileChoose_SetupCopyConfirm1,  FileChoose_SetupCopyConfirm2,
-    FileChoose_CopyConfirm,        FileChoose_ReturnToCopyDest,
-    FileChoose_CopyAnim1,          FileChoose_CopyAnim2,
-    FileChoose_CopyAnim3,          FileChoose_CopyAnim4,
-    FileChoose_CopyAnim5,          FileChoose_ExitCopyToMain,
-    FileChoose_SetupEraseSelect,   FileChoose_EraseSelect,
-    FileChoose_SetupEraseConfirm1, FileChoose_SetupEraseConfirm2,
-    FileChoose_EraseConfirm,       FileChoose_ExitToEraseSelect1,
-    FileChoose_ExitToEraseSelect2, FileChoose_EraseAnim1,
-    FileChoose_EraseAnim2,         FileChoose_EraseAnim3,
-    FileChoose_ExitEraseToMain,    FileChoose_UnusedCM31,
-    FileChoose_RotateToNameEntry,  FileChoose_UpdateKeyboardCursor,
-    FileChoose_StartNameEntry,     FileChoose_RotateToMain,
-    FileChoose_RotateToOptions,    FileChoose_UpdateOptionsMenu,
-    FileChoose_StartOptions,       FileChoose_RotateToMain,
-    FileChoose_UnusedCMDelay,      FileChoose_RotateToQuest,
-    FileChoose_UpdateQuestMenu,    FileChoose_StartQuestMenu,
-    FileChoose_RotateToMain,       FileChoose_RotateToQuest,
-    FileChoose_RotateToBossRush,   FileChoose_UpdateBossRushMenu,
-    FileChoose_StartBossRushMenu,  FileChoose_RotateToQuest,
-    FileChoose_RotateToRandomizer, FileChoose_UpdateRandomizerMenu,
-    FileChoose_StartRandomizerMenu,FileChoose_RotateToQuest,
-    FileChoose_RotateToRandomizer
+    FileChoose_StartFadeIn,         FileChoose_FinishFadeIn,
+    FileChoose_UpdateMainMenu,      FileChoose_SetupCopySource,
+    FileChoose_SelectCopySource,    FileChoose_SetupCopyDest1,
+    FileChoose_SetupCopyDest2,      FileChoose_SelectCopyDest,
+    FileChoose_ExitToCopySource1,   FileChoose_ExitToCopySource2,
+    FileChoose_SetupCopyConfirm1,   FileChoose_SetupCopyConfirm2,
+    FileChoose_CopyConfirm,         FileChoose_ReturnToCopyDest,
+    FileChoose_CopyAnim1,           FileChoose_CopyAnim2,
+    FileChoose_CopyAnim3,           FileChoose_CopyAnim4,
+    FileChoose_CopyAnim5,           FileChoose_ExitCopyToMain,
+    FileChoose_SetupEraseSelect,    FileChoose_EraseSelect,
+    FileChoose_SetupEraseConfirm1,  FileChoose_SetupEraseConfirm2,
+    FileChoose_EraseConfirm,        FileChoose_ExitToEraseSelect1,
+    FileChoose_ExitToEraseSelect2,  FileChoose_EraseAnim1,
+    FileChoose_EraseAnim2,          FileChoose_EraseAnim3,
+    FileChoose_ExitEraseToMain,     FileChoose_UnusedCM31,
+    FileChoose_RotateToNameEntry,   FileChoose_UpdateKeyboardCursor,
+    FileChoose_StartNameEntry,      FileChoose_RotateToMain,
+    FileChoose_RotateToOptions,     FileChoose_UpdateOptionsMenu,
+    FileChoose_StartOptions,        FileChoose_RotateToMain,
+    FileChoose_UnusedCMDelay,       FileChoose_RotateToQuest,
+    FileChoose_UpdateQuestMenu,     FileChoose_StartQuestMenu,
+    FileChoose_RotateToMain,        FileChoose_RotateToQuest,
+    FileChoose_RotateToBossRush,    FileChoose_UpdateBossRushMenu,
+    FileChoose_StartBossRushMenu,   FileChoose_RotateToQuest,
+    FileChoose_RotateToRandomizer,  FileChoose_UpdateRandomizerMenu,
+    FileChoose_StartRandomizerMenu, FileChoose_RotateToQuest,
+    FileChoose_RotateToRandomizer,
 };
 
 static void (*gConfigModeUpdateFuncsNES[])(GameState*) = {
-    FileChoose_StartFadeIn,        FileChoose_FinishFadeIn,
-    FileChoose_UpdateMainMenu,     FileChoose_SetupCopySource,
-    FileChoose_SelectCopySource,   FileChoose_SetupCopyDest1,
-    FileChoose_SetupCopyDest2,     FileChoose_SelectCopyDest,
-    FileChoose_ExitToCopySource1,  FileChoose_ExitToCopySource2,
-    FileChoose_SetupCopyConfirm1,  FileChoose_SetupCopyConfirm2,
-    FileChoose_CopyConfirm,        FileChoose_ReturnToCopyDest,
-    FileChoose_CopyAnim1,          FileChoose_CopyAnim2,
-    FileChoose_CopyAnim3,          FileChoose_CopyAnim4,
-    FileChoose_CopyAnim5,          FileChoose_ExitCopyToMain,
-    FileChoose_SetupEraseSelect,   FileChoose_EraseSelect,
-    FileChoose_SetupEraseConfirm1, FileChoose_SetupEraseConfirm2,
-    FileChoose_EraseConfirm,       FileChoose_ExitToEraseSelect1,
-    FileChoose_ExitToEraseSelect2, FileChoose_EraseAnim1,
-    FileChoose_EraseAnim2,         FileChoose_EraseAnim3,
-    FileChoose_ExitEraseToMain,    FileChoose_UnusedCM31,
-    FileChoose_RotateToNameEntry,  FileChoose_UpdateKeyboardCursorNES,
-    FileChoose_StartNameEntryNES,  FileChoose_RotateToMain,
-    FileChoose_RotateToOptions,    FileChoose_UpdateOptionsMenuNES,
-    FileChoose_StartOptionsNES,    FileChoose_RotateToMain,
-    FileChoose_UnusedCMDelay,      FileChoose_RotateToQuest,
-    FileChoose_UpdateQuestMenu,    FileChoose_StartQuestMenu,
-    FileChoose_RotateToMain,       FileChoose_RotateToQuest,
-    FileChoose_RotateToBossRush,   FileChoose_UpdateBossRushMenu,
-    FileChoose_StartBossRushMenu,  FileChoose_RotateToQuest,
-    FileChoose_RotateToRandomizer, FileChoose_UpdateRandomizerMenu,
-    FileChoose_StartRandomizerMenu,FileChoose_RotateToQuest,
-    FileChoose_RotateToRandomizer
+    FileChoose_StartFadeIn,         FileChoose_FinishFadeIn,
+    FileChoose_UpdateMainMenu,      FileChoose_SetupCopySource,
+    FileChoose_SelectCopySource,    FileChoose_SetupCopyDest1,
+    FileChoose_SetupCopyDest2,      FileChoose_SelectCopyDest,
+    FileChoose_ExitToCopySource1,   FileChoose_ExitToCopySource2,
+    FileChoose_SetupCopyConfirm1,   FileChoose_SetupCopyConfirm2,
+    FileChoose_CopyConfirm,         FileChoose_ReturnToCopyDest,
+    FileChoose_CopyAnim1,           FileChoose_CopyAnim2,
+    FileChoose_CopyAnim3,           FileChoose_CopyAnim4,
+    FileChoose_CopyAnim5,           FileChoose_ExitCopyToMain,
+    FileChoose_SetupEraseSelect,    FileChoose_EraseSelect,
+    FileChoose_SetupEraseConfirm1,  FileChoose_SetupEraseConfirm2,
+    FileChoose_EraseConfirm,        FileChoose_ExitToEraseSelect1,
+    FileChoose_ExitToEraseSelect2,  FileChoose_EraseAnim1,
+    FileChoose_EraseAnim2,          FileChoose_EraseAnim3,
+    FileChoose_ExitEraseToMain,     FileChoose_UnusedCM31,
+    FileChoose_RotateToNameEntry,   FileChoose_UpdateKeyboardCursorNES,
+    FileChoose_StartNameEntryNES,   FileChoose_RotateToMain,
+    FileChoose_RotateToOptions,     FileChoose_UpdateOptionsMenuNES,
+    FileChoose_StartOptionsNES,     FileChoose_RotateToMain,
+    FileChoose_UnusedCMDelay,       FileChoose_RotateToQuest,
+    FileChoose_UpdateQuestMenu,     FileChoose_StartQuestMenu,
+    FileChoose_RotateToMain,        FileChoose_RotateToQuest,
+    FileChoose_RotateToBossRush,    FileChoose_UpdateBossRushMenu,
+    FileChoose_StartBossRushMenu,   FileChoose_RotateToQuest,
+    FileChoose_RotateToRandomizer,  FileChoose_UpdateRandomizerMenu,
+    FileChoose_StartRandomizerMenu, FileChoose_RotateToQuest,
+    FileChoose_RotateToRandomizer,
 };
 
 /**
@@ -2122,19 +2172,19 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
     s16 j;
     s16 deathCountSplit[3];
 
-    Color_RGB8 heartColor = {HEARTS_PRIM_R, HEARTS_PRIM_G, HEARTS_PRIM_B};
+    Color_RGB8 heartColor = { HEARTS_PRIM_R, HEARTS_PRIM_G, HEARTS_PRIM_B };
     if (CVarGetInteger(CVAR_COSMETIC("Consumable.Hearts.Changed"), 0)) {
         heartColor = CVarGetColor24(CVAR_COSMETIC("Consumable.Hearts.Value"), heartColor);
     }
-    Color_RGB8 heartBorder = {HEARTS_ENV_R, HEARTS_ENV_G, HEARTS_ENV_B};
+    Color_RGB8 heartBorder = { HEARTS_ENV_R, HEARTS_ENV_G, HEARTS_ENV_B };
     if (CVarGetInteger(CVAR_COSMETIC("Consumable.HeartBorder.Changed"), 0)) {
         heartBorder = CVarGetColor24(CVAR_COSMETIC("Consumable.HeartBorder.Value"), heartBorder);
     }
-    Color_RGB8 ddColor = {HEARTS_DD_ENV_R, HEARTS_DD_ENV_G, HEARTS_DD_ENV_B};
+    Color_RGB8 ddColor = { HEARTS_DD_ENV_R, HEARTS_DD_ENV_G, HEARTS_DD_ENV_B };
     if (CVarGetInteger(CVAR_COSMETIC("Consumable.DDHearts.Changed"), 0)) {
         ddColor = CVarGetColor24(CVAR_COSMETIC("Consumable.DDHearts.Value"), ddColor);
     }
-    Color_RGB8 ddBorder = {HEARTS_DD_PRIM_R, HEARTS_DD_PRIM_G, HEARTS_DD_PRIM_B};
+    Color_RGB8 ddBorder = { HEARTS_DD_PRIM_R, HEARTS_DD_PRIM_G, HEARTS_DD_PRIM_B };
     if (CVarGetInteger(CVAR_COSMETIC("Consumable.DDHeartBorder.Changed"), 0)) {
         ddBorder = CVarGetColor24(CVAR_COSMETIC("Consumable.DDHeartBorder.Value"), ddBorder);
     }
@@ -2186,9 +2236,7 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
                 }
             }
             // #endregion
-            FileChoose_DrawCharacter(
-                this->state.gfxCtx, sp54->fontBuf + curChar * FONT_CHAR_TEX_SIZE,
-                vtxOffset);
+            FileChoose_DrawCharacter(this->state.gfxCtx, sp54->fontBuf + curChar * FONT_CHAR_TEX_SIZE, vtxOffset);
         }
     }
 
@@ -2218,10 +2266,12 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
         gDPSetCombineLERP(POLY_OPA_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                           PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
         if (heartType) {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0x00, 0x00, ddColor.r, ddColor.g, ddColor.b, this->fileInfoAlpha[fileIndex]);
+            gDPSetPrimColor(POLY_OPA_DISP++, 0x00, 0x00, ddColor.r, ddColor.g, ddColor.b,
+                            this->fileInfoAlpha[fileIndex]);
             gDPSetEnvColor(POLY_OPA_DISP++, ddBorder.r, ddBorder.g, ddBorder.b, 255);
         } else {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0x00, 0x00, heartColor.r, heartColor.g, heartColor.b, this->fileInfoAlpha[fileIndex]);
+            gDPSetPrimColor(POLY_OPA_DISP++, 0x00, 0x00, heartColor.r, heartColor.g, heartColor.b,
+                            this->fileInfoAlpha[fileIndex]);
             gDPSetEnvColor(POLY_OPA_DISP++, heartBorder.r, heartBorder.g, heartBorder.b, 255);
         }
 
@@ -2252,14 +2302,14 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
                 if (Save_GetSaveMetaInfo(fileIndex)->questItems & gBitFlags[sQuestItemFlags[j]]) {
                     gSPVertex(POLY_OPA_DISP++, &this->windowContentVtx[D_8081284C[fileIndex] + vtxOffset] + 0x80, 4, 0);
                     gDPPipeSync(POLY_OPA_DISP++);
-                    gDPSetPrimColor(POLY_OPA_DISP++, 0x00, 0x00, sQuestItemRed[j], sQuestItemGreen[j], sQuestItemBlue[j],
-                                    this->fileInfoAlpha[fileIndex]);
+                    gDPSetPrimColor(POLY_OPA_DISP++, 0x00, 0x00, sQuestItemRed[j], sQuestItemGreen[j],
+                                    sQuestItemBlue[j], this->fileInfoAlpha[fileIndex]);
                     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
 
                     if (j < 3) {
-                        gDPLoadTextureBlock(POLY_OPA_DISP++, sQuestItemTextures[j], G_IM_FMT_RGBA, G_IM_SIZ_32b, 16, 16, 0,
-                                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP,
-                                            G_TX_NOMASK, G_TX_NOLOD);
+                        gDPLoadTextureBlock(POLY_OPA_DISP++, sQuestItemTextures[j], G_IM_FMT_RGBA, G_IM_SIZ_32b, 16, 16,
+                                            0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD,
+                                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD);
                         gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
 
                     } else {
@@ -2401,87 +2451,103 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->titleAlpha[0]);
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
     gSPVertex(POLY_OPA_DISP++, this->windowContentVtx, 4, 0);
-    gDPLoadTextureBlock(POLY_OPA_DISP++, tex, G_IM_FMT_IA,
-                        G_IM_SIZ_8b, 128, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
-                        G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    gDPLoadTextureBlock(POLY_OPA_DISP++, tex, G_IM_FMT_IA, G_IM_SIZ_8b, 128, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
+                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
 
     // draw next title label
-    if ((this->configMode == CM_QUEST_MENU) || (this->configMode == CM_START_QUEST_MENU) || 
-        this->configMode == CM_NAME_ENTRY_TO_QUEST_MENU || this->configMode == CM_NAME_ENTRY_TO_RANDOMIZER_SETTINGS_MENU) {
+    if ((this->configMode == CM_QUEST_MENU) || (this->configMode == CM_START_QUEST_MENU) ||
+        this->configMode == CM_NAME_ENTRY_TO_QUEST_MENU ||
+        this->configMode == CM_NAME_ENTRY_TO_RANDOMIZER_SETTINGS_MENU) {
         // draw control stick prompts.
         Gfx_SetupDL_39Opa(this->state.gfxCtx);
         gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
         gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowCursorTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 24, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
-        FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.arrowColorR,
-                                this->stickLeftPrompt.arrowColorG, this->stickLeftPrompt.arrowColorB,
-                                this->stickLeftPrompt.arrowColorA, this->stickLeftPrompt.arrowTexX,
-                                this->stickLeftPrompt.arrowTexY, this->stickLeftPrompt.z, 0, 0, -1.0f, 1.0f);
+        FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.arrowColorR, this->stickLeftPrompt.arrowColorG,
+                               this->stickLeftPrompt.arrowColorB, this->stickLeftPrompt.arrowColorA,
+                               this->stickLeftPrompt.arrowTexX, this->stickLeftPrompt.arrowTexY,
+                               this->stickLeftPrompt.z, 0, 0, -1.0f, 1.0f);
         FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.arrowColorR,
-                                this->stickRightPrompt.arrowColorG, this->stickRightPrompt.arrowColorB,
-                                this->stickRightPrompt.arrowColorA, this->stickRightPrompt.arrowTexX,
-                                this->stickRightPrompt.arrowTexY, this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);
+                               this->stickRightPrompt.arrowColorG, this->stickRightPrompt.arrowColorB,
+                               this->stickRightPrompt.arrowColorA, this->stickRightPrompt.arrowTexX,
+                               this->stickRightPrompt.arrowTexY, this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);
         gDPLoadTextureBlock(POLY_OPA_DISP++, gControlStickTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
-        FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.stickColorR,
-                                this->stickLeftPrompt.stickColorG, this->stickLeftPrompt.stickColorB,
-                                this->stickLeftPrompt.stickColorA, this->stickLeftPrompt.stickTexX,
-                                this->stickLeftPrompt.stickTexY, this->stickLeftPrompt.z, 0, 0, -1.0f, 1.0f);
+        FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.stickColorR, this->stickLeftPrompt.stickColorG,
+                               this->stickLeftPrompt.stickColorB, this->stickLeftPrompt.stickColorA,
+                               this->stickLeftPrompt.stickTexX, this->stickLeftPrompt.stickTexY,
+                               this->stickLeftPrompt.z, 0, 0, -1.0f, 1.0f);
         FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.stickColorR,
-                                this->stickRightPrompt.stickColorG, this->stickRightPrompt.stickColorB,
-                                this->stickRightPrompt.stickColorA, this->stickRightPrompt.stickTexX,
-                                this->stickRightPrompt.stickTexY, this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);
+                               this->stickRightPrompt.stickColorG, this->stickRightPrompt.stickColorB,
+                               this->stickRightPrompt.stickColorA, this->stickRightPrompt.stickTexX,
+                               this->stickRightPrompt.stickTexY, this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);
         switch (this->questType[this->buttonIndex]) {
             case QUEST_NORMAL:
             default:
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->logoAlpha);
-                FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024, 1024);
-                FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 154, 163, 96, 8, 1024, 1024);
+                FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024,
+                                         1024);
+                FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 154, 163, 96, 8, 1024,
+                                         1024);
                 FileChoose_DrawImageRGBA32(this->state.gfxCtx, 160, 135, gTitleZeldaShieldLogoTex, 160, 160);
                 break;
 
             case QUEST_MASTER:
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->logoAlpha);
-                FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024, 1024);
-                FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 154, 163, 96, 8, 1024, 1024);
+                FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024,
+                                         1024);
+                FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 154, 163, 96, 8, 1024,
+                                         1024);
                 FileChoose_DrawImageRGBA32(this->state.gfxCtx, 160, 135, gTitleZeldaShieldLogoMQTex, 160, 160);
                 if (gSaveContext.language == LANGUAGE_JPN || ResourceMgr_GetGameVersion(0) == OOT_NTSC_JP_MQ) {
                     FileChoose_DrawImageRGBA32(this->state.gfxCtx, 243, 184, gTitleUraLogoTex, 40, 40);
                     gDPPipeSync(POLY_OPA_DISP++);
                     gDPSetCycleType(POLY_OPA_DISP++, G_CYC_2CYCLE);
                     gDPSetRenderMode(POLY_OPA_DISP++, G_RM_PASS, G_RM_XLU_SURF2);
-                    gDPSetCombineLERP(POLY_OPA_DISP++, TEXEL1, PRIMITIVE, PRIM_LOD_FRAC, TEXEL0, 0, 0, 0, TEXEL0, PRIMITIVE, ENVIRONMENT, COMBINED, ENVIRONMENT, COMBINED, 0, PRIMITIVE, 0);
+                    gDPSetCombineLERP(POLY_OPA_DISP++, TEXEL1, PRIMITIVE, PRIM_LOD_FRAC, TEXEL0, 0, 0, 0, TEXEL0,
+                                      PRIMITIVE, ENVIRONMENT, COMBINED, ENVIRONMENT, COMBINED, 0, PRIMITIVE, 0);
 
                     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0x80, 170, 255, 255, 255);
                     gDPSetEnvColor(POLY_OPA_DISP++, ZREG(34), 100 + ZREG(35), 255 + ZREG(36), 255);
 
                     gDPLoadTextureBlock(POLY_OPA_DISP++, gTitleTitleJPNTex, G_IM_FMT_I, G_IM_SIZ_8b, 128, 16, 0,
-                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD);
-                    gDPLoadMultiBlock(POLY_OPA_DISP++, gTitleFlameEffectTex, 0x100, 1, G_IM_FMT_I, G_IM_SIZ_8b, 32, 32, 0,
-                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 2, 1);
-                    gDPSetTileSize(POLY_OPA_DISP++, 1, 0 & 0x7F, 0 & 0x7F, (0 & 0x7F) + ((32 - 1) << 2), (0 & 0x7F) + ((32 - 1) << 2));
-                    gSPTextureRectangle(POLY_OPA_DISP++, 114 << 2, 179 << 2, (114 + 128) << 2, (179 + 16) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+                                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP,
+                                        G_TX_NOMASK, G_TX_NOLOD);
+                    gDPLoadMultiBlock(POLY_OPA_DISP++, gTitleFlameEffectTex, 0x100, 1, G_IM_FMT_I, G_IM_SIZ_8b, 32, 32,
+                                      0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 2, 1);
+                    gDPSetTileSize(POLY_OPA_DISP++, 1, 0 & 0x7F, 0 & 0x7F, (0 & 0x7F) + ((32 - 1) << 2),
+                                   (0 & 0x7F) + ((32 - 1) << 2));
+                    gSPTextureRectangle(POLY_OPA_DISP++, 114 << 2, 179 << 2, (114 + 128) << 2, (179 + 16) << 2,
+                                        G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
                 } else {
                     FileChoose_DrawImageRGBA32(this->state.gfxCtx, 182, 180, gTitleMasterQuestSubtitleTex, 128, 32);
                 }
                 break;
-            
+
             case QUEST_RANDOMIZER:
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->logoAlpha);
-                FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024, 1024);
-                FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 154, 163, 96, 8, 1024, 1024);
-                FileChoose_DrawImageRGBA32(this->state.gfxCtx, 160, 135, ResourceMgr_GameHasOriginal() ? gTitleZeldaShieldLogoTex : gTitleZeldaShieldLogoMQTex, 160, 160);
+                FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024,
+                                         1024);
+                FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 154, 163, 96, 8, 1024,
+                                         1024);
+                FileChoose_DrawImageRGBA32(
+                    this->state.gfxCtx, 160, 135,
+                    ResourceMgr_GameHasOriginal() ? gTitleZeldaShieldLogoTex : gTitleZeldaShieldLogoMQTex, 160, 160);
                 FileChoose_DrawImageRGBA32(this->state.gfxCtx, 182, 180, gTitleRandomizerSubtitleTex, 128, 32);
                 break;
 
             case QUEST_BOSSRUSH:
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->logoAlpha);
-                FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024, 1024);
-                FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 154, 163, 96, 8, 1024, 1024);
-                FileChoose_DrawImageRGBA32(this->state.gfxCtx, 160, 135, ResourceMgr_GameHasOriginal() ? gTitleZeldaShieldLogoTex : gTitleZeldaShieldLogoMQTex, 160, 160);
+                FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024,
+                                         1024);
+                FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 154, 163, 96, 8, 1024,
+                                         1024);
+                FileChoose_DrawImageRGBA32(
+                    this->state.gfxCtx, 160, 135,
+                    ResourceMgr_GameHasOriginal() ? gTitleZeldaShieldLogoTex : gTitleZeldaShieldLogoMQTex, 160, 160);
                 FileChoose_DrawImageRGBA32(this->state.gfxCtx, 182, 180, gTitleBossRushSubtitleTex, 128, 32);
                 break;
         }
@@ -2495,9 +2561,9 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
         if (listOffset > 0) {
             uint16_t arrowUpX = 140;
             uint16_t arrowUpY = 76 - (this->bossRushArrowOffset / 10);
-            gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowUpTex, G_IM_FMT_IA,
-                                G_IM_SIZ_16b, 16, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
-                                G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowUpTex, G_IM_FMT_IA, G_IM_SIZ_16b, 16, 16, 0,
+                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                                G_TX_NOLOD, G_TX_NOLOD);
             gSPWideTextureRectangle(POLY_OPA_DISP++, arrowUpX << 2, arrowUpY << 2, (arrowUpX + 8) << 2,
                                     (arrowUpY + 8) << 2, G_TX_RENDERTILE, 0, 0, (1 << 11), (1 << 11));
         }
@@ -2505,8 +2571,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
         if (BR_OPTIONS_MAX - listOffset > BOSSRUSH_MAX_OPTIONS_ON_SCREEN) {
             uint16_t arrowDownX = 140;
             uint16_t arrowDownY = 181 + (this->bossRushArrowOffset / 10);
-            gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowDownTex, G_IM_FMT_IA,
-                                G_IM_SIZ_16b, 16, 16, 0,
+            gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowDownTex, G_IM_FMT_IA, G_IM_SIZ_16b, 16, 16, 0,
                                 G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                                 G_TX_NOLOD, G_TX_NOLOD);
             gSPWideTextureRectangle(POLY_OPA_DISP++, arrowDownX << 2, arrowDownY << 2, (arrowDownX + 8) << 2,
@@ -2520,12 +2585,14 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
             uint16_t textYOffset = (i - listOffset) * 16;
 
             // Option name.
-            Interface_DrawTextLine(this->state.gfxCtx, BossRush_GetSettingName(i, language), 
-                65, (87 + textYOffset), 255, 255, 80, textAlpha, 0.8f, true);
+            Interface_DrawTextLine(this->state.gfxCtx, BossRush_GetSettingName(i, language), 65, (87 + textYOffset),
+                                   255, 255, 80, textAlpha, 0.8f, true);
 
             // Selected choice for option.
-            uint16_t finalKerning = Interface_DrawTextLine(this->state.gfxCtx, BossRush_GetSettingChoiceName(i, gSaveContext.ship.quest.data.bossRush.options[i], language), 
-                165, (87 + textYOffset), 255, 255, 255, textAlpha, 0.8f, true);
+            uint16_t finalKerning = Interface_DrawTextLine(
+                this->state.gfxCtx,
+                BossRush_GetSettingChoiceName(i, gSaveContext.ship.quest.data.bossRush.options[i], language), 165,
+                (87 + textYOffset), 255, 255, 255, textAlpha, 0.8f, true);
 
             // Draw arrows around selected option.
             if (this->bossRushIndex == i) {
@@ -2535,13 +2602,11 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                                     G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
                                     G_TX_NOLOD);
                 FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.arrowColorR,
-                                       this->stickLeftPrompt.arrowColorG, this->stickLeftPrompt.arrowColorB,
-                                       textAlpha, 160, (92 + textYOffset), 0.42f, 0, 0, -1.0f,
-                                       1.0f);
+                                       this->stickLeftPrompt.arrowColorG, this->stickLeftPrompt.arrowColorB, textAlpha,
+                                       160, (92 + textYOffset), 0.42f, 0, 0, -1.0f, 1.0f);
                 FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.arrowColorR,
                                        this->stickRightPrompt.arrowColorG, this->stickRightPrompt.arrowColorB,
-                                       textAlpha, (171 + finalKerning),
-                                       (92 + textYOffset), 0.42f, 0, 0, 1.0f, 1.0f);
+                                       textAlpha, (171 + finalKerning), (92 + textYOffset), 0.42f, 0, 0, 1.0f, 1.0f);
             }
         }
     } else if (this->configMode == CM_RANDOMIZER_SETTINGS_MENU) {
@@ -2558,8 +2623,10 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                 textColorB = 80;
             }
 
-            // If no randomizer is loaded and text is "start randomizer" or when a seed is generating, make all options gray.
-            if ((index == RSM_START_RANDOMIZER && !Randomizer_IsSeedGenerated() && !Randomizer_IsSpoilerLoaded()) || generating) {
+            // If no randomizer is loaded and text is "start randomizer" or when a seed is generating, make all options
+            // gray.
+            if ((index == RSM_START_RANDOMIZER && !Randomizer_IsSeedGenerated() && !Randomizer_IsSpoilerLoaded()) ||
+                generating) {
                 textColorR = textColorG = textColorB = 100;
             }
 
@@ -2569,16 +2636,16 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
 
         // Show text to indicate randomizer is being generated.
         if (generating) {
-            Interface_DrawTextLine(this->state.gfxCtx,
-                                   SohFileSelect_GetSettingText(RSM_GENERATING, language), 70,
+            Interface_DrawTextLine(this->state.gfxCtx, SohFileSelect_GetSettingText(RSM_GENERATING, language), 70,
                                    (80 + 64), 255, 255, 255, textAlpha, 0.8f, true);
         }
 
-        // If no randomizer is generated and "start randomizer" is selected, show text to explain why user can't start the randomizer.
-        if (!Randomizer_IsSeedGenerated() && !Randomizer_IsSpoilerLoaded() && this->randomizerIndex == RSM_START_RANDOMIZER) {
+        // If no randomizer is generated and "start randomizer" is selected, show text to explain why user can't start
+        // the randomizer.
+        if (!Randomizer_IsSeedGenerated() && !Randomizer_IsSpoilerLoaded() &&
+            this->randomizerIndex == RSM_START_RANDOMIZER) {
             Interface_DrawTextLine(this->state.gfxCtx,
-                                   SohFileSelect_GetSettingText(RSM_NO_RANDOMIZER_GENERATED, language), 70,
-                                   (80 + 64),
+                                   SohFileSelect_GetSettingText(RSM_NO_RANDOMIZER_GENERATED, language), 70, (80 + 64),
                                    240, 80, 80, textAlpha, 0.8f, true);
         }
 
@@ -2589,13 +2656,15 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
         FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.arrowColorR,
-                                this->stickRightPrompt.arrowColorG, this->stickRightPrompt.arrowColorB, textAlpha,
-                                62, (85 + textOffset), 0.42f, 0, 0, 1.0f, 1.0f);
+                               this->stickRightPrompt.arrowColorG, this->stickRightPrompt.arrowColorB, textAlpha, 62,
+                               (85 + textOffset), 0.42f, 0, 0, 1.0f, 1.0f);
 
     } else if (this->configMode != CM_ROTATE_TO_NAME_ENTRY && this->configMode != CM_START_BOSS_RUSH_MENU &&
                this->configMode != CM_ROTATE_TO_BOSS_RUSH_MENU && this->configMode != CM_BOSS_RUSH_TO_QUEST &&
-               this->configMode != CM_START_RANDOMIZER_SETTINGS_MENU && this->configMode != CM_ROTATE_TO_RANDOMIZER_SETTINGS_MENU &&
-               this->configMode != CM_RANDOMIZER_SETTINGS_MENU_TO_QUEST && this->configMode != CM_NAME_ENTRY_TO_RANDOMIZER_SETTINGS_MENU) {
+               this->configMode != CM_START_RANDOMIZER_SETTINGS_MENU &&
+               this->configMode != CM_ROTATE_TO_RANDOMIZER_SETTINGS_MENU &&
+               this->configMode != CM_RANDOMIZER_SETTINGS_MENU_TO_QUEST &&
+               this->configMode != CM_NAME_ENTRY_TO_RANDOMIZER_SETTINGS_MENU) {
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->titleAlpha[1]);
         gDPLoadTextureBlock(POLY_OPA_DISP++, sTitleLabels[gSaveContext.language][this->nextTitleLabel], G_IM_FMT_IA,
@@ -2614,13 +2683,14 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                             this->fileInfoAlpha[fileIndex]);
 
             // Draw the small file name box instead when more meta info is enabled
-            if (CVarGetInteger(CVAR_ENHANCEMENT("FileSelectMoreInfo"), 0) != 0 && this->menuMode == FS_MENU_MODE_SELECT) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("FileSelectMoreInfo"), 0) != 0 &&
+                this->menuMode == FS_MENU_MODE_SELECT) {
                 // Location of file 1 small name box vertices
                 gSPVertex(POLY_OPA_DISP++, &this->windowContentVtx[68], 4, 0);
 
                 gDPLoadTextureBlock(POLY_OPA_DISP++, gFileSelNameBoxTex, G_IM_FMT_IA, G_IM_SIZ_16b, 108, 16, 0,
-                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
-                                G_TX_NOLOD, G_TX_NOLOD);
+                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                                    G_TX_NOLOD, G_TX_NOLOD);
                 gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
             } else {
                 gSPVertex(POLY_OPA_DISP++, &this->windowContentVtx[temp], 20, 0);
@@ -2629,7 +2699,8 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                     gDPLoadTextureBlock(POLY_OPA_DISP++, sFileInfoBoxTextures[i], G_IM_FMT_IA, G_IM_SIZ_16b,
                                         sFileInfoBoxPartWidths[i], 56, 0, G_TX_NOMIRROR | G_TX_WRAP,
                                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-                    gSP1Quadrangle(POLY_OPA_DISP++, quadVtxIndex, quadVtxIndex + 2, quadVtxIndex + 3, quadVtxIndex + 1, 0);
+                    gSP1Quadrangle(POLY_OPA_DISP++, quadVtxIndex, quadVtxIndex + 2, quadVtxIndex + 3, quadVtxIndex + 1,
+                                   0);
                 }
             }
         }
@@ -2671,8 +2742,9 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
 
             // draw disk label for 64DD
             if (this->n64ddFlags[i]) {
-                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[isActive][0], sWindowContentColors[isActive][1],
-                                sWindowContentColors[isActive][2], this->nameBoxAlpha[i]);
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[isActive][0],
+                                sWindowContentColors[isActive][1], sWindowContentColors[isActive][2],
+                                this->nameBoxAlpha[i]);
                 gDPLoadTextureBlock(POLY_OPA_DISP++, gFileSelDISKButtonTex, G_IM_FMT_IA, G_IM_SIZ_16b, 44, 16, 0,
                                     G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                                     G_TX_NOLOD, G_TX_NOLOD);
@@ -2689,10 +2761,9 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                                     sWindowContentColors[isActive][1], sWindowContentColors[isActive][2],
                                     this->nameAlpha[i]);
                 }
-                gDPLoadTextureBlock(POLY_OPA_DISP++,
-                                    gFileSelRANDButtonTex,
-                                    G_IM_FMT_IA, G_IM_SIZ_16b, 44, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
-                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                gDPLoadTextureBlock(POLY_OPA_DISP++, gFileSelRANDButtonTex, G_IM_FMT_IA, G_IM_SIZ_16b, 44, 16, 0,
+                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                                    G_TX_NOLOD, G_TX_NOLOD);
                 gSP1Quadrangle(POLY_OPA_DISP++, 8, 10, 11, 9, 0);
             }
             // Draw MQ label
@@ -2706,10 +2777,9 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                                     sWindowContentColors[isActive][1], sWindowContentColors[isActive][2],
                                     this->nameAlpha[i]);
                 }
-                gDPLoadTextureBlock(POLY_OPA_DISP++,
-                                    gFileSelMQButtonTex,
-                                    G_IM_FMT_IA, G_IM_SIZ_16b, 44, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
-                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                gDPLoadTextureBlock(POLY_OPA_DISP++, gFileSelMQButtonTex, G_IM_FMT_IA, G_IM_SIZ_16b, 44, 16, 0,
+                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                                    G_TX_NOLOD, G_TX_NOLOD);
                 gSP1Quadrangle(POLY_OPA_DISP++, 8, 10, 11, 9, 0);
             }
 
@@ -2727,14 +2797,16 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                                 G_TX_NOLOD, G_TX_NOLOD);
             gSP1Quadrangle(POLY_OPA_DISP++, 12, 14, 15, 13, 0);
 
-            if (this->n64ddFlags[i] || Save_GetSaveMetaInfo(i)->randoSave || Save_GetSaveMetaInfo(i)->requiresMasterQuest) {
+            if (this->n64ddFlags[i] || Save_GetSaveMetaInfo(i)->randoSave ||
+                Save_GetSaveMetaInfo(i)->requiresMasterQuest) {
                 gSP1Quadrangle(POLY_OPA_DISP++, 16, 18, 19, 17, 0);
             }
         }
 
         // draw file info
         for (fileIndex = 0; fileIndex < 3; fileIndex++) {
-            isActive = ((this->n64ddFlag == this->n64ddFlags[fileIndex]) || (this->nameBoxAlpha[fileIndex] == 0)) ? 0 : 1;
+            isActive =
+                ((this->n64ddFlag == this->n64ddFlags[fileIndex]) || (this->nameBoxAlpha[fileIndex] == 0)) ? 0 : 1;
             FileChoose_DrawFileInfo(&this->state, fileIndex, isActive);
         }
 
@@ -2843,7 +2915,8 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
 
     if (this->configMode != CM_NAME_ENTRY && this->configMode != CM_START_NAME_ENTRY &&
         this->configMode != CM_QUEST_MENU && this->configMode != CM_NAME_ENTRY_TO_QUEST_MENU &&
-        this->configMode != CM_RANDOMIZER_SETTINGS_MENU && this->configMode != CM_NAME_ENTRY_TO_RANDOMIZER_SETTINGS_MENU) {
+        this->configMode != CM_RANDOMIZER_SETTINGS_MENU &&
+        this->configMode != CM_NAME_ENTRY_TO_RANDOMIZER_SETTINGS_MENU) {
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
@@ -2862,8 +2935,7 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
             }
         }
 
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
         gSPVertex(POLY_OPA_DISP++, &this->windowVtx[0], 32, 0);
         gSPDisplayList(POLY_OPA_DISP++, gFileSelWindow1DL);
@@ -2896,8 +2968,7 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
         } else {
             Matrix_RotateX((this->windowRot - 628.0f) / 100.0f, MTXMODE_APPLY);
         }
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
         gSPVertex(POLY_OPA_DISP++, &this->windowVtx[0], 32, 0);
         gSPDisplayList(POLY_OPA_DISP++, gFileSelWindow1DL);
@@ -2929,8 +3000,7 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
         Matrix_Scale(0.78f, 0.78f, 0.78f, MTXMODE_APPLY);
         Matrix_RotateX((this->windowRot - 314.0f) / 100.0f, MTXMODE_APPLY);
 
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
         gSPVertex(POLY_OPA_DISP++, &this->windowVtx[0], 32, 0);
         gSPDisplayList(POLY_OPA_DISP++, gFileSelWindow1DL);
@@ -2951,10 +3021,11 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
     }
 
     // draw quest menu
-    if (this->configMode == CM_QUEST_MENU || (this->configMode == CM_ROTATE_TO_QUEST_MENU) || 
+    if (this->configMode == CM_QUEST_MENU || (this->configMode == CM_ROTATE_TO_QUEST_MENU) ||
         this->configMode == CM_ROTATE_TO_NAME_ENTRY || this->configMode == CM_QUEST_TO_MAIN ||
         this->configMode == CM_NAME_ENTRY_TO_QUEST_MENU || this->configMode == CM_ROTATE_TO_BOSS_RUSH_MENU ||
-        this->configMode == CM_ROTATE_TO_RANDOMIZER_SETTINGS_MENU || this->configMode == CM_NAME_ENTRY_TO_RANDOMIZER_SETTINGS_MENU) {
+        this->configMode == CM_ROTATE_TO_RANDOMIZER_SETTINGS_MENU ||
+        this->configMode == CM_NAME_ENTRY_TO_RANDOMIZER_SETTINGS_MENU) {
         // window
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
@@ -2966,8 +3037,7 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
         Matrix_Scale(0.78f, 0.78f, 0.78f, MTXMODE_APPLY);
         Matrix_RotateX((this->windowRot - 314.0f) / 100.0f, MTXMODE_APPLY);
 
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
         gSPVertex(POLY_OPA_DISP++, &this->windowVtx[0], 32, 0);
         gSPDisplayList(POLY_OPA_DISP++, gFileSelWindow1DL);
@@ -2987,7 +3057,8 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
     if (this->configMode == CM_BOSS_RUSH_MENU || this->configMode == CM_ROTATE_TO_BOSS_RUSH_MENU ||
         this->configMode == CM_START_BOSS_RUSH_MENU || this->configMode == CM_BOSS_RUSH_TO_QUEST ||
         this->configMode == CM_RANDOMIZER_SETTINGS_MENU || this->configMode == CM_ROTATE_TO_RANDOMIZER_SETTINGS_MENU ||
-        this->configMode == CM_START_RANDOMIZER_SETTINGS_MENU || this->configMode == CM_RANDOMIZER_SETTINGS_MENU_TO_QUEST) {
+        this->configMode == CM_START_RANDOMIZER_SETTINGS_MENU ||
+        this->configMode == CM_RANDOMIZER_SETTINGS_MENU_TO_QUEST) {
         // window
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
@@ -3116,18 +3187,22 @@ void FileChoose_ConfirmFile(GameState* thisx) {
     if (CHECK_BTN_ALL(input->press.button, BTN_START) || (CHECK_BTN_ALL(input->press.button, BTN_A))) {
         if (this->confirmButtonIndex == FS_BTN_CONFIRM_YES) {
             func_800AA000(300.0f, 180, 20, 100);
-            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             this->selectMode = SM_FADE_OUT;
             func_800F6964(0xF);
         } else {
-            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CLOSE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CLOSE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             this->selectMode++;
         }
     } else if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
-        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CLOSE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CLOSE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         this->selectMode++;
     } else if ((ABS(this->stickRelY) >= 30) || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
-        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         this->confirmButtonIndex ^= 1;
     }
 
@@ -3236,11 +3311,13 @@ void FileChoose_LoadGame(GameState* thisx) {
     u16 swordEquipValue;
     s32 pad;
 
-    Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+    Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     gSaveContext.fileNum = this->buttonIndex;
     gSaveContext.gameMode = GAMEMODE_NORMAL;
 
-    if ((this->buttonIndex == FS_BTN_SELECT_FILE_1 && CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0)) || this->buttonIndex == 0xFF) {
+    if ((this->buttonIndex == FS_BTN_SELECT_FILE_1 && CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0)) ||
+        this->buttonIndex == 0xFF) {
         if (this->buttonIndex == 0xFF) {
             Sram_InitDebugSave();
         } else {
@@ -3353,8 +3430,7 @@ void FileChoose_SelectModeDraw(GameState* thisx) {
     Matrix_Translate(0.0f, 0.0f, -93.6f, MTXMODE_NEW);
     Matrix_Scale(0.78f, 0.78f, 0.78f, MTXMODE_APPLY);
     Matrix_RotateX(this->windowRot / 100.0f, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPVertex(POLY_OPA_DISP++, &this->windowVtx[0], 32, 0);
     gSPDisplayList(POLY_OPA_DISP++, gFileSelWindow1DL);
@@ -3390,7 +3466,8 @@ static const char* randoVersionWarningText[] = {
     // German
     "Dieser Spielstand wurde auf einer anderen Version\nvon SoH erstellt.\nEs könnten Fehler auftreten.",
     // French
-    "Cette sauvegarde a été créée sur une version\ndifférente de SoH.\nCertaines fonctionnalités peuvent être corrompues.",
+    "Cette sauvegarde a été créée sur une version\ndifférente de SoH.\nCertaines fonctionnalités peuvent être "
+    "corrompues.",
     // Japanese NTSC TODO:
     "This save was created on a different version of SoH.\nThings may be broken. Play at your own risk.",
 };
@@ -3402,10 +3479,9 @@ void FileChoose_DrawRandoSaveVersionWarning(GameState* thisx) {
 
     // Draw rando seed warning when build version doesn't match for Major or Minor number
     for (int fileIndex = 0; fileIndex < 3; fileIndex++) {
-        if (Save_GetSaveMetaInfo(fileIndex)->randoSave == 1 &&
-            this->menuMode == FS_MENU_MODE_SELECT &&
+        if (Save_GetSaveMetaInfo(fileIndex)->randoSave == 1 && this->menuMode == FS_MENU_MODE_SELECT &&
             (gBuildVersionMajor != Save_GetSaveMetaInfo(fileIndex)->buildVersionMajor ||
-            gBuildVersionMinor != Save_GetSaveMetaInfo(fileIndex)->buildVersionMinor)) {
+             gBuildVersionMinor != Save_GetSaveMetaInfo(fileIndex)->buildVersionMinor)) {
 
             // Use file info alpha to match fading
             u8 textAlpha = this->fileInfoAlpha[fileIndex];
@@ -3414,7 +3490,9 @@ void FileChoose_DrawRandoSaveVersionWarning(GameState* thisx) {
             }
 
             // Compute the height for a "squished" textbox texture
-            s16 height = ((gSaveContext.language == LANGUAGE_ENG) || (gSaveContext.language == LANGUAGE_JPN)) ? 32 : 40; // English is only 2 lines
+            s16 height = ((gSaveContext.language == LANGUAGE_ENG) || (gSaveContext.language == LANGUAGE_JPN))
+                             ? 32
+                             : 40; // English is only 2 lines
             // float math to get a S5.10 number that will squish the texture
             f32 texCoordinateHeightF = 512 / ((f32)height / 64);
             s16 texCoordinateHeightScale = texCoordinateHeightF + 0.5f;
@@ -3452,7 +3530,8 @@ void FileChoose_Main(GameState* thisx) {
 
     Color_RGB8 helpTextColor = { 100, 255, 255 };
     if (CVarGetInteger(CVAR_COSMETIC("Title.FileChoose.Changed"), 0)) {
-        Color_RGB8 backgroundColor = CVarGetColor24(CVAR_COSMETIC("Title.FileChoose.Value"), (Color_RGB8){ 100, 150, 255 });
+        Color_RGB8 backgroundColor =
+            CVarGetColor24(CVAR_COSMETIC("Title.FileChoose.Value"), (Color_RGB8){ 100, 150, 255 });
         this->windowColor[0] = backgroundColor.r;
         this->windowColor[1] = backgroundColor.g;
         this->windowColor[2] = backgroundColor.b;
@@ -3852,8 +3931,7 @@ void FileChoose_Init(GameState* thisx) {
     size = (u32)_parameter_staticSegmentRomEnd - (u32)_parameter_staticSegmentRomStart;
     this->parameterSegment = GAMESTATE_ALLOC_MC(&this->state, size);
     assert(this->parameterSegment != NULL);
-    DmaMgr_SendRequest1(this->parameterSegment, (u32)_parameter_staticSegmentRomStart, size, __FILE__,
-                        __LINE__);
+    DmaMgr_SendRequest1(this->parameterSegment, (u32)_parameter_staticSegmentRomStart, size, __FILE__, __LINE__);
 
     // Load some registers used by the dialog system
     Regs_InitData(NULL); // Passing in NULL as we dont have a playstate, and it isn't used in the func

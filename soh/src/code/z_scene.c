@@ -19,8 +19,8 @@ s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId) {
     assert(((objectCtx->num < OBJECT_EXCHANGE_BANK_MAX) &&
             (((uintptr_t)objectCtx->status[objectCtx->num].segment + size) < (uintptr_t)objectCtx->spaceEnd)));
 
-    DmaMgr_SendRequest1(objectCtx->status[objectCtx->num].segment, gObjectTable[objectId].vromStart, size,
-                        __FILE__, __LINE__);
+    DmaMgr_SendRequest1(objectCtx->status[objectCtx->num].segment, gObjectTable[objectId].vromStart, size, __FILE__,
+                        __LINE__);
 
     if (objectCtx->num < OBJECT_EXCHANGE_BANK_MAX - 1) {
         objectCtx->status[objectCtx->num + 1].segment =
@@ -32,7 +32,6 @@ s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId) {
 
     return objectCtx->num - 1;
 }
-
 
 // SOH [Port] Track when objects are first loaded for a scene
 static u8 sObjectFirstUpdateSkippedForScene = false;
@@ -73,8 +72,7 @@ void Object_InitBank(PlayState* play, ObjectContext* objectCtx) {
     osSyncPrintf("オブジェクト入れ替えバンク情報 %8.3fKB\n", spaceSize / 1024.0f);
     osSyncPrintf(VT_RST);
 
-    objectCtx->spaceStart = objectCtx->status[0].segment =
-        GAMESTATE_ALLOC_MC(&play->state, spaceSize);
+    objectCtx->spaceStart = objectCtx->status[0].segment = GAMESTATE_ALLOC_MC(&play->state, spaceSize);
     objectCtx->spaceEnd = (void*)((uintptr_t)objectCtx->spaceStart + spaceSize);
 
     objectCtx->mainKeepIndex = Object_Spawn(objectCtx, OBJECT_GAMEPLAY_KEEP);
@@ -110,17 +108,16 @@ void Object_UpdateBank(ObjectContext* objectCtx) {
                 status->id = -status->id;
             }
             */
-           status->id = -status->id;
+            status->id = -status->id;
         }
         status++;
     }
-
 }
 
 s32 Object_GetIndex(ObjectContext* objectCtx, s16 objectId) {
     s32 i;
 
-    //return 0;
+    // return 0;
 
     for (i = 0; i < objectCtx->num; i++) {
         if (ABS(objectCtx->status[i].id) == objectId) {
@@ -202,8 +199,8 @@ s32 Scene_ExecuteCommands(PlayState* play, SceneCmd* sceneCmd) {
 }
 
 void Scene_CommandSpawnList(PlayState* play, SceneCmd* cmd) {
-    ActorEntry* linkEntry = play->linkActorEntry = (ActorEntry*)SEGMENTED_TO_VIRTUAL(cmd->spawnList.segment) +
-                                                        play->setupEntranceList[play->curSpawn].spawn;
+    ActorEntry* linkEntry = play->linkActorEntry =
+        (ActorEntry*)SEGMENTED_TO_VIRTUAL(cmd->spawnList.segment) + play->setupEntranceList[play->curSpawn].spawn;
     s16 linkObjectId;
 
     play->linkAgeOnLoad = ((void)0, gSaveContext.linkAge);
@@ -511,8 +508,8 @@ void (*gSceneCmdHandlers[SCENE_CMD_ID_MAX])(PlayState*, SceneCmd*) = {
 };
 
 RomFile sNaviMsgFiles[] = {
-    ROM_FILE(text/elf_message_field/elf_message_field),
-    ROM_FILE(text/elf_message_ydan/elf_message_ydan),
+    ROM_FILE(text / elf_message_field / elf_message_field),
+    ROM_FILE(text / elf_message_ydan / elf_message_ydan),
     ROM_FILE_UNSET,
 };
 
@@ -522,7 +519,7 @@ u32 gObjectTableSize = ARRAY_COUNT(gObjectTable);
 
 // Object linker symbol declarations (used in the table below)
 #define DEFINE_OBJECT(name, _1) DECLARE_ROM_SEGMENT(name)
-#define DEFINE_OBJECT_NULL(_0, _1) 
+#define DEFINE_OBJECT_NULL(_0, _1)
 #define DEFINE_OBJECT_UNSET(_0)
 
 //#include "tables/object_table.h"

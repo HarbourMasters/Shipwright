@@ -1112,7 +1112,7 @@ s32 EnZl4_CsMakePlan(EnZl4* this, PlayState* play) {
                 play->talkWithPlayer(play, &this->actor);
                 if (GameInteractor_Should(VB_GIVE_ITEM_ZELDAS_LETTER, true)) {
                     Actor_OfferGetItem(&this->actor, play, GI_LETTER_ZELDA, fabsf(this->actor.xzDistToPlayer) + 1.0f,
-                                fabsf(this->actor.yDistToPlayer) + 1.0f);
+                                       fabsf(this->actor.yDistToPlayer) + 1.0f);
                 }
                 play->msgCtx.stateTimer = 4;
                 play->msgCtx.msgMode = MSGMODE_TEXT_CLOSING;
@@ -1124,7 +1124,7 @@ s32 EnZl4_CsMakePlan(EnZl4* this, PlayState* play) {
                 this->talkState++;
             } else {
                 Actor_OfferGetItem(&this->actor, play, GI_LETTER_ZELDA, fabsf(this->actor.xzDistToPlayer) + 1.0f,
-                              fabsf(this->actor.yDistToPlayer) + 1.0f);
+                                   fabsf(this->actor.yDistToPlayer) + 1.0f);
             }
             // no break here is required for matching
     }

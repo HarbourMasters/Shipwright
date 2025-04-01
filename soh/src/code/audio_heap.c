@@ -1201,8 +1201,7 @@ void AudioHeap_DiscardSampleCacheEntry(SampleCacheEntry* entry) {
     }
 }
 
-void AudioHeap_UnapplySampleCache(SampleCacheEntry* entry, SoundFontSample* sample)
-{
+void AudioHeap_UnapplySampleCache(SampleCacheEntry* entry, SoundFontSample* sample) {
 }
 
 SampleCacheEntry* AudioHeap_AllocPersistentSampleCacheEntry(size_t size) {
