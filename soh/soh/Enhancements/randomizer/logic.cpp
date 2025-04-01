@@ -2104,21 +2104,6 @@ namespace Rando {
         }
     }
 
-    std::unordered_map<SceneID, DungeonKey> SceneToDungeon = {
-        { SceneID::SCENE_DEKU_TREE, DungeonKey::DEKU_TREE },
-        { SceneID::SCENE_DODONGOS_CAVERN, DungeonKey::DODONGOS_CAVERN },
-        { SceneID::SCENE_JABU_JABU, DungeonKey::JABU_JABUS_BELLY },
-        { SceneID::SCENE_FOREST_TEMPLE, DungeonKey::FOREST_TEMPLE },
-        { SceneID::SCENE_FIRE_TEMPLE, DungeonKey::FIRE_TEMPLE },
-        { SceneID::SCENE_WATER_TEMPLE, DungeonKey::WATER_TEMPLE },
-        { SceneID::SCENE_SPIRIT_TEMPLE, DungeonKey::SPIRIT_TEMPLE },
-        { SceneID::SCENE_SHADOW_TEMPLE, DungeonKey::SHADOW_TEMPLE },
-        { SceneID::SCENE_BOTTOM_OF_THE_WELL, DungeonKey::BOTTOM_OF_THE_WELL },
-        { SceneID::SCENE_ICE_CAVERN, DungeonKey::ICE_CAVERN },
-        { SceneID::SCENE_GERUDO_TRAINING_GROUND, DungeonKey::GERUDO_TRAINING_GROUND },
-        { SceneID::SCENE_INSIDE_GANONS_CASTLE, DungeonKey::GANONS_CASTLE },
-    };
-
     // Get the swch bit positions for the dungeon
     const std::vector<uint8_t>& GetDungeonSmallKeyDoors(SceneID sceneId) {
         static const std::vector<uint8_t> emptyVector;
