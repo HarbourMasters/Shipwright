@@ -79,7 +79,7 @@ void SohMenu::AddMenuRandomizer() {
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimationScale"))
         .PreFunc([](WidgetInfo& info) {
             info.options->disabled =
-                !CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_DISABLED);
+                !CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_JUNK);
             info.options->disabledTooltip = "This slider only applies when using the \"Skip Get Item Animations\" option.";
             })
         .Options(FloatSliderOptions()
