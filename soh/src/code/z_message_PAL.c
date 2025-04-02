@@ -1685,7 +1685,7 @@ bool Message_DecodeName(PlayState* play, s16* decodedBufPosPtr, s32* charTexIdxP
         }
     }
 
-    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
+    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && (gSaveContext.language != LANGUAGE_JPN || sDisplayNextMessageAsEnglish)) {
         if (gSaveContext.ship.filenameLanguage == NAME_LANGUAGE_PAL) {
             for (i = 0; i < playerNameLen; i++) {
                 curChar2 = gSaveContext.playerName[i];
@@ -1740,7 +1740,7 @@ bool Message_DecodeName(PlayState* play, s16* decodedBufPosPtr, s32* charTexIdxP
                 msgCtx->msgBufDecoded[(*decodedBufPosPtr)] = curChar2;
                 (*decodedBufPosPtr)++;
             }
-        } else {
+        } else { // NAME_LANGUAGE_NTSC_JPN
             for (i = 0; i < playerNameLen; i++) {
                 curChar2 = gSaveContext.playerName[i];
 
