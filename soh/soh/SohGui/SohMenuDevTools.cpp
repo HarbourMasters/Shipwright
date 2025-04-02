@@ -90,9 +90,9 @@ void SohMenu::AddMenuDevTools() {
     AddWidget(path, "Log Level", WIDGET_CVAR_COMBOBOX)
         .CVar("gDeveloperTools.LogLevel")
         .Options(ComboboxOptions()
-            .Tooltip("The log level determines which messages are printed to the "
-                "console. This does not affect the log file output")
-            .ComboMap(logLevels))
+                     .Tooltip("The log level determines which messages are printed to the "
+                              "console. This does not affect the log file output")
+                     .ComboMap(logLevels))
         .Callback([](WidgetInfo& info) {
             Ship::Context::GetInstance()->GetLogger()->set_level(
                 (spdlog::level::level_enum)CVarGetInteger(CVAR_DEVELOPER_TOOLS("LogLevel"), 1));
