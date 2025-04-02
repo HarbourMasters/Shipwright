@@ -108,7 +108,7 @@ void EnMag_Init(Actor* thisx, PlayState* play) {
         this->effectPrimLodFrac = 128.0f;
         this->effectAlpha = 255.0f;
 
-        if (isMQ) {
+        if (!isMQ) {
             this->effectPrimColor[0] = 255.0f;
             this->effectPrimColor[1] = 255.0f;
             this->effectPrimColor[2] = 170;
@@ -242,7 +242,7 @@ void EnMag_Update(Actor* thisx, PlayState* play) {
                 this->effectFadeInState = 1;
             }
         } else if (this->effectFadeInState == 1) {
-            if (isMQ) {
+            if (!isMQ) {
                 this->effectPrimColor[2] += -2.125f;
                 this->effectEnvColor[1] += -3.875f;
             } else {
@@ -257,7 +257,7 @@ void EnMag_Update(Actor* thisx, PlayState* play) {
             if (this->effectFadeInTimer == 0) {
                 this->effectPrimLodFrac = 128.0f;
 
-                if (isMQ) {
+                if (!isMQ) {
                     this->effectPrimColor[2] = 170.0f;
                     this->effectEnvColor[1] = 100.0f;
                 } else {
@@ -564,7 +564,7 @@ void EnMag_DrawInner(Actor* thisx, PlayState* play, Gfx** gfxP) {
 
     gDPSetPrimColor(gfx++, 0, 0, 0, 0, 0, (s16)this->mainAlpha);
 
-    if (isMQ) {
+    if (!isMQ) {
         gDPSetEnvColor(gfx++, 100, 0, 100, 255);
     } else {
         gDPSetEnvColor(gfx++, 0, 0, 100, 255);
