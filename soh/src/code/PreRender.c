@@ -17,7 +17,7 @@ void PreRender_SetValuesSave(PreRender* this, u32 width, u32 height, void* fbuf,
 }
 
 void PreRender_Init(PreRender* this) {
-    memset(this,0, sizeof(PreRender));
+    memset(this, 0, sizeof(PreRender));
     ListAlloc_Init(&this->alloc);
 }
 
@@ -253,7 +253,7 @@ void func_800C1F20(PreRender* this, Gfx** gfxp) {
     LOG_CHECK_NULL_POINTER("this->fbuf", this->fbuf);
 
     if ((this->fbufSave != NULL) && (this->fbuf != NULL)) {
-         func_800C1AE8(this, gfxp, this->fbuf, this->fbufSave);
+        func_800C1AE8(this, gfxp, this->fbuf, this->fbufSave);
     }
 }
 

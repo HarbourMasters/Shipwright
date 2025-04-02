@@ -19,4 +19,4 @@ class SetExitList : public SceneCommand<uint16_t> {
 
     std::vector<uint16_t> exits;
 };
-}; // namespace LUS
+}; // namespace SOH

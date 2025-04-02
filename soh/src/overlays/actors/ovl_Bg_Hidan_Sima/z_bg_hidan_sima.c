@@ -118,7 +118,8 @@ void func_8088E518(BgHidanSima* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     Math_StepToF(&this->dyna.actor.world.pos.y, this->dyna.actor.home.pos.y, 3.4f);
-    if (DynaPolyActor_IsPlayerOnTop(&this->dyna) && !(player->stateFlags1 & (PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE))) {
+    if (DynaPolyActor_IsPlayerOnTop(&this->dyna) &&
+        !(player->stateFlags1 & (PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE))) {
         this->timer = 20;
         this->dyna.actor.world.rot.y = Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) + 0x4000;
         if (this->dyna.actor.home.pos.y <= this->dyna.actor.world.pos.y) {
@@ -259,18 +260,14 @@ Gfx* func_8088EB54(PlayState* play, BgHidanSima* this, Gfx* gfx) {
         mtxF.zz += 0.4f;
 
         gSPSegment(gfx++, 0x09, SEGMENTED_TO_VIRTUAL(sFireballsTexs[(this->timer + s3) % 7]));
-        gSPMatrix(gfx++,
-                  Matrix_MtxFToMtx(MATRIX_CHECKFLOATS(&mtxF),
-                                   Graph_Alloc(play->state.gfxCtx, sizeof(Mtx))),
+        gSPMatrix(gfx++, Matrix_MtxFToMtx(MATRIX_CHECKFLOATS(&mtxF), Graph_Alloc(play->state.gfxCtx, sizeof(Mtx))),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(gfx++, gFireTempleFireballDL);
     }
     mtxF.xw = this->dyna.actor.world.pos.x + (phi_s5 * 25 + 80) * sin;
     mtxF.zw = this->dyna.actor.world.pos.z + (phi_s5 * 25 + 80) * cos;
     gSPSegment(gfx++, 0x09, SEGMENTED_TO_VIRTUAL(sFireballsTexs[(this->timer + s3) % 7]));
-    gSPMatrix(gfx++,
-              Matrix_MtxFToMtx(MATRIX_CHECKFLOATS(&mtxF),
-                               Graph_Alloc(play->state.gfxCtx, sizeof(Mtx))),
+    gSPMatrix(gfx++, Matrix_MtxFToMtx(MATRIX_CHECKFLOATS(&mtxF), Graph_Alloc(play->state.gfxCtx, sizeof(Mtx))),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(gfx++, gFireTempleFireballDL);
     return gfx;
@@ -281,8 +278,7 @@ void BgHidanSima_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     if (this->dyna.actor.params == 0) {
         gSPDisplayList(POLY_OPA_DISP++, gFireTempleStonePlatform1DL);
     } else {

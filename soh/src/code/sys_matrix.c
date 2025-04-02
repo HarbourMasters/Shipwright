@@ -557,7 +557,7 @@ Mtx* Matrix_ToMtx(Mtx* dest, char* file, s32 line) {
     FrameInterpolation_RecordMatrixToMtx(dest, file, line);
     guMtxF2L(Matrix_CheckFloats(sCurrentMatrix, file, line), dest);
     return dest;
-    //return Matrix_MtxFToMtx(MATRIX_CHECKFLOATS(sCurrentMatrix), dest);
+    // return Matrix_MtxFToMtx(MATRIX_CHECKFLOATS(sCurrentMatrix), dest);
 }
 
 Mtx* Matrix_NewMtx(GraphicsContext* gfxCtx, char* file, s32 line) {
@@ -903,7 +903,7 @@ MtxF* Matrix_CheckFloats(MtxF* mf, char* file, s32 line) {
                              "\\ %12.6f %12.6f %12.6f %12.6f /\n",
                              file, line, "mf", mf->xx, mf->xy, mf->xz, mf->xw, mf->yx, mf->yy, mf->yz, mf->yw, mf->zx,
                              mf->zy, mf->zz, mf->zw, mf->wx, mf->wy, mf->wz, mf->ww);
-                //Fault_AddHungupAndCrash(file, line);
+                // Fault_AddHungupAndCrash(file, line);
             }
         }
     }
@@ -1044,11 +1044,8 @@ void Matrix_SetTranslateScaleMtx1(Mtx* mtx, f32 scaleX, f32 scaleY, f32 scaleZ, 
 
 void Matrix_SetTranslateScaleMtx2(Mtx* mtx, f32 scaleX, f32 scaleY, f32 scaleZ, f32 translateX, f32 translateY,
                                   f32 translateZ) {
-    MtxF mtxf = { {
-            { scaleX, 0, 0, 0 },
-            { 0, scaleY, 0, 0 },
-            { 0, 0, scaleZ, 0 },
-            { translateX, translateY, translateZ, 1 }
-        } };
+    MtxF mtxf = {
+        { { scaleX, 0, 0, 0 }, { 0, scaleY, 0, 0 }, { 0, 0, scaleZ, 0 }, { translateX, translateY, translateZ, 1 } }
+    };
     guMtxF2L(&mtxf, mtx);
 }

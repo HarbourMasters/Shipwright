@@ -59,8 +59,8 @@ void SsSram_Dma(void* dramAddr, size_t size, s32 direction) {
 
 void SsSram_ReadWrite(uintptr_t addr, void* dramAddr, size_t size, s32 direction) {
     osSyncPrintf("ssSRAMReadWrite:%08x %08x %08x %d\n", addr, (uintptr_t)dramAddr, size, direction);
-    
-    switch (direction) { 
+
+    switch (direction) {
         case OS_WRITE: {
             Ctx_WriteSaveFile(addr, dramAddr, size);
         } break;
@@ -68,6 +68,6 @@ void SsSram_ReadWrite(uintptr_t addr, void* dramAddr, size_t size, s32 direction
             Ctx_ReadSaveFile(addr, dramAddr, size);
         } break;
     }
-    //SsSram_Init(addr, DEVICE_TYPE_SRAM, PI_DOMAIN2, 5, 0xD, 2, 0xC, 0);
-    //SsSram_Dma(dramAddr, size, direction);
+    // SsSram_Init(addr, DEVICE_TYPE_SRAM, PI_DOMAIN2, 5, 0xD, 2, 0xC, 0);
+    // SsSram_Dma(dramAddr, size, direction);
 }

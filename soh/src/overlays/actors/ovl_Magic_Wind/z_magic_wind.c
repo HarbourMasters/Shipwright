@@ -135,8 +135,7 @@ void MagicWind_Shrink(MagicWind* this, PlayState* play) {
 
 void MagicWind_Update(Actor* thisx, PlayState* play) {
     MagicWind* this = (MagicWind*)thisx;
-    if (play->msgCtx.msgMode == MSGMODE_OCARINA_CORRECT_PLAYBACK ||
-        play->msgCtx.msgMode == MSGMODE_SONG_PLAYED) {
+    if (play->msgCtx.msgMode == MSGMODE_OCARINA_CORRECT_PLAYBACK || play->msgCtx.msgMode == MSGMODE_SONG_PLAYED) {
         Actor_Kill(thisx);
         return;
     }
@@ -153,15 +152,15 @@ s32 MagicWind_OverrideLimbDraw(PlayState* play, SkelAnimeCurve* skelCurve, s32 l
         gSPSegment(POLY_XLU_DISP++, 8,
                    Gfx_TwoTexScroll(play->state.gfxCtx, 0, (play->state.frames * 9) & 0xFF,
                                     0xFF - ((play->state.frames * 0xF) & 0xFF), 0x40, 0x40, 1,
-                                    (play->state.frames * 0xF) & 0xFF,
-                                    0xFF - ((play->state.frames * 0x1E) & 0xFF), 0x40, 0x40));
+                                    (play->state.frames * 0xF) & 0xFF, 0xFF - ((play->state.frames * 0x1E) & 0xFF),
+                                    0x40, 0x40));
 
     } else if (limbIndex == 2) {
         gSPSegment(POLY_XLU_DISP++, 9,
                    Gfx_TwoTexScroll(play->state.gfxCtx, 0, (play->state.frames * 3) & 0xFF,
                                     0xFF - ((play->state.frames * 5) & 0xFF), 0x40, 0x40, 1,
-                                    (play->state.frames * 6) & 0xFF,
-                                    0xFF - ((play->state.frames * 0xA) & 0xFF), 0x40, 0x40));
+                                    (play->state.frames * 6) & 0xFF, 0xFF - ((play->state.frames * 0xA) & 0xFF), 0x40,
+                                    0x40));
     }
 
     CLOSE_DISPS(play->state.gfxCtx);

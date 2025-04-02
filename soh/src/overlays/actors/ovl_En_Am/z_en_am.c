@@ -10,7 +10,9 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_CAN_PRESS_SWITCHES)
+#define FLAGS                                                                                 \
+    (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
+     ACTOR_FLAG_CAN_PRESS_SWITCHES)
 
 void EnAm_Init(Actor* thisx, PlayState* play);
 void EnAm_Destroy(Actor* thisx, PlayState* play);
@@ -213,8 +215,7 @@ void EnAm_Init(Actor* thisx, PlayState* play) {
 
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
     ActorShape_Init(&this->dyna.actor.shape, 0.0f, ActorShadow_DrawCircle, 48.0f);
-    SkelAnime_Init(play, &this->skelAnime, &gArmosSkel, &gArmosRicochetAnim, this->jointTable, this->morphTable,
-                   14);
+    SkelAnime_Init(play, &this->skelAnime, &gArmosSkel, &gArmosRicochetAnim, this->jointTable, this->morphTable, 14);
     Actor_SetScale(&this->dyna.actor, 0.01f);
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
     Collider_InitCylinder(play, &this->hurtCollider);
@@ -690,23 +691,29 @@ void EnAm_Statue(EnAm* this, PlayState* play) {
         }
 
         if ((this->dyna.unk_150 == 0.0f) || (this->unk_258 == 0) || !(this->dyna.actor.bgCheckFlags & 1) ||
-            !func_800435D8(play, &this->dyna, 0x14,
-                           (Math_SinS(this->unk_258) * (this->dyna.unk_150 * 0.5f)) + 40.0f, 0xA) ||
+            !func_800435D8(play, &this->dyna, 0x14, (Math_SinS(this->unk_258) * (this->dyna.unk_150 * 0.5f)) + 40.0f,
+                           0xA) ||
             ((this->hurtCollider.base.ocFlags1 & OC1_HIT) && (ABS(moveDir) <= 0x2000))) {
 
             this->unk_258 = 0;
-            player->stateFlags2 &= ~(PLAYER_STATE2_DO_ACTION_GRAB | PLAYER_STATE2_MOVING_DYNAPOLY | PLAYER_STATE2_DISABLE_ROTATION_ALWAYS | PLAYER_STATE2_GRABBING_DYNAPOLY);
+            player->stateFlags2 &= ~(PLAYER_STATE2_DO_ACTION_GRAB | PLAYER_STATE2_MOVING_DYNAPOLY |
+                                     PLAYER_STATE2_DISABLE_ROTATION_ALWAYS | PLAYER_STATE2_GRABBING_DYNAPOLY);
             player->actor.speedXZ = 0.0f;
             this->dyna.unk_150 = this->dyna.unk_154 = 0.0f;
         }
 
         this->dyna.actor.world.rot.y = this->dyna.unk_158;
-        this->dyna.actor.speedXZ = Math_SinS(this->unk_258 * 8 / (8 - blockSpeed)) * (this->dyna.unk_150 * 0.5f) +
-            (blockSpeed == 5 ? blockSpeed * (this->dyna.unk_150 * 0.5f) * 0.25681 : 
-                (blockSpeed == 4 ? blockSpeed * (this->dyna.unk_150 * 0.5f) * 0.18305 :
-                    (blockSpeed == 3 ? blockSpeed * (this->dyna.unk_150 * 0.5f) * 0.14222 :
-                        (blockSpeed == 2 ? blockSpeed * (this->dyna.unk_150 * 0.5f) * 0.11625 :
-                            (blockSpeed == 1 ? blockSpeed * (this->dyna.unk_150 * 0.5f) * 0.09828 : 0)))));
+        this->dyna.actor.speedXZ =
+            Math_SinS(this->unk_258 * 8 / (8 - blockSpeed)) * (this->dyna.unk_150 * 0.5f) +
+            (blockSpeed == 5
+                 ? blockSpeed * (this->dyna.unk_150 * 0.5f) * 0.25681
+                 : (blockSpeed == 4
+                        ? blockSpeed * (this->dyna.unk_150 * 0.5f) * 0.18305
+                        : (blockSpeed == 3
+                               ? blockSpeed * (this->dyna.unk_150 * 0.5f) * 0.14222
+                               : (blockSpeed == 2
+                                      ? blockSpeed * (this->dyna.unk_150 * 0.5f) * 0.11625
+                                      : (blockSpeed == 1 ? blockSpeed * (this->dyna.unk_150 * 0.5f) * 0.09828 : 0)))));
     }
 
     if (this->dyna.actor.bgCheckFlags & 2) {
@@ -868,9 +875,9 @@ void EnAm_Update(Actor* thisx, PlayState* play) {
                 dustPosScale = play->gameplayFrames * 10;
 
                 EnAm_SpawnEffects(this, play);
-                bomb =
-                    (EnBom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->dyna.actor.world.pos.x,
-                                        this->dyna.actor.world.pos.y, this->dyna.actor.world.pos.z, 0, 0, 2, BOMB_BODY, true);
+                bomb = (EnBom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->dyna.actor.world.pos.x,
+                                           this->dyna.actor.world.pos.y, this->dyna.actor.world.pos.z, 0, 0, 2,
+                                           BOMB_BODY, true);
                 if (bomb != NULL) {
                     bomb->timer = 0;
                 }
@@ -886,7 +893,7 @@ void EnAm_Update(Actor* thisx, PlayState* play) {
                     func_8002836C(play, &dustPos, &zeroVec, &zeroVec, &dustPrimColor, &dustEnvColor, 200, 45, 12);
                     dustPosScale += 60.0f;
                 }
-                
+
                 GameInteractor_ExecuteOnEnemyDefeat(thisx);
 
                 Actor_Kill(&this->dyna.actor);
@@ -962,8 +969,7 @@ void EnAm_Draw(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, this->textureBlend);
-    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, EnAm_PostLimbDraw,
-                              this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, EnAm_PostLimbDraw, this);
 
     if (this->iceTimer != 0) {
         this->dyna.actor.colorFilterTimer++;
@@ -978,8 +984,7 @@ void EnAm_Draw(Actor* thisx, PlayState* play) {
             sp68.y = this->dyna.actor.world.pos.y + sIcePosOffsets[index].y;
             sp68.z = this->dyna.actor.world.pos.z + sIcePosOffsets[index].z;
 
-            EffectSsEnIce_SpawnFlyingVec3f(play, &this->dyna.actor, &sp68, 150, 150, 150, 250, 235, 245, 255,
-                                           1.4f);
+            EffectSsEnIce_SpawnFlyingVec3f(play, &this->dyna.actor, &sp68, 150, 150, 150, 250, 235, 245, 255, 1.4f);
         }
     }
 

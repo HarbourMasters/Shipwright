@@ -26,10 +26,10 @@
 #define Audio_SeqCmd8(playerIdx, a, b, c) \
     Audio_QueueSeqCmd(0x80000000 | ((u8)playerIdx << 24) | ((u8)a << 16) | ((u8)b << 8) | ((u8)c))
 #define Audio_SeqCmdF(playerIdx, a) Audio_QueueSeqCmd(0xF0000000 | ((u8)playerIdx << 24) | ((u8)a))
-#define BTN_CUSTOM_RSTICK_UP       ((CONTROLLERBUTTONS_T)0x01000000)
-#define BTN_CUSTOM_RSTICK_DOWN     ((CONTROLLERBUTTONS_T)0x02000000)
-#define BTN_CUSTOM_RSTICK_LEFT     ((CONTROLLERBUTTONS_T)0x04000000)
-#define BTN_CUSTOM_RSTICK_RIGHT    ((CONTROLLERBUTTONS_T)0x08000000)
+#define BTN_CUSTOM_RSTICK_UP ((CONTROLLERBUTTONS_T)0x01000000)
+#define BTN_CUSTOM_RSTICK_DOWN ((CONTROLLERBUTTONS_T)0x02000000)
+#define BTN_CUSTOM_RSTICK_LEFT ((CONTROLLERBUTTONS_T)0x04000000)
+#define BTN_CUSTOM_RSTICK_RIGHT ((CONTROLLERBUTTONS_T)0x08000000)
 
 typedef struct {
     /* 0x0 */ f32 vol;
@@ -1265,8 +1265,7 @@ void Audio_OcaUpdateBtnMap(bool customControls) {
         sOcarinaA4BtnMap = BTN_CUSTOM_OCARINA_NOTE_A4;
         sOcarinaF4BtnMap = BTN_CUSTOM_OCARINA_NOTE_F4;
         sOcarinaD4BtnMap = BTN_CUSTOM_OCARINA_NOTE_D4;
-    }
-    else {
+    } else {
         sOcarinaD5BtnMap = BTN_CUP;
         sOcarinaB4BtnMap = BTN_CLEFT;
         sOcarinaA4BtnMap = BTN_CRIGHT;
@@ -1286,13 +1285,8 @@ void Audio_OcaUpdateBtnMap(bool customControls) {
         sOcarinaF4BtnMap |= BTN_CUSTOM_RSTICK_DOWN;
     }
 
-    sOcarinaAllowedBtnMask = (
-        sOcarinaD5BtnMap |
-        sOcarinaB4BtnMap |
-        sOcarinaA4BtnMap |
-        sOcarinaF4BtnMap |
-        sOcarinaD4BtnMap
-    );
+    sOcarinaAllowedBtnMask =
+        (sOcarinaD5BtnMap | sOcarinaB4BtnMap | sOcarinaA4BtnMap | sOcarinaF4BtnMap | sOcarinaD4BtnMap);
 }
 
 void Audio_GetOcaInput(void) {
@@ -1545,10 +1539,8 @@ void func_800ED200(void) {
         disableSongBtnMap = BTN_L;
     }
 
-    if (
-        CHECK_BTN_ANY(sCurOcarinaBtnPress, disableSongBtnMap)
-        && CHECK_BTN_ANY(sCurOcarinaBtnPress, sOcarinaAllowedBtnMask)
-    ) {
+    if (CHECK_BTN_ANY(sCurOcarinaBtnPress, disableSongBtnMap) &&
+        CHECK_BTN_ANY(sCurOcarinaBtnPress, sOcarinaAllowedBtnMask)) {
         func_800ECC04((u16)D_80130F3C);
         return;
     }
@@ -1875,7 +1867,6 @@ void func_800EDD68(u8 arg0) {
         lastNote = song[i].noteIdx;
     }
 
-
     if (sRecordSongPos != (i + 1)) {
         sRecordSongPos = i + 2;
         song[sRecordSongPos - 1].unk_02 = 0;
@@ -2062,7 +2053,7 @@ void func_800EE404(void) {
 
 void Audio_OcaMemoryGameStart(u8 minigameRound) {
     u8 i;
-    
+
     // #region SOH [Enhancement]
     if (CVarGetInteger(CVAR_ENHANCEMENT("CustomizeOcarinaGame"), 0)) {
         u8 startingNotes = 3;
@@ -2070,7 +2061,6 @@ void Audio_OcaMemoryGameStart(u8 minigameRound) {
         u8 roundTwoCount = CVarGetInteger(CVAR_ENHANCEMENT("OcarinaGame.RoundTwoNotes"), 6);
         u8 roundThreeCount = CVarGetInteger(CVAR_ENHANCEMENT("OcarinaGame.RoundThreeNotes"), 8);
         u8 modMinigameNoteCnts[] = { roundOneCount, roundTwoCount, roundThreeCount };
-
 
         startingNotes = CVarGetInteger(CVAR_ENHANCEMENT("OcarinaGame.StartingNotes"), 3);
 
@@ -2084,7 +2074,7 @@ void Audio_OcaMemoryGameStart(u8 minigameRound) {
         for (i = 0; i < startingNotes; i++) {
             Audio_OcaMemoryGameGenNote();
         }
-    // #endregion
+        // #endregion
     } else {
         if (minigameRound > 2) {
             minigameRound = 2;
@@ -2124,7 +2114,7 @@ s32 Audio_OcaMemoryGameGenNote(void) {
         sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].volume = 0x50;
         sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].vibrato = 0;
         sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].tone = 0;
-    // #endregion
+        // #endregion
     } else {
         sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].noteIdx = rndNote;
         sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].unk_02 = 0x2D;
@@ -3077,7 +3067,8 @@ void AudioDebug_ProcessInput_SndCont(void) {
             case 2:
             case 3:
                 Audio_PlaySoundGeneral(((sAudioSndContWork[2] << 12) & 0xFFFF) + sAudioSndContWork[3] + SFX_FLAG,
-                                       &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                       &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                       &gSfxDefaultReverb);
                 break;
             case 4:
                 func_800F6700(sAudioSndContWork[sAudioSndContSel]);
@@ -3476,7 +3467,8 @@ void AudioDebug_ProcessInput_SfxParamChg(void) {
 
     if (CHECK_BTN_ANY(sDebugPadPress, BTN_A)) {
         sfx = (u16)(sAudioSfxParamChgWork[0] << 12) + sAudioSfxParamChgWork[1] + SFX_FLAG;
-        Audio_PlaySoundGeneral(sfx, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySoundGeneral(sfx, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultReverb);
     }
 
     if (CHECK_BTN_ANY(sDebugPadPress, BTN_B)) {
@@ -4007,7 +3999,8 @@ void Audio_PlayFanfare_Rando(GetItemEntry getItem) {
 
     if (getItem.modIndex == MOD_NONE) {
         if (((itemId >= ITEM_RUPEE_GREEN) && (itemId <= ITEM_RUPEE_GOLD)) || (itemId == ITEM_HEART)) {
-            Audio_PlaySoundGeneral(NA_SE_SY_GET_BOXITEM, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+            Audio_PlaySoundGeneral(NA_SE_SY_GET_BOXITEM, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         } else {
             if (itemId == ITEM_HEART_CONTAINER ||
                 ((itemId == ITEM_HEART_PIECE_2) && ((gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000))) {
@@ -4018,7 +4011,7 @@ void Audio_PlayFanfare_Rando(GetItemEntry getItem) {
             // If we get a skulltula token or the "WINNER" heart, play "get small item"
             // Also make sure "WINNER" heart is not the 4th heart piece.
             if (itemId == ITEM_SKULL_TOKEN || (getItemId == GI_HEART_PIECE_WIN && itemId == ITEM_HEART_PIECE_2 &&
-                (gSaveContext.inventory.questItems & 0xF0000000) != 0x40000000)) {
+                                               (gSaveContext.inventory.questItems & 0xF0000000) != 0x40000000)) {
                 temp1 = NA_BGM_SMALL_ITEM_GET | 0x900;
             }
             // If the setting is toggled on and we get special quest items (longer fanfares):
@@ -4037,9 +4030,9 @@ void Audio_PlayFanfare_Rando(GetItemEntry getItem) {
                 }
             }
             Audio_PlayFanfare(temp1);
-        } 
+        }
     } else if (getItem.modIndex == MOD_RANDOMIZER) {
-        if ((itemId >= RG_BOTTLE_WITH_RED_POTION && itemId <= RG_BOTTLE_WITH_BIG_POE) || 
+        if ((itemId >= RG_BOTTLE_WITH_RED_POTION && itemId <= RG_BOTTLE_WITH_BIG_POE) ||
             (itemId >= RG_DEKU_TREE_MAP && itemId <= RG_GANONS_CASTLE_SMALL_KEY)) {
             temp1 = NA_BGM_ITEM_GET | 0x900;
         } else {
@@ -4112,7 +4105,8 @@ void func_800F4190(Vec3f* pos, u16 sfxId) {
 void Audio_PlaySoundRandom(Vec3f* pos, u16 baseSfxId, u8 randLim) {
     u8 offset = Audio_NextRandom() % randLim;
 
-    Audio_PlaySoundGeneral(baseSfxId + offset, pos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+    Audio_PlaySoundGeneral(baseSfxId + offset, pos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                           &gSfxDefaultReverb);
 }
 
 void func_800F4254(Vec3f* pos, u8 level) {
@@ -4121,10 +4115,12 @@ void func_800F4254(Vec3f* pos, u8 level) {
         D_801305F4 = D_801305E4[level];
         switch (level) {
             case 1:
-                Audio_PlaySoundGeneral(NA_SE_PL_SWORD_CHARGE, pos, 4, &D_801305F4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                Audio_PlaySoundGeneral(NA_SE_PL_SWORD_CHARGE, pos, 4, &D_801305F4, &gSfxDefaultFreqAndVolScale,
+                                       &gSfxDefaultReverb);
                 break;
             case 2:
-                Audio_PlaySoundGeneral(NA_SE_PL_SWORD_CHARGE, pos, 4, &D_801305F4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                Audio_PlaySoundGeneral(NA_SE_PL_SWORD_CHARGE, pos, 4, &D_801305F4, &gSfxDefaultFreqAndVolScale,
+                                       &gSfxDefaultReverb);
                 break;
         }
 
@@ -4132,7 +4128,8 @@ void func_800F4254(Vec3f* pos, u8 level) {
     }
 
     if (level != 0) {
-        Audio_PlaySoundGeneral(NA_SE_IT_SWORD_CHARGE - SFX_FLAG, pos, 4, &D_801305F4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySoundGeneral(NA_SE_IT_SWORD_CHARGE - SFX_FLAG, pos, 4, &D_801305F4, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultReverb);
     }
 }
 
@@ -4189,8 +4186,8 @@ void Audio_PlaySoundRiver(Vec3f* pos, f32 freqScale) {
         sRiverFreqScaleLerp.remainingFrames = 40;
         sRiverFreqScaleLerp.step = (sRiverFreqScaleLerp.target - sRiverFreqScaleLerp.value) / 40;
     }
-    Audio_PlaySoundGeneral(NA_SE_EV_RIVER_STREAM - SFX_FLAG, pos, 4, &sRiverFreqScaleLerp.value, &gSfxDefaultFreqAndVolScale,
-                           &gSfxDefaultReverb);
+    Audio_PlaySoundGeneral(NA_SE_EV_RIVER_STREAM - SFX_FLAG, pos, 4, &sRiverFreqScaleLerp.value,
+                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
 }
 
 void Audio_PlaySoundWaterfall(Vec3f* pos, f32 freqScale) {
@@ -4253,8 +4250,7 @@ void func_800F4870(u8 arg0) {
 }
 
 // (name derived from debug strings, should probably update. used in ganon/ganon_boss scenes)
-s32 Audio_SetGanonDistVol(u8 targetVol)
-{
+s32 Audio_SetGanonDistVol(u8 targetVol) {
     u8 phi_v0;
     u16 phi_v0_2;
     u8 i;
@@ -4318,8 +4314,8 @@ void func_800F4A70(void) {
 }
 
 void Audio_PlaySoundIncreasinglyTransposed(Vec3f* pos, s16 sfxId, u8* semitones) {
-    Audio_PlaySoundGeneral(sfxId, pos, 4, &gNoteFrequencies[semitones[sAudioIncreasingTranspose] + 39], &gSfxDefaultFreqAndVolScale,
-                           &gSfxDefaultReverb);
+    Audio_PlaySoundGeneral(sfxId, pos, 4, &gNoteFrequencies[semitones[sAudioIncreasingTranspose] + 39],
+                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
 
     if (sAudioIncreasingTranspose < 15) {
         sAudioIncreasingTranspose++;
@@ -4331,7 +4327,8 @@ void Audio_ResetIncreasingTranspose(void) {
 }
 
 void Audio_PlaySoundTransposed(Vec3f* pos, u16 sfxId, s8 semitone) {
-    Audio_PlaySoundGeneral(sfxId, pos, 4, &gNoteFrequencies[semitone + 39], &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+    Audio_PlaySoundGeneral(sfxId, pos, 4, &gNoteFrequencies[semitone + 39], &gSfxDefaultFreqAndVolScale,
+                           &gSfxDefaultReverb);
 }
 
 void func_800F4C58(Vec3f* pos, u16 sfxId, u8 arg2) {
@@ -4691,8 +4688,7 @@ void func_800F5C2C(void) {
     sPrevMainBgmSeqId = NA_BGM_DISABLED;
 }
 
-void Audio_PlayFanfare(u16 seqId)
-{
+void Audio_PlayFanfare(u16 seqId) {
     u16 curSeqId;
     u32 outNumFonts;
     u8* curFontId;
@@ -4707,17 +4703,17 @@ void Audio_PlayFanfare(u16 seqId)
     curFontId = func_800E5E84(curSeqId & 0xFF, &outNumFonts);
     requestedFontId = func_800E5E84(seqId & 0xFF, &outNumFonts);
 
-	if (!curFontId || !requestedFontId) {
-		// disable BGM, we're about to null deref!
-		D_8016B9F4 = 1;
-	} else {
-		if ((curSeqId == NA_BGM_DISABLED) || (*curFontId == *requestedFontId)) {
-			D_8016B9F4 = 1;
-		} else {
-			D_8016B9F4 = 5;
-			Audio_SeqCmd1(SEQ_PLAYER_FANFARE, 0);
-		}
-	}
+    if (!curFontId || !requestedFontId) {
+        // disable BGM, we're about to null deref!
+        D_8016B9F4 = 1;
+    } else {
+        if ((curSeqId == NA_BGM_DISABLED) || (*curFontId == *requestedFontId)) {
+            D_8016B9F4 = 1;
+        } else {
+            D_8016B9F4 = 5;
+            Audio_SeqCmd1(SEQ_PLAYER_FANFARE, 0);
+        }
+    }
     D_8016B9F6 = seqId;
 }
 
@@ -4913,10 +4909,12 @@ void func_800F6268(f32 dist, u16 arg1) {
 void func_800F64E0(u8 arg0) {
     D_80130608 = arg0;
     if (arg0 != 0) {
-        Audio_PlaySoundGeneral(NA_SE_SY_WIN_OPEN, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySoundGeneral(NA_SE_SY_WIN_OPEN, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         Audio_QueueCmdS32(0xF1000000, 0);
     } else {
-        Audio_PlaySoundGeneral(NA_SE_SY_WIN_CLOSE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySoundGeneral(NA_SE_SY_WIN_CLOSE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         Audio_QueueCmdS32(0xF2000000, 0);
     }
 }
@@ -4994,7 +4992,8 @@ void Audio_SetBaseFilter(u8 filter) {
         if (filter == 0) {
             Audio_StopSfxById(NA_SE_PL_IN_BUBBLE);
         } else if (sAudioBaseFilter == 0) {
-            Audio_PlaySoundGeneral(NA_SE_PL_IN_BUBBLE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+            Audio_PlaySoundGeneral(NA_SE_PL_IN_BUBBLE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         }
     }
     sAudioBaseFilter = filter;
@@ -5027,7 +5026,8 @@ void Audio_PlaySoundGeneralIfNotInCutscene(u16 sfxId, Vec3f* pos, u8 arg2, f32* 
 }
 
 void Audio_PlaySoundIfNotInCutscene(u16 sfxId) {
-    Audio_PlaySoundGeneralIfNotInCutscene(sfxId, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+    Audio_PlaySoundGeneralIfNotInCutscene(sfxId, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                          &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
 }
 
 void func_800F6964(u16 arg0) {

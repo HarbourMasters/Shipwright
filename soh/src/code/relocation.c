@@ -105,8 +105,8 @@ void Overlay_Relocate(void* allocatedVRamAddress, OverlayRelocationSection* over
             case 0x6000000:
                 if (gOverlayLogSeverity >= 3) {
                     osSyncPrintf("%02d %08x %08x %08x ", dbg, relocDataP, relocatedValue, relocatedAddress);
-                    osSyncPrintf(" %08x %08x %08x %08x\n", ((uintptr_t)relocDataP + (uintptr_t)vRamAddress) - allocu32, relocData,
-                                 unrelocatedAddress, relocOffset);
+                    osSyncPrintf(" %08x %08x %08x %08x\n", ((uintptr_t)relocDataP + (uintptr_t)vRamAddress) - allocu32,
+                                 relocData, unrelocatedAddress, relocOffset);
                 }
         }
     }

@@ -197,7 +197,7 @@ void EnDs_OfferBluePotion(EnDs* this, PlayState* play) {
                         this->actionFunc = EnDs_TalkNoEmptyBottle;
                         return;
                     case 2: // have 100 rupees and empty bottle
-                        if(GameInteractor_Should(VB_GRANNY_TAKE_MONEY, true, this)){
+                        if (GameInteractor_Should(VB_GRANNY_TAKE_MONEY, true, this)) {
                             Rupees_ChangeBy(-100);
                         }
                         this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
@@ -209,7 +209,7 @@ void EnDs_OfferBluePotion(EnDs* this, PlayState* play) {
                             gSaveContext.ship.pendingSaleMod = itemEntry.modIndex;
                             this->actionFunc = EnDs_GiveBluePotion;
                         }
-                        
+
                         return;
                 }
                 break;
@@ -226,10 +226,12 @@ void EnDs_Wait(EnDs* this, PlayState* play) {
 
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         if (func_8002F368(play) == EXCH_ITEM_ODD_MUSHROOM) {
-            Audio_PlaySoundGeneral(NA_SE_SY_TRE_BOX_APPEAR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+            Audio_PlaySoundGeneral(NA_SE_SY_TRE_BOX_APPEAR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             player->actor.textId = 0x504A;
             this->actionFunc = EnDs_OfferOddPotion;
-        } else if (GameInteractor_Should(VB_OFFER_BLUE_POTION, Flags_GetItemGetInf(ITEMGETINF_30), this)) { // Traded odd mushroom
+        } else if (GameInteractor_Should(VB_OFFER_BLUE_POTION, Flags_GetItemGetInf(ITEMGETINF_30),
+                                         this)) { // Traded odd mushroom
             player->actor.textId = 0x500C;
             this->actionFunc = EnDs_OfferBluePotion;
         } else {

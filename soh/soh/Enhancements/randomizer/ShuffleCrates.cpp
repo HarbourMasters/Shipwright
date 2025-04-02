@@ -25,63 +25,66 @@ extern "C" void ObjKibako2_RandomizerDraw(Actor* thisx, PlayState* play) {
     int csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED);
     int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
 
-    int isVanilla = csmc == CSMC_DISABLED || csmc == CSMC_SIZE || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
+    int isVanilla =
+        csmc == CSMC_DISABLED || csmc == CSMC_SIZE || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
 
     if (isVanilla) {
         Gfx_DrawDListOpa(play, (Gfx*)gLargeRandoCrateDL);
         return;
-    } 
-    
+    }
+
     GetItemEntry crateItem =
         Rando::Context::GetInstance()->GetFinalGIEntry(crateActor->crateIdentity.randomizerCheck, true, GI_NONE);
     getItemCategory = crateItem.getItemCategory;
-   
+
     // If they have bombchus, don't consider the bombchu item major
     if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU &&
-            ((crateItem.modIndex == MOD_RANDOMIZER && crateItem.getItemId == RG_PROGRESSIVE_BOMBCHUS) ||
-             (crateItem.modIndex == MOD_NONE && 
-                 (crateItem.getItemId == GI_BOMBCHUS_5 || crateItem.getItemId == GI_BOMBCHUS_10 ||
+        ((crateItem.modIndex == MOD_RANDOMIZER && crateItem.getItemId == RG_PROGRESSIVE_BOMBCHUS) ||
+         (crateItem.modIndex == MOD_NONE &&
+          (crateItem.getItemId == GI_BOMBCHUS_5 || crateItem.getItemId == GI_BOMBCHUS_10 ||
            crateItem.getItemId == GI_BOMBCHUS_20)))) {
         getItemCategory = ITEM_CATEGORY_JUNK;
         // If it's a bottle and they already have one, consider the item lesser
-    } else if ((crateItem.modIndex == MOD_RANDOMIZER && crateItem.getItemId >= RG_BOTTLE_WITH_RED_POTION && crateItem.getItemId <= RG_BOTTLE_WITH_POE) ||
-             (crateItem.modIndex == MOD_NONE && (crateItem.getItemId == GI_BOTTLE || crateItem.getItemId == GI_MILK_BOTTLE))) {
+    } else if ((crateItem.modIndex == MOD_RANDOMIZER && crateItem.getItemId >= RG_BOTTLE_WITH_RED_POTION &&
+                crateItem.getItemId <= RG_BOTTLE_WITH_POE) ||
+               (crateItem.modIndex == MOD_NONE &&
+                (crateItem.getItemId == GI_BOTTLE || crateItem.getItemId == GI_MILK_BOTTLE))) {
         if (gSaveContext.inventory.items[SLOT_BOTTLE_1] != ITEM_NONE) {
             getItemCategory = ITEM_CATEGORY_LESSER;
         }
     }
 
-        // Change texture
-        switch (getItemCategory) {
-            case ITEM_CATEGORY_MAJOR:
-                Gfx_DrawDListOpa(play, (Gfx*)gLargeMajorCrateDL);
-                break;
-            case ITEM_CATEGORY_SKULLTULA_TOKEN:
-                Gfx_DrawDListOpa(play, (Gfx*)gLargeTokenCrateDL);
-                break;
-            case ITEM_CATEGORY_SMALL_KEY:
-                Gfx_DrawDListOpa(play, (Gfx*)gLargeSmallKeyCrateDL);
-                break;
-            case ITEM_CATEGORY_BOSS_KEY:
-                Gfx_DrawDListOpa(play, (Gfx*)gLargeBossKeyCrateDL);
-                break;
-            case ITEM_CATEGORY_LESSER:
-                switch (crateItem.itemId) {
-                    case ITEM_HEART_PIECE:
-                    case ITEM_HEART_PIECE_2:
-                    case ITEM_HEART_CONTAINER:
-                        Gfx_DrawDListOpa(play, (Gfx*)gLargeHeartCrateDL);
-                        break;
-                    default:
-                        Gfx_DrawDListOpa(play, (Gfx*)gLargeMinorCrateDL);
-                        break;
-                }
-                break;
-            case ITEM_CATEGORY_JUNK:
-            default:
-                Gfx_DrawDListOpa(play, (Gfx*)gLargeJunkCrateDL);
-                break;
-        }
+    // Change texture
+    switch (getItemCategory) {
+        case ITEM_CATEGORY_MAJOR:
+            Gfx_DrawDListOpa(play, (Gfx*)gLargeMajorCrateDL);
+            break;
+        case ITEM_CATEGORY_SKULLTULA_TOKEN:
+            Gfx_DrawDListOpa(play, (Gfx*)gLargeTokenCrateDL);
+            break;
+        case ITEM_CATEGORY_SMALL_KEY:
+            Gfx_DrawDListOpa(play, (Gfx*)gLargeSmallKeyCrateDL);
+            break;
+        case ITEM_CATEGORY_BOSS_KEY:
+            Gfx_DrawDListOpa(play, (Gfx*)gLargeBossKeyCrateDL);
+            break;
+        case ITEM_CATEGORY_LESSER:
+            switch (crateItem.itemId) {
+                case ITEM_HEART_PIECE:
+                case ITEM_HEART_PIECE_2:
+                case ITEM_HEART_CONTAINER:
+                    Gfx_DrawDListOpa(play, (Gfx*)gLargeHeartCrateDL);
+                    break;
+                default:
+                    Gfx_DrawDListOpa(play, (Gfx*)gLargeMinorCrateDL);
+                    break;
+            }
+            break;
+        case ITEM_CATEGORY_JUNK:
+        default:
+            Gfx_DrawDListOpa(play, (Gfx*)gLargeJunkCrateDL);
+            break;
+    }
 }
 
 extern "C" void ObjKibako_RandomizerDraw(Actor* thisx, PlayState* play) {
@@ -90,62 +93,66 @@ extern "C" void ObjKibako_RandomizerDraw(Actor* thisx, PlayState* play) {
     int csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED);
     int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
 
-    int isVanilla = csmc == CSMC_DISABLED || csmc == CSMC_SIZE || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
-    
+    int isVanilla =
+        csmc == CSMC_DISABLED || csmc == CSMC_SIZE || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
+
     if (isVanilla) {
         Gfx_DrawDListOpa(play, (Gfx*)gSmallRandoCrateDL);
         return;
-    } 
+    }
 
-    GetItemEntry smallCrateItem = Rando::Context::GetInstance()->GetFinalGIEntry(smallCrateActor->smallCrateIdentity.randomizerCheck, true, GI_NONE);
+    GetItemEntry smallCrateItem = Rando::Context::GetInstance()->GetFinalGIEntry(
+        smallCrateActor->smallCrateIdentity.randomizerCheck, true, GI_NONE);
     getItemCategory = smallCrateItem.getItemCategory;
 
     // If they have bombchus, don't consider the bombchu item major
     if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU &&
         ((smallCrateItem.modIndex == MOD_RANDOMIZER && smallCrateItem.getItemId == RG_PROGRESSIVE_BOMBCHUS) ||
          (smallCrateItem.modIndex == MOD_NONE &&
-          (smallCrateItem.getItemId == GI_BOMBCHUS_5 || smallCrateItem.getItemId == GI_BOMBCHUS_10 || smallCrateItem.getItemId == GI_BOMBCHUS_20)))) {
+          (smallCrateItem.getItemId == GI_BOMBCHUS_5 || smallCrateItem.getItemId == GI_BOMBCHUS_10 ||
+           smallCrateItem.getItemId == GI_BOMBCHUS_20)))) {
         getItemCategory = ITEM_CATEGORY_JUNK;
         // If it's a bottle and they already have one, consider the item lesser
     } else if ((smallCrateItem.modIndex == MOD_RANDOMIZER && smallCrateItem.getItemId >= RG_BOTTLE_WITH_RED_POTION &&
                 smallCrateItem.getItemId <= RG_BOTTLE_WITH_POE) ||
-               (smallCrateItem.modIndex == MOD_NONE && (smallCrateItem.getItemId == GI_BOTTLE || smallCrateItem.getItemId == GI_MILK_BOTTLE))) {
+               (smallCrateItem.modIndex == MOD_NONE &&
+                (smallCrateItem.getItemId == GI_BOTTLE || smallCrateItem.getItemId == GI_MILK_BOTTLE))) {
         if (gSaveContext.inventory.items[SLOT_BOTTLE_1] != ITEM_NONE) {
             getItemCategory = ITEM_CATEGORY_LESSER;
         }
     }
 
     // Change texture
-        switch (getItemCategory) {
-            case ITEM_CATEGORY_MAJOR:
-                Gfx_DrawDListOpa(play, (Gfx*)gSmallMajorCrateDL);
-                break;
-            case ITEM_CATEGORY_SKULLTULA_TOKEN:
-                Gfx_DrawDListOpa(play, (Gfx*)gSmallTokenCrateDL);
-                break;
-            case ITEM_CATEGORY_SMALL_KEY:
-                Gfx_DrawDListOpa(play, (Gfx*)gSmallSmallKeyCrateDL);
-                break;
-            case ITEM_CATEGORY_BOSS_KEY:
-                Gfx_DrawDListOpa(play, (Gfx*)gSmallBossKeyCrateDL);
-                break;
-            case ITEM_CATEGORY_LESSER:
-                switch (smallCrateItem.itemId) {
-                    case ITEM_HEART_PIECE:
-                    case ITEM_HEART_PIECE_2:
-                    case ITEM_HEART_CONTAINER:
-                        Gfx_DrawDListOpa(play, (Gfx*)gSmallHeartCrateDL);
-                        break;
-                    default:
-                        Gfx_DrawDListOpa(play, (Gfx*)gSmallMinorCrateDL);
-                        break;
-                }
-                break;
-            case ITEM_CATEGORY_JUNK:
-            default:
-                Gfx_DrawDListOpa(play, (Gfx*)gSmallJunkCrateDL);
-                break;
-        }
+    switch (getItemCategory) {
+        case ITEM_CATEGORY_MAJOR:
+            Gfx_DrawDListOpa(play, (Gfx*)gSmallMajorCrateDL);
+            break;
+        case ITEM_CATEGORY_SKULLTULA_TOKEN:
+            Gfx_DrawDListOpa(play, (Gfx*)gSmallTokenCrateDL);
+            break;
+        case ITEM_CATEGORY_SMALL_KEY:
+            Gfx_DrawDListOpa(play, (Gfx*)gSmallSmallKeyCrateDL);
+            break;
+        case ITEM_CATEGORY_BOSS_KEY:
+            Gfx_DrawDListOpa(play, (Gfx*)gSmallBossKeyCrateDL);
+            break;
+        case ITEM_CATEGORY_LESSER:
+            switch (smallCrateItem.itemId) {
+                case ITEM_HEART_PIECE:
+                case ITEM_HEART_PIECE_2:
+                case ITEM_HEART_CONTAINER:
+                    Gfx_DrawDListOpa(play, (Gfx*)gSmallHeartCrateDL);
+                    break;
+                default:
+                    Gfx_DrawDListOpa(play, (Gfx*)gSmallMinorCrateDL);
+                    break;
+            }
+            break;
+        case ITEM_CATEGORY_JUNK:
+        default:
+            Gfx_DrawDListOpa(play, (Gfx*)gSmallJunkCrateDL);
+            break;
+    }
 }
 
 uint8_t ObjKibako2_RandomizerHoldsItem(ObjKibako2* crateActor, PlayState* play) {
@@ -183,7 +190,8 @@ uint8_t ObjKibako_RandomizerHoldsItem(ObjKibako* smallCrateActor, PlayState* pla
 void ObjKibako2_RandomizerSpawnCollectible(ObjKibako2* crateActor, PlayState* play) {
     EnItem00* item00 = (EnItem00*)Item_DropCollectible2(play, &crateActor->dyna.actor.world.pos, ITEM00_SOH_DUMMY);
     item00->randoInf = crateActor->crateIdentity.randomizerInf;
-    item00->itemEntry = Rando::Context::GetInstance()->GetFinalGIEntry(crateActor->crateIdentity.randomizerCheck, true, GI_NONE);
+    item00->itemEntry =
+        Rando::Context::GetInstance()->GetFinalGIEntry(crateActor->crateIdentity.randomizerCheck, true, GI_NONE);
     item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
     item00->actor.velocity.y = 8.0f;
     item00->actor.speedXZ = 2.0f;
@@ -193,8 +201,8 @@ void ObjKibako2_RandomizerSpawnCollectible(ObjKibako2* crateActor, PlayState* pl
 void ObjKibako_RandomizerSpawnCollectible(ObjKibako* smallCrateActor, PlayState* play) {
     EnItem00* item00 = (EnItem00*)Item_DropCollectible2(play, &smallCrateActor->actor.world.pos, ITEM00_SOH_DUMMY);
     item00->randoInf = smallCrateActor->smallCrateIdentity.randomizerInf;
-    item00->itemEntry =
-        Rando::Context::GetInstance()->GetFinalGIEntry(smallCrateActor->smallCrateIdentity.randomizerCheck, true, GI_NONE);
+    item00->itemEntry = Rando::Context::GetInstance()->GetFinalGIEntry(
+        smallCrateActor->smallCrateIdentity.randomizerCheck, true, GI_NONE);
     item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
     item00->actor.velocity.y = 8.0f;
     item00->actor.speedXZ = 2.0f;
@@ -207,29 +215,38 @@ void ObjKibako2_RandomizerInit(void* actorRef) {
 
     // don't shuffle two OOB crates in GF and don't shuffle child GV/GF crates when not in no logic
     if (actor->id != ACTOR_OBJ_KIBAKO2 ||
-        (gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS && (s16)actor->world.pos.x == -4051 && (s16)actor->world.pos.z == -3429) ||
-        (gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS && (s16)actor->world.pos.x == -4571 && (s16)actor->world.pos.z == -3429) ||
-        (logicSetting != RO_LOGIC_NO_LOGIC &&
-        ((gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS && (s16)actor->world.pos.x == 3443 && (s16)actor->world.pos.z == -4876) ||
-        (gPlayState->sceneNum == SCENE_GERUDO_VALLEY && (s16)actor->world.pos.x == -764 && (s16)actor->world.pos.z == 148) || 
-        (gPlayState->sceneNum == SCENE_GERUDO_VALLEY && (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -125) ||
-        (gPlayState->sceneNum == SCENE_GERUDO_VALLEY && (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -150) || 
-        (gPlayState->sceneNum == SCENE_GERUDO_VALLEY && (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -90))))
+        (gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS && (s16)actor->world.pos.x == -4051 &&
+         (s16)actor->world.pos.z == -3429) ||
+        (gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS && (s16)actor->world.pos.x == -4571 &&
+         (s16)actor->world.pos.z == -3429) ||
+        (logicSetting != RO_LOGIC_NO_LOGIC && ((gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS &&
+                                                (s16)actor->world.pos.x == 3443 && (s16)actor->world.pos.z == -4876) ||
+                                               (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
+                                                (s16)actor->world.pos.x == -764 && (s16)actor->world.pos.z == 148) ||
+                                               (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
+                                                (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -125) ||
+                                               (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
+                                                (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -150) ||
+                                               (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
+                                                (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -90))))
         return;
 
     ObjKibako2* crateActor = static_cast<ObjKibako2*>(actorRef);
 
-    crateActor->crateIdentity = OTRGlobals::Instance->gRandomizer->IdentifyCrate(gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
+    crateActor->crateIdentity = OTRGlobals::Instance->gRandomizer->IdentifyCrate(
+        gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
 }
 
 void ObjKibako_RandomizerInit(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
 
-    if (actor->id != ACTOR_OBJ_KIBAKO) return;
+    if (actor->id != ACTOR_OBJ_KIBAKO)
+        return;
 
     ObjKibako* smallCrateActor = static_cast<ObjKibako*>(actorRef);
 
-    smallCrateActor->smallCrateIdentity = OTRGlobals::Instance->gRandomizer->IdentifySmallCrate(gPlayState->sceneNum, (s16)actor->home.pos.x, (s16)actor->home.pos.z);
+    smallCrateActor->smallCrateIdentity = OTRGlobals::Instance->gRandomizer->IdentifySmallCrate(
+        gPlayState->sceneNum, (s16)actor->home.pos.x, (s16)actor->home.pos.z);
 }
 
 void RegisterShuffleCrates() {
@@ -274,12 +291,12 @@ void RegisterShuffleCrates() {
             *should = true;
         }
     });
-
 }
 
 void Rando::StaticData::RegisterCrateLocations() {
     static bool registered = false;
-    if (registered) return;
+    if (registered)
+        return;
     registered = true;
     // clang-format off
     // Overworld Crates
