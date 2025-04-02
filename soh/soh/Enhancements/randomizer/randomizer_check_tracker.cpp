@@ -15,6 +15,7 @@
 #include "soh/Enhancements/debugger/performanceTimer.h"
 
 #include <string>
+#include <sstream>
 #include <vector>
 #include <set>
 #include <libultraship/libultraship.h>

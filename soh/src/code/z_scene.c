@@ -507,11 +507,13 @@ void (*gSceneCmdHandlers[SCENE_CMD_ID_MAX])(PlayState*, SceneCmd*) = {
     Scene_CommandMiscSettings,        // SCENE_CMD_ID_MISC_SETTINGS
 };
 
+// clang-format off
 RomFile sNaviMsgFiles[] = {
-    ROM_FILE(text / elf_message_field / elf_message_field),
-    ROM_FILE(text / elf_message_ydan / elf_message_ydan),
+    ROM_FILE(text/elf_message_field/elf_message_field),
+    ROM_FILE(text/elf_message_ydan/elf_message_ydan),
     ROM_FILE_UNSET,
 };
+// clang-format on
 
 s16 gLinkObjectIds[] = { OBJECT_LINK_BOY, OBJECT_LINK_CHILD };
 
