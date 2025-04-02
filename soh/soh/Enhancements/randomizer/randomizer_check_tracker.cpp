@@ -1809,7 +1809,9 @@ void DrawLocation(RandomizerCheck rc) {
                     txt = itemLoc->GetPlacedItem().GetName().GetForCurrentLanguage(MF_RAW);
                 } else {
                     if (IsHeartPiece((GetItemID)Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetItemID())) {
-                        txt = Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetName().GetForCurrentLanguage(MF_RAW);
+                        txt = Rando::StaticData::RetrieveItem(loc->GetVanillaItem())
+                                  .GetName()
+                                  .GetForCurrentLanguage(MF_RAW);
                     }
                 }
                 break;
@@ -1838,7 +1840,9 @@ void DrawLocation(RandomizerCheck rc) {
                     }
                 } else {
                     if (IsHeartPiece((GetItemID)Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetItemID())) {
-                        txt = Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetName().GetForCurrentLanguage(MF_RAW);
+                        txt = Rando::StaticData::RetrieveItem(loc->GetVanillaItem())
+                                  .GetName()
+                                  .GetForCurrentLanguage(MF_RAW);
                     }
                 }
                 break;

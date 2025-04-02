@@ -406,11 +406,11 @@ void Rando::StaticData::InitItemTable() {
     // Init itemNameToEnum
     for (auto& item : itemTable) {
         std::vector<std::string> strings = item.GetName().GetAllMessages(MF_RAW);
-        for (std::string string: strings){
-            if (itemNameToEnum.contains(string) && string != ""){
-                if (itemNameToEnum[string] != item.GetRandomizerGet()){
+        for (std::string string : strings) {
+            if (itemNameToEnum.contains(string) && string != "") {
+                if (itemNameToEnum[string] != item.GetRandomizerGet()) {
                     SPDLOG_DEBUG("\tREPEATED STRING WITH " + string + "\n\n");
-                } 
+                }
             } else {
                 itemNameToEnum[string] = item.GetRandomizerGet();
             }

@@ -27,10 +27,11 @@ HintDistributionSetting::HintDistributionSetting(std::string _name, HintType _ty
     dungeonLimit = _dungeonLimit;
 }
 
-//RANDOTODO rearrange once all HintText's have names
+// RANDOTODO rearrange once all HintText's have names
 HintText::HintText(CustomMessage clearText_, std::vector<CustomMessage> ambiguousText_,
                    std::vector<CustomMessage> obscureText_, CustomMessage name_)
-    : clearText(std::move(clearText_)), ambiguousText(std::move(ambiguousText_)), obscureText(std::move(obscureText_)), name(std::move(name_)) {
+    : clearText(std::move(clearText_)), ambiguousText(std::move(ambiguousText_)), obscureText(std::move(obscureText_)),
+      name(std::move(name_)) {
 }
 
 const CustomMessage& HintText::GetClear() const {

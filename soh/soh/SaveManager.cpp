@@ -558,8 +558,8 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
 
                 std::vector<RandomizerGet> items = hint->GetHintedItems();
                 SaveManager::Instance->SaveArray("items", items.size(), [&](size_t i) {
-                    SaveManager::Instance->SaveData("",
-                                                    Rando::StaticData::GetItemTable()[items[i]].GetName().GetEnglish(MF_RAW));
+                    SaveManager::Instance->SaveData(
+                        "", Rando::StaticData::GetItemTable()[items[i]].GetName().GetEnglish(MF_RAW));
                 });
 
                 std::vector<uint8_t> itemNamesChosen = hint->GetItemNamesChosen();

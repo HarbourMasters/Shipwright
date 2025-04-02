@@ -233,21 +233,22 @@ StaticData::PopulateTranslationMap(std::unordered_map<uint32_t, CustomMessage> i
     return output;
 }
 
-std::unordered_map<std::string, uint32_t> StaticData::PopulateTranslationMap(std::unordered_map<uint32_t, RandomizerHintTextKey> input){
-  std::unordered_map<std::string, uint32_t> output = {};
-  for (const auto& [key, text] : input) {
-    std::vector<std::string> strings = hintTextTable[text].GetClear().GetAllMessages();
-    for (std::string string: strings){
-      if (output.contains(string)){
-        if (output[string] != key && string != ""){
-          SPDLOG_DEBUG("\tREPEATED STRING WITH " + string + "\n\n");
+std::unordered_map<std::string, uint32_t>
+StaticData::PopulateTranslationMap(std::unordered_map<uint32_t, RandomizerHintTextKey> input) {
+    std::unordered_map<std::string, uint32_t> output = {};
+    for (const auto& [key, text] : input) {
+        std::vector<std::string> strings = hintTextTable[text].GetClear().GetAllMessages();
+        for (std::string string : strings) {
+            if (output.contains(string)) {
+                if (output[string] != key && string != "") {
+                    SPDLOG_DEBUG("\tREPEATED STRING WITH " + string + "\n\n");
+                }
+            } else {
+                output[string] = key;
+            }
         }
-      } else {
-        output[string] = key;
-      }
     }
-  }
-  return output;
+    return output;
 }
 
 std::unordered_map<std::string, uint32_t> StaticData::hintNameToEnum = {};

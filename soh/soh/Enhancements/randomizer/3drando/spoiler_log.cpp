@@ -74,7 +74,8 @@ static void WriteLocation(std::string sphere, const RandomizerCheck locationKey,
     Rando::Location* location = Rando::StaticData::GetLocation(locationKey);
     Rando::ItemLocation* itemLocation = Rando::Context::GetInstance()->GetItemLocation(locationKey);
 
-    jsonData["playthrough"][sphere][location->GetName()] = itemLocation->GetPlacedItemName().GetForCurrentLanguage(MF_RAW);
+    jsonData["playthrough"][sphere][location->GetName()] =
+        itemLocation->GetPlacedItemName().GetForCurrentLanguage(MF_RAW);
 }
 
 // Writes a shuffled entrance to the specified node
@@ -255,43 +256,43 @@ static void WriteAllLocations() {
     for (const RandomizerCheck key : ctx->allLocations) {
         Rando::ItemLocation* location = ctx->GetItemLocation(key);
         std::string placedItemName = location->GetPlacedItemName().GetForCurrentLanguage(MF_RAW);
+        std::string locName = Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName();
 
         // If it's a simple item (not an ice trap, doesn't have a price)
         // just add the name of the item and move on
         if (!location->HasCustomPrice() && location->GetPlacedRandomizerGet() != RG_ICE_TRAP) {
 
-            jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()] =
-                placedItemName;
+            jsonData["locations"][locName] = placedItemName;
             continue;
         }
 
         // We're dealing with a complex item, build out the json object for it
-        jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["item"] =
-            placedItemName;
+        jsonData["locations"][locName]["item"] = placedItemName;
 
         if (location->HasCustomPrice()) {
-            jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["price"] =
-                location->GetPrice();
+            jsonData["locations"][locName]["price"] = location->GetPrice();
         }
         if (location->IsAHintAccessible()) {
             hintedLocations.emplace(Rando::StaticData::GetLocation(key)->GetHintKey(), location);
         }
 
         if (location->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
-          jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["model"] =
-          Rando::StaticData::RetrieveItem(ctx->overrides[location->GetRandomizerCheck()].LooksLike()).GetName().GetForCurrentLanguage(MF_RAW);
-          switch (gSaveContext.language) {
-              case 0:
-              default:
-                  jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["trickName"] = 
-                      ctx->overrides[location->GetRandomizerCheck()].GetTrickName().english;
-                  break;
-              case 2:
-                  jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["trickName"] =
-                      ctx->overrides[location->GetRandomizerCheck()].GetTrickName().french;
-                  break;
-          }
-      }
+            jsonData["locations"][locName]["model"] =
+                Rando::StaticData::RetrieveItem(ctx->overrides[location->GetRandomizerCheck()].LooksLike())
+                    .GetName()
+                    .GetForCurrentLanguage(MF_RAW);
+            switch (gSaveContext.language) {
+                case 0:
+                default:
+                    jsonData["locations"][locName]["trickName"] =
+                        ctx->overrides[location->GetRandomizerCheck()].GetTrickName().english;
+                    break;
+                case 2:
+                    jsonData["locations"][locName]["trickName"] =
+                        ctx->overrides[location->GetRandomizerCheck()].GetTrickName().french;
+                    break;
+            }
+        }
     }
 }
 
