@@ -13,4 +13,4 @@ void ObjKibako_RandomizerInit(void* actorRef);
 };
 #endif
 
-#endif //ShuffleCrates_H
+#endif // ShuffleCrates_H

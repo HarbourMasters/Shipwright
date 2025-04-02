@@ -20,8 +20,8 @@ extern PlayState* gPlayState;
 #ifdef __cplusplus
 extern "C" {
 #endif
-    void enableBetaQuest();
-    void disableBetaQuest();
+void enableBetaQuest();
+void disableBetaQuest();
 #ifdef __cplusplus
 }
 #endif
@@ -61,7 +61,7 @@ static const std::unordered_map<int32_t, const char*> notificationPosition = {
     { 0, "Top Left" }, { 1, "Top Right" }, { 2, "Bottom Left" }, { 3, "Bottom Right" }, { 4, "Hidden" },
 };
 
-static const std::unordered_map<int32_t, const char*> dekuStickCheat = { 
+static const std::unordered_map<int32_t, const char*> dekuStickCheat = {
     { DEKU_STICK_NORMAL, "Normal" },
     { DEKU_STICK_UNBREAKABLE, "Unbreakable" },
     { DEKU_STICK_UNBREAKABLE_AND_ALWAYS_ON_FIRE, "Unbreakable + Always on Fire" },
@@ -100,47 +100,32 @@ static const std::unordered_map<int32_t, const char*> sleepingWaterfallOptions =
 };
 
 static const std::unordered_map<int32_t, const char*> allPowers = {
-    { DAMAGE_VANILLA, "Vanilla (1x)" },
-    { DAMAGE_DOUBLE, "Double (2x)" },
-    { DAMAGE_QUADRUPLE, "Quadruple (4x)" },
-    { DAMAGE_OCTUPLE, "Octuple (8x)" },
-    { DAMAGE_FOOLISH, "Foolish (16x)" },
-    { DAMAGE_RIDICULOUS, "Ridiculous (32x)" },
-    { DAMAGE_MERCILESS, "Merciless (64x)" },
-    { DAMAGE_TORTURE, "Pure Torture (128x)" },
+    { DAMAGE_VANILLA, "Vanilla (1x)" },      { DAMAGE_DOUBLE, "Double (2x)" },
+    { DAMAGE_QUADRUPLE, "Quadruple (4x)" },  { DAMAGE_OCTUPLE, "Octuple (8x)" },
+    { DAMAGE_FOOLISH, "Foolish (16x)" },     { DAMAGE_RIDICULOUS, "Ridiculous (32x)" },
+    { DAMAGE_MERCILESS, "Merciless (64x)" }, { DAMAGE_TORTURE, "Pure Torture (128x)" },
     { DAMAGE_OHKO, "OHKO (256x)" },
 };
 
 static const std::unordered_map<int32_t, const char*> subPowers = {
-    { DAMAGE_VANILLA, "Vanilla (1x)" },
-    { DAMAGE_DOUBLE, "Double (2x)" },
-    { DAMAGE_QUADRUPLE, "Quadruple (4x)" },
-    { DAMAGE_OCTUPLE, "Octuple (8x)" },
-    { DAMAGE_FOOLISH, "Foolish (16x)" },
-    { DAMAGE_RIDICULOUS, "Ridiculous (32x)" },
-    { DAMAGE_MERCILESS, "Merciless (64x)" },
-    { DAMAGE_TORTURE, "Pure Torture (128x)" },
+    { DAMAGE_VANILLA, "Vanilla (1x)" },      { DAMAGE_DOUBLE, "Double (2x)" },
+    { DAMAGE_QUADRUPLE, "Quadruple (4x)" },  { DAMAGE_OCTUPLE, "Octuple (8x)" },
+    { DAMAGE_FOOLISH, "Foolish (16x)" },     { DAMAGE_RIDICULOUS, "Ridiculous (32x)" },
+    { DAMAGE_MERCILESS, "Merciless (64x)" }, { DAMAGE_TORTURE, "Pure Torture (128x)" },
 };
 
 static const std::unordered_map<int32_t, const char*> subSubPowers = {
-    { DAMAGE_VANILLA, "Vanilla (1x)" },
-    { DAMAGE_DOUBLE, "Double (2x)" },
-    { DAMAGE_QUADRUPLE, "Quadruple (4x)" },
-    { DAMAGE_OCTUPLE, "Octuple (8x)" },
-    { DAMAGE_FOOLISH, "Foolish (16x)" },
-    { DAMAGE_RIDICULOUS, "Ridiculous (32x)" },
+    { DAMAGE_VANILLA, "Vanilla (1x)" },      { DAMAGE_DOUBLE, "Double (2x)" },
+    { DAMAGE_QUADRUPLE, "Quadruple (4x)" },  { DAMAGE_OCTUPLE, "Octuple (8x)" },
+    { DAMAGE_FOOLISH, "Foolish (16x)" },     { DAMAGE_RIDICULOUS, "Ridiculous (32x)" },
     { DAMAGE_MERCILESS, "Merciless (64x)" },
 };
 
 static const std::unordered_map<int32_t, const char*> bonkDamageValues = {
-    { BONK_DAMAGE_NONE, "No Damage" },
-    { BONK_DAMAGE_QUARTER_HEART, "0.25 Hearts" },
-    { BONK_DAMAGE_HALF_HEART, "0.5 Hearts" },
-    { BONK_DAMAGE_1_HEART, "1 Heart" },
-    { BONK_DAMAGE_2_HEARTS, "2 Hearts" },
-    { BONK_DAMAGE_4_HEARTS, "4 Hearts" },
-    { BONK_DAMAGE_8_HEARTS, "8 Hearts" },
-    { BONK_DAMAGE_OHKO, "OHKO" },
+    { BONK_DAMAGE_NONE, "No Damage" },        { BONK_DAMAGE_QUARTER_HEART, "0.25 Hearts" },
+    { BONK_DAMAGE_HALF_HEART, "0.5 Hearts" }, { BONK_DAMAGE_1_HEART, "1 Heart" },
+    { BONK_DAMAGE_2_HEARTS, "2 Hearts" },     { BONK_DAMAGE_4_HEARTS, "4 Hearts" },
+    { BONK_DAMAGE_8_HEARTS, "8 Hearts" },     { BONK_DAMAGE_OHKO, "OHKO" },
 };
 
 static const std::unordered_map<int32_t, const char*> cursorAnywhereValues = {
@@ -170,17 +155,19 @@ static const std::unordered_map<int32_t, const char*> mirroredWorldModes = {
     { MIRRORED_WORLD_DUNGEONS_VANILLA, "Dungeons (Vanilla)" },
     { MIRRORED_WORLD_DUNGEONS_MQ, "Dungeons (MQ)" },
     { MIRRORED_WORLD_DUNGEONS_RANDOM, "Dungeons Random" },
-    { MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED, "Dungeons Random (Seeded)"},
+    { MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED, "Dungeons Random (Seeded)" },
 };
 
 static const std::unordered_map<int32_t, const char*> enemyRandomizerModes = {
     { ENEMY_RANDOMIZER_OFF, "Disabled" },
     { ENEMY_RANDOMIZER_RANDOM, "Random" },
-    { ENEMY_RANDOMIZER_RANDOM_SEEDED, "Random (Seeded)"},
+    { ENEMY_RANDOMIZER_RANDOM_SEEDED, "Random (Seeded)" },
 };
 
 static const std::unordered_map<int32_t, const char*> debugSaveFileModes = {
-    { 0, "Off" }, { 1, "Vanilla" }, { 2, "Maxed" },
+    { 0, "Off" },
+    { 1, "Vanilla" },
+    { 2, "Maxed" },
 };
 
 static const std::unordered_map<int32_t, const char*> bootSequenceLabels = {

@@ -2227,4 +2227,4 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
 
     // clang-format on
 }
-}
+} // namespace Rando

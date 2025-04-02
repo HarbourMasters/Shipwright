@@ -452,3 +452,7 @@ _packages
 
 soh/src/boot/build.c
 soh/properties.h
+
+# Tools
+/clang-format
+/clang-format.exe

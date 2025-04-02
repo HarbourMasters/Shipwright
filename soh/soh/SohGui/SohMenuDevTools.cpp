@@ -18,8 +18,9 @@ void SohMenu::AddMenuDevTools() {
         .Options(CheckboxOptions().Tooltip("Changes the menu display from overlay to windowed."));
     AddWidget(path, "Debug Mode", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("DebugEnabled"))
-        .Options(CheckboxOptions().Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip "
-                                           "with L + D-pad Right, and open the debug menu with L on the pause screen."));
+        .Options(
+            CheckboxOptions().Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip "
+                                      "with L + D-pad Right, and open the debug menu with L on the pause screen."));
     AddWidget(path, "OoT Registry Editor", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("RegEditEnabled"))
         .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0); })
@@ -41,13 +42,14 @@ void SohMenu::AddMenuDevTools() {
                                            "bits in that area.\nUSE WITH CAUTION AS IT DOES NOT UPDATE THE GS COUNT!"));
     AddWidget(path, "Better Debug Warp Screen", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("BetterDebugWarpScreen"))
-        .Options(CheckboxOptions().Tooltip(
-            "Optimized Debug Warp Screen, with the added ability to chose entrances and time of day.").DefaultValue(true));
+        .Options(CheckboxOptions()
+                     .Tooltip("Optimized Debug Warp Screen, with the added ability to chose entrances and time of day.")
+                     .DefaultValue(true));
     AddWidget(path, "Debug Warp Screen Translation", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"))
         .Options(CheckboxOptions()
-            .Tooltip("Translate the Debug Warp Screen based on the game language.")
-            .DefaultValue(true));
+                     .Tooltip("Translate the Debug Warp Screen based on the game language.")
+                     .DefaultValue(true));
     AddWidget(path, "Resource logging", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("ResourceLogging"))
         .Options(CheckboxOptions().Tooltip("Logs some resources as XML when they're loaded in binary format."));

@@ -8,7 +8,9 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED | ACTOR_FLAG_LOCK_ON_DISABLED)
+#define FLAGS                                                                                  \
+    (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
+     ACTOR_FLAG_DRAW_CULLING_DISABLED | ACTOR_FLAG_LOCK_ON_DISABLED)
 
 typedef enum {
     /* 0 */ CHU_GIRL_EYES_ASLEEP,
@@ -73,7 +75,10 @@ void EnBomBowlMan_Init(Actor* thisx, PlayState* play2) {
     Actor_SetScale(&this->actor, 0.013f);
 
     for (i = 0; i < 2; i++) {
-        if(CVarGetInteger(CVAR_ENHANCEMENT("CustomizeBombchuBowling"), 0) && CVarGetInteger(i == 0 ? CVAR_ENHANCEMENT("BombchuBowlingNoSmallCucco") : CVAR_ENHANCEMENT("BombchuBowlingNoBigCucco"), 0)) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("CustomizeBombchuBowling"), 0) &&
+            CVarGetInteger(i == 0 ? CVAR_ENHANCEMENT("BombchuBowlingNoSmallCucco")
+                                  : CVAR_ENHANCEMENT("BombchuBowlingNoBigCucco"),
+                           0)) {
             continue;
         }
 
@@ -145,7 +150,8 @@ void EnBomBowMan_BlinkAwake(EnBomBowlMan* this, PlayState* play) {
     if (frameCount == 30.0f) {
         this->dialogState = TEXT_STATE_EVENT;
 
-        if (GameInteractor_Should(VB_BE_ABLE_TO_PLAY_BOMBCHU_BOWLING, (Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) || BREG(2))) {
+        if (GameInteractor_Should(VB_BE_ABLE_TO_PLAY_BOMBCHU_BOWLING,
+                                  (Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) || BREG(2))) {
             this->actor.textId = 0xBF;
         } else {
             this->actor.textId = 0x7058;
@@ -260,9 +266,8 @@ void EnBomBowMan_RunGame(EnBomBowlMan* this, PlayState* play) {
             osSyncPrintf(VT_FGCOL(PURPLE) "☆☆☆☆☆ 中央ＨＩＴ！！！！ ☆☆☆☆☆ \n" VT_RST);
         }
 
-        if ((play->bombchuBowlingStatus == -1) &&
-            (play->actorCtx.actorLists[ACTORCAT_EXPLOSIVE].length == 0) && (this->bowlPit->status == 0) &&
-            (this->wallStatus[0] != 1) && (this->wallStatus[1] != 1)) {
+        if ((play->bombchuBowlingStatus == -1) && (play->actorCtx.actorLists[ACTORCAT_EXPLOSIVE].length == 0) &&
+            (this->bowlPit->status == 0) && (this->wallStatus[0] != 1) && (this->wallStatus[1] != 1)) {
             this->gameResult = 2; // Lost
             // "Bombchu lost"
             osSyncPrintf(VT_FGCOL(PURPLE) "☆☆☆☆☆ ボムチュウ消化 ☆☆☆☆☆ \n" VT_RST);
@@ -316,10 +321,9 @@ void EnBomBowlMan_HandlePlayChoice(EnBomBowlMan* this, PlayState* play) {
                     Rupees_ChangeBy(-30);
                     this->minigamePlayStatus = 1;
                     this->wallStatus[0] = this->wallStatus[1] = 0;
-                    if(CVarGetInteger(CVAR_ENHANCEMENT("CustomizeBombchuBowling"), 0)) {
+                    if (CVarGetInteger(CVAR_ENHANCEMENT("CustomizeBombchuBowling"), 0)) {
                         play->bombchuBowlingStatus = CVarGetInteger(CVAR_ENHANCEMENT("BombchuBowlingAmmo"), 10);
-                    }
-                    else {
+                    } else {
                         play->bombchuBowlingStatus = 10;
                     }
                     Flags_SetSwitch(play, 0x38);
@@ -453,11 +457,10 @@ void EnBomBowMan_ChooseShowPrize(EnBomBowlMan* this, PlayState* play) {
             this->prizeIndex = BREG(7) - 1;
         }
 
-        this->exItem = (EnExItem*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_EX_ITEM,
-                                                     sPrizePosOffset[this->prizeIndex].x + 148.0f,
-                                                     sPrizePosOffset[this->prizeIndex].y + 40.0f,
-                                                     sPrizePosOffset[this->prizeIndex].z + 300.0f, 0,
-                                                     sPrizeRot[this->prizeIndex], 0, this->prizeIndex + EXITEM_COUNTER);
+        this->exItem = (EnExItem*)Actor_SpawnAsChild(
+            &play->actorCtx, &this->actor, play, ACTOR_EN_EX_ITEM, sPrizePosOffset[this->prizeIndex].x + 148.0f,
+            sPrizePosOffset[this->prizeIndex].y + 40.0f, sPrizePosOffset[this->prizeIndex].z + 300.0f, 0,
+            sPrizeRot[this->prizeIndex], 0, this->prizeIndex + EXITEM_COUNTER);
 
         if (!this->startedPlaying) {
             this->bowlPit = (EnBomBowlPit*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play,
@@ -546,8 +549,7 @@ void EnBomBowlMan_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
 }
 
-s32 EnBomBowlMan_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                                  void* thisx) {
+s32 EnBomBowlMan_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnBomBowlMan* this = (EnBomBowlMan*)thisx;
 
     if (limbIndex == 4) { // head

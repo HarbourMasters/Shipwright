@@ -106,7 +106,8 @@ void func_80890740(BgIceShelter* this, PlayState* play) {
     s32 type = (this->dyna.actor.params >> 8) & 7;
 
     // Initialize this with the red ice, so it can't be affected by toggling while the actor is loaded
-    blueFireArrowsEnabledOnRedIceLoad = CVarGetInteger(CVAR_ENHANCEMENT("BlueFireArrows"), 0) || (IS_RANDO && Randomizer_GetSettingValue(RSK_BLUE_FIRE_ARROWS));
+    blueFireArrowsEnabledOnRedIceLoad = CVarGetInteger(CVAR_ENHANCEMENT("BlueFireArrows"), 0) ||
+                                        (IS_RANDO && Randomizer_GetSettingValue(RSK_BLUE_FIRE_ARROWS));
 
     Collider_InitCylinder(play, &this->cylinder1);
     // If "Blue Fire Arrows" is enabled, set up a collider on the red ice that responds to them
@@ -360,7 +361,8 @@ void func_8089107C(BgIceShelter* this, PlayState* play) {
     CollisionCheck_SetAC(play, &play->colChkCtx, &this->cylinder1.base);
 }
 
-// For "Blue Fire Arrows" enhancement: If hit by an Ice Arrow, melt the red ice (copied from the default blue fire function above).
+// For "Blue Fire Arrows" enhancement: If hit by an Ice Arrow, melt the red ice (copied from the default blue fire
+// function above).
 void MeltOnIceArrowHit(BgIceShelter* this, ColliderCylinder cylinder, s16 type, PlayState* play) {
     if (cylinder.base.acFlags & AC_HIT) {
         cylinder.base.acFlags &= ~AC_HIT;
@@ -450,8 +452,7 @@ void BgIceShelter_Draw(Actor* thisx, PlayState* play2) {
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     switch ((this->dyna.actor.params >> 8) & 7) {
         case 0:
@@ -463,7 +464,7 @@ void BgIceShelter_Draw(Actor* thisx, PlayState* play2) {
     }
 
     if (CVarGetInteger(CVAR_COSMETIC("World.RedIce.Changed"), 0)) {
-        Color_RGB8 color = CVarGetColor24(CVAR_COSMETIC("World.RedIce.Value"), (Color_RGB8){ 255, 0, 0});
+        Color_RGB8 color = CVarGetColor24(CVAR_COSMETIC("World.RedIce.Value"), (Color_RGB8){ 255, 0, 0 });
         gDPSetEnvColor(POLY_XLU_DISP++, color.r, color.g, color.b, this->alpha);
     } else {
         gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, this->alpha);
@@ -475,21 +476,19 @@ void BgIceShelter_Draw(Actor* thisx, PlayState* play2) {
         case 4:
             gSPSegment(POLY_XLU_DISP++, 0x08,
                        Gfx_TwoTexScroll(play->state.gfxCtx, 0, -play->gameplayFrames & 0x7F,
-                                        -play->gameplayFrames & 0x7F, 0x20, 0x20, 1,
-                                        -play->gameplayFrames & 0x7F, play->gameplayFrames & 0x7F, 0x20,
-                                        0x20));
+                                        -play->gameplayFrames & 0x7F, 0x20, 0x20, 1, -play->gameplayFrames & 0x7F,
+                                        play->gameplayFrames & 0x7F, 0x20, 0x20));
             gSPDisplayList(POLY_XLU_DISP++, gRedIceBlockDL);
             break;
 
         case 2:
             gSPSegment(POLY_XLU_DISP++, 0x08,
-                       Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, play->gameplayFrames & 0xFF, 0x40, 0x40, 1,
-                                        0, -play->gameplayFrames & 0xFF, 0x40, 0x40));
+                       Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, play->gameplayFrames & 0xFF, 0x40, 0x40, 1, 0,
+                                        -play->gameplayFrames & 0xFF, 0x40, 0x40));
             gSPSegment(POLY_XLU_DISP++, 0x09,
                        Gfx_TwoTexScroll(play->state.gfxCtx, 0, -play->gameplayFrames & 0xFF,
-                                        play->gameplayFrames & 0xFF, 0x40, 0x40, 1,
-                                        play->gameplayFrames & 0xFF, play->gameplayFrames & 0xFF, 0x40,
-                                        0x40));
+                                        play->gameplayFrames & 0xFF, 0x40, 0x40, 1, play->gameplayFrames & 0xFF,
+                                        play->gameplayFrames & 0xFF, 0x40, 0x40));
             gSPDisplayList(POLY_XLU_DISP++, gRedIcePlatformDL);
             break;
 

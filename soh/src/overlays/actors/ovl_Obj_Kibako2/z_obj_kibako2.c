@@ -99,8 +99,8 @@ void ObjKibako2_Break(ObjKibako2* this, PlayState* play) {
         } else {
             phi_s0 = 0x20;
         }
-        EffectSsKakera_Spawn(play, &pos, &velocity, &pos, -200, phi_s0, 28, 2, 0, (Rand_ZeroOne() * 30.0f) + 5.0f,
-                             0, 0, 70, KAKERA_COLOR_NONE, OBJECT_KIBAKO2, gLargeCrateFragmentDL);
+        EffectSsKakera_Spawn(play, &pos, &velocity, &pos, -200, phi_s0, 28, 2, 0, (Rand_ZeroOne() * 30.0f) + 5.0f, 0, 0,
+                             70, KAKERA_COLOR_NONE, OBJECT_KIBAKO2, gLargeCrateFragmentDL);
     }
     func_80033480(play, thisPos, 90.0f, 6, 100, 160, 1);
 }
@@ -111,7 +111,7 @@ void ObjKibako2_SpawnCollectible(ObjKibako2* this, PlayState* play) {
 
     collectibleFlagTemp = this->collectibleFlag;
     itemDropped = this->dyna.actor.home.rot.x;
-    if (GameInteractor_Should(VB_CRATE_DROP_ITEM,itemDropped >= 0 && itemDropped < 0x1A, this)) {
+    if (GameInteractor_Should(VB_CRATE_DROP_ITEM, itemDropped >= 0 && itemDropped < 0x1A, this)) {
         Item_DropCollectible(play, &this->dyna.actor.world.pos, itemDropped | (collectibleFlagTemp << 8));
     }
 }
@@ -162,9 +162,8 @@ void ObjKibako2_Kill(ObjKibako2* this, PlayState* play) {
     s16 params = this->dyna.actor.params;
 
     if ((params & 0x8000) == 0) {
-        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_SW, this->dyna.actor.world.pos.x,
-                    this->dyna.actor.world.pos.y, this->dyna.actor.world.pos.z, 0, this->dyna.actor.shape.rot.y, 0,
-                    params | 0x8000, true);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_SW, this->dyna.actor.world.pos.x, this->dyna.actor.world.pos.y,
+                    this->dyna.actor.world.pos.z, 0, this->dyna.actor.shape.rot.y, 0, params | 0x8000, true);
     }
     ObjKibako2_SpawnCollectible(this, play);
     Actor_Kill(&this->dyna.actor);

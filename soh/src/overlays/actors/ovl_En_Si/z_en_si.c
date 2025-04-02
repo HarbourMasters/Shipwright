@@ -137,7 +137,8 @@ void func_80AFB89C(EnSi* this, PlayState* play) {
 void func_80AFB950(EnSi* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    if (Message_GetState(&play->msgCtx) != TEXT_STATE_CLOSING && GameInteractor_Should(VB_FREEZE_ON_SKULL_TOKEN, true)) {
+    if (Message_GetState(&play->msgCtx) != TEXT_STATE_CLOSING &&
+        GameInteractor_Should(VB_FREEZE_ON_SKULL_TOKEN, true)) {
         player->actor.freezeTimer = 10;
     } else {
         SET_GS_FLAGS((this->actor.params & 0x1F00) >> 8, this->actor.params & 0xFF);

@@ -4,49 +4,37 @@
 #include "game-interactor/GameInteractor.h"
 #include "soh/OTRGlobals.h"
 
-static const int songMessageMap[] = { 
-    TEXT_WARP_MINUET_OF_FOREST,
-    TEXT_WARP_BOLERO_OF_FIRE,
-    TEXT_WARP_SERENADE_OF_WATER,
-    TEXT_WARP_REQUIEM_OF_SPIRIT,
-    TEXT_WARP_NOCTURNE_OF_SHADOW,
-    TEXT_WARP_PRELUDE_OF_LIGHT,
+static const int songMessageMap[] = {
+    TEXT_WARP_MINUET_OF_FOREST,  TEXT_WARP_BOLERO_OF_FIRE,     TEXT_WARP_SERENADE_OF_WATER,
+    TEXT_WARP_REQUIEM_OF_SPIRIT, TEXT_WARP_NOCTURNE_OF_SHADOW, TEXT_WARP_PRELUDE_OF_LIGHT,
 };
 
 static const int ocarinaSongMap[] = {
-    OCARINA_SONG_MINUET,
-    OCARINA_SONG_BOLERO,
-    OCARINA_SONG_SERENADE,
-    OCARINA_SONG_REQUIEM,
-    OCARINA_SONG_NOCTURNE,
-    OCARINA_SONG_PRELUDE,
+    OCARINA_SONG_MINUET,  OCARINA_SONG_BOLERO,   OCARINA_SONG_SERENADE,
+    OCARINA_SONG_REQUIEM, OCARINA_SONG_NOCTURNE, OCARINA_SONG_PRELUDE,
 };
 
 static const int entranceIndexMap[] = {
-    ENTR_SACRED_FOREST_MEADOW_WARP_PAD, // Minuet
+    ENTR_SACRED_FOREST_MEADOW_WARP_PAD,  // Minuet
     ENTR_DEATH_MOUNTAIN_CRATER_WARP_PAD, // Bolero
-    ENTR_LAKE_HYLIA_WARP_PAD, // Serenade
-    ENTR_DESERT_COLOSSUS_WARP_PAD, // Requiem
-    ENTR_GRAVEYARD_WARP_PAD, // Nocturne
-    ENTR_TEMPLE_OF_TIME_WARP_PAD, // Prelude
+    ENTR_LAKE_HYLIA_WARP_PAD,            // Serenade
+    ENTR_DESERT_COLOSSUS_WARP_PAD,       // Requiem
+    ENTR_GRAVEYARD_WARP_PAD,             // Nocturne
+    ENTR_TEMPLE_OF_TIME_WARP_PAD,        // Prelude
 };
 
-static const int songAudioMap[] = { 
-    NA_BGM_OCA_MINUET,
-    NA_BGM_OCA_BOLERO,
-    NA_BGM_OCA_SERENADE,
-    NA_BGM_OCA_REQUIEM,
-    NA_BGM_OCA_NOCTURNE,
-    NA_BGM_OCA_LIGHT,
+static const int songAudioMap[] = {
+    NA_BGM_OCA_MINUET,  NA_BGM_OCA_BOLERO,   NA_BGM_OCA_SERENADE,
+    NA_BGM_OCA_REQUIEM, NA_BGM_OCA_NOCTURNE, NA_BGM_OCA_LIGHT,
 };
 
-static bool isWarpActive = false; 
+static bool isWarpActive = false;
 
 void PauseWarp_Execute() {
     if (!isWarpActive || gPlayState->msgCtx.msgMode != MSGMODE_NONE) {
         return;
     }
-    isWarpActive = false; 
+    isWarpActive = false;
     GET_PLAYER(gPlayState)->stateFlags1 &= ~PLAYER_STATE1_IN_CUTSCENE;
     if (gPlayState->msgCtx.choiceIndex != 0) {
         return;
@@ -88,41 +76,42 @@ void PauseWarp_HandleSelection() {
         int song = gPlayState->pauseCtx.cursorPoint[PAUSE_QUEST];
         if (aButtonPressed && CHECK_QUEST_ITEM(song) && song >= QUEST_SONG_MINUET && song <= QUEST_SONG_PRELUDE &&
             gPlayState->pauseCtx.pageIndex == PAUSE_QUEST && gPlayState->pauseCtx.state == 6) {
-            if (gSaveContext.ship.quest.id == QUEST_RANDOMIZER && Randomizer_GetSettingValue(RSK_SHUFFLE_OCARINA_BUTTONS)) {
+            if (gSaveContext.ship.quest.id == QUEST_RANDOMIZER &&
+                Randomizer_GetSettingValue(RSK_SHUFFLE_OCARINA_BUTTONS)) {
                 bool canplay = false;
                 switch (song) {
                     case QUEST_SONG_MINUET:
                         canplay = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A) &&
-                            Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT) &&
-                            Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) &&
-                            Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_UP);
+                                  Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT) &&
+                                  Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) &&
+                                  Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_UP);
                         break;
                     case QUEST_SONG_BOLERO:
                         canplay = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A) &&
-                            Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) &&
-                            Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN);
+                                  Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) &&
+                                  Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN);
                         break;
                     case QUEST_SONG_SERENADE:
                         canplay = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A) &&
-                            Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT) &&
-                            Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) &&
-                            Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN);
+                                  Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT) &&
+                                  Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) &&
+                                  Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN);
                         break;
                     case QUEST_SONG_REQUIEM:
                         canplay = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A) &&
-                            Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) &&
-                            Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN);
+                                  Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) &&
+                                  Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN);
                         break;
                     case QUEST_SONG_NOCTURNE:
                         canplay = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A) &&
-                            Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT) &&
-                            Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) &&
-                            Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN);
+                                  Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT) &&
+                                  Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) &&
+                                  Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN);
                         break;
                     case QUEST_SONG_PRELUDE:
                         canplay = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT) &&
-                            Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) &&
-                            Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_UP);
+                                  Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) &&
+                                  Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_UP);
                         break;
                 }
                 if (!canplay) {

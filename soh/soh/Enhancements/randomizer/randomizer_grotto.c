@@ -90,8 +90,8 @@ static const GrottoReturnInfo grottoReturnTable[NUM_GROTTOS] = {
     // clang-format on
 };
 
-static s16 grottoExitList[NUM_GROTTOS] = {0};
-static s16 grottoLoadList[NUM_GROTTOS] = {0};
+static s16 grottoExitList[NUM_GROTTOS] = { 0 };
+static s16 grottoLoadList[NUM_GROTTOS] = { 0 };
 static s8 grottoId = 0xFF;
 static s8 lastEntranceType = NOT_GROTTO;
 static u8 overridingNextEntrance = false;
@@ -143,7 +143,9 @@ static void Grotto_SetupReturnInfo(GrottoReturnInfo grotto, RespawnMode respawnM
 // This method doesn't change player respawn data, so only use this if you are querying an entrance index.
 s16 Grotto_GetEntranceValueHandlingGrottoRando(s16 nextEntranceIndex) {
     // Don't change anything unless grotto shuffle has been enabled
-    if (!Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES) && !Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) && !Randomizer_GetSettingValue(RSK_SHUFFLE_WARP_SONGS)) {
+    if (!Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES) &&
+        !Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) &&
+        !Randomizer_GetSettingValue(RSK_SHUFFLE_WARP_SONGS)) {
         return nextEntranceIndex;
     }
 
@@ -157,7 +159,8 @@ s16 Grotto_GetEntranceValueHandlingGrottoRando(s16 nextEntranceIndex) {
     s8 tempGrottoId = nextEntranceIndex & 0x00FF;
 
     // Grotto Returns
-    if (nextEntranceIndex >= ENTRANCE_GROTTO_EXIT_START && nextEntranceIndex < ENTRANCE_GROTTO_EXIT_START + NUM_GROTTOS) {
+    if (nextEntranceIndex >= ENTRANCE_GROTTO_EXIT_START &&
+        nextEntranceIndex < ENTRANCE_GROTTO_EXIT_START + NUM_GROTTOS) {
         GrottoReturnInfo grotto = grottoReturnTable[tempGrottoId];
 
         // When the nextEntranceIndex is determined by a dynamic exit,
@@ -167,11 +170,11 @@ s16 Grotto_GetEntranceValueHandlingGrottoRando(s16 nextEntranceIndex) {
             nextEntranceIndex = grotto.entranceIndex;
         } else if (gPlayState == NULL) { // Handle spawn position when loading from a save file
             nextEntranceIndex = grotto.entranceIndex;
-        // Otherwise return 0x7FFF (ENTR_RETURN_GROTTO) and let the game handle it
+            // Otherwise return 0x7FFF (ENTR_RETURN_GROTTO) and let the game handle it
         } else {
             nextEntranceIndex = ENTR_RETURN_GROTTO;
         }
-    // Grotto Loads
+        // Grotto Loads
     } else if (nextEntranceIndex >= ENTRANCE_GROTTO_LOAD_START && nextEntranceIndex < ENTRANCE_GROTTO_EXIT_START) {
         GrottoLoadInfo grotto = grottoLoadTable[tempGrottoId];
         nextEntranceIndex = grotto.entranceIndex;
@@ -185,7 +188,9 @@ s16 Grotto_GetEntranceValueHandlingGrottoRando(s16 nextEntranceIndex) {
 s16 Grotto_OverrideSpecialEntrance(s16 nextEntranceIndex) {
 
     // Don't change anything unless grotto shuffle has been enabled
-    if (!Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES) && !Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) && !Randomizer_GetSettingValue(RSK_SHUFFLE_WARP_SONGS)) {
+    if (!Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES) &&
+        !Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) &&
+        !Randomizer_GetSettingValue(RSK_SHUFFLE_WARP_SONGS)) {
         return nextEntranceIndex;
     }
 
@@ -201,7 +206,8 @@ s16 Grotto_OverrideSpecialEntrance(s16 nextEntranceIndex) {
     grottoId = nextEntranceIndex & 0x00FF;
 
     // Grotto Returns
-    if (nextEntranceIndex >= ENTRANCE_GROTTO_EXIT_START && nextEntranceIndex < ENTRANCE_GROTTO_EXIT_START + NUM_GROTTOS) {
+    if (nextEntranceIndex >= ENTRANCE_GROTTO_EXIT_START &&
+        nextEntranceIndex < ENTRANCE_GROTTO_EXIT_START + NUM_GROTTOS) {
 
         GrottoReturnInfo grotto = grottoReturnTable[grottoId];
         Grotto_SetupReturnInfo(grotto, RESPAWN_MODE_RETURN);
@@ -219,13 +225,13 @@ s16 Grotto_OverrideSpecialEntrance(s16 nextEntranceIndex) {
             gSaveContext.respawnFlag = 2;
             nextEntranceIndex = grotto.entranceIndex;
             gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
-        // Otherwise return 0x7FFF (ENTR_RETURN_GROTTO) and let the game handle it
+            // Otherwise return 0x7FFF (ENTR_RETURN_GROTTO) and let the game handle it
         } else {
             nextEntranceIndex = ENTR_RETURN_GROTTO;
         }
 
         lastEntranceType = GROTTO_RETURN;
-    // Grotto Loads
+        // Grotto Loads
     } else if (nextEntranceIndex >= ENTRANCE_GROTTO_LOAD_START && nextEntranceIndex < ENTRANCE_GROTTO_EXIT_START) {
 
         // Set the respawn data to load the correct grotto
@@ -236,7 +242,7 @@ s16 Grotto_OverrideSpecialEntrance(s16 nextEntranceIndex) {
         EntranceTracker_SetCurrentGrottoID(grottoId);
 
         lastEntranceType = NOT_GROTTO;
-    // Otherwise just unset the current grotto ID
+        // Otherwise just unset the current grotto ID
     } else {
         grottoId = 0xFF;
         lastEntranceType = NOT_GROTTO;
@@ -251,7 +257,9 @@ s16 Grotto_OverrideSpecialEntrance(s16 nextEntranceIndex) {
 void Grotto_OverrideActorEntrance(Actor* thisx) {
 
     // Vanilla Behavior if there's no possibility of ending up in a grotto randomly
-    if (!Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES) && !Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) && !Randomizer_GetSettingValue(RSK_SHUFFLE_WARP_SONGS)) {
+    if (!Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES) &&
+        !Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) &&
+        !Randomizer_GetSettingValue(RSK_SHUFFLE_WARP_SONGS)) {
         return;
     }
 
@@ -277,7 +285,9 @@ void Grotto_OverrideActorEntrance(Actor* thisx) {
 
 // Set necessary flags for when warp songs/overworld spawns are shuffled to grotto return points
 void Grotto_ForceGrottoReturnOnSpecialEntrance(void) {
-    if (lastEntranceType == GROTTO_RETURN && (Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES) || Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) || Randomizer_GetSettingValue(RSK_SHUFFLE_WARP_SONGS))) {
+    if (lastEntranceType == GROTTO_RETURN && (Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES) ||
+                                              Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) ||
+                                              Randomizer_GetSettingValue(RSK_SHUFFLE_WARP_SONGS))) {
         gSaveContext.respawnFlag = 2;
         gSaveContext.respawn[RESPAWN_MODE_RETURN].playerParams = 0x04FF;
         gSaveContext.respawn[RESPAWN_MODE_RETURN].pos = grottoReturnTable[grottoId].pos;
@@ -290,11 +300,13 @@ void Grotto_ForceGrottoReturnOnSpecialEntrance(void) {
 // Set the respawn flag for when we want to return from a grotto entrance
 // Used for Sun's Song and Game Over, which usually don't restore saved position data
 void Grotto_ForceGrottoReturn(void) {
-    if (lastEntranceType == GROTTO_RETURN && (Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES) || Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) || Randomizer_GetSettingValue(RSK_SHUFFLE_WARP_SONGS))) {
+    if (lastEntranceType == GROTTO_RETURN && (Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES) ||
+                                              Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) ||
+                                              Randomizer_GetSettingValue(RSK_SHUFFLE_WARP_SONGS))) {
         gSaveContext.respawnFlag = 2;
         gSaveContext.respawn[RESPAWN_MODE_RETURN].playerParams = 0x0DFF;
         gSaveContext.respawn[RESPAWN_MODE_RETURN].pos = grottoReturnTable[grottoId].pos;
-        //Save the current temp flags in the grotto return point, so they'll properly keep their values.
+        // Save the current temp flags in the grotto return point, so they'll properly keep their values.
         gSaveContext.respawn[RESPAWN_MODE_RETURN].tempSwchFlags = gPlayState->actorCtx.flags.tempSwch;
         gSaveContext.respawn[RESPAWN_MODE_RETURN].tempCollectFlags = gPlayState->actorCtx.flags.tempCollect;
     }
@@ -302,7 +314,9 @@ void Grotto_ForceGrottoReturn(void) {
 
 // Used for the DMT special voids, which usually don't restore saved position data
 void Grotto_ForceRegularVoidOut(void) {
-    if (lastEntranceType == GROTTO_RETURN && (Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES) || Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) || Randomizer_GetSettingValue(RSK_SHUFFLE_WARP_SONGS))) {
+    if (lastEntranceType == GROTTO_RETURN && (Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES) ||
+                                              Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) ||
+                                              Randomizer_GetSettingValue(RSK_SHUFFLE_WARP_SONGS))) {
         gSaveContext.respawn[RESPAWN_MODE_DOWN] = gSaveContext.respawn[RESPAWN_MODE_RETURN];
         gSaveContext.respawn[RESPAWN_MODE_DOWN].playerParams = 0x0DFF;
         gSaveContext.respawn[RESPAWN_MODE_DOWN].pos = grottoReturnTable[grottoId].pos;
@@ -313,8 +327,9 @@ void Grotto_ForceRegularVoidOut(void) {
 // If returning to a FW point saved at a grotto exit, copy the FW data to the Grotto Return Point
 // so that Sun's Song and Game Over will behave correctly
 void Grotto_SetupReturnInfoOnFWReturn(void) {
-    if (Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES) || Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) || Randomizer_GetSettingValue(RSK_SHUFFLE_WARP_SONGS) &&
-        gSaveContext.fw.playerParams == 0x04FF) {
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES) ||
+        Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) ||
+        Randomizer_GetSettingValue(RSK_SHUFFLE_WARP_SONGS) && gSaveContext.fw.playerParams == 0x04FF) {
         gSaveContext.respawn[RESPAWN_MODE_RETURN] = gSaveContext.respawn[RESPAWN_MODE_TOP];
         gSaveContext.respawn[RESPAWN_MODE_RETURN].playerParams = 0x0DFF;
         lastEntranceType = GROTTO_RETURN;
@@ -345,7 +360,9 @@ s16 Grotto_GetRenamedGrottoIndexFromOriginal(s8 content, s8 scene) {
 }
 
 s8 Grotto_CurrentGrotto() {
-    if (Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES) || Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) || Randomizer_GetSettingValue(RSK_SHUFFLE_WARP_SONGS)) {
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES) ||
+        Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) ||
+        Randomizer_GetSettingValue(RSK_SHUFFLE_WARP_SONGS)) {
         return grottoId;
     } else {
         s16 entrance = gSaveContext.respawn[RESPAWN_MODE_RETURN].entranceIndex;

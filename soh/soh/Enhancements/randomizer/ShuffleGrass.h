@@ -12,4 +12,4 @@ void EnKusa_RandomizerInit(void* actorRef);
 };
 #endif
 
-#endif //SHUFFLEGRASS_H
+#endif // SHUFFLEGRASS_H

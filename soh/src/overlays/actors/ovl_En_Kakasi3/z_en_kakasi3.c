@@ -364,8 +364,7 @@ void func_80A918E4(EnKakasi3* this, PlayState* play) {
         if (BREG(3) != 0) {
             osSyncPrintf("\n\n");
             // "With this, other guys are OK! That's it!"
-            osSyncPrintf(VT_FGCOL(CYAN) "☆☆☆☆☆ これで、他の奴もＯＫ！だ！ ☆☆☆☆☆ %d\n" VT_RST,
-                         play->msgCtx.ocarinaMode);
+            osSyncPrintf(VT_FGCOL(CYAN) "☆☆☆☆☆ これで、他の奴もＯＫ！だ！ ☆☆☆☆☆ %d\n" VT_RST, play->msgCtx.ocarinaMode);
         }
         this->unk_195 = true;
         Message_StartTextbox(play, 0x40A7, NULL);

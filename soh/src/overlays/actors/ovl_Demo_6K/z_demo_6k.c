@@ -21,7 +21,6 @@ void Demo6K_Destroy(Actor* thisx, PlayState* play);
 void Demo6K_Update(Actor* thisx, PlayState* play);
 void Demo6K_Reset(void);
 
-
 void func_80966DB0(Demo6K* this, PlayState* play);
 void func_80966E04(Demo6K* this, PlayState* play);
 void func_80966E98(Demo6K* this, PlayState* play);
@@ -238,8 +237,8 @@ void func_80966E98(Demo6K* this, PlayState* play) {
 
     if (this->timer1 == 39) {
         Sfx_PlaySfxCentered2(NA_SE_EV_CONSENTRATION);
-        Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_6K, this->actor.world.pos.x,
-                    this->actor.world.pos.y + 10.0f, this->actor.world.pos.z, 0, 0, 0, 2, true);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_6K, this->actor.world.pos.x, this->actor.world.pos.y + 10.0f,
+                    this->actor.world.pos.z, 0, 0, 0, 2, true);
     }
 
     if (this->timer1 == 64) {
@@ -587,10 +586,9 @@ void func_80967FFC(Actor* thisx, PlayState* play) {
 
         for (i = 0; i < 6; i++) {
             FrameInterpolation_RecordOpenChild("Demo6K 80967FFC", i);
-    
+
             Matrix_RotateZ(M_PI / 3, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gDPPipeSync(POLY_XLU_DISP++);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, colors[i][0].r, colors[i][0].g, colors[i][0].b, 255);
             gDPSetEnvColor(POLY_XLU_DISP++, colors[i][1].r, colors[i][1].g, colors[i][1].b, 255);
@@ -637,17 +635,15 @@ void func_80968298(Actor* thisx, PlayState* play) {
     }
 
     Matrix_RotateX(-M_PI / 2, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, 210, 210, 210, 255);
     gDPSetEnvColor(POLY_XLU_DISP++, 100, 100, 100, 255);
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, (0xFFF - (timer1 * 6)) & 0xFFF, (timer1 * 12) & 0xFFF, 128,
-                                64, 1, (0xFFF - (timer1 * 6)) & 0xFFF, (timer1 * 12) & 0xFFF, 64, 32));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, (0xFFF - (timer1 * 6)) & 0xFFF, (timer1 * 12) & 0xFFF, 128, 64,
+                                1, (0xFFF - (timer1 * 6)) & 0xFFF, (timer1 * 12) & 0xFFF, 64, 32));
     gSPDisplayList(POLY_XLU_DISP++, object_demo_6k_DL_0039D0);
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 255);
     gDPSetEnvColor(POLY_XLU_DISP++, 50, 50, 50, 255);
@@ -677,13 +673,11 @@ void func_8096865C(Actor* thisx, PlayState* play) {
         Matrix_Mult(&play->billboardMtxF, MTXMODE_APPLY);
         Matrix_Push();
         Matrix_RotateZ((f32)(this->timer2 * 6) * (M_PI / 180.0f), MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, displayList);
         Matrix_Pop();
         Matrix_RotateZ(-(f32)(this->timer2 * 6) * (M_PI / 180.0f), MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, displayList);
     }
 
@@ -716,8 +710,7 @@ void func_809688C4(Actor* thisx, PlayState* play2) {
                          this->unk_234[i] * D_8096931C[(frames + i) & 3],
                          this->unk_234[i] * D_8096931C[(frames + i) & 3], MTXMODE_APPLY);
             Matrix_ReplaceRotation(&play->billboardMtxF);
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gEffFlash1DL);
             Matrix_Pop();
 
@@ -742,8 +735,7 @@ void func_80968B70(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     Matrix_Mult(&play->billboardMtxF, MTXMODE_APPLY);
     Matrix_RotateX(M_PI / 2, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPSegment(POLY_XLU_DISP++, 0x08,
                Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0xFF - ((timer2 * 2) & 0xFF), 0, 32, 32, 1,
                                 0xFF - ((timer2 * 2) & 0xFF), (timer2 * 15) & 0x3FF, 16, 64));
@@ -791,8 +783,7 @@ void func_80968FB0(Actor* thisx, PlayState* play) {
     scaleFactor = ((s16)D_809693CC[(frames * 4) & 0xF] * 0.01f) + 1.0f;
     Matrix_Scale(this->actor.scale.x * scaleFactor, this->actor.scale.y * scaleFactor,
                  this->actor.scale.z * scaleFactor, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPSegment(POLY_XLU_DISP++, 0x08, displayList);
     gDPPipeSync(displayList++);
     gDPSetPrimColor(displayList++, 0, 0x80, 255, 255, 255, this->unk_293);

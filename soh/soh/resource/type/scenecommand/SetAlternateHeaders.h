@@ -10,7 +10,6 @@
 #include "RomFile.h"
 #include <libultraship/libultra/types.h>
 
-
 namespace SOH {
 
 class SetAlternateHeaders : public SceneCommand<void> {
@@ -24,4 +23,4 @@ class SetAlternateHeaders : public SceneCommand<void> {
     std::vector<std::string> headerFileNames;
     std::vector<std::shared_ptr<Scene>> headers;
 };
-}; // namespace LUS
+}; // namespace SOH

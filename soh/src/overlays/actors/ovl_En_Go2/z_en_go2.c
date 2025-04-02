@@ -7,7 +7,9 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
+#define FLAGS                                                                                  \
+    (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
+     ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 /*
 FLAGS
@@ -24,10 +26,9 @@ Flags_GetInfTable(INFTABLE_EB) - Talked to DMT Goron at Bomb Flower with goron b
 Flags_GetInfTable(INFTABLE_F0) - Talked to Goron at GC Entrance (Before goron ruby is obtained)
 Flags_GetInfTable(INFTABLE_F4) - Talked to Goron at GC Island (Before goron ruby is obtained)
 Flags_GetInfTable(INFTABLE_F8) - (not on cloud modding) Talked to GC Goron outside Darunias door (after opening door,
-before getting goron bracelet) Flags_GetInfTable(INFTABLE_GORON_CITY_DOORS_UNLOCKED) - Obtained Fire Tunic from Goron Link
-Flags_GetInfTable(INFTABLE_10A) - (not on cloud modding)
-Flags_GetInfTable(INFTABLE_10B) - Spoke to Goron Link About Volvagia
-Flags_GetInfTable(INFTABLE_STOPPED_GORON_LINKS_ROLLING) - Stopped Goron Link's Rolling
+before getting goron bracelet) Flags_GetInfTable(INFTABLE_GORON_CITY_DOORS_UNLOCKED) - Obtained Fire Tunic from Goron
+Link Flags_GetInfTable(INFTABLE_10A) - (not on cloud modding) Flags_GetInfTable(INFTABLE_10B) - Spoke to Goron Link
+About Volvagia Flags_GetInfTable(INFTABLE_STOPPED_GORON_LINKS_ROLLING) - Stopped Goron Link's Rolling
 Flags_GetInfTable(INFTABLE_10D) - EnGo Exclusive
 Flags_GetInfTable(INFTABLE_SPOKE_TO_GORON_LINK) - Spoke to Goron Link
 Flags_GetInfTable(INFTABLE_10F) - (not on cloud modding)
@@ -248,8 +249,7 @@ void EnGo2_DrawDust(EnGo2* this, PlayState* play) {
             Matrix_Translate(dustEffect->pos.x, dustEffect->pos.y, dustEffect->pos.z, MTXMODE_NEW);
             Matrix_ReplaceRotation(&play->billboardMtxF);
             Matrix_Scale(dustEffect->scale, dustEffect->scale, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             index = dustEffect->timer * (8.0f / dustEffect->initialTimer);
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sDustTex[index]));
             gSPDisplayList(POLY_XLU_DISP++, gGoronDL_00FD50);
@@ -287,7 +287,7 @@ void EnGo2_GetItem(EnGo2* this, PlayState* play, s32 getItemId) {
     this->getItemId = getItemId;
     if (GameInteractor_Should(VB_GIVE_ITEM_FROM_GORON, true, this)) {
         Actor_OfferGetItem(&this->actor, play, getItemId, this->actor.xzDistToPlayer + 1.0f,
-                    fabsf(this->actor.yDistToPlayer) + 1.0f);
+                           fabsf(this->actor.yDistToPlayer) + 1.0f);
     }
 }
 
@@ -331,8 +331,9 @@ u16 EnGo2_GoronFireGenericGetTextId(EnGo2* this) {
 u16 EnGo2_GetTextIdGoronCityRollingBig(PlayState* play, EnGo2* this) {
     if (Flags_GetInfTable(INFTABLE_11E)) {
         return 0x3013;
-    } else if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_CHILD_ROLLING_GORON_REWARD, CUR_CAPACITY(UPG_BOMB_BAG) >= 20, this)
-        && this->waypoint > 7 && this->waypoint < 12) {
+    } else if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_CHILD_ROLLING_GORON_REWARD, CUR_CAPACITY(UPG_BOMB_BAG) >= 20,
+                                     this) &&
+               this->waypoint > 7 && this->waypoint < 12) {
         return 0x3012;
     } else {
         return 0x3011;
@@ -409,12 +410,15 @@ s16 EnGo2_UpdateTalkStateGoronDmtRollingSmall(PlayState* play, EnGo2* this) {
 }
 
 u16 EnGo2_GetTextIdGoronDmtDcEntrance(PlayState* play, EnGo2* this) {
-    if (GameInteractor_Should(VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) && LINK_IS_ADULT) {
+    if (GameInteractor_Should(VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) &&
+        LINK_IS_ADULT) {
         return 0x3043;
     } else if (GameInteractor_Should(VB_GORONS_CONSIDER_DODONGOS_CAVERN_FINISHED, CHECK_QUEST_ITEM(QUEST_GORON_RUBY))) {
         return 0x3027;
     } else {
-        return Flags_GetEventChkInf(EVENTCHKINF_BOMBED_DODONGOS_CAVERN_ENTRANCE) ? 0x3021 : Flags_GetInfTable(INFTABLE_E0) ? 0x302A : 0x3008;
+        return Flags_GetEventChkInf(EVENTCHKINF_BOMBED_DODONGOS_CAVERN_ENTRANCE) ? 0x3021
+               : Flags_GetInfTable(INFTABLE_E0)                                  ? 0x302A
+                                                                                 : 0x3008;
     }
 }
 
@@ -430,7 +434,8 @@ s16 EnGo2_UpdateTalkStateGoronDmtDcEntrance(PlayState* play, EnGo2* this) {
 }
 
 u16 EnGo2_GetTextIdGoronCityEntrance(PlayState* play, EnGo2* this) {
-    if (GameInteractor_Should(VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) && LINK_IS_ADULT) {
+    if (GameInteractor_Should(VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) &&
+        LINK_IS_ADULT) {
         return 0x3043;
     } else if (GameInteractor_Should(VB_GORONS_CONSIDER_DODONGOS_CAVERN_FINISHED, CHECK_QUEST_ITEM(QUEST_GORON_RUBY))) {
         return 0x3027;
@@ -451,7 +456,8 @@ s16 EnGo2_UpdateTalkStateGoronCityEntrance(PlayState* play, EnGo2* this) {
 }
 
 u16 EnGo2_GetTextIdGoronCityIsland(PlayState* play, EnGo2* this) {
-    if (GameInteractor_Should(VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) && LINK_IS_ADULT) {
+    if (GameInteractor_Should(VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) &&
+        LINK_IS_ADULT) {
         return 0x3043;
     } else if (GameInteractor_Should(VB_GORONS_CONSIDER_DODONGOS_CAVERN_FINISHED, CHECK_QUEST_ITEM(QUEST_GORON_RUBY))) {
         return 0x3027;
@@ -472,15 +478,16 @@ s16 EnGo2_UpdateTalkStateGoronCityIsland(PlayState* play, EnGo2* this) {
 }
 
 u16 EnGo2_GetTextIdGoronCityLowestFloor(PlayState* play, EnGo2* this) {
-    if (GameInteractor_Should(VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) && LINK_IS_ADULT) {
+    if (GameInteractor_Should(VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) &&
+        LINK_IS_ADULT) {
         return 0x3043;
     } else if (GameInteractor_Should(VB_GORONS_CONSIDER_DODONGOS_CAVERN_FINISHED, CHECK_QUEST_ITEM(QUEST_GORON_RUBY))) {
         return 0x3027;
     } else {
-        return CUR_UPG_VALUE(UPG_STRENGTH) != 0    ? 0x302C
-               : !Flags_GetSwitch(play, 0x1B) ? 0x3017
+        return CUR_UPG_VALUE(UPG_STRENGTH) != 0 ? 0x302C
+               : !Flags_GetSwitch(play, 0x1B)   ? 0x3017
                : Flags_GetInfTable(INFTABLE_F8) ? 0x3019
-                                                   : 0x3018;
+                                                : 0x3018;
     }
 }
 
@@ -504,7 +511,8 @@ u16 EnGo2_GetTextIdGoronCityLink(PlayState* play, EnGo2* this) {
 
     if (GameInteractor_Should(VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE))) {
         return Flags_GetInfTable(INFTABLE_10F) ? 0x3042 : 0x3041;
-    } else if (GameInteractor_Should(VB_GORONS_CONSIDER_TUNIC_COLLECTED, CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON))) {
+    } else if (GameInteractor_Should(VB_GORONS_CONSIDER_TUNIC_COLLECTED,
+                                     CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON))) {
         return Flags_GetInfTable(INFTABLE_SPOKE_TO_GORON_LINK) ? 0x3038 : 0x3037;
     } else if (Flags_GetInfTable(INFTABLE_STOPPED_GORON_LINKS_ROLLING)) {
         this->unk_20C = 0;
@@ -615,8 +623,8 @@ s16 EnGo2_UpdateTalkStateGoronDmtBiggoron(PlayState* play, EnGo2* this) {
                     }
                 case 0x3054:
                     if (dialogState == TEXT_STATE_NONE) {
-                        Audio_PlaySoundGeneral(NA_SE_SY_TRE_BOX_APPEAR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                               &gSfxDefaultReverb);
+                        Audio_PlaySoundGeneral(NA_SE_SY_TRE_BOX_APPEAR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     }
             }
             return 1;
@@ -887,7 +895,8 @@ s32 func_80A44AB0(EnGo2* this, PlayState* play) {
             return false;
         } else {
             if (this->collider.base.acFlags & 2) {
-                Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 this->actor.flags &= ~ACTOR_FLAG_SFX_FOR_PLAYER_BODY_HIT;
                 this->collider.base.acFlags &= ~0x2;
                 EnGo2_StopRolling(this, play);
@@ -1032,10 +1041,8 @@ void EnGo2_BiggoronSetTextId(EnGo2* this, PlayState* play, Player* player) {
             }
             player->actor.textId = this->actor.textId;
 
-        } else if (
-            !GameInteractor_Should(VB_BIGGORON_CONSIDER_SWORD_COLLECTED, gSaveContext.bgsFlag) && 
-            (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_CLAIM_CHECK)
-        ) {
+        } else if (!GameInteractor_Should(VB_BIGGORON_CONSIDER_SWORD_COLLECTED, gSaveContext.bgsFlag) &&
+                   (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_CLAIM_CHECK)) {
             if (func_8002F368(play) == EXCH_ITEM_CLAIM_CHECK) {
                 if (GameInteractor_Should(VB_BIGGORON_CONSIDER_SWORD_FORGED, Environment_GetBgsDayCount() >= 3)) {
                     textId = 0x305E;
@@ -1172,10 +1179,10 @@ s32 EnGo2_IsCameraModified(EnGo2* this, PlayState* play) {
         (this->actor.params & 0x1F) == GORON_CITY_STAIRWELL || (this->actor.params & 0x1F) == GORON_DMT_BIGGORON ||
         (this->actor.params & 0x1F) == GORON_MARKET_BAZAAR) {
         return true;
-    } else if (
-        !GameInteractor_Should(VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) &&
-        GameInteractor_Should(VB_GORONS_CONSIDER_TUNIC_COLLECTED, CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON))
-    ) {
+    } else if (!GameInteractor_Should(VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED,
+                                      CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) &&
+               GameInteractor_Should(VB_GORONS_CONSIDER_TUNIC_COLLECTED,
+                                     CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON))) {
         return true;
     } else {
         return false;
@@ -1232,10 +1239,10 @@ void EnGo2_SelectGoronWakingUp(EnGo2* this) {
             EnGo2_BiggoronWakingUp(this);
             break;
         case GORON_CITY_LINK:
-            if (
-                !GameInteractor_Should(VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) &&
-                GameInteractor_Should(VB_GORONS_CONSIDER_TUNIC_COLLECTED, CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON))
-            ) {
+            if (!GameInteractor_Should(VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED,
+                                       CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) &&
+                GameInteractor_Should(VB_GORONS_CONSIDER_TUNIC_COLLECTED,
+                                      CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON))) {
                 EnGo2_WakingUp(this);
                 break;
             }
@@ -1563,7 +1570,9 @@ void EnGo2_Init(Actor* thisx, PlayState* play) {
         case GORON_CITY_LOWEST_FLOOR:
         case GORON_CITY_STAIRWELL:
         case GORON_CITY_LOST_WOODS:
-            if (!GameInteractor_Should(VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) && LINK_IS_ADULT) {
+            if (!GameInteractor_Should(VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED,
+                                       CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) &&
+                LINK_IS_ADULT) {
                 Actor_Kill(&this->actor);
             }
             this->actionFunc = EnGo2_CurledUp;
@@ -1578,10 +1587,10 @@ void EnGo2_Init(Actor* thisx, PlayState* play) {
             if ((Flags_GetInfTable(INFTABLE_GORON_CITY_DOORS_UNLOCKED))) {
                 Path_CopyLastPoint(this->path, &this->actor.world.pos);
                 this->actor.home.pos = this->actor.world.pos;
-                if (
-                    !GameInteractor_Should(VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) &&
-                    GameInteractor_Should(VB_GORONS_CONSIDER_TUNIC_COLLECTED, CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON))
-                ) {
+                if (!GameInteractor_Should(VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED,
+                                           CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) &&
+                    GameInteractor_Should(VB_GORONS_CONSIDER_TUNIC_COLLECTED,
+                                          CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON))) {
                     EnGo2_GetItemAnimation(this, play);
                 } else {
                     this->actionFunc = EnGo2_CurledUp;
@@ -1803,12 +1812,14 @@ void EnGo2_SetupGetItem(EnGo2* this, PlayState* play) {
         this->actor.parent = NULL;
         this->actionFunc = EnGo2_SetGetItem;
     } else {
-        Actor_OfferGetItem(&this->actor, play, this->getItemId, this->actor.xzDistToPlayer + 1.0f, fabsf(this->actor.yDistToPlayer) + 1.0f);
+        Actor_OfferGetItem(&this->actor, play, this->getItemId, this->actor.xzDistToPlayer + 1.0f,
+                           fabsf(this->actor.yDistToPlayer) + 1.0f);
     }
 }
 
 void EnGo2_SetGetItem(EnGo2* this, PlayState* play) {
-    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_GORON, true)) {
+    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play) ||
+        !GameInteractor_Should(VB_GIVE_ITEM_FROM_GORON, true)) {
         this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
         switch (this->getItemId) {
             case GI_CLAIM_CHECK:
@@ -1841,7 +1852,9 @@ void EnGo2_BiggoronEyedrops(EnGo2* this, PlayState* play) {
             this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
             this->actor.shape.rot.y += 0x5B0;
             this->trackingMode = NPC_TRACKING_NONE;
-            this->animTimer = !GameInteractor_Should(VB_PLAY_EYEDROPS_CS, true) ? 0 : (this->skelAnime.endFrame + 60.0f + 60.0f); // eyeDrops animation timer
+            this->animTimer = !GameInteractor_Should(VB_PLAY_EYEDROPS_CS, true)
+                                  ? 0
+                                  : (this->skelAnime.endFrame + 60.0f + 60.0f); // eyeDrops animation timer
             this->eyeMouthTexState = 2;
             this->unk_20C = 0;
             this->goronState++;
@@ -2017,8 +2030,7 @@ s32 EnGo2_DrawCurledUp(EnGo2* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gGoronDL_00BD80);
     CLOSE_DISPS(play->state.gfxCtx);
     Matrix_MultVec3f(&D_80A48554, &this->actor.focus.pos);
@@ -2035,8 +2047,7 @@ s32 EnGo2_DrawRolling(EnGo2* this, PlayState* play) {
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     speedXZ = this->actionFunc == EnGo2_ReverseRolling ? 0.0f : this->actor.speedXZ;
     Matrix_RotateZYX((play->state.frames * ((s16)speedXZ * 1400)), 0, this->actor.shape.rot.z, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gGoronDL_00C140);
     CLOSE_DISPS(play->state.gfxCtx);
     Matrix_MultVec3f(&D_80A48560, &this->actor.focus.pos);

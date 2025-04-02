@@ -18,8 +18,8 @@ void Mouse_HandleShield(f32* sp50, f32* sp54);
 bool Mouse_HandleQuickspin(bool* should, s8* iter2, s8* sp3C);
 void Mouse_UpdateQuickspinCount();
 #ifdef __cplusplus
-}; //extern "C"
+}; // extern "C"
 #endif
 
-//MOUSE_H
+// MOUSE_H
 #endif

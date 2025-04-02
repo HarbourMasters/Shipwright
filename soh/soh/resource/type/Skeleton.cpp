@@ -16,7 +16,7 @@ SkeletonData* Skeleton::GetPointer() {
 }
 
 size_t Skeleton::GetPointerSize() {
-    switch(type) {
+    switch (type) {
         case SkeletonType::Normal:
             return sizeof(skeletonData.skeletonHeader);
         case SkeletonType::Flex:
@@ -29,7 +29,6 @@ size_t Skeleton::GetPointerSize() {
 }
 
 std::vector<SkeletonPatchInfo> SkeletonPatcher::skeletons;
-
 
 void SkeletonPatcher::RegisterSkeleton(std::string& path, SkelAnime* skelAnime) {
     SkeletonPatchInfo info;
@@ -56,8 +55,7 @@ void SkeletonPatcher::RegisterSkeleton(std::string& path, SkelAnime* skelAnime) 
 void SkeletonPatcher::UnregisterSkeleton(SkelAnime* skelAnime) {
 
     // TODO: Should probably just use a dictionary here...
-    for (int i = 0; i < skeletons.size(); i++) 
-    {
+    for (int i = 0; i < skeletons.size(); i++) {
         auto skel = skeletons[i];
 
         if (skel.skelAnime == skelAnime) {
@@ -66,8 +64,7 @@ void SkeletonPatcher::UnregisterSkeleton(SkelAnime* skelAnime) {
         }
     }
 }
-void SkeletonPatcher::ClearSkeletons() 
-{
+void SkeletonPatcher::ClearSkeletons() {
     skeletons.clear();
 }
 
@@ -76,12 +73,15 @@ void SkeletonPatcher::UpdateSkeletons() {
     bool isAlt = resourceMgr->IsAltAssetsEnabled();
     for (auto skel : skeletons) {
         Skeleton* newSkel =
-            (Skeleton*)resourceMgr->LoadResource((isAlt ? Ship::IResource::gAltAssetPrefix : "") + skel.vanillaSkeletonPath, true).get();
+            (Skeleton*)resourceMgr
+                ->LoadResource((isAlt ? Ship::IResource::gAltAssetPrefix : "") + skel.vanillaSkeletonPath, true)
+                .get();
 
         if (newSkel != nullptr) {
             skel.skelAnime->skeleton = newSkel->skeletonData.skeletonHeader.segment;
             uintptr_t skelPtr = (uintptr_t)newSkel->GetPointer();
-            memcpy(&skel.skelAnime->skeletonHeader, &skelPtr, sizeof(uintptr_t)); // Dumb thing that needs to be done because cast is not cooperating
+            memcpy(&skel.skelAnime->skeletonHeader, &skelPtr,
+                   sizeof(uintptr_t)); // Dumb thing that needs to be done because cast is not cooperating
         }
     }
 }
@@ -141,11 +141,10 @@ void SkeletonPatcher::UpdateCustomSkeletonFromPath(const std::string& skeletonPa
 
     // If alt assets are on, look for alt tagged skeletons
     if (isAlt) {
-        altSkel = 
-            (Skeleton*)Ship::Context::GetInstance()
-                ->GetResourceManager()
-                ->LoadResource(Ship::IResource::gAltAssetPrefix + skeletonPath, true)
-                .get();
+        altSkel = (Skeleton*)Ship::Context::GetInstance()
+                      ->GetResourceManager()
+                      ->LoadResource(Ship::IResource::gAltAssetPrefix + skeletonPath, true)
+                      .get();
 
         // Override non-alt skeleton if necessary
         if (altSkel != nullptr) {
@@ -155,11 +154,7 @@ void SkeletonPatcher::UpdateCustomSkeletonFromPath(const std::string& skeletonPa
 
     // Load new skeleton based on the custom model if it exists
     if (altSkel == nullptr) {
-        newSkel = 
-            (Skeleton*)Ship::Context::GetInstance()
-                ->GetResourceManager()
-                ->LoadResource(skeletonPath, true)
-                .get();
+        newSkel = (Skeleton*)Ship::Context::GetInstance()->GetResourceManager()->LoadResource(skeletonPath, true).get();
     }
 
     // Change back to the original skeleton if no skeleton's were found

@@ -200,12 +200,11 @@ void EnBom_Explode(EnBom* this, PlayState* play) {
     }
 
     if (CVarGetInteger(CVAR_ENHANCEMENT("StaticExplosionRadius"), 0)) {
-        //72 is the maximum radius of an OoT bomb explosion
+        // 72 is the maximum radius of an OoT bomb explosion
         this->explosionCollider.elements[0].dim.worldSphere.radius = 72;
     } else {
         this->explosionCollider.elements[0].dim.worldSphere.radius += this->actor.shape.rot.z + 8;
     }
-        
 
     if (this->actor.params == BOMB_EXPLOSION) {
         CollisionCheck_SetAT(play, &play->colChkCtx, &this->explosionCollider.base);
@@ -267,7 +266,8 @@ void EnBom_Update(Actor* thisx, PlayState* play2) {
     }
 
     // With random bomb fuse timer or gBombTimerMultiplier, sound effect and scaling is already done on init.
-    if (this->timer == 67 && !GameInteractor_GetRandomBombFuseTimerActive() && CVarGetFloat(CVAR_CHEAT("BombTimerMultiplier"), 1.0f) == 1.0f) {
+    if (this->timer == 67 && !GameInteractor_GetRandomBombFuseTimerActive() &&
+        CVarGetFloat(CVAR_CHEAT("BombTimerMultiplier"), 1.0f) == 1.0f) {
         Audio_PlayActorSound2(thisx, NA_SE_PL_TAKE_OUT_SHIELD);
         Actor_SetScale(thisx, 0.01f);
     }
@@ -338,8 +338,7 @@ void EnBom_Update(Actor* thisx, PlayState* play2) {
                 effPos.y += 30.0f;
             }
 
-            EffectSsBomb2_SpawnLayered(play, &effPos, &effVelocity, &bomb2Accel, 100,
-                                       (thisx->shape.rot.z * 6) + 19);
+            EffectSsBomb2_SpawnLayered(play, &effPos, &effVelocity, &bomb2Accel, 100, (thisx->shape.rot.z * 6) + 19);
 
             effPos.y = thisx->floorHeight;
             if (thisx->floorHeight > BGCHECK_Y_MIN) {
@@ -348,11 +347,9 @@ void EnBom_Update(Actor* thisx, PlayState* play2) {
 
             Audio_PlayActorSound2(thisx, NA_SE_IT_BOMB_EXPLOSION);
 
-            play->envCtx.adjLight1Color[0] = play->envCtx.adjLight1Color[1] =
-                play->envCtx.adjLight1Color[2] = 250;
+            play->envCtx.adjLight1Color[0] = play->envCtx.adjLight1Color[1] = play->envCtx.adjLight1Color[2] = 250;
 
-            play->envCtx.adjAmbientColor[0] = play->envCtx.adjAmbientColor[1] =
-                play->envCtx.adjAmbientColor[2] = 250;
+            play->envCtx.adjAmbientColor[0] = play->envCtx.adjAmbientColor[1] = play->envCtx.adjAmbientColor[2] = 250;
 
             Camera_AddQuake(&play->mainCamera, 2, 0xB, 8);
             thisx->params = BOMB_EXPLOSION;

@@ -8,8 +8,7 @@ std::multimap<std::tuple<s16, s16, s32>, RandomizerCheck> Rando::StaticData::Che
 
 std::vector<RandomizerCheck> Rando::StaticData::dungeonRewardLocations = {
     // Bosses
-    RC_QUEEN_GOHMA,   RC_KING_DODONGO, RC_BARINADE,
-    RC_PHANTOM_GANON, RC_VOLVAGIA,     RC_MORPHA,   RC_TWINROVA, RC_BONGO_BONGO,
+    RC_QUEEN_GOHMA, RC_KING_DODONGO, RC_BARINADE, RC_PHANTOM_GANON, RC_VOLVAGIA, RC_MORPHA, RC_TWINROVA, RC_BONGO_BONGO,
 };
 
 using namespace Rando;
@@ -17,7 +16,8 @@ using namespace Rando;
 std::vector<RandomizerCheck> Rando::StaticData::GetPondFishLocations() {
     std::vector<RandomizerCheck> pondFishLocations = {};
     for (Location& location : locationTable) {
-        if (location.GetRCType() == RCTYPE_FISH && location.GetScene() == SCENE_FISHING_POND && location.GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+        if (location.GetRCType() == RCTYPE_FISH && location.GetScene() == SCENE_FISHING_POND &&
+            location.GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
             pondFishLocations.push_back(location.GetRandomizerCheck());
         }
     }
@@ -26,7 +26,8 @@ std::vector<RandomizerCheck> Rando::StaticData::GetPondFishLocations() {
 std::vector<RandomizerCheck> Rando::StaticData::GetOverworldFishLocations() {
     std::vector<RandomizerCheck> overworldFishLocations = {};
     for (Location& location : locationTable) {
-        if (location.GetRCType() == RCTYPE_FISH && location.GetScene() != SCENE_FISHING_POND && location.GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+        if (location.GetRCType() == RCTYPE_FISH && location.GetScene() != SCENE_FISHING_POND &&
+            location.GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
             overworldFishLocations.push_back(location.GetRandomizerCheck());
         }
     }

@@ -6,6 +6,6 @@ CameraSettings* SetCameraSettings::GetPointer() {
 }
 
 size_t SetCameraSettings::GetPointerSize() {
-	return sizeof(CameraSettings);
+    return sizeof(CameraSettings);
 }
 } // namespace SOH

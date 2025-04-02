@@ -2017,4 +2017,4 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
 
     // clang-format on
 }
-}
+} // namespace Rando
