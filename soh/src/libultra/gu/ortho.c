@@ -27,7 +27,7 @@ void guOrtho(Mtx* mtx, f32 left, f32 right, f32 bottom, f32 top, f32 near, f32 f
 
     guOrthoF(mf, left, right, bottom, top, near, far, scale);
 
-    //guMtxF2L((MtxF*)mf, mtx);
+    // guMtxF2L((MtxF*)mf, mtx);
     FrameInterpolation_RecordOpenChild("ortho", 0);
     Matrix_MtxFToMtx((MtxF*)mf, mtx);
     FrameInterpolation_RecordCloseChild();

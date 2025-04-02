@@ -60,8 +60,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(uncullZoneDownward, 1000, ICHAIN_STOP),
 };
 
-void BgJyaZurerukabe_InitDynaPoly(BgJyaZurerukabe* this, PlayState* play, CollisionHeader* collision,
-                                  s32 flag) {
+void BgJyaZurerukabe_InitDynaPoly(BgJyaZurerukabe* this, PlayState* play, CollisionHeader* collision, s32 flag) {
     s32 pad;
     CollisionHeader* colHeader = NULL;
     s32 pad2;

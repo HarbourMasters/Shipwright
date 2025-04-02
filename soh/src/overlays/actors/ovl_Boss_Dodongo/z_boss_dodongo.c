@@ -11,7 +11,9 @@
 #include <stdlib.h> // malloc
 #include <string.h> // memcpy
 
-#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
+#define FLAGS                                                                                 \
+    (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
+     ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 #define LAVA_TEX_WIDTH 32
 #define LAVA_TEX_HEIGHT 64
@@ -214,13 +216,16 @@ void func_808C1554_Raw(void* arg0, void* floorTex, s32 arg2, f32 arg3) {
     u16 multiplier = width / LAVA_TEX_WIDTH;
 
     for (i = 0; i < size; i += width) {
-        temp = sinf((((i / width) + (s32)(((arg2 * multiplier) * 50.0f) / 100.0f)) & (width - 1)) * (M_PI / (16 * multiplier))) * (arg3 * sqrt(multiplier));
+        temp = sinf((((i / width) + (s32)(((arg2 * multiplier) * 50.0f) / 100.0f)) & (width - 1)) *
+                    (M_PI / (16 * multiplier))) *
+               (arg3 * sqrt(multiplier));
         for (i2 = 0; i2 < width; i2++) {
             sp54[i + ((temp + i2) & (width - 1))] = temp_s1[i + i2];
         }
     }
     for (i = 0; i < width; i++) {
-        temp = sinf(((i + (s32)(((arg2 * multiplier) * 80.0f) / 100.0f)) & (width - 1)) * (M_PI / (16 * multiplier))) * (arg3 * sqrt(multiplier));
+        temp = sinf(((i + (s32)(((arg2 * multiplier) * 80.0f) / 100.0f)) & (width - 1)) * (M_PI / (16 * multiplier))) *
+               (arg3 * sqrt(multiplier));
         temp *= width;
         for (i2 = 0; i2 < size; i2 += width) {
             temp2 = (temp + i2) & (size - 1);
@@ -319,8 +324,8 @@ void BossDodongo_Init(Actor* thisx, PlayState* play) {
     Actor_ProcessInitChain(&this->actor, sInitChain);
     ActorShape_Init(&this->actor.shape, 9200.0f, ActorShadow_DrawCircle, 250.0f);
     Actor_SetScale(&this->actor, 0.01f);
-    SkelAnime_Init(play, &this->skelAnime, &object_kingdodongo_Skel_01B310, &object_kingdodongo_Anim_00F0D8, NULL,
-                   NULL, 0);
+    SkelAnime_Init(play, &this->skelAnime, &object_kingdodongo_Skel_01B310, &object_kingdodongo_Anim_00F0D8, NULL, NULL,
+                   0);
     Animation_PlayLoop(&this->skelAnime, &object_kingdodongo_Anim_00F0D8);
     this->unk_1F8 = 1.0f;
     BossDodongo_SetupIntroCutscene(this, play);
@@ -339,8 +344,8 @@ void BossDodongo_Init(Actor* thisx, PlayState* play) {
         // is now handled by BossDodongo_RegisterBlendedLavaTextureUpdate below
 
         Actor_Kill(&this->actor);
-        Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, -890.0f, -1523.76f,
-                           -3304.0f, 0, 0, 0, WARP_DUNGEON_CHILD);
+        Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, -890.0f, -1523.76f, -3304.0f, 0, 0, 0,
+                           WARP_DUNGEON_CHILD);
         Actor_Spawn(&play->actorCtx, play, ACTOR_BG_BREAKWALL, -890.0f, -1523.76f, -3304.0f, 0, 0, 0, 0x6000, true);
         if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, -690.0f, -1523.76f, -3304.0f, 0, 0, 0, 0, true);
@@ -937,8 +942,7 @@ void BossDodongo_Roll(BossDodongo* this, PlayState* play) {
             }
 
             if (!(this->unk_19E & 1)) {
-                Actor_SpawnFloorDustRing(play, &this->actor, &this->actor.world.pos, 40.0f, 3, 8.0f, 500, 10,
-                                         false);
+                Actor_SpawnFloorDustRing(play, &this->actor, &this->actor.world.pos, 40.0f, 3, 8.0f, 500, 10, false);
             }
         }
     }
@@ -1274,8 +1278,7 @@ void BossDodongo_Update(Actor* thisx, PlayState* play2) {
     BossDodongo_UpdateEffects(play);
 }
 
-s32 BossDodongo_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                                 void* thisx) {
+s32 BossDodongo_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     f32 mtxScaleY;
     f32 mtxScaleZ;
     BossDodongo* this = (BossDodongo*)thisx;
@@ -1318,8 +1321,7 @@ block_1:
         if (this->skelAnime.skeletonHeader->skeletonType == SKELANIME_TYPE_FLEX) {
             gSPMatrix(POLY_OPA_DISP++, *play->flexLimbOverrideMTX, G_MTX_LOAD);
         } else {
-            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         }
 
         gSPDisplayList(POLY_OPA_DISP++, *dList);
@@ -1582,8 +1584,8 @@ void BossDodongo_DeathCutscene(BossDodongo* this, PlayState* play) {
                 Animation_Change(&this->skelAnime, &object_kingdodongo_Anim_003CF8, 1.0f, 0.0f,
                                  Animation_GetLastFrame(&object_kingdodongo_Anim_003CF8), ANIMMODE_ONCE, -1.0f);
                 this->csState = 6;
-                Actor_Spawn(&play->actorCtx, play, ACTOR_BG_BREAKWALL, -890.0f, -1523.76f, -3304.0f, 0, 0, 0,
-                            0x6000, true);
+                Actor_Spawn(&play->actorCtx, play, ACTOR_BG_BREAKWALL, -890.0f, -1523.76f, -3304.0f, 0, 0, 0, 0x6000,
+                            true);
             }
             break;
         case 6:
@@ -1757,8 +1759,8 @@ void BossDodongo_DeathCutscene(BossDodongo* this, PlayState* play) {
                         effectPos.x = Rand_CenteredFloat(120.0f) + this->actor.focus.pos.x;
                         effectPos.y = Rand_ZeroFloat(50.0f) + this->actor.world.pos.y;
                         effectPos.z = Rand_CenteredFloat(120.0f) + this->actor.focus.pos.z;
-                        func_8002836C(play, &effectPos, &dustVel, &dustAcell, &dustPrimColor, &dustEnvColor, 0x1F4,
-                                      0xA, 0xA);
+                        func_8002836C(play, &effectPos, &dustVel, &dustAcell, &dustPrimColor, &dustEnvColor, 0x1F4, 0xA,
+                                      0xA);
                         effectPos.x = Rand_CenteredFloat(120.0f) + this->actor.focus.pos.x;
                         effectPos.y = -1498.76f;
                         effectPos.z = Rand_CenteredFloat(120.0f) + this->actor.focus.pos.z;
@@ -1867,7 +1869,8 @@ void BossDodongo_DeathCutscene(BossDodongo* this, PlayState* play) {
                 func_80064534(play, &play->csCtx);
                 Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
                 if (GameInteractor_Should(VB_SPAWN_BLUE_WARP, true, this)) {
-                    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, -890.0f, -1523.76f, -3304.0f, 0, 0, 0, WARP_DUNGEON_CHILD);
+                    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, -890.0f, -1523.76f,
+                                       -3304.0f, 0, 0, 0, WARP_DUNGEON_CHILD);
                 }
                 this->skelAnime.playSpeed = 0.0f;
                 Flags_SetClear(play, play->roomCtx.curRoom.num);
@@ -1881,8 +1884,7 @@ void BossDodongo_DeathCutscene(BossDodongo* this, PlayState* play) {
                 sp68.x = Rand_CenteredFloat(60.0f) + this->actor.focus.pos.x;
                 sp68.y = (Rand_ZeroOne() * 50.0f) + -1498.76f;
                 sp68.z = Rand_CenteredFloat(60.0f) + this->actor.focus.pos.z;
-                EffectSsGMagma2_Spawn(play, &sp68, &D_808CA568, &D_808CA56C, 5, 1,
-                                      (s16)(Rand_ZeroOne() * 50.0f) + 50);
+                EffectSsGMagma2_Spawn(play, &sp68, &D_808CA568, &D_808CA56C, 5, 1, (s16)(Rand_ZeroOne() * 50.0f) + 50);
             }
             break;
     }
@@ -1949,8 +1951,7 @@ void BossDodongo_DrawEffects(PlayState* play) {
             Matrix_Translate(eff->unk_00.x, eff->unk_00.y, eff->unk_00.z, MTXMODE_NEW);
             Matrix_ReplaceRotation(unkMtx);
             Matrix_Scale(eff->unk_2C, eff->unk_2C, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, object_kingdodongo_DL_009DD0);
         }
         FrameInterpolation_RecordCloseChild();

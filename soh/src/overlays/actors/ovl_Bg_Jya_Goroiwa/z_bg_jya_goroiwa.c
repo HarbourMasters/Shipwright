@@ -201,7 +201,8 @@ void BgJyaGoroiwa_Update(Actor* thisx, PlayState* play) {
     s32 bgId;
     Vec3f pos;
 
-    if (!(player->stateFlags1 & (PLAYER_STATE1_TALKING | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE))) {
+    if (!(player->stateFlags1 &
+          (PLAYER_STATE1_TALKING | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE))) {
         this->actionFunc(this, play);
         BgJyaGoroiwa_UpdateRotation(this);
         pos.x = this->actor.world.pos.x;

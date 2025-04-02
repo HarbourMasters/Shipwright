@@ -9,7 +9,9 @@
 #include "objects/object_tk/object_tk.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_IGNORE_QUAKE | ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED)
+#define FLAGS                                                                                  \
+    (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
+     ACTOR_FLAG_IGNORE_QUAKE | ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED)
 
 void EnPoRelay_Init(Actor* thisx, PlayState* play);
 void EnPoRelay_Destroy(Actor* thisx, PlayState* play);
@@ -92,8 +94,7 @@ void EnPoRelay_Init(Actor* thisx, PlayState* play) {
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 42.0f);
-    SkelAnime_InitFlex(play, &this->skelAnime, &gDampeSkel, &gDampeFloatAnim, this->jointTable, this->morphTable,
-                       18);
+    SkelAnime_InitFlex(play, &this->skelAnime, &gDampeSkel, &gDampeFloatAnim, this->jointTable, this->morphTable, 18);
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
     this->lightNode = LightContext_InsertLight(play, &play->lightCtx, &this->lightInfo);
@@ -144,8 +145,8 @@ void EnPoRelay_SetupRace(EnPoRelay* this) {
     EnPoRelay_Vec3sToVec3f(&vec, &D_80AD8C30[this->pathIndex]);
     this->actionTimer = ((s16)(this->actor.shape.rot.y - this->actor.world.rot.y - 0x8000) >> 0xB) % 32U;
     func_80088B34(0);
-    this->hookshotSlotFull = (INV_CONTENT(ITEM_HOOKSHOT) != ITEM_NONE && !IS_RANDO) ||
-                             (IS_RANDO && Flags_GetTreasure(gPlayState, 0x1E));
+    this->hookshotSlotFull =
+        (INV_CONTENT(ITEM_HOOKSHOT) != ITEM_NONE && !IS_RANDO) || (IS_RANDO && Flags_GetTreasure(gPlayState, 0x1E));
     this->unk_19A = Actor_WorldYawTowardPoint(&this->actor, &vec);
     this->actor.flags |= ACTOR_FLAG_LOCK_ON_DISABLED;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_PO_LAUGH);
@@ -208,7 +209,7 @@ void EnPoRelay_Race(EnPoRelay* this, PlayState* play) {
                 multiplier = 0.0f;
             }
             speed = 30.0f * multiplier;
-            
+
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HONOTRAP,
                         Math_CosS(this->unk_19A) * speed + this->actor.world.pos.x, this->actor.world.pos.y,
                         Math_SinS(this->unk_19A) * speed + this->actor.world.pos.z, 0,
@@ -306,33 +307,31 @@ void EnPoRelay_DisappearAndReward(EnPoRelay* this, PlayState* play) {
         if (this->actionTimer < 5) {
             vec.y = Math_SinS((this->actionTimer * 0x1000) - 0x4000) * 23.0f + (this->actor.world.pos.y + 40.0f);
             multiplier = Math_CosS((this->actionTimer * 0x1000) - 0x4000) * 23.0f;
-            vec.x = (Math_SinS(Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) + 0x4800) * multiplier) +
-                    this->actor.world.pos.x;
-            vec.z = (Math_CosS(Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) + 0x4800) * multiplier) +
-                    this->actor.world.pos.z;
+            vec.x =
+                (Math_SinS(Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) + 0x4800) * multiplier) + this->actor.world.pos.x;
+            vec.z =
+                (Math_CosS(Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) + 0x4800) * multiplier) + this->actor.world.pos.z;
         } else {
             vec.y = this->actor.world.pos.y + 40.0f + 15.0f * (this->actionTimer - 5);
-            vec.x =
-                (Math_SinS(Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) + 0x4800) * 23.0f) + this->actor.world.pos.x;
-            vec.z =
-                (Math_CosS(Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) + 0x4800) * 23.0f) + this->actor.world.pos.z;
+            vec.x = (Math_SinS(Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) + 0x4800) * 23.0f) + this->actor.world.pos.x;
+            vec.z = (Math_CosS(Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) + 0x4800) * 23.0f) + this->actor.world.pos.z;
         }
-        EffectSsDeadDb_Spawn(play, &vec, &D_80AD8D30, &D_80AD8D3C, this->actionTimer * 10 + 80, 0, 255, 255, 255,
-                             255, 0, 0, 255, 1, 9, true);
+        EffectSsDeadDb_Spawn(play, &vec, &D_80AD8D30, &D_80AD8D3C, this->actionTimer * 10 + 80, 0, 255, 255, 255, 255,
+                             0, 0, 255, 1, 9, true);
         vec.x = (this->actor.world.pos.x + this->actor.world.pos.x) - vec.x;
         vec.z = (this->actor.world.pos.z + this->actor.world.pos.z) - vec.z;
-        EffectSsDeadDb_Spawn(play, &vec, &D_80AD8D30, &D_80AD8D3C, this->actionTimer * 10 + 80, 0, 255, 255, 255,
-                             255, 0, 0, 255, 1, 9, true);
+        EffectSsDeadDb_Spawn(play, &vec, &D_80AD8D30, &D_80AD8D3C, this->actionTimer * 10 + 80, 0, 255, 255, 255, 255,
+                             0, 0, 255, 1, 9, true);
         vec.x = this->actor.world.pos.x;
         vec.z = this->actor.world.pos.z;
-        EffectSsDeadDb_Spawn(play, &vec, &D_80AD8D30, &D_80AD8D3C, this->actionTimer * 10 + 80, 0, 255, 255, 255,
-                             255, 0, 0, 255, 1, 9, true);
+        EffectSsDeadDb_Spawn(play, &vec, &D_80AD8D30, &D_80AD8D3C, this->actionTimer * 10 + 80, 0, 255, 255, 255, 255,
+                             0, 0, 255, 1, 9, true);
         if (this->actionTimer == 1) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_EXTINCT);
         }
     }
     if (Math_StepToF(&this->actor.scale.x, 0.0f, 0.001f) != 0) {
-        if(!IS_RANDO) {
+        if (!IS_RANDO) {
             if (this->hookshotSlotFull != 0) {
                 sp60.x = this->actor.world.pos.x;
                 sp60.y = this->actor.floorHeight;
@@ -348,7 +347,7 @@ void EnPoRelay_DisappearAndReward(EnPoRelay* this, PlayState* play) {
             } else {
                 Flags_SetTempClear(play, 4);
                 HIGH_SCORE(HS_DAMPE_RACE) = gSaveContext.timerSeconds;
-            }            
+            }
         } else {
             sp60.x = this->actor.world.pos.x;
             sp60.y = this->actor.floorHeight;
@@ -421,8 +420,7 @@ void EnPoRelay_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* 
                                   this->lightColor.b, 200);
     } else if (limbIndex == 8) {
         OPEN_DISPS(play->state.gfxCtx);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gDampeHaloDL);
         CLOSE_DISPS(play->state.gfxCtx);
     }

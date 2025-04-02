@@ -28,4 +28,4 @@ class SetLightingSettings : public SceneCommand<EnvLightSettings> {
 
     std::vector<EnvLightSettings> settings;
 };
-}; // namespace LUS
+}; // namespace SOH

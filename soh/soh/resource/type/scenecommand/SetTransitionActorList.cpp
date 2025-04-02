@@ -6,6 +6,6 @@ TransitionActorEntry* SetTransitionActorList::GetPointer() {
 }
 
 size_t SetTransitionActorList::GetPointerSize() {
-	return transitionActorList.size() * sizeof(TransitionActorEntry);
+    return transitionActorList.size() * sizeof(TransitionActorEntry);
 }
 } // namespace SOH

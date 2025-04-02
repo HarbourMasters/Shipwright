@@ -71,10 +71,9 @@ typedef enum {
 // holds the widget values for a widget, contains all CVar types available from LUS. int32_t is used for boolean
 // evaluation
 using CVarVariant = std::variant<int32_t, const char*, float, Color_RGBA8, Color_RGB8>;
-using OptionsVariant =
-    std::variant<UIWidgets::ButtonOptions, UIWidgets::CheckboxOptions, UIWidgets::ComboboxOptions,
-                 UIWidgets::FloatSliderOptions, UIWidgets::IntSliderOptions, UIWidgets::TextOptions, UIWidgets::WidgetOptions,
-                 UIWidgets::WindowButtonOptions>;
+using OptionsVariant = std::variant<UIWidgets::ButtonOptions, UIWidgets::CheckboxOptions, UIWidgets::ComboboxOptions,
+                                    UIWidgets::FloatSliderOptions, UIWidgets::IntSliderOptions, UIWidgets::TextOptions,
+                                    UIWidgets::WidgetOptions, UIWidgets::WindowButtonOptions>;
 
 // All the info needed for display and search of all widgets in the menu.
 // `name` is the label displayed,
@@ -141,7 +140,8 @@ struct WidgetInfo {
                 options = std::make_shared<UIWidgets::ButtonOptions>(std::get<UIWidgets::ButtonOptions>(options_));
                 break;
             case WIDGET_WINDOW_BUTTON:
-                options = std::make_shared<UIWidgets::WindowButtonOptions>(std::get<UIWidgets::WindowButtonOptions>(options_));
+                options = std::make_shared<UIWidgets::WindowButtonOptions>(
+                    std::get<UIWidgets::WindowButtonOptions>(options_));
                 break;
             case WIDGET_TEXT:
             case WIDGET_SEPARATOR_TEXT:

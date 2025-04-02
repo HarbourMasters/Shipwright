@@ -124,8 +124,7 @@ void Audio_ClearBGMMute(u8 channelIdx) {
     }
 }
 
-void Audio_PlaySoundGeneral(u16 sfxId, Vec3f* pos, u8 token, f32* freqScale, f32* vol, s8* reverbAdd)
-{
+void Audio_PlaySoundGeneral(u16 sfxId, Vec3f* pos, u8 token, f32* freqScale, f32* vol, s8* reverbAdd) {
     size_t i;
     SoundRequest* req;
 
@@ -206,8 +205,7 @@ void Audio_RemoveMatchingSoundRequests(u8 aspect, SoundBankEntry* cmp) {
     }
 }
 
-void Audio_ProcessSoundRequest(void)
-{
+void Audio_ProcessSoundRequest(void) {
     u16 sfxId;
     u8 count;
     u8 index;
@@ -314,8 +312,7 @@ void Audio_ProcessSoundRequest(void)
     }
 }
 
-void Audio_RemoveSoundBankEntry(u8 bankId, u8 entryIndex)
-{
+void Audio_RemoveSoundBankEntry(u8 bankId, u8 entryIndex) {
     SoundBankEntry* entry = &gSoundBanks[bankId][entryIndex];
     u8 i;
 
@@ -342,8 +339,7 @@ void Audio_RemoveSoundBankEntry(u8 bankId, u8 entryIndex)
     }
 }
 
-void Audio_ChooseActiveSounds(u8 bankId)
-{
+void Audio_ChooseActiveSounds(u8 bankId) {
     u8 numChosenSounds;
     u8 numChannels;
     u8 entryIndex;
@@ -499,8 +495,7 @@ void Audio_ChooseActiveSounds(u8 bankId)
     }
 }
 
-void Audio_PlayActiveSounds(u8 bankId)
-{
+void Audio_PlayActiveSounds(u8 bankId) {
     u8 entryIndex;
     SequenceChannel* channel;
     SoundBankEntry* entry;
@@ -560,8 +555,7 @@ void Audio_PlayActiveSounds(u8 bankId)
     }
 }
 
-void Audio_StopSfxByBank(u8 bankId)
-{
+void Audio_StopSfxByBank(u8 bankId) {
     SoundBankEntry* entry;
     s32 pad;
     SoundBankEntry cmp;
@@ -622,8 +616,7 @@ void Audio_StopSfxByPos(Vec3f* pos) {
     Audio_RemoveMatchingSoundRequests(2, &cmp);
 }
 
-void Audio_StopSfxByPosAndId(Vec3f* pos, u16 sfxId)
-{
+void Audio_StopSfxByPosAndId(Vec3f* pos, u16 sfxId) {
     SoundBankEntry* entry;
     u8 entryIndex = gSoundBanks[SFX_BANK(sfxId)][0].next;
     u8 prevEntryIndex = 0;
@@ -742,8 +735,7 @@ void func_800F8F88(void) {
     }
 }
 
-u8 Audio_IsSfxPlaying(u32 sfxId)
-{
+u8 Audio_IsSfxPlaying(u32 sfxId) {
     SoundBankEntry* entry;
     u8 entryIndex = gSoundBanks[SFX_BANK(sfxId)][0].next;
 

@@ -151,7 +151,9 @@ void SohMenu::InitElement() {
           { [](disabledInfo& info) -> bool { return !CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".Enabled", 0); },
             "Advanced Resolution is Disabled" } },
         { DISABLE_FOR_VERTICAL_RESOLUTION_OFF,
-          { [](disabledInfo& info) -> bool { return !CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".VerticalResolutionToggle", 0); },
+          { [](disabledInfo& info) -> bool {
+               return !CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".VerticalResolutionToggle", 0);
+           },
             "Vertical Resolution Toggle is Off" } },
     };
 }

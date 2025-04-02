@@ -19,15 +19,15 @@ extern PlayState* gPlayState;
 
 typedef struct {
     Actor* actor;
-    std::string text; // Original text
+    std::string text;          // Original text
     std::string processedText; // Text filtered for supported font textures
-    const char* tag; // Tag identifier
-    Color_RGBA8 textColor; // Text color override. Global color is used if alpha is 0
-    int16_t height; // Textbox height
-    int16_t width; // Textbox width
-    int16_t yOffset; // Addition Y offset
-    Mtx* mtx; // Allocated Mtx for rendering
-    Vtx* vtx; // Allocated Vtx for rendering
+    const char* tag;           // Tag identifier
+    Color_RGBA8 textColor;     // Text color override. Global color is used if alpha is 0
+    int16_t height;            // Textbox height
+    int16_t width;             // Textbox width
+    int16_t yOffset;           // Addition Y offset
+    Mtx* mtx;                  // Allocated Mtx for rendering
+    Vtx* vtx;                  // Allocated Vtx for rendering
 } NameTag;
 
 static std::vector<NameTag> nameTags;
@@ -69,7 +69,7 @@ void DrawNameTag(PlayState* play, const NameTag* nameTag) {
         return;
     }
 
-    Color_RGBA8 textboxColor = { 0, 0, 0, 80};
+    Color_RGBA8 textboxColor = { 0, 0, 0, 80 };
     Color_RGBA8 textColor = { 255, 255, 255, 255 };
 
     if (CVarGetInteger(CVAR_COSMETIC("HUD.NameTagActorBackground.Changed"), 0)) {
@@ -130,9 +130,9 @@ void DrawNameTag(PlayState* play, const NameTag* nameTag) {
         int16_t vertexStart = 4 * (i % 16);
 
         // Multi-instruction macro, need to insert all to the dl buffer
-        Gfx charTexture[] = { gsDPLoadTextureBlock_4b(
-            texture, G_IM_FMT_I, FONT_CHAR_TEX_WIDTH, FONT_CHAR_TEX_HEIGHT, 0, G_TX_NOMIRROR | G_TX_CLAMP,
-            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD) };
+        Gfx charTexture[] = { gsDPLoadTextureBlock_4b(texture, G_IM_FMT_I, FONT_CHAR_TEX_WIDTH, FONT_CHAR_TEX_HEIGHT, 0,
+                                                      G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
+                                                      G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD) };
         nameTagDl.insert(nameTagDl.end(), std::begin(charTexture), std::end(charTexture));
 
         nameTagDl.push_back(gsSP1Quadrangle(vertexStart, vertexStart + 2, vertexStart + 3, vertexStart + 1, 0));
@@ -195,11 +195,14 @@ extern "C" void NameTag_RegisterForActorWithOptions(Actor* actor, const char* te
     std::string processedText = std::string(Interface_ReplaceSpecialCharacters((char*)text));
 
     // Strip out unsupported characters
-    processedText.erase(std::remove_if(processedText.begin(), processedText.end(), [](const char& c) {
-        // 172 is max supported texture for the in-game font system,
-        // and filter anything less than a space but not the newline or nul characters
-        return (unsigned char)c > 172 || (c < ' ' && c != '\n' && c != '\0');
-    }), processedText.end());
+    processedText.erase(std::remove_if(processedText.begin(), processedText.end(),
+                                       [](const char& c) {
+                                           // 172 is max supported texture for the in-game font system,
+                                           // and filter anything less than a space but not the newline or nul
+                                           // characters
+                                           return (unsigned char)c > 172 || (c < ' ' && c != '\n' && c != '\0');
+                                       }),
+                        processedText.end());
 
     int16_t numChar = processedText.length();
     int16_t numLines = 1;

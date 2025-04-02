@@ -29,11 +29,18 @@ typedef enum GetItemCategory {
     /* 0x05 */ ITEM_CATEGORY_MAJOR,
 } GetItemCategory;
 
-#define GET_ITEM(itemId, objectId, drawId, textId, field, chestAnim, itemCategory, modIndex, getItemId) \
-    { itemId, field, (int16_t)((chestAnim != CHEST_ANIM_SHORT ? 1 : -1) * (drawId + 1)), textId, objectId, modIndex, modIndex, getItemId, drawId, true, ITEM_FROM_NPC, itemCategory, itemId, modIndex, NULL }
+#define GET_ITEM(itemId, objectId, drawId, textId, field, chestAnim, itemCategory, modIndex, getItemId)                \
+    {                                                                                                                  \
+        itemId, field, (int16_t)((chestAnim != CHEST_ANIM_SHORT ? 1 : -1) * (drawId + 1)), textId, objectId, modIndex, \
+            modIndex, getItemId, drawId, true, ITEM_FROM_NPC, itemCategory, itemId, modIndex, NULL                     \
+    }
 
-#define GET_ITEM_CUSTOM_TABLE(itemId, objectId, drawId, textId, field, chestAnim, itemCategory, modIndex, tableId, getItemId) \
-    { itemId, field, (int16_t)((chestAnim != CHEST_ANIM_SHORT ? 1 : -1) * (drawId + 1)), textId, objectId, modIndex, tableId, getItemId, drawId, true, ITEM_FROM_NPC, itemCategory, itemId, modIndex, NULL }
+#define GET_ITEM_CUSTOM_TABLE(itemId, objectId, drawId, textId, field, chestAnim, itemCategory, modIndex, tableId,     \
+                              getItemId)                                                                               \
+    {                                                                                                                  \
+        itemId, field, (int16_t)((chestAnim != CHEST_ANIM_SHORT ? 1 : -1) * (drawId + 1)), textId, objectId, modIndex, \
+            tableId, getItemId, drawId, true, ITEM_FROM_NPC, itemCategory, itemId, modIndex, NULL                      \
+    }
 
 #define GET_ITEM_NONE \
     { ITEM_NONE, 0, 0, 0, 0, 0, 0, 0, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_JUNK, ITEM_NONE, 0, NULL }
@@ -50,13 +57,16 @@ typedef struct GetItemEntry {
     /* 0x03 */ uint16_t textId;
     /* 0x04 */ uint16_t objectId;
     /* 0x06 */ uint16_t modIndex; // Primarily used for determining whether to use Item_Give or Randomizer_Item_Give
-    /* 0x07 */ uint16_t tableId; // GetItemEntry table this entry is in (usually the same as modIndex, but not always)
+    /* 0x07 */ uint16_t tableId;  // GetItemEntry table this entry is in (usually the same as modIndex, but not always)
     /* 0x08 */ int16_t getItemId;
     /* 0x0A */ uint16_t gid; // Stores the GID value unmodified for future reference.
-    /* 0x0C */ uint16_t collectable; // determines whether the item can be collected on the overworld. Will be true in most cases.
+    /* 0x0C */ uint16_t
+        collectable; // determines whether the item can be collected on the overworld. Will be true in most cases.
     /* 0x0E */ GetItemFrom getItemFrom;
     /* 0x0F */ GetItemCategory getItemCategory; // Primarily made and used for chest size/texture matches contents
-    /* 0x10 */ uint16_t drawItemId; // Will be a copy of itemId unless the item is an ice trap. Needed for particles to function on ice traps.
-    /* 0x11 */ uint16_t drawModIndex; // Will be a copy of modIndex unless the item is an ice trap. Needed for particles to function on ice traps.
+    /* 0x10 */ uint16_t drawItemId; // Will be a copy of itemId unless the item is an ice trap. Needed for particles to
+                                    // function on ice traps.
+    /* 0x11 */ uint16_t drawModIndex; // Will be a copy of modIndex unless the item is an ice trap. Needed for particles
+                                      // to function on ice traps.
     CustomDrawFunc drawFunc;
 } GetItemEntry; // size = 0x11

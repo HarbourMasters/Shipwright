@@ -2,7 +2,8 @@
 #include <stddef.h>
 
 // Force the compiler to assume we have support for the CRC32 intrinsic. We will check for our selves later.
-// Clang will define both __llvm__ and __GNUC__ but GCC will only define __GNUC__. So we need to check for __llvm__ first.
+// Clang will define both __llvm__ and __GNUC__ but GCC will only define __GNUC__. So we need to check for __llvm__
+// first.
 #if ((defined(__llvm__) && (defined(__x86_64__) || defined(__i386__))))
 #pragma clang attribute push(__attribute__((target("crc32"))), apply_to = function)
 #elif ((defined(__GNUC__) && (defined(__x86_64__) || defined(__i386__))))
@@ -11,7 +12,8 @@
 #pragma GCC target("sse4.2")
 #endif
 
-// Include headers for the CRC32 intrinsic and cpuid instruction on windows. No need to do any other checks because it assumes the target will support CRC32
+// Include headers for the CRC32 intrinsic and cpuid instruction on windows. No need to do any other checks because it
+// assumes the target will support CRC32
 #ifdef _WIN32
 #include <immintrin.h>
 #include <intrin.h>
@@ -68,7 +70,8 @@ static const uint32_t crc32Table[256] = {
     0xE03E9C81L, 0x34F4F86AL, 0xC69F7B69L, 0xD5CF889DL, 0x27A40B9EL, 0x79B737BAL, 0x8BDCB4B9L, 0x988C474DL, 0x6AE7C44EL,
     0xBE2DA0A5L, 0x4C4623A6L, 0x5F16D052L, 0xAD7D5351L
 };
-// On platforms that we know will never support a crc32 instruction (such as the WiiU) we will skip compiling this function in.
+// On platforms that we know will never support a crc32 instruction (such as the WiiU) we will skip compiling this
+// function in.
 #ifndef NO_CRC_INTRIN
 
 static uint32_t CRC32IntrinImpl(unsigned char* data, size_t dataSize) {
@@ -123,7 +126,7 @@ uint32_t CRC32C(unsigned char* data, size_t dataSize) {
 #ifdef _WIN32
     __cpuid(cpuidData, 1);
 #elif __APPLE__ || (defined(__aarch64__) && defined(__ARM_FEATURE_CRC32))
-// Every Mac that supports SoH should support this instruction. Also check for ARM64 at the same time
+    // Every Mac that supports SoH should support this instruction. Also check for ARM64 at the same time
     return CRC32IntrinImpl(data, dataSize);
 #else
     __get_cpuid(1, &cpuidData[0], &cpuidData[1], &cpuidData[2], &cpuidData[3]);

@@ -72,8 +72,8 @@ void EnDodojr_Init(Actor* thisx, PlayState* play) {
     EnDodojr* this = (EnDodojr*)thisx;
 
     ActorShape_Init(&this->actor.shape, 0.0f, NULL, 18.0f);
-    SkelAnime_Init(play, &this->skelAnime, &object_dodojr_Skel_0020E0, &object_dodojr_Anim_0009D4,
-                   this->jointTable, this->morphTable, 15);
+    SkelAnime_Init(play, &this->skelAnime, &object_dodojr_Skel_0020E0, &object_dodojr_Anim_0009D4, this->jointTable,
+                   this->morphTable, 15);
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
     CollisionCheck_SetInfo2(&this->actor.colChkInfo, DamageTable_Get(4), &sColChkInit);
@@ -299,9 +299,9 @@ void func_809F6E54(EnDodojr* this, PlayState* play) {
     }
 
     if (Math_Vec3f_DistXYZ(&this->actor.world.pos, &pos) > 80.0f) {
-        angleIndex = (s16)(this->actor.home.pos.x + this->actor.home.pos.y + this->actor.home.pos.z +
-                           play->state.frames / 30) %
-                     12;
+        angleIndex =
+            (s16)(this->actor.home.pos.x + this->actor.home.pos.y + this->actor.home.pos.z + play->state.frames / 30) %
+            12;
         angleIndex = ABS(angleIndex);
         pos.x += 80.0f * sinf(angles[angleIndex]);
         pos.z += 80.0f * cosf(angles[angleIndex]);
@@ -649,8 +649,6 @@ void EnDodojr_Draw(Actor* thisx, PlayState* play) {
 
     if ((this->actionFunc != func_809F73AC) && (this->actionFunc != func_809F7BE4)) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
-        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, func_809F7D50,
-                                  func_809F7DFC,
-                          &this->actor);
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, func_809F7D50, func_809F7DFC, &this->actor);
     }
 }

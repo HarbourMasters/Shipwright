@@ -20,4 +20,4 @@ class SetCutscenes : public SceneCommand<uint32_t> {
     std::string fileName;
     std::shared_ptr<Cutscene> cutscene;
 };
-}; // namespace LUS
+}; // namespace SOH

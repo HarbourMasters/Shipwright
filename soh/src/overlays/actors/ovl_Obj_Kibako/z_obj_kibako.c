@@ -69,9 +69,8 @@ void ObjKibako_SpawnCollectible(ObjKibako* this, PlayState* play) {
     s16 collectible;
 
     collectible = this->actor.params & 0x1F;
-    if (GameInteractor_Should(VB_SMALL_CRATE_DROP_ITEM,(collectible >= 0) && (collectible <= 0x19), this)) {
-        Item_DropCollectible(play, &this->actor.world.pos,
-                             collectible | (((this->actor.params >> 8) & 0x3F) << 8));
+    if (GameInteractor_Should(VB_SMALL_CRATE_DROP_ITEM, (collectible >= 0) && (collectible <= 0x19), this)) {
+        Item_DropCollectible(play, &this->actor.world.pos, collectible | (((this->actor.params >> 8) & 0x3F) << 8));
     }
 }
 
@@ -141,9 +140,8 @@ void ObjKibako_AirBreak(ObjKibako* this, PlayState* play) {
         } else {
             phi_s0 = 0x20;
         }
-        EffectSsKakera_Spawn(play, &pos, &velocity, breakPos, -200, phi_s0, 10, 10, 0,
-                             (Rand_ZeroOne() * 30.0f) + 10.0f, 0, 32, 60, KAKERA_COLOR_NONE,
-                             OBJECT_GAMEPLAY_DANGEON_KEEP, gSmallWoodenBoxFragmentDL);
+        EffectSsKakera_Spawn(play, &pos, &velocity, breakPos, -200, phi_s0, 10, 10, 0, (Rand_ZeroOne() * 30.0f) + 10.0f,
+                             0, 32, 60, KAKERA_COLOR_NONE, OBJECT_GAMEPLAY_DANGEON_KEEP, gSmallWoodenBoxFragmentDL);
     }
     func_80033480(play, &this->actor.world.pos, 40.0f, 3, 50, 140, 1);
 }
@@ -176,9 +174,8 @@ void ObjKibako_WaterBreak(ObjKibako* this, PlayState* play) {
         pos.z += breakPos->z;
         temp_rand = Rand_ZeroOne();
         phi_s0 = (temp_rand < 0.2f) ? 0x40 : 0x20;
-        EffectSsKakera_Spawn(play, &pos, &velocity, breakPos, -180, phi_s0, 30, 30, 0,
-                             (Rand_ZeroOne() * 30.0f) + 10.0f, 0, 32, 70, KAKERA_COLOR_NONE,
-                             OBJECT_GAMEPLAY_DANGEON_KEEP, gSmallWoodenBoxFragmentDL);
+        EffectSsKakera_Spawn(play, &pos, &velocity, breakPos, -180, phi_s0, 30, 30, 0, (Rand_ZeroOne() * 30.0f) + 10.0f,
+                             0, 32, 70, KAKERA_COLOR_NONE, OBJECT_GAMEPLAY_DANGEON_KEEP, gSmallWoodenBoxFragmentDL);
     }
 }
 

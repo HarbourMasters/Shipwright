@@ -59,8 +59,7 @@ void KaleidoScopeCall_Update(PlayState* play) {
 
     GameInteractor_ExecuteOnKaleidoUpdate();
 
-    if (!gSaveContext.ship.stats.gameComplete &&
-        (!IS_BOSS_RUSH || !gSaveContext.ship.quest.data.bossRush.isPaused)) {
+    if (!gSaveContext.ship.stats.gameComplete && (!IS_BOSS_RUSH || !gSaveContext.ship.quest.data.bossRush.isPaused)) {
         gSaveContext.ship.stats.pauseTimer++;
     }
 
@@ -89,8 +88,7 @@ void KaleidoScopeCall_Update(PlayState* play) {
                 pauseCtx->state++;
             }
         } else if (pauseCtx->state != 0) {
-            if (gKaleidoMgrCurOvl != kaleidoScopeOvl) 
-            {
+            if (gKaleidoMgrCurOvl != kaleidoScopeOvl) {
                 if (gKaleidoMgrCurOvl != NULL) {
                     osSyncPrintf(VT_FGCOL(GREEN));
                     // "Kaleido area Player Forced Elimination"
@@ -108,8 +106,7 @@ void KaleidoScopeCall_Update(PlayState* play) {
                 KaleidoManager_LoadOvl(kaleidoScopeOvl);
             }
 
-            if (gKaleidoMgrCurOvl == kaleidoScopeOvl) 
-            {
+            if (gKaleidoMgrCurOvl == kaleidoScopeOvl) {
                 sKaleidoScopeUpdateFunc(play);
 
                 if ((play->pauseCtx.state == 0) && (play->pauseCtx.debugState == 0)) {
@@ -132,8 +129,7 @@ void KaleidoScopeCall_Draw(PlayState* play) {
     if (R_PAUSE_MENU_MODE >= 3) {
         if (((play->pauseCtx.state >= 4) && (play->pauseCtx.state <= 7)) ||
             ((play->pauseCtx.state >= 11) && (play->pauseCtx.state <= 18))) {
-            if (gKaleidoMgrCurOvl == kaleidoScopeOvl) 
-            {
+            if (gKaleidoMgrCurOvl == kaleidoScopeOvl) {
                 sKaleidoScopeDrawFunc(play);
             }
         }

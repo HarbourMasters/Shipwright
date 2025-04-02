@@ -263,12 +263,11 @@ void EnFdFire_Draw(Actor* thisx, PlayState* play) {
         sp84 = 0.1f;
     }
     Matrix_Scale(1.0f, sp84, 1.0f / sp84, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
-    gSPSegment(POLY_XLU_DISP++, 0x8,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0,
-                                play->state.frames * this->tile2Y, 0x20, 0x80));
+    gSPSegment(
+        POLY_XLU_DISP++, 0x8,
+        Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0, play->state.frames * this->tile2Y, 0x20, 0x80));
     gDPSetPrimColor(POLY_XLU_DISP++, 128, 128, primColors[((this->actor.params & 0x8000) >> 0xF)].r,
                     primColors[((this->actor.params & 0x8000) >> 0xF)].g,
                     primColors[((this->actor.params & 0x8000) >> 0xF)].b,

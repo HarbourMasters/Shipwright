@@ -6,6 +6,6 @@ SpecialObjects* SetSpecialObjects::GetPointer() {
 }
 
 size_t SetSpecialObjects::GetPointerSize() {
-	return sizeof(SpecialObjects);
+    return sizeof(SpecialObjects);
 }
 } // namespace SOH

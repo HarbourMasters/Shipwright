@@ -585,8 +585,7 @@ void EnGe2_Update(Actor* thisx, PlayState* play) {
     } else {
         this->actionFunc(this, play);
 
-        if (Ge2_DetectPlayerInUpdate(play, this, &this->actor.focus.pos, this->actor.shape.rot.y,
-                                     this->yDetectRange)) {
+        if (Ge2_DetectPlayerInUpdate(play, this, &this->actor.focus.pos, this->actor.shape.rot.y, this->yDetectRange)) {
             // "Discovered!"
             osSyncPrintf(VT_FGCOL(GREEN) "発見!!!!!!!!!!!!\n" VT_RST);
             EnGe2_SetupCapturePlayer(this, play);
@@ -607,7 +606,8 @@ void EnGe2_Update(Actor* thisx, PlayState* play) {
     }
     EnGe2_MoveAndBlink(this, play);
 
-    if (GameInteractor_Should(VB_GERUDOS_BE_FRIENDLY, EnGe2_CheckCarpentersFreed()) && !(this->stateFlags & GE2_STATE_KO)) {
+    if (GameInteractor_Should(VB_GERUDOS_BE_FRIENDLY, EnGe2_CheckCarpentersFreed()) &&
+        !(this->stateFlags & GE2_STATE_KO)) {
         this->actor.update = EnGe2_UpdateFriendly;
         this->actor.targetMode = 6;
     }

@@ -31,8 +31,9 @@ void RegisterPauseBufferInputs() {
     COND_VB_SHOULD(VB_KALEIDO_UNPAUSE_CLOSE, CVAR_BUFFER_VALUE || CVAR_INCLUDE_VALUE, {
         Input* input = &gPlayState->state.input[0];
 
-        // STEP #3: If the user opts to include held inputs in the buffer window, store the currnently held inputs, minus 
-        // the held inputs when the pause menu was opened. This only applies to the first frame of the buffer window
+        // STEP #3: If the user opts to include held inputs in the buffer window, store the currnently held inputs,
+        // minus the held inputs when the pause menu was opened. This only applies to the first frame of the buffer
+        // window
         if (CVAR_INCLUDE_VALUE && inputBufferTimer == 0) {
             pauseInputs |= input->cur.button & ~prePauseInputs;
             prePauseInputs = 0;
@@ -56,16 +57,15 @@ void RegisterPauseBufferInputs() {
         Input* input = &gPlayState->state.input[0];
         PauseContext* pauseCtx = &gPlayState->pauseCtx;
 
-        // STEP #1: If the user opts to include held inputs in the buffer window, store the held inputs at the beginning 
+        // STEP #1: If the user opts to include held inputs in the buffer window, store the held inputs at the beginning
         // of the pause process, minus the START input
         if (pauseCtx->state == PAUSE_STATE_OPENING_1 && CVAR_INCLUDE_VALUE) {
             prePauseInputs = input->cur.button & ~BTN_START;
         }
 
         // STEP #2: The unpause process has begun, so let's reset the input buffer timer
-        if (pauseCtx->state == PAUSE_STATE_UNPAUSE_SETUP || (
-            pauseCtx->state == PAUSE_STATE_SAVEPROMPT && (pauseCtx->unk_1EC == 2 || pauseCtx->unk_1EC == 5)
-        )) {
+        if (pauseCtx->state == PAUSE_STATE_UNPAUSE_SETUP ||
+            (pauseCtx->state == PAUSE_STATE_SAVEPROMPT && (pauseCtx->unk_1EC == 2 || pauseCtx->unk_1EC == 5))) {
             inputBufferTimer = 0;
         }
 

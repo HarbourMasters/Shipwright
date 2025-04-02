@@ -4,7 +4,9 @@
 #include "libultraship/libultraship.h"
 
 namespace SOH {
-std::shared_ptr<Ship::IResource> ResourceFactoryBinarySkeletonLimbV0::ReadResource(std::shared_ptr<Ship::File> file, std::shared_ptr<Ship::ResourceInitData> initData) {
+std::shared_ptr<Ship::IResource>
+ResourceFactoryBinarySkeletonLimbV0::ReadResource(std::shared_ptr<Ship::File> file,
+                                                  std::shared_ptr<Ship::ResourceInitData> initData) {
     if (!FileHasValidFormatAndReader(file, initData)) {
         return nullptr;
     }
@@ -17,12 +19,12 @@ std::shared_ptr<Ship::IResource> ResourceFactoryBinarySkeletonLimbV0::ReadResour
     skeletonLimb->skinDList = reader->ReadString();
 
     skeletonLimb->skinVtxCnt = reader->ReadUInt16();
-    
+
     skeletonLimb->skinLimbModifCount = reader->ReadUInt32();
     skeletonLimb->skinLimbModifArray.reserve(skeletonLimb->skinLimbModifCount);
     skeletonLimb->skinLimbModifVertexArrays.reserve(skeletonLimb->skinLimbModifCount);
     skeletonLimb->skinLimbModifTransformationArrays.reserve(skeletonLimb->skinLimbModifCount);
-    for (size_t i = 0; i <  skeletonLimb->skinLimbModifCount; i++) {
+    for (size_t i = 0; i < skeletonLimb->skinLimbModifCount; i++) {
         SkinLimbModif skinLimbModif;
         skinLimbModif.unk_4 = reader->ReadUInt16();
         skeletonLimb->skinLimbModifArray.push_back(skinLimbModif);
@@ -168,23 +170,29 @@ std::shared_ptr<Ship::IResource> ResourceFactoryBinarySkeletonLimbV0::ReadResour
             }
 
             for (size_t i = 0; i < skeletonLimb->skinLimbModifArray.size(); i++) {
-                skeletonLimb->skinAnimLimbData.limbModifications[i].vtxCount = skeletonLimb->skinLimbModifVertexArrays[i].size();
-                skeletonLimb->skinAnimLimbData.limbModifications[i].skinVertices = skeletonLimb->skinLimbModifVertexArrays[i].data();
-                
-                skeletonLimb->skinAnimLimbData.limbModifications[i].transformCount = skeletonLimb->skinLimbModifTransformationArrays[i].size();
-                skeletonLimb->skinAnimLimbData.limbModifications[i].limbTransformations = skeletonLimb->skinLimbModifTransformationArrays[i].data();
+                skeletonLimb->skinAnimLimbData.limbModifications[i].vtxCount =
+                    skeletonLimb->skinLimbModifVertexArrays[i].size();
+                skeletonLimb->skinAnimLimbData.limbModifications[i].skinVertices =
+                    skeletonLimb->skinLimbModifVertexArrays[i].data();
+
+                skeletonLimb->skinAnimLimbData.limbModifications[i].transformCount =
+                    skeletonLimb->skinLimbModifTransformationArrays[i].size();
+                skeletonLimb->skinAnimLimbData.limbModifications[i].limbTransformations =
+                    skeletonLimb->skinLimbModifTransformationArrays[i].data();
 
                 skeletonLimb->skinAnimLimbData.limbModifications[i].unk_4 = skeletonLimb->skinLimbModifArray[i].unk_4;
             }
 
-           skeletonLimb->limbData.skinLimb.segment = &skeletonLimb->skinAnimLimbData;
+            skeletonLimb->limbData.skinLimb.segment = &skeletonLimb->skinAnimLimbData;
         }
     }
 
     return skeletonLimb;
 }
 
-std::shared_ptr<Ship::IResource> ResourceFactoryXMLSkeletonLimbV0::ReadResource(std::shared_ptr<Ship::File> file, std::shared_ptr<Ship::ResourceInitData> initData) {
+std::shared_ptr<Ship::IResource>
+ResourceFactoryXMLSkeletonLimbV0::ReadResource(std::shared_ptr<Ship::File> file,
+                                               std::shared_ptr<Ship::ResourceInitData> initData) {
     if (!FileHasValidFormatAndReader(file, initData)) {
         return nullptr;
     }

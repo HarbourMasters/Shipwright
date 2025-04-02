@@ -101,8 +101,7 @@ void MagicFire_UpdateBeforeCast(Actor* thisx, PlayState* play) {
     MagicFire* this = (MagicFire*)thisx;
     Player* player = GET_PLAYER(play);
 
-    if ((play->msgCtx.msgMode == MSGMODE_OCARINA_CORRECT_PLAYBACK) ||
-        (play->msgCtx.msgMode == MSGMODE_SONG_PLAYED)) {
+    if ((play->msgCtx.msgMode == MSGMODE_OCARINA_CORRECT_PLAYBACK) || (play->msgCtx.msgMode == MSGMODE_SONG_PLAYED)) {
         Actor_Kill(&this->actor);
         return;
     }
@@ -121,8 +120,7 @@ void MagicFire_Update(Actor* thisx, PlayState* play) {
     s32 pad;
 
     this->actor.world.pos = player->actor.world.pos;
-    if ((play->msgCtx.msgMode == MSGMODE_OCARINA_CORRECT_PLAYBACK) ||
-        (play->msgCtx.msgMode == MSGMODE_SONG_PLAYED)) {
+    if ((play->msgCtx.msgMode == MSGMODE_OCARINA_CORRECT_PLAYBACK) || (play->msgCtx.msgMode == MSGMODE_SONG_PLAYED)) {
         Actor_Kill(&this->actor);
         return;
     }
@@ -236,11 +234,11 @@ void MagicFire_Draw(Actor* thisx, PlayState* play) {
         gDPSetColorDither(POLY_XLU_DISP++, G_CD_DISABLE);
         gDPFillRectangle(POLY_XLU_DISP++, 0, 0, 319, 239);
         Gfx_SetupDL_25Xlu(play->state.gfxCtx);
-        gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, Spell_col.r, Spell_col.g, Spell_col.b, (u8)(this->alphaMultiplier * 255));
+        gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, Spell_col.r, Spell_col.g, Spell_col.b,
+                        (u8)(this->alphaMultiplier * 255));
         gDPSetEnvColor(POLY_XLU_DISP++, Spell_env.r, Spell_env.g, Spell_env.b, (u8)(this->alphaMultiplier * 255));
         Matrix_Scale(0.15f, 0.15f, 0.15f, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gDPPipeSync(POLY_XLU_DISP++);
         gSPTexture(POLY_XLU_DISP++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON);
         gDPSetTextureLUT(POLY_XLU_DISP++, G_TT_NONE);

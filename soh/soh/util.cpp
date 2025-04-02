@@ -281,30 +281,11 @@ std::vector<std::string> itemNames = {
 };
 
 std::vector<std::string> questItemNames = {
-        "Forest Medallion",
-        "Fire Medallion",
-        "Water Medallion",
-        "Spirit Medallion",
-        "Shadow Medallion",
-        "Light Medallion",
-        "Minuet of Forest",
-        "Bolero of Fire",
-        "Serenade of Water",
-        "Requiem of Spirit",
-        "Nocturne of Shadow",
-        "Prelude of Light",
-        "Zelda's Lullaby",
-        "Epona's Song",
-        "Saria's Song",
-        "Sun's Song",
-        "Song of Time",
-        "Song of Storms",
-        "Kokiri's Emerald",
-        "Goron's Ruby",
-        "Zora's Sapphire",
-        "Stone of Agony",
-        "Gerudo's Card",
-        "Gold Skulltula Token",
+    "Forest Medallion",   "Fire Medallion",   "Water Medallion", "Spirit Medallion",     "Shadow Medallion",
+    "Light Medallion",    "Minuet of Forest", "Bolero of Fire",  "Serenade of Water",    "Requiem of Spirit",
+    "Nocturne of Shadow", "Prelude of Light", "Zelda's Lullaby", "Epona's Song",         "Saria's Song",
+    "Sun's Song",         "Song of Time",     "Song of Storms",  "Kokiri's Emerald",     "Goron's Ruby",
+    "Zora's Sapphire",    "Stone of Agony",   "Gerudo's Card",   "Gold Skulltula Token",
 };
 
 std::array<std::string, RA_MAX> rcareaPrefixes = {
@@ -390,7 +371,8 @@ void SohUtils::CopyStringToCharArray(char* destination, std::string source, size
 std::string SohUtils::Sanitize(std::string stringValue) {
     // Add backslashes.
     for (auto i = stringValue.begin();;) {
-        auto const pos = std::find_if(i, stringValue.end(), [](char const c) { return '\\' == c || '\'' == c || '"' == c; });
+        auto const pos =
+            std::find_if(i, stringValue.end(), [](char const c) { return '\\' == c || '\'' == c || '"' == c; });
         if (pos == stringValue.end()) {
             break;
         }
@@ -398,15 +380,17 @@ std::string SohUtils::Sanitize(std::string stringValue) {
     }
 
     // Removes others.
-    stringValue.erase(std::remove_if(stringValue.begin(), stringValue.end(), [](char const c) {
-        return '\n' == c || '\r' == c || '\0' == c || '\x1A' == c; }), stringValue.end());
+    stringValue.erase(std::remove_if(stringValue.begin(), stringValue.end(),
+                                     [](char const c) { return '\n' == c || '\r' == c || '\0' == c || '\x1A' == c; }),
+                      stringValue.end());
 
     return stringValue;
 }
 
 size_t SohUtils::CopyStringToCharBuffer(char* buffer, const std::string& source, const size_t maxBufferSize) {
     if (!source.empty()) {
-        // Prevent potential horrible overflow due to implicit conversion of maxBufferSize to an unsigned. Prevents negatives.
+        // Prevent potential horrible overflow due to implicit conversion of maxBufferSize to an unsigned. Prevents
+        // negatives.
         memset(buffer, 0, std::max<size_t>(0, maxBufferSize));
         // Gaurentee that this value will be greater than 0, regardless of passed variables.
         const size_t copiedCharLen = std::min<size_t>(std::max<size_t>(0, maxBufferSize - 1), source.length());

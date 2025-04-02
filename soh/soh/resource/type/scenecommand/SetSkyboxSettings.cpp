@@ -6,6 +6,6 @@ SkyboxSettings* SetSkyboxSettings::GetPointer() {
 }
 
 size_t SetSkyboxSettings::GetPointerSize() {
-	return sizeof(SetSkyboxSettings);
+    return sizeof(SetSkyboxSettings);
 }
 } // namespace SOH

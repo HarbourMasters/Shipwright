@@ -43,7 +43,7 @@ extern "C" void Ship_ExtendedCullingActorAdjustProjectedX(Actor* actor) {
 }
 
 // Restores the projectedPos values on the actor after modifications from the Extended Culling hacks
-//extern "C" void Ship_ExtendedCullingActorRestoreProjectedPos(PlayState* play, Actor* actor) {
+// extern "C" void Ship_ExtendedCullingActorRestoreProjectedPos(PlayState* play, Actor* actor) {
 //    f32 invW = 0.0f;
 //    Actor_GetProjectedPos(play, &actor->world.pos, &actor->projectedPos, &invW);
 //}
@@ -78,21 +78,21 @@ extern "C" void Ship_CreateQuadVertexGroup(Vtx* vtxList, s32 xStart, s32 yStart,
 }
 
 extern "C" f32 Ship_GetCharFontWidth(u8 character) {
-   u8 adjustedChar = character - ' ';
+    u8 adjustedChar = character - ' ';
 
-   if (adjustedChar >= ARRAY_COUNTU(sFontWidths)) {
-       return 0.0f;
-   }
+    if (adjustedChar >= ARRAY_COUNTU(sFontWidths)) {
+        return 0.0f;
+    }
 
-   return sFontWidths[adjustedChar];
+    return sFontWidths[adjustedChar];
 }
 
 extern "C" void* Ship_GetCharFontTexture(u8 character) {
-   u8 adjustedChar = character - ' ';
+    u8 adjustedChar = character - ' ';
 
-   if (adjustedChar >= ARRAY_COUNTU(fontTbl)) {
-       return (void*)gEmptyTexture;
-   }
+    if (adjustedChar >= ARRAY_COUNTU(fontTbl)) {
+        return (void*)gEmptyTexture;
+    }
 
-   return (void*)fontTbl[adjustedChar];
+    return (void*)fontTbl[adjustedChar];
 }

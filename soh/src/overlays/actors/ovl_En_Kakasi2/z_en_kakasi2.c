@@ -11,7 +11,9 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED | ACTOR_FLAG_UPDATE_DURING_OCARINA | ACTOR_FLAG_LOCK_ON_DISABLED)
+#define FLAGS                                                                                               \
+    (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED | \
+     ACTOR_FLAG_UPDATE_DURING_OCARINA | ACTOR_FLAG_LOCK_ON_DISABLED)
 
 static ColliderCylinderInit sCylinderInit = {
     {
@@ -120,8 +122,9 @@ void func_80A90264(EnKakasi2* this, PlayState* play) {
 
     this->unk_194++;
 
-    if ((BREG(1) != 0) || GameInteractor_Should(VB_SKIP_SCARECROWS_SONG, false) && (this->actor.xzDistToPlayer < this->maxSpawnDistance.x) &&
-        (fabsf(player->actor.world.pos.y - this->actor.world.pos.y) < this->maxSpawnDistance.y)) {
+    if ((BREG(1) != 0) || GameInteractor_Should(VB_SKIP_SCARECROWS_SONG, false) &&
+                              (this->actor.xzDistToPlayer < this->maxSpawnDistance.x) &&
+                              (fabsf(player->actor.world.pos.y - this->actor.world.pos.y) < this->maxSpawnDistance.y)) {
         this->actor.draw = func_80A90948;
         Collider_InitCylinder(play, &this->collider);
         Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
@@ -150,8 +153,7 @@ void func_80A90264(EnKakasi2* this, PlayState* play) {
             this->actor.draw = func_80A90948;
             Collider_InitCylinder(play, &this->collider);
             Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
-            SkelAnime_InitFlex(play, &this->skelAnime, &object_ka_Skel_0065B0, &object_ka_Anim_000214, NULL, NULL,
-                               0);
+            SkelAnime_InitFlex(play, &this->skelAnime, &object_ka_Skel_0065B0, &object_ka_Anim_000214, NULL, NULL, 0);
             OnePointCutscene_Attention(play, &this->actor);
             Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
 

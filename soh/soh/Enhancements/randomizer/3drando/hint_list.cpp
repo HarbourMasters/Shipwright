@@ -2417,4 +2417,4 @@ void StaticData::HintTable_Init() {
 
     // clang-format on
 }
-}
+} // namespace Rando

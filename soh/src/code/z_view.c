@@ -76,9 +76,8 @@ void View_GetParams(View* view, Vec3f* eye, Vec3f* lookAt, Vec3f* up) {
     *eye = view->eye;
     *lookAt = view->lookAt;
     *up = view->up;
-    //view->flags |= 1;
+    // view->flags |= 1;
 }
-
 
 void func_800AA358(View* view, Vec3f* eye, Vec3f* lookAt, Vec3f* up) {
     if (eye->x == lookAt->x && eye->z == lookAt->z) {
@@ -109,7 +108,7 @@ void View_GetScale(View* view, f32* scale) {
 void func_800AA460(View* view, f32 fovy, f32 near, f32 far) {
     view->fovy = fovy;
     view->zNear = near;
-    //view->zNear = -30;
+    // view->zNear = -30;
     view->zFar = far;
     view->flags |= 4;
 }
@@ -123,7 +122,7 @@ void func_800AA48C(View* view, f32* fovy, f32* near, f32* far) {
 void func_800AA4A8(View* view, f32 fovy, f32 near, f32 far) {
     view->fovy = fovy;
     view->zNear = near;
-    //view->zNear = -30;
+    // view->zNear = -30;
     view->zFar = far;
     view->flags |= 8;
     view->scale = 1.0f;
@@ -334,8 +333,8 @@ s32 func_800AAA9C(View* view) {
 
     func_800ABE74(view->eye.x, view->eye.y, view->eye.z);
     MtxF viewingF;
-    guLookAtF(viewingF.mf, view->eye.x, view->eye.y, view->eye.z, view->lookAt.x, view->lookAt.y, view->lookAt.z, view->up.x,
-             view->up.y, view->up.z);
+    guLookAtF(viewingF.mf, view->eye.x, view->eye.y, view->eye.z, view->lookAt.x, view->lookAt.y, view->lookAt.z,
+              view->up.x, view->up.y, view->up.z);
 
     // Some heuristics to identify instant camera movements and skip interpolation in that case
 
@@ -357,9 +356,12 @@ s32 func_800AAA9C(View* view) {
     odiry /= odir_dist;
     odirz /= odir_dist;
 
-    float eye_dist = sqrtf(sqr(view->eye.x - old_view.eye.x) + sqr(view->eye.y - old_view.eye.y) + sqr(view->eye.z - old_view.eye.z));
-    float look_dist = sqrtf(sqr(view->lookAt.x - old_view.lookAt.x) + sqr(view->lookAt.y - old_view.lookAt.y) + sqr(view->lookAt.z - old_view.lookAt.z));
-    float up_dist = sqrtf(sqr(view->up.x - old_view.up.x) + sqr(view->up.y - old_view.up.y) + sqr(view->up.z - old_view.up.z));
+    float eye_dist = sqrtf(sqr(view->eye.x - old_view.eye.x) + sqr(view->eye.y - old_view.eye.y) +
+                           sqr(view->eye.z - old_view.eye.z));
+    float look_dist = sqrtf(sqr(view->lookAt.x - old_view.lookAt.x) + sqr(view->lookAt.y - old_view.lookAt.y) +
+                            sqr(view->lookAt.z - old_view.lookAt.z));
+    float up_dist =
+        sqrtf(sqr(view->up.x - old_view.up.x) + sqr(view->up.y - old_view.up.y) + sqr(view->up.z - old_view.up.z));
     float d_dist = sqrtf(sqr(dirx - odirx) + sqr(diry - odiry) + sqr(dirz - odirz));
 
     bool dont_interpolate = false;
@@ -453,10 +455,10 @@ s32 func_800AAA9C(View* view) {
 
     view->viewing = *viewing;
 
-
     /*if (eye_dist > 1 || look_dist > 1 || abs(up_dist) > 0.1 || abs(d_dist) > 0.1)
-        printf("%d %f %f %f, %f %f %f, %f %f %f, %f %f %f %f %d\n", (int)view->fovy, view->eye.x, view->eye.y, view->eye.z, view->lookAt.x, view->lookAt.y, view->lookAt.z,
-           view->up.x, view->up.y, view->up.z, eye_dist, look_dist, up_dist, d_dist, dont_interpolate);*/
+        printf("%d %f %f %f, %f %f %f, %f %f %f, %f %f %f %f %d\n", (int)view->fovy, view->eye.x, view->eye.y,
+       view->eye.z, view->lookAt.x, view->lookAt.y, view->lookAt.z, view->up.x, view->up.y, view->up.z, eye_dist,
+       look_dist, up_dist, d_dist, dont_interpolate);*/
 
     old_view = *view;
 

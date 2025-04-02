@@ -8,7 +8,7 @@
 
 u32 osResetType;
 u32 osTvType = OS_TV_NTSC;
-//u32 osTvType = OS_TV_PAL;
+// u32 osTvType = OS_TV_PAL;
 OSViMode osViModeNtscLan1;
 OSViMode osViModeMpalLan1;
 OSViMode osViModeFpalLan1;
@@ -31,249 +31,160 @@ u8 osAppNmiBuffer[2048];
 
 f32 qNaN0x10000 = 0x7F810000;
 
-//void gSPTextureRectangle(Gfx* pkt, s32 xl, s32 yl, s32 xh, s32 yh, u32 tile, u32 s, s32 t, u32 dsdx, u32 dtdy)
+// void gSPTextureRectangle(Gfx* pkt, s32 xl, s32 yl, s32 xh, s32 yh, u32 tile, u32 s, s32 t, u32 dsdx, u32 dtdy)
 //{
 //	__gSPTextureRectangle(pkt, xl, yl, xh, yh, tile, s, t, dsdx, dtdy);
-//}
+// }
 
-OSId osGetThreadId(OSThread* thread)
-{
+OSId osGetThreadId(OSThread* thread) {
 }
 
-OSPri osGetThreadPri(OSThread* thread)
-{
+OSPri osGetThreadPri(OSThread* thread) {
 }
 
-void osSetThreadPri(OSThread* thread, OSPri pri)
-{
+void osSetThreadPri(OSThread* thread, OSPri pri) {
 }
 
-void osCreatePiManager(OSPri pri, OSMesgQueue* cmdQ, OSMesg* cmdBuf, s32 cmdMsgCnt)
-{
-
+void osCreatePiManager(OSPri pri, OSMesgQueue* cmdQ, OSMesg* cmdBuf, s32 cmdMsgCnt) {
 }
 
-s32 osPfsFreeBlocks(OSPfs* pfs, s32* leftoverBytes)
-{
-
+s32 osPfsFreeBlocks(OSPfs* pfs, s32* leftoverBytes) {
 }
 
-s32 osEPiWriteIo(OSPiHandle* handle, u32 devAddr, u32 data)
-{
-
+s32 osEPiWriteIo(OSPiHandle* handle, u32 devAddr, u32 data) {
 }
 
-s32 osPfsReadWriteFile(OSPfs* pfs, s32 fileNo, u8 flag, s32 offset, ptrdiff_t size, u8* data)
-{
-
+s32 osPfsReadWriteFile(OSPfs* pfs, s32 fileNo, u8 flag, s32 offset, ptrdiff_t size, u8* data) {
 }
 
-s32 osPfsDeleteFile(OSPfs* pfs, u16 companyCode, u32 gameCode, u8* gameName, u8* extName)
-{
-
+s32 osPfsDeleteFile(OSPfs* pfs, u16 companyCode, u32 gameCode, u8* gameName, u8* extName) {
 }
 
-s32 osPfsFileState(OSPfs* pfs, s32 fileNo, OSPfsState* state)
-{
-
+s32 osPfsFileState(OSPfs* pfs, s32 fileNo, OSPfsState* state) {
 }
 
-s32 osPfsInitPak(OSMesgQueue* mq, OSPfs* pfs, s32 channel)
-{
-
+s32 osPfsInitPak(OSMesgQueue* mq, OSPfs* pfs, s32 channel) {
 }
 
-s32 __osPfsCheckRamArea(OSPfs* pfs)
-{
-
+s32 __osPfsCheckRamArea(OSPfs* pfs) {
 }
 
-s32 osPfsChecker(OSPfs* pfs)
-{
-
+s32 osPfsChecker(OSPfs* pfs) {
 }
 
-s32 osPfsFindFile(OSPfs* pfs, u16 companyCode, u32 gameCode, u8* gameName, u8* extName, s32* fileNo)
-{
-
+s32 osPfsFindFile(OSPfs* pfs, u16 companyCode, u32 gameCode, u8* gameName, u8* extName, s32* fileNo) {
 }
 
-s32 osPfsAllocateFile(OSPfs* pfs, u16 companyCode, u32 gameCode, u8* gameName, u8* extName, s32 length, s32* fileNo)
-{
-
+s32 osPfsAllocateFile(OSPfs* pfs, u16 companyCode, u32 gameCode, u8* gameName, u8* extName, s32 length, s32* fileNo) {
 }
 
-OSIntMask osSetIntMask(OSIntMask a)
-{
-	return 0;
+OSIntMask osSetIntMask(OSIntMask a) {
+    return 0;
 }
 
-s32 osAfterPreNMI(void)
-{
-	return 0;
+s32 osAfterPreNMI(void) {
+    return 0;
 }
 
-s32 osProbeRumblePak(OSMesgQueue* ctrlrqueue, OSPfs* pfs, u32 channel)
-{
-
+s32 osProbeRumblePak(OSMesgQueue* ctrlrqueue, OSPfs* pfs, u32 channel) {
 }
 
-s32 osSetRumble(OSPfs* pfs, u32 vibrate)
-{
-	return 0;
+s32 osSetRumble(OSPfs* pfs, u32 vibrate) {
+    return 0;
 }
 
-void osCreateThread(OSThread* thread, OSId id, void (*entry)(void*), void* arg, void* sp, OSPri pri)
-{
-
+void osCreateThread(OSThread* thread, OSId id, void (*entry)(void*), void* arg, void* sp, OSPri pri) {
 }
 
-void osStartThread(OSThread* thread)
-{
-
+void osStartThread(OSThread* thread) {
 }
 
-void osStopThread(OSThread* thread)
-{
-
+void osStopThread(OSThread* thread) {
 }
 
-void osDestroyThread(OSThread* thread)
-{
-
+void osDestroyThread(OSThread* thread) {
 }
 
-void osWritebackDCache(void* vaddr, s32 nbytes)
-{
-
+void osWritebackDCache(void* vaddr, s32 nbytes) {
 }
 
-void osInvalICache(void* vaddr, s32 nbytes)
-{
-
+void osInvalICache(void* vaddr, s32 nbytes) {
 }
 
-s32 osContStartQuery(OSMesgQueue* mq)
-{
-
+s32 osContStartQuery(OSMesgQueue* mq) {
 }
 
-void osContGetQuery(OSContStatus* data)
-{
-
+void osContGetQuery(OSContStatus* data) {
 }
 
-u32 __osGetFpcCsr()
-{
-	return 0;
+u32 __osGetFpcCsr() {
+    return 0;
 }
 
-void __osSetFpcCsr(u32 a0)
-{
-
+void __osSetFpcCsr(u32 a0) {
 }
 
-s32 __osDisableInt(void)
-{
-
+s32 __osDisableInt(void) {
 }
 
-void __osRestoreInt(s32 a0)
-{
-
+void __osRestoreInt(s32 a0) {
 }
 
-OSThread* __osGetActiveQueue(void)
-{
-
+OSThread* __osGetActiveQueue(void) {
 }
 
-OSThread* __osGetCurrFaultedThread(void)
-{
-
+OSThread* __osGetCurrFaultedThread(void) {
 }
 
 u32 osMemSize = 1024 * 1024 * 1024;
 
-void Audio_osInvalDCache(void* buf, s32 size)
-{
-
+void Audio_osInvalDCache(void* buf, s32 size) {
 }
 
-void Audio_osWritebackDCache(void* mem, s32 size)
-{
-
+void Audio_osWritebackDCache(void* mem, s32 size) {
 }
 
-
-s32 osAiSetFrequency(u32 freq)
-{
-	return 1;
+s32 osAiSetFrequency(u32 freq) {
+    return 1;
 }
 
-void osInvalDCache(void* vaddr, s32 nbytes)
-{
-
+void osInvalDCache(void* vaddr, s32 nbytes) {
 }
 
-void osWritebackDCacheAll(void)
-{
-
+void osWritebackDCacheAll(void) {
 }
 
-void Audio_SetBGM(u32 bgmId)
-{
-
+void Audio_SetBGM(u32 bgmId) {
 }
 
-s32 osContSetCh(u8 ch)
-{
-
+s32 osContSetCh(u8 ch) {
 }
 
-u32 osDpGetStatus(void)
-{
-
+u32 osDpGetStatus(void) {
 }
 
-void osDpSetStatus(u32 status)
-{
-
+void osDpSetStatus(u32 status) {
 }
 
-u32 __osSpGetStatus()
-{
-
+u32 __osSpGetStatus() {
 }
 
-void __osSpSetStatus(u32 status)
-{
-
+void __osSpSetStatus(u32 status) {
 }
 
-OSPiHandle* osDriveRomInit()
-{
-	
+OSPiHandle* osDriveRomInit() {
 }
 
-void __osInitialize_common(void)
-{
-
+void __osInitialize_common(void) {
 }
 
-void __osInitialize_autodetect(void)
-{
-
+void __osInitialize_autodetect(void) {
 }
 
-void __osExceptionPreamble()
-{
-
+void __osExceptionPreamble() {
 }
 
-void __osCleanupThread(void)
-{
-
+void __osCleanupThread(void) {
 }
 
 s32 _Printf(PrintCallback a, void* arg, const char* fmt, va_list ap) {
@@ -283,46 +194,31 @@ s32 _Printf(PrintCallback a, void* arg, const char* fmt, va_list ap) {
     a(arg, buffer, strlen(buffer));
 }
 
-void osSpTaskLoad(OSTask* task)
-{
-
+void osSpTaskLoad(OSTask* task) {
 }
 
-void osSpTaskStartGo(OSTask* task)
-{
-
+void osSpTaskStartGo(OSTask* task) {
 }
 
-void osSetUpMempakWrite(s32 channel, OSPifRam* buf)
-{
-
+void osSetUpMempakWrite(s32 channel, OSPifRam* buf) {
 }
 
-u32 osGetMemSize(void)
-{
-	return 1024 * 1024 * 1024;
+u32 osGetMemSize(void) {
+    return 1024 * 1024 * 1024;
 }
 
-s32 osEPiReadIo(OSPiHandle* handle, u32 devAddr, u32* data)
-{
-	return 0;
+s32 osEPiReadIo(OSPiHandle* handle, u32 devAddr, u32* data) {
+    return 0;
 }
 
-void osSpTaskYield(void)
-{
+void osSpTaskYield(void) {
 }
 
-s32 osStopTimer(OSTimer* timer)
-{
-
+s32 osStopTimer(OSTimer* timer) {
 }
 
-OSYieldResult osSpTaskYielded(OSTask* task)
-{
-
+OSYieldResult osSpTaskYielded(OSTask* task) {
 }
 
-void osViExtendVStart(u32 arg0)
-{
-
+void osViExtendVStart(u32 arg0) {
 }

@@ -3,7 +3,9 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
+#define FLAGS                                                                                 \
+    (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
+     ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void EnBigokuta_Init(Actor* thisx, PlayState* play);
 void EnBigokuta_Destroy(Actor* thisx, PlayState* play);
@@ -639,8 +641,8 @@ void func_809BE26C(EnBigokuta* this, PlayState* play) {
             effectPos.x = this->actor.world.pos.x;
             effectPos.y = this->actor.world.pos.y + 150.0f;
             effectPos.z = this->actor.world.pos.z;
-            func_8002829C(play, &effectPos, &sEffectPosAccel, &sEffectPosAccel, &sEffectPrimColor,
-                          &sEffectEnvColor, 1200, 20);
+            func_8002829C(play, &effectPos, &sEffectPosAccel, &sEffectPosAccel, &sEffectPrimColor, &sEffectEnvColor,
+                          1200, 20);
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_OCTAROCK_DEAD2);
         }
         if (this->unk_198 == 0 && Math_StepToF(&this->actor.scale.y, 0.0f, 0.001f)) {
@@ -813,8 +815,7 @@ void EnBigokuta_Update(Actor* thisx, PlayState* play2) {
     func_809BCEBC(this, play);
 }
 
-s32 EnBigokuta_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                                void* thisx) {
+s32 EnBigokuta_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnBigokuta* this = (EnBigokuta*)thisx;
     u8 intensity;
     f32 temp_f0;
