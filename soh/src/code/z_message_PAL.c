@@ -1780,7 +1780,7 @@ bool Message_DecodeName(PlayState* play, s16* decodedBufPosPtr, s32* charTexIdxP
     } else { // GAME_REGION_NTSC
 
         if (gSaveContext.ship.filenameLanguage == NAME_LANGUAGE_NTSC_JPN) {
-            if (gSaveContext.language == LANGUAGE_JPN) {
+            if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
                 for (i = 0; i < playerNameLen; i++) {
                     curChar2 = gSaveContext.playerName[i];
                     u8* fontBuf = &font->fontBuf[(curChar2 * 32) << 2];
@@ -1808,7 +1808,7 @@ bool Message_DecodeName(PlayState* play, s16* decodedBufPosPtr, s32* charTexIdxP
                 }
             }
         } else if (gSaveContext.ship.filenameLanguage == NAME_LANGUAGE_NTSC_ENG) {
-            if (gSaveContext.language == LANGUAGE_JPN) {
+            if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
                 for (i = 0; i < playerNameLen; i++) {
                     curChar2 = gSaveContext.playerName[i];
                     u8* fontBuf = &font->fontBuf[(curChar2 * 32) << 2];
@@ -1850,7 +1850,7 @@ bool Message_DecodeName(PlayState* play, s16* decodedBufPosPtr, s32* charTexIdxP
                 }
             }
         } else if (gSaveContext.ship.filenameLanguage == NAME_LANGUAGE_PAL) {
-            if (gSaveContext.language == LANGUAGE_JPN) {
+            if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
                 for (i = 0; i < playerNameLen; i++) {
                     curChar2 = gSaveContext.playerName[i];
 
