@@ -14,11 +14,11 @@ extern PlayState* gPlayState;
 #define RAND_GET_OPTION(rsk) OTRGlobals::Instance->gRandoContext->GetOption(rsk)
 
 void BuildHintStoneMessage(uint16_t* textId, bool* loadFromMessageTable) {
-    if (
-        (RAND_GET_OPTION(RSK_GOSSIP_STONE_HINTS).Is(RO_GOSSIP_STONES_NEED_TRUTH) && Player_GetMask(gPlayState) == PLAYER_MASK_TRUTH) ||
-        (RAND_GET_OPTION(RSK_GOSSIP_STONE_HINTS).Is(RO_GOSSIP_STONES_NEED_STONE) && CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY) == 0)
-    ) {
-            return;
+    if ((RAND_GET_OPTION(RSK_GOSSIP_STONE_HINTS).Is(RO_GOSSIP_STONES_NEED_TRUTH) &&
+         Player_GetMask(gPlayState) == PLAYER_MASK_TRUTH) ||
+        (RAND_GET_OPTION(RSK_GOSSIP_STONE_HINTS).Is(RO_GOSSIP_STONES_NEED_STONE) &&
+         CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY) == 0)) {
+        return;
     }
     CustomMessage msg;
     Actor* stone = GET_PLAYER(gPlayState)->talkActor;
@@ -31,11 +31,11 @@ void BuildHintStoneMessage(uint16_t* textId, bool* loadFromMessageTable) {
         int numOfActorLists = sizeof(gPlayState->actorCtx.actorLists) / sizeof(gPlayState->actorCtx.actorLists[0]);
         for (int i = 0; i < numOfActorLists; i++) {
             if (gPlayState->actorCtx.actorLists[i].length) {
-                if (
-                    gPlayState->actorCtx.actorLists[i].head->id == 10 &&
-                    Rando::StaticData::grottoChestParamsToHint.contains(gPlayState->actorCtx.actorLists[i].head->params)
-                ) {
-                    stoneHint = Rando::StaticData::grottoChestParamsToHint[gPlayState->actorCtx.actorLists[i].head->params];
+                if (gPlayState->actorCtx.actorLists[i].head->id == 10 &&
+                    Rando::StaticData::grottoChestParamsToHint.contains(
+                        gPlayState->actorCtx.actorLists[i].head->params)) {
+                    stoneHint =
+                        Rando::StaticData::grottoChestParamsToHint[gPlayState->actorCtx.actorLists[i].head->params];
                 }
             }
         }
@@ -50,7 +50,8 @@ void BuildHintStoneMessage(uint16_t* textId, bool* loadFromMessageTable) {
 }
 
 void RegisterGossipStoneHints() {
-    COND_ID_HOOK(OnOpenText, TEXT_RANDOMIZER_GOSSIP_STONE_HINTS, RAND_GET_OPTION(RSK_GOSSIP_STONE_HINTS).IsNot(RO_GOSSIP_STONES_NONE), BuildHintStoneMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_RANDOMIZER_GOSSIP_STONE_HINTS,
+                 RAND_GET_OPTION(RSK_GOSSIP_STONE_HINTS).IsNot(RO_GOSSIP_STONES_NONE), BuildHintStoneMessage);
 }
 
 static RegisterShipInitFunc initFunc(RegisterGossipStoneHints, { "IS_RANDO" });

@@ -263,7 +263,8 @@ bool CustomMessage::operator!=(const CustomMessage& operand) const {
 
 int CopyStringToCharBuffer(const std::string& inputStr, char* buffer, const int maxBufferSize) {
     if (!inputStr.empty()) {
-        // Prevent potential horrible overflow due to implicit conversion of maxBufferSize to an unsigned. Prevents negatives.
+        // Prevent potential horrible overflow due to implicit conversion of maxBufferSize to an unsigned. Prevents
+        // negatives.
         memset(buffer, 0, std::max<int>(0, maxBufferSize));
         // Gaurentee that this value will be greater than 0, regardless of passed variables.
         const int copiedCharLen = std::min<int>(std::max<int>(0, maxBufferSize - 1), inputStr.length());
@@ -344,7 +345,7 @@ void CustomMessage::AutoFormat() {
 }
 
 void CustomMessage::AutoFormat(ItemID iid) {
-    for (std::string &str : messages) {
+    for (std::string& str : messages) {
         str.insert(0, ITEM_OBTAINED(iid));
     }
     AutoFormat();
@@ -399,42 +400,44 @@ static size_t NextLineLength(const std::string* textStr, const size_t lastNewlin
     size_t totalPixelWidth = 0;
     size_t currentPos = lastNewline;
 
-  // Looping through the string from the lastNewline until the total
-  // width of counted characters exceeds the maximum pixels in a line.
-  size_t nextPosJump = 0;
-  while (totalPixelWidth < maxLinePixelWidth && currentPos < textStr->length()) {
-    // Skip over control codes
-    if (textStr->at(currentPos) == '%') {
-      nextPosJump = 2;
-    } else if (textStr->at(currentPos) == '\x13') {
-      nextPosJump = 2;
-    } else if (textStr->at(currentPos) == '@') {
-      nextPosJump = 1;
-      // Assume worst case for player name 12 * 8 (widest character * longest name length)
-      totalPixelWidth += 96;
-    } else if (textStr->at(currentPos) == '\x05') {
-      // Skip colour control characters.
-      nextPosJump = 2;
-    } else if (textStr->at(currentPos) == '\x1E') {
-        //For the high score char, we have to take the next Char, then use that to get a worst case scenario.
-        if (textStr->at(currentPos+1) == '\x01'){
-            totalPixelWidth += 28;
-        } 
-        nextPosJump = 2;
-    } else {
-      // Some characters only one byte while others are two bytes
-      // So check both possibilities when checking for a character
-      if (pixelWidthTable.count(textStr->substr(currentPos, 1))) {
-        totalPixelWidth += pixelWidthTable[textStr->substr(currentPos, 1)];
-        nextPosJump = 1;
-      } else if (pixelWidthTable.count(textStr->substr(currentPos, 2))) {
-        totalPixelWidth += pixelWidthTable[textStr->substr(currentPos, 2)];
-        nextPosJump = 2;
-      } else {
-        SPDLOG_DEBUG("Table does not contain " + textStr->substr(currentPos, 1) + "/" + textStr->substr(currentPos, 2));
-        SPDLOG_DEBUG("Full string: " + *textStr);
-        nextPosJump = 1;
-      }
+    // Looping through the string from the lastNewline until the total
+    // width of counted characters exceeds the maximum pixels in a line.
+    size_t nextPosJump = 0;
+    while (totalPixelWidth < maxLinePixelWidth && currentPos < textStr->length()) {
+        // Skip over control codes
+        if (textStr->at(currentPos) == '%') {
+            nextPosJump = 2;
+        } else if (textStr->at(currentPos) == '\x13') {
+            nextPosJump = 2;
+        } else if (textStr->at(currentPos) == '@') {
+            nextPosJump = 1;
+            // Assume worst case for player name 12 * 8 (widest character * longest name length)
+            totalPixelWidth += 96;
+        } else if (textStr->at(currentPos) == '\x05') {
+            // Skip colour control characters.
+            nextPosJump = 2;
+        } else if (textStr->at(currentPos) == '\x1E') {
+            // For the high score char, we have to take the next Char, then use that to get a worst case scenario.
+            if (textStr->at(currentPos + 1) == '\x01') {
+                totalPixelWidth += 28;
+            }
+            nextPosJump = 2;
+        } else {
+            // Some characters only one byte while others are two bytes
+            // So check both possibilities when checking for a character
+            if (pixelWidthTable.count(textStr->substr(currentPos, 1))) {
+                totalPixelWidth += pixelWidthTable[textStr->substr(currentPos, 1)];
+                nextPosJump = 1;
+            } else if (pixelWidthTable.count(textStr->substr(currentPos, 2))) {
+                totalPixelWidth += pixelWidthTable[textStr->substr(currentPos, 2)];
+                nextPosJump = 2;
+            } else {
+                SPDLOG_DEBUG("Table does not contain " + textStr->substr(currentPos, 1) + "/" +
+                             textStr->substr(currentPos, 2));
+                SPDLOG_DEBUG("Full string: " + *textStr);
+                nextPosJump = 1;
+            }
+        }
     }
 }
 

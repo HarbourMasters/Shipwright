@@ -26,7 +26,7 @@ class Randomizer {
   public:
     Randomizer();
     ~Randomizer();
-    
+
     static Sprite* GetSeedTexture(uint8_t index);
     bool SpoilerFileExists(const char* spoilerFileName);
     bool IsTrialRequired(s32 trialFlag);

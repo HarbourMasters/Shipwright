@@ -3971,8 +3971,8 @@ void RandomizerSettingsWindow::UpdateElement() {
     }
 }
 
-class ExtendedVanillaTableInvalidItemIdException: public std::exception {
-    private:
+class ExtendedVanillaTableInvalidItemIdException : public std::exception {
+  private:
     s16 itemID;
 
   public:
