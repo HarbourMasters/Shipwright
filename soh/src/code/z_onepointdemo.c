@@ -70,13 +70,13 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
     PosRot sp8C;
     f32 tempRand;
     Unique9OnePointCs* csInfo = ONEPOINT_CS_INFO(csCam);
-    
+
     // #region SOH [Enhancement]
-    //the default is 90, lower values necessary to prevent camera swing as animation speeds up
+    // the default is 90, lower values necessary to prevent camera swing as animation speeds up
     s16 camCrawlTemp = CVarGetInteger(CVAR_ENHANCEMENT("CrawlSpeed"), 1);
     s16 camCrawlTimer = D_8012042C / camCrawlTemp;
     // #endregion
-    
+
     switch (csId) {
         case 1020:
             if (timer < 20) {
@@ -253,8 +253,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
                 D_801211D4[0].atTargetInit.y = actor->focus.pos.y - 5.0f;
                 D_801211D4[0].atTargetInit.z = actor->focus.pos.z;
                 spC0 = ((EnSw*)actor)->unk_364;
-                osSyncPrintf("%s(%d): xyz_t: %s (%f %f %f)\n", __FILE__, __LINE__, "&cp", spC0.x, spC0.y,
-                             spC0.z);
+                osSyncPrintf("%s(%d): xyz_t: %s (%f %f %f)\n", __FILE__, __LINE__, "&cp", spC0.x, spC0.y, spC0.z);
                 D_801211D4[0].eyeTargetInit.x = (actor->focus.pos.x + (120.0f * spC0.x)) - (Rand_ZeroOne() * 20.0f);
                 D_801211D4[0].eyeTargetInit.y = actor->focus.pos.y + (120.0f * spC0.y) + 20.0f;
                 D_801211D4[0].eyeTargetInit.z = (actor->focus.pos.z + (120.0f * spC0.z)) - (Rand_ZeroOne() * 20.0f);
@@ -350,7 +349,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
                 Play_CameraChangeSetting(play, MAIN_CAM, mainCam->prevSetting);
                 OnePointCutscene_SetCsCamPoints(csCam, D_80120430 | 0x1000, camCrawlTimer, D_80120308, D_80120434);
                 break;
-            // #endregion
+                // #endregion
             } else {
                 Play_CameraChangeSetting(play, camIdx, CAM_SET_CS_3);
                 Play_CameraChangeSetting(play, MAIN_CAM, mainCam->prevSetting);

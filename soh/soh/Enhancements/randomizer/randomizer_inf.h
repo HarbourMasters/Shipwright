@@ -144,7 +144,6 @@ typedef enum {
 
     RAND_INF_GREG_FOUND,
 
-
     RAND_INF_TOT_MASTER_SWORD,
 
     RAND_INF_CHILD_FISHING,
@@ -999,7 +998,7 @@ typedef enum {
     RAND_INF_SHADOW_TEMPLE_MQ_TRUTH_SPINNER_SMALL_CRATE_4,
     RAND_INF_SPIRIT_TEMPLE_MQ_STATUE_SMALL_CRATE,
     RAND_INF_SPIRIT_TEMPLE_MQ_BEAMOS_SMALL_CRATE,
-    
+
     RAND_INF_CAUGHT_LOACH,
 
     RAND_INF_CAN_SWIM,
@@ -1603,7 +1602,6 @@ typedef enum {
     RAND_INF_ADULT_TRADES_HAS_EYEDROPS,
     RAND_INF_ADULT_TRADES_HAS_CLAIM_CHECK,
 
-
     // Overworld Grass
     RAND_INF_KF_CHILD_GRASS_1,
     RAND_INF_KF_CHILD_GRASS_2,
@@ -1954,7 +1952,8 @@ typedef enum {
     RAND_INF_DEKU_TREE_QUEEN_GOHMA_GRASS_7,
     RAND_INF_DEKU_TREE_QUEEN_GOHMA_GRASS_8,
     // End Grass
-    // If you add anything to this list, you need to update the size of randomizerInf in z64save.h to be ceil(RAND_INF_MAX / 16)
+    // If you add anything to this list, you need to update the size of randomizerInf in z64save.h to be
+    // ceil(RAND_INF_MAX / 16)
 
     RAND_INF_MAX,
 } RandomizerInf;

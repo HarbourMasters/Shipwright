@@ -10,11 +10,19 @@
 static std::string comboboxTooltip = "";
 static int32_t enhancementPresetSelected = ENHANCEMENT_PRESET_DEFAULT;
 bool isBetaQuestEnabled = false;
-static std::unordered_map<int32_t, const char*> bunnyHoodEffectMap = {{ BUNNY_HOOD_VANILLA, "Vanilla" }, { BUNNY_HOOD_FAST, "Faster Run" }, { BUNNY_HOOD_FAST_AND_JUMP, "Faster + Longer Jump" },};
+static std::unordered_map<int32_t, const char*> bunnyHoodEffectMap = {
+    { BUNNY_HOOD_VANILLA, "Vanilla" },
+    { BUNNY_HOOD_FAST, "Faster Run" },
+    { BUNNY_HOOD_FAST_AND_JUMP, "Faster + Longer Jump" },
+};
 
 extern "C" {
-    void enableBetaQuest() { isBetaQuestEnabled = true; }
-    void disableBetaQuest() { isBetaQuestEnabled = false; }
+void enableBetaQuest() {
+    isBetaQuestEnabled = true;
+}
+void disableBetaQuest() {
+    isBetaQuestEnabled = false;
+}
 }
 
 namespace SohGui {
@@ -32,32 +40,34 @@ void SohMenu::AddMenuEnhancements() {
 
     const PresetTypeDefinition presetTypeDef = presetTypes.at(PRESET_TYPE_ENHANCEMENTS);
     for (auto iter = presetTypeDef.presets.begin(); iter != presetTypeDef.presets.end(); ++iter) {
-        if (iter->first != 0) comboboxTooltip += "\n\n";
+        if (iter->first != 0)
+            comboboxTooltip += "\n\n";
         comboboxTooltip += std::string(iter->second.label) + " - " + std::string(iter->second.description);
     }
     AddWidget(path, "Enhancement Presets", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Select Preset", WIDGET_COMBOBOX)
         .ValuePointer(&enhancementPresetSelected)
         .Callback([](WidgetInfo& info) {
-            const std::string presetTypeCvar = CVAR_GENERAL("SelectedPresets.") + std::to_string(PRESET_TYPE_ENHANCEMENTS);
+            const std::string presetTypeCvar =
+                CVAR_GENERAL("SelectedPresets.") + std::to_string(PRESET_TYPE_ENHANCEMENTS);
             CVarSetInteger(presetTypeCvar.c_str(), *std::get<int32_t*>(info.valuePointer));
         })
         .Options(ComboboxOptions()
-            .ComboMap(enhancementPresetList)
-            .DefaultIndex(ENHANCEMENT_PRESET_DEFAULT)
-            .Tooltip(comboboxTooltip.c_str())
-        );
+                     .ComboMap(enhancementPresetList)
+                     .DefaultIndex(ENHANCEMENT_PRESET_DEFAULT)
+                     .Tooltip(comboboxTooltip.c_str()));
     AddWidget(path, "Apply Preset##Enhancemnts", WIDGET_BUTTON)
         .Options(ButtonOptions().Size(UIWidgets::Sizes::Inline))
         .Callback([](WidgetInfo& info) {
-            const std::string presetTypeCvar = CVAR_GENERAL("SelectedPresets.") + std::to_string(PRESET_TYPE_ENHANCEMENTS);
+            const std::string presetTypeCvar =
+                CVAR_GENERAL("SelectedPresets.") + std::to_string(PRESET_TYPE_ENHANCEMENTS);
             const PresetTypeDefinition presetTypeDef = presetTypes.at(PRESET_TYPE_ENHANCEMENTS);
             uint16_t selectedPresetId = CVarGetInteger(presetTypeCvar.c_str(), 0);
-            if(selectedPresetId >= presetTypeDef.presets.size()){
+            if (selectedPresetId >= presetTypeDef.presets.size()) {
                 selectedPresetId = 0;
             }
             const PresetDefinition selectedPresetDef = presetTypeDef.presets.at(selectedPresetId);
-            for(const char* block : presetTypeDef.blocksToClear) {
+            for (const char* block : presetTypeDef.blocksToClear) {
                 CVarClearBlock(block);
             }
             if (selectedPresetId != 0) {
@@ -191,7 +201,8 @@ void SohMenu::AddMenuEnhancements() {
                      .Tooltip("Buffers your inputs to be executed a specified amount of frames later."));
 
     AddWidget(path, "Item Count Messages", WIDGET_SEPARATOR_TEXT);
-    AddWidget(path, "Gold Skulltula Tokens", WIDGET_CVAR_CHECKBOX).CVar(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"));
+    AddWidget(path, "Gold Skulltula Tokens", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"));
     AddWidget(path, "Pieces of Heart", WIDGET_CVAR_CHECKBOX).CVar(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"));
     AddWidget(path, "Heart Containers", WIDGET_CVAR_CHECKBOX).CVar(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"));
 
@@ -265,7 +276,8 @@ void SohMenu::AddMenuEnhancements() {
 
             Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         });
-    AddWidget(path, "None##Skips", WIDGET_BUTTON).SameLine(true)
+    AddWidget(path, "None##Skips", WIDGET_BUTTON)
+        .SameLine(true)
         .Options(ButtonOptions().Size(Sizes::Inline))
         .Callback([](WidgetInfo& info) {
             CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), false);
@@ -325,9 +337,9 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Skip Forced Dialog", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipForcedDialog"))
         .Options(ComboboxOptions()
-            .ComboMap(skipForcedDialogOptions)
-            .DefaultIndex(FORCED_DIALOG_SKIP_NONE)
-            .Tooltip("Prevent forced conversations with Navi and/or other NPCs."));
+                     .ComboMap(skipForcedDialogOptions)
+                     .DefaultIndex(FORCED_DIALOG_SKIP_NONE)
+                     .Tooltip("Prevent forced conversations with Navi and/or other NPCs."));
     AddWidget(path, "Skip Text", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("SkipText"))
         .Options(CheckboxOptions().Tooltip("Holding down B skips text."));
@@ -420,25 +432,22 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("AltAssets"))
         .Options(CheckboxOptions().Tooltip(
             "Toggle between standard assets and alternate assets. Usually mods will indicate if "
-            "this setting has to be used or not."
-        ));
+            "this setting has to be used or not."));
     AddWidget(path, "Disable Bomb Billboarding", WIDGET_CVAR_CHECKBOX)
         .CVar("DisableBombBillboarding")
         .Options(CheckboxOptions().Tooltip(
             "Disables bombs always rotating to face the camera. To be used in conjunction with mods that want to "
-            "replace bombs with 3D objects."
-        ));
+            "replace bombs with 3D objects."));
     AddWidget(path, "Disable Grotto Fixed Rotation", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("DisableGrottoRotation"))
         .Options(CheckboxOptions().Tooltip(
             "Disables Grottos rotating with the Camera. To be used in conjuction with mods that want to "
-            "replace grottos with 3D objects."
-        ));
+            "replace grottos with 3D objects."));
     AddWidget(path, "Ingame Text Spacing: %d", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_ENHANCEMENT("TextSpacing"))
         .Options(IntSliderOptions().Min(4).Max(6).DefaultValue(6).Tooltip(
             "Space between text characters (useful for HD font textures)."));
-    
+
     AddWidget(path, "Models & Textures", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Disable LOD", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("DisableLOD"))
@@ -453,18 +462,12 @@ void SohMenu::AddMenuEnhancements() {
             "Replaces most 2D items and projectiles on the overworld with their equivalent 3D models."));
     AddWidget(path, "Animated Link in Pause Menu", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("PauseMenuAnimatedLink"))
-        .Options(CheckboxOptions().Tooltip(
-            "Turns the Static Image of Link in the Pause Menu's Equipment Subscreen "
-            "into a model cycling through his idle animations."
-        ));
+        .Options(CheckboxOptions().Tooltip("Turns the Static Image of Link in the Pause Menu's Equipment Subscreen "
+                                           "into a model cycling through his idle animations."));
     AddWidget(path, "Show Age-Dependent Equipment", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"))
-        .Callback([](WidgetInfo& info) {
-            UpdatePatchHand();
-        })
-        .Options(CheckboxOptions().Tooltip(
-            "Makes all equipment visible, regardless of age."
-        ));
+        .Callback([](WidgetInfo& info) { UpdatePatchHand(); })
+        .Options(CheckboxOptions().Tooltip("Makes all equipment visible, regardless of age."));
     AddWidget(path, "Scale Adult Equipment as Child", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ScaleAdultEquipmentAsChild"))
         .PreFunc([](WidgetInfo& info) {
@@ -472,13 +475,10 @@ void SohMenu::AddMenuEnhancements() {
         })
         .Options(CheckboxOptions().Tooltip(
             "Scales all of the Adult Equipment, as well as moving some a bit, to fit on Child Link better. May "
-            "not work properly with some mods."
-        ));
+            "not work properly with some mods."));
     AddWidget(path, "Show Gauntlets in First Person", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FirstPersonGauntlets"))
-        .Options(CheckboxOptions().Tooltip(
-            "Renders Gauntlets when using the Bow and Hookshot like in OoT3D."
-        ));
+        .Options(CheckboxOptions().Tooltip("Renders Gauntlets when using the Bow and Hookshot like in OoT3D."));
     AddWidget(path, "Show Chains on Both Sides of Locked Doors", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ShowDoorLocksOnBothSides"));
     AddWidget(path, "Color Temple of Time's Medallions", WIDGET_CVAR_CHECKBOX)
@@ -487,7 +487,7 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "When Medallions are collected, the Medallion imprints around the Master Sword Pedestal in the Temple "
             "of Time will become colored-in."));
-    
+
     path.column = SECTION_COLUMN_2;
     AddWidget(path, "UI", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Minimal UI", WIDGET_CVAR_CHECKBOX)
@@ -537,21 +537,18 @@ void SohMenu::AddMenuEnhancements() {
             "Ammo counts in the pause menu will work correctly regardless of the position of items in the Inventory."));
     AddWidget(path, "Enable Passage of Time on File Select", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("TimeFlowFileSelect"))
-        .Options(CheckboxOptions().Tooltip(
-            "The skybox in the background of the File Select screen will go through the day and night cycle over time."));
+        .Options(CheckboxOptions().Tooltip("The skybox in the background of the File Select screen will go through the "
+                                           "day and night cycle over time."));
 
     path.column = SECTION_COLUMN_3;
     AddWidget(path, "Misc.", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "N64 Mode", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_LOW_RES_MODE)
         .Options(CheckboxOptions().Tooltip(
-            "Sets the aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution."
-        ));
+            "Sets the aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution."));
     AddWidget(path, "Remove Spin Attack Darkness", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("RemoveSpinAttackDarkness"))
-        .Options(CheckboxOptions().Tooltip(
-            "Remove the Darkness that appears when charging a Spin Attack."
-        ));
+        .Options(CheckboxOptions().Tooltip("Remove the Darkness that appears when charging a Spin Attack."));
     AddWidget(path, "Draw Distance", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Increase Actor Draw Distance: %dx", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_ENHANCEMENT("DisableDrawDistance"))
@@ -664,10 +661,12 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Masks", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Bunny Hood Effect", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("MMBunnyHood"))
-        .Options(ComboboxOptions().ComboMap(bunnyHoodEffectMap).Tooltip("Wearing the Bunny Hood grants a speed and jump boost like in Majora's Mask.\n"
-                                           "Can also be limited to only the speed boost.\n"
-                                           "The effects of either option are not accounted for in Randomizer logic.\n"
-                                           "Also disables NPC's reactions to wearing the Bunny Hood."));
+        .Options(ComboboxOptions()
+                     .ComboMap(bunnyHoodEffectMap)
+                     .Tooltip("Wearing the Bunny Hood grants a speed and jump boost like in Majora's Mask.\n"
+                              "Can also be limited to only the speed boost.\n"
+                              "The effects of either option are not accounted for in Randomizer logic.\n"
+                              "Also disables NPC's reactions to wearing the Bunny Hood."));
     AddWidget(path, "Masks Equippable as Adult", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("AdultMasks"))
         .Options(CheckboxOptions().Tooltip("Allows masks to be equipped normally from the pause menu as adult."));
@@ -882,8 +881,8 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Camera Fixes", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Fix Camera Drift", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FixCameraDrift"))
-        .Options(CheckboxOptions().Tooltip(
-            "Fixes camera slightly drifting to the left when standing still due to a math error. May impact certain glitches."));
+        .Options(CheckboxOptions().Tooltip("Fixes camera slightly drifting to the left when standing still due to a "
+                                           "math error. May impact certain glitches."));
     AddWidget(path, "Fix Camera Swing", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FixCameraSwing"))
         .Options(CheckboxOptions().Tooltip(
@@ -891,9 +890,9 @@ void SohMenu::AddMenuEnhancements() {
             "back in camera when Link stops moving. May impact certain glitches."));
     AddWidget(path, "Fix Hanging Ledge Swing Rate", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FixHangingLedgeSwingRate"))
-        .Options(CheckboxOptions().Tooltip(
-            "Fixes camera swing rate when the player falls off a ledge and the camera swings around. May impact certain glitches."));
-    
+        .Options(CheckboxOptions().Tooltip("Fixes camera swing rate when the player falls off a ledge and the camera "
+                                           "swings around. May impact certain glitches."));
+
     path.column = SECTION_COLUMN_2;
     AddWidget(path, "Graphical Fixes", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Fix L&R Pause Menu", WIDGET_CVAR_CHECKBOX)
@@ -989,7 +988,8 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip("Restores N64 Weird Frames allowing weirdshots to behave the same as N64."));
     AddWidget(path, "Bombchus Out of Bounds", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("BombchusOOB"))
-        .Options(CheckboxOptions().Tooltip("Allows Bombchus to explode out of bounds. Similar to GameCube and Wii VC."));
+        .Options(
+            CheckboxOptions().Tooltip("Allows Bombchus to explode out of bounds. Similar to GameCube and Wii VC."));
     AddWidget(path, "Quick Putaway", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("QuickPutaway"))
         .Options(CheckboxOptions().Tooltip(
@@ -1015,90 +1015,69 @@ void SohMenu::AddMenuEnhancements() {
     path.sidebarName = "Difficulty";
     AddSidebarEntry("Enhancements", path.sidebarName, 3);
     path.column = SECTION_COLUMN_1;
-    
+
     AddWidget(path, "Health", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Permanent Heart Loss", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("PermanentHeartLoss"))
-        .Callback([](WidgetInfo& info) {
-            UpdatePermanentHeartLossState();
-        })
+        .Callback([](WidgetInfo& info) { UpdatePermanentHeartLossState(); })
         .Options(CheckboxOptions().Tooltip(
             "When you lose 4 quarters of a heart you will permanently lose that Heart Container.\n\n"
-            "Disabling this after the fact will restore your Heart Containers."
-        ));
+            "Disabling this after the fact will restore your Heart Containers."));
     AddWidget(path, "Damage Multiplier", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("DamageMult"))
-        .Options(ComboboxOptions()
-            .ComboMap(allPowers)
-            .DefaultIndex(0)
-            .Tooltip(
-                "Modifies all sources of damage not affected by other sliders:\n"
-                    "2x: Can survive all common attacks from the start of the game.\n"
-                    "4x: Dies in 1 hit to any substantial attack from the start of the game.\n"
-                    "8x: Can only survive trivial damage from the start of the game.\n"
-                    "16x: Can survive all common attacks with max health without double defense.\n"
-                    "32x: Can survive all common attacks with max health and double defense.\n"
-                    "64x: Can survive trivial damage with max health without double defense.\n"
-                    "128x: Can survive trivial damage with max health and double defense.\n"
-                    "256x: Cannot survive damage."
-            )
-        );
+        .Options(ComboboxOptions().ComboMap(allPowers).DefaultIndex(0).Tooltip(
+            "Modifies all sources of damage not affected by other sliders:\n"
+            "2x: Can survive all common attacks from the start of the game.\n"
+            "4x: Dies in 1 hit to any substantial attack from the start of the game.\n"
+            "8x: Can only survive trivial damage from the start of the game.\n"
+            "16x: Can survive all common attacks with max health without double defense.\n"
+            "32x: Can survive all common attacks with max health and double defense.\n"
+            "64x: Can survive trivial damage with max health without double defense.\n"
+            "128x: Can survive trivial damage with max health and double defense.\n"
+            "256x: Cannot survive damage."));
     AddWidget(path, "Fall Damage Multiplier", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("FallDamageMult"))
-        .Options(ComboboxOptions()
-            .ComboMap(subPowers)
-            .Tooltip(
-                "Modifies all fall damage:\n"
-                    "2x: Can survive all fall damage from the start of the game.\n"
-                    "4x: Can only survive short fall damage from the start of the game.\n"
-                    "8x: Cannot survive any fall damage from the start of the game.\n"
-                    "16x: Can survive all fall damage with max health without double defense.\n"
-                    "32x: Can survive all fall damage with max health and double defense.\n"
-                    "64x: Can survive short fall damage with double defense.\n"
-                    "128x: Cannot survive fall damage."
-            )
-        );
+        .Options(ComboboxOptions().ComboMap(subPowers).Tooltip(
+            "Modifies all fall damage:\n"
+            "2x: Can survive all fall damage from the start of the game.\n"
+            "4x: Can only survive short fall damage from the start of the game.\n"
+            "8x: Cannot survive any fall damage from the start of the game.\n"
+            "16x: Can survive all fall damage with max health without double defense.\n"
+            "32x: Can survive all fall damage with max health and double defense.\n"
+            "64x: Can survive short fall damage with double defense.\n"
+            "128x: Cannot survive fall damage."));
     AddWidget(path, "Void Damage Multiplier", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("VoidDamageMult"))
         .Options(ComboboxOptions()
-            .ComboMap(subSubPowers)
-            .DefaultIndex(0)
-            .Tooltip(
-                "Modifies damage taken after falling into a void:\n"
-                "2x: Can survive void damage from the start of the game.\n"
-                "4x: Cannot survive void damage from the start of the game.\n"
-                "8x: Can survive void damage twice with max health without double defense.\n"
-                "16x: Can survive void damage with max health without double defense.\n"
-                "32x: Can survive void damage with max health and double defense.\n"
-                "64x: Cannot survive void damage."
-            )
-        );
+                     .ComboMap(subSubPowers)
+                     .DefaultIndex(0)
+                     .Tooltip("Modifies damage taken after falling into a void:\n"
+                              "2x: Can survive void damage from the start of the game.\n"
+                              "4x: Cannot survive void damage from the start of the game.\n"
+                              "8x: Can survive void damage twice with max health without double defense.\n"
+                              "16x: Can survive void damage with max health without double defense.\n"
+                              "32x: Can survive void damage with max health and double defense.\n"
+                              "64x: Cannot survive void damage."));
     AddWidget(path, "Bonk Damage Multiplier", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("BonkDamageMult"))
         .Options(ComboboxOptions()
-            .ComboMap(bonkDamageValues)
-            .DefaultIndex(BONK_DAMAGE_NONE)
-            .Tooltip("Modifies Damage taken after Bonking.")
-        );
+                     .ComboMap(bonkDamageValues)
+                     .DefaultIndex(BONK_DAMAGE_NONE)
+                     .Tooltip("Modifies Damage taken after Bonking."));
     AddWidget(path, "Spawn with Full Health", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FullHealthSpawn"))
-        .Options(CheckboxOptions().Tooltip(
-            "Respawn with Full Health instead of 3 hearts."
-        ));
+        .Options(CheckboxOptions().Tooltip("Respawn with Full Health instead of 3 hearts."));
     AddWidget(path, "No Heart Drops", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("NoHeartDrops"))
         .Options(CheckboxOptions().Tooltip(
             "Disables Heart Drops, but not Heart Placements, like from a Deku Scrub running off.\n"
-            "This simulates Hero Mode from other games in the series."
-        ));
-    
+            "This simulates Hero Mode from other games in the series."));
+
     path.column = SECTION_COLUMN_2;
     AddWidget(path, "Drops", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "No Random Drops", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("NoRandomDrops"))
-        .Options(CheckboxOptions().Tooltip(
-            "Disables Random Drops, except from the Goron Pot, Dampe, and Bosses."
-        ));
+        .Options(CheckboxOptions().Tooltip("Disables Random Drops, except from the Goron Pot, Dampe, and Bosses."));
     AddWidget(path, "Enable Bombchu Drops", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("EnableBombchuDrops"))
         .PreFunc([](WidgetInfo& info) {
@@ -1106,52 +1085,35 @@ void SohMenu::AddMenuEnhancements() {
                 IS_RANDO && GameInteractor::IsSaveLoaded(true) &&
                 OTRGlobals::Instance->gRandoContext->GetOption(RSK_ENABLE_BOMBCHU_DROPS).Is(RO_GENERIC_ON);
             info.options->disabledTooltip = "This setting is forcefully enabled because a randomized savefile with "
-            "\"Enable Bombchu Drops\" is loaded.";
+                                            "\"Enable Bombchu Drops\" is loaded.";
         })
-        .Options(CheckboxOptions().Tooltip(
-            "Bombchus will sometimes drop in place of Bombs."
-        ));
+        .Options(CheckboxOptions().Tooltip("Bombchus will sometimes drop in place of Bombs."));
     AddWidget(path, "Trees Drop Sticks", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("TreesDropSticks"))
         .Options(CheckboxOptions().Tooltip(
-            "Bonking into Trees will have a chance to drop up to 3 Sticks. Must have obtained sticks previously."
-        ));
+            "Bonking into Trees will have a chance to drop up to 3 Sticks. Must have obtained sticks previously."));
 
     AddWidget(path, "Miscellaneous", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Delete File on Death", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("DeleteFileOnDeath"))
-        .Options(CheckboxOptions().Tooltip(
-            "Dying will delete your file.\n\n"
-            ICON_FA_EXCLAMATION_TRIANGLE " WARNING " ICON_FA_EXCLAMATION_TRIANGLE
-            "\nTHIS IS NOT REVERSABLE!\nUSE AT YOUR OWN RISK!"
-        ));
+        .Options(CheckboxOptions().Tooltip("Dying will delete your file.\n\n" ICON_FA_EXCLAMATION_TRIANGLE
+                                           " WARNING " ICON_FA_EXCLAMATION_TRIANGLE
+                                           "\nTHIS IS NOT REVERSABLE!\nUSE AT YOUR OWN RISK!"));
     AddWidget(path, "Always Win Goron Pot", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("GoronPot"))
-        .Options(CheckboxOptions().Tooltip(
-            "Always get the Heart Piece/Purple Rupee from the Spinning Goron Pot."
-        ));
+        .Options(CheckboxOptions().Tooltip("Always get the Heart Piece/Purple Rupee from the Spinning Goron Pot."));
     AddWidget(path, "Always Win Dampe Digging Game", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("DampeWin"))
         .Options(CheckboxOptions().Tooltip(
             "Always win the Heart Piece/Purple Rupee on the first dig in Dampe's Grave Digging game. "
-            "In a Randomizer file, this is always enabled."
-        ));
+            "In a Randomizer file, this is always enabled."));
     AddWidget(path, "All Dogs are Richard", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("AllDogsRichard"))
-        .Options(CheckboxOptions().Tooltip(
-            "All dogs can be traded in and will count as Richard."
-        ));
+        .Options(CheckboxOptions().Tooltip("All dogs can be traded in and will count as Richard."));
     AddWidget(path, "Cuccos Stay Put Multiplier: %dx", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_ENHANCEMENT("CuccoStayDurationMult"))
-        .Options(IntSliderOptions()
-            .Min(1)
-            .Max(5)
-            .DefaultValue(1)
-            .Format("%dx")
-            .Tooltip(
-                "Cuccos will stay in place longer after putting them down, by a multiple of the value of the slider."
-            )
-        );
+        .Options(IntSliderOptions().Min(1).Max(5).DefaultValue(1).Format("%dx").Tooltip(
+            "Cuccos will stay in place longer after putting them down, by a multiple of the value of the slider."));
 
     path.column = SECTION_COLUMN_3;
     AddWidget(path, "Enemies", WIDGET_SEPARATOR_TEXT);
@@ -1172,7 +1134,7 @@ void SohMenu::AddMenuEnhancements() {
                      .DefaultValue(0)
                      .Format("%d seconds")
                      .Tooltip("The time between groups of Leevers spawning."));
-    
+
     // Minigames
     path.sidebarName = "Minigames";
     AddSidebarEntry("Enhancements", path.sidebarName, 3);
@@ -1385,170 +1347,137 @@ void SohMenu::AddMenuEnhancements() {
                 UpdateMirrorModeState(gPlayState->sceneNum);
             }
         })
-        .Options(ComboboxOptions()
-            .DefaultIndex(MIRRORED_WORLD_OFF)
-            .ComboMap(mirroredWorldModes)
-            .Tooltip(
-                "Mirrors the world horizontally:\n\n"
-                " - Always: Always mirror the world.\n"
-                " - Random: Randomly decide to mirror the world on each scene change.\n"
-                " - Random (Seeded): Scenes are mirrored based on the current randomizer seed/file.\n"
-                " - Dungeons: Mirror the world in Dungeons.\n"
-                " - Dungeons (Vanilla): Mirror the world in Vanilla Dungeons.\n"
-                " - Dungeons (MQ): Mirror the world in MQ Dungeons.\n"
-                " - Dungeons Random: Randomly decide to mirror the world in Dungeons.\n"
-                " - Dungeons Random (Seeded): Dungeons are mirrored based on the current randomizer seed/file.\n"
-            )
-        );
+        .Options(
+            ComboboxOptions()
+                .DefaultIndex(MIRRORED_WORLD_OFF)
+                .ComboMap(mirroredWorldModes)
+                .Tooltip(
+                    "Mirrors the world horizontally:\n\n"
+                    " - Always: Always mirror the world.\n"
+                    " - Random: Randomly decide to mirror the world on each scene change.\n"
+                    " - Random (Seeded): Scenes are mirrored based on the current randomizer seed/file.\n"
+                    " - Dungeons: Mirror the world in Dungeons.\n"
+                    " - Dungeons (Vanilla): Mirror the world in Vanilla Dungeons.\n"
+                    " - Dungeons (MQ): Mirror the world in MQ Dungeons.\n"
+                    " - Dungeons Random: Randomly decide to mirror the world in Dungeons.\n"
+                    " - Dungeons Random (Seeded): Dungeons are mirrored based on the current randomizer seed/file.\n"));
     AddWidget(path, "Ivan the Fairy (Coop Mode)", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("IvanCoopModeEnabled"))
         .Options(CheckboxOptions().Tooltip(
             "Enables Ivan the Fairy upon the next map change. Player 2 can control Ivan and press the C-Buttons to "
-            "use items and mess with Player 1!"
-        ));
+            "use items and mess with Player 1!"));
     AddWidget(path, "Dogs Follow You Everywhere", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("DogFollowsEverywhere"))
         .Options(CheckboxOptions().Tooltip("Allows dogs to follow you anywhere you go, even if you leave the Market."));
     AddWidget(path, "Rupee Dash Mode", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("RupeeDash"))
-        .Options(CheckboxOptions().Tooltip(
-            "Rupees reduce over time, Link suffers damage when the count hits 0."
-        ));
+        .Options(CheckboxOptions().Tooltip("Rupees reduce over time, Link suffers damage when the count hits 0."));
     AddWidget(path, "Rupee Dash Interval %d seconds", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_ENHANCEMENT("RupeeDashInterval"))
-        .PreFunc([](WidgetInfo& info) {
-            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("RupeeDash"), 0) == 0;
-        })
+        .PreFunc([](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("RupeeDash"), 0) == 0; })
         .Options(IntSliderOptions()
-            .Min(1)
-            .Max(10)
-            .DefaultValue(5)
-            .Format("%d seconds")
-            .Tooltip(
-                "Interval between Rupee reduction in Rupee Dash Mode."
-            )
-        );
+                     .Min(1)
+                     .Max(10)
+                     .DefaultValue(5)
+                     .Format("%d seconds")
+                     .Tooltip("Interval between Rupee reduction in Rupee Dash Mode."));
     AddWidget(path, "Shadow Tag Mode", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ShadowTag"))
-        .Options(CheckboxOptions().Tooltip(
-            "A Wallmaster follows Link everywhere, don't get caught!"
-        ));
+        .Options(CheckboxOptions().Tooltip("A Wallmaster follows Link everywhere, don't get caught!"));
     AddWidget(path, "Hurt Container Mode", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("HurtContainer"))
         .Callback([](WidgetInfo& info) {
             UpdateHurtContainerModeState(CVarGetInteger(CVAR_ENHANCEMENT("HurtContainer"), 0));
         })
-        .Options(CheckboxOptions().Tooltip(
-            "Changes Heart Piece and Heart Container functionality.\n\n"
-            " - Each Heart Container or full Heart Piece reduces Link's Hearts by 1.\n"
-            " - Can be enabled retroactively after a File has already started."
-        ));
+        .Options(CheckboxOptions().Tooltip("Changes Heart Piece and Heart Container functionality.\n\n"
+                                           " - Each Heart Container or full Heart Piece reduces Link's Hearts by 1.\n"
+                                           " - Can be enabled retroactively after a File has already started."));
     AddWidget(path, "Additional Traps", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ExtraTraps.Enabled"))
-        .Options(CheckboxOptions().Tooltip(
-            "Enables additional Trap variants."
-        ));
-    AddWidget(path, "Trap Options", WIDGET_SEPARATOR_TEXT)
-        .PreFunc([](WidgetInfo& info) {
-            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
-        });
-    AddWidget(path, "Tier 1 Traps:", WIDGET_TEXT)
-        .PreFunc([](WidgetInfo& info) {
-            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
-        });
+        .Options(CheckboxOptions().Tooltip("Enables additional Trap variants."));
+    AddWidget(path, "Trap Options", WIDGET_SEPARATOR_TEXT).PreFunc([](WidgetInfo& info) {
+        info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
+    });
+    AddWidget(path, "Tier 1 Traps:", WIDGET_TEXT).PreFunc([](WidgetInfo& info) {
+        info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
+    });
     AddWidget(path, "Freeze Traps", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ExtraTraps.Ice"))
-        .PreFunc([](WidgetInfo& info) {
-            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
-        });
+        .PreFunc(
+            [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0; });
     AddWidget(path, "Burn Traps", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ExtraTraps.Burn"))
-        .PreFunc([](WidgetInfo& info) {
-            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
-        });
+        .PreFunc(
+            [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0; });
     AddWidget(path, "Shock Traps", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ExtraTraps.Shock"))
-        .PreFunc([](WidgetInfo& info) {
-            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
-        });
-    AddWidget(path, "Tier 2 Traps:", WIDGET_TEXT)
-        .PreFunc([](WidgetInfo& info) {
-            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
-        });
+        .PreFunc(
+            [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0; });
+    AddWidget(path, "Tier 2 Traps:", WIDGET_TEXT).PreFunc([](WidgetInfo& info) {
+        info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
+    });
     AddWidget(path, "Knockback Traps", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ExtraTraps.Knockback"))
-        .PreFunc([](WidgetInfo& info) {
-            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
-        });
+        .PreFunc(
+            [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0; });
     AddWidget(path, "Speed Traps", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ExtraTraps.Speed"))
-        .PreFunc([](WidgetInfo& info) {
-            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
-        });
+        .PreFunc(
+            [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0; });
     AddWidget(path, "Bomb Traps", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ExtraTraps.Bomb"))
-        .PreFunc([](WidgetInfo& info) {
-            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
-        });
-    AddWidget(path, "Tier 3 Traps:", WIDGET_TEXT)
-        .PreFunc([](WidgetInfo& info) {
-            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
-        });
+        .PreFunc(
+            [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0; });
+    AddWidget(path, "Tier 3 Traps:", WIDGET_TEXT).PreFunc([](WidgetInfo& info) {
+        info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
+    });
     AddWidget(path, "Void Traps", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ExtraTraps.Void"))
-        .PreFunc([](WidgetInfo& info) {
-            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
-        });
+        .PreFunc(
+            [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0; });
     AddWidget(path, "Ammo Traps", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ExtraTraps.Ammo"))
-        .PreFunc([](WidgetInfo& info) {
-            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
-        });
+        .PreFunc(
+            [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0; });
     AddWidget(path, "Death Traps", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ExtraTraps.Kill"))
-        .PreFunc([](WidgetInfo& info) {
-            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
-        });
+        .PreFunc(
+            [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0; });
     AddWidget(path, "Teleport Traps", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ExtraTraps.Teleport"))
-        .PreFunc([](WidgetInfo& info) {
-            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
-        });
+        .PreFunc(
+            [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0; });
 
     path.column = SECTION_COLUMN_2;
     AddWidget(path, "Enemy Randomizer", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("RandomizedEnemies"))
-        .Callback([](WidgetInfo& info) {
-            GetSelectedEnemies();
-        })
-        .Options(ComboboxOptions()
-            .DefaultIndex(ENEMY_RANDOMIZER_OFF)
-            .ComboMap(enemyRandomizerModes)
-            .Tooltip(
-                "Replaces fixed enemies throughout the game with a random enemy. Bosses, Mini-Bosses and a few specific regular enemies are excluded.\n"
-                "Enemies that need more than Deku Nuts & either Deku Sticks or a sword to kill are excluded from spawning in \"clear enemy\" rooms.\n\n"
-                "- Random: Enemies are randomized every time you load a room.\n"
-                "- Random (Seeded): Enemies are randomized based on the current randomizer seed/file.\n"
-            )
-        );
+        .Callback([](WidgetInfo& info) { GetSelectedEnemies(); })
+        .Options(
+            ComboboxOptions()
+                .DefaultIndex(ENEMY_RANDOMIZER_OFF)
+                .ComboMap(enemyRandomizerModes)
+                .Tooltip("Replaces fixed enemies throughout the game with a random enemy. Bosses, Mini-Bosses and a "
+                         "few specific regular enemies are excluded.\n"
+                         "Enemies that need more than Deku Nuts & either Deku Sticks or a sword to kill are excluded "
+                         "from spawning in \"clear enemy\" rooms.\n\n"
+                         "- Random: Enemies are randomized every time you load a room.\n"
+                         "- Random (Seeded): Enemies are randomized based on the current randomizer seed/file.\n"));
     AddWidget(path, "Randomized Enemy Sizes", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("RandomizedEnemySizes"))
         .Options(CheckboxOptions().Tooltip("Enemies and Bosses spawn with random sizes."));
     AddWidget(path, "Scale Health with Size", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("EnemySizeScalesHealth"))
-        .PreFunc(
-            [](WidgetInfo& info) { info.options->disabled = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemySizes"), 0); })
+        .PreFunc([](WidgetInfo& info) {
+            info.options->disabled = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemySizes"), 0);
+        })
         .Options(CheckboxOptions().Tooltip(
             "Scales normal enemies Health with their randomized size. *This will NOT affect Bosses!*"));
-    AddWidget(path, "Enemy List", WIDGET_SEPARATOR_TEXT)
-        .PreFunc([](WidgetInfo& info) {
-            info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0);
-        });
+    AddWidget(path, "Enemy List", WIDGET_SEPARATOR_TEXT).PreFunc([](WidgetInfo& info) {
+        info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0);
+    });
     AddWidget(path, "Select all Enemies", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("RandomizedEnemyList.All"))
-        .PreFunc([](WidgetInfo& info) {
-            info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0);
-        });
+        .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0); });
     AddWidget(path, "Enemy List", WIDGET_SEPARATOR).PreFunc([](WidgetInfo& info) {
         info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0);
     });
@@ -1561,9 +1490,7 @@ void SohMenu::AddMenuEnhancements() {
                 info.options->disabled = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemyList.All"), 0);
                 info.options->disabledTooltip = "These options are disabled because \"Select All Enemies\" is enabled.";
             })
-            .Callback([](WidgetInfo& info) {
-                GetSelectedEnemies();
-            });
+            .Callback([](WidgetInfo& info) { GetSelectedEnemies(); });
     }
 
     // Cheats
@@ -1697,38 +1624,33 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Beta Quest", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Enable Beta Quest", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_CHEAT("EnableBetaQuest"))
-        .PreFunc([](WidgetInfo& info) {
-            info.options->disabled = !isBetaQuestEnabled;
-        })
+        .PreFunc([](WidgetInfo& info) { info.options->disabled = !isBetaQuestEnabled; })
         .Callback([](WidgetInfo& info) {
             if (CVarGetInteger(CVAR_CHEAT("EnableBetaQuest"), 0) == 0) {
                 CVarClear(CVAR_CHEAT("BetaQuestWorld"));
             } else {
                 CVarSetInteger(CVAR_CHEAT("BetaQuestWorld"), 0);
             }
-            std::reinterpret_pointer_cast<Ship::ConsoleWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch("reset");
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            std::reinterpret_pointer_cast<Ship::ConsoleWindow>(
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
+                ->Dispatch("reset");
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         })
-        .Options(CheckboxOptions().Tooltip(
-            "Turns on OoT Beta Quest. *WARNING*: This will reset your game!"
-        ));
+        .Options(CheckboxOptions().Tooltip("Turns on OoT Beta Quest. *WARNING*: This will reset your game!"));
     AddWidget(path, "Beta Quest World: %d", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_CHEAT("BetaQuestWorld"))
         .PreFunc([](WidgetInfo& info) {
             info.options->disabled = info.isHidden = CVarGetInteger(CVAR_CHEAT("EnableBetaQuest"), 0) == 0;
         })
         .Callback([](WidgetInfo& info) {
-            std::reinterpret_pointer_cast<Ship::ConsoleWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch("reset");
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            std::reinterpret_pointer_cast<Ship::ConsoleWindow>(
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
+                ->Dispatch("reset");
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         })
-        .Options(IntSliderOptions()
-            .DefaultValue(0)
-            .Min(0)
-            .Max(8)
-            .Tooltip(
-                "Set the Beta Quest world to explore. *WARNING*: Changing this will reset your game!\n"
-                "Ctrl+Click to type in a value."
-            ));
+        .Options(IntSliderOptions().DefaultValue(0).Min(0).Max(8).Tooltip(
+            "Set the Beta Quest world to explore. *WARNING*: Changing this will reset your game!\n"
+            "Ctrl+Click to type in a value."));
 
     // Cosmetics Editor
     path.sidebarName = "Cosmetics Editor";
@@ -1739,7 +1661,6 @@ void SohMenu::AddMenuEnhancements() {
         .WindowName("Cosmetics Editor")
         .Options(WindowButtonOptions().Tooltip("Enables the separate Cosmetics Editor Window."));
 
-
     // Audio Editor
     path.sidebarName = "Audio Editor";
     AddSidebarEntry("Enhancements", path.sidebarName, 1);
@@ -1747,7 +1668,6 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_WINDOW("AudioEditor"))
         .WindowName("Audio Editor")
         .Options(WindowButtonOptions().Tooltip("Enables the separate Audio Editor Window."));
-
 
     // Gameplay Stats
     path.sidebarName = "Gameplay Stats";
@@ -1757,7 +1677,6 @@ void SohMenu::AddMenuEnhancements() {
         .WindowName("Gameplay Stats")
         .Options(WindowButtonOptions().Tooltip("Enables the separate Gameplay Stats Window."));
 
-
     // Time Splits
     path.sidebarName = "Time Splits";
     AddSidebarEntry("Enhancements", path.sidebarName, 1);
@@ -1765,7 +1684,6 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_WINDOW("TimeSplits"))
         .WindowName("Time Splits")
         .Options(WindowButtonOptions().Tooltip("Enables the separate Time Splits Window."));
-
 
     // Timers
     path.sidebarName = "Timers";
@@ -1776,26 +1694,15 @@ void SohMenu::AddMenuEnhancements() {
         .Options(WindowButtonOptions().Tooltip("Enables the separate Additional Timers Window."));
     AddWidget(path, "Font Scale: %.2fx", WIDGET_CVAR_SLIDER_FLOAT)
         .CVar(CVAR_TIME_DISPLAY("FontScale"))
-        .Callback([](WidgetInfo& info) {
-            TimeDisplayInitSettings();
-        })
-        .Options(FloatSliderOptions()
-            .Min(1.0f)
-            .Max(5.0f)
-            .DefaultValue(1.0f)
-            .Format("%.2fx")
-        );
+        .Callback([](WidgetInfo& info) { TimeDisplayInitSettings(); })
+        .Options(FloatSliderOptions().Min(1.0f).Max(5.0f).DefaultValue(1.0f).Format("%.2fx"));
     AddWidget(path, "Hide Background", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_TIME_DISPLAY("ShowWindowBG"))
-        .Callback([](WidgetInfo& info) {
-            TimeDisplayInitSettings();
-        });
+        .Callback([](WidgetInfo& info) { TimeDisplayInitSettings(); });
     for (auto& timer : timeDisplayList) {
-        AddWidget(path, timer.timeLabel, WIDGET_CVAR_CHECKBOX)
-            .CVar(timer.timeEnable)
-            .Callback([](WidgetInfo& info) {
-                TimeDisplayUpdateDisplayOptions();
-            });
+        AddWidget(path, timer.timeLabel, WIDGET_CVAR_CHECKBOX).CVar(timer.timeEnable).Callback([](WidgetInfo& info) {
+            TimeDisplayUpdateDisplayOptions();
+        });
     }
 }
 

@@ -4,12 +4,13 @@
 #include "spdlog/spdlog.h"
 
 namespace SOH {
-std::shared_ptr<Ship::IResource> SetSpecialObjectsFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
-                                                                 std::shared_ptr<Ship::BinaryReader> reader) {
+std::shared_ptr<Ship::IResource>
+SetSpecialObjectsFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
+                                       std::shared_ptr<Ship::BinaryReader> reader) {
     auto setSpecialObjects = std::make_shared<SetSpecialObjects>(initData);
 
     ReadCommandId(setSpecialObjects, reader);
-    
+
     setSpecialObjects->specialObjects.elfMessage = reader->ReadInt8();
     setSpecialObjects->specialObjects.globalObject = reader->ReadInt16();
 
@@ -20,8 +21,9 @@ std::shared_ptr<Ship::IResource> SetSpecialObjectsFactory::ReadResource(std::sha
     return setSpecialObjects;
 }
 
-std::shared_ptr<Ship::IResource> SetSpecialObjectsFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
-                                                                   tinyxml2::XMLElement* reader) {
+std::shared_ptr<Ship::IResource>
+SetSpecialObjectsFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
+                                          tinyxml2::XMLElement* reader) {
     auto setSpecialObjects = std::make_shared<SetSpecialObjects>(initData);
 
     setSpecialObjects->cmdId = SceneCommandID::SetSpecialObjects;

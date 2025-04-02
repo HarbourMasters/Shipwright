@@ -255,7 +255,8 @@ void EnDivingGame_HandlePlayChoice(EnDivingGame* this, PlayState* play) {
                 this->allRupeesThrown = this->state = this->phase = this->unk_2A2 = this->grabbedRupeesCounter = 0;
                 break;
         }
-        if (!Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_SILVER_SCALE) || this->actor.textId == 0x85 || this->actor.textId == 0x2D) {
+        if (!Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_SILVER_SCALE) || this->actor.textId == 0x85 ||
+            this->actor.textId == 0x2D) {
             Message_ContinueTextbox(play, this->actor.textId);
             this->unk_292 = TEXT_STATE_EVENT;
             this->actionFunc = func_809EE048;
@@ -467,7 +468,8 @@ void func_809EEA00(EnDivingGame* this, PlayState* play) {
 
 void func_809EEA90(EnDivingGame* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
-    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_DIVING_MINIGAME, true, &this->actor)) {
+    if (Actor_HasParent(&this->actor, play) ||
+        !GameInteractor_Should(VB_GIVE_ITEM_FROM_DIVING_MINIGAME, true, &this->actor)) {
         this->actionFunc = func_809EEAF8;
     } else {
         if (GameInteractor_Should(VB_GIVE_ITEM_FROM_DIVING_MINIGAME, true, &this->actor)) {
@@ -480,7 +482,7 @@ void func_809EEA90(EnDivingGame* this, PlayState* play) {
 void func_809EEAF8(EnDivingGame* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(play)) ||
-         !GameInteractor_Should(VB_GIVE_ITEM_FROM_DIVING_MINIGAME, true, &this->actor)) {
+        !GameInteractor_Should(VB_GIVE_ITEM_FROM_DIVING_MINIGAME, true, &this->actor)) {
         // "Successful completion"
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 正常終了 ☆☆☆☆☆ \n" VT_RST);
         this->allRupeesThrown = this->state = this->phase = this->unk_2A2 = this->grabbedRupeesCounter = 0;
@@ -544,8 +546,7 @@ Gfx* EnDivingGame_EmptyDList(GraphicsContext* gfxCtx) {
     return displayList;
 }
 
-s32 EnDivingGame_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                                  void* thisx) {
+s32 EnDivingGame_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnDivingGame* this = (EnDivingGame*)thisx;
     s32 pad;
 

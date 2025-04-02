@@ -193,8 +193,10 @@ bool WindowButton(const char* label, const char* cvarName, std::shared_ptr<Ship:
     } else {
         buttonText = ICON_FA_EXTERNAL_LINK_SQUARE " " + buttonText;
     }
-    if (Button(buttonText.c_str(), {{ options.tooltip, options.disabled, options.disabledTooltip },
-                                      options.size, options.padding, options.color })) {
+    if (Button(buttonText.c_str(), { { options.tooltip, options.disabled, options.disabledTooltip },
+                                     options.size,
+                                     options.padding,
+                                     options.color })) {
         windowPtr->ToggleVisibility();
         dirty = true;
     }
@@ -414,12 +416,13 @@ bool StateButton(const char* str_id, const char* label, ImVec2 size, ButtonOptio
     PushStyleButton(options.color);
     // Render
     const ImU32 bg_col = ImGui::GetColorU32((held && hovered) ? ImGuiCol_ButtonActive
-        : hovered         ? ImGuiCol_ButtonHovered
-        : ImGuiCol_Button);
-    //const ImU32 text_col = ImGui::GetColorU32(ImGuiCol_Text);
+                                            : hovered         ? ImGuiCol_ButtonHovered
+                                                              : ImGuiCol_Button);
+    // const ImU32 text_col = ImGui::GetColorU32(ImGuiCol_Text);
     ImGui::RenderNavHighlight(bb, id);
     ImGui::RenderFrame(bb.Min, bb.Max, bg_col, true, g.Style.FrameRounding);
-    ImGui::RenderTextClipped(bb.Min + (style.FramePadding * 0.35f), bb.Max - (style.FramePadding / 4), label, NULL, &label_size, style.ButtonTextAlign, &bb);
+    ImGui::RenderTextClipped(bb.Min + (style.FramePadding * 0.35f), bb.Max - (style.FramePadding / 4), label, NULL,
+                             &label_size, style.ButtonTextAlign, &bb);
     PopStyleButton();
     /*ImGui::RenderArrow(window->DrawList,
     bb.Min +
@@ -434,7 +437,8 @@ float CalcComboWidth(const char* preview_value, ImGuiComboFlags flags) {
     ImGuiContext& g = *GImGui;
 
     const ImGuiStyle& style = g.Style;
-    IM_ASSERT((flags & (ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_NoPreview)) != (ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_NoPreview)); // Can't use both flags together
+    IM_ASSERT((flags & (ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_NoPreview)) !=
+              (ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_NoPreview)); // Can't use both flags together
     if (flags & ImGuiComboFlags_WidthFitPreview)
         IM_ASSERT((flags & (ImGuiComboFlags_NoPreview | (ImGuiComboFlags)ImGuiComboFlags_CustomPreview)) == 0);
 
@@ -518,7 +522,7 @@ bool SliderInt(const char* label, int32_t* value, const IntSliderOptions& option
     ImGui::BeginGroup();
     ImGui::BeginDisabled(options.disabled);
     PushStyleSlider(options.color);
-    float width = (options.size == ImVec2(0,0)) ? ImGui::GetContentRegionAvail().x : options.size.x;
+    float width = (options.size == ImVec2(0, 0)) ? ImGui::GetContentRegionAvail().x : options.size.x;
     if (options.labelPosition == LabelPositions::Near || options.labelPosition == LabelPositions::Far) {
         width = width - (ImGui::CalcTextSize(label).x + ImGui::GetStyle().FramePadding.x);
     }
@@ -582,7 +586,8 @@ bool SliderInt(const char* label, int32_t* value, const IntSliderOptions& option
             ImGui::SameLine();
             ImGui::Text(label, *value);
         } else if (options.labelPosition == LabelPositions::Far || options.labelPosition == LabelPositions::None) {
-            ImGui::SameLine(ImGui::GetContentRegionAvail().x - ImGui::CalcTextSize(label).x + ImGui::GetStyle().ItemSpacing.x);
+            ImGui::SameLine(ImGui::GetContentRegionAvail().x - ImGui::CalcTextSize(label).x +
+                            ImGui::GetStyle().ItemSpacing.x);
             ImGui::Text(label, *value);
         }
     }
@@ -859,7 +864,8 @@ bool CVarInputInt(const char* label, const char* cvarName, const InputOptions& o
     return dirty;
 }
 
-bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaultColor, bool hasAlpha, uint8_t modifiers, UIWidgets::Colors themeColor) {
+bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaultColor, bool hasAlpha,
+                     uint8_t modifiers, UIWidgets::Colors themeColor) {
     std::string valueCVar = std::string(cvarName) + ".Value";
     std::string rainbowCVar = std::string(cvarName) + ".Rainbow";
     std::string lockedCVar = std::string(cvarName) + ".Locked";
@@ -875,7 +881,8 @@ bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaul
     ImGui::BeginDisabled(locked);
     PushStyleCombobox(UIWidgets::Colors::DarkGray);
     if (hasAlpha) {
-        changed = ImGui::ColorEdit4(label, (float*)&colorVec, flags | ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_AlphaPreview);
+        changed = ImGui::ColorEdit4(label, (float*)&colorVec,
+                                    flags | ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_AlphaPreview);
     } else {
         changed = ImGui::ColorEdit3(label, (float*)&colorVec, flags | ImGuiColorEditFlags_NoAlpha);
     }
@@ -884,7 +891,10 @@ bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaul
     if (showReset) {
         ImGui::SameLine();
         std::string uniqueTag = "Reset##" + std::string(label);
-        if (UIWidgets::Button(uniqueTag.c_str(), UIWidgets::ButtonOptions({{ .tooltip = "Resets this color to its default value" }} ).Color(themeColor).Size(UIWidgets::Sizes::Inline))) {
+        if (UIWidgets::Button(uniqueTag.c_str(),
+                              UIWidgets::ButtonOptions({ { .tooltip = "Resets this color to its default value" } })
+                                  .Color(themeColor)
+                                  .Size(UIWidgets::Sizes::Inline))) {
             CVarClearBlock(valueCVar.c_str());
             Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         }
@@ -892,7 +902,10 @@ bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaul
     if (showRandom) {
         ImGui::SameLine();
         std::string uniqueTag = "Random##" + std::string(label);
-        if (UIWidgets::Button(uniqueTag.c_str(), UIWidgets::ButtonOptions({{ .tooltip = "Generates a random color value to use" }}).Color(themeColor).Size(UIWidgets::Sizes::Inline))) {
+        if (UIWidgets::Button(uniqueTag.c_str(),
+                              UIWidgets::ButtonOptions({ { .tooltip = "Generates a random color value to use" } })
+                                  .Color(themeColor)
+                                  .Size(UIWidgets::Sizes::Inline))) {
             colorVec = GetRandomValue();
             color.r = fmin(fmax(colorVec.x * 255, 0), 255);
             color.g = fmin(fmax(colorVec.y * 255, 0), 255);
@@ -907,14 +920,20 @@ bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaul
         ImGui::SameLine();
         std::string uniqueTag = "Rainbow##" + std::string(cvarName) + "Rainbow";
 
-        UIWidgets::CVarCheckbox(uniqueTag.c_str(), rainbowCVar.c_str(), UIWidgets::CheckboxOptions({{ .tooltip = "Cycles through colors on a timer\nOverwrites previously chosen color" }}).Color(themeColor));
+        UIWidgets::CVarCheckbox(
+            uniqueTag.c_str(), rainbowCVar.c_str(),
+            UIWidgets::CheckboxOptions(
+                { { .tooltip = "Cycles through colors on a timer\nOverwrites previously chosen color" } })
+                .Color(themeColor));
     }
     ImGui::EndDisabled();
     if (showLock) {
         ImGui::SameLine();
         std::string uniqueTag = "Lock##" + std::string(cvarName) + "Locked";
 
-        UIWidgets::CVarCheckbox(uniqueTag.c_str(), lockedCVar.c_str(), UIWidgets::CheckboxOptions({{ .tooltip = "Prevents this color from being changed" }}).Color(themeColor));
+        UIWidgets::CVarCheckbox(
+            uniqueTag.c_str(), lockedCVar.c_str(),
+            UIWidgets::CheckboxOptions({ { .tooltip = "Prevents this color from being changed" } }).Color(themeColor));
     }
     if (changed) {
         color.r = (uint8_t)(colorVec.x * 255.0f);
@@ -943,7 +962,9 @@ bool RadioButton(const char* label, bool active, const RadioButtonsOptions& opti
     const float square_sz = ImGui::GetFrameHeight();
     const ImVec2 pos = window->DC.CursorPos;
     const ImRect check_bb(pos, pos + ImVec2(square_sz, square_sz));
-    const ImRect total_bb(pos, pos + ImVec2(square_sz + (label_size.x > 0.0f ? style.ItemInnerSpacing.x + label_size.x : 0.0f), label_size.y + style.FramePadding.y * 2.0f));
+    const ImRect total_bb(
+        pos, pos + ImVec2(square_sz + (label_size.x > 0.0f ? style.ItemInnerSpacing.x + label_size.x : 0.0f),
+                          label_size.y + style.FramePadding.y * 2.0f));
     ImGui::ItemSize(total_bb, style.FramePadding.y);
     if (!ImGui::ItemAdd(total_bb, id))
         return false;
@@ -960,17 +981,21 @@ bool RadioButton(const char* label, bool active, const RadioButtonsOptions& opti
 
     ImGui::RenderNavCursor(total_bb, id);
     const int num_segment = window->DrawList->_CalcCircleAutoSegmentCount(radius);
-    window->DrawList->AddCircleFilled(center, radius, ImGui::GetColorU32((held && hovered) ? ImGuiCol_FrameBgActive : hovered ? ImGuiCol_FrameBgHovered : ImGuiCol_FrameBg), num_segment);
-    if (active)
-    {
+    window->DrawList->AddCircleFilled(center, radius,
+                                      ImGui::GetColorU32((held && hovered) ? ImGuiCol_FrameBgActive
+                                                         : hovered         ? ImGuiCol_FrameBgHovered
+                                                                           : ImGuiCol_FrameBg),
+                                      num_segment);
+    if (active) {
         const float pad = ImMax(1.0f, IM_TRUNC(square_sz / 6.0f));
         window->DrawList->AddCircleFilled(center, radius - pad, ImGui::GetColorU32(ImGuiCol_CheckMark));
     }
 
-    if (style.FrameBorderSize > 0.0f)
-    {
-        window->DrawList->AddCircle(center + ImVec2(1, 1), radius, ImGui::GetColorU32(ImGuiCol_BorderShadow), num_segment, style.FrameBorderSize);
-        window->DrawList->AddCircle(center, radius, ImGui::GetColorU32(ImGuiCol_Border), num_segment, style.FrameBorderSize);
+    if (style.FrameBorderSize > 0.0f) {
+        window->DrawList->AddCircle(center + ImVec2(1, 1), radius, ImGui::GetColorU32(ImGuiCol_BorderShadow),
+                                    num_segment, style.FrameBorderSize);
+        window->DrawList->AddCircle(center, radius, ImGui::GetColorU32(ImGuiCol_Border), num_segment,
+                                    style.FrameBorderSize);
     }
 
     ImVec2 label_pos = ImVec2(check_bb.Max.x + style.ItemInnerSpacing.x, check_bb.Min.y + style.FramePadding.y);
@@ -1000,7 +1025,7 @@ bool CVarRadioButton(const char* text, const char* cvarName, int32_t id, const R
     if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !Ship_IsCStringEmpty(options.tooltip)) {
         ImGui::SetTooltip("%s", WrappedText(options.tooltip).c_str());
     }
-        
+
     return ret;
 }
 

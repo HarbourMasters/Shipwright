@@ -18,7 +18,7 @@ void TransitionTriforce_Start(void* thisx) {
 void* TransitionTriforce_Init(void* thisx) {
     TransitionTriforce* this = (TransitionTriforce*)thisx;
 
-    memset(this,0, sizeof(*this));
+    memset(this, 0, sizeof(*this));
     guOrtho(&this->projection, -160.0f, 160.0f, -120.0f, 120.0f, -1000.0f, 1000.0f, 1.0f);
     this->transPos = 1.0f;
     this->state = 2;

@@ -179,8 +179,7 @@ void ArrowLight_Fly(ArrowLight* this, PlayState* play) {
 void ArrowLight_Update(Actor* thisx, PlayState* play) {
     ArrowLight* this = (ArrowLight*)thisx;
 
-    if (play->msgCtx.msgMode == MSGMODE_OCARINA_CORRECT_PLAYBACK ||
-        play->msgCtx.msgMode == MSGMODE_SONG_PLAYED) {
+    if (play->msgCtx.msgMode == MSGMODE_OCARINA_CORRECT_PLAYBACK || play->msgCtx.msgMode == MSGMODE_SONG_PLAYED) {
         Actor_Kill(&this->actor);
     } else {
         this->actionFunc(this, play);
@@ -194,11 +193,11 @@ void ArrowLight_Draw(Actor* thisx, PlayState* play) {
     EnArrow* arrow = (EnArrow*)this->actor.parent;
     Actor* tranform;
 
-    Color_RGB8 primaryColor = {255, 255, 170};
+    Color_RGB8 primaryColor = { 255, 255, 170 };
     if (CVarGetInteger(CVAR_COSMETIC("Arrows.LightPrimary.Changed"), 0)) {
         primaryColor = CVarGetColor24(CVAR_COSMETIC("Arrows.LightPrimary.Value"), primaryColor);
     }
-    Color_RGB8 secondaryColor = {255, 255, 0};
+    Color_RGB8 secondaryColor = { 255, 255, 0 };
     if (CVarGetInteger(CVAR_COSMETIC("Arrows.LightSecondary.Changed"), 0)) {
         secondaryColor = CVarGetColor24(CVAR_COSMETIC("Arrows.LightSecondary.Value"), secondaryColor);
     }
@@ -217,11 +216,9 @@ void ArrowLight_Draw(Actor* thisx, PlayState* play) {
         // Draw yellow effect over the screen when arrow hits
         if (this->unk_164 > 0) {
             POLY_XLU_DISP = Gfx_SetupDL_57(POLY_XLU_DISP);
-            gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 
-                (s32)((secondaryColor.r / 6) * this->unk_164) & 0xFF,
-                (s32)((secondaryColor.g / 6) * this->unk_164) & 0xFF, 
-                (s32)((secondaryColor.b / 6) * this->unk_164) & 0xFF,
-                (s32)(150.0f * this->unk_164) & 0xFF);
+            gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, (s32)((secondaryColor.r / 6) * this->unk_164) & 0xFF,
+                            (s32)((secondaryColor.g / 6) * this->unk_164) & 0xFF,
+                            (s32)((secondaryColor.b / 6) * this->unk_164) & 0xFF, (s32)(150.0f * this->unk_164) & 0xFF);
             gDPSetAlphaDither(POLY_XLU_DISP++, G_AD_DISABLE);
             gDPSetColorDither(POLY_XLU_DISP++, G_CD_DISABLE);
             gDPFillRectangle(POLY_XLU_DISP++, 0, 0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1);
@@ -239,8 +236,7 @@ void ArrowLight_Draw(Actor* thisx, PlayState* play) {
         }
         Matrix_Scale(this->radius * 0.2f, this->unk_160 * 4.0f, this->radius * 0.2f, MTXMODE_APPLY);
         Matrix_Translate(0.0f, -700.0f, 0.0f, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, sMaterialDL);
         gSPDisplayList(POLY_XLU_DISP++,
                        Gfx_TwoTexScroll(play->state.gfxCtx, 0, 511 - (stateFrames * 5) % 512, 0, 4, 32, 1,

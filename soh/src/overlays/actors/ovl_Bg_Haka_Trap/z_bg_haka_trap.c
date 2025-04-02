@@ -275,8 +275,7 @@ void func_808802D8(BgHakaTrap* this, PlayState* play) {
         vector.y = Rand_ZeroOne() * 10.0f + this->dyna.actor.world.pos.y + 30.0f;
         vector.z = Rand_CenteredFloat(320.0f) + this->dyna.actor.world.pos.z;
 
-        EffectSsDeadDb_Spawn(play, &vector, &zeroVec, &zeroVec, 130, 20, 255, 255, 150, 170, 255, 0, 0, 1, 9,
-                             false);
+        EffectSsDeadDb_Spawn(play, &vector, &zeroVec, &zeroVec, 130, 20, 255, 255, 150, 170, 255, 0, 0, 1, 9, false);
     }
 
     if (this->timer == 0) {
@@ -370,9 +369,9 @@ void func_808806BC(BgHakaTrap* this, PlayState* play) {
     tempf20 = this->dyna.actor.floorHeight;
 
     for (i = 0; i < 3; i++) {
-        temp = BgCheck_EntityRaycastFloor4(&play->colCtx, &this->dyna.actor.floorPoly, &sp64, &this->dyna.actor,
-                                           &vector) -
-               25.0f;
+        temp =
+            BgCheck_EntityRaycastFloor4(&play->colCtx, &this->dyna.actor.floorPoly, &sp64, &this->dyna.actor, &vector) -
+            25.0f;
         if (tempf20 < temp) {
             tempf20 = temp;
         }

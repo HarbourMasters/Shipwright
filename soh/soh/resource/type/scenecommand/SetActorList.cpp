@@ -6,6 +6,6 @@ ActorEntry* SetActorList::GetPointer() {
 }
 
 size_t SetActorList::GetPointerSize() {
-	return actorList.size() * sizeof(ActorEntry);
+    return actorList.size() * sizeof(ActorEntry);
 }
 } // namespace SOH

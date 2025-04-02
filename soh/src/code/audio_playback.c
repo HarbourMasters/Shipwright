@@ -302,7 +302,6 @@ void Audio_ProcessNotes(void) {
 
             subAttrs.frequency *= resampRate;
 
-
             subAttrs.velocity *= scale;
             Audio_InitNoteSub(note, noteSubEu2, &subAttrs);
             noteSubEu->bitField1.bookOffset = bookOffset;
@@ -363,12 +362,11 @@ Drum* Audio_GetDrum(s32 fontId, s32 drumId) {
         return NULL;
     }
 
-    
     SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fontMap[fontId]);
     if (drumId < sf->numDrums) {
         drum = sf->drums[drumId];
     }
-    
+
     if (drum == NULL) {
         gAudioContext.audioErrorFlags = ((fontId << 8) + drumId) + 0x5000000;
     }

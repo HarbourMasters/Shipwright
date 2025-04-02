@@ -52,14 +52,16 @@ FairyIdentity ShuffleFairies_GetFairyIdentity(int32_t params) {
         sceneNum = SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY;
     }
 
-    Rando::Location* location = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_ELF, sceneNum, params);
+    Rando::Location* location =
+        OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_ELF, sceneNum, params);
 
     if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
         LUSLOG_WARN("FairyGetIdentity did not receive a valid RC value (%d).", location->GetRandomizerCheck());
         assert(false);
     } else {
         fairyIdentity.randomizerInf = static_cast<RandomizerInf>(location->GetCollectionCheck().flag);
-        fairyIdentity.itemEntry = Rando::Context::GetInstance()->GetFinalGIEntry(location->GetRandomizerCheck(), true, GI_FAIRY);
+        fairyIdentity.itemEntry =
+            Rando::Context::GetInstance()->GetFinalGIEntry(location->GetRandomizerCheck(), true, GI_FAIRY);
     }
 
     return fairyIdentity;
@@ -91,44 +93,42 @@ void ShuffleFairies_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should,
         if (enElf->sohFairyIdentity.randomizerInf && enElf->sohFairyIdentity.randomizerInf != RAND_INF_MAX) {
             Flags_SetRandomizerInf(enElf->sohFairyIdentity.randomizerInf);
         }
-    // Spawn fairies in fairy fountains
+        // Spawn fairies in fairy fountains
     } else if (id == VB_SPAWN_FOUNTAIN_FAIRIES) {
         bool fairySpawned = false;
         s16 grottoId = (gPlayState->sceneNum == SCENE_FAIRYS_FOUNTAIN) ? Grotto_CurrentGrotto() : 0;
         for (s16 index = 0; index < 8; index++) {
             int32_t params = (grottoId << 8) | index;
-            if (ShuffleFairies_SpawnFairy(actor->world.pos.x, actor->world.pos.y, actor->world.pos.z,
-                params)) {
+            if (ShuffleFairies_SpawnFairy(actor->world.pos.x, actor->world.pos.y, actor->world.pos.z, params)) {
                 fairySpawned = true;
             }
         }
         if (fairySpawned) {
             *should = false;
         }
-    // Spawn 3 fairies when playing Song of Storms next to a planted bean
+        // Spawn 3 fairies when playing Song of Storms next to a planted bean
     } else if (id == VB_SPAWN_BEAN_STALK_FAIRIES) {
         ObjBean* objBean = (ObjBean*)(actor);
         bool fairySpawned = false;
         for (s16 index = 0; index < 3; index++) {
             int32_t params = ((objBean->dyna.actor.params & 0x3F) << 8) | index;
             if (ShuffleFairies_SpawnFairy(objBean->dyna.actor.world.pos.x, objBean->dyna.actor.world.pos.y,
-                objBean->dyna.actor.world.pos.z,
-                params)) {
+                                          objBean->dyna.actor.world.pos.z, params)) {
                 fairySpawned = true;
             }
         }
         if (fairySpawned) {
             *should = false;
         }
-    // Spawn a fairy from a ShotSun when playing the right song near it
+        // Spawn a fairy from a ShotSun when playing the right song near it
     } else if (id == VB_SPAWN_SONG_FAIRY) {
         ShotSun* shotSun = (ShotSun*)(actor);
         if (ShuffleFairies_SpawnFairy(shotSun->actor.world.pos.x, shotSun->actor.world.pos.y,
-            shotSun->actor.world.pos.z,
-            TWO_ACTOR_PARAMS(0x1000, (int32_t)shotSun->actor.world.pos.z))) {
+                                      shotSun->actor.world.pos.z,
+                                      TWO_ACTOR_PARAMS(0x1000, (int32_t)shotSun->actor.world.pos.z))) {
             *should = false;
         }
-    // Handle playing both misc songs and song of storms in front of a gossip stone.
+        // Handle playing both misc songs and song of storms in front of a gossip stone.
     } else if (id == VB_SPAWN_GOSSIP_STONE_FAIRY) {
         EnGs* gossipStone = (EnGs*)(actor);
 
@@ -136,11 +136,9 @@ void ShuffleFairies_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should,
         // Otherwise fall back to vanilla behaviour.
         if (gPlayState->msgCtx.ocarinaMode == OCARINA_MODE_04 &&
             (gPlayState->msgCtx.unk_E3F2 == OCARINA_SONG_LULLABY ||
-                gPlayState->msgCtx.unk_E3F2 == OCARINA_SONG_SARIAS ||
-                gPlayState->msgCtx.unk_E3F2 == OCARINA_SONG_EPONAS ||
-                gPlayState->msgCtx.unk_E3F2 == OCARINA_SONG_SUNS || 
-                gPlayState->msgCtx.unk_E3F2 == OCARINA_SONG_TIME ||
-                gPlayState->msgCtx.unk_E3F2 == OCARINA_SONG_STORMS)) {
+             gPlayState->msgCtx.unk_E3F2 == OCARINA_SONG_SARIAS || gPlayState->msgCtx.unk_E3F2 == OCARINA_SONG_EPONAS ||
+             gPlayState->msgCtx.unk_E3F2 == OCARINA_SONG_SUNS || gPlayState->msgCtx.unk_E3F2 == OCARINA_SONG_TIME ||
+             gPlayState->msgCtx.unk_E3F2 == OCARINA_SONG_STORMS)) {
 
             int32_t params = (gPlayState->sceneNum == SCENE_GROTTOS) ? Grotto_CurrentGrotto() : 0;
             // Distinguish storms fairies from the normal song fairies
@@ -159,7 +157,7 @@ void ShuffleFairies_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should,
             FairyIdentity fairyIdentity = ShuffleFairies_GetFairyIdentity(params);
             if (!ShuffleFairies_FairyExists(fairyIdentity)) {
                 if (ShuffleFairies_SpawnFairy(gossipStone->actor.world.pos.x, gossipStone->actor.world.pos.y,
-                                                gossipStone->actor.world.pos.z, params)) {
+                                              gossipStone->actor.world.pos.z, params)) {
                     Audio_PlayActorSound2(&gossipStone->actor, NA_SE_EV_BUTTERFRY_TO_FAIRY);
                     // Set vanilla check for fairy spawned so it doesn't spawn the vanilla fairy afterwards as well.
                     gossipStone->unk_19D = 0;
@@ -175,7 +173,8 @@ void ShuffleFairies_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should,
 uint32_t onVanillaBehaviorHook = 0;
 
 void ShuffleFairies_RegisterHooks() {
-    onVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(ShuffleFairies_OnVanillaBehaviorHandler);
+    onVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(
+        ShuffleFairies_OnVanillaBehaviorHandler);
 }
 
 void ShuffleFairies_UnregisterHooks() {
@@ -186,7 +185,8 @@ void ShuffleFairies_UnregisterHooks() {
 
 void Rando::StaticData::RegisterFairyLocations() {
     static bool registered = false;
-    if (registered) return;
+    if (registered)
+        return;
     registered = true;
     // clang-format off
     locationTable[RC_SFM_FAIRY_GROTTO_FAIRY_1] =                        Location::Fairy(RC_SFM_FAIRY_GROTTO_FAIRY_1,                        RCQUEST_BOTH,   RCAREA_SACRED_FOREST_MEADOW,  SCENE_FAIRYS_FOUNTAIN,              0x1800,                          "Grotto Fairy 1",                                     RHT_SFM_FAIRY_GROTTO_FAIRY,                          SpoilerCollectionCheck::RandomizerInf(RAND_INF_SFM_FAIRY_GROTTO_FAIRY_1));

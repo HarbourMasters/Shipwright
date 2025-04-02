@@ -8,5 +8,5 @@ class DLViewerWindow : public Ship::GuiWindow {
 
     void InitElement() override;
     void DrawElement() override;
-    void UpdateElement() override {};
+    void UpdateElement() override{};
 };

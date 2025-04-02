@@ -25,18 +25,20 @@ void DrawTypeOfGrass(EnKusa* grassActor, Gfx* bushDList, Gfx* grassDList, PlaySt
 }
 
 extern "C" void EnKusa_RandomizerDraw(Actor* thisx, PlayState* play) {
-    //static Gfx* dLists[] = { (Gfx*)gRandoBushDL, (Gfx*)object_kusa_DL_000140, (Gfx*)object_kusa_DL_000140 };
+    // static Gfx* dLists[] = { (Gfx*)gRandoBushDL, (Gfx*)object_kusa_DL_000140, (Gfx*)object_kusa_DL_000140 };
     static Gfx* dLists[] = { (Gfx*)gRandoBushJunkDL, (Gfx*)gRandoCuttableGrassJunkDL, (Gfx*)gRandoCuttableGrassJunkDL };
     auto grassActor = ((EnKusa*)thisx);
 
     OPEN_DISPS(play->state.gfxCtx);
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
-    if (grassActor->grassIdentity.randomizerCheck != RC_MAX && Flags_GetRandomizerInf(grassActor->grassIdentity.randomizerInf) == 0) {
+    if (grassActor->grassIdentity.randomizerCheck != RC_MAX &&
+        Flags_GetRandomizerInf(grassActor->grassIdentity.randomizerInf) == 0) {
         int csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED);
 
         if (csmc == CSMC_BOTH || csmc == CSMC_TEXTURE) {
-            auto itemEntry = Rando::Context::GetInstance()->GetFinalGIEntry(grassActor->grassIdentity.randomizerCheck, true, GI_NONE);
+            auto itemEntry = Rando::Context::GetInstance()->GetFinalGIEntry(grassActor->grassIdentity.randomizerCheck,
+                                                                            true, GI_NONE);
             GetItemCategory getItemCategory = itemEntry.getItemCategory;
 
             switch (getItemCategory) {
@@ -48,10 +50,12 @@ extern "C" void EnKusa_RandomizerDraw(Actor* thisx, PlayState* play) {
                         case ITEM_HEART_PIECE:
                         case ITEM_HEART_PIECE_2:
                         case ITEM_HEART_CONTAINER:
-                            DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushHeartDL, (Gfx*)gRandoCuttableGrassHeartDL, play);
+                            DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushHeartDL, (Gfx*)gRandoCuttableGrassHeartDL,
+                                            play);
                             break;
                         default:
-                            DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushMinorDL, (Gfx*)gRandoCuttableGrassMinorDL, play);
+                            DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushMinorDL, (Gfx*)gRandoCuttableGrassMinorDL,
+                                            play);
                             break;
                     }
                     break;
@@ -155,10 +159,10 @@ void RegisterShuffleGrass() {
     });
 }
 
-
 void Rando::StaticData::RegisterGrassLocations() {
     static bool registered = false;
-    if (registered) return;
+    if (registered)
+        return;
     registered = true;
     // clang-format off
     // Overworld Grass

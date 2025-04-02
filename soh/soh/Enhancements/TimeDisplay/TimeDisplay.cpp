@@ -147,18 +147,18 @@ void TimeDisplayUpdateDisplayOptions() {
         }
     }
 
-    //if (pushBack) {
-    //    activeTimers.push_back(timeDisplayList[timeID]);
-    //} else {
-    //    uint32_t index = 0;
-    //    for (auto& check : activeTimers) {
-    //        if (check.timeID == timeID) {
-    //            activeTimers.erase(activeTimers.begin() + index);
-    //            return;
-    //        }
-    //        index++;
-    //    }
-    //}
+    // if (pushBack) {
+    //     activeTimers.push_back(timeDisplayList[timeID]);
+    // } else {
+    //     uint32_t index = 0;
+    //     for (auto& check : activeTimers) {
+    //         if (check.timeID == timeID) {
+    //             activeTimers.erase(activeTimers.begin() + index);
+    //             return;
+    //         }
+    //         index++;
+    //     }
+    // }
 }
 
 void TimeDisplayWindow::Draw() {
@@ -174,9 +174,9 @@ void TimeDisplayWindow::Draw() {
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 4.0f);
 
     ImGui::Begin("TimerDisplay", nullptr,
-                    ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoFocusOnAppearing |
-                    ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar |
-                    ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar);
+                 ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoFocusOnAppearing |
+                     ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar |
+                     ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar);
     ImGui::SetWindowFontScale(fontScale);
     if (activeTimers.size() == 0) {
         ImGui::Text("No Enabled Timers...");
@@ -247,13 +247,17 @@ static void TimeDisplayInitTimers() {
 }
 
 void TimeDisplayWindow::InitElement() {
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("GAMEPLAY_TIMER", gClockIconTex, ImVec4(1, 1, 1, 1));
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("DAY_TIME_TIMER", gSunIconTex, ImVec4(1, 1, 1, 1));
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("NIGHT_TIME_TIMER", gMoonIconTex, ImVec4(1, 1, 1, 1));
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("GAMEPLAY_TIMER", gClockIconTex,
+                                                                        ImVec4(1, 1, 1, 1));
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("DAY_TIME_TIMER", gSunIconTex,
+                                                                        ImVec4(1, 1, 1, 1));
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("NIGHT_TIME_TIMER", gMoonIconTex,
+                                                                        ImVec4(1, 1, 1, 1));
     Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("NAVI_TIMER", gNaviIconTex, ImVec4(1, 1, 1, 1));
 
     for (auto& load : digitList) {
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(load.first.c_str(), load.second, ImVec4(1, 1, 1, 1));
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(load.first.c_str(), load.second,
+                                                                            ImVec4(1, 1, 1, 1));
     }
 
     TimeDisplayInitSettings();

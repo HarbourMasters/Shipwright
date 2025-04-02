@@ -29,7 +29,8 @@ void MessageViewer::DrawElement() {
     ImGui::Text("Table ID");
     ImGui::SameLine();
     PushStyleInput(THEME_COLOR);
-    ImGui::InputText("##TableID", mTableIdBuf, MAX_STRING_SIZE, ImGuiInputTextFlags_CallbackCharFilter, UIWidgets::TextFilters::FilterAlphaNum);
+    ImGui::InputText("##TableID", mTableIdBuf, MAX_STRING_SIZE, ImGuiInputTextFlags_CallbackCharFilter,
+                     UIWidgets::TextFilters::FilterAlphaNum);
     UIWidgets::InsertHelpHoverText("Leave blank for vanilla table");
     ImGui::Text("Text ID");
     ImGui::SameLine();
@@ -41,7 +42,8 @@ void MessageViewer::DrawElement() {
         case HEXADECIMAL:
         default:
             ImGui::InputText("##TextID", mTextIdBuf, MAX_STRING_SIZE, ImGuiInputTextFlags_CharsHexadecimal);
-            UIWidgets::InsertHelpHoverText("Hexadecimal Text ID of the message to load. Hexadecimal digits only (0-9/A-F).");
+            UIWidgets::InsertHelpHoverText(
+                "Hexadecimal Text ID of the message to load. Hexadecimal digits only (0-9/A-F).");
             break;
     }
     PopStyleInput();
@@ -169,8 +171,7 @@ void FindMessage(PlayState* play, const uint16_t textId, const uint8_t language)
     font->msgLength = nextSeg - foundSeg;
 }
 
-static const char* msgStaticTbl[] =
-{
+static const char* msgStaticTbl[] = {
     gDefaultMessageBackgroundTex,
     gSignMessageBackgroundTex,
     gNoteStaffMessageBackgroundTex,
@@ -201,13 +202,14 @@ void MessageDebug_StartTextBox(const char* tableId, uint16_t textId, uint8_t lan
         FindMessage(play, textId, language);
         msgCtx->msgLength = static_cast<int32_t>(font->msgLength);
         const uintptr_t src = font->msgOffset;
-        memcpy(font->msgBuf, reinterpret_cast<void const *>(src), font->msgLength);
+        memcpy(font->msgBuf, reinterpret_cast<void const*>(src), font->msgLength);
     } else {
         constexpr int maxBufferSize = sizeof(font->msgBuf);
         const CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(tableId, textId);
         font->charTexBuf[0] = (messageEntry.GetTextBoxType() << 4) | messageEntry.GetTextBoxPosition();
         switch (language) {
-            font->msgLength = SohUtils::CopyStringToCharBuffer(buffer, messageEntry.GetForLanguage(language), maxBufferSize);
+            font->msgLength =
+                SohUtils::CopyStringToCharBuffer(buffer, messageEntry.GetForLanguage(language), maxBufferSize);
         }
         msgCtx->msgLength = static_cast<int32_t>(font->msgLength);
     }
@@ -258,8 +260,6 @@ void MessageDebug_StartTextBox(const char* tableId, uint16_t textId, uint8_t lan
 void MessageDebug_DisplayCustomMessage(const char* customMessage) {
     CustomMessageManager::Instance->ClearMessageTable(MessageViewer::TABLE_ID);
     CustomMessageManager::Instance->CreateMessage(MessageViewer::TABLE_ID, 0,
-        CustomMessage(customMessage, customMessage, customMessage));
+                                                  CustomMessage(customMessage, customMessage, customMessage));
     MessageDebug_StartTextBox(MessageViewer::TABLE_ID, 0, 0);
 }
-
-

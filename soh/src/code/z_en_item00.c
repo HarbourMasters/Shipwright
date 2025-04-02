@@ -336,7 +336,8 @@ void EnItem00_SetupAction(EnItem00* this, EnItem00ActionFunc actionFunc) {
 void EnItem00_SetObjectDependency(EnItem00* this, PlayState* play, s16 objectIndex) {
     // Remove object dependency for Enemy Randomizer and Crowd Control to allow Like-likes to
     // drop equipment correctly in rooms where Like-likes normally don't spawn.
-    if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) || (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0))) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) ||
+        (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0))) {
         this->actor.objBankIndex = 0;
     } else {
         this->actor.objBankIndex = Object_GetIndex(&play->objectCtx, objectIndex);
@@ -710,8 +711,7 @@ void func_8001E304(EnItem00* this, PlayState* play) {
         pos.x = this->actor.world.pos.x + (Rand_ZeroOne() - 0.5f) * 10.0f;
         pos.y = this->actor.world.pos.y + (Rand_ZeroOne() - 0.5f) * 10.0f;
         pos.z = this->actor.world.pos.z + (Rand_ZeroOne() - 0.5f) * 10.0f;
-        EffectSsKiraKira_SpawnSmall(play, &pos, &sEffectVelocity, &sEffectAccel, &sEffectPrimColor,
-                                    &sEffectEnvColor);
+        EffectSsKiraKira_SpawnSmall(play, &pos, &sEffectVelocity, &sEffectAccel, &sEffectPrimColor, &sEffectEnvColor);
     }
 
     if (this->actor.bgCheckFlags & 0x0003) {
@@ -768,15 +768,13 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
     s32 pad;
 
     // Rotate some drops when 3D drops are on, otherwise reset rotation back to 0 for billboard effect
-    if (
-        (this->actor.params == ITEM00_HEART && this->unk_15A >= 0) ||
+    if ((this->actor.params == ITEM00_HEART && this->unk_15A >= 0) ||
         (this->actor.params >= ITEM00_ARROWS_SMALL && this->actor.params <= ITEM00_SMALL_KEY) ||
-        this->actor.params == ITEM00_BOMBS_A ||
-        this->actor.params == ITEM00_ARROWS_SINGLE ||
+        this->actor.params == ITEM00_BOMBS_A || this->actor.params == ITEM00_ARROWS_SINGLE ||
         this->actor.params == ITEM00_BOMBS_SPECIAL ||
-        (this->actor.params >= ITEM00_BOMBCHU && this->actor.params <= ITEM00_SOH_GIVE_ITEM_ENTRY_GI)
-    ) {
-        if (CVarGetInteger(CVAR_ENHANCEMENT("NewDrops"), 0) || (this->actor.params >= ITEM00_SOH_DUMMY && this->actor.params <= ITEM00_SOH_GIVE_ITEM_ENTRY_GI)) {
+        (this->actor.params >= ITEM00_BOMBCHU && this->actor.params <= ITEM00_SOH_GIVE_ITEM_ENTRY_GI)) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("NewDrops"), 0) ||
+            (this->actor.params >= ITEM00_SOH_DUMMY && this->actor.params <= ITEM00_SOH_GIVE_ITEM_ENTRY_GI)) {
             this->actor.shape.rot.y += 960;
         } else {
             this->actor.shape.rot.y = 0;
@@ -967,7 +965,8 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
     }
 
     if ((*params <= ITEM00_RUPEE_RED) || (*params == ITEM00_RUPEE_ORANGE)) {
-        Audio_PlaySoundGeneral(NA_SE_SY_GET_RUPY, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySoundGeneral(NA_SE_SY_GET_RUPY, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     } else if (getItemId != GI_NONE) {
         if (Actor_HasParent(&this->actor, play)) {
             Flags_SetCollectible(play, this->collectibleFlag);
@@ -975,7 +974,8 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
         }
         return;
     } else {
-        Audio_PlaySoundGeneral(NA_SE_SY_GET_ITEM, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySoundGeneral(NA_SE_SY_GET_ITEM, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 
     Flags_SetCollectible(play, this->collectibleFlag);
@@ -1181,7 +1181,6 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
     }
 }
 
-
 typedef enum {
     PARTICLE_BRIGHT_GREEN,
     PARTICLE_RED,
@@ -1357,8 +1356,7 @@ void EnItem00_DrawRupee(EnItem00* this, PlayState* play) {
         texIndex = this->actor.params - 0x10;
     }
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
 
     Color_RGB8 rupeeColor;
     u8 shouldColor = 0;
@@ -1422,8 +1420,7 @@ void EnItem00_DrawCollectible(EnItem00* this, PlayState* play) {
 
         POLY_OPA_DISP = Gfx_SetupDL_66(POLY_OPA_DISP);
 
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_MODELVIEW | G_MTX_LOAD);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
 
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetTexturePersp(POLY_OPA_DISP++, G_TP_PERSP);
@@ -1455,8 +1452,7 @@ void EnItem00_DrawCollectible(EnItem00* this, PlayState* play) {
 
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sItemDropTex[texIndex]));
 
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                G_MTX_MODELVIEW | G_MTX_LOAD);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
         gSPDisplayList(POLY_OPA_DISP++, gItemDropDL);
 
         CLOSE_DISPS(play->state.gfxCtx);
@@ -1473,14 +1469,12 @@ void EnItem00_DrawHeartContainer(EnItem00* this, PlayState* play) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     func_8002EBCC(&this->actor, play, 0);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_OPA_DISP++, gHeartPieceExteriorDL);
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     func_8002ED80(&this->actor, play, 0);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_XLU_DISP++, gHeartContainerInteriorDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
@@ -1496,8 +1490,7 @@ void EnItem00_DrawHeartPiece(EnItem00* this, PlayState* play) {
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     func_8002ED80(&this->actor, play, 0);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-            G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_XLU_DISP++, gHeartPieceInteriorDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
@@ -1553,8 +1546,8 @@ s16 func_8001F404(s16 dropId) {
     }
 
     // #region [Randomizer] [Enchancment]
-    if ((CVarGetInteger(CVAR_ENHANCEMENT("EnableBombchuDrops"), 0) || 
-        (IS_RANDO && Randomizer_GetSettingValue(RSK_ENABLE_BOMBCHU_DROPS) == 1)) &&
+    if ((CVarGetInteger(CVAR_ENHANCEMENT("EnableBombchuDrops"), 0) ||
+         (IS_RANDO && Randomizer_GetSettingValue(RSK_ENABLE_BOMBCHU_DROPS) == 1)) &&
         (dropId == ITEM00_BOMBS_A || dropId == ITEM00_BOMBS_B || dropId == ITEM00_BOMBS_SPECIAL) &&
         (!IS_RANDO || Randomizer_GetSettingValue(RSK_BOMBCHU_BAG) || INV_CONTENT(ITEM_BOMB) != ITEM_NONE)) {
         dropId = EnItem00_ConvertBombDropToBombchu(dropId);
@@ -1589,22 +1582,24 @@ EnItem00* Item_DropCollectible(PlayState* play, Vec3f* spawnPos, s16 params) {
 
     params &= 0x3FFF;
 
-    if ((params & 0x00FF) == ITEM00_HEART && CVarGetInteger(CVAR_ENHANCEMENT("NoHeartDrops"), 0)) { return NULL; }
+    if ((params & 0x00FF) == ITEM00_HEART && CVarGetInteger(CVAR_ENHANCEMENT("NoHeartDrops"), 0)) {
+        return NULL;
+    }
 
     if (((params & 0x00FF) == ITEM00_FLEXIBLE) && !param4000) {
         // TODO: Prevent the cast to EnItem00 here since this is a different actor (En_Elf)
-        spawnedActor = (EnItem00*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, spawnPos->x,
-                                              spawnPos->y + 40.0f, spawnPos->z, 0, 0, 0, FAIRY_HEAL_TIMED, true);
-        EffectSsDeadSound_SpawnStationary(play, spawnPos, NA_SE_EV_BUTTERFRY_TO_FAIRY, true,
-                                          DEADSOUND_REPEAT_MODE_OFF, 40);
+        spawnedActor = (EnItem00*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, spawnPos->x, spawnPos->y + 40.0f,
+                                              spawnPos->z, 0, 0, 0, FAIRY_HEAL_TIMED, true);
+        EffectSsDeadSound_SpawnStationary(play, spawnPos, NA_SE_EV_BUTTERFRY_TO_FAIRY, true, DEADSOUND_REPEAT_MODE_OFF,
+                                          40);
     } else {
         if (!param8000) {
             params = func_8001F404(params & 0x00FF);
         }
 
         if (params != -1) {
-            spawnedActor = (EnItem00*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ITEM00, spawnPos->x,
-                                                  spawnPos->y, spawnPos->z, 0, 0, 0, params | param8000 | param3F00, true);
+            spawnedActor = (EnItem00*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ITEM00, spawnPos->x, spawnPos->y,
+                                                  spawnPos->z, 0, 0, 0, params | param8000 | param3F00, true);
             if ((spawnedActor != NULL) && !param8000) {
                 spawnedActor->actor.velocity.y = !param4000 ? 8.0f : -2.0f;
                 spawnedActor->actor.speedXZ = 2.0f;
@@ -1634,19 +1629,21 @@ EnItem00* Item_DropCollectible2(PlayState* play, Vec3f* spawnPos, s16 params) {
 
     params &= 0x3FFF;
 
-    if ((params & 0x00FF) == ITEM00_HEART && CVarGetInteger(CVAR_ENHANCEMENT("NoHeartDrops"), 0)) { return NULL; }
-    
+    if ((params & 0x00FF) == ITEM00_HEART && CVarGetInteger(CVAR_ENHANCEMENT("NoHeartDrops"), 0)) {
+        return NULL;
+    }
+
     if (((params & 0x00FF) == ITEM00_FLEXIBLE) && !param4000) {
         // TODO: Prevent the cast to EnItem00 here since this is a different actor (En_Elf)
-        spawnedActor = (EnItem00*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, spawnPos->x,
-                                              spawnPos->y + 40.0f, spawnPos->z, 0, 0, 0, FAIRY_HEAL_TIMED, true);
-        EffectSsDeadSound_SpawnStationary(play, spawnPos, NA_SE_EV_BUTTERFRY_TO_FAIRY, true,
-                                          DEADSOUND_REPEAT_MODE_OFF, 40);
+        spawnedActor = (EnItem00*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, spawnPos->x, spawnPos->y + 40.0f,
+                                              spawnPos->z, 0, 0, 0, FAIRY_HEAL_TIMED, true);
+        EffectSsDeadSound_SpawnStationary(play, spawnPos, NA_SE_EV_BUTTERFRY_TO_FAIRY, true, DEADSOUND_REPEAT_MODE_OFF,
+                                          40);
     } else {
         params = func_8001F404(params & 0x00FF);
         if (params != -1) {
-            spawnedActor = (EnItem00*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ITEM00, spawnPos->x,
-                                                  spawnPos->y, spawnPos->z, 0, 0, 0, params | param8000 | param3F00, true);
+            spawnedActor = (EnItem00*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ITEM00, spawnPos->x, spawnPos->y,
+                                                  spawnPos->z, 0, 0, 0, params | param8000 | param3F00, true);
             if ((spawnedActor != NULL) && !param8000) {
                 spawnedActor->actor.velocity.y = 0.0f;
                 spawnedActor->actor.speedXZ = 0.0f;
@@ -1671,7 +1668,9 @@ void Item_DropCollectibleRandom(PlayState* play, Actor* fromActor, Vec3f* spawnP
     param8000 = params & 0x8000;
     params &= 0x7FFF;
 
-    if (CVarGetInteger(CVAR_ENHANCEMENT("NoRandomDrops"), 0)) { return; }
+    if (CVarGetInteger(CVAR_ENHANCEMENT("NoRandomDrops"), 0)) {
+        return;
+    }
 
     if (fromActor != NULL) {
         if (fromActor->dropFlag) {
@@ -1709,16 +1708,18 @@ void Item_DropCollectibleRandom(PlayState* play, Actor* fromActor, Vec3f* spawnP
 
     if (dropId == ITEM00_FLEXIBLE) {
         if (gSaveContext.health <= 0x10) { // 1 heart or less
-            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, spawnPos->x, spawnPos->y + 40.0f, spawnPos->z, 0,
-                        0, 0, FAIRY_HEAL_TIMED, true);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, spawnPos->x, spawnPos->y + 40.0f, spawnPos->z, 0, 0, 0,
+                        FAIRY_HEAL_TIMED, true);
             EffectSsDeadSound_SpawnStationary(play, spawnPos, NA_SE_EV_BUTTERFRY_TO_FAIRY, true,
                                               DEADSOUND_REPEAT_MODE_OFF, 40);
             return;
-        } else if (gSaveContext.health <= 0x30 && !CVarGetInteger(CVAR_ENHANCEMENT("NoHeartDrops"), 0)) { // 3 hearts or less
+        } else if (gSaveContext.health <= 0x30 &&
+                   !CVarGetInteger(CVAR_ENHANCEMENT("NoHeartDrops"), 0)) { // 3 hearts or less
             params = 0xB * 0x10;
             dropTableIndex = 0x0;
             dropId = ITEM00_HEART;
-        } else if (gSaveContext.health <= 0x50 && !CVarGetInteger(CVAR_ENHANCEMENT("NoHeartDrops"), 0)) { // 5 hearts or less
+        } else if (gSaveContext.health <= 0x50 &&
+                   !CVarGetInteger(CVAR_ENHANCEMENT("NoHeartDrops"), 0)) { // 5 hearts or less
             params = 0xA * 0x10;
             dropTableIndex = 0x0;
             dropId = ITEM00_HEART;

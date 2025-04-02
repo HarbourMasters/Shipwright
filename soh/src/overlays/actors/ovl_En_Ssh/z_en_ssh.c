@@ -3,7 +3,9 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
+#define FLAGS                                                                                 \
+    (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
+     ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 #define SSH_STATE_STUNNED (1 << 0)
 #define SSH_STATE_GROUND_START (1 << 2)
@@ -160,8 +162,8 @@ s32 EnSsh_CheckCeilingPos(EnSsh* this, PlayState* play) {
     posB.x = this->actor.world.pos.x;
     posB.y = this->actor.world.pos.y + 1000.0f;
     posB.z = this->actor.world.pos.z;
-    if (!BgCheck_EntityLineTest1(&play->colCtx, &this->actor.world.pos, &posB, &this->ceilingPos, &poly, false,
-                                 false, true, true, &bgId)) {
+    if (!BgCheck_EntityLineTest1(&play->colCtx, &this->actor.world.pos, &posB, &this->ceilingPos, &poly, false, false,
+                                 true, true, &bgId)) {
         return false;
     } else {
         return true;
@@ -701,10 +703,11 @@ void EnSsh_Idle(EnSsh* this, PlayState* play) {
                 this->actor.textId = Text_GetFaceReaction(play, 0xD);
                 if (this->actor.textId == 0) {
                     if (this->actor.params == ENSSH_FATHER) {
-                        // #region SOH [Randomizer] Skip the complexity of the father's text when he should just give a hint
-                        if (IS_RANDO && Randomizer_GetSettingValue(RSK_KAK_100_SKULLS_HINT)){
+                        // #region SOH [Randomizer] Skip the complexity of the father's text when he should just give a
+                        // hint
+                        if (IS_RANDO && Randomizer_GetSettingValue(RSK_KAK_100_SKULLS_HINT)) {
                             this->actor.textId = 0x27;
-                        // #endregion
+                            // #endregion
                         } else {
                             if (gSaveContext.inventory.gsTokens >= 50) {
                                 this->actor.textId = 0x29;
@@ -894,6 +897,5 @@ void EnSsh_Draw(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(blinkTex[this->blinkState]));
     CLOSE_DISPS(play->state.gfxCtx);
-    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnSsh_OverrideLimbDraw,
-                      EnSsh_PostLimbDraw, &this->actor);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnSsh_OverrideLimbDraw, EnSsh_PostLimbDraw, &this->actor);
 }

@@ -106,8 +106,7 @@ void EnTa_Init(Actor* thisx, PlayState* play2) {
     PlayState* play = play2;
 
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 36.0f);
-    SkelAnime_InitFlex(play, &this->skelAnime, &gTalonSkel, &gTalonStandAnim, this->jointTable, this->morphTable,
-                       17);
+    SkelAnime_InitFlex(play, &this->skelAnime, &gTalonSkel, &gTalonStandAnim, this->jointTable, this->morphTable, 17);
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
 
@@ -871,7 +870,8 @@ void EnTa_TalkGeneralInLonLonHouse(EnTa* this, PlayState* play) {
 }
 
 void EnTa_GiveItemInLonLonHouse(EnTa* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_TALONS_CHICKENS, true, &this->actor)) {
+    if (Actor_HasParent(&this->actor, play) ||
+        !GameInteractor_Should(VB_GIVE_ITEM_FROM_TALONS_CHICKENS, true, &this->actor)) {
         this->actor.parent = NULL;
         this->actionFunc = EnTa_TalkGeneralInLonLonHouse;
         if (!(this->unk_2E0 & 0x2)) {
