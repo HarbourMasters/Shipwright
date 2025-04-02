@@ -306,11 +306,13 @@ extern "C" void Randomizer_InitSaveFile() {
 
         // Malon/Talon back at ranch.
         Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG);
+        Flags_SetRandomizerInf(RAND_INF_WEIRD_EGG);
         Flags_SetEventChkInf(EVENTCHKINF_TALON_WOKEN_IN_CASTLE);
         Flags_SetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE);
 
         // Set "Got Zelda's Letter" flag. Also ensures Saria is back at SFM.
         Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER);
+        Flags_SetRandomizerInf(RAND_INF_ZELDAS_LETTER);
         Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_LETTER_ZELDA);
 
         // Got item from Impa.
@@ -321,7 +323,6 @@ extern "C" void Randomizer_InitSaveFile() {
         // Set this at the end to ensure we always start with the letter.
         // This is for the off chance, we got the Weird Egg from Impa (which should never happen).
         INV_CONTENT(ITEM_LETTER_ZELDA) = ITEM_LETTER_ZELDA;
-        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_LETTER_ZELDA);
     }
 
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && startingAge == RO_AGE_ADULT) {

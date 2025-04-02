@@ -1775,7 +1775,7 @@ void SohMenu::AddMenuEnhancements() {
         .WindowName("Additional Timers")
         .Options(WindowButtonOptions().Tooltip("Enables the separate Additional Timers Window."));
     AddWidget(path, "Font Scale: %.2fx", WIDGET_CVAR_SLIDER_FLOAT)
-        .CVar(CVAR_ENHANCEMENT("TimeDisplay.FontScale"))
+        .CVar(CVAR_TIME_DISPLAY("FontScale"))
         .Callback([](WidgetInfo& info) {
             TimeDisplayInitSettings();
         })
@@ -1786,7 +1786,7 @@ void SohMenu::AddMenuEnhancements() {
             .Format("%.2fx")
         );
     AddWidget(path, "Hide Background", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_ENHANCEMENT("TimeDisplay.ShowWindowBG"))
+        .CVar(CVAR_TIME_DISPLAY("ShowWindowBG"))
         .Callback([](WidgetInfo& info) {
             TimeDisplayInitSettings();
         });

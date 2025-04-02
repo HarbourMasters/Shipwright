@@ -25,12 +25,14 @@ typedef enum {
   PT_TOD_ACCESS,
   PT_ENTRANCE_LOGIC,
   PT_LOCATION_LOGIC,
+  PT_RECALCULATE_AVAILABLE_CHECKS,
   PT_MAX
 } TimerID;
 
 void StartPerformanceTimer(TimerID timer);
 void StopPerformanceTimer(TimerID timer);
 std::chrono::duration<double, std::milli> GetPerformanceTimer(TimerID timer);
+void ResetPerformanceTimer(TimerID timer);
 void ResetPerformanceTimers();
 static std::array<std::chrono::duration<double, std::milli>, PT_MAX> totalTimes = {};
 static std::array<std::chrono::high_resolution_clock::time_point, PT_MAX> timeStarted = {};

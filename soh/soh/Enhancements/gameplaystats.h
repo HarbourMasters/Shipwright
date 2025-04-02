@@ -27,7 +27,7 @@ extern "C" {
                        : gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED])) \
          :\
     (gSaveContext.ship.stats.playTimer / 2 + gSaveContext.ship.stats.pauseTimer / 3))
-#define CURRENT_MODE_TIMER (CVarGetInteger(CVAR_ENHANCEMENT("GameplayStats.RoomBreakdown"), 0) ?\
+#define CURRENT_MODE_TIMER (CVarGetInteger(CVAR_GAMEPLAY_STATS("RoomBreakdown"), 0) ?\
     gSaveContext.ship.stats.roomTimer :\
     gSaveContext.ship.stats.sceneTimer)
 

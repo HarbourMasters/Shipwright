@@ -236,6 +236,14 @@ void RandomizerOnFlagSetHandler(int16_t flagType, int16_t flag) {
         Flags_UnsetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_CHICKEN);
     }
 
+    if (flagType == FLAG_EVENT_CHECK_INF && flag == EVENTCHKINF_OBTAINED_ZELDAS_LETTER) {
+        Flags_SetRandomizerInf(RAND_INF_ZELDAS_LETTER);
+    }
+
+    if (flagType == FLAG_EVENT_CHECK_INF && flag == EVENTCHKINF_OBTAINED_POCKET_EGG) {
+        Flags_SetRandomizerInf(RAND_INF_WEIRD_EGG);
+    }
+
     RandomizerCheck rc = GetRandomizerCheckFromFlag(flagType, flag);
     if (rc == RC_UNKNOWN_CHECK) return;
 
@@ -351,6 +359,7 @@ void RandomizerOnItemReceiveHandler(GetItemEntry receivedItemEntry) {
         loc->SetCheckStatus(RCSHOW_COLLECTED);
         CheckTracker::SpoilAreaFromCheck(randomizerQueuedCheck);
         CheckTracker::RecalculateAllAreaTotals();
+        CheckTracker::RecalculateAvailableChecks();
         SaveManager::Instance->SaveSection(gSaveContext.fileNum, SECTION_ID_TRACKER_DATA, true);
         randomizerQueuedCheck = RC_UNKNOWN_CHECK;
         randomizerQueuedItemEntry = GET_ITEM_NONE;

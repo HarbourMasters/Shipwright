@@ -228,5 +228,14 @@ void ItemLocation::ResetVariables() {
     areas = {};
     status = RCSHOW_UNCHECKED;
     isSkipped = false;
+    isAvailable = false;
+}
+
+bool ItemLocation::IsAvailable() const {
+    return isAvailable;
+}
+
+void ItemLocation::SetAvailable(bool isAvailable_) {
+    isAvailable = isAvailable_;
 }
 }

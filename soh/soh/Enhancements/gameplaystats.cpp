@@ -391,7 +391,7 @@ void GameplayStatsRow(const char* label, const std::string& value, ImVec4 color 
 }
 
 bool compareTimestampInfoByTime(const TimestampInfo& a, const TimestampInfo& b) {
-    return CVarGetInteger(CVAR_ENHANCEMENT("GameplayStats.ReverseTimestamps"), 0) ? a.time > b.time : a.time < b.time;
+    return CVarGetInteger(CVAR_GAMEPLAY_STATS("ReverseTimestamps"), 0) ? a.time > b.time : a.time < b.time;
 }
 
 const char* ResolveSceneID(int sceneID, int roomID){
@@ -452,13 +452,13 @@ void DrawGameplayStatsHeader() {
     } else {
         GameplayStatsRow("Total Game Time:", formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME), gSaveContext.ship.stats.gameComplete ? COLOR_GREEN : COLOR_WHITE);
     }
-    if (CVarGetInteger(CVAR_ENHANCEMENT("GameplayStats.ShowAdditionalTimers"), 0)) { // !Only display total game time
+    if (CVarGetInteger(CVAR_GAMEPLAY_STATS("ShowAdditionalTimers"), 0)) { // !Only display total game time
         GameplayStatsRow("Gameplay Time:", formatTimestampGameplayStat(gSaveContext.ship.stats.playTimer / 2), COLOR_GREY);
         GameplayStatsRow("Pause Menu Time:", formatTimestampGameplayStat(gSaveContext.ship.stats.pauseTimer / 3), COLOR_GREY);
         GameplayStatsRow("Time in scene:", formatTimestampGameplayStat(gSaveContext.ship.stats.sceneTimer / 2), COLOR_LIGHT_BLUE);
         GameplayStatsRow("Time in room:", formatTimestampGameplayStat(gSaveContext.ship.stats.roomTimer / 2), COLOR_LIGHT_BLUE);
     }
-    if (gPlayState != NULL && CVarGetInteger(CVAR_ENHANCEMENT("GameplayStats.ShowDebugInfo"), 0)) { // && display debug info
+    if (gPlayState != NULL && CVarGetInteger(CVAR_GAMEPLAY_STATS("ShowDebugInfo"), 0)) { // && display debug info
         GameplayStatsRow("play->sceneNum:", formatHexGameplayStat(gPlayState->sceneNum), COLOR_YELLOW);
         GameplayStatsRow("gSaveContext.entranceIndex:", formatHexGameplayStat(gSaveContext.entranceIndex), COLOR_YELLOW);
         GameplayStatsRow("gSaveContext.cutsceneIndex:", formatHexOnlyGameplayStat(gSaveContext.cutsceneIndex), COLOR_YELLOW);
@@ -576,13 +576,13 @@ void DrawGameplayStatsBreakdownTab() {
     for (int i = 0; i < gSaveContext.ship.stats.tsIdx; i++) {
         std::string sceneName = ResolveSceneID(gSaveContext.ship.stats.sceneTimestamps[i].scene, gSaveContext.ship.stats.sceneTimestamps[i].room);
         std::string name;
-        if (CVarGetInteger(CVAR_ENHANCEMENT("GameplayStats.RoomBreakdown"), 0) && gSaveContext.ship.stats.sceneTimestamps[i].scene != SCENE_GROTTOS) {
+        if (CVarGetInteger(CVAR_GAMEPLAY_STATS("RoomBreakdown"), 0) && gSaveContext.ship.stats.sceneTimestamps[i].scene != SCENE_GROTTOS) {
             name = fmt::format("{:s} Room {:d}", sceneName, gSaveContext.ship.stats.sceneTimestamps[i].room);
         } else {
             name = sceneName;
         }
         strcpy(sceneTimestampDisplay[i].name, name.c_str());
-        sceneTimestampDisplay[i].time = CVarGetInteger(CVAR_ENHANCEMENT("GameplayStats.RoomBreakdown"), 0) ?
+        sceneTimestampDisplay[i].time = CVarGetInteger(CVAR_GAMEPLAY_STATS("RoomBreakdown"), 0) ?
             gSaveContext.ship.stats.sceneTimestamps[i].roomTime : gSaveContext.ship.stats.sceneTimestamps[i].sceneTime;
         sceneTimestampDisplay[i].color = COLOR_GREY;
         sceneTimestampDisplay[i].isRoom = gSaveContext.ship.stats.sceneTimestamps[i].isRoom;
@@ -593,13 +593,13 @@ void DrawGameplayStatsBreakdownTab() {
     ImGui::TableSetupColumn("stat", ImGuiTableColumnFlags_WidthStretch);
     for (int i = 0; i < gSaveContext.ship.stats.tsIdx; i++) {
         TimestampInfo tsInfo = sceneTimestampDisplay[i];
-        bool canShow = !tsInfo.isRoom || CVarGetInteger(CVAR_ENHANCEMENT("GameplayStats.RoomBreakdown"), 0);
+        bool canShow = !tsInfo.isRoom || CVarGetInteger(CVAR_GAMEPLAY_STATS("RoomBreakdown"), 0);
         if (tsInfo.time > 0 && strnlen(tsInfo.name, 40) > 1 && canShow) {
             GameplayStatsRow(tsInfo.name, formatTimestampGameplayStat(tsInfo.time), tsInfo.color);
         }
     }
     std::string toPass;
-    if (CVarGetInteger(CVAR_ENHANCEMENT("GameplayStats.RoomBreakdown"), 0) && gSaveContext.ship.stats.sceneNum != SCENE_GROTTOS) {
+    if (CVarGetInteger(CVAR_GAMEPLAY_STATS("RoomBreakdown"), 0) && gSaveContext.ship.stats.sceneNum != SCENE_GROTTOS) {
         toPass = fmt::format("{:s} Room {:d}", ResolveSceneID(gSaveContext.ship.stats.sceneNum, gSaveContext.ship.stats.roomNum), gSaveContext.ship.stats.roomNum);
     } else {
         toPass = ResolveSceneID(gSaveContext.ship.stats.sceneNum, gSaveContext.ship.stats.roomNum);
@@ -610,27 +610,27 @@ void DrawGameplayStatsBreakdownTab() {
 }
 
 void DrawGameplayStatsOptionsTab() {
-    UIWidgets::CVarCheckbox("Show in-game total timer", CVAR_ENHANCEMENT("GameplayStats.ShowIngameTimer"),
+    UIWidgets::CVarCheckbox("Show in-game total timer", CVAR_GAMEPLAY_STATS("ShowIngameTimer"),
                              UIWidgets::CheckboxOptions()
                                  .Tooltip("Keep track of the timer as an in-game HUD element. The position of the "
                                           "timer can be changed in the Cosmetics Editor.")
                                  .Color(THEME_COLOR));
-    UIWidgets::CVarCheckbox("Show latest timestamps on top", CVAR_ENHANCEMENT("GameplayStats.ReverseTimestamps"),
+    UIWidgets::CVarCheckbox("Show latest timestamps on top", CVAR_GAMEPLAY_STATS("ReverseTimestamps"),
                              UIWidgets::CheckboxOptions().Color(THEME_COLOR));
-    UIWidgets::CVarCheckbox("Room Breakdown", CVAR_ENHANCEMENT("GameplayStats.RoomBreakdown"),
+    UIWidgets::CVarCheckbox("Room Breakdown", CVAR_GAMEPLAY_STATS("RoomBreakdown"),
                              UIWidgets::CheckboxOptions()
                                  .Tooltip("Allows a more in-depth perspective of time spent in a certain map.")
                                  .Color(THEME_COLOR));
-    UIWidgets::CVarCheckbox("RTA Timing on new files", CVAR_ENHANCEMENT("GameplayStats.RTATiming"),
+    UIWidgets::CVarCheckbox("RTA Timing on new files", CVAR_GAMEPLAY_STATS("RTATiming"),
                              UIWidgets::CheckboxOptions()
                                  .Tooltip("Timestamps are relative to starting timestamp rather than in game time, "
                                           "usually necessary for races/speedruns.\n\n"
                                           "Starting timestamp is on first non-C-up input after intro cutscene.\n\n"
                                           "NOTE: THIS NEEDS TO BE SET BEFORE CREATING A FILE TO TAKE EFFECT")
                                  .Color(THEME_COLOR));
-    UIWidgets::CVarCheckbox("Show additional detail timers", CVAR_ENHANCEMENT("GameplayStats.ShowAdditionalTimers"),
+    UIWidgets::CVarCheckbox("Show additional detail timers", CVAR_GAMEPLAY_STATS("ShowAdditionalTimers"),
                              UIWidgets::CheckboxOptions().Color(THEME_COLOR));
-    UIWidgets::CVarCheckbox("Show Debug Info", CVAR_ENHANCEMENT("GameplayStats.ShowDebugInfo"),
+    UIWidgets::CVarCheckbox("Show Debug Info", CVAR_GAMEPLAY_STATS("ShowDebugInfo"),
                              UIWidgets::CheckboxOptions().Color(THEME_COLOR));
 }
 
@@ -671,7 +671,7 @@ void InitStats(bool isDebug) {
     for (int dungeon = 0; dungeon < ARRAY_COUNT(gSaveContext.ship.stats.dungeonKeys); dungeon++) {
         gSaveContext.ship.stats.dungeonKeys[dungeon] = isDebug ? 8 : 0;
     }
-    gSaveContext.ship.stats.rtaTiming = CVarGetInteger(CVAR_ENHANCEMENT("GameplayStats.RTATiming"), 0);
+    gSaveContext.ship.stats.rtaTiming = CVarGetInteger(CVAR_GAMEPLAY_STATS("RTATiming"), 0);
     gSaveContext.ship.stats.fileCreatedAt = 0;
     gSaveContext.ship.stats.playTimer = 0;
     gSaveContext.ship.stats.pauseTimer = 0;

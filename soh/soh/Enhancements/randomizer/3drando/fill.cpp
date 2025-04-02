@@ -402,7 +402,13 @@ bool AddCheckToLogic(LocationAccess& locPair, GetAccessibleLocationsStruct& gals
   Rando::ItemLocation* location = ctx->GetItemLocation(loc);
   RandomizerGet locItem = location->GetPlacedRandomizerGet();
 
-  if (!location->IsAddedToPool() && locPair.ConditionsMet(parentRegion)) {
+  if (!location->IsAddedToPool() && locPair.ConditionsMet(parentRegion, gals.calculatingAvailableChecks)) {
+    if (gals.calculatingAvailableChecks) {
+      gals.accessibleLocations.push_back(loc);
+      StopPerformanceTimer(PT_LOCATION_LOGIC);
+      return false;
+    }
+
     location->AddToPool();
 
     if (locItem == RG_NONE) {
@@ -498,19 +504,23 @@ void ProcessRegion(Region* region, GetAccessibleLocationsStruct& gals, Randomize
 }
 
 // Return any of the targetLocations that are accessible in logic
-std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerCheck>& targetLocations, RandomizerGet ignore /* = RG_NONE*/) {
+std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerCheck>& targetLocations, RandomizerGet ignore /* = RG_NONE*/, bool calculatingAvailableChecks /* = false */) {
   auto ctx = Rando::Context::GetInstance();
   GetAccessibleLocationsStruct gals(0);
-  ResetLogic(ctx, gals, true);
+  gals.calculatingAvailableChecks = calculatingAvailableChecks;
+  ResetLogic(ctx, gals, !calculatingAvailableChecks);
   do {
     gals.InitLoop();
     for (size_t i = 0; i < gals.regionPool.size(); i++) {
       ProcessRegion(RegionTable(gals.regionPool[i]), gals, ignore);
     }
   } while (gals.logicUpdated);
-  erase_if(gals.accessibleLocations, [&targetLocations, ctx](RandomizerCheck loc){
+  erase_if(gals.accessibleLocations, [&targetLocations, ctx, calculatingAvailableChecks](RandomizerCheck loc) {
+    if (ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() != RG_NONE && !calculatingAvailableChecks) {
+      return false;
+    }
     for (RandomizerCheck allowedLocation : targetLocations) {
-      if (loc == allowedLocation || ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() != RG_NONE) {
+      if (loc == allowedLocation) {
         return false;
       }
     }

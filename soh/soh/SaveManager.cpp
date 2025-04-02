@@ -459,10 +459,16 @@ void SaveManager::LoadRandomizerVersion3() {
     });
 
     randoContext->GetTrials()->SkipAll();
-    SaveManager::Instance->LoadArray("requiredTrials", randoContext->GetOption(RSK_TRIAL_COUNT).Get() + 1, [&](size_t i) {
+    SaveManager::Instance->LoadArray("requiredTrials", randoContext->GetOption(RSK_TRIAL_COUNT).Get(), [&](size_t i) {
         size_t trialId;
         SaveManager::Instance->LoadData("", trialId);
         randoContext->GetTrial(trialId)->SetAsRequired();
+                                     });
+
+    SaveManager::Instance->LoadArray("trickOptions", RT_MAX, [&](size_t i) {
+        uint8_t value = 0;
+        SaveManager::Instance->LoadData("", value);
+        randoContext->GetTrickOption(RandomizerTrick(i)).Set(value);
     });
 }
 
@@ -595,6 +601,10 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
         if (randoContext->GetTrial(i)->IsRequired()) {
             SaveManager::Instance->SaveData("", i);
         }
+    });
+
+    SaveManager::Instance->SaveArray("trickOptions", RT_MAX, [&](size_t i) {
+        SaveManager::Instance->SaveData("", randoContext->GetTrickOption(RandomizerTrick(i)).Get());
     });
 }
 

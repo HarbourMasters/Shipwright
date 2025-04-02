@@ -90,7 +90,7 @@ class Logic {
     bool FairyPot = false;
     bool FreeFairies = false;
     bool FairyPond = false;
-    bool AmmoCanDrop = false;
+    bool AmmoCanDrop = true;
 
     uint8_t PieceOfHeart = 0;
     uint8_t HeartContainer = 0;

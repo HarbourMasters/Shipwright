@@ -12,6 +12,10 @@ std::chrono::duration<double, std::milli> GetPerformanceTimer(TimerID timer){
     return totalTimes[timer];
 }
 
+void ResetPerformanceTimer(TimerID timer) {
+    totalTimes[timer] = {};
+}
+
 void ResetPerformanceTimers(){
     totalTimes = {};
 }

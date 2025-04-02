@@ -11,6 +11,11 @@
 
 #include <fstream>
 
+extern "C" {
+    extern SaveContext gSaveContext;
+    extern PlayState* gPlayState;
+}
+
 //generic grotto event list
 std::vector<EventAccess> grottoEvents;
 
@@ -27,7 +32,7 @@ bool LocationAccess::CheckConditionAtAgeTime(bool& age, bool& time) const {
     return GetConditionsMet();
 }
 
-bool LocationAccess::ConditionsMet(Region* parentRegion) const {
+bool LocationAccess::ConditionsMet(Region* parentRegion, bool calculatingAvailableChecks) const {
     //WARNING enterance validation can run this after resetting the access for sphere 0 validation
     //When refactoring ToD access, either fix the above or do not assume that we
     //have any access at all just because this is being run
@@ -41,8 +46,8 @@ bool LocationAccess::ConditionsMet(Region* parentRegion) const {
     ) {
         conditionsMet = true;
     }
-
-    return conditionsMet && CanBuy();
+    
+    return conditionsMet && (calculatingAvailableChecks || CanBuy()); // TODO: run CanBuy when price is known due to settings
 }
 
 bool LocationAccess::CanBuy() const {
@@ -224,8 +229,73 @@ bool MQSpiritSharedBrokenWallRoom(const RandomizerRegion region, ConditionFn con
     return areaTable[region].MQSpiritShared(condition, true, anyAge);
 }
 
+bool BeanPlanted(const RandomizerRegion region) {
+    // swchFlag found using the Actor Viewer to get the Obj_Bean parameters & 0x3F
+    // not tested with multiple OTRs, but can be automated similarly to GetDungeonSmallKeyDoors
+    SceneID sceneID;
+    uint8_t swchFlag;
+    switch (region) {
+        case RR_ZORAS_RIVER:
+            sceneID = SceneID::SCENE_ZORAS_RIVER;
+            swchFlag = 3;
+            break;
+        case RR_THE_GRAVEYARD:
+            sceneID = SceneID::SCENE_GRAVEYARD;
+            swchFlag = 3;
+            break;
+        case RR_KOKIRI_FOREST:
+            sceneID = SceneID::SCENE_KOKIRI_FOREST;
+            swchFlag = 9;
+            break;
+        case RR_THE_LOST_WOODS:
+            sceneID = SceneID::SCENE_LOST_WOODS;
+            swchFlag = 4;
+            break;
+        case RR_LW_BEYOND_MIDO:
+            sceneID = SceneID::SCENE_LOST_WOODS;
+            swchFlag = 18;
+            break;
+        case RR_DEATH_MOUNTAIN_TRAIL:
+            sceneID = SceneID::SCENE_DEATH_MOUNTAIN_TRAIL;
+            swchFlag = 6;
+            break;
+        case RR_LAKE_HYLIA:
+            sceneID = SceneID::SCENE_LAKE_HYLIA;
+            swchFlag = 1;
+            break;
+        case RR_GERUDO_VALLEY:
+            sceneID = SceneID::SCENE_GERUDO_VALLEY;
+            swchFlag = 3;
+            break;
+        case RR_DMC_CENTRAL_LOCAL:
+            sceneID = SceneID::SCENE_DEATH_MOUNTAIN_CRATER;
+            swchFlag = 3;
+            break;
+        case RR_DESERT_COLOSSUS:
+            sceneID = SceneID::SCENE_DESERT_COLOSSUS;
+            swchFlag = 24;
+            break;
+        default:
+            sceneID = SCENE_ID_MAX;
+            swchFlag = 0;
+            break;
+    }
+
+    // Get the swch value for the scene
+    uint32_t swch;
+    if (gPlayState != nullptr && gPlayState->sceneNum == sceneID) {
+        swch = gPlayState->actorCtx.flags.swch;
+    } else if (sceneID != SCENE_ID_MAX) {
+        swch = gSaveContext.sceneFlags[sceneID].swch;
+    } else {
+        swch = 0;
+    }
+
+    return swch >> swchFlag & 1;
+}
+
 bool CanPlantBean(const RandomizerRegion region) {
-    return areaTable[region].CanPlantBeanCheck();
+    return areaTable[region].CanPlantBeanCheck() || BeanPlanted(region);
 }
 
 bool BothAges(const RandomizerRegion region) {

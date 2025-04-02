@@ -13,6 +13,11 @@
 #include "macros.h"
 #include "variables.h"
 #include <spdlog/spdlog.h>
+#include "StringHelper.h"
+#include "soh/resource/type/Scene.h"
+#include "soh/resource/type/scenecommand/SetTransitionActorList.h"
+#include "src/overlays/actors/ovl_En_Door/z_en_door.h"
+#include "src/overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
 
 namespace Rando {
 
@@ -87,7 +92,7 @@ namespace Rando {
             case RG_BOMB_BAG:
                 return CurrentUpgrade(UPG_BOMB_BAG);
             case RG_MAGIC_SINGLE:
-                return GetSaveContext()->magicLevel >= 1;
+                return GetSaveContext()->magicLevel >= 1 || GetSaveContext()->isMagicAcquired;
                 // Songs
             case RG_ZELDAS_LULLABY:
             case RG_EPONAS_SONG:
@@ -217,6 +222,7 @@ namespace Rando {
             case RG_GOLDEN_SCALE:
                 return CurrentUpgrade(UPG_SCALE) >= 2;
             case RG_POCKET_EGG:
+                return CheckRandoInf(RAND_INF_ADULT_TRADES_HAS_POCKET_EGG);
             case RG_COJIRO:
             case RG_ODD_MUSHROOM:
             case RG_ODD_POTION:
@@ -226,7 +232,7 @@ namespace Rando {
             case RG_EYEBALL_FROG:
             case RG_EYEDROPS:
             case RG_CLAIM_CHECK:
-                return CheckRandoInf(itemName - RG_POCKET_EGG + RAND_INF_ADULT_TRADES_HAS_POCKET_EGG);
+                return CheckRandoInf(itemName - RG_COJIRO + RAND_INF_ADULT_TRADES_HAS_COJIRO);
             case RG_BOTTLE_WITH_BIG_POE:
             case RG_BOTTLE_WITH_BLUE_FIRE:
             case RG_BOTTLE_WITH_BLUE_POTION:
@@ -1509,6 +1515,8 @@ namespace Rando {
                 mSaveContext->isDoubleDefenseAcquired = state;
                 break;
             case RG_POCKET_EGG:
+                SetRandoInf(RAND_INF_ADULT_TRADES_HAS_POCKET_EGG, state);
+                break;
             case RG_COJIRO:
             case RG_ODD_MUSHROOM:
             case RG_ODD_POTION:
@@ -1518,7 +1526,7 @@ namespace Rando {
             case RG_EYEBALL_FROG:
             case RG_EYEDROPS:
             case RG_CLAIM_CHECK:
-                SetRandoInf(randoGet - RG_POCKET_EGG + RAND_INF_ADULT_TRADES_HAS_POCKET_EGG, state);
+                SetRandoInf(randoGet - RG_COJIRO + RAND_INF_ADULT_TRADES_HAS_COJIRO, state);
                 break;
             case RG_PROGRESSIVE_HOOKSHOT:
             {
@@ -2096,8 +2104,97 @@ namespace Rando {
         }
     }
 
+    // Get the swch bit positions for the dungeon
+    const std::vector<uint8_t>& GetDungeonSmallKeyDoors(SceneID sceneId) {
+        static const std::vector<uint8_t> emptyVector;
+
+        auto dungeonInfo = Rando::Context::GetInstance()->GetDungeons()->GetDungeonFromScene(sceneId);
+        if (dungeonInfo == nullptr) {
+            return emptyVector;
+        }
+
+        bool masterQuest = dungeonInfo->IsMQ();
+
+        // Create a unique key for the dungeon and master quest 
+        uint8_t key = sceneId | (masterQuest << 7);
+
+        static std::unordered_map<uint8_t, std::vector<uint8_t>> dungeonSmallKeyDoors;
+        auto foundEntry = dungeonSmallKeyDoors.find(key);
+        if (foundEntry != dungeonSmallKeyDoors.end()) {
+            return foundEntry->second;
+        }
+        dungeonSmallKeyDoors[key] = {};
+
+        // Get the scene path
+        SceneTableEntry* sceneTableEntry = &gSceneTable[sceneId];
+        std::string scenePath = StringHelper::Sprintf("scenes/%s/%s/%s", masterQuest ? "mq" : "nonmq",
+            sceneTableEntry->sceneFile.fileName, sceneTableEntry->sceneFile.fileName);
+
+        // Load the scene
+        std::shared_ptr<SOH::Scene> scene = std::dynamic_pointer_cast<SOH::Scene>(
+            Ship::Context::GetInstance()->GetResourceManager()->LoadResource(scenePath));
+        if (scene == nullptr) {
+            return emptyVector;
+        }
+
+        // Find the SetTransitionActorList command
+        std::shared_ptr<SOH::SetTransitionActorList> transitionActorListCommand = nullptr;
+        for (auto& command : scene->commands) {
+            if (command->cmdId == SOH::SceneCommandID::SetTransitionActorList) {
+                transitionActorListCommand = std::dynamic_pointer_cast<SOH::SetTransitionActorList>(command);
+                break;
+            }
+        }
+        if (transitionActorListCommand == nullptr) {
+            return emptyVector;
+        }
+
+        // Find the bit position for the small key doors
+        for (auto& transitionActor : transitionActorListCommand->transitionActorList) {
+            if (transitionActor.id == ACTOR_EN_DOOR) {
+                uint8_t doorType = (transitionActor.params >> 7) & 7;
+                if (doorType == DOOR_LOCKED) {
+                    dungeonSmallKeyDoors[key].emplace_back(transitionActor.params & 0x3F);
+                }
+            } else if (transitionActor.id == ACTOR_DOOR_SHUTTER) {
+                uint8_t doorType = (transitionActor.params >> 7) & 15;
+                if (doorType == SHUTTER_BACK_LOCKED || doorType == SHUTTER_BOSS || doorType == SHUTTER_KEY_LOCKED) {
+                    dungeonSmallKeyDoors[key].emplace_back(transitionActor.params & 0x3F);
+                }
+            }
+        }
+
+        return dungeonSmallKeyDoors[key];
+    }
+
+    int8_t GetUsedSmallKeyCount(SceneID sceneId) {
+        const auto& smallKeyDoors = GetDungeonSmallKeyDoors(sceneId);
+        
+        // Get the swch value for the scene
+        uint32_t swch;
+        if (gPlayState != nullptr && gPlayState->sceneNum == sceneId) {
+            swch = gPlayState->actorCtx.flags.swch;
+        } else {
+            swch = gSaveContext.sceneFlags[sceneId].swch;
+        }
+        
+        // Count the number of small keys doors unlocked
+        int8_t unlockedSmallKeyDoors = 0;
+        for (auto& smallKeyDoor : smallKeyDoors) {
+            unlockedSmallKeyDoors += swch >> smallKeyDoor & 1;
+        }
+
+        // RANDOTODO: Account for MQ Water trick that causes the basement lock to unlock when the player clears the stalfos pit.
+        return unlockedSmallKeyDoors;
+    }
+
     uint8_t Logic::GetSmallKeyCount(uint32_t dungeonIndex) {
-        return mSaveContext->inventory.dungeonKeys[dungeonIndex];
+        int8_t dungeonKeys = mSaveContext->inventory.dungeonKeys[dungeonIndex];
+        if (dungeonKeys == -1) {
+            // never got keys, so can't have used keys
+            return 0;
+        }
+        return dungeonKeys + GetUsedSmallKeyCount(SceneID(dungeonIndex));
     }
 
     void Logic::SetSmallKeyCount(uint32_t dungeonIndex, uint8_t count) {
@@ -2172,7 +2269,8 @@ namespace Rando {
         IsKeysanity = ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) || 
                     ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) || 
                     ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE);
-        AmmoCanDrop = /*AmmoDrops.IsNot(AMMODROPS_NONE) TODO: AmmoDrop setting*/ true;
+
+        //AmmoCanDrop = /*AmmoDrops.IsNot(AMMODROPS_NONE)*/ false; TODO: AmmoDrop setting
 
         //Child item logic
         SkullMask     = false;

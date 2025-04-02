@@ -37,10 +37,10 @@ const static std::vector<std::pair<std::string, const char*>> digitList = {
 };
 
 const std::vector<TimeObject> timeDisplayList = {
-    { DISPLAY_IN_GAME_TIMER, "Display Gameplay Timer", CVAR_ENHANCEMENT("TimeDisplay.Timers.InGameTimer") },
-    { DISPLAY_TIME_OF_DAY, "Display Time of Day", CVAR_ENHANCEMENT("TimeDisplay.Timers.TimeofDay") },
-    { DISPLAY_CONDITIONAL_TIMER, "Display Conditional Timer", CVAR_ENHANCEMENT("TimeDisplay.Timers.HotWater") },
-    { DISPLAY_NAVI_TIMER, "Display Navi Timer", CVAR_ENHANCEMENT("TimeDisplay.Timers.NaviTimer") }
+    { DISPLAY_IN_GAME_TIMER, "Display Gameplay Timer", CVAR_TIME_DISPLAY("Timers.InGameTimer") },
+    { DISPLAY_TIME_OF_DAY, "Display Time of Day", CVAR_TIME_DISPLAY("Timers.TimeofDay") },
+    { DISPLAY_CONDITIONAL_TIMER, "Display Conditional Timer", CVAR_TIME_DISPLAY("Timers.HotWater") },
+    { DISPLAY_NAVI_TIMER, "Display Navi Timer", CVAR_TIME_DISPLAY("Timers.NaviTimer") }
 };
 
 static std::vector<TimeObject> activeTimers;
@@ -227,11 +227,11 @@ void TimeDisplayWindow::Draw() {
 }
 
 void TimeDisplayInitSettings() {
-    fontScale = CVarGetFloat(CVAR_ENHANCEMENT("TimeDisplay.FontScale"), 1.0f);
+    fontScale = CVarGetFloat(CVAR_TIME_DISPLAY("FontScale"), 1.0f);
     if (fontScale < 1.0f) {
         fontScale = 1.0f;
     }
-    if (CVarGetInteger(CVAR_ENHANCEMENT("TimeDisplay.ShowWindowBG"), 0)) {
+    if (CVarGetInteger(CVAR_TIME_DISPLAY("ShowWindowBG"), 0)) {
         windowBG = ImVec4(0, 0, 0, 0);
     } else {
         windowBG = ImVec4(0, 0, 0, 0.5f);

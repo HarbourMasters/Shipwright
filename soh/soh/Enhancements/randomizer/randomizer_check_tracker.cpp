@@ -9,7 +9,10 @@
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
 #include "dungeon.h"
+#include "entrance.h"
 #include "location_access.h"
+#include "3drando/fill.hpp"
+#include "soh/Enhancements/debugger/performanceTimer.h"
 
 #include <string>
 #include <vector>
@@ -84,7 +87,7 @@ bool fishsanityAgeSplit;
 bool initialized;
 bool doAreaScroll;
 bool previousShowHidden = false;
-bool hideShopUnshuffledChecks = true;
+bool hideShopUnshuffledChecks = false;
 bool alwaysShowGS = false;
 
 std::map<uint32_t, RandomizerCheck> startingShopItem = { { SCENE_KOKIRI_SHOP, RC_KF_SHOP_ITEM_1 },
@@ -132,8 +135,10 @@ bool areasFullyChecked[RCAREA_INVALID];
 u32 areasSpoiled = 0;
 bool showVOrMQ;
 s8 areaChecksGotten[RCAREA_INVALID]; //|     "Kokiri Forest (4/9)"
+s8 areaChecksAvailable[RCAREA_INVALID];
 s8 areaCheckTotals[RCAREA_INVALID];
 uint16_t totalChecks = 0;
+uint16_t totalChecksAvailable = 0;
 uint16_t totalChecksGotten = 0;
 bool optCollapseAll; // A bool that will collapse all checks once
 bool optExpandAll;       // A bool that will expand all checks once
@@ -166,6 +171,8 @@ bool hideCollected = false;
 bool showHidden = true;
 bool mystery = false;
 bool showLogicTooltip = false;
+bool enableAvailableChecks = false;
+bool onlyShowAvailable = false;
 
 SceneID DungeonSceneLookupByArea(RandomizerCheckArea area) {
     switch (area) {
@@ -235,10 +242,12 @@ void TrySetAreas() {
 
 void CalculateTotals() {
     totalChecks = 0;
+    totalChecksAvailable = 0;
     totalChecksGotten = 0;
 
     for (uint8_t i = 0; i < RCAREA_INVALID; i++) {
         totalChecks += areaCheckTotals[i];
+        totalChecksAvailable += areaChecksAvailable[i];
         totalChecksGotten += areaChecksGotten[i];
     }
 }
@@ -251,16 +260,42 @@ uint16_t GetTotalChecksGotten() {
     return totalChecksGotten;
 }
 
+bool IsCheckHidden(RandomizerCheck rc) {
+    Rando::ItemLocation* itemLocation = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
+    RandomizerCheckStatus status = itemLocation->GetCheckStatus();
+    bool available = itemLocation->IsAvailable();
+    bool skipped = itemLocation->GetIsSkipped();
+    bool obtained = itemLocation->HasObtained();
+    bool seen = status == RCSHOW_SEEN || status == RCSHOW_IDENTIFIED;
+    bool scummed = status == RCSHOW_SCUMMED;
+    bool unchecked = status == RCSHOW_UNCHECKED;
+
+    return !showHidden && (
+        (skipped && hideSkipped) ||
+        (seen && hideSeen) ||
+        (scummed && hideScummed) ||
+        (unchecked && hideUnchecked)
+    );
+}
+
 void RecalculateAreaTotals(RandomizerCheckArea rcArea) {
     areaChecksGotten[rcArea] = 0;
+    areaChecksAvailable[rcArea] = 0;
     areaCheckTotals[rcArea] = 0;
     for (auto rc : checksByArea.at(rcArea)) {
         if (!IsVisibleInCheckTracker(rc)) {
             continue;
         }
         areaCheckTotals[rcArea]++;
-        if (OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->GetIsSkipped() || OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->HasObtained()) {
+
+        Rando::ItemLocation* itemLoc = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
+
+        if (itemLoc->GetIsSkipped() || itemLoc->HasObtained()) {
             areaChecksGotten[rcArea]++;
+        }
+
+        if (itemLoc->IsAvailable() && !IsCheckHidden(rc)) {
+            areaChecksAvailable[rcArea]++;
         }
     }
     CalculateTotals();
@@ -308,6 +343,7 @@ void SetCheckCollected(RandomizerCheck rc) {
     if (IsVisibleInCheckTracker(rc)) {
         if (!OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->GetIsSkipped()) {
             areaChecksGotten[loc->GetArea()]++;
+            areaChecksAvailable[loc->GetArea()]--;
         } else {
             OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->SetIsSkipped(false);
         }
@@ -424,10 +460,12 @@ void ClearAreaChecksAndTotals() {
     for (auto& [rcArea, vec] : checksByArea) {
         vec.clear();
         areaChecksGotten[rcArea] = 0;
+        areaChecksAvailable[rcArea] = 0;
         areaCheckTotals[rcArea] = 0;
     }
     totalChecks = 0;
     totalChecksGotten = 0;
+    totalChecksAvailable = 0;
 }
 
 void SetShopSeen(uint32_t sceneNum, bool prices) {
@@ -468,6 +506,9 @@ void CheckTrackerLoadGame(int32_t fileNum) {
             areaCheckTotals[entry2->GetArea()]++;
             if (loc->GetCheckStatus() == RCSHOW_SAVED || loc->GetIsSkipped()) {
                 areaChecksGotten[entry2->GetArea()]++;
+            }
+            if (loc->IsAvailable()) {
+                areaChecksAvailable[entry2->GetArea()]++;
             }
         }
 
@@ -524,6 +565,7 @@ void CheckTrackerLoadGame(int32_t fileNum) {
     UpdateAllOrdering();
     UpdateInventoryChecks();
     UpdateFilters();
+    RecalculateAvailableChecks();
 }
 
 void CheckTrackerShopSlotChange(uint8_t cursorSlot, int16_t basePrice) {
@@ -539,6 +581,7 @@ void CheckTrackerShopSlotChange(uint8_t cursorSlot, int16_t basePrice) {
     if (status == RCSHOW_SEEN) {
         OTRGlobals::Instance->gRandoContext->GetItemLocation(slot)->SetCheckStatus(RCSHOW_IDENTIFIED);
         SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionId, true);
+        RecalculateAvailableChecks();
     }
 }
 
@@ -812,6 +855,9 @@ void SaveTrackerData(SaveContext* saveContext, int sectionID, bool fullSave) {
 
 void SaveFile(SaveContext* saveContext, int sectionID, bool fullSave) {
     SaveTrackerData(saveContext, sectionID, fullSave);
+    if (fullSave) {
+        RecalculateAvailableChecks();
+    }
 }
 
 void LoadFile() {
@@ -882,6 +928,8 @@ void CheckTrackerWindow::DrawElement() {
     showHidden                  = CVarGetInteger(CVAR_TRACKER_CHECK("ShowHidden"), 0);
     mystery                     = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0);
     showLogicTooltip            = CVarGetInteger(CVAR_TRACKER_CHECK("ShowLogic"), 0);
+    enableAvailableChecks       = CVarGetInteger(CVAR_TRACKER_CHECK("EnableAvailableChecks"), 0);
+    onlyShowAvailable           = CVarGetInteger(CVAR_TRACKER_CHECK("OnlyShowAvailable"), 0);
 
     hideShopUnshuffledChecks = CVarGetInteger(CVAR_TRACKER_CHECK("HideUnshuffledShopChecks"), 0);
     alwaysShowGS = CVarGetInteger(CVAR_TRACKER_CHECK("AlwaysShowGSLocs"), 0);
@@ -932,9 +980,21 @@ void CheckTrackerWindow::DrawElement() {
 
     ImGui::TableNextRow(0, headerHeight);
     ImGui::TableNextColumn();
-    UIWidgets::CVarCheckbox(
-        "Show Hidden Items", CVAR_TRACKER_CHECK("ShowHidden"), UIWidgets::CheckboxOptions({{ .tooltip = "When active, items will show hidden checks by default when updated to this state." }})
-        .Color(THEME_COLOR));
+    if (UIWidgets::CVarCheckbox(
+        "Show Hidden Items", CVAR_TRACKER_CHECK("ShowHidden"), UIWidgets::CheckboxOptions({{.tooltip = "When active, items will show hidden checks by default when updated to this state." }})
+        .Color(THEME_COLOR))) {
+        doAreaScroll = true;
+        showHidden = CVarGetInteger(CVAR_TRACKER_CHECK("ShowHidden"), 0);
+        RecalculateAllAreaTotals();
+    }
+    if (enableAvailableChecks) {
+        if (UIWidgets::CVarCheckbox(
+            "Only Show Available Checks", CVAR_TRACKER_CHECK("OnlyShowAvailable"), UIWidgets::CheckboxOptions({{ .tooltip = "When active, unavailable checks will be hidden." }})
+            .Color(THEME_COLOR))) {
+            doAreaScroll = true;
+            RecalculateAllAreaTotals();
+        }
+    }
     UIWidgets::PaddedSeparator();
     if (UIWidgets::Button("Expand All", UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline))) {
         optCollapseAll = false;
@@ -960,7 +1020,13 @@ void CheckTrackerWindow::DrawElement() {
 
     ImGui::Separator();
 
-    ImGui::Text("Total Checks: %d / %d", totalChecksGotten, totalChecks);
+    std::ostringstream totalChecksSS;
+    totalChecksSS << "Total Checks: ";
+    if (enableAvailableChecks) {
+        totalChecksSS << totalChecksAvailable << " Available / ";
+    }
+    totalChecksSS << totalChecksGotten << " Checked / " << totalChecks << " Total";
+    ImGui::Text(totalChecksSS.str().c_str());
 
     UIWidgets::PaddedSeparator();
 
@@ -1012,7 +1078,8 @@ void CheckTrackerWindow::DrawElement() {
             doAreaScroll = true;
         }
         if ((shouldHideFilteredAreas && filterAreasHidden[rcArea]) ||
-            (!showHidden && ((hideComplete && thisAreaFullyChecked) || (hideIncomplete && !thisAreaFullyChecked)))
+            (!showHidden && ((hideComplete && thisAreaFullyChecked) || (hideIncomplete && !thisAreaFullyChecked))) ||
+            (enableAvailableChecks && onlyShowAvailable && areaChecksAvailable[rcArea] == 0)
         ) {
             doDraw = false;
         } else {
@@ -1051,14 +1118,27 @@ void CheckTrackerWindow::DrawElement() {
             isThisAreaSpoiled = IsAreaSpoiled(rcArea) || mqSpoilers;
 
             if (isThisAreaSpoiled) {
-                if (showVOrMQ && RandomizerCheckObjects::AreaIsDungeon(rcArea)) {
-                    if (OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(DungeonSceneLookupByArea(rcArea))->IsMQ())
-                        ImGui::Text("(%d/%d) - MQ", areaChecksGotten[rcArea], areaCheckTotals[rcArea]);
-                    else
-                        ImGui::Text("(%d/%d) - Vanilla", areaChecksGotten[rcArea], areaCheckTotals[rcArea]);
-                } else {
-                    ImGui::Text("(%d/%d)", areaChecksGotten[rcArea], areaCheckTotals[rcArea]);
+                std::ostringstream areaTotalsSS;
+                std::ostringstream areaTotalsTooltipSS;
+
+                areaTotalsSS << "(";
+                if (enableAvailableChecks) {
+                    areaTotalsSS << static_cast<uint16_t>(areaChecksAvailable[rcArea]) << " / ";
+                    areaTotalsTooltipSS << "Available / ";
                 }
+                areaTotalsSS << static_cast<uint16_t>(areaChecksGotten[rcArea]) << " / " << static_cast<uint16_t>(areaCheckTotals[rcArea]) << ")";
+                areaTotalsTooltipSS << "Checked / Total";
+
+                if (showVOrMQ && RandomizerCheckObjects::AreaIsDungeon(rcArea)) {
+                    if (OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(DungeonSceneLookupByArea(rcArea))->IsMQ()) {
+                        areaTotalsSS << " - MQ";
+                    } else {
+                        areaTotalsSS << " - Vanilla";
+                    }
+                }
+
+                ImGui::Text(areaTotalsSS.str().c_str());
+                UIWidgets::Tooltip(areaTotalsTooltipSS.str().c_str());
             } else {
                 ImGui::Text("???");
             }
@@ -1561,6 +1641,12 @@ void DrawLocation(RandomizerCheck rc) {
     Rando::ItemLocation* itemLoc = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
     RandomizerCheckStatus status = itemLoc->GetCheckStatus();
     bool skipped = itemLoc->GetIsSkipped();
+    bool available = itemLoc->IsAvailable();
+
+    if (enableAvailableChecks && onlyShowAvailable && !available) {
+        return;
+    }
+
     if (status == RCSHOW_COLLECTED) {
         if (!showHidden && hideCollected) {
             return;
@@ -1637,10 +1723,18 @@ void DrawLocation(RandomizerCheck rc) {
                 OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->SetIsSkipped(false);
                 areaChecksGotten[loc->GetArea()]--;
                 totalChecksGotten--;
+                if (available) {
+                    areaChecksAvailable[loc->GetArea()]++;
+                    totalChecksAvailable++;
+                }
             } else {
                 OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->SetIsSkipped(true);
                 areaChecksGotten[loc->GetArea()]++;
                 totalChecksGotten++;
+                if (available) {
+                    areaChecksAvailable[loc->GetArea()]--;
+                    totalChecksAvailable--;
+                }
             }
             UpdateOrdering(loc->GetArea());
             UpdateInventoryChecks();
@@ -1654,7 +1748,19 @@ void DrawLocation(RandomizerCheck rc) {
     ImGui::SameLine();
 
     //Draw
-    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(mainColor.r / 255.0f, mainColor.g / 255.0f, mainColor.b / 255.0f, mainColor.a / 255.0f));
+    ImVec4 styleColor(mainColor.r / 255.0f, mainColor.g / 255.0f, mainColor.b / 255.0f, mainColor.a / 255.0f);
+    if (enableAvailableChecks) {
+        if (itemLoc->HasObtained()) {
+            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 0, 0, 0));
+        } else {
+            ImGui::PushStyleColor(ImGuiCol_Text, styleColor);
+        }
+        ImGui::Text("%s", available ? ICON_FA_UNLOCK : ICON_FA_LOCK);
+        ImGui::PopStyleColor();
+        ImGui::SameLine();
+    }
+
+    ImGui::PushStyleColor(ImGuiCol_Text, styleColor);
     ImGui::Text("%s", txt.c_str());
     ImGui::PopStyleColor();
 
@@ -1718,7 +1824,7 @@ void DrawLocation(RandomizerCheck rc) {
                 if (conditionStr != "true") {
                     UIWidgets::Tooltip(conditionStr.c_str());
                 }
-                return;
+                break;
             }
         }
     }
@@ -1796,6 +1902,55 @@ void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, 
     UIWidgets::PopStyleCombobox();
 }
 
+void RecalculateAvailableChecks() {
+    if (!enableAvailableChecks) {
+        return;
+    }
+
+    ResetPerformanceTimer(PT_RECALCULATE_AVAILABLE_CHECKS);
+    StartPerformanceTimer(PT_RECALCULATE_AVAILABLE_CHECKS);
+
+    std::vector<RandomizerCheck> targetLocations;
+    targetLocations.reserve(RR_MAX);
+    for (auto& location : Rando::StaticData::GetLocationTable()) {
+        RandomizerCheck rc = location.GetRandomizerCheck();
+        Rando::ItemLocation* itemLocation = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
+        itemLocation->SetAvailable(false);
+        if (!itemLocation->HasObtained()) {
+            targetLocations.emplace_back(rc);
+        }
+    }
+
+    std::vector<RandomizerCheck> availableChecks = ReachabilitySearch(targetLocations, RG_NONE, true);
+    for (auto& rc : availableChecks) {
+        const auto& location = Rando::StaticData::GetLocation(rc);
+        const auto& itemLocation = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
+        if (location->GetRCType() == RCTYPE_SHOP && itemLocation->GetCheckStatus() == RCSHOW_IDENTIFIED) {
+            if (CanBuyAnother(rc)) {
+                itemLocation->SetAvailable(true);
+            }
+        } else {
+            itemLocation->SetAvailable(true);
+        }
+    }
+
+    totalChecksAvailable = 0;
+    for (auto& [rcArea, vec] : checksByArea) {
+        areaChecksAvailable[rcArea] = 0;
+        for (auto& rc : vec) {
+            Rando::ItemLocation* itemLocation = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
+            if (itemLocation->IsAvailable() && IsVisibleInCheckTracker(rc) && !IsCheckHidden(rc)) {
+                areaChecksAvailable[rcArea]++;
+            }
+        }
+        totalChecksAvailable += areaChecksAvailable[rcArea];
+    }
+
+    StopPerformanceTimer(PT_RECALCULATE_AVAILABLE_CHECKS);
+    SPDLOG_INFO("Recalculate Available Checks Time: {}ms", GetPerformanceTimer(PT_RECALCULATE_AVAILABLE_CHECKS).count());
+}
+
+
 void CheckTrackerWindow::Draw() {
     if (!IsVisible()) {
         return;
@@ -1850,7 +2005,7 @@ void CheckTrackerSettingsWindow::DrawElement() {
                 .Tooltip("If enabled, Vanilla/MQ dungeons will show on the tracker immediately. Otherwise, Vanilla/MQ dungeon locations must be unlocked.").Color(THEME_COLOR));
         if (UIWidgets::CVarCheckbox("Hide unshuffled shop item checks", CVAR_TRACKER_CHECK("HideUnshuffledShopChecks"),
                 UIWidgets::CheckboxOptions().Tooltip("If enabled, will prevent the tracker from displaying slots with non-shop-item shuffles.").Color(THEME_COLOR))) {
-            hideShopUnshuffledChecks = !hideShopUnshuffledChecks;
+            hideShopUnshuffledChecks = CVarGetInteger(CVAR_TRACKER_CHECK("HideUnshuffledShopChecks"), 0);
             UpdateFilters();
         }
         if (UIWidgets::CVarCheckbox("Always show gold skulltulas", CVAR_TRACKER_CHECK("AlwaysShowGSLocs"),
@@ -1860,6 +2015,11 @@ void CheckTrackerSettingsWindow::DrawElement() {
         }
         UIWidgets::CVarCheckbox("Show Logic", CVAR_TRACKER_CHECK("ShowLogic"),
             UIWidgets::CheckboxOptions().Tooltip("If enabled, will show a check's logic when hovering over it.").Color(THEME_COLOR));
+        if (UIWidgets::CVarCheckbox("Enable Available Checks", CVAR_TRACKER_CHECK("EnableAvailableChecks"),
+            UIWidgets::CheckboxOptions().Tooltip("If enabled, will show the checks that are available to be collected with your current progress.").Color(THEME_COLOR))) {
+            enableAvailableChecks = CVarGetInteger(CVAR_TRACKER_CHECK("EnableAvailableChecks"), 0);
+            RecalculateAvailableChecks();
+        }
 
         // Filtering settings
         UIWidgets::PaddedSeparator();

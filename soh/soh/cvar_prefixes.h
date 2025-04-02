@@ -15,3 +15,5 @@
 #define CVAR_REMOTE(var) CVAR_PREFIX_REMOTE "." var
 #define CVAR_REMOTE_CROWD_CONTROL(var) CVAR_REMOTE("CrowdControl." var)
 #define CVAR_REMOTE_SAIL(var) CVAR_REMOTE("Sail." var)
+#define CVAR_GAMEPLAY_STATS(var) CVAR_PREFIX_GAMEPLAY_STATS "." var
+#define CVAR_TIME_DISPLAY(var) CVAR_PREFIX_TIME_DISPLAY "." var
