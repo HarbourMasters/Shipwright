@@ -413,13 +413,13 @@ oJson Hint::toJSON() {
                 if (items.size() == 1) {
                     log["item"] = StaticData::GetItemTable()[items[0]]
                                       .GetName()
-                                      ..GetForCurrentLanguage(MF_RAW)); // RANDOTODO change to CustomMessage;
+                                      .GetForCurrentLanguage(MF_RAW); // RANDOTODO change to CustomMessage;
                 } else if (items.size() > 1) {
                     std::vector<std::string> itemStrings = {};
                     for (size_t c = 0; c < items.size(); c++) {
                         itemStrings.push_back(StaticData::GetItemTable()[items[c]]
                                                   .GetName()
-                                                  ..GetForCurrentLanguage(MF_RAW))); // RANDOTODO change to CustomMessage
+                                                  .GetForCurrentLanguage(MF_RAW)); // RANDOTODO change to CustomMessage
                     }
                     log["items"] = itemStrings;
                 }
