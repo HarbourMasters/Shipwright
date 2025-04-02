@@ -1211,10 +1211,12 @@ void FileChoose_DrawOptionsImplNES(GameState* thisx) {
 
         //! @bug Mistakenly using sOptionsMenuHeaders instead of sOptionsMenuSettings for the height.
         //! This works out anyway because all heights are 16.
+        // #region SOH [Port] Just use sOptionsMenuSettings height instead
         gDPLoadTextureBlock(POLY_OPA_DISP++, sOptionsMenuSettings[i].texture[NTSC_LANGUAGE_INDEX], G_IM_FMT_IA,
-                            G_IM_SIZ_8b, sOptionsMenuSettings[i].width, sOptionsMenuHeaders[i].height, 0,
+                            G_IM_SIZ_8b, sOptionsMenuSettings[i].width, sOptionsMenuSettings[i].height, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
+        // #endregion
         gSP1Quadrangle(POLY_OPA_DISP++, vtx, vtx + 2, vtx + 3, vtx + 1, 0);
     }
 
@@ -1238,10 +1240,12 @@ void FileChoose_DrawOptionsImplNES(GameState* thisx) {
         //! @bug Mistakenly using sOptionsMenuHeaders instead of sOptionsMenuSettings for the height.
         //! This is also an OOB read that happens to access the height of the first two elements in
         //! sOptionsMenuSettings, and since all heights are 16, it works out anyway.
+        // #region SOH [Port] Avoid UB and use sOptionsMenuSettings height instead
         gDPLoadTextureBlock(POLY_OPA_DISP++, sOptionsMenuSettings[i].texture[NTSC_LANGUAGE_INDEX], G_IM_FMT_IA,
-                            G_IM_SIZ_8b, sOptionsMenuSettings[i].width, sOptionsMenuHeaders[i].height, 0,
+                            G_IM_SIZ_8b, sOptionsMenuSettings[i].width, sOptionsMenuSettings[i].height, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
+        // #endregion
         gSP1Quadrangle(POLY_OPA_DISP++, vtx, vtx + 2, vtx + 3, vtx + 1, 0);
     }
 
