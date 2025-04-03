@@ -21,8 +21,9 @@
 # -print0
 # separate paths with NUL bytes, avoiding issues with spaces in paths
 #
-# | xargs -0 clang-format-14 -i
+# | xargs -0 clang-format-14 -i -verbose
 # use xargs to take each path we've found
 # and pass it as an argument to clang-format
+# verbose to print files being formatted and X out of Y status
 
-find soh -type f \( -name "*.c" -o -name "*.cpp" -o \( -name "*.h" ! -path "soh/src/**.h" ! -path "soh/include/**.h" \) \) ! -path "soh/assets/*" -print0 | xargs -0 clang-format-14 -i
+find soh -type f \( -name "*.c" -o -name "*.cpp" -o \( -name "*.h" ! -path "soh/src/**.h" ! -path "soh/include/**.h" \) \) ! -path "soh/assets/*" -print0 | xargs -0 clang-format-14 -i --verbose
