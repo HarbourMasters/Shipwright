@@ -4,7 +4,6 @@
 
 ActorDB* ActorDB::Instance;
 
-
 #define DEFINE_ACTOR(name, _1, _2) extern "C" ActorInit name##_InitVars;
 #define DEFINE_ACTOR_INTERNAL(name, _1, _2) extern "C" ActorInit name##_InitVars;
 #define DEFINE_ACTOR_UNSET(_0)
@@ -462,9 +461,10 @@ static constexpr std::pair<u16, const char*> actorDescriptionData[] = {
     { ACTOR_EN_ZL4, "Zelda (Child)" },
     { ACTOR_EN_MM2, "Running Man (Adult Era)" },
     { ACTOR_BG_JYA_BLOCK, "Silver Block (Child Era)" },
-    { ACTOR_OBJ_WARP2BLOCK, "Navi Infospot (Green, Time Block)" }
+    { ACTOR_OBJ_WARP2BLOCK, "Navi Infospot (Green, Time Block)" },
 };
-static std::unordered_map<u16, const char*> actorDescriptions = std::unordered_map<u16, const char*>(std::begin(actorDescriptionData), std::end(actorDescriptionData));
+static std::unordered_map<u16, const char*> actorDescriptions =
+    std::unordered_map<u16, const char*>(std::begin(actorDescriptionData), std::end(actorDescriptionData));
 
 ActorDB::ActorDB() {
     db.reserve(ACTOR_NUMBER_MAX); // reserve size for all initial entries so we don't do it for each
@@ -475,7 +475,8 @@ ActorDB::ActorDB() {
 
 // Adds an actor at the given index. The name must be unique.
 ActorDB::Entry& ActorDB::AddEntry(const std::string& name, const std::string& desc, size_t index) {
-    assert(!nameTable.contains(name)); // TODO this should maybe throw instead. We'll need to think about error handling for mods that try to declare the same actor.
+    assert(!nameTable.contains(name)); // TODO this should maybe throw instead. We'll need to think about error handling
+                                       // for mods that try to declare the same actor.
 
     if (db.size() < (index + 1)) {
         db.resize(index + 1);
@@ -513,7 +514,8 @@ ActorDB::Entry& ActorDB::AddEntry(const std::string& name, const std::string& de
     return entry;
 }
 
-// Adds an actor with the new ActorDBInit struct. The id assigned to the actor is dynamic. Use the return Entry or RetrieveId to get it.
+// Adds an actor with the new ActorDBInit struct. The id assigned to the actor is dynamic. Use the return Entry or
+// RetrieveId to get it.
 ActorDB::Entry& ActorDB::AddEntry(const ActorDBInit& init) {
     Entry& entry = AddEntry(init.name, init.desc, nextFreeId);
 
@@ -598,7 +600,8 @@ static ActorDBInit EnPartnerInit = {
     "En_Partner",
     "Ivan",
     ACTORCAT_ITEMACTION,
-    (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED | ACTOR_FLAG_HOOKSHOT_PULLS_PLAYER | ACTOR_FLAG_CAN_PRESS_SWITCHES),
+    (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED | ACTOR_FLAG_HOOKSHOT_PULLS_PLAYER |
+     ACTOR_FLAG_CAN_PRESS_SWITCHES),
     OBJECT_GAMEPLAY_KEEP,
     sizeof(EnPartner),
     (ActorFunc)EnPartner_Init,

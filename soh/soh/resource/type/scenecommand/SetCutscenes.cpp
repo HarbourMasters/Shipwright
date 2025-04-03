@@ -12,6 +12,6 @@ size_t SetCutscenes::GetPointerSize() {
     if (cutscene == nullptr) {
         return 0;
     }
-	return cutscene->GetPointerSize();
+    return cutscene->GetPointerSize();
 }
 } // namespace SOH

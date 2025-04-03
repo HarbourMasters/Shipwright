@@ -108,8 +108,7 @@ void EnWeiyer_Init(Actor* thisx, PlayState* play) {
 
     Actor_ProcessInitChain(thisx, sInitChain);
     ActorShape_Init(&this->actor.shape, 1000.0f, ActorShadow_DrawCircle, 65.0f);
-    SkelAnime_Init(play, &this->skelAnime, &gStingerSkel, &gStingerIdleAnim, this->jointTable, this->morphTable,
-                   19);
+    SkelAnime_Init(play, &this->skelAnime, &gStingerSkel, &gStingerIdleAnim, this->jointTable, this->morphTable, 19);
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
     CollisionCheck_SetInfo(&this->actor.colChkInfo, &sDamageTable, &sColChkInfoInit);
@@ -222,8 +221,8 @@ void func_80B32804(EnWeiyer* this, PlayState* play) {
     s32 bgId;
 
     this->actor.world.pos.y += 0.5f;
-    this->actor.floorHeight = BgCheck_EntityRaycastFloor4(&play->colCtx, &this->actor.floorPoly, &bgId,
-                                                          &this->actor, &this->actor.world.pos);
+    this->actor.floorHeight =
+        BgCheck_EntityRaycastFloor4(&play->colCtx, &this->actor.floorPoly, &bgId, &this->actor, &this->actor.world.pos);
 
     if (!WaterBox_GetSurfaceImpl(play, &play->colCtx, this->actor.world.pos.x, this->actor.world.pos.z,
                                  &this->actor.home.pos.y, &waterBox) ||
@@ -647,8 +646,8 @@ void EnWeiyer_Draw(Actor* thisx, PlayState* play) {
         Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gSPSegment(POLY_XLU_DISP++, 0x08, &D_80116280[0]);
         gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 255, this->actor.shape.shadowAlpha);
-        POLY_XLU_DISP = SkelAnime_DrawSkeleton2(play, &this->skelAnime,
-                                       EnWeiyer_OverrideLimbDraw, NULL, &this->actor, POLY_XLU_DISP);
+        POLY_XLU_DISP = SkelAnime_DrawSkeleton2(play, &this->skelAnime, EnWeiyer_OverrideLimbDraw, NULL, &this->actor,
+                                                POLY_XLU_DISP);
     }
 
     CLOSE_DISPS(play->state.gfxCtx);

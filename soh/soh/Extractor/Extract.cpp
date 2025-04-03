@@ -58,19 +58,28 @@ static constexpr uint32_t OOT_PAL_GC_DBG2 = 0x87121EFE; // 03-13-2002 build
 static constexpr uint32_t OOT_PAL_GC_MQ_DBG = 0x917D18F6;
 static constexpr uint32_t OOT_PAL_10 = 0xB044B569;
 static constexpr uint32_t OOT_PAL_11 = 0xB2055FBD;
+static constexpr uint32_t OOT_NTSC_US_GC = 0xF3DD35BA;
+static constexpr uint32_t OOT_NTSC_JP_GC = 0xF611F4BA;
+static constexpr uint32_t OOT_NTSC_JP_GC_CE = 0xF7F52DB8;
+static constexpr uint32_t OOT_NTSC_US_MQ = 0xF034001A;
+static constexpr uint32_t OOT_NTSC_JP_MQ = 0xF43B45BA;
+static constexpr uint32_t OOT_NTSC_10 = 0xEC7011B7;
+static constexpr uint32_t OOT_NTSC_11 = 0xD43DA81F;
+static constexpr uint32_t OOT_NTSC_12 = 0x693BA2AE;
 
 static const std::unordered_map<uint32_t, const char*> verMap = {
-    { OOT_PAL_GC, "PAL Gamecube" },
-    { OOT_PAL_MQ, "PAL MQ" },
-    { OOT_PAL_GC_DBG1, "PAL Debug 1" },
-    { OOT_PAL_GC_DBG2, "PAL Debug 2" },
-    { OOT_PAL_GC_MQ_DBG, "PAL MQ Debug" },
-    { OOT_PAL_10, "PAL N64 1.0" },
-    { OOT_PAL_11, "PAL N64 1.1" },
+    { OOT_PAL_GC, "PAL Gamecube" },         { OOT_PAL_MQ, "PAL MQ" },
+    { OOT_PAL_GC_DBG1, "PAL Debug 1" },     { OOT_PAL_GC_DBG2, "PAL Debug 2" },
+    { OOT_PAL_GC_MQ_DBG, "PAL MQ Debug" },  { OOT_PAL_10, "PAL N64 1.0" },
+    { OOT_PAL_11, "PAL N64 1.1" },          { OOT_NTSC_US_GC, "NTSC Gamecube US" },
+    { OOT_NTSC_JP_GC, "NTSC Gamecube JP" }, { OOT_NTSC_JP_GC_CE, "NTSC Gamecube JP (Collector's Edition)" },
+    { OOT_NTSC_US_GC, "NTSC MQ US" },       { OOT_NTSC_JP_GC, "NTSC MQ JP" },
+    { OOT_NTSC_10, "NTSC N64 1.0" },        { OOT_NTSC_11, "NTSC N64 1.1" },
+    { OOT_NTSC_12, "NTSC N64 1.2" },
 };
 
 // TODO only check the first 54MB of the rom.
-static constexpr std::array<const uint32_t, 10> goodCrcs = {
+static constexpr std::array<const uint32_t, 21> goodCrcs = {
     0xfa8c0555, // MQ DBG 64MB (Original overdump)
     0x8652ac4c, // MQ DBG 64MB
     0x5B8A1EB7, // MQ DBG 64MB (Empty overdump)
@@ -81,6 +90,17 @@ static constexpr std::array<const uint32_t, 10> goodCrcs = {
     0x7A2FAE68, // GC MQ PAL
     0xFD9913B1, // N64 PAL 1.0
     0xE033FBBA, // N64 PAL 1.1
+    0x460C938C, // N64 NTSC US 1.0
+    0xD0C76FA9, // N64 NTSC JP 1.0
+    0x3496EE47, // N64 NTSC US 1.1
+    0xA25D1262, // N64 NTSC JP 1.1
+    0x15736A58, // N64 NTSC US 1.2
+    0x83B8967D, // N64 NTSC JP 1.2
+    0xD61453DE, // GC NTSC US
+    0x4129C825, // GC MQ NTSC US
+    0x11A4BE61, // GC NTSC JP
+    0x2BC6C6FD, // GC NTSC JP Collector's Edition
+    0x02CD974C, // GC MQ NTSC JP
 };
 
 enum class ButtonId : int {
@@ -88,7 +108,6 @@ enum class ButtonId : int {
     NO,
     FIND,
 };
-
 
 void Extractor::ShowErrorBox(const char* title, const char* text) {
 #ifdef _WIN32
@@ -107,8 +126,9 @@ void Extractor::ShowSizeErrorBox() const {
 }
 
 void Extractor::ShowCrcErrorBox() const {
-    ShowErrorBox("Rom CRC invalid", "Rom CRC did not match the list of known compatible roms. Please find another.\n\n"
-                                    "Visit https://ship.equipment/ to validate your ROM and see a list of compatible versions");
+    ShowErrorBox("Rom CRC invalid",
+                 "Rom CRC did not match the list of known compatible roms. Please find another.\n\n"
+                 "Visit https://ship.equipment/ to validate your ROM and see a list of compatible versions");
 }
 
 void Extractor::ShowCompressedErrorBox() const {
@@ -196,8 +216,7 @@ void Extractor::FilterRoms(std::vector<std::string>& roms, RomSearchMode searchM
 
         // Rom doesn't claim to be valid
         // Game type doesn't match search mode
-        if (!verMap.contains(GetRomVerCrc()) ||
-            (searchMode == RomSearchMode::Vanilla && IsMasterQuest()) ||
+        if (!verMap.contains(GetRomVerCrc()) || (searchMode == RomSearchMode::Vanilla && IsMasterQuest()) ||
             (searchMode == RomSearchMode::MQ && !IsMasterQuest())) {
             it = roms.erase(it);
             continue;
@@ -240,8 +259,7 @@ void Extractor::GetRoms(std::vector<std::string>& roms) {
 
                 // Get the position of the extension character.
                 char* ext = strrchr(dir->d_name, '.');
-                if (ext != NULL && (strcmp(ext, ".z64") == 0 || strcmp(ext, ".n64") == 0 ||
-                    strcmp(ext, ".v64") == 0)) {
+                if (ext != NULL && (strcmp(ext, ".z64") == 0 || strcmp(ext, ".n64") == 0 || strcmp(ext, ".v64") == 0)) {
                     roms.push_back(dir->d_name);
                 }
             }
@@ -270,7 +288,8 @@ bool Extractor::GetRomPathFromBox() {
     box.lpstrFile = nameBuffer;
     box.nMaxFile = sizeof(nameBuffer) / sizeof(nameBuffer[0]);
     box.lpstrTitle = "Open Rom";
-    box.Flags = OFN_NOCHANGEDIR | OFN_ENABLESIZING | OFN_FILEMUSTEXIST | OFN_LONGNAMES | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY;
+    box.Flags =
+        OFN_NOCHANGEDIR | OFN_ENABLESIZING | OFN_FILEMUSTEXIST | OFN_LONGNAMES | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY;
     box.lpstrFilter = "N64 Roms\0*.z64;*.v64;*.n64\0\0";
     if (!GetOpenFileNameA(&box)) {
         DWORD err = CommDlgExtendedError();
@@ -297,7 +316,7 @@ bool Extractor::GetRomPathFromBox() {
         return false;
     }
     mCurrentRomPath = nameBuffer;
-    #else
+#else
     auto selection = pfd::open_file("Select a file", mSearchPath, { "N64 Roms", "*.z64 *.n64 *.v64" }).result();
 
     if (selection.empty()) {
@@ -305,7 +324,7 @@ bool Extractor::GetRomPathFromBox() {
     }
 
     mCurrentRomPath = selection[0];
-    #endif
+#endif
     mCurRomSize = GetCurRomSize();
     return true;
 }
@@ -345,7 +364,8 @@ bool Extractor::ValidateNotCompressed() const {
         return false;
     }
     // 7z file header. 37 7A BC AF 27 1C
-    if (mRomData[0] == '7' && mRomData[1] == 'z' && mRomData[2] == 0xBC && mRomData[3] == 0xAF && mRomData[4] == 0x27 && mRomData[5] == 0x1C) {
+    if (mRomData[0] == '7' && mRomData[1] == 'z' && mRomData[2] == 0xBC && mRomData[3] == 0xAF && mRomData[4] == 0x27 &&
+        mRomData[5] == 0x1C) {
         return false;
     }
 
@@ -408,7 +428,9 @@ bool Extractor::ManuallySearchForRomMatchingType(RomSearchMode searchMode) {
     }
 
     char msgBuf[150];
-    snprintf(msgBuf, 150, "The selected rom does not match the expected game type\nExpected type: %s.\n\nDo you want to search again?",
+    snprintf(
+        msgBuf, 150,
+        "The selected rom does not match the expected game type\nExpected type: %s.\n\nDo you want to search again?",
         searchMode == RomSearchMode::MQ ? "Master Quest" : "Vanilla");
 
     while ((searchMode == RomSearchMode::Vanilla && IsMasterQuest()) ||
@@ -479,9 +501,10 @@ bool Extractor::Run(std::string searchPath, RomSearchMode searchMode) {
                 if (rom == roms.back()) {
                     ShowCrcErrorBox();
                 } else {
-                    ShowErrorBox("Rom CRC invalid",
-                                 "Rom CRC did not match the list of known compatible roms. Trying the next one...\n\n"
-                                 "Visit https://ship.equipment/ to validate your ROM and see a list of compatible versions");
+                    ShowErrorBox(
+                        "Rom CRC invalid",
+                        "Rom CRC did not match the list of known compatible roms. Trying the next one...\n\n"
+                        "Visit https://ship.equipment/ to validate your ROM and see a list of compatible versions");
                 }
                 continue;
             }
@@ -507,7 +530,15 @@ bool Extractor::IsMasterQuest() const {
     switch (GetRomVerCrc()) {
         case OOT_PAL_MQ:
         case OOT_PAL_GC_MQ_DBG:
+        case OOT_NTSC_US_MQ:
+        case OOT_NTSC_JP_MQ:
             return true;
+        case OOT_NTSC_10:
+        case OOT_NTSC_11:
+        case OOT_NTSC_12:
+        case OOT_NTSC_US_GC:
+        case OOT_NTSC_JP_GC:
+        case OOT_NTSC_JP_GC_CE:
         case OOT_PAL_10:
         case OOT_PAL_11:
         case OOT_PAL_GC:
@@ -532,6 +563,22 @@ const char* Extractor::GetZapdVerStr() const {
             return "N64_PAL_10";
         case OOT_PAL_11:
             return "N64_PAL_11";
+        case OOT_NTSC_US_GC:
+            return "GC_NMQ_NTSC_U";
+        case OOT_NTSC_JP_GC:
+            return "GC_NMQ_NTSC_J";
+        case OOT_NTSC_JP_GC_CE:
+            return "GC_NMQ_NTSC_J_CE";
+        case OOT_NTSC_US_MQ:
+            return "GC_MQ_NTSC_U";
+        case OOT_NTSC_JP_MQ:
+            return "GC_MQ_NTSC_J";
+        case OOT_NTSC_10:
+            return "N64_NTSC_10";
+        case OOT_NTSC_11:
+            return "N64_NTSC_11";
+        case OOT_NTSC_12:
+            return "N64_NTSC_12";
         default:
             // We should never be in a state where this path happens.
             UNREACHABLE;
@@ -541,7 +588,7 @@ const char* Extractor::GetZapdVerStr() const {
 
 std::string Extractor::Mkdtemp() {
     std::string temp_dir = std::filesystem::temp_directory_path().string();
-    
+
     // create 6 random alphanumeric characters
     static const char charset[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     std::random_device rd;
@@ -578,7 +625,7 @@ bool Extractor::CallZapd(std::string installPath, std::string exportdir) {
     std::string curdir = std::filesystem::current_path().string();
 #ifdef _WIN32
     std::filesystem::copy(installPath + "/assets", tempdir + "/assets",
-        std::filesystem::copy_options::recursive | std::filesystem::copy_options::update_existing);
+                          std::filesystem::copy_options::recursive | std::filesystem::copy_options::update_existing);
 #else
     std::filesystem::create_symlink(installPath + "/assets", tempdir + "/assets");
 #endif
@@ -612,12 +659,16 @@ bool Extractor::CallZapd(std::string installPath, std::string exportdir) {
     // Grab a handle to the command window.
     HWND cmdWindow = GetConsoleWindow();
 
-    // Normally the command window is hidden. We want the window to be shown here so the user can see the progess of the extraction.
+    // Normally the command window is hidden. We want the window to be shown here so the user can see the progess of the
+    // extraction.
     ShowWindow(cmdWindow, SW_SHOW);
     SetWindowPos(cmdWindow, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE);
 #else
     // Show extraction in background message until linux/mac can have visual progress
-    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Extracting", "Extraction will now begin in the background.\n\nPlease be patient for the process to finish. Do not close the main program.", nullptr);
+    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Extracting",
+                             "Extraction will now begin in the background.\n\nPlease be patient for the process to "
+                             "finish. Do not close the main program.",
+                             nullptr);
 #endif
 
     zapd_main(argc, (char**)argv.data());

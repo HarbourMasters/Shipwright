@@ -1,0 +1,9 @@
+<Root>
+    <File Name="market_alley_n_scene" Segment="2">
+        <Path Name="gMarketAlleyNightPath_0019C" Offset="0x19C" NumPaths="4"/>
+        <Scene Name="market_alley_n_scene" Offset="0x0"/>
+    </File>
+    <File Name="market_alley_n_room_0" Segment="3">
+        <Room Name="market_alley_n_room_0" Offset="0x0"/>
+    </File>
+</Root>

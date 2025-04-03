@@ -2,7 +2,6 @@
 #define KALEIDO_H
 #include <z64.h>
 
-
 #ifdef __cplusplus
 #include <vector>
 #include <string>
@@ -18,7 +17,7 @@ namespace Rando {
  * subclasses to declare their Draw and Update functions.
  */
 class KaleidoEntry {
-public:
+  public:
     /**
      * @brief Constructor for Base KaleidoEntry class. Sets the position and
      * initial value of the line of text.
@@ -31,7 +30,8 @@ public:
     virtual void Draw(PlayState* play, std::vector<Gfx>* mEntryDl) = 0;
     virtual void Update(PlayState* play) = 0;
     void SetYOffset(int yOffset);
-protected:
+
+  protected:
     int16_t mX;
     int16_t mY;
     int16_t mHeight;
@@ -39,7 +39,6 @@ protected:
     Vtx* vtx;
     std::string mText;
     bool mAchieved = false;
-
 };
 
 /**
@@ -47,7 +46,7 @@ protected:
  * that wish to render an Icon at the start of their line.
  */
 class KaleidoEntryIcon : public KaleidoEntry {
-public:
+  public:
     /**
      * @param iconResourceName resource name of the icon to draw
      * @param iconFormat flag representing the format of the icon (i.e. G_IM_FMT_IA)
@@ -63,7 +62,8 @@ public:
                      Color_RGBA8 iconColor, int16_t x, int16_t y, std::string text = "");
     void Draw(PlayState* play, std::vector<Gfx>* mEntryDl) override;
     void RebuildVertices();
-protected:
+
+  protected:
     const char* mIconResourceName;
     int mIconFormat;
     int mIconSize;
@@ -80,7 +80,7 @@ protected:
  * that is either colored in or Grayscale according to a flag
  */
 class KaleidoEntryIconFlag : public KaleidoEntryIcon {
-public :
+  public:
     /**
      * @param iconResourceName resource name of the icon to draw
      * @param iconFormat flag representing the format of the icon (i.e. G_IM_FMT_IA)
@@ -98,7 +98,8 @@ public :
                          Color_RGBA8 iconColor, FlagType flagType, int flag, int16_t x, int16_t y,
                          std::string name = "");
     void Update(PlayState* play) override;
-private:
+
+  private:
     FlagType mFlagType;
     int mFlag;
 };
@@ -109,7 +110,7 @@ private:
  * render the count and not show progress towards a required amount or a total.
  */
 class KaleidoEntryIconCountRequired : public KaleidoEntryIcon {
-public:
+  public:
     /**
      * @param iconResourceName resource name of the icon to draw
      * @param iconFormat flag representing the format of the icon (i.e. G_IM_FMT_IA)
@@ -126,10 +127,12 @@ public:
      * @param required The amount of this collectible required to beat the seed. Set to 0 to not render.
      * @param total The amount of this collectible available in the seed. Set to 0 to not render.
      */
-    KaleidoEntryIconCountRequired(const char* iconResourceName, int iconFormat, int iconSize, int iconWidth, int iconHeight,
-                                  Color_RGBA8 iconColor, int16_t x, int16_t y, int* watch, int required = 0, int total = 0);
+    KaleidoEntryIconCountRequired(const char* iconResourceName, int iconFormat, int iconSize, int iconWidth,
+                                  int iconHeight, Color_RGBA8 iconColor, int16_t x, int16_t y, int* watch,
+                                  int required = 0, int total = 0);
     void Update(PlayState* play) override;
-private:
+
+  private:
     int* mWatch;
     int mRequired;
     int mTotal;
@@ -139,11 +142,12 @@ private:
 };
 
 class KaleidoEntryOcarinaButtons : public KaleidoEntryIcon {
-public:
+  public:
     KaleidoEntryOcarinaButtons(int16_t x, int16_t y);
     void Update(PlayState* play) override;
     void Draw(PlayState* play, std::vector<Gfx>* mEntryDl) override;
-private:
+
+  private:
     void CalculateColors();
 
     std::array<Color_RGBA8, 5> mButtonColors = {};
@@ -151,17 +155,18 @@ private:
 };
 
 class Kaleido {
-public:
+  public:
     Kaleido();
     void Draw(PlayState* play);
     void Update(PlayState* play);
-private:
+
+  private:
     std::vector<std::shared_ptr<KaleidoEntry>> mEntries;
     std::vector<Gfx> mEntryDl;
     int mTopIndex = 0;
     int mNumVisible = 7;
 };
-} // Rando
+} // namespace Rando
 
 extern "C" {
 #endif
@@ -172,5 +177,4 @@ void RandoKaleido_UpdateMiscCollectibles(int16_t inDungeonScene);
 #endif
 void RandoKaleido_RegisterHooks();
 
-
-#endif //KALEIDO_H
+#endif // KALEIDO_H

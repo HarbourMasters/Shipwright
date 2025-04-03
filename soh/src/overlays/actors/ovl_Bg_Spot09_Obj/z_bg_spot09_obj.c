@@ -142,8 +142,8 @@ void BgSpot09Obj_Init(Actor* thisx, PlayState* play) {
                  GET_EVENTCHKINF_CARPENTERS_FREE_ALL());
     this->dyna.actor.params &= 0xFF;
     if ((this->dyna.actor.params < 0) || (this->dyna.actor.params >= 5)) {
-        osSyncPrintf("Error : Spot 09 object の arg_data が判別出来ない(%s %d)(arg_data 0x%04x)\n",
-                     __FILE__, __LINE__, this->dyna.actor.params);
+        osSyncPrintf("Error : Spot 09 object の arg_data が判別出来ない(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
+                     this->dyna.actor.params);
     }
 
     if (!func_808B1C70(this, play)) {
@@ -173,8 +173,7 @@ void BgSpot09Obj_Draw(Actor* thisx, PlayState* play) {
 
         Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gCarpentersTentEntranceDL);
 
         CLOSE_DISPS(play->state.gfxCtx);

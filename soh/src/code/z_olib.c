@@ -91,7 +91,6 @@ Vec3f* OLib_VecSphToVec3f(Vec3f* dest, VecSph* sph) {
         sinPitch = Math_SinS(sph->pitch);
         sinYaw = Math_SinS(sph->yaw);
     }
-    
 
     v.x = sph->r * sinPitch * sinYaw;
     v.y = sph->r * cosPitch;

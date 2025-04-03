@@ -1,0 +1,43 @@
+<Root>
+    <File Name="object_ms" Segment="6">
+        <!-- Bean Salesman Skeleton -->
+        <Skeleton Name="gBeanSalesmanSkel" Type="Flex" LimbType="Standard" Offset="0x3DC0"/>
+        
+        <!-- Bean Salesman Limbs -->
+        <Limb Name="gBeanSalesmanRootLimb" LimbType="Standard" Offset="0x3D40"/>
+        <Limb Name="gBeanSalesmanLeftUpperArmLimb" LimbType="Standard" Offset="0x3D4C"/>
+        <Limb Name="gBeanSalesmanLeftForearmLimb" LimbType="Standard" Offset="0x3D58"/>
+        <Limb Name="gBeanSalesmanLeftHandLimb" LimbType="Standard" Offset="0x3D64"/>
+        <Limb Name="gBeanSalesmanHeadLimb" LimbType="Standard" Offset="0x3D70"/>
+        <Limb Name="gBeanSalesmanMouthLimb" LimbType="Standard" Offset="0x3D7C"/>
+        <Limb Name="gBeanSalesmanBodyLimb" LimbType="Standard" Offset="0x3D88"/>
+        <Limb Name="gBeanSalesmanBeanbagLimb" LimbType="Standard" Offset="0x3D94"/>
+
+        <!-- Bean Salesman Limb DisplayLists -->
+        <DList Name="gBeanSalesmanLeftUpperArmDL" Offset="0x2E58"/>
+        <DList Name="gBeanSalesmanLeftForearmDL" Offset="0x2F90"/>
+        <DList Name="gBeanSalesmanLeftHandDL" Offset="0x30C0"/>
+        <DList Name="gBeanSalesmanHeadDL" Offset="0x28A0"/>
+        <DList Name="gBeanSalesmanMouthDL" Offset="0x2CC8"/>
+        <DList Name="gBeanSalesmanBodyDL" Offset="0x2300"/>
+        <DList Name="gBeanSalesmanBeanbagDL" Offset="0x21E0"/>
+
+        <!-- Bean Salesman Palettes -->
+        <Texture Name="gBeanSalesmanTLUT" OutName="tlut" Format="rgba16" Width="16" Height="16" Offset="0x3230"/>
+
+        <!-- Bean Salesman DisplayList Textures -->
+        <Texture Name="gBeanSalesmanBackOfHandTex" OutName="back_of_hand" Format="ci8" Width="16" Height="16" Offset="0x3430" TlutOffset="0x3230"/>
+        <Texture Name="gBeanSalesmanTattooTex" OutName="tattoo" Format="ci8" Width="32" Height="32" Offset="0x3530" TlutOffset="0x3230"/>
+        <Texture Name="gBeanSalesmanMouthTex" OutName="mouth" Format="ci8" Width="16" Height="16" Offset="0x3930" TlutOffset="0x3230"/>
+        <Texture Name="gBeanSalesmanEarTex" OutName="ear" Format="ci8" Width="8" Height="8" Offset="0x3A30" TlutOffset="0x3230"/>
+        <Texture Name="gBeanSalesmanNoseTex" OutName="nose" Format="ci8" Width="8" Height="8" Offset="0x3A70" TlutOffset="0x3230"/>
+        <Texture Name="gBeanSalesmanEyeTex" OutName="eye" Format="ci8" Width="8" Height="8" Offset="0x3AB0" TlutOffset="0x3230"/>
+        <Texture Name="gBeanSalesmanPantsTex" OutName="pants" Format="ci8" Width="16" Height="16" Offset="0x3AF0" TlutOffset="0x3230"/>
+        <Texture Name="gBeanSalesmanShoeTex" OutName="shoe" Format="ci8" Width="8" Height="8" Offset="0x3BF0" TlutOffset="0x3230"/>
+        <Texture Name="gBeanSalesmanSkinGradientTex" OutName="skin_gradient" Format="ci8" Width="4" Height="4" Offset="0x3C30" TlutOffset="0x3230"/>
+        <Texture Name="gBeanSalesmanBeanbagTex" OutName="beanbag" Format="ci8" Width="16" Height="16" Offset="0x3C40" TlutOffset="0x3230"/>
+
+        <!-- Bean Salesman Animations -->
+        <Animation Name="gBeanSalesmanEatingAnim" Offset="0x5EC"/>
+    </File>
+</Root>

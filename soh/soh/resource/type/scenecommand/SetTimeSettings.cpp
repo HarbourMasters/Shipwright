@@ -6,6 +6,6 @@ TimeSettings* SetTimeSettings::GetPointer() {
 }
 
 size_t SetTimeSettings::GetPointerSize() {
-	return sizeof(TimeSettings);
+    return sizeof(TimeSettings);
 }
 } // namespace SOH

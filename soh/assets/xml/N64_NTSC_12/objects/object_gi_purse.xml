@@ -1,0 +1,17 @@
+<Root>
+    <File Name="object_gi_purse" Segment="6">
+        <Texture Name="object_gi_purseTex_000000" OutName="object_gi_purseTex_000000" Format="i8" Width="64" Height="64" Offset="0x0" AddedByScript="true"/>
+        <DList Name="gGiAdultWalletColorDL" Offset="0x1750"/>
+        <DList Name="gGiGiantsWalletColorDL" Offset="0x1770"/>
+        <DList Name="gGiAdultWalletRupeeOuterColorDL" Offset="0x1790"/>
+        <DList Name="gGiAdultWalletStringColorDL" Offset="0x17B0"/>
+        <DList Name="gGiAdultWalletRupeeInnerColorDL" Offset="0x17D0"/>
+        <DList Name="gGiGiantsWalletRupeeOuterColorDL" Offset="0x17F0"/>
+        <DList Name="gGiGiantsWalletStringColorDL" Offset="0x1810"/>
+        <DList Name="gGiGiantsWalletRupeeInnerColorDL" Offset="0x1830"/>
+        <DList Name="gGiWalletDL" Offset="0x1850"/>
+        <DList Name="gGiWalletRupeeOuterDL" Offset="0x19A0"/>
+        <DList Name="gGiWalletStringDL" Offset="0x1A28"/>
+        <DList Name="gGiWalletRupeeInnerDL" Offset="0x1AD8"/>
+    </File>
+</Root>

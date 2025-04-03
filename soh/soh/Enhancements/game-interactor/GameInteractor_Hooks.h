@@ -31,10 +31,14 @@ void GameInteractor_ExecuteOnActorUpdate(void* actor);
 void GameInteractor_ExecuteOnActorKill(void* actor);
 void GameInteractor_ExecuteOnEnemyDefeat(void* actor);
 void GameInteractor_ExecuteOnBossDefeat(void* actor);
-void GameInteractor_ExecuteOnTimestamp (u8 item);
+void GameInteractor_ExecuteOnTimestamp(u8 item);
 void GameInteractor_ExecuteOnPlayerBonk();
 void GameInteractor_ExecuteOnPlayerHealthChange(int16_t amount);
 void GameInteractor_ExecuteOnPlayerBottleUpdate(int16_t contents);
+void GameInteractor_ExecuteOnPlayerHoldUpShield();
+void GameInteractor_ExecuteOnPlayerFirstPersonControl(Player* player);
+void GameInteractor_ExecuteOnPlayerShieldControl(float_t* sp50, float_t* sp54);
+void GameInteractor_ExecuteOnPlayerProcessStick();
 void GameInteractor_ExecuteOnShopSlotChangeHooks(uint8_t cursorIndex, int16_t price);
 void GameInteractor_ExecuteOnPlayDestroy();
 void GameInteractor_ExecuteOnPlayDrawEnd();
@@ -72,7 +76,7 @@ void GameInteractor_ExecuteOnSetGameLanguage();
 // MARK: - System
 void GameInteractor_RegisterOnAssetAltChange(void (*fn)(void));
 
-//Mark: - Pause Menu
+// Mark: - Pause Menu
 void GameInteractor_ExecuteOnKaleidoUpdate();
 
 #ifdef __cplusplus

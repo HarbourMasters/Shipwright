@@ -1,0 +1,14 @@
+<DisplayList Version="0">
+	<ClearGeometryMode G_LIGHTING="1" />
+	<LoadVertices Path="objects/gameplay_field_keep/gFieldBushHeartDL_vtx_cull" VertexBufferIndex="0" VertexOffset="0" Count="8"/>
+	<SetGeometryMode G_LIGHTING="1" />
+	<CullDisplayList Start="0" End="7"/>
+	<CallDisplayList Path="objects/gameplay_field_keep/mat_gFieldBushHeartDL_f3dlite_shrubbery"/>
+	<CallDisplayList Path="objects/gameplay_field_keep/gFieldBushHeartDL_tri_0"/>
+	<CallDisplayList Path="objects/gameplay_field_keep/mat_gFieldBushHeartDL_f3dlite_leaf"/>
+	<CallDisplayList Path="objects/gameplay_field_keep/gFieldBushHeartDL_tri_1"/>
+	<CallDisplayList Path="objects/gameplay_field_keep/mat_gFieldBushHeartDL_f3dlite_flower_heart"/>
+	<CallDisplayList Path="objects/gameplay_field_keep/gFieldBushHeartDL_tri_2"/>
+	<EndDisplayList/>
+</DisplayList>
+

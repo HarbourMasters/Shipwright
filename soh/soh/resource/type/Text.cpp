@@ -6,6 +6,6 @@ MessageEntry* Text::GetPointer() {
 }
 
 size_t Text::GetPointerSize() {
-	return messages.size() * sizeof(MessageEntry);
+    return messages.size() * sizeof(MessageEntry);
 }
 } // namespace SOH

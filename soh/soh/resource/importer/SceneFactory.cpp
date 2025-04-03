@@ -58,7 +58,8 @@ ResourceFactoryBinarySceneV0::ResourceFactoryBinarySceneV0() {
     sceneCommandFactories[SceneCommandID::SetMesh] = std::make_shared<SetMeshFactory>();
 }
 
-void ResourceFactoryBinarySceneV0::ParseSceneCommands(std::shared_ptr<Scene> scene, std::shared_ptr<Ship::BinaryReader> reader) {
+void ResourceFactoryBinarySceneV0::ParseSceneCommands(std::shared_ptr<Scene> scene,
+                                                      std::shared_ptr<Ship::BinaryReader> reader) {
     uint32_t commandCount = reader->ReadUInt32();
     scene->commands.reserve(commandCount);
 
@@ -67,8 +68,9 @@ void ResourceFactoryBinarySceneV0::ParseSceneCommands(std::shared_ptr<Scene> sce
     }
 }
 
-std::shared_ptr<ISceneCommand> ResourceFactoryBinarySceneV0::ParseSceneCommand(std::shared_ptr<Scene> scene,
-                                                                std::shared_ptr<Ship::BinaryReader> reader, uint32_t index) {
+std::shared_ptr<ISceneCommand>
+ResourceFactoryBinarySceneV0::ParseSceneCommand(std::shared_ptr<Scene> scene,
+                                                std::shared_ptr<Ship::BinaryReader> reader, uint32_t index) {
     SceneCommandID cmdID = (SceneCommandID)reader->ReadInt32();
 
     reader->Seek(-sizeof(int32_t), Ship::SeekOffsetType::Current);
@@ -87,18 +89,21 @@ std::shared_ptr<ISceneCommand> ResourceFactoryBinarySceneV0::ParseSceneCommand(s
     }
 
     if (result == nullptr) {
-        SPDLOG_ERROR("Failed to load scene command of type {} in scene {}", (uint32_t)cmdID, scene->GetInitData()->Path);
+        SPDLOG_ERROR("Failed to load scene command of type {} in scene {}", (uint32_t)cmdID,
+                     scene->GetInitData()->Path);
     }
 
     return result;
 }
 
-std::shared_ptr<Ship::IResource> ResourceFactoryBinarySceneV0::ReadResource(std::shared_ptr<Ship::File> file) {
-    if (!FileHasValidFormatAndReader(file)) {
+std::shared_ptr<Ship::IResource>
+ResourceFactoryBinarySceneV0::ReadResource(std::shared_ptr<Ship::File> file,
+                                           std::shared_ptr<Ship::ResourceInitData> initData) {
+    if (!FileHasValidFormatAndReader(file, initData)) {
         return nullptr;
     }
 
-    auto scene = std::make_shared<Scene>(file->InitData);
+    auto scene = std::make_shared<Scene>(initData);
     auto reader = std::get<std::shared_ptr<Ship::BinaryReader>>(file->Reader);
 
     ParseSceneCommands(scene, reader);
@@ -125,7 +130,8 @@ ResourceFactoryXMLSceneV0::ResourceFactoryXMLSceneV0() {
     sceneCommandFactories[SceneCommandID::SetObjectList] = std::make_shared<SetObjectListFactoryXML>();
     sceneCommandFactories[SceneCommandID::SetStartPositionList] = std::make_shared<SetStartPositionListFactoryXML>();
     sceneCommandFactories[SceneCommandID::SetActorList] = std::make_shared<SetActorListFactoryXML>();
-    sceneCommandFactories[SceneCommandID::SetTransitionActorList] = std::make_shared<SetTransitionActorListFactoryXML>();
+    sceneCommandFactories[SceneCommandID::SetTransitionActorList] =
+        std::make_shared<SetTransitionActorListFactoryXML>();
     sceneCommandFactories[SceneCommandID::EndMarker] = std::make_shared<EndMarkerFactoryXML>();
     sceneCommandFactories[SceneCommandID::SetAlternateHeaders] = std::make_shared<SetAlternateHeadersFactoryXML>();
     sceneCommandFactories[SceneCommandID::SetPathways] = std::make_shared<SetPathwaysFactoryXML>();
@@ -173,7 +179,8 @@ SceneCommandID GetCommandID(std::string commandName) {
     return SceneCommandID::Error;
 }
 
-void ResourceFactoryXMLSceneV0::ParseSceneCommands(std::shared_ptr<Scene> scene, std::shared_ptr<tinyxml2::XMLDocument> reader) {
+void ResourceFactoryXMLSceneV0::ParseSceneCommands(std::shared_ptr<Scene> scene,
+                                                   std::shared_ptr<tinyxml2::XMLDocument> reader) {
     auto child = reader->RootElement()->FirstChildElement();
 
     int i = 0;
@@ -187,7 +194,8 @@ void ResourceFactoryXMLSceneV0::ParseSceneCommands(std::shared_ptr<Scene> scene,
 }
 
 std::shared_ptr<ISceneCommand> ResourceFactoryXMLSceneV0::ParseSceneCommand(std::shared_ptr<Scene> scene,
-                                                                tinyxml2::XMLElement* child, uint32_t index) {
+                                                                            tinyxml2::XMLElement* child,
+                                                                            uint32_t index) {
     std::string commandName = child->Name();
     SceneCommandID cmdID = GetCommandID(commandName);
 
@@ -210,18 +218,21 @@ std::shared_ptr<ISceneCommand> ResourceFactoryXMLSceneV0::ParseSceneCommand(std:
     }
 
     if (result == nullptr) {
-        SPDLOG_ERROR("Failed to load scene command of type {} in scene {}", (uint32_t)cmdID, scene->GetInitData()->Path);
+        SPDLOG_ERROR("Failed to load scene command of type {} in scene {}", (uint32_t)cmdID,
+                     scene->GetInitData()->Path);
     }
 
     return result;
 }
 
-std::shared_ptr<Ship::IResource> ResourceFactoryXMLSceneV0::ReadResource(std::shared_ptr<Ship::File> file) {
-    if (!FileHasValidFormatAndReader(file)) {
+std::shared_ptr<Ship::IResource>
+ResourceFactoryXMLSceneV0::ReadResource(std::shared_ptr<Ship::File> file,
+                                        std::shared_ptr<Ship::ResourceInitData> initData) {
+    if (!FileHasValidFormatAndReader(file, initData)) {
         return nullptr;
     }
 
-    auto scene = std::make_shared<Scene>(file->InitData);
+    auto scene = std::make_shared<Scene>(initData);
     auto reader = std::get<std::shared_ptr<tinyxml2::XMLDocument>>(file->Reader);
 
     ParseSceneCommands(scene, reader);

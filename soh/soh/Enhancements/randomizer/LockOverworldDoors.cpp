@@ -13,6 +13,7 @@ extern PlayState* gPlayState;
 
 using SceneDoorParamsPair = std::pair<int, int>;
 std::map<SceneDoorParamsPair, RandomizerInf> lookupTable = {
+    // clang-format off
     {{ SCENE_MARKET_ENTRANCE_DAY, 447 },         RAND_INF_GUARD_HOUSE_UNLOCKED },
     {{ SCENE_MARKET_ENTRANCE_NIGHT, 447 },       RAND_INF_GUARD_HOUSE_UNLOCKED },
     {{ SCENE_MARKET_ENTRANCE_RUINS, 447 },       RAND_INF_GUARD_HOUSE_UNLOCKED },
@@ -61,13 +62,15 @@ std::map<SceneDoorParamsPair, RandomizerInf> lookupTable = {
     {{ SCENE_LON_LON_RANCH, 447 },               RAND_INF_BACK_TOWER_UNLOCKED },
     {{ SCENE_LAKE_HYLIA, 447 },                  RAND_INF_HYLIA_LAB_UNLOCKED },
     {{ SCENE_LAKE_HYLIA, 1471 },                 RAND_INF_FISHING_HOLE_UNLOCKED },
+
+    // clang-format on
 };
 
 static void OnDoorInit(void* actorRef) {
     EnDoor* enDoor = static_cast<EnDoor*>(actorRef);
     enDoor->randomizerInf = RAND_INF_MAX;
 
-    auto it = lookupTable.find({gPlayState->sceneNum, enDoor->actor.params});
+    auto it = lookupTable.find({ gPlayState->sceneNum, enDoor->actor.params });
     if (it != lookupTable.end()) {
         enDoor->randomizerInf = it->second;
         if (!Flags_GetRandomizerInf(enDoor->randomizerInf)) {
@@ -90,7 +93,8 @@ void RegisterLockOverworldDoors() {
     COND_VB_SHOULD(VB_CONSUME_SMALL_KEY, shouldRegister, {
         EnDoor* enDoor = va_arg(args, EnDoor*);
 
-        if (enDoor->randomizerInf >= RAND_INF_GUARD_HOUSE_UNLOCKED && enDoor->randomizerInf <= RAND_INF_FISHING_HOLE_KEY_OBTAINED) {
+        if (enDoor->randomizerInf >= RAND_INF_GUARD_HOUSE_UNLOCKED &&
+            enDoor->randomizerInf <= RAND_INF_FISHING_HOLE_KEY_OBTAINED) {
             Flags_SetRandomizerInf(enDoor->randomizerInf);
             *should = false;
         }
@@ -99,7 +103,8 @@ void RegisterLockOverworldDoors() {
     COND_VB_SHOULD(VB_NOT_HAVE_SMALL_KEY, shouldRegister, {
         EnDoor* enDoor = va_arg(args, EnDoor*);
 
-        if (enDoor->randomizerInf >= RAND_INF_GUARD_HOUSE_UNLOCKED && enDoor->randomizerInf <= RAND_INF_FISHING_HOLE_KEY_OBTAINED) {
+        if (enDoor->randomizerInf >= RAND_INF_GUARD_HOUSE_UNLOCKED &&
+            enDoor->randomizerInf <= RAND_INF_FISHING_HOLE_KEY_OBTAINED) {
             *should = !Flags_GetRandomizerInf((RandomizerInf)(enDoor->randomizerInf + 1));
         }
     });
@@ -107,21 +112,20 @@ void RegisterLockOverworldDoors() {
     COND_VB_SHOULD(VB_DOOR_BE_LOCKED, shouldRegister, {
         EnDoor* enDoor = va_arg(args, EnDoor*);
 
-        if (enDoor->randomizerInf >= RAND_INF_GUARD_HOUSE_UNLOCKED && enDoor->randomizerInf <= RAND_INF_FISHING_HOLE_KEY_OBTAINED) {
+        if (enDoor->randomizerInf >= RAND_INF_GUARD_HOUSE_UNLOCKED &&
+            enDoor->randomizerInf <= RAND_INF_FISHING_HOLE_KEY_OBTAINED) {
             *should = !Flags_GetRandomizerInf(enDoor->randomizerInf);
         }
     });
 
-    // The door actor uses the same param to indicate if a door should be locked or be a scene transition, so it cannot be both. Here we're 
-    // overriding the check for scene transition to also check if the door is being unlocked and should be a scene transition.
+    // The door actor uses the same param to indicate if a door should be locked or be a scene transition, so it cannot
+    // be both. Here we're overriding the check for scene transition to also check if the door is being unlocked and
+    // should be a scene transition.
     COND_VB_SHOULD(VB_DOOR_PLAY_SCENE_TRANSITION, shouldRegister, {
         EnDoor* enDoor = va_arg(args, EnDoor*);
 
-        if (!*should && (
-            enDoor->actor.id == ACTOR_EN_DOOR &&
-            ((enDoor->actor.params >> 7) & 7) == 1 &&
-            enDoor->randomizerInf != RAND_INF_MAX
-        )) {
+        if (!*should && (enDoor->actor.id == ACTOR_EN_DOOR && ((enDoor->actor.params >> 7) & 7) == 1 &&
+                         enDoor->randomizerInf != RAND_INF_MAX)) {
             *should = true;
         }
     });

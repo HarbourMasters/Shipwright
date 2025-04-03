@@ -1,0 +1,6 @@
+<Root>
+    <File Name="object_gi_egg" Segment="6">
+        <DList Name="gGiEggMaterialDL" Offset="0x0FD0"/>
+        <DList Name="gGiEggDL" Offset="0x1008"/>
+    </File>
+</Root>

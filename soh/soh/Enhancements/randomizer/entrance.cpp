@@ -11,7 +11,8 @@ namespace Rando {
 EntranceLinkInfo NO_RETURN_ENTRANCE = { EntranceType::None, RR_NONE, RR_NONE, -1 };
 
 Entrance::Entrance(RandomizerRegion connectedRegion_, ConditionFn condition_function_, bool spreadsAreasWithPriority_)
-    : connectedRegion(connectedRegion_), condition_function(condition_function_),  spreadsAreasWithPriority(spreadsAreasWithPriority_){
+    : connectedRegion(connectedRegion_), condition_function(condition_function_),
+      spreadsAreasWithPriority(spreadsAreasWithPriority_) {
     originalConnectedRegion = connectedRegion_;
 }
 
@@ -20,11 +21,11 @@ void Entrance::SetCondition(ConditionFn newCondition) {
 }
 
 bool Entrance::GetConditionsMet() const {
-  auto ctx = Rando::Context::GetInstance();
-  if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS)) {
-    return condition_function();
-  }
-  return true;
+    auto ctx = Rando::Context::GetInstance();
+    if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS)) {
+        return condition_function();
+    }
+    return true;
 }
 
 std::string Entrance::to_string() const {
@@ -60,24 +61,24 @@ void Entrance::printAgeTimeAccess() {
 }
 
 bool Entrance::ConditionsMet(bool allAgeTimes) const {
-  auto ctx = Rando::Context::GetInstance();
-  StartPerformanceTimer(PT_ENTRANCE_LOGIC);
-  Region* parent = RegionTable(parentRegion);
-  int conditionsMet = 0;
+    auto ctx = Rando::Context::GetInstance();
+    StartPerformanceTimer(PT_ENTRANCE_LOGIC);
+    Region* parent = RegionTable(parentRegion);
+    int conditionsMet = 0;
 
-  if (allAgeTimes && !parent->AllAccess()) {
-      StopPerformanceTimer(PT_ENTRANCE_LOGIC);
-      return false;
-  }
+    if (allAgeTimes && !parent->AllAccess()) {
+        StopPerformanceTimer(PT_ENTRANCE_LOGIC);
+        return false;
+    }
 
-  // check all possible day/night condition combinations
-  conditionsMet = (parent->childDay && CheckConditionAtAgeTime(logic->IsChild, logic->AtDay, allAgeTimes)) +
-                  (parent->childNight && CheckConditionAtAgeTime(logic->IsChild, logic->AtNight, allAgeTimes)) +
-                  (parent->adultDay && CheckConditionAtAgeTime(logic->IsAdult, logic->AtDay, allAgeTimes)) +
-                  (parent->adultNight && CheckConditionAtAgeTime(logic->IsAdult, logic->AtNight, allAgeTimes));
+    // check all possible day/night condition combinations
+    conditionsMet = (parent->childDay && CheckConditionAtAgeTime(logic->IsChild, logic->AtDay, allAgeTimes)) +
+                    (parent->childNight && CheckConditionAtAgeTime(logic->IsChild, logic->AtNight, allAgeTimes)) +
+                    (parent->adultDay && CheckConditionAtAgeTime(logic->IsAdult, logic->AtDay, allAgeTimes)) +
+                    (parent->adultNight && CheckConditionAtAgeTime(logic->IsAdult, logic->AtNight, allAgeTimes));
 
-  StopPerformanceTimer(PT_ENTRANCE_LOGIC);
-  return conditionsMet && (!allAgeTimes || conditionsMet == 4);
+    StopPerformanceTimer(PT_ENTRANCE_LOGIC);
+    return conditionsMet && (!allAgeTimes || conditionsMet == 4);
 }
 
 uint32_t Entrance::Getuint32_t() const {
@@ -227,13 +228,13 @@ Entrance* Entrance::AssumeReachable() {
     return assumed;
 }
 
-bool Entrance::DoesSpreadAreas(){
-  return spreadsAreasWithPriority;
+bool Entrance::DoesSpreadAreas() {
+    return spreadsAreasWithPriority;
 }
 
 EntranceShuffler::EntranceShuffler() {
-  playthroughEntrances = {};
-  entranceOverrides = {};
+    playthroughEntrances = {};
+    entranceOverrides = {};
 }
 
 bool EntranceShuffler::HasNoRandomEntrances() {
@@ -532,7 +533,8 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
 
             // The player should be able to get back to ToT after going through time, without having collected any items
             // This is important to ensure that the player never loses access to the pedestal after going through time
-            if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD) && !RegionTable(RR_TEMPLE_OF_TIME)->Adult()) {
+            if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD) &&
+                !RegionTable(RR_TEMPLE_OF_TIME)->Adult()) {
                 SPDLOG_DEBUG("Path to Temple of Time as adult is not guaranteed\n");
                 return false;
             } else if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_ADULT) &&
@@ -856,6 +858,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
     mCurNumRandomizedEntrances = 0;
 
     std::vector<EntranceInfoPair> entranceShuffleTable = {
+        // clang-format off
         // Type                         Parent Region                        Connected Region                      Index
         { { EntranceType::Dungeon,      RR_KF_OUTSIDE_DEKU_TREE,             RR_DEKU_TREE_ENTRYWAY,                ENTR_DEKU_TREE_ENTRANCE },
           { EntranceType::Dungeon,      RR_DEKU_TREE_ENTRYWAY,               RR_KF_OUTSIDE_DEKU_TREE,              ENTR_KOKIRI_FOREST_OUTSIDE_DEKU_TREE } },
@@ -1161,6 +1164,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
           NO_RETURN_ENTRANCE },
         { { EntranceType::BlueWarp, RR_SHADOW_TEMPLE_BOSS_ROOM,    RR_GRAVEYARD_WARP_PAD_REGION, ENTR_GRAVEYARD_SHADOW_TEMPLE_BLUE_WARP },
           NO_RETURN_ENTRANCE },
+        // clang-format on
     };
 
     std::map<std::string, PriorityEntrance> priorityEntranceTable = {
@@ -1572,7 +1576,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
 
 void EntranceShuffler::CreateEntranceOverrides() {
     auto ctx = Rando::Context::GetInstance();
-    entranceOverrides.fill({0, 0, 0, 0, 0});
+    entranceOverrides.fill({ 0, 0, 0, 0, 0 });
     if (mNoRandomEntrances) {
         return;
     }

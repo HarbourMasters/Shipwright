@@ -66,16 +66,15 @@ static auto GetSpoilerLogPath() {
 }
 
 static auto GetPlacementLogPath() {
-  return GetGeneralPath();
+    return GetGeneralPath();
 }
 
 // Writes the location to the specified node.
-static void WriteLocation(
-    std::string sphere, const RandomizerCheck locationKey, const bool withPadding = false) {
-  Rando::Location* location = Rando::StaticData::GetLocation(locationKey);
-  Rando::ItemLocation* itemLocation = Rando::Context::GetInstance()->GetItemLocation(locationKey);
+static void WriteLocation(std::string sphere, const RandomizerCheck locationKey, const bool withPadding = false) {
+    Rando::Location* location = Rando::StaticData::GetLocation(locationKey);
+    Rando::ItemLocation* itemLocation = Rando::Context::GetInstance()->GetItemLocation(locationKey);
 
-  switch (gSaveContext.language) {
+    switch (gSaveContext.language) {
         case LANGUAGE_ENG:
         default:
             jsonData["playthrough"][sphere][location->GetName()] = itemLocation->GetPlacedItemName().GetEnglish();
@@ -86,48 +85,48 @@ static void WriteLocation(
     }
 }
 
-//Writes a shuffled entrance to the specified node
+// Writes a shuffled entrance to the specified node
 static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) {
-  int16_t originalIndex = entrance->GetIndex();
-  int16_t destinationIndex = -1;
-  int16_t replacementIndex = entrance->GetReplacement()->GetIndex();
-  int16_t replacementDestinationIndex = -1;
-  std::string name = GetEntranceData(originalIndex)->source;
-  std::string text = GetEntranceData(replacementIndex)->destination;
+    int16_t originalIndex = entrance->GetIndex();
+    int16_t destinationIndex = -1;
+    int16_t replacementIndex = entrance->GetReplacement()->GetIndex();
+    int16_t replacementDestinationIndex = -1;
+    std::string name = GetEntranceData(originalIndex)->source;
+    std::string text = GetEntranceData(replacementIndex)->destination;
 
-  // Track the reverse destination, useful for savewarp handling
-  if (entrance->GetReverse() != nullptr) {
-    destinationIndex = entrance->GetReverse()->GetIndex();
-    // When decouple is off we track the replacement's reverse destination, useful for recording visited entrances
-    if (!entrance->IsDecoupled()) {
-      replacementDestinationIndex = entrance->GetReplacement()->GetReverse()->GetIndex();
+    // Track the reverse destination, useful for savewarp handling
+    if (entrance->GetReverse() != nullptr) {
+        destinationIndex = entrance->GetReverse()->GetIndex();
+        // When decouple is off we track the replacement's reverse destination, useful for recording visited entrances
+        if (!entrance->IsDecoupled()) {
+            replacementDestinationIndex = entrance->GetReplacement()->GetReverse()->GetIndex();
+        }
     }
-  }
 
-  json entranceJson = json::object({
-    {"type", entrance->GetType()},
-    {"index", originalIndex},
-    {"destination", destinationIndex},
-    {"override", replacementIndex},
-    {"overrideDestination", replacementDestinationIndex},
-  });
-
-  jsonData["entrances"].push_back(entranceJson);
-
-  // When decoupled entrances is off, handle saving reverse entrances
-  if (entrance->GetReverse() != nullptr && !entrance->IsDecoupled()) {
-    json reverseEntranceJson = json::object({
-      {"type", entrance->GetReverse()->GetType()},
-      {"index", replacementDestinationIndex},
-      {"destination", replacementIndex},
-      {"override", destinationIndex},
-      {"overrideDestination", originalIndex},
+    json entranceJson = json::object({
+        { "type", entrance->GetType() },
+        { "index", originalIndex },
+        { "destination", destinationIndex },
+        { "override", replacementIndex },
+        { "overrideDestination", replacementDestinationIndex },
     });
 
-    jsonData["entrances"].push_back(reverseEntranceJson);
-  }
+    jsonData["entrances"].push_back(entranceJson);
 
-  switch (gSaveContext.language) {
+    // When decoupled entrances is off, handle saving reverse entrances
+    if (entrance->GetReverse() != nullptr && !entrance->IsDecoupled()) {
+        json reverseEntranceJson = json::object({
+            { "type", entrance->GetReverse()->GetType() },
+            { "index", replacementDestinationIndex },
+            { "destination", replacementIndex },
+            { "override", destinationIndex },
+            { "overrideDestination", originalIndex },
+        });
+
+        jsonData["entrances"].push_back(reverseEntranceJson);
+    }
+
+    switch (gSaveContext.language) {
         case LANGUAGE_ENG:
         case LANGUAGE_FRA:
         default:
@@ -141,32 +140,31 @@ static void WriteSettings() {
     auto ctx = Rando::Context::GetInstance();
     std::array<Rando::Option, RSK_MAX> options = Rando::Settings::GetInstance()->GetAllOptions();
     for (const Rando::Option& option : options) {
-      if (option.GetName() != ""){
-        jsonData["settings"][option.GetName()] = option.GetOptionText(ctx->GetOption(option.GetKey()).Get());
-      }
+        if (option.GetName() != "") {
+            jsonData["settings"][option.GetName()] = option.GetOptionText(ctx->GetOption(option.GetKey()).Get());
+        }
     }
 }
 
 // Removes any line breaks from s.
 std::string RemoveLineBreaks(std::string s) {
-  s.erase(std::remove(s.begin(), s.end(), '\n'), s.end());
-  return s;
+    s.erase(std::remove(s.begin(), s.end(), '\n'), s.end());
+    return s;
 }
 
 // Writes the excluded locations to the spoiler log, if there are any.
 static void WriteExcludedLocations() {
-  auto ctx = Rando::Context::GetInstance();
+    auto ctx = Rando::Context::GetInstance();
 
-  for (size_t i = 1; i < Rando::Settings::GetInstance()->GetExcludeLocationsOptions().size(); i++) {
-    for (const auto& location : Rando::Settings::GetInstance()->GetExcludeLocationsOptions()[i]) {
-      if (ctx->GetLocationOption(static_cast<RandomizerCheck>(location->GetKey())).Get() == RO_LOCATION_INCLUDE) {
-        continue;
-      }
+    for (size_t i = 1; i < Rando::Settings::GetInstance()->GetExcludeLocationsOptions().size(); i++) {
+        for (const auto& location : Rando::Settings::GetInstance()->GetExcludeLocationsOptions()[i]) {
+            if (ctx->GetLocationOption(static_cast<RandomizerCheck>(location->GetKey())).Get() == RO_LOCATION_INCLUDE) {
+                continue;
+            }
 
-      jsonData["excludedLocations"].push_back(RemoveLineBreaks(location->GetName()));
-
+            jsonData["excludedLocations"].push_back(RemoveLineBreaks(location->GetName()));
+        }
     }
-  }
 }
 
 // Writes the starting inventory to the spoiler log, if there is any.
@@ -182,16 +180,16 @@ static void WriteStartingInventory() {
     }
 }
 
-//Writes the enabled tricks to the spoiler log, if there are any.
+// Writes the enabled tricks to the spoiler log, if there are any.
 static void WriteEnabledTricks() {
-  auto ctx = Rando::Context::GetInstance();
+    auto ctx = Rando::Context::GetInstance();
 
-  for (const auto& setting : Rando::Settings::GetInstance()->GetOptionGroup(RSG_TRICKS).GetOptions()) {
-    if (ctx->GetTrickOption(static_cast<RandomizerTrick>(setting->GetKey())).IsNot(RO_GENERIC_ON)) {
-      continue;
+    for (const auto& setting : Rando::Settings::GetInstance()->GetOptionGroup(RSG_TRICKS).GetOptions()) {
+        if (ctx->GetTrickOption(static_cast<RandomizerTrick>(setting->GetKey())).IsNot(RO_GENERIC_ON)) {
+            continue;
+        }
+        jsonData["enabledTricks"].push_back(RemoveLineBreaks(setting->GetName()).c_str());
     }
-    jsonData["enabledTricks"].push_back(RemoveLineBreaks(setting->GetName()).c_str());
-  }
 }
 
 // Writes the Master Quest dungeons to the spoiler log, if there are any.
@@ -208,47 +206,49 @@ static void WriteMasterQuestDungeons() {
 
 // Writes the required trials to the spoiler log, if there are any.
 static void WriteChosenOptions() {
-  auto ctx = Rando::Context::GetInstance();
-  for (const auto& trial : ctx->GetTrials()->GetTrialList()) {
-    if (trial->IsRequired()) {
-      std::string trialName = trial->GetName().GetForCurrentLanguage(MF_CLEAN);
-      jsonData["requiredTrials"].push_back(RemoveLineBreaks(trialName));
+    auto ctx = Rando::Context::GetInstance();
+    for (const auto& trial : ctx->GetTrials()->GetTrialList()) {
+        if (trial->IsRequired()) {
+            std::string trialName = trial->GetName().GetForCurrentLanguage(MF_CLEAN);
+            jsonData["requiredTrials"].push_back(RemoveLineBreaks(trialName));
+        }
     }
-  }
-  if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_ADULT)){
-    jsonData["SelectedStartingAge"] = "Adult";
-  } else {
-    jsonData["SelectedStartingAge"] = "Child";
-  }
+    if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_ADULT)) {
+        jsonData["SelectedStartingAge"] = "Adult";
+    } else {
+        jsonData["SelectedStartingAge"] = "Child";
+    }
 }
 
 // Writes the intended playthrough to the spoiler log, separated into spheres.
 static void WritePlaythrough() {
-  auto ctx = Rando::Context::GetInstance();
+    auto ctx = Rando::Context::GetInstance();
 
-  for (uint32_t i = 0; i < ctx->playthroughLocations.size(); ++i) {
-    auto sphereNum = std::to_string(i);
-    std::string sphereString =  "sphere ";
-    if (i < 10) sphereString += "0";
-    sphereString += sphereNum;
-    for (const RandomizerCheck key : ctx->playthroughLocations[i]) {
-      WriteLocation(sphereString, key, true);
+    for (uint32_t i = 0; i < ctx->playthroughLocations.size(); ++i) {
+        auto sphereNum = std::to_string(i);
+        std::string sphereString = "sphere ";
+        if (i < 10)
+            sphereString += "0";
+        sphereString += sphereNum;
+        for (const RandomizerCheck key : ctx->playthroughLocations[i]) {
+            WriteLocation(sphereString, key, true);
+        }
     }
-  }
 }
 
-//Write the randomized entrance playthrough to the spoiler log, if applicable
+// Write the randomized entrance playthrough to the spoiler log, if applicable
 static void WriteShuffledEntrances() {
-  auto ctx = Rando::Context::GetInstance();
-  for (uint32_t i = 0; i < ctx->GetEntranceShuffler()->playthroughEntrances.size(); ++i) {
-    auto sphereNum = std::to_string(i);
-    std::string sphereString = "sphere ";
-    if (i < 10) sphereString += "0";
-    sphereString += sphereNum;
-    for (Entrance* entrance : ctx->GetEntranceShuffler()->playthroughEntrances[i]) {
-        WriteShuffledEntrance(sphereString, entrance);
+    auto ctx = Rando::Context::GetInstance();
+    for (uint32_t i = 0; i < ctx->GetEntranceShuffler()->playthroughEntrances.size(); ++i) {
+        auto sphereNum = std::to_string(i);
+        std::string sphereString = "sphere ";
+        if (i < 10)
+            sphereString += "0";
+        sphereString += sphereNum;
+        for (Entrance* entrance : ctx->GetEntranceShuffler()->playthroughEntrances[i]) {
+            WriteShuffledEntrance(sphereString, entrance);
+        }
     }
-  }
 }
 
 Rando::ItemLocation* GetItemLocation(RandomizerGet item) {
@@ -265,52 +265,59 @@ static void WriteAllLocations() {
         std::string placedItemName;
 
         switch (gSaveContext.language) {
-          case 0:
-          default:
-            placedItemName = location->GetPlacedItemName().english;
-            break;
-          case 2:
-            placedItemName = location->GetPlacedItemName().french;
-            break;
+            case 0:
+            default:
+                placedItemName = location->GetPlacedItemName().english;
+                break;
+            case 2:
+                placedItemName = location->GetPlacedItemName().french;
+                break;
         }
 
         // If it's a simple item (not an ice trap, doesn't have a price)
         // just add the name of the item and move on
-        if (!location->HasCustomPrice() &&
-            location->GetPlacedRandomizerGet() != RG_ICE_TRAP) {
-            
-            jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()] = placedItemName;
+        if (!location->HasCustomPrice() && location->GetPlacedRandomizerGet() != RG_ICE_TRAP) {
+
+            jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()] =
+                placedItemName;
             continue;
         }
 
         // We're dealing with a complex item, build out the json object for it
-        jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["item"] = placedItemName;
+        jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["item"] =
+            placedItemName;
 
         if (location->HasCustomPrice()) {
             jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["price"] =
                 location->GetPrice();
         }
         if (location->IsAHintAccessible()) {
-          hintedLocations.emplace(Rando::StaticData::GetLocation(key)->GetHintKey(), location);
+            hintedLocations.emplace(Rando::StaticData::GetLocation(key)->GetHintKey(), location);
         }
 
         if (location->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
-          switch (gSaveContext.language) {
-              case 0:
-              default:
-                  jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["model"] =
-                      Rando::StaticData::RetrieveItem(ctx->overrides[location->GetRandomizerCheck()].LooksLike()).GetName().english;
-                  jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["trickName"] = 
-                      ctx->overrides[location->GetRandomizerCheck()].GetTrickName().english;
-                  break;
-              case 2:
-                  jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["model"] =
-                      Rando::StaticData::RetrieveItem(ctx->overrides[location->GetRandomizerCheck()].LooksLike()).GetName().french;
-                  jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["trickName"] =
-                      ctx->overrides[location->GetRandomizerCheck()].GetTrickName().french;
-                  break;
-          }
-      }
+            switch (gSaveContext.language) {
+                case 0:
+                default:
+                    jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]
+                            ["model"] = Rando::StaticData::RetrieveItem(
+                                            ctx->overrides[location->GetRandomizerCheck()].LooksLike())
+                                            .GetName()
+                                            .english;
+                    jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]
+                            ["trickName"] = ctx->overrides[location->GetRandomizerCheck()].GetTrickName().english;
+                    break;
+                case 2:
+                    jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]
+                            ["model"] = Rando::StaticData::RetrieveItem(
+                                            ctx->overrides[location->GetRandomizerCheck()].LooksLike())
+                                            .GetName()
+                                            .french;
+                    jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]
+                            ["trickName"] = ctx->overrides[location->GetRandomizerCheck()].GetTrickName().french;
+                    break;
+            }
+        }
     }
 }
 
@@ -319,9 +326,9 @@ const char* SpoilerLog_Write() {
 
     jsonData.clear();
 
-    jsonData["version"] = (char*) gBuildVersion;
-    jsonData["git_branch"] = (char*) gGitBranch;
-    jsonData["git_commit"] = (char*) gGitCommitHash;
+    jsonData["version"] = (char*)gBuildVersion;
+    jsonData["git_branch"] = (char*)gGitBranch;
+    jsonData["git_commit"] = (char*)gGitCommitHash;
     jsonData["seed"] = ctx->GetSeedString();
     jsonData["finalSeed"] = ctx->GetSeed();
 
@@ -335,7 +342,7 @@ const char* SpoilerLog_Write() {
     WriteSettings();
     WriteExcludedLocations();
     WriteStartingInventory();
-    WriteEnabledTricks(); 
+    WriteEnabledTricks();
     WriteMasterQuestDungeons();
     WriteChosenOptions();
     WritePlaythrough();
@@ -353,7 +360,7 @@ const char* SpoilerLog_Write() {
 
     std::string jsonString = jsonData.dump(4);
     std::ostringstream fileNameStream;
-    for (uint8_t i = 0; i < ctx->hashIconIndexes.size(); i ++) {
+    for (uint8_t i = 0; i < ctx->hashIconIndexes.size(); i++) {
         if (i) {
             fileNameStream << '-';
         }
@@ -384,4 +391,3 @@ void PlacementLog_Msg(std::string_view msg) {
 void PlacementLog_Clear() {
     placementtxt = "";
 }
-

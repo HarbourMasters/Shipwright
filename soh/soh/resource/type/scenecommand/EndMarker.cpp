@@ -6,6 +6,6 @@ Marker* EndMarker::GetPointer() {
 }
 
 size_t EndMarker::GetPointerSize() {
-	return sizeof(Marker);
+    return sizeof(Marker);
 }
 } // namespace SOH

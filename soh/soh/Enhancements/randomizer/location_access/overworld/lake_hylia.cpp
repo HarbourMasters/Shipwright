@@ -4,6 +4,7 @@
 using namespace Rando;
 
 void RegionTable_Init_LakeHylia() {
+    // clang-format off
     areaTable[RR_LAKE_HYLIA] = Region("Lake Hylia", "Lake Hylia", {RA_LAKE_HYLIA}, DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairy();}),
@@ -38,6 +39,48 @@ void RegionTable_Init_LakeHylia() {
         LOCATION(RC_LH_LAB_GOSSIP_STONE,                 true),
         LOCATION(RC_LH_SOUTHEAST_GOSSIP_STONE,           true),
         LOCATION(RC_LH_SOUTHWEST_GOSSIP_STONE,           true),
+        LOCATION(RC_LH_GRASS_1,                          logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_2,                          logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_3,                          logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_4,                          logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_5,                          logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_6,                          logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_7,                          logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_8,                          logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_9,                          logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_10,                         logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_11,                         logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_12,                         logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_13,                         logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_14,                         logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_15,                         logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_16,                         logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_17,                         logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_18,                         logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_19,                         logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_20,                         logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_21,                         logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_22,                         logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_23,                         logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_24,                         logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_25,                         logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_26,                         logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_27,                         logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_28,                         logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_29,                         logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_30,                         logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_31,                         logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_32,                         logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_33,                         logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_34,                         logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_35,                         logic->CanCutShrubs()),
+        LOCATION(RC_LH_GRASS_36,                         logic->CanCutShrubs()),
+        LOCATION(RC_LH_CHILD_GRASS_1,                    logic->IsChild && logic->CanCutShrubs()),
+        LOCATION(RC_LH_CHILD_GRASS_2,                    logic->IsChild && logic->CanCutShrubs()),
+        LOCATION(RC_LH_CHILD_GRASS_3,                    logic->IsChild && logic->CanCutShrubs()),
+        LOCATION(RC_LH_CHILD_GRASS_4,                    logic->IsChild && logic->CanCutShrubs()),
+        LOCATION(RC_LH_WARP_PAD_GRASS_1,                 logic->CanCutShrubs()),
+        LOCATION(RC_LH_WARP_PAD_GRASS_2,                 logic->CanCutShrubs()),
     }, {
         //Exits
         Entrance(RR_HYRULE_FIELD,          []{return true;}),
@@ -64,10 +107,11 @@ void RegionTable_Init_LakeHylia() {
         //Locations
         LOCATION(RC_LH_LAB_DIVE,        logic->HasItem(RG_GOLDEN_SCALE) || (ctx->GetTrickOption(RT_LH_LAB_DIVING) && logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT))),
         LOCATION(RC_LH_TRADE_FROG,      logic->IsAdult && logic->CanUse(RG_EYEBALL_FROG)),
-        LOCATION(RC_LH_GS_LAB_CRATE,    logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT)),
+        LOCATION(RC_LH_GS_LAB_CRATE,    logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT) && logic->CanBreakCrates()),
         LOCATION(RC_LH_LAB_FRONT_RUPEE, logic->CanUse(RG_IRON_BOOTS) || logic->HasItem(RG_GOLDEN_SCALE)),
         LOCATION(RC_LH_LAB_LEFT_RUPEE,  logic->CanUse(RG_IRON_BOOTS) || logic->HasItem(RG_GOLDEN_SCALE)),
         LOCATION(RC_LH_LAB_RIGHT_RUPEE, logic->CanUse(RG_IRON_BOOTS) || logic->HasItem(RG_GOLDEN_SCALE)),
+        LOCATION(RC_LH_LAB_CRATE,       logic->CanUse(RG_IRON_BOOTS) && logic->CanBreakCrates()),
     }, {
         //Exits
         Entrance(RR_LAKE_HYLIA, []{return true;}),
@@ -128,4 +172,6 @@ void RegionTable_Init_LakeHylia() {
         //Exits
         Entrance(RR_LAKE_HYLIA, []{return true;}),
     });
+
+    // clang-format on
 }

@@ -118,10 +118,9 @@ void EnOwl_Init(Actor* thisx, PlayState* play) {
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
     ActorShape_Init(&this->actor.shape, 0, ActorShadow_DrawCircle, 36.0f);
-    SkelAnime_InitFlex(play, &this->skelAnime, &gOwlFlyingSkel, &gOwlFlyAnim, this->jointTable, this->morphTable,
-                       21);
-    SkelAnime_InitFlex(play, &this->skelAnime2, &gOwlPerchingSkel, &gOwlPerchAnim, this->jointTable2,
-                       this->morphTable2, 16);
+    SkelAnime_InitFlex(play, &this->skelAnime, &gOwlFlyingSkel, &gOwlFlyAnim, this->jointTable, this->morphTable, 21);
+    SkelAnime_InitFlex(play, &this->skelAnime2, &gOwlPerchingSkel, &gOwlPerchAnim, this->jointTable2, this->morphTable2,
+                       16);
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, &this->actor, &sOwlCylinderInit);
     this->actor.colChkInfo.mass = MASS_IMMOVABLE;
@@ -187,7 +186,8 @@ void EnOwl_Init(Actor* thisx, PlayState* play) {
             this->actionFunc = EnOwl_WaitLakeHylia;
             break;
         case OWL_ZORA_RIVER:
-            if ((Flags_GetEventChkInf(EVENTCHKINF_OPENED_ZORAS_DOMAIN)) || !Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
+            if ((Flags_GetEventChkInf(EVENTCHKINF_OPENED_ZORAS_DOMAIN)) ||
+                !Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
                 // opened zora's domain or has zelda's letter
                 osSyncPrintf("フクロウ退避\n"); // "Owl evacuation"
                 Actor_Kill(&this->actor);
@@ -374,9 +374,7 @@ void func_80ACA7E0(EnOwl* this, PlayState* play) {
 
 void EnOwl_ConfirmKokiriMessage(EnOwl* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
-        // swap the order of the responses if better owl is enabled
-        uint8_t index = CVarGetInteger(CVAR_ENHANCEMENT("BetterOwl"), 0) == 0 ? play->msgCtx.choiceIndex : (1 - play->msgCtx.choiceIndex);
-        switch (index) {
+        switch (play->msgCtx.choiceIndex) {
             case OWL_REPEAT:
                 Message_ContinueTextbox(play, 0x2065);
                 break;
@@ -404,8 +402,7 @@ void EnOwl_WaitOutsideKokiri(EnOwl* this, PlayState* play) {
 void func_80ACA998(EnOwl* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
         // swap the order of the responses if better owl is enabled
-        uint8_t index = CVarGetInteger(CVAR_ENHANCEMENT("BetterOwl"), 0) == 0 ? play->msgCtx.choiceIndex : (1 - play->msgCtx.choiceIndex);
-        switch (index) {
+        switch (play->msgCtx.choiceIndex) {
             case OWL_REPEAT:
                 Message_ContinueTextbox(play, 0x2069);
                 this->actionFunc = func_80ACAA54;
@@ -449,9 +446,7 @@ void EnOwl_WaitHyruleCastle(EnOwl* this, PlayState* play) {
 
 void func_80ACAB88(EnOwl* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
-        // swap the order of the responses if better owl is enabled
-        uint8_t index = CVarGetInteger(CVAR_ENHANCEMENT("BetterOwl"), 0) == 0 ? play->msgCtx.choiceIndex : (1 - play->msgCtx.choiceIndex);
-        switch (index) {
+        switch (play->msgCtx.choiceIndex) {
             case OWL_REPEAT:
                 // obtained zelda's letter
                 if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
@@ -492,9 +487,7 @@ void EnOwl_WaitKakariko(EnOwl* this, PlayState* play) {
 
 void func_80ACAD34(EnOwl* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
-        // swap the order of the responses if better owl is enabled
-        uint8_t index = CVarGetInteger(CVAR_ENHANCEMENT("BetterOwl"), 0) == 0 ? play->msgCtx.choiceIndex : (1 - play->msgCtx.choiceIndex);
-        switch (index) {
+        switch (play->msgCtx.choiceIndex) {
             case OWL_REPEAT:
                 Message_ContinueTextbox(play, 0x206F);
                 this->actionFunc = func_80ACADF0;
@@ -530,9 +523,7 @@ void EnOwl_WaitGerudo(EnOwl* this, PlayState* play) {
 
 void func_80ACAEB8(EnOwl* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
-        // swap the order of the responses if better owl is enabled
-        uint8_t index = CVarGetInteger(CVAR_ENHANCEMENT("BetterOwl"), 0) == 0 ? play->msgCtx.choiceIndex : (1 - play->msgCtx.choiceIndex);
-        switch (index) {
+        switch (play->msgCtx.choiceIndex) {
             case OWL_REPEAT:
                 Message_ContinueTextbox(play, 0x2071);
                 this->actionFunc = func_80ACAF74;
@@ -652,9 +643,7 @@ void EnOwl_WaitDeathMountainShortcut(EnOwl* this, PlayState* play) {
 
 void func_80ACB344(EnOwl* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
-        // swap the order of the responses if better owl is enabled
-        uint8_t index = CVarGetInteger(CVAR_ENHANCEMENT("BetterOwl"), 0) == 0 ? play->msgCtx.choiceIndex : (1 - play->msgCtx.choiceIndex);
-        switch (index) {
+        switch (play->msgCtx.choiceIndex) {
             case OWL_REPEAT:
                 Message_ContinueTextbox(play, 0x607A);
                 break;
@@ -677,9 +666,7 @@ void func_80ACB3E0(EnOwl* this, PlayState* play) {
 
 void func_80ACB440(EnOwl* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
-        // swap the order of the responses if better owl is enabled
-        uint8_t index = CVarGetInteger(CVAR_ENHANCEMENT("BetterOwl"), 0) == 0 ? play->msgCtx.choiceIndex : (1 - play->msgCtx.choiceIndex);
-        switch (index) {
+        switch (play->msgCtx.choiceIndex) {
             case OWL_REPEAT:
                 Message_ContinueTextbox(play, 0x10C1);
                 this->actionFunc = func_80ACB4FC;
@@ -714,9 +701,7 @@ void EnOwl_WaitLWPreSaria(EnOwl* this, PlayState* play) {
 
 void func_80ACB5C4(EnOwl* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
-        // swap the order of the responses if better owl is enabled
-        uint8_t index = CVarGetInteger(CVAR_ENHANCEMENT("BetterOwl"), 0) == 0 ? play->msgCtx.choiceIndex : (1 - play->msgCtx.choiceIndex);
-        switch (index) {
+        switch (play->msgCtx.choiceIndex) {
             case OWL_REPEAT:
                 Message_ContinueTextbox(play, 0x10C5);
                 this->actionFunc = func_80ACB680;
@@ -769,8 +754,7 @@ void func_80ACB748(EnOwl* this, PlayState* play) {
     switch (owlType) {
         case 7:
             func_800F436C(&D_80ACD62C, NA_SE_EV_FLYING_AIR - SFX_FLAG, weight * 2.0f);
-            if ((play->csCtx.frames > 324) ||
-                ((play->csCtx.frames >= 142 && (play->csCtx.frames <= 266)))) {
+            if ((play->csCtx.frames > 324) || ((play->csCtx.frames >= 142 && (play->csCtx.frames <= 266)))) {
                 func_800F4414(&D_80ACD62C, NA_SE_EN_OWL_FLUTTER, weight * 2.0f);
             }
             if (play->csCtx.frames == 85) {
@@ -780,8 +764,7 @@ void func_80ACB748(EnOwl* this, PlayState* play) {
         case 8:
         case 9:
             func_800F436C(&D_80ACD62C, NA_SE_EV_FLYING_AIR - SFX_FLAG, weight * 2.0f);
-            if ((play->csCtx.frames >= 420) ||
-                ((0xC1 < play->csCtx.frames && (play->csCtx.frames <= 280)))) {
+            if ((play->csCtx.frames >= 420) || ((0xC1 < play->csCtx.frames && (play->csCtx.frames <= 280)))) {
                 func_800F4414(&D_80ACD62C, NA_SE_EN_OWL_FLUTTER, weight * 2.0f);
             }
             if (play->csCtx.frames == 217) {
@@ -1391,8 +1374,8 @@ void func_80ACD130(EnOwl* this, PlayState* play, s32 idx) {
 }
 
 f32 func_80ACD1C4(PlayState* play, s32 idx) {
-    f32 ret = Environment_LerpWeight(play->csCtx.npcActions[idx]->endFrame,
-                                     play->csCtx.npcActions[idx]->startFrame, play->csCtx.frames);
+    f32 ret = Environment_LerpWeight(play->csCtx.npcActions[idx]->endFrame, play->csCtx.npcActions[idx]->startFrame,
+                                     play->csCtx.frames);
 
     ret = CLAMP_MAX(ret, 1.0f);
     return ret;

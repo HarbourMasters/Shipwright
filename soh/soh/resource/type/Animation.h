@@ -38,7 +38,7 @@ typedef struct {
     /* 0x00 */ s16 frameCount;
 } AnimationHeaderCommon;
 
-// Index into the frame data table. 
+// Index into the frame data table.
 typedef struct {
     /* 0x00 */ u16 x;
     /* 0x02 */ u16 y;
@@ -47,7 +47,7 @@ typedef struct {
 
 typedef struct {
     /* 0x00 */ AnimationHeaderCommon common;
-    /* 0x04 */ s16* frameData; // "tbl"
+    /* 0x04 */ s16* frameData;           // "tbl"
     /* 0x08 */ JointIndex* jointIndices; // "ref_tbl"
     /* 0x0C */ u16 staticIndexMax;
 } AnimationHeader; // size = 0x10
@@ -58,16 +58,17 @@ typedef struct {
 } LinkAnimationHeader; // size = 0x8
 
 union AnimationData {
-AnimationHeader animationHeader;
-LinkAnimationHeader linkAnimationHeader;
-TransformUpdateIndex transformUpdateIndex;
+    AnimationHeader animationHeader;
+    LinkAnimationHeader linkAnimationHeader;
+    TransformUpdateIndex transformUpdateIndex;
 };
 
 class Animation : public Ship::Resource<AnimationData> {
-public:
+  public:
     using Resource::Resource;
 
-    Animation() : Resource(std::shared_ptr<Ship::ResourceInitData>()) {}
+    Animation() : Resource(std::shared_ptr<Ship::ResourceInitData>()) {
+    }
 
     AnimationData* GetPointer();
     size_t GetPointerSize();
@@ -84,4 +85,4 @@ public:
     std::vector<TransformData> transformDataArr;
     std::vector<int16_t> copyValuesArr;
 };
-}; // namespace LUS
+}; // namespace SOH
