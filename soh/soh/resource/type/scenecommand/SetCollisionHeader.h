@@ -21,4 +21,4 @@ class SetCollisionHeader : public SceneCommand<CollisionHeaderData> {
 
     std::shared_ptr<CollisionHeader> collisionHeader;
 };
-}; // namespace LUS
+}; // namespace SOH

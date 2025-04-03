@@ -1,0 +1,56 @@
+<Root>
+    <File Name="object_po_sisters" Segment="6">
+        <Texture Name="object_po_sistersTex_0048D8" OutName="object_po_sistersTex_0048D8" Format="rgba16" Width="16" Height="16" Offset="0x48D8" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_004AD8" OutName="object_po_sistersTex_004AD8" Format="rgba16" Width="32" Height="32" Offset="0x4AD8" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_0052D8" OutName="object_po_sistersTex_0052D8" Format="rgba16" Width="32" Height="16" Offset="0x52D8" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_0056D8" OutName="object_po_sistersTex_0056D8" Format="rgba16" Width="16" Height="16" Offset="0x56D8" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_0058D8" OutName="object_po_sistersTex_0058D8" Format="rgba16" Width="4" Height="4" Offset="0x58D8" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_0058F8" OutName="object_po_sistersTex_0058F8" Format="rgba16" Width="16" Height="16" Offset="0x58F8" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_005AF8" OutName="object_po_sistersTex_005AF8" Format="rgba16" Width="16" Height="16" Offset="0x5AF8" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_005CF8" OutName="object_po_sistersTex_005CF8" Format="rgba16" Width="8" Height="8" Offset="0x5CF8" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_005D78" OutName="object_po_sistersTex_005D78" Format="rgba16" Width="16" Height="16" Offset="0x5D78" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_005F78" OutName="object_po_sistersTex_005F78" Format="rgba16" Width="16" Height="8" Offset="0x5F78" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_006078" OutName="object_po_sistersTex_006078" Format="rgba16" Width="16" Height="16" Offset="0x6078" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_006278" OutName="object_po_sistersTex_006278" Format="rgba16" Width="8" Height="8" Offset="0x6278" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_0062F8" OutName="object_po_sistersTex_0062F8" Format="rgba16" Width="4" Height="4" Offset="0x62F8" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_006318" OutName="object_po_sistersTex_006318" Format="rgba16" Width="16" Height="16" Offset="0x6318" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_007AC0" OutName="object_po_sistersTex_007AC0" Format="rgba16" Width="32" Height="32" Offset="0x7AC0" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_0082C0" OutName="object_po_sistersTex_0082C0" Format="rgba16" Width="8" Height="16" Offset="0x82C0" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_0083C0" OutName="object_po_sistersTex_0083C0" Format="rgba16" Width="32" Height="32" Offset="0x83C0" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_008BC0" OutName="object_po_sistersTex_008BC0" Format="rgba16" Width="32" Height="32" Offset="0x8BC0" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_0093C0" OutName="object_po_sistersTex_0093C0" Format="rgba16" Width="32" Height="32" Offset="0x93C0" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_009BC0" OutName="object_po_sistersTex_009BC0" Format="rgba16" Width="32" Height="32" Offset="0x9BC0" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_00A3C0" OutName="object_po_sistersTex_00A3C0" Format="rgba16" Width="32" Height="32" Offset="0xA3C0" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_00ABC0" OutName="object_po_sistersTex_00ABC0" Format="rgba16" Width="32" Height="32" Offset="0xABC0" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_00B3C0" OutName="object_po_sistersTex_00B3C0" Format="rgba16" Width="32" Height="32" Offset="0xB3C0" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_00BBC0" OutName="object_po_sistersTex_00BBC0" Format="rgba16" Width="32" Height="32" Offset="0xBBC0" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_00C3C0" OutName="object_po_sistersTex_00C3C0" Format="rgba16" Width="32" Height="32" Offset="0xC3C0" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_00CBC0" OutName="object_po_sistersTex_00CBC0" Format="rgba16" Width="32" Height="32" Offset="0xCBC0" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_00D3C0" OutName="object_po_sistersTex_00D3C0" Format="rgba16" Width="32" Height="32" Offset="0xD3C0" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_00DBC0" OutName="object_po_sistersTex_00DBC0" Format="rgba16" Width="32" Height="32" Offset="0xDBC0" AddedByScript="true"/>
+        <Animation Name="gPoeSistersAttackAnim" Offset="0x0114"/>
+        <Animation Name="gPoeSistersMegCryAnim" Offset="0x0680"/>
+        <Animation Name="gPoeSistersDamagedAnim" Offset="0x08C0"/>
+        <Animation Name="gPoeSistersFleeAnim" Offset="0x0A54"/>
+        <Animation Name="gPoeSistersFloatAnim" Offset="0x0D40"/>
+        <Animation Name="gPoeSistersAppearDisappearAnim" Offset="0x119C"/>
+        <Animation Name="gPoeSistersSwayAnim" Offset="0x14CC"/>
+        <DList Name="gPoeSistersMegFaceDL" Offset="0x1CB0"/>
+        <DList Name="gPoeSistersMegBodyDL" Offset="0x1DE0"/>
+        <DList Name="gPoSistersTorchDL" Offset="0x27B0"/>
+        <DList Name="gPoeSistersJoelleFaceDL" Offset="0x2EB8"/>
+        <DList Name="gPoeSistersJoelleBodyDL" Offset="0x2F88"/>
+        <DList Name="gPoeSistersBethBodyDL" Offset="0x3628"/>
+        <DList Name="gPoeSistersBethFaceDL" Offset="0x3880"/>
+        <DList Name="gPoeSistersAmyBodyDL" Offset="0x3DC8"/>
+        <DList Name="gPoSistersAmyFaceDL" Offset="0x4020"/>
+        <DList Name="gPoSistersBurnDL" Offset="0x46E0"/>
+        <Skeleton Name="gPoeSistersSkel" Type="Normal" LimbType="Standard" Offset="0x65C8"/>
+        <DList Name="gPoSistersJoellePaintingDL" Offset="0x6830"/> 
+        <DList Name="gPoSistersBethPaintingDL" Offset="0x6D60"/> 
+        <DList Name="gPoSistersAmyPaintingDL" Offset="0x7230"/> 
+        <DList Name="gPoSistersAmyBlockDL" Offset="0x75A0"/> 
+        <Collision Name="gPoSistersAmyBlockCol" Offset="0x7860"/>
+        <DList Name="gPoSistersAmyBethBlockDL" Offset="0x79E0"/> 
+    </File>
+</Root>

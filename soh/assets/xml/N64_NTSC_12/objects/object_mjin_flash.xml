@@ -1,0 +1,5 @@
+<Root>
+    <File Name="object_mjin_flash" Segment="6">
+        <Texture Name="gLightMedallionPlatformTex" OutName="light_medallion" Format="i8" Width="64" Height="64" Offset="0x0"/>
+    </File>
+</Root>

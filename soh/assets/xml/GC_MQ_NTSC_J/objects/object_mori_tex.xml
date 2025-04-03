@@ -1,0 +1,29 @@
+<Root>
+    <File Name="object_mori_tex" Segment="8">
+        <Texture Name="gMoriElevatorBarTex" OutName="elevator_bar" Format="rgba16" Height="16" Width="64" Offset="0x0"/>
+        <Texture Name="gMoriElevatorTopTex" OutName="elevator_top" Format="rgba16" Height="32" Width="32" Offset="0x800"/>
+        <Texture Name="gMoriElevatorSideTex" OutName="elevator_side" Format="rgba16" Height="16" Width="16" Offset="0x1000"/>
+
+        <Texture Name="gMoriStoneWallTex" OutName="stone_wall" Format="rgba16" Height="32" Width="32" Offset="0x1200"/>
+        <Texture Name="gMoriKaitenkabeMetalWallTex" OutName="metal_wall" Format="rgba16" Height="32" Width="32" Offset="0x1A00"/>
+        <Texture Name="gMoriRakkatenjoCheckerboardTex" OutName="checkerboard" Format="rgba16" Height="32" Width="64" Offset="0x2200"/>
+
+        <Texture Name="gMoriStalfosPlatformSideTex" OutName="stalfos_platform_side" Format="rgba16" Height="32" Width="64" Offset="0x3200"/>
+        <Texture Name="gMoriStalfosPlatformTopTex" OutName="stalfos_platform_top" Format="rgba16" Height="32" Width="32" Offset="0x4200"/>
+
+        <Texture Name="gMoriHashiraPlatformsTex" OutName="hashira_platform" Format="rgba16" Height="16" Width="16" Offset="0x4A00"/>
+
+        <Texture Name="gMoriWaterTex" OutName="water_tex" Format="rgba16" Height="32" Width="32" Offset="0x4C00"/> 
+
+        <Texture Name="gMoriHashigoLadderTex" OutName="ladder" Format="rgba16" Height="32" Width="32" Offset="0x5400"/>
+
+        <Texture Name="gForestTwistedHallwayPillarTex" OutName="twisted_hall_pillar" Format="rgba16" Height="64" Width="16" Offset="0x5C00"/>
+        <Texture Name="gForestTwistedHallwayWallAndFloorTex" OutName="twisted_hall_wall_and_floor" Format="rgba16" Width="32" Height="32" Offset="0x6400"/>
+        <Texture Name="gForestTwistedHallwayWallDesignTex" OutName="twisted_hall_design" Format="rgba16" Width="64" Height="32" Offset="0x6C00"/>
+        <Texture Name="gForestTwistedHallCarpetTex" OutName="twisted_hall_carpet" Format="rgba16" Width="16" Height="16" Offset="0x7C00"/>
+        <Texture Name="gForestTwistedHallLadderTex" OutName="twisted_hall_ladder" Format="rgba16" Height="32" Width="32" Offset="0x7E00"/>
+        <Texture Name="gForestTwistedHallBrickTex" OutName="twisted_hall_brick" Format="rgba16" Width="32" Height="32" Offset="0x8600"/>
+
+        <Texture Name="gMoriHashiraGateTex" OutName="hashira_gate" Format="rgba16" Width="32" Height="64" Offset="0x8E00"/>
+    </File>
+</Root>

@@ -53,7 +53,8 @@ class Context {
     void AddLocations(const Container& locations, std::vector<RandomizerCheck>* destination = nullptr);
     bool IsQuestOfLocationActive(RandomizerCheck rc);
     void GenerateLocationPool();
-    static std::vector<RandomizerCheck> GetLocations(const std::vector<RandomizerCheck>& locationPool, const RandomizerCheckType checkType);
+    static std::vector<RandomizerCheck> GetLocations(const std::vector<RandomizerCheck>& locationPool,
+                                                     const RandomizerCheckType checkType);
     void AddExcludedOptions();
     void LocationReset();
     void ClearItemLocations();

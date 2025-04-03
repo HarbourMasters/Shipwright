@@ -1,0 +1,6 @@
+<Root>
+    <File Name="object_ouke_haka" Segment="6">
+        <DList Name="object_ouke_haka_DL_0000C0" Offset="0xC0"/>
+        <Texture Name="object_ouke_haka_Tex_000170" OutName="tex_00000170" Format="i4" Width="128" Height="32" Offset="0x170"/>
+    </File>
+</Root>

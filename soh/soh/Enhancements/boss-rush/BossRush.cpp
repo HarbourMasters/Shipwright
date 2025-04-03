@@ -1,4 +1,4 @@
-﻿#include "BossRush.h"
+#include "BossRush.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
@@ -8,18 +8,18 @@
 #include <vector>
 
 extern "C" {
-    #include "functions.h"
-    #include "macros.h"
-    #include "variables.h"
-    #include "src/overlays/actors/ovl_Boss_Goma/z_boss_goma.h"
-    #include "src/overlays/actors/ovl_Boss_Mo/z_boss_mo.h"
-    #include "src/overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
-    extern PlayState* gPlayState;
+#include "functions.h"
+#include "macros.h"
+#include "variables.h"
+#include "src/overlays/actors/ovl_Boss_Goma/z_boss_goma.h"
+#include "src/overlays/actors/ovl_Boss_Mo/z_boss_mo.h"
+#include "src/overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
+extern PlayState* gPlayState;
 
-    Gfx* KaleidoScope_QuadTextureIA8(Gfx* gfx, void* texture, s16 width, s16 height, u16 point);
-    #include "textures/icon_item_nes_static/icon_item_nes_static.h"
-    #include "textures/icon_item_ger_static/icon_item_ger_static.h"
-    #include "textures/icon_item_fra_static/icon_item_fra_static.h"
+Gfx* KaleidoScope_QuadTextureIA8(Gfx* gfx, void* texture, s16 width, s16 height, u16 point);
+#include "textures/icon_item_nes_static/icon_item_nes_static.h"
+#include "textures/icon_item_ger_static/icon_item_ger_static.h"
+#include "textures/icon_item_fra_static/icon_item_fra_static.h"
 }
 
 typedef struct BossRushSetting {
@@ -27,103 +27,79 @@ typedef struct BossRushSetting {
     std::vector<std::array<std::string, LANGUAGE_MAX>> choices;
 } BossRushSetting;
 
-BossRushSetting BossRushOptions[BR_OPTIONS_MAX] = { 
-    {
-        { "BOSSES:", "BOSSE:", "BOSS:" },
-        {
-            { "All", "Alle", "Tous" },
-            { "Child", "Kind", "Enfant" },
-            { "Adult", "Erwachsener", "Adulte" },
-            { "Ganondorf & Ganon", "Ganondorf & Ganon", "Ganondorf & Ganon" }
-        }
-    },
-    {
-        { "HEARTS:", "HERZEN:", "COEURS:" },
-        {
-            { "10", "10", "10" },
-            { "15", "15", "15" },
-            { "20", "20", "20" },
-            { "3", "3", "3" },
-            { "5", "5", "5" },
-            { "7", "7", "7" }
-        }
-    },
-    {
-        { "AMMO:", "MUNITION:", "MUNITIONS:" },
-        {
-            { "Limited", "Limitiert", "Limitées" },
-            { "Full", "Voll", "Pleines" },
-            { "Maxed", "Maximum", "Maximum" }
-        }
-    },
-    {
-        { "HEAL:", "REGENERATION:", "SOIN:" },
-        {
-            { "Before Ganondorf", "Vor Ganondorf", "Avant Ganondorf" },
-            { "Every Boss", "Bei jedem Boss", "Tous les Boss" },
-            { "Never", "Niemals", "Jamais" }
-        }
-    },
-    {
-        { "HYPER BOSSES:", "HYPER-BOSSE:", "HYPER BOSS:" },
-        {
-            { "No", "Nein", "Non" },
-            { "Yes", "Ja", "Oui" }
-        }
-    },
-    {
-        { "MAGIC:", "MAGIE:", "MAGIE:" },
-        {
-            { "Single", "Einzel", "Simple" },
-            { "Double", "Doppel", "Double" }
-        }
-    },
-    {
-        { "BIG. SWORD:", "BIG.-SCHWERT:", "EPÉE DE BIG.:" },
-        {
-            { "No", "Nein", "Non" },
-            { "Yes", "Ja", "Oui" }
-        }
-    },
-    {
-        { "BOTTLE:", "FLASCHEN:", "BOUTEILLE:" },
-        {
-            { "No", "Nein", "Non" },
-            { "Empty", "Leer", "Vide" },
-            { "Fairy", "Fee", "Fée" },
-            { "Red Potion", "Rotes Elixier", "Potion Rouge" },
-            { "Green Potion", "Grünes Elixier", "Potion Verte" },
-            { "Blue Potion", "Blaues Elixier", "Potion Bleue" }
-        }
-    },
-    {
-        { "LONGSHOT:", "ENTERHAKEN:", "SUPER GRAPPIN:" },
-        {
-            { "No", "Nein", "Non" },
-            { "Yes", "Ja", "Oui" }
-        }
-    },
-    {
-        { "HOVER BOOTS:", "GLEITSTIEFEL:", "BOTTES DES AIRS:" },
-        {
-            { "No", "Nein", "Non" },
-            { "Yes", "Ja", "Oui" }
-        }
-    },
-    {
-        { "BUNNY HOOD:", "HASENOHREN:", "MASQUE DU LAPIN:" },
-        {
-            { "No", "Nein", "Non" },
-            { "Yes", "Ja", "Oui" }
-        }
-    },
-    {
-        { "TIMER:", "TIMER:", "TIMER:" },
-        {
-            { "Yes", "Ja", "Oui" },
-            { "No", "Nein", "Non" }
-        }
-    }
+BossRushSetting BossRushOptions[BR_OPTIONS_MAX] = {
+    { { "BOSSES:", "BOSSE:", "BOSS:" },
+      {
+          { "All", "Alle", "Tous" },
+          { "Child", "Kind", "Enfant" },
+          { "Adult", "Erwachsener", "Adulte" },
+          { "Ganondorf & Ganon", "Ganondorf & Ganon", "Ganondorf & Ganon" },
+      } },
+    { { "HEARTS:", "HERZEN:", "COEURS:" },
+      {
+          { "10", "10", "10" },
+          { "15", "15", "15" },
+          { "20", "20", "20" },
+          { "3", "3", "3" },
+          { "5", "5", "5" },
+          { "7", "7", "7" },
+      } },
+    { { "AMMO:", "MUNITION:", "MUNITIONS:" },
+      {
+          { "Limited", "Limitiert", "Limitées" },
+          { "Full", "Voll", "Pleines" },
+          { "Maxed", "Maximum", "Maximum" },
+      } },
+    { { "HEAL:", "REGENERATION:", "SOIN:" },
+      {
+          { "Before Ganondorf", "Vor Ganondorf", "Avant Ganondorf" },
+          { "Every Boss", "Bei jedem Boss", "Tous les Boss" },
+          { "Never", "Niemals", "Jamais" },
+      } },
+    { { "HYPER BOSSES:", "HYPER-BOSSE:", "HYPER BOSS:" },
+      {
+          { "No", "Nein", "Non" },
+          { "Yes", "Ja", "Oui" },
+      } },
+    { { "MAGIC:", "MAGIE:", "MAGIE:" },
+      {
+          { "Single", "Einzel", "Simple" },
+          { "Double", "Doppel", "Double" },
+      } },
+    { { "BIG. SWORD:", "BIG.-SCHWERT:", "EPÉE DE BIG.:" },
+      {
+          { "No", "Nein", "Non" },
+          { "Yes", "Ja", "Oui" },
+      } },
+    { { "BOTTLE:", "FLASCHEN:", "BOUTEILLE:" },
+      {
+          { "No", "Nein", "Non" },
+          { "Empty", "Leer", "Vide" },
+          { "Fairy", "Fee", "Fée" },
+          { "Red Potion", "Rotes Elixier", "Potion Rouge" },
+          { "Green Potion", "Grünes Elixier", "Potion Verte" },
+          { "Blue Potion", "Blaues Elixier", "Potion Bleue" },
+      } },
+    { { "LONGSHOT:", "ENTERHAKEN:", "SUPER GRAPPIN:" },
+      {
+          { "No", "Nein", "Non" },
+          { "Yes", "Ja", "Oui" },
+      } },
+    { { "HOVER BOOTS:", "GLEITSTIEFEL:", "BOTTES DES AIRS:" },
+      {
+          { "No", "Nein", "Non" },
+          { "Yes", "Ja", "Oui" },
+      } },
+    { { "BUNNY HOOD:", "HASENOHREN:", "MASQUE DU LAPIN:" },
+      {
+          { "No", "Nein", "Non" },
+          { "Yes", "Ja", "Oui" },
+      } },
+    { { "TIMER:", "TIMER:", "TIMER:" },
+      {
+          { "Yes", "Ja", "Oui" },
+          { "No", "Nein", "Non" },
+      } }
 };
 
 const char* BossRush_GetSettingName(u8 optionIndex, u8 language) {
@@ -196,7 +172,7 @@ void BossRush_SetEquipment(u8 linkAge) {
 
         Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_KOKIRI);
         Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_DEKU);
-    // Set Adult equipment.
+        // Set Adult equipment.
     } else {
         brButtonItems = { ITEM_SWORD_MASTER, ITEM_BOW,  ITEM_HAMMER, ITEM_BOMB,
                           ITEM_NONE,         ITEM_NONE, ITEM_NONE,   ITEM_NONE };
@@ -229,34 +205,36 @@ void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpPosZ) {
             } else {
                 play->nextEntranceIndex = ENTR_FOREST_TEMPLE_BOSS_ENTRANCE;
             }
-        // King Dodongo & Volvagia
+            // King Dodongo & Volvagia
         } else if (warpPosX == 100 && warpPosZ == -170) {
             if (gSaveContext.linkAge == LINK_AGE_CHILD) {
                 play->nextEntranceIndex = ENTR_DODONGOS_CAVERN_BOSS_ENTRANCE;
             } else {
                 play->nextEntranceIndex = ENTR_FIRE_TEMPLE_BOSS_ENTRANCE;
             }
-        // Barinade & Morb
+            // Barinade & Morb
         } else if (warpPosX == 199 && warpPosZ == 0) {
             if (gSaveContext.linkAge == LINK_AGE_CHILD) {
                 play->nextEntranceIndex = ENTR_JABU_JABU_BOSS_ENTRANCE;
             } else {
                 play->nextEntranceIndex = ENTR_WATER_TEMPLE_BOSS_ENTRANCE;
             }
-        // Twinrova
+            // Twinrova
         } else if (warpPosX == 100 && warpPosZ == 170) {
             play->nextEntranceIndex = ENTR_SPIRIT_TEMPLE_BOSS_2;
-        // Bongo Bongo
+            // Bongo Bongo
         } else if (warpPosX == -100 && warpPosZ == 170) {
             play->nextEntranceIndex = ENTR_SHADOW_TEMPLE_BOSS_ENTRANCE;
-        // Ganondork
+            // Ganondork
         } else if (warpPosX == -199 && warpPosZ == 0) {
             play->nextEntranceIndex = ENTR_GANONDORF_BOSS_0;
         } else {
-            SPDLOG_ERROR("[BossRush]: Unknown blue warp in chamber of sages at position ({}, {}). Warping back to chamber of sages.", warpPosX, warpPosZ);
+            SPDLOG_ERROR("[BossRush]: Unknown blue warp in chamber of sages at position ({}, {}). Warping back to "
+                         "chamber of sages.",
+                         warpPosX, warpPosZ);
             play->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
         }
-    // If coming from a boss room, teleport back to Chamber of Sages and set flag.
+        // If coming from a boss room, teleport back to Chamber of Sages and set flag.
     } else {
         play->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
 
@@ -267,7 +245,7 @@ void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpPosZ) {
             // Change to Adult Link.
             if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_ALL) {
                 BossRush_SetEquipment(LINK_AGE_ADULT);
-            // Warp to credits.
+                // Warp to credits.
             } else if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_CHILD) {
                 play->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
                 gSaveContext.nextCutsceneIndex = 0xFFF2;
@@ -328,7 +306,8 @@ void BossRush_HandleCompleteBoss(PlayState* play) {
         Health_ChangeBy(play, 320);
     }
 
-    if ((CheckDungeonCount() == 3 && gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_CHILD) ||
+    if ((CheckDungeonCount() == 3 &&
+         gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_CHILD) ||
         play->sceneNum == SCENE_GANON_BOSS) {
         gSaveContext.ship.stats.playTimer += 2;
         gSaveContext.ship.stats.gameComplete = 1;
@@ -399,17 +378,17 @@ void BossRush_InitSave() {
     gSaveContext.eventChkInf[7] |= 0x80; // bongo bongo
 
     // Sets all rando flags to false
-    // Boss Rush currently uses 2 randomizer flags (RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE & RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE)
+    // Boss Rush currently uses 2 randomizer flags (RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE &
+    // RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE)
     for (s32 i = 0; i < ARRAY_COUNT(gSaveContext.ship.randomizerInf); i++) {
         gSaveContext.ship.randomizerInf[i] = 0;
     }
 
     // Set items
     std::array<u8, 24> brItems = {
-        ITEM_STICK,     ITEM_NUT,  ITEM_BOMB, ITEM_BOW,      ITEM_NONE,        ITEM_NONE,
-        ITEM_SLINGSHOT, ITEM_NONE, ITEM_NONE, ITEM_HOOKSHOT, ITEM_NONE,        ITEM_NONE,
-        ITEM_BOOMERANG, ITEM_LENS, ITEM_NONE, ITEM_HAMMER,   ITEM_ARROW_LIGHT, ITEM_NONE,
-        ITEM_NONE,      ITEM_NONE, ITEM_NONE, ITEM_NONE,     ITEM_NONE,        ITEM_NONE,
+        ITEM_STICK,       ITEM_NUT,      ITEM_BOMB, ITEM_BOW,  ITEM_NONE,      ITEM_NONE, ITEM_SLINGSHOT, ITEM_NONE,
+        ITEM_NONE,        ITEM_HOOKSHOT, ITEM_NONE, ITEM_NONE, ITEM_BOOMERANG, ITEM_LENS, ITEM_NONE,      ITEM_HAMMER,
+        ITEM_ARROW_LIGHT, ITEM_NONE,     ITEM_NONE, ITEM_NONE, ITEM_NONE,      ITEM_NONE, ITEM_NONE,      ITEM_NONE,
     };
 
     if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_LONGSHOT] == BR_CHOICE_LONGSHOT_YES) {
@@ -507,7 +486,7 @@ void BossRush_InitSave() {
 static void* sSavePromptNoChoiceTexs[] = {
     (void*)gPauseNoENGTex,
     (void*)gPauseNoGERTex,
-    (void*)gPauseNoFRATex
+    (void*)gPauseNoFRATex,
 };
 
 void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
@@ -541,11 +520,13 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                             break;
                         }
                     }
-                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, childPos.x, bossGoma->actor.world.pos.y, childPos.z, 0, 0, 0, WARP_DUNGEON_ADULT, false);
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, childPos.x,
+                                bossGoma->actor.world.pos.y, childPos.z, 0, 0, 0, WARP_DUNGEON_ADULT, false);
                     break;
                 }
                 case SCENE_DODONGOS_CAVERN_BOSS: {
-                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, -890.0f, -1523.76f, -3304.0f, 0, 0, 0, WARP_DUNGEON_ADULT, false);
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, -890.0f, -1523.76f, -3304.0f, 0, 0,
+                                0, WARP_DUNGEON_ADULT, false);
                     break;
                 }
                 case SCENE_JABU_JABU_BOSS: {
@@ -563,28 +544,34 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                         }
                     }
 
-                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, sWarpPos[sp7C].x, sWarpPos[sp7C].y, sWarpPos[sp7C].z, 0, 0, 0, WARP_DUNGEON_ADULT, false);
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, sWarpPos[sp7C].x, sWarpPos[sp7C].y,
+                                sWarpPos[sp7C].z, 0, 0, 0, WARP_DUNGEON_ADULT, false);
                     break;
                 }
                 case SCENE_FOREST_TEMPLE_BOSS: {
-                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, 14.0f, -33.0f, -3315.0f, 0, 0, 0, WARP_DUNGEON_ADULT, true);
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, 14.0f, -33.0f, -3315.0f, 0, 0, 0,
+                                WARP_DUNGEON_ADULT, true);
                     break;
                 }
                 case SCENE_FIRE_TEMPLE_BOSS: {
-                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, 0.0f, 100.0f, 0.0f, 0, 0, 0, WARP_DUNGEON_ADULT, true);
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, 0.0f, 100.0f, 0.0f, 0, 0, 0,
+                                WARP_DUNGEON_ADULT, true);
                     break;
                 }
                 case SCENE_WATER_TEMPLE_BOSS: {
                     BossMo* bossMo = va_arg(args, BossMo*);
-                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, bossMo->actor.world.pos.x, -280.0f, bossMo->actor.world.pos.z, 0, 0, 0, WARP_DUNGEON_ADULT, true);
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, bossMo->actor.world.pos.x, -280.0f,
+                                bossMo->actor.world.pos.z, 0, 0, 0, WARP_DUNGEON_ADULT, true);
                     break;
                 }
                 case SCENE_SPIRIT_TEMPLE_BOSS: {
-                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, 600.0f, 230.0f, 0.0f, 0, 0, 0, WARP_DUNGEON_ADULT, true);
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, 600.0f, 230.0f, 0.0f, 0, 0, 0,
+                                WARP_DUNGEON_ADULT, true);
                     break;
                 }
                 case SCENE_SHADOW_TEMPLE_BOSS: {
-                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, -50.0f, 0.0f, 400.0f, 0, 0, 0, WARP_DUNGEON_ADULT, true);
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, -50.0f, 0.0f, 400.0f, 0, 0, 0,
+                                WARP_DUNGEON_ADULT, true);
                     break;
                 }
                 default: {
@@ -699,12 +686,18 @@ void BossRush_RegisterHooks() {
         onBossDefeatHook = 0;
         onActorUpdate = 0;
 
-        if (!IS_BOSS_RUSH) return;
+        if (!IS_BOSS_RUSH)
+            return;
 
-        onVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(BossRush_OnVanillaBehaviorHandler);
-        onSceneInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(BossRush_OnSceneInitHandler);
-        onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(BossRush_OnActorInitHandler);
-        onBossDefeatHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnBossDefeat>(BossRush_OnBossDefeatHandler);
-        onActorUpdate = GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnActorUpdate>(ACTOR_DOOR_WARP1, BossRush_OnBlueWarpUpdate);
+        onVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(
+            BossRush_OnVanillaBehaviorHandler);
+        onSceneInitHook =
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(BossRush_OnSceneInitHandler);
+        onActorInitHook =
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(BossRush_OnActorInitHandler);
+        onBossDefeatHook =
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnBossDefeat>(BossRush_OnBossDefeatHandler);
+        onActorUpdate = GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnActorUpdate>(
+            ACTOR_DOOR_WARP1, BossRush_OnBlueWarpUpdate);
     });
 }

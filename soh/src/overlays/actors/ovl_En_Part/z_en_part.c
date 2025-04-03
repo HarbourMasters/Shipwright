@@ -142,8 +142,8 @@ void func_80ACE13C(EnPart* this, PlayState* play) {
                             Rand_CenteredFloat(50.0f);
                     pos.z = this->actor.world.pos.z + Rand_CenteredFloat(60.0f);
                     velocity.y = Rand_ZeroOne() + 1.0f;
-                    EffectSsDtBubble_SpawnColorProfile(play, &pos, &velocity, &accel, Rand_S16Offset(80, 100), 25,
-                                                       0, true);
+                    EffectSsDtBubble_SpawnColorProfile(play, &pos, &velocity, &accel, Rand_S16Offset(80, 100), 25, 0,
+                                                       true);
                 }
                 break;
             case 5:
@@ -154,8 +154,8 @@ void func_80ACE13C(EnPart* this, PlayState* play) {
                     pos.x = this->actor.world.pos.x + Rand_CenteredFloat(25.0f);
                     pos.y = this->actor.world.pos.y + Rand_CenteredFloat(40.0f);
                     pos.z = this->actor.world.pos.z + Rand_CenteredFloat(25.0f);
-                    EffectSsDeadDb_Spawn(play, &pos, &zeroVec, &zeroVec, 40, 7, 255, 255, 255, 255, 0, 0, 255, 1,
-                                         9, true);
+                    EffectSsDeadDb_Spawn(play, &pos, &zeroVec, &zeroVec, 40, 7, 255, 255, 255, 255, 0, 0, 255, 1, 9,
+                                         true);
                 }
                 break;
         }
@@ -211,8 +211,8 @@ void func_80ACE7E8(EnPart* this, PlayState* play) {
     Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
 
     if ((this->actor.parent == NULL) || (this->actor.parent->update == NULL)) {
-        EffectSsDeadDb_Spawn(play, &this->actor.world.pos, &zeroVec, &zeroVec,
-                             (s16)(this->actor.scale.y * 100.0f) * 40, 7, 255, 255, 255, 255, 0, 255, 0, 1, 9, true);
+        EffectSsDeadDb_Spawn(play, &this->actor.world.pos, &zeroVec, &zeroVec, (s16)(this->actor.scale.y * 100.0f) * 40,
+                             7, 255, 255, 255, 255, 0, 255, 0, 1, 9, true);
         Actor_Kill(&this->actor);
         return;
     }
@@ -299,19 +299,24 @@ void EnPart_Draw(Actor* thisx, PlayState* play) {
         gSPSegment(POLY_OPA_DISP++, 0x08, func_80ACEAC0(play->state.gfxCtx, 255, 255, 255, 180, 180, 180));
         gSPSegment(POLY_OPA_DISP++, 0x09, func_80ACEAC0(play->state.gfxCtx, 225, 205, 115, 25, 20, 0));
         gSPSegment(POLY_OPA_DISP++, 0x0A, func_80ACEAC0(play->state.gfxCtx, 225, 205, 115, 25, 20, 0));
-    } else if ((thisx->params == 9) && (strcmp((const char*)this->displayList, object_tite_DL_002FF0) == 0)) {
+        // #region SOH [Port] DL references are stored as resource paths so we need to use string comparison to check
+        // for equality. Additionally, we added a fallback for checking the parent actor ID to account for mods the
+        // override the Tektite skelton
+    } else if ((thisx->params == 9) && ((strcmp((const char*)this->displayList, object_tite_DL_002FF0) == 0) ||
+                                        (thisx->parent != NULL && thisx->parent->id == ACTOR_EN_TITE))) {
         gSPSegment(POLY_OPA_DISP++, 0x08, object_tite_Tex_001300);
         gSPSegment(POLY_OPA_DISP++, 0x09, object_tite_Tex_001700);
         gSPSegment(POLY_OPA_DISP++, 0x0A, object_tite_Tex_001900);
-    } else if ((thisx->params == 10) && (strcmp((const char*)this->displayList, object_tite_DL_002FF0) == 0)) {
+    } else if ((thisx->params == 10) && ((strcmp((const char*)this->displayList, object_tite_DL_002FF0) == 0) ||
+                                         (thisx->parent != NULL && thisx->parent->id == ACTOR_EN_TITE))) {
+        // #endregion
         gSPSegment(POLY_OPA_DISP++, 0x08, object_tite_Tex_001B00);
         gSPSegment(POLY_OPA_DISP++, 0x09, object_tite_Tex_001F00);
         gSPSegment(POLY_OPA_DISP++, 0x0A, object_tite_Tex_002100);
     }
 
     if (this->displayList != NULL) {
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, this->displayList);
     }
 

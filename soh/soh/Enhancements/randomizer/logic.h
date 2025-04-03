@@ -64,10 +64,14 @@ class Logic {
     // Bottle Count
     uint8_t Bottles = 0;
     uint8_t NumBottles = 0;
-    //this event covers if the player can currently empty big poes in logic
+    // this event covers if the player can currently empty big poes in logic
     bool CanEmptyBigPoes = false;
-    //this check covers if the generation has confirmed that it's possible to empty big poes if needed as adult
-    bool CouldEmptyBigPoes = true;
+    // this event covers if the player could, if they filled their bottle with big poes in field, empty them at the poe
+    // merchant. Works in tandem with the big poes safety check during entrance validation
+    bool CouldEmptyBigPoes = false;
+    // this check is used to tell logic that we are checking big poes accessibility in logic, to ensure it's not
+    // bottle-locked.
+    bool AreCheckingBigPoes = false;
 
     // Drops and Bottle Contents Access
     bool NutPot = false;
@@ -87,7 +91,7 @@ class Logic {
     bool FairyPot = false;
     bool FreeFairies = false;
     bool FairyPond = false;
-    bool AmmoCanDrop = false;
+    bool AmmoCanDrop = true;
 
     uint8_t PieceOfHeart = 0;
     uint8_t HeartContainer = 0;
@@ -151,7 +155,7 @@ class Logic {
     bool OpenedFireMQFireMazeDoor = false;
     bool MQForestBlockRoomTargets = false;
     bool ForestCanTwistHallway = false;
-    bool ForestClearBelowBowChest = false; //a better name that covers both versions would be nice
+    bool ForestClearBelowBowChest = false; // a better name that covers both versions would be nice
     bool ForestOpenBossCorridor = false;
     bool ShadowTrialFirstChest = false;
     bool MQGTGMazeSwitch = false;
@@ -168,7 +172,7 @@ class Logic {
     bool MQWaterStalfosPit = false;
     bool MQWaterDragonTorches = false;
     bool MQWaterB1Switch = false;
-    //bool MQWaterPillarSoTBlock = false; should be irrelevant. SHOULD.
+    // bool MQWaterPillarSoTBlock = false; should be irrelevant. SHOULD.
     bool MQWaterOpenedPillarB1 = false;
     bool MQSpiritCrawlBoulder = false;
     bool MQSpiritMapRoomEnemies = false;
@@ -190,7 +194,8 @@ class Logic {
     bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched);
     bool CanDoGlitch(GlitchType glitch);
     bool CanEquipSwap(RandomizerGet itemName);
-    bool CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true, uint8_t quantity = 1, bool timer = false, bool inWater = false);
+    bool CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true,
+                      uint8_t quantity = 1, bool timer = false, bool inWater = false);
     bool CanPassEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true);
     bool CanAvoidEnemy(RandomizerEnemy enemy, bool grounded = false, uint8_t quantity = 1);
     bool CanGetEnemyDrop(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool aboveLink = false);
@@ -237,6 +242,8 @@ class Logic {
     bool CanBreakUpperBeehives();
     bool CanBreakLowerBeehives();
     bool CanBreakPots();
+    bool CanBreakCrates();
+    bool CanBreakSmallCrates();
     bool HasFireSource();
     bool HasFireSourceWithTorch();
     bool TradeQuestStep(RandomizerGet rg);

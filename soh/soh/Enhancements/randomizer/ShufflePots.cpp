@@ -11,7 +11,6 @@ extern PlayState* gPlayState;
 
 extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
 
-
 extern "C" void ObjTsubo_RandomizerDraw(Actor* thisx, PlayState* play) {
     float potSize = 1.0f;
 
@@ -19,7 +18,7 @@ extern "C" void ObjTsubo_RandomizerDraw(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     Matrix_Scale(potSize, potSize, potSize, MTXMODE_APPLY);
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
-                G_MTX_MODELVIEW | G_MTX_LOAD);
+              G_MTX_MODELVIEW | G_MTX_LOAD);
 
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gRandoPotDL);
     CLOSE_DISPS(play->state.gfxCtx);
@@ -44,7 +43,8 @@ uint8_t ObjTsubo_RandomizerHoldsItem(ObjTsubo* potActor, PlayState* play) {
 void ObjTsubo_RandomizerSpawnCollectible(ObjTsubo* potActor, PlayState* play) {
     EnItem00* item00 = (EnItem00*)Item_DropCollectible2(play, &potActor->actor.world.pos, ITEM00_SOH_DUMMY);
     item00->randoInf = potActor->potIdentity.randomizerInf;
-    item00->itemEntry = Rando::Context::GetInstance()->GetFinalGIEntry(potActor->potIdentity.randomizerCheck, true, GI_NONE);
+    item00->itemEntry =
+        Rando::Context::GetInstance()->GetFinalGIEntry(potActor->potIdentity.randomizerCheck, true, GI_NONE);
     item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
     item00->actor.velocity.y = 8.0f;
     item00->actor.speedXZ = 2.0f;
@@ -56,7 +56,8 @@ void ObjTsubo_RandomizerInit(void* actorRef) {
 
     ObjTsubo* potActor = static_cast<ObjTsubo*>(actorRef);
 
-    potActor->potIdentity = OTRGlobals::Instance->gRandomizer->IdentifyPot(gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
+    potActor->potIdentity = OTRGlobals::Instance->gRandomizer->IdentifyPot(
+        gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
 }
 
 void ShufflePots_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
@@ -95,6 +96,11 @@ void ShufflePots_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va
 }
 
 void Rando::StaticData::RegisterPotLocations() {
+    static bool registered = false;
+    if (registered)
+        return;
+    registered = true;
+    // clang-format off
     // Overworld Pots
     //            Randomizer Check                                 	Randomizer Check                                           Quest         Area                          Scene ID                           Params                          Short Name                    	  Hint Text Key                     Vanilla             Spoiler Collection Check
     locationTable[RC_KF_LINKS_HOUSE_POT]                    	=	Location::Pot(RC_KF_LINKS_HOUSE_POT,                       RCQUEST_BOTH, RCAREA_KOKIRI_FOREST,         SCENE_LINKS_HOUSE,                 TWO_ACTOR_PARAMS(-118, 51),     "Links House Pot",                  RHT_POT_KOKIRI_FOREST,	        RG_RECOVERY_HEART,  SpoilerCollectionCheck::RandomizerInf(RAND_INF_KF_LINKS_HOUSE_POT));
@@ -643,6 +649,8 @@ void Rando::StaticData::RegisterPotLocations() {
     locationTable[RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_LEFT_POT_2]    = Location::Pot(RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_LEFT_POT_2,      RCQUEST_MQ, RCAREA_GERUDO_TRAINING_GROUND,	SCENE_GERUDO_TRAINING_GROUND,   TWO_ACTOR_PARAMS(-324, -177),   "MQ Lobby Left Pot 2",          RHT_POT_GERUDO_TRAINING_GROUND,    RG_RECOVERY_HEART,   SpoilerCollectionCheck::RandomizerInf(RAND_INF_GERUDO_TRAINING_GROUND_MQ_LOBBY_LEFT_POT_2));
     locationTable[RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_POT_1]   = Location::Pot(RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_POT_1,     RCQUEST_MQ, RCAREA_GERUDO_TRAINING_GROUND,	SCENE_GERUDO_TRAINING_GROUND,   TWO_ACTOR_PARAMS(199, -79),     "MQ Lobby Right Pot 1",         RHT_POT_GERUDO_TRAINING_GROUND,    RG_RECOVERY_HEART,   SpoilerCollectionCheck::RandomizerInf(RAND_INF_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_POT_1));
     locationTable[RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_POT_2]   = Location::Pot(RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_POT_2,     RCQUEST_MQ, RCAREA_GERUDO_TRAINING_GROUND,	SCENE_GERUDO_TRAINING_GROUND,   TWO_ACTOR_PARAMS(197, -179),    "MQ Lobby Right Pot 2",         RHT_POT_GERUDO_TRAINING_GROUND,    RG_BLUE_RUPEE,       SpoilerCollectionCheck::RandomizerInf(RAND_INF_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_POT_2));
+
+    // clang-format on
 }
 
 static RegisterShipInitFunc initFunc(Rando::StaticData::RegisterPotLocations);

@@ -55,27 +55,27 @@ void AudioMgr_ThreadEntry(void* arg0) {
     AudioMgr* audioMgr = (AudioMgr*)arg0;
     s16* msg = NULL;
 
-    //while (true) {
-        osRecvMesg(&audioMgr->unk_74, (OSMesg*)&msg, OS_MESG_BLOCK);
-        AudioMgr_HandleRetrace(audioMgr);
-        /*switch (*msg) {
-            case OS_SC_RETRACE_MSG:
-                AudioMgr_HandleRetrace(audioMgr);
-                while (audioMgr->unk_74.validCount != 0) {
-                    osRecvMesg(&audioMgr->unk_74, (OSMesg*)&msg, OS_MESG_BLOCK);
-                    switch (*msg) {
-                        case OS_SC_RETRACE_MSG:
-                            break;
-                        case OS_SC_PRE_NMI_MSG:
-                            AudioMgr_HandlePRENMI(audioMgr);
-                            break;
-                    }
+    // while (true) {
+    osRecvMesg(&audioMgr->unk_74, (OSMesg*)&msg, OS_MESG_BLOCK);
+    AudioMgr_HandleRetrace(audioMgr);
+    /*switch (*msg) {
+        case OS_SC_RETRACE_MSG:
+            AudioMgr_HandleRetrace(audioMgr);
+            while (audioMgr->unk_74.validCount != 0) {
+                osRecvMesg(&audioMgr->unk_74, (OSMesg*)&msg, OS_MESG_BLOCK);
+                switch (*msg) {
+                    case OS_SC_RETRACE_MSG:
+                        break;
+                    case OS_SC_PRE_NMI_MSG:
+                        AudioMgr_HandlePRENMI(audioMgr);
+                        break;
                 }
-                break;
-            case OS_SC_PRE_NMI_MSG:
-                AudioMgr_HandlePRENMI(audioMgr);
-                break;
-        }*/
+            }
+            break;
+        case OS_SC_PRE_NMI_MSG:
+            AudioMgr_HandlePRENMI(audioMgr);
+            break;
+    }*/
     //}
 }
 
@@ -86,7 +86,7 @@ void AudioMgr_Unlock(AudioMgr* audioMgr) {
 void AudioMgr_Init(AudioMgr* audioMgr, void* stack, OSPri pri, OSId id, SchedContext* sched, IrqMgr* irqMgr) {
     // AudioPlayer_Init();
 
-    memset(audioMgr,0, sizeof(AudioMgr));
+    memset(audioMgr, 0, sizeof(AudioMgr));
 
     audioMgr->sched = sched;
     audioMgr->irqMgr = irqMgr;
@@ -98,7 +98,7 @@ void AudioMgr_Init(AudioMgr* audioMgr, void* stack, OSPri pri, OSId id, SchedCon
 
     osSendMesgPtr(&audioMgr->unk_AC, NULL, OS_MESG_BLOCK);
 
-        static bool hasInitialized = false;
+    static bool hasInitialized = false;
 
     if (!hasInitialized) {
         IrqMgrClient irqClient;
@@ -108,17 +108,18 @@ void AudioMgr_Init(AudioMgr* audioMgr, void* stack, OSPri pri, OSId id, SchedCon
         AudioLoad_SetDmaHandler(DmaMgr_DmaHandler);
         Audio_InitSound();
         osSendMesgPtr(&audioMgr->unk_C8, NULL, OS_MESG_BLOCK);
-        
-        Audio_SetGameVolume(SEQ_PLAYER_BGM_MAIN, ((float)CVarGetInteger(CVAR_SETTING("Volume.MainMusic"), 100) / 100.0f));
+
+        Audio_SetGameVolume(SEQ_PLAYER_BGM_MAIN,
+                            ((float)CVarGetInteger(CVAR_SETTING("Volume.MainMusic"), 100) / 100.0f));
         Audio_SetGameVolume(SEQ_PLAYER_BGM_SUB, ((float)CVarGetInteger(CVAR_SETTING("Volume.SubMusic"), 100) / 100.0f));
         Audio_SetGameVolume(SEQ_PLAYER_FANFARE, ((float)CVarGetInteger(CVAR_SETTING("Volume.Fanfare"), 100) / 100.0f));
         Audio_SetGameVolume(SEQ_PLAYER_SFX, ((float)CVarGetInteger(CVAR_SETTING("Volume.SFX"), 100) / 100.0f));
 
         // Removed due to crash
-        //IrqMgr_AddClient(audioMgr->irqMgr, &irqClient, &audioMgr->unk_74);
+        // IrqMgr_AddClient(audioMgr->irqMgr, &irqClient, &audioMgr->unk_74);
         hasInitialized = true;
     }
 
-    //osCreateThread(&audioMgr->unk_E8, id, AudioMgr_ThreadEntry, audioMgr, stack, pri);
-    //osStartThread(&audioMgr->unk_E8);
+    // osCreateThread(&audioMgr->unk_E8, id, AudioMgr_ThreadEntry, audioMgr, stack, pri);
+    // osStartThread(&audioMgr->unk_E8);
 }

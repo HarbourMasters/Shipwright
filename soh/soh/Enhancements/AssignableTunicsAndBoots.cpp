@@ -16,10 +16,9 @@ static u16 sItemButtons[] = { BTN_B, BTN_CLEFT, BTN_CDOWN, BTN_CRIGHT, BTN_DUP, 
 
 void UseTunicBoots(Player* player, PlayState* play, Input* input) {
     // Boots and tunics equip despite state
-    if (
-        player->stateFlags1 & (PLAYER_STATE1_INPUT_DISABLED | PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE | PLAYER_STATE1_TALKING | PLAYER_STATE1_DEAD) ||
-        player->stateFlags2 & PLAYER_STATE2_OCARINA_PLAYING
-    ) {
+    if (player->stateFlags1 & (PLAYER_STATE1_INPUT_DISABLED | PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE |
+                               PLAYER_STATE1_TALKING | PLAYER_STATE1_DEAD) ||
+        player->stateFlags2 & PLAYER_STATE2_OCARINA_PLAYING) {
         return;
     }
 
@@ -40,7 +39,8 @@ void UseTunicBoots(Player* player, PlayState* play, Input* input) {
                 Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, bootsValue);
             }
             Player_SetEquipmentData(play, player);
-            func_808328EC(player, CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) == EQUIP_VALUE_BOOTS_IRON ? NA_SE_PL_WALK_HEAVYBOOTS : NA_SE_PL_CHANGE_ARMS);
+            func_808328EC(player, CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) == EQUIP_VALUE_BOOTS_IRON ? NA_SE_PL_WALK_HEAVYBOOTS
+                                                                                              : NA_SE_PL_CHANGE_ARMS);
         } else {
             u16 tunicValue = item - ITEM_TUNIC_KOKIRI + 1;
             if (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC) == tunicValue) {
@@ -84,6 +84,28 @@ void RegisterAssignableTunicsBoots() {
 
         if (item >= ITEM_TUNIC_KOKIRI && item <= ITEM_BOOTS_HOVER) {
             *should = true;
+        }
+    });
+
+    // don't throw items when the pressed button is a tunic or boots
+    COND_VB_SHOULD(VB_THROW_OR_PUT_DOWN_HELD_ITEM, CVAR_TUNICBOOTS_VALUE != CVAR_TUNICBOOTS_DEFAULT, {
+        // if the vanilla condition doesn't want us to throw/put down the item, early return
+        if (!*should) {
+            return;
+        }
+
+        Input* input = va_arg(args, Input*);
+
+        s32 item = ITEM_NONE;
+        for (s32 i = 0; i < ARRAY_COUNT(sItemButtons); i++) {
+            if (CHECK_BTN_ALL(input->press.button, sItemButtons[i])) {
+                item = Player_GetItemOnButton(gPlayState, i);
+                break;
+            }
+        }
+
+        if (item >= ITEM_TUNIC_KOKIRI && item <= ITEM_BOOTS_HOVER) {
+            *should = false;
         }
     });
 

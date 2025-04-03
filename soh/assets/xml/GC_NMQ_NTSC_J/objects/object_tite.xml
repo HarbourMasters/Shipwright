@@ -1,0 +1,55 @@
+<Root>
+    <File Name="object_tite" Segment="6">
+        <Animation Name="object_tite_Anim_0001D4" Offset="0x1D4"/>
+        <Animation Name="object_tite_Anim_0004F8" Offset="0x4F8"/>
+        <Animation Name="object_tite_Anim_00069C" Offset="0x69C"/>
+        <Animation Name="object_tite_Anim_00083C" Offset="0x83C"/> <!-- Lunge (6 frames) -->
+        <Animation Name="object_tite_Anim_000A14" Offset="0xA14"/> <!-- Turning (8 frames) -->
+        <Animation Name="object_tite_Anim_000C70" Offset="0xC70"/> <!-- Jump / travelling to player (11 frames) -->
+        <Animation Name="object_tite_Anim_000F50" Offset="0xF50"/>
+        <Animation Name="object_tite_Anim_0012E4" Offset="0x12E4"/> <!-- Idle (14 frames) -->
+        <Blob Name="object_tite_Blob_0012F4" Size="0xC" Offset="0x12F4"/>
+        <Texture Name="object_tite_Tex_001300" OutName="tex_00001300" Format="rgba16" Width="16" Height="32" Offset="0x1300"/>
+        <Texture Name="object_tite_Tex_001700" OutName="tex_00001700" Format="rgba16" Width="16" Height="16" Offset="0x1700"/>
+        <Texture Name="object_tite_Tex_001900" OutName="tex_00001900" Format="rgba16" Width="8" Height="16" Offset="0x1900"/>
+        <Texture Name="object_tite_Tex_001A00" OutName="tex_00001A00" Format="rgba16" Width="4" Height="16" Offset="0x1A00"/>
+        <Texture Name="object_tite_Tex_001A80" OutName="tex_00001A80" Format="rgba16" Width="8" Height="8" Offset="0x1A80"/>
+        <Texture Name="object_tite_Tex_001B00" OutName="tex_00001B00" Format="rgba16" Width="16" Height="32" Offset="0x1B00"/>
+        <Texture Name="object_tite_Tex_001F00" OutName="tex_00001F00" Format="rgba16" Width="16" Height="16" Offset="0x1F00"/>
+        <Texture Name="object_tite_Tex_002100" OutName="tex_00002100" Format="rgba16" Width="8" Height="16" Offset="0x2100"/>
+        <DList Name="object_tite_DL_002FF0" Offset="0x2FF0"/>
+        <DList Name="object_tite_DL_003160" Offset="0x3160"/>
+        <DList Name="object_tite_DL_003290" Offset="0x3290"/>
+        <DList Name="object_tite_DL_003330" Offset="0x3330"/>
+        <DList Name="object_tite_DL_003460" Offset="0x3460"/>
+        <DList Name="object_tite_DL_003500" Offset="0x3500"/>
+        <DList Name="object_tite_DL_003630" Offset="0x3630"/>
+        <DList Name="object_tite_DL_0036D0" Offset="0x36D0"/>
+        <DList Name="object_tite_DL_003800" Offset="0x3800"/>
+        <Limb Name="object_tite_Limb_0038A0" LimbType="Standard" Offset="0x38A0"/>
+        <Limb Name="object_tite_Limb_0038AC" LimbType="Standard" Offset="0x38AC"/>
+        <Limb Name="object_tite_Limb_0038B8" LimbType="Standard" Offset="0x38B8"/>
+        <Limb Name="object_tite_Limb_0038C4" LimbType="Standard" Offset="0x38C4"/>
+        <Limb Name="object_tite_Limb_0038D0" LimbType="Standard" Offset="0x38D0"/>
+        <Limb Name="object_tite_Limb_0038DC" LimbType="Standard" Offset="0x38DC"/>
+        <Limb Name="object_tite_Limb_0038E8" LimbType="Standard" Offset="0x38E8"/>
+        <Limb Name="object_tite_Limb_0038F4" LimbType="Standard" Offset="0x38F4"/>
+        <Limb Name="object_tite_Limb_003900" LimbType="Standard" Offset="0x3900"/>
+        <Limb Name="object_tite_Limb_00390C" LimbType="Standard" Offset="0x390C"/>
+        <Limb Name="object_tite_Limb_003918" LimbType="Standard" Offset="0x3918"/>
+        <Limb Name="object_tite_Limb_003924" LimbType="Standard" Offset="0x3924"/>
+        <Limb Name="object_tite_Limb_003930" LimbType="Standard" Offset="0x3930"/>
+        <Limb Name="object_tite_Limb_00393C" LimbType="Standard" Offset="0x393C"/>
+        <Limb Name="object_tite_Limb_003948" LimbType="Standard" Offset="0x3948"/>
+        <Limb Name="object_tite_Limb_003954" LimbType="Standard" Offset="0x3954"/>
+        <Limb Name="object_tite_Limb_003960" LimbType="Standard" Offset="0x3960"/>
+        <Limb Name="object_tite_Limb_00396C" LimbType="Standard" Offset="0x396C"/>
+        <Limb Name="object_tite_Limb_003978" LimbType="Standard" Offset="0x3978"/>
+        <Limb Name="object_tite_Limb_003984" LimbType="Standard" Offset="0x3984"/>
+        <Limb Name="object_tite_Limb_003990" LimbType="Standard" Offset="0x3990"/>
+        <Limb Name="object_tite_Limb_00399C" LimbType="Standard" Offset="0x399C"/>
+        <Limb Name="object_tite_Limb_0039A8" LimbType="Standard" Offset="0x39A8"/>
+        <Limb Name="object_tite_Limb_0039B4" LimbType="Standard" Offset="0x39B4"/>
+        <Skeleton Name="object_tite_Skel_003A20" Type="Normal" LimbType="Standard" Offset="0x3A20"/>
+    </File>
+</Root>

@@ -3,8 +3,10 @@
 #include "logic.h"
 
 namespace Rando {
-ItemLocation::ItemLocation() : rc(RC_UNKNOWN_CHECK) {}
-ItemLocation::ItemLocation(const RandomizerCheck rc_) : rc(rc_) {}
+ItemLocation::ItemLocation() : rc(RC_UNKNOWN_CHECK) {
+}
+ItemLocation::ItemLocation(const RandomizerCheck rc_) : rc(rc_) {
+}
 
 RandomizerCheck ItemLocation::GetRandomizerCheck() const {
     return rc;
@@ -40,14 +42,14 @@ RandomizerGet ItemLocation::GetPlacedRandomizerGet() const {
 
 void ItemLocation::SetPlacedItem(const RandomizerGet item) {
     placedItem = item;
-    SetPrice (StaticData::RetrieveItem(placedItem).GetPrice());
+    SetPrice(StaticData::RetrieveItem(placedItem).GetPrice());
 }
 
 void ItemLocation::SetDelayedItem(const RandomizerGet item) {
     delayedItem = item;
 }
 
-void ItemLocation::SaveDelayedItem () {
+void ItemLocation::SaveDelayedItem() {
     placedItem = delayedItem;
     delayedItem = RG_NONE;
 }
@@ -56,15 +58,16 @@ void ItemLocation::SetParentRegion(const RandomizerRegion region) {
     parentRegion = region;
 }
 
-//RANDOTODO only used in tracker now, could possibly be removed
+// RANDOTODO only used in tracker now, could possibly be removed
 RandomizerRegion ItemLocation::GetParentRegionKey() const {
     return parentRegion;
 }
 
 void ItemLocation::MergeAreas(std::set<RandomizerArea> newAreas) {
     areas.merge(newAreas);
-    if (areas.size() >= 2){
-        //if we have more than 1 area, remove any RA_NONE as that's not a real area. can happen if an entrance is in 2 regions and 1 is disconnected
+    if (areas.size() >= 2) {
+        // if we have more than 1 area, remove any RA_NONE as that's not a real area. can happen if an entrance is in 2
+        // regions and 1 is disconnected
         areas.erase(RA_NONE);
     }
 }
@@ -74,7 +77,7 @@ std::set<RandomizerArea> ItemLocation::GetAreas() const {
 }
 
 RandomizerArea ItemLocation::GetFirstArea() const {
-    if (areas.empty()){
+    if (areas.empty()) {
         assert(false);
         return RA_NONE;
     } else {
@@ -83,7 +86,7 @@ RandomizerArea ItemLocation::GetFirstArea() const {
 }
 
 RandomizerArea ItemLocation::GetRandomArea() const {
-    if (areas.empty()){
+    if (areas.empty()) {
         SPDLOG_DEBUG("Attempted to get random area of location with no areas: ");
         SPDLOG_DEBUG(Rando::StaticData::GetLocation(rc)->GetName());
         assert(false);
@@ -102,7 +105,7 @@ void ItemLocation::ApplyPlacedItemEffect() const {
 }
 
 uint16_t ItemLocation::GetPrice() const {
-    //RANDOTODO if we ever change price of shop items, this needs replacing with proper price assignment in Fill
+    // RANDOTODO if we ever change price of shop items, this needs replacing with proper price assignment in Fill
     if (StaticData::RetrieveItem(placedItem).GetItemType() == ITEMTYPE_SHOP) {
         return StaticData::RetrieveItem(placedItem).GetPrice();
     }
@@ -167,7 +170,7 @@ const std::vector<RandomizerHint>& ItemLocation::GetHintedBy() const {
 
 void ItemLocation::AddHintedBy(const RandomizerHint hintKey) {
     hintedBy.push_back(hintKey);
-} 
+}
 
 bool ItemLocation::IsHidden() const {
     return hidden;
@@ -194,7 +197,6 @@ bool ItemLocation::IsVisible() const {
 }
 void ItemLocation::SetVisible(const bool visibleInImGui_) {
     visibleInImGui = visibleInImGui_;
-
 }
 
 bool ItemLocation::IsWothCandidate() const {
@@ -228,5 +230,14 @@ void ItemLocation::ResetVariables() {
     areas = {};
     status = RCSHOW_UNCHECKED;
     isSkipped = false;
+    isAvailable = false;
 }
+
+bool ItemLocation::IsAvailable() const {
+    return isAvailable;
 }
+
+void ItemLocation::SetAvailable(bool isAvailable_) {
+    isAvailable = isAvailable_;
+}
+} // namespace Rando

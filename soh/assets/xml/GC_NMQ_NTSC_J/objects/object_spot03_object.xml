@@ -1,0 +1,16 @@
+<Root>
+    <File Name="object_spot03_object" Segment="6">
+        <Texture Name="object_spot03_object_Tex_000000" OutName="tex_00000000" Format="i4" Width="64" Height="64" Offset="0x0"/>
+        <Array Name="object_spot03_object_Vtx_000800" Count="25" Offset="0x800">
+            <Vtx/>
+        </Array>
+        <Array Name="object_spot03_object_Vtx_000990" Count="25" Offset="0x990">
+            <Vtx/>
+        </Array>
+        <DList Name="object_spot03_object_DL_000B20" Offset="0xB20"/>
+        <DList Name="object_spot03_object_DL_000BC0" Offset="0xBC0"/>
+        <Collision Name="object_spot03_object_Col_000C98" Offset="0xC98"/>
+        <Texture Name="object_spot03_object_Tex_000CD0" OutName="tex_00000CD0" Format="i4" Width="64" Height="64" Offset="0xCD0"/>
+        <DList Name="object_spot03_object_DL_001580" Offset="0x1580"/>
+    </File>
+</Root>

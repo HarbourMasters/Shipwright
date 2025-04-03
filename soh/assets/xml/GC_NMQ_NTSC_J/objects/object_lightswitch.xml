@@ -1,0 +1,14 @@
+<Root>
+    <File Name="object_lightswitch" Segment="6">
+        <!-- face, uses rgba16 32x32 texture at 0x08000000, branches to dlist 0x09000000, uses env color -->
+        <DList Name="object_lightswitch_DL_000260" Offset="0x260"/>
+        <!-- flame ring, branches to dlist 0x09000000, uses env color -->
+        <DList Name="object_lightswitch_DL_000398" Offset="0x398"/>
+        <!-- a square, geometry only -->
+        <DList Name="object_lightswitch_DL_000408" Offset="0x408"/>
+        <Texture Name="object_lightswitch_Tex_000420" OutName="tex_00000420" Format="rgba16" Width="32" Height="32" Offset="0x420"/> <!-- eyes open -->
+        <Texture Name="object_lightswitch_Tex_000C20" OutName="tex_00000C20" Format="rgba16" Width="32" Height="32" Offset="0xC20"/> <!-- eyes closed -->
+        <Texture Name="object_lightswitch_Tex_001420" OutName="tex_00001420" Format="rgba16" Width="32" Height="32" Offset="0x1420"/> <!-- eyes open, smiling -->
+        <Texture Name="object_lightswitch_Tex_001C20" OutName="tex_00001C20" Format="rgba16" Width="32" Height="32" Offset="0x1C20"/>
+    </File>
+</Root>

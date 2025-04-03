@@ -16,35 +16,24 @@ static const std::unordered_map<std::string, char> textBoxSpecialCharacters = {
     { "è", 0x95 }, { "é", 0x96 }, { "ê", 0x97 }, { "ë", 0x98 }, { "ï", 0x99 }, { "ô", 0x9A }, { "ö", 0x9B },
     { "ù", 0x9C }, { "û", 0x9D }, { "ü", 0x9E }
 };
-static const std::unordered_map<std::string, std::string> percentColors = { { "w", QM_WHITE },  { "r", QM_RED },   { "g", QM_GREEN },
-                                                              { "b", QM_BLUE },   { "c", QM_LBLUE }, { "p", QM_PINK },
-                                                              { "y", QM_YELLOW }, { "B", QM_BLACK } };
+static const std::unordered_map<std::string, std::string> percentColors = {
+    { "w", QM_WHITE }, { "r", QM_RED },  { "g", QM_GREEN },  { "b", QM_BLUE },
+    { "c", QM_LBLUE }, { "p", QM_PINK }, { "y", QM_YELLOW }, { "B", QM_BLACK },
+};
 
-static const std::unordered_map<std::string, std::string> colorToPercent = { { QM_WHITE, "%w" },  { QM_RED, "%r"},   { QM_GREEN, "%g" },
-                                                              { QM_BLUE, "%b" },   { QM_LBLUE, "%c"}, { QM_PINK, "%p" },
-                                                              { QM_YELLOW, "%y" }, { QM_BLACK, "%B" } };
+static const std::unordered_map<std::string, std::string> colorToPercent = {
+    { QM_WHITE, "%w" }, { QM_RED, "%r" },  { QM_GREEN, "%g" },  { QM_BLUE, "%b" },
+    { QM_LBLUE, "%c" }, { QM_PINK, "%p" }, { QM_YELLOW, "%y" }, { QM_BLACK, "%B" },
+};
 
 static const std::unordered_map<std::string, ItemID> altarIcons = {
-    { "0", ITEM_KOKIRI_EMERALD },
-    { "1", ITEM_GORON_RUBY },
-    { "2", ITEM_ZORA_SAPPHIRE },
-    { "8", ITEM_MEDALLION_LIGHT },
-    { "3", ITEM_MEDALLION_FOREST },
-    { "4", ITEM_MEDALLION_FIRE },
-    { "5", ITEM_MEDALLION_WATER },
-    { "6", ITEM_MEDALLION_SPIRIT },
-    { "7", ITEM_MEDALLION_SHADOW },
-    { "l", ITEM_ARROW_LIGHT },
-    { "b", ITEM_KEY_BOSS },
-    { "o", ITEM_SWORD_MASTER },
-    { "c", ITEM_OCARINA_FAIRY },
-    { "i", ITEM_OCARINA_TIME },
-    { "L", ITEM_BOW_ARROW_LIGHT },
-    { "k", ITEM_TUNIC_KOKIRI },
-    { "m", ITEM_DUNGEON_MAP },
-    { "C", ITEM_COMPASS },
-    { "s", ITEM_SKULL_TOKEN },
-    { "g", ITEM_MASK_GORON }
+    { "0", ITEM_KOKIRI_EMERALD },  { "1", ITEM_GORON_RUBY },       { "2", ITEM_ZORA_SAPPHIRE },
+    { "8", ITEM_MEDALLION_LIGHT }, { "3", ITEM_MEDALLION_FOREST }, { "4", ITEM_MEDALLION_FIRE },
+    { "5", ITEM_MEDALLION_WATER }, { "6", ITEM_MEDALLION_SPIRIT }, { "7", ITEM_MEDALLION_SHADOW },
+    { "l", ITEM_ARROW_LIGHT },     { "b", ITEM_KEY_BOSS },         { "o", ITEM_SWORD_MASTER },
+    { "c", ITEM_OCARINA_FAIRY },   { "i", ITEM_OCARINA_TIME },     { "L", ITEM_BOW_ARROW_LIGHT },
+    { "k", ITEM_TUNIC_KOKIRI },    { "m", ITEM_DUNGEON_MAP },      { "C", ITEM_COMPASS },
+    { "s", ITEM_SKULL_TOKEN },     { "g", ITEM_MASK_GORON },
 };
 
 static std::map<std::string, int> pixelWidthTable = {
@@ -72,19 +61,20 @@ static std::map<std::string, int> pixelWidthTable = {
     { "í", 5 },  { "î", 5 },  { "ï", 5 },      { "ð", 7 },  { "ñ", 7 },  { "ò", 7 },  { "ó", 7 },  { "ô", 7 },
     { "õ", 7 },  { "ö", 7 },  { "÷", 11 },     { "ø", 9 },  { "ù", 7 },  { "ú", 7 },  { "û", 7 },  { "ü", 7 },
     { "ý", 8 },  { "þ", 8 },  { "ÿ", 8 },      { "Œ", 11 }, { "œ", 11 }, { "„", 5 },  { "”", 5 },  { "€", 10 },
-    { "Ÿ", 10 }, { "~", 8 }
+    { "Ÿ", 10 }, { "~", 8 },
 };
 
 CustomMessage::CustomMessage(std::string english_, std::string german_, std::string french_, TextBoxType type_,
                              TextBoxPosition position_)
-    : type(type_), position(position_){
+    : type(type_), position(position_) {
     messages[LANGUAGE_ENG] = std::move(english_);
     messages[LANGUAGE_GER] = std::move(german_);
     messages[LANGUAGE_FRA] = std::move(french_);
 }
 
-CustomMessage::CustomMessage(std::string english_, std::string german_, std::string french_, std::vector<std::string> colors_,
-                              std::vector<bool> capital_, TextBoxType type_, TextBoxPosition position_) {
+CustomMessage::CustomMessage(std::string english_, std::string german_, std::string french_,
+                             std::vector<std::string> colors_, std::vector<bool> capital_, TextBoxType type_,
+                             TextBoxPosition position_) {
     messages[LANGUAGE_ENG] = std::move(english_);
     messages[LANGUAGE_GER] = std::move(german_);
     messages[LANGUAGE_FRA] = std::move(french_);
@@ -99,7 +89,8 @@ CustomMessage::CustomMessage(std::string english_, TextBoxType type_, TextBoxPos
     messages[LANGUAGE_ENG] = std::move(english_);
 }
 
-CustomMessage::CustomMessage(std::string english_, std::vector<std::string> colors_, std::vector<bool> capital_, TextBoxType type_, TextBoxPosition position_){
+CustomMessage::CustomMessage(std::string english_, std::vector<std::string> colors_, std::vector<bool> capital_,
+                             TextBoxType type_, TextBoxPosition position_) {
     messages[LANGUAGE_ENG] = std::move(english_);
     colors = colors_;
     capital = capital_;
@@ -107,11 +98,48 @@ CustomMessage::CustomMessage(std::string english_, std::vector<std::string> colo
     position = position_;
 }
 
-CustomMessage::CustomMessage(Text text, TextBoxType type_,TextBoxPosition position_)
+CustomMessage::CustomMessage(Text text, TextBoxType type_, TextBoxPosition position_)
     : type(type_), position(position_) {
     messages[LANGUAGE_ENG] = text.GetEnglish();
     messages[LANGUAGE_GER] = text.GetGerman();
     messages[LANGUAGE_FRA] = text.GetFrench();
+}
+
+typedef struct {
+    u16 textId;
+    u8 typePos;
+    const char* segment;
+    u32 msgSize;
+} MessageTableEntry;
+
+extern "C" MessageTableEntry* sNesMessageEntryTablePtr;
+extern "C" MessageTableEntry* sGerMessageEntryTablePtr;
+extern "C" MessageTableEntry* sFraMessageEntryTablePtr;
+
+CustomMessage CustomMessage::LoadVanillaMessageTableEntry(uint16_t textId) {
+    const char* foundSeg;
+    const char* nextSeg;
+    MessageTableEntry* msgEntry = sNesMessageEntryTablePtr;
+    u16 bufferId = textId;
+    CustomMessage msg;
+    if (gSaveContext.language == LANGUAGE_GER) {
+        msgEntry = sGerMessageEntryTablePtr;
+    } else if (gSaveContext.language == LANGUAGE_FRA) {
+        msgEntry = sFraMessageEntryTablePtr;
+    }
+    while (msgEntry->textId != 0xFFFF) {
+        if (msgEntry->textId == bufferId) {
+            TextBoxPosition position = static_cast<TextBoxPosition>(msgEntry->typePos & 0xF);
+            TextBoxType type = static_cast<TextBoxType>(msgEntry->typePos >> 4);
+            // uint8_t icon = msgEntry->segment[1];
+            std::string message = std::string(msgEntry->segment, msgEntry->msgSize);
+            msg = CustomMessage(message, type, position);
+            // msg.Format(static_cast<ItemID>(icon));
+            return msg;
+        }
+        msgEntry++;
+    }
+    return CustomMessage();
 }
 
 const std::string CustomMessage::GetEnglish(MessageFormat format) const {
@@ -127,7 +155,7 @@ const std::string CustomMessage::GetFrench(MessageFormat format) const {
 }
 
 const std::string CustomMessage::GetForCurrentLanguage(MessageFormat format) const {
-    return GetForLanguage(gSaveContext.language, format);
+    return GetForLanguage((gSaveContext.language == LANGUAGE_JPN) ? LANGUAGE_ENG : gSaveContext.language, format);
 }
 
 const std::string CustomMessage::GetForLanguage(uint8_t language, MessageFormat format) const {
@@ -136,22 +164,22 @@ const std::string CustomMessage::GetForLanguage(uint8_t language, MessageFormat 
     return output;
 }
 
-const std::vector<std::string> CustomMessage::GetAllMessages(MessageFormat format) const{
+const std::vector<std::string> CustomMessage::GetAllMessages(MessageFormat format) const {
     std::vector<std::string> output = messages;
-    for (auto str : output){
+    for (auto str : output) {
         ProcessMessageFormat(str, format);
     }
     return output;
 }
 
 void CustomMessage::ProcessMessageFormat(std::string& str, MessageFormat format) const {
-    if (format == MF_FORMATTED){
+    if (format == MF_FORMATTED) {
         FormatString(str);
-    } else if (format == MF_CLEAN){
+    } else if (format == MF_CLEAN) {
         CleanString(str);
-    } else if (format == MF_AUTO_FORMAT){
+    } else if (format == MF_AUTO_FORMAT) {
         AutoFormatString(str);
-    }else if (format == MF_ENCODE){
+    } else if (format == MF_ENCODE) {
         EncodeColors(str);
     }
 }
@@ -160,14 +188,14 @@ const std::vector<bool>& CustomMessage::GetCapital() const {
     return capital;
 }
 
-void CustomMessage::SetCapital(std::vector<bool> capital_){
+void CustomMessage::SetCapital(std::vector<bool> capital_) {
     capital = capital_;
 }
 const std::vector<std::string>& CustomMessage::GetColors() const {
     return colors;
 }
 
-void CustomMessage::SetColors(std::vector<std::string> colors_){
+void CustomMessage::SetColors(std::vector<std::string> colors_) {
     colors = colors_;
 }
 
@@ -175,7 +203,7 @@ const TextBoxType& CustomMessage::GetTextBoxType() const {
     return type;
 }
 
-void CustomMessage::SetTextBoxType(TextBoxType boxType){
+void CustomMessage::SetTextBoxType(TextBoxType boxType) {
     type = boxType;
 }
 
@@ -186,19 +214,19 @@ const TextBoxPosition& CustomMessage::GetTextBoxPosition() const {
 CustomMessage CustomMessage::operator+(const CustomMessage& right) const {
     std::vector<std::string> newColors = colors;
     std::vector<std::string> rColors = right.GetColors();
-    for (auto color: rColors){
+    for (auto color : rColors) {
         newColors.push_back(color);
     }
     std::vector<bool> newCapital = capital;
     newCapital.insert(newCapital.end(), right.GetCapital().begin(), right.GetCapital().end());
     return CustomMessage(messages[LANGUAGE_ENG] + right.GetEnglish(MF_RAW),
                          messages[LANGUAGE_GER] + right.GetGerman(MF_RAW),
-                         messages[LANGUAGE_FRA] + right.GetFrench(MF_RAW),
-                         newColors, newCapital, type, position);
+                         messages[LANGUAGE_FRA] + right.GetFrench(MF_RAW), newColors, newCapital, type, position);
 }
 
 CustomMessage CustomMessage::operator+(const std::string& right) const {
-    return CustomMessage(messages[LANGUAGE_ENG] + right, messages[LANGUAGE_GER] + right, messages[LANGUAGE_FRA] + right);
+    return CustomMessage(messages[LANGUAGE_ENG] + right, messages[LANGUAGE_GER] + right,
+                         messages[LANGUAGE_FRA] + right);
 }
 
 void CustomMessage::operator+=(const CustomMessage& right) {
@@ -220,8 +248,8 @@ bool CustomMessage::operator==(const CustomMessage& operand) const {
 }
 
 bool CustomMessage::operator==(const std::string& operand) const {
-    for (auto str: messages){
-        if (str == operand){
+    for (auto str : messages) {
+        if (str == operand) {
             return true;
         }
     }
@@ -243,7 +271,7 @@ void CustomMessage::Replace(std::string&& oldStr, std::string&& newStr) {
 }
 
 void CustomMessage::Replace(std::string&& oldStr, CustomMessage newMessage) {
-    for (uint8_t language = 0; language < LANGUAGE_MAX; language++) {
+    for (uint8_t language = 0; language < LANGUAGE_MAX - 1; language++) {
         size_t position = messages[language].find(oldStr);
         while (position != std::string::npos) {
             messages[language].replace(position, oldStr.length(), newMessage.messages[language]);
@@ -253,7 +281,7 @@ void CustomMessage::Replace(std::string&& oldStr, CustomMessage newMessage) {
 }
 
 void CustomMessage::Format(ItemID iid) {
-    for (std::string &str : messages) {
+    for (std::string& str : messages) {
         str.insert(0, ITEM_OBTAINED(iid));
         size_t start_pos = 0;
         std::replace(str.begin(), str.end(), '&', NEWLINE()[0]);
@@ -303,7 +331,7 @@ void CustomMessage::FormatString(std::string& str) const {
     str += MESSAGE_END();
 }
 
-void DeleteControlCode(std::string& str, std::string code){
+void DeleteControlCode(std::string& str, std::string code) {
     size_t start_pos = 0;
     while ((start_pos = str.find(code, start_pos)) != std::string::npos) {
         str.replace(start_pos, code.length(), "");
@@ -324,56 +352,57 @@ void CustomMessage::CleanString(std::string& str) const {
 }
 
 static size_t NextLineLength(const std::string* textStr, const size_t lastNewline, bool hasIcon = false) {
-  const  size_t maxLinePixelWidth = hasIcon ? 200 : 216;
+    const size_t maxLinePixelWidth = hasIcon ? 200 : 216;
 
-  size_t totalPixelWidth = 0;
-  size_t currentPos = lastNewline;
+    size_t totalPixelWidth = 0;
+    size_t currentPos = lastNewline;
 
-  // Looping through the string from the lastNewline until the total
-  // width of counted characters exceeds the maximum pixels in a line.
-  size_t nextPosJump = 0;
-  while (totalPixelWidth < maxLinePixelWidth && currentPos < textStr->length()) {
-    // Skip over control codes
-    if (textStr->at(currentPos) == '%') {
-      nextPosJump = 2;
-    } else if (textStr->at(currentPos) == '$') {
-      nextPosJump = 2;
-    } else if (textStr->at(currentPos) == '@') {
-      nextPosJump = 1;
-      // Assume worst case for player name 12 * 8 (widest character * longest name length)
-      totalPixelWidth += 96;
-    } else if (textStr->at(currentPos) == '\x05') {
-      // Skip colour control characters.
-      nextPosJump = 2;
-    } else if (textStr->at(currentPos) == '\x1E') {
-        //For the high score char, we have to take the next Char, then use that to get a worst case scenario.
-        if (textStr->at(currentPos+1) == '\x01'){
-            totalPixelWidth += 28;
-        } 
-        nextPosJump = 2;
-    } else {
-      // Some characters only one byte while others are two bytes
-      // So check both possibilities when checking for a character
-      if (pixelWidthTable.count(textStr->substr(currentPos, 1))) {
-        totalPixelWidth += pixelWidthTable[textStr->substr(currentPos, 1)];
-        nextPosJump = 1;
-      } else if (pixelWidthTable.count(textStr->substr(currentPos, 2))) {
-        totalPixelWidth += pixelWidthTable[textStr->substr(currentPos, 2)];
-        nextPosJump = 2;
-      } else {
-        SPDLOG_DEBUG("Table does not contain " + textStr->substr(currentPos, 1) + "/" + textStr->substr(currentPos, 2));
-        SPDLOG_DEBUG("Full string: " + *textStr);
-        nextPosJump = 1;
-      }
+    // Looping through the string from the lastNewline until the total
+    // width of counted characters exceeds the maximum pixels in a line.
+    size_t nextPosJump = 0;
+    while (totalPixelWidth < maxLinePixelWidth && currentPos < textStr->length()) {
+        // Skip over control codes
+        if (textStr->at(currentPos) == '%') {
+            nextPosJump = 2;
+        } else if (textStr->at(currentPos) == '$') {
+            nextPosJump = 2;
+        } else if (textStr->at(currentPos) == '@') {
+            nextPosJump = 1;
+            // Assume worst case for player name 12 * 8 (widest character * longest name length)
+            totalPixelWidth += 96;
+        } else if (textStr->at(currentPos) == '\x05') {
+            // Skip colour control characters.
+            nextPosJump = 2;
+        } else if (textStr->at(currentPos) == '\x1E') {
+            // For the high score char, we have to take the next Char, then use that to get a worst case scenario.
+            if (textStr->at(currentPos + 1) == '\x01') {
+                totalPixelWidth += 28;
+            }
+            nextPosJump = 2;
+        } else {
+            // Some characters only one byte while others are two bytes
+            // So check both possibilities when checking for a character
+            if (pixelWidthTable.count(textStr->substr(currentPos, 1))) {
+                totalPixelWidth += pixelWidthTable[textStr->substr(currentPos, 1)];
+                nextPosJump = 1;
+            } else if (pixelWidthTable.count(textStr->substr(currentPos, 2))) {
+                totalPixelWidth += pixelWidthTable[textStr->substr(currentPos, 2)];
+                nextPosJump = 2;
+            } else {
+                SPDLOG_DEBUG("Table does not contain " + textStr->substr(currentPos, 1) + "/" +
+                             textStr->substr(currentPos, 2));
+                SPDLOG_DEBUG("Full string: " + *textStr);
+                nextPosJump = 1;
+            }
+        }
+        currentPos += nextPosJump;
     }
-    currentPos += nextPosJump;
-  }
-  // return the total number of characters we looped through
-  if (totalPixelWidth > maxLinePixelWidth && textStr->at(currentPos - nextPosJump) != ' ') {
-    return currentPos - lastNewline - nextPosJump;
-  } else {
-    return currentPos - lastNewline;
-  }
+    // return the total number of characters we looped through
+    if (totalPixelWidth > maxLinePixelWidth && textStr->at(currentPos - nextPosJump) != ' ') {
+        return currentPos - lastNewline - nextPosJump;
+    } else {
+        return currentPos - lastNewline;
+    }
 }
 
 size_t CustomMessage::FindNEWLINE(std::string& str, size_t lastNewline) const {
@@ -450,19 +479,19 @@ void CustomMessage::AutoFormatString(std::string& str) const {
         const size_t lastSpace = str.rfind(' ', lastNewline + lineLength);
         size_t waitForInput = str.find(WAIT_FOR_INPUT()[0], lastNewline);
         size_t newLine = FindNEWLINE(str, lastNewline);
-        if (carrot < waitForInput){
+        if (carrot < waitForInput) {
             waitForInput = carrot;
         }
-        if (ampersand < newLine){
+        if (ampersand < newLine) {
             newLine = ampersand;
         }
-        if (lineCount != 3 && yesNo < lastNewline + lineLength && yesNo < waitForInput && yesNo < newLine){
-            if (lineCount >= 4){
+        if (lineCount != 3 && yesNo < lastNewline + lineLength && yesNo < waitForInput && yesNo < newLine) {
+            if (lineCount >= 4) {
                 str.replace(yesNo, 1, "^&&\x1B");
                 lineCount = 3;
                 lastNewline = yesNo + 3;
             } else {
-                while(lineCount < 3){
+                while (lineCount < 3) {
                     str.replace(yesNo, 1, "&\x1B");
                     yesNo++;
                     lineCount++;
@@ -470,7 +499,7 @@ void CustomMessage::AutoFormatString(std::string& str) const {
                 lastNewline = yesNo;
             }
         } else {
-            if (lineCount < 4){
+            if (lineCount < 4) {
                 // replace '&' first if it's within the newline range
                 if (newLine < lastNewline + lineLength) {
                     lastNewline = newLine + 1;
@@ -488,12 +517,12 @@ void CustomMessage::AutoFormatString(std::string& str) const {
                     lastNewline = lastSpace + 1;
                 }
                 lineCount += 1;
-            } else { 
+            } else {
                 const size_t lastColor = str.rfind("\x05"s, lastNewline + lineLength);
                 std::string colorText = "";
-                //check if we are on a non default colour, as ^ resets it, and readd if needed
-                if (lastColor != std::string::npos && str[lastColor+1] != 0){
-                    colorText = "\x05"s + str[lastColor+1];
+                // check if we are on a non default colour, as ^ resets it, and readd if needed
+                if (lastColor != std::string::npos && str[lastColor + 1] != 0) {
+                    colorText = "\x05"s + str[lastColor + 1];
                 }
                 // replace '&' first if it's within the newline range
                 if (ampersand < lastNewline + lineLength) {
@@ -526,7 +555,7 @@ void CustomMessage::AutoFormatString(std::string& str) const {
     str += MESSAGE_END();
 }
 
-void CustomMessage::InsertNumber(uint8_t num){
+void CustomMessage::InsertNumber(uint8_t num) {
     for (std::string& str : messages) {
         size_t firstBar = str.find('|');
         if (firstBar != std::string::npos) {
@@ -543,11 +572,10 @@ void CustomMessage::InsertNumber(uint8_t num){
             }
         }
     }
-    //remove the remaining bar
+    // remove the remaining bar
     this->Replace("|", "");
     Replace("[[d]]", std::to_string(num));
 }
-
 
 void CustomMessage::Capitalize() {
     for (std::string str : messages) {
@@ -587,7 +615,7 @@ const char* Interface_ReplaceSpecialCharacters(char text[]) {
 }
 
 void CustomMessage::EncodeColors(std::string& str) const {
-    for (std::string color: colors) {
+    for (std::string color : colors) {
         if (const size_t firstHashtag = str.find('#'); firstHashtag != std::string::npos) {
             str.replace(firstHashtag, 1, colorToPercent.at(color));
             if (const size_t secondHashtag = str.find('#', firstHashtag + 1); secondHashtag != std::string::npos) {
@@ -626,13 +654,13 @@ void CustomMessage::ReplaceAltarIcons(std::string& str) const {
     }
 }
 
-void CustomMessage::InsertNames(std::vector<CustomMessage> toInsert){
-    for(uint8_t a = 0; a < toInsert.size(); a++){
+void CustomMessage::InsertNames(std::vector<CustomMessage> toInsert) {
+    for (uint8_t a = 0; a < toInsert.size(); a++) {
         CustomMessage temp = toInsert[a];
-        if ((capital.size() > a) && (capital[a] = true)){
+        if ((capital.size() > a) && (capital[a] = true)) {
             temp.Capitalize();
-        } 
-        Replace("[[" + std::to_string(a+1) + "]]", temp); 
+        }
+        Replace("[[" + std::to_string(a + 1) + "]]", temp);
     }
 }
 
@@ -697,16 +725,16 @@ CustomMessage CustomMessageManager::RetrieveMessage(std::string tableID, uint16_
     }
     CustomMessage message = foundMessage->second;
 
-    if (format == MF_FORMATTED){
+    if (format == MF_FORMATTED) {
         message.Format();
-    } else if (format == MF_AUTO_FORMAT){
+    } else if (format == MF_AUTO_FORMAT) {
         message.AutoFormat();
-    } else if (format == MF_CLEAN){
+    } else if (format == MF_CLEAN) {
         message.Clean();
-    } else if (format == MF_ENCODE){
+    } else if (format == MF_ENCODE) {
         message.Encode();
     }
-    
+
     return message;
 }
 
@@ -720,7 +748,7 @@ bool CustomMessageManager::ClearMessageTable(std::string tableID) {
     return true;
 }
 
-bool CustomMessageManager::AddCustomMessageTable(std::string tableID) { 
+bool CustomMessageManager::AddCustomMessageTable(std::string tableID) {
     CustomMessageTable newMessageTable;
     return messageTables.emplace(tableID, newMessageTable).second;
 }

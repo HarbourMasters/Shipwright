@@ -1,0 +1,5 @@
+<Root>
+    <File Name="object_mjin_soul" Segment="6">
+        <Texture Name="gSpiritMedallionPlatformTex" OutName="spirit_medallion" Format="i8" Width="64" Height="64" Offset="0x0"/>
+    </File>
+</Root>

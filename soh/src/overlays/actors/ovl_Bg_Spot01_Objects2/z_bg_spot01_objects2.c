@@ -110,9 +110,9 @@ void func_808AC2BC(BgSpot01Objects2* this, PlayState* play) {
                 this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, thisx, colHeader);
                 if (IS_DAY) {
                     func_808AC22C(play->setupPathList, &position, ((s32)thisx->params >> 8) & 0xFF, 0);
-                    Actor_SpawnAsChild(&play->actorCtx, thisx, play, ACTOR_EN_DAIKU_KAKARIKO, position.x,
-                                       position.y, position.z, thisx->world.rot.x, thisx->world.rot.y,
-                                       thisx->world.rot.z, ((((s32)thisx->params >> 8) & 0xFF) << 8) + 1);
+                    Actor_SpawnAsChild(&play->actorCtx, thisx, play, ACTOR_EN_DAIKU_KAKARIKO, position.x, position.y,
+                                       position.z, thisx->world.rot.x, thisx->world.rot.y, thisx->world.rot.z,
+                                       ((((s32)thisx->params >> 8) & 0xFF) << 8) + 1);
                 }
                 break;
             case 0: // Potion Shop Poster

@@ -5,12 +5,12 @@
 #include "libultraship/libultraship.h"
 
 namespace SOH {
-std::shared_ptr<Ship::IResource>
-SetMeshFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData, std::shared_ptr<Ship::BinaryReader> reader) {
+std::shared_ptr<Ship::IResource> SetMeshFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
+                                                              std::shared_ptr<Ship::BinaryReader> reader) {
     auto setMesh = std::make_shared<SetMesh>(initData);
 
     ReadCommandId(setMesh, reader);
-    
+
     setMesh->data = reader->ReadInt8();
 
     setMesh->meshHeader.base.type = reader->ReadInt8();
@@ -23,7 +23,8 @@ SetMeshFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData, s
         } else if (setMesh->meshHeader.base.type == 2) {
             setMesh->meshHeader.polygon2.num = polyNum;
         } else {
-            SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}", setMesh->meshHeader.base.type);
+            SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}",
+                         setMesh->meshHeader.base.type);
         }
     }
 
@@ -43,8 +44,8 @@ SetMeshFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData, s
             std::string meshOpa = reader->ReadString();
             std::string meshXlu = reader->ReadString();
 
-            // Enables alt-toggling support by setting maintained c_str references to DList resource after pushing to vector the first
-            // Defers resource loading later in game when the scene is drawn
+            // Enables alt-toggling support by setting maintained c_str references to DList resource after pushing to
+            // vector the first Defers resource loading later in game when the scene is drawn
             if (meshOpa != "") {
                 meshOpa = "__OTR__" + meshOpa;
                 setMesh->opaPaths.push_back(meshOpa);
@@ -64,8 +65,8 @@ SetMeshFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData, s
 
             setMesh->meshHeader.polygon1.format = reader->ReadUByte();
 
-            // These strings are the same that are read and used below. Not sure why they get exported twice from the exporter.
-            // We read and ignore these to advance the reader.
+            // These strings are the same that are read and used below. Not sure why they get exported twice from the
+            // exporter. We read and ignore these to advance the reader.
             reader->ReadString();
             reader->ReadString();
 
@@ -91,7 +92,8 @@ SetMeshFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData, s
                 if (setMesh->meshHeader.polygon1.format == 1) {
                     setMesh->meshHeader.polygon1.single.source = image.source;
                     setMesh->meshHeader.polygon1.single.unk_0C = image.unk_0C;
-                    setMesh->meshHeader.polygon1.single.tlut = (void*)image.tlut; // OTRTODO: type of bgimage.tlut should be uintptr_t
+                    setMesh->meshHeader.polygon1.single.tlut =
+                        (void*)image.tlut; // OTRTODO: type of bgimage.tlut should be uintptr_t
                     setMesh->meshHeader.polygon1.single.width = image.width;
                     setMesh->meshHeader.polygon1.single.height = image.height;
                     setMesh->meshHeader.polygon1.single.fmt = image.fmt;
@@ -153,7 +155,8 @@ SetMeshFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData, s
 
             setMesh->dlists2.push_back(dlist);
         } else {
-            SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}", setMesh->meshHeader.base.type);
+            SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}",
+                         setMesh->meshHeader.base.type);
         }
     }
 
@@ -165,7 +168,8 @@ SetMeshFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData, s
         setMesh->meshHeader.polygon1.multi.list = setMesh->images.data();
         setMesh->meshHeader.polygon1.dlist = (Gfx*)setMesh->dlists.data();
     } else {
-        SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}", setMesh->meshHeader.base.type);
+        SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}",
+                     setMesh->meshHeader.base.type);
     }
 
     if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
@@ -176,7 +180,7 @@ SetMeshFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData, s
 }
 
 std::shared_ptr<Ship::IResource> SetMeshFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
-                                                                   tinyxml2::XMLElement* reader) {
+                                                                 tinyxml2::XMLElement* reader) {
     auto setMesh = std::make_shared<SetMesh>(initData);
 
     setMesh->cmdId = SceneCommandID::SetMesh;
@@ -193,7 +197,8 @@ std::shared_ptr<Ship::IResource> SetMeshFactoryXML::ReadResource(std::shared_ptr
         } else if (setMesh->meshHeader.base.type == 2) {
             setMesh->meshHeader.polygon2.num = polyNum;
         } else {
-            SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}", setMesh->meshHeader.base.type);
+            SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}",
+                         setMesh->meshHeader.base.type);
         }
     }
 
@@ -221,8 +226,8 @@ std::shared_ptr<Ship::IResource> SetMeshFactoryXML::ReadResource(std::shared_ptr
             std::string meshOpa = child->Attribute("MeshOpa");
             std::string meshXlu = child->Attribute("MeshXlu");
 
-            // Enables alt-toggling support by setting maintained c_str references to DList resource after pushing to vector the first
-            // Defers resource loading later in game when the scene is drawn
+            // Enables alt-toggling support by setting maintained c_str references to DList resource after pushing to
+            // vector the first Defers resource loading later in game when the scene is drawn
             if (meshOpa != "") {
                 meshOpa = "__OTR__" + meshOpa;
                 setMesh->opaPaths.push_back(meshOpa);
@@ -271,7 +276,8 @@ std::shared_ptr<Ship::IResource> SetMeshFactoryXML::ReadResource(std::shared_ptr
                 if (setMesh->meshHeader.polygon1.format == 1) {
                     setMesh->meshHeader.polygon1.single.source = image.source;
                     setMesh->meshHeader.polygon1.single.unk_0C = image.unk_0C;
-                    setMesh->meshHeader.polygon1.single.tlut = (void*)image.tlut; // OTRTODO: type of bgimage.tlut should be uintptr_t
+                    setMesh->meshHeader.polygon1.single.tlut =
+                        (void*)image.tlut; // OTRTODO: type of bgimage.tlut should be uintptr_t
                     setMesh->meshHeader.polygon1.single.width = image.width;
                     setMesh->meshHeader.polygon1.single.height = image.height;
                     setMesh->meshHeader.polygon1.single.fmt = image.fmt;
@@ -335,7 +341,8 @@ std::shared_ptr<Ship::IResource> SetMeshFactoryXML::ReadResource(std::shared_ptr
 
             setMesh->dlists2.push_back(dlist);
         } else {
-            SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}", setMesh->meshHeader.base.type);
+            SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}",
+                         setMesh->meshHeader.base.type);
         }
 
         child = child->NextSiblingElement();
@@ -349,7 +356,8 @@ std::shared_ptr<Ship::IResource> SetMeshFactoryXML::ReadResource(std::shared_ptr
         setMesh->meshHeader.polygon1.multi.list = setMesh->images.data();
         setMesh->meshHeader.polygon1.dlist = (Gfx*)setMesh->dlists.data();
     } else {
-        SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}", setMesh->meshHeader.base.type);
+        SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}",
+                     setMesh->meshHeader.base.type);
     }
 
     return setMesh;

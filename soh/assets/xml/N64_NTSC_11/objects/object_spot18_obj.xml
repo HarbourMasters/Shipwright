@@ -1,0 +1,36 @@
+<Root>
+    <File Name="object_spot18_obj" Segment="6">
+        <!-- DisplayLists -->
+        <DList Name="gGoronCityVaseLidDL" Offset="0x150"/>
+        <DList Name="gGoronCityDoorDL" Offset="0x420"/>
+        <DList Name="gGoronCityVaseDL" Offset="0x18B0"/>
+        <DList Name="gGoronCityStatueSpearDL" Offset="0x2370"/>
+        <DList Name="gGoronCityStatueDL" Offset="0x2BC0"/>
+
+        <!-- Palettes -->
+        <Texture Name="gGoronCityVaseTLUT" OutName="vase_tlut" Format="rgba16" Width="4" Height="4" Offset="0x560"/>
+
+        <!-- Textures -->
+        <Texture Name="gGoronCityVaseTex_580" OutName="vase_580" Format="ci4" Width="64" Height="64" Offset="0x580" TlutOffset="0x560"/>
+        <Texture Name="gGoronCityVaseTex_D80" OutName="vase_D80" Format="ci4" Width="32" Height="32" Offset="0xD80" TlutOffset="0x560"/>
+        <Texture Name="gGoronCitySpearLeafTex" OutName="spear_leaf" Format="rgba16" Width="32" Height="64" Offset="0x3010"/>
+        <Texture Name="gGoronCitySpearTipTex" OutName="spear_tip" Format="rgba16" Width="32" Height="32" Offset="0x4010"/>
+        <Texture Name="gGoronCitySpearHandleTex" OutName="spear_handle" Format="rgba16" Width="32" Height="32" Offset="0x4810"/>
+        <Texture Name="gGoronCityStatuePattern1Tex" OutName="statue_pattern_1" Format="rgba16" Width="32" Height="64" Offset="0x5010"/>
+        <Texture Name="gGoronCityStatuePattern2Tex" OutName="statue_pattern_2" Format="rgba16" Width="32" Height="64" Offset="0x6010"/>
+        <Texture Name="gGoronCityStatueTex_7010" OutName="statue_7010" Format="rgba16" Width="64" Height="32" Offset="0x7010"/>
+        <Texture Name="gGoronCityStatueAngryFaceTex" OutName="statue_angry_face" Format="rgba16" Width="32" Height="64" Offset="0x8010"/>
+        <Texture Name="gGoronCityStatueNeutralFaceTex" OutName="statue_neutral_face" Format="rgba16" Width="32" Height="64" Offset="0x9010"/>
+        <Texture Name="gGoronCityStatueHappyFaceTex" OutName="statue_happy_face" Format="rgba16" Width="32" Height="64" Offset="0xA010"/>
+        <Texture Name="gGoronCityVaseLidTex" OutName="vase_lid" Format="rgba16" Width="32" Height="32" Offset="0xB010"/>
+        <Texture Name="gGoronCityVaseLidHandleTex" OutName="vase_lid_handle" Format="rgba16" Width="16" Height="16" Offset="0xB810"/>
+        <Texture Name="gGoronCityDoorTex" OutName="door" Format="rgba16" Width="32" Height="64" Offset="0xBA10"/>
+
+        <!-- Collision -->
+        <Collision Name="gGoronCityVaseLidCol" Offset="0x368"/>
+        <Collision Name="gGoronCityDoorCol" Offset="0x534"/>
+        <Collision Name="gGoronCityVaseCol" Offset="0x2154"/>
+        <Collision Name="gGoronCityStatueSpearCol" Offset="0x261C"/>
+        <Collision Name="gGoronCityStatueCol" Offset="0x2FE4"/>
+    </File>
+</Root>

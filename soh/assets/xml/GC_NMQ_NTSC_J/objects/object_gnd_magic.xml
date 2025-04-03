@@ -1,0 +1,7 @@
+<Root>
+    <File Name="object_gnd_magic" Segment="6">
+        <Texture Name="object_gnd_magic_Tex_000000" OutName="tex_00000000" Format="i8" Width="32" Height="64" Offset="0x0"/>
+        <Texture Name="object_gnd_magic_Tex_000800" OutName="tex_00000800" Format="i8" Width="32" Height="64" Offset="0x800"/>
+        <DList Name="object_gnd_magic_DL_001190" Offset="0x1190"/>
+    </File>
+</Root>

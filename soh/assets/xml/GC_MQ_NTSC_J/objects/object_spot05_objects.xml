@@ -1,0 +1,10 @@
+<Root>
+    <File Name="object_spot05_objects" Segment="6">
+        <Texture Name="object_spot05_objects_Tex_000000" OutName="tex_00000000" Format="rgba16" Width="32" Height="32" Offset="0x0"/>
+        <DList Name="object_spot05_objects_DL_000840" Offset="0x840"/>
+        <Collision Name="object_spot05_objects_Col_000918" Offset="0x918"/>
+        <Texture Name="object_spot05_objects_Tex_000950" OutName="tex_00000950" Format="rgba16" Width="16" Height="64" Offset="0x950"/>
+        <DList Name="object_spot05_objects_DL_001190" Offset="0x1190"/>
+        <Collision Name="object_spot05_objects_Col_0012C0" Offset="0x12C0"/>
+    </File>
+</Root>
