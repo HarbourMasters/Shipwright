@@ -28,34 +28,34 @@ struct ShipInit {
 
 /**
  * @brief Register a function to execute on boot and (optionally) in other situations
- * 
+ *
  * @param initFunc The function to execute
  * @param updatePaths Strings to specify additional situations in which to execute the function
- * 
+ *
  * ### Examples:
- * 
+ *
  * #### Execute function `bar` on boot
- * 
+ *
  * ```cpp
  * static RegisterShipInitFunc foo(bar);
  * ```
- * 
+ *
  * #### Execute function `bar` on boot and when the CVar `baz` might have changed
- * 
+ *
  * ```cpp
  * static RegisterShipInitFunc foo(bar, { "baz" });
  * ```
- * 
+ *
  * #### Execute function `bar` on boot and when `IS_RANDO` might have changed
- * 
+ *
  * ```cpp
  * static RegisterShipInitFunc foo(bar, { "IS_RANDO" });
  * ```
- * 
+ *
  * ### Additional Information:
- * 
- * To get a better sense of when your function will be executed 
- * you can look for `ShipInit::Init` calls throughout the codebase 
+ *
+ * To get a better sense of when your function will be executed
+ * you can look for `ShipInit::Init` calls throughout the codebase
  */
 struct RegisterShipInitFunc {
     RegisterShipInitFunc(std::function<void()> initFunc, const std::set<std::string>& updatePaths = {}) {

@@ -13,4 +13,5 @@
 #define DELETE_PRESET 6
 #define RESET_TO_DEFAULTS 8
 
-bool GenerateRandomizer(std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks, std::string seedInput);
+bool GenerateRandomizer(std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks,
+                        std::string seedInput);
