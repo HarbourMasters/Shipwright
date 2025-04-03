@@ -62,6 +62,7 @@ Congratulations, you are now sailing with the Ship of Harkinian! Have fun!
 | Keys | Action |
 | - | - |
 | ESC | Toggle menu |
+| F2 | Toggle capture mouse input |
 | F5 | Save state |
 | F6 | Change state |
 | F7 | Load state |
