@@ -61,7 +61,7 @@ Congratulations, you are now sailing with the Ship of Harkinian! Have fun!
 ### Other shortcuts
 | Keys | Action |
 | - | - |
-| F1 | Toggle menubar |
+| ESC | Toggle menubar |
 | F5 | Save state |
 | F6 | Change state |
 | F7 | Load state |
