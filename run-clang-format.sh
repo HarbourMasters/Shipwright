@@ -10,8 +10,8 @@
 # -name "*.c" -o -name "*.cpp"
 # find all .c and .cpp files
 #
-# -name "*.h" ! -path "soh/src/**.h" ! -path "soh/include/**.h"
-# find all .h files that aren't in soh/src or soh/include
+# ( -name "*.h" -o -name "*.hpp" ) ! -path "soh/src/**.h" ! -path "soh/include/**.h"
+# find all .h and .hpp files that aren't in soh/src or soh/include
 # this is because zret decomp only runs clang-format on c files
 # https://github.com/zeldaret/mm/blob/b7e5468ca16315a7e322055eff3d97fe980bbc25/format.py#L182
 #
@@ -26,4 +26,4 @@
 # and pass it as an argument to clang-format
 # verbose to print files being formatted and X out of Y status
 
-find soh -type f \( -name "*.c" -o -name "*.cpp" -o \( -name "*.h" ! -path "soh/src/**.h" ! -path "soh/include/**.h" \) \) ! -path "soh/assets/*" -print0 | xargs -0 clang-format-14 -i --verbose
+find soh -type f \( -name "*.c" -o -name "*.cpp" -o \( \( -name "*.h" -o -name "*.hpp" \) ! -path "soh/src/*" ! -path "soh/include/*" \) \) ! -path "soh/assets/*" -print0 | xargs -0 clang-format-14 -i --verbose
