@@ -159,7 +159,7 @@ const std::string CustomMessage::GetForCurrentLanguage(MessageFormat format) con
 }
 
 const std::string CustomMessage::GetForLanguage(uint8_t language, MessageFormat format) const {
-    std::string output = messages[language] == TODO_TRANSLATE ? messages[language] : messages[LANGUAGE_ENG];
+    std::string output = messages[language] != TODO_TRANSLATE ? messages[language] : messages[LANGUAGE_ENG];
     ProcessMessageFormat(output, format);
     return output;
 }

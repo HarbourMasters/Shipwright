@@ -474,8 +474,8 @@ void Randomizer::LoadMerchantMessages() {
         Randomizer::merchantMessageTableID, TEXT_SHOP_ITEM_RANDOM,
         CustomMessage(
             "\x08#[[1]]#  #[[2]]_Rupees#&Special deal! #ONE LEFT#!&Get it while it lasts!\x0A\x02",
-            "\x08#[[1]]#  #[[2]]_Rubine#&Sonderangebot! #NUR NOCH EINES VERFÜGBAR#!&Beeilen Sie sich!\x0A\x02",
-            "\x08#[[1]]#  #[[2]]_Rubis#&Offre spéciale! #DERNIER EN STOCK#!&Faites vite!\x0A\x02",
+            "\x08#[[1]]#  #[[2]]_Rubine#&Sonderangebot! #NUR NOCH EINES VERFÜGBAR#! Beeilen Sie sich!\x0A\x02",
+            "\x08#[[1]]#  #[[2]]_Rubis#&Offre spéciale! #DERNIER EN STOCK#! Faites vite!\x0A\x02",
             { QM_GREEN, QM_YELLOW, QM_RED }));
 
     CustomMessageManager::Instance->CreateMessage(
