@@ -22,6 +22,7 @@ using namespace std::literals::string_literals;
 namespace Rando {
 
 void StaticData::HintTable_Init() {
+    // clang-format off
     /*--------------------------
     |       GENERAL TEXT        |
     ---------------------------*/
@@ -46,12 +47,13 @@ void StaticData::HintTable_Init() {
                                 "Man erzählt sich, daß #[[2]]# #[[1]]# horte.",
                      /*french*/ "Selon moi, #[[2]]# recèle #[[1]]#.", {QM_RED, QM_GREEN}));
                     // /*spanish*/ "Según dicen, #[[2]]# acapara #[[1]]#."
+    // clang-format on
 
     HintTable_Init_Item();
     HintTable_Init_Exclude_Overworld();
     HintTable_Init_Exclude_Dungeon();
 
-
+    // clang-format off
     /*--------------------------
     |    SOMETIMES HINT TEXT   |
     ---------------------------*/
@@ -2279,15 +2281,15 @@ void StaticData::HintTable_Init() {
                                                               {QM_RED, QM_GREEN, QM_GREEN, QM_GREEN}, {}, TEXTBOX_TYPE_WOODEN));
 
     hintTextTable[RHT_HBA_HINT_NOT_ON_HORSE] = HintText(CustomMessage("Hey, rookie!&Come back on your #horse# and take on then #Horseback Archery# challenge!^"
-                                                                      "Impress me with a high score of 1000 to win a #[[1]]# or score 1500 for my #[[2]]#!",
+                                                                      "Impress me with a high score of 1000 to win a #[[1]]# or score 1500 for #[[2]]#!",
                                                                       {QM_RED, QM_RED, QM_GREEN, QM_GREEN}));
 
     hintTextTable[RHT_HBA_HINT_INITIAL] = HintText(CustomMessage("Hey, rookie!&Want to take on the #Horseback Archery# challenge?^"
-                                                                 "Impress me with a high score of 1000 to win a #[[1]]# or score 1500 for my #[[2]]#!\x0B",
+                                                                 "Impress me with a high score of 1000 to win a #[[1]]# or score 1500 for #[[2]]#!\x0B",
                                                                  {QM_RED, QM_GREEN, QM_GREEN}));
 
     hintTextTable[RHT_HBA_HINT_HAVE_1000] = HintText(CustomMessage("Hey, newcomer!&Want to take on the #Horseback Archery# challenge?^"
-                                                                   "Prove yourself to be a horsemaster by scoring 1500 points to win my #[[1]]#!\x0B",
+                                                                   "Prove yourself to be a horsemaster by scoring 1500 points to win #[[2]]#!\x0B",
                                                                    {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_MALON_HINT_HOW_IS_EPONA] = HintText(CustomMessage("@! You should come back with Epona and try to beat my time on the #Obstacle Course#!^"
@@ -2418,5 +2420,6 @@ void StaticData::HintTable_Init() {
                                                        /*german*/ "&Man kann darauf die Worte&%r\"Master Quest\"%w entziffern...",
                                                        /*french*/ "&Étrange... les mots %r\"Master&Quest\"%w sont gravés dessus."));
 
+    // clang-format on
 }
-}
+} // namespace Rando

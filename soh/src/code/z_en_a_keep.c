@@ -54,7 +54,7 @@ static ColliderCylinderInit sCylinderInit = {
     { 25, 60, 0, { 0, 0, 0 } },
 };
 
-//extern CollisionHeader D_06000730; // gHookshotTargetCol ?
+// extern CollisionHeader D_06000730; // gHookshotTargetCol ?
 
 static CollisionHeader* sColHeaders[] = {
     &gLargerCubeCol,       // A_OBJ_GRASS_CLUMP, A_OBJ_TREE_STUMP
@@ -72,7 +72,8 @@ static Gfx* sDLists[] = {
     gFlatRotBlockDL,
     gFlatRotBlockDL,
     gSmallCubeDL,
-    gHookshotPostDL, /* gHookshotPostDL ? */ // 0x06000210, // OTRTODO!
+    gHookshotPostDL,
+    /* gHookshotPostDL ? */ // 0x06000210, // OTRTODO!
     gGrassBladesDL,
     gTreeStumpDL,
     gSignRectangularDL,
@@ -359,8 +360,7 @@ void EnAObj_Draw(Actor* thisx, PlayState* play) {
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 1, 60, 60, 60, 50);
     }
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_OPA_DISP++, sDLists[type]);
 
     CLOSE_DISPS(play->state.gfxCtx);

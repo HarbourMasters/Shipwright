@@ -1,5 +1,6 @@
 #include "ShipUtils.h"
 #include <libultraship/libultraship.h>
+#include "soh_assets.h"
 
 extern "C" {
 #include "z64.h"
@@ -8,11 +9,8 @@ extern "C" {
 
 extern float OTRGetAspectRatio();
 
-//extern f32 sNESFontWidths[160];
-extern const char* fontTbl[156];
-//extern TexturePtr gItemIcons[131];
-//extern TexturePtr gQuestIcons[14];
-//extern TexturePtr gBombersNotebookPhotos[24];
+extern f32 sFontWidths[144];
+extern const char* fontTbl[140];
 }
 
 constexpr f32 fourByThree = 4.0f / 3.0f;
@@ -45,7 +43,7 @@ extern "C" void Ship_ExtendedCullingActorAdjustProjectedX(Actor* actor) {
 }
 
 // Restores the projectedPos values on the actor after modifications from the Extended Culling hacks
-//extern "C" void Ship_ExtendedCullingActorRestoreProjectedPos(PlayState* play, Actor* actor) {
+// extern "C" void Ship_ExtendedCullingActorRestoreProjectedPos(PlayState* play, Actor* actor) {
 //    f32 invW = 0.0f;
 //    Actor_GetProjectedPos(play, &actor->world.pos, &actor->projectedPos, &invW);
 //}
@@ -79,37 +77,22 @@ extern "C" void Ship_CreateQuadVertexGroup(Vtx* vtxList, s32 xStart, s32 yStart,
     vtxList[3].v.tc[1] = height << 5;
 }
 
-//extern "C" f32 Ship_GetCharFontWidthNES(u8 character) {
-//    u8 adjustedChar = character - ' ';
-//
-//    if (adjustedChar >= ARRAY_COUNTU(sNESFontWidths)) {
-//        return 0.0f;
-//    }
-//
-//    return sNESFontWidths[adjustedChar];
-//}
+extern "C" f32 Ship_GetCharFontWidth(u8 character) {
+    u8 adjustedChar = character - ' ';
 
-//extern "C" TexturePtr Ship_GetCharFontTextureNES(u8 character) {
-//    u8 adjustedChar = character - ' ';
-//
-//    if (adjustedChar >= ARRAY_COUNTU(sNESFontWidths)) {
-//        return (TexturePtr)gEmptyTexture;
-//    }
-//
-//    return (TexturePtr)fontTbl[adjustedChar];
-//}
+    if (adjustedChar >= ARRAY_COUNTU(sFontWidths)) {
+        return 0.0f;
+    }
 
-//void LoadGuiTextures() {
-//    for (TexturePtr entry : gItemIcons) {
-//        const char* path = static_cast<const char*>(entry);
-//        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(path, path, ImVec4(1, 1, 1, 1));
-//    }
-//    for (TexturePtr entry : gQuestIcons) {
-//        const char* path = static_cast<const char*>(entry);
-//        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(path, path, ImVec4(1, 1, 1, 1));
-//    }
-//    for (TexturePtr entry : gBombersNotebookPhotos) {
-//        const char* path = static_cast<const char*>(entry);
-//        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(path, path, ImVec4(1, 1, 1, 1));
-//    }
-//}
+    return sFontWidths[adjustedChar];
+}
+
+extern "C" void* Ship_GetCharFontTexture(u8 character) {
+    u8 adjustedChar = character - ' ';
+
+    if (adjustedChar >= ARRAY_COUNTU(fontTbl)) {
+        return (void*)gEmptyTexture;
+    }
+
+    return (void*)fontTbl[adjustedChar];
+}

@@ -7,6 +7,6 @@ void* Scene::GetPointer() {
 }
 
 size_t Scene::GetPointerSize() {
-	return 0;
+    return 0;
 }
 } // namespace SOH

@@ -81,8 +81,8 @@ void EnHintnuts_Init(Actor* thisx, PlayState* play) {
         this->actor.flags &= ~(ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE);
     } else {
         ActorShape_Init(&this->actor.shape, 0x0, ActorShadow_DrawCircle, 35.0f);
-        SkelAnime_Init(play, &this->skelAnime, &gHintNutsSkel, &gHintNutsStandAnim, this->jointTable,
-                       this->morphTable, 10);
+        SkelAnime_Init(play, &this->skelAnime, &gHintNutsSkel, &gHintNutsStandAnim, this->jointTable, this->morphTable,
+                       10);
         Collider_InitCylinder(play, &this->collider);
         Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
         CollisionCheck_SetInfo(&this->actor.colChkInfo, NULL, &sColChkInfoInit);
@@ -291,8 +291,8 @@ void EnHintnuts_ThrowNut(EnHintnuts* this, PlayState* play) {
         nutPos.x = this->actor.world.pos.x + (Math_SinS(this->actor.shape.rot.y) * 23.0f);
         nutPos.y = this->actor.world.pos.y + 12.0f;
         nutPos.z = this->actor.world.pos.z + (Math_CosS(this->actor.shape.rot.y) * 23.0f);
-        if (Actor_Spawn(&play->actorCtx, play, ACTOR_EN_NUTSBALL, nutPos.x, nutPos.y, nutPos.z,
-                        this->actor.shape.rot.x, this->actor.shape.rot.y, this->actor.shape.rot.z, 1, true) != NULL) {
+        if (Actor_Spawn(&play->actorCtx, play, ACTOR_EN_NUTSBALL, nutPos.x, nutPos.y, nutPos.z, this->actor.shape.rot.x,
+                        this->actor.shape.rot.y, this->actor.shape.rot.z, 1, true) != NULL) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_NUTS_THROW);
         }
     }
@@ -382,7 +382,8 @@ void EnHintnuts_Run(EnHintnuts* this, PlayState* play) {
                fabsf(this->actor.world.pos.y - this->actor.home.pos.y) < 2.0f) {
         this->actor.speedXZ = 0.0f;
         if (this->actor.category == ACTORCAT_BG) {
-            this->actor.flags &= ~(ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED);
+            this->actor.flags &=
+                ~(ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED);
             this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE;
             Actor_ChangeCategory(play, &play->actorCtx, &this->actor, ACTORCAT_ENEMY);
         }
@@ -489,8 +490,8 @@ void EnHintnuts_Update(Actor* thisx, PlayState* play) {
         this->actionFunc(this, play);
         if (this->actionFunc != EnHintnuts_Freeze && this->actionFunc != EnHintnuts_BeginFreeze) {
             Actor_MoveXZGravity(&this->actor);
-            Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, this->collider.dim.radius,
-                                    this->collider.dim.height, 0x1D);
+            Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, this->collider.dim.radius, this->collider.dim.height,
+                                    0x1D);
         }
         Collider_UpdateCylinder(&this->actor, &this->collider);
         if (this->collider.base.acFlags & AC_ON) {
@@ -508,8 +509,7 @@ void EnHintnuts_Update(Actor* thisx, PlayState* play) {
     }
 }
 
-s32 EnHintnuts_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                                void* thisx) {
+s32 EnHintnuts_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     Vec3f vec;
     f32 curFrame;
     EnHintnuts* this = (EnHintnuts*)thisx;
@@ -543,8 +543,6 @@ void EnHintnuts_Draw(Actor* thisx, PlayState* play) {
     if (this->actor.params == 0xA) {
         Gfx_DrawDListOpa(play, gHintNutsFlowerDL);
     } else {
-        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime,
-                                  EnHintnuts_OverrideLimbDraw,
-                          NULL, this);
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnHintnuts_OverrideLimbDraw, NULL, this);
     }
 }

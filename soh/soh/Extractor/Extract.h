@@ -20,9 +20,9 @@ static constexpr size_t MB54 = 54 * MB_BASE;
 static constexpr size_t MB64 = 64 * MB_BASE;
 
 enum class RomSearchMode {
-  Both = 0,
-  Vanilla = 1,
-  MQ = 2,
+    Both = 0,
+    Vanilla = 1,
+    MQ = 2,
 };
 
 class Extractor {
@@ -54,7 +54,7 @@ class Extractor {
     bool ManuallySearchForRomMatchingType(RomSearchMode searchMode);
 
   public:
-    //TODO create some kind of abstraction for message boxes.
+    // TODO create some kind of abstraction for message boxes.
     static int ShowYesNoBox(const char* title, const char* text);
     static void ShowErrorBox(const char* title, const char* text);
     bool IsMasterQuest() const;

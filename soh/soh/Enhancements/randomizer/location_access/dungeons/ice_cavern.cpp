@@ -5,6 +5,7 @@
 using namespace Rando;
 
 void RegionTable_Init_IceCavern() {
+    // clang-format off
     // Vanilla/MQ Decider
     areaTable[RR_ICE_CAVERN_ENTRYWAY] = Region("Ice Cavern Entryway", "Ice Cavern", {RA_ICE_CAVERN}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
@@ -144,4 +145,5 @@ void RegionTable_Init_IceCavern() {
     }, {});
 
 #pragma endregion
+    // clang-format on
 }

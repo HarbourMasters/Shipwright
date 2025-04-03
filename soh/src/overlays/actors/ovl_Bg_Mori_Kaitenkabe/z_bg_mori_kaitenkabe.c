@@ -94,7 +94,8 @@ void BgMoriKaitenkabe_Wait(BgMoriKaitenkabe* this, PlayState* play) {
 
     if (this->dyna.unk_150 > 0.001f) {
         this->timer++;
-        if ((this->timer > (28 - CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0) * 4)) && !Player_InCsMode(play)) {
+        if ((this->timer > (28 - CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0) * 4)) &&
+            !Player_InCsMode(play)) {
             BgMoriKaitenkabe_SetupRotate(this);
             Player_SetCsActionWithHaltedActors(play, &this->dyna.actor, 8);
             Math_Vec3f_Copy(&this->lockedPlayerPos, &player->actor.world.pos);
@@ -166,8 +167,7 @@ void BgMoriKaitenkabe_Draw(Actor* thisx, PlayState* play) {
 
     gSPSegment(POLY_OPA_DISP++, 0x08, play->objectCtx.status[this->moriTexObjIndex].segment);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_OPA_DISP++, gMoriKaitenkabeDL);
 

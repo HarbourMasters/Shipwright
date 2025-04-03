@@ -1,0 +1,7 @@
+<Root>
+    <File Name="object_ingate" Segment="6">
+        <Texture Name="gIngoGateTex" OutName="gate" Format="ia8" Width="64" Height="64" Offset="0x0"/>
+        <DList Name="gIngoGateDL" Offset="0x1040"/>
+        <Collision Name="gIngoGateCol" Offset="0x11B8"/>
+    </File>
+</Root>

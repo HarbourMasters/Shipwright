@@ -165,8 +165,8 @@ void EnGb_Init(Actor* thisx, PlayState* play) {
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
     CollisionHeader_GetVirtual(&gPoeSellerCol, &colHeader);
     this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
-    SkelAnime_InitFlex(play, &this->skelAnime, &gPoeSellerSkel, &gPoeSellerIdleAnim, this->jointTable,
-                       this->morphTable, 12);
+    SkelAnime_InitFlex(play, &this->skelAnime, &gPoeSellerSkel, &gPoeSellerIdleAnim, this->jointTable, this->morphTable,
+                       12);
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinderType1(play, &this->collider, &this->dyna.actor, &sCylinderInit);
 
@@ -369,8 +369,7 @@ void func_80A2FBB0(EnGb* this, PlayState* play) {
     if (Actor_HasParent(&this->dyna.actor, play)) {
         this->dyna.actor.parent = NULL;
         this->actionFunc = func_80A2FC0C;
-    }
-    else {
+    } else {
         Actor_OfferGetItem(&this->dyna.actor, play, GI_BOTTLE, 100.0f, 10.0f);
     }
 }
@@ -553,8 +552,7 @@ void EnGb_DrawCagedSouls(EnGb* this, PlayState* play) {
         }
         Matrix_Scale(0.007f, 0.007f, 1.0f, MTXMODE_APPLY);
 
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gPoeSellerCagedSoulDL);
 
         Matrix_Pop();

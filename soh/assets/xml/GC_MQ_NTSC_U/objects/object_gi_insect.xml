@@ -1,0 +1,6 @@
+<Root>
+    <File Name="object_gi_insect" Segment="6">
+        <DList Name="gGiBugsContainerDL" Offset="0x0830"/>
+        <DList Name="gGiBugsGlassDL" Offset="0x0B20"/>
+    </File>
+</Root>

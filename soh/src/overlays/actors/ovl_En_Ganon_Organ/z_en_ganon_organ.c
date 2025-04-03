@@ -27,7 +27,7 @@ const ActorInit En_Ganon_Organ_InitVars = {
     NULL,
 };
 
-//static u64 sForceAlignment = 0;
+// static u64 sForceAlignment = 0;
 
 #include "overlays/ovl_En_Ganon_Organ/ovl_En_Ganon_Organ.h"
 
@@ -101,8 +101,7 @@ void EnGanonOrgan_Draw(Actor* thisx, PlayState* play) {
         gSPSegment(POLY_OPA_DISP++, 0x09, EnGanonOrgan_EmptyDList(play->state.gfxCtx));
     }
     Matrix_Translate(0.0f, 0.0f, 0.0f, MTXMODE_NEW);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_OPA_DISP++, sRoomOrganAndFloorDL);
     gSPDisplayList(POLY_OPA_DISP++, sRoomStatuesDL);

@@ -5,7 +5,9 @@
 #include "soh/frame_interpolation.h"
 #include "soh/OTRGlobals.h"
 
-#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
+#define FLAGS                                                                                  \
+    (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
+     ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void EnGo_Init(Actor* thisx, PlayState* play);
 void EnGo_Destroy(Actor* thisx, PlayState* play);
@@ -30,7 +32,6 @@ void EnGo_GetItem(EnGo* this, PlayState* play);
 void func_80A40C78(EnGo* this, PlayState* play);
 void EnGo_Eyedrops(EnGo* this, PlayState* play);
 void func_80A40DCC(EnGo* this, PlayState* play);
-
 
 void EnGo_SpawnEffectDust(EnGo* this, Vec3f* pos, Vec3f* velocity, Vec3f* accel, u8 initialTimer, f32 scale,
                           f32 scaleStep);
@@ -121,7 +122,8 @@ u16 EnGo_GetTextID(PlayState* play, Actor* thisx) {
                 } else {
                     return 0x3041;
                 }
-            } else if (CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON) || (Flags_GetInfTable(INFTABLE_10D))) {
+            } else if (CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON) ||
+                       (Flags_GetInfTable(INFTABLE_10D))) {
                 if (Flags_GetInfTable(INFTABLE_SPOKE_TO_GORON_LINK)) {
                     return 0x3038;
                 } else {
@@ -337,7 +339,7 @@ s16 EnGo_UpdateTalkState(PlayState* play, Actor* thisx) {
 }
 
 s32 EnGo_UpdateTalking(PlayState* play, Actor* thisx, s16* talkState, f32 interactRange, NpcGetTextIdFunc getTextId,
-                  NpcUpdateTalkStateFunc updateTalkState) {
+                       NpcUpdateTalkStateFunc updateTalkState) {
     if (*talkState != NPC_TALK_STATE_IDLE) {
         *talkState = updateTalkState(play, thisx);
         return false;
@@ -589,11 +591,11 @@ void func_80A3F908(EnGo* this, PlayState* play) {
         }
 
         if ((this->actor.params & 0xF0) == 0x90) {
-            dialogStarted =
-                EnGo_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, interactRange, EnGo_GetTextID, EnGo_UpdateTalkState);
+            dialogStarted = EnGo_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, interactRange,
+                                               EnGo_GetTextID, EnGo_UpdateTalkState);
         } else {
             dialogStarted = Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, interactRange,
-                                               EnGo_GetTextID, EnGo_UpdateTalkState);
+                                              EnGo_GetTextID, EnGo_UpdateTalkState);
         }
 
         if (((this->actor.params & 0xF0) == 0x90) && (dialogStarted == true)) {
@@ -770,8 +772,8 @@ void EnGo_FireGenericActionFunc(EnGo* this, PlayState* play) {
 
 void EnGo_CurledUp(EnGo* this, PlayState* play) {
     if ((DECR(this->unk_210) == 0) && EnGo_IsCameraModified(this, play)) {
-        Audio_PlaySoundGeneral(NA_SE_EN_GOLON_WAKE_UP, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultReverb);
+        Audio_PlaySoundGeneral(NA_SE_EN_GOLON_WAKE_UP, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
 
         this->skelAnime.playSpeed = 0.1f;
         this->skelAnime.playSpeed *= (this->actor.params & 0xF0) == 0x90 ? 0.5f : 1.0f;
@@ -805,8 +807,8 @@ void EnGo_WakeUp(EnGo* this, PlayState* play) {
     }
 
     if (DECR(this->unk_212) == 0) {
-        Audio_PlaySoundGeneral(NA_SE_EN_GOLON_SIT_DOWN, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultReverb);
+        Audio_PlaySoundGeneral(NA_SE_EN_GOLON_SIT_DOWN, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         EnGo_SetupAction(this, func_80A405CC);
     } else if (!EnGo_IsCameraModified(this, play)) {
         EnGo_ReverseAnimation(this);
@@ -824,8 +826,8 @@ void func_80A40494(EnGo* this, PlayState* play) {
     frame += this->skelAnime.playSpeed;
 
     if (!(frame >= 0.0f)) {
-        Audio_PlaySoundGeneral(NA_SE_EN_DODO_M_GND, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultReverb);
+        Audio_PlaySoundGeneral(NA_SE_EN_DODO_M_GND, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         EnGo_SpawnDust(this, 10, 0.4f, 0.1f, 16, 26.0f, 2.0f);
         EnGo_ReverseAnimation(this);
         this->skelAnime.playSpeed = 0.0f;
@@ -869,7 +871,7 @@ void EnGo_BiggoronActionFunc(EnGo* this, PlayState* play) {
                 this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
                 EnGo_SetupAction(this, EnGo_Eyedrops);
                 play->msgCtx.msgMode = MSGMODE_PAUSED;
-                gSaveContext.timer2State = 0;
+                gSaveContext.subTimerState = 0;
                 OnePointCutscene_Init(play, 4190, -99, &this->actor, MAIN_CAM);
             } else {
                 this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
@@ -916,8 +918,8 @@ void func_80A408D8(EnGo* this, PlayState* play) {
         EnGo_SetupAction(this, func_80A40494);
     } else if (EnGo_IsCameraModified(this, play)) {
         EnGo_ReverseAnimation(this);
-        Audio_PlaySoundGeneral(NA_SE_EN_GOLON_SIT_DOWN, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultReverb);
+        Audio_PlaySoundGeneral(NA_SE_EN_GOLON_SIT_DOWN, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         this->skelAnime.playSpeed = 0.0f;
         EnGo_SetupAction(this, func_80A405CC);
     }
@@ -1054,8 +1056,7 @@ void EnGo_DrawCurledUp(EnGo* this, PlayState* play) {
     Matrix_Push();
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_OPA_DISP++, gGoronDL_00BD80);
 
@@ -1074,8 +1075,7 @@ void EnGo_DrawRolling(EnGo* this, PlayState* play) {
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     Matrix_RotateZYX((s16)(play->state.frames * ((s16)this->actor.speedXZ * 1400)), 0, this->actor.shape.rot.z,
                      MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gGoronDL_00C140);
     Matrix_MultVec3f(&D_80A41BC0, &this->actor.focus.pos);
     Matrix_Pop();
@@ -1150,7 +1150,8 @@ void EnGo_Draw(Actor* thisx, PlayState* play) {
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-void EnGo_SpawnEffectDust(EnGo* this, Vec3f* pos, Vec3f* velocity, Vec3f* accel, u8 initialTimer, f32 scale, f32 scaleStep) {
+void EnGo_SpawnEffectDust(EnGo* this, Vec3f* pos, Vec3f* velocity, Vec3f* accel, u8 initialTimer, f32 scale,
+                          f32 scaleStep) {
     EnGoEffect* dustEffect = this->effects;
     s16 i;
 
@@ -1222,8 +1223,7 @@ void EnGo_DrawEffects(EnGo* this, PlayState* play) {
             Matrix_Translate(dustEffect->pos.x, dustEffect->pos.y, dustEffect->pos.z, MTXMODE_NEW);
             Matrix_ReplaceRotation(&play->billboardMtxF);
             Matrix_Scale(dustEffect->scale, dustEffect->scale, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             index = dustEffect->timer * (8.0f / dustEffect->initialTimer);
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(dustTex[index]));

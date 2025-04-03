@@ -68,7 +68,7 @@ void OceffWipe4_Draw(Actor* thisx, PlayState* play) {
 
     eye = GET_ACTIVE_CAM(play)->eye;
     Camera_GetSkyboxOffset(&vec, GET_ACTIVE_CAM(play));
-    
+
     int fastOcarinaPlayback = (CVarGetInteger(CVAR_ENHANCEMENT("FastOcarinaPlayback"), 0) != 0);
     if (this->timer < 16) {
         z = Math_SinS(this->timer * 1024) * (fastOcarinaPlayback ? 1200.0f : 1330.0f);
@@ -96,8 +96,7 @@ void OceffWipe4_Draw(Actor* thisx, PlayState* play) {
     Matrix_ReplaceRotation(&play->billboardMtxF);
     Matrix_Translate(0.0f, 0.0f, -z, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     if (this->actor.params == OCEFF_WIPE4_UNUSED) {
         gSPDisplayList(POLY_XLU_DISP++, sUnusedMaterialDL);

@@ -228,8 +228,8 @@ void func_809CEA24(EnBw* this, PlayState* play) {
         this->color1.g = sp60;
     }
     if ((((play->gameplayFrames % 4) == (u32)this->actor.params) && (this->actor.speedXZ != 0.0f) &&
-         (sp64 = BgCheck_AnyLineTest2(&play->colCtx, &this->actor.world.pos, &this->unk_264, &sp68, &sp74, 1, 0, 0,
-                                      1))) ||
+         (sp64 =
+              BgCheck_AnyLineTest2(&play->colCtx, &this->actor.world.pos, &this->unk_264, &sp68, &sp74, 1, 0, 0, 1))) ||
         (this->unk_222 == 0)) {
         if (sp74 != NULL) {
             sp74 = SEGMENTED_TO_VIRTUAL(sp74);
@@ -307,8 +307,8 @@ void func_809CEA24(EnBw* this, PlayState* play) {
                 }
             }
         } else if (this->unk_221 == 0) {
-            sp64 = BgCheck_AnyLineTest2(&play->colCtx, &this->actor.world.pos, &player->actor.world.pos, &sp68,
-                                        &sp74, 1, 0, 0, 1);
+            sp64 = BgCheck_AnyLineTest2(&play->colCtx, &this->actor.world.pos, &player->actor.world.pos, &sp68, &sp74,
+                                        1, 0, 0, 1);
             if (sp64 != 0) {
                 sp74 = SEGMENTED_TO_VIRTUAL(sp74);
                 sp60 = Math_FAtan2F(sp74->normal.x, sp74->normal.z) * ((f32)0x8000 / M_PI);
@@ -327,8 +327,7 @@ void func_809CEA24(EnBw* this, PlayState* play) {
     if (this->unk_224 != 0) {
         this->unk_224--;
     }
-    if ((this->unk_234 == 0) &&
-        !Actor_TestFloorInDirection(&this->actor, play, 50.0f, this->unk_236 + this->unk_238)) {
+    if ((this->unk_234 == 0) && !Actor_TestFloorInDirection(&this->actor, play, 50.0f, this->unk_236 + this->unk_238)) {
         if (this->unk_238 != 0x4000) {
             this->unk_238 = 0x4000;
         } else {
@@ -360,7 +359,8 @@ void func_809CEA24(EnBw* this, PlayState* play) {
                 Math_SmoothStepToS(&this->actor.world.rot.y, this->unk_236 + this->unk_238, 1,
                                    this->actor.speedXZ * 1000.0f, 0);
             }
-            if ((this->unk_224 == 0) || (ABS(this->actor.yDistToPlayer) > 60.0f) || (player2->stateFlags1 & (PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE))) {
+            if ((this->unk_224 == 0) || (ABS(this->actor.yDistToPlayer) > 60.0f) ||
+                (player2->stateFlags1 & (PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE))) {
                 this->unk_221 = 3;
                 this->unk_224 = 150;
                 this->unk_250 = 0.0f;
@@ -729,8 +729,7 @@ void func_809D0584(EnBw* this, PlayState* play) {
                 this->unk_248 = 0.0f;
             }
         }
-        if ((play->actorCtx.unk_02 != 0) && (this->actor.xzDistToPlayer <= 400.0f) &&
-            (this->actor.bgCheckFlags & 1)) {
+        if ((play->actorCtx.unk_02 != 0) && (this->actor.xzDistToPlayer <= 400.0f) && (this->actor.bgCheckFlags & 1)) {
             if (this->unk_220 == 5) {
                 this->unk_23C = 0;
                 func_809CFF10(this);
@@ -812,8 +811,7 @@ void EnBw_Update(Actor* thisx, PlayState* play2) {
     thisx->focus.pos.y += 5.0f;
 }
 
-s32 EnBw_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx,
-                          Gfx** gfx) {
+s32 EnBw_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx, Gfx** gfx) {
     EnBw* this = (EnBw*)thisx;
 
     if (limbIndex == 1) {
@@ -829,8 +827,7 @@ s32 EnBw_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* po
             Matrix_RotateZ(-(this->unk_258 * 0.1f), MTXMODE_APPLY);
             Matrix_RotateY(-(this->unk_258 * 0.13f), MTXMODE_APPLY);
             Matrix_RotateX(-(this->unk_258 * 0.115f), MTXMODE_APPLY);
-            gSPMatrix((*gfx)++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix((*gfx)++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList((*gfx)++, *dList);
             Matrix_Pop();
             return 1;
@@ -857,16 +854,16 @@ void EnBw_Draw(Actor* thisx, PlayState* play2) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gDPSetEnvColor(POLY_OPA_DISP++, this->color1.r, this->color1.g, this->color1.b, this->color1.a);
         gSPSegment(POLY_OPA_DISP++, 0x08, &D_80116280[2]);
-        POLY_OPA_DISP = SkelAnime_DrawSkeleton2(play, &this->skelAnime,
-                                       EnBw_OverrideLimbDraw, NULL, this, POLY_OPA_DISP);
+        POLY_OPA_DISP =
+            SkelAnime_DrawSkeleton2(play, &this->skelAnime, EnBw_OverrideLimbDraw, NULL, this, POLY_OPA_DISP);
     } else {
         Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gDPPipeSync(POLY_XLU_DISP++);
         gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 0, 0, 0, this->color1.a);
         gDPSetEnvColor(POLY_XLU_DISP++, this->color1.r, this->color1.g, this->color1.b, this->color1.a);
         gSPSegment(POLY_XLU_DISP++, 0x08, &D_80116280[0]);
-        POLY_XLU_DISP = SkelAnime_DrawSkeleton2(play, &this->skelAnime,
-                                       EnBw_OverrideLimbDraw, NULL, this, POLY_XLU_DISP);
+        POLY_XLU_DISP =
+            SkelAnime_DrawSkeleton2(play, &this->skelAnime, EnBw_OverrideLimbDraw, NULL, this, POLY_XLU_DISP);
     }
 
     if (((play->gameplayFrames + 1) % 4) == (u32)thisx->params) {
@@ -886,13 +883,12 @@ void EnBw_Draw(Actor* thisx, PlayState* play2) {
     gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, 0);
 
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0,
-                                (play->gameplayFrames * -20) % 0x200, 0x20, 0x80));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0, (play->gameplayFrames * -20) % 0x200,
+                                0x20, 0x80));
     gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 255, 255, 0, 255);
     Matrix_Scale(this->unk_248 * 0.01f, this->unk_248 * 0.01f, this->unk_248 * 0.01f, MTXMODE_APPLY);
     Matrix_ReplaceRotation(&play->billboardMtxF);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);
 
     if (this->iceTimer != 0) {

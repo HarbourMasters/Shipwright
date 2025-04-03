@@ -4,12 +4,12 @@
 #include "spdlog/spdlog.h"
 
 namespace SOH {
-std::shared_ptr<Ship::IResource>
-SetRoomListFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData, std::shared_ptr<Ship::BinaryReader> reader) {
+std::shared_ptr<Ship::IResource> SetRoomListFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
+                                                                  std::shared_ptr<Ship::BinaryReader> reader) {
     auto setRoomList = std::make_shared<SetRoomList>(initData);
 
     ReadCommandId(setRoomList, reader);
-	
+
     setRoomList->numRooms = reader->ReadInt32();
     setRoomList->rooms.reserve(setRoomList->numRooms);
     for (uint32_t i = 0; i < setRoomList->numRooms; i++) {
@@ -20,7 +20,7 @@ SetRoomListFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initDat
         room.fileName = (char*)setRoomList->fileNames.back().c_str();
         room.vromStart = reader->ReadInt32();
         room.vromEnd = reader->ReadInt32();
-		
+
         setRoomList->rooms.push_back(room);
     }
 
@@ -32,7 +32,7 @@ SetRoomListFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initDat
 }
 
 std::shared_ptr<Ship::IResource> SetRoomListFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
-                                                                   tinyxml2::XMLElement* reader) {
+                                                                     tinyxml2::XMLElement* reader) {
     auto setRoomList = std::make_shared<SetRoomList>(initData);
 
     setRoomList->cmdId = SceneCommandID::SetRoomList;
@@ -44,11 +44,11 @@ std::shared_ptr<Ship::IResource> SetRoomListFactoryXML::ReadResource(std::shared
         if (childName == "RoomEntry") {
             RomFile room;
 
-	        setRoomList->fileNames.push_back(child->Attribute("Path"));
+            setRoomList->fileNames.push_back(child->Attribute("Path"));
 
-	        room.fileName = (char*)setRoomList->fileNames.back().c_str();
-	        room.vromStart = child->IntAttribute("VromStart");
-	        room.vromEnd = child->IntAttribute("VromEnd");
+            room.fileName = (char*)setRoomList->fileNames.back().c_str();
+            room.vromStart = child->IntAttribute("VromStart");
+            room.vromEnd = child->IntAttribute("VromEnd");
 
             setRoomList->rooms.push_back(room);
         }

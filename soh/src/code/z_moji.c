@@ -5,15 +5,11 @@
 #include "global.h"
 
 // OTRTODO
-u64 gMojiFontTex[] =
-{
+u64 gMojiFontTex[] = {
     0,
 };
 
-u64 gMojiFontTLUTs[4][4] =
-{
-    0
-};
+u64 gMojiFontTLUTs[4][4] = { 0 };
 
 // how big to draw the characters on screen
 #define DISP_CHAR_WIDTH 8

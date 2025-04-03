@@ -5,6 +5,7 @@
 using namespace Rando;
 
 void RegionTable_Init_BottomOfTheWell() {
+    // clang-format off
     // Vanilla/MQ Decider
     areaTable[RR_BOTTOM_OF_THE_WELL_ENTRYWAY] = Region("Bottom of the Well Entryway", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
@@ -130,20 +131,32 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTTOM_OF_THE_WELL_BASEMENT] = Region("Bottom of the Well Basement", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_BOTTOM_OF_THE_WELL_MAP_CHEST,          logic->BlastOrSmash()),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_1,     logic->CanBreakPots()),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_2,     logic->CanBreakPots()),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_3,     logic->CanBreakPots()),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_4,     logic->CanBreakPots()),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_5,     logic->CanBreakPots()),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_6,     logic->CanBreakPots()),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_7,     logic->CanBreakPots()),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_8,     logic->CanBreakPots()),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_9,     logic->CanBreakPots()),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_10,    logic->CanBreakPots()),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_11,    logic->CanBreakPots()),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_12,    logic->CanBreakPots()),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_SUN_FAIRY, logic->CanUse(RG_SUNS_SONG)),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_MAP_CHEST,                     logic->BlastOrSmash()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_1,                logic->CanBreakPots()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_2,                logic->CanBreakPots()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_3,                logic->CanBreakPots()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_4,                logic->CanBreakPots()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_5,                logic->CanBreakPots()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_6,                logic->CanBreakPots()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_7,                logic->CanBreakPots()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_8,                logic->CanBreakPots()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_9,                logic->CanBreakPots()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_10,               logic->CanBreakPots()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_11,               logic->CanBreakPots()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_12,               logic->CanBreakPots()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_SUN_FAIRY,            logic->CanUse(RG_SUNS_SONG)),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_GRASS_1,              logic->CanCutShrubs()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_GRASS_2,              logic->CanCutShrubs()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_GRASS_3,              logic->CanCutShrubs()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_1, logic->CanCutShrubs() && logic->BlastOrSmash()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_2, logic->CanCutShrubs() && logic->BlastOrSmash()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_3, logic->CanCutShrubs() && logic->BlastOrSmash()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_4, logic->CanCutShrubs() && logic->BlastOrSmash()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_5, logic->CanCutShrubs() && logic->BlastOrSmash()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_6, logic->CanCutShrubs() && logic->BlastOrSmash()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_7, logic->CanCutShrubs() && logic->BlastOrSmash()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_8, logic->CanCutShrubs() && logic->BlastOrSmash()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_9, logic->CanCutShrubs() && logic->BlastOrSmash()),
     }, {
         //Exits
         Entrance(RR_BOTTOM_OF_THE_WELL_SOUTHWEST_ROOM,               []{return logic->IsChild && logic->CanPassEnemy(RE_BIG_SKULLTULA);}),
@@ -234,6 +247,10 @@ void RegionTable_Init_BottomOfTheWell() {
         //Locations
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_COMPASS_CHEST,              logic->CanKillEnemy(RE_DEAD_HAND)),
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_DEAD_HAND_FREESTANDING_KEY, logic->HasExplosives() || (ctx->GetTrickOption(RT_BOTW_MQ_DEADHAND_KEY) && logic->CanUse(RG_BOOMERANG))),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_DEAD_HAND_GRASS_1,          logic->CanCutShrubs()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_DEAD_HAND_GRASS_2,          logic->CanCutShrubs()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_DEAD_HAND_GRASS_3,          logic->CanCutShrubs()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_DEAD_HAND_GRASS_4,          logic->CanCutShrubs()),
     }, {
         //Exits
         //This assumes we spawned in dead hand's room, if whatever trick made this relevant instead puts us in the previous room, remove the kill Dead Hand check.
@@ -293,4 +310,5 @@ void RegionTable_Init_BottomOfTheWell() {
     });
 
 #pragma endregion
+    // clang-format on
 }

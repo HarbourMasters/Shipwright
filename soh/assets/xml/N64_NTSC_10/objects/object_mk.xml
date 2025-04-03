@@ -1,0 +1,44 @@
+<Root>
+    <File Name="object_mk" Segment="6">
+        <Animation Name="object_mk_Anim_000368" Offset="0x368"/>
+        <Animation Name="object_mk_Anim_000724" Offset="0x724"/>
+        <Animation Name="object_mk_Anim_000AC0" Offset="0xAC0"/>
+        <Animation Name="object_mk_Anim_000D88" Offset="0xD88"/>
+        <DList Name="object_mk_DL_003470" Offset="0x3470"/>
+        <DList Name="object_mk_DL_003760" Offset="0x3760"/>
+        <DList Name="object_mk_DL_003AB0" Offset="0x3AB0"/>
+        <DList Name="object_mk_DL_003BC8" Offset="0x3BC8"/>
+        <DList Name="object_mk_DL_0042D0" Offset="0x42D0"/>
+        <DList Name="object_mk_DL_004650" Offset="0x4650"/>
+        <DList Name="object_mk_DL_004780" Offset="0x4780"/>
+        <DList Name="object_mk_DL_0048B0" Offset="0x48B0"/>
+        <DList Name="object_mk_DL_004A00" Offset="0x4A00"/>
+        <DList Name="object_mk_DL_004B30" Offset="0x4B30"/>
+        <DList Name="object_mk_DL_004C60" Offset="0x4C60"/>
+        <DList Name="object_mk_DL_004DB0" Offset="0x4DB0"/>
+        <Texture Name="object_mk_TLUT_004F30" OutName="tlut_00004F30" Format="rgba16" Width="16" Height="16" Offset="0x4F30"/>
+        <Texture Name="object_mk_Tex_005130" OutName="tex_00005130" Format="ci8" Width="8" Height="8" Offset="0x5130" TlutOffset="0x4F30"/>
+        <Texture Name="object_mk_Tex_005170" OutName="tex_00005170" Format="ci8" Width="16" Height="16" Offset="0x5170" TlutOffset="0x4F30"/>
+        <Texture Name="object_mk_Tex_005270" OutName="tex_00005270" Format="ci8" Width="8" Height="8" Offset="0x5270" TlutOffset="0x4F30"/>
+        <Texture Name="object_mk_Tex_0052B0" OutName="tex_000052B0" Format="ci8" Width="8" Height="8" Offset="0x52B0" TlutOffset="0x4F30"/>
+        <Texture Name="object_mk_Tex_0052F0" OutName="tex_000052F0" Format="ci8" Width="8" Height="16" Offset="0x52F0" TlutOffset="0x4F30"/>
+        <Texture Name="object_mk_Tex_005370" OutName="tex_00005370" Format="rgba16" Width="32" Height="32" Offset="0x5370"/>
+        <Texture Name="object_mk_Tex_005B70" OutName="tex_00005B70" Format="ci8" Width="8" Height="8" Offset="0x5B70" TlutOffset="0x4F30"/>
+        <Texture Name="object_mk_Tex_005BB0" OutName="tex_00005BB0" Format="ci8" Width="8" Height="8" Offset="0x5BB0" TlutOffset="0x4F30"/>
+        <Texture Name="object_mk_Tex_005BF0" OutName="tex_00005BF0" Format="ci8" Width="8" Height="8" Offset="0x5BF0" TlutOffset="0x4F30"/>
+        <Texture Name="object_mk_Tex_005C30" OutName="tex_00005C30" Format="ci8" Width="16" Height="16" Offset="0x5C30" TlutOffset="0x4F30"/>
+        <Limb Name="object_mk_Limb_005D30" LimbType="Standard" Offset="0x5D30"/>
+        <Limb Name="object_mk_Limb_005D3C" LimbType="Standard" Offset="0x5D3C"/>
+        <Limb Name="object_mk_Limb_005D48" LimbType="Standard" Offset="0x5D48"/>
+        <Limb Name="object_mk_Limb_005D54" LimbType="Standard" Offset="0x5D54"/>
+        <Limb Name="object_mk_Limb_005D60" LimbType="Standard" Offset="0x5D60"/>
+        <Limb Name="object_mk_Limb_005D6C" LimbType="Standard" Offset="0x5D6C"/>
+        <Limb Name="object_mk_Limb_005D78" LimbType="Standard" Offset="0x5D78"/>
+        <Limb Name="object_mk_Limb_005D84" LimbType="Standard" Offset="0x5D84"/>
+        <Limb Name="object_mk_Limb_005D90" LimbType="Standard" Offset="0x5D90"/>
+        <Limb Name="object_mk_Limb_005D9C" LimbType="Standard" Offset="0x5D9C"/>
+        <Limb Name="object_mk_Limb_005DA8" LimbType="Standard" Offset="0x5DA8"/>
+        <Limb Name="object_mk_Limb_005DB4" LimbType="Standard" Offset="0x5DB4"/>
+        <Skeleton Name="object_mk_Skel_005DF0" Type="Flex" LimbType="Standard" Offset="0x5DF0"/>
+    </File>
+</Root>

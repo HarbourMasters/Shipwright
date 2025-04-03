@@ -1,0 +1,59 @@
+<Root>
+    <File Name="object_dh" Segment="6">
+        <DList Name="object_dh_DL_000760" Offset="0x760"/>
+        <DList Name="object_dh_DL_000808" Offset="0x808"/>
+        <DList Name="object_dh_DL_000910" Offset="0x910"/>
+        <Limb Name="object_dh_Limb_000BA8" LimbType="Standard" Offset="0xBA8"/>
+        <Limb Name="object_dh_Limb_000BB4" LimbType="Standard" Offset="0xBB4"/>
+        <Limb Name="object_dh_Limb_000BC0" LimbType="Standard" Offset="0xBC0"/>
+        <Skeleton Name="object_dh_Skel_000BD8" Type="Flex" LimbType="Standard" Offset="0xBD8"/>
+        <Texture Name="object_dh_Tex_000BF0" OutName="tex_00000BF0" Format="rgba16" Width="16" Height="32" Offset="0xBF0"/>
+        <Texture Name="object_dh_Tex_000FF0" OutName="tex_00000FF0" Format="rgba16" Width="32" Height="16" Offset="0xFF0"/>
+        <Animation Name="object_dh_Anim_0015B0" Offset="0x15B0"/>
+        <Animation Name="object_dh_Anim_001A3C" Offset="0x1A3C"/>
+        <Animation Name="object_dh_Anim_002148" Offset="0x2148"/>
+        <Animation Name="object_dh_Anim_0032BC" Offset="0x32BC"/>
+        <Animation Name="object_dh_Anim_00375C" Offset="0x375C"/>
+        <Animation Name="object_dh_Anim_003A8C" Offset="0x3A8C"/>
+        <Animation Name="object_dh_Anim_003D6C" Offset="0x3D6C"/>
+        <Animation Name="object_dh_Anim_004658" Offset="0x4658"/>
+        <Texture Name="object_dh_Tex_004670" OutName="tex_00004670" Format="rgba16" Width="16" Height="32" Offset="0x4670"/>
+        <Texture Name="object_dh_Tex_004A70" OutName="tex_00004A70" Format="rgba16" Width="16" Height="32" Offset="0x4A70"/>
+        <Texture Name="object_dh_Tex_004E70" OutName="tex_00004E70" Format="rgba16" Width="16" Height="16" Offset="0x4E70"/>
+        <Texture Name="object_dh_Tex_005070" OutName="tex_00005070" Format="rgba16" Width="16" Height="16" Offset="0x5070"/>
+        <Animation Name="object_dh_Anim_005880" Offset="0x5880"/>
+        <DList Name="object_dh_DL_006D10" Offset="0x6D10"/>
+        <DList Name="object_dh_DL_006DD8" Offset="0x6DD8"/>
+        <DList Name="object_dh_DL_006EF8" Offset="0x6EF8"/>
+        <DList Name="object_dh_DL_006FE0" Offset="0x6FE0"/>
+        <DList Name="object_dh_DL_007108" Offset="0x7108"/>
+        <DList Name="object_dh_DL_007228" Offset="0x7228"/>
+        <DList Name="object_dh_DL_007338" Offset="0x7338"/>
+        <DList Name="object_dh_DL_007420" Offset="0x7420"/>
+        <DList Name="object_dh_DL_007540" Offset="0x7540"/>
+        <DList Name="object_dh_DL_007650" Offset="0x7650"/>
+        <DList Name="object_dh_DL_007738" Offset="0x7738"/>
+        <DList Name="object_dh_DL_007818" Offset="0x7818"/>
+        <DList Name="object_dh_DL_0078F8" Offset="0x78F8"/>
+        <DList Name="object_dh_DL_007BA8" Offset="0x7BA8"/>
+        <Limb Name="object_dh_Limb_007D98" LimbType="Standard" Offset="0x7D98"/>
+        <Limb Name="object_dh_Limb_007DA4" LimbType="Standard" Offset="0x7DA4"/>
+        <Limb Name="object_dh_Limb_007DB0" LimbType="Standard" Offset="0x7DB0"/>
+        <Limb Name="object_dh_Limb_007DBC" LimbType="Standard" Offset="0x7DBC"/>
+        <Limb Name="object_dh_Limb_007DC8" LimbType="Standard" Offset="0x7DC8"/>
+        <Limb Name="object_dh_Limb_007DD4" LimbType="Standard" Offset="0x7DD4"/>
+        <Limb Name="object_dh_Limb_007DE0" LimbType="Standard" Offset="0x7DE0"/>
+        <Limb Name="object_dh_Limb_007DEC" LimbType="Standard" Offset="0x7DEC"/>
+        <Limb Name="object_dh_Limb_007DF8" LimbType="Standard" Offset="0x7DF8"/>
+        <Limb Name="object_dh_Limb_007E04" LimbType="Standard" Offset="0x7E04"/>
+        <Limb Name="object_dh_Limb_007E10" LimbType="Standard" Offset="0x7E10"/>
+        <Limb Name="object_dh_Limb_007E1C" LimbType="Standard" Offset="0x7E1C"/>
+        <Limb Name="object_dh_Limb_007E28" LimbType="Standard" Offset="0x7E28"/>
+        <Limb Name="object_dh_Limb_007E34" LimbType="Standard" Offset="0x7E34"/>
+        <Limb Name="object_dh_Limb_007E40" LimbType="Standard" Offset="0x7E40"/>
+        <Skeleton Name="object_dh_Skel_007E88" Type="Flex" LimbType="Standard" Offset="0x7E88"/>
+        <DList Name="object_dh_DL_007FC0" Offset="0x7FC0"/>
+        <Texture Name="object_dh_Tex_0080C0" OutName="tex_000080C0" Format="i8" Width="32" Height="64" Offset="0x80C0"/>
+        <Texture Name="object_dh_Tex_0088C0" OutName="tex_000088C0" Format="i8" Width="32" Height="64" Offset="0x88C0"/>
+    </File>
+</Root>

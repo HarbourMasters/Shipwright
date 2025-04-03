@@ -6,6 +6,6 @@ CsCamera* SetCsCamera::GetPointer() {
 }
 
 size_t SetCsCamera::GetPointerSize() {
-	return sizeof(CsCamera);
+    return sizeof(CsCamera);
 }
 } // namespace SOH

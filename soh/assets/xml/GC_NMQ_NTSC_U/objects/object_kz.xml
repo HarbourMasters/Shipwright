@@ -1,0 +1,45 @@
+﻿<Root>
+    <File Name="object_kz" Segment="6">
+        <Animation Name="gKzMweepAnim" Offset="0x46C"/>
+        <Animation Name="gKzIdleAnim" Offset="0x75C"/>
+        <Texture Name="gKzTLUT" OutName="tlut" Format="rgba16" Width="16" Height="16" Offset="0x770"/>
+        <Texture Name="gKzEyeTLUT" OutName="eye_tlut" Format="rgba16" Width="16" Height="16" Offset="0x970"/>
+        <Texture Name="gKzFaceScalesTex" OutName="face_scales" Format="ci8" Width="32" Height="32" Offset="0xB70" TlutOffset="0x770"/>
+        <Texture Name="gKzSkinGradient1Tex" OutName="skin_gradient_1" Format="ci8" Width="8" Height="16" Offset="0xF70" TlutOffset="0x770"/>
+        <Texture Name="gKzCrownTex" OutName="crown" Format="ci8" Width="32" Height="32" Offset="0xFF0" TlutOffset="0x770"/>
+        <Texture Name="gKzSkinGradient2Tex" OutName="skin_gradient_2" Format="ci8" Width="8" Height="8" Offset="0x13F0" TlutOffset="0x770"/>
+        <Texture Name="object_kz_Tex_001430" OutName="tex_001430" Format="ci8" Width="8" Height="8" Offset="0x1430" TlutOffset="0x770"/>
+
+        <Texture Name="gKzEyeOpenTex" OutName="eye_open" Format="ci8" Width="32" Height="32" Offset="0x1470" TlutOffset="0x970"/>
+        <Texture Name="gKzEyeHalfTex" OutName="eye_half" Format="ci8" Width="32" Height="32" Offset="0x1870" TlutOffset="0x970"/>
+        <Texture Name="gKzEyeClosedTex" OutName="eye_closed" Format="ci8" Width="32" Height="32" Offset="0x1C70" TlutOffset="0x970"/>
+        <Texture Name="gKzEyeOpen2Tex" OutName="eye_open_2" Format="ci8" Width="32" Height="32" Offset="0x2070" TlutOffset="0x970"/>
+        
+        <Texture Name="gKzHandAndFootTex" OutName="hand_and_foot" Format="ci8" Width="16" Height="16" Offset="0x2470" TlutOffset="0x770"/>
+        <Texture Name="object_kz_Tex_002570" OutName="tex_002570" Format="ci8" Width="16" Height="16" Offset="0x2570" TlutOffset="0x770"/>
+        <Texture Name="gKzCloakOutlineTex" OutName="cloak_outline" Format="ci8" Width="32" Height="32" Offset="0x2670" TlutOffset="0x770"/>
+        <DList Name="gKzCloakAndTorsoDL" Offset="0x5920"/>
+        <DList Name="gKzHeadDL" Offset="0x6420"/>
+        <DList Name="gKzRightHandDL" Offset="0x7298"/>
+        <DList Name="gKzLeftHandDL" Offset="0x74B0"/>
+        <DList Name="gKzPelvisDL" Offset="0x76C8"/>
+        <DList Name="gKzRightThighDL" Offset="0x79E0"/>
+        <DList Name="gKzRightLegDL" Offset="0x7C00"/>
+        <DList Name="gKzRightFootDL" Offset="0x7D40"/>
+        <DList Name="gKzLeftThighDL" Offset="0x8000"/>
+        <DList Name="gKzLeftLegDL" Offset="0x8220"/>
+        <DList Name="gKzLeftFootDL" Offset="0x8360"/>
+        <Limb Name="gKzPelvisLimb" LimbType="Standard" Offset="0x8620"/>
+        <Limb Name="gKzLeftThighLimb" LimbType="Standard" Offset="0x862C"/>
+        <Limb Name="gKzLeftLegLimb" LimbType="Standard" Offset="0x8638"/>
+        <Limb Name="gKzLeftFootLimb" LimbType="Standard" Offset="0x8644"/>
+        <Limb Name="gKzRightThighLimb" LimbType="Standard" Offset="0x8650"/>
+        <Limb Name="gKzRightLegLimb" LimbType="Standard" Offset="0x865C"/>
+        <Limb Name="gKzRightFootLimb" LimbType="Standard" Offset="0x8668"/>
+        <Limb Name="object_kz_Limb_008674" LimbType="Standard" Offset="0x8674"/>
+        <Limb Name="gKzLeftHandLimb" LimbType="Standard" Offset="0x8680"/>
+        <Limb Name="gKzRightHandLimb" LimbType="Standard" Offset="0x868C"/>
+        <Limb Name="gKzHeadLimb" LimbType="Standard" Offset="0x8698"/>
+        <Skeleton Name="gKzSkel" Type="Flex" LimbType="Standard" Offset="0x86D0"/>
+    </File>
+</Root>

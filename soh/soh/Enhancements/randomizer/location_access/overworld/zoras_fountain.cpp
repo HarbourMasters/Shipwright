@@ -4,6 +4,7 @@
 using namespace Rando;
 
 void RegionTable_Init_ZorasFountain() {
+    // clang-format off
     areaTable[RR_ZORAS_FOUNTAIN] = Region("Zoras Fountain", "Zoras Fountain", {RA_ZORAS_FOUNTAIN}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairyExceptSuns();}),
@@ -61,4 +62,6 @@ void RegionTable_Init_ZorasFountain() {
         //Exits
         Entrance(RR_ZORAS_FOUNTAIN, []{return true;}),
     });
+
+    // clang-format on
 }

@@ -4,6 +4,7 @@
 using namespace Rando;
 
 void RegionTable_Init_LonLonRanch() {
+    // clang-format off
     areaTable[RR_LON_LON_RANCH] = Region("Lon Lon Ranch", "Lon Lon Ranch", {RA_LON_LON_RANCH}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->FreedEpona, []{return logic->FreedEpona || ((logic->HasItem(RG_CHILD_WALLET) || ctx->GetOption(RSK_SKIP_EPONA_RACE)) && logic->CanUse(RG_EPONAS_SONG) && logic->IsAdult && logic->AtDay);}),
@@ -22,6 +23,7 @@ void RegionTable_Init_LonLonRanch() {
         LOCATION(RC_LLR_RAIN_SHED_POT_1, logic->IsChild && logic->CanBreakPots()),
         LOCATION(RC_LLR_RAIN_SHED_POT_2, logic->IsChild && logic->CanBreakPots()),
         LOCATION(RC_LLR_RAIN_SHED_POT_3, logic->IsChild && logic->CanBreakPots()),
+        LOCATION(RC_LLR_NEAR_TREE_CRATE, logic->IsChild && logic->CanBreakCrates()),
     }, {
         //Exits
         Entrance(RR_HYRULE_FIELD,     []{return true;}),
@@ -71,4 +73,6 @@ void RegionTable_Init_LonLonRanch() {
         //Exits
         Entrance(RR_LON_LON_RANCH, []{return true;}),
     });
+
+    // clang-format on
 }

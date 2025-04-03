@@ -7,7 +7,9 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_UPDATE_DURING_OCARINA)
+#define FLAGS                                                                                  \
+    (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
+     ACTOR_FLAG_UPDATE_DURING_OCARINA)
 
 void EnSa_Init(Actor* thisx, PlayState* play);
 void EnSa_Destroy(Actor* thisx, PlayState* play);
@@ -225,7 +227,8 @@ s16 func_80AF56F4(PlayState* play, Actor* thisx) {
 
 void func_80AF57D8(EnSa* this, PlayState* play) {
     if (play->sceneNum != SCENE_SACRED_FOREST_MEADOW ||
-        ABS((s16)(this->actor.yawTowardsPlayer - this->actor.shape.rot.y)) < 0x1555 || this->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
+        ABS((s16)(this->actor.yawTowardsPlayer - this->actor.shape.rot.y)) < 0x1555 ||
+        this->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
         Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, this->collider.dim.radius + 30.0f,
                           func_80AF55E0, func_80AF56F4);
     }
@@ -389,7 +392,8 @@ s32 func_80AF5DFC(EnSa* this, PlayState* play) {
         }
     }
     if (play->sceneNum == SCENE_SARIAS_HOUSE && !LINK_IS_ADULT &&
-        INV_CONTENT(ITEM_OCARINA_FAIRY) == ITEM_OCARINA_FAIRY && !Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
+        INV_CONTENT(ITEM_OCARINA_FAIRY) == ITEM_OCARINA_FAIRY &&
+        !Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
         return 1;
     }
     if (play->sceneNum == SCENE_SACRED_FOREST_MEADOW && (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER))) {
@@ -626,7 +630,8 @@ void func_80AF683C(EnSa* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (!(player->actor.world.pos.z >= -2220.0f) && !Play_InCsMode(play)) {
-        // SOH [General] This flag was previously unused, but was named accordingly so we will make use of it. (Normally we should opt for soh_inf)
+        // SOH [General] This flag was previously unused, but was named accordingly so we will make use of it. (Normally
+        // we should opt for soh_inf)
         Flags_SetEventChkInf(EVENTCHKINF_LEARNED_SARIAS_SONG);
         if (GameInteractor_Should(VB_PLAY_SARIAS_SONG_CS, true, this)) {
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(spot05_scene_Cs_005730);
@@ -672,7 +677,7 @@ void func_80AF68E4(EnSa* this, PlayState* play) {
             EnSa_ChangeAnim(this, csAction->action);
             this->unk_210 = csAction->action;
         }
-        //if (phi_v0) {}
+        // if (phi_v0) {}
         if (csAction->action == 3) {
             if (this->unk_20C == 0) {
                 phi_v0 = 0;
@@ -681,8 +686,8 @@ void func_80AF68E4(EnSa* this, PlayState* play) {
                 phi_v0 = this->unk_20C;
             }
             if (phi_v0 == 0) {
-                Audio_PlaySoundGeneral(NA_SE_PL_WALK_GROUND, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                       &gSfxDefaultReverb);
+                Audio_PlaySoundGeneral(NA_SE_PL_WALK_GROUND, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 this->unk_20C = 8;
             }
         }
@@ -743,8 +748,7 @@ void EnSa_Update(Actor* thisx, PlayState* play) {
     if (this->actionFunc != func_80AF68E4) {
         if (CVarGetInteger(CVAR_ENHANCEMENT("DisableKokiriDrawDistance"), 0) != 0) {
             this->alpha = Actor_UpdateAlphaByDistance(&this->actor, play, this->alpha, 32767);
-        }
-        else {
+        } else {
             this->alpha = Actor_UpdateAlphaByDistance(&this->actor, play, this->alpha, 400.0f);
         }
     } else {
@@ -771,8 +775,7 @@ void EnSa_Update(Actor* thisx, PlayState* play) {
     func_80AF5F34(this, play);
 }
 
-s32 EnSa_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx,
-                          Gfx** gfx) {
+s32 EnSa_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx, Gfx** gfx) {
     EnSa* this = (EnSa*)thisx;
     s32 pad;
     Vec3s sp18;

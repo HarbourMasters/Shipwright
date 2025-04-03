@@ -396,8 +396,7 @@ void Audio_QueueCmd(u32 opArgs, u32 data) {
 }
 
 void Audio_QueueCmdF32(u32 opArgs, f32 data) {
-    union
-    {
+    union {
         f32 f;
         u32 u;
     } uData = { .f = data };
@@ -428,9 +427,8 @@ s32 Audio_ScheduleProcessCmds(void) {
         D_801304E8 = (u8)((gAudioContext.cmdWrPos - gAudioContext.cmdRdPos) + 0x100);
     }
 
-    ret =
-        osSendMesg32(gAudioContext.cmdProcQueueP,
-                   (((gAudioContext.cmdRdPos & 0xFF) << 8) | (gAudioContext.cmdWrPos & 0xFF)), OS_MESG_NOBLOCK);
+    ret = osSendMesg32(gAudioContext.cmdProcQueueP,
+                       (((gAudioContext.cmdRdPos & 0xFF) << 8) | (gAudioContext.cmdWrPos & 0xFF)), OS_MESG_NOBLOCK);
     if (ret != -1) {
         gAudioContext.cmdRdPos = gAudioContext.cmdWrPos;
         ret = 0;

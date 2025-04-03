@@ -245,8 +245,8 @@ void EnVm_Wait(EnVm* this, PlayState* play) {
             this->skelAnime.playSpeed = 1.0f;
         } else {
             this->skelAnime.curFrame = 6.0f;
-            EffectSsDeadDd_Spawn(play, &this->beamPos2, &D_80B2EAEC, &D_80B2EAEC, 150, -25, 0, 0, 255, 0, 255, 255,
-                                 255, 16, 20);
+            EffectSsDeadDd_Spawn(play, &this->beamPos2, &D_80B2EAEC, &D_80B2EAEC, 150, -25, 0, 0, 255, 0, 255, 255, 255,
+                                 16, 20);
             EnVm_SetupAttack(this);
         }
     }
@@ -410,8 +410,9 @@ void EnVm_CheckHealth(EnVm* this, PlayState* play) {
         Actor_SetColorFilter(&this->actor, 0x4000, 0xFF, 0, 8);
         EnVm_SetupStun(this);
     } else {
-        bomb = (EnBom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x,
-                                   this->actor.world.pos.y + 20.0f, this->actor.world.pos.z, 0, 0, 0x601, BOMB_BODY, true);
+        bomb =
+            (EnBom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x,
+                                this->actor.world.pos.y + 20.0f, this->actor.world.pos.z, 0, 0, 0x601, BOMB_BODY, true);
 
         if (bomb != NULL) {
             bomb->timer = 0;
@@ -489,8 +490,8 @@ void EnVm_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, 
             sp80.z = (this->beamScale.z + 500.0f) * (this->actor.scale.y * 10000.0f);
             Matrix_MultVec3f(&sp80, &this->beamPos3);
 
-            if (BgCheck_EntityLineTest1(&play->colCtx, &this->beamPos1, &this->beamPos3, &posResult, &poly, true,
-                                        true, false, true, &bgId) == true) {
+            if (BgCheck_EntityLineTest1(&play->colCtx, &this->beamPos1, &this->beamPos3, &posResult, &poly, true, true,
+                                        false, true, &bgId) == true) {
                 this->beamScale.z = Math_Vec3f_DistXYZ(&this->beamPos1, &posResult) - 5.0f;
                 this->unk_260 = 4;
                 this->beamPos3 = posResult;
@@ -529,24 +530,21 @@ void EnVm_Draw(Actor* thisx, PlayState* play2) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
-    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnVm_OverrideLimbDraw,
-                      EnVm_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnVm_OverrideLimbDraw, EnVm_PostLimbDraw, this);
     actorPos = this->actor.world.pos;
     func_80033C30(&actorPos, &D_80B2EB7C, 255, play);
 
     if (this->unk_260 >= 3) {
         Matrix_Translate(this->beamPos3.x, this->beamPos3.y + 10.0f, this->beamPos3.z, MTXMODE_NEW);
         Matrix_Scale(0.8f, 0.8f, 0.8f, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 168);
         Gfx_SetupDL_60NoCDXlu(play->state.gfxCtx);
         gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 255, 0);
         gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(D_80B2EB88[play->gameplayFrames % 8]));
         gSPDisplayList(POLY_XLU_DISP++, gEffEnemyDeathFlameDL);
         Matrix_RotateY(32767.0f, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(D_80B2EB88[(play->gameplayFrames + 4) % 8]));
         gSPDisplayList(POLY_XLU_DISP++, gEffEnemyDeathFlameDL);
     }
@@ -554,8 +552,7 @@ void EnVm_Draw(Actor* thisx, PlayState* play2) {
     Matrix_Translate(this->beamPos1.x, this->beamPos1.y, this->beamPos1.z, MTXMODE_NEW);
     Matrix_RotateZYX(this->beamRot.x, this->beamRot.y, this->beamRot.z, MTXMODE_APPLY);
     Matrix_Scale(this->beamScale.x * 0.1f, this->beamScale.x * 0.1f, this->beamScale.z * 0.0015f, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gBeamosLaserDL);
 
     CLOSE_DISPS(play->state.gfxCtx);

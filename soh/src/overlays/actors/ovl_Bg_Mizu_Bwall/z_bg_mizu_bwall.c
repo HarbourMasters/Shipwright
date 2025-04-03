@@ -191,8 +191,8 @@ void BgMizuBwall_Init(Actor* thisx, PlayState* play) {
             } else {
                 Collider_InitTris(play, &this->collider);
                 if (!Collider_SetTris(play, &this->collider, &this->dyna.actor, &sTrisInitFloor, this->elements)) {
-                    osSyncPrintf("Error : コリジョンデータセット失敗(%s %d)(arg_data 0x%04x)\n", __FILE__,
-                                 __LINE__, this->dyna.actor.params);
+                    osSyncPrintf("Error : コリジョンデータセット失敗(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
+                                 this->dyna.actor.params);
                     Actor_Kill(&this->dyna.actor);
                 } else {
                     f32 sin = Math_SinS(this->dyna.actor.shape.rot.y);
@@ -225,10 +225,9 @@ void BgMizuBwall_Init(Actor* thisx, PlayState* play) {
                 this->actionFunc = BgMizuBwall_DoNothing;
             } else {
                 Collider_InitTris(play, &this->collider);
-                if (!Collider_SetTris(play, &this->collider, &this->dyna.actor, &sTrisInitRutoWall,
-                                      this->elements)) {
-                    osSyncPrintf("Error : コリジョンデータセット失敗(%s %d)(arg_data 0x%04x)\n", __FILE__,
-                                 __LINE__, this->dyna.actor.params);
+                if (!Collider_SetTris(play, &this->collider, &this->dyna.actor, &sTrisInitRutoWall, this->elements)) {
+                    osSyncPrintf("Error : コリジョンデータセット失敗(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
+                                 this->dyna.actor.params);
                     Actor_Kill(&this->dyna.actor);
                 } else {
                     f32 sin = Math_SinS(this->dyna.actor.shape.rot.y);
@@ -261,10 +260,9 @@ void BgMizuBwall_Init(Actor* thisx, PlayState* play) {
                 this->actionFunc = BgMizuBwall_DoNothing;
             } else {
                 Collider_InitTris(play, &this->collider);
-                if (!Collider_SetTris(play, &this->collider, &this->dyna.actor, &sTrisInitUnusedWall,
-                                      this->elements)) {
-                    osSyncPrintf("Error : コリジョンデータセット失敗(%s %d)(arg_data 0x%04x)\n", __FILE__,
-                                 __LINE__, this->dyna.actor.params);
+                if (!Collider_SetTris(play, &this->collider, &this->dyna.actor, &sTrisInitUnusedWall, this->elements)) {
+                    osSyncPrintf("Error : コリジョンデータセット失敗(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
+                                 this->dyna.actor.params);
                     Actor_Kill(&this->dyna.actor);
                 } else {
                     f32 sin = Math_SinS(this->dyna.actor.shape.rot.y);
@@ -301,8 +299,8 @@ void BgMizuBwall_Init(Actor* thisx, PlayState* play) {
                 Collider_InitTris(play, &this->collider);
                 if (!Collider_SetTris(play, &this->collider, &this->dyna.actor, &sTrisInitStingerWall,
                                       this->elements)) {
-                    osSyncPrintf("Error : コリジョンデータセット失敗(%s %d)(arg_data 0x%04x)\n", __FILE__,
-                                 __LINE__, this->dyna.actor.params);
+                    osSyncPrintf("Error : コリジョンデータセット失敗(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
+                                 this->dyna.actor.params);
                     Actor_Kill(&this->dyna.actor);
                 } else {
                     f32 sin = Math_SinS(this->dyna.actor.shape.rot.y);
@@ -339,8 +337,8 @@ void BgMizuBwall_Init(Actor* thisx, PlayState* play) {
                 Collider_InitTris(play, &this->collider);
                 if (!Collider_SetTris(play, &this->collider, &this->dyna.actor, &sTrisInitStingerWall,
                                       this->elements)) {
-                    osSyncPrintf("Error : コリジョンデータセット失敗(%s %d)(arg_data 0x%04x)\n", __FILE__,
-                                 __LINE__, this->dyna.actor.params);
+                    osSyncPrintf("Error : コリジョンデータセット失敗(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
+                                 this->dyna.actor.params);
                     Actor_Kill(&this->dyna.actor);
                 } else {
                     f32 sin = Math_SinS(this->dyna.actor.shape.rot.y);
@@ -460,8 +458,7 @@ void BgMizuBwall_SpawnDebris(BgMizuBwall* this, PlayState* play) {
         rand1 = (s16)(Rand_ZeroOne() * 120.0f) + 20;
         rand2 = (s16)(Rand_ZeroOne() * 240.0f) + 20;
         func_80033480(play, &debrisPos, 50.0f, 2, rand1, rand2, 0);
-        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_A_OBJ, debrisPos.x, debrisPos.y, debrisPos.z, 0, 0, 0,
-                    0xB, true);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_A_OBJ, debrisPos.x, debrisPos.y, debrisPos.z, 0, 0, 0, 0xB, true);
     }
 }
 
@@ -475,7 +472,8 @@ void BgMizuBwall_Idle(BgMizuBwall* this, PlayState* play) {
         this->dList = NULL;
         BgMizuBwall_SpawnDebris(this, play);
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_WALL_BROKEN);
-        Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         this->actionFunc = BgMizuBwall_Break;
     } else if (this->dyna.actor.xzDistToPlayer < 600.0f) {
         CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
@@ -510,17 +508,17 @@ void BgMizuBwall_Draw(Actor* thisx, PlayState* play2) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08,
-               Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, 1 * frames, 0, 0x20, 0x20, 1, 0, 0, 0x20, 0x20, 0,
-                                        0, 0, this->scrollAlpha1));
+               Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, 1 * frames, 0, 0x20, 0x20, 1, 0, 0, 0x20, 0x20, 0, 0, 0,
+                                        this->scrollAlpha1));
     gSPSegment(POLY_OPA_DISP++, 0x09,
-               Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, 1 * frames, 0, 0x20, 0x20, 1, 0, 0, 0x20, 0x20, 0,
-                                        0, 0, this->scrollAlpha2));
+               Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, 1 * frames, 0, 0x20, 0x20, 1, 0, 0, 0x20, 0x20, 0, 0, 0,
+                                        this->scrollAlpha2));
     gSPSegment(POLY_OPA_DISP++, 0x0A,
-               Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, 1 * frames, 0, 0x20, 0x20, 1, 0, 0, 0x20, 0x20, 0,
-                                        0, 0, this->scrollAlpha3));
+               Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, 1 * frames, 0, 0x20, 0x20, 1, 0, 0, 0x20, 0x20, 0, 0, 0,
+                                        this->scrollAlpha3));
     gSPSegment(POLY_OPA_DISP++, 0x0B,
-               Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, 3 * frames, 0, 0x20, 0x20, 1, 0, 0, 0x20, 0x20, 0,
-                                        0, 0, this->scrollAlpha4));
+               Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, 3 * frames, 0, 0x20, 0x20, 1, 0, 0, 0x20, 0x20, 0, 0, 0,
+                                        this->scrollAlpha4));
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), 2);
 
     if (this->dList != NULL) {

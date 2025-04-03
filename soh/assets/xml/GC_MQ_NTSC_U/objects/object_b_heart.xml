@@ -1,0 +1,8 @@
+<Root>
+    <File Name="object_b_heart" Segment="6">
+        <DList Name="object_b_heart_DL_000240" Offset="0x240"/>
+        <DList Name="object_b_heart_DL_000348" Offset="0x348"/>
+        <Texture Name="object_b_heart_Tex_0003C0" OutName="tex_000003C0" Format="i4" Width="32" Height="32" Offset="0x3C0"/>
+        <Texture Name="object_b_heart_Tex_0005C0" OutName="tex_000005C0" Format="i4" Width="16" Height="16" Offset="0x5C0"/>
+    </File>
+</Root>

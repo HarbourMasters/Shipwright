@@ -2,7 +2,7 @@
 #include <libultraship/libultra.h>
 #include "global.h"
 
-#define ROUND(num) floorf((num) * 100) / 100;
+#define ROUND(num) floorf((num)*100) / 100;
 
 void Audio_SequenceChannelProcessSound(SequenceChannel* channel, s32 recalculateVolume, s32 b) {
     f32 channelVolume;

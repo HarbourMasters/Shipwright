@@ -18,125 +18,212 @@ typedef struct {
     int startInstruction;
 } DListPatchInfo;
 
-static DListPatchInfo freezardEffectDListPatchInfos[] = {
-    { gFreezardIntactDL, 5 },
-    { gFreezardTopRightHornChippedDL, 5 },
-    { gFreezardHeadChippedDL, 5 },
-    { gFreezardIceTriangleDL, 5 },
+static DListPatchInfo freezardBodyDListPatchInfos[] = {
+    { gFreezardIntactDL, 5 },      { gFreezardTopRightHornChippedDL, 5 },
+    { gFreezardHeadChippedDL, 5 }, { gFreezardIceTriangleDL, 5 },
     { gFreezardIceRockDL, 5 },
 };
 
 static DListPatchInfo ironKnuckleDListPatchInfos[] = {
+    // VambraceLeft
     { object_ik_DL_01BE98, 39 },
     { object_ik_DL_01BE98, 59 },
 
+    // ArmLeft
     { object_ik_DL_01C130, 38 },
 
+    // VambraceRight
     { object_ik_DL_01C2B8, 39 },
     { object_ik_DL_01C2B8, 59 },
 
+    // ArmRight
     { object_ik_DL_01C550, 38 },
 
+    // Waist
     { object_ik_DL_01C7B8, 8 },
     { object_ik_DL_01C7B8, 28 },
 
+    // PauldronLeft
     { object_ik_DL_01CB58, 8 },
     { object_ik_DL_01CB58, 31 },
 
+    // BootTipLeft
     { object_ik_DL_01CCA0, 15 },
     { object_ik_DL_01CCA0, 37 },
     { object_ik_DL_01CCA0, 52 },
     { object_ik_DL_01CCA0, 68 },
 
+    // WaistArmorLeft
     { object_ik_DL_01CEE0, 27 },
     { object_ik_DL_01CEE0, 46 },
     { object_ik_DL_01CEE0, 125 },
 
+    // PauldronRight
     { object_ik_DL_01D2B0, 8 },
     { object_ik_DL_01D2B0, 32 },
-    
+
+    // BootTipRight
     { object_ik_DL_01D3F8, 15 },
     { object_ik_DL_01D3F8, 37 },
     { object_ik_DL_01D3F8, 52 },
     { object_ik_DL_01D3F8, 68 },
 
+    // WaistArmorRight
     { object_ik_DL_01D638, 23 },
     { object_ik_DL_01D638, 42 },
     { object_ik_DL_01D638, 110 },
 };
 
+static DListPatchInfo arrowTipDListPatchInfos[] = {
+    { gArrowNearDL, 46 },
+    { gArrowFarDL, 5 },
+};
+
+void PatchArrowTipTexture() {
+    // Custom texture for Arrow tips that accounts for overflow texture reading
+    Gfx arrowTipTextureWithOverflowFixGfx =
+        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b_LOAD_BLOCK, 1, gHilite2Tex_Overflow);
+
+    // Gfx instructions to fix authentic vanilla bug where the Arrow tips texture is read as the wrong size
+    Gfx arrowTipTextureWithSizeFixGfx[] = {
+        gsDPLoadTextureBlock(gHilite2Tex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 16, 16, 0, G_TX_MIRROR | G_TX_WRAP,
+                             G_TX_MIRROR | G_TX_WRAP, 5, 5, 1, 1),
+    };
+
+    bool fixTexturesOOB = CVarGetInteger(CVAR_ENHANCEMENT("FixTexturesOOB"), 0);
+
+    for (const auto& patchInfo : arrowTipDListPatchInfos) {
+        const char* dlist = patchInfo.dlist;
+        int start = patchInfo.startInstruction;
+
+        // Patch using custom overflowed texture
+        if (!fixTexturesOOB) {
+            // Unpatch the other texture fix
+            for (size_t i = 4; i < 8; i++) {
+                int instruction = start + i;
+                std::string unpatchName = "arrowTipTextureWithSizeFix_" + std::to_string(instruction);
+                ResourceMgr_UnpatchGfxByName(dlist, unpatchName.c_str());
+            }
+
+            std::string patchName = "arrowTipTextureWithOverflowFix_" + std::to_string(start);
+            std::string patchName2 = "arrowTipTextureWithOverflowFix_" + std::to_string(start + 1);
+            ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), start, arrowTipTextureWithOverflowFixGfx);
+            ResourceMgr_PatchGfxByName(dlist, patchName2.c_str(), start + 1, gsSPNoOp());
+        } else { // Patch texture to use correct image size/fmt
+            // Unpatch the other texture fix
+            std::string unpatchName = "arrowTipTextureWithOverflowFix_" + std::to_string(start);
+            std::string unpatchName2 = "arrowTipTextureWithOverflowFix_" + std::to_string(start + 1);
+            ResourceMgr_UnpatchGfxByName(dlist, unpatchName.c_str());
+            ResourceMgr_UnpatchGfxByName(dlist, unpatchName2.c_str());
+
+            for (size_t i = 4; i < 8; i++) {
+                int instruction = start + i;
+                std::string patchName = "arrowTipTextureWithSizeFix_" + std::to_string(instruction);
+
+                if (i == 0) {
+                    ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), instruction, gsSPNoOp());
+                } else {
+                    ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), instruction,
+                                               arrowTipTextureWithSizeFixGfx[i - 1]);
+                }
+            }
+        }
+    }
+}
+
 void PatchDekuStickTextureOverflow() {
     // Custom texture for holding Deku Stick that accounts for overflow texture reading
-    Gfx gDekuStickOverflowTexFix = gsDPSetTextureImage(G_IM_FMT_I, G_IM_SIZ_8b, 1, gDekuStickOverflowTex);
+    Gfx dekuSticTexkWithOverflowFixGfx = gsDPSetTextureImage(G_IM_FMT_I, G_IM_SIZ_8b, 1, gDekuStickOverflowTex);
 
     // Gfx instructions to fix authentic vanilla bug where the Deku Stick texture is read as the wrong size
-    Gfx gDekuStickTexFix[] = {
+    Gfx dekuStickTexWithSizeFixGfx[] = {
         gsDPLoadTextureBlock(gDekuStickTex, G_IM_FMT_I, G_IM_SIZ_8b, 8, 8, 0, G_TX_NOMIRROR | G_TX_WRAP,
-                             G_TX_NOMIRROR | G_TX_WRAP, 4, 4, G_TX_NOLOD, G_TX_NOLOD)
+                             G_TX_NOMIRROR | G_TX_WRAP, 4, 4, G_TX_NOLOD, G_TX_NOLOD),
     };
 
     const char* dlist = gLinkChildLinkDekuStickDL;
     int start = 5;
 
+    // Patch using custom overflowed texture
     if (!CVarGetInteger(CVAR_ENHANCEMENT("FixTexturesOOB"), 0)) {
         // Unpatch the other texture fix
-        for (size_t i = 0; i < 7; i++) {
-            int instruction = start + (i == 0 ? 0 : i + 1);
-            std::string unpatchName = "DekuStickFix" + std::to_string(instruction);
+        for (size_t i = 0; i < 8; i++) {
+            int instruction = start + i;
+            std::string unpatchName = "dekuStickWithSizeFix_" + std::to_string(instruction);
             ResourceMgr_UnpatchGfxByName(dlist, unpatchName.c_str());
         }
 
-        std::string patchName = "DekuStickOverflow" + std::to_string(start);
-        ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), start, gDekuStickOverflowTexFix);
-    } else {
+        std::string patchName = "dekuStickWithOverflowFix_" + std::to_string(start);
+        std::string patchName2 = "dekuStickWithOverflowFix_" + std::to_string(start + 1);
+        ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), start, dekuSticTexkWithOverflowFixGfx);
+        ResourceMgr_PatchGfxByName(dlist, patchName2.c_str(), start + 1, gsSPNoOp());
+    } else { // Patch texture to use correct image size/fmt
         // Unpatch the other texture fix
-        std::string unpatchName = "DekuStickOverflow" + std::to_string(start);
+        std::string unpatchName = "dekuStickWithOverflowFix_" + std::to_string(start);
+        std::string unpatchName2 = "dekuStickWithOverflowFix_" + std::to_string(start + 1);
         ResourceMgr_UnpatchGfxByName(dlist, unpatchName.c_str());
-        
-        for (size_t i = 0; i < 7; i++) {
-            int instruction = start + (i == 0 ? 0 : i + 1);
-            std::string patchName = "DekuStickFix" + std::to_string(instruction);
-            ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), instruction, gDekuStickTexFix[i]);
+        ResourceMgr_UnpatchGfxByName(dlist, unpatchName2.c_str());
+
+        for (size_t i = 0; i < 8; i++) {
+            int instruction = start + i;
+            std::string patchName = "dekuStickWithSizeFix_" + std::to_string(instruction);
+
+            if (i == 0) {
+                ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), instruction, gsSPNoOp());
+            } else {
+                ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), instruction, dekuStickTexWithSizeFixGfx[i - 1]);
+            }
         }
     }
 }
 
 void PatchFreezardTextureOverflow() {
     // Custom texture for Freezard effect that accounts for overflow texture reading
-    Gfx gEffUnknown12OverflowTextFix = gsDPSetTextureImage(G_IM_FMT_IA, G_IM_SIZ_16b, 1, gEffUnknown12OverflowTex);
+    Gfx freezardBodyTextureWithOverflowFixGfx =
+        gsDPSetTextureImage(G_IM_FMT_IA, G_IM_SIZ_16b, 1, gEffUnknown12OverflowTex);
 
     // Gfx instructions to fix authentic vanilla bug where the Freezard effect texture is read as the wrong format
-    Gfx gEffUnknown12TexFix[] = {
-        gsDPLoadTextureBlock(gEffUnknown12Tex, G_IM_FMT_I, G_IM_SIZ_8b, 32, 32, 0, G_TX_NOMIRROR |
-                             G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD)
+    Gfx freezardBodyTextureWithFormatFixGfx[] = {
+        gsDPLoadTextureBlock(gEffUnknown12Tex, G_IM_FMT_I, G_IM_SIZ_8b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
+                             G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD),
     };
 
-    for (const auto& patchInfo : freezardEffectDListPatchInfos) {
+    bool fixTexturesOOB = CVarGetInteger(CVAR_ENHANCEMENT("FixTexturesOOB"), 0);
+
+    for (const auto& patchInfo : freezardBodyDListPatchInfos) {
         const char* dlist = patchInfo.dlist;
         int start = patchInfo.startInstruction;
 
-        char patchNameBuf[24];
-
         // Patch using custom overflowed texture
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("FixTexturesOOB"), 0)) {
+        if (!fixTexturesOOB) {
             // Unpatch the other texture fix
-            for (size_t i = 0; i < 7; i++) {
-                int instruction = start + (i == 0 ? 0 : i + 1);
-                std::string unpatchName = "gEffUnknown12Fix" + std::to_string(instruction);
+            for (size_t i = 0; i < 8; i++) {
+                int instruction = start + i;
+                std::string unpatchName = "freezardBodyTextureWithFormatFix_" + std::to_string(instruction);
                 ResourceMgr_UnpatchGfxByName(dlist, unpatchName.c_str());
             }
 
-            std::string patchName = "gEffUnknown12Overflow" + std::to_string(start);
-            ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), start, gEffUnknown12OverflowTextFix);
-        } else { // Patch texture to use correct image size
+            std::string patchName = "freezardBodyTextureWithOverflowFix_" + std::to_string(start);
+            std::string patchName2 = "freezardBodyTextureWithOverflowFix_" + std::to_string(start + 1);
+            ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), start, freezardBodyTextureWithOverflowFixGfx);
+            ResourceMgr_PatchGfxByName(dlist, patchName2.c_str(), start + 1, gsSPNoOp());
+        } else { // Patch texture to use correct image size/fmt
             // Unpatch the other texture fix
-            std::string unpatchName = "gEffUnknown12Overflow" + std::to_string(start);
+            std::string unpatchName = "freezardBodyTextureWithOverflowFix_" + std::to_string(start);
+            std::string unpatchName2 = "freezardBodyTextureWithOverflowFix_" + std::to_string(start + 1);
             ResourceMgr_UnpatchGfxByName(dlist, unpatchName.c_str());
+            ResourceMgr_UnpatchGfxByName(dlist, unpatchName2.c_str());
 
-            for (size_t i = 0; i < 7; i++) {
-                int instruction = start + (i == 0 ? 0 : i + 1);
-                std::string patchName = "gEffUnknown12Fix" + std::to_string(instruction);
-                ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), instruction, gEffUnknown12TexFix[i]);
+            for (size_t i = 0; i < 8; i++) {
+                int instruction = start + i;
+                std::string patchName = "freezardBodyTextureWithFormatFix_" + std::to_string(instruction);
+
+                if (i == 0) {
+                    ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), instruction, gsSPNoOp());
+                } else {
+                    ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), instruction,
+                                               freezardBodyTextureWithFormatFixGfx[i - 1]);
+                }
             }
         }
     }
@@ -144,48 +231,58 @@ void PatchFreezardTextureOverflow() {
 
 void PatchIronKnuckleTextureOverflow() {
     // Custom texture for Iron Knuckle that accounts for overflow texture reading
-    Gfx gIronKnuckleMetalOverflowTexFix = gsDPSetTextureImage(G_IM_FMT_I, G_IM_SIZ_8b, 1, gIronKnuckleMetalOverflowTex);
+    Gfx ironKnuckleFireTexWithOverflowFixGfx =
+        gsDPSetTextureImage(G_IM_FMT_I, G_IM_SIZ_8b, 1, gIronKnuckleMetalOverflowTex);
 
     // Gfx instructions to fix authentic vanilla bug where the Iron Knuckle texture is read as the wrong format
-    Gfx gIronKnuckleMetalTexFix[] = {
-        gsDPLoadTextureBlock(gIronKnuckleMetalTex, G_IM_FMT_I, G_IM_SIZ_4b, 32, 64, 0, G_TX_MIRROR | G_TX_WRAP,
-                            G_TX_MIRROR | G_TX_WRAP, 5, 6, G_TX_NOLOD, G_TX_NOLOD)
+    Gfx ironKnuckleFireTexWithFormatFixGfx[] = {
+        gsDPLoadTextureBlock_4b(gIronKnuckleMetalTex, G_IM_FMT_I, 32, 64, 0, G_TX_MIRROR | G_TX_WRAP,
+                                G_TX_MIRROR | G_TX_WRAP, 5, 6, G_TX_NOLOD, G_TX_NOLOD),
     };
+
+    bool fixTexturesOOB = CVarGetInteger(CVAR_ENHANCEMENT("FixTexturesOOB"), 0);
 
     for (const auto& patchInfo : ironKnuckleDListPatchInfos) {
         const char* dlist = patchInfo.dlist;
         int start = patchInfo.startInstruction;
 
-        // OTRTODO: Patching to use the correct size format for Iron Knuckle causes a tile size failure
-        // Until this is solved, Iron Knuckle will be hardcoded to always display with the "authentic" texture fix
-
         // Patch using custom overflowed texture
-        // if (!CVarGetInteger(CVAR_ENHANCEMENT("FixTexturesOOB"), 0)) {
+        if (!fixTexturesOOB) {
             // Unpatch the other texture fix
-            for (size_t i = 0; i < 7; i++) {
-                int instruction = start + (i == 0 ? 0 : i + 1);
-                std::string unpatchName = "MetalTexFix" + std::to_string(instruction);
+            for (size_t i = 0; i < 8; i++) {
+                int instruction = start + i;
+                std::string unpatchName = "ironKnuckleFireTexWithSizeFix_" + std::to_string(instruction);
                 ResourceMgr_UnpatchGfxByName(dlist, unpatchName.c_str());
             }
 
-            std::string patchName = "MetalTexOverflow" + std::to_string(start);
-            ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), start, gIronKnuckleMetalOverflowTexFix);
-        // } else { // Patch texture to use correct image size
-        //     // Unpatch the other texture fix
-        //     std::string unpatchName = "MetalTexOverflow" + std::to_string(start);
-        //     ResourceMgr_UnpatchGfxByName(dlist, unpatchName.c_str());
+            std::string patchName = "ironKnuckleFireTexWithOverflowFix_" + std::to_string(start);
+            std::string patchName2 = "ironKnuckleFireTexWithOverflowFix_" + std::to_string(start + 1);
+            ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), start, ironKnuckleFireTexWithOverflowFixGfx);
+            ResourceMgr_PatchGfxByName(dlist, patchName2.c_str(), start + 1, ironKnuckleFireTexWithOverflowFixGfx);
+        } else { // Patch texture to use correct image size/fmt
+            // Unpatch the other texture fix
+            std::string unpatchName = "ironKnuckleFireTexWithOverflowFix_" + std::to_string(start);
+            std::string unpatchName2 = "ironKnuckleFireTexWithOverflowFix_" + std::to_string(start + 1);
+            ResourceMgr_UnpatchGfxByName(dlist, unpatchName.c_str());
+            ResourceMgr_UnpatchGfxByName(dlist, unpatchName2.c_str());
 
-        //     // Patch texture to use correct image size
-        //     for (size_t i = 0; i < 7; i++) {
-        //         int instruction = start + (i == 0 ? 0 : i + 1);
-        //         std::string patchName = "MetalTexFix" + std::to_string(instruction);
-        //         ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), instruction, gIronKnuckleMetalTexFix[i]);
-        //     }
-        // }
+            for (size_t i = 0; i < 8; i++) {
+                int instruction = start + i;
+                std::string patchName = "ironKnuckleFireTexWithSizeFix_" + std::to_string(instruction);
+
+                if (i == 0) {
+                    ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), instruction, gsSPNoOp());
+                } else {
+                    ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), instruction,
+                                               ironKnuckleFireTexWithFormatFixGfx[i - 1]);
+                }
+            }
+        }
     }
 }
 
 void ApplyAuthenticGfxPatches() {
+    PatchArrowTipTexture();
     PatchDekuStickTextureOverflow();
     PatchFreezardTextureOverflow();
     PatchIronKnuckleTextureOverflow();
@@ -240,7 +337,8 @@ void PatchMirroredSoldOutGI() {
 void PatchMirroredSunSongEtching() {
     // Only using these strings for graphics patching lookup, we don't need aligned assets here
     static const char gRoyalGraveBackRoomDL[] = "__OTR__scenes/shared/hakaana_ouke_scene/hakaana_ouke_room_2DL_005040";
-    static const char gRoyalGraveBackRoomSongVtx[] = "__OTR__scenes/shared/hakaana_ouke_scene/hakaana_ouke_room_2Vtx_004F80";
+    static const char gRoyalGraveBackRoomSongVtx[] =
+        "__OTR__scenes/shared/hakaana_ouke_scene/hakaana_ouke_room_2Vtx_004F80";
 
     static Vtx* mirroredSunSongVtx;
 
@@ -248,7 +346,7 @@ void PatchMirroredSunSongEtching() {
     // Only need to patch over the two SetTile commands to get the MIRROR effect
     Gfx mirroredSunSongTex[] = {
         gsDPLoadTextureBlock("", G_IM_FMT_IA, G_IM_SIZ_8b, 128, 32, 0, G_TX_MIRROR | G_TX_WRAP,
-                             G_TX_NOMIRROR | G_TX_CLAMP, 7, 5, G_TX_NOLOD, G_TX_NOLOD)
+                             G_TX_NOMIRROR | G_TX_CLAMP, 7, 5, G_TX_NOLOD, G_TX_NOLOD),
     };
 
     if (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) {
@@ -266,7 +364,8 @@ void PatchMirroredSunSongEtching() {
 
         ResourceMgr_PatchGfxByName(gRoyalGraveBackRoomDL, "RoyalGraveSunSongTexture_1", 13, mirroredSunSongTex[1]);
         ResourceMgr_PatchGfxByName(gRoyalGraveBackRoomDL, "RoyalGraveSunSongTexture_2", 17, mirroredSunSongTex[5]);
-        ResourceMgr_PatchGfxByName(gRoyalGraveBackRoomDL, "RoyalGraveSunSongTextureCords_1", 24, gsSPVertex(mirroredSunSongVtx, 4, 0));
+        ResourceMgr_PatchGfxByName(gRoyalGraveBackRoomDL, "RoyalGraveSunSongTextureCords_1", 24,
+                                   gsSPVertex(mirroredSunSongVtx, 4, 0));
         // noop as the original vertex command is 128 bit wide
         ResourceMgr_PatchGfxByName(gRoyalGraveBackRoomDL, "RoyalGraveSunSongTextureCords_2", 25, gsSPNoOp());
     } else {
