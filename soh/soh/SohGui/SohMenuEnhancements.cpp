@@ -434,7 +434,7 @@ void SohMenu::AddMenuEnhancements() {
             "Toggle between standard assets and alternate assets. Usually mods will indicate if "
             "this setting has to be used or not."));
     AddWidget(path, "Disable Bomb Billboarding", WIDGET_CVAR_CHECKBOX)
-        .CVar("DisableBombBillboarding")
+        .CVar(CVAR_ENHANCEMENT("DisableBombBillboarding"))
         .Options(CheckboxOptions().Tooltip(
             "Disables bombs always rotating to face the camera. To be used in conjunction with mods that want to "
             "replace bombs with 3D objects."));
