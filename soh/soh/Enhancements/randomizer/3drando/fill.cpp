@@ -161,7 +161,7 @@ static void ValidateOtherEntrance(GetAccessibleLocationsStruct& gals) {
     }
     // If we are not shuffling the guard house, add the key so we can properly check for poe merchant access
     if (gals.validatedStartingRegion && gals.foundTempleOfTime &&
-        !ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL)) {
+        ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF)) {
         Rando::StaticData::RetrieveItem(RG_GUARD_HOUSE_KEY).ApplyEffect();
     }
 }
@@ -213,7 +213,7 @@ void ProcessExits(Region* region, GetAccessibleLocationsStruct& gals, Randomizer
         // Update Time of Day Access for the exit
         if (UpdateToDAccess(&exit, exitRegion)) {
             gals.logicUpdated = true;
-            if (!gals.sphereZeroComplete) {
+            if (!gals.sphereZeroComplete || logic->AreCheckingBigPoes) {
                 if (!gals.foundTempleOfTime || !gals.validatedStartingRegion) {
                     ValidateOtherEntrance(gals);
                 }
@@ -622,7 +622,7 @@ void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAcce
         RegionTable(RR_ROOT)->adultDay = true;
     } else if (checkPoeCollectorAccess) {
         // If we are not shuffling the guard house, add the key so we can properly check for poe merchant access
-        if (!ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL)) {
+        if (ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF)) {
             Rando::StaticData::RetrieveItem(RG_GUARD_HOUSE_KEY).ApplyEffect();
         }
     } else {
