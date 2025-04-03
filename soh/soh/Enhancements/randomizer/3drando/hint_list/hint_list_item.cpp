@@ -1962,69 +1962,69 @@ void StaticData::HintTable_Init_Item() {
                                                  CustomMessage("a gold fragment", /*german*/"ein goldenes Fragment", /*french*/"un fragment d'or")});
                                                   // /*spanish*/un fragmento dorado
 
-    hintTextTable[RHT_GOHMA_SOUL] = HintText(CustomMessage("the soul of Gohma", /*german*/"die Seele Gohmas", /*french*/""),
+    hintTextTable[RHT_GOHMA_SOUL] = HintText(CustomMessage("the soul of Gohma", /*german*/"die Seele Gohmas", /*french*/TODO_TRANSLATE),
                                              {
-                                             CustomMessage("something webbed", /*german*/"etwas Verwobenes", /*french*/"")
+                                             CustomMessage("something webbed", /*german*/"etwas Verwobenes", /*french*/TODO_TRANSLATE)
                                              }, {
-                                             CustomMessage("an invasive soul", /*german*/"eine invasive Seele", /*french*/""),
-                                             CustomMessage("some spider essence", /*german*/"etwas spinnenartige Essenz", /*french*/"")});
+                                             CustomMessage("an invasive soul", /*german*/"eine invasive Seele", /*french*/TODO_TRANSLATE),
+                                             CustomMessage("some spider essence", /*german*/"etwas spinnenartige Essenz", /*french*/TODO_TRANSLATE)});
 
-    hintTextTable[RHT_KING_DODONGO_SOUL] = HintText(CustomMessage("the soul of King Dodongo", /*german*/"die Seele König Dodongos", /*french*/""),
+    hintTextTable[RHT_KING_DODONGO_SOUL] = HintText(CustomMessage("the soul of King Dodongo", /*german*/"die Seele König Dodongos", /*french*/TODO_TRANSLATE),
                                                     {
-                                                    CustomMessage("something explosive", /*german*/"etwas Explosives", /*french*/"")
+                                                    CustomMessage("something explosive", /*german*/"etwas Explosives", /*french*/TODO_TRANSLATE)
                                                     }, {
-                                                    CustomMessage("a royal soul", /*german*/"eine royale Seele", /*french*/""),
-                                                    CustomMessage("some reptile essence", /*german*/"etwas reptilienartige Essenz", /*french*/"")});
+                                                    CustomMessage("a royal soul", /*german*/"eine royale Seele", /*french*/TODO_TRANSLATE),
+                                                    CustomMessage("some reptile essence", /*german*/"etwas reptilienartige Essenz", /*french*/TODO_TRANSLATE)});
 
-    hintTextTable[RHT_BARINADE_SOUL] = HintText(CustomMessage("the soul of Barinade", /*german*/"die Seele Barinades", /*french*/""),
+    hintTextTable[RHT_BARINADE_SOUL] = HintText(CustomMessage("the soul of Barinade", /*german*/"die Seele Barinades", /*french*/TODO_TRANSLATE),
                                                 {
-                                                CustomMessage("something fishy", /*german*/"etwas Fischiges", /*french*/"")
+                                                CustomMessage("something fishy", /*german*/"etwas Fischiges", /*french*/TODO_TRANSLATE)
                                                 }, {
-                                                CustomMessage("an infectuous soul", /*german*/"eine infektiöse Seele", /*french*/""),
-                                                CustomMessage("some parasitic essence", /*german*/"etwas parasitäre Essenz", /*french*/"")});
+                                                CustomMessage("an infectuous soul", /*german*/"eine infektiöse Seele", /*french*/TODO_TRANSLATE),
+                                                CustomMessage("some parasitic essence", /*german*/"etwas parasitäre Essenz", /*french*/TODO_TRANSLATE)});
 
-    hintTextTable[RHT_PHANTOM_GANON_SOUL] = HintText(CustomMessage("the soul of Phantom Ganon", /*german*/"die Seele Phantom-Ganons", /*french*/""),
+    hintTextTable[RHT_PHANTOM_GANON_SOUL] = HintText(CustomMessage("the soul of Phantom Ganon", /*german*/"die Seele Phantom-Ganons", /*french*/TODO_TRANSLATE),
                                                      {
-                                                     CustomMessage("something spectral", /*german*/"etwas Spektrales", /*french*/"")
+                                                     CustomMessage("something spectral", /*german*/"etwas Spektrales", /*french*/TODO_TRANSLATE)
                                                      }, {
-                                                     CustomMessage("a duplicate soul", /*german*/"eine duplizierte Seele", /*french*/""),
+                                                     CustomMessage("a duplicate soul", /*german*/"eine duplizierte Seele", /*french*/TODO_TRANSLATE),
 
-                                                     CustomMessage("some illusionary essence", /*german*/"etwas illusionäre Essenz", /*french*/"")});
+                                                     CustomMessage("some illusionary essence", /*german*/"etwas illusionäre Essenz", /*french*/TODO_TRANSLATE)});
 
-    hintTextTable[RHT_VOLVAGIA_SOUL] = HintText(CustomMessage("the soul of Volvagia", /*german*/"die Seele Volvagias", /*french*/""),
+    hintTextTable[RHT_VOLVAGIA_SOUL] = HintText(CustomMessage("the soul of Volvagia", /*german*/"die Seele Volvagias", /*french*/TODO_TRANSLATE),
                                                 {
-                                                CustomMessage("something hot", /*german*/"etwas Heißes", /*french*/"")
+                                                CustomMessage("something hot", /*german*/"etwas Heißes", /*french*/TODO_TRANSLATE)
                                                 }, {
-                                                CustomMessage("a draconic soul", /*german*/"eine drakonische Seele", /*french*/""),
-                                                CustomMessage("some magmatic essence", /*german*/"etwas magmatische Essenz", /*french*/"")});
+                                                CustomMessage("a draconic soul", /*german*/"eine drakonische Seele", /*french*/TODO_TRANSLATE),
+                                                CustomMessage("some magmatic essence", /*german*/"etwas magmatische Essenz", /*french*/TODO_TRANSLATE)});
 
-    hintTextTable[RHT_MORPHA_SOUL] = HintText(CustomMessage("the soul of Morpha", /*german*/"die Seele Morphas", /*french*/""),
+    hintTextTable[RHT_MORPHA_SOUL] = HintText(CustomMessage("the soul of Morpha", /*german*/"die Seele Morphas", /*french*/TODO_TRANSLATE),
                                               {
-                                              CustomMessage("something wet", /*german*/"etwas Nasses", /*french*/"")
+                                              CustomMessage("something wet", /*german*/"etwas Nasses", /*french*/TODO_TRANSLATE)
                                               }, {
-                                              CustomMessage("an aquatic soul", /*german*/"eine aquatische Seele", /*french*/""),
-                                              CustomMessage("some liquid essence", /*german*/"etwas flüssige Essenz", /*french*/"")});
+                                              CustomMessage("an aquatic soul", /*german*/"eine aquatische Seele", /*french*/TODO_TRANSLATE),
+                                              CustomMessage("some liquid essence", /*german*/"etwas flüssige Essenz", /*french*/TODO_TRANSLATE)});
 
-    hintTextTable[RHT_BONGO_BONGO_SOUL] = HintText(CustomMessage("the soul of Bongo Bongo", /*german*/"die Seele Bongo Bongos", /*french*/""),
+    hintTextTable[RHT_BONGO_BONGO_SOUL] = HintText(CustomMessage("the soul of Bongo Bongo", /*german*/"die Seele Bongo Bongos", /*french*/TODO_TRANSLATE),
                                                    {
-                                                   CustomMessage("something dark", /*german*/"etwas Dunkles", /*french*/"")
+                                                   CustomMessage("something dark", /*german*/"etwas Dunkles", /*french*/TODO_TRANSLATE)
                                                    }, {
-                                                   CustomMessage("a shadowy soul", /*german*/"eine schattige Seele", /*french*/""),
-                                                   CustomMessage("some handy essence", /*german*/"etwas praktische Essenz", /*french*/"")});
+                                                   CustomMessage("a shadowy soul", /*german*/"eine schattige Seele", /*french*/TODO_TRANSLATE),
+                                                   CustomMessage("some handy essence", /*german*/"etwas praktische Essenz", /*french*/TODO_TRANSLATE)});
 
-    hintTextTable[RHT_TWINROVA_SOUL] = HintText(CustomMessage("the soul of Twinrova", /*german*/"die Seele Twinrovas", /*french*/""),
+    hintTextTable[RHT_TWINROVA_SOUL] = HintText(CustomMessage("the soul of Twinrova", /*german*/"die Seele Twinrovas", /*french*/TODO_TRANSLATE),
                                                 {
-                                                CustomMessage("something spiritual", /*german*/"etwas Spirituelles", /*french*/"")
+                                                CustomMessage("something spiritual", /*german*/"etwas Spirituelles", /*french*/TODO_TRANSLATE)
                                                 }, {
-                                                CustomMessage("old souls", /*german*/"alte Seelen", /*french*/""),
-                                                CustomMessage("twin essences", /*german*/"Zwillingsessenzen", /*french*/"")});
+                                                CustomMessage("old souls", /*german*/"alte Seelen", /*french*/TODO_TRANSLATE),
+                                                CustomMessage("twin essences", /*german*/"Zwillingsessenzen", /*french*/TODO_TRANSLATE)});
 
-    hintTextTable[RHT_GANON_SOUL] = HintText(CustomMessage("the soul of Ganon", /*german*/"die Seele Ganons", /*french*/""),
+    hintTextTable[RHT_GANON_SOUL] = HintText(CustomMessage("the soul of Ganon", /*german*/"die Seele Ganons", /*french*/TODO_TRANSLATE),
                                              {
-                                             CustomMessage("something strong", /*german*/"etwas Starkes", /*french*/"")
+                                             CustomMessage("something strong", /*german*/"etwas Starkes", /*french*/TODO_TRANSLATE)
                                              }, {
-                                             CustomMessage("an evil soul", /*german*/"eine böse Seele", /*french*/""),
-                                             CustomMessage("some powerful essence", /*german*/"etwas mächtige Essenz", /*french*/"")});
+                                             CustomMessage("an evil soul", /*german*/"eine böse Seele", /*french*/TODO_TRANSLATE),
+                                             CustomMessage("some powerful essence", /*german*/"etwas mächtige Essenz", /*french*/TODO_TRANSLATE)});
 
     hintTextTable[RHT_OCARINA_A_BUTTON] = HintText(CustomMessage("an Ocarina A Button", /*german*/"eine Okarina A Taste", /*french*/"la Touche A de l'Ocarina"),
                                                    // /*spanish*/un botón A de Ocarina
@@ -2098,53 +2098,22 @@ void StaticData::HintTable_Init_Item() {
                                                { CustomMessage("a master unlocker", /*german*/ "ein Meisterentsperrer", /*french*/ "un Kit de Déverrouillage") });
                                                 // /*spanish*/un desbloqueador maestro
     
-    hintTextTable[RHT_QUIVER_INF] = HintText(CustomMessage("an infinite Quiver", /*german*/"ein unendlicher Köcher", /*french*/"un Carquois Infini"),
-                                             {
-                                             CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
-                                             }, {
-                                             CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
+    //RANDOTODO if these are ever used for anything other than name, they want abscure and ambiguous hints
+    hintTextTable[RHT_QUIVER_INF] = HintText(CustomMessage("an infinite Quiver", /*german*/"ein unendlicher Köcher", /*french*/"un Carquois Infini"));
 
-    hintTextTable[RHT_BOMB_BAG_INF] = HintText(CustomMessage("an infinite Bomb Bag", /*german*/"eine unendliche Bombentasche", /*french*/"un Sac de Bombe sans fond"),
-                                               {
-                                               CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
-                                               }, {
-                                               CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
+    hintTextTable[RHT_BOMB_BAG_INF] = HintText(CustomMessage("an infinite Bomb Bag", /*german*/"eine unendliche Bombentasche", /*french*/"un Sac de Bombe sans fond"));
 
-    hintTextTable[RHT_BULLET_BAG_INF] = HintText(CustomMessage("an infinite Bullet Bag", /*german*/"eine unendliche Samentasche", /*french*/"un Sac de Graine sans fond"),
-                                                 {
-                                                 CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
-                                                 }, {
-                                                 CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
+    hintTextTable[RHT_BULLET_BAG_INF] = HintText(CustomMessage("an infinite Bullet Bag", /*german*/"eine unendliche Samentasche", /*french*/"un Sac de Graine sans fond"));
 
-    hintTextTable[RHT_STICK_UPGRADE_INF] = HintText(CustomMessage("infinite Deku Sticks", /*german*/"unendliche Deku-Stäbe", /*french*/"des Bâtons Mojo illimités"),
-                                                    {
-                                                    CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
-                                                    }, {
-                                                    CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
+    hintTextTable[RHT_STICK_UPGRADE_INF] = HintText(CustomMessage("infinite Deku Sticks", /*german*/"unendliche Deku-Stäbe", /*french*/"des Bâtons Mojo illimités"));
 
-    hintTextTable[RHT_NUT_UPGRADE_INF] = HintText(CustomMessage("infinite Deku Nuts", /*german*/"unendliche Deku-Nüsse", /*french*/"des Noix Mojo illimitées"),
-                                                  {
-                                                  CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
-                                                  }, {
-                                                  CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
+    hintTextTable[RHT_NUT_UPGRADE_INF] = HintText(CustomMessage("infinite Deku Nuts", /*german*/"unendliche Deku-Nüsse", /*french*/"des Noix Mojo illimitées"));
 
-    hintTextTable[RHT_MAGIC_INF] = HintText(CustomMessage("unlimited Magic", /*german*/"unendliche Magie", /*french*/"de la Magie infinie"),
-                                            {
-                                            CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
-                                            }, {
-                                            CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
+    hintTextTable[RHT_MAGIC_INF] = HintText(CustomMessage("unlimited Magic", /*german*/"unendliche Magie", /*french*/"de la Magie infinie"));
 
-    hintTextTable[RHT_BOMBCHU_INF] = HintText(CustomMessage("infinite Bombchus", /*german*/"unendliche Krabbelminen", /*french*/"des Missiles Teigneux illimités"),
-                                              {
-                                              CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
-                                              }, {
-                                              CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
+    hintTextTable[RHT_BOMBCHU_INF] = HintText(CustomMessage("infinite Bombchus", /*german*/"unendliche Krabbelminen", /*french*/"des Missiles Teigneux illimités"));
 
-    hintTextTable[RHT_WALLET_INF] = HintText(CustomMessage("an infinite Wallet", /*german*/"eine unendliche Geldbörse", /*french*/"une Bourse sans fond"),
-                                             {
-                                             CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
-                                             }, {
-                                             CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
+    hintTextTable[RHT_WALLET_INF] = HintText(CustomMessage("an infinite Wallet", /*german*/"eine unendliche Geldbörse", /*french*/"une Bourse sans fond"));
 
     hintTextTable[RHT_EPONA] = HintText(CustomMessage("Epona", /*german*/"Epona", /*french*/"Epona"),
                                     // /*spanish*/a Epona

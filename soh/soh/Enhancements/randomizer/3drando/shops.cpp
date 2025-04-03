@@ -809,6 +809,7 @@ void InitTrickNames() {
         Text{ "Shiny Rock", "Caiiloux Brillant", "Shiny Rock" },
     };
 
+    // TODO_TRANSLATE
     trickNameTable[RG_GOHMA_SOUL] = {
         Text{ "Spider Sense", "", "" },
         Text{ "Deku Spirit", "", "" },
