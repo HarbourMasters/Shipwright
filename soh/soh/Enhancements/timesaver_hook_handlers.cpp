@@ -725,6 +725,12 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO)) {
                 EnHeishi2* enHeishi2 = va_arg(args, EnHeishi2*);
                 enHeishi2->unk_2F2[0] = 0;
+
+                if (enHeishi2->cameraId != MAIN_CAM) {
+                    Play_ClearCamera(gPlayState, enHeishi2->cameraId);
+                    Play_ChangeCameraStatus(gPlayState, MAIN_CAM, CAM_STAT_ACTIVE);
+                }
+
                 *should = false;
             }
             break;
