@@ -1427,6 +1427,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*EnHeishi2`
+    VB_PLAY_HYRULE_CASTLE_GATE_CS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - None
     VB_PLAY_MINUET_OF_FOREST_CS,
 

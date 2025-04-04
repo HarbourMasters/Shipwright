@@ -13,6 +13,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_Bg_Treemouth/z_bg_treemouth.h"
 #include "src/overlays/actors/ovl_En_Owl/z_en_owl.h"
 #include "src/overlays/actors/ovl_En_Go2/z_en_go2.h"
+#include "src/overlays/actors/ovl_En_Heishi2/z_en_heishi2.h"
 #include "src/overlays/actors/ovl_En_Ko/z_en_ko.h"
 #include "src/overlays/actors/ovl_En_Ma1/z_en_ma1.h"
 #include "src/overlays/actors/ovl_En_Ru2/z_en_ru2.h"
@@ -718,6 +719,20 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 *should = false;
             }
 
+            break;
+        }
+        case VB_PLAY_HYRULE_CASTLE_GATE_CS: {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO)) {
+                EnHeishi2* enHeishi2 = va_arg(args, EnHeishi2*);
+                enHeishi2->unk_2F2[0] = 0;
+
+                if (enHeishi2->cameraId != MAIN_CAM) {
+                    Play_ClearCamera(gPlayState, enHeishi2->cameraId);
+                    Play_ChangeCameraStatus(gPlayState, MAIN_CAM, CAM_STAT_ACTIVE);
+                }
+
+                *should = false;
+            }
             break;
         }
         case VB_PLAY_RAINBOW_BRIDGE_CS: {
