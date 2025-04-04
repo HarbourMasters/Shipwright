@@ -778,8 +778,7 @@ void SohMenu::AddMenuEnhancements() {
             "Change aiming for the Boomerang from Third-Person to First-Person to see past Link's head."));
     AddWidget(path, "Aiming Reticle for Boomerang", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("BoomerangReticle"))
-        .PreFunc(
-            [](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("BoomerangFirstPerson"), 0); })
+        .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("BoomerangFirstPerson"), 0); })
         .Options(CheckboxOptions().Tooltip("Aiming with the Boomerang will display a reticle as with the Hookshot."));
 
     AddWidget(path, "Magic Spells", WIDGET_SEPARATOR_TEXT);
