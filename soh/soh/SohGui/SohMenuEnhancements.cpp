@@ -429,7 +429,7 @@ void SohMenu::AddMenuEnhancements() {
 
     AddWidget(path, "Mods", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Use Alternate Assets", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_ENHANCEMENT("AltAssets"))
+        .CVar(CVAR_SETTING("AltAssets"))
         .Options(CheckboxOptions().Tooltip(
             "Toggle between standard assets and alternate assets. Usually mods will indicate if "
             "this setting has to be used or not."));
