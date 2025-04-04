@@ -1839,7 +1839,8 @@ void ItemTrackerSettingsWindow::DrawElement() {
     }
     if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonRewards"), SECTION_DISPLAY_MAIN_WINDOW) ==
         SECTION_DISPLAY_SEPARATE) {
-        if (CVarCheckbox("Circle display", CVAR_TRACKER_ITEM("DungeonRewardsLayout"))) {
+        if (CVarCheckbox("Circle display", CVAR_TRACKER_ITEM("DungeonRewardsLayout"),
+                         CheckboxOptions().DefaultValue(false).Color(THEME_COLOR))) {
             shouldUpdateVectors = true;
         }
     }

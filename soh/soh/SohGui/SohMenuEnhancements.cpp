@@ -562,7 +562,7 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Kokiri Draw Distance", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("DisableKokiriDrawDistance"))
         .PreFunc(
-            [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 1) > 1; })
+            [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 1) <= 1; })
         .Options(CheckboxOptions().Tooltip(
             "The Kokiri are mystical beings that fade into view when approached. Enabling this will remove their "
             "draw distance."));
@@ -777,9 +777,9 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Change aiming for the Boomerang from Third-Person to First-Person to see past Link's head."));
     AddWidget(path, "Aiming Reticle for Boomerang", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_ENHANCEMENT("BoomerangFirstPerson"))
+        .CVar(CVAR_ENHANCEMENT("BoomerangReticle"))
         .PreFunc(
-            [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("BoomerangFirstPerson"), 0) != 0; })
+            [](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("BoomerangFirstPerson"), 0); })
         .Options(CheckboxOptions().Tooltip("Aiming with the Boomerang will display a reticle as with the Hookshot."));
 
     AddWidget(path, "Magic Spells", WIDGET_SEPARATOR_TEXT);
