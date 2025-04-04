@@ -510,10 +510,8 @@ void func_80A53F30(EnHeishi2* this, PlayState* play) {
     }
     gate = (BgGateShutter*)this->gate;
     if ((this->unk_2F2[0] == 0) || (gate->openingState == 0)) {
-        if (GameInteractor_Should(VB_PLAY_KAKARIKO_GATE_CS, true, this)) {
-            Play_ClearCamera(play, this->cameraId);
-            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
-        }
+        Play_ClearCamera(play, this->cameraId);
+        Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
         if ((this->unk_30A != 2)) {
             if (this->unk_30A == 0) {
                 this->actor.textId = 0x2015;
