@@ -484,8 +484,11 @@ bool EnMag_ShouldDrawPressStart(Font* font, Gfx** gfxP, bool isActualText) {
 // Title logo is shifted to the left in Master Quest
 #define LOGO_X_SHIFT (isMQ ? 0 : -8)
 #define LOGO_TEX (isMQ ? gTitleZeldaShieldLogoMQTex : gTitleZeldaShieldLogoTex)
-// Copyright texture is larger on GC
-#define COPYRIGHT_TEX (isGC ? gTitleCopyright19982003Tex : gTitleCopyright1998Tex)
+// Copyright texture is larger on GC and different
+#define COPYRIGHT_TEX                                                                               \
+    (isGC ? ((isJpnGC_notCE || gSaveContext.language == LANGUAGE_JPN) ? gTitleCopyright19982002Tex  \
+                                                                      : gTitleCopyright19982003Tex) \
+          : gTitleCopyright1998Tex)
 #define COPYRIGHT_TEX_WIDTH (isGC ? 160 : 128)
 #define COPYRIGHT_TEX_LEFT (isGC ? 78 : 94)
 
@@ -515,6 +518,8 @@ void EnMag_DrawInner(Actor* thisx, PlayState* play, Gfx** gfxP) {
     u16 rectTop;
     bool isMQ = ResourceMgr_IsGameMasterQuest();
     bool isGC = ResourceMgr_GetGamePlatform(0) == GAME_PLATFORM_GC;
+    bool isJpnGC_notCE =
+        isGC && (ResourceMgr_GetGameVersion(0) == OOT_NTSC_JP_GC || ResourceMgr_GetGameVersion(0) == OOT_NTSC_JP_MQ);
 
     gSPSegment(gfx++, 0x06, play->objectCtx.status[this->actor.objBankIndex].segment);
 
