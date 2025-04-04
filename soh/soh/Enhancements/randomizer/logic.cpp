@@ -486,6 +486,8 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
                          bool inWater) {
     bool killed = false;
     switch (enemy) {
+            case RE_GERUDO_GUARD:
+                return false;
         case RE_GOLD_SKULLTULA:
             switch (distance) {
                 case ED_CLOSE:
@@ -842,6 +844,8 @@ bool Logic::CanPassEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
         case RE_PURPLE_LEEVER:
         case RE_OCTOROK:
             return true;
+            case RE_GERUDO_GUARD:
+                return HasItem(RG_GERUDO_MEMBERSHIP_CARD) || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT);
         case RE_BIG_SKULLTULA:
             // hammer jumpslash can pass, but only on flat land where you can kill with hammer swing
             return CanUse(RG_NUTS) || CanUse(RG_BOOMERANG);
@@ -1267,59 +1271,48 @@ bool Logic::HasFireSourceWithTorch() {
     return HasFireSource() || CanUse(RG_STICKS);
 }
 
-// Is this best off signaling what you have already traded, or what step you are currently on?
-bool Logic::TradeQuestStep(RandomizerGet rg) {
-    if (ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE)) {
-        return false; // This does not apply when we are shuffling trade items
+//Is this best off signaling what you have already traded, or what step you are currently on?
+    bool Logic::TradeQuestStep(RandomizerGet rg){
+        if (ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE)){
+            return false; //This does not apply when we are shuffling trade items
+        }
+        bool hasState = false;
+        //Falling through each case to test each possibility
+        switch (rg){
+            case RG_POCKET_EGG:
+                hasState = hasState || HasItem(RG_POCKET_EGG);
+                [[fallthrough]];
+            case RG_COJIRO:
+                hasState = hasState || HasItem(RG_COJIRO);
+                [[fallthrough]];
+            case RG_ODD_MUSHROOM:
+                hasState = hasState || HasItem(RG_ODD_MUSHROOM);
+                [[fallthrough]];
+            case RG_ODD_POTION:
+                hasState = hasState || HasItem(RG_ODD_POTION);
+                [[fallthrough]];
+            case RG_POACHERS_SAW:
+                hasState = hasState || HasItem(RG_POACHERS_SAW);
+                [[fallthrough]];
+            case RG_BROKEN_SWORD:
+                hasState = hasState || HasItem(RG_BROKEN_SWORD);
+                [[fallthrough]];
+            case RG_PRESCRIPTION:
+                hasState = hasState || HasItem(RG_PRESCRIPTION);
+                [[fallthrough]];
+            case RG_EYEDROPS:
+                hasState = hasState || HasItem(RG_EYEDROPS);
+                [[fallthrough]];
+            case RG_CLAIM_CHECK:
+                hasState = hasState || HasItem(RG_CLAIM_CHECK);
+                break;
+            default:
+                SPDLOG_ERROR("TradeQuestStep reached `return false;`. Missing case for RandomizerGet of {}", static_cast<uint32_t>(rg));
+                assert(false);
+                return false;
+        }
+        return hasState;
     }
-    bool hasState = false;
-    // Falling through each case to test each possibility
-    switch (rg) {
-        case RG_POCKET_EGG:
-            hasState = hasState || HasItem(RG_POCKET_EGG);
-            [[fallthrough]];
-        case RG_COJIRO:
-            hasState = hasState || HasItem(RG_COJIRO);
-            [[fallthrough]];
-        case RG_ODD_MUSHROOM:
-            hasState = hasState || HasItem(RG_ODD_MUSHROOM);
-            [[fallthrough]];
-        case RG_ODD_POTION:
-            hasState = hasState || HasItem(RG_ODD_POTION);
-            [[fallthrough]];
-        case RG_POACHERS_SAW:
-            hasState = hasState || HasItem(RG_POACHERS_SAW);
-            [[fallthrough]];
-        case RG_BROKEN_SWORD:
-            hasState = hasState || HasItem(RG_BROKEN_SWORD);
-            [[fallthrough]];
-        case RG_PRESCRIPTION:
-            hasState = hasState || HasItem(RG_PRESCRIPTION);
-            [[fallthrough]];
-        case RG_EYEDROPS:
-            hasState = hasState || HasItem(RG_EYEDROPS);
-            [[fallthrough]];
-        case RG_CLAIM_CHECK:
-            hasState = hasState || HasItem(RG_CLAIM_CHECK);
-            break;
-        default:
-            SPDLOG_ERROR("TradeQuestStep reached `return false;`. Missing case for RandomizerGet of {}",
-                         static_cast<uint32_t>(rg));
-            assert(false);
-            return false;
-    }
-    return hasState;
-}
-
-bool Logic::CanFinishGerudoFortress() {
-    return (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL) && SmallKeys(RR_GERUDO_FORTRESS, 4) &&
-            CanKillEnemy(RE_GERUDO_WARRIOR) &&
-            (HasItem(RG_GERUDO_MEMBERSHIP_CARD) || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) ||
-             CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_KITCHEN))) ||
-           (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST) && SmallKeys(RR_GERUDO_FORTRESS, 1) &&
-            CanKillEnemy(RE_GERUDO_WARRIOR)) ||
-           ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE);
-}
 
 bool Logic::CanStandingShield() {
     return CanUse(RG_MIRROR_SHIELD) || (IsAdult && HasItem(RG_HYLIAN_SHIELD)) || CanUse(RG_DEKU_SHIELD);
@@ -1442,7 +1435,7 @@ bool Logic::SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless
             }*/
             return GetSmallKeyCount(SCENE_TREASURE_BOX_SHOP) >= requiredAmountGlitchless;
 
-        case RR_GERUDO_FORTRESS:
+        case RR_GF_GROUND_BOTTOM:
             return GetSmallKeyCount(SCENE_THIEVES_HIDEOUT) >= requiredAmountGlitchless;
 
         default:
@@ -2464,67 +2457,70 @@ void Logic::Reset() {
     AtNight = false;
     GetSaveContext()->linkAge = !ctx->GetOption(RSK_SELECTED_STARTING_AGE).Get();
 
-    // Events
-    ShowedMidoSwordAndShield = false;
-    CarpenterRescue = false;
-    GF_GateOpen = false;
-    GtG_GateOpen = false;
-    DampesWindmillAccess = false;
-    DrainWell = false;
-    GoronCityChildFire = false;
-    GCWoodsWarpOpen = false;
-    GCDaruniasDoorOpenChild = false;
-    StopGCRollingGoronAsAdult = false;
-    CanWaterTempleLowFromHigh = false;
-    CanWaterTempleLowFromMid = false;
-    CanWaterTempleMiddle = false;
-    CanWaterTempleHigh = false;
-    KakarikoVillageGateOpen = false;
-    KingZoraThawed = false;
-    ForestTempleJoelle = false;
-    ForestTempleBeth = false;
-    ForestTempleAmy = false;
-    ForestTempleMeg = false;
-    FireLoopSwitch = false;
-    LinksCow = false;
-    DeliverLetter = false;
-    ClearMQDCUpperLobbyRocks = false;
-    LoweredWaterInsideBotw = false;
-    OpenedWestRoomMQBotw = false;
-    OpenedMiddleHoleMQBotw = false;
-    BrokeDeku1FWeb = false;
-    ClearedMQDekuSERoom = false;
-    MQDekuWaterRoomTorches = false;
-    PushedDekuBasementBlock = false;
-    OpenedLowestGoronCage = false;
-    OpenedUpperFireShortcut = false;
-    HitFireTemplePlatform = false;
-    OpenedFireMQFireMazeDoor = false;
-    MQForestBlockRoomTargets = false;
-    ForestCanTwistHallway = false;
-    ForestClearBelowBowChest = false;
-    ForestOpenBossCorridor = false;
-    ShadowTrialFirstChest = false;
-    MQGTGMazeSwitch = false;
-    GTGPlatformSilverRupees = false;
-    MQJabuHolesRoomDoor = false;
-    JabuWestTentacle = false;
-    JabuEastTentacle = false;
-    JabuNorthTentacle = false;
-    LoweredJabuPath = false;
-    MQJabuLiftRoomCow = false;
-    MQShadowFloorSpikeRupees = false;
-    ShadowShortcutBlock = false;
-    MQWaterStalfosPit = false;
-    MQWaterDragonTorches = false;
-    MQWaterB1Switch = false;
-    // MQWaterPillarSoTBlock     = false;
-    MQWaterOpenedPillarB1 = false;
-    MQSpiritCrawlBoulder = false;
-    MQSpiritMapRoomEnemies = false;
-    MQSpirit3SunsEnemies = false;
-    Spirit1FSilverRupees = false;
-    JabuRutoIn1F = false;
+        //Events
+        ShowedMidoSwordAndShield       = false;
+        TH_CouldRescueF1NorthCarpenter = false;
+        TH_CouldRescueF1SouthCarpenter = false;
+        TH_CouldRescueF2NorthCarpenter = false;
+        TH_CouldRescueF2SouthCarpenter = false;
+        GF_GateOpen                    = false;
+        GtG_GateOpen                   = false;
+        DampesWindmillAccess           = false;
+        DrainWell                      = false;
+        GoronCityChildFire             = false;
+        GCWoodsWarpOpen                = false;
+        GCDaruniasDoorOpenChild        = false;
+        StopGCRollingGoronAsAdult      = false;
+        CanWaterTempleLowFromHigh      = false;
+        CanWaterTempleLowFromMid       = false;
+        CanWaterTempleMiddle           = false;
+        CanWaterTempleHigh             = false;
+        KakarikoVillageGateOpen        = false;
+        KingZoraThawed                 = false;
+        ForestTempleJoelle             = false;
+        ForestTempleBeth               = false;
+        ForestTempleAmy                = false;
+        ForestTempleMeg                = false;
+        FireLoopSwitch                 = false;
+        LinksCow                       = false;
+        DeliverLetter                  = false;
+        ClearMQDCUpperLobbyRocks       = false;
+        LoweredWaterInsideBotw         = false;
+        OpenedWestRoomMQBotw           = false;
+        OpenedMiddleHoleMQBotw         = false;
+        BrokeDeku1FWeb                 = false;
+        ClearedMQDekuSERoom            = false;
+        MQDekuWaterRoomTorches         = false;
+        PushedDekuBasementBlock        = false;
+        OpenedLowestGoronCage          = false;
+        OpenedUpperFireShortcut        = false;
+        HitFireTemplePlatform          = false;
+        OpenedFireMQFireMazeDoor       = false;
+        MQForestBlockRoomTargets       = false;
+        ForestCanTwistHallway          = false;
+        ForestClearBelowBowChest       = false;
+        ForestOpenBossCorridor         = false;
+        ShadowTrialFirstChest          = false;
+        MQGTGMazeSwitch                = false;
+        GTGPlatformSilverRupees        = false;
+        MQJabuHolesRoomDoor            = false;
+        JabuWestTentacle               = false;
+        JabuEastTentacle               = false;
+        JabuNorthTentacle              = false;
+        LoweredJabuPath                = false;
+        MQJabuLiftRoomCow              = false;
+        MQShadowFloorSpikeRupees       = false;
+        ShadowShortcutBlock            = false;
+        MQWaterStalfosPit              = false;
+        MQWaterDragonTorches           = false;
+        MQWaterB1Switch                = false;
+        //MQWaterPillarSoTBlock          = false;
+        MQWaterOpenedPillarB1          = false;
+        MQSpiritCrawlBoulder           = false;
+        MQSpiritMapRoomEnemies         = false;
+        MQSpirit3SunsEnemies           = false;
+        Spirit1FSilverRupees           = false;
+        JabuRutoIn1F                   = false;
 
     StopPerformanceTimer(PT_LOGIC_RESET);
 }

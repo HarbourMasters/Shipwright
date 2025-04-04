@@ -569,7 +569,7 @@ void Settings::CreateOptions() {
               "Gerudo Valley Crate PoH as Adult with Hover Boots",
               "From the far side of Gerudo Valley, a precise Hover Boots movement and jump-slash recoil can allow "
               "adult to reach the ledge with the crate PoH without needing Longshot. You will take fall damage.");
-    OPT_TRICK(RT_GF_KITCHEN, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE },
+    OPT_TRICK(RT_TH_KITCHEN, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE },
               "Thieves\' Hideout \"Kitchen\" with No Additional Items",
               "Allows passing through the kitchen by avoiding being seen by the guards. The logic normally guarantees "
               "Bow or Hookshot to stun them from a distance, or Hover Boots to cross the room without needing to deal "

@@ -57,6 +57,8 @@ graphs/
 .extracted-assets.json
 
 !OTRExporter/assets/**/*.png
+!soh/soh/Enhancements/randomizer/location_access/gerudo_fortress_regions.png
+!soh/soh/Enhancements/randomizer/location_access/gerudo_fortress_regions_no_labels.png
 
 # Docs
 !docs/tutorial/
