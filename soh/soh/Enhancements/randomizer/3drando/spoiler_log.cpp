@@ -267,10 +267,10 @@ static void WriteAllLocations() {
         switch (gSaveContext.language) {
             case 0:
             default:
-                placedItemName = location->GetPlacedItemName().english;
+                placedItemName = location->GetPlacedItemName().GetEnglish();
                 break;
             case 2:
-                placedItemName = location->GetPlacedItemName().french;
+                placedItemName = location->GetPlacedItemName().GetFrench();
                 break;
         }
 
