@@ -826,7 +826,7 @@ void InitTrickNames() {
     };
     trickNameTable[RG_PHANTOM_GANON_SOUL] = {
         Text{ "Bigger Poe", "Âme Gigantesque", "" },
-        Text{ "Sacred Forest Pine Tree", "", "" },
+        Text{ "Sacred Forest Pine Tree", "Grande Perche du Bosquet Sacré", "" },
         Text{ "Ganon's Phantom", "Fantôme de Ganon", "" },
     };
     trickNameTable[RG_VOLVAGIA_SOUL] = {
