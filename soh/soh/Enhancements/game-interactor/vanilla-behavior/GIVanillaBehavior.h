@@ -1427,16 +1427,16 @@ typedef enum {
     // true
     // ```
     // #### `args`
-    // - None
-    VB_PLAY_GORON_FREE_CS,
+    // - `*EnHeishi2
+    VB_PLAY_GATE_OPENING_OR_CLOSING_CS,
 
     // #### `result`
     // ```c
     // true
     // ```
     // #### `args`
-    // - `*EnHeishi2
-    VB_PLAY_KAKARIKO_GATE_CS,
+    // - None
+    VB_PLAY_GORON_FREE_CS,
 
     // #### `result`
     // ```c

@@ -721,7 +721,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
 
             break;
         }
-        case VB_PLAY_KAKARIKO_GATE_CS: {
+        case VB_PLAY_GATE_OPENING_OR_CLOSING_CS: {
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO)) {
                 EnHeishi2* enHeishi2 = va_arg(args, EnHeishi2*);
                 enHeishi2->unk_2F2[0] = 0;
