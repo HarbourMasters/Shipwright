@@ -128,6 +128,7 @@ class EntranceShuffler {
     void CreateEntranceOverrides();
     void UnshuffleAllEntrances();
     void ParseJson(nlohmann::json spoilerFileJson);
+    void ApplyEntranceOverrides();
 
   private:
     std::vector<Entrance*> AssumeEntrancePool(std::vector<Entrance*>& entrancePool);

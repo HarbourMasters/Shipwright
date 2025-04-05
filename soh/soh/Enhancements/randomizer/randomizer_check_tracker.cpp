@@ -580,6 +580,13 @@ void CheckTrackerLoadGame(int32_t fileNum) {
     UpdateAllOrdering();
     UpdateInventoryChecks();
     UpdateFilters();
+
+    RegionTable_Init();
+
+    if (Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_ENTRANCES).Get()) {
+        Rando::Context::GetInstance()->GetEntranceShuffler()->ApplyEntranceOverrides();
+    }
+
     RecalculateAvailableChecks();
 }
 
@@ -898,7 +905,6 @@ void LoadFile() {
     SaveManager::Instance->LoadData("areasSpoiled", areasSpoiled, (uint32_t)0);
     UpdateAllOrdering();
     UpdateAllAreas();
-    RegionTable_Init();
 }
 
 void Teardown() {
