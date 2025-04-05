@@ -326,12 +326,12 @@ void RegionTable_Init() {
         EventAccess(&logic->KakarikoVillageGateOpen,        []{return ctx->GetOption(RSK_KAK_GATE).Is(RO_KAK_GATE_OPEN);}),
         //The big poes bottle softlock safety check does not account for the guard house lock if the guard house is not shuffled, so the key is needed before we can safely allow bottle use in logic
         //RANDOTODO a setting that lets you drink/dump big poes so we don't need this logic
-        EventAccess(&logic->CouldEmptyBigPoes,       []{return !ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF) || logic->CanOpenOverworldDoor(RG_GUARD_HOUSE_KEY);}),
-        EventAccess(&logic->TH_CouldRescueF1NorthCarpenter, []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE);}),
-        EventAccess(&logic->TH_CouldRescueF1SouthCarpenter, []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST);}),
-        EventAccess(&logic->TH_CouldRescueF2NorthCarpenter, []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST);}),
-        EventAccess(&logic->TH_CouldRescueF2SouthCarpenter, []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST);}),
-        EventAccess(&logic->TH_RescuedAllCarpenters,        []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE);}),
+        EventAccess(&logic->CouldEmptyBigPoes,              []{return !ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF) || logic->CanOpenOverworldDoor(RG_GUARD_HOUSE_KEY);}),
+        EventAccess(&logic->THCouldFree1TorchCarpenter,     []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE);}),
+        EventAccess(&logic->THCouldFreeDoubleCellCarpenter, []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST);}),
+        EventAccess(&logic->TH_CouldFreeDeadEndCarpenter,   []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST);}),
+        EventAccess(&logic->THCouldRescueSlopeCarpenter,    []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST);}),
+        EventAccess(&logic->THRescuedAllCarpenters,         []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE);}),
     }, {
         //Locations
         LOCATION(RC_LINKS_POCKET,       true),
@@ -416,6 +416,7 @@ void RegionTable_Init() {
     RegionTable_Init_ZorasFountain();
     RegionTable_Init_GerudoValley();
     RegionTable_Init_GerudoFortress();
+    RegionTable_Init_ThievesHideout();
     RegionTable_Init_HauntedWasteland();
     RegionTable_Init_DesertColossus();
     // Dungeons
