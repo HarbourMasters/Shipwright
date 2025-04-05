@@ -1663,11 +1663,11 @@ void StaticData::HintTable_Init() {
 
     hintTextTable[RHT_JUNK52] = HintText(CustomMessage("They say that the Nocturne of Shadow can bring you very close to Ganon.",
                                             /*german*/ "",
-                                            /*french*/ "Selon moi, le nocturne de l'ombre peut t'amener très près de Ganon."));
+                                            /*french*/ "Selon moi, le Nocturne de l'Ombre peut t'amener très près de Ganon."));
 
     hintTextTable[RHT_JUNK53] = HintText(CustomMessage("They say that Twinrova always casts the same spell the first three times.",
                                             /*german*/ "",
-                                            /*french*/ "Selon moi, Twinrova lance toujours les mêmes trois premiers sorts."));
+                                            /*french*/ "Selon moi, le Duo Maléfique lance toujours les mêmes trois premiers sorts."));
 
     hintTextTable[RHT_JUNK54] = HintText(CustomMessage("They say that the nightly builds may be unstable.",
                                             /*german*/ "",
