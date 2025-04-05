@@ -1427,7 +1427,7 @@ typedef enum {
     // true
     // ```
     // #### `args`
-    // - `*EnHeishi2
+    // - `*EnHeishi2`
     VB_PLAY_GATE_OPENING_OR_CLOSING_CS,
 
     // #### `result`
