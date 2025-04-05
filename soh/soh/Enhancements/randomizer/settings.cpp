@@ -573,9 +573,9 @@ void Settings::CreateOptions() {
               "Sneak Past Moving Gerudo Guards with No Items",
               "The logic normally guarantees Bow or Hookshot to stun them from a distance,"
               "but every moving guard can be passed with basic movement and AI manipulation");
-    OPT_TRICK(RT_GF_JUMP, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE },
-              "Gerudo\'s Fortress Ledge Jumps",
-              "It is possible to navigate the rooves of Fortress with unintuative jumps to reach additional areas without going inside.");
+    OPT_TRICK(RT_GF_JUMP, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE }, "Gerudo\'s Fortress Ledge Jumps",
+              "It is possible to navigate the rooves of Fortress with unintuative jumps to reach additional areas "
+              "without going inside.");
     OPT_TRICK(RT_GF_WARRIOR_WITH_DIFFICULT_WEAPON, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE },
               "Gerudo\'s Fortress Warriors with Difficult Weapons",
               "Warriors can be defeated with Slingshot or Bombchus.");
