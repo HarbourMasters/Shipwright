@@ -725,7 +725,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO)) {
                 EnHeishi2* enHeishi2 = va_arg(args, EnHeishi2*);
                 enHeishi2->unk_2F2[0] = 0;
-                
+
                 // The second argument determines whether the vanilla code should be run anyway. It
                 // should be set to `true` ONLY IF said code calls `Play_ClearCamera`, false otherwise.
                 bool clearCamera = va_arg(args, bool);
