@@ -1344,12 +1344,12 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
 
     hintTextTable[RHT_SFM_DEKU_SCRUB_GROTTO_REAR] = HintText(CustomMessage("They say that a #scrub underground duo# sells #[[1]]#.",
                                                                 /*german*/ "Man erzählt sich, daß ein #Deku-Paar im Untergrund# #[[1]]# verkaufe.",
-                                                                /*french*/ "Selon moi, le #duo de peste Mojo au cur du sanctuaire sylvestre# vend #[[1]]#.", {QM_RED, QM_GREEN}));
+                                                                /*french*/ "Selon moi, le #duo de peste Mojo au coeur du sanctuaire sylvestre# vend #[[1]]#.", {QM_RED, QM_GREEN}));
                                                              // /*spanish*/ Según dicen, un #par de dekus subterráneos# de la pradera sagrada venden #[[1]]#.
 
     hintTextTable[RHT_SFM_DEKU_SCRUB_GROTTO_FRONT] = HintText(CustomMessage("They say that a #scrub underground duo# sells #[[1]]#.",
                                                                  /*german*/ "Man erzählt sich, daß ein #Deku-Paar im Untergrund# #[[1]]# verkaufe.",
-                                                                 /*french*/ "Selon moi, le #duo de peste Mojo au cur du sanctuaire sylvestre# vend #[[1]]#.", {QM_RED, QM_GREEN}));
+                                                                 /*french*/ "Selon moi, le #duo de peste Mojo au coeur du sanctuaire sylvestre# vend #[[1]]#.", {QM_RED, QM_GREEN}));
                                                               // /*spanish*/ Según dicen, un #par de dekus subterráneos# de la pradera sagrada venden #[[1]]#.
 
     hintTextTable[RHT_GC_DEKU_SCRUB_GROTTO_LEFT] = HintText(CustomMessage("They say that a #trio of scrubs# sells #[[1]]#.",
@@ -1459,37 +1459,37 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
 
     hintTextTable[RHT_BEEHIVE_CHEST_GROTTO] = HintText(CustomMessage("They say that a #beehive above a chest# hides #[[1]]#.",
                                                           /*german*/ "Man erzählt sich, daß ein #Bienenstock oberhalb einer Truhe# #[[1]]# verberge.",
-                                                          /*french*/ "Selon moi,  #[[1]]#.", {QM_RED, QM_GREEN}));
+                                                          /*french*/ "Selon moi, une #ruche au dessus d'un coffre# cache #[[1]]#.", {QM_RED, QM_GREEN}));
                                                        // /*spanish*/ Según dicen, una #colmena sobre un cofre# esconde #[[1]]#.
 
     hintTextTable[RHT_BEEHIVE_LONELY_SCRUB_GROTTO] = HintText(CustomMessage("They say that a #beehive above a lonely scrub# hides #[[1]]#.",
                                                                  /*german*/ "Man erzählt sich, daß ein #Bienenstock oberhalb eines einsamen Deku# #[[1]]# verberge.",
-                                                                 /*french*/ "Selon moi,  #[[1]]#.", {QM_RED, QM_GREEN}));
+                                                                 /*french*/ "Selon moi, une #ruche au dessus d'une Peste Mojo solitaire# cache #[[1]]#.", {QM_RED, QM_GREEN}));
                                                               // /*spanish*/ Según dicen, una #colmena sobre un deku solitario# esconde #[[1]]#.
 
     hintTextTable[RHT_BEEHIVE_SCRUB_PAIR_GROTTO] = HintText(CustomMessage("They say that a #beehive above a pair of scrubs# hides #[[1]]#.",
                                                                /*german*/ "Man erzählt sich, daß ein #Bienenstock oberhalb eines Deku-Paars# #[[1]]# verberge.",
-                                                               /*french*/ "Selon moi,  #[[1]]#.", {QM_RED, QM_GREEN}));
+                                                               /*french*/ "Selon moi, une #ruche au dessus d'un duo de Pestes Mojo# cache #[[1]]#.", {QM_RED, QM_GREEN}));
                                                             // /*spanish*/ Según dicen, una #colmena sobre un par de dekus# esconde #[[1]]#.
 
     hintTextTable[RHT_BEEHIVE_SCRUB_TRIO_GROTTO] = HintText(CustomMessage("They say that a #beehive above a trio of scrubs# hides #[[1]]#.",
                                                                /*german*/ "Man erzählt sich, daß ein #Bienenstock oberhalb eines Deku-Trios# #[[1]]# verberge.",
-                                                               /*french*/ "Selon moi,  #[[1]]#.", {QM_RED, QM_GREEN}));
+                                                               /*french*/ "Selon moi, une #ruche au dessus d'un trio de Pestes Mojo# cache #[[1]]#.", {QM_RED, QM_GREEN}));
                                                             // /*spanish*/ Según dicen, una #colmena sobre un trío de dekus# esconde #[[1]]#.
 
     hintTextTable[RHT_BEEHIVE_COW_GROTTO] = HintText(CustomMessage("They say that a #beehive above a cow# hides #[[1]]#.",
                                                         /*german*/ "Man erzählt sich, daß ein #Bienenstock oberhalb einer Kuh# #[[1]]# verberge.",
-                                                        /*french*/ "Selon moi,  #[[1]]#.", {QM_RED, QM_GREEN}));
+                                                        /*french*/ "Selon moi, une #ruche au dessus d'une vache# cache #[[1]]#.", {QM_RED, QM_GREEN}));
                                                      // /*spanish*/ Según dicen, una #colmena sobre una vaca# esconde #[[1]]#.
 
     hintTextTable[RHT_BEEHIVE_IN_FRONT_OF_KING_ZORA] = HintText(CustomMessage("They say that a #beehive in front of the king of the zoras# hides #[[1]]#.",
                                                                    /*german*/ "Man erzählt sich, daß ein #Bienenstock vor dem Zora-König# #[[1]]# verberge.",
-                                                                   /*french*/ "Selon moi,  #[[1]]#.", {QM_RED, QM_GREEN}));
+                                                                   /*french*/ "Selon moi, une #ruche devant le Roi des Zoras# cache #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                 // /*spanish*/ Según dicen, una #colmena delante del rey de los zoras# esconde #[[1]]#.
 
     hintTextTable[RHT_BEEHIVE_BEHIND_KING_ZORA] = HintText(CustomMessage("They say that a #beehive behind the king of the zoras# hides #[[1]]#.",
                                                               /*german*/ "Man erzählt sich, daß ein #Bienenstock hinter dem Zora-König# #[[1]]# verberge.",
-                                                              /*french*/ "Selon moi,  #[[1]]#.", {QM_RED, QM_GREEN}));
+                                                              /*french*/ "Selon moi, une #rucheau derrière le Roi des Zoras# cache #[[1]]#.", {QM_RED, QM_GREEN}));
                                                            // /*spanish*/ Según dicen, una #colmena detrás del rey de los zoras# esconde #[[1]]#.
 
     hintTextTable[RHT_POT_KOKIRI_FOREST] = HintText(CustomMessage("They say that a #pot in Kokiri Forest# contains #[[1]]#.",
