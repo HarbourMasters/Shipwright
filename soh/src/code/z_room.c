@@ -256,6 +256,7 @@ s32 swapAndConvertJPEG(void* data) {
 
 void Room_DrawBackground2D(Gfx** gfxP, void* tex, void* tlut, u16 width, u16 height, u8 fmt, u8 siz, u16 tlutMode,
                            u16 tlutCount, f32 offsetX, f32 offsetY) {
+                            return;
     Gfx* gfx = *gfxP;
     uObjBg* bg;
 
