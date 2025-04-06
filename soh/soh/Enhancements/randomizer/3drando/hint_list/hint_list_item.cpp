@@ -1991,7 +1991,7 @@ void StaticData::HintTable_Init_Item() {
 
                                                      CustomMessage("some illusionary essence", /*german*/"etwas illusionäre Essenz", /*french*/"une essence illusoire")});
 
-    hintTextTable[RHT_VOLVAGIA_SOUL] = HintText(CustomMessage("the soul of Volvagia", /*german*/"die Seele Volvagias", /*french*/"l'Âme de Vulcania"),
+    hintTextTable[RHT_VOLVAGIA_SOUL] = HintText(CustomMessage("the soul of Volvagia", /*german*/"die Seele Volvagias", /*french*/"l'Âme de Volcania"),
                                                 {
                                                 CustomMessage("something hot", /*german*/"etwas Heißes", /*french*/"quelque chose de très chaud")
                                                 }, {
