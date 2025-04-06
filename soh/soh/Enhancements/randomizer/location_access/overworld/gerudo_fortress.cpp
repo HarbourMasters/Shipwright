@@ -17,8 +17,8 @@ void RegionTable_Init_GerudoFortress() {
     }, {
         //Exits
         Entrance(RR_GV_FORTRESS_SIDE, []{return true;}),
-        Entrance(RR_GF_OUTSIDE_GATE,  []{return logic->GF_GateOpen;}),
         Entrance(RR_TH_1_TORCH_CELL,  []{return true;}),
+        Entrance(RR_GF_OUTSIDE_GATE,  []{return logic->GF_GateOpen;}),
         Entrance(RR_GF_NEAR_GROTTO,   []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
         Entrance(RR_GF_OUTSIDE_GTG,   []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
         //As of now there is no infinitly repeatable way to get thrown in jail, once one is added getting here only needs hookshot from jail
@@ -33,13 +33,14 @@ void RegionTable_Init_GerudoFortress() {
         LOCATION(RR_GF_NORTHMOST_CENTER_CRATE, logic->CanBreakCrates()),
     }, {
         //Exits
-        Entrance(RR_TH_KITCHEN_CORRIDOR,   []{return true;}),
         Entrance(RR_TH_1_TORCH_CELL,       []{return true;}),
         Entrance(RR_TH_DOUBLE_CELL,        []{return true;}),
-        Entrance(RR_GF_STORMS_GROTTO,      []{return logic->IsAdult && logic->CanOpenStormsGrotto();}),
-        Entrance(RR_GF_TOP_OF_UPPER_VINES, []{return logic->CanUse(RG_LONGSHOT);}),
-        Entrance(RR_GF_OUTSIDE_GTG,        []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
+        Entrance(RR_TH_KITCHEN_CORRIDOR,   []{return true;}),
+        //Jail
         Entrance(RR_GF_OUTSKIRTS,          []{return true;}),
+        Entrance(RR_GF_OUTSIDE_GTG,        []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
+        Entrance(RR_GF_TOP_OF_UPPER_VINES, []{return logic->CanUse(RG_LONGSHOT);}),
+        Entrance(RR_GF_STORMS_GROTTO,      []{return logic->IsAdult && logic->CanOpenStormsGrotto();}),
     });
 
     areaTable[RR_GF_OUTSIDE_GTG] = Region("GF Outside GTG", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
@@ -47,72 +48,108 @@ void RegionTable_Init_GerudoFortress() {
         EventAccess(&logic->GtG_GateOpen, []{return (logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->HasItem(RG_CHILD_WALLET));}),
     }, {}, {
         //Exits
-        Entrance(RR_GF_OUTSKIRTS,          []{return true;}),
         Entrance(RR_GTG_ENTRYWAY,          []{return logic->GtG_GateOpen && (logic->IsAdult || ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES));}),
+        //Jail
+        Entrance(RR_GF_OUTSKIRTS,          []{return true;}),
         Entrance(RR_GF_NEAR_GROTTO,        []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
         // RANDTODO: Add tricks for getting past the gerudo guarding the hba range
-        Entrance(RR_GF_HBA_RANGE,          []{return logic->IsChild || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}),
         Entrance(RR_GF_ABOVE_GTG,          []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
         Entrance(RR_GF_TOP_OF_UPPER_VINES, []{return logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->CanUse(RG_LONGSHOT);}),
+        Entrance(RR_GF_HBA_RANGE,          []{return logic->IsChild || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}),
     });
 
 #pragma endregion
 
 #pragma region Rooftops
 
-    areaTable[RR_GF_BELOW_CHEST] = Region("GF Below Chest", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
-        //Exits
-        Entrance(RR_TH_BREAK_ROOM, []{return true;}),
-        Entrance(RR_GF_OUTSKIRTS,  []{return true;}),
-    });
-
-    areaTable[RR_GF_LONG_ROOF] = Region("GF Long Roof", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
-        //Exits
-        Entrance(RR_GF_BELOW_CHEST,           []{return true;}),
-        Entrance(RR_GF_OUTSKIRTS,             []{return true;}),
-        Entrance(RR_GF_BOTTOM_OF_LOWER_VINES, []{return true;}),
-        Entrance(RR_GF_BELOW_GS,              []{return true;}),
-        Entrance(RR_GF_NEAR_GS,               []{return (logic->IsAdult && ctx->GetTrickOption(RT_GF_JUMP)) || logic->CanUse(RG_HOVER_BOOTS);}),
-        Entrance(RR_GF_NEAR_CHEST,            []{return logic->CanUse(RG_LONGSHOT);}),
-    });
-
     areaTable[RR_GF_ABOVE_GTG] = Region("GF Above GTG", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
+        Entrance(RR_TH_DOUBLE_CELL,           []{return true;}),
         Entrance(RR_TH_KITCHEN_CORRIDOR,      []{return true;}),
+        //Jail
+        Entrance(RR_GF_OUTSKIRTS,             []{return true;}),
+        Entrance(RR_GF_NEAR_GROTTO,           []{return true;}),
+        Entrance(RR_GF_OUTSIDE_GTG,           []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
         // need to explicitly convert it into a bool
         Entrance(RR_GF_BOTTOM_OF_LOWER_VINES, []{return ctx->GetTrickOption(RT_GF_JUMP).Get() != 0 ;}),
-        Entrance(RR_TH_DOUBLE_CELL,           []{return true;}),
-        Entrance(RR_GF_NEAR_GROTTO,           []{return true;}),
-        Entrance(RR_GF_OUTSKIRTS,             []{return true;}),
-        Entrance(RR_GF_OUTSIDE_GTG,           []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
     });
 
     areaTable[RR_GF_BOTTOM_OF_LOWER_VINES] = Region("GF Bottom of Lower Vines", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_TH_STEEP_SLOPE_CELL,   []{return true;}),
+        Entrance(RR_GF_NEAR_GROTTO,        []{return true;}),
         Entrance(RR_GF_TOP_OF_LOWER_VINES, []{return true /* logic->CanClimb() */;}),
         Entrance(RR_GF_ABOVE_GTG,          []{return true;}),
-        Entrance(RR_GF_NEAR_GROTTO,        []{return true;}),
-        Entrance(RR_GF_OUTSKIRTS,          []{return true;}),
     });
 
     areaTable[RR_GF_TOP_OF_LOWER_VINES] = Region("GF Top of Lower Vines", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_TH_KITCHEN_TOP,           []{return true;}),
         Entrance(RR_TH_DOUBLE_CELL,           []{return true;}),
+        Entrance(RR_GF_ABOVE_GTG,             []{return true;}),
+        Entrance(RR_GF_BOTTOM_OF_LOWER_VINES, []{return true;}),
         // need to explicitly convert it into a bool
         Entrance(RR_GF_BOTTOM_OF_UPPER_VINES, []{return ctx->GetTrickOption(RT_GF_JUMP).Get() != 0;}),
+    });
+
+    areaTable[RR_GF_NEAR_GS] = Region("GF Near GS", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {
+        //Locations
+        LOCATION(RC_GF_GS_TOP_FLOOR, logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOMB_THROW) && logic->CanGetNightTimeGS()),
+    }, {
+        //Exits
+        Entrance(RR_TH_KITCHEN_TOP,           []{return true;}),
         Entrance(RR_GF_BOTTOM_OF_LOWER_VINES, []{return true;}),
-        Entrance(RR_GF_NEAR_GROTTO,           []{return true;}),
-        Entrance(RR_GF_ABOVE_GTG,             []{return true;}),
+        Entrance(RR_GF_TOP_OF_LOWER_VINES,    []{return true;}),
+        Entrance(RR_GF_SLOPED_ROOF,           []{return logic->IsAdult;}),
+        Entrance(RR_GF_LONG_ROOF,             []{return logic->CanUse(RG_HOVER_BOOTS) /* || bunny hood jump */ || logic->IsAdult && ctx->GetTrickOption(RT_GF_JUMP);}),
+        Entrance(RR_GF_NEAR_CHEST,            []{return logic->CanUse(RG_LONGSHOT);}),
+        Entrance(RR_GF_BELOW_GS,              []{return true;}),
+    });
+
+    areaTable[RR_GF_SLOPED_ROOF] = Region("GF Sloped Roof", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+        //Exits
+        Entrance(RR_GF_TOP_OF_LOWER_VINES,    []{return true;}),
+        Entrance(RR_GF_NEAR_GS,               []{return true;}),
+        Entrance(RR_GF_TOP_OF_UPPER_VINES,    []{return logic->IsAdult;}),
     });
 
     areaTable[RR_GF_BOTTOM_OF_UPPER_VINES] = Region("GF Bottom of Upper Vines", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
-        Entrance(RR_GF_TOP_OF_UPPER_VINES, []{return true /* logic->CanClimb() */;}),
-        Entrance(RR_GF_TOP_OF_LOWER_VINES, []{return true;}),
         Entrance(RR_GF_OUTSIDE_GTG,        []{return true;}),
+        Entrance(RR_GF_TOP_OF_LOWER_VINES, []{return true;}),
         Entrance(RR_GF_SLOPED_ROOF,        []{return logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS);}),
+        Entrance(RR_GF_TOP_OF_UPPER_VINES, []{return true /* logic->CanClimb() */;}),
+    });
+
+    areaTable[RR_GF_TOP_OF_UPPER_VINES] = Region("GF Top of Upper Vines", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {
+        //Locations
+        //if RR_GF_SLOPED_ROOF > RR_GF_TOP_OF_UPPER_VINES is ever made part of RT_GF_JUMP, climb is needed to get back up
+        LOCATION(RC_GF_GS_TOP_FLOOR, logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_SHORT_JUMPSLASH) && logic->CanGetNightTimeGS()),
+    }, {
+        //Exits
+        Entrance(RR_GF_TOP_OF_LOWER_VINES,    []{return true;}),
+        Entrance(RR_GF_SLOPED_ROOF,           []{return true;}),
+        Entrance(RR_GF_BOTTOM_OF_UPPER_VINES, []{return true;}),
+        Entrance(RR_GF_NEAR_CHEST,            []{return logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->CanUse(RG_SCARECROW) && logic->CanUse(RG_HOOKSHOT)) || logic->CanUse(RG_LONGSHOT);}),
+    });
+
+    areaTable[RR_GF_NEAR_CHEST] = Region("GF Near Chest", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {
+        //Locations
+        LOCATION(RC_GF_CHEST,        true),
+        LOCATION(RC_GF_GS_TOP_FLOOR, logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) && logic->CanGetNightTimeGS()),
+    }, {
+        //Exits
+        Entrance(RR_GF_NEAR_GS,     []{return true;}),
+        Entrance(RR_GF_LONG_ROOF,   []{return true;}),
+    });
+
+    areaTable[RR_GF_LONG_ROOF] = Region("GF Long Roof", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+        //Exits
+        Entrance(RR_GF_BOTTOM_OF_LOWER_VINES, []{return true;}),
+        Entrance(RR_GF_NEAR_GS,               []{return (logic->IsAdult && ctx->GetTrickOption(RT_GF_JUMP)) || logic->CanUse(RG_HOVER_BOOTS);}),
+        Entrance(RR_GF_BELOW_GS,              []{return true;}),
+        Entrance(RR_GF_NEAR_CHEST,            []{return logic->CanUse(RG_LONGSHOT);}),
+        Entrance(RR_GF_BELOW_CHEST,           []{return true;}),
     });
 
     areaTable[RR_GF_BELOW_GS] = Region("GF Below GS", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -124,53 +161,12 @@ void RegionTable_Init_GerudoFortress() {
         Entrance(RR_GF_BOTTOM_OF_LOWER_VINES, []{return true;}),
     });
 
-    areaTable[RR_GF_NEAR_GS] = Region("GF Near GS", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {
-        //Locations
-        LOCATION(RC_GF_GS_TOP_FLOOR, logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOMB_THROW) && logic->CanGetNightTimeGS()),
-    }, {
+    areaTable[RR_GF_BELOW_CHEST] = Region("GF Below Chest", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
-        Entrance(RR_TH_KITCHEN_TOP,           []{return true;}),
-        Entrance(RR_GF_BOTTOM_OF_LOWER_VINES, []{return true;}),
-        Entrance(RR_GF_TOP_OF_LOWER_VINES,    []{return true;}),
-        Entrance(RR_GF_BELOW_GS,              []{return true;}),
-        Entrance(RR_GF_LONG_ROOF,             []{return logic->CanUse(RG_HOVER_BOOTS) /* || bunny hood jump */ || logic->IsAdult && ctx->GetTrickOption(RT_GF_JUMP);}),
-        Entrance(RR_GF_SLOPED_ROOF,           []{return logic->IsAdult;}),
-        Entrance(RR_GF_NEAR_CHEST,            []{return logic->CanUse(RG_LONGSHOT);}),
+        Entrance(RR_TH_BREAK_ROOM, []{return true;}),
+        Entrance(RR_GF_OUTSKIRTS,  []{return true;}),
     });
 
-    areaTable[RR_GF_SLOPED_ROOF] = Region("GF Sloped Roof", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
-        //Exits
-        Entrance(RR_GF_TOP_OF_UPPER_VINES,    []{return logic->IsAdult;}),
-        Entrance(RR_GF_TOP_OF_LOWER_VINES,    []{return true;}),
-        Entrance(RR_GF_NEAR_GS,               []{return true;}),
-        Entrance(RR_GF_BOTTOM_OF_LOWER_VINES, []{return true;}),
-        Entrance(RR_GF_TOP_OF_LOWER_VINES,    []{return true;}),
-    });
-
-    areaTable[RR_GF_TOP_OF_UPPER_VINES] = Region("GF Top of Upper Vines", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {
-        //Locations
-        //if RR_GF_SLOPED_ROOF > RR_GF_TOP_OF_UPPER_VINES is ever made part of RT_GF_JUMP, climb is needed to get back up
-        LOCATION(RC_GF_GS_TOP_FLOOR, logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_SHORT_JUMPSLASH) && logic->CanGetNightTimeGS()),
-    }, {
-        //Exits
-        Entrance(RR_GF_TOP_OF_LOWER_VINES,    []{return true;}),
-        Entrance(RR_GF_BOTTOM_OF_UPPER_VINES, []{return true;}),
-        Entrance(RR_GF_NEAR_GS,               []{return true;}),
-        Entrance(RR_GF_SLOPED_ROOF,           []{return true;}),
-        Entrance(RR_GF_NEAR_CHEST,            []{return logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->CanUse(RG_SCARECROW) && logic->CanUse(RG_HOOKSHOT)) || logic->CanUse(RG_LONGSHOT);}),
-    });
-
-    areaTable[RR_GF_NEAR_CHEST] = Region("GF Near Chest", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {
-        //Locations
-        LOCATION(RC_GF_CHEST,        true),
-        LOCATION(RC_GF_GS_TOP_FLOOR, logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_LONG_JUMPSLASH) && logic->CanGetNightTimeGS()),
-    }, {
-        //Exits
-        Entrance(RR_GF_NEAR_GS,     []{return true;}),
-        Entrance(RR_GF_BELOW_GS,    []{return true;}),
-        Entrance(RR_GF_LONG_ROOF,   []{return true;}),
-        Entrance(RR_GF_BELOW_CHEST, []{return true;}),
-    });
 
 #pragma endregion
 
@@ -182,8 +178,8 @@ void RegionTable_Init_GerudoFortress() {
         //you don't take fall damage if you land on the rock with the flag on for some reason
         //there's a trick to reach RR_GF_LONG_ROOF but that's too intricate for GF_JUMP
         Entrance(RR_GF_OUTSKIRTS,   []{return ctx->GetTrickOption(RT_GF_JUMP).Get() != 0;}),
-        Entrance(RR_GF_BELOW_CHEST, []{return logic->TakeDamage();}),
         Entrance(RR_GF_NEAR_CHEST,  []{return logic->CanUse(RG_LONGSHOT);}),
+        Entrance(RR_GF_BELOW_CHEST, []{return logic->TakeDamage();}),
         Entrance(RR_GF_JAIL_WINDOW, []{return logic->CanUse(RG_HOOKSHOT);}),
     });
 

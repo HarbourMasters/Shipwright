@@ -4,6 +4,7 @@
 using namespace Rando;
 
 // clang-format off
+// When Thieve's hideout entrances are shuffled, getting caught by guards should behave like void outs to avoid logic headaches.
 void RegionTable_Init_ThievesHideout() {
     areaTable[RR_TH_1_TORCH_CELL] = Region("Thieves Hideout 1 Torch Cell", "Thieves Hideout", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
         //Events
