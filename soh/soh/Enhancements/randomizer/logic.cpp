@@ -558,7 +558,7 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
             }
             return killed;
         case RE_DODONGO:
-            return CanUseSword() || CanUse(RG_MEGATON_HAMMER) || (quantity <= 5 && CanUse(RG_STICKS)) || 
+            return CanUseSword() || CanUse(RG_MEGATON_HAMMER) || (quantity <= 5 && CanUse(RG_STICKS)) ||
                    HasExplosives() || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW);
         case RE_LIZALFOS:
             return CanJumpslash() || HasExplosives() || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW);
@@ -691,8 +691,8 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
                    CanUse(RG_STICKS) || HasExplosives() || CanUse(RG_HOOKSHOT) || CanUse(RG_DINS_FIRE) ||
                    CanUse(RG_FIRE_ARROWS);
         case RE_SHELL_BLADE:
-            return CanJumpslash() || HasExplosives() || CanUse(RG_HOOKSHOT) ||
-                   CanUse(RG_FAIRY_BOW) || CanUse(RG_DINS_FIRE);
+            return CanJumpslash() || HasExplosives() || CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_BOW) ||
+                   CanUse(RG_DINS_FIRE);
         case RE_SPIKE:
             return CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_MEGATON_HAMMER) ||
                    CanUse(RG_STICKS) || HasExplosives() || CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_BOW) ||
@@ -739,17 +739,16 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
         case RE_BARINADE:
             return HasBossSoul(RG_BARINADE_SOUL) && CanUse(RG_BOOMERANG) && CanJumpslashExceptHammer();
         case RE_PHANTOM_GANON:
-            return HasBossSoul(RG_PHANTOM_GANON_SOUL) &&
-                   CanUseSword() && (CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT));
+            return HasBossSoul(RG_PHANTOM_GANON_SOUL) && CanUseSword() &&
+                   (CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT));
         case RE_VOLVAGIA:
             return HasBossSoul(RG_VOLVAGIA_SOUL) && CanUse(RG_MEGATON_HAMMER);
         case RE_MORPHA:
-            return HasBossSoul(RG_MORPHA_SOUL) && CanUse(RG_HOOKSHOT) &&
-                   (CanUseSword() || CanUse(RG_MEGATON_HAMMER));
+            return HasBossSoul(RG_MORPHA_SOUL) && CanUse(RG_HOOKSHOT) && (CanUseSword() || CanUse(RG_MEGATON_HAMMER));
         case RE_BONGO_BONGO:
             return HasBossSoul(RG_BONGO_BONGO_SOUL) &&
-                   (CanUse(RG_LENS_OF_TRUTH) || ctx->GetTrickOption(RT_LENS_BONGO)) &&
-                   CanUseSword() && (CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) ||
+                   (CanUse(RG_LENS_OF_TRUTH) || ctx->GetTrickOption(RT_LENS_BONGO)) && CanUseSword() &&
+                   (CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) ||
                     ctx->GetTrickOption(RT_SHADOW_BONGO));
         case RE_TWINROVA:
             return HasBossSoul(RG_TWINROVA_SOUL) && CanUse(RG_MIRROR_SHIELD) &&
@@ -782,8 +781,7 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
             return CanUse(RG_BOOMERANG);
         case RE_BARI:
             return HookshotOrBoomerang() || CanUse(RG_FAIRY_BOW) || HasExplosives() || CanUse(RG_MEGATON_HAMMER) ||
-                   CanUse(RG_STICKS) || CanUse(RG_DINS_FIRE) ||
-                   (TakeDamage() && CanUseSword());
+                   CanUse(RG_STICKS) || CanUse(RG_DINS_FIRE) || (TakeDamage() && CanUseSword());
         case RE_SHABOM:
             // RANDOTODO when you add better damage logic, you can kill this by taking hits
             return CanUse(RG_BOOMERANG) || CanUse(RG_NUTS) || CanJumpslash() || CanUse(RG_DINS_FIRE) ||
