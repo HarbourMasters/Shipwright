@@ -209,6 +209,7 @@ class Logic {
     uint8_t BottleCount();
     uint8_t OcarinaButtons();
     bool HasBottle();
+    bool CanUseSword();
     bool CanJumpslashExceptHammer();
     bool CanJumpslash();
     bool CanHitSwitch(EnemyDistance distance = ED_CLOSE, bool inWater = false);
