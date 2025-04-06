@@ -817,7 +817,7 @@ void InitTrickNames() {
     trickNameTable[RG_KING_DODONGO_SOUL] = {
         Text{ "Lizard Soul", "Âme d'un Lézard", "" },
         Text{ "Regal Remains", "Restes Délicieux", "" },
-        Text{ "Dodongo's Core", "Coeur de Dondogo", "" },
+        Text{ "Dodongo's Core", "Coeur de Dodongo", "" },
     };
     trickNameTable[RG_BARINADE_SOUL] = {
         Text{ "Parasitic Poltergeist", "Poltergeist Parasite", "" },
