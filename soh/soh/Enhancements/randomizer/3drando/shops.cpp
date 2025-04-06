@@ -832,7 +832,7 @@ void InitTrickNames() {
     trickNameTable[RG_VOLVAGIA_SOUL] = {
         Text{ "Dragon Roast", "Friture du Dragon", "" },
         Text{ "Hot n' Ready", "Sauce Barbecue", "" },
-        Text{ "Volvagia's Vitality", "Vitalité de Vulcania", "" },
+        Text{ "Volvagia's Vitality", "Vitalité de Volcania", "" },
     };
     trickNameTable[RG_MORPHA_SOUL] = {
         Text{ "Dihydrogen Monoxide", "Monoxyde de Dihydrogène", "" },
