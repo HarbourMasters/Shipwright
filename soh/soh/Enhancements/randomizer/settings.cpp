@@ -2788,27 +2788,27 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
     bool interiorShuffle = !mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES].Is(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF);
     bool grottoShuffle = !mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES].Is(RO_GENERIC_OFF);
 
-    if (dungeonShuffle + bossShuffle + overworldShuffle + interiorShuffle + grottoShuffle <= 1){
+    if (dungeonShuffle + bossShuffle + overworldShuffle + interiorShuffle + grottoShuffle <= 1) {
         mOptions[RSK_MIXED_ENTRANCE_POOLS].Set(RO_GENERIC_OFF);
     }
 
-    if (!mOptions[RSK_MIXED_ENTRANCE_POOLS] || !dungeonShuffle){
+    if (!mOptions[RSK_MIXED_ENTRANCE_POOLS] || !dungeonShuffle) {
         mOptions[RSK_MIX_DUNGEON_ENTRANCES].Set(RO_GENERIC_OFF);
     }
 
-    if (!mOptions[RSK_MIXED_ENTRANCE_POOLS] || !bossShuffle){
+    if (!mOptions[RSK_MIXED_ENTRANCE_POOLS] || !bossShuffle) {
         mOptions[RSK_MIX_BOSS_ENTRANCES].Set(RO_GENERIC_OFF);
     }
 
-    if (!mOptions[RSK_MIXED_ENTRANCE_POOLS] || !overworldShuffle){
+    if (!mOptions[RSK_MIXED_ENTRANCE_POOLS] || !overworldShuffle) {
         mOptions[RSK_MIX_OVERWORLD_ENTRANCES].Set(RO_GENERIC_OFF);
     }
 
-    if (!mOptions[RSK_MIXED_ENTRANCE_POOLS] || !interiorShuffle){
+    if (!mOptions[RSK_MIXED_ENTRANCE_POOLS] || !interiorShuffle) {
         mOptions[RSK_MIX_INTERIOR_ENTRANCES].Set(RO_GENERIC_OFF);
     }
 
-    if (!mOptions[RSK_MIXED_ENTRANCE_POOLS] || !grottoShuffle){
+    if (!mOptions[RSK_MIXED_ENTRANCE_POOLS] || !grottoShuffle) {
         mOptions[RSK_MIX_GROTTO_ENTRANCES].Set(RO_GENERIC_OFF);
     }
 
