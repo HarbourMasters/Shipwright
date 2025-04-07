@@ -69,10 +69,10 @@ bool CanBuyAnother(RandomizerCheck rc) {
 }
 
 Region::Region() = default;
-Region::Region(std::string regionName_, std::string scene_, std::set<RandomizerArea> areas, bool timePass_,
+Region::Region(std::string regionName_, SceneID scene_, std::set<RandomizerArea> areas, bool timePass_,
                std::vector<EventAccess> events_, std::vector<LocationAccess> locations_,
                std::list<Rando::Entrance> exits_)
-    : regionName(std::move(regionName_)), scene(std::move(scene_)), areas(areas), timePass(timePass_),
+    : regionName(std::move(regionName_)), scene(scene_), areas(areas), timePass(timePass_),
       events(std::move(events_)), locations(std::move(locations_)), exits(std::move(exits_)) {
 }
 
@@ -267,6 +267,7 @@ bool BeanPlanted(const RandomizerRegion region) {
         default:
             sceneID = SCENE_ID_MAX;
             swchFlag = 0;
+            assert(false);
             break;
     }
 
@@ -318,10 +319,10 @@ void RegionTable_Init() {
     };
     // Clear the array from any previous playthrough attempts. This is important so that
     // locations which appear in both MQ and Vanilla dungeons don't get set in both areas.
-    areaTable.fill(Region("Invalid Region", "Invalid Region", {}, NO_DAY_NIGHT_CYCLE, {}, {}, {}));
+    areaTable.fill(Region("Invalid Region", SCENE_ID_MAX, {}, NO_DAY_NIGHT_CYCLE, {}, {}, {}));
 
     // clang-format off
-    areaTable[RR_ROOT] = Region("Root", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {
+    areaTable[RR_ROOT] = Region("Root", SCENE_ID_MAX, {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->KakarikoVillageGateOpen, []{return ctx->GetOption(RSK_KAK_GATE).Is(RO_KAK_GATE_OPEN);}),
         //The big poes bottle softlock safety check does not account for the guard house lock if the guard house is not shuffled, so the key is needed before we can safely allow bottle use in logic
@@ -337,7 +338,7 @@ void RegionTable_Init() {
         Entrance(RR_ROOT_EXITS, []{return true;}),
     });
 
-    areaTable[RR_ROOT_EXITS] = Region("Root Exits", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_ROOT_EXITS] = Region("Root Exits", SCENE_ID_MAX, {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_CHILD_SPAWN,             []{return logic->IsChild;}),
         Entrance(RR_ADULT_SPAWN,             []{return logic->IsAdult;}),
@@ -349,42 +350,42 @@ void RegionTable_Init() {
         Entrance(RR_PRELUDE_OF_LIGHT_WARP,   []{return logic->CanUse(RG_PRELUDE_OF_LIGHT)   && logic->CanLeaveForest();}),
     });
 
-    areaTable[RR_CHILD_SPAWN] = Region("Child Spawn", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_CHILD_SPAWN] = Region("Child Spawn", SCENE_ID_MAX, {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_KF_LINKS_HOUSE, []{return true;}),
     });
 
-    areaTable[RR_ADULT_SPAWN] = Region("Adult Spawn", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_ADULT_SPAWN] = Region("Adult Spawn", SCENE_ID_MAX, {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_TEMPLE_OF_TIME, []{return true;}),
     });
 
-    areaTable[RR_MINUET_OF_FOREST_WARP] = Region("Minuet of Forest Warp", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_MINUET_OF_FOREST_WARP] = Region("Minuet of Forest Warp", SCENE_ID_MAX, {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_SACRED_FOREST_MEADOW, []{return true;}),
     });
 
-    areaTable[RR_BOLERO_OF_FIRE_WARP] = Region("Bolero of Fire Warp", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_BOLERO_OF_FIRE_WARP] = Region("Bolero of Fire Warp", SCENE_ID_MAX, {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_DMC_CENTRAL_LOCAL, []{return true;}),
     });
 
-    areaTable[RR_SERENADE_OF_WATER_WARP] = Region("Serenade of Water Warp", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_SERENADE_OF_WATER_WARP] = Region("Serenade of Water Warp", SCENE_ID_MAX, {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_LAKE_HYLIA, []{return true;}),
     });
 
-    areaTable[RR_REQUIEM_OF_SPIRIT_WARP] = Region("Requiem of Spirit Warp", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_REQUIEM_OF_SPIRIT_WARP] = Region("Requiem of Spirit Warp", SCENE_ID_MAX, {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_DESERT_COLOSSUS, []{return true;}),
     });
 
-    areaTable[RR_NOCTURNE_OF_SHADOW_WARP] = Region("Nocturne of Shadow Warp", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_NOCTURNE_OF_SHADOW_WARP] = Region("Nocturne of Shadow Warp", SCENE_ID_MAX, {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_GRAVEYARD_WARP_PAD_REGION, []{return true;}),
     });
 
-    areaTable[RR_PRELUDE_OF_LIGHT_WARP] = Region("Prelude of Light Warp", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_PRELUDE_OF_LIGHT_WARP] = Region("Prelude of Light Warp", SCENE_ID_MAX, {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_TEMPLE_OF_TIME, []{return true;}),
     });

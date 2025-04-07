@@ -113,12 +113,12 @@ enum class EntranceType;
 class Region {
   public:
     Region();
-    Region(std::string regionName_, std::string scene_, std::set<RandomizerArea> areas, bool timePass_,
+    Region(std::string regionName_, SceneID scene_, std::set<RandomizerArea> areas, bool timePass_,
            std::vector<EventAccess> events_, std::vector<LocationAccess> locations_, std::list<Rando::Entrance> exits_);
     ~Region();
 
     std::string regionName;
-    std::string scene;
+    SceneID scene;
     std::set<RandomizerArea> areas;
     bool timePass;
     std::vector<EventAccess> events;
@@ -136,7 +136,6 @@ class Region {
     bool adultDay = false;
     bool adultNight = false;
     bool addedToPool = false;
-    ;
 
     void ApplyTimePass();
 

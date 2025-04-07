@@ -352,7 +352,7 @@ std::vector<Entrance*> EntranceShuffler::AssumeEntrancePool(std::vector<Entrance
 static bool AreEntrancesCompatible(Entrance* entrance, Entrance* target, std::vector<EntrancePair>& rollbacks) {
 
     // Entrances shouldn't connect to their own scene, fail in this situation
-    if (entrance->GetParentRegion()->scene != "" &&
+    if (entrance->GetParentRegion()->scene != SCENE_ID_MAX &&
         entrance->GetParentRegion()->scene == target->GetConnectedRegion()->scene) {
         auto message = "Entrance " + entrance->GetName() + " attempted to connect with own scene target " +
                        target->to_string() + ". Connection failed.\n";
