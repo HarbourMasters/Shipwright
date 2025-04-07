@@ -245,7 +245,7 @@ static const char* englishRupeeNames[180] = {
     "Wumpa Fruit",
     "Yen",
     "Zenny",
-    "Zorkmids",
+    "Zorkmids"
 };
 
 static const char* germanRupeeNames[70] = {
