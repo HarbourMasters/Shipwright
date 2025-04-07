@@ -244,8 +244,7 @@ static const char* englishRupeeNames[180] = { "[P]",
                                               "Wumpa Fruit",
                                               "Yen",
                                               "Zenny",
-                                              "Zorkmids"
-                                            };
+                                              "Zorkmids" };
 
 static const char* germanRupeeNames[70] = { "Bananen",
                                             "Bitcoin",
@@ -316,8 +315,7 @@ static const char* germanRupeeNames[70] = { "Bananen",
                                             "Taler",
                                             "Wagenchips",
                                             "Yen",
-                                            "Zenny"
-                                          };
+                                            "Zenny" };
 
 static const char* frenchRupeeNames[40] = { "Anneaux",
                                             "Baguettes",
@@ -358,8 +356,7 @@ static const char* frenchRupeeNames[40] = { "Anneaux",
                                             "Pokémon",
                                             "Radis",
                                             "Rubis",
-                                            "Zennies"
-                                          };
+                                            "Zennies" };
 
 Randomizer::Randomizer() {
     Rando::StaticData::InitItemTable();
