@@ -2244,7 +2244,7 @@ const std::vector<uint8_t>& GetDungeonSmallKeyDoors(SceneID sceneId) {
     return dungeonSmallKeyDoors[key];
 }
 
-int8_t GetUsedSmallKeyCount(SceneID sceneId) {
+int8_t Logic::GetUsedSmallKeyCount(SceneID sceneId) {
     const auto& smallKeyDoors = GetDungeonSmallKeyDoors(sceneId);
 
     // Get the swch value for the scene
@@ -2252,7 +2252,7 @@ int8_t GetUsedSmallKeyCount(SceneID sceneId) {
     if (gPlayState != nullptr && gPlayState->sceneNum == sceneId) {
         swch = gPlayState->actorCtx.flags.swch;
     } else {
-        swch = gSaveContext.sceneFlags[sceneId].swch;
+        swch = mSaveContext->sceneFlags[sceneId].swch;
     }
 
     // Count the number of small keys doors unlocked
