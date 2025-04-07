@@ -99,7 +99,7 @@ static const char* englishRupeeNames[190] = {
     "Cornflakes",
     "Credits",
     "Crimebucks",
-    "Crystal Shards"
+    "Crystal Shards",
     "Cubits",
     "Cucumbers",
     "Dalmations",
