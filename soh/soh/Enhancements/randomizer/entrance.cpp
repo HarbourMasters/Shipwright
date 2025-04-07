@@ -1665,43 +1665,26 @@ void EntranceShuffler::ParseJson(nlohmann::json spoilerFileJson) {
 }
 
 void EntranceShuffler::ApplyEntranceOverrides() {
-    std::unordered_map<uint32_t, Entrance*> randomizerRegionToEntranceMap;
+    SetAllEntrancesData(entranceShuffleTable);
+
+    std::unordered_map<int16_t, Entrance*> entrances;
     for (uint32_t rr = RR_NONE; rr < RR_MAX; rr++) {
         for (auto& exit : areaTable[rr].exits) {
-            uint32_t key = rr << 16 | (uint32_t)exit.GetConnectedRegionKey();
-            randomizerRegionToEntranceMap[key] = &exit;
+            int16_t index = exit.GetIndex();
+            if (index != -1) {
+                entrances[index] = &exit;
+            }
         }
     }
 
     for (size_t i = 0; i < entranceOverrides.size(); i++) {
         EntranceOverride entranceOverride = entranceOverrides[i];
-        
-        const EntranceLinkInfo* entranceInfo;
-        const EntranceLinkInfo* overridenEntranceInfo;
-        for (const auto& pair : entranceShuffleTable) {
-            if (pair.first.index == entranceOverride.index) {
-                entranceInfo = &pair.first;
-            }
-            if (pair.second.index == entranceOverride.index) {
-                entranceInfo = &pair.second;
-            }
-            if (pair.first.index == entranceOverride.override) {
-                overridenEntranceInfo = &pair.first;
-            }
-            if (pair.second.index == entranceOverride.override) {
-                overridenEntranceInfo = &pair.second;
-            }
-        }
 
-        uint32_t entranceKey = (uint32_t)entranceInfo->parentRegion << 16 | (uint32_t)entranceInfo->connectedRegion;
-        Entrance* entrance = randomizerRegionToEntranceMap[entranceKey];
-        uint32_t overridenEntranceKey = (uint32_t)overridenEntranceInfo->parentRegion << 16 | (uint32_t)overridenEntranceInfo->connectedRegion;
-        Entrance* overridenEntrance = randomizerRegionToEntranceMap[overridenEntranceKey];
+        Entrance* entrance = entrances[entranceOverride.index];
+        Entrance* overrideEntrance = entrances[entranceOverride.override];
 
         entrance->Disconnect();
-        entrance->Connect(overridenEntranceInfo->connectedRegion);
-        overridenEntrance->Disconnect();
-        overridenEntrance->Connect(entranceInfo->connectedRegion);
+        entrance->Connect(overrideEntrance->GetOriginalConnectedRegionKey());
     }
 }
 } // namespace Rando
