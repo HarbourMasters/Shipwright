@@ -5,7 +5,7 @@ using namespace Rando;
 
 void RegionTable_Init_ZoraRiver() {
     // clang-format off
-    areaTable[RR_ZR_FRONT] = Region("ZR Front", SCENE_ZORAS_RIVER, {RA_ZORAS_RIVER}, DAY_NIGHT_CYCLE, {}, {
+    areaTable[RR_ZR_FRONT] = Region("ZR Front", SCENE_ZORAS_RIVER, {RA_ZORAS_RIVER}, {}, {
         //Locations
         LOCATION(RC_ZR_GS_TREE,  logic->IsChild && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_CLOSE)),
         LOCATION(RC_ZR_GRASS_1,  logic->CanCutShrubs()),
@@ -26,7 +26,7 @@ void RegionTable_Init_ZoraRiver() {
         Entrance(RR_HYRULE_FIELD, []{return true;}),
     });
 
-    areaTable[RR_ZORAS_RIVER] = Region("Zora River", SCENE_ZORAS_RIVER, {RA_ZORAS_RIVER}, DAY_NIGHT_CYCLE, {
+    areaTable[RR_ZORAS_RIVER] = Region("Zora River", SCENE_ZORAS_RIVER, {RA_ZORAS_RIVER}, {
         //Events
         EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairy();}),
         EventAccess(&logic->BeanPlantFairy,   []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}),
@@ -71,13 +71,13 @@ void RegionTable_Init_ZoraRiver() {
         Entrance(RR_ZR_BEHIND_WATERFALL, []{return ctx->GetOption(RSK_SLEEPING_WATERFALL).Is(RO_WATERFALL_OPEN) || Here(RR_ZORAS_RIVER, []{return logic->CanUse(RG_ZELDAS_LULLABY);}) || (logic->IsChild && ctx->GetTrickOption(RT_ZR_CUCCO)) || (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_ZR_HOVERS));}),
     });
 
-    areaTable[RR_ZR_BEHIND_WATERFALL] = Region("ZR Behind Waterfall", SCENE_ZORAS_RIVER, {RA_ZORAS_RIVER}, DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_ZR_BEHIND_WATERFALL] = Region("ZR Behind Waterfall", SCENE_ZORAS_RIVER, {RA_ZORAS_RIVER}, {}, {}, {
         //Exits
         Entrance(RR_ZORAS_RIVER,  []{return true;}),
         Entrance(RR_ZORAS_DOMAIN, []{return true;}),
     });
 
-    areaTable[RR_ZR_OPEN_GROTTO] = Region("ZR Open Grotto", SCENE_GROTTOS, {}, NO_DAY_NIGHT_CYCLE, grottoEvents, {
+    areaTable[RR_ZR_OPEN_GROTTO] = Region("ZR Open Grotto", SCENE_GROTTOS, {}, grottoEvents, {
         //Locations
         LOCATION(RC_ZR_OPEN_GROTTO_CHEST,                  true),
         LOCATION(RC_ZR_OPEN_GROTTO_FISH,                   logic->HasBottle()),
@@ -95,7 +95,7 @@ void RegionTable_Init_ZoraRiver() {
         Entrance(RR_ZORAS_RIVER, []{return true;}),
     });
 
-    areaTable[RR_ZR_FAIRY_GROTTO] = Region("ZR Fairy Grotto", SCENE_GROTTOS, {}, NO_DAY_NIGHT_CYCLE, {
+    areaTable[RR_ZR_FAIRY_GROTTO] = Region("ZR Fairy Grotto", SCENE_GROTTOS, {}, {
         //Event
         EventAccess(&logic->FreeFairies, []{return true;}),
     }, {
@@ -113,7 +113,7 @@ void RegionTable_Init_ZoraRiver() {
         Entrance(RR_ZORAS_RIVER, []{return true;}),
     });
 
-    areaTable[RR_ZR_STORMS_GROTTO] = Region("ZR Storms Grotto", SCENE_GROTTOS, {}, NO_DAY_NIGHT_CYCLE, {}, {
+    areaTable[RR_ZR_STORMS_GROTTO] = Region("ZR Storms Grotto", SCENE_GROTTOS, {}, {}, {
         //Locations
         LOCATION(RC_ZR_DEKU_SCRUB_GROTTO_REAR,  logic->CanStunDeku()),
         LOCATION(RC_ZR_DEKU_SCRUB_GROTTO_FRONT, logic->CanStunDeku()),

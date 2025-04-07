@@ -5,7 +5,7 @@ using namespace Rando;
 
 void RegionTable_Init_ZorasFountain() {
     // clang-format off
-    areaTable[RR_ZORAS_FOUNTAIN] = Region("Zoras Fountain", SCENE_ZORAS_FOUNTAIN, {RA_ZORAS_FOUNTAIN}, NO_DAY_NIGHT_CYCLE, {
+    areaTable[RR_ZORAS_FOUNTAIN] = Region("Zoras Fountain", SCENE_ZORAS_FOUNTAIN, {RA_ZORAS_FOUNTAIN}, {
         //Events
         EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairyExceptSuns();}),
         EventAccess(&logic->ButterflyFairy,   []{return logic->ButterflyFairy   || (logic->CanUse(RG_STICKS) && logic->AtDay);}),
@@ -55,7 +55,7 @@ void RegionTable_Init_ZorasFountain() {
         Entrance(RR_ZF_GREAT_FAIRY_FOUNTAIN,   []{return logic->HasExplosives() || (ctx->GetTrickOption(RT_ZF_GREAT_FAIRY_WITHOUT_EXPLOSIVES) && logic->CanUse(RG_MEGATON_HAMMER) && logic->CanUse(RG_SILVER_GAUNTLETS));}),
     });
 
-    areaTable[RR_ZF_GREAT_FAIRY_FOUNTAIN] = Region("ZF Great Fairy Fountain", SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS, {}, NO_DAY_NIGHT_CYCLE, {}, {
+    areaTable[RR_ZF_GREAT_FAIRY_FOUNTAIN] = Region("ZF Great Fairy Fountain", SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS, {}, {}, {
         //Locations
         LOCATION(RC_ZF_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY)),
     }, {

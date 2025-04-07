@@ -113,14 +113,13 @@ enum class EntranceType;
 class Region {
   public:
     Region();
-    Region(std::string regionName_, SceneID scene_, std::set<RandomizerArea> areas, bool timePass_,
+    Region(std::string regionName_, SceneID scene_, std::set<RandomizerArea> areas,
            std::vector<EventAccess> events_, std::vector<LocationAccess> locations_, std::list<Rando::Entrance> exits_);
     ~Region();
 
     std::string regionName;
     SceneID scene;
     std::set<RandomizerArea> areas;
-    bool timePass;
     std::vector<EventAccess> events;
     std::vector<LocationAccess> locations;
     std::list<Rando::Entrance> exits;
@@ -136,6 +135,8 @@ class Region {
     bool adultDay = false;
     bool adultNight = false;
     bool addedToPool = false;
+
+    bool TimePass();
 
     void ApplyTimePass();
 
@@ -335,9 +336,6 @@ bool BothAges(const RandomizerRegion region);
 bool ChildCanAccess(const RandomizerRegion region);
 bool AdultCanAccess(const RandomizerRegion region);
 bool HasAccessTo(const RandomizerRegion region);
-
-#define DAY_NIGHT_CYCLE true
-#define NO_DAY_NIGHT_CYCLE false
 
 namespace Regions {
 extern void AccessReset();

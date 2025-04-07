@@ -485,7 +485,7 @@ void ProcessRegion(Region* region, GetAccessibleLocationsStruct& gals, Randomize
         // without the aid of TimePass. During this mode, TimePass won't update ToD access
         // in any region.
         // RANDOTODO can probably be removed after a ToD rework that accounts for having Dampe time access
-        if (region->timePass) {
+        if (region->TimePass()) {
             if (region->childDay) {
                 gals.timePassChildDay = true;
             }
