@@ -246,6 +246,7 @@ static const char* englishRupeeNames[190] = {
     "Upvotes",
     "V-Bucks",
     "Vespene Gas",
+    "Watts",
     "Widgets",
     "Woolongs",
     "World Dollars",
