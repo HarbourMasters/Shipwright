@@ -281,11 +281,24 @@ void PatchIronKnuckleTextureOverflow() {
     }
 }
 
+void PatchBoulderFragment() {
+    // The boulder fragment renders invisible due to the change made by https://github.com/Kenix3/libultraship/pull/721
+    // Until it is known wether this change is approriate or something else should be done to it, the following patches
+    // adjust the render mode for the DL to not become invisible
+    ResourceMgr_PatchGfxByName(gBoulderFragmentsDL, "boulderFragmentRenderFix3", 3,
+                               gsDPSetRenderMode(G_RM_FOG_SHADE_A, G_RM_AA_ZB_OPA_SURF2));
+    ResourceMgr_PatchGfxByName(gBoulderFragmentsDL, "boulderFragmentRenderFix6", 6,
+                               gsDPSetCombineMode(G_CC_MODULATEIDECALA, G_CC_MODULATEIA_PRIM2));
+}
+
 void ApplyAuthenticGfxPatches() {
+    // Overflow textures
     PatchArrowTipTexture();
     PatchDekuStickTextureOverflow();
     PatchFreezardTextureOverflow();
     PatchIronKnuckleTextureOverflow();
+
+    PatchBoulderFragment();
 }
 
 // Patches the Sold Out GI DL to render the texture in the mirror boundary
