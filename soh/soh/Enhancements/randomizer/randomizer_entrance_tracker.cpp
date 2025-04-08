@@ -423,7 +423,7 @@ bool IsEntranceDiscovered(s16 index) {
     bool isDiscovered = Entrance_GetIsEntranceDiscovered(index);
     if (!isDiscovered) {
         // If the pair included one of the hyrule field <-> zora's river entrances,
-        // the randomizer will have also overriden the water-based entrances, so check those too
+        // the randomizer will have also overridden the water-based entrances, so check those too
         if ((index == ENTR_ZORAS_RIVER_WEST_EXIT && Entrance_GetIsEntranceDiscovered(ENTR_ZORAS_RIVER_3)) ||
             (index == ENTR_ZORAS_RIVER_3 && Entrance_GetIsEntranceDiscovered(ENTR_ZORAS_RIVER_WEST_EXIT))) {
             isDiscovered = true;

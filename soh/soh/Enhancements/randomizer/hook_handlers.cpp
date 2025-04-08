@@ -1632,7 +1632,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                     gPlayState->actorCtx.flags.tempCollect = 0;
 
                     // If the respawnFlag is set for a grotto return, we don't want the void out to happen.
-                    // Set the data flag to one to prevent the respawn point from being overriden by dungeon doors.
+                    // Set the data flag to one to prevent the respawn point from being overridden by dungeon doors.
                     if (gSaveContext.respawnFlag == 2) {
                         gSaveContext.respawn[RESPAWN_MODE_DOWN].data = 1;
                         *should = false;
