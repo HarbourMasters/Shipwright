@@ -558,9 +558,8 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
             }
             return killed;
         case RE_DODONGO:
-            return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) ||
-                   CanUse(RG_MEGATON_HAMMER) || (quantity <= 5 && CanUse(RG_STICKS)) || HasExplosives() ||
-                   CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW);
+            return CanUseSword() || CanUse(RG_MEGATON_HAMMER) || (quantity <= 5 && CanUse(RG_STICKS)) ||
+                   HasExplosives() || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW);
         case RE_LIZALFOS:
             return CanJumpslash() || HasExplosives() || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW);
         case RE_KEESE:
@@ -604,11 +603,9 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
                     (CanUse(RG_NUTS) || HookshotOrBoomerang() || CanStandingShield()));
         case RE_DEAD_HAND:
             // RANDOTODO change Dead Hand trick to be sticks Dead Hand
-            return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) ||
-                   (CanUse(RG_STICKS) && ctx->GetTrickOption(RT_BOTW_CHILD_DEADHAND));
+            return CanUseSword() || (CanUse(RG_STICKS) && ctx->GetTrickOption(RT_BOTW_CHILD_DEADHAND));
         case RE_WITHERED_DEKU_BABA:
-            return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) ||
-                   CanUse(RG_BOOMERANG);
+            return CanUseSword() || CanUse(RG_BOOMERANG);
         case RE_LIKE_LIKE:
         case RE_FLOORMASTER:
             return CanDamage();
@@ -645,8 +642,7 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
         // bow and sling can wake them and damage after they shed their armour, so could reduce ammo requirements for
         // explosives to 10. requires 8 sticks to kill so would be a trick unless we apply higher stick bag logic
         case RE_IRON_KNUCKLE:
-            return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) ||
-                   CanUse(RG_MEGATON_HAMMER) || HasExplosives();
+            return CanUseSword() || CanUse(RG_MEGATON_HAMMER) || HasExplosives();
         // To stun flare dancer with chus, you have to hit the flame under it while it is spinning. It should eventually
         // return to spinning after dashing for a while if you miss the window it is possible to damage the core with
         // explosives, but difficult to get all 4 hits in even with chus, and if it reconstructs the core heals, so it
@@ -695,9 +691,8 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
                    CanUse(RG_STICKS) || HasExplosives() || CanUse(RG_HOOKSHOT) || CanUse(RG_DINS_FIRE) ||
                    CanUse(RG_FIRE_ARROWS);
         case RE_SHELL_BLADE:
-            return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) ||
-                   CanUse(RG_MEGATON_HAMMER) || CanUse(RG_STICKS) || HasExplosives() || CanUse(RG_HOOKSHOT) ||
-                   CanUse(RG_FAIRY_BOW) || CanUse(RG_DINS_FIRE);
+            return CanJumpslash() || HasExplosives() || CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_BOW) ||
+                   CanUse(RG_DINS_FIRE);
         case RE_SPIKE:
             return CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_MEGATON_HAMMER) ||
                    CanUse(RG_STICKS) || HasExplosives() || CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_BOW) ||
@@ -744,25 +739,20 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
         case RE_BARINADE:
             return HasBossSoul(RG_BARINADE_SOUL) && CanUse(RG_BOOMERANG) && CanJumpslashExceptHammer();
         case RE_PHANTOM_GANON:
-            return HasBossSoul(RG_PHANTOM_GANON_SOUL) &&
-                   (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)) &&
+            return HasBossSoul(RG_PHANTOM_GANON_SOUL) && CanUseSword() &&
                    (CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT));
         case RE_VOLVAGIA:
             return HasBossSoul(RG_VOLVAGIA_SOUL) && CanUse(RG_MEGATON_HAMMER);
         case RE_MORPHA:
-            return HasBossSoul(RG_MORPHA_SOUL) && CanUse(RG_HOOKSHOT) &&
-                   (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) ||
-                    CanUse(RG_MEGATON_HAMMER));
+            return HasBossSoul(RG_MORPHA_SOUL) && CanUse(RG_HOOKSHOT) && (CanUseSword() || CanUse(RG_MEGATON_HAMMER));
         case RE_BONGO_BONGO:
             return HasBossSoul(RG_BONGO_BONGO_SOUL) &&
-                   (CanUse(RG_LENS_OF_TRUTH) || ctx->GetTrickOption(RT_LENS_BONGO)) &&
-                   (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)) &&
+                   (CanUse(RG_LENS_OF_TRUTH) || ctx->GetTrickOption(RT_LENS_BONGO)) && CanUseSword() &&
                    (CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) ||
                     ctx->GetTrickOption(RT_SHADOW_BONGO));
         case RE_TWINROVA:
             return HasBossSoul(RG_TWINROVA_SOUL) && CanUse(RG_MIRROR_SHIELD) &&
-                   (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) ||
-                    CanUse(RG_MEGATON_HAMMER));
+                   (CanUseSword() || CanUse(RG_MEGATON_HAMMER));
         case RE_GANONDORF:
             // RANDOTODO: Trick to use hammer (no jumpslash) or stick (only jumpslash) instead of a sword to reflect the
             // energy ball and either of them regardless of jumpslashing to damage and kill ganondorf
@@ -771,8 +761,7 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
             // for killing ganondorf and all of those can reflect the energy ball
             // This will not be the case once ammo logic in taken into account as
             // sticks are limited and using a bottle might become a requirement in that case
-            return HasBossSoul(RG_GANON_SOUL) && CanUse(RG_LIGHT_ARROWS) &&
-                   (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD));
+            return HasBossSoul(RG_GANON_SOUL) && CanUse(RG_LIGHT_ARROWS) && CanUseSword();
         case RE_GANON:
             return HasBossSoul(RG_GANON_SOUL) && CanUse(RG_MASTER_SWORD);
         case RE_DARK_LINK:
@@ -792,8 +781,7 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
             return CanUse(RG_BOOMERANG);
         case RE_BARI:
             return HookshotOrBoomerang() || CanUse(RG_FAIRY_BOW) || HasExplosives() || CanUse(RG_MEGATON_HAMMER) ||
-                   CanUse(RG_STICKS) || CanUse(RG_DINS_FIRE) ||
-                   (TakeDamage() && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)));
+                   CanUse(RG_STICKS) || CanUse(RG_DINS_FIRE) || (TakeDamage() && CanUseSword());
         case RE_SHABOM:
             // RANDOTODO when you add better damage logic, you can kill this by taking hits
             return CanUse(RG_BOOMERANG) || CanUse(RG_NUTS) || CanJumpslash() || CanUse(RG_DINS_FIRE) ||
@@ -962,7 +950,7 @@ bool Logic::CanBreakMudWalls() {
 }
 
 bool Logic::CanGetDekuBabaSticks() {
-    return (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_BOOMERANG));
+    return CanUseSword() || CanUse(RG_BOOMERANG);
 }
 
 bool Logic::CanGetDekuBabaNuts() {
@@ -1060,9 +1048,13 @@ bool Logic::HasBottle() {
     return BottleCount() >= 1;
 }
 
+bool Logic::CanUseSword() {
+    return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD);
+}
+
 bool Logic::CanJumpslashExceptHammer() {
     // Not including hammer as hammer jump attacks can be weird;
-    return CanUse(RG_STICKS) || CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD);
+    return CanUse(RG_STICKS) || CanUseSword();
 }
 
 bool Logic::CanJumpslash() {
