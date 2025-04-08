@@ -1806,6 +1806,18 @@ void FileChoose_PulsateCursor(GameState* thisx) {
 void FileChoose_ConfigModeUpdate(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
 
+    // #region SOH [NTSC] Reload Fonts If Language Has Changed
+    static s32 previousLanguage = LANGUAGE_ENG;
+    if (previousLanguage != gSaveContext.language) {
+        if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
+            Font_LoadOrderedFont(&this->font);
+        } else { // GAME_REGION_NTSC
+            Font_LoadOrderedFontNTSC(&this->font);
+        }
+        previousLanguage = gSaveContext.language;
+    }
+    // #endregion
+
     if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
         gConfigModeUpdateFuncs[this->configMode](&this->state);
     } else { // GAME_REGION_NTSC

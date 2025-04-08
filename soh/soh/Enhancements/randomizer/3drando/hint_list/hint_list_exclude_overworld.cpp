@@ -319,7 +319,7 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
                                              /*french*/ "Selon moi, #[[1]]#.", {QM_RED, QM_GREEN}));
                                           // /*spanish*/ Según dicen, #[[1]]#.
 
- 
+
     hintTextTable[RHT_GC_ROLLING_GORON_AS_ADULT] = HintText(CustomMessage("They say that #reassuring a young Goron# is rewarded with #[[1]]#.",
                                                                /*german*/ "Man erzählt sich, daß das #Beruhigen eines jungen Goronen# mit #[[1]]# belohnt würde.",
                                                                /*french*/ "Selon moi, #rassurer un jeune Goron# donne #[[1]]#.", {QM_RED, QM_GREEN}),
@@ -1936,7 +1936,7 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
     hintTextTable[RHT_DMC_UPPER_GROTTO_GOSSIP_STONE_FAIRY_BIG] = HintText(CustomMessage("They say that #playing a stormy tune for an odd stone within the side of a crater# reveals #[[1]]#.",
                                             /*german*/ "!!!",
                                             /*french*/ "Selon moi, jouer une mélodie orageuse pour une pierre étrange dans le côté d'un cratère révèle [[1]].", {QM_RED, QM_GREEN}));
-    
+
     hintTextTable[RHT_LH_ISLAND_SUN_FAIRY] = HintText(CustomMessage("They say that #summoning the sun on the lake's island# calls #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_HF_POND_STORMS_FAIRY] = HintText(CustomMessage("They say that #calling rain to the field's pond# summons #[[1]]#.", {QM_RED, QM_GREEN}));
@@ -1974,7 +1974,7 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
     hintTextTable[RHT_ZR_GRASS] = HintText(CustomMessage("They say that #cutting some grass near a river# reveals #[[1]]#.", { QM_RED, QM_GREEN }));
 
     hintTextTable[RHT_GROTTO_GRASS] = HintText(CustomMessage("They say that #cutting some grass in a grotto# reveals #[[1]]#.", { QM_RED, QM_GREEN }));
-	
+
     hintTextTable[RHT_CRATE_GERUDO_VALLEY] = HintText(CustomMessage("They say that a #crate in Gerudo Valley# contains #[[1]]#.",
                             /*german*/ "",
                             /*french*/ "Selon moi, une #caisse dans une vallée# a #[[1]]#.", { QM_RED, QM_GREEN }));

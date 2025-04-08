@@ -349,7 +349,7 @@ void Rando::StaticData::InitItemTable() {
 
     itemTable[RG_BOMBCHU_BAG] =               Item(RG_BOMBCHU_BAG,              ITEMTYPE_ITEM,          RG_BOMBCHU_BAG,       true,  LOGIC_BOMBCHUS,                 RHT_BOMBCHU_BAG,                                   OBJECT_GI_BOMB_2,       GID_BOMBCHU,          TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR, MOD_RANDOMIZER);
     itemTable[RG_BOMBCHU_BAG].SetCustomDrawFunc(Randomizer_DrawBombchuBag);
-    
+
     itemTable[RG_QUIVER_INF] =                Item(RG_QUIVER_INF,               ITEMTYPE_ITEM,          RG_QUIVER_INF,        true,  LOGIC_PROGRESSIVE_BOW,          RHT_QUIVER_INF,                                    OBJECT_GI_ARROWCASE,    GID_QUIVER_50,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
     itemTable[RG_BOMB_BAG_INF] =              Item(RG_BOMB_BAG_INF,             ITEMTYPE_ITEM,          RG_BOMB_BAG_INF,      true,  LOGIC_PROGRESSIVE_BOMB_BAG,     RHT_BOMB_BAG_INF,                                  OBJECT_GI_BOMBPOUCH,    GID_BOMB_BAG_40,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
     itemTable[RG_BULLET_BAG_INF] =            Item(RG_BULLET_BAG_INF,           ITEMTYPE_ITEM,          RG_BULLET_BAG_INF,    true,  LOGIC_PROGRESSIVE_BULLET_BAG,   RHT_BULLET_BAG_INF,                                OBJECT_GI_DEKUPOUCH,    GID_BULLET_BAG,       TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);

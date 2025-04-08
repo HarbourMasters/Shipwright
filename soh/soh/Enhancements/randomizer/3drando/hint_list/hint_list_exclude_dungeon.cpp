@@ -126,7 +126,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
     hintTextTable[RHT_DEKU_TREE_GRASS] = HintText(CustomMessage("They say that some #grass in the Deku Tree# hides #[[1]]#.",
                                                      /*german*/ "",
                                                      /*french*/ "", {QM_RED, QM_GREEN}));
-													 
+
     hintTextTable[RHT_CRATE_DEKU_TREE] = HintText(CustomMessage("They say that a #crate in the Deku Tree# contains #[[1]]#.",
                                                      /*german*/ "",
                                                      /*french*/ "Selon moi, une #caisse dans l'Arbre Mojo# contient #[[1]]#.", {QM_RED, QM_GREEN}));
@@ -308,7 +308,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
     hintTextTable[RHT_DODONGOS_CAVERN_GRASS] = HintText(CustomMessage("They say that some #grass in Dodongo's Cavern# hides #[[1]]#.",
                                                                             /*german*/ "!!!",
                                                                             /*french*/ "", {QM_RED, QM_GREEN}));
-																			
+
     hintTextTable[RHT_CRATE_DODONGOS_CAVERN] = HintText(CustomMessage("They say that a #crate in Dodongo's Cavern# contains #[[1]]#.",
                                                      /*german*/ "",
                                                      /*french*/ "Selon moi, une #caisse dans la Caverne Dodongo# contient #[[1]]#.", {QM_RED, QM_GREEN}));
@@ -475,7 +475,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
     hintTextTable[RHT_JABU_JABUS_BELLY_GRASS] = HintText(CustomMessage("They say that some #grass in Jabu Jabu's Belly# hides #[[1]]#.",
                                                      /*german*/ "",
                                                      /*french*/ "", {QM_RED, QM_GREEN}));
-													 
+
     hintTextTable[RHT_CRATE_JABU_JABU] = HintText(CustomMessage("They say that a #crate in Jabu Jabu's Belly# contains #[[1]]#.",
                                                      /*german*/ "",
                                                      /*french*/ "Selon moi, une #caisse dans le Ventre de Jabu-Jabu# contient #[[1]]#.", {QM_RED, QM_GREEN}));
