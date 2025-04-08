@@ -137,9 +137,9 @@ std::map<RandomizerCheckArea, std::vector<RandomizerCheck>> checksByArea;
 bool areasFullyChecked[RCAREA_INVALID];
 u32 areasSpoiled = 0;
 bool showVOrMQ;
-s8 areaChecksGotten[RCAREA_INVALID]; //|     "Kokiri Forest (4/9)"
-s8 areaChecksAvailable[RCAREA_INVALID];
-s8 areaCheckTotals[RCAREA_INVALID];
+s16 areaChecksGotten[RCAREA_INVALID]; //|     "Kokiri Forest (4/9)"
+s16 areaChecksAvailable[RCAREA_INVALID];
+s16 areaCheckTotals[RCAREA_INVALID];
 uint16_t totalChecks = 0;
 uint16_t totalChecksAvailable = 0;
 uint16_t totalChecksGotten = 0;
@@ -1932,7 +1932,7 @@ void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, 
                 "Hidden", cvarHideName,
                 UIWidgets::CheckboxOptions(
                     { { .tooltip = "When active, checks will hide by default when updated to this state. Can "
-                                   "be overriden with the \"Show Hidden Items\" option." } })
+                                   "be overridden with the \"Show Hidden Items\" option." } })
                     .Color(theme));
             ImGui::PopID();
         }
