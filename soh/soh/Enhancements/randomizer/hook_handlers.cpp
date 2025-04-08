@@ -1598,7 +1598,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                     Flags_SetRandomizerInf(RAND_INF_ADULT_FISHING);
                 }
                 *should = true;
-                fishData->actor->stateAndTimer = 0;
+                fishing->actor->stateAndTimer = 0;
             }
             break;
         }
