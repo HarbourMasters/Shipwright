@@ -34,7 +34,7 @@ class HintText {
   public:
     HintText() = default;
     HintText(CustomMessage clearText_, std::vector<CustomMessage> ambiguousText_ = {},
-                      std::vector<CustomMessage> obscureText_ = {}, CustomMessage name_ = { "" });
+             std::vector<CustomMessage> obscureText_ = {}, CustomMessage name_ = { "" });
     const CustomMessage& GetName() const;
     const CustomMessage& GetClear() const;
     const CustomMessage& GetObscure() const;
