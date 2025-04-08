@@ -34,7 +34,7 @@ class HintText {
   public:
     HintText() = default;
     explicit HintText(CustomMessage clearText_, std::vector<CustomMessage> ambiguousText_ = {},
-             std::vector<CustomMessage> obscureText_ = {}, CustomMessage name_ = {""});
+                      std::vector<CustomMessage> obscureText_ = {}, CustomMessage name_ = { "" });
     const CustomMessage& GetName() const;
     const CustomMessage& GetClear() const;
     const CustomMessage& GetObscure() const;
@@ -49,7 +49,8 @@ class HintText {
     bool operator!=(const HintText& right) const;
 
   private:
-    CustomMessage clearText; //RANDOTODO proper system to define use of articles instead of having the name and name with articles repeated
+    CustomMessage clearText; // RANDOTODO proper system to define use of articles instead of having the name and name
+                             // with articles repeated
     std::vector<CustomMessage> ambiguousText = {};
     std::vector<CustomMessage> obscureText = {};
     CustomMessage name;
