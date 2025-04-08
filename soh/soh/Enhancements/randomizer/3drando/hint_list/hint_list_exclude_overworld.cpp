@@ -1937,23 +1937,41 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
                                             /*german*/ TODO_TRANSLATE,
                                             /*french*/ "Selon moi, #jouer une mélodie orageuse pour une pierre étrange dans le côté d'un cratère# révèle [[1]].", {QM_RED, QM_GREEN}));
     
-    hintTextTable[RHT_LH_ISLAND_SUN_FAIRY] = HintText(CustomMessage("They say that #summoning the sun on the lake's island# calls #[[1]]#.", {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_LH_ISLAND_SUN_FAIRY] = HintText(CustomMessage("They say that #summoning the sun on the lake's island# calls #[[1]]#.", 
+                                            /*german*/ TODO_TRANSLATE,
+                                            /*french*/ "Selon moi, #appeler le soleil sur l'île du lac # révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_HF_POND_STORMS_FAIRY] = HintText(CustomMessage("They say that #calling rain to the field's pond# summons #[[1]]#.", {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_HF_POND_STORMS_FAIRY] = HintText(CustomMessage("They say that #calling rain to the field's pond# summons #[[1]]#.", 
+                                            /*german*/ TODO_TRANSLATE,
+                                            /*french*/ "Selon moi, #jouer une mélodie orageuse dans l'étang d'une plaine# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_HF_FENCE_GROTTO_STORMS_FAIRY] = HintText(CustomMessage("They say that #making it rain in a scrub's cave# wakes #[[1]]#.", {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_HF_FENCE_GROTTO_STORMS_FAIRY] = HintText(CustomMessage("They say that #making it rain in a scrub's cave# wakes #[[1]]#.", 
+                                            /*german*/ TODO_TRANSLATE,
+                                            /*french*/ "Selon moi, #jouer une mélodie orageuse dans la grotte d'une Peste Mojo# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_DMT_FLAG_SUN_FAIRY] = HintText(CustomMessage("They say that #changing the time in front of the trail's flag# reveals #[[1]]#.", {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_DMT_FLAG_SUN_FAIRY] = HintText(CustomMessage("They say that #changing the time in front of the trail's flag# reveals #[[1]]#.", 
+                                            /*german*/ TODO_TRANSLATE,
+                                            /*french*/ "Selon moi, #appeler le soleil devant un drapeau du Mont du Péril # révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_DMT_COW_GROTTO_STORMS_FAIRY] = HintText(CustomMessage("They say that #calling a storm for a lonely cow# reveals #[[1]]#.", {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_DMT_COW_GROTTO_STORMS_FAIRY] = HintText(CustomMessage("They say that #calling a storm for a lonely cow# reveals #[[1]]#.", 
+                                            /*german*/ TODO_TRANSLATE,
+                                            /*french*/ "Selon moi, #jouer une mélodie orageuse pour une vache solitaire# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_LW_SHORTCUT_STORMS_FAIRY] = HintText(CustomMessage("They say that #making it rain in the Lost Woods# reveals #[[1]]#.", {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_LW_SHORTCUT_STORMS_FAIRY] = HintText(CustomMessage("They say that #making it rain in the Lost Woods# reveals #[[1]]#.",{QM_RED, QM_GREEN}));
+                                            /*german*/ TODO_TRANSLATE,
+                                            /*french*/ "Selon moi, #jouer une mélodie orageuse dans les Bois Perdus# révèle #[[1]]#.", 
 
-    hintTextTable[RHT_GF_KITCHEN_SUN_FAIRY] = HintText(CustomMessage("They say that #calling the sun in a guarded kitchen# exposes #[[1]]#.", {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_GF_KITCHEN_SUN_FAIRY] = HintText(CustomMessage("They say that #calling the sun in a guarded kitchen# exposes #[[1]]#.", 
+                                            /*german*/ TODO_TRANSLATE,
+                                            /*french*/ "Selon moi, #appeler le soleil dans une cuisine gardée# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_LW_DEKU_SCRUB_GROTTO_SUN_FAIRY] = HintText(CustomMessage("They say that #calling the sun for scrubs in the Lost Woods# reveals #[[1]]#.", { QM_RED, QM_GREEN }));
+    hintTextTable[RHT_LW_DEKU_SCRUB_GROTTO_SUN_FAIRY] = HintText(CustomMessage("They say that #calling the sun for scrubs in the Lost Woods# reveals #[[1]]#.", 
+                                            /*german*/ TODO_TRANSLATE,
+                                            /*french*/ "Selon moi, #appeler le soleil pour les Pestes dans les Bois Perdus # révèle #[[1]]#.", { QM_RED, QM_GREEN }));
 
-    hintTextTable[RHT_GRAVEYARD_ROYAL_FAMILYS_TOMB_SUN_FAIRY] = HintText(CustomMessage("They say that #calling the sun in a royal tomb# reveals #[[1]]#.", { QM_RED, QM_GREEN }));
+    hintTextTable[RHT_GRAVEYARD_ROYAL_FAMILYS_TOMB_SUN_FAIRY] = HintText(CustomMessage("They say that #calling the sun in a royal tomb# reveals #[[1]]#.", 
+                                            /*german*/ TODO_TRANSLATE,
+                                            /*french*/ "Selon moi, #appeler le soleil dans une tombe royale# révèle #[[1]]#.", { QM_RED, QM_GREEN }));
 
     hintTextTable[RHT_KF_GRASS] = HintText(CustomMessage("They say that #cutting some grass in a forest# reveals #[[1]]#.",
                             /*german*/ TODO_TRANSLATE,
