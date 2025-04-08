@@ -6,7 +6,7 @@ namespace Rando {
 void StaticData::HintTable_Init_Exclude_Overworld() {
     // clang-format off
 
-   hintTextTable[RHT_KF_KOKIRI_SWORD_CHEST] = HintText(CustomMessage("They say that the #hidden treasure of the Kokiri# is #[[1]]#.",
+    hintTextTable[RHT_KF_KOKIRI_SWORD_CHEST] = HintText(CustomMessage("They say that the #hidden treasure of the Kokiri# is #[[1]]#.",
                                                            /*german*/ "Man erzählt sich, daß der #versteckte Schatz der Kokiri# #[[1]]# sei.",
                                                            /*french*/ "Selon moi, le #trésor des Kokiri# est #[[1]]#.", {QM_RED, QM_GREEN}));
                                                         // /*spanish*/ Según dicen, el #tesoro oculto de los Kokiri# esconde #[[1]]#.
@@ -1557,127 +1557,127 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
                                                         /*french*/ "Selon moi, un cœur dans la #maison d'une amie chère# cache #[[1]]#.", {QM_RED, QM_GREEN}));
                                                      // /*spanish*/
     hintTextTable[RHT_LOST_WOODS_RUPEE] = HintText(CustomMessage("They say that under a #boulder in the woods# lies #[[1]]#.",
-                                                      /*german*/ TODO_TRANSLATE,
+                                                      /*german*/ "Man erzählt sich, daß unter einem #Felsen in den Wäldern# #[[1]]# läge.",
                                                       /*french*/ "Selon moi, sous un #rocher dans les bois# se trouve #[[1]]#.", {QM_RED, QM_GREEN}));
                                                    // /*spanish*/
     hintTextTable[RHT_LOST_WOODS_SHORTCUT_RUPEE] = HintText(CustomMessage("They say that in a #pool of water in the woods# lies #[[1]]#.",
-                                                               /*german*/ TODO_TRANSLATE,
+                                                               /*german*/ "Man erzählt sich, daß in einem #Wasserbecken in den Wäldern# #[[1]]# läge.",
                                                                /*french*/ "Selon moi, dans une #mare d'eau dans les bois# se trouve #[[1]]#.", {QM_RED, QM_GREEN}));
                                                             // /*spanish*/
     hintTextTable[RHT_LAKE_HYLIA_RUPEE] = HintText(CustomMessage("They say that just off the #coast of a lake# lies #[[1]]#.",
-                                                      /*german*/ TODO_TRANSLATE,
+                                                      /*german*/ "Man erzählt sich, daß an der #Küste eines Sees# #[[1]]# läge.",
                                                       /*french*/ "Selon moi, juste au large de la #côte d'un lac# se trouve #[[1]]#.", {QM_RED, QM_GREEN}));
                                                    // /*spanish*/
     hintTextTable[RHT_LABORATORY_RUPEE] = HintText(CustomMessage("They say that at the #bottom of a tank# lies #[[1]]#.",
-                                                      /*german*/ TODO_TRANSLATE,
+                                                      /*german*/ "Man erzählt sich, daß auf dem #Grund eines Reservoirs# #[[1]]# läge.",
                                                       /*french*/ "Selon moi, au #fond d'un réservoir# se trouve #[[1]]#.", {QM_RED, QM_GREEN}));
                                                    // /*spanish*/
     hintTextTable[RHT_DAMPES_GRAVE_RUPEE] = HintText(CustomMessage("They say that within a #quick-footed spirit's grave# lies #[[1]]#.",
-                                                        /*german*/ TODO_TRANSLATE,
+                                                        /*german*/ "Man erzählt sich, daß innerhalb eines #Grabes eines leichtfüßigen Geistes# #[[1]]# läge.",
                                                         /*french*/ "Selon moi, dans la #tombe d'un esprit à pieds rapides# se trouve #[[1]]#.", {QM_RED, QM_GREEN}));
                                                      // /*spanish*/
     hintTextTable[RHT_GERUDO_VALLEY_GROTTO_RUPEE] = HintText(CustomMessage("They say that an Octarok in an #underground spring# guards #[[1]]#.",
-                                                                /*german*/ TODO_TRANSLATE,
+                                                                /*german*/ "Man erzählt sich, daß ein Oktorok in einer #untergründigen Quelle# #[[1]]# bewache.",
                                                                 /*french*/ "Selon moi, un Octrocher dans une #source souterraine# garde #[[1]]#.", {QM_RED, QM_GREEN}));
                                                              // /*spanish*/
     hintTextTable[RHT_DEATH_MOUNTAIN_TRAIL_RUPEE] = HintText(CustomMessage("They say that beneath a boulder on a #mountain's cliffside# lies #[[1]]#.",
-                                                                /*german*/ TODO_TRANSLATE,
+                                                                /*german*/ "Man erzählt sich, daß unterhalb eines Felsens an einem #abfallenden Felswand eines Berges# #[[1]]# läge.",
                                                                 /*french*/ "Selon moi, sous un rocher sur la #falaise d'une montagne# se trouve #[[1]]#.", {QM_RED, QM_GREEN}));
                                                              // /*spanish*/
     hintTextTable[RHT_DEATH_MOUNTAIN_TRAIL_GROTTO_HEART] = HintText(CustomMessage("They say that accompanying a #cow in a small cave# is #[[1]]#.",
-                                                                       /*german*/ TODO_TRANSLATE,
+                                                                       /*german*/ "Man erzählt sich, daß unterhalb eines Felsens an einem #abfallenden Felswand eines Berges# #[[1]]# läge.",
                                                                        /*french*/ "Selon moi, accompagner une #vache dans une petite grotte# est #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                     // /*spanish*/
     hintTextTable[RHT_DEATH_MOUNTAIN_TRAIL_GROTTO_RUPEE] = HintText(CustomMessage("They say that accompanying a #cow in a small cave# is #[[1]]#.",
-                                                                       /*german*/ TODO_TRANSLATE,
+                                                                       /*german*/ "Man erzählt sich, daß das Begleiten einer #Kuh in einer kleinen Höhle# #[[1]]# sei.",
                                                                        /*french*/ "Selon moi, accompagner une #vache dans une petite grotte# est #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                     // /*spanish*/
     hintTextTable[RHT_DEATH_MOUNTAIN_CRATER_RUPEE] = HintText(CustomMessage("They say that on a #small platform suspended above lava# lies #[[1]]#.",
-                                                                 /*german*/ TODO_TRANSLATE,
+                                                                 /*german*/ "Man erzählt sich, daß auf einer #oberhalb von Lava hängenden kleinen Plattform# #[[1]]# läge.",
                                                                  /*french*/ "Selon moi, sur une #petite plateforme suspendue au-dessus de la lave# se trouve #[[1]]#.", {QM_RED, QM_GREEN}));
                                                               // /*spanish*/
     hintTextTable[RHT_ZORAS_RIVER_WATERFALL_RUPEE] = HintText(CustomMessage("They say that beneath a #waterfall feeding a narrow river# lies #[[1]]#.",
-                                                                 /*german*/ TODO_TRANSLATE,
+                                                                 /*german*/ "Man erzählt sich, daß unterhalb eines #einen schmalen Fluss nährenden Wasserfall# #[[1]]# läge.",
                                                                  /*french*/ "Selon moi, sous une #cascade alimentant une rivière étroite# se trouve #[[1]]#.", {QM_RED, QM_GREEN}));
                                                               // /*spanish*/
     hintTextTable[RHT_ZORAS_FOUNTAIN_RUPEE] = HintText(CustomMessage("They say that at the bottom of a #partially-frozen spring# lies #[[1]]#.",
-                                                          /*german*/ TODO_TRANSLATE,
+                                                          /*german*/ "Man erzählt sich, daß auf dem Grund einer #teilweise gefrorenen Quelle# #[[1]]# läge.",
                                                           /*french*/ "Selon moi, au fond d'une #source partiellement gelée# se trouve #[[1]]#.", {QM_RED, QM_GREEN}));
                                                        // /*spanish*/
 
     hintTextTable[RHT_SFM_FAIRY_GROTTO_FAIRY] = HintText(CustomMessage("They say that within #a fountain beneath a forest meadow# rests #[[1]]#.",
-                                            /*german*/ TODO_TRANSLATE,
+                                            /*german*/ "Man erzählt sich, daß innerhalb #eines Brunnens unter einer Waldwiese# #[[1]]# ruhe.",
                                             /*french*/ "Selon moi, dans #une fontaine sous un bosquet forestier# repose #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_ZR_FAIRY_GROTTO_FAIRY] = HintText(CustomMessage("They say that within #a fountain beneath a river# rests #[[1]]#.",
-                                            /*german*/ TODO_TRANSLATE,
+                                            /*german*/ "Man erzählt sich, daß innerhalb #eines Brunnens unter einem Fluß# #[[1]]# ruhe.",
                                             /*french*/ "Selon moi, dans #une fontaine sous une rivière# repose #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_HF_FAIRY_GROTTO_FAIRY] = HintText(CustomMessage("They say that within #a fountain beneath a a few trees bordering a wide field# rests #[[1]]#.",
-                                            /*german*/ TODO_TRANSLATE,
+    hintTextTable[RHT_HF_FAIRY_GROTTO_FAIRY] = HintText(CustomMessage("They say that within #a fountain beneath a few trees bordering a wide field# rests #[[1]]#.",
+                                            /*german*/ "Man erzählt sich, daß innerhalb #eines Brunnens unter ein weites Feld angrenzenden Bäumen# #[[1]]# ruhe.",
                                             /*french*/ "Selon moi, dans #une fontaine sous quelques arbres bordant un vaste champ# repose #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_ZD_FAIRY_GROTTO_FAIRY] = HintText(CustomMessage("They say that within #a fountain beneath the home of the Zoras# rests #[[1]]#.",
-                                            /*german*/ TODO_TRANSLATE,
+                                            /*german*/ "Man erzählt sich, daß innerhalb #eines Brunnens unter der Heimat der Zoras# #[[1]]# ruhe.",
                                             /*french*/ "Selon moi, dans #une fontaine sous la maison des Zora# repose #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_GF_FAIRY_GROTTO_FAIRY] = HintText(CustomMessage("They say that within #a fountain beneath the home of thieves# rests #[[1]]#.",
-                                            /*german*/ TODO_TRANSLATE,
+                                            /*german*/ "Man erzählt sich, daß innerhalb #eines Brunnens unter der Heimat von Dieben# #[[1]]# ruhe.",
                                             /*french*/ "Selon moi, dans #une fontaine sous la maison des voleurs# repose #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_GRAVEYARD_SHIELD_GRAVE_FAIRY] = HintText(CustomMessage("They say that within #a fountain behind a wall within a grave# rests #[[1]]#.",
-                                            /*german*/ TODO_TRANSLATE,
+                                            /*german*/ "Man erzählt sich, daß innerhalb #eines Brunnens unter einer Mauer innerhalb eines Grabes# #[[1]]# ruhe.",
                                             /*french*/ "Selon moi, dans #une fontaine derrière un mur dans une tombe# repose #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_COLOSSUS_OASIS_FAIRY] = HintText(CustomMessage("They say that #restoring water to a dried oasis# reveals #[[1]]#.",
-                                            /*german*/ TODO_TRANSLATE,
+                                            /*german*/ "Man erzählt sich, daß das #Wiederbringen von Wasser zu einer ausgetrockneten Oase# #[[1]]# enthülle.",
                                             /*french*/ "Selon moi, #restaurer l'eau dans un oasis asséché# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_ZR_BEAN_SPROUT_FAIRY] = HintText(CustomMessage("They say that #watering a young sprout on the riverside# reveals #[[1]]#.",
-                                            /*german*/ TODO_TRANSLATE,
+                                            /*german*/ "Man erzählt sich, daß das #Wässern eines jungen Sprosses am Flußufer# #[[1]]# enthülle.",
                                             /*french*/ "Selon moi, #arroser une jeune pousse au bord de la rivière# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_KF_BEAN_SPROUT_FAIRY] = HintText(CustomMessage("They say that #watering a young sprout near a forest shop# reveals #[[1]]#.",
-                                            /*german*/ TODO_TRANSLATE,
+                                            /*german*/ "Man erzählt sich, daß das #Wässern eines jungen Sprosses nahe des Waldladens# #[[1]]# enthülle.",
                                             /*french*/ "Selon moi, #arroser une jeune pousse près d'un magasin forestier# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_LW_BEAN_SPROUT_NEAR_BRIDGE_FAIRY] = HintText(CustomMessage("They say that #watering a young sprout near the entrance to the forest# reveals #[[1]]#.",
-                                            /*german*/ TODO_TRANSLATE,
+                                            /*german*/ "Man erzählt sich, daß das #Wässern eines jungen Sprosses nahe des Eingangs zum Wald# #[[1]]# enthülle.",
                                             /*french*/ "Selon moi, #arroser une jeune pousse près de l'entrée de la forêt# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_LW_BEAN_SPROUT_NEAR_THEATER_FAIRY] = HintText(CustomMessage("They say that #watering a young sprout above a sylvan theatre# reveals #[[1]]#.",
-                                            /*german*/ TODO_TRANSLATE,
+                                            /*german*/ "Man erzählt sich, daß das #Wässern eines jungen Sprosses oberhalb eines waldigen Theaters# #[[1]]# enthülle.",
                                             /*french*/ "Selon moi, #arroser une jeune pousse au-dessus d'un théâtre sylvestre# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_LH_BEAN_SPROUT_FAIRY] = HintText(CustomMessage("They say that #watering a young sprout on the lakeside# reveals #[[1]]#.",
-                                            /*german*/ TODO_TRANSLATE,
+                                            /*german*/ "Man erzählt sich, daß das #Wässern eines jungen Sprosses am Seeufer# #[[1]]# enthülle.",
                                             /*french*/ "Selon moi, #arroser une jeune pousse au bord du lac# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_GV_BEAN_SPROUT_FAIRY] = HintText(CustomMessage("They say that #watering a young sprout on the side of a canyon# reveals #[[1]]#.",
-                                            /*german*/ TODO_TRANSLATE,
+                                            /*german*/ "Man erzählt sich, daß das #Wässern eines jungen Sprosses an der Seite einer Schlucht# #[[1]]# enthülle.",
                                             /*french*/ "Selon moi, #arroser une jeune pousse sur le côté d'un canyon# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_COLOSSUS_BEAN_SPROUT_FAIRY] = HintText(CustomMessage("They say that #watering a young sprout near a temple of the sand# reveals #[[1]]#.",
-                                            /*german*/ TODO_TRANSLATE,
+                                            /*german*/ "Man erzählt sich, daß das #Wässern eines jungen Sprosses nahe eines Tempels des Sandes# #[[1]]# enthülle.",
                                             /*french*/ "Selon moi, #arroser une jeune pousse près d'un temple du sable# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_GRAVEYARD_BEAN_SPROUT_FAIRY] = HintText(CustomMessage("They say that #watering a young sprout within a graveyard# reveals #[[1]]#.",
-                                            /*german*/ TODO_TRANSLATE,
+                                            /*german*/ "Man erzählt sich, daß das #Wässern eines jungen Sprosses auf einem Friedhof# #[[1]]# enthülle.",
                                             /*french*/ "Selon moi, #arroser une jeune pousse dans un cimetière# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_DMC_BEAN_SPROUT_FAIRY] = HintText(CustomMessage("They say that #watering a young sprout within a volcano# reveals #[[1]]#.",
-                                            /*german*/ TODO_TRANSLATE,
+                                            /*german*/ "Man erzählt sich, daß das #Wässern eines jungen Sprosses innerhalb eines Vulkans# #[[1]]# enthülle.",
                                             /*french*/ "Selon moi, #arroser une jeune pousse dans un volcan# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_DMT_BEAN_SPROUT_FAIRY] = HintText(CustomMessage("They say that #watering a young sprout on the moutainside# reveals #[[1]]#.",
-                                            /*german*/ TODO_TRANSLATE,
+    hintTextTable[RHT_DMT_BEAN_SPROUT_FAIRY] = HintText(CustomMessage("They say that #watering a young sprout on the mountainside# reveals #[[1]]#.",
+                                            /*german*/ "Man erzählt sich, daß das #Wässern eines jungen Sprosses an einem Berghang# #[[1]]# enthülle.",
                                             /*french*/ "Selon moi, #arroser une jeune pousse sur le flanc d'une montagne# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_TOT_GOSSIP_STONE_FAIRY] = HintText(CustomMessage("They say that #playing a tune for an odd stone in the ouskirts of the market# reveals #[[1]]#.",
+    hintTextTable[RHT_TOT_GOSSIP_STONE_FAIRY] = HintText(CustomMessage("They say that #playing a tune for an odd stone in the outskirts of the market# reveals #[[1]]#.",
                                             /*german*/ TODO_TRANSLATE,
                                             /*french*/ "Selon moi, #jouer une mélodie pour une pierre étrange en périphérie du marché# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_TOT_GOSSIP_STONE_FAIRY_BIG] = HintText(CustomMessage("They say that #playing a stormy tune for an odd stone in the ouskirts of the market# reveals #[[1]]#.",
+    hintTextTable[RHT_TOT_GOSSIP_STONE_FAIRY_BIG] = HintText(CustomMessage("They say that #playing a stormy tune for an odd stone in the outskirts of the market# reveals #[[1]]#.",
                                             /*german*/ TODO_TRANSLATE,
                                             /*french*/ "Selon moi, #jouer une mélodie orageuse pour une pierre étrange en périphérie du marché# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
