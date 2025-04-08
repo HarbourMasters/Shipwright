@@ -1593,7 +1593,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         }
         case VB_GIVE_RANDO_GLITCH_FISHING_PRIZE: {
             if (IS_RANDO) {
-                VBFishingData* fishData = va_arg(args, VBFishingData*);
+                Fishing* fishing = va_arg(args, Fishing*);
                 if (!Flags_GetRandomizerInf(RAND_INF_ADULT_FISHING)) {
                     Flags_SetRandomizerInf(RAND_INF_ADULT_FISHING);
                 }
