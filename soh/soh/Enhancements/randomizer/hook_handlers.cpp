@@ -1591,6 +1591,17 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             }
             break;
         }
+        case VB_GIVE_RANDO_GLITCH_FISHING_PRIZE: {
+            if (IS_RANDO) {
+                VBFishingData* fishData = va_arg(args, VBFishingData*);
+                if (!Flags_GetRandomizerInf(RAND_INF_ADULT_FISHING)) {
+                    Flags_SetRandomizerInf(RAND_INF_ADULT_FISHING);
+                }
+                *should = true;
+                fishData->actor->stateAndTimer = 0;
+            }
+            break;
+        }
         case VB_TRADE_TIMER_EYEDROPS: {
             EnMk* enMk = va_arg(args, EnMk*);
             Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_LH_TRADE_FROG);

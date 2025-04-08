@@ -5170,7 +5170,9 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
             if (Actor_HasParent(&this->actor, play)) {
                 this->stateAndTimer = 24;
             } else {
-                Actor_OfferGetItem(&this->actor, play, GI_SCALE_GOLDEN, 2000.0f, 1000.0f);
+                if (!GameInteractor_Should(VB_GIVE_RANDO_GLITCH_FISHING_PRIZE, false, &this)) {
+                    Actor_OfferGetItem(&this->actor, play, GI_SCALE_GOLDEN, 2000.0f, 1000.0f);
+                }
             }
             break;
 
