@@ -120,7 +120,6 @@ static EnemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] =
     { ACTOR_EN_CROW, 0 },       // Guay
     { ACTOR_EN_FIREFLY, 4 },    // Ice Keese
     { ACTOR_EN_ST, 2 },         // Skulltula (invisible)
-    { ACTOR_EN_IK, 3 },         // Iron Knuckle (white, standing)
     { ACTOR_EN_FIREFLY, 2 },    // Regular Keese
     { ACTOR_EN_DEKUBABA, 1 },   // Deku Baba (large)
     { ACTOR_EN_RR, 0 },         // Like-Like
@@ -141,6 +140,7 @@ static EnemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] =
     { ACTOR_EN_TP, -1 },        // Electric Tailpasaran
     { ACTOR_EN_BW, 0 },         // Torch Slug
     { ACTOR_EN_WALLMAS, 1 },    // Wallmaster
+    { ACTOR_EN_IK, 3 },         // Iron Knuckle (white, standing)
     { ACTOR_EN_WF, 1 },         // Wolfos (white)
     { ACTOR_EN_KAREBABA, 0 },   // Withered Deku Baba
 
