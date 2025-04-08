@@ -1170,7 +1170,6 @@ void BeginFloatingWindows(std::string UniqueName, ImGuiWindowFlags flags = 0) {
     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 4.0f);
     ImGui::Begin(UniqueName.c_str(), nullptr, windowFlags);
-    ImGui::GetCurrentWindow()->Name;
 }
 void EndFloatingWindows() {
     ImGui::PopStyleVar();
