@@ -488,11 +488,10 @@ void Randomizer::LoadMerchantMessages() {
     // prompted buy/don't buy
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_SHOP_ITEM_RANDOM,
-        CustomMessage(
-            "\x08#[[1]]#  #[[2]]_Rupees#&Special deal! #ONE LEFT#!&Get it while it lasts!\x0A\x02",
-            "\x08#[[1]]#  #[[2]]_Rubine#&Sonderangebot! #NUR NOCH EINES VERFÜGBAR#!&Beeilen Sie sich!\x0A\x02",
-            "\x08#[[1]]#  #[[2]]_Rubis#&Offre spéciale! #DERNIER EN STOCK#!&Faites vite!\x0A\x02",
-            { QM_GREEN, QM_YELLOW, QM_RED }));
+        CustomMessage("\x08#[[1]]#  #[[2]]_Rupees#&Special deal! #ONE LEFT#!&Get it while it lasts!\x0A\x02",
+                      "\x08#[[1]]#  #[[2]]_Rubine#&#NUR NOCH EINES VERFÜGBAR#!&Beeilen Sie sich!\x0A\x02",
+                      "\x08#[[1]]#  #[[2]]_Rubis#&#DERNIER EN STOCK#!&Faites vite!\x0A\x02",
+                      { QM_GREEN, QM_YELLOW, QM_RED }));
 
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_SHOP_ITEM_RANDOM_CONFIRM,
@@ -5255,7 +5254,7 @@ void Randomizer::CreateCustomMessages() {
                   "Vous obtenez la %rClé %wdu %gBazar&de la Place du Marché%w!"),
         GIMESSAGE(RG_MARKET_POTION_SHOP_KEY, ITEM_KEY_SMALL, "You found the key to the&%gMarket Potion Shop%w!",
                   "Du erhältst einen %rkleinen&Schlüssel%w für den %gMagie-Laden des Marktes%w!",
-                  "Vous obtenez la %rClé %wde la&%gPlace du Marché%w!"),
+                  "Vous obtenez la %rClé %wdu&%gMagasin de Potions de la&Place du Marché%w!"),
         GIMESSAGE(RG_MASK_SHOP_KEY, ITEM_KEY_SMALL, "You found the key to the&%gMask Shop%w!",
                   "Du erhältst einen %rkleinen&Schlüssel%w für den %gMaskenladen%w!",
                   "Vous obtenez la %rClé %wde la&%gFoire aux Masques%w!"),
@@ -5287,7 +5286,7 @@ void Randomizer::CreateCustomMessages() {
                   "Vous obtenez la %rClé %wdu %gMagasin de&Potions de Cocorico%w!"),
         GIMESSAGE(RG_BOSS_HOUSE_KEY, ITEM_KEY_SMALL, "You found the key to the&%gBoss's House%w!",
                   "Du erhältst einen %rkleinen&Schlüssel%w für das %gHaus des Chefs%w!",
-                  "Vous obtenez la %rClé %wde la %gMaison&du chef des ouvriers%w!"),
+                  "Vous obtenez la %rClé %wde la %gMaison&du Chef des Ouvriers%w!"),
         GIMESSAGE(RG_GRANNYS_POTION_SHOP_KEY, ITEM_KEY_SMALL, "You found the key to&%gGranny's Potion Shop%w!",
                   "Du erhältst einen %rkleinen&Schlüssel%w für %gAsas Hexenladen%w!",
                   "Vous obtenez la %rClé %wde&l'%gApothicaire%w!"),
