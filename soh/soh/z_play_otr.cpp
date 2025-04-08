@@ -79,8 +79,15 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
     YREG(15) = 0;
     gSaveContext.worldMapArea = 0;
     OTRScene_ExecuteCommands(play, (SOH::Scene*)play->sceneSegment);
+
     // Replace skybox with normal sky
+    Player* player = GET_PLAYER(gPlayState);
     play->skyboxId = SKYBOX_NORMAL_SKY;
+    // Apply the always cloudy skybox as an adult for Temple of Time and the Market
+    if (LINK_IS_ADULT && gPlayState->sceneNum == SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS || gPlayState->sceneNum ==  SCENE_MARKET_RUINS || gPlayState->sceneNum ==  SCENE_MARKET_ENTRANCE_RUINS) {
+        gWeatherMode = 3;
+    }
+    
     Play_InitEnvironment(play, play->skyboxId);
     /* auto data = static_cast<LUS::Vertex*>(Ship::Context::GetInstance()
                                                ->GetResourceManager()
