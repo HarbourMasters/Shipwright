@@ -33,7 +33,7 @@ struct HintSetting {
 class HintText {
   public:
     HintText() = default;
-    explicit HintText(CustomMessage clearText_, std::vector<CustomMessage> ambiguousText_ = {},
+    HintText(CustomMessage clearText_, std::vector<CustomMessage> ambiguousText_ = {},
                       std::vector<CustomMessage> obscureText_ = {}, CustomMessage name_ = { "" });
     const CustomMessage& GetName() const;
     const CustomMessage& GetClear() const;
