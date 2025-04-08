@@ -1982,6 +1982,19 @@ void RecalculateAvailableChecks() {
     for (auto& rc : availableChecks) {
         const auto& location = Rando::StaticData::GetLocation(rc);
         const auto& itemLocation = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
+
+        bool regionDiscovered = false;
+        const auto& entrances = areaTable[itemLocation->GetParentRegionKey()].entrances;
+        for (const auto& entrance : entrances) {
+            if (IsEntranceDiscovered(entrance->GetIndex())) {
+                regionDiscovered = true;
+                break;
+            }
+        }
+        if (!regionDiscovered) {
+            continue;
+        }
+
         if (location->GetRCType() == RCTYPE_SHOP && itemLocation->GetCheckStatus() == RCSHOW_IDENTIFIED) {
             if (CanBuyAnother(rc)) {
                 itemLocation->SetAvailable(true);
