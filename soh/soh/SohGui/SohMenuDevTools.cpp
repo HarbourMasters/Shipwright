@@ -88,7 +88,7 @@ void SohMenu::AddMenuDevTools() {
         })
         .SameLine(true);
     AddWidget(path, "Log Level", WIDGET_CVAR_COMBOBOX)
-        .CVar("gDeveloperTools.LogLevel")
+        .CVar(CVAR_DEVELOPER_TOOLS("LogLevel"))
         .Options(ComboboxOptions()
                      .Tooltip("The log level determines which messages are printed to the "
                               "console. This does not affect the log file output")
