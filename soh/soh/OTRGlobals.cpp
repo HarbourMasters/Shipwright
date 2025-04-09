@@ -1152,9 +1152,11 @@ extern "C" void InitOTR() {
 #endif
 
     CheckSoHOTRVersion(Ship::Context::GetPathRelativeToAppBundle("soh.o2r"));
-    const bool ootO2RExists = std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs("oot-mq.o2r", appShortName)) ||
+    const bool ootO2RExists =
+        std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs("oot-mq.o2r", appShortName)) ||
         std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs("oot.o2r", appShortName));
-    const bool ootOTRExists = std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs("oot-mq.otr", appShortName)) ||
+    const bool ootOTRExists =
+        std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs("oot-mq.otr", appShortName)) ||
         std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs("oot.otr", appShortName));
 
     if (!ootOTRExists && !ootO2RExists) {
