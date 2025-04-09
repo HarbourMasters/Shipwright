@@ -245,6 +245,7 @@ Color_RGBA8 Color_Saved_Extra = { 0, 185, 0, 255 };               // Green
 std::vector<uint32_t> buttons = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT, BTN_CRIGHT, BTN_L,
                                   BTN_Z, BTN_R, BTN_START, BTN_DUP,   BTN_DDOWN, BTN_DLEFT,  BTN_DRIGHT };
 static ImGuiTextFilter checkSearch;
+static bool recalculateAvailable = false;
 std::array<bool, RCAREA_INVALID> filterAreasHidden = { 0 };
 std::array<bool, RC_MAX> filterChecksHidden = { 0 };
 
@@ -877,7 +878,7 @@ void SaveTrackerData(SaveContext* saveContext, int sectionID, bool fullSave) {
 void SaveFile(SaveContext* saveContext, int sectionID, bool fullSave) {
     SaveTrackerData(saveContext, sectionID, fullSave);
     if (fullSave) {
-        RecalculateAvailableChecks();
+        recalculateAvailable = true;
     }
 }
 
@@ -2032,6 +2033,10 @@ static std::unordered_map<int32_t, const char*> buttonStrings = {
 };
 
 void CheckTrackerSettingsWindow::DrawElement() {
+    if (recalculateAvailable) {
+        recalculateAvailable = false;
+        RecalculateAvailableChecks();
+    }
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
     if (ImGui::BeginTable("CheckTrackerSettingsTable", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
         ImGui::TableSetupColumn("General settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
