@@ -1975,43 +1975,43 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
 
     hintTextTable[RHT_KF_GRASS] = HintText(CustomMessage("They say that #cutting some grass in a forest# reveals #[[1]]#.",
                             /*german*/ "Man erzählt sich, daß das #Schneiden einiger Gräser in einem Wald# #[[1]]# enthülle.",
-                            /*french*/ "Selon moi, de l#herbe dans un fôret# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+                            /*french*/ "Selon moi, de l'#herbe dans un fôret# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_LW_GRASS] = HintText(CustomMessage("They say that #cutting some grass in the woods# reveals #[[1]]#.",
                             /*german*/ "Man erzählt sich, daß das #Schneiden einiger Gräser in den Wäldern# #[[1]]# enthülle.",
-                            /*french*/ "Selon moi, de l#herbe dans des bois# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+                            /*french*/ "Selon moi, de l'#herbe dans des bois# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_MARKET_GRASS] = HintText(CustomMessage("They say that #cutting some grass in the market# reveals #[[1]]#.",
                             /*german*/ "Man erzählt sich, daß das #Schneiden einiger Gräser auf dem Markt# #[[1]]# enthülle.",
-                            /*french*/ "Selon moi, de l#herbe dans un marché# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+                            /*french*/ "Selon moi, de l'#herbe dans un marché# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_HC_GRASS] = HintText(CustomMessage("They say that #cutting some grass near the castle# reveals #[[1]]#.",
                             /*german*/ "Man erzählt sich, daß das #Schneiden einiger Gräser in der Nähe vom Schloß# #[[1]]# enthülle.",
-                            /*french*/ "Selon moi, de l#herbe près du château# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+                            /*french*/ "Selon moi, de l'#herbe près du château# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_KAK_GRASS] = HintText(CustomMessage("They say that #cutting some grass in a village# reveals #[[1]]#.",
                             /*german*/ "Man erzählt sich, daß das #Schneiden einiger Gräser in einem Dorf# #[[1]]# enthülle.",
-                            /*french*/ "Selon moi, de l#herbe dans un village# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+                            /*french*/ "Selon moi, de l'#herbe dans un village# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_GY_GRASS] = HintText(CustomMessage("They say that #cutting some grass in a graveyard# reveals #[[1]]#.",
                             /*german*/ "Man erzählt sich, daß das #Schneiden einiger Gräser auf einem Friedhof# #[[1]]# enthülle.",
-                            /*french*/ "Selon moi, de l#herbe dans un cimetère# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+                            /*french*/ "Selon moi, de l'#herbe dans un cimetère# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_LH_GRASS] = HintText(CustomMessage("They say that #cutting some grass near a lake# reveals #[[1]]#.",
                             /*german*/ "Man erzählt sich, daß das #Schneiden einiger Gräser nahe eines Sees# #[[1]]# enthülle.",
-                            /*french*/ "Selon moi, de l#herbe près d'un lac# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+                            /*french*/ "Selon moi, de l'#herbe près d'un lac# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_HF_GRASS] = HintText(CustomMessage("They say that #cutting some grass on a field# reveals #[[1]]#.",
                             /*german*/ "Man erzählt sich, daß das #Schneiden einiger Gräser auf einem Feld# #[[1]]# enthülle.",
-                            /*french*/ "Selon moi, de l#herbe dans une plaine# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+                            /*french*/ "Selon moi, de l'#herbe dans une plaine# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_ZR_GRASS] = HintText(CustomMessage("They say that #cutting some grass near a river# reveals #[[1]]#.",
                             /*german*/ "Man erzählt sich, daß das #Schneiden einiger Gräser in der Nähe von einem Fluß# #[[1]]# enthülle.",
-                            /*french*/ "Selon moi, de l#herbe près d'une rivière# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+                            /*french*/ "Selon moi, de l'#herbe près d'une rivière# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_GROTTO_GRASS] = HintText(CustomMessage("They say that #cutting some grass in a grotto# reveals #[[1]]#.",
                             /*german*/ "Man erzählt sich, daß das #Schneiden einiger Gräser in einer Grotte# #[[1]]# enthülle.",
-                            /*french*/ "Selon moi, de l#herbe# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+                            /*french*/ "Selon moi, de l'#herbe# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 	
     hintTextTable[RHT_CRATE_GERUDO_VALLEY] = HintText(CustomMessage("They say that a #crate in Gerudo Valley# contains #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß eine #Kiste im Gerudotal# #[[1]]# enthielte.",
