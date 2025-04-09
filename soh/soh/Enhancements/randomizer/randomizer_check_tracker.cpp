@@ -1967,11 +1967,13 @@ void RecalculateAvailableChecks() {
     ResetPerformanceTimer(PT_RECALCULATE_AVAILABLE_CHECKS);
     StartPerformanceTimer(PT_RECALCULATE_AVAILABLE_CHECKS);
 
+    const auto& ctx = Rando::Context::GetInstance();
+
     std::vector<RandomizerCheck> targetLocations;
     targetLocations.reserve(RR_MAX);
     for (auto& location : Rando::StaticData::GetLocationTable()) {
         RandomizerCheck rc = location.GetRandomizerCheck();
-        Rando::ItemLocation* itemLocation = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
+        Rando::ItemLocation* itemLocation = ctx->GetItemLocation(rc);
         itemLocation->SetAvailable(false);
         if (!itemLocation->HasObtained()) {
             targetLocations.emplace_back(rc);
@@ -1981,17 +1983,10 @@ void RecalculateAvailableChecks() {
     std::vector<RandomizerCheck> availableChecks = ReachabilitySearch(targetLocations, RG_NONE, true);
     for (auto& rc : availableChecks) {
         const auto& location = Rando::StaticData::GetLocation(rc);
-        const auto& itemLocation = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
+        const auto& itemLocation = ctx->GetItemLocation(rc);
+        const auto& region = areaTable[itemLocation->GetParentRegionKey()];
 
-        bool regionDiscovered = false;
-        const auto& entrances = areaTable[itemLocation->GetParentRegionKey()].entrances;
-        for (const auto& entrance : entrances) {
-            if (IsEntranceDiscovered(entrance->GetIndex())) {
-                regionDiscovered = true;
-                break;
-            }
-        }
-        if (!regionDiscovered) {
+        if (ctx->GetOption(RSK_SHUFFLE_ENTRANCES).Get() && !region.IsDiscovered) {
             continue;
         }
 
@@ -2008,7 +2003,7 @@ void RecalculateAvailableChecks() {
     for (auto& [rcArea, vec] : checksByArea) {
         areaChecksAvailable[rcArea] = 0;
         for (auto& rc : vec) {
-            Rando::ItemLocation* itemLocation = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
+            Rando::ItemLocation* itemLocation = ctx->GetItemLocation(rc);
             if (itemLocation->IsAvailable() && IsVisibleInCheckTracker(rc) && !IsCheckHidden(rc)) {
                 areaChecksAvailable[rcArea]++;
             }

@@ -153,6 +153,7 @@ class EntranceShuffler {
 extern "C" {
 #endif
 EntranceOverride* Randomizer_GetEntranceOverrides();
+void Randomizer_EntranceDiscovered(s16 index);
 #ifdef __cplusplus
 }
 #endif

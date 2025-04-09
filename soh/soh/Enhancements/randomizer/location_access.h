@@ -138,6 +138,8 @@ class Region {
     bool addedToPool = false;
     ;
 
+    bool IsDiscovered = false;
+
     void ApplyTimePass();
 
     bool UpdateEvents();

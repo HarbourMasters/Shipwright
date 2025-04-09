@@ -4,6 +4,7 @@
 #include "3drando/pool_functions.hpp"
 #include "3drando/item_pool.hpp"
 #include "../debugger/performanceTimer.h"
+#include "randomizer_check_tracker.h"
 
 #include <spdlog/spdlog.h>
 
@@ -250,6 +251,8 @@ std::string EntranceNameByRegions(RandomizerRegion parentRegion, RandomizerRegio
     return RegionTable(parentRegion)->regionName + " -> " + RegionTable(connectedRegion)->regionName;
 }
 
+std::unordered_map<int16_t, Entrance*> entranceMap;
+
 void SetAllEntrancesData(std::vector<EntranceInfoPair>& entranceShuffleTable) {
     auto ctx = Rando::Context::GetInstance();
     for (auto& entrancePair : entranceShuffleTable) {
@@ -262,6 +265,7 @@ void SetAllEntrancesData(std::vector<EntranceInfoPair>& entranceShuffleTable) {
         forwardEntrance->SetIndex(forwardEntry.index);
         forwardEntrance->SetType(forwardEntry.type);
         forwardEntrance->SetAsPrimary();
+        entranceMap[forwardEntry.index] = forwardEntrance;
 
         // When decouple entrances is on, mark the forward entrance
         if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
@@ -273,6 +277,7 @@ void SetAllEntrancesData(std::vector<EntranceInfoPair>& entranceShuffleTable) {
             returnEntrance->SetIndex(returnEntry.index);
             returnEntrance->SetType(returnEntry.type);
             forwardEntrance->BindTwoWay(returnEntrance);
+            entranceMap[returnEntry.index] = returnEntrance;
 
             // Mark reverse entrance as decoupled
             if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
@@ -1667,21 +1672,11 @@ void EntranceShuffler::ParseJson(nlohmann::json spoilerFileJson) {
 void EntranceShuffler::ApplyEntranceOverrides() {
     SetAllEntrancesData(entranceShuffleTable);
 
-    std::unordered_map<int16_t, Entrance*> entrances;
-    for (uint32_t rr = RR_NONE; rr < RR_MAX; rr++) {
-        for (auto& exit : areaTable[rr].exits) {
-            int16_t index = exit.GetIndex();
-            if (index != -1) {
-                entrances[index] = &exit;
-            }
-        }
-    }
-
     for (size_t i = 0; i < entranceOverrides.size(); i++) {
         EntranceOverride entranceOverride = entranceOverrides[i];
 
-        Entrance* entrance = entrances[entranceOverride.index];
-        Entrance* overrideEntrance = entrances[entranceOverride.override];
+        Entrance* entrance = entranceMap[entranceOverride.index];
+        Entrance* overrideEntrance = entranceMap[entranceOverride.override];
 
         entrance->Disconnect();
         entrance->Connect(overrideEntrance->GetOriginalConnectedRegionKey());
@@ -1689,6 +1684,23 @@ void EntranceShuffler::ApplyEntranceOverrides() {
 }
 } // namespace Rando
 
-extern "C" EntranceOverride* Randomizer_GetEntranceOverrides() {
+extern "C" {
+EntranceOverride* Randomizer_GetEntranceOverrides() {
     return Rando::Context::GetInstance()->GetEntranceShuffler()->entranceOverrides.data();
+}
+
+void Randomizer_DiscoverRegion(Region* region) {
+    region->IsDiscovered = true;
+
+    // RANDOTODO: Discover other regions that will be known based on rando settings
+}
+
+void Randomizer_EntranceDiscovered(s16 index) {
+    Rando::Entrance* entrance = Rando::entranceMap[index];
+    Region* region = entrance->GetConnectedRegion();
+
+    Randomizer_DiscoverRegion(region);
+
+    CheckTracker::RecalculateAvailableChecks();
+}
 }
