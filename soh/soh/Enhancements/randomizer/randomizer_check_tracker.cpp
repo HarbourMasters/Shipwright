@@ -1086,14 +1086,6 @@ void CheckTrackerWindow::DrawElement() {
     bool doingCollapseOrExpand = optExpandAll || optCollapseAll;
     bool isThisAreaSpoiled;
     RandomizerCheckArea lastArea = RCAREA_INVALID;
-    Color_RGBA8 areaCompleteColor =
-        CVarGetColor(CVAR_TRACKER_CHECK("AreaComplete.MainColor.Value"), Color_Main_Default);
-    Color_RGBA8 areaIncompleteColor =
-        CVarGetColor(CVAR_TRACKER_CHECK("AreaIncomplete.MainColor.Value"), Color_Main_Default);
-    Color_RGBA8 extraCompleteColor =
-        CVarGetColor(CVAR_TRACKER_CHECK("AreaComplete.ExtraColor.Value"), Color_Area_Complete_Extra_Default);
-    Color_RGBA8 extraIncompleteColor =
-        CVarGetColor(CVAR_TRACKER_CHECK("AreaIncomplete.ExtraColor.Value"), Color_Area_Incomplete_Extra_Default);
     Color_RGBA8 mainColor;
     Color_RGBA8 extraColor;
     std::string stemp;
@@ -1121,11 +1113,11 @@ void CheckTrackerWindow::DrawElement() {
         } else {
             // Get the colour for the area
             if (thisAreaFullyChecked) {
-                mainColor = areaCompleteColor;
-                extraColor = extraCompleteColor;
+                mainColor = Color_Area_Complete_Main;
+                extraColor = Color_Area_Complete_Extra;
             } else {
-                mainColor = areaIncompleteColor;
-                extraColor = extraIncompleteColor;
+                mainColor = Color_Area_Incomplete_Main;
+                extraColor = Color_Area_Incomplete_Extra;
             }
 
             // Draw the area
