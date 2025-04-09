@@ -26,6 +26,7 @@ void MessageViewer::InitElement() {
 }
 
 void MessageViewer::DrawElement() {
+    ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
     ImGui::Text("Table ID");
     ImGui::SameLine();
     PushStyleInput(THEME_COLOR);
@@ -87,6 +88,7 @@ void MessageViewer::DrawElement() {
         mDisplayCustomMessageClicked = true;
     }
     PopStyleButton();
+    ImGui::EndDisabled();
 }
 
 void MessageViewer::UpdateElement() {

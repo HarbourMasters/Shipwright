@@ -849,6 +849,7 @@ void ActorViewer_AddTagForAllActors() {
 }
 
 void ActorViewerWindow::DrawElement() {
+    ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
     static Actor* display;
     static Actor empty{};
     static Actor* fetch = NULL;
@@ -1186,6 +1187,7 @@ void ActorViewerWindow::DrawElement() {
             actors.clear();
         }
     }
+    ImGui::EndDisabled();
 }
 
 void ActorViewerWindow::InitElement() {

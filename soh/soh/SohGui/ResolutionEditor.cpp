@@ -371,29 +371,37 @@ void RegisterResolutionWidgets() {
     WidgetPath path = { "Settings", "Graphics", SECTION_COLUMN_2 };
 
     // Resolution visualiser
-    mSohMenu->AddWidget(path, "Viewport dimensions: {} x {}", WIDGET_TEXT).PreFunc([](WidgetInfo& info) {
-        info.name = fmt::format("Viewport dimensions: {} x {}", gfx_current_game_window_viewport.width,
-                                gfx_current_game_window_viewport.height);
-    });
-    mSohMenu->AddWidget(path, "Internal resolution: {} x {}", WIDGET_TEXT).PreFunc([](WidgetInfo& info) {
-        info.name =
-            fmt::format("Internal resolution: {} x {}", gfx_current_dimensions.width, gfx_current_dimensions.height);
-    });
+    mSohMenu->AddWidget(path, "Viewport dimensions: {} x {}", WIDGET_TEXT)
+        .RaceDisable(false)
+        .PreFunc([](WidgetInfo& info) {
+            info.name = fmt::format("Viewport dimensions: {} x {}", gfx_current_game_window_viewport.width,
+                                    gfx_current_game_window_viewport.height);
+        });
+    mSohMenu->AddWidget(path, "Internal resolution: {} x {}", WIDGET_TEXT)
+        .RaceDisable(false)
+        .PreFunc([](WidgetInfo& info) {
+            info.name = fmt::format("Internal resolution: {} x {}", gfx_current_dimensions.width,
+                                    gfx_current_dimensions.height);
+        });
 
     //  Activator
     mSohMenu->AddWidget(path, "Enable advanced settings.", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_PREFIX_ADVANCED_RESOLUTION ".Enabled");
+        .CVar(CVAR_PREFIX_ADVANCED_RESOLUTION ".Enabled")
+        .RaceDisable(false);
     // Error/Warning display
     mSohMenu
         ->AddWidget(path, ICON_FA_EXCLAMATION_TRIANGLE " Significant frame rate (FPS) drops may be occuring.",
                     WIDGET_TEXT)
+        .RaceDisable(false)
         .PreFunc(
             [](WidgetInfo& info) { info.isHidden = !(!CVarGetInteger(CVAR_LOW_RES_MODE, 0) && IsDroppingFrames()); })
         .Options(TextOptions().Color(Colors::Orange));
     mSohMenu->AddWidget(path, ICON_FA_QUESTION_CIRCLE " \"N64 Mode\" is overriding these settings.", WIDGET_TEXT)
+        .RaceDisable(false)
         .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_LOW_RES_MODE, 0); })
         .Options(TextOptions().Color(Colors::LightBlue));
     mSohMenu->AddWidget(path, "Click to disable N64 mode", WIDGET_BUTTON)
+        .RaceDisable(false)
         .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_LOW_RES_MODE, 0); })
         .Callback([](WidgetInfo& info) {
             CVarSetInteger(CVAR_LOW_RES_MODE, 0);
@@ -401,17 +409,18 @@ void RegisterResolutionWidgets() {
         });
 
     // Aspect Ratio
-    mSohMenu->AddWidget(path, "AspectSep", WIDGET_SEPARATOR).PreFunc([](WidgetInfo& info) {
+    mSohMenu->AddWidget(path, "AspectSep", WIDGET_SEPARATOR).RaceDisable(false).PreFunc([](WidgetInfo& info) {
         if (mSohMenu->GetDisabledMap().at(DISABLE_FOR_ADVANCED_RESOLUTION_OFF).active) {
             info.activeDisables.push_back(DISABLE_FOR_ADVANCED_RESOLUTION_OFF);
         }
     });
-    mSohMenu->AddWidget(path, "Force aspect ratio:", WIDGET_TEXT).PreFunc([](WidgetInfo& info) {
+    mSohMenu->AddWidget(path, "Force aspect ratio:", WIDGET_TEXT).RaceDisable(false).PreFunc([](WidgetInfo& info) {
         if (mSohMenu->GetDisabledMap().at(DISABLE_FOR_ADVANCED_RESOLUTION_OFF).active) {
             info.activeDisables.push_back(DISABLE_FOR_ADVANCED_RESOLUTION_OFF);
         }
     });
     mSohMenu->AddWidget(path, "(Select \"Off\" to disable.)", WIDGET_TEXT)
+        .RaceDisable(false)
         .PreFunc([](WidgetInfo& info) {
             if (mSohMenu->GetDisabledMap().at(DISABLE_FOR_ADVANCED_RESOLUTION_OFF).active) {
                 info.activeDisables.push_back(DISABLE_FOR_ADVANCED_RESOLUTION_OFF);
@@ -422,6 +431,7 @@ void RegisterResolutionWidgets() {
     // Presets
     mSohMenu->AddWidget(path, "Aspect Ratio", WIDGET_COMBOBOX)
         .ValuePointer(&item_aspectRatio)
+        .RaceDisable(false)
         .PreFunc([](WidgetInfo& info) {
             if (mSohMenu->GetDisabledMap().at(DISABLE_FOR_ADVANCED_RESOLUTION_OFF).active) {
                 info.activeDisables.push_back(DISABLE_FOR_ADVANCED_RESOLUTION_OFF);
@@ -443,44 +453,49 @@ void RegisterResolutionWidgets() {
             Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         })
         .Options(ComboboxOptions().ComboMap(aspectRatioPresetLabels));
-    mSohMenu->AddWidget(path, "AspectRatioCustom", WIDGET_CUSTOM).CustomFunction([](WidgetInfo& info) {
-        // Hide aspect ratio input fields if using one of the presets.
-        if (item_aspectRatio == default_aspectRatio && !showHorizontalResField) {
-            // Declare input interaction bools outside of IF statement to prevent Y field from disappearing.
-            const bool input_X =
-                UIWidgets::SliderFloat("X", &aspectRatioX,
-                                       UIWidgets::FloatSliderOptions({ { .disabled = disabled_everything } })
-                                           .Min(0.1f)
-                                           .Max(32.0f)
-                                           .Step(0.001f)
-                                           .Format("%3f")
-                                           .Color(THEME_COLOR)
-                                           .LabelPosition(UIWidgets::LabelPositions::Near)
-                                           .ComponentAlignment(UIWidgets::ComponentAlignments::Right));
-            const bool input_Y =
-                UIWidgets::SliderFloat("Y", &aspectRatioY,
-                                       UIWidgets::FloatSliderOptions({ { .disabled = disabled_everything } })
-                                           .Min(0.1f)
-                                           .Max(24.0f)
-                                           .Step(0.001f)
-                                           .Format("%3f")
-                                           .Color(THEME_COLOR)
-                                           .LabelPosition(UIWidgets::LabelPositions::Near)
-                                           .ComponentAlignment(UIWidgets::ComponentAlignments::Right));
-            if (input_X || input_Y) {
-                item_aspectRatio = default_aspectRatio;
-                update[UPDATE_aspectRatioX] = true;
-                update[UPDATE_aspectRatioY] = true;
+    mSohMenu->AddWidget(path, "AspectRatioCustom", WIDGET_CUSTOM)
+        .RaceDisable(false)
+        .CustomFunction([](WidgetInfo& info) {
+            // Hide aspect ratio input fields if using one of the presets.
+            if (item_aspectRatio == default_aspectRatio && !showHorizontalResField) {
+                // Declare input interaction bools outside of IF statement to prevent Y field from disappearing.
+                const bool input_X =
+                    UIWidgets::SliderFloat("X", &aspectRatioX,
+                                           UIWidgets::FloatSliderOptions({ { .disabled = disabled_everything } })
+                                               .Min(0.1f)
+                                               .Max(32.0f)
+                                               .Step(0.001f)
+                                               .Format("%3f")
+                                               .Color(THEME_COLOR)
+                                               .LabelPosition(UIWidgets::LabelPositions::Near)
+                                               .ComponentAlignment(UIWidgets::ComponentAlignments::Right));
+                const bool input_Y =
+                    UIWidgets::SliderFloat("Y", &aspectRatioY,
+                                           UIWidgets::FloatSliderOptions({ { .disabled = disabled_everything } })
+                                               .Min(0.1f)
+                                               .Max(24.0f)
+                                               .Step(0.001f)
+                                               .Format("%3f")
+                                               .Color(THEME_COLOR)
+                                               .LabelPosition(UIWidgets::LabelPositions::Near)
+                                               .ComponentAlignment(UIWidgets::ComponentAlignments::Right));
+                if (input_X || input_Y) {
+                    item_aspectRatio = default_aspectRatio;
+                    update[UPDATE_aspectRatioX] = true;
+                    update[UPDATE_aspectRatioY] = true;
+                }
+            } else if (showHorizontalResField) { // Show calculated aspect ratio
+                if (item_aspectRatio) {
+                    ImGui::Dummy({ 0, 2 });
+                    const float resolvedAspectRatio =
+                        (float)gfx_current_dimensions.width / gfx_current_dimensions.height;
+                    ImGui::Text("Aspect ratio: %.2f:1", resolvedAspectRatio);
+                }
             }
-        } else if (showHorizontalResField) { // Show calculated aspect ratio
-            if (item_aspectRatio) {
-                ImGui::Dummy({ 0, 2 });
-                const float resolvedAspectRatio = (float)gfx_current_dimensions.width / gfx_current_dimensions.height;
-                ImGui::Text("Aspect ratio: %.2f:1", resolvedAspectRatio);
-            }
-        }
-    });
-    mSohMenu->AddWidget(path, "MoreResolutionSettings", WIDGET_CUSTOM).CustomFunction(ResolutionCustomWidget);
+        });
+    mSohMenu->AddWidget(path, "MoreResolutionSettings", WIDGET_CUSTOM)
+        .CustomFunction(ResolutionCustomWidget)
+        .RaceDisable(false);
 }
 
 void UpdateResolutionVars() {
