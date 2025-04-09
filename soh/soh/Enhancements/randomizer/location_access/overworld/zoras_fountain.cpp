@@ -51,8 +51,14 @@ void RegionTable_Init_ZorasFountain() {
         //Exits
         Entrance(RR_ZD_BEHIND_KING_ZORA,       []{return true;}),
         Entrance(RR_JABU_JABUS_BELLY_ENTRYWAY, []{return (logic->IsChild && logic->CanUse(RG_BOTTLE_WITH_FISH));}),
-        Entrance(RR_ICE_CAVERN_ENTRYWAY,       []{return logic->IsAdult;}),
+        Entrance(RR_ZF_LEDGE,                  []{return logic->IsAdult;}),
         Entrance(RR_ZF_GREAT_FAIRY_FOUNTAIN,   []{return logic->HasExplosives() || (ctx->GetTrickOption(RT_ZF_GREAT_FAIRY_WITHOUT_EXPLOSIVES) && logic->CanUse(RG_MEGATON_HAMMER) && logic->CanUse(RG_SILVER_GAUNTLETS));}),
+    });
+
+    areaTable[RR_ZF_LEDGE] = Region("ZF Ledge", "Zoras Fountain", {RA_ZORAS_FOUNTAIN}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+        //Exits
+        Entrance(RR_ZORAS_FOUNTAIN,      []{return logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE);}),
+        Entrance(RR_ICE_CAVERN_ENTRYWAY, []{return true;}),
     });
 
     areaTable[RR_ZF_GREAT_FAIRY_FOUNTAIN] = Region("ZF Great Fairy Fountain", "ZF Great Fairy Fountain", {}, NO_DAY_NIGHT_CYCLE, {}, {
