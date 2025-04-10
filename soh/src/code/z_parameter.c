@@ -2434,6 +2434,9 @@ u8 Item_Give(PlayState* play, u8 item) {
                 }
             } else {
                 Flags_SetRandomizerInf(item - ITEM_WEIRD_EGG + RAND_INF_CHILD_TRADES_HAS_WEIRD_EGG);
+                if (item == ITEM_WEIRD_EGG) {
+                    Flags_SetRandomizerInf(RAND_INF_WEIRD_EGG);
+                }
             }
         }
 

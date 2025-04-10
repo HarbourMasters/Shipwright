@@ -245,10 +245,6 @@ void RandomizerOnFlagSetHandler(int16_t flagType, int16_t flag) {
         Flags_SetRandomizerInf(RAND_INF_ZELDAS_LETTER);
     }
 
-    if (flagType == FLAG_EVENT_CHECK_INF && flag == EVENTCHKINF_OBTAINED_POCKET_EGG) {
-        Flags_SetRandomizerInf(RAND_INF_WEIRD_EGG);
-    }
-
     RandomizerCheck rc = GetRandomizerCheckFromFlag(flagType, flag);
     if (rc == RC_UNKNOWN_CHECK)
         return;
