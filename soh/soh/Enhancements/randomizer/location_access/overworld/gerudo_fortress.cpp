@@ -89,7 +89,7 @@ void RegionTable_Init_GerudoFortress() {
         Entrance(RR_GF_ABOVE_GTG,             []{return true;}),
         Entrance(RR_GF_BOTTOM_OF_LOWER_VINES, []{return true;}),
         // need to explicitly convert it into a bool
-        Entrance(RR_GF_BOTTOM_OF_UPPER_VINES, []{return ctx->GetTrickOption(RT_GF_JUMP).Get() != 0;}),
+        Entrance(RR_GF_BOTTOM_OF_UPPER_VINES, []{return logic->IsAdult && ctx->GetTrickOption(RT_GF_JUMP).Get();}),
     });
 
     areaTable[RR_GF_NEAR_GS] = Region("GF Near GS", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -110,7 +110,7 @@ void RegionTable_Init_GerudoFortress() {
         //Exits
         Entrance(RR_GF_TOP_OF_LOWER_VINES,    []{return true;}),
         Entrance(RR_GF_NEAR_GS,               []{return true;}),
-        Entrance(RR_GF_TOP_OF_UPPER_VINES,    []{return logic->IsAdult;}),
+        Entrance(RR_GF_TOP_OF_UPPER_VINES,    []{return logic->IsAdult && ctx->GetTrickOption(RT_GF_JUMP).Get();}),
     });
 
     areaTable[RR_GF_BOTTOM_OF_UPPER_VINES] = Region("GF Bottom of Upper Vines", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
