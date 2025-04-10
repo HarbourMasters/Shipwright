@@ -28,6 +28,13 @@ void disableBetaQuest();
 
 namespace SohGui {
 
+static std::unordered_map<int32_t, const char*> languages = {
+    { LANGUAGE_ENG, "English" },
+    { LANGUAGE_GER, "German" },
+    { LANGUAGE_FRA, "French" },
+    { LANGUAGE_JPN, "Japanese" },
+};
+
 static const std::unordered_map<int32_t, const char*> menuThemeOptions = {
     { UIWidgets::Colors::Red, "Red" },
     { UIWidgets::Colors::DarkRed, "Dark Red" },

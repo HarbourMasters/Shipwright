@@ -2,6 +2,7 @@
 
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
+#include "soh/SohGui/SohMenu.h"
 #include "soh/OTRGlobals.h"
 
 #include <textures/message_static/message_static.h>
@@ -56,22 +57,12 @@ void MessageViewer::DrawElement() {
         memset(mTextIdBuf, 0, sizeof(char) * MAX_STRING_SIZE);
     }
     PopStyleCheckbox();
-    ImGui::Text("Language");
-    ImGui::SameLine();
-    PushStyleCombobox(THEME_COLOR);
-    if (ImGui::BeginCombo("##Language", mLanguages[mLanguage])) {
-        // ReSharper disable CppDFAUnreachableCode
-        for (size_t i = 0; i < mLanguages.size(); i++) {
-            if (strlen(mLanguages[i]) > 0) {
-                if (ImGui::Selectable(mLanguages[i], i == mLanguage)) {
-                    mLanguage = i;
-                }
-            }
-        }
-        ImGui::EndCombo();
-    }
-    PopStyleCombobox();
-    UIWidgets::InsertHelpHoverText("Which language to load from the selected text ID");
+    SohGui::SohMenu::UpdateLanguageMap(SohGui::languages);
+    UIWidgets::Combobox("Language", &mLanguage, SohGui::languages,
+                        UIWidgets::ComboboxOptions()
+                            .Color(THEME_COLOR)
+                            .DefaultIndex(0)
+                            .Tooltip("Which language to load from the selected text ID"));
     PushStyleButton(THEME_COLOR);
     if (ImGui::Button("Display Message##ExistingMessage")) {
         mDisplayExistingMessageClicked = true;
@@ -196,6 +187,11 @@ void MessageDebug_StartTextBox(const char* tableId, uint16_t textId, uint8_t lan
     R_TEXT_CHAR_SCALE = 75;
     R_TEXT_LINE_SPACING = 12;
     R_TEXT_INIT_XPOS = 65;
+    if (language == LANGUAGE_JPN) {
+        R_TEXT_CHAR_SCALE = 88;
+        R_TEXT_LINE_SPACING = 18;
+        R_TEXT_INIT_XPOS = 65;
+    }
     char* buffer = font->msgBuf;
     msgCtx->textId = textId;
     if (strlen(tableId) == 0) {
@@ -207,10 +203,8 @@ void MessageDebug_StartTextBox(const char* tableId, uint16_t textId, uint8_t lan
         constexpr int maxBufferSize = sizeof(font->msgBuf);
         const CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(tableId, textId);
         font->charTexBuf[0] = (messageEntry.GetTextBoxType() << 4) | messageEntry.GetTextBoxPosition();
-        switch (language) {
-            font->msgLength =
-                SohUtils::CopyStringToCharBuffer(buffer, messageEntry.GetForLanguage(language), maxBufferSize);
-        }
+        font->msgLength =
+            SohUtils::CopyStringToCharBuffer(buffer, messageEntry.GetForLanguage(language), maxBufferSize);
         msgCtx->msgLength = static_cast<int32_t>(font->msgLength);
     }
     msgCtx->textBoxProperties = font->charTexBuf[0];

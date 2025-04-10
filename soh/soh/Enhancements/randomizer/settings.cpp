@@ -2014,16 +2014,16 @@ void Settings::UpdateOptionProperties() {
         }
     }
 
-    int dungeonShuffle =
+    bool dungeonShuffle =
         CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleDungeonsEntrances"), RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
-    int bossShuffle =
+    bool bossShuffle =
         CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleBossEntrances"), RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
-    int overworldShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOverworldEntrances"), RO_GENERIC_OFF);
-    int interiorShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleInteriorsEntrances"), RO_GENERIC_OFF);
-    int grottoShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGrottosEntrances"), RO_GENERIC_OFF);
+    bool overworldShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOverworldEntrances"), RO_GENERIC_OFF);
+    bool interiorShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleInteriorsEntrances"), RO_GENERIC_OFF);
+    bool grottoShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGrottosEntrances"), RO_GENERIC_OFF);
 
-    // Hide Mixed Entrances option if no applicable entrance shuffles are visible
-    if (!dungeonShuffle && !bossShuffle && !overworldShuffle && !interiorShuffle && !grottoShuffle) {
+    // Hide Mixed Entrances option if 1 or no applicable entrance shuffles are visible
+    if (dungeonShuffle + bossShuffle + overworldShuffle + interiorShuffle + grottoShuffle <= 1) {
         mOptions[RSK_MIXED_ENTRANCE_POOLS].Hide();
     } else {
         mOptions[RSK_MIXED_ENTRANCE_POOLS].Unhide();
@@ -2780,6 +2780,36 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
     }
     for (uint8_t i = 0; i < mOptions[RSK_TRIAL_COUNT].Get(); i++) {
         trials[i]->SetAsRequired();
+    }
+
+    bool dungeonShuffle = !mOptions[RSK_SHUFFLE_DUNGEON_ENTRANCES].Is(RO_GENERIC_OFF);
+    bool bossShuffle = !mOptions[RSK_SHUFFLE_BOSS_ENTRANCES].Is(RO_GENERIC_OFF);
+    bool overworldShuffle = !mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES].Is(RO_GENERIC_OFF);
+    bool interiorShuffle = !mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES].Is(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF);
+    bool grottoShuffle = !mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES].Is(RO_GENERIC_OFF);
+
+    if (dungeonShuffle + bossShuffle + overworldShuffle + interiorShuffle + grottoShuffle <= 1) {
+        mOptions[RSK_MIXED_ENTRANCE_POOLS].Set(RO_GENERIC_OFF);
+    }
+
+    if (!mOptions[RSK_MIXED_ENTRANCE_POOLS] || !dungeonShuffle) {
+        mOptions[RSK_MIX_DUNGEON_ENTRANCES].Set(RO_GENERIC_OFF);
+    }
+
+    if (!mOptions[RSK_MIXED_ENTRANCE_POOLS] || !bossShuffle) {
+        mOptions[RSK_MIX_BOSS_ENTRANCES].Set(RO_GENERIC_OFF);
+    }
+
+    if (!mOptions[RSK_MIXED_ENTRANCE_POOLS] || !overworldShuffle) {
+        mOptions[RSK_MIX_OVERWORLD_ENTRANCES].Set(RO_GENERIC_OFF);
+    }
+
+    if (!mOptions[RSK_MIXED_ENTRANCE_POOLS] || !interiorShuffle) {
+        mOptions[RSK_MIX_INTERIOR_ENTRANCES].Set(RO_GENERIC_OFF);
+    }
+
+    if (!mOptions[RSK_MIXED_ENTRANCE_POOLS] || !grottoShuffle) {
+        mOptions[RSK_MIX_GROTTO_ENTRANCES].Set(RO_GENERIC_OFF);
     }
 
     if (mOptions[RSK_FOREST].Is(RO_CLOSED_FOREST_ON) &&

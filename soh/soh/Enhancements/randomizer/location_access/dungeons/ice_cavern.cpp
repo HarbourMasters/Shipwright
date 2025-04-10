@@ -11,7 +11,7 @@ void RegionTable_Init_IceCavern() {
         //Exits
         Entrance(RR_ICE_CAVERN_BEGINNING,    []{return ctx->GetDungeon(ICE_CAVERN)->IsVanilla();}),
         Entrance(RR_ICE_CAVERN_MQ_BEGINNING, []{return ctx->GetDungeon(ICE_CAVERN)->IsMQ() && logic->CanUseProjectile();}),
-        Entrance(RR_ZORAS_FOUNTAIN,          []{return true;}),
+        Entrance(RR_ZF_LEDGE,                []{return true;}),
     });
 
 #pragma region Vanilla
