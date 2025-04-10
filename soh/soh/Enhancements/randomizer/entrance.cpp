@@ -1166,8 +1166,6 @@ void EntranceShuffler::ShuffleEntrancePool(std::vector<Entrance*>& entrancePool,
     }
 }
 
-
-
 int EntranceShuffler::ShuffleAllEntrances() {
     auto ctx = Rando::Context::GetInstance();
 
@@ -1694,7 +1692,7 @@ EntranceOverride* Randomizer_GetEntranceOverrides() {
 
 void Randomizer_DiscoverRegion(Region* region, std::unordered_set<RandomizerRegion>& visitedRegions) {
     region->IsDiscovered = true;
-    
+
     for (const auto& exit : region->exits) {
         if (!exit.IsShuffled()) {
             RandomizerRegion connectedRegionKey = exit.GetConnectedRegionKey();
