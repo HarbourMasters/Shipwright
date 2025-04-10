@@ -951,7 +951,7 @@ typedef enum {
     // false
     // ```
     // #### `args`
-    // - '*Fishing' (&this)
+    // - '*Fishing' (this)
     VB_GIVE_RANDO_GLITCH_FISHING_PRIZE,
 
     // #### `result`
