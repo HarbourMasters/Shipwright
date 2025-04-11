@@ -2380,6 +2380,10 @@ void CosmeticsEditorWindow::DrawElement() {
                             UIWidgets::CheckboxOptions()
                                 .Color(THEME_COLOR)
                                 .Tooltip("Enables randomizing all unlocked cosmetics when you enter a new scene."));
+    UIWidgets::CVarCheckbox("Randomize All on Randomizer Generation", CVAR_COSMETIC("RandomizeAllOnNewRandoGen"),
+        UIWidgets::CheckboxOptions()
+            .Color(THEME_COLOR)
+            .Tooltip("Enables randomizing all unlocked cosmetics when you generate a new randomizer."));
     UIWidgets::CVarCheckbox(
         "Advanced Mode", CVAR_COSMETIC("AdvancedMode"),
         UIWidgets::CheckboxOptions()

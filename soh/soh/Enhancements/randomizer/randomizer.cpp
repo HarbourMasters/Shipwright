@@ -3611,6 +3611,12 @@ bool GenerateRandomizer(std::string seed /*= ""*/) {
     }
     if (CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) == 0) {
         randoThread = std::thread(&GenerateRandomizerImgui, seed);
+        if (CVarGetInteger(CVAR_AUDIO("RandomizeAllOnNewRandoGen"), 0) == 1) {
+            AudioEditor_RandomizeAll();
+        }
+        if (CVarGetInteger(CVAR_COSMETIC("RandomizeAllOnNewRandoGen"), 0) == 1) {
+            CosmeticsEditor_RandomizeAll();
+        }
         return true;
     }
     return false;

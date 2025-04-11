@@ -565,6 +565,12 @@ void AudioEditor::DrawElement() {
                         .Tooltip(
                             "Enables randomizing all unlocked music and sound effects when you enter a new scene."));
                 UIWidgets::CVarCheckbox(
+                    "Randomize All Music and Sound Effects on Randomizer Generation",CVAR_AUDIO("RandomizeAllOnNewRandoGen"),
+                    UIWidgets::CheckboxOptions()
+                        .Color(THEME_COLOR)
+                        .Tooltip(
+                            "Enables randomizing all unlocked music and sound effects when you generate a new randomizer."));
+                UIWidgets::CVarCheckbox(
                     "Lower Octaves of Unplayable High Notes", CVAR_AUDIO("ExperimentalOctaveDrop"),
                     UIWidgets::CheckboxOptions()
                         .Color(THEME_COLOR)
