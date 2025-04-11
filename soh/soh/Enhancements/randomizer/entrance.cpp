@@ -1707,7 +1707,12 @@ void Randomizer_DiscoverRegion(Region* region, std::unordered_set<RandomizerRegi
 }
 
 void Randomizer_EntranceDiscovered(s16 index) {
-    Rando::Entrance* entrance = Rando::entranceMap[index];
+    auto entranceEntry = Rando::entranceMap.find(index);
+    if (entranceEntry == Rando::entranceMap.end()) {
+        return;
+    }
+
+    Rando::Entrance* entrance = entranceEntry->second;
     Region* region = entrance->GetConnectedRegion();
 
     std::unordered_set<RandomizerRegion> visitedRegions;
