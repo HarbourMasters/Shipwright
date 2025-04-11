@@ -2126,6 +2126,13 @@ void CheckTrackerSettingsWindow::DrawElement() {
                                                  "with your current progress.")
                                         .Color(THEME_COLOR))) {
             enableAvailableChecks = CVarGetInteger(CVAR_TRACKER_CHECK("EnableAvailableChecks"), 0);
+
+            for (s16 entranceIndex = 0; entranceIndex < ENTR_MAX; entranceIndex++) {
+                if (IsEntranceDiscovered(entranceIndex)) {
+                    Randomizer_EntranceDiscovered(entranceIndex, false);
+                }
+            }
+
             RecalculateAvailableChecks();
         }
 
