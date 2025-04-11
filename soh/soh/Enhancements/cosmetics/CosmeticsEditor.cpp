@@ -2413,8 +2413,7 @@ void CosmeticsEditorWindow::DrawElement() {
     }
     ImGui::SameLine();
     if (UIWidgets::Button("Reset All", UIWidgets::ButtonOptions().Size(ImVec2(250.0f, 0.0f)).Color(THEME_COLOR))) {
-        CVarClearBlock("gCosmetics");
-        ApplyOrResetCustomGfxPatches();
+        CosmeticsEditor_ResetAll();
     }
     if (UIWidgets::Button("Lock All", UIWidgets::ButtonOptions().Size(ImVec2(250.0f, 0.0f)).Color(THEME_COLOR))) {
         for (auto& [id, cosmeticOption] : cosmeticOptions) {
