@@ -1258,8 +1258,13 @@ void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flag
             windowFlags |= ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoMove;
         }
     }
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(Color_Background.r / 255.0f, Color_Background.g / 255.0f,
-                                                    Color_Background.b / 255.0f, Color_Background.a / 255.0f));
+    auto maybeParent = ImGui::GetCurrentWindow();
+    ImGuiWindow* window = ImGui::FindWindowByName(UniqueName.c_str());
+    if (window != NULL && window->DockTabIsVisible && window->ParentWindow != NULL &&
+        std::string(window->ParentWindow->Name).compare(0, strlen("Main - Deck"), "Main - Deck") == 0) {
+        Color_Background.a = 255;
+    }
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, VecFromRGBA8(Color_Background));
     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 4.0f);
     ImGui::Begin(UniqueName.c_str(), &open, windowFlags);
