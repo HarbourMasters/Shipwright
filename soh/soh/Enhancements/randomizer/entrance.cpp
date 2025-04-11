@@ -1706,18 +1706,24 @@ void Randomizer_DiscoverRegion(Region* region, std::unordered_set<RandomizerRegi
     }
 }
 
-void Randomizer_EntranceDiscovered(s16 index) {
+void Randomizer_RegionDiscovered(RandomizerRegion region) {
+    std::unordered_set<RandomizerRegion> visitedRegions;
+    Randomizer_DiscoverRegion(&areaTable[region], visitedRegions);
+}
+
+void Randomizer_EntranceDiscovered(s16 index, bool recalculateAvailableChecks) {
     auto entranceEntry = Rando::entranceMap.find(index);
     if (entranceEntry == Rando::entranceMap.end()) {
         return;
     }
 
     Rando::Entrance* entrance = entranceEntry->second;
-    Region* region = entrance->GetConnectedRegion();
+    RandomizerRegion connectedRegionKey = entrance->GetConnectedRegionKey();
 
-    std::unordered_set<RandomizerRegion> visitedRegions;
-    Randomizer_DiscoverRegion(region, visitedRegions);
+    Randomizer_RegionDiscovered(connectedRegionKey);
 
-    CheckTracker::RecalculateAvailableChecks();
+    if (recalculateAvailableChecks) {
+        CheckTracker::RecalculateAvailableChecks();
+    }
 }
 }

@@ -585,6 +585,12 @@ void CheckTrackerLoadGame(int32_t fileNum) {
 
     if (Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_ENTRANCES).Get()) {
         Rando::Context::GetInstance()->GetEntranceShuffler()->ApplyEntranceOverrides();
+
+        for (s16 entranceIndex = 0; entranceIndex < ENTR_MAX; entranceIndex++) {
+            if (IsEntranceDiscovered(entranceIndex)) {
+                Randomizer_EntranceDiscovered(entranceIndex, false);
+            }
+        }
     }
 
     RecalculateAvailableChecks();
