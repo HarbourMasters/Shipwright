@@ -31,7 +31,6 @@ void SohMenu::AddMenuNetwork() {
               "page to your clipboard.",
               WIDGET_TEXT);
     AddWidget(path, ICON_FA_CLIPBOARD "##Sail", WIDGET_BUTTON)
-        .RaceDisable(false)
         .Callback([](WidgetInfo& info) {
             ImGui::SetClipboardText("https://github.com/HarbourMasters/sail");
             Notification::Emit({
@@ -39,8 +38,8 @@ void SohMenu::AddMenuNetwork() {
             });
         })
         .Options(ButtonOptions().Tooltip("https://github.com/HarbourMasters/sail"));
-    AddWidget(path, "Host & Port", WIDGET_CUSTOM).RaceDisable(false).CustomFunction([](WidgetInfo& info) {
-        ImGui::BeginDisabled(Sail::Instance->isEnabled);
+    AddWidget(path, "Host & Port", WIDGET_CUSTOM).CustomFunction([](WidgetInfo& info) {
+        ImGui::BeginDisabled(Sail::Instance->isEnabled || CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
         ImGui::Text("%s", info.name.c_str());
         CVarInputString("##HostSail", CVAR_REMOTE_SAIL("Host"),
                         InputOptions()
@@ -62,7 +61,6 @@ void SohMenu::AddMenuNetwork() {
         ImGui::EndDisabled();
     });
     AddWidget(path, "Enable##Sail", WIDGET_BUTTON)
-        .RaceDisable(false)
         .PreFunc([](WidgetInfo& info) {
             std::string host = CVarGetString(CVAR_REMOTE_SAIL("Host"), "127.0.0.1");
             uint16_t port = CVarGetInteger(CVAR_REMOTE_SAIL("Port"), 43384);
@@ -105,7 +103,6 @@ void SohMenu::AddMenuNetwork() {
               "website to your clipboard.",
               WIDGET_TEXT);
     AddWidget(path, ICON_FA_CLIPBOARD "##CrowdControl", WIDGET_BUTTON)
-        .RaceDisable(false)
         .Callback([](WidgetInfo& info) {
             ImGui::SetClipboardText("https://crowdcontrol.live");
             Notification::Emit({
@@ -113,8 +110,8 @@ void SohMenu::AddMenuNetwork() {
             });
         })
         .Options(ButtonOptions().Tooltip("https://crowdcontrol.live"));
-    AddWidget(path, "Host & Port", WIDGET_CUSTOM).RaceDisable(false).CustomFunction([](WidgetInfo& info) {
-        ImGui::BeginDisabled(CrowdControl::Instance->isEnabled);
+    AddWidget(path, "Host & Port", WIDGET_CUSTOM).CustomFunction([](WidgetInfo& info) {
+        ImGui::BeginDisabled(CrowdControl::Instance->isEnabled || CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
         ImGui::Text("%s", info.name.c_str());
         CVarInputString("##HostCrowdControl", CVAR_REMOTE_CROWD_CONTROL("Host"),
                         InputOptions()
@@ -136,7 +133,6 @@ void SohMenu::AddMenuNetwork() {
         ImGui::EndDisabled();
     });
     AddWidget(path, "Enable##CrowdControl", WIDGET_BUTTON)
-        .RaceDisable(false)
         .PreFunc([](WidgetInfo& info) {
             std::string host = CVarGetString(CVAR_REMOTE_CROWD_CONTROL("Host"), "127.0.0.1");
             uint16_t port = CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Port"), 43384);

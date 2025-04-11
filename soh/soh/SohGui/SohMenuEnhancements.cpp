@@ -222,7 +222,6 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip("Disable Random Camera Wiggle at Low Health."));
     AddWidget(path, "Better Owl", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("BetterOwl"))
-        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "The default response to Kaepora Gaebora is always that you understood what he said."));
 

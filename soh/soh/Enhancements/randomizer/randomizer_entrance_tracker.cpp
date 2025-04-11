@@ -690,6 +690,7 @@ void EntranceTrackerSettingsWindow::DrawElement() {
             UIWidgets::CheckboxOptions()
                 .Tooltip("Automatically scroll to the first available entrance in the current scene")
                 .Color(THEME_COLOR));
+        ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
         UIWidgets::CVarCheckbox("Highlight previous", CVAR_TRACKER_ENTRANCE("HighlightPrevious"),
                                 UIWidgets::CheckboxOptions()
                                     .Tooltip("Highlight the previous entrance that Link came from")
@@ -698,6 +699,7 @@ void EntranceTrackerSettingsWindow::DrawElement() {
                                 UIWidgets::CheckboxOptions()
                                     .Tooltip("Highlight available entrances in the current scene")
                                     .Color(THEME_COLOR));
+        ImGui::EndDisabled();
         UIWidgets::CVarCheckbox("Hide undiscovered", CVAR_TRACKER_ENTRANCE("CollapseUndiscovered"),
                                 UIWidgets::CheckboxOptions()
                                     .Tooltip("Collapse undiscovered entrances towards the bottom of each group")
@@ -724,6 +726,7 @@ void EntranceTrackerSettingsWindow::DrawElement() {
             UIWidgets::RadioButtonsOptions().Color(THEME_COLOR).Tooltip("Group entrances by their entrance type"));
 
         ImGui::Text("Spoiler Reveal");
+        ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
         UIWidgets::CVarCheckbox(
             "Show Source", CVAR_TRACKER_ENTRANCE("ShowFrom"),
             UIWidgets::CheckboxOptions().Tooltip("Reveal the sourcefor undiscovered entrances").Color(THEME_COLOR));
@@ -731,7 +734,7 @@ void EntranceTrackerSettingsWindow::DrawElement() {
                                 UIWidgets::CheckboxOptions()
                                     .Tooltip("Reveal the destination for undiscovered entrances")
                                     .Color(THEME_COLOR));
-
+        ImGui::EndDisabled();
         ImGui::EndTable();
     }
 

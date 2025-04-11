@@ -368,7 +368,9 @@ void OptionGroup::Disable() {
 bool OptionGroup::RenderImGui() const { // NOLINT(*-no-recursion)
     ImGuiWindow* window = ImGui::GetCurrentWindow();
     bool changed = false;
-    ImGui::BeginDisabled(mDisabled);
+    ImGui::BeginDisabled(mDisabled || CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) ||
+                         CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) ||
+                         CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0));
     if (mContainerType == WidgetContainerType::TABLE) {
         if (ImGui::BeginTable(mName.c_str(), static_cast<int>(mSubGroups.size()),
                               ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {

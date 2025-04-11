@@ -35,7 +35,6 @@ void SohMenu::AddMenuRandomizer() {
                      .DefaultValue(true));
     AddWidget(path, "Use Custom Key Models", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"))
-        .RaceDisable(false)
         .Options(
             CheckboxOptions()
                 .Tooltip("Use Custom graphics for Dungeon Keys, Big and Small, so that they can be easily told apart.")
@@ -80,7 +79,6 @@ void SohMenu::AddMenuRandomizer() {
             "This might make boss souls more distinguishable from a distance, and can help with performance."));
     AddWidget(path, "Skip Get Item Animations", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"))
-        .RaceDisable(false)
         .Options(ComboboxOptions().ComboMap(skipGetItemAnimationOptions).DefaultIndex(SGIA_JUNK));
     AddWidget(path, "Item Scale: %.2f", WIDGET_CVAR_SLIDER_FLOAT)
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimationScale"))

@@ -2376,10 +2376,12 @@ void CosmeticsEditorWindow::DrawElement() {
                                    .Step(0.01f)
                                    .Size(ImVec2(300.0f, 0.0f))
                                    .Color(THEME_COLOR));
+    ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
     UIWidgets::CVarCheckbox("Randomize All on New Scene", CVAR_COSMETIC("RandomizeAllOnNewScene"),
                             UIWidgets::CheckboxOptions()
                                 .Color(THEME_COLOR)
                                 .Tooltip("Enables randomizing all unlocked cosmetics when you enter a new scene."));
+    ImGui::EndDisabled();
     UIWidgets::CVarCheckbox(
         "Advanced Mode", CVAR_COSMETIC("AdvancedMode"),
         UIWidgets::CheckboxOptions()
@@ -2408,9 +2410,12 @@ void CosmeticsEditorWindow::DrawElement() {
             }
         }
     }
+    ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
     if (UIWidgets::Button("Randomize All", UIWidgets::ButtonOptions().Size(ImVec2(250.0f, 0.0f)).Color(THEME_COLOR))) {
         CosmeticsEditor_RandomizeAll();
     }
+    ImGui::EndDisabled();
+
     ImGui::SameLine();
     if (UIWidgets::Button("Reset All", UIWidgets::ButtonOptions().Size(ImVec2(250.0f, 0.0f)).Color(THEME_COLOR))) {
         CVarClearBlock("gCosmetics");
@@ -2432,6 +2437,7 @@ void CosmeticsEditorWindow::DrawElement() {
         }
     }
 
+    ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
     if (UIWidgets::Button("Rainbow All", UIWidgets::ButtonOptions().Size(ImVec2(250.0f, 0.0f)).Color(THEME_COLOR))) {
         for (auto& [id, cosmeticOption] : cosmeticOptions) {
             if (!CVarGetInteger(cosmeticOption.lockedCvar, 0) &&
@@ -2441,6 +2447,8 @@ void CosmeticsEditorWindow::DrawElement() {
             }
         }
     }
+    ImGui::EndDisabled();
+
     ImGui::SameLine();
     if (UIWidgets::Button("Un-Rainbow All", UIWidgets::ButtonOptions().Size(ImVec2(250.0f, 0.0f)).Color(THEME_COLOR))) {
         for (auto& [id, cosmeticOption] : cosmeticOptions) {
@@ -2470,6 +2478,7 @@ void CosmeticsEditorWindow::DrawElement() {
 
         if (ImGui::BeginTabItem("Keys")) {
 
+            ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
             UIWidgets::Separator(true, true, 2.0f, 2.0f);
 
             if (UIWidgets::Button("Give all keys dungeon-specific colors",
@@ -2483,6 +2492,7 @@ void CosmeticsEditorWindow::DrawElement() {
             DrawCosmeticGroup(COSMETICS_GROUP_SMALL_KEYS);
             DrawCosmeticGroup(COSMETICS_GROUP_BOSS_KEYS);
 
+            ImGui::EndDisabled();
             ImGui::EndTabItem();
         }
 

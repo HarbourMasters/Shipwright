@@ -2075,11 +2075,13 @@ void CheckTrackerSettingsWindow::DrawElement() {
                                             .DefaultIndex(TRACKER_COMBO_BUTTON_L));
             }
         }
+        ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
         UIWidgets::CVarCheckbox("Vanilla/MQ Dungeon Spoilers", CVAR_TRACKER_CHECK("MQSpoilers"),
                                 UIWidgets::CheckboxOptions()
                                     .Tooltip("If enabled, Vanilla/MQ dungeons will show on the tracker immediately. "
                                              "Otherwise, Vanilla/MQ dungeon locations must be unlocked.")
                                     .Color(THEME_COLOR));
+        ImGui::EndDisabled();
         if (UIWidgets::CVarCheckbox(
                 "Hide unshuffled shop item checks", CVAR_TRACKER_CHECK("HideUnshuffledShopChecks"),
                 UIWidgets::CheckboxOptions()
@@ -2100,6 +2102,7 @@ void CheckTrackerSettingsWindow::DrawElement() {
                                 UIWidgets::CheckboxOptions()
                                     .Tooltip("If enabled, will show a check's logic when hovering over it.")
                                     .Color(THEME_COLOR));
+        ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
         if (UIWidgets::CVarCheckbox("Enable Available Checks", CVAR_TRACKER_CHECK("EnableAvailableChecks"),
                                     UIWidgets::CheckboxOptions()
                                         .Tooltip("If enabled, will show the checks that are available to be collected "
@@ -2108,6 +2111,7 @@ void CheckTrackerSettingsWindow::DrawElement() {
             enableAvailableChecks = CVarGetInteger(CVAR_TRACKER_CHECK("EnableAvailableChecks"), 0);
             RecalculateAvailableChecks();
         }
+        ImGui::EndDisabled();
 
         // Filtering settings
         UIWidgets::PaddedSeparator();
