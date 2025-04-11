@@ -71,7 +71,7 @@ bool Logic::HasItem(RandomizerGet itemName) {
         case RG_DISTANT_SCARECROW:
             return ScarecrowsSong() && CanUse(RG_LONGSHOT);
         case RG_MAGIC_BEAN:
-            return GetAmmo(ITEM_BEAN) > 0;
+            return GetAmmo(ITEM_BEAN) > 0 || CheckInventory(ITEM_BEAN, true);
         case RG_KOKIRI_SWORD:
         case RG_DEKU_SHIELD:
         case RG_GORON_TUNIC:

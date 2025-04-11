@@ -318,25 +318,19 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t* actorId, f32* po
     return 1;
 }
 
-std::vector<EnemyEntry> selectedEnemyList;
+static std::vector<EnemyEntry> selectedEnemyList;
 
 void GetSelectedEnemies() {
     selectedEnemyList.clear();
-    if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), ENEMY_RANDOMIZER_OFF) == ENEMY_RANDOMIZER_RANDOM) {
-        for (int i = 0; i < 49; i++) {
-            if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemyList.All"), 0)) {
-                selectedEnemyList.push_back(randomizedEnemySpawnTable[i]);
-            } else if (CVarGetInteger(enemyCVarList[i], 1)) {
-                selectedEnemyList.push_back(randomizedEnemySpawnTable[i]);
-            }
-        }
-        if (selectedEnemyList.size() == 0) {
-            selectedEnemyList.push_back(randomizedEnemySpawnTable[0]);
-        }
-    } else {
-        for (int i = 0; i < 49; i++) {
+    for (int i = 0; i < 49; i++) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemyList.All"), 0)) {
+            selectedEnemyList.push_back(randomizedEnemySpawnTable[i]);
+        } else if (CVarGetInteger(enemyCVarList[i], 1)) {
             selectedEnemyList.push_back(randomizedEnemySpawnTable[i]);
         }
+    }
+    if (selectedEnemyList.size() == 0) {
+        selectedEnemyList.push_back(randomizedEnemySpawnTable[0]);
     }
 }
 
@@ -348,7 +342,7 @@ EnemyEntry GetRandomizedEnemyEntry(uint32_t seed) {
         uint32_t finalSeed =
             seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
         Random_Init(finalSeed);
-        uint32_t randomNumber = Random(0, RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE);
+        uint32_t randomNumber = Random(0, selectedEnemyList.size());
         return selectedEnemyList[randomNumber];
     } else {
         uint32_t randomSelectedEnemy = Random(0, selectedEnemyList.size());

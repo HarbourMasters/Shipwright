@@ -14,12 +14,7 @@ namespace SohGui {
 
 extern std::shared_ptr<SohMenu> mSohMenu;
 using namespace UIWidgets;
-static const std::unordered_map<int32_t, const char*> languages = {
-    { LANGUAGE_ENG, "English" },
-    { LANGUAGE_GER, "German" },
-    { LANGUAGE_FRA, "French" },
-    { LANGUAGE_JPN, "Japanese" },
-};
+
 static std::unordered_map<int32_t, const char*> imguiScaleOptions = {
     { 0, "Small" },
     { 1, "Normal" },

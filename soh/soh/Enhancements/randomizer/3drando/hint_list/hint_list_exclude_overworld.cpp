@@ -1759,259 +1759,259 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
 
     hintTextTable[RHT_HC_STORMS_GROTTO_GOSSIP_STONE_FAIRY_BIG] = HintText(CustomMessage("They say that #playing a stormy tune for an odd stone beneath the castle# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer stürmischen Melodie für einen seltsamen Stein unterhalb des Schloßes# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie orageuse pour une pierre étrange sous le château révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie orageuse pour une pierre étrange sous le château# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_KF_DEKU_TREE_GOSSIP_STONE_FAIRY] = HintText(CustomMessage("They say that #playing a tune for an odd stone near an ancient tree# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer Melodie für einen seltsamen Stein nahe eines antiken Baumes# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie pour une pierre étrange près d'un arbre ancien révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie pour une pierre étrange près d'un arbre ancien# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_KF_DEKU_TREE_GOSSIP_STONE_FAIRY_BIG] = HintText(CustomMessage("They say that #playing a stormy tune for an odd stone near an ancient tree# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer stürmischen Melodie für einen seltsamen Stein nahe eines antiken Baumes# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie orageuse pour une pierre étrange près d'un arbre ancien révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie orageuse pour une pierre étrange près d'un arbre ancien# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_KF_GOSSIP_STONE_FAIRY] = HintText(CustomMessage("They say that #playing a tune for an odd stone overlooking a forest village# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer Melodie für einen seltsamen Stein, welcher ein Dorf im Wald überblickt#, #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie pour une pierre étrange surplombant un village forestier révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie pour une pierre étrange surplombant un village forestier# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_KF_GOSSIP_STONE_FAIRY_BIG] = HintText(CustomMessage("They say that #playing a stormy tune for an odd stone overlooking a forest village# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer stürmischen Melodie für einen seltsamen Stein, welcher ein Dorf im Wald überblickt#, #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie orageuse pour une pierre étrange surplombant un village forestier révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie orageuse pour une pierre étrange surplombant un village forestier# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_KF_STORMS_GROTTO_GOSSIP_STONE_FAIRY] = HintText(CustomMessage("They say that #playing a tune for an odd stone beneath a forest village# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer Melodie für einen seltsamen Stein unterhalb eines Dorfes im Wald# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie pour une pierre étrange sous un village forestier révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie pour une pierre étrange sous un village forestier# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_KF_STORMS_GROTTO_GOSSIP_STONE_FAIRY_BIG] = HintText(CustomMessage("They say that #playing a stormy tune for an odd stone beneath a forest village# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer stürmischen Melodie für einen seltsamen Stein unterhalb eines Dorfes im Wald# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie orageuse pour une pierre étrange sous un village forestier révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie orageuse pour une pierre étrange sous un village forestier# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_LH_LAB_GOSSIP_STONE_FAIRY] = HintText(CustomMessage("They say that #playing a tune for an odd stone overlooking the river feeding a lake# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer Melodie für einen seltsamen Stein, welcher einen See nährenden Fluß überblickt#, #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie pour une pierre étrange surplombant la rivière qui alimente un lac révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie pour une pierre étrange surplombant la rivière qui alimente un lac# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_LH_LAB_GOSSIP_STONE_FAIRY_BIG] = HintText(CustomMessage("They say that #playing a stormy tune for an odd stone overlooking the river feeding a lake# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer stürmischen Melodie für einen seltsamen Stein, welcher einen See nährenden Fluß überblickt#, #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie orageuse pour une pierre étrange surplombant la rivière qui alimente un lac révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie orageuse pour une pierre étrange surplombant la rivière qui alimente un lac# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_LH_SOUTHEAST_GOSSIP_STONE_FAIRY] = HintText(CustomMessage("They say that #playing a tune for an odd stone at the back of a lake# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer Melodie für einen seltsamen Stein am Rücken eines Sees# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie pour une pierre étrange au fond d'un lac révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie pour une pierre étrange au fond d'un lac# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_LH_SOUTHEAST_GOSSIP_STONE_FAIRY_BIG] = HintText(CustomMessage("They say that #playing a stormy tune for an odd stone at the back of a lake# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer stürmischen Melodie für einen seltsamen Stein am Rücken eines Sees# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie orageuse pour une pierre étrange au fond d'un lac révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie orageuse pour une pierre étrange au fond d'un lac# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_LH_SOUTHWEST_GOSSIP_STONE_FAIRY] = HintText(CustomMessage("They say that #playing a tune for an odd stone at the back of a lake# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer Melodie für einen seltsamen Stein am Rücken eines Sees# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie pour une pierre étrange au fond d'un lac révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie pour une pierre étrange au fond d'un lac# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_LH_SOUTHWEST_GOSSIP_STONE_FAIRY_BIG] = HintText(CustomMessage("They say that #playing a stormy tune for an odd stone at the back of a lake# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer stürmischen Melodie für einen seltsamen Stein am Rücken eines Sees# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie orageuse pour une pierre étrange au fond d'un lac révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie orageuse pour une pierre étrange au fond d'un lac# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_LW_GOSSIP_STONE_FAIRY] = HintText(CustomMessage("They say that #playing a tune for an odd stone within a perplexing wood# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer Melodie für einen seltsamen Stein innerhalb eines verwirrenden Waldes# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie pour une pierre étrange dans un bois déroutant révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie pour une pierre étrange dans un bois déroutant# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_LW_GOSSIP_STONE_FAIRY_BIG] = HintText(CustomMessage("They say that #playing a stormy tune for an odd stone within a perplexing wood# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer stürmischen Melodie für einen seltsamen Stein innerhalb eines verwirrenden Waldes# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie orageuse pour une pierre étrange dans un bois déroutant révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie orageuse pour une pierre étrange dans un bois déroutant# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_SFM_MAZE_GOSSIP_STONE_FAIRY] = HintText(CustomMessage("They say that #playing a tune for an odd stone overlooking a forest maze# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer Melodie für einen seltsamen Stein, welcher ein Waldlabyrinth überblickt#, #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie pour une pierre étrange surplombant un labyrinthe forestier révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie pour une pierre étrange surplombant un labyrinthe forestier# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_SFM_MAZE_GOSSIP_STONE_FAIRY_BIG] = HintText(CustomMessage("They say that #playing a stormy tune for an odd stone overlooking a forest maze# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer stürmischen Melodie für einen seltsamen Stein, welcher ein Waldlabyrinth überblickt#, #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie orageuse pour une pierre étrange surplombant un labyrinthe forestier révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie orageuse pour une pierre étrange surplombant un labyrinthe forestier# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_SFM_SARIA_GOSSIP_STONE_FAIRY] = HintText(CustomMessage("They say that #playing a tune for an odd stone watching a hiding place in the woods# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer Melodie für einen seltsamen Stein, welcher ein Versteck im Wald überblickt#, #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie pour une pierre étrange surveillant une cachette dans les bois révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie pour une pierre étrange surveillant une cachette dans les bois# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_SFM_SARIA_GOSSIP_STONE_FAIRY_BIG] = HintText(CustomMessage("They say that #playing a stormy tune for an odd stone watching a hiding place in the woods# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer stürmischen Melodie für einen seltsamen Stein, welcher ein Versteck im Wald überblickt#, #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie orageuse pour une pierre étrange surveillant une cachette dans les bois révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie orageuse pour une pierre étrange surveillant une cachette dans les bois# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_ZD_GOSSIP_STONE_FAIRY] = HintText(CustomMessage("They say that #playing a tune for an odd stone listening to an aquatic king# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer Melodie für einen seltsamen Stein, welcher einem aquatischen König zuhört#, #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie pour une pierre étrange écoutant un roi aquatique révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie pour une pierre étrange écoutant un roi aquatique# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_ZD_GOSSIP_STONE_FAIRY_BIG] = HintText(CustomMessage("They say that #playing a stormy tune for an odd stone listening to an aquatic king# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer stürmischen Melodie für einen seltsamen Stein, welcher einem aquatischen König zuhört#, #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie orageuse pour une pierre étrange écoutant un roi aquatique révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie orageuse pour une pierre étrange écoutant un roi aquatique# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_ZF_FAIRY_GOSSIP_STONE_FAIRY] = HintText(CustomMessage("They say that #playing a tune for an odd stone in the outskirts of a deep fountain# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer Melodie für einen seltsamen Stein am Rand eines tiefen Brunnens# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie pour une pierre étrange en périphérie d'une profonde fontaine révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie pour une pierre étrange en périphérie d'une profonde fontaine# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_ZF_FAIRY_GOSSIP_STONE_FAIRY_BIG] = HintText(CustomMessage("They say that #playing a stormy tune for an odd stone in the outskirts of a deep fountain# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer stürmischen Melodie für einen seltsamen Stein am Rand eines tiefen Brunnens# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie orageuse pour une pierre étrange en périphérie d'une profonde fontaine révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie orageuse pour une pierre étrange en périphérie d'une profonde fontaine# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_ZF_JABU_GOSSIP_STONE_FAIRY] = HintText(CustomMessage("They say that #playing a tune for an odd stone watching a guardian of the sea# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer Melodie für einen seltsamen Stein, welcher einen Wächter des Meeres beobachtet#, #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie pour une pierre étrange surveillant un gardien de la mer révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie pour une pierre étrange surveillant un gardien de la mer# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_ZF_JABU_GOSSIP_STONE_FAIRY_BIG] = HintText(CustomMessage("They say that #playing a stormy tune for an odd stone watching a guardian of the sea# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer stürmischen Melodie für einen seltsamen Stein, welcher einen Wächter des Meeres beobachtet#, #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie orageuse pour une pierre étrange surveillant un gardien de la mer révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie orageuse pour une pierre étrange surveillant un gardien de la mer# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_ZR_NEAR_GROTTOS_GOSSIP_STONE_FAIRY] = HintText(CustomMessage("They say that #playing a tune for an odd stone overwatching a river# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer Melodie für einen seltsamen Stein, welcher einen Fluß überblickt#, #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie pour une pierre étrange surplombant une rivière révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie pour une pierre étrange surplombant une rivière# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_ZR_NEAR_GROTTOS_GOSSIP_STONE_FAIRY_BIG] = HintText(CustomMessage("They say that #playing a stormy tune for an odd stone overwatching a river# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer stürmischen Melodie für einen seltsamen Stein, welcher einen Fluß überblickt#, #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie orageuse pour une pierre étrange surplombant une rivière révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie orageuse pour une pierre étrange surplombant une rivière# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_ZR_NEAR_DOMAIN_GOSSIP_STONE_FAIRY] = HintText(CustomMessage("They say that #playing a tune for an odd stone beneath a waterfall# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer Melodie für einen seltsamen Stein unterhalb eines Wasserfalls# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie pour une pierre étrange sous une cascade révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie pour une pierre étrange sous une cascade# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_ZR_NEAR_DOMAIN_GOSSIP_STONE_FAIRY_BIG] = HintText(CustomMessage("They say that #playing a stormy tune for an odd stone beneath a waterfall# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer stürmischen Melodie für einen seltsamen Stein unterhalb eines Wasserfalls# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie orageuse pour une pierre étrange sous une cascade révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie orageuse pour une pierre étrange sous une cascade# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_HF_COW_GROTTO_GOSSIP_STONE_FAIRY] = HintText(CustomMessage("They say that #playing a tune for an odd stone hiding near a cow# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer Melodie für einen seltsamen Stein, welcher sich nahe einer Kuh versteckt#, #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie pour une pierre étrange cachée près d'une vache révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie pour une pierre étrange cachée près d'une vache# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_HF_COW_GROTTO_GOSSIP_STONE_FAIRY_BIG] = HintText(CustomMessage("They say that #playing a stormy tune for an odd stone hiding near a cow# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer stürmischen Melodie für einen seltsamen Stein, welcher sich nahe einer Kuh versteckt#, #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie orageuse pour une pierre étrange cachée près d'une vache révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie orageuse pour une pierre étrange cachée près d'une vache# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_HF_NEAR_MARKET_GROTTO_GOSSIP_STONE_FAIRY] = HintText(CustomMessage("They say that #playing a tune for an odd stone beneath the entrance to the market# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer Melodie für einen seltsamen Stein unterhalb des Eingangs zum Markt# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie pour une pierre étrange sous l'entrée du marché révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie pour une pierre étrange sous l'entrée du marché# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_HF_NEAR_MARKET_GROTTO_GOSSIP_STONE_FAIRY_BIG] = HintText(CustomMessage("They say that #playing a stormy tune for an odd stone beneath the entrance to the market# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer stürmischen Melodie für einen seltsamen Stein unterhalb des Eingangs zum Markt# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie orageuse pour une pierre étrange sous l'entrée du marché révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie orageuse pour une pierre étrange sous l'entrée du marché# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_HF_SOUTHEAST_GROTTO_GOSSIP_STONE_FAIRY] = HintText(CustomMessage("They say that #playing a tune for an odd stone beneath trees guarded by a Peahat# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer Melodie für einen seltsamen Stein unterhalb von Killeranas bewachten Bäumen# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie pour une pierre étrange sous des arbres gardés par un Peahat révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie pour une pierre étrange sous des arbres gardés par un Peahat# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_HF_SOUTHEAST_GROTTO_GOSSIP_STONE_FAIRY_BIG] = HintText(CustomMessage("They say that #playing a stormy tune for an odd stone beneath trees guarded by a Peahat# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer stürmischen Melodie für einen seltsamen Stein unterhalb von Killeranas bewachten Bäumen# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie orageuse pour une pierre étrange sous des arbres gardés par un Peahat révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie orageuse pour une pierre étrange sous des arbres gardés par un Peahat# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_KAK_OPEN_GROTTO_GOSSIP_STONE_FAIRY] = HintText(CustomMessage("They say that #playing a tune for an odd stone beneath a village at the base of a mountain# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer Melodie für einen seltsamen Stein unterhalb eines Dorfes am Fuße eines Berges# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie pour une pierre étrange sous un village au pied d'une montagne révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie pour une pierre étrange sous un village au pied d'une montagne# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_KAK_OPEN_GROTTO_GOSSIP_STONE_FAIRY_BIG] = HintText(CustomMessage("They say that #playing a stormy tune for an odd stone beneath a village at the base of a mountain# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer stürmischen Melodie für einen seltsamen Stein unterhalb eines Dorfes am Fuße eines Berges# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie orageuse pour une pierre étrange sous un village au pied d'une montagne révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie orageuse pour une pierre étrange sous un village au pied d'une montagne# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_ZR_OPEN_GROTTO_GOSSIP_STONE_FAIRY] = HintText(CustomMessage("They say that #playing a tune for an odd stone within a plateau by a river# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer Melodie für einen seltsamen Stein auf einem Plateau von einem Fluß# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie pour une pierre étrange dans un plateau près d'une rivière révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie pour une pierre étrange dans un plateau près d'une rivière# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_ZR_OPEN_GROTTO_GOSSIP_STONE_FAIRY_BIG] = HintText(CustomMessage("They say that #playing a stormy tune for an odd stone within a plateau by a river# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer stürmischen Melodie für einen seltsamen Stein auf einem Plateau bei einem Fluß# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie orageuse pour une pierre étrange dans un plateau près d'une rivière révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie orageuse pour une pierre étrange dans un plateau près d'une rivière# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE_FAIRY] = HintText(CustomMessage("They say that #playing a tune for an odd stone beneath an escape from the forest# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer Melodie für einen seltsamen Stein unterhalb eines Auswegs des Waldes# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie pour une pierre étrange sous une issue de la forêt révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie pour une pierre étrange sous une issue de la forêt# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE_FAIRY_BIG] = HintText(CustomMessage("They say that #playing a stormy tune for an odd stone beneath an escape from the forest# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer stürmischen Melodie für einen seltsamen Stein unterhalb eines Auswegs des Waldes# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie orageuse pour une pierre étrange sous une issue de la forêt révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie orageuse pour une pierre étrange sous une issue de la forêt# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_DMT_STORMS_GROTTO_GOSSIP_STONE_FAIRY] = HintText(CustomMessage("They say that #playing a tune for an odd stone beneath the entrance to a village within a mountain# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer Melodie für einen seltsamen Stein unterhalb eines Eingangs zu einem Dorf innerhalb eines Berges# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie pour une pierre étrange sous l'entrée d'un village dans une montagne révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie pour une pierre étrange sous l'entrée d'un village dans une montagne# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_DMT_STORMS_GROTTO_GOSSIP_STONE_FAIRY_BIG] = HintText(CustomMessage("They say that #playing a stormy tune for an odd stone beneath the entrance to a village within a mountain# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer stürmischen Melodie für einen seltsamen Stein unterhalb eines Eingangs zu einem Dorf innerhalb eines Berges# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie orageuse pour une pierre étrange sous l'entrée d'un village dans une montagne révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie orageuse pour une pierre étrange sous l'entrée d'un village dans une montagne# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_DMC_UPPER_GROTTO_GOSSIP_STONE_FAIRY] = HintText(CustomMessage("They say that #playing a tune for an odd stone within the side of a crater# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer Melodie für einen seltsamen Stein innerhalb der Seite eines Kraters# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie pour une pierre étrange dans le côté d'un cratère révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie pour une pierre étrange dans le côté d'un cratère# révèle [[1]].", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_DMC_UPPER_GROTTO_GOSSIP_STONE_FAIRY_BIG] = HintText(CustomMessage("They say that #playing a stormy tune for an odd stone within the side of a crater# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Spielen einer stürmischen Melodie für einen seltsamen Stein innerhalb der Seite eines Kraters# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, jouer une mélodie orageuse pour une pierre étrange dans le côté d'un cratère révèle [[1]].", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie orageuse pour une pierre étrange dans le côté d'un cratère# révèle [[1]].", {QM_RED, QM_GREEN}));
     
     hintTextTable[RHT_LH_ISLAND_SUN_FAIRY] = HintText(CustomMessage("They say that #summoning the sun on the lake's island# calls #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Beschwören der Sonne auf der Insel eines Sees# #[[1]]# anrufe.",
-                                            /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #appeler le soleil sur l'île du lac # révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_HF_POND_STORMS_FAIRY] = HintText(CustomMessage("They say that #calling rain to the field's pond# summons #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Anrufen des Regens für den Tümpel eines Feldes# #[[1]]# beschwöre.",
-                                            /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie orageuse dans l'étang d'une plaine# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_HF_FENCE_GROTTO_STORMS_FAIRY] = HintText(CustomMessage("They say that #making it rain in a scrub's cave# wakes #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Machen von Regen in der Höhle eines Dekus# #[[1]]# erwecke.",
-                                            /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie orageuse dans la grotte d'une Peste Mojo# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_DMT_FLAG_SUN_FAIRY] = HintText(CustomMessage("They say that #changing the time in front of the trail's flag# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Verändern der Zeit im Angesicht der Flagge eines Pfades# #[[1]]# enthülle.",
-                                            /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #appeler le soleil devant un drapeau du Mont du Péril # révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_DMT_COW_GROTTO_STORMS_FAIRY] = HintText(CustomMessage("They say that #calling a storm for a lonely cow# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Anrufen eines Sturms für eine einsame Kuh# #[[1]]# enthülle.",
-                                            /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie orageuse pour une vache solitaire# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_LW_SHORTCUT_STORMS_FAIRY] = HintText(CustomMessage("They say that #making it rain in the Lost Woods# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Machen von Regen in den verlorenen Wäldern# #[[1]]# enthülle.",
-                                            /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #jouer une mélodie orageuse dans les Bois Perdus# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_GF_KITCHEN_SUN_FAIRY] = HintText(CustomMessage("They say that #calling the sun in a guarded kitchen# exposes #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Anrufen der Sonne in einer bewachten Küche# #[[1]]# freilege.",
-                                            /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #appeler le soleil dans une cuisine gardée# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_LW_DEKU_SCRUB_GROTTO_SUN_FAIRY] = HintText(CustomMessage("They say that #calling the sun for scrubs in the Lost Woods# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Anrufen der Sonne für Dekus in den verlorenen Wäldern# #[[1]]# enthülle.",
-                                            /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #appeler le soleil pour les Pestes dans les Bois Perdus # révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_GRAVEYARD_ROYAL_FAMILYS_TOMB_SUN_FAIRY] = HintText(CustomMessage("They say that #calling the sun in a royal tomb# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß das #Anrufen der Sonne in einer königlichen Gruft# #[[1]]# enthülle.",
-                                            /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #appeler le soleil dans une tombe royale# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_KF_GRASS] = HintText(CustomMessage("They say that #cutting some grass in a forest# reveals #[[1]]#.",
-                                            /*german*/ "Man erzählt sich, daß das #Schneiden einiger Gräser in einem Wald# #[[1]]# enthülle.",
-                                            /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+                            /*german*/ "Man erzählt sich, daß das #Schneiden einiger Gräser in einem Wald# #[[1]]# enthülle.",
+                            /*french*/ "Selon moi, de l'#herbe dans un fôret# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_LW_GRASS] = HintText(CustomMessage("They say that #cutting some grass in the woods# reveals #[[1]]#.",
-                                            /*german*/ "Man erzählt sich, daß das #Schneiden einiger Gräser in den Wäldern# #[[1]]# enthülle.",
-                                            /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+                            /*german*/ "Man erzählt sich, daß das #Schneiden einiger Gräser in den Wäldern# #[[1]]# enthülle.",
+                            /*french*/ "Selon moi, de l'#herbe dans des bois# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_MARKET_GRASS] = HintText(CustomMessage("They say that #cutting some grass in the market# reveals #[[1]]#.",
-                                            /*german*/ "Man erzählt sich, daß das #Schneiden einiger Gräser auf dem Markt# #[[1]]# enthülle.",
-                                            /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+                            /*german*/ "Man erzählt sich, daß das #Schneiden einiger Gräser auf dem Markt# #[[1]]# enthülle.",
+                            /*french*/ "Selon moi, de l'#herbe dans un marché# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_HC_GRASS] = HintText(CustomMessage("They say that #cutting some grass near the castle# reveals #[[1]]#.",
-                                            /*german*/ "Man erzählt sich, daß das #Schneiden einiger Gräser in der Nähe vom Schloß# #[[1]]# enthülle.",
-                                            /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+                            /*german*/ "Man erzählt sich, daß das #Schneiden einiger Gräser in der Nähe vom Schloß# #[[1]]# enthülle.",
+                            /*french*/ "Selon moi, de l'#herbe près du château# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_KAK_GRASS] = HintText(CustomMessage("They say that #cutting some grass in a village# reveals #[[1]]#.",
-                                            /*german*/ "Man erzählt sich, daß das #Schneiden einiger Gräser in einem Dorf# #[[1]]# enthülle.",
-                                            /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+                            /*german*/ "Man erzählt sich, daß das #Schneiden einiger Gräser in einem Dorf# #[[1]]# enthülle.",
+                            /*french*/ "Selon moi, de l'#herbe dans un village# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_GY_GRASS] = HintText(CustomMessage("They say that #cutting some grass in a graveyard# reveals #[[1]]#.",
-                                            /*german*/ "Man erzählt sich, daß das #Schneiden einiger Gräser auf einem Friedhof# #[[1]]# enthülle.",
-                                            /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+                            /*german*/ "Man erzählt sich, daß das #Schneiden einiger Gräser auf einem Friedhof# #[[1]]# enthülle.",
+                            /*french*/ "Selon moi, de l'#herbe dans un cimetère# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_LH_GRASS] = HintText(CustomMessage("They say that #cutting some grass near a lake# reveals #[[1]]#.",
-                                            /*german*/ "Man erzählt sich, daß das #Schneiden einiger Gräser nahe eines Sees# #[[1]]# enthülle.",
-                                            /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+                            /*german*/ "Man erzählt sich, daß das #Schneiden einiger Gräser nahe eines Sees# #[[1]]# enthülle.",
+                            /*french*/ "Selon moi, de l'#herbe près d'un lac# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_HF_GRASS] = HintText(CustomMessage("They say that #cutting some grass on a field# reveals #[[1]]#.",
-                                            /*german*/ "Man erzählt sich, daß das #Schneiden einiger Gräser auf einem Feld# #[[1]]# enthülle.",
-                                            /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+                            /*german*/ "Man erzählt sich, daß das #Schneiden einiger Gräser auf einem Feld# #[[1]]# enthülle.",
+                            /*french*/ "Selon moi, de l'#herbe dans une plaine# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_ZR_GRASS] = HintText(CustomMessage("They say that #cutting some grass near a river# reveals #[[1]]#.",
-                                            /*german*/ "Man erzählt sich, daß das #Schneiden einiger Gräser in der Nähe von einem Fluß# #[[1]]# enthülle.",
-                                            /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+                            /*german*/ "Man erzählt sich, daß das #Schneiden einiger Gräser in der Nähe von einem Fluß# #[[1]]# enthülle.",
+                            /*french*/ "Selon moi, de l'#herbe près d'une rivière# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_GROTTO_GRASS] = HintText(CustomMessage("They say that #cutting some grass in a grotto# reveals #[[1]]#.",
-                                            /*german*/ "Man erzählt sich, daß das #Schneiden einiger Gräser in einer Grotte# #[[1]]# enthülle.",
-                                            /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+                            /*german*/ "Man erzählt sich, daß das #Schneiden einiger Gräser in einer Grotte# #[[1]]# enthülle.",
+                            /*french*/ "Selon moi, de l'#herbe# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 	
     hintTextTable[RHT_CRATE_GERUDO_VALLEY] = HintText(CustomMessage("They say that a #crate in Gerudo Valley# contains #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß eine #Kiste im Gerudotal# #[[1]]# enthielte.",

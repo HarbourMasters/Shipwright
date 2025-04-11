@@ -303,7 +303,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
 
     hintTextTable[RHT_DODONGOS_CAVERN_GOSSIP_STONE_FAIRY_BIG] = HintText(CustomMessage("They say that #playing a stormy tune for an odd stone in Dodongo's Cavern# reveals #[[1]]#.",
                                                                             /*german*/ "Man erzählt sich, daß das #Spielen einer stürmischen Melodie für einen seltsamen Stein in Dodongos Höhle# #[[1]]# enthülle.",
-                                                                            /*french*/ "Selon moi, #jouer un air orageux pour une pierre étrange dans la Caverne Dodongo# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+                                                                            /*french*/ "Selon moi, #jouer une mélodie orageuse pour une pierre étrange dans la Caverne Dodongo# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_DODONGOS_CAVERN_GRASS] = HintText(CustomMessage("They say that some #grass in Dodongo's Cavern# hides #[[1]]#.",
                                                                             /*german*/ "Man erzählt sich, daß etwas #Gras in Dodongos Höhle# #[[1]]# verstecke.",
