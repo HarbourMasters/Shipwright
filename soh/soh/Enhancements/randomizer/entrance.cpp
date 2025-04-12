@@ -1675,6 +1675,11 @@ void EntranceShuffler::ApplyEntranceOverrides() {
     for (size_t i = 0; i < entranceOverrides.size(); i++) {
         EntranceOverride entranceOverride = entranceOverrides[i];
 
+        if (entranceOverride.index == 0 && entranceOverride.destination == 0 &&
+            entranceOverride.override == 0 && entranceOverride.overrideDestination == 0) {
+            continue;
+        }
+
         Entrance* entrance = entranceMap[entranceOverride.index];
         Entrance* overrideEntrance = entranceMap[entranceOverride.override];
 
