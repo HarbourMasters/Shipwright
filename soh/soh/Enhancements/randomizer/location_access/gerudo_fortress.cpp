@@ -10,7 +10,7 @@ using namespace Rando;
 
 void RegionTable_Init_GerudoFortress() {
     // clang-format off
-    areaTable[RR_GERUDO_FORTRESS] = Region("Gerudo Fortress", SCENE_GERUDOS_FORTRESS, {RA_GERUDO_FORTRESS}, {
+    areaTable[RR_GERUDO_FORTRESS] = Region("Gerudo Fortress", SCENE_GERUDOS_FORTRESS, {
         //Events
         EventAccess(&logic->CarpenterRescue, []{return logic->CanFinishGerudoFortress();}),
         EventAccess(&logic->GF_GateOpen,     []{return logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}),
@@ -89,7 +89,7 @@ void RegionTable_Init_GerudoFortress() {
         Entrance(RR_GF_STORMS_GROTTO,                []{return logic->IsAdult && logic->CanOpenStormsGrotto();}),
     });
 
-    areaTable[RR_GF_OUTSIDE_GATE] = Region("GF Outside Gate", SCENE_GERUDOS_FORTRESS, {RA_GERUDO_FORTRESS}, {
+    areaTable[RR_GF_OUTSIDE_GATE] = Region("GF Outside Gate", SCENE_GERUDOS_FORTRESS, {
         //Events
         EventAccess(&logic->GF_GateOpen, []{return logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && (ctx->GetOption(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD) || ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) /*|| ShuffleSpecialIndoorEntrances*/);}),
     }, {}, {
@@ -98,7 +98,7 @@ void RegionTable_Init_GerudoFortress() {
         Entrance(RR_WASTELAND_NEAR_FORTRESS, []{return true;}),
     });
 
-    areaTable[RR_GF_STORMS_GROTTO] = Region("GF Storms Grotto", SCENE_GROTTOS, {}, {
+    areaTable[RR_GF_STORMS_GROTTO] = Region("GF Storms Grotto", SCENE_GROTTOS, {
         //Events
         EventAccess(&logic->FreeFairies, []{return true;}),
     }, {

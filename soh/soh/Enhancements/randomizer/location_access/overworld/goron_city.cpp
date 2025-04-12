@@ -5,7 +5,7 @@ using namespace Rando;
 
 void RegionTable_Init_GoronCity() {
     // clang-format off
-    areaTable[RR_GORON_CITY] = Region("Goron City", SCENE_GORON_CITY, {RA_GORON_CITY}, {
+    areaTable[RR_GORON_CITY] = Region("Goron City", SCENE_GORON_CITY, {
         //Events
         EventAccess(&logic->GossipStoneFairy,          []{return logic->CallGossipFairyExceptSuns();}),
         EventAccess(&logic->StickPot,                  []{return logic->StickPot                  || logic->IsChild;}),
@@ -45,7 +45,7 @@ void RegionTable_Init_GoronCity() {
         Entrance(RR_GC_GROTTO_PLATFORM,   []{return logic->IsAdult && ((logic->CanUse(RG_SONG_OF_TIME) && ((logic->EffectiveHealth() > 2) || logic->CanUse(RG_GORON_TUNIC) || logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_NAYRUS_LOVE))) || (logic->EffectiveHealth() > 1 && logic->CanUse(RG_GORON_TUNIC) && logic->CanUse(RG_HOOKSHOT)) || (logic->CanUse(RG_NAYRUS_LOVE) && logic->CanUse(RG_HOOKSHOT)) || (logic->EffectiveHealth() > 2 && logic->CanUse(RG_HOOKSHOT) && ctx->GetTrickOption(RT_GC_GROTTO)));}),
     });
 
-    areaTable[RR_GC_MEDIGORON] = Region("GC Medigoron", SCENE_GORON_CITY, {RA_GORON_CITY}, {}, {
+    areaTable[RR_GC_MEDIGORON] = Region("GC Medigoron", SCENE_GORON_CITY, {}, {
         //Locations
         LOCATION(RC_GC_MEDIGORON_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns()),
         LOCATION(RC_GC_MEDIGORON_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
@@ -56,7 +56,7 @@ void RegionTable_Init_GoronCity() {
         Entrance(RR_GORON_CITY, []{return true;}),
     });
 
-    areaTable[RR_GC_WOODS_WARP] = Region("GC Woods Warp", SCENE_GORON_CITY, {RA_GORON_CITY}, {
+    areaTable[RR_GC_WOODS_WARP] = Region("GC Woods Warp", SCENE_GORON_CITY, {
         //Events
         EventAccess(&logic->GCWoodsWarpOpen, []{return logic->GCWoodsWarpOpen || (logic->BlastOrSmash() || logic->CanUse(RG_DINS_FIRE));}),
     }, {}, {
@@ -65,7 +65,7 @@ void RegionTable_Init_GoronCity() {
         Entrance(RR_THE_LOST_WOODS, []{return true;}),
     });
 
-    areaTable[RR_GC_DARUNIAS_CHAMBER] = Region("GC Darunias Chamber", SCENE_GORON_CITY, {RA_GORON_CITY}, {
+    areaTable[RR_GC_DARUNIAS_CHAMBER] = Region("GC Darunias Chamber", SCENE_GORON_CITY, {
         //Events
         EventAccess(&logic->GoronCityChildFire, []{return logic->GoronCityChildFire || (logic->IsChild && logic->CanUse(RG_STICKS));}),
     }, {
@@ -80,13 +80,13 @@ void RegionTable_Init_GoronCity() {
         Entrance(RR_DMC_LOWER_LOCAL, []{return logic->IsAdult;}),
     });
 
-    areaTable[RR_GC_GROTTO_PLATFORM] = Region("GC Grotto Platform", SCENE_GORON_CITY, {RA_GORON_CITY}, {}, {}, {
+    areaTable[RR_GC_GROTTO_PLATFORM] = Region("GC Grotto Platform", SCENE_GORON_CITY, {}, {}, {
         //Exits
         Entrance(RR_GC_GROTTO,  []{return true;}),
         Entrance(RR_GORON_CITY, []{return logic->EffectiveHealth() > 2 || logic->CanUse(RG_GORON_TUNIC) || logic->CanUse(RG_NAYRUS_LOVE) || ((logic->IsChild || logic->CanUse(RG_SONG_OF_TIME)) && logic->CanUse(RG_LONGSHOT));}),
     });
 
-    areaTable[RR_GC_SHOP] = Region("GC Shop", SCENE_GORON_SHOP, {}, {}, {
+    areaTable[RR_GC_SHOP] = Region("GC Shop", SCENE_GORON_SHOP, {}, {
         //Locations
         LOCATION(RC_GC_SHOP_ITEM_1, true),
         LOCATION(RC_GC_SHOP_ITEM_2, true),
@@ -101,7 +101,7 @@ void RegionTable_Init_GoronCity() {
         Entrance(RR_GORON_CITY, []{return true;}),
     });
 
-    areaTable[RR_GC_GROTTO] = Region("GC Grotto", SCENE_GROTTOS, {}, {}, {
+    areaTable[RR_GC_GROTTO] = Region("GC Grotto", SCENE_GROTTOS, {}, {
         //Locations
         LOCATION(RC_GC_DEKU_SCRUB_GROTTO_LEFT,   logic->CanStunDeku()),
         LOCATION(RC_GC_DEKU_SCRUB_GROTTO_RIGHT,  logic->CanStunDeku()),

@@ -5,14 +5,14 @@ using namespace Rando;
 
 void RegionTable_Init_Market() {
     // clang-format off
-    areaTable[RR_MARKET_ENTRANCE] = Region("Market Entrance", SCENE_MARKET_ENTRANCE_DAY, {RA_THE_MARKET}, {}, {}, {
+    areaTable[RR_MARKET_ENTRANCE] = Region("Market Entrance", SCENE_MARKET_ENTRANCE_DAY, {}, {}, {
         //Exits
         Entrance(RR_HYRULE_FIELD,       []{return logic->IsAdult || logic->AtDay;}),
         Entrance(RR_THE_MARKET,         []{return true;}),
         Entrance(RR_MARKET_GUARD_HOUSE, []{return logic->CanOpenOverworldDoor(RG_GUARD_HOUSE_KEY);}),
     });
 
-    areaTable[RR_THE_MARKET] = Region("Market", SCENE_MARKET_DAY, {RA_THE_MARKET}, {}, {
+    areaTable[RR_THE_MARKET] = Region("Market", SCENE_MARKET_DAY, {}, {
         //Locations
         LOCATION(RC_MARKET_GRASS_1,              logic->IsChild && logic->CanCutShrubs()),
         LOCATION(RC_MARKET_GRASS_2,              logic->IsChild && logic->CanCutShrubs()),
@@ -40,7 +40,7 @@ void RegionTable_Init_Market() {
         Entrance(RR_MARKET_BACK_ALLEY,          []{return logic->IsChild;}),
     });
 
-    areaTable[RR_MARKET_BACK_ALLEY] = Region("Market Back Alley", SCENE_BACK_ALLEY_DAY, {RA_THE_MARKET}, {}, {}, {
+    areaTable[RR_MARKET_BACK_ALLEY] = Region("Market Back Alley", SCENE_BACK_ALLEY_DAY, {}, {}, {
         //Exits
         Entrance(RR_THE_MARKET,                []{return true;}),
         Entrance(RR_MARKET_BOMBCHU_SHOP,       []{return logic->AtNight && logic->CanOpenOverworldDoor(RG_BOMBCHU_SHOP_KEY);}),
@@ -48,7 +48,7 @@ void RegionTable_Init_Market() {
         Entrance(RR_MARKET_MAN_IN_GREEN_HOUSE, []{return logic->AtNight && logic->CanOpenOverworldDoor(RG_ALLEY_HOUSE_KEY);}),
     });
 
-    areaTable[RR_MARKET_GUARD_HOUSE] = Region("Market Guard House", SCENE_MARKET_GUARD_HOUSE, {}, {
+    areaTable[RR_MARKET_GUARD_HOUSE] = Region("Market Guard House", SCENE_MARKET_GUARD_HOUSE, {
         //Events
         EventAccess(&logic->CanEmptyBigPoes,   []{return logic->IsAdult;}),
     }, {
@@ -120,7 +120,7 @@ void RegionTable_Init_Market() {
         Entrance(RR_MARKET_ENTRANCE, []{return true;}),
     });
 
-    areaTable[RR_MARKET_BAZAAR] = Region("Market Bazaar", SCENE_BAZAAR, {}, {}, {
+    areaTable[RR_MARKET_BAZAAR] = Region("Market Bazaar", SCENE_BAZAAR, {}, {
         //Locations
         LOCATION(RC_MARKET_BAZAAR_ITEM_1, true),
         LOCATION(RC_MARKET_BAZAAR_ITEM_2, true),
@@ -135,7 +135,7 @@ void RegionTable_Init_Market() {
         Entrance(RR_THE_MARKET, []{return true;}),
     });
 
-    areaTable[RR_MARKET_MASK_SHOP] = Region("Market Mask Shop", SCENE_HAPPY_MASK_SHOP, {}, {
+    areaTable[RR_MARKET_MASK_SHOP] = Region("Market Mask Shop", SCENE_HAPPY_MASK_SHOP, {
         //Events
         EventAccess(&logic->SkullMask,   []{return logic->SkullMask   || (logic->HasItem(RG_ZELDAS_LETTER) && (ctx->GetOption(RSK_COMPLETE_MASK_QUEST) ||  ChildCanAccess(RR_KAKARIKO_VILLAGE)));}), //RANDOTODO Complete mask quest does not need this location, so should be tied to link's pocket
         EventAccess(&logic->MaskOfTruth, []{return logic->MaskOfTruth || (logic->SkullMask && (ctx->GetOption(RSK_COMPLETE_MASK_QUEST) || (ChildCanAccess(RR_THE_LOST_WOODS) && logic->CanUse(RG_SARIAS_SONG) && RegionTable(RR_THE_GRAVEYARD)->childDay && ChildCanAccess(RR_HYRULE_FIELD) && logic->StoneCount() == 3)));}),
@@ -147,7 +147,7 @@ void RegionTable_Init_Market() {
         Entrance(RR_THE_MARKET, []{return true;}),
     });
 
-    areaTable[RR_MARKET_SHOOTING_GALLERY] = Region("Market Shooting Gallery", SCENE_SHOOTING_GALLERY, {}, {}, {
+    areaTable[RR_MARKET_SHOOTING_GALLERY] = Region("Market Shooting Gallery", SCENE_SHOOTING_GALLERY, {}, {
         //Locations
         LOCATION(RC_MARKET_SHOOTING_GALLERY_REWARD, logic->IsChild && logic->HasItem(RG_CHILD_WALLET)),
     }, {
@@ -155,7 +155,7 @@ void RegionTable_Init_Market() {
         Entrance(RR_THE_MARKET, []{return true;}),
     });
 
-    areaTable[RR_MARKET_BOMBCHU_BOWLING] = Region("Market Bombchu Bowling", SCENE_BOMBCHU_BOWLING_ALLEY, {}, {
+    areaTable[RR_MARKET_BOMBCHU_BOWLING] = Region("Market Bombchu Bowling", SCENE_BOMBCHU_BOWLING_ALLEY, {
         //Events
         EventAccess(&logic->CouldPlayBowling, []{return (logic->HasItem(RG_CHILD_WALLET));}),
     }, {
@@ -167,7 +167,7 @@ void RegionTable_Init_Market() {
         Entrance(RR_THE_MARKET, []{return true;}),
     });
 
-    areaTable[RR_MARKET_POTION_SHOP] = Region("Market Potion Shop", SCENE_POTION_SHOP_MARKET, {}, {}, {
+    areaTable[RR_MARKET_POTION_SHOP] = Region("Market Potion Shop", SCENE_POTION_SHOP_MARKET, {}, {
         //Locations
         LOCATION(RC_MARKET_POTION_SHOP_ITEM_1, true),
         LOCATION(RC_MARKET_POTION_SHOP_ITEM_2, true),
@@ -182,7 +182,7 @@ void RegionTable_Init_Market() {
         Entrance(RR_THE_MARKET, []{return true;}),
     });
 
-    areaTable[RR_MARKET_TREASURE_CHEST_GAME] = Region("Market Treasure Chest Game", SCENE_TREASURE_BOX_SHOP, {}, {}, {
+    areaTable[RR_MARKET_TREASURE_CHEST_GAME] = Region("Market Treasure Chest Game", SCENE_TREASURE_BOX_SHOP, {}, {
         //Locations
         LOCATION(RC_GREG_HINT,                         logic->HasItem(RG_CHILD_WALLET)),
         LOCATION(RC_MARKET_TREASURE_CHEST_GAME_REWARD, logic->HasItem(RG_CHILD_WALLET) && ((logic->CanUse(RG_LENS_OF_TRUTH) && !ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)) || (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 6)) || (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1)))),
@@ -201,7 +201,7 @@ void RegionTable_Init_Market() {
         Entrance(RR_THE_MARKET, []{return true;}),
     });
 
-    areaTable[RR_MARKET_BOMBCHU_SHOP] = Region("Market Bombchu Shop", SCENE_BOMBCHU_SHOP, {}, {}, {
+    areaTable[RR_MARKET_BOMBCHU_SHOP] = Region("Market Bombchu Shop", SCENE_BOMBCHU_SHOP, {}, {
         //Locations
         LOCATION(RC_MARKET_BOMBCHU_SHOP_ITEM_1, true),
         LOCATION(RC_MARKET_BOMBCHU_SHOP_ITEM_2, true),
@@ -216,7 +216,7 @@ void RegionTable_Init_Market() {
         Entrance(RR_MARKET_BACK_ALLEY, []{return true;}),
     });
 
-    areaTable[RR_MARKET_DOG_LADY_HOUSE] = Region("Market Dog Lady House", SCENE_DOG_LADY_HOUSE, {}, {}, {
+    areaTable[RR_MARKET_DOG_LADY_HOUSE] = Region("Market Dog Lady House", SCENE_DOG_LADY_HOUSE, {}, {
         //Locations
         LOCATION(RC_MARKET_LOST_DOG,         logic->IsChild && logic->AtNight),
         LOCATION(RC_MK_LOST_DOG_HOUSE_CRATE, logic->CanBreakCrates()),
@@ -225,7 +225,7 @@ void RegionTable_Init_Market() {
         Entrance(RR_MARKET_BACK_ALLEY, []{return true;}),
     });
 
-    areaTable[RR_MARKET_MAN_IN_GREEN_HOUSE] = Region("Market Man in Green House", SCENE_BACK_ALLEY_HOUSE, {}, {}, {
+    areaTable[RR_MARKET_MAN_IN_GREEN_HOUSE] = Region("Market Man in Green House", SCENE_BACK_ALLEY_HOUSE, {}, {
         // Locations
         LOCATION(RC_MK_BACK_ALLEY_HOUSE_POT_1, logic->CanBreakPots()),
         LOCATION(RC_MK_BACK_ALLEY_HOUSE_POT_2, logic->CanBreakPots()),
