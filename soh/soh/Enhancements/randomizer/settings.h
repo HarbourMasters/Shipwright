@@ -52,7 +52,7 @@ class Settings {
 
     /**
      * @brief Get the RandomizerTrick corresponding to the provided name.
-     * 
+     *
      * @param name
      * @return int RandomizerTrick index or -1 if not found
      */
