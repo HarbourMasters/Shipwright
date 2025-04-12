@@ -609,7 +609,7 @@ std::string Extractor::Mkdtemp() {
 extern "C" int zapd_main(int argc, char** argv);
 
 bool Extractor::CallZapd(std::string installPath, std::string exportdir) {
-    constexpr int argc = 18;
+    constexpr int argc = 22;
     char xmlPath[1024];
     char confPath[1024];
     char portVersion[18]; // 5 digits for int16_max (x3) + separators + terminator
@@ -632,8 +632,8 @@ bool Extractor::CallZapd(std::string installPath, std::string exportdir) {
 
     std::filesystem::current_path(tempdir);
 
-    snprintf(xmlPath, 1024, "assets/extractor/xmls/%s", version);
-    snprintf(confPath, 1024, "assets/extractor/Config_%s.xml", version);
+    snprintf(xmlPath, 1024, "assets/xml/%s", version);
+    snprintf(confPath, 1024, "assets/Config_%s.xml", version);
     snprintf(portVersion, 18, "%d.%d.%d", gBuildVersionMajor, gBuildVersionMinor, gBuildVersionPatch);
 
     argv[0] = "ZAPD";
@@ -643,9 +643,9 @@ bool Extractor::CallZapd(std::string installPath, std::string exportdir) {
     argv[4] = "-b";
     argv[5] = romPath.c_str();
     argv[6] = "-fl";
-    argv[7] = "assets/extractor/filelists";
+    argv[7] = "assets/filelists";
     argv[8] = "-gsf";
-    argv[9] = "1";
+    argv[9] = "0";
     argv[10] = "-rconf";
     argv[11] = confPath;
     argv[12] = "-se";
@@ -654,6 +654,11 @@ bool Extractor::CallZapd(std::string installPath, std::string exportdir) {
     argv[15] = otrFile;
     argv[16] = "--portVer";
     argv[17] = portVersion;
+    argv[18] = "-o";
+    argv[19] = "placeholder";
+    argv[20] = "-osf";
+    argv[21] = "placeholder";
+
 
 #ifdef _WIN32
     // Grab a handle to the command window.

@@ -1040,10 +1040,10 @@ void DetectOTRVersion(std::string fileName, bool isMQ) {
 
         if (Extractor::ShowYesNoBox("Old OTR File Found", msgBuf) == IDYES) {
             std::string installPath = Ship::Context::GetAppBundlePath();
-            if (!std::filesystem::exists(installPath + "/assets/extractor")) {
+            if (!std::filesystem::exists(installPath + "/assets")) {
                 Extractor::ShowErrorBox(
                     "Extractor assets not found",
-                    "Unable to regenerate. Missing assets/extractor folder needed to generate OTR file.\n\nExiting...");
+                    "Unable to regenerate. Missing assets/ folder needed to generate OTR file.\n\nExiting...");
                 exit(1);
             }
 
@@ -1163,10 +1163,10 @@ extern "C" void InitOTR() {
 
 #if not defined(__SWITCH__) && not defined(__WIIU__)
         std::string installPath = Ship::Context::GetAppBundlePath();
-        if (!std::filesystem::exists(installPath + "/assets/extractor")) {
+        if (!std::filesystem::exists(installPath + "/assets")) {
             Extractor::ShowErrorBox(
                 "Extractor assets not found",
-                "No OTR files found. Missing assets/extractor folder needed to generate OTR file.\n\nExiting...");
+                "No OTR files found. Missing assets/ folder needed to generate OTR file.\n\nExiting...");
             exit(1);
         }
 
