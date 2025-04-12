@@ -1739,6 +1739,14 @@ TrickOption& Settings::GetTrickOption(const RandomizerTrick key) {
     return mTrickOptions[key];
 }
 
+int Settings::GetRandomizerTrickByName(const std::string& name) {
+    const auto& it = mTrickNameToEnum.find(name);
+    if (it == mTrickNameToEnum.end()) {
+        return -1;
+    }
+    return it->second;
+}
+
 void Context::ResetTrickOptions() {
     for (int count = 0; count < RT_MAX; count++) {
         mTrickOptions[count].Set(0); // RANDOTODO this can probably be done better

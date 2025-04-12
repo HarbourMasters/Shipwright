@@ -110,6 +110,7 @@ class Context {
     void ParseItemLocationsJson(nlohmann::json spoilerFileJson);
     void WriteHintJson(nlohmann::ordered_json& spoilerFileJson);
     void ParseHintJson(nlohmann::json spoilerFileJson);
+    void ParseTricksJson(nlohmann::json spoilerFileJson);
     std::map<RandomizerCheck, ItemOverride> overrides = {};
     std::vector<std::vector<RandomizerCheck>> playthroughLocations = {};
     std::vector<RandomizerCheck> everyPossibleLocation = {};

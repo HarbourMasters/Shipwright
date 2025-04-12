@@ -399,6 +399,7 @@ void Context::ParseSpoiler(const char* spoilerFileName) {
         Rando::Settings::GetInstance()->ParseJson(spoilerFileJson);
         ParseItemLocationsJson(spoilerFileJson);
         ParseHintJson(spoilerFileJson);
+        ParseTricksJson(spoilerFileJson);
         mEntranceShuffler->ParseJson(spoilerFileJson);
         mDungeons->ParseJson(spoilerFileJson);
         mTrials->ParseJson(spoilerFileJson);
@@ -465,6 +466,17 @@ void Context::ParseHintJson(nlohmann::json spoilerFileJson) {
         AddHint(hint, Hint(hint, hintData.value()));
     }
     CreateStaticHints();
+}
+
+void Context::ParseTricksJson(nlohmann::json spoilerFileJson) {
+    nlohmann::json enabledTricksJson = spoilerFileJson["enabledTricks"];
+    const auto& settings = Rando::Settings::GetInstance();
+    for (auto it : enabledTricksJson) {
+        int rt = settings->GetRandomizerTrickByName(it);
+        if (rt != -1) {
+            mTrickOptions[rt].Set(RO_GENERIC_ON);
+        }
+    }
 }
 
 std::shared_ptr<EntranceShuffler> Context::GetEntranceShuffler() {
