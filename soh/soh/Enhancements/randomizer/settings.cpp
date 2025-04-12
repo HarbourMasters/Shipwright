@@ -120,6 +120,7 @@ void Settings::CreateOptions() {
     OPT_U8(RSK_DOOR_OF_TIME, "Door of Time", {"Closed", "Song only", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("DoorOfTime"), mOptionDescriptions[RSK_DOOR_OF_TIME], WidgetType::Combobox);
     OPT_U8(RSK_ZORAS_FOUNTAIN, "Zora's Fountain", {"Closed", "Closed as child", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ZorasFountain"), mOptionDescriptions[RSK_ZORAS_FOUNTAIN]);
     OPT_U8(RSK_SLEEPING_WATERFALL, "Sleeping Waterfall", {"Closed", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("SleepingWaterfall"), mOptionDescriptions[RSK_SLEEPING_WATERFALL]);
+    OPT_U8(RSK_JABU_JABU_KEY, "Feeding Jabu-Jabu", {"Fish", "Any Bottled Item", "Any Collectible", "Any Song", "Nothing"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("JabuJabuKey"), mOptionDescriptions[RSK_JABU_JABU_KEY]);
     OPT_BOOL(RSK_LOCK_OVERWORLD_DOORS, "Lock Overworld Doors", CVAR_RANDOMIZER_SETTING("LockOverworldDoors"), mOptionDescriptions[RSK_LOCK_OVERWORLD_DOORS]);
     OPT_U8(RSK_GERUDO_FORTRESS, "Fortress Carpenters", {"Normal", "Fast", "Free"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("FortressCarpenters"), mOptionDescriptions[RSK_GERUDO_FORTRESS]);
     OPT_U8(RSK_RAINBOW_BRIDGE, "Rainbow Bridge", {"Vanilla", "Always open", "Stones", "Medallions", "Dungeon rewards", "Dungeons", "Tokens", "Greg"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("RainbowBridge"), mOptionDescriptions[RSK_RAINBOW_BRIDGE], WidgetType::Combobox, RO_BRIDGE_VANILLA, false, IMFLAG_NONE);
@@ -1151,6 +1152,7 @@ void Settings::CreateOptions() {
                                                                      &mOptions[RSK_DOOR_OF_TIME],
                                                                      &mOptions[RSK_ZORAS_FOUNTAIN],
                                                                      &mOptions[RSK_SLEEPING_WATERFALL],
+                                                                     &mOptions[RSK_JABU_JABU_KEY],
                                                                      &mOptions[RSK_LOCK_OVERWORLD_DOORS],
                                                                  },
                                                                  WidgetContainerType::COLUMN);
@@ -1405,6 +1407,7 @@ void Settings::CreateOptions() {
                                                                &mOptions[RSK_DOOR_OF_TIME],
                                                                &mOptions[RSK_ZORAS_FOUNTAIN],
                                                                &mOptions[RSK_SLEEPING_WATERFALL],
+                                                               &mOptions[RSK_JABU_JABU_KEY],
                                                                &mOptions[RSK_LOCK_OVERWORLD_DOORS],
                                                                &mOptions[RSK_GERUDO_FORTRESS],
                                                                &mOptions[RSK_RAINBOW_BRIDGE],

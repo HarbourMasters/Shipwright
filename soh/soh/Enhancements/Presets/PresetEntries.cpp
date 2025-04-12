@@ -82,6 +82,7 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DisableCritWiggle"), 1), PRESET_ENTRY_S32(CVAR_ENHANCEMENT("BetterOwl"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("QuitFishingAtDoor"), 1), PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InstantPutaway"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TimeSavers.SleepingWaterfall"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TimeSavers.SkipJabuJabuFish"), 1),
 
     // Skips & Speed-ups
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SkipText"), 1), PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TextSpeed"), 5),
@@ -176,6 +177,7 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("QuitFishingAtDoor"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InstantPutaway"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TimeSavers.SleepingWaterfall"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TimeSavers.SkipJabuJabuFish"), 1),
 
     // Skips & Speed-ups
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), 1),

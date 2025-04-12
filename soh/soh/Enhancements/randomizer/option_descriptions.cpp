@@ -42,6 +42,13 @@ void Settings::CreateOptionDescriptions() {
                                                   "\n"
                                                   "Open - Sleeping Waterfall is always open. "
                                                   "Link may always enter Zora's Domain.";
+    mOptionDescriptions[RSK_JABU_JABU_KEY] =
+        "Chooses the requirement to enter Jabu-Jabu's Belly.\n\n"
+        "Fish - Feed Jabu-Jabu a fish (the vanilla option).\n"
+        "Any Bottled Item - Offer Jabu-Jabu a random bottled item (e.g. a Fairy).\n"
+        "Any Collectible - Offer Jabu-Jabu a random collectible item (e.g. a bomb or a stick).\n"
+        "Any Song - Play Jabu-Jabu a random song.\n"
+        "Nothing - Link can enter Jabu-Jabu's Belly immediately.";
     mOptionDescriptions[RSK_LOCK_OVERWORLD_DOORS] =
         "Add locks to all wooden overworld doors, requiring specific small keys to open them";
     mOptionDescriptions[RSK_STARTING_AGE] =

@@ -23,6 +23,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_Bg_Ddan_Kd/z_bg_ddan_kd.h"
 #include "src/overlays/actors/ovl_En_Tk/z_en_tk.h"
 #include "src/overlays/actors/ovl_En_Fu/z_en_fu.h"
+#include "src/overlays/actors/ovl_En_Jj/z_en_jj.h"
 #include "src/overlays/actors/ovl_En_Daiku/z_en_daiku.h"
 #include "src/overlays/actors/ovl_Bg_Spot02_Objects/z_bg_spot02_objects.h"
 #include "src/overlays/actors/ovl_Bg_Spot03_Taki/z_bg_spot03_taki.h"
@@ -45,6 +46,10 @@ extern void EnGo2_CurledUp(EnGo2* enGo2, PlayState* play);
 extern void EnRu2_SetEncounterSwitchFlag(EnRu2* enRu2, PlayState* play);
 
 extern void EnDaiku_EscapeSuccess(EnDaiku* enDaiku, PlayState* play);
+
+extern void EnJj_WaitToOpenMouth(EnJj* enJj, PlayState* play);
+extern void EnJj_WaitForFish(EnJj* enJj, PlayState* play);
+extern void EnJj_SetupAction(EnJj* enJj, EnJjActionFunc actionFunc);
 }
 
 #define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).Get()
@@ -810,6 +815,8 @@ static uint32_t enMa1UpdateHook = 0;
 static uint32_t enMa1KillHook = 0;
 static uint32_t enFuUpdateHook = 0;
 static uint32_t enFuKillHook = 0;
+static uint32_t enJjUpdateHook = 0;
+static uint32_t enJjKillHook = 0;
 static uint32_t bgSpot02UpdateHook = 0;
 static uint32_t bgSpot02KillHook = 0;
 static uint32_t bgSpot03UpdateHook = 0;
@@ -872,6 +879,31 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
                 GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enFuKillHook);
                 enFuUpdateHook = 0;
                 enFuKillHook = 0;
+            });
+    }
+
+    if (actor->id == ACTOR_EN_JJ && !IS_RANDO) {
+        enJjUpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>(
+            [](void* innerActorRef) mutable {
+                Actor* innerActor = static_cast<Actor*>(innerActorRef);
+                if (innerActor->id == ACTOR_EN_JJ && !Flags_GetEventChkInf(EVENTCHKINF_OFFERED_FISH_TO_JABU_JABU) &&
+                    CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipJabuJabuFish"), 0) && !IS_RANDO) {
+                    EnJj* enJj = static_cast<EnJj*>(innerActorRef);
+                    if (enJj->actionFunc == EnJj_WaitForFish) {
+                        EnJj_SetupAction(enJj, EnJj_WaitToOpenMouth);
+                        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(enJjUpdateHook);
+                        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enJjKillHook);
+                        enJjUpdateHook = 0;
+                        enJjKillHook = 0;
+                    }
+                }
+            });
+        enJjKillHook =
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) mutable {
+                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(enJjUpdateHook);
+                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enJjKillHook);
+                enJjUpdateHook = 0;
+                enJjKillHook = 0;
             });
     }
 
