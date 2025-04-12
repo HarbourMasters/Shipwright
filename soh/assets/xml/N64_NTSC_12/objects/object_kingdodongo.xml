@@ -48,7 +48,7 @@
         <Texture Name="object_kingdodongo_Tex_016D90" OutName="tex_00016D90" Format="rgba16" Width="8" Height="8" Offset="0x16D90"/>
         <Texture Name="object_kingdodongo_Tex_016E10" OutName="tex_00016E10" Format="rgba16" Width="32" Height="16" Offset="0x16E10"/>
         <Texture Name="object_kingdodongo_Tex_017210" OutName="tex_00017210" Format="rgba16" Width="8" Height="32" Offset="0x17210"/>
-        <Texture Name="gKingDodongoTitleCardTex" OutName="title_card" Format="i8" Width="128" Height="120" Offset="0x17410"/>
+        <Texture Name="gKingDodongoTitleCardTex" OutName="title_card" Format="i8" Width="128" Height="80" Offset="0x17410"/>
         <Limb Name="object_kingdodongo_Limb_01B010" LimbType="Standard" Offset="0x19C10"/>
         <Limb Name="object_kingdodongo_Limb_01B01C" LimbType="Standard" Offset="0x19C1C"/>
         <Limb Name="object_kingdodongo_Limb_01B028" LimbType="Standard" Offset="0x19C28"/>

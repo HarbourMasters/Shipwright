@@ -137,9 +137,9 @@ std::map<RandomizerCheckArea, std::vector<RandomizerCheck>> checksByArea;
 bool areasFullyChecked[RCAREA_INVALID];
 u32 areasSpoiled = 0;
 bool showVOrMQ;
-s8 areaChecksGotten[RCAREA_INVALID]; //|     "Kokiri Forest (4/9)"
-s8 areaChecksAvailable[RCAREA_INVALID];
-s8 areaCheckTotals[RCAREA_INVALID];
+s16 areaChecksGotten[RCAREA_INVALID]; //|     "Kokiri Forest (4/9)"
+s16 areaChecksAvailable[RCAREA_INVALID];
+s16 areaCheckTotals[RCAREA_INVALID];
 uint16_t totalChecks = 0;
 uint16_t totalChecksAvailable = 0;
 uint16_t totalChecksGotten = 0;
@@ -245,6 +245,7 @@ Color_RGBA8 Color_Saved_Extra = { 0, 185, 0, 255 };               // Green
 std::vector<uint32_t> buttons = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT, BTN_CRIGHT, BTN_L,
                                   BTN_Z, BTN_R, BTN_START, BTN_DUP,   BTN_DDOWN, BTN_DLEFT,  BTN_DRIGHT };
 static ImGuiTextFilter checkSearch;
+static bool recalculateAvailable = false;
 std::array<bool, RCAREA_INVALID> filterAreasHidden = { 0 };
 std::array<bool, RC_MAX> filterChecksHidden = { 0 };
 
@@ -877,7 +878,7 @@ void SaveTrackerData(SaveContext* saveContext, int sectionID, bool fullSave) {
 void SaveFile(SaveContext* saveContext, int sectionID, bool fullSave) {
     SaveTrackerData(saveContext, sectionID, fullSave);
     if (fullSave) {
-        RecalculateAvailableChecks();
+        recalculateAvailable = true;
     }
 }
 
@@ -1086,14 +1087,6 @@ void CheckTrackerWindow::DrawElement() {
     bool doingCollapseOrExpand = optExpandAll || optCollapseAll;
     bool isThisAreaSpoiled;
     RandomizerCheckArea lastArea = RCAREA_INVALID;
-    Color_RGBA8 areaCompleteColor =
-        CVarGetColor(CVAR_TRACKER_CHECK("AreaComplete.MainColor.Value"), Color_Main_Default);
-    Color_RGBA8 areaIncompleteColor =
-        CVarGetColor(CVAR_TRACKER_CHECK("AreaIncomplete.MainColor.Value"), Color_Main_Default);
-    Color_RGBA8 extraCompleteColor =
-        CVarGetColor(CVAR_TRACKER_CHECK("AreaComplete.ExtraColor.Value"), Color_Area_Complete_Extra_Default);
-    Color_RGBA8 extraIncompleteColor =
-        CVarGetColor(CVAR_TRACKER_CHECK("AreaIncomplete.ExtraColor.Value"), Color_Area_Incomplete_Extra_Default);
     Color_RGBA8 mainColor;
     Color_RGBA8 extraColor;
     std::string stemp;
@@ -1121,11 +1114,11 @@ void CheckTrackerWindow::DrawElement() {
         } else {
             // Get the colour for the area
             if (thisAreaFullyChecked) {
-                mainColor = areaCompleteColor;
-                extraColor = extraCompleteColor;
+                mainColor = Color_Area_Complete_Main;
+                extraColor = Color_Area_Complete_Extra;
             } else {
-                mainColor = areaIncompleteColor;
-                extraColor = extraIncompleteColor;
+                mainColor = Color_Area_Incomplete_Main;
+                extraColor = Color_Area_Incomplete_Extra;
             }
 
             // Draw the area
@@ -1932,7 +1925,7 @@ void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, 
                 "Hidden", cvarHideName,
                 UIWidgets::CheckboxOptions(
                     { { .tooltip = "When active, checks will hide by default when updated to this state. Can "
-                                   "be overriden with the \"Show Hidden Items\" option." } })
+                                   "be overridden with the \"Show Hidden Items\" option." } })
                     .Color(theme));
             ImGui::PopID();
         }
@@ -2032,6 +2025,10 @@ static std::unordered_map<int32_t, const char*> buttonStrings = {
 };
 
 void CheckTrackerSettingsWindow::DrawElement() {
+    if (recalculateAvailable) {
+        recalculateAvailable = false;
+        RecalculateAvailableChecks();
+    }
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
     if (ImGui::BeginTable("CheckTrackerSettingsTable", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
         ImGui::TableSetupColumn("General settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);

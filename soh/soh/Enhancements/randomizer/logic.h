@@ -209,6 +209,7 @@ class Logic {
     uint8_t BottleCount();
     uint8_t OcarinaButtons();
     bool HasBottle();
+    bool CanUseSword();
     bool CanJumpslashExceptHammer();
     bool CanJumpslash();
     bool CanHitSwitch(EnemyDistance distance = ED_CLOSE, bool inWater = false);
@@ -267,6 +268,7 @@ class Logic {
     bool CheckEquipment(uint32_t item);
     bool CheckQuestItem(uint32_t item);
     void SetQuestItem(uint32_t item, bool state);
+    int8_t GetUsedSmallKeyCount(SceneID sceneId);
     uint8_t GetSmallKeyCount(uint32_t dungeonIndex);
     void SetSmallKeyCount(uint32_t dungeonIndex, uint8_t count);
     bool CheckDungeonItem(uint32_t item, uint32_t dungeonIndex);
