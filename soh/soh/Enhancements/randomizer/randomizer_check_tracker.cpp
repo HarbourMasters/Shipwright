@@ -1488,6 +1488,27 @@ void LoadSettings() {
         showOverworldFreestanding = false;
         showDungeonFreestanding = true;
     }
+
+    switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY)) {
+        case RO_GANON_BOSS_KEY_LACS_STONES:
+            Rando::Context::GetInstance()->LACSCondition(RO_LACS_STONES);
+            break;
+        case RO_GANON_BOSS_KEY_LACS_MEDALLIONS:
+            Rando::Context::GetInstance()->LACSCondition(RO_LACS_MEDALLIONS);
+            break;
+        case RO_GANON_BOSS_KEY_LACS_REWARDS:
+            Rando::Context::GetInstance()->LACSCondition(RO_LACS_REWARDS);
+            break;
+        case RO_GANON_BOSS_KEY_LACS_DUNGEONS:
+            Rando::Context::GetInstance()->LACSCondition(RO_LACS_DUNGEONS);
+            break;
+        case RO_GANON_BOSS_KEY_LACS_TOKENS:
+            Rando::Context::GetInstance()->LACSCondition(RO_LACS_TOKENS);
+            break;
+        default:
+            Rando::Context::GetInstance()->LACSCondition(RO_LACS_VANILLA);
+            break;
+    }
 }
 
 bool IsCheckShuffled(RandomizerCheck rc) {

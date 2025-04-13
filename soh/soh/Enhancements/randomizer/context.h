@@ -104,6 +104,15 @@ class Context {
      * @return RandoOptionLACSCondition
      */
     RandoOptionLACSCondition LACSCondition() const;
+
+    /**
+     * @brief Sets the resolved Light Arrow CutScene check condition.
+     * There is no direct option for this, it is inferred based on the value of a few other options.
+     *
+     * @param lacsCondition
+     */
+    void LACSCondition(RandoOptionLACSCondition lacsCondition);
+
     GetItemEntry GetFinalGIEntry(RandomizerCheck rc, bool checkObtainability = true, GetItemID ogItemId = GI_NONE);
     void ParseSpoiler(const char* spoilerFileName);
     void ParseHashIconIndexesJson(nlohmann::json spoilerFileJson);

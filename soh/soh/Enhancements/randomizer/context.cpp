@@ -534,6 +534,10 @@ RandoOptionLACSCondition Context::LACSCondition() const {
     return mLACSCondition;
 }
 
+void Context::LACSCondition(RandoOptionLACSCondition lacsCondition) {
+    mLACSCondition = lacsCondition;
+}
+
 std::shared_ptr<Kaleido> Context::GetKaleido() {
     if (mKaleido == nullptr) {
         mKaleido = std::make_shared<Kaleido>();
