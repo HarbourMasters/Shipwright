@@ -273,7 +273,7 @@
         <DList Name="gTwinrovaBroomIceTrailDL" Offset="0x2DEB0"/>
         <DList Name="gTwinrovaBroomFireJetDL" Offset="0x2DFB0"/>
         <DList Name="gTwinrovaBroomFireTrailDL" Offset="0x2E098"/>
-        <Texture Name="gTwinrovaTitleCardTex" OutName="title_card" Format="i8" Width="128" Height="120" Offset="0x2E170"/>
+        <Texture Name="gTwinrovaTitleCardTex" OutName="title_card" Format="i8" Width="128" Height="80" Offset="0x2E170"/>
         <Limb Name="gTwinrovaPelvisLimb" LimbType="Standard" Offset="0x30970"/>
         <Limb Name="gTwinrovaSash1Limb" LimbType="Standard" Offset="0x3097C"/>
         <Limb Name="gTwinrovaSash2Limb" LimbType="Standard" Offset="0x30988"/>

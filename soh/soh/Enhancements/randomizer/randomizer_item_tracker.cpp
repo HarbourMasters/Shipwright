@@ -1161,8 +1161,12 @@ void BeginFloatingWindows(std::string UniqueName, ImGuiWindowFlags flags = 0) {
             windowFlags |= ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoMove;
         }
     }
-    ImGui::PushStyleColor(ImGuiCol_WindowBg,
-                          VecFromRGBA8(CVarGetColor(CVAR_TRACKER_ITEM("BgColor.Value"), { 0, 0, 0, 0 })));
+    auto color = VecFromRGBA8(CVarGetColor(CVAR_TRACKER_ITEM("BgColor.Value"), { 0, 0, 0, 0 }));
+    ImGuiWindow* window = ImGui::FindWindowByName(UniqueName.c_str());
+    if (window != NULL && window->DockTabIsVisible) {
+        color.w = 1.0f;
+    }
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, color);
     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 4.0f);
     ImGui::Begin(UniqueName.c_str(), nullptr, windowFlags);
@@ -1839,7 +1843,8 @@ void ItemTrackerSettingsWindow::DrawElement() {
     }
     if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonRewards"), SECTION_DISPLAY_MAIN_WINDOW) ==
         SECTION_DISPLAY_SEPARATE) {
-        if (CVarCheckbox("Circle display", CVAR_TRACKER_ITEM("DungeonRewardsLayout"))) {
+        if (CVarCheckbox("Circle display", CVAR_TRACKER_ITEM("DungeonRewardsLayout"),
+                         CheckboxOptions().DefaultValue(false).Color(THEME_COLOR))) {
             shouldUpdateVectors = true;
         }
     }

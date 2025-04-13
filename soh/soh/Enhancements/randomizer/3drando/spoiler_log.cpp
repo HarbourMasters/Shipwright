@@ -285,11 +285,11 @@ static void WriteAllLocations() {
                 case 0:
                 default:
                     jsonData["locations"][locName]["trickName"] =
-                        ctx->overrides[location->GetRandomizerCheck()].GetTrickName().english;
+                        ctx->overrides[location->GetRandomizerCheck()].GetTrickName().GetEnglish();
                     break;
                 case 2:
                     jsonData["locations"][locName]["trickName"] =
-                        ctx->overrides[location->GetRandomizerCheck()].GetTrickName().french;
+                        ctx->overrides[location->GetRandomizerCheck()].GetTrickName().GetFrench();
                     break;
             }
         }

@@ -38,7 +38,7 @@
         <Texture Name="object_bvTLUT_01DBB0" OutName="object_bvTLUT_01DBB0" Format="rgba16" Width="16" Height="16" Offset="0x1C7B0" AddedByScript="true"/>
         <Texture Name="object_bvTLUT_01E6B0" OutName="object_bvTLUT_01E6B0" Format="rgba16" Width="16" Height="16" Offset="0x1D2B0" AddedByScript="true"/>
         <!-- Boss title card -->
-        <Texture Name="gBarinadeTitleCardTex" OutName="barinade_title_card" Format="i8" Width="128" Height="120" Offset="0x1230"/>
+        <Texture Name="gBarinadeTitleCardTex" OutName="barinade_title_card" Format="i8" Width="128" Height="80" Offset="0x1230"/>
 
         <Skeleton Name="gBarinadeBodySkel" Type="Normal" LimbType="Standard" Offset="0x14718"/>
         <Skeleton Name="gBarinadeSupportSkel" Type="Flex" LimbType="Standard" Offset="0x16098"/>

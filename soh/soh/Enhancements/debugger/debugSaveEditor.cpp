@@ -849,9 +849,19 @@ void DrawFlagsTab() {
 
     DrawGroupWithBorder(
         [&]() {
-            size_t selectedGsMap = 0;
+            PushStyleCombobox(THEME_COLOR);
+            static size_t selectedGsMap = 0;
             ImGui::Text("Gold Skulltulas");
-            Combobox("Map##Gold Skulltulas", &selectedGsMap, gsMapping, comboboxOptionsBase.Tooltip(""));
+            if (ImGui::BeginCombo("##GSMap", gsMapping[selectedGsMap])) {
+                for (size_t index = 0; index < gsMapping.size(); index++) {
+                    if (ImGui::Selectable(gsMapping[index])) {
+                        selectedGsMap = index;
+                    }
+                }
+
+                ImGui::EndCombo();
+            }
+            PopStyleCombobox();
 
             // TODO We should write out descriptions for each one... ugh
             ImGui::AlignTextToFramePadding();

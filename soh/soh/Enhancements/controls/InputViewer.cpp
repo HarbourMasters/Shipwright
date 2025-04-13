@@ -584,7 +584,7 @@ void InputViewerSettingsWindow::DrawElement() {
         }
         // gInputViewer.Dpad
         CVarCheckbox("Show D-Pad Layers", CVAR_INPUT_VIEWER("Dpad"),
-                     CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
+                     CheckboxOptions().Color(THEME_COLOR).DefaultValue(false));
         if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("Dpad"), 0)) {
             ImGui::Indent();
             CVarCombobox("##DpadOutline", CVAR_INPUT_VIEWER("DpadOutlineMode"), buttonOutlineOptionsVerbose,
@@ -593,7 +593,7 @@ void InputViewerSettingsWindow::DrawElement() {
         }
         // gInputViewer.Mod1
         CVarCheckbox("Show Modifier Button 1 Layers", CVAR_INPUT_VIEWER("Mod1"),
-                     CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
+                     CheckboxOptions().Color(THEME_COLOR).DefaultValue(false));
         if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("Mod1"), 0)) {
             ImGui::Indent();
             CVarCombobox("##Mmod1Outline", CVAR_INPUT_VIEWER("Mod1OutlineMode"), buttonOutlineOptionsVerbose,
@@ -602,7 +602,7 @@ void InputViewerSettingsWindow::DrawElement() {
         }
         // gInputViewer.Mod2
         CVarCheckbox("Show Modifier Button 2 Layers", CVAR_INPUT_VIEWER("Mod2"),
-                     CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
+                     CheckboxOptions().Color(THEME_COLOR).DefaultValue(false));
         if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("Mod2"), 0)) {
             ImGui::Indent();
             CVarCombobox("##Mod2Outline", CVAR_INPUT_VIEWER("Mod2OutlineMode"), buttonOutlineOptionsVerbose,
@@ -652,7 +652,7 @@ void InputViewerSettingsWindow::DrawElement() {
             "Right Stick Visibility", CVAR_INPUT_VIEWER("RightStick.VisibilityMode"), stickModeOptions,
             ComboboxOptions()
                 .Color(THEME_COLOR)
-                .DefaultIndex(STICK_MODE_ALWAYS_SHOWN)
+                .DefaultIndex(STICK_MODE_ALWAYS_HIDDEN)
                 .Tooltip(
                     "Determines the conditions under which the moving layer of the right stick texture is visible."));
 
@@ -661,7 +661,7 @@ void InputViewerSettingsWindow::DrawElement() {
             "Right Stick Outline/Background Visibility", CVAR_INPUT_VIEWER("RightStick.OutlineMode"), stickModeOptions,
             ComboboxOptions()
                 .Color(THEME_COLOR)
-                .DefaultIndex(STICK_MODE_ALWAYS_SHOWN)
+                .DefaultIndex(STICK_MODE_ALWAYS_HIDDEN)
                 .Tooltip(
                     "Determines the conditions under which the right stick outline/background texture is visible."));
 
