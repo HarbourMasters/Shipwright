@@ -71,37 +71,37 @@ bool CanBuyAnother(RandomizerCheck rc) {
 std::set<RandomizerArea> CalculateAreas(SceneID scene) {
     switch (scene) {
         case SCENE_DEKU_TREE:
-            return {RA_DEKU_TREE};
+            return { RA_DEKU_TREE };
         case SCENE_DODONGOS_CAVERN:
-            return {RA_DODONGOS_CAVERN};
+            return { RA_DODONGOS_CAVERN };
         case SCENE_JABU_JABU:
-            return {RA_JABU_JABUS_BELLY};
+            return { RA_JABU_JABUS_BELLY };
         case SCENE_FOREST_TEMPLE:
-            return {RA_FOREST_TEMPLE};
+            return { RA_FOREST_TEMPLE };
         case SCENE_FIRE_TEMPLE:
-            return {RA_FIRE_TEMPLE};
+            return { RA_FIRE_TEMPLE };
         case SCENE_WATER_TEMPLE:
-            return {RA_WATER_TEMPLE};
+            return { RA_WATER_TEMPLE };
         case SCENE_SPIRIT_TEMPLE:
-            return {RA_SPIRIT_TEMPLE};
+            return { RA_SPIRIT_TEMPLE };
         case SCENE_SHADOW_TEMPLE:
-            return {RA_SHADOW_TEMPLE};
+            return { RA_SHADOW_TEMPLE };
         case SCENE_BOTTOM_OF_THE_WELL:
-            return {RA_BOTTOM_OF_THE_WELL};
+            return { RA_BOTTOM_OF_THE_WELL };
         case SCENE_ICE_CAVERN:
-            return {RA_ICE_CAVERN};
+            return { RA_ICE_CAVERN };
         case SCENE_GANONS_TOWER:
         case SCENE_INSIDE_GANONS_CASTLE:
         case SCENE_GANONS_TOWER_COLLAPSE_INTERIOR:
         case SCENE_INSIDE_GANONS_CASTLE_COLLAPSE:
         case SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR:
         case SCENE_GANON_BOSS:
-            return {RA_GANONS_CASTLE};
+            return { RA_GANONS_CASTLE };
         case SCENE_GERUDO_TRAINING_GROUND:
-            return {RA_GERUDO_TRAINING_GROUND};
+            return { RA_GERUDO_TRAINING_GROUND };
         case SCENE_THIEVES_HIDEOUT:
         case SCENE_GERUDOS_FORTRESS:
-            return {RA_GERUDO_FORTRESS};
+            return { RA_GERUDO_FORTRESS };
         case SCENE_MARKET_ENTRANCE_DAY:
         case SCENE_MARKET_ENTRANCE_NIGHT:
         case SCENE_MARKET_ENTRANCE_RUINS:
@@ -113,47 +113,47 @@ std::set<RandomizerArea> CalculateAreas(SceneID scene) {
         case SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY:
         case SCENE_TEMPLE_OF_TIME_EXTERIOR_NIGHT:
         case SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS:
-            return {RA_THE_MARKET};
+            return { RA_THE_MARKET };
         case SCENE_TEMPLE_OF_TIME:
-            return {RA_TEMPLE_OF_TIME};
+            return { RA_TEMPLE_OF_TIME };
         case SCENE_HYRULE_FIELD:
-            return {RA_HYRULE_FIELD};
+            return { RA_HYRULE_FIELD };
         case SCENE_KAKARIKO_VILLAGE:
-            return {RA_KAKARIKO_VILLAGE};
+            return { RA_KAKARIKO_VILLAGE };
         case SCENE_GRAVEYARD:
-            return {RA_THE_GRAVEYARD};
+            return { RA_THE_GRAVEYARD };
         case SCENE_ZORAS_RIVER:
-            return {RA_ZORAS_RIVER};
+            return { RA_ZORAS_RIVER };
         case SCENE_KOKIRI_FOREST:
-            return {RA_KOKIRI_FOREST};
+            return { RA_KOKIRI_FOREST };
         case SCENE_SACRED_FOREST_MEADOW:
-            return {RA_SACRED_FOREST_MEADOW};
+            return { RA_SACRED_FOREST_MEADOW };
         case SCENE_LAKE_HYLIA:
-            return {RA_LAKE_HYLIA};
+            return { RA_LAKE_HYLIA };
         case SCENE_ZORAS_DOMAIN:
-            return {RA_ZORAS_DOMAIN};
+            return { RA_ZORAS_DOMAIN };
         case SCENE_ZORAS_FOUNTAIN:
-            return {RA_ZORAS_FOUNTAIN};
+            return { RA_ZORAS_FOUNTAIN };
         case SCENE_GERUDO_VALLEY:
-            return {RA_GERUDO_VALLEY};
+            return { RA_GERUDO_VALLEY };
         case SCENE_LOST_WOODS:
-            return {RA_THE_LOST_WOODS};
+            return { RA_THE_LOST_WOODS };
         case SCENE_DESERT_COLOSSUS:
-            return {RA_DESERT_COLOSSUS};
+            return { RA_DESERT_COLOSSUS };
         case SCENE_HAUNTED_WASTELAND:
-            return {RA_HAUNTED_WASTELAND};
+            return { RA_HAUNTED_WASTELAND };
         case SCENE_HYRULE_CASTLE:
-            return {RA_HYRULE_CASTLE};
+            return { RA_HYRULE_CASTLE };
         case SCENE_DEATH_MOUNTAIN_TRAIL:
-            return {RA_DEATH_MOUNTAIN_TRAIL};
+            return { RA_DEATH_MOUNTAIN_TRAIL };
         case SCENE_DEATH_MOUNTAIN_CRATER:
-            return {RA_DEATH_MOUNTAIN_CRATER};
+            return { RA_DEATH_MOUNTAIN_CRATER };
         case SCENE_GORON_CITY:
-            return {RA_GORON_CITY};
+            return { RA_GORON_CITY };
         case SCENE_LON_LON_RANCH:
-            return {RA_LON_LON_RANCH};
+            return { RA_LON_LON_RANCH };
         case SCENE_OUTSIDE_GANONS_CASTLE:
-            return {RA_OUTSIDE_GANONS_CASTLE};
+            return { RA_OUTSIDE_GANONS_CASTLE };
         case SCENE_TREASURE_BOX_SHOP:
         case SCENE_DEKU_TREE_BOSS:
         case SCENE_DODONGOS_CAVERN_BOSS:
@@ -226,13 +226,13 @@ Region::Region() = default;
 Region::Region(std::string regionName_, SceneID scene_, std::set<RandomizerArea> areas,
                std::vector<EventAccess> events_, std::vector<LocationAccess> locations_,
                std::list<Rando::Entrance> exits_)
-    : regionName(std::move(regionName_)), scene(scene_), areas(areas),
-      events(std::move(events_)), locations(std::move(locations_)), exits(std::move(exits_)) {
+    : regionName(std::move(regionName_)), scene(scene_), areas(areas), events(std::move(events_)),
+      locations(std::move(locations_)), exits(std::move(exits_)) {
 }
 Region::Region(std::string regionName_, SceneID scene_, std::vector<EventAccess> events_,
-    std::vector<LocationAccess> locations_, std::list<Rando::Entrance> exits_)
-: regionName(std::move(regionName_)), scene(scene_), areas(CalculateAreas(scene_)),
-events(std::move(events_)), locations(std::move(locations_)), exits(std::move(exits_)) {
+               std::vector<LocationAccess> locations_, std::list<Rando::Entrance> exits_)
+    : regionName(std::move(regionName_)), scene(scene_), areas(CalculateAreas(scene_)), events(std::move(events_)),
+      locations(std::move(locations_)), exits(std::move(exits_)) {
 }
 
 Region::~Region() = default;
