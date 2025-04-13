@@ -126,7 +126,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
     hintTextTable[RHT_DEKU_TREE_GRASS] = HintText(CustomMessage("They say that some #grass in the Deku Tree# hides #[[1]]#.",
                                                      /*german*/ "Man erzählt sich, daß etwas #Gras im Deku-Baum# #[[1]]# verstecke.",
                                                      /*french*/ "Selon moi, de l'#herbe dans l'Arbre Mojo# cache #[[1]]#.", {QM_RED, QM_GREEN}));
-													 
+
     hintTextTable[RHT_CRATE_DEKU_TREE] = HintText(CustomMessage("They say that a #crate in the Deku Tree# contains #[[1]]#.",
                                                      /*german*/ "Man erzählt sich, daß eine #Kiste im Deku-Baum# #[[1]]# enthielte.",
                                                      /*french*/ "Selon moi, une #caisse dans l'Arbre Mojo# contient #[[1]]#.", {QM_RED, QM_GREEN}));
@@ -475,7 +475,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
     hintTextTable[RHT_JABU_JABUS_BELLY_GRASS] = HintText(CustomMessage("They say that some #grass in Jabu Jabu's Belly# hides #[[1]]#.",
                                                      /*german*/ "Man erzählt sich, daß etwas #Gras in Jabu-Jabus Bauch# #[[1]]# verstecke.",
                                                      /*french*/ "Selon moi, de l'#herbe dans le Ventre de Jabu-Jabu# cache #[[1]]#.", {QM_RED, QM_GREEN}));
-													 
+
     hintTextTable[RHT_CRATE_JABU_JABU] = HintText(CustomMessage("They say that a #crate in Jabu Jabu's Belly# contains #[[1]]#.",
                                                      /*german*/ "Man erzählt sich, daß eine #Kiste in Jabu-Jabus Bauch# #[[1]]# enthielte.",
                                                      /*french*/ "Selon moi, une #caisse dans le Ventre de Jabu-Jabu# contient #[[1]]#.", {QM_RED, QM_GREEN}));

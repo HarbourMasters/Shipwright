@@ -953,7 +953,7 @@ void StaticData::HintTable_Init() {
                                                     /*german*/ "Verlorene Wälder",
                                                     /*french*/ "les Bois Perdus"));
                                                  // /*spanish*/el Bosque Perdido
-    
+
     hintTextTable[RHT_SACRED_FOREST_MEADOW] = HintText(CustomMessage("Sacred Forest Meadow",
                                                           /*german*/ "Heilige Lichtung",
                                                           /*french*/ "le Bosquet Sacré"));
@@ -998,12 +998,12 @@ void StaticData::HintTable_Init() {
                                                     /*german*/ "Zitadelle der Zeit",
                                                     /*french*/ "le Temple du Temps"));
                                                  // /*spanish*/el Templo del Tiempo
-    
+
     hintTextTable[RHT_CASTLE_GROUNDS] = HintText(CustomMessage("the Castle Grounds",
                                                     /*german*/ "Anlage von Schloß Hyrule",
                                                     /*french*/ "le Château d'Hyrule"));
                                                  // /*spanish*/
-    
+
     hintTextTable[RHT_HYRULE_CASTLE] = HintText(CustomMessage("Hyrule Castle",
                                                    /*german*/ "Schloß Hyrule",
                                                    /*french*/ "le Château d'Hyrule"));
@@ -1018,7 +1018,7 @@ void StaticData::HintTable_Init() {
                                                     /*german*/ "Anlage von Schloß Hyrule",
                                                     /*french*/ "le Château d'Hyrule"));
                                                  // /*spanish*/
-    
+
     hintTextTable[RHT_KAKARIKO_VILLAGE] = HintText(CustomMessage("Kakariko Village",
                                                       /*german*/ "Kakariko",
                                                       /*french*/ "le Village Cocorico"));
@@ -1058,7 +1058,7 @@ void StaticData::HintTable_Init() {
                                                     /*german*/ "Zoras Quelle",
                                                     /*french*/ "la Fontaine Zora"));
                                                  // /*spanish*/la Fuente Zora
-    
+
     hintTextTable[RHT_LON_LON_RANCH] = HintText(CustomMessage("Lon Lon Ranch",
                                                    /*german*/ "Lon Lon-Farm",
                                                    /*french*/ "le Ranch Lon Lon"));
@@ -1077,7 +1077,7 @@ void StaticData::HintTable_Init() {
                                                     /*german*/ "Midos Haus",
                                                     /*french*/ "la Cabane du Grand Mido"));
                                                  // /*spanish*/la casa de Mido
-    
+
     hintTextTable[RHT_KF_SARIAS_HOUSE] = HintText(CustomMessage("Saria's House",
                                                      /*german*/ "Salias Haus",
                                                      /*french*/ "la Cabane de Saria"));
@@ -1097,7 +1097,7 @@ void StaticData::HintTable_Init() {
                                                     /*german*/ "der #Kokiri-Laden#",
                                                     /*french*/ "le #Magasin Kokiri#"));
                                                  // /*spanish*/la tienda kokiri
-    
+
     hintTextTable[RHT_LH_LAB] = HintText(CustomMessage("the #Lakeside Laboratory#",
                                             /*german*/ "das #Laboratorium des Sees#",
                                             /*french*/ "le #Laboratoire du Lac#"));
@@ -1292,7 +1292,7 @@ void StaticData::HintTable_Init() {
                                                     /*german*/ "eine solitäre #Kuh#",
                                                     /*french*/ "la #grotte avec une vache#"));
                                                  // /*spanish*/una #vaca# solitaria
-    
+
     hintTextTable[RHT_HC_STORMS_GROTTO] = HintText(CustomMessage("a sandy grotto with #fragile walls#",
                                                       /*german*/ "eine sandige Grotte mit #fragilen Wänden#",
                                                       /*french*/ "la #grotte avec des murs fragiles#"));
@@ -1337,7 +1337,7 @@ void StaticData::HintTable_Init() {
                                                     /*german*/ "eine #generische Grotte#",
                                                     /*french*/ "une #grotte avec un trésor#"));
                                                  // /*spanish*/una #cueva genérica#
-    
+
     hintTextTable[RHT_DMC_UPPER_GROTTO] = HintText(CustomMessage("a #generic grotto#",
                                                       /*german*/ "eine #generische Grotte#",
                                                       /*french*/ "une #grotte avec un trésor#"));
@@ -1362,7 +1362,7 @@ void StaticData::HintTable_Init() {
                                                     /*german*/ "eine #generische Grotte#",
                                                     /*french*/ "une #grotte avec un trésor#"));
                                                  // /*spanish*/una #cueva genérica#
-    
+
     hintTextTable[RHT_HF_SOUTHEAST_GROTTO] = HintText(CustomMessage("a #generic grotto#",
                                                          /*german*/ "eine #generische Grotte#",
                                                          /*french*/ "une #grotte avec un trésor#"));
@@ -1719,7 +1719,7 @@ void StaticData::HintTable_Init() {
 
 #define HINT_TEXT_NEEDS_TRANSLATION_FR \
     "Erreur 0x69a504:&Traduction manquante^C'est de la faute à Purple Hato!&J'vous jure!"
-    
+
     hintTextTable[RHT_JUNK64] = HintText(CustomMessage("They say Greg is special.",
                                             /*german*/ TODO_TRANSLATE,
                                             /*french*/ "Selon moi, Greg est spécial."));
@@ -1731,7 +1731,7 @@ void StaticData::HintTable_Init() {
     hintTextTable[RHT_JUNK66] = HintText(CustomMessage("They say this ship is what all true gamers strive for.",
                                             /*german*/ TODO_TRANSLATE,
                                             /*french*/ "Selon moi, cette version du port est ce pour quoi luttent tous les vrais gamers."));
-    
+
     hintTextTable[RHT_JUNK67] = HintText(CustomMessage("They say that Glowsticks can be found in the Raveyard.",
                                             /*german*/ TODO_TRANSLATE,
                                             /*french*/ "Selon moi, on peut trouver des Bâtons Lumineux sur le dancefloor du cimetière."));
@@ -1756,7 +1756,7 @@ void StaticData::HintTable_Init() {
     |     DUNGEON HINT TEXT    |
     ---------------------------*/
 
-    
+
     hintTextTable[RHT_DEKU_TREE] = HintText(CustomMessage("Deku Tree",
                                                /*german*/ "Deku-Baum",
                                                /*french*/ "l'Arbre Mojo"),
@@ -2188,7 +2188,7 @@ void StaticData::HintTable_Init() {
                                                                       /*german*/ "$cJener auf dem Weg des Helden...&Nehme er seine Okarina zur Hand und&spiele hier die Hymne der Zeit.",
                                                                       /*french*/ "$cÀ celui qui a quête de devenir&héros...&Portez l'Ocarina et jouez&le chant du temps."));
                                                                    // /*spanish*/$cPara aquel que se convierta en el héroe...&Tome la ocarina y&entone la Canción del Tiempo.
-    
+
     hintTextTable[RHT_CHILD_ALTAR_TEXT_END_DOTCLOSED] = HintText(CustomMessage("$iYe who may become a Hero...&Offer the spiritual stones and&play the Song of Time.",
                                                                     /*german*/ "$iJener mit den drei Heiligen Steinen&nehme seine Okarina zur Hand und&spiele hier die Hymne der Zeit.",
                                                                     /*french*/ "$iÀ celui qui a quête de devenir&héros... Présentez les Pierres&Ancestrales et jouez&le chant du temps."));
@@ -2272,7 +2272,7 @@ void StaticData::HintTable_Init() {
                                                /*german*/ "Zu&#[[1]]#?&" + TWO_WAY_CHOICE() + "#OK&No#",
                                                /*french*/ "Se téléporter vers&#[[1]]#?&" + TWO_WAY_CHOICE() + "#OK!&Non#",
                                                           {QM_RED, QM_GREEN}));
-                                                          
+
     /*--------------------------
     |   STATIC LOCATION HINTS   |
     ---------------------------*/
@@ -2404,7 +2404,7 @@ void StaticData::HintTable_Init() {
    /*--------------------------
    |     Misc utilities       |
    ---------------------------*/
-   
+
     hintTextTable[RHT_YOUR_POCKET] = HintText(CustomMessage("your pocket",
                                                  /*german*/ "deine Tasche",
                                                  /*french*/ "tes poches"));

@@ -119,7 +119,7 @@ AudioCollection::AudioCollection() {
         SEQUENCE_MAP_ENTRY(NA_BGM_STAFF_2,                      "End Credits II",                           "NA_BGM_STAFF_2",                 SEQ_BGM_EVENT,    false,    false), // Previously SEQ_UNUSED, so not shown anywhere?
         SEQUENCE_MAP_ENTRY(NA_BGM_STAFF_3,                      "End Credits III",                          "NA_BGM_STAFF_3",                 SEQ_BGM_EVENT,    false,    false), // Previously SEQ_UNUSED, so not shown anywhere?
         SEQUENCE_MAP_ENTRY(NA_BGM_STAFF_4,                      "End Credits IV",                           "NA_BGM_STAFF_4",                 SEQ_BGM_EVENT,    false,    false), // Previously SEQ_UNUSED, so not shown anywhere?
-        
+
         // SEQ_INSTRUMENT
         SEQUENCE_MAP_ENTRY(INSTRUMENT_OFFSET + 1,               "Ocarina",                                  "OCARINA_INSTRUMENT_DEFAULT",     SEQ_INSTRUMENT,   true,     true),
         SEQUENCE_MAP_ENTRY(INSTRUMENT_OFFSET + 2,               "Malon",                                    "OCARINA_INSTRUMENT_MALON",       SEQ_INSTRUMENT,   true,     true),
@@ -304,7 +304,7 @@ AudioCollection::AudioCollection() {
         //SEQUENCE_MAP_ENTRY("Adult Link - Unused Sound 1?","NA_SE_VO_LI_ELECTRIC_SHOCK_LV",    "NA_SE_VO_LI_ELECTRIC_SHOCK_LV",        SEQ_VOICE, true, false),
         //SEQUENCE_MAP_ENTRY(NA_SE_VO_LI_GROAN_KID, "Child Link - Groan (Unused)",              "NA_SE_VO_LI_GROAN_KID",                SEQ_VOICE, true, false),
         //SEQUENCE_MAP_ENTRY(NA_SE_VO_LI_ELECTRIC_SHOCK_LV_KID, "Child Link - Unused Sound 1?", "NA_SE_VO_LI_ELECTRIC_SHOCK_LV_KID",    SEQ_VOICE, true, false),
-        
+
         // Following group of Dummies are all duplicate entries for Navi saying Look/Hey/Watchout
         //SEQUENCE_MAP_ENTRY(NA_SE_VO_DUMMY_0x45,          "NA_SE_VO_DUMMY_0x45",                 "NA_SE_VO_DUMMY_0x45",            SEQ_VOICE, true, false),
         //SEQUENCE_MAP_ENTRY(NA_SE_VO_DUMMY_0x46,          "NA_SE_VO_DUMMY_0x46",                 "NA_SE_VO_DUMMY_0x46",            SEQ_VOICE, true, false),
