@@ -2380,7 +2380,8 @@ void CosmeticsEditorWindow::DrawElement() {
                             UIWidgets::CheckboxOptions()
                                 .Color(THEME_COLOR)
                                 .Tooltip("Enables randomizing all unlocked cosmetics when you enter a new scene."));
-    UIWidgets::CVarCheckbox("Randomize All on Randomizer Generation", CVAR_COSMETIC("RandomizeAllOnNewRandoGen"),
+    UIWidgets::CVarCheckbox(
+        "Randomize All on Randomizer Generation", CVAR_COSMETIC("RandomizeAllOnRandoGen"),
         UIWidgets::CheckboxOptions()
             .Color(THEME_COLOR)
             .Tooltip("Enables randomizing all unlocked cosmetics when you generate a new randomizer."));
@@ -2584,6 +2585,14 @@ void Cosmetics_RegisterOnSceneInitHook() {
     });
 }
 
+void CosmeticsEditorRegisterOnRandomizerGenerationHook() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnRandomizerGeneration>([]() {
+        if (CVarGetInteger(CVAR_COSMETIC("RandomizeAllOnRandoGen"), 0)) {
+            CosmeticsEditor_RandomizeAll();
+        }
+    });
+}
+
 void CosmeticsEditorWindow::InitElement() {
     // Convert the `current color` into the format that the ImGui color picker expects
     for (auto& [id, cosmeticOption] : cosmeticOptions) {
@@ -2603,6 +2612,7 @@ void CosmeticsEditorWindow::InitElement() {
     RegisterOnLoadGameHook();
     RegisterOnGameFrameUpdateHook();
     Cosmetics_RegisterOnSceneInitHook();
+    CosmeticsEditorRegisterOnRandomizerGenerationHook();
 }
 
 void CosmeticsEditor_RandomizeAll() {
