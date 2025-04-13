@@ -444,7 +444,7 @@ void StaticData::HintTable_Init_Item() {
                                                CustomMessage("a little clucker", /*german*/"ein kleiner Gackerer", /*french*/"un petit glousseur")
                                                // /*spanish*/un pollito chiquito
                                                },
-                                               CustomMessage("Pocket Cucco", "!!!", "!!!"));
+                                               CustomMessage("Pocket Cucco",  TODO_TRANSLATE,  TODO_TRANSLATE));
 
     hintTextTable[RHT_COJIRO] = HintText(CustomMessage("Cojiro", /*german*/"Henni", /*french*/"le p'tit poulet"),
                                          // /*spanish*/a Cojiro
@@ -1608,216 +1608,216 @@ void StaticData::HintTable_Init_Item() {
                                                  CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
                                                   // /*spanish*/una llave del mundo exterior
                                                  }, {
-                                                 CustomMessage("a key to pots", /*german*/"!!!", /*french*/"!!!")
+                                                 CustomMessage("a key to pots", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE)
                                                  },
-                                                 CustomMessage("Guard House Key", "Schlüssel für das Haus der Wachen", ""/*!!!*/));
+                                                 CustomMessage("Guard House Key", "Schlüssel für das Haus der Wachen", "Clé de la Maison des Gardes"));
 
    hintTextTable[RHT_MARKET_BAZAAR_KEY] = HintText(CustomMessage("Market Bazaar's key"),
                                                   {
                                                   CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
                                                    // /*spanish*/una llave del mundo exterior
                                                   }, {
-                                                  CustomMessage("a child's shopping key", /*german*/"!!!", /*french*/"!!!")
+                                                  CustomMessage("a child's shopping key", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE)
                                                   },
-                                                  CustomMessage("Market Bazaar Key", "Schlüssel für den Basar des Marktes", ""));
+                                                  CustomMessage("Market Bazaar Key", "Schlüssel für den Basar des Marktes", "Clé du Bazar de la Place du Marché"));
 
    hintTextTable[RHT_MARKET_POTION_SHOP_KEY] = HintText(CustomMessage("the Market Potion Shop's key"),
                                                        {
                                                        CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
                                                         // /*spanish*/una llave del mundo exterior
                                                        }, {
-                                                       CustomMessage("past potion's key", /*german*/"!!!", /*french*/"!!!")
+                                                       CustomMessage("past potion's key", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE)
                                                        },
-                                                       CustomMessage("Market Potion Shop Key", "Schlüssel für den Magie-Laden des Marktes", ""));
+                                                       CustomMessage("Market Potion Shop Key", "Schlüssel für den Magie-Laden des Marktes", "Clé du Magasin de Potions de la Place du Marché"));
 
    hintTextTable[RHT_MASK_SHOP_KEY] = HintText(CustomMessage("the Mask Shop's key"),
                                                {
                                                CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
                                                 // /*spanish*/una llave del mundo exterior
                                                }, {
-                                               CustomMessage("the masqurade's key", /*german*/"!!!", /*french*/"!!!")
+                                               CustomMessage("the masqurade's key", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE)
                                                },
-                                               CustomMessage("Mask Shop Key", "Schlüssel für den Maskenladen", ""));
+                                               CustomMessage("Mask Shop Key", "Schlüssel für den Maskenladen", "Clé de la Foire aux Masques"));
 
    hintTextTable[RHT_MARKET_SHOOTING_KEY] = HintText(CustomMessage("Market Shooting Gallery's key"),
                                                     {
                                                     CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
                                                      // /*spanish*/una llave del mundo exterior
                                                     }, {
-                                                    CustomMessage("slingshot shooting's key", /*german*/"!!!", /*french*/"!!!")
+                                                    CustomMessage("slingshot shooting's key", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE)
                                                     },
-                                                    CustomMessage("Market Shooting Gallery Key", "Schlüssel für die Schießbude des Marktes", ""));
+                                                    CustomMessage("Market Shooting Gallery Key", "Schlüssel für die Schießbude des Marktes", "Clé du Stand de Tir de la Place du Marché"));
 
    hintTextTable[RHT_BOMBCHU_BOWLING_KEY] = HintText(CustomMessage("Bombchu Bowling's key"),
                                                     {
                                                     CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
                                                      // /*spanish*/una llave del mundo exterior
                                                     }, {
-                                                    CustomMessage("mouse golf's key", /*german*/"!!!", /*french*/"!!!")
+                                                    CustomMessage("mouse golf's key", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE)
                                                     },
-                                                    CustomMessage("Bombchu Bowling Alley Key", "Schlüssel für die Minenbowlingbahn", ""));
+                                                    CustomMessage("Bombchu Bowling Alley Key", "Schlüssel für die Minenbowlingbahn", "Clé du Bowling Teigneux"));
 
    hintTextTable[RHT_TCG_BUILDING_KEY] = HintText(CustomMessage("Treasure Chest Game Building's key"),
                                                 {
                                                 CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
                                                  // /*spanish*/una llave del mundo exterior
                                                 }, {
-                                                CustomMessage("the gambling game's key", /*german*/"!!!", /*french*/"!!!")
+                                                CustomMessage("the gambling game's key", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE)
                                                 },
-                                                CustomMessage("Treasure Chest Game Building Key", "Schlüssel für das Haus des Schatzkisten-Pokers", ""));
+                                                CustomMessage("Treasure Chest Game Building Key", "Schlüssel für das Haus des Schatzkisten-Pokers", "Clé de la Chasse au Trésor"));
 
    hintTextTable[RHT_BOMBCHU_SHOP_KEY] = HintText(CustomMessage("the Bombchu Shop's key"),
                                                 {
                                                 CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
                                                  // /*spanish*/una llave del mundo exterior
                                                 }, {
-                                                CustomMessage("a mouse merchant's key", /*german*/"!!!", /*french*/"!!!")
+                                                CustomMessage("a mouse merchant's key", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE)
                                                 },
-                                                CustomMessage("Bombchu Shop Key", "Schlüssel für den Krabbelminenladen", ""));
+                                                CustomMessage("Bombchu Shop Key", "Schlüssel für den Krabbelminenladen", "Clé du Magasin de Missiles"));
 
    hintTextTable[RHT_RICHARDS_HOUSE_KEY] = HintText(CustomMessage("Richard's House Key"),
                                                 {
                                                 CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
                                                  // /*spanish*/una llave del mundo exterior
                                                 }, {
-                                                CustomMessage("a lost puppy's key", /*german*/"!!!", /*french*/"!!!")
+                                                CustomMessage("a lost puppy's key", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE)
                                                 },
-                                                CustomMessage("Richard's House Key", "Schlüssel für das Haus von Richard", ""));
+                                                CustomMessage("Richard's House Key", "Schlüssel für das Haus von Richard", "Clé de la Maison de Kiki"));
 
    hintTextTable[RHT_ALLEY_HOUSE_KEY] = HintText(CustomMessage("the Alley House's key"),
                                                 {
                                                 CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
                                                  // /*spanish*/una llave del mundo exterior
                                                 }, {
-                                                CustomMessage("a townhouse's key", /*german*/"!!!", /*french*/"!!!")
+                                                CustomMessage("a townhouse's key", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE)
                                                 },
-                                                CustomMessage("Alley House Key", "Schlüssel für das Gassenhaus", ""));
+                                                CustomMessage("Alley House Key", "Schlüssel für das Gassenhaus", "Clé de la Maison de la Ruelle"));
 
    hintTextTable[RHT_KAK_BAZAAR_KEY] = HintText(CustomMessage("Kakariko Bazaar's key"),
                                                 {
                                                 CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
                                                  // /*spanish*/una llave del mundo exterior
                                                 }, {
-                                                CustomMessage("adult's shopping key", /*german*/"!!!", /*french*/"!!!")
+                                                CustomMessage("adult's shopping key", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE)
                                                 },
-                                                CustomMessage("Kakariko Bazaar Key", "Schlüssel für den Basar von Kakariko", ""));
+                                                CustomMessage("Kakariko Bazaar Key", "Schlüssel für den Basar von Kakariko", "Clé du Bazar de Cocorico"));
 
    hintTextTable[RHT_KAK_POTION_SHOP_KEY] = HintText(CustomMessage("the Kakariko Potion Shop's key"),
                                                 {
                                                 CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
                                                  // /*spanish*/una llave del mundo exterior
                                                 }, {
-                                                CustomMessage("future's potion key", /*german*/"!!!", /*french*/"!!!")
+                                                CustomMessage("future's potion key", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE)
                                                 },
-                                                CustomMessage("Kakariko Potion Shop Key", "Schlüssel für den Magie-Laden von Kakariko", ""));
+                                                CustomMessage("Kakariko Potion Shop Key", "Schlüssel für den Magie-Laden von Kakariko", "Clé du Magasin de Potions de Cocorico"));
 
    hintTextTable[RHT_BOSS_HOUSE_KEY] = HintText(CustomMessage("the Boss's House's key"),
                                                 {
                                                 CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
                                                  // /*spanish*/una llave del mundo exterior
                                                 }, {
-                                                CustomMessage("the carpenter's key", /*german*/"!!!", /*french*/"!!!")
+                                                CustomMessage("the carpenter's key", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE)
                                                 },
-                                                CustomMessage("Boss's House Key", "Schlüssel für das Haus des Chefs", ""));
+                                                CustomMessage("Boss's House Key", "Schlüssel für das Haus des Chefs", "Clé de la Maison du Chef des Ouvriers"));
 
    hintTextTable[RHT_GRANNYS_POTION_SHOP_KEY] = HintText(CustomMessage("Granny's Potion Shop's key"),
                                                 {
                                                 CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
                                                  // /*spanish*/una llave del mundo exterior
                                                 }, {
-                                                CustomMessage("the old woman's key", /*german*/"!!!", /*french*/"!!!")
+                                                CustomMessage("the old woman's key", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE)
                                                 },
-                                                CustomMessage("Granny's Potion Shop Key", "Schlüssel für Asas Hexenladen", ""));
+                                                CustomMessage("Granny's Potion Shop Key", "Schlüssel für Asas Hexenladen", "Clé de l'Apothicaire"));
 
    hintTextTable[RHT_SKULLTULA_HOUSE_KEY] = HintText(CustomMessage("the Skulltula House's key"),
                                                 {
                                                 CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
                                                  // /*spanish*/una llave del mundo exterior
                                                 }, {
-                                                CustomMessage("the cursed place's key", /*german*/"!!!", /*french*/"!!!")
+                                                CustomMessage("the cursed place's key", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE)
                                                 },
-                                                CustomMessage("Skulltula House Key", "Schlüssel für das Skulltula-Haus", ""));
+                                                CustomMessage("Skulltula House Key", "Schlüssel für das Skulltula-Haus", "Clé de la Maison des Araignées"));
 
    hintTextTable[RHT_IMPAS_HOUSE_KEY] = HintText(CustomMessage("Impa's House's key"),
                                                 {
                                                 CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
                                                  // /*spanish*/una llave del mundo exterior
                                                 }, {
-                                                CustomMessage("the Shadow Sage's key", /*german*/"!!!", /*french*/"!!!")
+                                                CustomMessage("the Shadow Sage's key", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE)
                                                 },
-                                                CustomMessage("Impa's House Key", "Schlüssel für das Haus von Impa", ""));
+                                                CustomMessage("Impa's House Key", "Schlüssel für das Haus von Impa", "Clé de la Maison d'Impa"));
 
    hintTextTable[RHT_WINDMILL_KEY] = HintText(CustomMessage("the Windmill's key"),
                                                 {
                                                 CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
                                                  // /*spanish*/una llave del mundo exterior
                                                 }, {
-                                                CustomMessage("the grain grinder's key", /*german*/"!!!", /*french*/"!!!")
+                                                CustomMessage("the grain grinder's key", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE)
                                                 },
-                                                CustomMessage("Windmill Key", "Schlüssel für die Windmühle", ""));
+                                                CustomMessage("Windmill Key", "Schlüssel für die Windmühle", "Clé du Moulin"));
 
    hintTextTable[RHT_KAK_SHOOTING_KEY] = HintText(CustomMessage("Kakariko Shooting Gallery's key"),
                                                 {
                                                 CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
                                                  // /*spanish*/una llave del mundo exterior
                                                 }, {
-                                                CustomMessage("bow shooting's key", /*german*/"!!!", /*french*/"!!!")
+                                                CustomMessage("bow shooting's key", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE)
                                                 },
-                                                CustomMessage("Kakariko Shooting Gallery Key", "Schlüssel für die Schießbude von Kakariko", ""));
+                                                CustomMessage("Kakariko Shooting Gallery Key", "Schlüssel für die Schießbude von Kakariko", "Clé du Stand de Tir de Cocorico"));
 
    hintTextTable[RHT_DAMPES_HUT_KEY] = HintText(CustomMessage("Dampe's Hut's key"),
                                                 {
                                                 CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
                                                  // /*spanish*/una llave del mundo exterior
                                                 }, {
-                                                CustomMessage("the small hut's key", /*german*/"!!!", /*french*/"!!!")
+                                                CustomMessage("the small hut's key", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE)
                                                 },
-                                                CustomMessage("Dampe's Hut Key", "Schlüssel für die Hütte von Boris", ""));
+                                                CustomMessage("Dampe's Hut Key", "Schlüssel für die Hütte von Boris", "Clé de la Cabane d'Igor"));
 
    hintTextTable[RHT_TALONS_HOUSE_KEY] = HintText(CustomMessage("Talon's House's key"),
                                                 {
                                                 CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
                                                  // /*spanish*/una llave del mundo exterior
                                                 }, {
-                                                CustomMessage("the layabout's key", /*german*/"!!!", /*french*/"!!!")
+                                                CustomMessage("the layabout's key", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE)
                                                 },
-                                                CustomMessage("Talon's House Key", "Schlüssel für das Haus von Talon", ""));
+                                                CustomMessage("Talon's House Key", "Schlüssel für das Haus von Talon", "Clé de la Maison de Talon"));
 
    hintTextTable[RHT_STABLES_KEY] = HintText(CustomMessage("the Stables' key"),
                                                 {
                                                 CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
                                                  // /*spanish*/una llave del mundo exterior
                                                 }, {
-                                                CustomMessage("the key to the farm", /*german*/"!!!", /*french*/"!!!")
+                                                CustomMessage("the key to the farm", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE)
                                                 },
-                                                CustomMessage("Stables Key", "Schlüssel für die Ställe", ""));
+                                                CustomMessage("Stables Key", "Schlüssel für die Ställe", "Clé des Écuries"));
 
    hintTextTable[RHT_BACK_TOWER_KEY] = HintText(CustomMessage("the Back Tower's key"),
                                                 {
                                                 CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
                                                  // /*spanish*/una llave del mundo exterior
                                                 }, {
-                                                CustomMessage("the cowshed's key", /*german*/"!!!", /*french*/"!!!")
+                                                CustomMessage("the cowshed's key", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE)
                                                 },
-                                                CustomMessage("Back Tower Key", "Schlüssel für den hinteren Turm", ""));
+                                                CustomMessage("Back Tower Key", "Schlüssel für den hinteren Turm", "Clé du Silo"));
 
    hintTextTable[RHT_HYLIA_LAB_KEY] = HintText(CustomMessage("the Hylia Laboratory's key"),
                                                 {
                                                 CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
                                                  // /*spanish*/una llave del mundo exterior
                                                 }, {
-                                                CustomMessage("the key to science", /*german*/"!!!", /*french*/"!!!")
+                                                CustomMessage("the key to science", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE)
                                                 },
-                                                CustomMessage("Hylia Laboratory Key", "Schlüssel für das Hylia-Labor", ""));
+                                                CustomMessage("Hylia Laboratory Key", "Schlüssel für das Hylia-Labor", "Clé du Laboratoire du Lac Hylia"));
 
    hintTextTable[RHT_FISHING_HOLE_KEY] = HintText(CustomMessage("the Fishing Hole's key"),
                                                 {
                                                 CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
                                                  // /*spanish*/una llave del mundo exterior
                                                 }, {
-                                                CustomMessage("the fisherman's key", /*german*/"!!!", /*french*/"!!!")
+                                                CustomMessage("the fisherman's key", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE)
                                                 },
-                                                CustomMessage("Fishing Hole Key", "Schlüssel für den Fischweiher", ""));
+                                                CustomMessage("Fishing Hole Key", "Schlüssel für den Fischweiher", "Clé de l'Étang"));
 
     hintTextTable[RHT_FOREST_TEMPLE_KEY_RING] = HintText(CustomMessage("a Forest Temple Key Ring", /*german*/"ein Schlüsselbund des Waldtempels", /*french*/"un trousseau de clés du Temple de la Forêt"),
                                                          // /*spanish*/un llavero del Templo del Bosque
@@ -1977,7 +1977,7 @@ void StaticData::HintTable_Init_Item() {
                                                CustomMessage("a key ring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
                                                 // /*spanish*/un llavero
                                                }, {
-                                               CustomMessage("a gambler's toolbox for unlocking"),//"!!!"
+                                               CustomMessage("a gambler's toolbox for unlocking"),// TODO_TRANSLATE
                                                CustomMessage("a gambler's season pass"),
                                                CustomMessage("a gambler's jingling ring"),
                                                CustomMessage("a gambler's skeleton key")
@@ -2254,11 +2254,11 @@ void StaticData::HintTable_Init_Item() {
                                            CustomMessage("Ice Trap", "Eisfalle", "Piège de Glace"));
 
     
-    hintTextTable[RHT_MILK] = HintText(CustomMessage("some Milk", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_MILK] = HintText(CustomMessage("some Milk", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Milk", "Milch", "Lait"));
     
-    hintTextTable[RHT_FISH] = HintText(CustomMessage("a Fish", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_FISH] = HintText(CustomMessage("a Fish", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Fish", "Fisch", "Poisson"));
 
@@ -2457,15 +2457,15 @@ void StaticData::HintTable_Init_Item() {
                                                },
                                                CustomMessage("Deku Stick (1)", "Deku-Stab (1)", "Bâton Mojo (1)"));
 
-    hintTextTable[RHT_RED_POTION_REFILL] = HintText(CustomMessage("some Red Potion", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_RED_POTION_REFILL] = HintText(CustomMessage("some Red Potion", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Red Potion Refill", "Nachfüllpackung des roten Elixiers", "Recharge de Potion Rouge"));
     
-    hintTextTable[RHT_GREEN_POTION_REFILL] = HintText(CustomMessage("some Green Potion", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_GREEN_POTION_REFILL] = HintText(CustomMessage("some Green Potion", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Green Potion Refill", "Nachfüllpackung des grünen Elixiers", "Recharge de Potion Verte"));
     
-    hintTextTable[RHT_BLUE_POTION_REFILL] = HintText(CustomMessage("some Blue Potion", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BLUE_POTION_REFILL] = HintText(CustomMessage("some Blue Potion", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Blue Potion Refill", "Nachfüllpackung des blauen Elixiers", "Recharge de Potion Bleue"));
 
@@ -2491,123 +2491,123 @@ void StaticData::HintTable_Init_Item() {
                                                    },
                                                    CustomMessage("Green Rupee (LOSER)", "Grüner Rubin (Schatztruhenminispiel)", "Rubis Vert (Chasse-aux-Trésors)"));
 
-    hintTextTable[RHT_BUY_DEKU_NUTS_5] = HintText(CustomMessage("Deku Nuts", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BUY_DEKU_NUTS_5] = HintText(CustomMessage("Deku Nuts", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                                   {}, {},
                                                   CustomMessage("Buy Deku Nut (5)", "Deku-Nuß kaufen (5)", "Acheter: Noix Mojo (5)"));
 
-    hintTextTable[RHT_BUY_ARROWS_30] = HintText(CustomMessage("Arrows", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BUY_ARROWS_30] = HintText(CustomMessage("Arrows", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                                   {}, {},
                                                   CustomMessage("Buy Arrows (30)", "Pfeile kaufen (30)", "Acheter: Flèches (30)"));
 
-    hintTextTable[RHT_BUY_ARROWS_50] = HintText(CustomMessage("Arrows", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BUY_ARROWS_50] = HintText(CustomMessage("Arrows", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                                   {}, {},
                                                   CustomMessage("Buy Arrows (50)", "Pfeile kaufen (50)", "Acheter: Flèches (50)"));
 
-    hintTextTable[RHT_BUY_BOMBS_525] = HintText(CustomMessage("cheap Bombs", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BUY_BOMBS_525] = HintText(CustomMessage("cheap Bombs", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                                   {}, {},
                                                   CustomMessage("Buy Bombs (5) [25]", "Bomben kaufen (5) [25]", "Acheter: Bombes (5) [25]"));
 
-    hintTextTable[RHT_BUY_DEKU_NUTS_10] = HintText(CustomMessage("Deku Nuts", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BUY_DEKU_NUTS_10] = HintText(CustomMessage("Deku Nuts", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                                   {}, {},
                                                   CustomMessage("Buy Deku Nut (10)", "Deku-Nuß kaufen (10)", "Acheter: Noix Mojo (10)"));
 
-    hintTextTable[RHT_BUY_DEKU_STICK_1] = HintText(CustomMessage("Deku Sticks", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BUY_DEKU_STICK_1] = HintText(CustomMessage("Deku Sticks", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                                   {}, {},
                                                   CustomMessage("Buy Deku Stick (1)", "Acheter: Bâton Mojo (1)", "Deku-Stab kaufen (1)"));
 
-    hintTextTable[RHT_BUY_BOMBS_10] = HintText(CustomMessage("Bombs", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BUY_BOMBS_10] = HintText(CustomMessage("Bombs", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                                   {}, {},
                                                   CustomMessage("Buy Bombs (10)", "Bomben kaufen (10)", "Acheter: Bombes (10)"));
 
-    hintTextTable[RHT_BUY_FISH] = HintText(CustomMessage("Fish", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BUY_FISH] = HintText(CustomMessage("Fish", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                                   {}, {},
                                                   CustomMessage("Buy Fish", "Fisch kaufen", "Acheter: Poisson"));
 
-    hintTextTable[RHT_BUY_RED_POTION_30] = HintText(CustomMessage("cheap Red Potion", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BUY_RED_POTION_30] = HintText(CustomMessage("cheap Red Potion", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                                   {}, {},
                                                   CustomMessage("Buy Red Potion [30]", "Rotes Elixier kaufen [30]", "Acheter: Potion Rouge [30]"));
 
-    hintTextTable[RHT_BUY_GREEN_POTION] = HintText(CustomMessage("Green Potion", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BUY_GREEN_POTION] = HintText(CustomMessage("Green Potion", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                                   {}, {},
                                                   CustomMessage("Buy Green Potion", "Grünes Elixier kaufen", "Acheter: Potion Verte"));
 
-    hintTextTable[RHT_BUY_BLUE_POTION] = HintText(CustomMessage("Blue Potion", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BUY_BLUE_POTION] = HintText(CustomMessage("Blue Potion", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                                   {}, {},
                                                   CustomMessage("Buy Blue Potion", "Blaues Elixier kaufen", "Acheter: Potion Bleue"));
 
-    hintTextTable[RHT_BUY_HYLIAN_SHIELD] = HintText(CustomMessage("Hylian Shields", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BUY_HYLIAN_SHIELD] = HintText(CustomMessage("Hylian Shields", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                                   {}, {},
                                                   CustomMessage("Buy Hylian Shield", "Hylia-Schild kaufen", "Acheter: Bouclier Hylien"));
 
-    hintTextTable[RHT_BUY_DEKU_SHIELD] = HintText(CustomMessage("Deku Shields", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BUY_DEKU_SHIELD] = HintText(CustomMessage("Deku Shields", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                                   {}, {},
                                                   CustomMessage("Buy Deku Shield", "Deku-Schild kaufen", "Acheter: Bouclier Mojo"));
 
-    hintTextTable[RHT_BUY_GORON_TUNIC] = HintText(CustomMessage("Goron Tunics", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BUY_GORON_TUNIC] = HintText(CustomMessage("Goron Tunics", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                                   {}, {},
                                                   CustomMessage("Buy Goron Tunic", "Goronen-Tunika kaufen", "Acheter: Tunique Goron"));
 
-    hintTextTable[RHT_BUY_ZORA_TUNIC] = HintText(CustomMessage("Zora Tunics", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BUY_ZORA_TUNIC] = HintText(CustomMessage("Zora Tunics", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                                   {}, {},
                                                   CustomMessage("Buy Zora Tunic", "Zora-Tunika kaufen", "Acheter: Tunique Zora"));
 
-    hintTextTable[RHT_BUY_HEART] = HintText(CustomMessage("Recovery Hearts", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BUY_HEART] = HintText(CustomMessage("Recovery Hearts", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                                   {}, {},
                                                   CustomMessage("Buy Heart", "Herz kaufen", "Acheter: Coeur de Vie"));
 
-    hintTextTable[RHT_BUY_BOMBCHUS_10] = HintText(CustomMessage("Bombchus", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BUY_BOMBCHUS_10] = HintText(CustomMessage("Bombchus", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                                   {}, {},
                                                   CustomMessage("Buy Bombchu (10)", "Krabbelminen kaufen (10)", "Acheter: Missiles (10)"));
 
-    hintTextTable[RHT_BUY_BOMBCHUS_20] = HintText(CustomMessage("Bulk Bombchus", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BUY_BOMBCHUS_20] = HintText(CustomMessage("Bulk Bombchus", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                                   {}, {},
                                                   CustomMessage("Buy Bombchu (20)", "Krabbelminen kaufen (20)", "Acheter: Missiles (20)"));
 
-    hintTextTable[RHT_BUY_DEKU_SEEDS_30] = HintText(CustomMessage("Deku Seeds", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BUY_DEKU_SEEDS_30] = HintText(CustomMessage("Deku Seeds", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                                   {}, {},
                                                   CustomMessage("Buy Deku Seeds (30)", "Deku-Samen kaufen (30)", "Acheter: Graines Mojo (30)"));
 
-    hintTextTable[RHT_SOLD_OUT] = HintText(CustomMessage("Nothing", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_SOLD_OUT] = HintText(CustomMessage("Nothing", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                                   {}, {},
                                                   CustomMessage("Sold Out", "Ausverkauft", "Rupture de stock"));
 
-    hintTextTable[RHT_BUY_BLUE_FIRE] = HintText(CustomMessage("Blue Fire", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BUY_BLUE_FIRE] = HintText(CustomMessage("Blue Fire", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                                   {}, {},
                                                   CustomMessage("Buy Blue Fire", "Blaues Feuer kaufen", "Acheter: Flamme Bleue"));
 
-    hintTextTable[RHT_BUY_BOTTLE_BUG] = HintText(CustomMessage("Bugs", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BUY_BOTTLE_BUG] = HintText(CustomMessage("Bugs", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                                   {}, {},
                                                   CustomMessage("Buy Bottle Bug", "Flaschenkäfer kaufen", "Acheter: Insecte en bouteille"));
 
-    hintTextTable[RHT_BUY_POE] = HintText(CustomMessage("Poes", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BUY_POE] = HintText(CustomMessage("Poes", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                                   {}, {},
                                                   CustomMessage("Buy Poe", "Geist kaufen", "Acheter: Esprit"));
 
-    hintTextTable[RHT_BUY_FAIRYS_SPIRIT] = HintText(CustomMessage("Fairies", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BUY_FAIRYS_SPIRIT] = HintText(CustomMessage("Fairies", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                                   {}, {},
                                                   CustomMessage("Buy Fairy's Spirit", "Feengeist kaufen", "Acheter: Esprit de Fée"));
 
-    hintTextTable[RHT_BUY_ARROWS_10] = HintText(CustomMessage("Arrows", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BUY_ARROWS_10] = HintText(CustomMessage("Arrows", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                                   {}, {},
                                                   CustomMessage("Buy Arrows (10)", "Pfeile kaufen (10)", "Acheter: Flèches (10)"));
 
-    hintTextTable[RHT_BUY_BOMBS_20] = HintText(CustomMessage("Bombs", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BUY_BOMBS_20] = HintText(CustomMessage("Bombs", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                                   {}, {},
                                                   CustomMessage("Buy Bombs (20)", "Bomben kaufen (20)", "Acheter: Bombes (20)"));
 
-    hintTextTable[RHT_BUY_BOMBS_30] = HintText(CustomMessage("bulk Bombs", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BUY_BOMBS_30] = HintText(CustomMessage("bulk Bombs", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                                   {}, {},
                                                   CustomMessage("Buy Bombs (30)", "Bomben kaufen (30)", "Acheter: Bombes (30)"));
 
-    hintTextTable[RHT_BUY_BOMBS_535] = HintText(CustomMessage("pricy Bombs", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BUY_BOMBS_535] = HintText(CustomMessage("pricy Bombs", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                                   {}, {},
                                                   CustomMessage("Buy Bombs (5) [35]", "Bomben kaufen (5) [35]", "Acheter: Bombes (5) [35]"));
 
-    hintTextTable[RHT_BUY_RED_POTION_40] = HintText(CustomMessage("Red Potion", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BUY_RED_POTION_40] = HintText(CustomMessage("Red Potion", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                                   {}, {},
                                                   CustomMessage("Buy Red Potion [40]", "Rotes Elixier kaufen [40]", "Acheter: Potion Rouge [40]"));
 
-    hintTextTable[RHT_BUY_RED_POTION_50] = HintText(CustomMessage("pricy Red Potion", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BUY_RED_POTION_50] = HintText(CustomMessage("pricy Red Potion", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                                   {}, {},
                                                   CustomMessage("Buy Red Potion [50]", "Rotes Elixier kaufen [50]", "Acheter: Potion Rouge [50]"));
 
@@ -2780,7 +2780,7 @@ void StaticData::HintTable_Init_Item() {
                                               }, {
                                               CustomMessage("sack of mice", /*german*/"ein Sack Mäuse", /*french*/"un Sac rempli de souris")
                                               },
-                                              CustomMessage("Bombchu Bag", "Krabbelminentasche", "!!!"));
+                                              CustomMessage("Bombchu Bag", "Krabbelminentasche",  TODO_TRANSLATE));
 
     hintTextTable[RHT_SKELETON_KEY] = HintText(CustomMessage("a Skeleton Key", /*german*/ "ein Universalschlüssel", /*french*/ "une Clé Squelette"),
                                                // /*spanish*/una Llave Maestra
@@ -2841,135 +2841,135 @@ void StaticData::HintTable_Init_Item() {
                                     CustomMessage("a four legged friend", /*german*/"ein vierbeiniger Freund", /*french*/"un puissant animal")});
                                          // /*spanish*/una amiga cuadrúpeda
 
-    hintTextTable[RG_TRIFORCE] = HintText(CustomMessage("the Triforce", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RG_TRIFORCE] = HintText(CustomMessage("the Triforce", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Triforce", "Triforce", "Triforce"));
 
-    hintTextTable[RHT_HINT] = HintText(CustomMessage("a Hint", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_HINT] = HintText(CustomMessage("a Hint", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Hint", "Hinweis", "Indice"));
 
-    hintTextTable[RHT_HOOKSHOT] = HintText(CustomMessage("the Hookshot", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_HOOKSHOT] = HintText(CustomMessage("the Hookshot", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Hookshot", "Fanghaken", "Grappin"));
 
-    hintTextTable[RHT_LONGSHOT] = HintText(CustomMessage("the Longshot", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_LONGSHOT] = HintText(CustomMessage("the Longshot", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Longshot", "Enterhaken", "Super-Grappin"));
 
-    hintTextTable[RHT_FAIRY_OCARINA] = HintText(CustomMessage("the Fairy Ocarina", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_FAIRY_OCARINA] = HintText(CustomMessage("the Fairy Ocarina", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Fairy Ocarina", "Feen-Okarina", "Ocarina des fées"));
 
-    hintTextTable[RHT_OCARINA_OF_TIME] = HintText(CustomMessage("the Ocarina of Time", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_OCARINA_OF_TIME] = HintText(CustomMessage("the Ocarina of Time", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Ocarina of Time", "Okarina der Zeit", "Ocarina du Temps"));
 
-    hintTextTable[RHT_BOMB_BAG] = HintText(CustomMessage("the Bomb Bag", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BOMB_BAG] = HintText(CustomMessage("the Bomb Bag", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Bomb Bag", "Bombentasche", "Sac de Bombes"));
 
-    hintTextTable[RHT_BIG_BOMB_BAG] = HintText(CustomMessage("the Big Bomb Bag", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BIG_BOMB_BAG] = HintText(CustomMessage("the Big Bomb Bag", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Big Bomb Bag", "Große Bombentasche", "Grand Sac de Bombes"));
 
-    hintTextTable[RHT_BIGGEST_BOMB_BAG] = HintText(CustomMessage("the Biggest Bomb Bag", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BIGGEST_BOMB_BAG] = HintText(CustomMessage("the Biggest Bomb Bag", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Biggest Bomb Bag", "Größte Bombentasche", "Énorme Sac de Bombes"));
 
-    hintTextTable[RHT_FAIRY_BOW] = HintText(CustomMessage("the Fairy Bow", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_FAIRY_BOW] = HintText(CustomMessage("the Fairy Bow", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Fairy Bow", "Feen-Bogen", "Arc des Fées"));
 
-    hintTextTable[RHT_BIG_QUIVER] = HintText(CustomMessage("a Big Quiver", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BIG_QUIVER] = HintText(CustomMessage("a Big Quiver", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Big Quiver", "Großer Köcher", "Grand carquois"));
 
-    hintTextTable[RHT_BIGGEST_QUIVER] = HintText(CustomMessage("the Biggest Quiver", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BIGGEST_QUIVER] = HintText(CustomMessage("the Biggest Quiver", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Biggest Quiver", "Größter Köcher", "Énorme carquois"));
 
-    hintTextTable[RHT_FAIRY_SLINGSHOT] = HintText(CustomMessage("the Fairy Slingshot", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_FAIRY_SLINGSHOT] = HintText(CustomMessage("the Fairy Slingshot", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Fairy Slingshot", "Feen-Schleuder", "Lance-Pierre des Fées"));
 
-    hintTextTable[RHT_BIG_BULLET_BAG] = HintText(CustomMessage("a Big Bullet Bag", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BIG_BULLET_BAG] = HintText(CustomMessage("a Big Bullet Bag", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Big Deku Seed Bullet Bag", "Große Deku-Samentasche", "Grand sac de graines mojo"));
 
-    hintTextTable[RHT_BIGGEST_BULLET_BAG] = HintText(CustomMessage("the Biggest Bullet Bag", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BIGGEST_BULLET_BAG] = HintText(CustomMessage("the Biggest Bullet Bag", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Biggest Deku Seed Bullet Bag", "Größte Deku-Samentasche", "Énorme sac de graines mojo"));
 
-    hintTextTable[RHT_GORONS_BRACELET] = HintText(CustomMessage("the Goron's Bracelet", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_GORONS_BRACELET] = HintText(CustomMessage("the Goron's Bracelet", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Goron's Bracelet", "Goronen-Armband", "Bracelet Goron"));
 
-    hintTextTable[RHT_SILVER_GAUNTLETS] = HintText(CustomMessage("the Silver Gauntlets", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_SILVER_GAUNTLETS] = HintText(CustomMessage("the Silver Gauntlets", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Silver Gauntlets", "Silberhandschuhe", "Gantelets d'argent"));
 
-    hintTextTable[RHT_GOLDEN_GAUNTLETS] = HintText(CustomMessage("the Golden Gauntlets", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_GOLDEN_GAUNTLETS] = HintText(CustomMessage("the Golden Gauntlets", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Golden Gauntlets", "Goldhandschuhe", "Gantelets d'or"));
 
-    hintTextTable[RHT_BRONZE_SCALE] = HintText(CustomMessage("a Bronze Scale", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_BRONZE_SCALE] = HintText(CustomMessage("a Bronze Scale", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Bronze Scale", "Bronzene Schuppe", "Écaille de Bronze"));
 
-    hintTextTable[RHT_SILVER_SCALE] = HintText(CustomMessage("a Silver Scale", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_SILVER_SCALE] = HintText(CustomMessage("a Silver Scale", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Silver Scale", "Silberne Schuppe", "Écaille d'argent"));
 
-    hintTextTable[RHT_GOLDEN_SCALE] = HintText(CustomMessage("a Golden Scale", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_GOLDEN_SCALE] = HintText(CustomMessage("a Golden Scale", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Golden Scale", "Goldene Schuppe", "Écaille d'or"));
 
-    hintTextTable[RHT_CHILD_WALLET] = HintText(CustomMessage("a Child's Wallet", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_CHILD_WALLET] = HintText(CustomMessage("a Child's Wallet", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Child Wallet", "Kindergeldbörse", "Petite Bourse"));
 
-    hintTextTable[RHT_ADULT_WALLET] = HintText(CustomMessage("an Adult's Wallet", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_ADULT_WALLET] = HintText(CustomMessage("an Adult's Wallet", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Adult Wallet", "Erwachsenengeldbörse", "Grande Bourse"));
 
-    hintTextTable[RHT_GIANT_WALLET] = HintText(CustomMessage("a Giant Wallet", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_GIANT_WALLET] = HintText(CustomMessage("a Giant Wallet", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Giant Wallet", "Riesige Geldbörse", "Bourse de Géant"));
 
-    hintTextTable[RHT_TYCOON_WALLET] = HintText(CustomMessage("the Tycoon Wallet", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_TYCOON_WALLET] = HintText(CustomMessage("the Tycoon Wallet", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Tycoon Wallet", "Goldene Geldbörse", "Bourse de Magnat"));
 
-    hintTextTable[RHT_DEKU_NUT_BAG] = HintText(CustomMessage("a Deku Nut Bag", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_DEKU_NUT_BAG] = HintText(CustomMessage("a Deku Nut Bag", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Deku Nut Bag", "Deku-Nuß-Tasche", "Sac de Noix Mojo"));
 
-    hintTextTable[RHT_DEKU_NUT_CAPACITY_30] = HintText(CustomMessage("Deku Nut Capacity (30)", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_DEKU_NUT_CAPACITY_30] = HintText(CustomMessage("Deku Nut Capacity (30)", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Deku Nut Capacity (30)", "Deku-Nuß-Kapazität (30)", "Capacité de noix Mojo (30)"));
 
-    hintTextTable[RHT_DEKU_NUT_CAPACITY_40] = HintText(CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_DEKU_NUT_CAPACITY_40] = HintText(CustomMessage("", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Deku Nut Capacity (40)", "Deku-Nuß-Kapazität (40)", "Capacité de noix Mojo (40)"));
 
-    hintTextTable[RHT_DEKU_STICK_BAG] = HintText(CustomMessage("a Deku Stick Bag", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_DEKU_STICK_BAG] = HintText(CustomMessage("a Deku Stick Bag", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Deku Stick Bag", "Deku-Stab-Tasche", "Sac de Bâton Mojo"));
                                              
-    hintTextTable[RHT_DEKU_STICK_CAPACITY_20] = HintText(CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_DEKU_STICK_CAPACITY_20] = HintText(CustomMessage("", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Deku Stick Capacity (20)", "Deku-Stab-Kapazität (20)", "Capacité de Bâtons Mojo (20)"));
                                              
-    hintTextTable[RHT_DEKU_STICK_CAPACITY_30] = HintText(CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_DEKU_STICK_CAPACITY_30] = HintText(CustomMessage("", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Deku Stick Capacity (30)", "Deku-Stab-Kapazität (30)", "Capacité de Bâtons Mojo (30)"));
                                              
-    hintTextTable[RHT_MAGIC_SINGLE] = HintText(CustomMessage("a Small Magic Meter", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_MAGIC_SINGLE] = HintText(CustomMessage("a Small Magic Meter", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Magic Meter", "Magisches Maß", "Jauge de Magie"));
                                              
-    hintTextTable[RHT_MAGIC_DOUBLE] = HintText(CustomMessage("a Large Magic Meter", /*german*/"!!!", /*french*/"!!!"),
+    hintTextTable[RHT_MAGIC_DOUBLE] = HintText(CustomMessage("a Large Magic Meter", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Enhanced Magic Meter", "Verbessertes Magisches Maß", "Jauge de Magie améliorée"));
                                              
