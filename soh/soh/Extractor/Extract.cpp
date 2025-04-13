@@ -659,7 +659,6 @@ bool Extractor::CallZapd(std::string installPath, std::string exportdir) {
     argv[20] = "-osf";
     argv[21] = "placeholder";
 
-
 #ifdef _WIN32
     // Grab a handle to the command window.
     HWND cmdWindow = GetConsoleWindow();
