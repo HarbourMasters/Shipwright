@@ -79,7 +79,10 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
     YREG(15) = 0;
     gSaveContext.worldMapArea = 0;
     OTRScene_ExecuteCommands(play, (SOH::Scene*)play->sceneSegment);
-
+    
+    // Add a skybox on scenes like the Castle Courtyard (play->envCtx.skyboxDisabled = false;)
+    play->envCtx.skyboxDisabled = false;
+    
     // Replace skybox with normal sky
     Player* player = GET_PLAYER(gPlayState);
     play->skyboxId = SKYBOX_NORMAL_SKY;
