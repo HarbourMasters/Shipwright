@@ -29,6 +29,7 @@ void SohMenu::AddMenuRandomizer() {
                      .DefaultValue(true));
     AddWidget(path, "Random Rupee Names", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("RandomizeRupeeNames"))
+        .RaceDisable(false)
         .Options(CheckboxOptions()
                      .Tooltip("When obtaining Rupees, randomize what the Rupee is called in the textbox.")
                      .DefaultValue(true));
@@ -60,6 +61,7 @@ void SohMenu::AddMenuRandomizer() {
                 .DefaultValue(true));
     AddWidget(path, "Quest Item Fanfares", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("QuestItemFanfares"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "Play unique fanfares when obtaining quest items (medallions/stones/songs). Note that these "
             "fanfares can be longer than usual."));
@@ -71,6 +73,7 @@ void SohMenu::AddMenuRandomizer() {
             "so you never know what you're getting."));
     AddWidget(path, "Simpler Boss Soul Models", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("SimplerBossSoulModels"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "When shuffling boss souls, they'll appear as a simpler model instead of showing the boss' models."
             "This might make boss souls more distinguishable from a distance, and can help with performance."));
@@ -93,6 +96,7 @@ void SohMenu::AddMenuRandomizer() {
     AddSidebarEntry("Randomizer", path.sidebarName, 1);
     AddWidget(path, "Popout Plandomizer Window", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("PlandomizerEditor"))
+        .RaceDisable(false)
         .WindowName("Plandomizer Editor")
         .Options(WindowButtonOptions().Tooltip("Enables the separate Randomizer Settings Window."));
 
@@ -103,12 +107,14 @@ void SohMenu::AddMenuRandomizer() {
     AddWidget(path, "Item Tracker", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Toggle Item Tracker", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("ItemTracker"))
+        .RaceDisable(false)
         .WindowName("Item Tracker")
         .Options(WindowButtonOptions().Tooltip("Toggles the Item Tracker.").EmbedWindow(false));
 
     AddWidget(path, "Item Tracker Settings", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Popout Item Tracker Settings", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("ItemTrackerSettings"))
+        .RaceDisable(false)
         .WindowName("Item Tracker Settings")
         .Options(WindowButtonOptions().Tooltip("Enables the separate Item Tracker Settings Window."));
 
@@ -119,12 +125,14 @@ void SohMenu::AddMenuRandomizer() {
     AddWidget(path, "Entrance Tracker", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Toggle Entrance Tracker", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("EntranceTracker"))
+        .RaceDisable(false)
         .WindowName("Entrance Tracker")
         .Options(WindowButtonOptions().Tooltip("Toggles the Entrance Tracker.").EmbedWindow(false));
 
     AddWidget(path, "Entrance Tracker Settings", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Popout Entrance Tracker Settings", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("EntranceTrackerSettings"))
+        .RaceDisable(false)
         .WindowName("Entrance Tracker Settings")
         .Options(WindowButtonOptions().Tooltip("Enables the separate Entrance Tracker Settings Window."));
 
@@ -135,12 +143,14 @@ void SohMenu::AddMenuRandomizer() {
     AddWidget(path, "Check Tracker", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Toggle Check Tracker", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("CheckTracker"))
+        .RaceDisable(false)
         .WindowName("Check Tracker")
         .Options(WindowButtonOptions().Tooltip("Toggles the Check Tracker.").EmbedWindow(false));
 
     AddWidget(path, "Check Tracker Settings", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Popout Check Tracker Settings", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("CheckTrackerSettings"))
+        .RaceDisable(false)
         .WindowName("Check Tracker Settings")
         .Options(WindowButtonOptions().Tooltip("Enables the separate Check Tracker Settings Window."));
 }

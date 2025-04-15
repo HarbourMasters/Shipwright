@@ -109,6 +109,7 @@ struct WidgetInfo {
     const char* windowName = "";
     bool isHidden = false;
     bool sameLine = false;
+    bool raceDisable = true;
 
     WidgetInfo& CVar(const char* cVar_) {
         cVar = cVar_;
@@ -189,6 +190,10 @@ struct WidgetInfo {
     }
     WidgetInfo& CustomFunction(WidgetFunc customFunction_) {
         customFunction = customFunction_;
+        return *this;
+    }
+    WidgetInfo& RaceDisable(bool disable) {
+        raceDisable = disable;
         return *this;
     }
 };

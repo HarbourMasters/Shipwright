@@ -85,6 +85,7 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Saving", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Autosave", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("Autosave"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "Save the game automatically on a 3 minute interval and when soft-resetting the game. The interval "
             "autosave will wait if the game is paused in any way (dialogue, pause screen up, cutscenes, "
@@ -168,9 +169,11 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Controls", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Answer Navi Prompt with L Button", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("NaviOnL"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip("Speak to Navi with L but enter First-Person Camera with C-Up."));
     AddWidget(path, "Don't Require Input for Credits Sequence", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("NoInputForCredits"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "Removes the Input Requirement on Text boxes after defeating Ganon, allowing the Credits "
             "Sequence to continue to progress."));
@@ -202,14 +205,20 @@ void SohMenu::AddMenuEnhancements() {
 
     AddWidget(path, "Item Count Messages", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Gold Skulltula Tokens", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"));
-    AddWidget(path, "Pieces of Heart", WIDGET_CVAR_CHECKBOX).CVar(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"));
-    AddWidget(path, "Heart Containers", WIDGET_CVAR_CHECKBOX).CVar(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"));
+        .CVar(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"))
+        .RaceDisable(false);
+    AddWidget(path, "Pieces of Heart", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"))
+        .RaceDisable(false);
+    AddWidget(path, "Heart Containers", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"))
+        .RaceDisable(false);
 
     path.column = SECTION_COLUMN_3;
     AddWidget(path, "Misc", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Disable Crit Wiggle", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("DisableCritWiggle"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip("Disable Random Camera Wiggle at Low Health."));
     AddWidget(path, "Better Owl", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("BetterOwl"))
@@ -430,27 +439,32 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Mods", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Use Alternate Assets", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("AltAssets"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "Toggle between standard assets and alternate assets. Usually mods will indicate if "
             "this setting has to be used or not."));
     AddWidget(path, "Disable Bomb Billboarding", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("DisableBombBillboarding"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "Disables bombs always rotating to face the camera. To be used in conjunction with mods that want to "
             "replace bombs with 3D objects."));
     AddWidget(path, "Disable Grotto Fixed Rotation", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("DisableGrottoRotation"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "Disables Grottos rotating with the Camera. To be used in conjuction with mods that want to "
             "replace grottos with 3D objects."));
     AddWidget(path, "Ingame Text Spacing: %d", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_ENHANCEMENT("TextSpacing"))
+        .RaceDisable(false)
         .Options(IntSliderOptions().Min(4).Max(6).DefaultValue(6).Tooltip(
             "Space between text characters (useful for HD font textures)."));
 
     AddWidget(path, "Models & Textures", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Disable LOD", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("DisableLOD"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "Turns off the Level of Detail setting, making models use their Higher-Poly variants at any distance."));
     AddWidget(path, "Enemy Health Bars", WIDGET_CVAR_CHECKBOX)
@@ -458,18 +472,22 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip("Renders a health bar for Enemies when Z-Targeted."));
     AddWidget(path, "Enable 3D Dropped Items/Projectiles", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("NewDrops"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "Replaces most 2D items and projectiles on the overworld with their equivalent 3D models."));
     AddWidget(path, "Animated Link in Pause Menu", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("PauseMenuAnimatedLink"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip("Turns the Static Image of Link in the Pause Menu's Equipment Subscreen "
                                            "into a model cycling through his idle animations."));
     AddWidget(path, "Show Age-Dependent Equipment", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"))
+        .RaceDisable(false)
         .Callback([](WidgetInfo& info) { UpdatePatchHand(); })
         .Options(CheckboxOptions().Tooltip("Makes all equipment visible, regardless of age."));
     AddWidget(path, "Scale Adult Equipment as Child", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ScaleAdultEquipmentAsChild"))
+        .RaceDisable(false)
         .PreFunc([](WidgetInfo& info) {
             info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0) == 0;
         })
@@ -478,11 +496,14 @@ void SohMenu::AddMenuEnhancements() {
             "not work properly with some mods."));
     AddWidget(path, "Show Gauntlets in First Person", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FirstPersonGauntlets"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip("Renders Gauntlets when using the Bow and Hookshot like in OoT3D."));
     AddWidget(path, "Show Chains on Both Sides of Locked Doors", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_ENHANCEMENT("ShowDoorLocksOnBothSides"));
+        .CVar(CVAR_ENHANCEMENT("ShowDoorLocksOnBothSides"))
+        .RaceDisable(false);
     AddWidget(path, "Color Temple of Time's Medallions", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ToTMedallionsColors"))
+        .RaceDisable(false)
         .Callback([](WidgetInfo& info) { PatchToTMedallions(); })
         .Options(CheckboxOptions().Tooltip(
             "When Medallions are collected, the Medallion imprints around the Master Sword Pedestal in the Temple "
@@ -500,15 +521,18 @@ void SohMenu::AddMenuEnhancements() {
                                            "in Hot/Underwater conditions."));
     AddWidget(path, "Remember Minimap State Between Areas", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("RememberMapToggleState"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
-            "Preverse the minimap visibility state when going between areas rather than default it to \"on\" "
+            "Preserve the minimap visibility state when going between areas rather than default it to \"on\" "
             "when going through loading zones."));
     AddWidget(path, "Visual Stone of Agony", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("VisualAgony"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "Displays an icon and plays a sound when Stone of Agony should be activated, for those without rumble."));
     AddWidget(path, "Disable HUD Heart Animations", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("NoHUDHeartAnimation"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip("Disables the Beating Animation of the Hearts on the HUD."));
     AddWidget(path, "Glitch Line-up Tick", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("DrawLineupTick"))
@@ -517,26 +541,32 @@ void SohMenu::AddMenuEnhancements() {
             "UI based line-ups do not work outside of 4:3"));
     AddWidget(path, "Disable Black Bar Letterboxes", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("DisableBlackBars"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "Disables Black Bar Letterboxes during cutscenes and Z-Targeting. NOTE: There may be minor visual "
             "glitches that were covered up by the black bars. Please disable this setting before reporting a bug."));
     AddWidget(path, "Dynamic Wallet Icon", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("DynamicWalletIcon"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "Changes the Rupee in the Wallet icon to match the wallet size you currently have."));
     AddWidget(path, "Always Show Dungeon Entrances", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("AlwaysShowDungeonMinimapIcon"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip("Always shows dungeon entrance icons on the Minimap."));
     AddWidget(path, "More Info in File Select", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FileSelectMoreInfo"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "Shows what items you have collected in the File Select screen, like in N64 Randomizer."));
     AddWidget(path, "Better Ammo Rendering in Pause Menu", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("BetterAmmoRendering"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "Ammo counts in the pause menu will work correctly regardless of the position of items in the Inventory."));
     AddWidget(path, "Enable Passage of Time on File Select", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("TimeFlowFileSelect"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip("The skybox in the background of the File Select screen will go through the "
                                            "day and night cycle over time."));
 
@@ -544,14 +574,17 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Misc.", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "N64 Mode", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_LOW_RES_MODE)
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "Sets the aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution."));
     AddWidget(path, "Remove Spin Attack Darkness", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("RemoveSpinAttackDarkness"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip("Remove the Darkness that appears when charging a Spin Attack."));
-    AddWidget(path, "Draw Distance", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Draw Distance", WIDGET_SEPARATOR_TEXT).RaceDisable(false);
     AddWidget(path, "Increase Actor Draw Distance: %dx", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_ENHANCEMENT("DisableDrawDistance"))
+        .RaceDisable(false)
         .Callback([](WidgetInfo& info) {
             if (CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 1) <= 1) {
                 CVarSetInteger(CVAR_ENHANCEMENT("DisableKokiriDrawDistance"), 0);
@@ -561,6 +594,7 @@ void SohMenu::AddMenuEnhancements() {
             "Increases the range in which Actors/Objects are drawn."));
     AddWidget(path, "Kokiri Draw Distance", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("DisableKokiriDrawDistance"))
+        .RaceDisable(false)
         .PreFunc(
             [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 1) <= 1; })
         .Options(CheckboxOptions().Tooltip(
@@ -860,7 +894,7 @@ void SohMenu::AddMenuEnhancements() {
             [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("CrouchStabHammerFix"), 0) == 0; })
         .Options(CheckboxOptions().Tooltip("Make crouch stabbing always do the same damage as a regular slash."));
     AddWidget(path, "Fix Broken Giant's Knife Bug", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_ENHANCEMENT("FixGrokenGiantsKnife"))
+        .CVar(CVAR_ENHANCEMENT("FixBrokenGiantsKnife"))
         .PreFunc([](WidgetInfo& info) {
             info.options->disabled = IS_RANDO && GameInteractor::IsSaveLoaded(true);
             info.options->disabledTooltip = "This setting is forcefully enabled when you are playing a Randomizer.";
@@ -896,22 +930,27 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Graphical Fixes", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Fix L&R Pause Menu", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FixMenuLR"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip("Makes the L and R buttons in the pause menu the same color."));
     AddWidget(path, "Fix Dungeon Entrances", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FixDungeonMinimapIcon"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "Removes the Dungeon Entrance icon on the top-left corner of the screen when no dungeon is present on the "
             "current map."));
     AddWidget(path, "Fix Two-Handed Idle Animations", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("TwoHandedIdle"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "Re-Enables the two-handed idle animation, a seemingly finished animation that was disabled on accident "
             "in the original game."));
     AddWidget(path, "Fix Navi Text HUD Position", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("NaviTextFix"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip("Correctly centers the Navi text prompt on the HUD's C-Up button."));
     AddWidget(path, "Fix Gerudo Warrior's Clothing Colors", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("GerudoWarriorClothingFix"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "Prevent the Gerudo Warrior's clothes changing color when changing Link's tunic or "
             "using bombs in front of her."));
@@ -922,15 +961,18 @@ void SohMenu::AddMenuEnhancements() {
             "Fixes authentic out of bounds texture reads, instead loading textures with the correct size."));
     AddWidget(path, "Fix Link's Eyes Open while Sleeping", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FixEyesOpenWhileSleeping"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "Fixes Link's eyes being open in the opening cutscene when he is supposed to be sleeping."));
     AddWidget(path, "Fix Hand Holding Hammer", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FixHammerHand"))
+        .RaceDisable(false)
         .Callback([](WidgetInfo& info) { UpdatePatchHand(); })
         .Options(CheckboxOptions().Tooltip(
             "Fixes Adult Link having a backwards Left hand when holding the Megaton Hammer."));
     AddWidget(path, "Fix Vanishing Paths", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("SceneSpecificDirtPathFix"))
+        .RaceDisable(false)
         .Callback([](WidgetInfo& info) {
             if (gPlayState != NULL) {
                 UpdateDirtPathFixState(gPlayState->sceneNum);
@@ -948,6 +990,7 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Audio Fixes", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Fix Missing Jingle after 5 Silver Rupees", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("SilverRupeeJingleExtend"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "Adds 5 higher pitches for the Silver Rupee Jingle for the rooms with more than 5 Silver Rupees. "
             "Only relevant for playthroughs involving Master Quest Dungeons."));
@@ -955,10 +998,12 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Desync Fixes", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Fix Darunia Dancing too Fast", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FixDaruniaDanceSpeed"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "Fixes Darunia's dancing speed so he dances to the beat of Saria's Song, like in the Original Game."));
     AddWidget(path, "Fix Credits Timing (PAL)", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("CreditsFix"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "Extend certain credits scenes so the music lines up properly with the visuals. (PAL only)"));
 
@@ -966,6 +1011,7 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Graphical Restorations", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Red Ganon Blood", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("RedGanonBlood"))
+        .RaceDisable(false)
         .Options(
             CheckboxOptions().Tooltip("Restore the original red blood from NTSC 1.0/1.1. Disable for Green blood."));
     AddWidget(path, "Restore Old Gold Skulltula Cutscene", WIDGET_CVAR_CHECKBOX)
@@ -974,6 +1020,7 @@ void SohMenu::AddMenuEnhancements() {
             "Restore pre-release behavior where defeating a Gold Skulltula will play a cutscene showing it die."));
     AddWidget(path, "Pulsate Boss Icon", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("PulsateBossIcon"))
+        .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "Restores an unfinished feature to pulsate the boss room icon when you are in the boss room."));
 
@@ -1657,6 +1704,7 @@ void SohMenu::AddMenuEnhancements() {
     path.column = SECTION_COLUMN_1;
     AddWidget(path, "Popout Cosmetics Editor Window", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("CosmeticsEditor"))
+        .RaceDisable(false)
         .WindowName("Cosmetics Editor")
         .Options(WindowButtonOptions().Tooltip("Enables the separate Cosmetics Editor Window."));
 
@@ -1665,6 +1713,7 @@ void SohMenu::AddMenuEnhancements() {
     AddSidebarEntry("Enhancements", path.sidebarName, 1);
     AddWidget(path, "Popout Audio Editor Window", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("AudioEditor"))
+        .RaceDisable(false)
         .WindowName("Audio Editor")
         .Options(WindowButtonOptions().Tooltip("Enables the separate Audio Editor Window."));
 
@@ -1673,6 +1722,7 @@ void SohMenu::AddMenuEnhancements() {
     AddSidebarEntry("Enhancements", path.sidebarName, 2);
     AddWidget(path, "Popout Gameplay Stats Window", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("GameplayStats"))
+        .RaceDisable(false)
         .WindowName("Gameplay Stats")
         .Options(WindowButtonOptions().Tooltip("Enables the separate Gameplay Stats Window."));
 
@@ -1681,6 +1731,7 @@ void SohMenu::AddMenuEnhancements() {
     AddSidebarEntry("Enhancements", path.sidebarName, 1);
     AddWidget(path, "Popout Time Splits Window", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("TimeSplits"))
+        .RaceDisable(false)
         .WindowName("Time Splits")
         .Options(WindowButtonOptions().Tooltip("Enables the separate Time Splits Window."));
 
@@ -1689,19 +1740,23 @@ void SohMenu::AddMenuEnhancements() {
     AddSidebarEntry("Enhancements", path.sidebarName, 3);
     AddWidget(path, "Toggle Timers Window", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("TimeDisplayEnabled"))
+        .RaceDisable(false)
         .WindowName("Additional Timers")
         .Options(WindowButtonOptions().Tooltip("Enables the separate Additional Timers Window."));
     AddWidget(path, "Font Scale: %.2fx", WIDGET_CVAR_SLIDER_FLOAT)
         .CVar(CVAR_TIME_DISPLAY("FontScale"))
+        .RaceDisable(false)
         .Callback([](WidgetInfo& info) { TimeDisplayInitSettings(); })
         .Options(FloatSliderOptions().Min(1.0f).Max(5.0f).DefaultValue(1.0f).Format("%.2fx"));
     AddWidget(path, "Hide Background", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_TIME_DISPLAY("ShowWindowBG"))
+        .RaceDisable(false)
         .Callback([](WidgetInfo& info) { TimeDisplayInitSettings(); });
     for (auto& timer : timeDisplayList) {
-        AddWidget(path, timer.timeLabel, WIDGET_CVAR_CHECKBOX).CVar(timer.timeEnable).Callback([](WidgetInfo& info) {
-            TimeDisplayUpdateDisplayOptions();
-        });
+        AddWidget(path, timer.timeLabel, WIDGET_CVAR_CHECKBOX)
+            .RaceDisable(false)
+            .CVar(timer.timeEnable)
+            .Callback([](WidgetInfo& info) { TimeDisplayUpdateDisplayOptions(); });
     }
 }
 

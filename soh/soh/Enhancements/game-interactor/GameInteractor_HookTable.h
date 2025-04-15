@@ -15,6 +15,7 @@ DEFINE_HOOK(OnItemReceive, (GetItemEntry itemEntry));
 DEFINE_HOOK(OnSaleEnd, (GetItemEntry itemEntry));
 DEFINE_HOOK(OnTransitionEnd, (int16_t sceneNum));
 DEFINE_HOOK(OnSceneInit, (int16_t sceneNum));
+DEFINE_HOOK(AfterSceneCommands, (int16_t sceneNum));
 DEFINE_HOOK(OnSceneFlagSet, (int16_t sceneNum, int16_t flagType, int16_t flag));
 DEFINE_HOOK(OnSceneFlagUnset, (int16_t sceneNum, int16_t flagType, int16_t flag));
 DEFINE_HOOK(OnFlagSet, (int16_t flagType, int16_t flag));

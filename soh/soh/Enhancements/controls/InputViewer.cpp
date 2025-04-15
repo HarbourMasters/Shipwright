@@ -151,7 +151,7 @@ void InputViewer::DrawElement() {
         }
 
         ImVec2 mainPos = ImGui::GetWindowPos();
-        ImVec2 size = ImGui::GetContentRegionAvail();
+        ImVec2 size = ImGui::GetMainViewport()->WorkSize;
 
 #ifdef __WIIU__
         const float scale = CVarGetFloat(CVAR_INPUT_VIEWER("Scale"), 1.0f) * 2.0f;
