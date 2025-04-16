@@ -231,7 +231,6 @@ void ProcessExits(Region* region, GetAccessibleLocationsStruct& gals, Randomizer
             ProcessRegion(exitRegion, gals, ignore, stopOnBeatable, addToPlaythrough);
         }
 
-
         if (addToPlaythrough) {
             // RANDOTODO Should this match the regular spheres?
             // Add shuffled entrances to the entrance playthrough
