@@ -219,17 +219,18 @@ void ProcessExits(Region* region, GetAccessibleLocationsStruct& gals, Randomizer
                 }
                 ValidateSphereZero(gals);
             }
+            // If the exit is accessible and hasn't been added yet, add it to the pool
+            // RANDOTODO do we want to add the region after the loop now, considering we
+            // are processing the new region immediately. Maybe a reverse for loop in ProcessRegion?
+            if (!exitRegion->addedToPool) {
+                exitRegion->addedToPool = true;
+                gals.regionPool.push_back(exit.GetConnectedRegionKey());
+            }
+
             // process the region we just expanded to, to reduce looping
             ProcessRegion(exitRegion, gals, ignore, stopOnBeatable, addToPlaythrough);
         }
 
-        // If the exit is accessible and hasn't been added yet, add it to the pool
-        // RANDOTODO do we want to add the region after the loop now, considering we
-        // are processing the new region immediately. Maybe a reverse for loop in ProcessRegion?
-        if (!exitRegion->addedToPool && exit.ConditionsMet()) {
-            exitRegion->addedToPool = true;
-            gals.regionPool.push_back(exit.GetConnectedRegionKey());
-        }
 
         if (addToPlaythrough) {
             // RANDOTODO Should this match the regular spheres?
