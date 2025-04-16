@@ -2411,6 +2411,9 @@ u8 Item_Give(PlayState* play, u8 item) {
                 }
             }
         } else {
+            if (item == ITEM_LETTER_RUTO) {
+                Flags_SetRandomizerInf(RAND_INF_OBTAINED_RUTOS_LETTER);
+            }
             for (i = 0; i < 4; i++) {
                 if (gSaveContext.inventory.items[temp + i] == ITEM_NONE) {
                     gSaveContext.inventory.items[temp + i] = item;
