@@ -591,6 +591,10 @@ void CheckTrackerLoadGame(int32_t fileNum) {
                 Randomizer_EntranceDiscovered(entranceIndex, false);
             }
         }
+
+        // RANDOTODO: This is needed because using the master sword does not discover the spawn entrance.
+        Entrance_SetEntranceDiscovered(ENTR_LINKS_HOUSE_CHILD_SPAWN, false);
+        Entrance_SetEntranceDiscovered(ENTR_HYRULE_FIELD_10, false);
     }
 
     RecalculateAvailableChecks();
@@ -2017,10 +2021,6 @@ void RecalculateAvailableChecks() {
         const auto& location = Rando::StaticData::GetLocation(rc);
         const auto& itemLocation = ctx->GetItemLocation(rc);
         const auto& region = areaTable[itemLocation->GetParentRegionKey()];
-
-        if (ctx->GetOption(RSK_SHUFFLE_ENTRANCES).Get() && !region.IsDiscovered) {
-            continue;
-        }
 
         if (location->GetRCType() == RCTYPE_SHOP && itemLocation->GetCheckStatus() == RCSHOW_IDENTIFIED) {
             if (CanBuyAnother(rc)) {

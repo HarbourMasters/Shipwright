@@ -209,6 +209,12 @@ void ProcessExits(Region* region, GetAccessibleLocationsStruct& gals, Randomizer
                   bool stopOnBeatable = false, bool addToPlaythrough = false) {
     auto ctx = Rando::Context::GetInstance();
     for (auto& exit : region->exits) {
+        int16_t entranceIndex = exit.GetIndex();
+        if (gals.calculatingAvailableChecks && ctx->GetOption(RSK_SHUFFLE_ENTRANCES).Get() && exit.IsShuffled() &&
+            entranceIndex != -1 && !Entrance_GetIsEntranceDiscovered(entranceIndex)) {
+            continue;
+        }
+
         Region* exitRegion = exit.GetConnectedRegion();
         // Update Time of Day Access for the exit
         if (UpdateToDAccess(&exit, exitRegion)) {
