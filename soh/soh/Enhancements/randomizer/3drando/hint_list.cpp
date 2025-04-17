@@ -2412,13 +2412,13 @@ void StaticData::HintTable_Init() {
 
     hintTextTable[RHT_ISOLATED_PLACE] = HintText(CustomMessage("an Isolated Place"));
 
-    hintTextTable[RHT_DUNGEON_ORDINARY] = HintText(CustomMessage(" It's ordinary.",
-                                                      /*german*/ "&Sieht aus wie immer.",
-                                                      /*french*/ "&Elle vous semble %rordinaire%w."));
+    hintTextTable[RHT_DUNGEON_ORDINARY] = HintText(CustomMessage("&It's %gordinary%w.",
+                                                      /*german*/ "&Sieht aus %gwie immer%w.",
+                                                      /*french*/ "&Elle vous semble %gordinaire%w."));
 
-    hintTextTable[RHT_DUNGEON_MASTERFUL] = HintText(CustomMessage(" It's masterful!",
-                                                       /*german*/ "&Man kann darauf die Worte&%r\"Master Quest\"%w entziffern...",
-                                                       /*french*/ "&Étrange... les mots %r\"Master&Quest\"%w sont gravés dessus."));
+    hintTextTable[RHT_DUNGEON_MASTERFUL] = HintText(CustomMessage("&It's %rmasterful%w!",
+                                                       /*german*/ "&Man kann darauf die Worte %r\"Master_Quest\"%w entziffern...",
+                                                       /*french*/ "&Étrange... les mots %r\"Master_Quest\"%w sont gravés dessus."));
 
     // clang-format on
 }
