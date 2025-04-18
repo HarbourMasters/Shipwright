@@ -2265,7 +2265,7 @@ void StaticData::HintTable_Init() {
     hintTextTable[RHT_LOACH_HINT] = HintText(CustomMessage("What?^You wanna know about the&%rHyrule Loach%w?^It's a big fish, but it's so rare that I'll give my %g[[1]]%w to anyone who catches it. Seriously!",
 	                                            /*german*/ "Was?^Du willst was über den&%rHyrule-Schleicher%w wissen?^Das ist ein riesiger Fisch, aber&so selten, dass ich jedem mein&%g[[1]]%w gebe, der ihn fängt.&Im Ernst."
                                                 /*french*/ "Quoi?&Tu veux en savoir plus sur le&%rBrochet d'Hyrule%w?^C'est un gros poisson, mais il&est si rare que je donne&%g[[1]]%w&à celui qui l'attrape.^Ouais, j'suis sérieux!",
-                                                                  {QM_RED}));
+                                                           {QM_RED}));
 
     hintTextTable[RHT_FISHING_POLE_HINT] = HintText(CustomMessage("^If I remember correctly, I lost it somewhere in #[[1]]#...&Let me know if you find it!",
 	                                                   /*german*/ "Wenn ich mich recht erinnere,&hab ich es irgendwo in #[[1]]#&verloren...&Sag mir Bescheid, wenn du es findest."
