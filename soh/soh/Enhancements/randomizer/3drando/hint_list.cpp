@@ -2290,7 +2290,7 @@ void StaticData::HintTable_Init() {
                                                    /*french*/ "Récompenses de l'#Archerie Montée#:&1000: #[[1]]#&1500: #[[2]]#^Record de @: #" + CustomMessage::POINTS(HS_HORSE_ARCHERY) + "#",
                                                               {QM_RED, QM_GREEN, QM_GREEN, QM_GREEN}, {}, TEXTBOX_TYPE_WOODEN));
 
-    hintTextTable[RHT_HBA_HINT_NOT_ON_HORSE] = HintText(CustomMessage("Hey, rookie!&Come back on your #horse# and take on then #Horseback Archery# challenge!^"
+    hintTextTable[RHT_HBA_HINT_NOT_ON_HORSE] = HintText(CustomMessage("Hey, rookie!&Come back on your #horse# and take on the #Horseback Archery# challenge!^"
                                                                       "Impress me with a high score of 1000 to win a #[[1]]# or score 1500 for #[[2]]#!",
 														   /*german*/ "Hey, Neuling!&Komm mit deinem #Pferd# zurück und stell dich der #Pferdebogenschießen#-Herausforderung!^"
 																	  "Beeindruck mich mit 1000 Punkten und gewinne #[[1]]#! Oder hol dir 1500 Punkte für #[[2]]#!",
