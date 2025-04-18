@@ -536,11 +536,16 @@ void CustomMessage::AutoFormatString(std::string& str) const {
                     // or move the lastNewline cursor to the next line if a '^' is encountered.
                 } else if (carrot < lastNewline + lineLength) {
                     lastNewline = carrot + 1;
-                    // some lines need to be split but don't have spaces, look for periods instead
+                    // some lines need to be split but don't have spaces, look for punctuation instead
                 } else if (lastSpace == std::string::npos) {
-                    const size_t lastPeriod = str.rfind('.', lastNewline + lineLength);
-                    str.replace(lastPeriod, 1, ".^" + colorText);
-                    lastNewline = lastPeriod + 2;
+                    const size_t lastPunc = str.find_last_of('.,!', lastNewline + lineLength);
+                    //if none exist, we just have to throw it down somewhere....
+                    if (lastPunc != std::string::npos){
+
+                    } else {
+                        str.insert(lastPunc+1, "^" + colorText);
+                        lastNewline = lastPunc + 2;
+                    } 
                 } else {
                     str.replace(lastSpace, 1, "^" + colorText);
                     lastNewline = lastSpace + 1;
