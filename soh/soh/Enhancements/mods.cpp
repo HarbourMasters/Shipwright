@@ -99,6 +99,13 @@ void SwitchAge() {
     gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK_FAST;
     gPlayState->linkAgeOnLoad ^= 1;
 
+    // Discover adult/child spawns
+    if (gPlayState->linkAgeOnLoad == LINK_AGE_ADULT) {
+        Entrance_SetEntranceDiscovered(ENTR_HYRULE_FIELD_10, false);
+    } else {
+        Entrance_SetEntranceDiscovered(ENTR_LINKS_HOUSE_CHILD_SPAWN, false);
+    }
+
     static HOOK_ID hookId = 0;
     hookId = REGISTER_VB_SHOULD(VB_INFLICT_VOID_DAMAGE, {
         *should = false;
