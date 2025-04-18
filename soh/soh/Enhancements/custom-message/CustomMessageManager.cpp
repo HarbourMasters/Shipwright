@@ -470,11 +470,11 @@ size_t CustomMessage::FindNEWLINE(std::string& str, size_t lastNewline) const {
 }
 
 bool CustomMessage::AddBreakString(std::string& str, size_t pos, std::string breakString) const {
-    if (str[pos] == (char)" " || str[pos] == (char)"&"){
+    if (str[pos] == (char)" " || str[pos] == (char)"&") {
         str.replace(pos, 1, breakString);
         return false;
     } else {
-        str.insert(pos+1, breakString);
+        str.insert(pos + 1, breakString);
         return true;
     }
 }
@@ -523,23 +523,23 @@ void CustomMessage::AutoFormatString(std::string& str) const {
                     lineCount = 0;
                     // some lines need to be split but don't have spaces, look for periods instead
                 } else {
-                    const size_t lastBreak = str.find_last_of((std::string)".,!- ", lastNewline + lineLength);
-                    //if none exist or we go backwards, we look forward for a something and allow the overflow
-                    if (lastBreak == std::string::npos || lastBreak < lastNewline){
-                        const size_t nextBreak = str.find_first_of((std::string)".,!- &^", lastNewline);
-                        if (str[nextBreak] == (char)"^"){
+                    const size_t lastBreak = str.find_last_of((std::string) ".,!- ", lastNewline + lineLength);
+                    // if none exist or we go backwards, we look forward for a something and allow the overflow
+                    if (lastBreak == std::string::npos || lastBreak < lastNewline) {
+                        const size_t nextBreak = str.find_first_of((std::string) ".,!- &^", lastNewline);
+                        if (str[nextBreak] == (char)"^") {
                             lastNewline = nextBreak + 1;
-                            lineCount = 0; //increments to 1 at the end
-                        } else if (str[nextBreak] == (char)"&"){
+                            lineCount = 0; // increments to 1 at the end
+                        } else if (str[nextBreak] == (char)"&") {
                             lastNewline = nextBreak + 1;
                         } else {
                             bool isAdded = AddBreakString(str, nextBreak, "&");
                             lastNewline = nextBreak + 1 + isAdded;
-                        } 
+                        }
                     } else {
                         bool isAdded = AddBreakString(str, lastBreak, "&");
                         lastNewline = lastBreak + 1 + isAdded;
-                    } 
+                    }
                 }
                 lineCount += 1;
             } else {
@@ -558,20 +558,20 @@ void CustomMessage::AutoFormatString(std::string& str) const {
                     lastNewline = carrot + 1;
                     // some lines need to be split but don't have spaces, look for punctuation instead
                 } else {
-                    const size_t lastBreak = str.find_last_of((std::string)".,!- &", lastNewline + lineLength);
-                    //if none exist or we go backwards, we look forward for a something and allow the overflow
-                    if (lastBreak == std::string::npos || lastBreak < lastNewline){
-                        const size_t nextBreak = str.find_first_of((std::string)".,!- &^", lastNewline);
-                        if (str[nextBreak] == (char)"^"){
+                    const size_t lastBreak = str.find_last_of((std::string) ".,!- &", lastNewline + lineLength);
+                    // if none exist or we go backwards, we look forward for a something and allow the overflow
+                    if (lastBreak == std::string::npos || lastBreak < lastNewline) {
+                        const size_t nextBreak = str.find_first_of((std::string) ".,!- &^", lastNewline);
+                        if (str[nextBreak] == (char)"^") {
                             lastNewline = nextBreak + 1;
                         } else {
                             bool isAdded = AddBreakString(str, nextBreak, "^" + colorText);
                             lastNewline = nextBreak + 1 + isAdded;
-                        } 
+                        }
                     } else {
                         bool isAdded = AddBreakString(str, lastBreak, "^" + colorText);
                         lastNewline = lastBreak + 1 + isAdded;
-                    } 
+                    }
                 }
                 lineCount = 1;
             }
