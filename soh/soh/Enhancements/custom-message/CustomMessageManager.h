@@ -190,6 +190,8 @@ class CustomMessage {
      */
     size_t FindNEWLINE(std::string& str, size_t lastNewline) const;
 
+    bool AddBreakString(std::string& str, size_t pos, std::string breakString) const;
+
     /**
      * @brief formats the string specifically to fit in OoT's
      * textboxes, and use it's formatting.
