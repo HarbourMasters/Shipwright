@@ -2303,7 +2303,7 @@ void StaticData::HintTable_Init() {
 													  /*german*/ "Hey, Neuling!&Willst du dich der #Pferdebogenschießen#-Herausforderung stellen?^"
 																 "Zeig, was du drauf hast - hol 1000 Punkte für #[[1]]#! Oder knack die 1500 und kassier #[[2]]#!\x0B",
 												      /*french*/ "Hé, l'nouveau!&Tu veux essayer notre #Terrain d'Archerie Montée#^"
-                                                                 "Impressionne-moi avec un score de 1000 pour gagner #[[1]]# ou atteins 1500 pour #[[2]]#!",
+                                                                 "Impressionne-moi avec un score de 1000 pour gagner #[[1]]# ou atteins 1500 pour #[[2]]#!\x0B",
                                                                  {QM_RED, QM_GREEN, QM_GREEN}));
 
     hintTextTable[RHT_HBA_HINT_HAVE_1000] = HintText(CustomMessage("Hey, newcomer!&Want to take on the #Horseback Archery# challenge?^"
