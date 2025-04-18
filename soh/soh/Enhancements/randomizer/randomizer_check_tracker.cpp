@@ -591,10 +591,6 @@ void CheckTrackerLoadGame(int32_t fileNum) {
                 Randomizer_EntranceDiscovered(entranceIndex, false);
             }
         }
-
-        // RANDOTODO: This is needed because using the master sword does not discover the spawn entrance.
-        Entrance_SetEntranceDiscovered(ENTR_LINKS_HOUSE_CHILD_SPAWN, false);
-        Entrance_SetEntranceDiscovered(ENTR_HYRULE_FIELD_10, false);
     }
 
     RecalculateAvailableChecks();
