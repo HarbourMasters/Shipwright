@@ -2424,7 +2424,7 @@ void StaticData::HintTable_Init() {
 
     hintTextTable[RHT_GANON_JOKE07] = HintText(CustomMessage("What about Zelda makes you think&she'd be a better ruler than I?^I saved Lon Lon Ranch,&fed the "
                                                              "hungry,&and my castle floats.",
-                                                  /*german*/ "Was an Zelda lässt dich glauben&sie wäre eine bessere&Herrscherin als ich?^Ich rettete die Lon Lon Ranch,&fütterte die Hungrigen "
+                                                  /*german*/ "Was an Zelda lässt dich glauben&sie wäre eine bessere&Herrscherin als ich?^Ich rettete die Lon Lon Ranch,&fütterte die Hungrigen"
 															 "&und mein Schloss schwebt.",
                                                   /*french*/ "Zelda ne sera jamais un meilleur monarque que moi!^J'ai un château volant, mes sujets sont des belles "
                                                              "amazones... et mes Moblins sont clairement plus puissants que jamais!"));
