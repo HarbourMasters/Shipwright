@@ -1499,7 +1499,7 @@ void StaticData::HintTable_Init() {
 
     hintTextTable[RHT_JUNK11] = HintText(CustomMessage("I'm stoned. Get it?",
                                             /*german*/ "Ich bin stoned. Verstehst du?",
-                                            /*french*/ "Allez, roche, papier, ciseau...&Roche."));
+                                            /*french*/ "J'ai été pétrifié.&Tu as compris?"));
 
     hintTextTable[RHT_JUNK12] = HintText(CustomMessage("Hoot! Hoot! Would you like me to repeat that?",
                                             /*german*/ "Sei willkommen! Soll ich meine Worte wiederholen?",
@@ -1515,7 +1515,7 @@ void StaticData::HintTable_Init() {
 
     hintTextTable[RHT_JUNK15] = HintText(CustomMessage("They say without the Lens of Truth, the Treasure Chest Mini-Game is a 1 out of 32 chance.^Good luck!",
                                             /*german*/ "Man erzählt sich, dass du ohne das Auge der Wahrheit beim Schatzkisten-Minispiel nur eine 1-zu-32-Chance hast.^Na dann, viel Glück.",
-                                            /*french*/ "Gagner la Chasse-aux-Trésors est 1 chance sur 32.^Bonne chance!"));
+                                            /*french*/ "Selon moi, les chances de gagner la Chasse-aux-Trésors sans Monocle de Vérité est de 1 chance sur 32.^Bonne chance!"));
 
     hintTextTable[RHT_JUNK16] = HintText(CustomMessage("Use bombs wisely.",
                                             /*german*/ "Setze Bomben mit Bedacht ein.",
