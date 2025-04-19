@@ -565,7 +565,7 @@ void RegionTable_Init_DodongosCavern() {
         Entrance(RR_DODONGOS_CAVERN_BOSS_ROOM,       []{return true;}),
     });
 
-    areaTable[RR_DODONGOS_CAVERN_BOSS_ROOM] = Region("Dodongos Cavern Boss Room", SCENE_DODONGOS_CAVERN_BOSS, {
+    areaTable[RR_DODONGOS_CAVERN_BOSS_ROOM] = Region("Dodongos Cavern Boss Room", SCENE_DODONGOS_CAVERN, {
         // Events
         EventAccess(&logic->DodongosCavernClear, []{return logic->DodongosCavernClear || (Here(RR_DODONGOS_CAVERN_BOSS_ROOM, []{return logic->HasExplosives() || (logic->CanUse(RG_MEGATON_HAMMER) && ctx->GetTrickOption(RT_DC_HAMMER_FLOOR));}) && logic->CanKillEnemy(RE_KING_DODONGO)); /*todo add chu kill to tricks*/}),
     }, {

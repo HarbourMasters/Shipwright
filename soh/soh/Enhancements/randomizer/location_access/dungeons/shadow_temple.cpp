@@ -399,7 +399,7 @@ void RegionTable_Init_ShadowTemple() {
 #pragma endregion
 
     // Boss Room
-    areaTable[RR_SHADOW_TEMPLE_BOSS_ENTRYWAY] = Region("Shadow Temple Boss Entryway", SCENE_SHADOW_TEMPLE_BOSS, {}, {}, {
+    areaTable[RR_SHADOW_TEMPLE_BOSS_ENTRYWAY] = Region("Shadow Temple Boss Entryway", SCENE_SHADOW_TEMPLE, {}, {}, {
         // Exits
         Entrance(RR_SHADOW_TEMPLE_BEYOND_BOAT,    []{return ctx->GetDungeon(SHADOW_TEMPLE)->IsVanilla() && false;}),
         Entrance(RR_SHADOW_TEMPLE_MQ_BEYOND_BOAT, []{return ctx->GetDungeon(SHADOW_TEMPLE)->IsMQ() && false;}),

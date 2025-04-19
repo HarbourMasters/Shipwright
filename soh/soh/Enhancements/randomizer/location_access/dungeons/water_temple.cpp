@@ -839,7 +839,7 @@ void RegionTable_Init_WaterTemple() {
 #pragma endregion
 
     // Boss Room
-    areaTable[RR_WATER_TEMPLE_BOSS_ENTRYWAY] = Region("Water Temple Boss Entryway", SCENE_WATER_TEMPLE_BOSS, {}, {}, {
+    areaTable[RR_WATER_TEMPLE_BOSS_ENTRYWAY] = Region("Water Temple Boss Entryway", SCENE_WATER_TEMPLE, {}, {}, {
         // Exits
         Entrance(RR_WATER_TEMPLE_PRE_BOSS_ROOM, []{return ctx->GetDungeon(WATER_TEMPLE)->IsVanilla() && false;}),
         Entrance(RR_WATER_TEMPLE_MQ_BOSS_DOOR,  []{return ctx->GetDungeon(WATER_TEMPLE)->IsMQ() && false;}),

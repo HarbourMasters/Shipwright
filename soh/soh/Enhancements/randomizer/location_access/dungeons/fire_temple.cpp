@@ -742,7 +742,7 @@ void RegionTable_Init_FireTemple() {
         Entrance(RR_FIRE_TEMPLE_BOSS_ROOM,         []{return true;}),
     });
 
-    areaTable[RR_FIRE_TEMPLE_BOSS_ROOM] = Region("Fire Temple Boss Room", SCENE_FIRE_TEMPLE_BOSS, {
+    areaTable[RR_FIRE_TEMPLE_BOSS_ROOM] = Region("Fire Temple Boss Room", SCENE_FIRE_TEMPLE, {
         // Events
         EventAccess(&logic->FireTempleClear, []{return logic->FireTempleClear || (logic->FireTimer() >= 64 && logic->CanKillEnemy(RE_VOLVAGIA));}),
     }, {

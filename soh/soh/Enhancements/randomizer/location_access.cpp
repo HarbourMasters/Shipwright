@@ -90,7 +90,6 @@ std::set<RandomizerArea> CalculateAreas(SceneID scene) {
             return { RA_BOTTOM_OF_THE_WELL };
         case SCENE_ICE_CAVERN:
             return { RA_ICE_CAVERN };
-        case SCENE_GANONS_TOWER:
         case SCENE_INSIDE_GANONS_CASTLE:
         case SCENE_GANONS_TOWER_COLLAPSE_INTERIOR:
         case SCENE_INSIDE_GANONS_CASTLE_COLLAPSE:
@@ -163,6 +162,7 @@ std::set<RandomizerArea> CalculateAreas(SceneID scene) {
         case SCENE_WATER_TEMPLE_BOSS:
         case SCENE_SPIRIT_TEMPLE_BOSS:
         case SCENE_SHADOW_TEMPLE_BOSS:
+        case SCENE_GANONS_TOWER:
         case SCENE_GANONDORF_BOSS:
         case SCENE_KNOW_IT_ALL_BROS_HOUSE:
         case SCENE_TWINS_HOUSE:
@@ -324,23 +324,23 @@ bool Region::TimePass() {
         case SCENE_LOST_WOODS:
         case SCENE_GORON_CITY:
         case SCENE_OUTSIDE_GANONS_CASTLE:
+        case SCENE_GRAVEYARD:
+        case SCENE_ZORAS_DOMAIN:
+        case SCENE_ZORAS_FOUNTAIN:
+        case SCENE_GERUDOS_FORTRESS:
+        case SCENE_HAUNTED_WASTELAND:
+        case SCENE_DEATH_MOUNTAIN_CRATER:
         case SCENE_ID_MAX:
             return false;
         case SCENE_FISHING_POND:
         case SCENE_HYRULE_FIELD:
         case SCENE_KAKARIKO_VILLAGE:
-        case SCENE_GRAVEYARD:
         case SCENE_ZORAS_RIVER:
         case SCENE_LAKE_HYLIA:
-        case SCENE_ZORAS_DOMAIN:
-        case SCENE_ZORAS_FOUNTAIN:
         case SCENE_GERUDO_VALLEY:
         case SCENE_DESERT_COLOSSUS:
-        case SCENE_GERUDOS_FORTRESS:
-        case SCENE_HAUNTED_WASTELAND:
         case SCENE_HYRULE_CASTLE:
         case SCENE_DEATH_MOUNTAIN_TRAIL:
-        case SCENE_DEATH_MOUNTAIN_CRATER:
         case SCENE_LON_LON_RANCH:
             return true;
         case SCENE_TEST01:

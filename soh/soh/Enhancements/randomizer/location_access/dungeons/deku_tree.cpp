@@ -436,7 +436,7 @@ void RegionTable_Init_DekuTree() {
 #pragma endregion
 
     // Boss Room
-    areaTable[RR_DEKU_TREE_BOSS_ENTRYWAY] = Region("Deku Tree Boss Entryway", SCENE_DEKU_TREE_BOSS, {}, {}, {
+    areaTable[RR_DEKU_TREE_BOSS_ENTRYWAY] = Region("Deku Tree Boss Entryway", SCENE_DEKU_TREE, {}, {}, {
         // Exits
         Entrance(RR_DEKU_TREE_OUTSIDE_BOSS_ROOM,    []{return ctx->GetDungeon(DEKU_TREE)->IsVanilla();}),
         Entrance(RR_DEKU_TREE_MQ_OUTSIDE_BOSS_ROOM, []{return ctx->GetDungeon(DEKU_TREE)->IsMQ();}),

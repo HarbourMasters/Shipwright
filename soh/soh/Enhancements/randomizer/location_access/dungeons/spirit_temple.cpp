@@ -547,7 +547,7 @@ void RegionTable_Init_SpiritTemple() {
 #pragma endregion
 
     // Boss Room
-    areaTable[RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY] = Region("Spirit Temple Boss Entryway", SCENE_SPIRIT_TEMPLE_BOSS, {}, {}, {
+    areaTable[RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY] = Region("Spirit Temple Boss Entryway", SCENE_SPIRIT_TEMPLE, {}, {}, {
         // Exits
         Entrance(RR_SPIRIT_TEMPLE_INSIDE_STATUE_HEAD,    []{return ctx->GetDungeon(SPIRIT_TEMPLE)->IsVanilla() && false;}),
         Entrance(RR_SPIRIT_TEMPLE_MQ_INSIDE_STATUE_HEAD, []{return ctx->GetDungeon(SPIRIT_TEMPLE)->IsMQ() && false;}),
