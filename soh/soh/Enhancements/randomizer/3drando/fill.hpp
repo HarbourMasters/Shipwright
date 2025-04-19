@@ -34,8 +34,6 @@ struct GetAccessibleLocationsStruct {
   std::vector<RandomizerCheck> itemSphere;
   std::list<Rando::Entrance*> entranceSphere;
 
-  bool calculatingAvailableChecks = false;
-
   GetAccessibleLocationsStruct(int _maxGsCount){
     regionPool = {RR_ROOT};
     gsCount = 0;

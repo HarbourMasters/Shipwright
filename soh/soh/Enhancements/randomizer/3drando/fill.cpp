@@ -210,7 +210,7 @@ void ProcessExits(Region* region, GetAccessibleLocationsStruct& gals, Randomizer
     auto ctx = Rando::Context::GetInstance();
     for (auto& exit : region->exits) {
         int16_t entranceIndex = exit.GetIndex();
-        if (gals.calculatingAvailableChecks && ctx->GetOption(RSK_SHUFFLE_ENTRANCES).Get() && exit.IsShuffled() &&
+        if (logic->CalculatingAvailableChecks && ctx->GetOption(RSK_SHUFFLE_ENTRANCES).Get() && exit.IsShuffled() &&
             entranceIndex != -1 && !Entrance_GetIsEntranceDiscovered(entranceIndex)) {
             continue;
         }
@@ -427,18 +427,13 @@ bool AddCheckToLogic(LocationAccess& locPair, GetAccessibleLocationsStruct& gals
     Rando::ItemLocation* location = ctx->GetItemLocation(loc);
     RandomizerGet locItem = location->GetPlacedRandomizerGet();
 
-    if (!location->IsAddedToPool() && locPair.ConditionsMet(parentRegion, gals.calculatingAvailableChecks)) {
-        if (gals.calculatingAvailableChecks) {
-            gals.accessibleLocations.push_back(loc);
-            StopPerformanceTimer(PT_LOCATION_LOGIC);
-            return false;
-        }
-
+    if (!location->IsAddedToPool() && locPair.ConditionsMet(parentRegion, logic->CalculatingAvailableChecks)) {
         location->AddToPool();
 
-        if (locItem == RG_NONE) {
+        if (locItem == RG_NONE || logic->CalculatingAvailableChecks) {
             gals.accessibleLocations.push_back(loc); // Empty location, consider for placement
-        } else {
+        }
+        if (locItem != RG_NONE) {
             // If ignore has a value, we want to check if the item location should be considered or not
             // This is necessary due to the below preprocessing for playthrough generation
             if (ignore != RG_NONE) {
@@ -537,8 +532,11 @@ std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerChec
                                                 bool calculatingAvailableChecks /* = false */) {
     auto ctx = Rando::Context::GetInstance();
     GetAccessibleLocationsStruct gals(0);
-    gals.calculatingAvailableChecks = calculatingAvailableChecks;
     ResetLogic(ctx, gals, !calculatingAvailableChecks);
+    if (calculatingAvailableChecks) {
+        logic->Reset(false);
+        logic->CalculatingAvailableChecks = true;
+    }
     do {
         gals.InitLoop();
         for (size_t i = 0; i < gals.regionPool.size(); i++) {
