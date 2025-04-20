@@ -1694,41 +1694,4 @@ extern "C" {
 EntranceOverride* Randomizer_GetEntranceOverrides() {
     return Rando::Context::GetInstance()->GetEntranceShuffler()->entranceOverrides.data();
 }
-
-void Randomizer_DiscoverRegion(Region* region, std::unordered_set<RandomizerRegion>& visitedRegions) {
-    region->IsDiscovered = true;
-
-    for (const auto& exit : region->exits) {
-        if (!exit.IsShuffled()) {
-            RandomizerRegion connectedRegionKey = exit.GetConnectedRegionKey();
-            if (visitedRegions.contains(connectedRegionKey)) {
-                continue;
-            }
-            visitedRegions.insert(connectedRegionKey);
-
-            Randomizer_DiscoverRegion(exit.GetConnectedRegion(), visitedRegions);
-        }
-    }
-}
-
-void Randomizer_RegionDiscovered(RandomizerRegion region) {
-    std::unordered_set<RandomizerRegion> visitedRegions;
-    Randomizer_DiscoverRegion(&areaTable[region], visitedRegions);
-}
-
-void Randomizer_EntranceDiscovered(s16 index, bool recalculateAvailableChecks) {
-    auto entranceEntry = Rando::entranceMap.find(index);
-    if (entranceEntry == Rando::entranceMap.end()) {
-        return;
-    }
-
-    Rando::Entrance* entrance = entranceEntry->second;
-    RandomizerRegion connectedRegionKey = entrance->GetConnectedRegionKey();
-
-    Randomizer_RegionDiscovered(connectedRegionKey);
-
-    if (recalculateAvailableChecks) {
-        CheckTracker::RecalculateAvailableChecks();
-    }
-}
 }

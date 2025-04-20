@@ -137,8 +137,6 @@ class Region {
     bool adultNight = false;
     bool addedToPool = false;
 
-    bool IsDiscovered = false;
-
     void ApplyTimePass();
 
     bool UpdateEvents();

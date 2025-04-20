@@ -585,12 +585,6 @@ void CheckTrackerLoadGame(int32_t fileNum) {
 
     if (Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_ENTRANCES).Get()) {
         Rando::Context::GetInstance()->GetEntranceShuffler()->ApplyEntranceOverrides();
-
-        for (s16 entranceIndex = 0; entranceIndex < MAX_ENTRANCE_RANDO_USED_INDEX; entranceIndex++) {
-            if (IsEntranceDiscovered(entranceIndex)) {
-                Randomizer_EntranceDiscovered(entranceIndex, false);
-            }
-        }
     }
 
     RecalculateAvailableChecks();
@@ -2150,13 +2144,6 @@ void CheckTrackerSettingsWindow::DrawElement() {
                                                  "with your current progress.")
                                         .Color(THEME_COLOR))) {
             enableAvailableChecks = CVarGetInteger(CVAR_TRACKER_CHECK("EnableAvailableChecks"), 0);
-
-            for (s16 entranceIndex = 0; entranceIndex < ENTR_MAX; entranceIndex++) {
-                if (IsEntranceDiscovered(entranceIndex)) {
-                    Randomizer_EntranceDiscovered(entranceIndex, false);
-                }
-            }
-
             RecalculateAvailableChecks();
         }
         ImGui::EndDisabled();

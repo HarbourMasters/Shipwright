@@ -2608,4 +2608,7 @@ void SoH_ProcessDroppedFiles(std::string filePath) {
         return;
     }
 }
-// #endregion
+
+extern "C" void CheckTracker_RecalculateAvailableChecks() {
+    CheckTracker::RecalculateAvailableChecks();
+}
