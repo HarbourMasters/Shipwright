@@ -4926,7 +4926,7 @@ CustomMessage Randomizer::GetIceTrapMessage() {
         "#Titanic's revenge#.",
     };
 
-    static const char* const germanIceTrapMessages[60] = {
+    static const char* const germanIceTrapMessages[100] = {
         "Du bist ein #DUMMKOPF#!",
         "Du bist eine #Frostbeule#!",
         "#DUMMKOPF#!",
