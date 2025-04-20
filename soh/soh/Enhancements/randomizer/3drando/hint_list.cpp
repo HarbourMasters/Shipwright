@@ -2229,7 +2229,7 @@ void StaticData::HintTable_Init() {
 
     hintTextTable[RHT_GANONDORF_HINT_LA_AND_MS] = HintText(CustomMessage("Ha ha ha... You'll never beat me by reflecting my lightning bolts and unleashing the arrows from #[[1]]#!"
                                                                          "^And even if you do, you'll never find the legendary blade hidden in #[[2]]#!",
-                                                              /*german*/ "Ha ha ha... Du wirst mich nie besiegen, indem du meine Blitze zurückschlägst und die Pfeile aus #[[1]]# entfesselts!",
+                                                              /*german*/ "Ha ha ha... Du wirst mich nie besiegen, indem du meine Blitze zurückschlägst und die Pfeile aus #[[1]]# entfesselts!"
 																		 "Und selbst wenn du es tust, wirst du nie das legendäre Schwert finden, das in #[[2]]# versteckt ist!",
                                                               /*french*/ "Ha ha ha... Pauvre fou! Tu ne pourras jamais me vaincre sans les flèches que j'ai cachées dans #[[1]]#!"
                                                                          "^Et même si tu les trouves, tu ne touveras jamais l'Épée de Légende cachée dans #[[2]]#!",
