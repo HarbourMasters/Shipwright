@@ -625,6 +625,8 @@ void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAcce
         if (ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF)) {
             Rando::StaticData::RetrieveItem(RG_GUARD_HOUSE_KEY).ApplyEffect();
         }
+        RegionTable(RR_ROOT)->adultNight = true;
+        RegionTable(RR_ROOT)->adultDay = true;
     } else {
         ApplyAllAdvancmentItems();
     }
