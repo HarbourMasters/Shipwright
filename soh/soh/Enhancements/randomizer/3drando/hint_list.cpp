@@ -2023,7 +2023,7 @@ void StaticData::HintTable_Init() {
                                                      // /*spanish*/$sLos sabios aguardarán a que el héroe obtenga #[[d]] símbolo||s| de skulltula dorada#.^
 
     hintTextTable[RHT_BRIDGE_GREG_HINT] = HintText(CustomMessage("$gThe awakened ones will await for the Hero to find #Greg#.^",
-	                                                  /*german*/ "$gDie Erwachten werden darauf warten, dass der Held #Greg# findet.^"",
+	                                                  /*german*/ "$gDie Erwachten werden darauf warten, dass der Held #Greg# findet.^",
                                                       /*french*/ TODO_TRANSLATE,
                                                                  {QM_GREEN}));
 
