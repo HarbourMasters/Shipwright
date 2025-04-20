@@ -4,7 +4,6 @@
 #include "3drando/pool_functions.hpp"
 #include "3drando/item_pool.hpp"
 #include "../debugger/performanceTimer.h"
-#include "randomizer_check_tracker.h"
 
 #include <spdlog/spdlog.h>
 
@@ -1690,8 +1689,6 @@ void EntranceShuffler::ApplyEntranceOverrides() {
 }
 } // namespace Rando
 
-extern "C" {
-EntranceOverride* Randomizer_GetEntranceOverrides() {
+extern "C" EntranceOverride* Randomizer_GetEntranceOverrides() {
     return Rando::Context::GetInstance()->GetEntranceShuffler()->entranceOverrides.data();
-}
 }
