@@ -2296,21 +2296,21 @@ void StaticData::HintTable_Init() {
 
     hintTextTable[RHT_HBA_HINT_NOT_ON_HORSE] = HintText(CustomMessage("Hey, rookie!&Come back on your #horse# and take on then #Horseback Archery# challenge!^"
                                                                       "Impress me with a high score of 1000 to win a #[[1]]# or score 1500 for #[[2]]#!",
-														   /*german*/ "Hey Neuling!&Komm mit deinem #Pferd# zurück und stell dich der #Pferdebogenschießen#&-Herausforderung!^"
+														   /*german*/ "Hey Neuling!&Komm mit deinem #Pferd# zurück und stell dich der #Pferdebogenschießen#-Herausforderung!^"
 																	  "Beeindruck mich mit 1000 Punkten und gewinne #[[1]]#! Oder hol dir 1500 Punkte für #[[2]]#!",
 												   		   /*french*/ TODO_TRANSLATE,
                                                                       {QM_RED, QM_RED, QM_GREEN, QM_GREEN}));
 
     hintTextTable[RHT_HBA_HINT_INITIAL] = HintText(CustomMessage("Hey, rookie!&Want to take on the #Horseback Archery# challenge?^"
                                                                  "Impress me with a high score of 1000 to win a #[[1]]# or score 1500 for #[[2]]#!\x0B",
-													  /*german*/ "Hey, Neuling!&Willst du dich der&#Pferdebogenschießen#-&Herausforderung stellen?^"
+													  /*german*/ "Hey, Neuling!&Willst du dich der&#Pferdebogenschießen#-Herausforderung stellen?^"
 																 "Zeig, was du drauf hast - hol 1000 Punkte für #[[1]]#! Oder knack die 1500 und kassier #[[2]]#!\x0B",
 												      /*french*/ TODO_TRANSLATE,
                                                                  {QM_RED, QM_GREEN, QM_GREEN}));
 
     hintTextTable[RHT_HBA_HINT_HAVE_1000] = HintText(CustomMessage("Hey, newcomer!&Want to take on the #Horseback Archery# challenge?^"
                                                                    "Prove yourself to be a horsemaster by scoring 1500 points to win #[[2]]#!\x0B",
-													    /*german*/ "Hey, Neuling!&Willst du dich der&#Pferdebogenschießen#-&Herausforderung stellen?^"
+													    /*german*/ "Hey, Neuling!&Willst du dich der&#Pferdebogenschießen#-Herausforderung stellen?^"
 																   "Beweise dein Können als Reitmeister - hol 1500 Punkte und gewinne #[[2]]#!\x0B",
 												        /*french*/ TODO_TRANSLATE,
                                                                    {QM_RED, QM_GREEN}));
