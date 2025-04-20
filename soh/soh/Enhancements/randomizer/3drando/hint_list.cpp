@@ -1684,7 +1684,7 @@ void StaticData::HintTable_Init() {
     hintTextTable[RHT_JUNK57] = HintText(CustomMessage("They say Ganon's tail is vulnerable to nuts, arrows, swords, explosives, hammers...^...sticks, seeds, "
                                                        "boomerangs...^...rods, shovels, iron balls, angry bees...",
                                             /*german*/ "Man erzählt sich, dass Ganons Schwanz verwundbar ist durch Nüsse, Pfeile, Schwerter...^...Sprengstoffe, Hämmer, "
-													   "Stöcke...^...Kerne, Bumerangs, Schaufeln, Eisenkugeln, wütende Bienen..."
+													   "Stöcke...^...Kerne, Bumerangs, Schaufeln, Eisenkugeln, wütende Bienen...",
                                             /*french*/ "Selon moi, la queue de Ganon est vulnérable aux noix, flèches, épées, bombes, marteaux...^...bâtons, "
                                                        "graines, boomerangs...^...baguettes, pelles, boulets de fer, abeilles enragées..."));
 
@@ -2364,7 +2364,7 @@ void StaticData::HintTable_Init() {
                                                            {QM_GREEN}));
 
     hintTextTable[RHT_OOT_HINT] = HintText(CustomMessage("Bring the #Spiritual Stones# to the past so you can receive #[[1]]# from Zelda and learn #[[2]]#!",
-									  	      /*german*/ "Bringe die #Spirituellen Steine# in die Vergangenheit, damit du #[[1]]# von Zelda erhältst und #[[2]]#! lernst"
+									  	      /*german*/ "Bringe die #Spirituellen Steine# in die Vergangenheit, damit du #[[1]]# von Zelda erhältst und #[[2]]#! lernst",
 											  /*french*/ TODO_TRANSLATE,
                                                          {QM_BLUE, QM_GREEN, QM_GREEN}));
 
@@ -2412,7 +2412,7 @@ void StaticData::HintTable_Init() {
     hintTextTable[RHT_GANON_JOKE06] = HintText(CustomMessage("Zelda is probably going to do something stupid, like send you back to your own timeline.^So this is "
                                                              "quite meaningless. Do you really want to save this moron?",
                                                   /*german*/ "Zelda wird wahrscheinlich wieder etwas Dummes tun, wie dich zurück in deine eigene Timeline schicken "
-															 "^Das ist also ziemlich bedeutungslos. Willst du wirklich diese Idiotin retten?"
+															 "^Das ist also ziemlich bedeutungslos. Willst du wirklich diese Idiotin retten?",
                                                   /*french*/ "Même si je suis vaincu... Zelda te renverra dans ton ère, et je reviendrai conquérir!^Telle est la "
                                                              "prophécie d'Hyrule Historia!"));
                                                // /*spanish*/Seguro que Zelda trata de hacer alguna tontería, como enviarte de vuelta a tu línea temporal.^No tiene
@@ -2428,13 +2428,13 @@ void StaticData::HintTable_Init() {
                                                           // los hambrientos&y hasta hago que mi castillo flote.
 
     hintTextTable[RHT_GANON_JOKE08] = HintText(CustomMessage("I've learned this spell,&it's really neat,&I'll keep it later&for your treat!",
-                                                  /*german*/ "Ich hab' diesen Zauber gelernt,&er ist wirklich ziemlich fein,&ich heb' ihn auf für später,&und dann soll er dein Geschenk sein!"
+                                                  /*german*/ "Ich hab' diesen Zauber gelernt,&er ist wirklich ziemlich fein,&ich heb' ihn auf für später,&und dann soll er dein Geschenk sein!",
                                                   /*french*/ "Gamin, ton destin achève,&sous mon sort tu périras!&Cette partie ne fut pas brève,&et cette mort, tu subiras!"));
                                                // /*spanish*/Veamos ahora que harás,&la batalla ha de comenzar,&te enviaré de una vez al más allá,&¿listo para
                                                           // afrontar la verdad?
 
     hintTextTable[RHT_GANON_JOKE09] = HintText(CustomMessage("Many tricks are up my sleeve,&to save yourself&you'd better leave!",
-                                                  /*german*/ "Viele Tricks hab' ich im Gepäck,&und um dich zu retten,&solltest du lieber weg."
+                                                  /*german*/ "Viele Tricks hab' ich im Gepäck,&und um dich zu retten,&solltest du lieber weg.",
                                                   /*french*/ "Sale petit garnement,&tu fais erreur!&C'est maintenant que marque&ta dernière heure!"));
                                                // /*spanish*/¿No osarás a mí enfrentarte?&Rimas aparte,&¡voy a matarte!
 
@@ -2458,7 +2458,7 @@ void StaticData::HintTable_Init() {
                                                  /*french*/ "tes poches"));
                                               // /*spanish*/tu bolsillo
 
-    hintTextTable[RHT_ISOLATED_PLACE] = HintText(CustomMessage("an Isolated Place"
+    hintTextTable[RHT_ISOLATED_PLACE] = HintText(CustomMessage("an Isolated Place",
                                                  /*german*/ "ein abgelegener Ort",
                                                  /*french*/ TODO_TRANSLATE));
 
