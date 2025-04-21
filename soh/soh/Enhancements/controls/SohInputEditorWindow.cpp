@@ -642,10 +642,14 @@ void SohInputEditorWindow::DrawStickSection(uint8_t port, uint8_t stick, int32_t
 
     ImGui::SameLine();
     ImGui::BeginGroup();
-    DrawStickDirectionLine(StringHelper::Sprintf("%s##%d", ICON_FA_ARROW_UP, stick).c_str(), port, stick, Ship::UP, color);
-    DrawStickDirectionLine(StringHelper::Sprintf("%s##%d", ICON_FA_ARROW_DOWN, stick).c_str(), port, stick, Ship::DOWN, color);
-    DrawStickDirectionLine(StringHelper::Sprintf("%s##%d", ICON_FA_ARROW_LEFT, stick).c_str(), port, stick, Ship::LEFT, color);
-    DrawStickDirectionLine(StringHelper::Sprintf("%s##%d", ICON_FA_ARROW_RIGHT, stick).c_str(), port, stick, Ship::RIGHT, color);
+    DrawStickDirectionLine(StringHelper::Sprintf("%s##%d", ICON_FA_ARROW_UP, stick).c_str(), port, stick, Ship::UP,
+                           color);
+    DrawStickDirectionLine(StringHelper::Sprintf("%s##%d", ICON_FA_ARROW_DOWN, stick).c_str(), port, stick, Ship::DOWN,
+                           color);
+    DrawStickDirectionLine(StringHelper::Sprintf("%s##%d", ICON_FA_ARROW_LEFT, stick).c_str(), port, stick, Ship::LEFT,
+                           color);
+    DrawStickDirectionLine(StringHelper::Sprintf("%s##%d", ICON_FA_ARROW_RIGHT, stick).c_str(), port, stick,
+                           Ship::RIGHT, color);
     ImGui::EndGroup();
     ImGui::SetNextItemOpen(true, ImGuiCond_Once);
     if (ImGui::TreeNode(StringHelper::Sprintf("Analog Stick Options##%d", id).c_str())) {
