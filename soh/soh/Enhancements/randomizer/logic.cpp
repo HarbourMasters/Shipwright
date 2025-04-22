@@ -2498,6 +2498,7 @@ void Logic::Reset() {
     ForestOpenBossCorridor = false;
     ShadowTrialFirstChest = false;
     MQGTGMazeSwitch = false;
+    MQGTGRightSideSwitch = false;
     GTGPlatformSilverRupees = false;
     MQJabuHolesRoomDoor = false;
     JabuWestTentacle = false;
