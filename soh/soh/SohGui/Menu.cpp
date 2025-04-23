@@ -65,6 +65,8 @@ uint32_t GetVectorIndexOf(std::vector<std::string>& vector, std::string value) {
     return std::distance(vector.begin(), std::find(vector.begin(), vector.end(), value));
 }
 
+static bool raceDisableActive = false;
+
 void Menu::InsertSidebarSearch() {
     menuEntries["Settings"].sidebars.emplace("Search", searchSidebarEntry);
     uint32_t curIndex = 0;
@@ -228,7 +230,7 @@ std::unordered_map<uint32_t, disabledInfo>& Menu::GetDisabledMap() {
 }
 
 void Menu::MenuDrawItem(WidgetInfo& widget, uint32_t width, UIWidgets::Colors menuThemeIndex) {
-    disabledTempTooltip = "This setting is disabled because: \n\n";
+    disabledTempTooltip = "This setting is disabled because: \n";
     disabledValue = false;
     disabledTooltip = " ";
 
@@ -241,10 +243,15 @@ void Menu::MenuDrawItem(WidgetInfo& widget, uint32_t width, UIWidgets::Colors me
         if (!widget.activeDisables.empty()) {
             widget.options->disabled = true;
             for (auto option : widget.activeDisables) {
-                disabledTempTooltip += std::string("- ") + disabledMap.at(option).reason + std::string("\n");
+                disabledTempTooltip += std::string("\n- ") + disabledMap.at(option).reason;
             }
             widget.options->disabledTooltip = disabledTempTooltip.c_str();
         }
+    }
+    if (widget.raceDisable && raceDisableActive) {
+        widget.options->disabled = true;
+        disabledTempTooltip += std::string("\n- Race Lockout Active");
+        widget.options->disabledTooltip = disabledTempTooltip.c_str();
     }
 
     if (widget.sameLine) {
@@ -491,6 +498,8 @@ void Menu::DrawElement() {
     for (auto& [reason, info] : disabledMap) {
         info.active = info.evaluation(info);
     }
+
+    raceDisableActive = CVarGetInteger(CVAR_SETTING("DisableChanges"), 0);
 
     windowHeight = ImGui::GetMainViewport()->WorkSize.y;
     windowWidth = ImGui::GetMainViewport()->WorkSize.x;

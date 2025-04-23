@@ -469,6 +469,27 @@ size_t CustomMessage::FindNEWLINE(std::string& str, size_t lastNewline) const {
     return newLine;
 }
 
+bool CustomMessage::AddBreakString(std::string& str, size_t pos, std::string breakString) const {
+    if (str[pos] == ' ' || str[pos] == '&') {
+        str.replace(pos, 1, breakString);
+        return false;
+    } else {
+        if (pos <= str.size() - 1) {
+            // If the next char is a new textbox, it has priority, ignore whatever we are replacing it with
+            if (str[pos + 1] == '^') {
+                return false;
+                // otherwise, if it is a line break or space, replace it
+            } else if (str[pos + 1] == ' ' || str[pos + 1] == '&') {
+                str.replace(pos + 1, 1, breakString);
+                return false;
+            }
+        }
+        // otherwise insert after it
+        str.insert(pos + 1, breakString);
+        return true;
+    }
+}
+
 void CustomMessage::AutoFormatString(std::string& str) const {
     ReplaceAltarIcons(str);
     ReplaceColors(str);
@@ -481,7 +502,6 @@ void CustomMessage::AutoFormatString(std::string& str) const {
     while (lastNewline + lineLength < str.length() || yesNo != std::string::npos) {
         const size_t carrot = str.find('^', lastNewline);
         const size_t ampersand = str.find('&', lastNewline);
-        const size_t lastSpace = str.rfind(' ', lastNewline + lineLength);
         size_t waitForInput = str.find(WAIT_FOR_INPUT()[0], lastNewline);
         size_t newLine = FindNEWLINE(str, lastNewline);
         if (carrot < waitForInput) {
@@ -513,13 +533,25 @@ void CustomMessage::AutoFormatString(std::string& str) const {
                     lastNewline = waitForInput + 1;
                     lineCount = 0;
                     // some lines need to be split but don't have spaces, look for periods instead
-                } else if (lastSpace == std::string::npos) {
-                    const size_t lastPeriod = str.rfind('.', lastNewline + lineLength);
-                    str.replace(lastPeriod, 1, ".&");
-                    lastNewline = lastPeriod + 2;
                 } else {
-                    str.replace(lastSpace, 1, "&");
-                    lastNewline = lastSpace + 1;
+                    const size_t lastBreak =
+                        str.find_last_of(static_cast<std::string>(".,!?- "), lastNewline + lineLength);
+                    // if none exist or we go backwards, we look forward for a something and allow the overflow
+                    if (lastBreak == std::string::npos || lastBreak < lastNewline) {
+                        const size_t nextBreak = str.find_first_of(static_cast<std::string>(".,!?- &^"), lastNewline);
+                        if (str[nextBreak] == '^') {
+                            lastNewline = nextBreak + 1;
+                            lineCount = 0; // increments to 1 at the end
+                        } else if (str[nextBreak] == '&') {
+                            lastNewline = nextBreak + 1;
+                        } else {
+                            bool isAdded = AddBreakString(str, nextBreak, "&");
+                            lastNewline = nextBreak + 1 + isAdded;
+                        }
+                    } else {
+                        bool isAdded = AddBreakString(str, lastBreak, "&");
+                        lastNewline = lastBreak + 1 + isAdded;
+                    }
                 }
                 lineCount += 1;
             } else {
@@ -536,14 +568,23 @@ void CustomMessage::AutoFormatString(std::string& str) const {
                     // or move the lastNewline cursor to the next line if a '^' is encountered.
                 } else if (carrot < lastNewline + lineLength) {
                     lastNewline = carrot + 1;
-                    // some lines need to be split but don't have spaces, look for periods instead
-                } else if (lastSpace == std::string::npos) {
-                    const size_t lastPeriod = str.rfind('.', lastNewline + lineLength);
-                    str.replace(lastPeriod, 1, ".^" + colorText);
-                    lastNewline = lastPeriod + 2;
+                    // some lines need to be split but don't have spaces, look for punctuation instead
                 } else {
-                    str.replace(lastSpace, 1, "^" + colorText);
-                    lastNewline = lastSpace + 1;
+                    const size_t lastBreak =
+                        str.find_last_of(static_cast<std::string>(".,!?- &"), lastNewline + lineLength);
+                    // if none exist or we go backwards, we look forward for a something and allow the overflow
+                    if (lastBreak == std::string::npos || lastBreak < lastNewline) {
+                        const size_t nextBreak = str.find_first_of(static_cast<std::string>(".,!?- &^"), lastNewline);
+                        if (str[nextBreak] == '^') {
+                            lastNewline = nextBreak + 1;
+                        } else {
+                            bool isAdded = AddBreakString(str, nextBreak, "^" + colorText);
+                            lastNewline = nextBreak + 1 + isAdded;
+                        }
+                    } else {
+                        bool isAdded = AddBreakString(str, lastBreak, "^" + colorText);
+                        lastNewline = lastBreak + 1 + isAdded;
+                    }
                 }
                 lineCount = 1;
             }
