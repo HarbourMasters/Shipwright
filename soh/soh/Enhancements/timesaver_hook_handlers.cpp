@@ -275,6 +275,10 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 }
                 switch (actor->id) {
                     case ACTOR_OBJ_SWITCH: {
+                        if (actor->params == 8224 && gPlayState->sceneNum == SCENE_DODONGOS_CAVERN &&
+                            CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)) {
+                            break;
+                        }
                         ObjSwitch* switchActor = (ObjSwitch*)actor;
                         switchActor->cooldownTimer = 0;
                         *should = false;
