@@ -332,7 +332,13 @@ bool Region::TimePass() {
         case SCENE_DEATH_MOUNTAIN_CRATER:
         case SCENE_ID_MAX:
             return false;
+
+        // Time does pass in the fishing pond but it's
+        // extremely slow (more than 2 IRL seconds per in-game minute)
+        // maybe in the future there could be a trick to count it
         case SCENE_FISHING_POND:
+            return false;
+
         case SCENE_HYRULE_FIELD:
         case SCENE_KAKARIKO_VILLAGE:
         case SCENE_ZORAS_RIVER:
@@ -343,6 +349,7 @@ bool Region::TimePass() {
         case SCENE_DEATH_MOUNTAIN_TRAIL:
         case SCENE_LON_LON_RANCH:
             return true;
+
         case SCENE_TEST01:
         case SCENE_BESITU:
         case SCENE_DEPTH_TEST:

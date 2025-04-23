@@ -7,7 +7,9 @@ void RegionTable_Init_CastleGrounds() {
     // clang-format off
     //With multi-area support {RA_CASTLE_GROUNDS} is not strictly required anymore, as any interior here could inherit both
     //{RA_HYRULE_CASTLE} and {RA_OUTSIDE_GANONS_CASTLE}, but a setting to merge the latter 2 into the former may be preferred
-    areaTable[RR_CASTLE_GROUNDS] = Region("Castle Grounds", SCENE_ID_MAX, {RA_CASTLE_GROUNDS}, {}, {}, {
+    //
+    //Temporarily uses SCENE_OUTSIDE_GANONS_CASTLE to avoid self connection between ages
+    areaTable[RR_CASTLE_GROUNDS] = Region("Castle Grounds", SCENE_OUTSIDE_GANONS_CASTLE, {RA_CASTLE_GROUNDS}, {}, {}, {
         //Exits
         Entrance(RR_THE_MARKET,            []{return true;}),
         Entrance(RR_HYRULE_CASTLE_GROUNDS, []{return logic->IsChild;}),

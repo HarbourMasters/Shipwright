@@ -360,7 +360,14 @@ static bool AreEntrancesCompatible(Entrance* entrance, Entrance* target, std::ve
         entrance->GetParentRegion()->scene != SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC &&
         entrance->GetParentRegion()->scene != SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS &&
 
-        entrance->GetParentRegion()->scene == target->GetConnectedRegion()->scene) {
+        (
+            entrance->GetParentRegion()->scene == target->GetConnectedRegion()->scene ||
+
+            // prevent SCENE_HYRULE_CASTLE & SCENE_OUTSIDE_GANONS_CASTLE from connecting to eachother
+            (entrance->GetParentRegion()->scene == SCENE_HYRULE_CASTLE && target->GetConnectedRegion()->scene == SCENE_OUTSIDE_GANONS_CASTLE) ||
+            (entrance->GetParentRegion()->scene == SCENE_OUTSIDE_GANONS_CASTLE && target->GetConnectedRegion()->scene == SCENE_HYRULE_CASTLE)
+        )
+    ) {
         auto message = "Entrance " + entrance->GetName() + " attempted to connect with own scene target " +
                        target->to_string() + ". Connection failed.\n";
         SPDLOG_DEBUG(message);
