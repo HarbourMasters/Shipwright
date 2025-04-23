@@ -881,7 +881,6 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
         Shuffle(itemsToPlace);
         while (!itemsToPlace.empty()) {
             RandomizerGet item = std::move(itemsToPlace.back());
-            Rando::StaticData::RetrieveItem(item).SetAsPlaythrough();
             itemsToPlace.pop_back();
 
             // assume we have all unplaced items

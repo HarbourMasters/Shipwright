@@ -32,14 +32,12 @@ class Item {
     Item();
     Item(RandomizerGet randomizerGet_, ItemType type_, int16_t getItemId_, bool advancement_, LogicVal logicVal_,
          RandomizerHintTextKey hintKey_, uint16_t itemId_, uint16_t objectId_, uint16_t gid_, uint16_t textId_,
-         uint16_t field_, int16_t chestAnimation_, GetItemCategory category_, uint16_t modIndex_,
-         bool progressive_ = false, uint16_t price_ = 0);
+         uint16_t field_, int16_t chestAnimation_, GetItemCategory category_, uint16_t modIndex_, uint16_t price_ = 0);
     Item(RandomizerGet randomizerGet_, ItemType type_, int16_t getItemId_, bool advancement_, LogicVal logicVal_,
          RandomizerHintTextKey hintKey_, uint16_t objectId_, uint16_t gid_, uint16_t textId_, uint16_t field_,
-         int16_t chestAnimation_, GetItemCategory category_, uint16_t modIndex_, bool progressive_ = false,
-         uint16_t price_ = 0);
+         int16_t chestAnimation_, GetItemCategory category_, uint16_t modIndex_, uint16_t price_ = 0);
     Item(RandomizerGet randomizerGet_, ItemType type_, int16_t getItemId_, bool advancement_, LogicVal logicVal_,
-         RandomizerHintTextKey hintKey_, bool progressive_ = false, uint16_t price_ = 0);
+         RandomizerHintTextKey hintKey_,  uint16_t price_ = 0);
     ~Item();
 
     void ApplyEffect() const;
@@ -55,9 +53,7 @@ class Item {
     std::shared_ptr<GetItemEntry> GetGIEntry() const;
     GetItemEntry GetGIEntry_Copy() const;
     void SetPrice(uint16_t price_);
-    void SetAsPlaythrough();
     void SetCustomDrawFunc(CustomDrawFunc) const;
-    bool IsPlaythrough() const;
     bool IsBottleItem() const;
     bool IsMajorItem() const;
     RandomizerHintTextKey GetHintKey() const;
@@ -73,9 +69,7 @@ class Item {
     bool advancement;
     LogicVal logicVal;
     RandomizerHintTextKey hintKey;
-    bool progressive;
     uint16_t price;
-    bool playthrough = false;
     std::shared_ptr<GetItemEntry> giEntry;
 };
 } // namespace Rando

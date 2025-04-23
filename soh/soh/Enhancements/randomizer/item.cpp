@@ -13,14 +13,14 @@
 namespace Rando {
 Item::Item()
     : randomizerGet(RG_NONE), type(ITEMTYPE_ITEM), getItemId(GI_NONE), advancement(false), hintKey(RHT_NONE),
-      progressive(false), price(0) {
+      price(0) {
 }
 Item::Item(const RandomizerGet randomizerGet_, const ItemType type_, const int16_t getItemId_, const bool advancement_,
            LogicVal logicVal_, const RandomizerHintTextKey hintKey_, const uint16_t itemId_, const uint16_t objectId_,
            const uint16_t gid_, const uint16_t textId_, const uint16_t field_, const int16_t chestAnimation_,
-           const GetItemCategory category_, const uint16_t modIndex_, const bool progressive_, const uint16_t price_)
+           const GetItemCategory category_, const uint16_t modIndex_, const uint16_t price_)
     : randomizerGet(randomizerGet_), type(type_), getItemId(getItemId_), advancement(advancement_), logicVal(logicVal_),
-      hintKey(hintKey_), progressive(progressive_), price(price_) {
+      hintKey(hintKey_), price(price_) {
     if (modIndex_ == MOD_RANDOMIZER || getItemId > 0x7D) {
         giEntry = std::make_shared<GetItemEntry>(GetItemEntry{
             itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_,
@@ -37,9 +37,9 @@ Item::Item(const RandomizerGet randomizerGet_, const ItemType type_, const int16
 Item::Item(const RandomizerGet randomizerGet_, const ItemType type_, const int16_t getItemId_, const bool advancement_,
            LogicVal logicVal_, const RandomizerHintTextKey hintKey_, const uint16_t objectId_, const uint16_t gid_,
            const uint16_t textId_, const uint16_t field_, const int16_t chestAnimation_,
-           const GetItemCategory category_, const uint16_t modIndex_, const bool progressive_, const uint16_t price_)
+           const GetItemCategory category_, const uint16_t modIndex_, const uint16_t price_)
     : randomizerGet(randomizerGet_), type(type_), getItemId(getItemId_), advancement(advancement_), logicVal(logicVal_),
-      hintKey(hintKey_), progressive(progressive_), price(price_) {
+      hintKey(hintKey_), price(price_) {
     if (modIndex_ == MOD_RANDOMIZER || getItemId > 0x7D) {
         giEntry = std::make_shared<GetItemEntry>(
             GetItemEntry{ static_cast<uint16_t>(randomizerGet_), field_,
@@ -56,9 +56,9 @@ Item::Item(const RandomizerGet randomizerGet_, const ItemType type_, const int16
 }
 
 Item::Item(const RandomizerGet randomizerGet_, const ItemType type_, const int16_t getItemId_, const bool advancement_,
-           LogicVal logicVal_, const RandomizerHintTextKey hintKey_, const bool progressive_, const uint16_t price_)
+           LogicVal logicVal_, const RandomizerHintTextKey hintKey_, const uint16_t price_)
     : randomizerGet(randomizerGet_), type(type_), getItemId(getItemId_), advancement(advancement_), logicVal(logicVal_),
-      hintKey(hintKey_), progressive(progressive_), price(price_) {
+      hintKey(hintKey_), price(price_) {
 }
 
 Item::~Item() = default;
@@ -390,16 +390,8 @@ void Item::SetPrice(const uint16_t price_) {
     price = price_;
 }
 
-void Item::SetAsPlaythrough() {
-    playthrough = true;
-}
-
 void Item::SetCustomDrawFunc(const CustomDrawFunc drawFunc) const {
     giEntry->drawFunc = drawFunc;
-}
-
-bool Item::IsPlaythrough() const {
-    return playthrough;
 }
 
 bool Item::IsBottleItem() const {
