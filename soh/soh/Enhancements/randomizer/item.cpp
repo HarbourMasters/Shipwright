@@ -12,8 +12,7 @@
 
 namespace Rando {
 Item::Item()
-    : randomizerGet(RG_NONE), type(ITEMTYPE_ITEM), getItemId(GI_NONE), advancement(false), hintKey(RHT_NONE),
-      price(0) {
+    : randomizerGet(RG_NONE), type(ITEMTYPE_ITEM), getItemId(GI_NONE), advancement(false), hintKey(RHT_NONE), price(0) {
 }
 Item::Item(const RandomizerGet randomizerGet_, const ItemType type_, const int16_t getItemId_, const bool advancement_,
            LogicVal logicVal_, const RandomizerHintTextKey hintKey_, const uint16_t itemId_, const uint16_t objectId_,
