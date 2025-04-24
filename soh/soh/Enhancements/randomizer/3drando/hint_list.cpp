@@ -1001,7 +1001,7 @@ void StaticData::HintTable_Init() {
 
     hintTextTable[RHT_CASTLE_GROUNDS] = HintText(CustomMessage("the Castle Grounds",
                                                     /*german*/ "Anlage von Schloß Hyrule",
-                                                    /*french*/ "le Château d'Hyrule")); //RANDOTODO name differently to RHT_HYRULE_CASTLE
+                                                    /*french*/ "le Château d'Hyrule")); //TRANSLATE_TODO name differently to RHT_HYRULE_CASTLE
                                                  // /*spanish*/
 
     hintTextTable[RHT_HYRULE_CASTLE] = HintText(CustomMessage("Hyrule Castle",
