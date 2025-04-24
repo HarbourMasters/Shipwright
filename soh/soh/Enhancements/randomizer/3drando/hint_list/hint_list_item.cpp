@@ -2841,7 +2841,7 @@ void StaticData::HintTable_Init_Item() {
                                     CustomMessage("a four legged friend", /*german*/"ein vierbeiniger Freund", /*french*/"un puissant animal")});
                                          // /*spanish*/una amiga cuadrúpeda
 
-    hintTextTable[RG_TRIFORCE] = HintText(CustomMessage("the Triforce", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
+    hintTextTable[RHT_TRIFORCE] = HintText(CustomMessage("the Triforce", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
                                              CustomMessage("Triforce", "Triforce", "Triforce"));
 
