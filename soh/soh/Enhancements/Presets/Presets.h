@@ -38,8 +38,6 @@ typedef struct PresetEntry {
     std::variant<int32_t, float, const char*, std::string> value;
 } PresetEntry;
 
-std::string FormatLocations(std::vector<RandomizerCheck> locs);
-
 void DrawPresetSelector(PresetType presetType);
 void clearCvars(std::vector<const char*> cvarsToClear);
 void applyPreset(std::vector<PresetEntry> entries);

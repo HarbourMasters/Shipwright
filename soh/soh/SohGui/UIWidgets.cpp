@@ -204,19 +204,19 @@ bool WindowButton(const char* label, const char* cvarName, std::shared_ptr<Ship:
     return dirty;
 }
 
-void PushStyleCheckbox(const ImVec4& color) {
+void PushStyleCheckbox(const ImVec4& color, ImVec2 padding) {
     ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(color.x, color.y, color.z, 1.0f));
     ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(color.x, color.y, color.z, 0.8f));
     ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4(color.x, color.y, color.z, 0.6f));
     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.0f, 0.0f, 0.0f, 0.3f));
     ImGui::PushStyleColor(ImGuiCol_CheckMark, ImVec4(1.0f, 1.0f, 1.0f, 0.7f));
     ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 3.0f);
-    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10.0f, 6.0f));
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, padding);
     ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 5.0f);
 }
 
-void PushStyleCheckbox(Colors color) {
-    PushStyleCheckbox(ColorValues.at(color));
+void PushStyleCheckbox(Colors color, ImVec2 padding) {
+    PushStyleCheckbox(ColorValues.at(color), padding);
 }
 
 void PopStyleCheckbox() {

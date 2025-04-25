@@ -194,6 +194,7 @@ struct CheckboxOptions : WidgetOptions {
     bool defaultValue = false; // Only applicable to CVarCheckbox
     ComponentAlignments alignment = ComponentAlignments::Left;
     LabelPositions labelPosition = LabelPositions::Near;
+    ImVec2 padding = ImVec2(10.0f, 8.0f);
     Colors color = Colors::LightBlue;
 
     CheckboxOptions& DefaultValue(bool defaultValue_) {
@@ -218,6 +219,10 @@ struct CheckboxOptions : WidgetOptions {
     }
     CheckboxOptions& DisabledTooltip(const char* disabledTooltip_) {
         WidgetOptions::disabledTooltip = disabledTooltip_;
+        return *this;
+    }
+    CheckboxOptions& Padding(ImVec2 padding_) {
+        padding = padding_;
         return *this;
     }
 };
@@ -482,8 +487,8 @@ bool Button(const char* label, const ButtonOptions& options = {});
 bool WindowButton(const char* label, const char* cvarName, std::shared_ptr<Ship::GuiWindow> windowPtr,
                   const WindowButtonOptions& options = {});
 
-void PushStyleCheckbox(const ImVec4& color);
-void PushStyleCheckbox(Colors color = Colors::LightBlue);
+void PushStyleCheckbox(const ImVec4& color, ImVec2 padding = ImVec2(10.0f, 6.0f));
+void PushStyleCheckbox(Colors color = Colors::LightBlue, ImVec2 padding = ImVec2(10.0f, 6.0f));
 void PopStyleCheckbox();
 void RenderText(ImVec2 pos, const char* text, const char* text_end, bool hide_text_after_hash);
 bool Checkbox(const char* label, bool* v, const CheckboxOptions& options = {});
