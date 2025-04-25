@@ -129,6 +129,24 @@ static std::unordered_map<std::string, PresetInfo> presets = {
     }}
 };
 
+void DrawSectionCheck(const std::string& name, bool empty, bool* pointer, std::string section) {
+    ImGui::AlignTextToFramePadding();
+    if (empty) {
+        ImGui::PushStyleColor(ImGuiCol_Text, { 1.0f, 0.0f, 0.0f, 0.7f });
+        BlankButton();
+        ImGui::BeginDisabled();
+        ImGui::Button((ICON_FA_TIMES + std::string("##") + name + section).c_str());
+        ImGui::EndDisabled();
+        UIWidgets::PopStyleButton();
+        ImGui::PopStyleColor();
+    } else {
+        ImGui::PushFont(OTRGlobals::Instance->fontMono);
+        ImGui::SetCursorPosY(ImGui::GetCursorPosY() + (ImGui::GetStyle().FramePadding.y));
+        UIWidgets::Checkbox(("##" + name + section).c_str(), pointer, {.defaultValue = true, .padding = {6.0f, 6.0f}, .color = THEME_COLOR});
+        ImGui::PopFont();
+    }
+}
+
 void PresetsCustomWidget(WidgetInfo& info) {
     UIWidgets::PushStyleTabs(THEME_COLOR);
     ImGui::PushFont(OTRGlobals::Instance->fontMonoLargest);
@@ -140,7 +158,7 @@ void PresetsCustomWidget(WidgetInfo& info) {
         ImGui::TableSetupColumn("Cosmetics");
         ImGui::TableSetupColumn("Randomizer");
         ImGui::TableSetupColumn("Trackers");
-        ImGui::TableSetupColumn("Apply", ImGuiTableColumnFlags_WidthFixed, ImGui::CalcTextSize("Delete").x + ImGui::GetStyle().FramePadding.x * 2);
+        ImGui::TableSetupColumn("Apply", ImGuiTableColumnFlags_WidthFixed, ImGui::CalcTextSize("Apply").x + ImGui::GetStyle().FramePadding.x * 2);
         ImGui::TableSetupColumn("Delete", ImGuiTableColumnFlags_WidthFixed, ImGui::CalcTextSize("Delete").x + ImGui::GetStyle().FramePadding.x * 2);
         BlankButton();
         ImGui::TableNextRow();
@@ -165,110 +183,32 @@ void PresetsCustomWidget(WidgetInfo& info) {
         UIWidgets::Tooltip("Trackers");
         UIWidgets::PopStyleButton();
 
-        UIWidgets::CheckboxOptions checkboxOptions;
-        checkboxOptions.DefaultValue(true).Padding({ 10.0f, 6.0f }).Color(THEME_COLOR);
-
-        for (auto [name, info] : presets) {
+        for (auto& [name, info] : presets) {
             ImGui::TableNextRow();
             ImGui::TableNextColumn();
             ImGui::AlignTextToFramePadding();
             ImGui::Text(name.c_str());
             ImGui::TableNextColumn();
-            ImGui::AlignTextToFramePadding();
-            if (info.settings.empty()) {
-                ImGui::PushStyleColor(ImGuiCol_Text, { 1.0f, 0.0f, 0.0f, 0.7f });
-                BlankButton();
-                ImGui::BeginDisabled();
-                ImGui::Button((ICON_FA_TIMES + std::string("##") + name + "settings").c_str());
-                ImGui::EndDisabled();
-                UIWidgets::PopStyleButton();
-                ImGui::PopStyleColor();
-            }
-            else {
-                UIWidgets::Checkbox(("##" + name + "settings").c_str(), &info.applySettings, UIWidgets::CheckboxOptions().DefaultValue(true));
-            }
+            DrawSectionCheck(name, info.settings.empty(), &info.applySettings, "settings");
             ImGui::TableNextColumn();
-            ImGui::AlignTextToFramePadding();
-            if (info.enhancements.empty()) {
-                ImGui::PushStyleColor(ImGuiCol_Text, { 1.0f, 0.0f, 0.0f, 0.7f });
-                BlankButton();
-                ImGui::BeginDisabled();
-                ImGui::Button((ICON_FA_TIMES + std::string("##") + name + "enhancements").c_str());
-                ImGui::EndDisabled();
-                UIWidgets::PopStyleButton();
-                ImGui::PopStyleColor();
-            }
-            else {
-                checkboxOptions.DefaultValue(info.applyEnhancements);
-                ImGui::PushFont(OTRGlobals::Instance->fontMono);
-                UIWidgets::Checkbox(("##" + name + "enhancements").c_str(), &info.applyEnhancements, checkboxOptions);
-                ImGui::PopFont();
-            }
+            DrawSectionCheck(name, info.enhancements.empty(), &info.applyEnhancements, "enhancements");
             ImGui::TableNextColumn();
-            ImGui::AlignTextToFramePadding();
-            if (info.audio.empty()) {
-                ImGui::PushStyleColor(ImGuiCol_Text, { 1.0f, 0.0f, 0.0f, 0.7f });
-                BlankButton();
-                ImGui::BeginDisabled();
-                ImGui::Button((ICON_FA_TIMES + std::string("##") + name + "audio").c_str());
-                ImGui::EndDisabled();
-                UIWidgets::PopStyleButton();
-                ImGui::PopStyleColor();
-            }
-            else {
-                UIWidgets::Checkbox(("##" + name + "audio").c_str(), &info.applyAudio, UIWidgets::CheckboxOptions().DefaultValue(true));
-            }
+            DrawSectionCheck(name, info.audio.empty(), &info.applyAudio, "audio");
             ImGui::TableNextColumn();
-            ImGui::AlignTextToFramePadding();
-            if (info.cosmetics.empty()) {
-                ImGui::PushStyleColor(ImGuiCol_Text, { 1.0f, 0.0f, 0.0f, 0.7f });
-                BlankButton();
-                ImGui::BeginDisabled();
-                ImGui::Button((ICON_FA_TIMES + std::string("##") + name + "cosmetics").c_str());
-                ImGui::EndDisabled();
-                UIWidgets::PopStyleButton();
-                ImGui::PopStyleColor();
-            }
-            else {
-                UIWidgets::Checkbox(("##" + name + "cosmetics").c_str(), &info.applyCosmetics, UIWidgets::CheckboxOptions().DefaultValue(true));
-            }
+            DrawSectionCheck(name, info.cosmetics.empty(), &info.applyCosmetics, "cosmetics");
             ImGui::TableNextColumn();
-            ImGui::AlignTextToFramePadding();
-            if (info.rando.empty()) {
-                ImGui::PushStyleColor(ImGuiCol_Text, { 1.0f, 0.0f, 0.0f, 0.7f });
-                BlankButton();
-                ImGui::BeginDisabled();
-                ImGui::Button((ICON_FA_TIMES + std::string("##") + name + "rando").c_str());
-                ImGui::EndDisabled();
-                UIWidgets::PopStyleButton();
-                ImGui::PopStyleColor();
-            }
-            else {
-                UIWidgets::Checkbox(("##" + name + "rando").c_str(), &info.applyRando, UIWidgets::CheckboxOptions().DefaultValue(true));
-            }
+            DrawSectionCheck(name, info.rando.empty(), &info.applyRando, "rando");
             ImGui::TableNextColumn();
-            ImGui::AlignTextToFramePadding();
-            if (info.trackers.empty()) {
-                ImGui::PushStyleColor(ImGuiCol_Text, { 1.0f, 0.0f, 0.0f, 0.7f });
-                BlankButton();
-                ImGui::BeginDisabled();
-                ImGui::Button((ICON_FA_TIMES + std::string("##") + name + "trackers").c_str());
-                ImGui::EndDisabled();
-                UIWidgets::PopStyleButton();
-                ImGui::PopStyleColor();
-            }
-            else {
-                UIWidgets::Checkbox(("##" + name + "trackers").c_str(), &info.applyTrackers, UIWidgets::CheckboxOptions().DefaultValue(true));
-            }
+            DrawSectionCheck(name, info.trackers.empty(), &info.applyTrackers, "trackers");
             ImGui::TableNextColumn();
             UIWidgets::PushStyleButton(THEME_COLOR);
-            if (UIWidgets::Button(("Apply##" + name).c_str())) {
+            if (UIWidgets::Button(("Apply##" + name).c_str(), UIWidgets::ButtonOptions().Padding({6.0f, 6.0f}))) {
 
             }
             UIWidgets::PopStyleButton();
             ImGui::TableNextColumn();
             UIWidgets::PushStyleButton(THEME_COLOR);
-            if (UIWidgets::Button(("Delete##" + name).c_str())) {
+            if (UIWidgets::Button(("Delete##" + name).c_str(), UIWidgets::ButtonOptions().Padding({6.0f, 6.0f}))) {
                 presets.erase(name);
             }
             UIWidgets::PopStyleButton();

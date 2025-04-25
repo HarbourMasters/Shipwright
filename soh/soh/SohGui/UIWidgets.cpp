@@ -297,6 +297,7 @@ bool Checkbox(const char* _label, bool* value, const CheckboxOptions& options) {
 
     const char* label = labelStr.c_str();
 
+    PushStyleCheckbox(options.color, options.padding);
     ImGuiContext& g = *GImGui;
     const ImGuiStyle& style = g.Style;
     const ImGuiID id = window->GetID(label);
@@ -326,7 +327,6 @@ bool Checkbox(const char* _label, bool* value, const CheckboxOptions& options) {
         *value = !(*value);
         ImGui::MarkItemEdited(id);
     }
-    PushStyleCheckbox(options.color);
     ImVec2 checkPos = pos;
     ImVec2 labelPos = pos;
     if (options.labelPosition == LabelPositions::Above) {
