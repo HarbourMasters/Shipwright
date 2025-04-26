@@ -320,7 +320,7 @@ void RegionTable_Init_SpiritTemple() {
     }, {
         //Exits
         Entrance(RR_SPIRIT_TEMPLE_WEST_HAND_EXIT, []{return true;}),
-        Entrance(RR_DESERT_COLOSSUS,              []{return true;}),
+        Entrance(RR_DESERT_COLOSSUS,              []{return SpiritCertainAccess(RR_SPIRIT_TEMPLE_OUTER_WEST_HAND);}),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_STATUE_ROOM_EAST] = Region("Spirit Temple Statue Room East", "Spirit Temple", {RA_SPIRIT_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
@@ -773,7 +773,9 @@ void RegionTable_Init_SpiritTemple() {
         //Locations
         //We don't need Shared here because If we are checking as child, universe 2 adult access needs nothing so it always passes, and if we are checking as adult, it is Certain Access
         LOCATION(RC_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM_CHEST, SpiritShared(RR_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM, []{return true/*str0*/;})),
-        LOCATION(RC_SPIRIT_TEMPLE_MQ_GS_SUN_BLOCK_ROOM,    SpiritShared(RR_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM, []{return logic->CanUse(RG_HOOKSHOT) || (ctx->GetTrickOption(RT_SPIRIT_MQ_SUN_BLOCK_GS) && logic->CanUse(RG_BOOMERANG));})),
+        // RT_SPIRIT_MQ_SUN_BLOCK_GS should probably be expanded to cover all ground based methods when str0 is added, as it can be hit with longshot because the skull hitbox is larger than the model
+        LOCATION(RC_SPIRIT_TEMPLE_MQ_GS_SUN_BLOCK_ROOM,    SpiritShared(RR_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM, []{return (logic->CanUse(RG_HOOKSHOT)/* && (str0 || SunlightArrows())*/) || 
+                                                                                                                      (ctx->GetTrickOption(RT_SPIRIT_MQ_SUN_BLOCK_GS) && logic->CanUse(RG_BOOMERANG));})),
         LOCATION(RC_SPIRIT_TEMPLE_MQ_SUN_BLOCKS_POT_1,     SpiritShared(RR_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM, []{return logic->CanBreakPots();})),
         LOCATION(RC_SPIRIT_TEMPLE_MQ_SUN_BLOCKS_POT_2,     SpiritShared(RR_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM, []{return logic->CanBreakPots();})),
     }, {
@@ -785,8 +787,7 @@ void RegionTable_Init_SpiritTemple() {
     areaTable[RR_SPIRIT_TEMPLE_MQ_SKULLTULA_STAIRS] = Region("Spirit Temple MQ Skulltula Stairs", "Spirit Temple", {RA_SPIRIT_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM, []{return true;}),
-        //This door causes the Universes to merge as it requires 7 keys for both ages
-        Entrance(RR_SPIRIT_TEMPLE_MQ_WEST_THRONE,    []{return logic->SmallKeys(RR_SPIRIT_TEMPLE, 7);}),
+        Entrance(RR_SPIRIT_TEMPLE_MQ_WEST_THRONE,    []{return logic->SmallKeys(RR_SPIRIT_TEMPLE, 4);}),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_WEST_THRONE] = Region("Spirit Temple MQ West Throne", "Spirit Temple", {RA_SPIRIT_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
@@ -803,12 +804,12 @@ void RegionTable_Init_SpiritTemple() {
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_OUTER_WEST_HAND] = Region("Spirit Temple MQ Outer West Hand", "Spirit Temple", {RA_SPIRIT_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST, true),
+        LOCATION(RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST, SpiritShared(RR_SPIRIT_TEMPLE_MQ_OUTER_WEST_HAND, []{return true;})),
     }, {
         //Exits
         //If it is ever relevent for 1 age to spawn the mirror shield chest for the other can longshot across, it needs an eventAccess
         Entrance(RR_SPIRIT_TEMPLE_MQ_WEST_HAND_EXIT, []{return true;}),
-        Entrance(RR_DESERT_COLOSSUS,                 []{return true;}),
+        Entrance(RR_DESERT_COLOSSUS,                 []{return SpiritCertainAccess(RR_SPIRIT_TEMPLE_MQ_OUTER_WEST_HAND);}),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_BIG_BLOCK_ROOM_SOUTH] = Region("Spirit Temple MQ Block Room South", "Spirit Temple", {RA_SPIRIT_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
@@ -850,12 +851,13 @@ void RegionTable_Init_SpiritTemple() {
                                                                       logic->CanUse(RG_HOOKSHOT);}),
         //!QUANTUM LOGIC!
         //Continuing from above, if we also have a longshot, we can go from the East hand to the West hand, meaning we always have access to East Hand
-        Entrance(RR_SPIRIT_TEMPLE_MQ_OUTER_WEST_HAND,        []{return logic->SmallKeys(RR_SPIRIT_TEMPLE, 4) &&
+        /* 
                                                                        logic->CanAvoidEnemy(RE_BEAMOS, true, 4) && logic->CanUse(RG_SONG_OF_TIME) &&
-                                                                       logic->CanJumpslash() && /*(str0 || SunlightArrows) &&*/
+                                                                       logic->CanJumpslash() && /*(str0 || SunlightArrows) &&
                                                                        (ctx->GetTrickOption(RT_LENS_SPIRIT_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) &&
                                                                        logic->CanKillEnemy(RE_IRON_KNUCKLE) &&
-                                                                       logic->CanUse(RG_LONGSHOT);}),
+                                                                       logic->CanUse(RG_LONGSHOT) */
+        Entrance(RR_SPIRIT_TEMPLE_MQ_OUTER_WEST_HAND,        []{return logic->SmallKeys(RR_SPIRIT_TEMPLE, 4) && logic->MQSpirit4KeyWestHand();}),
         Entrance(RR_SPIRIT_TEMPLE_MQ_FIRE_WALL_STAIRS_LOWER, []{return logic->SmallKeys(RR_SPIRIT_TEMPLE, 5);}),
         // RT_SPIRIT_PLATFORM_HOOKSHOT is currently disabled
         Entrance(RR_SPIRIT_TEMPLE_MQ_PLATFORM,               []{return logic->SpiritPlatformLowered && 

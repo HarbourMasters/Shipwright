@@ -311,6 +311,8 @@ class Logic {
     bool MQSpiritWestToPots();
     bool MQSpiritStatueToSunBlock();
     bool MQSpiritStatueSouthDoor();
+    bool MQSpirit4KeyWestHand();
+    bool CouldMQSpirit4KeyWestHand();
 
   private:
     std::shared_ptr<Context> ctx;

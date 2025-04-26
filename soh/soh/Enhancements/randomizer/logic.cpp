@@ -2404,6 +2404,22 @@ bool Logic::MQSpiritStatueSouthDoor() {
                                CanUse(RG_SONG_OF_TIME) /* && CanClimb()*/);
 }
 
+bool Logic::MQSpirit4KeyWestHand() {
+    return CanAvoidEnemy(RE_BEAMOS, true, 4) && CanUse(RG_SONG_OF_TIME) &&
+           CanJumpslash() && /*(str0 || SunlightArrows) &&*/
+           (ctx->GetTrickOption(RT_LENS_SPIRIT_MQ) || CanUse(RG_LENS_OF_TRUTH)) && CanKillEnemy(RE_IRON_KNUCKLE) &&
+           CanUse(RG_LONGSHOT);
+}
+// This version of the function handles reaching there as child, based on what adult could do if they existed
+bool Logic::CouldMQSpirit4KeyWestHand() {
+    return CanAvoidEnemy(RE_BEAMOS, true, 4) && CanUse(RG_SONG_OF_TIME) && HasItem(RG_MASTER_SWORD) ||
+           HasItem(RG_BIGGORON_SWORD) ||
+           HasItem(RG_MEGATON_HAMMER) &&
+               /*(str0 || SunlightArrows) &&*/
+               (ctx->GetTrickOption(RT_LENS_SPIRIT_MQ) || CanUse(RG_LENS_OF_TRUTH)) && CanKillEnemy(RE_IRON_KNUCKLE) &&
+               HasItem(RG_LONGSHOT);
+}
+
 void Logic::Reset() {
     NewSaveContext();
     StartPerformanceTimer(PT_LOGIC_RESET);
