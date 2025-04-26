@@ -2,11 +2,17 @@
 
 namespace SOH {
 
-Sequence* AudioSequence::GetPointer() {
-    return &sequence;
-}
+    Sequence* AudioSequence::GetPointer() {
+        return &sequence;
+    }
 
-size_t AudioSequence::GetPointerSize() {
-    return sizeof(Sequence);
-}
+    size_t AudioSequence::GetPointerSize() {
+        return sizeof(Sequence);
+    }
+
+    AudioSequence::~AudioSequence() {
+        delete[] sequence.seqData;
+        sequence.seqData = nullptr;
+    }
+
 } // namespace SOH

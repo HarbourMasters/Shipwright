@@ -792,7 +792,7 @@ s32 func_800E6590(s32 playerIdx, s32 arg1, s32 arg2) {
                 if (sound == NULL) {
                     return 0;
                 }
-                loopEnd = sound->sample->loop->end;
+                loopEnd = sound->sample->loop->loopEnd;
                 samplePos = note->synthesisState.samplePosInt;
                 return loopEnd - samplePos;
             }
