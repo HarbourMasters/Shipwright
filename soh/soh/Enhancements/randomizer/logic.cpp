@@ -2383,6 +2383,8 @@ bool Logic::SpiritWestToSkull() {
 }
 
 bool Logic::SpiritSunBlockSouthLedge() {
+    // It's also possible to do a backwalk hover + backflip if you equip hovers as you start the backwalk to accelerate
+    // faster
     return true /*str0 || IsAdult || CanKillEnemy(RE_BEAMOS) || BunnyHovers() ||
             (CanUse(RG_HOOKSHOT) && (HasFireSource() ||
                                      (SpiritSunBlockTorch && (logic->CanUse(STICKS) ||
@@ -2396,7 +2398,8 @@ bool Logic::MQSpiritWestToPots() {
 }
 
 bool Logic::MQSpiritStatueToSunBlock() {
-    return (IsAdult || ctx->GetTrickOption(RT_SPIRIT_MQ_SUN_BLOCK_SOT) || CanUse(RG_SONG_OF_TIME)) /* && str0*/;
+    return (IsAdult || ctx->GetTrickOption(RT_SPIRIT_MQ_SUN_BLOCK_SOT) ||
+            CanUse(RG_SONG_OF_TIME) /* || CanBunnyJump()*/) /* && str0*/;
 }
 
 bool Logic::MQSpiritStatueSouthDoor() {
@@ -2613,7 +2616,9 @@ void Logic::Reset() {
     Spirit1FSilverRupees = false;
     SpiritChildSwitchBridge = false;
     SpiritRupeeBridge = false;
+    SpiritSunBlockTorch = false;
     SpiritBouldersSilvers = false;
+    SpiritStatueRoomSouthDoor = false;
     SpiritPlatformLowered = false;
     Spirit4FSwitch = false;
     SpiritPushed4FMirrors = false;
