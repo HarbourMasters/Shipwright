@@ -581,7 +581,8 @@ void RegionTable_Init_SpiritTemple() {
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_1F_GIBDO_ROOM_SOUTH] = Region("Spirit Temple MQ 1F Gibdo Room South", "Spirit Temple", {RA_SPIRIT_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->MQSpiritGibdosCleared, []{return logic->CanUse(RG_BOMBCHU_5) && logic->CanHitEyeTargets() && logic->CanKillEnemy(RE_GIBDO, ED_CLOSE, true, 3);}),
+        EventAccess(&logic->MQSpiritGibdosCleared, []{return logic->CanUse(RG_BOMBCHU_5) && logic->CanHitEyeTargets()
+                                                             && logic->CanKillEnemy(RE_GIBDO, ED_CLOSE, true, 3) /* && str0*/;}),
     }, {}, {
         //Exits
         Entrance(RR_SPIRIT_TEMPLE_MQ_1F_WEST,             []{return true;}),
@@ -853,7 +854,7 @@ void RegionTable_Init_SpiritTemple() {
         //Continuing from above, if we also have a longshot, we can go from the East hand to the West hand, meaning we always have access to East Hand
         /* 
                                                                        logic->CanAvoidEnemy(RE_BEAMOS, true, 4) && logic->CanUse(RG_SONG_OF_TIME) &&
-                                                                       logic->CanJumpslash() && /*(str0 || SunlightArrows) &&
+                                                                       logic->CanJumpslash() && (str0 || SunlightArrows) &&
                                                                        (ctx->GetTrickOption(RT_LENS_SPIRIT_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) &&
                                                                        logic->CanKillEnemy(RE_IRON_KNUCKLE) &&
                                                                        logic->CanUse(RG_LONGSHOT) */
