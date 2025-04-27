@@ -2,11 +2,15 @@
 #include <variant>
 #include <string>
 #include <cstdint>
+#include <fstream>
 #include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
+#include <spdlog/fmt/fmt.h>
 #include "soh/SohGui/MenuTypes.h"
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
+
+namespace fs = std::filesystem;
 
 namespace SohGui {
 extern std::shared_ptr<SohMenu> mSohMenu;
@@ -108,26 +112,13 @@ enum PresetSection {
 };
 
 struct PresetInfo {
-    std::unordered_map<std::string, CVarVariant> settings;
-    std::unordered_map<std::string, CVarVariant> enhancements;
-    std::unordered_map<std::string, CVarVariant> audio;
-    std::unordered_map<std::string, CVarVariant> cosmetics;
-    std::unordered_map<std::string, CVarVariant> rando;
-    std::unordered_map<std::string, CVarVariant> trackers;
+    nlohmann::json presetValues;
 
     bool applySettings = true, applyEnhancements = true, applyAudio = true, applyCosmetics = true, applyRando = true, applyTrackers = true;
 };
 
-static std::unordered_map<std::string, PresetInfo> presets = {
-    { "Vanilla Plus", {
-        {},
-        {{"DpadEquips", 1}},
-    {},
-    {},
-    {},
-    {},
-    }}
-};
+static std::map<std::string, PresetInfo> presets;
+static std::string presetFolder;
 
 void DrawSectionCheck(const std::string& name, bool empty, bool* pointer, std::string section) {
     ImGui::AlignTextToFramePadding();
@@ -147,11 +138,95 @@ void DrawSectionCheck(const std::string& name, bool empty, bool* pointer, std::s
     }
 }
 
+void LoadPresets() {
+    if (!fs::exists(presetFolder)) {
+        return;
+    }
+    for (auto const& preset : fs::directory_iterator(presetFolder)) {
+        std::ifstream ifs(preset.path());
+
+        auto json = nlohmann::json::parse(ifs);
+        try {
+            if (!json.contains("presetName")) {
+                spdlog::error(fmt::format("Attempted to load file {} as a preset, but was not a preset file.", preset.path().filename().string()));
+                return;
+            }
+            presets[json["presetName"]].presetValues = json;
+        } catch (...) {}
+    }
+}
+
+void SavePreset(std::string& presetName) {
+    std::string folderPath = Ship::Context::GetInstance()->GetPathRelativeToAppDirectory("presets");
+    if (!fs::exists(folderPath)) {
+        fs::create_directory(folderPath);
+    }
+    presets[presetName].presetValues["presetName"] = presetName;
+    std::ofstream file(fmt::format("{}/{}.json", folderPath, presetName));
+    file << presets[presetName].presetValues.dump(4);
+}
+
+static std::string newPresetName;
+static bool newPresetSettings = true, newPresetEnhancements = true, newPresetAudio = true, newPresetCosmetics = true, newPresetRando = true, newPresetTrackers = true;
+
 void PresetsCustomWidget(WidgetInfo& info) {
-    UIWidgets::PushStyleTabs(THEME_COLOR);
     ImGui::PushFont(OTRGlobals::Instance->fontMonoLargest);
+    if (UIWidgets::Button("New Preset", UIWidgets::ButtonOptions().Size(UIWidgets::Sizes::Inline).Color(THEME_COLOR))) {
+        ImGui::OpenPopup("newPreset");
+    }
+    ImGui::SetNextWindowSize({400, 400});
+    if (ImGui::BeginPopup("newPreset", ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize |
+                                       ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoSavedSettings |
+                                       ImGuiWindowFlags_NoTitleBar)) {
+        bool nameExists = presets.contains(newPresetName);
+        UIWidgets::InputString("Preset Name", &newPresetName, UIWidgets::InputOptions().Color(THEME_COLOR).Size({200, 40})
+            .ComponentAlignment(UIWidgets::ComponentAlignments::Right).LabelPosition(UIWidgets::LabelPositions::Near).ErrorText("Preset name already exists").HasError(nameExists));
+        nameExists = presets.contains(newPresetName);
+        bool noneSelected = !newPresetSettings && !newPresetEnhancements && !newPresetAudio && !newPresetCosmetics && !newPresetRando && !newPresetTrackers;
+        const char* disabledTooltip = (newPresetName.empty() ? "Preset name is empty" : (noneSelected ? "No sections selected" : "Preset name already exists"));
+        UIWidgets::Checkbox("Save Settings", &newPresetSettings, UIWidgets::CheckboxOptions().Color(THEME_COLOR).Padding({6.0f, 6.0f}));
+        UIWidgets::Checkbox("Save Enhancements", &newPresetEnhancements, UIWidgets::CheckboxOptions().Color(THEME_COLOR).Padding({6.0f, 6.0f}));
+        UIWidgets::Checkbox("Save Audio", &newPresetAudio, UIWidgets::CheckboxOptions().Color(THEME_COLOR).Padding({6.0f, 6.0f}));
+        UIWidgets::Checkbox("Save Cosmetics", &newPresetCosmetics, UIWidgets::CheckboxOptions().Color(THEME_COLOR).Padding({6.0f, 6.0f}));
+        UIWidgets::Checkbox("Save Rando Settings", &newPresetRando, UIWidgets::CheckboxOptions().Color(THEME_COLOR).Padding({6.0f, 6.0f}));
+        UIWidgets::Checkbox("Save Trackers", &newPresetTrackers, UIWidgets::CheckboxOptions().Color(THEME_COLOR).Padding({6.0f, 6.0f}));
+        if (UIWidgets::Button("Save", UIWidgets::ButtonOptions({.disabled = nameExists || noneSelected || newPresetName.empty(), .disabledTooltip = disabledTooltip})
+                .Padding({6.0f, 6.0f}).Color(THEME_COLOR))) {
+            presets[newPresetName] = {};
+            auto config = Ship::Context::GetInstance()->GetConfig()->GetNestedJson();
+            if (newPresetSettings) {
+                presets[newPresetName].presetValues["settings"] = config["CVars"][CVAR_PREFIX_SETTING];
+                presets[newPresetName].presetValues["windows"] = config["CVars"][CVAR_PREFIX_WINDOW];
+            }
+            if (newPresetEnhancements) {
+                presets[newPresetName].presetValues["enhancements"] = config["CVars"][CVAR_PREFIX_ENHANCEMENT];
+                presets[newPresetName].presetValues["randoEnhancements"] = config["CVars"][CVAR_PREFIX_RANDOMIZER_ENHANCEMENT];
+            }
+            if (newPresetAudio) {
+                presets[newPresetName].presetValues["audio"] = config["CVars"][CVAR_PREFIX_AUDIO];
+            }
+            if (newPresetCosmetics) {
+                presets[newPresetName].presetValues["cosmetics"] = config["CVars"][CVAR_PREFIX_COSMETIC];
+            }
+            if (newPresetRando) {
+                presets[newPresetName].presetValues["rando"] = config["CVars"][CVAR_PREFIX_RANDOMIZER_SETTING];
+            }
+            if (newPresetTrackers) {
+                presets[newPresetName].presetValues["trackers"] = config["CVars"][CVAR_PREFIX_TRACKER];
+            }
+            SavePreset(newPresetName);
+            newPresetName = "";
+            newPresetSettings = newPresetEnhancements = newPresetAudio = newPresetCosmetics = newPresetRando = newPresetTrackers = false;
+            ImGui::CloseCurrentPopup();
+        }
+        if (UIWidgets::Button("Cancel", UIWidgets::ButtonOptions().Padding({6.0f, 6.0f}).Color(THEME_COLOR))) {
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::EndPopup();
+    }
+    UIWidgets::PushStyleTabs(THEME_COLOR);
     if (ImGui::BeginTable("PresetWidgetTable", 9)) {
-        ImGui::TableSetupColumn("Name");
+        ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthFixed, 200);
         ImGui::TableSetupColumn("Settings");
         ImGui::TableSetupColumn("Enhancements");
         ImGui::TableSetupColumn("Audio");
@@ -183,33 +258,46 @@ void PresetsCustomWidget(WidgetInfo& info) {
         UIWidgets::Tooltip("Trackers");
         UIWidgets::PopStyleButton();
 
+        if (presets.empty()) {
+            ImGui::TableNextRow();
+            ImGui::TableNextColumn();
+            ImGui::AlignTextToFramePadding();
+            ImGui::Text("No presets found.");
+            ImGui::EndTable();
+            UIWidgets::PopStyleTabs();
+            ImGui::PopFont();
+            return;
+        }
         for (auto& [name, info] : presets) {
             ImGui::TableNextRow();
             ImGui::TableNextColumn();
             ImGui::AlignTextToFramePadding();
             ImGui::Text(name.c_str());
             ImGui::TableNextColumn();
-            DrawSectionCheck(name, info.settings.empty(), &info.applySettings, "settings");
+            DrawSectionCheck(name, !info.presetValues.contains("settings"), &info.applySettings, "settings");
             ImGui::TableNextColumn();
-            DrawSectionCheck(name, info.enhancements.empty(), &info.applyEnhancements, "enhancements");
+            DrawSectionCheck(name, !info.presetValues.contains("enhancements"), &info.applyEnhancements, "enhancements");
             ImGui::TableNextColumn();
-            DrawSectionCheck(name, info.audio.empty(), &info.applyAudio, "audio");
+            DrawSectionCheck(name, !info.presetValues.contains("audio"), &info.applyAudio, "audio");
             ImGui::TableNextColumn();
-            DrawSectionCheck(name, info.cosmetics.empty(), &info.applyCosmetics, "cosmetics");
+            DrawSectionCheck(name, !info.presetValues.contains("cosmetics"), &info.applyCosmetics, "cosmetics");
             ImGui::TableNextColumn();
-            DrawSectionCheck(name, info.rando.empty(), &info.applyRando, "rando");
+            DrawSectionCheck(name, !info.presetValues.contains("rando"), &info.applyRando, "rando");
             ImGui::TableNextColumn();
-            DrawSectionCheck(name, info.trackers.empty(), &info.applyTrackers, "trackers");
+            DrawSectionCheck(name, !info.presetValues.contains("trackers"), &info.applyTrackers, "trackers");
             ImGui::TableNextColumn();
             UIWidgets::PushStyleButton(THEME_COLOR);
             if (UIWidgets::Button(("Apply##" + name).c_str(), UIWidgets::ButtonOptions().Padding({6.0f, 6.0f}))) {
-
+                if (info.applySettings && info.presetValues.contains("gSettings")) {
+                }
             }
             UIWidgets::PopStyleButton();
             ImGui::TableNextColumn();
             UIWidgets::PushStyleButton(THEME_COLOR);
             if (UIWidgets::Button(("Delete##" + name).c_str(), UIWidgets::ButtonOptions().Padding({6.0f, 6.0f}))) {
                 presets.erase(name);
+                UIWidgets::PopStyleButton();
+                break;
             }
             UIWidgets::PopStyleButton();
         }
@@ -225,6 +313,8 @@ void RegisterPresetsWidgets() {
     WidgetPath path = { "Settings", "Presets", SECTION_COLUMN_1 };
     SohGui::mSohMenu->AddWidget(path, "PresetsWidget", WIDGET_CUSTOM)
         .CustomFunction(PresetsCustomWidget);
+    presetFolder = Ship::Context::GetInstance()->GetPathRelativeToAppDirectory("presets");
+    LoadPresets();
 }
 
 //static RegisterMenuUpdateFunc updateFunc(UpdateResolutionVars, "Settings", "General");

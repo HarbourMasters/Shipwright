@@ -425,6 +425,8 @@ struct InputOptions : WidgetOptions {
     std::string defaultValue = "";
     bool secret = false;
     ImGuiInputFlags addedFlags = 0;
+    bool hasError = false;
+    const char* errorText = "";
 
     InputOptions& Tooltip(const char* tooltip_) {
         WidgetOptions::tooltip = tooltip_;
@@ -459,6 +461,11 @@ struct InputOptions : WidgetOptions {
         return *this;
     }
 
+    InputOptions& ComponentAlignment(ComponentAlignments alignment_) {
+        alignment = alignment_;
+        return *this;
+    }
+
     InputOptions& DefaultValue(std::string defaultValue_) {
         defaultValue = defaultValue_;
         return *this;
@@ -466,6 +473,16 @@ struct InputOptions : WidgetOptions {
 
     InputOptions& IsSecret(bool secret_ = false) {
         secret = secret_;
+        return *this;
+    }
+
+    InputOptions& HasError(bool error_ = false) {
+        hasError = error_;
+        return *this;
+    }
+
+    InputOptions& ErrorText(const char* errorText_) {
+        errorText = errorText_;
         return *this;
     }
 };
