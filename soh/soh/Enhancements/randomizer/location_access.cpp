@@ -50,7 +50,7 @@ bool LocationAccess::ConditionsMet(Region* parentRegion) const {
     return conditionsMet && CanBuy();
 }
 
-static uint16_t GetMiniumPrice(const Rando::Location* loc) {
+static uint16_t GetMinimumPrice(const Rando::Location* loc) {
     extern PriceSettingsStruct shopsanityPrices;
     extern PriceSettingsStruct scrubPrices;
     extern PriceSettingsStruct merchantPrices;
@@ -96,8 +96,9 @@ bool LocationAccess::CanBuy() const {
     const auto& itemLoc = OTRGlobals::Instance->gRandoContext->GetItemLocation(location);
 
     if (loc->GetRCType() == RCTYPE_SHOP || loc->GetRCType() == RCTYPE_SCRUB || loc->GetRCType() == RCTYPE_MERCHANT) {
+        // Checks should only be identified while playing
         if (itemLoc->GetCheckStatus() != RCSHOW_IDENTIFIED) {
-            return CanBuyAnother(GetMiniumPrice(loc));
+            return CanBuyAnother(GetMinimumPrice(loc));
         } else {
             return CanBuyAnother(itemLoc->GetPrice());
         }
