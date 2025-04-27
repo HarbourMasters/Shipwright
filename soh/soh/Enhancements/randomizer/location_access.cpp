@@ -10,7 +10,9 @@
 #include "soh/Enhancements/debugger/performanceTimer.h"
 
 #include <fstream>
+#include <soh/OTRGlobals.h>
 
+#include "3drando/shops.hpp"
 extern "C" {
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
@@ -32,7 +34,7 @@ bool LocationAccess::CheckConditionAtAgeTime(bool& age, bool& time) const {
     return GetConditionsMet();
 }
 
-bool LocationAccess::ConditionsMet(Region* parentRegion, bool calculatingAvailableChecks) const {
+bool LocationAccess::ConditionsMet(Region* parentRegion) const {
     // WARNING enterance validation can run this after resetting the access for sphere 0 validation
     // When refactoring ToD access, either fix the above or do not assume that we
     // have any access at all just because this is being run
@@ -45,17 +47,70 @@ bool LocationAccess::ConditionsMet(Region* parentRegion, bool calculatingAvailab
         conditionsMet = true;
     }
 
-    return conditionsMet &&
-           (calculatingAvailableChecks || CanBuy()); // TODO: run CanBuy when price is known due to settings
+    return conditionsMet && CanBuy();
+}
+
+static uint16_t GetMiniumPrice(const Rando::Location* loc) {
+    extern PriceSettingsStruct shopsanityPrices;
+    extern PriceSettingsStruct scrubPrices;
+    extern PriceSettingsStruct merchantPrices;
+    PriceSettingsStruct priceSettings = loc->GetRCType() == RCTYPE_SHOP    ? shopsanityPrices
+                                        : loc->GetRCType() == RCTYPE_SCRUB ? scrubPrices
+                                                                           : merchantPrices;
+
+    auto ctx = Rando::Context::GetInstance();
+    switch (ctx->GetOption(priceSettings.main).Get()) {
+        case RO_PRICE_VANILLA:
+            return loc->GetVanillaPrice();
+        case RO_PRICE_CHEAP_BALANCED:
+            return 0;
+        case RO_PRICE_BALANCED:
+            return 0;
+        case RO_PRICE_FIXED:
+            return ctx->GetOption(priceSettings.fixedPrice).Get() * 5;
+        case RO_PRICE_RANGE: {
+            uint16_t range1 = ctx->GetOption(priceSettings.range1).Get() * 5;
+            uint16_t range2 = ctx->GetOption(priceSettings.range1).Get() * 5;
+            return range1 < range2 ? range1 : range2;
+        }
+        case RO_PRICE_SET_BY_WALLET: {
+            if (ctx->GetOption(priceSettings.noWallet).Get()) {
+                return 0;
+            } else if (ctx->GetOption(priceSettings.childWallet).Get()) {
+                return 1;
+            } else if (ctx->GetOption(priceSettings.adultWallet).Get()) {
+                return 100;
+            } else if (ctx->GetOption(priceSettings.giantWallet).Get()) {
+                return 201;
+            } else {
+                return 501;
+            }
+        }
+        default:
+            return 0;
+    }
 }
 
 bool LocationAccess::CanBuy() const {
-    return CanBuyAnother(location);
+    const auto& loc = Rando::StaticData::GetLocation(location);
+    const auto& itemLoc = OTRGlobals::Instance->gRandoContext->GetItemLocation(location);
+
+    if (loc->GetRCType() == RCTYPE_SHOP || loc->GetRCType() == RCTYPE_SCRUB || loc->GetRCType() == RCTYPE_MERCHANT) {
+        if (itemLoc->GetCheckStatus() != RCSHOW_IDENTIFIED) {
+            return CanBuyAnother(GetMiniumPrice(loc));
+        } else {
+            return CanBuyAnother(itemLoc->GetPrice());
+        }
+    }
+
+    return true;
 }
 
 bool CanBuyAnother(RandomizerCheck rc) {
-    uint16_t price = ctx->GetItemLocation(rc)->GetPrice();
+    return CanBuyAnother(ctx->GetItemLocation(rc)->GetPrice());
+}
 
+bool CanBuyAnother(uint16_t price) {
     if (price > 500) {
         return logic->HasItem(RG_TYCOON_WALLET);
     } else if (price > 200) {

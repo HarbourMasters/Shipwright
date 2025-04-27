@@ -12,7 +12,6 @@
 #include "entrance.h"
 #include "location_access.h"
 #include "3drando/fill.hpp"
-#include "3drando/shops.hpp"
 #include "soh/Enhancements/debugger/performanceTimer.h"
 
 #include <string>
@@ -1959,68 +1958,6 @@ void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, 
     UIWidgets::PopStyleCombobox();
 }
 
-static RandomizerGet PriceToWallet(uint16_t price) {
-    if (price <= 0) {
-        return RG_NONE;
-    } else if (price <= 99) {
-        return RG_CHILD_WALLET;
-    } else if (price <= 200) {
-        return RG_ADULT_WALLET;
-    } else if (price <= 500) {
-        return RG_GIANT_WALLET;
-    } else if (price <= 999) {
-        return RG_TYCOON_WALLET;
-    } else {
-        return RG_WALLET_INF;
-    }
-}
-
-// Location RCType should be RCTYPE_SHOP, RCTYPE_SCRUB, or RCTYPE_MERCHANT
-static RandomizerGet GetMiniumWalletRequirement(const Rando::Location* loc) {
-    PriceSettingsStruct priceSettings = loc->GetRCType() == RCTYPE_SHOP    ? shopsanityPrices
-                                        : loc->GetRCType() == RCTYPE_SCRUB ? scrubPrices
-                                                                           : merchantPrices;
-
-    auto ctx = Rando::Context::GetInstance();
-    switch (ctx->GetOption(priceSettings.main).Get()) {
-        case RO_PRICE_VANILLA: {
-            uint16_t vanillaPrice = loc->GetVanillaPrice();
-            return PriceToWallet(vanillaPrice);
-        }
-        case RO_PRICE_CHEAP_BALANCED:
-            return RG_NONE;
-        case RO_PRICE_BALANCED:
-            return RG_NONE;
-        case RO_PRICE_FIXED: {
-            uint16_t fixedPrice = ctx->GetOption(priceSettings.fixedPrice).Get() * 5;
-            return PriceToWallet(fixedPrice);
-        }
-        case RO_PRICE_RANGE: {
-            uint16_t range1 = ctx->GetOption(priceSettings.range1).Get() * 5;
-            uint16_t range2 = ctx->GetOption(priceSettings.range1).Get() * 5;
-            return PriceToWallet(range1 < range2 ? range1 : range2);
-        }
-        case RO_PRICE_SET_BY_WALLET: {
-            bool includeTycoon = ctx->GetOption(RSK_INCLUDE_TYCOON_WALLET).Get();
-            if (ctx->GetOption(priceSettings.noWallet).Get()) {
-                return RG_NONE;
-            } else if (ctx->GetOption(priceSettings.childWallet).Get()) {
-                return RG_CHILD_WALLET;
-            } else if (ctx->GetOption(priceSettings.adultWallet).Get()) {
-                return RG_ADULT_WALLET;
-            } else if (ctx->GetOption(priceSettings.giantWallet).Get()) {
-                return RG_GIANT_WALLET;
-            } else if (includeTycoon && ctx->GetOption(priceSettings.tycoonWallet).Get()) {
-                return RG_TYCOON_WALLET;
-            } else {
-                return RG_WALLET_INF;
-            }
-        }
-        default:
-            return RG_NONE;
-    }
-}
-
 void RecalculateAvailableChecks() {
     if (!enableAvailableChecks) {
         return;
@@ -2042,21 +1979,8 @@ void RecalculateAvailableChecks() {
 
     std::vector<RandomizerCheck> availableChecks = ReachabilitySearch(targetLocations, RG_NONE, true);
     for (auto& rc : availableChecks) {
-        const auto& location = Rando::StaticData::GetLocation(rc);
         const auto& itemLocation = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
-
-        if (location->GetRCType() == RCTYPE_SHOP || location->GetRCType() == RCTYPE_SCRUB ||
-            location->GetRCType() == RCTYPE_MERCHANT) {
-            if (itemLocation->GetCheckStatus() != RCSHOW_IDENTIFIED) {
-                auto minimumWallet = GetMiniumWalletRequirement(location);
-                itemLocation->SetAvailable(minimumWallet == RG_NONE || logic->HasItem(minimumWallet));
-            } else {
-                auto requiredWallet = PriceToWallet(itemLocation->GetPrice());
-                itemLocation->SetAvailable(requiredWallet == RG_NONE || logic->HasItem(requiredWallet));
-            }
-        } else {
-            itemLocation->SetAvailable(true);
-        }
+        itemLocation->SetAvailable(true);
     }
 
     totalChecksAvailable = 0;

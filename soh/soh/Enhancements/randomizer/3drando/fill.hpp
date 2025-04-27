@@ -71,8 +71,3 @@ void GeneratePlaythrough();
 bool CheckBeatable(RandomizerGet ignore=RG_NONE);
 
 void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAccess);
-
-struct PriceSettingsStruct;
-extern PriceSettingsStruct shopsanityPrices;
-extern PriceSettingsStruct scrubPrices;
-extern PriceSettingsStruct merchantPrices;
