@@ -122,7 +122,7 @@ void RegionTable_Init_Kakariko() {
         //Exits
         Entrance(RR_KAKARIKO_VILLAGE,        []{return true;}),
         Entrance(RR_KAK_OPEN_GROTTO,         []{return true;}),
-        Entrance(RR_KAK_ODD_POTION_BUILDING, []{return logic->IsAdult && logic->CanOpenOverworldDoor(RG_GRANNYS_POTION_SHOP_KEY);}),
+        Entrance(RR_KAK_ODD_POTION_BUILDING, []{return logic->IsAdult && logic->CanOpenOverworldDoor(RG_GRANNYS_SHOP_KEY);}),
         Entrance(RR_KAK_POTION_SHOP_BACK,    []{return logic->IsAdult && logic->AtDay && logic->CanOpenOverworldDoor(RG_KAK_POTION_SHOP_KEY);}),
     });
 

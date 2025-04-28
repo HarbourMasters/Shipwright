@@ -957,7 +957,7 @@ void GenerateItemPool() {
         AddItemToPool(ItemPool, RG_KAK_BAZAAR_KEY);
         AddItemToPool(ItemPool, RG_KAK_POTION_SHOP_KEY);
         AddItemToPool(ItemPool, RG_BOSS_HOUSE_KEY);
-        AddItemToPool(ItemPool, RG_GRANNYS_POTION_SHOP_KEY);
+        AddItemToPool(ItemPool, RG_GRANNYS_SHOP_KEY);
         AddItemToPool(ItemPool, RG_SKULLTULA_HOUSE_KEY);
         AddItemToPool(ItemPool, RG_IMPAS_HOUSE_KEY);
         AddItemToPool(ItemPool, RG_WINDMILL_KEY);

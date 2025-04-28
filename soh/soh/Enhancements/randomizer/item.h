@@ -30,13 +30,13 @@ namespace Rando {
 class Item {
   public:
     Item();
-    Item(RandomizerGet randomizerGet_, ItemType type_, int16_t getItemId_, bool advancement_, LogicVal logicVal_,
+    Item(RandomizerGet randomizerGet_, ItemType type_, int16_t getItemId_, LogicVal logicVal_,
          RandomizerHintTextKey hintKey_, uint16_t itemId_, uint16_t objectId_, uint16_t gid_, uint16_t textId_,
          uint16_t field_, int16_t chestAnimation_, GetItemCategory category_, uint16_t modIndex_, uint16_t price_ = 0);
-    Item(RandomizerGet randomizerGet_, ItemType type_, int16_t getItemId_, bool advancement_, LogicVal logicVal_,
+    Item(RandomizerGet randomizerGet_, ItemType type_, int16_t getItemId_, LogicVal logicVal_,
          RandomizerHintTextKey hintKey_, uint16_t objectId_, uint16_t gid_, uint16_t textId_, uint16_t field_,
          int16_t chestAnimation_, GetItemCategory category_, uint16_t modIndex_, uint16_t price_ = 0);
-    Item(RandomizerGet randomizerGet_, ItemType type_, int16_t getItemId_, bool advancement_, LogicVal logicVal_,
+    Item(RandomizerGet randomizerGet_, ItemType type_, int16_t getItemId_, LogicVal logicVal_,
          RandomizerHintTextKey hintKey_, uint16_t price_ = 0);
     ~Item();
 

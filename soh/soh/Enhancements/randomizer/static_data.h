@@ -22,6 +22,16 @@ class StaticData {
 
   public:
     static void InitItemTable();
+    static void AddItem(RandomizerGet randomizerGet_, ItemType type_, int16_t getItemId_, LogicVal logicVal_,
+                        RandomizerHintTextKey hintKey_, uint16_t itemId_, uint16_t objectId_, uint16_t gid_,
+                        uint16_t textId_, uint16_t field_, int16_t chestAnimation_, GetItemCategory category_,
+                        uint16_t modIndex_, uint16_t price_ = 0);
+    static void AddItem(RandomizerGet randomizerGet_, ItemType type_, int16_t getItemId_, LogicVal logicVal_,
+                        RandomizerHintTextKey hintKey_, uint16_t objectId_, uint16_t gid_, uint16_t textId_,
+                        uint16_t field_, int16_t chestAnimation_, GetItemCategory category_, uint16_t modIndex_,
+                        uint16_t price_ = 0);
+    static void AddItem(RandomizerGet randomizerGet_, ItemType type_, int16_t getItemId_, LogicVal logicVal_,
+                        RandomizerHintTextKey hintKey_, uint16_t price_ = 0);
     static void HintTable_Init();
     static void HintTable_Init_Item();
     static void HintTable_Init_Exclude_Overworld();

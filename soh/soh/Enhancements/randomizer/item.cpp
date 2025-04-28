@@ -14,12 +14,12 @@ namespace Rando {
 Item::Item()
     : randomizerGet(RG_NONE), type(ITEMTYPE_ITEM), getItemId(GI_NONE), advancement(false), hintKey(RHT_NONE), price(0) {
 }
-Item::Item(const RandomizerGet randomizerGet_, const ItemType type_, const int16_t getItemId_, const bool advancement_,
-           LogicVal logicVal_, const RandomizerHintTextKey hintKey_, const uint16_t itemId_, const uint16_t objectId_,
-           const uint16_t gid_, const uint16_t textId_, const uint16_t field_, const int16_t chestAnimation_,
+Item::Item(const RandomizerGet randomizerGet_, const ItemType type_, const int16_t getItemId_, LogicVal logicVal_,
+           const RandomizerHintTextKey hintKey_, const uint16_t itemId_, const uint16_t objectId_, const uint16_t gid_,
+           const uint16_t textId_, const uint16_t field_, const int16_t chestAnimation_,
            const GetItemCategory category_, const uint16_t modIndex_, const uint16_t price_)
-    : randomizerGet(randomizerGet_), type(type_), getItemId(getItemId_), advancement(advancement_), logicVal(logicVal_),
-      hintKey(hintKey_), price(price_) {
+    : randomizerGet(randomizerGet_), type(type_), getItemId(getItemId_), logicVal(logicVal_), hintKey(hintKey_),
+      price(price_) {
     if (modIndex_ == MOD_RANDOMIZER || getItemId > 0x7D) {
         giEntry = std::make_shared<GetItemEntry>(GetItemEntry{
             itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_,
@@ -33,12 +33,12 @@ Item::Item(const RandomizerGet randomizerGet_, const ItemType type_, const int16
     }
 }
 
-Item::Item(const RandomizerGet randomizerGet_, const ItemType type_, const int16_t getItemId_, const bool advancement_,
-           LogicVal logicVal_, const RandomizerHintTextKey hintKey_, const uint16_t objectId_, const uint16_t gid_,
-           const uint16_t textId_, const uint16_t field_, const int16_t chestAnimation_,
-           const GetItemCategory category_, const uint16_t modIndex_, const uint16_t price_)
-    : randomizerGet(randomizerGet_), type(type_), getItemId(getItemId_), advancement(advancement_), logicVal(logicVal_),
-      hintKey(hintKey_), price(price_) {
+Item::Item(const RandomizerGet randomizerGet_, const ItemType type_, const int16_t getItemId_, LogicVal logicVal_,
+           const RandomizerHintTextKey hintKey_, const uint16_t objectId_, const uint16_t gid_, const uint16_t textId_,
+           const uint16_t field_, const int16_t chestAnimation_, const GetItemCategory category_,
+           const uint16_t modIndex_, const uint16_t price_)
+    : randomizerGet(randomizerGet_), type(type_), getItemId(getItemId_), logicVal(logicVal_), hintKey(hintKey_),
+      price(price_) {
     if (modIndex_ == MOD_RANDOMIZER || getItemId > 0x7D) {
         giEntry = std::make_shared<GetItemEntry>(
             GetItemEntry{ static_cast<uint16_t>(randomizerGet_), field_,
@@ -54,10 +54,10 @@ Item::Item(const RandomizerGet randomizerGet_, const ItemType type_, const int16
     }
 }
 
-Item::Item(const RandomizerGet randomizerGet_, const ItemType type_, const int16_t getItemId_, const bool advancement_,
-           LogicVal logicVal_, const RandomizerHintTextKey hintKey_, const uint16_t price_)
-    : randomizerGet(randomizerGet_), type(type_), getItemId(getItemId_), advancement(advancement_), logicVal(logicVal_),
-      hintKey(hintKey_), price(price_) {
+Item::Item(const RandomizerGet randomizerGet_, const ItemType type_, const int16_t getItemId_, LogicVal logicVal_,
+           const RandomizerHintTextKey hintKey_, const uint16_t price_)
+    : randomizerGet(randomizerGet_), type(type_), getItemId(getItemId_), logicVal(logicVal_), hintKey(hintKey_),
+      price(price_) {
 }
 
 Item::~Item() = default;
@@ -79,7 +79,7 @@ const CustomMessage& Item::GetName() const {
 }
 
 bool Item::IsAdvancement() const {
-    return advancement;
+    return logicVal != LOGIC_NONE;
 }
 
 int Item::GetItemID() const {

@@ -5278,7 +5278,7 @@ void Randomizer::CreateCustomMessages() {
         GIMESSAGE(RG_BOSS_HOUSE_KEY, ITEM_KEY_SMALL, "You found the key to the&%gBoss's House%w!",
                   "Du erhältst einen %rkleinen&Schlüssel%w für das %gHaus des Chefs%w!",
                   "Vous obtenez la %rClé %wde la %gMaison&du Chef des Ouvriers%w!"),
-        GIMESSAGE(RG_GRANNYS_POTION_SHOP_KEY, ITEM_KEY_SMALL, "You found the key to&%gGranny's Potion Shop%w!",
+        GIMESSAGE(RG_GRANNYS_SHOP_KEY, ITEM_KEY_SMALL, "You found the key to&%gGranny's Potion Shop%w!",
                   "Du erhältst einen %rkleinen&Schlüssel%w für %gAsas Hexenladen%w!",
                   "Vous obtenez la %rClé %wde&l'%gApothicaire%w!"),
         GIMESSAGE(RG_SKULLTULA_HOUSE_KEY, ITEM_KEY_SMALL, "You found the key to the&%gSkulltula House%w!",

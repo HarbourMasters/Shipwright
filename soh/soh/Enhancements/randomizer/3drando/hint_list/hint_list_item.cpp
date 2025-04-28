@@ -1720,7 +1720,7 @@ void StaticData::HintTable_Init_Item() {
                                                 },
                                                 CustomMessage("Boss's House Key", "Schlüssel für das Haus des Chefs", "Clé de la Maison du Chef des Ouvriers"));
 
-   hintTextTable[RHT_GRANNYS_POTION_SHOP_KEY] = HintText(CustomMessage("Granny's Potion Shop's key"),
+   hintTextTable[RHT_GRANNYS_SHOP_KEY] = HintText(CustomMessage("Granny's Potion Shop's key"),
                                                 {
                                                 CustomMessage("an Overworld Key", /*german*/"ein Überwelt-Schlüssel", /*french*/"une clé de l'Overworld")
                                                  // /*spanish*/una llave del mundo exterior

@@ -158,7 +158,7 @@ bool Logic::HasItem(RandomizerGet itemName) {
         case RG_KAK_BAZAAR_KEY:
         case RG_KAK_POTION_SHOP_KEY:
         case RG_BOSS_HOUSE_KEY:
-        case RG_GRANNYS_POTION_SHOP_KEY:
+        case RG_GRANNYS_SHOP_KEY:
         case RG_SKULLTULA_HOUSE_KEY:
         case RG_IMPAS_HOUSE_KEY:
         case RG_WINDMILL_KEY:
@@ -1485,7 +1485,7 @@ std::map<RandomizerGet, uint32_t> Logic::RandoGetToRandInf = {
     { RG_KAK_BAZAAR_KEY, RAND_INF_KAK_BAZAAR_KEY_OBTAINED },
     { RG_KAK_POTION_SHOP_KEY, RAND_INF_KAK_POTION_SHOP_KEY_OBTAINED },
     { RG_BOSS_HOUSE_KEY, RAND_INF_BOSS_HOUSE_KEY_OBTAINED },
-    { RG_GRANNYS_POTION_SHOP_KEY, RAND_INF_GRANNYS_POTION_SHOP_KEY_OBTAINED },
+    { RG_GRANNYS_SHOP_KEY, RAND_INF_GRANNYS_POTION_SHOP_KEY_OBTAINED },
     { RG_SKULLTULA_HOUSE_KEY, RAND_INF_SKULLTULA_HOUSE_KEY_OBTAINED },
     { RG_IMPAS_HOUSE_KEY, RAND_INF_IMPAS_HOUSE_KEY_OBTAINED },
     { RG_WINDMILL_KEY, RAND_INF_WINDMILL_KEY_OBTAINED },
@@ -1850,7 +1850,7 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                 case RG_KAK_BAZAAR_KEY:
                 case RG_KAK_POTION_SHOP_KEY:
                 case RG_BOSS_HOUSE_KEY:
-                case RG_GRANNYS_POTION_SHOP_KEY:
+                case RG_GRANNYS_SHOP_KEY:
                 case RG_SKULLTULA_HOUSE_KEY:
                 case RG_IMPAS_HOUSE_KEY:
                 case RG_WINDMILL_KEY:
