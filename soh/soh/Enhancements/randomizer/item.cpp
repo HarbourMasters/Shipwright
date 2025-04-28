@@ -17,26 +17,27 @@ Item::Item()
 Item::Item(const RandomizerGet randomizerGet_, const ItemType type_, const int16_t getItemId_, LogicVal logicVal_,
            const RandomizerHintTextKey hintKey_, const uint16_t itemId_, const uint16_t objectId_, const uint16_t gid_,
            const uint16_t textId_, const uint16_t field_, const int16_t chestAnimation_,
-           const GetItemCategory category_, const uint16_t modIndex_, const uint16_t price_)
+           const GetItemCategory category_, const uint16_t modIndex_, const uint16_t price_,
+           const CustomDrawFunc drawfunc_)
     : randomizerGet(randomizerGet_), type(type_), getItemId(getItemId_), logicVal(logicVal_), hintKey(hintKey_),
       price(price_) {
     if (modIndex_ == MOD_RANDOMIZER || getItemId > 0x7D) {
         giEntry = std::make_shared<GetItemEntry>(GetItemEntry{
             itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_,
             objectId_, modIndex_, TABLE_RANDOMIZER, static_cast<int16_t>(randomizerGet_), gid_, true, ITEM_FROM_NPC,
-            category_, static_cast<uint16_t>(randomizerGet_), MOD_RANDOMIZER, NULL });
+            category_, static_cast<uint16_t>(randomizerGet_), MOD_RANDOMIZER, drawfunc_ });
     } else {
         giEntry = std::make_shared<GetItemEntry>(GetItemEntry{
             itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_,
             objectId_, modIndex_, TABLE_VANILLA, getItemId_, gid_, true, ITEM_FROM_NPC, category_, itemId_, modIndex_,
-            NULL });
+            drawfunc_ });
     }
 }
 
 Item::Item(const RandomizerGet randomizerGet_, const ItemType type_, const int16_t getItemId_, LogicVal logicVal_,
            const RandomizerHintTextKey hintKey_, const uint16_t objectId_, const uint16_t gid_, const uint16_t textId_,
            const uint16_t field_, const int16_t chestAnimation_, const GetItemCategory category_,
-           const uint16_t modIndex_, const uint16_t price_)
+           const uint16_t modIndex_, const uint16_t price_, const CustomDrawFunc drawfunc_)
     : randomizerGet(randomizerGet_), type(type_), getItemId(getItemId_), logicVal(logicVal_), hintKey(hintKey_),
       price(price_) {
     if (modIndex_ == MOD_RANDOMIZER || getItemId > 0x7D) {
@@ -44,13 +45,13 @@ Item::Item(const RandomizerGet randomizerGet_, const ItemType type_, const int16
             GetItemEntry{ static_cast<uint16_t>(randomizerGet_), field_,
                           static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_,
                           objectId_, modIndex_, TABLE_RANDOMIZER, static_cast<int16_t>(randomizerGet_), gid_, true,
-                          ITEM_FROM_NPC, category_, static_cast<uint16_t>(randomizerGet_), MOD_RANDOMIZER, NULL });
+                          ITEM_FROM_NPC, category_, static_cast<uint16_t>(randomizerGet_), MOD_RANDOMIZER, drawfunc_ });
     } else {
         giEntry = std::make_shared<GetItemEntry>(
             GetItemEntry{ static_cast<uint16_t>(randomizerGet_), field_,
                           static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_,
                           objectId_, modIndex_, TABLE_VANILLA, getItemId_, gid_, true, ITEM_FROM_NPC, category_,
-                          static_cast<uint16_t>(randomizerGet_), modIndex_, NULL });
+                          static_cast<uint16_t>(randomizerGet_), modIndex_, drawfunc_ });
     }
 }
 

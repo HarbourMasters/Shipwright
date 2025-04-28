@@ -611,7 +611,7 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
         switch (getItemCategory) {
             case ITEM_CATEGORY_JUNK:
             case ITEM_CATEGORY_SMALL_KEY:
-            case ITEM_CATEGORY_SKULLTULA_TOKEN:
+            case ITEM_CATEGORY_SKULL_TOKEN:
                 Actor_SetScale(&this->dyna.actor, 0.005f);
                 Actor_SetFocus(&this->dyna.actor, 20.0f);
                 break;
@@ -643,7 +643,7 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
                 this->boxBodyDL = gGoldTreasureChestChestFrontDL;
                 this->boxLidDL = gGoldTreasureChestChestSideAndLidDL;
                 break;
-            case ITEM_CATEGORY_SKULLTULA_TOKEN:
+            case ITEM_CATEGORY_SKULL_TOKEN:
                 this->boxBodyDL = gSkullTreasureChestChestFrontDL;
                 this->boxLidDL = gSkullTreasureChestChestSideAndLidDL;
                 break;

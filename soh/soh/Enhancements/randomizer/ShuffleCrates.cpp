@@ -59,7 +59,7 @@ extern "C" void ObjKibako2_RandomizerDraw(Actor* thisx, PlayState* play) {
         case ITEM_CATEGORY_MAJOR:
             Gfx_DrawDListOpa(play, (Gfx*)gLargeMajorCrateDL);
             break;
-        case ITEM_CATEGORY_SKULLTULA_TOKEN:
+        case ITEM_CATEGORY_SKULL_TOKEN:
             Gfx_DrawDListOpa(play, (Gfx*)gLargeTokenCrateDL);
             break;
         case ITEM_CATEGORY_SMALL_KEY:
@@ -127,7 +127,7 @@ extern "C" void ObjKibako_RandomizerDraw(Actor* thisx, PlayState* play) {
         case ITEM_CATEGORY_MAJOR:
             Gfx_DrawDListOpa(play, (Gfx*)gSmallMajorCrateDL);
             break;
-        case ITEM_CATEGORY_SKULLTULA_TOKEN:
+        case ITEM_CATEGORY_SKULL_TOKEN:
             Gfx_DrawDListOpa(play, (Gfx*)gSmallTokenCrateDL);
             break;
         case ITEM_CATEGORY_SMALL_KEY:

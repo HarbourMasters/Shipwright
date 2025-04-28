@@ -25,7 +25,7 @@ typedef enum GetItemCategory {
     /* 0x01 */ ITEM_CATEGORY_LESSER,
     /* 0x02 */ ITEM_CATEGORY_BOSS_KEY,
     /* 0x03 */ ITEM_CATEGORY_SMALL_KEY,
-    /* 0x04 */ ITEM_CATEGORY_SKULLTULA_TOKEN,
+    /* 0x04 */ ITEM_CATEGORY_SKULL_TOKEN,
     /* 0x05 */ ITEM_CATEGORY_MAJOR,
 } GetItemCategory;
 
