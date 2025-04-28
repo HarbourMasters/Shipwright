@@ -728,7 +728,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
 
                 // The second argument determines whether the vanilla code should be run anyway. It
                 // should be set to `true` ONLY IF said code calls `Play_ClearCamera`, false otherwise.
-                bool clearCamera = va_arg(args, bool);
+                bool clearCamera = (bool)va_arg(args, int);
                 *should = clearCamera && enHeishi2->cameraId != MAIN_CAM;
             }
             break;
