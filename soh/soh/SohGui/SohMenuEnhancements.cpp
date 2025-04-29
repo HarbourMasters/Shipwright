@@ -334,10 +334,10 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().DefaultValue(IS_RANDO));
     AddWidget(path, "Exclude Glitch-Aiding Cutscenes", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"))
-        .Options(
-            CheckboxOptions().Tooltip("Don't skip cutscenes that are associated with useful glitches. Currently, it is "
-                                      "only the Fire Temple Darunia CS, Forest Temple Poe Sisters CS, Dodongo Boss "
-                                      "Door Switch, and the Box Skip One Point in Jabu."));
+        .Options(CheckboxOptions().Tooltip(
+            "Don't skip cutscenes that are associated with useful glitches. Currently, it is "
+            "only the Fire Temple Darunia CS, Forest Temple Poe Sisters CS, Dodongo Boss "
+            "Door Switch CS, Water Temple Dragon Switch CS, and the Box Skip One Point in Jabu."));
 
     AddWidget(path, "Text", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Skip Pickup Messages", WIDGET_CVAR_CHECKBOX)
