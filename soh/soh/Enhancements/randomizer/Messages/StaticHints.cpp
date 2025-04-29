@@ -132,10 +132,14 @@ void BuildSkulltulaPeopleMessage(uint16_t* textId, bool* loadFromMessageTable) {
         return;
     }
     Rando::Item& item = Rando::StaticData::RetrieveItem(RAND_GET_ITEM_LOC(rc)->GetPlacedRandomizerGet());
-    CustomMessage msg = CustomMessage(
-        "Yeaaarrgh! I'm cursed!!^Please save me by destroying %y[[d]] Spiders of the Curse%w and I will give you my [[color]][[1]]%w!",
-        /*german*/ "Yeaaarrgh! Ich bin verflucht!^Bitte rette mich, indem Du %y[[d]] Skulltulas%w zerstörst und ich werde Dir dafür [[color]][[1]]%w geben!",
-        /*french*/ "Yeaaarrgh! Je suis maudit!^Détruit encore %y[[d]] Araignées de la Malédiction%w et j'aurai quelque chose à te donner! [[color]]([[1]])%w");
+    CustomMessage msg = CustomMessage("Yeaaarrgh! I'm cursed!!^Please save me by destroying %y[[d]] Spiders of the "
+                                      "Curse%w and I will give you my [[color]][[1]]%w!",
+                                      /*german*/
+                                      "Yeaaarrgh! Ich bin verflucht!^Bitte rette mich, indem Du %y[[d]] Skulltulas%w "
+                                      "zerstörst und ich werde Dir dafür [[color]][[1]]%w geben!",
+                                      /*french*/
+                                      "Yeaaarrgh! Je suis maudit!^Détruit encore %y[[d]] Araignées de la Malédiction%w "
+                                      "et j'aurai quelque chose à te donner! [[color]]([[1]])%w");
     msg.InsertNumber(count);
     msg.Replace("[[color]]", item.GetColor());
     msg.InsertNames({ item.GetName() });
@@ -145,12 +149,20 @@ void BuildSkulltulaPeopleMessage(uint16_t* textId, bool* loadFromMessageTable) {
 }
 
 void Build100SkullsHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
-    CustomMessage msg = CustomMessage(
-        "Yeaaarrgh! I'm cursed!!^Please save me by destroying %y100 Spiders of the Curse%w and I will give you my [[color]][[1]]%w!",
-        /*german*/ "Yeaaarrgh! Ich bin verflucht!^Bitte rette mich, indem Du %y100 Skulltulas%w zerstörst und ich werde Dir dafür [[color]][[1]]%w geben!",
-        /*french*/ "Yeaaarrgh! Je suis maudit!^Détruit encore %y100 Araignées de la Malédiction%w et j'aurai quelque chose à te donner! [[color]]([[1]])%w");
-    msg.Replace("[[color]]", Rando::StaticData::RetrieveItem(RAND_GET_ITEM_LOC(RC_KAK_100_GOLD_SKULLTULA_REWARD)->GetPlacedRandomizerGet()).GetColor());
-    msg.InsertNames({ Rando::StaticData::RetrieveItem(RAND_GET_ITEM_LOC(RC_KAK_100_GOLD_SKULLTULA_REWARD)->GetPlacedRandomizerGet()).GetName() });
+    CustomMessage msg = CustomMessage("Yeaaarrgh! I'm cursed!!^Please save me by destroying %y100 Spiders of the "
+                                      "Curse%w and I will give you my [[color]][[1]]%w!",
+                                      /*german*/
+                                      "Yeaaarrgh! Ich bin verflucht!^Bitte rette mich, indem Du %y100 Skulltulas%w "
+                                      "zerstörst und ich werde Dir dafür [[color]][[1]]%w geben!",
+                                      /*french*/
+                                      "Yeaaarrgh! Je suis maudit!^Détruit encore %y100 Araignées de la Malédiction%w "
+                                      "et j'aurai quelque chose à te donner! [[color]]([[1]])%w");
+    msg.Replace("[[color]]", Rando::StaticData::RetrieveItem(
+                                 RAND_GET_ITEM_LOC(RC_KAK_100_GOLD_SKULLTULA_REWARD)->GetPlacedRandomizerGet())
+                                 .GetColor());
+    msg.InsertNames(
+        { Rando::StaticData::RetrieveItem(RAND_GET_ITEM_LOC(RC_KAK_100_GOLD_SKULLTULA_REWARD)->GetPlacedRandomizerGet())
+              .GetName() });
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
