@@ -544,6 +544,8 @@ typedef enum {
     LANGUAGE_MAX
 } Language;
 
+#define TODO_TRANSLATE "__Translate_This__" 
+
 // TODO get these properties from the textures themselves
 #define FONT_CHAR_TEX_WIDTH  16
 #define FONT_CHAR_TEX_HEIGHT 16

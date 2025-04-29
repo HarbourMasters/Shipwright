@@ -215,7 +215,7 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD, "Shuffle Gerudo Membership Card", CVAR_RANDOMIZER_SETTING("ShuffleGerudoToken"), mOptionDescriptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD]);
     OPT_U8(RSK_SHUFFLE_POTS, "Shuffle Pots", {"Off", "Dungeons", "Overworld", "All Pots"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShufflePots"), mOptionDescriptions[RSK_SHUFFLE_POTS], WidgetType::Combobox, RO_SHUFFLE_POTS_OFF);
     OPT_U8(RSK_SHUFFLE_GRASS, "Shuffle Grass", {"Off", "Dungeons", "Overworld", "All Grass/Bushes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleGrass"), mOptionDescriptions[RSK_SHUFFLE_GRASS], WidgetType::Combobox, RO_SHUFFLE_GRASS_OFF);
-	OPT_U8(RSK_SHUFFLE_CRATES, "Shuffle Crates", {"Off", "Dungeons", "Overworld", "All Crates"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleCrates"), mOptionDescriptions[RSK_SHUFFLE_CRATES], WidgetType::Combobox, RO_SHUFFLE_CRATES_OFF);	
+    OPT_U8(RSK_SHUFFLE_CRATES, "Shuffle Crates", {"Off", "Dungeons", "Overworld", "All Crates"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleCrates"), mOptionDescriptions[RSK_SHUFFLE_CRATES], WidgetType::Combobox, RO_SHUFFLE_CRATES_OFF);
     OPT_BOOL(RSK_SHUFFLE_FISHING_POLE, "Shuffle Fishing Pole", CVAR_RANDOMIZER_SETTING("ShuffleFishingPole"), mOptionDescriptions[RSK_SHUFFLE_FISHING_POLE]);
     OPT_U8(RSK_SHUFFLE_MERCHANTS, "Shuffle Merchants", {"Off", "Bean Merchant Only", "All But Beans", "All"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleMerchants"), mOptionDescriptions[RSK_SHUFFLE_MERCHANTS], WidgetType::Combobox, RO_SHUFFLE_MERCHANTS_OFF, IMFLAG_NONE);
     OPT_U8(RSK_MERCHANT_PRICES, "Merchant Prices", {"Vanilla", "Cheap Balanced", "Balanced", "Fixed", "Range", "Set By Wallet"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("MerchantPrices"), mOptionDescriptions[RSK_MERCHANT_PRICES], WidgetType::Combobox, RO_PRICE_VANILLA, false, IMFLAG_NONE);
@@ -2014,16 +2014,16 @@ void Settings::UpdateOptionProperties() {
         }
     }
 
-    int dungeonShuffle =
+    bool dungeonShuffle =
         CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleDungeonsEntrances"), RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
-    int bossShuffle =
+    bool bossShuffle =
         CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleBossEntrances"), RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
-    int overworldShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOverworldEntrances"), RO_GENERIC_OFF);
-    int interiorShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleInteriorsEntrances"), RO_GENERIC_OFF);
-    int grottoShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGrottosEntrances"), RO_GENERIC_OFF);
+    bool overworldShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOverworldEntrances"), RO_GENERIC_OFF);
+    bool interiorShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleInteriorsEntrances"), RO_GENERIC_OFF);
+    bool grottoShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGrottosEntrances"), RO_GENERIC_OFF);
 
-    // Hide Mixed Entrances option if no applicable entrance shuffles are visible
-    if (!dungeonShuffle && !bossShuffle && !overworldShuffle && !interiorShuffle && !grottoShuffle) {
+    // Hide Mixed Entrances option if 1 or no applicable entrance shuffles are visible
+    if (dungeonShuffle + bossShuffle + overworldShuffle + interiorShuffle + grottoShuffle <= 1) {
         mOptions[RSK_MIXED_ENTRANCE_POOLS].Hide();
     } else {
         mOptions[RSK_MIXED_ENTRANCE_POOLS].Unhide();
@@ -2780,6 +2780,36 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
     }
     for (uint8_t i = 0; i < mOptions[RSK_TRIAL_COUNT].Get(); i++) {
         trials[i]->SetAsRequired();
+    }
+
+    bool dungeonShuffle = !mOptions[RSK_SHUFFLE_DUNGEON_ENTRANCES].Is(RO_GENERIC_OFF);
+    bool bossShuffle = !mOptions[RSK_SHUFFLE_BOSS_ENTRANCES].Is(RO_GENERIC_OFF);
+    bool overworldShuffle = !mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES].Is(RO_GENERIC_OFF);
+    bool interiorShuffle = !mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES].Is(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF);
+    bool grottoShuffle = !mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES].Is(RO_GENERIC_OFF);
+
+    if (dungeonShuffle + bossShuffle + overworldShuffle + interiorShuffle + grottoShuffle <= 1) {
+        mOptions[RSK_MIXED_ENTRANCE_POOLS].Set(RO_GENERIC_OFF);
+    }
+
+    if (!mOptions[RSK_MIXED_ENTRANCE_POOLS] || !dungeonShuffle) {
+        mOptions[RSK_MIX_DUNGEON_ENTRANCES].Set(RO_GENERIC_OFF);
+    }
+
+    if (!mOptions[RSK_MIXED_ENTRANCE_POOLS] || !bossShuffle) {
+        mOptions[RSK_MIX_BOSS_ENTRANCES].Set(RO_GENERIC_OFF);
+    }
+
+    if (!mOptions[RSK_MIXED_ENTRANCE_POOLS] || !overworldShuffle) {
+        mOptions[RSK_MIX_OVERWORLD_ENTRANCES].Set(RO_GENERIC_OFF);
+    }
+
+    if (!mOptions[RSK_MIXED_ENTRANCE_POOLS] || !interiorShuffle) {
+        mOptions[RSK_MIX_INTERIOR_ENTRANCES].Set(RO_GENERIC_OFF);
+    }
+
+    if (!mOptions[RSK_MIXED_ENTRANCE_POOLS] || !grottoShuffle) {
+        mOptions[RSK_MIX_GROTTO_ENTRANCES].Set(RO_GENERIC_OFF);
     }
 
     if (mOptions[RSK_FOREST].Is(RO_CLOSED_FOREST_ON) &&

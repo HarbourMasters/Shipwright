@@ -948,6 +948,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // false
+    // ```
+    // #### `args`
+    // - '*Fishing'
+    VB_GIVE_RANDO_GLITCH_FISHING_PRIZE,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`

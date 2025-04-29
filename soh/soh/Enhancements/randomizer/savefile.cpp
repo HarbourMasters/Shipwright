@@ -107,6 +107,7 @@ void GiveLinksPocketItem() {
 }
 
 void SetStartingItems() {
+    int startingAge = OTRGlobals::Instance->gRandoContext->GetOption(RSK_SELECTED_STARTING_AGE).Get();
     if (Randomizer_GetSettingValue(RSK_STARTING_KOKIRI_SWORD))
         Item_Give(NULL, ITEM_SWORD_KOKIRI);
     if (Randomizer_GetSettingValue(RSK_STARTING_DEKU_SHIELD))
@@ -157,6 +158,13 @@ void SetStartingItems() {
     }
     if (Randomizer_GetSettingValue(RSK_STARTING_NUTS) && !Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_NUT_BAG)) {
         GiveLinkDekuNuts(20);
+    }
+    if (Randomizer_GetSettingValue(RSK_STARTING_MASTER_SWORD)) {
+        if (startingAge == RO_AGE_ADULT) {
+            Item_Give(NULL, ITEM_SWORD_MASTER);
+        } else {
+            gSaveContext.inventory.equipment |= 1 << 1;
+        }
     }
 
     if (Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {

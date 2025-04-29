@@ -759,7 +759,7 @@ void InitTrickNames() {
     trickNameTable[RG_RECOVERY_HEART] = {
         Text{ "Love", "Bisou", "Te amo" },
         Text{ "Life", "Vie", "vida" },
-        Text{ "HP", "VP", "VP" },
+        Text{ "HP", "PV", "VP" },
     };
     trickNameTable[RG_GREEN_RUPEE] = {
         Text{ "False Greg", "Faux Greg", "Falso Greg" },   Text{ "One Ruby", "Un rubis", "Un rubí" },
@@ -779,15 +779,15 @@ void InitTrickNames() {
         Text{ "Rupee (20)", "Rubis (20)", "Peso hyliano" },
     };
     trickNameTable[RG_PURPLE_RUPEE] = {
-        Text{ "Purpee", "pourbi", "morupiua" },
-        Text{ "Fifty Rubies", "cinquante rubis", "Cincuenta rubíes" },
+        Text{ "Purpee", "Pourbi", "morupiua" },
+        Text{ "Fifty Rubies", "Cinquante rubis", "Cincuenta rubíes" },
         Text{ "Rupoor (50)", "Roupir (50)", "Rupobre (50)" },
         Text{ "Fifty Rupees", "Cinquante rubis", "Balboa hyliano" },
         Text{ "Rupee (50)", "Rubis (50)", "Peso hyliano" },
     };
     trickNameTable[RG_HUGE_RUPEE] = {
         Text{ "Hugo", "Or Rubi", "Oro Rubi" },
-        Text{ "Two Hundred Rubies", "deux cents rubis", "Doscientos rubíes" },
+        Text{ "Two Hundred Rubies", "Deux cents rubis", "Doscientos rubíes" },
         Text{ "Diamond", "Diamant", "Diamante" },
         Text{ "Huge Ruby", "Énorme rubis", "Rubi gigante" },
         Text{ "Two Hundred Rupees", "Deux cent rubis", "Euro hyliano" },
@@ -806,53 +806,54 @@ void InitTrickNames() {
     trickNameTable[RG_TRIFORCE_PIECE] = {
         Text{ "Piece of Cheese", "Morceau de Fromage", "Piece of Cheese" },
         Text{ "Triforce Shard", "Éclat de Triforce", "Triforce Shard" },
-        Text{ "Shiny Rock", "Caiiloux Brillant", "Shiny Rock" },
+        Text{ "Shiny Rock", "Caillou Brillant", "Shiny Rock" },
     };
 
+    // TODO_TRANSLATE
     trickNameTable[RG_GOHMA_SOUL] = {
-        Text{ "Spider Sense", "", "" },
-        Text{ "Deku Spirit", "", "" },
-        Text{ "Ghost of Ghoma", "", "" },
+        Text{ "Spider Sense", "Sens de l'Araignée", "" },
+        Text{ "Deku Spirit", "Parasite Mojo", "" },
+        Text{ "Ghost of Ghoma", "Fantôme de Gohma", "" },
     };
     trickNameTable[RG_KING_DODONGO_SOUL] = {
-        Text{ "Lizard Soul", "", "" },
-        Text{ "Regal Remains", "", "" },
-        Text{ "Dodongo's Core", "", "" },
+        Text{ "Lizard Soul", "Âme d'un Lézard", "" },
+        Text{ "Regal Remains", "Restes Délicieux", "" },
+        Text{ "Dodongo's Core", "Coeur de Dodongo", "" },
     };
     trickNameTable[RG_BARINADE_SOUL] = {
-        Text{ "Parasitic Poltergeist", "", "" },
-        Text{ "Jabu Insides", "", "" },
-        Text{ "Barinade Bacteria", "", "" },
+        Text{ "Parasitic Poltergeist", "Poltergeist Parasite", "" },
+        Text{ "Jabu Insides", "Entrailles de Jabu-Jabu", "" },
+        Text{ "Barinade Bacteria", "Bactérie de Barinade", "" },
     };
     trickNameTable[RG_PHANTOM_GANON_SOUL] = {
-        Text{ "Bigger Poe", "", "" },
-        Text{ "Sacred Forest Pine Tree", "", "" },
-        Text{ "Ganon's Phantom", "", "" },
+        Text{ "Bigger Poe", "Âme Gigantesque", "" },
+        Text{ "Sacred Forest Pine Tree", "Grande Perche du Bosquet Sacré", "" },
+        Text{ "Ganon's Phantom", "Fantôme de Ganon", "" },
     };
     trickNameTable[RG_VOLVAGIA_SOUL] = {
-        Text{ "Dragon Roast", "", "" },
-        Text{ "Hot n' Ready", "", "" },
-        Text{ "Volvagia's Vitality", "", "" },
+        Text{ "Dragon Roast", "Friture du Dragon", "" },
+        Text{ "Hot n' Ready", "Sauce Barbecue", "" },
+        Text{ "Volvagia's Vitality", "Vitalité de Volcania", "" },
     };
     trickNameTable[RG_MORPHA_SOUL] = {
-        Text{ "Dihydrogen Monoxide", "", "" },
-        Text{ "Morpha Molecules", "", "" },
-        Text{ "Wet Stuff", "", "" },
+        Text{ "Dihydrogen Monoxide", "Monoxyde de Dihydrogène", "" },
+        Text{ "Morpha Molecules", "Molécule de Morpha", "" },
+        Text{ "Wet Stuff", "Truc Mouillé", "" },
     };
     trickNameTable[RG_BONGO_BONGO_SOUL] = {
-        Text{ "Shadow Soul", "", "" },
-        Text{ "Dark Essence", "", "" },
-        Text{ "Bongo Bongo's Bongo", "", "" },
+        Text{ "Shadow Soul", "Âme de l'Ombre", "" },
+        Text{ "Dark Essence", "Essence Sombre", "" },
+        Text{ "Bongo Bongo's Bongo", "Bongo de Bongo Bongo", "" },
     };
     trickNameTable[RG_TWINROVA_SOUL] = {
-        Text{ "Sandy Ashes", "", "" },
-        Text{ "Spiritual Spirit", "", "" },
-        Text{ "Twin Rovers", "", "" },
+        Text{ "Sandy Ashes", "Cendres des Vieilles", "" },
+        Text{ "Spiritual Spirit", "Esprit Spirituel", "" },
+        Text{ "Twin Rovers", "Duo Angélique", "" },
     };
     trickNameTable[RG_GANON_SOUL] = {
-        Text{ "Pure Evil", "", "" },
-        Text{ "Ganon's Ghost", "", "" },
-        Text{ "Pork", "", "" },
+        Text{ "Pure Evil", "Mal Incarné", "" },
+        Text{ "Ganon's Ghost", "Le Malin", "" },
+        Text{ "Pork", "Porc", "" },
     };
 
     trickNameTable[RG_FISHING_POLE] = {
@@ -862,31 +863,31 @@ void InitTrickNames() {
     };
 
     trickNameTable[RG_OCARINA_A_BUTTON] = {
-        Text{ "Ocarina J Button", "", "" },
-        Text{ "Ocarina Ayy Button", "", "" },
-        Text{ "Ocarina A Trigger", "", "" },
+        Text{ "Ocarina J Button", "Touche Ha de l'Ocarina", "" },
+        Text{ "Ocarina Ayy Button", "Touche Ah de l'Ocarina", "" },
+        Text{ "Ocarina A Trigger", "Bumper A de l'Ocarina", "" },
     };
     trickNameTable[RG_OCARINA_C_UP_BUTTON] = {
-        Text{ "Ocarina C North Button", "", "" },
-        Text{ "Ocarina C App Button", "", "" },
-        Text{ "Ocarina Sup Button", "", "" },
+        Text{ "Ocarina C North Button", "Touche C Nord de l'Ocarina", "" },
+        Text{ "Ocarina C App Button", "Touche C'est Haut de l'Ocarina", "" },
+        Text{ "Ocarina Sup Button", "Touche O de l'Ocarina", "" },
     };
     trickNameTable[RG_OCARINA_C_DOWN_BUTTON] = {
-        Text{ "Ocarina C South Button", "", "" },
-        Text{ "Ocarina Z Down Button", "", "" },
-        Text{ "Ocarina See Down Button", "", "" },
-        Text{ "Ocarina C Dawn Button", "", "" },
+        Text{ "Ocarina C South Button", "Touche C Sud de l'Ocarina", "" },
+        Text{ "Ocarina Z Down Button", "Touche Z Bas de l'Ocarina", "" },
+        Text{ "Ocarina See Down Button", "Touche C'est Bas de l'Ocarina", "" },
+        Text{ "Ocarina C Dawn Button", "Touche Séba de l'Ocarina", "" },
     };
     trickNameTable[RG_OCARINA_C_LEFT_BUTTON] = {
-        Text{ "Ocarina C West Button", "", "" },
-        Text{ "Ocarina Sea Left Button", "", "" },
-        Text{ "Ocarina C Lift Button", "", "" },
-        Text{ "Ocarina Rewind Button", "", "" },
+        Text{ "Ocarina C West Button", "Touche C Ouest de l'Ocarina", "" },
+        Text{ "Ocarina Sea Left Button", "Touche Cégoche de L'Ocarina", "" },
+        Text{ "Ocarina C Lift Button", "Touche C'est Gauche de l'Ocarina", "" },
+        Text{ "Ocarina Rewind Button", "Touche Rembobiner de l'Ocarina", "" },
     };
     trickNameTable[RG_OCARINA_C_RIGHT_BUTTON] = {
-        Text{ "Ocarina C East Button", "", "" },
-        Text{ "Ocarina C Wright Button", "", "" },
-        Text{ "Overworld C Right Button", "", "" },
+        Text{ "Ocarina C East Button", "Touche C Est de l'Ocarina", "" },
+        Text{ "Ocarina C Wright Button", "Touche C'est Droite de l'Ocarina", "" },
+        Text{ "Overworld C Right Button", "Trou Droit de l'Ocarina", "" },
     };
 
     /*

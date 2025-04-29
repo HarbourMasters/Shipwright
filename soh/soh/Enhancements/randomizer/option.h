@@ -302,7 +302,7 @@ class Option {
     /**
      * @brief Automatically renders a widget for this option in ImGui, based on the various
      * properties of this Option. Typically, Bool options are rendered as Checkboxes and
-     * U8 options are rendered as Comboboxes, but this can be overriden during construction with
+     * U8 options are rendered as Comboboxes, but this can be overridden during construction with
      * the `widgetType` property.
      */
     bool RenderImGui();

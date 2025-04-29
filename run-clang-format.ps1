@@ -37,12 +37,13 @@ if (-not (Test-Path $clangFormatFilePath) -or ($currentVersion -ne $requiredVers
 $basePath = (Resolve-Path .).Path
 $files = Get-ChildItem -Path $basePath\soh -Recurse -File `
     | Where-Object { ($_.Extension -eq '.c' -or $_.Extension -eq '.cpp' -or `
-                      ($_.Extension -eq '.h' -and `
+                      (($_.Extension -eq '.h' -or $_.Extension -eq '.hpp') -and `
                        (-not ($_.FullName -like "*\soh\src\*" -or $_.FullName -like "*\soh\include\*")))) -and `
                      (-not ($_.FullName -like "*\soh\assets\*")) }
 
-foreach ($file in $files) {
+for ($i = 0; $i -lt $files.Length; $i++) {
+    $file = $files[$i]
     $relativePath = $file.FullName.Substring($basePath.Length + 1)
-    Write-Host "Formatting $relativePath"
+    Write-Host "Formatting [$($i+1)/$($files.Length)] $relativePath"
     .\clang-format.exe -i $file.FullName
 }

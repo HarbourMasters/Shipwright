@@ -849,9 +849,19 @@ void DrawFlagsTab() {
 
     DrawGroupWithBorder(
         [&]() {
-            size_t selectedGsMap = 0;
+            PushStyleCombobox(THEME_COLOR);
+            static size_t selectedGsMap = 0;
             ImGui::Text("Gold Skulltulas");
-            Combobox("Map##Gold Skulltulas", &selectedGsMap, gsMapping, comboboxOptionsBase.Tooltip(""));
+            if (ImGui::BeginCombo("##GSMap", gsMapping[selectedGsMap])) {
+                for (size_t index = 0; index < gsMapping.size(); index++) {
+                    if (ImGui::Selectable(gsMapping[index])) {
+                        selectedGsMap = index;
+                    }
+                }
+
+                ImGui::EndCombo();
+            }
+            PopStyleCombobox();
 
             // TODO We should write out descriptions for each one... ugh
             ImGui::AlignTextToFramePadding();
@@ -1655,6 +1665,7 @@ void ResetBaseOptions() {
 void SaveEditorWindow::DrawElement() {
     PushStyleTabs(THEME_COLOR);
     ImGui::PushFont(OTRGlobals::Instance->fontMonoLarger);
+    ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
 
     if (ImGui::BeginTabBar("SaveContextTabBar", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         ResetBaseOptions();
@@ -1696,6 +1707,7 @@ void SaveEditorWindow::DrawElement() {
         ImGui::EndTabBar();
     }
 
+    ImGui::EndDisabled();
     ImGui::PopFont();
     PopStyleTabs();
 }
