@@ -27,13 +27,13 @@ extern PlayState* gPlayState;
 #define COLOR_GREEN IM_COL32(0, 158, 115, 255)
 #define COLOR_GRAY IM_COL32(155, 155, 155, 255)
 
-EntranceOverride srcListSortedByArea[ENTRANCE_OVERRIDES_MAX_COUNT] = {0};
-EntranceOverride destListSortedByArea[ENTRANCE_OVERRIDES_MAX_COUNT] = {0};
-EntranceOverride srcListSortedByType[ENTRANCE_OVERRIDES_MAX_COUNT] = {0};
-EntranceOverride destListSortedByType[ENTRANCE_OVERRIDES_MAX_COUNT] = {0};
-EntranceTrackingData gEntranceTrackingData = {0};
+EntranceOverride srcListSortedByArea[ENTRANCE_OVERRIDES_MAX_COUNT] = { 0 };
+EntranceOverride destListSortedByArea[ENTRANCE_OVERRIDES_MAX_COUNT] = { 0 };
+EntranceOverride srcListSortedByType[ENTRANCE_OVERRIDES_MAX_COUNT] = { 0 };
+EntranceOverride destListSortedByType[ENTRANCE_OVERRIDES_MAX_COUNT] = { 0 };
+EntranceTrackingData gEntranceTrackingData = { 0 };
 
-static const EntranceOverride emptyOverride = {0};
+static const EntranceOverride emptyOverride = { 0 };
 
 static s16 lastEntranceIndex = -1;
 static s16 currentGrottoId = -1;
@@ -64,16 +64,13 @@ static std::string spoilerEntranceGroupNames[] = {
 };
 
 static std::string groupTypeNames[] = {
-    "One Way",
-    "Overworld",
-    "Interior",
-    "Grotto",
-    "Dungeon",
+    "One Way", "Overworld", "Interior", "Grotto", "Dungeon",
 };
 
-// Entrance data for the tracker taken from the 3ds rando entrance tracker, and supplemented with scene/spawn info and meta search tags
-// ENTR_HYRULE_FIELD_10 and ENTR_POTION_SHOP_KAKARIKO_1 have been repurposed for entrance randomizer
+// Entrance data for the tracker taken from the 3ds rando entrance tracker, and supplemented with scene/spawn info and
+// meta search tags ENTR_HYRULE_FIELD_10 and ENTR_POTION_SHOP_KAKARIKO_1 have been repurposed for entrance randomizer
 const EntranceData entranceData[] = {
+    // clang-format off
     //index,                reverse, scenes (and spawns),     source name,   destination name, source group,           destination group,      type,                 metaTag, oneExit
     { ENTR_LINKS_HOUSE_CHILD_SPAWN,   -1,      SINGLE_SCENE_INFO(SCENE_LINKS_HOUSE), "Child Spawn", "Link's House",   ENTRANCE_GROUP_ONE_WAY, ENTRANCE_GROUP_ONE_WAY, ENTRANCE_TYPE_ONE_WAY},
     { ENTR_HYRULE_FIELD_10, -1,      SINGLE_SCENE_INFO(SCENE_TEMPLE_OF_TIME), "Adult Spawn", "Temple of Time", ENTRANCE_GROUP_ONE_WAY, ENTRANCE_GROUP_ONE_WAY, ENTRANCE_TYPE_ONE_WAY},
@@ -343,32 +340,32 @@ const EntranceData entranceData[] = {
     { ENTR_DESERT_COLOSSUS_SPIRIT_TEMPLE_BLUE_WARP,      -1,                                                SINGLE_SCENE_INFO(SCENE_SPIRIT_TEMPLE_BOSS),    "Twinrova Blue Warp",            "Spirit Temple Blue Warp",       ENTRANCE_GROUP_DESERT_COLOSSUS,   ENTRANCE_GROUP_DESERT_COLOSSUS,   ENTRANCE_TYPE_ONE_WAY,   "bw", 1},
 
     // Market
-    { ENTR_HYRULE_FIELD_ON_BRIDGE_SPAWN,                  ENTR_MARKET_ENTRANCE_NEAR_GUARD_EXIT,               {SCENE_NO_SPAWN(SCENE_MARKET_ENTRANCE_DAY), SCENE_NO_SPAWN(SCENE_MARKET_ENTRANCE_NIGHT), SCENE_NO_SPAWN(SCENE_MARKET_ENTRANCE_RUINS)},                                                    "Market Entrance South Exit",          "Hyrule Field Drawbridge Exit",  ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_HYRULE_FIELD,  ENTRANCE_TYPE_OVERWORLD, "hf"},
-    { ENTR_MARKET_SOUTH_EXIT,                             ENTR_MARKET_ENTRANCE_NORTH_EXIT,                    {SCENE_NO_SPAWN(SCENE_MARKET_ENTRANCE_DAY), SCENE_NO_SPAWN(SCENE_MARKET_ENTRANCE_NIGHT), SCENE_NO_SPAWN(SCENE_MARKET_ENTRANCE_RUINS)},                                                    "Market Entrance North Exit",          "Market South Exit",             ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_OVERWORLD},
-    { ENTR_MARKET_GUARD_HOUSE_0,                          ENTR_MARKET_ENTRANCE_OUTSIDE_GUARD_HOUSE,           {SCENE_NO_SPAWN(SCENE_MARKET_ENTRANCE_DAY), SCENE_NO_SPAWN(SCENE_MARKET_ENTRANCE_NIGHT), SCENE_NO_SPAWN(SCENE_MARKET_ENTRANCE_RUINS)},                                                    "MK Entrance Guard House Entry",       "Guard House",                   ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR,  "pots,poe", 1},
-    { ENTR_MARKET_ENTRANCE_NORTH_EXIT,                    ENTR_MARKET_SOUTH_EXIT,                             {SCENE_NO_SPAWN(SCENE_MARKET_DAY), SCENE_NO_SPAWN(SCENE_MARKET_NIGHT), SCENE_NO_SPAWN(SCENE_MARKET_RUINS), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_DAY), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_NIGHT)}, "Market South Exit",                   "Market Entrance North Exit",    ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_OVERWORLD},
-    { ENTR_CASTLE_GROUNDS_SOUTH_EXIT,                     ENTR_MARKET_DAY_CASTLE_EXIT,                        {SCENE_NO_SPAWN(SCENE_MARKET_DAY), SCENE_NO_SPAWN(SCENE_MARKET_NIGHT), SCENE_NO_SPAWN(SCENE_MARKET_RUINS), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_DAY), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_NIGHT)}, "Market Castle Exit",                  "Castle Grounds South Exit",     ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_OVERWORLD, "outside ganon's castle"},
-    { ENTR_TEMPLE_OF_TIME_EXTERIOR_DAY_GOSSIP_STONE_EXIT, ENTR_MARKET_DAY_TEMPLE_EXIT,                        {SCENE_NO_SPAWN(SCENE_MARKET_DAY), SCENE_NO_SPAWN(SCENE_MARKET_NIGHT), SCENE_NO_SPAWN(SCENE_MARKET_RUINS), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_DAY), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_NIGHT)}, "Market Temple Exit",                  "Outside Temple of Time",        ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_OVERWORLD},
-    { ENTR_SHOOTING_GALLERY_1,                            ENTR_MARKET_DAY_OUTSIDE_SHOOTING_GALLERY,           {SCENE_NO_SPAWN(SCENE_MARKET_DAY), SCENE_NO_SPAWN(SCENE_MARKET_NIGHT), SCENE_NO_SPAWN(SCENE_MARKET_RUINS), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_DAY), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_NIGHT)}, "MK Shooting Gallery Entry",           "MK Shooting Gallery",           ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR,  "child", 1},
-    { ENTR_BOMBCHU_BOWLING_ALLEY_0,                       ENTR_MARKET_DAY_OUTSIDE_BOMBCHU_BOWLING,            {SCENE_NO_SPAWN(SCENE_MARKET_DAY), SCENE_NO_SPAWN(SCENE_MARKET_NIGHT), SCENE_NO_SPAWN(SCENE_MARKET_RUINS), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_DAY), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_NIGHT)}, "MK Bombchu Bowling Entry",            "Bombchu Bowling",               ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR,  "", 1},
-    { ENTR_TREASURE_BOX_SHOP_0,                           ENTR_MARKET_DAY_OUTSIDE_TREASURE_BOX_SHOP,          {SCENE_NO_SPAWN(SCENE_MARKET_DAY), SCENE_NO_SPAWN(SCENE_MARKET_NIGHT), SCENE_NO_SPAWN(SCENE_MARKET_RUINS), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_DAY), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_NIGHT)}, "MK Treasure Chest Game Entry",        "Treasure Chest Game",           ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR,  "", 1},
-    { ENTR_BACK_ALLEY_MAN_IN_GREEN_HOUSE,                 ENTR_BACK_ALLEY_DAY_OUTSIDE_MAN_IN_GREEN_HOUSE,     {SCENE_NO_SPAWN(SCENE_MARKET_DAY), SCENE_NO_SPAWN(SCENE_MARKET_NIGHT), SCENE_NO_SPAWN(SCENE_MARKET_RUINS), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_DAY), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_NIGHT)}, "MK Man-in-Green House Entry",         "Man-in-Green's House",          ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR,  "", 1},
-    { ENTR_HAPPY_MASK_SHOP_0,                             ENTR_MARKET_DAY_OUTSIDE_HAPPY_MASK_SHOP,            {SCENE_NO_SPAWN(SCENE_MARKET_DAY), SCENE_NO_SPAWN(SCENE_MARKET_NIGHT), SCENE_NO_SPAWN(SCENE_MARKET_RUINS), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_DAY), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_NIGHT)}, "MK Mask Shop Entry",                  "Mask Shop",                     ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR,  "", 1},
-    { ENTR_BAZAAR_1,                                      ENTR_MARKET_DAY_OUTSIDE_BAZAAR,                     {SCENE_NO_SPAWN(SCENE_MARKET_DAY), SCENE_NO_SPAWN(SCENE_MARKET_NIGHT), SCENE_NO_SPAWN(SCENE_MARKET_RUINS), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_DAY), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_NIGHT)}, "MK Bazaar Entry",                     "MK Bazaar",                     ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR,  "shop", 1},
-    { ENTR_POTION_SHOP_MARKET_0,                          ENTR_MARKET_DAY_OUTSIDE_POTION_SHOP,                {SCENE_NO_SPAWN(SCENE_MARKET_DAY), SCENE_NO_SPAWN(SCENE_MARKET_NIGHT), SCENE_NO_SPAWN(SCENE_MARKET_RUINS), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_DAY), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_NIGHT)}, "MK Potion Shop Entry",                "MK Potion Shop",                ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR,  "", 1},
-    { ENTR_BOMBCHU_SHOP_1,                                ENTR_BACK_ALLEY_DAY_OUTSIDE_BOMBCHU_SHOP,           {SCENE_NO_SPAWN(SCENE_MARKET_DAY), SCENE_NO_SPAWN(SCENE_MARKET_NIGHT), SCENE_NO_SPAWN(SCENE_MARKET_RUINS), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_DAY), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_NIGHT)}, "MK Bombchu Shop Entry",               "Bombchu Shop",                  ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR,  "", 1},
-    { ENTR_MARKET_ENTRANCE_OUTSIDE_GUARD_HOUSE,           ENTR_MARKET_GUARD_HOUSE_0,                          {{ SCENE_MARKET_GUARD_HOUSE }},                                                                                                                                                           "Guard House",                         "MK Entrance Guard House Entry", ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR,  "pots,poe"},
-    { ENTR_MARKET_DAY_OUTSIDE_SHOOTING_GALLERY,           ENTR_SHOOTING_GALLERY_1,                            {{ SCENE_SHOOTING_GALLERY, 0x01 }},                                                                                                                                                       "MK Shooting Gallery",                 "MK Shooting Gallery Entry",     ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR},
-    { ENTR_MARKET_DAY_OUTSIDE_BOMBCHU_BOWLING,            ENTR_BOMBCHU_BOWLING_ALLEY_0,                       SINGLE_SCENE_INFO(SCENE_BOMBCHU_BOWLING_ALLEY),                                                                                                                                           "Bombchu Bowling",                     "MK Bombchu Bowling Entry",      ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR},
-    { ENTR_MARKET_DAY_OUTSIDE_TREASURE_BOX_SHOP,          ENTR_TREASURE_BOX_SHOP_0,                           SINGLE_SCENE_INFO(SCENE_TREASURE_BOX_SHOP),                                                                                                                                               "Treasure Chest Game",                 "MK Treasure Chest Game Entry",  ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR},
-    { ENTR_BACK_ALLEY_DAY_OUTSIDE_MAN_IN_GREEN_HOUSE,     ENTR_BACK_ALLEY_MAN_IN_GREEN_HOUSE,                 SINGLE_SCENE_INFO(SCENE_BACK_ALLEY_HOUSE),                                                                                                                                                "Man-in-Green's House",                "MK Man-in-Green House Entry",   ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR},
-    { ENTR_MARKET_DAY_OUTSIDE_HAPPY_MASK_SHOP,            ENTR_HAPPY_MASK_SHOP_0,                             SINGLE_SCENE_INFO(SCENE_HAPPY_MASK_SHOP),                                                                                                                                                 "Mask Shop",                           "MK Mask Shop Entry",            ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR},
-    { ENTR_MARKET_DAY_OUTSIDE_BAZAAR,                     ENTR_BAZAAR_1,                                      {{ SCENE_BAZAAR, 0x01 }},                                                                                                                                                                 "MK Bazaar",                           "MK Bazaar Entry",               ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR,  "shop"},
-    { ENTR_MARKET_DAY_OUTSIDE_POTION_SHOP,                ENTR_POTION_SHOP_MARKET_0,                          SINGLE_SCENE_INFO(SCENE_POTION_SHOP_MARKET),                                                                                                                                              "MK Potion Shop",                      "MK Potion Shop Entry",          ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR},
-    { ENTR_BACK_ALLEY_DAY_OUTSIDE_BOMBCHU_SHOP,           ENTR_BOMBCHU_SHOP_1,                                SINGLE_SCENE_INFO(SCENE_BOMBCHU_SHOP),                                                                                                                                                    "Bombchu Shop",                        "MK Bombchu Shop Entry",         ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR},
-    { ENTR_MARKET_DAY_TEMPLE_EXIT,                        ENTR_TEMPLE_OF_TIME_EXTERIOR_DAY_GOSSIP_STONE_EXIT, {SCENE_NO_SPAWN(SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY), SCENE_NO_SPAWN(SCENE_TEMPLE_OF_TIME_EXTERIOR_NIGHT), SCENE_NO_SPAWN(SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS)},                            "Outside Temple of Time",              "Market Temple Exit",            ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_OVERWORLD, "tot"},
-    { ENTR_TEMPLE_OF_TIME_ENTRANCE,                       ENTR_TEMPLE_OF_TIME_EXTERIOR_DAY_OUTSIDE_TEMPLE,    {SCENE_NO_SPAWN(SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY), SCENE_NO_SPAWN(SCENE_TEMPLE_OF_TIME_EXTERIOR_NIGHT), SCENE_NO_SPAWN(SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS)},                            "Outside Temple of Time",              "Temple of Time Entrance",       ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR,  "tot", 1},
-    { ENTR_TEMPLE_OF_TIME_EXTERIOR_DAY_OUTSIDE_TEMPLE,    ENTR_TEMPLE_OF_TIME_ENTRANCE,                       SINGLE_SCENE_INFO(SCENE_TEMPLE_OF_TIME),                                                                                                                                                  "Temple of Time Entrance",             "Outside Temple of Time",        ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR,  "tot"},
+    { ENTR_HYRULE_FIELD_ON_BRIDGE_SPAWN,                  ENTR_MARKET_ENTRANCE_NEAR_GUARD_EXIT,               {SCENE_NO_SPAWN(SCENE_MARKET_ENTRANCE_DAY), SCENE_NO_SPAWN(SCENE_MARKET_ENTRANCE_NIGHT), SCENE_NO_SPAWN(SCENE_MARKET_ENTRANCE_RUINS)},                                                    "Market Entrance South Exit",       "Hyrule Field Drawbridge Exit",     ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_HYRULE_FIELD,  ENTRANCE_TYPE_OVERWORLD, "hf"},
+    { ENTR_MARKET_SOUTH_EXIT,                             ENTR_MARKET_ENTRANCE_NORTH_EXIT,                    {SCENE_NO_SPAWN(SCENE_MARKET_ENTRANCE_DAY), SCENE_NO_SPAWN(SCENE_MARKET_ENTRANCE_NIGHT), SCENE_NO_SPAWN(SCENE_MARKET_ENTRANCE_RUINS)},                                                    "Market Entrance North Exit",       "Market South Exit",                ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_OVERWORLD},
+    { ENTR_MARKET_GUARD_HOUSE_0,                          ENTR_MARKET_ENTRANCE_OUTSIDE_GUARD_HOUSE,           {SCENE_NO_SPAWN(SCENE_MARKET_ENTRANCE_DAY), SCENE_NO_SPAWN(SCENE_MARKET_ENTRANCE_NIGHT), SCENE_NO_SPAWN(SCENE_MARKET_ENTRANCE_RUINS)},                                                    "MK Entrance Guard House Entry",    "Guard House",                      ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR,  "pots,poe", 1},
+    { ENTR_MARKET_ENTRANCE_NORTH_EXIT,                    ENTR_MARKET_SOUTH_EXIT,                             {SCENE_NO_SPAWN(SCENE_MARKET_DAY), SCENE_NO_SPAWN(SCENE_MARKET_NIGHT), SCENE_NO_SPAWN(SCENE_MARKET_RUINS), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_DAY), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_NIGHT)}, "Market South Exit",                "Market Entrance North Exit",       ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_OVERWORLD},
+    { ENTR_CASTLE_GROUNDS_SOUTH_EXIT,                     ENTR_MARKET_DAY_CASTLE_EXIT,                        {SCENE_NO_SPAWN(SCENE_MARKET_DAY), SCENE_NO_SPAWN(SCENE_MARKET_NIGHT), SCENE_NO_SPAWN(SCENE_MARKET_RUINS), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_DAY), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_NIGHT)}, "Market Castle Exit",               "Castle Grounds South Exit",        ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_OVERWORLD, "outside ganon's castle"},
+    { ENTR_TEMPLE_OF_TIME_EXTERIOR_DAY_GOSSIP_STONE_EXIT, ENTR_MARKET_DAY_TEMPLE_EXIT,                        {SCENE_NO_SPAWN(SCENE_MARKET_DAY), SCENE_NO_SPAWN(SCENE_MARKET_NIGHT), SCENE_NO_SPAWN(SCENE_MARKET_RUINS), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_DAY), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_NIGHT)}, "Market Temple Exit",               "ToT Courtyard Gossip Stones Exit", ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_OVERWORLD},
+    { ENTR_SHOOTING_GALLERY_1,                            ENTR_MARKET_DAY_OUTSIDE_SHOOTING_GALLERY,           {SCENE_NO_SPAWN(SCENE_MARKET_DAY), SCENE_NO_SPAWN(SCENE_MARKET_NIGHT), SCENE_NO_SPAWN(SCENE_MARKET_RUINS), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_DAY), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_NIGHT)}, "MK Shooting Gallery Entry",        "MK Shooting Gallery",              ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR,  "child", 1},
+    { ENTR_BOMBCHU_BOWLING_ALLEY_0,                       ENTR_MARKET_DAY_OUTSIDE_BOMBCHU_BOWLING,            {SCENE_NO_SPAWN(SCENE_MARKET_DAY), SCENE_NO_SPAWN(SCENE_MARKET_NIGHT), SCENE_NO_SPAWN(SCENE_MARKET_RUINS), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_DAY), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_NIGHT)}, "MK Bombchu Bowling Entry",         "Bombchu Bowling",                  ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR,  "", 1},
+    { ENTR_TREASURE_BOX_SHOP_0,                           ENTR_MARKET_DAY_OUTSIDE_TREASURE_BOX_SHOP,          {SCENE_NO_SPAWN(SCENE_MARKET_DAY), SCENE_NO_SPAWN(SCENE_MARKET_NIGHT), SCENE_NO_SPAWN(SCENE_MARKET_RUINS), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_DAY), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_NIGHT)}, "MK Treasure Chest Game Entry",     "Treasure Chest Game",              ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR,  "", 1},
+    { ENTR_BACK_ALLEY_MAN_IN_GREEN_HOUSE,                 ENTR_BACK_ALLEY_DAY_OUTSIDE_MAN_IN_GREEN_HOUSE,     {SCENE_NO_SPAWN(SCENE_MARKET_DAY), SCENE_NO_SPAWN(SCENE_MARKET_NIGHT), SCENE_NO_SPAWN(SCENE_MARKET_RUINS), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_DAY), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_NIGHT)}, "MK Man-in-Green House Entry",      "Man-in-Green's House",             ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR,  "", 1},
+    { ENTR_HAPPY_MASK_SHOP_0,                             ENTR_MARKET_DAY_OUTSIDE_HAPPY_MASK_SHOP,            {SCENE_NO_SPAWN(SCENE_MARKET_DAY), SCENE_NO_SPAWN(SCENE_MARKET_NIGHT), SCENE_NO_SPAWN(SCENE_MARKET_RUINS), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_DAY), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_NIGHT)}, "MK Mask Shop Entry",               "Mask Shop",                        ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR,  "", 1},
+    { ENTR_BAZAAR_1,                                      ENTR_MARKET_DAY_OUTSIDE_BAZAAR,                     {SCENE_NO_SPAWN(SCENE_MARKET_DAY), SCENE_NO_SPAWN(SCENE_MARKET_NIGHT), SCENE_NO_SPAWN(SCENE_MARKET_RUINS), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_DAY), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_NIGHT)}, "MK Bazaar Entry",                  "MK Bazaar",                        ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR,  "shop", 1},
+    { ENTR_POTION_SHOP_MARKET_0,                          ENTR_MARKET_DAY_OUTSIDE_POTION_SHOP,                {SCENE_NO_SPAWN(SCENE_MARKET_DAY), SCENE_NO_SPAWN(SCENE_MARKET_NIGHT), SCENE_NO_SPAWN(SCENE_MARKET_RUINS), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_DAY), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_NIGHT)}, "MK Potion Shop Entry",             "MK Potion Shop",                   ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR,  "", 1},
+    { ENTR_BOMBCHU_SHOP_1,                                ENTR_BACK_ALLEY_DAY_OUTSIDE_BOMBCHU_SHOP,           {SCENE_NO_SPAWN(SCENE_MARKET_DAY), SCENE_NO_SPAWN(SCENE_MARKET_NIGHT), SCENE_NO_SPAWN(SCENE_MARKET_RUINS), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_DAY), SCENE_NO_SPAWN(SCENE_BACK_ALLEY_NIGHT)}, "MK Bombchu Shop Entry",            "Bombchu Shop",                     ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR,  "", 1},
+    { ENTR_MARKET_ENTRANCE_OUTSIDE_GUARD_HOUSE,           ENTR_MARKET_GUARD_HOUSE_0,                          {{ SCENE_MARKET_GUARD_HOUSE }},                                                                                                                                                           "Guard House",                      "MK Entrance Guard House Entry",    ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR,  "pots,poe"},
+    { ENTR_MARKET_DAY_OUTSIDE_SHOOTING_GALLERY,           ENTR_SHOOTING_GALLERY_1,                            {{ SCENE_SHOOTING_GALLERY, 0x01 }},                                                                                                                                                       "MK Shooting Gallery",              "MK Shooting Gallery Entry",        ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR},
+    { ENTR_MARKET_DAY_OUTSIDE_BOMBCHU_BOWLING,            ENTR_BOMBCHU_BOWLING_ALLEY_0,                       SINGLE_SCENE_INFO(SCENE_BOMBCHU_BOWLING_ALLEY),                                                                                                                                           "Bombchu Bowling",                  "MK Bombchu Bowling Entry",         ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR},
+    { ENTR_MARKET_DAY_OUTSIDE_TREASURE_BOX_SHOP,          ENTR_TREASURE_BOX_SHOP_0,                           SINGLE_SCENE_INFO(SCENE_TREASURE_BOX_SHOP),                                                                                                                                               "Treasure Chest Game",              "MK Treasure Chest Game Entry",     ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR},
+    { ENTR_BACK_ALLEY_DAY_OUTSIDE_MAN_IN_GREEN_HOUSE,     ENTR_BACK_ALLEY_MAN_IN_GREEN_HOUSE,                 SINGLE_SCENE_INFO(SCENE_BACK_ALLEY_HOUSE),                                                                                                                                                "Man-in-Green's House",             "MK Man-in-Green House Entry",      ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR},
+    { ENTR_MARKET_DAY_OUTSIDE_HAPPY_MASK_SHOP,            ENTR_HAPPY_MASK_SHOP_0,                             SINGLE_SCENE_INFO(SCENE_HAPPY_MASK_SHOP),                                                                                                                                                 "Mask Shop",                        "MK Mask Shop Entry",               ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR},
+    { ENTR_MARKET_DAY_OUTSIDE_BAZAAR,                     ENTR_BAZAAR_1,                                      {{ SCENE_BAZAAR, 0x01 }},                                                                                                                                                                 "MK Bazaar",                        "MK Bazaar Entry",                  ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR,  "shop"},
+    { ENTR_MARKET_DAY_OUTSIDE_POTION_SHOP,                ENTR_POTION_SHOP_MARKET_0,                          SINGLE_SCENE_INFO(SCENE_POTION_SHOP_MARKET),                                                                                                                                              "MK Potion Shop",                   "MK Potion Shop Entry",             ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR},
+    { ENTR_BACK_ALLEY_DAY_OUTSIDE_BOMBCHU_SHOP,           ENTR_BOMBCHU_SHOP_1,                                SINGLE_SCENE_INFO(SCENE_BOMBCHU_SHOP),                                                                                                                                                    "Bombchu Shop",                     "MK Bombchu Shop Entry",            ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR},
+    { ENTR_MARKET_DAY_TEMPLE_EXIT,                        ENTR_TEMPLE_OF_TIME_EXTERIOR_DAY_GOSSIP_STONE_EXIT, {SCENE_NO_SPAWN(SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY), SCENE_NO_SPAWN(SCENE_TEMPLE_OF_TIME_EXTERIOR_NIGHT), SCENE_NO_SPAWN(SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS)},                            "ToT Courtyard Gossip Stones Exit", "Market Temple Exit",               ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_OVERWORLD, "tot"},
+    { ENTR_TEMPLE_OF_TIME_ENTRANCE,                       ENTR_TEMPLE_OF_TIME_EXTERIOR_DAY_OUTSIDE_TEMPLE,    {SCENE_NO_SPAWN(SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY), SCENE_NO_SPAWN(SCENE_TEMPLE_OF_TIME_EXTERIOR_NIGHT), SCENE_NO_SPAWN(SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS)},                            "ToT Courtyard Temple Entry",       "Temple of Time Entrance",          ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR,  "tot", 1},
+    { ENTR_TEMPLE_OF_TIME_EXTERIOR_DAY_OUTSIDE_TEMPLE,    ENTR_TEMPLE_OF_TIME_ENTRANCE,                       SINGLE_SCENE_INFO(SCENE_TEMPLE_OF_TIME),                                                                                                                                                  "Temple of Time Entrance",          "ToT Courtyard Temple Entry",       ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR,  "tot"},
 
     // Hyrule Castle
     { ENTR_MARKET_DAY_CASTLE_EXIT,                   ENTR_CASTLE_GROUNDS_SOUTH_EXIT,                {SCENE_NO_SPAWN(SCENE_HYRULE_CASTLE), SCENE_NO_SPAWN(SCENE_OUTSIDE_GANONS_CASTLE)}, "Castle Grounds South Exit",      "Market Castle Exit",             ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_OVERWORLD, "outside ganon's castle"},
@@ -380,6 +377,8 @@ const EntranceData entranceData[] = {
     { ENTR_INSIDE_GANONS_CASTLE_ENTRANCE,            ENTR_CASTLE_GROUNDS_RAINBOW_BRIDGE_EXIT,       SINGLE_SCENE_INFO(SCENE_OUTSIDE_GANONS_CASTLE),                                     "OGC Rainbow Bridge Exit",        "Inside Ganon's Castle Entrance", ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_DUNGEON,   "outside ganon's castle,gc", 1},
     { ENTR_POTION_SHOP_KAKARIKO_1,                   ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_OGC_DD,       {{ SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC, 0x02 }},                                      "OGC Great Fairy Fountain",       "OGC Behind Pillar",              ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_INTERIOR,  "outside ganon's castle"},
     { ENTR_CASTLE_GROUNDS_RAINBOW_BRIDGE_EXIT,       ENTR_INSIDE_GANONS_CASTLE_ENTRANCE,            SINGLE_SCENE_INFO(SCENE_INSIDE_GANONS_CASTLE),                                      "Inside Ganon's Castle Entrance", "OGC Rainbow Bridge Exit",        ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_DUNGEON,   "outside ganon's castle,gc"}
+
+    // clang-format on
 };
 
 // Check if Link is in the area and return that scene/entrance for tracking
@@ -425,9 +424,11 @@ bool IsEntranceDiscovered(s16 index) {
     if (!isDiscovered) {
         // If the pair included one of the hyrule field <-> zora's river entrances,
         // the randomizer will have also overriden the water-based entrances, so check those too
-        if ((index == ENTR_ZORAS_RIVER_WEST_EXIT && Entrance_GetIsEntranceDiscovered(ENTR_ZORAS_RIVER_3)) || (index == ENTR_ZORAS_RIVER_3 && Entrance_GetIsEntranceDiscovered(ENTR_ZORAS_RIVER_WEST_EXIT))) {
+        if ((index == ENTR_ZORAS_RIVER_WEST_EXIT && Entrance_GetIsEntranceDiscovered(ENTR_ZORAS_RIVER_3)) ||
+            (index == ENTR_ZORAS_RIVER_3 && Entrance_GetIsEntranceDiscovered(ENTR_ZORAS_RIVER_WEST_EXIT))) {
             isDiscovered = true;
-        } else if ((index == ENTR_HYRULE_FIELD_RIVER_EXIT && Entrance_GetIsEntranceDiscovered(ENTR_HYRULE_FIELD_14)) || (index == ENTR_HYRULE_FIELD_14 && Entrance_GetIsEntranceDiscovered(ENTR_HYRULE_FIELD_RIVER_EXIT))) {
+        } else if ((index == ENTR_HYRULE_FIELD_RIVER_EXIT && Entrance_GetIsEntranceDiscovered(ENTR_HYRULE_FIELD_14)) ||
+                   (index == ENTR_HYRULE_FIELD_14 && Entrance_GetIsEntranceDiscovered(ENTR_HYRULE_FIELD_RIVER_EXIT))) {
             isDiscovered = true;
         }
     }
@@ -444,16 +445,18 @@ const EntranceData* GetEntranceData(s16 index) {
     return nullptr;
 }
 
-// Used for verifying the names on both sides of entrance pairs match. Keeping for ease of use for further name changes later
+// Used for verifying the names on both sides of entrance pairs match. Keeping for ease of use for further name changes
+// later
 // TODO: Figure out how to remove the need for duplicate entrance names so this is no longer necessary
 void CheckEntranceNames() {
-        SPDLOG_ERROR("Checking entrance names:");
+    SPDLOG_ERROR("Checking entrance names:");
     for (size_t i = 0; i < ARRAY_COUNT(entranceData); i++) {
         auto entrance = &entranceData[i];
         auto reverse = GetEntranceData(entrance->reverseIndex);
         if (entrance != nullptr && reverse != nullptr) {
             if (entrance->source != reverse->destination) {
-                SPDLOG_ERROR("{}({}) -> {}({})", entrance->source, entrance->index, reverse->destination, reverse->reverseIndex);
+                SPDLOG_ERROR("{}({}) -> {}({})", entrance->source, entrance->index, reverse->destination,
+                             reverse->reverseIndex);
             }
         }
     }
@@ -587,12 +590,12 @@ void ClearEntranceTrackingData() {
     currentGrottoId = -1;
     lastEntranceIndex = -1;
     lastSceneOrEntranceDetected = -1;
-    gEntranceTrackingData = {0};
+    gEntranceTrackingData = { 0 };
 }
 
 void InitEntranceTrackingData() {
     auto entranceCtx = Rando::Context::GetInstance()->GetEntranceShuffler();
-    gEntranceTrackingData = {0};
+    gEntranceTrackingData = { 0 };
 
     // Check if entrance randomization is disabled
     if (!OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ENTRANCES)) {
@@ -665,7 +668,8 @@ void EntranceTrackerSettingsWindow::DrawElement() {
 
     ImGui::TableNextColumn();
 
-    if (ImGui::BeginTable("entranceTrackerSubSettings", 2, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingStretchProp)) {
+    if (ImGui::BeginTable("entranceTrackerSubSettings", 2,
+                          ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingStretchProp)) {
         ImGui::TableSetupColumn("column 1", ImGuiTableColumnFlags_WidthStretch, 150.0f);
         ImGui::TableSetupColumn("column 2", ImGuiTableColumnFlags_WidthStretch, 150.0f);
 
@@ -673,26 +677,41 @@ void EntranceTrackerSettingsWindow::DrawElement() {
 
         ImGui::Text("Sort By");
         UIWidgets::CVarRadioButton("To", CVAR_TRACKER_ENTRANCE("SortBy"), 0,
-                                    UIWidgets::RadioButtonsOptions()
-                                        .Color(THEME_COLOR).Tooltip("Sort entrances by the original source entrance"));
-        UIWidgets::CVarRadioButton("From", CVAR_TRACKER_ENTRANCE("SortBy"), 1,
-                                    UIWidgets::RadioButtonsOptions()
-                                        .Color(THEME_COLOR).Tooltip("Sort entrances by the overrided destination"));
+                                   UIWidgets::RadioButtonsOptions()
+                                       .Color(THEME_COLOR)
+                                       .Tooltip("Sort entrances by the original source entrance"));
+        UIWidgets::CVarRadioButton(
+            "From", CVAR_TRACKER_ENTRANCE("SortBy"), 1,
+            UIWidgets::RadioButtonsOptions().Color(THEME_COLOR).Tooltip("Sort entrances by the overrided destination"));
 
         ImGui::Text("List Items");
-        UIWidgets::CVarCheckbox("Auto scroll", CVAR_TRACKER_ENTRANCE("AutoScroll"),
-            UIWidgets::CheckboxOptions().Tooltip("Automatically scroll to the first aviable entrance in the current scene").Color(THEME_COLOR));
+        UIWidgets::CVarCheckbox(
+            "Auto scroll", CVAR_TRACKER_ENTRANCE("AutoScroll"),
+            UIWidgets::CheckboxOptions()
+                .Tooltip("Automatically scroll to the first available entrance in the current scene")
+                .Color(THEME_COLOR));
         UIWidgets::CVarCheckbox("Highlight previous", CVAR_TRACKER_ENTRANCE("HighlightPrevious"),
-                UIWidgets::CheckboxOptions().Tooltip("Highlight the previous entrance that Link came from").Color(THEME_COLOR));
+                                UIWidgets::CheckboxOptions()
+                                    .Tooltip("Highlight the previous entrance that Link came from")
+                                    .Color(THEME_COLOR));
         UIWidgets::CVarCheckbox("Highlight available", CVAR_TRACKER_ENTRANCE("HighlightAvailable"),
-                UIWidgets::CheckboxOptions().Tooltip("Highlight available entrances in the current scene").Color(THEME_COLOR));
+                                UIWidgets::CheckboxOptions()
+                                    .Tooltip("Highlight available entrances in the current scene")
+                                    .Color(THEME_COLOR));
         UIWidgets::CVarCheckbox("Hide undiscovered", CVAR_TRACKER_ENTRANCE("CollapseUndiscovered"),
-                UIWidgets::CheckboxOptions().Tooltip("Collapse undiscovered entrances towards the bottom of each group").Color(THEME_COLOR));
-        bool disableHideReverseEntrances = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_ON;
-        static const char* disableHideReverseEntrancesText = "This option is disabled because \"Decouple Entrances\" is enabled.";
+                                UIWidgets::CheckboxOptions()
+                                    .Tooltip("Collapse undiscovered entrances towards the bottom of each group")
+                                    .Color(THEME_COLOR));
+        bool disableHideReverseEntrances =
+            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_ON;
+        static const char* disableHideReverseEntrancesText =
+            "This option is disabled because \"Decouple Entrances\" is enabled.";
         UIWidgets::CVarCheckbox("Hide reverse", CVAR_TRACKER_ENTRANCE("HideReverseEntrances"),
-            UIWidgets::CheckboxOptions({ {.disabled = disableHideReverseEntrances, .disabledTooltip = disableHideReverseEntrancesText }})
-                .Tooltip("Hide reverse entrance transitions when Decouple Entrances is off").DefaultValue(true).Color(THEME_COLOR));
+                                UIWidgets::CheckboxOptions({ { .disabled = disableHideReverseEntrances,
+                                                               .disabledTooltip = disableHideReverseEntrancesText } })
+                                    .Tooltip("Hide reverse entrance transitions when Decouple Entrances is off")
+                                    .DefaultValue(true)
+                                    .Color(THEME_COLOR));
 
         ImGui::TableNextColumn();
 
@@ -705,10 +724,13 @@ void EntranceTrackerSettingsWindow::DrawElement() {
             UIWidgets::RadioButtonsOptions().Color(THEME_COLOR).Tooltip("Group entrances by their entrance type"));
 
         ImGui::Text("Spoiler Reveal");
-        UIWidgets::CVarCheckbox("Show Source", CVAR_TRACKER_ENTRANCE("ShowFrom"),
-                UIWidgets::CheckboxOptions().Tooltip("Reveal the sourcefor undiscovered entrances").Color(THEME_COLOR));
+        UIWidgets::CVarCheckbox(
+            "Show Source", CVAR_TRACKER_ENTRANCE("ShowFrom"),
+            UIWidgets::CheckboxOptions().Tooltip("Reveal the sourcefor undiscovered entrances").Color(THEME_COLOR));
         UIWidgets::CVarCheckbox("Show Destination", CVAR_TRACKER_ENTRANCE("ShowTo"),
-                UIWidgets::CheckboxOptions().Tooltip("Reveal the destination for undiscovered entrances").Color(THEME_COLOR));
+                                UIWidgets::CheckboxOptions()
+                                    .Tooltip("Reveal the destination for undiscovered entrances")
+                                    .Color(THEME_COLOR));
 
         ImGui::EndTable();
     }
@@ -742,18 +764,21 @@ void EntranceTrackerWindow::DrawElement() {
     static ImGuiTextFilter locationSearch;
 
     uint8_t nextTreeState = 0;
-    if (UIWidgets::Button("Collapse All", UIWidgets::ButtonOptions({{ .tooltip = "Collapse all entrance groups" }})
-        .Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline))) {
+    if (UIWidgets::Button("Collapse All", UIWidgets::ButtonOptions({ { .tooltip = "Collapse all entrance groups" } })
+                                              .Color(THEME_COLOR)
+                                              .Size(UIWidgets::Sizes::Inline))) {
         nextTreeState = 1;
     }
     ImGui::SameLine();
-    if (UIWidgets::Button("Expand All", UIWidgets::ButtonOptions({{ .tooltip = "Expand all entrance groups" }})
-        .Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline))) {
+    if (UIWidgets::Button("Expand All", UIWidgets::ButtonOptions({ { .tooltip = "Expand all entrance groups" } })
+                                            .Color(THEME_COLOR)
+                                            .Size(UIWidgets::Sizes::Inline))) {
         nextTreeState = 2;
     }
     ImGui::SameLine();
-    if (UIWidgets::Button("Clear", UIWidgets::ButtonOptions({{ .tooltip = "Clear the search field" }})
-        .Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline))) {
+    if (UIWidgets::Button("Clear", UIWidgets::ButtonOptions({ { .tooltip = "Clear the search field" } })
+                                       .Color(THEME_COLOR)
+                                       .Size(UIWidgets::Sizes::Inline))) {
         locationSearch.Clear();
     }
 
@@ -771,7 +796,7 @@ void EntranceTrackerWindow::DrawElement() {
     size_t groupCount = groupToggle ? ENTRANCE_TYPE_COUNT : SPOILER_ENTRANCE_GROUP_COUNT;
     auto groupNames = groupToggle ? groupTypeNames : spoilerEntranceGroupNames;
 
-    EntranceOverride *entranceList;
+    EntranceOverride* entranceList;
 
     switch (groupType) {
         case ENTRANCE_SOURCE_AREA:
@@ -816,14 +841,17 @@ void EntranceTrackerWindow::DrawElement() {
             const EntranceData* original = GetEntranceData(entrance.index);
             const EntranceData* override = GetEntranceData(entrance.override);
 
-            // If entrance is a dungeon, grotto, or interior entrance, the transition into that area has oneExit set, which means we can filter the return transitions as redundant
-            // if entrances are not decoupled, as this is redundant information. Also checks a setting, enabled by default, for hiding them.
-            // If all of these conditions are met, we skip adding this entrance to any lists.
-            // However, if entrances are decoupled, then all transitions need to be displayed, so we proceed with the filtering
-            if ((original->type == ENTRANCE_TYPE_DUNGEON || original->type == ENTRANCE_TYPE_GROTTO || original->type == ENTRANCE_TYPE_INTERIOR) &&
-                (original->oneExit != 1 && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_OFF) &&
+            // If entrance is a dungeon, grotto, or interior entrance, the transition into that area has oneExit set,
+            // which means we can filter the return transitions as redundant if entrances are not decoupled, as this is
+            // redundant information. Also checks a setting, enabled by default, for hiding them. If all of these
+            // conditions are met, we skip adding this entrance to any lists. However, if entrances are decoupled, then
+            // all transitions need to be displayed, so we proceed with the filtering
+            if ((original->type == ENTRANCE_TYPE_DUNGEON || original->type == ENTRANCE_TYPE_GROTTO ||
+                 original->type == ENTRANCE_TYPE_INTERIOR) &&
+                (original->oneExit != 1 &&
+                 OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_OFF) &&
                 hideReverse == 1) {
-                    continue;
+                continue;
             }
 
             // RANDOTODO: Only show blue warps if bluewarp shuffle is on
@@ -841,18 +869,21 @@ void EntranceTrackerWindow::DrawElement() {
             const char* rplcSrcAreaName = spoilerEntranceGroupNames[override->srcGroup].c_str();
             const char* rplcTypeName = groupTypeNames[override->type].c_str();
 
-            const char* origSrcName = showOriginal ? original->source.c_str()      : "";
+            const char* origSrcName = showOriginal ? original->source.c_str() : "";
             const char* rplcDstName = showOverride ? override->destination.c_str() : "";
 
             // Filter for entrances by group name, type, source/destination names, and meta tags
             if ((!locationSearch.IsActive() && (showOriginal || showOverride || !collapsUndiscovered)) ||
-                ((showOriginal && (locationSearch.PassFilter(origSrcName) || locationSearch.PassFilter(origSrcAreaName) ||
-                locationSearch.PassFilter(origTypeName) || locationSearch.PassFilter(original->metaTag.c_str()))) ||
-                (showOverride && (locationSearch.PassFilter(rplcDstName) || locationSearch.PassFilter(rplcSrcAreaName) ||
-                locationSearch.PassFilter(rplcTypeName) || locationSearch.PassFilter(override->metaTag.c_str()))))) {
+                ((showOriginal &&
+                  (locationSearch.PassFilter(origSrcName) || locationSearch.PassFilter(origSrcAreaName) ||
+                   locationSearch.PassFilter(origTypeName) || locationSearch.PassFilter(original->metaTag.c_str()))) ||
+                 (showOverride &&
+                  (locationSearch.PassFilter(rplcDstName) || locationSearch.PassFilter(rplcSrcAreaName) ||
+                   locationSearch.PassFilter(rplcTypeName) || locationSearch.PassFilter(override->metaTag.c_str()))))) {
 
                 // Detect if a scroll should happen and remember the scene for that scroll
-                if (!doAreaScroll && (lastSceneOrEntranceDetected != LinkIsInArea(original) && LinkIsInArea(original) != -1)) {
+                if (!doAreaScroll &&
+                    (lastSceneOrEntranceDetected != LinkIsInArea(original) && LinkIsInArea(original) != -1)) {
                     lastSceneOrEntranceDetected = LinkIsInArea(original);
                     doAreaScroll = true;
                 }
@@ -886,16 +917,18 @@ void EntranceTrackerWindow::DrawElement() {
 
                     const char* unknown = "???";
 
-                    const char* origSrcName = showOriginal ? original->source.c_str()      : unknown;
+                    const char* origSrcName = showOriginal ? original->source.c_str() : unknown;
                     const char* rplcDstName = showOverride ? override->destination.c_str() : unknown;
 
                     uint32_t color = isDiscovered ? IM_COL32_WHITE : COLOR_GRAY;
 
                     // Handle highlighting and auto scroll
                     if ((original->index == lastEntranceIndex ||
-                        (override->reverseIndex == lastEntranceIndex && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_OFF)) &&
-                            highlightPrevious) {
-                                 color = COLOR_ORANGE;
+                         (override->reverseIndex == lastEntranceIndex &&
+                          OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) ==
+                              RO_GENERIC_OFF)) &&
+                        highlightPrevious) {
+                        color = COLOR_ORANGE;
                     } else if (LinkIsInArea(original) != -1) {
                         if (highlightAvailable) {
                             color = COLOR_GREEN;
@@ -937,10 +970,8 @@ void EntranceTrackerWindow::DrawElement() {
 
 void EntranceTrackerWindow::InitElement() {
     // Setup hooks for loading and clearing the entrance tracker data
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
-        InitEntranceTrackingData();
-    });
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnExitGame>([](int32_t fileNum) {
-        ClearEntranceTrackingData();
-    });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>(
+        [](int32_t fileNum) { InitEntranceTrackingData(); });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnExitGame>(
+        [](int32_t fileNum) { ClearEntranceTrackingData(); });
 }

@@ -14,7 +14,8 @@ class ItemOverride {
     RandomizerGet LooksLike() const;
     RandomizerGet& RefLooksLike();
     Text& GetTrickName();
-    void SetTrickName (Text trickName);
+    void SetTrickName(Text trickName);
+
   private:
     RandomizerCheck mLocation;
     RandomizerGet mLooksLike;

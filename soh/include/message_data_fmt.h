@@ -173,6 +173,40 @@
 #define MESSAGE_FISH_INFO               HEX(CTRL_FISH_INFO)
 #define MESSAGE_HIGHSCORE               HEX(CTRL_HIGHSCORE)
 #define MESSAGE_TIME                    HEX(CTRL_TIME)
+
+#define MESSAGE_NEWLINE_JPN             0x000A
+#define MESSAGE_END_JPN                 0x8170
+#define MESSAGE_BOX_BREAK_JPN           0x81A5
+#define MESSAGE_COLOR_JPN               0x000B
+#define MESSAGE_SHIFT_JPN               0x86C7
+#define MESSAGE_TEXTID_JPN              0x81CB
+#define MESSAGE_QUICKTEXT_ENABLE_JPN    0x8189
+#define MESSAGE_QUICKTEXT_DISABLE_JPN   0x818A
+#define MESSAGE_PERSISTENT_JPN          0x86C8
+#define MESSAGE_EVENT_JPN               0x819F
+#define MESSAGE_BOX_BREAK_DELAYED_JPN   0x81A3
+#define MESSAGE_AWAIT_BUTTON_PRESS_JPN  0x81A4
+#define MESSAGE_FADE_JPN                0x819E
+#define MESSAGE_NAME_JPN                0x874F
+#define MESSAGE_OCARINA_JPN             0x81F0
+#define MESSAGE_FADE2_JPN               0x81F4
+#define MESSAGE_SFX_JPN                 0x81F3
+#define MESSAGE_ITEM_ICON_JPN           0x819A
+#define MESSAGE_TEXT_SPEED_JPN          0x86C9
+#define MESSAGE_BACKGROUND_JPN          0x86B3
+#define MESSAGE_MARATHON_TIME_JPN       0x8791
+#define MESSAGE_RACE_TIME_JPN           0x8792
+#define MESSAGE_POINTS_JPN              0x879B
+#define MESSAGE_TOKENS_JPN              0x86A3
+#define MESSAGE_UNSKIPPABLE_JPN         0x8199
+#define MESSAGE_TWO_CHOICE_JPN          0x81BC
+#define MESSAGE_THREE_CHOICE_JPN        0x81B8
+#define MESSAGE_FISH_INFO_JPN           0x86A4
+#define MESSAGE_HIGHSCORE_JPN           0x869F
+#define MESSAGE_TIME_JPN                0x81A1
+
+#define MESSAGE_SPACE_JPN               0x8140
+
 #endif
 
 #endif

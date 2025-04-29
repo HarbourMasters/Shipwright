@@ -14,4 +14,4 @@ void ObjTsubo_RandomizerInit(void* actorRef);
 
 void ShufflePots_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs);
 
-#endif //SHUFFLEPOTS_H
+#endif // SHUFFLEPOTS_H

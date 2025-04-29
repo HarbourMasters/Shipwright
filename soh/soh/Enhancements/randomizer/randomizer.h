@@ -26,7 +26,6 @@ class Randomizer {
   public:
     Randomizer();
     ~Randomizer();
-    
     static Sprite* GetSeedTexture(uint8_t index);
     bool SpoilerFileExists(const char* spoilerFileName);
     bool IsTrialRequired(s32 trialFlag);
@@ -40,8 +39,13 @@ class Randomizer {
     CowIdentity IdentifyCow(s32 sceneNum, s32 posX, s32 posZ);
     PotIdentity IdentifyPot(s32 sceneNum, s32 posX, s32 posZ);
     FishIdentity IdentifyFish(s32 sceneNum, s32 actorParams);
-    GetItemEntry GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId, bool checkObtainability = true);
-    GetItemEntry GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId, bool checkObtainability = true);
+    GrassIdentity IdentifyGrass(s32 sceneNum, s32 posX, s32 posZ, s32 respawnData, s32 linkAge);
+    CrateIdentity IdentifyCrate(s32 sceneNum, s32 posX, s32 posZ);
+    SmallCrateIdentity IdentifySmallCrate(s32 sceneNum, s32 posX, s32 posZ);
+    GetItemEntry GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId,
+                                       bool checkObtainability = true);
+    GetItemEntry GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId,
+                                  bool checkObtainability = true);
     ItemObtainability GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
     ItemObtainability GetItemObtainabilityFromRandomizerGet(RandomizerGet randomizerCheck);
     RandomizerCheck GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
@@ -56,4 +60,3 @@ bool GenerateRandomizer(std::string seed = "");
 #ifdef __cplusplus
 }
 #endif
-

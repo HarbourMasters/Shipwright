@@ -215,7 +215,7 @@ void EnGoroiwa_ReverseDirection(EnGoroiwa* this) {
 }
 
 void EnGoroiwa_InitPath(EnGoroiwa* this, PlayState* play) {
-    this->endWaypoint = play->setupPathList [this->actor.params & 0xFF].count - 1;
+    this->endWaypoint = play->setupPathList[this->actor.params & 0xFF].count - 1;
     this->currentWaypoint = 0;
     this->nextWaypoint = 1;
     this->pathDirection = 1;
@@ -389,8 +389,8 @@ s32 EnGoroiwa_MoveDownToNextWaypoint(EnGoroiwa* this, PlayState* play) {
                 raycastFrom.x = this->actor.world.pos.x;
                 raycastFrom.y = this->actor.world.pos.y + 50.0f;
                 raycastFrom.z = this->actor.world.pos.z;
-                floorY = BgCheck_EntityRaycastFloor5(play, &play->colCtx, &floorPoly, &floorBgId,
-                                                     &this->actor, &raycastFrom);
+                floorY = BgCheck_EntityRaycastFloor5(play, &play->colCtx, &floorPoly, &floorBgId, &this->actor,
+                                                     &raycastFrom);
                 yDistToFloor = floorY - (this->actor.world.pos.y - 59.5f);
                 if (fabsf(yDistToFloor) < 15.0f) {
                     dustPos.x = this->actor.world.pos.x;
@@ -408,8 +408,8 @@ s32 EnGoroiwa_MoveDownToNextWaypoint(EnGoroiwa* this, PlayState* play) {
         this->actor.world.pos.y = nextPointY - ((this->actor.world.pos.y - nextPointY) * 0.3f);
     }
     if (this->bounceCount == 0 &&
-        WaterBox_GetSurfaceImpl(play, &play->colCtx, this->actor.world.pos.x, this->actor.world.pos.z,
-                                &ySurface, &waterBox) &&
+        WaterBox_GetSurfaceImpl(play, &play->colCtx, this->actor.world.pos.x, this->actor.world.pos.z, &ySurface,
+                                &waterBox) &&
         this->actor.world.pos.y <= ySurface) {
         this->stateFlags |= ENGOROIWA_IN_WATER;
         if (ySurface < thisY) {
@@ -537,8 +537,7 @@ void EnGoroiwa_Init(Actor* thisx, PlayState* play) {
     pathIdx = this->actor.params & 0xFF;
     if (pathIdx == 0xFF) {
         // "Error: Invalid arg_data"
-        osSyncPrintf("Ｅｒｒｏｒ : arg_data が不正(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
-                     this->actor.params);
+        osSyncPrintf("Ｅｒｒｏｒ : arg_data が不正(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__, this->actor.params);
         Actor_Kill(&this->actor);
         return;
     }
@@ -725,7 +724,8 @@ void EnGoroiwa_Update(Actor* thisx, PlayState* play) {
     s32 pad;
     s32 sp30;
 
-    if (!(player->stateFlags1 & (PLAYER_STATE1_TALKING | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE))) {
+    if (!(player->stateFlags1 &
+          (PLAYER_STATE1_TALKING | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE))) {
         if (this->collisionDisabledTimer > 0) {
             this->collisionDisabledTimer--;
         }

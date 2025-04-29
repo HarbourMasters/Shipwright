@@ -68,9 +68,10 @@ extern "C" void CustomLogoTitle_Draw(TitleContext* titleContext, uint8_t logoToD
     gDPSetCycleType(POLY_OPA_DISP++, G_CYC_2CYCLE);
     gDPSetRenderMode(POLY_OPA_DISP++, G_RM_XLU_SURF2, G_RM_OPA_CI | CVG_DST_WRAP);
     gDPSetCombineLERP(POLY_OPA_DISP++, TEXEL1, PRIMITIVE, ENV_ALPHA, TEXEL0, 0, 0, 0, TEXEL0, PRIMITIVE, ENVIRONMENT,
-        COMBINED, ENVIRONMENT, COMBINED, 0, PRIMITIVE, 0);
+                      COMBINED, ENVIRONMENT, COMBINED, 0, PRIMITIVE, 0);
     if (CVarGetInteger(CVAR_COSMETIC("Title.NintendoLogo.Changed"), 0)) {
-        Color_RGB8 nintendoLogoColor = CVarGetColor24(CVAR_COSMETIC("Title.NintendoLogo.Value"), Color_RGB8{0, 0, 255});
+        Color_RGB8 nintendoLogoColor =
+            CVarGetColor24(CVAR_COSMETIC("Title.NintendoLogo.Value"), Color_RGB8{ 0, 0, 255 });
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
         gDPSetEnvColor(POLY_OPA_DISP++, nintendoLogoColor.r, nintendoLogoColor.g, nintendoLogoColor.b, 128);
     } else {
@@ -79,16 +80,16 @@ extern "C" void CustomLogoTitle_Draw(TitleContext* titleContext, uint8_t logoToD
     }
 
     gDPLoadMultiBlock(POLY_OPA_DISP++, nintendo_rogo_static_Tex_001800, 0x100, 1, G_IM_FMT_I, G_IM_SIZ_8b, 32, 32, 0,
-        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 2, 11);
+                      G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 2, 11);
 
-    for (idx = 0, y = 94; idx < 16; idx++, y += 2)
-    {
-        gDPLoadMultiTile(POLY_OPA_DISP++, (logoToDraw == LOGO_TO_DRAW_N64) ? nintendo_rogo_static_Tex_000000 : nintendo_rogo_static_Tex_LUS_000000, 0, G_TX_RENDERTILE, G_IM_FMT_I, G_IM_SIZ_8b, 192, 32,
-                         0, idx * 2, 192 - 1, (idx + 1) * 2 - 1, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
-                         G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-        
-        gDPSetTileSize(POLY_OPA_DISP++, 0, 0, 0, (192 - 1) << G_TEXTURE_IMAGE_FRAC,
-                       (2 - 1) << G_TEXTURE_IMAGE_FRAC);
+    for (idx = 0, y = 94; idx < 16; idx++, y += 2) {
+        gDPLoadMultiTile(
+            POLY_OPA_DISP++,
+            (logoToDraw == LOGO_TO_DRAW_N64) ? nintendo_rogo_static_Tex_000000 : nintendo_rogo_static_Tex_LUS_000000, 0,
+            G_TX_RENDERTILE, G_IM_FMT_I, G_IM_SIZ_8b, 192, 32, 0, idx * 2, 192 - 1, (idx + 1) * 2 - 1, 0,
+            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+
+        gDPSetTileSize(POLY_OPA_DISP++, 0, 0, 0, (192 - 1) << G_TEXTURE_IMAGE_FRAC, (2 - 1) << G_TEXTURE_IMAGE_FRAC);
 
         gDPSetTileSize(POLY_OPA_DISP++, 1, titleContext->uls, (titleContext->ult & 0x7F) - idx * 4, 0, 0);
         gSPTextureRectangle(POLY_OPA_DISP++, 388, y << 2, 1156, (y + 2) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
@@ -99,13 +100,13 @@ extern "C" void CustomLogoTitle_Draw(TitleContext* titleContext, uint8_t logoToD
         f32 scale = 0.4f;
 
         gSPSegment(POLY_OPA_DISP++, 0x08,
-                    (uintptr_t)Gfx_TwoTexScroll(titleContext->state.gfxCtx, 0, 0, (0 - 1) % 128, 32, 32, 1,
-                                    0, (1 * -2) % 128, 32, 32));
+                   (uintptr_t)Gfx_TwoTexScroll(titleContext->state.gfxCtx, 0, 0, (0 - 1) % 128, 32, 32, 1, 0,
+                                               (1 * -2) % 128, 32, 32));
 
         Matrix_Translate(0.0f, -10.0f, 0.0f, MTXMODE_APPLY);
         Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(titleContext->state.gfxCtx),
-                    G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 50, 100, 255);
         gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gEffIceFragment3DL);
     }
@@ -117,7 +118,7 @@ extern "C" void CustomLogoTitle_Draw(TitleContext* titleContext, uint8_t logoToD
     CLOSE_DISPS(titleContext->state.gfxCtx);
 }
 
-#define CVAR_BOOTSEQUENCE_NAME CVAR_ENHANCEMENT("BootSequence")
+#define CVAR_BOOTSEQUENCE_NAME CVAR_SETTING("BootSequence")
 #define CVAR_BOOTSEQUENCE_DEFAULT BOOTSEQUENCE_DEFAULT
 #define CVAR_BOOTSEQUENCE_VALUE CVarGetInteger(CVAR_BOOTSEQUENCE_NAME, CVAR_BOOTSEQUENCE_DEFAULT)
 
@@ -150,7 +151,7 @@ extern "C" void CustomLogoTitle_Main(TitleContext* titleContext) {
         gSaveContext.natureAmbienceId = 0xFF;
         gSaveContext.gameMode = GAMEMODE_TITLE_SCREEN;
         titleContext->state.running = false;
-        
+
         logosSeen++;
 
         if (CVAR_BOOTSEQUENCE_VALUE == BOOTSEQUENCE_DEFAULT && logosSeen == 1) {
@@ -171,7 +172,7 @@ extern "C" void CustomLogoTitle_Main(TitleContext* titleContext) {
 
 // // // //
 // Always
-// 
+//
 
 void OnZTitleInitReplaceTitleMainWithCustom(void* gameState) {
     TitleContext* titleContext = (TitleContext*)gameState;
@@ -198,7 +199,7 @@ static RegisterShipInitFunc initFuncAlways(RegisterCustomLogoTitle);
 
 // // // // // //
 // Bootsequence
-// 
+//
 
 void OnZTitleUpdateSkipToFileSelect(void* gameState) {
     TitleContext* titleContext = (TitleContext*)gameState;
@@ -219,7 +220,7 @@ static RegisterShipInitFunc initFuncBootsequence(RegisterCustomLogoTitleBootsequ
 
 // // // // // //
 // Let it Snow
-// 
+//
 
 #define CVAR_LETITSNOW_NAME CVAR_GENERAL("LetItSnow")
 #define CVAR_LETITSNOW_DEFAULT 0

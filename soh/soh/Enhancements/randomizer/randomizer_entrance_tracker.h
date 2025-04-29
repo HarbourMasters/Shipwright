@@ -76,8 +76,12 @@ typedef struct {
 
 extern EntranceTrackingData gEntranceTrackingData;
 
-#define SINGLE_SCENE_INFO(scene) {{ scene, -1 }}
-#define SCENE_NO_SPAWN(scene) { scene, -1 }
+#define SINGLE_SCENE_INFO(scene) \
+    {                            \
+        { scene, -1 }            \
+    }
+#define SCENE_NO_SPAWN(scene) \
+    { scene, -1 }
 
 void SetCurrentGrottoIDForTracker(int16_t entranceIndex);
 void SetLastEntranceOverrideForTracker(int16_t entranceIndex);
@@ -92,9 +96,9 @@ class EntranceTrackerSettingsWindow : public Ship::GuiWindow {
     using GuiWindow::GuiWindow;
 
   protected:
-    void InitElement() override {};
+    void InitElement() override{};
     void DrawElement() override;
-    void UpdateElement() override {};
+    void UpdateElement() override{};
 };
 
 class EntranceTrackerWindow : public Ship::GuiWindow {
@@ -104,5 +108,5 @@ class EntranceTrackerWindow : public Ship::GuiWindow {
 
     void InitElement() override;
     void DrawElement() override;
-    void UpdateElement() override {};
+    void UpdateElement() override{};
 };

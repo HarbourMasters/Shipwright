@@ -5,6 +5,7 @@
 using namespace Rando;
 
 void RegionTable_Init_GerudoTrainingGround() {
+    // clang-format off
     // Vanilla/MQ Decider
     areaTable[RR_GERUDO_TRAINING_GROUND_ENTRYWAY] = Region("Gerudo Training Ground Entryway", "Gerudo Training Ground", {RA_GERUDO_TRAINING_GROUND}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
@@ -151,7 +152,11 @@ void RegionTable_Init_GerudoTrainingGround() {
     areaTable[RR_GERUDO_TRAINING_GROUND_MQ_MAZE_CENTER] = Region("Gerudo Training Ground MQ Center", "Gerudo Training Ground", {RA_GERUDO_TRAINING_GROUND}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->MQGTGMazeSwitch, []{return logic->CanUse(RG_MEGATON_HAMMER);}),
-    }, {}, {
+    }, 
+    {   //Locations
+        LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_MAZE_CRATE, logic->CanBreakCrates()),
+    },
+    {
         //Exits
         Entrance(RR_GERUDO_TRAINING_GROUND_MQ_MAZE_FIRST_LOCK, []{return logic->SmallKeys(RR_GERUDO_TRAINING_GROUND, 3);}),
     });
@@ -321,4 +326,5 @@ void RegionTable_Init_GerudoTrainingGround() {
     });
 
 #pragma endregion
+    // clang-format on
 }

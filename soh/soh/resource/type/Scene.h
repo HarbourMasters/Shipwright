@@ -10,14 +10,15 @@
 namespace SOH {
 
 class Scene : public Ship::Resource<void> {
-public:
-  using Resource::Resource;
+  public:
+    using Resource::Resource;
 
-    Scene() : Resource(std::shared_ptr<Ship::ResourceInitData>()) {}
+    Scene() : Resource(std::shared_ptr<Ship::ResourceInitData>()) {
+    }
 
     void* GetPointer();
-  size_t GetPointerSize();
+    size_t GetPointerSize();
 
-  std::vector<std::shared_ptr<ISceneCommand>> commands;
+    std::vector<std::shared_ptr<ISceneCommand>> commands;
 };
-}; // namespace LUS
+}; // namespace SOH

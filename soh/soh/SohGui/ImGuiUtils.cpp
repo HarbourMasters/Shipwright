@@ -125,27 +125,29 @@ std::map<uint32_t, ItemMapEntry> itemMapping = {
     ITEM_MAP_ENTRY(ITEM_DUNGEON_MAP),
     ITEM_MAP_ENTRY(ITEM_KEY_SMALL),
     ITEM_MAP_ENTRY(ITEM_MAGIC_SMALL),
-    ITEM_MAP_ENTRY(ITEM_MAGIC_LARGE)
+    ITEM_MAP_ENTRY(ITEM_MAGIC_LARGE),
 };
 
 std::map<uint32_t, ItemMapEntry> gregMapping = {
-    {ITEM_RUPEE_GREEN, {ITEM_RUPEE_GREEN, "ITEM_RUPEE_GREEN", "ITEM_RUPEE_GREEN_Faded", gRupeeCounterIconTex}}
+    { ITEM_RUPEE_GREEN, { ITEM_RUPEE_GREEN, "ITEM_RUPEE_GREEN", "ITEM_RUPEE_GREEN_Faded", gRupeeCounterIconTex } }
 };
 
 std::map<uint32_t, ItemMapEntry> triforcePieceMapping = {
-    {RG_TRIFORCE_PIECE, {RG_TRIFORCE_PIECE, "RG_TRIFORCE_PIECE", "RG_TRIFORCE_PIECE_Faded", gTriforcePieceTex}}
+    { RG_TRIFORCE_PIECE, { RG_TRIFORCE_PIECE, "RG_TRIFORCE_PIECE", "RG_TRIFORCE_PIECE_Faded", gTriforcePieceTex } }
 };
 
 std::map<uint32_t, ItemMapEntry> bossSoulMapping = {
-    { RG_GOHMA_SOUL,        { RG_GOHMA_SOUL,        "RG_GOHMA_SOUL",        "RG_GOHMA_SOUL_Faded",          gBossSoulTex } },
-    { RG_KING_DODONGO_SOUL, { RG_KING_DODONGO_SOUL, "RG_KING_DODONGO_SOUL", "RG_KING_DODONGO_SOUL_Faded",   gBossSoulTex } },
-    { RG_BARINADE_SOUL,     { RG_BARINADE_SOUL,     "RG_BARINADE_SOUL",     "RG_BARINADE_SOUL_Faded",       gBossSoulTex } },
-    { RG_PHANTOM_GANON_SOUL,{ RG_PHANTOM_GANON_SOUL,"RG_PHANTOM_GANON_SOUL","RG_PHANTOM_GANON_SOUL_Faded",  gBossSoulTex } },
-    { RG_VOLVAGIA_SOUL,     { RG_VOLVAGIA_SOUL,     "RG_VOLVAGIA_SOUL",     "RG_VOLVAGIA_SOUL_Faded",       gBossSoulTex } },
-    { RG_MORPHA_SOUL,       { RG_MORPHA_SOUL,       "RG_MORPHA_SOUL",       "RG_MORPHA_SOUL_Faded",         gBossSoulTex } },
-    { RG_BONGO_BONGO_SOUL,  { RG_BONGO_BONGO_SOUL,  "RG_BONGO_BONGO_SOUL",  "RG_BONGO_BONGO_SOUL_Faded",    gBossSoulTex } },
-    { RG_TWINROVA_SOUL,     { RG_TWINROVA_SOUL,     "RG_TWINROVA_SOUL",     "RG_TWINROVA_SOUL_Faded",       gBossSoulTex } },
-    { RG_GANON_SOUL,        { RG_GANON_SOUL,        "RG_GANON_SOUL",        "RG_GANON_SOUL_Faded",          gBossSoulTex } },
+    { RG_GOHMA_SOUL, { RG_GOHMA_SOUL, "RG_GOHMA_SOUL", "RG_GOHMA_SOUL_Faded", gBossSoulTex } },
+    { RG_KING_DODONGO_SOUL,
+      { RG_KING_DODONGO_SOUL, "RG_KING_DODONGO_SOUL", "RG_KING_DODONGO_SOUL_Faded", gBossSoulTex } },
+    { RG_BARINADE_SOUL, { RG_BARINADE_SOUL, "RG_BARINADE_SOUL", "RG_BARINADE_SOUL_Faded", gBossSoulTex } },
+    { RG_PHANTOM_GANON_SOUL,
+      { RG_PHANTOM_GANON_SOUL, "RG_PHANTOM_GANON_SOUL", "RG_PHANTOM_GANON_SOUL_Faded", gBossSoulTex } },
+    { RG_VOLVAGIA_SOUL, { RG_VOLVAGIA_SOUL, "RG_VOLVAGIA_SOUL", "RG_VOLVAGIA_SOUL_Faded", gBossSoulTex } },
+    { RG_MORPHA_SOUL, { RG_MORPHA_SOUL, "RG_MORPHA_SOUL", "RG_MORPHA_SOUL_Faded", gBossSoulTex } },
+    { RG_BONGO_BONGO_SOUL, { RG_BONGO_BONGO_SOUL, "RG_BONGO_BONGO_SOUL", "RG_BONGO_BONGO_SOUL_Faded", gBossSoulTex } },
+    { RG_TWINROVA_SOUL, { RG_TWINROVA_SOUL, "RG_TWINROVA_SOUL", "RG_TWINROVA_SOUL_Faded", gBossSoulTex } },
+    { RG_GANON_SOUL, { RG_GANON_SOUL, "RG_GANON_SOUL", "RG_GANON_SOUL_Faded", gBossSoulTex } },
 };
 
 std::map<uint32_t, QuestMapEntry> questMapping = {
@@ -164,33 +166,27 @@ std::map<uint32_t, QuestMapEntry> questMapping = {
 };
 
 std::map<QuestItem, SongMapEntry> songMapping = {
-    SONG_MAP_ENTRY(QUEST_SONG_LULLABY,  224, 107, 255),
-    SONG_MAP_ENTRY(QUEST_SONG_EPONA,    255, 195, 60),
-    SONG_MAP_ENTRY(QUEST_SONG_SARIA,    127, 255, 137),
-    SONG_MAP_ENTRY(QUEST_SONG_SUN,      255, 255, 60),
-    SONG_MAP_ENTRY(QUEST_SONG_TIME,     119, 236, 255),
-    SONG_MAP_ENTRY(QUEST_SONG_STORMS,   165, 165, 165),
-    SONG_MAP_ENTRY(QUEST_SONG_MINUET,   150, 255, 100),
-    SONG_MAP_ENTRY(QUEST_SONG_BOLERO,   255, 80,  40),
-    SONG_MAP_ENTRY(QUEST_SONG_SERENADE, 100, 150, 255),
-    SONG_MAP_ENTRY(QUEST_SONG_REQUIEM,  255, 160, 0),
-    SONG_MAP_ENTRY(QUEST_SONG_NOCTURNE, 255, 100, 255),
-    SONG_MAP_ENTRY(QUEST_SONG_PRELUDE,  255, 240, 100),
+    SONG_MAP_ENTRY(QUEST_SONG_LULLABY, 224, 107, 255),  SONG_MAP_ENTRY(QUEST_SONG_EPONA, 255, 195, 60),
+    SONG_MAP_ENTRY(QUEST_SONG_SARIA, 127, 255, 137),    SONG_MAP_ENTRY(QUEST_SONG_SUN, 255, 255, 60),
+    SONG_MAP_ENTRY(QUEST_SONG_TIME, 119, 236, 255),     SONG_MAP_ENTRY(QUEST_SONG_STORMS, 165, 165, 165),
+    SONG_MAP_ENTRY(QUEST_SONG_MINUET, 150, 255, 100),   SONG_MAP_ENTRY(QUEST_SONG_BOLERO, 255, 80, 40),
+    SONG_MAP_ENTRY(QUEST_SONG_SERENADE, 100, 150, 255), SONG_MAP_ENTRY(QUEST_SONG_REQUIEM, 255, 160, 0),
+    SONG_MAP_ENTRY(QUEST_SONG_NOCTURNE, 255, 100, 255), SONG_MAP_ENTRY(QUEST_SONG_PRELUDE, 255, 240, 100),
 };
 
 std::array<SongMapEntry, 12> vanillaSongMapping = { {
-    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_LULLABY,  255, 255, 255),
-    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_EPONA,    255, 255, 255),
-    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_SARIA,    255, 255, 255),
-    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_SUN,      255, 255, 255),
-    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_TIME,     255, 255, 255),
-    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_STORMS,   255, 255, 255),
-    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_MINUET,   150, 255, 100),
-    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_BOLERO,   255, 80,  40),
+    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_LULLABY, 255, 255, 255),
+    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_EPONA, 255, 255, 255),
+    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_SARIA, 255, 255, 255),
+    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_SUN, 255, 255, 255),
+    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_TIME, 255, 255, 255),
+    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_STORMS, 255, 255, 255),
+    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_MINUET, 150, 255, 100),
+    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_BOLERO, 255, 80, 40),
     VANILLA_SONG_MAP_ENTRY(QUEST_SONG_SERENADE, 100, 150, 255),
-    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_REQUIEM,  255, 160, 0),
+    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_REQUIEM, 255, 160, 0),
     VANILLA_SONG_MAP_ENTRY(QUEST_SONG_NOCTURNE, 255, 100, 255),
-    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_PRELUDE,  255, 240, 100),
+    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_PRELUDE, 255, 240, 100),
 } };
 
 const char* GetTextureForItemId(uint32_t itemId) {
@@ -203,31 +199,41 @@ const char* GetTextureForItemId(uint32_t itemId) {
 
 void RegisterImGuiItemIcons() {
     for (const auto& entry : itemMapping) {
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath, ImVec4(1, 1, 1, 1));
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath,
+                                                                            ImVec4(1, 1, 1, 1));
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(
+            entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
     }
 
     for (const auto& entry : gregMapping) {
         ImVec4 gregGreen = ImVec4(42.0f / 255.0f, 169.0f / 255.0f, 40.0f / 255.0f, 1.0f);
         ImVec4 gregFadedGreen = gregGreen;
         gregFadedGreen.w = 0.3f;
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath, gregGreen);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, gregFadedGreen);
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath,
+                                                                            gregGreen);
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.nameFaded,
+                                                                            entry.second.texturePath, gregFadedGreen);
     }
 
     for (const auto& entry : triforcePieceMapping) {
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath, ImVec4(1, 1, 1, 1));
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath,
+                                                                            ImVec4(1, 1, 1, 1));
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(
+            entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
     }
 
     for (const auto& entry : bossSoulMapping) {
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath, ImVec4(1, 1, 1, 1));
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath,
+                                                                            ImVec4(1, 1, 1, 1));
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(
+            entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
     }
 
     for (const auto& entry : questMapping) {
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath, ImVec4(1, 1, 1, 1));
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath,
+                                                                            ImVec4(1, 1, 1, 1));
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(
+            entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
     }
 
     for (const auto& [quest, entry] : songMapping) {

@@ -42,10 +42,12 @@ void Mouse_HandleThirdPerson(f32* newCamX, f32* newCamY) {
 void Mouse_HandleFirstPerson(Player* player) {
     f32 xAxisMulti = CVarGetFloat(CVAR_SETTING("FirstPersonCameraSensitivity.X"), 1.0f);
     f32 yAxisMulti = CVarGetFloat(CVAR_SETTING("FirstPersonCameraSensitivity.Y"), 1.0f);
-    s8 invertXAxisMulti = ((CVarGetInteger(CVAR_SETTING("Controls.InvertAimingXAxis"), 0)
-                        && !CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0))
-                            || (!CVarGetInteger(CVAR_SETTING("Controls.InvertAimingXAxis"), 0)
-                        && CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0))) ? -1 : 1;
+    s8 invertXAxisMulti = ((CVarGetInteger(CVAR_SETTING("Controls.InvertAimingXAxis"), 0) &&
+                            !CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) ||
+                           (!CVarGetInteger(CVAR_SETTING("Controls.InvertAimingXAxis"), 0) &&
+                            CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)))
+                              ? -1
+                              : 1;
     s8 invertYAxisMulti = CVarGetInteger(CVAR_SETTING("Controls.InvertAimingYAxis"), 1) ? 1 : -1;
     if (MOUSE_ENABLED) {
         player->actor.focus.rot.y -= mouseCoordRel.x * 6.0f * xAxisMulti * invertXAxisMulti;
@@ -57,7 +59,7 @@ void Mouse_RecenterCursor() {
     u32 width = GetWindow()->GetWidth();
     u32 height = GetWindow()->GetHeight();
     if (MOUSE_ENABLED) {
-        GetWindow()->SetMousePos({(s32) (width/2), (s32) (height/2)});
+        GetWindow()->SetMousePos({ (s32)(width / 2), (s32)(height / 2) });
     }
 }
 
@@ -67,7 +69,8 @@ void Mouse_HandleShield(f32* sp50, f32* sp54) {
         s32 height = GetWindow()->GetHeight();
         f32 xBound = 7200 / ((f32)width / 2);
         f32 yBound = 6000 / ((f32)height / 2);
-        *sp50 += (mouseCoord.x - (width / 2)) * xBound * (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? 1 : -1);
+        *sp50 +=
+            (mouseCoord.x - (width / 2)) * xBound * (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? 1 : -1);
         *sp54 += (mouseCoord.y - (height / 2)) * yBound;
         *sp50 = CLAMP(*sp50, -7200, 7200);
         *sp54 = CLAMP(*sp54, -6000, 6000);
@@ -142,7 +145,7 @@ void Mouse_RegisterUpdateQuickspinCount() {
 }
 
 void Mouse_RegisterHandleQuickspin() {
-    REGISTER_VB_SHOULD(VB_SHOULD_QUICKSPIN, { Mouse_HandleQuickspin(should, va_arg(args, s8*), va_arg(args, s8*)); } );
+    REGISTER_VB_SHOULD(VB_SHOULD_QUICKSPIN, { Mouse_HandleQuickspin(should, va_arg(args, s8*), va_arg(args, s8*)); });
 }
 
 static RegisterShipInitFunc initFunc_shieldRecenter(Mouse_RegisterRecenterCursorOnShield, { CVAR_ENABLE_MOUSE_NAME });
@@ -150,4 +153,4 @@ static RegisterShipInitFunc initFunc_firstPerson(Mouse_RegisterHandleFirstPerson
 static RegisterShipInitFunc initFunc_quickspinCount(Mouse_RegisterUpdateQuickspinCount, { CVAR_ENABLE_MOUSE_NAME });
 static RegisterShipInitFunc initFunc_quickspin(Mouse_RegisterHandleQuickspin, { CVAR_ENABLE_MOUSE_NAME });
 static RegisterShipInitFunc initFunc_shieldMove(Mouse_RegisterHandleShield, { CVAR_ENABLE_MOUSE_NAME });
-} //extern "C"
+} // extern "C"

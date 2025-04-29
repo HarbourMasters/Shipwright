@@ -8,8 +8,7 @@ std::multimap<std::tuple<s16, s16, s32>, RandomizerCheck> Rando::StaticData::Che
 
 std::vector<RandomizerCheck> Rando::StaticData::dungeonRewardLocations = {
     // Bosses
-    RC_QUEEN_GOHMA,   RC_KING_DODONGO, RC_BARINADE,
-    RC_PHANTOM_GANON, RC_VOLVAGIA,     RC_MORPHA,   RC_TWINROVA, RC_BONGO_BONGO,
+    RC_QUEEN_GOHMA, RC_KING_DODONGO, RC_BARINADE, RC_PHANTOM_GANON, RC_VOLVAGIA, RC_MORPHA, RC_TWINROVA, RC_BONGO_BONGO,
 };
 
 using namespace Rando;
@@ -17,7 +16,8 @@ using namespace Rando;
 std::vector<RandomizerCheck> Rando::StaticData::GetPondFishLocations() {
     std::vector<RandomizerCheck> pondFishLocations = {};
     for (Location& location : locationTable) {
-        if (location.GetRCType() == RCTYPE_FISH && location.GetScene() == SCENE_FISHING_POND && location.GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+        if (location.GetRCType() == RCTYPE_FISH && location.GetScene() == SCENE_FISHING_POND &&
+            location.GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
             pondFishLocations.push_back(location.GetRandomizerCheck());
         }
     }
@@ -26,7 +26,8 @@ std::vector<RandomizerCheck> Rando::StaticData::GetPondFishLocations() {
 std::vector<RandomizerCheck> Rando::StaticData::GetOverworldFishLocations() {
     std::vector<RandomizerCheck> overworldFishLocations = {};
     for (Location& location : locationTable) {
-        if (location.GetRCType() == RCTYPE_FISH && location.GetScene() != SCENE_FISHING_POND && location.GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+        if (location.GetRCType() == RCTYPE_FISH && location.GetScene() != SCENE_FISHING_POND &&
+            location.GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
             overworldFishLocations.push_back(location.GetRandomizerCheck());
         }
     }
@@ -113,8 +114,9 @@ std::vector<RandomizerCheck> Rando::StaticData::GetOverworldFairyLocations() {
     return fairyLocations;
 }
 
-void Rando::StaticData::InitLocationTable() { //                                                      Randomizer Check                                                 Quest            Type                                Area                                 Actor ID              Scene ID                            Params                        Flags Short Name                                     Hint Text Key                                                    Vanilla Item                                                        Spoiler Collection Check                                                                                                      Vanilla Progression  Price
+void Rando::StaticData::InitLocationTable() {
     // clang-format off
+    //                                                                                                Randomizer Check                                                 Quest            Type                                Area                                 Actor ID              Scene ID                            Params                        Flags Short Name                                     Hint Text Key                                                    Vanilla Item                                                        Spoiler Collection Check                                                                                                      Vanilla Progression  Price
     locationTable[RC_UNKNOWN_CHECK] =                                                  Location::Base(RC_UNKNOWN_CHECK,                                                RCQUEST_BOTH,    RCTYPE_STANDARD,                    RCAREA_INVALID,                      ACTOR_ID_MAX,         SCENE_ID_MAX,                       0x00,                               "Invalid Location", "Invalid Location",        RHT_NONE,                                                        RG_NONE);
     // Kokiri Forest
     locationTable[RC_KF_KOKIRI_SWORD_CHEST] =                                         Location::Chest(RC_KF_KOKIRI_SWORD_CHEST,                                        RCQUEST_BOTH,    RCTYPE_STANDARD,                                                         ACTOR_EN_BOX,         SCENE_KOKIRI_FOREST,                1248,                         0x00, "Kokiri Sword Chest",                          RHT_KF_KOKIRI_SWORD_CHEST,                                       RG_KOKIRI_SWORD,                                                                                                                                                                                  true);

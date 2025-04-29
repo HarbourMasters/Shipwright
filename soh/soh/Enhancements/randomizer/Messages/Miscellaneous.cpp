@@ -14,17 +14,15 @@ extern "C" {
 void BuildWaterSwitchMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg;
     if (*textId == TEXT_LAKE_HYLIA_WATER_SWITCH_NAVI) {
-        msg = CustomMessage(
-            "%cThis switch is rustier than you think.^%cSomething must be wrong with the pipe system in the %bWater Temple%c.",
-            "%cDieser Schalter scheint rostiger zu sein als er aussieht.^%cEtwas muss mit dem Leitungssystem im %bWassertempel%c nicht stimmen.",
-            "%cCet interrupteur est très rouillé.^%cIl doit y avoir un problème avec la tuyauterie du %bTemple de l'Eau%c."
-        );
+        msg = CustomMessage("%cThis switch is rustier than you think.^%cSomething must be wrong with the pipe system "
+                            "in the %bWater Temple%c.",
+                            "%cDieser Schalter scheint rostiger zu sein als er aussieht.^%cEtwas muss mit dem "
+                            "Leitungssystem im %bWassertempel%c nicht stimmen.",
+                            "%cCet interrupteur est très rouillé.^%cIl doit y avoir un problème avec la tuyauterie du "
+                            "%bTemple de l'Eau%c.");
     } else if (*textId == TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN) {
-        msg = CustomMessage(
-            "Water level control system.&Keep away!",
-            "Wasserstand Kontrollsystem&Finger weg!",
-            "Système de contrôle du niveau&d'eau.&Ne pas toucher!"
-        );
+        msg = CustomMessage("Water level control system.&Keep away!", "Wasserstand Kontrollsystem&Finger weg!",
+                            "Système de contrôle du niveau&d'eau.&Ne pas toucher!");
     }
     msg.AutoFormat();
     msg.LoadIntoFont();
@@ -32,11 +30,10 @@ void BuildWaterSwitchMessage(uint16_t* textId, bool* loadFromMessageTable) {
 }
 
 void BuildShootingGalleryNoBowMessage(uint16_t* textId, bool* loadFromMessageTable) {
-    CustomMessage msg = CustomMessage(
-        "Come back when you have your own bow and you'll get a %rdifferent prize%w!",
-        "Komm wieder sobald Du Deinen eigenen Bogen hast, um einen %rspeziellen Preis%w zu erhalten!",
-        "J'aurai %rune autre récompense%w pour toi lorsque tu auras ton propre arc."
-    );
+    CustomMessage msg =
+        CustomMessage("Come back when you have your own bow and you'll get a %rdifferent prize%w!",
+                      "Komm wieder sobald Du Deinen eigenen Bogen hast, um einen %rspeziellen Preis%w zu erhalten!",
+                      "J'aurai %rune autre récompense%w pour toi lorsque tu auras ton propre arc.");
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;

@@ -42,7 +42,6 @@ class Item {
     void ApplyEffect() const;
     void UndoEffect() const;
 
-    
     const Text& GetName() const;
     const Text& GetArticle() const;
     const std::string& GetColor() const;
@@ -80,4 +79,4 @@ class Item {
     bool playthrough = false;
     std::shared_ptr<GetItemEntry> giEntry;
 };
-}
+} // namespace Rando

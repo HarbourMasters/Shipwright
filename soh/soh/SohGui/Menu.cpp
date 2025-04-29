@@ -80,8 +80,8 @@ void Menu::InsertSidebarSearch() {
 }
 
 void Menu::RemoveSidebarSearch() {
-    uint32_t curIndex =
-        GetVectorIndexOf(menuEntries["Settings"].sidebarOrder, CVarGetString(menuEntries["Settings"].sidebarCvar, "General"));
+    uint32_t curIndex = GetVectorIndexOf(menuEntries["Settings"].sidebarOrder,
+                                         CVarGetString(menuEntries["Settings"].sidebarCvar, "General"));
     menuEntries["Settings"].sidebars.erase("Search");
     std::erase_if(menuEntries["Settings"].sidebarOrder, [](std::string& name) { return name == "Search"; });
     if (curIndex > searchSidebarIndex) {
@@ -192,8 +192,8 @@ uint32_t Menu::DrawSearchResults(std::string& menuSearchText) {
             for (int i = 0; i < sidebar.columnWidgets.size(); i++) {
                 auto& column = sidebar.columnWidgets.at(i);
                 for (auto& info : column) {
-                    if (info.type == WIDGET_SEARCH || info.type == WIDGET_SEPARATOR || info.type == WIDGET_SEPARATOR_TEXT ||
-                        info.isHidden) {
+                    if (info.type == WIDGET_SEARCH || info.type == WIDGET_SEPARATOR ||
+                        info.type == WIDGET_SEPARATOR_TEXT || info.isHidden) {
                         continue;
                     }
                     const char* tooltip = info.options->tooltip;
@@ -527,6 +527,7 @@ void Menu::DrawElement() {
         if (!popout) {
             ImGui::PopStyleVar();
         }
+        ImGui::PopStyleColor();
         ImGui::End();
         return;
     }
@@ -537,6 +538,7 @@ void Menu::DrawElement() {
         if (!popout) {
             ImGui::PopStyleVar();
         }
+        ImGui::PopStyleColor();
         CVarSetInteger(CVAR_SETTING("Menu.Popout"), popped);
         CVarSetFloat(CVAR_SETTING("Menu.PoppedWidth"), poppedSize.x);
         CVarSetFloat(CVAR_SETTING("Menu.PoppedHeight"), poppedSize.y);
@@ -583,7 +585,7 @@ void Menu::DrawElement() {
     if (windowHeight > 800) {
         menuSize.y = windowHeight * 0.9f;
     }
-    
+
     pos += window->WorkRect.GetSize() / 2 - menuSize / 2;
     ImGui::SetNextWindowPos(pos);
     ImGui::BeginChild("Menu Block", menuSize,
@@ -664,13 +666,17 @@ void Menu::DrawElement() {
     options3.size = UIWidgets::Sizes::Inline;
     options3.tooltip = "Quit SoH";
     if (UIWidgets::Button(ICON_FA_POWER_OFF, options3)) {
-        SohGui::mModalWindow->RegisterPopup("Quit SoH", "Are you sure you want to quit SoH?", "Quit", "Cancel", []() {
-            std::shared_ptr<Menu> menu = static_pointer_cast<Menu>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetMenu());
-            if (!menu->IsMenuPopped()) {
-                menu->ToggleVisibility();
-            }
-            Ship::Context::GetInstance()->GetWindow()->Close();
-        }, nullptr);
+        SohGui::mModalWindow->RegisterPopup(
+            "Quit SoH", "Are you sure you want to quit SoH?", "Quit", "Cancel",
+            []() {
+                std::shared_ptr<Menu> menu =
+                    static_pointer_cast<Menu>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetMenu());
+                if (!menu->IsMenuPopped()) {
+                    menu->ToggleVisibility();
+                }
+                Ship::Context::GetInstance()->GetWindow()->Close();
+            },
+            nullptr);
     }
     ImGui::PopStyleVar();
     ImGui::SameLine();

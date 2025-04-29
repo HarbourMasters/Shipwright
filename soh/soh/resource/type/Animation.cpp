@@ -6,11 +6,11 @@ AnimationData* Animation::GetPointer() {
 }
 
 size_t Animation::GetPointerSize() {
-    switch(type) {
+    switch (type) {
         case AnimationType::Normal:
             return sizeof(animationData.animationHeader);
         case AnimationType::Link:
-            return  sizeof(animationData.linkAnimationHeader);
+            return sizeof(animationData.linkAnimationHeader);
         case AnimationType::Curve:
             return sizeof(animationData.transformUpdateIndex);
         case AnimationType::Legacy:

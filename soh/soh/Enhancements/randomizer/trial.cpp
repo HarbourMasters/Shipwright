@@ -2,7 +2,9 @@
 #include "static_data.h"
 
 namespace Rando {
-TrialInfo::TrialInfo(RandomizerHintTextKey nameKey_, TrialKey trialKey_) : nameKey(std::move(nameKey_)), trialKey(std::move(trialKey_)) {}
+TrialInfo::TrialInfo(RandomizerHintTextKey nameKey_, TrialKey trialKey_)
+    : nameKey(std::move(nameKey_)), trialKey(std::move(trialKey_)) {
+}
 TrialInfo::TrialInfo() = default;
 TrialInfo::~TrialInfo() = default;
 
@@ -35,7 +37,7 @@ void TrialInfo::SetAsSkipped() {
 }
 
 Trials::Trials() {
-    for (const auto trial : StaticData::trialData){
+    for (const auto trial : StaticData::trialData) {
         mTrials[trial.first] = TrialInfo(trial.second, static_cast<TrialKey>(trial.first));
     }
 }
@@ -85,7 +87,7 @@ void Trials::ParseJson(nlohmann::json spoilerFileJson) {
 
 std::unordered_map<uint32_t, RandomizerHintTextKey> Trials::GetAllTrialHintHeys() const {
     std::unordered_map<uint32_t, RandomizerHintTextKey> output = {};
-    for (auto trial: mTrials){
+    for (auto trial : mTrials) {
         output[(uint32_t)trial.GetTrialKey()] = trial.GetNameKey();
     }
     return output;

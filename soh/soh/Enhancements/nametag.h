@@ -3,8 +3,8 @@
 #include <z64.h>
 
 typedef struct {
-    const char* tag; // Tag identifier to filter/remove multiple tags 
-    int16_t yOffset; // Additional Y offset to apply for the name tag
+    const char* tag;       // Tag identifier to filter/remove multiple tags
+    int16_t yOffset;       // Additional Y offset to apply for the name tag
     Color_RGBA8 textColor; // Text color override. Global color is used if alpha is 0
 } NameTagOptions;
 

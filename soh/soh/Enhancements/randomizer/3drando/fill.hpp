@@ -34,6 +34,8 @@ struct GetAccessibleLocationsStruct {
   std::vector<RandomizerCheck> itemSphere;
   std::list<Rando::Entrance*> entranceSphere;
 
+  bool calculatingAvailableChecks = false;
+
   GetAccessibleLocationsStruct(int _maxGsCount){
     regionPool = {RR_ROOT};
     gsCount = 0;
@@ -62,7 +64,7 @@ std::vector<RandomizerCheck> GetEmptyLocations(std::vector<RandomizerCheck> allo
 void ProcessRegion(Region* region, GetAccessibleLocationsStruct& gals, RandomizerGet ignore = RG_NONE, 
                    bool stopOnBeatable = false, bool addToPlaythrough = false);
 
-std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerCheck>& allowedLocations, RandomizerGet ignore=RG_NONE);
+std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerCheck>& allowedLocations, RandomizerGet ignore=RG_NONE, bool calculatingAvailableChecks=false);
 
 void GeneratePlaythrough();
 

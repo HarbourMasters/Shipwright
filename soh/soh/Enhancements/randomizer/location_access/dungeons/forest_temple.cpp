@@ -5,6 +5,7 @@
 using namespace Rando;
 
 void RegionTable_Init_ForestTemple() {
+    // clang-format off
     // Vanilla/MQ Decider
     areaTable[RR_FOREST_TEMPLE_ENTRYWAY] = Region("Forest Temple Entryway", "Forest Temple", {RA_FOREST_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
@@ -529,7 +530,14 @@ void RegionTable_Init_ForestTemple() {
     });
 
     //This room exists to show the actual map layout, and for when the crates get added to logic
-    areaTable[RR_FOREST_TEMPLE_MQ_TORCH_SHOT_ROOM] = Region("Forest Temple MQ Torch Shot Room", "Forest Temple", {RA_FOREST_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_FOREST_TEMPLE_MQ_TORCH_SHOT_ROOM] = Region("Forest Temple MQ Torch Shot Room", "Forest Temple", {RA_FOREST_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, 
+    {
+        // Locations
+        LOCATION(RC_FOREST_TEMPLE_MQ_FROZEN_EYE_SWITCH_SMALL_CRATE_1, logic->CanBreakSmallCrates()),
+        LOCATION(RC_FOREST_TEMPLE_MQ_FROZEN_EYE_SWITCH_SMALL_CRATE_2, logic->CanBreakSmallCrates()),
+        LOCATION(RC_FOREST_TEMPLE_MQ_FROZEN_EYE_SWITCH_SMALL_CRATE_3, logic->CanBreakSmallCrates()),
+    }, 
+    {
         //Exits
         Entrance(RR_FOREST_TEMPLE_MQ_FALLING_ROOM, []{return logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_DINS_FIRE);}),
         Entrance(RR_FOREST_TEMPLE_MQ_BETH_ROOM,    []{return logic->SmallKeys(RR_FOREST_TEMPLE, 6);}),
@@ -610,4 +618,6 @@ void RegionTable_Init_ForestTemple() {
         Entrance(RR_FOREST_TEMPLE_BOSS_ENTRYWAY, []{return false;}),
         Entrance(RR_SACRED_FOREST_MEADOW,        []{return logic->ForestTempleClear;}, false),
     });
+
+    // clang-format on
 }

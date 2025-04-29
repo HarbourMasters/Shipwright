@@ -62,7 +62,7 @@ static const char* const englishIceTrapMessages[169] = {
     "Would you like #ice# with that?",
     "You have obtained the #Ice# Medallion!",
     "Quick, do a #Zora# impression!",
-    "One item #on the rocks#!",//would be better if it could display the name of the item
+    "One item #on the rocks#!", // would be better if it could display the name of the item
     "How much does a polar bear weigh?&Enough to break the #ice#.",
     "You got Din's #Ice#!",
     "You got Nayru's #Cold#!",
@@ -125,12 +125,13 @@ static const char* const englishIceTrapMessages[169] = {
     "STOP!&You violated the #Thaw#!",
     "I wanted to give you a treasure, but it looks like you got #cold feet#.",
     "You told me you wanted to deliver #just ice# to Ganondorf!",
-    "You got the triforce!&This ancient artifact of divine power can grant any- wait, no, sorry, it's just an ice trap. My bad.",
+    "You got the triforce!&This ancient artifact of divine power can grant any- wait, no, sorry, it's just an ice "
+    "trap. My bad.",
     "Time to #cool off#!",
     "The #Ice Cavern# sends its regards.",
     "Loading item, please #wait#...",
     "Mash A+B to not #die#.",
-    "Sorry, your item is in another location.", //would be better if it could have the name of the item
+    "Sorry, your item is in another location.", // would be better if it could have the name of the item
     "You only wish this was %gGreg%w.",
     "Do you want to drink a hot chocolate?",
     "The #cold# never bothered me anyway.",
@@ -151,7 +152,7 @@ static const char* const englishIceTrapMessages[169] = {
     "Remember, there may be some momentary #discomfort#.",
     "In a perfect world #ice traps# like me would not exist, but this is not a perfect world.",
     "Gee, it sure is #cold# around here.",
-    "You tested the item with your #ice detector#, it beeped.", //would be better if it could have the name of the item
+    "You tested the item with your #ice detector#, it beeped.", // would be better if it could have the name of the item
     "You have found the way of the zero. The #sub-zero#.",
     "Mweep... mweep... mweep...",
     "Scum, #freezebag#! I mean #freeze#, scumbag!",
@@ -170,19 +171,22 @@ static const char* const englishIceTrapMessages[169] = {
     "Hydration break! Hey, who #froze# my water?",
     "Oops, wrong #item model#.",
     "Whoops! You have to put the item #in your inventory#.",
-    "You dropped the item, shattering it into #shards of ice#!", //would be better if it could have the name of the item
+    "You dropped the item, shattering it into #shards of ice#!", // would be better if it could have the name of the
+                                                                 // item
     "Is this... golden age Simpsons?&BECAUSE I'M ABOUT TO #CHOKE A CHILD#.",
     "You are the weakest @, #goodbye#!",
     "Ugh... Why did we even randomize #this item#?",
     "The #Frost Moon# is rising...",
-    "According to all known laws of physics and biology, there is no way that @ should be able to survive #getting fully encased in ice#. The cells in @'s body would all die by the time they #unthaw#. Of course, this is a video game, so @ survives anyway... #Probably#.",
+    "According to all known laws of physics and biology, there is no way that @ should be able to survive #getting "
+    "fully encased in ice#. The cells in @'s body would all die by the time they #unthaw#. Of course, this is a video "
+    "game, so @ survives anyway... #Probably#.",
     "Okay, so stop me if you've heard this one - a gamer and a bottle of #liquid nitrogen# walk into a milk bar...",
     "Lástima, es una #trampa de hielo#...&&Nobody expects the Spanish #ice trap#!",
     "Gee, it sure is #BURR#ing around here.",
     "Navi? Oh! I thought she was called #Névé#!",
     "It's fine, @ knew this was a #trap#, they're just using it to take damage intentionally to manipulate RNG.",
-    "Unfortunately, the item has #stopped#.", //would be better if it could have the name of the item
-    "This item is #not available# in your country.", //would be better if it could have the name of the item
+    "Unfortunately, the item has #stopped#.",        // would be better if it could have the name of the item
+    "This item is #not available# in your country.", // would be better if it could have the name of the item
     "#Ice# try. #;)#",
     "D'oh, I #missed#!",
     "Where is my #super suit#?",
@@ -241,12 +245,13 @@ static const char* const frenchIceTrapMessages[83] = {
     "J'espère que ça ne te fait ni chaud, ni #froid#.",
     "Je voulais t'offrir un trésor, mais il semble que tu aies eu #froid aux pieds#",
     "Tu m'as dit que tu voulais livrer #de la glace# à Ganondorf!",
-    "Tu as obtenu la Triforce!&Cet ancien artefact divin peut exaucer n'importe quel... ah non, désolé, c'est juste un piège de glace.",
+    "Tu as obtenu la Triforce!&Cet ancien artefact divin peut exaucer n'importe quel... ah non, désolé, c'est juste un "
+    "piège de glace.",
     "Il est temps de #te rafraîchir#!",
     "La #Caverne Polaire# te passe le bonjour.",
     "Chargement de l'objet, veuillez #patienter#...",
     "Martèle A+B pour ne pas #mourir#.",
-    "Désolé, ton objet est à un autre endroit.", //would be better if it could have the name of the item
+    "Désolé, ton objet est à un autre endroit.", // would be better if it could have the name of the item
     "Tu espérais que ce soit %gGreg%w.",
     "Tu veux boire un chocolat chaud?",
     "Le #froid# ne m'a jamais dérangé, de toute façon.",
@@ -267,7 +272,8 @@ static const char* const frenchIceTrapMessages[83] = {
     "Souviens-toi, il pourrait y avoir un léger #inconfort#.",
     "Dans un monde parfait, les #pièges de glace# comme moi n'existeraient pas, mais ce n'est pas un monde parfait.",
     "Mon dieu qu'il fait #froid# ici.",
-    "Tu as testé l'objet avec ton #détecteur de glace#, il a bipé.", //would be better if it could have the name of the item
+    "Tu as testé l'objet avec ton #détecteur de glace#, il a bipé.", // would be better if it could have the name of the
+                                                                     // item
     "Tu as découvert le chemin du zéro. Le #sub-zéro#.",
     "Mweep... mweep... mweep...",
     "Gelé, #sac à glace#! Je veux dire #gèle-toi#, racaille!",
@@ -286,16 +292,21 @@ static const char* const frenchIceTrapMessages[83] = {
     "Pause hydratation ! Hé, qui a #gelé# mon eau?",
     "Oups, mauvais #modèle d'objet#.",
     "Oups! Tu dois mettre l'objet #dans ton inventaire#.",
-    "Tu as fait tomber l'objet, le brisant en #éclats de glace#!", //would be better if it could have the name of the item
+    "Tu as fait tomber l'objet, le brisant en #éclats de glace#!", // would be better if it could have the name of the
+                                                                   // item
     "Tu es le maillon faible @, #au revoir#!",
     "Ugh... Pourquoi avons-nous même randomisé #cet objet#?",
     "La #Lune de Givre# se lève...",
-    "Selon toutes les lois connues de la physique et de la biologie, @ ne devrait pas survivre à #être complètement enfermé dans la glace#. Les cellules de @ mourraient avant qu'elles ne #dégèlent#. Mais c'est un jeu vidéo, alors @ survit... #Probablement#.",
-    "OK, arrête-moi si tu l'as déjà entendue - un joueur et une bouteille de #nitrogène liquide# entrent dans un bar à lait...",
+    "Selon toutes les lois connues de la physique et de la biologie, @ ne devrait pas survivre à #être complètement "
+    "enfermé dans la glace#. Les cellules de @ mourraient avant qu'elles ne #dégèlent#. Mais c'est un jeu vidéo, alors "
+    "@ survit... #Probablement#.",
+    "OK, arrête-moi si tu l'as déjà entendue - un joueur et une bouteille de #nitrogène liquide# entrent dans un bar à "
+    "lait...",
     "Lástima, c'est un #piège de glace#...&&Personne ne s'attend à un #piège de glace espagnol#!",
     "Mon dieu qu'il fait #GLAGLA# ici.",
-    "C'est bon, @ savait que c'était un #piège#, il l'utilise juste pour prendre des dégâts intentionnellement et manipuler la RNG.",
-    "Cet objet n'est #pas disponible# dans votre pays.", //would be better if it could have the name of the item
+    "C'est bon, @ savait que c'était un #piège#, il l'utilise juste pour prendre des dégâts intentionnellement et "
+    "manipuler la RNG.",
+    "Cet objet n'est #pas disponible# dans votre pays.", // would be better if it could have the name of the item
     "#Bonne# tentative. #;)#",
     "Où est mon #Super Costume#?",
     "#La revanche du Titanic#.",
@@ -305,17 +316,11 @@ void BuildIceTrapMessage(CustomMessage& msg) {
     if (CVarGetInteger(CVAR_GENERAL("LetItSnow"), 0)) {
         msg = CustomMessage(
             /*english*/ "This year for Christmas, all you get is #COAL#!",
-            /*german*/  "This year for Christmas, all you get is #COAL#!",
-            /*french*/  "Pour Noël, cette année, tu n'auras que du #CHARBON#! %rJoyeux Noël%w!",
-                        { QM_BLUE }
-        );
+            /*german*/ "This year for Christmas, all you get is #COAL#!",
+            /*french*/ "Pour Noël, cette année, tu n'auras que du #CHARBON#! %rJoyeux Noël%w!", { QM_BLUE });
     } else {
-        msg = CustomMessage(
-            RandomElement(englishIceTrapMessages),
-            RandomElement(germanIceTrapMessages),
-            RandomElement(frenchIceTrapMessages),
-            { QM_BLUE, QM_BLUE, QM_BLUE }
-        );
+        msg = CustomMessage(RandomElement(englishIceTrapMessages), RandomElement(germanIceTrapMessages),
+                            RandomElement(frenchIceTrapMessages), { QM_BLUE, QM_BLUE, QM_BLUE });
     }
 
     msg.AutoFormat();
@@ -329,28 +334,36 @@ void BuildTriforcePieceMessage(CustomMessage& msg) {
 
     if (percentageCollected <= 0.25) {
         msg = { "You found a %yTriforce Piece%w!&%g[[current]]%w down, %c[[remaining]]%w to go. It's a start!",
-            "Ein %yTriforce-Splitter%w! Du hast&%g[[current]]%w von %c[[required]]%w gefunden. Es ist ein&Anfang!",
-            "Vous trouvez un %yFragment de la&Triforce%w! Vous en avez %g[[current]]%w, il en&reste %c[[remaining]]%w à trouver. C'est un début!" };
+                "Ein %yTriforce-Splitter%w! Du hast&%g[[current]]%w von %c[[required]]%w gefunden. Es ist ein&Anfang!",
+                "Vous trouvez un %yFragment de la&Triforce%w! Vous en avez %g[[current]]%w, il en&reste "
+                "%c[[remaining]]%w à trouver. C'est un début!" };
     } else if (percentageCollected <= 0.5) {
         msg = { "You found a %yTriforce Piece%w!&%g[[current]]%w down, %c[[remaining]]%w to go. Progress!",
-            "Ein %yTriforce-Splitter%w! Du hast&%g[[current]]%w von %c[[required]]%w gefunden. Es geht voran!",
-            "Vous trouvez un %yFragment de la&Triforce%w! Vous en avez %g[[current]]%w, il en&reste %c[[remaining]]%w à trouver. Ça avance!" };
+                "Ein %yTriforce-Splitter%w! Du hast&%g[[current]]%w von %c[[required]]%w gefunden. Es geht voran!",
+                "Vous trouvez un %yFragment de la&Triforce%w! Vous en avez %g[[current]]%w, il en&reste "
+                "%c[[remaining]]%w à trouver. Ça avance!" };
     } else if (percentageCollected <= 0.75) {
         msg = { "You found a %yTriforce Piece%w!&%g[[current]]%w down, %c[[remaining]]%w to go. Over half-way&there!",
-            "Ein %yTriforce-Splitter%w! Du hast&schon %g[[current]]%w von %c[[required]]%w gefunden. Schon&über die Hälfte!",
-            "Vous trouvez un %yFragment de la&Triforce%w! Vous en avez %g[[current]]%w, il en&reste %c[[remaining]]%w à trouver. Il en reste un&peu moins que la moitié!" };
+                "Ein %yTriforce-Splitter%w! Du hast&schon %g[[current]]%w von %c[[required]]%w gefunden. Schon&über "
+                "die Hälfte!",
+                "Vous trouvez un %yFragment de la&Triforce%w! Vous en avez %g[[current]]%w, il en&reste "
+                "%c[[remaining]]%w à trouver. Il en reste un&peu moins que la moitié!" };
     } else if (percentageCollected < 1.0) {
-        msg = { "You found a %yTriforce Piece%w!&%g[[current]]%w down, %c[[remaining]]%w to go. Almost done!",
+        msg = {
+            "You found a %yTriforce Piece%w!&%g[[current]]%w down, %c[[remaining]]%w to go. Almost done!",
             "Ein %yTriforce-Splitter%w! Du hast&schon %g[[current]]%w von %c[[required]]%w gefunden. Fast&geschafft!",
-            "Vous trouvez un %yFragment de la&Triforce%w! Vous en avez %g[[current]]%w, il en&reste %c[[remaining]]%w à trouver. C'est presque&terminé!" };
+            "Vous trouvez un %yFragment de la&Triforce%w! Vous en avez %g[[current]]%w, il en&reste %c[[remaining]]%w "
+            "à trouver. C'est presque&terminé!"
+        };
     } else if (current == required) {
         msg = { "You completed the %yTriforce of&Courage%w! %gGG%w!",
-            "Das %yTriforce des Mutes%w! Du hast&alle Splitter gefunden. %gGut gemacht%w!",
-            "Vous avez complété la %yTriforce&du Courage%w! %gFélicitations%w!" };
+                "Das %yTriforce des Mutes%w! Du hast&alle Splitter gefunden. %gGut gemacht%w!",
+                "Vous avez complété la %yTriforce&du Courage%w! %gFélicitations%w!" };
     } else {
         msg = { "You found a spare %yTriforce Piece%w!&You only needed %c[[required]]%w, but you have %g[[current]]%w!",
-            "Ein übriger %yTriforce-Splitter%w! Du&hast nun %g[[current]]%w von %c[[required]]%w nötigen gefunden.",
-            "Vous avez trouvé un %yFragment de&Triforce%w en plus! Vous n'aviez besoin&que de %c[[required]]%w, mais vous en avez %g[[current]]%w en&tout!" };
+                "Ein übriger %yTriforce-Splitter%w! Du&hast nun %g[[current]]%w von %c[[required]]%w nötigen gefunden.",
+                "Vous avez trouvé un %yFragment de&Triforce%w en plus! Vous n'aviez besoin&que de %c[[required]]%w, "
+                "mais vous en avez %g[[current]]%w en&tout!" };
     }
     msg.Replace("[[current]]", std::to_string(current));
     msg.Replace("[[remaining]]", std::to_string(remaining));
@@ -392,12 +405,9 @@ void BuildItemMessage(u16* textId, bool* loadFromMessageTable) {
 void BuildMapMessage(uint16_t* textId, bool* loadFromMessageTable) {
     GetItemEntry itemEntry = GET_PLAYER(gPlayState)->getItemEntry;
     auto ctx = OTRGlobals::Instance->gRandoContext;
-    CustomMessage msg = CustomMessage(
-        "You found the %g[[name]]%w! [[typeHint]]",
-        "Du erhältst das %g[[name]]%w! [[typeHint]]", 
-        "Vous ebtenez %g[[name]]%w! [[typeHint]]", 
-        TEXTBOX_TYPE_BLUE
-    );
+    CustomMessage msg =
+        CustomMessage("You found the %g[[name]]%w! [[typeHint]]", "Du erhältst das %g[[name]]%w! [[typeHint]]",
+                      "Vous ebtenez %g[[name]]%w! [[typeHint]]", TEXTBOX_TYPE_BLUE);
     int sceneNum;
     switch (itemEntry.getItemId) {
         case RG_DEKU_TREE_MAP:
@@ -431,11 +441,9 @@ void BuildMapMessage(uint16_t* textId, bool* loadFromMessageTable) {
             sceneNum = SCENE_ICE_CAVERN;
             break;
     }
-    if (
-        ctx->GetOption(RSK_MQ_DUNGEON_RANDOM).Is(RO_MQ_DUNGEONS_NONE) ||
+    if (ctx->GetOption(RSK_MQ_DUNGEON_RANDOM).Is(RO_MQ_DUNGEONS_NONE) ||
         (ctx->GetOption(RSK_MQ_DUNGEON_RANDOM).Is(RO_MQ_DUNGEONS_SET_NUMBER) &&
-        ctx->GetOption(RSK_MQ_DUNGEON_COUNT).Is(12))
-    ) {
+         ctx->GetOption(RSK_MQ_DUNGEON_COUNT).Is(12))) {
         msg.Replace("[[typeHint]]", "");
     } else if (ResourceMgr_IsSceneMasterQuest(sceneNum)) {
         msg.Replace("[[typeHint]]", Rando::StaticData::hintTextTable[RHT_DUNGEON_MASTERFUL].GetHintMessage());
@@ -448,10 +456,12 @@ void BuildMapMessage(uint16_t* textId, bool* loadFromMessageTable) {
 
 void BuildBossKeyMessage(uint16_t* textId, bool* loadFromMessageTable) {
     Player* player = GET_PLAYER(gPlayState);
-    if (player->getItemEntry.getItemId == RG_GANONS_CASTLE_BOSS_KEY && !DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_GANONS_BOSS_KEY)) {
+    if (player->getItemEntry.getItemId == RG_GANONS_CASTLE_BOSS_KEY &&
+        !DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_GANONS_BOSS_KEY)) {
         return;
     }
-    if (player->getItemEntry.getItemId != RG_GANONS_CASTLE_BOSS_KEY && !DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_BOSS_KEYSANITY)) {
+    if (player->getItemEntry.getItemId != RG_GANONS_CASTLE_BOSS_KEY &&
+        !DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_BOSS_KEYSANITY)) {
         return;
     }
     CustomMessage msg;
@@ -462,10 +472,12 @@ void BuildBossKeyMessage(uint16_t* textId, bool* loadFromMessageTable) {
 
 void BuildSmallKeyMessage(uint16_t* textId, bool* loadFromMessageTable) {
     Player* player = GET_PLAYER(gPlayState);
-    if (player->getItemEntry.getItemId == RG_GERUDO_FORTRESS_SMALL_KEY && OTRGlobals::Instance->gRandoContext->GetOption(RSK_GERUDO_KEYS).Is(RO_GERUDO_KEYS_VANILLA)) {
+    if (player->getItemEntry.getItemId == RG_GERUDO_FORTRESS_SMALL_KEY &&
+        OTRGlobals::Instance->gRandoContext->GetOption(RSK_GERUDO_KEYS).Is(RO_GERUDO_KEYS_VANILLA)) {
         return;
     }
-    if (player->getItemEntry.getItemId != RG_GERUDO_FORTRESS_SMALL_KEY && DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_KEYSANITY)) {
+    if (player->getItemEntry.getItemId != RG_GERUDO_FORTRESS_SMALL_KEY &&
+        DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_KEYSANITY)) {
         return;
     }
     CustomMessage msg;
@@ -474,16 +486,20 @@ void BuildSmallKeyMessage(uint16_t* textId, bool* loadFromMessageTable) {
     msg.LoadIntoFont();
 }
 
-void RegisterItemMessages () {
+void RegisterItemMessages() {
     COND_ID_HOOK(OnOpenText, TEXT_RANDOMIZER_CUSTOM_ITEM, IS_RANDO, BuildItemMessage);
-    COND_ID_HOOK(OnOpenText, TEXT_ITEM_DUNGEON_MAP, DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_SHUFFLE_MAPANDCOMPASS), BuildMapMessage);
-    COND_ID_HOOK(OnOpenText, TEXT_ITEM_COMPASS, DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_SHUFFLE_MAPANDCOMPASS), BuildItemMessage);
-    COND_ID_HOOK(OnOpenText, TEXT_ITEM_KEY_BOSS, 
-        (DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_BOSS_KEYSANITY) ||
-        DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_GANONS_BOSS_KEY)), BuildBossKeyMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_ITEM_DUNGEON_MAP, DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_SHUFFLE_MAPANDCOMPASS),
+                 BuildMapMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_ITEM_COMPASS, DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_SHUFFLE_MAPANDCOMPASS),
+                 BuildItemMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_ITEM_KEY_BOSS,
+                 (DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_BOSS_KEYSANITY) ||
+                  DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_GANONS_BOSS_KEY)),
+                 BuildBossKeyMessage);
     COND_ID_HOOK(OnOpenText, TEXT_ITEM_KEY_SMALL,
-        (OTRGlobals::Instance->gRandoContext->GetOption(RSK_GERUDO_KEYS).IsNot(RO_GERUDO_KEYS_VANILLA) ||
-        DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_KEYSANITY)), BuildSmallKeyMessage);
+                 (OTRGlobals::Instance->gRandoContext->GetOption(RSK_GERUDO_KEYS).IsNot(RO_GERUDO_KEYS_VANILLA) ||
+                  DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_KEYSANITY)),
+                 BuildSmallKeyMessage);
 }
 
 static RegisterShipInitFunc initFunc(RegisterItemMessages, { "IS_RANDO" });

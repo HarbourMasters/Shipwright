@@ -6,6 +6,7 @@
 using namespace Rando;
 
 void RegionTable_Init_GanonsCastle() {
+    // clang-format off
     // Vanilla/MQ Decider
     areaTable[RR_GANONS_CASTLE_ENTRYWAY] = Region("Ganon's Castle Entryway", "Ganon's Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
@@ -511,4 +512,5 @@ void RegionTable_Init_GanonsCastle() {
     }, {});
 
 #pragma endregion
+    // clang-format on
 }

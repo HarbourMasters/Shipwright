@@ -19,8 +19,9 @@ extern PlayState* gPlayState;
 #define RAND_GET_OPTION(rsk) OTRGlobals::Instance->gRandoContext->GetOption(rsk)
 #define RAND_GET_ITEM(rc) OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)
 #define RAND_GET_OVERRIDE(rc) OTRGlobals::Instance->gRandoContext->overrides[rc]
-#define NON_BEAN_MERCHANTS (RAND_GET_OPTION(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL_BUT_BEANS) || \
-                            RAND_GET_OPTION(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL))
+#define NON_BEAN_MERCHANTS                                                            \
+    (RAND_GET_OPTION(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL_BUT_BEANS) || \
+     RAND_GET_OPTION(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL))
 
 void BuildMerchantMessage(CustomMessage& msg, RandomizerCheck rc) {
     RandomizerGet rgid = RAND_GET_ITEM(rc)->GetPlacedRandomizerGet();
@@ -113,10 +114,9 @@ void BuildCarpetGuyMessage(uint16_t* textId, bool* loadFromMessageTable) {
 }
 
 void BuildCarpetGuyFailToBuyMessage(uint16_t* textId, bool* loadFromMessageTable) {
-    CustomMessage msg = CustomMessage(
-        "I'm sorry I can't sell you these fine specimens, they need an %rexperienced owner%w.^"
-                      "Come back when you have had %gBombchus%w of your own."
-    );
+    CustomMessage msg =
+        CustomMessage("I'm sorry I can't sell you these fine specimens, they need an %rexperienced owner%w.^"
+                      "Come back when you have had %gBombchus%w of your own.");
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
@@ -168,10 +168,10 @@ void BuildShopMessage(uint16_t* textId, bool* loadFromMessageTable) {
 }
 
 void RegisterMerchantMessages() {
-    COND_ID_HOOK(OnOpenText, TEXT_BEAN_SALESMAN_BUY_FOR_10, 
-        (RAND_GET_OPTION(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_BEANS_ONLY) ||
-        RAND_GET_OPTION(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL)),
-        BuildBeanGuyMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_BEAN_SALESMAN_BUY_FOR_10,
+                 (RAND_GET_OPTION(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_BEANS_ONLY) ||
+                  RAND_GET_OPTION(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL)),
+                 BuildBeanGuyMessage);
     COND_ID_HOOK(OnOpenText, TEXT_BEAN_SALESMAN_BUY_FOR_100, IS_RANDO, BuildBeanGuyMessage);
     COND_ID_HOOK(OnOpenText, TEXT_MEDIGORON, NON_BEAN_MERCHANTS, BuildMedigoronMessage);
     COND_ID_HOOK(OnOpenText, TEXT_GRANNYS_SHOP, NON_BEAN_MERCHANTS, BuildGrannyMessage);

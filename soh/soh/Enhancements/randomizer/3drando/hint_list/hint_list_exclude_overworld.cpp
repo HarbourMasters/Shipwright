@@ -4,6 +4,7 @@
 
 namespace Rando {
 void StaticData::HintTable_Init_Exclude_Overworld() {
+    // clang-format off
 
    hintTextTable[RHT_KF_KOKIRI_SWORD_CHEST] = HintText(CustomMessage("They say that the #hidden treasure of the Kokiri# is #[[1]]#.",
                                                            /*german*/ "Man erzählt sich, daß der #versteckte Schatz der Kokiri# #[[1]]# sei.",
@@ -1492,67 +1493,67 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
                                                            // /*spanish*/ Según dicen, una #colmena detrás del rey de los zoras# esconde #[[1]]#.
 
     hintTextTable[RHT_POT_KOKIRI_FOREST] = HintText(CustomMessage("They say that a #pot in Kokiri Forest# contains #[[1]]#.",
-                                                       /*german*/ "",
+                                                       /*german*/ "Man erzählt sich, daß eine #Vase im Kokiri-Wald# #[[1]]# enthielte.",
                                                        /*french*/ "Selon moi, une #jarre dans la Fôret Kokiri# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_POT_GERUDO_FORTRESS] = HintText(CustomMessage("They say that a #pot in Gerudo Fortress# contains #[[1]]#.",
-                                                         /*german*/ "",
+                                                         /*german*/ "Man erzählt sich, daß eine #Vase in der Gerudo-Festung# #[[1]]# enthielte.",
                                                          /*french*/ "Selon moi, une #jarre dans la Forteresse Gerudo# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_POT_WASTELAND] = HintText(CustomMessage("They say that a #pot in Haunted Wasteland# contains #[[1]]#.",
-                                                   /*german*/ "",
+                                                   /*german*/ "Man erzählt sich, daß eine #Vase in der Gespensterwüste# #[[1]]# enthielte.",
                                                    /*french*/ "Selon moi, une #jarre dans le Désert Hanté# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_POT_MARKET] = HintText(CustomMessage("They say that a #pot in Market# contains #[[1]]#.",
-                                                /*german*/ "",
+                                                /*german*/ "Man erzählt sich, daß eine #Vase auf dem Markt# #[[1]]# enthielte.",
                                                 /*french*/ "Selon moi, une #jarre dans la Place du Marché# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_POT_KAKARIKO] = HintText(CustomMessage("They say that a #pot in Kakariko Village# contains #[[1]]#.",
-                                                  /*german*/ "",
+                                                  /*german*/ "Man erzählt sich, daß eine #Vase in Kakariko# #[[1]]# enthielte.",
                                                   /*french*/ "Selon moi, une #jarre dans le Village de Cocorico# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_POT_GRAVEYARD] = HintText(CustomMessage("They say that a #pot in Graveyard# contains #[[1]]#.",
-                                                   /*german*/ "",
+                                                   /*german*/ "Man erzählt sich, daß eine #Vase auf dem Friedhof# #[[1]]# enthielte.",
                                                    /*french*/ "Selon moi, une #jarre dans le Cimetière# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_POT_GORON_CITY] = HintText(CustomMessage("They say that a #pot in Goron City# contains #[[1]]#.",
-                                                    /*german*/ "",
+                                                    /*german*/ "Man erzählt sich, daß eine #Vase in Goronia# #[[1]]# enthielte.",
                                                     /*french*/ "Selon moi, une #jarre dans le Village Goron# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_POT_DEATH_MOUNTAIN_CRATER] = HintText(CustomMessage("They say that a #pot in Death Mountain Crater# contains #[[1]]#.",
-                                                               /*german*/ "",
+                                                               /*german*/ "Man erzählt sich, daß eine #Vase im Todeskrater# #[[1]]# enthielte.",
                                                                /*french*/ "Selon moi, une #jarre sur le Mont du Péril# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_POT_ZORAS_DOMAIN] = HintText(CustomMessage("They say that a #pot in Zora's Domain# contains #[[1]]#.",
-                                                      /*german*/ "",
+                                                      /*german*/ "Man erzählt sich, daß eine #Vase in Zoras Reich# #[[1]]# enthielte.",
                                                       /*french*/ "Selon moi, une #jarre dans le Domaine Zora# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_POT_ZORAS_FOUNTAIN] = HintText(CustomMessage("They say that a #pot in Zora's Fountain# contains #[[1]]#.",
-                                                        /*german*/ "",
+                                                        /*german*/ "Man erzählt sich, daß eine #Vase in Zoras Quelle# #[[1]]# enthielte.",
                                                         /*french*/ "Selon moi, une #jarre dans la Fontaine Zora# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_POT_LON_LON_RANCH] = HintText(CustomMessage("They say that a #pot in Lon Lon Ranch# contains #[[1]]#.",
-                                                       /*german*/ "",
+                                                       /*german*/ "Man erzählt sich, daß eine #Vase auf der Lon Lon-Farm# #[[1]]# enthielte.",
                                                        /*french*/ "Selon moi, une #jarre dans le Ranch Lon Lon# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_POT_HYRULE_FIELD] = HintText(CustomMessage("They say that a #pot in Hyrule Field# contains #[[1]]#.",
-                                                      /*german*/ "",
+                                                      /*german*/ "Man erzählt sich, daß eine #Vase in der Hylianischen Steppe# #[[1]]# enthielte.",
                                                       /*french*/ "Selon moi, une #jarre dans la Plaine d'Hyrule# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_POT_HYRULE_CASTLE] = HintText(CustomMessage("They say that a #pot in Hyrule Castle# contains #[[1]]#.",
-                                                       /*german*/ "",
+                                                       /*german*/ "Man erzählt sich, daß eine #Vase in Schloß Hyrule# #[[1]]# enthielte.",
                                                        /*french*/ "Selon moi, une #jarre dans le Château d'Hyrule# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_KOKIRI_FOREST_RUPEE] = HintText(CustomMessage("They say that a rupee in a #tranquil forest# hides #[[1]]#.",
-                                                         /*german*/ "",
+                                                         /*german*/ "Man erzählt sich, daß ein Rubin in einem #ruhigen Wald# #[[1]]# verstecke.",
                                                          /*french*/ "Selon moi, un rubis dans une #forêt tranquille# cache #[[1]]#.", {QM_RED, QM_GREEN}));
                                                       // /*spanish*/
     hintTextTable[RHT_KOKIRI_FOREST_HEART] = HintText(CustomMessage("They say that a heart in a #tranquil forest# hides #[[1]]#.",
-                                                         /*german*/ "",
+                                                         /*german*/ "Man erzählt sich, daß ein Herz in einem #ruhigen Wald# #[[1]]# verstecke.",
                                                          /*french*/ "Selon moi, un cœur dans une #forêt tranquille# cache #[[1]]#.", {QM_RED, QM_GREEN}));
                                                       // /*spanish*/
     hintTextTable[RHT_SARIAS_HOUSE_HEART] = HintText(CustomMessage("They say that a heart in a #dear friend's home# hides #[[1]]#.",
-                                                        /*german*/ "",
+                                                        /*german*/ "Man erzählt sich, daß ein Herz #im Heim eines lieben Freundes# #[[1]]# verstecke.",
                                                         /*french*/ "Selon moi, un cœur dans la #maison d'une amie chère# cache #[[1]]#.", {QM_RED, QM_GREEN}));
                                                      // /*spanish*/
     hintTextTable[RHT_LOST_WOODS_RUPEE] = HintText(CustomMessage("They say that under a #boulder in the woods# lies #[[1]]#.",
@@ -1954,5 +1955,66 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
 
     hintTextTable[RHT_GRAVEYARD_ROYAL_FAMILYS_TOMB_SUN_FAIRY] = HintText(CustomMessage("They say that #calling the sun in a royal tomb# reveals #[[1]]#.", { QM_RED, QM_GREEN }));
 
+    hintTextTable[RHT_KF_GRASS] = HintText(CustomMessage("They say that #cutting some grass in a forest# reveals #[[1]]#.", { QM_RED, QM_GREEN }));
+
+    hintTextTable[RHT_LW_GRASS] = HintText(CustomMessage("They say that #cutting some grass in the woods# reveals #[[1]]#.", { QM_RED, QM_GREEN }));
+
+    hintTextTable[RHT_MARKET_GRASS] = HintText(CustomMessage("They say that #cutting some grass in the market# reveals #[[1]]#.", { QM_RED, QM_GREEN }));
+
+    hintTextTable[RHT_HC_GRASS] = HintText(CustomMessage("They say that #cutting some grass near the castle# reveals #[[1]]#.", { QM_RED, QM_GREEN }));
+
+    hintTextTable[RHT_KAK_GRASS] = HintText(CustomMessage("They say that #cutting some grass in a village# reveals #[[1]]#.", { QM_RED, QM_GREEN }));
+
+    hintTextTable[RHT_GY_GRASS] = HintText(CustomMessage("They say that #cutting some grass in a graveyard# reveals #[[1]]#.", { QM_RED, QM_GREEN }));
+
+    hintTextTable[RHT_LH_GRASS] = HintText(CustomMessage("They say that #cutting some grass near a lake# reveals #[[1]]#.", { QM_RED, QM_GREEN }));
+
+    hintTextTable[RHT_HF_GRASS] = HintText(CustomMessage("They say that #cutting some grass on a field# reveals #[[1]]#.", { QM_RED, QM_GREEN }));
+
+    hintTextTable[RHT_ZR_GRASS] = HintText(CustomMessage("They say that #cutting some grass near a river# reveals #[[1]]#.", { QM_RED, QM_GREEN }));
+
+    hintTextTable[RHT_GROTTO_GRASS] = HintText(CustomMessage("They say that #cutting some grass in a grotto# reveals #[[1]]#.", { QM_RED, QM_GREEN }));
+	
+    hintTextTable[RHT_CRATE_GERUDO_VALLEY] = HintText(CustomMessage("They say that a #crate in Gerudo Valley# contains #[[1]]#.",
+                            /*german*/ "",
+                            /*french*/ "Selon moi, une #caisse dans une vallée# a #[[1]]#.", { QM_RED, QM_GREEN }));
+
+    hintTextTable[RHT_CRATE_GERUDOS_FORTRESS] = HintText(CustomMessage("They say that a #crate in Gerudo Fortress# contains #[[1]]#.",
+                            /*german*/ "",
+                            /*french*/ "Selon moi, une #caisse dans la Forteresse Gerudo# contient #[[1]]#.", { QM_RED, QM_GREEN }));
+
+    hintTextTable[RHT_CRATE_WASTELAND] = HintText(CustomMessage("They say that a #crate in Haunted Wasteland# contains #[[1]]#.",
+                            /*german*/ "",
+                            /*french*/ "Selon moi, une #caisse dans le Désert Hanté# contient #[[1]]#.", { QM_RED, QM_GREEN }));
+
+    hintTextTable[RHT_CRATE_MARKET] = HintText(CustomMessage("They say that a #crate in the Market# contains #[[1]]#.",
+                            /*german*/ "",
+                            /*french*/ "Selon moi, une #caisse dans la Place du Marché# contient #[[1]]#.", { QM_RED, QM_GREEN }));
+
+    hintTextTable[RHT_CRATE_KAKARIKO_VILLAGE] = HintText(CustomMessage("They say that a #crate in Kakariko Village# contains #[[1]]#.",
+                            /*german*/ "",
+                            /*french*/ "Selon moi, une #caisse dans le Village de Cocorico# contient #[[1]]#.", { QM_RED, QM_GREEN }));
+
+    hintTextTable[RHT_CRATE_GRAVEYARD] = HintText(CustomMessage("They say that a #crate in the Graveyard# contains #[[1]]#.",
+                            /*german*/ "",
+                            /*french*/ "Selon moi, une #caisse dans le Cimetière# contient #[[1]]#.", { QM_RED, QM_GREEN }));
+
+    hintTextTable[RHT_CRATE_GORON_CITY] = HintText(CustomMessage("They say that a #crate in Goron City# contains #[[1]]#.",
+                            /*german*/ "",
+                            /*french*/ "Selon moi, une #caisse dans le Village Goron# contient #[[1]]#.", { QM_RED, QM_GREEN }));
+
+    hintTextTable[RHT_CRATE_DEATH_MOUNTAIN_CRATER] = HintText(CustomMessage("They say that a #crate in Death Mountain Crater# contains #[[1]]#.",
+                            /*german*/ "",
+                            /*french*/ "Selon moi, une #caisse sur le Mont du Péril# contient #[[1]]#.", { QM_RED, QM_GREEN }));
+
+    hintTextTable[RHT_CRATE_LON_LON_RANCH] = HintText(CustomMessage("They say that a #crate in Lon Lon Ranch# contains #[[1]]#.",
+                            /*german*/ "",
+                            /*french*/ "Selon moi, une #caisse dans le Ranch Lon Lon# contient #[[1]]#.", { QM_RED, QM_GREEN }));
+
+    hintTextTable[RHT_CRATE_LAKESIDE_LABORATORY] = HintText(CustomMessage("They say that a #crate in the Laboratory# contains #[[1]]#.",
+                            /*german*/ "",
+                            /*french*/ "Selon moi, une #caisse dans un laboratoire# contient #[[1]]#.", { QM_RED, QM_GREEN }));
+
+    // clang-format on
 }
-}
+} // namespace Rando

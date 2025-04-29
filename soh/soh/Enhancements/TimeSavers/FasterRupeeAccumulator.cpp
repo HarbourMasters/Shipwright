@@ -4,17 +4,18 @@
 #include "spdlog/spdlog.h"
 
 extern "C" {
-    #include "z64save.h"
-    #include "macros.h"
-    #include "variables.h"
-    #include "functions.h"
-    extern PlayState* gPlayState;
-    extern SaveContext gSaveContext;
+#include "z64save.h"
+#include "macros.h"
+#include "variables.h"
+#include "functions.h"
+extern PlayState* gPlayState;
+extern SaveContext gSaveContext;
 }
 
 void FasterRupeeAccumulator_Register() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnInterfaceUpdate>([]() {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.FasterRupeeAccumulator"), 0)) return;
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("FasterRupeeAccumulator"), 0))
+            return;
 
         if (gSaveContext.rupeeAccumulator == 0) {
             return;
@@ -28,10 +29,10 @@ void FasterRupeeAccumulator_Register() {
             }
 
             if (gSaveContext.rupeeAccumulator >= 10 && gSaveContext.rupees + 10 < CUR_CAPACITY(UPG_WALLET)) {
-                gSaveContext.rupeeAccumulator-= 10;
+                gSaveContext.rupeeAccumulator -= 10;
                 gSaveContext.rupees += 10;
             }
-        // Losing rupees
+            // Losing rupees
         } else if (gSaveContext.rupeeAccumulator < 0) {
             // No rupees to lose
             if (gSaveContext.rupees == 0) {

@@ -1,0 +1,61 @@
+<Root>
+    <File Name="object_ahg" Segment="6">
+        <!-- The textures used by these limbs aren't 64-bit aligned -->
+        <Limb Name="object_ahg_Limb_000000" LimbType="Standard" Offset="0x0"/>
+        <Limb Name="object_ahg_Limb_00000C" LimbType="Standard" Offset="0xC"/>
+        <Limb Name="object_ahg_Limb_000018" LimbType="Standard" Offset="0x18"/>
+        <Limb Name="object_ahg_Limb_000024" LimbType="Standard" Offset="0x24"/>
+        <Limb Name="object_ahg_Limb_000030" LimbType="Standard" Offset="0x30"/>
+        <Limb Name="object_ahg_Limb_00003C" LimbType="Standard" Offset="0x3C"/>
+        <Limb Name="object_ahg_Limb_000048" LimbType="Standard" Offset="0x48"/>
+        <Limb Name="object_ahg_Limb_000054" LimbType="Standard" Offset="0x54"/>
+        <Limb Name="object_ahg_Limb_000060" LimbType="Standard" Offset="0x60"/>
+        <Limb Name="object_ahg_Limb_00006C" LimbType="Standard" Offset="0x6C"/>
+        <Limb Name="object_ahg_Limb_000078" LimbType="Standard" Offset="0x78"/>
+        <Limb Name="object_ahg_Limb_000084" LimbType="Standard" Offset="0x84"/>
+        <Limb Name="object_ahg_Limb_000090" LimbType="Standard" Offset="0x90"/>
+        <Limb Name="object_ahg_Limb_00009C" LimbType="Standard" Offset="0x9C"/>
+        <Limb Name="object_ahg_Limb_0000A8" LimbType="Standard" Offset="0xA8"/>
+
+        <Skeleton Name="object_ahg_Skel_0000F0" Type="Flex" LimbType="Standard" Offset="0xF0"/>
+
+        <!-- 32-bit aligned textures. -->
+        <Texture Name="object_ahg_TLUT_0000FC" OutName="tlut_000000FC" Format="rgba16" Width="16" Height="16" Offset="0xFC"/>
+        <Texture Name="object_ahg_Tex_0002FC" OutName="tex_000002FC" Format="ci8" Width="16" Height="16" Offset="0x2FC" TlutOffset="0xFC"/>
+        <Texture Name="object_ahg_Tex_0003FC" OutName="tex_000003FC" Format="ci8" Width="16" Height="16" Offset="0x3FC" TlutOffset="0xFC"/>
+        <Texture Name="object_ahg_Tex_0004FC" OutName="tex_000004FC" Format="ci8" Width="8" Height="8" Offset="0x4FC" TlutOffset="0xFC"/>
+        <Texture Name="object_ahg_Tex_00053C" OutName="tex_0000053C" Format="ci8" Width="8" Height="8" Offset="0x53C" TlutOffset="0xFC"/>
+        <Texture Name="object_ahg_Tex_00057C" OutName="tex_0000057C" Format="ci8" Width="16" Height="16" Offset="0x57C" TlutOffset="0xFC"/>
+        <Texture Name="object_ahg_Tex_00067C" OutName="tex_0000067C" Format="ci8" Width="16" Height="16" Offset="0x67C" TlutOffset="0xFC"/>
+        <Texture Name="object_ahg_Tex_00077C" OutName="tex_0000077C" Format="ci8" Width="16" Height="16" Offset="0x77C" TlutOffset="0xFC"/>
+        <Texture Name="object_ahg_Tex_00087C" OutName="tex_0000087C" Format="ci8" Width="16" Height="16" Offset="0x87C" TlutOffset="0xFC"/>
+        <Texture Name="object_ahg_Tex_00097C" OutName="tex_0000097C" Format="i8" Width="8" Height="8" Offset="0x97C"/>
+        <Texture Name="object_ahg_Tex_0009BC" OutName="tex_000009BC" Format="i8" Width="8" Height="8" Offset="0x9BC"/>
+        <Texture Name="object_ahg_Tex_0009FC" OutName="tex_000009FC" Format="ci8" Width="32" Height="16" Offset="0x9FC" TlutOffset="0xFC"/>
+        <Texture Name="object_ahg_Tex_000BFC" OutName="tex_00000BFC" Format="ci8" Width="16" Height="16" Offset="0xBFC" TlutOffset="0xFC"/>
+
+        <DList Name="object_ahg_DL_0030F0" Offset="0x30F0"/>
+        <DList Name="object_ahg_DL_003500" Offset="0x3500"/>
+        <DList Name="object_ahg_DL_003670" Offset="0x3670"/>
+        <DList Name="object_ahg_DL_0037A0" Offset="0x37A0"/>
+        <DList Name="object_ahg_DL_0038D8" Offset="0x38D8"/>
+        <DList Name="object_ahg_DL_003A48" Offset="0x3A48"/>
+        <DList Name="object_ahg_DL_003B78" Offset="0x3B78"/>
+        <DList Name="object_ahg_DL_003CB0" Offset="0x3CB0"/>
+        <DList Name="object_ahg_DL_003ED8" Offset="0x3ED8"/>
+        <DList Name="object_ahg_DL_004018" Offset="0x4018"/>
+        <DList Name="object_ahg_DL_004148" Offset="0x4148"/>
+        <DList Name="object_ahg_DL_004280" Offset="0x4280"/>
+        <DList Name="object_ahg_DL_0043C0" Offset="0x43C0"/>
+        <DList Name="object_ahg_DL_0044F0" Offset="0x44F0"/>
+        <DList Name="object_ahg_DL_004628" Offset="0x4628"/>
+
+        <Texture Name="object_ahg_TLUT_0047C8" OutName="tlut_000047C8" Format="rgba16" Width="16" Height="12" Offset="0x47C8"/>
+        <Texture Name="object_ahg_Tex_004948" OutName="tex_00004948" Format="ci8" Width="8" Height="8" Offset="0x4948" TlutOffset="0x47C8"/>
+        <Texture Name="object_ahg_Tex_004988" OutName="tex_00004988" Format="ci8" Width="32" Height="16" Offset="0x4988" TlutOffset="0x47C8"/>
+        <Texture Name="object_ahg_Tex_004B88" OutName="tex_00004B88" Format="ci8" Width="16" Height="16" Offset="0x4B88" TlutOffset="0x47C8"/>
+        <Texture Name="object_ahg_Tex_004C88" OutName="tex_00004C88" Format="ci8" Width="8" Height="16" Offset="0x4C88" TlutOffset="0x47C8"/>
+        <DList Name="object_ahg_DL_005508" Offset="0x5508"/>
+        <DList Name="object_ahg_DL_005728" Offset="0x5728"/>
+    </File>
+</Root>

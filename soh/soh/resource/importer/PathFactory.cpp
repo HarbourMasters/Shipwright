@@ -4,7 +4,9 @@
 #include "spdlog/spdlog.h"
 
 namespace SOH {
-std::shared_ptr<Ship::IResource> ResourceFactoryBinaryPathV0::ReadResource(std::shared_ptr<Ship::File> file, std::shared_ptr<Ship::ResourceInitData> initData) {
+std::shared_ptr<Ship::IResource>
+ResourceFactoryBinaryPathV0::ReadResource(std::shared_ptr<Ship::File> file,
+                                          std::shared_ptr<Ship::ResourceInitData> initData) {
     if (!FileHasValidFormatAndReader(file, initData)) {
         return nullptr;
     }
@@ -29,7 +31,7 @@ std::shared_ptr<Ship::IResource> ResourceFactoryBinaryPathV0::ReadResource(std::
 
         PathData pathDataEntry;
         pathDataEntry.count = pointCount;
-        
+
         path->paths.push_back(points);
         pathDataEntry.points = path->paths.back().data();
 
@@ -43,7 +45,9 @@ std::shared_ptr<Ship::IResource> ResourceFactoryBinaryPathV0::ReadResource(std::
     return path;
 }
 
-std::shared_ptr<Ship::IResource> ResourceFactoryXMLPathV0::ReadResource(std::shared_ptr<Ship::File> file, std::shared_ptr<Ship::ResourceInitData> initData) {
+std::shared_ptr<Ship::IResource>
+ResourceFactoryXMLPathV0::ReadResource(std::shared_ptr<Ship::File> file,
+                                       std::shared_ptr<Ship::ResourceInitData> initData) {
     if (!FileHasValidFormatAndReader(file, initData)) {
         return nullptr;
     }
@@ -53,15 +57,15 @@ std::shared_ptr<Ship::IResource> ResourceFactoryXMLPathV0::ReadResource(std::sha
 
     auto pathElement = reader->RootElement();
 
-    //path->numPaths = pathElement->IntAttribute("NumPaths");
-    //path->paths.reserve(path->numPaths);
+    // path->numPaths = pathElement->IntAttribute("NumPaths");
+    // path->paths.reserve(path->numPaths);
 
     auto pathDataElement = pathElement->FirstChildElement();
 
     while (pathDataElement != nullptr) {
         std::vector<Vec3s> points;
-        //uint32_t pointCount = pathDataElement->IntAttribute("NumPoints");
-        //points.reserve(pointCount);
+        // uint32_t pointCount = pathDataElement->IntAttribute("NumPoints");
+        // points.reserve(pointCount);
 
         auto pointElement = pathDataElement->FirstChildElement();
 
@@ -77,7 +81,7 @@ std::shared_ptr<Ship::IResource> ResourceFactoryXMLPathV0::ReadResource(std::sha
         }
 
         PathData pathDataEntry;
-        //pathDataEntry.count = pointCount;
+        // pathDataEntry.count = pointCount;
         pathDataEntry.count = points.size();
 
         path->paths.push_back(points);

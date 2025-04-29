@@ -41,7 +41,7 @@ typedef struct {
 
 typedef enum PlandoTabs {
     TAB_HINTS,
-    TAB_LOCATIONS
+    TAB_LOCATIONS,
 } PlandoTabs;
 
 typedef enum PlandoHints {

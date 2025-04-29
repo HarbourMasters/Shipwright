@@ -41,7 +41,8 @@ class SohInputEditorWindow : public Ship::GuiWindow {
     void DrawButtonLineEditMappingButton(uint8_t port, N64ButtonMask bitmask, std::string id);
     void DrawButtonLineAddMappingButton(uint8_t port, N64ButtonMask bitmask);
 
-    void DrawStickDirectionLineEditMappingButton(uint8_t port, uint8_t stick, Ship::Direction direction, std::string id);
+    void DrawStickDirectionLineEditMappingButton(uint8_t port, uint8_t stick, Ship::Direction direction,
+                                                 std::string id);
     void DrawStickDirectionLineAddMappingButton(uint8_t port, uint8_t stick, Ship::Direction direction);
     void DrawStickSection(uint8_t port, uint8_t stick, int32_t id, ImVec4 color);
 
@@ -84,7 +85,7 @@ class SohInputEditorWindow : public Ship::GuiWindow {
     void UpdateStickDirectionToMappingIds(uint8_t port);
 
     void GetButtonColorsForDeviceType(Ship::PhysicalDeviceType lusIndex, ImVec4& buttonColor,
-                                          ImVec4& buttonHoveredColor);
+                                      ImVec4& buttonHoveredColor);
     void DrawLinkTab();
     void DrawIvanTab();
     void DrawDebugPortTab(uint8_t portIndex, std::string customName = "");

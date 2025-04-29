@@ -14,18 +14,38 @@ namespace SohGui {
 
 extern std::shared_ptr<SohMenu> mSohMenu;
 using namespace UIWidgets;
-static std::unordered_map<int32_t, const char*> languages = {{ LANGUAGE_ENG, "English" }, { LANGUAGE_GER, "German" }, { LANGUAGE_FRA, "French" }};
-static std::unordered_map<int32_t, const char*> imguiScaleOptions = {{ 0, "Small" }, { 1, "Normal" }, { 2, "Large" }, { 3, "X-Large" }};
+static const std::unordered_map<int32_t, const char*> languages = {
+    { LANGUAGE_ENG, "English" },
+    { LANGUAGE_GER, "German" },
+    { LANGUAGE_FRA, "French" },
+    { LANGUAGE_JPN, "Japanese" },
+};
+static std::unordered_map<int32_t, const char*> imguiScaleOptions = {
+    { 0, "Small" },
+    { 1, "Normal" },
+    { 2, "Large" },
+    { 3, "X-Large" },
+};
 
 const char* GetGameVersionString(uint32_t index) {
     uint32_t gameVersion = ResourceMgr_GetGameVersion(index);
     switch (gameVersion) {
         case OOT_NTSC_US_10:
-            return "NTSC-U 1.0";
+            return "NTSC 1.0";
         case OOT_NTSC_US_11:
-            return "NTSC-U 1.1";
+            return "NTSC 1.1";
         case OOT_NTSC_US_12:
-            return "NTSC-U 1.2";
+            return "NTSC 1.2";
+        case OOT_NTSC_US_GC:
+            return "NTSC-U GC";
+        case OOT_NTSC_JP_GC:
+            return "NTSC-J GC";
+        case OOT_NTSC_JP_GC_CE:
+            return "NTSC-J GC (Collector's Edition)";
+        case OOT_NTSC_US_MQ:
+            return "NTSC-U MQ";
+        case OOT_NTSC_JP_MQ:
+            return "NTSC-J MQ";
         case OOT_PAL_10:
             return "PAL 1.0";
         case OOT_PAL_11:
@@ -45,6 +65,28 @@ const char* GetGameVersionString(uint32_t index) {
             return "IQUE TW";
         default:
             return "UNKNOWN";
+    }
+}
+
+#include "message_data_static.h"
+extern "C" MessageTableEntry* sNesMessageEntryTablePtr;
+extern "C" MessageTableEntry* sGerMessageEntryTablePtr;
+extern "C" MessageTableEntry* sFraMessageEntryTablePtr;
+extern "C" MessageTableEntry* sJpnMessageEntryTablePtr;
+
+static const std::array<MessageTableEntry**, LANGUAGE_MAX> messageTables = {
+    &sNesMessageEntryTablePtr, &sGerMessageEntryTablePtr, &sFraMessageEntryTablePtr, &sJpnMessageEntryTablePtr
+};
+
+void SohMenu::UpdateLanguageMap(std::unordered_map<int32_t, const char*>& languageMap) {
+    for (int32_t i = LANGUAGE_ENG; i < LANGUAGE_MAX; i++) {
+        if (*messageTables.at(i) != NULL) {
+            if (!languageMap.contains(i)) {
+                languageMap.insert(std::make_pair(i, languages.at(i)));
+            }
+        } else {
+            languageMap.erase(i);
+        }
     }
 }
 
@@ -71,10 +113,8 @@ void SohMenu::AddMenuSettings() {
             "items, A to select, B to move up in scope."));
     AddWidget(path, "Menu Background Opacity", WIDGET_CVAR_SLIDER_FLOAT)
         .CVar(CVAR_SETTING("Menu.BackgroundOpacity"))
-        .Options(FloatSliderOptions()
-                     .DefaultValue(0.85f)
-                     .IsPercentage()
-                     .Tooltip("Sets the opacity of the background of the port menu."));
+        .Options(FloatSliderOptions().DefaultValue(0.85f).IsPercentage().Tooltip(
+            "Sets the opacity of the background of the port menu."));
 
     AddWidget(path, "General Settings", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Cursor Always Visible", WIDGET_CVAR_CHECKBOX)
@@ -125,29 +165,37 @@ void SohMenu::AddMenuSettings() {
                               "File Select: Skip to file select menu"));
 
     AddWidget(path, "Languages", WIDGET_SEPARATOR_TEXT);
-    AddWidget(path, "Translate Title Screen", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_SETTING("TitleScreenTranslation"));
-    AddWidget(path, "Menu Language", WIDGET_CVAR_COMBOBOX)
+    AddWidget(path, "Translate Title Screen", WIDGET_CVAR_CHECKBOX).CVar(CVAR_SETTING("TitleScreenTranslation"));
+    AddWidget(path, "Language", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_SETTING("Languages"))
-        .Options(ComboboxOptions().LabelPosition(LabelPositions::Far).ComponentAlignment(ComponentAlignments::Right).ComboMap(languages).DefaultIndex(LANGUAGE_ENG));
+        .PreFunc([](WidgetInfo& info) {
+            auto options = std::static_pointer_cast<UIWidgets::ComboboxOptions>(info.options);
+            SohMenu::UpdateLanguageMap(options->comboMap);
+        })
+        .Options(ComboboxOptions()
+                     .LabelPosition(LabelPositions::Far)
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .ComboMap(languages)
+                     .DefaultIndex(LANGUAGE_ENG));
     AddWidget(path, "Accessibility", WIDGET_SEPARATOR_TEXT);
-    #if defined(_WIN32) || defined(__APPLE__)
+#if defined(_WIN32) || defined(__APPLE__)
     AddWidget(path, "Text to Speech", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("A11yTTS"))
         .Options(CheckboxOptions().Tooltip("Enables text to speech for in game dialog"));
-    #endif
+#endif
     AddWidget(path, "Disable Idle Camera Re-Centering", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("A11yDisableIdleCam"))
         .Options(CheckboxOptions().Tooltip("Disables the automatic re-centering of the camera when idle."));
-    AddWidget(path, "EXPERIMENTAL", WIDGET_SEPARATOR_TEXT)
-        .Options(TextOptions().Color(Colors::Orange));
+    AddWidget(path, "EXPERIMENTAL", WIDGET_SEPARATOR_TEXT).Options(TextOptions().Color(Colors::Orange));
     AddWidget(path, "ImGui Menu Scaling", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_SETTING("ImGuiScale"))
-        .Options(ComboboxOptions().ComboMap(imguiScaleOptions).Tooltip("Changes the scaling of the ImGui menu elements.").DefaultIndex(1)
-            .ComponentAlignment(ComponentAlignments::Right).LabelPosition(LabelPositions::Far))
-        .Callback([](WidgetInfo& info) {
-            OTRGlobals::Instance->ScaleImGui();
-        });
+        .Options(ComboboxOptions()
+                     .ComboMap(imguiScaleOptions)
+                     .Tooltip("Changes the scaling of the ImGui menu elements.")
+                     .DefaultIndex(1)
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Far))
+        .Callback([](WidgetInfo& info) { OTRGlobals::Instance->ScaleImGui(); });
 
     // General - About
     path.column = SECTION_COLUMN_2;
@@ -171,53 +219,31 @@ void SohMenu::AddMenuSettings() {
 
     AddWidget(path, "Master Volume: %d %%", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_SETTING("Volume.Master"))
-        .Options(IntSliderOptions()
-                     .Min(0)
-                     .Max(100)
-                     .DefaultValue(40)
-                     .ShowButtons(true)
-                     .Format(""));
+        .Options(IntSliderOptions().Min(0).Max(100).DefaultValue(40).ShowButtons(true).Format(""));
     AddWidget(path, "Main Music Volume: %d %%", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_SETTING("Volume.MainMusic"))
-        .Options(IntSliderOptions()
-                     .Min(0)
-                     .Max(100)
-                     .DefaultValue(100)
-                     .ShowButtons(true)
-                     .Format(""))
+        .Options(IntSliderOptions().Min(0).Max(100).DefaultValue(100).ShowButtons(true).Format(""))
         .Callback([](WidgetInfo& info) {
-            Audio_SetGameVolume(SEQ_PLAYER_BGM_MAIN, ((float)CVarGetInteger(CVAR_SETTING("Volume.MainMusic"), 100) / 100.0f));
+            Audio_SetGameVolume(SEQ_PLAYER_BGM_MAIN,
+                                ((float)CVarGetInteger(CVAR_SETTING("Volume.MainMusic"), 100) / 100.0f));
         });
     AddWidget(path, "Sub Music Volume: %d %%", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_SETTING("Volume.SubMusic"))
-        .Options(IntSliderOptions()
-                     .Min(0)
-                     .Max(100)
-                     .DefaultValue(100)
-                     .ShowButtons(true)
-                     .Format(""))
+        .Options(IntSliderOptions().Min(0).Max(100).DefaultValue(100).ShowButtons(true).Format(""))
         .Callback([](WidgetInfo& info) {
-            Audio_SetGameVolume(SEQ_PLAYER_BGM_SUB, ((float)CVarGetInteger(CVAR_SETTING("Volume.SubMusic"), 100) / 100.0f));
+            Audio_SetGameVolume(SEQ_PLAYER_BGM_SUB,
+                                ((float)CVarGetInteger(CVAR_SETTING("Volume.SubMusic"), 100) / 100.0f));
         });
     AddWidget(path, "Fanfare Volume: %d %%", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_SETTING("Volume.Fanfare"))
-        .Options(IntSliderOptions()
-                     .Min(0)
-                     .Max(100)
-                     .DefaultValue(100)
-                     .ShowButtons(true)
-                     .Format(""))
+        .Options(IntSliderOptions().Min(0).Max(100).DefaultValue(100).ShowButtons(true).Format(""))
         .Callback([](WidgetInfo& info) {
-            Audio_SetGameVolume(SEQ_PLAYER_FANFARE, ((float)CVarGetInteger(CVAR_SETTING("Volume.Fanfare"), 100) / 100.0f));
+            Audio_SetGameVolume(SEQ_PLAYER_FANFARE,
+                                ((float)CVarGetInteger(CVAR_SETTING("Volume.Fanfare"), 100) / 100.0f));
         });
     AddWidget(path, "Sound Effects Volume: %d %%", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_SETTING("Volume.SFX"))
-        .Options(IntSliderOptions()
-                     .Min(0)
-                     .Max(100)
-                     .DefaultValue(100)
-                     .ShowButtons(true)
-                     .Format(""))
+        .Options(IntSliderOptions().Min(0).Max(100).DefaultValue(100).ShowButtons(true).Format(""))
         .Callback([](WidgetInfo& info) {
             Audio_SetGameVolume(SEQ_PLAYER_SFX, ((float)CVarGetInteger(CVAR_SETTING("Volume.SFX"), 100) / 100.0f));
         });
@@ -231,10 +257,9 @@ void SohMenu::AddMenuSettings() {
     path.sidebarName = "Graphics";
     AddSidebarEntry("Settings", "Graphics", 3);
     AddWidget(path, "Graphics Options", WIDGET_SEPARATOR_TEXT);
-    AddWidget(path, "Toggle Fullscreen", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_SETTING("Fullscreen"))
+    AddWidget(path, "Toggle Fullscreen", WIDGET_BUTTON)
         .Callback([](WidgetInfo& info) { Ship::Context::GetInstance()->GetWindow()->ToggleFullscreen(); })
-        .Options(CheckboxOptions().Tooltip("Toggles Fullscreen On/Off."));
+        .Options(ButtonOptions().Tooltip("Toggles Fullscreen On/Off."));
     AddWidget(path, "Internal Resolution", WIDGET_CVAR_SLIDER_FLOAT)
         .CVar(CVAR_INTERNAL_RESOLUTION)
         .Callback([](WidgetInfo& info) {
@@ -278,19 +303,18 @@ void SohMenu::AddMenuSettings() {
     AddWidget(path, "Current FPS", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_SETTING("InterpolationFPS"))
         .Callback([](WidgetInfo& info) {
-        auto options = std::static_pointer_cast<IntSliderOptions>(info.options);
-        int32_t defaultValue = options->defaultValue;
-        if (CVarGetInteger(info.cVar, defaultValue) == defaultValue) {
-            options->format = "Original (%d)";
-        }
-        else {
-            options->format = "%d";
-        }
-            })
+            auto options = std::static_pointer_cast<IntSliderOptions>(info.options);
+            int32_t defaultValue = options->defaultValue;
+            if (CVarGetInteger(info.cVar, defaultValue) == defaultValue) {
+                options->format = "Original (%d)";
+            } else {
+                options->format = "%d";
+            }
+        })
         .PreFunc([](WidgetInfo& info) {
-        if (mSohMenu->disabledMap.at(DISABLE_FOR_MATCH_REFRESH_RATE_ON).active)
-            info.activeDisables.push_back(DISABLE_FOR_MATCH_REFRESH_RATE_ON);
-            })
+            if (mSohMenu->disabledMap.at(DISABLE_FOR_MATCH_REFRESH_RATE_ON).active)
+                info.activeDisables.push_back(DISABLE_FOR_MATCH_REFRESH_RATE_ON);
+        })
         .Options(IntSliderOptions().Tooltip(tooltip).Min(20).Max(maxFps).DefaultValue(20).Format(fpsFormat));
     AddWidget(path, "Match Refresh Rate", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("MatchRefreshRate"))
@@ -299,7 +323,9 @@ void SohMenu::AddMenuSettings() {
     AddWidget(path, "Enable Vsync", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_VSYNC_ENABLED)
         .PreFunc([](WidgetInfo& info) { info.isHidden = mSohMenu->disabledMap.at(DISABLE_FOR_NO_VSYNC).active; })
-        .Options(CheckboxOptions().Tooltip("Removes tearing, but clamps your max FPS to your displays refresh rate."));
+        .Options(CheckboxOptions()
+                     .Tooltip("Removes tearing, but clamps your max FPS to your displays refresh rate.")
+                     .DefaultValue(true));
     AddWidget(path, "Windowed Fullscreen", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SDL_WINDOWED_FULLSCREEN)
         .PreFunc([](WidgetInfo& info) {
@@ -354,7 +380,7 @@ void SohMenu::AddMenuSettings() {
                      .Tooltip("Which corner of the screen notifications appear in.")
                      .ComboMap(notificationPosition)
                      .DefaultIndex(3));
-    AddWidget(path, "Duration: %.0f seconds", WIDGET_CVAR_SLIDER_FLOAT)
+    AddWidget(path, "Duration (seconds):", WIDGET_CVAR_SLIDER_FLOAT)
         .CVar(CVAR_SETTING("Notifications.Duration"))
         .Options(FloatSliderOptions()
                      .Tooltip("How long notifications are displayed for.")
@@ -363,13 +389,13 @@ void SohMenu::AddMenuSettings() {
                      .Min(3.0f)
                      .Max(30.0f)
                      .DefaultValue(10.0f));
-    AddWidget(path, "Background Opacity: %.0f%%", WIDGET_CVAR_SLIDER_FLOAT)
+    AddWidget(path, "Background Opacity", WIDGET_CVAR_SLIDER_FLOAT)
         .CVar(CVAR_SETTING("Notifications.BgOpacity"))
         .Options(FloatSliderOptions()
                      .Tooltip("How opaque the background of notifications is.")
                      .DefaultValue(0.5f)
                      .IsPercentage());
-    AddWidget(path, "Size %.1f", WIDGET_CVAR_SLIDER_FLOAT)
+    AddWidget(path, "Size:", WIDGET_CVAR_SLIDER_FLOAT)
         .CVar(CVAR_SETTING("Notifications.Size"))
         .Options(FloatSliderOptions()
                      .Tooltip("How large notifications are.")

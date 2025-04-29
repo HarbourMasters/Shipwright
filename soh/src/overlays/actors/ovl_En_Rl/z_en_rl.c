@@ -119,9 +119,9 @@ void func_80AE7590(EnRl* this, PlayState* play) {
     Vec3f pos;
     s16 sceneNum = play->sceneNum;
 
-    if (gSaveContext.sceneSetupIndex == 4 && sceneNum == SCENE_CHAMBER_OF_THE_SAGES && play->csCtx.state != CS_STATE_IDLE &&
-        play->csCtx.npcActions[6] != NULL && play->csCtx.npcActions[6]->action == 2 &&
-        !this->lightMedallionGiven) {
+    if (gSaveContext.sceneSetupIndex == 4 && sceneNum == SCENE_CHAMBER_OF_THE_SAGES &&
+        play->csCtx.state != CS_STATE_IDLE && play->csCtx.npcActions[6] != NULL &&
+        play->csCtx.npcActions[6]->action == 2 && !this->lightMedallionGiven) {
         player = GET_PLAYER(play);
         pos.x = player->actor.world.pos.x;
         pos.y = player->actor.world.pos.y + 80.0f;
@@ -313,8 +313,8 @@ void func_80AE7D94(EnRl* this, PlayState* play) {
     gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 0, this->alpha);
     gSPSegment(POLY_XLU_DISP++, 0x0C, D_80116280);
 
-    POLY_XLU_DISP = SkelAnime_DrawFlex(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
-                                       NULL, NULL, NULL, POLY_XLU_DISP);
+    POLY_XLU_DISP = SkelAnime_DrawFlex(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, NULL,
+                                       NULL, NULL, POLY_XLU_DISP);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

@@ -19,7 +19,7 @@ void SkyboxDraw_Draw(SkyboxContext* skyboxCtx, GraphicsContext* gfxCtx, s16 skyb
 
     Gfx_SetupDL_40Opa(gfxCtx);
 
-    //gsSPShaderTest(POLY_OPA_DISP++);
+    // gsSPShaderTest(POLY_OPA_DISP++);
 
     /*gSPSegment(POLY_OPA_DISP++, 0x7, skyboxCtx->staticSegments[0]);
     gSPSegment(POLY_OPA_DISP++, 0x8, skyboxCtx->staticSegments[1]);
@@ -92,7 +92,7 @@ void SkyboxDraw_Draw(SkyboxContext* skyboxCtx, GraphicsContext* gfxCtx, s16 skyb
     }
 
     gDPPipeSync(POLY_OPA_DISP++);
-    //gsSPShaderTest2(POLY_OPA_DISP++);
+    // gsSPShaderTest2(POLY_OPA_DISP++);
 
     FrameInterpolation_RecordCloseChild();
     CLOSE_DISPS(gfxCtx);

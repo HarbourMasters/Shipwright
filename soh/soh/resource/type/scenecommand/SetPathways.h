@@ -21,4 +21,4 @@ class SetPathways : public SceneCommand<PathData*> {
     std::vector<std::string> pathFileNames;
     std::vector<PathData*> paths;
 };
-}; // namespace LUS
+}; // namespace SOH

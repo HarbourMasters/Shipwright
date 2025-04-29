@@ -6,6 +6,6 @@ EchoSettings* SetEchoSettings::GetPointer() {
 }
 
 size_t SetEchoSettings::GetPointerSize() {
-	return sizeof(EchoSettings);
+    return sizeof(EchoSettings);
 }
 } // namespace SOH

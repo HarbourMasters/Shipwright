@@ -18,8 +18,9 @@ void SohMenu::AddMenuDevTools() {
         .Options(CheckboxOptions().Tooltip("Changes the menu display from overlay to windowed."));
     AddWidget(path, "Debug Mode", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("DebugEnabled"))
-        .Options(CheckboxOptions().Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip "
-                                           "with L + D-pad Right, and open the debug menu with L on the pause screen."));
+        .Options(
+            CheckboxOptions().Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip "
+                                      "with L + D-pad Right, and open the debug menu with L on the pause screen."));
     AddWidget(path, "OoT Registry Editor", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("RegEditEnabled"))
         .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0); })
@@ -28,29 +29,30 @@ void SohMenu::AddMenuDevTools() {
         .CVar(CVAR_DEVELOPER_TOOLS("DebugSaveFileMode"))
         .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0); })
         .Options(ComboboxOptions()
-                     .Tooltip("Changes the behaviour of debug file select creation (creating a save file on slot 1 "
-                              "with debug mode on)\n"
-                              "- Off: The debug save file will be a normal savefile\n"
-                              "- Vanilla: The debug save file will be the debug save file from the original game\n"
-                              "- Maxed: The debug save file will be a save file with all of the items & upgrades")
+                     .Tooltip("Changes the behavior of debug file select creation (creating a save file on slot 1 "
+                              "with debug mode on):\n"
+                              "- Off: The debug save file will be a normal savefile.\n"
+                              "- Vanilla: The debug save file will be the debug save file from the original game.\n"
+                              "- Maxed: The debug save file will be a save file with all of the items & upgrades.")
                      .ComboMap(debugSaveFileModes));
     AddWidget(path, "OoT Skulltula Debug", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("SkulltulaDebugEnabled"))
         .Options(CheckboxOptions().Tooltip("Enables Skulltula Debug, when moving the cursor in the menu above various "
-                                           "map icons (boss key, compass, map screen locations, etc) will set the GS "
-                                           "bits in that area.\nUSE WITH CAUTION AS IT DOES NOT UPDATE THE GS COUNT."));
+                                           "map icons (boss key, compass, map screen locations, etc.) will set the GS "
+                                           "bits in that area.\nUSE WITH CAUTION AS IT DOES NOT UPDATE THE GS COUNT!"));
     AddWidget(path, "Better Debug Warp Screen", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("BetterDebugWarpScreen"))
-        .Options(CheckboxOptions().Tooltip(
-            "Optimized debug warp screen, with the added ability to chose entrances and time of day").DefaultValue(true));
+        .Options(CheckboxOptions()
+                     .Tooltip("Optimized Debug Warp Screen, with the added ability to chose entrances and time of day.")
+                     .DefaultValue(true));
     AddWidget(path, "Debug Warp Screen Translation", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"))
         .Options(CheckboxOptions()
-            .Tooltip("Translate the Debug Warp Screen based on the game language.")
-            .DefaultValue(true));
+                     .Tooltip("Translate the Debug Warp Screen based on the game language.")
+                     .DefaultValue(true));
     AddWidget(path, "Resource logging", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("ResourceLogging"))
-        .Options(CheckboxOptions().Tooltip("Logs some resources as XML when they're loaded in binary format"));
+        .Options(CheckboxOptions().Tooltip("Logs some resources as XML when they're loaded in binary format."));
 
     AddWidget(path, "Frame Advance", WIDGET_CHECKBOX)
         .Options(CheckboxOptions().Tooltip(
@@ -90,15 +92,15 @@ void SohMenu::AddMenuDevTools() {
     path.sidebarName = "Stats";
     AddSidebarEntry("Dev Tools", path.sidebarName, 1);
     AddWidget(path, "Popout Stats Window", WIDGET_WINDOW_BUTTON)
-        .CVar(CVAR_WINDOW("Stats"))
-        .WindowName("Stats")
+        .CVar(CVAR_WINDOW("SohStats"))
+        .WindowName("Stats##Soh")
         .Options(WindowButtonOptions().Tooltip("Enables the separate Stats Window."));
 
     // Console
     path.sidebarName = "Console";
     AddSidebarEntry("Dev Tools", path.sidebarName, 1);
     AddWidget(path, "Popout Console", WIDGET_WINDOW_BUTTON)
-        .CVar(CVAR_WINDOW("Console"))
+        .CVar(CVAR_WINDOW("SohConsole"))
         .WindowName("Console##SoH")
         .Options(WindowButtonOptions().Tooltip("Enables the separate Console Window."));
 
@@ -162,7 +164,7 @@ void SohMenu::AddMenuDevTools() {
     path.sidebarName = "Gfx Debugger";
     AddSidebarEntry("Dev Tools", path.sidebarName, 1);
     AddWidget(path, "Popout Gfx Debugger", WIDGET_WINDOW_BUTTON)
-        .CVar(CVAR_WINDOW("GfxDebugger"))
+        .CVar(CVAR_WINDOW("SohGfxDebugger"))
         .WindowName("GfxDebugger##SoH")
         .Options(WindowButtonOptions().Tooltip("Enables the separate Gfx Debugger Window."));
 }

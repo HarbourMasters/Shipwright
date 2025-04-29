@@ -106,7 +106,7 @@ bool Scene_CommandSpecialFiles(PlayState* play, SOH::ISceneCommand* cmd) {
     }
 
     if (specialCmd->specialObjects.elfMessage != 0) {
-        auto res = 
+        auto res =
             (Ship::Blob*)OTRPlay_LoadFile(play, sNaviMsgFiles[specialCmd->specialObjects.elfMessage - 1].fileName);
         play->cUpElfMsgs = (ElfMessage*)res->Data.data();
     }
@@ -397,7 +397,7 @@ bool Scene_CommandMiscSettings(PlayState* play, SOH::ISceneCommand* cmd) {
         if (gSaveContext.cutsceneIndex < 0xFFF0) {
             gSaveContext.worldMapAreaData |= gBitFlags[gSaveContext.worldMapArea];
             osSyncPrintf("０００  ａｒｅａ＿ａｒｒｉｖａｌ＝%x (%d)\n", gSaveContext.worldMapAreaData,
-                gSaveContext.worldMapArea);
+                         gSaveContext.worldMapArea);
         }
     }
     return false;
@@ -442,7 +442,8 @@ s32 OTRScene_ExecuteCommands(PlayState* play, SOH::Scene* scene) {
             continue;
 
         cmdCode = sceneCmd->cmdId;
-        // osSyncPrintf("*** Scene_Word = { code=%d, data1=%02x, data2=%04x } ***\n", cmdCode, sceneCmd->base.data1, sceneCmd->base.data2);
+        // osSyncPrintf("*** Scene_Word = { code=%d, data1=%02x, data2=%04x } ***\n", cmdCode, sceneCmd->base.data1,
+        // sceneCmd->base.data2);
 
         if ((int)cmdCode == 0x14) {
             break;
@@ -503,10 +504,10 @@ extern "C" s32 OTRfunc_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomN
 
         osCreateMesgQueue(&roomCtx->loadQueue, &roomCtx->loadMsg, 1);
         // DmaMgr_SendRequest2(&roomCtx->dmaRequest, roomCtx->unk_34, play->roomList[roomNum].vromStart, size, 0,
-                            //&roomCtx->loadQueue, NULL, __FILE__, __LINE__);
+        //&roomCtx->loadQueue, NULL, __FILE__, __LINE__);
 
-        auto roomData =
-            std::static_pointer_cast<SOH::Scene>(ResourceMgr_GetResourceByNameHandlingMQ(play->roomList[roomNum].fileName));
+        auto roomData = std::static_pointer_cast<SOH::Scene>(
+            ResourceMgr_GetResourceByNameHandlingMQ(play->roomList[roomNum].fileName));
         roomCtx->status = 1;
         roomCtx->roomToLoad = roomData.get();
 

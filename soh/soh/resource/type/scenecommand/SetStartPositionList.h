@@ -27,4 +27,4 @@ class SetStartPositionList : public SceneCommand<ActorEntry> {
     uint32_t numStartPositions;
     std::vector<ActorEntry> startPositions;
 };
-}; // namespace LUS
+}; // namespace SOH

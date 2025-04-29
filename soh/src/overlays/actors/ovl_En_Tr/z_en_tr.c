@@ -131,8 +131,8 @@ void EnTr_CrySpellcast(EnTr* this, PlayState* play) {
     if (this->timer == 11) {
         // Both cry in the title screen cutscene, but only Kotake in the in-game cutscene
         if ((this->actor.params != TR_KOUME) || (gSaveContext.sceneSetupIndex == 6)) {
-            Audio_PlaySoundGeneral(NA_SE_EN_TWINROBA_SHOOT_VOICE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                   &gSfxDefaultReverb);
+            Audio_PlaySoundGeneral(NA_SE_EN_TWINROBA_SHOOT_VOICE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         }
     }
 
@@ -165,9 +165,9 @@ void EnTr_ChooseAction2(EnTr* this, PlayState* play) {
                     EnTr_SetupAction(this, EnTr_CrySpellcast);
                     this->animation = D_80B24378[this->actor.params];
                     this->timer = 39;
-                    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DEMO_6K,
-                                       this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z, 0, 0,
-                                       0, this->actor.params + 9);
+                    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DEMO_6K, this->actor.world.pos.x,
+                                       this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0,
+                                       this->actor.params + 9);
                     Audio_PlayActorSound2(&this->actor, NA_SE_EN_FANTOM_MASIC1);
                     break;
 
@@ -386,7 +386,8 @@ void EnTr_Update(Actor* thisx, PlayState* play) {
 
     if (SkelAnime_Update(&this->skelAnime) != 0) {
         if (this->animation != NULL) {
-            if ((this->animation == &gKotakeKoumeLookingOverLeftShoulderAnim) || (this->animation == &gKotakeKoumeLookingOverRightShoulderAnim)) {
+            if ((this->animation == &gKotakeKoumeLookingOverLeftShoulderAnim) ||
+                (this->animation == &gKotakeKoumeLookingOverRightShoulderAnim)) {
                 if (this->actor.params != TR_KOUME) {
                     Audio_PlayActorSound2(&this->actor, NA_SE_EN_TWINROBA_LAUGH2);
                 } else {

@@ -21,6 +21,9 @@ static const ALIGN_ASSET(2) char gHilite1Tex[] = dgHilite1Tex;
 #define dgHilite2Tex "__OTR__objects/gameplay_keep/gHilite2Tex"
 static const ALIGN_ASSET(2) char gHilite2Tex[] = dgHilite2Tex;
 
+#define dgHilite2Tex_Overflow "__OTR__objects/gameplay_keep/gHilite2Tex_Overflow"
+static const ALIGN_ASSET(2) char gHilite2Tex_Overflow[] = dgHilite2Tex_Overflow;
+
 #define dgHylianShieldDesignTex "__OTR__objects/gameplay_keep/gHylianShieldDesignTex"
 static const ALIGN_ASSET(2) char gHylianShieldDesignTex[] = dgHylianShieldDesignTex;
 
@@ -2846,6 +2849,63 @@ static const ALIGN_ASSET(2) char gFishSkelLimbsLimb_018FB0DL_018950[] = dgFishSk
 
 #define dgFishSkelLimbsLimb_018FBCDL_0188B0 "__OTR__objects/gameplay_keep/gFishSkelLimbsLimb_018FBCDL_0188B0"
 static const ALIGN_ASSET(2) char gFishSkelLimbsLimb_018FBCDL_0188B0[] = dgFishSkelLimbsLimb_018FBCDL_0188B0;
+
+// #region NTSC
+
+#define dgameplay_keep_DL_0C8B0 "__OTR__objects/gameplay_keep/gameplay_keep_DL_0C8B0"
+static const ALIGN_ASSET(2) char gameplay_keep_DL_0C8B0[] = dgameplay_keep_DL_0C8B0;
+
+#define dgameplay_keep_Tex_0CE60 "__OTR__objects/gameplay_keep/gameplay_keep_Tex_0CE60"
+static const ALIGN_ASSET(2) char gameplay_keep_Tex_0CE60[] = dgameplay_keep_Tex_0CE60;
+
+#define dgameplay_keep_DL_39890 "__OTR__objects/gameplay_keep/gameplay_keep_DL_39890"
+static const ALIGN_ASSET(2) char gameplay_keep_DL_39890[] = dgameplay_keep_DL_39890;
+
+#define dgameplay_keep_DL_399B0 "__OTR__objects/gameplay_keep/gameplay_keep_DL_399B0"
+static const ALIGN_ASSET(2) char gameplay_keep_DL_399B0[] = dgameplay_keep_DL_399B0;
+
+#define dgameplay_keep_DL_39A80 "__OTR__objects/gameplay_keep/gameplay_keep_DL_39A80"
+static const ALIGN_ASSET(2) char gameplay_keep_DL_39A80[] = dgameplay_keep_DL_39A80;
+
+#define dgameplay_keep_DL_39B50 "__OTR__objects/gameplay_keep/gameplay_keep_DL_39B50"
+static const ALIGN_ASSET(2) char gameplay_keep_DL_39B50[] = dgameplay_keep_DL_39B50;
+
+#define dgameplay_keep_DL_3CFD0 "__OTR__objects/gameplay_keep/gameplay_keep_DL_3CFD0"
+static const ALIGN_ASSET(2) char gameplay_keep_DL_3CFD0[] = dgameplay_keep_DL_3CFD0;
+
+#define dgameplay_keep_DL_3D108 "__OTR__objects/gameplay_keep/gameplay_keep_DL_3D108"
+static const ALIGN_ASSET(2) char gameplay_keep_DL_3D108[] = dgameplay_keep_DL_3D108;
+
+#define dgameplay_keep_DL_3D260 "__OTR__objects/gameplay_keep/gameplay_keep_DL_3D260"
+static const ALIGN_ASSET(2) char gameplay_keep_DL_3D260[] = dgameplay_keep_DL_3D260;
+
+#define dgUnusedDropBombchuTex "__OTR__objects/gameplay_keep/gUnusedDropBombchuTex"
+static const ALIGN_ASSET(2) char gUnusedDropBombchuTex[] = dgUnusedDropBombchuTex;
+
+#define dgUnusedWalletTex "__OTR__objects/gameplay_keep/gUnusedWalletTex"
+static const ALIGN_ASSET(2) char gUnusedWalletTex[] = dgUnusedWalletTex;
+
+#define dgUnusedHeartPieceTex "__OTR__objects/gameplay_keep/gUnusedHeartPieceTex"
+static const ALIGN_ASSET(2) char gUnusedHeartPieceTex[] = dgUnusedHeartPieceTex;
+
+#define dgUnusedDropRecoveryHeartTex "__OTR__objects/gameplay_keep/gUnusedDropRecoveryHeartTex"
+static const ALIGN_ASSET(2) char gUnusedDropRecoveryHeartTex[] = dgUnusedDropRecoveryHeartTex;
+
+#define dgUnusedDropBombTex "__OTR__objects/gameplay_keep/gUnusedDropBombTex"
+static const ALIGN_ASSET(2) char gUnusedDropBombTex[] = dgUnusedDropBombTex;
+
+#define dgUnusedDropArrows1Tex "__OTR__objects/gameplay_keep/gUnusedDropArrows1Tex"
+static const ALIGN_ASSET(2) char gUnusedDropArrows1Tex[] = dgUnusedDropArrows1Tex;
+
+#define dgUnusedRupeeLightBlueTex "__OTR__objects/gameplay_keep/gUnusedRupeeLightBlueTex"
+static const ALIGN_ASSET(2) char gUnusedRupeeLightBlueTex[] = dgUnusedRupeeLightBlueTex;
+
+#define dgUnusedHeartContainerTex "__OTR__objects/gameplay_keep/gUnusedHeartContainerTex"
+static const ALIGN_ASSET(2) char gUnusedHeartContainerTex[] = dgUnusedHeartContainerTex;
+
+#define dgUnusedTreeBarkTex "__OTR__objects/gameplay_keep/gUnusedTreeBarkTex"
+static const ALIGN_ASSET(2) char gUnusedTreeBarkTex[] = dgUnusedTreeBarkTex;
+
 
 
 #endif // OBJECTS_GAMEPLAY_KEEP_H

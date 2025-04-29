@@ -1,6 +1,6 @@
 #include "z64.h"
 
-//OTRTODO - this is awful
+// OTRTODO - this is awful
 
 extern "C" {
 void InitOTR();
@@ -29,9 +29,7 @@ CollisionHeader* ResourceMgr_LoadColByName(char* path);
 uint64_t GetPerfCounter();
 int ResourceMgr_OTRSigCheck(char* imgData);
 void ResourceMgr_PushCurrentDirectory(char* path);
-
 }
-
 
 extern "C" void gSPSegment(void* value, int segNum, uintptr_t target) {
     char* imgData = (char*)target;
@@ -70,9 +68,9 @@ extern "C" void gSPDisplayList(Gfx* pkt, Gfx* dl) {
     char* imgData = (char*)dl;
 
     if (ResourceMgr_OTRSigCheck(imgData) == 1) {
-        
-        //ResourceMgr_PushCurrentDirectory(imgData);
-        //gsSPPushCD(pkt++, imgData);
+
+        // ResourceMgr_PushCurrentDirectory(imgData);
+        // gsSPPushCD(pkt++, imgData);
         dl = ResourceMgr_LoadGfxByName(imgData);
     }
 
@@ -96,15 +94,14 @@ extern "C" void gSPVertex(Gfx* pkt, uintptr_t v, int n, int v0) {
     __gSPVertex(pkt, v, n, v0);
 }
 
-extern "C" void gSPInvalidateTexCache(Gfx* pkt, uintptr_t texAddr)
-{
+extern "C" void gSPInvalidateTexCache(Gfx* pkt, uintptr_t texAddr) {
     char* imgData = (char*)texAddr;
-    
+
     if (texAddr != 0 && ResourceMgr_OTRSigCheck(imgData)) {
         // Temporary solution to the mq/nonmq issue, this will be
         // handled better with LUS 1.0
-        texAddr = (uintptr_t)ResourceMgr_LoadTexOrDListByName(imgData); 
+        texAddr = (uintptr_t)ResourceMgr_LoadTexOrDListByName(imgData);
     }
 
     __gSPInvalidateTexCache(pkt, texAddr);
- }
+}

@@ -91,18 +91,18 @@ static char* sItemDebugTxt[] = {
     "緑のくすり売り          ", "デクの棒持てる数を増やす", "デクの実持てる数を増やす",
 };
 
-static DnsItemEntry sItemNuts =        { 20,  5, GI_NUTS_5_2,     EnDns_CanBuyDekuNuts,   EnDns_PayForDekuNuts };
-static DnsItemEntry sItemSticks =      { 15,  1, GI_STICKS_1,     EnDns_CanBuyDekuSticks, EnDns_PayPrice };
-static DnsItemEntry sItemHeartPiece =  { 10,  1, GI_HEART_PIECE,  EnDns_CanBuyPrice,      EnDns_PayForHeartPiece };
-static DnsItemEntry sItemSeeds =       { 40, 30, GI_SEEDS_30,     EnDns_CanBuyDekuSeeds,  EnDns_PayPrice };
-static DnsItemEntry sItemDekuShield =  { 50,  1, GI_SHIELD_DEKU,  EnDns_CanBuyDekuShield, EnDns_PayPrice };
-static DnsItemEntry sItemBombs =       { 40,  5, GI_BOMBS_5,      EnDns_CanBuyBombs,      EnDns_PayForBombs };
-static DnsItemEntry sItemArrows =      { 70, 20, GI_ARROWS_LARGE, EnDns_CanBuyArrows,     EnDns_PayForArrows };
-static DnsItemEntry sItemRedPotion =   { 40,  1, GI_POTION_RED,   EnDns_CanBuyBottle,     EnDns_PayPrice };
-static DnsItemEntry sItemGreenPotion = { 40,  1, GI_POTION_GREEN, EnDns_CanBuyBottle,     EnDns_PayPrice };
+static DnsItemEntry sItemNuts = { 20, 5, GI_NUTS_5_2, EnDns_CanBuyDekuNuts, EnDns_PayForDekuNuts };
+static DnsItemEntry sItemSticks = { 15, 1, GI_STICKS_1, EnDns_CanBuyDekuSticks, EnDns_PayPrice };
+static DnsItemEntry sItemHeartPiece = { 10, 1, GI_HEART_PIECE, EnDns_CanBuyPrice, EnDns_PayForHeartPiece };
+static DnsItemEntry sItemSeeds = { 40, 30, GI_SEEDS_30, EnDns_CanBuyDekuSeeds, EnDns_PayPrice };
+static DnsItemEntry sItemDekuShield = { 50, 1, GI_SHIELD_DEKU, EnDns_CanBuyDekuShield, EnDns_PayPrice };
+static DnsItemEntry sItemBombs = { 40, 5, GI_BOMBS_5, EnDns_CanBuyBombs, EnDns_PayForBombs };
+static DnsItemEntry sItemArrows = { 70, 20, GI_ARROWS_LARGE, EnDns_CanBuyArrows, EnDns_PayForArrows };
+static DnsItemEntry sItemRedPotion = { 40, 1, GI_POTION_RED, EnDns_CanBuyBottle, EnDns_PayPrice };
+static DnsItemEntry sItemGreenPotion = { 40, 1, GI_POTION_GREEN, EnDns_CanBuyBottle, EnDns_PayPrice };
 
 static DnsItemEntry sItemStickUpgrade = { 40, 1, GI_STICK_UPGRADE_20, EnDns_CanBuyPrice, EnDns_PayForDekuStickUpgrade };
-static DnsItemEntry sItemNutUpgrade =   { 40, 1, GI_NUT_UPGRADE_30,   EnDns_CanBuyPrice, EnDns_PayForDekuNutUpgrade };
+static DnsItemEntry sItemNutUpgrade = { 40, 1, GI_NUT_UPGRADE_30, EnDns_CanBuyPrice, EnDns_PayForDekuNutUpgrade };
 
 static DnsItemEntry* sItemEntries[] = {
     &sItemNuts,   &sItemSticks,    &sItemHeartPiece,  &sItemSeeds,        &sItemDekuShield, &sItemBombs,
