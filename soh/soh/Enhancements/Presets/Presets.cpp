@@ -222,8 +222,8 @@ void PresetsCustomWidget(WidgetInfo& info) {
         UIWidgets::Checkbox("Save Trackers", &newPresetTrackers,
                             UIWidgets::CheckboxOptions().Color(THEME_COLOR).Padding({ 6.0f, 6.0f }));
         if (UIWidgets::Button(
-                "Save", UIWidgets::ButtonOptions({ .disabled = nameExists || noneSelected || newPresetName.empty(),
-                                                   .disabledTooltip = disabledTooltip })
+                "Save", UIWidgets::ButtonOptions({{ .disabled = (nameExists || noneSelected || newPresetName.empty()),
+                                                   .disabledTooltip = disabledTooltip }})
                             .Padding({ 6.0f, 6.0f })
                             .Color(THEME_COLOR))) {
             presets[newPresetName] = {};
