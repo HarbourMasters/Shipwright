@@ -280,16 +280,16 @@ void SohMenu::AddMenuEnhancements() {
         .SameLine(true)
         .Options(ButtonOptions().Size(Sizes::Inline))
         .Callback([](WidgetInfo& info) {
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), false);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"), false);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), false);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), false);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), false);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), false);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), false);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), false);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), false);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), false);
+            CVarClear(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"));
+            CVarClear(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"));
+            CVarClear(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"));
+            CVarClear(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"));
+            CVarClear(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"));
+            CVarClear(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"));
+            CVarClear(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"));
+            CVarClear(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"));
+            CVarClear(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"));
+            CVarClear(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"));
 
             Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         });

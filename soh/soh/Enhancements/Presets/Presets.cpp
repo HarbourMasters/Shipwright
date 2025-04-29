@@ -113,12 +113,16 @@ enum PresetSection {
 
 struct PresetInfo {
     nlohmann::json presetValues;
-
+    std::string fileName;
     bool applySettings = true, applyEnhancements = true, applyAudio = true, applyCosmetics = true, applyRando = true, applyTrackers = true;
 };
 
 static std::map<std::string, PresetInfo> presets;
 static std::string presetFolder;
+
+std::string FormatPresetPath(std::string name) {
+    return fmt::format("{}/{}.json", presetFolder, name);
+}
 
 void DrawSectionCheck(const std::string& name, bool empty, bool* pointer, std::string section) {
     ImGui::AlignTextToFramePadding();
@@ -152,19 +156,24 @@ void LoadPresets() {
                 return;
             }
             presets[json["presetName"]].presetValues = json;
+            presets[json["presetName"]].fileName = preset.path().filename().stem().string();
         } catch (...) {}
+        ifs.close();
     }
 }
 
 void SavePreset(std::string& presetName) {
-    std::string folderPath = Ship::Context::GetInstance()->GetPathRelativeToAppDirectory("presets");
-    if (!fs::exists(folderPath)) {
-        fs::create_directory(folderPath);
+    if (!fs::exists(presetFolder)) {
+        fs::create_directory(presetFolder);
     }
     presets[presetName].presetValues["presetName"] = presetName;
-    std::ofstream file(fmt::format("{}/{}.json", folderPath, presetName));
+    std::ofstream file(fmt::format("{}/{}.json", presetFolder, presetName));
     file << presets[presetName].presetValues.dump(4);
+    file.close();
 }
+
+std::vector<std::string> sections = { CVAR_PREFIX_SETTING, CVAR_PREFIX_WINDOW, CVAR_PREFIX_ENHANCEMENT, CVAR_PREFIX_RANDOMIZER_ENHANCEMENT,
+                                      CVAR_PREFIX_AUDIO, CVAR_PREFIX_COSMETIC, CVAR_PREFIX_RANDOMIZER_SETTING, CVAR_PREFIX_TRACKER, CVAR_PREFIX_CHEAT };
 
 static std::string newPresetName;
 static bool newPresetSettings = true, newPresetEnhancements = true, newPresetAudio = true, newPresetCosmetics = true, newPresetRando = true, newPresetTrackers = true;
@@ -195,28 +204,28 @@ void PresetsCustomWidget(WidgetInfo& info) {
             presets[newPresetName] = {};
             auto config = Ship::Context::GetInstance()->GetConfig()->GetNestedJson();
             if (newPresetSettings) {
-                presets[newPresetName].presetValues["settings"] = config["CVars"][CVAR_PREFIX_SETTING];
-                presets[newPresetName].presetValues["windows"] = config["CVars"][CVAR_PREFIX_WINDOW];
+                presets[newPresetName].presetValues["blocks"]["settings"][CVAR_PREFIX_SETTING] = config["CVars"][CVAR_PREFIX_SETTING];
+                presets[newPresetName].presetValues["blocks"]["windows"][CVAR_PREFIX_WINDOW] = config["CVars"][CVAR_PREFIX_WINDOW];
             }
             if (newPresetEnhancements) {
-                presets[newPresetName].presetValues["enhancements"] = config["CVars"][CVAR_PREFIX_ENHANCEMENT];
-                presets[newPresetName].presetValues["randoEnhancements"] = config["CVars"][CVAR_PREFIX_RANDOMIZER_ENHANCEMENT];
+                presets[newPresetName].presetValues["blocks"]["enhancements"][CVAR_PREFIX_ENHANCEMENT] = config["CVars"][CVAR_PREFIX_ENHANCEMENT];
+                presets[newPresetName].presetValues["blocks"]["randoEnhancements"][CVAR_PREFIX_RANDOMIZER_ENHANCEMENT] = config["CVars"][CVAR_PREFIX_RANDOMIZER_ENHANCEMENT];
             }
             if (newPresetAudio) {
-                presets[newPresetName].presetValues["audio"] = config["CVars"][CVAR_PREFIX_AUDIO];
+                presets[newPresetName].presetValues["blocks"]["audio"][CVAR_PREFIX_AUDIO] = config["CVars"][CVAR_PREFIX_AUDIO];
             }
             if (newPresetCosmetics) {
-                presets[newPresetName].presetValues["cosmetics"] = config["CVars"][CVAR_PREFIX_COSMETIC];
+                presets[newPresetName].presetValues["blocks"]["cosmetics"][CVAR_PREFIX_COSMETIC] = config["CVars"][CVAR_PREFIX_COSMETIC];
             }
             if (newPresetRando) {
-                presets[newPresetName].presetValues["rando"] = config["CVars"][CVAR_PREFIX_RANDOMIZER_SETTING];
+                presets[newPresetName].presetValues["blocks"]["rando"][CVAR_PREFIX_RANDOMIZER_SETTING] = config["CVars"][CVAR_PREFIX_RANDOMIZER_SETTING];
             }
             if (newPresetTrackers) {
-                presets[newPresetName].presetValues["trackers"] = config["CVars"][CVAR_PREFIX_TRACKER];
+                presets[newPresetName].presetValues["blocks"]["trackers"][CVAR_PREFIX_TRACKER] = config["CVars"][CVAR_PREFIX_TRACKER];
             }
+            presets[newPresetName].fileName = newPresetName;
             SavePreset(newPresetName);
             newPresetName = "";
-            newPresetSettings = newPresetEnhancements = newPresetAudio = newPresetCosmetics = newPresetRando = newPresetTrackers = false;
             ImGui::CloseCurrentPopup();
         }
         if (UIWidgets::Button("Cancel", UIWidgets::ButtonOptions().Padding({6.0f, 6.0f}).Color(THEME_COLOR))) {
@@ -274,27 +283,39 @@ void PresetsCustomWidget(WidgetInfo& info) {
             ImGui::AlignTextToFramePadding();
             ImGui::Text(name.c_str());
             ImGui::TableNextColumn();
-            DrawSectionCheck(name, !info.presetValues.contains("settings"), &info.applySettings, "settings");
+            DrawSectionCheck(name, !info.presetValues["blocks"].contains("settings"), &info.applySettings, "settings");
             ImGui::TableNextColumn();
-            DrawSectionCheck(name, !info.presetValues.contains("enhancements"), &info.applyEnhancements, "enhancements");
+            DrawSectionCheck(name, !info.presetValues["blocks"].contains("enhancements"), &info.applyEnhancements, "enhancements");
             ImGui::TableNextColumn();
-            DrawSectionCheck(name, !info.presetValues.contains("audio"), &info.applyAudio, "audio");
+            DrawSectionCheck(name, !info.presetValues["blocks"].contains("audio"), &info.applyAudio, "audio");
             ImGui::TableNextColumn();
-            DrawSectionCheck(name, !info.presetValues.contains("cosmetics"), &info.applyCosmetics, "cosmetics");
+            DrawSectionCheck(name, !info.presetValues["blocks"].contains("cosmetics"), &info.applyCosmetics, "cosmetics");
             ImGui::TableNextColumn();
-            DrawSectionCheck(name, !info.presetValues.contains("rando"), &info.applyRando, "rando");
+            DrawSectionCheck(name, !info.presetValues["blocks"].contains("rando"), &info.applyRando, "rando");
             ImGui::TableNextColumn();
-            DrawSectionCheck(name, !info.presetValues.contains("trackers"), &info.applyTrackers, "trackers");
+            DrawSectionCheck(name, !info.presetValues["blocks"].contains("trackers"), &info.applyTrackers, "trackers");
             ImGui::TableNextColumn();
             UIWidgets::PushStyleButton(THEME_COLOR);
             if (UIWidgets::Button(("Apply##" + name).c_str(), UIWidgets::ButtonOptions().Padding({6.0f, 6.0f}))) {
-                if (info.applySettings && info.presetValues.contains("gSettings")) {
+                for (auto& section : info.presetValues["blocks"]) {
+                    for (auto& item : section.items()) {
+                        if (section[item.key()].is_null()) {
+                            CVarClearBlock(item.key().c_str());
+                        } else {
+                            Ship::Context::GetInstance()->GetConfig()->SetBlock(fmt::format("{}.{}", "CVars", item.key()), item.value());
+                            Ship::Context::GetInstance()->GetConsoleVariables()->Load();
+                        }
+                    }
                 }
             }
             UIWidgets::PopStyleButton();
             ImGui::TableNextColumn();
             UIWidgets::PushStyleButton(THEME_COLOR);
             if (UIWidgets::Button(("Delete##" + name).c_str(), UIWidgets::ButtonOptions().Padding({6.0f, 6.0f}))) {
+                auto path = FormatPresetPath(info.fileName);
+                if (fs::exists(path)) {
+                    fs::remove(path);
+                }
                 presets.erase(name);
                 UIWidgets::PopStyleButton();
                 break;
