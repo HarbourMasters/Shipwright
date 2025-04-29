@@ -399,6 +399,7 @@ struct FloatSliderOptions : WidgetOptions {
 
 struct RadioButtonsOptions : WidgetOptions {
     std::unordered_map<int32_t, const char*> buttonMap;
+    int32_t defaultIndex = 0;
     Colors color = Colors::LightBlue;
 
     RadioButtonsOptions& ButtonMap(std::unordered_map<int32_t, const char*> buttonMap_) {
@@ -411,6 +412,10 @@ struct RadioButtonsOptions : WidgetOptions {
     }
     RadioButtonsOptions& Color(Colors color_) {
         color = color_;
+        return *this;
+    }
+    RadioButtonsOptions& DefaultIndex(float defaultIndex_) {
+        defaultIndex = defaultIndex_;
         return *this;
     }
 };
@@ -875,7 +880,11 @@ bool CVarCombobox(const char* label, const char* cvarName, const std::unordered_
     bool dirty = false;
     int32_t value = CVarGetInteger(cvarName, options.defaultIndex);
     if (Combobox<T>(label, &value, comboMap, options)) {
-        CVarSetInteger(cvarName, value);
+        if (value == options.defaultIndex) {
+            CVarClear(cvarName);
+        } else {
+            CVarSetInteger(cvarName, value);
+        }
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         ShipInit::Init(cvarName);
         dirty = true;
@@ -889,7 +898,11 @@ bool CVarCombobox(const char* label, const char* cvarName, const std::vector<con
     bool dirty = false;
     int32_t value = CVarGetInteger(cvarName, options.defaultIndex);
     if (Combobox<T>(label, &value, comboVector, options)) {
-        CVarSetInteger(cvarName, value);
+        if (value == options.defaultIndex) {
+            CVarClear(cvarName);
+        } else {
+            CVarSetInteger(cvarName, value);
+        }
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         ShipInit::Init(cvarName);
         dirty = true;
@@ -903,7 +916,11 @@ bool CVarCombobox(const char* label, const char* cvarName, const char* (&comboAr
     bool dirty = false;
     int32_t value = CVarGetInteger(cvarName, options.defaultIndex);
     if (Combobox<T>(label, &value, comboArray, options)) {
-        CVarSetInteger(cvarName, value);
+        if (value == options.defaultIndex) {
+            CVarClear(cvarName);
+        } else {
+            CVarSetInteger(cvarName, value);
+        }
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         ShipInit::Init(cvarName);
         dirty = true;
