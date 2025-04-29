@@ -86,12 +86,6 @@ std::unordered_map<uint32_t, CustomMessage> StaticData::hintNames = {
     { RH_BIGGORON_HINT, CustomMessage("Biggoron Claim Check Hint") },
     { RH_FROGS_HINT, CustomMessage("Final Frogs in River Hint") },
     { RH_OOT_HINT, CustomMessage("Sheik in Temple of Time Hint") },
-    { RH_KAK_10_SKULLS_HINT, CustomMessage("10 Skulls Hint") },
-    { RH_KAK_20_SKULLS_HINT, CustomMessage("20 Skulls Hint") },
-    { RH_KAK_30_SKULLS_HINT, CustomMessage("30 Skulls Hint") },
-    { RH_KAK_40_SKULLS_HINT, CustomMessage("40 Skulls Hint") },
-    { RH_KAK_50_SKULLS_HINT, CustomMessage("50 Skulls Hint") },
-    { RH_KAK_100_SKULLS_HINT, CustomMessage("100 Skulls Hint") },
     { RH_MASK_SHOP_HINT, CustomMessage("Mask Shop Hint") },
 };
 

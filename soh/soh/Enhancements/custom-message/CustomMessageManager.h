@@ -62,7 +62,6 @@ class CustomMessage {
     static std::string PLAYER_NAME();
     static std::string TWO_WAY_CHOICE();
 
-    CustomMessage LoadVanillaMessageTableEntry(uint16_t textId);
     const std::string GetEnglish(MessageFormat format = MF_FORMATTED) const;
     const std::string GetFrench(MessageFormat format = MF_FORMATTED) const;
     const std::string GetGerman(MessageFormat format = MF_FORMATTED) const;

@@ -443,6 +443,13 @@ static size_t NextLineLength(const std::string* textStr, const size_t lastNewlin
                 nextPosJump = 1;
             }
         }
+        currentPos += nextPosJump;
+    }
+    // return the total number of characters we looped through
+    if (totalPixelWidth > maxLinePixelWidth && textStr->at(currentPos - nextPosJump) != ' ') {
+        return currentPos - lastNewline - nextPosJump;
+    } else {
+        return currentPos - lastNewline;
     }
 }
 
