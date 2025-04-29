@@ -121,8 +121,6 @@ bool Logic::HasItem(RandomizerGet itemName) {
         case RG_STONE_OF_AGONY:
         case RG_GERUDO_MEMBERSHIP_CARD:
             return CheckQuestItem(RandoGetToQuestItem.at(itemName));
-        case RG_RUTOS_LETTER:
-            return CheckEventChkInf(EVENTCHKINF_OBTAINED_RUTOS_LETTER);
         case RG_DOUBLE_DEFENSE:
             return GetSaveContext()->isDoubleDefenseAcquired;
         case RG_FISHING_POLE:
@@ -171,6 +169,7 @@ bool Logic::HasItem(RandomizerGet itemName) {
         case RG_BACK_TOWER_KEY:
         case RG_HYLIA_LAB_KEY:
         case RG_FISHING_HOLE_KEY:
+        case RG_RUTOS_LETTER:
             return CheckRandoInf(RandoGetToRandInf.at(itemName));
             // Boss Keys
         case RG_EPONA:
@@ -1455,6 +1454,7 @@ std::map<RandomizerGet, uint32_t> Logic::RandoGetToEquipFlag = {
 std::map<RandomizerGet, uint32_t> Logic::RandoGetToRandInf = {
     { RG_ZELDAS_LETTER, RAND_INF_ZELDAS_LETTER },
     { RG_WEIRD_EGG, RAND_INF_WEIRD_EGG },
+    { RG_RUTOS_LETTER, RAND_INF_OBTAINED_RUTOS_LETTER },
     { RG_GOHMA_SOUL, RAND_INF_GOHMA_SOUL },
     { RG_KING_DODONGO_SOUL, RAND_INF_KING_DODONGO_SOUL },
     { RG_BARINADE_SOUL, RAND_INF_BARINADE_SOUL },
@@ -1819,7 +1819,7 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                     mSaveContext->inventory.items[slot] = itemId;
                 } break;
                 case RG_RUTOS_LETTER:
-                    SetEventChkInf(EVENTCHKINF_OBTAINED_RUTOS_LETTER, state);
+                    SetRandoInf(RAND_INF_OBTAINED_RUTOS_LETTER, state);
                     break;
                 case RG_GOHMA_SOUL:
                 case RG_KING_DODONGO_SOUL:

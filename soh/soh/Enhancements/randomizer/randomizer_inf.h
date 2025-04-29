@@ -1952,6 +1952,7 @@ typedef enum {
     RAND_INF_DEKU_TREE_QUEEN_GOHMA_GRASS_7,
     RAND_INF_DEKU_TREE_QUEEN_GOHMA_GRASS_8,
     // End Grass
+    RAND_INF_OBTAINED_RUTOS_LETTER,
     // If you add anything to this list, you need to update the size of randomizerInf in z64save.h to be
     // ceil(RAND_INF_MAX / 16)
 

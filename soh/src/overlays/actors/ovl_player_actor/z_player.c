@@ -12773,9 +12773,8 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
         if (!CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0)) {
             temp2 += sControlInput->rel.stick_y * 240.0f * invertYAxisMulti * yAxisMulti;
         }
-        if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0) &&
-            fabsf(sControlInput->cur.right_stick_y) > 15.0f) {
-            temp2 += sControlInput->cur.right_stick_y * 240.0f * invertYAxisMulti * yAxisMulti;
+        if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0)) {
+            temp2 += sControlInput->rel.right_stick_y * 240.0f * invertYAxisMulti * yAxisMulti;
         }
         if (fabsf(sControlInput->cur.gyro_x) > 0.01f) {
             temp2 += (-sControlInput->cur.gyro_x) * 750.0f;
@@ -12792,9 +12791,8 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
         if (!CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0)) {
             temp2 += sControlInput->rel.stick_x * -16.0f * invertXAxisMulti * xAxisMulti;
         }
-        if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0) &&
-            fabsf(sControlInput->cur.right_stick_x) > 15.0f) {
-            temp2 += sControlInput->cur.right_stick_x * -16.0f * invertXAxisMulti * xAxisMulti;
+        if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0)) {
+            temp2 += sControlInput->rel.right_stick_x * -16.0f * invertXAxisMulti * xAxisMulti;
         }
         if (fabsf(sControlInput->cur.gyro_y) > 0.01f) {
             temp2 += (sControlInput->cur.gyro_y) * 750.0f * invertXAxisMulti;
@@ -12810,10 +12808,9 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
                      (s32)((1.0f - Math_CosS(sControlInput->rel.stick_y * 200)) * 1500.0f) * invertYAxisMulti *
                      yAxisMulti;
         }
-        if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0) &&
-            fabsf(sControlInput->cur.right_stick_y) > 15.0f) {
-            temp3 += ((sControlInput->cur.right_stick_y >= 0) ? 1 : -1) *
-                     (s32)((1.0f - Math_CosS(sControlInput->cur.right_stick_y * 200)) * 1500.0f) * invertYAxisMulti *
+        if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0)) {
+            temp3 += ((sControlInput->rel.right_stick_y >= 0) ? 1 : -1) *
+                     (s32)((1.0f - Math_CosS(sControlInput->rel.right_stick_y * 200)) * 1500.0f) * invertYAxisMulti *
                      yAxisMulti;
         }
         if (fabsf(sControlInput->cur.gyro_x) > 0.01f) {
@@ -12831,10 +12828,9 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
                     (s32)((1.0f - Math_CosS(sControlInput->rel.stick_x * 200)) * -1500.0f) * invertXAxisMulti *
                     xAxisMulti;
         }
-        if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0) &&
-            fabsf(sControlInput->cur.right_stick_x) > 15.0f) {
-            temp3 += ((sControlInput->cur.right_stick_x >= 0) ? 1 : -1) *
-                     (s32)((1.0f - Math_CosS(sControlInput->cur.right_stick_x * 200)) * -1500.0f) * invertXAxisMulti *
+        if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0)) {
+            temp3 += ((sControlInput->rel.right_stick_x >= 0) ? 1 : -1) *
+                     (s32)((1.0f - Math_CosS(sControlInput->rel.right_stick_x * 200)) * -1500.0f) * invertXAxisMulti *
                      xAxisMulti;
         }
         if (fabsf(sControlInput->cur.gyro_y) > 0.01f) {
