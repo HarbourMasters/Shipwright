@@ -35,7 +35,7 @@ void SohMenu::AddMenuEnhancements() {
     AddMenuEntry("Enhancements", CVAR_SETTING("Menu.EnhancementsSidebarSection"));
 
     // Enhancements
-    WidgetPath path = { "Enhancements", "Presets", SECTION_COLUMN_1 };
+    /*WidgetPath path = {"Enhancements", "Presets", SECTION_COLUMN_1};
     AddSidebarEntry("Enhancements", path.sidebarName, 3);
 
     const PresetTypeDefinition presetTypeDef = presetTypes.at(PRESET_TYPE_ENHANCEMENTS);
@@ -75,10 +75,11 @@ void SohMenu::AddMenuEnhancements() {
             }
             CVarSetInteger(presetTypeCvar.c_str(), selectedPresetId);
             Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-        });
+        });*/
 
     // Quality of Life
-    path.sidebarName = "Quality of Life";
+    //path.sidebarName = "Quality of Life";
+    WidgetPath path = { "Enhancements", "Quality of Life", SECTION_COLUMN_1 };
     AddSidebarEntry("Enhancements", path.sidebarName, 3);
     path.column = SECTION_COLUMN_1;
 

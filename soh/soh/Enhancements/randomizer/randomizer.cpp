@@ -3651,47 +3651,47 @@ void RandomizerSettingsWindow::DrawElement() {
     bool disableEditingRandoSettings =
         CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings);
-    const PresetTypeDefinition presetTypeDef = presetTypes.at(PRESET_TYPE_RANDOMIZER);
-    std::string comboboxTooltip = "";
-    for (auto iter = presetTypeDef.presets.begin(); iter != presetTypeDef.presets.end(); ++iter) {
-        if (iter->first != 0)
-            comboboxTooltip += "\n\n";
-        comboboxTooltip += std::string(iter->second.label) + " - " + std::string(iter->second.description);
-    }
-    const std::string presetTypeCvar = CVAR_GENERAL("SelectedPresets.") + std::to_string(PRESET_TYPE_RANDOMIZER);
-    randomizerPresetSelected = CVarGetInteger(presetTypeCvar.c_str(), RANDOMIZER_PRESET_DEFAULT);
+    //const PresetTypeDefinition presetTypeDef = presetTypes.at(PRESET_TYPE_RANDOMIZER);
+    //std::string comboboxTooltip = "";
+    //for (auto iter = presetTypeDef.presets.begin(); iter != presetTypeDef.presets.end(); ++iter) {
+    //    if (iter->first != 0)
+    //        comboboxTooltip += "\n\n";
+    //    comboboxTooltip += std::string(iter->second.label) + " - " + std::string(iter->second.description);
+    //}
+    //const std::string presetTypeCvar = CVAR_GENERAL("SelectedPresets.") + std::to_string(PRESET_TYPE_RANDOMIZER);
+    //randomizerPresetSelected = CVarGetInteger(presetTypeCvar.c_str(), RANDOMIZER_PRESET_DEFAULT);
 
-    if (UIWidgets::Combobox("Randomizer Presets", &randomizerPresetSelected, randomizerPresetList,
-                            UIWidgets::ComboboxOptions()
-                                .DefaultIndex(RANDOMIZER_PRESET_DEFAULT)
-                                .Tooltip(comboboxTooltip.c_str())
-                                .Color(THEME_COLOR))) {
-        CVarSetInteger(presetTypeCvar.c_str(), randomizerPresetSelected);
-    }
-    ImGui::SameLine();
-    ImGui::SetCursorPosY(ImGui::GetCursorPos().y + 35.f);
-    if (UIWidgets::Button(
-            "Apply Preset##Randomizer",
-            UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline).Padding(ImVec2(10.f, 6.f)))) {
-        if (randomizerPresetSelected >= presetTypeDef.presets.size()) {
-            randomizerPresetSelected = 0;
-        }
-        const PresetDefinition selectedPresetDef = presetTypeDef.presets.at(randomizerPresetSelected);
-        for (const char* block : presetTypeDef.blocksToClear) {
-            CVarClearBlock(block);
-        }
-        if (randomizerPresetSelected != 0) {
-            applyPreset(selectedPresetDef.entries);
-        }
-        CVarSetInteger(presetTypeCvar.c_str(), randomizerPresetSelected);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-        mSettings->UpdateOptionProperties();
-        // force excluded location list and trick list update if tab is open.
-        locationsTabOpen = false;
-        tricksTabOpen = false;
-    }
+    //if (UIWidgets::Combobox("Randomizer Presets", &randomizerPresetSelected, randomizerPresetList,
+    //                        UIWidgets::ComboboxOptions()
+    //                            .DefaultIndex(RANDOMIZER_PRESET_DEFAULT)
+    //                            .Tooltip(comboboxTooltip.c_str())
+    //                            .Color(THEME_COLOR))) {
+    //    CVarSetInteger(presetTypeCvar.c_str(), randomizerPresetSelected);
+    //}
+    //ImGui::SameLine();
+    //ImGui::SetCursorPosY(ImGui::GetCursorPos().y + 35.f);
+    //if (UIWidgets::Button(
+    //        "Apply Preset##Randomizer",
+    //        UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline).Padding(ImVec2(10.f, 6.f)))) {
+    //    if (randomizerPresetSelected >= presetTypeDef.presets.size()) {
+    //        randomizerPresetSelected = 0;
+    //    }
+    //    const PresetDefinition selectedPresetDef = presetTypeDef.presets.at(randomizerPresetSelected);
+    //    for (const char* block : presetTypeDef.blocksToClear) {
+    //        CVarClearBlock(block);
+    //    }
+    //    if (randomizerPresetSelected != 0) {
+    //        applyPreset(selectedPresetDef.entries);
+    //    }
+    //    CVarSetInteger(presetTypeCvar.c_str(), randomizerPresetSelected);
+    //    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    //    mSettings->UpdateOptionProperties();
+    //    // force excluded location list and trick list update if tab is open.
+    //    locationsTabOpen = false;
+    //    tricksTabOpen = false;
+    //}
 
-    UIWidgets::Spacer(0);
+    //UIWidgets::Spacer(0);
     UIWidgets::CVarCheckbox("Manual seed entry", CVAR_RANDOMIZER_SETTING("ManualSeedEntry"),
                             UIWidgets::CheckboxOptions().Color(THEME_COLOR));
     if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ManualSeedEntry"), 0)) {
