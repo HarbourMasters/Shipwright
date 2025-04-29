@@ -78,7 +78,7 @@ void SohMenu::AddMenuEnhancements() {
         });*/
 
     // Quality of Life
-    //path.sidebarName = "Quality of Life";
+    // path.sidebarName = "Quality of Life";
     WidgetPath path = { "Enhancements", "Quality of Life", SECTION_COLUMN_1 };
     AddSidebarEntry("Enhancements", path.sidebarName, 3);
     path.column = SECTION_COLUMN_1;

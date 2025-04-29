@@ -809,11 +809,11 @@ bool InputString(const char* label, std::string* value, const InputOptions& opti
     PopStyleInput();
     ImGui::EndDisabled();
     ImGui::EndGroup();
-    if (options.hasError&& ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && 
+    if (options.hasError && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) &&
         !Ship_IsCStringEmpty(options.errorText)) {
         ImGui::SetTooltip("%s", WrappedText(options.errorText).c_str());
     } else if (options.disabled && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) &&
-        !Ship_IsCStringEmpty(options.disabledTooltip)) {
+               !Ship_IsCStringEmpty(options.disabledTooltip)) {
         ImGui::SetTooltip("%s", WrappedText(options.disabledTooltip).c_str());
     } else if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !Ship_IsCStringEmpty(options.tooltip)) {
         ImGui::SetTooltip("%s", WrappedText(options.tooltip).c_str());
@@ -972,7 +972,8 @@ bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaul
             UIWidgets::CheckboxOptions({ { .tooltip = "Prevents this color from being changed" } }).Color(themeColor));
     }
     if (changed) {
-        if (color.r == defaultColor.r && color.g == defaultColor.g && color.b == defaultColor.b && color.a == defaultColor.a) {
+        if (color.r == defaultColor.r && color.g == defaultColor.g && color.b == defaultColor.b &&
+            color.a == defaultColor.a) {
             CVarClear(valueCVar.c_str());
         } else {
             color.r = (uint8_t)(colorVec.x * 255.0f);
