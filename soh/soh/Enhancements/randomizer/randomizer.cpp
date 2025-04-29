@@ -3650,7 +3650,7 @@ void RandomizerSettingsWindow::DrawElement() {
     static bool tricksTabOpen = false;
     bool disableEditingRandoSettings =
         CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
-    ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings);
+    //ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings);
     // const PresetTypeDefinition presetTypeDef = presetTypes.at(PRESET_TYPE_RANDOMIZER);
     // std::string comboboxTooltip = "";
     // for (auto iter = presetTypeDef.presets.begin(); iter != presetTypeDef.presets.end(); ++iter) {
@@ -3739,10 +3739,6 @@ void RandomizerSettingsWindow::DrawElement() {
         std::string spoilerfilepath = CVarGetString(CVAR_GENERAL("SpoilerLog"), "");
         ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
     }
-
-    // RANDOTODO settings presets
-    // std::string presetfilepath = CVarGetString(CVAR_RANDOMIZER_SETTING("LoadedPreset"), "");
-    // ImGui::Text("Settings File: %s", presetfilepath.c_str());
 
     UIWidgets::Separator(true, true, 0.f, 0.f);
 

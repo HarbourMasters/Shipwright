@@ -109,6 +109,8 @@ enum PresetSection {
     PRESET_SECTION_COSMETICS,
     PRESET_SECTION_RANDOMIZER,
     PRESET_SECTION_TRACKERS,
+    PRESET_SECTION_NETWORK,
+    PRESET_SECTION_MAX,
 };
 
 struct PresetInfo {
@@ -175,22 +177,22 @@ void SavePreset(std::string& presetName) {
     file.close();
 }
 
-std::vector<std::string> sections = {
+std::vector<std::string> blocks = {
     CVAR_PREFIX_SETTING, CVAR_PREFIX_WINDOW,   CVAR_PREFIX_ENHANCEMENT,        CVAR_PREFIX_RANDOMIZER_ENHANCEMENT,
     CVAR_PREFIX_AUDIO,   CVAR_PREFIX_COSMETIC, CVAR_PREFIX_RANDOMIZER_SETTING, CVAR_PREFIX_TRACKER,
     CVAR_PREFIX_CHEAT
 };
 
 static std::string newPresetName;
-static bool newPresetSettings = true, newPresetEnhancements = true, newPresetAudio = true, newPresetCosmetics = true,
-            newPresetRando = true, newPresetTrackers = true;
+static bool saveSection[PRESET_SECTION_MAX];
+static std::string sectionNames[PRESET_SECTION_MAX][2] = {{"Settings", "settings"}, {"Enhancements", "enhancements"}, 
+    {"Audio", "audio"}, {"Cosmetics", "cosmetics"}, {"Rando Settings", "rando"}, {"Trackers", "trackers"}, {"Network", "network"}};
 
 void PresetsCustomWidget(WidgetInfo& info) {
     ImGui::PushFont(OTRGlobals::Instance->fontMonoLargest);
     if (UIWidgets::Button("New Preset", UIWidgets::ButtonOptions().Size(UIWidgets::Sizes::Inline).Color(THEME_COLOR))) {
         ImGui::OpenPopup("newPreset");
     }
-    ImGui::SetNextWindowSize({ 400, 400 });
     if (ImGui::BeginPopup("newPreset", ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize |
                                            ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar |
                                            ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar)) {
@@ -204,23 +206,20 @@ void PresetsCustomWidget(WidgetInfo& info) {
                                    .ErrorText("Preset name already exists")
                                    .HasError(nameExists));
         nameExists = presets.contains(newPresetName);
-        bool noneSelected = !newPresetSettings && !newPresetEnhancements && !newPresetAudio && !newPresetCosmetics &&
-                            !newPresetRando && !newPresetTrackers;
+        bool noneSelected = true;
+        for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
+            if (saveSection[i]) {
+                noneSelected = false;
+                break;
+            }
+        }
         const char* disabledTooltip =
             (newPresetName.empty() ? "Preset name is empty"
                                    : (noneSelected ? "No sections selected" : "Preset name already exists"));
-        UIWidgets::Checkbox("Save Settings", &newPresetSettings,
-                            UIWidgets::CheckboxOptions().Color(THEME_COLOR).Padding({ 6.0f, 6.0f }));
-        UIWidgets::Checkbox("Save Enhancements", &newPresetEnhancements,
-                            UIWidgets::CheckboxOptions().Color(THEME_COLOR).Padding({ 6.0f, 6.0f }));
-        UIWidgets::Checkbox("Save Audio", &newPresetAudio,
-                            UIWidgets::CheckboxOptions().Color(THEME_COLOR).Padding({ 6.0f, 6.0f }));
-        UIWidgets::Checkbox("Save Cosmetics", &newPresetCosmetics,
-                            UIWidgets::CheckboxOptions().Color(THEME_COLOR).Padding({ 6.0f, 6.0f }));
-        UIWidgets::Checkbox("Save Rando Settings", &newPresetRando,
-                            UIWidgets::CheckboxOptions().Color(THEME_COLOR).Padding({ 6.0f, 6.0f }));
-        UIWidgets::Checkbox("Save Trackers", &newPresetTrackers,
-                            UIWidgets::CheckboxOptions().Color(THEME_COLOR).Padding({ 6.0f, 6.0f }));
+        for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
+            UIWidgets::Checkbox(fmt::format("Save {}", sectionNames[i][0]).c_str(), &saveSection[i],
+                UIWidgets::CheckboxOptions().Color(THEME_COLOR).Padding({ 6.0f, 6.0f }));
+        }
         if (UIWidgets::Button(
                 "Save", UIWidgets::ButtonOptions({ { .disabled = (nameExists || noneSelected || newPresetName.empty()),
                                                      .disabledTooltip = disabledTooltip } })
@@ -228,31 +227,31 @@ void PresetsCustomWidget(WidgetInfo& info) {
                             .Color(THEME_COLOR))) {
             presets[newPresetName] = {};
             auto config = Ship::Context::GetInstance()->GetConfig()->GetNestedJson();
-            if (newPresetSettings) {
+            if (saveSection[PRESET_SECTION_SETTINGS]) {
                 presets[newPresetName].presetValues["blocks"]["settings"][CVAR_PREFIX_SETTING] =
                     config["CVars"][CVAR_PREFIX_SETTING];
                 presets[newPresetName].presetValues["blocks"]["windows"][CVAR_PREFIX_WINDOW] =
                     config["CVars"][CVAR_PREFIX_WINDOW];
             }
-            if (newPresetEnhancements) {
+            if (saveSection[PRESET_SECTION_ENHANCEMENTS]) {
                 presets[newPresetName].presetValues["blocks"]["enhancements"][CVAR_PREFIX_ENHANCEMENT] =
                     config["CVars"][CVAR_PREFIX_ENHANCEMENT];
                 presets[newPresetName].presetValues["blocks"]["randoEnhancements"][CVAR_PREFIX_RANDOMIZER_ENHANCEMENT] =
                     config["CVars"][CVAR_PREFIX_RANDOMIZER_ENHANCEMENT];
             }
-            if (newPresetAudio) {
+            if (saveSection[PRESET_SECTION_AUDIO]) {
                 presets[newPresetName].presetValues["blocks"]["audio"][CVAR_PREFIX_AUDIO] =
                     config["CVars"][CVAR_PREFIX_AUDIO];
             }
-            if (newPresetCosmetics) {
+            if (saveSection[PRESET_SECTION_COSMETICS]) {
                 presets[newPresetName].presetValues["blocks"]["cosmetics"][CVAR_PREFIX_COSMETIC] =
                     config["CVars"][CVAR_PREFIX_COSMETIC];
             }
-            if (newPresetRando) {
+            if (saveSection[PRESET_SECTION_RANDOMIZER]) {
                 presets[newPresetName].presetValues["blocks"]["rando"][CVAR_PREFIX_RANDOMIZER_SETTING] =
                     config["CVars"][CVAR_PREFIX_RANDOMIZER_SETTING];
             }
-            if (newPresetTrackers) {
+            if (saveSection[PRESET_SECTION_TRACKERS]) {
                 presets[newPresetName].presetValues["blocks"]["trackers"][CVAR_PREFIX_TRACKER] =
                     config["CVars"][CVAR_PREFIX_TRACKER];
             }
@@ -268,7 +267,7 @@ void PresetsCustomWidget(WidgetInfo& info) {
     }
     UIWidgets::PushStyleTabs(THEME_COLOR);
     if (ImGui::BeginTable("PresetWidgetTable", 9)) {
-        ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthFixed, 200);
+        ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthFixed, 250);
         ImGui::TableSetupColumn("Settings");
         ImGui::TableSetupColumn("Enhancements");
         ImGui::TableSetupColumn("Audio");
@@ -372,6 +371,7 @@ void RegisterPresetsWidgets() {
     WidgetPath path = { "Settings", "Presets", SECTION_COLUMN_1 };
     SohGui::mSohMenu->AddWidget(path, "PresetsWidget", WIDGET_CUSTOM).CustomFunction(PresetsCustomWidget);
     presetFolder = Ship::Context::GetInstance()->GetPathRelativeToAppDirectory("presets");
+    std::fill_n(saveSection, PRESET_SECTION_MAX, true);
     LoadPresets();
 }
 
