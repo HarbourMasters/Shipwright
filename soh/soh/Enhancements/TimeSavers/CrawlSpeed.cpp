@@ -4,7 +4,6 @@
 #include "global.h"
 
 extern "C" {
-#include "macros.h"
 #include "functions.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 extern PlayState* gPlayState;
@@ -81,9 +80,9 @@ void CrawlSpeed_Register() {
     COND_VB_SHOULD(VB_CRAWL_SPEED_EXIT_CS, shouldRegister, {
         Player* player = GET_PLAYER(gPlayState);
         Camera* csCam = va_arg(args, Camera*);
-        int16_t csId = (int16_t)va_arg(args, int);
-        int16_t actionParameters = (int16_t)va_arg(args, int);
-        int16_t initTimer = (int16_t)va_arg(args, int);
+        s16 csId = va_arg(args, s16);
+        s16 actionParameters = va_arg(args, s16);
+        s16 initTimer = va_arg(args, s16);
         CutsceneCameraPoint* atPoints = va_arg(args, CutsceneCameraPoint*);
         CutsceneCameraPoint* eyePoints = va_arg(args, CutsceneCameraPoint*);
         bool worldPosition = (player->actor.world.pos.x > 950.0f) && (player->actor.world.pos.x < 1025.0f) &&
