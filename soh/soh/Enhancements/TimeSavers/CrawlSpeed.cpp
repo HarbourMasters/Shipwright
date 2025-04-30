@@ -7,9 +7,6 @@ extern "C" {
 #include "functions.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 extern PlayState* gPlayState;
-extern void OnePointCutscene_SetCsCamPoints(Camera* camera, s16 actionParameters, s16 initTimer,
-                                            CutsceneCameraPoint* atPoints, CutsceneCameraPoint* eyePoints);
-extern void Player_StartAnimMovement(PlayState* play, Player* player, s32 flags);
 }
 
 #define CVAR_CRAWL_SPEED_NAME CVAR_ENHANCEMENT("CrawlSpeed")
