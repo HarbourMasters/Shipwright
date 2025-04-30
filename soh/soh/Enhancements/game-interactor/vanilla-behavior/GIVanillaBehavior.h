@@ -296,6 +296,43 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_CRAWL_SPEED_ENTER,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_CRAWL_SPEED_EXIT,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*Camera`
+    // - 'int16_t' (csId)
+    // - 'int16_t' (actionParameters)
+    // - 'int16_t' (initTimer)
+    // - 'CutsceneCameraPoint*' (atPoints)
+    // - 'CutsceneCameraPoint*' (eyePoints)
+    VB_CRAWL_SPEED_EXIT_CS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_CRAWL_SPEED_INCREASE,
+
+    // #### `result`
+    // ```c
     // !Flags_GetItemGetInf(ITEMGETINF_1C)
     // ```
     // #### `args`
