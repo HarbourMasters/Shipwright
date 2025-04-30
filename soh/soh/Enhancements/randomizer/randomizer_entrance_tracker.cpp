@@ -445,6 +445,9 @@ const EntranceData* GetEntranceData(s16 index) {
     return nullptr;
 }
 
+void EntranceTracker_LoadFromPreset(nlohmann::json info) {
+}
+
 // Used for verifying the names on both sides of entrance pairs match. Keeping for ease of use for further name changes
 // later
 // TODO: Figure out how to remove the need for duplicate entrance names so this is no longer necessary

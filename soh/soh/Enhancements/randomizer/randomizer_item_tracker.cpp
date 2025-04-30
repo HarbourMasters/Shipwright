@@ -398,6 +398,9 @@ bool HasEquipment(ItemTrackerItem item) {
     return GameInteractor::IsSaveLoaded() ? (item.data & gSaveContext.inventory.equipment) : false;
 }
 
+void ItemTracker_LoadFromPreset(nlohmann::json trackerInfo) {
+}
+
 ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
     ItemTrackerNumbers result;
     result.currentCapacity = 0;
