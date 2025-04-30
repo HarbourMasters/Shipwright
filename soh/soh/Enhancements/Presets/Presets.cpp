@@ -120,6 +120,24 @@ struct PresetInfo {
          applyTrackers = true;
 };
 
+struct BlockInfo {
+    std::vector<std::string> sections;
+    const char* icon;
+    std::string names[2];
+};
+
+static BlockInfo blockInfo[PRESET_SECTION_MAX] = {
+    { { CVAR_PREFIX_SETTING, CVAR_PREFIX_WINDOW }, ICON_FA_COG, { "Settings", "settings" } },
+    { { CVAR_PREFIX_ENHANCEMENT, CVAR_PREFIX_RANDOMIZER_ENHANCEMENT, CVAR_PREFIX_CHEAT },
+      ICON_FA_PLUS_CIRCLE,
+      { "Enhancements", "enhancements" } },
+    { { CVAR_PREFIX_AUDIO }, ICON_FA_MUSIC, { "Audio", "audio" } },
+    { { CVAR_PREFIX_COSMETIC }, ICON_FA_PAINT_BRUSH, { "Cosmetics", "cosmetics" } },
+    { { CVAR_PREFIX_RANDOMIZER_SETTING }, ICON_FA_RANDOM, { "Rando Settings", "rando" } },
+    { { CVAR_PREFIX_TRACKER }, ICON_FA_MAP, { "Trackers", "trackers" } },
+    { { CVAR_PREFIX_REMOTE }, ICON_FA_WIFI, { "Network", "network" } },
+};
+
 static std::map<std::string, PresetInfo> presets;
 static std::string presetFolder;
 
@@ -185,8 +203,6 @@ std::vector<std::string> blocks = {
 
 static std::string newPresetName;
 static bool saveSection[PRESET_SECTION_MAX];
-static std::string sectionNames[PRESET_SECTION_MAX][2] = {{"Settings", "settings"}, {"Enhancements", "enhancements"}, 
-    {"Audio", "audio"}, {"Cosmetics", "cosmetics"}, {"Rando Settings", "rando"}, {"Trackers", "trackers"}, {"Network", "network"}};
 
 void PresetsCustomWidget(WidgetInfo& info) {
     ImGui::PushFont(OTRGlobals::Instance->fontMonoLargest);
@@ -217,8 +233,8 @@ void PresetsCustomWidget(WidgetInfo& info) {
             (newPresetName.empty() ? "Preset name is empty"
                                    : (noneSelected ? "No sections selected" : "Preset name already exists"));
         for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
-            UIWidgets::Checkbox(fmt::format("Save {}", sectionNames[i][0]).c_str(), &saveSection[i],
-                UIWidgets::CheckboxOptions().Color(THEME_COLOR).Padding({ 6.0f, 6.0f }));
+            UIWidgets::Checkbox(fmt::format("Save {}", blockInfo[i].names[0]).c_str(), &saveSection[i],
+                                UIWidgets::CheckboxOptions().Color(THEME_COLOR).Padding({ 6.0f, 6.0f }));
         }
         if (UIWidgets::Button(
                 "Save", UIWidgets::ButtonOptions({ { .disabled = (nameExists || noneSelected || newPresetName.empty()),
@@ -227,33 +243,13 @@ void PresetsCustomWidget(WidgetInfo& info) {
                             .Color(THEME_COLOR))) {
             presets[newPresetName] = {};
             auto config = Ship::Context::GetInstance()->GetConfig()->GetNestedJson();
-            if (saveSection[PRESET_SECTION_SETTINGS]) {
-                presets[newPresetName].presetValues["blocks"]["settings"][CVAR_PREFIX_SETTING] =
-                    config["CVars"][CVAR_PREFIX_SETTING];
-                presets[newPresetName].presetValues["blocks"]["windows"][CVAR_PREFIX_WINDOW] =
-                    config["CVars"][CVAR_PREFIX_WINDOW];
-            }
-            if (saveSection[PRESET_SECTION_ENHANCEMENTS]) {
-                presets[newPresetName].presetValues["blocks"]["enhancements"][CVAR_PREFIX_ENHANCEMENT] =
-                    config["CVars"][CVAR_PREFIX_ENHANCEMENT];
-                presets[newPresetName].presetValues["blocks"]["randoEnhancements"][CVAR_PREFIX_RANDOMIZER_ENHANCEMENT] =
-                    config["CVars"][CVAR_PREFIX_RANDOMIZER_ENHANCEMENT];
-            }
-            if (saveSection[PRESET_SECTION_AUDIO]) {
-                presets[newPresetName].presetValues["blocks"]["audio"][CVAR_PREFIX_AUDIO] =
-                    config["CVars"][CVAR_PREFIX_AUDIO];
-            }
-            if (saveSection[PRESET_SECTION_COSMETICS]) {
-                presets[newPresetName].presetValues["blocks"]["cosmetics"][CVAR_PREFIX_COSMETIC] =
-                    config["CVars"][CVAR_PREFIX_COSMETIC];
-            }
-            if (saveSection[PRESET_SECTION_RANDOMIZER]) {
-                presets[newPresetName].presetValues["blocks"]["rando"][CVAR_PREFIX_RANDOMIZER_SETTING] =
-                    config["CVars"][CVAR_PREFIX_RANDOMIZER_SETTING];
-            }
-            if (saveSection[PRESET_SECTION_TRACKERS]) {
-                presets[newPresetName].presetValues["blocks"]["trackers"][CVAR_PREFIX_TRACKER] =
-                    config["CVars"][CVAR_PREFIX_TRACKER];
+            for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
+                if (saveSection[i]) {
+                    for (int j = 0; j < blockInfo[i].sections.size(); j++) {
+                        presets[newPresetName].presetValues["blocks"][blockInfo[i].names[1]][blockInfo[i].sections[j]] =
+                            config["CVars"][blockInfo[i].sections[j]];
+                    }
+                }
             }
             presets[newPresetName].fileName = newPresetName;
             SavePreset(newPresetName);
@@ -266,14 +262,11 @@ void PresetsCustomWidget(WidgetInfo& info) {
         ImGui::EndPopup();
     }
     UIWidgets::PushStyleTabs(THEME_COLOR);
-    if (ImGui::BeginTable("PresetWidgetTable", 9)) {
+    if (ImGui::BeginTable("PresetWidgetTable", PRESET_SECTION_MAX + 3)) {
         ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthFixed, 250);
-        ImGui::TableSetupColumn("Settings");
-        ImGui::TableSetupColumn("Enhancements");
-        ImGui::TableSetupColumn("Audio");
-        ImGui::TableSetupColumn("Cosmetics");
-        ImGui::TableSetupColumn("Randomizer");
-        ImGui::TableSetupColumn("Trackers");
+        for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
+            ImGui::TableSetupColumn(blockInfo[i].names[0].c_str());
+        }
         ImGui::TableSetupColumn("Apply", ImGuiTableColumnFlags_WidthFixed,
                                 ImGui::CalcTextSize("Apply").x + ImGui::GetStyle().FramePadding.x * 2);
         ImGui::TableSetupColumn("Delete", ImGuiTableColumnFlags_WidthFixed,
@@ -281,24 +274,11 @@ void PresetsCustomWidget(WidgetInfo& info) {
         BlankButton();
         ImGui::TableNextRow();
         ImGui::TableNextColumn();
-        ImGui::TableNextColumn();
-        ImGui::Button((ICON_FA_COG + std::string("##") + "headersettings").c_str());
-        UIWidgets::Tooltip("Settings");
-        ImGui::TableNextColumn();
-        ImGui::Button((ICON_FA_PLUS_CIRCLE + std::string("##") + "headerenhancements").c_str());
-        UIWidgets::Tooltip("Enhancements");
-        ImGui::TableNextColumn();
-        ImGui::Button((ICON_FA_MUSIC + std::string("##") + "headeraudio").c_str());
-        UIWidgets::Tooltip("Audio");
-        ImGui::TableNextColumn();
-        ImGui::Button((ICON_FA_PAINT_BRUSH + std::string("##") + "headercosmetics").c_str());
-        UIWidgets::Tooltip("Cosmetics");
-        ImGui::TableNextColumn();
-        ImGui::Button((ICON_FA_RANDOM + std::string("##") + "headerrando").c_str());
-        UIWidgets::Tooltip("Randomizer");
-        ImGui::TableNextColumn();
-        ImGui::Button((ICON_FA_MAP + std::string("##") + "headertrackers").c_str());
-        UIWidgets::Tooltip("Trackers");
+        for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
+            ImGui::TableNextColumn();
+            ImGui::Button(fmt::format("{}##header{}", blockInfo[i].icon, blockInfo[i].names[1]).c_str());
+            UIWidgets::Tooltip(blockInfo[i].names[0].c_str());
+        }
         UIWidgets::PopStyleButton();
 
         if (presets.empty()) {
@@ -316,20 +296,11 @@ void PresetsCustomWidget(WidgetInfo& info) {
             ImGui::TableNextColumn();
             ImGui::AlignTextToFramePadding();
             ImGui::Text(name.c_str());
-            ImGui::TableNextColumn();
-            DrawSectionCheck(name, !info.presetValues["blocks"].contains("settings"), &info.applySettings, "settings");
-            ImGui::TableNextColumn();
-            DrawSectionCheck(name, !info.presetValues["blocks"].contains("enhancements"), &info.applyEnhancements,
-                             "enhancements");
-            ImGui::TableNextColumn();
-            DrawSectionCheck(name, !info.presetValues["blocks"].contains("audio"), &info.applyAudio, "audio");
-            ImGui::TableNextColumn();
-            DrawSectionCheck(name, !info.presetValues["blocks"].contains("cosmetics"), &info.applyCosmetics,
-                             "cosmetics");
-            ImGui::TableNextColumn();
-            DrawSectionCheck(name, !info.presetValues["blocks"].contains("rando"), &info.applyRando, "rando");
-            ImGui::TableNextColumn();
-            DrawSectionCheck(name, !info.presetValues["blocks"].contains("trackers"), &info.applyTrackers, "trackers");
+            for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
+                ImGui::TableNextColumn();
+                DrawSectionCheck(name, !info.presetValues["blocks"].contains(blockInfo[i].names[1]),
+                                 &info.applySettings, blockInfo[i].names[1]);
+            }
             ImGui::TableNextColumn();
             UIWidgets::PushStyleButton(THEME_COLOR);
             if (UIWidgets::Button(("Apply##" + name).c_str(), UIWidgets::ButtonOptions().Padding({ 6.0f, 6.0f }))) {

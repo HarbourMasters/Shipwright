@@ -3650,16 +3650,16 @@ void RandomizerSettingsWindow::DrawElement() {
     static bool tricksTabOpen = false;
     bool disableEditingRandoSettings =
         CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
-    //ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings);
-    // const PresetTypeDefinition presetTypeDef = presetTypes.at(PRESET_TYPE_RANDOMIZER);
-    // std::string comboboxTooltip = "";
-    // for (auto iter = presetTypeDef.presets.begin(); iter != presetTypeDef.presets.end(); ++iter) {
-    //     if (iter->first != 0)
-    //         comboboxTooltip += "\n\n";
-    //     comboboxTooltip += std::string(iter->second.label) + " - " + std::string(iter->second.description);
-    // }
-    // const std::string presetTypeCvar = CVAR_GENERAL("SelectedPresets.") + std::to_string(PRESET_TYPE_RANDOMIZER);
-    // randomizerPresetSelected = CVarGetInteger(presetTypeCvar.c_str(), RANDOMIZER_PRESET_DEFAULT);
+    // ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings);
+    //  const PresetTypeDefinition presetTypeDef = presetTypes.at(PRESET_TYPE_RANDOMIZER);
+    //  std::string comboboxTooltip = "";
+    //  for (auto iter = presetTypeDef.presets.begin(); iter != presetTypeDef.presets.end(); ++iter) {
+    //      if (iter->first != 0)
+    //          comboboxTooltip += "\n\n";
+    //      comboboxTooltip += std::string(iter->second.label) + " - " + std::string(iter->second.description);
+    //  }
+    //  const std::string presetTypeCvar = CVAR_GENERAL("SelectedPresets.") + std::to_string(PRESET_TYPE_RANDOMIZER);
+    //  randomizerPresetSelected = CVarGetInteger(presetTypeCvar.c_str(), RANDOMIZER_PRESET_DEFAULT);
 
     // if (UIWidgets::Combobox("Randomizer Presets", &randomizerPresetSelected, randomizerPresetList,
     //                         UIWidgets::ComboboxOptions()
