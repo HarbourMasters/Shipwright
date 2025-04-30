@@ -218,23 +218,23 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 (entranceFlag != EVENTCHKINF_EPONA_OBTAINED) && entranceIndex != ENTR_SPIRIT_TEMPLE_BOSS_ENTRANCE) {
                 *should = false;
 
-                // Ganon's Tower barrier dispulsion happens in an entrance cutscene, so its side effects must be accounted for
+                // Check for dispulsion of Ganon's Tower barrier
                 switch (entranceIndex) {
-                case ENTR_INSIDE_GANONS_CASTLE_2:
-                case ENTR_INSIDE_GANONS_CASTLE_3:
-                case ENTR_INSIDE_GANONS_CASTLE_4:
-                case ENTR_INSIDE_GANONS_CASTLE_5:
-                case ENTR_INSIDE_GANONS_CASTLE_6:
-                case ENTR_INSIDE_GANONS_CASTLE_7:
-                    if (Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_FOREST_TRIAL) &&
-                        Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_WATER_TRIAL) &&
-                        Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_SHADOW_TRIAL) &&
-                        Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_FIRE_TRIAL) &&
-                        Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_LIGHT_TRIAL) &&
-                        Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_SPIRIT_TRIAL)) {
-                        Flags_SetEventChkInf(EVENTCHKINF_DISPELLED_GANONS_TOWER_BARRIER);
-                    }
-                    break;
+                    case ENTR_INSIDE_GANONS_CASTLE_2:
+                    case ENTR_INSIDE_GANONS_CASTLE_3:
+                    case ENTR_INSIDE_GANONS_CASTLE_4:
+                    case ENTR_INSIDE_GANONS_CASTLE_5:
+                    case ENTR_INSIDE_GANONS_CASTLE_6:
+                    case ENTR_INSIDE_GANONS_CASTLE_7:
+                        if (Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_FOREST_TRIAL) &&
+                            Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_WATER_TRIAL) &&
+                            Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_SHADOW_TRIAL) &&
+                            Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_FIRE_TRIAL) &&
+                            Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_LIGHT_TRIAL) &&
+                            Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_SPIRIT_TRIAL)) {
+                            Flags_SetEventChkInf(EVENTCHKINF_DISPELLED_GANONS_TOWER_BARRIER);
+                        }
+                        break;
                 }
             }
             break;
