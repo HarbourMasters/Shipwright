@@ -19,6 +19,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Zl4/z_en_zl4.h"
 #include "src/overlays/actors/ovl_En_Box/z_en_box.h"
 #include "src/overlays/actors/ovl_Demo_Im/z_demo_im.h"
+#include "src/overlays/actors/ovl_Demo_Kekkai/z_demo_kekkai.h"
 #include "src/overlays/actors/ovl_En_Sa/z_en_sa.h"
 #include "src/overlays/actors/ovl_Bg_Ddan_Kd/z_bg_ddan_kd.h"
 #include "src/overlays/actors/ovl_En_Tk/z_en_tk.h"
@@ -445,6 +446,26 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 *should = false;
             }
             break;
+        case VB_PLAY_DISPEL_BARRIER_CS: {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), IS_RANDO)) {
+                static s16 trialEntrances[] = {
+                    0,
+                    ENTR_INSIDE_GANONS_CASTLE_3,
+                    ENTR_INSIDE_GANONS_CASTLE_6,
+                    ENTR_INSIDE_GANONS_CASTLE_5,
+                    ENTR_INSIDE_GANONS_CASTLE_4,
+                    ENTR_INSIDE_GANONS_CASTLE_7,
+                    ENTR_INSIDE_GANONS_CASTLE_2,
+                };
+                RateLimitedSuccessChime();
+                DemoKekkai* kekkai = va_arg(args, DemoKekkai*);
+                gPlayState->nextEntranceIndex = trialEntrances[kekkai->actor.params];
+                gPlayState->transitionTrigger = TRANS_TRIGGER_START;
+                gPlayState->transitionType = TRANS_TYPE_FADE_BLACK;
+                *should = false;
+            }
+            break;
+        }
         case VB_OWL_INTERACTION: {
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), IS_RANDO) && *should) {
                 EnOwl* enOwl = va_arg(args, EnOwl*);

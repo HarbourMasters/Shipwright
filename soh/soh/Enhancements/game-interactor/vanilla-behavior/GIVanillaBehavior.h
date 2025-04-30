@@ -1363,6 +1363,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*DemoKekkai`
+    VB_PLAY_DISPEL_BARRIER_CS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*EnOkarinaTag`
     VB_PLAY_DOOR_OF_TIME_CS,
 
