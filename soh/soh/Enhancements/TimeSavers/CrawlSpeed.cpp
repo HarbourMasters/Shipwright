@@ -62,11 +62,11 @@ void CrawlSpeed_Register() {
 
     COND_VB_SHOULD(VB_CRAWL_SPEED_EXIT, shouldRegister, {
         Player* player = GET_PLAYER(gPlayState);
-        bool worldPosition = (player->actor.world.pos.x > 950.0f) && (player->actor.world.pos.x < 1025.0f) &&
-                             (player->actor.world.pos.z > -1510.0f) && (player->actor.world.pos.z < -1490.0f) &&
-                             gPlayState->sceneNum == SCENE_BOTTOM_OF_THE_WELL;
+        bool excludeWellBackroom = (player->actor.world.pos.x > 950.0f) && (player->actor.world.pos.x < 1025.0f) &&
+                                   (player->actor.world.pos.z > -1510.0f) && (player->actor.world.pos.z < -1490.0f) &&
+                                   gPlayState->sceneNum == SCENE_BOTTOM_OF_THE_WELL;
         bool glitchAiding = CVAR_GLITCH_AIDING_VALUE;
-        if (glitchAiding && worldPosition) {
+        if (glitchAiding && excludeWellBackroom) {
             *should = true;
         } else {
             ExitCrawlspace(player, gPlayState);
@@ -82,11 +82,11 @@ void CrawlSpeed_Register() {
         s16 initTimer = va_arg(args, s16);
         CutsceneCameraPoint* atPoints = va_arg(args, CutsceneCameraPoint*);
         CutsceneCameraPoint* eyePoints = va_arg(args, CutsceneCameraPoint*);
-        bool worldPosition = (player->actor.world.pos.x > 950.0f) && (player->actor.world.pos.x < 1025.0f) &&
-                             (player->actor.world.pos.z > -1510.0f) && (player->actor.world.pos.z < -1490.0f) &&
-                             gPlayState->sceneNum == SCENE_BOTTOM_OF_THE_WELL;
+        bool excludeWellBackroom = (player->actor.world.pos.x > 950.0f) && (player->actor.world.pos.x < 1025.0f) &&
+                                   (player->actor.world.pos.z > -1510.0f) && (player->actor.world.pos.z < -1490.0f) &&
+                                   gPlayState->sceneNum == SCENE_BOTTOM_OF_THE_WELL;
         bool glitchAiding = CVAR_GLITCH_AIDING_VALUE;
-        if (glitchAiding && worldPosition) {
+        if (glitchAiding && excludeWellBackroom) {
             *should = true;
         } else {
             ExitCrawlspaceCS(gPlayState, csCam, actionParameters, initTimer, atPoints, eyePoints);
