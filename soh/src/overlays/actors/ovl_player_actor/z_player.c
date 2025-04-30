@@ -7679,10 +7679,10 @@ s32 Player_TryEnteringCrawlspace(Player* this, PlayState* play, u32 interactWall
                 this->actor.world.pos.z = zVertex1 + (distToInteractWall * wallPolyNormZ);
                 func_80832224(this);
                 this->actor.prevPos = this->actor.world.pos;
-                Player_AnimPlayOnce(play, this, &gPlayerAnim_link_child_tunnel_start);
                 if (GameInteractor_Should(VB_CRAWL_SPEED_ENTER, true)) {
                     Player_AnimPlayOnce(play, this, &gPlayerAnim_link_child_tunnel_start);
                 }
+                Player_StartAnimMovement(play, this, 0x9D);
                 return true;
             }
         }
