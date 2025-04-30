@@ -387,7 +387,7 @@ void SohMenu::AddMenuEnhancements() {
             }
         })
         .Options(IntSliderOptions().Min(1).Max(4).DefaultValue(1).Format("%dx"));
-    AddWidget(path, "Exclude Glitch-Aiding Cutscenes", WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "Exclude Glitch-Aiding Crawlspaces", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("GlitchAidingCrawlspaces"))
         .PreFunc([](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("CrawlSpeed"), 0) == 1; })
         .Options(CheckboxOptions().Tooltip("Don't increase crawl speed when exiting glitch-useful crawlspaces."
