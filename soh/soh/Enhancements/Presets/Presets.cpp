@@ -201,108 +201,116 @@ void SavePreset(std::string& presetName) {
 static std::string newPresetName;
 static bool saveSection[PRESET_SECTION_MAX];
 
+void DrawNewPresetPopup() {
+    bool nameExists = presets.contains(newPresetName);
+    UIWidgets::InputString("Preset Name", &newPresetName,
+                           UIWidgets::InputOptions()
+                               .Color(THEME_COLOR)
+                               .Size({ 200, 40 })
+                               .ComponentAlignment(UIWidgets::ComponentAlignments::Right)
+                               .LabelPosition(UIWidgets::LabelPositions::Near)
+                               .ErrorText("Preset name already exists")
+                               .HasError(nameExists));
+    nameExists = presets.contains(newPresetName);
+    bool noneSelected = true;
+    for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
+        if (saveSection[i]) {
+            noneSelected = false;
+            break;
+        }
+    }
+    const char* disabledTooltip =
+        (newPresetName.empty() ? "Preset name is empty"
+                               : (noneSelected ? "No sections selected" : "Preset name already exists"));
+    for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
+        UIWidgets::Checkbox(fmt::format("Save {}", blockInfo[i].names[0]).c_str(), &saveSection[i],
+                            UIWidgets::CheckboxOptions().Color(THEME_COLOR).Padding({ 6.0f, 6.0f }));
+    }
+    if (UIWidgets::Button(
+            "Save", UIWidgets::ButtonOptions({ { .disabled = (nameExists || noneSelected || newPresetName.empty()),
+                                                 .disabledTooltip = disabledTooltip } })
+                        .Padding({ 6.0f, 6.0f })
+                        .Color(THEME_COLOR))) {
+        presets[newPresetName] = {};
+        auto config = Ship::Context::GetInstance()->GetConfig()->GetNestedJson();
+        for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
+            if (saveSection[i]) {
+                for (int j = 0; j < blockInfo[i].sections.size(); j++) {
+                    presets[newPresetName].presetValues["blocks"][blockInfo[i].names[1]][blockInfo[i].sections[j]] =
+                        config["CVars"][blockInfo[i].sections[j]];
+                }
+            }
+        }
+        if (saveSection[PRESET_SECTION_TRACKERS]) {
+            for (auto id : itemTrackerWindowIDs) {
+                auto window = ImGui::FindWindowByName(id);
+                if (window != nullptr) {
+                    auto size = window->Size;
+                    auto pos = window->Pos;
+                    presets[newPresetName].presetValues["blocks"][blockInfo[PRESET_SECTION_TRACKERS].names[1]]
+                                                       ["windows"][id]["size"]["width"] = size.x;
+                    presets[newPresetName].presetValues["blocks"][blockInfo[PRESET_SECTION_TRACKERS].names[1]]
+                                                       ["windows"][id]["size"]["height"] = size.y;
+                    presets[newPresetName].presetValues["blocks"][blockInfo[PRESET_SECTION_TRACKERS].names[1]]
+                                                       ["windows"][id]["pos"]["x"] = pos.x;
+                    presets[newPresetName].presetValues["blocks"][blockInfo[PRESET_SECTION_TRACKERS].names[1]]
+                                                       ["windows"][id]["pos"]["y"] = pos.y;
+                }
+            }
+
+            auto window = ImGui::FindWindowByName("Entrance Tracker");
+            if (window != nullptr) {
+                auto size = window->Size;
+                auto pos = window->Pos;
+                presets[newPresetName].presetValues["blocks"][blockInfo[PRESET_SECTION_TRACKERS].names[1]]["windows"]
+                                                   ["Entrance Tracker"]["size"]["width"] = size.x;
+                presets[newPresetName].presetValues["blocks"][blockInfo[PRESET_SECTION_TRACKERS].names[1]]["windows"]
+                                                   ["Entrance Tracker"]["size"]["height"] = size.y;
+                presets[newPresetName].presetValues["blocks"][blockInfo[PRESET_SECTION_TRACKERS].names[1]]["windows"]
+                                                   ["Entrance Tracker"]["pos"]["x"] = pos.x;
+                presets[newPresetName].presetValues["blocks"][blockInfo[PRESET_SECTION_TRACKERS].names[1]]["windows"]
+                                                   ["Entrance Tracker"]["pos"]["y"] = pos.y;
+            }
+
+            window = ImGui::FindWindowByName("Check Tracker");
+            if (window != nullptr) {
+                auto size = window->Size;
+                auto pos = window->Pos;
+                presets[newPresetName].presetValues["blocks"][blockInfo[PRESET_SECTION_TRACKERS].names[1]]["windows"]
+                                                   ["Check Tracker"]["size"]["width"] = size.x;
+                presets[newPresetName].presetValues["blocks"][blockInfo[PRESET_SECTION_TRACKERS].names[1]]["windows"]
+                                                   ["Check Tracker"]["size"]["height"] = size.y;
+                presets[newPresetName].presetValues["blocks"][blockInfo[PRESET_SECTION_TRACKERS].names[1]]["windows"]
+                                                   ["Check Tracker"]["pos"]["x"] = pos.x;
+                presets[newPresetName].presetValues["blocks"][blockInfo[PRESET_SECTION_TRACKERS].names[1]]["windows"]
+                                                   ["Check Tracker"]["pos"]["y"] = pos.y;
+            }
+        }
+        presets[newPresetName].fileName = newPresetName;
+        std::fill_n(presets[newPresetName].apply, PRESET_SECTION_MAX, true);
+        SavePreset(newPresetName);
+        newPresetName = "";
+        ImGui::CloseCurrentPopup();
+    }
+    if (UIWidgets::Button("Cancel", UIWidgets::ButtonOptions().Padding({ 6.0f, 6.0f }).Color(THEME_COLOR))) {
+        ImGui::CloseCurrentPopup();
+    }
+    ImGui::EndPopup();
+}
+
 void PresetsCustomWidget(WidgetInfo& info) {
     ImGui::PushFont(OTRGlobals::Instance->fontMonoLargest);
-    if (UIWidgets::Button("New Preset", UIWidgets::ButtonOptions().Size(UIWidgets::Sizes::Inline).Color(THEME_COLOR))) {
+    if (UIWidgets::Button("New Preset", UIWidgets::ButtonOptions(
+                                            { { .disabled = (CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) != 0),
+                                                .disabledTooltip = "Disabled because of race lockout" } })
+                                            .Size(UIWidgets::Sizes::Inline)
+                                            .Color(THEME_COLOR))) {
         ImGui::OpenPopup("newPreset");
     }
     if (ImGui::BeginPopup("newPreset", ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize |
                                            ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar |
                                            ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar)) {
-        bool nameExists = presets.contains(newPresetName);
-        UIWidgets::InputString("Preset Name", &newPresetName,
-                               UIWidgets::InputOptions()
-                                   .Color(THEME_COLOR)
-                                   .Size({ 200, 40 })
-                                   .ComponentAlignment(UIWidgets::ComponentAlignments::Right)
-                                   .LabelPosition(UIWidgets::LabelPositions::Near)
-                                   .ErrorText("Preset name already exists")
-                                   .HasError(nameExists));
-        nameExists = presets.contains(newPresetName);
-        bool noneSelected = true;
-        for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
-            if (saveSection[i]) {
-                noneSelected = false;
-                break;
-            }
-        }
-        const char* disabledTooltip =
-            (newPresetName.empty() ? "Preset name is empty"
-                                   : (noneSelected ? "No sections selected" : "Preset name already exists"));
-        for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
-            UIWidgets::Checkbox(fmt::format("Save {}", blockInfo[i].names[0]).c_str(), &saveSection[i],
-                                UIWidgets::CheckboxOptions().Color(THEME_COLOR).Padding({ 6.0f, 6.0f }));
-        }
-        if (UIWidgets::Button(
-                "Save", UIWidgets::ButtonOptions({ { .disabled = (nameExists || noneSelected || newPresetName.empty()),
-                                                     .disabledTooltip = disabledTooltip } })
-                            .Padding({ 6.0f, 6.0f })
-                            .Color(THEME_COLOR))) {
-            presets[newPresetName] = {};
-            auto config = Ship::Context::GetInstance()->GetConfig()->GetNestedJson();
-            for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
-                if (saveSection[i]) {
-                    for (int j = 0; j < blockInfo[i].sections.size(); j++) {
-                        presets[newPresetName].presetValues["blocks"][blockInfo[i].names[1]][blockInfo[i].sections[j]] =
-                            config["CVars"][blockInfo[i].sections[j]];
-                    }
-                }
-            }
-            if (saveSection[PRESET_SECTION_TRACKERS]) {
-                for (auto id : itemTrackerWindowIDs) {
-                    auto window = ImGui::FindWindowByName(id);
-                    if (window != nullptr) {
-                        auto size = window->Size;
-                        auto pos = window->Pos;
-                        presets[newPresetName].presetValues["blocks"][blockInfo[PRESET_SECTION_TRACKERS].names[1]]
-                                                           ["windows"][id]["size"]["width"] = size.x;
-                        presets[newPresetName].presetValues["blocks"][blockInfo[PRESET_SECTION_TRACKERS].names[1]]
-                                                           ["windows"][id]["size"]["height"] = size.y;
-                        presets[newPresetName].presetValues["blocks"][blockInfo[PRESET_SECTION_TRACKERS].names[1]]
-                                                           ["windows"][id]["pos"]["x"] = pos.x;
-                        presets[newPresetName].presetValues["blocks"][blockInfo[PRESET_SECTION_TRACKERS].names[1]]
-                                                           ["windows"][id]["pos"]["y"] = pos.y;
-                    }
-                }
-
-                auto window = ImGui::FindWindowByName("Entrance Tracker");
-                if (window != nullptr) {
-                    auto size = window->Size;
-                    auto pos = window->Pos;
-                    presets[newPresetName].presetValues["blocks"][blockInfo[PRESET_SECTION_TRACKERS].names[1]]
-                                                       ["windows"]["Entrance Tracker"]["size"]["width"] = size.x;
-                    presets[newPresetName].presetValues["blocks"][blockInfo[PRESET_SECTION_TRACKERS].names[1]]
-                                                       ["windows"]["Entrance Tracker"]["size"]["height"] = size.y;
-                    presets[newPresetName].presetValues["blocks"][blockInfo[PRESET_SECTION_TRACKERS].names[1]]
-                                                       ["windows"]["Entrance Tracker"]["pos"]["x"] = pos.x;
-                    presets[newPresetName].presetValues["blocks"][blockInfo[PRESET_SECTION_TRACKERS].names[1]]
-                                                       ["windows"]["Entrance Tracker"]["pos"]["y"] = pos.y;
-                }
-
-                window = ImGui::FindWindowByName("Check Tracker");
-                if (window != nullptr) {
-                    auto size = window->Size;
-                    auto pos = window->Pos;
-                    presets[newPresetName].presetValues["blocks"][blockInfo[PRESET_SECTION_TRACKERS].names[1]]
-                                                       ["windows"]["Check Tracker"]["size"]["width"] = size.x;
-                    presets[newPresetName].presetValues["blocks"][blockInfo[PRESET_SECTION_TRACKERS].names[1]]
-                                                       ["windows"]["Check Tracker"]["size"]["height"] = size.y;
-                    presets[newPresetName].presetValues["blocks"][blockInfo[PRESET_SECTION_TRACKERS].names[1]]
-                                                       ["windows"]["Check Tracker"]["pos"]["x"] = pos.x;
-                    presets[newPresetName].presetValues["blocks"][blockInfo[PRESET_SECTION_TRACKERS].names[1]]
-                                                       ["windows"]["Check Tracker"]["pos"]["y"] = pos.y;
-                }
-            }
-            presets[newPresetName].fileName = newPresetName;
-            std::fill_n(presets[newPresetName].apply, PRESET_SECTION_MAX, true);
-            SavePreset(newPresetName);
-            newPresetName = "";
-            ImGui::CloseCurrentPopup();
-        }
-        if (UIWidgets::Button("Cancel", UIWidgets::ButtonOptions().Padding({ 6.0f, 6.0f }).Color(THEME_COLOR))) {
-            ImGui::CloseCurrentPopup();
-        }
-        ImGui::EndPopup();
+        DrawNewPresetPopup();
     }
     UIWidgets::PushStyleTabs(THEME_COLOR);
     if (ImGui::BeginTable("PresetWidgetTable", PRESET_SECTION_MAX + 3)) {
@@ -346,7 +354,11 @@ void PresetsCustomWidget(WidgetInfo& info) {
             }
             ImGui::TableNextColumn();
             UIWidgets::PushStyleButton(THEME_COLOR);
-            if (UIWidgets::Button(("Apply##" + name).c_str(), UIWidgets::ButtonOptions().Padding({ 6.0f, 6.0f }))) {
+            if (UIWidgets::Button(
+                    ("Apply##" + name).c_str(),
+                    UIWidgets::ButtonOptions({ { .disabled = (CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) != 0),
+                                                 .disabledTooltip = "Disabled because of race lockout" } })
+                        .Padding({ 6.0f, 6.0f }))) {
                 for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
                     if (info.apply[i] && info.presetValues["blocks"].contains(blockInfo[i].names[1])) {
                         if (i == PRESET_SECTION_TRACKERS) {

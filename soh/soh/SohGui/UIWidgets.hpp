@@ -414,7 +414,7 @@ struct RadioButtonsOptions : WidgetOptions {
         color = color_;
         return *this;
     }
-    RadioButtonsOptions& DefaultIndex(float defaultIndex_) {
+    RadioButtonsOptions& DefaultIndex(int32_t defaultIndex_) {
         defaultIndex = defaultIndex_;
         return *this;
     }
