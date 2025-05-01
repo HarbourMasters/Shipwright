@@ -346,8 +346,7 @@ uint8_t ResourceFactoryXMLAudioSampleV0::CodecStrToInt(const char* str, const ch
         return CODEC_S16;
     } else {
         char buff[2048];
-        snprintf(buff, 2048,
-                 "Invalid codec in %s. Got %s, expected ADPCM, S8, S16MEM, ADPCMSMALL, REVERB, S16.", file,
+        snprintf(buff, 2048, "Invalid codec in %s. Got %s, expected ADPCM, S8, S16MEM, ADPCMSMALL, REVERB, S16.", file,
                  str);
         throw std::runtime_error(buff);
     }

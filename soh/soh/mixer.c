@@ -16,7 +16,6 @@
 #define ROUND_UP_8(v) (((v) + 7) & ~7)
 #define ROUND_DOWN_16(v) ((v) & ~0xf)
 
-
 #define DMEM_BUF_SIZE (0x1000 - 0x3C0 - 0x40)
 #define BUF_U8(a) (rspa.buf.as_u8 + ((a)-0x3C0))
 #define BUF_S16(a) (rspa.buf.as_s16 + ((a)-0x3C0) / sizeof(int16_t))
@@ -38,7 +37,7 @@ static struct {
     uint16_t filter_count;
     int16_t filter[8];
 
-    __attribute__((aligned(16))) union {
+    union {
         int16_t as_s16[DMEM_BUF_SIZE / sizeof(int16_t)];
         uint8_t as_u8[DMEM_BUF_SIZE];
     } buf;

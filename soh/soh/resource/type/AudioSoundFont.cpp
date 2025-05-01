@@ -2,27 +2,27 @@
 
 namespace SOH {
 
-    AudioSoundFont::~AudioSoundFont() {
-        for (auto i : instrumentAddresses) {
-            if (i != nullptr) {
-                delete[] i->envelope;
-                delete i;
-            }
-        }
-
-        for (auto d : drumAddresses) {
-            if (d != nullptr) {
-                delete[] d->envelope;
-                delete d;
-            }
+AudioSoundFont::~AudioSoundFont() {
+    for (auto i : instrumentAddresses) {
+        if (i != nullptr) {
+            delete[] i->envelope;
+            delete i;
         }
     }
 
-    SoundFont* AudioSoundFont::GetPointer() {
-        return &soundFont;
+    for (auto d : drumAddresses) {
+        if (d != nullptr) {
+            delete[] d->envelope;
+            delete d;
+        }
     }
+}
 
-    size_t AudioSoundFont::GetPointerSize() {
-        return sizeof(SoundFont);
-    }
+SoundFont* AudioSoundFont::GetPointer() {
+    return &soundFont;
+}
+
+size_t AudioSoundFont::GetPointerSize() {
+    return sizeof(SoundFont);
+}
 } // namespace SOH

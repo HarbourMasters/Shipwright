@@ -892,7 +892,7 @@ AudioTable* AudioLoad_GetLoadTable(s32 tableType) {
 }
 
 void AudioLoad_RelocateFont(s32 fontId, SoundFontData* mem, RelocInfo* relocInfo) {
-return;
+    return;
     uintptr_t reloc;
     uintptr_t reloc2;
     Instrument* inst;
@@ -1354,7 +1354,7 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
     int customSeqListSize = 0;
     char** seqList = ResourceMgr_ListFiles("audio/sequences*", &seqListSize);
     char** customSeqList = ResourceMgr_ListFiles("custom/music/*", &customSeqListSize);
-    sequenceMapSize = (size_t)(seqListSize + customSeqListSize );
+    sequenceMapSize = (size_t)(seqListSize + customSeqListSize);
     sequenceMap = malloc((sequenceMapSize + 0xF) * sizeof(char*));
 
     gAudioContext.seqLoadStatus = malloc(sequenceMapSize);
