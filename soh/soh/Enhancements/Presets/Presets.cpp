@@ -198,12 +198,6 @@ void SavePreset(std::string& presetName) {
     file.close();
 }
 
-std::vector<std::string> blocks = {
-    CVAR_PREFIX_SETTING, CVAR_PREFIX_WINDOW,   CVAR_PREFIX_ENHANCEMENT,        CVAR_PREFIX_RANDOMIZER_ENHANCEMENT,
-    CVAR_PREFIX_AUDIO,   CVAR_PREFIX_COSMETIC, CVAR_PREFIX_RANDOMIZER_SETTING, CVAR_PREFIX_TRACKER,
-    CVAR_PREFIX_CHEAT
-};
-
 static std::string newPresetName;
 static bool saveSection[PRESET_SECTION_MAX];
 
@@ -354,25 +348,28 @@ void PresetsCustomWidget(WidgetInfo& info) {
             UIWidgets::PushStyleButton(THEME_COLOR);
             if (UIWidgets::Button(("Apply##" + name).c_str(), UIWidgets::ButtonOptions().Padding({ 6.0f, 6.0f }))) {
                 for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
-                    if (info.apply[i]) {
-                        if (info.presetValues["blocks"].contains(blockInfo[i].names[1])) {
-                            if (i == PRESET_SECTION_TRACKERS) {
-                                ItemTracker_LoadFromPreset(
-                                    info.presetValues["blocks"][blockInfo[i].names[1]]["windows"]);
+                    if (info.apply[i] && info.presetValues["blocks"].contains(blockInfo[i].names[1])) {
+                        if (i == PRESET_SECTION_TRACKERS) {
+                            ItemTracker_LoadFromPreset(info.presetValues["blocks"][blockInfo[i].names[1]]["windows"]);
+                            if (info.presetValues["blocks"][blockInfo[i].names[1]]["windows"].contains(
+                                    "Check Tracker")) {
                                 CheckTracker::CheckTracker_LoadFromPreset(
-                                    info.presetValues["blocks"][blockInfo[i].names[1]]["windows"]["Entrance Tracker"]);
-                                EntranceTracker_LoadFromPreset(
                                     info.presetValues["blocks"][blockInfo[i].names[1]]["windows"]["Check Tracker"]);
                             }
-                            auto section = info.presetValues["blocks"][blockInfo[i].names[1]];
-                            for (auto& item : section.items()) {
-                                if (section[item.key()].is_null()) {
-                                    CVarClearBlock(item.key().c_str());
-                                } else {
-                                    Ship::Context::GetInstance()->GetConfig()->SetBlock(
-                                        fmt::format("{}.{}", "CVars", item.key()), item.value());
-                                    Ship::Context::GetInstance()->GetConsoleVariables()->Load();
-                                }
+                            if (info.presetValues["blocks"][blockInfo[i].names[1]]["windows"].contains(
+                                    "Entrance Tracker")) {
+                                EntranceTracker_LoadFromPreset(
+                                    info.presetValues["blocks"][blockInfo[i].names[1]]["windows"]["Entrance Tracker"]);
+                            }
+                        }
+                        auto section = info.presetValues["blocks"][blockInfo[i].names[1]];
+                        for (auto& item : section.items()) {
+                            if (section[item.key()].is_null()) {
+                                CVarClearBlock(item.key().c_str());
+                            } else {
+                                Ship::Context::GetInstance()->GetConfig()->SetBlock(
+                                    fmt::format("{}.{}", "CVars", item.key()), item.value());
+                                Ship::Context::GetInstance()->GetConsoleVariables()->Load();
                             }
                         }
                     }

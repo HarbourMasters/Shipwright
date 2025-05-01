@@ -25,7 +25,7 @@ bool HasEquipment(ItemTrackerItem);
 #define ITEM_TRACKER_ITEM_CUSTOM(id, name, nameFaded, data, drawFunc) \
     { id, #name, #nameFaded "_Faded", data, drawFunc }
 
-static std::vector<const char*> itemTrackerWindowIDs = { "Item Tracker##main window",
+static std::vector<const char*> itemTrackerWindowIDs = { "Item Tracker",
                                                          "Inventory Items Tracker",
                                                          "Equipment Items Tracker",
                                                          "Misc Items Tracker",
