@@ -3,7 +3,7 @@
 
 #include <libultraship/libultraship.h>
 
-class SohStatsWindow : public Ship::GuiWindow {
+class SohStatsWindow final : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
     ~SohStatsWindow(){};

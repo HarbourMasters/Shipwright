@@ -1162,8 +1162,10 @@ void BeginFloatingWindows(std::string UniqueName, ImGuiWindowFlags flags = 0) {
         }
     }
     auto color = VecFromRGBA8(CVarGetColor(CVAR_TRACKER_ITEM("BgColor.Value"), { 0, 0, 0, 0 }));
+    auto maybeParent = ImGui::GetCurrentWindow();
     ImGuiWindow* window = ImGui::FindWindowByName(UniqueName.c_str());
-    if (window != NULL && window->DockTabIsVisible) {
+    if (window != NULL && window->DockTabIsVisible && window->ParentWindow != NULL &&
+        std::string(window->ParentWindow->Name).compare(0, strlen("Main - Deck"), "Main - Deck") == 0) {
         color.w = 1.0f;
     }
     ImGui::PushStyleColor(ImGuiCol_WindowBg, color);

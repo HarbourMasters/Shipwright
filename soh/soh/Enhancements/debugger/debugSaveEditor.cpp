@@ -106,7 +106,7 @@ char z2ASCII(int code) {
     return char(ret);
 }
 
-typedef enum MagicLevel { MAGIC_LEVEL_NONE, MAGIC_LEVEL_SINGLE, MAGIC_LEVEL_DOUBLE };
+enum MagicLevel { MAGIC_LEVEL_NONE, MAGIC_LEVEL_SINGLE, MAGIC_LEVEL_DOUBLE };
 
 std::unordered_map<int8_t, const char*> magicLevelMap = {
     { MAGIC_LEVEL_NONE, "None" },
@@ -114,7 +114,7 @@ std::unordered_map<int8_t, const char*> magicLevelMap = {
     { MAGIC_LEVEL_DOUBLE, "Double" },
 };
 
-typedef enum AudioOutput {
+enum AudioOutput {
     AUDIO_STEREO,
     AUDIO_MONO,
     AUDIO_HEADSET,
@@ -128,7 +128,7 @@ std::unordered_map<uint8_t, const char*> audioMap = {
     { AUDIO_SURROUND, "Surround" },
 };
 
-typedef enum ZTarget {
+enum ZTarget {
     Z_TARGET_SWITCH,
     Z_TARGET_HOLD,
 };
@@ -1665,6 +1665,7 @@ void ResetBaseOptions() {
 void SaveEditorWindow::DrawElement() {
     PushStyleTabs(THEME_COLOR);
     ImGui::PushFont(OTRGlobals::Instance->fontMonoLarger);
+    ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
 
     if (ImGui::BeginTabBar("SaveContextTabBar", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         ResetBaseOptions();
@@ -1706,6 +1707,7 @@ void SaveEditorWindow::DrawElement() {
         ImGui::EndTabBar();
     }
 
+    ImGui::EndDisabled();
     ImGui::PopFont();
     PopStyleTabs();
 }

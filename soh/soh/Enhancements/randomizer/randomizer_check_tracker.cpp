@@ -1258,8 +1258,13 @@ void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flag
             windowFlags |= ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoMove;
         }
     }
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(Color_Background.r / 255.0f, Color_Background.g / 255.0f,
-                                                    Color_Background.b / 255.0f, Color_Background.a / 255.0f));
+    auto maybeParent = ImGui::GetCurrentWindow();
+    ImGuiWindow* window = ImGui::FindWindowByName(UniqueName.c_str());
+    if (window != NULL && window->DockTabIsVisible && window->ParentWindow != NULL &&
+        std::string(window->ParentWindow->Name).compare(0, strlen("Main - Deck"), "Main - Deck") == 0) {
+        Color_Background.a = 255;
+    }
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, VecFromRGBA8(Color_Background));
     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 4.0f);
     ImGui::Begin(UniqueName.c_str(), &open, windowFlags);
@@ -2075,11 +2080,13 @@ void CheckTrackerSettingsWindow::DrawElement() {
                                             .DefaultIndex(TRACKER_COMBO_BUTTON_L));
             }
         }
+        ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
         UIWidgets::CVarCheckbox("Vanilla/MQ Dungeon Spoilers", CVAR_TRACKER_CHECK("MQSpoilers"),
                                 UIWidgets::CheckboxOptions()
                                     .Tooltip("If enabled, Vanilla/MQ dungeons will show on the tracker immediately. "
                                              "Otherwise, Vanilla/MQ dungeon locations must be unlocked.")
                                     .Color(THEME_COLOR));
+        ImGui::EndDisabled();
         if (UIWidgets::CVarCheckbox(
                 "Hide unshuffled shop item checks", CVAR_TRACKER_CHECK("HideUnshuffledShopChecks"),
                 UIWidgets::CheckboxOptions()
@@ -2100,6 +2107,7 @@ void CheckTrackerSettingsWindow::DrawElement() {
                                 UIWidgets::CheckboxOptions()
                                     .Tooltip("If enabled, will show a check's logic when hovering over it.")
                                     .Color(THEME_COLOR));
+        ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
         if (UIWidgets::CVarCheckbox("Enable Available Checks", CVAR_TRACKER_CHECK("EnableAvailableChecks"),
                                     UIWidgets::CheckboxOptions()
                                         .Tooltip("If enabled, will show the checks that are available to be collected "
@@ -2108,6 +2116,7 @@ void CheckTrackerSettingsWindow::DrawElement() {
             enableAvailableChecks = CVarGetInteger(CVAR_TRACKER_CHECK("EnableAvailableChecks"), 0);
             RecalculateAvailableChecks();
         }
+        ImGui::EndDisabled();
 
         // Filtering settings
         UIWidgets::PaddedSeparator();
