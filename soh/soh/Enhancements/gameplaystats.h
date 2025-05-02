@@ -6,30 +6,32 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-    uint64_t GetUnixTimestamp(void);
-    char* GameplayStats_GetCurrentTime();
+uint64_t GetUnixTimestamp(void);
+char* GameplayStats_GetCurrentTime();
 #ifdef __cplusplus
 };
 #endif
 
 // When using RTA timing
-    // get the diff since the save was created,
-    // unless the game is complete in which we use the defeated ganon timestamp
+// get the diff since the save was created,
+// unless the game is complete in which we use the defeated ganon timestamp
 // When not using RTA timing
-    // Total gameplay time is tracked in tenths of seconds
-    // I.E. game time counts frames at 20fps/2, pause time counts frames at 30fps/3
-    // Frame counts in z_play.c and z_kaleido_scope_call.c
-#define GAMEPLAYSTAT_TOTAL_TIME (gSaveContext.ship.stats.rtaTiming ?\
-    (!gSaveContext.ship.stats.gameComplete ?\
-        (!gSaveContext.ship.stats.fileCreatedAt ? 0 : ((GetUnixTimestamp() - gSaveContext.ship.stats.fileCreatedAt) / 100)) :\
-        (gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON]                         \
+// Total gameplay time is tracked in tenths of seconds
+// I.E. game time counts frames at 20fps/2, pause time counts frames at 30fps/3
+// Frame counts in z_play.c and z_kaleido_scope_call.c
+#define GAMEPLAYSTAT_TOTAL_TIME                                                                \
+    (gSaveContext.ship.stats.rtaTiming                                                         \
+         ? (!gSaveContext.ship.stats.gameComplete                                              \
+                ? (!gSaveContext.ship.stats.fileCreatedAt                                      \
+                       ? 0                                                                     \
+                       : ((GetUnixTimestamp() - gSaveContext.ship.stats.fileCreatedAt) / 100)) \
+                : (gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON]               \
                        ? gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON]         \
                        : gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED])) \
-         :\
-    (gSaveContext.ship.stats.playTimer / 2 + gSaveContext.ship.stats.pauseTimer / 3))
-#define CURRENT_MODE_TIMER (CVarGetInteger(CVAR_ENHANCEMENT("GameplayStats.RoomBreakdown"), 0) ?\
-    gSaveContext.ship.stats.roomTimer :\
-    gSaveContext.ship.stats.sceneTimer)
+         : (gSaveContext.ship.stats.playTimer / 2 + gSaveContext.ship.stats.pauseTimer / 3))
+#define CURRENT_MODE_TIMER                                                                       \
+    (CVarGetInteger(CVAR_GAMEPLAY_STATS("RoomBreakdown"), 0) ? gSaveContext.ship.stats.roomTimer \
+                                                             : gSaveContext.ship.stats.sceneTimer)
 
 void InitStatTracker();
 
@@ -37,22 +39,22 @@ typedef enum {
     // 0x00 to 0x9B (0 to 155) used for getting items,
     // piggybacked off enum "ItemID" in z64item.h
 
-    /* 0xA0 */ TIMESTAMP_DEFEAT_GOHMA = 0xA0,   // z_boss_goma.c
-    /* 0xA1 */ TIMESTAMP_DEFEAT_KING_DODONGO,   // z_boss_dodongo.c
-    /* 0xA2 */ TIMESTAMP_DEFEAT_BARINADE,       // z_boss_va.c
-    /* 0xA3 */ TIMESTAMP_DEFEAT_PHANTOM_GANON,  // z_boss_ganondrof.c
-    /* 0xA4 */ TIMESTAMP_DEFEAT_VOLVAGIA,       // z_boss_fd2.c
-    /* 0xA5 */ TIMESTAMP_DEFEAT_MORPHA,         // z_boss_mo.c
-    /* 0xA6 */ TIMESTAMP_DEFEAT_BONGO_BONGO,    // z_boss_sst.c
-    /* 0xA7 */ TIMESTAMP_DEFEAT_TWINROVA,       // z_boss_tw.c
-    /* 0xA8 */ TIMESTAMP_DEFEAT_GANONDORF,      // z_boss_ganon.c
-    /* 0xA9 */ TIMESTAMP_DEFEAT_GANON,          // z_boss_ganon2.c
-    /* 0xA9 */ TIMESTAMP_BOSSRUSH_FINISH,       // z_boss_ganon2.c
-    /* 0xAA */ TIMESTAMP_FOUND_GREG,            // z_parameter.c
-    /* 0xAA */ TIMESTAMP_TRIFORCE_COMPLETED,    // z_parameter.c
+    /* 0xA0 */ TIMESTAMP_DEFEAT_GOHMA = 0xA0,  // z_boss_goma.c
+    /* 0xA1 */ TIMESTAMP_DEFEAT_KING_DODONGO,  // z_boss_dodongo.c
+    /* 0xA2 */ TIMESTAMP_DEFEAT_BARINADE,      // z_boss_va.c
+    /* 0xA3 */ TIMESTAMP_DEFEAT_PHANTOM_GANON, // z_boss_ganondrof.c
+    /* 0xA4 */ TIMESTAMP_DEFEAT_VOLVAGIA,      // z_boss_fd2.c
+    /* 0xA5 */ TIMESTAMP_DEFEAT_MORPHA,        // z_boss_mo.c
+    /* 0xA6 */ TIMESTAMP_DEFEAT_BONGO_BONGO,   // z_boss_sst.c
+    /* 0xA7 */ TIMESTAMP_DEFEAT_TWINROVA,      // z_boss_tw.c
+    /* 0xA8 */ TIMESTAMP_DEFEAT_GANONDORF,     // z_boss_ganon.c
+    /* 0xA9 */ TIMESTAMP_DEFEAT_GANON,         // z_boss_ganon2.c
+    /* 0xA9 */ TIMESTAMP_BOSSRUSH_FINISH,      // z_boss_ganon2.c
+    /* 0xAA */ TIMESTAMP_FOUND_GREG,           // z_parameter.c
+    /* 0xAA */ TIMESTAMP_TRIFORCE_COMPLETED,   // z_parameter.c
     /* 0xAB */ TIMESTAMP_MAX
 
-}GameplayStatTimestamp;
+} GameplayStatTimestamp;
 
 typedef enum {
     // Enemies defeated

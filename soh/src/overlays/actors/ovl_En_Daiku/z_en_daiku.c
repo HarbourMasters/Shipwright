@@ -175,8 +175,7 @@ void EnDaiku_Init(Actor* thisx, PlayState* play) {
     this->actor.shape.rot.z = 0;
 
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 40.0f);
-    SkelAnime_InitFlex(play, &this->skelAnime, &object_daiku_Skel_007958, NULL, this->jointTable, this->morphTable,
-                       17);
+    SkelAnime_InitFlex(play, &this->skelAnime, &object_daiku_Skel_007958, NULL, this->jointTable, this->morphTable, 17);
 
     if (!noKill) {
         Actor_Kill(&this->actor);
@@ -276,7 +275,8 @@ void EnDaiku_UpdateText(EnDaiku* this, PlayState* play) {
                 if (this->stateFlags & ENDAIKU_STATEFLAG_GERUDODEFEATED) {
                     freedCount = 0;
                     for (carpenterType = 0; carpenterType < 4; carpenterType++) {
-                        if (gSaveContext.eventChkInf[EVENTCHKINF_CARPENTERS_FREE_INDEX] & EVENTCHKINF_CARPENTERS_FREE_MASK(carpenterType)) {
+                        if (gSaveContext.eventChkInf[EVENTCHKINF_CARPENTERS_FREE_INDEX] &
+                            EVENTCHKINF_CARPENTERS_FREE_MASK(carpenterType)) {
                             freedCount++;
                         }
                     }
@@ -383,7 +383,8 @@ void EnDaiku_Jailed(EnDaiku* this, PlayState* play) {
 void EnDaiku_WaitFreedom(EnDaiku* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
 
-    if (Flags_GetSwitch(play, this->actor.params >> 8 & 0x3F) || (IS_RANDO && Flags_GetRandomizerInf(RAND_INF_HAS_SKELETON_KEY))) {
+    if (Flags_GetSwitch(play, this->actor.params >> 8 & 0x3F) ||
+        (IS_RANDO && Flags_GetRandomizerInf(RAND_INF_HAS_SKELETON_KEY))) {
         this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY;
         EnDaiku_UpdateText(this, play);
     }
@@ -404,8 +405,10 @@ void EnDaiku_InitEscape(EnDaiku* this, PlayState* play) {
     EnDaiku_ChangeAnim(this, ENDAIKU_ANIM_RUN, &this->currentAnimIndex);
     this->stateFlags &= ~(ENDAIKU_STATEFLAG_1 | ENDAIKU_STATEFLAG_2);
 
-    gSaveContext.eventChkInf[EVENTCHKINF_CARPENTERS_FREE_INDEX] |= EVENTCHKINF_CARPENTERS_FREE_MASK(this->actor.params & 3);
-    GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_CHECK_INF, (EVENTCHKINF_CARPENTERS_FREE_INDEX << 4) + (this->actor.params & 3));
+    gSaveContext.eventChkInf[EVENTCHKINF_CARPENTERS_FREE_INDEX] |=
+        EVENTCHKINF_CARPENTERS_FREE_MASK(this->actor.params & 3);
+    GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_CHECK_INF,
+                                    (EVENTCHKINF_CARPENTERS_FREE_INDEX << 4) + (this->actor.params & 3));
 
     this->actor.gravity = -1.0f;
     this->escapeSubCamTimer = sEscapeSubCamParams[this->actor.params & 3].maxFramesActive;
@@ -451,6 +454,10 @@ void EnDaiku_InitSubCamera(EnDaiku* this, PlayState* play) {
     this->subCamActive = true;
     this->escapeSubCamTimer = sEscapeSubCamParams[this->actor.params & 3].maxFramesActive;
 
+    if (!GameInteractor_Should(VB_PLAY_CARPENTER_FREE_CS, true, this)) {
+        return;
+    }
+
     eyePosDeltaLocal.x = sEscapeSubCamParams[this->actor.params & 3].eyePosDeltaLocal.x;
     eyePosDeltaLocal.y = sEscapeSubCamParams[this->actor.params & 3].eyePosDeltaLocal.y;
     eyePosDeltaLocal.z = sEscapeSubCamParams[this->actor.params & 3].eyePosDeltaLocal.z;
@@ -477,6 +484,10 @@ void EnDaiku_InitSubCamera(EnDaiku* this, PlayState* play) {
 void EnDaiku_UpdateSubCamera(EnDaiku* this, PlayState* play) {
     s32 pad;
 
+    if (!GameInteractor_Should(VB_PLAY_CARPENTER_FREE_CS, true, this)) {
+        return;
+    }
+
     this->subCamAtTarget.x = this->actor.world.pos.x;
     this->subCamAtTarget.y = this->actor.world.pos.y + 60.0f;
     this->subCamAtTarget.z = this->actor.world.pos.z;
@@ -493,8 +504,10 @@ void EnDaiku_EscapeSuccess(EnDaiku* this, PlayState* play) {
     Actor* gerudoGuard;
     Vec3f vec;
 
-    Play_ClearCamera(play, this->subCamId);
-    Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
+    if (GameInteractor_Should(VB_PLAY_CARPENTER_FREE_CS, true, this)) {
+        Play_ClearCamera(play, this->subCamId);
+        Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
+    }
     this->subCamActive = false;
 
     if (GET_EVENTCHKINF_CARPENTERS_FREE_ALL()) {

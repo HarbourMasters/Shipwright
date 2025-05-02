@@ -1599,10 +1599,10 @@ void BgCheck_Allocate(CollisionContext* colCtx, PlayState* play, CollisionHeader
     BgCheck_SetSubdivisionDimension(colCtx->minBounds.z, colCtx->subdivAmount.z, &colCtx->maxBounds.z,
                                     &colCtx->subdivLength.z, &colCtx->subdivLengthInv.z);
 
-// OTRTODO: Re-enable when the below DynaPoly workaround is removed.
-// #ifdef _SOH64 // BGCheck needs more memory on 64 bits because it crashes on some areas
-//     colCtx->memSize *= 2;
-// #endif
+    // OTRTODO: Re-enable when the below DynaPoly workaround is removed.
+    // #ifdef _SOH64 // BGCheck needs more memory on 64 bits because it crashes on some areas
+    //     colCtx->memSize *= 2;
+    // #endif
 
     // BGCheck needs a higher polygon and vertex count due to removed object dependencies.
     // Otherwise Forest Temple checkered room will crash due to the hallway actor being killed a frame late.
@@ -1765,8 +1765,7 @@ f32 BgCheck_EntityRaycastFloor1(CollisionContext* colCtx, CollisionPoly** outPol
  * Public raycast toward floor
  * returns yIntersect of the poly found, or BGCHECK_Y_MIN if no poly detected
  */
-f32 BgCheck_EntityRaycastFloor2(PlayState* play, CollisionContext* colCtx, CollisionPoly** outPoly,
-                                Vec3f* pos) {
+f32 BgCheck_EntityRaycastFloor2(PlayState* play, CollisionContext* colCtx, CollisionPoly** outPoly, Vec3f* pos) {
     s32 bgId;
 
     return BgCheck_RaycastFloorImpl(play, colCtx, COLPOLY_IGNORE_ENTITY, outPoly, &bgId, pos, NULL, 0x1C, 1.0f);
@@ -1916,8 +1915,7 @@ s32 BgCheck_CheckWallImpl(CollisionContext* colCtx, u16 xpFlags, Vec3f* posResul
     dy = posNext->y - posPrev->y;
     dz = posNext->z - posPrev->z;
 
-    if (BGCHECK_POS_ERROR_CHECK(posNext) == true ||
-        BGCHECK_POS_ERROR_CHECK(posPrev) == true) {
+    if (BGCHECK_POS_ERROR_CHECK(posNext) == true || BGCHECK_POS_ERROR_CHECK(posPrev) == true) {
         if (actor != NULL) {
             osSyncPrintf("こいつ,pself_actor->name %d\n", actor->id);
         }
@@ -2179,8 +2177,7 @@ s32 BgCheck_CheckLineImpl(CollisionContext* colCtx, u16 xpFlags1, u16 xpFlags2, 
     s32 temp_lo;
 
     *outBgId = BGCHECK_SCENE;
-    if (BGCHECK_POS_ERROR_CHECK(posA) == true ||
-        BGCHECK_POS_ERROR_CHECK(posB) == true) {
+    if (BGCHECK_POS_ERROR_CHECK(posA) == true || BGCHECK_POS_ERROR_CHECK(posB) == true) {
         if (actor != NULL) {
             osSyncPrintf("こいつ,pself_actor->name %d\n", actor->id);
         } else {
@@ -2653,8 +2650,7 @@ void DynaPoly_Alloc(PlayState* play, DynaCollisionContext* dyna) {
  * Set BgActor
  * original name: DynaPolyInfo_setActor
  */
-s32 DynaPoly_SetBgActor(PlayState* play, DynaCollisionContext* dyna, Actor* actor,
-                        CollisionHeader* colHeader) {
+s32 DynaPoly_SetBgActor(PlayState* play, DynaCollisionContext* dyna, Actor* actor, CollisionHeader* colHeader) {
     s32 bgId;
     s32 foundSlot = false;
 
@@ -3813,8 +3809,7 @@ void CollisionHeader_SegmentedToVirtual(CollisionHeader* colHeader) {
 /**
  * Convert CollisionHeader Segmented to Virtual addressing
  */
-void CollisionHeader_GetVirtual(void* colHeader, CollisionHeader** dest)
-{
+void CollisionHeader_GetVirtual(void* colHeader, CollisionHeader** dest) {
     if (ResourceMgr_OTRSigCheck(colHeader))
         colHeader = ResourceMgr_LoadColByName(colHeader);
 
@@ -4339,8 +4334,7 @@ u32 WaterBox_GetLightSettingIndex(CollisionContext* colCtx, WaterBox* waterBox) 
  * returns true if point is within the xz boundaries of an active water box, else false
  * `ySurface` returns the water box's surface, while `outWaterBox` returns a pointer to the WaterBox
  */
-s32 func_800425B0(PlayState* play, CollisionContext* colCtx, f32 x, f32 z, f32* ySurface,
-                  WaterBox** outWaterBox) {
+s32 func_800425B0(PlayState* play, CollisionContext* colCtx, f32 x, f32 z, f32* ySurface, WaterBox** outWaterBox) {
     CollisionHeader* colHeader = colCtx->colHeader;
     u32 room;
     WaterBox* curWaterBox;
@@ -4408,8 +4402,8 @@ s32 func_800427B4(CollisionPoly* polyA, CollisionPoly* polyB, Vec3f* pointA, Vec
 /**
  * Draw a list of dyna polys, specified by `ssList`
  */
-void BgCheck_DrawDynaPolyList(PlayState* play, CollisionContext* colCtx, DynaCollisionContext* dyna,
-                              SSList* ssList, u8 r, u8 g, u8 b) {
+void BgCheck_DrawDynaPolyList(PlayState* play, CollisionContext* colCtx, DynaCollisionContext* dyna, SSList* ssList,
+                              u8 r, u8 g, u8 b) {
     s16 curPolyId;
     CollisionPoly* poly;
     SSNode* curNode;
@@ -4457,16 +4451,14 @@ void BgCheck_DrawDynaPolyList(PlayState* play, CollisionContext* colCtx, DynaCol
  */
 void BgCheck_DrawBgActor(PlayState* play, CollisionContext* colCtx, s32 bgId) {
     if (AREG(21)) {
-        BgCheck_DrawDynaPolyList(play, colCtx, &colCtx->dyna, &colCtx->dyna.bgActors[bgId].dynaLookup.ceiling, 255,
-                                 0, 0);
-    }
-    if (AREG(22)) {
-        BgCheck_DrawDynaPolyList(play, colCtx, &colCtx->dyna, &colCtx->dyna.bgActors[bgId].dynaLookup.wall, 0, 255,
+        BgCheck_DrawDynaPolyList(play, colCtx, &colCtx->dyna, &colCtx->dyna.bgActors[bgId].dynaLookup.ceiling, 255, 0,
                                  0);
     }
+    if (AREG(22)) {
+        BgCheck_DrawDynaPolyList(play, colCtx, &colCtx->dyna, &colCtx->dyna.bgActors[bgId].dynaLookup.wall, 0, 255, 0);
+    }
     if (AREG(23)) {
-        BgCheck_DrawDynaPolyList(play, colCtx, &colCtx->dyna, &colCtx->dyna.bgActors[bgId].dynaLookup.floor, 0, 0,
-                                 255);
+        BgCheck_DrawDynaPolyList(play, colCtx, &colCtx->dyna, &colCtx->dyna.bgActors[bgId].dynaLookup.floor, 0, 0, 255);
     }
 }
 

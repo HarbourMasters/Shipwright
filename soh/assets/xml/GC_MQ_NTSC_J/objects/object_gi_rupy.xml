@@ -1,0 +1,16 @@
+<Root>
+    <File Name="object_gi_rupy" Segment="6">
+        <DList Name="gGiGreenRupeeInnerColorDL" Offset="0x04A0"/>
+        <DList Name="gGiBlueRupeeInnerColorDL" Offset="0x04C0"/>
+        <DList Name="gGiRedRupeeInnerColorDL" Offset="0x04E0"/>
+        <DList Name="gGiPurpleRupeeInnerColorDL" Offset="0x0500"/>
+        <DList Name="gGiGoldRupeeInnerColorDL" Offset="0x0520"/>
+        <DList Name="gGiGreenRupeeOuterColorDL" Offset="0x0540"/>
+        <DList Name="gGiBlueRupeeOuterColorDL" Offset="0x0560"/>
+        <DList Name="gGiRedRupeeOuterColorDL" Offset="0x0580"/>
+        <DList Name="gGiPurpleRupeeOuterColorDL" Offset="0x05A0"/>
+        <DList Name="gGiGoldRupeeOuterColorDL" Offset="0x05C0"/>
+        <DList Name="gGiRupeeInnerDL" Offset="0x05E0"/>
+        <DList Name="gGiRupeeOuterDL" Offset="0x06F0"/>
+    </File>
+</Root>

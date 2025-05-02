@@ -42,4 +42,4 @@ size_t Array::GetPointerSize() {
     }
     return ArrayCount * typeSize;
 }
-} // namespace LUS
+} // namespace SOH

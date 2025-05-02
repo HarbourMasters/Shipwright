@@ -4,10 +4,11 @@
 using namespace Rando;
 
 void RegionTable_Init_SacredForestMeadow() {
+    // clang-format off
     areaTable[RR_SFM_ENTRYWAY] = Region("SFM Entryway", "Sacred Forest Meadow", {RA_SACRED_FOREST_MEADOW}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_LW_BEYOND_MIDO,       []{return true;}),
-        Entrance(RR_SACRED_FOREST_MEADOW, []{return logic->CanJumpslash() || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_DINS_FIRE);}),
+        Entrance(RR_SACRED_FOREST_MEADOW, []{return logic->IsAdult || logic->CanKillEnemy(RE_WOLFOS);}),
         Entrance(RR_SFM_WOLFOS_GROTTO,    []{return logic->CanOpenBombGrotto();}),
     });
 
@@ -71,4 +72,6 @@ void RegionTable_Init_SacredForestMeadow() {
         //Exits
         Entrance(RR_SACRED_FOREST_MEADOW, []{return true;}),
     });
+
+    // clang-format on
 }

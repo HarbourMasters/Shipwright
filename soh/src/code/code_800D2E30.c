@@ -110,7 +110,7 @@ void func_800D2E30(UnkRumbleStruct* arg0) {
 }
 
 void func_800D3140(UnkRumbleStruct* arg0) {
-    memset(arg0, 0,sizeof(UnkRumbleStruct));
+    memset(arg0, 0, sizeof(UnkRumbleStruct));
     arg0->unk_104 = 2;
     arg0->unk_105 = 1;
 }

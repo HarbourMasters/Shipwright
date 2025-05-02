@@ -5,6 +5,7 @@
 using namespace Rando;
 
 void RegionTable_Init_ShadowTemple() {
+    // clang-format off
     // Vanilla/MQ Decider
     areaTable[RR_SHADOW_TEMPLE_ENTRYWAY] = Region("Shadow Temple Entryway", "Shadow Temple", {RA_SHADOW_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
@@ -79,8 +80,8 @@ void RegionTable_Init_ShadowTemple() {
     areaTable[RR_SHADOW_TEMPLE_WIND_TUNNEL] = Region("Shadow Temple Wind Tunnel", "Shadow Temple", {RA_SHADOW_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
         LOCATION(RC_SHADOW_TEMPLE_WIND_HINT_CHEST,         true),
-        LOCATION(RC_SHADOW_TEMPLE_AFTER_WIND_ENEMY_CHEST,  logic->CanJumpslashExceptHammer()),
-        LOCATION(RC_SHADOW_TEMPLE_AFTER_WIND_HIDDEN_CHEST, true),
+        LOCATION(RC_SHADOW_TEMPLE_AFTER_WIND_ENEMY_CHEST,  logic->CanKillEnemy(RE_GIBDO, ED_CLOSE, true, 2)),
+        LOCATION(RC_SHADOW_TEMPLE_AFTER_WIND_HIDDEN_CHEST, logic->HasExplosives()),
         LOCATION(RC_SHADOW_TEMPLE_GS_NEAR_SHIP,            logic->CanUse(RG_LONGSHOT) && logic->SmallKeys(RR_SHADOW_TEMPLE, 4, 5)),
         LOCATION(RC_SHADOW_TEMPLE_WIND_HINT_SUN_FAIRY,     logic->CanUse(RG_SUNS_SONG)),
         LOCATION(RC_SHADOW_TEMPLE_AFTER_WIND_POT_1,        logic->CanBreakPots()),
@@ -96,7 +97,7 @@ void RegionTable_Init_ShadowTemple() {
         //Locations
         LOCATION(RC_SHADOW_TEMPLE_SPIKE_WALLS_LEFT_CHEST,       logic->CanUse(RG_DINS_FIRE)),
         LOCATION(RC_SHADOW_TEMPLE_BOSS_KEY_CHEST,               logic->CanUse(RG_DINS_FIRE)),
-        LOCATION(RC_SHADOW_TEMPLE_INVISIBLE_FLOORMASTER_CHEST,  logic->CanJumpslashExceptHammer()),
+        LOCATION(RC_SHADOW_TEMPLE_INVISIBLE_FLOORMASTER_CHEST,  logic->CanKillEnemy(RE_FLOORMASTER)),
         //RANDOTODO check if child can reach the token
         LOCATION(RC_SHADOW_TEMPLE_GS_TRIPLE_GIANT_POT,          logic->IsAdult && logic->CanAttack()),
         LOCATION(RC_SHADOW_TEMPLE_AFTER_BOAT_POT_1,             logic->CanBreakPots()),
@@ -125,7 +126,15 @@ void RegionTable_Init_ShadowTemple() {
         Entrance(RR_SHADOW_TEMPLE_MQ_SPINNER_ROOM,  []{return logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT);}),
     });
 
-    areaTable[RR_SHADOW_TEMPLE_MQ_SPINNER_ROOM] = Region("Shadow Temple MQ Spinner Room", "Shadow Temple", {RA_SHADOW_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_SHADOW_TEMPLE_MQ_SPINNER_ROOM] = Region("Shadow Temple MQ Spinner Room", "Shadow Temple", {RA_SHADOW_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, 
+    {
+        // Locations
+        LOCATION(RC_SHADOW_TEMPLE_MQ_TRUTH_SPINNER_SMALL_CRATE_1, logic->CanBreakSmallCrates()),
+        LOCATION(RC_SHADOW_TEMPLE_MQ_TRUTH_SPINNER_SMALL_CRATE_2, logic->CanBreakSmallCrates()),
+        LOCATION(RC_SHADOW_TEMPLE_MQ_TRUTH_SPINNER_SMALL_CRATE_3, logic->CanBreakSmallCrates()),
+        LOCATION(RC_SHADOW_TEMPLE_MQ_TRUTH_SPINNER_SMALL_CRATE_4, logic->CanBreakSmallCrates()),
+    }, 
+    {
         //Exits
         Entrance(RR_SHADOW_TEMPLE_ENTRYWAY,          []{return true;}),
         Entrance(RR_SHADOW_TEMPLE_MQ_FIRST_BEAMOS,   []{return Here(RR_SHADOW_TEMPLE_MQ_SPINNER_ROOM, []{return logic->CanUse(RG_HOVER_BOOTS) || (ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH));}) && (logic->CanUse(RG_HOVER_BOOTS) || Here(RR_SHADOW_TEMPLE_MQ_SPINNER_ROOM, []{return logic->CanUse(RG_FIRE_ARROWS);}) || (ctx->GetTrickOption(RT_SHADOW_MQ_GAP) && logic->CanUse(RG_LONGSHOT) && logic->CanJumpslashExceptHammer()));}),
@@ -181,7 +190,7 @@ void RegionTable_Init_ShadowTemple() {
     //Room exists for if it's ever possible to go backwards or void warp into the middle of shadow
     areaTable[RR_SHADOW_TEMPLE_MQ_B2_TO_B3_CORRIDOR] = Region("Shadow Temple MQ B2 to B3 Corridor", "Shadow Temple", {RA_SHADOW_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
-        Entrance(RR_SHADOW_TEMPLE_MQ_FIRST_BEAMOS,   []{return logic->HasExplosives() && logic->SmallKeys(RR_SHADOW_TEMPLE, 2);}),
+        Entrance(RR_SHADOW_TEMPLE_MQ_FIRST_BEAMOS,   []{return logic->SmallKeys(RR_SHADOW_TEMPLE, 2);}),
         Entrance(RR_SHADOW_TEMPLE_MQ_UPPER_HUGE_PIT, []{return true;}),
         //bunnyhovers + lens lets you go from the very top of upper pit to the stationary invisible platform below quite easily
     });
@@ -409,4 +418,6 @@ void RegionTable_Init_ShadowTemple() {
         Entrance(RR_SHADOW_TEMPLE_BOSS_ENTRYWAY, []{return false;}),
         Entrance(RR_GRAVEYARD_WARP_PAD_REGION,   []{return logic->ShadowTempleClear;}, false),
     });
+
+    // clang-format on
 }

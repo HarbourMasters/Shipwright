@@ -1,0 +1,21 @@
+<Root>
+    <File Name="mahouya_scene" Segment="2">
+        <Texture Name="mahouya_sceneTex_000A20" OutName="mahouya_sceneTex_000A20" Format="rgba16" Width="32" Height="32" Offset="0xA20" AddedByScript="true"/>
+        <Texture Name="mahouya_sceneTex_001220" OutName="mahouya_sceneTex_001220" Format="rgba16" Width="32" Height="32" Offset="0x1220" AddedByScript="true"/>
+        <Texture Name="mahouya_sceneTex_001A20" OutName="mahouya_sceneTex_001A20" Format="rgba16" Width="16" Height="128" Offset="0x1A20" AddedByScript="true"/>
+        <Texture Name="mahouya_sceneTex_002A20" OutName="mahouya_sceneTex_002A20" Format="rgba16" Width="32" Height="64" Offset="0x2A20" AddedByScript="true"/>
+        <Texture Name="mahouya_sceneTex_003A20" OutName="mahouya_sceneTex_003A20" Format="rgba16" Width="64" Height="32" Offset="0x3A20" AddedByScript="true"/>
+        <Texture Name="mahouya_sceneTex_004A20" OutName="mahouya_sceneTex_004A20" Format="rgba16" Width="32" Height="32" Offset="0x4A20" AddedByScript="true"/>
+        <Texture Name="mahouya_sceneTex_005220" OutName="mahouya_sceneTex_005220" Format="rgba16" Width="16" Height="128" Offset="0x5220" AddedByScript="true"/>
+        <Texture Name="mahouya_sceneTex_006220" OutName="mahouya_sceneTex_006220" Format="rgba16" Width="16" Height="128" Offset="0x6220" AddedByScript="true"/>
+        <Texture Name="mahouya_sceneTex_007220" OutName="mahouya_sceneTex_007220" Format="rgba16" Width="32" Height="32" Offset="0x7220" AddedByScript="true"/>
+        <Texture Name="mahouya_sceneTex_007A20" OutName="mahouya_sceneTex_007A20" Format="rgba16" Width="64" Height="32" Offset="0x7A20" AddedByScript="true"/>
+        <Texture Name="mahouya_sceneTex_008A20" OutName="mahouya_sceneTex_008A20" Format="i8" Width="16" Height="128" Offset="0x8A20" AddedByScript="true"/>
+        <Texture Name="mahouya_sceneTex_009220" OutName="mahouya_sceneTex_009220" Format="rgba16" Width="32" Height="32" Offset="0x9220" AddedByScript="true"/>
+        <Texture Name="mahouya_sceneTex_009A20" OutName="mahouya_sceneTex_009A20" Format="rgba16" Width="64" Height="32" Offset="0x9A20" AddedByScript="true"/>
+        <Scene Name="mahouya_scene" Offset="0x0"/>
+    </File>
+    <File Name="mahouya_room_0" Segment="3">
+        <Room Name="mahouya_room_0" Offset="0x0"/>
+    </File>
+</Root>

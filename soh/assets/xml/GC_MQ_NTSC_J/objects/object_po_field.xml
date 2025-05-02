@@ -1,0 +1,31 @@
+<Root>
+    <File Name="object_po_field" Segment="6">
+        <Texture Name="object_po_fieldTex_002470" OutName="object_po_fieldTex_002470" Format="rgba16" Width="16" Height="16" Offset="0x2470" AddedByScript="true"/>
+        <Texture Name="object_po_fieldTex_002670" OutName="object_po_fieldTex_002670" Format="rgba16" Width="16" Height="16" Offset="0x2670" AddedByScript="true"/>
+        <Texture Name="object_po_fieldTex_002870" OutName="object_po_fieldTex_002870" Format="rgba16" Width="32" Height="32" Offset="0x2870" AddedByScript="true"/>
+        <Texture Name="object_po_fieldTex_003070" OutName="object_po_fieldTex_003070" Format="rgba16" Width="16" Height="16" Offset="0x3070" AddedByScript="true"/>
+        <Texture Name="object_po_fieldTex_003270" OutName="object_po_fieldTex_003270" Format="rgba16" Width="8" Height="8" Offset="0x3270" AddedByScript="true"/>
+        <Texture Name="object_po_fieldTex_0032F0" OutName="object_po_fieldTex_0032F0" Format="rgba16" Width="16" Height="8" Offset="0x32F0" AddedByScript="true"/>
+        <Texture Name="object_po_fieldTex_0033F0" OutName="object_po_fieldTex_0033F0" Format="rgba16" Width="16" Height="16" Offset="0x33F0" AddedByScript="true"/>
+        <Texture Name="object_po_fieldTex_0035F0" OutName="object_po_fieldTex_0035F0" Format="rgba16" Width="16" Height="16" Offset="0x35F0" AddedByScript="true"/>
+        <Texture Name="object_po_fieldTex_0037F0" OutName="object_po_fieldTex_0037F0" Format="rgba16" Width="16" Height="16" Offset="0x37F0" AddedByScript="true"/>
+        <Texture Name="object_po_fieldTex_005AB0" OutName="object_po_fieldTex_005AB0" Format="rgba16" Width="16" Height="16" Offset="0x5AB0" AddedByScript="true"/>
+        <Texture Name="object_po_fieldTex_005CB0" OutName="object_po_fieldTex_005CB0" Format="rgba16" Width="8" Height="8" Offset="0x5CB0" AddedByScript="true"/>
+        <Animation Name="gPoeFieldAttackAnim" Offset="0x0158"/>
+        <Animation Name="gPoeFieldDamagedAnim" Offset="0x0454"/>
+        <Animation Name="gPoeFieldFleeAnim" Offset="0x0608"/>
+        <Animation Name="gPoeFieldFloatAnim" Offset="0x0924"/>
+        <Animation Name="gPoeFieldAppearAnim" Offset="0x0F9C"/>
+        <Animation Name="gPoeFieldDisappearAnim" Offset="0x1360"/>
+        <Texture Name="gBigPoeSoulTex" OutName="big_poe_soul" Format="i8" Width="32" Height="64" Offset="0x1370"/>
+        <Texture Name="gPoeFieldSoulTex" OutName="poe_field_soul" Format="i8" Width="32" Height="64" Offset="0x1B70"/>
+        <DList Name="gPoeFieldSoulDL" Offset="0x23B0"/>
+        <DList Name="gPoeFieldLanternDL" Offset="0x4BA0"/>
+        <DList Name="gPoeFieldLanternTopDL" Offset="0x4CC0"/>
+        <DList Name="gBigPoeCloakDL" Offset="0x5620"/>
+        <DList Name="gBigPoeFaceDL" Offset="0x5900"/>
+        <DList Name="gBigPoeBodyDL" Offset="0x59F0"/>
+        <DList Name="gPoeFieldBurnDL" Offset="0x66D0"/>
+        <Skeleton Name="gPoeFieldSkel" Type="Normal" LimbType="Standard" Offset="0x6A30"/>
+    </File>
+</Root>

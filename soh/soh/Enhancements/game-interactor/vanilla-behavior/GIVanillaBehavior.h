@@ -1,3 +1,8 @@
+#pragma once
+
+#ifndef GI_VANILLA_BEHAVIOR_H
+#define GI_VANILLA_BEHAVIOR_H
+
 typedef enum {
     // #### `result`
     // ```c
@@ -95,10 +100,10 @@ typedef enum {
     // #### `args`
     // - `*BgDyYoseizo`
     VB_BE_ELIGIBLE_FOR_GREAT_FAIRY_REWARD,
-    
+
     // #### `result`
     // ```c
-    // CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && 
+    // CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) &&
     // CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
     // LINK_IS_ADULT &&
     // !Flags_GetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS) &&
@@ -118,11 +123,11 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // (gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_FRONT_GATE) && 
+    // (gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_FRONT_GATE) &&
     // LINK_IS_ADULT &&
-    // Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP) && 
+    // Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP) &&
     // Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP) &&
-    // Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP) && 
+    // Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP) &&
     // !Flags_GetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL)
     // ```
     // #### `args`
@@ -131,7 +136,8 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT) && Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)
+    // !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT) &&
+    // Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)
     // ```
     // #### `args`
     // - None
@@ -158,7 +164,8 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // CHECK_OWNED_EQUIP(EQUIP_TYPE_BOOTS, EQUIP_INV_BOOTS_IRON) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_SERENADE_OF_WATER)
+    // CHECK_OWNED_EQUIP(EQUIP_TYPE_BOOTS, EQUIP_INV_BOOTS_IRON) &&
+    // !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_SERENADE_OF_WATER)
     // ```
     // #### `args`
     // - None
@@ -273,6 +280,22 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // itemDropped >= 0 && itemDropped < 0x1A
+    // ```
+    // #### `args`
+    // - `*ObjKibako2`
+    VB_CRATE_DROP_ITEM,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*ObjKibako2`
+    VB_CRATE_SETUP_DRAW,
+
+    // #### `result`
+    // ```c
     // !Flags_GetItemGetInf(ITEMGETINF_1C)
     // ```
     // #### `args`
@@ -281,7 +304,8 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // gSaveContext.dayTime <= 0xC000 || gSaveContext.dayTime >= 0xE000 || LINK_IS_ADULT || play->sceneNum != SCENE_GRAVEYARD
+    // gSaveContext.dayTime <= 0xC000 || gSaveContext.dayTime >= 0xE000 || LINK_IS_ADULT || play->sceneNum !=
+    // SCENE_GRAVEYARD
     // ```
     // #### `args`
     // - `*EnTk`
@@ -350,7 +374,8 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // play->sceneNum == SCENE_LINKS_HOUSE && (!LINK_IS_ADULT || !Flags_GetEventChkInf(EVENTCHKINF_WON_COW_IN_MALONS_RACE)
+    // play->sceneNum == SCENE_LINKS_HOUSE && (!LINK_IS_ADULT ||
+    // !Flags_GetEventChkInf(EVENTCHKINF_WON_COW_IN_MALONS_RACE)
     // ```
     // #### `args`
     // - `*EnCow`
@@ -399,6 +424,14 @@ typedef enum {
     // #### `args`
     // - `*int16_t` (item id)
     VB_DRAW_AMMO_COUNT,
+
+    // #### `result`
+    // ```c
+    // (Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)
+    // ```
+    // #### `args`
+    // - None
+    VB_END_GERUDO_MEMBERSHIP_TALK,
 
     // #### `result`
     // ```c
@@ -473,7 +506,7 @@ typedef enum {
     // and
     // ```c
     // EnGe2_CheckCarpentersFreed()
-    // ``` 
+    // ```
     // #### `args`
     // - None
     VB_GERUDOS_BE_FRIENDLY,
@@ -915,6 +948,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // false
+    // ```
+    // #### `args`
+    // - '*Fishing'
+    VB_GIVE_RANDO_GLITCH_FISHING_PRIZE,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -960,6 +1001,22 @@ typedef enum {
     // #### `args`
     // - `*EnDs`
     VB_GRANNY_TAKE_MONEY,
+
+    // ### `result`
+    // ```c
+    // false
+    // ```
+    // ### `args`
+    // - `*EnKusa`
+    VB_GRASS_DROP_ITEM,
+
+    // ### `result`
+    // ```c
+    // true
+    // ```
+    // ### `args`
+    // - `*EnKusa`
+    VB_GRASS_SETUP_DRAW,
 
     // #### `result`
     // ```c
@@ -1266,10 +1323,19 @@ typedef enum {
     VB_PLAY_BOLERO_OF_FIRE_CS,
 
     // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnDaiku`
+    VB_PLAY_CARPENTER_FREE_CS,
+
+    // #### `result`
     // Close enough & various cutscene checks
     // ```c
-    // (func_80AEC5FC(this, play)) && (!Play_InCsMode(play)) && 
-    // (!(player->stateFlags1 & (PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE | PLAYER_STATE1_CLIMBING_LADDER))) &&
+    // (func_80AEC5FC(this, play)) && (!Play_InCsMode(play)) &&
+    // (!(player->stateFlags1 & (PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE |
+    // PLAYER_STATE1_CLIMBING_LADDER))) &&
     // (player->actor.bgCheckFlags & 1)
     // ```
     // #### `args`
@@ -1602,6 +1668,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `int32_t` (button - promoted from `s16`)
+    VB_SET_BUTTON_ITEM_FROM_C_BUTTON_SLOT,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*EnNiwLady`
     VB_SET_CUCCO_COUNT,
 
@@ -1615,7 +1689,8 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // (!CHECK_OWNED_EQUIP(EQUIP_TYPE_BOOTS, EQUIP_INV_BOOTS_IRON) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_SERENADE_OF_WATER)) && LINK_IS_ADULT
+    // (!CHECK_OWNED_EQUIP(EQUIP_TYPE_BOOTS, EQUIP_INV_BOOTS_IRON) &&
+    // !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_SERENADE_OF_WATER)) && LINK_IS_ADULT
     // ```
     // #### `args`
     // - None
@@ -1660,6 +1735,15 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // false
+    // ```
+    // #### `args`
+    // - `*s8 iter2`
+    // - `s8 sp3C[4]`
+    VB_SHOULD_QUICKSPIN,
+
+    // #### `result`
+    // ```c
     // (interactedActor->id == ACTOR_BG_TOKI_SWD) && LINK_IS_ADULT
     // ```
     // #### `args`
@@ -1673,6 +1757,22 @@ typedef enum {
     // #### `args`
     // - None
     VB_SHOW_TITLE_CARD,
+
+    // #### `result`
+    // ```c
+    // (collectible >= 0) && (collectible <= 0x19
+    // ```
+    // #### `args`
+    // - `*ObjKibako`
+    VB_SMALL_CRATE_DROP_ITEM,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*ObjKibako`
+    VB_SMALL_CRATE_SETUP_DRAW,
 
     // #### `result`
     // ```c
@@ -1697,25 +1797,25 @@ typedef enum {
     // #### `args`
     // ##### In `z_boss_dodongo.c`:
     // - `*BossDodongo`
-    // 
+    //
     // ##### In `z_boss_fd2.c`
     // - `*BossFd2`
-    // 
+    //
     // ##### In `z_boss_ganondrof.c`:
     // - `*BossGanondrof`
-    // 
+    //
     // ##### In `z_boss_goma.c`:
     // - `*BossGoma`
-    // 
+    //
     // ##### In `z_boss_mo.c`:
     // - `*BossMo`
-    // 
+    //
     // ##### In `z_boss_sst.c`:
     // - `*BossSst`
-    // 
+    //
     // ##### In `z_boss_tw.c`:
     // - `*BossTw`
-    // 
+    //
     // ##### In `z_boss_va.c`:
     // - `*BossVa`
     VB_SPAWN_BLUE_WARP,
@@ -1772,6 +1872,15 @@ typedef enum {
     // #### `args`
     // - `*ShotSun`
     VB_SPAWN_SONG_FAIRY,
+
+    // #### `result`
+    // ```c
+    // (this->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) && (this->heldActor != NULL) &&
+    // CHECK_BTN_ANY(sControlInput->press.button, buttonsToCheck)
+    // ```
+    // #### `args`
+    // - `*Input`
+    VB_THROW_OR_PUT_DOWN_HELD_ITEM,
 
     // #### `result`
     // ```c
@@ -1855,12 +1964,21 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `int32_t` (button - promoted from `u8`)
+    // - `int32_t` (item - promoted from `u8`)
+    VB_UPDATE_BOTTLE_ITEM,
+
+    // #### `result`
+    // ```c
     // INV_CONTENT(ITEM_ODD_MUSHROOM) == ITEM_EYEDROPS
     // ```
     // #### `args`
     // - `*EnMk`
     VB_USE_EYEDROP_DIALOGUE,
-    
+
     // #### `result`
     // ```c
     // true
@@ -1869,3 +1987,5 @@ typedef enum {
     // - `*EnWonderTalk2`
     VB_WONDER_TALK,
 } GIVanillaBehavior;
+
+#endif

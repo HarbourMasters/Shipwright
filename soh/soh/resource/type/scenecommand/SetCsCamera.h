@@ -21,4 +21,4 @@ class SetCsCamera : public SceneCommand<CsCamera> {
 
     CsCamera csCamera;
 };
-}; // namespace LUS
+}; // namespace SOH

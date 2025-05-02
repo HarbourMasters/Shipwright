@@ -4,12 +4,12 @@
 #include "spdlog/spdlog.h"
 
 namespace SOH {
-std::shared_ptr<Ship::IResource>
-SetExitListFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData, std::shared_ptr<Ship::BinaryReader> reader) {
-    auto setExitList = std::make_shared<SetExitList>( initData);
+std::shared_ptr<Ship::IResource> SetExitListFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
+                                                                  std::shared_ptr<Ship::BinaryReader> reader) {
+    auto setExitList = std::make_shared<SetExitList>(initData);
 
     ReadCommandId(setExitList, reader);
-	
+
     setExitList->numExits = reader->ReadUInt32();
     setExitList->exits.reserve(setExitList->numExits);
     for (uint32_t i = 0; i < setExitList->numExits; i++) {
@@ -24,7 +24,7 @@ SetExitListFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initDat
 }
 
 std::shared_ptr<Ship::IResource> SetExitListFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
-                                                                   tinyxml2::XMLElement* reader) {
+                                                                     tinyxml2::XMLElement* reader) {
     auto setExitList = std::make_shared<SetExitList>(initData);
 
     setExitList->cmdId = SceneCommandID::SetExitList;

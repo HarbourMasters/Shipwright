@@ -4,7 +4,13 @@
 using namespace Rando;
 
 void RegionTable_Init_HauntedWasteland() {
-    areaTable[RR_WASTELAND_NEAR_FORTRESS] = Region("Wasteland Near Fortress", "Haunted Wasteland", {RA_HAUNTED_WASTELAND}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    // clang-format off
+    areaTable[RR_WASTELAND_NEAR_FORTRESS] = Region("Wasteland Near Fortress", "Haunted Wasteland", {RA_HAUNTED_WASTELAND}, NO_DAY_NIGHT_CYCLE, {}, 
+    {
+        //Locations
+        LOCATION(RC_HW_BEFORE_QUICKSAND_CRATE, logic->CanBreakCrates()),
+    }, 
+    {
         //Exits
         Entrance(RR_GF_OUTSIDE_GATE,   []{return true;}),
         Entrance(RR_HAUNTED_WASTELAND, []{return logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_LONGSHOT) || ctx->GetTrickOption(RT_HW_CROSSING);}),
@@ -24,15 +30,25 @@ void RegionTable_Init_HauntedWasteland() {
         LOCATION(RC_WASTELAND_NEAR_GS_POT_2,    logic->CanBreakPots()),
         LOCATION(RC_WASTELAND_NEAR_GS_POT_3,    logic->CanBreakPots()),
         LOCATION(RC_WASTELAND_NEAR_GS_POT_4,    logic->CanBreakPots()),
+        LOCATION(RC_HW_AFTER_QUICKSAND_CRATE_1, logic->CanBreakCrates()),
+        LOCATION(RC_HW_AFTER_QUICKSAND_CRATE_2, logic->CanBreakCrates()),
+        LOCATION(RC_HW_AFTER_QUICKSAND_CRATE_3, logic->CanBreakCrates()),
     }, {
         //Exits
         Entrance(RR_WASTELAND_NEAR_COLOSSUS, []{return ctx->GetTrickOption(RT_LENS_HW) || logic->CanUse(RG_LENS_OF_TRUTH);}),
         Entrance(RR_WASTELAND_NEAR_FORTRESS, []{return logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_LONGSHOT) || ctx->GetTrickOption(RT_HW_CROSSING);}),
     });
 
-    areaTable[RR_WASTELAND_NEAR_COLOSSUS] = Region("Wasteland Near Colossus", "Haunted Wasteland", {RA_HAUNTED_WASTELAND}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_WASTELAND_NEAR_COLOSSUS] = Region("Wasteland Near Colossus", "Haunted Wasteland", {RA_HAUNTED_WASTELAND}, NO_DAY_NIGHT_CYCLE, {}, 
+    {
+        //Locations
+        LOCATION(RC_HW_NEAR_COLOSSUS_CRATE, logic->CanBreakCrates()),
+    }, 
+    {
         //Exits
         Entrance(RR_DESERT_COLOSSUS,   []{return true;}),
         Entrance(RR_HAUNTED_WASTELAND, []{return ctx->GetTrickOption(RT_HW_REVERSE) || false;}),
     });
+
+    // clang-format on
 }

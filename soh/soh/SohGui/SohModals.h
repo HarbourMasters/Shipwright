@@ -9,8 +9,12 @@ class SohModalWindow : public Ship::GuiWindow {
     using GuiWindow::GuiWindow;
     void Draw() override;
 
-    void InitElement() override {};
+    void InitElement() override{};
     void DrawElement() override;
-    void UpdateElement() override {};
-    void RegisterPopup(std::string title, std::string message, std::string button1 = "OK", std::string button2 = "", std::function<void()> button1callback = nullptr, std::function<void()> button2callback = nullptr);
+    void UpdateElement() override{};
+    void RegisterPopup(std::string title, std::string message, std::string button1 = "OK", std::string button2 = "",
+                       std::function<void()> button1callback = nullptr,
+                       std::function<void()> button2callback = nullptr);
+    bool IsPopupOpen(std::string title);
+    void DismissPopup();
 };

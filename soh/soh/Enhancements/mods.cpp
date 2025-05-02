@@ -16,7 +16,6 @@
 #include "soh/Enhancements/timesaver_hook_handlers.h"
 #include "soh/Enhancements/TimeSavers/TimeSavers.h"
 #include "soh/Enhancements/randomizer/hook_handlers.h"
-#include "objects/object_gi_compass/object_gi_compass.h"
 
 #include "src/overlays/actors/ovl_En_Bb/z_en_bb.h"
 #include "src/overlays/actors/ovl_En_Dekubaba/z_en_dekubaba.h"
@@ -67,7 +66,8 @@ static const ALIGN_ASSET(2) char tokinoma_room_0DL_007FD0[] = dtokinoma_room_0DL
 
 /// Switches Link's age and respawns him at the last entrance he entered.
 void SwitchAge() {
-    if (gPlayState == NULL) return;
+    if (gPlayState == NULL)
+        return;
 
     Player* player = GET_PLAYER(gPlayState);
 
@@ -115,14 +115,16 @@ void RegisterOcarinaTimeTravel() {
         }
 
         Actor* player = &GET_PLAYER(gPlayState)->actor;
-        Actor* nearbyTimeBlockEmpty = Actor_FindNearby(gPlayState, player, ACTOR_OBJ_WARP2BLOCK, ACTORCAT_ITEMACTION, 300.0f);
+        Actor* nearbyTimeBlockEmpty =
+            Actor_FindNearby(gPlayState, player, ACTOR_OBJ_WARP2BLOCK, ACTORCAT_ITEMACTION, 300.0f);
         Actor* nearbyTimeBlock = Actor_FindNearby(gPlayState, player, ACTOR_OBJ_TIMEBLOCK, ACTORCAT_ITEMACTION, 300.0f);
         Actor* nearbyOcarinaSpot = Actor_FindNearby(gPlayState, player, ACTOR_EN_OKARINA_TAG, ACTORCAT_PROP, 120.0f);
         Actor* nearbyDoorOfTime = Actor_FindNearby(gPlayState, player, ACTOR_DOOR_TOKI, ACTORCAT_BG, 500.0f);
         Actor* nearbyFrogs = Actor_FindNearby(gPlayState, player, ACTOR_EN_FR, ACTORCAT_NPC, 300.0f);
         Actor* nearbyGossipStone = Actor_FindNearby(gPlayState, player, ACTOR_EN_GS, ACTORCAT_NPC, 300.0f);
         bool justPlayedSoT = gPlayState->msgCtx.lastPlayedSong == OCARINA_SONG_TIME;
-        bool notNearAnySource = !nearbyTimeBlockEmpty && !nearbyTimeBlock && !nearbyOcarinaSpot && !nearbyDoorOfTime && !nearbyFrogs && !nearbyGossipStone;
+        bool notNearAnySource = !nearbyTimeBlockEmpty && !nearbyTimeBlock && !nearbyOcarinaSpot && !nearbyDoorOfTime &&
+                                !nearbyFrogs && !nearbyGossipStone;
         bool hasOcarinaOfTime = (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME);
         bool doesntNeedOcarinaOfTime = CVarGetInteger(CVAR_ENHANCEMENT("TimeTravel"), 0) == 2;
         bool hasMasterSword = CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER);
@@ -138,11 +140,11 @@ void RegisterRupeeDash() {
         if (!CVarGetInteger(CVAR_ENHANCEMENT("RupeeDash"), 0)) {
             return;
         }
-        
+
         // Initialize Timer
         static uint16_t rupeeDashTimer = 0;
         uint16_t rdmTime = CVarGetInteger(CVAR_ENHANCEMENT("RupeeDashInterval"), 5) * 20;
-        
+
         // Did time change by DashInterval?
         if (rupeeDashTimer >= rdmTime) {
             rupeeDashTimer = 0;
@@ -166,10 +168,10 @@ void RegisterShadowTag() {
         if (!CVarGetInteger(CVAR_ENHANCEMENT("ShadowTag"), 0)) {
             return;
         }
-        if (gPlayState->sceneNum == SCENE_FOREST_TEMPLE &&  // Forest Temple Scene
-            gPlayState->roomCtx.curRoom.num == 16 ||        // Green Poe Room
-            gPlayState->roomCtx.curRoom.num == 13 ||        // Blue Poe Room
-            gPlayState->roomCtx.curRoom.num == 12) {        // Red Poe Room
+        if (gPlayState->sceneNum == SCENE_FOREST_TEMPLE && // Forest Temple Scene
+                gPlayState->roomCtx.curRoom.num == 16 ||   // Green Poe Room
+            gPlayState->roomCtx.curRoom.num == 13 ||       // Blue Poe Room
+            gPlayState->roomCtx.curRoom.num == 12) {       // Red Poe Room
             return;
         } else {
             if (shouldSpawn && (delayTimer <= 0)) {
@@ -192,13 +194,14 @@ void RegisterShadowTag() {
 
 static bool hasAffectedHealth = false;
 void UpdatePermanentHeartLossState() {
-    if (!GameInteractor::IsSaveLoaded()) return;
+    if (!GameInteractor::IsSaveLoaded())
+        return;
 
     if (!CVarGetInteger(CVAR_ENHANCEMENT("PermanentHeartLoss"), 0) && hasAffectedHealth) {
         uint8_t heartContainers = gSaveContext.ship.stats.heartContainers; // each worth 16 health
         uint8_t heartPieces = gSaveContext.ship.stats.heartPieces; // each worth 4 health, but only in groups of 4
-        uint8_t startingHealth = 16 * (IS_RANDO ? (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_HEARTS) + 1) : 3);
-
+        uint8_t startingHealth =
+            16 * (IS_RANDO ? (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_HEARTS) + 1) : 3);
 
         uint8_t newCapacity = startingHealth + (heartContainers * 16) + ((heartPieces - (heartPieces % 4)) * 4);
         gSaveContext.healthCapacity = MAX(newCapacity, gSaveContext.healthCapacity);
@@ -214,7 +217,8 @@ void RegisterPermanentHeartLoss() {
     });
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("PermanentHeartLoss"), 0) || !GameInteractor::IsSaveLoaded()) return;
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("PermanentHeartLoss"), 0) || !GameInteractor::IsSaveLoaded())
+            return;
 
         if (gSaveContext.healthCapacity > 16 && gSaveContext.healthCapacity - gSaveContext.health >= 16) {
             gSaveContext.healthCapacity -= 16;
@@ -226,12 +230,16 @@ void RegisterPermanentHeartLoss() {
 
 void RegisterDeleteFileOnDeath() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("DeleteFileOnDeath"), 0) || !GameInteractor::IsSaveLoaded() || gPlayState == NULL) return;
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("DeleteFileOnDeath"), 0) || !GameInteractor::IsSaveLoaded() ||
+            gPlayState == NULL)
+            return;
 
         if (gPlayState->gameOverCtx.state == GAMEOVER_DEATH_MENU && gPlayState->pauseCtx.state == 9) {
             SaveManager::Instance->DeleteZeldaFile(gSaveContext.fileNum);
             hasAffectedHealth = false;
-            std::reinterpret_pointer_cast<Ship::ConsoleWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch("reset");
+            std::reinterpret_pointer_cast<Ship::ConsoleWindow>(
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
+                ->Dispatch("reset");
         }
     });
 }
@@ -259,7 +267,10 @@ void RegisterDaytimeGoldSkultullas() {
             // ZF
             { SCENE_ZORAS_FOUNTAIN, 0, true, { { ACTOR_EN_SW, { -1891, 187, 1911 }, { 16384, 18022, 0 }, -19964 } } },
             // GF
-            { SCENE_GERUDOS_FORTRESS, 0, false, { { ACTOR_EN_SW, { 1598, 999, -2008 }, { 16384, -16384, 0 }, -19198 } } },
+            { SCENE_GERUDOS_FORTRESS,
+              0,
+              false,
+              { { ACTOR_EN_SW, { 1598, 999, -2008 }, { 16384, -16384, 0 }, -19198 } } },
             { SCENE_GERUDOS_FORTRESS, 1, false, { { ACTOR_EN_SW, { 3377, 1734, -4935 }, { 16384, 0, 0 }, -19199 } } },
             // Kak
             { SCENE_KAKARIKO_VILLAGE, 0, false, { { ACTOR_EN_SW, { -18, 540, 1800 }, { 0, -32768, 0 }, -20160 } } },
@@ -294,7 +305,8 @@ void RegisterDaytimeGoldSkultullas() {
 
 bool IsHyperBossesActive() {
     return CVarGetInteger(CVAR_ENHANCEMENT("HyperBosses"), 0) ||
-           (IS_BOSS_RUSH && gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_HYPERBOSSES] == BR_CHOICE_HYPERBOSSES_YES);
+           (IS_BOSS_RUSH &&
+            gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_HYPERBOSSES] == BR_CHOICE_HYPERBOSSES_YES);
 }
 
 void UpdateHyperBossesState() {
@@ -305,53 +317,53 @@ void UpdateHyperBossesState() {
     }
 
     if (IsHyperBossesActive()) {
-        actorUpdateHookId = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
-            // Run the update function a second time to make bosses move and act twice as fast.
+        actorUpdateHookId =
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
+                // Run the update function a second time to make bosses move and act twice as fast.
 
-            Player* player = GET_PLAYER(gPlayState);
-            Actor* actor = static_cast<Actor*>(refActor);
+                Player* player = GET_PLAYER(gPlayState);
+                Actor* actor = static_cast<Actor*>(refActor);
 
-            uint8_t isBossActor =
-                actor->id == ACTOR_BOSS_GOMA ||                              // Gohma
-                actor->id == ACTOR_BOSS_DODONGO ||                           // King Dodongo
-                actor->id == ACTOR_EN_BDFIRE ||                              // King Dodongo Fire Breath
-                actor->id == ACTOR_BOSS_VA ||                                // Barinade
-                actor->id == ACTOR_BOSS_GANONDROF ||                         // Phantom Ganon
-                actor->id == ACTOR_EN_FHG_FIRE ||                            // Phantom Ganon/Ganondorf Energy Ball/Thunder
-                actor->id == ACTOR_EN_FHG ||                                 // Phantom Ganon's Horse
-                actor->id == ACTOR_BOSS_FD || actor->id == ACTOR_BOSS_FD2 || // Volvagia (grounded/flying)
-                actor->id == ACTOR_EN_VB_BALL ||                             // Volvagia Rocks
-                actor->id == ACTOR_BOSS_MO ||                                // Morpha
-                actor->id == ACTOR_BOSS_SST ||                               // Bongo Bongo
-                actor->id == ACTOR_BOSS_TW ||                                // Twinrova
-                actor->id == ACTOR_BOSS_GANON ||                             // Ganondorf
-                actor->id == ACTOR_BOSS_GANON2;                              // Ganon
+                uint8_t isBossActor = actor->id == ACTOR_BOSS_GOMA ||      // Gohma
+                                      actor->id == ACTOR_BOSS_DODONGO ||   // King Dodongo
+                                      actor->id == ACTOR_EN_BDFIRE ||      // King Dodongo Fire Breath
+                                      actor->id == ACTOR_BOSS_VA ||        // Barinade
+                                      actor->id == ACTOR_BOSS_GANONDROF || // Phantom Ganon
+                                      actor->id == ACTOR_EN_FHG_FIRE || // Phantom Ganon/Ganondorf Energy Ball/Thunder
+                                      actor->id == ACTOR_EN_FHG ||      // Phantom Ganon's Horse
+                                      actor->id == ACTOR_BOSS_FD ||
+                                      actor->id == ACTOR_BOSS_FD2 ||   // Volvagia (grounded/flying)
+                                      actor->id == ACTOR_EN_VB_BALL || // Volvagia Rocks
+                                      actor->id == ACTOR_BOSS_MO ||    // Morpha
+                                      actor->id == ACTOR_BOSS_SST ||   // Bongo Bongo
+                                      actor->id == ACTOR_BOSS_TW ||    // Twinrova
+                                      actor->id == ACTOR_BOSS_GANON || // Ganondorf
+                                      actor->id == ACTOR_BOSS_GANON2;  // Ganon
 
-            // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some bosses.
-            if (IsHyperBossesActive() && isBossActor && !Player_InBlockingCsMode(gPlayState, player)) {
-                // Barinade needs to be updated in sequence to avoid unintended behaviour.
-                if (actor->id == ACTOR_BOSS_VA) {
-                    // params -1 is BOSSVA_BODY
-                    if (actor->params == -1) {
-                        Actor* actorList = gPlayState->actorCtx.actorLists[ACTORCAT_BOSS].head;
-                        while (actorList != NULL) {
-                            GameInteractor::RawAction::UpdateActor(actorList);
-                            actorList = actorList->next;
+                // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some bosses.
+                if (IsHyperBossesActive() && isBossActor && !Player_InBlockingCsMode(gPlayState, player)) {
+                    // Barinade needs to be updated in sequence to avoid unintended behaviour.
+                    if (actor->id == ACTOR_BOSS_VA) {
+                        // params -1 is BOSSVA_BODY
+                        if (actor->params == -1) {
+                            Actor* actorList = gPlayState->actorCtx.actorLists[ACTORCAT_BOSS].head;
+                            while (actorList != NULL) {
+                                GameInteractor::RawAction::UpdateActor(actorList);
+                                actorList = actorList->next;
+                            }
                         }
+                    } else {
+                        GameInteractor::RawAction::UpdateActor(actor);
                     }
-                } else {
-                    GameInteractor::RawAction::UpdateActor(actor);
                 }
-            }
-        });
+            });
     }
 }
 
 void RegisterHyperBosses() {
     UpdateHyperBossesState();
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int16_t fileNum) {
-        UpdateHyperBossesState();
-    });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>(
+        [](int16_t fileNum) { UpdateHyperBossesState(); });
 }
 
 void UpdateHyperEnemiesState() {
@@ -362,22 +374,23 @@ void UpdateHyperEnemiesState() {
     }
 
     if (CVarGetInteger(CVAR_ENHANCEMENT("HyperEnemies"), 0)) {
-        actorUpdateHookId = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
-            // Run the update function a second time to make enemies and minibosses move and act twice as fast.
+        actorUpdateHookId =
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
+                // Run the update function a second time to make enemies and minibosses move and act twice as fast.
 
-            Player* player = GET_PLAYER(gPlayState);
-            Actor* actor = static_cast<Actor*>(refActor);
+                Player* player = GET_PLAYER(gPlayState);
+                Actor* actor = static_cast<Actor*>(refActor);
 
-            // Some enemies are not in the ACTORCAT_ENEMY category, and some are that aren't really enemies.
-            bool isEnemy = actor->category == ACTORCAT_ENEMY || actor->id == ACTOR_EN_TORCH2;
-            bool isExcludedEnemy = actor->id == ACTOR_EN_FIRE_ROCK || actor->id == ACTOR_EN_ENCOUNT2;
+                // Some enemies are not in the ACTORCAT_ENEMY category, and some are that aren't really enemies.
+                bool isEnemy = actor->category == ACTORCAT_ENEMY || actor->id == ACTOR_EN_TORCH2;
+                bool isExcludedEnemy = actor->id == ACTOR_EN_FIRE_ROCK || actor->id == ACTOR_EN_ENCOUNT2;
 
-            // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some cutscenes.
-            if (CVarGetInteger(CVAR_ENHANCEMENT("HyperEnemies"), 0) && isEnemy && !isExcludedEnemy &&
-                !Player_InBlockingCsMode(gPlayState, player)) {
-                GameInteractor::RawAction::UpdateActor(actor);
-            }
-        });
+                // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some cutscenes.
+                if (CVarGetInteger(CVAR_ENHANCEMENT("HyperEnemies"), 0) && isEnemy && !isExcludedEnemy &&
+                    !Player_InBlockingCsMode(gPlayState, player)) {
+                    GameInteractor::RawAction::UpdateActor(actor);
+                }
+            });
     }
 }
 
@@ -416,7 +429,7 @@ void RegisterBonkDamage() {
             default:
                 break;
         }
-        
+
         Health_ChangeBy(gPlayState, -bonkDamage);
         // Set invincibility to make Link flash red as a visual damage indicator.
         Player* player = GET_PLAYER(gPlayState);
@@ -429,7 +442,8 @@ void UpdateDirtPathFixState(int32_t sceneNum) {
         case SCENE_HYRULE_FIELD:
         case SCENE_KOKIRI_FOREST:
         case SCENE_HYRULE_CASTLE:
-            CVarSetInteger(CVAR_Z_FIGHTING_MODE, CVarGetInteger(CVAR_ENHANCEMENT("SceneSpecificDirtPathFix"), ZFIGHT_FIX_DISABLED));
+            CVarSetInteger(CVAR_Z_FIGHTING_MODE,
+                           CVarGetInteger(CVAR_ENHANCEMENT("SceneSpecificDirtPathFix"), ZFIGHT_FIX_DISABLED));
             return;
         default:
             CVarClear(CVAR_Z_FIGHTING_MODE);
@@ -437,9 +451,8 @@ void UpdateDirtPathFixState(int32_t sceneNum) {
 }
 
 void RegisterMenuPathFix() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>([](int32_t sceneNum) {
-        UpdateDirtPathFixState(sceneNum);
-    });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>(
+        [](int32_t sceneNum) { UpdateDirtPathFixState(sceneNum); });
 }
 
 void UpdateMirrorModeState(int32_t sceneNum) {
@@ -447,27 +460,28 @@ void UpdateMirrorModeState(int32_t sceneNum) {
     bool nextMirroredWorld = false;
 
     int16_t mirroredMode = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorldMode"), MIRRORED_WORLD_OFF);
-    int16_t inDungeon = (sceneNum >= SCENE_DEKU_TREE && sceneNum <= SCENE_INSIDE_GANONS_CASTLE_COLLAPSE && sceneNum != SCENE_THIEVES_HIDEOUT) ||
+    int16_t inDungeon = (sceneNum >= SCENE_DEKU_TREE && sceneNum <= SCENE_INSIDE_GANONS_CASTLE_COLLAPSE &&
+                         sceneNum != SCENE_THIEVES_HIDEOUT) ||
                         (sceneNum >= SCENE_DEKU_TREE_BOSS && sceneNum <= SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) ||
                         (sceneNum == SCENE_GANON_BOSS);
 
     if (mirroredMode == MIRRORED_WORLD_RANDOM_SEEDED || mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED) {
-        uint32_t seed = sceneNum + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed()
-                                             : gSaveContext.ship.stats.fileCreatedAt);
+        uint32_t seed =
+            sceneNum + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
         Random_Init(seed);
     }
 
     bool randomMirror = Random(0, 2) == 1;
 
-    if (
-        mirroredMode == MIRRORED_WORLD_ALWAYS ||
+    if (mirroredMode == MIRRORED_WORLD_ALWAYS ||
         ((mirroredMode == MIRRORED_WORLD_RANDOM || mirroredMode == MIRRORED_WORLD_RANDOM_SEEDED) && randomMirror) ||
         // Dungeon modes
-        (inDungeon && (mirroredMode == MIRRORED_WORLD_DUNGEONS_All ||
-         (mirroredMode == MIRRORED_WORLD_DUNGEONS_VANILLA && !ResourceMgr_IsSceneMasterQuest(sceneNum)) ||
-         (mirroredMode == MIRRORED_WORLD_DUNGEONS_MQ && ResourceMgr_IsSceneMasterQuest(sceneNum)) ||
-         ((mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM || mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED) && randomMirror)))
-    ) {
+        (inDungeon &&
+         (mirroredMode == MIRRORED_WORLD_DUNGEONS_ALL ||
+          (mirroredMode == MIRRORED_WORLD_DUNGEONS_VANILLA && !ResourceMgr_IsSceneMasterQuest(sceneNum)) ||
+          (mirroredMode == MIRRORED_WORLD_DUNGEONS_MQ && ResourceMgr_IsSceneMasterQuest(sceneNum)) ||
+          ((mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM || mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED) &&
+           randomMirror)))) {
         nextMirroredWorld = true;
         CVarSetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 1);
     } else {
@@ -482,25 +496,33 @@ void UpdateMirrorModeState(int32_t sceneNum) {
 }
 
 void RegisterMirrorModeHandler() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int32_t sceneNum) {
-        UpdateMirrorModeState(sceneNum);
-    });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(
+        [](int32_t sceneNum) { UpdateMirrorModeState(sceneNum); });
 }
 
 void UpdatePatchHand() {
     if ((CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0)) && LINK_IS_CHILD) {
-        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer1", 92, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
+        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer1", 92,
+                                   gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
         ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer2", 93, gsSPEndDisplayList());
-        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingHookshotNearDL, "childHookshot1", 84, gsSPDisplayListOTRFilePath(gLinkChildRightHandClosedNearDL));
-        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingHookshotNearDL, "childHookshot2", 85, gsSPEndDisplayList());
-        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingBowNearDL, "childBow1", 51, gsSPDisplayListOTRFilePath(gLinkChildRightHandClosedNearDL));
+        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingHookshotNearDL, "childHookshot1", 84,
+                                   gsSPDisplayListOTRFilePath(gLinkChildRightHandClosedNearDL));
+        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingHookshotNearDL, "childHookshot2", 85,
+                                   gsSPEndDisplayList());
+        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingBowNearDL, "childBow1", 51,
+                                   gsSPDisplayListOTRFilePath(gLinkChildRightHandClosedNearDL));
         ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingBowNearDL, "childBow2", 52, gsSPEndDisplayList());
-        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "childMasterSword1", 104, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
-        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "childMasterSword2", 105, gsSPEndDisplayList());
-        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "childBiggoronSword1", 79, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
+        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "childMasterSword1", 104,
+                                   gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
+        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "childMasterSword2", 105,
+                                   gsSPEndDisplayList());
+        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "childBiggoronSword1", 79,
+                                   gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
         ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "childBiggoronSword2", 80, gsSPEndDisplayList());
-        ResourceMgr_PatchGfxByName(gLinkAdultHandHoldingBrokenGiantsKnifeDL, "childBrokenGiantsKnife1", 76, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
-        ResourceMgr_PatchGfxByName(gLinkAdultHandHoldingBrokenGiantsKnifeDL, "childBrokenGiantsKnife2", 77, gsSPEndDisplayList());
+        ResourceMgr_PatchGfxByName(gLinkAdultHandHoldingBrokenGiantsKnifeDL, "childBrokenGiantsKnife1", 76,
+                                   gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
+        ResourceMgr_PatchGfxByName(gLinkAdultHandHoldingBrokenGiantsKnifeDL, "childBrokenGiantsKnife2", 77,
+                                   gsSPEndDisplayList());
 
     } else {
         ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer1");
@@ -515,12 +537,16 @@ void UpdatePatchHand() {
         ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "childBiggoronSword2");
         ResourceMgr_UnpatchGfxByName(gLinkAdultHandHoldingBrokenGiantsKnifeDL, "childBrokenGiantsKnife1");
         ResourceMgr_UnpatchGfxByName(gLinkAdultHandHoldingBrokenGiantsKnifeDL, "childBrokenGiantsKnife2");
-	}
+    }
     if ((CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0)) && LINK_IS_ADULT) {
-        ResourceMgr_PatchGfxByName(gLinkChildLeftFistAndKokiriSwordNearDL, "adultKokiriSword", 13, gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
-        ResourceMgr_PatchGfxByName(gLinkChildRightHandHoldingSlingshotNearDL, "adultSlingshot", 13, gsSPDisplayListOTRFilePath(gLinkAdultRightHandClosedNearDL));
-        ResourceMgr_PatchGfxByName(gLinkChildLeftFistAndBoomerangNearDL, "adultBoomerang", 50, gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
-        ResourceMgr_PatchGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "adultDekuShield", 49, gsSPDisplayListOTRFilePath(gLinkAdultRightHandClosedNearDL));
+        ResourceMgr_PatchGfxByName(gLinkChildLeftFistAndKokiriSwordNearDL, "adultKokiriSword", 13,
+                                   gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
+        ResourceMgr_PatchGfxByName(gLinkChildRightHandHoldingSlingshotNearDL, "adultSlingshot", 13,
+                                   gsSPDisplayListOTRFilePath(gLinkAdultRightHandClosedNearDL));
+        ResourceMgr_PatchGfxByName(gLinkChildLeftFistAndBoomerangNearDL, "adultBoomerang", 50,
+                                   gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
+        ResourceMgr_PatchGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "adultDekuShield", 49,
+                                   gsSPDisplayListOTRFilePath(gLinkAdultRightHandClosedNearDL));
     } else {
         ResourceMgr_UnpatchGfxByName(gLinkChildLeftFistAndKokiriSwordNearDL, "adultKokiriSword");
         ResourceMgr_UnpatchGfxByName(gLinkChildRightHandHoldingSlingshotNearDL, "adultSlingshot");
@@ -528,7 +554,8 @@ void UpdatePatchHand() {
         ResourceMgr_UnpatchGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "adultDekuShield");
     }
     if (CVarGetInteger("gEnhancements.FixHammerHand", 0) && LINK_IS_ADULT) {
-        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "hammerHand1", 92, gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
+        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "hammerHand1", 92,
+                                   gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
         ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "hammerHand2", 93, gsSPEndDisplayList());
     } else {
         ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "hammerHand1");
@@ -537,62 +564,61 @@ void UpdatePatchHand() {
 }
 
 void RegisterPatchHandHandler() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int32_t sceneNum) { 
-        UpdatePatchHand(); 
-    });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(
+        [](int32_t sceneNum) { UpdatePatchHand(); });
 }
 
 void RegisterResetNaviTimer() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int32_t sceneNum) {
-		if (CVarGetInteger(CVAR_ENHANCEMENT("ResetNaviTimer"), 0)) {
-			gSaveContext.naviTimer = 0;
-		}
-	});
+        if (CVarGetInteger(CVAR_ENHANCEMENT("ResetNaviTimer"), 0)) {
+            gSaveContext.naviTimer = 0;
+        }
+    });
 }
 
-//this map is used for enemies that can be uniquely identified by their id
-//and that are always counted
-//enemies that can't be uniquely identified by their id
-//or only sometimes count (like ACTOR_EN_TP)
-//have to be manually handled in RegisterEnemyDefeatCounts
+// this map is used for enemies that can be uniquely identified by their id
+// and that are always counted
+// enemies that can't be uniquely identified by their id
+// or only sometimes count (like ACTOR_EN_TP)
+// have to be manually handled in RegisterEnemyDefeatCounts
 static std::unordered_map<u16, u16> uniqueEnemyIdToStatCount = {
-    { ACTOR_EN_ANUBICE,    COUNT_ENEMIES_DEFEATED_ANUBIS },
-    { ACTOR_EN_AM,         COUNT_ENEMIES_DEFEATED_ARMOS },
-    { ACTOR_EN_CLEAR_TAG,  COUNT_ENEMIES_DEFEATED_ARWING },
-    { ACTOR_EN_VALI,       COUNT_ENEMIES_DEFEATED_BARI },
-    { ACTOR_EN_VM,         COUNT_ENEMIES_DEFEATED_BEAMOS },
-    { ACTOR_EN_BIGOKUTA,   COUNT_ENEMIES_DEFEATED_BIG_OCTO },
-    { ACTOR_EN_BILI,       COUNT_ENEMIES_DEFEATED_BIRI },
-    { ACTOR_EN_DNS,        COUNT_ENEMIES_DEFEATED_BUSINESS_SCRUB },
-    { ACTOR_EN_TORCH,      COUNT_ENEMIES_DEFEATED_DARK_LINK },
-    { ACTOR_EN_DH,         COUNT_ENEMIES_DEFEATED_DEAD_HAND },
-    { ACTOR_EN_HINTNUTS,   COUNT_ENEMIES_DEFEATED_DEKU_SCRUB },
-    { ACTOR_EN_DODONGO,    COUNT_ENEMIES_DEFEATED_DODONGO },
-    { ACTOR_EN_DODOJR,     COUNT_ENEMIES_DEFEATED_DODONGO_BABY },
-    { ACTOR_DOOR_KILLER,   COUNT_ENEMIES_DEFEATED_DOOR_TRAP },
-    { ACTOR_EN_FD,         COUNT_ENEMIES_DEFEATED_FLARE_DANCER },
-    { ACTOR_EN_FLOORMAS,   COUNT_ENEMIES_DEFEATED_FLOORMASTER },
-    { ACTOR_EN_TUBO_TRAP,  COUNT_ENEMIES_DEFEATED_FLYING_POT },
-    { ACTOR_EN_YUKABYUN,   COUNT_ENEMIES_DEFEATED_FLOOR_TILE },
-    { ACTOR_EN_FZ,         COUNT_ENEMIES_DEFEATED_FREEZARD },
-    { ACTOR_EN_GELDB,      COUNT_ENEMIES_DEFEATED_GERUDO_THIEF },
-    { ACTOR_EN_GOMA,       COUNT_ENEMIES_DEFEATED_GOHMA_LARVA },
-    { ACTOR_EN_CROW,       COUNT_ENEMIES_DEFEATED_GUAY },
-    { ACTOR_EN_RR,         COUNT_ENEMIES_DEFEATED_LIKE_LIKE },
-    { ACTOR_EN_DEKUNUTS,   COUNT_ENEMIES_DEFEATED_MAD_SCRUB },
-    { ACTOR_EN_OKUTA,      COUNT_ENEMIES_DEFEATED_OCTOROK },
-    { ACTOR_EN_BA,         COUNT_ENEMIES_DEFEATED_PARASITIC_TENTACLE },
+    { ACTOR_EN_ANUBICE, COUNT_ENEMIES_DEFEATED_ANUBIS },
+    { ACTOR_EN_AM, COUNT_ENEMIES_DEFEATED_ARMOS },
+    { ACTOR_EN_CLEAR_TAG, COUNT_ENEMIES_DEFEATED_ARWING },
+    { ACTOR_EN_VALI, COUNT_ENEMIES_DEFEATED_BARI },
+    { ACTOR_EN_VM, COUNT_ENEMIES_DEFEATED_BEAMOS },
+    { ACTOR_EN_BIGOKUTA, COUNT_ENEMIES_DEFEATED_BIG_OCTO },
+    { ACTOR_EN_BILI, COUNT_ENEMIES_DEFEATED_BIRI },
+    { ACTOR_EN_DNS, COUNT_ENEMIES_DEFEATED_BUSINESS_SCRUB },
+    { ACTOR_EN_TORCH, COUNT_ENEMIES_DEFEATED_DARK_LINK },
+    { ACTOR_EN_DH, COUNT_ENEMIES_DEFEATED_DEAD_HAND },
+    { ACTOR_EN_HINTNUTS, COUNT_ENEMIES_DEFEATED_DEKU_SCRUB },
+    { ACTOR_EN_DODONGO, COUNT_ENEMIES_DEFEATED_DODONGO },
+    { ACTOR_EN_DODOJR, COUNT_ENEMIES_DEFEATED_DODONGO_BABY },
+    { ACTOR_DOOR_KILLER, COUNT_ENEMIES_DEFEATED_DOOR_TRAP },
+    { ACTOR_EN_FD, COUNT_ENEMIES_DEFEATED_FLARE_DANCER },
+    { ACTOR_EN_FLOORMAS, COUNT_ENEMIES_DEFEATED_FLOORMASTER },
+    { ACTOR_EN_TUBO_TRAP, COUNT_ENEMIES_DEFEATED_FLYING_POT },
+    { ACTOR_EN_YUKABYUN, COUNT_ENEMIES_DEFEATED_FLOOR_TILE },
+    { ACTOR_EN_FZ, COUNT_ENEMIES_DEFEATED_FREEZARD },
+    { ACTOR_EN_GELDB, COUNT_ENEMIES_DEFEATED_GERUDO_THIEF },
+    { ACTOR_EN_GOMA, COUNT_ENEMIES_DEFEATED_GOHMA_LARVA },
+    { ACTOR_EN_CROW, COUNT_ENEMIES_DEFEATED_GUAY },
+    { ACTOR_EN_RR, COUNT_ENEMIES_DEFEATED_LIKE_LIKE },
+    { ACTOR_EN_DEKUNUTS, COUNT_ENEMIES_DEFEATED_MAD_SCRUB },
+    { ACTOR_EN_OKUTA, COUNT_ENEMIES_DEFEATED_OCTOROK },
+    { ACTOR_EN_BA, COUNT_ENEMIES_DEFEATED_PARASITIC_TENTACLE },
     { ACTOR_EN_PO_SISTERS, COUNT_ENEMIES_DEFEATED_POE_SISTERS },
-    { ACTOR_EN_BUBBLE,     COUNT_ENEMIES_DEFEATED_SHABOM },
-    { ACTOR_EN_SB,         COUNT_ENEMIES_DEFEATED_SHELLBLADE },
-    { ACTOR_EN_SKJ,        COUNT_ENEMIES_DEFEATED_SKULL_KID },
-    { ACTOR_EN_NY,         COUNT_ENEMIES_DEFEATED_SPIKE },
-    { ACTOR_EN_SKB,        COUNT_ENEMIES_DEFEATED_STALCHILD },
-    { ACTOR_EN_TEST,       COUNT_ENEMIES_DEFEATED_STALFOS },
-    { ACTOR_EN_WEIYER,     COUNT_ENEMIES_DEFEATED_STINGER },
-    { ACTOR_EN_BW,         COUNT_ENEMIES_DEFEATED_TORCH_SLUG },
-    { ACTOR_EN_WALLMAS,    COUNT_ENEMIES_DEFEATED_WALLMASTER },
-    { ACTOR_EN_KAREBABA,   COUNT_ENEMIES_DEFEATED_WITHERED_DEKU_BABA },
+    { ACTOR_EN_BUBBLE, COUNT_ENEMIES_DEFEATED_SHABOM },
+    { ACTOR_EN_SB, COUNT_ENEMIES_DEFEATED_SHELLBLADE },
+    { ACTOR_EN_SKJ, COUNT_ENEMIES_DEFEATED_SKULL_KID },
+    { ACTOR_EN_NY, COUNT_ENEMIES_DEFEATED_SPIKE },
+    { ACTOR_EN_SKB, COUNT_ENEMIES_DEFEATED_STALCHILD },
+    { ACTOR_EN_TEST, COUNT_ENEMIES_DEFEATED_STALFOS },
+    { ACTOR_EN_WEIYER, COUNT_ENEMIES_DEFEATED_STINGER },
+    { ACTOR_EN_BW, COUNT_ENEMIES_DEFEATED_TORCH_SLUG },
+    { ACTOR_EN_WALLMAS, COUNT_ENEMIES_DEFEATED_WALLMASTER },
+    { ACTOR_EN_KAREBABA, COUNT_ENEMIES_DEFEATED_WITHERED_DEKU_BABA },
 };
 
 void RegisterEnemyDefeatCounts() {
@@ -656,16 +682,14 @@ void RegisterEnemyDefeatCounts() {
                     }
                     break;
 
-                case ACTOR_EN_REEBA:
-                    {
-                        EnReeba* reeba = (EnReeba*)actor;
-                        if (reeba->isBig) {
-                            gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_LEEVER_BIG]++;
-                        } else {
-                            gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_LEEVER]++;
-                        }
+                case ACTOR_EN_REEBA: {
+                    EnReeba* reeba = (EnReeba*)actor;
+                    if (reeba->isBig) {
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_LEEVER_BIG]++;
+                    } else {
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_LEEVER]++;
                     }
-                    break;
+                } break;
 
                 case ACTOR_EN_MB:
                     if (actor->params == 0) {
@@ -716,7 +740,8 @@ void RegisterEnemyDefeatCounts() {
                     break;
 
                 case ACTOR_EN_TP:
-                    if (actor->params == TAILPASARAN_HEAD) {  // Only count the head, otherwise each body segment will increment
+                    // Only count the head, otherwise each body segment will increment
+                    if (actor->params == TAILPASARAN_HEAD) {
                         gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_TAILPASARAN]++;
                     }
                     break;
@@ -781,26 +806,25 @@ void RegisterBossDefeatTimestamps() {
 }
 
 void UpdateHurtContainerModeState(bool newState) {
-        static bool hurtEnabled = false;
-        if (hurtEnabled == newState) {
-            return;
-        }
+    static bool hurtEnabled = false;
+    if (hurtEnabled == newState) {
+        return;
+    }
 
-        hurtEnabled = newState;
-        uint16_t getHeartPieces = gSaveContext.ship.stats.heartPieces / 4;
-        uint16_t getHeartContainers = gSaveContext.ship.stats.heartContainers;
+    hurtEnabled = newState;
+    uint16_t getHeartPieces = gSaveContext.ship.stats.heartPieces / 4;
+    uint16_t getHeartContainers = gSaveContext.ship.stats.heartContainers;
 
-        if (hurtEnabled) {
-            gSaveContext.healthCapacity = 320 - ((getHeartPieces + getHeartContainers) * 16);
-        } else {
-            gSaveContext.healthCapacity = 48 + ((getHeartPieces + getHeartContainers) * 16);
-        }
+    if (hurtEnabled) {
+        gSaveContext.healthCapacity = 320 - ((getHeartPieces + getHeartContainers) * 16);
+    } else {
+        gSaveContext.healthCapacity = 48 + ((getHeartPieces + getHeartContainers) * 16);
+    }
 }
 
 void RegisterHurtContainerModeHandler() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
-        UpdateHurtContainerModeState(CVarGetInteger(CVAR_ENHANCEMENT("HurtContainer"), 0));
-    });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>(
+        [](int32_t fileNum) { UpdateHurtContainerModeState(CVarGetInteger(CVAR_ENHANCEMENT("HurtContainer"), 0)); });
 }
 
 void RegisterRandomizedEnemySizes() {
@@ -810,15 +834,18 @@ void RegisterRandomizedEnemySizes() {
         Actor* actor = static_cast<Actor*>(refActor);
 
         // Exclude wobbly platforms in Jabu because they need to act like platforms.
+        // Exclude demo effect for Zora sapphire being re-categorized as a "boss".
         // Exclude Dead Hand hands and Bongo Bongo main body because they make the fights (near) impossible.
-        uint8_t excludedEnemy = actor->id == ACTOR_EN_BROB || actor->id == ACTOR_EN_DHA || (actor->id == ACTOR_BOSS_SST && actor->params == -1);
+        uint8_t excludedEnemy = actor->id == ACTOR_EN_BROB || actor->id == ACTOR_EN_DHA ||
+                                actor->id == ACTOR_DEMO_EFFECT || (actor->id == ACTOR_BOSS_SST && actor->params == -1);
 
         // Dodongo, Volvagia and Dead Hand are always smaller because they're impossible when bigger.
         uint8_t smallOnlyEnemy = actor->id == ACTOR_BOSS_DODONGO || actor->id == ACTOR_BOSS_FD ||
                                  actor->id == ACTOR_BOSS_FD2 || actor->id == ACTOR_EN_DH;
 
         // Only apply to enemies and bosses.
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemySizes"), 0) || (actor->category != ACTORCAT_ENEMY && actor->category != ACTORCAT_BOSS) || excludedEnemy) {
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemySizes"), 0) ||
+            (actor->category != ACTORCAT_ENEMY && actor->category != ACTORCAT_BOSS) || excludedEnemy) {
             return;
         }
 
@@ -832,8 +859,8 @@ void RegisterRandomizedEnemySizes() {
             randomNumber = rand() % 200;
             // Between 100% and 300% size.
             randomScale = 1.0f + (randomNumber / 100);
-        // Small actor
         } else {
+            // Small actor
             randomNumber = rand() % 90;
             // Between 10% and 100% size.
             randomScale = 0.1f + (randomNumber / 100);
@@ -858,7 +885,8 @@ void RegisterOpenAllHours() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
         Actor* actor = static_cast<Actor*>(refActor);
 
-        if (CVarGetInteger(CVAR_ENHANCEMENT("OpenAllHours"), 0) && (actor->id == ACTOR_EN_DOOR) && (!IS_RANDO || !OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOCK_OVERWORLD_DOORS))) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("OpenAllHours"), 0) && (actor->id == ACTOR_EN_DOOR) &&
+            (!IS_RANDO || !OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOCK_OVERWORLD_DOORS))) {
             switch (actor->params) {
                 case 4753: // Night Market Bazaar
                 case 1678: // Night Potion Shop
@@ -890,47 +918,65 @@ void PatchToTMedallions() {
         ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_StartGrayscale", 7, gsSPGrayscale(true));
 
         if (CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER)) {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeBlue", 16, gsDPSetGrayscaleColor(0, 161, 255, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeBlue", 16,
+                                       gsDPSetGrayscaleColor(0, 161, 255, 255));
         } else {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeBlue", 16, gsDPSetGrayscaleColor(255, 255, 255, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeBlue", 16,
+                                       gsDPSetGrayscaleColor(255, 255, 255, 255));
         }
 
         if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT)) {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeOrange", 45, gsDPSetGrayscaleColor(255, 135, 0, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeOrange", 45,
+                                       gsDPSetGrayscaleColor(255, 135, 0, 255));
         } else {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeOrange", 45, gsDPSetGrayscaleColor(255, 255, 255, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeOrange", 45,
+                                       gsDPSetGrayscaleColor(255, 255, 255, 255));
         }
 
         if (CHECK_QUEST_ITEM(QUEST_MEDALLION_LIGHT)) {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeYellow", 69, gsDPSetGrayscaleColor(255, 255, 0, 255));
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakeYellow", 16, gsDPSetGrayscaleColor(255, 255, 0, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeYellow", 69,
+                                       gsDPSetGrayscaleColor(255, 255, 0, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakeYellow", 16,
+                                       gsDPSetGrayscaleColor(255, 255, 0, 255));
         } else {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeYellow", 69, gsDPSetGrayscaleColor(255, 255, 255, 255));
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakeYellow", 16, gsDPSetGrayscaleColor(255, 255, 255, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeYellow", 69,
+                                       gsDPSetGrayscaleColor(255, 255, 255, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakeYellow", 16,
+                                       gsDPSetGrayscaleColor(255, 255, 255, 255));
         }
 
         if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST)) {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeGreen", 94, gsDPSetGrayscaleColor(0, 255, 0, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeGreen", 94,
+                                       gsDPSetGrayscaleColor(0, 255, 0, 255));
         } else {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeGreen", 94, gsDPSetGrayscaleColor(255, 255, 255, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeGreen", 94,
+                                       gsDPSetGrayscaleColor(255, 255, 255, 255));
         }
 
         if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeRed", 118, gsDPSetGrayscaleColor(255, 0, 0, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeRed", 118,
+                                       gsDPSetGrayscaleColor(255, 0, 0, 255));
         } else {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeRed", 118, gsDPSetGrayscaleColor(255, 255, 255, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeRed", 118,
+                                       gsDPSetGrayscaleColor(255, 255, 255, 255));
         }
 
         if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW)) {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakePurple", 142, gsDPSetGrayscaleColor(212, 0, 255, 255));
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakePurple", 27, gsDPSetGrayscaleColor(212, 0, 255, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakePurple", 142,
+                                       gsDPSetGrayscaleColor(212, 0, 255, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakePurple", 27,
+                                       gsDPSetGrayscaleColor(212, 0, 255, 255));
         } else {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakePurple", 142, gsDPSetGrayscaleColor(255, 255, 255, 255));
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakePurple", 27, gsDPSetGrayscaleColor(255, 255, 255, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakePurple", 142,
+                                       gsDPSetGrayscaleColor(255, 255, 255, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakePurple", 27,
+                                       gsDPSetGrayscaleColor(255, 255, 255, 255));
         }
 
-        ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_EndGrayscaleAndEndDlist", 160, gsSPBranchListOTRFilePath(gEndGrayscaleAndEndDlistDL));
-        ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_EndGrayscaleAndEndDlist", 51, gsSPBranchListOTRFilePath(gEndGrayscaleAndEndDlistDL));
+        ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_EndGrayscaleAndEndDlist", 160,
+                                   gsSPBranchListOTRFilePath(gEndGrayscaleAndEndDlistDL));
+        ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_EndGrayscaleAndEndDlist", 51,
+                                   gsSPBranchListOTRFilePath(gEndGrayscaleAndEndDlistDL));
     } else {
         // Unpatch everything
         ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_StartGrayscale");
@@ -951,7 +997,8 @@ void PatchToTMedallions() {
 
 void RegisterToTMedallions() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry _unused) {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("ToTMedallionsColors"), 0) || !gPlayState || gPlayState->sceneNum != SCENE_TEMPLE_OF_TIME) {
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("ToTMedallionsColors"), 0) || !gPlayState ||
+            gPlayState->sceneNum != SCENE_TEMPLE_OF_TIME) {
             return;
         }
         PatchToTMedallions();
@@ -963,7 +1010,6 @@ void RegisterToTMedallions() {
         PatchToTMedallions();
     });
 }
-
 
 void RegisterFloorSwitchesHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
@@ -989,32 +1035,12 @@ void RegisterPauseMenuHooks() {
             return;
         }
         if (!pauseWarpHooksRegistered) {
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnKaleidoUpdate>([]() {PauseWarp_HandleSelection();});
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-                    PauseWarp_Execute();
-            });
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnKaleidoUpdate>(
+                []() { PauseWarp_HandleSelection(); });
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(
+                []() { PauseWarp_Execute(); });
             pauseWarpHooksRegistered = true;
         }
-    });
-}
-
-extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
-
-void PatchCompasses() {
-    s8 compassesCanBeOutsideDungeon = IS_RANDO && DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_SHUFFLE_MAPANDCOMPASS);
-    s8 isColoredCompassesEnabled = compassesCanBeOutsideDungeon && CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MatchCompassColors"), 1);
-    if (isColoredCompassesEnabled) {
-        ResourceMgr_PatchGfxByName(gGiCompassDL, "Compass_PrimColor", 5, gsDPNoOp());
-        ResourceMgr_PatchGfxByName(gGiCompassDL, "Compass_EnvColor", 6, gsDPNoOp());
-    } else {
-        ResourceMgr_UnpatchGfxByName(gGiCompassDL, "Compass_PrimColor");
-        ResourceMgr_UnpatchGfxByName(gGiCompassDL, "Compass_EnvColor");
-    }
-}
-
-void RegisterRandomizerCompasses() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadFile>([](int32_t _unused) {
-        PatchCompasses();
     });
 }
 
@@ -1022,7 +1048,6 @@ void RegisterCustomSkeletons() {
     static int8_t previousTunic = -1;
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-
         if (!GameInteractor::IsSaveLoaded() || gPlayState == NULL) {
             return;
         }
@@ -1065,7 +1090,6 @@ void InitMods() {
     RegisterRandomizedEnemySizes();
     RegisterOpenAllHours();
     RegisterToTMedallions();
-    RegisterRandomizerCompasses();
     NameTag_RegisterHooks();
     RegisterFloorSwitchesHook();
     RegisterPatchHandHandler();

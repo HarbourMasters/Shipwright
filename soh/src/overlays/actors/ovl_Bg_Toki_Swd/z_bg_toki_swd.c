@@ -127,9 +127,9 @@ void func_808BAF40(BgTokiSwd* this, PlayState* play) {
     if (!LINK_IS_ADULT || (Flags_GetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT) && !IS_RANDO) || IS_RANDO) {
         if (Actor_HasParent(&this->actor, play)) {
             if (!LINK_IS_ADULT) {
-                 if (GameInteractor_Should(VB_GIVE_ITEM_MASTER_SWORD, true)) {
+                if (GameInteractor_Should(VB_GIVE_ITEM_MASTER_SWORD, true)) {
                     Item_Give(play, ITEM_SWORD_MASTER);
-                 }
+                }
                 play->csCtx.segment = D_808BB2F0;
             } else {
                 play->csCtx.segment = D_808BB7A0;
@@ -192,7 +192,8 @@ void BgTokiSwd_Draw(Actor* thisx, PlayState* play2) {
     s32 pad[3];
 
     // Do not draw the Master Sword in the pedestal if the player has not found it yet
-    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
+    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) &&
+        !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
         return;
     }
 
@@ -202,10 +203,8 @@ void BgTokiSwd_Draw(Actor* thisx, PlayState* play2) {
 
     func_8002EBCC(&this->actor, play, 0);
 
-    gSPSegment(POLY_OPA_DISP++, 0x08,
-               Gfx_TexScroll(play->state.gfxCtx, 0, -(play->gameplayFrames % 0x80), 32, 32));
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPSegment(POLY_OPA_DISP++, 0x08, Gfx_TexScroll(play->state.gfxCtx, 0, -(play->gameplayFrames % 0x80), 32, 32));
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, object_toki_objects_DL_001BD0);
 
     CLOSE_DISPS(play->state.gfxCtx);

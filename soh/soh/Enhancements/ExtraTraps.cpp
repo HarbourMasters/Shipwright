@@ -36,23 +36,19 @@ static int statusTimer = -1;
 static int eventTimer = -1;
 
 const char* altTrapTypeCvars[] = {
-    CVAR_ENHANCEMENT("ExtraTraps.Ice"),
-    CVAR_ENHANCEMENT("ExtraTraps.Burn"),
-    CVAR_ENHANCEMENT("ExtraTraps.Shock"),
-    CVAR_ENHANCEMENT("ExtraTraps.Knockback"),
-    CVAR_ENHANCEMENT("ExtraTraps.Speed"),
-    CVAR_ENHANCEMENT("ExtraTraps.Bomb"),
-    CVAR_ENHANCEMENT("ExtraTraps.Void"),
-    CVAR_ENHANCEMENT("ExtraTraps.Ammo"),
-    CVAR_ENHANCEMENT("ExtraTraps.Kill"),
-    CVAR_ENHANCEMENT("ExtraTraps.Teleport")
+    CVAR_ENHANCEMENT("ExtraTraps.Ice"),   CVAR_ENHANCEMENT("ExtraTraps.Burn"),
+    CVAR_ENHANCEMENT("ExtraTraps.Shock"), CVAR_ENHANCEMENT("ExtraTraps.Knockback"),
+    CVAR_ENHANCEMENT("ExtraTraps.Speed"), CVAR_ENHANCEMENT("ExtraTraps.Bomb"),
+    CVAR_ENHANCEMENT("ExtraTraps.Void"),  CVAR_ENHANCEMENT("ExtraTraps.Ammo"),
+    CVAR_ENHANCEMENT("ExtraTraps.Kill"),  CVAR_ENHANCEMENT("ExtraTraps.Teleport"),
 };
 
-std::vector<AltTrapType> getEnabledAddTraps () {
+std::vector<AltTrapType> getEnabledAddTraps() {
     std::vector<AltTrapType> enabledAddTraps;
     for (int i = 0; i < ADD_TRAP_MAX; i++) {
         if (CVarGetInteger(altTrapTypeCvars[i], 0)) {
-            if (gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE && (i == ADD_VOID_TRAP || i == ADD_TELEPORT_TRAP)) {
+            if (gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE &&
+                (i == ADD_VOID_TRAP || i == ADD_TELEPORT_TRAP)) {
                 continue; // don't add void or teleport if you're holding the fishing pole, as this causes issues
             }
             enabledAddTraps.push_back(static_cast<AltTrapType>(i));
@@ -65,7 +61,8 @@ std::vector<AltTrapType> getEnabledAddTraps () {
 };
 
 static void RollRandomTrap(uint32_t seed) {
-    uint32_t finalSeed = seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
+    uint32_t finalSeed =
+        seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
     Random_Init(finalSeed);
 
     roll = RandomElement(getEnabledAddTraps());
@@ -83,7 +80,8 @@ static void RollRandomTrap(uint32_t seed) {
             eventTimer = 3;
             break;
         case ADD_SPEED_TRAP:
-            Audio_PlaySoundGeneral(NA_SE_VO_KZ_MOVE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+            Audio_PlaySoundGeneral(NA_SE_VO_KZ_MOVE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             GameInteractor::State::RunSpeedModifier = -2;
             statusTimer = 200;
             Notification::Emit({ .message = "Speed Decreased!" });
@@ -92,7 +90,8 @@ static void RollRandomTrap(uint32_t seed) {
             eventTimer = 3;
             break;
         case ADD_VOID_TRAP:
-            Audio_PlaySoundGeneral(NA_SE_EN_GANON_LAUGH, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+            Audio_PlaySoundGeneral(NA_SE_EN_GANON_LAUGH, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             eventTimer = 3;
             break;
         case ADD_AMMO_TRAP:
@@ -133,7 +132,8 @@ static void OnPlayerUpdate() {
                 AMMO(ITEM_BOW) = AMMO(ITEM_BOW) * 0.5;
                 AMMO(ITEM_BOMB) = AMMO(ITEM_BOMB) * 0.5;
                 AMMO(ITEM_BOMBCHU) = AMMO(ITEM_BOMBCHU) * 0.5;
-                Audio_PlaySoundGeneral(NA_SE_VO_FR_SMILE_0, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                Audio_PlaySoundGeneral(NA_SE_VO_FR_SMILE_0, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 break;
             case ADD_TELEPORT_TRAP: {
                 int entrance;
@@ -199,5 +199,3 @@ void RegisterExtraTraps() {
 }
 
 static RegisterShipInitFunc initFunc(RegisterExtraTraps, { CVAR_EXTRA_TRAPS_NAME });
-
-

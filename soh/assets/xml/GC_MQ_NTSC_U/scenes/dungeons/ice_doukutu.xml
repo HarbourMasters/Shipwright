@@ -1,0 +1,106 @@
+<Root>
+    <File Name="ice_doukutu_scene" Segment="2">
+        <Texture Name="ice_doukutu_sceneTex_00FCC0" OutName="ice_doukutu_sceneTex_00FCC0" Format="i8" Width="32" Height="32" Offset="0xFCC0" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_sceneTex_0100C0" OutName="ice_doukutu_sceneTex_0100C0" Format="rgba16" Width="32" Height="32" Offset="0x100C0" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_sceneTex_0108C0" OutName="ice_doukutu_sceneTex_0108C0" Format="rgba16" Width="16" Height="16" Offset="0x108C0" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_sceneTex_010AC0" OutName="ice_doukutu_sceneTex_010AC0" Format="i8" Width="32" Height="32" Offset="0x10AC0" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_sceneTex_010EC0" OutName="ice_doukutu_sceneTex_010EC0" Format="rgba16" Width="32" Height="32" Offset="0x10EC0" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_sceneTLUT_00F8A0" OutName="ice_doukutu_sceneTLUT_00F8A0" Format="rgba16" Width="4" Height="4" Offset="0xF8A0" AddedByScript="true"/>
+        <Path Name="ice_doukutu_scenePathList_000304" Offset="0x0304" NumPaths="5"/>
+        <Cutscene Name="gIceCavernSerenadeCs" Offset="0x330"/>
+        <Texture Name="gIceCavernNightEntranceTex" OutName="night_entrance" Format="ia16" Width="64" Height="4" Offset="0xF8C0"/>
+        <Texture Name="gIceCavernDayEntranceTex" OutName="day_entrance" Format="ia16" Width="64" Height="4" Offset="0xFAC0"/>
+        <Scene Name="ice_doukutu_scene" Offset="0x0"/>
+    </File>
+    <File Name="ice_doukutu_room_0" Segment="3">
+        <Texture Name="ice_doukutu_room_0Tex_002F50" OutName="ice_doukutu_room_0Tex_002F50" Format="rgba16" Width="32" Height="64" Offset="0x2F50" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_0Tex_003F50" OutName="ice_doukutu_room_0Tex_003F50" Format="rgba16" Width="32" Height="32" Offset="0x3F50" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_0Tex_004750" OutName="ice_doukutu_room_0Tex_004750" Format="rgba16" Width="32" Height="64" Offset="0x4750" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_0Tex_005750" OutName="ice_doukutu_room_0Tex_005750" Format="rgba16" Width="32" Height="32" Offset="0x5750" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_0Tex_005F50" OutName="ice_doukutu_room_0Tex_005F50" Format="i8" Width="64" Height="64" Offset="0x5F50" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_0Tex_007678" OutName="ice_doukutu_room_0Tex_007678" Format="i8" Width="64" Height="64" Offset="0x7678" AddedByScript="true"/>
+        <Room Name="ice_doukutu_room_0" Offset="0x0"/>
+    </File>
+    <File Name="ice_doukutu_room_1" Segment="3">
+        <Texture Name="ice_doukutu_room_1Tex_004110" OutName="ice_doukutu_room_1Tex_004110" Format="rgba16" Width="32" Height="64" Offset="0x4110" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_1Tex_005110" OutName="ice_doukutu_room_1Tex_005110" Format="rgba16" Width="32" Height="32" Offset="0x5110" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_1Tex_005910" OutName="ice_doukutu_room_1Tex_005910" Format="rgba16" Width="32" Height="64" Offset="0x5910" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_1Tex_006910" OutName="ice_doukutu_room_1Tex_006910" Format="rgba16" Width="32" Height="32" Offset="0x6910" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_1Tex_007110" OutName="ice_doukutu_room_1Tex_007110" Format="rgba16" Width="32" Height="64" Offset="0x7110" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_1Tex_008110" OutName="ice_doukutu_room_1Tex_008110" Format="i8" Width="64" Height="64" Offset="0x8110" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_1Tex_009110" OutName="ice_doukutu_room_1Tex_009110" Format="rgba16" Width="32" Height="32" Offset="0x9110" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_1Tex_00AB30" OutName="ice_doukutu_room_1Tex_00AB30" Format="rgba16" Width="32" Height="64" Offset="0xAB30" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_1Tex_00BB30" OutName="ice_doukutu_room_1Tex_00BB30" Format="rgba16" Width="16" Height="16" Offset="0xBB30" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_1Tex_00BD30" OutName="ice_doukutu_room_1Tex_00BD30" Format="rgba16" Width="32" Height="32" Offset="0xBD30" AddedByScript="true"/>
+        <Room Name="ice_doukutu_room_1" Offset="0x0"/>
+    </File>
+    <File Name="ice_doukutu_room_2" Segment="3">
+        <Texture Name="ice_doukutu_room_2Tex_001730" OutName="ice_doukutu_room_2Tex_001730" Format="rgba16" Width="32" Height="64" Offset="0x1730" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_2Tex_002730" OutName="ice_doukutu_room_2Tex_002730" Format="ci4" Width="64" Height="64" Offset="0x2730" ExternalTlut="ice_doukutu_scene" ExternalTlutOffset="0xF8A0" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_2Tex_003AF8" OutName="ice_doukutu_room_2Tex_003AF8" Format="i8" Width="64" Height="64" Offset="0x3AF8" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_2Tex_004AF8" OutName="ice_doukutu_room_2Tex_004AF8" Format="rgba16" Width="32" Height="64" Offset="0x4AF8" AddedByScript="true"/>
+        <Room Name="ice_doukutu_room_2" Offset="0x0"/>
+    </File>
+    <File Name="ice_doukutu_room_3" Segment="3">
+        <Texture Name="ice_doukutu_room_3Tex_003208" OutName="ice_doukutu_room_3Tex_003208" Format="rgba16" Width="32" Height="32" Offset="0x3208" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_3Tex_003A08" OutName="ice_doukutu_room_3Tex_003A08" Format="ci4" Width="64" Height="64" Offset="0x3A08" ExternalTlut="ice_doukutu_scene" ExternalTlutOffset="0xF8A0" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_3Tex_005090" OutName="ice_doukutu_room_3Tex_005090" Format="i8" Width="64" Height="64" Offset="0x5090" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_3Tex_006090" OutName="ice_doukutu_room_3Tex_006090" Format="rgba16" Width="32" Height="64" Offset="0x6090" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_3Tex_007090" OutName="ice_doukutu_room_3Tex_007090" Format="i8" Width="32" Height="128" Offset="0x7090" AddedByScript="true"/>
+        <Room Name="ice_doukutu_room_3" Offset="0x0"/>
+    </File>
+    <File Name="ice_doukutu_room_4" Segment="3">
+        <Texture Name="ice_doukutu_room_4Tex_0028E0" OutName="ice_doukutu_room_4Tex_0028E0" Format="rgba16" Width="32" Height="32" Offset="0x28E0" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_4Tex_0030E0" OutName="ice_doukutu_room_4Tex_0030E0" Format="rgba16" Width="32" Height="32" Offset="0x30E0" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_4Tex_0038E0" OutName="ice_doukutu_room_4Tex_0038E0" Format="ci4" Width="64" Height="64" Offset="0x38E0" ExternalTlut="ice_doukutu_scene" ExternalTlutOffset="0xF8A0" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_4Tex_004650" OutName="ice_doukutu_room_4Tex_004650" Format="i8" Width="64" Height="64" Offset="0x4650" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_4Tex_005650" OutName="ice_doukutu_room_4Tex_005650" Format="rgba16" Width="32" Height="64" Offset="0x5650" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_4Tex_006650" OutName="ice_doukutu_room_4Tex_006650" Format="i8" Width="32" Height="128" Offset="0x6650" AddedByScript="true"/>
+        <Room Name="ice_doukutu_room_4" Offset="0x0"/>
+    </File>
+    <File Name="ice_doukutu_room_5" Segment="3">
+        <Texture Name="ice_doukutu_room_5Tex_004648" OutName="ice_doukutu_room_5Tex_004648" Format="rgba16" Width="16" Height="128" Offset="0x4648" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_5Tex_005648" OutName="ice_doukutu_room_5Tex_005648" Format="rgba16" Width="32" Height="32" Offset="0x5648" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_5Tex_005E48" OutName="ice_doukutu_room_5Tex_005E48" Format="rgba16" Width="32" Height="32" Offset="0x5E48" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_5Tex_006648" OutName="ice_doukutu_room_5Tex_006648" Format="rgba16" Width="32" Height="32" Offset="0x6648" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_5Tex_007478" OutName="ice_doukutu_room_5Tex_007478" Format="i8" Width="32" Height="32" Offset="0x7478" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_5Tex_007878" OutName="ice_doukutu_room_5Tex_007878" Format="i8" Width="64" Height="64" Offset="0x7878" AddedByScript="true"/>
+        <Room Name="ice_doukutu_room_5" Offset="0x0"/>
+    </File>
+    <File Name="ice_doukutu_room_6" Segment="3">
+        <Texture Name="ice_doukutu_room_6Tex_0029B0" OutName="ice_doukutu_room_6Tex_0029B0" Format="i8" Width="64" Height="64" Offset="0x29B0" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_6Tex_0039B0" OutName="ice_doukutu_room_6Tex_0039B0" Format="rgba16" Width="32" Height="32" Offset="0x39B0" AddedByScript="true"/>
+        <Room Name="ice_doukutu_room_6" Offset="0x0"/>
+    </File>
+    <File Name="ice_doukutu_room_7" Segment="3">
+        <Texture Name="ice_doukutu_room_7Tex_001758" OutName="ice_doukutu_room_7Tex_001758" Format="ci4" Width="64" Height="64" Offset="0x1758" ExternalTlut="ice_doukutu_scene" ExternalTlutOffset="0xF8A0" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_7Tex_0040E8" OutName="ice_doukutu_room_7Tex_0040E8" Format="i8" Width="64" Height="64" Offset="0x40E8" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_7Tex_0050E8" OutName="ice_doukutu_room_7Tex_0050E8" Format="rgba16" Width="32" Height="32" Offset="0x50E8" AddedByScript="true"/>
+        <Room Name="ice_doukutu_room_7" Offset="0x0"/>
+    </File>
+    <File Name="ice_doukutu_room_8" Segment="3">
+        <Room Name="ice_doukutu_room_8" Offset="0x0"/>
+    </File>
+    <File Name="ice_doukutu_room_9" Segment="3">
+        <Texture Name="ice_doukutu_room_9Tex_0044A0" OutName="ice_doukutu_room_9Tex_0044A0" Format="rgba16" Width="32" Height="64" Offset="0x44A0" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_9Tex_0054A0" OutName="ice_doukutu_room_9Tex_0054A0" Format="rgba16" Width="32" Height="32" Offset="0x54A0" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_9Tex_005CA0" OutName="ice_doukutu_room_9Tex_005CA0" Format="rgba16" Width="32" Height="32" Offset="0x5CA0" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_9Tex_0064A0" OutName="ice_doukutu_room_9Tex_0064A0" Format="rgba16" Width="32" Height="32" Offset="0x64A0" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_9Tex_006CA0" OutName="ice_doukutu_room_9Tex_006CA0" Format="rgba16" Width="32" Height="32" Offset="0x6CA0" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_9Tex_007690" OutName="ice_doukutu_room_9Tex_007690" Format="rgba16" Width="32" Height="64" Offset="0x7690" AddedByScript="true"/>
+        <Room Name="ice_doukutu_room_9" Offset="0x0"/>
+    </File>
+    <File Name="ice_doukutu_room_10" Segment="3">
+        <Texture Name="ice_doukutu_room_10Tex_001A28" OutName="ice_doukutu_room_10Tex_001A28" Format="rgba16" Width="32" Height="64" Offset="0x1A28" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_10Tex_002A28" OutName="ice_doukutu_room_10Tex_002A28" Format="i8" Width="64" Height="64" Offset="0x2A28" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_10Tex_003BD8" OutName="ice_doukutu_room_10Tex_003BD8" Format="rgba16" Width="32" Height="32" Offset="0x3BD8" AddedByScript="true"/>
+        <Room Name="ice_doukutu_room_10" Offset="0x0"/>
+    </File>
+    <File Name="ice_doukutu_room_11" Segment="3">
+        <Texture Name="ice_doukutu_room_11Tex_002928" OutName="ice_doukutu_room_11Tex_002928" Format="rgba16" Width="32" Height="32" Offset="0x2928" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_11Tex_003128" OutName="ice_doukutu_room_11Tex_003128" Format="rgba16" Width="32" Height="32" Offset="0x3128" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_11Tex_003928" OutName="ice_doukutu_room_11Tex_003928" Format="rgba16" Width="32" Height="32" Offset="0x3928" AddedByScript="true"/>
+        <Texture Name="ice_doukutu_room_11Tex_004848" OutName="ice_doukutu_room_11Tex_004848" Format="i8" Width="64" Height="64" Offset="0x4848" AddedByScript="true"/>
+        <Room Name="ice_doukutu_room_11" Offset="0x0"/>
+    </File>
+</Root>

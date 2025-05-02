@@ -63,7 +63,6 @@ void func_800AA0B4(void) {
 
     gPadMgr.retraceCallback = func_800A9F30;
     gPadMgr.retraceCallbackValue = 0;
-
 }
 
 void func_800AA0F0(void) {

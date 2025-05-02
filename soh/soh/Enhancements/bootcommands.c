@@ -12,8 +12,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
 
-void BootCommands_Init()
-{
+void BootCommands_Init() {
     // Clears vars to prevent randomizer menu from being disabled
     CVarClear(CVAR_GENERAL("RandoGenerating")); // Clear when a crash happened during rando seed generation
     CVarClear(CVAR_GENERAL("NewSeedGenerated"));

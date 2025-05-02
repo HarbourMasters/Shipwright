@@ -3,12 +3,14 @@
 #include "spdlog/spdlog.h"
 
 namespace SOH {
-std::shared_ptr<Ship::IResource> ResourceFactoryBinaryCollisionHeaderV0::ReadResource(std::shared_ptr<Ship::File> file) {
-    if (!FileHasValidFormatAndReader(file)) {
+std::shared_ptr<Ship::IResource>
+ResourceFactoryBinaryCollisionHeaderV0::ReadResource(std::shared_ptr<Ship::File> file,
+                                                     std::shared_ptr<Ship::ResourceInitData> initData) {
+    if (!FileHasValidFormatAndReader(file, initData)) {
         return nullptr;
     }
 
-    auto collisionHeader = std::make_shared<CollisionHeader>(file->InitData);
+    auto collisionHeader = std::make_shared<CollisionHeader>(initData);
     auto reader = std::get<std::shared_ptr<Ship::BinaryReader>>(file->Reader);
 
     collisionHeader->collisionHeaderData.minBounds.x = reader->ReadInt16();
@@ -36,7 +38,7 @@ std::shared_ptr<Ship::IResource> ResourceFactoryBinaryCollisionHeaderV0::ReadRes
         CollisionPoly polygon;
 
         polygon.type = reader->ReadUInt16();
-        
+
         polygon.flags_vIA = reader->ReadUInt16();
         polygon.flags_vIB = reader->ReadUInt16();
         polygon.vIC = reader->ReadUInt16();
@@ -48,7 +50,6 @@ std::shared_ptr<Ship::IResource> ResourceFactoryBinaryCollisionHeaderV0::ReadRes
         polygon.dist = reader->ReadUInt16();
 
         collisionHeader->polygons.push_back(polygon);
-        
     }
     collisionHeader->collisionHeaderData.polyList = collisionHeader->polygons.data();
 
@@ -72,7 +73,7 @@ std::shared_ptr<Ship::IResource> ResourceFactoryBinaryCollisionHeaderV0::ReadRes
         camDataEntry.cameraSType = reader->ReadUInt16();
         camDataEntry.numCameras = reader->ReadInt16();
         collisionHeader->camData.push_back(camDataEntry);
-        
+
         int32_t camPosDataIdx = reader->ReadInt32();
         collisionHeader->camPosDataIndices.push_back(camPosDataIdx);
     }
@@ -91,7 +92,7 @@ std::shared_ptr<Ship::IResource> ResourceFactoryBinaryCollisionHeaderV0::ReadRes
     zero.x = 0;
     zero.y = 0;
     zero.z = 0;
-    collisionHeader->camPosDataZero = zero; 
+    collisionHeader->camPosDataZero = zero;
 
     for (size_t i = 0; i < collisionHeader->camDataCount; i++) {
         int32_t idx = collisionHeader->camPosDataIndices[i];
@@ -123,12 +124,14 @@ std::shared_ptr<Ship::IResource> ResourceFactoryBinaryCollisionHeaderV0::ReadRes
     return collisionHeader;
 }
 
-std::shared_ptr<Ship::IResource> ResourceFactoryXMLCollisionHeaderV0::ReadResource(std::shared_ptr<Ship::File> file) {
-    if (!FileHasValidFormatAndReader(file)) {
+std::shared_ptr<Ship::IResource>
+ResourceFactoryXMLCollisionHeaderV0::ReadResource(std::shared_ptr<Ship::File> file,
+                                                  std::shared_ptr<Ship::ResourceInitData> initData) {
+    if (!FileHasValidFormatAndReader(file, initData)) {
         return nullptr;
     }
 
-    auto collisionHeader = std::make_shared<CollisionHeader>(file->InitData);
+    auto collisionHeader = std::make_shared<CollisionHeader>(initData);
 
     auto reader = std::get<std::shared_ptr<tinyxml2::XMLDocument>>(file->Reader)->FirstChildElement();
     auto child = reader->FirstChildElement();
@@ -159,7 +162,7 @@ std::shared_ptr<Ship::IResource> ResourceFactoryXMLCollisionHeaderV0::ReadResour
             CollisionPoly polygon;
 
             polygon.type = child->UnsignedAttribute("Type");
-        
+
             polygon.flags_vIA = child->UnsignedAttribute("VertexA");
             polygon.flags_vIB = child->UnsignedAttribute("VertexB");
             polygon.vIC = child->UnsignedAttribute("VertexC");
@@ -183,11 +186,11 @@ std::shared_ptr<Ship::IResource> ResourceFactoryXMLCollisionHeaderV0::ReadResour
             camDataEntry.cameraSType = child->UnsignedAttribute("SType");
             camDataEntry.numCameras = child->IntAttribute("NumData");
             collisionHeader->camData.push_back(camDataEntry);
-        
+
             int32_t camPosDataIdx = child->IntAttribute("CameraPosDataSeg");
             collisionHeader->camPosDataIndices.push_back(camPosDataIdx);
         } else if (childName == "CameraPositionData") {
-            //each camera position data is made up of 3 Vec3s
+            // each camera position data is made up of 3 Vec3s
             Vec3s pos;
             pos.x = child->IntAttribute("PosX");
             pos.y = child->IntAttribute("PosY");
@@ -227,7 +230,7 @@ std::shared_ptr<Ship::IResource> ResourceFactoryXMLCollisionHeaderV0::ReadResour
             collisionHeader->camData[i].camPosData = &collisionHeader->camPosDataZero;
         }
     }
-    
+
     collisionHeader->collisionHeaderData.numVertices = collisionHeader->vertices.size();
     collisionHeader->collisionHeaderData.numPolygons = collisionHeader->polygons.size();
     collisionHeader->surfaceTypesCount = collisionHeader->surfaceTypes.size();

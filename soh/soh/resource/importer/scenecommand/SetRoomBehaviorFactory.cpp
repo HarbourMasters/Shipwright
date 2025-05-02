@@ -4,12 +4,12 @@
 #include "spdlog/spdlog.h"
 
 namespace SOH {
-std::shared_ptr<Ship::IResource>
-SetRoomBehaviorFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData, std::shared_ptr<Ship::BinaryReader> reader) {
+std::shared_ptr<Ship::IResource> SetRoomBehaviorFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
+                                                                      std::shared_ptr<Ship::BinaryReader> reader) {
     auto setRoomBehavior = std::make_shared<SetRoomBehavior>(initData);
 
     ReadCommandId(setRoomBehavior, reader);
-	
+
     setRoomBehavior->roomBehavior.gameplayFlags = reader->ReadInt8();
     setRoomBehavior->roomBehavior.gameplayFlags2 = reader->ReadInt32();
 
@@ -20,8 +20,9 @@ SetRoomBehaviorFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> ini
     return setRoomBehavior;
 }
 
-std::shared_ptr<Ship::IResource> SetRoomBehaviorFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
-                                                                   tinyxml2::XMLElement* reader) {
+std::shared_ptr<Ship::IResource>
+SetRoomBehaviorFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
+                                        tinyxml2::XMLElement* reader) {
     auto setRoomBehavior = std::make_shared<SetRoomBehavior>(initData);
 
     setRoomBehavior->cmdId = SceneCommandID::SetRoomBehavior;

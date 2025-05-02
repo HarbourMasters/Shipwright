@@ -423,6 +423,9 @@ static const ALIGN_ASSET(2) char gFileSelHoldFRATex[] = dgFileSelHoldFRATex;
 #define dgFileSelCheckBrightnessENGTex "__OTR__textures/title_static/gFileSelCheckBrightnessENGTex"
 static const ALIGN_ASSET(2) char gFileSelCheckBrightnessENGTex[] = dgFileSelCheckBrightnessENGTex;
 
+#define dgFileSelCheckBrightnessENGNTSCTex "__OTR__textures/title_static/gFileSelCheckBrightnessENGNTSCTex"
+static const ALIGN_ASSET(2) char gFileSelCheckBrightnessENGNTSCTex[] = dgFileSelCheckBrightnessENGNTSCTex;
+
 #define dgFileSelCheckBrightnessGERTex "__OTR__textures/title_static/gFileSelCheckBrightnessGERTex"
 static const ALIGN_ASSET(2) char gFileSelCheckBrightnessGERTex[] = dgFileSelCheckBrightnessGERTex;
 
@@ -446,5 +449,111 @@ static const ALIGN_ASSET(2) char gFileSelWindow2DL[] = dgFileSelWindow2DL;
 
 #define dgFileSelWindow3DL "__OTR__textures/title_static/gFileSelWindow3DL"
 static const ALIGN_ASSET(2) char gFileSelWindow3DL[] = dgFileSelWindow3DL;
+
+#define dgFileSelNoFileToCopyJPNTex "__OTR__textures/title_static/gFileSelNoFileToCopyJPNTex"
+static const ALIGN_ASSET(2) char gFileSelNoFileToCopyJPNTex[] = dgFileSelNoFileToCopyJPNTex;
+
+#define dgFileSelNoFileToEraseJPNTex "__OTR__textures/title_static/gFileSelNoFileToEraseJPNTex"
+static const ALIGN_ASSET(2) char gFileSelNoFileToEraseJPNTex[] = dgFileSelNoFileToEraseJPNTex;
+
+#define dgFileSelNoEmptyFileJPNTex "__OTR__textures/title_static/gFileSelNoEmptyFileJPNTex"
+static const ALIGN_ASSET(2) char gFileSelNoEmptyFileJPNTex[] = dgFileSelNoEmptyFileJPNTex;
+
+#define dgFileSelFileEmptyJPNTex "__OTR__textures/title_static/gFileSelFileEmptyJPNTex"
+static const ALIGN_ASSET(2) char gFileSelFileEmptyJPNTex[] = dgFileSelFileEmptyJPNTex;
+
+#define dgFileSelFileInUseJPNTex "__OTR__textures/title_static/gFileSelFileInUseJPNTex"
+static const ALIGN_ASSET(2) char gFileSelFileInUseJPNTex[] = dgFileSelFileInUseJPNTex;
+
+#define dgFileSelWhichFile1JPNTex "__OTR__textures/title_static/gFileSelWhichFile1JPNTex"
+static const ALIGN_ASSET(2) char gFileSelWhichFile1JPNTex[] = dgFileSelWhichFile1JPNTex;
+
+#define dgFileSelCopyToWhichFileJPNTex "__OTR__textures/title_static/gFileSelCopyToWhichFileJPNTex"
+static const ALIGN_ASSET(2) char gFileSelCopyToWhichFileJPNTex[] = dgFileSelCopyToWhichFileJPNTex;
+
+#define dgFileSelAreYouSureJPNTex "__OTR__textures/title_static/gFileSelAreYouSureJPNTex"
+static const ALIGN_ASSET(2) char gFileSelAreYouSureJPNTex[] = dgFileSelAreYouSureJPNTex;
+
+#define dgFileSelFileCopiedJPNTex "__OTR__textures/title_static/gFileSelFileCopiedJPNTex"
+static const ALIGN_ASSET(2) char gFileSelFileCopiedJPNTex[] = dgFileSelFileCopiedJPNTex;
+
+#define dgFileSelPleaseSelectAFileJPNTex "__OTR__textures/title_static/gFileSelPleaseSelectAFileJPNTex"
+static const ALIGN_ASSET(2) char gFileSelPleaseSelectAFileJPNTex[] = dgFileSelPleaseSelectAFileJPNTex;
+
+#define dgFileSelOpenThisFileJPNTex "__OTR__textures/title_static/gFileSelOpenThisFileJPNTex"
+static const ALIGN_ASSET(2) char gFileSelOpenThisFileJPNTex[] = dgFileSelOpenThisFileJPNTex;
+
+#define dgFileSelEraseWhichFileJPNTex "__OTR__textures/title_static/gFileSelEraseWhichFileJPNTex"
+static const ALIGN_ASSET(2) char gFileSelEraseWhichFileJPNTex[] = dgFileSelEraseWhichFileJPNTex;
+
+#define dgFileSelAreYouSure2JPNTex "__OTR__textures/title_static/gFileSelAreYouSure2JPNTex"
+static const ALIGN_ASSET(2) char gFileSelAreYouSure2JPNTex[] = dgFileSelAreYouSure2JPNTex;
+
+#define dgFileSelFileErasedJPNTex "__OTR__textures/title_static/gFileSelFileErasedJPNTex"
+static const ALIGN_ASSET(2) char gFileSelFileErasedJPNTex[] = dgFileSelFileErasedJPNTex;
+
+#define dgFileSelOptionsJPNTex "__OTR__textures/title_static/gFileSelOptionsJPNTex"
+static const ALIGN_ASSET(2) char gFileSelOptionsJPNTex[] = dgFileSelOptionsJPNTex;
+
+#define dgFileSelNameJPNTex "__OTR__textures/title_static/gFileSelNameJPNTex"
+static const ALIGN_ASSET(2) char gFileSelNameJPNTex[] = dgFileSelNameJPNTex;
+
+#define dgFileSelSurroundJPNTex "__OTR__textures/title_static/gFileSelSurroundJPNTex"
+static const ALIGN_ASSET(2) char gFileSelSurroundJPNTex[] = dgFileSelSurroundJPNTex;
+
+#define dgFileSelHeadsetJPNTex "__OTR__textures/title_static/gFileSelHeadsetJPNTex"
+static const ALIGN_ASSET(2) char gFileSelHeadsetJPNTex[] = dgFileSelHeadsetJPNTex;
+
+#define dgFileSelMonoJPNTex "__OTR__textures/title_static/gFileSelMonoJPNTex"
+static const ALIGN_ASSET(2) char gFileSelMonoJPNTex[] = dgFileSelMonoJPNTex;
+
+#define dgFileSelStereoJPNTex "__OTR__textures/title_static/gFileSelStereoJPNTex"
+static const ALIGN_ASSET(2) char gFileSelStereoJPNTex[] = dgFileSelStereoJPNTex;
+
+#define dgFileSelLTargetingJPNTex "__OTR__textures/title_static/gFileSelLTargetingJPNTex"
+static const ALIGN_ASSET(2) char gFileSelLTargetingJPNTex[] = dgFileSelLTargetingJPNTex;
+
+#define dgFileSelSwitchJPNTex "__OTR__textures/title_static/gFileSelSwitchJPNTex"
+static const ALIGN_ASSET(2) char gFileSelSwitchJPNTex[] = dgFileSelSwitchJPNTex;
+
+#define dgFileSelHoldJPNTex "__OTR__textures/title_static/gFileSelHoldJPNTex"
+static const ALIGN_ASSET(2) char gFileSelHoldJPNTex[] = dgFileSelHoldJPNTex;
+
+#define dgFileSelControlsJPNTex "__OTR__textures/title_static/gFileSelControlsJPNTex"
+static const ALIGN_ASSET(2) char gFileSelControlsJPNTex[] = dgFileSelControlsJPNTex;
+
+#define dgFileSelCheckBrightnessJPNTex "__OTR__textures/title_static/gFileSelCheckBrightnessJPNTex"
+static const ALIGN_ASSET(2) char gFileSelCheckBrightnessJPNTex[] = dgFileSelCheckBrightnessJPNTex;
+
+#define dgFileSelCopyButtonJPNTex "__OTR__textures/title_static/gFileSelCopyButtonJPNTex"
+static const ALIGN_ASSET(2) char gFileSelCopyButtonJPNTex[] = dgFileSelCopyButtonJPNTex;
+
+#define dgFileSelFile1ButtonJPNTex "__OTR__textures/title_static/gFileSelFile1ButtonJPNTex"
+static const ALIGN_ASSET(2) char gFileSelFile1ButtonJPNTex[] = dgFileSelFile1ButtonJPNTex;
+
+#define dgFileSelFile2ButtonJPNTex "__OTR__textures/title_static/gFileSelFile2ButtonJPNTex"
+static const ALIGN_ASSET(2) char gFileSelFile2ButtonJPNTex[] = dgFileSelFile2ButtonJPNTex;
+
+#define dgFileSelFile3ButtonJPNTex "__OTR__textures/title_static/gFileSelFile3ButtonJPNTex"
+static const ALIGN_ASSET(2) char gFileSelFile3ButtonJPNTex[] = dgFileSelFile3ButtonJPNTex;
+
+#define dgFileSelYesButtonJPNTex "__OTR__textures/title_static/gFileSelYesButtonJPNTex"
+static const ALIGN_ASSET(2) char gFileSelYesButtonJPNTex[] = dgFileSelYesButtonJPNTex;
+
+#define dgFileSelEraseButtonJPNTex "__OTR__textures/title_static/gFileSelEraseButtonJPNTex"
+static const ALIGN_ASSET(2) char gFileSelEraseButtonJPNTex[] = dgFileSelEraseButtonJPNTex;
+
+#define dgFileSelOptionsButtonJPNTex "__OTR__textures/title_static/gFileSelOptionsButtonJPNTex"
+static const ALIGN_ASSET(2) char gFileSelOptionsButtonJPNTex[] = dgFileSelOptionsButtonJPNTex;
+
+#define dgFileSelQuitButtonJPNTex "__OTR__textures/title_static/gFileSelQuitButtonJPNTex"
+static const ALIGN_ASSET(2) char gFileSelQuitButtonJPNTex[] = dgFileSelQuitButtonJPNTex;
+
+#define dgFileSelSaveXJPNTex "__OTR__textures/title_static/gFileSelSaveXJPNTex"
+static const ALIGN_ASSET(2) char gFileSelSaveXJPNTex[] = dgFileSelSaveXJPNTex;
+
+#define dgFileSelSaveXENGTex "__OTR__textures/title_static/gFileSelSaveXENGTex"
+static const ALIGN_ASSET(2) char gFileSelSaveXENGTex[] = dgFileSelSaveXENGTex;
+
 
 #endif // TEXTURES_TITLE_STATIC_H

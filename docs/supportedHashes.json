@@ -30,5 +30,49 @@
     {
         "name": "PAL MQ (Debug)",
         "sha1": "cfecfdc58d650e71a200c81f033de4e6d617a9f6"
+    },
+    {
+        "name": "NTSC 1.0 (US)",
+        "sha1": "ad69c91157f6705e8ab06c79fe08aad47bb57ba7"
+    },
+    {
+        "name": "NTSC 1.1 (US)",
+        "sha1": "d3ecb253776cd847a5aa63d859d8c89a2f37b364"
+    },
+    {
+        "name": "NTSC 1.2 (US)",
+        "sha1": "41b3bdc48d98c48529219919015a1af22f5057c2"
+    },
+    {
+        "name": "NTSC 1.0 (JP)",
+        "sha1": "c892bbda3993e66bd0d56a10ecd30b1ee612210f"
+    },
+    {
+        "name": "NTSC 1.1 (JP)",
+        "sha1": "dbfc81f655187dc6fefd93fa6798face770d579d"
+    },
+    {
+        "name": "NTSC 1.2 (JP)",
+        "sha1": "fa5f5942b27480d60243c2d52c0e93e26b9e6b86"
+    },
+    {
+        "name": "NTSC GC (US)",
+        "sha1": "b82710ba2bd3b4c6ee8aa1a7e9acf787dfc72e9b"
+    },
+    {
+        "name": "NTSC MQ (US)",
+        "sha1": "8b5d13aac69bfbf989861cfdc50b1d840945fc1d"
+    },
+    {
+        "name": "NTSC GC (JP)",
+        "sha1": "0769c84615422d60f16925cd859593cdfa597f84"
+    },
+    {
+        "name": "NTSC GC (JP) (Collector's Edition)",
+        "sha1": "2ce2d1a9f0534c9cd9fa04ea5317b80da21e5e73"
+    },
+    {
+        "name": "NTSC MQ (JP)",
+        "sha1": "dd14e143c4275861fe93ea79d0c02e36ae8c6c2f"
     }
 ]

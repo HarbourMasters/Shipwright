@@ -1,0 +1,5 @@
+<Root>
+    <File Name="object_gi_shield_2" Segment="6">
+        <DList Name="gGiHylianShieldDL" Offset="0x0C70"/>
+    </File>
+</Root>

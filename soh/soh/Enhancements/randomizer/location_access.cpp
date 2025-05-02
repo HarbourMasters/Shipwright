@@ -11,14 +11,19 @@
 
 #include <fstream>
 
-//generic grotto event list
+extern "C" {
+extern SaveContext gSaveContext;
+extern PlayState* gPlayState;
+}
+
+// generic grotto event list
 std::vector<EventAccess> grottoEvents;
 
-//set the logic to be a specific age and time of day and see if the condition still holds
+// set the logic to be a specific age and time of day and see if the condition still holds
 bool LocationAccess::CheckConditionAtAgeTime(bool& age, bool& time) const {
     logic->IsChild = false;
     logic->IsAdult = false;
-    logic->AtDay   = false;
+    logic->AtDay = false;
     logic->AtNight = false;
 
     time = true;
@@ -27,22 +32,21 @@ bool LocationAccess::CheckConditionAtAgeTime(bool& age, bool& time) const {
     return GetConditionsMet();
 }
 
-bool LocationAccess::ConditionsMet(Region* parentRegion) const {
-    //WARNING enterance validation can run this after resetting the access for sphere 0 validation
-    //When refactoring ToD access, either fix the above or do not assume that we
-    //have any access at all just because this is being run
+bool LocationAccess::ConditionsMet(Region* parentRegion, bool calculatingAvailableChecks) const {
+    // WARNING enterance validation can run this after resetting the access for sphere 0 validation
+    // When refactoring ToD access, either fix the above or do not assume that we
+    // have any access at all just because this is being run
     bool conditionsMet = false;
 
-    if (
-        (parentRegion->childDay   && CheckConditionAtAgeTime(logic->IsChild, logic->AtDay))   ||
+    if ((parentRegion->childDay && CheckConditionAtAgeTime(logic->IsChild, logic->AtDay)) ||
         (parentRegion->childNight && CheckConditionAtAgeTime(logic->IsChild, logic->AtNight)) ||
-        (parentRegion->adultDay   && CheckConditionAtAgeTime(logic->IsAdult, logic->AtDay))   ||
-        (parentRegion->adultNight && CheckConditionAtAgeTime(logic->IsAdult, logic->AtNight))
-    ) {
+        (parentRegion->adultDay && CheckConditionAtAgeTime(logic->IsAdult, logic->AtDay)) ||
+        (parentRegion->adultNight && CheckConditionAtAgeTime(logic->IsAdult, logic->AtNight))) {
         conditionsMet = true;
     }
 
-    return conditionsMet && CanBuy();
+    return conditionsMet &&
+           (calculatingAvailableChecks || CanBuy()); // TODO: run CanBuy when price is known due to settings
 }
 
 bool LocationAccess::CanBuy() const {
@@ -65,25 +69,16 @@ bool CanBuyAnother(RandomizerCheck rc) {
 }
 
 Region::Region() = default;
-Region::Region(
-    std::string regionName_,
-    std::string scene_,
-    std::set<RandomizerArea> areas,
-    bool timePass_,
-    std::vector<EventAccess> events_,
-    std::vector<LocationAccess> locations_,
-    std::list<Rando::Entrance> exits_
-) : regionName(std::move(regionName_)),
-    scene(std::move(scene_)),
-    areas(areas),
-    timePass(timePass_),
-    events(std::move(events_)),
-    locations(std::move(locations_)),
-    exits(std::move(exits_)) {}
+Region::Region(std::string regionName_, std::string scene_, std::set<RandomizerArea> areas, bool timePass_,
+               std::vector<EventAccess> events_, std::vector<LocationAccess> locations_,
+               std::list<Rando::Entrance> exits_)
+    : regionName(std::move(regionName_)), scene(std::move(scene_)), areas(areas), timePass(timePass_),
+      events(std::move(events_)), locations(std::move(locations_)), exits(std::move(exits_)) {
+}
 
 Region::~Region() = default;
 
-void Region::ApplyTimePass(){
+void Region::ApplyTimePass() {
     if (timePass) {
         StartPerformanceTimer(PT_TOD_ACCESS);
         if (Child()) {
@@ -103,20 +98,18 @@ void Region::ApplyTimePass(){
 }
 
 bool Region::UpdateEvents() {
-    bool eventsUpdated =  false;
+    bool eventsUpdated = false;
     StartPerformanceTimer(PT_EVENT_ACCESS);
     for (EventAccess& event : events) {
-        //If the event has already happened, there's no reason to check it
+        // If the event has already happened, there's no reason to check it
         if (event.GetEvent()) {
             continue;
         }
 
-        if (
-            (childDay   && event.CheckConditionAtAgeTime(logic->IsChild, logic->AtDay))    ||
-            (childNight && event.CheckConditionAtAgeTime(logic->IsChild, logic->AtNight))  ||
-            (adultDay   && event.CheckConditionAtAgeTime(logic->IsAdult, logic->AtDay))    ||
-            (adultNight && event.CheckConditionAtAgeTime(logic->IsAdult, logic->AtNight))
-        ) {
+        if ((childDay && event.CheckConditionAtAgeTime(logic->IsChild, logic->AtDay)) ||
+            (childNight && event.CheckConditionAtAgeTime(logic->IsChild, logic->AtNight)) ||
+            (adultDay && event.CheckConditionAtAgeTime(logic->IsAdult, logic->AtDay)) ||
+            (adultNight && event.CheckConditionAtAgeTime(logic->IsAdult, logic->AtNight))) {
             event.EventOccurred();
             eventsUpdated = true;
         }
@@ -126,14 +119,14 @@ bool Region::UpdateEvents() {
 }
 
 void Region::AddExit(RandomizerRegion parentKey, RandomizerRegion newExitKey, ConditionFn condition) {
-    Rando::Entrance newExit = Rando::Entrance(newExitKey, {condition});
+    Rando::Entrance newExit = Rando::Entrance(newExitKey, { condition });
     newExit.SetParentRegion(parentKey);
     exits.push_front(newExit);
 }
 
-//The exit will be completely removed from this region
+// The exit will be completely removed from this region
 void Region::RemoveExit(Rando::Entrance* exitToRemove) {
-    exits.remove_if([exitToRemove](const auto exit){return &exit == exitToRemove;});
+    exits.remove_if([exitToRemove](const auto exit) { return &exit == exitToRemove; });
 }
 
 void Region::SetAsPrimary(RandomizerRegion exitToBePrimary) {
@@ -152,7 +145,8 @@ Rando::Entrance* Region::GetExit(RandomizerRegion exitToReturn) {
         }
     }
 
-    LUSLOG_ERROR("ERROR: EXIT \"%s\" DOES NOT EXIST IN \"%s\"", RegionTable(exitToReturn)->regionName.c_str(), this->regionName.c_str());
+    LUSLOG_ERROR("ERROR: EXIT \"%s\" DOES NOT EXIST IN \"%s\"", RegionTable(exitToReturn)->regionName.c_str(),
+                 this->regionName.c_str());
     assert(false);
     return nullptr;
 }
@@ -190,9 +184,9 @@ bool Region::CheckAllAccess(const RandomizerRegion exitKey) {
 
     for (Rando::Entrance& exit : exits) {
         if (exit.GetConnectedRegionKey() == exitKey) {
-            return exit.CheckConditionAtAgeTime(logic->IsChild, logic->AtDay)   &&
+            return exit.CheckConditionAtAgeTime(logic->IsChild, logic->AtDay) &&
                    exit.CheckConditionAtAgeTime(logic->IsChild, logic->AtNight) &&
-                   exit.CheckConditionAtAgeTime(logic->IsAdult, logic->AtDay)   &&
+                   exit.CheckConditionAtAgeTime(logic->IsAdult, logic->AtDay) &&
                    exit.CheckConditionAtAgeTime(logic->IsAdult, logic->AtNight);
         }
     }
@@ -224,8 +218,73 @@ bool MQSpiritSharedBrokenWallRoom(const RandomizerRegion region, ConditionFn con
     return areaTable[region].MQSpiritShared(condition, true, anyAge);
 }
 
+bool BeanPlanted(const RandomizerRegion region) {
+    // swchFlag found using the Actor Viewer to get the Obj_Bean parameters & 0x3F
+    // not tested with multiple OTRs, but can be automated similarly to GetDungeonSmallKeyDoors
+    SceneID sceneID;
+    uint8_t swchFlag;
+    switch (region) {
+        case RR_ZORAS_RIVER:
+            sceneID = SceneID::SCENE_ZORAS_RIVER;
+            swchFlag = 3;
+            break;
+        case RR_THE_GRAVEYARD:
+            sceneID = SceneID::SCENE_GRAVEYARD;
+            swchFlag = 3;
+            break;
+        case RR_KOKIRI_FOREST:
+            sceneID = SceneID::SCENE_KOKIRI_FOREST;
+            swchFlag = 9;
+            break;
+        case RR_THE_LOST_WOODS:
+            sceneID = SceneID::SCENE_LOST_WOODS;
+            swchFlag = 4;
+            break;
+        case RR_LW_BEYOND_MIDO:
+            sceneID = SceneID::SCENE_LOST_WOODS;
+            swchFlag = 18;
+            break;
+        case RR_DEATH_MOUNTAIN_TRAIL:
+            sceneID = SceneID::SCENE_DEATH_MOUNTAIN_TRAIL;
+            swchFlag = 6;
+            break;
+        case RR_LAKE_HYLIA:
+            sceneID = SceneID::SCENE_LAKE_HYLIA;
+            swchFlag = 1;
+            break;
+        case RR_GERUDO_VALLEY:
+            sceneID = SceneID::SCENE_GERUDO_VALLEY;
+            swchFlag = 3;
+            break;
+        case RR_DMC_CENTRAL_LOCAL:
+            sceneID = SceneID::SCENE_DEATH_MOUNTAIN_CRATER;
+            swchFlag = 3;
+            break;
+        case RR_DESERT_COLOSSUS:
+            sceneID = SceneID::SCENE_DESERT_COLOSSUS;
+            swchFlag = 24;
+            break;
+        default:
+            sceneID = SCENE_ID_MAX;
+            swchFlag = 0;
+            break;
+    }
+
+    // Get the swch value for the scene
+    uint32_t swch;
+    if (gPlayState != nullptr && gPlayState->sceneNum == sceneID) {
+        swch = gPlayState->actorCtx.flags.swch;
+    } else if (sceneID != SCENE_ID_MAX) {
+        swch = gSaveContext.sceneFlags[sceneID].swch;
+    } else {
+        swch = 0;
+    }
+
+    return swch >> swchFlag & 1;
+}
+
 bool CanPlantBean(const RandomizerRegion region) {
-    return areaTable[region].CanPlantBeanCheck();
+    return areaTable[region].CanPlantBeanCheck() || BeanPlanted(region);
 }
 
 bool BothAges(const RandomizerRegion region) {
@@ -250,20 +309,24 @@ std::shared_ptr<Rando::Logic> logic;
 void RegionTable_Init() {
     using namespace Rando;
     ctx = Context::GetInstance().get();
-    logic = ctx->GetLogic(); //RANDOTODO do not hardcode, instead allow accepting a Logic class somehow
+    logic = ctx->GetLogic(); // RANDOTODO do not hardcode, instead allow accepting a Logic class somehow
     grottoEvents = {
-        EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairy();}),
-        EventAccess(&logic->ButterflyFairy,   []{return logic->ButterflyFairy || (logic->CanUse(RG_STICKS));}),
-        EventAccess(&logic->BugShrub,         []{return logic->CanCutShrubs();}),
-        EventAccess(&logic->LoneFish,         []{return true;}),
+        EventAccess(&logic->GossipStoneFairy, [] { return logic->CallGossipFairy(); }),
+        EventAccess(&logic->ButterflyFairy, [] { return logic->ButterflyFairy || (logic->CanUse(RG_STICKS)); }),
+        EventAccess(&logic->BugShrub, [] { return logic->CanCutShrubs(); }),
+        EventAccess(&logic->LoneFish, [] { return true; }),
     };
-    //Clear the array from any previous playthrough attempts. This is important so that
-    //locations which appear in both MQ and Vanilla dungeons don't get set in both areas.
+    // Clear the array from any previous playthrough attempts. This is important so that
+    // locations which appear in both MQ and Vanilla dungeons don't get set in both areas.
     areaTable.fill(Region("Invalid Region", "Invalid Region", {}, NO_DAY_NIGHT_CYCLE, {}, {}, {}));
 
+    // clang-format off
     areaTable[RR_ROOT] = Region("Root", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->KakarikoVillageGateOpen, []{return ctx->GetOption(RSK_KAK_GATE).Is(RO_KAK_GATE_OPEN);}),
+        //The big poes bottle softlock safety check does not account for the guard house lock if the guard house is not shuffled, so the key is needed before we can safely allow bottle use in logic
+        //RANDOTODO a setting that lets you drink/dump big poes so we don't need this logic
+        EventAccess(&logic->CouldEmptyBigPoes,       []{return !ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF) || logic->CanOpenOverworldDoor(RG_GUARD_HOUSE_KEY);}),
     }, {
         //Locations
         LOCATION(RC_LINKS_POCKET,       true),
@@ -326,6 +389,8 @@ void RegionTable_Init() {
         Entrance(RR_TEMPLE_OF_TIME, []{return true;}),
     });
 
+    // clang-format on
+
     // Overworld
     RegionTable_Init_KokiriForest();
     RegionTable_Init_LostWoods();
@@ -362,7 +427,7 @@ void RegionTable_Init() {
     RegionTable_Init_GerudoTrainingGround();
     RegionTable_Init_GanonsCastle();
 
-    //Set parent regions
+    // Set parent regions
     for (uint32_t i = RR_ROOT; i <= RR_GANONS_CASTLE; i++) {
         for (LocationAccess& locPair : areaTable[i].locations) {
             RandomizerCheck location = locPair.GetLocation();
@@ -415,130 +480,131 @@ std::string CleanCheckConditionString(std::string condition) {
 }
 
 namespace Regions {
-    const auto GetAllRegions() {
-        static const size_t regionCount = RR_MAX - (RR_NONE + 1);
+const auto GetAllRegions() {
+    static const size_t regionCount = RR_MAX - (RR_NONE + 1);
 
-        static std::array<RandomizerRegion, regionCount> allRegions = {};
+    static std::array<RandomizerRegion, regionCount> allRegions = {};
 
-        static bool intialized = false;
-        if (!intialized) {
-            for (size_t i = 0; i < regionCount; i++) {
-                allRegions[i] = (RandomizerRegion)((RR_NONE + 1) + i);
-            }
-            intialized = true;
+    static bool intialized = false;
+    if (!intialized) {
+        for (size_t i = 0; i < regionCount; i++) {
+            allRegions[i] = (RandomizerRegion)((RR_NONE + 1) + i);
         }
-
-        return allRegions;
+        intialized = true;
     }
 
-    void AccessReset() {
-        auto ctx = Rando::Context::GetInstance();
-        for (const RandomizerRegion region : GetAllRegions()) {
-            RegionTable(region)->ResetVariables();
-        }
+    return allRegions;
+}
 
-        if (/*Settings::HasNightStart TODO:: Randomize Starting Time*/ false) {
-            if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD)) {
-                RegionTable(RR_ROOT)->childNight = true;
-            } else {
-                RegionTable(RR_ROOT)->adultNight = true;
-            }
+void AccessReset() {
+    auto ctx = Rando::Context::GetInstance();
+    for (const RandomizerRegion region : GetAllRegions()) {
+        RegionTable(region)->ResetVariables();
+    }
+
+    if (/*Settings::HasNightStart TODO:: Randomize Starting Time*/ false) {
+        if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD)) {
+            RegionTable(RR_ROOT)->childNight = true;
         } else {
-            if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD)) {
-                RegionTable(RR_ROOT)->childDay = true;
-            } else {
-                RegionTable(RR_ROOT)->adultDay = true;
-            }
+            RegionTable(RR_ROOT)->adultNight = true;
         }
-    }
-
-    //Reset exits and clear items from locations
-    void ResetAllLocations() {
-        auto ctx = Rando::Context::GetInstance();
-        for (const RandomizerRegion region : GetAllRegions()) {
-            RegionTable(region)->ResetVariables();
-            //Erase item from every location in this exit
-            for (LocationAccess& locPair : RegionTable(region)->locations) {
-                RandomizerCheck location = locPair.GetLocation();
-                Rando::Context::GetInstance()->GetItemLocation(location)->ResetVariables();
-            }
-        }
-
-        if (/*Settings::HasNightStart TODO:: Randomize Starting Time*/ false) {
-            if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD)) {
-                RegionTable(RR_ROOT)->childNight = true;
-            } else {
-                RegionTable(RR_ROOT)->adultNight = true;
-            }
+    } else {
+        if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD)) {
+            RegionTable(RR_ROOT)->childDay = true;
         } else {
-            if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD)) {
-                RegionTable(RR_ROOT)->childDay = true;
-            } else {
-                RegionTable(RR_ROOT)->adultDay = true;
-            }
+            RegionTable(RR_ROOT)->adultDay = true;
+        }
+    }
+}
+
+// Reset exits and clear items from locations
+void ResetAllLocations() {
+    auto ctx = Rando::Context::GetInstance();
+    for (const RandomizerRegion region : GetAllRegions()) {
+        RegionTable(region)->ResetVariables();
+        // Erase item from every location in this exit
+        for (LocationAccess& locPair : RegionTable(region)->locations) {
+            RandomizerCheck location = locPair.GetLocation();
+            Rando::Context::GetInstance()->GetItemLocation(location)->ResetVariables();
         }
     }
 
-    bool HasTimePassAccess(uint8_t age) {
-        for (const RandomizerRegion regionKey : GetAllRegions()) {
-            auto region = RegionTable(regionKey);
-            if (region->timePass && ((age == RO_AGE_CHILD && region->Child()) || (age == RO_AGE_ADULT && region->Adult()))) {
-                return true;
-            }
+    if (/*Settings::HasNightStart TODO:: Randomize Starting Time*/ false) {
+        if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD)) {
+            RegionTable(RR_ROOT)->childNight = true;
+        } else {
+            RegionTable(RR_ROOT)->adultNight = true;
         }
-        return false;
+    } else {
+        if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD)) {
+            RegionTable(RR_ROOT)->childDay = true;
+        } else {
+            RegionTable(RR_ROOT)->adultDay = true;
+        }
     }
+}
 
-    // Will dump a file which can be turned into a visual graph using graphviz
-    // https://graphviz.org/download/
-    // Use command: dot -Tsvg <filename> -o world.svg
-    // Then open in a browser and CTRL + F to find the area of interest
-    void DumpWorldGraph(std::string str) {
-        std::ofstream worldGraph;
-        worldGraph.open (str + ".dot");
-        worldGraph << "digraph {\n\tcenter=true;\n";
+bool HasTimePassAccess(uint8_t age) {
+    for (const RandomizerRegion regionKey : GetAllRegions()) {
+        auto region = RegionTable(regionKey);
+        if (region->timePass &&
+            ((age == RO_AGE_CHILD && region->Child()) || (age == RO_AGE_ADULT && region->Adult()))) {
+            return true;
+        }
+    }
+    return false;
+}
 
-        for (const RandomizerRegion regionKey : GetAllRegions()) {
-            auto region = RegionTable(regionKey);
-            for (auto exit : region->exits) {
-                if (exit.GetConnectedRegion()->regionName != "Invalid Region") {
-                    std::string parent = exit.GetParentRegion()->regionName;
-                    if (region->childDay) {
-                        parent += " CD";
-                    }
-                    if (region->childNight) {
-                        parent += " CN";
-                    }
-                    if (region->adultDay) {
-                        parent += " AD";
-                    }
-                    if (region->adultNight) {
-                        parent += " AN";
-                    }
-                    Region* connected = exit.GetConnectedRegion();
-                    auto connectedStr = connected->regionName;
-                    if (connected->childDay) {
-                        connectedStr += " CD";
-                    }
-                    if (connected->childNight) {
-                        connectedStr += " CN";
-                    }
-                    if (connected->adultDay) {
-                        connectedStr += " AD";
-                    }
-                    if (connected->adultNight) {
-                        connectedStr += " AN";
-                    }
-                    worldGraph << "\t\"" + parent + "\"[shape=\"plain\"];\n";
-                    worldGraph << "\t\"" + connectedStr + "\"[shape=\"plain\"];\n";
-                    worldGraph << "\t\"" + parent + "\" -> \"" + connectedStr + "\"\n";
+// Will dump a file which can be turned into a visual graph using graphviz
+// https://graphviz.org/download/
+// Use command: dot -Tsvg <filename> -o world.svg
+// Then open in a browser and CTRL + F to find the area of interest
+void DumpWorldGraph(std::string str) {
+    std::ofstream worldGraph;
+    worldGraph.open(str + ".dot");
+    worldGraph << "digraph {\n\tcenter=true;\n";
+
+    for (const RandomizerRegion regionKey : GetAllRegions()) {
+        auto region = RegionTable(regionKey);
+        for (auto exit : region->exits) {
+            if (exit.GetConnectedRegion()->regionName != "Invalid Region") {
+                std::string parent = exit.GetParentRegion()->regionName;
+                if (region->childDay) {
+                    parent += " CD";
                 }
+                if (region->childNight) {
+                    parent += " CN";
+                }
+                if (region->adultDay) {
+                    parent += " AD";
+                }
+                if (region->adultNight) {
+                    parent += " AN";
+                }
+                Region* connected = exit.GetConnectedRegion();
+                auto connectedStr = connected->regionName;
+                if (connected->childDay) {
+                    connectedStr += " CD";
+                }
+                if (connected->childNight) {
+                    connectedStr += " CN";
+                }
+                if (connected->adultDay) {
+                    connectedStr += " AD";
+                }
+                if (connected->adultNight) {
+                    connectedStr += " AN";
+                }
+                worldGraph << "\t\"" + parent + "\"[shape=\"plain\"];\n";
+                worldGraph << "\t\"" + connectedStr + "\"[shape=\"plain\"];\n";
+                worldGraph << "\t\"" + parent + "\" -> \"" + connectedStr + "\"\n";
             }
         }
-        worldGraph << "}";
-        worldGraph.close();
     }
-} //namespace Regions
+    worldGraph << "}";
+    worldGraph.close();
+}
+} // namespace Regions
 
 Region* RegionTable(const RandomizerRegion regionKey) {
     if (regionKey > RR_MAX) {
@@ -547,12 +613,13 @@ Region* RegionTable(const RandomizerRegion regionKey) {
     return &(areaTable[regionKey]);
 }
 
-//Retrieve all the shuffable entrances of a specific type
+// Retrieve all the shuffable entrances of a specific type
 std::vector<Rando::Entrance*> GetShuffleableEntrances(Rando::EntranceType type, bool onlyPrimary /*= true*/) {
     std::vector<Rando::Entrance*> entrancesToShuffle = {};
     for (RandomizerRegion region : Regions::GetAllRegions()) {
         for (auto& exit : RegionTable(region)->exits) {
-            if ((exit.GetType() == type || type == Rando::EntranceType::All) && (exit.IsPrimary() || !onlyPrimary) && exit.GetType() != Rando::EntranceType::None) {
+            if ((exit.GetType() == type || type == Rando::EntranceType::All) && (exit.IsPrimary() || !onlyPrimary) &&
+                exit.GetType() != Rando::EntranceType::None) {
                 entrancesToShuffle.push_back(&exit);
             }
         }

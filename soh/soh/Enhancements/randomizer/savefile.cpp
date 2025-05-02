@@ -32,9 +32,9 @@ void StartingItemGive(GetItemEntry getItemEntry, RandomizerCheck randomizerCheck
     }
 }
 
-// RANDOTODO replace most of these GiveLink functions with calls to
+// RANDOTODO: Replace most of these GiveLink functions with calls to
 // Item_Give in z_parameter, we'll need to update Item_Give to ensure
-// nothing breaks when calling it without a valid play first
+// nothing breaks when calling it without a valid play first.
 void GiveLinkRupees(int numOfRupees) {
     int maxRupeeCount = 0;
     if (CUR_UPG_VALUE(UPG_WALLET) == 0) {
@@ -101,13 +101,13 @@ void GiveLinksPocketItem() {
     if (Randomizer_GetSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LINKS_POCKET, (GetItemID)RG_NONE);
         StartingItemGive(getItemEntry, RC_LINKS_POCKET);
-        // If we re-add the above, we'll get the item on save creation, now it's given on first load
+        // If we re-add the above, we'll get the item on save creation, now it's given on first load.
         Flags_SetRandomizerInf(RAND_INF_LINKS_POCKET);
     }
 }
 
-
 void SetStartingItems() {
+    int startingAge = OTRGlobals::Instance->gRandoContext->GetOption(RSK_SELECTED_STARTING_AGE).Get();
     if (Randomizer_GetSettingValue(RSK_STARTING_KOKIRI_SWORD))
         Item_Give(NULL, ITEM_SWORD_KOKIRI);
     if (Randomizer_GetSettingValue(RSK_STARTING_DEKU_SHIELD))
@@ -159,6 +159,13 @@ void SetStartingItems() {
     if (Randomizer_GetSettingValue(RSK_STARTING_NUTS) && !Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_NUT_BAG)) {
         GiveLinkDekuNuts(20);
     }
+    if (Randomizer_GetSettingValue(RSK_STARTING_MASTER_SWORD)) {
+        if (startingAge == RO_AGE_ADULT) {
+            Item_Give(NULL, ITEM_SWORD_MASTER);
+        } else {
+            gSaveContext.inventory.equipment |= 1 << 1;
+        }
+    }
 
     if (Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
         GiveLinkRupees(9001);
@@ -174,40 +181,40 @@ void SetStartingItems() {
     }
 
     if (Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH) {
-        gSaveContext.inventory.dungeonKeys[SCENE_FOREST_TEMPLE] = FOREST_TEMPLE_SMALL_KEY_MAX;                    // Forest
-        gSaveContext.ship.stats.dungeonKeys[SCENE_FOREST_TEMPLE] = FOREST_TEMPLE_SMALL_KEY_MAX;                   // Forest
-        gSaveContext.inventory.dungeonKeys[SCENE_FIRE_TEMPLE] = FIRE_TEMPLE_SMALL_KEY_MAX;                        // Fire
-        gSaveContext.ship.stats.dungeonKeys[SCENE_FIRE_TEMPLE] = FIRE_TEMPLE_SMALL_KEY_MAX;                       // Fire
-        gSaveContext.inventory.dungeonKeys[SCENE_WATER_TEMPLE] = WATER_TEMPLE_SMALL_KEY_MAX;                      // Water
-        gSaveContext.ship.stats.dungeonKeys[SCENE_WATER_TEMPLE] = WATER_TEMPLE_SMALL_KEY_MAX;                     // Water
-        gSaveContext.inventory.dungeonKeys[SCENE_SPIRIT_TEMPLE] = SPIRIT_TEMPLE_SMALL_KEY_MAX;                    // Spirit
-        gSaveContext.ship.stats.dungeonKeys[SCENE_SPIRIT_TEMPLE] = SPIRIT_TEMPLE_SMALL_KEY_MAX;                   // Spirit
-        gSaveContext.inventory.dungeonKeys[SCENE_SHADOW_TEMPLE] = SHADOW_TEMPLE_SMALL_KEY_MAX;                    // Shadow
-        gSaveContext.ship.stats.dungeonKeys[SCENE_SHADOW_TEMPLE] = SHADOW_TEMPLE_SMALL_KEY_MAX;                   // Shadow
-        gSaveContext.inventory.dungeonKeys[SCENE_BOTTOM_OF_THE_WELL] = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;          // BotW
-        gSaveContext.ship.stats.dungeonKeys[SCENE_BOTTOM_OF_THE_WELL] = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;         // BotW
+        gSaveContext.inventory.dungeonKeys[SCENE_FOREST_TEMPLE] = FOREST_TEMPLE_SMALL_KEY_MAX;            // Forest
+        gSaveContext.ship.stats.dungeonKeys[SCENE_FOREST_TEMPLE] = FOREST_TEMPLE_SMALL_KEY_MAX;           // Forest
+        gSaveContext.inventory.dungeonKeys[SCENE_FIRE_TEMPLE] = FIRE_TEMPLE_SMALL_KEY_MAX;                // Fire
+        gSaveContext.ship.stats.dungeonKeys[SCENE_FIRE_TEMPLE] = FIRE_TEMPLE_SMALL_KEY_MAX;               // Fire
+        gSaveContext.inventory.dungeonKeys[SCENE_WATER_TEMPLE] = WATER_TEMPLE_SMALL_KEY_MAX;              // Water
+        gSaveContext.ship.stats.dungeonKeys[SCENE_WATER_TEMPLE] = WATER_TEMPLE_SMALL_KEY_MAX;             // Water
+        gSaveContext.inventory.dungeonKeys[SCENE_SPIRIT_TEMPLE] = SPIRIT_TEMPLE_SMALL_KEY_MAX;            // Spirit
+        gSaveContext.ship.stats.dungeonKeys[SCENE_SPIRIT_TEMPLE] = SPIRIT_TEMPLE_SMALL_KEY_MAX;           // Spirit
+        gSaveContext.inventory.dungeonKeys[SCENE_SHADOW_TEMPLE] = SHADOW_TEMPLE_SMALL_KEY_MAX;            // Shadow
+        gSaveContext.ship.stats.dungeonKeys[SCENE_SHADOW_TEMPLE] = SHADOW_TEMPLE_SMALL_KEY_MAX;           // Shadow
+        gSaveContext.inventory.dungeonKeys[SCENE_BOTTOM_OF_THE_WELL] = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;  // BotW
+        gSaveContext.ship.stats.dungeonKeys[SCENE_BOTTOM_OF_THE_WELL] = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX; // BotW
         gSaveContext.inventory.dungeonKeys[SCENE_GERUDO_TRAINING_GROUND] = GERUDO_TRAINING_GROUND_SMALL_KEY_MAX;  // GTG
         gSaveContext.ship.stats.dungeonKeys[SCENE_GERUDO_TRAINING_GROUND] = GERUDO_TRAINING_GROUND_SMALL_KEY_MAX; // GTG
-        gSaveContext.inventory.dungeonKeys[SCENE_INSIDE_GANONS_CASTLE] = GANONS_CASTLE_SMALL_KEY_MAX;             // Ganon
-        gSaveContext.ship.stats.dungeonKeys[SCENE_INSIDE_GANONS_CASTLE] = GANONS_CASTLE_SMALL_KEY_MAX;            // Ganon
+        gSaveContext.inventory.dungeonKeys[SCENE_INSIDE_GANONS_CASTLE] = GANONS_CASTLE_SMALL_KEY_MAX;  // Ganon
+        gSaveContext.ship.stats.dungeonKeys[SCENE_INSIDE_GANONS_CASTLE] = GANONS_CASTLE_SMALL_KEY_MAX; // Ganon
     } else if (Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_VANILLA) {
         // Logic cannot handle vanilla key layout in some dungeons
         // this is because vanilla expects the dungeon major item to be
         // locked behind the keys, which is not always true in rando.
-        // We can resolve this by starting with some extra keys
+        // We can resolve this by starting with some extra keys.
         if (ResourceMgr_IsSceneMasterQuest(SCENE_SPIRIT_TEMPLE)) {
-            // MQ Spirit needs 3 keys
+            // MQ Spirit needs 3 keys.
             gSaveContext.inventory.dungeonKeys[SCENE_SPIRIT_TEMPLE] = 3;
             gSaveContext.ship.stats.dungeonKeys[SCENE_SPIRIT_TEMPLE] = 3;
         }
     }
 
     if (Randomizer_GetSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH) {
-        gSaveContext.inventory.dungeonItems[SCENE_FOREST_TEMPLE] |= 1;    // Forest
-        gSaveContext.inventory.dungeonItems[SCENE_FIRE_TEMPLE] |= 1;     // Fire
-        gSaveContext.inventory.dungeonItems[SCENE_WATER_TEMPLE] |= 1;   // Water
+        gSaveContext.inventory.dungeonItems[SCENE_FOREST_TEMPLE] |= 1; // Forest
+        gSaveContext.inventory.dungeonItems[SCENE_FIRE_TEMPLE] |= 1;   // Fire
+        gSaveContext.inventory.dungeonItems[SCENE_WATER_TEMPLE] |= 1;  // Water
         gSaveContext.inventory.dungeonItems[SCENE_SPIRIT_TEMPLE] |= 1; // Spirit
-        gSaveContext.inventory.dungeonItems[SCENE_SHADOW_TEMPLE] |= 1;   // Shadow
+        gSaveContext.inventory.dungeonItems[SCENE_SHADOW_TEMPLE] |= 1; // Shadow
     }
 
     if (Randomizer_GetSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_STARTWITH) {
@@ -222,10 +229,10 @@ extern "C" void Randomizer_InitSaveFile() {
     // Starts pending ice traps out at 0 before potentially incrementing them down the line.
     gSaveContext.ship.pendingIceTrapCount = 0;
 
-    // Reset triforce pieces collected
+    // Reset triforce pieces collected.
     gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected = 0;
 
-    // Set Cutscene flags and texts to skip them
+    // Set Cutscene flags and texts to skip them.
     Flags_SetEventChkInf(EVENTCHKINF_FIRST_SPOKE_TO_MIDO);
     Flags_SetInfTable(INFTABLE_SPOKE_TO_KAEPORA_IN_LAKE_HYLIA);
     Flags_SetEventChkInf(EVENTCHKINF_SHEIK_SPAWNED_AT_MASTER_SWORD_PEDESTAL);
@@ -234,7 +241,7 @@ extern "C" void Randomizer_InitSaveFile() {
     Flags_SetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO);
     Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_NABOORU_IN_SPIRIT_TEMPLE);
 
-    // Go away ruto (water temple first cutscene)
+    // Go away Ruto (Water Temple first cutscene).
     gSaveContext.sceneFlags[SCENE_WATER_TEMPLE].swch |= (1 << 0x10);
 
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_OCARINA_BUTTONS) == RO_GENERIC_OFF) {
@@ -260,7 +267,7 @@ extern "C" void Randomizer_InitSaveFile() {
     // Give Link's pocket item
     GiveLinksPocketItem();
 
-    // remove One Time scrubs with scrubsanity off
+    // Remove One Time Scrubs with Scrubsanity off
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_OFF) {
         Flags_SetRandomizerInf(RAND_INF_SCRUBS_PURCHASED_LW_DEKU_SCRUB_NEAR_BRIDGE);
         Flags_SetRandomizerInf(RAND_INF_SCRUBS_PURCHASED_LW_DEKU_SCRUB_GROTTO_FRONT);
@@ -272,7 +279,7 @@ extern "C" void Randomizer_InitSaveFile() {
         case RO_AGE_ADULT: // Adult
             gSaveContext.linkAge = LINK_AGE_ADULT;
             gSaveContext.entranceIndex = ENTR_TEMPLE_OF_TIME_WARP_PAD;
-            gSaveContext.savedSceneNum = SCENE_LON_LON_RANCH; // Set scene num manually to ToT
+            gSaveContext.savedSceneNum = SCENE_LON_LON_RANCH; // Set scene num manually to ToT.
             break;
         case RO_AGE_CHILD: // Child
             gSaveContext.linkAge = LINK_AGE_CHILD;
@@ -284,17 +291,13 @@ extern "C" void Randomizer_InitSaveFile() {
 
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS)) {
         // Override the spawn entrance so entrance rando can take control,
-        // and to prevent remember save location from breaking inital spawn
+        // and to prevent remember save location from breaking initial spawn.
         gSaveContext.entranceIndex = -1;
     }
 
-    for (auto trialFlag : { EVENTCHKINF_COMPLETED_LIGHT_TRIAL,
-                        EVENTCHKINF_COMPLETED_FOREST_TRIAL,
-                        EVENTCHKINF_COMPLETED_FIRE_TRIAL,
-                        EVENTCHKINF_COMPLETED_WATER_TRIAL,
-                        EVENTCHKINF_COMPLETED_SPIRIT_TRIAL,
-                        EVENTCHKINF_COMPLETED_SHADOW_TRIAL }
-    ) {
+    for (auto trialFlag : { EVENTCHKINF_COMPLETED_LIGHT_TRIAL, EVENTCHKINF_COMPLETED_FOREST_TRIAL,
+                            EVENTCHKINF_COMPLETED_FIRE_TRIAL, EVENTCHKINF_COMPLETED_WATER_TRIAL,
+                            EVENTCHKINF_COMPLETED_SPIRIT_TRIAL, EVENTCHKINF_COMPLETED_SHADOW_TRIAL }) {
         if (!OTRGlobals::Instance->gRandomizer->IsTrialRequired(trialFlag)) {
             Flags_SetEventChkInf(trialFlag);
         }
@@ -304,24 +307,25 @@ extern "C" void Randomizer_InitSaveFile() {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_SONG_FROM_IMPA, (GetItemID)RG_ZELDAS_LULLABY);
         StartingItemGive(getItemEntry, RC_SONG_FROM_IMPA);
 
-        // malon/talon back at ranch
+        // Malon/Talon back at ranch.
         Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG);
+        Flags_SetRandomizerInf(RAND_INF_WEIRD_EGG);
         Flags_SetEventChkInf(EVENTCHKINF_TALON_WOKEN_IN_CASTLE);
         Flags_SetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE);
 
         // Set "Got Zelda's Letter" flag. Also ensures Saria is back at SFM.
         Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER);
+        Flags_SetRandomizerInf(RAND_INF_ZELDAS_LETTER);
         Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_LETTER_ZELDA);
 
-        // Got item from impa
+        // Got item from Impa.
         Flags_SetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY);
 
-        gSaveContext.sceneFlags[SCENE_HYRULE_CASTLE].swch |= (1 << 0x4); // move milk crates in hyrule castle to moat
+        gSaveContext.sceneFlags[SCENE_HYRULE_CASTLE].swch |= (1 << 0x4); // Move milk crates in Hyrule Castle to moat.
 
-        // set this at the end to ensure we always start with the letter
-        // this is for the off chance we got the weird egg from impa (which should never happen)
+        // Set this at the end to ensure we always start with the letter.
+        // This is for the off chance, we got the Weird Egg from Impa (which should never happen).
         INV_CONTENT(ITEM_LETTER_ZELDA) = ITEM_LETTER_ZELDA;
-        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_LETTER_ZELDA);
     }
 
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && startingAge == RO_AGE_ADULT) {
@@ -336,8 +340,8 @@ extern "C" void Randomizer_InitSaveFile() {
         Flags_SetEventChkInf(EVENTCHKINF_EPONA_OBTAINED);
     }
 
-    // Open lowest Vanilla Fire Temple locked door (to prevent key logic lockouts)
-    // Not done on keysanity since this lockout is a non issue when Fire keys can be found outside the temple
+    // Open lowest Vanilla Fire Temple locked door (to prevent key logic lockouts).
+    // Not done on Keysanity since this lockout is a non-issue when Fire Keys can be found outside the temple.
     u8 keysanity = Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANYWHERE ||
                    Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OVERWORLD ||
                    Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANY_DUNGEON;
@@ -345,14 +349,14 @@ extern "C" void Randomizer_InitSaveFile() {
         gSaveContext.sceneFlags[SCENE_FIRE_TEMPLE].swch |= (1 << 0x17);
     }
 
-    // Opens locked Water Temple door in vanilla to prevent softlocks
-    // West door on the middle level that leads to the water raising thing
-    // Happens in 3DS rando and N64 rando as well
+    // Opens locked Water Temple door in vanilla to prevent softlocks.
+    // West door on the middle level that leads to the water raising thing.
+    // Happens in 3DS rando and N64 rando as well.
     if (!ResourceMgr_IsSceneMasterQuest(SCENE_WATER_TEMPLE)) {
         gSaveContext.sceneFlags[SCENE_WATER_TEMPLE].swch |= (1 << 0x15);
     }
 
-    // Now handled on the fly
+    // Now handled on the fly.
     // int openForest = Randomizer_GetSettingValue(RSK_FOREST);
     // switch (openForest) {
     //     case RO_CLOSED_FOREST_OFF:
@@ -423,7 +427,7 @@ extern "C" void Randomizer_InitSaveFile() {
         gSaveContext.itemGetInf[3] |= 0x100;  // Sold Keaton Mask
         gSaveContext.itemGetInf[3] |= 0x200;  // Sold Skull Mask
         gSaveContext.itemGetInf[3] |= 0x400;  // Sold Spooky Mask
-        gSaveContext.itemGetInf[3] |= 0x800;  // bunny hood related
+        gSaveContext.itemGetInf[3] |= 0x800;  // Bunny Hood related
         gSaveContext.itemGetInf[3] |= 0x8000; // Obtained Mask of Truth
     }
 

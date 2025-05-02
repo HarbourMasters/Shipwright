@@ -2,11 +2,7 @@
 
 #include <libultraship/libultraship.h>
 
-typedef enum {
-  COLVIEW_DISABLED,
-  COLVIEW_SOLID,
-  COLVIEW_TRANSPARENT
-} ColViewerRenderSetting;
+typedef enum { COLVIEW_DISABLED, COLVIEW_SOLID, COLVIEW_TRANSPARENT } ColViewerRenderSetting;
 
 #ifdef __cplusplus
 class ColViewerWindow : public Ship::GuiWindow {
@@ -15,7 +11,7 @@ class ColViewerWindow : public Ship::GuiWindow {
 
     void InitElement() override;
     void DrawElement() override;
-    void UpdateElement() override {};
+    void UpdateElement() override{};
 };
 
 #endif

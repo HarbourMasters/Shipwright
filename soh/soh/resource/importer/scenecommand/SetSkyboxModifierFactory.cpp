@@ -4,12 +4,13 @@
 #include "spdlog/spdlog.h"
 
 namespace SOH {
-std::shared_ptr<Ship::IResource> SetSkyboxModifierFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
-                                                                 std::shared_ptr<Ship::BinaryReader> reader) {
+std::shared_ptr<Ship::IResource>
+SetSkyboxModifierFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
+                                       std::shared_ptr<Ship::BinaryReader> reader) {
     auto setSkyboxModifier = std::make_shared<SetSkyboxModifier>(initData);
 
-	ReadCommandId(setSkyboxModifier, reader);
-	
+    ReadCommandId(setSkyboxModifier, reader);
+
     setSkyboxModifier->modifier.skyboxDisabled = reader->ReadInt8();
     setSkyboxModifier->modifier.sunMoonDisabled = reader->ReadInt8();
 
@@ -20,8 +21,9 @@ std::shared_ptr<Ship::IResource> SetSkyboxModifierFactory::ReadResource(std::sha
     return setSkyboxModifier;
 }
 
-std::shared_ptr<Ship::IResource> SetSkyboxModifierFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
-                                                                   tinyxml2::XMLElement* reader) {
+std::shared_ptr<Ship::IResource>
+SetSkyboxModifierFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
+                                          tinyxml2::XMLElement* reader) {
     auto setSkyboxModifier = std::make_shared<SetSkyboxModifier>(initData);
 
     setSkyboxModifier->cmdId = SceneCommandID::SetSkyboxModifier;

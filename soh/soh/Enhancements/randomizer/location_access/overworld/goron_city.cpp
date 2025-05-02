@@ -4,6 +4,7 @@
 using namespace Rando;
 
 void RegionTable_Init_GoronCity() {
+    // clang-format off
     areaTable[RR_GORON_CITY] = Region("Goron City", "Goron City", {RA_GORON_CITY}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->GossipStoneFairy,          []{return logic->CallGossipFairyExceptSuns();}),
@@ -32,6 +33,8 @@ void RegionTable_Init_GoronCity() {
         LOCATION(RC_GC_UPPER_STAIRCASE_POT_1,       logic->CanBreakPots()),
         LOCATION(RC_GC_UPPER_STAIRCASE_POT_2,       logic->CanBreakPots()),
         LOCATION(RC_GC_UPPER_STAIRCASE_POT_3,       logic->CanBreakPots()),
+        LOCATION(RC_GC_MAZE_CRATE,                  logic->BlastOrSmash()  || (logic->CanUse(RG_SILVER_GAUNTLETS) && logic->CanBreakCrates())),
+
     }, {
         //Exits
         Entrance(RR_DEATH_MOUNTAIN_TRAIL, []{return true;}),
@@ -108,4 +111,6 @@ void RegionTable_Init_GoronCity() {
         //Exits
         Entrance(RR_GC_GROTTO_PLATFORM, []{return true;}),
     });
+
+    // clang-format on
 }

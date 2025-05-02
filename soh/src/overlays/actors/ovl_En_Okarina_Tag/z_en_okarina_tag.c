@@ -154,7 +154,8 @@ void func_80ABF0CC(EnOkarinaTag* this, PlayState* play) {
             if (play->sceneNum == SCENE_WATER_TEMPLE) {
                 play->msgCtx.msgMode = MSGMODE_PAUSED;
             }
-            if ((play->sceneNum != SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC) && (play->sceneNum != SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS)) {
+            if ((play->sceneNum != SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC) &&
+                (play->sceneNum != SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS)) {
                 play->msgCtx.ocarinaMode = OCARINA_MODE_04;
             }
             Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
@@ -162,12 +163,9 @@ void func_80ABF0CC(EnOkarinaTag* this, PlayState* play) {
             return;
         }
         if (this->unk_158 != 0) {
-            if ((play->msgCtx.ocarinaMode == OCARINA_MODE_05) ||
-                (play->msgCtx.ocarinaMode == OCARINA_MODE_06) ||
-                (play->msgCtx.ocarinaMode == OCARINA_MODE_07) ||
-                (play->msgCtx.ocarinaMode == OCARINA_MODE_08) ||
-                (play->msgCtx.ocarinaMode == OCARINA_MODE_09) ||
-                (play->msgCtx.ocarinaMode == OCARINA_MODE_0A) ||
+            if ((play->msgCtx.ocarinaMode == OCARINA_MODE_05) || (play->msgCtx.ocarinaMode == OCARINA_MODE_06) ||
+                (play->msgCtx.ocarinaMode == OCARINA_MODE_07) || (play->msgCtx.ocarinaMode == OCARINA_MODE_08) ||
+                (play->msgCtx.ocarinaMode == OCARINA_MODE_09) || (play->msgCtx.ocarinaMode == OCARINA_MODE_0A) ||
                 (play->msgCtx.ocarinaMode == OCARINA_MODE_0D)) {
                 if (this->switchFlag >= 0) {
                     Flags_SetSwitch(play, this->switchFlag);
@@ -194,7 +192,9 @@ void func_80ABF28C(EnOkarinaTag* this, PlayState* play) {
     if ((this->ocarinaSong != 6) || (gSaveContext.scarecrowSpawnSongSet)) {
         if ((this->switchFlag >= 0) && Flags_GetSwitch(play, this->switchFlag)) {
             this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
-        } else if (((this->type != 4) || GameInteractor_Should(VB_BE_ELIGIBLE_TO_OPEN_DOT, !Flags_GetEventChkInf(EVENTCHKINF_OPENED_THE_DOOR_OF_TIME), this)) &&
+        } else if (((this->type != 4) ||
+                    GameInteractor_Should(VB_BE_ELIGIBLE_TO_OPEN_DOT,
+                                          !Flags_GetEventChkInf(EVENTCHKINF_OPENED_THE_DOOR_OF_TIME), this)) &&
                    ((this->type != 6) || !Flags_GetEventChkInf(EVENTCHKINF_DESTROYED_ROYAL_FAMILY_TOMB)) &&
                    (this->actor.xzDistToPlayer < (90.0f + this->interactRange)) &&
                    (fabsf(player->actor.world.pos.y - this->actor.world.pos.y) < 80.0f)) {
@@ -261,7 +261,7 @@ void func_80ABF4C8(EnOkarinaTag* this, PlayState* play) {
             case 6: // Royal Family Tomb
                 if (GameInteractor_Should(VB_PLAY_ROYAL_FAMILY_TOMB_CS, true, this)) {
                     play->csCtx.segment = LINK_IS_ADULT ? SEGMENTED_TO_VIRTUAL(&spot02_scene_Cs_003C80)
-                                                             : SEGMENTED_TO_VIRTUAL(&spot02_scene_Cs_005020);
+                                                        : SEGMENTED_TO_VIRTUAL(&spot02_scene_Cs_005020);
                     gSaveContext.cutsceneTrigger = 1;
                 }
                 Flags_SetEventChkInf(EVENTCHKINF_DESTROYED_ROYAL_FAMILY_TOMB);

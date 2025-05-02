@@ -35,8 +35,7 @@ void DemoGt_Rumble(PlayState* play) {
     func_800AA000(0.0f, 0x32, 0xA, 5);
 }
 
-void DemoGt_SpawnDust(PlayState* play, Vec3f* pos, Vec3f* velocity, Vec3f* accel, f32 scale, s16 scaleStep,
-                      s16 life) {
+void DemoGt_SpawnDust(PlayState* play, Vec3f* pos, Vec3f* velocity, Vec3f* accel, f32 scale, s16 scaleStep, s16 life) {
     static Color_RGBA8 brownPrim = { 100, 80, 100, 0 };
     static Color_RGBA8 redEnv = { 255, 110, 96, 0 };
 
@@ -73,8 +72,7 @@ void func_8097D7D8(PlayState* play, Vec3f* pos, Vec3f* velOffset, f32 scale, s32
 }
 
 Actor* DemoGt_SpawnCloudRing(PlayState* play, Vec3f* pos, s16 params) {
-    return Actor_Spawn(&play->actorCtx, play, ACTOR_BG_SPOT16_DOUGHNUT, pos->x, pos->y, pos->z, 0, 0, 0,
-                       params, true);
+    return Actor_Spawn(&play->actorCtx, play, ACTOR_BG_SPOT16_DOUGHNUT, pos->x, pos->y, pos->z, 0, 0, 0, params, true);
 }
 
 void DemoGt_SpawnExplosionWithSound(PlayState* play, Vec3f* pos, f32 scale) {
@@ -207,9 +205,9 @@ void func_8097DF70(DemoGt* this, PlayState* play, Vec3f* spawnerPos) {
             phi_s0 = 33;
         }
 
-        EffectSsKakera_Spawn(play, &pos, &velocity, spawnerPos, -200, phi_s0, 10, 10, 0,
-                             Rand_ZeroOne() * 30.0f + 30.0f, 2, 300, (s32)(Rand_ZeroOne() * 30.0f) + 30,
-                             KAKERA_COLOR_NONE, OBJECT_GEFF, gGanonRubbleDL);
+        EffectSsKakera_Spawn(play, &pos, &velocity, spawnerPos, -200, phi_s0, 10, 10, 0, Rand_ZeroOne() * 30.0f + 30.0f,
+                             2, 300, (s32)(Rand_ZeroOne() * 30.0f) + 30, KAKERA_COLOR_NONE, OBJECT_GEFF,
+                             gGanonRubbleDL);
         angle += 0x1555;
     }
 }
@@ -256,8 +254,8 @@ void func_8097E1D4(PlayState* play, Vec3f* arg1, s16 arg2) {
     }
 }
 
-void func_8097E454(PlayState* play, Vec3f* spawnerPos, Vec3f* velocity, Vec3f* accel, f32 arg4, f32 scale,
-                   s32 arg6, s32 arg7, s16 life) {
+void func_8097E454(PlayState* play, Vec3f* spawnerPos, Vec3f* velocity, Vec3f* accel, f32 arg4, f32 scale, s32 arg6,
+                   s32 arg7, s16 life) {
     s32 pad2[3];
     s16 increment;
     s32 frames;
@@ -859,8 +857,7 @@ void DemoGt_Draw2(DemoGt* this, PlayState* play) {
     gSPSegment(POLY_OPA_DISP++, 0x08,
                Gfx_TwoTexScrollEnvColor(gfxCtx, 0, 0, unk198[0], 0x20, 0x40, 1, 0, unk198[1], 0x20, 0x40, unk178[0],
                                         unk178[1], unk178[2], 128));
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
-              G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gTowerCollapseCsCollapsedStructureInnerDL);
     gSPPopMatrix(POLY_OPA_DISP++, G_MTX_MODELVIEW);
 
@@ -1169,8 +1166,7 @@ void DemoGt_Draw3(DemoGt* this, PlayState* play) {
     OPEN_DISPS(gfxCtx);
 
     Gfx_SetupDL_25Opa(gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
-              G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gTowerCollapseCsCollapsedStructureOuterDL);
     gSPPopMatrix(POLY_OPA_DISP++, G_MTX_MODELVIEW);
 

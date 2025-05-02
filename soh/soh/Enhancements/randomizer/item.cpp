@@ -11,31 +11,38 @@
 #include "../../OTRGlobals.h"
 
 namespace Rando {
-Item::Item() : randomizerGet(RG_NONE), type(ITEMTYPE_ITEM), getItemId(GI_NONE), advancement(false), hintKey(RHT_NONE),
-               progressive(false), price(0) {}
+Item::Item()
+    : randomizerGet(RG_NONE), type(ITEMTYPE_ITEM), getItemId(GI_NONE), advancement(false), hintKey(RHT_NONE),
+      progressive(false), price(0) {
+}
 Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_, const int16_t getItemId_,
-    const bool advancement_, LogicVal logicVal_, const RandomizerHintTextKey hintKey_, const uint16_t itemId_,
-    const uint16_t objectId_, const uint16_t gid_, const uint16_t textId_, const uint16_t field_,
-    const int16_t chestAnimation_, const GetItemCategory category_, const uint16_t modIndex_,
-    const bool progressive_, const uint16_t price_)
+           const bool advancement_, LogicVal logicVal_, const RandomizerHintTextKey hintKey_, const uint16_t itemId_,
+           const uint16_t objectId_, const uint16_t gid_, const uint16_t textId_, const uint16_t field_,
+           const int16_t chestAnimation_, const GetItemCategory category_, const uint16_t modIndex_,
+           const bool progressive_, const uint16_t price_)
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
-    advancement(advancement_), logicVal(logicVal_), hintKey(hintKey_), progressive(progressive_), price(price_) {
+      advancement(advancement_), logicVal(logicVal_), hintKey(hintKey_), progressive(progressive_), price(price_) {
     if (modIndex_ == MOD_RANDOMIZER || getItemId > 0x7D) {
-        giEntry = std::make_shared<GetItemEntry>(GetItemEntry{ itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_, objectId_, modIndex_, TABLE_RANDOMIZER, static_cast<int16_t>(randomizerGet_), gid_, true, ITEM_FROM_NPC, category_, static_cast<uint16_t>(randomizerGet_), MOD_RANDOMIZER, NULL });
-    }
-    else {
-        giEntry = std::make_shared<GetItemEntry>(GetItemEntry{ itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_, objectId_, modIndex_, TABLE_VANILLA, getItemId_, gid_, true, ITEM_FROM_NPC, category_, itemId_, modIndex_, NULL });
+        giEntry = std::make_shared<GetItemEntry>(GetItemEntry{
+            itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_,
+            objectId_, modIndex_, TABLE_RANDOMIZER, static_cast<int16_t>(randomizerGet_), gid_, true, ITEM_FROM_NPC,
+            category_, static_cast<uint16_t>(randomizerGet_), MOD_RANDOMIZER, NULL });
+    } else {
+        giEntry = std::make_shared<GetItemEntry>(GetItemEntry{
+            itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_,
+            objectId_, modIndex_, TABLE_VANILLA, getItemId_, gid_, true, ITEM_FROM_NPC, category_, itemId_, modIndex_,
+            NULL });
     }
 }
 
 Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_, const int16_t getItemId_,
-    const bool advancement_, LogicVal logicVal_, const RandomizerHintTextKey hintKey_, const bool progressive_,
-    const uint16_t price_)
+           const bool advancement_, LogicVal logicVal_, const RandomizerHintTextKey hintKey_, const bool progressive_,
+           const uint16_t price_)
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
-    advancement(advancement_), logicVal(logicVal_), hintKey(hintKey_), progressive(progressive_), price(price_) {
+      advancement(advancement_), logicVal(logicVal_), hintKey(hintKey_), progressive(progressive_), price(price_) {
 }
 
-    Item::~Item() = default;
+Item::~Item() = default;
 
 void Item::ApplyEffect() const {
     auto ctx = Rando::Context::GetInstance();
@@ -94,6 +101,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
                         actual = RG_DEKU_STICK_BAG;
                         break;
                     }
+                    [[fallthrough]];
                 case 1:
                     if (infiniteUpgrades == RO_INF_UPGRADES_CONDENSED_PROGRESSIVE) {
                         actual = RG_STICK_UPGRADE_INF;
@@ -123,6 +131,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
                         actual = RG_DEKU_NUT_BAG;
                         break;
                     }
+                    [[fallthrough]];
                 case 1:
                     if (infiniteUpgrades == RO_INF_UPGRADES_CONDENSED_PROGRESSIVE) {
                         actual = RG_NUT_UPGRADE_INF;
@@ -281,11 +290,11 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
                     actual = RG_GIANT_WALLET;
                     break;
                 case 2:
-                    if(tycoonWallet){
+                    if (tycoonWallet) {
                         actual = RG_TYCOON_WALLET;
                         break;
                     }
-                    //fallthrough
+                    // fallthrough
                 case 3:
                 case 4:
                     if (infiniteUpgrades != RO_INF_UPGRADES_OFF) {
@@ -336,8 +345,8 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
             }
             break;
         case RG_PROGRESSIVE_GORONSWORD: // todo progressive?
-           actual = RG_BIGGORON_SWORD;
-           break;
+            actual = RG_BIGGORON_SWORD;
+            break;
         case RG_PROGRESSIVE_BOMBCHUS:
             if (logic->CurrentInventory(ITEM_BOMBCHU) == ITEM_NONE) {
                 actual = RG_BOMBCHU_BAG;
@@ -391,7 +400,8 @@ bool Item::IsMajorItem() const {
         return false;
     }
 
-    if (type == ITEMTYPE_DUNGEONREWARD && ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
+    if (type == ITEMTYPE_DUNGEONREWARD &&
+        ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
         return false;
     }
 
@@ -405,7 +415,8 @@ bool Item::IsMajorItem() const {
         return false;
     }
 
-    if (type == ITEMTYPE_SMALLKEY && (ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_VANILLA) || ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON))) {
+    if (type == ITEMTYPE_SMALLKEY && (ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_VANILLA) ||
+                                      ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON))) {
         return false;
     }
 
@@ -414,11 +425,13 @@ bool Item::IsMajorItem() const {
     }
 
     if (type == ITEMTYPE_BOSSKEY && getItemId != 0xAD &&
-        (ctx->GetOption(RSK_BOSS_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_VANILLA) || ctx->GetOption(RSK_BOSS_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON))) {
+        (ctx->GetOption(RSK_BOSS_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_VANILLA) ||
+         ctx->GetOption(RSK_BOSS_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON))) {
         return false;
     }
     // Ganons Castle Boss Key
-    if (getItemId == 0xAD && (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_VANILLA) || ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_OWN_DUNGEON))) {
+    if (getItemId == 0xAD && (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_VANILLA) ||
+                              ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_OWN_DUNGEON))) {
         return false;
     }
 
@@ -444,4 +457,4 @@ bool Item::operator==(const Item& right) const {
 bool Item::operator!=(const Item& right) const {
     return !operator==(right);
 }
-}
+} // namespace Rando

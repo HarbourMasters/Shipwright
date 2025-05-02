@@ -124,8 +124,7 @@ void EnEiyer_Init(Actor* thisx, PlayState* play) {
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
     ActorShape_Init(&this->actor.shape, 600.0f, ActorShadow_DrawCircle, 65.0f);
-    SkelAnime_Init(play, &this->skelanime, &gStingerSkel, &gStingerIdleAnim, this->jointTable, this->morphTable,
-                   19);
+    SkelAnime_Init(play, &this->skelanime, &gStingerSkel, &gStingerIdleAnim, this->jointTable, this->morphTable, 19);
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, &this->actor, &sColCylInit);
     CollisionCheck_SetInfo(&this->actor.colChkInfo, &sDamageTable, &sColChkInfoInit);
@@ -709,15 +708,15 @@ void EnEiyer_Draw(Actor* thisx, PlayState* play) {
         gSPSegment(POLY_OPA_DISP++, 0x08, &D_80116280[2]);
         gDPSetEnvColor(POLY_OPA_DISP++, 255, 255, 255, 255);
 
-        POLY_OPA_DISP = SkelAnime_DrawSkeleton2(play, &this->skelanime,
-                                       EnEiyer_OverrideLimbDraw, NULL, this, POLY_OPA_DISP);
+        POLY_OPA_DISP =
+            SkelAnime_DrawSkeleton2(play, &this->skelanime, EnEiyer_OverrideLimbDraw, NULL, this, POLY_OPA_DISP);
     } else {
         Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gSPSegment(POLY_XLU_DISP++, 0x08, D_80116280);
         gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 255, this->actor.shape.shadowAlpha);
 
-        POLY_XLU_DISP = SkelAnime_DrawSkeleton2(play, &this->skelanime,
-                                       EnEiyer_OverrideLimbDraw, NULL, this, POLY_XLU_DISP);
+        POLY_XLU_DISP =
+            SkelAnime_DrawSkeleton2(play, &this->skelanime, EnEiyer_OverrideLimbDraw, NULL, this, POLY_XLU_DISP);
     }
     CLOSE_DISPS(play->state.gfxCtx);
 }

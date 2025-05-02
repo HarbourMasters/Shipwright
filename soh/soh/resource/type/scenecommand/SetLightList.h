@@ -45,4 +45,4 @@ class SetLightList : public SceneCommand<LightInfo> {
     uint32_t numLights;
     std::vector<LightInfo> lightList;
 };
-}; // namespace LUS
+}; // namespace SOH

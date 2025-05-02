@@ -115,9 +115,9 @@ s32 BgHidanHamstep_SpawnChildren(BgHidanHamstep* this, PlayState* play2) {
         params = (i + 1) & 0xFF;
         params |= (this->dyna.actor.params & 0xFF00);
 
-        step = (BgHidanHamstep*)Actor_SpawnAsChild(
-            &play->actorCtx, &step->dyna.actor, play, ACTOR_BG_HIDAN_HAMSTEP, pos.x, pos.y, pos.z,
-            this->dyna.actor.world.rot.x, this->dyna.actor.world.rot.y, this->dyna.actor.world.rot.z, params);
+        step = (BgHidanHamstep*)Actor_SpawnAsChild(&play->actorCtx, &step->dyna.actor, play, ACTOR_BG_HIDAN_HAMSTEP,
+                                                   pos.x, pos.y, pos.z, this->dyna.actor.world.rot.x,
+                                                   this->dyna.actor.world.rot.y, this->dyna.actor.world.rot.z, params);
 
         if (step == NULL) {
             return 0;
@@ -306,7 +306,6 @@ void func_80888860(BgHidanHamstep* this, PlayState* play) {
         } else {
             this->dyna.actor.velocity.y *= -0.24f;
 
-
             if (this->unk_244 == 1) {
                 quakeIndex = Quake_Add(GET_ACTIVE_CAM(play), 3);
                 Quake_SetSpeed(quakeIndex, -15536);
@@ -364,7 +363,6 @@ void func_80888A58(BgHidanHamstep* this, PlayState* play) {
         } else {
             this->dyna.actor.velocity.y *= -0.24f;
 
-
             if (this->unk_244 == 1) {
                 quakeIndex = Quake_Add(GET_ACTIVE_CAM(play), 3);
                 Quake_SetSpeed(quakeIndex, -15536);
@@ -399,8 +397,7 @@ void BgHidanHamstep_Draw(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     if ((thisx->params & 0xFF) == 0) {
         gSPDisplayList(POLY_OPA_DISP++, gFireTempleStoneStep1DL);

@@ -42,33 +42,42 @@ const uint32_t defaultImGuiScale = 1;
 const float imguiScaleOptionToValue[4] = { 0.75f, 1.0f, 1.5f, 2.0f };
 
 class OTRGlobals {
-    public:
-        static OTRGlobals* Instance;
+  public:
+    static OTRGlobals* Instance;
 
     std::shared_ptr<Ship::Context> context;
     std::shared_ptr<SaveStateMgr> gSaveStateMgr;
     std::shared_ptr<Randomizer> gRandomizer;
     std::shared_ptr<Rando::Context> gRandoContext;
 
-        ImFont* defaultFontSmaller;
-        ImFont* defaultFontLarger;
-        ImFont* defaultFontLargest;
+    ImFont* defaultFontSmaller;
+    ImFont* defaultFontLarger;
+    ImFont* defaultFontLargest;
 
-        OTRGlobals();
-        ~OTRGlobals();
+    ImFont* fontMonoSmall;
+    ImFont* fontStandard;
+    ImFont* fontStandardLarger;
+    ImFont* fontStandardLargest;
+    ImFont* fontMono;
+    ImFont* fontMonoLarger;
+    ImFont* fontMonoLargest;
 
-        void ScaleImGui();
+    OTRGlobals();
+    ~OTRGlobals();
 
-        bool HasMasterQuest();
-        bool HasOriginal();
-        uint32_t GetInterpolationFPS();
-        std::shared_ptr<std::vector<std::string>> ListFiles(std::string path);
+    void ScaleImGui();
 
-    private:
-    	void CheckSaveFile(size_t sramSize) const;
-        bool hasMasterQuest;
-        bool hasOriginal;
-        ImFont* CreateDefaultFontWithSize(float size);
+    bool HasMasterQuest();
+    bool HasOriginal();
+    uint32_t GetInterpolationFPS();
+    std::shared_ptr<std::vector<std::string>> ListFiles(std::string path);
+
+  private:
+    void CheckSaveFile(size_t sramSize) const;
+    bool hasMasterQuest;
+    bool hasOriginal;
+    ImFont* CreateDefaultFontWithSize(float size);
+    ImFont* CreateFontWithSize(float size, std::string fontPath);
 };
 #endif
 
@@ -128,7 +137,8 @@ void Randomizer_LoadHintMessages();
 void Randomizer_LoadMerchantMessages();
 bool Randomizer_IsTrialRequired(s32 trialFlag);
 GetItemEntry Randomizer_GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId);
-GetItemEntry Randomizer_GetItemFromActorWithoutObtainabilityCheck(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId);
+GetItemEntry Randomizer_GetItemFromActorWithoutObtainabilityCheck(s16 actorId, s16 sceneNum, s16 actorParams,
+                                                                  GetItemID ogId);
 GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 GetItemEntry Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 RandomizerInf Randomizer_GetRandomizerInfFromCheck(RandomizerCheck randomizerCheck);

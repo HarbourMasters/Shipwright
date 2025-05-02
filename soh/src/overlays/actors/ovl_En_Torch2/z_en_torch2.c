@@ -8,7 +8,9 @@
 #include "objects/object_torch2/object_torch2.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
+#define FLAGS                                                                                 \
+    (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
+     ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 typedef enum {
     /* 0 */ ENTORCH2_WAIT,
@@ -128,7 +130,8 @@ void EnTorch2_Init(Actor* thisx, PlayState* play2) {
 
     // Change Dark Link to regular enemy instead of boss with enemy randomizer and crowd control.
     // This way Dark Link will be considered for "clear enemy" rooms properly.
-    if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) || (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0))) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) ||
+        (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0))) {
         Actor_ChangeCategory(play, &play->actorCtx, thisx, ACTORCAT_ENEMY);
     }
 
@@ -202,8 +205,7 @@ s32 EnTorch2_SwingSword(PlayState* play, Input* input, Player* this) {
     if (sAlpha != 255) {
         noAttackChance += 2.0f;
     }
-    if ((((play->gameplayFrames & attackDelay) == 0) || (sSwordJumpState != 0)) &&
-        (noAttackChance <= Rand_ZeroOne())) {
+    if ((((play->gameplayFrames & attackDelay) == 0) || (sSwordJumpState != 0)) && (noAttackChance <= Rand_ZeroOne())) {
         if (sSwordJumpState == 0) {
             switch ((s32)(Rand_ZeroOne() * 7.0f)) {
                 case 1:
@@ -291,7 +293,8 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
 
             // Handles Dark Link's sword clanking on Link's sword
 
-            if ((this->meleeWeaponQuads[0].base.acFlags & AC_BOUNCED) || (this->meleeWeaponQuads[1].base.acFlags & AC_BOUNCED)) {
+            if ((this->meleeWeaponQuads[0].base.acFlags & AC_BOUNCED) ||
+                (this->meleeWeaponQuads[1].base.acFlags & AC_BOUNCED)) {
                 this->meleeWeaponQuads[0].base.acFlags &= ~AC_BOUNCED;
                 this->meleeWeaponQuads[1].base.acFlags &= ~AC_BOUNCED;
                 this->meleeWeaponQuads[0].base.atFlags |= AT_BOUNCED;
@@ -366,7 +369,8 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
                                            player->actor.world.pos.z,
                                        1.0f, 5.0f, 0.0f);
                     sSwordJumpTimer--;
-                    if (((u32)sSwordJumpTimer == 0) || ((player->invincibilityTimer > 0) && (this->meleeWeaponState == 0))) {
+                    if (((u32)sSwordJumpTimer == 0) ||
+                        ((player->invincibilityTimer > 0) && (this->meleeWeaponState == 0))) {
                         this->actor.world.rot.y = this->actor.shape.rot.y = this->actor.yawTowardsPlayer;
                         input->cur.button = BTN_A;
                         player->stateFlags3 &= ~PLAYER_STATE3_PAUSE_ACTION_FUNC;
@@ -398,9 +402,9 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
                             // Handles the reaction to a one-handed stab. If the conditions are satisfied,
                             // Dark Link jumps on Link's sword. Otherwise he backflips away.
 
-                            if ((this->meleeWeaponState == 0) && (sCounterState == 0) && (player->invincibilityTimer == 0) &&
-                                (player->meleeWeaponAnimation == STAB_1H) && (this->actor.xzDistToPlayer <= 85.0f) &&
-                                Actor_IsTargeted(play, &this->actor)) {
+                            if ((this->meleeWeaponState == 0) && (sCounterState == 0) &&
+                                (player->invincibilityTimer == 0) && (player->meleeWeaponAnimation == STAB_1H) &&
+                                (this->actor.xzDistToPlayer <= 85.0f) && Actor_IsTargeted(play, &this->actor)) {
 
                                 sStickTilt = 0.0f;
                                 sSwordJumpState = 1;
@@ -452,10 +456,12 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
                         sStickAngle = thisx->yawTowardsPlayer;
                         sp50 = 0.0f;
                         if ((90.0f >= this->actor.xzDistToPlayer) && (this->actor.xzDistToPlayer > 70.0f) &&
-                            (ABS(sp5A) >= 0x7800) && (this->actor.isTargeted || !(player->stateFlags1 & PLAYER_STATE1_SHIELDING))) {
+                            (ABS(sp5A) >= 0x7800) &&
+                            (this->actor.isTargeted || !(player->stateFlags1 & PLAYER_STATE1_SHIELDING))) {
                             EnTorch2_SwingSword(play, input, this);
                         } else if (((this->actor.xzDistToPlayer <= 70.0f) ||
-                                    ((this->actor.xzDistToPlayer <= 80.0f + sp50) && (player->meleeWeaponState != 0))) &&
+                                    ((this->actor.xzDistToPlayer <= 80.0f + sp50) &&
+                                     (player->meleeWeaponState != 0))) &&
                                    (this->meleeWeaponState == 0)) {
                             if (!EnTorch2_SwingSword(play, input, this) && (this->meleeWeaponState == 0) &&
                                 (sCounterState == 0)) {
@@ -469,7 +475,8 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
                             }
                         } else if (this->actor.xzDistToPlayer > 100.0f + sp50) {
                             if ((player->meleeWeaponState == 0) || (player->meleeWeaponAnimation < SPIN_ATTACK_1H) ||
-                                (player->meleeWeaponAnimation > BIG_SPIN_2H) || (this->actor.xzDistToPlayer >= 280.0f)) {
+                                (player->meleeWeaponAnimation > BIG_SPIN_2H) ||
+                                (this->actor.xzDistToPlayer >= 280.0f)) {
                                 sStickTilt = 127.0f;
                                 sStickAngle = this->actor.yawTowardsPlayer;
                                 if (!this->actor.isTargeted) {
@@ -568,8 +575,9 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
 
     // Causes Dark Link to shield in place when Link is using magic attacks other than the spin attack
 
-    if ((gSaveContext.magicState == MAGIC_STATE_METER_FLASH_1) && (player->meleeWeaponState == 0 || (player->meleeWeaponAnimation < SPIN_ATTACK_1H) ||
-                                         (player->meleeWeaponAnimation > BIG_SPIN_2H))) {
+    if ((gSaveContext.magicState == MAGIC_STATE_METER_FLASH_1) &&
+        (player->meleeWeaponState == 0 || (player->meleeWeaponAnimation < SPIN_ATTACK_1H) ||
+         (player->meleeWeaponAnimation > BIG_SPIN_2H))) {
         sStickTilt = 0.0f;
         input->cur.stick_x = 0;
         input->cur.stick_y = 0;
@@ -794,17 +802,17 @@ void EnTorch2_Draw(Actor* thisx, PlayState* play2) {
         gSPSegment(POLY_OPA_DISP++, 0x0C, D_80116280 + 2);
         func_8002EBCC(&this->actor, play, 0);
         func_8002ED80(&this->actor, play, 0);
-        POLY_OPA_DISP = SkelAnime_DrawFlex(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                                           this->skelAnime.dListCount, EnTorch2_OverrideLimbDraw, EnTorch2_PostLimbDraw,
-                                           this, POLY_OPA_DISP);
+        POLY_OPA_DISP =
+            SkelAnime_DrawFlex(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
+                               EnTorch2_OverrideLimbDraw, EnTorch2_PostLimbDraw, this, POLY_OPA_DISP);
     } else {
         gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, sAlpha);
         gSPSegment(POLY_XLU_DISP++, 0x0C, D_80116280);
         func_8002EBCC(&this->actor, play, 0);
         func_8002ED80(&this->actor, play, 0);
-        POLY_XLU_DISP = SkelAnime_DrawFlex(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                                           this->skelAnime.dListCount, EnTorch2_OverrideLimbDraw, EnTorch2_PostLimbDraw,
-                                           this, POLY_XLU_DISP);
+        POLY_XLU_DISP =
+            SkelAnime_DrawFlex(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
+                               EnTorch2_OverrideLimbDraw, EnTorch2_PostLimbDraw, this, POLY_XLU_DISP);
     }
     CLOSE_DISPS(play->state.gfxCtx);
 }
