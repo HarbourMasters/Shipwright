@@ -91,7 +91,7 @@ void SohMenu::AddMenuDevTools() {
         .CVar(CVAR_DEVELOPER_TOOLS("LogLevel"))
         .Options(ComboboxOptions()
                      .Tooltip("The log level determines which messages are printed to the console."
-                         " This does not affect the log file output")
+                              " This does not affect the log file output")
                      .ComboMap(logLevels))
         .Callback([](WidgetInfo& info) {
             Ship::Context::GetInstance()->GetLogger()->set_level(
