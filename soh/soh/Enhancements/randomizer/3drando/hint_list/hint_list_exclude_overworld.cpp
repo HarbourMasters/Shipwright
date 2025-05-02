@@ -313,11 +313,11 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
                                                  /*german*/ "Man erzählt sich, daß ein #Tauchexperiment# mit #[[1]]# belohnt würde.",
                                                  /*french*/ "Selon moi, l'#expérience de plongée# donne #[[1]]#.", {QM_RED, QM_GREEN}));
                                               // /*spanish*/ Según dicen, #bucear para un experimento# se premia con #[[1]]#.
-    // RANDOTODO: needs translation
+
     hintTextTable[RHT_ZD_FISH] = HintText(CustomMessage("They say that a #fish by a waterfall# hoards #[[1]]#.",
                                              /*german*/ "Man erzählt sich, daß ein #Fisch nahe eines Wasserfalls# #[[1]]# horte.",
-                                             /*french*/ "Selon moi, #[[1]]#.", {QM_RED, QM_GREEN}));
-                                          // /*spanish*/ Según dicen, #[[1]]#.
+                                             /*french*/ "Selon moi, un #poisson près d'une cascade# amasse #[[1]]#.", {QM_RED, QM_GREEN}));
+                                          // /*spanish*/ Según dicen, un #pez junto a una cascada# acumula #[[1]]#.
 
  
     hintTextTable[RHT_GC_ROLLING_GORON_AS_ADULT] = HintText(CustomMessage("They say that #reassuring a young Goron# is rewarded with #[[1]]#.",
