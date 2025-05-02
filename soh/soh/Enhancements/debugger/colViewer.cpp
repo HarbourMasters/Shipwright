@@ -20,7 +20,7 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-typedef enum ColRenderSetting { ColRenderDisabled, ColRenderSolid, ColRenderTransparent } ColRenderSetting;
+enum ColRenderSetting { ColRenderDisabled, ColRenderSolid, ColRenderTransparent };
 
 static std::unordered_map<int32_t, const char*> ColRenderSettingNames = {
     { ColRenderDisabled, "Disabled" },

@@ -364,8 +364,10 @@ const std::string& SohUtils::GetRandomizerCheckAreaPrefix(int32_t rcarea) {
 }
 
 void SohUtils::CopyStringToCharArray(char* destination, std::string source, size_t size) {
-    strncpy(destination, source.c_str(), size - 1);
-    destination[size - 1] = '\0';
+    if (size > 0) {
+        strncpy(destination, source.c_str(), size - 1);
+        destination[size - 1] = '\0';
+    }
 }
 
 std::string SohUtils::Sanitize(std::string stringValue) {
@@ -388,12 +390,9 @@ std::string SohUtils::Sanitize(std::string stringValue) {
 }
 
 size_t SohUtils::CopyStringToCharBuffer(char* buffer, const std::string& source, const size_t maxBufferSize) {
-    if (!source.empty()) {
-        // Prevent potential horrible overflow due to implicit conversion of maxBufferSize to an unsigned. Prevents
-        // negatives.
-        memset(buffer, 0, std::max<size_t>(0, maxBufferSize));
-        // Gaurentee that this value will be greater than 0, regardless of passed variables.
-        const size_t copiedCharLen = std::min<size_t>(std::max<size_t>(0, maxBufferSize - 1), source.length());
+    if (!source.empty() && maxBufferSize > 0) {
+        memset(buffer, 0, maxBufferSize);
+        const size_t copiedCharLen = std::min<size_t>(maxBufferSize - 1, source.length());
         memcpy(buffer, source.c_str(), copiedCharLen);
         return copiedCharLen;
     }
@@ -408,8 +407,5 @@ bool SohUtils::IsStringEmpty(std::string str) {
     std::string::size_type end = str.find_last_not_of(' ');
 
     // Check if the string is empty after stripping spaces
-    if (start == std::string::npos || end == std::string::npos)
-        return true; // The string is empty
-    else
-        return false; // The string is not empty
+    return start == std::string::npos || end == std::string::npos;
 }

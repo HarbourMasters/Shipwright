@@ -2791,6 +2791,7 @@ void Interface_SetDoAction(PlayState* play, u16 action) {
     PauseContext* pauseCtx = &play->pauseCtx;
 
     if (interfaceCtx->unk_1F0 != action) {
+        GameInteractor_ExecuteOnSetDoAction(action);
         interfaceCtx->unk_1F0 = action;
         interfaceCtx->unk_1EC = 1;
         interfaceCtx->unk_1F4 = 0.0f;

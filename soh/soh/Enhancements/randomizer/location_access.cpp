@@ -627,13 +627,10 @@ std::vector<Rando::Entrance*> GetShuffleableEntrances(Rando::EntranceType type, 
     return entrancesToShuffle;
 }
 
-// Get the specific entrance by name
-Rando::Entrance* GetEntrance(const std::string name) {
-    for (RandomizerRegion region : Regions::GetAllRegions()) {
-        for (auto& exit : RegionTable(region)->exits) {
-            if (exit.GetName() == name) {
-                return &exit;
-            }
+Rando::Entrance* GetEntrance(RandomizerRegion source, RandomizerRegion destination) {
+    for (auto& exit : RegionTable(source)->exits) {
+        if (exit.GetConnectedRegionKey() == destination) {
+            return &exit;
         }
     }
 
