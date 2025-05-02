@@ -319,6 +319,16 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
                                              /*french*/ "Selon moi, #[[1]]#.", {QM_RED, QM_GREEN}));
                                           // /*spanish*/ Según dicen, #[[1]]#.
 
+    hintTextTable[RHT_ZF_JABU_KEY] = HintText(CustomMessage("They say that the #guardian of the fish# prefers #[[1]]#.",
+                                                 /*german*/ "Man erzählt sich, daß der #Wächter der Fische# #[[1]]# bevorzugt.",
+                                                 /*french*/ "Selon moi, le #gardien des poissons# préfère #[[1]]#.", {QM_RED, QM_GREEN}),
+                                              // /*spanish*/ Según dicen, el #guardián de los peces# prefiere #[[1]]#.
+                                              {}, {
+                                              CustomMessage("They say that a #large aquatic creature# prefers #[[1]]#.",
+                                                  /*german*/ "Man erzählt sich, daß ein #großes Wasserlebewesen# #[[1]]# bevorzugt.",
+                                                  /*french*/ "Selon moi, une #grande créature aquatique# préfère #[[1]]#.", {QM_RED, QM_GREEN})});
+                                               // /*spanish*/ Según dicen, una #criatura acuática de gran tamaño# prefiere #[[1]]#.
+
  
     hintTextTable[RHT_GC_ROLLING_GORON_AS_ADULT] = HintText(CustomMessage("They say that #reassuring a young Goron# is rewarded with #[[1]]#.",
                                                                /*german*/ "Man erzählt sich, daß das #Beruhigen eines jungen Goronen# mit #[[1]]# belohnt würde.",
