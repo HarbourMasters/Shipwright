@@ -62,7 +62,7 @@ std::vector<AltTrapType> getEnabledAddTraps() {
 
 static void RollRandomTrap(uint32_t seed) {
     uint32_t finalSeed =
-        seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
+        seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : (uint32_t)gSaveContext.ship.stats.fileCreatedAt);
     Random_Init(finalSeed);
 
     roll = RandomElement(getEnabledAddTraps());
@@ -126,12 +126,12 @@ static void OnPlayerUpdate() {
                 Play_TriggerRespawn(gPlayState);
                 break;
             case ADD_AMMO_TRAP:
-                AMMO(ITEM_STICK) = AMMO(ITEM_STICK) * 0.5;
-                AMMO(ITEM_NUT) = AMMO(ITEM_NUT) * 0.5;
-                AMMO(ITEM_SLINGSHOT) = AMMO(ITEM_SLINGSHOT) * 0.5;
-                AMMO(ITEM_BOW) = AMMO(ITEM_BOW) * 0.5;
-                AMMO(ITEM_BOMB) = AMMO(ITEM_BOMB) * 0.5;
-                AMMO(ITEM_BOMBCHU) = AMMO(ITEM_BOMBCHU) * 0.5;
+                AMMO(ITEM_STICK) = (int8_t)floor(AMMO(ITEM_STICK) * 0.5f);
+                AMMO(ITEM_NUT) = (int8_t)floor(AMMO(ITEM_NUT) * 0.5f);
+                AMMO(ITEM_SLINGSHOT) = (int8_t)floor(AMMO(ITEM_SLINGSHOT) * 0.5f);
+                AMMO(ITEM_BOW) = (int8_t)floor(AMMO(ITEM_BOW) * 0.5f);
+                AMMO(ITEM_BOMB) = (int8_t)floor(AMMO(ITEM_BOMB) * 0.5f);
+                AMMO(ITEM_BOMBCHU) = (int8_t)floor(AMMO(ITEM_BOMBCHU) * 0.5f);
                 Audio_PlaySoundGeneral(NA_SE_VO_FR_SMILE_0, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                        &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 break;
