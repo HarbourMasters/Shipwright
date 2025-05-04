@@ -14,8 +14,7 @@ void Random_Init(uint32_t seed) {
     generator = boost::random::mt19937{ seed };
 }
 
-// Returns a random integer in range [min, max-1]
-uint32_t Random(int min, int max) {
+void Random_InitSeed() {
     if (!init) {
         // No seed given, get a random number from device to seed
 #if !defined(__SWITCH__) && !defined(__WIIU__)
@@ -25,7 +24,19 @@ uint32_t Random(int min, int max) {
 #endif
         Random_Init(seed);
     }
+}
+
+// Returns a random unsigned integer in range [min, max-1]
+uint32_t Random(uint32_t min, uint32_t max) {
+    Random_InitSeed();
     boost::random::uniform_int_distribution<uint32_t> distribution(min, max - 1);
+    return distribution(generator);
+}
+
+// Returns a random float in range [min, max-1]
+float Random_Float(float min, float max) {
+    Random_InitSeed();
+    boost::random::uniform_real_distribution<float> distribution(min, max - 1);
     return distribution(generator);
 }
 
