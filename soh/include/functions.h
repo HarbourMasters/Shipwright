@@ -1378,7 +1378,7 @@ void func_800AA0B4();
 void func_800AA0F0(void);
 u32 func_800AA148();
 void func_800AA15C();
-void func_800AA16C();
+void Rumble_ClearRequests();
 void func_800AA178(u32);
 View* View_New(GraphicsContext* gfxCtx);
 void View_Free(View* view);

@@ -1170,9 +1170,9 @@ void SkelAnime_InitLink(PlayState* play, SkelAnime* skelAnime, FlexSkeletonHeade
  */
 void LinkAnimation_SetUpdateFunction(SkelAnime* skelAnime) {
     if (skelAnime->mode <= ANIMMODE_LOOP_INTERP) {
-        skelAnime->update = LinkAnimation_Loop;
+        skelAnime->update.link = LinkAnimation_Loop;
     } else {
-        skelAnime->update = LinkAnimation_Once;
+        skelAnime->update.link = LinkAnimation_Once;
     }
     skelAnime->morphWeight = 0.0f;
 }
@@ -1182,7 +1182,7 @@ void LinkAnimation_SetUpdateFunction(SkelAnime* skelAnime) {
  * finishes.
  */
 s32 LinkAnimation_Update(PlayState* play, SkelAnime* skelAnime) {
-    return skelAnime->update(play, skelAnime);
+    return skelAnime->update.link(play, skelAnime);
 }
 
 /**
@@ -1294,7 +1294,7 @@ void LinkAnimation_Change(PlayState* play, SkelAnime* skelAnime, LinkAnimationHe
             SkelAnime_CopyFrameTable(skelAnime, skelAnime->morphTable, skelAnime->jointTable);
             morphFrames = -morphFrames;
         } else {
-            skelAnime->update = LinkAnimation_Morph;
+            skelAnime->update.link = LinkAnimation_Morph;
             AnimationContext_SetLoadFrame(play, animation, (s32)startFrame, skelAnime->limbCount,
                                           skelAnime->morphTable);
         }
@@ -1559,11 +1559,11 @@ s32 SkelAnime_InitSkin(PlayState* play, SkelAnime* skelAnime, SkeletonHeader* sk
  */
 void SkelAnime_SetUpdate(SkelAnime* skelAnime) {
     if (skelAnime->mode <= ANIMMODE_LOOP_INTERP) {
-        skelAnime->update = SkelAnime_LoopFull;
+        skelAnime->update.normal = SkelAnime_LoopFull;
     } else if (skelAnime->mode <= ANIMMODE_ONCE_INTERP) {
-        skelAnime->update = SkelAnime_Once;
+        skelAnime->update.normal = SkelAnime_Once;
     } else {
-        skelAnime->update = SkelAnime_LoopPartial;
+        skelAnime->update.normal = SkelAnime_LoopPartial;
     }
 }
 
@@ -1572,7 +1572,7 @@ void SkelAnime_SetUpdate(SkelAnime* skelAnime) {
  * finishes.
  */
 s32 SkelAnime_Update(SkelAnime* skelAnime) {
-    return skelAnime->update(skelAnime);
+    return skelAnime->update.normal(skelAnime);
 }
 
 /**
@@ -1741,10 +1741,10 @@ void Animation_ChangeImpl(SkelAnime* skelAnime, AnimationHeader* animation, f32 
             morphFrames = -morphFrames;
         } else {
             if (taper != ANIMTAPER_NONE) {
-                skelAnime->update = SkelAnime_MorphTaper;
+                skelAnime->update.normal = SkelAnime_MorphTaper;
                 skelAnime->taper = taper;
             } else {
-                skelAnime->update = SkelAnime_Morph;
+                skelAnime->update.normal = SkelAnime_Morph;
             }
             SkelAnime_GetFrameData(animation, startFrame, skelAnime->limbCount, skelAnime->morphTable);
         }
@@ -1895,7 +1895,7 @@ void SkelAnime_UpdateTranslation(SkelAnime* skelAnime, Vec3f* diff, s16 angle) {
     f32 sin;
     f32 cos;
 
-    if (skelAnime->moveFlags & ANIM_FLAG_NOMOVE) {
+    if (skelAnime->movementFlags & ANIM_FLAG_NOMOVE) {
         diff->x = diff->z = 0.0f;
     } else {
         x = skelAnime->jointTable[0].x;
@@ -1917,8 +1917,8 @@ void SkelAnime_UpdateTranslation(SkelAnime* skelAnime, Vec3f* diff, s16 angle) {
     skelAnime->jointTable[0].x = skelAnime->baseTransl.x;
     skelAnime->prevTransl.z = skelAnime->jointTable[0].z;
     skelAnime->jointTable[0].z = skelAnime->baseTransl.z;
-    if (skelAnime->moveFlags & ANIM_FLAG_UPDATEY) {
-        if (skelAnime->moveFlags & ANIM_FLAG_NOMOVE) {
+    if (skelAnime->movementFlags & ANIM_FLAG_UPDATEY) {
+        if (skelAnime->movementFlags & ANIM_FLAG_NOMOVE) {
             diff->y = 0.0f;
         } else {
             diff->y = skelAnime->jointTable[0].y - skelAnime->prevTransl.y;
@@ -1929,7 +1929,7 @@ void SkelAnime_UpdateTranslation(SkelAnime* skelAnime, Vec3f* diff, s16 angle) {
         diff->y = 0.0f;
         skelAnime->prevTransl.y = skelAnime->jointTable[0].y;
     }
-    skelAnime->moveFlags &= ~ANIM_FLAG_NOMOVE;
+    skelAnime->movementFlags &= ~ANIM_FLAG_NOMOVE;
 }
 
 /**
