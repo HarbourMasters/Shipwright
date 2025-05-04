@@ -50,8 +50,8 @@ void Mouse_HandleFirstPerson(Player* player) {
                               : 1;
     s8 invertYAxisMulti = CVarGetInteger(CVAR_SETTING("Controls.InvertAimingYAxis"), 1) ? 1 : -1;
     if (MOUSE_ENABLED) {
-        player->actor.focus.rot.y -= mouseCoordRel.x * 6.0f * xAxisMulti * invertXAxisMulti;
-        player->actor.focus.rot.x += mouseCoordRel.y * 6.0f * yAxisMulti * invertYAxisMulti;
+        player->actor.focus.rot.y -= (int16_t)(mouseCoordRel.x * 6.0f * xAxisMulti * invertXAxisMulti);
+        player->actor.focus.rot.x += (int16_t)(mouseCoordRel.y * 6.0f * yAxisMulti * invertYAxisMulti);
     }
 }
 
@@ -78,8 +78,8 @@ void Mouse_HandleShield(f32* sp50, f32* sp54) {
 }
 
 static s8 iterMouse = 0;
-static f32 mouseQuickspinX[5] = {};
-static f32 mouseQuickspinY[5] = {};
+static s32 mouseQuickspinX[5] = {};
+static s32 mouseQuickspinY[5] = {};
 static u8 quickspinCount = 0;
 
 void Mouse_UpdateQuickspinCount() {
@@ -102,9 +102,9 @@ bool Mouse_HandleQuickspin(bool* should, s8* iter2, s8* sp3C) {
 
     for (i = 0; i < 4; i++, iter2++) {
         // Calculating angles as per z_lib.c:func_80077D10()
-        f32 relY = mouseQuickspinY[i + 1] - mouseQuickspinY[i];
-        f32 relX = mouseQuickspinX[i + 1] - mouseQuickspinX[i];
-        s16 aTan = Math_Atan2S(relY, -relX);
+        s32 relY = mouseQuickspinY[i + 1] - mouseQuickspinY[i];
+        s32 relX = mouseQuickspinX[i + 1] - mouseQuickspinX[i];
+        s16 aTan = Math_Atan2S((f32)relY, (f32)-relX);
         iterMouse = (u16)(aTan + 0x2000) >> 9; // See z_player.c:Player_ProcessControlStick()
         if ((*iter2 = iterMouse) < 0) {
             return *should = false;
