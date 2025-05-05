@@ -1758,6 +1758,14 @@ void SohMenu::AddMenuEnhancements() {
             .CVar(timer.timeEnable)
             .Callback([](WidgetInfo& info) { TimeDisplayUpdateDisplayOptions(); });
     }
+
+    // Mod Menu
+    path.sidebarName = "Mod Menu";
+    AddSidebarEntry("Enhancements", path.sidebarName, 1);
+    AddWidget(path, "Toggle Mod Menu Window", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("ModMenu"))
+        .WindowName("Mod Menu")
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Mod Menu Window."));
 }
 
 } // namespace SohGui

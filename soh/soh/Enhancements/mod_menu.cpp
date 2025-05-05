@@ -1,10 +1,12 @@
 #include "mod_menu.h"
 #include "utils/StringHelper.h"
 #include <libultraship/classes.h>
+#include "soh/SohGui/SohGui.hpp"
 #include "soh/OTRGlobals.h"
 #include "soh/resource/type/Skeleton.h"
 #include <map>
 #include <ranges>
+
 extern "C" void gfx_texture_cache_clear();
 
 std::shared_ptr<Ship::ArchiveManager> GetArchiveManager() {
@@ -17,6 +19,9 @@ std::map<std::string, bool> modFiles;
 #define CVAR_ENABLED_MODS_DEFAULT ""
 #define CVAR_ENABLED_MODS_VALUE CVarGetString(CVAR_ENABLED_MODS_NAME, CVAR_ENABLED_MODS_DEFAULT)
 
+// "|" was chosen as the separator due to
+// it being an invalid character in NTFS
+// and being rarely used in ext4
 #define SEPARATOR "|"
 
 void SaveEnabledModsCVarValue() {
@@ -129,7 +134,7 @@ void DrawEnabledMods() {
     }
 
     for (std::string file : enabledMods) {
-        if (ImGui::ArrowButton(file.c_str(), ImGuiDir_Left)) {
+        if (UIWidgets::StateButton(file.c_str(), ICON_FA_ARROW_LEFT, ImVec2(25, 25), UIWidgets::ButtonOptions().Color(THEME_COLOR))) {
             modFiles[file] = false;
             GetArchiveManager()->RemoveArchive(file);
             AfterModChange();
@@ -146,7 +151,7 @@ void DrawDisabledMods() {
     }
 
     for (std::string file : disabledMods) {
-        if (ImGui::ArrowButton(file.c_str(), ImGuiDir_Right)) {
+        if (UIWidgets::StateButton(file.c_str(), ICON_FA_ARROW_RIGHT, ImVec2(25, 25), UIWidgets::ButtonOptions().Color(THEME_COLOR))) {
             modFiles[file] = true;
             GetArchiveManager()->AddArchive(file);
             AfterModChange();
@@ -156,7 +161,9 @@ void DrawDisabledMods() {
 }
 
 void ModMenuWindow::DrawElement() {
-    if (ImGui::Button("Update")) {
+    ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
+
+    if (UIWidgets::Button("Update", UIWidgets::ButtonOptions().Size(ImVec2(250.0f, 0.0f)).Color(THEME_COLOR))) {
         UpdateModFiles();
     }
 
@@ -186,6 +193,8 @@ void ModMenuWindow::DrawElement() {
 
         ImGui::EndTable();
     }
+
+    ImGui::EndDisabled();
 }
 
 void ModMenuWindow::InitElement() {
