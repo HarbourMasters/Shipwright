@@ -178,6 +178,11 @@ typedef enum {
     /* 99 */ FS_KBD_BTN_NONE = 99
 } KeyboardButton;
 
+typedef enum {
+    /* 0 */ FS_TITLE_CUR,
+    /* 1 */ FS_TITLE_NEXT
+} TitleIndex;
+
 void FileChoose_SetupCopySource(GameState* thisx); 
 void FileChoose_SelectCopySource(GameState* thisx); 
 void FileChoose_SetupCopyDest1(GameState* thisx); 
@@ -229,5 +234,33 @@ Vec2f HandleMouseCursorSplit(FileChooseContext* thisx, Input* input, int minx, i
                              int county);
 
 extern s16 D_808123F0[];
+
+// #region SOH [NTSC]
+
+void FileChoose_UpdateKeyboardCursorNES(GameState* thisx);
+void FileChoose_StartNameEntryNES(GameState* thisx);
+void FileChoose_UpdateOptionsMenuNES(GameState* thisx);
+void FileChoose_StartOptionsNES(GameState* thisx);
+
+void FileChoose_DrawOptionsNES(GameState* thisx);
+
+void FileChoose_DrawNameEntryNES(GameState* thisx);
+void FileChoose_DrawCharacterNES(GraphicsContext* gfxCtx, void* texture, s16 vtx);
+
+extern s16 gKeyboardCharactersHiragana[];
+extern s16 gKeyboardCharactersKatakana[];
+extern s16 gKeyboardCharactersAlphanumeric[];
+
+extern s16 D_808127DC_ne0[];
+
+extern s16 D_808125EC[];
+extern s16 D_80812604[];
+
+// Port Data:
+extern s16 sLastCharIndex;
+extern s16 sLastKbdX;
+extern s8 sLastOptionButtonIndex;
+
+// #endregion
 
 #endif

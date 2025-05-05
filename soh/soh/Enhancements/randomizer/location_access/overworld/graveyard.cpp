@@ -4,6 +4,7 @@
 using namespace Rando;
 
 void RegionTable_Init_Graveyard() {
+    // clang-format off
     areaTable[RR_THE_GRAVEYARD] = Region("The Graveyard", "The Graveyard", {RA_THE_GRAVEYARD}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->ButterflyFairy, []{return logic->ButterflyFairy || (logic->CanUse(RG_STICKS) && logic->AtDay);}),
@@ -11,13 +12,26 @@ void RegionTable_Init_Graveyard() {
         EventAccess(&logic->BugRock,        []{return true;}),
     }, {
         //Locations
-        LOCATION(RC_GRAVEYARD_FREESTANDING_POH,        (logic->IsAdult && CanPlantBean(RR_THE_GRAVEYARD)) || logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_GY_POH) && logic->CanUse(RG_BOOMERANG))),
+        LOCATION(RC_GRAVEYARD_FREESTANDING_POH,        (((logic->IsAdult && CanPlantBean(RR_THE_GRAVEYARD)) || logic->CanUse(RG_LONGSHOT)) && logic->CanBreakCrates()) || (ctx->GetTrickOption(RT_GY_POH) && logic->CanUse(RG_BOOMERANG))),
         LOCATION(RC_GRAVEYARD_DAMPE_GRAVEDIGGING_TOUR, logic->HasItem(RG_CHILD_WALLET) && logic->IsChild && logic->AtNight), //TODO: This needs to change
         LOCATION(RC_GRAVEYARD_GS_WALL,                 logic->IsChild && logic->HookshotOrBoomerang() && logic->AtNight && logic->CanGetNightTimeGS()),
         LOCATION(RC_GRAVEYARD_GS_BEAN_PATCH,           logic->CanSpawnSoilSkull() && logic->CanAttack()),
         LOCATION(RC_GRAVEYARD_BEAN_SPROUT_FAIRY_1,     logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_GRAVEYARD_BEAN_SPROUT_FAIRY_2,     logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_GRAVEYARD_BEAN_SPROUT_FAIRY_3,     logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_GY_GRASS_1,                        logic->CanCutShrubs()),
+        LOCATION(RC_GY_GRASS_2,                        logic->CanCutShrubs()),
+        LOCATION(RC_GY_GRASS_3,                        logic->CanCutShrubs()),
+        LOCATION(RC_GY_GRASS_4,                        logic->CanCutShrubs()),
+        LOCATION(RC_GY_GRASS_5,                        logic->CanCutShrubs()),
+        LOCATION(RC_GY_GRASS_6,                        logic->CanCutShrubs()),
+        LOCATION(RC_GY_GRASS_7,                        logic->CanCutShrubs()),
+        LOCATION(RC_GY_GRASS_8,                        logic->CanCutShrubs()),
+        LOCATION(RC_GY_GRASS_9,                        logic->CanCutShrubs()),
+        LOCATION(RC_GY_GRASS_10,                       logic->CanCutShrubs()),
+        LOCATION(RC_GY_GRASS_11,                       logic->CanCutShrubs()),
+        LOCATION(RC_GY_GRASS_12,                       logic->CanCutShrubs()),
+        LOCATION(RC_GRAVEYARD_CRATE,                   ((logic->IsAdult && CanPlantBean(RR_THE_GRAVEYARD)) || logic->CanUse(RG_LONGSHOT)) && logic->CanBreakCrates()),
     }, {
         //Exits
         Entrance(RR_GRAVEYARD_SHIELD_GRAVE,       []{return logic->IsAdult || logic->AtNight;}),
@@ -50,7 +64,7 @@ void RegionTable_Init_Graveyard() {
         LOCATION(RC_GRAVEYARD_SHIELD_GRAVE_FAIRY_8, true),
     }, {
         //Exits
-        Entrance(RR_THE_GRAVEYARD, []{return true;}),
+        Entrance(RR_GRAVEYARD_SHIELD_GRAVE, []{return true;}),
     });
 
     areaTable[RR_GRAVEYARD_HEART_PIECE_GRAVE] = Region("Graveyard Heart Piece Grave", "Graveyard Heart Piece Grave", {}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -120,4 +134,6 @@ void RegionTable_Init_Graveyard() {
         Entrance(RR_THE_GRAVEYARD,          []{return true;}),
         Entrance(RR_SHADOW_TEMPLE_ENTRYWAY, []{return logic->CanUse(RG_DINS_FIRE) || (ctx->GetTrickOption(RT_GY_SHADOW_FIRE_ARROWS) && logic->IsAdult && logic->CanUse(RG_FIRE_ARROWS));}),
     });
+
+    // clang-format on
 }

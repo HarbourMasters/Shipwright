@@ -1110,4 +1110,340 @@ static const ALIGN_ASSET(2) char gUnusedBossKeyItemName21JPNTex[] = dgUnusedBoss
 #define dgBiggoronsSwordItemNameFRATex "__OTR__textures/item_name_static/gBiggoronsSwordItemNameFRATex"
 static const ALIGN_ASSET(2) char gBiggoronsSwordItemNameFRATex[] = dgBiggoronsSwordItemNameFRATex;
 
+#define dgDekuStickItemNameJPNTex "__OTR__textures/item_name_static/gDekuStickItemNameJPNTex"
+static const ALIGN_ASSET(2) char gDekuStickItemNameJPNTex[] = dgDekuStickItemNameJPNTex;
+
+#define dgDekuNutItemNameJPNTex "__OTR__textures/item_name_static/gDekuNutItemNameJPNTex"
+static const ALIGN_ASSET(2) char gDekuNutItemNameJPNTex[] = dgDekuNutItemNameJPNTex;
+
+#define dgBombItemNameJPNTex "__OTR__textures/item_name_static/gBombItemNameJPNTex"
+static const ALIGN_ASSET(2) char gBombItemNameJPNTex[] = dgBombItemNameJPNTex;
+
+#define dgFairyBowItemNameJPNTex "__OTR__textures/item_name_static/gFairyBowItemNameJPNTex"
+static const ALIGN_ASSET(2) char gFairyBowItemNameJPNTex[] = dgFairyBowItemNameJPNTex;
+
+#define dgFireArrowItemNameJPNTex "__OTR__textures/item_name_static/gFireArrowItemNameJPNTex"
+static const ALIGN_ASSET(2) char gFireArrowItemNameJPNTex[] = dgFireArrowItemNameJPNTex;
+
+#define dgDinsFireItemNameJPNTex "__OTR__textures/item_name_static/gDinsFireItemNameJPNTex"
+static const ALIGN_ASSET(2) char gDinsFireItemNameJPNTex[] = dgDinsFireItemNameJPNTex;
+
+#define dgFairySlingshotItemNameJPNTex "__OTR__textures/item_name_static/gFairySlingshotItemNameJPNTex"
+static const ALIGN_ASSET(2) char gFairySlingshotItemNameJPNTex[] = dgFairySlingshotItemNameJPNTex;
+
+#define dgFairyOcarinaItemNameJPNTex "__OTR__textures/item_name_static/gFairyOcarinaItemNameJPNTex"
+static const ALIGN_ASSET(2) char gFairyOcarinaItemNameJPNTex[] = dgFairyOcarinaItemNameJPNTex;
+
+#define dgOcarinaOfTimeItemNameJPNTex "__OTR__textures/item_name_static/gOcarinaOfTimeItemNameJPNTex"
+static const ALIGN_ASSET(2) char gOcarinaOfTimeItemNameJPNTex[] = dgOcarinaOfTimeItemNameJPNTex;
+
+#define dgBombchuItemNameJPNTex "__OTR__textures/item_name_static/gBombchuItemNameJPNTex"
+static const ALIGN_ASSET(2) char gBombchuItemNameJPNTex[] = dgBombchuItemNameJPNTex;
+
+#define dgHookshotItemNameJPNTex "__OTR__textures/item_name_static/gHookshotItemNameJPNTex"
+static const ALIGN_ASSET(2) char gHookshotItemNameJPNTex[] = dgHookshotItemNameJPNTex;
+
+#define dgLongshotItemNameJPNTex "__OTR__textures/item_name_static/gLongshotItemNameJPNTex"
+static const ALIGN_ASSET(2) char gLongshotItemNameJPNTex[] = dgLongshotItemNameJPNTex;
+
+#define dgIceArrowItemNameJPNTex "__OTR__textures/item_name_static/gIceArrowItemNameJPNTex"
+static const ALIGN_ASSET(2) char gIceArrowItemNameJPNTex[] = dgIceArrowItemNameJPNTex;
+
+#define dgFaroresWindItemNameJPNTex "__OTR__textures/item_name_static/gFaroresWindItemNameJPNTex"
+static const ALIGN_ASSET(2) char gFaroresWindItemNameJPNTex[] = dgFaroresWindItemNameJPNTex;
+
+#define dgBoomerangItemNameJPNTex "__OTR__textures/item_name_static/gBoomerangItemNameJPNTex"
+static const ALIGN_ASSET(2) char gBoomerangItemNameJPNTex[] = dgBoomerangItemNameJPNTex;
+
+#define dgLensItemNameJPNTex "__OTR__textures/item_name_static/gLensItemNameJPNTex"
+static const ALIGN_ASSET(2) char gLensItemNameJPNTex[] = dgLensItemNameJPNTex;
+
+#define dgMagicBeansItemNameJPNTex "__OTR__textures/item_name_static/gMagicBeansItemNameJPNTex"
+static const ALIGN_ASSET(2) char gMagicBeansItemNameJPNTex[] = dgMagicBeansItemNameJPNTex;
+
+#define dgMegatonHammerItemNameJPNTex "__OTR__textures/item_name_static/gMegatonHammerItemNameJPNTex"
+static const ALIGN_ASSET(2) char gMegatonHammerItemNameJPNTex[] = dgMegatonHammerItemNameJPNTex;
+
+#define dgLightArrowItemNameJPNTex "__OTR__textures/item_name_static/gLightArrowItemNameJPNTex"
+static const ALIGN_ASSET(2) char gLightArrowItemNameJPNTex[] = dgLightArrowItemNameJPNTex;
+
+#define dgNayrusLoveItemNameJPNTex "__OTR__textures/item_name_static/gNayrusLoveItemNameJPNTex"
+static const ALIGN_ASSET(2) char gNayrusLoveItemNameJPNTex[] = dgNayrusLoveItemNameJPNTex;
+
+#define dgEmptyBottleItemNameJPNTex "__OTR__textures/item_name_static/gEmptyBottleItemNameJPNTex"
+static const ALIGN_ASSET(2) char gEmptyBottleItemNameJPNTex[] = dgEmptyBottleItemNameJPNTex;
+
+#define dgRedPotionItemNameJPNTex "__OTR__textures/item_name_static/gRedPotionItemNameJPNTex"
+static const ALIGN_ASSET(2) char gRedPotionItemNameJPNTex[] = dgRedPotionItemNameJPNTex;
+
+#define dgGreenPotionItemNameJPNTex "__OTR__textures/item_name_static/gGreenPotionItemNameJPNTex"
+static const ALIGN_ASSET(2) char gGreenPotionItemNameJPNTex[] = dgGreenPotionItemNameJPNTex;
+
+#define dgBluePotionItemNameJPNTex "__OTR__textures/item_name_static/gBluePotionItemNameJPNTex"
+static const ALIGN_ASSET(2) char gBluePotionItemNameJPNTex[] = dgBluePotionItemNameJPNTex;
+
+#define dgBottledFairyItemNameJPNTex "__OTR__textures/item_name_static/gBottledFairyItemNameJPNTex"
+static const ALIGN_ASSET(2) char gBottledFairyItemNameJPNTex[] = dgBottledFairyItemNameJPNTex;
+
+#define dgFishItemNameJPNTex "__OTR__textures/item_name_static/gFishItemNameJPNTex"
+static const ALIGN_ASSET(2) char gFishItemNameJPNTex[] = dgFishItemNameJPNTex;
+
+#define dgFullMilkItemNameJPNTex "__OTR__textures/item_name_static/gFullMilkItemNameJPNTex"
+static const ALIGN_ASSET(2) char gFullMilkItemNameJPNTex[] = dgFullMilkItemNameJPNTex;
+
+#define dgRutosLetterItemNameJPNTex "__OTR__textures/item_name_static/gRutosLetterItemNameJPNTex"
+static const ALIGN_ASSET(2) char gRutosLetterItemNameJPNTex[] = dgRutosLetterItemNameJPNTex;
+
+#define dgBlueFireItemNameJPNTex "__OTR__textures/item_name_static/gBlueFireItemNameJPNTex"
+static const ALIGN_ASSET(2) char gBlueFireItemNameJPNTex[] = dgBlueFireItemNameJPNTex;
+
+#define dgBugItemNameJPNTex "__OTR__textures/item_name_static/gBugItemNameJPNTex"
+static const ALIGN_ASSET(2) char gBugItemNameJPNTex[] = dgBugItemNameJPNTex;
+
+#define dgBigPoeItemNameJPNTex "__OTR__textures/item_name_static/gBigPoeItemNameJPNTex"
+static const ALIGN_ASSET(2) char gBigPoeItemNameJPNTex[] = dgBigPoeItemNameJPNTex;
+
+#define dgHalfMilkItemNameJPNTex "__OTR__textures/item_name_static/gHalfMilkItemNameJPNTex"
+static const ALIGN_ASSET(2) char gHalfMilkItemNameJPNTex[] = dgHalfMilkItemNameJPNTex;
+
+#define dgPoeItemNameJPNTex "__OTR__textures/item_name_static/gPoeItemNameJPNTex"
+static const ALIGN_ASSET(2) char gPoeItemNameJPNTex[] = dgPoeItemNameJPNTex;
+
+#define dgWeirdEggItemNameJPNTex "__OTR__textures/item_name_static/gWeirdEggItemNameJPNTex"
+static const ALIGN_ASSET(2) char gWeirdEggItemNameJPNTex[] = dgWeirdEggItemNameJPNTex;
+
+#define dgCuccoItemNameJPNTex "__OTR__textures/item_name_static/gCuccoItemNameJPNTex"
+static const ALIGN_ASSET(2) char gCuccoItemNameJPNTex[] = dgCuccoItemNameJPNTex;
+
+#define dgZeldasLetterItemNameJPNTex "__OTR__textures/item_name_static/gZeldasLetterItemNameJPNTex"
+static const ALIGN_ASSET(2) char gZeldasLetterItemNameJPNTex[] = dgZeldasLetterItemNameJPNTex;
+
+#define dgKeatonMaskItemNameJPNTex "__OTR__textures/item_name_static/gKeatonMaskItemNameJPNTex"
+static const ALIGN_ASSET(2) char gKeatonMaskItemNameJPNTex[] = dgKeatonMaskItemNameJPNTex;
+
+#define dgSkullMaskItemNameJPNTex "__OTR__textures/item_name_static/gSkullMaskItemNameJPNTex"
+static const ALIGN_ASSET(2) char gSkullMaskItemNameJPNTex[] = dgSkullMaskItemNameJPNTex;
+
+#define dgSpookyMaskItemNameJPNTex "__OTR__textures/item_name_static/gSpookyMaskItemNameJPNTex"
+static const ALIGN_ASSET(2) char gSpookyMaskItemNameJPNTex[] = dgSpookyMaskItemNameJPNTex;
+
+#define dgBunnyHoodItemNameJPNTex "__OTR__textures/item_name_static/gBunnyHoodItemNameJPNTex"
+static const ALIGN_ASSET(2) char gBunnyHoodItemNameJPNTex[] = dgBunnyHoodItemNameJPNTex;
+
+#define dgGoronMaskItemNameJPNTex "__OTR__textures/item_name_static/gGoronMaskItemNameJPNTex"
+static const ALIGN_ASSET(2) char gGoronMaskItemNameJPNTex[] = dgGoronMaskItemNameJPNTex;
+
+#define dgZoraMaskItemNameJPNTex "__OTR__textures/item_name_static/gZoraMaskItemNameJPNTex"
+static const ALIGN_ASSET(2) char gZoraMaskItemNameJPNTex[] = dgZoraMaskItemNameJPNTex;
+
+#define dgGerudoMaskItemNameJPNTex "__OTR__textures/item_name_static/gGerudoMaskItemNameJPNTex"
+static const ALIGN_ASSET(2) char gGerudoMaskItemNameJPNTex[] = dgGerudoMaskItemNameJPNTex;
+
+#define dgMaskofTruthItemNameJPNTex "__OTR__textures/item_name_static/gMaskofTruthItemNameJPNTex"
+static const ALIGN_ASSET(2) char gMaskofTruthItemNameJPNTex[] = dgMaskofTruthItemNameJPNTex;
+
+#define dgSOLDOUTItemNameJPNTex "__OTR__textures/item_name_static/gSOLDOUTItemNameJPNTex"
+static const ALIGN_ASSET(2) char gSOLDOUTItemNameJPNTex[] = dgSOLDOUTItemNameJPNTex;
+
+#define dgPocketEggItemNameJPNTex "__OTR__textures/item_name_static/gPocketEggItemNameJPNTex"
+static const ALIGN_ASSET(2) char gPocketEggItemNameJPNTex[] = dgPocketEggItemNameJPNTex;
+
+#define dgPocketCuccoItemNameJPNTex "__OTR__textures/item_name_static/gPocketCuccoItemNameJPNTex"
+static const ALIGN_ASSET(2) char gPocketCuccoItemNameJPNTex[] = dgPocketCuccoItemNameJPNTex;
+
+#define dgCojiroItemNameJPNTex "__OTR__textures/item_name_static/gCojiroItemNameJPNTex"
+static const ALIGN_ASSET(2) char gCojiroItemNameJPNTex[] = dgCojiroItemNameJPNTex;
+
+#define dgOddMushroomItemNameJPNTex "__OTR__textures/item_name_static/gOddMushroomItemNameJPNTex"
+static const ALIGN_ASSET(2) char gOddMushroomItemNameJPNTex[] = dgOddMushroomItemNameJPNTex;
+
+#define dgOddPotionItemNameJPNTex "__OTR__textures/item_name_static/gOddPotionItemNameJPNTex"
+static const ALIGN_ASSET(2) char gOddPotionItemNameJPNTex[] = dgOddPotionItemNameJPNTex;
+
+#define dgPoachersSawItemNameJPNTex "__OTR__textures/item_name_static/gPoachersSawItemNameJPNTex"
+static const ALIGN_ASSET(2) char gPoachersSawItemNameJPNTex[] = dgPoachersSawItemNameJPNTex;
+
+#define dgBrokenGoronsSwordItemNameJPNTex "__OTR__textures/item_name_static/gBrokenGoronsSwordItemNameJPNTex"
+static const ALIGN_ASSET(2) char gBrokenGoronsSwordItemNameJPNTex[] = dgBrokenGoronsSwordItemNameJPNTex;
+
+#define dgPrescriptionItemNameJPNTex "__OTR__textures/item_name_static/gPrescriptionItemNameJPNTex"
+static const ALIGN_ASSET(2) char gPrescriptionItemNameJPNTex[] = dgPrescriptionItemNameJPNTex;
+
+#define dgEyeBallFrogItemNameJPNTex "__OTR__textures/item_name_static/gEyeBallFrogItemNameJPNTex"
+static const ALIGN_ASSET(2) char gEyeBallFrogItemNameJPNTex[] = dgEyeBallFrogItemNameJPNTex;
+
+#define dgEyeDropsItemNameJPNTex "__OTR__textures/item_name_static/gEyeDropsItemNameJPNTex"
+static const ALIGN_ASSET(2) char gEyeDropsItemNameJPNTex[] = dgEyeDropsItemNameJPNTex;
+
+#define dgClaimCheckItemNameJPNTex "__OTR__textures/item_name_static/gClaimCheckItemNameJPNTex"
+static const ALIGN_ASSET(2) char gClaimCheckItemNameJPNTex[] = dgClaimCheckItemNameJPNTex;
+
+#define dgKokiriSwordItemNameJPNTex "__OTR__textures/item_name_static/gKokiriSwordItemNameJPNTex"
+static const ALIGN_ASSET(2) char gKokiriSwordItemNameJPNTex[] = dgKokiriSwordItemNameJPNTex;
+
+#define dgMasterSwordItemNameJPNTex "__OTR__textures/item_name_static/gMasterSwordItemNameJPNTex"
+static const ALIGN_ASSET(2) char gMasterSwordItemNameJPNTex[] = dgMasterSwordItemNameJPNTex;
+
+#define dgGiantsKnifeItemNameJPNTex "__OTR__textures/item_name_static/gGiantsKnifeItemNameJPNTex"
+static const ALIGN_ASSET(2) char gGiantsKnifeItemNameJPNTex[] = dgGiantsKnifeItemNameJPNTex;
+
+#define dgDekuShieldItemNameJPNTex "__OTR__textures/item_name_static/gDekuShieldItemNameJPNTex"
+static const ALIGN_ASSET(2) char gDekuShieldItemNameJPNTex[] = dgDekuShieldItemNameJPNTex;
+
+#define dgHylianShieldItemNameJPNTex "__OTR__textures/item_name_static/gHylianShieldItemNameJPNTex"
+static const ALIGN_ASSET(2) char gHylianShieldItemNameJPNTex[] = dgHylianShieldItemNameJPNTex;
+
+#define dgMirrorShieldItemNameJPNTex "__OTR__textures/item_name_static/gMirrorShieldItemNameJPNTex"
+static const ALIGN_ASSET(2) char gMirrorShieldItemNameJPNTex[] = dgMirrorShieldItemNameJPNTex;
+
+#define dgKokiriTunicItemNameJPNTex "__OTR__textures/item_name_static/gKokiriTunicItemNameJPNTex"
+static const ALIGN_ASSET(2) char gKokiriTunicItemNameJPNTex[] = dgKokiriTunicItemNameJPNTex;
+
+#define dgGoronTunicItemNameJPNTex "__OTR__textures/item_name_static/gGoronTunicItemNameJPNTex"
+static const ALIGN_ASSET(2) char gGoronTunicItemNameJPNTex[] = dgGoronTunicItemNameJPNTex;
+
+#define dgZoraTunicItemNameJPNTex "__OTR__textures/item_name_static/gZoraTunicItemNameJPNTex"
+static const ALIGN_ASSET(2) char gZoraTunicItemNameJPNTex[] = dgZoraTunicItemNameJPNTex;
+
+#define dgKokiriBootsItemNameJPNTex "__OTR__textures/item_name_static/gKokiriBootsItemNameJPNTex"
+static const ALIGN_ASSET(2) char gKokiriBootsItemNameJPNTex[] = dgKokiriBootsItemNameJPNTex;
+
+#define dgIronBootsItemNameJPNTex "__OTR__textures/item_name_static/gIronBootsItemNameJPNTex"
+static const ALIGN_ASSET(2) char gIronBootsItemNameJPNTex[] = dgIronBootsItemNameJPNTex;
+
+#define dgHoverBootsItemNameJPNTex "__OTR__textures/item_name_static/gHoverBootsItemNameJPNTex"
+static const ALIGN_ASSET(2) char gHoverBootsItemNameJPNTex[] = dgHoverBootsItemNameJPNTex;
+
+#define dgBulletBag30ItemNameJPNTex "__OTR__textures/item_name_static/gBulletBag30ItemNameJPNTex"
+static const ALIGN_ASSET(2) char gBulletBag30ItemNameJPNTex[] = dgBulletBag30ItemNameJPNTex;
+
+#define dgBulletBag40ItemNameJPNTex "__OTR__textures/item_name_static/gBulletBag40ItemNameJPNTex"
+static const ALIGN_ASSET(2) char gBulletBag40ItemNameJPNTex[] = dgBulletBag40ItemNameJPNTex;
+
+#define dgBulletBag50ItemNameJPNTex "__OTR__textures/item_name_static/gBulletBag50ItemNameJPNTex"
+static const ALIGN_ASSET(2) char gBulletBag50ItemNameJPNTex[] = dgBulletBag50ItemNameJPNTex;
+
+#define dgQuiver30ItemNameJPNTex "__OTR__textures/item_name_static/gQuiver30ItemNameJPNTex"
+static const ALIGN_ASSET(2) char gQuiver30ItemNameJPNTex[] = dgQuiver30ItemNameJPNTex;
+
+#define dgQuiver40ItemNameJPNTex "__OTR__textures/item_name_static/gQuiver40ItemNameJPNTex"
+static const ALIGN_ASSET(2) char gQuiver40ItemNameJPNTex[] = dgQuiver40ItemNameJPNTex;
+
+#define dgQuiver50ItemNameJPNTex "__OTR__textures/item_name_static/gQuiver50ItemNameJPNTex"
+static const ALIGN_ASSET(2) char gQuiver50ItemNameJPNTex[] = dgQuiver50ItemNameJPNTex;
+
+#define dgBombBag20ItemNameJPNTex "__OTR__textures/item_name_static/gBombBag20ItemNameJPNTex"
+static const ALIGN_ASSET(2) char gBombBag20ItemNameJPNTex[] = dgBombBag20ItemNameJPNTex;
+
+#define dgBombBag30ItemNameJPNTex "__OTR__textures/item_name_static/gBombBag30ItemNameJPNTex"
+static const ALIGN_ASSET(2) char gBombBag30ItemNameJPNTex[] = dgBombBag30ItemNameJPNTex;
+
+#define dgBombBag40ItemNameJPNTex "__OTR__textures/item_name_static/gBombBag40ItemNameJPNTex"
+static const ALIGN_ASSET(2) char gBombBag40ItemNameJPNTex[] = dgBombBag40ItemNameJPNTex;
+
+#define dgGoronsBraceletItemNameJPNTex "__OTR__textures/item_name_static/gGoronsBraceletItemNameJPNTex"
+static const ALIGN_ASSET(2) char gGoronsBraceletItemNameJPNTex[] = dgGoronsBraceletItemNameJPNTex;
+
+#define dgSilverGauntletsItemNameJPNTex "__OTR__textures/item_name_static/gSilverGauntletsItemNameJPNTex"
+static const ALIGN_ASSET(2) char gSilverGauntletsItemNameJPNTex[] = dgSilverGauntletsItemNameJPNTex;
+
+#define dgGoldenGauntletsItemNameJPNTex "__OTR__textures/item_name_static/gGoldenGauntletsItemNameJPNTex"
+static const ALIGN_ASSET(2) char gGoldenGauntletsItemNameJPNTex[] = dgGoldenGauntletsItemNameJPNTex;
+
+#define dgSilverScaleItemNameJPNTex "__OTR__textures/item_name_static/gSilverScaleItemNameJPNTex"
+static const ALIGN_ASSET(2) char gSilverScaleItemNameJPNTex[] = dgSilverScaleItemNameJPNTex;
+
+#define dgGoldenScaleItemNameJPNTex "__OTR__textures/item_name_static/gGoldenScaleItemNameJPNTex"
+static const ALIGN_ASSET(2) char gGoldenScaleItemNameJPNTex[] = dgGoldenScaleItemNameJPNTex;
+
+#define dgBrokenGiantsKnifeItemNameJPNTex "__OTR__textures/item_name_static/gBrokenGiantsKnifeItemNameJPNTex"
+static const ALIGN_ASSET(2) char gBrokenGiantsKnifeItemNameJPNTex[] = dgBrokenGiantsKnifeItemNameJPNTex;
+
+#define dgMinuetOfForestItemNameJPNTex "__OTR__textures/item_name_static/gMinuetOfForestItemNameJPNTex"
+static const ALIGN_ASSET(2) char gMinuetOfForestItemNameJPNTex[] = dgMinuetOfForestItemNameJPNTex;
+
+#define dgBoleroOfFireItemNameJPNTex "__OTR__textures/item_name_static/gBoleroOfFireItemNameJPNTex"
+static const ALIGN_ASSET(2) char gBoleroOfFireItemNameJPNTex[] = dgBoleroOfFireItemNameJPNTex;
+
+#define dgSerenadeOfWaterItemNameJPNTex "__OTR__textures/item_name_static/gSerenadeOfWaterItemNameJPNTex"
+static const ALIGN_ASSET(2) char gSerenadeOfWaterItemNameJPNTex[] = dgSerenadeOfWaterItemNameJPNTex;
+
+#define dgRequiemOfSpiritItemNameJPNTex "__OTR__textures/item_name_static/gRequiemOfSpiritItemNameJPNTex"
+static const ALIGN_ASSET(2) char gRequiemOfSpiritItemNameJPNTex[] = dgRequiemOfSpiritItemNameJPNTex;
+
+#define dgNocturneOfShadowItemNameJPNTex "__OTR__textures/item_name_static/gNocturneOfShadowItemNameJPNTex"
+static const ALIGN_ASSET(2) char gNocturneOfShadowItemNameJPNTex[] = dgNocturneOfShadowItemNameJPNTex;
+
+#define dgPreludeOfLightItemNameJPNTex "__OTR__textures/item_name_static/gPreludeOfLightItemNameJPNTex"
+static const ALIGN_ASSET(2) char gPreludeOfLightItemNameJPNTex[] = dgPreludeOfLightItemNameJPNTex;
+
+#define dgZeldasLullabyItemNameJPNTex "__OTR__textures/item_name_static/gZeldasLullabyItemNameJPNTex"
+static const ALIGN_ASSET(2) char gZeldasLullabyItemNameJPNTex[] = dgZeldasLullabyItemNameJPNTex;
+
+#define dgEponasSongItemNameJPNTex "__OTR__textures/item_name_static/gEponasSongItemNameJPNTex"
+static const ALIGN_ASSET(2) char gEponasSongItemNameJPNTex[] = dgEponasSongItemNameJPNTex;
+
+#define dgSariasSongItemNameJPNTex "__OTR__textures/item_name_static/gSariasSongItemNameJPNTex"
+static const ALIGN_ASSET(2) char gSariasSongItemNameJPNTex[] = dgSariasSongItemNameJPNTex;
+
+#define dgSunsSongItemNameJPNTex "__OTR__textures/item_name_static/gSunsSongItemNameJPNTex"
+static const ALIGN_ASSET(2) char gSunsSongItemNameJPNTex[] = dgSunsSongItemNameJPNTex;
+
+#define dgSongOfTimeItemNameJPNTex "__OTR__textures/item_name_static/gSongOfTimeItemNameJPNTex"
+static const ALIGN_ASSET(2) char gSongOfTimeItemNameJPNTex[] = dgSongOfTimeItemNameJPNTex;
+
+#define dgSongOfStormsItemNameJPNTex "__OTR__textures/item_name_static/gSongOfStormsItemNameJPNTex"
+static const ALIGN_ASSET(2) char gSongOfStormsItemNameJPNTex[] = dgSongOfStormsItemNameJPNTex;
+
+#define dgForestMedallionItemNameJPNTex "__OTR__textures/item_name_static/gForestMedallionItemNameJPNTex"
+static const ALIGN_ASSET(2) char gForestMedallionItemNameJPNTex[] = dgForestMedallionItemNameJPNTex;
+
+#define dgFireMedallionItemNameJPNTex "__OTR__textures/item_name_static/gFireMedallionItemNameJPNTex"
+static const ALIGN_ASSET(2) char gFireMedallionItemNameJPNTex[] = dgFireMedallionItemNameJPNTex;
+
+#define dgWaterMedallionItemNameJPNTex "__OTR__textures/item_name_static/gWaterMedallionItemNameJPNTex"
+static const ALIGN_ASSET(2) char gWaterMedallionItemNameJPNTex[] = dgWaterMedallionItemNameJPNTex;
+
+#define dgSpiritMedallionItemNameJPNTex "__OTR__textures/item_name_static/gSpiritMedallionItemNameJPNTex"
+static const ALIGN_ASSET(2) char gSpiritMedallionItemNameJPNTex[] = dgSpiritMedallionItemNameJPNTex;
+
+#define dgShadowMedallionItemNameJPNTex "__OTR__textures/item_name_static/gShadowMedallionItemNameJPNTex"
+static const ALIGN_ASSET(2) char gShadowMedallionItemNameJPNTex[] = dgShadowMedallionItemNameJPNTex;
+
+#define dgLightMedallionItemNameJPNTex "__OTR__textures/item_name_static/gLightMedallionItemNameJPNTex"
+static const ALIGN_ASSET(2) char gLightMedallionItemNameJPNTex[] = dgLightMedallionItemNameJPNTex;
+
+#define dgKokiriEmeraldItemNameJPNTex "__OTR__textures/item_name_static/gKokiriEmeraldItemNameJPNTex"
+static const ALIGN_ASSET(2) char gKokiriEmeraldItemNameJPNTex[] = dgKokiriEmeraldItemNameJPNTex;
+
+#define dgGoronsRubyItemNameJPNTex "__OTR__textures/item_name_static/gGoronsRubyItemNameJPNTex"
+static const ALIGN_ASSET(2) char gGoronsRubyItemNameJPNTex[] = dgGoronsRubyItemNameJPNTex;
+
+#define dgZorasSapphireItemNameJPNTex "__OTR__textures/item_name_static/gZorasSapphireItemNameJPNTex"
+static const ALIGN_ASSET(2) char gZorasSapphireItemNameJPNTex[] = dgZorasSapphireItemNameJPNTex;
+
+#define dgStoneofAgonyItemNameJPNTex "__OTR__textures/item_name_static/gStoneofAgonyItemNameJPNTex"
+static const ALIGN_ASSET(2) char gStoneofAgonyItemNameJPNTex[] = dgStoneofAgonyItemNameJPNTex;
+
+#define dgGerudosCardItemNameJPNTex "__OTR__textures/item_name_static/gGerudosCardItemNameJPNTex"
+static const ALIGN_ASSET(2) char gGerudosCardItemNameJPNTex[] = dgGerudosCardItemNameJPNTex;
+
+#define dgGoldSkulltulaItemNameJPNTex "__OTR__textures/item_name_static/gGoldSkulltulaItemNameJPNTex"
+static const ALIGN_ASSET(2) char gGoldSkulltulaItemNameJPNTex[] = dgGoldSkulltulaItemNameJPNTex;
+
+#define dgPieceOfHeartItemNameJPNTex "__OTR__textures/item_name_static/gPieceOfHeartItemNameJPNTex"
+static const ALIGN_ASSET(2) char gPieceOfHeartItemNameJPNTex[] = dgPieceOfHeartItemNameJPNTex;
+
+#define dgUnusedBigKeyItemNameJPNTex "__OTR__textures/item_name_static/gUnusedBigKeyItemNameJPNTex"
+static const ALIGN_ASSET(2) char gUnusedBigKeyItemNameJPNTex[] = dgUnusedBigKeyItemNameJPNTex;
+
+#define dgCompassItemNameJPNTex "__OTR__textures/item_name_static/gCompassItemNameJPNTex"
+static const ALIGN_ASSET(2) char gCompassItemNameJPNTex[] = dgCompassItemNameJPNTex;
+
+#define dgDungeonMapItemNameJPNTex "__OTR__textures/item_name_static/gDungeonMapItemNameJPNTex"
+static const ALIGN_ASSET(2) char gDungeonMapItemNameJPNTex[] = dgDungeonMapItemNameJPNTex;
+
+#define dgBiggoronsSwordItemNameJPNTex "__OTR__textures/item_name_static/gBiggoronsSwordItemNameJPNTex"
+static const ALIGN_ASSET(2) char gBiggoronsSwordItemNameJPNTex[] = dgBiggoronsSwordItemNameJPNTex;
+
 #endif // TEXTURES_ITEM_NAME_STATIC_H

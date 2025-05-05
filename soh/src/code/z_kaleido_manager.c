@@ -10,7 +10,7 @@
 //    }
 
 #define KALEIDO_OVERLAY(name) \
-{ 0 }
+    { 0 }
 
 KaleidoMgrOverlay gKaleidoMgrOverlayTable[] = {
     KALEIDO_OVERLAY(kaleido_scope),
@@ -22,16 +22,16 @@ KaleidoMgrOverlay* gKaleidoMgrCurOvl = NULL;
 u8 gBossMarkState = 0;
 
 void KaleidoManager_LoadOvl(KaleidoMgrOverlay* ovl) {
-    //LOG_CHECK_NULL_POINTER("KaleidoArea_allocp", sKaleidoAreaPtr);
+    // LOG_CHECK_NULL_POINTER("KaleidoArea_allocp", sKaleidoAreaPtr);
 
     ovl->loadedRamAddr = sKaleidoAreaPtr;
     Overlay_Load(ovl->vromStart, ovl->vromEnd, ovl->vramStart, ovl->vramEnd, ovl->loadedRamAddr);
 
-    //osSyncPrintf(VT_FGCOL(GREEN));
-    //osSyncPrintf("OVL(k):Seg:%08x-%08x Ram:%08x-%08x Off:%08x %s\n", ovl->vramStart, ovl->vramEnd, ovl->loadedRamAddr,
-                 //(uintptr_t)ovl->loadedRamAddr + (uintptr_t)ovl->vramEnd - (uintptr_t)ovl->vramStart,
-                 //(uintptr_t)ovl->vramStart - (uintptr_t)ovl->loadedRamAddr, ovl->name);
-    //osSyncPrintf(VT_RST);
+    // osSyncPrintf(VT_FGCOL(GREEN));
+    // osSyncPrintf("OVL(k):Seg:%08x-%08x Ram:%08x-%08x Off:%08x %s\n", ovl->vramStart, ovl->vramEnd,
+    // ovl->loadedRamAddr, (uintptr_t)ovl->loadedRamAddr + (uintptr_t)ovl->vramEnd - (uintptr_t)ovl->vramStart,
+    //(uintptr_t)ovl->vramStart - (uintptr_t)ovl->loadedRamAddr, ovl->name);
+    // osSyncPrintf(VT_RST);
 
     ovl->offset = (uintptr_t)ovl->loadedRamAddr - (uintptr_t)ovl->vramStart;
     gKaleidoMgrCurOvl = ovl;

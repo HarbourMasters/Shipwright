@@ -6,6 +6,6 @@ SkyboxModifier* SetSkyboxModifier::GetPointer() {
 }
 
 size_t SetSkyboxModifier::GetPointerSize() {
-	return sizeof(SkyboxModifier);
+    return sizeof(SkyboxModifier);
 }
 } // namespace SOH

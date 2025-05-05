@@ -95,7 +95,7 @@ void Audio_InitNoteSub(Note* note, NoteSubEu* sub, NoteSubAttributes* attrs) {
     vel = 0.0f > vel ? 0.0f : vel;
     vel = 1.0f < vel ? 1.0f : vel;
 
-    float master_vol = (float)CVarGetInteger(CVAR_SETTING("Volume.Master"), 100) / 100.0f;
+    float master_vol = (float)CVarGetInteger(CVAR_SETTING("Volume.Master"), 40) / 100.0f;
     sub->targetVolLeft = (s32)((vel * volLeft) * (0x1000 - 0.001f)) * master_vol;
     sub->targetVolRight = (s32)((vel * volRight) * (0x1000 - 0.001f)) * master_vol;
 
@@ -302,7 +302,6 @@ void Audio_ProcessNotes(void) {
 
             subAttrs.frequency *= resampRate;
 
-
             subAttrs.velocity *= scale;
             Audio_InitNoteSub(note, noteSubEu2, &subAttrs);
             noteSubEu->bitField1.bookOffset = bookOffset;
@@ -363,12 +362,11 @@ Drum* Audio_GetDrum(s32 fontId, s32 drumId) {
         return NULL;
     }
 
-    
     SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fontMap[fontId]);
     if (drumId < sf->numDrums) {
         drum = sf->drums[drumId];
     }
-    
+
     if (drum == NULL) {
         gAudioContext.audioErrorFlags = ((fontId << 8) + drumId) + 0x5000000;
     }

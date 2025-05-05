@@ -477,8 +477,7 @@ void ObjBean_Init(Actor* thisx, PlayState* play) {
             if (path == 0x1F) {
                 osSyncPrintf(VT_COL(RED, WHITE));
                 // "No path data?"
-                osSyncPrintf("パスデータが無い？(%s %d)(arg_data %xH)\n", __FILE__, __LINE__,
-                             this->dyna.actor.params);
+                osSyncPrintf("パスデータが無い？(%s %d)(arg_data %xH)\n", __FILE__, __LINE__, this->dyna.actor.params);
                 osSyncPrintf(VT_RST);
                 Actor_Kill(&this->dyna.actor);
                 return;
@@ -486,8 +485,7 @@ void ObjBean_Init(Actor* thisx, PlayState* play) {
             if (play->setupPathList[path].count < 3) {
                 osSyncPrintf(VT_COL(RED, WHITE));
                 // "Incorrect number of path data"
-                osSyncPrintf("パスデータ数が不正(%s %d)(arg_data %xH)\n", __FILE__, __LINE__,
-                             this->dyna.actor.params);
+                osSyncPrintf("パスデータ数が不正(%s %d)(arg_data %xH)\n", __FILE__, __LINE__, this->dyna.actor.params);
                 osSyncPrintf(VT_RST);
                 Actor_Kill(&this->dyna.actor);
                 return;

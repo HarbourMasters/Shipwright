@@ -77,6 +77,66 @@ static const ALIGN_ASSET(2) char gBossSoulSkullDL[] = dgBossSoulSkullDL;
 #define dgRandoPotDL "__OTR__objects/gameplay_dangeon_keep/gRandoPotDL"
 static const ALIGN_ASSET(2) char gRandoPotDL[] = dgRandoPotDL;
 
+#define dgRandoBushDL "__OTR__objects/gameplay_field_keep/gFieldBushRandomDL"
+static const ALIGN_ASSET(2) char gRandoBushDL[] = dgRandoBushDL;
+
+#define dgRandoBushMinorDL "__OTR__objects/gameplay_field_keep/gFieldBushMinorDL"
+static const ALIGN_ASSET(2) char gRandoBushMinorDL[] = dgRandoBushMinorDL;
+
+#define dgRandoBushMajorDL "__OTR__objects/gameplay_field_keep/gFieldBushMajorDL"
+static const ALIGN_ASSET(2) char gRandoBushMajorDL[] = dgRandoBushMajorDL;
+
+#define dgRandoBushSmallKeyDL "__OTR__objects/gameplay_field_keep/gFieldBushSmallKeyDL"
+static const ALIGN_ASSET(2) char gRandoBushSmallKeyDL[] = dgRandoBushSmallKeyDL;
+
+#define dgRandoBushBossKeyDL "__OTR__objects/gameplay_field_keep/gFieldBushBossKeyDL"
+static const ALIGN_ASSET(2) char gRandoBushBossKeyDL[] = dgRandoBushBossKeyDL;
+
+#define dgRandoBushTokenDL "__OTR__objects/gameplay_field_keep/gFieldBushTokenDL"
+static const ALIGN_ASSET(2) char gRandoBushTokenDL[] = dgRandoBushTokenDL;
+
+#define dgRandoBushMaskDL "__OTR__objects/gameplay_field_keep/gFieldBushMaskDL"
+static const ALIGN_ASSET(2) char gRandoBushMaskDL[] = dgRandoBushMaskDL;
+
+#define dgRandoBushFairyDL "__OTR__objects/gameplay_field_keep/gFieldBushFairyDL"
+static const ALIGN_ASSET(2) char gRandoBushFairyDL[] = dgRandoBushFairyDL;
+
+#define dgRandoBushHeartDL "__OTR__objects/gameplay_field_keep/gFieldBushHeartDL"
+static const ALIGN_ASSET(2) char gRandoBushHeartDL[] = dgRandoBushHeartDL;
+
+#define dgRandoBushJunkDL "__OTR__objects/gameplay_field_keep/gFieldBushJunkDL"
+static const ALIGN_ASSET(2) char gRandoBushJunkDL[] = dgRandoBushJunkDL;
+
+#define dgRandoCuttableGrassRandomDL "__OTR__objects/gameplay_keep/gRandoCuttableGrassRandomDL"
+static const ALIGN_ASSET(2) char gRandoCuttableGrassDL[] = dgRandoCuttableGrassRandomDL;
+
+#define dgRandoCuttableGrassMinorDL "__OTR__objects/gameplay_keep/gRandoCuttableGrassMinorDL"
+static const ALIGN_ASSET(2) char gRandoCuttableGrassMinorDL[] = dgRandoCuttableGrassMinorDL;
+
+#define dgRandoCuttableGrassMajorDL "__OTR__objects/gameplay_keep/gRandoCuttableGrassMajorDL"
+static const ALIGN_ASSET(2) char gRandoCuttableGrassMajorDL[] = dgRandoCuttableGrassMajorDL;
+
+#define dgRandoCuttableGrassSmallKeyDL "__OTR__objects/gameplay_keep/gRandoCuttableGrassSmallKeyDL"
+static const ALIGN_ASSET(2) char gRandoCuttableGrassSmallKeyDL[] = dgRandoCuttableGrassSmallKeyDL;
+
+#define dgRandoCuttableGrassBossKeyDL "__OTR__objects/gameplay_keep/gRandoCuttableGrassBossKeyDL"
+static const ALIGN_ASSET(2) char gRandoCuttableGrassBossKeyDL[] = dgRandoCuttableGrassBossKeyDL;
+
+#define dgRandoCuttableGrassTokenDL "__OTR__objects/gameplay_keep/gRandoCuttableGrassTokenDL"
+static const ALIGN_ASSET(2) char gRandoCuttableGrassTokenDL[] = dgRandoCuttableGrassTokenDL;
+
+#define dgRandoCuttableGrassMaskDL "__OTR__objects/gameplay_keep/gRandoCuttableGrassMaskDL"
+static const ALIGN_ASSET(2) char gRandoCuttableGrassMaskDL[] = dgRandoCuttableGrassMaskDL;
+
+#define dgRandoCuttableGrassFairyDL "__OTR__objects/gameplay_keep/gRandoCuttableGrassFairyDL"
+static const ALIGN_ASSET(2) char gRandoCuttableGrassFairyDL[] = dgRandoCuttableGrassFairyDL;
+
+#define dgRandoCuttableGrassHeartDL "__OTR__objects/gameplay_keep/gRandoCuttableGrassHeartDL"
+static const ALIGN_ASSET(2) char gRandoCuttableGrassHeartDL[] = dgRandoCuttableGrassHeartDL;
+
+#define dgRandoCuttableGrassJunkDL "__OTR__objects/gameplay_keep/gRandoCuttableGrassJunkDL"
+static const ALIGN_ASSET(2) char gRandoCuttableGrassJunkDL[] = dgRandoCuttableGrassJunkDL;
+
 #define dgFishingPoleGiDL "__OTR__objects/object_gi_fishing_pole/gFishingPoleGiDL"
 static const ALIGN_ASSET(2) char gFishingPoleGiDL[] = dgFishingPoleGiDL;
 
@@ -88,6 +148,54 @@ static const ALIGN_ASSET(2) char gBombchuBagBodyDL[] = dgBombchuBagBodyDL;
 
 #define dgBombchuBagMaskDL "__OTR__objects/object_bombchubag/gBombchuBagMaskDL"
 static const ALIGN_ASSET(2) char gBombchuBagMaskDL[] = dgBombchuBagMaskDL;
+
+#define dgLargeMajorCrateDL "__OTR__objects/object_kibako2/gLargeMajorCrateDL"
+static const ALIGN_ASSET(2) char gLargeMajorCrateDL[] = dgLargeMajorCrateDL;
+
+#define dgLargeMinorCrateDL "__OTR__objects/object_kibako2/gLargeMinorCrateDL"
+static const ALIGN_ASSET(2) char gLargeMinorCrateDL[] = dgLargeMinorCrateDL;
+
+#define dgLargeRandoCrateDL "__OTR__objects/object_kibako2/gLargeRandoCrateDL"
+static const ALIGN_ASSET(2) char gLargeRandoCrateDL[] = dgLargeRandoCrateDL;
+
+#define dgLargeSmallKeyCrateDL "__OTR__objects/object_kibako2/gLargeSmallKeyCrateDL"
+static const ALIGN_ASSET(2) char gLargeSmallKeyCrateDL[] = dgLargeSmallKeyCrateDL;
+
+#define dgLargeTokenCrateDL "__OTR__objects/object_kibako2/gLargeTokenCrateDL"
+static const ALIGN_ASSET(2) char gLargeTokenCrateDL[] = dgLargeTokenCrateDL;
+
+#define dgLargeBossKeyCrateDL "__OTR__objects/object_kibako2/gLargeBossKeyCrateDL"
+static const ALIGN_ASSET(2) char gLargeBossKeyCrateDL[] = dgLargeBossKeyCrateDL;
+
+#define dgLargeHeartCrateDL "__OTR__objects/object_kibako2/gLargeHeartCrateDL"
+static const ALIGN_ASSET(2) char gLargeHeartCrateDL[] = dgLargeHeartCrateDL;
+
+#define dgLargeJunkCrateDL "__OTR__objects/object_kibako2/gLargeJunkCrateDL"
+static const ALIGN_ASSET(2) char gLargeJunkCrateDL[] = dgLargeJunkCrateDL;
+
+#define dgSmallMajorCrateDL "__OTR__objects/object_kibako/gSmallMajorCrateDL"
+static const ALIGN_ASSET(2) char gSmallMajorCrateDL[] = dgSmallMajorCrateDL;
+
+#define dgSmallMinorCrateDL "__OTR__objects/object_kibako/gSmallMinorCrateDL"
+static const ALIGN_ASSET(2) char gSmallMinorCrateDL[] = dgSmallMinorCrateDL;
+
+#define dgSmallRandoCrateDL "__OTR__objects/object_kibako/gSmallRandoCrateDL"
+static const ALIGN_ASSET(2) char gSmallRandoCrateDL[] = dgSmallRandoCrateDL;
+
+#define dgSmallSmallKeyCrateDL "__OTR__objects/object_kibako/gSmallSmallKeyCrateDL"
+static const ALIGN_ASSET(2) char gSmallSmallKeyCrateDL[] = dgSmallSmallKeyCrateDL;
+
+#define dgSmallTokenCrateDL "__OTR__objects/object_kibako/gSmallTokenCrateDL"
+static const ALIGN_ASSET(2) char gSmallTokenCrateDL[] = dgSmallTokenCrateDL;
+
+#define dgSmallBossKeyCrateDL "__OTR__objects/object_kibako/gSmallBossKeyCrateDL"
+static const ALIGN_ASSET(2) char gSmallBossKeyCrateDL[] = dgSmallBossKeyCrateDL;
+
+#define dgSmallHeartCrateDL "__OTR__objects/object_kibako/gSmallHeartCrateDL"
+static const ALIGN_ASSET(2) char gSmallHeartCrateDL[] = dgSmallHeartCrateDL;
+
+#define dgSmallJunkCrateDL "__OTR__objects/object_kibako/gSmallJunkCrateDL"
+static const ALIGN_ASSET(2) char gSmallJunkCrateDL[] = dgSmallJunkCrateDL;
 
 //boss keys
 #define dgBossKeyCustomDL "__OTR__objects/object_bosskey/gBossKeyCustomDL"
@@ -287,6 +395,9 @@ static const ALIGN_ASSET(2) char gFileSelPleaseChooseAQuestFRATex[] = dgFileSelP
 #define dgFileSelPleaseChooseAQuestGERTex "__OTR__textures/title_static/gFileSelPleaseChooseAQuestGERTex"
 static const ALIGN_ASSET(2) char gFileSelPleaseChooseAQuestGERTex[] = dgFileSelPleaseChooseAQuestGERTex;
 
+#define dgFileSelPleaseChooseAQuestJPNTex "__OTR__textures/title_static/gFileSelPleaseChooseAQuestJPNTex"
+static const ALIGN_ASSET(2) char gFileSelPleaseChooseAQuestJPNTex[] = dgFileSelPleaseChooseAQuestJPNTex;
+
 #define dgFileSelBossRushSettingsENGTex "__OTR__textures/title_static/gFileSelBossRushSettingsENGTex"
 static const ALIGN_ASSET(2) char gFileSelBossRushSettingsENGText[] = dgFileSelBossRushSettingsENGTex;
 
@@ -295,6 +406,9 @@ static const ALIGN_ASSET(2) char gFileSelBossRushSettingsFRAText[] = dgFileSelBo
 
 #define dgFileSelBossRushSettingsGERTex "__OTR__textures/title_static/gFileSelBossRushSettingsGERTex"
 static const ALIGN_ASSET(2) char gFileSelBossRushSettingsGERText[] = dgFileSelBossRushSettingsGERTex;
+
+#define dgFileSelBossRushSettingsJPNTex "__OTR__textures/title_static/gFileSelBossRushSettingsJPNTex"
+static const ALIGN_ASSET(2) char gFileSelBossRushSettingsJPNText[] = dgFileSelBossRushSettingsJPNTex;
 
 #define dgFileSelRANDButtonTex "__OTR__textures/title_static/gFileSelRANDButtonTex"
 static const ALIGN_ASSET(2) char gFileSelRANDButtonTex[] = dgFileSelRANDButtonTex;

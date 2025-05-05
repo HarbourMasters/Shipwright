@@ -4,6 +4,7 @@
 using namespace Rando;
 
 void RegionTable_Init_KokiriForest() {
+    // clang-format off
     areaTable[RR_KOKIRI_FOREST] = Region("Kokiri Forest", "Kokiri Forest", {RA_KOKIRI_FOREST}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->BeanPlantFairy,           []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}),
@@ -39,6 +40,41 @@ void RegionTable_Init_KokiriForest() {
         LOCATION(RC_KF_SARIAS_ROOF_EAST_HEART,  logic->IsChild),
         LOCATION(RC_KF_SARIAS_ROOF_NORTH_HEART, logic->IsChild),
         LOCATION(RC_KF_GOSSIP_STONE,            true),
+        LOCATION(RC_KF_CHILD_GRASS_1,           logic->IsChild && logic->CanCutShrubs()),
+        LOCATION(RC_KF_CHILD_GRASS_2,           logic->IsChild && logic->CanCutShrubs()),
+        LOCATION(RC_KF_CHILD_GRASS_3,           logic->IsChild && logic->CanCutShrubs()),
+        LOCATION(RC_KF_CHILD_GRASS_4,           logic->IsChild && logic->CanCutShrubs()),
+        LOCATION(RC_KF_CHILD_GRASS_5,           logic->IsChild && logic->CanCutShrubs()),
+        LOCATION(RC_KF_CHILD_GRASS_6,           logic->IsChild && logic->CanCutShrubs()),
+        LOCATION(RC_KF_CHILD_GRASS_7,           logic->IsChild && logic->CanCutShrubs()),
+        LOCATION(RC_KF_CHILD_GRASS_8,           logic->IsChild && logic->CanCutShrubs()),
+        LOCATION(RC_KF_CHILD_GRASS_9,           logic->IsChild && logic->CanCutShrubs()),
+        LOCATION(RC_KF_CHILD_GRASS_10,          logic->IsChild && logic->CanCutShrubs()),
+        LOCATION(RC_KF_CHILD_GRASS_11,          logic->IsChild && logic->CanCutShrubs()),
+        LOCATION(RC_KF_CHILD_GRASS_12,          logic->IsChild && logic->CanCutShrubs()),
+        LOCATION(RC_KF_CHILD_GRASS_MAZE_1,      logic->IsChild && logic->CanCutShrubs()),
+        LOCATION(RC_KF_CHILD_GRASS_MAZE_2,      logic->IsChild && logic->CanCutShrubs()),
+        LOCATION(RC_KF_CHILD_GRASS_MAZE_3,      logic->IsChild && logic->CanCutShrubs()),
+        LOCATION(RC_KF_ADULT_GRASS_1,           logic->IsAdult && logic->CanCutShrubs()),
+        LOCATION(RC_KF_ADULT_GRASS_2,           logic->IsAdult && logic->CanCutShrubs()),
+        LOCATION(RC_KF_ADULT_GRASS_3,           logic->IsAdult && logic->CanCutShrubs()),
+        LOCATION(RC_KF_ADULT_GRASS_4,           logic->IsAdult && logic->CanCutShrubs()),
+        LOCATION(RC_KF_ADULT_GRASS_5,           logic->IsAdult && logic->CanCutShrubs()),
+        LOCATION(RC_KF_ADULT_GRASS_6,           logic->IsAdult && logic->CanCutShrubs()),
+        LOCATION(RC_KF_ADULT_GRASS_7,           logic->IsAdult && logic->CanCutShrubs()),
+        LOCATION(RC_KF_ADULT_GRASS_8,           logic->IsAdult && logic->CanCutShrubs()),
+        LOCATION(RC_KF_ADULT_GRASS_9,           logic->IsAdult && logic->CanCutShrubs()),
+        LOCATION(RC_KF_ADULT_GRASS_10,          logic->IsAdult && logic->CanCutShrubs()),
+        LOCATION(RC_KF_ADULT_GRASS_11,          logic->IsAdult && logic->CanCutShrubs()),
+        LOCATION(RC_KF_ADULT_GRASS_12,          logic->IsAdult && logic->CanCutShrubs()),
+        LOCATION(RC_KF_ADULT_GRASS_13,          logic->IsAdult && logic->CanCutShrubs()),
+        LOCATION(RC_KF_ADULT_GRASS_14,          logic->IsAdult && logic->CanCutShrubs()),
+        LOCATION(RC_KF_ADULT_GRASS_15,          logic->IsAdult && logic->CanCutShrubs()),
+        LOCATION(RC_KF_ADULT_GRASS_16,          logic->IsAdult && logic->CanCutShrubs()),
+        LOCATION(RC_KF_ADULT_GRASS_17,          logic->IsAdult && logic->CanCutShrubs()),
+        LOCATION(RC_KF_ADULT_GRASS_18,          logic->IsAdult && logic->CanCutShrubs()),
+        LOCATION(RC_KF_ADULT_GRASS_19,          logic->IsAdult && logic->CanCutShrubs()),
+        LOCATION(RC_KF_ADULT_GRASS_20,          logic->IsAdult && logic->CanCutShrubs()),
     }, {
         //Exits
         Entrance(RR_KF_LINKS_HOUSE,        []{return true;}),
@@ -145,8 +181,14 @@ void RegionTable_Init_KokiriForest() {
         LOCATION(RC_KF_STORMS_GROTTO_GOSSIP_STONE,           true),
         LOCATION(RC_KF_STORMS_GROTTO_BEEHIVE_LEFT,           logic->CanBreakLowerBeehives()),
         LOCATION(RC_KF_STORMS_GROTTO_BEEHIVE_RIGHT,          logic->CanBreakLowerBeehives()),
+        LOCATION(RC_KF_STORMS_GROTTO_GRASS_1,                logic->CanCutShrubs()),
+        LOCATION(RC_KF_STORMS_GROTTO_GRASS_2,                logic->CanCutShrubs()),
+        LOCATION(RC_KF_STORMS_GROTTO_GRASS_3,                logic->CanCutShrubs()),
+        LOCATION(RC_KF_STORMS_GROTTO_GRASS_4,                logic->CanCutShrubs()),
     }, {
         //Exits
         Entrance(RR_KOKIRI_FOREST, []{return true;})
     });
+
+    // clang-format on
 }

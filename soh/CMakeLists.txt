@@ -440,6 +440,7 @@ if(MSVC)
                 /Gy;
                 /W3
             >
+            /bigobj;
             /sdl-;
             /permissive-;
             /MP;

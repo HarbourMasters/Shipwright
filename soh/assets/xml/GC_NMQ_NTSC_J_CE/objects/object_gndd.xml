@@ -1,0 +1,106 @@
+<Root>
+    <!-- Assets for the young version of Ganondorf (the one before the seven-year timeskip). -->
+    <File Name="object_gndd" Segment="6">
+        <!-- Young Ganondorf Animations -->
+        <Animation Name="gYoungGanondorfHorsebackRideAnim" Offset="0x5B4"/> <!-- Original name is "gnd_anim_fastrun" -->
+        <Animation Name="gYoungGanondorfHorsebackMagicChargeUpStartAnim" Offset="0x8A0"/> <!-- Original name is "gnd_anim_mahou" ("magic, sorcery") -->
+        <Animation Name="gYoungGanondorfHorsebackMagicChargeUpLoopAnim" Offset="0xBC8"/> <!-- Original name is "gnd_anim_mahou_wait" -->
+        <Animation Name="gYoungGanondorfHorsebackLookSidewaysStartAnim" Offset="0xF54"/> <!-- Original name is "gnd_anim_nirami" ("glare, sharp look") -->
+        <Animation Name="gYoungGanondorfHorsebackLookSidewaysLoopAnim" Offset="0x14F4"/> <!-- Original name is "gnd_anim_nirami_wait" -->
+        <Animation Name="gYoungGanondorfHorsebackRearAnim" Offset="0x1D28"/> <!-- Original name is "gnd_anim_stand" -->
+        <Animation Name="gYoungGanondorfHorsebackIdleAnim" Offset="0x2928"/> <!-- Original name is "gnd_anim_wait" -->
+        <Animation Name="gYoungGanondorfKneelStartAnim" Offset="0x3284"/> <!-- Original name is "gnd_demo_ojigi" ("bowing") -->
+        <Animation Name="gYoungGanondorfKneelLookSidewaysAnim" Offset="0x3428"/> <!-- Original name is "gnd_demo_ojigi_furimuki" ("to turn one's face") -->
+        <Animation Name="gYoungGanondorfKneelLoopAnim" Offset="0x3D84"/> <!-- Original name is "gnd_demo_ojigi_wait" -->
+        <Animation Name="gYoungGanondorfArmsCrossedAnim" Offset="0x4260"/> <!-- Original name is "gnd_demo_ukabi_wait" ("to emerge (from obscurity)") -->
+        <Animation Name="gYoungGanondorfLaughStartAnim" Offset="0x4534"/> <!-- Original name is "gnd_demo_ukabi_warai" ("laughter") -->
+        <Animation Name="gYoungGanondorfLaughLoopAnim" Offset="0x48B0"/> <!-- Original name is "gnd_demo_ukabi_warai_wait" -->
+        <Animation Name="gYoungGanondorfWalkAnim" Offset="0x50A8"/> <!-- Original name is "gnd_walk" -->
+
+        <!-- Young Ganondorf Limb DisplayLists -->
+        <DList Name="gYoungGanondorfHeadDL" Offset="0x61C0"/>
+        <DList Name="gYoungGanondorfRightUpperLipDL" Offset="0x69F8"/>
+        <DList Name="gYoungGanondorfChinDL" Offset="0x6B78"/>
+        <DList Name="gYoungGanondorfJawDL" Offset="0x6D90"/>
+        <DList Name="gYoungGanondorfLeftUpperLipDL" Offset="0x6FC8"/>
+        <DList Name="gYoungGanondorfPelvisDL" Offset="0xA6A8"/>
+        <DList Name="gYoungGanondorfTorsoDL" Offset="0xAB10"/>
+        <DList Name="gYoungGanondorfJewelDL" Offset="0xB410"/>
+        <DList Name="gYoungGanondorfKnifeDL" Offset="0xB4B0"/>
+        <DList Name="gYoungGanondorfLeftUpperArmDL" Offset="0xB918"/>
+        <DList Name="gYoungGanondorfRightUpperArmDL" Offset="0xBA90"/>
+        <DList Name="gYoungGanondorfLeftForearmDL" Offset="0xBC08"/>
+        <DList Name="gYoungGanondorfRightForearmDL" Offset="0xBEA0"/>
+        <DList Name="gYoungGanondorfLeftHandDL" Offset="0xC138"/>
+        <DList Name="gYoungGanondorfRightHandDL" Offset="0xC550"/>
+        <DList Name="gYoungGanondorfLeftFootDL" Offset="0xC968"/>
+        <DList Name="gYoungGanondorfRightFootDL" Offset="0xCBF8"/>
+        <DList Name="gYoungGanondorfLeftThighDL" Offset="0xCE88"/>
+        <DList Name="gYoungGanondorfLeftShinDL" Offset="0xD080"/>
+        <DList Name="gYoungGanondorfRightThighDL" Offset="0xD278"/>
+        <DList Name="gYoungGanondorfRightShinDL" Offset="0xD470"/>
+        <DList Name="gYoungGanondorfTeethDL" Offset="0xD668"/>
+        <DList Name="gYoungGanondorfOpenLeftHandDL" Offset="0xE1A8"/>
+
+        <!-- Young Ganondorf Textures -->
+        <Texture Name="gYoungGanondorfEyeTLUT" OutName="young_ganondorf_eye_tlut" Format="rgba16" Width="16" Height="16" Offset="0xECB8"/>
+        <Texture Name="gYoungGanondorfInnerMouthTex" OutName="young_ganondorf_inner_mouth" Format="rgba16" Width="8" Height="8" Offset="0xEEB8"/>
+        <Texture Name="gYoungGanondorfSideburnTex" OutName="young_ganondorf_sideburn" Format="rgba16" Width="16" Height="16" Offset="0xEF38"/>
+        <Texture Name="gYoungGanondorfOuterMouthTex" OutName="young_ganondorf_outer_mouth" Format="rgba16" Width="4" Height="8" Offset="0xF138"/>
+        <Texture Name="gYoungGanondorfEyeOpenTex" OutName="young_ganondorf_eye_open" Format="ci8" Width="32" Height="16" Offset="0xF178" TlutOffset="0xECB8"/>
+        <Texture Name="gYoungGanondorfEyeHalfTex" OutName="young_ganondorf_eye_half" Format="ci8" Width="32" Height="16" Offset="0xF378" TlutOffset="0xECB8"/>
+        <Texture Name="gYoungGanondorfEyeClosedTex" OutName="young_ganondorf_eye_closed" Format="ci8" Width="32" Height="16" Offset="0xF578" TlutOffset="0xECB8"/>
+        <Texture Name="gYoungGanondorfEyeLookingDownTex" OutName="young_ganondorf_eye_looking_down" Format="ci8" Width="32" Height="16" Offset="0xF778" TlutOffset="0xECB8"/>
+        <Texture Name="gYoungGanondorfUpperLipTex" OutName="young_ganondorf_upper_lip" Format="rgba16" Width="16" Height="16" Offset="0xF978"/>
+        <Texture Name="gYoungGanondorfEarTex" OutName="young_ganondorf_ear" Format="rgba16" Width="8" Height="16" Offset="0xFB78"/>
+        <Texture Name="gYoungGanondorfNoseTex" OutName="young_ganondorf_nose" Format="rgba16" Width="8" Height="8" Offset="0xFC78"/>
+        <Texture Name="gYoungGanondorfNoseBridgeTex" OutName="young_ganondorf_nose_bridge" Format="rgba16" Width="4" Height="16" Offset="0xFCF8"/>
+        <Texture Name="gYoungGanondorfEyebrowTex" OutName="young_ganondorf_eyebrow" Format="rgba16" Width="16" Height="8" Offset="0xFD78"/>
+        <Texture Name="gYoungGanondorfJawTex" OutName="young_ganondorf_jaw" Format="rgba16" Width="16" Height="16" Offset="0xFE78"/>
+        <Texture Name="gYoungGanondorfBlackLeatherTex" OutName="young_ganondorf_black_leather" Format="rgba16" Width="16" Height="16" Offset="0x10078"/>
+        <Texture Name="gYoungGanondorfGerudoFabricWithSunTex" OutName="young_ganondorf_gerudo_fabric_with_sun" Format="rgba16" Width="32" Height="16" Offset="0x10278"/>
+        <Texture Name="gYoungGanondorfLeatherTex" OutName="young_ganondorf_leather" Format="rgba16" Width="16" Height="16" Offset="0x10678"/>
+        <Texture Name="gYoungGanondorfBodysuitTex" OutName="young_ganondorf_bodysuit" Format="rgba16" Width="8" Height="8" Offset="0x10878"/>
+        <Texture Name="gYoungGanondorfNeckTex" OutName="young_ganondorf_neck" Format="rgba16" Width="8" Height="8" Offset="0x108F8"/>
+        <Texture Name="gYoungGanondorfChestAndKnifeJewelTex" OutName="young_ganondorf_chest_and_knife_jewel" Format="rgba16" Width="16" Height="16" Offset="0x10978"/>
+        <Texture Name="gYoungGanondorfGerudoFabricTex" OutName="young_ganondorf_gerudo_fabric" Format="rgba16" Width="16" Height="16" Offset="0x10B78"/>
+        <Texture Name="gYoungGanondorfHairFringeTex" OutName="young_ganondorf_hair_fringe" Format="rgba16" Width="16" Height="16" Offset="0x10D78"/>
+        <Texture Name="gYoungGanondorfJewelTex" OutName="young_ganondorf_jewel" Format="rgba16" Width="16" Height="32" Offset="0x10F78"/>
+        <Texture Name="gYoungGanondorfPauldronTex" OutName="young_ganondorf_pauldron" Format="rgba16" Width="16" Height="16" Offset="0x11378"/> <!-- Also used for the sides of his gauntlets and knee guards. -->
+        <Texture Name="gYoungGanondorfThumbTex" OutName="young_ganondorf_thumb" Format="rgba16" Width="8" Height="8" Offset="0x11578"/>
+        <Texture Name="gYoungGanondorfHandSideTex" OutName="young_ganondorf_hand_side" Format="rgba16" Width="8" Height="8" Offset="0x115F8"/>
+        <Texture Name="gYoungGanondorfFingerTex" OutName="young_ganondorf_finger" Format="rgba16" Width="8" Height="8" Offset="0x11678"/>
+        <Texture Name="gYoungGanondorfTeethTex" OutName="young_ganondorf_teeth" Format="rgba16" Width="4" Height="4" Offset="0x116F8"/>
+        <Texture Name="gYoungGanondorfPalmMaskTex" OutName="young_ganondorf_palm_mask" Format="i8" Width="16" Height="16" Offset="0x11718"/>
+        <Texture Name="gYoungGanondorfFingerUndersideTex" OutName="young_ganondorf_finger_underside" Format="rgba16" Width="4" Height="8" Offset="0x11818"/>
+        <Texture Name="gYoungGanondorfFingernailTex" OutName="young_ganondorf_fingernail" Format="rgba16" Width="4" Height="4" Offset="0x11858"/>
+
+        <!-- Young Ganondorf Limbs -->
+        <Limb Name="gYoungGanondorfRootLimb" LimbType="Standard" Offset="0x11878"/>
+        <Limb Name="gYoungGanondorfTorsoLimb" LimbType="Standard" Offset="0x11884"/>
+        <Limb Name="gYoungGanondorfLeftUpperArmLimb" LimbType="Standard" Offset="0x11890"/>
+        <Limb Name="gYoungGanondorfLeftForearmLimb" LimbType="Standard" Offset="0x1189C"/>
+        <Limb Name="gYoungGanondorfLeftHandLimb" LimbType="Standard" Offset="0x118A8"/>
+        <Limb Name="gYoungGanondorfRightUpperArmLimb" LimbType="Standard" Offset="0x118B4"/>
+        <Limb Name="gYoungGanondorfRightForearmLimb" LimbType="Standard" Offset="0x118C0"/>
+        <Limb Name="gYoungGanondorfRightHandLimb" LimbType="Standard" Offset="0x118CC"/>
+        <Limb Name="gYoungGanondorfJewelLimb" LimbType="Standard" Offset="0x118D8"/>
+        <Limb Name="gYoungGanondorfLeftUpperLipLimb" LimbType="Standard" Offset="0x118E4"/>
+        <Limb Name="gYoungGanondorfJawLimb" LimbType="Standard" Offset="0x118F0"/>
+        <Limb Name="gYoungGanondorfChinLimb" LimbType="Standard" Offset="0x118FC"/>
+        <Limb Name="gYoungGanondorfRightUpperLipLimb" LimbType="Standard" Offset="0x11908"/>
+        <Limb Name="gYoungGanondorfTeethLimb" LimbType="Standard" Offset="0x11914"/>
+        <Limb Name="gYoungGanondorfHeadLimb" LimbType="Standard" Offset="0x11920"/>
+        <Limb Name="gYoungGanondorfPelvisLimb" LimbType="Standard" Offset="0x1192C"/>
+        <Limb Name="gYoungGanondorfLeftThighLimb" LimbType="Standard" Offset="0x11938"/>
+        <Limb Name="gYoungGanondorfLeftShinLimb" LimbType="Standard" Offset="0x11944"/>
+        <Limb Name="gYoungGanondorfLeftFootLimb" LimbType="Standard" Offset="0x11950"/>
+        <Limb Name="gYoungGanondorfKnifeLimb" LimbType="Standard" Offset="0x1195C"/>
+        <Limb Name="gYoungGanondorfRightThighLimb" LimbType="Standard" Offset="0x11968"/>
+        <Limb Name="gYoungGanondorfRightShinLimb" LimbType="Standard" Offset="0x11974"/>
+        <Limb Name="gYoungGanondorfRightFootLimb" LimbType="Standard" Offset="0x11980"/>
+
+        <!-- Young Ganondorf Skeleton -->
+        <Skeleton Name="gYoungGanondorfSkel" Type="Flex" LimbType="Standard" Offset="0x119E8"/>
+    </File>
+</Root>

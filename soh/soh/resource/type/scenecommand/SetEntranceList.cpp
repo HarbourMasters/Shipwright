@@ -6,6 +6,6 @@ EntranceEntry* SetEntranceList::GetPointer() {
 }
 
 size_t SetEntranceList::GetPointerSize() {
-	return entrances.size() * sizeof(EntranceEntry);
+    return entrances.size() * sizeof(EntranceEntry);
 }
 } // namespace SOH

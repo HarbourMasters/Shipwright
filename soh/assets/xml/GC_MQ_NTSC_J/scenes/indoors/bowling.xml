@@ -1,0 +1,36 @@
+<Root>
+    <File Name="bowling_scene" Segment="2">
+        <Texture Name="bowling_sceneTex_001AA0" OutName="bowling_sceneTex_001AA0" Format="rgba16" Width="32" Height="32" Offset="0x1AA0" AddedByScript="true"/>
+        <Texture Name="bowling_sceneTex_0022A0" OutName="bowling_sceneTex_0022A0" Format="i4" Width="16" Height="16" Offset="0x22A0" AddedByScript="true"/>
+        <Texture Name="bowling_sceneTex_002320" OutName="bowling_sceneTex_002320" Format="rgba16" Width="16" Height="32" Offset="0x2320" AddedByScript="true"/>
+        <Texture Name="bowling_sceneTex_002720" OutName="bowling_sceneTex_002720" Format="rgba16" Width="32" Height="32" Offset="0x2720" AddedByScript="true"/>
+        <Texture Name="bowling_sceneTex_002F20" OutName="bowling_sceneTex_002F20" Format="rgba16" Width="32" Height="32" Offset="0x2F20" AddedByScript="true"/>
+        <Texture Name="bowling_sceneTex_003720" OutName="bowling_sceneTex_003720" Format="i4" Width="64" Height="128" Offset="0x3720" AddedByScript="true"/>
+        <Texture Name="bowling_sceneTex_004720" OutName="bowling_sceneTex_004720" Format="ia4" Width="64" Height="64" Offset="0x4720" AddedByScript="true"/>
+        <Texture Name="bowling_sceneTex_004F20" OutName="bowling_sceneTex_004F20" Format="rgba16" Width="16" Height="16" Offset="0x4F20" AddedByScript="true"/>
+        <Texture Name="bowling_sceneTex_005120" OutName="bowling_sceneTex_005120" Format="rgba16" Width="16" Height="16" Offset="0x5120" AddedByScript="true"/>
+        <Texture Name="bowling_sceneTex_005320" OutName="bowling_sceneTex_005320" Format="rgba16" Width="16" Height="16" Offset="0x5320" AddedByScript="true"/>
+        <Texture Name="bowling_sceneTex_005520" OutName="bowling_sceneTex_005520" Format="rgba16" Width="16" Height="32" Offset="0x5520" AddedByScript="true"/>
+        <Texture Name="bowling_sceneTex_005920" OutName="bowling_sceneTex_005920" Format="rgba16" Width="32" Height="32" Offset="0x5920" AddedByScript="true"/>
+        <Texture Name="bowling_sceneTex_006120" OutName="bowling_sceneTex_006120" Format="rgba16" Width="64" Height="32" Offset="0x6120" AddedByScript="true"/>
+        <Texture Name="bowling_sceneTex_007120" OutName="bowling_sceneTex_007120" Format="ia8" Width="128" Height="32" Offset="0x7120" AddedByScript="true"/>
+        <Texture Name="bowling_sceneTex_008120" OutName="bowling_sceneTex_008120" Format="rgba16" Width="32" Height="32" Offset="0x8120" AddedByScript="true"/>
+        <Texture Name="bowling_sceneTex_008920" OutName="bowling_sceneTex_008920" Format="rgba16" Width="32" Height="32" Offset="0x8920" AddedByScript="true"/>
+        <Texture Name="bowling_sceneTex_009120" OutName="bowling_sceneTex_009120" Format="rgba16" Width="32" Height="64" Offset="0x9120" AddedByScript="true"/>
+        <Texture Name="bowling_sceneTex_00A120" OutName="bowling_sceneTex_00A120" Format="rgba16" Width="32" Height="32" Offset="0xA120" AddedByScript="true"/>
+        <Texture Name="bowling_sceneTex_00A920" OutName="bowling_sceneTex_00A920" Format="i8" Width="32" Height="16" Offset="0xA920" AddedByScript="true"/>
+        <Texture Name="bowling_sceneTex_00AB20" OutName="bowling_sceneTex_00AB20" Format="ia8" Width="32" Height="16" Offset="0xAB20" AddedByScript="true"/>
+        <Texture Name="bowling_sceneTex_00AD20" OutName="bowling_sceneTex_00AD20" Format="i4" Width="32" Height="32" Offset="0xAD20" AddedByScript="true"/>
+        <Texture Name="bowling_sceneTex_00AF20" OutName="bowling_sceneTex_00AF20" Format="ia8" Width="64" Height="32" Offset="0xAF20" AddedByScript="true"/>
+        <Texture Name="bowling_sceneTex_00B720" OutName="bowling_sceneTex_00B720" Format="ia8" Width="32" Height="32" Offset="0xB720" AddedByScript="true"/>
+        <Texture Name="bowling_sceneTex_00BB20" OutName="bowling_sceneTex_00BB20" Format="ia8" Width="32" Height="32" Offset="0xBB20" AddedByScript="true"/>
+        <Texture Name="bowling_sceneTex_00BF20" OutName="bowling_sceneTex_00BF20" Format="rgba16" Width="32" Height="32" Offset="0xBF20" AddedByScript="true"/>
+        <Texture Name="bowling_sceneTex_00C720" OutName="bowling_sceneTex_00C720" Format="ia8" Width="64" Height="64" Offset="0xC720" AddedByScript="true"/>
+        <Texture Name="bowling_sceneTex_00D720" OutName="bowling_sceneTex_00D720" Format="i8" Width="32" Height="32" Offset="0xD720" AddedByScript="true"/>
+        <Texture Name="bowling_sceneTex_00DB20" OutName="bowling_sceneTex_00DB20" Format="rgba16" Width="64" Height="32" Offset="0xDB20" AddedByScript="true"/>
+        <Scene Name="bowling_scene" Offset="0x0"/>
+    </File>
+    <File Name="bowling_room_0" Segment="3">
+        <Room Name="bowling_room_0" Offset="0x0"/>
+    </File>
+</Root>

@@ -73,8 +73,8 @@ void EnSyatekiItm_Init(Actor* thisx, PlayState* play2) {
     EnSyatekiItm* this = (EnSyatekiItm*)thisx;
     s32 i;
 
-    this->man = (EnSyatekiMan*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_SYATEKI_MAN,
-                                                  140.0f, 0.0f, 255.0f, 0, -0x4000, 0, 0);
+    this->man = (EnSyatekiMan*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_SYATEKI_MAN, 140.0f,
+                                                  0.0f, 255.0f, 0, -0x4000, 0, 0);
     if (this->man == NULL) {
         // "Spawn error"
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ エラー原 ☆☆☆☆ \n" VT_RST);
@@ -82,9 +82,8 @@ void EnSyatekiItm_Init(Actor* thisx, PlayState* play2) {
         return;
     }
     for (i = 0; i < 10; i++) {
-        this->markers[i] =
-            (EnExRuppy*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_EX_RUPPY,
-                                           sRupeePos[i].x, sRupeePos[i].y, sRupeePos[i].z, 0, 0, 0, 4);
+        this->markers[i] = (EnExRuppy*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_EX_RUPPY,
+                                                          sRupeePos[i].x, sRupeePos[i].y, sRupeePos[i].z, 0, 0, 0, 4);
         if (this->markers[i] == NULL) {
             // "Second spawn error"
             osSyncPrintf(VT_FGCOL(YELLOW) "☆☆☆☆☆ エラー原セカンド ☆☆☆☆ \n" VT_RST);
@@ -111,8 +110,10 @@ void EnSyatekiItm_Idle(EnSyatekiItm* this, PlayState* play) {
         player->actor.world.rot.x = player->actor.shape.rot.x = player->actor.world.rot.z = player->actor.shape.rot.z =
             0;
         s32 ammunition = 15;
-        if(CVarGetInteger(CVAR_ENHANCEMENT("CustomizeShootingGallery"), 0)) {
-            ammunition = CVarGetInteger(LINK_IS_ADULT ? CVAR_ENHANCEMENT("ShootingGalleryAmmoAdult") : CVAR_ENHANCEMENT("ShootingGalleryAmmoChild"), 15);
+        if (CVarGetInteger(CVAR_ENHANCEMENT("CustomizeShootingGallery"), 0)) {
+            ammunition = CVarGetInteger(LINK_IS_ADULT ? CVAR_ENHANCEMENT("ShootingGalleryAmmoAdult")
+                                                      : CVAR_ENHANCEMENT("ShootingGalleryAmmoChild"),
+                                        15);
         }
         func_8008EF44(play, ammunition);
         this->roundNum = this->hitCount = 0;
@@ -132,7 +133,8 @@ void EnSyatekiItm_StartRound(EnSyatekiItm* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (this->unkTimer == 0) {
-        if (LINK_IS_ADULT && !(CVarGetInteger(CVAR_ENHANCEMENT("CustomizeShootingGallery"), 0) && CVarGetInteger(CVAR_ENHANCEMENT("ConstantAdultGallery"), 0))) {
+        if (LINK_IS_ADULT && !(CVarGetInteger(CVAR_ENHANCEMENT("CustomizeShootingGallery"), 0) &&
+                               CVarGetInteger(CVAR_ENHANCEMENT("ConstantAdultGallery"), 0))) {
             for (i = 0, j = 0; i < SYATEKI_ROUND_MAX; i++) {
                 if (this->roundFlags[i]) {
                     j++;
@@ -238,8 +240,8 @@ void EnSyatekiItm_SpawnTargets(EnSyatekiItm* this, PlayState* play) {
 
         for (i = 0; i < this->numTargets; i++) {
             this->targets[i] = (EnGSwitch*)Actor_SpawnAsChild(
-                &play->actorCtx, &this->actor, play, ACTOR_EN_G_SWITCH, this->targetHome[i].x,
-                this->targetHome[i].y, this->targetHome[i].z, 0, 0, 0, (ENGSWITCH_TARGET_RUPEE << 0xC) | 0x3F);
+                &play->actorCtx, &this->actor, play, ACTOR_EN_G_SWITCH, this->targetHome[i].x, this->targetHome[i].y,
+                this->targetHome[i].z, 0, 0, 0, (ENGSWITCH_TARGET_RUPEE << 0xC) | 0x3F);
             if (this->targets[i] == NULL) {
                 // "Rupee spawn error"
                 osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ ルピーでエラー原 ☆☆☆☆ \n" VT_RST);

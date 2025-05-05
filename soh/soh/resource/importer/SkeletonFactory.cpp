@@ -4,12 +4,14 @@
 #include <libultraship/libultraship.h>
 
 namespace SOH {
-std::shared_ptr<Ship::IResource> ResourceFactoryBinarySkeletonV0::ReadResource(std::shared_ptr<Ship::File> file) {
-    if (!FileHasValidFormatAndReader(file)) {
+std::shared_ptr<Ship::IResource>
+ResourceFactoryBinarySkeletonV0::ReadResource(std::shared_ptr<Ship::File> file,
+                                              std::shared_ptr<Ship::ResourceInitData> initData) {
+    if (!FileHasValidFormatAndReader(file, initData)) {
         return nullptr;
     }
 
-    auto skeleton = std::make_shared<Skeleton>(file->InitData);
+    auto skeleton = std::make_shared<Skeleton>(initData);
     auto reader = std::get<std::shared_ptr<Ship::BinaryReader>>(file->Reader);
 
     skeleton->type = (SkeletonType)reader->ReadInt8();
@@ -27,18 +29,18 @@ std::shared_ptr<Ship::IResource> ResourceFactoryBinarySkeletonV0::ReadResource(s
     }
 
     if (skeleton->type == SkeletonType::Curve) {
-	skeleton->skeletonData.skelCurveLimbList.limbCount = skeleton->limbCount;
-	skeleton->curveLimbArray.reserve(skeleton->skeletonData.skelCurveLimbList.limbCount);
+        skeleton->skeletonData.skelCurveLimbList.limbCount = skeleton->limbCount;
+        skeleton->curveLimbArray.reserve(skeleton->skeletonData.skelCurveLimbList.limbCount);
     } else if (skeleton->type == SkeletonType::Flex) {
-	skeleton->skeletonData.flexSkeletonHeader.dListCount = skeleton->dListCount;
+        skeleton->skeletonData.flexSkeletonHeader.dListCount = skeleton->dListCount;
     }
 
     if (skeleton->type == SkeletonType::Normal) {
         skeleton->skeletonData.skeletonHeader.limbCount = skeleton->limbCount;
-	skeleton->standardLimbArray.reserve(skeleton->skeletonData.skeletonHeader.limbCount);
+        skeleton->standardLimbArray.reserve(skeleton->skeletonData.skeletonHeader.limbCount);
     } else if (skeleton->type == SkeletonType::Flex) {
         skeleton->skeletonData.flexSkeletonHeader.sh.limbCount = skeleton->limbCount;
-	skeleton->standardLimbArray.reserve(skeleton->skeletonData.flexSkeletonHeader.sh.limbCount);
+        skeleton->standardLimbArray.reserve(skeleton->skeletonData.flexSkeletonHeader.sh.limbCount);
     }
 
     for (size_t i = 0; i < skeleton->limbTable.size(); i++) {
@@ -62,12 +64,14 @@ std::shared_ptr<Ship::IResource> ResourceFactoryBinarySkeletonV0::ReadResource(s
     return skeleton;
 }
 
-std::shared_ptr<Ship::IResource> ResourceFactoryXMLSkeletonV0::ReadResource(std::shared_ptr<Ship::File> file) {
-    if (!FileHasValidFormatAndReader(file)) {
+std::shared_ptr<Ship::IResource>
+ResourceFactoryXMLSkeletonV0::ReadResource(std::shared_ptr<Ship::File> file,
+                                           std::shared_ptr<Ship::ResourceInitData> initData) {
+    if (!FileHasValidFormatAndReader(file, initData)) {
         return nullptr;
     }
 
-    auto skel = std::make_shared<Skeleton>(file->InitData);
+    auto skel = std::make_shared<Skeleton>(initData);
     auto reader = std::get<std::shared_ptr<tinyxml2::XMLDocument>>(file->Reader)->FirstChildElement();
     auto child = reader->FirstChildElement();
 
@@ -101,7 +105,6 @@ std::shared_ptr<Ship::IResource> ResourceFactoryXMLSkeletonV0::ReadResource(std:
         }
     }
 
-
     skel->limbCount = reader->IntAttribute("LimbCount");
     skel->dListCount = reader->IntAttribute("DisplayListCount");
 
@@ -118,7 +121,7 @@ std::shared_ptr<Ship::IResource> ResourceFactoryXMLSkeletonV0::ReadResource(std:
 
         child = child->NextSiblingElement();
     }
-    
+
     skel->skeletonData.flexSkeletonHeader.sh.limbCount = skel->limbCount;
     skel->skeletonData.flexSkeletonHeader.sh.segment = (void**)skel->skeletonHeaderSegments.data();
     skel->skeletonData.flexSkeletonHeader.dListCount = skel->dListCount;

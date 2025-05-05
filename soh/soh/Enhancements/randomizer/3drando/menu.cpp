@@ -22,7 +22,7 @@ Rando::Option* currentSetting;
 } // namespace
 
 bool GenerateRandomizer(std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks,
-    std::string seedInput) {
+                        std::string seedInput) {
     const auto ctx = Rando::Context::GetInstance();
     ResetPerformanceTimers();
     StartPerformanceTimer(PT_WHOLE_SEED);
@@ -35,9 +35,7 @@ bool GenerateRandomizer(std::set<RandomizerCheck> excludedLocations, std::set<Ra
         int count;
         try {
             count = std::stoi(seedInput.substr(18), nullptr);
-        } catch (std::invalid_argument &e) {
-            count = 1;
-        } catch (std::out_of_range &e) {
+        } catch (std::invalid_argument& e) { count = 1; } catch (std::out_of_range& e) {
             count = 1;
         }
         Playthrough::Playthrough_Repeat(excludedLocations, enabledTricks, count);

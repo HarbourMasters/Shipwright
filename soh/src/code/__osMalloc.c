@@ -3,7 +3,8 @@
 
 #include <string.h>
 
-// SOH [General] This file corresponds to decomp's "__osMalloc_gc.c", there's currently no file corresponding to decomp's "__osMalloc_n64.c"
+// SOH [General] This file corresponds to decomp's "__osMalloc_gc.c", there's currently no file corresponding to
+// decomp's "__osMalloc_n64.c"
 
 // #region SOH [General] We currently don't set OOT_DEBUG when building so set it here manually
 #define OOT_DEBUG 1
@@ -180,7 +181,7 @@ ArenaNode* ArenaImpl_GetLastBlock(Arena* arena) {
 }
 
 void __osMallocInit(Arena* arena, void* start, size_t size) {
-    memset(arena,0, sizeof(Arena));
+    memset(arena, 0, sizeof(Arena));
     ArenaImpl_LockInit(arena);
     __osMallocAddBlock(arena, start, size);
     arena->isInit = true;
@@ -649,7 +650,8 @@ void* __osRealloc(Arena* arena, void* ptr, size_t newSize) {
         } else if (node->size < newSize) {
             next = NODE_GET_NEXT(node);
             sizeDiff = newSize - node->size;
-            if ((uintptr_t)next == ((uintptr_t)node + node->size + sizeof(ArenaNode)) && next->isFree && next->size >= sizeDiff) {
+            if ((uintptr_t)next == ((uintptr_t)node + node->size + sizeof(ArenaNode)) && next->isFree &&
+                next->size >= sizeDiff) {
                 // "Merge because there is a free block after the current memory block"
                 osSyncPrintf("現メモリブロックの後ろにフリーブロックがあるので結合します\n");
                 next->size -= sizeDiff;
@@ -879,8 +881,7 @@ s32 __osCheckArena(Arena* arena) {
         if (NODE_IS_VALID(iter)) {
 #if OOT_DEBUG
             // "Oops!! (%08x %08x)"
-            osSyncPrintf(VT_COL(RED, WHITE) "おおっと！！ (%08x %08x)\n" VT_RST, iter,
-                         iter->magic);
+            osSyncPrintf(VT_COL(RED, WHITE) "おおっと！！ (%08x %08x)\n" VT_RST, iter, iter->magic);
 #else
             // "Oops!! (%08x %08x)"
             osSyncPrintf("おおっと！！ (%08x %08x)\n", iter, iter->magic);

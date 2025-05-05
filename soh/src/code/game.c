@@ -6,6 +6,12 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
+#include "message_data_static.h"
+extern MessageTableEntry* sNesMessageEntryTablePtr;
+extern MessageTableEntry* sGerMessageEntryTablePtr;
+extern MessageTableEntry* sFraMessageEntryTablePtr;
+extern MessageTableEntry* sJpnMessageEntryTablePtr;
+
 SpeedMeter D_801664D0;
 VisCvg sVisCvg;
 VisZBuf sVisZBuf;
@@ -19,9 +25,9 @@ GameState* gGameState;
 // #endregion
 
 // Forward declared, because this in a C++ header.
-int gfx_create_framebuffer(uint32_t width, uint32_t height, uint32_t native_width, uint32_t native_height, uint8_t resize);
+int gfx_create_framebuffer(uint32_t width, uint32_t height, uint32_t native_width, uint32_t native_height,
+                           uint8_t resize);
 void gfx_texture_cache_clear();
-
 
 void GameState_FaultPrint(void) {
     static char sBtnChars[] = "ABZSuldr*+LRudlr";
@@ -339,6 +345,14 @@ void GameState_Update(GameState* gameState) {
 
     gSaveContext.language = CVarGetInteger(CVAR_SETTING("Languages"), LANGUAGE_ENG);
 
+    if (gSaveContext.language == LANGUAGE_JPN && sJpnMessageEntryTablePtr == NULL) {
+        gSaveContext.language = LANGUAGE_ENG;
+    } else if (gSaveContext.language == LANGUAGE_GER && sGerMessageEntryTablePtr == NULL) {
+        gSaveContext.language = LANGUAGE_ENG;
+    } else if (gSaveContext.language == LANGUAGE_FRA && sFraMessageEntryTablePtr == NULL) {
+        gSaveContext.language = LANGUAGE_ENG;
+    }
+
     GameInteractor_ExecuteOnGameFrameUpdate();
     gameState->frames++;
 }
@@ -472,7 +486,8 @@ void GameState_Destroy(GameState* gameState) {
 
     osSyncPrintf("game デストラクタ終了\n"); // "game destructor end"
 
-    // Performing clear skeletons before unload resources fixes an actor heap corruption crash due to the skeleton patching system.
+    // Performing clear skeletons before unload resources fixes an actor heap corruption crash due to the skeleton
+    // patching system.
     ResourceMgr_ClearSkeletons();
 
     if (ResourceMgr_IsAltAssetsEnabled()) {
@@ -493,8 +508,7 @@ u32 GameState_IsRunning(GameState* gameState) {
     return gameState->running;
 }
 
-void* GameState_Alloc(GameState* gameState, size_t size, char* file, s32 line)
-{
+void* GameState_Alloc(GameState* gameState, size_t size, char* file, s32 line) {
     void* ret;
 
     if (THA_IsCrash(&gameState->tha)) {

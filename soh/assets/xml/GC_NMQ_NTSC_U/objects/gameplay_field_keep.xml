@@ -1,0 +1,62 @@
+<Root>
+    <File Name="gameplay_field_keep" Segment="5">
+        <DList Name="gHanaFlower1DL" Offset="0x000"/>
+        <DList Name="gHanaFlower2DL" Offset="0x0A0"/>
+        <DList Name="gHanaFlower3DL" Offset="0x0140"/>
+        <DList Name="gHanaLeaf1DL" Offset="0x01E0"/>
+        <DList Name="gHanaLeaf2DL" Offset="0x0280"/>
+        <DList Name="gHanaLeaf3DL" Offset="0x0320"/>
+        <DList Name="gHanaLeaf4DL" Offset="0x03C0"/>
+        <DList Name="gHanaLeaf5DL" Offset="0x0460"/>
+        <Texture Name="gHanaFlowerTex" OutName="hana_flower" Format="rgba16" Width="16" Height="32" Offset="0x750"/>
+        <Texture Name="gHanaLeafTex" OutName="hana_leaf" Format="rgba16" Width="32" Height="32" Offset="0xB50"/>
+        <DList Name="gHanaDL" Offset="0x500"/>
+        <Collision Name="gBgBombwallCol" Offset="0x41B0"/>
+        <DList Name="gBgBombwallNormalDL" Offset="0x3FC0"/>
+        <DList Name="gBgBombwallBrokenDL" Offset="0x4088"/>
+        <DList Name="gGrottoDL" Offset="0x1390"/>
+        <Texture Name="gGrottoTex" OutName="grotto_tex" Format="ia16" Width="32" Height="64" Offset="0x1420"/>
+        <DList Name="gButterflyDL_002480" Offset="0x2480"/>
+        <DList Name="gButterflyDL_002520" Offset="0x2520"/>
+        <DList Name="gButterflyDL_002580" Offset="0x2580"/>
+        <DList Name="gButterflyDL_002620" Offset="0x2620"/>
+        <Texture Name="gButterflyWingTex" OutName="butterfly_wing" Format="rgba16" Width="32" Height="64" Offset="0x2680"/>
+        <Skeleton Name="gButterflySkel" Type="Normal" LimbType="Standard" Offset="0x36F0"/>
+        <Animation Name="gButterflyAnim" Offset="0x2470"/>
+        <Texture Name="gBgBombwallTLUT" OutName="bombwall_tlut" Format="rgba16" Width="4" Height="4" Offset="0x3700"/>
+        <Texture Name="gBgBombwallNormalTex" OutName="bombwall_normal" Format="ci4" Width="32" Height="64" Offset="0x3720" TlutOffset="0x3700"/>
+        <Texture Name="gBgBombWallBrokenTex" OutName="bombwall_broken" Format="ci4" Width="32" Height="64" Offset="0x3B20" TlutOffset="0x3700"/>
+        <DList Name="gFieldDoorDL_004720" Offset="0x4720"/>
+        <DList Name="gFieldDoorLeftDL" Offset="0x47A0"/>
+        <DList Name="gFieldDoorRightDL" Offset="0x4978"/>
+        <Texture Name="gFieldDoor1Tex" OutName="field_door1" Format="i8" Width="32" Height="128" Offset="0x04F50"/>
+        <Texture Name="gFieldDoorKnobTopHalfTex" OutName="field_door_knob_upper" Format="rgba16" Width="16" Height="16" Offset="0x4B50"/>
+        <Texture Name="gFieldDoorKnobTex" OutName="field_door_knob" Format="rgba16" Width="16" Height="16" Offset="0x4D50"/>
+        <Skeleton Name="gFieldUnusedFishSkel" Type="Normal" LimbType="Standard" Offset="0x088F8"/>
+        <Animation Name="gFieldUnusedFishAnim" Offset="0x5FF0"/>
+        <DList Name="gFieldUnusedFishDL" Offset="0x6000"/>
+        <DList Name="gFieldSkelUnusedFishDL_0061E8" Offset="0x61E8"/>
+        <DList Name="gFieldSkelUnusedFishDL_0063A8" Offset="0x63A8"/>
+        <DList Name="gFieldSkelUnusedFishDL_006448" Offset="0x6448"/>
+        <Texture Name="gFieldUnusedFishTex" OutName="unused_fish" Format="rgba16" Width="64" Height="32" Offset="0x64A8"/>
+        <Texture Name="gFieldUnusedFishBottomTex" OutName="unused_fish_bottom" Format="rgba16" Width="64" Height="32" Offset="0x074A8"/>
+        <Texture Name="gFieldUnusedFishFinTex" OutName="unused_fish_fin" Format="rgba16" Width="32" Height="16" Offset="0x84A8"/>
+        <DList Name="gSilverRockDL" Offset="0xA3B8"/>
+        <DList Name="gFieldKakeraDL" Offset="0xA880"/>
+        <Texture Name="gFieldKakeraTex" OutName="kakera" Format="rgba16" Width="32" Height="32" Offset="0xA940"/>
+        <DList Name="gSilverRockFragmentsDL" Offset="0xA5E8"/>
+        <DList Name="gFieldBushDL" Offset="0xB9D0"/>
+        <Texture Name="gFieldBushTex" OutName="bush" Format="rgba16" Width="32" Height="32" Offset="0xB140"/>
+        <DList Name="gFieldBeehiveDL" Offset="0x95B0"/>
+        <DList Name="gFieldBeehiveFragmentDL" Offset="0x9940"/>
+        <Texture Name="gFieldBeehiveTex" OutName="beehive" Format="rgba16" Width="32" Height="32" Offset="0x8900"/>
+        <Texture Name="gFieldBeehiveFragmentTex" OutName="beehive_fragment" Format="rgba16" Width="16" Height="16" Offset="0x9710"/>
+        <Texture Name="gFieldSilverRockTex" OutName="silver_rock" Format="ci4" Width="64" Height="64" Offset="0x99F8" TlutOffset="0x99D0"/>
+        <Texture Name="gFieldSilverRockTLUT" OutName="silver_rock_tlut" Format="rgba16" Width="4" Height="4" Offset="0x99D0"/>
+
+        <Texture Name="gFieldSandstorm1Tex" OutName="sandstorm_1" Format="i8" Width="64" Height="32" Offset="0xBA70"/>
+        <Texture Name="gFieldSandstorm2Tex" OutName="sandstorm_2" Format="ia8" Width="64" Height="32" Offset="0xC270"/>
+        <DList Name="gFieldSandstormDL" Offset="0xCA70"/>
+        <Texture Name="gFieldKeepTex_00CB30" OutName="gFieldKeep_00CB30" Format="rgba16" Width="32" Height="32" Offset="0xCB30"/>
+    </File>
+</Root>

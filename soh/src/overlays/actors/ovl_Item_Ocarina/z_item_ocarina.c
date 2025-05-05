@@ -60,7 +60,8 @@ void ItemOcarina_Init(Actor* thisx, PlayState* play) {
             break;
         case 3:
             ItemOcarina_SetupAction(this, ItemOcarina_WaitInWater);
-            if (!Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE) || (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_OCARINA_OF_TIME))) {
+            if (!Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE) ||
+                (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_OCARINA_OF_TIME))) {
                 Actor_Kill(thisx);
                 return;
             }
@@ -177,14 +178,9 @@ void ItemOcarina_StartSoTCutscene(ItemOcarina* this, PlayState* play) {
 }
 
 void ItemOcarina_WaitInWater(ItemOcarina* this, PlayState* play) {
-    if (
-        Actor_HasParent(&this->actor, play) || 
-        (
-            !GameInteractor_Should(VB_GIVE_ITEM_OCARINA_OF_TIME, true) &&
-            (this->actor.xzDistToPlayer < 20.0f) && (fabsf(this->actor.yDistToPlayer) < 10.0f) &&
-            GET_PLAYER(play)->stateFlags2 & PLAYER_STATE2_DIVING
-        )
-    ) {
+    if (Actor_HasParent(&this->actor, play) ||
+        (!GameInteractor_Should(VB_GIVE_ITEM_OCARINA_OF_TIME, true) && (this->actor.xzDistToPlayer < 20.0f) &&
+         (fabsf(this->actor.yDistToPlayer) < 10.0f) && GET_PLAYER(play)->stateFlags2 & PLAYER_STATE2_DIVING)) {
         Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_OCARINA_OF_TIME);
         Flags_SetSwitch(play, 3);
         this->actionFunc = ItemOcarina_StartSoTCutscene;
@@ -213,7 +209,10 @@ void ItemOcarina_Draw(Actor* thisx, PlayState* play) {
     func_8002ED80(thisx, play, 0);
 
     if (IS_RANDO) {
-        GetItemEntry randoGetItem = (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && Randomizer_IsCheckShuffled(RC_HF_OCARINA_OF_TIME_ITEM)) ? GetItemMystery() : Randomizer_GetItemFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT);
+        GetItemEntry randoGetItem = (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) &&
+                                     Randomizer_IsCheckShuffled(RC_HF_OCARINA_OF_TIME_ITEM))
+                                        ? GetItemMystery()
+                                        : Randomizer_GetItemFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT);
         EnItem00_CustomItemsParticles(&this->actor, play, randoGetItem);
         GetItemEntry_Draw(play, randoGetItem);
         return;

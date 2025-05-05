@@ -72,7 +72,7 @@ void EffectBlure_AddVertex(EffectBlure* this, Vec3f* p1, Vec3f* p2) {
     }
 }
 
-//dumb doo doo command to change the type of an object's blur on the fly. Link's Swords with unique trail colors.
+// dumb doo doo command to change the type of an object's blur on the fly. Link's Swords with unique trail colors.
 void EffectBlure_ChangeType(EffectBlure* this, int type) {
     this->trailType = type;
 }
@@ -206,8 +206,8 @@ s32 EffectBlure_Update(void* thisx) {
     static u8 changed = 0;
     u8 reset = 0;
 
-    switch (this->trailType) { //there HAS to be a better way to do this.
-        case 2:
+    switch (this->trailType) {
+        case TRAIL_TYPE_BOOMERANG:
             if (CVarGetInteger(CVAR_COSMETIC("Trails.Boomerang.Changed"), 0)) {
                 color = CVarGetColor(CVAR_COSMETIC("Trails.Boomerang.Value"), (Color_RGBA8){ 255, 255, 100, 255 });
                 changed = 1;
@@ -216,7 +216,7 @@ s32 EffectBlure_Update(void* thisx) {
                 reset = 1;
             }
             break;
-        case 3:
+        case TRAIL_TYPE_BOMBCHU:
             if (CVarGetInteger(CVAR_COSMETIC("Trails.Bombchu.Changed"), 0)) {
                 color = CVarGetColor(CVAR_COSMETIC("Trails.Bombchu.Value"), (Color_RGBA8){ 250, 0, 0, 255 });
                 this->p1StartColor.r = color.r;
@@ -247,7 +247,7 @@ s32 EffectBlure_Update(void* thisx) {
                 this->p2EndColor.b = color.b * 0.4f;
             }
             break;
-        case 4:
+        case TRAIL_TYPE_KOKIRI_SWORD:
             if (CVarGetInteger(CVAR_COSMETIC("Trails.KokiriSword.Changed"), 0)) {
                 color = CVarGetColor(CVAR_COSMETIC("Trails.KokiriSword.Value"), (Color_RGBA8){ 255, 255, 255, 255 });
                 changed = 1;
@@ -256,7 +256,7 @@ s32 EffectBlure_Update(void* thisx) {
                 reset = 1;
             }
             break;
-        case 5:
+        case TRAIL_TYPE_MASTER_SWORD:
             if (CVarGetInteger(CVAR_COSMETIC("Trails.MasterSword.Changed"), 0)) {
                 color = CVarGetColor(CVAR_COSMETIC("Trails.MasterSword.Value"), (Color_RGBA8){ 255, 255, 255, 255 });
                 changed = 1;
@@ -265,7 +265,7 @@ s32 EffectBlure_Update(void* thisx) {
                 reset = 1;
             }
             break;
-        case 6:
+        case TRAIL_TYPE_BIGGORON_SWORD:
             if (CVarGetInteger(CVAR_COSMETIC("Trails.BiggoronSword.Changed"), 0)) {
                 color = CVarGetColor(CVAR_COSMETIC("Trails.BiggoronSword.Value"), (Color_RGBA8){ 255, 255, 255, 255 });
                 changed = 1;
@@ -274,7 +274,7 @@ s32 EffectBlure_Update(void* thisx) {
                 reset = 1;
             }
             break;
-        case 7:
+        case TRAIL_TYPE_STICK:
             if (CVarGetInteger(CVAR_COSMETIC("Trails.Stick.Changed"), 0)) {
                 color = CVarGetColor(CVAR_COSMETIC("Trails.Stick.Value"), (Color_RGBA8){ 255, 255, 255, 255 });
                 changed = 1;
@@ -283,7 +283,7 @@ s32 EffectBlure_Update(void* thisx) {
                 reset = 1;
             }
             break;
-        case 8:
+        case TRAIL_TYPE_HAMMER:
             if (CVarGetInteger(CVAR_COSMETIC("Trails.Hammer.Changed"), 0)) {
                 color = CVarGetColor(CVAR_COSMETIC("Trails.Hammer.Value"), (Color_RGBA8){ 255, 255, 255, 255 });
                 changed = 1;
@@ -316,7 +316,7 @@ s32 EffectBlure_Update(void* thisx) {
     }
 
     // Don't override boomerang and bombchu trail durations
-    if (this->trailType != 2 && this->trailType != 3) {
+    if (this->trailType != TRAIL_TYPE_BOOMERANG && this->trailType != TRAIL_TYPE_BOMBCHU) {
         if (CVarGetInteger(CVAR_COSMETIC("Trails.Duration.Changed"), 0)) {
             this->elemDuration = CVarGetInteger(CVAR_COSMETIC("Trails.Duration.Value"), 4);
         }
@@ -831,7 +831,6 @@ void EffectBlure_DrawSmooth(EffectBlure* this2, GraphicsContext* gfxCtx) {
         } else {
             EffectBlure_DrawElemHermiteInterpolation(this, elem, i, gfxCtx);
         }
-        
     }
 
     FrameInterpolation_RecordCloseChild();
@@ -1170,7 +1169,6 @@ void EffectBlure_Draw(void* thisx, GraphicsContext* gfxCtx) {
                         } else {
                             gSP1Quadrangle(POLY_XLU_DISP++, j - 2, j - 1, j + 1, j, 0);
 
-                
                             if (this->unkFlag == 1) {
                                 phi_t2 = 0;
                             }

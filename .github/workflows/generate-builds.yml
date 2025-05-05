@@ -6,42 +6,44 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
+
   generate-soh-otr:
     runs-on: ubuntu-22.04
     steps:
-    - uses: actions/checkout@v4
+    - name: Git Checkout
+      uses: actions/checkout@v4
       with:
         submodules: true
-    - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2.14
+    - name: Configure ccache
+      uses: hendrikmuhs/ccache-action@v1.2
       with:
+        save: ${{ github.ref_name == github.event.repository.default_branch }}
         key: ${{ runner.os }}-otr-ccache-${{ github.ref }}-${{ github.sha }}
         restore-keys: |
           ${{ runner.os }}-otr-ccache-${{ github.ref }}
-          ${{ runner.os }}-otr-ccache-
+          ${{ runner.os }}-otr-ccache
     - name: Install dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y $(cat .github/workflows/apt-deps.txt) libzip-dev zipcmp zipmerge ziptool
-    - name: Cache build folders
-      uses: actions/cache@v4
+    - name: Restore Cached deps folder
+      uses: actions/cache/restore@v4
       with:
-        key: ${{ runner.os }}-otr-build-${{ github.ref }}-${{ github.sha }}
+        key: ${{ runner.os }}-deps-${{ github.ref }}-${{ github.sha }}
         restore-keys: |
-          ${{ runner.os }}-otr-build-${{ github.ref }}
-          ${{ runner.os }}-otr-build-
-        path: |
-          build-cmake
-          SDL2-2.30.3
-          tinyxml2-10.0.0
+          ${{ runner.os }}-deps-${{ github.ref }}-
+          ${{ runner.os }}-deps-
+        path: deps
+    - name: Create deps folder
+      run: mkdir -p deps
     - name: Install latest SDL
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        if [ ! -d "SDL2-2.30.3" ]; then
-          wget https://www.libsdl.org/release/SDL2-2.30.3.tar.gz
-          tar -xzf SDL2-2.30.3.tar.gz
+        if [ ! -d "deps/SDL2-2.30.3" ]; then
+          wget https://github.com/libsdl-org/SDL/releases/download/release-2.30.3/SDL2-2.30.3.tar.gz
+          tar -xzf SDL2-2.30.3.tar.gz -C deps
         fi
-        cd SDL2-2.30.3
+        cd deps/SDL2-2.30.3
         ./configure --enable-hidapi-libusb
         make -j 10
         sudo make install
@@ -50,11 +52,11 @@ jobs:
       run: |
         sudo apt-get remove libtinyxml2-dev
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        if [ ! -d "tinyxml2-10.0.0" ]; then
+        if [ ! -d "deps/tinyxml2-10.0.0" ]; then
           wget https://github.com/leethomason/tinyxml2/archive/refs/tags/10.0.0.tar.gz
-          tar -xzf 10.0.0.tar.gz
+          tar -xzf 10.0.0.tar.gz -C deps
         fi
-        cd tinyxml2-10.0.0
+        cd deps/tinyxml2-10.0.0
         mkdir -p build
         cd build
         cmake ..
@@ -64,49 +66,57 @@ jobs:
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
-        cmake --build build-cmake --config Release --target GenerateSohOtr
-    - uses: actions/upload-artifact@v4
+        cmake --build build-cmake --config Release --target GenerateSohOtr -j3
+    - name: Upload soh.otr
+      uses: actions/upload-artifact@v4
       with:
         name: soh.otr
         path: soh.otr
-        retention-days: 1
+        retention-days: 3
+
   build-macos:
     needs: generate-soh-otr
     runs-on: macos-14
     steps:
-    - uses: actions/checkout@v4
+    - name: Git Checkout
+      uses: actions/checkout@v4
       with:
         submodules: true
-    - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2.14
+    - name: Configure ccache
+      uses: hendrikmuhs/ccache-action@v1.2
       with:
         create-symlink: true
+        save: ${{ github.ref_name == github.event.repository.default_branch }}
         key: ${{ runner.os }}-14-ccache-${{ github.ref }}-${{ github.sha }}
         restore-keys: |
           ${{ runner.os }}-14-ccache-${{ github.ref }}
-          ${{ runner.os }}-14-ccache-
+          ${{ runner.os }}-14-ccache
+    # Needed to apply sudo for macports cache restore
     - name: Install gtar wrapper
       run: |
         sudo mv /opt/homebrew/bin/gtar /opt/homebrew/bin/gtar.orig
-        sudo cp .github/workflows//gtar /opt/homebrew/bin/gtar
+        sudo cp .github/workflows/gtar /opt/homebrew/bin/gtar
         sudo chmod +x /opt/homebrew/bin/gtar
-    - name: Cache MacPorts
-      id: cache-macports
-      uses: actions/cache@v4
+    - name: Restore Cached MacPorts
+      id: restore-cache-macports
+      uses: actions/cache/restore@v4
       with:
-        path: /opt/local/
-        key: ${{ runner.os }}-14-macports-${{ hashFiles('.github/workflows/macports-deps.txt') }}
+        key: ${{ runner.os }}-14-macports-${{ hashFiles('.github/workflows/macports-deps.txt') }}-${{ github.sha }}
         restore-keys: |
+          ${{ runner.os }}-14-macports-${{ hashFiles('.github/workflows/macports-deps.txt') }}-
           ${{ runner.os }}-14-macports-
+        path: /opt/local/
+    # Updated PATH applies to the next step and onwards
     - name: Install MacPorts (if necessary)
       run: |
-        if [ -d /opt/local/ ]; then
+        if command -v /opt/local/bin/port 2>&1 >/dev/null; then
           echo "MacPorts already installed"
         else
+          echo "Installing MacPorts"
           wget https://github.com/macports/macports-base/releases/download/v2.9.3/MacPorts-2.9.3-14-Sonoma.pkg
           sudo installer -pkg ./MacPorts-2.9.3-14-Sonoma.pkg -target /
         fi
-        echo "/opt/local/bin:/opt/local/sbin" >> $GITHUB_PATH
+        echo "/opt/local/bin:/opt/local/sbin" >> "$GITHUB_PATH"
     - name: Install dependencies
       run: |
         brew uninstall --ignore-dependencies libpng
@@ -116,11 +126,12 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: soh.otr
+        path: build-cmake/soh
     - name: Build SoH
       run: |
+        export PATH="/usr/lib/ccache:/opt/homebrew/opt/ccache/libexec:/usr/local/opt/ccache/libexec:$PATH"
         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -DBUILD_REMOTE_CONTROL=1
         cmake --build build-cmake --config Release --parallel 10
-        mv soh.otr build-cmake/soh
         (cd build-cmake && cpack)
 
         mv _packages/*.dmg SoH.dmg
@@ -132,44 +143,52 @@ jobs:
         path: |
           SoH.dmg
           readme.txt
+    - name: Save Cache MacPorts
+      if: ${{ github.ref_name == github.event.repository.default_branch }}
+      uses: actions/cache/save@v4
+      with:
+        key: ${{ steps.restore-cache-macports.outputs.cache-primary-key }}
+        path: /opt/local/
+
   build-linux:
     needs: generate-soh-otr
     runs-on: ubuntu-22.04
     steps:
-    - uses: actions/checkout@v4
+    - name: Git Checkout
+      uses: actions/checkout@v4
       with:
         submodules: true
     - name: Install dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y $(cat .github/workflows/apt-deps.txt)
-    - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2.14
+    - name: Configure ccache
+      uses: hendrikmuhs/ccache-action@v1.2
       with:
-        key: linux-ccache-${{ github.ref }}-${{ github.sha }}
+        save: ${{ github.ref_name == github.event.repository.default_branch }}
+        key: ${{ runner.os }}-ccache-${{ github.ref }}-${{ github.sha }}
         restore-keys: |
-          linux-ccache-${{ github.ref }}
-          linux-ccache-
-    - name: Cache build folders
-      uses: actions/cache@v4
+          ${{ runner.os }}-ccache-${{ github.ref }}
+          ${{ runner.os }}-ccache
+    - name: Restore Cached deps folder
+      id: restore-cache-deps
+      uses: actions/cache/restore@v4
       with:
-        key: linux-build-${{ github.ref }}-${{ github.sha }}
+        key: ${{ runner.os }}-deps-${{ github.ref }}-${{ github.sha }}
         restore-keys: |
-          linux-build-${{ github.ref }}
-          linux-build-
-        path: |
-          SDL2-2.30.3
-          SDL2_net-2.2.0
-          tinyxml2-10.0.0
-          libzip-1.10.1
+          ${{ runner.os }}-deps-${{ github.ref }}-
+          ${{ runner.os }}-deps-
+        path: deps
+    - name: Create deps folder
+      run: mkdir -p deps
     - name: Install latest SDL
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        if [ ! -d "SDL2-2.30.3" ]; then
-          wget https://www.libsdl.org/release/SDL2-2.30.3.tar.gz
-          tar -xzf SDL2-2.30.3.tar.gz
+        if [ ! -d "deps/SDL2-2.30.3" ]; then
+          wget https://github.com/libsdl-org/SDL/releases/download/release-2.30.3/SDL2-2.30.3.tar.gz
+          tar -xzf SDL2-2.30.3.tar.gz -C deps
         fi
-        cd SDL2-2.30.3
+        cd deps/SDL2-2.30.3
         ./configure --enable-hidapi-libusb
         make -j 10
         sudo make install
@@ -177,11 +196,11 @@ jobs:
     - name: Install latest SDL_net
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        if [ ! -d "SDL2_net-2.2.0" ]; then
+        if [ ! -d "deps/SDL2_net-2.2.0" ]; then
           wget https://www.libsdl.org/projects/SDL_net/release/SDL2_net-2.2.0.tar.gz
-          tar -xzf SDL2_net-2.2.0.tar.gz
+          tar -xzf SDL2_net-2.2.0.tar.gz -C deps
         fi
-        cd SDL2_net-2.2.0
+        cd deps/SDL2_net-2.2.0
         ./configure
         make -j 10
         sudo make install
@@ -190,11 +209,11 @@ jobs:
       run: |
         sudo apt-get remove libtinyxml2-dev
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        if [ ! -d "tinyxml2-10.0.0" ]; then
+        if [ ! -d "deps/tinyxml2-10.0.0" ]; then
           wget https://github.com/leethomason/tinyxml2/archive/refs/tags/10.0.0.tar.gz
-          tar -xzf 10.0.0.tar.gz
+          tar -xzf 10.0.0.tar.gz -C deps
         fi
-        cd tinyxml2-10.0.0
+        cd deps/tinyxml2-10.0.0
         mkdir -p build
         cd build
         cmake ..
@@ -203,11 +222,11 @@ jobs:
     - name: Install libzip without crypto
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        if [ ! -d "libzip-1.10.1" ]; then
+        if [ ! -d "deps/libzip-1.10.1" ]; then
           wget https://github.com/nih-at/libzip/releases/download/v1.10.1/libzip-1.10.1.tar.gz
-          tar -xzf libzip-1.10.1.tar.gz
+          tar -xzf libzip-1.10.1.tar.gz -C deps
         fi
-        cd libzip-1.10.1
+        cd deps/libzip-1.10.1
         mkdir -p build
         cd build
         cmake .. -DENABLE_COMMONCRYPTO=OFF -DENABLE_GNUTLS=OFF -DENABLE_MBEDTLS=OFF -DENABLE_OPENSSL=OFF
@@ -218,6 +237,7 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: soh.otr
+        path: build-cmake/soh
     - name: Build SoH
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
@@ -237,63 +257,73 @@ jobs:
         path: |
           soh.appimage
           readme.txt
+    - name: Save Cache deps folder
+      if: ${{ github.ref_name == github.event.repository.default_branch }}
+      uses: actions/cache/save@v4
+      with:
+        key: ${{ steps.restore-cache-deps.outputs.cache-primary-key }}
+        path: deps
+
   build-windows:
     needs: generate-soh-otr
-    runs-on: ${{ (vars.WINDOWS_RUNNER && fromJSON(vars.WINDOWS_RUNNER)) || 'windows-latest' }}
+    runs-on: windows-latest
     steps:
     - name: Install dependencies
-      if: ${{ !vars.WINDOWS_RUNNER }}
       run: |
-        choco install ninja
+        choco install ninja -y
         Remove-Item -Path "C:\ProgramData\Chocolatey\bin\ccache.exe" -Force -ErrorAction SilentlyContinue
-    - uses: actions/checkout@v4
+    - name: Git Checkout
+      uses: actions/checkout@v4
       with:
         submodules: true
-    - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2.14
+    - name: Configure sccache
+      uses: hendrikmuhs/ccache-action@v1.2
       with:
         variant: sccache
-        max-size: "1G"
+        max-size: "2G"
+        evict-old-files: job
+        save: ${{ github.ref_name == github.event.repository.default_branch }}
         key: ${{ runner.os }}-ccache-${{ github.ref }}-${{ github.sha }}
         restore-keys: |
           ${{ runner.os }}-ccache-${{ github.ref }}
-          ${{ runner.os }}-ccache-
-    - name: Cache build folder
-      uses: actions/cache@v4
+          ${{ runner.os }}-ccache
+    - name: Restore Cached VCPKG folder
+      id: restore-cache-vcpkg
+      uses: actions/cache/restore@v4
       with:
-        key: ${{ runner.os }}-build-${{ github.ref }}-${{ github.sha }}
+        key: ${{ runner.os }}-vcpkg-${{ github.ref }}-${{ github.sha }}
         restore-keys: |
-          ${{ runner.os }}-build-${{ github.ref }}
-          ${{ runner.os }}-build-
-        path: |
-          build-windows
-          vcpkg
+          ${{ runner.os }}-vcpkg-${{ github.ref }}-
+          ${{ runner.os }}-vcpkg-
+        path: vcpkg
     - name: Configure Developer Command Prompt
       uses: ilammy/msvc-dev-cmd@v1
+    - name: Download soh.otr
+      uses: actions/download-artifact@v4
+      with:
+        name: soh.otr
+        path: build-windows/soh
     - name: Build SoH
-      env: 
+      env:
         VCPKG_ROOT: ${{github.workspace}}/vcpkg
       run: |
         set $env:PATH="$env:USERPROFILE/.cargo/bin;$env:PATH"
         cmake -S . -B build-windows -G Ninja -DCMAKE_MAKE_PROGRAM=ninja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER_LAUNCHER=sccache -DCMAKE_CXX_COMPILER_LAUNCHER=sccache -DBUILD_REMOTE_CONTROL=1
         cmake --build build-windows --config Release --parallel 10
 
-        mkdir soh-windows
-        mv ./x64/Release/soh.exe ./soh-windows/soh.exe
-        mkdir soh-windows/debug
-        mkdir soh-windows/mods
-        New-Item soh-windows/mods/custom_otr_files_go_here.txt -type file
-        mv ./x64/Release/soh.pdb ./soh-windows/debug/soh.pdb
-        mv ./README.md ./soh-windows/readme.txt
-        mv ./build-windows/gamecontrollerdb.txt ./soh-windows/gamecontrollerdb.txt
-        mv ./x64/Release/assets ./soh-windows
-    - name: Download soh.otr
-      uses: actions/download-artifact@v4
-      with:
-        name: soh.otr
-        path: soh-windows
+        (cd build-windows && cpack)
+        cd ..
+        mv _packages/*.zip _packages/soh-windows.zip
+    - name: Unzip package
+      run: Expand-Archive -Path _packages/soh-windows.zip -DestinationPath soh-windows
     - name: Upload build
       uses: actions/upload-artifact@v4
       with:
         name: soh-windows
         path: soh-windows
+    - name: Save Cache VCPKG folder
+      if: ${{ github.ref_name == github.event.repository.default_branch }}
+      uses: actions/cache/save@v4
+      with:
+        key: ${{ steps.restore-cache-vcpkg.outputs.cache-primary-key }}
+        path: vcpkg

@@ -30,7 +30,8 @@ void RegisterFreezeTime() {
     GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnGameFrameUpdate>(hookId);
     hookId = 0;
     if (CVAR_FREEZE_TIME_VALUE) {
-        hookId = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(OnGameFrameUpdateFreezeTime);
+        hookId =
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(OnGameFrameUpdateFreezeTime);
     } else {
         CVarClear(CVAR_PREV_TIME_NAME);
     }

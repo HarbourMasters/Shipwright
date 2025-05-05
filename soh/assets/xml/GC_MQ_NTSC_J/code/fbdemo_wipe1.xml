@@ -1,0 +1,10 @@
+<Root>
+    <!-- ZAPD isn't finding sTransWipeVtx and sTransWipeTex properly for sWipe1DL, instead finding symbols much later in `code`-->
+    <File Name="code" OutName="z_fbdemo_wipe1" RangeStart="0xEACC0" RangeEnd="0xEB650" Segment="0">
+        <Array Name="sTransWipeVtx" Count="25" Offset="0xEACC0">
+            <Vtx/>
+        </Array>
+        <Texture Name="sTransWipeTex" Format="i4" Width="64" Height="64" Offset="0xEAE50"/>
+       <!-- <DList Name="sWipe1DL" Offset="0xEB650"/>-->
+    </File>
+</Root>

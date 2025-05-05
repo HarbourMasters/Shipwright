@@ -1,0 +1,15 @@
+<Root>
+    <ExternalFile XmlPath="objects/gameplay_dangeon_keep.xml" OutPath="objects/gameplay_dangeon_keep/"/>
+    <File Name="object_bdoor" Segment="6">
+        <Texture Name="gBossDoorGanonsCastleTex" OutName="tex_00000000" Format="rgba16" Width="32" Height="64" Offset="0x0"/>
+        <DList Name="gBossDoorDL" Offset="0x10C0"/>
+        <DList Name="gBossDoorLockDL" Offset="0x1400"/>
+        <DList Name="gBossDoorChainDL" Offset="0x1530"/>
+        <Texture Name="gBossDoorSpiritTex" OutName="tex_000015C0" Format="rgba16" Width="32" Height="64" Offset="0x15C0"/>
+        <Texture Name="gBossDoorForestTex" OutName="tex_000025C0" Format="rgba16" Width="32" Height="64" Offset="0x25C0"/>
+        <Texture Name="gBossDoorFireTex" OutName="tex_000035C0" Format="rgba16" Width="32" Height="64" Offset="0x35C0"/>
+        <Texture Name="gBossDoorShadowTex" OutName="tex_000045C0" Format="rgba16" Width="32" Height="64" Offset="0x45C0"/>
+        <Texture Name="gBossDoorWaterTex" OutName="tex_000055C0" Format="rgba16" Width="32" Height="64" Offset="0x55C0"/>
+        <Texture Name="gBossDoorDefaultTex" OutName="tex_000065C0" Format="rgba16" Width="32" Height="64" Offset="0x65C0"/>
+    </File>
+</Root>

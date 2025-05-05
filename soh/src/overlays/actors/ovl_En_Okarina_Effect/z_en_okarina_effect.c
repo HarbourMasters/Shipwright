@@ -58,7 +58,7 @@ void EnOkarinaEffect_Init(Actor* thisx, PlayState* play) {
 }
 
 void EnOkarinaEffect_TriggerStorm(EnOkarinaEffect* this, PlayState* play) {
-    this->timer = 400;                   // 20 seconds
+    this->timer = 400;              // 20 seconds
     play->envCtx.unk_F2[0] = 20;    // rain intensity target
     play->envCtx.gloomySkyMode = 1; // start gloomy sky
     if ((gWeatherMode != 0) || play->envCtx.unk_17 != 0) {
@@ -73,7 +73,7 @@ void EnOkarinaEffect_ManageStorm(EnOkarinaEffect* this, PlayState* play) {
     Flags_UnsetEnv(play, 5); // clear storms env flag
     if (((play->pauseCtx.state == 0) && (play->gameOverCtx.state == GAMEOVER_INACTIVE) &&
          (play->msgCtx.msgLength == 0) && (!FrameAdvance_IsEnabled(play)) &&
-         ((play->transitionMode == TRANS_MODE_OFF) || (gSaveContext.gameMode != 0))) ||
+         ((play->transitionMode == TRANS_MODE_OFF) || (gSaveContext.gameMode != GAMEMODE_NORMAL))) ||
         (this->timer >= 250)) {
         if (play->envCtx.indoors || play->envCtx.unk_1F != 1) {
             this->timer--;
@@ -81,7 +81,7 @@ void EnOkarinaEffect_ManageStorm(EnOkarinaEffect* this, PlayState* play) {
         osSyncPrintf("\nthis->timer=[%d]", this->timer);
         if (this->timer == 308) {
             osSyncPrintf("\n\n\n豆よ のびろ 指定\n\n\n"); // "Let's grow some beans"
-            Flags_SetEnv(play, 5);                   // set storms env flag
+            Flags_SetEnv(play, 5);                        // set storms env flag
         }
     }
 

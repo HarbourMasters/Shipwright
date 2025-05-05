@@ -27,4 +27,13 @@ static const ALIGN_ASSET(2) char gOptionsDividerMiddleVtx[] = dgOptionsDividerMi
 #define dgOptionsDividerBottomVtx "__OTR__overlays/ovl_file_choose/gOptionsDividerBottomVtx"
 static const ALIGN_ASSET(2) char gOptionsDividerBottomVtx[] = dgOptionsDividerBottomVtx;
 
+#define dD_80811BB0_NTSC "__OTR__overlays/ovl_file_choose/D_80811BB0_NTSC"
+static const ALIGN_ASSET(2) char D_80811BB0_NTSC[] = dD_80811BB0_NTSC;
+
+#define dD_80811D30_NTSC "__OTR__overlays/ovl_file_choose/D_80811D30_NTSC"
+static const ALIGN_ASSET(2) char D_80811D30_NTSC[] = dD_80811D30_NTSC;
+
+#define dD_80811F30_NTSC "__OTR__overlays/ovl_file_choose/D_80811F30_NTSC"
+static const ALIGN_ASSET(2) char D_80811F30_NTSC[] = dD_80811F30_NTSC;
+
 #endif // OVERLAYS_OVL_FILE_CHOOSE_H

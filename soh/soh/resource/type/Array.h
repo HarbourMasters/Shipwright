@@ -82,4 +82,4 @@ class Array : public Ship::Resource<void> {
     std::vector<ScalarData> Scalars;
     std::vector<F3DVtx> Vertices;
 };
-} // namespace LUS
+} // namespace SOH

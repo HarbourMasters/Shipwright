@@ -14,7 +14,9 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED | ACTOR_FLAG_HOOKSHOT_PULLS_PLAYER | ACTOR_FLAG_CAN_PRESS_SWITCHES)
+#define FLAGS                                                                                                   \
+    (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED | ACTOR_FLAG_HOOKSHOT_PULLS_PLAYER | \
+     ACTOR_FLAG_CAN_PRESS_SWITCHES)
 
 void EnPartner_Init(Actor* thisx, PlayState* play);
 void EnPartner_Destroy(Actor* thisx, PlayState* play);
@@ -106,7 +108,7 @@ void EnPartner_Init(Actor* thisx, PlayState* play) {
                               255, 200, 0);
     this->lightNodeNoGlow = LightContext_InsertLight(play, &play->lightCtx, &this->lightInfoNoGlow);
 
-	thisx->room = -1;
+    thisx->room = -1;
 }
 
 void EnPartner_Destroy(Actor* thisx, PlayState* play) {
@@ -162,8 +164,8 @@ void EnPartner_SpawnSparkles(EnPartner* this, PlayState* play, s32 sparkleLife) 
     envColor.g = this->outerColor.g;
     envColor.b = this->outerColor.b;
 
-    EffectSsKiraKira_SpawnDispersed(play, &sparklePos, &sparkleVelocity, &sparkleAccel, &primColor, &envColor,
-                                    1500, sparkleLife);
+    EffectSsKiraKira_SpawnDispersed(play, &sparklePos, &sparkleVelocity, &sparkleAccel, &primColor, &envColor, 1500,
+                                    sparkleLife);
 }
 
 Vec3f Vec3fNormalize(Vec3f vec) {
@@ -299,8 +301,8 @@ void UseBombchus(Actor* thisx, PlayState* play, u8 started) {
         if (started == 1) {
             if (AMMO(ITEM_BOMBCHU) > 0) {
                 this->itemTimer = 10;
-                EnBom* bomb = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x, this->actor.world.pos.y + 7,
-                            this->actor.world.pos.z, 0, 0, 0, 0, false);
+                EnBom* bomb = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x,
+                                          this->actor.world.pos.y + 7, this->actor.world.pos.z, 0, 0, 0, 0, false);
                 bomb->timer = 0;
                 Inventory_ChangeAmmo(ITEM_BOMBCHU, -1);
             } else {
@@ -467,7 +469,7 @@ void UseSpell(Actor* thisx, PlayState* play, u8 started, u8 spellType) {
                     GET_PLAYER(play)->ivanFloating = 0;
                     break;
             }
-            
+
             this->usedSpell = 0;
         }
 
@@ -477,13 +479,13 @@ void UseSpell(Actor* thisx, PlayState* play, u8 started, u8 spellType) {
                 Vec3f newBasePos[3];
 
                 switch (this->usedSpell) {
-                    case 1: //Din's
+                    case 1: // Din's
                         GET_PLAYER(play)->ivanDamageMultiplier = 2;
                         break;
-                    case 2: //Nayru's
+                    case 2: // Nayru's
                         GET_PLAYER(play)->invincibilityTimer = -10;
                         break;
-                    case 3: //Farore's
+                    case 3: // Farore's
                         GET_PLAYER(play)->hoverBootsTimer = 10;
                         GET_PLAYER(play)->ivanFloating = 1;
                         break;
@@ -689,7 +691,7 @@ void EnPartner_Update(Actor* thisx, PlayState* play) {
         uint8_t released = 0;
         uint8_t current = 0;
 
-        uint16_t partnerButtons[7] = { BTN_CLEFT, BTN_CDOWN, BTN_CRIGHT, BTN_DUP, BTN_DDOWN, BTN_DLEFT, BTN_DRIGHT};
+        uint16_t partnerButtons[7] = { BTN_CLEFT, BTN_CDOWN, BTN_CRIGHT, BTN_DUP, BTN_DDOWN, BTN_DLEFT, BTN_DRIGHT };
         uint8_t buttonMax = 3;
         if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) {
             buttonMax = ARRAY_COUNT(gSaveContext.equips.cButtonSlots);
@@ -698,7 +700,7 @@ void EnPartner_Update(Actor* thisx, PlayState* play) {
         if (this->usedItem == 0xFF && this->itemTimer <= 0) {
             for (uint8_t i = 0; i < buttonMax; i++) {
                 if (CHECK_BTN_ALL(sControlInput.press.button, partnerButtons[i])) {
-                    this->usedItem = gSaveContext.equips.buttonItems[i+1];
+                    this->usedItem = gSaveContext.equips.buttonItems[i + 1];
                     this->usedItemButton = i;
                     pressed = 1;
                 }
@@ -775,7 +777,7 @@ void EnPartner_Update(Actor* thisx, PlayState* play) {
 }
 
 s32 EnPartner_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx,
-                           Gfx** gfx) {
+                               Gfx** gfx) {
     static Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
     s32 pad;
     f32 scale;
@@ -842,7 +844,6 @@ void DrawOrb(Actor* thisx, PlayState* play, u8 color) {
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-
 void EnPartner_Draw(Actor* thisx, PlayState* play) {
     s32 pad;
     f32 alphaScale;
@@ -882,8 +883,8 @@ void EnPartner_Draw(Actor* thisx, PlayState* play) {
     gSPEndDisplayList(dListHead++);
     gDPSetEnvColor(POLY_XLU_DISP++, (u8)this->outerColor.r, (u8)this->outerColor.g, (u8)this->outerColor.b,
                    (u8)(envAlpha * alphaScale));
-    POLY_XLU_DISP = SkelAnime_DrawSkeleton2(play, &this->skelAnime,
-                                   EnPartner_OverrideLimbDraw, NULL, this, POLY_XLU_DISP);
+    POLY_XLU_DISP =
+        SkelAnime_DrawSkeleton2(play, &this->skelAnime, EnPartner_OverrideLimbDraw, NULL, this, POLY_XLU_DISP);
 
     CLOSE_DISPS(play->state.gfxCtx);
 

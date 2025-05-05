@@ -1,0 +1,16 @@
+<DisplayList Version="0">
+	<LoadVertices Path="objects/gameplay_keep/gRandoCuttableGrassRandomDL_vtx_3" VertexBufferIndex="0" VertexOffset="0" Count="30"/>
+	<Triangles2 V00="0" V01="1" V02="2" Flag0="0" V10="3" V11="4" V12="5" Flag1="0"/>
+	<Triangles2 V00="6" V01="7" V02="8" Flag0="0" V10="9" V11="10" V12="11" Flag1="0"/>
+	<Triangles2 V00="12" V01="13" V02="14" Flag0="0" V10="12" V11="14" V12="15" Flag1="0"/>
+	<Triangles2 V00="16" V01="17" V02="18" Flag0="0" V10="16" V11="18" V12="19" Flag1="0"/>
+	<Triangles2 V00="20" V01="16" V02="19" Flag0="0" V10="20" V11="19" V12="21" Flag1="0"/>
+	<Triangles2 V00="22" V01="23" V02="24" Flag0="0" V10="22" V11="24" V12="25" Flag1="0"/>
+	<Triangles2 V00="26" V01="27" V02="28" Flag0="0" V10="26" V11="28" V12="29" Flag1="0"/>
+	<LoadVertices Path="objects/gameplay_keep/gRandoCuttableGrassRandomDL_vtx_3" VertexBufferIndex="0" VertexOffset="30" Count="10"/>
+	<Triangles2 V00="0" V01="1" V02="2" Flag0="0" V10="0" V11="3" V12="1" Flag1="0"/>
+	<Triangles2 V00="4" V01="3" V02="0" Flag0="0" V10="4" V11="5" V12="3" Flag1="0"/>
+	<Triangles2 V00="6" V01="7" V02="8" Flag0="0" V10="6" V11="8" V12="9" Flag1="0"/>
+	<EndDisplayList/>
+</DisplayList>
+

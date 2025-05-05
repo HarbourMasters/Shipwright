@@ -6,15 +6,16 @@
 
 namespace Rando {
 DungeonInfo::DungeonInfo(std::string name_, const RandomizerHintTextKey hintKey_, const RandomizerGet map_,
-    const RandomizerGet compass_, const RandomizerGet smallKey_, const RandomizerGet keyRing_,
-    const RandomizerGet bossKey_, RandomizerArea area_, const uint8_t vanillaKeyCount_, const uint8_t mqKeyCount_,
-    const RandomizerSettingKey mqSetting_)
+                         const RandomizerGet compass_, const RandomizerGet smallKey_, const RandomizerGet keyRing_,
+                         const RandomizerGet bossKey_, RandomizerArea area_, const uint8_t vanillaKeyCount_,
+                         const uint8_t mqKeyCount_, const RandomizerSettingKey mqSetting_)
     : name(std::move(name_)), hintKey(hintKey_), map(map_), compass(compass_), smallKey(smallKey_), keyRing(keyRing_),
       bossKey(bossKey_), area(area_), vanillaKeyCount(vanillaKeyCount_), mqKeyCount(mqKeyCount_),
       mqSetting(mqSetting_) {
 }
-DungeonInfo::DungeonInfo() : hintKey(RHT_NONE), map(RG_NONE), compass(RG_NONE), smallKey(RG_NONE), keyRing(RG_NONE),
-    bossKey(RG_NONE) {}
+DungeonInfo::DungeonInfo()
+    : hintKey(RHT_NONE), map(RG_NONE), compass(RG_NONE), smallKey(RG_NONE), keyRing(RG_NONE), bossKey(RG_NONE) {
+}
 DungeonInfo::~DungeonInfo() = default;
 
 const std::string& DungeonInfo::GetName() const {
@@ -145,35 +146,38 @@ std::vector<RandomizerCheck> DungeonInfo::GetDungeonLocations() const {
 }
 
 Dungeons::Dungeons() {
-    dungeonList[DEKU_TREE] =
-        DungeonInfo("Deku Tree", RHT_DEKU_TREE, RG_DEKU_TREE_MAP, RG_DEKU_TREE_COMPASS, RG_NONE, RG_NONE, RG_NONE, RA_DEKU_TREE, 0, 0, RSK_MQ_DEKU_TREE);
-    dungeonList[DODONGOS_CAVERN] = DungeonInfo("Dodongo's Cavern", RHT_DODONGOS_CAVERN, RG_DODONGOS_CAVERN_MAP,
-                                               RG_DODONGOS_CAVERN_COMPASS, RG_NONE, RG_NONE, RG_NONE, RA_DODONGOS_CAVERN, 0, 0, RSK_MQ_DODONGOS_CAVERN);
-    dungeonList[JABU_JABUS_BELLY] = DungeonInfo("Jabu Jabu's Belly", RHT_JABU_JABUS_BELLY, RG_JABU_JABUS_BELLY_MAP,
-                                                RG_JABU_JABUS_BELLY_COMPASS, RG_NONE, RG_NONE, RG_NONE, RA_JABU_JABUS_BELLY, 0, 0, RSK_MQ_JABU_JABU);
-    dungeonList[FOREST_TEMPLE] =
-        DungeonInfo("Forest Temple", RHT_FOREST_TEMPLE, RG_FOREST_TEMPLE_MAP, RG_FOREST_TEMPLE_COMPASS,
-                    RG_FOREST_TEMPLE_SMALL_KEY, RG_FOREST_TEMPLE_KEY_RING, RG_FOREST_TEMPLE_BOSS_KEY, RA_FOREST_TEMPLE, 5, 6, RSK_MQ_FOREST_TEMPLE);
-    dungeonList[FIRE_TEMPLE] =
-        DungeonInfo("Fire Temple", RHT_FIRE_TEMPLE, RG_FIRE_TEMPLE_MAP, RG_FIRE_TEMPLE_COMPASS,
-                    RG_FIRE_TEMPLE_SMALL_KEY, RG_FIRE_TEMPLE_KEY_RING, RG_FIRE_TEMPLE_BOSS_KEY, RA_FIRE_TEMPLE, 8, 5, RSK_MQ_FIRE_TEMPLE);
-    dungeonList[WATER_TEMPLE] =
-        DungeonInfo("Water Temple", RHT_WATER_TEMPLE, RG_WATER_TEMPLE_MAP, RG_WATER_TEMPLE_COMPASS,
-                    RG_WATER_TEMPLE_SMALL_KEY, RG_WATER_TEMPLE_KEY_RING, RG_WATER_TEMPLE_BOSS_KEY, RA_WATER_TEMPLE, 6, 2, RSK_MQ_WATER_TEMPLE);
-    dungeonList[SPIRIT_TEMPLE] =
-        DungeonInfo("Spirit Temple", RHT_SPIRIT_TEMPLE, RG_SPIRIT_TEMPLE_MAP, RG_SPIRIT_TEMPLE_COMPASS,
-                    RG_SPIRIT_TEMPLE_SMALL_KEY, RG_SPIRIT_TEMPLE_KEY_RING, RG_SPIRIT_TEMPLE_BOSS_KEY, RA_SPIRIT_TEMPLE, 5, 7, RSK_MQ_SPIRIT_TEMPLE);
-    dungeonList[SHADOW_TEMPLE] =
-        DungeonInfo("Shadow Temple", RHT_SHADOW_TEMPLE, RG_SHADOW_TEMPLE_MAP, RG_SHADOW_TEMPLE_COMPASS,
-                    RG_SHADOW_TEMPLE_SMALL_KEY, RG_SHADOW_TEMPLE_KEY_RING, RG_SHADOW_TEMPLE_BOSS_KEY, RA_SHADOW_TEMPLE, 5, 6, RSK_MQ_SHADOW_TEMPLE);
-    dungeonList[BOTTOM_OF_THE_WELL] = DungeonInfo(
-        "Bottom of the Well", RHT_BOTTOM_OF_THE_WELL, RG_BOTTOM_OF_THE_WELL_MAP, RG_BOTTOM_OF_THE_WELL_COMPASS,
-        RG_BOTTOM_OF_THE_WELL_SMALL_KEY, RG_BOTTOM_OF_THE_WELL_KEY_RING, RG_NONE, RA_BOTTOM_OF_THE_WELL, 3, 2, RSK_MQ_BOTTOM_OF_THE_WELL);
+    dungeonList[DEKU_TREE] = DungeonInfo("Deku Tree", RHT_DEKU_TREE, RG_DEKU_TREE_MAP, RG_DEKU_TREE_COMPASS, RG_NONE,
+                                         RG_NONE, RG_NONE, RA_DEKU_TREE, 0, 0, RSK_MQ_DEKU_TREE);
+    dungeonList[DODONGOS_CAVERN] =
+        DungeonInfo("Dodongo's Cavern", RHT_DODONGOS_CAVERN, RG_DODONGOS_CAVERN_MAP, RG_DODONGOS_CAVERN_COMPASS,
+                    RG_NONE, RG_NONE, RG_NONE, RA_DODONGOS_CAVERN, 0, 0, RSK_MQ_DODONGOS_CAVERN);
+    dungeonList[JABU_JABUS_BELLY] =
+        DungeonInfo("Jabu Jabu's Belly", RHT_JABU_JABUS_BELLY, RG_JABU_JABUS_BELLY_MAP, RG_JABU_JABUS_BELLY_COMPASS,
+                    RG_NONE, RG_NONE, RG_NONE, RA_JABU_JABUS_BELLY, 0, 0, RSK_MQ_JABU_JABU);
+    dungeonList[FOREST_TEMPLE] = DungeonInfo(
+        "Forest Temple", RHT_FOREST_TEMPLE, RG_FOREST_TEMPLE_MAP, RG_FOREST_TEMPLE_COMPASS, RG_FOREST_TEMPLE_SMALL_KEY,
+        RG_FOREST_TEMPLE_KEY_RING, RG_FOREST_TEMPLE_BOSS_KEY, RA_FOREST_TEMPLE, 5, 6, RSK_MQ_FOREST_TEMPLE);
+    dungeonList[FIRE_TEMPLE] = DungeonInfo("Fire Temple", RHT_FIRE_TEMPLE, RG_FIRE_TEMPLE_MAP, RG_FIRE_TEMPLE_COMPASS,
+                                           RG_FIRE_TEMPLE_SMALL_KEY, RG_FIRE_TEMPLE_KEY_RING, RG_FIRE_TEMPLE_BOSS_KEY,
+                                           RA_FIRE_TEMPLE, 8, 5, RSK_MQ_FIRE_TEMPLE);
+    dungeonList[WATER_TEMPLE] = DungeonInfo(
+        "Water Temple", RHT_WATER_TEMPLE, RG_WATER_TEMPLE_MAP, RG_WATER_TEMPLE_COMPASS, RG_WATER_TEMPLE_SMALL_KEY,
+        RG_WATER_TEMPLE_KEY_RING, RG_WATER_TEMPLE_BOSS_KEY, RA_WATER_TEMPLE, 6, 2, RSK_MQ_WATER_TEMPLE);
+    dungeonList[SPIRIT_TEMPLE] = DungeonInfo(
+        "Spirit Temple", RHT_SPIRIT_TEMPLE, RG_SPIRIT_TEMPLE_MAP, RG_SPIRIT_TEMPLE_COMPASS, RG_SPIRIT_TEMPLE_SMALL_KEY,
+        RG_SPIRIT_TEMPLE_KEY_RING, RG_SPIRIT_TEMPLE_BOSS_KEY, RA_SPIRIT_TEMPLE, 5, 7, RSK_MQ_SPIRIT_TEMPLE);
+    dungeonList[SHADOW_TEMPLE] = DungeonInfo(
+        "Shadow Temple", RHT_SHADOW_TEMPLE, RG_SHADOW_TEMPLE_MAP, RG_SHADOW_TEMPLE_COMPASS, RG_SHADOW_TEMPLE_SMALL_KEY,
+        RG_SHADOW_TEMPLE_KEY_RING, RG_SHADOW_TEMPLE_BOSS_KEY, RA_SHADOW_TEMPLE, 5, 6, RSK_MQ_SHADOW_TEMPLE);
+    dungeonList[BOTTOM_OF_THE_WELL] =
+        DungeonInfo("Bottom of the Well", RHT_BOTTOM_OF_THE_WELL, RG_BOTTOM_OF_THE_WELL_MAP,
+                    RG_BOTTOM_OF_THE_WELL_COMPASS, RG_BOTTOM_OF_THE_WELL_SMALL_KEY, RG_BOTTOM_OF_THE_WELL_KEY_RING,
+                    RG_NONE, RA_BOTTOM_OF_THE_WELL, 3, 2, RSK_MQ_BOTTOM_OF_THE_WELL);
     dungeonList[ICE_CAVERN] = DungeonInfo("Ice Cavern", RHT_ICE_CAVERN, RG_ICE_CAVERN_MAP, RG_ICE_CAVERN_COMPASS,
                                           RG_NONE, RG_NONE, RG_NONE, RA_ICE_CAVERN, 0, 0, RSK_MQ_ICE_CAVERN);
-    dungeonList[GERUDO_TRAINING_GROUND] =
-        DungeonInfo("Gerudo Training Ground", RHT_GERUDO_TRAINING_GROUND, RG_NONE, RG_NONE,
-                    RG_GERUDO_TRAINING_GROUND_SMALL_KEY, RG_GERUDO_TRAINING_GROUND_KEY_RING, RG_NONE, RA_GERUDO_TRAINING_GROUND, 9, 3, RSK_MQ_GTG);
+    dungeonList[GERUDO_TRAINING_GROUND] = DungeonInfo(
+        "Gerudo Training Ground", RHT_GERUDO_TRAINING_GROUND, RG_NONE, RG_NONE, RG_GERUDO_TRAINING_GROUND_SMALL_KEY,
+        RG_GERUDO_TRAINING_GROUND_KEY_RING, RG_NONE, RA_GERUDO_TRAINING_GROUND, 9, 3, RSK_MQ_GTG);
     dungeonList[GANONS_CASTLE] =
         DungeonInfo("Ganon's Castle", RHT_GANONS_CASTLE, RG_NONE, RG_NONE, RG_GANONS_CASTLE_SMALL_KEY,
                     RG_GANONS_CASTLE_KEY_RING, RG_GANONS_CASTLE_BOSS_KEY, RA_GANONS_CASTLE, 2, 3, RSK_MQ_GANONS_CASTLE);

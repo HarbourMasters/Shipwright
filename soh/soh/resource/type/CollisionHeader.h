@@ -23,7 +23,7 @@ typedef struct {
                              // Value ranges from -0x7FFF to 0x7FFF, representing -1.0 to 1.0; 0x8000 is invalid
 
     /* 0x0E */ s16 dist; // Plane distance from origin along the normal
-} CollisionPoly; // size = 0x10
+} CollisionPoly;         // size = 0x10
 
 typedef struct {
     /* 0x00 */ s16 xMin;
@@ -52,7 +52,6 @@ typedef struct {
     // 0x0800_0000 = wall damage
 } SurfaceType;
 
-
 typedef struct {
     /* 0x00 */ Vec3s minBounds; // minimum coordinates of poly bounding box
     /* 0x06 */ Vec3s maxBounds; // maximum coordinates of poly bounding box
@@ -65,13 +64,14 @@ typedef struct {
     /* 0x24 */ u16 numWaterBoxes;
     /* 0x28 */ WaterBox* waterBoxes;
     size_t cameraDataListLen; // OTRTODO: Added to allow for bounds checking the cameraDataList.
-} CollisionHeaderData; // original name: BGDataInfo
+} CollisionHeaderData;        // original name: BGDataInfo
 
 class CollisionHeader : public Ship::Resource<CollisionHeaderData> {
-public:
+  public:
     using Resource::Resource;
 
-    CollisionHeader() : Resource(std::shared_ptr<Ship::ResourceInitData>()) {}
+    CollisionHeader() : Resource(std::shared_ptr<Ship::ResourceInitData>()) {
+    }
 
     CollisionHeaderData* GetPointer();
     size_t GetPointerSize();
@@ -95,4 +95,4 @@ public:
 
     std::vector<WaterBox> waterBoxes;
 };
-}; // namespace LUS
+}; // namespace SOH

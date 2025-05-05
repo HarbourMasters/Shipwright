@@ -45,41 +45,41 @@ static MapMarkInfo sMapMarkInfoTable[] = {
     { gMapBossIconTex, G_IM_FMT_IA, G_IM_SIZ_8b, 8, 8, 32, 32, 1 << 10, 1 << 10 },     // Boss Skull Icon
 };
 
-//static MapMarkDataOverlay sMapMarkDataOvl = {
-//    NULL,
-//    //(uintptr_t)_ovl_map_mark_dataSegmentRomStart,
-//    //(uintptr_t)_ovl_map_mark_dataSegmentRomEnd,
-//    //_ovl_map_mark_dataSegmentStart,
-//    //_ovl_map_mark_dataSegmentEnd,
-//    0, 0, 0, 0,
-//    gMapMarkDataTableVanilla,
-//};
+// static MapMarkDataOverlay sMapMarkDataOvl = {
+//     NULL,
+//     //(uintptr_t)_ovl_map_mark_dataSegmentRomStart,
+//     //(uintptr_t)_ovl_map_mark_dataSegmentRomEnd,
+//     //_ovl_map_mark_dataSegmentStart,
+//     //_ovl_map_mark_dataSegmentEnd,
+//     0, 0, 0, 0,
+//     gMapMarkDataTableVanilla,
+// };
 
 MapMarkData** sLoadedMarkDataTable;
 
 void MapMark_Init(PlayState* play) {
-    //MapMarkDataOverlay* overlay = &sMapMarkDataOvl;
-    //u32 overlaySize = (uintptr_t)overlay->vramEnd - (uintptr_t)overlay->vramStart;
+    // MapMarkDataOverlay* overlay = &sMapMarkDataOvl;
+    // u32 overlaySize = (uintptr_t)overlay->vramEnd - (uintptr_t)overlay->vramStart;
 
-    //overlay->loadedRamAddr = GAMESTATE_ALLOC_MC(&play->state, overlaySize);
-    //LOG_CHECK_NULL_POINTER("dlftbl->allocp", overlay->loadedRamAddr);
+    // overlay->loadedRamAddr = GAMESTATE_ALLOC_MC(&play->state, overlaySize);
+    // LOG_CHECK_NULL_POINTER("dlftbl->allocp", overlay->loadedRamAddr);
 
-    //Overlay_Load(overlay->vromStart, overlay->vromEnd, overlay->vramStart, overlay->vramEnd, overlay->loadedRamAddr);
+    // Overlay_Load(overlay->vromStart, overlay->vromEnd, overlay->vramStart, overlay->vramEnd, overlay->loadedRamAddr);
 
-    if(ResourceMgr_IsGameMasterQuest()) {
+    if (ResourceMgr_IsGameMasterQuest()) {
         sLoadedMarkDataTable = gMapMarkDataTableMq;
     } else {
         sLoadedMarkDataTable = gMapMarkDataTableVanilla;
     }
-    //sLoadedMarkDataTable = gMapMarkDataTableVanilla;
-    //sLoadedMarkDataTable = (void*)(uintptr_t)(
+    // sLoadedMarkDataTable = gMapMarkDataTableVanilla;
+    // sLoadedMarkDataTable = (void*)(uintptr_t)(
     //(overlay->vramTable != NULL)
     //? (void*)((uintptr_t)overlay->vramTable - ((intptr_t)overlay->vramStart - (intptr_t)overlay->loadedRamAddr))
     //: NULL);
 }
 
 void MapMark_ClearPointers(PlayState* play) {
-    //sMapMarkDataOvl.loadedRamAddr = NULL;
+    // sMapMarkDataOvl.loadedRamAddr = NULL;
     sLoadedMarkDataTable = NULL;
 }
 
@@ -124,7 +124,9 @@ void MapMark_DrawForDungeon(PlayState* play) {
         s32 X_Margins_Minimap_ic;
         s32 Y_Margins_Minimap_ic;
         if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {
-            if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ORIGINAL_LOCATION) {X_Margins_Minimap_ic = Right_MC_Margin;};
+            if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ORIGINAL_LOCATION) {
+                X_Margins_Minimap_ic = Right_MC_Margin;
+            };
             Y_Margins_Minimap_ic = Bottom_MC_Margin;
         } else {
             X_Margins_Minimap_ic = 0;
@@ -132,40 +134,55 @@ void MapMark_DrawForDungeon(PlayState* play) {
         }
 
         markPoint = &mapMarkIconData->points[0];
-        //Place each chest / boss room icon
+        // Place each chest / boss room icon
         for (i = 0; i < mapMarkIconData->count; i++) {
             if ((mapMarkIconData->markType != MAP_MARK_CHEST) || !Flags_GetTreasure(play, markPoint->chestFlag)) {
                 markInfo = &sMapMarkInfoTable[mapMarkIconData->markType];
-                int height = markInfo->textureHeight * 1.0f; //Adjust Height with scale
-                int width = markInfo->textureWidth * 1.0f; //Adjust Width with scale
+                int height = markInfo->textureHeight * 1.0f; // Adjust Height with scale
+                int width = markInfo->textureWidth * 1.0f;   // Adjust Width with scale
                 int height_factor = (1 << 10) * markInfo->textureHeight / height;
                 int width_factor = (1 << 10) * markInfo->textureWidth / width;
 
                 // The original mark point X originates from the left edge of the map
                 // For mirror mode, we compute the new mark point X by subtracting it from the right side of the
                 // dungeon map and the textures width
-                s16 markPointX = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? 96 - markPoint->x - width : markPoint->x;
+                s16 markPointX =
+                    CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? 96 - markPoint->x - width : markPoint->x;
 
-                //Minimap chest / boss icon 
-                const s32 PosX_Minimap_ori = GREG(94) + OTRGetRectDimensionFromRightEdge(markPointX+X_Margins_Minimap_ic) + 204;
+                // Minimap chest / boss icon
+                const s32 PosX_Minimap_ori =
+                    GREG(94) + OTRGetRectDimensionFromRightEdge(markPointX + X_Margins_Minimap_ic) + 204;
                 const s32 PosY_Minimap_ori = GREG(95) + markPoint->y + Y_Margins_Minimap_ic + 140;
                 if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) != ORIGINAL_LOCATION) {
-                    rectTop = (markPoint->y + Y_Margins_Minimap_ic + 140+CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosY"), 0));
-                    if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_LEFT) { 
-                        if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {X_Margins_Minimap_ic = Left_MC_Margin;};
-                        if (play->sceneNum == SCENE_DEKU_TREE || play->sceneNum == SCENE_DODONGOS_CAVERN || play->sceneNum == SCENE_JABU_JABU || 
-                            play->sceneNum == SCENE_FOREST_TEMPLE || play->sceneNum == SCENE_FIRE_TEMPLE || play->sceneNum == SCENE_WATER_TEMPLE || 
-                            play->sceneNum == SCENE_SPIRIT_TEMPLE || play->sceneNum == SCENE_SHADOW_TEMPLE || play->sceneNum == SCENE_BOTTOM_OF_THE_WELL || 
-                            play->sceneNum == SCENE_ICE_CAVERN) {
-                            rectLeft = OTRGetRectDimensionFromLeftEdge(markPointX+CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0)+204+X_Margins_Minimap_ic);
+                    rectTop = (markPoint->y + Y_Margins_Minimap_ic + 140 +
+                               CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosY"), 0));
+                    if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_LEFT) {
+                        if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {
+                            X_Margins_Minimap_ic = Left_MC_Margin;
+                        };
+                        if (play->sceneNum == SCENE_DEKU_TREE || play->sceneNum == SCENE_DODONGOS_CAVERN ||
+                            play->sceneNum == SCENE_JABU_JABU || play->sceneNum == SCENE_FOREST_TEMPLE ||
+                            play->sceneNum == SCENE_FIRE_TEMPLE || play->sceneNum == SCENE_WATER_TEMPLE ||
+                            play->sceneNum == SCENE_SPIRIT_TEMPLE || play->sceneNum == SCENE_SHADOW_TEMPLE ||
+                            play->sceneNum == SCENE_BOTTOM_OF_THE_WELL || play->sceneNum == SCENE_ICE_CAVERN) {
+                            rectLeft = OTRGetRectDimensionFromLeftEdge(
+                                markPointX + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) + 204 +
+                                X_Margins_Minimap_ic);
                         } else {
-                            rectLeft = OTRGetRectDimensionFromLeftEdge(markPointX+CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0)+204+X_Margins_Minimap_ic);
+                            rectLeft = OTRGetRectDimensionFromLeftEdge(
+                                markPointX + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) + 204 +
+                                X_Margins_Minimap_ic);
                         }
                     } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_RIGHT) {
-                        if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {X_Margins_Minimap_ic = Right_MC_Margin;};
-                        rectLeft = OTRGetRectDimensionFromRightEdge(markPointX+CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) + 204 +X_Margins_Minimap_ic);
+                        if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {
+                            X_Margins_Minimap_ic = Right_MC_Margin;
+                        };
+                        rectLeft = OTRGetRectDimensionFromRightEdge(
+                            markPointX + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) + 204 +
+                            X_Margins_Minimap_ic);
                     } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_NONE) {
-                        rectLeft = markPointX+CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0)+204+X_Margins_Minimap_ic;
+                        rectLeft = markPointX + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) + 204 +
+                                   X_Margins_Minimap_ic;
                     } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == HIDDEN) {
                         rectLeft = -9999;
                     }
@@ -179,10 +196,9 @@ void MapMark_DrawForDungeon(PlayState* play) {
                 gDPLoadTextureBlock(OVERLAY_DISP++, markInfo->texture, markInfo->imageFormat, G_IM_SIZ_MARK,
                                     markInfo->textureWidth, markInfo->textureHeight, 0, G_TX_NOMIRROR | G_TX_WRAP,
                                     G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-                //Changed to a Wide texture to support Left anchor.
-                gSPWideTextureRectangle(OVERLAY_DISP++, rectLeft << 2, rectTop << 2, rectLeft + width  << 2,
-                                    rectTop + height  << 2, G_TX_RENDERTILE, 0, 0, width_factor,
-                                    height_factor);
+                // Changed to a Wide texture to support Left anchor.
+                gSPWideTextureRectangle(OVERLAY_DISP++, rectLeft << 2, rectTop << 2, rectLeft + width << 2,
+                                        rectTop + height << 2, G_TX_RENDERTILE, 0, 0, width_factor, height_factor);
             }
 
             markPoint++;

@@ -1,0 +1,6 @@
+<Root>
+    <File Name="object_ganon_objects" Segment="6">
+        <DList Name="object_ganon_objects_DL_0000C0" Offset="0xC0"/>
+        <Texture Name="object_ganon_objects_Tex_000170" OutName="tex_00000170" Format="rgba16" Width="32" Height="64" Offset="0x170"/>
+    </File>
+</Root>

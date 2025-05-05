@@ -1,0 +1,75 @@
+<Root>
+    <File Name="object_skj" Segment="6">
+        <Texture Name="object_skjTex_005300" OutName="object_skjTex_005300" Format="rgba16" Width="16" Height="16" Offset="0x5300" AddedByScript="true"/>
+        <Texture Name="object_skjTex_005500" OutName="object_skjTex_005500" Format="rgba16" Width="16" Height="16" Offset="0x5500" AddedByScript="true"/>
+        <Texture Name="object_skjTex_005700" OutName="object_skjTex_005700" Format="rgba16" Width="16" Height="16" Offset="0x5700" AddedByScript="true"/>
+        <Texture Name="object_skjTex_005900" OutName="object_skjTex_005900" Format="rgba16" Width="16" Height="16" Offset="0x5900" AddedByScript="true"/>
+        <Texture Name="object_skjTex_005B00" OutName="object_skjTex_005B00" Format="rgba16" Width="8" Height="8" Offset="0x5B00" AddedByScript="true"/>
+        <Texture Name="object_skjTex_005B80" OutName="object_skjTex_005B80" Format="rgba16" Width="16" Height="16" Offset="0x5B80" AddedByScript="true"/>
+        <Texture Name="object_skjTex_005D80" OutName="object_skjTex_005D80" Format="rgba16" Width="4" Height="4" Offset="0x5D80" AddedByScript="true"/>
+        <Texture Name="object_skjTex_005DA0" OutName="object_skjTex_005DA0" Format="ia16" Width="8" Height="8" Offset="0x5DA0" AddedByScript="true"/>
+        <DList Name="gSkullKidNeedleDL" Offset="0x0EB0"/>
+        <DList Name="gSkullKidSkullMaskDL" Offset="0x14C8"/>
+
+        <Limb Name="gSkullKidUnkLimb_5E20" LimbType="Standard" Offset="0x5E20"/>
+        <Limb Name="gSkullKidUnkLimb_5E2C" LimbType="Standard" Offset="0x5E2C"/>
+        <Limb Name="gSkullKidUnkLimb_5E38" LimbType="Standard" Offset="0x5E38"/>
+        <Limb Name="gSkullKidLeftUpperLegLimb" LimbType="Standard" Offset="0x5E44"/>
+        <Limb Name="gSkullKidLeftLowerLegLimb" LimbType="Standard" Offset="0x5E50"/>
+        <Limb Name="gSkullKidLeftFootLimb" LimbType="Standard" Offset="0x5E5C"/>
+        <Limb Name="gSkullKidRightUpperLegLimb" LimbType="Standard" Offset="0x5E68"/>
+        <Limb Name="gSkullKidRightLowerLegLimb" LimbType="Standard" Offset="0x5E74"/>
+        <Limb Name="gSkullKidRightFootLimb" LimbType="Standard" Offset="0x5E80"/>
+        <Limb Name="gSkullKidChestAndClothesLimb" LimbType="Standard" Offset="0x5E8C"/>
+        <Limb Name="gSkullKidNeckLimb" LimbType="Standard" Offset="0x5E98"/>
+        <Limb Name="gSkullKidHeadAndFaceLimb" LimbType="Standard" Offset="0x5EA4"/>
+        <Limb Name="gSkullKidUpperHatLimb" LimbType="Standard" Offset="0x5EB0"/>
+        <Limb Name="gSkullKidLeftShoulderLimb" LimbType="Standard" Offset="0x5EBC"/>
+        <Limb Name="gSkullKidLeftArmLimb" LimbType="Standard" Offset="0x5EC8"/>
+        <Limb Name="gSkullKidLeftHandAndFluteLimb" LimbType="Standard" Offset="0x5ED4"/>
+        <Limb Name="gSkullKidRightShoulderLimb" LimbType="Standard" Offset="0x5EE0"/>
+        <Limb Name="gSkullKidRightArmLimb" LimbType="Standard" Offset="0x5EEC"/>
+        <Skeleton Name="gSkullKidSkel" Type="Flex" LimbType="Standard" Offset="0x5F40"/>
+
+        <!--Limb DLists-->
+        <DList Name="gSkullKidLeftUpperLegDL" Offset="0x3B90"/>
+        <DList Name="gSkullKidLeftLowerLegDL" Offset="0x3C88"/>
+        <DList Name="gSkullKidLeftFootDL" Offset="0x3A28"/>
+        <DList Name="gSkullKidRightUpperLegDL" Offset="0x3770"/>
+        <DList Name="gSkullKidRightLowerLegDL" Offset="0x3868"/>
+        <DList Name="gSkullKidRightFootDL" Offset="0x4630"/>
+        <DList Name="gSkullKidChestAndClothesDL" Offset="0x4008"/>
+        <DList Name="gSkullKidNeckDL" Offset="0x40E8"/>
+        <DList Name="gSKullKidHeadAndFaceDL" Offset="0x44C8"/>
+        <DList Name="gSkullKidUpperHatDL" Offset="0x5130"/>
+        <DList Name="gSkullKidLeftShoulderDL" Offset="0x4FB8"/>
+        <DList Name="gSkullKidLeftArmDL" Offset="0x4CF8"/>
+        <DList Name="gSkullKidLeftHandAndFluteDL" Offset="0x4B28"/>
+        <DList Name="gSkullKidRightShoulderDL" Offset="0x49B0"/>
+        <DList Name="gSkullKidRightArmDL" Offset="0x4810"/>
+
+        <Animation Name="gSkullKidBackflipAnim" Offset="0x051C"/>
+        <Animation Name="gSkullKidShootNeedleAnim" Offset="0x07A4"/>
+        <Animation Name="gSkullKidPlayFluteAnim" Offset="0x0E10"/>
+        <Animation Name="gSkullKidDieAnim" Offset="0x6A98"/>
+        <Animation Name="gSkullKidHitAnim" Offset="0x6D84"/>
+        <Animation Name="gSkullKidLandAnim" Offset="0x7128"/>
+        <Animation Name="gSkullKidLookLeftAndRightAnim" Offset="0x8174"/>
+        <Animation Name="gSkullKidFightingStanceAnim" Offset="0x8374"/>
+        <Animation Name="gSkullKidWaitAnim" Offset="0x8B9C"/>
+        <Animation Name="gSkullKidWalkToPlayerAnim" Offset="0x8E14"/>
+
+        <Texture Name="gSkullKidSkullMaskTex" OutName="skull_mask" Format="rgba16" Width="16" Height="16" Offset="0xF08"/>
+        <Texture Name="gSkullKidSkullMaskTeethTex" OutName="skull_mask_teeth" Format="rgba16" Width="8" Height="8" Offset="0x1108"/>
+        <Texture Name="gSkullKidSkullMaskNoseTex" OutName="skull_mask_nose" Format="rgba16" Width="8" Height="8" Offset="0x1188"/>
+
+        <!--Unaccounted blocks larger than the padding of a file-->
+        <Blob Name="gSKJunaccounted_52C" Size="0x24" Offset="0x52C"/>
+        <Blob Name="gSKJunaccounted_E20" Size="0x30" Offset="0xE20"/>
+        <Blob Name="gSKJunaccounted_EAA8" Size="0x48" Offset="0x6AA8"/>
+        <Blob Name="gSKJunaccounted_ED94" Size="0x1C" Offset="0x6D94"/>
+        <Blob Name="gSKJunaccounted_7138" Size="0x18" Offset="0x7138"/>
+        <Blob Name="gSKJunaccounted_8184" Size="0x6C" Offset="0x8184"/>
+        <Blob Name="gSKJunaccounted_8BAC" Size="0x54" Offset="0x8BAC"/>
+    </File>
+</Root>

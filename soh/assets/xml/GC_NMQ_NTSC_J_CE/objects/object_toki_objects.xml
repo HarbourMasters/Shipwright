@@ -1,0 +1,25 @@
+﻿<Root>
+    <File Name="object_toki_objects" Segment="6">
+        <Texture Name="object_toki_objects_Tex_000000" OutName="tex_000000" Format="i8" Width="32" Height="64" Offset="0x0"/>
+        <DList Name="object_toki_objects_DL_000880" Offset="0x880"/>
+        <DList Name="object_toki_objects_DL_0009C0" Offset="0x9C0"/>
+        <Texture Name="object_toki_objects_Tex_000A30" OutName="tex_000A30" Format="rgba16" Width="16" Height="16" Offset="0xA30"/>
+        <Texture Name="object_toki_objects_Tex_000C30" OutName="tex_000C30" Format="rgba16" Width="32" Height="32" Offset="0xC30"/>
+        <DList Name="object_toki_objects_DL_001BD0" Offset="0x1BD0"/>
+        <DList Name="object_toki_objects_DL_0028E0" Offset="0x28E0"/>
+        <Texture Name="object_toki_objects_Tex_002DC0" OutName="tex_002DC0" Format="rgba16" Width="32" Height="32" Offset="0x2DC0"/>
+        <Texture Name="object_toki_objects_Tex_0035C0" OutName="tex_0035C0" Format="ia8" Width="64" Height="32" Offset="0x35C0"/>
+        <Texture Name="object_toki_objects_Tex_003DC0" OutName="tex_003DC0" Format="rgba16" Width="32" Height="32" Offset="0x3DC0"/>
+        <Texture Name="object_toki_objects_Tex_0045C0" OutName="tex_0045C0" Format="i4" Width="64" Height="128" Offset="0x45C0"/>
+        <Texture Name="object_toki_objects_Tex_0055C0" OutName="tex_0055C0" Format="rgba16" Width="32" Height="64" Offset="0x55C0"/>
+        <Blob Name="object_toki_objects_Blob_0065C0" Size="0xA00" Offset="0x65C0"/>
+        <Texture Name="object_toki_objects_Tex_006FC0" OutName="tex_006FC0" Format="rgba16" Width="16" Height="16" Offset="0x6FC0"/>
+        <DList Name="object_toki_objects_DL_007440" Offset="0x7440"/> <!-- Door of Time left -->
+        <DList Name="object_toki_objects_DL_007578" Offset="0x7578"/> <!-- Door of Time right -->
+        <Collision Name="gDoorTokiCol" Offset="0x7888"/>
+        <DList Name="object_toki_objects_DL_007E20" Offset="0x7E20"/>
+        <DList Name="object_toki_objects_DL_007EE0" Offset="0x7EE0"/>
+        <DList Name="object_toki_objects_DL_008190" Offset="0x8190"/>
+        <DList Name="object_toki_objects_DL_008390" Offset="0x8390"/> <!-- light plane -->
+    </File>
+</Root>

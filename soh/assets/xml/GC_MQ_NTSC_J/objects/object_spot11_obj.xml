@@ -1,0 +1,9 @@
+<Root>
+    <File Name="object_spot11_obj" Segment="6">
+        <Texture Name="gDesertColossusOasisWaterTex" OutName="desert_colossus_oasis_water" Format="rgba16" Width="32" Height="32" Offset="0x0"/>
+        <DList Name="gDesertColossusOasisDL" Offset="0x870"/>
+        <Texture Name="gDesertColossusBombableWallTex" OutName="desert_colossus_bombable_wall" Format="rgba16" Width="32" Height="64" Offset="0x940"/>
+        <DList Name="gDesertColossusBombableWallDL" Offset="0x1980"/>
+        <Collision Name="gDesertColossusBombableWallCol" Offset="0x1A58"/>
+    </File>
+</Root>

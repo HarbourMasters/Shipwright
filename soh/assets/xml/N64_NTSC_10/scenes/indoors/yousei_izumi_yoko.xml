@@ -1,0 +1,24 @@
+<Root>
+    <File Name="yousei_izumi_yoko_scene" Segment="2">
+        <Texture Name="yousei_izumi_yoko_sceneTex_003DA0" OutName="yousei_izumi_yoko_sceneTex_003DA0" Format="i8" Width="32" Height="64" Offset="0x3DA0" AddedByScript="true"/>
+        <Texture Name="yousei_izumi_yoko_sceneTex_0045A0" OutName="yousei_izumi_yoko_sceneTex_0045A0" Format="rgba16" Width="32" Height="32" Offset="0x45A0" AddedByScript="true"/>
+        <Texture Name="yousei_izumi_yoko_sceneTex_004DA0" OutName="yousei_izumi_yoko_sceneTex_004DA0" Format="rgba16" Width="32" Height="32" Offset="0x4DA0" AddedByScript="true"/>
+        <Texture Name="yousei_izumi_yoko_sceneTex_0055A0" OutName="yousei_izumi_yoko_sceneTex_0055A0" Format="ia4" Width="64" Height="128" Offset="0x55A0" AddedByScript="true"/>
+        <Texture Name="yousei_izumi_yoko_sceneTex_0065A0" OutName="yousei_izumi_yoko_sceneTex_0065A0" Format="rgba16" Width="32" Height="64" Offset="0x65A0" AddedByScript="true"/>
+        <Texture Name="yousei_izumi_yoko_sceneTex_0075A0" OutName="yousei_izumi_yoko_sceneTex_0075A0" Format="rgba16" Width="32" Height="64" Offset="0x75A0" AddedByScript="true"/>
+        <Texture Name="yousei_izumi_yoko_sceneTex_0085A0" OutName="yousei_izumi_yoko_sceneTex_0085A0" Format="rgba16" Width="32" Height="64" Offset="0x85A0" AddedByScript="true"/>
+        <Texture Name="yousei_izumi_yoko_sceneTex_0095A0" OutName="yousei_izumi_yoko_sceneTex_0095A0" Format="rgba16" Width="32" Height="32" Offset="0x95A0" AddedByScript="true"/>
+        <Texture Name="yousei_izumi_yoko_sceneTex_009DA0" OutName="yousei_izumi_yoko_sceneTex_009DA0" Format="i8" Width="32" Height="128" Offset="0x9DA0" AddedByScript="true"/>
+        <Texture Name="yousei_izumi_yoko_sceneTex_00ADA0" OutName="yousei_izumi_yoko_sceneTex_00ADA0" Format="rgba16" Width="32" Height="32" Offset="0xADA0" AddedByScript="true"/>
+        <Texture Name="yousei_izumi_yoko_sceneTex_00B5A0" OutName="yousei_izumi_yoko_sceneTex_00B5A0" Format="ia8" Width="64" Height="32" Offset="0xB5A0" AddedByScript="true"/>
+        <Texture Name="yousei_izumi_yoko_sceneTex_00BDA0" OutName="yousei_izumi_yoko_sceneTex_00BDA0" Format="rgba16" Width="32" Height="32" Offset="0xBDA0" AddedByScript="true"/>
+        <Texture Name="yousei_izumi_yoko_sceneTex_00C5A0" OutName="yousei_izumi_yoko_sceneTex_00C5A0" Format="rgba16" Width="32" Height="32" Offset="0xC5A0" AddedByScript="true"/>
+        <Cutscene Name="gGreatFairyFaroresWindCs" Offset="0x0160"/>
+        <Cutscene Name="gGreatFairyDinsFireCs" Offset="0x1020"/>
+        <Cutscene Name="gGreatFairyNayrusLoveCs" Offset="0x1F40"/>
+        <Scene Name="yousei_izumi_yoko_scene" Offset="0x0"/>
+    </File>
+    <File Name="yousei_izumi_yoko_room_0" Segment="3">
+        <Room Name="yousei_izumi_yoko_room_0" Offset="0x0"/>
+    </File>
+</Root>

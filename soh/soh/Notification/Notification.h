@@ -19,12 +19,12 @@ struct Options {
     float remainingTime = 0.0f; // Seconds
 };
 
-class Window : public Ship::GuiWindow {
+class Window final : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
 
-    void InitElement() override {};
-    void DrawElement() override {};
+    void InitElement() override{};
+    void DrawElement() override{};
     void Draw() override;
     void UpdateElement() override;
 };

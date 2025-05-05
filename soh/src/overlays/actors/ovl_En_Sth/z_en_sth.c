@@ -66,12 +66,8 @@ static s16 sObjectIds[6] = {
 };
 
 static FlexSkeletonHeader* sSkeletons[6] = {
-    &object_ahg_Skel_0000F0,
-    &object_boj_Skel_0000F0,
-    &object_boj_Skel_0000F0,
-    &object_boj_Skel_0000F0,
-    &object_boj_Skel_0000F0,
-    &object_boj_Skel_0000F0,
+    &object_ahg_Skel_0000F0, &object_boj_Skel_0000F0, &object_boj_Skel_0000F0,
+    &object_boj_Skel_0000F0, &object_boj_Skel_0000F0, &object_boj_Skel_0000F0,
 };
 
 static AnimationHeader* sAnimations[6] = {
@@ -174,8 +170,8 @@ void EnSth_SetupAfterObjectLoaded(EnSth* this, PlayState* play) {
 
     EnSth_SetupShapeColliderUpdate2AndDraw(this, play);
     gSegments[6] = PHYSICAL_TO_VIRTUAL(play->objectCtx.status[this->objectBankIdx].segment);
-    SkelAnime_InitFlex(play, &this->skelAnime, sSkeletons[this->actor.params], NULL, this->jointTable,
-                       this->morphTable, 16);
+    SkelAnime_InitFlex(play, &this->skelAnime, sSkeletons[this->actor.params], NULL, this->jointTable, this->morphTable,
+                       16);
     Animation_PlayLoop(&this->skelAnime, sAnimations[this->actor.params]);
 
     this->eventFlag = sEventFlags[this->actor.params];
@@ -284,7 +280,8 @@ void EnSth_GiveReward(EnSth* this, PlayState* play) {
         EnSth_SetupAction(this, EnSth_RewardObtainedTalk);
         gSaveContext.eventChkInf[EVENTCHKINF_SKULLTULA_REWARD_INDEX] |= this->eventFlag;
         if (this->eventFlag != 0) {
-            GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_CHECK_INF, (EVENTCHKINF_SKULLTULA_REWARD_INDEX << 4) + sEventFlagsShift[this->actor.params]);
+            GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_CHECK_INF, (EVENTCHKINF_SKULLTULA_REWARD_INDEX << 4) +
+                                                                      sEventFlagsShift[this->actor.params]);
         }
     } else if (GameInteractor_Should(VB_GIVE_ITEM_FROM_SKULLTULA_REWARD, true, this)) {
         EnSth_GivePlayerItem(this, play);

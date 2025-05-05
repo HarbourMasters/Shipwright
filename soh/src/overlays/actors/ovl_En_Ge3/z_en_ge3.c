@@ -152,7 +152,8 @@ void EnGe3_WaitTillCardGiven(EnGe3* this, PlayState* play) {
 }
 
 void EnGe3_GiveCard(EnGe3* this, PlayState* play) {
-    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
+    if (GameInteractor_Should(VB_END_GERUDO_MEMBERSHIP_TALK,
+                              (Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play))) {
         Message_CloseTextbox(play);
         this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         this->actionFunc = EnGe3_WaitTillCardGiven;
@@ -298,7 +299,7 @@ void EnGe3_Draw(Actor* thisx, PlayState* play2) {
     Gfx_SetupDL_37Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeIndex]));
     func_8002EBCC(&this->actor, play, 0);
-    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime,EnGe3_OverrideLimbDraw, EnGe3_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnGe3_OverrideLimbDraw, EnGe3_PostLimbDraw, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

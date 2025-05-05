@@ -11,9 +11,14 @@
 #include <filesystem>
 
 #define SEQUENCE_MAP_ENTRY(sequenceId, label, sfxKey, category, canBeReplaced, canBeUsedAsReplacement) \
-    { sequenceId, { sequenceId, label, sfxKey, category, canBeReplaced, canBeUsedAsReplacement } }
+    {                                                                                                  \
+        sequenceId, {                                                                                  \
+            sequenceId, label, sfxKey, category, canBeReplaced, canBeUsedAsReplacement                 \
+        }                                                                                              \
+    }
 
 AudioCollection::AudioCollection() {
+    // clang-format off
     //                    (originalSequenceId,                  label,                                      sfxKey,                           category,    canBeReplaced, canBeUsedAsReplacement),
     sequenceMap = {
 
@@ -114,7 +119,7 @@ AudioCollection::AudioCollection() {
         SEQUENCE_MAP_ENTRY(NA_BGM_STAFF_2,                      "End Credits II",                           "NA_BGM_STAFF_2",                 SEQ_BGM_EVENT,    false,    false), // Previously SEQ_UNUSED, so not shown anywhere?
         SEQUENCE_MAP_ENTRY(NA_BGM_STAFF_3,                      "End Credits III",                          "NA_BGM_STAFF_3",                 SEQ_BGM_EVENT,    false,    false), // Previously SEQ_UNUSED, so not shown anywhere?
         SEQUENCE_MAP_ENTRY(NA_BGM_STAFF_4,                      "End Credits IV",                           "NA_BGM_STAFF_4",                 SEQ_BGM_EVENT,    false,    false), // Previously SEQ_UNUSED, so not shown anywhere?
-        
+
         // SEQ_INSTRUMENT
         SEQUENCE_MAP_ENTRY(INSTRUMENT_OFFSET + 1,               "Ocarina",                                  "OCARINA_INSTRUMENT_DEFAULT",     SEQ_INSTRUMENT,   true,     true),
         SEQUENCE_MAP_ENTRY(INSTRUMENT_OFFSET + 2,               "Malon",                                    "OCARINA_INSTRUMENT_MALON",       SEQ_INSTRUMENT,   true,     true),
@@ -299,7 +304,7 @@ AudioCollection::AudioCollection() {
         //SEQUENCE_MAP_ENTRY("Adult Link - Unused Sound 1?","NA_SE_VO_LI_ELECTRIC_SHOCK_LV",    "NA_SE_VO_LI_ELECTRIC_SHOCK_LV",        SEQ_VOICE, true, false),
         //SEQUENCE_MAP_ENTRY(NA_SE_VO_LI_GROAN_KID, "Child Link - Groan (Unused)",              "NA_SE_VO_LI_GROAN_KID",                SEQ_VOICE, true, false),
         //SEQUENCE_MAP_ENTRY(NA_SE_VO_LI_ELECTRIC_SHOCK_LV_KID, "Child Link - Unused Sound 1?", "NA_SE_VO_LI_ELECTRIC_SHOCK_LV_KID",    SEQ_VOICE, true, false),
-        
+
         // Following group of Dummies are all duplicate entries for Navi saying Look/Hey/Watchout
         //SEQUENCE_MAP_ENTRY(NA_SE_VO_DUMMY_0x45,          "NA_SE_VO_DUMMY_0x45",                 "NA_SE_VO_DUMMY_0x45",            SEQ_VOICE, true, false),
         //SEQUENCE_MAP_ENTRY(NA_SE_VO_DUMMY_0x46,          "NA_SE_VO_DUMMY_0x46",                 "NA_SE_VO_DUMMY_0x46",            SEQ_VOICE, true, false),
@@ -328,7 +333,7 @@ AudioCollection::AudioCollection() {
         //SEQUENCE_MAP_ENTRY(NA_SE_VO_DUMMY_0x88_YOBI,     "NA_SE_VO_DUMMY_0x88_YOBI",            "NA_SE_VO_DUMMY_0x88_YOBI",       SEQ_VOICE, true, false), // ..
         //SEQUENCE_MAP_ENTRY(NA_SE_VO_DUMMY_0x89_YOBI,     "NA_SE_VO_DUMMY_0x89_YOBI",            "NA_SE_VO_DUMMY_0x89_YOBI",       SEQ_VOICE, true, false), // ..
     };
-
+    // clang-format on
 }
 
 std::string AudioCollection::GetCvarKey(std::string sfxKey) {
@@ -354,10 +359,13 @@ void AudioCollection::AddToCollection(char* otrPath, uint16_t seqNum) {
     if (typeString == "fanfare") {
         type = SEQ_FANFARE;
     }
-    SequenceInfo info = {seqNum,
-                         sequenceName,
-                         StringHelper::Replace(StringHelper::Replace(StringHelper::Replace(sequenceName, " ", "_"), "~", "-"),".", ""),
-                         type, false, true};
+    SequenceInfo info = { seqNum,
+                          sequenceName,
+                          StringHelper::Replace(
+                              StringHelper::Replace(StringHelper::Replace(sequenceName, " ", "_"), "~", "-"), ".", ""),
+                          type,
+                          false,
+                          true };
     sequenceMap.emplace(seqNum, info);
 }
 
@@ -366,7 +374,8 @@ uint16_t AudioCollection::GetReplacementSequence(uint16_t seqId) {
     // for Hyrule Field instead. Otherwise, leave it alone, so that without any sfx editor modifications we will
     // play the normal track as usual.
     if (seqId == NA_BGM_FIELD_MORNING) {
-        if (CVarGetInteger(CVAR_AUDIO("ReplacedSequences.NA_BGM_FIELD_LOGIC.value"), NA_BGM_FIELD_LOGIC) != NA_BGM_FIELD_LOGIC) {
+        if (CVarGetInteger(CVAR_AUDIO("ReplacedSequences.NA_BGM_FIELD_LOGIC.value"), NA_BGM_FIELD_LOGIC) !=
+            NA_BGM_FIELD_LOGIC) {
             seqId = NA_BGM_FIELD_LOGIC;
         }
     }
@@ -401,10 +410,12 @@ void AudioCollection::AddToShufflePool(SequenceInfo* seqInfo) {
 }
 
 void AudioCollection::InitializeShufflePool() {
-    if (shufflePoolInitialized) return;
-    
+    if (shufflePoolInitialized)
+        return;
+
     for (auto& [seqId, seqInfo] : sequenceMap) {
-        if (!seqInfo.canBeUsedAsReplacement) continue;
+        if (!seqInfo.canBeUsedAsReplacement)
+            continue;
         const std::string cvarKey = std::string(CVAR_AUDIO("Excluded.")) + seqInfo.sfxKey;
         if (CVarGetInteger(cvarKey.c_str(), 0)) {
             excludedSequences.insert(&seqInfo);
@@ -416,7 +427,7 @@ void AudioCollection::InitializeShufflePool() {
     shufflePoolInitialized = true;
 };
 
-extern "C" void AudioCollection_AddToCollection(char *otrPath, uint16_t seqNum) {
+extern "C" void AudioCollection_AddToCollection(char* otrPath, uint16_t seqNum) {
     AudioCollection::Instance->AddToCollection(otrPath, seqNum);
 }
 

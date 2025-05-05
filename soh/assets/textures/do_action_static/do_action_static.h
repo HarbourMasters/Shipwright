@@ -264,4 +264,92 @@ static const ALIGN_ASSET(2) char gNum7DoActionFRATex[] = dgNum7DoActionFRATex;
 #define dgNum8DoActionFRATex "__OTR__textures/do_action_static/gNum8DoActionFRATex"
 static const ALIGN_ASSET(2) char gNum8DoActionFRATex[] = dgNum8DoActionFRATex;
 
+#define dgAttackDoActionJPNTex "__OTR__textures/do_action_static/gAttackDoActionJPNTex"
+static const ALIGN_ASSET(2) char gAttackDoActionJPNTex[] = dgAttackDoActionJPNTex;
+
+#define dgCheckDoActionJPNTex "__OTR__textures/do_action_static/gCheckDoActionJPNTex"
+static const ALIGN_ASSET(2) char gCheckDoActionJPNTex[] = dgCheckDoActionJPNTex;
+
+#define dgEnterDoActionJPNTex "__OTR__textures/do_action_static/gEnterDoActionJPNTex"
+static const ALIGN_ASSET(2) char gEnterDoActionJPNTex[] = dgEnterDoActionJPNTex;
+
+#define dgReturnDoActionJPNTex "__OTR__textures/do_action_static/gReturnDoActionJPNTex"
+static const ALIGN_ASSET(2) char gReturnDoActionJPNTex[] = dgReturnDoActionJPNTex;
+
+#define dgOpenDoActionJPNTex "__OTR__textures/do_action_static/gOpenDoActionJPNTex"
+static const ALIGN_ASSET(2) char gOpenDoActionJPNTex[] = dgOpenDoActionJPNTex;
+
+#define dgJumpDoActionJPNTex "__OTR__textures/do_action_static/gJumpDoActionJPNTex"
+static const ALIGN_ASSET(2) char gJumpDoActionJPNTex[] = dgJumpDoActionJPNTex;
+
+#define dgDecideDoActionJPNTex "__OTR__textures/do_action_static/gDecideDoActionJPNTex"
+static const ALIGN_ASSET(2) char gDecideDoActionJPNTex[] = dgDecideDoActionJPNTex;
+
+#define dgDiveDoActionJPNTex "__OTR__textures/do_action_static/gDiveDoActionJPNTex"
+static const ALIGN_ASSET(2) char gDiveDoActionJPNTex[] = dgDiveDoActionJPNTex;
+
+#define dgFasterDoActionJPNTex "__OTR__textures/do_action_static/gFasterDoActionJPNTex"
+static const ALIGN_ASSET(2) char gFasterDoActionJPNTex[] = dgFasterDoActionJPNTex;
+
+#define dgThrowDoActionJPNTex "__OTR__textures/do_action_static/gThrowDoActionJPNTex"
+static const ALIGN_ASSET(2) char gThrowDoActionJPNTex[] = dgThrowDoActionJPNTex;
+
+#define dgUnusedNaviDoActionJPNTex "__OTR__textures/do_action_static/gUnusedNaviDoActionJPNTex"
+static const ALIGN_ASSET(2) char gUnusedNaviDoActionJPNTex[] = dgUnusedNaviDoActionJPNTex;
+
+#define dgClimbDoActionJPNTex "__OTR__textures/do_action_static/gClimbDoActionJPNTex"
+static const ALIGN_ASSET(2) char gClimbDoActionJPNTex[] = dgClimbDoActionJPNTex;
+
+#define dgDropDoActionJPNTex "__OTR__textures/do_action_static/gDropDoActionJPNTex"
+static const ALIGN_ASSET(2) char gDropDoActionJPNTex[] = dgDropDoActionJPNTex;
+
+#define dgDownDoActionJPNTex "__OTR__textures/do_action_static/gDownDoActionJPNTex"
+static const ALIGN_ASSET(2) char gDownDoActionJPNTex[] = dgDownDoActionJPNTex;
+
+#define dgSaveDoActionJPNTex "__OTR__textures/do_action_static/gSaveDoActionJPNTex"
+static const ALIGN_ASSET(2) char gSaveDoActionJPNTex[] = dgSaveDoActionJPNTex;
+
+#define dgSpeakDoActionJPNTex "__OTR__textures/do_action_static/gSpeakDoActionJPNTex"
+static const ALIGN_ASSET(2) char gSpeakDoActionJPNTex[] = dgSpeakDoActionJPNTex;
+
+#define dgNextDoActionJPNTex "__OTR__textures/do_action_static/gNextDoActionJPNTex"
+static const ALIGN_ASSET(2) char gNextDoActionJPNTex[] = dgNextDoActionJPNTex;
+
+#define dgGrabDoActionJPNTex "__OTR__textures/do_action_static/gGrabDoActionJPNTex"
+static const ALIGN_ASSET(2) char gGrabDoActionJPNTex[] = dgGrabDoActionJPNTex;
+
+#define dgStopDoActionJPNTex "__OTR__textures/do_action_static/gStopDoActionJPNTex"
+static const ALIGN_ASSET(2) char gStopDoActionJPNTex[] = dgStopDoActionJPNTex;
+
+#define dgPutAwayDoActionJPNTex "__OTR__textures/do_action_static/gPutAwayDoActionJPNTex"
+static const ALIGN_ASSET(2) char gPutAwayDoActionJPNTex[] = dgPutAwayDoActionJPNTex;
+
+#define dgReelDoActionJPNTex "__OTR__textures/do_action_static/gReelDoActionJPNTex"
+static const ALIGN_ASSET(2) char gReelDoActionJPNTex[] = dgReelDoActionJPNTex;
+
+#define dgNum1DoActionJPNTex "__OTR__textures/do_action_static/gNum1DoActionJPNTex"
+static const ALIGN_ASSET(2) char gNum1DoActionJPNTex[] = dgNum1DoActionJPNTex;
+
+#define dgNum2DoActionJPNTex "__OTR__textures/do_action_static/gNum2DoActionJPNTex"
+static const ALIGN_ASSET(2) char gNum2DoActionJPNTex[] = dgNum2DoActionJPNTex;
+
+#define dgNum3DoActionJPNTex "__OTR__textures/do_action_static/gNum3DoActionJPNTex"
+static const ALIGN_ASSET(2) char gNum3DoActionJPNTex[] = dgNum3DoActionJPNTex;
+
+#define dgNum4DoActionJPNTex "__OTR__textures/do_action_static/gNum4DoActionJPNTex"
+static const ALIGN_ASSET(2) char gNum4DoActionJPNTex[] = dgNum4DoActionJPNTex;
+
+#define dgNum5DoActionJPNTex "__OTR__textures/do_action_static/gNum5DoActionJPNTex"
+static const ALIGN_ASSET(2) char gNum5DoActionJPNTex[] = dgNum5DoActionJPNTex;
+
+#define dgNum6DoActionJPNTex "__OTR__textures/do_action_static/gNum6DoActionJPNTex"
+static const ALIGN_ASSET(2) char gNum6DoActionJPNTex[] = dgNum6DoActionJPNTex;
+
+#define dgNum7DoActionJPNTex "__OTR__textures/do_action_static/gNum7DoActionJPNTex"
+static const ALIGN_ASSET(2) char gNum7DoActionJPNTex[] = dgNum7DoActionJPNTex;
+
+#define dgNum8DoActionJPNTex "__OTR__textures/do_action_static/gNum8DoActionJPNTex"
+static const ALIGN_ASSET(2) char gNum8DoActionJPNTex[] = dgNum8DoActionJPNTex;
+
+
 #endif // TEXTURES_DO_ACTION_STATIC_H

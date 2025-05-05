@@ -7,6 +7,7 @@
 #include "z_obj_kibako.h"
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 #include "overlays/effects/ovl_Effect_Ss_Kakera/z_eff_ss_kakera.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_CAN_PRESS_SWITCHES)
 
@@ -68,9 +69,8 @@ void ObjKibako_SpawnCollectible(ObjKibako* this, PlayState* play) {
     s16 collectible;
 
     collectible = this->actor.params & 0x1F;
-    if ((collectible >= 0) && (collectible <= 0x19)) {
-        Item_DropCollectible(play, &this->actor.world.pos,
-                             collectible | (((this->actor.params >> 8) & 0x3F) << 8));
+    if (GameInteractor_Should(VB_SMALL_CRATE_DROP_ITEM, (collectible >= 0) && (collectible <= 0x19), this)) {
+        Item_DropCollectible(play, &this->actor.world.pos, collectible | (((this->actor.params >> 8) & 0x3F) << 8));
     }
 }
 
@@ -140,9 +140,8 @@ void ObjKibako_AirBreak(ObjKibako* this, PlayState* play) {
         } else {
             phi_s0 = 0x20;
         }
-        EffectSsKakera_Spawn(play, &pos, &velocity, breakPos, -200, phi_s0, 10, 10, 0,
-                             (Rand_ZeroOne() * 30.0f) + 10.0f, 0, 32, 60, KAKERA_COLOR_NONE,
-                             OBJECT_GAMEPLAY_DANGEON_KEEP, gSmallWoodenBoxFragmentDL);
+        EffectSsKakera_Spawn(play, &pos, &velocity, breakPos, -200, phi_s0, 10, 10, 0, (Rand_ZeroOne() * 30.0f) + 10.0f,
+                             0, 32, 60, KAKERA_COLOR_NONE, OBJECT_GAMEPLAY_DANGEON_KEEP, gSmallWoodenBoxFragmentDL);
     }
     func_80033480(play, &this->actor.world.pos, 40.0f, 3, 50, 140, 1);
 }
@@ -175,9 +174,8 @@ void ObjKibako_WaterBreak(ObjKibako* this, PlayState* play) {
         pos.z += breakPos->z;
         temp_rand = Rand_ZeroOne();
         phi_s0 = (temp_rand < 0.2f) ? 0x40 : 0x20;
-        EffectSsKakera_Spawn(play, &pos, &velocity, breakPos, -180, phi_s0, 30, 30, 0,
-                             (Rand_ZeroOne() * 30.0f) + 10.0f, 0, 32, 70, KAKERA_COLOR_NONE,
-                             OBJECT_GAMEPLAY_DANGEON_KEEP, gSmallWoodenBoxFragmentDL);
+        EffectSsKakera_Spawn(play, &pos, &velocity, breakPos, -180, phi_s0, 30, 30, 0, (Rand_ZeroOne() * 30.0f) + 10.0f,
+                             0, 32, 70, KAKERA_COLOR_NONE, OBJECT_GAMEPLAY_DANGEON_KEEP, gSmallWoodenBoxFragmentDL);
     }
 }
 
@@ -283,6 +281,10 @@ void ObjKibako_Update(Actor* thisx, PlayState* play) {
 void ObjKibako_Draw(Actor* thisx, PlayState* play) {
     s32 pad;
     ObjKibako* this = (ObjKibako*)thisx;
+
+    if (!GameInteractor_Should(VB_SMALL_CRATE_SETUP_DRAW, true, thisx)) {
+        return;
+    }
 
     Gfx_DrawDListOpa(play, gSmallWoodenBoxDL);
 }

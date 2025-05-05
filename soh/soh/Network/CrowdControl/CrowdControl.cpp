@@ -19,7 +19,8 @@ extern PlayState* gPlayState;
 }
 
 void CrowdControl::Enable() {
-    Network::Enable(CVarGetString(CVAR_REMOTE_CROWD_CONTROL("Host"), "127.0.0.1"), CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Port"), 43384));
+    Network::Enable(CVarGetString(CVAR_REMOTE_CROWD_CONTROL("Host"), "127.0.0.1"),
+                    CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Port"), 43384));
 }
 
 void CrowdControl::OnConnected() {
@@ -44,7 +45,8 @@ void CrowdControl::OnIncomingJson(nlohmann::json payload) {
         // If another timed effect is already active that conflicts with the incoming effect.
         bool isConflictingEffectActive = false;
         for (Effect* effect : activeEffects) {
-            if (effect != incomingEffect && effect->category == incomingEffect->category && effect->id < incomingEffect->id) {
+            if (effect != incomingEffect && effect->category == incomingEffect->category &&
+                effect->id < incomingEffect->id) {
                 isConflictingEffectActive = true;
                 EmitMessage(incomingEffect->id, incomingEffect->timeRemaining, EffectResult::Retry);
                 break;
@@ -75,14 +77,14 @@ void CrowdControl::ProcessActiveEffects() {
         auto it = activeEffects.begin();
 
         while (it != activeEffects.end()) {
-            Effect *effect = *it;
+            Effect* effect = *it;
             EffectResult result = CrowdControl::ExecuteEffect(effect);
 
             if (result == EffectResult::Success) {
                 // If time remaining has reached 0, we have finished the effect.
                 if (effect->timeRemaining <= 0) {
                     it = activeEffects.erase(std::remove(activeEffects.begin(), activeEffects.end(), effect),
-                                        activeEffects.end());
+                                             activeEffects.end());
                     GameInteractor::RemoveEffect(dynamic_cast<RemovableGameInteractionEffect*>(effect->giEffect));
                     delete effect;
                 } else {
@@ -90,9 +92,9 @@ void CrowdControl::ProcessActiveEffects() {
                     if (effect->isPaused) {
                         effect->isPaused = false;
                         EmitMessage(effect->id, effect->timeRemaining, EffectResult::Resumed);
-                    // If not paused before, subtract time from the timer and send a Success event if
-                    // the result is different from the last time this was ran.
-                    // Timed events are put on a thread that runs once per second.
+                        // If not paused before, subtract time from the timer and send a Success event if
+                        // the result is different from the last time this was ran.
+                        // Timed events are put on a thread that runs once per second.
                     } else {
                         effect->timeRemaining -= 1000;
                         if (result != effect->lastExecutionResult) {
@@ -330,7 +332,8 @@ CrowdControl::Effect* CrowdControl::ParseMessage(nlohmann::json dataReceived) {
             effect->category = kEffectCatBoots;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ForceEquipBoots();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = EQUIP_VALUE_BOOTS_HOVER;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] =
+                EQUIP_VALUE_BOOTS_HOVER;
             break;
         case kEffectSlipperyFloor:
             effect->category = kEffectCatSlipperyFloor;
@@ -764,69 +767,4 @@ CrowdControl::Effect* CrowdControl::ParseMessage(nlohmann::json dataReceived) {
 
     return effect;
 }
-
-void CrowdControl::DrawMenu() {
-    ImGui::PushID("CrowdControl");
-
-    static std::string host = CVarGetString(CVAR_REMOTE_CROWD_CONTROL("Host"), "127.0.0.1");
-    static uint16_t port = CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Port"), 43384);
-    bool isFormValid = !SohUtils::IsStringEmpty(host) && port > 1024 && port < 65535;
-
-    ImGui::SeparatorText("Crowd Control");
-    UIWidgets::Tooltip(
-        "Crowd Control is a platform that allows viewers to interact "
-        "with a streamer's game in real time.\n"
-        "\n"
-        "Click the question mark to copy the link to the Crowd Control "
-        "website to your clipboard."
-    );
-    if (ImGui::IsItemClicked()) {
-        ImGui::SetClipboardText("https://crowdcontrol.live");
-    }
-
-    ImGui::BeginDisabled(isEnabled);
-    ImGui::Text("Host & Port");
-    if (UIWidgets::InputString("##Host", &host)) {
-        CVarSetString(CVAR_REMOTE_CROWD_CONTROL("Host"), host.c_str());
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    }
-
-    ImGui::SameLine();
-    ImGui::PushItemWidth(ImGui::GetFontSize() * 5);
-    if (ImGui::InputScalar("##Port", ImGuiDataType_U16, &port)) {
-        CVarSetInteger(CVAR_REMOTE_CROWD_CONTROL("Port"), port);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    }
-    ImGui::PopItemWidth();
-    ImGui::EndDisabled();
-
-    ImGui::Spacing();
-
-    ImGui::BeginDisabled(!isFormValid);
-    const char* buttonLabel = isEnabled ? "Disable" : "Enable";
-    if (ImGui::Button(buttonLabel, ImVec2(-1.0f, 0.0f))) {
-        if (isEnabled) {
-            CVarClear(CVAR_REMOTE_CROWD_CONTROL("Enabled"));
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-            Disable();
-        } else {
-            CVarSetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 1);
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-            Enable();
-        }
-    }
-    ImGui::EndDisabled();
-
-    if (isEnabled) {
-        ImGui::Spacing();
-        if (isConnected) {
-            ImGui::Text("Connected");
-        } else {
-            ImGui::Text("Connecting...");
-        }
-    }
-    
-    ImGui::PopID();
-}
-
 #endif

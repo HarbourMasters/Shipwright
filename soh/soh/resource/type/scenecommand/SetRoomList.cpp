@@ -6,6 +6,6 @@ RomFile* SetRoomList::GetPointer() {
 }
 
 size_t SetRoomList::GetPointerSize() {
-	return rooms.size() * sizeof(RomFile);
+    return rooms.size() * sizeof(RomFile);
 }
 } // namespace SOH

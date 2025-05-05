@@ -89,12 +89,6 @@ class Settings {
     const OptionGroup& GetOptionGroup(RandomizerSettingGroupKey key);
 
     /**
-     * @brief sets the `selectedOption` of all Options to the value of the CVar
-     * corresponding to their `cvarName`s.
-    */
-    void SetAllFromCVar();
-
-    /**
      * @brief Updates various properties of options based on the value of other options.
      * Used to update visibility, whether or not interaction is disabled, and what the
      * actual option values are. Actually changing option values should be handled in
@@ -103,7 +97,7 @@ class Settings {
      * For example, this function handles setting the maximum possible keyring count to 9
      * when Gerudo's Fortress options are set such that a keyring is possible for that
      * dungeon.
-    */
+     */
     void UpdateOptionProperties();
 
     /**
@@ -113,13 +107,12 @@ class Settings {
      */
     void ParseJson(nlohmann::json spoilerFileJson);
     std::map<RandomizerArea, std::vector<RandomizerTrick>> mTricksByArea = {};
-    void ReloadOptions();
 
     /**
      * @brief Assigns a Rando::Context instance to this settings instance
      * with which to later instantiate and access OptionValues.
-     * 
-     * @param ctx 
+     *
+     * @param ctx
      */
     void AssignContext(std::shared_ptr<Context> ctx);
     void ClearContext();
@@ -128,7 +121,7 @@ class Settings {
      * @brief Sets all the currently selected MenuIndexes to the currently assigned Rando::Context.
      */
     void SetAllToContext();
-    
+
     static std::shared_ptr<Settings> GetInstance();
 
   private:
