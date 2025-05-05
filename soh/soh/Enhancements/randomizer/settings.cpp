@@ -1188,13 +1188,13 @@ void Settings::CreateOptions() {
                                                            WidgetContainerType::COLUMN);
     mOptionGroups[RSG_SHUFFLE_ENTRANCES_IMGUI] = OptionGroup::SubGroup(
         "Shuffle Entrances",
-        { &mOptions[RSK_SHUFFLE_DUNGEON_ENTRANCES], &mOptions[RSK_SHUFFLE_BOSS_ENTRANCES], &mOptions[RSK_SHUFFLE_GANON_TOWER_ENTRANCE],
-          &mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES], &mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES],
-          &mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES], &mOptions[RSK_SHUFFLE_OWL_DROPS], &mOptions[RSK_SHUFFLE_WARP_SONGS],
-          &mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS], &mOptions[RSK_DECOUPLED_ENTRANCES],
-          &mOptions[RSK_MIXED_ENTRANCE_POOLS], &mOptions[RSK_MIX_DUNGEON_ENTRANCES], &mOptions[RSK_MIX_BOSS_ENTRANCES],
-          &mOptions[RSK_MIX_OVERWORLD_ENTRANCES], &mOptions[RSK_MIX_INTERIOR_ENTRANCES],
-          &mOptions[RSK_MIX_GROTTO_ENTRANCES] },
+        { &mOptions[RSK_SHUFFLE_DUNGEON_ENTRANCES], &mOptions[RSK_SHUFFLE_BOSS_ENTRANCES],
+          &mOptions[RSK_SHUFFLE_GANON_TOWER_ENTRANCE], &mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES],
+          &mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES], &mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES],
+          &mOptions[RSK_SHUFFLE_OWL_DROPS], &mOptions[RSK_SHUFFLE_WARP_SONGS], &mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS],
+          &mOptions[RSK_DECOUPLED_ENTRANCES], &mOptions[RSK_MIXED_ENTRANCE_POOLS], &mOptions[RSK_MIX_DUNGEON_ENTRANCES],
+          &mOptions[RSK_MIX_BOSS_ENTRANCES], &mOptions[RSK_MIX_OVERWORLD_ENTRANCES],
+          &mOptions[RSK_MIX_INTERIOR_ENTRANCES], &mOptions[RSK_MIX_GROTTO_ENTRANCES] },
         WidgetContainerType::COLUMN);
     mOptionGroups[RSG_WORLD_IMGUI_TABLE] = OptionGroup::SubGroup("World",
                                                                  {
@@ -2533,13 +2533,12 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
     }
 
     // If any of the individual shuffle settings are on, turn on the main Shuffle Entrances option
-    if (mOptions[RSK_SHUFFLE_DUNGEON_ENTRANCES].IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)
-        || mOptions[RSK_SHUFFLE_BOSS_ENTRANCES].IsNot(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)
-        || mOptions[RSK_SHUFFLE_GANON_TOWER_ENTRANCE]
-        || mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES]
-        || mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES].IsNot(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF)
-        || mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES] || mOptions[RSK_SHUFFLE_OWL_DROPS]
-        || mOptions[RSK_SHUFFLE_WARP_SONGS] || mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS]) {
+    if (mOptions[RSK_SHUFFLE_DUNGEON_ENTRANCES].IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) ||
+        mOptions[RSK_SHUFFLE_BOSS_ENTRANCES].IsNot(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) ||
+        mOptions[RSK_SHUFFLE_GANON_TOWER_ENTRANCE] || mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES] ||
+        mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES].IsNot(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF) ||
+        mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES] || mOptions[RSK_SHUFFLE_OWL_DROPS] || mOptions[RSK_SHUFFLE_WARP_SONGS] ||
+        mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS]) {
         mOptions[RSK_SHUFFLE_ENTRANCES].Set(RO_GENERIC_ON);
     } else {
         mOptions[RSK_SHUFFLE_ENTRANCES].Set(RO_GENERIC_OFF);
