@@ -2,6 +2,7 @@
 #include "soh/resource/type/scenecommand/SetRoomList.h"
 #include "soh/resource/logging/SceneCommandLoggers.h"
 #include "spdlog/spdlog.h"
+#include <tinyxml2.h>
 
 namespace SOH {
 std::shared_ptr<Ship::IResource> SetRoomListFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
