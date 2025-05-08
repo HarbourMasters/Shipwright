@@ -880,11 +880,7 @@ bool CVarCombobox(const char* label, const char* cvarName, const std::unordered_
     bool dirty = false;
     int32_t value = CVarGetInteger(cvarName, options.defaultIndex);
     if (Combobox<T>(label, &value, comboMap, options)) {
-        if (value == options.defaultIndex) {
-            CVarClear(cvarName);
-        } else {
-            CVarSetInteger(cvarName, value);
-        }
+        CVarSetInteger(cvarName, value);
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         ShipInit::Init(cvarName);
         dirty = true;
@@ -898,11 +894,7 @@ bool CVarCombobox(const char* label, const char* cvarName, const std::vector<con
     bool dirty = false;
     int32_t value = CVarGetInteger(cvarName, options.defaultIndex);
     if (Combobox<T>(label, &value, comboVector, options)) {
-        if (value == options.defaultIndex) {
-            CVarClear(cvarName);
-        } else {
-            CVarSetInteger(cvarName, value);
-        }
+        CVarSetInteger(cvarName, value);
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         ShipInit::Init(cvarName);
         dirty = true;
@@ -916,11 +908,7 @@ bool CVarCombobox(const char* label, const char* cvarName, const char* (&comboAr
     bool dirty = false;
     int32_t value = CVarGetInteger(cvarName, options.defaultIndex);
     if (Combobox<T>(label, &value, comboArray, options)) {
-        if (value == options.defaultIndex) {
-            CVarClear(cvarName);
-        } else {
-            CVarSetInteger(cvarName, value);
-        }
+        CVarSetInteger(cvarName, value);
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         ShipInit::Init(cvarName);
         dirty = true;
