@@ -480,6 +480,14 @@ typedef enum {
     // ```
     // #### `args`
     // - None
+    VB_FREEZE_LINK_FOR_FOREST_PILLARS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
     VB_FREEZE_ON_SKULL_TOKEN,
 
     // #### `result`
