@@ -11,7 +11,7 @@ class ActorViewerWindow final : public Ship::GuiWindow {
     using GuiWindow::GuiWindow;
 
     void DrawElement() override;
-    void InitElement() override{};
+    void InitElement() override;
     void UpdateElement() override{};
 
   private:

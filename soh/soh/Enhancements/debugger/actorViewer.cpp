@@ -875,6 +875,57 @@ void ActorViewerWindow::DrawElement() {
     static std::vector<u16> actorSearchResults;
 
     if (gPlayState != nullptr) {
+        if (ImGui::BeginChild("options", ImVec2(0, 0), ImGuiChildFlags_Border | ImGuiChildFlags_AutoResizeY)) {
+            bool toggled = false;
+            bool optionChange = false;
+
+            ImGui::SeparatorText("Options");
+
+            toggled = UIWidgets::CVarCheckbox("Actor Name Tags", CVAR_ACTOR_NAME_TAGS("Enabled"),
+                                              { { .tooltip = "Adds \"name tags\" above actors for identification" } });
+
+            ImGui::SameLine();
+
+            UIWidgets::Button("Display Items", { { .tooltip = "Click to add display items on the name tags" } });
+
+            if (ImGui::BeginPopupContextItem(nullptr, ImGuiPopupFlags_MouseButtonLeft | ImGuiPopupFlags_NoReopen)) {
+                optionChange |= UIWidgets::CVarCheckbox("ID", CVAR_ACTOR_NAME_TAGS("DisplayID"));
+                optionChange |= UIWidgets::CVarCheckbox("Description", CVAR_ACTOR_NAME_TAGS("DisplayDescription"));
+                optionChange |= UIWidgets::CVarCheckbox("Category", CVAR_ACTOR_NAME_TAGS("DisplayCategory"));
+                optionChange |= UIWidgets::CVarCheckbox("Params", CVAR_ACTOR_NAME_TAGS("DisplayParams"));
+
+                ImGui::EndPopup();
+            }
+
+            optionChange |= UIWidgets::CVarCheckbox(
+                "Name tags with Z-Buffer", CVAR_ACTOR_NAME_TAGS("WithZBuffer"),
+                { { .tooltip = "Allow name tags to be obstructed when behind geometry and actors" } });
+
+            if (toggled || optionChange) {
+                bool tagsEnabled = CVarGetInteger(CVAR_ACTOR_NAME_TAGS("Enabled"), 0);
+                bool noOptionsEnabled = !CVarGetInteger(CVAR_ACTOR_NAME_TAGS("DisplayID"), 0) &&
+                                        !CVarGetInteger(CVAR_ACTOR_NAME_TAGS("DisplayDescription"), 0) &&
+                                        !CVarGetInteger(CVAR_ACTOR_NAME_TAGS("DisplayCategory"), 0) &&
+                                        !CVarGetInteger(CVAR_ACTOR_NAME_TAGS("DisplayParams"), 0);
+
+                // Save the user an extra click and prevent adding "empty" tags by enabling,
+                // disabling, or setting an option based on what changed
+                if (tagsEnabled && noOptionsEnabled) {
+                    if (toggled) {
+                        CVarSetInteger(CVAR_ACTOR_NAME_TAGS("DisplayID"), 1);
+                    } else {
+                        CVarSetInteger(CVAR_ACTOR_NAME_TAGS("Enabled"), 0);
+                    }
+                } else if (optionChange && !tagsEnabled && !noOptionsEnabled) {
+                    CVarSetInteger(CVAR_ACTOR_NAME_TAGS("Enabled"), 1);
+                }
+
+                NameTag_RemoveAllByTag(DEBUG_ACTOR_NAMETAG_TAG);
+                ActorViewer_AddTagForAllActors();
+            }
+        }
+        ImGui::EndChild();
+
         PushStyleCombobox(THEME_COLOR);
         if (ImGui::BeginCombo("Actor Type", acMapping[category])) {
             for (int i = 0; i < acMapping.size(); i++) {
@@ -1142,6 +1193,12 @@ void ActorViewerWindow::DrawElement() {
     ImGui::EndDisabled();
 }
 
+void ActorViewerWindow::ResetData() {
+    display = nullptr;
+    category = ACTORCAT_SWITCH;
+    list.clear();
+}
+
 void ActorViewerWindow::InitElement() {
     ResetData();
 
@@ -1172,7 +1229,7 @@ void ActorViewerWindow::InitElement() {
 
 void ActorViewer_RegisterNameTagHooks() {
     COND_HOOK(OnActorInit, CVAR_ACTOR_NAME_TAGS_ENABLED,
-        [](void* actor) { ActorViewer_AddTagForActor(static_cast<Actor*>(actor)); });
+              [](void* actor) { ActorViewer_AddTagForActor(static_cast<Actor*>(actor)); });
 }
 
 RegisterShipInitFunc nametagInit(ActorViewer_RegisterNameTagHooks, { CVAR_ACTOR_NAME_TAGS_ENABLED_NAME });
