@@ -410,8 +410,7 @@ void Settings::CreateOptions() {
               "Hover Boots, or Bean.");
     OPT_TRICK(RT_LW_MIDO_BACKFLIP, RCQUEST_BOTH, RA_THE_LOST_WOODS, { Tricks::Tag::NOVICE },
               "Backflip over Mido as Adult", "With a specific position and angle, you can backflip over Mido.");
-    OPT_TRICK(RT_LOST_WOOD_NAVI_DIVE, RCQUEST_BOTH, RA_THE_LOST_WOODS, { Tricks::Tag::NOVICE },
-              "Lost Wood Navi dive",
+    OPT_TRICK(RT_LOST_WOOD_NAVI_DIVE, RCQUEST_BOTH, RA_THE_LOST_WOODS, { Tricks::Tag::NOVICE }, "Lost Wood Navi dive",
               "You need deku sticks or kokiri sword to dive with Navi for entering Zoras River.");
     OPT_TRICK(RT_LW_GS_BEAN, RCQUEST_BOTH, RA_THE_LOST_WOODS, { Tricks::Tag::INTERMEDIATE },
               "Lost Woods Adult GS without Bean",
