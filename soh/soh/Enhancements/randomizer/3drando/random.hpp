@@ -9,7 +9,6 @@
 
 void Random_Init(uint32_t seed);
 uint32_t Random(uint32_t min, uint32_t max);
-float Random_Float(float min, float max);
 double RandomDouble();
 
 // Get a random element from a vector or array

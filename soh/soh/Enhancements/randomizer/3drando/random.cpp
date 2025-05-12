@@ -33,14 +33,7 @@ uint32_t Random(uint32_t min, uint32_t max) {
     return distribution(generator);
 }
 
-// Returns a random float in range [min, max-1]
-float Random_Float(float min, float max) {
-    Random_InitSeed();
-    boost::random::uniform_real_distribution<float> distribution(min, max - 1);
-    return distribution(generator);
-}
-
-// Returns a random floating point number in [0.0, 1.0]
+// Returns a random floating point number in [0.0, 1.0)
 double RandomDouble() {
     boost::random::uniform_real_distribution<double> distribution(0.0, 1.0);
     return distribution(generator);
