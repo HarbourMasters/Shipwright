@@ -32,14 +32,15 @@
 #include "SohModals.h"
 
 namespace SohGui {
-    void SetupHooks();
-    void SetupGuiElements();
-    void Draw();
-    void Destroy();
-    void RegisterPopup(std::string title, std::string message, std::string button1 = "OK", std::string button2 = "", std::function<void()> button1callback = nullptr, std::function<void()> button2callback = nullptr);
-    void ShowRandomizerSettingsMenu();
-    UIWidgets::Colors GetMenuThemeColor();
-}
+void SetupHooks();
+void SetupGuiElements();
+void Draw();
+void Destroy();
+void RegisterPopup(std::string title, std::string message, std::string button1 = "OK", std::string button2 = "",
+                   std::function<void()> button1callback = nullptr, std::function<void()> button2callback = nullptr);
+void ShowRandomizerSettingsMenu();
+UIWidgets::Colors GetMenuThemeColor();
+} // namespace SohGui
 
 #define THEME_COLOR SohGui::GetMenuThemeColor()
 

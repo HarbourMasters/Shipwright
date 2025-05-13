@@ -6,6 +6,7 @@
 #include <string>
 
 #include "../../../include/z64item.h"
+#include "../../../include/z64.h"
 #include "../../../include/message_data_textbox_types.h"
 #include "../randomizer/3drando/text.hpp"
 
@@ -190,6 +191,17 @@ class CustomMessage {
     size_t FindNEWLINE(std::string& str, size_t lastNewline) const;
 
     /**
+     * @brief Inserts a string into another string, following the rules
+     * of auto-format inserting new lines: spaces and & are replaced while
+     * other chars are appended to.
+     *
+     * @param str the string we are inserting into
+     * @param pos the position in the string to insert
+     * @param breakString the string we are inserting
+     */
+    bool AddBreakString(std::string& str, size_t pos, std::string breakString) const;
+
+    /**
      * @brief formats the string specifically to fit in OoT's
      * textboxes, and use it's formatting.
      * RANDOTODO whoever knows exactly what this does check my adaption
@@ -203,7 +215,7 @@ class CustomMessage {
     void CleanString(std::string& str) const;
 
   private:
-    std::vector<std::string> messages = { "", "", "" };
+    std::vector<std::string> messages = { "", TODO_TRANSLATE, TODO_TRANSLATE };
     TextBoxType type = TEXTBOX_TYPE_BLACK;
     TextBoxPosition position = TEXTBOX_POS_BOTTOM;
     std::vector<std::string> colors = {};
