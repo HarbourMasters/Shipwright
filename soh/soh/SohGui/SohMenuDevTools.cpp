@@ -24,9 +24,9 @@ void SohMenu::AddMenuDevTools() {
     AddWidget(path, "Boot To Debug Warp Screen", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("BootToDebugWarpScreen"))
         .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0); })
-        .Options(CheckboxOptions()
-                    .Tooltip("Automatically shows Debug Warp Screen when starting or resetting the game.\n"
-                             "This option takes precedence over \"Boot Sequence\" option."));
+        .Options(
+            CheckboxOptions().Tooltip("Automatically shows Debug Warp Screen when starting or resetting the game.\n"
+                                      "This option takes precedence over \"Boot Sequence\" option."));
     AddWidget(path, "OoT Registry Editor", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("RegEditEnabled"))
         .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0); })

@@ -3589,7 +3589,8 @@ void FileChoose_Main(GameState* thisx) {
     }
 
     // Boot to Debug Warp Screen
-    if ((CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) != 0) && (CVarGetInteger(CVAR_DEVELOPER_TOOLS("BootToDebugWarpScreen"), 0) != 0)) {
+    if ((CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) != 0) &&
+        (CVarGetInteger(CVAR_DEVELOPER_TOOLS("BootToDebugWarpScreen"), 0) != 0)) {
         this->buttonIndex = 0xFF;
         this->menuMode = FS_MENU_MODE_SELECT;
         this->selectMode = SM_LOAD_GAME;

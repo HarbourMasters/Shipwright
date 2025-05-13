@@ -183,7 +183,8 @@ void OnZTitleInitReplaceTitleMainWithCustom(void* gameState) {
 void OnZTitleUpdatePressButtonToSkip(void* gameState) {
     TitleContext* titleContext = (TitleContext*)gameState;
 
-    if ((CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) != 0) && (CVarGetInteger(CVAR_DEVELOPER_TOOLS("BootToDebugWarpScreen"), 0) != 0)) {
+    if ((CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) != 0) &&
+        (CVarGetInteger(CVAR_DEVELOPER_TOOLS("BootToDebugWarpScreen"), 0) != 0)) {
         // Boot to Debug Warp Screen
         gSaveContext.seqId = (u8)NA_BGM_DISABLED;
         gSaveContext.natureAmbienceId = 0xFF;
