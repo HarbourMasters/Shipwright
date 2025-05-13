@@ -183,7 +183,15 @@ void OnZTitleInitReplaceTitleMainWithCustom(void* gameState) {
 void OnZTitleUpdatePressButtonToSkip(void* gameState) {
     TitleContext* titleContext = (TitleContext*)gameState;
 
-    if (CHECK_BTN_ANY(titleContext->state.input->press.button, BTN_A | BTN_B | BTN_START)) {
+    if ((CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) != 0) && (CVarGetInteger(CVAR_DEVELOPER_TOOLS("BootToDebugWarpScreen"), 0) != 0)) {
+        // Boot to Debug Warp Screen
+        gSaveContext.seqId = (u8)NA_BGM_DISABLED;
+        gSaveContext.natureAmbienceId = 0xFF;
+        gSaveContext.gameMode = GAMEMODE_FILE_SELECT;
+        titleContext->state.running = false;
+
+        SET_NEXT_GAMESTATE(&titleContext->state, FileChoose_Init, FileChooseContext);
+    } else if (CHECK_BTN_ANY(titleContext->state.input->press.button, BTN_A | BTN_B | BTN_START)) {
         // Force the title state to start fading to black and to last roughly 5 frames based on current fade in/out
         titleContext->visibleDuration = 0;
         titleContext->addAlpha = std::max<int16_t>((255 - titleContext->coverAlpha) / 5, 1);
