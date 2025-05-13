@@ -17,8 +17,8 @@ void RegionTable_Init_ZorasDomain() {
         //Locations
         LOCATION(RC_ZD_DIVING_MINIGAME,                     logic->HasItem(RG_BRONZE_SCALE) && logic->HasItem(RG_CHILD_WALLET) && logic->IsChild),
         LOCATION(RC_ZD_CHEST,                               logic->IsChild && logic->CanUse(RG_STICKS)),
-        LOCATION(RC_ZD_KING_ZORA_THAWED,                    logic->KingZoraThawed),
-        LOCATION(RC_ZD_TRADE_PRESCRIPTION,                  logic->KingZoraThawed && logic->CanUse(RG_PRESCRIPTION)),
+        LOCATION(RC_ZD_KING_ZORA_THAWED,                    logic->IsAdult && logic->KingZoraThawed),
+        LOCATION(RC_ZD_TRADE_PRESCRIPTION,                  logic->IsAdult && logic->KingZoraThawed && logic->CanUse(RG_PRESCRIPTION)),
         LOCATION(RC_ZD_GS_FROZEN_WATERFALL,                 logic->IsAdult && (logic->HookshotOrBoomerang() || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || (logic->CanUse(RG_MAGIC_SINGLE) && (logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_BIGGORON_SWORD))) || (ctx->GetTrickOption(RT_ZD_GS) && logic->CanJumpslashExceptHammer())) && logic->CanGetNightTimeGS()),
         LOCATION(RC_ZD_FISH_1,                              logic->IsChild && logic->HasBottle()),
         LOCATION(RC_ZD_FISH_2,                              logic->IsChild && logic->HasBottle()),
@@ -28,8 +28,8 @@ void RegionTable_Init_ZorasDomain() {
         LOCATION(RC_ZD_GOSSIP_STONE_FAIRY,                  logic->CallGossipFairyExceptSuns()),
         LOCATION(RC_ZD_GOSSIP_STONE_FAIRY_BIG,              logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_ZD_GOSSIP_STONE,                        true),
-        LOCATION(RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_LEFT,  logic->CanBreakUpperBeehives()),
-        LOCATION(RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_RIGHT, logic->CanBreakUpperBeehives()),
+        LOCATION(RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_LEFT,  logic->IsChild && logic->CanBreakUpperBeehives()),
+        LOCATION(RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_RIGHT, logic->IsChild && logic->CanBreakUpperBeehives()),
         LOCATION(RC_ZD_NEAR_SHOP_POT_1,                     logic->CanBreakPots()),
         LOCATION(RC_ZD_NEAR_SHOP_POT_2,                     logic->CanBreakPots()),
         LOCATION(RC_ZD_NEAR_SHOP_POT_3,                     logic->CanBreakPots()),
@@ -50,9 +50,12 @@ void RegionTable_Init_ZorasDomain() {
         Entrance(RR_ZD_STORMS_GROTTO, []{return logic->CanOpenStormsGrotto();}),
     });
 
-    areaTable[RR_ZD_BEHIND_KING_ZORA] = Region("ZD Behind King Zora", "Zoras Domain", {RA_ZORAS_DOMAIN}, NO_DAY_NIGHT_CYCLE, {}, {
+    areaTable[RR_ZD_BEHIND_KING_ZORA] = Region("ZD Behind King Zora", "Zoras Domain", {RA_ZORAS_DOMAIN}, NO_DAY_NIGHT_CYCLE, {
+        //Events
+        EventAccess(&logic->KingZoraThawed, []{return logic->IsAdult && logic->BlueFire();}),
+    }, {
         //Locations
-        LOCATION(RC_ZD_BEHIND_KING_ZORA_BEEHIVE, logic->CanBreakUpperBeehives()),
+        LOCATION(RC_ZD_BEHIND_KING_ZORA_BEEHIVE, logic->IsChild && logic->CanBreakUpperBeehives()),
     }, {
         //Exits
         Entrance(RR_ZORAS_DOMAIN,   []{return logic->DeliverLetter || ctx->GetOption(RSK_ZORAS_FOUNTAIN).Is(RO_ZF_OPEN) || (ctx->GetOption(RSK_ZORAS_FOUNTAIN).Is(RO_ZF_CLOSED_CHILD) && logic->IsAdult);}),

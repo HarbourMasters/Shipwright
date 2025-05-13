@@ -835,7 +835,7 @@ void CreateGanondorfJoke() {
 void CreateGanondorfHint() {
     auto ctx = Rando::Context::GetInstance();
     if (ctx->GetOption(RSK_GANONDORF_HINT) && !ctx->GetHint(RH_GANONDORF_HINT)->IsEnabled()) {
-        if (ctx->GetOption(RSK_SHUFFLE_MASTER_SWORD)) {
+        if (ctx->GetOption(RSK_SHUFFLE_MASTER_SWORD) && ctx->GetOption(RSK_STARTING_MASTER_SWORD).Is(RO_GENERIC_OFF)) {
             CreateStaticItemHint(
                 RH_GANONDORF_HINT,
                 { RHT_GANONDORF_HINT_LA_ONLY, RHT_GANONDORF_HINT_MS_ONLY, RHT_GANONDORF_HINT_LA_AND_MS },

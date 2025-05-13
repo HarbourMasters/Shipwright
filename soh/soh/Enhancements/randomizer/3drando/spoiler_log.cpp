@@ -267,10 +267,10 @@ static void WriteAllLocations() {
         switch (gSaveContext.language) {
             case 0:
             default:
-                placedItemName = location->GetPlacedItemName().english;
+                placedItemName = location->GetPlacedItemName().GetEnglish();
                 break;
             case 2:
-                placedItemName = location->GetPlacedItemName().french;
+                placedItemName = location->GetPlacedItemName().GetFrench();
                 break;
         }
 
@@ -303,18 +303,18 @@ static void WriteAllLocations() {
                             ["model"] = Rando::StaticData::RetrieveItem(
                                             ctx->overrides[location->GetRandomizerCheck()].LooksLike())
                                             .GetName()
-                                            .english;
+                                            .GetEnglish();
                     jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]
-                            ["trickName"] = ctx->overrides[location->GetRandomizerCheck()].GetTrickName().english;
+                            ["trickName"] = ctx->overrides[location->GetRandomizerCheck()].GetTrickName().GetEnglish();
                     break;
                 case 2:
                     jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]
                             ["model"] = Rando::StaticData::RetrieveItem(
                                             ctx->overrides[location->GetRandomizerCheck()].LooksLike())
                                             .GetName()
-                                            .french;
+                                            .GetFrench();
                     jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]
-                            ["trickName"] = ctx->overrides[location->GetRandomizerCheck()].GetTrickName().french;
+                            ["trickName"] = ctx->overrides[location->GetRandomizerCheck()].GetTrickName().GetFrench();
                     break;
             }
         }

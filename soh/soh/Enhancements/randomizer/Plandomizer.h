@@ -16,7 +16,7 @@ extern "C" {
 #include "soh/Enhancements/randomizer/item.h"
 
 #ifdef __cplusplus
-class PlandomizerWindow : public Ship::GuiWindow {
+class PlandomizerWindow final : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
 

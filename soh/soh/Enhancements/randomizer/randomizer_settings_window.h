@@ -6,7 +6,7 @@ namespace Rando {
 class Settings;
 }
 
-class RandomizerSettingsWindow : public Ship::GuiWindow {
+class RandomizerSettingsWindow final : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
 
