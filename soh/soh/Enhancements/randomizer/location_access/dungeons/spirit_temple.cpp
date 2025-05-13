@@ -145,7 +145,7 @@ void RegionTable_Init_SpiritTemple() {
     areaTable[RR_SPIRIT_TEMPLE_INSIDE_STATUE_HEAD] = Region("Spirit Temple Inside Statue Head", "Spirit Temple", {RA_SPIRIT_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         // Exits
         Entrance(RR_SPIRIT_TEMPLE_CENTRAL_CHAMBER, []{return true;}),
-        Entrance(RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY,   []{return logic->HasItem(RG_SPIRIT_TEMPLE_BOSS_KEY);}),
+        Entrance(RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY,   []{return true;}),
     });
 
 #pragma endregion
@@ -541,7 +541,7 @@ void RegionTable_Init_SpiritTemple() {
     areaTable[RR_SPIRIT_TEMPLE_MQ_INSIDE_STATUE_HEAD] = Region("Spirit Temple MQ Inside Statue Head", "Spirit Temple", {RA_SPIRIT_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         // Exits
         Entrance(RR_SPIRIT_TEMPLE_MQ_LOBBY,      []{return true;}),
-        Entrance(RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY, []{return logic->HasItem(RG_SPIRIT_TEMPLE_BOSS_KEY);}),
+        Entrance(RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY, []{return true;}),
     });
 
 #pragma endregion
@@ -551,7 +551,7 @@ void RegionTable_Init_SpiritTemple() {
         // Exits
         Entrance(RR_SPIRIT_TEMPLE_INSIDE_STATUE_HEAD,    []{return ctx->GetDungeon(SPIRIT_TEMPLE)->IsVanilla() && false;}),
         Entrance(RR_SPIRIT_TEMPLE_MQ_INSIDE_STATUE_HEAD, []{return ctx->GetDungeon(SPIRIT_TEMPLE)->IsMQ() && false;}),
-        Entrance(RR_SPIRIT_TEMPLE_BOSS_ROOM,             []{return true;}),
+        Entrance(RR_SPIRIT_TEMPLE_BOSS_ROOM,             []{return logic->HasItem(RG_SPIRIT_TEMPLE_BOSS_KEY);}),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_BOSS_ROOM] = Region("Spirit Temple Boss Room", "Spirit Temple", {}, NO_DAY_NIGHT_CYCLE, {
