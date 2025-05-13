@@ -328,7 +328,7 @@ void RandomizerOnPlayerUpdateForRCQueueHandler() {
                   (getItemEntry.getItemCategory == ITEM_CATEGORY_JUNK ||
                    getItemEntry.getItemCategory == ITEM_CATEGORY_SKULLTULA_TOKEN ||
                    getItemEntry.getItemCategory == ITEM_CATEGORY_LESSER))))) {
-            Item_DropCollectible(gPlayState, &spawnPos, (int16_t)(ITEM00_SOH_GIVE_ITEM_ENTRY | 0x8000));
+            Item_DropCollectible(gPlayState, &spawnPos, static_cast<int16_t>(ITEM00_SOH_GIVE_ITEM_ENTRY | 0x8000));
         }
     }
 
@@ -2157,7 +2157,7 @@ void RandomizerOnGameFrameUpdateHandler() {
     }
 
     if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MAGIC_METER)) {
-        gSaveContext.magic = (int8_t)gSaveContext.magicCapacity;
+        gSaveContext.magic = static_cast<int8_t>(gSaveContext.magicCapacity);
     }
 
     if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS)) {
@@ -2203,7 +2203,8 @@ void RandomizerOnActorUpdateHandler(void* refActor) {
     if (actor->id == ACTOR_OBJ_COMB) {
         ObjComb* combActor = reinterpret_cast<ObjComb*>(actor);
         combActor->actor.shape.rot.x =
-            (int16_t)Math_SinS(combActor->unk_1B2) * CLAMP_MIN(combActor->unk_1B0, 0) + combActor->actor.home.rot.x;
+            static_cast<int16_t>(Math_SinS(combActor->unk_1B2)) * CLAMP_MIN(combActor->unk_1B0, 0) +
+            combActor->actor.home.rot.x;
     }
 }
 
@@ -2298,8 +2299,8 @@ void RandomizerOnSceneSpawnActorsHandler() {
         switch (gPlayState->sceneNum) {
             case SCENE_TEMPLE_OF_TIME:
                 if (gPlayState->roomCtx.curRoom.num == 1) {
-                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_XC, -104, -40, 2382, 0, (int16_t)0x8000, 0,
-                                SHEIK_TYPE_RANDO, false);
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_XC, -104, -40, 2382, 0,
+                                static_cast<int16_t>(0x8000), 0, SHEIK_TYPE_RANDO, false);
                 }
                 break;
             case SCENE_INSIDE_GANONS_CASTLE:

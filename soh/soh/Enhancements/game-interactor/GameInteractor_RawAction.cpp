@@ -112,7 +112,7 @@ void GameInteractor::RawAction::FreezePlayer() {
 void GameInteractor::RawAction::BurnPlayer() {
     Player* player = GET_PLAYER(gPlayState);
     for (int i = 0; i < 18; i++) {
-        player->bodyFlameTimers[i] = (uint8_t)Rand_S16Offset(0, 200);
+        player->bodyFlameTimers[i] = static_cast<uint8_t>(Rand_S16Offset(0, 200));
     }
     player->bodyIsBurning = true;
     func_80837C0C(gPlayState, player, 0, 0, 0, 0, 0);
@@ -617,7 +617,7 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset
     }
 
     // Generate point in random angle with a radius.
-    float angle = (float)(RandomDouble() * 2 * M_PI);
+    float angle = static_cast<float>(RandomDouble() * 2 * M_PI);
     float radius = 150;
     float posXOffset = radius * cos(angle);
     float posZOffset = radius * sin(angle);

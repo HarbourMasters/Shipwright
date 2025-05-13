@@ -50,8 +50,8 @@ void Mouse_HandleFirstPerson(Player* player) {
                               : 1;
     s8 invertYAxisMulti = CVarGetInteger(CVAR_SETTING("Controls.InvertAimingYAxis"), 1) ? 1 : -1;
     if (MOUSE_ENABLED) {
-        player->actor.focus.rot.y -= (int16_t)(mouseCoordRel.x * 6.0f * xAxisMulti * invertXAxisMulti);
-        player->actor.focus.rot.x += (int16_t)(mouseCoordRel.y * 6.0f * yAxisMulti * invertYAxisMulti);
+        player->actor.focus.rot.y -= static_cast<int16_t>(mouseCoordRel.x * 6.0f * xAxisMulti * invertXAxisMulti);
+        player->actor.focus.rot.x += static_cast<int16_t>(mouseCoordRel.y * 6.0f * yAxisMulti * invertYAxisMulti);
     }
 }
 
@@ -59,7 +59,7 @@ void Mouse_RecenterCursor() {
     u32 width = GetWindow()->GetWidth();
     u32 height = GetWindow()->GetHeight();
     if (MOUSE_ENABLED) {
-        GetWindow()->SetMousePos({ (s32)(width / 2), (s32)(height / 2) });
+        GetWindow()->SetMousePos({ static_cast<s32>(width / 2), static_cast<s32>(height / 2) });
     }
 }
 
@@ -67,8 +67,8 @@ void Mouse_HandleShield(f32* sp50, f32* sp54) {
     if (MOUSE_ENABLED) {
         s32 width = GetWindow()->GetWidth();
         s32 height = GetWindow()->GetHeight();
-        f32 xBound = 7200 / ((f32)width / 2);
-        f32 yBound = 6000 / ((f32)height / 2);
+        f32 xBound = 7200 / (width / 2.0f);
+        f32 yBound = 6000 / (height / 2.0f);
         *sp50 +=
             (mouseCoord.x - (width / 2)) * xBound * (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? 1 : -1);
         *sp54 += (mouseCoord.y - (height / 2)) * yBound;
