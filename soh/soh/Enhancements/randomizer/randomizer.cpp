@@ -65,9 +65,10 @@ const std::string Randomizer::NaviRandoMessageTableID = "RandomizerNavi";
 const std::string Randomizer::IceTrapRandoMessageTableID = "RandomizerIceTrap";
 const std::string Randomizer::randoMiscHintsTableID = "RandomizerMiscHints";
 
-static const char* englishRupeeNames[175] = {
+static const char* englishRupeeNames[190] = {
     "[P]",
     "Bad RNG Rolls",
+    "Baht",
     "Bananas",
     "Beanbean Coins",
     "Beans",
@@ -86,6 +87,7 @@ static const char* englishRupeeNames[175] = {
     "BugFrags",
     "Canadian Dollars",
     "Cards",
+    "Cents",
     "Chaos Orbs",
     "Clams",
     "Coal",
@@ -106,6 +108,8 @@ static const char* englishRupeeNames[175] = {
     "Darseks",
     "Dead Memes",
     "Diamonds",
+    "Dimes",
+    "Dinars",
     "DNA",
     "Doge",
     "Dogecoin",
@@ -114,7 +118,9 @@ static const char* englishRupeeNames[175] = {
     "Dollarydoos",
     "Dosh",
     "Doubloons",
+    "Drakes",
     "Dwarfbucks",
+    "ECU",
     "Elexit",
     "Emeralds",
     "Energon",
@@ -150,7 +156,7 @@ static const char* englishRupeeNames[175] = {
     "KF7 Ammo",
     "Kinstones",
     "Kremcoins",
-    "Kroner",
+    "Kronor",
     "Leaves",
     "Lemmings",
     "Lien",
@@ -173,11 +179,14 @@ static const char* englishRupeeNames[175] = {
     "Munny",
     "Mushrooms",
     "Mysteries",
+    "Naira",
     "Neopoints",
+    "Nickels",
     "Notes",
     "Nuyen",
     "Orbs",
     "Ore",
+    "Pence",
     "Pix",
     "Pixels",
     "Plastyks",
@@ -190,19 +199,23 @@ static const char* englishRupeeNames[175] = {
     "Pounds",
     "Power Pellets",
     "Primogems",
-    "Réals",
+    "Rand",
+    "Reais",
     "Refined Metal",
     "Remote Mines",
     "Retweets",
     "Rhinu",
+    "Rials",
     "Rings",
     "Riot Points",
+    "Riyals",
     "Robux",
     "Rubies",
     "Rubles",
     "Runite Ore",
     "Rupees",
     "Saint Quartz",
+    "Sapphires",
     "Septims",
     "Shekels",
     "Shillings",
@@ -235,24 +248,27 @@ static const char* englishRupeeNames[175] = {
     "Vespene Gas",
     "Watts",
     "Widgets",
+    "Won",
     "Woolongs",
     "World Dollars",
     "Wumpa Fruit",
     "Yen",
+    "Yuan",
     "Zenny",
     "Zorkmids",
 };
 
-static const char* germanRupeeNames[65] = {
-    "Bananen",    "Bitcoin",  "Bonbons",    "Bratwürste", "Brause UFOs", "Brötchen",      "Cent",    "Diamanten",
-    "Diridari",   "Dogecoin", "ECU",        "Elexit",     "Erz",         "Erzbrocken",    "Euro",    "EXP",
-    "Forint",     "Franken",  "Freunde",    "Gil",        "Gold",        "Groschen",      "Gulden",  "Gummibären",
-    "Heller",     "Juwelen",  "Karolin",    "Kartoffeln", "Kies",        "Knete",         "Knochen", "Kohle",
-    "Kraniche",   "Kreuzer",  "Kronen",     "Kronkorken", "Kröten",      "Mark",          "Mäuse",   "Monde",
-    "Moorhühner", "Moos",     "Münzen",     "Penunze",    "Pesa",        "Pfandflaschen", "Pfennig", "Pfund",
-    "Pilze",      "Plastiks", "Pokédollar", "Radieschen", "Rappen",      "Rubine",        "Saphire", "Schilling",
-    "Seelen",     "Smaragde", "Steine",     "Sterne",     "Sternis",     "Tael",          "Taler",   "Wagenchips",
-    "Zenny"
+static const char* germanRupeeNames[80] = {
+    "Baht",       "Bananen",    "Bitcoin",   "Bonbons",       "Bratwürste", "Brause UFOs", "Brötchen", "Cent",
+    "Diamanten",  "Dinar",      "Diridari",  "Dogecoin",      "Dollar",     "Draken",      "ECU",      "Elexit",
+    "Erz",        "Erzbrocken", "Euro",      "EXP",           "Forint",     "Franken",     "Freunde",  "Gil",
+    "Gold",       "Groschen",   "Gulden",    "Gummibären",    "Heller",     "Juwelen",     "Karolin",  "Kartoffeln",
+    "Kies",       "Knete",      "Knochen",   "Kohle",         "Kraniche",   "Kreuzer",     "Kronen",   "Kronkorken",
+    "Kröten",     "Lira",       "Mark",      "Mäuse",         "Monde",      "Moorhühner",  "Moos",     "Münzen",
+    "Naira",      "Penunze",    "Pesa",      "Pfandflaschen", "Pfennig",    "Pfund",       "Pilze",    "Plastiks",
+    "Pokédollar", "Radieschen", "Rand",      "Rappen",        "Real",       "Rial",        "Riyal",    "Rubine",
+    "Rupien",     "Saphire",    "Schilling", "Seelen",        "Septime",    "Smaragde",    "Steine",   "Sterne",
+    "Sternis",    "Tael",       "Taler",     "Wagenchips",    "Won",        "Yen",         "Yuan",     "Zenny",
 };
 
 static const char* frenchRupeeNames[40] = {
@@ -260,7 +276,7 @@ static const char* frenchRupeeNames[40] = {
     "Centimes",  "Champignons", "Clochettes", "Crédits",     "Croissants", "Diamants", "Dogecoin", "Dollars",
     "Émeraudes", "Éthers",      "Étoiles",    "Euros",       "Florens",    "Francs",   "Galds",    "Gils",
     "Grouses",   "Halos",       "Joyaux",     "Lunes",       "Mailles",    "Munnies",  "Orbes",    "Orens",
-    "Pépètes",   "Pièces",      "Plastyks",   "Pokédollars", "Pokémon",    "Radis",    "Rubis",    "Zennies"
+    "Pépètes",   "Pièces",      "Plastyks",   "Pokédollars", "Pokémon",    "Radis",    "Rubis",    "Zennies",
 };
 
 Randomizer::Randomizer() {
@@ -472,11 +488,10 @@ void Randomizer::LoadMerchantMessages() {
     // prompted buy/don't buy
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_SHOP_ITEM_RANDOM,
-        CustomMessage(
-            "\x08#[[1]]#  #[[2]]_Rupees#&Special deal! #ONE LEFT#!&Get it while it lasts!\x0A\x02",
-            "\x08#[[1]]#  #[[2]]_Rubine#&Sonderangebot! #NUR NOCH EINES VERFÜGBAR#!&Beeilen Sie sich!\x0A\x02",
-            "\x08#[[1]]#  #[[2]]_Rubis#&Offre spéciale! #DERNIER EN STOCK#!&Faites vite!\x0A\x02",
-            { QM_GREEN, QM_YELLOW, QM_RED }));
+        CustomMessage("\x08#[[1]]#  #[[2]]_Rupees#&Special deal! #ONE LEFT#!&Get it while it lasts!\x0A\x02",
+                      "\x08#[[1]]#  #[[2]]_Rubine#&#NUR NOCH EINES VERFÜGBAR#!&Beeilen Sie sich!\x0A\x02",
+                      "\x08#[[1]]#  #[[2]]_Rubis#&#DERNIER EN STOCK#!&Faites vite!\x0A\x02",
+                      { QM_GREEN, QM_YELLOW, QM_RED }));
 
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_SHOP_ITEM_RANDOM_CONFIRM,
@@ -1537,7 +1552,7 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_JABU_JABUS_BELLY_MQ_BASEMENT_GRASS_1, RAND_INF_JABU_JABUS_BELLY_MQ_BASEMENT_GRASS_1 },
     { RC_JABU_JABUS_BELLY_MQ_BASEMENT_GRASS_2, RAND_INF_JABU_JABUS_BELLY_MQ_BASEMENT_GRASS_2 },
     { RC_JABU_JABUS_BELLY_MQ_BASEMENT_GRASS_3, RAND_INF_JABU_JABUS_BELLY_MQ_BASEMENT_GRASS_3 },
-    { RC_JABU_JABUS_BELLY_MQ_WIGGLERS_GRASS, RAND_INF_JABU_JABUS_BELLY_MQ_WIGGLERS_GRASS },
+    { RC_JABU_JABUS_BELLY_MQ_JIGGLIES_GRASS, RAND_INF_JABU_JABUS_BELLY_MQ_JIGGLIES_GRASS },
     { RC_JABU_JABUS_BELLY_MQ_AFTER_BIG_OCTO_GRASS_1, RAND_INF_JABU_JABUS_BELLY_MQ_AFTER_BIG_OCTO_GRASS_1 },
     { RC_JABU_JABUS_BELLY_MQ_AFTER_BIG_OCTO_GRASS_2, RAND_INF_JABU_JABUS_BELLY_MQ_AFTER_BIG_OCTO_GRASS_2 },
     { RC_JABU_JABUS_BELLY_MQ_FALLING_LIKE_LIKE_GRASS, RAND_INF_JABU_JABUS_BELLY_MQ_FALLING_LIKE_LIKE_GRASS },
@@ -3009,6 +3024,14 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
         RAND_INF_JABU_JABUS_BELLY_MQ_TRIPLE_HALLWAY_SMALL_CRATE_2,
     },
     {
+        RC_JABU_JABUS_BELLY_MQ_JIGGLIES_SMALL_CRATE_1,
+        RAND_INF_JABU_JABUS_BELLY_MQ_JIGGLIES_SMALL_CRATE_1,
+    },
+    {
+        RC_JABU_JABUS_BELLY_MQ_JIGGLIES_SMALL_CRATE_2,
+        RAND_INF_JABU_JABUS_BELLY_MQ_JIGGLIES_SMALL_CRATE_2,
+    },
+    {
         RC_FOREST_TEMPLE_MQ_FROZEN_EYE_SWITCH_SMALL_CRATE_1,
         RAND_INF_FOREST_TEMPLE_MQ_FROZEN_EYE_SWITCH_SMALL_CRATE_1,
     },
@@ -3675,6 +3698,7 @@ void RandomizerSettingsWindow::DrawElement() {
         locationsTabOpen = false;
         tricksTabOpen = false;
     }
+    ImGui::EndDisabled();
 
     UIWidgets::Spacer(0);
     UIWidgets::CVarCheckbox("Manual seed entry", CVAR_RANDOMIZER_SETTING("ManualSeedEntry"),
@@ -3710,9 +3734,7 @@ void RandomizerSettingsWindow::DrawElement() {
     }
 
     UIWidgets::Spacer(0);
-    ImGui::BeginDisabled((CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0) &&
-                          gSaveContext.gameMode != GAMEMODE_FILE_SELECT) ||
-                         GameInteractor::IsSaveLoaded());
+    ImGui::BeginDisabled((gSaveContext.gameMode != GAMEMODE_FILE_SELECT) || GameInteractor::IsSaveLoaded());
     if (UIWidgets::Button("Generate Randomizer",
                           UIWidgets::ButtonOptions().Size(ImVec2(250.f, 0.f)).Color(THEME_COLOR))) {
         ctx->SetSpoilerLoaded(false);
@@ -3731,7 +3753,6 @@ void RandomizerSettingsWindow::DrawElement() {
     // ImGui::Text("Settings File: %s", presetfilepath.c_str());
 
     UIWidgets::Separator(true, true, 0.f, 0.f);
-    ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
 
     ImGuiWindow* window = ImGui::GetCurrentWindow();
     static ImVec2 cellPadding(8.0f, 8.0f);
@@ -3747,8 +3768,6 @@ void RandomizerSettingsWindow::DrawElement() {
             ImGui::EndTabItem();
         }
 
-        ImGui::BeginDisabled(CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) ==
-                             RO_LOGIC_VANILLA);
         if (ImGui::BeginTabItem("Items")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             ImGui::BeginDisabled(CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) ==
@@ -3760,23 +3779,23 @@ void RandomizerSettingsWindow::DrawElement() {
             ImGui::PopStyleVar(1);
             ImGui::EndTabItem();
         }
-        ImGui::EndDisabled();
 
-        ImGui::BeginDisabled(CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) ==
-                             RO_LOGIC_VANILLA);
         if (ImGui::BeginTabItem("Gameplay")) {
+            ImGui::BeginDisabled(CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) ==
+                                 RO_LOGIC_VANILLA);
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (mSettings->GetOptionGroup(RSG_GAMEPLAY_IMGUI_TABLE).RenderImGui()) {
                 mNeedsUpdate = true;
             }
+            ImGui::EndDisabled();
             ImGui::PopStyleVar(1);
             ImGui::EndTabItem();
         }
-        ImGui::EndDisabled();
 
-        ImGui::BeginDisabled(CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) ==
-                             RO_LOGIC_VANILLA);
         if (ImGui::BeginTabItem("Locations")) {
+            ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings ||
+                                 CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) ==
+                                     RO_LOGIC_VANILLA);
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (!locationsTabOpen) {
                 locationsTabOpen = true;
@@ -3909,10 +3928,10 @@ void RandomizerSettingsWindow::DrawElement() {
             }
             ImGui::PopStyleVar(1);
             ImGui::EndTabItem();
+            ImGui::EndDisabled();
         } else {
             locationsTabOpen = false;
         }
-        ImGui::EndDisabled();
 
         if (ImGui::BeginTabItem("Tricks/Glitches")) {
             if (!tricksTabOpen) {
@@ -3960,8 +3979,9 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::EndTable();
             }
 
-            ImGui::BeginDisabled(CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) ==
-                                 RO_LOGIC_VANILLA);
+            ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings ||
+                                 CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) ==
+                                     RO_LOGIC_VANILLA);
 
             // Tricks
             static std::unordered_map<RandomizerArea, bool> areaTreeDisabled{
@@ -4339,9 +4359,6 @@ void RandomizerSettingsWindow::DrawElement() {
         ImGui::EndTabBar();
     }
     UIWidgets::PopStyleTabs();
-
-    ImGui::EndDisabled();
-    ImGui::EndDisabled();
 }
 
 void RandomizerSettingsWindow::UpdateElement() {
@@ -5239,7 +5256,7 @@ void Randomizer::CreateCustomMessages() {
                   "Vous obtenez la %rClé %wdu %gBazar&de la Place du Marché%w!"),
         GIMESSAGE(RG_MARKET_POTION_SHOP_KEY, ITEM_KEY_SMALL, "You found the key to the&%gMarket Potion Shop%w!",
                   "Du erhältst einen %rkleinen&Schlüssel%w für den %gMagie-Laden des Marktes%w!",
-                  "Vous obtenez la %rClé %wde la&%gPlace du Marché%w!"),
+                  "Vous obtenez la %rClé %wdu&%gMagasin de Potions de la&Place du Marché%w!"),
         GIMESSAGE(RG_MASK_SHOP_KEY, ITEM_KEY_SMALL, "You found the key to the&%gMask Shop%w!",
                   "Du erhältst einen %rkleinen&Schlüssel%w für den %gMaskenladen%w!",
                   "Vous obtenez la %rClé %wde la&%gFoire aux Masques%w!"),
@@ -5271,7 +5288,7 @@ void Randomizer::CreateCustomMessages() {
                   "Vous obtenez la %rClé %wdu %gMagasin de&Potions de Cocorico%w!"),
         GIMESSAGE(RG_BOSS_HOUSE_KEY, ITEM_KEY_SMALL, "You found the key to the&%gBoss's House%w!",
                   "Du erhältst einen %rkleinen&Schlüssel%w für das %gHaus des Chefs%w!",
-                  "Vous obtenez la %rClé %wde la %gMaison&du chef des ouvriers%w!"),
+                  "Vous obtenez la %rClé %wde la %gMaison&du Chef des Ouvriers%w!"),
         GIMESSAGE(RG_GRANNYS_POTION_SHOP_KEY, ITEM_KEY_SMALL, "You found the key to&%gGranny's Potion Shop%w!",
                   "Du erhältst einen %rkleinen&Schlüssel%w für %gAsas Hexenladen%w!",
                   "Vous obtenez la %rClé %wde&l'%gApothicaire%w!"),

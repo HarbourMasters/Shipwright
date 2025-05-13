@@ -2908,6 +2908,7 @@ extern "C" void Save_LoadFile(void) {
     OTRGlobals::Instance->gRandoContext = Rando::Context::CreateInstance();
     OTRGlobals::Instance->gRandoContext->GetLogic()->SetSaveContext(&gSaveContext);
     Rando::Settings::GetInstance()->AssignContext(OTRGlobals::Instance->gRandoContext);
+    OTRGlobals::Instance->gRandoContext->AddExcludedOptions();
     SaveManager::Instance->LoadFile(gSaveContext.fileNum);
 }
 

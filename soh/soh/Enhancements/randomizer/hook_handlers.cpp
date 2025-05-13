@@ -245,10 +245,6 @@ void RandomizerOnFlagSetHandler(int16_t flagType, int16_t flag) {
         Flags_SetRandomizerInf(RAND_INF_ZELDAS_LETTER);
     }
 
-    if (flagType == FLAG_EVENT_CHECK_INF && flag == EVENTCHKINF_OBTAINED_POCKET_EGG) {
-        Flags_SetRandomizerInf(RAND_INF_WEIRD_EGG);
-    }
-
     RandomizerCheck rc = GetRandomizerCheckFromFlag(flagType, flag);
     if (rc == RC_UNKNOWN_CHECK)
         return;
@@ -1591,6 +1587,17 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             }
             break;
         }
+        case VB_GIVE_RANDO_GLITCH_FISHING_PRIZE: {
+            if (IS_RANDO) {
+                Fishing* fishing = va_arg(args, Fishing*);
+                if (!Flags_GetRandomizerInf(RAND_INF_ADULT_FISHING)) {
+                    Flags_SetRandomizerInf(RAND_INF_ADULT_FISHING);
+                }
+                *should = true;
+                fishing->stateAndTimer = 0;
+            }
+            break;
+        }
         case VB_TRADE_TIMER_EYEDROPS: {
             EnMk* enMk = va_arg(args, EnMk*);
             Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_LH_TRADE_FROG);
@@ -1632,7 +1639,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                     gPlayState->actorCtx.flags.tempCollect = 0;
 
                     // If the respawnFlag is set for a grotto return, we don't want the void out to happen.
-                    // Set the data flag to one to prevent the respawn point from being overriden by dungeon doors.
+                    // Set the data flag to one to prevent the respawn point from being overridden by dungeon doors.
                     if (gSaveContext.respawnFlag == 2) {
                         gSaveContext.respawn[RESPAWN_MODE_DOWN].data = 1;
                         *should = false;
@@ -1754,10 +1761,6 @@ void RandomizerOnSceneInitHandler(int16_t sceneNum) {
 
         // Handle updated link spawn positions
         Entrance_OverrideSpawnScene(sceneNum, gPlayState->curSpawn);
-
-        Entrance_OverrideWeatherState();
-        // Need to reinitialize the environment after replacing the weather mode
-        Play_InitEnvironment(gPlayState, gPlayState->skyboxId);
     }
 
     // LACs & Prelude checks
@@ -1794,6 +1797,13 @@ void RandomizerOnSceneInitHandler(int16_t sceneNum) {
             updateHook = 0;
         }
     });
+}
+
+void RandomizerAfterSceneCommandsHandler(int16_t sceneNum) {
+    // ENTRTODO: Move all entrance rando handling to a dedicated file
+    if (RAND_GET_OPTION(RSK_SHUFFLE_ENTRANCES)) {
+        Entrance_OverrideWeatherState();
+    }
 }
 
 void EnSi_DrawRandomizedItem(EnSi* enSi, PlayState* play) {
@@ -2351,6 +2361,7 @@ void RandomizerRegisterHooks() {
     static uint32_t onDialogMessageHook = 0;
     static uint32_t onVanillaBehaviorHook = 0;
     static uint32_t onSceneInitHook = 0;
+    static uint32_t afterSceneCommandsHook = 0;
     static uint32_t onActorInitHook = 0;
     static uint32_t onActorUpdateHook = 0;
     static uint32_t onPlayerUpdateHook = 0;
@@ -2387,6 +2398,7 @@ void RandomizerRegisterHooks() {
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnItemReceive>(onDialogMessageHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(onVanillaBehaviorHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(onSceneInitHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::AfterSceneCommands>(afterSceneCommandsHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(onActorInitHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(onActorUpdateHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnPlayerUpdate>(onPlayerUpdateHook);
@@ -2419,6 +2431,7 @@ void RandomizerRegisterHooks() {
         onDialogMessageHook = 0;
         onVanillaBehaviorHook = 0;
         onSceneInitHook = 0;
+        afterSceneCommandsHook = 0;
         onActorInitHook = 0;
         onActorUpdateHook = 0;
         onPlayerUpdateHook = 0;
@@ -2470,6 +2483,8 @@ void RandomizerRegisterHooks() {
             RandomizerOnVanillaBehaviorHandler);
         onSceneInitHook =
             GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(RandomizerOnSceneInitHandler);
+        afterSceneCommandsHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::AfterSceneCommands>(
+            RandomizerAfterSceneCommandsHandler);
         onActorInitHook =
             GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(RandomizerOnActorInitHandler);
         onActorUpdateHook =

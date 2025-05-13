@@ -50,7 +50,7 @@ void RegionTable_Init_BottomOfTheWell() {
         LOCATION(RC_BOTTOM_OF_THE_WELL_FRONT_LEFT_FAKE_WALL_CHEST,   true),
         LOCATION(RC_BOTTOM_OF_THE_WELL_RIGHT_BOTTOM_FAKE_WALL_CHEST, true),
         LOCATION(RC_BOTTOM_OF_THE_WELL_COMPASS_CHEST,                true),
-        //N64 has no extra check here, but I can't get past without dealing with the spider or taking a hit, they probably assume sticks
+        //You can just barely pass the spider on the right side without damage or items, but it's probably tight enough to count as as a trick
         LOCATION(RC_BOTTOM_OF_THE_WELL_CENTER_SKULLTULA_CHEST,       logic->CanPassEnemy(RE_BIG_SKULLTULA) || logic->TakeDamage()),
         //Not technically behind a wall, but still logically needs lens due to pits
         LOCATION(RC_BOTTOM_OF_THE_WELL_BACK_LEFT_BOMBABLE_CHEST,     logic->HasExplosives()),
@@ -160,7 +160,7 @@ void RegionTable_Init_BottomOfTheWell() {
     }, {
         //Exits
         Entrance(RR_BOTTOM_OF_THE_WELL_SOUTHWEST_ROOM,               []{return logic->IsChild && logic->CanPassEnemy(RE_BIG_SKULLTULA);}),
-        //It's possible top abuse boulder's limited range of collision detection to detonate the flowers through the boulder with bow, but this is a glitch
+        //It's possible to abuse boulder's limited range of collision detection to detonate the flowers through the boulder with bow, but this is a glitch
         //the exact range is just past the furthest away plank in the green goo section
         Entrance(RR_BOTTOM_OF_THE_WELL_BASEMENT_USEFUL_BOMB_FLOWERS, []{return Here(RR_BOTTOM_OF_THE_WELL_BASEMENT, []{return logic->BlastOrSmash() || logic->CanUse(RG_DINS_FIRE) || (logic->CanUse(RG_STICKS) && ctx->GetTrickOption(RT_BOTW_BASEMENT));});}),
     });
