@@ -1892,7 +1892,7 @@ static std::set<std::string> rainbowCVars = {
 
 int hue = 0;
 void RainbowTick() {
-    float freqHue = hue * 2 * static_cast<float>(M_PI) / (360 * CVarGetFloat(CVAR_COSMETIC("RainbowSpeed"), 0.6f));
+    float freqHue = hue * 2 * M_PIf / (360 * CVarGetFloat(CVAR_COSMETIC("RainbowSpeed"), 0.6f));
     for (auto& cvar : rainbowCVars) {
         if (CVarGetInteger((cvar + ".Rainbow").c_str(), 0) == 0) {
             continue;
