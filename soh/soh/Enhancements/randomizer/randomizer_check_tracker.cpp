@@ -1892,16 +1892,16 @@ static std::set<std::string> rainbowCVars = {
 
 int hue = 0;
 void RainbowTick() {
-    float freqHue = hue * 2 * M_PI / (360 * CVarGetFloat(CVAR_COSMETIC("RainbowSpeed"), 0.6f));
+    float freqHue = hue * 2 * static_cast<float>(M_PI) / (360 * CVarGetFloat(CVAR_COSMETIC("RainbowSpeed"), 0.6f));
     for (auto& cvar : rainbowCVars) {
         if (CVarGetInteger((cvar + ".Rainbow").c_str(), 0) == 0) {
             continue;
         }
 
         Color_RGBA8 newColor;
-        newColor.r = sin(freqHue + 0) * 127 + 128;
-        newColor.g = sin(freqHue + (2 * M_PI / 3)) * 127 + 128;
-        newColor.b = sin(freqHue + (4 * M_PI / 3)) * 127 + 128;
+        newColor.r = static_cast<uint8_t>(sin(freqHue + 0) * 127) + 128;
+        newColor.g = static_cast<uint8_t>(sin(freqHue + (2 * M_PI / 3)) * 127) + 128;
+        newColor.b = static_cast<uint8_t>(sin(freqHue + (4 * M_PI / 3)) * 127) + 128;
         newColor.a = 255;
 
         CVarSetColor((cvar + ".Value").c_str(), newColor);

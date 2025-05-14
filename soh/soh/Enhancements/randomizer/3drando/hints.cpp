@@ -598,7 +598,7 @@ static void DistributeHints(std::vector<uint8_t>& selected, size_t stoneCount,
     }
     // if stones are left, assign junk to every remaining stone as a fallback.
     if (stoneCount > 0) {
-        selected[static_cast<uint8_t>(selected.size()) - 1] += stoneCount;
+        selected[static_cast<uint8_t>(selected.size()) - 1] += static_cast<uint8_t>(stoneCount);
     }
 }
 
