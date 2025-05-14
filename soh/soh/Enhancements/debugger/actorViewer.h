@@ -15,8 +15,6 @@ class ActorViewerWindow final : public Ship::GuiWindow {
     void UpdateElement() override{};
 
   private:
-    void ResetData();
-
     Actor* display = nullptr;
     int category = ACTORCAT_SWITCH;
     std::vector<Actor*> list;

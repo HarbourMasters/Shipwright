@@ -1193,15 +1193,7 @@ void ActorViewerWindow::DrawElement() {
     ImGui::EndDisabled();
 }
 
-void ActorViewerWindow::ResetData() {
-    display = nullptr;
-    category = ACTORCAT_SWITCH;
-    list.clear();
-}
-
 void ActorViewerWindow::InitElement() {
-    ResetData();
-
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorSpawn>([this](void* refActor) {
         Actor* actor = static_cast<Actor*>(refActor);
 
@@ -1224,7 +1216,11 @@ void ActorViewerWindow::InitElement() {
         }
     });
 
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([this](int16_t sceneNum) { ResetData(); });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([this](int16_t sceneNum) {
+        display = nullptr;
+        category = ACTORCAT_SWITCH;
+        list.clear();
+    });
 }
 
 void ActorViewer_RegisterNameTagHooks() {
