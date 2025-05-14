@@ -24,7 +24,7 @@ std::vector<std::string> NumOpts(const int min, const int max, const int step = 
 }
 
 std::vector<std::string> MultiVecOpts(const std::vector<std::vector<std::string>>& optionsVector) {
-    uint32_t totalSize = 0;
+    size_t totalSize = 0;
     for (const auto& vector : optionsVector) {
         totalSize += vector.size();
     }
@@ -2638,7 +2638,7 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
                         mqSet += 1;
                         break;
                     case RO_MQ_SET_RANDOM:
-                        randMQOption.push_back(i);
+                        randMQOption.push_back(static_cast<uint8_t>(i));
                         dungeons[i]->SetDungeonKnown(false);
                         break;
                     default:
@@ -2659,7 +2659,7 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
                 // otherwise, make everything a possibility and unknown
             } else {
                 for (size_t i = 0; i < dungeons.size(); i++) {
-                    randMQOption.push_back(i);
+                    randMQOption.push_back(static_cast<uint8_t>(i));
                     dungeons[i]->SetDungeonKnown(false);
                     mOptions[dungeons[i]->GetMQSetting()].Set(RO_MQ_SET_RANDOM);
                 }

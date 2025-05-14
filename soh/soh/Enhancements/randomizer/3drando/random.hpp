@@ -13,7 +13,7 @@ double RandomDouble();
 
 // Get a random element from a vector or array
 template <typename T> T RandomElement(std::vector<T>& vector, bool erase) {
-    const auto idx = Random(0, vector.size());
+    const auto idx = Random(0, static_cast<uint32_t>(vector.size()));
     const T selected = vector[idx];
     if (erase) {
         vector.erase(vector.begin() + idx);

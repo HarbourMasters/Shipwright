@@ -1814,7 +1814,7 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                     if (randoGet == RG_BOTTLE_WITH_BIG_POE) {
                         BigPoes++;
                     }
-                    mSaveContext->inventory.items[slot] = itemId;
+                    mSaveContext->inventory.items[slot] = static_cast<uint8_t>(itemId);
                 } break;
                 case RG_RUTOS_LETTER:
                     SetRandoInf(RAND_INF_OBTAINED_RUTOS_LETTER, state);
@@ -2306,7 +2306,7 @@ void Logic::SetEventChkInf(int32_t flag, bool state) {
 }
 
 uint8_t Logic::GetGSCount() {
-    return mSaveContext->inventory.gsTokens;
+    return static_cast<uint8_t>(mSaveContext->inventory.gsTokens);
 }
 
 uint8_t Logic::GetAmmo(uint32_t item) {

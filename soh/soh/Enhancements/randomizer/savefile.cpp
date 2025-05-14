@@ -22,7 +22,7 @@ void StartingItemGive(GetItemEntry getItemEntry, RandomizerCheck randomizerCheck
         if (getItemEntry.getItemId == GI_SWORD_BGS) {
             gSaveContext.bgsFlag = true;
         }
-        Item_Give(NULL, getItemEntry.itemId);
+        Item_Give(NULL, static_cast<uint8_t>(getItemEntry.itemId));
     } else if (getItemEntry.modIndex == MOD_RANDOMIZER) {
         if (getItemEntry.getItemId == RG_ICE_TRAP) {
             gSaveContext.ship.pendingIceTrapCount++;

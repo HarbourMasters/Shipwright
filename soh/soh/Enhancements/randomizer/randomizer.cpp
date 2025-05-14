@@ -357,9 +357,12 @@ std::unordered_map<s16, s16> getItemIdToItemId = {
     { GI_CLAIM_CHECK, ITEM_CLAIM_CHECK },
 };
 
+#ifdef _MSC_VER
 #pragma optimize("", off)
+#else
 #pragma GCC push_options
 #pragma GCC optimize("O0")
+#endif
 bool Randomizer::SpoilerFileExists(const char* spoilerFileName) {
     if (strcmp(spoilerFileName, "") != 0) {
         std::ifstream spoilerFileStream(SohUtils::Sanitize(spoilerFileName));
@@ -372,8 +375,11 @@ bool Randomizer::SpoilerFileExists(const char* spoilerFileName) {
 
     return false;
 }
-#pragma GCC pop_options
+#ifdef _MSC_VER
 #pragma optimize("", on)
+#else
+#pragma GCC pop_options
+#endif
 
 void Randomizer::LoadHintMessages() {
     auto ctx = Rando::Context::GetInstance();
@@ -3506,9 +3512,9 @@ CrateIdentity Randomizer::IdentifyCrate(s32 sceneNum, s32 posX, s32 posZ) {
         crateSceneNum = SCENE_MARKET_DAY;
     } else if (sceneNum == SCENE_GERUDOS_FORTRESS && gPlayState->linkAgeOnLoad == 1 && posX == 310) {
         if (posZ == -1830) {
-            posZ = -1842.0f;
+            posZ = -1842;
         } else if (posZ == -1770) {
-            posZ = -1782.0f;
+            posZ = -1782;
         }
     }
 
@@ -4100,7 +4106,7 @@ void RandomizerSettingsWindow::DrawElement() {
                     Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                 }
             }
-            if (ImGui::BeginTable("trickTags", showTag.size(),
+            if (ImGui::BeginTable("trickTags", static_cast<int>(showTag.size()),
                                   ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings |
                                       ImGuiTableFlags_Borders)) {
                 for (auto [rtTag, isShown] : showTag) {
@@ -5572,7 +5578,7 @@ void RandomizerSettingsWindow::InitElement() {
 // (special cases for rando items)
 void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
 
-    u32 time = GAMEPLAYSTAT_TOTAL_TIME;
+    u32 time = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
 
     // Have items in Link's pocket shown as being obtained at 0.1 seconds
     if (time == 0) {
@@ -5868,7 +5874,7 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         case RG_GREG_RUPEE:
             Rupees_ChangeBy(1);
             Flags_SetRandomizerInf(RAND_INF_GREG_FOUND);
-            gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_FOUND_GREG] = GAMEPLAYSTAT_TOTAL_TIME;
+            gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_FOUND_GREG] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
             break;
         case RG_TRIFORCE_PIECE:
             gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected++;
@@ -5877,7 +5883,8 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             // Teleport to credits when goal is reached.
             if (gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected ==
                 (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1)) {
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] = GAMEPLAYSTAT_TOTAL_TIME;
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] =
+                    static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
                 gSaveContext.ship.stats.gameComplete = 1;
                 Flags_SetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY);
                 Play_PerformSave(play);
@@ -5910,12 +5917,12 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         case RG_DEKU_STICK_BAG:
             Inventory_ChangeUpgrade(UPG_STICKS, 1);
             INV_CONTENT(ITEM_STICK) = ITEM_STICK;
-            AMMO(ITEM_STICK) = CUR_CAPACITY(UPG_STICKS);
+            AMMO(ITEM_STICK) = static_cast<int8_t>(CUR_CAPACITY(UPG_STICKS));
             break;
         case RG_DEKU_NUT_BAG:
             Inventory_ChangeUpgrade(UPG_NUTS, 1);
             INV_CONTENT(ITEM_NUT) = ITEM_NUT;
-            AMMO(ITEM_NUT) = CUR_CAPACITY(UPG_NUTS);
+            AMMO(ITEM_NUT) = static_cast<int8_t>(CUR_CAPACITY(UPG_NUTS));
             break;
         default:
             LUSLOG_WARN("Randomizer_Item_Give didn't have behaviour specified for getItemId=%d", item);
