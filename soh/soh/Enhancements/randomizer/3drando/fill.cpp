@@ -210,8 +210,9 @@ void ProcessExits(Region* region, GetAccessibleLocationsStruct& gals, Randomizer
     auto ctx = Rando::Context::GetInstance();
     for (auto& exit : region->exits) {
         int16_t entranceIndex = exit.GetIndex();
-        if (logic->CalculatingAvailableChecks && ctx->GetOption(RSK_SHUFFLE_ENTRANCES).Get() && exit.IsShuffled() &&
-            entranceIndex != -1 && !Entrance_GetIsEntranceDiscovered(entranceIndex)) {
+        if (!logic->ACProcessUndiscoveredExits && logic->CalculatingAvailableChecks &&
+            ctx->GetOption(RSK_SHUFFLE_ENTRANCES).Get() && exit.IsShuffled() && entranceIndex != -1 &&
+            !Entrance_GetIsEntranceDiscovered(entranceIndex)) {
             continue;
         }
 

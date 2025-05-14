@@ -11,6 +11,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
 #include "soh/Enhancements/audio/AudioEditor.h"
+#include "soh/Enhancements/randomizer/logic.h"
 
 #define Path _Path
 #define PATH_HACK
@@ -1450,6 +1451,29 @@ static bool SfxHandler(std::shared_ptr<Ship::Console> Console, const std::vector
     return 0;
 }
 
+static bool AvailabeChecksProcessUndiscoveredExitsHandler(std::shared_ptr<Ship::Console> Console,
+                                                          const std::vector<std::string>& args, std::string* output) {
+    const auto& logic = Rando::Context::GetInstance()->GetLogic();
+    bool enabled = false;
+
+    if (args.size() == 1) {
+        enabled = !logic->ACProcessUndiscoveredExits;
+    } else {
+        try {
+            enabled = std::stoi(args[1]);
+        } catch (std::invalid_argument const& ex) {
+            ERROR_MESSAGE("[SOH] Enable should be 0 or 1");
+            return 1;
+        }
+    }
+
+    logic->ACProcessUndiscoveredExits = enabled;
+    INFO_MESSAGE("[SOH] Available Checks - Process Undiscovered Exits %s",
+                 logic->ACProcessUndiscoveredExits ? "enabled" : "disabled");
+    CheckTracker::RecalculateAvailableChecks();
+    return 0;
+}
+
 void DebugConsole_Init(void) {
     // Console
     CMD_REGISTER("file_select", { FileSelectHandler, "Returns to the file select." });
@@ -1707,6 +1731,10 @@ void DebugConsole_Init(void) {
                               { "reset|randomize", Ship::ArgumentType::TEXT },
                               { "group_name", Ship::ArgumentType::TEXT, true },
                           } });
+
+    CMD_REGISTER("acpue", { AvailabeChecksProcessUndiscoveredExitsHandler,
+                            "Available Checks - Process Undiscovered Exits",
+                            { { "enable", Ship::ArgumentType::NUMBER, true } } });
 
     Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 }

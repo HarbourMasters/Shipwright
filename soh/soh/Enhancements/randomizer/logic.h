@@ -184,6 +184,7 @@ class Logic {
     /* --- END OF HELPERS AND LOCATION ACCESS --- */
 
     bool CalculatingAvailableChecks = false;
+    bool ACProcessUndiscoveredExits = false;
 
     SaveContext* mSaveContext = nullptr;
     Logic();
