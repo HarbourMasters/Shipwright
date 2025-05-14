@@ -62,7 +62,7 @@ std::vector<RandomizerCheck> GetEmptyLocations(std::vector<RandomizerCheck> allo
 void ProcessRegion(Region* region, GetAccessibleLocationsStruct& gals, RandomizerGet ignore = RG_NONE, 
                    bool stopOnBeatable = false, bool addToPlaythrough = false);
 
-std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerCheck>& allowedLocations, RandomizerGet ignore=RG_NONE, bool calculatingAvailableChecks=false);
+std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerCheck>& allowedLocations, RandomizerGet ignore=RG_NONE, bool calculatingAvailableChecks=false, RandomizerRegion startingRegion=RR_ROOT);
 
 void GeneratePlaythrough();
 

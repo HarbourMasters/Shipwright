@@ -1474,6 +1474,28 @@ static bool AvailabeChecksProcessUndiscoveredExitsHandler(std::shared_ptr<Ship::
     return 0;
 }
 
+static bool AvailabeChecksRecalculateHandler(std::shared_ptr<Ship::Console> Console,
+                                             const std::vector<std::string>& args, std::string* output) {
+    RandomizerRegion startingRegion = RR_ROOT;
+
+    if (args.size() > 1) {
+        try {
+            startingRegion = static_cast<RandomizerRegion>(std::stoi(args[1]));
+        } catch (std::invalid_argument const& ex) {
+            ERROR_MESSAGE("[SOH] Region should be a number");
+            return 1;
+        }
+
+        if (startingRegion <= RR_NONE || startingRegion >= RR_MAX) {
+            ERROR_MESSAGE("[SOH] Region should be between 1 and %d", RR_MAX - 1);
+            return 1;
+        }
+    }
+
+    CheckTracker::RecalculateAvailableChecks(startingRegion);
+    return 0;
+}
+
 void DebugConsole_Init(void) {
     // Console
     CMD_REGISTER("file_select", { FileSelectHandler, "Returns to the file select." });
@@ -1735,6 +1757,12 @@ void DebugConsole_Init(void) {
     CMD_REGISTER("acpue", { AvailabeChecksProcessUndiscoveredExitsHandler,
                             "Available Checks - Process Undiscovered Exits",
                             { { "enable", Ship::ArgumentType::NUMBER, true } } });
+
+    CMD_REGISTER("acr", { AvailabeChecksRecalculateHandler,
+                          "Available Checks - Recalculate",
+                          {
+                              { "starting_region", Ship::ArgumentType::NUMBER, true },
+                          } });
 
     Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 }

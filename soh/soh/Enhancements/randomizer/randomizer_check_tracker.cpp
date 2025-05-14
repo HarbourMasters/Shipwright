@@ -1984,7 +1984,7 @@ void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, 
     UIWidgets::PopStyleCombobox();
 }
 
-void RecalculateAvailableChecks() {
+void RecalculateAvailableChecks(RandomizerRegion startingRegion /* = RR_ROOT */) {
     if (!enableAvailableChecks) {
         return;
     }
@@ -2005,7 +2005,7 @@ void RecalculateAvailableChecks() {
         }
     }
 
-    std::vector<RandomizerCheck> availableChecks = ReachabilitySearch(targetLocations, RG_NONE, true);
+    std::vector<RandomizerCheck> availableChecks = ReachabilitySearch(targetLocations, RG_NONE, true, startingRegion);
     for (auto& rc : availableChecks) {
         const auto& location = Rando::StaticData::GetLocation(rc);
         const auto& itemLocation = ctx->GetItemLocation(rc);

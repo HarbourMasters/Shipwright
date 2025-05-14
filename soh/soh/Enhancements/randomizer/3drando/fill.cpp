@@ -530,9 +530,13 @@ void ProcessRegion(Region* region, GetAccessibleLocationsStruct& gals, Randomize
 // Return any of the targetLocations that are accessible in logic
 std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerCheck>& targetLocations,
                                                 RandomizerGet ignore /* = RG_NONE*/,
-                                                bool calculatingAvailableChecks /* = false */) {
+                                                bool calculatingAvailableChecks /* = false */,
+                                                RandomizerRegion startingRegion /* = RR_ROOT */) {
     auto ctx = Rando::Context::GetInstance();
     GetAccessibleLocationsStruct gals(0);
+    if (startingRegion != RR_ROOT) {
+        gals.regionPool.insert(gals.regionPool.begin(), startingRegion);
+    }
     ResetLogic(ctx, gals, !calculatingAvailableChecks);
     if (calculatingAvailableChecks) {
         logic->Reset(false);
