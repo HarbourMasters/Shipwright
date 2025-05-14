@@ -15,6 +15,11 @@
 #define BTN_CUSTOM_OCARINA_PITCH_UP ((CONTROLLERBUTTONS_T)0x00400000)
 #define BTN_CUSTOM_OCARINA_PITCH_DOWN ((CONTROLLERBUTTONS_T)0x00800000)
 
+#define M_PIf 3.14159265358979323846f
+#define M_PI_2f 1.57079632679489661923f // pi/2
+#define M_SQRT2f 1.41421356237309504880f
+#define M_SQRT1_2f 0.70710678118654752440f /* 1/sqrt(2) */
+
 #ifdef __cplusplus
 #include <Context.h>
 #include "Enhancements/savestates.h"
