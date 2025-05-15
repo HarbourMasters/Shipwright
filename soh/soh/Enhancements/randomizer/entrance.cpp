@@ -1132,7 +1132,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
           NO_RETURN_ENTRANCE },
 
         { { EntranceType::ChildBoss, RR_DEKU_TREE_BOSS_ENTRYWAY,        RR_DEKU_TREE_BOSS_ROOM,            ENTR_DEKU_TREE_BOSS_ENTRANCE },
-          { EntranceType::ChildBoss, RR_DEKU_TREE_BOSS_ROOM,            RR_DEKU_TREE_BOSS_ENTRYWAY,        ENTR_DEKU_TREE_BOSS_DOOR } },
+          { EntranceType::ChildBoss, RR_DEKU_TREE_BOSS_ROOM,            RR_DEKU_TREE_BOSS_EXIT,            ENTR_DEKU_TREE_BOSS_DOOR } },
         { { EntranceType::ChildBoss, RR_DODONGOS_CAVERN_BOSS_ENTRYWAY,  RR_DODONGOS_CAVERN_BOSS_ROOM,      ENTR_DODONGOS_CAVERN_BOSS_ENTRANCE },
           { EntranceType::ChildBoss, RR_DODONGOS_CAVERN_BOSS_ROOM,      RR_DODONGOS_CAVERN_BOSS_ENTRYWAY,  ENTR_DODONGOS_CAVERN_BOSS_DOOR } },
         { { EntranceType::ChildBoss, RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY, RR_JABU_JABUS_BELLY_BOSS_ROOM,     ENTR_JABU_JABU_BOSS_ENTRANCE },
@@ -1488,7 +1488,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
     if (true /* ctx->GetOption(RSK_SHUFFLE_BLUEWARP_ENTRANCES).Is(RO_BLUEWARP_ENTRANCE_SHUFFLE_DUNGEON) */) {
         // If a boss room is inside a boss door, make the blue warp go outside the dungeon's entrance
         std::map<std::string, Entrance*> bossExits = {
-            { EntranceNameByRegions(RR_DEKU_TREE_BOSS_ROOM, RR_DEKU_TREE_BOSS_ENTRYWAY),
+            { EntranceNameByRegions(RR_DEKU_TREE_BOSS_ROOM, RR_DEKU_TREE_BOSS_EXIT),
               GetEntrance(EntranceNameByRegions(RR_DEKU_TREE_ENTRYWAY, RR_KF_OUTSIDE_DEKU_TREE)) },
             { EntranceNameByRegions(RR_DODONGOS_CAVERN_BOSS_ROOM, RR_DODONGOS_CAVERN_BOSS_ENTRYWAY),
               GetEntrance(EntranceNameByRegions(RR_DODONGOS_CAVERN_ENTRYWAY, RR_DEATH_MOUNTAIN_TRAIL)) },
@@ -1530,11 +1530,11 @@ int EntranceShuffler::ShuffleAllEntrances() {
         // Pair <BlueWarp exit, BossRoom reverse exit>
         std::vector<EntrancePair> bossRoomExitPairs = {
             { GetEntrance(EntranceNameByRegions(RR_DEKU_TREE_BOSS_ROOM, RR_KF_OUTSIDE_DEKU_TREE)),
-              GetEntrance(EntranceNameByRegions(RR_DEKU_TREE_BOSS_ROOM, RR_DEKU_TREE_BOSS_ENTRYWAY)) },
+              GetEntrance(EntranceNameByRegions(RR_DEKU_TREE_BOSS_ROOM, RR_DEKU_TREE_BOSS_EXIT)) },
             { GetEntrance(EntranceNameByRegions(RR_DODONGOS_CAVERN_BOSS_ROOM, RR_DEATH_MOUNTAIN_TRAIL)),
-              GetEntrance(EntranceNameByRegions(RR_DODONGOS_CAVERN_BOSS_ROOM, RR_DODONGOS_CAVERN_BOSS_ENTRYWAY)) },
+              GetEntrance(EntranceNameByRegions(RR_DODONGOS_CAVERN_BOSS_ROOM, RR_DODONGOS_CAVERN_BOSS_EXIT)) },
             { GetEntrance(EntranceNameByRegions(RR_JABU_JABUS_BELLY_BOSS_ROOM, RR_ZORAS_FOUNTAIN)),
-              GetEntrance(EntranceNameByRegions(RR_JABU_JABUS_BELLY_BOSS_ROOM, RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY)) },
+              GetEntrance(EntranceNameByRegions(RR_JABU_JABUS_BELLY_BOSS_ROOM, RR_JABU_JABUS_BELLY_BOSS_EXIT)) },
             { GetEntrance(EntranceNameByRegions(RR_FOREST_TEMPLE_BOSS_ROOM, RR_SACRED_FOREST_MEADOW)),
               GetEntrance(EntranceNameByRegions(RR_FOREST_TEMPLE_BOSS_ROOM, RR_FOREST_TEMPLE_BOSS_ENTRYWAY)) },
             { GetEntrance(EntranceNameByRegions(RR_FIRE_TEMPLE_BOSS_ROOM, RR_DMC_CENTRAL_LOCAL)),
