@@ -534,10 +534,24 @@ std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerChec
                                                 RandomizerRegion startingRegion /* = RR_ROOT */) {
     auto ctx = Rando::Context::GetInstance();
     GetAccessibleLocationsStruct gals(0);
+    ResetLogic(ctx, gals, !calculatingAvailableChecks);
     if (startingRegion != RR_ROOT) {
         gals.regionPool.insert(gals.regionPool.begin(), startingRegion);
+
+        const auto& region = RegionTable(startingRegion);
+        if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD)) {
+            region->childDay = true;
+        } else {
+            region->adultDay = true;
+        }
+        if (region->timePass) {
+            if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD)) {
+                region->childNight = true;
+            } else {
+                region->adultNight = true;
+            }
+        }
     }
-    ResetLogic(ctx, gals, !calculatingAvailableChecks);
     if (calculatingAvailableChecks) {
         logic->Reset(false);
         logic->CalculatingAvailableChecks = true;

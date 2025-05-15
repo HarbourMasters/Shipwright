@@ -1470,7 +1470,11 @@ static bool AvailabeChecksProcessUndiscoveredExitsHandler(std::shared_ptr<Ship::
     logic->ACProcessUndiscoveredExits = enabled;
     INFO_MESSAGE("[SOH] Available Checks - Process Undiscovered Exits %s",
                  logic->ACProcessUndiscoveredExits ? "enabled" : "disabled");
-    CheckTracker::RecalculateAvailableChecks();
+
+    if (GameInteractor::IsSaveLoaded(true)) {
+        CheckTracker::RecalculateAvailableChecks();
+    }
+
     return 0;
 }
 
