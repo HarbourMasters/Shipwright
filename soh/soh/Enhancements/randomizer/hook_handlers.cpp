@@ -328,7 +328,7 @@ void RandomizerOnPlayerUpdateForRCQueueHandler() {
                   (getItemEntry.getItemCategory == ITEM_CATEGORY_JUNK ||
                    getItemEntry.getItemCategory == ITEM_CATEGORY_SKULLTULA_TOKEN ||
                    getItemEntry.getItemCategory == ITEM_CATEGORY_LESSER))))) {
-            Item_DropCollectible(gPlayState, &spawnPos, ITEM00_SOH_GIVE_ITEM_ENTRY | 0x8000);
+            Item_DropCollectible(gPlayState, &spawnPos, static_cast<int16_t>(ITEM00_SOH_GIVE_ITEM_ENTRY | 0x8000));
         }
     }
 
@@ -2157,7 +2157,7 @@ void RandomizerOnGameFrameUpdateHandler() {
     }
 
     if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MAGIC_METER)) {
-        gSaveContext.magic = gSaveContext.magicCapacity;
+        gSaveContext.magic = static_cast<int8_t>(gSaveContext.magicCapacity);
     }
 
     if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS)) {
@@ -2203,7 +2203,8 @@ void RandomizerOnActorUpdateHandler(void* refActor) {
     if (actor->id == ACTOR_OBJ_COMB) {
         ObjComb* combActor = reinterpret_cast<ObjComb*>(actor);
         combActor->actor.shape.rot.x =
-            Math_SinS(combActor->unk_1B2) * CLAMP_MIN(combActor->unk_1B0, 0) + combActor->actor.home.rot.x;
+            static_cast<int16_t>(Math_SinS(combActor->unk_1B2)) * CLAMP_MIN(combActor->unk_1B0, 0) +
+            combActor->actor.home.rot.x;
     }
 }
 
@@ -2216,29 +2217,29 @@ typedef struct {
 // special respawns used when voided out without swim to prevent infinite loops
 std::map<s32, SpecialRespawnInfo> swimSpecialRespawnInfo = {
     { ENTR_ZORAS_RIVER_3, // hf to zr in water
-      { { -1455.443, -20, 1384.826 }, 28761 } },
+      { { -1455.443f, -20.0f, 1384.826f }, 28761 } },
     { ENTR_HYRULE_FIELD_14, // zr to hf in water
-      { { 5730.209, -20, 3725.911 }, -20025 } },
+      { { 5730.209f, -20.0f, 3725.911f }, -20025 } },
     { ENTR_LOST_WOODS_UNDERWATER_SHORTCUT, // zr to lw
-      { { 1978.718, -36.908, -855 }, -16384 } },
+      { { 1978.718f, -36.908f, -855.0f }, -16384 } },
     { ENTR_ZORAS_RIVER_UNDERWATER_SHORTCUT, // lw to zr
-      { { 4082.366, 860.442, -1018.949 }, -32768 } },
+      { { 4082.366f, 860.442f, -1018.949f }, -32768 } },
     { ENTR_LAKE_HYLIA_RIVER_EXIT, // gv to lh
-      { { -3276.416, -1033, 2908.421 }, 11228 } },
+      { { -3276.416f, -1033.0f, 2908.421f }, 11228 } },
     { ENTR_WATER_TEMPLE_ENTRANCE, // lh to water temple
-      { { -182, 780, 759.5 }, -32768 } },
+      { { -182.0f, 780.0f, 759.5f }, -32768 } },
     { ENTR_LAKE_HYLIA_OUTSIDE_TEMPLE, // water temple to lh
-      { { -955.028, -1306.9, 6768.954 }, -32768 } },
+      { { -955.028f, -1306.9f, 6768.954f }, -32768 } },
     { ENTR_ZORAS_DOMAIN_UNDERWATER_SHORTCUT, // lh to zd
-      { { -109.86, 11.396, -9.933 }, -29131 } },
+      { { -109.86f, 11.396f, -9.933f }, -29131 } },
     { ENTR_LAKE_HYLIA_UNDERWATER_SHORTCUT, // zd to lh
-      { { -912, -1326.967, 3391 }, 0 } },
+      { { -912.0f, -1326.967f, 3391.0f }, 0 } },
     { ENTR_GERUDO_VALLEY_1, // caught by gerudos as child
-      { { -424, -2051, -74 }, 16384 } },
+      { { -424.0f, -2051.0f, -74.0f }, 16384 } },
     { ENTR_HYRULE_FIELD_ON_BRIDGE_SPAWN, // mk to hf (can be a problem when it then turns night)
-      { { 0, 0, 1100 }, 0 } },
+      { { 0.0f, 0.0f, 1100.0f }, 0 } },
     { ENTR_ZORAS_FOUNTAIN_JABU_JABU_BLUE_WARP, // jabu blue warp to zf
-      { { -1580, 150, 1670 }, 8000 } },
+      { { -1580.0f, 150.0f, 1670.0f }, 8000 } },
 };
 
 f32 triforcePieceScale;
@@ -2298,8 +2299,8 @@ void RandomizerOnSceneSpawnActorsHandler() {
         switch (gPlayState->sceneNum) {
             case SCENE_TEMPLE_OF_TIME:
                 if (gPlayState->roomCtx.curRoom.num == 1) {
-                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_XC, -104, -40, 2382, 0, 0x8000, 0,
-                                SHEIK_TYPE_RANDO, false);
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_XC, -104, -40, 2382, 0,
+                                static_cast<int16_t>(0x8000), 0, SHEIK_TYPE_RANDO, false);
                 }
                 break;
             case SCENE_INSIDE_GANONS_CASTLE:

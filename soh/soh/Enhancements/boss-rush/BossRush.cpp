@@ -111,7 +111,7 @@ const char* BossRush_GetSettingChoiceName(u8 optionIndex, u8 choiceIndex, u8 lan
 }
 
 u8 BossRush_GetSettingOptionsAmount(u8 optionIndex) {
-    return BossRushOptions[optionIndex].choices.size();
+    return static_cast<u8>(BossRushOptions[optionIndex].choices.size());
 }
 
 void BossRush_SpawnBlueWarps(PlayState* play) {
@@ -311,7 +311,8 @@ void BossRush_HandleCompleteBoss(PlayState* play) {
         play->sceneNum == SCENE_GANON_BOSS) {
         gSaveContext.ship.stats.playTimer += 2;
         gSaveContext.ship.stats.gameComplete = 1;
-        gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_BOSSRUSH_FINISH] = GAMEPLAYSTAT_TOTAL_TIME;
+        gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_BOSSRUSH_FINISH] =
+            static_cast<uint32_t>(GAMEPLAYSTAT_TOTAL_TIME);
     }
 }
 

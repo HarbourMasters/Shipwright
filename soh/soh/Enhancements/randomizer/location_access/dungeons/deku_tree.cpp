@@ -445,7 +445,7 @@ void RegionTable_Init_DekuTree() {
 
     areaTable[RR_DEKU_TREE_BOSS_ROOM] = Region("Deku Tree Boss Room", "Deku Tree", {}, NO_DAY_NIGHT_CYCLE, {
         // Events
-        EventAccess(&logic->DekuTreeClear, []{return logic->DekuTreeClear || logic->CanKillEnemy(RE_GOHMA);}),
+        EventAccess(&logic->DekuTreeClear, []{return logic->CanKillEnemy(RE_GOHMA);}),
     }, {
         // Locations
         LOCATION(RC_QUEEN_GOHMA,                   logic->DekuTreeClear),

@@ -40,7 +40,7 @@ void RegionTable_Init_WaterTemple() {
 
     areaTable[RR_WATER_TEMPLE_EAST_LOWER] = Region("Water Temple East Lower", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->CanWaterTempleLowFromHigh, []{return logic->CanWaterTempleLowFromHigh || logic->CanUse(RG_ZELDAS_LULLABY);}),
+        EventAccess(&logic->CanWaterTempleLowFromHigh, []{return logic->CanUse(RG_ZELDAS_LULLABY);}),
     }, {
         //Locations
         LOCATION(RC_WATER_TEMPLE_TORCH_POT_1, logic->CanBreakPots() && (logic->CanWaterTempleLowFromHigh || (logic->CanUse(RG_HOOKSHOT) && logic->CanUse(RG_IRON_BOOTS)))),
@@ -165,7 +165,7 @@ void RegionTable_Init_WaterTemple() {
 
     areaTable[RR_WATER_TEMPLE_CENTRAL_PILLAR_UPPER] = Region("Water Temple Central Pillar Upper", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->CanWaterTempleMiddle, []{return logic->CanWaterTempleMiddle || logic->CanUse(RG_ZELDAS_LULLABY);}),
+        EventAccess(&logic->CanWaterTempleMiddle, []{return logic->CanUse(RG_ZELDAS_LULLABY);}),
     }, {
         //Locations
         LOCATION(RC_WATER_TEMPLE_GS_CENTRAL_PILLAR, logic->CanUse(RG_LONGSHOT) || (((ctx->GetTrickOption(RT_WATER_FW_CENTRAL_GS) && logic->CanUse(RG_FARORES_WIND) && (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_DINS_FIRE) || logic->SmallKeys(RR_WATER_TEMPLE, 5))) || (ctx->GetTrickOption(RT_WATER_IRONS_CENTRAL_GS) && logic->CanUse(RG_IRON_BOOTS) && ((logic->CanUse(RG_HOOKSHOT) && logic->CanUse(RG_FAIRY_BOW)) || (logic->CanUse(RG_DINS_FIRE))))) && logic->CanWaterTempleHigh && logic->HookshotOrBoomerang())),
@@ -202,7 +202,7 @@ void RegionTable_Init_WaterTemple() {
 
     areaTable[RR_WATER_TEMPLE_HIGH_WATER] = Region("Water Temple High Water", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->CanWaterTempleHigh, []{return logic->CanWaterTempleHigh || logic->CanUse(RG_ZELDAS_LULLABY);}),
+        EventAccess(&logic->CanWaterTempleHigh, []{return logic->CanUse(RG_ZELDAS_LULLABY);}),
     }, {}, {
         //Exits
         Entrance(RR_WATER_TEMPLE_LOBBY, []{return true;}),
@@ -848,7 +848,7 @@ void RegionTable_Init_WaterTemple() {
 
     areaTable[RR_WATER_TEMPLE_BOSS_ROOM] = Region("Water Temple Boss Room", "Water Temple", {}, NO_DAY_NIGHT_CYCLE, {
         // Events
-        EventAccess(&logic->WaterTempleClear, []{return logic->WaterTempleClear || logic->CanKillEnemy(RE_MORPHA);}),
+        EventAccess(&logic->WaterTempleClear, []{return logic->CanKillEnemy(RE_MORPHA);}),
     }, {
         // Locations
         LOCATION(RC_WATER_TEMPLE_MORPHA_HEART, logic->WaterTempleClear),

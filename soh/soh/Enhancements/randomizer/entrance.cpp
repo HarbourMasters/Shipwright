@@ -1645,7 +1645,7 @@ void EntranceShuffler::ParseJson(nlohmann::json spoilerFileJson) {
     try {
         nlohmann::json entrancesJson = spoilerFileJson["entrances"];
         size_t i = 0;
-        for (auto it = entrancesJson.begin(); it != entrancesJson.end(); ++it, i++) {
+        for (auto it = entrancesJson.begin(); it != entrancesJson.end() && i < entranceOverrides.size(); ++it, i++) {
             nlohmann::json entranceJson = *it;
             for (auto entranceIt = entranceJson.begin(); entranceIt != entranceJson.end(); ++entranceIt) {
                 if (entranceIt.key() == "type") {

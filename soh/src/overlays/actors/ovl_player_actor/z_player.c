@@ -7679,19 +7679,10 @@ s32 Player_TryEnteringCrawlspace(Player* this, PlayState* play, u32 interactWall
                 this->actor.world.pos.z = zVertex1 + (distToInteractWall * wallPolyNormZ);
                 func_80832224(this);
                 this->actor.prevPos = this->actor.world.pos;
-                // #region SOH [Enhancement]
-                if (CVarGetInteger(CVAR_ENHANCEMENT("CrawlSpeed"), 1) > 1) {
-                    // increase animation speed when entering a tunnel
-                    LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_start,
-                                         ((CVarGetInteger(CVAR_ENHANCEMENT("CrawlSpeed"), 1) + 1.0f) / 2.0f), 0.0f,
-                                         Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_start), ANIMMODE_ONCE,
-                                         0.0f);
-                    Player_StartAnimMovement(play, this, 0x9D);
-                    // #endregion
-                } else {
+                if (GameInteractor_Should(VB_CRAWL_SPEED_ENTER, true)) {
                     Player_AnimPlayOnce(play, this, &gPlayerAnim_link_child_tunnel_start);
-                    Player_StartAnimMovement(play, this, 0x9D);
                 }
+                Player_StartAnimMovement(play, this, 0x9D);
                 return true;
             }
         }
@@ -7773,36 +7764,16 @@ s32 Player_TryLeavingCrawlspace(Player* this, PlayState* play) {
         if (ABS(yawToWall) > 0x4000) {
             Player_SetupAction(play, this, Player_Action_8084C81C, 0);
 
-            if (this->linearVelocity > 0.0f) {
-                // Leaving a crawlspace forwards
-                this->actor.shape.rot.y = this->actor.wallYaw + 0x8000;
-                // #region SOH [Enhancement]
-                if (CVarGetInteger(CVAR_ENHANCEMENT("CrawlSpeed"), 1) > 1) {
-                    LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_end,
-                                         ((CVarGetInteger(CVAR_ENHANCEMENT("CrawlSpeed"), 1) + 1.0f) / 2.0f), 0.0f,
-                                         Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_end), ANIMMODE_ONCE,
-                                         0.0f);
-                    Player_StartAnimMovement(play, this, 0x9D);
-                    OnePointCutscene_Init(play, 9601, 999, NULL, MAIN_CAM);
-                    // #endregion
-                } else {
+            if (GameInteractor_Should(VB_CRAWL_SPEED_EXIT, true)) {
+                if (this->linearVelocity > 0.0f) {
+                    // Leaving a crawlspace forwards
+                    this->actor.shape.rot.y = this->actor.wallYaw + 0x8000;
                     Player_AnimPlayOnce(play, this, &gPlayerAnim_link_child_tunnel_end);
                     Player_StartAnimMovement(play, this, 0x9D);
                     OnePointCutscene_Init(play, 9601, 999, NULL, MAIN_CAM);
-                }
-            } else {
-                // Leaving a crawlspace backwards
-                this->actor.shape.rot.y = this->actor.wallYaw;
-                // #region SOH [Enhancement]
-                if (CVarGetInteger(CVAR_ENHANCEMENT("CrawlSpeed"), 1) > 1) {
-                    LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_start,
-                                         -1.0f * ((CVarGetInteger(CVAR_ENHANCEMENT("CrawlSpeed"), 1) + 1.0f) / 2.0f),
-                                         Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_start), 0.0f,
-                                         ANIMMODE_ONCE, 0.0f);
-                    Player_StartAnimMovement(play, this, 0x9D);
-                    OnePointCutscene_Init(play, 9602, 999, NULL, MAIN_CAM);
-                    // #endregion
                 } else {
+                    // Leaving a crawlspace backwards
+                    this->actor.shape.rot.y = this->actor.wallYaw;
                     LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_start, -1.0f,
                                          Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_start), 0.0f,
                                          ANIMMODE_ONCE, 0.0f);
@@ -13587,12 +13558,7 @@ void Player_Action_8084C760(Player* this, PlayState* play) {
 
             // player speed in a tunnel
             if (!Player_TryLeavingCrawlspace(this, play)) {
-                // #region SOH [Enhancement]
-                if (CVarGetInteger(CVAR_ENHANCEMENT("CrawlSpeed"), 1) > 1) {
-                    this->linearVelocity =
-                        sControlInput->rel.stick_y * 0.03f * CVarGetInteger(CVAR_ENHANCEMENT("CrawlSpeed"), 1);
-                    // #endregion
-                } else {
+                if (GameInteractor_Should(VB_CRAWL_SPEED_INCREASE, true)) {
                     this->linearVelocity = sControlInput->rel.stick_y * 0.03f;
                 }
             }
@@ -14785,6 +14751,8 @@ static AnimSfxEntry D_80854A34[] = {
 
 void Player_Action_8084EFC0(Player* this, PlayState* play) {
     Player_DecelerateToZero(this);
+
+    GameInteractor_Should(VB_EMPTYING_BOTTLE, true, this);
 
     if (LinkAnimation_Update(play, &this->skelAnime)) {
         func_8083C0E8(this, play);
