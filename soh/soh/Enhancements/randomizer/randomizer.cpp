@@ -65,7 +65,7 @@ const std::string Randomizer::NaviRandoMessageTableID = "RandomizerNavi";
 const std::string Randomizer::IceTrapRandoMessageTableID = "RandomizerIceTrap";
 const std::string Randomizer::randoMiscHintsTableID = "RandomizerMiscHints";
 
-static const char* englishRupeeNames[190] = {
+static const char* englishRupeeNames[188] = {
     "[P]",
     "Bad RNG Rolls",
     "Baht",
@@ -111,8 +111,6 @@ static const char* englishRupeeNames[190] = {
     "Dimes",
     "Dinars",
     "DNA",
-    "Doge",
-    "Dogecoin",
     "Doll Hairs",
     "Dollars",
     "Dollarydoos",
@@ -258,25 +256,25 @@ static const char* englishRupeeNames[190] = {
     "Zorkmids",
 };
 
-static const char* germanRupeeNames[80] = {
-    "Baht",       "Bananen",    "Bitcoin",   "Bonbons",       "Bratwürste", "Brause UFOs", "Brötchen", "Cent",
-    "Diamanten",  "Dinar",      "Diridari",  "Dogecoin",      "Dollar",     "Draken",      "ECU",      "Elexit",
-    "Erz",        "Erzbrocken", "Euro",      "EXP",           "Forint",     "Franken",     "Freunde",  "Gil",
-    "Gold",       "Groschen",   "Gulden",    "Gummibären",    "Heller",     "Juwelen",     "Karolin",  "Kartoffeln",
-    "Kies",       "Knete",      "Knochen",   "Kohle",         "Kraniche",   "Kreuzer",     "Kronen",   "Kronkorken",
-    "Kröten",     "Lira",       "Mark",      "Mäuse",         "Monde",      "Moorhühner",  "Moos",     "Münzen",
-    "Naira",      "Penunze",    "Pesa",      "Pfandflaschen", "Pfennig",    "Pfund",       "Pilze",    "Plastiks",
-    "Pokédollar", "Radieschen", "Rand",      "Rappen",        "Real",       "Rial",        "Riyal",    "Rubine",
-    "Rupien",     "Saphire",    "Schilling", "Seelen",        "Septime",    "Smaragde",    "Steine",   "Sterne",
-    "Sternis",    "Tael",       "Taler",     "Wagenchips",    "Won",        "Yen",         "Yuan",     "Zenny",
+static const char* germanRupeeNames[79] = {
+    "Baht",       "Bananen",   "Bitcoin",       "Bonbons",  "Bratwürste", "Brause UFOs", "Brötchen",   "Cent",
+    "Diamanten",  "Dinar",     "Diridari",      "Dollar",   "Draken",     "ECU",         "Elexit",     "Erz",
+    "Erzbrocken", "Euro",      "EXP",           "Forint",   "Franken",    "Freunde",     "Gil",        "Gold",
+    "Groschen",   "Gulden",    "Gummibären",    "Heller",   "Juwelen",    "Karolin",     "Kartoffeln", "Kies",
+    "Knete",      "Knochen",   "Kohle",         "Kraniche", "Kreuzer",    "Kronen",      "Kronkorken", "Kröten",
+    "Lira",       "Mark",      "Mäuse",         "Monde",    "Moorhühner", "Moos",        "Münzen",     "Naira",
+    "Penunze",    "Pesa",      "Pfandflaschen", "Pfennig",  "Pfund",      "Pilze",       "Plastiks",   "Pokédollar",
+    "Radieschen", "Rand",      "Rappen",        "Real",     "Rial",       "Riyal",       "Rubine",     "Rupien",
+    "Saphire",    "Schilling", "Seelen",        "Septime",  "Smaragde",   "Steine",      "Sterne",     "Sternis",
+    "Tael",       "Taler",     "Wagenchips",    "Won",      "Yen",        "Yuan",        "Zenny",
 };
 
-static const char* frenchRupeeNames[40] = {
-    "Anneaux",   "Baguettes",   "Balles",     "Bananes",     "Bitcoin",    "Blés",     "Bling",    "Capsules",
-    "Centimes",  "Champignons", "Clochettes", "Crédits",     "Croissants", "Diamants", "Dogecoin", "Dollars",
-    "Émeraudes", "Éthers",      "Étoiles",    "Euros",       "Florens",    "Francs",   "Galds",    "Gils",
-    "Grouses",   "Halos",       "Joyaux",     "Lunes",       "Mailles",    "Munnies",  "Orbes",    "Orens",
-    "Pépètes",   "Pièces",      "Plastyks",   "Pokédollars", "Pokémon",    "Radis",    "Rubis",    "Zennies",
+static const char* frenchRupeeNames[39] = {
+    "Anneaux",  "Baguettes",   "Balles",      "Bananes", "Bitcoin",    "Blés",     "Bling",   "Capsules",
+    "Centimes", "Champignons", "Clochettes",  "Crédits", "Croissants", "Diamants", "Dollars", "Émeraudes",
+    "Éthers",   "Étoiles",     "Euros",       "Florens", "Francs",     "Galds",    "Gils",    "Grouses",
+    "Halos",    "Joyaux",      "Lunes",       "Mailles", "Munnies",    "Orbes",    "Orens",   "Pépètes",
+    "Pièces",   "Plastyks",    "Pokédollars", "Pokémon", "Radis",      "Rubis",    "Zennies",
 };
 
 Randomizer::Randomizer() {
