@@ -580,8 +580,8 @@ void RegionTable_Init_DodongosCavern() {
         LOCATION(RC_KING_DODONGO,                       logic->DodongosCavernClear),
     }, {
         // Exits
-        Entrance(RR_DODONGOS_CAVERN_BOSS_ENTRYWAY, []{return true;}),
-        Entrance(RR_DEATH_MOUNTAIN_TRAIL,          []{return logic->DodongosCavernClear;}, false),
+        Entrance(RR_DODONGOS_CAVERN_BOSS_EXIT, []{return true;}),
+        Entrance(RR_DEATH_MOUNTAIN_TRAIL,      []{return logic->DodongosCavernClear;}, false),
     });
 
     // clang-format on
