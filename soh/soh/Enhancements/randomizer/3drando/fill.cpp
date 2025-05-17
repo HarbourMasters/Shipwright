@@ -712,11 +712,11 @@ static void PareDownPlaythrough() {
     auto ctx = Rando::Context::GetInstance();
     std::vector<RandomizerCheck> toAddBackItem;
     // Start at sphere before Ganon's and count down
-    for (size_t i = ctx->playthroughLocations.size() - 2; i >= 0; i--) {
+    for (int32_t i = static_cast<int32_t>(ctx->playthroughLocations.size()) - 2; i >= 0; i--) {
         // Check each item location in sphere
         std::vector<int> erasableIndices;
         std::vector<RandomizerCheck> sphere = ctx->playthroughLocations.at(i);
-        for (size_t j = sphere.size() - 1; j >= 0; j--) {
+        for (int32_t j = static_cast<int32_t>(sphere.size()) - 1; j >= 0; j--) {
             RandomizerCheck loc = sphere.at(j);
             RandomizerGet locGet = ctx->GetItemLocation(loc)->GetPlacedRandomizerGet(); // Copy out item
 
