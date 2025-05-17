@@ -2114,7 +2114,10 @@ void CheckTrackerSettingsWindow::DrawElement() {
                                                  "with your current progress.")
                                         .Color(THEME_COLOR))) {
             enableAvailableChecks = CVarGetInteger(CVAR_TRACKER_CHECK("EnableAvailableChecks"), 0);
-            RecalculateAvailableChecks();
+
+            if (GameInteractor::IsSaveLoaded(true)) {
+                RecalculateAvailableChecks();
+            }
         }
         ImGui::EndDisabled();
 
