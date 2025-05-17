@@ -148,17 +148,11 @@ s32 osAiSetFrequency(u32 freq) {
     // from libultra
     // #define VI_NTSC_CLOCK 48681812 /* Hz = 48.681812 MHz */
     // s32 osViClock = VI_NTSC_CLOCK;
-    u8 bitrate;
     f32 dacRateF = ((f32)48681812 / freq) + 0.5f;
     u32 dacRate = dacRateF;
 
     if (dacRate < 132) {
         return -1;
-    }
-
-    bitrate = (dacRate / 66);
-    if (bitrate > 16) {
-        bitrate = 16;
     }
 
     return 48681812 / (s32)dacRate;
