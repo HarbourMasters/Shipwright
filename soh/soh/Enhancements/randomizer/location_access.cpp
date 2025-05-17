@@ -12,7 +12,6 @@
 #include <fstream>
 
 extern "C" {
-extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 }
 
