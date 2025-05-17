@@ -49,14 +49,14 @@ void InputViewer::RenderButton(std::string btnTexture, std::string btnOutlineTex
     if (outlineMode == BUTTON_OUTLINE_ALWAYS_SHOWN || (outlineMode == BUTTON_OUTLINE_NOT_PRESSED && !state) ||
         (outlineMode == BUTTON_OUTLINE_PRESSED && state)) {
         ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(btnOutlineTexture), size,
-                     ImVec2(0, 0), ImVec2(1.0f, 1.0f), ImVec4(255, 255, 255, 255));
+                     ImVec2(0, 0), ImVec2(1.0f, 1.0f));
     }
     // Render button if pressed
     if (state) {
         ImGui::SetCursorPos(pos);
         ImGui::SetNextItemAllowOverlap();
         ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(btnTexture), size,
-                     ImVec2(0, 0), ImVec2(1.0f, 1.0f), ImVec4(255, 255, 255, 255));
+                     ImVec2(0, 0), ImVec2(1.0f, 1.0f));
     }
 }
 
@@ -201,7 +201,7 @@ void InputViewer::DrawElement() {
                 // Background
                 ImGui::Image(
                     Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Input-Viewer-Background"),
-                    scaledBGSize, ImVec2(0, 0), ImVec2(1.0f, 1.0f), ImVec4(255, 255, 255, 255));
+                    scaledBGSize, ImVec2(0, 0), ImVec2(1.0f, 1.0f));
             }
 
             // A/B
@@ -352,7 +352,7 @@ void InputViewer::DrawElement() {
                 ImGui::SetCursorPos(aPos);
                 ImGui::Image(
                     Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Analog-Stick Outline"),
-                    scaledBGSize, ImVec2(0, 0), ImVec2(1.0f, 1.0f), ImVec4(255, 255, 255, 255));
+                    scaledBGSize, ImVec2(0, 0), ImVec2(1.0f, 1.0f));
             }
             const int analogStickMode =
                 CVarGetInteger(CVAR_INPUT_VIEWER("AnalogStick.VisibilityMode"), STICK_MODE_ALWAYS_SHOWN);
@@ -363,7 +363,7 @@ void InputViewer::DrawElement() {
                     ImVec2(aPos.x + maxStickDistance * ((float)(pads[0].stick_x) / MAX_AXIS_RANGE) * scale,
                            aPos.y - maxStickDistance * ((float)(pads[0].stick_y) / MAX_AXIS_RANGE) * scale));
                 ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Analog-Stick"),
-                             scaledBGSize, ImVec2(0, 0), ImVec2(1.0f, 1.0f), ImVec4(255, 255, 255, 255));
+                             scaledBGSize, ImVec2(0, 0), ImVec2(1.0f, 1.0f));
             }
 
             // Right Stick
@@ -376,7 +376,7 @@ void InputViewer::DrawElement() {
                 ImGui::SetCursorPos(aPos);
                 ImGui::Image(
                     Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Right-Stick Outline"),
-                    scaledBGSize, ImVec2(0, 0), ImVec2(1.0f, 1.0f), ImVec4(255, 255, 255, 255));
+                    scaledBGSize, ImVec2(0, 0), ImVec2(1.0f, 1.0f));
             }
             const int rightStickMode =
                 CVarGetInteger(CVAR_INPUT_VIEWER("RightStick.VisibilityMode"), STICK_MODE_ALWAYS_HIDDEN);
@@ -387,7 +387,7 @@ void InputViewer::DrawElement() {
                     ImVec2(aPos.x + maxRightStickDistance * ((float)(pads[0].right_stick_x) / MAX_AXIS_RANGE) * scale,
                            aPos.y - maxRightStickDistance * ((float)(pads[0].right_stick_y) / MAX_AXIS_RANGE) * scale));
                 ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Right-Stick"),
-                             scaledBGSize, ImVec2(0, 0), ImVec2(1.0f, 1.0f), ImVec4(255, 255, 255, 255));
+                             scaledBGSize, ImVec2(0, 0), ImVec2(1.0f, 1.0f));
             }
 
             // Analog stick angle text
