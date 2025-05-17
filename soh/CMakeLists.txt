@@ -4,7 +4,7 @@ set(CMAKE_SYSTEM_VERSION 10.0 CACHE STRING "" FORCE)
 
 project(soh LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 20 CACHE STRING "The C++ standard to use")
-set(CMAKE_C_STANDARD 17 CACHE STRING "The C standard to use")
+set(CMAKE_C_STANDARD 23 CACHE STRING "The C standard to use")
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     enable_language(OBJCXX)
