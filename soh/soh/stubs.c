@@ -147,7 +147,7 @@ void Audio_osWritebackDCache(void* mem, s32 size) {
 s32 osAiSetFrequency(u32 freq) {
     // this is based off the math from the original method
     /*
-    
+
     s32 osAiSetFrequency(u32 frequency) {
         u8 bitrate;
         f32 dacRateF = ((f32)osViClock / frequency) + 0.5f;
@@ -174,7 +174,7 @@ s32 osAiSetFrequency(u32 freq) {
     // osViClock comes from
     // #define VI_NTSC_CLOCK 48681812 /* Hz = 48.681812 MHz */
     // s32 osViClock = VI_NTSC_CLOCK;
-    
+
     // frequency was originally 32000
 
     // given all of that, dacRate is
