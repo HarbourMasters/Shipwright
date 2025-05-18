@@ -174,8 +174,8 @@ void Hint::NamesChosen() {
     auto ctx = Rando::Context::GetInstance();
     std::vector<uint8_t> namesTemp = {};
     bool saveNames = false;
-    uint8_t numMessages = GetNumberOfMessages();
-    for (uint8_t c = 0; c < numMessages; c++) {
+    size_t numMessages = GetNumberOfMessages();
+    for (size_t c = 0; c < numMessages; c++) {
         uint8_t selection = GetRandomHintTextEntry(GetHintText(c));
         if (selection > 0) {
             saveNames = true;
@@ -187,7 +187,7 @@ void Hint::NamesChosen() {
     }
 
     if (hintType == HINT_TYPE_ITEM || hintType == HINT_TYPE_ITEM_AREA) {
-        for (uint8_t c = 0; c < locations.size(); c++) {
+        for (size_t c = 0; c < locations.size(); c++) {
             namesTemp = {};
             saveNames = false;
             uint8_t selection = GetRandomHintTextEntry(GetItemHintText(c));
@@ -218,7 +218,7 @@ void Hint::NamesChosen() {
     }
 }
 
-uint8_t Hint::GetNumberOfMessages() const {
+size_t Hint::GetNumberOfMessages() const {
     size_t numMessages = std::max(messages.size(), hintKeys.size());
     if (StaticData::staticHintInfoMap.contains(ownKey)) {
         numMessages = std::max(StaticData::staticHintInfoMap[ownKey].hintKeys.size(), numMessages);
@@ -226,20 +226,19 @@ uint8_t Hint::GetNumberOfMessages() const {
     if (numMessages == 0) {
         numMessages = 1; // RANDOTODO make std::max actually fucking work for 3 arguments
     }
-    // RANDOTODO will number of messages always be u8?
-    return static_cast<uint8_t>(numMessages);
+    return numMessages;
 }
 
 const std::vector<std::string> Hint::GetAllMessageStrings(MessageFormat format) const {
     std::vector<std::string> hintMessages = {};
-    uint8_t numMessages = GetNumberOfMessages();
-    for (int c = 0; c < numMessages; c++) {
+    size_t numMessages = GetNumberOfMessages();
+    for (size_t c = 0; c < numMessages; c++) {
         hintMessages.push_back(GetHintMessage(format, c).GetForCurrentLanguage(format));
     }
     return hintMessages;
 }
 
-const HintText Hint::GetHintText(uint8_t id) const {
+const HintText Hint::GetHintText(size_t id) const {
     auto ctx = Rando::Context::GetInstance();
     if (hintKeys.size() > id) {
         return StaticData::hintTextTable[hintKeys[id]];
@@ -284,11 +283,11 @@ const HintText Hint::GetHintText(uint8_t id) const {
     }
 }
 
-const CustomMessage Hint::GetHintMessage(MessageFormat format, uint8_t id) const {
+const CustomMessage Hint::GetHintMessage(MessageFormat format, size_t id) const {
     auto ctx = Rando::Context::GetInstance();
     CustomMessage hintText = CustomMessage("");
 
-    uint8_t chosenMessage = 0;
+    size_t chosenMessage = 0;
     if (hintTextsChosen.size() > id) {
         chosenMessage = id;
     }
