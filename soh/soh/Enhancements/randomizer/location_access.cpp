@@ -33,7 +33,7 @@ bool LocationAccess::CheckConditionAtAgeTime(bool& age, bool& time) const {
     return GetConditionsMet();
 }
 
-bool LocationAccess::ConditionsMet(Region* parentRegion) const {
+bool LocationAccess::ConditionsMet(Region* parentRegion, bool calculatingAvailableChecks) const {
     // WARNING enterance validation can run this after resetting the access for sphere 0 validation
     // When refactoring ToD access, either fix the above or do not assume that we
     // have any access at all just because this is being run
@@ -46,7 +46,7 @@ bool LocationAccess::ConditionsMet(Region* parentRegion) const {
         conditionsMet = true;
     }
 
-    return conditionsMet && CanBuy();
+    return conditionsMet && CanBuy(calculatingAvailableChecks);
 }
 
 static uint16_t GetMinimumPrice(const Rando::Location* loc) {
@@ -90,13 +90,13 @@ static uint16_t GetMinimumPrice(const Rando::Location* loc) {
     }
 }
 
-bool LocationAccess::CanBuy() const {
+bool LocationAccess::CanBuy(bool calculatingAvailableChecks) const {
     const auto& loc = Rando::StaticData::GetLocation(location);
     const auto& itemLoc = OTRGlobals::Instance->gRandoContext->GetItemLocation(location);
 
     if (loc->GetRCType() == RCTYPE_SHOP || loc->GetRCType() == RCTYPE_SCRUB || loc->GetRCType() == RCTYPE_MERCHANT) {
         // Checks should only be identified while playing
-        if (itemLoc->GetCheckStatus() != RCSHOW_IDENTIFIED) {
+        if (calculatingAvailableChecks && itemLoc->GetCheckStatus() != RCSHOW_IDENTIFIED) {
             return CanBuyAnother(GetMinimumPrice(loc));
         } else {
             return CanBuyAnother(itemLoc->GetPrice());
