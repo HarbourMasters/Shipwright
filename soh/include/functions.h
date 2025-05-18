@@ -14,11 +14,11 @@ extern "C"
 #include <soh/Enhancements/item-tables/ItemTableTypes.h>
 #include <soh/Enhancements/randomizer/randomizer_inf.h>
 
-// #if defined(INCLUDE_GAME_PRINTF) && defined(_DEBUG)
+#if defined(INCLUDE_GAME_PRINTF) && defined(_DEBUG)
 #define osSyncPrintf(fmt, ...) lusprintf(__FILE__, __LINE__, 0, fmt, ##__VA_ARGS__)
-// #else
-// #define osSyncPrintf(fmt, ...) osSyncPrintfUnused(fmt, ##__VA_ARGS__)
-// #endif
+#else
+#define osSyncPrintf(fmt, ...) osSyncPrintfUnused(fmt, ##__VA_ARGS__)
+#endif
 
 void gSPSegment(void* value, int segNum, uintptr_t target);
 void gSPSegmentLoadRes(void* value, int segNum, uintptr_t target);
