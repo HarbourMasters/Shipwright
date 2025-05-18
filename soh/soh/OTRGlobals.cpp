@@ -2438,8 +2438,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             // RANDOTODO: Implement a way to determine if an item came from a skulltula and
             // inject the auto-dismiss control code if it did.
             bool gsTokensShuffled = Randomizer_GetSettingValue(RSK_SHUFFLE_TOKENS) != RO_TOKENSANITY_OFF;
-            if (CVarGetInteger(CVAR_ENHANCEMENT("SkulltulaFreeze"), 0) != 0 &&
-                !(IS_RANDO && gsTokensShuffled)) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("SkulltulaFreeze"), 0) != 0 && !(IS_RANDO && gsTokensShuffled)) {
                 textId = TEXT_GS_NO_FREEZE;
             } else {
                 textId = TEXT_GS_FREEZE;
