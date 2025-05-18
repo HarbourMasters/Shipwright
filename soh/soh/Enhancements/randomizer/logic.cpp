@@ -1389,7 +1389,7 @@ bool Logic::SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless
             static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE) || GetDifficultyValueFromString(GlitchHover) >=
             static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE))) { return FireTempleKeys >= requiredAmountGlitched;
             }*/
-           // If the Fire Temple loop lock is removed, Small key Count is set to 1 before starting
+            // If the Fire Temple loop lock is removed, Small key Count is set to 1 before starting
             return GetSmallKeyCount(SCENE_FIRE_TEMPLE) >= requiredAmountGlitchless;
 
         case RR_WATER_TEMPLE:
