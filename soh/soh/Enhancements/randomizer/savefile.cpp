@@ -231,7 +231,7 @@ extern "C" void Randomizer_InitSaveFile() {
 
     // Reset triforce pieces collected.
     gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected = 0;
-    
+
     SetStartingItems();
 
     // Set Cutscene flags and texts to skip them.
@@ -432,5 +432,4 @@ extern "C" void Randomizer_InitSaveFile() {
         gSaveContext.itemGetInf[3] |= 0x800;  // Bunny Hood related
         gSaveContext.itemGetInf[3] |= 0x8000; // Obtained Mask of Truth
     }
-
 }
