@@ -331,8 +331,8 @@ EnemyEntry GetRandomizedEnemyEntry(uint32_t seed, PlayState* play) {
     if (selectedEnemyList.size() == 0) {
         GetSelectedEnemies();
     }
-    for (EnemyEntry enemy: selectedEnemyList){
-        if(IsEnemyAllowedToSpawn(play->sceneNum, play->roomCtx.curRoom.num, enemy)){
+    for (EnemyEntry enemy : selectedEnemyList) {
+        if (IsEnemyAllowedToSpawn(play->sceneNum, play->roomCtx.curRoom.num, enemy)) {
             filteredEnemyList.push_back(enemy);
         }
     }
