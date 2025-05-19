@@ -1532,8 +1532,9 @@ void ItemTrackerWindow::DrawElement() {
 
             if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Notes"), SECTION_DISPLAY_HIDDEN) ==
                     SECTION_DISPLAY_MAIN_WINDOW &&
-                CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) ==
-                    TRACKER_DISPLAY_ALWAYS) {
+                (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING &&
+                 CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) ==
+                     TRACKER_DISPLAY_ALWAYS)) {
                 DrawNotes();
             }
             EndFloatingWindows();
@@ -1642,7 +1643,10 @@ void ItemTrackerWindow::DrawElement() {
 
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Notes"), SECTION_DISPLAY_HIDDEN) ==
                 SECTION_DISPLAY_SEPARATE &&
-            CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_ALWAYS) {
+            (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_WINDOW ||
+             (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING &&
+              CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) !=
+                  TRACKER_DISPLAY_COMBO_BUTTON))) {
             ImGui::SetNextWindowSize(ImVec2(400, 300), ImGuiCond_FirstUseEver);
             BeginFloatingWindows("Personal Notes", ImGuiWindowFlags_NoFocusOnAppearing);
             DrawNotes(true);
@@ -1943,7 +1947,10 @@ void ItemTrackerSettingsWindow::DrawElement() {
         shouldUpdateVectors = true;
     }
 
-    if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_ALWAYS) {
+    if (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_WINDOW ||
+        (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING &&
+         CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) !=
+             TRACKER_DISPLAY_COMBO_BUTTON)) {
         if (CVarCombobox("Personal notes", CVAR_TRACKER_ITEM("DisplayType.Notes"), displayTypes,
                          ComboboxOptions()
                              .DefaultIndex(SECTION_DISPLAY_HIDDEN)

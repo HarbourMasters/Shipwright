@@ -20,7 +20,7 @@ void RegionTable_Init_FireTemple() {
         //Exits
         Entrance(RR_FIRE_TEMPLE_ENTRYWAY,       []{return true;}),
         Entrance(RR_FIRE_TEMPLE_NEAR_BOSS_ROOM, []{return logic->FireTimer() >= 24;}),
-        Entrance(RR_FIRE_TEMPLE_LOOP_ENEMIES,   []{return Here(RR_FIRE_TEMPLE_FIRST_ROOM, []{return logic->CanUse(RG_MEGATON_HAMMER);}) && (logic->SmallKeys(RR_FIRE_TEMPLE, 8) || !logic->IsKeysanity);}),
+        Entrance(RR_FIRE_TEMPLE_LOOP_ENEMIES,   []{return Here(RR_FIRE_TEMPLE_FIRST_ROOM, []{return logic->CanUse(RG_MEGATON_HAMMER);}) && (logic->SmallKeys(RR_FIRE_TEMPLE, 8) || !logic->IsFireLoopLocked);}),
         Entrance(RR_FIRE_TEMPLE_LOOP_EXIT,      []{return true;}),
         Entrance(RR_FIRE_TEMPLE_BIG_LAVA_ROOM,  []{return logic->SmallKeys(RR_FIRE_TEMPLE, 2) && logic->FireTimer() >= 24;}),
     });
@@ -43,7 +43,7 @@ void RegionTable_Init_FireTemple() {
 
     areaTable[RR_FIRE_TEMPLE_LOOP_ENEMIES] = Region("Fire Temple Loop Enemies", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
-        Entrance(RR_FIRE_TEMPLE_FIRST_ROOM, []{return logic->SmallKeys(RR_FIRE_TEMPLE, 8) || !logic->IsKeysanity;}),
+        Entrance(RR_FIRE_TEMPLE_FIRST_ROOM, []{return logic->SmallKeys(RR_FIRE_TEMPLE, 8) || !logic->IsFireLoopLocked;}),
         Entrance(RR_FIRE_TEMPLE_LOOP_TILES, []{return Here(RR_FIRE_TEMPLE_LOOP_ENEMIES, []{return logic->CanKillEnemy(RE_TORCH_SLUG) && logic->CanKillEnemy(RE_FIRE_KEESE);});}),
     });
 

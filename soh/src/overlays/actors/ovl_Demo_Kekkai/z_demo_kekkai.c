@@ -7,6 +7,7 @@
 #include "z_demo_kekkai.h"
 #include "objects/object_demo_kekkai/object_demo_kekkai.h"
 #include "scenes/dungeons/ganontika/ganontika_scene.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
@@ -257,13 +258,15 @@ void DemoKekkai_TrialBarrierIdle(Actor* thisx, PlayState* play) {
     CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider1.base);
     CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider1.base);
     if (this->collider2.base.acFlags & AC_HIT) {
-        Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
-        // "I got it"
-        LOG_STRING("当ったよ");
-        this->actor.update = DemoKekkai_TrialBarrierDispel;
-        this->timer = 0;
-        play->csCtx.segment = SEGMENTED_TO_VIRTUAL(sSageCutscenes[this->actor.params]);
-        gSaveContext.cutsceneTrigger = 1;
+        if (GameInteractor_Should(VB_PLAY_DISPEL_BARRIER_CS, true, this)) {
+            Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
+            // "I got it"
+            LOG_STRING("当ったよ");
+            this->actor.update = DemoKekkai_TrialBarrierDispel;
+            this->timer = 0;
+            play->csCtx.segment = SEGMENTED_TO_VIRTUAL(sSageCutscenes[this->actor.params]);
+            gSaveContext.cutsceneTrigger = 1;
+        }
     }
     CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider2.base);
     func_8002F974(&this->actor, NA_SE_EV_TOWER_ENERGY - SFX_FLAG);

@@ -1995,7 +1995,7 @@ void RecalculateAvailableChecks(RandomizerRegion startingRegion /* = RR_ROOT */)
     const auto& ctx = Rando::Context::GetInstance();
 
     std::vector<RandomizerCheck> targetLocations;
-    targetLocations.reserve(RR_MAX);
+    targetLocations.reserve(RC_MAX);
     for (auto& location : Rando::StaticData::GetLocationTable()) {
         RandomizerCheck rc = location.GetRandomizerCheck();
         Rando::ItemLocation* itemLocation = ctx->GetItemLocation(rc);
@@ -2007,17 +2007,8 @@ void RecalculateAvailableChecks(RandomizerRegion startingRegion /* = RR_ROOT */)
 
     std::vector<RandomizerCheck> availableChecks = ReachabilitySearch(targetLocations, RG_NONE, true, startingRegion);
     for (auto& rc : availableChecks) {
-        const auto& location = Rando::StaticData::GetLocation(rc);
         const auto& itemLocation = ctx->GetItemLocation(rc);
-        const auto& region = areaTable[itemLocation->GetParentRegionKey()];
-
-        if (location->GetRCType() == RCTYPE_SHOP && itemLocation->GetCheckStatus() == RCSHOW_IDENTIFIED) {
-            if (CanBuyAnother(rc)) {
-                itemLocation->SetAvailable(true);
-            }
-        } else {
-            itemLocation->SetAvailable(true);
-        }
+        itemLocation->SetAvailable(true);
     }
 
     totalChecksAvailable = 0;
@@ -2144,7 +2135,10 @@ void CheckTrackerSettingsWindow::DrawElement() {
                                                  "with your current progress.")
                                         .Color(THEME_COLOR))) {
             enableAvailableChecks = CVarGetInteger(CVAR_TRACKER_CHECK("EnableAvailableChecks"), 0);
-            RecalculateAvailableChecks();
+
+            if (GameInteractor::IsSaveLoaded(true)) {
+                RecalculateAvailableChecks();
+            }
         }
         ImGui::EndDisabled();
 

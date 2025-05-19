@@ -480,6 +480,14 @@ typedef enum {
     // ```
     // #### `args`
     // - None
+    VB_FREEZE_LINK_FOR_FOREST_PILLARS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
     VB_FREEZE_ON_SKULL_TOKEN,
 
     // #### `result`
@@ -1363,6 +1371,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*DemoKekkai`
+    VB_PLAY_DISPEL_BARRIER_CS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*EnOkarinaTag`
     VB_PLAY_DOOR_OF_TIME_CS,
 
@@ -1421,6 +1437,15 @@ typedef enum {
     // #### `args`
     // - None
     VB_PLAY_FIRE_ARROW_CS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnHeishi2`
+    // - `bool` (clearCamera - true if the code clears a sub-camera, false otherwise)
+    VB_PLAY_GATE_OPENING_OR_CLOSING_CS,
 
     // #### `result`
     // ```c
