@@ -219,16 +219,16 @@ void ProcessExits(Region* region, GetAccessibleLocationsStruct& gals, Randomizer
                 }
                 ValidateSphereZero(gals);
             }
+            // If the exit is accessible and hasn't been added yet, add it to the pool
+            // RANDOTODO do we want to add the region after the loop now, considering we
+            // are processing the new region immediately. Maybe a reverse for loop in ProcessRegion?
+            if (!exitRegion->addedToPool) {
+                exitRegion->addedToPool = true;
+                gals.regionPool.push_back(exit.GetConnectedRegionKey());
+            }
+
             // process the region we just expanded to, to reduce looping
             ProcessRegion(exitRegion, gals, ignore, stopOnBeatable, addToPlaythrough);
-        }
-
-        // If the exit is accessible and hasn't been added yet, add it to the pool
-        // RANDOTODO do we want to add the region after the loop now, considering we
-        // are processing the new region immediately. Maybe a reverse for loop in ProcessRegion?
-        if (!exitRegion->addedToPool && exit.ConditionsMet()) {
-            exitRegion->addedToPool = true;
-            gals.regionPool.push_back(exit.GetConnectedRegionKey());
         }
 
         if (addToPlaythrough) {
@@ -327,13 +327,12 @@ bool IsBeatableWithout(RandomizerCheck excludedCheck, bool replaceItem,
     auto ctx = Rando::Context::GetInstance();
     RandomizerGet copy = ctx->GetItemLocation(excludedCheck)->GetPlacedRandomizerGet(); // Copy out item
     ctx->GetItemLocation(excludedCheck)->SetPlacedItem(RG_NONE);                        // Write in empty item
-    ctx->playthroughBeatable = false;
     logic->Reset();
-    CheckBeatable(ignore);
+    bool result = CheckBeatable(ignore);
     if (replaceItem) {
         ctx->GetItemLocation(excludedCheck)->SetPlacedItem(copy); // Immediately put item back
     }
-    return ctx->playthroughBeatable;
+    return result;
 }
 
 // Reset non-Logic-class logic, and optionally apply the initial inventory
@@ -581,6 +580,7 @@ void GeneratePlaythrough() {
 // return if the seed is currently beatable or not
 bool CheckBeatable(RandomizerGet ignore /* = RG_NONE*/) {
     auto ctx = Rando::Context::GetInstance();
+    ctx->playthroughBeatable = false;
     GetAccessibleLocationsStruct gals(0);
     ResetLogic(ctx, gals, true);
     do {
@@ -625,6 +625,8 @@ void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAcce
         if (ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF)) {
             Rando::StaticData::RetrieveItem(RG_GUARD_HOUSE_KEY).ApplyEffect();
         }
+        RegionTable(RR_ROOT)->adultNight = true;
+        RegionTable(RR_ROOT)->adultDay = true;
     } else {
         ApplyAllAdvancmentItems();
     }
@@ -710,11 +712,11 @@ static void PareDownPlaythrough() {
     auto ctx = Rando::Context::GetInstance();
     std::vector<RandomizerCheck> toAddBackItem;
     // Start at sphere before Ganon's and count down
-    for (int i = ctx->playthroughLocations.size() - 2; i >= 0; i--) {
+    for (int32_t i = static_cast<int32_t>(ctx->playthroughLocations.size()) - 2; i >= 0; i--) {
         // Check each item location in sphere
         std::vector<int> erasableIndices;
         std::vector<RandomizerCheck> sphere = ctx->playthroughLocations.at(i);
-        for (int j = sphere.size() - 1; j >= 0; j--) {
+        for (int32_t j = static_cast<int32_t>(sphere.size()) - 1; j >= 0; j--) {
             RandomizerCheck loc = sphere.at(j);
             RandomizerGet locGet = ctx->GetItemLocation(loc)->GetPlacedRandomizerGet(); // Copy out item
 
@@ -929,10 +931,8 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
             // If ALR is off, then we check beatability after placing the item.
             // If the game is beatable, then we can stop placing items with logic.
             if (!ctx->GetOption(RSK_ALL_LOCATIONS_REACHABLE)) {
-                ctx->playthroughBeatable = false;
                 logic->Reset();
-                CheckBeatable();
-                if (ctx->playthroughBeatable) {
+                if (CheckBeatable()) {
                     SPDLOG_DEBUG("Game beatable, now placing items randomly. " + std::to_string(itemsToPlace.size()) +
                                  " major items remaining.\n\n");
                     FastFill(itemsToPlace, GetEmptyLocations(allowedLocations), true);

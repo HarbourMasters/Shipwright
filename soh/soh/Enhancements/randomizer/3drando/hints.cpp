@@ -63,11 +63,11 @@ const CustomMessage& HintText::GetAmbiguous(uint8_t selection) const {
 }
 
 uint8_t HintText::GetAmbiguousSize() const {
-    return ambiguousText.size();
+    return static_cast<uint8_t>(ambiguousText.size());
 }
 
 uint8_t HintText::GetObscureSize() const {
-    return obscureText.size();
+    return static_cast<uint8_t>(obscureText.size());
 }
 
 const CustomMessage& HintText::GetHintMessage(uint8_t selection) const {
@@ -598,7 +598,7 @@ static void DistributeHints(std::vector<uint8_t>& selected, size_t stoneCount,
     }
     // if stones are left, assign junk to every remaining stone as a fallback.
     if (stoneCount > 0) {
-        selected[selected.size() - 1] += stoneCount;
+        selected[static_cast<uint8_t>(selected.size()) - 1] += static_cast<uint8_t>(stoneCount);
     }
 }
 

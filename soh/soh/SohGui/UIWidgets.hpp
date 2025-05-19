@@ -633,9 +633,9 @@ bool Combobox(const char* label, T* value, const std::vector<const char*>& combo
     PushStyleCombobox(options.color);
 
     const char* longest;
-    int length = 0;
+    size_t length = 0;
     for (auto& string : comboVector) {
-        int len = strlen(string);
+        size_t len = strlen(string);
         if (len > length) {
             longest = string;
             length = len;
@@ -717,9 +717,9 @@ bool Combobox(const char* label, T* value, const std::vector<std::string>& combo
     PushStyleCombobox(options.color);
 
     const char* longest;
-    int length = 0;
+    size_t length = 0;
     for (auto& string : comboVector) {
-        int len = string.length();
+        size_t len = string.length();
         if (len > length) {
             longest = string.c_str();
             length = len;

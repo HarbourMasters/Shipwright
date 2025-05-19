@@ -296,6 +296,43 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_CRAWL_SPEED_ENTER,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_CRAWL_SPEED_EXIT,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*Camera`
+    // - 'int16_t' (csId)
+    // - 'int16_t' (actionParameters)
+    // - 'int16_t' (initTimer)
+    // - 'CutsceneCameraPoint*' (atPoints)
+    // - 'CutsceneCameraPoint*' (eyePoints)
+    VB_CRAWL_SPEED_EXIT_CS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_CRAWL_SPEED_INCREASE,
+
+    // #### `result`
+    // ```c
     // !Flags_GetItemGetInf(ITEMGETINF_1C)
     // ```
     // #### `args`
@@ -427,6 +464,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - Player*
+    VB_EMPTYING_BOTTLE,
+
+    // #### `result`
+    // ```c
     // (Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)
     // ```
     // #### `args`
@@ -473,6 +518,14 @@ typedef enum {
     // #### `args`
     // - `*BgHeavyBlock`
     VB_FREEZE_LINK_FOR_BLOCK_THROW,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_FREEZE_LINK_FOR_FOREST_PILLARS,
 
     // #### `result`
     // ```c
@@ -1363,6 +1416,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*DemoKekkai`
+    VB_PLAY_DISPEL_BARRIER_CS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*EnOkarinaTag`
     VB_PLAY_DOOR_OF_TIME_CS,
 
@@ -1421,6 +1482,15 @@ typedef enum {
     // #### `args`
     // - None
     VB_PLAY_FIRE_ARROW_CS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnHeishi2`
+    // - `bool` (clearCamera - true if the code clears a sub-camera, false otherwise)
+    VB_PLAY_GATE_OPENING_OR_CLOSING_CS,
 
     // #### `result`
     // ```c
@@ -1789,6 +1859,14 @@ typedef enum {
     // #### `args`
     // - `*ObjBean`
     VB_SPAWN_BEAN_STALK_FAIRIES,
+
+    // #### `result`
+    // ```c
+    // this->timer >= 60
+    // ```
+    // #### `args`
+    // - `None`
+    VB_SPAWN_BEAN_SKULLTULA,
 
     // #### `result`
     // ```c

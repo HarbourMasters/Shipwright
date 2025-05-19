@@ -106,7 +106,7 @@ char z2ASCII(int code) {
     return char(ret);
 }
 
-typedef enum MagicLevel { MAGIC_LEVEL_NONE, MAGIC_LEVEL_SINGLE, MAGIC_LEVEL_DOUBLE };
+enum MagicLevel { MAGIC_LEVEL_NONE, MAGIC_LEVEL_SINGLE, MAGIC_LEVEL_DOUBLE };
 
 std::unordered_map<int8_t, const char*> magicLevelMap = {
     { MAGIC_LEVEL_NONE, "None" },
@@ -114,7 +114,7 @@ std::unordered_map<int8_t, const char*> magicLevelMap = {
     { MAGIC_LEVEL_DOUBLE, "Double" },
 };
 
-typedef enum AudioOutput {
+enum AudioOutput {
     AUDIO_STEREO,
     AUDIO_MONO,
     AUDIO_HEADSET,
@@ -128,7 +128,7 @@ std::unordered_map<uint8_t, const char*> audioMap = {
     { AUDIO_SURROUND, "Surround" },
 };
 
-typedef enum ZTarget {
+enum ZTarget {
     Z_TARGET_SWITCH,
     Z_TARGET_HOLD,
 };

@@ -393,17 +393,17 @@ s32 EnRu1_UpdateSkelAnime(EnRu1* this) {
 }
 
 void func_80AEB364(EnRu1* this, PlayState* play) {
-    this->skelAnime.moveFlags |= 1;
+    this->skelAnime.movementFlags |= 1;
     AnimationContext_SetMoveActor(play, &this->actor, &this->skelAnime, 1.0f);
 }
 
 void func_80AEB3A4(EnRu1* this, PlayState* play) {
-    this->skelAnime.moveFlags |= 1;
+    this->skelAnime.movementFlags |= 1;
     func_80AEB364(this, play);
 }
 
 void func_80AEB3CC(EnRu1* this) {
-    this->skelAnime.moveFlags &= ~0x1;
+    this->skelAnime.movementFlags &= ~0x1;
 }
 
 void func_80AEB3DC(EnRu1* this, PlayState* play) {
@@ -464,7 +464,7 @@ void func_80AEB6E0(EnRu1* this, PlayState* play) {
     SkelAnime* skelAnime = &this->skelAnime;
 
     if (skelAnime->baseTransl.y < skelAnime->jointTable[0].y) {
-        skelAnime->moveFlags |= 3;
+        skelAnime->movementFlags |= 3;
         AnimationContext_SetMoveActor(play, &this->actor, skelAnime, 1.0f);
     }
 }
@@ -475,13 +475,13 @@ void func_80AEB738(EnRu1* this, PlayState* play) {
     skelAnime->baseTransl = skelAnime->jointTable[0];
     skelAnime->prevTransl = skelAnime->jointTable[0];
     if (skelAnime->baseTransl.y < skelAnime->jointTable[0].y) {
-        skelAnime->moveFlags |= 3;
+        skelAnime->movementFlags |= 3;
         AnimationContext_SetMoveActor(play, &this->actor, skelAnime, 1.0f);
     }
 }
 
 void func_80AEB7D0(EnRu1* this) {
-    this->skelAnime.moveFlags &= ~0x3;
+    this->skelAnime.movementFlags &= ~0x3;
 }
 
 f32 func_80AEB7E0(CsCmdActorCue* csCmdNPCAction, PlayState* play) {

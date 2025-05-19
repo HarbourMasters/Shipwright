@@ -85,6 +85,10 @@ void GameInteractor_ExecuteOnPlayerUpdate() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerUpdate>();
 }
 
+void GameInteractor_ExecuteOnSetDoAction(uint16_t action) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetDoAction>(action);
+}
+
 void GameInteractor_ExecuteOnOcarinaSongAction() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnOcarinaSongAction>();
 }
@@ -116,6 +120,13 @@ void GameInteractor_ExecuteOnActorKill(void* actor) {
     GameInteractor::Instance->ExecuteHooksForID<GameInteractor::OnActorKill>(((Actor*)actor)->id, actor);
     GameInteractor::Instance->ExecuteHooksForPtr<GameInteractor::OnActorKill>((uintptr_t)actor, actor);
     GameInteractor::Instance->ExecuteHooksForFilter<GameInteractor::OnActorKill>(actor);
+}
+
+void GameInteractor_ExecuteOnActorDestroy(void* actor) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnActorDestroy>(actor);
+    GameInteractor::Instance->ExecuteHooksForID<GameInteractor::OnActorDestroy>(((Actor*)actor)->id, actor);
+    GameInteractor::Instance->ExecuteHooksForPtr<GameInteractor::OnActorDestroy>((uintptr_t)actor, actor);
+    GameInteractor::Instance->ExecuteHooksForFilter<GameInteractor::OnActorDestroy>(actor);
 }
 
 void GameInteractor_ExecuteOnEnemyDefeat(void* actor) {

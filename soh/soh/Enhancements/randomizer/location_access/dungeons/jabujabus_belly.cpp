@@ -312,9 +312,11 @@ void RegionTable_Init_JabuJabusBelly() {
     }, {
         //Locations
         LOCATION(RC_JABU_JABUS_BELLY_MQ_COW,                    logic->CanUse(RG_EPONAS_SONG) && logic->CanUse(RG_FAIRY_SLINGSHOT)),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_WIGGLERS_GRASS,         logic->CanCutShrubs()),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_JIGGLIES_GRASS,         logic->CanCutShrubs()),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_AFTER_BIG_OCTO_GRASS_1, logic->CanCutShrubs()),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_AFTER_BIG_OCTO_GRASS_2, logic->CanCutShrubs()),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_JIGGLIES_SMALL_CRATE_1, logic->CanUse(RG_FAIRY_SLINGSHOT) && logic->CanBreakSmallCrates()),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_JIGGLIES_SMALL_CRATE_2, logic->CanUse(RG_FAIRY_SLINGSHOT) && logic->CanBreakSmallCrates()),
     }, {
         //Exits
         Entrance(RR_JABU_JABUS_BELLY_MQ_LIFT_ROOM,  []{return logic->CanUse(RG_BOOMERANG) && logic->CanUse(RG_FAIRY_SLINGSHOT);}),
@@ -359,7 +361,7 @@ void RegionTable_Init_JabuJabusBelly() {
 
     areaTable[RR_JABU_JABUS_BELLY_BOSS_ROOM] = Region("Jabu Jabus Belly Boss Room", "Jabu Jabus Belly", {}, NO_DAY_NIGHT_CYCLE, {
         // Events //todo: add pot kill trick
-        EventAccess(&logic->JabuJabusBellyClear, []{return logic->JabuJabusBellyClear || logic->CanKillEnemy(RE_BARINADE);}),
+        EventAccess(&logic->JabuJabusBellyClear, []{return logic->CanKillEnemy(RE_BARINADE);}),
     }, {
         // Locations
         LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_1, logic->CanBreakPots()),
