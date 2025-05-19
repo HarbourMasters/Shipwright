@@ -1490,9 +1490,9 @@ int EntranceShuffler::ShuffleAllEntrances() {
         std::map<std::string, Entrance*> bossExits = {
             { EntranceNameByRegions(RR_DEKU_TREE_BOSS_ROOM, RR_DEKU_TREE_BOSS_EXIT),
               GetEntrance(EntranceNameByRegions(RR_DEKU_TREE_ENTRYWAY, RR_KF_OUTSIDE_DEKU_TREE)) },
-            { EntranceNameByRegions(RR_DODONGOS_CAVERN_BOSS_ROOM, RR_DODONGOS_CAVERN_BOSS_ENTRYWAY),
+            { EntranceNameByRegions(RR_DODONGOS_CAVERN_BOSS_ROOM, RR_DODONGOS_CAVERN_BOSS_EXIT),
               GetEntrance(EntranceNameByRegions(RR_DODONGOS_CAVERN_ENTRYWAY, RR_DEATH_MOUNTAIN_TRAIL)) },
-            { EntranceNameByRegions(RR_JABU_JABUS_BELLY_BOSS_ROOM, RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY),
+            { EntranceNameByRegions(RR_JABU_JABUS_BELLY_BOSS_ROOM, RR_JABU_JABUS_BELLY_BOSS_EXIT),
               GetEntrance(EntranceNameByRegions(RR_JABU_JABUS_BELLY_ENTRYWAY, RR_ZORAS_FOUNTAIN)) },
             { EntranceNameByRegions(RR_FOREST_TEMPLE_BOSS_ROOM, RR_FOREST_TEMPLE_BOSS_ENTRYWAY),
               GetEntrance(EntranceNameByRegions(RR_FOREST_TEMPLE_ENTRYWAY, RR_SACRED_FOREST_MEADOW)) },
