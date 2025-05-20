@@ -432,6 +432,8 @@ bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, 
                 case ACTOR_EN_SB:
                 case ACTOR_EN_NY:
                     return (!(!isMQ && sceneNum == SCENE_WATER_TEMPLE && roomNum == 2));
+                case ACTOR_EN_SKJ:
+                    return !(sceneNum == SCENE_LOST_WOODS && LINK_IS_CHILD);
                 default:
                     return 1;
             }
