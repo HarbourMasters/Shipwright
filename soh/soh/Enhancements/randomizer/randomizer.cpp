@@ -322,30 +322,36 @@ void Randomizer::LoadMerchantMessages() {
             /*french*/"Squalala! Je vais enfin pouvoir #prendre des vacances#!",
             {QM_RED}));
 
-    // Each shop item has two messages, one for when the cursor is over it, and one for when you select it and are
-    // prompted buy/don't buy
-    CustomMessageManager::Instance->CreateMessage(
-        Randomizer::merchantMessageTableID, TEXT_SHOP_ITEM_RANDOM,
-        CustomMessage("\x08#[[1]]#  #[[2]]_Rupees#&Special deal! #ONE LEFT#!&Get it while it lasts!\x0A\x02",
-            "\x08#[[1]]#  #[[2]]_Rubine#&Sonderangebot! #NUR NOCH EINES VERFÜGBAR#!&Beeilen Sie sich!\x0A\x02",
-            "\x08#[[1]]#  #[[2]]_Rubis#&Offre spéciale! #DERNIER EN STOCK#!&Faites vite!\x0A\x02",
-            {QM_GREEN, QM_YELLOW, QM_RED}));
+    for (int index = 0; index < NUM_SHOP_ITEMS; index++) {
+        RandomizerCheck shopItemCheck = shopItemRandomizerChecks[index];
+        RandomizerGet shopItemGet = this->itemLocations[shopItemCheck];
+        // TODO: This should eventually be replaced with a full fledged trick model & trick name system
+        if (shopItemGet == RG_ICE_TRAP) {
+            shopItemGet = RG_HUGE_RUPEE;
+        }
+        std::vector<std::string> shopItemName = EnumToSpoilerfileGetName[shopItemGet];
+        u16 shopItemPrice = merchantPrices[shopItemCheck];
+        // Each shop item has two messages, one for when the cursor is over it, and one for when you select it and are
+        // prompted buy/don't buy, so we're adding the first at {index}, and the second at {index + NUM_SHOP_ITEMS}
+        CustomMessageManager::Instance->CreateMessage(
+            Randomizer::merchantMessageTableID, TEXT_SHOP_ITEM_RANDOM + index, { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
+                "\x08%r" + shopItemName[0] + "  " + std::to_string(shopItemPrice) + " Rupees&%wSpecial deal! ONE LEFT!&Get it while it lasts!\x0A\x02",
+                "\x08%r" + shopItemName[1] + "  " + std::to_string(shopItemPrice) + " Rubine&%wSonderangebot! NUR NOCH EINES VERFÜGBAR!&Beeilen Sie sich!\x0A\x02",
+                "\x08%r" + shopItemName[2] + "  " + std::to_string(shopItemPrice) + " Rubis&%wOffre spéciale! DERNIER EN STOCK!&Faites vite!\x0A\x02",
+        });
+        CustomMessageManager::Instance->CreateMessage(
+            Randomizer::merchantMessageTableID, TEXT_SHOP_ITEM_RANDOM + index + NUM_SHOP_ITEMS, { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
+                "\x08" + shopItemName[0] + "  " + std::to_string(shopItemPrice) + " Rupees\x09&&\x1B%gBuy&Don't buy%w\x09\x02",
+                "\x08" + shopItemName[1] + "  " + std::to_string(shopItemPrice) + " Rubine\x09&&\x1B%gKaufen&Nicht kaufen%w\x09\x02",
+                "\x08" + shopItemName[2] + "  " + std::to_string(shopItemPrice) + " Rubis\x09&&\x1B%gAcheter&Ne pas acheter%w\x09\x02",
+        });
+    }
+}
 
-    CustomMessageManager::Instance->CreateMessage(
-        Randomizer::merchantMessageTableID, TEXT_SHOP_ITEM_RANDOM_CONFIRM,
-        CustomMessage("\x08#[[1]]#  #[[2]]_Rupees#\x09\x1B#Buy&Don't buy#\x09\x02",
-            "\x08#[[1]]#  #[[2]]_Rubine#\x09\x1B#Kaufen&Nicht kaufen#\x09\x02",
-            "\x08#[[1]]#  #[[2]]_Rubis#\x09\x1B#Acheter&Ne pas acheter#\x09\x02",
-            {QM_GREEN, QM_YELLOW, QM_GREEN}));
-                      
-    CustomMessageManager::Instance->CreateMessage(
-        Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN_BUY_FOR_10,
-        CustomMessage("I tried to be a #magic bean# salesman, but it turns out my marketing skills weren't worth "
-                      "beans!^Anyway, want to buy #[[1]]# for #[[2]] Rupees#?\x1B#Yes&No#",
-           /*german*/ "Möchten Sie #[[1]]# für #[[2]] Rubine# kaufen?\x1B#Ja&Nein#",
-           /*french*/ "J'ai essayé d'être un vendeur de #haricots magiques#, mais j'étais mauvais au niveau du marketing et ça "
-                      "me courait sur le haricot...^Enfin bref, ça te dirait de m'acheter #[[1]]# pour #[[2]] Rubis#?\x1B#Oui&Non#",
-                      {QM_RED, QM_GREEN, QM_YELLOW, QM_GREEN}));
+void Randomizer::LoadItemLocations(const char* spoilerFileName, bool silent) {
+    if (strcmp(spoilerFileName, "") != 0) {
+        ParseItemLocationsFile(spoilerFileName, silent);
+    }
 
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN_BUY_FOR_100,
