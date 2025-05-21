@@ -269,9 +269,9 @@ extern "C" void Randomizer_InitSaveFile() {
 
     // Remove One Time Scrubs with Scrubsanity off
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_OFF) {
-        Flags_SetRandomizerInf(RAND_INF_SCRUBS_PURCHASED_LW_DEKU_SCRUB_NEAR_BRIDGE);
-        Flags_SetRandomizerInf(RAND_INF_SCRUBS_PURCHASED_LW_DEKU_SCRUB_GROTTO_FRONT);
-        Flags_SetRandomizerInf(RAND_INF_SCRUBS_PURCHASED_HF_DEKU_SCRUB_GROTTO);
+        Flags_SetItemGetInf(ITEMGETINF_DEKU_SCRUB_HEART_PIECE);
+        Flags_SetInfTable(INFTABLE_BOUGHT_STICK_UPGRADE);
+        Flags_SetInfTable(INFTABLE_BOUGHT_NUT_UPGRADE);
     }
 
     int startingAge = OTRGlobals::Instance->gRandoContext->GetOption(RSK_SELECTED_STARTING_AGE).Get();
