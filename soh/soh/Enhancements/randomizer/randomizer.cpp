@@ -3644,14 +3644,15 @@ bool GenerateRandomizer(std::string seed /*= ""*/) {
     return false;
 }
 
+static bool locationsTabOpen = false;
+static bool tricksTabOpen = false;
+
 void RandomizerSettingsWindow::DrawElement() {
     auto ctx = Rando::Context::GetInstance();
     if (generated) {
         generated = 0;
         randoThread.join();
     }
-    static bool locationsTabOpen = false;
-    static bool tricksTabOpen = false;
     bool disableEditingRandoSettings =
         CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
 
@@ -4322,7 +4323,11 @@ void RandomizerSettingsWindow::SetNeedsUpdate() {
 
 void RandomizerSettingsWindow::UpdateElement() {
     if (mNeedsUpdate) {
+        RandomizerCheckObjects::UpdateImGuiVisibility();
         mSettings->UpdateOptionProperties();
+        locationsTabOpen = false;
+        tricksTabOpen = false;
+        mNeedsUpdate = false;
     }
 }
 
