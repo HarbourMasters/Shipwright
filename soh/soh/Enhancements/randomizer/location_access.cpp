@@ -535,17 +535,17 @@ std::string CleanCheckConditionString(std::string condition) {
 }
 
 namespace Regions {
-const auto GetAllRegions() {
+auto GetAllRegions() {
     static const size_t regionCount = RR_MAX - (RR_NONE + 1);
 
     static std::array<RandomizerRegion, regionCount> allRegions = {};
 
-    static bool intialized = false;
-    if (!intialized) {
+    static bool initialized = false;
+    if (!initialized) {
         for (size_t i = 0; i < regionCount; i++) {
             allRegions[i] = (RandomizerRegion)((RR_NONE + 1) + i);
         }
-        intialized = true;
+        initialized = true;
     }
 
     return allRegions;
@@ -684,7 +684,7 @@ std::vector<Rando::Entrance*> GetShuffleableEntrances(Rando::EntranceType type, 
 
 Rando::Entrance* GetEntrance(RandomizerRegion source, RandomizerRegion destination) {
     for (auto& exit : RegionTable(source)->exits) {
-        if (exit.GetConnectedRegionKey() == destination) {
+        if (exit.GetOriginalConnectedRegionKey() == destination) {
             return &exit;
         }
     }
