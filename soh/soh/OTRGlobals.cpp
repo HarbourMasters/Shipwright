@@ -272,7 +272,7 @@ OTRGlobals::OTRGlobals() {
     if (std::filesystem::exists(ootPath)) {
         OTRFiles.push_back(ootPath);
     }
-    std::string sohOtrPath = Ship::Context::GetPathRelativeToAppBundle("soh.otr");
+    std::string sohOtrPath = Ship::Context::LocateFileAcrossAppDirs("soh.otr");
     if (std::filesystem::exists(sohOtrPath)) {
         OTRFiles.push_back(sohOtrPath);
     }
@@ -1153,7 +1153,7 @@ extern "C" void InitOTR() {
     CheckAndCreateModFolder();
 #endif
 
-    CheckSoHOTRVersion(Ship::Context::GetPathRelativeToAppBundle("soh.otr"));
+    CheckSoHOTRVersion(Ship::Context::LocateFileAcrossAppDirs("soh.otr"));
 
     if (!std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs("oot-mq.otr", appShortName)) &&
         !std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs("oot.otr", appShortName))) {
