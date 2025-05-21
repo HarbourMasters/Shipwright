@@ -1,14 +1,17 @@
 #include "Presets.h"
 #include <variant>
 #include <string>
-#include <cstdint>
 #include <fstream>
-#include <libultraship/bridge.h>
+#include <config/Config.h>
+#include <libultraship/classes.h>
+#include <nlohmann/json.hpp>
 #include <libultraship/libultraship.h>
-#include <spdlog/fmt/fmt.h>
+#include <Json.h>
+#include "soh/OTRGlobals.h"
 #include "soh/SohGui/MenuTypes.h"
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
+#include "soh/Enhancements/randomizer/randomizer_settings_window.h"
 #include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include "soh/Enhancements/randomizer/randomizer_item_tracker.h"
@@ -17,7 +20,24 @@ namespace fs = std::filesystem;
 
 namespace SohGui {
 extern std::shared_ptr<SohMenu> mSohMenu;
-}
+extern std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
+} // namespace SohGui
+
+struct PresetInfo {
+    nlohmann::json presetValues;
+    std::string fileName;
+    bool apply[PRESET_SECTION_MAX];
+    bool isBuiltIn = false;
+};
+
+struct BlockInfo {
+    std::vector<std::string> sections;
+    const char* icon;
+    std::string names[2];
+};
+
+static std::map<std::string, PresetInfo> presets;
+static std::string presetFolder;
 
 void BlankButton() {
     ImGui::PushStyleColor(ImGuiCol_Button, { 0, 0, 0, 0 });
@@ -40,94 +60,6 @@ void PresetCheckboxStyle(const ImVec4& color) {
     ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 5.0f);
 }
 
-void applyPreset(std::vector<PresetEntry> entries) {
-    for (auto& [cvar, type, value] : entries) {
-        switch (type) {
-            case PRESET_ENTRY_TYPE_S32:
-                CVarSetInteger(cvar, std::get<int32_t>(value));
-                break;
-            case PRESET_ENTRY_TYPE_FLOAT:
-                CVarSetFloat(cvar, std::get<float>(value));
-                break;
-            case PRESET_ENTRY_TYPE_STRING:
-                CVarSetString(cvar, std::get<const char*>(value));
-                break;
-            case PRESET_ENTRY_TYPE_CPP_STRING:
-                CVarSetString(cvar, std::get<std::string>(value).c_str());
-                break;
-        }
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    }
-    ShipInit::Init("*");
-}
-
-void DrawPresetSelector(PresetType presetTypeId) {
-    const std::string presetTypeCvar = CVAR_GENERAL("SelectedPresets.") + std::to_string(presetTypeId);
-    const PresetTypeDefinition presetTypeDef = presetTypes.at(presetTypeId);
-    uint16_t selectedPresetId = CVarGetInteger(presetTypeCvar.c_str(), 0);
-    if (selectedPresetId >= presetTypeDef.presets.size()) {
-        selectedPresetId = 0;
-    }
-    const PresetDefinition selectedPresetDef = presetTypeDef.presets.at(selectedPresetId);
-    std::string comboboxTooltip = "";
-    for (auto iter = presetTypeDef.presets.begin(); iter != presetTypeDef.presets.end(); ++iter) {
-        if (iter->first != 0)
-            comboboxTooltip += "\n\n";
-        comboboxTooltip += std::string(iter->second.label) + " - " + std::string(iter->second.description);
-    }
-
-    ImGui::Text("Presets");
-    UIWidgets::PushStyleCombobox(THEME_COLOR);
-    if (ImGui::BeginCombo("##PresetsComboBox", selectedPresetDef.label)) {
-        for (auto iter = presetTypeDef.presets.begin(); iter != presetTypeDef.presets.end(); ++iter) {
-            if (ImGui::Selectable(iter->second.label, iter->first == selectedPresetId)) {
-                CVarSetInteger(presetTypeCvar.c_str(), iter->first);
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-            }
-        }
-
-        ImGui::EndCombo();
-    }
-    UIWidgets::PopStyleCombobox();
-    UIWidgets::Tooltip(comboboxTooltip.c_str());
-
-    UIWidgets::PushStyleButton(THEME_COLOR);
-    if (ImGui::Button(("Apply Preset##" + presetTypeCvar).c_str())) {
-        for (const char* block : presetTypeDef.blocksToClear) {
-            CVarClearBlock(block);
-        }
-        if (selectedPresetId != 0) {
-            applyPreset(selectedPresetDef.entries);
-        }
-        CVarSetInteger(presetTypeCvar.c_str(), selectedPresetId);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    }
-    UIWidgets::PopStyleButton();
-}
-
-enum PresetSection {
-    PRESET_SECTION_SETTINGS,
-    PRESET_SECTION_ENHANCEMENTS,
-    PRESET_SECTION_AUDIO,
-    PRESET_SECTION_COSMETICS,
-    PRESET_SECTION_RANDOMIZER,
-    PRESET_SECTION_TRACKERS,
-    PRESET_SECTION_NETWORK,
-    PRESET_SECTION_MAX,
-};
-
-struct PresetInfo {
-    nlohmann::json presetValues;
-    std::string fileName;
-    bool apply[PRESET_SECTION_MAX];
-};
-
-struct BlockInfo {
-    std::vector<std::string> sections;
-    const char* icon;
-    std::string names[2];
-};
-
 static BlockInfo blockInfo[PRESET_SECTION_MAX] = {
     { { CVAR_PREFIX_SETTING, CVAR_PREFIX_WINDOW }, ICON_FA_COG, { "Settings", "settings" } },
     { { CVAR_PREFIX_ENHANCEMENT, CVAR_PREFIX_RANDOMIZER_ENHANCEMENT, CVAR_PREFIX_CHEAT },
@@ -140,11 +72,84 @@ static BlockInfo blockInfo[PRESET_SECTION_MAX] = {
     { { CVAR_PREFIX_REMOTE }, ICON_FA_WIFI, { "Network", "network" } },
 };
 
-static std::map<std::string, PresetInfo> presets;
-static std::string presetFolder;
-
 std::string FormatPresetPath(std::string name) {
     return fmt::format("{}/{}.json", presetFolder, name);
+}
+
+void applyPreset(std::string presetName, std::vector<PresetSection> includeSections) {
+    auto& info = presets[presetName];
+    for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
+        if (info.apply[i] && info.presetValues["blocks"].contains(blockInfo[i].names[1])) {
+            if (!includeSections.empty() &&
+                std::find(includeSections.begin(), includeSections.end(), i) == includeSections.end()) {
+                continue;
+            }
+            if (i == PRESET_SECTION_TRACKERS) {
+                ItemTracker_LoadFromPreset(info.presetValues["blocks"][blockInfo[i].names[1]]["windows"]);
+                if (info.presetValues["blocks"][blockInfo[i].names[1]]["windows"].contains("Check Tracker")) {
+                    CheckTracker::CheckTracker_LoadFromPreset(
+                        info.presetValues["blocks"][blockInfo[i].names[1]]["windows"]["Check Tracker"]);
+                }
+                if (info.presetValues["blocks"][blockInfo[i].names[1]]["windows"].contains("Entrance Tracker")) {
+                    EntranceTracker_LoadFromPreset(
+                        info.presetValues["blocks"][blockInfo[i].names[1]]["windows"]["Entrance Tracker"]);
+                }
+            }
+            auto section = info.presetValues["blocks"][blockInfo[i].names[1]];
+            for (auto& item : section.items()) {
+                if (section[item.key()].is_null()) {
+                    CVarClearBlock(item.key().c_str());
+                } else {
+                    Ship::Context::GetInstance()->GetConfig()->SetBlock(fmt::format("{}.{}", "CVars", item.key()),
+                                                                        item.value());
+                    Ship::Context::GetInstance()->GetConsoleVariables()->Load();
+                }
+            }
+            if (i == PRESET_SECTION_RANDOMIZER) {
+                SohGui::mRandomizerSettingsWindow->SetNeedsUpdate();
+            }
+        }
+    }
+}
+
+void DrawPresetSelector(std::vector<PresetSection> includeSections, std::string presetLoc, bool disabled) {
+    std::vector<std::string> includedPresets;
+    for (auto& [name, info] : presets) {
+        for (auto& section : includeSections) {
+            if (info.apply[section]) {
+                includedPresets.push_back(name);
+            }
+        }
+    }
+    ImGui::Text("Presets");
+    if (includedPresets.empty()) {
+        ImGui::PushStyleColor(ImGuiCol_Text, UIWidgets::ColorValues.at(UIWidgets::Colors::Orange));
+        ImGui::Text("No presets with rando options. Make some in Settings -> Presets");
+        ImGui::PopStyleColor();
+        return;
+    }
+    std::string selectorCvar = fmt::format(CVAR_GENERAL("{}SelectedPreset"), presetLoc);
+    std::string currentIndex = CVarGetString(selectorCvar.c_str(), includedPresets[0].c_str());
+    UIWidgets::PushStyleCombobox(THEME_COLOR);
+    if (ImGui::BeginCombo("##PresetsComboBox", currentIndex.c_str())) {
+        for (auto iter = includedPresets.begin(); iter != includedPresets.end(); ++iter) {
+            if (ImGui::Selectable(iter->c_str(), *iter == currentIndex)) {
+                CVarSetString(selectorCvar.c_str(), iter->c_str());
+                currentIndex = *iter;
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            }
+        }
+
+        ImGui::EndCombo();
+    }
+    UIWidgets::PopStyleCombobox();
+    // UIWidgets::Tooltip(comboboxTooltip.c_str());
+
+    UIWidgets::PushStyleButton(THEME_COLOR);
+    if (ImGui::Button(("Apply Preset##" + selectorCvar).c_str())) {
+        applyPreset(currentIndex, includeSections);
+    }
+    UIWidgets::PopStyleButton();
 }
 
 void DrawSectionCheck(const std::string& name, bool empty, bool* pointer, std::string section) {
@@ -166,6 +171,21 @@ void DrawSectionCheck(const std::string& name, bool empty, bool* pointer, std::s
     }
 }
 
+void ParsePreset(nlohmann::json& json, std::string name) {
+    try {
+        presets[json["presetName"]].presetValues = json;
+        presets[json["presetName"]].fileName = name;
+        if (json.contains("isBuiltIn")) {
+            presets[json["presetName"]].isBuiltIn = json["isBuiltIn"];
+        }
+        for (int i = 0; i < PRESET_SECTION_MAX; i++) {
+            if (presets[json["presetName"]].presetValues["blocks"].contains(blockInfo[i].names[1])) {
+                presets[json["presetName"]].apply[i] = true;
+            }
+        }
+    } catch (...) {}
+}
+
 void LoadPresets() {
     if (!fs::exists(presetFolder)) {
         return;
@@ -174,17 +194,28 @@ void LoadPresets() {
         std::ifstream ifs(preset.path());
 
         auto json = nlohmann::json::parse(ifs);
-        try {
-            if (!json.contains("presetName")) {
-                spdlog::error(fmt::format("Attempted to load file {} as a preset, but was not a preset file.",
-                                          preset.path().filename().string()));
-                return;
-            }
-            presets[json["presetName"]].presetValues = json;
-            presets[json["presetName"]].fileName = preset.path().filename().stem().string();
-            std::fill_n(presets[json["presetName"]].apply, PRESET_SECTION_MAX, true);
-        } catch (...) {}
+        if (!json.contains("presetName")) {
+            spdlog::error(fmt::format("Attempted to load file {} as a preset, but was not a preset file.",
+                                      preset.path().filename().string()));
+        } else {
+            ParsePreset(json, preset.path().filename().stem().string());
+        }
         ifs.close();
+    }
+    auto initData = std::make_shared<Ship::ResourceInitData>();
+    initData->Format = RESOURCE_FORMAT_BINARY;
+    initData->Type = static_cast<uint32_t>(Ship::ResourceType::Json);
+    initData->ResourceVersion = 0;
+    std::string folder = "presets/*";
+    auto builtIns = Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->ListFiles(folder);
+    size_t start = std::string(folder).size() - 1;
+    for (size_t i = 0; i < builtIns->size(); i++) {
+        std::string filePath = builtIns->at(i);
+        auto json = std::static_pointer_cast<Ship::Json>(
+            Ship::Context::GetInstance()->GetResourceManager()->LoadResource(filePath, true, initData));
+
+        std::string fileName = filePath.substr(start, filePath.size() - start - 5); // 5 for length of ".json"
+        ParsePreset(json->Data, fileName);
     }
 }
 
@@ -193,7 +224,8 @@ void SavePreset(std::string& presetName) {
         fs::create_directory(presetFolder);
     }
     presets[presetName].presetValues["presetName"] = presetName;
-    std::ofstream file(fmt::format("{}/{}.json", presetFolder, presetName));
+    std::ofstream file(
+        fmt::format("{}/{}.json", Ship::Context::GetInstance()->LocateFileAcrossAppDirs("presets"), presetName));
     file << presets[presetName].presetValues.dump(4);
     file.close();
 }
@@ -312,6 +344,10 @@ void PresetsCustomWidget(WidgetInfo& info) {
                                            ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar)) {
         DrawNewPresetPopup();
     }
+    ImGui::SameLine();
+    UIWidgets::CVarCheckbox("Hide built-in presets", CVAR_GENERAL("HideBuiltInPresets"),
+                            UIWidgets::CheckboxOptions().Color(THEME_COLOR));
+    bool hideBuiltIn = CVarGetInteger(CVAR_GENERAL("HideBuiltInPresets"), 0);
     UIWidgets::PushStyleTabs(THEME_COLOR);
     if (ImGui::BeginTable("PresetWidgetTable", PRESET_SECTION_MAX + 3)) {
         ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthFixed, 250);
@@ -343,6 +379,9 @@ void PresetsCustomWidget(WidgetInfo& info) {
             return;
         }
         for (auto& [name, info] : presets) {
+            if (hideBuiltIn && info.isBuiltIn) {
+                continue;
+            }
             ImGui::TableNextRow();
             ImGui::TableNextColumn();
             ImGui::AlignTextToFramePadding();
@@ -359,46 +398,22 @@ void PresetsCustomWidget(WidgetInfo& info) {
                     UIWidgets::ButtonOptions({ { .disabled = (CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) != 0),
                                                  .disabledTooltip = "Disabled because of race lockout" } })
                         .Padding({ 6.0f, 6.0f }))) {
-                for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
-                    if (info.apply[i] && info.presetValues["blocks"].contains(blockInfo[i].names[1])) {
-                        if (i == PRESET_SECTION_TRACKERS) {
-                            ItemTracker_LoadFromPreset(info.presetValues["blocks"][blockInfo[i].names[1]]["windows"]);
-                            if (info.presetValues["blocks"][blockInfo[i].names[1]]["windows"].contains(
-                                    "Check Tracker")) {
-                                CheckTracker::CheckTracker_LoadFromPreset(
-                                    info.presetValues["blocks"][blockInfo[i].names[1]]["windows"]["Check Tracker"]);
-                            }
-                            if (info.presetValues["blocks"][blockInfo[i].names[1]]["windows"].contains(
-                                    "Entrance Tracker")) {
-                                EntranceTracker_LoadFromPreset(
-                                    info.presetValues["blocks"][blockInfo[i].names[1]]["windows"]["Entrance Tracker"]);
-                            }
-                        }
-                        auto section = info.presetValues["blocks"][blockInfo[i].names[1]];
-                        for (auto& item : section.items()) {
-                            if (section[item.key()].is_null()) {
-                                CVarClearBlock(item.key().c_str());
-                            } else {
-                                Ship::Context::GetInstance()->GetConfig()->SetBlock(
-                                    fmt::format("{}.{}", "CVars", item.key()), item.value());
-                                Ship::Context::GetInstance()->GetConsoleVariables()->Load();
-                            }
-                        }
-                    }
-                }
-                for (auto& section : info.presetValues["blocks"]) {}
+                applyPreset(name);
             }
             UIWidgets::PopStyleButton();
             ImGui::TableNextColumn();
             UIWidgets::PushStyleButton(THEME_COLOR);
-            if (UIWidgets::Button(("Delete##" + name).c_str(), UIWidgets::ButtonOptions().Padding({ 6.0f, 6.0f }))) {
-                auto path = FormatPresetPath(info.fileName);
-                if (fs::exists(path)) {
-                    fs::remove(path);
+            if (!info.isBuiltIn) {
+                if (UIWidgets::Button(("Delete##" + name).c_str(),
+                                      UIWidgets::ButtonOptions().Padding({ 6.0f, 6.0f }))) {
+                    auto path = FormatPresetPath(info.fileName);
+                    if (fs::exists(path)) {
+                        fs::remove(path);
+                    }
+                    presets.erase(name);
+                    UIWidgets::PopStyleButton();
+                    break;
                 }
-                presets.erase(name);
-                UIWidgets::PopStyleButton();
-                break;
             }
             UIWidgets::PopStyleButton();
         }
@@ -418,5 +433,4 @@ void RegisterPresetsWidgets() {
     LoadPresets();
 }
 
-// static RegisterMenuUpdateFunc updateFunc(UpdateResolutionVars, "Settings", "General");
 static RegisterMenuInitFunc initFunc(RegisterPresetsWidgets);
