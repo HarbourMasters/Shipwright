@@ -192,6 +192,9 @@ void LoadPresets() {
     if (!fs::exists(presetFolder)) {
         return;
     }
+    if (!presets.empty()) {
+        presets.clear();
+    }
     for (auto const& preset : fs::directory_iterator(presetFolder)) {
         std::ifstream ifs(preset.path());
 
@@ -230,6 +233,7 @@ void SavePreset(std::string& presetName) {
         fmt::format("{}/{}.json", Ship::Context::GetInstance()->LocateFileAcrossAppDirs("presets"), presetName));
     file << presets[presetName].presetValues.dump(4);
     file.close();
+    LoadPresets();
 }
 
 static std::string newPresetName;
