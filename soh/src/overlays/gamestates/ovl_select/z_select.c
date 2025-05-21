@@ -445,18 +445,18 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "たからは゛こや　から", "From Treasure Box Minigame", "Von der Truhenlotterie", "Depuis le Bowling Teigneux", ENTR_MARKET_DAY_OUTSIDE_TREASURE_BOX_SHOP, 0 },
         { "おしろ　から", "From Castle", "Vom Schloss", "Depuis le Chateau d'Hyrule", ENTR_MARKET_DAY_CASTLE_EXIT, 0 },
         { "ときのしんて゛ん　から", "From Temple of Time", "Von der Zitadelle der Zeit", "Depuis le Temple du Temps", ENTR_MARKET_DAY_TEMPLE_EXIT, 0 },
-        { "うらろし゛　から　(みき゛)", "From Back Alley (Right)", "Von der Seitenstrasse (Rechts)", "Depuis la Ruelle (Droite)", ENTR_MARKET_DAY_3, 0 },
-        { "うらろし゛　から　(ひた゛り)", "From Back Alley (Left)", "Von der Seitenstrasse (Links)", "Depuis la Ruelle (Gauche)", ENTR_MARKET_DAY_4, 0 },
+        { "ろし゛うら　から　(みき゛)", "From Back Alley (Right)", "Von der Seitenstrasse (Rechts)", "Depuis la Ruelle (Droite)", ENTR_MARKET_DAY_3, 0 },
+        { "ろし゛うら　から　(ひた゛り)", "From Back Alley (Left)", "Von der Seitenstrasse (Links)", "Depuis la Ruelle (Gauche)", ENTR_MARKET_DAY_4, 0 },
         { "くすりや　から", "From Potion Shop", "Vom Magie-Laden", "Depuis l'Apothicaire", ENTR_MARKET_DAY_OUTSIDE_POTION_SHOP, 0 },
         { "なンて゛もや　から", "From Bazaar Shop", "Vom Basar", "Depuis le Bazar", ENTR_MARKET_DAY_OUTSIDE_BAZAAR, 0 },
         { "ホ゛ムチュウホ゛ウリンク゛から", "From Bomchu Bowling Minigame", "Von der Minenbowlingbahn", "Depuis le Bowling Teigneux", ENTR_MARKET_DAY_OUTSIDE_BOMBCHU_BOWLING, 0 },
     }},
-    { "8:し゛ょうかまち　うらろし゛", " 8:Castle Town Alley", " 8:Seitenstrasse", " 8:Ruelle du Bourg d'Hyrule", Select_LoadGame, 5, {
+    { "8:し゛ょうかまち　ろし゛うら", " 8:Castle Town Alley", " 8:Seitenstrasse", " 8:Ruelle du Bourg d'Hyrule", Select_LoadGame, 5, {
         { "し゛ょうかまち　から　(みき゛)", "From Market (Right)", "Vom Marktplatz (Rechts)", "Depuis la Place du Marche (Droite)", ENTR_BACK_ALLEY_DAY_0, 0 },
         { "し゛ょうかまち　から　(ひた゛り)", "From Market (Left)", "Vom Marktplatz (Links)", "Depuis la Place du Marche (Gauche)", ENTR_BACK_ALLEY_DAY_1, 0 },
-        { "うらろし゛のいえ　から", "From Alley House", "Vom Seitenstrassenhaus", "Depuis la Maison de la Ruelle", ENTR_BACK_ALLEY_DAY_OUTSIDE_MAN_IN_GREEN_HOUSE, 0 },
+        { "ろし゛うらのいえ　から", "From Alley House", "Vom Seitenstrassenhaus", "Depuis la Maison de la Ruelle", ENTR_BACK_ALLEY_DAY_OUTSIDE_MAN_IN_GREEN_HOUSE, 0 },
         { "いぬのいえ　から", "From Dog House", "Vom Haus der Hunde-Dame", "Depuis la Maison du Chien", ENTR_BACK_ALLEY_DAY_4, 0 },
-        { "ホ゛ムチュウショッフ゜　から", "From Bombchu Shop", "Vom Krabbelminen-Laden", "Depuis le Magasin de Missiles", ENTR_BACK_ALLEY_DAY_OUTSIDE_BOMBCHU_SHOP, 0 },
+        { "ホ゛ムチュウや　から", "From Bombchu Shop", "Vom Krabbelminen-Laden", "Depuis le Magasin de Missiles", ENTR_BACK_ALLEY_DAY_OUTSIDE_BOMBCHU_SHOP, 0 },
     }},
     { "9:し゛ょうかまちのたてもの", " 9:Castle Town Buildings", " 9:Marktplatz Gebaeude", " 9:Batiments du Bourg d'Hyrule", Select_LoadGame, 10, {
         { "つほ゛のこや", "Pot House", "Wachposten", "Maison des Jarres", ENTR_MARKET_GUARD_HOUSE_0, 0 },
@@ -466,9 +466,9 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "ホ゛ムチュウホ゛ウリンク゛", "Bombchu Bowling Minigame", "Minenbowlingbahn", "Bowling Teigneux", ENTR_BOMBCHU_BOWLING_ALLEY_0, 0 },
         { "なンて゛もや", "Bazaar Shop", "Basar", "Bazar", ENTR_BAZAAR_1, 0 },
         { "おめんや", "Happy Mask Shop", "Maskenhaendler", "Foire aux Masques", ENTR_HAPPY_MASK_SHOP_0, 0 },
-        { "ホ゛ムチュウショッフ゜", "Bombchu Shop", "Krabbelminen-Laden", "Boutique de Missiles", ENTR_BOMBCHU_SHOP_1, 0 },
+        { "ホ゛ムチュウや", "Bombchu Shop", "Krabbelminen-Laden", "Boutique de Missiles", ENTR_BOMBCHU_SHOP_1, 0 },
         { "いぬのいえ", "Dog House", "Haus der Hunde-Dame", "Maison du Chien", ENTR_DOG_LADY_HOUSE_0, 0 },
-        { "うらろし゛のいえ", "Alley House", "Seitenstrassenhaus", "Maison de la Ruelle", ENTR_BACK_ALLEY_MAN_IN_GREEN_HOUSE, 0 },
+        { "ろし゛うらのいえ", "Alley House", "Seitenstrassenhaus", "Maison de la Ruelle", ENTR_BACK_ALLEY_MAN_IN_GREEN_HOUSE, 0 },
     }},
     { "10:ときのしんて゛ん", "10:Temple of Time", "10:Zitadelle der Zeit", "10:Temple du Temps", Select_LoadGame, 5, {
         { "そと　から", "From Outside", "Von draussen", "Depuis l'Entree", ENTR_TEMPLE_OF_TIME_ENTRANCE, 0 },
@@ -511,8 +511,8 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "くすりや　から", "From Potion Shop", "Vom Magie-Laden", "Depuis l'Apothicaire", ENTR_KAKARIKO_VILLAGE_OUTSIDE_POTION_SHOP_FRONT, 0 },
         { "くすりや　から(うらく゛ち)", "From Potion Shop (Back Entrance)", "Vom Magie-Laden (Hintereingang)", "Depuis l'Apothicaire (Entree Arriere)", ENTR_KAKARIKO_VILLAGE_OUTSIDE_POTION_SHOP_BACK, 0 },
         { "オハ゛ハ゛のくすりや　から", "From Grannys Potion Shop", "Von Omas Magie-Laden", "Depuis l'Apothicaire (Vieille Femme)", ENTR_KAKARIKO_VILLAGE_OUTSIDE_SHOP_GRANNY, 0 },
-        { "インハ゜のいえ　から", "From Impas House", "Von Impas Haus", "Depuis la Maison d'Impa", ENTR_KAKARIKO_VILLAGE_OUTSIDE_IMPAS_HOUSE_FRONT, 0 },
-        { "インハ゜のいえ(ウシ)　から", "From Impas House (Cow)", "Von Impas Haus (Kuh)", "Depuis la Maison d'Impa (Vache)", ENTR_KAKARIKO_VILLAGE_OUTSIDE_IMPAS_HOUSE_BACK, 0 },
+        { "インハ゜のおやしき　から", "From Impas House", "Von Impas Haus", "Depuis la Maison d'Impa", ENTR_KAKARIKO_VILLAGE_OUTSIDE_IMPAS_HOUSE_FRONT, 0 },
+        { "インハ゜のおやしき(ウシ)　から", "From Impas House (Cow)", "Von Impas Haus (Kuh)", "Depuis la Maison d'Impa (Vache)", ENTR_KAKARIKO_VILLAGE_OUTSIDE_IMPAS_HOUSE_BACK, 0 },
         { "ふうしゃ　から", "From Windmill", "Von der Windmuehle", "Depuis le Moulin", ENTR_KAKARIKO_VILLAGE_OUTSIDE_WINDMILL, 0 },
         { "まとあてや　から", "From Shooting Gallery", "Von der Schiessbude", "Depuis le Jeu d'adresse", ENTR_KAKARIKO_VILLAGE_OUTSIDE_SHOOTING_GALLERY, 0 },
         { "スタルチュラハウス　から", "From Skulltula House", "Vom Haus der Skulltulas", "Depuis la Maison des Skulltulas", ENTR_KAKARIKO_VILLAGE_OUTSIDE_SKULKLTULA_HOUSE, 0 },
@@ -523,8 +523,8 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "オハ゛ハ゛のくすりや", "Grannys Potion Shop", "Omas Magie-Laden", "Apothicaire (Vieille Femme)", ENTR_POTION_SHOP_GRANNY_0, 0 },
         { "なンて゛もや", "Bazaar Shop", "Basar", "Bazar", ENTR_BAZAAR_0, 0 },
         { "くすりや", "Potion Shop", "Magie-Laden", "Apothicaire", ENTR_POTION_SHOP_KAKARIKO_FRONT, 0 },
-        { "インハ゜のいえ", "Impas House", "Impas Haus", "Maison d'Impa", ENTR_IMPAS_HOUSE_FRONT, 0 },
-        { "インハ゜のいえ(ウシのちかく)", "Impas House (Near Cow)", "Impas Haus (Kuh)", "Maison d'Impa (Vache)", ENTR_IMPAS_HOUSE_BACK, 0 },
+        { "インハ゜のおやしき", "Impas House", "Impas Haus", "Maison d'Impa", ENTR_IMPAS_HOUSE_FRONT, 0 },
+        { "インハ゜のおやしき(ウシのちかく)", "Impas House (Near Cow)", "Impas Haus (Kuh)", "Maison d'Impa (Vache)", ENTR_IMPAS_HOUSE_BACK, 0 },
         { "なか゛や", "Boss House", "Haus des Bosses", "Maison du Boss", ENTR_KAKARIKO_CENTER_GUEST_HOUSE_0, 0 },
         { "ふうしゃ", "Windmill", "Windmuehle", "Moulin", ENTR_WINDMILL_AND_DAMPES_GRAVE_WINDMILL, 0 },
         { "スタルチュラハウス", "Skulltula House", "Haus der Skulltulas", "Maison des Skulltulas", ENTR_HOUSE_OF_SKULLTULA_0, 0 },
@@ -679,8 +679,8 @@ static BetterSceneSelectEntry sBetterScenes[] = {
     }},
     { "36:ほのおのしんて゛ん", "36:Fire Temple", "36:Feuertempel", "36:Temple du Feu", Select_LoadGame, 3, {
         { "いりく゛ち", "Entrance", "Eingang", "Entrance", ENTR_FIRE_TEMPLE_ENTRANCE, 1 },
-        { "ウ゛ァルウ゛ァシ゛アまえ", "Before Volvagia", "Vor Volvagia", "Avant Volvagia", ENTR_FIRE_TEMPLE_BOSS_DOOR, 1 },
-        { "ウ゛ァルウ゛ァシ゛アのへや", "Volvagia's Lair", "Volvagias Kampf", "Repaire de Volcania", ENTR_FIRE_TEMPLE_BOSS_ENTRANCE, 0 },
+        { "ウ゛ァルハ゛シ゛アまえ", "Before Volvagia", "Vor Volvagia", "Avant Volvagia", ENTR_FIRE_TEMPLE_BOSS_DOOR, 1 },
+        { "ウ゛ァルハ゛シ゛アのへや", "Volvagia's Lair", "Volvagias Kampf", "Repaire de Volcania", ENTR_FIRE_TEMPLE_BOSS_ENTRANCE, 0 },
     }},
     { "37:みす゛のしんて゛ん", "37:Water Temple", "37:Wassertempel", "37:Temple de l'Eau", Select_LoadGame, 2, {
         { "いりく゛ち", "Entrance", "Eingang", "Entree", ENTR_WATER_TEMPLE_ENTRANCE, 1 },
@@ -732,7 +732,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "くすりや(し゛ょうかまち)", "Potion Shop (Market)", "Magie-Laden (Marktplatz)", "Apothicaire (Place du Marche)", ENTR_POTION_SHOP_MARKET_0, 0 },
         { "なンて゛もや(し゛ょうかまち)", "Bazaar Shop (Market)", "Basar (Marktplatz)", "Bazar (Place du Marche)", ENTR_BAZAAR_1, 0 },
         { "おめんや", "Happy Mask Shop", "Maskenhaendler", "Foire aux Masques", ENTR_HAPPY_MASK_SHOP_0, 0 },
-        { "ホ゛ムチュウショッフ゜", "Bombchu Shop", "Krabbelminen-Laden", "Boutique de Missiles", ENTR_BOMBCHU_SHOP_1, 0 },
+        { "ホ゛ムチュウや", "Bombchu Shop", "Krabbelminen-Laden", "Boutique de Missiles", ENTR_BOMBCHU_SHOP_1, 0 },
         { "なンて゛もや(カカリコむら)", "Bazaar Shop (Kakariko)", "Basar (Kakariko)", "Bazar (Village Cocorico)", ENTR_BAZAAR_0, 0 },
         { "くすりや(カカリコむら)", "Potion Shop (Kakariko)", "Magie-Laden (Kakariko)", "Apothicaire (Village Cocorico)", ENTR_POTION_SHOP_KAKARIKO_FRONT, 0 },
         { "コ゛ロンのおみせ", "Goron City Shop", "Goronen-Laden", "Boutique Goron", ENTR_GORON_SHOP_0, 0 },
@@ -785,8 +785,8 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "SRDマッフ゜(ささテスト)", "SRD Map", "SRD Karte", "Carte SRD", ENTR_SASATEST_0, 0 },
         { "テストマッフ゜", "Test Map", "Test Karte", "Carte de Test", ENTR_TEST01_0, 0 },
         { "たからは゛こワーフ゜", "Treasure Chest Warp", "Schatzkisten Teleport", "Salle de Test - Objets", ENTR_TESTROOM_0, 0 },
-        { "ちゅうスタロフォスへ゛や", "Stalfos Miniboss Room", "Stalfos-Ritter Miniboss-Raum", "Salle du Minoboss Stalfos", ENTR_SYOTES_0, 0 },
-        { "ホ゛スタスロフォスへ゛や", "Stalfos Boss Room", "Stalfos-Ritter Boss-Raum", "Salle de Boss Stalfos", ENTR_SYOTES2_0, 0 },
+        { "ちゅうスタルフォスへ゛や", "Stalfos Miniboss Room", "Stalfos-Ritter Miniboss-Raum", "Salle du Minoboss Stalfos", ENTR_SYOTES_0, 0 },
+        { "ホ゛ススタルフォスへ゛や", "Stalfos Boss Room", "Stalfos-Ritter Boss-Raum", "Salle de Boss Stalfos", ENTR_SYOTES2_0, 0 },
         { "タ゛ークリンクへ゛や(Sutaru)", "Dark Link Room", "Schwarzer Link Raum", "Salle de Dark Link", ENTR_SUTARU_0, 0 },
         { "まとあてやのコヒ゜ー(jikkenjyou)", "Shooting Gallery Duplicate", "Schiessbude (Duplikat)", "Jeu d'Adresse (Duplicata)", ENTR_TEST_SHOOTING_GALLERY_0, 0 },
         { "depthテスト", "Depth Test", "Tiefen Test", "Test de Profondeur", ENTR_DEPTH_TEST_0, 0 },
@@ -1605,7 +1605,7 @@ void Better_Select_PrintTimeSetting(SelectContext* this, GfxPrint* printer) {
                     label = "Nuit";
                     break;
                 case LANGUAGE_JPN:
-                    label = "ヨル";
+                    label = "よる";
                     break;
             }
         } else {
