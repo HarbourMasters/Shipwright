@@ -3653,10 +3653,10 @@ void RandomizerSettingsWindow::DrawElement() {
         generated = 0;
         randoThread.join();
     }
-    bool disableEditingRandoSettings =
-        CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
+    bool generating = CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0);
+    bool disableEditingRandoSettings = generating || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
 
-    DrawPresetSelector({ PRESET_SECTION_RANDOMIZER }, "Randomizer", disableEditingRandoSettings);
+    DrawPresetSelector({ PRESET_SECTION_RANDOMIZER }, "Randomizer", generating);
 
     // UIWidgets::Spacer(0);
     UIWidgets::CVarCheckbox("Manual seed entry", CVAR_RANDOMIZER_SETTING("ManualSeedEntry"),

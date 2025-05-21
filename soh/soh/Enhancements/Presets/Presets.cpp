@@ -146,7 +146,9 @@ void DrawPresetSelector(std::vector<PresetSection> includeSections, std::string 
     // UIWidgets::Tooltip(comboboxTooltip.c_str());
 
     UIWidgets::PushStyleButton(THEME_COLOR);
-    if (ImGui::Button(("Apply Preset##" + selectorCvar).c_str())) {
+    if (UIWidgets::Button(
+            ("Apply Preset##" + selectorCvar).c_str(),
+            UIWidgets::ButtonOptions({ { .disabled = disabled } }).Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline))) {
         applyPreset(currentIndex, includeSections);
     }
     UIWidgets::PopStyleButton();
