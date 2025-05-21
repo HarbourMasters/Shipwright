@@ -130,6 +130,10 @@ void DrawPresetSelector(std::vector<PresetSection> includeSections, std::string 
     }
     std::string selectorCvar = fmt::format(CVAR_GENERAL("{}SelectedPreset"), presetLoc);
     std::string currentIndex = CVarGetString(selectorCvar.c_str(), includedPresets[0].c_str());
+    if (!presets.contains(currentIndex)) {
+        currentIndex = *includedPresets.begin();
+        CVarSetString(selectorCvar.c_str(), currentIndex.c_str());
+    }
     UIWidgets::PushStyleCombobox(THEME_COLOR);
     if (ImGui::BeginCombo("##PresetsComboBox", currentIndex.c_str())) {
         for (auto iter = includedPresets.begin(); iter != includedPresets.end(); ++iter) {
