@@ -7,7 +7,7 @@
 #include "z_en_weather_tag.h"
 #include "vt.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void EnWeatherTag_Init(Actor* thisx, PlayState* play);
 void EnWeatherTag_Destroy(Actor* thisx, PlayState* play);
@@ -54,7 +54,7 @@ void EnWeatherTag_Destroy(Actor* thisx, PlayState* play) {
 void EnWeatherTag_Init(Actor* thisx, PlayState* play) {
     EnWeatherTag* this = (EnWeatherTag*)thisx;
 
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
 
     switch (this->actor.params & 0xF) {
         case EN_WEATHER_TAG_TYPE_CLOUDY_MARKET:
@@ -106,8 +106,10 @@ void EnWeatherTag_Init(Actor* thisx, PlayState* play) {
             // "☆☆☆☆☆ Cloudy Rain Thunder (;O;) Uo Melancholy ☆☆☆☆☆"
             osSyncPrintf(VT_FGCOL(YELLOW) "☆☆☆☆☆ くもり雨雷 (;O;) うおお 憂鬱 ☆☆☆☆☆ \n" VT_RST);
 
-            if (!Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP) || !Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP) ||
-                !Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP) || CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW)) {
+            if (!Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP) ||
+                !Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP) ||
+                !Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP) ||
+                CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW)) {
                 Actor_Kill(&this->actor);
             }
             EnWeatherTag_SetupAction(this, EnWeatherTag_DisabledCloudyRainThunderKakariko);
@@ -168,8 +170,7 @@ u8 WeatherTag_CheckEnableWeatherEffect(EnWeatherTag* this, PlayState* play, u8 a
     return ret;
 }
 
-u8 WeatherTag_CheckRestoreWeather(EnWeatherTag* this, PlayState* play, u8 arg2, u8 arg3, u8 arg4, u8 arg5,
-                                  u16 arg6) {
+u8 WeatherTag_CheckRestoreWeather(EnWeatherTag* this, PlayState* play, u8 arg2, u8 arg3, u8 arg4, u8 arg5, u16 arg6) {
     s32 pad;
     u8 ret = false;
     Player* player = GET_PLAYER(play);

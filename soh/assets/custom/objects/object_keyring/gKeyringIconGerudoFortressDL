@@ -1,0 +1,10 @@
+<DisplayList Version="0">
+	<ClearGeometryMode G_LIGHTING="1" />
+	<LoadVertices Path="objects/object_keyring/gKeyringIconGerudoFortressDL_vtx_cull" VertexBufferIndex="0" VertexOffset="0" Count="8"/>
+	<SetGeometryMode G_LIGHTING="1" />
+	<CullDisplayList Start="0" End="7"/>
+	<CallDisplayList Path="objects/object_keyring/mat_gKeyringIconGerudoFortressDL_f3dlite_IconMetal_GerudoFortress"/>
+	<CallDisplayList Path="objects/object_keyring/gKeyringIconGerudoFortressDL_tri_0"/>
+	<EndDisplayList/>
+</DisplayList>
+

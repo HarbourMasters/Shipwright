@@ -60,7 +60,7 @@ if (NOT LINUXDEPLOY_EXECUTABLE)
   message(STATUS "Downloading linuxdeploy")
   set(LINUXDEPLOY_EXECUTABLE ${CPACK_PACKAGE_DIRECTORY}/linuxdeploy/linuxdeploy)
   file(DOWNLOAD 
-      https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+      https://github.com/linuxdeploy/linuxdeploy/releases/download/1-alpha-20240109-1/linuxdeploy-x86_64.AppImage
       ${LINUXDEPLOY_EXECUTABLE}
       INACTIVITY_TIMEOUT 10
       LOG ${CPACK_PACKAGE_DIRECTORY}/linuxdeploy/download.log

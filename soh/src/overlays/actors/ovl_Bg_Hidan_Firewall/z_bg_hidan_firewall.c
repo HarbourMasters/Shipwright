@@ -86,7 +86,7 @@ s32 BgHidanFirewall_CheckProximity(BgHidanFirewall* this, PlayState* play) {
     Vec3f distance;
 
     player = GET_PLAYER(play);
-    func_8002DBD0(&this->actor, &distance, &player->actor.world.pos);
+    Actor_WorldToActorCoords(&this->actor, &distance, &player->actor.world.pos);
 
     if (fabsf(distance.x) < 100.0f && fabsf(distance.z) < 120.0f) {
         return 1;
@@ -146,7 +146,7 @@ void BgHidanFirewall_ColliderFollowPlayer(BgHidanFirewall* this, PlayState* play
 
     player = GET_PLAYER(play);
 
-    func_8002DBD0(&this->actor, &sp30, &player->actor.world.pos);
+    Actor_WorldToActorCoords(&this->actor, &sp30, &player->actor.world.pos);
     if (sp30.x < -70.0f) {
         sp30.x = -70.0f;
     } else {
@@ -209,8 +209,7 @@ void BgHidanFirewall_Draw(Actor* thisx, PlayState* play) {
     gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sFireballTexs[this->unk_150]));
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x01, 255, 255, 0, 150);
     gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, 255);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gFireTempleFireballUpperHalfDL);
 
     CLOSE_DISPS(play->state.gfxCtx);

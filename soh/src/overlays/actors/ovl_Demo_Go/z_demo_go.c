@@ -8,7 +8,7 @@
 #include "objects/object_oF1d_map/object_oF1d_map.h"
 #include "vt.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void DemoGo_Init(Actor* thisx, PlayState* play);
 void DemoGo_Destroy(Actor* thisx, PlayState* play);
@@ -159,11 +159,11 @@ void func_8097CC08(DemoGo* this) {
     } else {
         this->actor.speedXZ = (kREG(15) * 0.01f) + 1.2f;
     }
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 }
 
 void func_8097CCC0(DemoGo* this) {
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 }
 
 void func_8097CCE0(DemoGo* this, PlayState* play) {

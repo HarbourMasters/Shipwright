@@ -1,4 +1,4 @@
-﻿#include "BossRush.h"
+#include "BossRush.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
@@ -8,18 +8,18 @@
 #include <vector>
 
 extern "C" {
-    #include "functions.h"
-    #include "macros.h"
-    #include "variables.h"
-    #include "src/overlays/actors/ovl_Boss_Goma/z_boss_goma.h"
-    #include "src/overlays/actors/ovl_Boss_Mo/z_boss_mo.h"
-    #include "src/overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
-    extern PlayState* gPlayState;
+#include "functions.h"
+#include "macros.h"
+#include "variables.h"
+#include "src/overlays/actors/ovl_Boss_Goma/z_boss_goma.h"
+#include "src/overlays/actors/ovl_Boss_Mo/z_boss_mo.h"
+#include "src/overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
+extern PlayState* gPlayState;
 
-    Gfx* KaleidoScope_QuadTextureIA8(Gfx* gfx, void* texture, s16 width, s16 height, u16 point);
-    #include "textures/icon_item_nes_static/icon_item_nes_static.h"
-    #include "textures/icon_item_ger_static/icon_item_ger_static.h"
-    #include "textures/icon_item_fra_static/icon_item_fra_static.h"
+Gfx* KaleidoScope_QuadTextureIA8(Gfx* gfx, void* texture, s16 width, s16 height, u16 point);
+#include "textures/icon_item_nes_static/icon_item_nes_static.h"
+#include "textures/icon_item_ger_static/icon_item_ger_static.h"
+#include "textures/icon_item_fra_static/icon_item_fra_static.h"
 }
 
 typedef struct BossRushSetting {
@@ -27,103 +27,79 @@ typedef struct BossRushSetting {
     std::vector<std::array<std::string, LANGUAGE_MAX>> choices;
 } BossRushSetting;
 
-BossRushSetting BossRushOptions[BR_OPTIONS_MAX] = { 
-    {
-        { "BOSSES:", "BOSSE:", "BOSS:" },
-        {
-            { "All", "Alle", "Tous" },
-            { "Child", "Kind", "Enfant" },
-            { "Adult", "Erwachsener", "Adulte" },
-            { "Ganondorf & Ganon", "Ganondorf & Ganon", "Ganondorf & Ganon" }
-        }
-    },
-    {
-        { "HEARTS:", "HERZEN:", "COEURS:" },
-        {
-            { "10", "10", "10" },
-            { "15", "15", "15" },
-            { "20", "20", "20" },
-            { "3", "3", "3" },
-            { "5", "5", "5" },
-            { "7", "7", "7" }
-        }
-    },
-    {
-        { "AMMO:", "MUNITION:", "MUNITIONS:" },
-        {
-            { "Limited", "Limitiert", "Limitées" },
-            { "Full", "Voll", "Pleines" },
-            { "Maxed", "Maximum", "Maximum" }
-        }
-    },
-    {
-        { "HEAL:", "REGENERATION:", "SOIN:" },
-        {
-            { "Before Ganondorf", "Vor Ganondorf", "Avant Ganondorf" },
-            { "Every Boss", "Bei jedem Boss", "Tous les Boss" },
-            { "Never", "Niemals", "Jamais" }
-        }
-    },
-    {
-        { "HYPER BOSSES:", "HYPER-BOSSE:", "HYPER BOSS:" },
-        {
-            { "No", "Nein", "Non" },
-            { "Yes", "Ja", "Oui" }
-        }
-    },
-    {
-        { "MAGIC:", "MAGIE:", "MAGIE:" },
-        {
-            { "Single", "Einzel", "Simple" },
-            { "Double", "Doppel", "Double" }
-        }
-    },
-    {
-        { "BIG. SWORD:", "BIG.-SCHWERT:", "EPÉE DE BIG.:" },
-        {
-            { "No", "Nein", "Non" },
-            { "Yes", "Ja", "Oui" }
-        }
-    },
-    {
-        { "BOTTLE:", "FLASCHEN:", "BOUTEILLE:" },
-        {
-            { "No", "Nein", "Non" },
-            { "Empty", "Leer", "Vide" },
-            { "Fairy", "Fee", "Fée" },
-            { "Red Potion", "Rotes Elixier", "Potion Rouge" },
-            { "Green Potion", "Grünes Elixier", "Potion Verte" },
-            { "Blue Potion", "Blaues Elixier", "Potion Bleue" }
-        }
-    },
-    {
-        { "LONGSHOT:", "ENTERHAKEN:", "SUPER GRAPPIN:" },
-        {
-            { "No", "Nein", "Non" },
-            { "Yes", "Ja", "Oui" }
-        }
-    },
-    {
-        { "HOVER BOOTS:", "GLEITSTIEFEL:", "BOTTES DES AIRS:" },
-        {
-            { "No", "Nein", "Non" },
-            { "Yes", "Ja", "Oui" }
-        }
-    },
-    {
-        { "BUNNY HOOD:", "HASENOHREN:", "MASQUE DU LAPIN:" },
-        {
-            { "No", "Nein", "Non" },
-            { "Yes", "Ja", "Oui" }
-        }
-    },
-    {
-        { "TIMER:", "TIMER:", "TIMER:" },
-        {
-            { "Yes", "Ja", "Oui" },
-            { "No", "Nein", "Non" }
-        }
-    }
+BossRushSetting BossRushOptions[BR_OPTIONS_MAX] = {
+    { { "BOSSES:", "BOSSE:", "BOSS:" },
+      {
+          { "All", "Alle", "Tous" },
+          { "Child", "Kind", "Enfant" },
+          { "Adult", "Erwachsener", "Adulte" },
+          { "Ganondorf & Ganon", "Ganondorf & Ganon", "Ganondorf & Ganon" },
+      } },
+    { { "HEARTS:", "HERZEN:", "COEURS:" },
+      {
+          { "10", "10", "10" },
+          { "15", "15", "15" },
+          { "20", "20", "20" },
+          { "3", "3", "3" },
+          { "5", "5", "5" },
+          { "7", "7", "7" },
+      } },
+    { { "AMMO:", "MUNITION:", "MUNITIONS:" },
+      {
+          { "Limited", "Limitiert", "Limitées" },
+          { "Full", "Voll", "Pleines" },
+          { "Maxed", "Maximum", "Maximum" },
+      } },
+    { { "HEAL:", "REGENERATION:", "SOIN:" },
+      {
+          { "Before Ganondorf", "Vor Ganondorf", "Avant Ganondorf" },
+          { "Every Boss", "Bei jedem Boss", "Tous les Boss" },
+          { "Never", "Niemals", "Jamais" },
+      } },
+    { { "HYPER BOSSES:", "HYPER-BOSSE:", "HYPER BOSS:" },
+      {
+          { "No", "Nein", "Non" },
+          { "Yes", "Ja", "Oui" },
+      } },
+    { { "MAGIC:", "MAGIE:", "MAGIE:" },
+      {
+          { "Single", "Einzel", "Simple" },
+          { "Double", "Doppel", "Double" },
+      } },
+    { { "BIG. SWORD:", "BIG.-SCHWERT:", "EPÉE DE BIG.:" },
+      {
+          { "No", "Nein", "Non" },
+          { "Yes", "Ja", "Oui" },
+      } },
+    { { "BOTTLE:", "FLASCHEN:", "BOUTEILLE:" },
+      {
+          { "No", "Nein", "Non" },
+          { "Empty", "Leer", "Vide" },
+          { "Fairy", "Fee", "Fée" },
+          { "Red Potion", "Rotes Elixier", "Potion Rouge" },
+          { "Green Potion", "Grünes Elixier", "Potion Verte" },
+          { "Blue Potion", "Blaues Elixier", "Potion Bleue" },
+      } },
+    { { "LONGSHOT:", "ENTERHAKEN:", "SUPER GRAPPIN:" },
+      {
+          { "No", "Nein", "Non" },
+          { "Yes", "Ja", "Oui" },
+      } },
+    { { "HOVER BOOTS:", "GLEITSTIEFEL:", "BOTTES DES AIRS:" },
+      {
+          { "No", "Nein", "Non" },
+          { "Yes", "Ja", "Oui" },
+      } },
+    { { "BUNNY HOOD:", "HASENOHREN:", "MASQUE DU LAPIN:" },
+      {
+          { "No", "Nein", "Non" },
+          { "Yes", "Ja", "Oui" },
+      } },
+    { { "TIMER:", "TIMER:", "TIMER:" },
+      {
+          { "Yes", "Ja", "Oui" },
+          { "No", "Nein", "Non" },
+      } }
 };
 
 const char* BossRush_GetSettingName(u8 optionIndex, u8 language) {
@@ -135,7 +111,7 @@ const char* BossRush_GetSettingChoiceName(u8 optionIndex, u8 choiceIndex, u8 lan
 }
 
 u8 BossRush_GetSettingOptionsAmount(u8 optionIndex) {
-    return BossRushOptions[optionIndex].choices.size();
+    return static_cast<u8>(BossRushOptions[optionIndex].choices.size());
 }
 
 void BossRush_SpawnBlueWarps(PlayState* play) {
@@ -196,7 +172,7 @@ void BossRush_SetEquipment(u8 linkAge) {
 
         Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_KOKIRI);
         Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_DEKU);
-    // Set Adult equipment.
+        // Set Adult equipment.
     } else {
         brButtonItems = { ITEM_SWORD_MASTER, ITEM_BOW,  ITEM_HAMMER, ITEM_BOMB,
                           ITEM_NONE,         ITEM_NONE, ITEM_NONE,   ITEM_NONE };
@@ -229,34 +205,36 @@ void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpPosZ) {
             } else {
                 play->nextEntranceIndex = ENTR_FOREST_TEMPLE_BOSS_ENTRANCE;
             }
-        // King Dodongo & Volvagia
+            // King Dodongo & Volvagia
         } else if (warpPosX == 100 && warpPosZ == -170) {
             if (gSaveContext.linkAge == LINK_AGE_CHILD) {
                 play->nextEntranceIndex = ENTR_DODONGOS_CAVERN_BOSS_ENTRANCE;
             } else {
                 play->nextEntranceIndex = ENTR_FIRE_TEMPLE_BOSS_ENTRANCE;
             }
-        // Barinade & Morb
+            // Barinade & Morb
         } else if (warpPosX == 199 && warpPosZ == 0) {
             if (gSaveContext.linkAge == LINK_AGE_CHILD) {
                 play->nextEntranceIndex = ENTR_JABU_JABU_BOSS_ENTRANCE;
             } else {
                 play->nextEntranceIndex = ENTR_WATER_TEMPLE_BOSS_ENTRANCE;
             }
-        // Twinrova
+            // Twinrova
         } else if (warpPosX == 100 && warpPosZ == 170) {
             play->nextEntranceIndex = ENTR_SPIRIT_TEMPLE_BOSS_2;
-        // Bongo Bongo
+            // Bongo Bongo
         } else if (warpPosX == -100 && warpPosZ == 170) {
             play->nextEntranceIndex = ENTR_SHADOW_TEMPLE_BOSS_ENTRANCE;
-        // Ganondork
+            // Ganondork
         } else if (warpPosX == -199 && warpPosZ == 0) {
             play->nextEntranceIndex = ENTR_GANONDORF_BOSS_0;
         } else {
-            SPDLOG_ERROR("[BossRush]: Unknown blue warp in chamber of sages at position ({}, {}). Warping back to chamber of sages.", warpPosX, warpPosZ);
+            SPDLOG_ERROR("[BossRush]: Unknown blue warp in chamber of sages at position ({}, {}). Warping back to "
+                         "chamber of sages.",
+                         warpPosX, warpPosZ);
             play->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
         }
-    // If coming from a boss room, teleport back to Chamber of Sages and set flag.
+        // If coming from a boss room, teleport back to Chamber of Sages and set flag.
     } else {
         play->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
 
@@ -265,10 +243,10 @@ void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpPosZ) {
             gSaveContext.linkAge = LINK_AGE_ADULT;
 
             // Change to Adult Link.
-            if (gSaveContext.bossRushOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_ALL) {
+            if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_ALL) {
                 BossRush_SetEquipment(LINK_AGE_ADULT);
-            // Warp to credits.
-            } else if (gSaveContext.bossRushOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_CHILD) {
+                // Warp to credits.
+            } else if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_CHILD) {
                 play->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
                 gSaveContext.nextCutsceneIndex = 0xFFF2;
                 play->transitionTrigger = TRANS_TRIGGER_START;
@@ -285,14 +263,14 @@ void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpPosZ) {
 void BossRush_HandleBlueWarpHeal(PlayState* play) {
 
     // This function gets called multiple times per blue warp, so only heal when player isn't at max HP.
-    if (gSaveContext.bossRushOptions[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_EVERYBOSS &&
+    if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_EVERYBOSS &&
         gSaveContext.health != gSaveContext.healthCapacity) {
         Health_ChangeBy(play, 320);
     }
 }
 
 void BossRush_HandleCompleteBoss(PlayState* play) {
-    gSaveContext.isBossRushPaused = 1;
+    gSaveContext.ship.quest.data.bossRush.isPaused = true;
     switch (play->sceneNum) {
         case SCENE_DEKU_TREE_BOSS:
             Flags_SetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP);
@@ -323,16 +301,18 @@ void BossRush_HandleCompleteBoss(PlayState* play) {
     }
 
     // Fully heal the player after Ganondorf
-    if (gSaveContext.bossRushOptions[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_EVERYBOSS &&
+    if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_EVERYBOSS &&
         play->sceneNum == SCENE_GANONDORF_BOSS) {
         Health_ChangeBy(play, 320);
     }
 
-    if ((CheckDungeonCount() == 3 && gSaveContext.bossRushOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_CHILD) ||
+    if ((CheckDungeonCount() == 3 &&
+         gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_CHILD) ||
         play->sceneNum == SCENE_GANON_BOSS) {
-        gSaveContext.sohStats.playTimer += 2;
-        gSaveContext.sohStats.gameComplete = 1;
-        gSaveContext.sohStats.itemTimestamp[TIMESTAMP_BOSSRUSH_FINISH] = GAMEPLAYSTAT_TOTAL_TIME;
+        gSaveContext.ship.stats.playTimer += 2;
+        gSaveContext.ship.stats.gameComplete = 1;
+        gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_BOSSRUSH_FINISH] =
+            static_cast<uint32_t>(GAMEPLAYSTAT_TOTAL_TIME);
     }
 }
 
@@ -344,14 +324,14 @@ void BossRush_InitSave() {
         gSaveContext.playerName[i] = brPlayerName[i];
     }
 
-    gSaveContext.questId = QUEST_BOSSRUSH;
-    gSaveContext.isBossRushPaused = 1;
+    gSaveContext.ship.quest.id = QUEST_BOSSRUSH;
+    gSaveContext.ship.quest.data.bossRush.isPaused = true;
     gSaveContext.entranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
     gSaveContext.cutsceneIndex = 0x8000;
     gSaveContext.isMagicAcquired = 1;
 
     // Set magic
-    if (gSaveContext.bossRushOptions[BR_OPTIONS_MAGIC] == BR_CHOICE_MAGIC_SINGLE) {
+    if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_MAGIC] == BR_CHOICE_MAGIC_SINGLE) {
         gSaveContext.magicLevel = 1;
         gSaveContext.magic = 48;
     } else {
@@ -362,7 +342,7 @@ void BossRush_InitSave() {
 
     // Set health
     u16 health = 16;
-    switch (gSaveContext.bossRushOptions[BR_OPTIONS_HEARTS]) { 
+    switch (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_HEARTS]) {
         case BR_CHOICE_HEARTS_7:
             health *= 7;
             break;
@@ -399,23 +379,24 @@ void BossRush_InitSave() {
     gSaveContext.eventChkInf[7] |= 0x80; // bongo bongo
 
     // Sets all rando flags to false
-    for (s32 i = 0; i < ARRAY_COUNT(gSaveContext.randomizerInf); i++) {
-        gSaveContext.randomizerInf[i] = 0;
+    // Boss Rush currently uses 2 randomizer flags (RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE &
+    // RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE)
+    for (s32 i = 0; i < ARRAY_COUNT(gSaveContext.ship.randomizerInf); i++) {
+        gSaveContext.ship.randomizerInf[i] = 0;
     }
 
     // Set items
     std::array<u8, 24> brItems = {
-        ITEM_STICK,     ITEM_NUT,  ITEM_BOMB, ITEM_BOW,      ITEM_NONE,        ITEM_NONE,
-        ITEM_SLINGSHOT, ITEM_NONE, ITEM_NONE, ITEM_HOOKSHOT, ITEM_NONE,        ITEM_NONE,
-        ITEM_BOOMERANG, ITEM_LENS, ITEM_NONE, ITEM_HAMMER,   ITEM_ARROW_LIGHT, ITEM_NONE,
-        ITEM_NONE,      ITEM_NONE, ITEM_NONE, ITEM_NONE,     ITEM_NONE,        ITEM_NONE,
+        ITEM_STICK,       ITEM_NUT,      ITEM_BOMB, ITEM_BOW,  ITEM_NONE,      ITEM_NONE, ITEM_SLINGSHOT, ITEM_NONE,
+        ITEM_NONE,        ITEM_HOOKSHOT, ITEM_NONE, ITEM_NONE, ITEM_BOOMERANG, ITEM_LENS, ITEM_NONE,      ITEM_HAMMER,
+        ITEM_ARROW_LIGHT, ITEM_NONE,     ITEM_NONE, ITEM_NONE, ITEM_NONE,      ITEM_NONE, ITEM_NONE,      ITEM_NONE,
     };
 
-    if (gSaveContext.bossRushOptions[BR_OPTIONS_LONGSHOT] == BR_CHOICE_LONGSHOT_YES) {
+    if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_LONGSHOT] == BR_CHOICE_LONGSHOT_YES) {
         brItems[9] = ITEM_LONGSHOT;
     }
 
-    switch (gSaveContext.bossRushOptions[BR_OPTIONS_BOTTLE]) {
+    switch (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_BOTTLE]) {
         case BR_CHOICE_BOTTLE_EMPTY:
             brItems[18] = ITEM_BOTTLE;
             break;
@@ -435,7 +416,7 @@ void BossRush_InitSave() {
             break;
     }
 
-    if (gSaveContext.bossRushOptions[BR_OPTIONS_BUNNYHOOD] == BR_CHOICE_BUNNYHOOD_YES) {
+    if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_BUNNYHOOD] == BR_CHOICE_BUNNYHOOD_YES) {
         brItems[23] = ITEM_MASK_BUNNY;
     }
 
@@ -446,9 +427,9 @@ void BossRush_InitSave() {
     // Set consumable counts
     std::array<s8, 16> brAmmo = { 5, 5, 10, 10, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-    if (gSaveContext.bossRushOptions[BR_OPTIONS_AMMO] == BR_CHOICE_AMMO_FULL) {
+    if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_AMMO] == BR_CHOICE_AMMO_FULL) {
         brAmmo = { 10, 20, 20, 30, 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    } else if (gSaveContext.bossRushOptions[BR_OPTIONS_AMMO] == BR_CHOICE_AMMO_MAXED) {
+    } else if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_AMMO] == BR_CHOICE_AMMO_MAXED) {
         brAmmo = { 30, 40, 40, 50, 0, 0, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     }
 
@@ -462,17 +443,17 @@ void BossRush_InitSave() {
     gSaveContext.inventory.equipment |= 1 << 4; // Deku Shield
     gSaveContext.inventory.equipment |= 1 << 6; // Mirror Shield
     gSaveContext.inventory.equipment |= 1 << 9; // Goron Tunic
-    if (gSaveContext.bossRushOptions[BR_OPTIONS_BGS] == BR_CHOICE_BGS_YES) {
+    if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_BGS] == BR_CHOICE_BGS_YES) {
         gSaveContext.inventory.equipment |= 1 << 2; // Biggoron Sword
         gSaveContext.bgsFlag = 1;
     }
-    if (gSaveContext.bossRushOptions[BR_OPTIONS_HOVERBOOTS] == BR_CHOICE_HOVERBOOTS_YES) {
+    if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_HOVERBOOTS] == BR_CHOICE_HOVERBOOTS_YES) {
         gSaveContext.inventory.equipment |= 1 << 14; // Hover Boots
     }
 
     // Upgrades
     u8 upgradeLevel = 1;
-    if (gSaveContext.bossRushOptions[BR_OPTIONS_AMMO] == BR_CHOICE_AMMO_MAXED) {
+    if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_AMMO] == BR_CHOICE_AMMO_MAXED) {
         upgradeLevel = 3;
     }
     Inventory_ChangeUpgrade(UPG_QUIVER, upgradeLevel);
@@ -483,12 +464,12 @@ void BossRush_InitSave() {
     Inventory_ChangeUpgrade(UPG_STRENGTH, 1);
 
     // Set flags and Link's age based on chosen settings.
-    if (gSaveContext.bossRushOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_ADULT ||
-        gSaveContext.bossRushOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_GANONDORF_GANON) {
+    if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_ADULT ||
+        gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_GANONDORF_GANON) {
         Flags_SetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP);
         Flags_SetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP);
         Flags_SetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP);
-        if (gSaveContext.bossRushOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_GANONDORF_GANON) {
+        if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_GANONDORF_GANON) {
             Flags_SetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP);
             Flags_SetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP);
             Flags_SetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP);
@@ -506,7 +487,7 @@ void BossRush_InitSave() {
 static void* sSavePromptNoChoiceTexs[] = {
     (void*)gPauseNoENGTex,
     (void*)gPauseNoGERTex,
-    (void*)gPauseNoFRATex
+    (void*)gPauseNoFRATex,
 };
 
 void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
@@ -516,16 +497,9 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
     switch (id) {
         // Allow not healing before ganon
         case VB_GANON_HEAL_BEFORE_FIGHT: {
-            if (gSaveContext.bossRushOptions[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_NEVER) {
+            if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_NEVER) {
                 *should = false;
             }
-            break;
-        }
-        // Replace the blue warp transitions with ones that lead back to the chamber of sages
-        case VB_BLUE_WARP_APPLY_ENTRANCE_AND_CUTSCENE: {
-            DoorWarp1* blueWarp = va_arg(args, DoorWarp1*);
-            BossRush_HandleBlueWarp(gPlayState, blueWarp->actor.world.pos.x, blueWarp->actor.world.pos.z);
-            *should = false;
             break;
         }
         // Spawn clean blue warps (no ruto, adult animation, etc)
@@ -547,11 +521,13 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                             break;
                         }
                     }
-                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, childPos.x, bossGoma->actor.world.pos.y, childPos.z, 0, 0, 0, WARP_DUNGEON_ADULT, false);
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, childPos.x,
+                                bossGoma->actor.world.pos.y, childPos.z, 0, 0, 0, WARP_DUNGEON_ADULT, false);
                     break;
                 }
                 case SCENE_DODONGOS_CAVERN_BOSS: {
-                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, -890.0f, -1523.76f, -3304.0f, 0, 0, 0, WARP_DUNGEON_ADULT, false);
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, -890.0f, -1523.76f, -3304.0f, 0, 0,
+                                0, WARP_DUNGEON_ADULT, false);
                     break;
                 }
                 case SCENE_JABU_JABU_BOSS: {
@@ -569,28 +545,34 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                         }
                     }
 
-                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, sWarpPos[sp7C].x, sWarpPos[sp7C].y, sWarpPos[sp7C].z, 0, 0, 0, WARP_DUNGEON_ADULT, false);
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, sWarpPos[sp7C].x, sWarpPos[sp7C].y,
+                                sWarpPos[sp7C].z, 0, 0, 0, WARP_DUNGEON_ADULT, false);
                     break;
                 }
                 case SCENE_FOREST_TEMPLE_BOSS: {
-                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, 14.0f, -33.0f, -3315.0f, 0, 0, 0, WARP_DUNGEON_ADULT, true);
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, 14.0f, -33.0f, -3315.0f, 0, 0, 0,
+                                WARP_DUNGEON_ADULT, true);
                     break;
                 }
                 case SCENE_FIRE_TEMPLE_BOSS: {
-                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, 0.0f, 100.0f, 0.0f, 0, 0, 0, WARP_DUNGEON_ADULT, true);
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, 0.0f, 100.0f, 0.0f, 0, 0, 0,
+                                WARP_DUNGEON_ADULT, true);
                     break;
                 }
                 case SCENE_WATER_TEMPLE_BOSS: {
                     BossMo* bossMo = va_arg(args, BossMo*);
-                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, bossMo->actor.world.pos.x, -280.0f, bossMo->actor.world.pos.z, 0, 0, 0, WARP_DUNGEON_ADULT, true);
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, bossMo->actor.world.pos.x, -280.0f,
+                                bossMo->actor.world.pos.z, 0, 0, 0, WARP_DUNGEON_ADULT, true);
                     break;
                 }
                 case SCENE_SPIRIT_TEMPLE_BOSS: {
-                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, 600.0f, 230.0f, 0.0f, 0, 0, 0, WARP_DUNGEON_ADULT, true);
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, 600.0f, 230.0f, 0.0f, 0, 0, 0,
+                                WARP_DUNGEON_ADULT, true);
                     break;
                 }
                 case SCENE_SHADOW_TEMPLE_BOSS: {
-                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, -50.0f, 0.0f, 400.0f, 0, 0, 0, WARP_DUNGEON_ADULT, true);
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, -50.0f, 0.0f, 400.0f, 0, 0, 0,
+                                WARP_DUNGEON_ADULT, true);
                     break;
                 }
                 default: {
@@ -669,7 +651,7 @@ void BossRush_OnActorInitHandler(void* actorRef) {
 void BossRush_OnSceneInitHandler(s16 sceneNum) {
     // Unpause the timer when the scene loaded isn't the Chamber of Sages.
     if (sceneNum != SCENE_CHAMBER_OF_THE_SAGES) {
-        gSaveContext.isBossRushPaused = 0;
+        gSaveContext.ship.quest.data.bossRush.isPaused = false;
     }
 }
 
@@ -705,12 +687,18 @@ void BossRush_RegisterHooks() {
         onBossDefeatHook = 0;
         onActorUpdate = 0;
 
-        if (!IS_BOSS_RUSH) return;
+        if (!IS_BOSS_RUSH)
+            return;
 
-        onVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(BossRush_OnVanillaBehaviorHandler);
-        onSceneInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(BossRush_OnSceneInitHandler);
-        onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(BossRush_OnActorInitHandler);
-        onBossDefeatHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnBossDefeat>(BossRush_OnBossDefeatHandler);
-        onActorUpdate = GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnActorUpdate>(ACTOR_DOOR_WARP1, BossRush_OnBlueWarpUpdate);
+        onVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(
+            BossRush_OnVanillaBehaviorHandler);
+        onSceneInitHook =
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(BossRush_OnSceneInitHandler);
+        onActorInitHook =
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(BossRush_OnActorInitHandler);
+        onBossDefeatHook =
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnBossDefeat>(BossRush_OnBossDefeatHandler);
+        onActorUpdate = GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnActorUpdate>(
+            ACTOR_DOOR_WARP1, BossRush_OnBlueWarpUpdate);
     });
 }

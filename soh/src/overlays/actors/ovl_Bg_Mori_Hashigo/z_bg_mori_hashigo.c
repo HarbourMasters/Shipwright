@@ -77,8 +77,7 @@ static InitChainEntry sInitChainLadder[] = {
     ICHAIN_VEC3F_DIV1000(scale, 1000, ICHAIN_STOP),
 };
 
-void BgMoriHashigo_InitDynapoly(BgMoriHashigo* this, PlayState* play, CollisionHeader* collision,
-                                s32 moveFlag) {
+void BgMoriHashigo_InitDynapoly(BgMoriHashigo* this, PlayState* play, CollisionHeader* collision, s32 moveFlag) {
     s32 pad;
     CollisionHeader* colHeader;
     s32 pad2;
@@ -120,22 +119,21 @@ s32 BgMoriHashigo_SpawnLadder(BgMoriHashigo* this, PlayState* play) {
     pos.y = -210.0f + this->dyna.actor.world.pos.y;
     pos.z = 6.0f * cs + this->dyna.actor.world.pos.z;
 
-    ladder = Actor_SpawnAsChild(&play->actorCtx, &this->dyna.actor, play, ACTOR_BG_MORI_HASHIGO, pos.x, pos.y,
-                                pos.z, this->dyna.actor.world.rot.x, this->dyna.actor.world.rot.y,
-                                this->dyna.actor.world.rot.z, 0);
+    ladder =
+        Actor_SpawnAsChild(&play->actorCtx, &this->dyna.actor, play, ACTOR_BG_MORI_HASHIGO, pos.x, pos.y, pos.z,
+                           this->dyna.actor.world.rot.x, this->dyna.actor.world.rot.y, this->dyna.actor.world.rot.z, 0);
     if (ladder != NULL) {
         return true;
     } else {
         // "Ladder failure"
-        osSyncPrintf("Error : 梯子の発生失敗(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
-                     this->dyna.actor.params);
+        osSyncPrintf("Error : 梯子の発生失敗(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__, this->dyna.actor.params);
         return false;
     }
 }
 
 s32 BgMoriHashigo_InitClasp(BgMoriHashigo* this, PlayState* play) {
     Actor_ProcessInitChain(&this->dyna.actor, sInitChainClasp);
-    this->dyna.actor.flags |= ACTOR_FLAG_TARGETABLE;
+    this->dyna.actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
     Actor_SetFocus(&this->dyna.actor, 55.0f);
     BgMoriHashigo_InitCollider(this, play);
     if ((this->dyna.actor.params == HASHIGO_CLASP) && !BgMoriHashigo_SpawnLadder(this, play)) {
@@ -169,8 +167,7 @@ void BgMoriHashigo_Init(Actor* thisx, PlayState* play) {
     this->moriTexObjIndex = Object_GetIndex(&play->objectCtx, OBJECT_MORI_TEX);
     if (this->moriTexObjIndex < 0) {
         // "Bank danger!"
-        osSyncPrintf("Error : バンク危険！(arg_data 0x%04x)(%s %d)\n", this->dyna.actor.params,
-                     __FILE__, __LINE__);
+        osSyncPrintf("Error : バンク危険！(arg_data 0x%04x)(%s %d)\n", this->dyna.actor.params, __FILE__, __LINE__);
         Actor_Kill(&this->dyna.actor);
     } else {
         BgMoriHashigo_SetupWaitForMoriTex(this);
@@ -245,7 +242,7 @@ void BgMoriHashigo_LadderFall(BgMoriHashigo* this, PlayState* play) {
     static f32 bounceSpeed[3] = { 4.0f, 2.7f, 1.7f };
     Actor* thisx = &this->dyna.actor;
 
-    Actor_MoveForward(thisx);
+    Actor_MoveXZGravity(thisx);
     if ((thisx->bgCheckFlags & 1) && (thisx->velocity.y < 0.0f)) {
         if (this->bounceCounter >= ARRAY_COUNT(bounceSpeed)) {
             BgMoriHashigo_SetupLadderRest(this);
@@ -286,8 +283,7 @@ void BgMoriHashigo_Draw(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, play->objectCtx.status[this->moriTexObjIndex].segment);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     switch (this->dyna.actor.params) {
         case HASHIGO_CLASP:

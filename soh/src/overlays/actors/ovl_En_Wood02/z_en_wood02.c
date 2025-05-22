@@ -101,8 +101,7 @@ static f32 sSpawnSin;
 s32 EnWood02_SpawnZoneCheck(EnWood02* this, PlayState* play, Vec3f* pos) {
     f32 phi_f12;
 
-    SkinMatrix_Vec3fMtxFMultXYZW(&play->viewProjectionMtxF, pos, &this->actor.projectedPos,
-                                 &this->actor.projectedW);
+    SkinMatrix_Vec3fMtxFMultXYZW(&play->viewProjectionMtxF, pos, &this->actor.projectedPos, &this->actor.projectedW);
 
     // #region SOH [Enhancement] Use the extended culling calculation
     if (CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 1) > 1 ||
@@ -154,9 +153,9 @@ void EnWood02_SpawnOffspring(EnWood02* this, PlayState* play) {
                 } else {
                     childParams = (((this->drawType & 0xF0) << 4) | (this->actor.params + 1));
                 }
-                childWood = (EnWood02*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play,
-                                                          ACTOR_EN_WOOD02, childPos.x, childPos.y, childPos.z,
-                                                          this->actor.world.rot.x, *childSpawnAngle, 0, childParams);
+                childWood = (EnWood02*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_WOOD02,
+                                                          childPos.x, childPos.y, childPos.z, this->actor.world.rot.x,
+                                                          *childSpawnAngle, 0, childParams);
                 if (childWood != NULL) {
                     childWood->unk_14E[0] = i;
                     this->unk_14E[i] |= 1;
@@ -182,8 +181,8 @@ void EnWood02_Init(Actor* thisx, PlayState* play2) {
     // The tree in Kakariko's day scene does not have the same params to spawn the GS
     // as the night scene, For the always spawn GS enhancement we apply the needed
     // params to have the GS drop when bonking
-    if ((this->actor.params & 0xFF) == WOOD_TREE_CONICAL_MEDIUM && IS_DAY &&
-        play->sceneNum == SCENE_KAKARIKO_VILLAGE && CVarGetInteger(CVAR_ENHANCEMENT("NightGSAlwaysSpawn"), 0)) {
+    if ((this->actor.params & 0xFF) == WOOD_TREE_CONICAL_MEDIUM && IS_DAY && play->sceneNum == SCENE_KAKARIKO_VILLAGE &&
+        CVarGetInteger(CVAR_ENHANCEMENT("NightGSAlwaysSpawn"), 0)) {
         this->actor.params = 0x2001;
         this->actor.home.rot.z = 0x71;
     }
@@ -291,7 +290,7 @@ void EnWood02_Init(Actor* thisx, PlayState* play2) {
             this->actor.world.pos.x += (sSpawnSin * sSpawnDistance[5]);
             this->actor.world.pos.z += (sSpawnCos * sSpawnDistance[5]);
         } else {
-            this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+            this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
         }
 
         // Snap to floor, or remove if over void
@@ -332,7 +331,7 @@ void EnWood02_Update(Actor* thisx, PlayState* play2) {
 
     // Despawn extra trees in a group if out of range
     if ((this->spawnType == WOOD_SPAWN_SPAWNED) && (this->actor.parent != NULL)) {
-        if (!(this->actor.flags & ACTOR_FLAG_ACTIVE)) {
+        if (!(this->actor.flags & ACTOR_FLAG_INSIDE_CULLING_VOLUME)) {
             new_var = this->unk_14E[0];
             phi_v0 = 0;
 
@@ -358,23 +357,21 @@ void EnWood02_Update(Actor* thisx, PlayState* play2) {
             dropsSpawnPt = this->actor.world.pos;
             dropsSpawnPt.y += 200.0f;
 
-            if ((this->unk_14C >= 0) && (this->unk_14C < 0x64) && (CVarGetInteger(CVAR_ENHANCEMENT("TreesDropSticks"), 0)) && !(INV_CONTENT(ITEM_STICK) == ITEM_NONE)) {
-                (numDrops = (Rand_ZeroOne() * 4));
-                for (i = 0; i < numDrops; ++i) {
-                    Item_DropCollectible(play, &dropsSpawnPt, ITEM00_STICK);
-                }
-            } else {
-                if ((this->unk_14C >= 0) && (this->unk_14C < 0x64)) {
-                Item_DropCollectibleRandom(play, &this->actor, &dropsSpawnPt, this->unk_14C << 4);
-            } else {
-                if (this->actor.home.rot.z != 0) {
-                    this->actor.home.rot.z &= 0x1FFF;
-                    this->actor.home.rot.z |= 0xE000;
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_SW, dropsSpawnPt.x, dropsSpawnPt.y,
-                                dropsSpawnPt.z, 0, this->actor.world.rot.y, 0, this->actor.home.rot.z, true);
-                    this->actor.home.rot.z = 0;
+            if ((this->unk_14C >= 0) && (this->unk_14C < 0x64)) {
+                if (CVarGetInteger(CVAR_ENHANCEMENT("TreesDropSticks"), 0) && INV_CONTENT(ITEM_STICK) != ITEM_NONE) {
+                    numDrops = Rand_ZeroOne() * 4;
+                    for (i = 0; i < numDrops; ++i) {
+                        Item_DropCollectible(play, &dropsSpawnPt, ITEM00_STICK);
                     }
+                } else {
+                    Item_DropCollectibleRandom(play, &this->actor, &dropsSpawnPt, this->unk_14C << 4);
                 }
+            } else if (this->actor.home.rot.z != 0) {
+                this->actor.home.rot.z &= 0x1FFF;
+                this->actor.home.rot.z |= 0xE000;
+                Actor_Spawn(&play->actorCtx, play, ACTOR_EN_SW, dropsSpawnPt.x, dropsSpawnPt.y, dropsSpawnPt.z, 0,
+                            this->actor.world.rot.y, 0, this->actor.home.rot.z, true);
+                this->actor.home.rot.z = 0;
             }
 
             // Spawn falling leaves
@@ -388,8 +385,8 @@ void EnWood02_Update(Actor* thisx, PlayState* play2) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EV_TREE_SWING);
 
                 for (i = 3; i >= 0; i--) {
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_WOOD02, dropsSpawnPt.x, dropsSpawnPt.y,
-                                dropsSpawnPt.z, 0, Rand_CenteredFloat(65535.0f), 0, leavesParams, true);
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_WOOD02, dropsSpawnPt.x, dropsSpawnPt.y, dropsSpawnPt.z,
+                                0, Rand_CenteredFloat(65535.0f), 0, leavesParams, true);
                 }
             }
             this->unk_14C = -0x15;
@@ -421,7 +418,7 @@ void EnWood02_Update(Actor* thisx, PlayState* play2) {
         this->unk_14C++;
         Math_ApproachF(&this->actor.velocity.x, 0.0f, 1.0f, 5 * 0.01f);
         Math_ApproachF(&this->actor.velocity.z, 0.0f, 1.0f, 5 * 0.01f);
-        func_8002D7EC(&this->actor);
+        Actor_UpdatePos(&this->actor);
         this->actor.shape.rot.z = Math_SinS(3000 * this->unk_14C) * 0x4000;
         this->unk_14E[0]--;
 
@@ -473,13 +470,11 @@ void EnWood02_Draw(Actor* thisx, PlayState* play) {
     } else if (D_80B3BF70[this->drawType & 0xF] != NULL) {
         Gfx_DrawDListOpa(play, D_80B3BF54[this->drawType & 0xF]);
         gDPSetEnvColor(POLY_XLU_DISP++, red, green, blue, 0);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, D_80B3BF70[this->drawType & 0xF]);
     } else {
         Gfx_SetupDL_25Xlu(gfxCtx);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, D_80B3BF54[this->drawType & 0xF]);
     }
 

@@ -5,18 +5,16 @@
 #include "soh/OTRGlobals.h"
 #include "soh/SaveManager.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/resource/type/Skeleton.h"
 #include "soh/Enhancements/boss-rush/BossRushTypes.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
 #include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
-#include "soh/Enhancements/nametag.h"
 #include "soh/Enhancements/timesaver_hook_handlers.h"
 #include "soh/Enhancements/TimeSavers/TimeSavers.h"
-#include "soh/Enhancements/cheat_hook_handlers.h"
 #include "soh/Enhancements/randomizer/hook_handlers.h"
-#include "objects/object_gi_compass/object_gi_compass.h"
 
 #include "src/overlays/actors/ovl_En_Bb/z_en_bb.h"
 #include "src/overlays/actors/ovl_En_Dekubaba/z_en_dekubaba.h"
@@ -35,9 +33,10 @@
 #include "src/overlays/actors/ovl_Obj_Switch/z_obj_switch.h"
 #include "src/overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
 #include "src/overlays/actors/ovl_Door_Gerudo/z_door_gerudo.h"
-#include "src/overlays/actors/ovl_En_Door/z_en_door.h"
+#include "src/overlays/actors/ovl_En_Elf/z_en_elf.h"
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
+#include "soh_assets.h"
 #include "kaleido.h"
 
 extern "C" {
@@ -45,7 +44,6 @@ extern "C" {
 #include "align_asset_macro.h"
 #include "macros.h"
 #include "soh/cvar_prefixes.h"
-#include "functions.h"
 #include "variables.h"
 #include "functions.h"
 #include "src/overlays/actors/ovl_En_Door/z_en_door.h"
@@ -65,154 +63,10 @@ static const ALIGN_ASSET(2) char tokinoma_room_0DL_007A70[] = dtokinoma_room_0DL
 #define dtokinoma_room_0DL_007FD0 "__OTR__scenes/shared/tokinoma_scene/tokinoma_room_0DL_007FD0"
 static const ALIGN_ASSET(2) char tokinoma_room_0DL_007FD0[] = dtokinoma_room_0DL_007FD0;
 
-void RegisterInfiniteMoney() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded(true)) return;
-        if (CVarGetInteger(CVAR_CHEAT("InfiniteMoney"), 0) != 0 && (!IS_RANDO || Flags_GetRandomizerInf(RAND_INF_HAS_WALLET))) {
-            if (gSaveContext.rupees < CUR_CAPACITY(UPG_WALLET)) {
-                gSaveContext.rupees = CUR_CAPACITY(UPG_WALLET);
-            }
-        }
-    });
-}
-
-void RegisterInfiniteHealth() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded(true)) return;
-        if (CVarGetInteger(CVAR_CHEAT("InfiniteHealth"), 0) != 0) {
-            if (gSaveContext.health < gSaveContext.healthCapacity) {
-                gSaveContext.health = gSaveContext.healthCapacity;
-            }
-        }
-    });
-}
-
-void RegisterInfiniteAmmo() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded(true)) return;
-        if (CVarGetInteger(CVAR_CHEAT("InfiniteAmmo"), 0) != 0) {
-            // Deku Sticks
-            if (AMMO(ITEM_STICK) < CUR_CAPACITY(UPG_STICKS)) {
-                AMMO(ITEM_STICK) = CUR_CAPACITY(UPG_STICKS);
-            }
-
-            // Deku Nuts
-            if (AMMO(ITEM_NUT) < CUR_CAPACITY(UPG_NUTS)) {
-                AMMO(ITEM_NUT) = CUR_CAPACITY(UPG_NUTS);
-            }
-
-            // Bombs
-            if (AMMO(ITEM_BOMB) < CUR_CAPACITY(UPG_BOMB_BAG)) {
-                AMMO(ITEM_BOMB) = CUR_CAPACITY(UPG_BOMB_BAG);
-            }
-
-            // Fairy Bow (Ammo)
-            if (AMMO(ITEM_BOW) < CUR_CAPACITY(UPG_QUIVER)) {
-                AMMO(ITEM_BOW) = CUR_CAPACITY(UPG_QUIVER);
-            }
-
-            // Fairy Slingshot (Ammo)
-            if (AMMO(ITEM_SLINGSHOT) < CUR_CAPACITY(UPG_BULLET_BAG)) {
-                AMMO(ITEM_SLINGSHOT) = CUR_CAPACITY(UPG_BULLET_BAG);
-            }
-
-            // Bombchus (max: 50, no upgrades)
-            if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU && AMMO(ITEM_BOMBCHU) < 50) {
-                AMMO(ITEM_BOMBCHU) = 50;
-            }
-        }
-    });
-}
-
-void RegisterInfiniteMagic() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded(true)) return;
-        if (CVarGetInteger(CVAR_CHEAT("InfiniteMagic"), 0) != 0) {
-            if (gSaveContext.isMagicAcquired && gSaveContext.magic != (gSaveContext.isDoubleMagicAcquired + 1) * 0x30) {
-                gSaveContext.magic = (gSaveContext.isDoubleMagicAcquired + 1) * 0x30;
-            }
-        }
-    });
-}
-
-void RegisterInfiniteNayrusLove() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded(true)) return;
-        if (CVarGetInteger(CVAR_CHEAT("InfiniteNayru"), 0) != 0) {
-            gSaveContext.nayrusLoveTimer = 0x44B;
-        }
-    });
-}
-
-void RegisterMoonJumpOnL() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded(true)) return;
-        
-        if (CVarGetInteger(CVAR_CHEAT("MoonJumpOnL"), 0) != 0) {
-            Player* player = GET_PLAYER(gPlayState);
-
-            if (CHECK_BTN_ANY(gPlayState->state.input[0].cur.button, BTN_L)) {
-                player->actor.velocity.y = 6.34375f;
-            }
-        }
-    });
-}
-
-
-void RegisterInfiniteISG() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded(true)) return;
-
-        if (CVarGetInteger(CVAR_CHEAT("EasyISG"), 0) != 0) {
-            Player* player = GET_PLAYER(gPlayState);
-            player->meleeWeaponState = 1;
-        }
-    });
-}
-
-//Permanent quick put away (QPA) glitched damage value
-void RegisterEzQPA() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded(true)) return;
-
-        if (CVarGetInteger(CVAR_CHEAT("EasyQPA"), 0) != 0) {
-            Player* player = GET_PLAYER(gPlayState);
-            player->meleeWeaponQuads[0].info.toucher.dmgFlags = 0x16171617;
-            player->meleeWeaponQuads[1].info.toucher.dmgFlags = 0x16171617;
-        }
-    });
-}
-
-void RegisterUnrestrictedItems() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded(true)) return;
-
-        if (CVarGetInteger(CVAR_CHEAT("NoRestrictItems"), 0) != 0) {
-            u8 sunsBackup = gPlayState->interfaceCtx.restrictions.sunsSong;
-            memset(&gPlayState->interfaceCtx.restrictions, 0, sizeof(gPlayState->interfaceCtx.restrictions));
-            gPlayState->interfaceCtx.restrictions.sunsSong = sunsBackup;
-        }
-    });
-}
-
-void RegisterFreezeTime() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (CVarGetInteger(CVAR_CHEAT("FreezeTime"), 0) != 0) {
-            if (CVarGetInteger(CVAR_GENERAL("PrevTime"), -1) == -1) {
-                CVarSetInteger(CVAR_GENERAL("PrevTime"), gSaveContext.dayTime);
-            }
-
-            int32_t prevTime = CVarGetInteger(CVAR_GENERAL("PrevTime"), gSaveContext.dayTime);
-            gSaveContext.dayTime = prevTime;
-        } else {
-            CVarClear(CVAR_GENERAL("PrevTime"));
-        }
-    });
-}
-
 /// Switches Link's age and respawns him at the last entrance he entered.
 void SwitchAge() {
-    if (gPlayState == NULL) return;
+    if (gPlayState == NULL)
+        return;
 
     Player* player = GET_PLAYER(gPlayState);
 
@@ -260,13 +114,16 @@ void RegisterOcarinaTimeTravel() {
         }
 
         Actor* player = &GET_PLAYER(gPlayState)->actor;
-        Actor* nearbyTimeBlockEmpty = Actor_FindNearby(gPlayState, player, ACTOR_OBJ_WARP2BLOCK, ACTORCAT_ITEMACTION, 300.0f);
+        Actor* nearbyTimeBlockEmpty =
+            Actor_FindNearby(gPlayState, player, ACTOR_OBJ_WARP2BLOCK, ACTORCAT_ITEMACTION, 300.0f);
         Actor* nearbyTimeBlock = Actor_FindNearby(gPlayState, player, ACTOR_OBJ_TIMEBLOCK, ACTORCAT_ITEMACTION, 300.0f);
         Actor* nearbyOcarinaSpot = Actor_FindNearby(gPlayState, player, ACTOR_EN_OKARINA_TAG, ACTORCAT_PROP, 120.0f);
         Actor* nearbyDoorOfTime = Actor_FindNearby(gPlayState, player, ACTOR_DOOR_TOKI, ACTORCAT_BG, 500.0f);
         Actor* nearbyFrogs = Actor_FindNearby(gPlayState, player, ACTOR_EN_FR, ACTORCAT_NPC, 300.0f);
+        Actor* nearbyGossipStone = Actor_FindNearby(gPlayState, player, ACTOR_EN_GS, ACTORCAT_NPC, 300.0f);
         bool justPlayedSoT = gPlayState->msgCtx.lastPlayedSong == OCARINA_SONG_TIME;
-        bool notNearAnySource = !nearbyTimeBlockEmpty && !nearbyTimeBlock && !nearbyOcarinaSpot && !nearbyDoorOfTime && !nearbyFrogs;
+        bool notNearAnySource = !nearbyTimeBlockEmpty && !nearbyTimeBlock && !nearbyOcarinaSpot && !nearbyDoorOfTime &&
+                                !nearbyFrogs && !nearbyGossipStone;
         bool hasOcarinaOfTime = (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME);
         bool doesntNeedOcarinaOfTime = CVarGetInteger(CVAR_ENHANCEMENT("TimeTravel"), 0) == 2;
         bool hasMasterSword = CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER);
@@ -277,97 +134,16 @@ void RegisterOcarinaTimeTravel() {
     });
 }
 
-void AutoSave(GetItemEntry itemEntry) {
-    u8 item = itemEntry.itemId;
-    bool performSave = false;
-    // Don't autosave immediately after buying items from shops to prevent getting them for free!
-    // Don't autosave in the Chamber of Sages since resuming from that map breaks the game
-    // Don't autosave during the Ganon fight when picking up the Master Sword
-    if ((CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_OFF) != AUTOSAVE_OFF) && (gPlayState != NULL) && (gSaveContext.pendingSale == ITEM_NONE) &&
-        (gPlayState->gameplayFrames > 60 && gSaveContext.cutsceneIndex < 0xFFF0) && (gPlayState->sceneNum != SCENE_GANON_BOSS) && (gPlayState->sceneNum != SCENE_CHAMBER_OF_THE_SAGES)) {
-        if (((CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_ALL_ITEMS) || (CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_OFF) == AUTOSAVE_ALL_ITEMS)) && (item != ITEM_NONE)) {
-            // Autosave for all items
-            performSave = true;
-
-        } else if (((CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_MAJOR_ITEMS) || (CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_OFF) == AUTOSAVE_MAJOR_ITEMS)) && (item != ITEM_NONE)) {
-            // Autosave for major items
-            if (itemEntry.modIndex == 0) {
-                switch (item) {
-                    case ITEM_STICK:
-                    case ITEM_NUT:
-                    case ITEM_BOMB:
-                    case ITEM_BOW:
-                    case ITEM_SEEDS:
-                    case ITEM_FISHING_POLE:
-                    case ITEM_MAGIC_SMALL:
-                    case ITEM_MAGIC_LARGE:
-                    case ITEM_INVALID_4:
-                    case ITEM_INVALID_5:
-                    case ITEM_INVALID_6:
-                    case ITEM_INVALID_7:
-                    case ITEM_HEART:
-                    case ITEM_RUPEE_GREEN:
-                    case ITEM_RUPEE_BLUE:
-                    case ITEM_RUPEE_RED:
-                    case ITEM_RUPEE_PURPLE:
-                    case ITEM_RUPEE_GOLD:
-                    case ITEM_INVALID_8:
-                    case ITEM_STICKS_5:
-                    case ITEM_STICKS_10:
-                    case ITEM_NUTS_5:
-                    case ITEM_NUTS_10:
-                    case ITEM_BOMBS_5:
-                    case ITEM_BOMBS_10:
-                    case ITEM_BOMBS_20:
-                    case ITEM_BOMBS_30:
-                    case ITEM_ARROWS_SMALL:
-                    case ITEM_ARROWS_MEDIUM:
-                    case ITEM_ARROWS_LARGE:
-                    case ITEM_SEEDS_30:
-                    case ITEM_NONE:
-                        break;
-                    case ITEM_BOMBCHU:
-                    case ITEM_BOMBCHUS_5:
-                    case ITEM_BOMBCHUS_20:
-                        if (!CVarGetInteger(CVAR_ENHANCEMENT("EnableBombchuDrops"), 0)) {
-                            performSave = true;
-                        }
-                        break;
-                    default:
-                        performSave = true;
-                        break;
-                }
-            } else if (itemEntry.modIndex == 1 && item != RG_ICE_TRAP) {
-                performSave = true;
-            }
-        } else if (CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_MAJOR_ITEMS ||
-                   CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_ALL_ITEMS ||
-                   CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_OFF) == AUTOSAVE_LOCATION) {
-            performSave = true;
-        }
-        if (performSave) {
-            Play_PerformSave(gPlayState);
-            performSave = false;
-        }
-    }
-}
-
-void RegisterAutoSave() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry itemEntry) { AutoSave(itemEntry); });
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSaleEnd>([](GetItemEntry itemEntry) { AutoSave(itemEntry); });
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>([](int32_t sceneNum) { AutoSave(GET_ITEM_NONE); });
-}
-
 void RegisterRupeeDash() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
         if (!CVarGetInteger(CVAR_ENHANCEMENT("RupeeDash"), 0)) {
             return;
         }
-        
+
         // Initialize Timer
         static uint16_t rupeeDashTimer = 0;
         uint16_t rdmTime = CVarGetInteger(CVAR_ENHANCEMENT("RupeeDashInterval"), 5) * 20;
-        
+
         // Did time change by DashInterval?
         if (rupeeDashTimer >= rdmTime) {
             rupeeDashTimer = 0;
@@ -391,10 +167,10 @@ void RegisterShadowTag() {
         if (!CVarGetInteger(CVAR_ENHANCEMENT("ShadowTag"), 0)) {
             return;
         }
-        if (gPlayState->sceneNum == SCENE_FOREST_TEMPLE &&  // Forest Temple Scene
-            gPlayState->roomCtx.curRoom.num == 16 ||        // Green Poe Room
-            gPlayState->roomCtx.curRoom.num == 13 ||        // Blue Poe Room
-            gPlayState->roomCtx.curRoom.num == 12) {        // Red Poe Room
+        if (gPlayState->sceneNum == SCENE_FOREST_TEMPLE && // Forest Temple Scene
+                gPlayState->roomCtx.curRoom.num == 16 ||   // Green Poe Room
+            gPlayState->roomCtx.curRoom.num == 13 ||       // Blue Poe Room
+            gPlayState->roomCtx.curRoom.num == 12) {       // Red Poe Room
             return;
         } else {
             if (shouldSpawn && (delayTimer <= 0)) {
@@ -417,13 +193,14 @@ void RegisterShadowTag() {
 
 static bool hasAffectedHealth = false;
 void UpdatePermanentHeartLossState() {
-    if (!GameInteractor::IsSaveLoaded()) return;
+    if (!GameInteractor::IsSaveLoaded())
+        return;
 
     if (!CVarGetInteger(CVAR_ENHANCEMENT("PermanentHeartLoss"), 0) && hasAffectedHealth) {
-        uint8_t heartContainers = gSaveContext.sohStats.heartContainers; // each worth 16 health
-        uint8_t heartPieces = gSaveContext.sohStats.heartPieces; // each worth 4 health, but only in groups of 4
-        uint8_t startingHealth = 16 * (IS_RANDO ? (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_HEARTS) + 1) : 3);
-
+        uint8_t heartContainers = gSaveContext.ship.stats.heartContainers; // each worth 16 health
+        uint8_t heartPieces = gSaveContext.ship.stats.heartPieces; // each worth 4 health, but only in groups of 4
+        uint8_t startingHealth =
+            16 * (IS_RANDO ? (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_HEARTS) + 1) : 3);
 
         uint8_t newCapacity = startingHealth + (heartContainers * 16) + ((heartPieces - (heartPieces % 4)) * 4);
         gSaveContext.healthCapacity = MAX(newCapacity, gSaveContext.healthCapacity);
@@ -439,7 +216,8 @@ void RegisterPermanentHeartLoss() {
     });
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("PermanentHeartLoss"), 0) || !GameInteractor::IsSaveLoaded()) return;
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("PermanentHeartLoss"), 0) || !GameInteractor::IsSaveLoaded())
+            return;
 
         if (gSaveContext.healthCapacity > 16 && gSaveContext.healthCapacity - gSaveContext.health >= 16) {
             gSaveContext.healthCapacity -= 16;
@@ -451,12 +229,16 @@ void RegisterPermanentHeartLoss() {
 
 void RegisterDeleteFileOnDeath() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("DeleteFileOnDeath"), 0) || !GameInteractor::IsSaveLoaded() || gPlayState == NULL) return;
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("DeleteFileOnDeath"), 0) || !GameInteractor::IsSaveLoaded() ||
+            gPlayState == NULL)
+            return;
 
         if (gPlayState->gameOverCtx.state == GAMEOVER_DEATH_MENU && gPlayState->pauseCtx.state == 9) {
             SaveManager::Instance->DeleteZeldaFile(gSaveContext.fileNum);
             hasAffectedHealth = false;
-            std::reinterpret_pointer_cast<Ship::ConsoleWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch("reset");
+            std::reinterpret_pointer_cast<Ship::ConsoleWindow>(
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
+                ->Dispatch("reset");
         }
     });
 }
@@ -484,7 +266,10 @@ void RegisterDaytimeGoldSkultullas() {
             // ZF
             { SCENE_ZORAS_FOUNTAIN, 0, true, { { ACTOR_EN_SW, { -1891, 187, 1911 }, { 16384, 18022, 0 }, -19964 } } },
             // GF
-            { SCENE_GERUDOS_FORTRESS, 0, false, { { ACTOR_EN_SW, { 1598, 999, -2008 }, { 16384, -16384, 0 }, -19198 } } },
+            { SCENE_GERUDOS_FORTRESS,
+              0,
+              false,
+              { { ACTOR_EN_SW, { 1598, 999, -2008 }, { 16384, -16384, 0 }, -19198 } } },
             { SCENE_GERUDOS_FORTRESS, 1, false, { { ACTOR_EN_SW, { 3377, 1734, -4935 }, { 16384, 0, 0 }, -19199 } } },
             // Kak
             { SCENE_KAKARIKO_VILLAGE, 0, false, { { ACTOR_EN_SW, { -18, 540, 1800 }, { 0, -32768, 0 }, -20160 } } },
@@ -519,7 +304,8 @@ void RegisterDaytimeGoldSkultullas() {
 
 bool IsHyperBossesActive() {
     return CVarGetInteger(CVAR_ENHANCEMENT("HyperBosses"), 0) ||
-           (IS_BOSS_RUSH && gSaveContext.bossRushOptions[BR_OPTIONS_HYPERBOSSES] == BR_CHOICE_HYPERBOSSES_YES);
+           (IS_BOSS_RUSH &&
+            gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_HYPERBOSSES] == BR_CHOICE_HYPERBOSSES_YES);
 }
 
 void UpdateHyperBossesState() {
@@ -530,53 +316,53 @@ void UpdateHyperBossesState() {
     }
 
     if (IsHyperBossesActive()) {
-        actorUpdateHookId = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
-            // Run the update function a second time to make bosses move and act twice as fast.
+        actorUpdateHookId =
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
+                // Run the update function a second time to make bosses move and act twice as fast.
 
-            Player* player = GET_PLAYER(gPlayState);
-            Actor* actor = static_cast<Actor*>(refActor);
+                Player* player = GET_PLAYER(gPlayState);
+                Actor* actor = static_cast<Actor*>(refActor);
 
-            uint8_t isBossActor =
-                actor->id == ACTOR_BOSS_GOMA ||                              // Gohma
-                actor->id == ACTOR_BOSS_DODONGO ||                           // King Dodongo
-                actor->id == ACTOR_EN_BDFIRE ||                              // King Dodongo Fire Breath
-                actor->id == ACTOR_BOSS_VA ||                                // Barinade
-                actor->id == ACTOR_BOSS_GANONDROF ||                         // Phantom Ganon
-                actor->id == ACTOR_EN_FHG_FIRE ||                            // Phantom Ganon/Ganondorf Energy Ball/Thunder
-                actor->id == ACTOR_EN_FHG ||                                 // Phantom Ganon's Horse
-                actor->id == ACTOR_BOSS_FD || actor->id == ACTOR_BOSS_FD2 || // Volvagia (grounded/flying)
-                actor->id == ACTOR_EN_VB_BALL ||                             // Volvagia Rocks
-                actor->id == ACTOR_BOSS_MO ||                                // Morpha
-                actor->id == ACTOR_BOSS_SST ||                               // Bongo Bongo
-                actor->id == ACTOR_BOSS_TW ||                                // Twinrova
-                actor->id == ACTOR_BOSS_GANON ||                             // Ganondorf
-                actor->id == ACTOR_BOSS_GANON2;                              // Ganon
+                uint8_t isBossActor = actor->id == ACTOR_BOSS_GOMA ||      // Gohma
+                                      actor->id == ACTOR_BOSS_DODONGO ||   // King Dodongo
+                                      actor->id == ACTOR_EN_BDFIRE ||      // King Dodongo Fire Breath
+                                      actor->id == ACTOR_BOSS_VA ||        // Barinade
+                                      actor->id == ACTOR_BOSS_GANONDROF || // Phantom Ganon
+                                      actor->id == ACTOR_EN_FHG_FIRE || // Phantom Ganon/Ganondorf Energy Ball/Thunder
+                                      actor->id == ACTOR_EN_FHG ||      // Phantom Ganon's Horse
+                                      actor->id == ACTOR_BOSS_FD ||
+                                      actor->id == ACTOR_BOSS_FD2 ||   // Volvagia (grounded/flying)
+                                      actor->id == ACTOR_EN_VB_BALL || // Volvagia Rocks
+                                      actor->id == ACTOR_BOSS_MO ||    // Morpha
+                                      actor->id == ACTOR_BOSS_SST ||   // Bongo Bongo
+                                      actor->id == ACTOR_BOSS_TW ||    // Twinrova
+                                      actor->id == ACTOR_BOSS_GANON || // Ganondorf
+                                      actor->id == ACTOR_BOSS_GANON2;  // Ganon
 
-            // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some bosses.
-            if (IsHyperBossesActive() && isBossActor && !Player_InBlockingCsMode(gPlayState, player)) {
-                // Barinade needs to be updated in sequence to avoid unintended behaviour.
-                if (actor->id == ACTOR_BOSS_VA) {
-                    // params -1 is BOSSVA_BODY
-                    if (actor->params == -1) {
-                        Actor* actorList = gPlayState->actorCtx.actorLists[ACTORCAT_BOSS].head;
-                        while (actorList != NULL) {
-                            GameInteractor::RawAction::UpdateActor(actorList);
-                            actorList = actorList->next;
+                // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some bosses.
+                if (IsHyperBossesActive() && isBossActor && !Player_InBlockingCsMode(gPlayState, player)) {
+                    // Barinade needs to be updated in sequence to avoid unintended behaviour.
+                    if (actor->id == ACTOR_BOSS_VA) {
+                        // params -1 is BOSSVA_BODY
+                        if (actor->params == -1) {
+                            Actor* actorList = gPlayState->actorCtx.actorLists[ACTORCAT_BOSS].head;
+                            while (actorList != NULL) {
+                                GameInteractor::RawAction::UpdateActor(actorList);
+                                actorList = actorList->next;
+                            }
                         }
+                    } else {
+                        GameInteractor::RawAction::UpdateActor(actor);
                     }
-                } else {
-                    GameInteractor::RawAction::UpdateActor(actor);
                 }
-            }
-        });
+            });
     }
 }
 
 void RegisterHyperBosses() {
     UpdateHyperBossesState();
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int16_t fileNum) {
-        UpdateHyperBossesState();
-    });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>(
+        [](int16_t fileNum) { UpdateHyperBossesState(); });
 }
 
 void UpdateHyperEnemiesState() {
@@ -587,22 +373,23 @@ void UpdateHyperEnemiesState() {
     }
 
     if (CVarGetInteger(CVAR_ENHANCEMENT("HyperEnemies"), 0)) {
-        actorUpdateHookId = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
-            // Run the update function a second time to make enemies and minibosses move and act twice as fast.
+        actorUpdateHookId =
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
+                // Run the update function a second time to make enemies and minibosses move and act twice as fast.
 
-            Player* player = GET_PLAYER(gPlayState);
-            Actor* actor = static_cast<Actor*>(refActor);
+                Player* player = GET_PLAYER(gPlayState);
+                Actor* actor = static_cast<Actor*>(refActor);
 
-            // Some enemies are not in the ACTORCAT_ENEMY category, and some are that aren't really enemies.
-            bool isEnemy = actor->category == ACTORCAT_ENEMY || actor->id == ACTOR_EN_TORCH2;
-            bool isExcludedEnemy = actor->id == ACTOR_EN_FIRE_ROCK || actor->id == ACTOR_EN_ENCOUNT2;
+                // Some enemies are not in the ACTORCAT_ENEMY category, and some are that aren't really enemies.
+                bool isEnemy = actor->category == ACTORCAT_ENEMY || actor->id == ACTOR_EN_TORCH2;
+                bool isExcludedEnemy = actor->id == ACTOR_EN_FIRE_ROCK || actor->id == ACTOR_EN_ENCOUNT2;
 
-            // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some cutscenes.
-            if (CVarGetInteger(CVAR_ENHANCEMENT("HyperEnemies"), 0) && isEnemy && !isExcludedEnemy &&
-                !Player_InBlockingCsMode(gPlayState, player)) {
-                GameInteractor::RawAction::UpdateActor(actor);
-            }
-        });
+                // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some cutscenes.
+                if (CVarGetInteger(CVAR_ENHANCEMENT("HyperEnemies"), 0) && isEnemy && !isExcludedEnemy &&
+                    !Player_InBlockingCsMode(gPlayState, player)) {
+                    GameInteractor::RawAction::UpdateActor(actor);
+                }
+            });
     }
 }
 
@@ -641,7 +428,7 @@ void RegisterBonkDamage() {
             default:
                 break;
         }
-        
+
         Health_ChangeBy(gPlayState, -bonkDamage);
         // Set invincibility to make Link flash red as a visual damage indicator.
         Player* player = GET_PLAYER(gPlayState);
@@ -654,7 +441,8 @@ void UpdateDirtPathFixState(int32_t sceneNum) {
         case SCENE_HYRULE_FIELD:
         case SCENE_KOKIRI_FOREST:
         case SCENE_HYRULE_CASTLE:
-            CVarSetInteger(CVAR_Z_FIGHTING_MODE, CVarGetInteger(CVAR_ENHANCEMENT("SceneSpecificDirtPathFix"), ZFIGHT_FIX_DISABLED));
+            CVarSetInteger(CVAR_Z_FIGHTING_MODE,
+                           CVarGetInteger(CVAR_ENHANCEMENT("SceneSpecificDirtPathFix"), ZFIGHT_FIX_DISABLED));
             return;
         default:
             CVarClear(CVAR_Z_FIGHTING_MODE);
@@ -662,9 +450,8 @@ void UpdateDirtPathFixState(int32_t sceneNum) {
 }
 
 void RegisterMenuPathFix() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>([](int32_t sceneNum) {
-        UpdateDirtPathFixState(sceneNum);
-    });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>(
+        [](int32_t sceneNum) { UpdateDirtPathFixState(sceneNum); });
 }
 
 void UpdateMirrorModeState(int32_t sceneNum) {
@@ -672,27 +459,28 @@ void UpdateMirrorModeState(int32_t sceneNum) {
     bool nextMirroredWorld = false;
 
     int16_t mirroredMode = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorldMode"), MIRRORED_WORLD_OFF);
-    int16_t inDungeon = (sceneNum >= SCENE_DEKU_TREE && sceneNum <= SCENE_INSIDE_GANONS_CASTLE_COLLAPSE && sceneNum != SCENE_THIEVES_HIDEOUT) ||
+    int16_t inDungeon = (sceneNum >= SCENE_DEKU_TREE && sceneNum <= SCENE_INSIDE_GANONS_CASTLE_COLLAPSE &&
+                         sceneNum != SCENE_THIEVES_HIDEOUT) ||
                         (sceneNum >= SCENE_DEKU_TREE_BOSS && sceneNum <= SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) ||
                         (sceneNum == SCENE_GANON_BOSS);
 
     if (mirroredMode == MIRRORED_WORLD_RANDOM_SEEDED || mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED) {
-        uint32_t seed = sceneNum + (IS_RANDO ? Rando::Context::GetInstance()->GetSettings()->GetSeed()
-                                             : gSaveContext.sohStats.fileCreatedAt);
+        uint32_t seed =
+            sceneNum + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
         Random_Init(seed);
     }
 
     bool randomMirror = Random(0, 2) == 1;
 
-    if (
-        mirroredMode == MIRRORED_WORLD_ALWAYS ||
+    if (mirroredMode == MIRRORED_WORLD_ALWAYS ||
         ((mirroredMode == MIRRORED_WORLD_RANDOM || mirroredMode == MIRRORED_WORLD_RANDOM_SEEDED) && randomMirror) ||
         // Dungeon modes
-        (inDungeon && (mirroredMode == MIRRORED_WORLD_DUNGEONS_All ||
-         (mirroredMode == MIRRORED_WORLD_DUNGEONS_VANILLA && !ResourceMgr_IsSceneMasterQuest(sceneNum)) ||
-         (mirroredMode == MIRRORED_WORLD_DUNGEONS_MQ && ResourceMgr_IsSceneMasterQuest(sceneNum)) ||
-         ((mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM || mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED) && randomMirror)))
-    ) {
+        (inDungeon &&
+         (mirroredMode == MIRRORED_WORLD_DUNGEONS_ALL ||
+          (mirroredMode == MIRRORED_WORLD_DUNGEONS_VANILLA && !ResourceMgr_IsSceneMasterQuest(sceneNum)) ||
+          (mirroredMode == MIRRORED_WORLD_DUNGEONS_MQ && ResourceMgr_IsSceneMasterQuest(sceneNum)) ||
+          ((mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM || mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED) &&
+           randomMirror)))) {
         nextMirroredWorld = true;
         CVarSetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 1);
     } else {
@@ -707,25 +495,33 @@ void UpdateMirrorModeState(int32_t sceneNum) {
 }
 
 void RegisterMirrorModeHandler() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int32_t sceneNum) {
-        UpdateMirrorModeState(sceneNum);
-    });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(
+        [](int32_t sceneNum) { UpdateMirrorModeState(sceneNum); });
 }
 
 void UpdatePatchHand() {
     if ((CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0)) && LINK_IS_CHILD) {
-        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer1", 92, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
+        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer1", 92,
+                                   gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
         ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer2", 93, gsSPEndDisplayList());
-        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingHookshotNearDL, "childHookshot1", 84, gsSPDisplayListOTRFilePath(gLinkChildRightHandClosedNearDL));
-        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingHookshotNearDL, "childHookshot2", 85, gsSPEndDisplayList());
-        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingBowNearDL, "childBow1", 51, gsSPDisplayListOTRFilePath(gLinkChildRightHandClosedNearDL));
+        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingHookshotNearDL, "childHookshot1", 84,
+                                   gsSPDisplayListOTRFilePath(gLinkChildRightHandClosedNearDL));
+        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingHookshotNearDL, "childHookshot2", 85,
+                                   gsSPEndDisplayList());
+        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingBowNearDL, "childBow1", 51,
+                                   gsSPDisplayListOTRFilePath(gLinkChildRightHandClosedNearDL));
         ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingBowNearDL, "childBow2", 52, gsSPEndDisplayList());
-        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "childMasterSword1", 104, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
-        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "childMasterSword2", 105, gsSPEndDisplayList());
-        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "childBiggoronSword1", 79, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
+        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "childMasterSword1", 104,
+                                   gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
+        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "childMasterSword2", 105,
+                                   gsSPEndDisplayList());
+        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "childBiggoronSword1", 79,
+                                   gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
         ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "childBiggoronSword2", 80, gsSPEndDisplayList());
-        ResourceMgr_PatchGfxByName(gLinkAdultHandHoldingBrokenGiantsKnifeDL, "childBrokenGiantsKnife1", 76, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
-        ResourceMgr_PatchGfxByName(gLinkAdultHandHoldingBrokenGiantsKnifeDL, "childBrokenGiantsKnife2", 77, gsSPEndDisplayList());
+        ResourceMgr_PatchGfxByName(gLinkAdultHandHoldingBrokenGiantsKnifeDL, "childBrokenGiantsKnife1", 76,
+                                   gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
+        ResourceMgr_PatchGfxByName(gLinkAdultHandHoldingBrokenGiantsKnifeDL, "childBrokenGiantsKnife2", 77,
+                                   gsSPEndDisplayList());
 
     } else {
         ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer1");
@@ -740,12 +536,16 @@ void UpdatePatchHand() {
         ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "childBiggoronSword2");
         ResourceMgr_UnpatchGfxByName(gLinkAdultHandHoldingBrokenGiantsKnifeDL, "childBrokenGiantsKnife1");
         ResourceMgr_UnpatchGfxByName(gLinkAdultHandHoldingBrokenGiantsKnifeDL, "childBrokenGiantsKnife2");
-	}
+    }
     if ((CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0)) && LINK_IS_ADULT) {
-        ResourceMgr_PatchGfxByName(gLinkChildLeftFistAndKokiriSwordNearDL, "adultKokiriSword", 13, gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
-        ResourceMgr_PatchGfxByName(gLinkChildRightHandHoldingSlingshotNearDL, "adultSlingshot", 13, gsSPDisplayListOTRFilePath(gLinkAdultRightHandClosedNearDL));
-        ResourceMgr_PatchGfxByName(gLinkChildLeftFistAndBoomerangNearDL, "adultBoomerang", 50, gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
-        ResourceMgr_PatchGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "adultDekuShield", 49, gsSPDisplayListOTRFilePath(gLinkAdultRightHandClosedNearDL));
+        ResourceMgr_PatchGfxByName(gLinkChildLeftFistAndKokiriSwordNearDL, "adultKokiriSword", 13,
+                                   gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
+        ResourceMgr_PatchGfxByName(gLinkChildRightHandHoldingSlingshotNearDL, "adultSlingshot", 13,
+                                   gsSPDisplayListOTRFilePath(gLinkAdultRightHandClosedNearDL));
+        ResourceMgr_PatchGfxByName(gLinkChildLeftFistAndBoomerangNearDL, "adultBoomerang", 50,
+                                   gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
+        ResourceMgr_PatchGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "adultDekuShield", 49,
+                                   gsSPDisplayListOTRFilePath(gLinkAdultRightHandClosedNearDL));
     } else {
         ResourceMgr_UnpatchGfxByName(gLinkChildLeftFistAndKokiriSwordNearDL, "adultKokiriSword");
         ResourceMgr_UnpatchGfxByName(gLinkChildRightHandHoldingSlingshotNearDL, "adultSlingshot");
@@ -753,7 +553,8 @@ void UpdatePatchHand() {
         ResourceMgr_UnpatchGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "adultDekuShield");
     }
     if (CVarGetInteger("gEnhancements.FixHammerHand", 0) && LINK_IS_ADULT) {
-        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "hammerHand1", 92, gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
+        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "hammerHand1", 92,
+                                   gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
         ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "hammerHand2", 93, gsSPEndDisplayList());
     } else {
         ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "hammerHand1");
@@ -762,203 +563,201 @@ void UpdatePatchHand() {
 }
 
 void RegisterPatchHandHandler() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int32_t sceneNum) { 
-        UpdatePatchHand(); 
-    });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(
+        [](int32_t sceneNum) { UpdatePatchHand(); });
 }
 
 void RegisterResetNaviTimer() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int32_t sceneNum) {
-		if (CVarGetInteger(CVAR_ENHANCEMENT("ResetNaviTimer"), 0)) {
-			gSaveContext.naviTimer = 0;
-		}
-	});
+        if (CVarGetInteger(CVAR_ENHANCEMENT("ResetNaviTimer"), 0)) {
+            gSaveContext.naviTimer = 0;
+        }
+    });
 }
 
-//this map is used for enemies that can be uniquely identified by their id
-//and that are always counted
-//enemies that can't be uniquely identified by their id
-//or only sometimes count (like ACTOR_EN_TP)
-//have to be manually handled in RegisterEnemyDefeatCounts
+// this map is used for enemies that can be uniquely identified by their id
+// and that are always counted
+// enemies that can't be uniquely identified by their id
+// or only sometimes count (like ACTOR_EN_TP)
+// have to be manually handled in RegisterEnemyDefeatCounts
 static std::unordered_map<u16, u16> uniqueEnemyIdToStatCount = {
-    { ACTOR_EN_ANUBICE,    COUNT_ENEMIES_DEFEATED_ANUBIS },
-    { ACTOR_EN_AM,         COUNT_ENEMIES_DEFEATED_ARMOS },
-    { ACTOR_EN_CLEAR_TAG,  COUNT_ENEMIES_DEFEATED_ARWING },
-    { ACTOR_EN_VALI,       COUNT_ENEMIES_DEFEATED_BARI },
-    { ACTOR_EN_VM,         COUNT_ENEMIES_DEFEATED_BEAMOS },
-    { ACTOR_EN_BIGOKUTA,   COUNT_ENEMIES_DEFEATED_BIG_OCTO },
-    { ACTOR_EN_BILI,       COUNT_ENEMIES_DEFEATED_BIRI },
-    { ACTOR_EN_DNS,        COUNT_ENEMIES_DEFEATED_BUSINESS_SCRUB },
-    { ACTOR_EN_TORCH,      COUNT_ENEMIES_DEFEATED_DARK_LINK },
-    { ACTOR_EN_DH,         COUNT_ENEMIES_DEFEATED_DEAD_HAND },
-    { ACTOR_EN_HINTNUTS,   COUNT_ENEMIES_DEFEATED_DEKU_SCRUB },
-    { ACTOR_EN_DODONGO,    COUNT_ENEMIES_DEFEATED_DODONGO },
-    { ACTOR_EN_DODOJR,     COUNT_ENEMIES_DEFEATED_DODONGO_BABY },
-    { ACTOR_DOOR_KILLER,   COUNT_ENEMIES_DEFEATED_DOOR_TRAP },
-    { ACTOR_EN_FD,         COUNT_ENEMIES_DEFEATED_FLARE_DANCER },
-    { ACTOR_EN_FLOORMAS,   COUNT_ENEMIES_DEFEATED_FLOORMASTER },
-    { ACTOR_EN_TUBO_TRAP,  COUNT_ENEMIES_DEFEATED_FLYING_POT },
-    { ACTOR_EN_YUKABYUN,   COUNT_ENEMIES_DEFEATED_FLOOR_TILE },
-    { ACTOR_EN_FZ,         COUNT_ENEMIES_DEFEATED_FREEZARD },
-    { ACTOR_EN_GELDB,      COUNT_ENEMIES_DEFEATED_GERUDO_THIEF },
-    { ACTOR_EN_GOMA,       COUNT_ENEMIES_DEFEATED_GOHMA_LARVA },
-    { ACTOR_EN_CROW,       COUNT_ENEMIES_DEFEATED_GUAY },
-    { ACTOR_EN_RR,         COUNT_ENEMIES_DEFEATED_LIKE_LIKE },
-    { ACTOR_EN_DEKUNUTS,   COUNT_ENEMIES_DEFEATED_MAD_SCRUB },
-    { ACTOR_EN_OKUTA,      COUNT_ENEMIES_DEFEATED_OCTOROK },
-    { ACTOR_EN_BA,         COUNT_ENEMIES_DEFEATED_PARASITIC_TENTACLE },
+    { ACTOR_EN_ANUBICE, COUNT_ENEMIES_DEFEATED_ANUBIS },
+    { ACTOR_EN_AM, COUNT_ENEMIES_DEFEATED_ARMOS },
+    { ACTOR_EN_CLEAR_TAG, COUNT_ENEMIES_DEFEATED_ARWING },
+    { ACTOR_EN_VALI, COUNT_ENEMIES_DEFEATED_BARI },
+    { ACTOR_EN_VM, COUNT_ENEMIES_DEFEATED_BEAMOS },
+    { ACTOR_EN_BIGOKUTA, COUNT_ENEMIES_DEFEATED_BIG_OCTO },
+    { ACTOR_EN_BILI, COUNT_ENEMIES_DEFEATED_BIRI },
+    { ACTOR_EN_DNS, COUNT_ENEMIES_DEFEATED_BUSINESS_SCRUB },
+    { ACTOR_EN_TORCH, COUNT_ENEMIES_DEFEATED_DARK_LINK },
+    { ACTOR_EN_DH, COUNT_ENEMIES_DEFEATED_DEAD_HAND },
+    { ACTOR_EN_HINTNUTS, COUNT_ENEMIES_DEFEATED_DEKU_SCRUB },
+    { ACTOR_EN_DODONGO, COUNT_ENEMIES_DEFEATED_DODONGO },
+    { ACTOR_EN_DODOJR, COUNT_ENEMIES_DEFEATED_DODONGO_BABY },
+    { ACTOR_DOOR_KILLER, COUNT_ENEMIES_DEFEATED_DOOR_TRAP },
+    { ACTOR_EN_FD, COUNT_ENEMIES_DEFEATED_FLARE_DANCER },
+    { ACTOR_EN_FLOORMAS, COUNT_ENEMIES_DEFEATED_FLOORMASTER },
+    { ACTOR_EN_TUBO_TRAP, COUNT_ENEMIES_DEFEATED_FLYING_POT },
+    { ACTOR_EN_YUKABYUN, COUNT_ENEMIES_DEFEATED_FLOOR_TILE },
+    { ACTOR_EN_FZ, COUNT_ENEMIES_DEFEATED_FREEZARD },
+    { ACTOR_EN_GELDB, COUNT_ENEMIES_DEFEATED_GERUDO_THIEF },
+    { ACTOR_EN_GOMA, COUNT_ENEMIES_DEFEATED_GOHMA_LARVA },
+    { ACTOR_EN_CROW, COUNT_ENEMIES_DEFEATED_GUAY },
+    { ACTOR_EN_RR, COUNT_ENEMIES_DEFEATED_LIKE_LIKE },
+    { ACTOR_EN_DEKUNUTS, COUNT_ENEMIES_DEFEATED_MAD_SCRUB },
+    { ACTOR_EN_OKUTA, COUNT_ENEMIES_DEFEATED_OCTOROK },
+    { ACTOR_EN_BA, COUNT_ENEMIES_DEFEATED_PARASITIC_TENTACLE },
     { ACTOR_EN_PO_SISTERS, COUNT_ENEMIES_DEFEATED_POE_SISTERS },
-    { ACTOR_EN_BUBBLE,     COUNT_ENEMIES_DEFEATED_SHABOM },
-    { ACTOR_EN_SB,         COUNT_ENEMIES_DEFEATED_SHELLBLADE },
-    { ACTOR_EN_SKJ,        COUNT_ENEMIES_DEFEATED_SKULL_KID },
-    { ACTOR_EN_NY,         COUNT_ENEMIES_DEFEATED_SPIKE },
-    { ACTOR_EN_SKB,        COUNT_ENEMIES_DEFEATED_STALCHILD },
-    { ACTOR_EN_TEST,       COUNT_ENEMIES_DEFEATED_STALFOS },
-    { ACTOR_EN_WEIYER,     COUNT_ENEMIES_DEFEATED_STINGER },
-    { ACTOR_EN_BW,         COUNT_ENEMIES_DEFEATED_TORCH_SLUG },
-    { ACTOR_EN_WALLMAS,    COUNT_ENEMIES_DEFEATED_WALLMASTER },
-    { ACTOR_EN_KAREBABA,   COUNT_ENEMIES_DEFEATED_WITHERED_DEKU_BABA },
+    { ACTOR_EN_BUBBLE, COUNT_ENEMIES_DEFEATED_SHABOM },
+    { ACTOR_EN_SB, COUNT_ENEMIES_DEFEATED_SHELLBLADE },
+    { ACTOR_EN_SKJ, COUNT_ENEMIES_DEFEATED_SKULL_KID },
+    { ACTOR_EN_NY, COUNT_ENEMIES_DEFEATED_SPIKE },
+    { ACTOR_EN_SKB, COUNT_ENEMIES_DEFEATED_STALCHILD },
+    { ACTOR_EN_TEST, COUNT_ENEMIES_DEFEATED_STALFOS },
+    { ACTOR_EN_WEIYER, COUNT_ENEMIES_DEFEATED_STINGER },
+    { ACTOR_EN_BW, COUNT_ENEMIES_DEFEATED_TORCH_SLUG },
+    { ACTOR_EN_WALLMAS, COUNT_ENEMIES_DEFEATED_WALLMASTER },
+    { ACTOR_EN_KAREBABA, COUNT_ENEMIES_DEFEATED_WITHERED_DEKU_BABA },
 };
 
 void RegisterEnemyDefeatCounts() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnEnemyDefeat>([](void* refActor) {
         Actor* actor = static_cast<Actor*>(refActor);
         if (uniqueEnemyIdToStatCount.contains(actor->id)) {
-            gSaveContext.sohStats.count[uniqueEnemyIdToStatCount[actor->id]]++;
+            gSaveContext.ship.stats.count[uniqueEnemyIdToStatCount[actor->id]]++;
         } else {
             switch (actor->id) {
                 case ACTOR_EN_BB:
                     if (actor->params == ENBB_GREEN || actor->params == ENBB_GREEN_BIG) {
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_GREEN]++;
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_GREEN]++;
                     } else if (actor->params == ENBB_BLUE) {
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_BLUE]++;
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_BLUE]++;
                     } else if (actor->params == ENBB_WHITE) {
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_WHITE]++;
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_WHITE]++;
                     } else if (actor->params == ENBB_RED) {
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_RED]++;
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_RED]++;
                     }
                     break;
 
                 case ACTOR_EN_DEKUBABA:
                     if (actor->params == DEKUBABA_BIG) {
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA_BIG]++;
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA_BIG]++;
                     } else {
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA]++;
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA]++;
                     }
                     break;
 
                 case ACTOR_EN_ZF:
                     if (actor->params == ENZF_TYPE_DINOLFOS) {
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DINOLFOS]++;
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_DINOLFOS]++;
                     } else {
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LIZALFOS]++;
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_LIZALFOS]++;
                     }
                     break;
 
                 case ACTOR_EN_RD:
                     if (actor->params >= -1) {
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_REDEAD]++;
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_REDEAD]++;
                     } else {
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GIBDO]++;
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_GIBDO]++;
                     }
                     break;
 
                 case ACTOR_EN_IK:
                     if (actor->params == 0) {
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_IRON_KNUCKLE_NABOORU]++;
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_IRON_KNUCKLE_NABOORU]++;
                     } else {
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_IRON_KNUCKLE]++;
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_IRON_KNUCKLE]++;
                     }
                     break;
 
                 case ACTOR_EN_FIREFLY:
                     if (actor->params == KEESE_NORMAL_FLY || actor->params == KEESE_NORMAL_PERCH) {
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_KEESE]++;
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_KEESE]++;
                     } else if (actor->params == KEESE_FIRE_FLY || actor->params == KEESE_FIRE_PERCH) {
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_KEESE_FIRE]++;
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_KEESE_FIRE]++;
                     } else if (actor->params == KEESE_ICE_FLY) {
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_KEESE_ICE]++;
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_KEESE_ICE]++;
                     }
                     break;
 
-                case ACTOR_EN_REEBA:
-                    {
-                        EnReeba* reeba = (EnReeba*)actor;
-                        if (reeba->isBig) {
-                            gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LEEVER_BIG]++;
-                        } else {
-                            gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LEEVER]++;
-                        }
+                case ACTOR_EN_REEBA: {
+                    EnReeba* reeba = (EnReeba*)actor;
+                    if (reeba->isBig) {
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_LEEVER_BIG]++;
+                    } else {
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_LEEVER]++;
                     }
-                    break;
+                } break;
 
                 case ACTOR_EN_MB:
                     if (actor->params == 0) {
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_MOBLIN_CLUB]++;
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_MOBLIN_CLUB]++;
                     } else {
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_MOBLIN]++;
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_MOBLIN]++;
                     }
                     break;
 
                 case ACTOR_EN_PEEHAT:
                     if (actor->params == PEAHAT_TYPE_LARVA) {
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_PEAHAT_LARVA]++;
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_PEAHAT_LARVA]++;
                     } else {
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_PEAHAT]++;
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_PEAHAT]++;
                     }
                     break;
-                
+
                 case ACTOR_EN_POH:
                     if (actor->params == EN_POH_FLAT || actor->params == EN_POH_SHARP) {
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE_COMPOSER]++;
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_POE_COMPOSER]++;
                     } else {
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE]++;
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_POE]++;
                     }
                     break;
 
                 case ACTOR_EN_PO_FIELD:
                     if (actor->params == EN_PO_FIELD_BIG) {
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE_BIG]++;
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_POE_BIG]++;
                     } else {
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE]++;
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_POE]++;
                     }
                     break;
 
                 case ACTOR_EN_ST:
                     if (actor->params == 1) {
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA_BIG]++;
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA_BIG]++;
                     } else {
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA]++;
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA]++;
                     }
                     break;
 
                 case ACTOR_EN_SW:
                     if (((actor->params & 0xE000) >> 0xD) != 0) {
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA_GOLD]++;
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA_GOLD]++;
                     } else {
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLWALLTULA]++;
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_SKULLWALLTULA]++;
                     }
                     break;
 
                 case ACTOR_EN_TP:
-                    if (actor->params == TAILPASARAN_HEAD) {  // Only count the head, otherwise each body segment will increment
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TAILPASARAN]++;
+                    // Only count the head, otherwise each body segment will increment
+                    if (actor->params == TAILPASARAN_HEAD) {
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_TAILPASARAN]++;
                     }
                     break;
 
                 case ACTOR_EN_TITE:
                     if (actor->params == TEKTITE_BLUE) {
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TEKTITE_BLUE]++;
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_TEKTITE_BLUE]++;
                     } else {
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TEKTITE_RED]++;
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_TEKTITE_RED]++;
                     }
                     break;
 
                 case ACTOR_EN_WF:
                     if (actor->params == WOLFOS_WHITE) {
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_WOLFOS_WHITE]++;
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_WOLFOS_WHITE]++;
                     } else {
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_WOLFOS]++;
+                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_WOLFOS]++;
                     }
                     break;
             }
@@ -971,217 +770,60 @@ void RegisterBossDefeatTimestamps() {
         Actor* actor = static_cast<Actor*>(refActor);
         switch (actor->id) {
             case ACTOR_BOSS_DODONGO:
-                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_KING_DODONGO] = GAMEPLAYSTAT_TOTAL_TIME;
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_KING_DODONGO] = GAMEPLAYSTAT_TOTAL_TIME;
                 break;
             case ACTOR_BOSS_FD2:
-                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_VOLVAGIA] = GAMEPLAYSTAT_TOTAL_TIME;
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_VOLVAGIA] = GAMEPLAYSTAT_TOTAL_TIME;
                 break;
             case ACTOR_BOSS_GANON:
-                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANONDORF] = GAMEPLAYSTAT_TOTAL_TIME;
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANONDORF] = GAMEPLAYSTAT_TOTAL_TIME;
                 break;
             case ACTOR_BOSS_GANON2:
-                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
-                gSaveContext.sohStats.gameComplete = true;
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
+                gSaveContext.ship.stats.gameComplete = true;
                 break;
             case ACTOR_BOSS_GANONDROF:
-                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_PHANTOM_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_PHANTOM_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
                 break;
             case ACTOR_BOSS_GOMA:
-                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GOHMA] = GAMEPLAYSTAT_TOTAL_TIME;
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GOHMA] = GAMEPLAYSTAT_TOTAL_TIME;
                 break;
             case ACTOR_BOSS_MO:
-                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_MORPHA] = GAMEPLAYSTAT_TOTAL_TIME;
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_MORPHA] = GAMEPLAYSTAT_TOTAL_TIME;
                 break;
             case ACTOR_BOSS_SST:
-                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_BONGO_BONGO] = GAMEPLAYSTAT_TOTAL_TIME;
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_BONGO_BONGO] = GAMEPLAYSTAT_TOTAL_TIME;
                 break;
             case ACTOR_BOSS_TW:
-                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_TWINROVA] = GAMEPLAYSTAT_TOTAL_TIME;
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_TWINROVA] = GAMEPLAYSTAT_TOTAL_TIME;
                 break;
             case ACTOR_BOSS_VA:
-                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_BARINADE] = GAMEPLAYSTAT_TOTAL_TIME;
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_BARINADE] = GAMEPLAYSTAT_TOTAL_TIME;
                 break;
         }
-    });
-}
-
-typedef enum {
-    ADD_ICE_TRAP,
-    ADD_BURN_TRAP,
-    ADD_SHOCK_TRAP,
-    ADD_KNOCK_TRAP,
-    ADD_SPEED_TRAP,
-    ADD_BOMB_TRAP,
-    ADD_VOID_TRAP,
-    ADD_AMMO_TRAP,
-    ADD_KILL_TRAP,
-    ADD_TELEPORT_TRAP,
-    ADD_TRAP_MAX
-} AltTrapType;
-
-const char* altTrapTypeCvars[] = {
-    CVAR_ENHANCEMENT("ExtraTraps.Ice"),
-    CVAR_ENHANCEMENT("ExtraTraps.Burn"),
-    CVAR_ENHANCEMENT("ExtraTraps.Shock"),
-    CVAR_ENHANCEMENT("ExtraTraps.Knockback"),
-    CVAR_ENHANCEMENT("ExtraTraps.Speed"),
-    CVAR_ENHANCEMENT("ExtraTraps.Bomb"),
-    CVAR_ENHANCEMENT("ExtraTraps.Void"),
-    CVAR_ENHANCEMENT("ExtraTraps.Ammo"),
-    CVAR_ENHANCEMENT("ExtraTraps.Kill"),
-    CVAR_ENHANCEMENT("ExtraTraps.Teleport")
-};
-
-std::vector<AltTrapType> getEnabledAddTraps () {
-    std::vector<AltTrapType> enabledAddTraps;
-    for (int i = 0; i < ADD_TRAP_MAX; i++) {
-        if (CVarGetInteger(altTrapTypeCvars[i], 0)) {
-            if (gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE && (i == ADD_VOID_TRAP || i == ADD_TELEPORT_TRAP)) {
-                continue; // don't add void or teleport if you're holding the fishing pole, as this causes issues
-            }
-            enabledAddTraps.push_back(static_cast<AltTrapType>(i));
-        }
-    }
-    if (enabledAddTraps.size() == 0) {
-        enabledAddTraps.push_back(ADD_ICE_TRAP);
-    }
-    return enabledAddTraps;
-};
-
-void RegisterAltTrapTypes() {
-    static AltTrapType roll = ADD_TRAP_MAX;
-    static int statusTimer = -1;
-    static int eventTimer = -1;
-
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry itemEntry) {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) || itemEntry.modIndex != MOD_RANDOMIZER || itemEntry.getItemId != RG_ICE_TRAP) {
-            return;
-        }
-        roll = RandomElement(getEnabledAddTraps());
-        switch (roll) {
-            case ADD_ICE_TRAP:
-                GameInteractor::RawAction::FreezePlayer();
-                break;
-            case ADD_BURN_TRAP:
-                GameInteractor::RawAction::BurnPlayer();
-                break;
-            case ADD_SHOCK_TRAP:
-                GameInteractor::RawAction::ElectrocutePlayer();
-                break;
-            case ADD_KNOCK_TRAP:
-                eventTimer = 3;
-                break;
-            case ADD_SPEED_TRAP:
-                Audio_PlaySoundGeneral(NA_SE_VO_KZ_MOVE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
-                GameInteractor::State::RunSpeedModifier = -2;
-                statusTimer = 200;
-                Overlay_DisplayText(10, "Speed Decreased!");
-                break;
-            case ADD_BOMB_TRAP:
-                eventTimer = 3;
-                break;
-            case ADD_VOID_TRAP:
-                Audio_PlaySoundGeneral(NA_SE_EN_GANON_LAUGH, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
-                eventTimer = 3;
-                break;
-            case ADD_AMMO_TRAP:
-                eventTimer = 3;
-                Overlay_DisplayText(5, "Ammo Halved!");
-                break;
-            case ADD_KILL_TRAP:
-                GameInteractor::RawAction::SetPlayerHealth(0);
-                break;
-            case ADD_TELEPORT_TRAP:
-                eventTimer = 3;
-                break;
-            default:
-                break;
-        }
-    });
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
-        Player* player = GET_PLAYER(gPlayState);
-        if (statusTimer == 0) {
-            GameInteractor::State::RunSpeedModifier = 0;
-        }
-        if (eventTimer == 0) {
-            switch (roll) {
-                case ADD_KNOCK_TRAP:
-                    GameInteractor::RawAction::KnockbackPlayer(1);
-                    break;
-                case ADD_BOMB_TRAP:
-                    GameInteractor::RawAction::SpawnActor(ACTOR_EN_BOM, 1);
-                    break;
-                case ADD_VOID_TRAP:
-                    Play_TriggerRespawn(gPlayState);
-                    break;
-                case ADD_AMMO_TRAP:
-                    AMMO(ITEM_STICK) = AMMO(ITEM_STICK) * 0.5;
-                    AMMO(ITEM_NUT) = AMMO(ITEM_NUT) * 0.5;
-                    AMMO(ITEM_SLINGSHOT) = AMMO(ITEM_SLINGSHOT) * 0.5;
-                    AMMO(ITEM_BOW) = AMMO(ITEM_BOW) * 0.5;
-                    AMMO(ITEM_BOMB) = AMMO(ITEM_BOMB) * 0.5;
-                    AMMO(ITEM_BOMBCHU) = AMMO(ITEM_BOMBCHU) * 0.5;
-                    Audio_PlaySoundGeneral(NA_SE_VO_FR_SMILE_0, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
-                    break;
-                case ADD_TELEPORT_TRAP: {
-                    int entrance;
-                    int index = 1 + rand() % 10;
-                    switch (index) {
-                        case 1:
-                            entrance = GI_TP_DEST_SERENADE;
-                            break;
-                        case 2:
-                            entrance = GI_TP_DEST_REQUIEM;
-                            break;
-                        case 3:
-                            entrance = GI_TP_DEST_BOLERO;
-                            break;
-                        case 4:
-                            entrance = GI_TP_DEST_MINUET;
-                            break;
-                        case 5:
-                            entrance = GI_TP_DEST_NOCTURNE;
-                            break;
-                        case 6:
-                            entrance = GI_TP_DEST_PRELUDE;
-                            break;
-                        default:
-                            entrance = GI_TP_DEST_LINKSHOUSE;
-                            break;
-                    }
-                    GameInteractor::RawAction::TeleportPlayer(entrance);
-                    break;
-                }
-                default:
-                    break;
-            }
-        }
-        statusTimer--;
-        eventTimer--;
     });
 }
 
 void UpdateHurtContainerModeState(bool newState) {
-        static bool hurtEnabled = false;
-        if (hurtEnabled == newState) {
-            return;
-        }
+    static bool hurtEnabled = false;
+    if (hurtEnabled == newState) {
+        return;
+    }
 
-        hurtEnabled = newState;
-        uint16_t getHeartPieces = gSaveContext.sohStats.heartPieces / 4;
-        uint16_t getHeartContainers = gSaveContext.sohStats.heartContainers;
-        
-        if (hurtEnabled) {        
-            gSaveContext.healthCapacity = 320 - ((getHeartPieces + getHeartContainers) * 16);
-        } else {
-            gSaveContext.healthCapacity = 48 + ((getHeartPieces + getHeartContainers) * 16);
-        }
+    hurtEnabled = newState;
+    uint16_t getHeartPieces = gSaveContext.ship.stats.heartPieces / 4;
+    uint16_t getHeartContainers = gSaveContext.ship.stats.heartContainers;
+
+    if (hurtEnabled) {
+        gSaveContext.healthCapacity = 320 - ((getHeartPieces + getHeartContainers) * 16);
+    } else {
+        gSaveContext.healthCapacity = 48 + ((getHeartPieces + getHeartContainers) * 16);
+    }
 }
 
 void RegisterHurtContainerModeHandler() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
-        UpdateHurtContainerModeState(CVarGetInteger(CVAR_ENHANCEMENT("HurtContainer"), 0));
-    });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>(
+        [](int32_t fileNum) { UpdateHurtContainerModeState(CVarGetInteger(CVAR_ENHANCEMENT("HurtContainer"), 0)); });
 }
 
 void RegisterRandomizedEnemySizes() {
@@ -1191,15 +833,18 @@ void RegisterRandomizedEnemySizes() {
         Actor* actor = static_cast<Actor*>(refActor);
 
         // Exclude wobbly platforms in Jabu because they need to act like platforms.
+        // Exclude demo effect for Zora sapphire being re-categorized as a "boss".
         // Exclude Dead Hand hands and Bongo Bongo main body because they make the fights (near) impossible.
-        uint8_t excludedEnemy = actor->id == ACTOR_EN_BROB || actor->id == ACTOR_EN_DHA || (actor->id == ACTOR_BOSS_SST && actor->params == -1);
+        uint8_t excludedEnemy = actor->id == ACTOR_EN_BROB || actor->id == ACTOR_EN_DHA ||
+                                actor->id == ACTOR_DEMO_EFFECT || (actor->id == ACTOR_BOSS_SST && actor->params == -1);
 
         // Dodongo, Volvagia and Dead Hand are always smaller because they're impossible when bigger.
         uint8_t smallOnlyEnemy = actor->id == ACTOR_BOSS_DODONGO || actor->id == ACTOR_BOSS_FD ||
                                  actor->id == ACTOR_BOSS_FD2 || actor->id == ACTOR_EN_DH;
 
         // Only apply to enemies and bosses.
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemySizes"), 0) || (actor->category != ACTORCAT_ENEMY && actor->category != ACTORCAT_BOSS) || excludedEnemy) {
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemySizes"), 0) ||
+            (actor->category != ACTORCAT_ENEMY && actor->category != ACTORCAT_BOSS) || excludedEnemy) {
             return;
         }
 
@@ -1213,8 +858,8 @@ void RegisterRandomizedEnemySizes() {
             randomNumber = rand() % 200;
             // Between 100% and 300% size.
             randomScale = 1.0f + (randomNumber / 100);
-        // Small actor
         } else {
+            // Small actor
             randomNumber = rand() % 90;
             // Between 10% and 100% size.
             randomScale = 0.1f + (randomNumber / 100);
@@ -1239,7 +884,8 @@ void RegisterOpenAllHours() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
         Actor* actor = static_cast<Actor*>(refActor);
 
-        if (CVarGetInteger(CVAR_ENHANCEMENT("OpenAllHours"), 0) && (actor->id == ACTOR_EN_DOOR)) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("OpenAllHours"), 0) && (actor->id == ACTOR_EN_DOOR) &&
+            (!IS_RANDO || !OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOCK_OVERWORLD_DOORS))) {
             switch (actor->params) {
                 case 4753: // Night Market Bazaar
                 case 1678: // Night Potion Shop
@@ -1271,47 +917,65 @@ void PatchToTMedallions() {
         ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_StartGrayscale", 7, gsSPGrayscale(true));
 
         if (CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER)) {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeBlue", 16, gsDPSetGrayscaleColor(0, 161, 255, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeBlue", 16,
+                                       gsDPSetGrayscaleColor(0, 161, 255, 255));
         } else {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeBlue", 16, gsDPSetGrayscaleColor(255, 255, 255, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeBlue", 16,
+                                       gsDPSetGrayscaleColor(255, 255, 255, 255));
         }
 
         if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT)) {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeOrange", 45, gsDPSetGrayscaleColor(255, 135, 0, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeOrange", 45,
+                                       gsDPSetGrayscaleColor(255, 135, 0, 255));
         } else {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeOrange", 45, gsDPSetGrayscaleColor(255, 255, 255, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeOrange", 45,
+                                       gsDPSetGrayscaleColor(255, 255, 255, 255));
         }
 
         if (CHECK_QUEST_ITEM(QUEST_MEDALLION_LIGHT)) {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeYellow", 69, gsDPSetGrayscaleColor(255, 255, 0, 255));
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakeYellow", 16, gsDPSetGrayscaleColor(255, 255, 0, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeYellow", 69,
+                                       gsDPSetGrayscaleColor(255, 255, 0, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakeYellow", 16,
+                                       gsDPSetGrayscaleColor(255, 255, 0, 255));
         } else {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeYellow", 69, gsDPSetGrayscaleColor(255, 255, 255, 255));
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakeYellow", 16, gsDPSetGrayscaleColor(255, 255, 255, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeYellow", 69,
+                                       gsDPSetGrayscaleColor(255, 255, 255, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakeYellow", 16,
+                                       gsDPSetGrayscaleColor(255, 255, 255, 255));
         }
 
         if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST)) {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeGreen", 94, gsDPSetGrayscaleColor(0, 255, 0, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeGreen", 94,
+                                       gsDPSetGrayscaleColor(0, 255, 0, 255));
         } else {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeGreen", 94, gsDPSetGrayscaleColor(255, 255, 255, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeGreen", 94,
+                                       gsDPSetGrayscaleColor(255, 255, 255, 255));
         }
 
         if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeRed", 118, gsDPSetGrayscaleColor(255, 0, 0, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeRed", 118,
+                                       gsDPSetGrayscaleColor(255, 0, 0, 255));
         } else {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeRed", 118, gsDPSetGrayscaleColor(255, 255, 255, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeRed", 118,
+                                       gsDPSetGrayscaleColor(255, 255, 255, 255));
         }
 
         if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW)) {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakePurple", 142, gsDPSetGrayscaleColor(212, 0, 255, 255));
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakePurple", 27, gsDPSetGrayscaleColor(212, 0, 255, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakePurple", 142,
+                                       gsDPSetGrayscaleColor(212, 0, 255, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakePurple", 27,
+                                       gsDPSetGrayscaleColor(212, 0, 255, 255));
         } else {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakePurple", 142, gsDPSetGrayscaleColor(255, 255, 255, 255));
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakePurple", 27, gsDPSetGrayscaleColor(255, 255, 255, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakePurple", 142,
+                                       gsDPSetGrayscaleColor(255, 255, 255, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakePurple", 27,
+                                       gsDPSetGrayscaleColor(255, 255, 255, 255));
         }
 
-        ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_EndGrayscaleAndEndDlist", 160, gsSPBranchListOTRFilePath(gEndGrayscaleAndEndDlistDL));
-        ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_EndGrayscaleAndEndDlist", 51, gsSPBranchListOTRFilePath(gEndGrayscaleAndEndDlistDL));
+        ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_EndGrayscaleAndEndDlist", 160,
+                                   gsSPBranchListOTRFilePath(gEndGrayscaleAndEndDlistDL));
+        ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_EndGrayscaleAndEndDlist", 51,
+                                   gsSPBranchListOTRFilePath(gEndGrayscaleAndEndDlistDL));
     } else {
         // Unpatch everything
         ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_StartGrayscale");
@@ -1332,7 +996,8 @@ void PatchToTMedallions() {
 
 void RegisterToTMedallions() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry _unused) {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("ToTMedallionsColors"), 0) || !gPlayState || gPlayState->sceneNum != SCENE_TEMPLE_OF_TIME) {
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("ToTMedallionsColors"), 0) || !gPlayState ||
+            gPlayState->sceneNum != SCENE_TEMPLE_OF_TIME) {
             return;
         }
         PatchToTMedallions();
@@ -1344,7 +1009,6 @@ void RegisterToTMedallions() {
         PatchToTMedallions();
     });
 }
-
 
 void RegisterFloorSwitchesHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
@@ -1370,32 +1034,35 @@ void RegisterPauseMenuHooks() {
             return;
         }
         if (!pauseWarpHooksRegistered) {
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnKaleidoUpdate>([]() {PauseWarp_HandleSelection();});
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-                    PauseWarp_Execute();
-            });
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnKaleidoUpdate>(
+                []() { PauseWarp_HandleSelection(); });
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(
+                []() { PauseWarp_Execute(); });
             pauseWarpHooksRegistered = true;
         }
     });
 }
 
-extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
+void RegisterCustomSkeletons() {
+    static int8_t previousTunic = -1;
 
-void PatchCompasses() {
-    s8 compassesCanBeOutsideDungeon = IS_RANDO && DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_SHUFFLE_MAPANDCOMPASS);
-    s8 isColoredCompassesEnabled = compassesCanBeOutsideDungeon && CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MatchCompassColors"), 1);
-    if (isColoredCompassesEnabled) {
-        ResourceMgr_PatchGfxByName(gGiCompassDL, "Compass_PrimColor", 5, gsDPNoOp());
-        ResourceMgr_PatchGfxByName(gGiCompassDL, "Compass_EnvColor", 6, gsDPNoOp());
-    } else {
-        ResourceMgr_UnpatchGfxByName(gGiCompassDL, "Compass_PrimColor");
-        ResourceMgr_UnpatchGfxByName(gGiCompassDL, "Compass_EnvColor");
-    }
-}
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+        if (!GameInteractor::IsSaveLoaded() || gPlayState == NULL) {
+            return;
+        }
 
-void RegisterRandomizerCompasses() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadFile>([](int32_t _unused) {
-        PatchCompasses();
+        if (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC) != previousTunic) {
+            SOH::SkeletonPatcher::UpdateCustomSkeletons();
+        }
+        previousTunic = CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC);
+    });
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnAssetAltChange>([]() {
+        if (!GameInteractor::IsSaveLoaded() || gPlayState == NULL) {
+            return;
+        }
+
+        SOH::SkeletonPatcher::UpdateCustomSkeletons();
     });
 }
 
@@ -1403,21 +1070,9 @@ void InitMods() {
     BossRush_RegisterHooks();
     RandomizerRegisterHooks();
     TimeSaverRegisterHooks();
-    CheatsRegisterHooks();
     TimeSavers_Register();
     RegisterTTS();
-    RegisterInfiniteMoney();
-    RegisterInfiniteHealth();
-    RegisterInfiniteAmmo();
-    RegisterInfiniteMagic();
-    RegisterInfiniteNayrusLove();
-    RegisterMoonJumpOnL();
-    RegisterInfiniteISG();
-    RegisterEzQPA();
-    RegisterUnrestrictedItems();
-    RegisterFreezeTime();
     RegisterOcarinaTimeTravel();
-    RegisterAutoSave();
     RegisterDaytimeGoldSkultullas();
     RegisterRupeeDash();
     RegisterShadowTag();
@@ -1431,15 +1086,13 @@ void InitMods() {
     RegisterResetNaviTimer();
     RegisterEnemyDefeatCounts();
     RegisterBossDefeatTimestamps();
-    RegisterAltTrapTypes();
     RegisterRandomizedEnemySizes();
     RegisterOpenAllHours();
     RegisterToTMedallions();
-    RegisterRandomizerCompasses();
-    NameTag_RegisterHooks();
     RegisterFloorSwitchesHook();
     RegisterPatchHandHandler();
     RegisterHurtContainerModeHandler();
     RegisterPauseMenuHooks();
     RandoKaleido_RegisterHooks();
+    RegisterCustomSkeletons();
 }

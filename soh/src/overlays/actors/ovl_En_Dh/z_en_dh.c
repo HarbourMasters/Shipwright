@@ -3,7 +3,9 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAGGED_BY_HOOKSHOT)
+#define FLAGS                                                                                 \
+    (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
+     ACTOR_FLAG_HOOKSHOT_PULLS_PLAYER)
 
 typedef enum {
     /* 0 */ DH_WAIT,
@@ -151,7 +153,7 @@ void EnDh_Init(Actor* thisx, PlayState* play) {
     this->actor.colChkInfo.mass = MASS_HEAVY;
     this->actor.colChkInfo.health = LINK_IS_ADULT ? 14 : 20;
     this->alpha = this->unk_258 = 255;
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     Collider_InitCylinder(play, &this->collider1);
     Collider_SetCylinder(play, &this->collider1, &this->actor, &sCylinderInit);
     Collider_InitJntSph(play, &this->collider2);
@@ -170,8 +172,7 @@ void EnDh_Destroy(Actor* thisx, PlayState* play) {
     ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
-void EnDh_SpawnDebris(PlayState* play, EnDh* this, Vec3f* spawnPos, f32 spread, s32 arg4, f32 accelXZ,
-                      f32 scale) {
+void EnDh_SpawnDebris(PlayState* play, EnDh* this, Vec3f* spawnPos, f32 spread, s32 arg4, f32 accelXZ, f32 scale) {
     Vec3f pos;
     Vec3f vel = { 0.0f, 8.0f, 0.0f };
     Vec3f accel = { 0.0f, -1.5f, 0.0f };
@@ -197,7 +198,7 @@ void EnDh_SetupWait(EnDh* this) {
     this->actor.shape.yOffset = -15000.0f;
     this->dirtWaveSpread = this->actor.speedXZ = 0.0f;
     this->actor.world.rot.y = this->actor.shape.rot.y;
-    this->actor.flags |= ACTOR_FLAG_LENS;
+    this->actor.flags |= ACTOR_FLAG_REACT_TO_LENS;
     this->dirtWavePhase = this->actionState = this->actor.params = ENDH_WAIT_UNDERGROUND;
     EnDh_SetupAction(this, EnDh_Wait);
 }
@@ -212,9 +213,9 @@ void EnDh_Wait(EnDh* this, PlayState* play) {
     if ((this->actor.params >= ENDH_START_ATTACK_GRAB) || (this->actor.params <= ENDH_HANDS_KILLED_4)) {
         switch (this->actionState) {
             case 0:
-                this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+                this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
                 this->actor.shape.rot.y = this->actor.yawTowardsPlayer;
-                this->actor.flags &= ~ACTOR_FLAG_LENS;
+                this->actor.flags &= ~ACTOR_FLAG_REACT_TO_LENS;
                 this->actionState++;
                 this->drawDirtWave++;
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_DEADHAND_HIDE);
@@ -368,7 +369,7 @@ void EnDh_SetupBurrow(EnDh* this) {
     this->actor.world.rot.y = this->actor.shape.rot.y;
     this->dirtWavePhase = 0;
     this->actionState = 0;
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_DEADHAND_HIDE);
     EnDh_SetupAction(this, EnDh_Burrow);
 }
@@ -438,7 +439,7 @@ void EnDh_SetupDeath(EnDh* this) {
     Animation_MorphToPlayOnce(&this->skelAnime, &object_dh_Anim_0032BC, -1.0f);
     this->curAction = DH_DEATH;
     this->timer = 300;
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->actor.speedXZ = 0.0f;
     func_800F5B58();
     this->actor.params = ENDH_DEATH;
@@ -512,7 +513,7 @@ void EnDh_Update(Actor* thisx, PlayState* play) {
 
     EnDh_CollisionCheck(this, play);
     this->actionFunc(this, play);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 45.0f, 45.0f, 0x1D);
     this->actor.focus.pos = this->headPos;
     Collider_UpdateCylinder(&this->actor, &this->collider1);
@@ -558,8 +559,8 @@ void EnDh_Draw(Actor* thisx, PlayState* play) {
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, this->alpha);
         gSPSegment(POLY_OPA_DISP++, 0x08, &D_80116280[2]);
         POLY_OPA_DISP =
-            SkelAnime_DrawFlex(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                               this->skelAnime.dListCount, NULL, EnDh_PostLimbDraw, &this->actor, POLY_OPA_DISP);
+            SkelAnime_DrawFlex(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
+                               NULL, EnDh_PostLimbDraw, &this->actor, POLY_OPA_DISP);
     } else {
         Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 0, this->alpha);
@@ -572,15 +573,13 @@ void EnDh_Draw(Actor* thisx, PlayState* play) {
         gDPSetEnvColor(POLY_XLU_DISP++, 85, 55, 0, 130);
         gSPSegment(POLY_XLU_DISP++, 0x08,
                    Gfx_TwoTexScroll(play->state.gfxCtx, 0, (play->state.frames * -3) % 0x80, 0, 0x20, 0x40, 1,
-                                    (play->state.frames * -10) % 0x80, (play->state.frames * -20) % 0x100,
-                                    0x20, 0x40));
+                                    (play->state.frames * -10) % 0x80, (play->state.frames * -20) % 0x100, 0x20, 0x40));
         gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 0, 0, 0, this->dirtWaveAlpha);
 
         Matrix_Translate(0.0f, -this->actor.shape.yOffset, 0.0f, MTXMODE_APPLY);
         Matrix_Scale(this->dirtWaveSpread * 0.01f, this->dirtWaveHeight * 0.01f, this->dirtWaveSpread * 0.01f,
                      MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, object_dh_DL_007FC0);
     }
     CLOSE_DISPS(play->state.gfxCtx);

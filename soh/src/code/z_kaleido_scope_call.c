@@ -59,9 +59,8 @@ void KaleidoScopeCall_Update(PlayState* play) {
 
     GameInteractor_ExecuteOnKaleidoUpdate();
 
-    if (!gSaveContext.sohStats.gameComplete &&
-        (!IS_BOSS_RUSH || !gSaveContext.isBossRushPaused)) {
-        gSaveContext.sohStats.pauseTimer++;
+    if (!gSaveContext.ship.stats.gameComplete && (!IS_BOSS_RUSH || !gSaveContext.ship.quest.data.bossRush.isPaused)) {
+        gSaveContext.ship.stats.pauseTimer++;
     }
 
     if ((pauseCtx->state != 0) || (pauseCtx->debugState != 0)) {
@@ -73,7 +72,7 @@ void KaleidoScopeCall_Update(PlayState* play) {
                 pauseCtx->unk_1E4 = 0;
                 pauseCtx->unk_1EC = 0;
                 pauseCtx->state = (pauseCtx->state & 0xFFFF) + 1;
-                gSaveContext.sohStats.count[COUNT_PAUSES]++;
+                gSaveContext.ship.stats.count[COUNT_PAUSES]++;
             }
         } else if (pauseCtx->state == 8) {
             HREG(80) = 7;
@@ -89,8 +88,7 @@ void KaleidoScopeCall_Update(PlayState* play) {
                 pauseCtx->state++;
             }
         } else if (pauseCtx->state != 0) {
-            if (gKaleidoMgrCurOvl != kaleidoScopeOvl) 
-            {
+            if (gKaleidoMgrCurOvl != kaleidoScopeOvl) {
                 if (gKaleidoMgrCurOvl != NULL) {
                     osSyncPrintf(VT_FGCOL(GREEN));
                     // "Kaleido area Player Forced Elimination"
@@ -108,8 +106,7 @@ void KaleidoScopeCall_Update(PlayState* play) {
                 KaleidoManager_LoadOvl(kaleidoScopeOvl);
             }
 
-            if (gKaleidoMgrCurOvl == kaleidoScopeOvl) 
-            {
+            if (gKaleidoMgrCurOvl == kaleidoScopeOvl) {
                 sKaleidoScopeUpdateFunc(play);
 
                 if ((play->pauseCtx.state == 0) && (play->pauseCtx.debugState == 0)) {
@@ -132,8 +129,7 @@ void KaleidoScopeCall_Draw(PlayState* play) {
     if (R_PAUSE_MENU_MODE >= 3) {
         if (((play->pauseCtx.state >= 4) && (play->pauseCtx.state <= 7)) ||
             ((play->pauseCtx.state >= 11) && (play->pauseCtx.state <= 18))) {
-            if (gKaleidoMgrCurOvl == kaleidoScopeOvl) 
-            {
+            if (gKaleidoMgrCurOvl == kaleidoScopeOvl) {
                 sKaleidoScopeDrawFunc(play);
             }
         }

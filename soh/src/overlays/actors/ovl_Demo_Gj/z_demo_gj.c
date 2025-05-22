@@ -9,7 +9,7 @@
 #include "objects/object_geff/object_geff.h"
 #include "vt.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void DemoGj_Init(Actor* thisx, PlayState* play);
 void DemoGj_Destroy(Actor* thisx, PlayState* play);
@@ -192,8 +192,9 @@ void DemoGj_Explode(DemoGj* this, PlayState* play, Vec3f* initialPos, Vec3f* dir
             phi_s0 = 0x21;
         }
 
-        // SoH [Port] Changed from &gGanonsCastleRubbleAroundArenaDL[28] to gGanonRubbleDL as it seems this was an error in the original rom/decomp
-        // Other calls to EffectSsKakera_Spawn with OBJECT_GEFF use gGanonRubbleDL, so this change is to match that
+        // SoH [Port] Changed from &gGanonsCastleRubbleAroundArenaDL[28] to gGanonRubbleDL as it seems this was an error
+        // in the original rom/decomp Other calls to EffectSsKakera_Spawn with OBJECT_GEFF use gGanonRubbleDL, so this
+        // change is to match that
         EffectSsKakera_Spawn(play, &explosionPos, &velocity, initialPos, -200, phi_s0, 10, 10, 0,
                              Rand_ZeroOne() * 20.0f + 20.0f, 20, 300, (s32)(Rand_ZeroOne() * 30.0f) + 30, -1,
                              OBJECT_GEFF, gGanonRubbleDL);
@@ -253,8 +254,7 @@ void DemoGj_InitCommon(DemoGj* this, PlayState* play, CollisionHeader* header) {
 }
 
 // TODO: find a better name
-s32 DemoGj_InitSetIndexes(DemoGj* this, PlayState* play, s32 updateMode, s32 drawConfig,
-                          CollisionHeader* header) {
+s32 DemoGj_InitSetIndexes(DemoGj* this, PlayState* play, s32 updateMode, s32 drawConfig, CollisionHeader* header) {
     if (!DemoGj_IsSceneInvalid()) {
         this->updateMode = updateMode;
         this->drawConfig = drawConfig;
@@ -273,8 +273,7 @@ void DemoGj_DrawCommon(DemoGj* this, PlayState* play, Gfx* displayList) {
 
         Gfx_SetupDL_25Opa(gfxCtx);
 
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
-                  G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
         gSPDisplayList(POLY_OPA_DISP++, displayList);
         gSPPopMatrix(POLY_OPA_DISP++, G_MTX_MODELVIEW);
@@ -571,7 +570,7 @@ void DemoGj_InitRubblePile1(DemoGj* this, PlayState* play) {
 }
 
 void func_8097A000(DemoGj* this, PlayState* play) {
-    Actor_MoveForward(&this->dyna.actor);
+    Actor_MoveXZGravity(&this->dyna.actor);
 
     this->rotationVec.x += (s16)(kREG(18));
     this->rotationVec.y += (s16)(kREG(19) + 1000);
@@ -635,7 +634,7 @@ void DemoGj_InitRubblePile2(DemoGj* this, PlayState* play) {
 }
 
 void func_8097A238(DemoGj* this, PlayState* play) {
-    Actor_MoveForward(&this->dyna.actor);
+    Actor_MoveXZGravity(&this->dyna.actor);
 
     this->rotationVec.x += (s16)(kREG(31));
     this->rotationVec.y += (s16)(kREG(32) + 1000);
@@ -699,7 +698,7 @@ void DemoGj_InitRubblePile3(DemoGj* this, PlayState* play) {
 }
 
 void func_8097A474(DemoGj* this, PlayState* play) {
-    Actor_MoveForward(&this->dyna.actor);
+    Actor_MoveXZGravity(&this->dyna.actor);
 
     this->rotationVec.x += (s16)(kREG(44));
     this->rotationVec.y += (s16)(kREG(45) + 1000);
@@ -747,7 +746,7 @@ void DemoGj_InitRubblePile4(DemoGj* this, PlayState* play) {
 }
 
 void func_8097A644(DemoGj* this, PlayState* play) {
-    Actor_MoveForward(&this->dyna.actor);
+    Actor_MoveXZGravity(&this->dyna.actor);
 
     this->rotationVec.x += (s16)(kREG(57));
     this->rotationVec.y += (s16)(kREG(58) + 1000);
@@ -795,7 +794,7 @@ void DemoGj_InitRubblePile5(DemoGj* this, PlayState* play) {
 }
 
 void func_8097A814(DemoGj* this, PlayState* play) {
-    Actor_MoveForward(&this->dyna.actor);
+    Actor_MoveXZGravity(&this->dyna.actor);
 
     this->rotationVec.x += (s16)(kREG(70));
     this->rotationVec.y += (s16)(kREG(71) + 1000);
@@ -843,7 +842,7 @@ void DemoGj_InitRubblePile6(DemoGj* this, PlayState* play) {
 }
 
 void func_8097A9E4(DemoGj* this, PlayState* play) {
-    Actor_MoveForward(&this->dyna.actor);
+    Actor_MoveXZGravity(&this->dyna.actor);
 
     this->rotationVec.x += (s16)(kREG(83));
     this->rotationVec.y += (s16)(kREG(84) + 1000);
@@ -891,7 +890,7 @@ void DemoGj_InitRubblePile7(DemoGj* this, PlayState* play) {
 }
 
 void func_8097ABB4(DemoGj* this, PlayState* play) {
-    Actor_MoveForward(&this->dyna.actor);
+    Actor_MoveXZGravity(&this->dyna.actor);
 
     this->rotationVec.x += (s16)(kREG(15));
     this->rotationVec.y += (s16)(kREG(14) + 1000);
@@ -1402,8 +1401,7 @@ void DemoGj_Init(Actor* thisx, PlayState* play) {
 
         default:
             // "Demo_Gj_Actor_ct There is no such argument!!!!!!!!!!!!!!!!!!!!!!"
-            osSyncPrintf(VT_FGCOL(RED) "Demo_Gj_Actor_ct そんな引数は無い!!!!!!!!!!!!!!!!!!!!!!\n" VT_RST, play,
-                         this);
+            osSyncPrintf(VT_FGCOL(RED) "Demo_Gj_Actor_ct そんな引数は無い!!!!!!!!!!!!!!!!!!!!!!\n" VT_RST, play, this);
             Actor_Kill(&this->dyna.actor);
     }
 }

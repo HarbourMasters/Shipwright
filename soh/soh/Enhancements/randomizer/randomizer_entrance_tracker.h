@@ -25,7 +25,9 @@ typedef enum {
     ENTRANCE_GROUP_LON_LON_RANCH,
     ENTRANCE_GROUP_LAKE_HYLIA,
     ENTRANCE_GROUP_GERUDO_VALLEY,
+    ENTRANCE_GROUP_GERUDO_FORTRESS,
     ENTRANCE_GROUP_HAUNTED_WASTELAND,
+    ENTRANCE_GROUP_DESERT_COLOSSUS,
     ENTRANCE_GROUP_MARKET,
     ENTRANCE_GROUP_HYRULE_CASTLE,
     SPOILER_ENTRANCE_GROUP_COUNT,
@@ -74,8 +76,12 @@ typedef struct {
 
 extern EntranceTrackingData gEntranceTrackingData;
 
-#define SINGLE_SCENE_INFO(scene) {{ scene, -1 }}
-#define SCENE_NO_SPAWN(scene) { scene, -1 }
+#define SINGLE_SCENE_INFO(scene) \
+    {                            \
+        { scene, -1 }            \
+    }
+#define SCENE_NO_SPAWN(scene) \
+    { scene, -1 }
 
 void SetCurrentGrottoIDForTracker(int16_t entranceIndex);
 void SetLastEntranceOverrideForTracker(int16_t entranceIndex);
@@ -85,22 +91,22 @@ s16 GetLastEntranceOverride();
 s16 GetCurrentGrottoId();
 const EntranceData* GetEntranceData(s16);
 
-class EntranceTrackerSettingsWindow : public Ship::GuiWindow {
+class EntranceTrackerSettingsWindow final : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
 
   protected:
-    void InitElement() override {};
+    void InitElement() override{};
     void DrawElement() override;
-    void UpdateElement() override {};
+    void UpdateElement() override{};
 };
 
-class EntranceTrackerWindow : public Ship::GuiWindow {
+class EntranceTrackerWindow final : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
-
     void Draw() override;
+
     void InitElement() override;
     void DrawElement() override;
-    void UpdateElement() override {};
+    void UpdateElement() override{};
 };

@@ -9,7 +9,7 @@
 #include "overlays/actors/ovl_Eff_Dust/z_eff_dust.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 typedef enum {
     /* 0 */ JABUJABU_EYE_OPEN,
@@ -200,8 +200,7 @@ void EnJj_WaitForFish(EnJj* this, PlayState* play) {
     static Vec3f feedingSpot = { -1589.0f, 53.0f, -43.0f };
     Player* player = GET_PLAYER(play);
 
-    if ((Math_Vec3f_DistXZ(&feedingSpot, &player->actor.world.pos) < 300.0f) &&
-        play->isPlayerDroppingFish(play)) {
+    if ((Math_Vec3f_DistXZ(&feedingSpot, &player->actor.world.pos) < 300.0f) && play->isPlayerDroppingFish(play)) {
         this->cutsceneCountdownTimer = 100;
         EnJj_SetupAction(this, EnJj_BeginCutscene);
     }
@@ -244,8 +243,8 @@ void EnJj_CutsceneUpdate(EnJj* this, PlayState* play) {
             this->unk_30A |= 1;
 
             if (!(this->unk_30A & 8)) {
-                this->dust = Actor_SpawnAsChild(&play->actorCtx, &this->dyna.actor, play, ACTOR_EFF_DUST,
-                                                -1100.0f, 105.0f, -27.0f, 0, 0, 0, EFF_DUST_TYPE_0);
+                this->dust = Actor_SpawnAsChild(&play->actorCtx, &this->dyna.actor, play, ACTOR_EFF_DUST, -1100.0f,
+                                                105.0f, -27.0f, 0, 0, 0, EFF_DUST_TYPE_0);
                 this->unk_30A |= 8;
             }
             break;

@@ -64,7 +64,7 @@ void BgPushbox_UpdateImpl(BgPushbox* this, PlayState* play) {
                                    : ((this->dyna.actor.speedXZ > 1.0f) ? 1.0f : this->dyna.actor.speedXZ);
     Math_StepToF(&this->dyna.actor.speedXZ, 0.0f, 0.2f);
     this->dyna.actor.world.rot.y = this->dyna.unk_158;
-    Actor_MoveForward(&this->dyna.actor);
+    Actor_MoveXZGravity(&this->dyna.actor);
     Actor_UpdateBgCheckInfo(play, &this->dyna.actor, 20.0f, 40.0f, 40.0f, 0x1D);
 }
 
@@ -81,8 +81,7 @@ void BgPushbox_Draw(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_OPA_DISP++, gBlockSmallDL);
 
     CLOSE_DISPS(play->state.gfxCtx);

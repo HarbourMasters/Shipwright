@@ -108,8 +108,7 @@ void BgIceTurara_Break(BgIceTurara* this, PlayState* play, f32 arg2) {
             vel.z = Rand_CenteredFloat(7.0f);
             vel.y = (Rand_ZeroOne() * 4.0f) + 8.0f;
 
-            EffectSsEnIce_Spawn(play, &pos, (Rand_ZeroOne() * 0.2f) + 0.1f, &vel, &accel, &primColor, &envColor,
-                                30);
+            EffectSsEnIce_Spawn(play, &pos, (Rand_ZeroOne() * 0.2f) + 0.1f, &vel, &accel, &primColor, &envColor, 30);
         }
     }
 }
@@ -175,7 +174,7 @@ void BgIceTurara_Fall(BgIceTurara* this, PlayState* play) {
             return;
         }
     } else {
-        Actor_MoveForward(&this->dyna.actor);
+        Actor_MoveXZGravity(&this->dyna.actor);
         this->dyna.actor.world.pos.y += 40.0f;
         Actor_UpdateBgCheckInfo(play, &this->dyna.actor, 0.0f, 0.0f, 0.0f, 4);
         this->dyna.actor.world.pos.y -= 40.0f;

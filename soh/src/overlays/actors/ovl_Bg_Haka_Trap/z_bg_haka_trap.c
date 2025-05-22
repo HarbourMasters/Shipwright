@@ -133,7 +133,7 @@ void BgHakaTrap_Init(Actor* thisx, PlayState* play) {
             this->actionFunc = func_80880484;
         } else {
             DynaPolyActor_Init(&this->dyna, DPM_PLAYER);
-            thisx->flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+            thisx->flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
 
             if (thisx->params == HAKA_TRAP_SPIKED_BOX) {
                 CollisionHeader_GetVirtual(&object_haka_objects_Col_009CD0, &colHeader);
@@ -210,7 +210,7 @@ void func_8087FFC0(BgHakaTrap* this, PlayState* play) {
     f32 zNonNegative;
     Player* player = GET_PLAYER(play);
 
-    func_8002DBD0(&this->dyna.actor, &sp28, &player->actor.world.pos);
+    Actor_WorldToActorCoords(&this->dyna.actor, &sp28, &player->actor.world.pos);
 
     sine = Math_SinS(this->dyna.actor.shape.rot.y);
     cosine = Math_CosS(this->dyna.actor.shape.rot.y);
@@ -275,8 +275,7 @@ void func_808802D8(BgHakaTrap* this, PlayState* play) {
         vector.y = Rand_ZeroOne() * 10.0f + this->dyna.actor.world.pos.y + 30.0f;
         vector.z = Rand_CenteredFloat(320.0f) + this->dyna.actor.world.pos.z;
 
-        EffectSsDeadDb_Spawn(play, &vector, &zeroVec, &zeroVec, 130, 20, 255, 255, 150, 170, 255, 0, 0, 1, 9,
-                             false);
+        EffectSsDeadDb_Spawn(play, &vector, &zeroVec, &zeroVec, 130, 20, 255, 255, 150, 170, 255, 0, 0, 1, 9, false);
     }
 
     if (this->timer == 0) {
@@ -370,9 +369,9 @@ void func_808806BC(BgHakaTrap* this, PlayState* play) {
     tempf20 = this->dyna.actor.floorHeight;
 
     for (i = 0; i < 3; i++) {
-        temp = BgCheck_EntityRaycastFloor4(&play->colCtx, &this->dyna.actor.floorPoly, &sp64, &this->dyna.actor,
-                                           &vector) -
-               25.0f;
+        temp =
+            BgCheck_EntityRaycastFloor4(&play->colCtx, &this->dyna.actor.floorPoly, &sp64, &this->dyna.actor, &vector) -
+            25.0f;
         if (tempf20 < temp) {
             tempf20 = temp;
         }
@@ -434,7 +433,7 @@ void func_808809E4(BgHakaTrap* this, PlayState* play, s16 arg2) {
     Player* player = GET_PLAYER(play);
     Vec3f sp18;
 
-    func_8002DBD0(&this->dyna.actor, &sp18, &player->actor.world.pos);
+    Actor_WorldToActorCoords(&this->dyna.actor, &sp18, &player->actor.world.pos);
 
     if ((fabsf(sp18.x) < 70.0f) && (fabsf(sp18.y) < 100.0f) && (sp18.z < 500.0f) &&
         (GET_PLAYER(play)->currentBoots != PLAYER_BOOTS_IRON)) {

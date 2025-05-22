@@ -7,7 +7,7 @@
 #include "z_en_eg.h"
 #include "vt.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void EnEg_Init(Actor* thisx, PlayState* play);
 void EnEg_Destroy(Actor* thisx, PlayState* play);
@@ -50,7 +50,7 @@ void EnEg_Init(Actor* thisx, PlayState* play) {
 }
 
 void func_809FFDC8(EnEg* this, PlayState* play) {
-    if (!voided && (gSaveContext.timer2Value < 1) && Flags_GetSwitch(play, 0x36) && (kREG(0) == 0)) {
+    if (!voided && (gSaveContext.subTimerSeconds < 1) && Flags_GetSwitch(play, 0x36) && (kREG(0) == 0)) {
         // Void the player out
         Play_TriggerRespawn(play);
         gSaveContext.respawnFlag = -2;

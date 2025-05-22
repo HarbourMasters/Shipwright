@@ -15,6 +15,11 @@
 #define BTN_CUSTOM_OCARINA_PITCH_UP ((CONTROLLERBUTTONS_T)0x00400000)
 #define BTN_CUSTOM_OCARINA_PITCH_DOWN ((CONTROLLERBUTTONS_T)0x00800000)
 
+#define M_PIf 3.14159265358979323846f
+#define M_PI_2f 1.57079632679489661923f // pi/2
+#define M_SQRT2f 1.41421356237309504880f
+#define M_SQRT1_2f 0.70710678118654752440f /* 1/sqrt(2) */
+
 #ifdef __cplusplus
 #include <Context.h>
 #include "Enhancements/savestates.h"
@@ -28,7 +33,7 @@ struct ExtensionEntry {
 };
 
 extern std::unordered_map<std::string, ExtensionEntry> ExtensionCache;
-#include "Enhancements/randomizer/context.h"
+#include "Enhancements/randomizer/settings.h"
 
 const std::string customMessageTableID = "BaseGameOverrides";
 const std::string appShortName = "soh";
@@ -42,33 +47,42 @@ const uint32_t defaultImGuiScale = 1;
 const float imguiScaleOptionToValue[4] = { 0.75f, 1.0f, 1.5f, 2.0f };
 
 class OTRGlobals {
-    public:
-        static OTRGlobals* Instance;
+  public:
+    static OTRGlobals* Instance;
 
     std::shared_ptr<Ship::Context> context;
     std::shared_ptr<SaveStateMgr> gSaveStateMgr;
     std::shared_ptr<Randomizer> gRandomizer;
     std::shared_ptr<Rando::Context> gRandoContext;
 
-        ImFont* defaultFontSmaller;
-        ImFont* defaultFontLarger;
-        ImFont* defaultFontLargest;
+    ImFont* defaultFontSmaller;
+    ImFont* defaultFontLarger;
+    ImFont* defaultFontLargest;
 
-        OTRGlobals();
-        ~OTRGlobals();
+    ImFont* fontMonoSmall;
+    ImFont* fontStandard;
+    ImFont* fontStandardLarger;
+    ImFont* fontStandardLargest;
+    ImFont* fontMono;
+    ImFont* fontMonoLarger;
+    ImFont* fontMonoLargest;
 
-        void ScaleImGui();
+    OTRGlobals();
+    ~OTRGlobals();
 
-        bool HasMasterQuest();
-        bool HasOriginal();
-        uint32_t GetInterpolationFPS();
-        std::shared_ptr<std::vector<std::string>> ListFiles(std::string path);
+    void ScaleImGui();
 
-    private:
-    	void CheckSaveFile(size_t sramSize) const;
-        bool hasMasterQuest;
-        bool hasOriginal;
-        ImFont* CreateDefaultFontWithSize(float size);
+    bool HasMasterQuest();
+    bool HasOriginal();
+    uint32_t GetInterpolationFPS();
+    std::shared_ptr<std::vector<std::string>> ListFiles(std::string path);
+
+  private:
+    void CheckSaveFile(size_t sramSize) const;
+    bool hasMasterQuest;
+    bool hasOriginal;
+    ImFont* CreateDefaultFontWithSize(float size);
+    ImFont* CreateFontWithSize(float size, std::string fontPath);
 };
 #endif
 
@@ -112,7 +126,7 @@ int Controller_ShouldRumble(size_t slot);
 void Controller_BlockGameInput();
 void Controller_UnblockGameInput();
 void* getN64WeirdFrame(s32 i);
-int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSize);
+size_t GetEquipNowMessage(char* buffer, char* src, const size_t maxBufferSize);
 u32 SpoilerFileExists(const char* spoilerFileName);
 Sprite* GetSeedTexture(uint8_t index);
 uint8_t GetSeedIconIndex(uint8_t index);
@@ -128,20 +142,20 @@ void Randomizer_LoadHintMessages();
 void Randomizer_LoadMerchantMessages();
 bool Randomizer_IsTrialRequired(s32 trialFlag);
 GetItemEntry Randomizer_GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId);
-GetItemEntry Randomizer_GetItemFromActorWithoutObtainabilityCheck(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId);
+GetItemEntry Randomizer_GetItemFromActorWithoutObtainabilityCheck(s16 actorId, s16 sceneNum, s16 actorParams,
+                                                                  GetItemID ogId);
 GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 GetItemEntry Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 RandomizerInf Randomizer_GetRandomizerInfFromCheck(RandomizerCheck randomizerCheck);
 bool Randomizer_IsCheckShuffled(RandomizerCheck check);
 GetItemEntry GetItemMystery();
 ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
-void Randomizer_GenerateSeed();
 uint8_t Randomizer_IsSeedGenerated();
 void Randomizer_SetSeedGenerated(bool seedGenerated);
 uint8_t Randomizer_IsSpoilerLoaded();
 void Randomizer_SetSpoilerLoaded(bool spoilerLoaded);
-uint8_t Randomizer_IsPlandoLoaded();
-void Randomizer_SetPlandoLoaded(bool plandoLoaded);
+uint8_t Randomizer_GenerateRandomizer();
+void Randomizer_ShowRandomizerMenu();
 int CustomMessage_RetrieveIfExists(PlayState* play);
 void Overlay_DisplayText(float duration, const char* text);
 void Overlay_DisplayText_Seconds(int seconds, const char* text);

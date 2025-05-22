@@ -3,12 +3,11 @@
 #include "objects/object_os_anime/object_os_anime.h"
 #include "overlays/actors/ovl_En_Niw/z_en_niw.h"
 #include "vt.h"
-#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
 void EnNiwLady_Init(Actor* thisx, PlayState* play);
 void EnNiwLady_Destroy(Actor* thisx, PlayState* play);
@@ -234,8 +233,7 @@ void func_80ABA244(EnNiwLady* this, PlayState* play) {
         this->cuccosInPen = BREG(7) - 1;
     }
     phi_s1 = this->cuccosInPen;
-    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_NONE) ||
-        (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE)) {
+    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_NONE) || (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE)) {
         this->unk_26E = 101;
     }
     if (this->cuccosInPen >= 7) {
@@ -326,7 +324,6 @@ void func_80ABA654(EnNiwLady* this, PlayState* play) {
 
             this->actionFunc = func_80ABAC00;
             return;
-
         }
         if (this->unk_26C == 1) {
             this->getItemId = GI_RUPEE_PURPLE;
@@ -375,8 +372,7 @@ void func_80ABA878(EnNiwLady* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
     s8 playerExchangeItemId;
 
-    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_NONE) ||
-        (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE)) {
+    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_NONE) || (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE)) {
         this->unk_26E = 11;
     }
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
@@ -410,10 +406,6 @@ void func_80ABA9B8(EnNiwLady* this, PlayState* play) {
                 if (GameInteractor_Should(VB_GIVE_ITEM_FROM_ANJU_AS_ADULT, true, this)) {
                     Actor_OfferGetItem(&this->actor, play, GI_POCKET_EGG, 200.0f, 100.0f);
                     this->actionFunc = func_80ABAC00;
-                } else {
-                    // Circumvent the item offer action
-                    this->actionFunc = func_80ABAC84;
-                    return;
                 }
 
                 break;
@@ -445,10 +437,6 @@ void func_80ABAB08(EnNiwLady* this, PlayState* play) {
                 if (GameInteractor_Should(VB_TRADE_POCKET_CUCCO, true, this)) {
                     Actor_OfferGetItem(&this->actor, play, GI_COJIRO, 200.0f, 100.0f);
                     this->actionFunc = func_80ABAC00;
-                } else {
-                    // Circumvent the item offer action
-                    this->actionFunc = func_80ABAC84;
-                    return;
                 }
                 break;
             case 1:
@@ -484,12 +472,10 @@ void func_80ABAC84(EnNiwLady* this, PlayState* play) {
     }
     osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 正常終了 ☆☆☆☆☆ \n" VT_RST);
     if (LINK_IS_ADULT) {
-        if (GameInteractor_Should(VB_ANJU_SET_OBTAINED_TRADE_ITEM, true, this)) {
-            if (!Flags_GetItemGetInf(ITEMGETINF_2C)) {
-                Flags_SetItemGetInf(ITEMGETINF_2C);
-            } else {
-                Flags_SetItemGetInf(ITEMGETINF_2E);
-            }
+        if (!Flags_GetItemGetInf(ITEMGETINF_2C)) {
+            Flags_SetItemGetInf(ITEMGETINF_2C);
+        } else {
+            Flags_SetItemGetInf(ITEMGETINF_2E);
         }
         this->actionFunc = func_80ABA778;
     } else {
@@ -510,8 +496,7 @@ void func_80ABAD7C(EnNiwLady* this, PlayState* play) {
     if (Text_GetFaceReaction(play, 8) != 0) {
         this->actor.textId = Text_GetFaceReaction(play, 8);
     }
-    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_NONE) ||
-        (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE)) {
+    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_NONE) || (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE)) {
         this->unk_26E = 8;
     }
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
@@ -581,8 +566,7 @@ Gfx* func_80ABB0A0(GraphicsContext* gfxCtx) {
     return dList;
 }
 
-s32 EnNiwLady_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                               void* thisx) {
+s32 EnNiwLady_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnNiwLady* this = (EnNiwLady*)thisx;
     s32 pad;
 

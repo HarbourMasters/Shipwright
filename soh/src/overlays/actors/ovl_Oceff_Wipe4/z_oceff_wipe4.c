@@ -8,7 +8,7 @@
 #include "vt.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_UPDATE_DURING_OCARINA)
 
 void OceffWipe4_Init(Actor* thisx, PlayState* play);
 void OceffWipe4_Destroy(Actor* thisx, PlayState* play);
@@ -68,7 +68,7 @@ void OceffWipe4_Draw(Actor* thisx, PlayState* play) {
 
     eye = GET_ACTIVE_CAM(play)->eye;
     Camera_GetSkyboxOffset(&vec, GET_ACTIVE_CAM(play));
-    
+
     int fastOcarinaPlayback = (CVarGetInteger(CVAR_ENHANCEMENT("FastOcarinaPlayback"), 0) != 0);
     if (this->timer < 16) {
         z = Math_SinS(this->timer * 1024) * (fastOcarinaPlayback ? 1200.0f : 1330.0f);
@@ -96,8 +96,7 @@ void OceffWipe4_Draw(Actor* thisx, PlayState* play) {
     Matrix_ReplaceRotation(&play->billboardMtxF);
     Matrix_Translate(0.0f, 0.0f, -z, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     if (this->actor.params == OCEFF_WIPE4_UNUSED) {
         gSPDisplayList(POLY_XLU_DISP++, sUnusedMaterialDL);
@@ -108,7 +107,8 @@ void OceffWipe4_Draw(Actor* thisx, PlayState* play) {
     gSPDisplayList(POLY_XLU_DISP++, sMaterial2DL);
     gSPDisplayList(POLY_XLU_DISP++, Gfx_TwoTexScroll(play->state.gfxCtx, 0, scroll * 2, scroll * (-2), 32, 64, 1,
                                                      scroll * (-1), scroll, 32, 32));
-    gSPDisplayListOffset(POLY_XLU_DISP++, sMaterial2DL, 11);
+    // SOH [Port] Index adjust 11 -> 14 (for LUS marker and load texture) to account for our extraction size changes
+    gSPDisplayListOffset(POLY_XLU_DISP++, sMaterial2DL, 11 + 2 + 1);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

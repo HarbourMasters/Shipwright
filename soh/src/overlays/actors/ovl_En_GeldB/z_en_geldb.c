@@ -10,7 +10,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
 typedef enum {
     /*  0 */ GELDB_WAIT,
@@ -213,7 +213,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32_DIV1000(gravity, -3000, ICHAIN_STOP),
 };
 
-//static Vec3f sUnusedOffset = { 1100.0f, -700.0f, 0.0f };
+// static Vec3f sUnusedOffset = { 1100.0f, -700.0f, 0.0f };
 
 void EnGeldB_SetupAction(EnGeldB* this, EnGeldBActionFunc actionFunc) {
     this->actionFunc = actionFunc;
@@ -354,13 +354,12 @@ void EnGeldB_SetupWait(EnGeldB* this) {
     this->action = GELDB_WAIT;
     this->actor.bgCheckFlags &= ~3;
     this->actor.gravity = -2.0f;
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     EnGeldB_SetupAction(this, EnGeldB_Wait);
 }
 
 void EnGeldB_Wait(EnGeldB* this, PlayState* play) {
-    if ((this->invisible && !Flags_GetSwitch(play, this->actor.home.rot.z)) ||
-        this->actor.xzDistToPlayer > 300.0f) {
+    if ((this->invisible && !Flags_GetSwitch(play, this->actor.home.rot.z)) || this->actor.xzDistToPlayer > 300.0f) {
         this->actor.shape.rot.y = this->actor.world.rot.y = this->actor.yawTowardsPlayer;
         this->actor.world.pos.y = this->actor.floorHeight + 120.0f;
     } else {
@@ -372,7 +371,7 @@ void EnGeldB_Wait(EnGeldB* this, PlayState* play) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_RIZA_DOWN);
         this->skelAnime.playSpeed = 1.0f;
         this->actor.world.pos.y = this->actor.floorHeight;
-        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
         this->actor.focus.pos = this->actor.world.pos;
         this->actor.bgCheckFlags &= ~2;
         this->actor.velocity.y = 0.0f;
@@ -672,8 +671,8 @@ void EnGeldB_Circle(EnGeldB* this, PlayState* play) {
                 this->actor.speedXZ = 8.0f;
             }
         }
-        if ((this->actor.bgCheckFlags & 8) || !Actor_TestFloorInDirection(&this->actor, play, this->actor.speedXZ,
-                                                                          this->actor.shape.rot.y + 0x3E80)) {
+        if ((this->actor.bgCheckFlags & 8) ||
+            !Actor_TestFloorInDirection(&this->actor, play, this->actor.speedXZ, this->actor.shape.rot.y + 0x3E80)) {
             if (this->actor.bgCheckFlags & 8) {
                 if (this->actor.speedXZ >= 0.0f) {
                     phi_v1 = this->actor.shape.rot.y + 0x3E80;
@@ -1320,7 +1319,7 @@ void EnGeldB_SetupDefeated(EnGeldB* this) {
         this->invisible = true;
     }
     this->action = GELDB_DEFEAT;
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_GERUDOFT_DEAD);
     EnGeldB_SetupAction(this, EnGeldB_Defeated);
     GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
@@ -1384,7 +1383,8 @@ void EnGeldB_CollisionCheck(EnGeldB* this, PlayState* play) {
                         if (key != NULL) {
                             key->actor.world.rot.y = Math_Vec3f_Yaw(&key->actor.world.pos, &this->actor.home.pos);
                             key->actor.speedXZ = 6.0f;
-                            Audio_PlaySoundGeneral(NA_SE_SY_TRE_BOX_APPEAR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                            Audio_PlaySoundGeneral(NA_SE_SY_TRE_BOX_APPEAR, &gSfxDefaultPos, 4,
+                                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
                                                    &gSfxDefaultReverb);
                         }
                     }
@@ -1404,7 +1404,7 @@ void EnGeldB_Update(Actor* thisx, PlayState* play) {
 
     EnGeldB_CollisionCheck(this, play);
     if (this->actor.colChkInfo.damageEffect != GELDB_DMG_UNK_6) {
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
         Actor_UpdateBgCheckInfo(play, &this->actor, 15.0f, 30.0f, 60.0f, 0x1D);
         this->actionFunc(this, play);
         this->actor.focus.pos = this->actor.world.pos;
@@ -1432,8 +1432,7 @@ void EnGeldB_Update(Actor* thisx, PlayState* play) {
     }
 }
 
-s32 EnGeldB_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                             void* thisx) {
+s32 EnGeldB_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnGeldB* this = (EnGeldB*)thisx;
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -1609,8 +1608,8 @@ void EnGeldB_Draw(Actor* thisx, PlayState* play) {
             if ((this->iceTimer % 4) == 0) {
                 s32 iceIndex = this->iceTimer >> 2;
 
-                EffectSsEnIce_SpawnFlyingVec3s(play, thisx, &this->bodyPartsPos[iceIndex], 150, 150, 150, 250, 235,
-                                               245, 255, 1.5f);
+                EffectSsEnIce_SpawnFlyingVec3s(play, thisx, &this->bodyPartsPos[iceIndex], 150, 150, 150, 250, 235, 245,
+                                               255, 1.5f);
             }
         }
     }

@@ -7,22 +7,20 @@
 #define SINGULAR 1
 
 class Text {
-public:
+  public:
     Text() = default;
     Text(std::string english_, std::string french_, std::string spanish_)
-      : english(std::move(english_)),
-        french(std::move(french_)),
-        spanish(std::move(spanish_)),
-        german(std::move("")) {
-            // german defaults to english text until a translation is provided.
-            german = english;
-        }
+        : english(std::move(english_)), french(std::move(french_)), spanish(std::move(spanish_)),
+          german(std::move("")) {
+        // german defaults to english text until a translation is provided.
+        german = english;
+    }
     Text(std::string english_, std::string french_, std::string spanish_, std::string german_)
-      : english(std::move(english_)),
-        french(std::move(french_)),
-        spanish(std::move(spanish_)),
-        german(std::move(german_)) {}
-    Text(std::string english_) : english(std::move(english_)), french(std::move("")), spanish(std::move("")), german(std::move("")) {
+        : english(std::move(english_)), french(std::move(french_)), spanish(std::move(spanish_)),
+          german(std::move(german_)) {
+    }
+    Text(std::string english_)
+        : english(std::move(english_)), french(std::move("")), spanish(std::move("")), german(std::move("")) {
         // default unprovided languages to english text
         french = spanish = german = english;
     }
@@ -54,24 +52,24 @@ public:
 
     const std::string& GetForLanguage(uint8_t language) const {
         switch (language) {
-            case 0: //LANGUAGE_ENG: changed to resolve #include loops
+            case 0: // LANGUAGE_ENG: changed to resolve #include loops
                 return GetEnglish();
-            case 2: //LANGUAGE_FRA:
+            case 2: // LANGUAGE_FRA:
                 return GetFrench();
-            case 1: //LANGUAGE_GER:
+            case 1: // LANGUAGE_GER:
                 return GetGerman();
             default:
                 return GetEnglish();
         }
     }
 
-    Text operator+ (const Text& right) const {
-        return Text{english + right.GetEnglish(), french + right.GetFrench(), spanish + right.GetSpanish(),
-            german + right.GetGerman()};
+    Text operator+(const Text& right) const {
+        return Text{ english + right.GetEnglish(), french + right.GetFrench(), spanish + right.GetSpanish(),
+                     german + right.GetGerman() };
     }
 
-    Text operator+ (const std::string& right) const {
-        return Text{english + right, french + right, spanish + right, german + right};
+    Text operator+(const std::string& right) const {
+        return Text{ english + right, french + right, spanish + right, german + right };
     }
 
     bool operator==(const Text& right) const {
@@ -88,11 +86,11 @@ public:
 
     void Replace(std::string oldStr, std::string newStr) {
 
-        for (std::string* str : {&english, &french, &spanish, &german}) {
+        for (std::string* str : { &english, &french, &spanish, &german }) {
             size_t position = str->find(oldStr);
             while (position != std::string::npos) {
-              str->replace(position, oldStr.length(), newStr);
-              position = str->find(oldStr);
+                str->replace(position, oldStr.length(), newStr);
+                position = str->find(oldStr);
             }
         }
     }
@@ -123,15 +121,15 @@ public:
     // Convert first char to upper case
     Text Capitalize(void) const {
         Text cap = *this + "";
-        for (std::string* str : {&cap.english, &cap.french, &cap.spanish, &cap.german}) {
+        for (std::string* str : { &cap.english, &cap.french, &cap.spanish, &cap.german }) {
             (*str)[0] = std::toupper((*str)[0]);
         }
         return cap;
     }
 
-    //find the appropriate bars that separate singular from plural
+    // find the appropriate bars that separate singular from plural
     void SetForm(int form) {
-        for (std::string* str : {&english, &french, &spanish, &german}) {
+        for (std::string* str : { &english, &french, &spanish, &german }) {
 
             size_t firstBar = str->find('|');
             if (firstBar != std::string::npos) {
@@ -151,7 +149,7 @@ public:
                 }
             }
         }
-        //remove the remaining bar
+        // remove the remaining bar
         this->Replace("|", "");
     }
 

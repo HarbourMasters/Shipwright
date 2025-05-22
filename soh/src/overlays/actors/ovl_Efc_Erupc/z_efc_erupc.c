@@ -2,7 +2,7 @@
 #include "objects/object_efc_erupc/object_efc_erupc.h"
 #include "soh/frame_interpolation.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void EfcErupc_Init(Actor* thisx, PlayState* play);
 void EfcErupc_Destroy(Actor* thisx, PlayState* play);
@@ -134,8 +134,7 @@ void EfcErupc_Draw(Actor* thisx, PlayState* play) {
 
     Matrix_Push();
     Matrix_Scale(0.8f, 0.8f, 0.8f, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     if (play->csCtx.state != 0) {
         if ((play->csCtx.npcActions[1] != 0) && (play->csCtx.npcActions[1]->action == 2)) {
@@ -144,8 +143,7 @@ void EfcErupc_Draw(Actor* thisx, PlayState* play) {
     }
     Matrix_Pop();
     Matrix_Scale(3.4f, 3.4f, 3.4f, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     if (play->csCtx.state != 0) {
         CsCmdActorCue* csActorAction = play->csCtx.npcActions[2];
         if (csActorAction != 0) {
@@ -180,8 +178,7 @@ void EfcErupc_DrawParticles(EfcErupcParticles* particles, PlayState* play) {
             Matrix_Translate(particles->pos.x, particles->pos.y, particles->pos.z, MTXMODE_NEW);
             Matrix_ReplaceRotation(&play->billboardMtxF);
             Matrix_Scale(particles->scale, particles->scale, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, object_efc_erupc_DL_0027D8);
         }
 

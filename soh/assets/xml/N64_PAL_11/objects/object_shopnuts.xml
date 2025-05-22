@@ -61,7 +61,7 @@
         <Animation Name="gBusinessScrubLookAroundAnim" Offset="0xBA0"/>
         <Animation Name="gBusinessScrubNervousIdleAnim" Offset="0x1108"/>
         <Animation Name="gBusinessScrubAnim_139C" Offset="0x139C"/>
-        <Animation Name="gBusinessScrubAnim_4404" Offset="0x4404"/>
+        <Animation Name="gBusinessScrubLeaveBurrowAnim" Offset="0x4404"/>
         <Animation Name="gBusinessScrubAnim_4574" Offset="0x4574"/>
     </File>
 </Root>

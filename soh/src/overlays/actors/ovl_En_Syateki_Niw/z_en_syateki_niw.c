@@ -10,7 +10,7 @@
 #include "soh/frame_interpolation.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void EnSyatekiNiw_Init(Actor* thisx, PlayState* play);
 void EnSyatekiNiw_Destroy(Actor* thisx, PlayState* play);
@@ -71,7 +71,7 @@ void EnSyatekiNiw_Init(Actor* thisx, PlayState* play) {
     EnSyatekiNiw* this = (EnSyatekiNiw*)thisx;
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 25.0f);
     SkelAnime_InitFlex(play, &this->skelAnime, &gCuccoSkel, &gCuccoAnim, this->jointTable, this->morphTable, 16);
 
@@ -459,8 +459,8 @@ void func_80B12460(EnSyatekiNiw* this, PlayState* play) {
             }
 
             if ((this->unk_25A == 0) && ((player->actor.world.pos.z - 30.0f) < this->actor.world.pos.z)) {
-                Audio_PlaySoundGeneral(NA_SE_VO_LI_DOWN, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                       &gSfxDefaultReverb);
+                Audio_PlaySoundGeneral(NA_SE_VO_LI_DOWN, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 this->unk_25E = 0x14;
                 this->unk_29A = 6;
                 this->actor.speedXZ = 0.0f;
@@ -496,7 +496,7 @@ void func_80B12460(EnSyatekiNiw* this, PlayState* play) {
 
 void func_80B128D8(EnSyatekiNiw* this, PlayState* play) {
     if (this->unk_25E == 1) {
-        gSaveContext.timer1State = 0;
+        gSaveContext.timerState = 0;
     }
 }
 
@@ -620,7 +620,7 @@ void EnSyatekiNiw_Update(Actor* thisx, PlayState* play) {
     this->actor.shape.shadowScale = 15.0f;
 
     this->actionFunc(this, play);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 20.0f, 60.0f, 0x1D);
 
     if (this->unk_2A0 != 0) {
@@ -670,8 +670,7 @@ void EnSyatekiNiw_Update(Actor* thisx, PlayState* play) {
     }
 }
 
-s32 SyatekiNiw_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                                void* thisx) {
+s32 SyatekiNiw_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnSyatekiNiw* this = (EnSyatekiNiw*)thisx;
     Vec3f sp0 = { 0.0f, 0.0f, 0.0f };
 
@@ -784,8 +783,7 @@ void func_80B13464(EnSyatekiNiw* this, PlayState* play) {
             Matrix_RotateZ(ptr->unk_30, MTXMODE_APPLY);
             Matrix_Translate(0.0f, -1000.0f, 0.0f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gCuccoEffectFeatherModelDL);
             FrameInterpolation_RecordCloseChild();
         }

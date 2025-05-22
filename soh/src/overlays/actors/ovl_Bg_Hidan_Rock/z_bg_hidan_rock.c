@@ -93,7 +93,7 @@ void BgHidanRock_Init(Actor* thisx, PlayState* play) {
         } else {
             this->actionFunc = func_8088B268;
         }
-        thisx->flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED;
+        thisx->flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED;
         CollisionHeader_GetVirtual(&gFireTempleStoneBlock1Col, &colHeader);
     } else {
         CollisionHeader_GetVirtual(&gFireTempleStoneBlock2Col, &colHeader);
@@ -116,7 +116,7 @@ void BgHidanRock_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void func_8088B24C(BgHidanRock* this) {
-    this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED;
+    this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED;
     this->actionFunc = func_8088B990;
 }
 
@@ -137,9 +137,10 @@ void func_8088B268(BgHidanRock* this, PlayState* play) {
                 }
             }
 
-            this->dyna.actor.speedXZ = this->dyna.actor.speedXZ + (CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0) * 0.3) + 0.5f;
             this->dyna.actor.speedXZ =
-                CLAMP_MAX(this->dyna.actor.speedXZ, 2.0f + (CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0) * 0.5));
+                this->dyna.actor.speedXZ + (CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0) * 0.3) + 0.5f;
+            this->dyna.actor.speedXZ = CLAMP_MAX(this->dyna.actor.speedXZ,
+                                                 2.0f + (CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0) * 0.5));
 
             if (D_8088BFC0 > 0.0f) {
                 temp_v1 = Math_StepToF(&D_8088BFC0, 20.0f, this->dyna.actor.speedXZ);
@@ -212,7 +213,7 @@ void func_8088B5F4(BgHidanRock* this, PlayState* play) {
 }
 
 void func_8088B634(BgHidanRock* this, PlayState* play) {
-    if (func_8004356C(&this->dyna)) {
+    if (DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
         this->timer = 20;
         this->dyna.actor.world.rot.y = Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) + 0x4000;
         this->actionFunc = func_8088B69C;
@@ -250,7 +251,7 @@ void func_8088B79C(BgHidanRock* this, PlayState* play) {
         } else {
             this->dyna.actor.world.pos.y = this->dyna.actor.home.pos.y - 15.0f;
             this->actionFunc = func_8088B90C;
-            this->dyna.actor.flags &= ~(ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED);
+            this->dyna.actor.flags &= ~(ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED);
         }
 
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BLOCK_BOUND);
@@ -263,12 +264,12 @@ void func_8088B79C(BgHidanRock* this, PlayState* play) {
     this->unk_16C = CLAMP_MIN(this->unk_16C, 0.0f);
 
     if (this->type == 0) {
-        if (func_8004356C(&this->dyna)) {
+        if (DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
             if (this->unk_169 == 0) {
                 this->unk_169 = 3;
             }
             Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_FIRE_PLATFORM);
-        } else if (!func_8004356C(&this->dyna)) {
+        } else if (!DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
             if (this->unk_169 != 0) {
                 Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_DUNGEON0);
             }
@@ -316,12 +317,12 @@ void func_8088B990(BgHidanRock* this, PlayState* play) {
 
     this->unk_16C = (this->dyna.actor.world.pos.y + 50.0f - this->dyna.actor.home.pos.y + 40.0f) / 80.0f;
     if (this->type == 0) {
-        if (func_8004356C(&this->dyna)) {
+        if (DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
             if (this->unk_169 == 0) {
                 this->unk_169 = 3;
             }
             Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_FIRE_PLATFORM);
-        } else if (!func_8004356C(&this->dyna)) {
+        } else if (!DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
             if (this->unk_169 != 0) {
                 Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_DUNGEON0);
             }
@@ -335,7 +336,7 @@ void BgHidanRock_Update(Actor* thisx, PlayState* play) {
 
     this->actionFunc(this, play);
     if (this->actionFunc == func_8088B79C) {
-        Actor_MoveForward(&this->dyna.actor);
+        Actor_MoveXZGravity(&this->dyna.actor);
         Actor_UpdateBgCheckInfo(play, &this->dyna.actor, 0.0f, 0.0f, 0.0f, 4);
     }
 
@@ -372,8 +373,7 @@ void func_8088BC40(PlayState* play, BgHidanRock* this) {
     Matrix_Scale(6.0f, this->unk_16C, 6.0f, MTXMODE_APPLY);
 
     gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sVerticalFlamesTexs[play->gameplayFrames & 7]));
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gFireTempleBigVerticalFlameDL);
 
     CLOSE_DISPS(play->state.gfxCtx);

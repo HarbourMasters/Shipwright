@@ -3,9 +3,11 @@
 #include <utility>
 
 namespace Rando {
-ItemOverride::ItemOverride() : mLocation(RC_UNKNOWN_CHECK), mLooksLike(RG_NONE) {}
+ItemOverride::ItemOverride() : mLocation(RC_UNKNOWN_CHECK), mLooksLike(RG_NONE) {
+}
 ItemOverride::ItemOverride(const RandomizerCheck location, const RandomizerGet looksLike)
-    : mLocation(location), mLooksLike(looksLike) {}
+    : mLocation(location), mLooksLike(looksLike) {
+}
 
 RandomizerCheck ItemOverride::GetLocation() const {
     return mLocation;

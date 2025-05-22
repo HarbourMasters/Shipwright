@@ -8,14 +8,14 @@
 #include "objects/object_spot03_object/object_spot03_object.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void BgSpot03Taki_Init(Actor* thisx, PlayState* play);
 void BgSpot03Taki_Destroy(Actor* thisx, PlayState* play);
 void BgSpot03Taki_Update(Actor* thisx, PlayState* play);
 void BgSpot03Taki_Draw(Actor* thisx, PlayState* play);
 
-void func_808ADEF0(BgSpot03Taki* this, PlayState* play);
+void BgSpot03Taki_HandleWaterfallState(BgSpot03Taki* this, PlayState* play);
 
 const ActorInit Bg_Spot03_Taki_InitVars = {
     ACTOR_BG_SPOT03_TAKI,
@@ -38,7 +38,7 @@ void BgSpot03Taki_ApplyOpeningAlpha(BgSpot03Taki* this, s32 bufferIndex) {
     s32 i;
     Vtx* vtx = (bufferIndex == 0) ? SEGMENTED_TO_VIRTUAL(object_spot03_object_Vtx_000800)
                                   : SEGMENTED_TO_VIRTUAL(object_spot03_object_Vtx_000990);
-    
+
     vtx = ResourceMgr_LoadVtxByName(vtx);
 
     for (i = 0; i < 5; i++) {
@@ -60,7 +60,7 @@ void BgSpot03Taki_Init(Actor* thisx, PlayState* play) {
     this->openingAlpha = 255.0f;
     BgSpot03Taki_ApplyOpeningAlpha(this, 0);
     BgSpot03Taki_ApplyOpeningAlpha(this, 1);
-    this->actionFunc = func_808ADEF0;
+    this->actionFunc = BgSpot03Taki_HandleWaterfallState;
 }
 
 void BgSpot03Taki_Destroy(Actor* thisx, PlayState* play) {
@@ -69,7 +69,7 @@ void BgSpot03Taki_Destroy(Actor* thisx, PlayState* play) {
     DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
 }
 
-void func_808ADEF0(BgSpot03Taki* this, PlayState* play) {
+void BgSpot03Taki_HandleWaterfallState(BgSpot03Taki* this, PlayState* play) {
     if (this->state == WATERFALL_CLOSED) {
         if (Flags_GetSwitch(play, this->switchFlag)) {
             this->state = WATERFALL_OPENING_ANIMATED;
@@ -126,8 +126,7 @@ void BgSpot03Taki_Draw(Actor* thisx, PlayState* play) {
 
     gameplayFrames = play->gameplayFrames;
 
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 

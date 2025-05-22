@@ -1,0 +1,8 @@
+<Root>
+    <File Name="alley_shop_scene" Segment="2">
+        <Scene Name="alley_shop_scene" Offset="0x0"/>
+    </File>
+    <File Name="alley_shop_room_0" Segment="3">
+        <Room Name="alley_shop_room_0" Offset="0x0"/>
+    </File>
+</Root>

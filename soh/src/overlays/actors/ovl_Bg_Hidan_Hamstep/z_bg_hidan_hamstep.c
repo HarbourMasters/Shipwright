@@ -115,9 +115,9 @@ s32 BgHidanHamstep_SpawnChildren(BgHidanHamstep* this, PlayState* play2) {
         params = (i + 1) & 0xFF;
         params |= (this->dyna.actor.params & 0xFF00);
 
-        step = (BgHidanHamstep*)Actor_SpawnAsChild(
-            &play->actorCtx, &step->dyna.actor, play, ACTOR_BG_HIDAN_HAMSTEP, pos.x, pos.y, pos.z,
-            this->dyna.actor.world.rot.x, this->dyna.actor.world.rot.y, this->dyna.actor.world.rot.z, params);
+        step = (BgHidanHamstep*)Actor_SpawnAsChild(&play->actorCtx, &step->dyna.actor, play, ACTOR_BG_HIDAN_HAMSTEP,
+                                                   pos.x, pos.y, pos.z, this->dyna.actor.world.rot.x,
+                                                   this->dyna.actor.world.rot.y, this->dyna.actor.world.rot.z, params);
 
         if (step == NULL) {
             return 0;
@@ -294,7 +294,7 @@ void func_80888860(BgHidanHamstep* this, PlayState* play) {
     s32 pad2;
     s32 quakeIndex;
 
-    Actor_MoveForward(&this->dyna.actor);
+    Actor_MoveXZGravity(&this->dyna.actor);
 
     if (((this->dyna.actor.world.pos.y - this->dyna.actor.home.pos.y) < (-20.0f - this->dyna.actor.minVelocityY)) &&
         (this->dyna.actor.velocity.y <= 0.0f)) {
@@ -305,7 +305,6 @@ void func_80888860(BgHidanHamstep* this, PlayState* play) {
             BgHidanHamstep_SetupAction(this, 4);
         } else {
             this->dyna.actor.velocity.y *= -0.24f;
-
 
             if (this->unk_244 == 1) {
                 quakeIndex = Quake_Add(GET_ACTIVE_CAM(play), 3);
@@ -343,7 +342,7 @@ void func_80888A58(BgHidanHamstep* this, PlayState* play) {
     s32 pad2;
     s32 quakeIndex;
 
-    Actor_MoveForward(&this->dyna.actor);
+    Actor_MoveXZGravity(&this->dyna.actor);
     func_80888694(this, (BgHidanHamstep*)this->dyna.actor.parent);
 
     if (((this->dyna.actor.params & 0xFF) <= 0) || ((this->dyna.actor.params & 0xFF) >= 6)) {
@@ -363,7 +362,6 @@ void func_80888A58(BgHidanHamstep* this, PlayState* play) {
             BgHidanHamstep_SetupAction(this, 3);
         } else {
             this->dyna.actor.velocity.y *= -0.24f;
-
 
             if (this->unk_244 == 1) {
                 quakeIndex = Quake_Add(GET_ACTIVE_CAM(play), 3);
@@ -399,8 +397,7 @@ void BgHidanHamstep_Draw(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     if ((thisx->params & 0xFF) == 0) {
         gSPDisplayList(POLY_OPA_DISP++, gFireTempleStoneStep1DL);

@@ -97,8 +97,7 @@ s32 func_808B8910(BgSpot18Obj* this, PlayState* play) {
     } else if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
         age = 0;
     } else {
-        osSyncPrintf("Error : リンク年齢不詳 (%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
-                     this->dyna.actor.params);
+        osSyncPrintf("Error : リンク年齢不詳 (%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__, this->dyna.actor.params);
         return 0;
     }
 
@@ -247,7 +246,7 @@ void func_808B8F08(BgSpot18Obj* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     Math_StepToF(&this->dyna.actor.speedXZ, 1.2f, 0.1f);
-    Actor_MoveForward(&this->dyna.actor);
+    Actor_MoveXZGravity(&this->dyna.actor);
     func_808B8DDC(this, play);
 
     if (Math3D_Dist2DSq(this->dyna.actor.world.pos.x, this->dyna.actor.world.pos.z, this->dyna.actor.home.pos.x,

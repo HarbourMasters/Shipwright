@@ -3,7 +3,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE)
 
 void EnEiyer_Init(Actor* thisx, PlayState* play);
 void EnEiyer_Destroy(Actor* thisx, PlayState* play);
@@ -124,8 +124,7 @@ void EnEiyer_Init(Actor* thisx, PlayState* play) {
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
     ActorShape_Init(&this->actor.shape, 600.0f, ActorShadow_DrawCircle, 65.0f);
-    SkelAnime_Init(play, &this->skelanime, &gStingerSkel, &gStingerIdleAnim, this->jointTable, this->morphTable,
-                   19);
+    SkelAnime_Init(play, &this->skelanime, &gStingerSkel, &gStingerIdleAnim, this->jointTable, this->morphTable, 19);
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, &this->actor, &sColCylInit);
     CollisionCheck_SetInfo(&this->actor.colChkInfo, &sDamageTable, &sColChkInfoInit);
@@ -206,7 +205,7 @@ void EnEiyer_SetupAppearFromGround(EnEiyer* this) {
 
     this->collider.base.atFlags &= ~AT_ON;
     this->collider.base.acFlags &= ~AC_ON;
-    this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_IGNORE_QUAKE);
+    this->actor.flags &= ~(ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_IGNORE_QUAKE);
     this->actor.shape.shadowScale = 0.0f;
     this->actor.shape.yOffset = 0.0f;
     this->actionFunc = EnEiyer_AppearFromGround;
@@ -221,12 +220,12 @@ void EnEiyer_SetupUnderground(EnEiyer* this) {
     }
 
     this->collider.base.acFlags |= AC_ON;
-    this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
-    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_UPDATE_CULLING_DISABLED;
+    this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
 }
 
 void EnEiyer_SetupInactive(EnEiyer* this) {
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->actor.world.rot.y = this->actor.shape.rot.y;
     this->actionFunc = EnEiyer_Inactive;
 }
@@ -271,7 +270,7 @@ void EnEiyer_SetupDiveAttack(EnEiyer* this, PlayState* play) {
 void EnEiyer_SetupLand(EnEiyer* this) {
     Animation_MorphToPlayOnce(&this->skelanime, &gStingerDiveAnim, -3.0f);
     this->collider.base.atFlags &= ~AT_ON;
-    this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+    this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
 
     // Update BgCheck info, play sound, and spawn effect on the first frame of the land action
     this->timer = -1;
@@ -614,7 +613,7 @@ void EnEiyer_UpdateDamage(EnEiyer* this, PlayState* play) {
             if (Actor_ApplyDamage(&this->actor) == 0) {
                 Enemy_StartFinishingBlow(play, &this->actor);
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_EIER_DEAD);
-                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+                this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
                 GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
             }
 
@@ -648,9 +647,9 @@ void EnEiyer_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
 
     if (this->actor.world.rot.x == 0 || this->actionFunc == EnEiyer_Stunned) {
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
     } else {
-        func_8002D97C(&this->actor);
+        Actor_MoveXYZ(&this->actor);
     }
 
     if (this->actionFunc == EnEiyer_Glide || this->actionFunc == EnEiyer_DiveAttack ||
@@ -678,7 +677,7 @@ void EnEiyer_Update(Actor* thisx, PlayState* play) {
         }
     }
 
-    if (this->actor.flags & ACTOR_FLAG_TARGETABLE) {
+    if (this->actor.flags & ACTOR_FLAG_ATTENTION_ENABLED) {
         this->actor.focus.pos.x = this->actor.world.pos.x + Math_SinS(this->actor.shape.rot.y) * 12.5f;
         this->actor.focus.pos.z = this->actor.world.pos.z + Math_CosS(this->actor.shape.rot.y) * 12.5f;
         this->actor.focus.pos.y = this->actor.world.pos.y;
@@ -709,15 +708,15 @@ void EnEiyer_Draw(Actor* thisx, PlayState* play) {
         gSPSegment(POLY_OPA_DISP++, 0x08, &D_80116280[2]);
         gDPSetEnvColor(POLY_OPA_DISP++, 255, 255, 255, 255);
 
-        POLY_OPA_DISP = SkelAnime_DrawSkeleton2(play, &this->skelanime,
-                                       EnEiyer_OverrideLimbDraw, NULL, this, POLY_OPA_DISP);
+        POLY_OPA_DISP =
+            SkelAnime_DrawSkeleton2(play, &this->skelanime, EnEiyer_OverrideLimbDraw, NULL, this, POLY_OPA_DISP);
     } else {
         Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gSPSegment(POLY_XLU_DISP++, 0x08, D_80116280);
         gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 255, this->actor.shape.shadowAlpha);
 
-        POLY_XLU_DISP = SkelAnime_DrawSkeleton2(play, &this->skelanime,
-                                       EnEiyer_OverrideLimbDraw, NULL, this, POLY_XLU_DISP);
+        POLY_XLU_DISP =
+            SkelAnime_DrawSkeleton2(play, &this->skelanime, EnEiyer_OverrideLimbDraw, NULL, this, POLY_XLU_DISP);
     }
     CLOSE_DISPS(play->state.gfxCtx);
 }

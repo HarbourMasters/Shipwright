@@ -1,7 +1,7 @@
 #include "z_bg_mori_elevator.h"
 #include "objects/object_mori_objects/object_mori_objects.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void BgMoriElevator_Init(Actor* thisx, PlayState* play);
 void BgMoriElevator_Destroy(Actor* thisx, PlayState* play);
@@ -125,7 +125,8 @@ void BgMoriElevator_Destroy(Actor* thisx, PlayState* play) {
 }
 
 s32 BgMoriElevator_IsPlayerRiding(BgMoriElevator* this, PlayState* play) {
-    return ((this->dyna.unk_160 & 2) && !(this->unk_170 & 2) &&
+    return ((this->dyna.interactFlags & DYNA_INTERACT_PLAYER_ON_TOP) &&
+            !(this->unk_170 & DYNA_INTERACT_PLAYER_ON_TOP) &&
             ((GET_PLAYER(play)->actor.world.pos.y - this->dyna.actor.world.pos.y) < 80.0f));
 }
 
@@ -244,7 +245,7 @@ void BgMoriElevator_Update(Actor* thisx, PlayState* play) {
     BgMoriElevator* this = (BgMoriElevator*)thisx;
 
     this->actionFunc(this, play);
-    this->unk_170 = this->dyna.unk_160;
+    this->unk_170 = this->dyna.interactFlags;
     this->unk_16C = Flags_GetSwitch(play, (thisx->params & 0x3F));
 }
 
@@ -256,8 +257,7 @@ void BgMoriElevator_Draw(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, play->objectCtx.status[this->moriTexObjIndex].segment);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gMoriElevatorDL);
 
     CLOSE_DISPS(play->state.gfxCtx);

@@ -7,7 +7,7 @@
 #include "z_bg_ice_shutter.h"
 #include "objects/object_ice_objects/object_ice_objects.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void BgIceShutter_Init(Actor* thisx, PlayState* play);
 void BgIceShutter_Destroy(Actor* thisx, PlayState* play);

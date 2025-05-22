@@ -8,7 +8,7 @@
 #include "objects/object_hakach_objects/object_hakach_objects.h"
 #include "objects/object_haka_objects/object_haka_objects.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 typedef enum {
     /* 0x0 */ STA_GIANT_BIRD_STATUE,
@@ -238,8 +238,8 @@ void func_80882CC4(BgHakaZou* this, PlayState* play) {
             actorSpawnPos.z = this->dyna.actor.world.pos.z + (j - 1) * cos;
             actorSpawnPos.y = this->dyna.actor.world.pos.y + (i - 1) * 55;
 
-            Actor_Spawn(&play->actorCtx, play, ACTOR_BG_HAKA_ZOU, actorSpawnPos.x, actorSpawnPos.y,
-                        actorSpawnPos.z, 0, this->dyna.actor.shape.rot.y, 0, this->dyna.actor.params + 2, true);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_BG_HAKA_ZOU, actorSpawnPos.x, actorSpawnPos.y, actorSpawnPos.z, 0,
+                        this->dyna.actor.shape.rot.y, 0, this->dyna.actor.params + 2, true);
             func_800286CC(play, &actorSpawnPos, &sZeroVec, &sZeroVec, 1000, 50);
         }
     }
@@ -396,7 +396,7 @@ void BgHakaZou_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
 
     if (this->dyna.actor.params == 3) {
-        Actor_MoveForward(&this->dyna.actor);
+        Actor_MoveXZGravity(&this->dyna.actor);
     }
 }
 

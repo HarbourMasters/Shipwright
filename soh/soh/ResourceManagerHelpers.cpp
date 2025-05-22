@@ -6,12 +6,12 @@
 #include "Enhancements/enhancementTypes.h"
 #include "Enhancements/randomizer/dungeon.h"
 #include <libultraship/libultraship.h>
-#include <GameVersions.h>
+#include <soh/GameVersions.h>
 #include "resource/type/SohResourceType.h"
 #include "resource/type/Array.h"
 #include "resource/type/Skeleton.h"
 #include "resource/type/PlayerAnimation.h"
-#include <Fast3D/gfx_pc.h>
+#include <Fast3D/Fast3dWindow.h>
 #include <DisplayList.h>
 
 extern "C" PlayState* gPlayState;
@@ -25,7 +25,8 @@ extern "C" uint32_t ResourceMgr_GetGameVersion(int index) {
 }
 
 extern "C" uint32_t ResourceMgr_GetGamePlatform(int index) {
-    uint32_t version = Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions()[index];
+    uint32_t version =
+        Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions()[index];
 
     switch (version) {
         case OOT_NTSC_US_10:
@@ -35,6 +36,7 @@ extern "C" uint32_t ResourceMgr_GetGamePlatform(int index) {
         case OOT_PAL_11:
             return GAME_PLATFORM_N64;
         case OOT_NTSC_JP_GC:
+        case OOT_NTSC_JP_GC_CE:
         case OOT_NTSC_US_GC:
         case OOT_PAL_GC:
         case OOT_NTSC_JP_MQ:
@@ -48,13 +50,15 @@ extern "C" uint32_t ResourceMgr_GetGamePlatform(int index) {
 }
 
 extern "C" uint32_t ResourceMgr_GetGameRegion(int index) {
-    uint32_t version = Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions()[index];
+    uint32_t version =
+        Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions()[index];
 
     switch (version) {
         case OOT_NTSC_US_10:
         case OOT_NTSC_US_11:
         case OOT_NTSC_US_12:
         case OOT_NTSC_JP_GC:
+        case OOT_NTSC_JP_GC_CE:
         case OOT_NTSC_US_GC:
         case OOT_NTSC_JP_MQ:
         case OOT_NTSC_US_MQ:
@@ -68,6 +72,11 @@ extern "C" uint32_t ResourceMgr_GetGameRegion(int index) {
         case OOT_PAL_GC_MQ_DBG:
             return GAME_REGION_PAL;
     }
+}
+
+extern "C" char* _message_0xFFFC_nes;
+extern "C" bool ResourceMgr_IsPalLoaded() {
+    return _message_0xFFFC_nes != NULL;
 }
 
 u32 IsSceneMasterQuest(s16 sceneNum) {
@@ -117,11 +126,11 @@ extern "C" uint32_t ResourceMgr_IsGameMasterQuest() {
 }
 
 extern "C" void ResourceMgr_LoadDirectory(const char* resName) {
-    Ship::Context::GetInstance()->GetResourceManager()->LoadDirectory(resName);
+    Ship::Context::GetInstance()->GetResourceManager()->LoadResources(resName);
 }
 
 extern "C" void ResourceMgr_DirtyDirectory(const char* resName) {
-    Ship::Context::GetInstance()->GetResourceManager()->DirtyDirectory(resName);
+    Ship::Context::GetInstance()->GetResourceManager()->DirtyResources(resName);
 }
 
 extern "C" void ResourceMgr_UnloadResource(const char* resName) {
@@ -151,7 +160,7 @@ extern "C" char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize)
 
 extern "C" uint8_t ResourceMgr_FileExists(const char* filePath) {
     std::string path = filePath;
-    if(path.substr(0, 7) == "__OTR__"){
+    if (path.substr(0, 7) == "__OTR__") {
         path = path.substr(7);
     }
 
@@ -179,7 +188,7 @@ extern "C" bool ResourceMgr_IsAltAssetsEnabled() {
 // The resource is only removed from the internal cache to prevent it from used in the next resource lookup
 extern "C" void ResourceMgr_UnloadOriginalWhenAltExists(const char* resName) {
     if (ResourceMgr_IsAltAssetsEnabled() && ResourceMgr_FileAltExists((char*)resName)) {
-        ResourceMgr_UnloadResource((char*) resName);
+        ResourceMgr_UnloadResource((char*)resName);
     }
 }
 
@@ -205,7 +214,7 @@ extern "C" char* ResourceMgr_GetResourceDataByNameHandlingMQ(const char* path) {
 }
 
 extern "C" uint8_t ResourceMgr_TexIsRaw(const char* texPath) {
-    auto res = std::static_pointer_cast<LUS::Texture>(ResourceMgr_GetResourceByNameHandlingMQ(texPath));
+    auto res = std::static_pointer_cast<Fast::Texture>(ResourceMgr_GetResourceByNameHandlingMQ(texPath));
     return res->Flags & TEX_FLAG_LOAD_AS_RAW;
 }
 
@@ -225,8 +234,10 @@ extern "C" char* ResourceMgr_LoadJPEG(char* data, size_t dataSize) {
     int h;
     int comp;
 
-    unsigned char* pixels = stbi_load_from_memory((const unsigned char*)data, 320 * 240 * 2, &w, &h, &comp, STBI_rgb_alpha);
-    //unsigned char* pixels = stbi_load_from_memory((const unsigned char*)data, 480 * 240 * 2, &w, &h, &comp, STBI_rgb_alpha);
+    unsigned char* pixels =
+        stbi_load_from_memory((const unsigned char*)data, 320 * 240 * 2, &w, &h, &comp, STBI_rgb_alpha);
+    // unsigned char* pixels = stbi_load_from_memory((const unsigned char*)data, 480 * 240 * 2, &w, &h, &comp,
+    // STBI_rgb_alpha);
     int idx = 0;
 
     for (int y = 0; y < h; y++) {
@@ -253,8 +264,8 @@ extern "C" char* ResourceMgr_LoadJPEG(char* data, size_t dataSize) {
 extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
     auto res = ResourceMgr_GetResourceByNameHandlingMQ(filePath);
 
-    if (res->GetInitData()->Type == static_cast<uint32_t>(LUS::ResourceType::DisplayList)) {
-        return (char*)&((std::static_pointer_cast<LUS::DisplayList>(res))->Instructions[0]);
+    if (res->GetInitData()->Type == static_cast<uint32_t>(Fast::ResourceType::DisplayList)) {
+        return (char*)&((std::static_pointer_cast<Fast::DisplayList>(res))->Instructions[0]);
     }
 
     if (res->GetInitData()->Type == static_cast<uint32_t>(SOH::ResourceType::SOH_Array)) {
@@ -267,8 +278,8 @@ extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
 extern "C" char* ResourceMgr_LoadIfDListByName(const char* filePath) {
     auto res = ResourceMgr_GetResourceByNameHandlingMQ(filePath);
 
-    if (res->GetInitData()->Type == static_cast<uint32_t>(LUS::ResourceType::DisplayList)) {
-        return (char*)&((std::static_pointer_cast<LUS::DisplayList>(res))->Instructions[0]);
+    if (res->GetInitData()->Type == static_cast<uint32_t>(Fast::ResourceType::DisplayList)) {
+        return (char*)&((std::static_pointer_cast<Fast::DisplayList>(res))->Instructions[0]);
     }
 
     return nullptr;
@@ -281,7 +292,7 @@ extern "C" char* ResourceMgr_LoadPlayerAnimByName(const char* animPath) {
 }
 
 extern "C" void ResourceMgr_PushCurrentDirectory(char* path) {
-    gfx_push_current_dir(path);
+    Fast::gfx_push_current_dir(path);
 }
 
 extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path) {
@@ -290,12 +301,12 @@ extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path) {
     // OTRTODO: If Alt loading over original cache is fixed, this line can most likely be removed
     ResourceMgr_UnloadOriginalWhenAltExists(path);
 
-    auto res = std::static_pointer_cast<LUS::DisplayList>(ResourceMgr_GetResourceByNameHandlingMQ(path));
+    auto res = std::static_pointer_cast<Fast::DisplayList>(ResourceMgr_GetResourceByNameHandlingMQ(path));
     return (Gfx*)&res->Instructions[0];
 }
 
 extern "C" uint8_t ResourceMgr_FileIsCustomByName(const char* path) {
-    auto res = std::static_pointer_cast<LUS::DisplayList>(ResourceMgr_GetResourceByNameHandlingMQ(path));
+    auto res = std::static_pointer_cast<Fast::DisplayList>(ResourceMgr_GetResourceByNameHandlingMQ(path));
     return res->GetInitData()->IsCustom;
 }
 
@@ -306,10 +317,10 @@ typedef struct {
 
 std::unordered_map<std::string, std::unordered_map<std::string, GfxPatch>> originalGfx;
 
-// Attention! This is primarily for cosmetics & bug fixes. For things like mods and model replacement you should be using OTRs
-// instead (When that is available). Index can be found using the commented out section below.
+// Attention! This is primarily for cosmetics & bug fixes. For things like mods and model replacement you should be
+// using OTRs instead (When that is available). Index can be found using the commented out section below.
 extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction) {
-    auto res = std::static_pointer_cast<LUS::DisplayList>(
+    auto res = std::static_pointer_cast<Fast::DisplayList>(
         Ship::Context::GetInstance()->GetResourceManager()->LoadResource(path));
 
     // Leaving this here for people attempting to find the correct Dlist index to patch
@@ -320,7 +331,8 @@ extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchNa
             // SPDLOG_INFO("index:{} command:{}", i, gfx->words.w0 >> 24);
             // Log only SetPrimColors
             if (gfx->words.w0 >> 24 == 250) {
-                SPDLOG_INFO("index:{} r:{} g:{} b:{} a:{}", i, _SHIFTR(gfx->words.w1, 24, 8), _SHIFTR(gfx->words.w1, 16, 8), _SHIFTR(gfx->words.w1, 8, 8), _SHIFTR(gfx->words.w1, 0, 8));
+                SPDLOG_INFO("index:{} r:{} g:{} b:{} a:{}", i, _SHIFTR(gfx->words.w1, 24, 8), _SHIFTR(gfx->words.w1, 16,
+    8), _SHIFTR(gfx->words.w1, 8, 8), _SHIFTR(gfx->words.w1, 0, 8));
             }
         }
     }*/
@@ -338,17 +350,15 @@ extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchNa
     Gfx* gfx = (Gfx*)&res->Instructions[index];
 
     if (!originalGfx.contains(path) || !originalGfx[path].contains(patchName)) {
-        originalGfx[path][patchName] = {
-            index,
-            *gfx
-        };
+        originalGfx[path][patchName] = { index, *gfx };
     }
 
     *gfx = instruction;
 }
 
-extern "C" void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const char* patchName, int destinationIndex, int sourceIndex) {
-    auto res = std::static_pointer_cast<LUS::DisplayList>(
+extern "C" void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const char* patchName, int destinationIndex,
+                                                      int sourceIndex) {
+    auto res = std::static_pointer_cast<Fast::DisplayList>(
         Ship::Context::GetInstance()->GetResourceManager()->LoadResource(path));
 
     // Do not patch custom assets as they most likely do not have the same instructions as authentic assets
@@ -360,10 +370,7 @@ extern "C" void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const ch
     Gfx sourceGfx = *(Gfx*)&res->Instructions[sourceIndex];
 
     if (!originalGfx.contains(path) || !originalGfx[path].contains(patchName)) {
-        originalGfx[path][patchName] = {
-            destinationIndex,
-            *destinationGfx
-        };
+        originalGfx[path][patchName] = { destinationIndex, *destinationGfx };
     }
 
     *destinationGfx = sourceGfx;
@@ -371,7 +378,7 @@ extern "C" void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const ch
 
 extern "C" void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName) {
     if (originalGfx.contains(path) && originalGfx[path].contains(patchName)) {
-        auto res = std::static_pointer_cast<LUS::DisplayList>(
+        auto res = std::static_pointer_cast<Fast::DisplayList>(
             Ship::Context::GetInstance()->GetResourceManager()->LoadResource(path));
 
         Gfx* gfx = (Gfx*)&res->Instructions[originalGfx[path][patchName].index];
@@ -395,59 +402,52 @@ extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path) {
     //     return (char*)res->CachedGameAsset;
     // else
     // {
-        Vec3s* data = (Vec3s*)malloc(sizeof(Vec3s) * res->Scalars.size());
+    Vec3s* data = (Vec3s*)malloc(sizeof(Vec3s) * res->Scalars.size());
 
-        for (size_t i = 0; i < res->Scalars.size(); i += 3) {
-            data[(i / 3)].x = res->Scalars[i + 0].s16;
-            data[(i / 3)].y = res->Scalars[i + 1].s16;
-            data[(i / 3)].z = res->Scalars[i + 2].s16;
-        }
+    for (size_t i = 0; i < res->Scalars.size(); i += 3) {
+        data[(i / 3)].x = res->Scalars[i + 0].s16;
+        data[(i / 3)].y = res->Scalars[i + 1].s16;
+        data[(i / 3)].z = res->Scalars[i + 2].s16;
+    }
 
-        // res->CachedGameAsset = data;
+    // res->CachedGameAsset = data;
 
-        return (char*)data;
+    return (char*)data;
     // }
 }
 
 extern "C" CollisionHeader* ResourceMgr_LoadColByName(const char* path) {
-    return (CollisionHeader*) ResourceGetDataByName(path);
+    return (CollisionHeader*)ResourceGetDataByName(path);
 }
 
 extern "C" Vtx* ResourceMgr_LoadVtxByName(char* path) {
-    return (Vtx*) ResourceGetDataByName(path);
+    return (Vtx*)ResourceGetDataByName(path);
 }
 
 extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path) {
-    SequenceData* sequence = (SequenceData*) ResourceGetDataByName(path);
+    SequenceData* sequence = (SequenceData*)ResourceGetDataByName(path);
     return *sequence;
 }
 
 extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path) {
-    return (SoundFontSample*) ResourceGetDataByName(path);
+    return (SoundFontSample*)ResourceGetDataByName(path);
 }
 
 extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
-    return (SoundFont*) ResourceGetDataByName(path);
+    return (SoundFont*)ResourceGetDataByName(path);
 }
 
 extern "C" int ResourceMgr_OTRSigCheck(char* imgData) {
-	uintptr_t i = (uintptr_t)(imgData);
+    uintptr_t i = (uintptr_t)(imgData);
 
-// if (i == 0xD9000000 || i == 0xE7000000 || (i & 1) == 1)
+    // if (i == 0xD9000000 || i == 0xE7000000 || (i & 1) == 1)
     if ((i & 1) == 1)
         return 0;
 
-// if ((i & 0xFF000000) != 0xAB000000 && (i & 0xFF000000) != 0xCD000000 && i != 0) {
+    // if ((i & 0xFF000000) != 0xAB000000 && (i & 0xFF000000) != 0xCD000000 && i != 0) {
     if (i != 0) {
-        if (
-            imgData[0] == '_' &&
-            imgData[1] == '_' &&
-            imgData[2] == 'O' &&
-            imgData[3] == 'T' &&
-            imgData[4] == 'R' &&
-            imgData[5] == '_' &&
-            imgData[6] == '_'
-        ) {
+        if (imgData[0] == '_' && imgData[1] == '_' && imgData[2] == 'O' && imgData[3] == 'T' && imgData[4] == 'R' &&
+            imgData[5] == '_' && imgData[6] == '_') {
             return 1;
         }
     }
@@ -456,7 +456,7 @@ extern "C" int ResourceMgr_OTRSigCheck(char* imgData) {
 }
 
 extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
-    return (AnimationHeaderCommon*) ResourceGetDataByName(path);
+    return (AnimationHeaderCommon*)ResourceGetDataByName(path);
 }
 
 extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, SkelAnime* skelAnime) {
@@ -473,11 +473,11 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, Skel
         pathStr = Ship::IResource::gAltAssetPrefix + pathStr;
     }
 
-    SkeletonHeader* skelHeader = (SkeletonHeader*) ResourceGetDataByName(pathStr.c_str());
+    SkeletonHeader* skelHeader = (SkeletonHeader*)ResourceGetDataByName(pathStr.c_str());
 
     // If there isn't an alternate model, load the regular one
     if (isAlt && skelHeader == NULL) {
-        skelHeader = (SkeletonHeader*) ResourceGetDataByName(path);
+        skelHeader = (SkeletonHeader*)ResourceGetDataByName(path);
     }
 
     // This function is only called when a skeleton is initialized.

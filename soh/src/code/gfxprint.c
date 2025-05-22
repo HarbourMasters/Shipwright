@@ -1,7 +1,28 @@
 #include "global.h"
+
 #include "align_asset_macro.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
+
+// #region SOH [HD Textures]
+#define drGfxPrintFontData "__OTR__textures/font/sGfxPrintFontData"
+static const ALIGN_ASSET(2) char rGfxPrintFontData[] = drGfxPrintFontData;
+
+#define drGfxPrintFontDataAlt "__OTR__alt/textures/font/sGfxPrintFontData"
+static const ALIGN_ASSET(2) char rGfxPrintFontDataAlt[] = drGfxPrintFontDataAlt;
+
+bool sHasArchiveTexture = false;
+
+// OTRTODO: this isn't as clean as it could be if we implemented
+// the GfxPrint texture extraction to `.otr` as described in
+// https://github.com/HarbourMasters/Shipwright/issues/2762
+
+// Checks if we have a gfx font as a resource in an archive, which needs to be rendered differently
+bool GfxPrint_HasArchiveTexture() {
+    return ResourceMgr_FileExists(rGfxPrintFontData) ||
+           (ResourceMgr_IsAltAssetsEnabled() && ResourceMgr_FileExists(rGfxPrintFontDataAlt));
+}
+// #endregion
 
 u16 sGfxPrintFontTLUT[64] = {
     0x0000, 0xFFFF, 0x0000, 0xFFFF, 0x0000, 0xFFFF, 0x0000, 0xFFFF, 0x0000, 0xFFFF, 0x0000, 0xFFFF, 0x0000,
@@ -132,29 +153,6 @@ u8 sGfxPrintFontData[(16 * 256) / 2] = {
 // Can be used to set GFXP_FLAG_ENLARGE by default
 static u8 sDefaultSpecialFlags;
 
-#define drGfxPrintFontData "__OTR__textures/font/sGfxPrintFontData";
-static const ALIGN_ASSET(2) char rGfxPrintFontData[] = drGfxPrintFontData;
-
-#define drGfxPrintFontDataAlt "__OTR__alt/textures/font/sGfxPrintFontData";
-static const ALIGN_ASSET(2) char rGfxPrintFontDataAlt[] = drGfxPrintFontDataAlt;
-
-// OTRTODO: this isn't as clean as it could be if we implemented
-// the GfxPrint texture extraction to `.otr` as described in
-// https://github.com/HarbourMasters/Shipwright/issues/2762
-typedef enum {hardcoded, otrDefault, otrAlt} font_texture_t;
-font_texture_t GfxPrint_TextureToUse() {
-    if (ResourceMgr_IsAltAssetsEnabled() && ResourceMgr_FileExists(rGfxPrintFontDataAlt)) {
-        // If we have alt assets enabled, and we have alt prefixed font texture, use that
-        return otrAlt;
-    } else if (ResourceMgr_FileExists(rGfxPrintFontData)) {
-        // if we have a non alt prefixed font texture, use that
-        return otrDefault;
-    }
-
-    // default to hardcoded font
-    return hardcoded;
-}
-
 void GfxPrint_Setup(GfxPrint* this) {
     s32 width = 16;
     s32 height = 256;
@@ -166,35 +164,31 @@ void GfxPrint_Setup(GfxPrint* this) {
                         G_TD_CLAMP | G_TP_NONE | G_CYC_1CYCLE | G_PM_NPRIMITIVE,
                     G_AC_NONE | G_ZS_PRIM | G_RM_XLU_SURF | G_RM_XLU_SURF2);
     gDPSetCombineMode(this->dList++, G_CC_DECALRGBA, G_CC_DECALRGBA);
-    
 
-
-    if (GfxPrint_TextureToUse() == hardcoded) {
-        gDPLoadTextureBlock_4b(this->dList++, sGfxPrintFontData, G_IM_FMT_CI, width, height, 0, G_TX_NOMIRROR | G_TX_WRAP,
-                               G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    // SOH [HD Textures] Font data from an archive has 4 times the width as the letter columns are side by side
+    if (sHasArchiveTexture) {
+        gDPLoadTextureBlock_4b(this->dList++, rGfxPrintFontData, G_IM_FMT_CI, width * 4, height, 0,
+                               G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                               G_TX_NOLOD, G_TX_NOLOD);
     } else {
-        gDPLoadTextureBlock_4b(this->dList++, 
-                               GfxPrint_TextureToUse() == otrAlt ? rGfxPrintFontDataAlt : rGfxPrintFontData,
-                               G_IM_FMT_CI, width * 4, height, 0, G_TX_NOMIRROR | G_TX_WRAP,
-                               G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureBlock_4b(this->dList++, sGfxPrintFontData, G_IM_FMT_CI, width, height, 0,
+                               G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                               G_TX_NOLOD, G_TX_NOLOD);
     }
-    
+
     gDPLoadTLUT(this->dList++, 64, 256, sGfxPrintFontTLUT);
 
     for (i = 1; i < 4; i++) {
-        if (GfxPrint_TextureToUse() != hardcoded) {
-            gDPSetTile(this->dList++, G_IM_FMT_RGBA, G_IM_SIZ_4b, 1, 0, i * 2, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
-                       G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD);
-        } else {
-            gDPSetTile(this->dList++, G_IM_FMT_CI, G_IM_SIZ_4b, 1, 0, i * 2, i, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
-                       G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD);
-        }
+        gDPSetTile(this->dList++, G_IM_FMT_CI, G_IM_SIZ_4b, 1, 0, i * 2, i, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                   G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD);
         gDPSetTileSize(this->dList++, i * 2, 0, 0, 60, 1020);
     }
 
     gDPSetColor(this->dList++, G_SETPRIMCOLOR, this->color.rgba);
 
-    /*gDPLoadMultiTile_4b(this->dList++, sGfxPrintRainbowData, 0, 1, G_IM_FMT_CI, 2, 8, 0, 0, 1, 7, 4,
+    // SOH [Port] Rainbow disabled until LUS supports multiple palettes and tiles
+    /*
+    gDPLoadMultiTile_4b(this->dList++, sGfxPrintRainbowData, 0, 1, G_IM_FMT_CI, 2, 8, 0, 0, 1, 7, 4,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 1, 3, G_TX_NOLOD, G_TX_NOLOD);
 
     gDPLoadTLUT(this->dList++, 16, 320, sGfxPrintRainbowTLUT);
@@ -203,7 +197,8 @@ void GfxPrint_Setup(GfxPrint* this) {
         gDPSetTile(this->dList++, G_IM_FMT_CI, G_IM_SIZ_4b, 1, 0, i * 2 + 1, 4, G_TX_NOMIRROR | G_TX_WRAP, 3,
                    G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, 1, G_TX_NOLOD);
         gDPSetTileSize(this->dList++, i * 2 + 1, 0, 0, 4, 28);
-    }*/
+    }
+    */
 }
 
 void GfxPrint_SetColor(GfxPrint* this, u32 r, u32 g, u32 b, u32 a) {
@@ -250,6 +245,16 @@ void GfxPrint_PrintCharImpl(GfxPrint* this, u8 c) {
         }
     }
 
+    // SOH [HD Textures] The font data is normally 4 sets of 2 columns overlayed on top of each other with
+    // different CI palette values. Custom font data from archives instead are all 4 sets laid out side by side.
+    // This means we have to compute an additional offset value that represents which of the 4 sets a letter is from.
+    u16 assetOffsetX = 0;
+    if (sHasArchiveTexture) {
+        // Multiplied by the offset of 2 columns before added with the original value below
+        assetOffsetX = (c & 0x3) * (256 * 2);
+        tile = 0;
+    }
+
     if (this->flags & GFXP_FLAG_SHADOW) {
         gDPSetColor(this->dList++, G_SETPRIMCOLOR, 0);
 
@@ -259,7 +264,7 @@ void GfxPrint_PrintCharImpl(GfxPrint* this, u8 c) {
                                 1 << 9);
         } else {
             gSPTextureRectangle(this->dList++, this->posX + 4, this->posY + 4, this->posX + 4 + 32, this->posY + 4 + 32,
-                                tile, (u16)(c & 4) * 64, (u16)(c >> 3) * 256, 1 << 10, 1 << 10);
+                                tile, assetOffsetX + (u16)(c & 4) * 64, (u16)(c >> 3) * 256, 1 << 10, 1 << 10);
         }
 
         gDPSetColor(this->dList++, G_SETPRIMCOLOR, this->color.rgba);
@@ -269,20 +274,31 @@ void GfxPrint_PrintCharImpl(GfxPrint* this, u8 c) {
         gSPTextureRectangle(this->dList++, (this->posX) << 1, (this->posY) << 1, (this->posX + 32) << 1,
                             (this->posY + 32) << 1, tile, (u16)(c & 4) * 64, (u16)(c >> 3) * 256, 1 << 9, 1 << 9);
     } else {
-        gSPTextureRectangle(this->dList++, this->posX, this->posY, this->posX + 32, this->posY + 32,
-                            GfxPrint_TextureToUse() != hardcoded ? 0 : tile, (GfxPrint_TextureToUse() != hardcoded ? ((128 * 4) * offset) : 0) + (u16)((c & 4) * 64),
-                            (u16)(c >> 3) * 256, 1 << 10, 1 << 10);
+        gSPTextureRectangle(this->dList++, this->posX, this->posY, this->posX + 32, this->posY + 32, tile,
+                            assetOffsetX + (u16)((c & 4) * 64), (u16)(c >> 3) * 256, 1 << 10, 1 << 10);
     }
 
     this->posX += CVarGetInteger(CVAR_DEVELOPER_TOOLS("GfxPrintChar.Spacing"), 32);
 }
 
 void GfxPrint_PrintStringWithSize(GfxPrint* this, const void* buffer, u32 charSize, u32 charCount) {
-    OTRGfxPrint((const char*)buffer, this, GfxPrint_PrintCharImpl);
+    const char* str = (const char*)buffer;
+    u32 count = charSize * charCount;
+
+    // SOH [Port] Process the string with our wrapper that converts Japanese UTF8 characters for the print system
+    OTRGfxPrint(str, this, GfxPrint_PrintCharImpl);
+    // while (count != 0) {
+    //     GfxPrint_PrintChar(this, *(str++));
+    //     count--;
+    // }
 }
 
 void GfxPrint_PrintString(GfxPrint* this, const char* str) {
+    // SOH [Port] Process the string with our wrapper that converts Japanese UTF8 characters for the print system
     OTRGfxPrint(str, this, GfxPrint_PrintCharImpl);
+    // while (*str != '\0') {
+    //     GfxPrint_PrintChar(this, *(str++));
+    // }
 }
 
 void* GfxPrint_Callback(void* arg, const char* str, size_t size) {
@@ -314,6 +330,8 @@ void GfxPrint_Init(GfxPrint* this) {
     } else {
         this->flags &= ~GFXP_FLAG_ENLARGE;
     }
+
+    sHasArchiveTexture = GfxPrint_HasArchiveTexture();
 }
 
 void GfxPrint_Destroy(GfxPrint* this) {

@@ -3,20 +3,19 @@
 #include <libultraship/libultraship.h>
 #include "soh/resource/type/Scene.h"
 #include <utils/StringHelper.h>
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/SceneDB.h"
 #include "global.h"
 #include "vt.h"
 #include <Vertex.h>
 
-extern "C" void Play_InitScene(PlayState * play, s32 spawn);
-extern "C" void Play_InitEnvironment(PlayState * play, s16 skyboxId);
+extern "C" void Play_InitScene(PlayState* play, s32 spawn);
+extern "C" void Play_InitEnvironment(PlayState* play, s16 skyboxId);
 void OTRPlay_InitScene(PlayState* play, s32 spawn);
 s32 OTRScene_ExecuteCommands(PlayState* play, SOH::Scene* scene);
 
-//LUS::OTRResource* OTRPlay_LoadFile(PlayState* play, RomFile* file) {
-Ship::IResource* OTRPlay_LoadFile(PlayState* play, const char* fileName)
-{
+// LUS::OTRResource* OTRPlay_LoadFile(PlayState* play, RomFile* file) {
+Ship::IResource* OTRPlay_LoadFile(PlayState* play, const char* fileName) {
     auto res = Ship::Context::GetInstance()->GetResourceManager()->LoadResource(fileName);
     return res.get();
 }
@@ -40,8 +39,7 @@ extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneId, s32 spawn) {
     play->sceneSegment = OTRPlay_LoadFile(play, scenePath.c_str());
 
     // Failed to load scene... default to doodongs cavern
-    if (play->sceneSegment == nullptr) 
-    {
+    if (play->sceneSegment == nullptr) {
         lusprintf(__FILE__, __LINE__, 2, "Unable to load scene %s... Defaulting to Doodong's Cavern!\n",
                   scenePath.c_str());
         OTRPlay_SpawnScene(play, 0x01, 0);
@@ -53,7 +51,7 @@ extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneId, s32 spawn) {
 
     osSyncPrintf("ROOM SIZE=%fK\n", roomSize / 1024.0f);
 
-    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSceneInit>(play->sceneNum);
+    GameInteractor_ExecuteOnSceneInit(play->sceneNum);
     SPDLOG_INFO("Scene Init - sceneNum: {0:#x}, entranceIndex: {1:#x}", play->sceneNum, gSaveContext.entranceIndex);
 }
 
@@ -73,6 +71,7 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
     YREG(15) = 0;
     gSaveContext.worldMapArea = 0;
     OTRScene_ExecuteCommands(play, (SOH::Scene*)play->sceneSegment);
+    GameInteractor_ExecuteAfterSceneCommands(play->sceneNum);
     Play_InitEnvironment(play, play->skyboxId);
     /* auto data = static_cast<LUS::Vertex*>(Ship::Context::GetInstance()
                                                ->GetResourceManager()

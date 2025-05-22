@@ -68,7 +68,7 @@ f32 func_809946BC(PlayState* play, DoorGerudo* this, f32 arg2, f32 arg3, f32 arg
     playerPos.x = player->actor.world.pos.x;
     playerPos.y = player->actor.world.pos.y + arg2;
     playerPos.z = player->actor.world.pos.z;
-    func_8002DBD0(&this->dyna.actor, &sp1C, &playerPos);
+    Actor_WorldToActorCoords(&this->dyna.actor, &sp1C, &playerPos);
 
     if ((arg3 < fabsf(sp1C.x)) || (arg4 < fabsf(sp1C.y))) {
         return FLT_MAX;
@@ -148,8 +148,7 @@ void DoorGerudo_Draw(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gGerudoCellDoorDL);
 
     if (this->unk_166 != 0) {

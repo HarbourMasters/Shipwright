@@ -9,7 +9,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void BgTokiSwd_Init(Actor* thisx, PlayState* play);
 void BgTokiSwd_Destroy(Actor* thisx, PlayState* play);
@@ -117,8 +117,8 @@ void func_808BAF40(BgTokiSwd* this, PlayState* play) {
     if (((Flags_GetEventChkInf(EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER)) == 0) && (gSaveContext.sceneSetupIndex < 4) &&
         Actor_IsFacingAndNearPlayer(&this->actor, 800.0f, 0x7530) && !Play_InCsMode(play)) {
         Flags_SetEventChkInf(EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER);
-        s32 flag = EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER;
-        if (GameInteractor_Should(VB_PLAY_ENTRANCE_CS, true, &flag)) {
+        if (GameInteractor_Should(VB_PLAY_ENTRANCE_CS, true, EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER,
+                                  gSaveContext.entranceIndex)) {
             play->csCtx.segment = D_808BBD90;
             gSaveContext.cutsceneTrigger = 1;
         }
@@ -127,9 +127,9 @@ void func_808BAF40(BgTokiSwd* this, PlayState* play) {
     if (!LINK_IS_ADULT || (Flags_GetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT) && !IS_RANDO) || IS_RANDO) {
         if (Actor_HasParent(&this->actor, play)) {
             if (!LINK_IS_ADULT) {
-                 if (GameInteractor_Should(VB_GIVE_ITEM_MASTER_SWORD, true)) {
+                if (GameInteractor_Should(VB_GIVE_ITEM_MASTER_SWORD, true)) {
                     Item_Give(play, ITEM_SWORD_MASTER);
-                 }
+                }
                 play->csCtx.segment = D_808BB2F0;
             } else {
                 play->csCtx.segment = D_808BB7A0;
@@ -142,7 +142,7 @@ void func_808BAF40(BgTokiSwd* this, PlayState* play) {
         } else {
             Player* player = GET_PLAYER(play);
             if (Actor_IsFacingPlayer(&this->actor, 0x2000)) {
-                func_8002F580(&this->actor, play);
+                Actor_OfferCarry(&this->actor, play);
             }
         }
     }
@@ -192,7 +192,8 @@ void BgTokiSwd_Draw(Actor* thisx, PlayState* play2) {
     s32 pad[3];
 
     // Do not draw the Master Sword in the pedestal if the player has not found it yet
-    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
+    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) &&
+        !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
         return;
     }
 
@@ -202,10 +203,8 @@ void BgTokiSwd_Draw(Actor* thisx, PlayState* play2) {
 
     func_8002EBCC(&this->actor, play, 0);
 
-    gSPSegment(POLY_OPA_DISP++, 0x08,
-               Gfx_TexScroll(play->state.gfxCtx, 0, -(play->gameplayFrames % 0x80), 32, 32));
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPSegment(POLY_OPA_DISP++, 0x08, Gfx_TexScroll(play->state.gfxCtx, 0, -(play->gameplayFrames % 0x80), 32, 32));
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, object_toki_objects_DL_001BD0);
 
     CLOSE_DISPS(play->state.gfxCtx);

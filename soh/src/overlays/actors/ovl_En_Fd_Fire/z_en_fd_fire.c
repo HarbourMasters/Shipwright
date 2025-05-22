@@ -1,7 +1,7 @@
 #include "z_en_fd_fire.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
 void EnFdFire_Init(Actor* thisx, PlayState* play);
 void EnFdFire_Destroy(Actor* thisx, PlayState* play);
@@ -129,7 +129,7 @@ void EnFdFire_Init(Actor* thisx, PlayState* play) {
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
     CollisionCheck_SetInfo2(&this->actor.colChkInfo, &sDamageTable, &sColChkInit);
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->actor.gravity = -0.6f;
     this->actor.speedXZ = 5.0f;
     this->actor.velocity.y = 12.0f;
@@ -193,13 +193,13 @@ void EnFdFire_DanceTowardsPlayer(EnFdFire* this, PlayState* play) {
         if (this->actor.speedXZ < 0.1f) {
             this->actor.speedXZ = 5.0f;
         }
-        func_8002D868(&this->actor);
+        Actor_UpdateVelocityXZGravity(&this->actor);
     }
 }
 
 void EnFdFire_Disappear(EnFdFire* this, PlayState* play) {
     Math_SmoothStepToF(&this->actor.speedXZ, 0.0f, 0.6f, 9.0f, 0.0f);
-    func_8002D868(&this->actor);
+    Actor_UpdateVelocityXZGravity(&this->actor);
     Math_SmoothStepToF(&this->scale, 0.0f, 0.3f, 0.1f, 0.0f);
     this->actor.shape.shadowScale = 20.0f;
     this->actor.shape.shadowScale *= (this->scale / 3.0f);
@@ -218,7 +218,7 @@ void EnFdFire_Update(Actor* thisx, PlayState* play) {
         }
     }
 
-    func_8002D7EC(&this->actor);
+    Actor_UpdatePos(&this->actor);
     this->actionFunc(this, play);
     Actor_UpdateBgCheckInfo(play, &this->actor, 12.0f, 10.0f, 0.0f, 5);
 
@@ -263,12 +263,11 @@ void EnFdFire_Draw(Actor* thisx, PlayState* play) {
         sp84 = 0.1f;
     }
     Matrix_Scale(1.0f, sp84, 1.0f / sp84, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
-    gSPSegment(POLY_XLU_DISP++, 0x8,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0,
-                                play->state.frames * this->tile2Y, 0x20, 0x80));
+    gSPSegment(
+        POLY_XLU_DISP++, 0x8,
+        Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0, play->state.frames * this->tile2Y, 0x20, 0x80));
     gDPSetPrimColor(POLY_XLU_DISP++, 128, 128, primColors[((this->actor.params & 0x8000) >> 0xF)].r,
                     primColors[((this->actor.params & 0x8000) >> 0xF)].g,
                     primColors[((this->actor.params & 0x8000) >> 0xF)].b,

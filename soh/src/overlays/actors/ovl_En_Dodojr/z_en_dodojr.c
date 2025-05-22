@@ -10,7 +10,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE)
 
 void EnDodojr_Init(Actor* thisx, PlayState* play);
 void EnDodojr_Destroy(Actor* thisx, PlayState* play);
@@ -72,14 +72,14 @@ void EnDodojr_Init(Actor* thisx, PlayState* play) {
     EnDodojr* this = (EnDodojr*)thisx;
 
     ActorShape_Init(&this->actor.shape, 0.0f, NULL, 18.0f);
-    SkelAnime_Init(play, &this->skelAnime, &object_dodojr_Skel_0020E0, &object_dodojr_Anim_0009D4,
-                   this->jointTable, this->morphTable, 15);
+    SkelAnime_Init(play, &this->skelAnime, &object_dodojr_Skel_0020E0, &object_dodojr_Anim_0009D4, this->jointTable,
+                   this->morphTable, 15);
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
     CollisionCheck_SetInfo2(&this->actor.colChkInfo, DamageTable_Get(4), &sColChkInit);
 
     this->actor.naviEnemyId = 0xE;
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
 
     Actor_SetScale(&this->actor, 0.02f);
 
@@ -209,7 +209,7 @@ void func_809F6B38(EnDodojr* this) {
 
 void func_809F6BBC(EnDodojr* this) {
     this->actor.shape.shadowDraw = NULL;
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->actor.home.pos = this->actor.world.pos;
     this->actor.speedXZ = 0.0f;
     this->actor.gravity = -0.8f;
@@ -299,9 +299,9 @@ void func_809F6E54(EnDodojr* this, PlayState* play) {
     }
 
     if (Math_Vec3f_DistXYZ(&this->actor.world.pos, &pos) > 80.0f) {
-        angleIndex = (s16)(this->actor.home.pos.x + this->actor.home.pos.y + this->actor.home.pos.z +
-                           play->state.frames / 30) %
-                     12;
+        angleIndex =
+            (s16)(this->actor.home.pos.x + this->actor.home.pos.y + this->actor.home.pos.z + play->state.frames / 30) %
+            12;
         angleIndex = ABS(angleIndex);
         pos.x += 80.0f * sinf(angles[angleIndex]);
         pos.z += 80.0f * cosf(angles[angleIndex]);
@@ -321,7 +321,7 @@ s32 func_809F706C(EnDodojr* this) {
 
 void func_809F709C(EnDodojr* this) {
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_M_DEAD);
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     func_809F6A20(this);
     this->actionFunc = func_809F7AB8;
 }
@@ -406,7 +406,7 @@ void func_809F73AC(EnDodojr* this, PlayState* play) {
                              -10.0f);
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_M_UP);
             this->actor.world.pos.y -= 60.0f;
-            this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+            this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
             this->actor.world.rot.x -= 0x4000;
             this->actor.shape.rot.x = this->actor.world.rot.x;
             this->dustPos = this->actor.world.pos;
@@ -434,7 +434,7 @@ void func_809F74C4(EnDodojr* this, PlayState* play) {
 }
 
 void func_809F758C(EnDodojr* this, PlayState* play) {
-    func_8002D868(&this->actor);
+    Actor_UpdateVelocityXZGravity(&this->actor);
     func_809F6730(this, play, &this->actor.world.pos);
 
     if (DECR(this->timer4) == 0) {
@@ -482,7 +482,7 @@ void func_809F768C(EnDodojr* this, PlayState* play) {
 void func_809F773C(EnDodojr* this, PlayState* play) {
     if (DECR(this->timer3) == 0) {
         func_809F64D0(this);
-        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+        this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
         func_809F6A20(this);
         this->actionFunc = func_809F77AC;
     }
@@ -491,7 +491,7 @@ void func_809F773C(EnDodojr* this, PlayState* play) {
 void func_809F77AC(EnDodojr* this, PlayState* play) {
     this->rootScale = 1.2f;
     this->rootScale *= ((f32)this->actor.colorFilterTimer / 8);
-    func_8002D868(&this->actor);
+    Actor_UpdateVelocityXZGravity(&this->actor);
 
     if (func_809F68B0(this, play) != 0) {
         this->timer3 = 60;
@@ -506,7 +506,7 @@ void func_809F784C(EnDodojr* this, PlayState* play) {
 }
 
 void func_809F786C(EnDodojr* this, PlayState* play) {
-    func_8002D868(&this->actor);
+    Actor_UpdateVelocityXZGravity(&this->actor);
 
     if (func_809F68B0(this, play) != 0) {
         func_809F6AC4(this);
@@ -538,8 +538,8 @@ void func_809F78EC(EnDodojr* this, PlayState* play) {
 }
 
 void func_809F799C(EnDodojr* this, PlayState* play) {
-    this->actor.flags |= ACTOR_FLAG_PLAY_HIT_SFX;
-    func_8002D868(&this->actor);
+    this->actor.flags |= ACTOR_FLAG_SFX_FOR_PLAYER_BODY_HIT;
+    Actor_UpdateVelocityXZGravity(&this->actor);
 
     if (func_809F68B0(this, play) != 0) {
         func_809F6994(this);
@@ -563,7 +563,7 @@ void func_809F7A00(EnDodojr* this, PlayState* play) {
 }
 
 void func_809F7AB8(EnDodojr* this, PlayState* play) {
-    func_8002D868(&this->actor);
+    Actor_UpdateVelocityXZGravity(&this->actor);
     Math_SmoothStepToS(&this->actor.shape.rot.y, 0, 4, 1000, 10);
     this->actor.world.rot.x = this->actor.shape.rot.x;
 
@@ -613,7 +613,7 @@ void EnDodojr_Update(Actor* thisx, PlayState* play) {
     EnDodojr* this = (EnDodojr*)thisx;
 
     SkelAnime_Update(&this->skelAnime);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     func_809F70E8(this, play);
 
     if (this->actionFunc != func_809F73AC) {
@@ -649,8 +649,6 @@ void EnDodojr_Draw(Actor* thisx, PlayState* play) {
 
     if ((this->actionFunc != func_809F73AC) && (this->actionFunc != func_809F7BE4)) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
-        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, func_809F7D50,
-                                  func_809F7DFC,
-                          &this->actor);
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, func_809F7D50, func_809F7DFC, &this->actor);
     }
 }

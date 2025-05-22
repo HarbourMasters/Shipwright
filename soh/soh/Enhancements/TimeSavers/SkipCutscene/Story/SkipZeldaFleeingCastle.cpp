@@ -3,9 +3,9 @@
 #include "soh/OTRGlobals.h"
 
 extern "C" {
-    #include "z64save.h"
-    #include "functions.h"
-    extern SaveContext gSaveContext;
+#include "z64save.h"
+#include "functions.h"
+extern SaveContext gSaveContext;
 }
 
 void SkipZeldaFleeingCastle_ShouldPlayTransitionCS(GIVanillaBehavior _, bool* should, va_list originalArgs) {
@@ -46,13 +46,11 @@ void SkipZeldaFleeingCastle_OnActorUpdate(void* actorPtr) {
 void SkipZeldaFleeingCastle_OnActorInit(void* actorPtr) {
     Actor* actor = static_cast<Actor*>(actorPtr);
 
-    if (
-        actor->params == 3 &&
-        CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)
-    ) {
+    if (actor->params == 3 && CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
         framesSinceSpawn = 0;
-        itemOcarinaUpdateHook = GameInteractor::Instance->RegisterGameHookForPtr<GameInteractor::OnActorUpdate>((uintptr_t)actorPtr, SkipZeldaFleeingCastle_OnActorUpdate);
-        sceneInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([] (int16_t sceneNum) {
+        itemOcarinaUpdateHook = GameInteractor::Instance->RegisterGameHookForPtr<GameInteractor::OnActorUpdate>(
+            (uintptr_t)actorPtr, SkipZeldaFleeingCastle_OnActorUpdate);
+        sceneInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
             GameInteractor::Instance->UnregisterGameHookForPtr<GameInteractor::OnActorUpdate>(itemOcarinaUpdateHook);
             GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(sceneInitHook);
             itemOcarinaUpdateHook = 0;
@@ -62,6 +60,8 @@ void SkipZeldaFleeingCastle_OnActorInit(void* actorPtr) {
 }
 
 void SkipZeldaFleeingCastle_Register() {
-    GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnActorInit>(ACTOR_ITEM_OCARINA, SkipZeldaFleeingCastle_OnActorInit);
-    GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnVanillaBehavior>(VB_PLAY_TRANSITION_CS, SkipZeldaFleeingCastle_ShouldPlayTransitionCS);
+    GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnActorInit>(ACTOR_ITEM_OCARINA,
+                                                                                 SkipZeldaFleeingCastle_OnActorInit);
+    GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnVanillaBehavior>(
+        VB_PLAY_TRANSITION_CS, SkipZeldaFleeingCastle_ShouldPlayTransitionCS);
 }

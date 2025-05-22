@@ -6,6 +6,6 @@ MeshHeader* SetMesh::GetPointer() {
 }
 
 size_t SetMesh::GetPointerSize() {
-	return sizeof(MeshHeader);
+    return sizeof(MeshHeader);
 }
 } // namespace SOH

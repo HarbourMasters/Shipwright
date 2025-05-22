@@ -9,7 +9,7 @@
 #include "objects/object_anubice/object_anubice.h"
 #include "soh/frame_interpolation.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void EnAnubiceFire_Init(Actor* thisx, PlayState* play);
 void EnAnubiceFire_Destroy(Actor* thisx, PlayState* play);
@@ -179,7 +179,7 @@ void EnAnubiceFire_Update(Actor* thisx, PlayState* play) {
 
     Actor_SetScale(&this->actor, this->scale);
     this->actionFunc(this, play);
-    func_8002D7EC(&this->actor);
+    Actor_UpdatePos(&this->actor);
     this->unk_160[0] = this->actor.world.pos;
 
     for (i = 4; i >= 0; i--) {
@@ -246,8 +246,7 @@ void EnAnubiceFire_Draw(Actor* thisx, PlayState* play) {
             Matrix_ReplaceRotation(&play->billboardMtxF);
             Matrix_RotateZ(this->actor.world.rot.z + i * 1000.0f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             gSPDisplayList(POLY_XLU_DISP++, gAnubiceFireAttackDL);
         }

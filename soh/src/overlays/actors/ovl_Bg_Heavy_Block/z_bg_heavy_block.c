@@ -77,7 +77,8 @@ void BgHeavyBlock_InitPiece(BgHeavyBlock* this, f32 scale) {
 void BgHeavyBlock_SetupDynapoly(BgHeavyBlock* this, PlayState* play) {
     s32 pad[2];
     CollisionHeader* colHeader = NULL;
-    this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_PILLAR_PICKUP;
+    this->dyna.actor.flags |=
+        ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED | ACTOR_FLAG_CARRY_X_ROT_INFLUENCE;
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
     CollisionHeader_GetVirtual(&gHeavyBlockCol, &colHeader);
     this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
@@ -101,7 +102,7 @@ void BgHeavyBlock_Init(Actor* thisx, PlayState* play) {
             this->actionFunc = BgHeavyBlock_MovePiece;
             BgHeavyBlock_InitPiece(this, 1.0f);
             this->timer = 120;
-            thisx->flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+            thisx->flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
             this->unk_164.y = -50.0f;
             break;
         case HEAVYBLOCK_SMALL_PIECE:
@@ -109,7 +110,7 @@ void BgHeavyBlock_Init(Actor* thisx, PlayState* play) {
             this->actionFunc = BgHeavyBlock_MovePiece;
             BgHeavyBlock_InitPiece(this, 2.0f);
             this->timer = 120;
-            thisx->flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+            thisx->flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
             this->unk_164.y = -20.0f;
             break;
         case HEAVYBLOCK_BREAKABLE:
@@ -173,7 +174,7 @@ void BgHeavyBlock_MovePiece(BgHeavyBlock* this, PlayState* play) {
 
     thisx->velocity.x *= 0.98f;
     thisx->velocity.z *= 0.98f;
-    func_8002D7EC(thisx);
+    Actor_UpdatePos(thisx);
     thisx->shape.rot.x += thisx->world.rot.x;
     thisx->shape.rot.y += thisx->world.rot.y;
     thisx->shape.rot.z += thisx->world.rot.z;
@@ -305,10 +306,10 @@ void BgHeavyBlock_SpawnPieces(BgHeavyBlock* this, PlayState* play) {
         pos.y = this->dyna.actor.world.pos.y + (spA4[i].y * cosPitch) + (-spA4[i].z * sinPitch);
         pos.z = this->dyna.actor.world.pos.z + (spA4[i].x * -sinYaw) + (cosYaw * pos.z);
 
-        Actor_Spawn(&play->actorCtx, play, ACTOR_BG_HEAVY_BLOCK, pos.x, pos.y, pos.z,
-                    this->dyna.actor.shape.rot.x, this->dyna.actor.shape.rot.y, 0, 2, true);
-        Actor_Spawn(&play->actorCtx, play, ACTOR_BG_HEAVY_BLOCK, pos.x, pos.y, pos.z,
-                    this->dyna.actor.shape.rot.x, this->dyna.actor.shape.rot.y, 0, 3, true);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_BG_HEAVY_BLOCK, pos.x, pos.y, pos.z, this->dyna.actor.shape.rot.x,
+                    this->dyna.actor.shape.rot.y, 0, 2, true);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_BG_HEAVY_BLOCK, pos.x, pos.y, pos.z, this->dyna.actor.shape.rot.x,
+                    this->dyna.actor.shape.rot.y, 0, 3, true);
 
         BgHeavyBlock_SpawnDust(play, pos.x, pos.y, pos.z, 0.0f, 0.0f, 0.0f, 0);
     }
@@ -385,7 +386,7 @@ void BgHeavyBlock_Fly(BgHeavyBlock* this, PlayState* play) {
     Vec3f pos;
     f32 raycastResult;
 
-    Actor_MoveForward(&this->dyna.actor);
+    Actor_MoveXZGravity(&this->dyna.actor);
     pos.x = this->dyna.actor.home.pos.x;
     pos.y = this->dyna.actor.home.pos.y + 1000.0f;
     pos.z = this->dyna.actor.home.pos.z;
@@ -412,8 +413,7 @@ void BgHeavyBlock_Fly(BgHeavyBlock* this, PlayState* play) {
                 Quake_SetQuakeValues(quakeIndex, 5, 0, 0, 0);
                 Quake_SetCountdown(quakeIndex, 999);
 
-                SoundSource_PlaySfxAtFixedWorldPos(play, &this->dyna.actor.world.pos, 30,
-                                                   NA_SE_EV_ELECTRIC_EXPLOSION);
+                SoundSource_PlaySfxAtFixedWorldPos(play, &this->dyna.actor.world.pos, 30, NA_SE_EV_ELECTRIC_EXPLOSION);
                 return;
             case HEAVYBLOCK_UNBREAKABLE_OUTSIDE_CASTLE:
                 Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_STONE_BOUND);
@@ -459,7 +459,7 @@ void BgHeavyBlock_Land(BgHeavyBlock* this, PlayState* play) {
         Math_StepToF(&this->dyna.actor.velocity.y, 0.0f, 3.0f);
         this->dyna.actor.gravity = 0.0f;
         this->dyna.actor.world.pos = this->dyna.actor.home.pos;
-        Actor_MoveForward(&this->dyna.actor);
+        Actor_MoveXZGravity(&this->dyna.actor);
         this->dyna.actor.home.pos = this->dyna.actor.world.pos;
         switch (this->dyna.actor.params & 0xFF) {
             case HEAVYBLOCK_UNBREAKABLE_OUTSIDE_CASTLE:
@@ -474,7 +474,7 @@ void BgHeavyBlock_Land(BgHeavyBlock* this, PlayState* play) {
                 break;
         }
     } else {
-        this->dyna.actor.flags &= ~(ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED);
+        this->dyna.actor.flags &= ~(ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED);
         this->actionFunc = BgHeavyBlock_DoNothing;
     }
 }
@@ -507,8 +507,7 @@ void BgHeavyBlock_Draw(Actor* thisx, PlayState* play) {
     Matrix_MultVec3f(&D_80884ED4, &thisx->home.pos);
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gHeavyBlockEntirePillarDL);
 
     CLOSE_DISPS(play->state.gfxCtx);

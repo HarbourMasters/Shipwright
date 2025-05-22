@@ -2,11 +2,11 @@
 
 #include <libultraship/libultraship.h>
 
-class DLViewerWindow : public Ship::GuiWindow {
+class DLViewerWindow final : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
 
     void InitElement() override;
     void DrawElement() override;
-    void UpdateElement() override {};
+    void UpdateElement() override{};
 };

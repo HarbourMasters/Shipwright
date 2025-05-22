@@ -1,7 +1,7 @@
 /*
  * File: z_bg_menkuri_nisekabe.c
  * Overlay: ovl_Bg_Menkuri_Nisekabe
- * Description: False Stone Walls (Gerudo Training Grounds)
+ * Description: False Stone Walls (Gerudo Training Ground)
  */
 
 #include "z_bg_menkuri_nisekabe.h"
@@ -42,9 +42,9 @@ void BgMenkuriNisekabe_Update(Actor* thisx, PlayState* play) {
     BgMenkuriNisekabe* this = (BgMenkuriNisekabe*)thisx;
 
     if (play->actorCtx.lensActive) {
-        this->actor.flags |= ACTOR_FLAG_LENS;
+        this->actor.flags |= ACTOR_FLAG_REACT_TO_LENS;
     } else {
-        this->actor.flags &= ~ACTOR_FLAG_LENS;
+        this->actor.flags &= ~ACTOR_FLAG_REACT_TO_LENS;
     }
 }
 
@@ -52,7 +52,7 @@ void BgMenkuriNisekabe_Draw(Actor* thisx, PlayState* play) {
     BgMenkuriNisekabe* this = (BgMenkuriNisekabe*)thisx;
     u32 index = this->actor.params & 0xFF;
 
-    if (CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_LENS)) {
+    if (CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_REACT_TO_LENS)) {
         Gfx_DrawDListXlu(play, sDLists[index]);
     } else {
         Gfx_DrawDListOpa(play, sDLists[index]);

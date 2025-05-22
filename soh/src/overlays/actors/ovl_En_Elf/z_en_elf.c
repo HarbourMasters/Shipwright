@@ -7,9 +7,10 @@
 #include "z_en_elf.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include <assert.h>
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED | ACTOR_FLAG_UPDATE_DURING_OCARINA)
 
 #define FAIRY_FLAG_TIMED (1 << 8)
 #define FAIRY_FLAG_BIG (1 << 9)
@@ -400,9 +401,11 @@ void EnElf_Init(Actor* thisx, PlayState* play) {
             EnElf_SetupAction(this, func_80A03604);
             func_80A01C38(this, 8);
 
-            for (i = 0; i < 8; i++) {
-                Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, thisx->world.pos.x,
-                            thisx->world.pos.y - 30.0f, thisx->world.pos.z, 0, 0, 0, FAIRY_HEAL, true);
+            if (GameInteractor_Should(VB_SPAWN_FOUNTAIN_FAIRIES, true, this)) {
+                for (i = 0; i < 8; i++) {
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, thisx->world.pos.x, thisx->world.pos.y - 30.0f,
+                                thisx->world.pos.z, 0, 0, 0, FAIRY_HEAL, true);
+                }
             }
             break;
         default:
@@ -507,14 +510,14 @@ void func_80A02C98(EnElf* this, Vec3f* targetPos, f32 arg2) {
     func_80A02BD8(this, targetPos, arg2);
     Math_StepToF(&this->actor.velocity.x, xVelTarget, 1.5f);
     Math_StepToF(&this->actor.velocity.z, zVelTarget, 1.5f);
-    func_8002D7EC(&this->actor);
+    Actor_UpdatePos(&this->actor);
 }
 
 void func_80A02E30(EnElf* this, Vec3f* targetPos) {
     func_80A02BD8(this, targetPos, 0.2f);
     this->actor.velocity.x = (targetPos->x + this->unk_28C.x) - this->actor.world.pos.x;
     this->actor.velocity.z = (targetPos->z + this->unk_28C.z) - this->actor.world.pos.z;
-    func_8002D7EC(&this->actor);
+    Actor_UpdatePos(&this->actor);
     this->actor.world.pos.x = targetPos->x + this->unk_28C.x;
     this->actor.world.pos.z = targetPos->z + this->unk_28C.z;
 }
@@ -522,7 +525,7 @@ void func_80A02E30(EnElf* this, Vec3f* targetPos) {
 void func_80A02EC0(EnElf* this, Vec3f* targetPos) {
     func_80A02BD8(this, targetPos, 0.2f);
     this->actor.velocity.x = this->actor.velocity.z = 0.0f;
-    func_8002D7EC(&this->actor);
+    Actor_UpdatePos(&this->actor);
     this->actor.world.pos.x = targetPos->x + this->unk_28C.x;
     this->actor.world.pos.z = targetPos->z + this->unk_28C.z;
 }
@@ -569,7 +572,7 @@ void func_80A03018(EnElf* this, PlayState* play) {
 
     Math_SmoothStepToS(&this->unk_2BC, targetYaw, 10, this->unk_2AC, 0x20);
     this->actor.world.rot.y = this->unk_2BC;
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
 }
 
 void func_80A03148(EnElf* this, Vec3f* arg1, f32 arg2, f32 arg3, f32 arg4) {
@@ -597,7 +600,7 @@ void func_80A03148(EnElf* this, Vec3f* arg1, f32 arg2, f32 arg3, f32 arg4) {
 
     Math_StepToF(&this->actor.velocity.x, xVelTarget, 5.0f);
     Math_StepToF(&this->actor.velocity.z, zVelTarget, 5.0f);
-    func_8002D7EC(&this->actor);
+    Actor_UpdatePos(&this->actor);
 }
 
 void func_80A0329C(EnElf* this, PlayState* play) {
@@ -632,19 +635,7 @@ void func_80A0329C(EnElf* this, PlayState* play) {
 
         if ((heightDiff > 0.0f) && (heightDiff < 60.0f)) {
             if (!func_80A01F90(&this->actor.world.pos, &refActor->actor.world.pos, 10.0f)) {
-                if (CVarGetInteger(CVAR_ENHANCEMENT("FairyEffect"), 0) && !(this->fairyFlags & FAIRY_FLAG_BIG))
-                {
-                    if (CVarGetInteger(CVAR_ENHANCEMENT("FairyPercentRestore"), 0))
-                    {
-                        Health_ChangeBy(play, (gSaveContext.healthCapacity * CVarGetInteger(CVAR_ENHANCEMENT("FairyHealth"), 100) / 100 + 15) / 16 * 16);
-                    }
-                    else
-                    {
-                        Health_ChangeBy(play, CVarGetInteger(CVAR_ENHANCEMENT("FairyHealth"), 8) * 16);
-                    }
-                }
-                else
-                {
+                if (GameInteractor_Should(VB_FAIRY_HEAL, true, this)) {
                     Health_ChangeBy(play, 128);
                 }
                 if (this->fairyFlags & FAIRY_FLAG_BIG) {
@@ -1211,8 +1202,8 @@ void EnElf_SpawnSparkles(EnElf* this, PlayState* play, s32 sparkleLife) {
     envColor.g = this->outerColor.g;
     envColor.b = this->outerColor.b;
 
-    EffectSsKiraKira_SpawnDispersed(play, &sparklePos, &sparkleVelocity, &sparkleAccel, &primColor, &envColor,
-                                    1000, sparkleLife);
+    EffectSsKiraKira_SpawnDispersed(play, &sparklePos, &sparkleVelocity, &sparkleAccel, &primColor, &envColor, 1000,
+                                    sparkleLife);
 }
 
 void func_80A04D90(EnElf* this, PlayState* play) {
@@ -1233,7 +1224,8 @@ void func_80A04DE4(EnElf* this, PlayState* play) {
     if (this->fairyFlags & 0x10) {
         naviRefPos = play->actorCtx.targetCtx.naviRefPos;
 
-        if ((player->focusActor == NULL) || (&player->actor == player->focusActor) || (&this->actor == player->focusActor)) {
+        if ((player->focusActor == NULL) || (&player->actor == player->focusActor) ||
+            (&this->actor == player->focusActor)) {
             naviRefPos.x = player->bodyPartsPos[7].x + (Math_SinS(player->actor.shape.rot.y) * 20.0f);
             naviRefPos.y = player->bodyPartsPos[7].y + 5.0f;
             naviRefPos.z = player->bodyPartsPos[7].z + (Math_CosS(player->actor.shape.rot.y) * 20.0f);
@@ -1396,7 +1388,7 @@ void func_80A053F0(Actor* thisx, PlayState* play) {
         }
     } else if (player->naviTextId < 0) {
         // trigger dialog instantly for negative message IDs
-        thisx->flags |= ACTOR_FLAG_WILL_TALK;
+        thisx->flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
     }
 
     if (Actor_ProcessTalkRequest(thisx, play)) {
@@ -1414,10 +1406,10 @@ void func_80A053F0(Actor* thisx, PlayState* play) {
         func_80A01C38(this, 3);
 
         if (this->elfMsg != NULL) {
-            this->elfMsg->actor.flags |= ACTOR_FLAG_PLAYER_TALKED_TO;
+            this->elfMsg->actor.flags |= ACTOR_FLAG_TALK;
         }
 
-        thisx->flags &= ~ACTOR_FLAG_WILL_TALK;
+        thisx->flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
     } else {
         this->actionFunc(this, play);
         thisx->shape.rot.y = this->unk_2BC;
@@ -1443,8 +1435,8 @@ void func_80A053F0(Actor* thisx, PlayState* play) {
 
     if (this->unk_2A4 > 0.0f) {
         Math_StepToF(&this->unk_2A4, 0.0f, 0.05f);
-        Environment_AdjustLights(play, SQ(this->unk_2A4) * this->unk_2A4, player->actor.projectedPos.z + 780.0f,
-                                 0.2f, 0.5f);
+        Environment_AdjustLights(play, SQ(this->unk_2A4) * this->unk_2A4, player->actor.projectedPos.z + 780.0f, 0.2f,
+                                 0.5f);
     }
 
     // temp probably fake match
@@ -1541,8 +1533,8 @@ void EnElf_Draw(Actor* thisx, PlayState* play) {
             gSPEndDisplayList(dListHead++);
             gDPSetEnvColor(POLY_XLU_DISP++, (u8)this->outerColor.r, (u8)this->outerColor.g, (u8)this->outerColor.b,
                            (u8)(envAlpha * alphaScale));
-            POLY_XLU_DISP = SkelAnime_DrawSkeleton2(play, &this->skelAnime,
-                                           EnElf_OverrideLimbDraw, NULL, this, POLY_XLU_DISP);
+            POLY_XLU_DISP =
+                SkelAnime_DrawSkeleton2(play, &this->skelAnime, EnElf_OverrideLimbDraw, NULL, this, POLY_XLU_DISP);
 
             CLOSE_DISPS(play->state.gfxCtx);
         }

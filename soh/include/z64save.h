@@ -157,6 +157,42 @@ typedef struct {
     char hintText[200];
 } HintLocationRando;
 
+#pragma region SoH
+
+typedef struct ShipRandomizerSaveContextData {
+    u8 triforcePiecesCollected;
+} ShipRandomizerSaveContextData;
+
+typedef struct ShipBossRushSaveContextData {
+    u32 isPaused;
+    u8 options[BR_OPTIONS_MAX];
+} ShipBossRushSaveContextData;
+
+typedef union ShipQuestSpecificSaveContextData {
+    ShipRandomizerSaveContextData randomizer;
+    ShipBossRushSaveContextData bossRush;
+} ShipQuestSpecificSaveContextData;
+
+typedef struct ShipQuestSaveContextData {
+    u8 id;
+    ShipQuestSpecificSaveContextData data;
+} ShipQuestSaveContextData;
+
+typedef struct ShipSaveContextData {
+    u16 pendingSale;
+    u16 pendingSaleMod;
+    u8 pendingIceTrapCount;
+    SohStats stats;
+    FaroresWindData backupFW;
+    ShipQuestSaveContextData quest;
+    u8 maskMemory;
+    u8 filenameLanguage;
+    //TODO: Move non-rando specific flags to a new sohInf and move the remaining randomizerInf to ShipRandomizerSaveContextData
+    u16 randomizerInf[(RAND_INF_MAX + 15) / 16];
+} ShipSaveContextData;
+
+#pragma endregion
+
 typedef struct {
     /* 0x0000 */ s32 entranceIndex; // start of `save` substruct, originally called "memory"
     /* 0x0004 */ s32 linkAge; // 0: Adult; 1: Child (see enum `LinkAge`)
@@ -167,7 +203,7 @@ typedef struct {
     /* 0x0018 */ s32 bgsDayCount; // increments with totalDays, can be cleared with `Environment_ClearBgsDayCount`
     /* 0x001C */ char newf[6]; // string "ZELDAZ". start of `info` substruct, originally called "information"
     /* 0x0022 */ u16 deaths;
-    /* 0x0024 */ char playerName[8];
+    /* 0x0024 */ u8 playerName[8];
     /* 0x002C */ s16 n64ddFlag;
     /* 0x002E */ s16 healthCapacity; // "max_life"
     /* 0x0030 */ s16 health; // "now_life"
@@ -225,17 +261,17 @@ typedef struct {
     /* 0x13C8 */ s16 nayrusLoveTimer;
     /* 0x13CA */ char unk_13CA[0x0002];
     /* 0x13CC */ s16 rupeeAccumulator;
-    /* 0x13CE */ s16 timer1State;
-    /* 0x13D0 */ s16 timer1Value;
-    /* 0x13D2 */ s16 timer2State;
-    /* 0x13D4 */ s16 timer2Value;
+    /* 0x13CE */ s16 timerState;
+    /* 0x13D0 */ s16 timerSeconds;
+    /* 0x13D2 */ s16 subTimerState;
+    /* 0x13D4 */ s16 subTimerSeconds;
     /* 0x13D6 */ s16 timerX[2];
     /* 0x13DA */ s16 timerY[2];
     /* 0x13DE */ char unk_13DE[0x0002];
     /* 0x13E0 */ u8 seqId;
     /* 0x13E1 */ u8 natureAmbienceId;
     /* 0x13E2 */ u8 buttonStatus[9]; // SOH [Enhancements] Changed from 5 to 9 to support Dpad equips
-    /* 0x13E7 */ u8 unk_13E7; // alpha related
+    /* 0x13E7 */ u8 forceRisingButtonAlphas; // alpha related
     /* 0x13E8 */ u16 unk_13E8; // alpha type?
     /* 0x13EA */ u16 unk_13EA; // also alpha type?
     /* 0x13EC */ u16 unk_13EC; // alpha type counter?
@@ -270,25 +306,7 @@ typedef struct {
     /* 0x1420 */ s16 worldMapArea;
     /* 0x1422 */ s16 sunsSongState; // controls the effects of suns song
     /* 0x1424 */ s16 healthAccumulator;
-    // #region SOH [General]
-    // Upstream TODO: Move these to their own struct or name to more obviously specific to SoH
-    /*        */ u16 pendingSale;
-    /*        */ u16 pendingSaleMod;
-    /*        */ uint8_t questId;
-    /*        */ uint32_t isBossRushPaused;
-    /*        */ uint8_t bossRushOptions[BR_OPTIONS_MAX];
-    /*        */ u8 pendingIceTrapCount;
-    /*        */ SohStats sohStats;
-    /*        */ FaroresWindData backupFW;
-    /*        */ u8 maskMemory;
-    // #endregion
-    // #region SOH [Randomizer]
-    // Upstream TODO: Move these to their own struct or name to more obviously specific to Randomizer
-    /*        */ u16 randomizerInf[17];
-    /*        */ u8 mqDungeonCount;
-    /*        */ u16 adultTradeItems;
-    /*        */ u8 triforcePiecesCollected;
-    // #endregion
+    /*        */ ShipSaveContextData ship;
 } SaveContext; // size = 0x1428
 
 typedef enum {
@@ -298,10 +316,10 @@ typedef enum {
     /* 03 */ QUEST_BOSSRUSH,
 } Quest;
 
-#define IS_VANILLA (gSaveContext.questId == QUEST_NORMAL)
-#define IS_MASTER_QUEST (gSaveContext.questId == QUEST_MASTER)
-#define IS_RANDO (gSaveContext.questId == QUEST_RANDOMIZER)
-#define IS_BOSS_RUSH (gSaveContext.questId == QUEST_BOSSRUSH)
+#define IS_VANILLA (gSaveContext.ship.quest.id == QUEST_NORMAL)
+#define IS_MASTER_QUEST (gSaveContext.ship.quest.id == QUEST_MASTER)
+#define IS_RANDO (gSaveContext.ship.quest.id == QUEST_RANDOMIZER)
+#define IS_BOSS_RUSH (gSaveContext.ship.quest.id == QUEST_BOSSRUSH)
 
 typedef enum {
     /* 0x00 */ BTN_ENABLED,
@@ -590,7 +608,7 @@ typedef enum {
 #define ITEMGETINF_08 0x08
 #define ITEMGETINF_09 0x09
 #define ITEMGETINF_0A 0x0A
-#define ITEMGETINF_0B 0x0B
+#define ITEMGETINF_DEKU_SCRUB_HEART_PIECE 0x0B
 #define ITEMGETINF_0C 0x0C
 #define ITEMGETINF_0D 0x0D
 #define ITEMGETINF_0E 0x0E
@@ -760,8 +778,8 @@ typedef enum {
 #define INFTABLE_17F 0x17F
 #define INFTABLE_190 0x190
 #define INFTABLE_191 0x191
-#define INFTABLE_192 0x192
-#define INFTABLE_193 0x193
+#define INFTABLE_BOUGHT_STICK_UPGRADE 0x192
+#define INFTABLE_BOUGHT_NUT_UPGRADE 0x193
 #define INFTABLE_SPOKE_TO_KAEPORA_IN_LAKE_HYLIA 0x195
 #define INFTABLE_196 0x196
 #define INFTABLE_197 0x197

@@ -10,7 +10,7 @@
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "soh/OTRGlobals.h"
 
-#define FLAGS ACTOR_FLAG_NO_FREEZE_OCARINA
+#define FLAGS ACTOR_FLAG_UPDATE_DURING_OCARINA
 
 void DoorAna_Init(Actor* thisx, PlayState* play);
 void DoorAna_Destroy(Actor* thisx, PlayState* play);
@@ -77,7 +77,7 @@ void DoorAna_Init(Actor* thisx, PlayState* play) {
             Collider_InitCylinder(play, &this->collider);
             Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
         } else {
-            this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+            this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
         }
         Actor_SetScale(&this->actor, 0);
         DoorAna_SetupAction(this, DoorAna_WaitClosed);
@@ -104,7 +104,7 @@ void DoorAna_WaitClosed(DoorAna* this, PlayState* play) {
         // opening with song of storms
         if (this->actor.xyzDistToPlayerSq < 40000.0f && Flags_GetEnv(play, 5)) {
             openGrotto = true;
-            this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
+            this->actor.flags &= ~ACTOR_FLAG_UPDATE_CULLING_DISABLED;
         }
     } else {
         // bombing/hammering open a grotto
@@ -120,7 +120,8 @@ void DoorAna_WaitClosed(DoorAna* this, PlayState* play) {
     if (openGrotto) {
         this->actor.params &= ~0x0300;
         DoorAna_SetupAction(this, DoorAna_WaitOpen);
-        Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
     func_8002F5F0(&this->actor, play);
 }
@@ -132,8 +133,8 @@ void DoorAna_WaitOpen(DoorAna* this, PlayState* play) {
 
     player = GET_PLAYER(play);
     if (Math_StepToF(&this->actor.scale.x, 0.01f, 0.001f)) {
-        if ((this->actor.targetMode != 0) && (play->transitionTrigger == TRANS_TRIGGER_OFF) && (player->stateFlags1 & PLAYER_STATE1_FLOOR_DISABLED) &&
-            (player->av1.actionVar1 == 0)) {
+        if ((this->actor.targetMode != 0) && (play->transitionTrigger == TRANS_TRIGGER_OFF) &&
+            (player->stateFlags1 & PLAYER_STATE1_FLOOR_DISABLED) && (player->av1.actionVar1 == 0)) {
             destinationIdx = ((this->actor.params >> 0xC) & 7) - 1;
             Play_SetupRespawnPoint(play, RESPAWN_MODE_RETURN, 0x4FF);
             gSaveContext.respawn[RESPAWN_MODE_RETURN].pos.y = this->actor.world.pos.y;
@@ -189,8 +190,7 @@ void DoorAna_Draw(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gGrottoDL);
 
     CLOSE_DISPS(play->state.gfxCtx);

@@ -99,7 +99,7 @@ void PauseMapMark_DrawForDungeon(PlayState* play) {
     }
 
     markInfo = &sMapMarkInfoTable[MAP_MARK_CHEST];
-    gDPLoadTextureBlock(POLY_KAL_DISP++, markInfo->texture, markInfo->imageFormat, G_IM_SIZ_MARK,
+    gDPLoadTextureBlock(POLY_OPA_DISP++, markInfo->texture, markInfo->imageFormat, G_IM_SIZ_MARK,
         markInfo->textureWidth, markInfo->textureHeight, 0, G_TX_NOMIRROR | G_TX_WRAP,
         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     for (s32 i = 0; i < floor->numChestMarks; i++) {
@@ -128,22 +128,22 @@ void PauseMapMark_DrawForDungeon(PlayState* play) {
     }
 
     markInfo = &sMapMarkInfoTable[MAP_MARK_BOSS];
-    gDPLoadTextureBlock(POLY_KAL_DISP++, markInfo->texture, markInfo->imageFormat, G_IM_SIZ_MARK,
+    gDPLoadTextureBlock(POLY_OPA_DISP++, markInfo->texture, markInfo->imageFormat, G_IM_SIZ_MARK,
         markInfo->textureWidth, markInfo->textureHeight, 0, G_TX_NOMIRROR | G_TX_WRAP,
         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     for (s32 i = 0; i < floor->numBossMarks; i++) {
         // Compute the offset to mirror icons over the map center (48) as an axis line
-        s16 mirrorOffset = CVarGetInteger("gMirroredWorld", 0) ? mirrorOffset = (48 - floor->bossMarks[i].x) * 2 + 1 : 0;
+        s16 mirrorOffset = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? mirrorOffset = (48 - floor->bossMarks[i].x) * 2 + 1 : 0;
 
         Matrix_Push();
         Matrix_Translate(GREG(92) + floor->bossMarks[i].x + mirrorOffset, GREG(93) + floor->bossMarks[i].y, 0.0f, MTXMODE_APPLY);
         Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-        gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
             G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         Matrix_Pop();
 
-        gSPVertex(POLY_KAL_DISP++, sMarkBossVtx, 4, 0);
-        gSP1Quadrangle(POLY_KAL_DISP++, 1, 3, 2, 0, 0);
+        gSPVertex(POLY_OPA_DISP++, sMarkBossVtx, 4, 0);
+        gSP1Quadrangle(POLY_OPA_DISP++, 1, 3, 2, 0, 0);
     }
 
     Matrix_Pop();

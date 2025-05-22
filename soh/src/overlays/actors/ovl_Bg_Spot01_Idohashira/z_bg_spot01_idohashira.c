@@ -8,7 +8,7 @@
 #include "objects/object_spot01_objects/object_spot01_objects.h"
 #include "vt.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void BgSpot01Idohashira_Init(Actor* thisx, PlayState* play);
 void BgSpot01Idohashira_Destroy(Actor* thisx, PlayState* play);
@@ -206,8 +206,7 @@ s32 func_808AB29C(BgSpot01Idohashira* this, PlayState* play) {
         thisPos = &this->dyna.actor.world.pos;
         thisPos->x = ((endX - initPos.x) * temp_f0) + initPos.x;
         thisPos->y =
-            func_808AB1DC(initPos.y, tempY, npcAction->endFrame, npcAction->startFrame, play->csCtx.frames) +
-            initPos.y;
+            func_808AB1DC(initPos.y, tempY, npcAction->endFrame, npcAction->startFrame, play->csCtx.frames) + initPos.y;
         thisPos->z = ((endZ - initPos.z) * temp_f0) + initPos.z;
 
         if (temp_f0 >= 1.0f) {
@@ -325,8 +324,7 @@ void func_808AB700(BgSpot01Idohashira* this, PlayState* play) {
 
     Gfx_SetupDL_25Opa(localGfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(localGfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(localGfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     func_808AAF34(this, play);
     gSPDisplayList(POLY_OPA_DISP++, gKakarikoWellArchDL);
 

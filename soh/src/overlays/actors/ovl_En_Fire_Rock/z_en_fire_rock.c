@@ -3,7 +3,7 @@
 #include "vt.h"
 #include "objects/object_efc_star_field/object_efc_star_field.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void EnFireRock_Init(Actor* thisx, PlayState* play);
 void EnFireRock_Destroy(Actor* thisx, PlayState* play);
@@ -199,8 +199,8 @@ void EnFireRock_Fall(EnFireRock* this, PlayState* play) {
             case FIRE_ROCK_SPAWNED_FALLING2:
                 func_80033E88(&this->actor, play, 5, 2);
             case FIRE_ROCK_BROKEN_PIECE1:
-                Actor_SpawnFloorDustRing(play, &this->actor, &this->actor.world.pos, this->actor.shape.shadowScale,
-                                         1, 8.0f, 500, 10, false);
+                Actor_SpawnFloorDustRing(play, &this->actor, &this->actor.world.pos, this->actor.shape.shadowScale, 1,
+                                         8.0f, 500, 10, false);
                 for (i = 0; i < 5; i++) {
                     flamePos.x = Rand_CenteredFloat(20.0f) + this->actor.world.pos.x;
                     flamePos.y = this->actor.floorHeight;
@@ -210,8 +210,8 @@ void EnFireRock_Fall(EnFireRock* this, PlayState* play) {
                 this->actionFunc = EnFireRock_SpawnMoreBrokenPieces;
                 break;
             default:
-                Actor_SpawnFloorDustRing(play, &this->actor, &this->actor.world.pos, this->actor.shape.shadowScale,
-                                         3, 8.0f, 200, 10, false);
+                Actor_SpawnFloorDustRing(play, &this->actor, &this->actor.world.pos, this->actor.shape.shadowScale, 3,
+                                         8.0f, 200, 10, false);
                 SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 40, NA_SE_EV_EXPLOSION);
                 Actor_Kill(&this->actor);
                 break;
@@ -336,7 +336,7 @@ void EnFireRock_Update(Actor* thisx, PlayState* play) {
             thisx->gravity = -0.3f - (this->scale * 7.0f);
         }
         if (this->type != FIRE_ROCK_ON_FLOOR) {
-            Actor_MoveForward(thisx);
+            Actor_MoveXZGravity(thisx);
             Actor_UpdateBgCheckInfo(play, thisx, 50.0f, 50.0f, 100.0f, 0x1C);
         }
 
@@ -392,8 +392,7 @@ void EnFireRock_Draw(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 155, 55, 255);
     gDPSetEnvColor(POLY_OPA_DISP++, 155, 255, 55, 255);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, object_efc_star_field_DL_000DE0);
     CLOSE_DISPS(play->state.gfxCtx);
 }

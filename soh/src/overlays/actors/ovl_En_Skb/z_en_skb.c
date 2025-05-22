@@ -4,7 +4,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
 void EnSkb_Init(Actor* thisx, PlayState* play);
 void EnSkb_Destroy(Actor* thisx, PlayState* play);
@@ -206,7 +206,7 @@ void func_80AFCD60(EnSkb* this) {
 void func_80AFCDF8(EnSkb* this) {
     Animation_PlayOnceSetSpeed(&this->skelAnime, &gStalchildUncurlingAnim, 1.0f);
     this->unk_280 = 0;
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_RIVA_APPEAR);
     EnSkb_SetupAction(this, func_80AFCE5C);
 }
@@ -216,7 +216,7 @@ void func_80AFCE5C(EnSkb* this, PlayState* play) {
         this->actor.world.rot.y = this->actor.yawTowardsPlayer;
         this->actor.shape.rot.y = this->actor.yawTowardsPlayer;
     } else {
-        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
     }
     Math_SmoothStepToF(&this->actor.shape.yOffset, 0.0f, 1.0f, 800.0f, 0.0f);
     Math_SmoothStepToF(&this->actor.shape.shadowScale, 25.0f, 1.0f, 2.5f, 0.0f);
@@ -233,7 +233,7 @@ void func_80AFCF48(EnSkb* this) {
                      Animation_GetLastFrame(&gStalchildUncurlingAnim), 0.0f, ANIMMODE_ONCE, -4.0f);
     this->unk_280 = 0;
     this->unk_281 = 0;
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->actor.speedXZ = 0.0f;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_AKINDONUTS_HIDE);
     EnSkb_SetupAction(this, func_80AFCFF0);
@@ -290,8 +290,10 @@ void EnSkb_Advance(EnSkb* this, PlayState* play) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_STALKID_WALK);
         }
     }
-    // Don't despawn stallchildren during daytime or when a stalchildren walks too far away from his "home" when enemy randomizer is enabled.
-    if ((Math_Vec3f_DistXZ(&this->actor.home.pos, &player->actor.world.pos) > 800.0f || IS_DAY) && !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0)) {
+    // Don't despawn stallchildren during daytime or when a stalchildren walks too far away from his "home" when enemy
+    // randomizer is enabled.
+    if ((Math_Vec3f_DistXZ(&this->actor.home.pos, &player->actor.world.pos) > 800.0f || IS_DAY) &&
+        !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0)) {
         func_80AFCF48(this);
     } else if (Actor_IsFacingPlayer(&this->actor, 0x11C7) &&
                (this->actor.xzDistToPlayer < (60.0f + (this->actor.params * 6.0f)))) {
@@ -413,7 +415,7 @@ void func_80AFD7B4(EnSkb* this, PlayState* play) {
         this->actor.speedXZ = -6.0f;
     }
     this->unk_280 = 1;
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     BodyBreak_Alloc(&this->bodyBreak, 18, play);
     this->unk_283 |= 4;
     EffectSsDeadSound_SpawnStationary(play, &this->actor.projectedPos, NA_SE_EN_STALKID_DEAD, 1, 1, 0x28);
@@ -503,7 +505,7 @@ void EnSkb_Update(Actor* thisx, PlayState* play) {
     s32 pad;
 
     func_80AFD968(this, play);
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 15.0f, 30.0f, 60.0f, 0x1D);
     this->actionFunc(this, play);
     this->actor.focus.pos = this->actor.world.pos;
@@ -557,6 +559,5 @@ void EnSkb_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
 void EnSkb_Draw(Actor* thisx, PlayState* play) {
     EnSkb* this = (EnSkb*)thisx;
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnSkb_OverrideLimbDraw,
-                      EnSkb_PostLimbDraw, &this->actor);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnSkb_OverrideLimbDraw, EnSkb_PostLimbDraw, &this->actor);
 }

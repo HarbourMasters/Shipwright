@@ -8,6 +8,7 @@
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 #include "objects/object_bdoor/object_bdoor.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/enemyrandomizer.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
@@ -132,8 +133,7 @@ void ActorShadow_Draw(Actor* actor, Lights* lights, PlayState* play, Gfx* dlist,
             temp2 = (1.0f - (temp1 * (1.0f / 350))) * actor->shape.shadowScale;
             Matrix_Scale(actor->scale.x * temp2, 1.0f, actor->scale.z * temp2, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_MODELVIEW | G_MTX_LOAD);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
             gSPDisplayList(POLY_OPA_DISP++, dlist);
 
             CLOSE_DISPS(play->state.gfxCtx);
@@ -172,8 +172,7 @@ void ActorShadow_DrawFoot(PlayState* play, Light* light, MtxF* arg2, s32 arg3, f
     Matrix_RotateY(sp58, MTXMODE_APPLY);
     Matrix_Scale(arg5, 1.0f, arg5 * arg6, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_OPA_DISP++, gFootShadowDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
@@ -356,49 +355,59 @@ void func_8002BE98(TargetContext* targetCtx, s32 actorCategory, PlayState* play)
 
 void func_8002BF60(TargetContext* targetCtx, Actor* actor, s32 actorCategory, PlayState* play) {
     if (CVarGetInteger(CVAR_COSMETIC("Navi.IdlePrimary.Changed"), 0)) {
-        sNaviColorList[ACTORCAT_PLAYER].inner = CVarGetColor(CVAR_COSMETIC("Navi.IdlePrimary.Value"), defaultIdlePrimaryColor);
+        sNaviColorList[ACTORCAT_PLAYER].inner =
+            CVarGetColor(CVAR_COSMETIC("Navi.IdlePrimary.Value"), defaultIdlePrimaryColor);
     } else {
         sNaviColorList[ACTORCAT_PLAYER].inner = defaultIdlePrimaryColor;
     }
     if (CVarGetInteger(CVAR_COSMETIC("Navi.IdleSecondary.Changed"), 0)) {
-        sNaviColorList[ACTORCAT_PLAYER].outer = CVarGetColor(CVAR_COSMETIC("Navi.IdleSecondary.Value"), defaultIdleSecondaryColor);
+        sNaviColorList[ACTORCAT_PLAYER].outer =
+            CVarGetColor(CVAR_COSMETIC("Navi.IdleSecondary.Value"), defaultIdleSecondaryColor);
     } else {
         sNaviColorList[ACTORCAT_PLAYER].outer = defaultIdleSecondaryColor;
     }
-    
+
     if (CVarGetInteger(CVAR_COSMETIC("Navi.NPCPrimary.Changed"), 0)) {
-        sNaviColorList[ACTORCAT_NPC].inner = CVarGetColor(CVAR_COSMETIC("Navi.NPCPrimary.Value"), defaultNPCPrimaryColor);
+        sNaviColorList[ACTORCAT_NPC].inner =
+            CVarGetColor(CVAR_COSMETIC("Navi.NPCPrimary.Value"), defaultNPCPrimaryColor);
     } else {
         sNaviColorList[ACTORCAT_NPC].inner = defaultNPCPrimaryColor;
     }
     if (CVarGetInteger(CVAR_COSMETIC("Navi.NPCSecondary.Changed"), 0)) {
-        sNaviColorList[ACTORCAT_NPC].outer = CVarGetColor(CVAR_COSMETIC("Navi.NPCSecondary.Value"), defaultNPCSecondaryColor);
+        sNaviColorList[ACTORCAT_NPC].outer =
+            CVarGetColor(CVAR_COSMETIC("Navi.NPCSecondary.Value"), defaultNPCSecondaryColor);
     } else {
         sNaviColorList[ACTORCAT_NPC].outer = defaultNPCSecondaryColor;
     }
 
     if (CVarGetInteger(CVAR_COSMETIC("Navi.EnemyPrimary.Changed"), 0)) {
-        sNaviColorList[ACTORCAT_ENEMY].inner = CVarGetColor(CVAR_COSMETIC("Navi.EnemyPrimary.Value"), defaultEnemyPrimaryColor);
-        sNaviColorList[ACTORCAT_BOSS].inner = CVarGetColor(CVAR_COSMETIC("Navi.EnemyPrimary.Value"), defaultEnemyPrimaryColor);
+        sNaviColorList[ACTORCAT_ENEMY].inner =
+            CVarGetColor(CVAR_COSMETIC("Navi.EnemyPrimary.Value"), defaultEnemyPrimaryColor);
+        sNaviColorList[ACTORCAT_BOSS].inner =
+            CVarGetColor(CVAR_COSMETIC("Navi.EnemyPrimary.Value"), defaultEnemyPrimaryColor);
     } else {
         sNaviColorList[ACTORCAT_ENEMY].inner = defaultEnemyPrimaryColor;
         sNaviColorList[ACTORCAT_BOSS].inner = defaultEnemyPrimaryColor;
     }
     if (CVarGetInteger(CVAR_COSMETIC("Navi.EnemySecondary.Changed"), 0)) {
-        sNaviColorList[ACTORCAT_ENEMY].outer = CVarGetColor(CVAR_COSMETIC("Navi.EnemySecondary.Value"), defaultEnemySecondaryColor);
-        sNaviColorList[ACTORCAT_BOSS].outer = CVarGetColor(CVAR_COSMETIC("Navi.EnemySecondary.Value"), defaultEnemySecondaryColor);
+        sNaviColorList[ACTORCAT_ENEMY].outer =
+            CVarGetColor(CVAR_COSMETIC("Navi.EnemySecondary.Value"), defaultEnemySecondaryColor);
+        sNaviColorList[ACTORCAT_BOSS].outer =
+            CVarGetColor(CVAR_COSMETIC("Navi.EnemySecondary.Value"), defaultEnemySecondaryColor);
     } else {
         sNaviColorList[ACTORCAT_ENEMY].outer = defaultEnemySecondaryColor;
         sNaviColorList[ACTORCAT_BOSS].outer = defaultEnemySecondaryColor;
     }
 
     if (CVarGetInteger(CVAR_COSMETIC("Navi.PropsPrimary.Changed"), 0)) {
-        sNaviColorList[ACTORCAT_PROP].inner = CVarGetColor(CVAR_COSMETIC("Navi.PropsPrimary.Value"), defaultPropsPrimaryColor);
+        sNaviColorList[ACTORCAT_PROP].inner =
+            CVarGetColor(CVAR_COSMETIC("Navi.PropsPrimary.Value"), defaultPropsPrimaryColor);
     } else {
         sNaviColorList[ACTORCAT_PROP].inner = defaultPropsPrimaryColor;
     }
     if (CVarGetInteger(CVAR_COSMETIC("Navi.PropsSecondary.Changed"), 0)) {
-        sNaviColorList[ACTORCAT_PROP].outer = CVarGetColor(CVAR_COSMETIC("Navi.PropsSecondary.Value"), defaultPropsSecondaryColor);
+        sNaviColorList[ACTORCAT_PROP].outer =
+            CVarGetColor(CVAR_COSMETIC("Navi.PropsSecondary.Value"), defaultPropsSecondaryColor);
     } else {
         sNaviColorList[ACTORCAT_PROP].outer = defaultPropsSecondaryColor;
     }
@@ -512,8 +521,7 @@ void func_8002C124(TargetContext* targetCtx, PlayState* play) {
                         Matrix_RotateZ(M_PI / 2, MTXMODE_APPLY);
                         Matrix_Push();
                         Matrix_Translate(entry->unk_0C, entry->unk_0C, 0.0f, MTXMODE_APPLY);
-                        gSPMatrix(OVERLAY_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                                  G_MTX_MODELVIEW | G_MTX_LOAD);
+                        gSPMatrix(OVERLAY_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
                         gSPDisplayList(OVERLAY_DISP++, gZTargetLockOnTriangleDL);
                         Matrix_Pop();
                     }
@@ -529,7 +537,7 @@ void func_8002C124(TargetContext* targetCtx, PlayState* play) {
     }
 
     actor = targetCtx->unk_94;
-    if ((actor != NULL) && !(actor->flags & ACTOR_FLAG_NO_LOCKON)) {
+    if ((actor != NULL) && !(actor->flags & ACTOR_FLAG_LOCK_ON_DISABLED)) {
         FrameInterpolation_RecordOpenChild(actor, 1);
         NaviColor* naviColor = &sNaviColorList[actor->category];
 
@@ -541,8 +549,7 @@ void func_8002C124(TargetContext* targetCtx, PlayState* play) {
         Matrix_Scale((iREG(27) + 35) / 1000.0f, (iREG(28) + 60) / 1000.0f, (iREG(29) + 50) / 1000.0f, MTXMODE_APPLY);
 
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, naviColor->inner.r, naviColor->inner.g, naviColor->inner.b, 255);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_MODELVIEW | G_MTX_LOAD);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
         gSPDisplayList(POLY_XLU_DISP++, gZTargetArrowDL);
         FrameInterpolation_RecordCloseChild();
     }
@@ -624,8 +631,9 @@ void func_8002C7BC(TargetContext* targetCtx, Player* player, Actor* actorArg, Pl
                 targetCtx->unk_48 = 0;
             }
 
-            lockOnSfxId = CHECK_FLAG_ALL(actorArg->flags, ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE) ? NA_SE_SY_LOCK_ON
-                                                                                       : NA_SE_SY_LOCK_ON_HUMAN;
+            lockOnSfxId = CHECK_FLAG_ALL(actorArg->flags, ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE)
+                              ? NA_SE_SY_LOCK_ON
+                              : NA_SE_SY_LOCK_ON_HUMAN;
             Sfx_PlaySfxCentered(lockOnSfxId);
         }
 
@@ -834,7 +842,7 @@ void func_8002CDE4(PlayState* play, TitleCardContext* titleCtx) {
 void TitleCard_InitBossName(PlayState* play, TitleCardContext* titleCtx, void* texture, s16 x, s16 y, u8 width,
                             u8 height, s16 hasTranslation) {
     static char newName[512];
-    
+
     if (gSaveContext.language != LANGUAGE_ENG) {
         size_t length = strlen(texture);
         strcpy(newName, texture);
@@ -846,6 +854,10 @@ void TitleCard_InitBossName(PlayState* play, TitleCardContext* titleCtx, void* t
             newName[length - 6] = 'G';
             newName[length - 5] = 'E';
             newName[length - 4] = 'R';
+        } else if (gSaveContext.language == LANGUAGE_JPN) {
+            newName[length - 6] = 'J';
+            newName[length - 5] = 'P';
+            newName[length - 4] = 'N';
         }
         texture = newName;
     }
@@ -865,7 +877,7 @@ void TitleCard_InitBossName(PlayState* play, TitleCardContext* titleCtx, void* t
 void TitleCard_InitPlaceName(PlayState* play, TitleCardContext* titleCtx, void* texture, s32 x, s32 y,
                              s32 width, s32 height, s32 delay) {
     SceneTableEntry* loadedScene = play->loadedScene;
-  //  size_t size = loadedScene->titleFile.vromEnd - loadedScene->titleFile.vromStart;
+    //  size_t size = loadedScene->titleFile.vromEnd - loadedScene->titleFile.vromStart;
     switch (play->sceneNum) {
         case SCENE_DEKU_TREE:
             texture = gDekuTreeTitleCardENGTex;
@@ -1050,7 +1062,6 @@ void TitleCard_InitPlaceName(PlayState* play, TitleCardContext* titleCtx, void* 
         default:
             titleCtx->texture = NULL;
             return;
-
     }
 
     static char newName[512];
@@ -1062,11 +1073,14 @@ void TitleCard_InitPlaceName(PlayState* play, TitleCardContext* titleCtx, void* 
             newName[length - 6] = 'F';
             newName[length - 5] = 'R';
             newName[length - 4] = 'A';
-        }
-        else if (gSaveContext.language == LANGUAGE_GER) {
+        } else if (gSaveContext.language == LANGUAGE_GER) {
             newName[length - 6] = 'G';
             newName[length - 5] = 'E';
             newName[length - 4] = 'R';
+        } else if (gSaveContext.language == LANGUAGE_JPN) {
+            newName[length - 6] = 'J';
+            newName[length - 5] = 'P';
+            newName[length - 4] = 'N';
         }
         texture = newName;
     }
@@ -1094,7 +1108,7 @@ void TitleCard_Update(PlayState* play, TitleCardContext* titleCtx) {
         if (titleCtx->durationTimer == 80) {
             GameInteractor_ExecuteOnPresentTitleCard();
         }
-        
+
         if (DECR(titleCtx->durationTimer) == 0) {
             Math_StepToS(&titleCtx->alpha, 0, 30);
             Math_StepToS(&titleCtx->intensityR, 0, 70);
@@ -1119,24 +1133,34 @@ void TitleCard_Draw(PlayState* play, TitleCardContext* titleCtx) {
     if (titleCtx->alpha != 0) {
         width = titleCtx->width;
         height = titleCtx->height;
-        s16 TitleCard_PosX_Modifier = (titleCtx->isBossCard ? CVarGetInteger(CVAR_COSMETIC("TitleCard.Boss.PosX"), 0) : CVarGetInteger(CVAR_COSMETIC("TitleCard.Map.PosX"), 0));
-        s16 TitleCard_PosY_Modifier = (titleCtx->isBossCard ? CVarGetInteger(CVAR_COSMETIC("TitleCard.Boss.PosY"), 0) : CVarGetInteger(CVAR_COSMETIC("TitleCard.Map.PosY"), 0));
-        s16 TitleCard_PosType_Checker = (titleCtx->isBossCard ? CVarGetInteger(CVAR_COSMETIC("TitleCard.Boss.PosType"), 0) : CVarGetInteger(CVAR_COSMETIC("TitleCard.Map.PosType"), 0));
-        s16 TitleCard_Margin_Checker = (titleCtx->isBossCard ? CVarGetInteger(CVAR_COSMETIC("TitleCard.Boss.UseMargins"), 0) : CVarGetInteger(CVAR_COSMETIC("TitleCard.Map.UseMargins"), 0));
+        s16 TitleCard_PosX_Modifier = (titleCtx->isBossCard ? CVarGetInteger(CVAR_COSMETIC("TitleCard.Boss.PosX"), 0)
+                                                            : CVarGetInteger(CVAR_COSMETIC("TitleCard.Map.PosX"), 0));
+        s16 TitleCard_PosY_Modifier = (titleCtx->isBossCard ? CVarGetInteger(CVAR_COSMETIC("TitleCard.Boss.PosY"), 0)
+                                                            : CVarGetInteger(CVAR_COSMETIC("TitleCard.Map.PosY"), 0));
+        s16 TitleCard_PosType_Checker =
+            (titleCtx->isBossCard ? CVarGetInteger(CVAR_COSMETIC("TitleCard.Boss.PosType"), 0)
+                                  : CVarGetInteger(CVAR_COSMETIC("TitleCard.Map.PosType"), 0));
+        s16 TitleCard_Margin_Checker =
+            (titleCtx->isBossCard ? CVarGetInteger(CVAR_COSMETIC("TitleCard.Boss.UseMargins"), 0)
+                                  : CVarGetInteger(CVAR_COSMETIC("TitleCard.Map.UseMargins"), 0));
         s16 TitleCard_MarginX = 0;
         s16 TitleCard_PosX = titleCtx->x;
         s16 TitleCard_PosY = titleCtx->y;
         if (TitleCard_PosType_Checker != 0) {
             TitleCard_PosY = TitleCard_PosY_Modifier;
-            if (TitleCard_PosType_Checker == 1) {//Anchor Left
-                if (TitleCard_Margin_Checker != 0) {TitleCard_MarginX = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.L"), 0)*-1;};
-                TitleCard_PosX = OTRGetDimensionFromLeftEdge(TitleCard_PosX_Modifier+TitleCard_MarginX)-11;            
-            } else if (TitleCard_PosType_Checker == 2) {//Anchor Right
-                if (TitleCard_Margin_Checker != 0) {TitleCard_MarginX = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.R"), 0);};
-                TitleCard_PosX = OTRGetDimensionFromRightEdge(TitleCard_PosX_Modifier+TitleCard_MarginX);
-            } else if (TitleCard_PosType_Checker == 3) {//Anchor None
+            if (TitleCard_PosType_Checker == ANCHOR_LEFT) {
+                if (TitleCard_Margin_Checker != 0) {
+                    TitleCard_MarginX = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.L"), 0) * -1;
+                };
+                TitleCard_PosX = OTRGetDimensionFromLeftEdge(TitleCard_PosX_Modifier + TitleCard_MarginX) - 11;
+            } else if (TitleCard_PosType_Checker == ANCHOR_RIGHT) {
+                if (TitleCard_Margin_Checker != 0) {
+                    TitleCard_MarginX = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.R"), 0);
+                };
+                TitleCard_PosX = OTRGetDimensionFromRightEdge(TitleCard_PosX_Modifier + TitleCard_MarginX);
+            } else if (TitleCard_PosType_Checker == ANCHOR_NONE) {
                 TitleCard_PosX = TitleCard_PosX_Modifier;
-            } else if (TitleCard_PosType_Checker == 4) {//Hidden
+            } else if (TitleCard_PosType_Checker == HIDDEN) {
                 TitleCard_PosX = -9999;
             }
         }
@@ -1149,15 +1173,14 @@ void TitleCard_Draw(PlayState* play, TitleCardContext* titleCtx) {
 
         OVERLAY_DISP = Gfx_SetupDL_52NoCD(OVERLAY_DISP);
 
-        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, (u8)titleCtx->intensityR, (u8)titleCtx->intensityG, (u8)titleCtx->intensityB,
-                        (u8)titleCtx->alpha);
+        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, (u8)titleCtx->intensityR, (u8)titleCtx->intensityG,
+                        (u8)titleCtx->intensityB, (u8)titleCtx->alpha);
 
-        gDPLoadTextureBlock(OVERLAY_DISP++, (uintptr_t)titleCtx->texture, G_IM_FMT_IA,
-                            G_IM_SIZ_8b,
-                            width, height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
-                            G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureBlock(OVERLAY_DISP++, (uintptr_t)titleCtx->texture, G_IM_FMT_IA, G_IM_SIZ_8b, width, height, 0,
+                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
+                            G_TX_NOLOD);
         gSPWideTextureRectangle(OVERLAY_DISP++, titleX, titleY, ((doubleWidth * 2) + titleX) - 4, titleY + (height * 4),
-                            G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+                                G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
 
         height = titleCtx->height - height;
 
@@ -1179,7 +1202,7 @@ void Actor_Kill(Actor* actor) {
     GameInteractor_ExecuteOnActorKill(actor);
     actor->draw = NULL;
     actor->update = NULL;
-    actor->flags &= ~ACTOR_FLAG_TARGETABLE;
+    actor->flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
 }
 
 void Actor_SetWorldToHome(Actor* actor) {
@@ -1256,7 +1279,7 @@ void Actor_Destroy(Actor* actor, PlayState* play) {
     NameTag_RemoveAllForActor(actor);
 }
 
-void func_8002D7EC(Actor* actor) {
+void Actor_UpdatePos(Actor* actor) {
     f32 speedRate = R_UPDATE_RATE * 0.5f;
 
     actor->world.pos.x += (actor->velocity.x * speedRate) + actor->colChkInfo.displacement.x;
@@ -1264,7 +1287,7 @@ void func_8002D7EC(Actor* actor) {
     actor->world.pos.z += (actor->velocity.z * speedRate) + actor->colChkInfo.displacement.z;
 }
 
-void func_8002D868(Actor* actor) {
+void Actor_UpdateVelocityXZGravity(Actor* actor) {
     actor->velocity.x = Math_SinS(actor->world.rot.y) * actor->speedXZ;
     actor->velocity.z = Math_CosS(actor->world.rot.y) * actor->speedXZ;
 
@@ -1274,12 +1297,12 @@ void func_8002D868(Actor* actor) {
     }
 }
 
-void Actor_MoveForward(Actor* actor) {
-    func_8002D868(actor);
-    func_8002D7EC(actor);
+void Actor_MoveXZGravity(Actor* actor) {
+    Actor_UpdateVelocityXZGravity(actor);
+    Actor_UpdatePos(actor);
 }
 
-void func_8002D908(Actor* actor) {
+void Actor_UpdateVelocityXYZ(Actor* actor) {
     f32 sp24 = Math_CosS(actor->world.rot.x) * actor->speedXZ;
 
     actor->velocity.x = Math_SinS(actor->world.rot.y) * sp24;
@@ -1287,17 +1310,17 @@ void func_8002D908(Actor* actor) {
     actor->velocity.z = Math_CosS(actor->world.rot.y) * sp24;
 }
 
-void func_8002D97C(Actor* actor) {
-    func_8002D908(actor);
-    func_8002D7EC(actor);
+void Actor_MoveXYZ(Actor* actor) {
+    Actor_UpdateVelocityXYZ(actor);
+    Actor_UpdatePos(actor);
 }
 
-void func_8002D9A4(Actor* actor, f32 arg1) {
+void Actor_SetProjectileSpeed(Actor* actor, f32 arg1) {
     actor->speedXZ = Math_CosS(actor->world.rot.x) * arg1;
     actor->velocity.y = -Math_SinS(actor->world.rot.x) * arg1;
 }
 
-void func_8002D9F8(Actor* actor, SkelAnime* skelAnime) {
+void Actor_UpdatePosByAnimation(Actor* actor, SkelAnime* skelAnime) {
     Vec3f sp1C;
 
     SkelAnime_UpdateTranslation(skelAnime, &sp1C, actor->shape.rot.y);
@@ -1346,20 +1369,20 @@ f32 Actor_WorldDistXZToPoint(Actor* actor, Vec3f* refPoint) {
     return Math_Vec3f_DistXZ(&actor->world.pos, refPoint);
 }
 
-void func_8002DBD0(Actor* actor, Vec3f* result, Vec3f* arg2) {
-    f32 cosRot2Y;
-    f32 sinRot2Y;
+void Actor_WorldToActorCoords(Actor* actor, Vec3f* dest, Vec3f* pos) {
+    f32 cosY;
+    f32 sinY;
     f32 deltaX;
     f32 deltaZ;
 
-    cosRot2Y = Math_CosS(actor->shape.rot.y);
-    sinRot2Y = Math_SinS(actor->shape.rot.y);
-    deltaX = arg2->x - actor->world.pos.x;
-    deltaZ = arg2->z - actor->world.pos.z;
+    cosY = Math_CosS(actor->shape.rot.y);
+    sinY = Math_SinS(actor->shape.rot.y);
+    deltaX = pos->x - actor->world.pos.x;
+    deltaZ = pos->z - actor->world.pos.z;
 
-    result->x = (deltaX * cosRot2Y) - (deltaZ * sinRot2Y);
-    result->z = (deltaX * sinRot2Y) + (deltaZ * cosRot2Y);
-    result->y = arg2->y - actor->world.pos.y;
+    dest->x = (deltaX * cosY) - (deltaZ * sinY);
+    dest->z = (deltaX * sinY) + (deltaZ * cosY);
+    dest->y = pos->y - actor->world.pos.y;
 }
 
 f32 Actor_HeightDiff(Actor* actorA, Actor* actorB) {
@@ -1590,8 +1613,7 @@ s32 func_8002E2AC(PlayState* play, Actor* actor, Vec3f* arg2, s32 arg3) {
 
     arg2->y += 50.0f;
 
-    actor->floorHeight =
-        BgCheck_EntityRaycastFloor5(play, &play->colCtx, &actor->floorPoly, &floorBgId, actor, arg2);
+    actor->floorHeight = BgCheck_EntityRaycastFloor5(play, &play->colCtx, &actor->floorPoly, &floorBgId, actor, arg2);
     actor->bgCheckFlags &= ~0x0086;
 
     if (actor->floorHeight <= BGCHECK_Y_MIN) {
@@ -1693,8 +1715,8 @@ void Actor_UpdateBgCheckInfo(PlayState* play, Actor* actor, f32 wallCheckHeight,
         sp64.y = actor->prevPos.y;
         func_8002E2AC(play, actor, &sp64, flags);
         waterBoxYSurface = actor->world.pos.y;
-        if (WaterBox_GetSurface1(play, &play->colCtx, actor->world.pos.x, actor->world.pos.z,
-                                 &waterBoxYSurface, &waterBox)) {
+        if (WaterBox_GetSurface1(play, &play->colCtx, actor->world.pos.x, actor->world.pos.z, &waterBoxYSurface,
+                                 &waterBox)) {
             actor->yDistToWater = waterBoxYSurface - actor->world.pos.y;
             if (actor->yDistToWater < 0.0f) {
                 actor->bgCheckFlags &= ~0x60;
@@ -1782,8 +1804,8 @@ void func_8002EBCC(Actor* actor, PlayState* play, s32 flag) {
     lightDir.z = play->envCtx.dirLight1.params.dir.z;
 
     if (HREG(80) == 6) {
-        osSyncPrintf("z_actor.c 3637 game_play->view.eye=[%f(%f) %f %f]\n", play->view.eye.x,
-                     play->view.eye.y, play->view.eye.z);
+        osSyncPrintf("z_actor.c 3637 game_play->view.eye=[%f(%f) %f %f]\n", play->view.eye.x, play->view.eye.y,
+                     play->view.eye.z);
     }
 
     hilite = func_8002EABC(&actor->world.pos, &play->view.eye, &lightDir, play->state.gfxCtx);
@@ -1855,7 +1877,7 @@ f32 func_8002EFC0(Actor* actor, Player* player, s16 arg2) {
     s16 yawTempAbs = ABS(yawTemp);
 
     if (player->focusActor != NULL) {
-        if ((yawTempAbs > 0x4000) || (actor->flags & ACTOR_FLAG_NO_LOCKON)) {
+        if ((yawTempAbs > 0x4000) || (actor->flags & ACTOR_FLAG_LOCK_ON_DISABLED)) {
             return FLT_MAX;
         } else {
             f32 ret =
@@ -1891,7 +1913,7 @@ u32 func_8002F090(Actor* actor, f32 arg1) {
 }
 
 s32 func_8002F0C8(Actor* actor, Player* player, s32 flag) {
-    if ((actor->update == NULL) || !(actor->flags & ACTOR_FLAG_TARGETABLE)) {
+    if ((actor->update == NULL) || !(actor->flags & ACTOR_FLAG_ATTENTION_ENABLED)) {
         return true;
     }
 
@@ -1913,8 +1935,8 @@ s32 func_8002F0C8(Actor* actor, Player* player, s32 flag) {
 }
 
 u32 Actor_ProcessTalkRequest(Actor* actor, PlayState* play) {
-    if (actor->flags & ACTOR_FLAG_PLAYER_TALKED_TO) {
-        actor->flags &= ~ACTOR_FLAG_PLAYER_TALKED_TO;
+    if (actor->flags & ACTOR_FLAG_TALK) {
+        actor->flags &= ~ACTOR_FLAG_TALK;
         return true;
     }
 
@@ -1925,7 +1947,7 @@ s32 func_8002F1C4(Actor* actor, PlayState* play, f32 arg2, f32 arg3, u32 exchang
     Player* player = GET_PLAYER(play);
 
     // This is convoluted but it seems like it must be a single if statement to match
-    if ((player->actor.flags & ACTOR_FLAG_PLAYER_TALKED_TO) || ((exchangeItemId != EXCH_ITEM_NONE) && Player_InCsMode(play)) ||
+    if ((player->actor.flags & ACTOR_FLAG_TALK) || ((exchangeItemId != EXCH_ITEM_NONE) && Player_InCsMode(play)) ||
         (!actor->isTargeted &&
          ((arg3 < fabsf(actor->yDistToPlayer)) || (player->talkActorDistance < actor->xzDistToPlayer) ||
           (arg2 < actor->xzDistToPlayer)))) {
@@ -1988,7 +2010,7 @@ u32 Actor_HasParent(Actor* actor, PlayState* play) {
  * Uses the given `GetItemEntry` to prepare the player to receive an item via the animation
  * where Link holds an item over his head. This function does not require an actor for giving
  * the player an item, instead setting the player as their own interactRangeActor and getItemDirection.
- * 
+ *
  * \param play the Global Context
  * \param getItemEntry the GetItemEntry for the item you want the player to receive.
  * \return true if the player can receive an item, false if not.
@@ -1996,12 +2018,13 @@ u32 Actor_HasParent(Actor* actor, PlayState* play) {
 s32 GiveItemEntryWithoutActor(PlayState* play, GetItemEntry getItemEntry) {
     Player* player = GET_PLAYER(play);
 
-    if (!(player->stateFlags1 & 
-        (PLAYER_STATE1_DEAD | PLAYER_STATE1_CHARGING_SPIN_ATTACK | PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE |
-         PLAYER_STATE1_JUMPING | PLAYER_STATE1_FREEFALL | PLAYER_STATE1_FIRST_PERSON | PLAYER_STATE1_CLIMBING_LADDER)) && 
-         Player_GetExplosiveHeld(player) < 0) {
-        if (((player->heldActor != NULL) && ((getItemEntry.getItemId > GI_NONE) && (getItemEntry.getItemId < GI_MAX)) || 
-            (IS_RANDO && (getItemEntry.getItemId > RG_NONE) && (getItemEntry.getItemId < RG_MAX))) ||
+    if (!(player->stateFlags1 &
+          (PLAYER_STATE1_DEAD | PLAYER_STATE1_CHARGING_SPIN_ATTACK | PLAYER_STATE1_HANGING_OFF_LEDGE |
+           PLAYER_STATE1_CLIMBING_LEDGE | PLAYER_STATE1_JUMPING | PLAYER_STATE1_FREEFALL | PLAYER_STATE1_FIRST_PERSON |
+           PLAYER_STATE1_CLIMBING_LADDER)) &&
+        Player_GetExplosiveHeld(player) < 0) {
+        if (((player->heldActor != NULL) && ((getItemEntry.getItemId > GI_NONE) && (getItemEntry.getItemId < GI_MAX)) ||
+             (IS_RANDO && (getItemEntry.getItemId > RG_NONE) && (getItemEntry.getItemId < RG_MAX))) ||
             (!(player->stateFlags1 & (PLAYER_STATE1_CARRYING_ACTOR | PLAYER_STATE1_IN_CUTSCENE)))) {
             if ((getItemEntry.getItemId != GI_NONE)) {
                 player->getItemEntry = getItemEntry;
@@ -2035,14 +2058,15 @@ s32 GiveItemEntryWithoutActor(PlayState* play, GetItemEntry getItemEntry) {
 s32 GiveItemEntryFromActor(Actor* actor, PlayState* play, GetItemEntry getItemEntry, f32 xzRange, f32 yRange) {
     Player* player = GET_PLAYER(play);
 
-    if (!(player->stateFlags1 & 
-        (PLAYER_STATE1_DEAD | PLAYER_STATE1_CHARGING_SPIN_ATTACK | PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE |
-         PLAYER_STATE1_JUMPING | PLAYER_STATE1_FREEFALL | PLAYER_STATE1_FIRST_PERSON | PLAYER_STATE1_CLIMBING_LADDER)) && 
-         Player_GetExplosiveHeld(player) < 0) {
-        if ((((player->heldActor != NULL) || (actor == player->talkActor)) && 
-            ((!IS_RANDO && ((getItemEntry.getItemId > GI_NONE) && (getItemEntry.getItemId < GI_MAX))) || 
-                (IS_RANDO && ((getItemEntry.getItemId > RG_NONE) && (getItemEntry.getItemId < RG_MAX))))) ||
-                    (!(player->stateFlags1 & (PLAYER_STATE1_CARRYING_ACTOR | PLAYER_STATE1_IN_CUTSCENE)))) {
+    if (!(player->stateFlags1 &
+          (PLAYER_STATE1_DEAD | PLAYER_STATE1_CHARGING_SPIN_ATTACK | PLAYER_STATE1_HANGING_OFF_LEDGE |
+           PLAYER_STATE1_CLIMBING_LEDGE | PLAYER_STATE1_JUMPING | PLAYER_STATE1_FREEFALL | PLAYER_STATE1_FIRST_PERSON |
+           PLAYER_STATE1_CLIMBING_LADDER)) &&
+        Player_GetExplosiveHeld(player) < 0) {
+        if ((((player->heldActor != NULL) || (actor == player->talkActor)) &&
+             ((!IS_RANDO && ((getItemEntry.getItemId > GI_NONE) && (getItemEntry.getItemId < GI_MAX))) ||
+              (IS_RANDO && ((getItemEntry.getItemId > RG_NONE) && (getItemEntry.getItemId < RG_MAX))))) ||
+            (!(player->stateFlags1 & (PLAYER_STATE1_CARRYING_ACTOR | PLAYER_STATE1_IN_CUTSCENE)))) {
             if ((actor->xzDistToPlayer < xzRange) && (fabsf(actor->yDistToPlayer) < yRange)) {
                 s16 yawDiff = actor->yawTowardsPlayer - player->actor.shape.rot.y;
                 s32 absYawDiff = ABS(yawDiff);
@@ -2079,12 +2103,14 @@ s32 GiveItemEntryFromActorWithFixedRange(Actor* actor, PlayState* play, GetItemE
 s32 Actor_OfferGetItem(Actor* actor, PlayState* play, s32 getItemId, f32 xzRange, f32 yRange) {
     Player* player = GET_PLAYER(play);
 
-    if (!(player->stateFlags1 & 
-        (PLAYER_STATE1_DEAD | PLAYER_STATE1_CHARGING_SPIN_ATTACK | PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE |
-         PLAYER_STATE1_JUMPING | PLAYER_STATE1_FREEFALL | PLAYER_STATE1_FIRST_PERSON | PLAYER_STATE1_CLIMBING_LADDER)) && 
-         Player_GetExplosiveHeld(player) < 0) {
-        if ((((player->heldActor != NULL) || (actor == player->talkActor)) && 
-            ((!IS_RANDO && ((getItemId > GI_NONE) && (getItemId < GI_MAX))) || (IS_RANDO && ((getItemId > RG_NONE) && (getItemId < RG_MAX))))) ||
+    if (!(player->stateFlags1 &
+          (PLAYER_STATE1_DEAD | PLAYER_STATE1_CHARGING_SPIN_ATTACK | PLAYER_STATE1_HANGING_OFF_LEDGE |
+           PLAYER_STATE1_CLIMBING_LEDGE | PLAYER_STATE1_JUMPING | PLAYER_STATE1_FREEFALL | PLAYER_STATE1_FIRST_PERSON |
+           PLAYER_STATE1_CLIMBING_LADDER)) &&
+        Player_GetExplosiveHeld(player) < 0) {
+        if ((((player->heldActor != NULL) || (actor == player->talkActor)) &&
+             ((!IS_RANDO && ((getItemId > GI_NONE) && (getItemId < GI_MAX))) ||
+              (IS_RANDO && ((getItemId > RG_NONE) && (getItemId < RG_MAX))))) ||
             (!(player->stateFlags1 & (PLAYER_STATE1_CARRYING_ACTOR | PLAYER_STATE1_IN_CUTSCENE)))) {
             if ((actor->xzDistToPlayer < xzRange) && (fabsf(actor->yDistToPlayer) < yRange)) {
                 s16 yawDiff = actor->yawTowardsPlayer - player->actor.shape.rot.y;
@@ -2103,14 +2129,13 @@ s32 Actor_OfferGetItem(Actor* actor, PlayState* play, s32 getItemId, f32 xzRange
     return false;
 }
 
-// TODO: Rename to GiveItemIdFromActorWithFixedRange or similar
 // If you're doing something for randomizer, you're probably looking for GiveItemEntryFromActorWithFixedRange
-void func_8002F554(Actor* actor, PlayState* play, s32 getItemId) {
+void Actor_OfferGetItemNearby(Actor* actor, PlayState* play, s32 getItemId) {
     Actor_OfferGetItem(actor, play, getItemId, 50.0f, 10.0f);
 }
 
-void func_8002F580(Actor* actor, PlayState* play) {
-    func_8002F554(actor, play, GI_NONE);
+void Actor_OfferCarry(Actor* actor, PlayState* play) {
+    Actor_OfferGetItemNearby(actor, play, GI_NONE);
 }
 
 u32 Actor_HasNoParent(Actor* actor, PlayState* play) {
@@ -2155,9 +2180,10 @@ s32 Actor_IsMounted(PlayState* play, Actor* horse) {
 u32 Actor_SetRideActor(PlayState* play, Actor* horse, s32 mountSide) {
     Player* player = GET_PLAYER(play);
 
-    if (!(player->stateFlags1 & 
-        (PLAYER_STATE1_DEAD | PLAYER_STATE1_CARRYING_ACTOR | PLAYER_STATE1_CHARGING_SPIN_ATTACK | PLAYER_STATE1_HANGING_OFF_LEDGE |
-         PLAYER_STATE1_CLIMBING_LEDGE | PLAYER_STATE1_JUMPING | PLAYER_STATE1_FREEFALL | PLAYER_STATE1_FIRST_PERSON | PLAYER_STATE1_CLIMBING_LADDER))) {
+    if (!(player->stateFlags1 &
+          (PLAYER_STATE1_DEAD | PLAYER_STATE1_CARRYING_ACTOR | PLAYER_STATE1_CHARGING_SPIN_ATTACK |
+           PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE | PLAYER_STATE1_JUMPING |
+           PLAYER_STATE1_FREEFALL | PLAYER_STATE1_FIRST_PERSON | PLAYER_STATE1_CLIMBING_LADDER))) {
         player->rideActor = horse;
         player->mountSide = mountSide;
         return true;
@@ -2202,15 +2228,17 @@ void func_8002F7A0(PlayState* play, Actor* actor, f32 arg2, s16 arg3, f32 arg4) 
 
 void Player_PlaySfx(Actor* actor, u16 sfxId) {
     if (actor->id != ACTOR_PLAYER || sfxId < NA_SE_VO_LI_SWORD_N || sfxId > NA_SE_VO_LI_ELECTRIC_SHOCK_LV_KID) {
-        Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &gSfxDefaultFreqAndVolScale , &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultReverb);
     } else {
         freqMultiplier = CVarGetFloat(CVAR_AUDIO("LinkVoiceFreqMultiplier"), 1.0);
-        if (freqMultiplier <= 0) { 
+        if (freqMultiplier <= 0) {
             freqMultiplier = 1;
         }
         // Authentic behavior uses D_801333E0 for both freqScale and a4
         // Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &D_801333E0 , &D_801333E0, &D_801333E8);
-        Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &freqMultiplier, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &freqMultiplier, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultReverb);
     }
 }
 
@@ -2237,30 +2265,31 @@ void func_8002F850(PlayState* play, Actor* actor) {
 
 void func_8002F8F0(Actor* actor, u16 sfxId) {
     actor->sfx = sfxId;
-    actor->flags |= ACTOR_FLAG_SFX_AT_POS;
-    actor->flags &= ~(ACTOR_FLAG_SFX_AT_CENTER | ACTOR_FLAG_SFX_AT_CENTER2 | ACTOR_FLAG_SFX_AS_TIMER);
+    actor->flags |= ACTOR_FLAG_SFX_ACTOR_POS_2;
+    actor->flags &= ~(ACTOR_AUDIO_FLAG_SFX_CENTERED_1 | ACTOR_AUDIO_FLAG_SFX_CENTERED_2 | ACTOR_FLAG_SFX_TIMER);
 }
 
 void func_8002F91C(Actor* actor, u16 sfxId) {
     actor->sfx = sfxId;
-    actor->flags |= ACTOR_FLAG_SFX_AT_CENTER;
-    actor->flags &= ~(ACTOR_FLAG_SFX_AT_POS | ACTOR_FLAG_SFX_AT_CENTER2 | ACTOR_FLAG_SFX_AS_TIMER);
+    actor->flags |= ACTOR_AUDIO_FLAG_SFX_CENTERED_1;
+    actor->flags &= ~(ACTOR_FLAG_SFX_ACTOR_POS_2 | ACTOR_AUDIO_FLAG_SFX_CENTERED_2 | ACTOR_FLAG_SFX_TIMER);
 }
 
 void func_8002F948(Actor* actor, u16 sfxId) {
     actor->sfx = sfxId;
-    actor->flags |= ACTOR_FLAG_SFX_AT_CENTER2;
-    actor->flags &= ~(ACTOR_FLAG_SFX_AT_POS | ACTOR_FLAG_SFX_AT_CENTER | ACTOR_FLAG_SFX_AS_TIMER);
+    actor->flags |= ACTOR_AUDIO_FLAG_SFX_CENTERED_2;
+    actor->flags &= ~(ACTOR_FLAG_SFX_ACTOR_POS_2 | ACTOR_AUDIO_FLAG_SFX_CENTERED_1 | ACTOR_FLAG_SFX_TIMER);
 }
 
 void func_8002F974(Actor* actor, u16 sfxId) {
-    actor->flags &= ~(ACTOR_FLAG_SFX_AT_POS | ACTOR_FLAG_SFX_AT_CENTER | ACTOR_FLAG_SFX_AT_CENTER2 | ACTOR_FLAG_SFX_AS_TIMER);
+    actor->flags &= ~(ACTOR_FLAG_SFX_ACTOR_POS_2 | ACTOR_AUDIO_FLAG_SFX_CENTERED_1 | ACTOR_AUDIO_FLAG_SFX_CENTERED_2 |
+                      ACTOR_FLAG_SFX_TIMER);
     actor->sfx = sfxId;
 }
 
 void func_8002F994(Actor* actor, s32 arg1) {
-    actor->flags |= ACTOR_FLAG_SFX_AS_TIMER;
-    actor->flags &= ~(ACTOR_FLAG_SFX_AT_POS | ACTOR_FLAG_SFX_AT_CENTER | ACTOR_FLAG_SFX_AT_CENTER2);
+    actor->flags |= ACTOR_FLAG_SFX_TIMER;
+    actor->flags &= ~(ACTOR_FLAG_SFX_ACTOR_POS_2 | ACTOR_AUDIO_FLAG_SFX_CENTERED_1 | ACTOR_AUDIO_FLAG_SFX_CENTERED_2);
     if (arg1 < 40) {
         actor->sfx = NA_SE_PL_WALK_DIRT - SFX_FLAG;
     } else if (arg1 < 100) {
@@ -2340,7 +2369,7 @@ void Actor_DrawFaroresWindPointer(PlayState* play) {
             D_8015BC14 = 60;
             D_8015BC18 = 1.0f;
         } else if (D_8015BC14) {
-            D_8015BC14-= CVarGetInteger(CVAR_ENHANCEMENT("FastFarores"), 0) ? 5 : 1;
+            D_8015BC14 -= CVarGetInteger(CVAR_ENHANCEMENT("FastFarores"), 0) ? 5 : 1;
         } else if (D_8015BC18 > 0.0f) {
             static Vec3f effectVel = { 0.0f, -0.05f, 0.0f };
             static Vec3f effectAccel = { 0.0f, -0.025f, 0.0f };
@@ -2385,8 +2414,8 @@ void Actor_DrawFaroresWindPointer(PlayState* play) {
             effectPos.y = curPos->y + 80.0f + (6.0f * Rand_ZeroOne());
             effectPos.z = curPos->z + Rand_CenteredFloat(6.0f);
 
-            EffectSsKiraKira_SpawnDispersed(play, &effectPos, &effectVel, &effectAccel, &effectPrimCol,
-                                            &effectEnvCol, 1000, 16);
+            EffectSsKiraKira_SpawnDispersed(play, &effectPos, &effectVel, &effectAccel, &effectPrimCol, &effectEnvCol,
+                                            1000, 16);
 
             if (D_8015BC18 == 0.0f) {
                 gSaveContext.respawn[RESPAWN_MODE_TOP] = gSaveContext.respawn[RESPAWN_MODE_DOWN];
@@ -2458,22 +2487,19 @@ void Actor_DrawFaroresWindPointer(PlayState* play) {
             gDPSetEnvColor(POLY_XLU_DISP++, Spell_env.r, Spell_env.g, Spell_env.b, 255);
 
             Matrix_RotateZ(((play->gameplayFrames * 1500) & 0xFFFF) * M_PI / 32768.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH);
             gSPDisplayList(POLY_XLU_DISP++, gEffFlash1DL);
 
             Matrix_Pop();
             Matrix_RotateZ(~((play->gameplayFrames * 1200) & 0xFFFF) * M_PI / 32768.0f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH);
             gSPDisplayList(POLY_XLU_DISP++, gEffFlash1DL);
         }
 
         Lights_PointNoGlowSetInfo(&D_8015BC00, ((void)0, gSaveContext.respawn[RESPAWN_MODE_TOP].pos.x),
                                   ((void)0, gSaveContext.respawn[RESPAWN_MODE_TOP].pos.y) + yOffset,
                                   ((void)0, gSaveContext.respawn[RESPAWN_MODE_TOP].pos.z), 255, 255, 255, lightRadius);
-
     }
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -2562,14 +2588,14 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
     if (KREG(0) == -100) {
         refActor = &GET_PLAYER(play)->actor;
         KREG(0) = 0;
-        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_CLEAR_TAG, refActor->world.pos.x,
-                    refActor->world.pos.y + 100.0f, refActor->world.pos.z, 0, 0, 0, 1, true);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_CLEAR_TAG, refActor->world.pos.x, refActor->world.pos.y + 100.0f,
+                    refActor->world.pos.z, 0, 0, 0, 1, true);
     }
 
     sp80 = &D_80116068[0];
 
     if (player->stateFlags2 & PLAYER_STATE2_OCARINA_PLAYING) {
-        unkFlag = ACTOR_FLAG_NO_FREEZE_OCARINA;
+        unkFlag = ACTOR_FLAG_UPDATE_DURING_OCARINA;
     }
 
     if ((player->stateFlags1 & PLAYER_STATE1_TALKING) && ((player->actor.textId & 0xFF00) != 0x600)) {
@@ -2588,8 +2614,7 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
             actor->sfx = 0;
 
             if (actor->init != NULL) {
-                if (Object_IsLoaded(&play->objectCtx, actor->objBankIndex))
-                {
+                if (Object_IsLoaded(&play->objectCtx, actor->objBankIndex)) {
                     Actor_SetObjectDependency(play, actor);
                     actor->init(actor, play);
                     actor->init = NULL;
@@ -2624,9 +2649,10 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
                 actor->xyzDistToPlayerSq = SQ(actor->xzDistToPlayer) + SQ(actor->yDistToPlayer);
 
                 actor->yawTowardsPlayer = Actor_WorldYawTowardActor(actor, &player->actor);
-                actor->flags &= ~ACTOR_FLAG_PLAY_HIT_SFX;
+                actor->flags &= ~ACTOR_FLAG_SFX_FOR_PLAYER_BODY_HIT;
 
-                if ((DECR(actor->freezeTimer) == 0) && (actor->flags & (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_ACTIVE))) {
+                if ((DECR(actor->freezeTimer) == 0) &&
+                    (actor->flags & (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_INSIDE_CULLING_VOLUME))) {
                     if (actor == player->focusActor) {
                         actor->isTargeted = true;
                     } else {
@@ -2709,7 +2735,8 @@ void Actor_Draw(PlayState* play, Actor* actor) {
 
     lights = LightContext_NewLights(&play->lightCtx, play->state.gfxCtx);
 
-    Lights_BindAll(lights, play->lightCtx.listHead, (actor->flags & ACTOR_FLAG_IGNORE_POINTLIGHTS) ? NULL : &actor->world.pos);
+    Lights_BindAll(lights, play->lightCtx.listHead,
+                   (actor->flags & ACTOR_FLAG_IGNORE_POINTLIGHTS) ? NULL : &actor->world.pos);
     Lights_Draw(lights, play->state.gfxCtx);
 
     FrameInterpolation_RecordActorPosRotMatrix();
@@ -2768,13 +2795,14 @@ void Actor_Draw(PlayState* play, Actor* actor) {
 }
 
 void func_80030ED8(Actor* actor) {
-    if (actor->flags & ACTOR_FLAG_SFX_AT_POS) {
-        Audio_PlaySoundGeneral(actor->sfx, &actor->projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
-    } else if (actor->flags & ACTOR_FLAG_SFX_AT_CENTER) {
+    if (actor->flags & ACTOR_FLAG_SFX_ACTOR_POS_2) {
+        Audio_PlaySoundGeneral(actor->sfx, &actor->projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+    } else if (actor->flags & ACTOR_AUDIO_FLAG_SFX_CENTERED_1) {
         Sfx_PlaySfxCentered(actor->sfx);
-    } else if (actor->flags & ACTOR_FLAG_SFX_AT_CENTER2) {
+    } else if (actor->flags & ACTOR_AUDIO_FLAG_SFX_CENTERED_2) {
         Sfx_PlaySfxCentered2(actor->sfx);
-    } else if (actor->flags & ACTOR_FLAG_SFX_AS_TIMER) {
+    } else if (actor->flags & ACTOR_FLAG_SFX_TIMER) {
         func_800F4C58(&gSfxDefaultPos, NA_SE_SY_TIMER - SFX_FLAG, (s8)(actor->sfx - 1));
     } else {
         Sfx_PlaySfxAtPos(&actor->projectedPos, actor->sfx);
@@ -2801,10 +2829,9 @@ void Actor_DrawLensOverlay(GraphicsContext* gfxCtx) {
                    (SCREEN_HEIGHT / 2 - LENS_MASK_HEIGHT) << 2, (SCREEN_WIDTH / 2 + LENS_MASK_WIDTH - 1) << 2,
                    (SCREEN_HEIGHT / 2 + LENS_MASK_HEIGHT - 1) << 2);
     gSPWideTextureRectangle(POLY_XLU_DISP++, x, 0, x + abs(x), SCREEN_HEIGHT << 2, G_TX_RENDERTILE, 0, 0, 0, 0);
-    gSPWideTextureRectangle(POLY_XLU_DISP++, 0, 0, w, SCREEN_HEIGHT << 2, G_TX_RENDERTILE,
-                        LENS_MASK_OFFSET_S << 5, LENS_MASK_OFFSET_T << 5,
-                        (1 << 10) * (SCREEN_WIDTH - 2 * LENS_MASK_OFFSET_S) / SCREEN_WIDTH,
-                        (1 << 10) * (SCREEN_HEIGHT - 2 * LENS_MASK_OFFSET_T) / SCREEN_HEIGHT);
+    gSPWideTextureRectangle(POLY_XLU_DISP++, 0, 0, w, SCREEN_HEIGHT << 2, G_TX_RENDERTILE, LENS_MASK_OFFSET_S << 5,
+                            LENS_MASK_OFFSET_T << 5, (1 << 10) * (SCREEN_WIDTH - 2 * LENS_MASK_OFFSET_S) / SCREEN_WIDTH,
+                            (1 << 10) * (SCREEN_HEIGHT - 2 * LENS_MASK_OFFSET_T) / SCREEN_HEIGHT);
     gDPPipeSync(POLY_XLU_DISP++);
     CLOSE_DISPS(gfxCtx);
 }
@@ -3034,15 +3061,15 @@ void func_800315AC(PlayState* play, ActorContext* actorCtx) {
                                                  &shipShouldUpdate);
 
                     if (shipShouldUpdate) {
-                        actor->flags |= ACTOR_FLAG_ACTIVE;
+                        actor->flags |= ACTOR_FLAG_INSIDE_CULLING_VOLUME;
                     } else {
-                        actor->flags &= ~ACTOR_FLAG_ACTIVE;
+                        actor->flags &= ~ACTOR_FLAG_INSIDE_CULLING_VOLUME;
                     }
                 } else {
                     if (func_800314B0(play, actor)) {
-                        actor->flags |= ACTOR_FLAG_ACTIVE;
+                        actor->flags |= ACTOR_FLAG_INSIDE_CULLING_VOLUME;
                     } else {
-                        actor->flags &= ~ACTOR_FLAG_ACTIVE;
+                        actor->flags &= ~ACTOR_FLAG_INSIDE_CULLING_VOLUME;
                     }
                 }
             }
@@ -3051,11 +3078,12 @@ void func_800315AC(PlayState* play, ActorContext* actorCtx) {
 
             if ((HREG(64) != 1) || ((HREG(65) != -1) && (HREG(65) != HREG(66))) || (HREG(71) == 0)) {
                 if ((actor->init == NULL) && (actor->draw != NULL) &&
-                    ((actor->flags & (ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_ACTIVE)) || shipShouldDraw)) {
+                    ((actor->flags & (ACTOR_FLAG_DRAW_CULLING_DISABLED | ACTOR_FLAG_INSIDE_CULLING_VOLUME)) ||
+                     shipShouldDraw)) {
                     // #endregion
-                    if ((actor->flags & ACTOR_FLAG_LENS) &&
-                        ((play->roomCtx.curRoom.lensMode == LENS_MODE_HIDE_ACTORS) ||
-                         play->actorCtx.lensActive || (actor->room != play->roomCtx.curRoom.num))) {
+                    if ((actor->flags & ACTOR_FLAG_REACT_TO_LENS) &&
+                        ((play->roomCtx.curRoom.lensMode == LENS_MODE_HIDE_ACTORS) || play->actorCtx.lensActive ||
+                         (actor->room != play->roomCtx.curRoom.num))) {
                         assert(invisibleActorCounter < INVISIBLE_ACTOR_MAX);
                         invisibleActors[invisibleActorCounter] = actor;
                         invisibleActorCounter++;
@@ -3265,14 +3293,15 @@ void Actor_FreeOverlay(ActorDBEntry* dbEntry) {
 }
 
 // SoH: Flag to check if actors are being spawned from the actor entry list
-//      This flag is checked against to allow actors which dont have an objectBankIndex in the objectCtx slot/status array to spawn
-//      An example of what this fixes, is that it allows hookshot to be used as child
+//      This flag is checked against to allow actors which dont have an objectBankIndex in the objectCtx slot/status
+//      array to spawn An example of what this fixes, is that it allows hookshot to be used as child
 int gMapLoading = 0;
 
-Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 posX, f32 posY, f32 posZ,
-                   s16 rotX, s16 rotY, s16 rotZ, s16 params, s16 canRandomize) {
+Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 posX, f32 posY, f32 posZ, s16 rotX,
+                   s16 rotY, s16 rotZ, s16 params, s16 canRandomize) {
 
-    uint8_t tryRandomizeEnemy = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2 && canRandomize;
+    uint8_t tryRandomizeEnemy = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) && gSaveContext.fileNum >= 0 &&
+                                gSaveContext.fileNum <= 2 && canRandomize;
 
     if (tryRandomizeEnemy) {
         if (!GetRandomizedEnemy(play, &actorId, &posX, &posY, &posZ, &rotX, &rotY, &rotZ, &params)) {
@@ -3366,8 +3395,8 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
     return actor;
 }
 
-Actor* Actor_SpawnAsChild(ActorContext* actorCtx, Actor* parent, PlayState* play, s16 actorId, f32 posX,
-                          f32 posY, f32 posZ, s16 rotX, s16 rotY, s16 rotZ, s16 params) {
+Actor* Actor_SpawnAsChild(ActorContext* actorCtx, Actor* parent, PlayState* play, s16 actorId, f32 posX, f32 posY,
+                          f32 posZ, s16 rotX, s16 rotY, s16 rotZ, s16 params) {
     Actor* spawnedActor = Actor_Spawn(actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params, true);
 
     if (spawnedActor == NULL) {
@@ -3379,7 +3408,8 @@ Actor* Actor_SpawnAsChild(ActorContext* actorCtx, Actor* parent, PlayState* play
     // Gohma (z_boss_goma.c), the Stalchildren spawner (z_en_encount1.c) and the falling platform spawning Stalfos in
     // Forest Temple (z_bg_mori_bigst.c) that normally rely on this behaviour are changed when
     // Enemy Rando is on so they still work properly even without assigning a parent.
-    if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) && (spawnedActor->id == ACTOR_EN_FLOORMAS || spawnedActor->id == ACTOR_EN_PEEHAT)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) &&
+        (spawnedActor->id == ACTOR_EN_FLOORMAS || spawnedActor->id == ACTOR_EN_PEEHAT)) {
         return spawnedActor;
     }
 
@@ -3424,7 +3454,7 @@ void Actor_SpawnTransitionActors(PlayState* play, ActorContext* actorCtx) {
 Actor* Actor_SpawnEntry(ActorContext* actorCtx, ActorEntry* actorEntry, PlayState* play) {
     gMapLoading = 1;
     Actor* ret = Actor_Spawn(actorCtx, play, actorEntry->id, actorEntry->pos.x, actorEntry->pos.y, actorEntry->pos.z,
-                       actorEntry->rot.x, actorEntry->rot.y, actorEntry->rot.z, actorEntry->params, true);
+                             actorEntry->rot.x, actorEntry->rot.y, actorEntry->rot.z, actorEntry->params, true);
     gMapLoading = 0;
 
     return ret;
@@ -3436,6 +3466,9 @@ Actor* Actor_Delete(ActorContext* actorCtx, Actor* actor, PlayState* play) {
     ActorDBEntry* dbEntry;
 
     player = GET_PLAYER(play);
+
+    // Execute before actor memory is freed
+    GameInteractor_ExecuteOnActorDestroy(actor);
 
     dbEntry = ActorDB_Retrieve(actor->id);
 
@@ -3501,11 +3534,13 @@ void func_800328D4(PlayState* play, ActorContext* actorCtx, Player* player, u32 
     sp84 = player->focusActor;
 
     while (actor != NULL) {
-        if ((actor->update != NULL) && ((Player*)actor != player) && CHECK_FLAG_ALL(actor->flags, ACTOR_FLAG_TARGETABLE)) {
+        if ((actor->update != NULL) && ((Player*)actor != player) &&
+            CHECK_FLAG_ALL(actor->flags, ACTOR_FLAG_ATTENTION_ENABLED)) {
 
             // This block below is for determining the closest actor to player in determining the volume
             // used while playing enemy bgm music
-            if ((actorCategory == ACTORCAT_ENEMY) && CHECK_FLAG_ALL(actor->flags, ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE) &&
+            if ((actorCategory == ACTORCAT_ENEMY) &&
+                CHECK_FLAG_ALL(actor->flags, ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE) &&
                 (actor->xyzDistToPlayerSq < SQ(500.0f)) && (actor->xyzDistToPlayerSq < sbgmEnemyDistSq)) {
                 actorCtx->targetCtx.bgmEnemy = actor;
                 sbgmEnemyDistSq = actor->xyzDistToPlayerSq;
@@ -3514,8 +3549,8 @@ void func_800328D4(PlayState* play, ActorContext* actorCtx, Player* player, u32 
             if (actor != sp84) {
                 var = func_8002EFC0(actor, player, D_8015BBFC);
                 if ((var < D_8015BBF0) && func_8002F090(actor, var) && func_80032880(play, actor) &&
-                    (!BgCheck_CameraLineTest1(&play->colCtx, &player->actor.focus.pos, &actor->focus.pos, &sp70,
-                                              &sp80, 1, 1, 1, 1, &sp7C) ||
+                    (!BgCheck_CameraLineTest1(&play->colCtx, &player->actor.focus.pos, &actor->focus.pos, &sp70, &sp80,
+                                              1, 1, 1, 1, &sp7C) ||
                      SurfaceType_IsIgnoredByProjectiles(&play->colCtx, sp80, sp7C))) {
                     if (actor->targetPriority != 0) {
                         if (actor->targetPriority < D_8015BBF8) {
@@ -3646,7 +3681,7 @@ void BodyBreak_Alloc(BodyBreak* bodyBreak, s32 count, PlayState* play) {
             bodyBreak->objectIds = ZELDA_ARENA_MALLOC_DEBUG(objectIdsSize);
 
             if (bodyBreak->objectIds != NULL) {
-                memset((u8*)bodyBreak->matrices,0, matricesSize);
+                memset((u8*)bodyBreak->matrices, 0, matricesSize);
                 memset((u8*)bodyBreak->dLists, 0, dListsSize);
                 memset((u8*)bodyBreak->objectIds, 0, objectIdsSize);
                 bodyBreak->val = 1;
@@ -3717,8 +3752,8 @@ s32 BodyBreak_SpawnParts(Actor* actor, BodyBreak* bodyBreak, PlayState* play, s1
 
         mtx = &bodyBreak->matrices[bodyBreak->count];
 
-        spawnedEnPart = (EnPart*)Actor_SpawnAsChild(&play->actorCtx, actor, play, ACTOR_EN_PART, mtx->xw,
-                                                    mtx->yw, mtx->zw, 0, 0, objBankIndex, type);
+        spawnedEnPart = (EnPart*)Actor_SpawnAsChild(&play->actorCtx, actor, play, ACTOR_EN_PART, mtx->xw, mtx->yw,
+                                                    mtx->zw, 0, 0, objBankIndex, type);
 
         if (spawnedEnPart != NULL) {
             Matrix_MtxFToYXZRotS(&bodyBreak->matrices[bodyBreak->count], &spawnedEnPart->actor.shape.rot, 0);
@@ -3862,8 +3897,7 @@ Actor* Actor_GetProjectileActor(PlayState* play, Actor* refActor, f32 radius) {
             //  place in memory and causing issues with Dark link behavior, and probably other places too
             if ((Math_Vec3f_DistXYZ(&refActor->world.pos, &actor->world.pos) > radius) ||
                 (actor->id == ACTOR_ARMS_HOOK && ((ArmsHook*)actor)->timer == 0) ||
-                (actor->id == ACTOR_EN_ARROW && ((EnArrow*)actor)->unk_210.x == 0)
-            ) {
+                (actor->id == ACTOR_EN_ARROW && ((EnArrow*)actor)->unk_210.x == 0)) {
                 actor = actor->next;
             } else {
                 deltaX = Math_SinS(actor->world.rot.y) * (actor->speedXZ * 10.0f);
@@ -4068,8 +4102,7 @@ void func_80033C30(Vec3f* arg0, Vec3f* arg1, u8 alpha, PlayState* play) {
 
     Matrix_Scale(arg1->x, 1.0f, arg1->z, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_OPA_DISP++, gCircleShadowDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
@@ -4159,8 +4192,7 @@ void Actor_DrawDoorLock(PlayState* play, s32 frame, s32 type) {
             Matrix_Scale(entry->chainsScale, entry->chainsScale, entry->chainsScale, MTXMODE_APPLY);
         }
 
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_MODELVIEW | G_MTX_LOAD);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
         gSPDisplayList(POLY_OPA_DISP++, entry->chainDL);
 
         if (i % 2) {
@@ -4176,8 +4208,7 @@ void Actor_DrawDoorLock(PlayState* play, s32 frame, s32 type) {
     Matrix_Put(&baseMtxF);
     Matrix_Scale(frame * 0.1f, frame * 0.1f, frame * 0.1f, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_OPA_DISP++, entry->lockDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
@@ -4515,8 +4546,8 @@ Gfx* func_80034B54(GraphicsContext* gfxCtx) {
     return displayList;
 }
 
-void func_80034BA0(PlayState* play, SkelAnime* skelAnime, OverrideLimbDraw overrideLimbDraw,
-                   PostLimbDraw postLimbDraw, Actor* actor, s16 alpha) {
+void func_80034BA0(PlayState* play, SkelAnime* skelAnime, OverrideLimbDraw overrideLimbDraw, PostLimbDraw postLimbDraw,
+                   Actor* actor, s16 alpha) {
     OPEN_DISPS(play->state.gfxCtx);
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
@@ -4532,8 +4563,8 @@ void func_80034BA0(PlayState* play, SkelAnime* skelAnime, OverrideLimbDraw overr
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-void func_80034CC4(PlayState* play, SkelAnime* skelAnime, OverrideLimbDraw overrideLimbDraw,
-                   PostLimbDraw postLimbDraw, Actor* actor, s16 alpha) {
+void func_80034CC4(PlayState* play, SkelAnime* skelAnime, OverrideLimbDraw overrideLimbDraw, PostLimbDraw postLimbDraw,
+                   Actor* actor, s16 alpha) {
     OPEN_DISPS(play->state.gfxCtx);
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
@@ -4548,25 +4579,25 @@ void func_80034CC4(PlayState* play, SkelAnime* skelAnime, OverrideLimbDraw overr
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-s16 func_80034DD4(Actor* actor, PlayState* play, s16 arg2, f32 arg3) {
+s16 Actor_UpdateAlphaByDistance(Actor* actor, PlayState* play, s16 alpha, f32 radius) {
     Player* player = GET_PLAYER(play);
-    f32 var;
+    f32 distance;
 
     if ((play->csCtx.state != CS_STATE_IDLE) || (gDbgCamEnabled)) {
-        var = Math_Vec3f_DistXYZ(&actor->world.pos, &play->view.eye) * 0.25f;
+        distance = Math_Vec3f_DistXYZ(&actor->world.pos, &play->view.eye) * 0.25f;
     } else {
-        var = Math_Vec3f_DistXYZ(&actor->world.pos, &player->actor.world.pos);
+        distance = Math_Vec3f_DistXYZ(&actor->world.pos, &player->actor.world.pos);
     }
 
-    if (arg3 < var) {
-        actor->flags &= ~ACTOR_FLAG_TARGETABLE;
-        Math_SmoothStepToS(&arg2, 0, 6, 0x14, 1);
+    if (radius < distance) {
+        actor->flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
+        Math_SmoothStepToS(&alpha, 0, 6, 0x14, 1);
     } else {
-        actor->flags |= ACTOR_FLAG_TARGETABLE;
-        Math_SmoothStepToS(&arg2, 0xFF, 6, 0x14, 1);
+        actor->flags |= ACTOR_FLAG_ATTENTION_ENABLED;
+        Math_SmoothStepToS(&alpha, 0xFF, 6, 0x14, 1);
     }
 
-    return arg2;
+    return alpha;
 }
 
 void Animation_ChangeByInfo(SkelAnime* skelAnime, AnimationInfo* animationInfo, s32 index) {
@@ -4605,13 +4636,13 @@ s32 func_80035124(Actor* actor, PlayState* play) {
             if (Actor_HasParent(actor, play)) {
                 actor->params = 1;
             } else if (!(actor->bgCheckFlags & 1)) {
-                Actor_MoveForward(actor);
+                Actor_MoveXZGravity(actor);
                 Math_SmoothStepToF(&actor->speedXZ, 0.0f, 1.0f, 0.1f, 0.0f);
             } else if ((actor->bgCheckFlags & 2) && (actor->velocity.y < -4.0f)) {
                 ret = 1;
             } else {
                 actor->shape.rot.x = actor->shape.rot.z = 0;
-                func_8002F580(actor, play);
+                Actor_OfferCarry(actor, play);
             }
             break;
         case 1:
@@ -4664,7 +4695,8 @@ s32 func_800354B4(PlayState* play, Actor* actor, f32 range, s16 arg3, s16 arg4, 
     var1 = (s16)(actor->yawTowardsPlayer + 0x8000) - player->actor.shape.rot.y;
     var2 = actor->yawTowardsPlayer - arg5;
 
-    if ((actor->xzDistToPlayer <= range) && (player->meleeWeaponState != 0) && (arg4 >= ABS(var1)) && (arg3 >= ABS(var2))) {
+    if ((actor->xzDistToPlayer <= range) && (player->meleeWeaponState != 0) && (arg4 >= ABS(var1)) &&
+        (arg3 >= ABS(var2))) {
         return true;
     } else {
         return false;
@@ -4704,7 +4736,8 @@ void func_800355B8(PlayState* play, Vec3f* pos) {
 u8 func_800355E4(PlayState* play, Collider* collider) {
     Player* player = GET_PLAYER(play);
 
-    if ((collider->acFlags & AC_TYPE_PLAYER) && (player->meleeWeaponState != 0) && (player->meleeWeaponAnimation == 0x16)) {
+    if ((collider->acFlags & AC_TYPE_PLAYER) && (player->meleeWeaponState != 0) &&
+        (player->meleeWeaponAnimation == 0x16)) {
         return true;
     } else {
         return false;
@@ -4799,13 +4832,12 @@ void func_80035844(Vec3f* arg0, Vec3f* arg1, Vec3s* arg2, s32 arg3) {
 /**
  * Spawns En_Part (Dissipating Flames) actor as a child of the given actor.
  */
-Actor* func_800358DC(Actor* actor, Vec3f* spawnPos, Vec3s* spawnRot, f32* arg3, s32 timer, s16* unused,
-                     PlayState* play, s16 params, s32 arg8) {
+Actor* func_800358DC(Actor* actor, Vec3f* spawnPos, Vec3s* spawnRot, f32* arg3, s32 timer, s16* unused, PlayState* play,
+                     s16 params, s32 arg8) {
     EnPart* spawnedEnPart;
 
-    spawnedEnPart =
-        (EnPart*)Actor_SpawnAsChild(&play->actorCtx, actor, play, ACTOR_EN_PART, spawnPos->x, spawnPos->y,
-                                    spawnPos->z, spawnRot->x, spawnRot->y, actor->objBankIndex, params);
+    spawnedEnPart = (EnPart*)Actor_SpawnAsChild(&play->actorCtx, actor, play, ACTOR_EN_PART, spawnPos->x, spawnPos->y,
+                                                spawnPos->z, spawnRot->x, spawnRot->y, actor->objBankIndex, params);
     if (spawnedEnPart != NULL) {
         spawnedEnPart->actor.scale = actor->scale;
         spawnedEnPart->actor.speedXZ = arg3[0];
@@ -4984,15 +5016,33 @@ void Flags_UnsetEventInf(s32 flag) {
  * Tests if "randomizerInf" flag is set.
  */
 s32 Flags_GetRandomizerInf(RandomizerInf flag) {
-    return gSaveContext.randomizerInf[flag >> 4] & (1 << (flag & 0xF));
+    // Randomizer flags are currently accessible from any quest (boss rush as an example)
+    /*
+    if (!IS_RANDO) {
+        LUSLOG_ERROR("Tried to get randomizerInf flag \"%d\" outside of rando", flag);
+        assert(false);
+        return 0;
+    }
+    */
+
+    return gSaveContext.ship.randomizerInf[flag >> 4] & (1 << (flag & 0xF));
 }
 
 /**
  * Sets "randomizerInf" flag.
  */
 void Flags_SetRandomizerInf(RandomizerInf flag) {
+    // Randomizer flags are currently accessible from any quest (boss rush as an example)
+    /*
+    if (!IS_RANDO) {
+        LUSLOG_ERROR("Tried to set randomizerInf flag \"%d\" outside of rando", flag);
+        assert(false);
+        return;
+    }
+    */
+
     s32 previouslyOff = !Flags_GetRandomizerInf(flag);
-    gSaveContext.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
+    gSaveContext.ship.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
     if (previouslyOff) {
         LUSLOG_INFO("RandomizerInf Flag Set - %#x", flag);
         GameInteractor_ExecuteOnFlagSet(FLAG_RANDOMIZER_INF, flag);
@@ -5003,8 +5053,17 @@ void Flags_SetRandomizerInf(RandomizerInf flag) {
  * Unsets "randomizerInf" flag.
  */
 void Flags_UnsetRandomizerInf(RandomizerInf flag) {
+    // Randomizer flags are currently accessible from any quest (boss rush as an example)
+    /*
+    if (!IS_RANDO) {
+        LUSLOG_ERROR("Tried to unset randomizerInf flag \"%d\" outside of rando", flag);
+        assert(false);
+        return;
+    }
+    */
+
     s32 previouslyOn = Flags_GetRandomizerInf(flag);
-    gSaveContext.randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
+    gSaveContext.ship.randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
     if (previouslyOn) {
         LUSLOG_INFO("RandomizerInf Flag Unset - %#x", flag);
         GameInteractor_ExecuteOnFlagUnset(FLAG_RANDOMIZER_INF, flag);
@@ -5312,7 +5371,9 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             }
             break;
         case 17:
-            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) &&
+                Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) &&
+                Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                 if (Flags_GetInfTable(INFTABLE_6C)) {
                     retTextId = 0x7008;
                 } else {
@@ -5326,7 +5387,9 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             retTextId = 0x702D;
             break;
         case 18:
-            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) &&
+                Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) &&
+                Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                 retTextId = 0x7006;
             } else {
                 if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG)) {
@@ -5357,14 +5420,18 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             }
             break;
         case 24:
-            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) &&
+                Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) &&
+                Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                 retTextId = 0x7044;
             } else {
                 retTextId = 0x7015;
             }
             break;
         case 25:
-            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) &&
+                Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) &&
+                Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                 retTextId = 0x7045;
             } else {
                 Flags_GetInfTable(INFTABLE_C2);
@@ -5372,7 +5439,9 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             }
             break;
         case 26:
-            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) &&
+                Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) &&
+                Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                 retTextId = 0x7046;
             } else {
                 Flags_GetInfTable(INFTABLE_C2);
@@ -5380,7 +5449,9 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             }
             break;
         case 27:
-            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) &&
+                Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) &&
+                Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                 retTextId = 0x7047;
             } else if (Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)) {
                 retTextId = 0x701A;
@@ -5395,7 +5466,9 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             }
             break;
         case 28:
-            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) &&
+                Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) &&
+                Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                 retTextId = 0x7048;
             } else {
                 Flags_GetInfTable(INFTABLE_CA);
@@ -5403,7 +5476,9 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             }
             break;
         case 29:
-            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) &&
+                Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) &&
+                Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                 retTextId = 0x7049;
             } else {
                 Flags_GetInfTable(INFTABLE_CC);
@@ -5411,7 +5486,9 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             }
             break;
         case 30:
-            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) &&
+                Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) &&
+                Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                 retTextId = 0x704A;
             } else {
                 Flags_GetInfTable(INFTABLE_CE);
@@ -5419,7 +5496,9 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             }
             break;
         case 31:
-            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) &&
+                Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) &&
+                Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                 retTextId = 0x704B;
             } else {
                 Flags_GetInfTable(INFTABLE_D0);
@@ -5427,7 +5506,9 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             }
             break;
         case 32:
-            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) &&
+                Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) &&
+                Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                 retTextId = 0x704C;
             } else {
                 Flags_GetInfTable(INFTABLE_D2);
@@ -5435,7 +5516,9 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             }
             break;
         case 33:
-            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) &&
+                Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) &&
+                Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                 retTextId = 0x704D;
             } else {
                 Flags_GetInfTable(INFTABLE_D4);
@@ -5687,7 +5770,8 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
                 retTextId = 0x2048;
             } else if (Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)) {
                 retTextId = 0x2047;
-            } else if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG) && !Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)) {
+            } else if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG) &&
+                       !Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)) {
                 retTextId = 0x2044;
             } else if (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_CHILD_MALON_AT_CASTLE_OR_MARKET)) {
                 if (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_INGO_AT_RANCH_BEFORE_TALON_RETURNS)) {
@@ -5757,8 +5841,8 @@ void func_80036E50(u16 textId, s16 arg1) {
                     Flags_SetInfTable(INFTABLE_0C);
                     return;
                 case 0x1033:
-                    Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultReverb);
+                    Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     Flags_SetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD);
                     Flags_SetInfTable(INFTABLE_0E);
                     return;
@@ -6221,7 +6305,8 @@ s32 func_80037CB8(PlayState* play, Actor* actor, s16 arg2) {
         case TEXT_STATE_CHOICE:
         case TEXT_STATE_EVENT:
             if (Message_ShouldAdvance(play) && func_80037C94(play, actor, arg2)) {
-                Audio_PlaySoundGeneral(NA_SE_SY_CANCEL, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                Audio_PlaySoundGeneral(NA_SE_SY_CANCEL, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 msgCtx->msgMode = MSGMODE_TEXT_CLOSING;
                 ret = true;
             }
@@ -6321,7 +6406,8 @@ s32 func_80038154(PlayState* play, Actor* actor, Vec3s* arg2, Vec3s* arg3, f32 a
     actor->focus.pos = actor->world.pos;
     actor->focus.pos.y += arg4;
 
-    if (!(((play->csCtx.state != CS_STATE_IDLE) || (gDbgCamEnabled)) && (gSaveContext.entranceIndex == ENTR_KOKIRI_FOREST_0))) {
+    if (!(((play->csCtx.state != CS_STATE_IDLE) || (gDbgCamEnabled)) &&
+          (gSaveContext.entranceIndex == ENTR_KOKIRI_FOREST_0))) {
         var = actor->yawTowardsPlayer - actor->shape.rot.y;
         abs_var = ABS(var);
         if (abs_var >= 0x4300) {
@@ -6330,7 +6416,8 @@ s32 func_80038154(PlayState* play, Actor* actor, Vec3s* arg2, Vec3s* arg3, f32 a
         }
     }
 
-    if (((play->csCtx.state != CS_STATE_IDLE) || (gDbgCamEnabled)) && (gSaveContext.entranceIndex == ENTR_KOKIRI_FOREST_0)) {
+    if (((play->csCtx.state != CS_STATE_IDLE) || (gDbgCamEnabled)) &&
+        (gSaveContext.entranceIndex == ENTR_KOKIRI_FOREST_0)) {
         sp2C = play->view.eye;
     } else {
         sp2C = player->actor.focus.pos;
@@ -6350,7 +6437,8 @@ s32 func_80038290(PlayState* play, Actor* actor, Vec3s* arg2, Vec3s* arg3, Vec3f
 
     actor->focus.pos = arg4;
 
-    if (!(((play->csCtx.state != CS_STATE_IDLE) || (gDbgCamEnabled)) && (gSaveContext.entranceIndex == ENTR_KOKIRI_FOREST_0))) {
+    if (!(((play->csCtx.state != CS_STATE_IDLE) || (gDbgCamEnabled)) &&
+          (gSaveContext.entranceIndex == ENTR_KOKIRI_FOREST_0))) {
         var = actor->yawTowardsPlayer - actor->shape.rot.y;
         abs_var = ABS(var);
         if (abs_var >= 0x4300) {
@@ -6359,7 +6447,8 @@ s32 func_80038290(PlayState* play, Actor* actor, Vec3s* arg2, Vec3s* arg3, Vec3f
         }
     }
 
-    if (((play->csCtx.state != CS_STATE_IDLE) || (gDbgCamEnabled)) && (gSaveContext.entranceIndex == ENTR_KOKIRI_FOREST_0)) {
+    if (((play->csCtx.state != CS_STATE_IDLE) || (gDbgCamEnabled)) &&
+        (gSaveContext.entranceIndex == ENTR_KOKIRI_FOREST_0)) {
         sp24 = play->view.eye;
     } else {
         sp24 = player->actor.focus.pos;

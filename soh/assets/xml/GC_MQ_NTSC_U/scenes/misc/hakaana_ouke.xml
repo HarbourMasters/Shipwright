@@ -1,0 +1,37 @@
+<Root>
+    <File Name="hakaana_ouke_scene" Segment="2">
+        <Texture Name="hakaana_ouke_sceneTex_002AE0" OutName="hakaana_ouke_sceneTex_002AE0" Format="rgba16" Width="32" Height="16" Offset="0x2AE0" AddedByScript="true"/>
+        <Texture Name="hakaana_ouke_sceneTex_002EE0" OutName="hakaana_ouke_sceneTex_002EE0" Format="rgba16" Width="32" Height="16" Offset="0x2EE0" AddedByScript="true"/>
+        <Texture Name="hakaana_ouke_sceneTex_0032E0" OutName="hakaana_ouke_sceneTex_0032E0" Format="rgba16" Width="32" Height="32" Offset="0x32E0" AddedByScript="true"/>
+        <Texture Name="hakaana_ouke_sceneTex_003AE0" OutName="hakaana_ouke_sceneTex_003AE0" Format="i4" Width="64" Height="64" Offset="0x3AE0" AddedByScript="true"/>
+        <Texture Name="hakaana_ouke_sceneTex_0042E0" OutName="hakaana_ouke_sceneTex_0042E0" Format="i4" Width="64" Height="64" Offset="0x42E0" AddedByScript="true"/>
+        <Cutscene Name="gSunSongGraveSunSongTeachCs" Offset="0x24A0"/>
+        <Cutscene Name="gSunSongGraveSunSongTeachPart2Cs" Offset="0x28E0"/>
+        <Scene Name="hakaana_ouke_scene" Offset="0x0"/>
+    </File>
+    <File Name="hakaana_ouke_room_0" Segment="3">
+        <Texture Name="hakaana_ouke_room_0Tex_004F30" OutName="hakaana_ouke_room_0Tex_004F30" Format="rgba16" Width="16" Height="64" Offset="0x4F30" AddedByScript="true"/>
+        <Texture Name="hakaana_ouke_room_0Tex_005730" OutName="hakaana_ouke_room_0Tex_005730" Format="rgba16" Width="32" Height="64" Offset="0x5730" AddedByScript="true"/>
+        <Texture Name="hakaana_ouke_room_0Tex_006730" OutName="hakaana_ouke_room_0Tex_006730" Format="i4" Width="128" Height="32" Offset="0x6730" AddedByScript="true"/>
+        <Texture Name="hakaana_ouke_room_0Tex_006F30" OutName="hakaana_ouke_room_0Tex_006F30" Format="i4" Width="64" Height="64" Offset="0x6F30" AddedByScript="true"/>
+        <Texture Name="hakaana_ouke_room_0Tex_007FF8" OutName="hakaana_ouke_room_0Tex_007FF8" Format="ia4" Width="32" Height="256" Offset="0x7FF8" AddedByScript="true"/>
+        <Texture Name="hakaana_ouke_room_0Tex_008FF8" OutName="hakaana_ouke_room_0Tex_008FF8" Format="ia8" Width="8" Height="256" Offset="0x8FF8" AddedByScript="true"/>
+        <Texture Name="hakaana_ouke_room_0Tex_0097F8" OutName="hakaana_ouke_room_0Tex_0097F8" Format="ia16" Width="128" Height="16" Offset="0x97F8" AddedByScript="true"/>
+        <Room Name="hakaana_ouke_room_0" Offset="0x0"/>
+    </File>
+    <File Name="hakaana_ouke_room_1" Segment="3">
+        <Texture Name="hakaana_ouke_room_1Tex_001FC8" OutName="hakaana_ouke_room_1Tex_001FC8" Format="rgba16" Width="32" Height="32" Offset="0x1FC8" AddedByScript="true"/>
+        <Texture Name="hakaana_ouke_room_1Tex_0027C8" OutName="hakaana_ouke_room_1Tex_0027C8" Format="rgba16" Width="32" Height="64" Offset="0x27C8" AddedByScript="true"/>
+        <Texture Name="hakaana_ouke_room_1Tex_004000" OutName="hakaana_ouke_room_1Tex_004000" Format="i8" Width="16" Height="128" Offset="0x4000" AddedByScript="true"/>
+        <Room Name="hakaana_ouke_room_1" Offset="0x0"/>
+    </File>
+    <File Name="hakaana_ouke_room_2" Segment="3">
+        <Texture Name="hakaana_ouke_room_2Tex_002778" OutName="hakaana_ouke_room_2Tex_002778" Format="i4" Width="128" Height="32" Offset="0x2778" AddedByScript="true"/>
+        <Texture Name="hakaana_ouke_room_2Tex_002F78" OutName="hakaana_ouke_room_2Tex_002F78" Format="rgba16" Width="32" Height="32" Offset="0x2F78" AddedByScript="true"/>
+        <Texture Name="hakaana_ouke_room_2Tex_003778" OutName="hakaana_ouke_room_2Tex_003778" Format="i4" Width="128" Height="32" Offset="0x3778" AddedByScript="true"/>
+        <Texture Name="hakaana_ouke_room_2Tex_003F78" OutName="hakaana_ouke_room_2Tex_003F78" Format="rgba16" Width="32" Height="32" Offset="0x3F78" AddedByScript="true"/>
+        <Texture Name="hakaana_ouke_room_2Tex_004778" OutName="hakaana_ouke_room_2Tex_004778" Format="i4" Width="64" Height="64" Offset="0x4778" AddedByScript="true"/>
+        <Texture Name="hakaana_ouke_room_2Tex_005108" OutName="hakaana_ouke_room_2Tex_005108" Format="ia8" Width="128" Height="32" Offset="0x5108" AddedByScript="true"/>
+        <Room Name="hakaana_ouke_room_2" Offset="0x0"/>
+    </File>
+</Root>

@@ -4,7 +4,7 @@
 
 #ifdef __cplusplus
 #include "GuiWindow.h"
-#include <array>
+#include <unordered_map>
 extern "C" {
 #endif
 /**
@@ -25,9 +25,8 @@ void MessageDebug_DisplayCustomMessage(const char* customMessage);
 #ifdef __cplusplus
 }
 
-
-class MessageViewer : public Ship::GuiWindow {
-public:
+class MessageViewer final : public Ship::GuiWindow {
+  public:
     static inline const char* TABLE_ID = "MessageViewer";
     using GuiWindow::GuiWindow;
 
@@ -37,12 +36,11 @@ public:
 
     virtual ~MessageViewer() = default;
 
-private:
+  private:
     void DisplayExistingMessage() const;
     void DisplayCustomMessage() const;
 
     static constexpr uint16_t MAX_STRING_SIZE = 1024;
-    static constexpr std::array<const char*, LANGUAGE_MAX> mLanguages = {"English", "German", "French"};
     static constexpr int HEXADECIMAL = 0;
     static constexpr int DECIMAL = 1;
     char* mTableIdBuf;
@@ -50,13 +48,12 @@ private:
     char* mTextIdBuf;
     uint16_t mTextId;
     int mTextIdBase = HEXADECIMAL;
-    size_t mLanguage = LANGUAGE_ENG;
+    int32_t mLanguage = LANGUAGE_ENG;
     char* mCustomMessageBuf;
     std::string mCustomMessageString;
     bool mDisplayExistingMessageClicked = false;
     bool mDisplayCustomMessageClicked = false;
 };
 
-
 #endif //__cplusplus
-#endif //CUSTOMMESSAGEDEBUGGER_H
+#endif // CUSTOMMESSAGEDEBUGGER_H
