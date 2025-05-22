@@ -1311,7 +1311,25 @@ void Better_Select_PrintMenu(SelectContext* this, GfxPrint* printer) {
 
     GfxPrint_SetColor(printer, 255, 255, 255, 255);
     GfxPrint_SetPos(printer, 12, 2);
-    GfxPrint_Printf(printer, "Scene Selection");
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"), 1)) {
+        switch (gSaveContext.language) {
+            case LANGUAGE_ENG:
+            default:
+                GfxPrint_Printf(printer, "Scene Selection");
+                break;
+            case LANGUAGE_GER:
+                GfxPrint_Printf(printer, "Szenenauswahl");
+                break;
+            case LANGUAGE_FRA:
+                GfxPrint_Printf(printer, "Selection de Scene");
+                break;
+            case LANGUAGE_JPN:
+                GfxPrint_Printf(printer, "シーンセレクト");
+                break;
+        }
+    } else {
+        GfxPrint_Printf(printer, "Scene Selection");
+    }
     GfxPrint_SetColor(printer, 255, 255, 255, 255);
 
     for (i = 0; i < 20; i++) {
