@@ -182,9 +182,9 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 // LACS
                 u8 meetsLACSRequirements =
                     LINK_IS_ADULT &&
-                    (EntranceDB::Instance->RetrieveEntry(gSaveContext.entranceIndex).entry.sceneId == SCENE_TEMPLE_OF_TIME) &&
-                    CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) &&
-                    CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
+                    (EntranceDB::Instance->RetrieveEntry(gSaveContext.entranceIndex).entry.sceneId ==
+                     SCENE_TEMPLE_OF_TIME) &&
+                    CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
                     !Flags_GetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS);
                 if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_LIGHT_ARROWS, meetsLACSRequirements)) {
                     Flags_SetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS);

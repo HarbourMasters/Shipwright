@@ -34,7 +34,8 @@ extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneId, s32 spawn) {
     if (inNonSharedScene) {
         sceneVersion = ResourceMgr_IsGameMasterQuest() ? "mq" : "nonmq";
     }
-    std::string scenePath = StringHelper::Sprintf("scenes/%s/%s/%s", sceneVersion.c_str(), entry.name.c_str(), entry.name.c_str());
+    std::string scenePath =
+        StringHelper::Sprintf("scenes/%s/%s/%s", sceneVersion.c_str(), entry.name.c_str(), entry.name.c_str());
 
     play->sceneSegment = OTRPlay_LoadFile(play, scenePath.c_str());
 

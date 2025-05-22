@@ -1434,94 +1434,95 @@ void Inventory_DoBA(u8 cRight) {
         // ITEM_SONG_NOCTURNE and ITEM_SONG_PRELUDE land in padding bytes
         gSaveContext.equips.buttonItems[0] = 0;
     } else if (cRight >= ITEM_SONG_LULLABY) {
-        // The rest of the items fall into the saved scene flags. Let's calculate the scene and which field it pulls from
+        // The rest of the items fall into the saved scene flags. Let's calculate the scene and which field it pulls
+        // from
         u32 offset = cRight - ITEM_SONG_LULLABY;
         u32 scene = offset / sizeof(SavedSceneFlags);
         switch (offset % sizeof(SavedSceneFlags)) {
-        case 0:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].chest >> 24) & 0xFF;
-            break;
-        case 1:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].chest >> 16) & 0xFF;
-            break;
-        case 2:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].chest >> 8) & 0xFF;
-            break;
-        case 3:
-            gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].chest & 0xFF;
-            break;
-        case 4:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].swch >> 24) & 0xFF;
-            break;
-        case 5:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].swch >> 16) & 0xFF;
-            break;
-        case 6:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].swch >> 8) & 0xFF;
-            break;
-        case 7:
-            gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].swch & 0xFF;
-            break;
-        case 8:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].clear >> 24) & 0xFF;
-            break;
-        case 9:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].clear >> 16) & 0xFF;
-            break;
-        case 10:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].clear >> 8) & 0xFF;
-            break;
-        case 11:
-            gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].clear & 0xFF;
-            break;
-        case 12:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].collect >> 24) & 0xFF;
-            break;
-        case 13:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].collect >> 16) & 0xFF;
-            break;
-        case 14:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].collect >> 8) & 0xFF;
-            break;
-        case 15:
-            gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].collect & 0xFF;
-            break;
-        case 16:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].unk >> 24) & 0xFF;
-            break;
-        case 17:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].unk >> 16) & 0xFF;
-            break;
-        case 18:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].unk >> 8) & 0xFF;
-            break;
-        case 19:
-            gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].unk & 0xFF;
-            break;
-        case 20:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].rooms >> 24) & 0xFF;
-            break;
-        case 21:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].rooms >> 16) & 0xFF;
-            break;
-        case 22:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].rooms >> 8) & 0xFF;
-            break;
-        case 23:
-            gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].rooms & 0xFF;
-            break;
-        case 24:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].floors >> 24) & 0xFF;
-            break;
-        case 25:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].floors >> 16) & 0xFF;
-            break;
-        case 26:
-            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].floors >> 8) & 0xFF;
-            break;
-        case 27:
-            gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].floors & 0xFF;
-            break;
+            case 0:
+                gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].chest >> 24) & 0xFF;
+                break;
+            case 1:
+                gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].chest >> 16) & 0xFF;
+                break;
+            case 2:
+                gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].chest >> 8) & 0xFF;
+                break;
+            case 3:
+                gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].chest & 0xFF;
+                break;
+            case 4:
+                gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].swch >> 24) & 0xFF;
+                break;
+            case 5:
+                gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].swch >> 16) & 0xFF;
+                break;
+            case 6:
+                gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].swch >> 8) & 0xFF;
+                break;
+            case 7:
+                gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].swch & 0xFF;
+                break;
+            case 8:
+                gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].clear >> 24) & 0xFF;
+                break;
+            case 9:
+                gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].clear >> 16) & 0xFF;
+                break;
+            case 10:
+                gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].clear >> 8) & 0xFF;
+                break;
+            case 11:
+                gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].clear & 0xFF;
+                break;
+            case 12:
+                gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].collect >> 24) & 0xFF;
+                break;
+            case 13:
+                gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].collect >> 16) & 0xFF;
+                break;
+            case 14:
+                gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].collect >> 8) & 0xFF;
+                break;
+            case 15:
+                gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].collect & 0xFF;
+                break;
+            case 16:
+                gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].unk >> 24) & 0xFF;
+                break;
+            case 17:
+                gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].unk >> 16) & 0xFF;
+                break;
+            case 18:
+                gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].unk >> 8) & 0xFF;
+                break;
+            case 19:
+                gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].unk & 0xFF;
+                break;
+            case 20:
+                gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].rooms >> 24) & 0xFF;
+                break;
+            case 21:
+                gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].rooms >> 16) & 0xFF;
+                break;
+            case 22:
+                gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].rooms >> 8) & 0xFF;
+                break;
+            case 23:
+                gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].rooms & 0xFF;
+                break;
+            case 24:
+                gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].floors >> 24) & 0xFF;
+                break;
+            case 25:
+                gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].floors >> 16) & 0xFF;
+                break;
+            case 26:
+                gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].floors >> 8) & 0xFF;
+                break;
+            case 27:
+                gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].floors & 0xFF;
+                break;
         }
     }
 }

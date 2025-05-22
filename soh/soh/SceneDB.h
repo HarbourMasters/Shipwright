@@ -120,7 +120,7 @@ typedef struct {
 #include <map>
 
 class SceneDB {
-public:
+  public:
     static SceneDB* Instance;
 
     struct Init {
@@ -230,13 +230,18 @@ public:
         void SetTitleCard(const std::string& newTitleCard);
         void SetEponaSpawnPos(const std::vector<Vec3s>& newSpawnPos);
         void SetDungeonPalettes(const std::vector<s16>& newDungeonPalettes);
-        void SetDungeonNameTextures(const std::string& newNameEngTexture, const std::string& newNameGerTexture, const std::string& newNameFraTexture);
+        void SetDungeonNameTextures(const std::string& newNameEngTexture, const std::string& newNameGerTexture,
+                                    const std::string& newNameFraTexture);
         void SetDungeonFloors(const std::vector<Init::FloorInit>& newDungeonFloors);
-        void SetDungeonFloors(const std::vector<SceneDBFloor>& newDungeonFloors, const std::vector<FloorInfo>& newDungeonFloorInfo);
+        void SetDungeonFloors(const std::vector<SceneDBFloor>& newDungeonFloors,
+                              const std::vector<FloorInfo>& newDungeonFloorInfo);
         void SetDungeonRooms(const std::vector<Init::RoomInit>& newDungeonRooms);
-        void SetDungeonRooms(const std::vector<SceneDBRoom>& newDungeonRooms, const std::vector<RoomInfo>& newDungeonRoomInfo);
-        void SetDungeonIntraRoomTransitions(const std::vector<Init::IntraRoomTransitionInit>& newDungeonIntraRoomTransitions);
-        void SetDungeonIntraRoomTransitions(const std::vector<SceneDBIntraRoomTransition>& newDungeonIntraRoomTransitions);
+        void SetDungeonRooms(const std::vector<SceneDBRoom>& newDungeonRooms,
+                             const std::vector<RoomInfo>& newDungeonRoomInfo);
+        void SetDungeonIntraRoomTransitions(
+            const std::vector<Init::IntraRoomTransitionInit>& newDungeonIntraRoomTransitions);
+        void
+        SetDungeonIntraRoomTransitions(const std::vector<SceneDBIntraRoomTransition>& newDungeonIntraRoomTransitions);
         void SetWorldMinimapTexture(const std::string& newWorldMinimapTexture);
         void SetMapMarkData(const bool isMQ);
         void SetPauseMapMarkData(const bool isMQ);
@@ -268,7 +273,7 @@ public:
 
     size_t GetNumEntries();
 
-private:
+  private:
     Entry& AddEntry(const std::string& name, const std::string& desc, size_t index);
 
     std::vector<Entry> db;
@@ -277,7 +282,7 @@ private:
 };
 
 class EntranceDB {
-public:
+  public:
     static EntranceDB* Instance;
 
     struct Init {
@@ -320,14 +325,16 @@ public:
     s32 CalcId(s32 entrance, s32 newLayer);
 
     void Copy(s32 from, s32 to);
-private:
+
+  private:
     Entry& AddEntry(const std::string& name, const std::string& desc, size_t index);
 
     std::vector<Entry> db;
     std::unordered_map<std::string, int> nameTable;
     size_t nextFreeId = 0;
 
-    // This keeps a mapping of a scene, spawn, and layer to the resulting entrance ID, since we can assume no order about them
+    // This keeps a mapping of a scene, spawn, and layer to the resulting entrance ID, since we can assume no order
+    // about them
     struct IdLookupKey {
         s32 sceneId;
         s32 spawn;

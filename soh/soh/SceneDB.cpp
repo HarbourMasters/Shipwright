@@ -11,8 +11,8 @@ EntranceDB* EntranceDB::Instance;
 
 extern const std::vector<SceneDB::Init> sceneDBInit;
 
-// We need a different struct than EntranceDB::Init (scene is a int not a string) because tables/entrance_table.h has the scene
-// as an enum, which we do not have a compile-time way to convert to a string
+// We need a different struct than EntranceDB::Init (scene is a int not a string) because tables/entrance_table.h has
+// the scene as an enum, which we do not have a compile-time way to convert to a string
 struct EntranceTableInit {
     std::string name;
     std::string desc;
@@ -41,7 +41,7 @@ SceneDB::SceneDB() {
 
     SceneDB::Entry& entry = RetrieveEntry(SCENE_BOTTOM_OF_THE_WELL);
     entry.entry.epona.allowed = true;
-    entry.SetEponaSpawnPos({ { -630, 0, 53} });
+    entry.SetEponaSpawnPos({ { -630, 0, 53 } });
 }
 
 // Adds an scene at the given index. The name must be unique.
@@ -107,7 +107,8 @@ SceneDB::Entry& SceneDB::AddEntry(const Init& init) {
     }
     entry.entry.dungeonData.bossFloor = init.dungeonData.bossFloor;
     entry.SetDungeonPalettes(init.dungeonData.palettes);
-    entry.SetDungeonNameTextures(init.dungeonData.nameEngTexture, init.dungeonData.nameGerTexture, init.dungeonData.nameFraTexture);
+    entry.SetDungeonNameTextures(init.dungeonData.nameEngTexture, init.dungeonData.nameGerTexture,
+                                 init.dungeonData.nameFraTexture);
     entry.SetDungeonFloors(init.dungeonData.floors);
     entry.SetDungeonRooms(init.dungeonData.rooms);
     entry.SetDungeonIntraRoomTransitions(init.dungeonData.intraRoomTransitions);
@@ -257,7 +258,8 @@ void SceneDB::Entry::SetDungeonPalettes(const std::vector<s16>& newDungeonPalett
     entry.dungeonData.numPalettes = dungeonPalettes.size();
 }
 
-void SceneDB::Entry::SetDungeonNameTextures(const std::string& newNameEngTexture, const std::string& newNameGerTexture, const std::string& newNameFraTexture) {
+void SceneDB::Entry::SetDungeonNameTextures(const std::string& newNameEngTexture, const std::string& newNameGerTexture,
+                                            const std::string& newNameFraTexture) {
     nameEngTexture = newNameEngTexture;
     nameGerTexture = newNameGerTexture;
     nameFraTexture = newNameFraTexture;
@@ -276,8 +278,11 @@ void SceneDB::Entry::SetDungeonFloors(const std::vector<Init::FloorInit>& newDun
     dungeonFloorInfo.reserve(newDungeonFloors.size());
 
     for (size_t i = 0; i < newDungeonFloors.size(); i++) {
-        dungeonFloors.push_back(SceneDBFloor{ static_cast<FloorID>(newDungeonFloors[i].id), newDungeonFloors[i].height, nullptr, 0, nullptr, nullptr, nullptr, 0, nullptr, 0 });
-        dungeonFloorInfo.push_back(FloorInfo{ newDungeonFloors[i].palettes, newDungeonFloors[i].mapLeftTexture, newDungeonFloors[i].mapRightTexture, newDungeonFloors[i].chestMarks, newDungeonFloors[i].bossMarks });
+        dungeonFloors.push_back(SceneDBFloor{ static_cast<FloorID>(newDungeonFloors[i].id), newDungeonFloors[i].height,
+                                              nullptr, 0, nullptr, nullptr, nullptr, 0, nullptr, 0 });
+        dungeonFloorInfo.push_back(FloorInfo{ newDungeonFloors[i].palettes, newDungeonFloors[i].mapLeftTexture,
+                                              newDungeonFloors[i].mapRightTexture, newDungeonFloors[i].chestMarks,
+                                              newDungeonFloors[i].bossMarks });
     }
 
     for (size_t i = 0; i < dungeonFloors.size(); i++) {
@@ -293,7 +298,8 @@ void SceneDB::Entry::SetDungeonFloors(const std::vector<Init::FloorInit>& newDun
     std::copy(dungeonFloors.begin(), dungeonFloors.end(), entry.dungeonData.floors);
 }
 
-void SceneDB::Entry::SetDungeonFloors(const std::vector<SceneDBFloor>& newDungeonFloors, const std::vector<FloorInfo>& newDungeonFloorInfo) {
+void SceneDB::Entry::SetDungeonFloors(const std::vector<SceneDBFloor>& newDungeonFloors,
+                                      const std::vector<FloorInfo>& newDungeonFloorInfo) {
     assert(newDungeonFloors.size() == 8 || newDungeonFloors.size() == 0);
     assert(newDungeonFloorInfo.size() == 8 || newDungeonFloorInfo.size() == 0);
     assert(newDungeonFloors.size() == newDungeonFloorInfo.size());
@@ -320,8 +326,10 @@ void SceneDB::Entry::SetDungeonRooms(const std::vector<Init::RoomInit>& newDunge
     dungeonRoomInfo.reserve(newDungeonRooms.size());
 
     for (size_t i = 0; i < newDungeonRooms.size(); i++) {
-        dungeonRooms.push_back(SceneDBRoom{ newDungeonRooms[i].compassOffsetX, newDungeonRooms[i].compassOffsetY, nullptr, nullptr, 0, nullptr, 0 });
-        dungeonRoomInfo.push_back(RoomInfo{ newDungeonRooms[i].minimapTexture, newDungeonRooms[i].chestMarks, newDungeonRooms[i].bossMarks });
+        dungeonRooms.push_back(SceneDBRoom{ newDungeonRooms[i].compassOffsetX, newDungeonRooms[i].compassOffsetY,
+                                            nullptr, nullptr, 0, nullptr, 0 });
+        dungeonRoomInfo.push_back(
+            RoomInfo{ newDungeonRooms[i].minimapTexture, newDungeonRooms[i].chestMarks, newDungeonRooms[i].bossMarks });
     }
 
     for (size_t i = 0; i < dungeonRooms.size(); i++) {
@@ -335,7 +343,8 @@ void SceneDB::Entry::SetDungeonRooms(const std::vector<Init::RoomInit>& newDunge
     entry.dungeonData.numRooms = dungeonRooms.size();
 }
 
-void SceneDB::Entry::SetDungeonRooms(const std::vector<SceneDBRoom>& newDungeonRooms, const std::vector<RoomInfo>& newDungeonRoomInfo) {
+void SceneDB::Entry::SetDungeonRooms(const std::vector<SceneDBRoom>& newDungeonRooms,
+                                     const std::vector<RoomInfo>& newDungeonRoomInfo) {
     dungeonRooms = newDungeonRooms;
     dungeonRoomInfo = newDungeonRoomInfo;
     for (size_t i = 0; i < dungeonRooms.size(); i++) {
@@ -349,19 +358,23 @@ void SceneDB::Entry::SetDungeonRooms(const std::vector<SceneDBRoom>& newDungeonR
     entry.dungeonData.numRooms = dungeonRooms.size();
 }
 
-void SceneDB::Entry::SetDungeonIntraRoomTransitions(const std::vector<Init::IntraRoomTransitionInit>& newDungeonIntraRoomTransitions) {
+void SceneDB::Entry::SetDungeonIntraRoomTransitions(
+    const std::vector<Init::IntraRoomTransitionInit>& newDungeonIntraRoomTransitions) {
     dungeonIntraRoomTransitions.clear();
 
     dungeonIntraRoomTransitions.reserve(newDungeonIntraRoomTransitions.size());
 
     for (size_t i = 0; i < newDungeonIntraRoomTransitions.size(); i++) {
-        dungeonIntraRoomTransitions.push_back(SceneDBIntraRoomTransition{ newDungeonIntraRoomTransitions[i].fromRoom, newDungeonIntraRoomTransitions[i].toRoom, newDungeonIntraRoomTransitions[i].toFloor });
+        dungeonIntraRoomTransitions.push_back(SceneDBIntraRoomTransition{ newDungeonIntraRoomTransitions[i].fromRoom,
+                                                                          newDungeonIntraRoomTransitions[i].toRoom,
+                                                                          newDungeonIntraRoomTransitions[i].toFloor });
     }
     entry.dungeonData.intraRoomTransitions = dungeonIntraRoomTransitions.data();
     entry.dungeonData.numIntraRoomTransitions = dungeonIntraRoomTransitions.size();
 }
 
-void SceneDB::Entry::SetDungeonIntraRoomTransitions(const std::vector<SceneDBIntraRoomTransition>& newDungeonIntraRoomTransitions) {
+void SceneDB::Entry::SetDungeonIntraRoomTransitions(
+    const std::vector<SceneDBIntraRoomTransition>& newDungeonIntraRoomTransitions) {
     dungeonIntraRoomTransitions = newDungeonIntraRoomTransitions;
     entry.dungeonData.intraRoomTransitions = dungeonIntraRoomTransitions.data();
     entry.dungeonData.numIntraRoomTransitions = dungeonIntraRoomTransitions.size();
@@ -384,298 +397,278 @@ struct MqMapMarkInit {
 std::vector<MqMapMarkInit> mqMapMarkInit = {
     // Deku Tree
     {
-        {
-            { { { 3, 71, 50 } }, {} },
-            { {}, {} },
-            { { { 1, 64, 62 } }, {} },
-            { { { 4, 76, 37 } }, {} },
-            { {}, {} },
-            { { { 0, 46, 50 }, { 5, 76, 52 } }, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, { { -1, 50, 23 } } },
-            { { { 2, 46, 50 }, { 6, 58, 60 } }, {} },
-            { {}, {} },
-            { {}, {} }
-        },
+        { { { { 3, 71, 50 } }, {} },
+          { {}, {} },
+          { { { 1, 64, 62 } }, {} },
+          { { { 4, 76, 37 } }, {} },
+          { {}, {} },
+          { { { 0, 46, 50 }, { 5, 76, 52 } }, {} },
+          { {}, {} },
+          { {}, {} },
+          { {}, {} },
+          { {}, { { -1, 50, 23 } } },
+          { { { 2, 46, 50 }, { 6, 58, 60 } }, {} },
+          { {}, {} },
+          { {}, {} } },
     },
     // Dodongo's Cavern
-    {
-        {
-            { { { 0, 69, 14 }, { 4, 69, 30 } }, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { { { 5, 54, 54 } }, {} },
-            { { { 2, 69, 54 } }, {} },
-            { {}, { { -1, 37, 49 } } },
-            { {}, {} },
-            { { { 3, 59, 53 } }, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { { { 1, 68, 54 } }, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-        }
-    },
+    { {
+        { { { 0, 69, 14 }, { 4, 69, 30 } }, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { { { 5, 54, 54 } }, {} },
+        { { { 2, 69, 54 } }, {} },
+        { {}, { { -1, 37, 49 } } },
+        { {}, {} },
+        { { { 3, 59, 53 } }, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { { { 1, 68, 54 } }, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+    } },
     // Jabu-Jabu's Belly
-    {
-        {
-            { { { 3, 66, 50 }, { 5, 72, 47 } }, {} },
-            { { { 7, 72, 54 } }, {} },
-            { {}, {} },
-            { { { 4, 64, 62 }, { 8, 79, 38 } }, {} },
-            { {}, {} },
-            { { { 10, 64, 45 } }, { { -1, 67, 32 } } },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { { { 9, 68, 45 } }, {} },
-            { {}, {} },
-            { {}, {} },
-            { { { 1, 79, 33 }, { 6, 61, 41 } }, {} },
-            { { { 0, 48, 57 }, { 2, 77, 55 } }, {} },
-            // Jabu-Jabu's Belly minimap 16
-            // SoH [General] - This entry corresponds to Big Octorok's room and is missing in the MQ game
-            // N64 hardware does an OoB read and lands on MQ Forest Temple room 0
-            // To avoid UB with OoB for SoH, the correct entry is now added below
-            { {}, {} },
-        }
-    },
+    { {
+        { { { 3, 66, 50 }, { 5, 72, 47 } }, {} },
+        { { { 7, 72, 54 } }, {} },
+        { {}, {} },
+        { { { 4, 64, 62 }, { 8, 79, 38 } }, {} },
+        { {}, {} },
+        { { { 10, 64, 45 } }, { { -1, 67, 32 } } },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { { { 9, 68, 45 } }, {} },
+        { {}, {} },
+        { {}, {} },
+        { { { 1, 79, 33 }, { 6, 61, 41 } }, {} },
+        { { { 0, 48, 57 }, { 2, 77, 55 } }, {} },
+        // Jabu-Jabu's Belly minimap 16
+        // SoH [General] - This entry corresponds to Big Octorok's room and is missing in the MQ game
+        // N64 hardware does an OoB read and lands on MQ Forest Temple room 0
+        // To avoid UB with OoB for SoH, the correct entry is now added below
+        { {}, {} },
+    } },
     // Forest Temple
-    {
-        {
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { { { 0, 72, 57 } }, {} },
-            { { { 1, 69, 39 }, { 9, 62, 65 } }, {} },
-            { {}, {} },
-            { { { 9, 71, 59 } }, {} },
-            { {}, {} },
-            { {}, {} },
-            { { { 13, 80, 53 } }, {} },
-            { { { 15, 49, 50 } }, {} },
-            { {}, {} },
-            { { { 6, 65, 53 } }, {} },
-            { {}, {} },
-            { { { 11, 39, 35 } }, { { -1, 53, 5 } } },
-            { { { 2, 65, 54 } }, {} },
-            { { { 14, 64, 31 } }, {} },
-            { {}, {} },
-            { {}, {} },
-            { { { 3, 75, 53 } }, {} },
-            { { { 12, 69, 52 } }, {} },
-            { { { 5, 58, 27 } }, {} },
-            { {}, {} },
-            { {}, {} },
-        }
-    },
+    { {
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { { { 0, 72, 57 } }, {} },
+        { { { 1, 69, 39 }, { 9, 62, 65 } }, {} },
+        { {}, {} },
+        { { { 9, 71, 59 } }, {} },
+        { {}, {} },
+        { {}, {} },
+        { { { 13, 80, 53 } }, {} },
+        { { { 15, 49, 50 } }, {} },
+        { {}, {} },
+        { { { 6, 65, 53 } }, {} },
+        { {}, {} },
+        { { { 11, 39, 35 } }, { { -1, 53, 5 } } },
+        { { { 2, 65, 54 } }, {} },
+        { { { 14, 64, 31 } }, {} },
+        { {}, {} },
+        { {}, {} },
+        { { { 3, 75, 53 } }, {} },
+        { { { 12, 69, 52 } }, {} },
+        { { { 5, 58, 27 } }, {} },
+        { {}, {} },
+        { {}, {} },
+    } },
     // Fire Temple
-    {
-        {
-            { {}, {} },
-            { {}, {} },
-            { { { 7, 53, 70 } }, { { -1, 40, 47 } } },
-            { {}, {} },
-            { { { 11, 57, 48 } }, {} },
-            { { { 3, 67, 73 }, { 6, 58, 76 } }, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { { { 2, 78, 62 }, { 12, 77, 58 } }, {} },
-            { {}, {} },
-            { { { 4, 60, 54 } }, {} },
-            { {}, {} },
-            { {}, {} },
-            { { { 1, 72, 68 } }, {} },
-            { { { 8, 66, 57 } }, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { { { 5, 51, 61 } }, {} },
-            { {}, {} },
-            { {}, {} },
-        }
-    },
+    { {
+        { {}, {} },
+        { {}, {} },
+        { { { 7, 53, 70 } }, { { -1, 40, 47 } } },
+        { {}, {} },
+        { { { 11, 57, 48 } }, {} },
+        { { { 3, 67, 73 }, { 6, 58, 76 } }, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { { { 2, 78, 62 }, { 12, 77, 58 } }, {} },
+        { {}, {} },
+        { { { 4, 60, 54 } }, {} },
+        { {}, {} },
+        { {}, {} },
+        { { { 1, 72, 68 } }, {} },
+        { { { 8, 66, 57 } }, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { { { 5, 51, 61 } }, {} },
+        { {}, {} },
+        { {}, {} },
+    } },
     // Water Temple
-    {
-        {
-            { {}, {} },
-            { {}, {} },
-            { { { 6, 81, 68 } }, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { { { 5, 75, 55 } }, {} },
-            { {}, {} },
-            { {}, { { -1, 77, 40 } } },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { { { 1, 74, 61 } }, {} },
-            { { { 2, 73, 65 } }, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { { { 0, 73, 63 } }, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-        }
-    },
+    { {
+        { {}, {} },
+        { {}, {} },
+        { { { 6, 81, 68 } }, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { { { 5, 75, 55 } }, {} },
+        { {}, {} },
+        { {}, { { -1, 77, 40 } } },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { { { 1, 74, 61 } }, {} },
+        { { { 2, 73, 65 } }, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { { { 0, 73, 63 } }, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+    } },
     // Spirit Temple
-    {
-        {
-            { { { 26, 27, 35 }, { 27, 36, 35 }, { 30, 27, 28 }, { 31, 36, 28 } }, {} },
-            { { { 29, 67, 63 } }, {} },
-            { {}, {} },
-            { { { 0, 71, 62 }, { 8, 71, 48 } }, {} },
-            { {}, {} },
-            { { { 3, 56, 54 }, { 15, 69, 42 } }, {} },
-            { { { 28, 60, 54 } }, {} },
-            { {}, {} },
-            { { { 1, 76, 40 } }, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { { { 7, 70, 53 } }, {} },
-            { {}, {} },
-            { { { 4, 68, 42 } }, {} },
-            { {}, {} },
-            { {}, {} },
-            { { { 25, 78, 58 } }, {} },
-            { { { 24, 78, 58 } }, {} },
-            { {}, {} },
-            { {}, {} },
-            { { { 5, 71, 55 } }, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { { { 18, 75, 54 } }, {} },
-            { {}, {} },
-            { { { 6, 78, 55 }, { 12, 70, 70 } }, {} },
-            { { { 2, 76, 37 } }, { { -1, 57, 23 } } },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-        }
-    },
+    { {
+        { { { 26, 27, 35 }, { 27, 36, 35 }, { 30, 27, 28 }, { 31, 36, 28 } }, {} },
+        { { { 29, 67, 63 } }, {} },
+        { {}, {} },
+        { { { 0, 71, 62 }, { 8, 71, 48 } }, {} },
+        { {}, {} },
+        { { { 3, 56, 54 }, { 15, 69, 42 } }, {} },
+        { { { 28, 60, 54 } }, {} },
+        { {}, {} },
+        { { { 1, 76, 40 } }, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { { { 7, 70, 53 } }, {} },
+        { {}, {} },
+        { { { 4, 68, 42 } }, {} },
+        { {}, {} },
+        { {}, {} },
+        { { { 25, 78, 58 } }, {} },
+        { { { 24, 78, 58 } }, {} },
+        { {}, {} },
+        { {}, {} },
+        { { { 5, 71, 55 } }, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { { { 18, 75, 54 } }, {} },
+        { {}, {} },
+        { { { 6, 78, 55 }, { 12, 70, 70 } }, {} },
+        { { { 2, 76, 37 } }, { { -1, 57, 23 } } },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+    } },
     // Shadow Temple
-    {
-        {
-            { {}, {} },
-            { { { 1, 77, 64 } }, {} },
-            { {}, {} },
-            { {}, { { -1, 77, 76 } } },
-            { { { 7, 76, 65 } }, {} },
-            { {}, {} },
-            { { { 2, 83, 67 }, { 14, 84, 59 } }, {} },
-            { { { 3, 76, 67 } }, {} },
-            { {}, {} },
-            { {}, {} },
-            { { { 4, 78, 62 }, { 5, 74, 62 }, { 6, 71, 68 } }, {} },
-            { { { 9, 77, 64 } }, {} },
-            { {}, {} },
-            { { { 10, 71, 65 }, { 11, 80, 65 } }, {} },
-            { { { 16, 73, 64 } }, {} },
-            { {}, {} },
-            { { { 12, 87, 64 }, { 22, 87, 68 } }, {} },
-            { { { 13, 77, 66 } }, {} },
-            { {}, {} },
-            { { { 21, 78, 66 } }, {} },
-            { { { 8, 76, 66 }, { 20, 78, 68 } }, {} },
-            { { { 14, 77, 62 } }, {} },
-            { {}, {} },
-            { { { 15, 56, 67 } }, {} },
-            { {}, {} },
-            { { { 16, 73, 64 } }, {} },
-            { { { 14, 77, 62 } }, {} },
-        }
-    },
+    { {
+        { {}, {} },
+        { { { 1, 77, 64 } }, {} },
+        { {}, {} },
+        { {}, { { -1, 77, 76 } } },
+        { { { 7, 76, 65 } }, {} },
+        { {}, {} },
+        { { { 2, 83, 67 }, { 14, 84, 59 } }, {} },
+        { { { 3, 76, 67 } }, {} },
+        { {}, {} },
+        { {}, {} },
+        { { { 4, 78, 62 }, { 5, 74, 62 }, { 6, 71, 68 } }, {} },
+        { { { 9, 77, 64 } }, {} },
+        { {}, {} },
+        { { { 10, 71, 65 }, { 11, 80, 65 } }, {} },
+        { { { 16, 73, 64 } }, {} },
+        { {}, {} },
+        { { { 12, 87, 64 }, { 22, 87, 68 } }, {} },
+        { { { 13, 77, 66 } }, {} },
+        { {}, {} },
+        { { { 21, 78, 66 } }, {} },
+        { { { 8, 76, 66 }, { 20, 78, 68 } }, {} },
+        { { { 14, 77, 62 } }, {} },
+        { {}, {} },
+        { { { 15, 56, 67 } }, {} },
+        { {}, {} },
+        { { { 16, 73, 64 } }, {} },
+        { { { 14, 77, 62 } }, {} },
+    } },
     // Bottom of the Well
-    {
-        {
-            { { { 3, 60, 18 } }, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { { { 2, 73, 61 } }, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { { { 1, 74, 66 } }, {} },
-        }
-    },
+    { {
+        { { { 3, 60, 18 } }, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { { { 2, 73, 61 } }, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { { { 1, 74, 66 } }, {} },
+    } },
     // Ice Cavern
-    {
-        {
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { { { 2, 71, 59 } }, {} },
-            { {}, {} },
-            { { { 0, 48, 36 } }, {} },
-            { {}, {} },
-            { { { 1, 73, 67 } }, {} },
-        }
-    },
+    { {
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { { { 2, 71, 59 } }, {} },
+        { {}, {} },
+        { { { 0, 48, 36 } }, {} },
+        { {}, {} },
+        { { { 1, 73, 67 } }, {} },
+    } },
 };
 
 // Sets a scene's dungeon map marks based on whether it should be MQ or not
@@ -707,138 +700,170 @@ struct MqPauseMapMarkInit {
     Floor floors[8];
 };
 
-std::vector<MqPauseMapMarkInit> mqPauseMapMarkInit =
-{
+std::vector<MqPauseMapMarkInit> mqPauseMapMarkInit = {
     // Deku Tree
-    {
-        {
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { { { 2, 40.0f, -33.0f }, { 6, 49.0f, -42.0f } }, {} }, // 3F
-            { { { 1, 48.0f, -63.0f } }, {} }, // 2F
-            { { { 3, 84.0f, -39.0f } }, {} }, // 1F
-            { { { 0, 46.0f, -59.0f }, { 4, 77.0f, -26.0f }, { 5, 65.0f, -61.0f } }, {} }, // B1
-            { {}, { { -1, 55.0f, 0.0f } } }, // B2
-        }
-    },
+    { {
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { { { 2, 40.0f, -33.0f }, { 6, 49.0f, -42.0f } }, {} },                       // 3F
+        { { { 1, 48.0f, -63.0f } }, {} },                                             // 2F
+        { { { 3, 84.0f, -39.0f } }, {} },                                             // 1F
+        { { { 0, 46.0f, -59.0f }, { 4, 77.0f, -26.0f }, { 5, 65.0f, -61.0f } }, {} }, // B1
+        { {}, { { -1, 55.0f, 0.0f } } },                                              // B2
+    } },
     // Dodongo's Cavern
-    {
-        {
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { { { 2, 55.0f, -36.0f }, { 3, 54.0f, -51.0f }, { 5, 13.0f, -61.0f } }, {} }, // 2F
-            { { { 0, 47.0f, -40.0f }, { 1, 51.0f, -3.0f }, { 4, 47.0f, -47.0f } }, { { -1, 23.0f, -25.0f } } }, // 1F
-        }
-    },
+    { {
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { { { 2, 55.0f, -36.0f }, { 3, 54.0f, -51.0f }, { 5, 13.0f, -61.0f } }, {} },                       // 2F
+        { { { 0, 47.0f, -40.0f }, { 1, 51.0f, -3.0f }, { 4, 47.0f, -47.0f } }, { { -1, 23.0f, -25.0f } } }, // 1F
+    } },
     // Jabu-Jabu's Belly
-    {
-        {
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { { { 3, 48.0f, -68.0f }, { 5, 50.0f, -66.0f }, { 7, 55.0f, -50.0f }, { 9, 58.0f, 1.0f }, { 10, 62.0f, -45.0f } }, { { -1, 65.0f, -37.0f } } }, // 1F
-            { { { 0, 37.0f, -49.0f }, { 1, 65.0f, -38.0f }, { 2, 52.0f, -48.0f }, { 4, 46.0f, -36.0f }, { 6, 59.0f, -41.0f }, { 8, 52.0f, -26.0f } }, {} }, // B1
-        }
-    },
+    { {
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { { { 3, 48.0f, -68.0f },
+            { 5, 50.0f, -66.0f },
+            { 7, 55.0f, -50.0f },
+            { 9, 58.0f, 1.0f },
+            { 10, 62.0f, -45.0f } },
+          { { -1, 65.0f, -37.0f } } }, // 1F
+        { { { 0, 37.0f, -49.0f },
+            { 1, 65.0f, -38.0f },
+            { 2, 52.0f, -48.0f },
+            { 4, 46.0f, -36.0f },
+            { 6, 59.0f, -41.0f },
+            { 8, 52.0f, -26.0f } },
+          {} }, // B1
+    } },
     // Forest Temple
-    {
-        {
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { { { 3, 53.0f, -64.0f }, { 5, 65.0f, -9.0f }, { 12, 49.0f, -1.0f }, { 13, 40.0f, 0.0f }, { 14, 18.0f, -2.0f }, { 15, 59.0f, 0.0f } }, {} }, // 2F
-            { { { 0, 49.0f, -1.0f }, { 1, 71.0f, -13.0f }, { 2, 11.0f, -25.0f }, { 6, 84.0f, -16.0f } }, {} }, // 1F
-            { { { 9, 65.0f, -30.0f } }, {} }, // B1
-            { { { 11, 41.0f, -24.0f } }, { { -1, 50.0f, -11.0f } } }, // B2
-        }
-    },
+    { {
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { { { 3, 53.0f, -64.0f },
+            { 5, 65.0f, -9.0f },
+            { 12, 49.0f, -1.0f },
+            { 13, 40.0f, 0.0f },
+            { 14, 18.0f, -2.0f },
+            { 15, 59.0f, 0.0f } },
+          {} },                                                                                            // 2F
+        { { { 0, 49.0f, -1.0f }, { 1, 71.0f, -13.0f }, { 2, 11.0f, -25.0f }, { 6, 84.0f, -16.0f } }, {} }, // 1F
+        { { { 9, 65.0f, -30.0f } }, {} },                                                                  // B1
+        { { { 11, 41.0f, -24.0f } }, { { -1, 50.0f, -11.0f } } },                                          // B2
+    } },
     // Fire Temple
-    {
-        {
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { { { 5, 24.0f, -40.0f } }, {} }, // 5F
-            { {}, {} }, // 4F
-            { { { 3, 75.0f, -47.0f }, { 6, 72.0f, -51.0f }, { 8, 65.0f, -12.0f } }, {} }, // 3F
-            { { { 11, 78.0f, -35.0f } }, {} }, // 2F
-            { { { 1, 67.0f, -58.0f }, { 2, 48.0f, -30.0f }, { 4, 63.0f, -14.0f }, { 7, 36.0f, -45.0f }, { 12, 47.0f, -26.0f } }, { { -1, 26.0f, -34.0f } } }, // 1F
-        }
-    },
+    { {
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { { { 5, 24.0f, -40.0f } }, {} },                                             // 5F
+        { {}, {} },                                                                   // 4F
+        { { { 3, 75.0f, -47.0f }, { 6, 72.0f, -51.0f }, { 8, 65.0f, -12.0f } }, {} }, // 3F
+        { { { 11, 78.0f, -35.0f } }, {} },                                            // 2F
+        { { { 1, 67.0f, -58.0f },
+            { 2, 48.0f, -30.0f },
+            { 4, 63.0f, -14.0f },
+            { 7, 36.0f, -45.0f },
+            { 12, 47.0f, -26.0f } },
+          { { -1, 26.0f, -34.0f } } }, // 1F
+    } },
     // Water Temple
-    {
-        {
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { { { 2, 88.0f, -60.0f } }, { { -1, 62.0f, -23.0f } } }, // 3F
-            { { { 0, 88.0f, -60.0f } }, {} }, // 2F
-            { { { 1, 88.0f, -60.0f }, { 5, 49.0f, -43.0f } }, {} }, // 1F
-            { { { 6, 75.0f, -65.0f } }, {} }, // B1
-        }
-    },
+    { {
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { { { 2, 88.0f, -60.0f } }, { { -1, 62.0f, -23.0f } } }, // 3F
+        { { { 0, 88.0f, -60.0f } }, {} },                        // 2F
+        { { { 1, 88.0f, -60.0f }, { 5, 49.0f, -43.0f } }, {} },  // 1F
+        { { { 6, 75.0f, -65.0f } }, {} },                        // B1
+    } },
     // Spirit Temple
-    {
-        {
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { { { 18, 46.0f, -30.0f } }, {} }, // 4F
-            { { { 1, 23.0f, -33.0f }, { 2, 56.0f, -11.0f }, { 5, 83.0f, -25.0f }, { 24, 84.0f, -39.0f }, { 25, 74.0f, -37.0f } }, { { -1, 47.0f, 0.0f } } }, // 3F
-            { { { 3, 46.0f, -20.0f }, { 6, 28.0f, -19.0f }, { 12, 25.0f, -25.0f }, { 15, 50.0f, -13.0f }, { 28, 48.0f, -29.0f } }, {} }, // 2F
-            { { { 0, 14.0f, -24.0f }, { 4, 55.0f, -14.0f }, { 7, 78.0f, -2.0f }, { 8, 14.0f, -16.0f }, { 26, 42.0f, -43.0f }, { 27, 50.0f, -43.0f }, { 29, 25.0f, -35.0f }, { 30, 42.0f, -36.0f }, { 31, 50.0f, -36.0f } }, {} }, // 1F
-        }
-    },
+    { {
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { { { 18, 46.0f, -30.0f } }, {} }, // 4F
+        { { { 1, 23.0f, -33.0f },
+            { 2, 56.0f, -11.0f },
+            { 5, 83.0f, -25.0f },
+            { 24, 84.0f, -39.0f },
+            { 25, 74.0f, -37.0f } },
+          { { -1, 47.0f, 0.0f } } }, // 3F
+        { { { 3, 46.0f, -20.0f },
+            { 6, 28.0f, -19.0f },
+            { 12, 25.0f, -25.0f },
+            { 15, 50.0f, -13.0f },
+            { 28, 48.0f, -29.0f } },
+          {} }, // 2F
+        { { { 0, 14.0f, -24.0f },
+            { 4, 55.0f, -14.0f },
+            { 7, 78.0f, -2.0f },
+            { 8, 14.0f, -16.0f },
+            { 26, 42.0f, -43.0f },
+            { 27, 50.0f, -43.0f },
+            { 29, 25.0f, -35.0f },
+            { 30, 42.0f, -36.0f },
+            { 31, 50.0f, -36.0f } },
+          {} }, // 1F
+    } },
     // Shadow Temple
-    {
-        {
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { { { 1, 41.0f, -17.0f }, { 7, 27.0f, -24.0f } }, {} }, // B1
-            { { { 2, 81.0f, -20.0f }, { 3, 74.0f, -37.0f } }, {} }, // B2
-            { { { 12, 96.0f, -51.0f }, { 16, 46.0f, -42.0f }, { 22, 96.0f, -55.0f } }, {} }, // B3
-            { { { 4, 43.0f, -66.0f }, { 5, 37.0f, -66.0f }, { 6, 33.0f, -72.0f }, { 8, 85.0f, -18.0f }, { 9, 61.0f, -42.0f }, { 10, 15.0f, -4.0f }, { 11, 25.0f, -4.0f }, { 13, 19.0f, -29.0f }, { 14, 78.0f, -15.0f }, { 15, 60.0f, -70.0f }, { 21, 92.0f, -29.0f }, { 20, 87.0f, -20.0f } }, { { -1, 31.0f, -45.0f } } }, // B4
-        }
-    },
+    { {
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { { { 1, 41.0f, -17.0f }, { 7, 27.0f, -24.0f } }, {} },                          // B1
+        { { { 2, 81.0f, -20.0f }, { 3, 74.0f, -37.0f } }, {} },                          // B2
+        { { { 12, 96.0f, -51.0f }, { 16, 46.0f, -42.0f }, { 22, 96.0f, -55.0f } }, {} }, // B3
+        { { { 4, 43.0f, -66.0f },
+            { 5, 37.0f, -66.0f },
+            { 6, 33.0f, -72.0f },
+            { 8, 85.0f, -18.0f },
+            { 9, 61.0f, -42.0f },
+            { 10, 15.0f, -4.0f },
+            { 11, 25.0f, -4.0f },
+            { 13, 19.0f, -29.0f },
+            { 14, 78.0f, -15.0f },
+            { 15, 60.0f, -70.0f },
+            { 21, 92.0f, -29.0f },
+            { 20, 87.0f, -20.0f } },
+          { { -1, 31.0f, -45.0f } } }, // B4
+    } },
     // Bottom of the Well
-    {
-        {
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { { { 2, 84.0f, -38.0f }, { 3, 57.0f, -18.0f } }, {} }, // B1
-            { {}, {} }, // B2
-            { { { 1, 72.0f, -32.0f } }, {} }, // B3
-        }
-    },
+    { {
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { { { 2, 84.0f, -38.0f }, { 3, 57.0f, -18.0f } }, {} }, // B1
+        { {}, {} },                                             // B2
+        { { { 1, 72.0f, -32.0f } }, {} },                       // B3
+    } },
     // Ice Cavern
-    {
-        {
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { {}, {} },
-            { { { 0, 66.0f, -2.0f }, { 1, 77.0f, -46.0f }, { 2, 27.0f, -45.0f } }, {} }, // 1F
-        }
-    },
+    { {
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { {}, {} },
+        { { { 0, 66.0f, -2.0f }, { 1, 77.0f, -46.0f }, { 2, 27.0f, -45.0f } }, {} }, // 1F
+    } },
 };
 
 // Sets a scene's pause map marks based on whether it should be MQ or not
@@ -879,20 +904,12 @@ bool SceneDB::Entry::isOverworld() {
     return SCENEDB_ISOVERWORLD(&this->entry);
 }
 
-
 EntranceDB::EntranceDB() {
     db.reserve(ENTR_MAX); // reserve size for all initial entries so we don't do it for each
     for (const EntranceTableInit& init : entranceDBInit) {
-        Init nativeInit{
-            init.name,
-            init.desc,
-            SceneDB::Instance->RetrieveEntry(init.scene).name,
-            init.spawn,
-            init.continueBgm,
-            init.displayTitleCard,
-            init.endTransition,
-            init.startTransition
-        };
+        Init nativeInit{ init.name,          init.desc,           SceneDB::Instance->RetrieveEntry(init.scene).name,
+                         init.spawn,         init.continueBgm,    init.displayTitleCard,
+                         init.endTransition, init.startTransition };
 
         AddEntry(nativeInit);
     }
@@ -987,9 +1004,9 @@ s32 EntranceDB::CalcId(const s32 entrance, const s32 newLayer) {
 void EntranceDB::ResetVanillaEntrances() {
     // Erase all instances of vanilla entrances in the lookup tables
     for (size_t i = 0; i < ENTR_MAX; i++) {
-        // For this entrance, reset the next layer. This will cause problems with mods that add a new layer (like for a cutscene)
-        // However, we will treat this as fine for now because we don't have such mods
-        // A more robust solution is to use a local nextLayerLookupTable to reestablish the vanilla layers
+        // For this entrance, reset the next layer. This will cause problems with mods that add a new layer (like for a
+        // cutscene) However, we will treat this as fine for now because we don't have such mods A more robust solution
+        // is to use a local nextLayerLookupTable to reestablish the vanilla layers
         NextLayerLookupKey nextLayerKey{ entranceDBInit[i].scene, entranceDBInit[i].spawn };
         nextLayerLookupTable.erase(nextLayerKey);
 

@@ -114,7 +114,7 @@ void func_8006D0EC(PlayState* play, Player* player) {
         SceneDBEntry* entry = SceneDB_Retrieve(play->sceneNum);
         Actor* horseActor =
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE, entry->epona.startingPos.x, entry->epona.startingPos.y,
-                entry->epona.startingPos.z, 0, entry->epona.angle, 0, 2, true);
+                        entry->epona.startingPos.z, 0, entry->epona.angle, 0, 2, true);
         assert(horseActor != NULL);
         if (play->sceneNum == SCENE_GERUDOS_FORTRESS) {
             horseActor->room = -1;

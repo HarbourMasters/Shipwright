@@ -100,8 +100,8 @@ void PauseMapMark_DrawForDungeon(PlayState* play) {
 
     markInfo = &sMapMarkInfoTable[MAP_MARK_CHEST];
     gDPLoadTextureBlock(POLY_OPA_DISP++, markInfo->texture, markInfo->imageFormat, G_IM_SIZ_MARK,
-        markInfo->textureWidth, markInfo->textureHeight, 0, G_TX_NOMIRROR | G_TX_WRAP,
-        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                        markInfo->textureWidth, markInfo->textureHeight, 0, G_TX_NOMIRROR | G_TX_WRAP,
+                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     for (s32 i = 0; i < floor->numChestMarks; i++) {
         s32 display;
 
@@ -113,13 +113,14 @@ void PauseMapMark_DrawForDungeon(PlayState* play) {
 
         if (display) {
             // Compute the offset to mirror icons over the map center (48) as an axis line
-            s16 mirrorOffset = CVarGetInteger("gMirroredWorld", 0) ? mirrorOffset = (48 - floor->chestMarks[i].x) * 2 + 1 : 0;
+            s16 mirrorOffset =
+                CVarGetInteger("gMirroredWorld", 0) ? mirrorOffset = (48 - floor->chestMarks[i].x) * 2 + 1 : 0;
 
             Matrix_Push();
-            Matrix_Translate(GREG(92) + floor->chestMarks[i].x + mirrorOffset, GREG(93) + floor->chestMarks[i].y, 0.0f, MTXMODE_APPLY);
+            Matrix_Translate(GREG(92) + floor->chestMarks[i].x + mirrorOffset, GREG(93) + floor->chestMarks[i].y, 0.0f,
+                             MTXMODE_APPLY);
             Matrix_Scale(1.0f, 1.0f, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             Matrix_Pop();
 
             gSPVertex(POLY_KAL_DISP++, sMarkChestVtx, 4, 0);
@@ -129,17 +130,19 @@ void PauseMapMark_DrawForDungeon(PlayState* play) {
 
     markInfo = &sMapMarkInfoTable[MAP_MARK_BOSS];
     gDPLoadTextureBlock(POLY_OPA_DISP++, markInfo->texture, markInfo->imageFormat, G_IM_SIZ_MARK,
-        markInfo->textureWidth, markInfo->textureHeight, 0, G_TX_NOMIRROR | G_TX_WRAP,
-        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                        markInfo->textureWidth, markInfo->textureHeight, 0, G_TX_NOMIRROR | G_TX_WRAP,
+                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     for (s32 i = 0; i < floor->numBossMarks; i++) {
         // Compute the offset to mirror icons over the map center (48) as an axis line
-        s16 mirrorOffset = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? mirrorOffset = (48 - floor->bossMarks[i].x) * 2 + 1 : 0;
+        s16 mirrorOffset = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)
+                               ? mirrorOffset = (48 - floor->bossMarks[i].x) * 2 + 1
+                               : 0;
 
         Matrix_Push();
-        Matrix_Translate(GREG(92) + floor->bossMarks[i].x + mirrorOffset, GREG(93) + floor->bossMarks[i].y, 0.0f, MTXMODE_APPLY);
+        Matrix_Translate(GREG(92) + floor->bossMarks[i].x + mirrorOffset, GREG(93) + floor->bossMarks[i].y, 0.0f,
+                         MTXMODE_APPLY);
         Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-            G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         Matrix_Pop();
 
         gSPVertex(POLY_OPA_DISP++, sMarkBossVtx, 4, 0);
@@ -154,7 +157,8 @@ void PauseMapMark_DrawForDungeon(PlayState* play) {
 void PauseMapMark_Draw(PlayState* play) {
     PauseMapMark_Init(play);
 
-    if (SceneDB_IsDungeon(play->sceneNum) || (CVarGetInteger(CVAR_ENHANCEMENT("PulsateBossIcon"), 0) != 0 && SceneDB_IsBoss(play->sceneNum))) {
+    if (SceneDB_IsDungeon(play->sceneNum) ||
+        (CVarGetInteger(CVAR_ENHANCEMENT("PulsateBossIcon"), 0) != 0 && SceneDB_IsBoss(play->sceneNum))) {
         PauseMapMark_DrawForDungeon(play);
     }
 

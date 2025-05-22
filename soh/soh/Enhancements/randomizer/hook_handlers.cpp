@@ -858,20 +858,18 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             *should = !Flags_GetRandomizerInf(RAND_INF_DARUNIAS_JOY);
             break;
         case VB_BE_ELIGIBLE_FOR_LIGHT_ARROWS:
-            *should =
-                LINK_IS_ADULT &&
-                (EntranceDB::Instance->RetrieveEntry(gSaveContext.entranceIndex).entry.sceneId == SCENE_TEMPLE_OF_TIME) &&
-                !Flags_GetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS) &&
-                MeetsLACSRequirements();
+            *should = LINK_IS_ADULT &&
+                      (EntranceDB::Instance->RetrieveEntry(gSaveContext.entranceIndex).entry.sceneId ==
+                       SCENE_TEMPLE_OF_TIME) &&
+                      !Flags_GetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS) &&
+                      MeetsLACSRequirements();
             break;
         case VB_BE_ELIGIBLE_FOR_NOCTURNE_OF_SHADOW:
-            *should =
-                    !Flags_GetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL) &&
-                    LINK_IS_ADULT &&
-                    (EntranceDB::Instance->RetrieveEntry(gSaveContext.entranceIndex).entry.sceneId == SCENE_KAKARIKO_VILLAGE) &&
-                    CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) &&
-                    CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) &&
-                    CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER);
+            *should = !Flags_GetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL) && LINK_IS_ADULT &&
+                      (EntranceDB::Instance->RetrieveEntry(gSaveContext.entranceIndex).entry.sceneId ==
+                       SCENE_KAKARIKO_VILLAGE) &&
+                      CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) && CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) &&
+                      CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER);
             break;
         case VB_BE_ELIGIBLE_FOR_CHILD_ROLLING_GORON_REWARD: {
             // Don't require a bomb bag to get prize in rando

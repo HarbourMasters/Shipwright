@@ -1213,7 +1213,8 @@ void Better_Select_UpdateMenu(SelectContext* this) {
         BetterSceneSelectEntrancePair entrancePair =
             this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex];
         // Update the MQ status to match the new scene
-        if (entrancePair.canBeMQ && ResourceMgr_IsSceneMasterQuest(EntranceDB_Retrieve(entrancePair.entranceIndex)->sceneId)) {
+        if (entrancePair.canBeMQ &&
+            ResourceMgr_IsSceneMasterQuest(EntranceDB_Retrieve(entrancePair.entranceIndex)->sceneId)) {
             this->opt = 1;
         } else {
             this->opt = 0;
@@ -1793,8 +1794,10 @@ void Select_SwitchBetterWarpMode(SelectContext* this, u8 isBetterWarpMode) {
             this->topDisplayedScene = CVarGetInteger(CVAR_GENERAL("BetterDebugWarpScreenTopDisplayedScene"), 0);
             this->pageDownIndex = CVarGetInteger(CVAR_GENERAL("BetterDebugWarpScreenPageDownIndex"), 0);
 
-            BetterSceneSelectEntrancePair entrancePair = this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex];
-            if (entrancePair.canBeMQ && ResourceMgr_IsSceneMasterQuest(EntranceDB_Retrieve(entrancePair.entranceIndex)->sceneId)) {
+            BetterSceneSelectEntrancePair entrancePair =
+                this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex];
+            if (entrancePair.canBeMQ &&
+                ResourceMgr_IsSceneMasterQuest(EntranceDB_Retrieve(entrancePair.entranceIndex)->sceneId)) {
                 this->opt = 1;
             }
         }

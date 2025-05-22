@@ -491,7 +491,8 @@ void Play_Init(GameState* thisx) {
         gSaveContext.sceneSetupIndex = (Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) ? 3 : 2;
     }
 
-    EntranceDBEntry* adjustedEntrance = EntranceDB_RetrieveLayer(gSaveContext.entranceIndex, gSaveContext.sceneSetupIndex);
+    EntranceDBEntry* adjustedEntrance =
+        EntranceDB_RetrieveLayer(gSaveContext.entranceIndex, gSaveContext.sceneSetupIndex);
     Play_SpawnScene(play, adjustedEntrance->sceneId, adjustedEntrance->spawn);
 
     osSyncPrintf("\nSCENE_NO=%d COUNTER=%d\n", ((void)0, gSaveContext.entranceIndex), gSaveContext.sceneSetupIndex);

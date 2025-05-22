@@ -2027,80 +2027,80 @@ void Logic::InitSaveContext() {
     }
     mSaveContext->equips.equipment = 0;
 
-        // Inventory
-        size_t numScenes = SceneDB::Instance->GetNumEntries();
-        for (int item = 0; item < ARRAY_COUNT(mSaveContext->inventory.items); item++) {
-            mSaveContext->inventory.items[item] = ITEM_NONE;
-        }
-        for (int ammo = 0; ammo < ARRAY_COUNT(mSaveContext->inventory.ammo); ammo++) {
-            mSaveContext->inventory.ammo[ammo] = 0;
-        }
-        mSaveContext->inventory.equipment = 0;
-        mSaveContext->inventory.upgrades = 0;
-        mSaveContext->inventory.questItems = 0;
-        for (int dungeon = 0; dungeon < numScenes; dungeon++) {
-            mSaveContext->inventory.dungeonItems[dungeon] = 0;
-        }
-        for (int dungeon = 0; dungeon < numScenes; dungeon++) {
-            mSaveContext->inventory.dungeonKeys[dungeon] = 0x0;
-        }
-        mSaveContext->inventory.defenseHearts = 0;
-        mSaveContext->inventory.gsTokens = 0;
-        for (int scene = 0; scene < numScenes; scene++) {
-            mSaveContext->sceneFlags[scene].chest = 0;
-            mSaveContext->sceneFlags[scene].swch = 0;
-            mSaveContext->sceneFlags[scene].clear = 0;
-            mSaveContext->sceneFlags[scene].collect = 0;
-            mSaveContext->sceneFlags[scene].unk = 0;
-            mSaveContext->sceneFlags[scene].rooms = 0;
-            mSaveContext->sceneFlags[scene].floors = 0;
-        }
-        mSaveContext->fw.pos.x = 0;
-        mSaveContext->fw.pos.y = 0;
-        mSaveContext->fw.pos.z = 0;
-        mSaveContext->fw.yaw = 0;
-        mSaveContext->fw.playerParams = 0;
-        mSaveContext->fw.entranceIndex = 0;
-        mSaveContext->fw.roomIndex = 0;
-        mSaveContext->fw.set = 0;
-        mSaveContext->fw.tempSwchFlags = 0;
-        mSaveContext->fw.tempCollectFlags = 0;
-        for (int flag = 0; flag < ARRAY_COUNT(mSaveContext->gsFlags); flag++) {
-            mSaveContext->gsFlags[flag] = 0;
-        }
-        for (int highscore = 0; highscore < ARRAY_COUNT(mSaveContext->highScores); highscore++) {
-            mSaveContext->highScores[highscore] = 0;
-        }
-        for (int flag = 0; flag < ARRAY_COUNT(mSaveContext->eventChkInf); flag++) {
-            mSaveContext->eventChkInf[flag] = 0;
-        }
-        for (int flag = 0; flag < ARRAY_COUNT(mSaveContext->itemGetInf); flag++) {
-            mSaveContext->itemGetInf[flag] = 0;
-        }
-        for (int flag = 0; flag < ARRAY_COUNT(mSaveContext->infTable); flag++) {
-            mSaveContext->infTable[flag] = 0;
-        }
-        mSaveContext->worldMapAreaData = 0;
-        mSaveContext->scarecrowLongSongSet = 0;
-        for (int i = 0; i < ARRAY_COUNT(mSaveContext->scarecrowLongSong); i++) {
-            mSaveContext->scarecrowLongSong[i].noteIdx = 0;
-            mSaveContext->scarecrowLongSong[i].unk_01 = 0;
-            mSaveContext->scarecrowLongSong[i].unk_02 = 0;
-            mSaveContext->scarecrowLongSong[i].volume = 0;
-            mSaveContext->scarecrowLongSong[i].vibrato = 0;
-            mSaveContext->scarecrowLongSong[i].tone = 0;
-            mSaveContext->scarecrowLongSong[i].semitone = 0;
-        }
-        mSaveContext->scarecrowSpawnSongSet = 0;
-        for (int i = 0; i < ARRAY_COUNT(mSaveContext->scarecrowSpawnSong); i++) {
-            mSaveContext->scarecrowSpawnSong[i].noteIdx = 0;
-            mSaveContext->scarecrowSpawnSong[i].unk_01 = 0;
-            mSaveContext->scarecrowSpawnSong[i].unk_02 = 0;
-            mSaveContext->scarecrowSpawnSong[i].volume = 0;
-            mSaveContext->scarecrowSpawnSong[i].vibrato = 0;
-            mSaveContext->scarecrowSpawnSong[i].tone = 0;
-            mSaveContext->scarecrowSpawnSong[i].semitone = 0;
-        }
+    // Inventory
+    size_t numScenes = SceneDB::Instance->GetNumEntries();
+    for (int item = 0; item < ARRAY_COUNT(mSaveContext->inventory.items); item++) {
+        mSaveContext->inventory.items[item] = ITEM_NONE;
+    }
+    for (int ammo = 0; ammo < ARRAY_COUNT(mSaveContext->inventory.ammo); ammo++) {
+        mSaveContext->inventory.ammo[ammo] = 0;
+    }
+    mSaveContext->inventory.equipment = 0;
+    mSaveContext->inventory.upgrades = 0;
+    mSaveContext->inventory.questItems = 0;
+    for (int dungeon = 0; dungeon < numScenes; dungeon++) {
+        mSaveContext->inventory.dungeonItems[dungeon] = 0;
+    }
+    for (int dungeon = 0; dungeon < numScenes; dungeon++) {
+        mSaveContext->inventory.dungeonKeys[dungeon] = 0x0;
+    }
+    mSaveContext->inventory.defenseHearts = 0;
+    mSaveContext->inventory.gsTokens = 0;
+    for (int scene = 0; scene < numScenes; scene++) {
+        mSaveContext->sceneFlags[scene].chest = 0;
+        mSaveContext->sceneFlags[scene].swch = 0;
+        mSaveContext->sceneFlags[scene].clear = 0;
+        mSaveContext->sceneFlags[scene].collect = 0;
+        mSaveContext->sceneFlags[scene].unk = 0;
+        mSaveContext->sceneFlags[scene].rooms = 0;
+        mSaveContext->sceneFlags[scene].floors = 0;
+    }
+    mSaveContext->fw.pos.x = 0;
+    mSaveContext->fw.pos.y = 0;
+    mSaveContext->fw.pos.z = 0;
+    mSaveContext->fw.yaw = 0;
+    mSaveContext->fw.playerParams = 0;
+    mSaveContext->fw.entranceIndex = 0;
+    mSaveContext->fw.roomIndex = 0;
+    mSaveContext->fw.set = 0;
+    mSaveContext->fw.tempSwchFlags = 0;
+    mSaveContext->fw.tempCollectFlags = 0;
+    for (int flag = 0; flag < ARRAY_COUNT(mSaveContext->gsFlags); flag++) {
+        mSaveContext->gsFlags[flag] = 0;
+    }
+    for (int highscore = 0; highscore < ARRAY_COUNT(mSaveContext->highScores); highscore++) {
+        mSaveContext->highScores[highscore] = 0;
+    }
+    for (int flag = 0; flag < ARRAY_COUNT(mSaveContext->eventChkInf); flag++) {
+        mSaveContext->eventChkInf[flag] = 0;
+    }
+    for (int flag = 0; flag < ARRAY_COUNT(mSaveContext->itemGetInf); flag++) {
+        mSaveContext->itemGetInf[flag] = 0;
+    }
+    for (int flag = 0; flag < ARRAY_COUNT(mSaveContext->infTable); flag++) {
+        mSaveContext->infTable[flag] = 0;
+    }
+    mSaveContext->worldMapAreaData = 0;
+    mSaveContext->scarecrowLongSongSet = 0;
+    for (int i = 0; i < ARRAY_COUNT(mSaveContext->scarecrowLongSong); i++) {
+        mSaveContext->scarecrowLongSong[i].noteIdx = 0;
+        mSaveContext->scarecrowLongSong[i].unk_01 = 0;
+        mSaveContext->scarecrowLongSong[i].unk_02 = 0;
+        mSaveContext->scarecrowLongSong[i].volume = 0;
+        mSaveContext->scarecrowLongSong[i].vibrato = 0;
+        mSaveContext->scarecrowLongSong[i].tone = 0;
+        mSaveContext->scarecrowLongSong[i].semitone = 0;
+    }
+    mSaveContext->scarecrowSpawnSongSet = 0;
+    for (int i = 0; i < ARRAY_COUNT(mSaveContext->scarecrowSpawnSong); i++) {
+        mSaveContext->scarecrowSpawnSong[i].noteIdx = 0;
+        mSaveContext->scarecrowSpawnSong[i].unk_01 = 0;
+        mSaveContext->scarecrowSpawnSong[i].unk_02 = 0;
+        mSaveContext->scarecrowSpawnSong[i].volume = 0;
+        mSaveContext->scarecrowSpawnSong[i].vibrato = 0;
+        mSaveContext->scarecrowSpawnSong[i].tone = 0;
+        mSaveContext->scarecrowSpawnSong[i].semitone = 0;
+    }
 
     mSaveContext->horseData.scene = SCENE_HYRULE_FIELD;
     mSaveContext->horseData.pos.x = -1840;
@@ -2123,20 +2123,20 @@ void Logic::InitSaveContext() {
     // RANDOTODO (ADD ITEMLOCATIONS TO GSAVECONTEXT)
 }
 
-    void Logic::NewSaveContext() {
-        if (mSaveContext != nullptr && mSaveContext != &gSaveContext) {
-            delete[] mSaveContext->inventory.dungeonItems;
-            delete[] mSaveContext->inventory.dungeonKeys;
-            delete[] mSaveContext->sceneFlags;
-            delete mSaveContext;
-        }
-        size_t numScenes = SceneDB::Instance->GetNumEntries();
-        mSaveContext = new SaveContext();
-        mSaveContext->inventory.dungeonItems = new u8[numScenes];
-        mSaveContext->inventory.dungeonKeys = new s8[numScenes];
-        mSaveContext->sceneFlags = new SavedSceneFlags[numScenes];
-        InitSaveContext();
+void Logic::NewSaveContext() {
+    if (mSaveContext != nullptr && mSaveContext != &gSaveContext) {
+        delete[] mSaveContext->inventory.dungeonItems;
+        delete[] mSaveContext->inventory.dungeonKeys;
+        delete[] mSaveContext->sceneFlags;
+        delete mSaveContext;
     }
+    size_t numScenes = SceneDB::Instance->GetNumEntries();
+    mSaveContext = new SaveContext();
+    mSaveContext->inventory.dungeonItems = new u8[numScenes];
+    mSaveContext->inventory.dungeonKeys = new s8[numScenes];
+    mSaveContext->sceneFlags = new SavedSceneFlags[numScenes];
+    InitSaveContext();
+}
 
 uint8_t Logic::InventorySlot(uint32_t item) {
     return gItemSlots[item];

@@ -1173,9 +1173,9 @@ void SaveManager::AllocateSceneData() {
 
     size_t numScenes = SceneDB::Instance->GetNumEntries();
 
-    gSaveContext.inventory.dungeonItems =  new u8[numScenes];
-    gSaveContext.inventory.dungeonKeys =  new s8[numScenes];
-    gSaveContext.sceneFlags =  new SavedSceneFlags[numScenes];
+    gSaveContext.inventory.dungeonItems = new u8[numScenes];
+    gSaveContext.inventory.dungeonKeys = new s8[numScenes];
+    gSaveContext.sceneFlags = new SavedSceneFlags[numScenes];
 
     std::fill_n(gSaveContext.inventory.dungeonItems, numScenes, 0);
     std::fill_n(gSaveContext.inventory.dungeonKeys, numScenes, -1);
@@ -2254,9 +2254,8 @@ void SaveManager::LoadBaseVersion5() {
     SaveManager::Instance->LoadData("totalDays", gSaveContext.totalDays);
     SaveManager::Instance->LoadData("bgsDayCount", gSaveContext.bgsDayCount);
     SaveManager::Instance->LoadData("deaths", gSaveContext.deaths);
-    SaveManager::Instance->LoadArray("playerName", ARRAY_COUNT(gSaveContext.playerName), [](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.playerName[i]);
-    });
+    SaveManager::Instance->LoadArray("playerName", ARRAY_COUNT(gSaveContext.playerName),
+                                     [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.playerName[i]); });
     int isRando = 0;
     SaveManager::Instance->LoadData("n64ddFlag", isRando);
     if (isRando) {
@@ -2275,25 +2274,29 @@ void SaveManager::LoadBaseVersion5() {
     SaveManager::Instance->LoadData("bgsFlag", gSaveContext.bgsFlag);
     SaveManager::Instance->LoadData("ocarinaGameRoundNum", gSaveContext.ocarinaGameRoundNum);
     SaveManager::Instance->LoadStruct("childEquips", []() {
-        SaveManager::Instance->LoadArray("buttonItems", ARRAY_COUNT(gSaveContext.childEquips.buttonItems), [](size_t i) {
-            SaveManager::Instance->LoadData("", gSaveContext.childEquips.buttonItems[i],
-                static_cast<uint8_t>(ITEM_NONE));
-        });
-        SaveManager::Instance->LoadArray("cButtonSlots", ARRAY_COUNT(gSaveContext.childEquips.cButtonSlots), [](size_t i) {
-            SaveManager::Instance->LoadData("", gSaveContext.childEquips.cButtonSlots[i],
-                static_cast<uint8_t>(SLOT_NONE));
-        });
+        SaveManager::Instance->LoadArray(
+            "buttonItems", ARRAY_COUNT(gSaveContext.childEquips.buttonItems), [](size_t i) {
+                SaveManager::Instance->LoadData("", gSaveContext.childEquips.buttonItems[i],
+                                                static_cast<uint8_t>(ITEM_NONE));
+            });
+        SaveManager::Instance->LoadArray(
+            "cButtonSlots", ARRAY_COUNT(gSaveContext.childEquips.cButtonSlots), [](size_t i) {
+                SaveManager::Instance->LoadData("", gSaveContext.childEquips.cButtonSlots[i],
+                                                static_cast<uint8_t>(SLOT_NONE));
+            });
         SaveManager::Instance->LoadData("equipment", gSaveContext.childEquips.equipment);
     });
     SaveManager::Instance->LoadStruct("adultEquips", []() {
-        SaveManager::Instance->LoadArray("buttonItems", ARRAY_COUNT(gSaveContext.adultEquips.buttonItems), [](size_t i) {
-            SaveManager::Instance->LoadData("", gSaveContext.adultEquips.buttonItems[i],
-                static_cast<uint8_t>(ITEM_NONE));
-        });
-        SaveManager::Instance->LoadArray("cButtonSlots", ARRAY_COUNT(gSaveContext.adultEquips.cButtonSlots), [](size_t i) {
-            SaveManager::Instance->LoadData("", gSaveContext.adultEquips.cButtonSlots[i],
-                static_cast<uint8_t>(SLOT_NONE));
-        });
+        SaveManager::Instance->LoadArray(
+            "buttonItems", ARRAY_COUNT(gSaveContext.adultEquips.buttonItems), [](size_t i) {
+                SaveManager::Instance->LoadData("", gSaveContext.adultEquips.buttonItems[i],
+                                                static_cast<uint8_t>(ITEM_NONE));
+            });
+        SaveManager::Instance->LoadArray(
+            "cButtonSlots", ARRAY_COUNT(gSaveContext.adultEquips.cButtonSlots), [](size_t i) {
+                SaveManager::Instance->LoadData("", gSaveContext.adultEquips.cButtonSlots[i],
+                                                static_cast<uint8_t>(SLOT_NONE));
+            });
         SaveManager::Instance->LoadData("equipment", gSaveContext.adultEquips.equipment);
     });
     SaveManager::Instance->LoadData("unk_54", gSaveContext.unk_54);
@@ -2350,21 +2353,17 @@ void SaveManager::LoadBaseVersion5() {
         SaveManager::Instance->LoadData("tempSwchFlags", gSaveContext.fw.tempSwchFlags);
         SaveManager::Instance->LoadData("tempCollectFlags", gSaveContext.fw.tempCollectFlags);
     });
-    SaveManager::Instance->LoadArray("gsFlags", ARRAY_COUNT(gSaveContext.gsFlags), [](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.gsFlags[i]);
-    });
-    SaveManager::Instance->LoadArray("highScores", ARRAY_COUNT(gSaveContext.highScores), [](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.highScores[i]);
-    });
+    SaveManager::Instance->LoadArray("gsFlags", ARRAY_COUNT(gSaveContext.gsFlags),
+                                     [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.gsFlags[i]); });
+    SaveManager::Instance->LoadArray("highScores", ARRAY_COUNT(gSaveContext.highScores),
+                                     [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.highScores[i]); });
     SaveManager::Instance->LoadArray("eventChkInf", ARRAY_COUNT(gSaveContext.eventChkInf), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.eventChkInf[i]);
     });
-    SaveManager::Instance->LoadArray("itemGetInf", ARRAY_COUNT(gSaveContext.itemGetInf), [](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.itemGetInf[i]);
-    });
-    SaveManager::Instance->LoadArray("infTable", ARRAY_COUNT(gSaveContext.infTable), [](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.infTable[i]);
-    });
+    SaveManager::Instance->LoadArray("itemGetInf", ARRAY_COUNT(gSaveContext.itemGetInf),
+                                     [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.itemGetInf[i]); });
+    SaveManager::Instance->LoadArray("infTable", ARRAY_COUNT(gSaveContext.infTable),
+                                     [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.infTable[i]); });
     SaveManager::Instance->LoadData("worldMapAreaData", gSaveContext.worldMapAreaData);
     SaveManager::Instance->LoadData("scarecrowLongSongSet", gSaveContext.scarecrowLongSongSet);
     SaveManager::Instance->LoadArray("scarecrowLongSong", ARRAY_COUNT(gSaveContext.scarecrowLongSong), [](size_t i) {

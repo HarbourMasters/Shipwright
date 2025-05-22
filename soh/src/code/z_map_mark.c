@@ -107,7 +107,9 @@ void MapMark_DrawForDungeon(PlayState* play) {
     s32 X_Margins_Minimap_ic;
     s32 Y_Margins_Minimap_ic;
     if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {
-        if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ORIGINAL_LOCATION) { X_Margins_Minimap_ic = Right_MC_Margin; };
+        if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ORIGINAL_LOCATION) {
+            X_Margins_Minimap_ic = Right_MC_Margin;
+        };
         Y_Margins_Minimap_ic = Bottom_MC_Margin;
     } else {
         X_Margins_Minimap_ic = 0;
@@ -135,22 +137,24 @@ void MapMark_DrawForDungeon(PlayState* play) {
             markInfo = &sMapMarkInfoTable[MAP_MARK_BOSS];
         }
 
-        int height = markInfo->textureHeight * 1.0f; //Adjust Height with scale
-        int width = markInfo->textureWidth * 1.0f; //Adjust Width with scale
+        int height = markInfo->textureHeight * 1.0f; // Adjust Height with scale
+        int width = markInfo->textureWidth * 1.0f;   // Adjust Width with scale
         int height_factor = (1 << 10) * markInfo->textureHeight / height;
         int width_factor = (1 << 10) * markInfo->textureWidth / width;
 
         // The original mark point X originates from the left edge of the map
         // For mirror mode, we compute the new mark point X by subtracting it from the right side of the
         // dungeon map and the textures width
-        s16 markPointX = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? 96 - markPoint->x - width : markPoint->x;
+        s16 markPointX =
+            CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? 96 - markPoint->x - width : markPoint->x;
 
-        //Minimap chest / boss icon
-        const s32 PosX_Minimap_ori = GREG(94) + OTRGetRectDimensionFromRightEdge(markPointX + X_Margins_Minimap_ic) + 204;
+        // Minimap chest / boss icon
+        const s32 PosX_Minimap_ori =
+            GREG(94) + OTRGetRectDimensionFromRightEdge(markPointX + X_Margins_Minimap_ic) + 204;
         const s32 PosY_Minimap_ori = GREG(95) + markPoint->y + Y_Margins_Minimap_ic + 140;
         if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) != ORIGINAL_LOCATION) {
-            rectTop = (markPoint->y + Y_Margins_Minimap_ic + 140 +
-                CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosY"), 0));
+            rectTop =
+                (markPoint->y + Y_Margins_Minimap_ic + 140 + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosY"), 0));
             if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_LEFT) {
                 if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {
                     X_Margins_Minimap_ic = Left_MC_Margin;
@@ -161,23 +165,20 @@ void MapMark_DrawForDungeon(PlayState* play) {
                     play->sceneNum == SCENE_SPIRIT_TEMPLE || play->sceneNum == SCENE_SHADOW_TEMPLE ||
                     play->sceneNum == SCENE_BOTTOM_OF_THE_WELL || play->sceneNum == SCENE_ICE_CAVERN) {
                     rectLeft = OTRGetRectDimensionFromLeftEdge(
-                        markPointX + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) + 204 +
-                        X_Margins_Minimap_ic);
+                        markPointX + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) + 204 + X_Margins_Minimap_ic);
                 } else {
                     rectLeft = OTRGetRectDimensionFromLeftEdge(
-                        markPointX + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) + 204 +
-                        X_Margins_Minimap_ic);
+                        markPointX + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) + 204 + X_Margins_Minimap_ic);
                 }
             } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_RIGHT) {
                 if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {
                     X_Margins_Minimap_ic = Right_MC_Margin;
                 };
                 rectLeft = OTRGetRectDimensionFromRightEdge(
-                    markPointX + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) + 204 +
-                    X_Margins_Minimap_ic);
+                    markPointX + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) + 204 + X_Margins_Minimap_ic);
             } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_NONE) {
-                rectLeft = markPointX + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) + 204 +
-                    X_Margins_Minimap_ic;
+                rectLeft =
+                    markPointX + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) + 204 + X_Margins_Minimap_ic;
             } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == HIDDEN) {
                 rectLeft = -9999;
             }
@@ -189,12 +190,11 @@ void MapMark_DrawForDungeon(PlayState* play) {
         gDPPipeSync(OVERLAY_DISP++);
 
         gDPLoadTextureBlock(OVERLAY_DISP++, markInfo->texture, markInfo->imageFormat, G_IM_SIZ_MARK,
-            markInfo->textureWidth, markInfo->textureHeight, 0, G_TX_NOMIRROR | G_TX_WRAP,
-            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-        //Changed to a Wide texture to support Left anchor.
+                            markInfo->textureWidth, markInfo->textureHeight, 0, G_TX_NOMIRROR | G_TX_WRAP,
+                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        // Changed to a Wide texture to support Left anchor.
         gSPWideTextureRectangle(OVERLAY_DISP++, rectLeft << 2, rectTop << 2, rectLeft + width << 2,
-            rectTop + height << 2, G_TX_RENDERTILE, 0, 0, width_factor,
-            height_factor);
+                                rectTop + height << 2, G_TX_RENDERTILE, 0, 0, width_factor, height_factor);
     }
 
     CLOSE_DISPS(play->state.gfxCtx);

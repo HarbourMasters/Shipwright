@@ -2220,8 +2220,10 @@ void Cutscene_HandleConditionalTriggers(PlayState* play) {
     }
 
     s32 scene = EntranceDB_Retrieve(gSaveContext.entranceIndex)->sceneId;
-    if ((gSaveContext.gameMode == GAMEMODE_NORMAL) && (gSaveContext.respawnFlag <= 0) && (gSaveContext.cutsceneIndex < 0xFFF0)) {
-        if ((gSaveContext.entranceIndex == ENTR_DESERT_COLOSSUS_OUTSIDE_TEMPLE) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT)) {
+    if ((gSaveContext.gameMode == GAMEMODE_NORMAL) && (gSaveContext.respawnFlag <= 0) &&
+        (gSaveContext.cutsceneIndex < 0xFFF0)) {
+        if ((gSaveContext.entranceIndex == ENTR_DESERT_COLOSSUS_OUTSIDE_TEMPLE) &&
+            !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT)) {
             Flags_SetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT);
             gSaveContext.entranceIndex = ENTR_DESERT_COLOSSUS_EAST_EXIT;
             gSaveContext.cutsceneIndex = 0xFFF0;
@@ -2242,13 +2244,12 @@ void Cutscene_HandleConditionalTriggers(PlayState* play) {
             }
             gSaveContext.entranceIndex = ENTR_LOST_WOODS_SOUTH_EXIT;
             gSaveContext.cutsceneIndex = 0xFFF0;
-        } else if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_LIGHT_ARROWS, (
-            CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && 
-            CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
-            LINK_IS_ADULT &&
-            !Flags_GetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS) &&
-            (scene == SCENE_TEMPLE_OF_TIME)
-        ))) {
+        } else if (GameInteractor_Should(
+                       VB_BE_ELIGIBLE_FOR_LIGHT_ARROWS,
+                       (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
+                        LINK_IS_ADULT &&
+                        !Flags_GetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS) &&
+                        (scene == SCENE_TEMPLE_OF_TIME)))) {
             Flags_SetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS);
             gSaveContext.entranceIndex = ENTR_TEMPLE_OF_TIME_ENTRANCE;
             gSaveContext.cutsceneIndex = 0xFFF8;

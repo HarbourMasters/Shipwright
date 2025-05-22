@@ -689,10 +689,13 @@ s32 EnHorse_Spawn(EnHorse* this, PlayState* play) {
         player = GET_PLAYER(play);
         if (play->sceneNum != SCENE_LON_LON_RANCH ||
             //! Same flag checked twice
-            (Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED) && ((gSaveContext.eventInf[0] & 0xF) != 6 || Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED))) ||
+            (Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED) &&
+             ((gSaveContext.eventInf[0] & 0xF) != 6 || Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED))) ||
             // always load two spawns inside lon lon
-            ((entry->epona.spawnPos[i].x == 856 && entry->epona.spawnPos[i].y == 0 && entry->epona.spawnPos[i].z == -918) ||
-                (entry->epona.spawnPos[i].x == -1003 && entry->epona.spawnPos[i].y == 0 && entry->epona.spawnPos[i].z == -755))) {
+            ((entry->epona.spawnPos[i].x == 856 && entry->epona.spawnPos[i].y == 0 &&
+              entry->epona.spawnPos[i].z == -918) ||
+             (entry->epona.spawnPos[i].x == -1003 && entry->epona.spawnPos[i].y == 0 &&
+              entry->epona.spawnPos[i].z == -755))) {
 
             spawnPos.x = entry->epona.spawnPos[i].x;
             spawnPos.y = entry->epona.spawnPos[i].y;
@@ -709,7 +712,7 @@ s32 EnHorse_Spawn(EnHorse* this, PlayState* play) {
                 this->actor.shape.rot.y = Actor_WorldYawTowardActor(&this->actor, &GET_PLAYER(play)->actor);
                 spawn = true;
                 SkinMatrix_Vec3fMtxFMultXYZW(&play->viewProjectionMtxF, &this->actor.world.pos,
-                    &this->actor.projectedPos, &this->actor.projectedW);
+                                             &this->actor.projectedPos, &this->actor.projectedW);
             }
         }
     }

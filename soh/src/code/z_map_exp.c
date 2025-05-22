@@ -360,17 +360,18 @@ void Map_InitData(PlayState* play, s16 room) {
             sOwEntranceIconPosY = -825;
             play->interfaceCtx.mapSegmentName[0] = gExploredShadowGraveyardMinimapTex;
         } else if (play->sceneNum == SCENE_LAKE_HYLIA && (LINK_AGE_IN_YEARS == YEARS_ADULT) &&
-                ((!IS_RANDO && !CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER)) ||
+                   ((!IS_RANDO && !CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER)) ||
                     (IS_RANDO && !Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP)))) {
             sOwEntranceIconPosX = 259;
             sOwEntranceIconPosY = -829;
             play->interfaceCtx.mapSegmentName[0] = gDrainedLakeHyliaMinimapTex;
-        } else if (play->sceneNum == SCENE_GERUDO_VALLEY && (LINK_AGE_IN_YEARS == YEARS_ADULT) && !GET_EVENTCHKINF_CARPENTERS_FREE_ALL()) {
+        } else if (play->sceneNum == SCENE_GERUDO_VALLEY && (LINK_AGE_IN_YEARS == YEARS_ADULT) &&
+                   !GET_EVENTCHKINF_CARPENTERS_FREE_ALL()) {
             sOwEntranceIconPosX = 1;
             sOwEntranceIconPosY = 0;
             play->interfaceCtx.mapSegmentName[0] = gGerudoValleyWithBrokenBridgeMinimapTex;
         } else if (play->sceneNum == SCENE_GERUDOS_FORTRESS && (!IS_RANDO && GET_EVENTCHKINF_CARPENTERS_FREE_ALL()) ||
-                (IS_RANDO && CHECK_QUEST_ITEM(QUEST_GERUDO_CARD))) {
+                   (IS_RANDO && CHECK_QUEST_ITEM(QUEST_GERUDO_CARD))) {
             sOwEntranceIconPosX = 243;
             sOwEntranceIconPosY = -833;
             play->interfaceCtx.mapSegmentName[0] = gGerudosFortressMinimapTex;
@@ -385,8 +386,8 @@ void Map_InitData(PlayState* play, s16 room) {
     } else if (SCENEDB_ISDUNGEON(entry)) {
         osSyncPrintf(VT_FGCOL(YELLOW));
         // "Deku Tree Dungeon MAP Texture DMA"
-        osSyncPrintf("デクの樹ダンジョンＭＡＰ テクスチャＤＭＡ(%x) scene_id_offset=%d  VREG(30)=%d\n", room,
-            mapIndex, VREG(30));
+        osSyncPrintf("デクの樹ダンジョンＭＡＰ テクスチャＤＭＡ(%x) scene_id_offset=%d  VREG(30)=%d\n", room, mapIndex,
+                     VREG(30));
         osSyncPrintf(VT_RST);
 
         play->interfaceCtx.mapSegmentName[0] = entry->dungeonData.rooms[room].minimapTexture;
@@ -445,7 +446,6 @@ void Map_Init(PlayState* play) {
     osSyncPrintf("\n\n\nＭＡＰ テクスチャ初期化   scene_data_ID=%d\nmapSegment=%x\n\n", play->sceneNum,
                  interfaceCtx->mapSegment, play);
     assert(interfaceCtx->mapSegment != NULL);
-
 
     SceneDBEntry* entry = SceneDB_Retrieve(play->sceneNum);
 
@@ -640,7 +640,7 @@ void Minimap_Draw(PlayState* play) {
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
     s32 mapIndex = gSaveContext.mapIndex;
     SceneDBEntry* entry = SceneDB_Retrieve(play->sceneNum);
-    Color_RGB8 minimapColor = {0, 255, 255};
+    Color_RGB8 minimapColor = { 0, 255, 255 };
     if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.Changed"), 0)) {
         minimapColor = CVarGetColor24(CVAR_COSMETIC("HUD.Minimap.Value"), minimapColor);
     }
@@ -667,42 +667,44 @@ void Minimap_Draw(PlayState* play) {
         }
 
         if (SCENEDB_ISDUNGEON(entry)) {
-            if (!R_MINIMAP_DISABLED && CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) != HIDDEN) { // Not Hidden
+            if (!R_MINIMAP_DISABLED &&
+                CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) != HIDDEN) { // Not Hidden
                 Gfx_SetupDL_39Overlay(play->state.gfxCtx);
                 gDPSetCombineLERP(OVERLAY_DISP++, 1, 0, PRIMITIVE, 0, TEXEL0, 0, PRIMITIVE, 0, 1, 0, PRIMITIVE, 0,
-                    TEXEL0, 0, PRIMITIVE, 0);
+                                  TEXEL0, 0, PRIMITIVE, 0);
 
                 if (CHECK_DUNGEON_ITEM(DUNGEON_MAP, mapIndex)) {
-                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, minimapColor.r, minimapColor.g, minimapColor.b, interfaceCtx->minimapAlpha);
+                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, minimapColor.r, minimapColor.g, minimapColor.b,
+                                    interfaceCtx->minimapAlpha);
 
                     u8 mirrorMode = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? G_TX_MIRROR : G_TX_NOMIRROR;
                     gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->mapSegmentName[0], G_IM_FMT_I, 96, 85, 0,
-                        mirrorMode | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
-                        G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                                           mirrorMode | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                                           G_TX_NOLOD, G_TX_NOLOD);
 
-                        s16 dgnMiniMapX = OTRGetRectDimensionFromRightEdge(R_DGN_MINIMAP_X + X_Margins_Minimap);
-                        s16 dgnMiniMapY = R_DGN_MINIMAP_Y + Y_Margins_Minimap;
-                        if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) != ORIGINAL_LOCATION) {
-                            dgnMiniMapY = R_DGN_MINIMAP_Y + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosY"), 0) +
-                                          Y_Margins_Minimap;
-                            if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_LEFT) {
-                                if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {
-                                    X_Margins_Minimap = Left_MM_Margin;
-                                };
-                                dgnMiniMapX = OTRGetDimensionFromLeftEdge(
-                                    R_DGN_MINIMAP_X + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) +
-                                    X_Margins_Minimap);
-                            } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_RIGHT) {
-                                if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {
-                                    X_Margins_Minimap = Right_MM_Margin;
-                                };
-                                dgnMiniMapX = OTRGetDimensionFromRightEdge(
-                                    R_DGN_MINIMAP_X + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) +
-                                    X_Margins_Minimap);
-                            } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_NONE) {
-                                dgnMiniMapX = CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0);
-                            }
+                    s16 dgnMiniMapX = OTRGetRectDimensionFromRightEdge(R_DGN_MINIMAP_X + X_Margins_Minimap);
+                    s16 dgnMiniMapY = R_DGN_MINIMAP_Y + Y_Margins_Minimap;
+                    if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) != ORIGINAL_LOCATION) {
+                        dgnMiniMapY =
+                            R_DGN_MINIMAP_Y + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosY"), 0) + Y_Margins_Minimap;
+                        if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_LEFT) {
+                            if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {
+                                X_Margins_Minimap = Left_MM_Margin;
+                            };
+                            dgnMiniMapX = OTRGetDimensionFromLeftEdge(
+                                R_DGN_MINIMAP_X + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) +
+                                X_Margins_Minimap);
+                        } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_RIGHT) {
+                            if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {
+                                X_Margins_Minimap = Right_MM_Margin;
+                            };
+                            dgnMiniMapX = OTRGetDimensionFromRightEdge(
+                                R_DGN_MINIMAP_X + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) +
+                                X_Margins_Minimap);
+                        } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_NONE) {
+                            dgnMiniMapX = CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0);
                         }
+                    }
 
                     s32 sValue = 0;
                     if (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) {
@@ -710,10 +712,9 @@ void Minimap_Draw(PlayState* play) {
                         sValue = 96 << 5;
                     }
 
-                        gSPWideTextureRectangle(OVERLAY_DISP++, dgnMiniMapX << 2, dgnMiniMapY << 2,
-                                                (dgnMiniMapX + 96) << 2, (dgnMiniMapY + 85) << 2, G_TX_RENDERTILE,
-                                                sValue, 0, 1 << 10, 1 << 10);
-                    }
+                    gSPWideTextureRectangle(OVERLAY_DISP++, dgnMiniMapX << 2, dgnMiniMapY << 2, (dgnMiniMapX + 96) << 2,
+                                            (dgnMiniMapY + 85) << 2, G_TX_RENDERTILE, sValue, 0, 1 << 10, 1 << 10);
+                }
 
                 if (CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, mapIndex)) {
                     Minimap_DrawCompassIcons(play); // Draw icons for the player spawn and current position
@@ -737,24 +738,34 @@ void Minimap_Draw(PlayState* play) {
                 Gfx_SetupDL_39Overlay(play->state.gfxCtx);
 
                 gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, minimapColor.r, minimapColor.g, minimapColor.b, interfaceCtx->minimapAlpha);
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, minimapColor.r, minimapColor.g, minimapColor.b,
+                                interfaceCtx->minimapAlpha);
 
                 u8 mirrorMode = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? G_TX_MIRROR : G_TX_NOMIRROR;
                 gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->mapSegmentName[0], G_IM_FMT_IA,
-                    entry->worldData.minimapWidth, entry->worldData.minimapHeight, 0,
-                    mirrorMode | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
-                    G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                                       entry->worldData.minimapWidth, entry->worldData.minimapHeight, 0,
+                                       mirrorMode | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                                       G_TX_NOLOD, G_TX_NOLOD);
 
                 s16 oWMiniMapX = OTRGetRectDimensionFromRightEdge(entry->worldData.minimapX + X_Margins_Minimap);
                 s16 oWMiniMapY = entry->worldData.minimapY + Y_Margins_Minimap;
                 if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) != ORIGINAL_LOCATION) {
-                    oWMiniMapY = entry->worldData.minimapY + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosY"), 0) + Y_Margins_Minimap;
+                    oWMiniMapY = entry->worldData.minimapY + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosY"), 0) +
+                                 Y_Margins_Minimap;
                     if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_LEFT) {
-                        if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) { X_Margins_Minimap = Left_MM_Margin; };
-                        oWMiniMapX = OTRGetDimensionFromLeftEdge(entry->worldData.minimapX + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) + X_Margins_Minimap);
+                        if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {
+                            X_Margins_Minimap = Left_MM_Margin;
+                        };
+                        oWMiniMapX = OTRGetDimensionFromLeftEdge(entry->worldData.minimapX +
+                                                                 CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) +
+                                                                 X_Margins_Minimap);
                     } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_RIGHT) {
-                        if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) { X_Margins_Minimap = Right_MM_Margin; };
-                        oWMiniMapX = OTRGetDimensionFromRightEdge(entry->worldData.minimapX + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) + X_Margins_Minimap);
+                        if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {
+                            X_Margins_Minimap = Right_MM_Margin;
+                        };
+                        oWMiniMapX = OTRGetDimensionFromRightEdge(entry->worldData.minimapX +
+                                                                  CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) +
+                                                                  X_Margins_Minimap);
                     } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_NONE) {
                         oWMiniMapX = CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0);
                     }
@@ -766,31 +777,34 @@ void Minimap_Draw(PlayState* play) {
                     sValue = entry->worldData.minimapWidth << 5;
                 }
 
-                gSPWideTextureRectangle(OVERLAY_DISP++, oWMiniMapX << 2, oWMiniMapY << 2,
-                    (oWMiniMapX + entry->worldData.minimapWidth) << 2,
-                    (oWMiniMapY + entry->worldData.minimapHeight) << 2, G_TX_RENDERTILE, sValue,
-                    0, 1 << 10, 1 << 10);
+                gSPWideTextureRectangle(
+                    OVERLAY_DISP++, oWMiniMapX << 2, oWMiniMapY << 2, (oWMiniMapX + entry->worldData.minimapWidth) << 2,
+                    (oWMiniMapY + entry->worldData.minimapHeight) << 2, G_TX_RENDERTILE, sValue, 0, 1 << 10, 1 << 10);
 
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, minimapColor.r, minimapColor.g, minimapColor.b, interfaceCtx->minimapAlpha);
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, minimapColor.r, minimapColor.g, minimapColor.b,
+                                interfaceCtx->minimapAlpha);
 
                 s16 iconSize = 8;
 
                 if (((play->sceneNum != SCENE_KAKARIKO_VILLAGE) && (play->sceneNum != SCENE_KOKIRI_FOREST) &&
-                    (play->sceneNum != SCENE_ZORAS_FOUNTAIN)) ||
+                     (play->sceneNum != SCENE_ZORAS_FOUNTAIN)) ||
                     (LINK_AGE_IN_YEARS != YEARS_ADULT)) {
                     s16 origX = R_OW_MINIMAP_X;
 
                     // Compute the distance of the center of the original texture location to the center of the map
-                    // Then duplicate that and right-align the texture (extra 2 pixels are due to the texture being a 6px left-aligned in a 8px tex)
-                    s16 distFromCenter = (entry->worldData.minimapX + (entry->worldData.minimapWidth / 2)) - (origX + (iconSize / 2));
+                    // Then duplicate that and right-align the texture (extra 2 pixels are due to the texture being a
+                    // 6px left-aligned in a 8px tex)
+                    s16 distFromCenter =
+                        (entry->worldData.minimapX + (entry->worldData.minimapWidth / 2)) - (origX + (iconSize / 2));
                     s16 mirrorOffset = distFromCenter * 2 + (iconSize / 2) - 2;
                     s16 newX = origX + (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? mirrorOffset : 0);
 
-                    // The game authentically uses larger negative values for the entrance icon Y pos value. Normally only the first 12 bits
-                    // would be read when the final value is passed into `gSPTextureRectangle`, but our cosmetic hud placements requires using
-                    // `gSPWideTextureRectangle` which reads the first 24 bits instead. This caused the icon to be placed off screen.
-                    // To address this, we take only the first 10 bits (which are later left-shifted by 2 to get our final 12 bits)
-                    // to fix the entrance icon position when used with `gSPWideTextureRectangle`
+                    // The game authentically uses larger negative values for the entrance icon Y pos value. Normally
+                    // only the first 12 bits would be read when the final value is passed into `gSPTextureRectangle`,
+                    // but our cosmetic hud placements requires using `gSPWideTextureRectangle` which reads the first 24
+                    // bits instead. This caused the icon to be placed off screen. To address this, we take only the
+                    // first 10 bits (which are later left-shifted by 2 to get our final 12 bits) to fix the entrance
+                    // icon position when used with `gSPWideTextureRectangle`
                     s16 newY = R_OW_MINIMAP_Y & 0x3FF;
 
                     s16 entranceX = OTRGetRectDimensionFromRightEdge(newX + X_Margins_Minimap);
@@ -798,11 +812,17 @@ void Minimap_Draw(PlayState* play) {
                     if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) != ORIGINAL_LOCATION) {
                         entranceY = newY + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosY"), 0) + Y_Margins_Minimap;
                         if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_LEFT) {
-                            if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) { X_Margins_Minimap = Left_MM_Margin; };
-                            entranceX = OTRGetRectDimensionFromLeftEdge(newX + X_Margins_Minimap + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0));
+                            if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {
+                                X_Margins_Minimap = Left_MM_Margin;
+                            };
+                            entranceX = OTRGetRectDimensionFromLeftEdge(
+                                newX + X_Margins_Minimap + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0));
                         } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_RIGHT) {
-                            if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) { X_Margins_Minimap = Right_MM_Margin; };
-                            entranceX = OTRGetRectDimensionFromRightEdge(newX + X_Margins_Minimap + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0));
+                            if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {
+                                X_Margins_Minimap = Right_MM_Margin;
+                            };
+                            entranceX = OTRGetRectDimensionFromRightEdge(
+                                newX + X_Margins_Minimap + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0));
                         } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_NONE) {
                             entranceX = newX + X_Margins_Minimap + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0);
                         }
@@ -812,18 +832,21 @@ void Minimap_Draw(PlayState* play) {
                     // or hide them entirely if the fix is applied
                     if (R_OW_MINIMAP_Y == 0) {
                         entranceY = 0;
-                        entranceX = CVarGetInteger(CVAR_ENHANCEMENT("FixDungeonMinimapIcon"), 0) ? -9999 : OTRGetRectDimensionFromLeftEdge(0);
+                        entranceX = CVarGetInteger(CVAR_ENHANCEMENT("FixDungeonMinimapIcon"), 0)
+                                        ? -9999
+                                        : OTRGetRectDimensionFromLeftEdge(0);
                     }
 
                     if ((entry->worldData.entranceFlag == -1) ||
                         ((entry->worldData.entranceFlag != -1) &&
-                            ((gSaveContext.infTable[26] & gBitFlags[entry->worldData.entranceFlag]) ||
-                                CVarGetInteger(CVAR_ENHANCEMENT("AlwaysShowDungeonMinimapIcon"), 0)))) {
+                         ((gSaveContext.infTable[26] & gBitFlags[entry->worldData.entranceFlag]) ||
+                          CVarGetInteger(CVAR_ENHANCEMENT("AlwaysShowDungeonMinimapIcon"), 0)))) {
                         gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b,
-                            iconSize, iconSize, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
-                            G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-                        gSPWideTextureRectangle(OVERLAY_DISP++, entranceX << 2, entranceY << 2, (entranceX + iconSize) << 2,
-                            (entranceY + iconSize) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+                                            iconSize, iconSize, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
+                                            G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                        gSPWideTextureRectangle(OVERLAY_DISP++, entranceX << 2, entranceY << 2,
+                                                (entranceX + iconSize) << 2, (entranceY + iconSize) << 2,
+                                                G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
                     }
                 }
 
@@ -833,24 +856,31 @@ void Minimap_Draw(PlayState* play) {
                 if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) != ORIGINAL_LOCATION) {
                     entranceY = 154 + Y_Margins_Minimap + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosY"), 0);
                     if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_LEFT) {
-                        if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) { X_Margins_Minimap = Left_MM_Margin; };
-                        entranceX = OTRGetRectDimensionFromLeftEdge(origX + X_Margins_Minimap + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0));
+                        if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {
+                            X_Margins_Minimap = Left_MM_Margin;
+                        };
+                        entranceX = OTRGetRectDimensionFromLeftEdge(
+                            origX + X_Margins_Minimap + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0));
                     } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_RIGHT) {
-                        if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) { X_Margins_Minimap = Right_MM_Margin; };
-                        entranceX = OTRGetRectDimensionFromRightEdge(origX + X_Margins_Minimap + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0));
+                        if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {
+                            X_Margins_Minimap = Right_MM_Margin;
+                        };
+                        entranceX = OTRGetRectDimensionFromRightEdge(
+                            origX + X_Margins_Minimap + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0));
                     } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_NONE) {
                         entranceX = origX + X_Margins_Minimap + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0);
                     }
                 }
 
                 // Ice Cavern entrance icon
-                if ((play->sceneNum == SCENE_ZORAS_FOUNTAIN) && ((gSaveContext.infTable[26] & gBitFlags[9]) ||
-                    CVarGetInteger(CVAR_ENHANCEMENT("AlwaysShowDungeonMinimapIcon"), 0))) {
-                    gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, iconSize,
-                        iconSize, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
-                        G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                if ((play->sceneNum == SCENE_ZORAS_FOUNTAIN) &&
+                    ((gSaveContext.infTable[26] & gBitFlags[9]) ||
+                     CVarGetInteger(CVAR_ENHANCEMENT("AlwaysShowDungeonMinimapIcon"), 0))) {
+                    gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b,
+                                        iconSize, iconSize, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
+                                        G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                     gSPWideTextureRectangle(OVERLAY_DISP++, entranceX << 2, entranceY << 2, (entranceX + iconSize) << 2,
-                        (entranceY + iconSize) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+                                            (entranceY + iconSize) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
                 }
 
                 Minimap_DrawCompassIcons(play); // Draw icons for the player spawn and current position
@@ -910,7 +940,7 @@ void Map_Update(PlayState* play) {
             if (interfaceCtx->mapRoomNum != sLastRoomNum) {
                 // "Current floor = %d Current room = %x Number of rooms = %d"
                 osSyncPrintf("現在階＝%d  現在部屋＝%x  部屋数＝%d\n", floor, interfaceCtx->mapRoomNum,
-                    entry->dungeonData.numRooms);
+                             entry->dungeonData.numRooms);
                 sLastRoomNum = interfaceCtx->mapRoomNum;
             }
 
