@@ -2259,7 +2259,7 @@ void SaveManager::LoadBaseVersion5() {
     int isRando = 0;
     SaveManager::Instance->LoadData("n64ddFlag", isRando);
     if (isRando) {
-        gSaveContext.questId = QUEST_RANDOMIZER;
+        gSaveContext.ship.quest.id = QUEST_RANDOMIZER;
     }
     SaveManager::Instance->LoadData("healthCapacity", gSaveContext.healthCapacity);
     SaveManager::Instance->LoadData("health", gSaveContext.health);
@@ -2399,31 +2399,31 @@ void SaveManager::LoadBaseVersion5() {
         SaveManager::Instance->LoadData("angle", gSaveContext.horseData.angle);
     });
 
-    SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(gSaveContext.randomizerInf), [](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.randomizerInf[i]);
+    SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(gSaveContext.ship.randomizerInf), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.ship.randomizerInf[i]);
     });
     int isMQ = 0;
     SaveManager::Instance->LoadData("isMasterQuest", isMQ);
     if (isMQ) {
-        gSaveContext.questId = QUEST_MASTER;
+        gSaveContext.ship.quest.id = QUEST_MASTER;
     }
     SaveManager::Instance->LoadStruct("backupFW", []() {
         SaveManager::Instance->LoadStruct("pos", []() {
-            SaveManager::Instance->LoadData("x", gSaveContext.backupFW.pos.x);
-            SaveManager::Instance->LoadData("y", gSaveContext.backupFW.pos.y);
-            SaveManager::Instance->LoadData("z", gSaveContext.backupFW.pos.z);
+            SaveManager::Instance->LoadData("x", gSaveContext.ship.backupFW.pos.x);
+            SaveManager::Instance->LoadData("y", gSaveContext.ship.backupFW.pos.y);
+            SaveManager::Instance->LoadData("z", gSaveContext.ship.backupFW.pos.z);
         });
-        SaveManager::Instance->LoadData("yaw", gSaveContext.backupFW.yaw);
-        SaveManager::Instance->LoadData("playerParams", gSaveContext.backupFW.playerParams);
-        SaveManager::Instance->LoadData("entranceIndex", gSaveContext.backupFW.entranceIndex);
-        SaveManager::Instance->LoadData("roomIndex", gSaveContext.backupFW.roomIndex);
-        SaveManager::Instance->LoadData("set", gSaveContext.backupFW.set);
-        SaveManager::Instance->LoadData("tempSwchFlags", gSaveContext.backupFW.tempSwchFlags);
-        SaveManager::Instance->LoadData("tempCollectFlags", gSaveContext.backupFW.tempCollectFlags);
+        SaveManager::Instance->LoadData("yaw", gSaveContext.ship.backupFW.yaw);
+        SaveManager::Instance->LoadData("playerParams", gSaveContext.ship.backupFW.playerParams);
+        SaveManager::Instance->LoadData("entranceIndex", gSaveContext.ship.backupFW.entranceIndex);
+        SaveManager::Instance->LoadData("roomIndex", gSaveContext.ship.backupFW.roomIndex);
+        SaveManager::Instance->LoadData("set", gSaveContext.ship.backupFW.set);
+        SaveManager::Instance->LoadData("tempSwchFlags", gSaveContext.ship.backupFW.tempSwchFlags);
+        SaveManager::Instance->LoadData("tempCollectFlags", gSaveContext.ship.backupFW.tempCollectFlags);
     });
     SaveManager::Instance->LoadData("dogParams", gSaveContext.dogParams);
     SaveManager::Instance->LoadData("filenameLanguage", gSaveContext.ship.filenameLanguage);
-    SaveManager::Instance->LoadData("maskMemory", gSaveContext.maskMemory);
+    SaveManager::Instance->LoadData("maskMemory", gSaveContext.ship.maskMemory);
 }
 
 void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSave) {

@@ -86,9 +86,9 @@ void PauseMapMark_DrawForDungeon(PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    gDPPipeSync(POLY_KAL_DISP++);
-    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, 255);
-    gDPSetEnvColor(POLY_KAL_DISP++, 0, 0, 0, 255);
+    gDPPipeSync(POLY_OPA_DISP++);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
+    gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
 
     Matrix_Push();
 
@@ -120,11 +120,11 @@ void PauseMapMark_DrawForDungeon(PlayState* play) {
             Matrix_Translate(GREG(92) + floor->chestMarks[i].x + mirrorOffset, GREG(93) + floor->chestMarks[i].y, 0.0f,
                              MTXMODE_APPLY);
             Matrix_Scale(1.0f, 1.0f, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             Matrix_Pop();
 
-            gSPVertex(POLY_KAL_DISP++, sMarkChestVtx, 4, 0);
-            gSP1Quadrangle(POLY_KAL_DISP++, 1, 3, 2, 0, 0);
+            gSPVertex(POLY_OPA_DISP++, sMarkChestVtx, 4, 0);
+            gSP1Quadrangle(POLY_OPA_DISP++, 1, 3, 2, 0, 0);
         }
     }
 
