@@ -31,7 +31,7 @@ const char* enemyCVarList[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] = {
     CVAR_ENHANCEMENT("RandomizedEnemyList.BlueTektite"),  CVAR_ENHANCEMENT("RandomizedEnemyList.Bubble"),
     CVAR_ENHANCEMENT("RandomizedEnemyList.ClubMoblin"),   CVAR_ENHANCEMENT("RandomizedEnemyList.DarkLink"),
     CVAR_ENHANCEMENT("RandomizedEnemyList.Dinolfos"),     CVAR_ENHANCEMENT("RandomizedEnemyList.Dodongo"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.FireKeese"),    CVAR_ENHANCEMENT("RandomizedEnemyList.FlareDancer"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.FireKeese"), /*CVAR_ENHANCEMENT("RandomizedEnemyList.FlareDancer"),*/
     CVAR_ENHANCEMENT("RandomizedEnemyList.FloorTile"),    CVAR_ENHANCEMENT("RandomizedEnemyList.Floormaster"),
     CVAR_ENHANCEMENT("RandomizedEnemyList.FlyingPeahat"), CVAR_ENHANCEMENT("RandomizedEnemyList.FlyingPot"),
     CVAR_ENHANCEMENT("RandomizedEnemyList.Freezard"),     CVAR_ENHANCEMENT("RandomizedEnemyList.Gibdo"),
@@ -70,7 +70,7 @@ const char* enemyNameList[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] = {
     "Dinolfos",
     "Dodongo",
     "Fire Keese",
-    "Flare Dancer",
+    //"Flare Dancer",
     "Floor Tile",
     "Floormaster",
     "Flying Peahat",
@@ -127,8 +127,8 @@ static EnemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] =
     { ACTOR_EN_ZF, -2 },         // Dinolfos
     { ACTOR_EN_DODONGO, -1 },    // Dodongo
     { ACTOR_EN_FIREFLY, 1 },     // Fire Keese
-    { ACTOR_EN_FD, 0 }, // Flare Dancer (jumps out of bounds a lot, and possible cause of crashes because of spawning a
-                        // ton of flame actors)
+    // { ACTOR_EN_FD, 0 },          // Flare Dancer (possible cause of crashes because of spawning flame actors on
+    // sloped ground)
     { ACTOR_EN_YUKABYUN, 0 },  // Flying Floor Tile
     { ACTOR_EN_FLOORMAS, 0 },  // Floormaster
     { ACTOR_EN_PEEHAT, -1 },   // Flying Peahat (big grounded, doesn't spawn larva)
@@ -151,11 +151,11 @@ static EnemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] =
     // { ACTOR_EN_OKUTA, 0 },       // Octorok
     { ACTOR_EN_PEEHAT, 1 }, // Flying Peahat Larva
     // Doesn't work (Seems to rely on other objects?)
-    //{ ACTOR_EN_POH, 0 },         // Poe
+    // { ACTOR_EN_POH, 0 },         // Poe
     // Doesn't work (Seems to rely on other objects?)
-    //{ ACTOR_EN_POH, 2 },         // Poe (composer Sharp)
+    // { ACTOR_EN_POH, 2 },         // Poe (composer Sharp)
     // Doesn't work (Seems to rely on other objects?)
-    //{ ACTOR_EN_POH, 3 },         // Poe (composer Flat)
+    // { ACTOR_EN_POH, 3 },         // Poe (composer Flat)
     { ACTOR_EN_RD, 1 },       // Redead (standing)
     { ACTOR_EN_TITE, -1 },    // Tektite (red)
     { ACTOR_EN_BUBBLE, 0 },   // Shabom (bubble)

@@ -2,7 +2,7 @@
 
 #include <libultraship/libultra/types.h>
 
-#define RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE 53
+#define RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE 52
 
 extern const char* enemyCVarList[];
 extern const char* enemyNameList[];
