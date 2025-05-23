@@ -15,7 +15,7 @@ ResourceFactoryBinaryAudioSequenceV2::ReadResource(std::shared_ptr<Ship::File> f
 
     audioSequence->sequence.seqDataSize = reader->ReadInt32();
     audioSequence->sequenceData.reserve(audioSequence->sequence.seqDataSize);
-    for (uint32_t i = 0; i < audioSequence->sequence.seqDataSize; i++) {
+    for (int32_t i = 0; i < audioSequence->sequence.seqDataSize; i++) {
         audioSequence->sequenceData.push_back(reader->ReadChar());
     }
     audioSequence->sequence.seqData = audioSequence->sequenceData.data();
@@ -25,10 +25,10 @@ ResourceFactoryBinaryAudioSequenceV2::ReadResource(std::shared_ptr<Ship::File> f
     audioSequence->sequence.cachePolicy = reader->ReadUByte();
 
     audioSequence->sequence.numFonts = reader->ReadUInt32();
-    for (uint32_t i = 0; i < 16; i++) {
+    for (int32_t i = 0; i < 16; i++) {
         audioSequence->sequence.fonts[i] = 0;
     }
-    for (uint32_t i = 0; i < audioSequence->sequence.numFonts; i++) {
+    for (int32_t i = 0; i < audioSequence->sequence.numFonts; i++) {
         audioSequence->sequence.fonts[i] = reader->ReadUByte();
     }
 

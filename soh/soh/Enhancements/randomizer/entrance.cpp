@@ -441,12 +441,6 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
         type = entrancePlaced->GetType();
     }
 
-    bool checkPoeCollectorAccess =
-        (ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) ||
-         ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL)) &&
-        (entrancePlaced == nullptr || ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS) || type == EntranceType::Interior ||
-         type == EntranceType::SpecialInterior || type == EntranceType::Overworld || type == EntranceType::Spawn ||
-         type == EntranceType::WarpSong || type == EntranceType::OwlDrop);
     bool checkOtherEntranceAccess =
         (ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) ||
          ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL) ||
@@ -459,7 +453,7 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
     // Conditions will be checked during the search and any that fail will be figured out
     // afterwards
     ctx->GetLogic()->Reset();
-    ValidateEntrances(checkPoeCollectorAccess, checkOtherEntranceAccess);
+    ValidateEntrances(checkOtherEntranceAccess);
 
     if (!ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
         // Unless entrances are decoupled, we don't want the player to end up through certain entrances as the wrong age
@@ -544,15 +538,6 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
             }
         }
 
-        // The Big Poe shop should always be accessible as adult without the need to use any bottles
-        // This is important to ensure that players can never lock their only bottles by filling them with Big Poes they
-        // can't sell
-        if (checkPoeCollectorAccess) {
-            if (!RegionTable(RR_MARKET_GUARD_HOUSE)->Adult()) {
-                SPDLOG_DEBUG("Big Poe Shop access is not guarenteed as adult\n");
-                return false;
-            }
-        }
         SPDLOG_DEBUG("All Locations NOT REACHABLE\n");
         return false;
     }

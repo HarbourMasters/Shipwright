@@ -135,6 +135,16 @@ static const std::unordered_map<int32_t, const char*> bonkDamageValues = {
     { BONK_DAMAGE_8_HEARTS, "8 Hearts" },     { BONK_DAMAGE_OHKO, "OHKO" },
 };
 
+static const std::unordered_map<int32_t, const char*> dampeDropRates = {
+    { DAMPE_NONE, "None" },
+    { DAMPE_NORMAL, "Vanilla" },
+    { DAMPE_JALAPENO, "Jalapeño" },
+    { DAMPE_CHIPOTLE, "Serrano" },
+    { DAMPE_SCOTCH_BONNET, "Habanero" },
+    { DAMPE_GHOST_PEPPER, "Ghost Pepper" },
+    { DAMPE_INFERNO, "Dampe's Inferno" },
+};
+
 static const std::unordered_map<int32_t, const char*> cursorAnywhereValues = {
     { PAUSE_ANY_CURSOR_RANDO_ONLY, "Only in Rando" },
     { PAUSE_ANY_CURSOR_ALWAYS_ON, "Always" },

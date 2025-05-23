@@ -316,7 +316,7 @@ const std::vector<PresetEntry> randomizerBeginnerPresetEntries = {
 
     // Gamplay tab
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("CuccosToReturn"), 1),
-    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BigPoeTargetCount"), 0),
+    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BigPoeTargetCount"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("SkipChildZelda"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("SkipEponaRace"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("CompleteMaskQuest"), 1),
@@ -387,7 +387,7 @@ const std::vector<PresetEntry> randomizerStandardPresetEntries = {
 
     // Gamplay tab
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("CuccosToReturn"), 1),
-    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BigPoeTargetCount"), 0),
+    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BigPoeTargetCount"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("SkipChildZelda"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("SkipEponaRace"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("CompleteMaskQuest"), 1),
@@ -469,7 +469,7 @@ const std::vector<PresetEntry> randomizerAdvancedPresetEntries = {
 
     // Gamplay tab
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("CuccosToReturn"), 1),
-    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BigPoeTargetCount"), 0),
+    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BigPoeTargetCount"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("SkipChildZelda"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("SkipEponaRace"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("CompleteMaskQuest"), 1),
@@ -568,7 +568,7 @@ const std::vector<PresetEntry> hellModePresetEntries = {
 
     // Gamplay tab
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("CuccosToReturn"), 1),
-    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BigPoeTargetCount"), 0),
+    PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BigPoeTargetCount"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("SkipEponaRace"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BombchuBag"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("EnableBombchuDrops"), 1),

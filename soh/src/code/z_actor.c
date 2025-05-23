@@ -7,6 +7,8 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 #include "objects/object_bdoor/object_bdoor.h"
+#include "soh/ObjectExtension/ObjectExtension.h"
+#include "soh/ObjectExtension/ActorListIndex.h"
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/enemyrandomizer.h"
@@ -2574,7 +2576,11 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
     if (play->numSetupActors != 0) {
         actorEntry = &play->setupActorList[0];
         for (i = 0; i < play->numSetupActors; i++) {
-            Actor_SpawnEntry(&play->actorCtx, actorEntry++, play);
+            Actor* spawnedActor = Actor_SpawnEntry(&play->actorCtx, actorEntry++, play);
+
+            // #region SOH [ObjectExtension] ActorListIndex tracking
+            SetActorListIndex(spawnedActor, (s16)i);
+            // #endregion
         }
         play->numSetupActors = 0;
         GameInteractor_ExecuteOnSceneSpawnActors();
@@ -3352,6 +3358,10 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
         return NULL;
     }
 
+    // #region SOH [ObjectExtension]
+    SetActorListIndex(actor, -1);
+    // #endregion
+
     assert(dbEntry->numLoaded < 255);
 
     dbEntry->numLoaded++;
@@ -3496,6 +3506,10 @@ Actor* Actor_Delete(ActorContext* actorCtx, Actor* actor, PlayState* play) {
     Actor_Destroy(actor, play);
 
     newHead = Actor_RemoveFromCategory(play, actorCtx, actor);
+
+    // #region SOH [ObjectExtension]
+    ObjectExtension_Free(actor);
+    // #endregion
 
     ZELDA_ARENA_FREE_DEBUG(actor);
 

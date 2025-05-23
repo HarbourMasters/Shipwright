@@ -272,7 +272,7 @@ OTRGlobals::OTRGlobals() {
     if (std::filesystem::exists(ootPath)) {
         OTRFiles.push_back(ootPath);
     }
-    std::string sohOtrPath = Ship::Context::GetPathRelativeToAppBundle("soh.otr");
+    std::string sohOtrPath = Ship::Context::LocateFileAcrossAppDirs("soh.otr");
     if (std::filesystem::exists(sohOtrPath)) {
         OTRFiles.push_back(sohOtrPath);
     }
@@ -331,6 +331,10 @@ OTRGlobals::OTRGlobals() {
 
     context->InitCrashHandler();
     context->InitConsole();
+
+    Ship::Context::GetInstance()->GetLogger()->set_level(
+        (spdlog::level::level_enum)CVarGetInteger(CVAR_DEVELOPER_TOOLS("LogLevel"), 1));
+    Ship::Context::GetInstance()->GetLogger()->set_pattern("[%H:%M:%S.%e] [%s:%#] [%l] %v");
 
     auto sohInputEditorWindow =
         std::make_shared<SohInputEditorWindow>(CVAR_WINDOW("ControllerConfiguration"), "Configure Controller");
@@ -1153,7 +1157,7 @@ extern "C" void InitOTR() {
     CheckAndCreateModFolder();
 #endif
 
-    CheckSoHOTRVersion(Ship::Context::GetPathRelativeToAppBundle("soh.otr"));
+    CheckSoHOTRVersion(Ship::Context::LocateFileAcrossAppDirs("soh.otr"));
 
     if (!std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs("oot-mq.otr", appShortName)) &&
         !std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs("oot.otr", appShortName))) {
@@ -2436,6 +2440,9 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                 CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId, MF_AUTO_FORMAT);
         } else if (textId == TEXT_MASK_SHOP_SIGN && ctx->GetOption(RSK_MASK_SHOP_HINT)) {
             messageEntry = ctx->GetHint(RH_MASK_SHOP_HINT)->GetHintMessage(MF_AUTO_FORMAT);
+        } else if (textId == TEXT_BIG_POE_COLLECTED_RANDO) {
+            messageEntry =
+                CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId, MF_AUTO_FORMAT);
         }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {

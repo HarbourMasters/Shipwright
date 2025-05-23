@@ -8,7 +8,7 @@
 #include "ResourceFactoryXML.h"
 
 namespace SOH {
-class ResourceFactoryBinarySceneV0 : public Ship::ResourceFactoryBinary {
+class ResourceFactoryBinarySceneV0 final : public Ship::ResourceFactoryBinary {
   public:
     ResourceFactoryBinarySceneV0();
 
@@ -28,7 +28,7 @@ class ResourceFactoryBinarySceneV0 : public Ship::ResourceFactoryBinary {
                                                      std::shared_ptr<Ship::BinaryReader> reader, uint32_t index);
 };
 
-class ResourceFactoryXMLSceneV0 : public Ship::ResourceFactoryXML {
+class ResourceFactoryXMLSceneV0 final : public Ship::ResourceFactoryXML {
   public:
     ResourceFactoryXMLSceneV0();
 

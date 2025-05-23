@@ -1150,6 +1150,12 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("TreesDropSticks"))
         .Options(CheckboxOptions().Tooltip(
             "Bonking into Trees will have a chance to drop up to 3 Sticks. Must have obtained sticks previously."));
+    AddWidget(path, "Dampe Drop Rate", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_ENHANCEMENT("DampeDropRate"))
+        .Options(ComboboxOptions()
+                     .ComboMap(dampeDropRates)
+                     .DefaultIndex(DAMPE_NORMAL)
+                     .Tooltip("Adjusts rate Dampe drops flames during race."));
 
     AddWidget(path, "Miscellaneous", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Delete File on Death", WIDGET_CVAR_CHECKBOX)
@@ -1615,6 +1621,9 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Keese and Guay no longer target you and simply ignore you as if you were wearing the "
             "Skull Mask."));
+    AddWidget(path, "No Dampe Fire", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_CHEAT("NoDampeFire"))
+        .Options(CheckboxOptions().Tooltip("Dampe won't drop fireballs during race."));
 
     AddWidget(path, "Glitch Aids", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Easy Frame Advancing with Pause", WIDGET_CVAR_CHECKBOX)
