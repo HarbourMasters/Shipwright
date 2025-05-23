@@ -410,6 +410,8 @@ void Settings::CreateOptions() {
               "Hover Boots, or Bean.");
     OPT_TRICK(RT_LW_MIDO_BACKFLIP, RCQUEST_BOTH, RA_THE_LOST_WOODS, { Tricks::Tag::NOVICE },
               "Backflip over Mido as Adult", "With a specific position and angle, you can backflip over Mido.");
+    OPT_TRICK(RT_LOST_WOOD_NAVI_DIVE, RCQUEST_BOTH, RA_THE_LOST_WOODS, { Tricks::Tag::NOVICE }, "Lost Woods Navi dive",
+              "You need Deku Sticks or Kokiri Sword to dive with Navi for entering Zora's River.");
     OPT_TRICK(RT_LW_GS_BEAN, RCQUEST_BOTH, RA_THE_LOST_WOODS, { Tricks::Tag::INTERMEDIATE },
               "Lost Woods Adult GS without Bean",
               "You can collect the token with a precise Hookshot use, as long as you can kill the Skulltula somehow "
@@ -705,6 +707,9 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_LENS_BOTW, RCQUEST_VANILLA, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE },
               "Bottom of the Well without Lens of Truth",
               "Removes the requirements for the Lens of Truth in Bottom of the Well.");
+    OPT_TRICK(RT_BOTTOM_OF_THE_WELL_NAVI_DIVE, RCQUEST_BOTH, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE },
+              "Bottom of the Well Navi dive",
+              "You need Deku Sticks or Kokiri Sword to dive with Navi for entering Bottom of the Well.");
     OPT_TRICK(RT_BOTW_CHILD_DEADHAND, RCQUEST_BOTH, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE },
               "Child Dead Hand without Kokiri Sword", "Requires 9 sticks or 5 jump slashes.");
     OPT_TRICK(RT_BOTW_BASEMENT, RCQUEST_VANILLA, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE },

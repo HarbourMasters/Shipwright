@@ -91,6 +91,10 @@ bool previousShowHidden = false;
 bool hideShopUnshuffledChecks = false;
 bool alwaysShowGS = false;
 
+static bool presetLoaded = false;
+static ImVec2 presetPos;
+static ImVec2 presetSize;
+
 std::map<uint32_t, RandomizerCheck> startingShopItem = {
     { SCENE_KOKIRI_SHOP, RC_KF_SHOP_ITEM_1 },
     { SCENE_BAZAAR, RC_MARKET_BAZAAR_ITEM_1 },
@@ -979,7 +983,13 @@ void CheckTrackerWindow::DrawElement() {
         }
     }
 
-    ImGui::SetNextWindowSize(ImVec2(400, 540), ImGuiCond_FirstUseEver);
+    if (presetLoaded) {
+        ImGui::SetNextWindowSize(presetSize);
+        ImGui::SetNextWindowPos(presetPos);
+        presetLoaded = false;
+    } else {
+        ImGui::SetNextWindowSize(ImVec2(400, 540), ImGuiCond_FirstUseEver);
+    }
     BeginFloatWindows("Check Tracker", mIsVisible, ImGuiWindowFlags_NoScrollbar);
 
     if (!GameInteractor::IsSaveLoaded() || !initialized) {
@@ -1998,6 +2008,12 @@ void RecalculateAvailableChecks() {
     StopPerformanceTimer(PT_RECALCULATE_AVAILABLE_CHECKS);
     SPDLOG_INFO("Recalculate Available Checks Time: {}ms",
                 GetPerformanceTimer(PT_RECALCULATE_AVAILABLE_CHECKS).count());
+}
+
+void CheckTracker_LoadFromPreset(nlohmann::json info) {
+    presetLoaded = true;
+    presetPos = { info["pos"]["x"], info["pos"]["y"] };
+    presetSize = { info["size"]["width"], info["size"]["height"] };
 }
 
 void CheckTrackerWindow::Draw() {

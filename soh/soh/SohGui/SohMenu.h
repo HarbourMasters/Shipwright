@@ -193,13 +193,6 @@ static const std::unordered_map<int32_t, const char*> bootSequenceLabels = {
     { BOOTSEQUENCE_FILESELECT, "File Select" },
 };
 
-static const std::unordered_map<int32_t, const char*> enhancementPresetList = {
-    { ENHANCEMENT_PRESET_DEFAULT, "Default" },
-    { ENHANCEMENT_PRESET_VANILLA_PLUS, "Vanilla Plus" },
-    { ENHANCEMENT_PRESET_ENHANCED, "Enhanced" },
-    { ENHANCEMENT_PRESET_RANDOMIZER, "Randomizer" },
-};
-
 class SohMenu : public Ship::Menu {
   public:
     SohMenu(const std::string& consoleVariable, const std::string& name);

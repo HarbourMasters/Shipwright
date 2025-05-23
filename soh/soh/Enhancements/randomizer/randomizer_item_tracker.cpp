@@ -375,6 +375,10 @@ uint32_t notesIdleFrames = 0;
 bool notesNeedSave = false;
 const uint32_t notesMaxIdleFrames = 40; // two seconds of game time, since OnGameFrameUpdate is used to tick
 
+static bool presetLoaded = false;
+static std::unordered_map<std::string, ImVec2> presetPos;
+static std::unordered_map<std::string, ImVec2> presetSize;
+
 void ItemTrackerOnFrame() {
     if (notesNeedSave && notesIdleFrames <= notesMaxIdleFrames) {
         notesIdleFrames++;
@@ -396,6 +400,16 @@ bool HasQuestItem(ItemTrackerItem item) {
 
 bool HasEquipment(ItemTrackerItem item) {
     return GameInteractor::IsSaveLoaded() ? (item.data & gSaveContext.inventory.equipment) : false;
+}
+
+void ItemTracker_LoadFromPreset(nlohmann::json trackerInfo) {
+    presetLoaded = true;
+    for (auto window : itemTrackerWindowIDs) {
+        if (trackerInfo.contains(window)) {
+            presetPos[window] = { trackerInfo[window]["pos"]["x"], trackerInfo[window]["pos"]["y"] };
+            presetSize[window] = { trackerInfo[window]["size"]["width"], trackerInfo[window]["size"]["height"] };
+        }
+    }
 }
 
 ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
@@ -1171,6 +1185,12 @@ void BeginFloatingWindows(std::string UniqueName, ImGuiWindowFlags flags = 0) {
     ImGui::PushStyleColor(ImGuiCol_WindowBg, color);
     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 4.0f);
+    if (presetLoaded && presetPos.contains(UniqueName)) {
+        ImGui::SetNextWindowSize(presetSize[UniqueName]);
+        ImGui::SetNextWindowPos(presetPos[UniqueName]);
+        presetSize.erase(UniqueName);
+        presetPos.erase(UniqueName);
+    }
     ImGui::Begin(UniqueName.c_str(), nullptr, windowFlags);
 }
 void EndFloatingWindows() {
@@ -1525,7 +1545,7 @@ void ItemTrackerWindow::DrawElement() {
              SECTION_DISPLAY_EXTENDED_MAIN_WINDOW) ||
             (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Notes"), SECTION_DISPLAY_HIDDEN) ==
              SECTION_DISPLAY_MAIN_WINDOW)) {
-            BeginFloatingWindows("Item Tracker##main window");
+            BeginFloatingWindows("Item Tracker");
             DrawItemsInRows(mainWindowItems, 6);
 
             if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Notes"), SECTION_DISPLAY_HIDDEN) ==
@@ -1658,6 +1678,10 @@ void ItemTrackerWindow::DrawElement() {
             DrawTotalChecks();
             EndFloatingWindows();
         }
+    }
+    if (presetLoaded) {
+        shouldUpdateVectors = true;
+        presetLoaded = false;
     }
 }
 

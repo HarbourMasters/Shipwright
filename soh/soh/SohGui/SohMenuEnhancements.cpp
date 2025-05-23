@@ -4,11 +4,9 @@
 #include <soh/OTRGlobals.h>
 #include <soh/Enhancements/cosmetics/authenticGfxPatches.h>
 #include <soh/Enhancements/enemyrandomizer.h>
-#include <soh/Enhancements/Presets/Presets.h>
 #include <soh/Enhancements/TimeDisplay/TimeDisplay.h>
 
 static std::string comboboxTooltip = "";
-static int32_t enhancementPresetSelected = ENHANCEMENT_PRESET_DEFAULT;
 bool isBetaQuestEnabled = false;
 static std::unordered_map<int32_t, const char*> bunnyHoodEffectMap = {
     { BUNNY_HOOD_VANILLA, "Vanilla" },
@@ -34,51 +32,8 @@ void SohMenu::AddMenuEnhancements() {
     // Add Enhancements Menu
     AddMenuEntry("Enhancements", CVAR_SETTING("Menu.EnhancementsSidebarSection"));
 
-    // Enhancements
-    WidgetPath path = { "Enhancements", "Presets", SECTION_COLUMN_1 };
-    AddSidebarEntry("Enhancements", path.sidebarName, 3);
-
-    const PresetTypeDefinition presetTypeDef = presetTypes.at(PRESET_TYPE_ENHANCEMENTS);
-    for (auto iter = presetTypeDef.presets.begin(); iter != presetTypeDef.presets.end(); ++iter) {
-        if (iter->first != 0)
-            comboboxTooltip += "\n\n";
-        comboboxTooltip += std::string(iter->second.label) + " - " + std::string(iter->second.description);
-    }
-    AddWidget(path, "Enhancement Presets", WIDGET_SEPARATOR_TEXT);
-    AddWidget(path, "Select Preset", WIDGET_COMBOBOX)
-        .ValuePointer(&enhancementPresetSelected)
-        .Callback([](WidgetInfo& info) {
-            const std::string presetTypeCvar =
-                CVAR_GENERAL("SelectedPresets.") + std::to_string(PRESET_TYPE_ENHANCEMENTS);
-            CVarSetInteger(presetTypeCvar.c_str(), *std::get<int32_t*>(info.valuePointer));
-        })
-        .Options(ComboboxOptions()
-                     .ComboMap(enhancementPresetList)
-                     .DefaultIndex(ENHANCEMENT_PRESET_DEFAULT)
-                     .Tooltip(comboboxTooltip.c_str()));
-    AddWidget(path, "Apply Preset##Enhancemnts", WIDGET_BUTTON)
-        .Options(ButtonOptions().Size(UIWidgets::Sizes::Inline))
-        .Callback([](WidgetInfo& info) {
-            const std::string presetTypeCvar =
-                CVAR_GENERAL("SelectedPresets.") + std::to_string(PRESET_TYPE_ENHANCEMENTS);
-            const PresetTypeDefinition presetTypeDef = presetTypes.at(PRESET_TYPE_ENHANCEMENTS);
-            uint16_t selectedPresetId = CVarGetInteger(presetTypeCvar.c_str(), 0);
-            if (selectedPresetId >= presetTypeDef.presets.size()) {
-                selectedPresetId = 0;
-            }
-            const PresetDefinition selectedPresetDef = presetTypeDef.presets.at(selectedPresetId);
-            for (const char* block : presetTypeDef.blocksToClear) {
-                CVarClearBlock(block);
-            }
-            if (selectedPresetId != 0) {
-                applyPreset(selectedPresetDef.entries);
-            }
-            CVarSetInteger(presetTypeCvar.c_str(), selectedPresetId);
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-        });
-
     // Quality of Life
-    path.sidebarName = "Quality of Life";
+    WidgetPath path = { "Enhancements", "Quality of Life", SECTION_COLUMN_1 };
     AddSidebarEntry("Enhancements", path.sidebarName, 3);
     path.column = SECTION_COLUMN_1;
 
@@ -289,16 +244,16 @@ void SohMenu::AddMenuEnhancements() {
         .SameLine(true)
         .Options(ButtonOptions().Size(Sizes::Inline))
         .Callback([](WidgetInfo& info) {
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), false);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"), false);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), false);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), false);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), false);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), false);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), false);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), false);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), false);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), false);
+            CVarClear(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"));
+            CVarClear(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"));
+            CVarClear(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"));
+            CVarClear(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"));
+            CVarClear(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"));
+            CVarClear(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"));
+            CVarClear(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"));
+            CVarClear(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"));
+            CVarClear(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"));
+            CVarClear(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"));
 
             Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         });
