@@ -194,6 +194,7 @@ struct CheckboxOptions : WidgetOptions {
     bool defaultValue = false; // Only applicable to CVarCheckbox
     ComponentAlignments alignment = ComponentAlignments::Left;
     LabelPositions labelPosition = LabelPositions::Near;
+    ImVec2 padding = ImVec2(10.0f, 8.0f);
     Colors color = Colors::LightBlue;
 
     CheckboxOptions& DefaultValue(bool defaultValue_) {
@@ -218,6 +219,10 @@ struct CheckboxOptions : WidgetOptions {
     }
     CheckboxOptions& DisabledTooltip(const char* disabledTooltip_) {
         WidgetOptions::disabledTooltip = disabledTooltip_;
+        return *this;
+    }
+    CheckboxOptions& Padding(ImVec2 padding_) {
+        padding = padding_;
         return *this;
     }
 };
@@ -394,6 +399,7 @@ struct FloatSliderOptions : WidgetOptions {
 
 struct RadioButtonsOptions : WidgetOptions {
     std::unordered_map<int32_t, const char*> buttonMap;
+    int32_t defaultIndex = 0;
     Colors color = Colors::LightBlue;
 
     RadioButtonsOptions& ButtonMap(std::unordered_map<int32_t, const char*> buttonMap_) {
@@ -408,6 +414,10 @@ struct RadioButtonsOptions : WidgetOptions {
         color = color_;
         return *this;
     }
+    RadioButtonsOptions& DefaultIndex(int32_t defaultIndex_) {
+        defaultIndex = defaultIndex_;
+        return *this;
+    }
 };
 
 struct InputOptions : WidgetOptions {
@@ -420,6 +430,8 @@ struct InputOptions : WidgetOptions {
     std::string defaultValue = "";
     bool secret = false;
     ImGuiInputFlags addedFlags = 0;
+    bool hasError = false;
+    const char* errorText = "";
 
     InputOptions& Tooltip(const char* tooltip_) {
         WidgetOptions::tooltip = tooltip_;
@@ -454,6 +466,11 @@ struct InputOptions : WidgetOptions {
         return *this;
     }
 
+    InputOptions& ComponentAlignment(ComponentAlignments alignment_) {
+        alignment = alignment_;
+        return *this;
+    }
+
     InputOptions& DefaultValue(std::string defaultValue_) {
         defaultValue = defaultValue_;
         return *this;
@@ -461,6 +478,16 @@ struct InputOptions : WidgetOptions {
 
     InputOptions& IsSecret(bool secret_ = false) {
         secret = secret_;
+        return *this;
+    }
+
+    InputOptions& HasError(bool error_ = false) {
+        hasError = error_;
+        return *this;
+    }
+
+    InputOptions& ErrorText(const char* errorText_) {
+        errorText = errorText_;
         return *this;
     }
 };
@@ -482,8 +509,8 @@ bool Button(const char* label, const ButtonOptions& options = {});
 bool WindowButton(const char* label, const char* cvarName, std::shared_ptr<Ship::GuiWindow> windowPtr,
                   const WindowButtonOptions& options = {});
 
-void PushStyleCheckbox(const ImVec4& color);
-void PushStyleCheckbox(Colors color = Colors::LightBlue);
+void PushStyleCheckbox(const ImVec4& color, ImVec2 padding = ImVec2(10.0f, 6.0f));
+void PushStyleCheckbox(Colors color = Colors::LightBlue, ImVec2 padding = ImVec2(10.0f, 6.0f));
 void PopStyleCheckbox();
 void RenderText(ImVec2 pos, const char* text, const char* text_end, bool hide_text_after_hash);
 bool Checkbox(const char* label, bool* v, const CheckboxOptions& options = {});

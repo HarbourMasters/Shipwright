@@ -29,6 +29,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Shopnuts/z_en_shopnuts.h"
 #include "src/overlays/actors/ovl_En_Dns/z_en_dns.h"
 #include "src/overlays/actors/ovl_En_Gb/z_en_gb.h"
+#include "src/overlays/actors/ovl_En_Po_Field/z_en_po_field.h"
 #include "src/overlays/actors/ovl_Item_B_Heart/z_item_b_heart.h"
 #include "src/overlays/actors/ovl_En_Ko/z_en_ko.h"
 #include "src/overlays/actors/ovl_En_Mk/z_en_mk.h"
@@ -43,7 +44,6 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Box/z_en_box.h"
 #include "src/overlays/actors/ovl_En_Skj/z_en_skj.h"
 #include "src/overlays/actors/ovl_En_Hy/z_en_hy.h"
-#include "src/overlays/actors/ovl_Obj_Comb/z_obj_comb.h"
 #include "src/overlays/actors/ovl_En_Bom_Bowl_Pit/z_en_bom_bowl_pit.h"
 #include "src/overlays/actors/ovl_En_Ge1/z_en_ge1.h"
 #include "src/overlays/actors/ovl_En_Ds/z_en_ds.h"
@@ -1080,12 +1080,35 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             *should = false;
             break;
         }
+        case VB_BOTTLE_BIG_POE: {
+            EnPoField* enPoe = va_arg(args, EnPoField*);
+            enPoe->actor.textId = 0x5090;
+            Flags_SetSwitch(gPlayState, enPoe->actor.params & 0xFF);
+            HIGH_SCORE(HS_POE_POINTS) += 100;
+            if (HIGH_SCORE(HS_POE_POINTS) > 1100) {
+                HIGH_SCORE(HS_POE_POINTS) = 1100;
+            }
+            *should = false;
+            break;
+        }
+        case VB_SELL_POES_TO_POE_COLLECTOR: {
+            if (!Flags_GetRandomizerInf(RAND_INF_10_BIG_POES) && HIGH_SCORE(HS_POE_POINTS) >= 1000) {
+                EnGb* enGb = va_arg(args, EnGb*);
+                enGb->textId = 0x70F8;
+                Message_ContinueTextbox(gPlayState, enGb->textId);
+                enGb->actionFunc = func_80A2FB40;
+                *should = false;
+            }
+            break;
+        }
         case VB_GIVE_ITEM_FROM_POE_COLLECTOR: {
             EnGb* enGb = va_arg(args, EnGb*);
             if (!Flags_GetRandomizerInf(RAND_INF_10_BIG_POES)) {
+                Flags_SetInfTable(INFTABLE_SPOKE_TO_POE_COLLECTOR_IN_RUINED_MARKET);
                 Flags_SetRandomizerInf(RAND_INF_10_BIG_POES);
+                enGb->textId = 0x70F5;
                 enGb->dyna.actor.parent = NULL;
-                enGb->actionFunc = func_80A2FC0C;
+                enGb->actionFunc = func_80A2F83C;
                 *should = false;
             }
             break;
@@ -1832,65 +1855,6 @@ void EnDns_RandomizerPurchase(EnDns* enDns) {
     Flags_SetRandomizerInf(enDns->sohScrubIdentity.randomizerInf);
 }
 
-void ObjComb_RandomizerChooseItemDrop(ObjComb* objComb, PlayState* play) {
-    s16 params = objComb->actor.params & 0x1F;
-
-    if (RAND_GET_OPTION(RSK_SHUFFLE_BEEHIVES) && !Flags_GetRandomizerInf(objComb->beehiveIdentity.randomizerInf)) {
-        EnItem00* item00 = (EnItem00*)Item_DropCollectible2(play, &objComb->actor.world.pos, ITEM00_SOH_DUMMY);
-        item00->randoInf = objComb->beehiveIdentity.randomizerInf;
-        item00->itemEntry =
-            OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(objComb->beehiveIdentity.randomizerCheck, GI_NONE);
-        item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
-        return;
-    }
-
-    if ((params > 0) || (params < 0x1A)) {
-        if (params == 6) {
-            if (Flags_GetCollectible(play, (objComb->actor.params >> 8) & 0x3F)) {
-                params = -1;
-            } else {
-                params = (params | (((objComb->actor.params >> 8) & 0x3F) << 8));
-            }
-        } else if (Rand_ZeroOne() < 0.5f) {
-            params = -1;
-        }
-        if (params >= 0 && !CVarGetInteger(CVAR_ENHANCEMENT("NoRandomDrops"), 0)) {
-            Item_DropCollectible(play, &objComb->actor.world.pos, params);
-        }
-    }
-}
-
-void ObjComb_RandomizerWait(ObjComb* objComb, PlayState* play) {
-    s32 dmgFlags;
-
-    objComb->unk_1B0 -= 50;
-    if (RAND_GET_OPTION(RSK_SHUFFLE_BEEHIVES) && !Flags_GetRandomizerInf(objComb->beehiveIdentity.randomizerInf)) {
-        if (objComb->unk_1B0 <= -5000) {
-            objComb->unk_1B0 = 1500;
-        }
-    } else if (objComb->unk_1B0 < 0) {
-        objComb->unk_1B0 = 0;
-    }
-
-    if ((objComb->collider.base.acFlags & AC_HIT) != 0) {
-        objComb->collider.base.acFlags &= ~AC_HIT;
-        dmgFlags = objComb->collider.elements[0].info.acHitInfo->toucher.dmgFlags;
-        if (dmgFlags & 0x4001F866) {
-            objComb->unk_1B0 = 1500;
-        } else {
-            ObjComb_Break(objComb, play);
-            ObjComb_RandomizerChooseItemDrop(objComb, play);
-            Actor_Kill(&objComb->actor);
-        }
-    } else {
-        CollisionCheck_SetAC(play, &play->colChkCtx, &objComb->collider.base);
-    }
-
-    if (objComb->actor.update != NULL) {
-        CollisionCheck_SetOC(play, &play->colChkCtx, &objComb->collider.base);
-    }
-}
-
 void RandomizerOnActorInitHandler(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
 
@@ -1981,14 +1945,6 @@ void RandomizerOnActorInitHandler(void* actorRef) {
                 break;
             }
         }
-    }
-
-    if (actor->id == ACTOR_OBJ_COMB) {
-        ObjComb* objComb = static_cast<ObjComb*>(actorRef);
-        s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
-        objComb->beehiveIdentity = OTRGlobals::Instance->gRandomizer->IdentifyBeehive(
-            gPlayState->sceneNum, (s16)actor->world.pos.x, respawnData);
-        objComb->actionFunc = (ObjCombActionFunc)ObjComb_RandomizerWait;
     }
 
     if (actor->id == ACTOR_EN_EX_ITEM) {
@@ -2198,13 +2154,6 @@ void RandomizerOnActorUpdateHandler(void* refActor) {
     if (RAND_GET_OPTION(RSK_SHUFFLE_ENTRANCES) && actor->id == ACTOR_DEMO_KANKYO &&
         actor->params == 0x000F) { // Warp Song particles
         Entrance_SetWarpSongEntrance();
-    }
-
-    if (actor->id == ACTOR_OBJ_COMB) {
-        ObjComb* combActor = reinterpret_cast<ObjComb*>(actor);
-        combActor->actor.shape.rot.x =
-            static_cast<int16_t>(Math_SinS(combActor->unk_1B2)) * CLAMP_MIN(combActor->unk_1B0, 0) +
-            combActor->actor.home.rot.x;
     }
 }
 

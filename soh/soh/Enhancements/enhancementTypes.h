@@ -88,6 +88,16 @@ typedef enum {
 } DamageMultType;
 
 typedef enum {
+    DAMPE_NONE,
+    DAMPE_NORMAL,
+    DAMPE_JALAPENO,
+    DAMPE_CHIPOTLE,
+    DAMPE_SCOTCH_BONNET,
+    DAMPE_GHOST_PEPPER,
+    DAMPE_INFERNO,
+} DampeDropRate;
+
+typedef enum {
     DEKU_STICK_NORMAL,
     DEKU_STICK_UNBREAKABLE,
     DEKU_STICK_UNBREAKABLE_AND_ALWAYS_ON_FIRE,

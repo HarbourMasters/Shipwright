@@ -172,4 +172,7 @@ extern "C" void OTRMessage_Init() {
         CustomMessage("I'm sorry I can't sell you these fine specimens, they need an #experienced owner#.^"
                       "Come back when you have had #Bombchus# of your own.",
                       { QM_RED, QM_GREEN }));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BIG_POE_COLLECTED_RANDO,
+        CustomMessage("You have #" + CustomMessage::POINTS("\x01") + "# points.", { QM_RED }));
 }

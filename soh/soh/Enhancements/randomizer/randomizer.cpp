@@ -26,6 +26,7 @@
 #include <tuple>
 #include <functional>
 #include "draw.h"
+#include "soh/OTRGlobals.h"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "static_data.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
@@ -3643,14 +3644,8 @@ bool GenerateRandomizer(std::string seed /*= ""*/) {
     return false;
 }
 
-static const std::unordered_map<int32_t, const char*> randomizerPresetList = {
-    { RANDOMIZER_PRESET_DEFAULT, "Default" },
-    { RANDOMIZER_PRESET_BEGINNER, "Beginner" },
-    { RANDOMIZER_PRESET_STANDARD, "Standard" },
-    { RANDOMIZER_PRESET_ADVANCED, "Advanced" },
-    { RANDOMIZER_PRESET_HELL_MODE, "Hell Mode" }
-};
-static int32_t randomizerPresetSelected = RANDOMIZER_PRESET_DEFAULT;
+static bool locationsTabOpen = false;
+static bool tricksTabOpen = false;
 
 void RandomizerSettingsWindow::DrawElement() {
     auto ctx = Rando::Context::GetInstance();
@@ -3658,53 +3653,12 @@ void RandomizerSettingsWindow::DrawElement() {
         generated = 0;
         randoThread.join();
     }
-    static bool locationsTabOpen = false;
-    static bool tricksTabOpen = false;
-    bool disableEditingRandoSettings =
-        CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
-    ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings);
-    const PresetTypeDefinition presetTypeDef = presetTypes.at(PRESET_TYPE_RANDOMIZER);
-    std::string comboboxTooltip = "";
-    for (auto iter = presetTypeDef.presets.begin(); iter != presetTypeDef.presets.end(); ++iter) {
-        if (iter->first != 0)
-            comboboxTooltip += "\n\n";
-        comboboxTooltip += std::string(iter->second.label) + " - " + std::string(iter->second.description);
-    }
-    const std::string presetTypeCvar = CVAR_GENERAL("SelectedPresets.") + std::to_string(PRESET_TYPE_RANDOMIZER);
-    randomizerPresetSelected = CVarGetInteger(presetTypeCvar.c_str(), RANDOMIZER_PRESET_DEFAULT);
+    bool generating = CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0);
+    bool disableEditingRandoSettings = generating || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
 
-    if (UIWidgets::Combobox("Randomizer Presets", &randomizerPresetSelected, randomizerPresetList,
-                            UIWidgets::ComboboxOptions()
-                                .DefaultIndex(RANDOMIZER_PRESET_DEFAULT)
-                                .Tooltip(comboboxTooltip.c_str())
-                                .Color(THEME_COLOR))) {
-        CVarSetInteger(presetTypeCvar.c_str(), randomizerPresetSelected);
-    }
-    ImGui::SameLine();
-    ImGui::SetCursorPosY(ImGui::GetCursorPos().y + 35.f);
-    if (UIWidgets::Button(
-            "Apply Preset##Randomizer",
-            UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline).Padding(ImVec2(10.f, 6.f)))) {
-        if (randomizerPresetSelected >= presetTypeDef.presets.size()) {
-            randomizerPresetSelected = 0;
-        }
-        const PresetDefinition selectedPresetDef = presetTypeDef.presets.at(randomizerPresetSelected);
-        for (const char* block : presetTypeDef.blocksToClear) {
-            CVarClearBlock(block);
-        }
-        if (randomizerPresetSelected != 0) {
-            applyPreset(selectedPresetDef.entries);
-        }
-        CVarSetInteger(presetTypeCvar.c_str(), randomizerPresetSelected);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-        mSettings->UpdateOptionProperties();
-        // force excluded location list and trick list update if tab is open.
-        locationsTabOpen = false;
-        tricksTabOpen = false;
-    }
-    ImGui::EndDisabled();
+    DrawPresetSelector({ PRESET_SECTION_RANDOMIZER }, "Randomizer", generating);
 
-    UIWidgets::Spacer(0);
+    // UIWidgets::Spacer(0);
     UIWidgets::CVarCheckbox("Manual seed entry", CVAR_RANDOMIZER_SETTING("ManualSeedEntry"),
                             UIWidgets::CheckboxOptions().Color(THEME_COLOR));
     if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ManualSeedEntry"), 0)) {
@@ -3753,10 +3707,6 @@ void RandomizerSettingsWindow::DrawElement() {
         std::string spoilerfilepath = CVarGetString(CVAR_GENERAL("SpoilerLog"), "");
         ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
     }
-
-    // RANDOTODO settings presets
-    // std::string presetfilepath = CVarGetString(CVAR_RANDOMIZER_SETTING("LoadedPreset"), "");
-    // ImGui::Text("Settings File: %s", presetfilepath.c_str());
 
     UIWidgets::Separator(true, true, 0.f, 0.f);
 
@@ -4367,9 +4317,17 @@ void RandomizerSettingsWindow::DrawElement() {
     UIWidgets::PopStyleTabs();
 }
 
+void RandomizerSettingsWindow::SetNeedsUpdate() {
+    mNeedsUpdate = true;
+}
+
 void RandomizerSettingsWindow::UpdateElement() {
     if (mNeedsUpdate) {
+        RandomizerCheckObjects::UpdateImGuiVisibility();
         mSettings->UpdateOptionProperties();
+        locationsTabOpen = false;
+        tricksTabOpen = false;
+        mNeedsUpdate = false;
     }
 }
 

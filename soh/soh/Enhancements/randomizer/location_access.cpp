@@ -379,9 +379,6 @@ void RegionTable_Init() {
     areaTable[RR_ROOT] = Region("Root", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->KakarikoVillageGateOpen, []{return ctx->GetOption(RSK_KAK_GATE).Is(RO_KAK_GATE_OPEN);}),
-        //The big poes bottle softlock safety check does not account for the guard house lock if the guard house is not shuffled, so the key is needed before we can safely allow bottle use in logic
-        //RANDOTODO a setting that lets you drink/dump big poes so we don't need this logic
-        EventAccess(&logic->CouldEmptyBigPoes,       []{return !ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF) || logic->CanOpenOverworldDoor(RG_GUARD_HOUSE_KEY);}),
     }, {
         //Locations
         LOCATION(RC_LINKS_POCKET,       true),

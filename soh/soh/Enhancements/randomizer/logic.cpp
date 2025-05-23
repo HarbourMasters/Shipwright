@@ -1011,26 +1011,24 @@ Logic::Logic() {
 
 uint8_t Logic::BottleCount() {
     uint8_t count = 0;
-    if (CouldEmptyBigPoes && !AreCheckingBigPoes) {
-        for (int i = SLOT_BOTTLE_1; i <= SLOT_BOTTLE_4; i++) {
-            uint8_t item = GetSaveContext()->inventory.items[i];
-            switch (item) {
-                case ITEM_LETTER_RUTO:
-                    if (DeliverLetter) {
-                        count++;
-                    }
-                    break;
-                case ITEM_BIG_POE:
-                    if (CanEmptyBigPoes) {
-                        count++;
-                    }
-                    break;
-                case ITEM_NONE:
-                    break;
-                default:
+    for (int i = SLOT_BOTTLE_1; i <= SLOT_BOTTLE_4; i++) {
+        uint8_t item = GetSaveContext()->inventory.items[i];
+        switch (item) {
+            case ITEM_LETTER_RUTO:
+                if (DeliverLetter) {
                     count++;
-                    break;
-            }
+                }
+                break;
+            case ITEM_BIG_POE:
+                if (CanEmptyBigPoes) {
+                    count++;
+                }
+                break;
+            case ITEM_NONE:
+                break;
+            default:
+                count++;
+                break;
         }
     }
     return count;
@@ -2407,7 +2405,6 @@ void Logic::Reset() {
     Bottles = 0;
     NumBottles = 0;
     CanEmptyBigPoes = false;
-    CouldEmptyBigPoes = false;
 
     // Drops and Bottle Contents Access
     NutPot = false;

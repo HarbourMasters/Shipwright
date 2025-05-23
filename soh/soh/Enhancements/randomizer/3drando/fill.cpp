@@ -159,11 +159,6 @@ static void ValidateOtherEntrance(GetAccessibleLocationsStruct& gals) {
             ApplyStartingInventory(); // RANDOTODO when proper ammo logic is done, this could be moved to the start
         }
     }
-    // If we are not shuffling the guard house, add the key so we can properly check for poe merchant access
-    if (gals.validatedStartingRegion && gals.foundTempleOfTime &&
-        ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF)) {
-        Rando::StaticData::RetrieveItem(RG_GUARD_HOUSE_KEY).ApplyEffect();
-    }
 }
 
 // Apply all items that are necessary for checking all location access
@@ -180,10 +175,7 @@ static void ApplyAllAdvancmentItems() {
 static void ValidateSphereZero(GetAccessibleLocationsStruct& gals) {
     auto ctx = Rando::Context::GetInstance();
     // Condition for verifying everything required for sphere 0, expanding search to all locations
-    if ((!logic->AreCheckingBigPoes || logic->CanEmptyBigPoes) && gals.validatedStartingRegion &&
-        gals.foundTempleOfTime && gals.haveTimeAccess) {
-        // stop checking for big poes
-        logic->AreCheckingBigPoes = false;
+    if (gals.validatedStartingRegion && gals.foundTempleOfTime && gals.haveTimeAccess) {
         // Apply all items that are necessary for checking all location access
         ApplyAllAdvancmentItems();
         // Reset access as the non-starting age
@@ -213,7 +205,7 @@ void ProcessExits(Region* region, GetAccessibleLocationsStruct& gals, Randomizer
         // Update Time of Day Access for the exit
         if (UpdateToDAccess(&exit, exitRegion)) {
             gals.logicUpdated = true;
-            if (!gals.sphereZeroComplete || logic->AreCheckingBigPoes) {
+            if (!gals.sphereZeroComplete) {
                 if (!gals.foundTempleOfTime || !gals.validatedStartingRegion) {
                     ValidateOtherEntrance(gals);
                 }
@@ -596,15 +588,12 @@ bool CheckBeatable(RandomizerGet ignore /* = RG_NONE*/) {
 }
 
 // Check if the currently randomised set of entrances is a valid game map.
-void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAccess) {
+void ValidateEntrances(bool checkOtherEntranceAccess) {
     auto ctx = Rando::Context::GetInstance();
     GetAccessibleLocationsStruct gals(0);
     ResetLogic(ctx, gals, !checkOtherEntranceAccess);
 
     ctx->allLocationsReachable = false;
-    if (checkPoeCollectorAccess) {
-        logic->AreCheckingBigPoes = true;
-    }
 
     if (checkOtherEntranceAccess) {
         gals.foundTempleOfTime = false;
@@ -619,13 +608,6 @@ void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAcce
         RegionTable(RR_ROOT)->childNight = true;
         RegionTable(RR_ROOT)->adultNight = true;
         RegionTable(RR_ROOT)->childDay = true;
-        RegionTable(RR_ROOT)->adultDay = true;
-    } else if (checkPoeCollectorAccess) {
-        // If we are not shuffling the guard house, add the key so we can properly check for poe merchant access
-        if (ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF)) {
-            Rando::StaticData::RetrieveItem(RG_GUARD_HOUSE_KEY).ApplyEffect();
-        }
-        RegionTable(RR_ROOT)->adultNight = true;
         RegionTable(RR_ROOT)->adultDay = true;
     } else {
         ApplyAllAdvancmentItems();
