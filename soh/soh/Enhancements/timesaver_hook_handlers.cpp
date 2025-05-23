@@ -13,12 +13,14 @@ extern "C" {
 #include "src/overlays/actors/ovl_Bg_Treemouth/z_bg_treemouth.h"
 #include "src/overlays/actors/ovl_En_Owl/z_en_owl.h"
 #include "src/overlays/actors/ovl_En_Go2/z_en_go2.h"
+#include "src/overlays/actors/ovl_En_Heishi2/z_en_heishi2.h"
 #include "src/overlays/actors/ovl_En_Ko/z_en_ko.h"
 #include "src/overlays/actors/ovl_En_Ma1/z_en_ma1.h"
 #include "src/overlays/actors/ovl_En_Ru2/z_en_ru2.h"
 #include "src/overlays/actors/ovl_En_Zl4/z_en_zl4.h"
 #include "src/overlays/actors/ovl_En_Box/z_en_box.h"
 #include "src/overlays/actors/ovl_Demo_Im/z_demo_im.h"
+#include "src/overlays/actors/ovl_Demo_Kekkai/z_demo_kekkai.h"
 #include "src/overlays/actors/ovl_En_Sa/z_en_sa.h"
 #include "src/overlays/actors/ovl_Bg_Ddan_Kd/z_bg_ddan_kd.h"
 #include "src/overlays/actors/ovl_En_Tk/z_en_tk.h"
@@ -217,6 +219,25 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"), IS_RANDO) &&
                 (entranceFlag != EVENTCHKINF_EPONA_OBTAINED) && entranceIndex != ENTR_SPIRIT_TEMPLE_BOSS_ENTRANCE) {
                 *should = false;
+
+                // Check for dispulsion of Ganon's Tower barrier
+                switch (entranceIndex) {
+                    case ENTR_INSIDE_GANONS_CASTLE_2:
+                    case ENTR_INSIDE_GANONS_CASTLE_3:
+                    case ENTR_INSIDE_GANONS_CASTLE_4:
+                    case ENTR_INSIDE_GANONS_CASTLE_5:
+                    case ENTR_INSIDE_GANONS_CASTLE_6:
+                    case ENTR_INSIDE_GANONS_CASTLE_7:
+                        if (Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_FOREST_TRIAL) &&
+                            Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_WATER_TRIAL) &&
+                            Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_SHADOW_TRIAL) &&
+                            Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_FIRE_TRIAL) &&
+                            Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_LIGHT_TRIAL) &&
+                            Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_SPIRIT_TRIAL)) {
+                            Flags_SetEventChkInf(EVENTCHKINF_DISPELLED_GANONS_TOWER_BARRIER);
+                        }
+                        break;
+                }
             }
             break;
         }
@@ -275,6 +296,11 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 }
                 switch (actor->id) {
                     case ACTOR_OBJ_SWITCH: {
+                        if ((actor->params == 8224 && gPlayState->sceneNum == SCENE_DODONGOS_CAVERN) ||
+                            (actor->params == 6979 && gPlayState->sceneNum == SCENE_WATER_TEMPLE) &&
+                                CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)) {
+                            break;
+                        }
                         ObjSwitch* switchActor = (ObjSwitch*)actor;
                         switchActor->cooldownTimer = 0;
                         *should = false;
@@ -349,6 +375,11 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             }
             break;
         }
+        case VB_FREEZE_LINK_FOR_FOREST_PILLARS:
+            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), IS_RANDO)) {
+                *should = false;
+            }
+            break;
         case VB_SHOW_TITLE_CARD:
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), IS_RANDO)) {
                 *should = false;
@@ -441,6 +472,26 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 *should = false;
             }
             break;
+        case VB_PLAY_DISPEL_BARRIER_CS: {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), IS_RANDO)) {
+                static s16 trialEntrances[] = {
+                    0,
+                    ENTR_INSIDE_GANONS_CASTLE_3,
+                    ENTR_INSIDE_GANONS_CASTLE_6,
+                    ENTR_INSIDE_GANONS_CASTLE_5,
+                    ENTR_INSIDE_GANONS_CASTLE_4,
+                    ENTR_INSIDE_GANONS_CASTLE_7,
+                    ENTR_INSIDE_GANONS_CASTLE_2,
+                };
+                RateLimitedSuccessChime();
+                DemoKekkai* kekkai = va_arg(args, DemoKekkai*);
+                gPlayState->nextEntranceIndex = trialEntrances[kekkai->actor.params];
+                gPlayState->transitionTrigger = TRANS_TRIGGER_START;
+                gPlayState->transitionType = TRANS_TYPE_FADE_BLACK;
+                *should = false;
+            }
+            break;
+        }
         case VB_OWL_INTERACTION: {
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), IS_RANDO) && *should) {
                 EnOwl* enOwl = va_arg(args, EnOwl*);
@@ -718,6 +769,18 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 *should = false;
             }
 
+            break;
+        }
+        case VB_PLAY_GATE_OPENING_OR_CLOSING_CS: {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO)) {
+                EnHeishi2* enHeishi2 = va_arg(args, EnHeishi2*);
+                enHeishi2->unk_2F2[0] = 0;
+
+                // The second argument determines whether the vanilla code should be run anyway. It
+                // should be set to `true` ONLY IF said code calls `Play_ClearCamera`, false otherwise.
+                bool clearCamera = (bool)va_arg(args, int);
+                *should = clearCamera && enHeishi2->cameraId != MAIN_CAM;
+            }
             break;
         }
         case VB_PLAY_RAINBOW_BRIDGE_CS: {

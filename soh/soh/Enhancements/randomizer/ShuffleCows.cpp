@@ -19,7 +19,7 @@ void EnCow_MoveForRandomizer(EnCow* enCow, PlayState* play) {
         // Move left cow in lon lon tower
         enCow->actor.world.pos.x = -229.0f;
         enCow->actor.world.pos.z = 157.0f;
-        enCow->actor.shape.rot.y = 15783.0f;
+        enCow->actor.shape.rot.y = 15783;
         moved = true;
     } else if (play->sceneNum == SCENE_STABLE && enCow->actor.world.pos.x == -3 && enCow->actor.world.pos.z == -254) {
         // Move right cow in lon lon stable
@@ -39,7 +39,8 @@ void RegisterShuffleCows() {
     COND_VB_SHOULD(VB_GIVE_ITEM_FROM_COW, shouldRegister, {
         EnCow* enCow = va_arg(args, EnCow*);
         CowIdentity cowIdentity = OTRGlobals::Instance->gRandomizer->IdentifyCow(
-            gPlayState->sceneNum, enCow->actor.world.pos.x, enCow->actor.world.pos.z);
+            gPlayState->sceneNum, static_cast<int32_t>(enCow->actor.world.pos.x),
+            static_cast<int32_t>(enCow->actor.world.pos.z));
         // Has this cow already rewarded an item?
         if (!Flags_GetRandomizerInf(cowIdentity.randomizerInf)) {
             Flags_SetRandomizerInf(cowIdentity.randomizerInf);

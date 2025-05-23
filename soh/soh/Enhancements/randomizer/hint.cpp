@@ -226,7 +226,8 @@ uint8_t Hint::GetNumberOfMessages() const {
     if (numMessages == 0) {
         numMessages = 1; // RANDOTODO make std::max actually fucking work for 3 arguments
     }
-    return numMessages;
+    // RANDOTODO will number of messages always be u8?
+    return static_cast<uint8_t>(numMessages);
 }
 
 const std::vector<std::string> Hint::GetAllMessageStrings(MessageFormat format) const {

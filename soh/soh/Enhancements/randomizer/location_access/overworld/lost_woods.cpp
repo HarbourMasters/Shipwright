@@ -64,7 +64,7 @@ void RegionTable_Init_LostWoods() {
 
     areaTable[RR_LW_BEYOND_MIDO] = Region("LW Beyond Mido", "Lost Woods", {RA_THE_LOST_WOODS}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->ButterflyFairy, []{return logic->ButterflyFairy || logic->CanUse(RG_STICKS);}),
+        EventAccess(&logic->ButterflyFairy, []{return logic->CanUse(RG_STICKS);}),
     }, {
         //Locations
         LOCATION(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT, logic->IsChild && logic->CanStunDeku()),

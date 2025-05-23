@@ -24,7 +24,7 @@ std::vector<std::string> NumOpts(const int min, const int max, const int step = 
 }
 
 std::vector<std::string> MultiVecOpts(const std::vector<std::vector<std::string>>& optionsVector) {
-    uint32_t totalSize = 0;
+    size_t totalSize = 0;
     for (const auto& vector : optionsVector) {
         totalSize += vector.size();
     }
@@ -250,7 +250,7 @@ void Settings::CreateOptions() {
     OPT_U8(RSK_LACS_REWARD_COUNT, "GCBK Reward Count", {NumOpts(0, 10)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LacsRewardCount"), "", WidgetType::Slider, 9, true);
     OPT_U8(RSK_LACS_DUNGEON_COUNT, "GCBK Dungeon Count", {NumOpts(0, 9)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LacsDungeonCount"), "", WidgetType::Slider, 8, true);
     OPT_U8(RSK_LACS_TOKEN_COUNT, "GCBK Token Count", {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LacsTokenCount"), "", WidgetType::Slider, 100, true);
-    OPT_U8(RSK_LACS_OPTIONS, "GCBK LACS Reward Options", {"Standard Reward", "Greg as Reward", "Greg as Wildcard"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LacsRewardOptions"), "", WidgetType::Combobox, RO_LACS_STANDARD_REWARD);
+    OPT_U8(RSK_LACS_OPTIONS, "GCBK LACS Reward Options", {"Standard Reward", "Greg as Reward", "Greg as Wildcard"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LacsRewardOptions"), mOptionDescriptions[RSK_LACS_OPTIONS], WidgetType::Combobox, RO_LACS_STANDARD_REWARD);
     OPT_U8(RSK_KEYRINGS, "Key Rings", {"Off", "Random", "Count", "Selection"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleKeyRings"), mOptionDescriptions[RSK_KEYRINGS], WidgetType::Combobox, RO_KEYRINGS_OFF);
     OPT_U8(RSK_KEYRINGS_RANDOM_COUNT, "Keyring Dungeon Count", {NumOpts(0, 9)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsRandomCount"), "", WidgetType::Slider, 8);
     OPT_U8(RSK_KEYRINGS_GERUDO_FORTRESS, "Gerudo Fortress Keyring", {"No", "Random", "Yes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsGerudoFortress"), "", WidgetType::Combobox, 0);
@@ -2638,7 +2638,7 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
                         mqSet += 1;
                         break;
                     case RO_MQ_SET_RANDOM:
-                        randMQOption.push_back(i);
+                        randMQOption.push_back(static_cast<uint8_t>(i));
                         dungeons[i]->SetDungeonKnown(false);
                         break;
                     default:
@@ -2659,7 +2659,7 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
                 // otherwise, make everything a possibility and unknown
             } else {
                 for (size_t i = 0; i < dungeons.size(); i++) {
-                    randMQOption.push_back(i);
+                    randMQOption.push_back(static_cast<uint8_t>(i));
                     dungeons[i]->SetDungeonKnown(false);
                     mOptions[dungeons[i]->GetMQSetting()].Set(RO_MQ_SET_RANDOM);
                 }

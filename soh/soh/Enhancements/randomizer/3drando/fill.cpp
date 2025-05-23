@@ -625,6 +625,8 @@ void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAcce
         if (ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF)) {
             Rando::StaticData::RetrieveItem(RG_GUARD_HOUSE_KEY).ApplyEffect();
         }
+        RegionTable(RR_ROOT)->adultNight = true;
+        RegionTable(RR_ROOT)->adultDay = true;
     } else {
         ApplyAllAdvancmentItems();
     }
@@ -710,11 +712,11 @@ static void PareDownPlaythrough() {
     auto ctx = Rando::Context::GetInstance();
     std::vector<RandomizerCheck> toAddBackItem;
     // Start at sphere before Ganon's and count down
-    for (int i = ctx->playthroughLocations.size() - 2; i >= 0; i--) {
+    for (int32_t i = static_cast<int32_t>(ctx->playthroughLocations.size()) - 2; i >= 0; i--) {
         // Check each item location in sphere
         std::vector<int> erasableIndices;
         std::vector<RandomizerCheck> sphere = ctx->playthroughLocations.at(i);
-        for (int j = sphere.size() - 1; j >= 0; j--) {
+        for (int32_t j = static_cast<int32_t>(sphere.size()) - 1; j >= 0; j--) {
             RandomizerCheck loc = sphere.at(j);
             RandomizerGet locGet = ctx->GetItemLocation(loc)->GetPlacedRandomizerGet(); // Copy out item
 

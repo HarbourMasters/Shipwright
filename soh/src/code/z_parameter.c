@@ -4113,7 +4113,8 @@ void Interface_DrawItemButtons(PlayState* play) {
             if (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.UseMargins"), 0) != 0) {
                 X_Margins_CD = Left_HUD_Margin;
             };
-            C_Down_BTN_Pos[0] = (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.PosX"), 0) + X_Margins_CD);
+            C_Down_BTN_Pos[0] =
+                OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.PosX"), 0) + X_Margins_CD);
         } else if (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.PosType"), 0) == ANCHOR_RIGHT) {
             if (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.UseMargins"), 0) != 0) {
                 X_Margins_CD = Right_HUD_Margin;

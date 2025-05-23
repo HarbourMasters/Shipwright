@@ -382,7 +382,7 @@ const EntranceData entranceData[] = {
 };
 
 // Check if Link is in the area and return that scene/entrance for tracking
-s8 LinkIsInArea(const EntranceData* entrance) {
+int16_t LinkIsInArea(const EntranceData* entrance) {
     bool result = false;
 
     if (gPlayState == nullptr) {

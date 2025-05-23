@@ -361,7 +361,7 @@ void RegionTable_Init_JabuJabusBelly() {
 
     areaTable[RR_JABU_JABUS_BELLY_BOSS_ROOM] = Region("Jabu Jabus Belly Boss Room", "Jabu Jabus Belly", {}, NO_DAY_NIGHT_CYCLE, {
         // Events //todo: add pot kill trick
-        EventAccess(&logic->JabuJabusBellyClear, []{return logic->JabuJabusBellyClear || logic->CanKillEnemy(RE_BARINADE);}),
+        EventAccess(&logic->JabuJabusBellyClear, []{return logic->CanKillEnemy(RE_BARINADE);}),
     }, {
         // Locations
         LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_1, logic->CanBreakPots()),
