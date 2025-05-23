@@ -3401,6 +3401,8 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
     Actor_Init(actor, play);
     gSegments[6] = temp;
 
+    GameInteractor_ExecuteOnActorSpawn(actor);
+
     return actor;
 }
 
@@ -3473,6 +3475,8 @@ Actor* Actor_Delete(ActorContext* actorCtx, Actor* actor, PlayState* play) {
     Player* player;
     Actor* newHead;
     ActorDBEntry* dbEntry;
+
+    GameInteractor_ExecuteOnActorDelete(actor);
 
     player = GET_PLAYER(play);
 
