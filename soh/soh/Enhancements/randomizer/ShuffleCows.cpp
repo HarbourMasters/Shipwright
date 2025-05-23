@@ -76,7 +76,6 @@ void Rando::StaticData::RegisterCowLocations() {
     locationTable[RC_DMT_COW_GROTTO_COW] =      Location::Base(RC_DMT_COW_GROTTO_COW,      RCQUEST_BOTH, RCTYPE_COW, RCAREA_DEATH_MOUNTAIN_TRAIL, ACTOR_EN_COW, SCENE_GROTTOS,           TWO_ACTOR_PARAMS(2444, -471),       "Cow Grotto Cow",    RHT_DMT_COW_GROTTO_COW,      RG_MILK, SpoilerCollectionCheck::RandomizerInf(RAND_INF_COWS_MILKED_DMT_COW_GROTTO_COW));
     locationTable[RC_GV_COW] =                  Location::Base(RC_GV_COW,                  RCQUEST_BOTH, RCTYPE_COW,                              ACTOR_EN_COW, SCENE_GERUDO_VALLEY,     0x00,                               "Cow",               RHT_GV_COW,                  RG_MILK, SpoilerCollectionCheck::RandomizerInf(RAND_INF_COWS_MILKED_GV_COW));
     locationTable[RC_JABU_JABUS_BELLY_MQ_COW] = Location::Base(RC_JABU_JABUS_BELLY_MQ_COW, RCQUEST_MQ,   RCTYPE_COW,                              ACTOR_EN_COW, SCENE_JABU_JABU,         0x00,                               "MQ Cow",            RHT_JABU_JABUS_BELLY_MQ_COW, RG_MILK, SpoilerCollectionCheck::RandomizerInf(RAND_INF_COWS_MILKED_JABU_JABUS_BELLY_MQ_COW));
-
     // clang-format-on
 }
 

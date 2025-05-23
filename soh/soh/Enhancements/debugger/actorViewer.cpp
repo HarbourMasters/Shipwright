@@ -17,6 +17,7 @@
 #include <spdlog/fmt/fmt.h>
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
+#include "soh/ObjectExtension/ActorListIndex.h"
 
 extern "C" {
 #include <z64.h>
@@ -998,6 +999,7 @@ void ActorViewerWindow::DrawElement() {
                     ImGui::Text("Category: %s", acMapping[display->category]);
                     ImGui::Text("ID: %d", display->id);
                     ImGui::Text("Parameters: %d", display->params);
+                    ImGui::Text("Actor List Index: %d", GetActorListIndex(display));
                 },
                 "Selected Actor");
             ImGui::SameLine();

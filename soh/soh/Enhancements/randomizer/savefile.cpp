@@ -334,7 +334,7 @@ extern "C" void Randomizer_InitSaveFile() {
         Flags_SetRandomizerInf(RAND_INF_TOT_MASTER_SWORD);
     }
 
-    HIGH_SCORE(HS_POE_POINTS) = 1000 - (100 * (Randomizer_GetSettingValue(RSK_BIG_POE_COUNT) + 1));
+    HIGH_SCORE(HS_POE_POINTS) = 1000 - (100 * Randomizer_GetSettingValue(RSK_BIG_POE_COUNT));
 
     if (Randomizer_GetSettingValue(RSK_SKIP_EPONA_RACE)) {
         Flags_SetEventChkInf(EVENTCHKINF_EPONA_OBTAINED);
