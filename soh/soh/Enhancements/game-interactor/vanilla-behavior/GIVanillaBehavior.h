@@ -2011,6 +2011,38 @@ typedef enum {
     // #### `args`
     // - `*EnWonderTalk2`
     VB_WONDER_TALK,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*Actor`
+    VB_TRIGGER_VOIDOUT,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*Actor`
+    VB_TORCH2_HANDLE_CLANKING,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*Actor`
+    VB_RECIEVE_FALL_DAMAGE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnRr`
+    VB_LIKE_LIKE_GRAB_PLAYER,
 } GIVanillaBehavior;
 
 #endif

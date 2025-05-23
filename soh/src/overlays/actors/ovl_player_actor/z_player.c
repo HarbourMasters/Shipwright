@@ -4764,7 +4764,9 @@ s32 func_808382DC(Player* this, PlayState* play) {
                     gSaveContext.respawn[RESPAWN_MODE_DOWN].yaw = respawnInfo->yaw;
                 }
 
-                Play_TriggerVoidOut(play);
+                if (GameInteractor_Should(VB_TRIGGER_VOIDOUT, true, this)) {
+                    Play_TriggerVoidOut(play);
+                }
             }
 
             Player_PlayVoiceSfx(this, NA_SE_VO_LI_TAKEN_AWAY);
@@ -5129,7 +5131,9 @@ s32 Player_HandleExitsAndVoids(PlayState* play, Player* this, CollisionPoly* pol
             }
 
             if (exitIndex == 0) {
-                Play_TriggerVoidOut(play);
+                if (GameInteractor_Should(VB_TRIGGER_VOIDOUT, true, this)) {
+                    Play_TriggerVoidOut(play);
+                }
                 Scene_SetTransitionForNextEntrance(play);
             } else {
                 play->nextEntranceIndex = play->setupExitList[exitIndex - 1];
@@ -5163,7 +5167,9 @@ s32 Player_HandleExitsAndVoids(PlayState* play, Player* this, CollisionPoly* pol
                                               SurfaceType_GetSlope(&play->colCtx, poly, bgId) == 2,
                                               play->setupExitList[exitIndex - 1])) {
                         gSaveContext.respawn[RESPAWN_MODE_DOWN].entranceIndex = play->nextEntranceIndex;
-                        Play_TriggerVoidOut(play);
+                        if (GameInteractor_Should(VB_TRIGGER_VOIDOUT, true, this)) {
+                            Play_TriggerVoidOut(play);
+                        }
                         gSaveContext.respawnFlag = -2;
                     }
                     gSaveContext.retainWeatherMode = 1;
@@ -5226,7 +5232,7 @@ s32 Player_HandleExitsAndVoids(PlayState* play, Player* this, CollisionPoly* pol
                     if (this->actor.bgCheckFlags & 1) {
                         if (this->floorProperty == 5) {
                             Play_TriggerRespawn(play);
-                        } else {
+                        } else if (GameInteractor_Should(VB_TRIGGER_VOIDOUT, true, this)) {
                             Play_TriggerVoidOut(play);
                         }
                         play->transitionType = TRANS_TYPE_FADE_BLACK_FAST;
@@ -9612,6 +9618,10 @@ static FallImpactInfo D_80854600[] = {
 
 s32 func_80843E64(PlayState* play, Player* this) {
     s32 sp34;
+
+    if (!GameInteractor_Should(VB_RECIEVE_FALL_DAMAGE, true, this)) {
+        return 0;
+    }
 
     if ((sFloorType == 6) || (sFloorType == 9)) {
         sp34 = 0;
@@ -15009,7 +15019,7 @@ void Player_Action_8084F88C(Player* this, PlayState* play) {
                 if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
                     Grotto_ForceRegularVoidOut();
                 }
-            } else {
+            } else if (GameInteractor_Should(VB_TRIGGER_VOIDOUT, true, this)) {
                 Play_TriggerVoidOut(play);
             }
 
