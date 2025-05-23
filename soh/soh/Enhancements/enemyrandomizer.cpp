@@ -270,15 +270,7 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t* actorId, f32* po
         // Get randomized enemy ID and parameter.
         uint32_t seed =
             play->sceneNum + *actorId + (int)*posX + (int)*posY + (int)*posZ + *rotX + *rotY + *rotZ + *params;
-        EnemyEntry randomEnemy = GetRandomizedEnemyEntry(seed);
-
-        int8_t timesRandomized = 1;
-
-        // While randomized enemy isn't allowed in certain situations, randomize again.
-        while (!IsEnemyAllowedToSpawn(play->sceneNum, play->roomCtx.curRoom.num, randomEnemy)) {
-            randomEnemy = GetRandomizedEnemyEntry(seed + timesRandomized);
-            timesRandomized++;
-        }
+        EnemyEntry randomEnemy = GetRandomizedEnemyEntry(seed, play);
 
         *actorId = randomEnemy.id;
         *params = randomEnemy.params;
@@ -334,19 +326,28 @@ void GetSelectedEnemies() {
     }
 }
 
-EnemyEntry GetRandomizedEnemyEntry(uint32_t seed) {
+EnemyEntry GetRandomizedEnemyEntry(uint32_t seed, PlayState* play) {
+    std::vector<EnemyEntry> filteredEnemyList = {};
     if (selectedEnemyList.size() == 0) {
         GetSelectedEnemies();
+    }
+    for (EnemyEntry enemy : selectedEnemyList) {
+        if (IsEnemyAllowedToSpawn(play->sceneNum, play->roomCtx.curRoom.num, enemy)) {
+            filteredEnemyList.push_back(enemy);
+        }
+    }
+    if (filteredEnemyList.size() == 0) {
+        filteredEnemyList = selectedEnemyList;
     }
     if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), ENEMY_RANDOMIZER_OFF) == ENEMY_RANDOMIZER_RANDOM_SEEDED) {
         uint32_t finalSeed =
             seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
         Random_Init(finalSeed);
-        uint32_t randomNumber = Random(0, selectedEnemyList.size());
-        return selectedEnemyList[randomNumber];
+        uint32_t randomNumber = Random(0, filteredEnemyList.size());
+        return filteredEnemyList[randomNumber];
     } else {
-        uint32_t randomSelectedEnemy = Random(0, selectedEnemyList.size());
-        return selectedEnemyList[randomSelectedEnemy];
+        uint32_t randomSelectedEnemy = Random(0, filteredEnemyList.size());
+        return filteredEnemyList[randomSelectedEnemy];
     }
 }
 

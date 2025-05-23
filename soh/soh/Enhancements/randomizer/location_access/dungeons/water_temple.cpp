@@ -277,7 +277,7 @@ void RegionTable_Init_WaterTemple() {
     }, {
         //Exits
         Entrance(RR_WATER_TEMPLE_LOBBY,         []{return true;}),
-        Entrance(RR_WATER_TEMPLE_BOSS_ENTRYWAY, []{return logic->HasItem(RG_WATER_TEMPLE_BOSS_KEY);}),
+        Entrance(RR_WATER_TEMPLE_BOSS_ENTRYWAY, []{return true;}),
     });
 
 #pragma endregion
@@ -365,7 +365,7 @@ void RegionTable_Init_WaterTemple() {
     areaTable[RR_WATER_TEMPLE_MQ_BOSS_DOOR] = Region("Water Temple MQ Main", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_WATER_TEMPLE_MQ_3F_NORTH_LEDGE, []{return logic->CanUse(RG_ICE_ARROWS) || logic->TakeDamage();}),
-        Entrance(RR_WATER_TEMPLE_BOSS_ENTRYWAY,     []{return logic->HasItem(RG_WATER_TEMPLE_BOSS_KEY);}),
+        Entrance(RR_WATER_TEMPLE_BOSS_ENTRYWAY,     []{return true;}),
     });
 
     areaTable[RR_WATER_TEMPLE_MQ_EAST_TOWER] = Region("Water Temple MQ East Tower", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
@@ -843,7 +843,7 @@ void RegionTable_Init_WaterTemple() {
         // Exits
         Entrance(RR_WATER_TEMPLE_PRE_BOSS_ROOM, []{return ctx->GetDungeon(WATER_TEMPLE)->IsVanilla() && false;}),
         Entrance(RR_WATER_TEMPLE_MQ_BOSS_DOOR,  []{return ctx->GetDungeon(WATER_TEMPLE)->IsMQ() && false;}),
-        Entrance(RR_WATER_TEMPLE_BOSS_ROOM,     []{return true;}),
+        Entrance(RR_WATER_TEMPLE_BOSS_ROOM,     []{return logic->HasItem(RG_WATER_TEMPLE_BOSS_KEY);}),
     });
 
     areaTable[RR_WATER_TEMPLE_BOSS_ROOM] = Region("Water Temple Boss Room", "Water Temple", {}, NO_DAY_NIGHT_CYCLE, {

@@ -1145,6 +1145,13 @@ extern "C" void InitOTR() {
             "Error", "SoH does not have proper file permissions. Please move it to a folder that does and run again.");
         exit(1);
     }
+    if (ownPath.string().find("OneDrive") != std::string::npos) {
+        Extractor::ShowErrorBox(
+            "Error",
+            "SoH appears to be in a OneDrive folder, which will cause issues. "
+            "Please move it to a folder outside of OneDrive, like the root of a drive (e.g. \"C:\\Games\\SoH\").");
+        exit(1);
+    }
 #endif
 
 #if not defined(__SWITCH__) && not defined(__WIIU__)
