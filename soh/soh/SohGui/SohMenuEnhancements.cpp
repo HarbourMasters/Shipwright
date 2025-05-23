@@ -604,6 +604,11 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "When Medallions are collected, the Medallion imprints around the Master Sword Pedestal in the Temple "
             "of Time will become colored-in."));
+    AddWidget(path, "EXPERIMENTAL", WIDGET_SEPARATOR_TEXT).Options(TextOptions().Color(Colors::Orange));
+    AddWidget(path, "Dynamic Shadow", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("DynamicShadow"))
+        .Options(CheckboxOptions().Tooltip("Enable Dynamic Shadow for the player. May cause graphical glitches or "
+                                           "gameplay issues. Requires a scene reload to take effect."));
 
     path.column = SECTION_COLUMN_2;
     AddWidget(path, "UI", WIDGET_SEPARATOR_TEXT);
