@@ -1,5 +1,6 @@
 #include "soh/resource/type/Path.h"
 #include "spdlog/spdlog.h"
+#include <tinyxml2.h>
 
 namespace SOH {
 void LogPathAsXML(std::shared_ptr<Ship::IResource> resource) {

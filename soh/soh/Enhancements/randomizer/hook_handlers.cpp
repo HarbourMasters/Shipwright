@@ -1013,7 +1013,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                     if (item00->itemEntry.getItemId == GI_SWORD_BGS) {
                         gSaveContext.bgsFlag = true;
                     }
-                    Item_Give(gPlayState, item00->itemEntry.itemId);
+                    Item_Give(gPlayState, static_cast<uint8_t>(item00->itemEntry.itemId));
                 } else if (item00->itemEntry.modIndex == MOD_RANDOMIZER) {
                     if (item00->itemEntry.getItemId == RG_ICE_TRAP) {
                         gSaveContext.ship.pendingIceTrapCount++;
@@ -2137,23 +2137,23 @@ void RandomizerOnActorInitHandler(void* actorRef) {
 
 void RandomizerOnGameFrameUpdateHandler() {
     if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_QUIVER)) {
-        AMMO(ITEM_BOW) = CUR_CAPACITY(UPG_QUIVER);
+        AMMO(ITEM_BOW) = static_cast<int8_t>(CUR_CAPACITY(UPG_QUIVER));
     }
 
     if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMB_BAG)) {
-        AMMO(ITEM_BOMB) = CUR_CAPACITY(UPG_BOMB_BAG);
+        AMMO(ITEM_BOMB) = static_cast<int8_t>(CUR_CAPACITY(UPG_BOMB_BAG));
     }
 
     if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BULLET_BAG)) {
-        AMMO(ITEM_SLINGSHOT) = CUR_CAPACITY(UPG_BULLET_BAG);
+        AMMO(ITEM_SLINGSHOT) = static_cast<int8_t>(CUR_CAPACITY(UPG_BULLET_BAG));
     }
 
     if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_STICK_UPGRADE)) {
-        AMMO(ITEM_STICK) = CUR_CAPACITY(UPG_STICKS);
+        AMMO(ITEM_STICK) = static_cast<int8_t>(CUR_CAPACITY(UPG_STICKS));
     }
 
     if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_NUT_UPGRADE)) {
-        AMMO(ITEM_NUT) = CUR_CAPACITY(UPG_NUTS);
+        AMMO(ITEM_NUT) = static_cast<int8_t>(CUR_CAPACITY(UPG_NUTS));
     }
 
     if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MAGIC_METER)) {
@@ -2165,7 +2165,7 @@ void RandomizerOnGameFrameUpdateHandler() {
     }
 
     if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MONEY)) {
-        gSaveContext.rupees = CUR_CAPACITY(UPG_WALLET);
+        gSaveContext.rupees = static_cast<int8_t>(CUR_CAPACITY(UPG_WALLET));
     }
 
     if (!Flags_GetRandomizerInf(RAND_INF_HAS_WALLET)) {

@@ -59,7 +59,7 @@ class Logic {
     bool LightTrialClear = false;
 
     // Logical keysanity
-    bool IsKeysanity = false;
+    bool IsFireLoopLocked = false;
 
     // Bottle Count
     uint8_t Bottles = 0;

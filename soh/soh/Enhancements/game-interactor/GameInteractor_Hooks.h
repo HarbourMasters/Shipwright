@@ -31,6 +31,7 @@ void GameInteractor_ExecuteOnCuccoOrChickenHatch();
 void GameInteractor_ExecuteOnActorInit(void* actor);
 void GameInteractor_ExecuteOnActorUpdate(void* actor);
 void GameInteractor_ExecuteOnActorKill(void* actor);
+void GameInteractor_ExecuteOnActorDestroy(void* actor);
 void GameInteractor_ExecuteOnEnemyDefeat(void* actor);
 void GameInteractor_ExecuteOnBossDefeat(void* actor);
 void GameInteractor_ExecuteOnTimestamp(u8 item);

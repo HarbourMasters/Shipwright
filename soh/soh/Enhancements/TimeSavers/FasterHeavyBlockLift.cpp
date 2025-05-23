@@ -41,7 +41,7 @@ void FasterHeavyBlockLift_Register() {
         LinkAnimationHeader* anim = va_arg(args, LinkAnimationHeader*);
 
         // Same actor is used for small and large silver rocks, use actor params to identify large ones
-        bool isLargeSilverRock = interactActorId == ACTOR_EN_ISHI && interactRangeActor->params & 1 == 1;
+        bool isLargeSilverRock = (interactActorId == ACTOR_EN_ISHI) && ((interactRangeActor->params & 1) == 1);
         if (CVarGetInteger(CVAR_ENHANCEMENT("FasterHeavyBlockLift"), 0) &&
             (isLargeSilverRock || interactActorId == ACTOR_BG_HEAVY_BLOCK)) {
             *should = false;

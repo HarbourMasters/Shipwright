@@ -5,6 +5,7 @@
 #include "soh/ActorDB.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/nametag.h"
+#include "soh/ShipInit.hpp"
 
 #include <array>
 #include <bit>
@@ -13,6 +14,7 @@
 #include <string>
 #include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
+#include <spdlog/fmt/fmt.h>
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
 
@@ -30,6 +32,10 @@ extern PlayState* gPlayState;
 
 #define DEKUNUTS_FLOWER 10
 #define DEBUG_ACTOR_NAMETAG_TAG "debug_actor_viewer"
+
+#define CVAR_ACTOR_NAME_TAGS(val) CVAR_DEVELOPER_TOOLS("ActorViewer.NameTags." val)
+#define CVAR_ACTOR_NAME_TAGS_ENABLED_NAME CVAR_ACTOR_NAME_TAGS("Enabled")
+#define CVAR_ACTOR_NAME_TAGS_ENABLED CVarGetInteger(CVAR_ACTOR_NAME_TAGS("Enabled"), 0)
 
 typedef struct {
     u16 id;
@@ -65,6 +71,10 @@ typedef enum {
 
 const std::string GetActorDescription(u16 id) {
     return ActorDB::Instance->RetrieveEntry(id).entry.valid ? ActorDB::Instance->RetrieveEntry(id).entry.desc : "???";
+}
+
+const std::string GetActorDebugName(u16 id) {
+    return ActorDB::Instance->RetrieveEntry(id).entry.valid ? ActorDB::Instance->RetrieveEntry(id).entry.name : "???";
 }
 
 template <typename T> void DrawGroupWithBorder(T&& drawFunc, std::string section) {
@@ -812,25 +822,37 @@ std::vector<u16> GetActorsWithDescriptionContainingString(std::string s) {
 }
 
 void ActorViewer_AddTagForActor(Actor* actor) {
-    int val = CVarGetInteger(CVAR_DEVELOPER_TOOLS("ActorViewer.NameTags"), ACTORVIEWER_NAMETAGS_NONE);
-    auto entry = ActorDB::Instance->RetrieveEntry(actor->id);
-    std::string tag;
-
-    if (val > 0 && entry.entry.valid) {
-        switch (val) {
-            case ACTORVIEWER_NAMETAGS_DESC:
-                tag = entry.desc;
-                break;
-            case ACTORVIEWER_NAMETAGS_NAME:
-                tag = entry.name;
-                break;
-            case ACTORVIEWER_NAMETAGS_BOTH:
-                tag = entry.name + '\n' + entry.desc;
-                break;
-        }
-
-        NameTag_RegisterForActorWithOptions(actor, tag.c_str(), { .tag = DEBUG_ACTOR_NAMETAG_TAG });
+    if (!CVarGetInteger(CVAR_ACTOR_NAME_TAGS("Enabled"), 0)) {
+        return;
     }
+
+    std::vector<std::string> parts;
+
+    if (CVarGetInteger(CVAR_ACTOR_NAME_TAGS("DisplayID"), 0)) {
+        parts.push_back(GetActorDebugName(actor->id));
+    }
+    if (CVarGetInteger(CVAR_ACTOR_NAME_TAGS("DisplayDescription"), 0)) {
+        parts.push_back(GetActorDescription(actor->id));
+    }
+    if (CVarGetInteger(CVAR_ACTOR_NAME_TAGS("DisplayCategory"), 0)) {
+        parts.push_back(acMapping[actor->category]);
+    }
+    if (CVarGetInteger(CVAR_ACTOR_NAME_TAGS("DisplayParams"), 0)) {
+        parts.push_back(fmt::format("0x{:04X} ({})", (u16)actor->params, actor->params));
+    }
+
+    std::string tag = "";
+    for (size_t i = 0; i < parts.size(); i++) {
+        if (i != 0) {
+            tag += "\n";
+        }
+        tag += parts.at(i);
+    }
+
+    bool withZBuffer = CVarGetInteger(CVAR_ACTOR_NAME_TAGS("WithZBuffer"), 0);
+
+    NameTag_RegisterForActorWithOptions(actor, tag.c_str(),
+                                        { .tag = DEBUG_ACTOR_NAMETAG_TAG, .noZBuffer = !withZBuffer });
 }
 
 void ActorViewer_AddTagForAllActors() {
@@ -880,6 +902,57 @@ void ActorViewerWindow::DrawElement() {
             actors.clear();
         }
         lastSceneId = gPlayState->sceneNum;
+
+        if (ImGui::BeginChild("options", ImVec2(0, 0), ImGuiChildFlags_Border | ImGuiChildFlags_AutoResizeY)) {
+            bool toggled = false;
+            bool optionChange = false;
+
+            ImGui::SeparatorText("Options");
+
+            toggled = UIWidgets::CVarCheckbox("Actor Name Tags", CVAR_ACTOR_NAME_TAGS("Enabled"),
+                                              { { .tooltip = "Adds \"name tags\" above actors for identification" } });
+
+            ImGui::SameLine();
+
+            UIWidgets::Button("Display Items", { { .tooltip = "Click to add display items on the name tags" } });
+
+            if (ImGui::BeginPopupContextItem(nullptr, ImGuiPopupFlags_MouseButtonLeft | ImGuiPopupFlags_NoReopen)) {
+                optionChange |= UIWidgets::CVarCheckbox("ID", CVAR_ACTOR_NAME_TAGS("DisplayID"));
+                optionChange |= UIWidgets::CVarCheckbox("Description", CVAR_ACTOR_NAME_TAGS("DisplayDescription"));
+                optionChange |= UIWidgets::CVarCheckbox("Category", CVAR_ACTOR_NAME_TAGS("DisplayCategory"));
+                optionChange |= UIWidgets::CVarCheckbox("Params", CVAR_ACTOR_NAME_TAGS("DisplayParams"));
+
+                ImGui::EndPopup();
+            }
+
+            optionChange |= UIWidgets::CVarCheckbox(
+                "Name tags with Z-Buffer", CVAR_ACTOR_NAME_TAGS("WithZBuffer"),
+                { { .tooltip = "Allow name tags to be obstructed when behind geometry and actors" } });
+
+            if (toggled || optionChange) {
+                bool tagsEnabled = CVarGetInteger(CVAR_ACTOR_NAME_TAGS("Enabled"), 0);
+                bool noOptionsEnabled = !CVarGetInteger(CVAR_ACTOR_NAME_TAGS("DisplayID"), 0) &&
+                                        !CVarGetInteger(CVAR_ACTOR_NAME_TAGS("DisplayDescription"), 0) &&
+                                        !CVarGetInteger(CVAR_ACTOR_NAME_TAGS("DisplayCategory"), 0) &&
+                                        !CVarGetInteger(CVAR_ACTOR_NAME_TAGS("DisplayParams"), 0);
+
+                // Save the user an extra click and prevent adding "empty" tags by enabling,
+                // disabling, or setting an option based on what changed
+                if (tagsEnabled && noOptionsEnabled) {
+                    if (toggled) {
+                        CVarSetInteger(CVAR_ACTOR_NAME_TAGS("DisplayID"), 1);
+                    } else {
+                        CVarSetInteger(CVAR_ACTOR_NAME_TAGS("Enabled"), 0);
+                    }
+                } else if (optionChange && !tagsEnabled && !noOptionsEnabled) {
+                    CVarSetInteger(CVAR_ACTOR_NAME_TAGS("Enabled"), 1);
+                }
+
+                NameTag_RemoveAllByTag(DEBUG_ACTOR_NAMETAG_TAG);
+                ActorViewer_AddTagForAllActors();
+            }
+        }
+        ImGui::EndChild();
 
         PushStyleCombobox(THEME_COLOR);
         if (ImGui::BeginCombo("Actor Type", acMapping[category])) {
@@ -1160,20 +1233,6 @@ void ActorViewerWindow::DrawElement() {
             ImGui::TreePop();
         }
         PopStyleHeader();
-
-        static std::unordered_map<int32_t, const char*> nameTagOptions = {
-            { 0, "None" },
-            { 1, "Short Description" },
-            { 2, "Actor ID" },
-            { 3, "Both" },
-        };
-
-        if (CVarCombobox(
-                "Actor Name Tags", CVAR_DEVELOPER_TOOLS("ActorViewer.NameTags"), nameTagOptions,
-                ComboboxOptions().Color(THEME_COLOR).Tooltip("Adds \"name tags\" above actors for identification"))) {
-            NameTag_RemoveAllByTag(DEBUG_ACTOR_NAMETAG_TAG);
-            ActorViewer_AddTagForAllActors();
-        }
     } else {
         ImGui::Text("Global Context needed for actor info!");
         if (needs_reset) {
@@ -1190,9 +1249,9 @@ void ActorViewerWindow::DrawElement() {
     ImGui::EndDisabled();
 }
 
-void ActorViewerWindow::InitElement() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
-        Actor* actor = static_cast<Actor*>(refActor);
-        ActorViewer_AddTagForActor(actor);
-    });
+void ActorViewer_RegisterNameTagHooks() {
+    COND_HOOK(OnActorInit, CVAR_ACTOR_NAME_TAGS_ENABLED,
+              [](void* actor) { ActorViewer_AddTagForActor(static_cast<Actor*>(actor)); });
 }
+
+RegisterShipInitFunc nametagInit(ActorViewer_RegisterNameTagHooks, { CVAR_ACTOR_NAME_TAGS_ENABLED_NAME });

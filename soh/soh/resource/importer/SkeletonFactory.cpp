@@ -1,6 +1,7 @@
 #include "soh/resource/importer/SkeletonFactory.h"
 #include "soh/resource/type/Skeleton.h"
 #include <spdlog/spdlog.h>
+#include <tinyxml2.h>
 #include <libultraship/libultraship.h>
 
 namespace SOH {

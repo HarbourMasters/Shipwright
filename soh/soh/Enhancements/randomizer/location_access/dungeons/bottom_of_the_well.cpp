@@ -25,7 +25,6 @@ void RegionTable_Init_BottomOfTheWell() {
     }, {
         //Locations
         LOCATION(RC_BOTTOM_OF_THE_WELL_FRONT_CENTER_BOMBABLE_CHEST,  logic->HasExplosives()),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_FREESTANDING_KEY,             (logic->HasItem(RG_BRONZE_SCALE) || logic->LoweredWaterInsideBotw) && logic->CanUse(RG_STICKS) || logic->CanUse(RG_DINS_FIRE)),
         LOCATION(RC_BOTTOM_OF_THE_WELL_UNDERWATER_FRONT_CHEST,       logic->LoweredWaterInsideBotw),
         LOCATION(RC_BOTTOM_OF_THE_WELL_UNDERWATER_LEFT_CHEST,        logic->LoweredWaterInsideBotw),
         LOCATION(RC_BOTTOM_OF_THE_WELL_NEAR_ENTRANCE_POT_1,          logic->CanBreakPots()),

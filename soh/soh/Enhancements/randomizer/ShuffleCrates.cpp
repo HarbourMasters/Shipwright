@@ -3,6 +3,7 @@
 #include "static_data.h"
 #include <libultraship/libultra.h>
 #include "global.h"
+#include "soh/ResourceManagerHelpers.h"
 
 extern "C" {
 #include "variables.h"
@@ -11,7 +12,6 @@ extern "C" {
 #include "overlays/actors/ovl_Obj_Kibako/z_obj_kibako.h"
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 #include "soh/Enhancements/enhancementTypes.h"
-#include "soh/ResourceManagerHelpers.h"
 extern PlayState* gPlayState;
 }
 
@@ -195,7 +195,7 @@ void ObjKibako2_RandomizerSpawnCollectible(ObjKibako2* crateActor, PlayState* pl
     item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
     item00->actor.velocity.y = 8.0f;
     item00->actor.speedXZ = 2.0f;
-    item00->actor.world.rot.y = Rand_CenteredFloat(65536.0f);
+    item00->actor.world.rot.y = static_cast<int16_t>(Rand_CenteredFloat(65536.0f));
 }
 
 void ObjKibako_RandomizerSpawnCollectible(ObjKibako* smallCrateActor, PlayState* play) {
@@ -206,7 +206,7 @@ void ObjKibako_RandomizerSpawnCollectible(ObjKibako* smallCrateActor, PlayState*
     item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
     item00->actor.velocity.y = 8.0f;
     item00->actor.speedXZ = 2.0f;
-    item00->actor.world.rot.y = Rand_CenteredFloat(65536.0f);
+    item00->actor.world.rot.y = static_cast<int16_t>(Rand_CenteredFloat(65536.0f));
 }
 
 void ObjKibako2_RandomizerInit(void* actorRef) {

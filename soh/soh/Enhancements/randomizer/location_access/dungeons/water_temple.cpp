@@ -658,7 +658,7 @@ void RegionTable_Init_WaterTemple() {
 
     areaTable[RR_WATER_TEMPLE_MQ_DRAGON_ROOM_ALCOVE] = Region("Water Temple MQ Dragon Room Alcove", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->MQWaterDragonTorches, []{return true;}),
+        EventAccess(&logic->MQWaterDragonTorches, []{return logic->HasFireSource();}),
     }, 
     {
         //Locations

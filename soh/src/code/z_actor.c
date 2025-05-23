@@ -3466,6 +3466,9 @@ Actor* Actor_Delete(ActorContext* actorCtx, Actor* actor, PlayState* play) {
 
     player = GET_PLAYER(play);
 
+    // Execute before actor memory is freed
+    GameInteractor_ExecuteOnActorDestroy(actor);
+
     dbEntry = ActorDB_Retrieve(actor->id);
 
     if (HREG(20) != 0) {

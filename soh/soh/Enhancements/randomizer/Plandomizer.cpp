@@ -632,7 +632,7 @@ void PlandomizerLoadSpoilerLog(std::string logFile) {
                     PlandomizerAddToItemList(plandomizerRandoRetrieveItem(RG_SOLD_OUT));
                 }
             }
-        } catch (nlohmann::json::parse_error& e) {
+        } catch (nlohmann::json::parse_error&) {
             Notification::Emit({ .message = "Invalid Spoiler Log Format", .remainingTime = 10.0f });
         }
     }
@@ -967,7 +967,7 @@ void PlandomizerDrawOptions() {
                 }
                 ImGui::TableNextColumn();
 
-                size_t index = 0;
+                int32_t index = 0;
                 PlandoPushImageButtonStyle();
                 for (auto& hash : plandoHash) {
                     ImGui::PushID(index);
@@ -995,7 +995,7 @@ void PlandomizerDrawOptions() {
                     ImGui::PopStyleVar();
                     if (downRet) {
                         if (hash == 0) {
-                            hash = gSeedTextures.size() - 1;
+                            hash = static_cast<int32_t>(gSeedTextures.size()) - 1;
                         } else {
                             hash--;
                         }

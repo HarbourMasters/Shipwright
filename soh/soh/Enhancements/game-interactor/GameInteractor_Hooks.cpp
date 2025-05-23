@@ -122,6 +122,13 @@ void GameInteractor_ExecuteOnActorKill(void* actor) {
     GameInteractor::Instance->ExecuteHooksForFilter<GameInteractor::OnActorKill>(actor);
 }
 
+void GameInteractor_ExecuteOnActorDestroy(void* actor) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnActorDestroy>(actor);
+    GameInteractor::Instance->ExecuteHooksForID<GameInteractor::OnActorDestroy>(((Actor*)actor)->id, actor);
+    GameInteractor::Instance->ExecuteHooksForPtr<GameInteractor::OnActorDestroy>((uintptr_t)actor, actor);
+    GameInteractor::Instance->ExecuteHooksForFilter<GameInteractor::OnActorDestroy>(actor);
+}
+
 void GameInteractor_ExecuteOnEnemyDefeat(void* actor) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnEnemyDefeat>(actor);
     GameInteractor::Instance->ExecuteHooksForID<GameInteractor::OnEnemyDefeat>(((Actor*)actor)->id, actor);

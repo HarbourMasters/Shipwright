@@ -65,7 +65,7 @@ const std::string Randomizer::NaviRandoMessageTableID = "RandomizerNavi";
 const std::string Randomizer::IceTrapRandoMessageTableID = "RandomizerIceTrap";
 const std::string Randomizer::randoMiscHintsTableID = "RandomizerMiscHints";
 
-static const char* englishRupeeNames[190] = {
+static const char* englishRupeeNames[188] = {
     "[P]",
     "Bad RNG Rolls",
     "Baht",
@@ -111,8 +111,6 @@ static const char* englishRupeeNames[190] = {
     "Dimes",
     "Dinars",
     "DNA",
-    "Doge",
-    "Dogecoin",
     "Doll Hairs",
     "Dollars",
     "Dollarydoos",
@@ -258,25 +256,25 @@ static const char* englishRupeeNames[190] = {
     "Zorkmids",
 };
 
-static const char* germanRupeeNames[80] = {
-    "Baht",       "Bananen",    "Bitcoin",   "Bonbons",       "Bratwürste", "Brause UFOs", "Brötchen", "Cent",
-    "Diamanten",  "Dinar",      "Diridari",  "Dogecoin",      "Dollar",     "Draken",      "ECU",      "Elexit",
-    "Erz",        "Erzbrocken", "Euro",      "EXP",           "Forint",     "Franken",     "Freunde",  "Gil",
-    "Gold",       "Groschen",   "Gulden",    "Gummibären",    "Heller",     "Juwelen",     "Karolin",  "Kartoffeln",
-    "Kies",       "Knete",      "Knochen",   "Kohle",         "Kraniche",   "Kreuzer",     "Kronen",   "Kronkorken",
-    "Kröten",     "Lira",       "Mark",      "Mäuse",         "Monde",      "Moorhühner",  "Moos",     "Münzen",
-    "Naira",      "Penunze",    "Pesa",      "Pfandflaschen", "Pfennig",    "Pfund",       "Pilze",    "Plastiks",
-    "Pokédollar", "Radieschen", "Rand",      "Rappen",        "Real",       "Rial",        "Riyal",    "Rubine",
-    "Rupien",     "Saphire",    "Schilling", "Seelen",        "Septime",    "Smaragde",    "Steine",   "Sterne",
-    "Sternis",    "Tael",       "Taler",     "Wagenchips",    "Won",        "Yen",         "Yuan",     "Zenny",
+static const char* germanRupeeNames[79] = {
+    "Baht",       "Bananen",   "Bitcoin",       "Bonbons",  "Bratwürste", "Brause UFOs", "Brötchen",   "Cent",
+    "Diamanten",  "Dinar",     "Diridari",      "Dollar",   "Draken",     "ECU",         "Elexit",     "Erz",
+    "Erzbrocken", "Euro",      "EXP",           "Forint",   "Franken",    "Freunde",     "Gil",        "Gold",
+    "Groschen",   "Gulden",    "Gummibären",    "Heller",   "Juwelen",    "Karolin",     "Kartoffeln", "Kies",
+    "Knete",      "Knochen",   "Kohle",         "Kraniche", "Kreuzer",    "Kronen",      "Kronkorken", "Kröten",
+    "Lira",       "Mark",      "Mäuse",         "Monde",    "Moorhühner", "Moos",        "Münzen",     "Naira",
+    "Penunze",    "Pesa",      "Pfandflaschen", "Pfennig",  "Pfund",      "Pilze",       "Plastiks",   "Pokédollar",
+    "Radieschen", "Rand",      "Rappen",        "Real",     "Rial",       "Riyal",       "Rubine",     "Rupien",
+    "Saphire",    "Schilling", "Seelen",        "Septime",  "Smaragde",   "Steine",      "Sterne",     "Sternis",
+    "Tael",       "Taler",     "Wagenchips",    "Won",      "Yen",        "Yuan",        "Zenny",
 };
 
-static const char* frenchRupeeNames[40] = {
-    "Anneaux",   "Baguettes",   "Balles",     "Bananes",     "Bitcoin",    "Blés",     "Bling",    "Capsules",
-    "Centimes",  "Champignons", "Clochettes", "Crédits",     "Croissants", "Diamants", "Dogecoin", "Dollars",
-    "Émeraudes", "Éthers",      "Étoiles",    "Euros",       "Florens",    "Francs",   "Galds",    "Gils",
-    "Grouses",   "Halos",       "Joyaux",     "Lunes",       "Mailles",    "Munnies",  "Orbes",    "Orens",
-    "Pépètes",   "Pièces",      "Plastyks",   "Pokédollars", "Pokémon",    "Radis",    "Rubis",    "Zennies",
+static const char* frenchRupeeNames[39] = {
+    "Anneaux",  "Baguettes",   "Balles",      "Bananes", "Bitcoin",    "Blés",     "Bling",   "Capsules",
+    "Centimes", "Champignons", "Clochettes",  "Crédits", "Croissants", "Diamants", "Dollars", "Émeraudes",
+    "Éthers",   "Étoiles",     "Euros",       "Florens", "Francs",     "Galds",    "Gils",    "Grouses",
+    "Halos",    "Joyaux",      "Lunes",       "Mailles", "Munnies",    "Orbes",    "Orens",   "Pépètes",
+    "Pièces",   "Plastyks",    "Pokédollars", "Pokémon", "Radis",      "Rubis",    "Zennies",
 };
 
 Randomizer::Randomizer() {
@@ -357,9 +355,12 @@ std::unordered_map<s16, s16> getItemIdToItemId = {
     { GI_CLAIM_CHECK, ITEM_CLAIM_CHECK },
 };
 
+#ifdef _MSC_VER
 #pragma optimize("", off)
+#else
 #pragma GCC push_options
 #pragma GCC optimize("O0")
+#endif
 bool Randomizer::SpoilerFileExists(const char* spoilerFileName) {
     if (strcmp(spoilerFileName, "") != 0) {
         std::ifstream spoilerFileStream(SohUtils::Sanitize(spoilerFileName));
@@ -372,8 +373,11 @@ bool Randomizer::SpoilerFileExists(const char* spoilerFileName) {
 
     return false;
 }
-#pragma GCC pop_options
+#ifdef _MSC_VER
 #pragma optimize("", on)
+#else
+#pragma GCC pop_options
+#endif
 
 void Randomizer::LoadHintMessages() {
     auto ctx = Rando::Context::GetInstance();
@@ -3506,9 +3510,9 @@ CrateIdentity Randomizer::IdentifyCrate(s32 sceneNum, s32 posX, s32 posZ) {
         crateSceneNum = SCENE_MARKET_DAY;
     } else if (sceneNum == SCENE_GERUDOS_FORTRESS && gPlayState->linkAgeOnLoad == 1 && posX == 310) {
         if (posZ == -1830) {
-            posZ = -1842.0f;
+            posZ = -1842;
         } else if (posZ == -1770) {
-            posZ = -1782.0f;
+            posZ = -1782;
         }
     }
 
@@ -3734,13 +3738,15 @@ void RandomizerSettingsWindow::DrawElement() {
     }
 
     UIWidgets::Spacer(0);
-    ImGui::BeginDisabled((gSaveContext.gameMode != GAMEMODE_FILE_SELECT) || GameInteractor::IsSaveLoaded());
-    if (UIWidgets::Button("Generate Randomizer",
-                          UIWidgets::ButtonOptions().Size(ImVec2(250.f, 0.f)).Color(THEME_COLOR))) {
+    UIWidgets::ButtonOptions options = UIWidgets::ButtonOptions().Size(ImVec2(250.f, 0.f)).Color(THEME_COLOR);
+    options.Disabled((gSaveContext.gameMode != GAMEMODE_FILE_SELECT) || GameInteractor::IsSaveLoaded());
+    if (options.disabled) {
+        options.DisabledTooltip("Must be on File Select to generate a randomizer seed.");
+    }
+    if (UIWidgets::Button("Generate Randomizer", options)) {
         ctx->SetSpoilerLoaded(false);
         GenerateRandomizer(CVarGetInteger(CVAR_RANDOMIZER_SETTING("ManualSeedEntry"), 0) ? seedString : "");
     }
-    ImGui::EndDisabled();
 
     ImGui::SameLine();
     if (!CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
@@ -4100,7 +4106,7 @@ void RandomizerSettingsWindow::DrawElement() {
                     Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                 }
             }
-            if (ImGui::BeginTable("trickTags", showTag.size(),
+            if (ImGui::BeginTable("trickTags", static_cast<int>(showTag.size()),
                                   ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings |
                                       ImGuiTableFlags_Borders)) {
                 for (auto [rtTag, isShown] : showTag) {
@@ -4522,6 +4528,9 @@ CustomMessage Randomizer::GetMapGetItemMessageWithHint(GetItemEntry itemEntry) {
     } else {
         messageEntry.Replace("[[typeHint]]", Rando::StaticData::hintTextTable[RHT_DUNGEON_ORDINARY].GetHintMessage());
     }
+
+    // BUG: the icon is not in the message yet so are not accounted for, so overflows are possible
+    messageEntry.AutoFormat();
 
     return messageEntry;
 }
@@ -5572,7 +5581,7 @@ void RandomizerSettingsWindow::InitElement() {
 // (special cases for rando items)
 void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
 
-    u32 time = GAMEPLAYSTAT_TOTAL_TIME;
+    u32 time = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
 
     // Have items in Link's pocket shown as being obtained at 0.1 seconds
     if (time == 0) {
@@ -5868,7 +5877,7 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         case RG_GREG_RUPEE:
             Rupees_ChangeBy(1);
             Flags_SetRandomizerInf(RAND_INF_GREG_FOUND);
-            gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_FOUND_GREG] = GAMEPLAYSTAT_TOTAL_TIME;
+            gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_FOUND_GREG] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
             break;
         case RG_TRIFORCE_PIECE:
             gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected++;
@@ -5877,7 +5886,8 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             // Teleport to credits when goal is reached.
             if (gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected ==
                 (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1)) {
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] = GAMEPLAYSTAT_TOTAL_TIME;
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] =
+                    static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
                 gSaveContext.ship.stats.gameComplete = 1;
                 Flags_SetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY);
                 Play_PerformSave(play);
@@ -5910,12 +5920,12 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         case RG_DEKU_STICK_BAG:
             Inventory_ChangeUpgrade(UPG_STICKS, 1);
             INV_CONTENT(ITEM_STICK) = ITEM_STICK;
-            AMMO(ITEM_STICK) = CUR_CAPACITY(UPG_STICKS);
+            AMMO(ITEM_STICK) = static_cast<int8_t>(CUR_CAPACITY(UPG_STICKS));
             break;
         case RG_DEKU_NUT_BAG:
             Inventory_ChangeUpgrade(UPG_NUTS, 1);
             INV_CONTENT(ITEM_NUT) = ITEM_NUT;
-            AMMO(ITEM_NUT) = CUR_CAPACITY(UPG_NUTS);
+            AMMO(ITEM_NUT) = static_cast<int8_t>(CUR_CAPACITY(UPG_NUTS));
             break;
         default:
             LUSLOG_WARN("Randomizer_Item_Give didn't have behaviour specified for getItemId=%d", item);
