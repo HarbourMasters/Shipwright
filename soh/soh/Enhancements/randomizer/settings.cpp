@@ -546,6 +546,9 @@ void Settings::CreateOptions() {
               "Zora\'s Domain Entry with Hover Boots", "Can hover behind the waterfall as adult.");
     OPT_TRICK(RT_ZR_CUCCO, RCQUEST_BOTH, RA_ZORAS_RIVER, { Tricks::Tag::NOVICE }, "Zora\'s Domain Entry with Cucco",
               "You can fly behind the waterfall with a Cucco as child.");
+    OPT_TRICK(RT_ZR_OCARINA_ITEMS_GLITCH_WATERFALL, RCQUEST_BOTH, RA_ZORAS_RIVER, { Tricks::Tag::NOVICE },
+              "Zora\'s Domain Entry with Ocarina Items Glitch",
+              "With the Ocarina Items Glitch allows you to open the waterfall.");
     OPT_TRICK(RT_ZD_KING_ZORA_SKIP, RCQUEST_BOTH, RA_ZORAS_DOMAIN, { Tricks::Tag::INTERMEDIATE },
               "Skip King Zora as Adult with Nothing",
               "With a precise jump as adult, it is possible to get on the fence next to King Zora from the front to "
