@@ -401,6 +401,9 @@ void Settings::CreateOptions() {
               "Allows exploding beehives with Bombchus.");
     OPT_TRICK(RT_BLUE_FIRE_MUD_WALLS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Break Mud Walls with Blue Fire",
               "Use Blue Fire to break mud walls.");
+    OPT_TRICK(RT_OCARINA_ITEMS_GLITCH_GREAT_FAIRY, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE },
+              "Ocarina Items Glitch for Great Fairy",
+              "Access the rewards of the Great Fairy with Ocarina Items Glitch.");
     OPT_TRICK(RT_KF_ADULT_GS, RCQUEST_BOTH, RA_KOKIRI_FOREST, { Tricks::Tag::NOVICE },
               "Adult Kokiri Forest GS with Hover Boots",
               "Can be obtained without Hookshot by using the Hover Boots off of one of the roots.");

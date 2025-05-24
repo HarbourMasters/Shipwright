@@ -1043,6 +1043,18 @@ bool Logic::HasBottle() {
     return BottleCount() >= 1;
 }
 
+bool Logic::OcarinaItemGlitch() {
+    return ((CanUse(RG_BOTTLE_WITH_BUGS) || CanUse(RG_BOTTLE_WITH_FISH)) &&
+            (CanUseSword() || CanUse(RG_STICKS) || CanUse(RG_NUTS) || CanUse(RG_BOMB_BAG) || CanUse(RG_FAIRY_BOW) ||
+             CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOMBCHU_BAG) || CanUse(RG_HOOKSHOT) || CanUse(RG_LONGSHOT) ||
+             CanUse(RG_BOOMERANG) || CanUse(RG_MEGATON_HAMMER)));
+}
+
+bool Logic::OcarinaItemGlitchZeldasLullaby() {
+    return OcarinaItemGlitch() && HasItem(RG_ZELDAS_LULLABY) && HasItem(RG_OCARINA_C_LEFT_BUTTON) &&
+           HasItem(RG_OCARINA_C_RIGHT_BUTTON) && HasItem(RG_OCARINA_C_UP_BUTTON);
+}
+
 bool Logic::CanUseSword() {
     return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD);
 }
