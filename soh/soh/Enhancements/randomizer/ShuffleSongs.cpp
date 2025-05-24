@@ -23,4 +23,4 @@ void Rando::StaticData::RegisterSongLocations() {
     // clang-format-on
 }
 
-static RegisterShipInitFunc registerFunc(Rando::StaticData::RegisterSongLocations);
+static RegisterShipInitFunc initSongLocations(Rando::StaticData::RegisterSongLocations);
