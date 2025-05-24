@@ -21,7 +21,7 @@ void RegionTable_Init_BottomOfTheWell() {
         //Events
         EventAccess(&logic->StickPot,               []{return true;}),
         EventAccess(&logic->NutPot,                 []{return true;}),
-        EventAccess(&logic->LoweredWaterInsideBotw, []{return logic->CanUse(RG_ZELDAS_LULLABY);}),
+        EventAccess(&logic->LoweredWaterInsideBotw, []{return (logic->CanUse(RG_ZELDAS_LULLABY) || (ctx->GetTrickOption(RT_BOTTOM_OF_THE_WELL_OCARINA_ITEMS_GLITCH) && logic->OcarinaItemsGlitchZeldasLullaby()));}),
     }, {
         //Locations
         LOCATION(RC_BOTTOM_OF_THE_WELL_FRONT_CENTER_BOMBABLE_CHEST,  logic->HasExplosives()),
@@ -210,7 +210,7 @@ void RegionTable_Init_BottomOfTheWell() {
         Entrance(RR_BOTTOM_OF_THE_WELL_MQ_COFFIN_ROOM,      []{return (logic->LoweredWaterInsideBotw || logic->HasItem(RG_BRONZE_SCALE)) && logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 2);}),
         Entrance(RR_BOTTOM_OF_THE_WELL_MQ_LOCKED_CAGE,      []{return logic->IsChild && logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 2) && logic->CanUseProjectile();}),
         Entrance(RR_BOTTOM_OF_THE_WELL_MQ_DEAD_HAND_ROOM,   []{return logic->IsChild && logic->LoweredWaterInsideBotw;}),
-        Entrance(RR_BOTTOM_OF_THE_WELL_MQ_MIDDLE,           []{return logic->CanUse(RG_ZELDAS_LULLABY);}),
+        Entrance(RR_BOTTOM_OF_THE_WELL_MQ_MIDDLE,           []{return (logic->CanUse(RG_ZELDAS_LULLABY) || (ctx->GetTrickOption(RT_BOTTOM_OF_THE_WELL_OCARINA_ITEMS_GLITCH_MQ) && logic->OcarinaItemsGlitchZeldasLullaby()));}),
         Entrance(RR_BOTTOM_OF_THE_WELL_MQ_BASEMENT,         []{return true;}),
     });
 
