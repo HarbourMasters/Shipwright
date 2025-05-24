@@ -23,7 +23,7 @@ void RegisterDynamicShadow() {
         Actor* shadowActor;
 
         if ((player != nullptr) && (startMode != PLAYER_START_MODE_NOTHING)) {
-            SPDLOG_DEBUG("Spawning Dynamic Shadow");
+            SPDLOG_DEBUG("Spawning Dynamic Shadow. sceneNum: {0:#x}", gPlayState->sceneNum);
 
             // Spawn as Link's child so the shadow doesn't get unloaded on room change.
             shadowActor = Actor_SpawnAsChild(&gPlayState->actorCtx, &player->actor, gPlayState, ACTOR_EN_SDA, 0, 0, 0,
@@ -36,4 +36,4 @@ void RegisterDynamicShadow() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterDynamicShadow, { CVAR_DYNAMICSHADOW_NAME });
+static RegisterShipInitFunc initFunc_DynamicShadow(RegisterDynamicShadow, { CVAR_DYNAMICSHADOW_NAME });
