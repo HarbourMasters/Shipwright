@@ -110,7 +110,7 @@ void RegionTable_Init_KokiriForest() {
 
     areaTable[RR_KF_LINKS_HOUSE] = Region("KF Link's House", "KF Link's House", {}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_KF_LINKS_HOUSE_COW, logic->IsAdult && logic->CanUse(RG_EPONAS_SONG) && logic->LinksCow),
+        LOCATION(RC_KF_LINKS_HOUSE_COW, logic->IsAdult && logic->LinksCow && logic->CanUse(RG_EPONAS_SONG) || (ctx->GetTrickOption(RT_OCARINA_ITEMS_GLITCH_COW) && logic->OcarinaItemsGlitchEponasSong())),
         LOCATION(RC_KF_LINKS_HOUSE_POT, logic->CanBreakPots()),
     }, {
         //Exits

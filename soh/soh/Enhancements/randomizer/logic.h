@@ -205,6 +205,7 @@ class Logic {
     bool HasBottle();
     bool OcarinaItemsGlitch();
     bool OcarinaItemsGlitchZeldasLullaby();
+    bool OcarinaItemsGlitchEponasSong();
     bool CanUseSword();
     bool CanJumpslashExceptHammer();
     bool CanJumpslash();

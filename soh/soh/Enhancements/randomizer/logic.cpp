@@ -1055,6 +1055,11 @@ bool Logic::OcarinaItemsGlitchZeldasLullaby() {
            HasItem(RG_OCARINA_C_RIGHT_BUTTON) && HasItem(RG_OCARINA_C_UP_BUTTON);
 }
 
+bool Logic::OcarinaItemsGlitchEponasSong() {
+    return OcarinaItemsGlitch() && HasItem(RG_EPONAS_SONG) && HasItem(RG_OCARINA_C_LEFT_BUTTON) &&
+           HasItem(RG_OCARINA_C_RIGHT_BUTTON) && HasItem(RG_OCARINA_C_UP_BUTTON);
+}
+
 bool Logic::CanUseSword() {
     return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD);
 }

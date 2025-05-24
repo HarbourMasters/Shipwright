@@ -404,6 +404,9 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_OCARINA_ITEMS_GLITCH_GREAT_FAIRY, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE },
               "Ocarina Items Glitch for Great Fairy",
               "Access the rewards of the Great Fairy with Ocarina Items Glitch.");
+    OPT_TRICK(RT_OCARINA_ITEMS_GLITCH_COW, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE },
+              "Ocarina Items Glitch for Cow",
+              "Access the rewards of Cow with Ocarina Items Glitch.");
     OPT_TRICK(RT_KF_ADULT_GS, RCQUEST_BOTH, RA_KOKIRI_FOREST, { Tricks::Tag::NOVICE },
               "Adult Kokiri Forest GS with Hover Boots",
               "Can be obtained without Hookshot by using the Hover Boots off of one of the roots.");
