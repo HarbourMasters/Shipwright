@@ -1452,7 +1452,7 @@ static bool SfxHandler(std::shared_ptr<Ship::Console> Console, const std::vector
 }
 
 static bool AvailableChecksProcessUndiscoveredExitsHandler(std::shared_ptr<Ship::Console> Console,
-                                                          const std::vector<std::string>& args, std::string* output) {
+                                                           const std::vector<std::string>& args, std::string* output) {
     const auto& logic = Rando::Context::GetInstance()->GetLogic();
     bool enabled = false;
 
@@ -1479,7 +1479,7 @@ static bool AvailableChecksProcessUndiscoveredExitsHandler(std::shared_ptr<Ship:
 }
 
 static bool AvailableChecksRecalculateHandler(std::shared_ptr<Ship::Console> Console,
-                                             const std::vector<std::string>& args, std::string* output) {
+                                              const std::vector<std::string>& args, std::string* output) {
     RandomizerRegion startingRegion = RR_ROOT;
 
     if (args.size() > 1) {
