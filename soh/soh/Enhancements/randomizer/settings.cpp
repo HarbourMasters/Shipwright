@@ -725,8 +725,8 @@ void Settings::CreateOptions() {
               "Lowered Water Inside BOTW with Ocarina Items Glitch",
               "Allows you to lower the water level in BOTW with the Ocarina Items Glitch.");
     OPT_TRICK(RT_BOTTOM_OF_THE_WELL_OCARINA_ITEMS_GLITCH_MQ, RCQUEST_MQ, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE },
-              "Open Door BOTW with Ocarina Items Glitch (MQ)",
-              "Open Door in BOTW with the Ocarina Items Glitch. (MQ)");
+              "Open Door BOTW MQ with Ocarina Items Glitch",
+              "Open Door in BOTW MQ with the Ocarina Items Glitch.");
     OPT_TRICK(RT_BOTW_CHILD_DEADHAND, RCQUEST_BOTH, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE },
               "Child Dead Hand without Kokiri Sword", "Requires 9 sticks or 5 jump slashes.");
     OPT_TRICK(RT_BOTW_BASEMENT, RCQUEST_VANILLA, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE },
