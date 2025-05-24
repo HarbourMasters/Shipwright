@@ -196,6 +196,8 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_MIX_INTERIOR_ENTRANCES] = "Interior entrances will be part of the mixed pool.";
     mOptionDescriptions[RSK_MIX_GROTTO_ENTRANCES] = "Grotto entrances will be part of the mixed pool.";
     mOptionDescriptions[RSK_SHUFFLE_SONGS] =
+        "Off - Songs will appear at their vanilla locations.\n"
+        "\n"
         "Song locations - Songs will only appear at locations that normally teach songs.\n"
         "\n"
         "Dungeon rewards - Songs appear after beating a major dungeon boss.\n"

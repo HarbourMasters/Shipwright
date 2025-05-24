@@ -51,6 +51,7 @@ bool showBeans;
 bool showScrubs;
 bool showMajorScrubs;
 bool showMerchants;
+bool showSongs;
 bool showBeehives;
 bool showCows;
 bool showOverworldFreestanding;
@@ -1306,6 +1307,9 @@ void LoadSettings() {
                                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MERCHANTS) ==
                                        RO_SHUFFLE_MERCHANTS_ALL
                              : true;
+    showSongs = IS_RANDO
+                    ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SONGS) != RO_SONG_SHUFFLE_OFF
+                    : false;
     showBeehives = IS_RANDO
                        ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BEEHIVES) == RO_GENERIC_YES
                        : false;
@@ -1516,6 +1520,7 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                 (showMajorScrubs && (rc == RC_LW_DEKU_SCRUB_NEAR_BRIDGE || // The 3 scrubs that are always randomized
                                      rc == RC_HF_DEKU_SCRUB_GROTTO || rc == RC_LW_DEKU_SCRUB_GROTTO_FRONT))) &&
                (loc->GetRCType() != RCTYPE_MERCHANT || showMerchants) &&
+               (loc->GetRCType() != RCTYPE_SONG_LOCATION || showSongs) &&
                (loc->GetRCType() != RCTYPE_BEEHIVE || showBeehives) &&
                (loc->GetRCType() != RCTYPE_OCARINA || showOcarinas) &&
                (loc->GetRCType() != RCTYPE_SKULL_TOKEN || alwaysShowGS ||
