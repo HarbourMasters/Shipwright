@@ -100,7 +100,7 @@ void RegionTable_Init_CastleGrounds() {
 
     areaTable[RR_OGC_GREAT_FAIRY_FOUNTAIN] = Region("OGC Great Fairy Fountain", "OGC Great Fairy Fountain", {}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_OGC_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY)),
+        LOCATION(RC_OGC_GREAT_FAIRY_REWARD, (logic->CanUse(RG_ZELDAS_LULLABY) || (ctx->GetTrickOption(RT_OCARINA_ITEMS_GLITCH_GREAT_FAIRY) && logic->OcarinaItemGlitchZeldasLullaby()))),
     }, {
         //Exits
         Entrance(RR_CASTLE_GROUNDS, []{return true;}),

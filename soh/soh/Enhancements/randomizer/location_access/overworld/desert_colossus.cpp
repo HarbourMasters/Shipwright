@@ -60,7 +60,7 @@ void RegionTable_Init_DesertColossus() {
 
     areaTable[RR_COLOSSUS_GREAT_FAIRY_FOUNTAIN] = Region("Colossus Great Fairy Fountain", "Colossus Great Fairy Fountain", {}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_COLOSSUS_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY)),
+        LOCATION(RC_COLOSSUS_GREAT_FAIRY_REWARD, (logic->CanUse(RG_ZELDAS_LULLABY) || (ctx->GetTrickOption(RT_OCARINA_ITEMS_GLITCH_GREAT_FAIRY) && logic->OcarinaItemGlitchZeldasLullaby()))),
     }, {
         //Exits
         Entrance(RR_DESERT_COLOSSUS, []{return true;}),
