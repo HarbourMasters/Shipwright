@@ -203,8 +203,8 @@ class Logic {
     uint8_t BottleCount();
     uint8_t OcarinaButtons();
     bool HasBottle();
-    bool OcarinaItemGlitch();
-    bool OcarinaItemGlitchZeldasLullaby();
+    bool OcarinaItemsGlitch();
+    bool OcarinaItemsGlitchZeldasLullaby();
     bool CanUseSword();
     bool CanJumpslashExceptHammer();
     bool CanJumpslash();

@@ -100,7 +100,7 @@ void RegionTable_Init_DeathMountainTrail() {
 
     areaTable[RR_DMT_GREAT_FAIRY_FOUNTAIN] = Region("DMT Great Fairy Fountain", "DMT Great Fairy Fountain", {}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_DMT_GREAT_FAIRY_REWARD, (logic->CanUse(RG_ZELDAS_LULLABY) || (ctx->GetTrickOption(RT_OCARINA_ITEMS_GLITCH_GREAT_FAIRY) && logic->OcarinaItemGlitchZeldasLullaby()))),
+        LOCATION(RC_DMT_GREAT_FAIRY_REWARD, (logic->CanUse(RG_ZELDAS_LULLABY) || (ctx->GetTrickOption(RT_OCARINA_ITEMS_GLITCH_GREAT_FAIRY) && logic->OcarinaItemsGlitchZeldasLullaby()))),
     }, {
         //Exits
         Entrance(RR_DEATH_MOUNTAIN_SUMMIT, []{return true;}),

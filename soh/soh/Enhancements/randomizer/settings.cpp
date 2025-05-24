@@ -520,6 +520,8 @@ void Settings::CreateOptions() {
               "taking damage from the lava floor.");
     OPT_TRICK(RT_GC_LINK_GORON_DINS, RCQUEST_BOTH, RA_GORON_CITY, { Tricks::Tag::NOVICE },
               "Stop Link the Goron with Din\'s Fire", "The timing is quite awkward.");
+    OPT_TRICK(RT_GC_OCARINA_ITEMS_GLITCH_DARUNIAS_CHAMBER, RCQUEST_BOTH, RA_GORON_CITY, { Tricks::Tag::NOVICE },
+              "Open Darunia\'s Chamber with Ocarina Items Glitch", "With the Ocarina Items Glitch allows you to open the Darunia\'s Chamber.");
     OPT_TRICK(RT_DMC_HOVER_BEAN_POH, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_CRATER, { Tricks::Tag::NOVICE },
               "Crater\'s Bean PoH with Hover Boots",
               "Hover from the base of the bridge near Goron City and walk up the very steep slope.");

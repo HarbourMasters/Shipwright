@@ -112,7 +112,7 @@ void RegionTable_Init_ZorasFountain() {
 
     areaTable[RR_ZF_GREAT_FAIRY_FOUNTAIN] = Region("ZF Great Fairy Fountain", "ZF Great Fairy Fountain", {}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_ZF_GREAT_FAIRY_REWARD, (logic->CanUse(RG_ZELDAS_LULLABY) || (ctx->GetTrickOption(RT_OCARINA_ITEMS_GLITCH_GREAT_FAIRY) && logic->OcarinaItemGlitchZeldasLullaby()))),
+        LOCATION(RC_ZF_GREAT_FAIRY_REWARD, (logic->CanUse(RG_ZELDAS_LULLABY) || (ctx->GetTrickOption(RT_OCARINA_ITEMS_GLITCH_GREAT_FAIRY) && logic->OcarinaItemsGlitchZeldasLullaby()))),
     }, {
         //Exits
         Entrance(RR_ZORAS_FOUNTAIN, []{return true;}),
