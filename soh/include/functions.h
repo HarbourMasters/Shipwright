@@ -12,7 +12,6 @@ extern "C"
 
 #include "luslog.h"
 #include <soh/Enhancements/item-tables/ItemTableTypes.h>
-#include <soh/Enhancements/randomizer/randomizer_inf.h>
 
 #if defined(INCLUDE_GAME_PRINTF) && defined(_DEBUG)
 #define osSyncPrintf(fmt, ...) lusprintf(__FILE__, __LINE__, 0, fmt, ##__VA_ARGS__)
