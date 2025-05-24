@@ -1451,7 +1451,7 @@ static bool SfxHandler(std::shared_ptr<Ship::Console> Console, const std::vector
     return 0;
 }
 
-static bool AvailabeChecksProcessUndiscoveredExitsHandler(std::shared_ptr<Ship::Console> Console,
+static bool AvailableChecksProcessUndiscoveredExitsHandler(std::shared_ptr<Ship::Console> Console,
                                                           const std::vector<std::string>& args, std::string* output) {
     const auto& logic = Rando::Context::GetInstance()->GetLogic();
     bool enabled = false;
@@ -1478,7 +1478,7 @@ static bool AvailabeChecksProcessUndiscoveredExitsHandler(std::shared_ptr<Ship::
     return 0;
 }
 
-static bool AvailabeChecksRecalculateHandler(std::shared_ptr<Ship::Console> Console,
+static bool AvailableChecksRecalculateHandler(std::shared_ptr<Ship::Console> Console,
                                              const std::vector<std::string>& args, std::string* output) {
     RandomizerRegion startingRegion = RR_ROOT;
 
@@ -1758,11 +1758,11 @@ void DebugConsole_Init(void) {
                               { "group_name", Ship::ArgumentType::TEXT, true },
                           } });
 
-    CMD_REGISTER("acpue", { AvailabeChecksProcessUndiscoveredExitsHandler,
+    CMD_REGISTER("acpue", { AvailableChecksProcessUndiscoveredExitsHandler,
                             "Available Checks - Process Undiscovered Exits",
                             { { "enable", Ship::ArgumentType::NUMBER, true } } });
 
-    CMD_REGISTER("acr", { AvailabeChecksRecalculateHandler,
+    CMD_REGISTER("acr", { AvailableChecksRecalculateHandler,
                           "Available Checks - Recalculate",
                           {
                               { "starting_region", Ship::ArgumentType::NUMBER, true },
