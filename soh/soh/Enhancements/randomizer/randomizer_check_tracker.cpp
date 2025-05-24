@@ -91,6 +91,10 @@ bool previousShowHidden = false;
 bool hideShopUnshuffledChecks = false;
 bool alwaysShowGS = false;
 
+static bool presetLoaded = false;
+static ImVec2 presetPos;
+static ImVec2 presetSize;
+
 std::map<uint32_t, RandomizerCheck> startingShopItem = {
     { SCENE_KOKIRI_SHOP, RC_KF_SHOP_ITEM_1 },
     { SCENE_BAZAAR, RC_MARKET_BAZAAR_ITEM_1 },
@@ -979,7 +983,13 @@ void CheckTrackerWindow::DrawElement() {
         }
     }
 
-    ImGui::SetNextWindowSize(ImVec2(400, 540), ImGuiCond_FirstUseEver);
+    if (presetLoaded) {
+        ImGui::SetNextWindowSize(presetSize);
+        ImGui::SetNextWindowPos(presetPos);
+        presetLoaded = false;
+    } else {
+        ImGui::SetNextWindowSize(ImVec2(400, 540), ImGuiCond_FirstUseEver);
+    }
     BeginFloatWindows("Check Tracker", mIsVisible, ImGuiWindowFlags_NoScrollbar);
 
     if (!GameInteractor::IsSaveLoaded() || !initialized) {
@@ -1892,16 +1902,16 @@ static std::set<std::string> rainbowCVars = {
 
 int hue = 0;
 void RainbowTick() {
-    float freqHue = hue * 2 * M_PI / (360 * CVarGetFloat(CVAR_COSMETIC("RainbowSpeed"), 0.6f));
+    float freqHue = hue * 2 * M_PIf / (360 * CVarGetFloat(CVAR_COSMETIC("RainbowSpeed"), 0.6f));
     for (auto& cvar : rainbowCVars) {
         if (CVarGetInteger((cvar + ".Rainbow").c_str(), 0) == 0) {
             continue;
         }
 
         Color_RGBA8 newColor;
-        newColor.r = sin(freqHue + 0) * 127 + 128;
-        newColor.g = sin(freqHue + (2 * M_PI / 3)) * 127 + 128;
-        newColor.b = sin(freqHue + (4 * M_PI / 3)) * 127 + 128;
+        newColor.r = static_cast<uint8_t>(sin(freqHue + 0) * 127) + 128;
+        newColor.g = static_cast<uint8_t>(sin(freqHue + (2 * M_PI / 3)) * 127) + 128;
+        newColor.b = static_cast<uint8_t>(sin(freqHue + (4 * M_PI / 3)) * 127) + 128;
         newColor.a = 255;
 
         CVarSetColor((cvar + ".Value").c_str(), newColor);
@@ -1967,7 +1977,7 @@ void RecalculateAvailableChecks() {
     StartPerformanceTimer(PT_RECALCULATE_AVAILABLE_CHECKS);
 
     std::vector<RandomizerCheck> targetLocations;
-    targetLocations.reserve(RR_MAX);
+    targetLocations.reserve(RC_MAX);
     for (auto& location : Rando::StaticData::GetLocationTable()) {
         RandomizerCheck rc = location.GetRandomizerCheck();
         Rando::ItemLocation* itemLocation = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
@@ -1979,15 +1989,8 @@ void RecalculateAvailableChecks() {
 
     std::vector<RandomizerCheck> availableChecks = ReachabilitySearch(targetLocations, RG_NONE, true);
     for (auto& rc : availableChecks) {
-        const auto& location = Rando::StaticData::GetLocation(rc);
         const auto& itemLocation = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
-        if (location->GetRCType() == RCTYPE_SHOP && itemLocation->GetCheckStatus() == RCSHOW_IDENTIFIED) {
-            if (CanBuyAnother(rc)) {
-                itemLocation->SetAvailable(true);
-            }
-        } else {
-            itemLocation->SetAvailable(true);
-        }
+        itemLocation->SetAvailable(true);
     }
 
     totalChecksAvailable = 0;
@@ -2005,6 +2008,12 @@ void RecalculateAvailableChecks() {
     StopPerformanceTimer(PT_RECALCULATE_AVAILABLE_CHECKS);
     SPDLOG_INFO("Recalculate Available Checks Time: {}ms",
                 GetPerformanceTimer(PT_RECALCULATE_AVAILABLE_CHECKS).count());
+}
+
+void CheckTracker_LoadFromPreset(nlohmann::json info) {
+    presetLoaded = true;
+    presetPos = { info["pos"]["x"], info["pos"]["y"] };
+    presetSize = { info["size"]["width"], info["size"]["height"] };
 }
 
 void CheckTrackerWindow::Draw() {
@@ -2114,7 +2123,10 @@ void CheckTrackerSettingsWindow::DrawElement() {
                                                  "with your current progress.")
                                         .Color(THEME_COLOR))) {
             enableAvailableChecks = CVarGetInteger(CVAR_TRACKER_CHECK("EnableAvailableChecks"), 0);
-            RecalculateAvailableChecks();
+
+            if (GameInteractor::IsSaveLoaded(true)) {
+                RecalculateAvailableChecks();
+            }
         }
         ImGui::EndDisabled();
 

@@ -1011,26 +1011,24 @@ Logic::Logic() {
 
 uint8_t Logic::BottleCount() {
     uint8_t count = 0;
-    if (CouldEmptyBigPoes && !AreCheckingBigPoes) {
-        for (int i = SLOT_BOTTLE_1; i <= SLOT_BOTTLE_4; i++) {
-            uint8_t item = GetSaveContext()->inventory.items[i];
-            switch (item) {
-                case ITEM_LETTER_RUTO:
-                    if (DeliverLetter) {
-                        count++;
-                    }
-                    break;
-                case ITEM_BIG_POE:
-                    if (CanEmptyBigPoes) {
-                        count++;
-                    }
-                    break;
-                case ITEM_NONE:
-                    break;
-                default:
+    for (int i = SLOT_BOTTLE_1; i <= SLOT_BOTTLE_4; i++) {
+        uint8_t item = GetSaveContext()->inventory.items[i];
+        switch (item) {
+            case ITEM_LETTER_RUTO:
+                if (DeliverLetter) {
                     count++;
-                    break;
-            }
+                }
+                break;
+            case ITEM_BIG_POE:
+                if (CanEmptyBigPoes) {
+                    count++;
+                }
+                break;
+            case ITEM_NONE:
+                break;
+            default:
+                count++;
+                break;
         }
     }
     return count;
@@ -1387,6 +1385,7 @@ bool Logic::SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless
             static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE) || GetDifficultyValueFromString(GlitchHover) >=
             static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE))) { return FireTempleKeys >= requiredAmountGlitched;
             }*/
+            // If the Fire Temple loop lock is removed, Small key Count is set to 1 before starting
             return GetSmallKeyCount(SCENE_FIRE_TEMPLE) >= requiredAmountGlitchless;
 
         case RR_WATER_TEMPLE:
@@ -1814,7 +1813,7 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                     if (randoGet == RG_BOTTLE_WITH_BIG_POE) {
                         BigPoes++;
                     }
-                    mSaveContext->inventory.items[slot] = itemId;
+                    mSaveContext->inventory.items[slot] = static_cast<uint8_t>(itemId);
                 } break;
                 case RG_RUTOS_LETTER:
                     SetRandoInf(RAND_INF_OBTAINED_RUTOS_LETTER, state);
@@ -2306,7 +2305,7 @@ void Logic::SetEventChkInf(int32_t flag, bool state) {
 }
 
 uint8_t Logic::GetGSCount() {
-    return mSaveContext->inventory.gsTokens;
+    return static_cast<uint8_t>(mSaveContext->inventory.gsTokens);
 }
 
 uint8_t Logic::GetAmmo(uint32_t item) {
@@ -2334,9 +2333,9 @@ void Logic::Reset() {
     StartPerformanceTimer(PT_LOGIC_RESET);
     memset(inLogic, false, sizeof(inLogic));
     // Settings-dependent variables
-    IsKeysanity = ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) ||
-                  ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) ||
-                  ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE);
+    IsFireLoopLocked = ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) ||
+                       ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_OVERWORLD) ||
+                       ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANY_DUNGEON);
 
     // AmmoCanDrop = /*AmmoDrops.IsNot(AMMODROPS_NONE)*/ false; TODO: AmmoDrop setting
 
@@ -2398,7 +2397,7 @@ void Logic::Reset() {
 
     // If not keysanity, start with 1 logical key to account for automatically unlocking the basement door in vanilla
     // FiT
-    if (!IsKeysanity && ctx->GetDungeon(Rando::FIRE_TEMPLE)->IsVanilla()) {
+    if (!IsFireLoopLocked && ctx->GetDungeon(Rando::FIRE_TEMPLE)->IsVanilla()) {
         SetSmallKeyCount(SCENE_FIRE_TEMPLE, 1);
     }
 
@@ -2406,7 +2405,6 @@ void Logic::Reset() {
     Bottles = 0;
     NumBottles = 0;
     CanEmptyBigPoes = false;
-    CouldEmptyBigPoes = false;
 
     // Drops and Bottle Contents Access
     NutPot = false;
@@ -2496,6 +2494,7 @@ void Logic::Reset() {
     ForestOpenBossCorridor = false;
     ShadowTrialFirstChest = false;
     MQGTGMazeSwitch = false;
+    MQGTGRightSideSwitch = false;
     GTGPlatformSilverRupees = false;
     MQJabuHolesRoomDoor = false;
     JabuWestTentacle = false;

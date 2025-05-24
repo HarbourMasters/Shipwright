@@ -712,7 +712,7 @@ void EnPoField_SoulInteract(EnPoField* this, PlayState* play) {
                     if (this->actor.params == 0) {
                         Item_Give(play, ITEM_POE);
                         this->actor.textId = 0x5008;
-                    } else {
+                    } else if (GameInteractor_Should(VB_BOTTLE_BIG_POE, true, this)) {
                         this->actor.textId = 0x508F;
                         Item_Give(play, ITEM_BIG_POE);
                         Flags_SetSwitch(play, sEnPoFieldSpawnSwitchFlags[this->spawnFlagIndex]);

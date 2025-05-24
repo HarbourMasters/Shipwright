@@ -1,5 +1,6 @@
 #include "SohMenu.h"
 #include "soh/Notification/Notification.h"
+#include "soh/OTRGlobals.h"
 #include <soh/GameVersions.h>
 #include "soh/ResourceManagerHelpers.h"
 #include "UIWidgets.hpp"

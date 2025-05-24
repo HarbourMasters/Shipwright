@@ -22,7 +22,7 @@ void StartingItemGive(GetItemEntry getItemEntry, RandomizerCheck randomizerCheck
         if (getItemEntry.getItemId == GI_SWORD_BGS) {
             gSaveContext.bgsFlag = true;
         }
-        Item_Give(NULL, getItemEntry.itemId);
+        Item_Give(NULL, static_cast<uint8_t>(getItemEntry.itemId));
     } else if (getItemEntry.modIndex == MOD_RANDOMIZER) {
         if (getItemEntry.getItemId == RG_ICE_TRAP) {
             gSaveContext.ship.pendingIceTrapCount++;
@@ -269,9 +269,9 @@ extern "C" void Randomizer_InitSaveFile() {
 
     // Remove One Time Scrubs with Scrubsanity off
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_OFF) {
-        Flags_SetRandomizerInf(RAND_INF_SCRUBS_PURCHASED_LW_DEKU_SCRUB_NEAR_BRIDGE);
-        Flags_SetRandomizerInf(RAND_INF_SCRUBS_PURCHASED_LW_DEKU_SCRUB_GROTTO_FRONT);
-        Flags_SetRandomizerInf(RAND_INF_SCRUBS_PURCHASED_HF_DEKU_SCRUB_GROTTO);
+        Flags_SetItemGetInf(ITEMGETINF_DEKU_SCRUB_HEART_PIECE);
+        Flags_SetInfTable(INFTABLE_BOUGHT_STICK_UPGRADE);
+        Flags_SetInfTable(INFTABLE_BOUGHT_NUT_UPGRADE);
     }
 
     int startingAge = OTRGlobals::Instance->gRandoContext->GetOption(RSK_SELECTED_STARTING_AGE).Get();
@@ -334,7 +334,7 @@ extern "C" void Randomizer_InitSaveFile() {
         Flags_SetRandomizerInf(RAND_INF_TOT_MASTER_SWORD);
     }
 
-    HIGH_SCORE(HS_POE_POINTS) = 1000 - (100 * (Randomizer_GetSettingValue(RSK_BIG_POE_COUNT) + 1));
+    HIGH_SCORE(HS_POE_POINTS) = 1000 - (100 * Randomizer_GetSettingValue(RSK_BIG_POE_COUNT));
 
     if (Randomizer_GetSettingValue(RSK_SKIP_EPONA_RACE)) {
         Flags_SetEventChkInf(EVENTCHKINF_EPONA_OBTAINED);

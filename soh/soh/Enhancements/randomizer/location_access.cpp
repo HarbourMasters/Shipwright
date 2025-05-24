@@ -10,9 +10,10 @@
 #include "soh/Enhancements/debugger/performanceTimer.h"
 
 #include <fstream>
+#include <soh/OTRGlobals.h>
 
+#include "3drando/shops.hpp"
 extern "C" {
-extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 }
 
@@ -45,17 +46,71 @@ bool LocationAccess::ConditionsMet(Region* parentRegion, bool calculatingAvailab
         conditionsMet = true;
     }
 
-    return conditionsMet &&
-           (calculatingAvailableChecks || CanBuy()); // TODO: run CanBuy when price is known due to settings
+    return conditionsMet && CanBuy(calculatingAvailableChecks);
 }
 
-bool LocationAccess::CanBuy() const {
-    return CanBuyAnother(location);
+static uint16_t GetMinimumPrice(const Rando::Location* loc) {
+    extern PriceSettingsStruct shopsanityPrices;
+    extern PriceSettingsStruct scrubPrices;
+    extern PriceSettingsStruct merchantPrices;
+    PriceSettingsStruct priceSettings = loc->GetRCType() == RCTYPE_SHOP    ? shopsanityPrices
+                                        : loc->GetRCType() == RCTYPE_SCRUB ? scrubPrices
+                                                                           : merchantPrices;
+
+    auto ctx = Rando::Context::GetInstance();
+    switch (ctx->GetOption(priceSettings.main).Get()) {
+        case RO_PRICE_VANILLA:
+            return loc->GetVanillaPrice();
+        case RO_PRICE_CHEAP_BALANCED:
+            return 0;
+        case RO_PRICE_BALANCED:
+            return 0;
+        case RO_PRICE_FIXED:
+            return ctx->GetOption(priceSettings.fixedPrice).Get() * 5;
+        case RO_PRICE_RANGE: {
+            uint16_t range1 = ctx->GetOption(priceSettings.range1).Get() * 5;
+            uint16_t range2 = ctx->GetOption(priceSettings.range1).Get() * 5;
+            return range1 < range2 ? range1 : range2;
+        }
+        case RO_PRICE_SET_BY_WALLET: {
+            if (ctx->GetOption(priceSettings.noWallet).Get()) {
+                return 0;
+            } else if (ctx->GetOption(priceSettings.childWallet).Get()) {
+                return 1;
+            } else if (ctx->GetOption(priceSettings.adultWallet).Get()) {
+                return 100;
+            } else if (ctx->GetOption(priceSettings.giantWallet).Get()) {
+                return 201;
+            } else {
+                return 501;
+            }
+        }
+        default:
+            return 0;
+    }
+}
+
+bool LocationAccess::CanBuy(bool calculatingAvailableChecks) const {
+    const auto& loc = Rando::StaticData::GetLocation(location);
+    const auto& itemLoc = OTRGlobals::Instance->gRandoContext->GetItemLocation(location);
+
+    if (loc->GetRCType() == RCTYPE_SHOP || loc->GetRCType() == RCTYPE_SCRUB || loc->GetRCType() == RCTYPE_MERCHANT) {
+        // Checks should only be identified while playing
+        if (calculatingAvailableChecks && itemLoc->GetCheckStatus() != RCSHOW_IDENTIFIED) {
+            return CanBuyAnother(GetMinimumPrice(loc));
+        } else {
+            return CanBuyAnother(itemLoc->GetPrice());
+        }
+    }
+
+    return true;
 }
 
 bool CanBuyAnother(RandomizerCheck rc) {
-    uint16_t price = ctx->GetItemLocation(rc)->GetPrice();
+    return CanBuyAnother(ctx->GetItemLocation(rc)->GetPrice());
+}
 
+bool CanBuyAnother(uint16_t price) {
     if (price > 500) {
         return logic->HasItem(RG_TYCOON_WALLET);
     } else if (price > 200) {
@@ -275,7 +330,7 @@ bool BeanPlanted(const RandomizerRegion region) {
     if (gPlayState != nullptr && gPlayState->sceneNum == sceneID) {
         swch = gPlayState->actorCtx.flags.swch;
     } else if (sceneID != SCENE_ID_MAX) {
-        swch = gSaveContext.sceneFlags[sceneID].swch;
+        swch = Rando::Context::GetInstance()->GetLogic()->GetSaveContext()->sceneFlags[sceneID].swch;
     } else {
         swch = 0;
     }
@@ -312,7 +367,7 @@ void RegionTable_Init() {
     logic = ctx->GetLogic(); // RANDOTODO do not hardcode, instead allow accepting a Logic class somehow
     grottoEvents = {
         EventAccess(&logic->GossipStoneFairy, [] { return logic->CallGossipFairy(); }),
-        EventAccess(&logic->ButterflyFairy, [] { return logic->ButterflyFairy || (logic->CanUse(RG_STICKS)); }),
+        EventAccess(&logic->ButterflyFairy, [] { return logic->CanUse(RG_STICKS); }),
         EventAccess(&logic->BugShrub, [] { return logic->CanCutShrubs(); }),
         EventAccess(&logic->LoneFish, [] { return true; }),
     };
@@ -324,9 +379,6 @@ void RegionTable_Init() {
     areaTable[RR_ROOT] = Region("Root", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->KakarikoVillageGateOpen, []{return ctx->GetOption(RSK_KAK_GATE).Is(RO_KAK_GATE_OPEN);}),
-        //The big poes bottle softlock safety check does not account for the guard house lock if the guard house is not shuffled, so the key is needed before we can safely allow bottle use in logic
-        //RANDOTODO a setting that lets you drink/dump big poes so we don't need this logic
-        EventAccess(&logic->CouldEmptyBigPoes,       []{return !ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF) || logic->CanOpenOverworldDoor(RG_GUARD_HOUSE_KEY);}),
     }, {
         //Locations
         LOCATION(RC_LINKS_POCKET,       true),
@@ -480,17 +532,17 @@ std::string CleanCheckConditionString(std::string condition) {
 }
 
 namespace Regions {
-const auto GetAllRegions() {
+auto GetAllRegions() {
     static const size_t regionCount = RR_MAX - (RR_NONE + 1);
 
     static std::array<RandomizerRegion, regionCount> allRegions = {};
 
-    static bool intialized = false;
-    if (!intialized) {
+    static bool initialized = false;
+    if (!initialized) {
         for (size_t i = 0; i < regionCount; i++) {
             allRegions[i] = (RandomizerRegion)((RR_NONE + 1) + i);
         }
-        intialized = true;
+        initialized = true;
     }
 
     return allRegions;
@@ -629,7 +681,7 @@ std::vector<Rando::Entrance*> GetShuffleableEntrances(Rando::EntranceType type, 
 
 Rando::Entrance* GetEntrance(RandomizerRegion source, RandomizerRegion destination) {
     for (auto& exit : RegionTable(source)->exits) {
-        if (exit.GetConnectedRegionKey() == destination) {
+        if (exit.GetOriginalConnectedRegionKey() == destination) {
             return &exit;
         }
     }

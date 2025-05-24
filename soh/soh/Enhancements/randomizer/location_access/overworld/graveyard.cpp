@@ -7,7 +7,7 @@ void RegionTable_Init_Graveyard() {
     // clang-format off
     areaTable[RR_THE_GRAVEYARD] = Region("The Graveyard", "The Graveyard", {RA_THE_GRAVEYARD}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->ButterflyFairy, []{return logic->ButterflyFairy || (logic->CanUse(RG_STICKS) && logic->AtDay);}),
+        EventAccess(&logic->ButterflyFairy, []{return logic->CanUse(RG_STICKS) && logic->AtDay;}),
         EventAccess(&logic->BeanPlantFairy, []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}),
         EventAccess(&logic->BugRock,        []{return true;}),
     }, {
@@ -88,7 +88,7 @@ void RegionTable_Init_Graveyard() {
     areaTable[RR_GRAVEYARD_DAMPES_GRAVE] = Region("Graveyard Dampes Grave", "Windmill and Dampes Grave", {}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->NutPot,               []{return true;}),
-        EventAccess(&logic->DampesWindmillAccess, []{return logic->DampesWindmillAccess || (logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME));}),
+        EventAccess(&logic->DampesWindmillAccess, []{return logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME);}),
     }, {
         //Locations
         LOCATION(RC_GRAVEYARD_HOOKSHOT_CHEST,              true),
