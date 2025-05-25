@@ -56,6 +56,7 @@ struct GetAccessibleLocationsStruct {
 void ClearProgress();
 void VanillaFill();
 int Fill();
+void SetAreas();
 
 std::vector<RandomizerCheck> GetEmptyLocations(std::vector<RandomizerCheck> allowedLocations);
 

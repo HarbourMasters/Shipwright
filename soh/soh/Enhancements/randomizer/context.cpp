@@ -400,9 +400,9 @@ void Context::ParseSpoiler(const char* spoilerFileName) {
         ParseHashIconIndexesJson(spoilerFileJson);
         Rando::Settings::GetInstance()->ParseJson(spoilerFileJson);
         ParseItemLocationsJson(spoilerFileJson);
-        ParseHintJson(spoilerFileJson);
         ParseTricksJson(spoilerFileJson);
         mEntranceShuffler->ParseJson(spoilerFileJson);
+        ParseHintJson(spoilerFileJson);
         mDungeons->ParseJson(spoilerFileJson);
         mTrials->ParseJson(spoilerFileJson);
         mSpoilerLoaded = true;

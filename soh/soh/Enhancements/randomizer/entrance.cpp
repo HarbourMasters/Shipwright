@@ -1666,6 +1666,10 @@ void EntranceShuffler::ParseJson(nlohmann::json spoilerFileJson) {
             }
         }
     } catch (const std::exception& e) { throw e; }
+    // We may need to reset more things here or elsewhere in spoiler loading
+    RegionTable_Init();
+    ApplyEntranceOverrides();
+    SetAreas();
 }
 
 void EntranceShuffler::ApplyEntranceOverrides() {
