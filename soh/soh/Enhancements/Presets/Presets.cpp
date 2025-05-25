@@ -203,7 +203,7 @@ void LoadPresets() {
             auto json = nlohmann::json::parse(ifs);
             if (!json.contains("presetName")) {
                 spdlog::error(fmt::format("Attempted to load file {} as a preset, but was not a preset file.",
-                    preset.path().filename().string()));
+                                          preset.path().filename().string()));
             } else {
                 ParsePreset(json, preset.path().filename().stem().string());
             }
