@@ -71,6 +71,12 @@ void RegionTable_Init_ZoraRiver() {
         Entrance(RR_ZR_BEHIND_WATERFALL, []{return ctx->GetOption(RSK_SLEEPING_WATERFALL).Is(RO_WATERFALL_OPEN) || Here(RR_ZORAS_RIVER, []{return logic->CanUse(RG_ZELDAS_LULLABY);}) || (logic->IsChild && ctx->GetTrickOption(RT_ZR_CUCCO)) || (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_ZR_HOVERS));}),
     });
 
+    areaTable[RR_ZR_FROM_SHORTCUT] = Region("ZR From Shortcut", SCENE_ZORAS_RIVER, TIME_DOESNT_PASS, {RA_ZORAS_RIVER}, {}, {}, {
+        //Exits
+        Entrance(RR_ZORAS_RIVER,    []{return logic->HasItem(RG_BRONZE_SCALE);}),
+        Entrance(RR_THE_LOST_WOODS, []{return logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS);}),
+    });
+
     areaTable[RR_ZR_BEHIND_WATERFALL] = Region("ZR Behind Waterfall", SCENE_ZORAS_RIVER, {}, {}, {
         //Exits
         Entrance(RR_ZORAS_RIVER,  []{return true;}),

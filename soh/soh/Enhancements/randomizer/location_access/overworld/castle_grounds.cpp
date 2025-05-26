@@ -9,7 +9,7 @@ void RegionTable_Init_CastleGrounds() {
     //{RA_HYRULE_CASTLE} and {RA_OUTSIDE_GANONS_CASTLE}, but a setting to merge the latter 2 into the former may be preferred
     //
     //Temporarily uses SCENE_OUTSIDE_GANONS_CASTLE to avoid self connection between ages
-    areaTable[RR_CASTLE_GROUNDS] = Region("Castle Grounds", SCENE_OUTSIDE_GANONS_CASTLE, {RA_CASTLE_GROUNDS}, {}, {}, {
+    areaTable[RR_CASTLE_GROUNDS] = Region("Castle Grounds", SCENE_OUTSIDE_GANONS_CASTLE, TIME_DOESNT_PASS, {RA_CASTLE_GROUNDS}, {}, {}, {
         //Exits
         Entrance(RR_THE_MARKET,            []{return true;}),
         Entrance(RR_HYRULE_CASTLE_GROUNDS, []{return logic->IsChild;}),

@@ -222,22 +222,7 @@ std::set<RandomizerArea> CalculateAreas(SceneID scene) {
     }
 }
 
-Region::Region() = default;
-Region::Region(std::string regionName_, SceneID scene_, std::set<RandomizerArea> areas,
-               std::vector<EventAccess> events_, std::vector<LocationAccess> locations_,
-               std::list<Rando::Entrance> exits_)
-    : regionName(std::move(regionName_)), scene(scene_), areas(areas), events(std::move(events_)),
-      locations(std::move(locations_)), exits(std::move(exits_)) {
-}
-Region::Region(std::string regionName_, SceneID scene_, std::vector<EventAccess> events_,
-               std::vector<LocationAccess> locations_, std::list<Rando::Entrance> exits_)
-    : regionName(std::move(regionName_)), scene(scene_), areas(CalculateAreas(scene_)), events(std::move(events_)),
-      locations(std::move(locations_)), exits(std::move(exits_)) {
-}
-
-Region::~Region() = default;
-
-bool Region::TimePass() {
+bool GetTimePassFromScene(SceneID scene) {
     switch (scene) {
         case SCENE_DEKU_TREE:
         case SCENE_DODONGOS_CAVERN:
@@ -363,6 +348,25 @@ bool Region::TimePass() {
             assert(false);
             return false;
     }
+}
+
+Region::Region() = default;
+Region::Region(std::string regionName_, SceneID scene_, bool timePass_, std::set<RandomizerArea> areas,
+               std::vector<EventAccess> events_, std::vector<LocationAccess> locations_,
+               std::list<Rando::Entrance> exits_)
+    : regionName(std::move(regionName_)), scene(scene_), timePass(timePass_), areas(areas), events(std::move(events_)),
+      locations(std::move(locations_)), exits(std::move(exits_)) {
+}
+Region::Region(std::string regionName_, SceneID scene_, std::vector<EventAccess> events_,
+               std::vector<LocationAccess> locations_, std::list<Rando::Entrance> exits_)
+    : regionName(std::move(regionName_)), scene(scene_), timePass(GetTimePassFromScene(scene_)), areas(CalculateAreas(scene_)), events(std::move(events_)),
+      locations(std::move(locations_)), exits(std::move(exits_)) {
+}
+
+Region::~Region() = default;
+
+bool Region::TimePass() {
+    return timePass;
 }
 
 void Region::ApplyTimePass() {
@@ -606,10 +610,10 @@ void RegionTable_Init() {
     };
     // Clear the array from any previous playthrough attempts. This is important so that
     // locations which appear in both MQ and Vanilla dungeons don't get set in both areas.
-    areaTable.fill(Region("Invalid Region", SCENE_ID_MAX, {}, {}, {}, {}));
+    areaTable.fill(Region("Invalid Region", SCENE_ID_MAX, {}, {}, {}));
 
     // clang-format off
-    areaTable[RR_ROOT] = Region("Root", SCENE_ID_MAX, {RA_LINKS_POCKET}, {
+    areaTable[RR_ROOT] = Region("Root", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {
         //Events
         EventAccess(&logic->KakarikoVillageGateOpen, []{return ctx->GetOption(RSK_KAK_GATE).Is(RO_KAK_GATE_OPEN);}),
         //The big poes bottle softlock safety check does not account for the guard house lock if the guard house is not shuffled, so the key is needed before we can safely allow bottle use in logic
@@ -625,7 +629,7 @@ void RegionTable_Init() {
         Entrance(RR_ROOT_EXITS, []{return true;}),
     });
 
-    areaTable[RR_ROOT_EXITS] = Region("Root Exits", SCENE_ID_MAX, {RA_LINKS_POCKET}, {}, {}, {
+    areaTable[RR_ROOT_EXITS] = Region("Root Exits", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
         //Exits
         Entrance(RR_CHILD_SPAWN,             []{return logic->IsChild;}),
         Entrance(RR_ADULT_SPAWN,             []{return logic->IsAdult;}),
@@ -637,42 +641,42 @@ void RegionTable_Init() {
         Entrance(RR_PRELUDE_OF_LIGHT_WARP,   []{return logic->CanUse(RG_PRELUDE_OF_LIGHT)   && logic->CanLeaveForest();}),
     });
 
-    areaTable[RR_CHILD_SPAWN] = Region("Child Spawn", SCENE_ID_MAX, {RA_LINKS_POCKET}, {}, {}, {
+    areaTable[RR_CHILD_SPAWN] = Region("Child Spawn", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
         //Exits
         Entrance(RR_KF_LINKS_HOUSE, []{return true;}),
     });
 
-    areaTable[RR_ADULT_SPAWN] = Region("Adult Spawn", SCENE_ID_MAX, {RA_LINKS_POCKET}, {}, {}, {
+    areaTable[RR_ADULT_SPAWN] = Region("Adult Spawn", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
         //Exits
         Entrance(RR_TEMPLE_OF_TIME, []{return true;}),
     });
 
-    areaTable[RR_MINUET_OF_FOREST_WARP] = Region("Minuet of Forest Warp", SCENE_ID_MAX, {RA_LINKS_POCKET}, {}, {}, {
+    areaTable[RR_MINUET_OF_FOREST_WARP] = Region("Minuet of Forest Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
         //Exits
         Entrance(RR_SACRED_FOREST_MEADOW, []{return true;}),
     });
 
-    areaTable[RR_BOLERO_OF_FIRE_WARP] = Region("Bolero of Fire Warp", SCENE_ID_MAX, {RA_LINKS_POCKET}, {}, {}, {
+    areaTable[RR_BOLERO_OF_FIRE_WARP] = Region("Bolero of Fire Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
         //Exits
         Entrance(RR_DMC_CENTRAL_LOCAL, []{return true;}),
     });
 
-    areaTable[RR_SERENADE_OF_WATER_WARP] = Region("Serenade of Water Warp", SCENE_ID_MAX, {RA_LINKS_POCKET}, {}, {}, {
+    areaTable[RR_SERENADE_OF_WATER_WARP] = Region("Serenade of Water Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
         //Exits
         Entrance(RR_LAKE_HYLIA, []{return true;}),
     });
 
-    areaTable[RR_REQUIEM_OF_SPIRIT_WARP] = Region("Requiem of Spirit Warp", SCENE_ID_MAX, {RA_LINKS_POCKET}, {}, {}, {
+    areaTable[RR_REQUIEM_OF_SPIRIT_WARP] = Region("Requiem of Spirit Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
         //Exits
         Entrance(RR_DESERT_COLOSSUS, []{return true;}),
     });
 
-    areaTable[RR_NOCTURNE_OF_SHADOW_WARP] = Region("Nocturne of Shadow Warp", SCENE_ID_MAX, {RA_LINKS_POCKET}, {}, {}, {
+    areaTable[RR_NOCTURNE_OF_SHADOW_WARP] = Region("Nocturne of Shadow Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
         //Exits
         Entrance(RR_GRAVEYARD_WARP_PAD_REGION, []{return true;}),
     });
 
-    areaTable[RR_PRELUDE_OF_LIGHT_WARP] = Region("Prelude of Light Warp", SCENE_ID_MAX, {RA_LINKS_POCKET}, {}, {}, {
+    areaTable[RR_PRELUDE_OF_LIGHT_WARP] = Region("Prelude of Light Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
         //Exits
         Entrance(RR_TEMPLE_OF_TIME, []{return true;}),
     });

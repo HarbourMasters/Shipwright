@@ -9,6 +9,9 @@
 #include "soh/Enhancements/randomizer/context.h"
 #include "soh/Enhancements/randomizer/logic.h"
 
+#define TIME_PASSES true
+#define TIME_DOESNT_PASS false
+
 typedef bool (*ConditionFn)();
 
 // I hate this but every alternative I can think of right now is worse
@@ -113,7 +116,7 @@ enum class EntranceType;
 class Region {
   public:
     Region();
-    Region(std::string regionName_, SceneID scene_, std::set<RandomizerArea> areas, std::vector<EventAccess> events_,
+    Region(std::string regionName_, SceneID scene_, bool timePass, std::set<RandomizerArea> areas, std::vector<EventAccess> events_,
            std::vector<LocationAccess> locations_, std::list<Rando::Entrance> exits_);
     Region(std::string regionName_, SceneID scene_, std::vector<EventAccess> events_,
            std::vector<LocationAccess> locations_, std::list<Rando::Entrance> exits_);
@@ -121,6 +124,7 @@ class Region {
 
     std::string regionName;
     SceneID scene;
+    bool timePass;
     std::set<RandomizerArea> areas;
     std::vector<EventAccess> events;
     std::vector<LocationAccess> locations;
