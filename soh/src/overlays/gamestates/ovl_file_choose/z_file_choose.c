@@ -1374,6 +1374,7 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
                 } else {
                     defaultName = &emptyNameNES;
                 }
+                this->charPage = FS_CHAR_PAGE_HIRA; // Default to Hiragana Keyboard
             } else { // GAME_REGION_NTSC
                 defaultName = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkNameNES : &emptyNameNES;
             }
@@ -1575,6 +1576,7 @@ void FileChoose_UpdateRandomizerMenu(GameState* thisx) {
                     } else {
                         defaultName = &emptyNameNES;
                     }
+                    this->charPage = FS_CHAR_PAGE_HIRA; // Default to Hiragana Keyboard
                 } else { // GAME_REGION_NTSC
                     defaultName = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkNameNES : &emptyNameNES;
                 }
