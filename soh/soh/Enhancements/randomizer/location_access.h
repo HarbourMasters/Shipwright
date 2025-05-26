@@ -116,8 +116,8 @@ enum class EntranceType;
 class Region {
   public:
     Region();
-    Region(std::string regionName_, SceneID scene_, bool timePass, std::set<RandomizerArea> areas, std::vector<EventAccess> events_,
-           std::vector<LocationAccess> locations_, std::list<Rando::Entrance> exits_);
+    Region(std::string regionName_, SceneID scene_, bool timePass, std::set<RandomizerArea> areas,
+           std::vector<EventAccess> events_, std::vector<LocationAccess> locations_, std::list<Rando::Entrance> exits_);
     Region(std::string regionName_, SceneID scene_, std::vector<EventAccess> events_,
            std::vector<LocationAccess> locations_, std::list<Rando::Entrance> exits_);
     ~Region();

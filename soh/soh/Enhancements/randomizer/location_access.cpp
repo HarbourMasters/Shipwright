@@ -359,8 +359,9 @@ Region::Region(std::string regionName_, SceneID scene_, bool timePass_, std::set
 }
 Region::Region(std::string regionName_, SceneID scene_, std::vector<EventAccess> events_,
                std::vector<LocationAccess> locations_, std::list<Rando::Entrance> exits_)
-    : regionName(std::move(regionName_)), scene(scene_), timePass(GetTimePassFromScene(scene_)), areas(CalculateAreas(scene_)), events(std::move(events_)),
-      locations(std::move(locations_)), exits(std::move(exits_)) {
+    : regionName(std::move(regionName_)), scene(scene_), timePass(GetTimePassFromScene(scene_)),
+      areas(CalculateAreas(scene_)), events(std::move(events_)), locations(std::move(locations_)),
+      exits(std::move(exits_)) {
 }
 
 Region::~Region() = default;
