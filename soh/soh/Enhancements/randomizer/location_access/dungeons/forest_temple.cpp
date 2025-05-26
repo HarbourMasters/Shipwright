@@ -481,7 +481,7 @@ void RegionTable_Init_ForestTemple() {
         Entrance(RR_FOREST_TEMPLE_MQ_FALLING_ROOM, []{return logic->CanUse(RG_SONG_OF_TIME);}),
     });
 
-    areaTable[RR_FOREST_TEMPLE_MQ_JOELLE_ROOM] = Region("Forest Temple MQ Joelle room", "Forest Temple", {RA_FOREST_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
+    areaTable[RR_FOREST_TEMPLE_MQ_JOELLE_ROOM] = Region("Forest Temple MQ Joelle Room", "Forest Temple", {RA_FOREST_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->ForestTempleJoelle, []{return logic->CanUse(RG_FAIRY_BOW);}),
     }, {

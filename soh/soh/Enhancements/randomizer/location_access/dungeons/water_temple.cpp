@@ -362,7 +362,7 @@ void RegionTable_Init_WaterTemple() {
         Entrance(RR_WATER_TEMPLE_MQ_BOSS_DOOR,  []{return logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_ICE_ARROWS) || logic->CanUse(RG_NAYRUS_LOVE);}),
     });
 
-    areaTable[RR_WATER_TEMPLE_MQ_BOSS_DOOR] = Region("Water Temple MQ Main", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_WATER_TEMPLE_MQ_BOSS_DOOR] = Region("Water Temple MQ Boss Door", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_WATER_TEMPLE_MQ_3F_NORTH_LEDGE, []{return logic->CanUse(RG_ICE_ARROWS) || logic->TakeDamage();}),
         Entrance(RR_WATER_TEMPLE_BOSS_ENTRYWAY,     []{return true;}),
@@ -507,7 +507,7 @@ void RegionTable_Init_WaterTemple() {
         Entrance(RR_WATER_TEMPLE_MQ_BEHIND_BLUE_SWITCH_3F, []{return logic->CanUse(RG_LONGSHOT);}),
     });
 
-    areaTable[RR_WATER_TEMPLE_MQ_BEHIND_BLUE_SWITCH_3F] = Region("Water Temple MQ Behind Blue Switch 2F", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
+    areaTable[RR_WATER_TEMPLE_MQ_BEHIND_BLUE_SWITCH_3F] = Region("Water Temple MQ Behind Blue Switch 3F", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
         LOCATION(RC_WATER_TEMPLE_MQ_GS_BEFORE_UPPER_WATER_SWITCH, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
     }, {
@@ -552,7 +552,7 @@ void RegionTable_Init_WaterTemple() {
     }, {});
 
     //This room exists to hold the wonderitems that drop from the emblems here. Specifically this assumes you are standing on the final ledge
-    areaTable[RR_WATER_TEMPLE_MQ_WATERFALL] = Region("Water Temple Waterfall", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_WATER_TEMPLE_MQ_WATERFALL] = Region("Water Temple MQ Waterfall", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_WATER_TEMPLE_MQ_3F_CENTRAL,        []{return logic->SmallKeys(RR_WATER_TEMPLE, 1) && logic->CanUse(RG_LONGSHOT);}),
         Entrance(RR_WATER_TEMPLE_MQ_STALFOS_PIT,       []{return true;}),

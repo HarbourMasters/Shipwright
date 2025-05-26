@@ -265,7 +265,7 @@ void RegionTable_Init_Kakariko() {
         Entrance(RR_DEATH_MOUNTAIN_TRAIL, []{return true;}),
     });
 
-    areaTable[RR_KAK_WELL] = Region("Kak Behind Gate", "Kakariko Village", {RA_KAKARIKO_VILLAGE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_KAK_WELL] = Region("Kak Well", "Kakariko Village", {RA_KAKARIKO_VILLAGE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_KAKARIKO_VILLAGE,            []{return logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->DrainWell;}),
         Entrance(RR_BOTTOM_OF_THE_WELL_ENTRYWAY, []{return logic->IsChild || (logic->DrainWell && ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF));}),
