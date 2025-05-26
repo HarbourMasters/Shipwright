@@ -105,6 +105,13 @@ void SohMenu::AddMenuDevTools() {
             }
         })
         .SameLine(true);
+    AddWidget(path, "Frame Advance Alternative Control Scheme", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_DEVELOPER_TOOLS("FrameAdvanceAltScheme"))
+        .Options(CheckboxOptions().Tooltip("Remaps Frame Advance controls. Uses Controller Port 4.\n"
+                                           "Push START button to toggle Frame Advance.\n"
+                                           "Push A button to advance a frame.\n"
+                                           "Hold L button to run the game normally until L button is released.\n"
+                                           "Hold R button to advance a frame every half second."));
     AddWidget(path, "Log Level", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("LogLevel"))
         .Options(ComboboxOptions()

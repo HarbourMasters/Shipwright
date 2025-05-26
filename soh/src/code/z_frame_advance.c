@@ -14,18 +14,43 @@ void FrameAdvance_Init(FrameAdvanceContext* frameAdvCtx) {
  * This function returns true when frame advance is not active (game will run normally)
  */
 s32 FrameAdvance_Update(FrameAdvanceContext* frameAdvCtx, Input* input) {
-    if (CHECK_BTN_ALL(input->cur.button, BTN_R) && CHECK_BTN_ALL(input->press.button, BTN_DDOWN)) {
-        frameAdvCtx->enabled = !frameAdvCtx->enabled;
-    }
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("FrameAdvanceAltScheme"), 0) != 0) {
+        // Frame Advance Alternative Control Scheme
 
-    if (!frameAdvCtx->enabled || CVarGetInteger(CVAR_DEVELOPER_TOOLS("FrameAdvanceTick"), 0) ||
-        (CHECK_BTN_ALL(input->cur.button, BTN_Z) &&
-         (CHECK_BTN_ALL(input->press.button, BTN_R) ||
-          (CHECK_BTN_ALL(input->cur.button, BTN_R) && (++frameAdvCtx->timer >= 9))))) {
-        CVarClear(CVAR_DEVELOPER_TOOLS("FrameAdvanceTick"));
-        frameAdvCtx->timer = 0;
-        return true;
-    }
+        // Push START to toggle the frame advance mode.
+        if (CHECK_BTN_ALL(input->press.button, BTN_START)) {
+            frameAdvCtx->enabled = !frameAdvCtx->enabled;
+        }
 
-    return false;
+        // Push A to advance one frame.
+        // Hold L to run normally until L is released.
+        // Hold R to advance a frame every half second.
+        if (!frameAdvCtx->enabled || CVarGetInteger(CVAR_DEVELOPER_TOOLS("FrameAdvanceTick"), 0) ||
+            CHECK_BTN_ALL(input->press.button, BTN_A) || CHECK_BTN_ALL(input->cur.button, BTN_L) ||
+            CHECK_BTN_ALL(input->press.button, BTN_R) ||
+            (CHECK_BTN_ALL(input->cur.button, BTN_R) && (++frameAdvCtx->timer >= 9))) {
+            CVarClear(CVAR_DEVELOPER_TOOLS("FrameAdvanceTick"));
+            frameAdvCtx->timer = 0;
+            return true;
+        }
+
+        return false;
+    } else {
+        // Frame Advance Original Control Scheme
+
+        if (CHECK_BTN_ALL(input->cur.button, BTN_R) && CHECK_BTN_ALL(input->press.button, BTN_DDOWN)) {
+            frameAdvCtx->enabled = !frameAdvCtx->enabled;
+        }
+
+        if (!frameAdvCtx->enabled || CVarGetInteger(CVAR_DEVELOPER_TOOLS("FrameAdvanceTick"), 0) ||
+            (CHECK_BTN_ALL(input->cur.button, BTN_Z) &&
+             (CHECK_BTN_ALL(input->press.button, BTN_R) ||
+              (CHECK_BTN_ALL(input->cur.button, BTN_R) && (++frameAdvCtx->timer >= 9))))) {
+            CVarClear(CVAR_DEVELOPER_TOOLS("FrameAdvanceTick"));
+            frameAdvCtx->timer = 0;
+            return true;
+        }
+
+        return false;
+    }
 }
