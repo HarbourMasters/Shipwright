@@ -87,12 +87,24 @@ void SohMenu::AddMenuDevTools() {
             }
         })
         .SameLine(true);
+    AddWidget(path, "Log Level", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_DEVELOPER_TOOLS("LogLevel"))
+        .Options(ComboboxOptions()
+                     .Tooltip("The log level determines which messages are printed to the console."
+                              " This does not affect the log file output")
+                     .ComboMap(logLevels))
+        .Callback([](WidgetInfo& info) {
+            Ship::Context::GetInstance()->GetLogger()->set_level(
+                (spdlog::level::level_enum)CVarGetInteger(CVAR_DEVELOPER_TOOLS("LogLevel"), DEBUG_LOG_DEBUG));
+        })
+        .PreFunc([](WidgetInfo& info) { info.isHidden = mSohMenu->disabledMap.at(DISABLE_FOR_DEBUG_MODE_OFF).active; });
 
     // Stats
     path.sidebarName = "Stats";
     AddSidebarEntry("Dev Tools", path.sidebarName, 1);
     AddWidget(path, "Popout Stats Window", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("SohStats"))
+        .RaceDisable(false)
         .WindowName("Stats##Soh")
         .Options(WindowButtonOptions().Tooltip("Enables the separate Stats Window."));
 

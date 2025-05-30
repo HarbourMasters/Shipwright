@@ -5,7 +5,7 @@
 #include <libultraship/libultraship.h>
 #include "UIWidgets.hpp"
 #include "include/z64audio.h"
-#include "graphic/Fast3D/gfx_rendering_api.h"
+#include "graphic/Fast3D/backends/gfx_rendering_api.h"
 #include "soh/OTRGlobals.h"
 #include "soh/SaveManager.h"
 #include "z64.h"

@@ -74,13 +74,10 @@ Fishsanity::~Fishsanity() {
 bool Fishsanity::GetFishLocationIncluded(Rando::Location* loc, FishsanityOptionsSource optionsSource) {
     auto [mode, numFish, ageSplit] = GetOptions(optionsSource);
 
-    if (loc->GetRCType() != RCTYPE_FISH || mode == RO_FISHSANITY_OFF) {
+    if (loc->GetRCType() != RCTYPE_FISH || mode == RO_FISHSANITY_OFF || mode == RO_FISHSANITY_HYRULE_LOACH) {
         return false;
     }
     RandomizerCheck rc = loc->GetRandomizerCheck();
-    if (mode == RO_FISHSANITY_HYRULE_LOACH && rc != RC_LH_HYRULE_LOACH) {
-        return false;
-    }
     // Are pond fish enabled, and is this a pond fish location?
     if (mode != RO_FISHSANITY_OVERWORLD && numFish > 0 && loc->GetScene() == SCENE_FISHING_POND &&
         loc->GetActorID() == ACTOR_FISHING) {
@@ -139,8 +136,9 @@ Fishsanity::GetFishingPondLocations(FishsanityOptionsSource optionsSource) {
     }
     // NOTE: This only works because we can assume activeFish is already sorted; changes that break this assumption will
     // also break this
-    FilterAndEraseFromPool(remainingFish,
-                           [&](uint32_t loc) { return std::binary_search(activeFish.begin(), activeFish.end(), loc); });
+    FilterAndEraseFromPool(remainingFish, [&](RandomizerCheck loc) {
+        return std::binary_search(activeFish.begin(), activeFish.end(), loc);
+    });
 
     return std::make_pair(activeFish, remainingFish);
 }

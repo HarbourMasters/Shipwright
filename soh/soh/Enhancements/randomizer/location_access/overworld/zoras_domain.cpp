@@ -9,10 +9,10 @@ void RegionTable_Init_ZorasDomain() {
         //Events
         EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairyExceptSuns();}),
         EventAccess(&logic->NutPot,           []{return true;}),
-        EventAccess(&logic->StickPot,         []{return logic->StickPot          || logic->IsChild;}),
-        EventAccess(&logic->FishGroup,        []{return logic->FishGroup         || logic->IsChild;}),
-        EventAccess(&logic->KingZoraThawed,   []{return logic->KingZoraThawed    || (logic->IsAdult     && logic->BlueFire());}),
-        EventAccess(&logic->DeliverLetter,    []{return logic->DeliverLetter     || (logic->CanUse(RG_RUTOS_LETTER) && logic->IsChild && ctx->GetOption(RSK_ZORAS_FOUNTAIN).IsNot(RO_ZF_OPEN));}),
+        EventAccess(&logic->StickPot,         []{return logic->IsChild;}),
+        EventAccess(&logic->FishGroup,        []{return logic->IsChild;}),
+        EventAccess(&logic->KingZoraThawed,   []{return logic->IsAdult && logic->BlueFire();}),
+        EventAccess(&logic->DeliverLetter,    []{return logic->CanUse(RG_RUTOS_LETTER) && logic->IsChild && ctx->GetOption(RSK_ZORAS_FOUNTAIN).IsNot(RO_ZF_OPEN);}),
     }, {
         //Locations
         LOCATION(RC_ZD_DIVING_MINIGAME,                     logic->HasItem(RG_BRONZE_SCALE) && logic->HasItem(RG_CHILD_WALLET) && logic->IsChild),

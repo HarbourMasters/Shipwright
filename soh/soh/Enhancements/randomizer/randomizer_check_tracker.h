@@ -8,7 +8,7 @@
 
 namespace CheckTracker {
 
-class CheckTrackerSettingsWindow : public Ship::GuiWindow {
+class CheckTrackerSettingsWindow final : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
     ~CheckTrackerSettingsWindow(){};
@@ -19,7 +19,7 @@ class CheckTrackerSettingsWindow : public Ship::GuiWindow {
     void UpdateElement() override{};
 };
 
-class CheckTrackerWindow : public Ship::GuiWindow {
+class CheckTrackerWindow final : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
     void Draw() override;
@@ -62,4 +62,5 @@ void UpdateAllAreas();
 void RecalculateAllAreaTotals();
 void SpoilAreaFromCheck(RandomizerCheck rc);
 void RecalculateAvailableChecks();
+void CheckTracker_LoadFromPreset(nlohmann::json info);
 } // namespace CheckTracker

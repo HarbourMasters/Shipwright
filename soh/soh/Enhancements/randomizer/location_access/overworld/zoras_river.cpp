@@ -30,8 +30,8 @@ void RegionTable_Init_ZoraRiver() {
         //Events
         EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairy();}),
         EventAccess(&logic->BeanPlantFairy,   []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}),
-        EventAccess(&logic->ButterflyFairy,   []{return logic->ButterflyFairy   || logic->CanUse(RG_STICKS);}),
-        EventAccess(&logic->BugShrub,         []{return logic->BugShrub         || logic->CanCutShrubs();}),
+        EventAccess(&logic->ButterflyFairy,   []{return logic->CanUse(RG_STICKS);}),
+        EventAccess(&logic->BugShrub,         []{return logic->CanCutShrubs();}),
     }, {
         //Locations
         LOCATION(RC_ZR_MAGIC_BEAN_SALESMAN,                  logic->HasItem(RG_CHILD_WALLET) && logic->IsChild),

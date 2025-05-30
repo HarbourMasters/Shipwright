@@ -7,7 +7,7 @@ void RegionTable_Init_GerudoValley() {
     // clang-format off
     areaTable[RR_GERUDO_VALLEY] = Region("Gerudo Valley", SCENE_GERUDO_VALLEY, {
         //Events
-        EventAccess(&logic->BugRock, []{return logic->BugRock || logic->IsChild;}),
+        EventAccess(&logic->BugRock, []{return logic->IsChild;}),
     }, {
         //Locations
         LOCATION(RC_GV_GS_SMALL_BRIDGE, logic->IsChild && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),

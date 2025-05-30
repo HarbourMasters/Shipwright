@@ -7,7 +7,7 @@ void RegionTable_Init_DesertColossus() {
     // clang-format off
     areaTable[RR_DESERT_COLOSSUS] = Region("Desert Colossus", SCENE_DESERT_COLOSSUS, {
         //Events
-        EventAccess(&logic->FairyPond, []{return logic->FairyPond || logic->CanUse(RG_SONG_OF_STORMS);}),
+        EventAccess(&logic->FairyPond, []{return logic->CanUse(RG_SONG_OF_STORMS);}),
         EventAccess(&logic->BugRock,   []{return true;}),
     }, {
         //Locations

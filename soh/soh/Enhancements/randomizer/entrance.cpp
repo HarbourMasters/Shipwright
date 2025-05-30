@@ -454,12 +454,6 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
         type = entrancePlaced->GetType();
     }
 
-    bool checkPoeCollectorAccess =
-        (ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) ||
-         ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL)) &&
-        (entrancePlaced == nullptr || ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS) || type == EntranceType::Interior ||
-         type == EntranceType::SpecialInterior || type == EntranceType::Overworld || type == EntranceType::Spawn ||
-         type == EntranceType::WarpSong || type == EntranceType::OwlDrop);
     bool checkOtherEntranceAccess =
         (ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) ||
          ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL) ||
@@ -472,7 +466,7 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
     // Conditions will be checked during the search and any that fail will be figured out
     // afterwards
     ctx->GetLogic()->Reset();
-    ValidateEntrances(checkPoeCollectorAccess, checkOtherEntranceAccess);
+    ValidateEntrances(checkOtherEntranceAccess);
 
     if (!ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
         // Unless entrances are decoupled, we don't want the player to end up through certain entrances as the wrong age
@@ -557,15 +551,6 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
             }
         }
 
-        // The Big Poe shop should always be accessible as adult without the need to use any bottles
-        // This is important to ensure that players can never lock their only bottles by filling them with Big Poes they
-        // can't sell
-        if (checkPoeCollectorAccess) {
-            if (!RegionTable(RR_MARKET_GUARD_HOUSE)->Adult()) {
-                SPDLOG_DEBUG("Big Poe Shop access is not guarenteed as adult\n");
-                return false;
-            }
-        }
         SPDLOG_DEBUG("All Locations NOT REACHABLE\n");
         return false;
     }
@@ -1502,62 +1487,62 @@ int EntranceShuffler::ShuffleAllEntrances() {
         // If a boss room is inside a boss door, make the blue warp go outside the dungeon's entrance
         std::map<std::string, Entrance*> bossExits = {
             { EntranceNameByRegions(RR_DEKU_TREE_BOSS_ROOM, RR_DEKU_TREE_BOSS_ENTRYWAY),
-              GetEntrance(EntranceNameByRegions(RR_DEKU_TREE_ENTRYWAY, RR_KF_OUTSIDE_DEKU_TREE)) },
+              GetEntrance(RR_DEKU_TREE_ENTRYWAY, RR_KF_OUTSIDE_DEKU_TREE) },
             { EntranceNameByRegions(RR_DODONGOS_CAVERN_BOSS_ROOM, RR_DODONGOS_CAVERN_BOSS_ENTRYWAY),
-              GetEntrance(EntranceNameByRegions(RR_DODONGOS_CAVERN_ENTRYWAY, RR_DEATH_MOUNTAIN_TRAIL)) },
+              GetEntrance(RR_DODONGOS_CAVERN_ENTRYWAY, RR_DEATH_MOUNTAIN_TRAIL) },
             { EntranceNameByRegions(RR_JABU_JABUS_BELLY_BOSS_ROOM, RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY),
-              GetEntrance(EntranceNameByRegions(RR_JABU_JABUS_BELLY_ENTRYWAY, RR_ZORAS_FOUNTAIN)) },
+              GetEntrance(RR_JABU_JABUS_BELLY_ENTRYWAY, RR_ZORAS_FOUNTAIN) },
             { EntranceNameByRegions(RR_FOREST_TEMPLE_BOSS_ROOM, RR_FOREST_TEMPLE_BOSS_ENTRYWAY),
-              GetEntrance(EntranceNameByRegions(RR_FOREST_TEMPLE_ENTRYWAY, RR_SACRED_FOREST_MEADOW)) },
+              GetEntrance(RR_FOREST_TEMPLE_ENTRYWAY, RR_SACRED_FOREST_MEADOW) },
             { EntranceNameByRegions(RR_FIRE_TEMPLE_BOSS_ROOM, RR_FIRE_TEMPLE_BOSS_ENTRYWAY),
-              GetEntrance(EntranceNameByRegions(RR_FIRE_TEMPLE_ENTRYWAY, RR_DMC_CENTRAL_LOCAL)) },
+              GetEntrance(RR_FIRE_TEMPLE_ENTRYWAY, RR_DMC_CENTRAL_LOCAL) },
             { EntranceNameByRegions(RR_WATER_TEMPLE_BOSS_ROOM, RR_WATER_TEMPLE_BOSS_ENTRYWAY),
-              GetEntrance(EntranceNameByRegions(RR_WATER_TEMPLE_ENTRYWAY, RR_LAKE_HYLIA)) },
+              GetEntrance(RR_WATER_TEMPLE_ENTRYWAY, RR_LAKE_HYLIA) },
             { EntranceNameByRegions(RR_SPIRIT_TEMPLE_BOSS_ROOM, RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY),
-              GetEntrance(EntranceNameByRegions(RR_SPIRIT_TEMPLE_ENTRYWAY, RR_DESERT_COLOSSUS_OUTSIDE_TEMPLE)) },
+              GetEntrance(RR_SPIRIT_TEMPLE_ENTRYWAY, RR_DESERT_COLOSSUS_OUTSIDE_TEMPLE) },
             { EntranceNameByRegions(RR_SHADOW_TEMPLE_BOSS_ROOM, RR_SHADOW_TEMPLE_BOSS_ENTRYWAY),
-              GetEntrance(EntranceNameByRegions(RR_SHADOW_TEMPLE_ENTRYWAY, RR_GRAVEYARD_WARP_PAD_REGION)) },
+              GetEntrance(RR_SHADOW_TEMPLE_ENTRYWAY, RR_GRAVEYARD_WARP_PAD_REGION) },
         };
 
         // If a boss room is inside a dungeon entrance (or inside a dungeon which is inside a dungeon entrance), make
         // the blue warp go to that dungeon's blue warp target
         std::map<std::string, Entrance*> dungeonExits = {
             { EntranceNameByRegions(RR_DEKU_TREE_ENTRYWAY, RR_KF_OUTSIDE_DEKU_TREE),
-              GetEntrance(EntranceNameByRegions(RR_DEKU_TREE_BOSS_ROOM, RR_KF_OUTSIDE_DEKU_TREE)) },
+              GetEntrance(RR_DEKU_TREE_BOSS_ROOM, RR_KF_OUTSIDE_DEKU_TREE) },
             { EntranceNameByRegions(RR_DODONGOS_CAVERN_ENTRYWAY, RR_DEATH_MOUNTAIN_TRAIL),
-              GetEntrance(EntranceNameByRegions(RR_DODONGOS_CAVERN_BOSS_ROOM, RR_DEATH_MOUNTAIN_TRAIL)) },
+              GetEntrance(RR_DODONGOS_CAVERN_BOSS_ROOM, RR_DEATH_MOUNTAIN_TRAIL) },
             { EntranceNameByRegions(RR_JABU_JABUS_BELLY_ENTRYWAY, RR_ZORAS_FOUNTAIN),
-              GetEntrance(EntranceNameByRegions(RR_JABU_JABUS_BELLY_BOSS_ROOM, RR_ZORAS_FOUNTAIN)) },
+              GetEntrance(RR_JABU_JABUS_BELLY_BOSS_ROOM, RR_ZORAS_FOUNTAIN) },
             { EntranceNameByRegions(RR_FOREST_TEMPLE_ENTRYWAY, RR_SACRED_FOREST_MEADOW),
-              GetEntrance(EntranceNameByRegions(RR_FOREST_TEMPLE_BOSS_ROOM, RR_SACRED_FOREST_MEADOW)) },
+              GetEntrance(RR_FOREST_TEMPLE_BOSS_ROOM, RR_SACRED_FOREST_MEADOW) },
             { EntranceNameByRegions(RR_FIRE_TEMPLE_ENTRYWAY, RR_DMC_CENTRAL_LOCAL),
-              GetEntrance(EntranceNameByRegions(RR_FIRE_TEMPLE_BOSS_ROOM, RR_DMC_CENTRAL_LOCAL)) },
+              GetEntrance(RR_FIRE_TEMPLE_BOSS_ROOM, RR_DMC_CENTRAL_LOCAL) },
             { EntranceNameByRegions(RR_WATER_TEMPLE_ENTRYWAY, RR_LAKE_HYLIA),
-              GetEntrance(EntranceNameByRegions(RR_WATER_TEMPLE_BOSS_ROOM, RR_LAKE_HYLIA)) },
+              GetEntrance(RR_WATER_TEMPLE_BOSS_ROOM, RR_LAKE_HYLIA) },
             { EntranceNameByRegions(RR_SPIRIT_TEMPLE_ENTRYWAY, RR_DESERT_COLOSSUS_OUTSIDE_TEMPLE),
-              GetEntrance(EntranceNameByRegions(RR_SPIRIT_TEMPLE_BOSS_ROOM, RR_DESERT_COLOSSUS)) },
+              GetEntrance(RR_SPIRIT_TEMPLE_BOSS_ROOM, RR_DESERT_COLOSSUS) },
             { EntranceNameByRegions(RR_SHADOW_TEMPLE_ENTRYWAY, RR_GRAVEYARD_WARP_PAD_REGION),
-              GetEntrance(EntranceNameByRegions(RR_SHADOW_TEMPLE_BOSS_ROOM, RR_GRAVEYARD_WARP_PAD_REGION)) },
+              GetEntrance(RR_SHADOW_TEMPLE_BOSS_ROOM, RR_GRAVEYARD_WARP_PAD_REGION) },
         };
 
         // Pair <BlueWarp exit, BossRoom reverse exit>
         std::vector<EntrancePair> bossRoomExitPairs = {
-            { GetEntrance(EntranceNameByRegions(RR_DEKU_TREE_BOSS_ROOM, RR_KF_OUTSIDE_DEKU_TREE)),
-              GetEntrance(EntranceNameByRegions(RR_DEKU_TREE_BOSS_ROOM, RR_DEKU_TREE_BOSS_ENTRYWAY)) },
-            { GetEntrance(EntranceNameByRegions(RR_DODONGOS_CAVERN_BOSS_ROOM, RR_DEATH_MOUNTAIN_TRAIL)),
-              GetEntrance(EntranceNameByRegions(RR_DODONGOS_CAVERN_BOSS_ROOM, RR_DODONGOS_CAVERN_BOSS_ENTRYWAY)) },
-            { GetEntrance(EntranceNameByRegions(RR_JABU_JABUS_BELLY_BOSS_ROOM, RR_ZORAS_FOUNTAIN)),
-              GetEntrance(EntranceNameByRegions(RR_JABU_JABUS_BELLY_BOSS_ROOM, RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY)) },
-            { GetEntrance(EntranceNameByRegions(RR_FOREST_TEMPLE_BOSS_ROOM, RR_SACRED_FOREST_MEADOW)),
-              GetEntrance(EntranceNameByRegions(RR_FOREST_TEMPLE_BOSS_ROOM, RR_FOREST_TEMPLE_BOSS_ENTRYWAY)) },
-            { GetEntrance(EntranceNameByRegions(RR_FIRE_TEMPLE_BOSS_ROOM, RR_DMC_CENTRAL_LOCAL)),
-              GetEntrance(EntranceNameByRegions(RR_FIRE_TEMPLE_BOSS_ROOM, RR_FIRE_TEMPLE_BOSS_ENTRYWAY)) },
-            { GetEntrance(EntranceNameByRegions(RR_WATER_TEMPLE_BOSS_ROOM, RR_LAKE_HYLIA)),
-              GetEntrance(EntranceNameByRegions(RR_WATER_TEMPLE_BOSS_ROOM, RR_WATER_TEMPLE_BOSS_ENTRYWAY)) },
-            { GetEntrance(EntranceNameByRegions(RR_SPIRIT_TEMPLE_BOSS_ROOM, RR_DESERT_COLOSSUS)),
-              GetEntrance(EntranceNameByRegions(RR_SPIRIT_TEMPLE_BOSS_ROOM, RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY)) },
-            { GetEntrance(EntranceNameByRegions(RR_SHADOW_TEMPLE_BOSS_ROOM, RR_GRAVEYARD_WARP_PAD_REGION)),
-              GetEntrance(EntranceNameByRegions(RR_SHADOW_TEMPLE_BOSS_ROOM, RR_SHADOW_TEMPLE_BOSS_ENTRYWAY)) },
+            { GetEntrance(RR_DEKU_TREE_BOSS_ROOM, RR_KF_OUTSIDE_DEKU_TREE),
+              GetEntrance(RR_DEKU_TREE_BOSS_ROOM, RR_DEKU_TREE_BOSS_ENTRYWAY) },
+            { GetEntrance(RR_DODONGOS_CAVERN_BOSS_ROOM, RR_DEATH_MOUNTAIN_TRAIL),
+              GetEntrance(RR_DODONGOS_CAVERN_BOSS_ROOM, RR_DODONGOS_CAVERN_BOSS_ENTRYWAY) },
+            { GetEntrance(RR_JABU_JABUS_BELLY_BOSS_ROOM, RR_ZORAS_FOUNTAIN),
+              GetEntrance(RR_JABU_JABUS_BELLY_BOSS_ROOM, RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY) },
+            { GetEntrance(RR_FOREST_TEMPLE_BOSS_ROOM, RR_SACRED_FOREST_MEADOW),
+              GetEntrance(RR_FOREST_TEMPLE_BOSS_ROOM, RR_FOREST_TEMPLE_BOSS_ENTRYWAY) },
+            { GetEntrance(RR_FIRE_TEMPLE_BOSS_ROOM, RR_DMC_CENTRAL_LOCAL),
+              GetEntrance(RR_FIRE_TEMPLE_BOSS_ROOM, RR_FIRE_TEMPLE_BOSS_ENTRYWAY) },
+            { GetEntrance(RR_WATER_TEMPLE_BOSS_ROOM, RR_LAKE_HYLIA),
+              GetEntrance(RR_WATER_TEMPLE_BOSS_ROOM, RR_WATER_TEMPLE_BOSS_ENTRYWAY) },
+            { GetEntrance(RR_SPIRIT_TEMPLE_BOSS_ROOM, RR_DESERT_COLOSSUS),
+              GetEntrance(RR_SPIRIT_TEMPLE_BOSS_ROOM, RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY) },
+            { GetEntrance(RR_SHADOW_TEMPLE_BOSS_ROOM, RR_GRAVEYARD_WARP_PAD_REGION),
+              GetEntrance(RR_SHADOW_TEMPLE_BOSS_ROOM, RR_SHADOW_TEMPLE_BOSS_ENTRYWAY) },
         };
 
         for (EntrancePair pair : bossRoomExitPairs) {
@@ -1658,7 +1643,7 @@ void EntranceShuffler::ParseJson(nlohmann::json spoilerFileJson) {
     try {
         nlohmann::json entrancesJson = spoilerFileJson["entrances"];
         size_t i = 0;
-        for (auto it = entrancesJson.begin(); it != entrancesJson.end(); ++it, i++) {
+        for (auto it = entrancesJson.begin(); it != entrancesJson.end() && i < entranceOverrides.size(); ++it, i++) {
             nlohmann::json entranceJson = *it;
             for (auto entranceIt = entranceJson.begin(); entranceIt != entranceJson.end(); ++entranceIt) {
                 if (entranceIt.key() == "type") {

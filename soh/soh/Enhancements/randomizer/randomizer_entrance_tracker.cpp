@@ -39,6 +39,10 @@ static s16 lastEntranceIndex = -1;
 static s16 currentGrottoId = -1;
 static s16 lastSceneOrEntranceDetected = -1;
 
+static bool presetLoaded = false;
+static ImVec2 presetPos;
+static ImVec2 presetSize;
+
 static std::string spoilerEntranceGroupNames[] = {
     "Spawns/Warp Songs/Owls",
     "Kokiri Forest",
@@ -382,7 +386,7 @@ const EntranceData entranceData[] = {
 };
 
 // Check if Link is in the area and return that scene/entrance for tracking
-s8 LinkIsInArea(const EntranceData* entrance) {
+int16_t LinkIsInArea(const EntranceData* entrance) {
     bool result = false;
 
     if (gPlayState == nullptr) {
@@ -443,6 +447,12 @@ const EntranceData* GetEntranceData(s16 index) {
     }
     // Shouldn't be reached
     return nullptr;
+}
+
+void EntranceTracker_LoadFromPreset(nlohmann::json info) {
+    presetLoaded = true;
+    presetPos = { info["pos"]["x"], info["pos"]["y"] };
+    presetSize = { info["size"]["width"], info["size"]["height"] };
 }
 
 // Used for verifying the names on both sides of entrance pairs match. Keeping for ease of use for further name changes
@@ -690,6 +700,7 @@ void EntranceTrackerSettingsWindow::DrawElement() {
             UIWidgets::CheckboxOptions()
                 .Tooltip("Automatically scroll to the first available entrance in the current scene")
                 .Color(THEME_COLOR));
+        ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
         UIWidgets::CVarCheckbox("Highlight previous", CVAR_TRACKER_ENTRANCE("HighlightPrevious"),
                                 UIWidgets::CheckboxOptions()
                                     .Tooltip("Highlight the previous entrance that Link came from")
@@ -698,6 +709,7 @@ void EntranceTrackerSettingsWindow::DrawElement() {
                                 UIWidgets::CheckboxOptions()
                                     .Tooltip("Highlight available entrances in the current scene")
                                     .Color(THEME_COLOR));
+        ImGui::EndDisabled();
         UIWidgets::CVarCheckbox("Hide undiscovered", CVAR_TRACKER_ENTRANCE("CollapseUndiscovered"),
                                 UIWidgets::CheckboxOptions()
                                     .Tooltip("Collapse undiscovered entrances towards the bottom of each group")
@@ -724,6 +736,7 @@ void EntranceTrackerSettingsWindow::DrawElement() {
             UIWidgets::RadioButtonsOptions().Color(THEME_COLOR).Tooltip("Group entrances by their entrance type"));
 
         ImGui::Text("Spoiler Reveal");
+        ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
         UIWidgets::CVarCheckbox(
             "Show Source", CVAR_TRACKER_ENTRANCE("ShowFrom"),
             UIWidgets::CheckboxOptions().Tooltip("Reveal the sourcefor undiscovered entrances").Color(THEME_COLOR));
@@ -731,7 +744,7 @@ void EntranceTrackerSettingsWindow::DrawElement() {
                                 UIWidgets::CheckboxOptions()
                                     .Tooltip("Reveal the destination for undiscovered entrances")
                                     .Color(THEME_COLOR));
-
+        ImGui::EndDisabled();
         ImGui::EndTable();
     }
 
@@ -754,7 +767,13 @@ void EntranceTrackerWindow::Draw() {
 }
 
 void EntranceTrackerWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(600, 375), ImGuiCond_FirstUseEver);
+    if (presetLoaded) {
+        ImGui::SetNextWindowSize(presetSize);
+        ImGui::SetNextWindowPos(presetPos);
+        presetLoaded = false;
+    } else {
+        ImGui::SetNextWindowSize(ImVec2(600, 375), ImGuiCond_FirstUseEver);
+    }
 
     if (!ImGui::Begin("Entrance Tracker", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();

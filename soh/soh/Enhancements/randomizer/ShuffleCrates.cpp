@@ -3,6 +3,7 @@
 #include "static_data.h"
 #include <libultraship/libultra.h>
 #include "global.h"
+#include "soh/ResourceManagerHelpers.h"
 
 extern "C" {
 #include "variables.h"
@@ -11,7 +12,6 @@ extern "C" {
 #include "overlays/actors/ovl_Obj_Kibako/z_obj_kibako.h"
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 #include "soh/Enhancements/enhancementTypes.h"
-#include "soh/ResourceManagerHelpers.h"
 extern PlayState* gPlayState;
 }
 
@@ -195,7 +195,7 @@ void ObjKibako2_RandomizerSpawnCollectible(ObjKibako2* crateActor, PlayState* pl
     item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
     item00->actor.velocity.y = 8.0f;
     item00->actor.speedXZ = 2.0f;
-    item00->actor.world.rot.y = Rand_CenteredFloat(65536.0f);
+    item00->actor.world.rot.y = static_cast<int16_t>(Rand_CenteredFloat(65536.0f));
 }
 
 void ObjKibako_RandomizerSpawnCollectible(ObjKibako* smallCrateActor, PlayState* play) {
@@ -206,7 +206,7 @@ void ObjKibako_RandomizerSpawnCollectible(ObjKibako* smallCrateActor, PlayState*
     item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
     item00->actor.velocity.y = 8.0f;
     item00->actor.speedXZ = 2.0f;
-    item00->actor.world.rot.y = Rand_CenteredFloat(65536.0f);
+    item00->actor.world.rot.y = static_cast<int16_t>(Rand_CenteredFloat(65536.0f));
 }
 
 void ObjKibako2_RandomizerInit(void* actorRef) {
@@ -535,6 +535,8 @@ void Rando::StaticData::RegisterCrateLocations() {
     locationTable[RC_SPIRIT_TEMPLE_BEFORE_CHILD_CLIMB_SMALL_CRATE_2]            = Location::SmallCrate(RC_SPIRIT_TEMPLE_BEFORE_CHILD_CLIMB_SMALL_CRATE_2,       RCQUEST_VANILLA, RCAREA_SPIRIT_TEMPLE,          SCENE_SPIRIT_TEMPLE,            TWO_ACTOR_PARAMS(-1151, -939),      "Before Child Climb Small Crate 2",             RHT_CRATE_SPIRIT_TEMPLE,            RG_DEKU_NUTS_5,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_SPIRIT_TEMPLE_BEFORE_CHILD_CLIMB_SMALL_CRATE_2));
     locationTable[RC_JABU_JABUS_BELLY_MQ_TRIPLE_HALLWAY_SMALL_CRATE_1]          = Location::SmallCrate(RC_JABU_JABUS_BELLY_MQ_TRIPLE_HALLWAY_SMALL_CRATE_1,     RCQUEST_MQ,      RCAREA_JABU_JABUS_BELLY,       SCENE_JABU_JABU,                TWO_ACTOR_PARAMS(-512, -4592),      "MQ Triple Hallway Small Crate 1",              RHT_CRATE_JABU_JABU,                RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_JABU_JABUS_BELLY_MQ_TRIPLE_HALLWAY_SMALL_CRATE_1));
     locationTable[RC_JABU_JABUS_BELLY_MQ_TRIPLE_HALLWAY_SMALL_CRATE_2]          = Location::SmallCrate(RC_JABU_JABUS_BELLY_MQ_TRIPLE_HALLWAY_SMALL_CRATE_2,     RCQUEST_MQ,      RCAREA_JABU_JABUS_BELLY,       SCENE_JABU_JABU,                TWO_ACTOR_PARAMS(-666, -4671),      "MQ Triple Hallway Small Crate 2",              RHT_CRATE_JABU_JABU,                RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_JABU_JABUS_BELLY_MQ_TRIPLE_HALLWAY_SMALL_CRATE_2));
+    locationTable[RC_JABU_JABUS_BELLY_MQ_JIGGLIES_SMALL_CRATE_1]                = Location::SmallCrate(RC_JABU_JABUS_BELLY_MQ_JIGGLIES_SMALL_CRATE_1,           RCQUEST_MQ,      RCAREA_JABU_JABUS_BELLY,       SCENE_JABU_JABU,                TWO_ACTOR_PARAMS(-1381, -2115),     "MQ Jigglies Small Crate 1",                    RHT_CRATE_JABU_JABU,                RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_JABU_JABUS_BELLY_MQ_JIGGLIES_SMALL_CRATE_1));
+    locationTable[RC_JABU_JABUS_BELLY_MQ_JIGGLIES_SMALL_CRATE_2]                = Location::SmallCrate(RC_JABU_JABUS_BELLY_MQ_JIGGLIES_SMALL_CRATE_2,           RCQUEST_MQ,      RCAREA_JABU_JABUS_BELLY,       SCENE_JABU_JABU,                TWO_ACTOR_PARAMS(-1341, -2116),     "MQ Jigglies Small Crate 2",                    RHT_CRATE_JABU_JABU,                RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_JABU_JABUS_BELLY_MQ_JIGGLIES_SMALL_CRATE_2));
     locationTable[RC_FOREST_TEMPLE_MQ_FROZEN_EYE_SWITCH_SMALL_CRATE_1]          = Location::SmallCrate(RC_FOREST_TEMPLE_MQ_FROZEN_EYE_SWITCH_SMALL_CRATE_1,     RCQUEST_MQ,      RCAREA_FOREST_TEMPLE,          SCENE_FOREST_TEMPLE,            TWO_ACTOR_PARAMS(1599, -1322),      "MQ Frozen Eye Switch Small Crate 1",           RHT_CRATE_FOREST_TEMPLE,            RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_FOREST_TEMPLE_MQ_FROZEN_EYE_SWITCH_SMALL_CRATE_1));
     locationTable[RC_FOREST_TEMPLE_MQ_FROZEN_EYE_SWITCH_SMALL_CRATE_2]          = Location::SmallCrate(RC_FOREST_TEMPLE_MQ_FROZEN_EYE_SWITCH_SMALL_CRATE_2,     RCQUEST_MQ,      RCAREA_FOREST_TEMPLE,          SCENE_FOREST_TEMPLE,            TWO_ACTOR_PARAMS(2364, -873),       "MQ Frozen Eye Switch Small Crate 2",           RHT_CRATE_FOREST_TEMPLE,            RG_ARROWS_5,            SpoilerCollectionCheck::RandomizerInf(RAND_INF_FOREST_TEMPLE_MQ_FROZEN_EYE_SWITCH_SMALL_CRATE_2));
     locationTable[RC_FOREST_TEMPLE_MQ_FROZEN_EYE_SWITCH_SMALL_CRATE_3]          = Location::SmallCrate(RC_FOREST_TEMPLE_MQ_FROZEN_EYE_SWITCH_SMALL_CRATE_3,     RCQUEST_MQ,      RCAREA_FOREST_TEMPLE,          SCENE_FOREST_TEMPLE,            TWO_ACTOR_PARAMS(2312, -874),       "MQ Frozen Eye Switch Small Crate 3",           RHT_CRATE_FOREST_TEMPLE,            RG_ARROWS_5,            SpoilerCollectionCheck::RandomizerInf(RAND_INF_FOREST_TEMPLE_MQ_FROZEN_EYE_SWITCH_SMALL_CRATE_3));

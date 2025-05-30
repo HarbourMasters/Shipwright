@@ -8,7 +8,7 @@ void RegionTable_Init_ZorasFountain() {
     areaTable[RR_ZORAS_FOUNTAIN] = Region("Zoras Fountain", SCENE_ZORAS_FOUNTAIN, {
         //Events
         EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairyExceptSuns();}),
-        EventAccess(&logic->ButterflyFairy,   []{return logic->ButterflyFairy   || (logic->CanUse(RG_STICKS) && logic->AtDay);}),
+        EventAccess(&logic->ButterflyFairy,   []{return logic->CanUse(RG_STICKS) && logic->AtDay;}),
     }, {
         //Locations
         LOCATION(RC_ZF_GS_TREE,                      logic->IsChild),

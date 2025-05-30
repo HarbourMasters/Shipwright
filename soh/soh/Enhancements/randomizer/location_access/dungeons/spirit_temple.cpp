@@ -556,7 +556,7 @@ void RegionTable_Init_SpiritTemple() {
 
     areaTable[RR_SPIRIT_TEMPLE_BOSS_ROOM] = Region("Spirit Temple Boss Room", SCENE_SPIRIT_TEMPLE_BOSS, {
         // Events
-        EventAccess(&logic->SpiritTempleClear, []{return logic->SpiritTempleClear || logic->CanKillEnemy(RE_TWINROVA);}),
+        EventAccess(&logic->SpiritTempleClear, []{return logic->CanKillEnemy(RE_TWINROVA);}),
     }, {
         // Locations
         LOCATION(RC_SPIRIT_TEMPLE_TWINROVA_HEART, logic->SpiritTempleClear),

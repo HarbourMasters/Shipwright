@@ -121,8 +121,6 @@ bool Logic::HasItem(RandomizerGet itemName) {
         case RG_STONE_OF_AGONY:
         case RG_GERUDO_MEMBERSHIP_CARD:
             return CheckQuestItem(RandoGetToQuestItem.at(itemName));
-        case RG_RUTOS_LETTER:
-            return CheckEventChkInf(EVENTCHKINF_OBTAINED_RUTOS_LETTER);
         case RG_DOUBLE_DEFENSE:
             return GetSaveContext()->isDoubleDefenseAcquired;
         case RG_FISHING_POLE:
@@ -171,6 +169,7 @@ bool Logic::HasItem(RandomizerGet itemName) {
         case RG_BACK_TOWER_KEY:
         case RG_HYLIA_LAB_KEY:
         case RG_FISHING_HOLE_KEY:
+        case RG_RUTOS_LETTER:
             return CheckRandoInf(RandoGetToRandInf.at(itemName));
             // Boss Keys
         case RG_EPONA:
@@ -323,11 +322,9 @@ bool Logic::CanUse(RandomizerGet itemName) {
         case RG_KOKIRI_SWORD:
             return IsChild; // || KokiriSwordAsAdult;
         case RG_NUTS:
-            return (NutPot || NutCrate || DekuBabaNuts) &&
-                   AmmoCanDrop; // RANDOTODO BuyNuts currently mixed in with Nuts, should be seperate as BuyNuts are
-                                // also a Nuts source
+            return ((NutPot || NutCrate || DekuBabaNuts) && AmmoCanDrop) || GetInLogic(LOGIC_BUY_NUTS);
         case RG_STICKS:
-            return IsChild /* || StickAsAdult;*/ && (StickPot || DekuBabaSticks);
+            return IsChild /* || StickAsAdult;*/ && (StickPot || DekuBabaSticks || GetInLogic(LOGIC_BUY_STICKS));
         case RG_DEKU_SHIELD:
             return IsChild; // || DekuShieldAsAdult;
         case RG_PROGRESSIVE_BOMB_BAG:
@@ -1014,26 +1011,24 @@ Logic::Logic() {
 
 uint8_t Logic::BottleCount() {
     uint8_t count = 0;
-    if (CouldEmptyBigPoes && !AreCheckingBigPoes) {
-        for (int i = SLOT_BOTTLE_1; i <= SLOT_BOTTLE_4; i++) {
-            uint8_t item = GetSaveContext()->inventory.items[i];
-            switch (item) {
-                case ITEM_LETTER_RUTO:
-                    if (DeliverLetter) {
-                        count++;
-                    }
-                    break;
-                case ITEM_BIG_POE:
-                    if (CanEmptyBigPoes) {
-                        count++;
-                    }
-                    break;
-                case ITEM_NONE:
-                    break;
-                default:
+    for (int i = SLOT_BOTTLE_1; i <= SLOT_BOTTLE_4; i++) {
+        uint8_t item = GetSaveContext()->inventory.items[i];
+        switch (item) {
+            case ITEM_LETTER_RUTO:
+                if (DeliverLetter) {
                     count++;
-                    break;
-            }
+                }
+                break;
+            case ITEM_BIG_POE:
+                if (CanEmptyBigPoes) {
+                    count++;
+                }
+                break;
+            case ITEM_NONE:
+                break;
+            default:
+                count++;
+                break;
         }
     }
     return count;
@@ -1390,6 +1385,7 @@ bool Logic::SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless
             static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE) || GetDifficultyValueFromString(GlitchHover) >=
             static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE))) { return FireTempleKeys >= requiredAmountGlitched;
             }*/
+            // If the Fire Temple loop lock is removed, Small key Count is set to 1 before starting
             return GetSmallKeyCount(SCENE_FIRE_TEMPLE) >= requiredAmountGlitchless;
 
         case RR_WATER_TEMPLE:
@@ -1455,6 +1451,7 @@ std::map<RandomizerGet, uint32_t> Logic::RandoGetToEquipFlag = {
 std::map<RandomizerGet, uint32_t> Logic::RandoGetToRandInf = {
     { RG_ZELDAS_LETTER, RAND_INF_ZELDAS_LETTER },
     { RG_WEIRD_EGG, RAND_INF_WEIRD_EGG },
+    { RG_RUTOS_LETTER, RAND_INF_OBTAINED_RUTOS_LETTER },
     { RG_GOHMA_SOUL, RAND_INF_GOHMA_SOUL },
     { RG_KING_DODONGO_SOUL, RAND_INF_KING_DODONGO_SOUL },
     { RG_BARINADE_SOUL, RAND_INF_BARINADE_SOUL },
@@ -1816,10 +1813,10 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                     if (randoGet == RG_BOTTLE_WITH_BIG_POE) {
                         BigPoes++;
                     }
-                    mSaveContext->inventory.items[slot] = itemId;
+                    mSaveContext->inventory.items[slot] = static_cast<uint8_t>(itemId);
                 } break;
                 case RG_RUTOS_LETTER:
-                    SetEventChkInf(EVENTCHKINF_OBTAINED_RUTOS_LETTER, state);
+                    SetRandoInf(RAND_INF_OBTAINED_RUTOS_LETTER, state);
                     break;
                 case RG_GOHMA_SOUL:
                 case RG_KING_DODONGO_SOUL:
@@ -2308,7 +2305,7 @@ void Logic::SetEventChkInf(int32_t flag, bool state) {
 }
 
 uint8_t Logic::GetGSCount() {
-    return mSaveContext->inventory.gsTokens;
+    return static_cast<uint8_t>(mSaveContext->inventory.gsTokens);
 }
 
 uint8_t Logic::GetAmmo(uint32_t item) {
@@ -2336,9 +2333,9 @@ void Logic::Reset() {
     StartPerformanceTimer(PT_LOGIC_RESET);
     memset(inLogic, false, sizeof(inLogic));
     // Settings-dependent variables
-    IsKeysanity = ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) ||
-                  ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) ||
-                  ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE);
+    IsFireLoopLocked = ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) ||
+                       ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_OVERWORLD) ||
+                       ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANY_DUNGEON);
 
     // AmmoCanDrop = /*AmmoDrops.IsNot(AMMODROPS_NONE)*/ false; TODO: AmmoDrop setting
 
@@ -2400,7 +2397,7 @@ void Logic::Reset() {
 
     // If not keysanity, start with 1 logical key to account for automatically unlocking the basement door in vanilla
     // FiT
-    if (!IsKeysanity && ctx->GetDungeon(Rando::FIRE_TEMPLE)->IsVanilla()) {
+    if (!IsFireLoopLocked && ctx->GetDungeon(Rando::FIRE_TEMPLE)->IsVanilla()) {
         SetSmallKeyCount(SCENE_FIRE_TEMPLE, 1);
     }
 
@@ -2408,7 +2405,6 @@ void Logic::Reset() {
     Bottles = 0;
     NumBottles = 0;
     CanEmptyBigPoes = false;
-    CouldEmptyBigPoes = false;
 
     // Drops and Bottle Contents Access
     NutPot = false;
@@ -2498,6 +2494,7 @@ void Logic::Reset() {
     ForestOpenBossCorridor = false;
     ShadowTrialFirstChest = false;
     MQGTGMazeSwitch = false;
+    MQGTGRightSideSwitch = false;
     GTGPlatformSilverRupees = false;
     MQJabuHolesRoomDoor = false;
     JabuWestTentacle = false;

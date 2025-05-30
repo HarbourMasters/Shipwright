@@ -2,6 +2,7 @@
 #include "soh/resource/type/scenecommand/SetMesh.h"
 #include "soh/resource/logging/SceneCommandLoggers.h"
 #include "spdlog/spdlog.h"
+#include <tinyxml2.h>
 #include "libultraship/libultraship.h"
 
 namespace SOH {
