@@ -13,6 +13,10 @@ extern "C" {
 #include <z64.h>
 }
 
+#define CVAR_ENEMY_RANDOMIZER_NAME CVAR_ENHANCEMENT("RandomizedEnemies")
+#define CVAR_ENEMY_RANDOMIZER_DEFAULT ENEMY_RANDOMIZER_OFF
+#define CVAR_ENEMY_RANDOMIZER_VALUE CVarGetInteger(CVAR_ENEMY_RANDOMIZER_NAME, CVAR_ENEMY_RANDOMIZER_DEFAULT)
+
 typedef struct EnemyEntry {
     int16_t id;
     int16_t params;
@@ -558,3 +562,16 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
             return 1;
     }
 }
+
+void FixClubMoblinScale(void* ptr) {
+    Actor* actor = (Actor*)ptr;
+    if (actor->params == -1) {
+        Actor_SetScale(actor, 0.014f);
+    }
+}
+
+void RegisterEnemyRandomizer() {
+    COND_ID_HOOK(OnActorInit, ACTOR_EN_MB, CVAR_ENEMY_RANDOMIZER_VALUE, FixClubMoblinScale);
+}
+
+static RegisterShipInitFunc initFunc(RegisterEnemyRandomizer, { CVAR_ENEMY_RANDOMIZER_NAME });

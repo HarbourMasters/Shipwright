@@ -281,10 +281,6 @@ void EnMb_Init(Actor* thisx, PlayState* play) {
             SkelAnime_InitFlex(play, &this->skelAnime, &gEnMbSpearSkel, &gEnMbSpearStandStillAnim, this->jointTable,
                                this->morphTable, 28);
 
-            if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), ENEMY_RANDOMIZER_OFF) != ENEMY_RANDOMIZER_OFF) {
-                Actor_SetScale(&this->actor, 0.014f);
-            }
-
             this->actor.colChkInfo.health = 2;
             this->actor.colChkInfo.mass = MASS_HEAVY;
             this->maxHomeDist = 1000.0f;
