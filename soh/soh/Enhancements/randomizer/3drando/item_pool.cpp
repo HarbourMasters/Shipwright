@@ -325,7 +325,7 @@ RandomizerGet GetJunkItem() {
         return RandomElement(JunkPoolItems);
     }
     // Ice Trap is the last item in JunkPoolItems, so subtract 1 to never hit that index
-    uint8_t idx = Random(0, JunkPoolItems.size() - 1);
+    uint8_t idx = Random(0, static_cast<uint32_t>(JunkPoolItems.size()) - 1);
     return JunkPoolItems[idx];
 }
 

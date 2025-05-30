@@ -77,9 +77,9 @@ void CrawlSpeed_Register() {
     COND_VB_SHOULD(VB_CRAWL_SPEED_EXIT_CS, shouldRegister, {
         Player* player = GET_PLAYER(gPlayState);
         Camera* csCam = va_arg(args, Camera*);
-        s16 csId = va_arg(args, s16);
-        s16 actionParameters = va_arg(args, s16);
-        s16 initTimer = va_arg(args, s16);
+        s16 csId = static_cast<s16>(va_arg(args, int));
+        s16 actionParameters = static_cast<s16>(va_arg(args, int));
+        s16 initTimer = static_cast<s16>(va_arg(args, int));
         CutsceneCameraPoint* atPoints = va_arg(args, CutsceneCameraPoint*);
         CutsceneCameraPoint* eyePoints = va_arg(args, CutsceneCameraPoint*);
         bool excludeWellBackroom = (player->actor.world.pos.x > 950.0f) && (player->actor.world.pos.x < 1025.0f) &&

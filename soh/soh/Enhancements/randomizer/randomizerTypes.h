@@ -2,7 +2,6 @@
 
 #include <stdint.h>
 #include "z64item.h"
-#include "randomizer_inf.h"
 
 #define MAX_TRICK_NAME_SIZE 50
 
@@ -213,6 +212,15 @@ typedef enum {
     LOGIC_TRIFORCE_PIECES,
     LOGIC_MAX
 } LogicVal;
+
+#define DEFINE_RAND_INF(enum) enum,
+
+typedef enum {
+#include "randomizer_inf.h"
+    RAND_INF_MAX,
+} RandomizerInf;
+
+#undef DEFINE_RAND_INF
 
 typedef enum {
     RA_NONE,
@@ -3697,6 +3705,8 @@ typedef enum {
     RT_MEGASIDEHOP_BOMB,
     RT_MEGASIDEHOP_BOMBCHU,
     RT_NAVI_DIVE,
+    RT_BOTTOM_OF_THE_WELL_NAVI_DIVE,
+    RT_LOST_WOOD_NAVI_DIVE,
     RT_OCARINA_ITEMS,
     RT_OCARINA_ITEMS_BOMB,
     RT_OCARINA_ITEMS_ESS,

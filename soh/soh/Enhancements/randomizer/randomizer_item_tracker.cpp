@@ -375,6 +375,10 @@ uint32_t notesIdleFrames = 0;
 bool notesNeedSave = false;
 const uint32_t notesMaxIdleFrames = 40; // two seconds of game time, since OnGameFrameUpdate is used to tick
 
+static bool presetLoaded = false;
+static std::unordered_map<std::string, ImVec2> presetPos;
+static std::unordered_map<std::string, ImVec2> presetSize;
+
 void ItemTrackerOnFrame() {
     if (notesNeedSave && notesIdleFrames <= notesMaxIdleFrames) {
         notesIdleFrames++;
@@ -396,6 +400,16 @@ bool HasQuestItem(ItemTrackerItem item) {
 
 bool HasEquipment(ItemTrackerItem item) {
     return GameInteractor::IsSaveLoaded() ? (item.data & gSaveContext.inventory.equipment) : false;
+}
+
+void ItemTracker_LoadFromPreset(nlohmann::json trackerInfo) {
+    presetLoaded = true;
+    for (auto window : itemTrackerWindowIDs) {
+        if (trackerInfo.contains(window)) {
+            presetPos[window] = { trackerInfo[window]["pos"]["x"], trackerInfo[window]["pos"]["y"] };
+            presetSize[window] = { trackerInfo[window]["size"]["width"], trackerInfo[window]["size"]["height"] };
+        }
+    }
 }
 
 ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
@@ -670,17 +684,17 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
 
 void DrawEquip(ItemTrackerItem item) {
     bool hasEquip = HasEquipment(item);
-    int iconSize = CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36);
+    float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
     ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
                      hasEquip && IsValidSaveFile() ? item.name : item.nameFaded),
-                 ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
+                 ImVec2(iconSize, iconSize), ImVec2(0.0f, 0.0f), ImVec2(1, 1));
 
     Tooltip(SohUtils::GetItemName(item.id).c_str());
 }
 
 void DrawQuest(ItemTrackerItem item) {
     bool hasQuestItem = HasQuestItem(item);
-    int iconSize = CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36);
+    float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
     ImGui::BeginGroup();
     ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
                      hasQuestItem && IsValidSaveFile() ? item.name : item.nameFaded),
@@ -698,7 +712,7 @@ void DrawQuest(ItemTrackerItem item) {
 void DrawItem(ItemTrackerItem item) {
 
     uint32_t actualItemId = GameInteractor::IsSaveLoaded() ? INV_CONTENT(item.id) : ITEM_NONE;
-    int iconSize = CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36);
+    float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
     bool hasItem = actualItemId != ITEM_NONE;
     std::string itemName = "";
 
@@ -1015,7 +1029,7 @@ void DrawBottle(ItemTrackerItem item) {
         item = actualItemTrackerItemMap[actualItemId];
     }
 
-    int iconSize = CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36);
+    float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
     ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
                      hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
@@ -1027,7 +1041,7 @@ void DrawDungeonItem(ItemTrackerItem item) {
     uint32_t itemId = item.id;
     ImU32 dungeonColor = IM_COL_WHITE;
     uint32_t bitMask = 1 << (item.id - ITEM_KEY_BOSS); // Bitset starts at ITEM_KEY_BOSS == 0. the rest are sequential
-    int iconSize = CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36);
+    float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
     bool hasItem = GameInteractor::IsSaveLoaded() ? (bitMask & gSaveContext.inventory.dungeonItems[item.data]) : false;
     bool hasSmallKey = GameInteractor::IsSaveLoaded() ? ((gSaveContext.inventory.dungeonKeys[item.data]) >= 0) : false;
     ImGui::BeginGroup();
@@ -1078,19 +1092,19 @@ void DrawDungeonItem(ItemTrackerItem item) {
 }
 
 void DrawSong(ItemTrackerItem item) {
-    int iconSize = CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36);
+    float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
     ImVec2 p = ImGui::GetCursorScreenPos();
     bool hasSong = HasSong(item);
     ImGui::SetCursorScreenPos(ImVec2(p.x + 6, p.y));
     ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
                      hasSong && IsValidSaveFile() ? item.name : item.nameFaded),
-                 ImVec2(iconSize / 1.5, iconSize), ImVec2(0, 0), ImVec2(1, 1));
+                 ImVec2(iconSize / 1.5f, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     Tooltip(SohUtils::GetQuestItemName(item.id).c_str());
 }
 
 void DrawNotes(bool resizeable = false) {
     ImGui::BeginGroup();
-    int iconSize = CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36);
+    float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
     int iconSpacing = CVarGetInteger(CVAR_TRACKER_ITEM("IconSpacing"), 12);
 
     struct ItemTrackerNotes {
@@ -1113,7 +1127,7 @@ void DrawNotes(bool resizeable = false) {
         }
     };
     ImVec2 size = resizeable ? ImVec2(-FLT_MIN, ImGui::GetContentRegionAvail().y)
-                             : ImVec2(((iconSize + iconSpacing) * 6) - 8, 200);
+                             : ImVec2(((iconSize + iconSpacing) * 6) - 8.0f, 200.0f);
     if (GameInteractor::IsSaveLoaded()) {
         if (ItemTrackerNotes::TrackerNotesInputTextMultiline("##ItemTrackerNotes", &itemTrackerNotes, size,
                                                              ImGuiInputTextFlags_AllowTabInput)) {
@@ -1171,6 +1185,12 @@ void BeginFloatingWindows(std::string UniqueName, ImGuiWindowFlags flags = 0) {
     ImGui::PushStyleColor(ImGuiCol_WindowBg, color);
     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 4.0f);
+    if (presetLoaded && presetPos.contains(UniqueName)) {
+        ImGui::SetNextWindowSize(presetSize[UniqueName]);
+        ImGui::SetNextWindowPos(presetPos[UniqueName]);
+        presetSize.erase(UniqueName);
+        presetPos.erase(UniqueName);
+    }
     ImGui::Begin(UniqueName.c_str(), nullptr, windowFlags);
 }
 void EndFloatingWindows() {
@@ -1185,7 +1205,7 @@ void EndFloatingWindows() {
  * Takes in a vector of ItemTrackerItem and draws them in rows of N items
  */
 void DrawItemsInRows(std::vector<ItemTrackerItem> items, int columns = 6) {
-    int iconSize = CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36);
+    float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
     int iconSpacing = CVarGetInteger(CVAR_TRACKER_ITEM("IconSpacing"), 12);
     int topPadding =
         (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_WINDOW) ? 20 : 0;
@@ -1194,7 +1214,7 @@ void DrawItemsInRows(std::vector<ItemTrackerItem> items, int columns = 6) {
         int row = i / columns;
         int column = i % columns;
         ImGui::SetCursorPos(
-            ImVec2((column * (iconSize + iconSpacing) + 8), (row * (iconSize + iconSpacing)) + 8 + topPadding));
+            ImVec2((column * (iconSize + iconSpacing) + 8.0f), (row * (iconSize + iconSpacing)) + 8.0f + topPadding));
         items[i].drawFunc(items[i]);
     }
 }
@@ -1208,10 +1228,10 @@ void DrawItemsInACircle(std::vector<ItemTrackerItem> items) {
     int iconSpacing = CVarGetInteger(CVAR_TRACKER_ITEM("IconSpacing"), 12);
 
     ImVec2 max = ImGui::GetWindowContentRegionMax();
-    float radius = (iconSize + iconSpacing) * 2;
+    float radius = (iconSize + iconSpacing) * 2.0f;
 
     for (int i = 0; i < items.size(); i++) {
-        float angle = (float)i / items.size() * 2.0f * M_PI;
+        float angle = static_cast<float>(i / items.size() * 2.0f * M_PI);
         float x = (radius / 2.0f) * cos(angle) + max.x / 2.0f;
         float y = (radius / 2.0f) * sin(angle) + max.y / 2.0f;
         ImGui::SetCursorPos(ImVec2(x - (CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36) - 8) / 2.0f, y + 4));
@@ -1225,14 +1245,12 @@ void DrawItemsInACircle(std::vector<ItemTrackerItem> items) {
  * to then call DrawItemsInRows
  */
 std::vector<ItemTrackerItem> GetDungeonItemsVector(std::vector<ItemTrackerDungeon> dungeons, int columns = 6) {
-    int iconSize = CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36);
-    int iconSpacing = CVarGetInteger(CVAR_TRACKER_ITEM("IconSpacing"), 12);
     std::vector<ItemTrackerItem> dungeonItems = {};
 
     int rowCount = 0;
     for (int i = 0; i < dungeons.size(); i++) {
         if (dungeons[i].items.size() > rowCount)
-            rowCount = dungeons[i].items.size();
+            rowCount = static_cast<int32_t>(dungeons[i].items.size());
     }
 
     for (int i = 0; i < rowCount; i++) {
@@ -1469,7 +1487,7 @@ void ItemTrackerSaveFile(SaveContext* saveContext, int sectionID, bool fullSave)
 void ItemTrackerLoadFile() {
     std::string initialTrackerNotes = "";
     SaveManager::Instance->LoadData("personalNotes", initialTrackerNotes);
-    itemTrackerNotes.resize(initialTrackerNotes.length() + 1);
+    itemTrackerNotes.resize(static_cast<int>(initialTrackerNotes.length() + 1));
     if (initialTrackerNotes != "") {
         SohUtils::CopyStringToCharArray(itemTrackerNotes.Data, initialTrackerNotes.c_str(), itemTrackerNotes.size());
     } else {
@@ -1527,13 +1545,14 @@ void ItemTrackerWindow::DrawElement() {
              SECTION_DISPLAY_EXTENDED_MAIN_WINDOW) ||
             (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Notes"), SECTION_DISPLAY_HIDDEN) ==
              SECTION_DISPLAY_MAIN_WINDOW)) {
-            BeginFloatingWindows("Item Tracker##main window");
+            BeginFloatingWindows("Item Tracker");
             DrawItemsInRows(mainWindowItems, 6);
 
             if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Notes"), SECTION_DISPLAY_HIDDEN) ==
                     SECTION_DISPLAY_MAIN_WINDOW &&
-                CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) ==
-                    TRACKER_DISPLAY_ALWAYS) {
+                (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING &&
+                 CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) ==
+                     TRACKER_DISPLAY_ALWAYS)) {
                 DrawNotes();
             }
             EndFloatingWindows();
@@ -1642,7 +1661,10 @@ void ItemTrackerWindow::DrawElement() {
 
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Notes"), SECTION_DISPLAY_HIDDEN) ==
                 SECTION_DISPLAY_SEPARATE &&
-            CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_ALWAYS) {
+            (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_WINDOW ||
+             (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING &&
+              CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) !=
+                  TRACKER_DISPLAY_COMBO_BUTTON))) {
             ImGui::SetNextWindowSize(ImVec2(400, 300), ImGuiCond_FirstUseEver);
             BeginFloatingWindows("Personal Notes", ImGuiWindowFlags_NoFocusOnAppearing);
             DrawNotes(true);
@@ -1656,6 +1678,10 @@ void ItemTrackerWindow::DrawElement() {
             DrawTotalChecks();
             EndFloatingWindows();
         }
+    }
+    if (presetLoaded) {
+        shouldUpdateVectors = true;
+        presetLoaded = false;
     }
 }
 
@@ -1943,7 +1969,10 @@ void ItemTrackerSettingsWindow::DrawElement() {
         shouldUpdateVectors = true;
     }
 
-    if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_ALWAYS) {
+    if (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_WINDOW ||
+        (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING &&
+         CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) !=
+             TRACKER_DISPLAY_COMBO_BUTTON)) {
         if (CVarCombobox("Personal notes", CVAR_TRACKER_ITEM("DisplayType.Notes"), displayTypes,
                          ComboboxOptions()
                              .DefaultIndex(SECTION_DISPLAY_HIDDEN)

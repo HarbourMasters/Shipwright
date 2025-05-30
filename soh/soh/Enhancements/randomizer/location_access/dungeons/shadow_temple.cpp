@@ -408,7 +408,7 @@ void RegionTable_Init_ShadowTemple() {
 
     areaTable[RR_SHADOW_TEMPLE_BOSS_ROOM] = Region("Shadow Temple Boss Room", "Shadow Temple", {}, NO_DAY_NIGHT_CYCLE, {
         // Events
-        EventAccess(&logic->ShadowTempleClear, []{return logic->ShadowTempleClear || logic->CanKillEnemy(RE_BONGO_BONGO);}),
+        EventAccess(&logic->ShadowTempleClear, []{return logic->CanKillEnemy(RE_BONGO_BONGO);}),
     }, {
         // Locations
         LOCATION(RC_SHADOW_TEMPLE_BONGO_BONGO_HEART, logic->ShadowTempleClear),

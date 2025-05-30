@@ -90,7 +90,7 @@ class Entrance {
     Entrance* reverse = nullptr;
     Entrance* assumed = nullptr;
     Entrance* replacement = nullptr;
-    int16_t index = 0xFFFF;
+    int16_t index = -1;
     bool shuffled = false;
     bool primary = false;
     bool addedToPool = false;

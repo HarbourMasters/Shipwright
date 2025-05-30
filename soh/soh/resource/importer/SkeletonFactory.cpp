@@ -1,6 +1,7 @@
 #include "soh/resource/importer/SkeletonFactory.h"
 #include "soh/resource/type/Skeleton.h"
 #include <spdlog/spdlog.h>
+#include <tinyxml2.h>
 #include <libultraship/libultraship.h>
 
 namespace SOH {
@@ -22,7 +23,7 @@ ResourceFactoryBinarySkeletonV0::ReadResource(std::shared_ptr<Ship::File> file,
     skeleton->limbTableCount = reader->ReadUInt32();
 
     skeleton->limbTable.reserve(skeleton->limbTableCount);
-    for (uint32_t i = 0; i < skeleton->limbTableCount; i++) {
+    for (int32_t i = 0; i < skeleton->limbTableCount; i++) {
         std::string limbPath = reader->ReadString();
 
         skeleton->limbTable.push_back(limbPath);

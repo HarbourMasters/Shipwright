@@ -11,7 +11,7 @@
 #include "resource/type/Array.h"
 #include "resource/type/Skeleton.h"
 #include "resource/type/PlayerAnimation.h"
-#include <Fast3D/gfx_pc.h>
+#include <Fast3D/Fast3dWindow.h>
 #include <DisplayList.h>
 
 extern "C" PlayState* gPlayState;
@@ -292,7 +292,7 @@ extern "C" char* ResourceMgr_LoadPlayerAnimByName(const char* animPath) {
 }
 
 extern "C" void ResourceMgr_PushCurrentDirectory(char* path) {
-    gfx_push_current_dir(path);
+    Fast::gfx_push_current_dir(path);
 }
 
 extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path) {

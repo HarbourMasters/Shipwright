@@ -4,7 +4,7 @@
 #include <libultraship/libultraship.h>
 #include "UIWidgets.hpp"
 #include "Menu.h"
-#include "graphic/Fast3D/gfx_rendering_api.h"
+#include "graphic/Fast3D/backends/gfx_rendering_api.h"
 #include "soh/cvar_prefixes.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/Presets/Presets.h"
@@ -53,9 +53,9 @@ static const std::unordered_map<int32_t, const char*> menuThemeOptions = {
 };
 
 static const std::unordered_map<int32_t, const char*> textureFilteringMap = {
-    { FILTER_THREE_POINT, "Three-Point" },
-    { FILTER_LINEAR, "Linear" },
-    { FILTER_NONE, "None" },
+    { Fast::FILTER_THREE_POINT, "Three-Point" },
+    { Fast::FILTER_LINEAR, "Linear" },
+    { Fast::FILTER_NONE, "None" },
 };
 
 static const std::unordered_map<int32_t, const char*> logLevels = {
@@ -135,6 +135,16 @@ static const std::unordered_map<int32_t, const char*> bonkDamageValues = {
     { BONK_DAMAGE_8_HEARTS, "8 Hearts" },     { BONK_DAMAGE_OHKO, "OHKO" },
 };
 
+static const std::unordered_map<int32_t, const char*> dampeDropRates = {
+    { DAMPE_NONE, "None" },
+    { DAMPE_NORMAL, "Vanilla" },
+    { DAMPE_JALAPENO, "Jalapeño" },
+    { DAMPE_CHIPOTLE, "Serrano" },
+    { DAMPE_SCOTCH_BONNET, "Habanero" },
+    { DAMPE_GHOST_PEPPER, "Ghost Pepper" },
+    { DAMPE_INFERNO, "Dampe's Inferno" },
+};
+
 static const std::unordered_map<int32_t, const char*> cursorAnywhereValues = {
     { PAUSE_ANY_CURSOR_RANDO_ONLY, "Only in Rando" },
     { PAUSE_ANY_CURSOR_ALWAYS_ON, "Always" },
@@ -181,13 +191,6 @@ static const std::unordered_map<int32_t, const char*> bootSequenceLabels = {
     { BOOTSEQUENCE_DEFAULT, "Default" },
     { BOOTSEQUENCE_AUTHENTIC, "Authentic" },
     { BOOTSEQUENCE_FILESELECT, "File Select" },
-};
-
-static const std::unordered_map<int32_t, const char*> enhancementPresetList = {
-    { ENHANCEMENT_PRESET_DEFAULT, "Default" },
-    { ENHANCEMENT_PRESET_VANILLA_PLUS, "Vanilla Plus" },
-    { ENHANCEMENT_PRESET_ENHANCED, "Enhanced" },
-    { ENHANCEMENT_PRESET_RANDOMIZER, "Randomizer" },
 };
 
 class SohMenu : public Ship::Menu {

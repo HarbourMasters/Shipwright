@@ -4,7 +4,7 @@
 #include "ResourceFactoryBinary.h"
 
 namespace SOH {
-class ResourceFactoryBinaryAudioSampleV2 : public Ship::ResourceFactoryBinary {
+class ResourceFactoryBinaryAudioSampleV2 final : public Ship::ResourceFactoryBinary {
   public:
     std::shared_ptr<Ship::IResource> ReadResource(std::shared_ptr<Ship::File> file,
                                                   std::shared_ptr<Ship::ResourceInitData> initData) override;

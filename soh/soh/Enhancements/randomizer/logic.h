@@ -59,19 +59,13 @@ class Logic {
     bool LightTrialClear = false;
 
     // Logical keysanity
-    bool IsKeysanity = false;
+    bool IsFireLoopLocked = false;
 
     // Bottle Count
     uint8_t Bottles = 0;
     uint8_t NumBottles = 0;
     // this event covers if the player can currently empty big poes in logic
     bool CanEmptyBigPoes = false;
-    // this event covers if the player could, if they filled their bottle with big poes in field, empty them at the poe
-    // merchant. Works in tandem with the big poes safety check during entrance validation
-    bool CouldEmptyBigPoes = false;
-    // this check is used to tell logic that we are checking big poes accessibility in logic, to ensure it's not
-    // bottle-locked.
-    bool AreCheckingBigPoes = false;
 
     // Drops and Bottle Contents Access
     bool NutPot = false;

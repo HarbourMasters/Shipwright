@@ -1,5 +1,5 @@
 #include "SohMenu.h"
-#include <macros.h>
+#include "soh/OTRGlobals.h"
 
 namespace SohGui {
 

@@ -136,8 +136,9 @@ Fishsanity::GetFishingPondLocations(FishsanityOptionsSource optionsSource) {
     }
     // NOTE: This only works because we can assume activeFish is already sorted; changes that break this assumption will
     // also break this
-    FilterAndEraseFromPool(remainingFish,
-                           [&](uint32_t loc) { return std::binary_search(activeFish.begin(), activeFish.end(), loc); });
+    FilterAndEraseFromPool(remainingFish, [&](RandomizerCheck loc) {
+        return std::binary_search(activeFish.begin(), activeFish.end(), loc);
+    });
 
     return std::make_pair(activeFish, remainingFish);
 }
