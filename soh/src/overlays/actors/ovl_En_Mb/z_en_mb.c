@@ -6,7 +6,6 @@
 
 #include "z_en_mb.h"
 #include "objects/object_mb/object_mb.h"
-#include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
@@ -280,7 +279,6 @@ void EnMb_Init(Actor* thisx, PlayState* play) {
         case ENMB_TYPE_SPEAR_GUARD:
             SkelAnime_InitFlex(play, &this->skelAnime, &gEnMbSpearSkel, &gEnMbSpearStandStillAnim, this->jointTable,
                                this->morphTable, 28);
-
             this->actor.colChkInfo.health = 2;
             this->actor.colChkInfo.mass = MASS_HEAVY;
             this->maxHomeDist = 1000.0f;
