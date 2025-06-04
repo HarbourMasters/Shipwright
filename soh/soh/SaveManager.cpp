@@ -1118,11 +1118,13 @@ void SaveManager::LoadFile(int fileNum) {
                     if (sectionName == "randomizer") {
                         bool hasStats = saveBlock["sections"].contains("sohStats");
                         if (block.value()["data"].contains("aat0") || !hasStats) { // Rachael rando data
-                            SohGui::RegisterPopup("Loading old file", "The file in slot " +
-                                std::to_string(fileNum + 1) +
-                                " appears to contain randomizer data, but is a very old format.\n" +
-                                "The randomizer data has been removed, and this file will be treated as a vanilla file.\n" +
-                                "If this was a randomizer file, the file will not work, and should be deleted.");
+                            SohGui::RegisterPopup(
+                                "Loading old file",
+                                "The file in slot " + std::to_string(fileNum + 1) +
+                                    " appears to contain randomizer data, but is a very old format.\n" +
+                                    "The randomizer data has been removed, and this file will be treated as a vanilla "
+                                    "file.\n" +
+                                    "If this was a randomizer file, the file will not work, and should be deleted.");
                             input.close();
                             saveMtx.unlock();
                             SaveFile(fileNum);
@@ -1132,12 +1134,14 @@ void SaveManager::LoadFile(int fileNum) {
                         s16 minor = saveBlock["sections"]["sohStats"]["data"]["buildVersionMinor"];
                         s16 patch = saveBlock["sections"]["sohStats"]["data"]["buildVersionPatch"];
                         // block loading outdated rando save
-                        if (!(major == gBuildVersionMajor && minor == gBuildVersionMinor && patch == gBuildVersionPatch)) {
+                        if (!(major == gBuildVersionMajor && minor == gBuildVersionMinor &&
+                              patch == gBuildVersionPatch)) {
                             input.close();
                             std::string newFileName = Ship::Context::GetPathRelativeToAppDirectory("Save") +
-                                ("/file" + std::to_string(fileNum + 1) + "-" + std::to_string(GetUnixTimestamp()) + ".bak");
+                                                      ("/file" + std::to_string(fileNum + 1) + "-" +
+                                                       std::to_string(GetUnixTimestamp()) + ".bak");
                             std::filesystem::path newFile(newFileName);
-                                
+
 #if defined(__SWITCH__) || defined(__WIIU__)
                             copy_file(fileName.c_str(), newFile.c_str());
 #else
@@ -1145,12 +1149,13 @@ void SaveManager::LoadFile(int fileNum) {
 #endif
 
                             std::filesystem::remove(fileName);
-                            SohGui::RegisterPopup("Outdated Randomizer Save", "The SoH version in the file in slot " +
-                                std::to_string(fileNum + 1) +
-                                " does not match the currently running version.\n" +
-                                "Non-matching rando saves are unsupported, and the file has been renamed to\n" +
-                                "    " + newFileName + "\n" + 
-                                "If this was not in error, the file should be deleted.");
+                            SohGui::RegisterPopup(
+                                "Outdated Randomizer Save",
+                                "The SoH version in the file in slot " + std::to_string(fileNum + 1) +
+                                    " does not match the currently running version.\n" +
+                                    "Non-matching rando saves are unsupported, and the file has been renamed to\n" +
+                                    "    " + newFileName + "\n" +
+                                    "If this was not in error, the file should be deleted.");
                             saveMtx.unlock();
                             SaveFile(fileNum);
                             return;

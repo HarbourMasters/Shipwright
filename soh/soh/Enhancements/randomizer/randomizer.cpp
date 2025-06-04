@@ -365,13 +365,15 @@ bool Randomizer::SpoilerFileExists(const char* spoilerFileName) {
             nlohmann::json contents;
             spoilerFileStream >> contents;
             spoilerFileStream.close();
-            if (contents.contains("version") && strcmp(std::string(contents["version"]).c_str(), (char*)gBuildVersion) == 0) {
+            if (contents.contains("version") &&
+                strcmp(std::string(contents["version"]).c_str(), (char*)gBuildVersion) == 0) {
                 return true;
             } else {
-                SohGui::RegisterPopup("Old Spoiler Version", "The spoiler file located at\n" +
-                                    std::string(spoilerFileName) +
-                                    "\nwas made by an version that doesn't match the currently running version.\n" +
-                                    "Loading for this file has been cancelled.");
+                SohGui::RegisterPopup(
+                    "Old Spoiler Version",
+                    "The spoiler file located at\n" + std::string(spoilerFileName) +
+                        "\nwas made by an version that doesn't match the currently running version.\n" +
+                        "Loading for this file has been cancelled.");
             }
         }
     }
