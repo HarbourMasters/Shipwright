@@ -11,6 +11,8 @@
 #include "fishsanity.h"
 #include "macros.h"
 #include "3drando/hints.hpp"
+#include "soh/SohGui/SohGui.hpp"
+
 #include "../kaleido.h"
 
 #include <fstream>
@@ -397,6 +399,7 @@ void Context::ParseSpoiler(const char* spoilerFileName) {
     try {
         nlohmann::json spoilerFileJson;
         spoilerFileStream >> spoilerFileJson;
+        spoilerFileStream.close();
         ParseHashIconIndexesJson(spoilerFileJson);
         Rando::Settings::GetInstance()->ParseJson(spoilerFileJson);
         ParseItemLocationsJson(spoilerFileJson);

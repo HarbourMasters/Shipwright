@@ -376,7 +376,11 @@ std::string SohUtils::Sanitize(std::string stringValue) {
         if (pos == stringValue.end()) {
             break;
         }
-        i = std::next(stringValue.insert(pos, '\\'), 2);
+        auto checkPos = pos + 1;
+        auto reversePos = pos - 1;
+        if (*checkPos != '\\' && *reversePos != '\\') {
+            i = std::next(stringValue.insert(pos, '\\'), 2);
+        }
     }
 
     // Removes others.
