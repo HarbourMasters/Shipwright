@@ -137,8 +137,10 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleMerchants"), RO_SHUFFLE_MERCHANTS_OFF) !=
                  RO_SHUFFLE_MERCHANTS_OFF) &&
             (location.GetRCType() != RCTYPE_SONG_LOCATION ||
-             CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleSongs"), RO_SONG_SHUFFLE_SONG_LOCATIONS) !=
-                 RO_SONG_SHUFFLE_SONG_LOCATIONS) && // song locations
+             (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleSongs"), RO_SONG_SHUFFLE_SONG_LOCATIONS) !=
+                  RO_SONG_SHUFFLE_SONG_LOCATIONS &&
+              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleSongs"), RO_SONG_SHUFFLE_SONG_LOCATIONS) !=
+                  RO_SONG_SHUFFLE_OFF)) && // song locations
             ((location.GetRCType() != RCTYPE_BOSS_HEART_OR_OTHER_REWARD &&
               location.GetRandomizerCheck() != RC_SONG_FROM_IMPA &&
               location.GetRandomizerCheck() != RC_SHEIK_IN_ICE_CAVERN) ||

@@ -71,8 +71,6 @@ extern void EnGe1_Wait_Archery(EnGe1* enGe1, PlayState* play);
 extern void EnGe1_SetAnimationIdle(EnGe1* enGe1);
 }
 
-#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).Get()
-
 bool LocMatchesQuest(Rando::Location loc) {
     if (loc.GetQuest() == RCQUEST_BOTH) {
         return true;
@@ -2144,7 +2142,7 @@ void RandomizerOnActorUpdateHandler(void* refActor) {
                 shutterDoor->unk_16E = 0;
             }
         } else if (actor->id == ACTOR_DOOR_GERUDO) {
-            DoorGerudo* gerudoDoor = (DoorGerudo*)actor;
+            DoorGerudo* gerudoDoor = reinterpret_cast<DoorGerudo*>(actor);
             gerudoDoor->actionFunc = func_8099485C;
             gerudoDoor->dyna.actor.world.pos.y = gerudoDoor->dyna.actor.home.pos.y + 200.0f;
         }

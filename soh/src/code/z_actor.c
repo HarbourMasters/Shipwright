@@ -3401,6 +3401,8 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
     Actor_Init(actor, play);
     gSegments[6] = temp;
 
+    GameInteractor_ExecuteOnActorSpawn(actor);
+
     return actor;
 }
 

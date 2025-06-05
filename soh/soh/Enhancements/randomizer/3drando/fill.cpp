@@ -1015,7 +1015,8 @@ static void RandomizeOwnDungeon(const Rando::DungeonInfo* dungeon) {
 
     // filter out locations that may be required to have songs placed at them
     dungeonLocations = FilterFromPool(dungeonLocations, [ctx](const auto loc) {
-        if (ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_SONG_LOCATIONS)) {
+        if (ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_SONG_LOCATIONS) ||
+            ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_OFF)) {
             return !(Rando::StaticData::GetLocation(loc)->GetRCType() == RCTYPE_SONG_LOCATION);
         }
         if (ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_DUNGEON_REWARDS)) {
@@ -1344,8 +1345,8 @@ int Fill() {
 
         StartPerformanceTimer(PT_LIMITED_CHECKS);
         // Then Place songs if song shuffle is set to specific locations
-        if (ctx->GetOption(RSK_SHUFFLE_SONGS).IsNot(RO_SONG_SHUFFLE_ANYWHERE)) {
-
+        if (ctx->GetOption(RSK_SHUFFLE_SONGS).IsNot(RO_SONG_SHUFFLE_ANYWHERE) &&
+            ctx->GetOption(RSK_SHUFFLE_SONGS).IsNot(RO_SONG_SHUFFLE_OFF)) {
             // Get each song
             std::vector<RandomizerGet> songs = FilterAndEraseFromPool(ItemPool, [](const auto i) {
                 return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_SONG;

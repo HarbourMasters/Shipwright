@@ -11,8 +11,6 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).Get()
-
 extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
 
 void DrawTypeOfGrass(EnKusa* grassActor, Gfx* bushDList, Gfx* grassDList, PlayState* play) {
@@ -96,7 +94,7 @@ uint8_t EnKusa_RandomizerHoldsItem(EnKusa* grassActor, PlayState* play) {
     RandomizerCheck rc = grassActor->grassIdentity.randomizerCheck;
 
     uint8_t isDungeon = Rando::StaticData::GetLocation(rc)->IsDungeon();
-    uint8_t grassSetting = Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_GRASS).Get();
+    uint8_t grassSetting = RAND_GET_OPTION(RSK_SHUFFLE_GRASS);
 
     // Don't pull randomized item if grass isn't randomized or is already checked
     if (!IS_RANDO || (grassSetting == RO_SHUFFLE_GRASS_OVERWORLD && isDungeon) ||

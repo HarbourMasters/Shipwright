@@ -193,23 +193,22 @@ void ParsePreset(nlohmann::json& json, std::string name) {
 }
 
 void LoadPresets() {
-    if (!fs::exists(presetFolder)) {
-        return;
-    }
     if (!presets.empty()) {
         presets.clear();
     }
-    for (auto const& preset : fs::directory_iterator(presetFolder)) {
-        std::ifstream ifs(preset.path());
+    if (fs::exists(presetFolder)) {
+        for (auto const& preset : fs::directory_iterator(presetFolder)) {
+            std::ifstream ifs(preset.path());
 
-        auto json = nlohmann::json::parse(ifs);
-        if (!json.contains("presetName")) {
-            spdlog::error(fmt::format("Attempted to load file {} as a preset, but was not a preset file.",
-                                      preset.path().filename().string()));
-        } else {
-            ParsePreset(json, preset.path().filename().stem().string());
+            auto json = nlohmann::json::parse(ifs);
+            if (!json.contains("presetName")) {
+                spdlog::error(fmt::format("Attempted to load file {} as a preset, but was not a preset file.",
+                                          preset.path().filename().string()));
+            } else {
+                ParsePreset(json, preset.path().filename().stem().string());
+            }
+            ifs.close();
         }
-        ifs.close();
     }
     auto initData = std::make_shared<Ship::ResourceInitData>();
     initData->Format = RESOURCE_FORMAT_BINARY;

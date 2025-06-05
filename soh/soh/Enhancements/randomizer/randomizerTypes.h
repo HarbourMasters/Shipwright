@@ -2,7 +2,6 @@
 
 #include <stdint.h>
 #include "z64item.h"
-#include "randomizer_inf.h"
 
 #define MAX_TRICK_NAME_SIZE 50
 
@@ -213,6 +212,15 @@ typedef enum {
     LOGIC_TRIFORCE_PIECES,
     LOGIC_MAX
 } LogicVal;
+
+#define DEFINE_RAND_INF(enum) enum,
+
+typedef enum {
+#include "randomizer_inf.h"
+    RAND_INF_MAX,
+} RandomizerInf;
+
+#undef DEFINE_RAND_INF
 
 typedef enum {
     RA_NONE,
@@ -6166,6 +6174,7 @@ typedef enum {
 
 // Song shuffle Settings (Song locations, Dungeon rewards, anywhere)
 typedef enum {
+    RO_SONG_SHUFFLE_OFF,
     RO_SONG_SHUFFLE_SONG_LOCATIONS,
     RO_SONG_SHUFFLE_DUNGEON_REWARDS,
     RO_SONG_SHUFFLE_ANYWHERE,

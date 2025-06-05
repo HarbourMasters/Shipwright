@@ -4393,7 +4393,7 @@ CustomMessage Randomizer::GetFishingPondOwnerMessage(u16 originalTextId) {
         "fischen!",
         "Désolé, mais l'étang est fermé.&J'ai perdu ma bonne %rCanne à Pêche%w...&Impossible de pêcher sans elle!");
 
-    if (Rando::Context::GetInstance()->GetOption(RSK_FISHING_POLE_HINT)) {
+    if (GetRandoSettingValue(RSK_FISHING_POLE_HINT)) {
         messageEntry = messageEntry + CustomMessage(ctx->GetHint(RH_FISHING_POLE)->GetHintMessage());
     }
 

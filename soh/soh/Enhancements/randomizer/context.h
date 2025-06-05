@@ -14,6 +14,8 @@
 #include <map>
 #include <nlohmann/json.hpp>
 
+#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).Get()
+
 /**
  * @brief Singleton for storing and accessing dynamic Randomizer-related data
  *
