@@ -369,21 +369,6 @@ void SohUtils::CopyStringToCharArray(char* destination, std::string source, size
 }
 
 std::string SohUtils::Sanitize(std::string stringValue) {
-    // Add backslashes.
-    for (auto i = stringValue.begin();;) {
-        auto const pos =
-            std::find_if(i, stringValue.end(), [](char const c) { return '\\' == c || '\'' == c || '"' == c; });
-        if (pos == stringValue.end()) {
-            break;
-        }
-        auto checkPos = pos + 1;
-        auto reversePos = pos - 1;
-        if (*checkPos != '\\' && *reversePos != '\\') {
-            i = std::next(stringValue.insert(pos, '\\'), 2);
-        }
-    }
-
-    // Removes others.
     stringValue.erase(std::remove_if(stringValue.begin(), stringValue.end(),
                                      [](char const c) { return '\n' == c || '\r' == c || '\0' == c || '\x1A' == c; }),
                       stringValue.end());

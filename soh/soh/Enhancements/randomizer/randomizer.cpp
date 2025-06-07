@@ -372,7 +372,7 @@ bool Randomizer::SpoilerFileExists(const char* spoilerFileName) {
                 SohGui::RegisterPopup(
                     "Old Spoiler Version",
                     "The spoiler file located at\n" + std::string(spoilerFileName) +
-                        "\nwas made by an version that doesn't match the currently running version.\n" +
+                        "\nwas made by a version that doesn't match the currently running version.\n" +
                         "Loading for this file has been cancelled.");
             }
         }

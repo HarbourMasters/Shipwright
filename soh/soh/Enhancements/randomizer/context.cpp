@@ -11,8 +11,7 @@
 #include "fishsanity.h"
 #include "macros.h"
 #include "3drando/hints.hpp"
-#include "soh/SohGui/SohGui.hpp"
-
+#include "soh/util.h"
 #include "../kaleido.h"
 
 #include <fstream>
@@ -372,25 +371,8 @@ GetItemEntry Context::GetFinalGIEntry(const RandomizerCheck rc, const bool check
     return giEntry;
 }
 
-std::string sanitize(std::string stringValue) {
-    // Add backslashes.
-    for (auto i = stringValue.begin();;) {
-        auto const pos =
-            std::find_if(i, stringValue.end(), [](char const c) { return '\\' == c || '\'' == c || '"' == c; });
-        if (pos == stringValue.end()) {
-            break;
-        }
-        i = std::next(stringValue.insert(pos, '\\'), 2);
-    }
-
-    // Removes others.
-    std::erase_if(stringValue, [](char const c) { return '\n' == c || '\r' == c || '\0' == c || '\x1A' == c; });
-
-    return stringValue;
-}
-
 void Context::ParseSpoiler(const char* spoilerFileName) {
-    std::ifstream spoilerFileStream(sanitize(spoilerFileName));
+    std::ifstream spoilerFileStream(SohUtils::Sanitize(spoilerFileName));
     if (!spoilerFileStream) {
         return;
     }
