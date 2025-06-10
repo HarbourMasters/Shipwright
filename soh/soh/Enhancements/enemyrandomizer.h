@@ -1,6 +1,7 @@
 #pragma once
 
 #include <libultraship/bridge.h>
+#include "item-tables/ItemTableTypes.h"
 
 typedef struct EnemyEntry {
     int16_t id;
@@ -11,7 +12,7 @@ typedef struct EnemyEntry {
 
 bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, int16_t params, float posX);
 bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy);
-EnemyEntry GetRandomizedEnemyEntry(uint32_t seed);
+EnemyEntry GetRandomizedEnemyEntry(uint32_t seed, PlayState* play);
 
 extern const char* enemyCVarList[];
 extern const char* enemyNameList[];

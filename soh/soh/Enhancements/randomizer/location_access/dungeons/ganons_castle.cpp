@@ -29,12 +29,7 @@ void RegionTable_Init_GanonsCastle() {
         Entrance(RR_GANONS_CASTLE_SHADOW_TRIAL, []{return true;}),
         Entrance(RR_GANONS_CASTLE_SPIRIT_TRIAL, []{return true;}),
         Entrance(RR_GANONS_CASTLE_LIGHT_TRIAL,  []{return logic->CanUse(RG_GOLDEN_GAUNTLETS);}),
-        Entrance(RR_GANONS_TOWER_ENTRYWAY,      []{return (logic->ForestTrialClear || ctx->GetTrial(TK_FOREST_TRIAL)->IsSkipped()) &&
-                                                          (logic->FireTrialClear   || ctx->GetTrial(TK_FIRE_TRIAL)->IsSkipped())   &&
-                                                          (logic->WaterTrialClear  || ctx->GetTrial(TK_WATER_TRIAL)->IsSkipped())  &&
-                                                          (logic->ShadowTrialClear || ctx->GetTrial(TK_SHADOW_TRIAL)->IsSkipped()) &&
-                                                          (logic->SpiritTrialClear || ctx->GetTrial(TK_SPIRIT_TRIAL)->IsSkipped()) &&
-                                                          (logic->LightTrialClear  || ctx->GetTrial(TK_LIGHT_TRIAL)->IsSkipped());}),
+        Entrance(RR_GANONS_TOWER_ENTRYWAY,      []{return true;}),
         Entrance(RR_GANONS_CASTLE_DEKU_SCRUBS,  []{return ctx->GetTrickOption(RT_LENS_GANON) || logic->CanUse(RG_LENS_OF_TRUTH);}),
     });
 
@@ -162,13 +157,7 @@ void RegionTable_Init_GanonsCastle() {
         Entrance(RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_STARTING_LEDGE, []{return true;}),
         Entrance(RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_CHAIRS_ROOM,    []{return true;}),
         Entrance(RR_GANONS_CASTLE_MQ_LIGHT_TRIAL_DINOLFOS_ROOM,   []{return Here(RR_GANONS_CASTLE_MQ_MAIN, []{return logic->CanUse(RG_GOLDEN_GAUNTLETS);});}),
-        //RANDOTODO could we just set these events automatically based on the setting?
-        Entrance(RR_GANONS_TOWER_ENTRYWAY,                        []{return (logic->ForestTrialClear || ctx->GetTrial(TK_FOREST_TRIAL)->IsSkipped()) &&
-                                                                            (logic->FireTrialClear   || ctx->GetTrial(TK_FIRE_TRIAL)->IsSkipped())   &&
-                                                                            (logic->WaterTrialClear  || ctx->GetTrial(TK_WATER_TRIAL)->IsSkipped())  &&
-                                                                            (logic->ShadowTrialClear || ctx->GetTrial(TK_SHADOW_TRIAL)->IsSkipped()) &&
-                                                                            (logic->SpiritTrialClear || ctx->GetTrial(TK_SPIRIT_TRIAL)->IsSkipped()) &&
-                                                                            (logic->LightTrialClear  || ctx->GetTrial(TK_LIGHT_TRIAL)->IsSkipped());}),
+        Entrance(RR_GANONS_TOWER_ENTRYWAY,                        []{return true;}),
         Entrance(RR_GANONS_CASTLE_MQ_DEKU_SCRUBS,                 []{return ctx->GetTrickOption(RT_LENS_GANON_MQ) || logic->CanUse(RG_LENS_OF_TRUTH);}),
     });
 
@@ -436,7 +425,13 @@ void RegionTable_Init_GanonsCastle() {
         //Exits
         Entrance(RR_GANONS_CASTLE_LOBBY,   []{return ctx->GetDungeon(GANONS_CASTLE)->IsVanilla();}),
         Entrance(RR_GANONS_CASTLE_MQ_MAIN, []{return ctx->GetDungeon(GANONS_CASTLE)->IsMQ();}),
-        Entrance(RR_GANONS_TOWER_FLOOR_1,  []{return true;}),
+        //RANDOTODO could we just set these events automatically based on the setting?
+        Entrance(RR_GANONS_TOWER_FLOOR_1,  []{return (logic->ForestTrialClear || ctx->GetTrial(TK_FOREST_TRIAL)->IsSkipped()) &&
+                                                     (logic->FireTrialClear   || ctx->GetTrial(TK_FIRE_TRIAL)->IsSkipped())   &&
+                                                     (logic->WaterTrialClear  || ctx->GetTrial(TK_WATER_TRIAL)->IsSkipped())  &&
+                                                     (logic->ShadowTrialClear || ctx->GetTrial(TK_SHADOW_TRIAL)->IsSkipped()) &&
+                                                     (logic->SpiritTrialClear || ctx->GetTrial(TK_SPIRIT_TRIAL)->IsSkipped()) &&
+                                                     (logic->LightTrialClear  || ctx->GetTrial(TK_LIGHT_TRIAL)->IsSkipped());}),
     });
 
     areaTable[RR_GANONS_TOWER_FLOOR_1] = Region("Ganon's Tower Floor 1", "Ganons Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {

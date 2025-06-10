@@ -1389,6 +1389,7 @@ bool Logic::SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless
             static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE) || GetDifficultyValueFromString(GlitchHover) >=
             static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE))) { return FireTempleKeys >= requiredAmountGlitched;
             }*/
+            // If the Fire Temple loop lock is removed, Small key Count is set to 1 before starting
             return GetSmallKeyCount(SCENE_FIRE_TEMPLE) >= requiredAmountGlitchless;
 
         case RR_WATER_TEMPLE:
@@ -2331,14 +2332,16 @@ void Logic::SetInLogic(LogicVal logicVal, bool value) {
     inLogic[logicVal] = value;
 }
 
-void Logic::Reset() {
-    NewSaveContext();
+void Logic::Reset(bool resetSaveContext /*= true*/) {
+    if (resetSaveContext) {
+        NewSaveContext();
+    }
     StartPerformanceTimer(PT_LOGIC_RESET);
     memset(inLogic, false, sizeof(inLogic));
     // Settings-dependent variables
-    IsKeysanity = ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) ||
-                  ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) ||
-                  ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE);
+    IsFireLoopLocked = ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) ||
+                       ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_OVERWORLD) ||
+                       ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANY_DUNGEON);
 
     // AmmoCanDrop = /*AmmoDrops.IsNot(AMMODROPS_NONE)*/ false; TODO: AmmoDrop setting
 
@@ -2371,37 +2374,39 @@ void Logic::Reset() {
     ShadowTrialClear = false;
     LightTrialClear = false;
 
-    // Ocarina C Buttons
-    bool ocBtnShuffle = ctx->GetOption(RSK_SHUFFLE_OCARINA_BUTTONS).Is(true);
-    SetRandoInf(RAND_INF_HAS_OCARINA_A, !ocBtnShuffle);
-    SetRandoInf(RAND_INF_HAS_OCARINA_C_UP, !ocBtnShuffle);
-    SetRandoInf(RAND_INF_HAS_OCARINA_C_DOWN, !ocBtnShuffle);
-    SetRandoInf(RAND_INF_HAS_OCARINA_C_LEFT, !ocBtnShuffle);
-    SetRandoInf(RAND_INF_HAS_OCARINA_C_RIGHT, !ocBtnShuffle);
+    if (resetSaveContext) {
+        // Ocarina C Buttons
+        bool ocBtnShuffle = ctx->GetOption(RSK_SHUFFLE_OCARINA_BUTTONS).Is(true);
+        SetRandoInf(RAND_INF_HAS_OCARINA_A, !ocBtnShuffle);
+        SetRandoInf(RAND_INF_HAS_OCARINA_C_UP, !ocBtnShuffle);
+        SetRandoInf(RAND_INF_HAS_OCARINA_C_DOWN, !ocBtnShuffle);
+        SetRandoInf(RAND_INF_HAS_OCARINA_C_LEFT, !ocBtnShuffle);
+        SetRandoInf(RAND_INF_HAS_OCARINA_C_RIGHT, !ocBtnShuffle);
 
-    // Progressive Items
-    SetUpgrade(UPG_STICKS, ctx->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG).Is(true) ? 0 : 1);
-    SetUpgrade(UPG_NUTS, ctx->GetOption(RSK_SHUFFLE_DEKU_NUT_BAG).Is(true) ? 0 : 1);
+        // Progressive Items
+        SetUpgrade(UPG_STICKS, ctx->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG).Is(true) ? 0 : 1);
+        SetUpgrade(UPG_NUTS, ctx->GetOption(RSK_SHUFFLE_DEKU_NUT_BAG).Is(true) ? 0 : 1);
 
-    // If we're not shuffling swim, we start with it
-    if (ctx->GetOption(RSK_SHUFFLE_SWIM).Is(false)) {
-        SetRandoInf(RAND_INF_CAN_SWIM, true);
-    }
+        // If we're not shuffling swim, we start with it
+        if (ctx->GetOption(RSK_SHUFFLE_SWIM).Is(false)) {
+            SetRandoInf(RAND_INF_CAN_SWIM, true);
+        }
 
-    // If we're not shuffling child's wallet, we start with it
-    if (ctx->GetOption(RSK_SHUFFLE_CHILD_WALLET).Is(false)) {
-        SetRandoInf(RAND_INF_HAS_WALLET, true);
-    }
+        // If we're not shuffling child's wallet, we start with it
+        if (ctx->GetOption(RSK_SHUFFLE_CHILD_WALLET).Is(false)) {
+            SetRandoInf(RAND_INF_HAS_WALLET, true);
+        }
 
-    // If we're not shuffling fishing pole, we start with it
-    if (ctx->GetOption(RSK_SHUFFLE_FISHING_POLE).Is(false)) {
-        SetRandoInf(RAND_INF_FISHING_POLE_FOUND, true);
-    }
+        // If we're not shuffling fishing pole, we start with it
+        if (ctx->GetOption(RSK_SHUFFLE_FISHING_POLE).Is(false)) {
+            SetRandoInf(RAND_INF_FISHING_POLE_FOUND, true);
+        }
 
-    // If not keysanity, start with 1 logical key to account for automatically unlocking the basement door in vanilla
-    // FiT
-    if (!IsKeysanity && ctx->GetDungeon(Rando::FIRE_TEMPLE)->IsVanilla()) {
-        SetSmallKeyCount(SCENE_FIRE_TEMPLE, 1);
+        // If not keysanity, start with 1 logical key to account for automatically unlocking the basement door in
+        // vanilla FiT
+        if (!IsFireLoopLocked && ctx->GetDungeon(Rando::FIRE_TEMPLE)->IsVanilla()) {
+            SetSmallKeyCount(SCENE_FIRE_TEMPLE, 1);
+        }
     }
 
     // Bottle Count
@@ -2454,7 +2459,9 @@ void Logic::Reset() {
     // Other
     AtDay = false;
     AtNight = false;
-    GetSaveContext()->linkAge = !ctx->GetOption(RSK_SELECTED_STARTING_AGE).Get();
+    if (resetSaveContext) {
+        GetSaveContext()->linkAge = !ctx->GetOption(RSK_SELECTED_STARTING_AGE).Get();
+    }
 
     // Events
     ShowedMidoSwordAndShield = false;
@@ -2518,6 +2525,8 @@ void Logic::Reset() {
     MQSpirit3SunsEnemies = false;
     Spirit1FSilverRupees = false;
     JabuRutoIn1F = false;
+
+    CalculatingAvailableChecks = false;
 
     StopPerformanceTimer(PT_LOGIC_RESET);
 }

@@ -209,6 +209,13 @@ void ProcessExits(Region* region, GetAccessibleLocationsStruct& gals, Randomizer
                   bool stopOnBeatable = false, bool addToPlaythrough = false) {
     auto ctx = Rando::Context::GetInstance();
     for (auto& exit : region->exits) {
+        int16_t entranceIndex = exit.GetIndex();
+        if (!logic->ACProcessUndiscoveredExits && logic->CalculatingAvailableChecks &&
+            ctx->GetOption(RSK_SHUFFLE_ENTRANCES).Get() && exit.IsShuffled() && entranceIndex != -1 &&
+            !Entrance_GetIsEntranceDiscovered(entranceIndex)) {
+            continue;
+        }
+
         Region* exitRegion = exit.GetConnectedRegion();
         // Update Time of Day Access for the exit
         if (UpdateToDAccess(&exit, exitRegion)) {
@@ -421,18 +428,13 @@ bool AddCheckToLogic(LocationAccess& locPair, GetAccessibleLocationsStruct& gals
     Rando::ItemLocation* location = ctx->GetItemLocation(loc);
     RandomizerGet locItem = location->GetPlacedRandomizerGet();
 
-    if (!location->IsAddedToPool() && locPair.ConditionsMet(parentRegion, gals.calculatingAvailableChecks)) {
-        if (gals.calculatingAvailableChecks) {
-            gals.accessibleLocations.push_back(loc);
-            StopPerformanceTimer(PT_LOCATION_LOGIC);
-            return false;
-        }
-
+    if (!location->IsAddedToPool() && locPair.ConditionsMet(parentRegion, logic->CalculatingAvailableChecks)) {
         location->AddToPool();
 
-        if (locItem == RG_NONE) {
+        if (locItem == RG_NONE || logic->CalculatingAvailableChecks) {
             gals.accessibleLocations.push_back(loc); // Empty location, consider for placement
-        } else {
+        }
+        if (locItem != RG_NONE) {
             // If ignore has a value, we want to check if the item location should be considered or not
             // This is necessary due to the below preprocessing for playthrough generation
             if (ignore != RG_NONE) {
@@ -528,11 +530,32 @@ void ProcessRegion(Region* region, GetAccessibleLocationsStruct& gals, Randomize
 // Return any of the targetLocations that are accessible in logic
 std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerCheck>& targetLocations,
                                                 RandomizerGet ignore /* = RG_NONE*/,
-                                                bool calculatingAvailableChecks /* = false */) {
+                                                bool calculatingAvailableChecks /* = false */,
+                                                RandomizerRegion startingRegion /* = RR_ROOT */) {
     auto ctx = Rando::Context::GetInstance();
     GetAccessibleLocationsStruct gals(0);
-    gals.calculatingAvailableChecks = calculatingAvailableChecks;
     ResetLogic(ctx, gals, !calculatingAvailableChecks);
+    if (startingRegion != RR_ROOT) {
+        gals.regionPool.insert(gals.regionPool.begin(), startingRegion);
+
+        const auto& region = RegionTable(startingRegion);
+        if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD)) {
+            region->childDay = true;
+        } else {
+            region->adultDay = true;
+        }
+        if (region->timePass) {
+            if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD)) {
+                region->childNight = true;
+            } else {
+                region->adultNight = true;
+            }
+        }
+    }
+    if (calculatingAvailableChecks) {
+        logic->Reset(false);
+        logic->CalculatingAvailableChecks = true;
+    }
     do {
         gals.InitLoop();
         for (size_t i = 0; i < gals.regionPool.size(); i++) {

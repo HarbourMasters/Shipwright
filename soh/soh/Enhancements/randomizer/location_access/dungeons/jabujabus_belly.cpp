@@ -352,9 +352,13 @@ void RegionTable_Init_JabuJabusBelly() {
     // Boss Room
     areaTable[RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY] = Region("Jabu Jabus Belly Boss Entryway", "Jabu Jabus Belly", {RA_JABU_JABUS_BELLY}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         // Exits
+        Entrance(RR_JABU_JABUS_BELLY_BOSS_ROOM, []{return true;}),
+    });
+
+    areaTable[RR_JABU_JABUS_BELLY_BOSS_EXIT] = Region("Jabu Jabus Belly Boss Exit", "Jabu Jabus Belly", {RA_JABU_JABUS_BELLY}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+        // Exits
         Entrance(RR_JABU_JABUS_BELLY_NEAR_BOSS_ROOM, []{return ctx->GetDungeon(JABU_JABUS_BELLY)->IsVanilla();}),
         Entrance(RR_JABU_JABUS_BELLY_MQ_EAST_ROOM,   []{return ctx->GetDungeon(JABU_JABUS_BELLY)->IsMQ();}),
-        Entrance(RR_JABU_JABUS_BELLY_BOSS_ROOM,      []{return true;}),
     });
 
     areaTable[RR_JABU_JABUS_BELLY_BOSS_ROOM] = Region("Jabu Jabus Belly Boss Room", "Jabu Jabus Belly", {}, NO_DAY_NIGHT_CYCLE, {
@@ -372,8 +376,8 @@ void RegionTable_Init_JabuJabusBelly() {
         LOCATION(RC_BARINADE,                        logic->JabuJabusBellyClear),
     }, {
         // Exits
-        Entrance(RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY, []{return false;}),
-        Entrance(RR_ZORAS_FOUNTAIN,                 []{return logic->JabuJabusBellyClear;}, false),
+        Entrance(RR_JABU_JABUS_BELLY_BOSS_EXIT, []{return false;}),
+        Entrance(RR_ZORAS_FOUNTAIN,             []{return logic->JabuJabusBellyClear;}, false),
     });
 
     // clang-format on

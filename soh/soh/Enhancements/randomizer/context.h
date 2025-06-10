@@ -104,12 +104,22 @@ class Context {
      * @return RandoOptionLACSCondition
      */
     RandoOptionLACSCondition LACSCondition() const;
+
+    /**
+     * @brief Sets the resolved Light Arrow CutScene check condition.
+     * There is no direct option for this, it is inferred based on the value of a few other options.
+     *
+     * @param lacsCondition
+     */
+    void LACSCondition(RandoOptionLACSCondition lacsCondition);
+
     GetItemEntry GetFinalGIEntry(RandomizerCheck rc, bool checkObtainability = true, GetItemID ogItemId = GI_NONE);
     void ParseSpoiler(const char* spoilerFileName);
     void ParseHashIconIndexesJson(nlohmann::json spoilerFileJson);
     void ParseItemLocationsJson(nlohmann::json spoilerFileJson);
     void WriteHintJson(nlohmann::ordered_json& spoilerFileJson);
     void ParseHintJson(nlohmann::json spoilerFileJson);
+    void ParseTricksJson(nlohmann::json spoilerFileJson);
     std::map<RandomizerCheck, ItemOverride> overrides = {};
     std::vector<std::vector<RandomizerCheck>> playthroughLocations = {};
     std::vector<RandomizerCheck> everyPossibleLocation = {};

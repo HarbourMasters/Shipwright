@@ -11,7 +11,12 @@
 
 extern "C" {
 #include <z64.h>
+#include "src/overlays/actors/ovl_En_Rr/z_en_rr.h"
 }
+
+#define CVAR_ENEMY_RANDOMIZER_NAME CVAR_ENHANCEMENT("RandomizedEnemies")
+#define CVAR_ENEMY_RANDOMIZER_DEFAULT ENEMY_RANDOMIZER_OFF
+#define CVAR_ENEMY_RANDOMIZER_VALUE CVarGetInteger(CVAR_ENEMY_RANDOMIZER_NAME, CVAR_ENEMY_RANDOMIZER_DEFAULT)
 
 const char* enemyCVarList[] = {
     CVAR_ENHANCEMENT("RandomizedEnemyList.Armos"),        CVAR_ENHANCEMENT("RandomizedEnemyList.Arwing"),
@@ -270,15 +275,7 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t* actorId, f32* po
         // Get randomized enemy ID and parameter.
         uint32_t seed =
             play->sceneNum + *actorId + (int)*posX + (int)*posY + (int)*posZ + *rotX + *rotY + *rotZ + *params;
-        EnemyEntry randomEnemy = GetRandomizedEnemyEntry(seed);
-
-        int8_t timesRandomized = 1;
-
-        // While randomized enemy isn't allowed in certain situations, randomize again.
-        while (!IsEnemyAllowedToSpawn(play->sceneNum, play->roomCtx.curRoom.num, randomEnemy)) {
-            randomEnemy = GetRandomizedEnemyEntry(seed + timesRandomized);
-            timesRandomized++;
-        }
+        EnemyEntry randomEnemy = GetRandomizedEnemyEntry(seed, play);
 
         *actorId = randomEnemy.id;
         *params = randomEnemy.params;
@@ -334,19 +331,28 @@ void GetSelectedEnemies() {
     }
 }
 
-EnemyEntry GetRandomizedEnemyEntry(uint32_t seed) {
+EnemyEntry GetRandomizedEnemyEntry(uint32_t seed, PlayState* play) {
+    std::vector<EnemyEntry> filteredEnemyList = {};
     if (selectedEnemyList.size() == 0) {
         GetSelectedEnemies();
     }
-    if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), ENEMY_RANDOMIZER_OFF) == ENEMY_RANDOMIZER_RANDOM_SEEDED) {
+    for (EnemyEntry enemy : selectedEnemyList) {
+        if (IsEnemyAllowedToSpawn(play->sceneNum, play->roomCtx.curRoom.num, enemy)) {
+            filteredEnemyList.push_back(enemy);
+        }
+    }
+    if (filteredEnemyList.size() == 0) {
+        filteredEnemyList = selectedEnemyList;
+    }
+    if (CVAR_ENEMY_RANDOMIZER_VALUE == ENEMY_RANDOMIZER_RANDOM_SEEDED) {
         uint32_t finalSeed =
             seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
         Random_Init(finalSeed);
-        uint32_t randomNumber = Random(0, selectedEnemyList.size());
-        return selectedEnemyList[randomNumber];
+        uint32_t randomNumber = Random(0, filteredEnemyList.size());
+        return filteredEnemyList[randomNumber];
     } else {
-        uint32_t randomSelectedEnemy = Random(0, selectedEnemyList.size());
-        return selectedEnemyList[randomSelectedEnemy];
+        uint32_t randomSelectedEnemy = Random(0, filteredEnemyList.size());
+        return filteredEnemyList[randomSelectedEnemy];
     }
 }
 
@@ -532,3 +538,45 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
             return 1;
     }
 }
+
+void RegisterEnemyRandomizer() {
+    // prevent dark link from triggering a voidout
+    COND_VB_SHOULD(VB_TRIGGER_VOIDOUT, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+        Actor* actor = va_arg(args, Actor*);
+
+        if (actor->category != ACTORCAT_PLAYER) {
+            *should = false;
+            Actor_Kill(actor);
+        }
+    });
+
+    // prevent dark link dealing fall damage to the player
+    COND_VB_SHOULD(VB_RECIEVE_FALL_DAMAGE, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+        Actor* actor = va_arg(args, Actor*);
+
+        if (actor->category != ACTORCAT_PLAYER) {
+            *should = false;
+        }
+    });
+
+    // prevent dark link from interfering with HESS/recoil/etc when at more than 100 away from him
+    COND_VB_SHOULD(VB_TORCH2_HANDLE_CLANKING, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+        Actor* darkLink = va_arg(args, Actor*);
+
+        if (darkLink->xzDistToPlayer > 100.0f) {
+            *should = false;
+        }
+    });
+
+    // prevent dark link from being grabbed by like likes and therefore grabbing the player
+    COND_VB_SHOULD(VB_LIKE_LIKE_GRAB_PLAYER, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+        EnRr* likeLike = va_arg(args, EnRr*);
+
+        if (!(likeLike->collider1.base.oc != NULL && likeLike->collider1.base.oc->category == ACTORCAT_PLAYER) &&
+            !(likeLike->collider2.base.oc != NULL && likeLike->collider2.base.oc->category == ACTORCAT_PLAYER)) {
+            *should = false;
+        }
+    });
+}
+
+static RegisterShipInitFunc initFunc(RegisterEnemyRandomizer, { CVAR_ENEMY_RANDOMIZER_NAME });
