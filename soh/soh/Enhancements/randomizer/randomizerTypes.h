@@ -5689,7 +5689,7 @@ typedef enum {
     RSK_DOOR_OF_TIME,
     RSK_ZORAS_FOUNTAIN,
     RSK_SLEEPING_WATERFALL,
-    RSK_JABU_JABU_KEY,
+    RSK_JABU_OPEN,
     RSK_STARTING_AGE,
     RSK_SELECTED_STARTING_AGE,
     RSK_GERUDO_FORTRESS,
@@ -5940,14 +5940,11 @@ typedef enum {
     RO_WATERFALL_OPEN,
 } RandoOptionSleepingWaterfall;
 
-// Jabu-Jabu Key settings (fish, bottled item, any item, Ocarina song, none)
+// Jabu-Jabu settings (closed, open)
 typedef enum {
-    RO_JABU_KEY_FISH,
-    RO_JABU_KEY_BOTTLED_ITEM,
-    RO_JABU_KEY_ANY_ITEM,
-    RO_JABU_KEY_OCARINA_SONG,
-    RO_JABU_KEY_NONE,
-} RandoOptionJabuKey;
+    RO_JABU_CLOSED,
+    RO_JABU_OPEN,
+} RandoOptionJabu;
 
 // Starting Age settings (child, adult, random)
 typedef enum {

@@ -942,19 +942,27 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
     }
 
     if (actor->id == ACTOR_EN_JJ && !IS_RANDO) {
-        enJjUpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>(
-            [](void* innerActorRef) mutable {
+        enJjUpdateHook =
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* innerActorRef) mutable {
                 Actor* innerActor = static_cast<Actor*>(innerActorRef);
-                if (innerActor->id == ACTOR_EN_JJ && !Flags_GetEventChkInf(EVENTCHKINF_OFFERED_FISH_TO_JABU_JABU) &&
-                    CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipJabuJabuFish"), 0) && !IS_RANDO) {
-                    EnJj* enJj = static_cast<EnJj*>(innerActorRef);
-                    if (enJj->actionFunc == EnJj_WaitForFish) {
-                        EnJj_SetupAction(enJj, EnJj_WaitToOpenMouth);
-                        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(enJjUpdateHook);
-                        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enJjKillHook);
-                        enJjUpdateHook = 0;
-                        enJjKillHook = 0;
-                    }
+
+                if (innerActor->id != ACTOR_EN_JJ || Flags_GetEventChkInf(EVENTCHKINF_OFFERED_FISH_TO_JABU_JABU)) {
+                    return;
+                }
+
+                bool shouldOpen = IS_RANDO ? RAND_GET_OPTION(RSK_JABU_OPEN)
+                                           : CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipJabuJabuFish"), 0);
+                if (!shouldOpen) {
+                    return;
+                }
+
+                EnJj* enJj = static_cast<EnJj*>(innerActorRef);
+                if (enJj->actionFunc == EnJj_WaitForFish) {
+                    EnJj_SetupAction(enJj, EnJj_WaitToOpenMouth);
+                    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(enJjUpdateHook);
+                    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enJjKillHook);
+                    enJjUpdateHook = 0;
+                    enJjKillHook = 0;
                 }
             });
         enJjKillHook =

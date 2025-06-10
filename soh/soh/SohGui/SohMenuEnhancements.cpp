@@ -266,8 +266,7 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipJabuJabuFish"))
         .PreFunc([](WidgetInfo& info) {
             info.options->disabled = IS_RANDO && GameInteractor::IsSaveLoaded(true);
-            info.options->disabledTooltip =
-                "This setting is disabled because a randomizer savefile is loaded.";
+            info.options->disabledTooltip = "This setting is disabled because a randomizer savefile is loaded.";
         })
         .Options(CheckboxOptions().Tooltip("Allow Link to enter Jabu-Jabu without feeding him a fish."));
 

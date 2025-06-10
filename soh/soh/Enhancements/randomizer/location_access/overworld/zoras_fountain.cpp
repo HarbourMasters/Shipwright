@@ -31,7 +31,7 @@ void RegionTable_Init_ZorasFountain() {
         //child can break the brown rock without lifting the silver rock and it stays gone for adult, but it's not intuitive and there's no reasonable case where it matters.
         Entrance(RR_ZF_HIDDEN_CAVE,            []{return logic->CanUse(RG_SILVER_GAUNTLETS) && logic->BlastOrSmash();}),
         Entrance(RR_ZF_ROCK,                   []{return logic->IsAdult && logic->CanUse(RG_SCARECROW);}),
-        Entrance(RR_JABU_JABUS_BELLY_ENTRYWAY, []{return (logic->IsChild && logic->CanUse(RG_BOTTLE_WITH_FISH));}),
+        Entrance(RR_JABU_JABUS_BELLY_ENTRYWAY, []{return logic->IsChild && (ctx->GetOption(RSK_JABU_OPEN).Is(RO_JABU_OPEN) || logic->CanUse(RG_BOTTLE_WITH_FISH));}),
         Entrance(RR_ZF_GREAT_FAIRY_FOUNTAIN,   []{return logic->HasExplosives() || (ctx->GetTrickOption(RT_ZF_GREAT_FAIRY_WITHOUT_EXPLOSIVES) && logic->CanUse(RG_MEGATON_HAMMER) && logic->CanUse(RG_SILVER_GAUNTLETS));}),
     });
 
