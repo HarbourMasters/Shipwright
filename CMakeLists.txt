@@ -155,6 +155,9 @@ set(GFX_DEBUG_DISASSEMBLER ON)
 # Tell LUS we're using F3DEX_GBI_2 (in a way that doesn't break libgfxd)
 set(GBI_UCODE F3DEX_GBI_2)
 
+# Enable MPQ and OTR support
+set(INCLUDE_MPQ_SUPPORT ON)
+
 ################################################################################
 # Set CONTROLLERBUTTONS_T
 ################################################################################
