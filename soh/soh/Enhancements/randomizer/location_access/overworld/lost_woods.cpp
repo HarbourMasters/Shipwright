@@ -12,9 +12,10 @@ void RegionTable_Init_LostWoods() {
 
     areaTable[RR_THE_LOST_WOODS] = Region("Lost Woods", "Lost Woods", {RA_THE_LOST_WOODS}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->GossipStoneFairy,  []{return logic->CallGossipFairyExceptSuns();}),
-        EventAccess(&logic->BeanPlantFairy,    []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}),
-        EventAccess(&logic->BugShrub,          []{return logic->IsChild && logic->CanCutShrubs();}),
+        EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairyExceptSuns();}),
+        EventAccess(&logic->BeanPlantFairy,   []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}),
+        EventAccess(&logic->BugShrub,         []{return logic->IsChild && logic->CanCutShrubs();}),
+        EventAccess(&logic->BorrowSpookyMask, []{return logic->IsChild && logic->BorrowSkullMask && logic->CanUse(RG_SARIAS_SONG) && logic->HasItem(RG_CHILD_WALLET);}),
     }, {
         //Locations
         LOCATION(RC_LW_SKULL_KID,                       logic->IsChild && logic->CanUse(RG_SARIAS_SONG)),
@@ -110,8 +111,8 @@ void RegionTable_Init_LostWoods() {
 
     areaTable[RR_DEKU_THEATER] = Region("Deku Theater", "Deku Theater", {}, NO_DAY_NIGHT_CYCLE, {}, {
         //Locations
-        LOCATION(RC_DEKU_THEATER_SKULL_MASK,    logic->IsChild && logic->SkullMask),
-        LOCATION(RC_DEKU_THEATER_MASK_OF_TRUTH, logic->IsChild && logic->MaskOfTruth),
+        LOCATION(RC_DEKU_THEATER_SKULL_MASK,    logic->IsChild && logic->BorrowSkullMask),
+        LOCATION(RC_DEKU_THEATER_MASK_OF_TRUTH, logic->IsChild && logic->BorrowRightMasks),
     }, {
         //Exits
         Entrance(RR_LW_BEYOND_MIDO, []{return true;}),
