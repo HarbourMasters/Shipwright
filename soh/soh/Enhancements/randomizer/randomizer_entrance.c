@@ -253,7 +253,9 @@ void Entrance_Init(void) {
             for (s16 i = 0; i < 4; i++) {
                 // Zero out the bit in the field which tells the game to keep playing
                 // background music for all four scene setups at each index
-                gEntranceTable[override + i].field &= ~ENTRANCE_INFO_CONTINUE_BGM_FLAG;
+                if (override + i < ENTRANCE_TABLE_SIZE) {
+                    gEntranceTable[override + i].field &= ~ENTRANCE_INFO_CONTINUE_BGM_FLAG;
+                }
             }
         }
     }
