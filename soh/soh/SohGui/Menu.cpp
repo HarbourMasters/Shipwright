@@ -208,7 +208,8 @@ uint32_t Menu::DrawSearchResults(std::string& menuSearchText) {
                         if (widgetStr.find(menuSearchText) != std::string::npos) {
                             MenuDrawItem(info, 90 / sidebar.columnCount, menuThemeIndex);
                             ImGui::PushStyleColor(ImGuiCol_Text, UIWidgets::ColorValues.at(UIWidgets::Colors::Gray));
-                            std::string origin = fmt::format("  ({} -> {}, Col {})", menuEntry.label, sidebarLabel, i + 1);
+                            std::string origin =
+                                fmt::format("  ({} -> {}, Col {})", menuEntry.label, sidebarLabel, i + 1);
                             ImGui::Text("%s", origin.c_str());
                             ImGui::PopStyleColor();
                             searchCount++;
