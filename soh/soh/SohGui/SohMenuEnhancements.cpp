@@ -7,6 +7,10 @@
 #include <soh/Enhancements/Presets/Presets.h>
 #include <soh/Enhancements/TimeDisplay/TimeDisplay.h>
 
+#define CVAR_INT_SHIP_INIT(cvar, val) \
+    CVarSetInteger(cvar, val);        \
+    ShipInit::Init(cvar);
+
 static std::string comboboxTooltip = "";
 static int32_t enhancementPresetSelected = ENHANCEMENT_PRESET_DEFAULT;
 bool isBetaQuestEnabled = false;
@@ -272,16 +276,16 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "All##Skips", WIDGET_BUTTON)
         .Options(ButtonOptions().Size(Sizes::Inline))
         .Callback([](WidgetInfo& info) {
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), true);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"), true);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), true);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), true);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), true);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), true);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), true);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), true);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), true);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), true);
+            CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), true);
+            CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"), true);
+            CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), true);
+            CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), true);
+            CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), true);
+            CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), true);
+            CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), true);
+            CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), true);
+            CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), true);
+            CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), true);
 
             Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         });
@@ -289,16 +293,16 @@ void SohMenu::AddMenuEnhancements() {
         .SameLine(true)
         .Options(ButtonOptions().Size(Sizes::Inline))
         .Callback([](WidgetInfo& info) {
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), false);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"), false);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), false);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), false);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), false);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), false);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), false);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), false);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), false);
-            CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), false);
+            CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), false);
+            CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"), false);
+            CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), false);
+            CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), false);
+            CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), false);
+            CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), false);
+            CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), false);
+            CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), false);
+            CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), false);
+            CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), false);
 
             Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         });
