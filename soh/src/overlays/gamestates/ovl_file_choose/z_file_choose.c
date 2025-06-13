@@ -3557,6 +3557,9 @@ void FileChoose_Main(GameState* thisx) {
     Input* input = &this->state.input[0];
 
     Color_RGB8 helpTextColor = { 100, 255, 255 };
+
+    GameInteractor_ExecuteOnFileChooseMain(thisx);
+
     if (CVarGetInteger(CVAR_COSMETIC("Title.FileChoose.Changed"), 0)) {
         Color_RGB8 backgroundColor =
             CVarGetColor24(CVAR_COSMETIC("Title.FileChoose.Value"), (Color_RGB8){ 100, 150, 255 });
@@ -3586,14 +3589,6 @@ void FileChoose_Main(GameState* thisx) {
 
     if (CVarGetInteger(CVAR_ENHANCEMENT("TimeFlowFileSelect"), 0) != 0) {
         gSaveContext.skyboxTime += 0x10;
-    }
-
-    // Boot to Debug Warp Screen
-    if ((CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) != 0) &&
-        (CVarGetInteger(CVAR_DEVELOPER_TOOLS("BootToDebugWarpScreen"), 0) != 0)) {
-        this->buttonIndex = 0xFF;
-        this->menuMode = FS_MENU_MODE_SELECT;
-        this->selectMode = SM_LOAD_GAME;
     }
 
     OPEN_DISPS(this->state.gfxCtx);

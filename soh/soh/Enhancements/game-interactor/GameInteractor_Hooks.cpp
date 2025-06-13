@@ -298,6 +298,10 @@ void GameInteractor_ExecuteOnUpdateFileNameSelection(int16_t charCode) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileNameSelection>(charCode);
 }
 
+void GameInteractor_ExecuteOnFileChooseMain(void* gameState) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnFileChooseMain>(gameState);
+}
+
 // MARK: - Game
 
 void GameInteractor_ExecuteOnSetGameLanguage() {
