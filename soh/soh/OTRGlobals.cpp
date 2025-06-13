@@ -1704,6 +1704,7 @@ extern "C" void Ctx_WriteSaveFile(uintptr_t addr, void* dramAddr, size_t size) {
 std::wstring StringToU16(const std::string& s) {
     std::vector<unsigned long> result;
     size_t i = 0;
+
     while (i < s.size()) {
         unsigned long uni;
         size_t nbytes = 0;
@@ -1712,7 +1713,13 @@ std::wstring StringToU16(const std::string& s) {
         if (c < 0x80) { // ascii
             uni = c;
             nbytes = 0;
-        } else if (c <= 0xBF) { // assuming kata/hiragana delimiter
+        } else if (c == GFXP_HIRAGANA_CHAR) { // Start Hiragana Mode
+            uni = c;
+            nbytes = 0;
+        } else if (c == GFXP_KATAKANA_CHAR) { // Start Katakana Mode
+            uni = c;
+            nbytes = 0;
+        } else if (c <= 0xBF) { // Invalid Characters (Skipped)
             nbytes = 0;
             uni = '\1';
         } else if (c <= 0xDF) {
@@ -1769,13 +1776,23 @@ extern "C" void OTRGfxPrint(const char* str, void* printer, void (*printImpl)(vo
     };
 
     std::wstring wstr = StringToU16(str);
+    bool hiraganaMode = false;
 
     for (const auto& c : wstr) {
-        unsigned char convt = ' ';
         if (c < 0x80) {
             printImpl(printer, c);
+        } else if (c == GFXP_HIRAGANA_CHAR) {
+            hiraganaMode = true;
+        } else if (c == GFXP_KATAKANA_CHAR) {
+            hiraganaMode = false;
         } else if (c >= u'｡' && c <= u'ﾟ') { // katakana (hankaku)
-            printImpl(printer, c - 0xFEC0);
+            if (hiraganaMode && c >= u'ｦ' && c <= u'ｿ') {
+                printImpl(printer, c - 0xFEC0 - 0x20); // Hiragana Mode, Block 1
+            } else if (hiraganaMode && c >= u'ﾀ' && c <= u'ﾝ') {
+                printImpl(printer, c - 0xFEC0 + 0x20); // Hiragana Mode, Block 2
+            } else {
+                printImpl(printer, c - 0xFEC0);
+            }
         } else if (c == u'　') { // zenkaku space
             printImpl(printer, u' ');
         } else {

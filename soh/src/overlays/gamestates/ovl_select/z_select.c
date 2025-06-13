@@ -386,8 +386,9 @@ static SceneSelectEntry sScenes[] = {
 };
 
 // Note about Japanese scene names:
-// * SoH currently lacks the ability to render Hiragana characters using GFXP_HIRAGANA macro.
-//   So instead Hiragana characters are written directly.
+// * SoH originally lacked the ability to render Hiragana characters using GFXP_HIRAGANA macro.
+//   This is not the case anymore, but Hiragana characters are still written directly here
+//   for the sake of readability and editability.
 // * Dakuten (濁点) characters must be explicitly written using '゛' or '゜'.
 //   Combined characters (such as 'が', 'げ', 'ば', etc) won't render.
 static BetterSceneSelectEntry sBetterScenes[] = {
