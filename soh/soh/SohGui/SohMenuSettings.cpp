@@ -159,6 +159,10 @@ void SohMenu::AddMenuSettings() {
     AddWidget(path, "Boot Sequence", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_SETTING("BootSequence"))
         .RaceDisable(false)
+        .PreFunc([](WidgetInfo& info) {
+            if (mSohMenu->disabledMap.at(DISABLE_FOR_BOOT_TO_DEBUG_WARP_SCREEN_ON).active)
+                info.activeDisables.push_back(DISABLE_FOR_BOOT_TO_DEBUG_WARP_SCREEN_ON);
+        })
         .Options(ComboboxOptions()
                      .DefaultIndex(BOOTSEQUENCE_DEFAULT)
                      .LabelPosition(LabelPositions::Far)
