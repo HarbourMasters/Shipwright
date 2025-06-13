@@ -30,4 +30,5 @@ void RegisterBootToDebugWarpScreen() {
 }
 
 static RegisterShipInitFunc initFunc_BootToDebugWarpScreen(RegisterBootToDebugWarpScreen,
-                                                           { CVAR_BOOT_TO_DEBUG_WARP_SCREEN_NAME });
+                                                           { CVAR_DEBUG_ENABLED_NAME,
+                                                             CVAR_BOOT_TO_DEBUG_WARP_SCREEN_NAME });
