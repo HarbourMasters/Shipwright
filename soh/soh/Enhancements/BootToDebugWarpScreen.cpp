@@ -24,9 +24,22 @@ void OnFileChooseMainBootToDebugWarpScreen(void* gameState) {
     fileChooseContext->selectMode = SM_LOAD_GAME;
 }
 
+void OnZTitleUpdateBootToDebugWarpScreen(void* gameState) {
+    TitleContext* titleContext = (TitleContext*)gameState;
+
+    gSaveContext.seqId = (u8)NA_BGM_DISABLED;
+    gSaveContext.natureAmbienceId = 0xFF;
+    gSaveContext.gameMode = GAMEMODE_FILE_SELECT;
+    titleContext->state.running = false;
+
+    SET_NEXT_GAMESTATE(&titleContext->state, FileChoose_Init, FileChooseContext);
+}
+
 void RegisterBootToDebugWarpScreen() {
     COND_HOOK(OnFileChooseMain, CVAR_DEBUG_ENABLED_VALUE && CVAR_BOOT_TO_DEBUG_WARP_SCREEN_VALUE,
               OnFileChooseMainBootToDebugWarpScreen);
+    COND_HOOK(OnZTitleUpdate, CVAR_DEBUG_ENABLED_VALUE && CVAR_BOOT_TO_DEBUG_WARP_SCREEN_VALUE,
+              OnZTitleUpdateBootToDebugWarpScreen);
 }
 
 static RegisterShipInitFunc initFunc_BootToDebugWarpScreen(RegisterBootToDebugWarpScreen,
