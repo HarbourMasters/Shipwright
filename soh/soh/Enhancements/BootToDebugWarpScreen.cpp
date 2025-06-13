@@ -14,17 +14,20 @@ static constexpr int32_t CVAR_DEBUG_ENABLED_DEFAULT = 0;
 
 static constexpr int32_t CVAR_BOOT_TO_DEBUG_WARP_SCREEN_DEFAULT = 0;
 #define CVAR_BOOT_TO_DEBUG_WARP_SCREEN_NAME CVAR_DEVELOPER_TOOLS("BootToDebugWarpScreen")
-#define CVAR_BOOT_TO_DEBUG_WARP_SCREEN_VALUE CVarGetInteger(CVAR_BOOT_TO_DEBUG_WARP_SCREEN_NAME, CVAR_BOOT_TO_DEBUG_WARP_SCREEN_DEFAULT)
+#define CVAR_BOOT_TO_DEBUG_WARP_SCREEN_VALUE \
+    CVarGetInteger(CVAR_BOOT_TO_DEBUG_WARP_SCREEN_NAME, CVAR_BOOT_TO_DEBUG_WARP_SCREEN_DEFAULT)
 
 void OnFileChooseMainBootToDebugWarpScreen(void* gameState) {
-	FileChooseContext* fileChooseContext = (FileChooseContext*)gameState;
-	fileChooseContext->buttonIndex = 0xFF;
-	fileChooseContext->menuMode = FS_MENU_MODE_SELECT;
- 	fileChooseContext->selectMode = SM_LOAD_GAME;
+    FileChooseContext* fileChooseContext = (FileChooseContext*)gameState;
+    fileChooseContext->buttonIndex = 0xFF;
+    fileChooseContext->menuMode = FS_MENU_MODE_SELECT;
+    fileChooseContext->selectMode = SM_LOAD_GAME;
 }
 
 void RegisterBootToDebugWarpScreen() {
-	COND_HOOK(OnFileChooseMain, CVAR_DEBUG_ENABLED_VALUE && CVAR_BOOT_TO_DEBUG_WARP_SCREEN_VALUE, OnFileChooseMainBootToDebugWarpScreen);
+    COND_HOOK(OnFileChooseMain, CVAR_DEBUG_ENABLED_VALUE && CVAR_BOOT_TO_DEBUG_WARP_SCREEN_VALUE,
+              OnFileChooseMainBootToDebugWarpScreen);
 }
 
-static RegisterShipInitFunc initFunc_BootToDebugWarpScreen(RegisterBootToDebugWarpScreen, { CVAR_BOOT_TO_DEBUG_WARP_SCREEN_NAME });
+static RegisterShipInitFunc initFunc_BootToDebugWarpScreen(RegisterBootToDebugWarpScreen,
+                                                           { CVAR_BOOT_TO_DEBUG_WARP_SCREEN_NAME });
