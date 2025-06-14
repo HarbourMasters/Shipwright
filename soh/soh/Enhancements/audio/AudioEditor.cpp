@@ -459,8 +459,8 @@ void AudioEditorRegisterOnSceneInitHook() {
     });
 }
 
-void AudioEditorRegisterOnRandomizerGenerationHook() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnRandomizerGeneration>([]() {
+void AudioEditorRegisterOnGenerationCompletionHook() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGenerationCompletion>([]() {
         if (CVarGetInteger(CVAR_AUDIO("RandomizeAllOnRandoGen"), 0)) {
             AudioEditor_RandomizeAll();
         }
@@ -469,7 +469,7 @@ void AudioEditorRegisterOnRandomizerGenerationHook() {
 
 void AudioEditor::InitElement() {
     AudioEditorRegisterOnSceneInitHook();
-    AudioEditorRegisterOnRandomizerGenerationHook();
+    AudioEditorRegisterOnGenerationCompletionHook();
 }
 
 void AudioEditor::DrawElement() {

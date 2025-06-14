@@ -3602,6 +3602,8 @@ void GenerateRandomizerImgui(std::string seed = "") {
     Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 
     generated = 1;
+
+    GameInteractor_ExecuteOnGenerationCompletion();
 }
 
 bool GenerateRandomizer(std::string seed /*= ""*/) {
@@ -3611,8 +3613,6 @@ bool GenerateRandomizer(std::string seed /*= ""*/) {
     }
     if (CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) == 0) {
         randoThread = std::thread(&GenerateRandomizerImgui, seed);
-
-        GameInteractor_ExecuteOnRandomizerGeneration();
 
         return true;
     }

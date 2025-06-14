@@ -2585,8 +2585,8 @@ void Cosmetics_RegisterOnSceneInitHook() {
     });
 }
 
-void CosmeticsEditorRegisterOnRandomizerGenerationHook() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnRandomizerGeneration>([]() {
+void CosmeticsEditorRegisterOnGenerationCompletionHook() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGenerationCompletion>([]() {
         if (CVarGetInteger(CVAR_COSMETIC("RandomizeAllOnRandoGen"), 0)) {
             CosmeticsEditor_RandomizeAll();
         }
@@ -2612,7 +2612,7 @@ void CosmeticsEditorWindow::InitElement() {
     RegisterOnLoadGameHook();
     RegisterOnGameFrameUpdateHook();
     Cosmetics_RegisterOnSceneInitHook();
-    CosmeticsEditorRegisterOnRandomizerGenerationHook();
+    CosmeticsEditorRegisterOnGenerationCompletionHook();
 }
 
 void CosmeticsEditor_RandomizeAll() {

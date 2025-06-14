@@ -274,8 +274,8 @@ void GameInteractor_ExecuteOnUpdateFileNameSelection(int16_t charCode) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileNameSelection>(charCode);
 }
 
-void GameInteractor_ExecuteOnRandomizerGeneration() {
-    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnRandomizerGeneration>();
+void GameInteractor_ExecuteOnGenerationCompletion() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnGenerationCompletion>();
 }
 
 // MARK: - Game
