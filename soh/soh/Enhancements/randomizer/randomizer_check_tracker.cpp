@@ -1988,6 +1988,9 @@ void RecalculateAvailableChecks(RandomizerRegion startingRegion /* = RR_ROOT */)
     if (!enableAvailableChecks) {
         return;
     }
+    if (!GameInteractor::IsSaveLoaded(true)) {
+        return;
+    }
 
     ResetPerformanceTimer(PT_RECALCULATE_AVAILABLE_CHECKS);
     StartPerformanceTimer(PT_RECALCULATE_AVAILABLE_CHECKS);
@@ -2135,10 +2138,7 @@ void CheckTrackerSettingsWindow::DrawElement() {
                                                  "with your current progress.")
                                         .Color(THEME_COLOR))) {
             enableAvailableChecks = CVarGetInteger(CVAR_TRACKER_CHECK("EnableAvailableChecks"), 0);
-
-            if (GameInteractor::IsSaveLoaded(true)) {
-                RecalculateAvailableChecks();
-            }
+            RecalculateAvailableChecks();
         }
         ImGui::EndDisabled();
 
