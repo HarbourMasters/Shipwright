@@ -1985,10 +1985,7 @@ void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, 
 }
 
 void RecalculateAvailableChecks(RandomizerRegion startingRegion /* = RR_ROOT */) {
-    if (!enableAvailableChecks) {
-        return;
-    }
-    if (!GameInteractor::IsSaveLoaded(true)) {
+    if (!enableAvailableChecks || !GameInteractor::IsSaveLoaded(true)) {
         return;
     }
 
