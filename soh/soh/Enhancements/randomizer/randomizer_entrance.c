@@ -81,8 +81,6 @@ static DungeonEntranceInfo dungeons[] = {
 static s8 hasCopiedEntranceTable = 0;
 static s8 hasModifiedEntranceTable = 0;
 
-void Entrance_SetEntranceDiscovered(u16 entranceIndex, u8 isReversedEntrance);
-
 u8 Entrance_EntranceIsNull(EntranceOverride* entranceOverride) {
     return entranceOverride->index == 0 && entranceOverride->destination == 0 && entranceOverride->override == 0 &&
            entranceOverride->overrideDestination == 0;
