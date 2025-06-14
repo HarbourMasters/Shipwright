@@ -41,7 +41,7 @@ void RegionTable_Init_ZorasFountain() {
     }, {
         //Exits
         //This hover is pretty tight, come at it with momentum and aim for the small corner polygon of the big iceburg while spamming roll
-        Entrance(RR_ZORAS_FOUNTAIN, []{return logic->HasItem(RG_BRONZE_SCALE) || logic->HasItem(RG_HOVER_BOOTS);}),
+        Entrance(RR_ZORAS_FOUNTAIN, []{return logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_HOVER_BOOTS);}),
         Entrance(RR_ZF_LAKEBED,     []{return logic->CanUse(RG_IRON_BOOTS);}),
         Entrance(RR_ZF_LEDGE,       []{return true;}),
     });
