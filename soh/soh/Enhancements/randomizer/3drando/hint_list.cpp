@@ -1976,27 +1976,27 @@ void StaticData::HintTable_Init() {
     hintTextTable[RHT_BRIDGE_OPEN_HINT] = HintText(CustomMessage("$lThe awakened ones have #already created a bridge# to the castle where the evil dwells.^",
                                                       /*german*/ "$lDie Weisen haben #bereits&eine Brücke zum Portal von&Ganons Schloß gelegt#...^",
                                                       /*french*/ "$lLes êtres de sagesse ont#déjà créé un pont# vers le repaire du mal.^",
-                                                                 {QM_LBLUE}));
+                                                                 {QM_LBLUE}, {}, TEXTBOX_TYPE_BLUE));
                                                    // /*spanish*/$lLos sabios #ya habrán creado un puente#&al castillo, de donde emana el mal.^
 
 
     hintTextTable[RHT_BRIDGE_VANILLA_HINT] = HintText(CustomMessage("$6The awakened ones require the #Shadow and Spirit Medallions# as well as the #Light Arrows#.^",
                                                         /*german*/ "$6Die Weisen werden darauf warten, daß der Held das #Amulett des Schattens, Amulett der Geister# und die #Licht-Pfeile# sammelt.^",
                                                         /*french*/ "$6Les êtres de sagesse attendront le héros muni des #Médaillons de l'Ombre et l'Esprit# et des #Flèches de Lumière#.^",
-                                                                   {QM_RED, QM_YELLOW}));
+                                                                   {QM_RED, QM_YELLOW}, {}, TEXTBOX_TYPE_BLUE));
                                                      // /*spanish*/$6Los sabios aguardarán a que el héroe obtenga tanto el #Medallón de las Sombras y el del Espíritu# junto
                                                                 // a la #flecha de luz#.^
 
     hintTextTable[RHT_BRIDGE_STONES_HINT] = HintText(CustomMessage("$0The awakened ones will await for the Hero to collect #[[d]] Spiritual Stone||s|#.^",
                                                         /*german*/ "$0Die Weisen werden darauf warten, daß der Held #[[d]] |Heiligen Stein|Heilige Steine|# sammelt.^",
                                                         /*french*/ "$0Les êtres de sagesse attendront le héros muni de #[[d]] |Pierre Ancestrale|Pierres Ancestrales|#.^",
-                                                                   {QM_BLUE}));
+                                                                   {QM_BLUE}, {}, TEXTBOX_TYPE_BLUE));
                                                      // /*spanish*/$0Los sabios aguardarán a que el héroe&obtenga #[[d]] |piedra espiritual|piedras espirituales|#.^
 
     hintTextTable[RHT_BRIDGE_MEDALLIONS_HINT] = HintText(CustomMessage("$8The awakened ones will await for the Hero to collect #[[d]] Medallion||s|#.^",
                                                             /*german*/ "$8Die Weisen werden darauf warten, daß der Held #[[d]] Amulett||e|# sammelt.^",
                                                             /*french*/ "$8Les êtres de sagesse attendront le héros muni de #[[d]] Médaillon||s|#.^",
-                                                                       {QM_RED}));
+                                                                       {QM_RED}, {}, TEXTBOX_TYPE_BLUE));
                                                          // /*spanish*/$8Los sabios aguardarán a que el héroe&obtenga #[[d]] |medallón|medallones|#.^
 
     hintTextTable[RHT_BRIDGE_REWARDS_HINT] = HintText(CustomMessage("$CThe awakened ones will await for the Hero to collect #[[d]]# |#Spiritual Stone# or #Medallion#|"
@@ -2005,24 +2005,24 @@ void StaticData::HintTable_Init() {
                                                                        "#Heilige Steine# oder #Amulette#| sammelt.^",
                                                             /*french*/ "$CLes êtres de sagesse attendront le héros muni de #[[d]]# |#Pierre Ancestrale# ou #Médaillon#"
                                                                        "|#Pierres Ancestrales# ou #Médaillons#|.^",
-                                                                       {QM_YELLOW, QM_BLUE, QM_RED}));
+                                                                       {QM_YELLOW, QM_BLUE, QM_RED}, {}, TEXTBOX_TYPE_BLUE));
                                                          // /*spanish*/$CLos sabios aguardarán a que el héroe obtenga #[[d]]# |#piedra espiritual# o #medallón#|
                                                                     //#piedras espirtuales# y #medallones#|.^
 
     hintTextTable[RHT_BRIDGE_DUNGEONS_HINT] = HintText(CustomMessage("$mThe awakened ones will await for the Hero to conquer #[[d]] Dungeon||s|#.^",
                                                           /*german*/ "$mDie Weisen werden darauf warten, daß der Held #[[d]] Labyrinth||e|# abschließt.^",
                                                           /*french*/ "$mLes êtres de sagesse attendront la conquête de #[[d]] Donjon||s|#.^",
-                                                                     {QM_PINK}));
+                                                                     {QM_PINK}, {}, TEXTBOX_TYPE_BLUE));
                                                        // /*spanish*/$mLos sabios aguardarán a que el héroe complete #[[d]] mazmorra||s|#.^
 
     hintTextTable[RHT_BRIDGE_TOKENS_HINT] = HintText(CustomMessage("$sThe awakened ones will await for the Hero to collect #[[d]] Gold Skulltula Token||s|#.^",
                                                         /*german*/ "$sDie Weisen werden darauf warten, daß der Held #[[d]] Skulltula-Symbol||e|# sammelt.^",
                                                         /*french*/ "$sLes êtres de sagesse attendront le héros muni de #[[d]] Symbole||s| de Skulltula d'or#.^",
-                                                                   {QM_YELLOW}));
+                                                                   {QM_YELLOW}, {}, TEXTBOX_TYPE_BLUE));
                                                      // /*spanish*/$sLos sabios aguardarán a que el héroe obtenga #[[d]] símbolo||s| de skulltula dorada#.^
 
-    hintTextTable[RHT_BRIDGE_GREG_HINT] = HintText(CustomMessage("$gThe awakened ones will await for the Hero to find #Greg#.^",
-                                                                 {QM_GREEN}));
+    hintTextTable[RHT_BRIDGE_GREG_HINT] = HintText(CustomMessage("$gThe awakened ones will await for the Hero to find #Greg#.^", TODO_TRANSLATE, TODO_TRANSLATE,
+                                                                 {QM_GREEN}, {}, TEXTBOX_TYPE_BLUE));
 
 
     /*--------------------------
@@ -2176,22 +2176,22 @@ void StaticData::HintTable_Init() {
     hintTextTable[RHT_CHILD_ALTAR_STONES] = HintText(CustomMessage("3 Spiritual Stones found in Hyrule...^$0#[[1]]#...^$1#[[2]]#...^$2#[[3]]#...^",
                                                         /*german*/ "Drei Heilige Steine, zu finden in Hyrule...$0#[[1]]#...^$1#[[2]]#...^$2#[[3]]#...^",
                                                         /*french*/ "Les trois Pierres Ancestrales cachées&dans Hyrule...$0#[[1]]#...^$1#[[2]]#...^$2#[[3]]#...^",
-                                                        {QM_GREEN, QM_RED, QM_BLUE}, {true, true, true}));
+                                                        {QM_GREEN, QM_RED, QM_BLUE}, {true, true, true}, TEXTBOX_TYPE_BLUE));
                                                     // /*spanish*/ Tres piedras espirituales halladas por Hyrule...$0#[[1]]#...^$1#[[2]]#...^$2#[[3]]#...^
 
     hintTextTable[RHT_CHILD_ALTAR_TEXT_END_DOTOPEN] = HintText(CustomMessage("$oYe who may become a Hero...&The path to the future is open...",
                                                                   /*german*/ "$oJener auf dem Weg des Helden...&Der Pfad zur Zukunft sei geöffnet...",
-                                                                  /*french*/ "$oÀ celui qui a quête de devenir&héros...&Le futur vous accueille béant..."));
+                                                                  /*french*/ "$oÀ celui qui a quête de devenir&héros...&Le futur vous accueille béant...", TEXTBOX_TYPE_BLUE));
                                                                // /*spanish*/$oPara aquel que se convierta en el héroe...&La puerta al futuro está a su disposición...
 
     hintTextTable[RHT_CHILD_ALTAR_TEXT_END_DOTSONGONLY] = HintText(CustomMessage("$cYe who may become a Hero...&Stand with the Ocarina and&play the Song of Time.",
                                                                       /*german*/ "$cJener auf dem Weg des Helden...&Nehme er seine Okarina zur Hand und&spiele hier die Hymne der Zeit.",
-                                                                      /*french*/ "$cÀ celui qui a quête de devenir&héros...&Portez l'Ocarina et jouez&le chant du temps."));
+                                                                      /*french*/ "$cÀ celui qui a quête de devenir&héros...&Portez l'Ocarina et jouez&le chant du temps.", TEXTBOX_TYPE_BLUE));
                                                                    // /*spanish*/$cPara aquel que se convierta en el héroe...&Tome la ocarina y&entone la Canción del Tiempo.
     
     hintTextTable[RHT_CHILD_ALTAR_TEXT_END_DOTCLOSED] = HintText(CustomMessage("$iYe who may become a Hero...&Offer the spiritual stones and&play the Song of Time.",
                                                                     /*german*/ "$iJener mit den drei Heiligen Steinen&nehme seine Okarina zur Hand und&spiele hier die Hymne der Zeit.",
-                                                                    /*french*/ "$iÀ celui qui a quête de devenir&héros... Présentez les Pierres&Ancestrales et jouez&le chant du temps."));
+                                                                    /*french*/ "$iÀ celui qui a quête de devenir&héros... Présentez les Pierres&Ancestrales et jouez&le chant du temps.", TEXTBOX_TYPE_BLUE));
                                                                  // /*spanish*/$iPara aquel que se convierta en el héroe...&Tome las piedras espirituales y&entone la Canción del Tiempo.
 
     hintTextTable[RHT_ADULT_ALTAR_MEDALLIONS] = HintText(CustomMessage("An awakening voice from the Sacred Realm will call those destined to be Sages, who dwell in the #five temples#.^"

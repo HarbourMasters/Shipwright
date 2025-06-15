@@ -2258,7 +2258,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             }
         } else if ((textId == TEXT_ALTAR_CHILD || textId == TEXT_ALTAR_ADULT)) {
             // rando hints at altar
-            messageEntry = (LINK_IS_ADULT) ? ctx->GetHint(RH_ALTAR_ADULT)->GetHintMessage()
+            messageEntry = (LINK_IS_ADULT) ? ctx->GetHint(RH_ALTAR_ADULT)->GetHintMessage(MF_AUTO_FORMAT)
                                            : ctx->GetHint(RH_ALTAR_CHILD)->GetHintMessage(MF_AUTO_FORMAT);
         } else if (textId == TEXT_GANONDORF) {
             if (ctx->GetOption(RSK_GANONDORF_HINT)) {

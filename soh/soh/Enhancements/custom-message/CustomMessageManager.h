@@ -47,6 +47,7 @@ class CustomMessage {
                   TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
     CustomMessage(std::string english_, TextBoxType type_ = TEXTBOX_TYPE_BLACK,
                   TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
+    // RANDOTODO trying to declare this with capital and type causes ambiguity with the first signature
     CustomMessage(std::string english_, std::vector<std::string> colors_, std::vector<bool> capital_ = {},
                   TextBoxType type_ = TEXTBOX_TYPE_BLACK, TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
     CustomMessage(Text text, TextBoxType type_ = TEXTBOX_TYPE_BLACK, TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);

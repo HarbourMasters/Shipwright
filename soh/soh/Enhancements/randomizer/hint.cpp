@@ -299,6 +299,8 @@ const CustomMessage Hint::GetHintMessage(MessageFormat format, uint8_t id) const
     } else if (hintType == HINT_TYPE_ALTAR_CHILD) {
         if (ctx->GetOption(RSK_TOT_ALTAR_HINT)) {
             hintText = StaticData::hintTextTable[RHT_CHILD_ALTAR_STONES].GetHintMessage();
+        } else {
+            hintText.SetTextBoxType(TEXTBOX_TYPE_BLUE);
         }
         if (ctx->GetOption(RSK_DOOR_OF_TIME).Is(RO_DOOROFTIME_OPEN)) {
             hintText += CustomMessage(StaticData::hintTextTable[RHT_CHILD_ALTAR_TEXT_END_DOTOPEN].GetHintMessage());
@@ -310,6 +312,8 @@ const CustomMessage Hint::GetHintMessage(MessageFormat format, uint8_t id) const
     } else if (hintType == HINT_TYPE_ALTAR_ADULT) {
         if (ctx->GetOption(RSK_TOT_ALTAR_HINT)) {
             hintText = StaticData::hintTextTable[RHT_ADULT_ALTAR_MEDALLIONS].GetHintMessage();
+        } else {
+            hintText.SetTextBoxType(TEXTBOX_TYPE_BLUE);
         }
         hintText += GetBridgeReqsText() + GetGanonBossKeyText() +
                     StaticData::hintTextTable[RHT_ADULT_ALTAR_TEXT_END].GetHintMessage();
