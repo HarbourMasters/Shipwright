@@ -1528,7 +1528,7 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
                                                   /*german*/ "Man erzählt sich, daß eine #Vase in Kakariko# #[[1]]# enthielte.",
                                                   /*french*/ "Selon moi, une #jarre dans le Village de Cocorico# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_POT_DAMPE] = HintText(CustomMessage("They say that a #pot in Dampe's Tomb# contains #[[1]]#.",
+    hintTextTable[RHT_POT_DAMPE] = HintText(CustomMessage("They say that a #pot in gravekeeper's tomb# contains #[[1]]#.",
                                                          //TODO_TRANSLATE check these to make sure they refernce dampe's tomb not the graveyard area
                                                    /*german*/ "Man erzählt sich, daß eine #Vase auf dem Friedhof# #[[1]]# enthielte.",
                                                    /*french*/ "Selon moi, une #jarre dans le Cimetière# contient #[[1]]#.", {QM_RED, QM_GREEN}));
