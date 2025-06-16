@@ -7,7 +7,7 @@ using namespace Rando;
 void RegionTable_Init_GerudoTrainingGround() {
     // clang-format off
     // Vanilla/MQ Decider
-    areaTable[RR_GTG_ENTRYWAY] = Region("Gerudo Training Ground Entryway", "Gerudo Training Ground", {RA_GERUDO_TRAINING_GROUND}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_GERUDO_TRAINING_GROUND_ENTRYWAY] = Region("Gerudo Training Ground Entryway", "Gerudo Training Ground", {RA_GERUDO_TRAINING_GROUND}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_GERUDO_TRAINING_GROUND_LOBBY,    []{return ctx->GetDungeon(GERUDO_TRAINING_GROUND)->IsVanilla();}),
         Entrance(RR_GERUDO_TRAINING_GROUND_MQ_LOBBY, []{return ctx->GetDungeon(GERUDO_TRAINING_GROUND)->IsMQ();}),
@@ -27,7 +27,7 @@ void RegionTable_Init_GerudoTrainingGround() {
         LOCATION(RC_GERUDO_TRAINING_GROUND_BEAMOS_EAST_HEART,     true),
     }, {
         //Exits
-        Entrance(RR_GTG_ENTRYWAY,                            []{return true;}),
+        Entrance(RR_GERUDO_TRAINING_GROUND_ENTRYWAY,         []{return true;}),
         Entrance(RR_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_ROOM, []{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2, true) && (logic->CanUse(RG_HOOKSHOT) || ctx->GetTrickOption(RT_GTG_WITHOUT_HOOKSHOT));}),
         Entrance(RR_GERUDO_TRAINING_GROUND_LAVA_ROOM,        []{return Here(RR_GERUDO_TRAINING_GROUND_LOBBY, []{return logic->CanKillEnemy(RE_BEAMOS) && logic->CanKillEnemy(RE_DINOLFOS, ED_CLOSE, true, 2, true);});}),
         Entrance(RR_GERUDO_TRAINING_GROUND_CENTRAL_MAZE,     []{return true;}),
@@ -124,7 +124,7 @@ void RegionTable_Init_GerudoTrainingGround() {
         LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_POT_2,      logic->CanBreakPots()),
     }, {
         //Exits
-        Entrance(RR_GTG_ENTRYWAY,                               []{return true;}),
+        Entrance(RR_GERUDO_TRAINING_GROUND_ENTRYWAY,            []{return true;}),
         Entrance(RR_GERUDO_TRAINING_GROUND_MQ_MAZE_HIDDEN_ROOM, []{return ctx->GetTrickOption(RT_LENS_GTG_MQ) || logic->CanUse(RG_LENS_OF_TRUTH);}),
         Entrance(RR_GERUDO_TRAINING_GROUND_MQ_MAZE_FIRST_LOCK,  []{return logic->SmallKeys(RR_GERUDO_TRAINING_GROUND, 1);}),
         //It's possible to use the torch in RR_GERUDO_TRAINING_GROUND_MQ_MAZE_HIDDEN_ROOM with flame storage to light these

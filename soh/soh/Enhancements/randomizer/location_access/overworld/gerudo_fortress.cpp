@@ -21,8 +21,8 @@ void RegionTable_Init_GerudoFortress() {
         Entrance(RR_GF_OUTSIDE_GATE,  []{return logic->GF_GateOpen;}),
         Entrance(RR_GF_NEAR_GROTTO,   []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
         Entrance(RR_GF_OUTSIDE_GTG,   []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
-        //As of now there is no infinitly repeatable way to get thrown in jail, once one is added getting here only needs hookshot from jail
-        Entrance(RR_GF_JAIL_WINDOW,   []{return logic->CanUse(RG_LONGSHOT);}),
+        //You can talk to the guards to get yourself thrown in jail, so long as you have a hookshot to actually end up there
+        Entrance(RR_GF_JAIL_WINDOW,   []{return logic->CanUse(RG_HOOKSHOT);}),
     });
 
     areaTable[RR_GF_NEAR_GROTTO] = Region("GF Near Grotto", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -38,6 +38,7 @@ void RegionTable_Init_GerudoFortress() {
         Entrance(RR_TH_KITCHEN_CORRIDOR,   []{return true;}),
         //Jail
         Entrance(RR_GF_OUTSKIRTS,          []{return true;}),
+        Entrance(RR_GF_JAIL_WINDOW,        []{return logic->CanUse(RG_HOOKSHOT);}),
         Entrance(RR_GF_OUTSIDE_GTG,        []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
         Entrance(RR_GF_TOP_OF_UPPER_VINES, []{return logic->CanUse(RG_LONGSHOT);}),
         Entrance(RR_GF_STORMS_GROTTO,      []{return logic->IsAdult && logic->CanOpenStormsGrotto();}),
@@ -48,14 +49,15 @@ void RegionTable_Init_GerudoFortress() {
         EventAccess(&logic->GtG_GateOpen, []{return (logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->HasItem(RG_CHILD_WALLET));}),
     }, {}, {
         //Exits
-        Entrance(RR_GTG_ENTRYWAY,          []{return logic->GtG_GateOpen && (logic->IsAdult || ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES));}),
+        Entrance(RR_GERUDO_TRAINING_GROUND_ENTRYWAY, []{return logic->GtG_GateOpen && (logic->IsAdult || ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES));}),
         //Jail
-        Entrance(RR_GF_OUTSKIRTS,          []{return true;}),
-        Entrance(RR_GF_NEAR_GROTTO,        []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
+        Entrance(RR_GF_JAIL_WINDOW,                  []{return logic->CanUse(RG_HOOKSHOT);}),
+        Entrance(RR_GF_OUTSKIRTS,                    []{return true;}),
+        Entrance(RR_GF_NEAR_GROTTO,                  []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
         // RANDTODO: Add tricks for getting past the gerudo guarding the hba range
-        Entrance(RR_GF_ABOVE_GTG,          []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
-        Entrance(RR_GF_TOP_OF_UPPER_VINES, []{return logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->CanUse(RG_LONGSHOT);}),
-        Entrance(RR_GF_HBA_RANGE,          []{return logic->IsChild || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}),
+        Entrance(RR_GF_ABOVE_GTG,                    []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
+        Entrance(RR_GF_TOP_OF_UPPER_VINES,           []{return logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->CanUse(RG_LONGSHOT);}),
+        Entrance(RR_GF_HBA_RANGE,                    []{return logic->IsChild || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}),
     });
 
 #pragma endregion
@@ -67,6 +69,7 @@ void RegionTable_Init_GerudoFortress() {
         Entrance(RR_TH_DOUBLE_CELL,           []{return true;}),
         Entrance(RR_TH_KITCHEN_CORRIDOR,      []{return true;}),
         //Jail
+        Entrance(RR_GF_JAIL_WINDOW,           []{return logic->CanUse(RG_HOOKSHOT);}),
         Entrance(RR_GF_OUTSKIRTS,             []{return true;}),
         Entrance(RR_GF_NEAR_GROTTO,           []{return true;}),
         Entrance(RR_GF_OUTSIDE_GTG,           []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
@@ -217,10 +220,10 @@ void RegionTable_Init_GerudoFortress() {
 
     areaTable[RR_GF_OUTSIDE_GATE] = Region("GF Outside Gate", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->GF_GateOpen, []{return logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && (ctx->GetOption(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD) || ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) /*|| ShuffleSpecialIndoorEntrances*/);}),
+        EventAccess(&logic->GF_GateOpen, []{return logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}),
     }, {}, {
         //Exits
-        Entrance(RR_GF_OUTSKIRTS,            []{return (logic->IsAdult && (logic->CanUse(RG_HOOKSHOT) || !ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES))) || logic->GF_GateOpen;}),
+        Entrance(RR_GF_OUTSKIRTS,            []{return logic->GF_GateOpen;}),
         Entrance(RR_WASTELAND_NEAR_FORTRESS, []{return true;}),
     });
 
