@@ -46,6 +46,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Hy/z_en_hy.h"
 #include "src/overlays/actors/ovl_En_Bom_Bowl_Pit/z_en_bom_bowl_pit.h"
 #include "src/overlays/actors/ovl_En_Ge1/z_en_ge1.h"
+#include "src/overlays/actors/ovl_En_Ge2/z_en_ge2.h"
 #include "src/overlays/actors/ovl_En_Ds/z_en_ds.h"
 #include "src/overlays/actors/ovl_En_Gm/z_en_gm.h"
 #include "src/overlays/actors/ovl_En_Js/z_en_js.h"
@@ -55,7 +56,6 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
 #include "src/overlays/actors/ovl_Fishing/z_fishing.h"
 #include "src/overlays/actors/ovl_En_Mk/z_en_mk.h"
-#include "src/overlays/actors/ovl_En_Ge1/z_en_ge1.h"
 #include "draw.h"
 
 extern SaveContext gSaveContext;
@@ -69,6 +69,8 @@ extern void EnMk_Wait(EnMk* enMk, PlayState* play);
 extern void func_80ABA778(EnNiwLady* enNiwLady, PlayState* play);
 extern void EnGe1_Wait_Archery(EnGe1* enGe1, PlayState* play);
 extern void EnGe1_SetAnimationIdle(EnGe1* enGe1);
+extern void EnGe1_SetAnimationIdle(EnGe1* enGe1);
+extern void EnGe2_SetupCapturePlayer(EnGe2* enGe2, PlayState* play);
 }
 
 bool LocMatchesQuest(Rando::Location loc) {
@@ -925,13 +927,6 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             *should = Flags_GetRandomizerInf(RAND_INF_LEARNED_EPONA_SONG);
             break;
         }
-        case VB_SET_CUCCO_COUNT: {
-            EnNiwLady* enNiwLady = va_arg(args, EnNiwLady*);
-            // Override starting Cucco count using setting value
-            enNiwLady->cuccosInPen = 7 - RAND_GET_OPTION(RSK_CUCCO_COUNT);
-            *should = false;
-            break;
-        }
         case VB_KING_ZORA_THANK_CHILD: {
             // Allow turning in Ruto's letter even if you have already rescued her
             if (!Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)) {
@@ -1442,6 +1437,13 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             }
             break;
         }
+        case VB_GERUDO_GUARD_SET_ACTION_AFTER_TALK:
+            if (gPlayState->msgCtx.choiceIndex == 0) {
+                EnGe2* enGe2 = va_arg(args, EnGe2*);
+                EnGe2_SetupCapturePlayer(enGe2, gPlayState);
+                *should = false;
+            }
+            break;
         case VB_GERUDOS_BE_FRIENDLY: {
             *should = CHECK_QUEST_ITEM(QUEST_GERUDO_CARD);
             break;

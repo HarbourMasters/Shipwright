@@ -576,6 +576,14 @@ typedef enum {
     VB_GANON_HEAL_BEFORE_FIGHT,
 
     // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnGe2`
+    VB_GERUDO_GUARD_SET_ACTION_AFTER_TALK,
+
+    // #### `result`
     // See logic in
     // ```c
     // EnGe1_CheckCarpentersFreed()
@@ -1699,6 +1707,15 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // dropId == ITEM00_STICK
+    // ```
+    // #### `args`
+    // - None
+    VB_PREVENT_ADULT_STICK,
+
+    // #### `result`
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -1985,6 +2002,15 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // varies, never set should to true
+    // ```
+    // #### `args`
+    // - `*Actor`
+    // - `*s16` - timer value
+    VB_SWITCH_TIMER_TICK,
+
+    // #### `result`
+    // ```c
     // (this->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) && (this->heldActor != NULL) &&
     // CHECK_BTN_ANY(sControlInput->press.button, buttonsToCheck)
     // ```
@@ -2073,6 +2099,13 @@ typedef enum {
     VB_TRANSITION_TO_SAVE_SCREEN_ON_DEATH,
 
     // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnWood02`
+    VB_TREE_DROP_COLLECTIBLE,
+
     // ```c
     // true
     // ```
