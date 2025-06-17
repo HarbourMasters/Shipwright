@@ -1588,10 +1588,11 @@ bool IsCheckShuffled(RandomizerCheck rc) {
 bool IsVisibleInCheckTracker(RandomizerCheck rc) {
     auto loc = Rando::StaticData::GetLocation(rc);
     if (IS_RANDO) {
-        return IsCheckShuffled(rc) ||
-               (alwaysShowGS && loc->GetRCType() == RCTYPE_SKULL_TOKEN &&
-                OTRGlobals::Instance->gRandoContext->IsQuestOfLocationActive(rc)) ||
-               (loc->GetRCType() == RCTYPE_SHOP && showShops && !hideShopUnshuffledChecks);
+        return !Rando::Context::GetInstance()->GetItemLocation(rc)->IsExcluded() &&
+               (IsCheckShuffled(rc) ||
+                (alwaysShowGS && loc->GetRCType() == RCTYPE_SKULL_TOKEN &&
+                 OTRGlobals::Instance->gRandoContext->IsQuestOfLocationActive(rc)) ||
+                (loc->GetRCType() == RCTYPE_SHOP && showShops && !hideShopUnshuffledChecks));
     } else {
         return loc->IsVanillaCompletion() &&
                (!loc->IsDungeon() || (loc->IsDungeon() && loc->GetQuest() == gSaveContext.ship.quest.id));

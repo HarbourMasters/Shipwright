@@ -179,6 +179,9 @@ void SaveManager::LoadRandomizer() {
                 // all ItemLocations is 0 anyway.
                 randoContext->GetItemLocation(i)->SetCustomPrice(price);
             }
+            bool excluded = false;
+            SaveManager::Instance->LoadData("excluded", excluded, false);
+            randoContext->GetItemLocation(i)->SetExcludedOption(excluded);
         });
     });
 
@@ -268,6 +271,9 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
                                                     randoContext->GetItemOverride(i).GetTrickName().GetFrench());
                     // TODO: German (trick names don't have german translations yet)
                 });
+            }
+            if (randoContext->GetItemLocation(i)->IsExcluded()) {
+                SaveManager::Instance->SaveData("excluded", true);
             }
             if (randoContext->GetItemLocation(i)->HasCustomPrice()) {
                 SaveManager::Instance->SaveData("price", randoContext->GetItemLocation(i)->GetPrice());
