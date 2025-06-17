@@ -693,7 +693,6 @@ void Play_Update(PlayState* play) {
     Input* input = play->state.input;
     s32 isPaused;
     s32 pad1;
-    s32 frameAdvanceInputPort;
 
     if ((SREG(1) < 0) || (DREG(0) != 0)) {
         SREG(1) = 0;
@@ -731,13 +730,7 @@ void Play_Update(PlayState* play) {
     gSegments[5] = VIRTUAL_TO_PHYSICAL(play->objectCtx.status[play->objectCtx.subKeepIndex].segment);
     gSegments[2] = VIRTUAL_TO_PHYSICAL(play->sceneSegment);
 
-    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("FrameAdvanceAltScheme"), 0) != 0) {
-        frameAdvanceInputPort = 3; // Frame Advance Alternative Control Scheme. Uses P4 port.
-    } else {
-        frameAdvanceInputPort = 1; // Frame Advance Original Control Scheme. Uses P2 port.
-    }
-
-    if (FrameAdvance_Update(&play->frameAdvCtx, &input[frameAdvanceInputPort])) {
+    if (FrameAdvance_Update(&play->frameAdvCtx, &input[1])) {
         if ((play->transitionMode == TRANS_MODE_OFF) && (play->transitionTrigger != TRANS_TRIGGER_OFF)) {
             play->transitionMode = TRANS_MODE_SETUP;
         }

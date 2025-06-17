@@ -540,6 +540,22 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*FrameAdvanceContext`
+    VB_FRAME_ADVANCE_BE_VANILLA,
+
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // #### `args`
+    // - `*FrameAdvanceContext`
+    VB_FRAME_ADVANCE_FREEZE_FRAME,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*BgHeavyBlock`
     VB_FREEZE_LINK_FOR_BLOCK_THROW,
 
