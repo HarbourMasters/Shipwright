@@ -1,4 +1,6 @@
 #include "global.h"
+#include "soh/ResourceManagerHelpers.h"
+#include "soh/SceneDB.h"
 
 s16 sKaleidoSetupKscpPos0[] = { PAUSE_QUEST, PAUSE_EQUIP, PAUSE_ITEM, PAUSE_MAP };
 f32 sKaleidoSetupEyeX0[] = { 0.0f, 64.0f, 0.0f, -64.0f };
@@ -124,6 +126,10 @@ void KaleidoSetup_Init(PlayState* play) {
     pauseCtx->randoQuestMode = 0;
 
     View_Init(&pauseCtx->view, play->state.gfxCtx);
+
+    if (SceneDB_IsDungeon(play->sceneNum)) {
+        SceneDB_SetPauseMapMarkData(play->sceneNum, ResourceMgr_IsGameMasterQuest());
+    }
 }
 
 void KaleidoSetup_Destroy(PlayState* play) {

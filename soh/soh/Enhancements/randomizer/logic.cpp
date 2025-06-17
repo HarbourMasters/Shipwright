@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "soh/OTRGlobals.h"
+#include "soh/SceneDB.h"
 #include "dungeon.h"
 #include "context.h"
 #include "macros.h"
@@ -2025,6 +2026,7 @@ void Logic::InitSaveContext() {
     mSaveContext->equips.equipment = 0;
 
     // Inventory
+    size_t numScenes = SceneDB::Instance->GetNumEntries();
     for (int item = 0; item < ARRAY_COUNT(mSaveContext->inventory.items); item++) {
         mSaveContext->inventory.items[item] = ITEM_NONE;
     }
@@ -2034,15 +2036,15 @@ void Logic::InitSaveContext() {
     mSaveContext->inventory.equipment = 0;
     mSaveContext->inventory.upgrades = 0;
     mSaveContext->inventory.questItems = 0;
-    for (int dungeon = 0; dungeon < ARRAY_COUNT(mSaveContext->inventory.dungeonItems); dungeon++) {
+    for (int dungeon = 0; dungeon < numScenes; dungeon++) {
         mSaveContext->inventory.dungeonItems[dungeon] = 0;
     }
-    for (int dungeon = 0; dungeon < ARRAY_COUNT(mSaveContext->inventory.dungeonKeys); dungeon++) {
+    for (int dungeon = 0; dungeon < numScenes; dungeon++) {
         mSaveContext->inventory.dungeonKeys[dungeon] = 0x0;
     }
     mSaveContext->inventory.defenseHearts = 0;
     mSaveContext->inventory.gsTokens = 0;
-    for (int scene = 0; scene < ARRAY_COUNT(mSaveContext->sceneFlags); scene++) {
+    for (int scene = 0; scene < numScenes; scene++) {
         mSaveContext->sceneFlags[scene].chest = 0;
         mSaveContext->sceneFlags[scene].swch = 0;
         mSaveContext->sceneFlags[scene].clear = 0;
@@ -2121,9 +2123,16 @@ void Logic::InitSaveContext() {
 
 void Logic::NewSaveContext() {
     if (mSaveContext != nullptr && mSaveContext != &gSaveContext) {
-        free(mSaveContext);
+        delete[] mSaveContext->inventory.dungeonItems;
+        delete[] mSaveContext->inventory.dungeonKeys;
+        delete[] mSaveContext->sceneFlags;
+        delete mSaveContext;
     }
+    size_t numScenes = SceneDB::Instance->GetNumEntries();
     mSaveContext = new SaveContext();
+    mSaveContext->inventory.dungeonItems = new u8[numScenes];
+    mSaveContext->inventory.dungeonKeys = new s8[numScenes];
+    mSaveContext->sceneFlags = new SavedSceneFlags[numScenes];
     InitSaveContext();
 }
 

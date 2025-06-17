@@ -1413,11 +1413,11 @@ void func_80A053F0(Actor* thisx, PlayState* play) {
     } else {
         this->actionFunc(this, play);
         thisx->shape.rot.y = this->unk_2BC;
-        nREG(80) = gSaveContext.sceneFlags[127].chest;
+        nREG(80) = HIGH_SCORE(HS_HBA);
 
         if (nREG(81) != 0) {
-            if (gSaveContext.sceneFlags[127].chest) {
-                LOG_NUM("z_common_data.memory.information.room_inf[127][ 0 ]", gSaveContext.sceneFlags[127].chest);
+            if (HIGH_SCORE(HS_HBA)) {
+                LOG_NUM("z_common_data.memory.information.room_inf[127][ 0 ]", HIGH_SCORE(HS_HBA));
             }
         }
 

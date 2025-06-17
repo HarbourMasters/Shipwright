@@ -26,6 +26,7 @@
 #include "soh/mq_asset_hacks.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/SceneDB.h"
 
 // Entrance Table definition
 #define DEFINE_ENTRANCE(_0, sceneId, spawn, continueBgm, displayTitleCard, endTransType, startTransType) \
@@ -87,23 +88,23 @@ Gfx sDefaultDisplayList[] = {
 
 // Computes next entrance index based on age and day time to set the fade out transition
 void Scene_SetTransitionForNextEntrance(PlayState* play) {
-    s16 entranceIndex;
+    s16 layer = 0;
 
     if (!IS_DAY) {
         if (!LINK_IS_ADULT) {
-            entranceIndex = play->nextEntranceIndex + 1;
+            layer = 1;
         } else {
-            entranceIndex = play->nextEntranceIndex + 3;
+            layer = 3;
         }
     } else {
         if (!LINK_IS_ADULT) {
-            entranceIndex = play->nextEntranceIndex;
+            layer = 0;
         } else {
-            entranceIndex = play->nextEntranceIndex + 2;
+            layer = 2;
         }
     }
 
-    play->transitionType = ENTRANCE_INFO_START_TRANS_TYPE(gEntranceTable[entranceIndex].field); // Fade out
+    play->transitionType = EntranceDB_RetrieveLayer(play->nextEntranceIndex, layer)->startTransition; // Fade out
 }
 
 // Scene Draw Config 0
