@@ -146,10 +146,6 @@ std::set<RandomizerArea> CalculateAreas(SceneID scene) {
         case SCENE_ICE_CAVERN:
             return { RA_ICE_CAVERN };
         case SCENE_INSIDE_GANONS_CASTLE:
-        case SCENE_GANONS_TOWER_COLLAPSE_INTERIOR:
-        case SCENE_INSIDE_GANONS_CASTLE_COLLAPSE:
-        case SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR:
-        case SCENE_GANON_BOSS:
             return { RA_GANONS_CASTLE };
         case SCENE_GERUDO_TRAINING_GROUND:
             return { RA_GERUDO_TRAINING_GROUND };
@@ -258,6 +254,10 @@ std::set<RandomizerArea> CalculateAreas(SceneID scene) {
         case SCENE_MARKET_GUARD_HOUSE:
         case SCENE_POTION_SHOP_GRANNY:
         case SCENE_HOUSE_OF_SKULLTULA:
+        case SCENE_GANONS_TOWER_COLLAPSE_INTERIOR:
+        case SCENE_INSIDE_GANONS_CASTLE_COLLAPSE:
+        case SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR:
+        case SCENE_GANON_BOSS:
             return {};
         case SCENE_CHAMBER_OF_THE_SAGES:
         case SCENE_CUTSCENE_MAP:

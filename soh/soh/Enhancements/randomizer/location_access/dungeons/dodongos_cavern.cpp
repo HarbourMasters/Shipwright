@@ -558,14 +558,14 @@ void RegionTable_Init_DodongosCavern() {
 #pragma endregion
 
     // Boss Room
-    areaTable[RR_DODONGOS_CAVERN_BOSS_ENTRYWAY] = Region("Dodongos Cavern Boss Entryway", SCENE_DODONGOS_CAVERN_BOSS, {}, {}, {
+    areaTable[RR_DODONGOS_CAVERN_BOSS_ENTRYWAY] = Region("Dodongos Cavern Boss Entryway", SCENE_DODONGOS_CAVERN, {}, {}, {
         // Exits
         Entrance(RR_DODONGOS_CAVERN_BOSS_AREA,       []{return ctx->GetDungeon(DODONGOS_CAVERN)->IsVanilla();}),
         Entrance(RR_DODONGOS_CAVERN_MQ_BEHIND_MOUTH, []{return ctx->GetDungeon(DODONGOS_CAVERN)->IsMQ();}),
         Entrance(RR_DODONGOS_CAVERN_BOSS_ROOM,       []{return true;}),
     });
 
-    areaTable[RR_DODONGOS_CAVERN_BOSS_ROOM] = Region("Dodongos Cavern Boss Room", SCENE_DODONGOS_CAVERN, {
+    areaTable[RR_DODONGOS_CAVERN_BOSS_ROOM] = Region("Dodongos Cavern Boss Room", SCENE_DODONGOS_CAVERN_BOSS, {
         // Events
         EventAccess(&logic->DodongosCavernClear, []{return Here(RR_DODONGOS_CAVERN_BOSS_ROOM, []{return logic->HasExplosives() || (logic->CanUse(RG_MEGATON_HAMMER) && ctx->GetTrickOption(RT_DC_HAMMER_FLOOR));}) && logic->CanKillEnemy(RE_KING_DODONGO); /*todo add chu kill to tricks*/}),
     }, {
