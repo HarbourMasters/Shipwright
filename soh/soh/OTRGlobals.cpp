@@ -1151,6 +1151,13 @@ extern "C" void InitOTR() {
             "Error", "SoH does not have proper file permissions. Please move it to a folder that does and run again.");
         exit(1);
     }
+    if (ownPath.string().find("OneDrive") != std::string::npos) {
+        Extractor::ShowErrorBox(
+            "Error",
+            "SoH appears to be in a OneDrive folder, which will cause issues. "
+            "Please move it to a folder outside of OneDrive, like the root of a drive (e.g. \"C:\\Games\\SoH\").");
+        exit(1);
+    }
 #endif
 
 #if not defined(__SWITCH__) && not defined(__WIIU__)
@@ -2236,7 +2243,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                     (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_STONE &&
                      CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
 
-            Actor* stone = GET_PLAYER(play)->talkActor;
+            Actor* stone = player->talkActor;
             RandomizerHint stoneHint = RH_NONE;
             s16 hintParams = stone->params & 0xFF;
 
@@ -2294,7 +2301,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                 (RandomizerInf)((textId - TEXT_SHOP_ITEM_RANDOM_CONFIRM) + RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1));
             messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(rc, TEXT_SHOP_ITEM_RANDOM_CONFIRM);
         } else if (textId == TEXT_SCRUB_RANDOM) {
-            EnDns* enDns = (EnDns*)GET_PLAYER(play)->talkActor;
+            EnDns* enDns = (EnDns*)player->talkActor;
             RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf(
                 (RandomizerInf)enDns->sohScrubIdentity.randomizerInf);
             messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(
@@ -2344,7 +2351,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, textId,
                                                                            MF_AUTO_FORMAT);
         } else if (textId == TEXT_SKULLTULA_PEOPLE_IM_CURSED) {
-            actorParams = GET_PLAYER(play)->talkActor->params;
+            actorParams = player->talkActor->params;
             if (actorParams == 1 && ctx->GetOption(RSK_KAK_10_SKULLS_HINT)) {
                 messageEntry = ctx->GetHint(RH_KAK_10_SKULLS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
             } else if (actorParams == 2 && ctx->GetOption(RSK_KAK_20_SKULLS_HINT)) {
@@ -2443,6 +2450,10 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         } else if (textId == TEXT_BIG_POE_COLLECTED_RANDO) {
             messageEntry =
                 CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId, MF_AUTO_FORMAT);
+        } else if (textId == TEXT_GERUDO_GUARD_FRIENDLY && player->talkActor->id == ACTOR_EN_GE2) {
+            // TODO_TRANSLATE Translate into french and german
+            messageEntry = CustomMessage("Want me to throw you in jail?&\x1B#Yes please&No thanks#", { QM_GREEN });
+            messageEntry.AutoFormat();
         }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {
@@ -2643,4 +2654,7 @@ void SoH_ProcessDroppedFiles(std::string filePath) {
         return;
     }
 }
-// #endregion
+
+extern "C" void CheckTracker_RecalculateAvailableChecks() {
+    CheckTracker::RecalculateAvailableChecks();
+}

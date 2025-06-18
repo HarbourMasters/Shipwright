@@ -177,6 +177,9 @@ class Logic {
 
     /* --- END OF HELPERS AND LOCATION ACCESS --- */
 
+    bool CalculatingAvailableChecks = false;
+    bool ACProcessUndiscoveredExits = false;
+
     SaveContext* mSaveContext = nullptr;
     Logic();
     bool CanUse(RandomizerGet itemName);
@@ -248,7 +251,7 @@ class Logic {
     bool CanUseProjectile();
     bool CanBuildRainbowBridge();
     bool CanTriggerLACS();
-    void Reset();
+    void Reset(bool resetSaveContext = true);
     void SetContext(std::shared_ptr<Context> _ctx);
     bool GetInLogic(LogicVal logicVal);
     void SetInLogic(LogicVal logicVal, bool remove);

@@ -119,10 +119,8 @@ SaveManager::SaveManager() {
     AddLoadFunction("base", 4, LoadBaseVersion4);
     AddSaveFunction("base", 4, SaveBase, true, SECTION_PARENT_NONE);
 
-    AddLoadFunction("randomizer", 1, LoadRandomizerVersion1);
-    AddLoadFunction("randomizer", 2, LoadRandomizerVersion2);
-    AddLoadFunction("randomizer", 3, LoadRandomizerVersion3);
-    AddSaveFunction("randomizer", 3, SaveRandomizer, true, SECTION_PARENT_NONE);
+    AddLoadFunction("randomizer", 1, LoadRandomizer);
+    AddSaveFunction("randomizer", 1, SaveRandomizer, true, SECTION_PARENT_NONE);
 
     AddInitFunction(InitFileImpl);
 
@@ -157,234 +155,7 @@ SaveManager::SaveManager() {
     }
 }
 
-// RANDOTODO should we just have dummy functions that raise warnings instead if these aren't supported?
-void SaveManager::LoadRandomizerVersion1() {
-    auto randoContext = Rando::Context::GetInstance();
-    RandomizerCheck location = RC_UNKNOWN_CHECK;
-    for (int i = 0; i < RC_MAX; i++) {
-        SaveManager::Instance->LoadData("check" + std::to_string(i), location);
-        SaveManager::Instance->LoadStruct("get" + std::to_string(i), [&]() {
-            SaveManager::Instance->LoadData("rgID", randoContext->GetItemLocation(location)->RefPlacedItem());
-            if (randoContext->GetItemLocation(location)->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
-                randoContext->overrides[location].SetLocation(location);
-                SaveManager::Instance->LoadData("fakeRgID", randoContext->overrides[location].RefLooksLike());
-                SaveManager::Instance->LoadData("trickName", randoContext->overrides[location].GetTrickName().english);
-                SaveManager::Instance->LoadData("trickName", randoContext->overrides[location].GetTrickName().french);
-            }
-        });
-    }
-
-    for (uint32_t i = 0; i < randoContext->hashIconIndexes.size(); i++) {
-        SaveManager::Instance->LoadData("seed" + std::to_string(i), randoContext->hashIconIndexes[i]);
-    }
-
-    for (int i = 0; i < RSK_MAX; i++) {
-        int key, value;
-        SaveManager::Instance->LoadData("sk" + std::to_string(i), key);
-        SaveManager::Instance->LoadData("sv" + std::to_string(i), value);
-        randoContext->GetOption(RandomizerSettingKey(key)).Set(value);
-    }
-
-    for (int i = 0; i < 50; i++) {
-        RandomizerCheck check;
-        char hintText[200];
-        SaveManager::Instance->LoadData("hc" + std::to_string(i), check);
-        for (int j = 0; j < ARRAY_COUNT(hintText); j++) {
-            SaveManager::Instance->LoadData("ht" + std::to_string(i) + "-" + std::to_string(j), hintText[j]);
-        }
-        RandomizerHint stoneHint = Rando::StaticData::oldVerHintOrder[i - Rando::StaticData::oldVerGossipStoneStart];
-        randoContext->AddHint(stoneHint, Rando::Hint(stoneHint, { CustomMessage(hintText) }));
-    }
-
-    char childAltarText[250];
-    for (int i = 0; i < ARRAY_COUNT(childAltarText); i++) {
-        SaveManager::Instance->LoadData("cat" + std::to_string(i), childAltarText[i]);
-    }
-    randoContext->AddHint(RH_ALTAR_CHILD, Rando::Hint(RH_ALTAR_CHILD, { CustomMessage(childAltarText) }));
-
-    char adultAltarText[750];
-    for (int i = 0; i < ARRAY_COUNT(adultAltarText); i++) {
-        SaveManager::Instance->LoadData("aat" + std::to_string(i), adultAltarText[i]);
-    }
-    randoContext->AddHint(RH_ALTAR_ADULT, Rando::Hint(RH_ALTAR_ADULT, { CustomMessage(adultAltarText) }));
-
-    char ganonHintText[150];
-    for (int i = 0; i < ARRAY_COUNT(ganonHintText); i++) {
-        SaveManager::Instance->LoadData("ght" + std::to_string(i), ganonHintText[i]);
-    }
-    randoContext->AddHint(RH_GANONDORF_HINT, Rando::Hint(RH_GANONDORF_HINT, { CustomMessage(ganonHintText) }));
-
-    char ganonText[250];
-    for (int i = 0; i < ARRAY_COUNT(ganonText); i++) {
-        SaveManager::Instance->LoadData("gt" + std::to_string(i), ganonText[i]);
-    }
-    randoContext->AddHint(RH_GANONDORF_JOKE, Rando::Hint(RH_GANONDORF_JOKE, { CustomMessage(ganonText) }));
-
-    SaveManager::Instance->LoadData("triforcePiecesCollected",
-                                    gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected);
-
-    SaveManager::Instance->LoadData("pendingIceTrapCount", gSaveContext.ship.pendingIceTrapCount);
-
-    size_t merchantPricesSize = 0;
-    if (randoContext->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_OFF)) {
-        merchantPricesSize += NUM_SCRUBS;
-    }
-    if (randoContext->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF)) {
-        merchantPricesSize += NUM_SHOP_ITEMS;
-    }
-
-    SaveManager::Instance->LoadArray("merchantPrices", merchantPricesSize, [&](size_t i) {
-        SaveManager::Instance->LoadStruct("", [&]() {
-            RandomizerCheck rc;
-            SaveManager::Instance->LoadData("check", rc);
-            uint32_t price;
-            SaveManager::Instance->LoadData("price", price);
-            randoContext->GetItemLocation(rc)->SetCustomPrice(price);
-        });
-    });
-}
-
-// RANDOTODO if we actually support this, be less lazy
-void SaveManager::LoadRandomizerVersion2() {
-    auto randoContext = Rando::Context::GetInstance();
-    SaveManager::Instance->LoadArray("itemLocations", RC_MAX, [&](size_t i) {
-        SaveManager::Instance->LoadStruct("", [&]() {
-            SaveManager::Instance->LoadData("rgID", randoContext->GetItemLocation(i)->RefPlacedItem());
-            RandomizerGet rg = RG_NONE;
-            SaveManager::Instance->LoadData("fakeRgID", rg, RG_NONE);
-            if (rg != RG_NONE) {
-                randoContext->overrides[static_cast<RandomizerCheck>(i)] =
-                    Rando::ItemOverride(static_cast<RandomizerCheck>(i), rg);
-                SaveManager::Instance->LoadData(
-                    "trickName", randoContext->overrides[static_cast<RandomizerCheck>(i)].GetTrickName().english);
-                SaveManager::Instance->LoadData(
-                    "trickName", randoContext->overrides[static_cast<RandomizerCheck>(i)].GetTrickName().french);
-            }
-        });
-    });
-
-    auto entranceCtx = randoContext->GetEntranceShuffler();
-    SaveManager::Instance->LoadArray("entrances", ARRAY_COUNT(entranceCtx->entranceOverrides), [&](size_t i) {
-        SaveManager::Instance->LoadStruct("", [&]() {
-            SaveManager::Instance->LoadData("type", entranceCtx->entranceOverrides[i].type);
-            SaveManager::Instance->LoadData("index", entranceCtx->entranceOverrides[i].index);
-            SaveManager::Instance->LoadData("destination", entranceCtx->entranceOverrides[i].destination);
-            SaveManager::Instance->LoadData("override", entranceCtx->entranceOverrides[i].override);
-            SaveManager::Instance->LoadData("overrideDestination",
-                                            entranceCtx->entranceOverrides[i].overrideDestination);
-        });
-    });
-
-    SaveManager::Instance->LoadArray("seed", randoContext->hashIconIndexes.size(), [&](size_t i) {
-        SaveManager::Instance->LoadData("", randoContext->hashIconIndexes[i]);
-    });
-
-    std::string inputSeed;
-    SaveManager::Instance->LoadData("inputSeed", inputSeed);
-    randoContext->SetSeedString(inputSeed);
-
-    uint32_t finalSeed;
-    SaveManager::Instance->LoadData("finalSeed", finalSeed);
-    randoContext->SetSeed(finalSeed);
-
-    SaveManager::Instance->LoadArray("randoSettings", RSK_MAX, [&](size_t i) {
-        int value = 0;
-        SaveManager::Instance->LoadData("", value);
-        randoContext->GetOption(RandomizerSettingKey(i)).Set(value);
-    });
-
-    SaveManager::Instance->LoadArray("hintLocations", RH_ZR_OPEN_GROTTO_GOSSIP_STONE + 1, [&](size_t i) {
-        SaveManager::Instance->LoadStruct("", [&]() {
-            RandomizerCheck rc = RC_UNKNOWN_CHECK;
-            SaveManager::Instance->LoadData("check", rc);
-            if (rc != RC_UNKNOWN_CHECK) {
-                std::string hintText;
-                SaveManager::Instance->LoadData("hintText", hintText);
-                RandomizerHint stoneHint =
-                    Rando::StaticData::oldVerHintOrder[rc - Rando::StaticData::oldVerGossipStoneStart];
-                randoContext->AddHint(stoneHint, Rando::Hint(stoneHint, { CustomMessage(hintText) }));
-            }
-        });
-    });
-
-    std::string childAltarText;
-    SaveManager::Instance->LoadData("childAltarText", childAltarText);
-    randoContext->AddHint(RH_ALTAR_CHILD, Rando::Hint(RH_ALTAR_CHILD, { CustomMessage(childAltarText) }));
-    std::string adultAltarText;
-    SaveManager::Instance->LoadData("adultAltarText", adultAltarText);
-    randoContext->AddHint(RH_ALTAR_ADULT, Rando::Hint(RH_ALTAR_ADULT, { CustomMessage(adultAltarText) }));
-    std::string ganonHintText;
-    SaveManager::Instance->LoadData("ganonHintText", ganonHintText);
-    randoContext->AddHint(RH_GANONDORF_HINT, Rando::Hint(RH_GANONDORF_HINT, { CustomMessage(ganonHintText) }));
-    std::string ganonText;
-    SaveManager::Instance->LoadData("ganonText", ganonText);
-    randoContext->AddHint(RH_GANONDORF_JOKE, Rando::Hint(RH_GANONDORF_JOKE, { CustomMessage(ganonText) }));
-    std::string dampeText;
-    SaveManager::Instance->LoadData("dampeText", dampeText);
-    randoContext->AddHint(RH_DAMPES_DIARY, Rando::Hint(RH_DAMPES_DIARY, { CustomMessage(dampeText) }));
-    std::string gregHintText;
-    SaveManager::Instance->LoadData("gregHintText", gregHintText);
-    randoContext->AddHint(RH_GREG_RUPEE, Rando::Hint(RH_GREG_RUPEE, { CustomMessage(gregHintText) }));
-    std::string sheikText;
-    SaveManager::Instance->LoadData("sheikText", sheikText);
-    randoContext->AddHint(RH_SHEIK_HINT, Rando::Hint(RH_SHEIK_HINT, { CustomMessage(sheikText) }));
-    std::string sariaText;
-    SaveManager::Instance->LoadData("sariaText", sariaText);
-    randoContext->AddHint(RH_SARIA_HINT, Rando::Hint(RH_SARIA_HINT, { CustomMessage(sariaText) }));
-    std::string fishingPoleText;
-    SaveManager::Instance->LoadData("fishingPoleText", fishingPoleText);
-    randoContext->AddHint(RH_FISHING_POLE, Rando::Hint(RH_FISHING_POLE, { CustomMessage(fishingPoleText) }));
-    std::string warpMinuetText;
-    SaveManager::Instance->LoadData("warpMinuetText", warpMinuetText);
-    randoContext->AddHint(RH_MINUET_WARP_LOC, Rando::Hint(RH_MINUET_WARP_LOC, { CustomMessage(warpMinuetText) }));
-    std::string warpBoleroText;
-    SaveManager::Instance->LoadData("warpBoleroText", warpBoleroText);
-    randoContext->AddHint(RH_BOLERO_WARP_LOC, Rando::Hint(RH_BOLERO_WARP_LOC, { CustomMessage(warpBoleroText) }));
-    std::string warpSerenadeText;
-    SaveManager::Instance->LoadData("warpSerenadeText", warpSerenadeText);
-    randoContext->AddHint(RH_SERENADE_WARP_LOC, Rando::Hint(RH_SERENADE_WARP_LOC, { CustomMessage(warpSerenadeText) }));
-    std::string warpRequiemText;
-    SaveManager::Instance->LoadData("warpRequiemText", warpRequiemText);
-    randoContext->AddHint(RH_REQUIEM_WARP_LOC, Rando::Hint(RH_REQUIEM_WARP_LOC, { CustomMessage(warpRequiemText) }));
-    std::string warpNocturneText;
-    SaveManager::Instance->LoadData("warpNocturneText", warpNocturneText);
-    randoContext->AddHint(RH_NOCTURNE_WARP_LOC, Rando::Hint(RH_NOCTURNE_WARP_LOC, { CustomMessage(warpNocturneText) }));
-    std::string warpPreludeText;
-    SaveManager::Instance->LoadData("warpPreludeText", warpPreludeText);
-    randoContext->AddHint(RH_PRELUDE_WARP_LOC, Rando::Hint(RH_PRELUDE_WARP_LOC, { CustomMessage(warpPreludeText) }));
-
-    SaveManager::Instance->LoadData("triforcePiecesCollected",
-                                    gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected);
-
-    SaveManager::Instance->LoadData("pendingIceTrapCount", gSaveContext.ship.pendingIceTrapCount);
-
-    std::shared_ptr<Randomizer> randomizer = OTRGlobals::Instance->gRandomizer;
-
-    size_t merchantPricesSize = 0;
-    SaveManager::Instance->LoadData("merchantPricesSize", merchantPricesSize);
-
-    SaveManager::Instance->LoadArray("merchantPrices", merchantPricesSize, [&](size_t i) {
-        SaveManager::Instance->LoadStruct("", [&]() {
-            RandomizerCheck rc;
-            SaveManager::Instance->LoadData("check", rc);
-            uint32_t price;
-            SaveManager::Instance->LoadData("price", price);
-            randoContext->GetItemLocation(rc)->SetCustomPrice(price);
-        });
-    });
-
-    size_t mqDungeonCount;
-    SaveManager::Instance->LoadData("masterQuestDungeonCount", mqDungeonCount, (size_t)0);
-
-    randoContext->GetDungeons()->ClearAllMQ();
-    SaveManager::Instance->LoadArray("masterQuestDungeons", mqDungeonCount, [&](size_t i) {
-        uint16_t scene;
-        SaveManager::Instance->LoadData("", scene);
-        randoContext->GetDungeons()->GetDungeonFromScene(SceneID(scene))->SetMQ();
-    });
-}
-
-void SaveManager::LoadRandomizerVersion3() {
+void SaveManager::LoadRandomizer() {
     auto randoContext = Rando::Context::GetInstance();
     SaveManager::Instance->LoadArray("itemLocations", RC_MAX, [&](size_t i) {
         SaveManager::Instance->LoadStruct("", [&]() {
@@ -1355,8 +1126,57 @@ void SaveManager::LoadFile(int fileNum) {
         switch (saveBlock["version"].get<int>()) {
             case 1:
                 for (auto& block : saveBlock["sections"].items()) {
-                    int sectionVersion = block.value()["version"];
                     std::string sectionName = block.key();
+                    if (sectionName == "randomizer") {
+                        bool hasStats = saveBlock["sections"].contains("sohStats");
+                        if (block.value()["data"].contains("aat0") || !hasStats) { // Rachael rando data
+                            SohGui::RegisterPopup(
+                                "Loading old file",
+                                "The file in slot " + std::to_string(fileNum + 1) +
+                                    " appears to contain randomizer data, but is a very old format.\n" +
+                                    "The randomizer data has been removed, and this file will be treated as a vanilla "
+                                    "file.\n" +
+                                    "If this was a randomizer file, the file will not work, and should be deleted.");
+                            input.close();
+                            saveMtx.unlock();
+                            SaveFile(fileNum);
+                            return;
+                        }
+                        s16 major = saveBlock["sections"]["sohStats"]["data"]["buildVersionMajor"];
+                        s16 minor = saveBlock["sections"]["sohStats"]["data"]["buildVersionMinor"];
+                        s16 patch = saveBlock["sections"]["sohStats"]["data"]["buildVersionPatch"];
+                        // block loading outdated rando save
+                        if (!(major == gBuildVersionMajor && minor == gBuildVersionMinor &&
+                              patch == gBuildVersionPatch)) {
+                            input.close();
+                            std::string newFileName = Ship::Context::GetPathRelativeToAppDirectory("Save") +
+                                                      ("/file" + std::to_string(fileNum + 1) + "-" +
+                                                       std::to_string(GetUnixTimestamp()) + ".bak");
+                            std::filesystem::path newFile(newFileName);
+
+#if defined(__SWITCH__) || defined(__WIIU__)
+                            copy_file(fileName.c_str(), newFile.c_str());
+#else
+                            std::filesystem::copy_file(fileName, newFile);
+#endif
+
+                            std::filesystem::remove(fileName);
+                            SohGui::RegisterPopup(
+                                "Outdated Randomizer Save",
+                                "The SoH version in the file in slot " + std::to_string(fileNum + 1) +
+                                    " does not match the currently running version.\n" +
+                                    "Non-matching rando saves are unsupported, and the file has been renamed to\n" +
+                                    "    " + newFileName + "\n" +
+                                    "If this was not in error, the file should be deleted.");
+                            saveMtx.unlock();
+                            SaveFile(fileNum);
+                            return;
+                        }
+                    }
+                    int sectionVersion = block.value()["version"];
+                    if (sectionName == "randomizer" && sectionVersion != 1) {
+                        sectionVersion = 1;
+                    }
                     if (!sectionLoadHandlers.contains(sectionName)) {
                         // Unloadable sections aren't necessarily errors, they are probably mods that were unloaded
                         // TODO report in a more noticeable manner

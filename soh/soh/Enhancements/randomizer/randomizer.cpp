@@ -365,10 +365,20 @@ std::unordered_map<s16, s16> getItemIdToItemId = {
 bool Randomizer::SpoilerFileExists(const char* spoilerFileName) {
     if (strcmp(spoilerFileName, "") != 0) {
         std::ifstream spoilerFileStream(SohUtils::Sanitize(spoilerFileName));
-        if (!spoilerFileStream) {
-            return false;
-        } else {
-            return true;
+        if (spoilerFileStream) {
+            nlohmann::json contents;
+            spoilerFileStream >> contents;
+            spoilerFileStream.close();
+            if (contents.contains("version") &&
+                strcmp(std::string(contents["version"]).c_str(), (char*)gBuildVersion) == 0) {
+                return true;
+            } else {
+                SohGui::RegisterPopup(
+                    "Old Spoiler Version",
+                    "The spoiler file located at\n" + std::string(spoilerFileName) +
+                        "\nwas made by a version that doesn't match the currently running version.\n" +
+                        "Loading for this file has been cancelled.");
+            }
         }
     }
 
@@ -4393,7 +4403,7 @@ CustomMessage Randomizer::GetFishingPondOwnerMessage(u16 originalTextId) {
         "fischen!",
         "Désolé, mais l'étang est fermé.&J'ai perdu ma bonne %rCanne à Pêche%w...&Impossible de pêcher sans elle!");
 
-    if (Rando::Context::GetInstance()->GetOption(RSK_FISHING_POLE_HINT)) {
+    if (GetRandoSettingValue(RSK_FISHING_POLE_HINT)) {
         messageEntry = messageEntry + CustomMessage(ctx->GetHint(RH_FISHING_POLE)->GetHintMessage());
     }
 

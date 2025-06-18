@@ -438,9 +438,13 @@ void RegionTable_Init_DekuTree() {
     // Boss Room
     areaTable[RR_DEKU_TREE_BOSS_ENTRYWAY] = Region("Deku Tree Boss Entryway", SCENE_DEKU_TREE, {}, {}, {
         // Exits
+        Entrance(RR_DEKU_TREE_BOSS_ROOM, []{return true;}),
+    });
+
+    areaTable[RR_DEKU_TREE_BOSS_EXIT] = Region("Deku Tree Boss Exit", "Deku Tree", {RA_DEKU_TREE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+        // Exits
         Entrance(RR_DEKU_TREE_OUTSIDE_BOSS_ROOM,    []{return ctx->GetDungeon(DEKU_TREE)->IsVanilla();}),
         Entrance(RR_DEKU_TREE_MQ_OUTSIDE_BOSS_ROOM, []{return ctx->GetDungeon(DEKU_TREE)->IsMQ();}),
-        Entrance(RR_DEKU_TREE_BOSS_ROOM,            []{return true;}),
     });
 
     areaTable[RR_DEKU_TREE_BOSS_ROOM] = Region("Deku Tree Boss Room", SCENE_DEKU_TREE_BOSS, {
@@ -460,8 +464,8 @@ void RegionTable_Init_DekuTree() {
         LOCATION(RC_DEKU_TREE_QUEEN_GOHMA_GRASS_8, logic->CanCutShrubs()),
     }, {
         // Exits
-        Entrance(RR_DEKU_TREE_BOSS_ENTRYWAY, []{return true;}),
-        Entrance(RR_KF_OUTSIDE_DEKU_TREE,    []{return logic->DekuTreeClear;}, false),
+        Entrance(RR_DEKU_TREE_BOSS_EXIT,  []{return true;}),
+        Entrance(RR_KF_OUTSIDE_DEKU_TREE, []{return logic->DekuTreeClear;}, false),
     });
 
     // clang-format on

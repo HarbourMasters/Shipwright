@@ -22,6 +22,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // sBgPoEventPuzzleState == 0xF
+    // ```
+    // #### `args`
+    // - None
+    VB_AMY_SOLVE,
+
+    // #### `result`
+    // ```c
     // this->actor.textId == 0x401A
     // ```
     // #### `args`
@@ -566,6 +574,14 @@ typedef enum {
     // #### `args`
     // - None
     VB_GANON_HEAL_BEFORE_FIGHT,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnGe2`
+    VB_GERUDO_GUARD_SET_ACTION_AFTER_TALK,
 
     // #### `result`
     // See logic in
@@ -1691,6 +1707,15 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // dropId == ITEM00_STICK
+    // ```
+    // #### `args`
+    // - None
+    VB_PREVENT_ADULT_STICK,
+
+    // #### `result`
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -1977,6 +2002,15 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // varies, never set should to true
+    // ```
+    // #### `args`
+    // - `*Actor`
+    // - `*s16` - timer value
+    VB_SWITCH_TIMER_TICK,
+
+    // #### `result`
+    // ```c
     // (this->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) && (this->heldActor != NULL) &&
     // CHECK_BTN_ANY(sControlInput->press.button, buttonsToCheck)
     // ```
@@ -2069,6 +2103,13 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*EnWood02`
+    VB_TREE_DROP_COLLECTIBLE,
+
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `int32_t` (button - promoted from `u8`)
     // - `int32_t` (item - promoted from `u8`)
     VB_UPDATE_BOTTLE_ITEM,
@@ -2088,6 +2129,38 @@ typedef enum {
     // #### `args`
     // - `*EnWonderTalk2`
     VB_WONDER_TALK,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*Actor`
+    VB_TRIGGER_VOIDOUT,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*Actor`
+    VB_TORCH2_HANDLE_CLANKING,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*Actor`
+    VB_RECIEVE_FALL_DAMAGE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnRr`
+    VB_LIKE_LIKE_GRAB_PLAYER,
 } GIVanillaBehavior;
 
 #endif

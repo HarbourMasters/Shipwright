@@ -11,8 +11,7 @@ extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
 void ObjComb_RandomizerChooseItemDrop(ObjComb* objComb, PlayState* play) {
     s16 params = objComb->actor.params & 0x1F;
 
-    if (Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_BEEHIVES).Get() &&
-        !Flags_GetRandomizerInf(objComb->beehiveIdentity.randomizerInf)) {
+    if (RAND_GET_OPTION(RSK_SHUFFLE_BEEHIVES) && !Flags_GetRandomizerInf(objComb->beehiveIdentity.randomizerInf)) {
         EnItem00* item00 = (EnItem00*)Item_DropCollectible2(play, &objComb->actor.world.pos, ITEM00_SOH_DUMMY);
         item00->randoInf = objComb->beehiveIdentity.randomizerInf;
         item00->itemEntry =
@@ -41,8 +40,7 @@ void ObjComb_RandomizerWait(ObjComb* objComb, PlayState* play) {
     s32 dmgFlags;
 
     objComb->unk_1B0 -= 50;
-    if (Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_BEEHIVES).Get() &&
-        !Flags_GetRandomizerInf(objComb->beehiveIdentity.randomizerInf)) {
+    if (RAND_GET_OPTION(RSK_SHUFFLE_BEEHIVES) && !Flags_GetRandomizerInf(objComb->beehiveIdentity.randomizerInf)) {
         if (objComb->unk_1B0 <= -5000) {
             objComb->unk_1B0 = 1500;
         }
@@ -85,7 +83,7 @@ void ObjComb_RandomizerUpdate(void* actor) {
 }
 
 void RegisterShuffleBeehives() {
-    bool shouldRegister = IS_RANDO && Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_BEEHIVES).Get();
+    bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_BEEHIVES);
 
     COND_ID_HOOK(OnActorInit, ACTOR_OBJ_COMB, shouldRegister, ObjComb_RandomizerInit);
     COND_ID_HOOK(OnActorUpdate, ACTOR_OBJ_COMB, shouldRegister, ObjComb_RandomizerUpdate);

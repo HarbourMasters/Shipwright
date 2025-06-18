@@ -298,7 +298,7 @@ void RegionTable_Init_ForestTemple() {
     }, {
         //Exits
         Entrance(RR_FOREST_TEMPLE_LOBBY,         []{return true;}),
-        Entrance(RR_FOREST_TEMPLE_BOSS_ENTRYWAY, []{return logic->HasItem(RG_FOREST_TEMPLE_BOSS_KEY);}),
+        Entrance(RR_FOREST_TEMPLE_BOSS_ENTRYWAY, []{return true;}),
     });
 
 #pragma endregion
@@ -591,7 +591,7 @@ void RegionTable_Init_ForestTemple() {
     areaTable[RR_FOREST_TEMPLE_MQ_BOSS_REGION] = Region("Forest Temple MQ Boss Region", SCENE_FOREST_TEMPLE, {}, {}, {
         //Exits
         Entrance(RR_FOREST_TEMPLE_MQ_BASEMENT,   []{return logic->ForestOpenBossCorridor;}),
-        Entrance(RR_FOREST_TEMPLE_BOSS_ENTRYWAY, []{return logic->HasItem(RG_FOREST_TEMPLE_BOSS_KEY);}),
+        Entrance(RR_FOREST_TEMPLE_BOSS_ENTRYWAY, []{return true;}),
     });
 
 #pragma endregion
@@ -601,7 +601,7 @@ void RegionTable_Init_ForestTemple() {
         // Exits
         Entrance(RR_FOREST_TEMPLE_BOSS_REGION,    []{return ctx->GetDungeon(FOREST_TEMPLE)->IsVanilla() && false;}),
         Entrance(RR_FOREST_TEMPLE_MQ_BOSS_REGION, []{return ctx->GetDungeon(FOREST_TEMPLE)->IsMQ() && false;}),
-        Entrance(RR_FOREST_TEMPLE_BOSS_ROOM,      []{return true;}),
+        Entrance(RR_FOREST_TEMPLE_BOSS_ROOM,      []{return logic->HasItem(RG_FOREST_TEMPLE_BOSS_KEY);}),
     });
 
     areaTable[RR_FOREST_TEMPLE_BOSS_ROOM] = Region("Forest Temple Boss Room", SCENE_FOREST_TEMPLE_BOSS, {

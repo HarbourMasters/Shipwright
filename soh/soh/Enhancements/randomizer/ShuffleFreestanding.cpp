@@ -23,7 +23,7 @@ void ShuffleFreestanding_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* sh
         Rando::Location* loc =
             OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(item00->actor.id, gPlayState->sceneNum, params);
         uint8_t isDungeon = loc->IsDungeon();
-        uint8_t freestandingSetting = Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_FREESTANDING).Get();
+        uint8_t freestandingSetting = RAND_GET_OPTION(RSK_SHUFFLE_FREESTANDING);
         RandomizerCheck randomizerCheck = loc->GetRandomizerCheck();
         bool checkObtained = Rando::Context::GetInstance()->GetItemLocation(randomizerCheck)->HasObtained();
 

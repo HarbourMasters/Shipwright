@@ -34,7 +34,7 @@ void EnCow_MoveForRandomizer(EnCow* enCow, PlayState* play) {
 }
 
 void RegisterShuffleCows() {
-    bool shouldRegister = IS_RANDO && Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_COWS).Get();
+    bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_COWS);
 
     COND_VB_SHOULD(VB_GIVE_ITEM_FROM_COW, shouldRegister, {
         EnCow* enCow = va_arg(args, EnCow*);

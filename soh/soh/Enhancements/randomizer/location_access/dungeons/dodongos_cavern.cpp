@@ -268,6 +268,7 @@ void RegionTable_Init_DodongosCavern() {
         LOCATION(RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_FRONT, logic->CanStunDeku()),
     }, {
         //Exits
+        Entrance(RR_DODONGOS_CAVERN_MQ_BEGINNING,         []{return true;}),
         Entrance(RR_DODONGOS_CAVERN_MQ_GOSSIP_STONE,      []{return Here(RR_DODONGOS_CAVERN_MQ_LOBBY, []{return logic->CanBreakMudWalls() || logic->HasItem(RG_GORONS_BRACELET);});}),
         Entrance(RR_DODONGOS_CAVERN_MQ_MOUTH_SIDE_BRIDGE, []{return Here(RR_DODONGOS_CAVERN_MQ_LOBBY, []{return logic->BlastOrSmash() || logic->HasItem(RG_GORONS_BRACELET);});}),
         Entrance(RR_DODONGOS_CAVERN_MQ_STAIRS_LOWER,      []{return Here(RR_DODONGOS_CAVERN_MQ_LOBBY, []{return logic->BlastOrSmash() || logic->HasItem(RG_GORONS_BRACELET);});}),
@@ -560,9 +561,13 @@ void RegionTable_Init_DodongosCavern() {
     // Boss Room
     areaTable[RR_DODONGOS_CAVERN_BOSS_ENTRYWAY] = Region("Dodongos Cavern Boss Entryway", SCENE_DODONGOS_CAVERN, {}, {}, {
         // Exits
+        Entrance(RR_DODONGOS_CAVERN_BOSS_ROOM, []{return true;}),
+    });
+
+    areaTable[RR_DODONGOS_CAVERN_BOSS_EXIT] = Region("Dodongos Cavern Boss Exit", SCENE_DODONGOS_CAVERN, {}, {}, {
+        // Exits
         Entrance(RR_DODONGOS_CAVERN_BOSS_AREA,       []{return ctx->GetDungeon(DODONGOS_CAVERN)->IsVanilla();}),
         Entrance(RR_DODONGOS_CAVERN_MQ_BEHIND_MOUTH, []{return ctx->GetDungeon(DODONGOS_CAVERN)->IsMQ();}),
-        Entrance(RR_DODONGOS_CAVERN_BOSS_ROOM,       []{return true;}),
     });
 
     areaTable[RR_DODONGOS_CAVERN_BOSS_ROOM] = Region("Dodongos Cavern Boss Room", SCENE_DODONGOS_CAVERN_BOSS, {
@@ -575,8 +580,8 @@ void RegionTable_Init_DodongosCavern() {
         LOCATION(RC_KING_DODONGO,                       logic->DodongosCavernClear),
     }, {
         // Exits
-        Entrance(RR_DODONGOS_CAVERN_BOSS_ENTRYWAY, []{return true;}),
-        Entrance(RR_DEATH_MOUNTAIN_TRAIL,          []{return logic->DodongosCavernClear;}, false),
+        Entrance(RR_DODONGOS_CAVERN_BOSS_EXIT, []{return true;}),
+        Entrance(RR_DEATH_MOUNTAIN_TRAIL,      []{return logic->DodongosCavernClear;}, false),
     });
 
     // clang-format on

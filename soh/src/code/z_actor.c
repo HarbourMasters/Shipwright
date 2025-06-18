@@ -1260,11 +1260,6 @@ void Actor_Init(Actor* actor, PlayState* play) {
         actor->init = NULL;
 
         GameInteractor_ExecuteOnActorInit(actor);
-
-        // For enemy health bar we need to know the max health during init
-        if (actor->category == ACTORCAT_ENEMY) {
-            actor->maximumHealth = actor->colChkInfo.health;
-        }
     }
 }
 
@@ -2625,11 +2620,6 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
                     actor->init = NULL;
 
                     GameInteractor_ExecuteOnActorInit(actor);
-
-                    // For enemy health bar we need to know the max health during init
-                    if (actor->category == ACTORCAT_ENEMY) {
-                        actor->maximumHealth = actor->colChkInfo.health;
-                    }
                 }
                 actor = actor->next;
             } else if (!Object_IsLoaded(&play->objectCtx, actor->objBankIndex)) {
