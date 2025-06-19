@@ -124,7 +124,7 @@ void func_80ABBBA8(EnNutsball* this, PlayState* play) {
         // And if so, reflects the projectile on impact
         if ((player->currentShield == PLAYER_SHIELD_DEKU) ||
             ((player->currentShield == PLAYER_SHIELD_HYLIAN) && LINK_IS_ADULT) ||
-            (CVarGetInteger(CVAR_ENHANCEMENT("ChildHoldsHylianShield"), 0) &&
+            (CVarGetInteger(CVAR_CHEAT("ChildHoldsHylianShield"), 0) &&
              player->currentShield == PLAYER_SHIELD_HYLIAN)) {
             if ((this->collider.base.atFlags & AT_HIT) && (this->collider.base.atFlags & AT_TYPE_ENEMY) &&
                 (this->collider.base.atFlags & AT_BOUNCED)) {

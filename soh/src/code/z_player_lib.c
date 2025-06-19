@@ -526,7 +526,7 @@ s32 Player_CheckHostileLockOn(Player* this) {
 }
 
 s32 Player_IsChildWithHylianShield(Player* this) {
-    if (CVarGetInteger(CVAR_ENHANCEMENT("ChildHoldsHylianShield"), 0)) {
+    if (CVarGetInteger(CVAR_CHEAT("ChildHoldsHylianShield"), 0)) {
         return false; // Skip vanilla check for making child Link have the Hylian Shield on his back, allowing for it to
                       // be used in hand
     } else {
@@ -552,7 +552,7 @@ void Player_SetModelsForHoldingShield(Player* this) {
              !Player_HoldsTwoHandedWeapon(this)) &&
             !Player_IsChildWithHylianShield(this)) {
             this->rightHandType = PLAYER_MODELTYPE_RH_SHIELD;
-            if (LINK_IS_CHILD && CVarGetInteger(CVAR_ENHANCEMENT("ChildHoldsHylianShield"), 0) &&
+            if (LINK_IS_CHILD && CVarGetInteger(CVAR_CHEAT("ChildHoldsHylianShield"), 0) &&
                 this->currentShield == PLAYER_SHIELD_HYLIAN) {
                 this->rightHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_RH_SHIELD][LINK_AGE_ADULT];
             } else if (LINK_IS_CHILD && (CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0)) &&
@@ -607,7 +607,7 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     this->rightHandType = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_RIGHT_HAND];
     this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][gSaveContext.linkAge];
 
-    if (LINK_IS_CHILD && CVarGetInteger(CVAR_ENHANCEMENT("ChildHoldsHylianShield"), 0) &&
+    if (LINK_IS_CHILD && CVarGetInteger(CVAR_CHEAT("ChildHoldsHylianShield"), 0) &&
         this->rightHandType == PLAYER_MODELTYPE_RH_SHIELD && this->currentShield == PLAYER_SHIELD_HYLIAN) {
         this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][LINK_AGE_ADULT];
     }
