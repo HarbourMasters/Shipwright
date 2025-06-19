@@ -1698,6 +1698,13 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_CHEAT("TimelessEquipment"))
         .Options(CheckboxOptions().Tooltip("Allows any item to be equipped, regardless of age.\n"
                                            "Also allows child to use adult strength upgrades."));
+    AddWidget(path, "Hold Hylian Shield as Child Link", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("ChildHoldsHylianShield"))
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0) == 0;
+        })
+        .Options(CheckboxOptions().Tooltip(
+            "Allows Child Link to hold the Hylian Shield the same way as the rest of the shields."));
     AddWidget(path, "Unrestricted Items", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_CHEAT("NoRestrictItems"))
         .Options(CheckboxOptions().Tooltip("Allows you to use any item at any location"));
