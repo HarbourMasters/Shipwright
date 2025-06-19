@@ -9,6 +9,8 @@ extern "C" {
 
 void UpdateHyperBossesState();
 void InitMods();
+void UpdatePatchChildHylianShield();
+void UpdateChildHylianShieldState();
 void SwitchAge();
 
 #ifdef __cplusplus

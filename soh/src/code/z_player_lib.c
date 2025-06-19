@@ -633,6 +633,15 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     this->sheathType = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_SHEATH];
     this->sheathDLists = &sPlayerDListGroups[this->sheathType][gSaveContext.linkAge];
 
+    if (CVarGetInteger(CVAR_ENHANCEMENT("ScaleAdultEquipmentAsChild"), 0)) {
+        if (LINK_IS_CHILD && this->sheathType == PLAYER_MODELTYPE_SHEATH_18 &&
+            this->currentShield == PLAYER_SHIELD_HYLIAN &&
+            (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_MASTER &&
+             gSaveContext.equips.buttonItems[0] != ITEM_SWORD_BGS)) {
+            this->sheathDLists = &sPlayerDListGroups[this->sheathType][LINK_AGE_ADULT];
+        }
+    }
+
     if (CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0)) {
         if (LINK_IS_CHILD && (this->currentShield == PLAYER_SHIELD_HYLIAN &&
                                   ((gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER) ||
@@ -647,7 +656,9 @@ void Player_SetModels(Player* this, s32 modelGroup) {
         } else if (LINK_IS_ADULT && (this->currentShield == PLAYER_SHIELD_DEKU &&
                                      gSaveContext.equips.buttonItems[0] != ITEM_SWORD_MASTER) ||
                    (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER &&
-                    this->sheathType == PLAYER_MODELTYPE_SHEATH_18 && this->currentShield == PLAYER_SHIELD_DEKU)) {
+                    this->sheathType == PLAYER_MODELTYPE_SHEATH_18 && this->currentShield == PLAYER_SHIELD_DEKU) ||
+                   (this->sheathType == PLAYER_MODELTYPE_SHEATH_17 &&
+                    gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI)) {
             this->sheathDLists = &sPlayerDListGroups[this->sheathType][1];
         } else if (LINK_IS_CHILD && this->sheathType == PLAYER_MODELTYPE_SHEATH_17 &&
                    ((gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER) ||
@@ -1275,6 +1286,10 @@ s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** 
             if ((this->currentShield == PLAYER_SHIELD_MIRROR && sRightHandType == PLAYER_MODELTYPE_RH_SHIELD) ||
                 sRightHandType == PLAYER_MODELTYPE_RH_HOOKSHOT ||
                 (sRightHandType == PLAYER_MODELTYPE_RH_BOW_SLINGSHOT && Player_HoldsBow(this))) {
+                Matrix_Scale(0.8, 0.8, 0.8, MTXMODE_APPLY);
+            }
+            if (CVarGetInteger(CVAR_CHEAT("ChildHoldsHylianShield"), 0) &&
+                this->currentShield == PLAYER_SHIELD_HYLIAN && sRightHandType == PLAYER_MODELTYPE_RH_SHIELD) {
                 Matrix_Scale(0.8, 0.8, 0.8, MTXMODE_APPLY);
             }
         }
