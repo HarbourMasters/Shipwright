@@ -51,6 +51,14 @@ class Settings {
     TrickOption& GetTrickOption(RandomizerTrick key);
 
     /**
+     * @brief Get the RandomizerTrick corresponding to the provided name.
+     *
+     * @param name
+     * @return int RandomizerTrick index or -1 if not found
+     */
+    int GetRandomizerTrickByName(const std::string& name);
+
+    /**
      * @brief Returns a reference to the entire array of options.
      *
      * @return const std::array<Option, RSK_MAX>&

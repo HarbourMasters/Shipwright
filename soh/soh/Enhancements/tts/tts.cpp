@@ -12,6 +12,7 @@
 #include "message_data_static.h"
 #include "overlays/gamestates/ovl_file_choose/file_choose.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
+#include "soh/Enhancements/FileSelectEnhancements.h"
 #include "soh/resource/type/SohResourceType.h"
 
 extern "C" {
@@ -837,6 +838,16 @@ void RegisterOnUpdateMainMenuSelection() {
             auto optionValueName = BossRush_GetSettingChoiceName(optionIndex, optionValue, language);
             auto translation = optionName + std::string(" - ") + optionValueName;
             SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+        });
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileRandomizerOptionSelection>(
+        [](uint8_t optionIndex) {
+            if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0))
+                return;
+            uint8_t language = (gSaveContext.language == LANGUAGE_JPN) ? LANGUAGE_ENG : gSaveContext.language;
+
+            auto optionName = SohFileSelect_GetSettingText(optionIndex, language);
+            SpeechSynthesizer::Instance->Speak(optionName, GetLanguageCode());
         });
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileNameSelection>([](int16_t charCode) {

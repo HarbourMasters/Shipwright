@@ -11,6 +11,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
 #include "soh/Enhancements/audio/AudioEditor.h"
+#include "soh/Enhancements/randomizer/logic.h"
 
 #define Path _Path
 #define PATH_HACK
@@ -1450,6 +1451,55 @@ static bool SfxHandler(std::shared_ptr<Ship::Console> Console, const std::vector
     return 0;
 }
 
+static bool AvailableChecksProcessUndiscoveredExitsHandler(std::shared_ptr<Ship::Console> Console,
+                                                           const std::vector<std::string>& args, std::string* output) {
+    const auto& logic = Rando::Context::GetInstance()->GetLogic();
+    bool enabled = false;
+
+    if (args.size() == 1) {
+        enabled = !logic->ACProcessUndiscoveredExits;
+    } else {
+        try {
+            enabled = std::stoi(args[1]);
+        } catch (std::invalid_argument const& ex) {
+            ERROR_MESSAGE("[SOH] Enable should be 0 or 1");
+            return 1;
+        }
+    }
+
+    logic->ACProcessUndiscoveredExits = enabled;
+    INFO_MESSAGE("[SOH] Available Checks - Process Undiscovered Exits %s",
+                 logic->ACProcessUndiscoveredExits ? "enabled" : "disabled");
+
+    if (GameInteractor::IsSaveLoaded(true)) {
+        CheckTracker::RecalculateAvailableChecks();
+    }
+
+    return 0;
+}
+
+static bool AvailableChecksRecalculateHandler(std::shared_ptr<Ship::Console> Console,
+                                              const std::vector<std::string>& args, std::string* output) {
+    RandomizerRegion startingRegion = RR_ROOT;
+
+    if (args.size() > 1) {
+        try {
+            startingRegion = static_cast<RandomizerRegion>(std::stoi(args[1]));
+        } catch (std::invalid_argument const& ex) {
+            ERROR_MESSAGE("[SOH] Region should be a number");
+            return 1;
+        }
+
+        if (startingRegion <= RR_NONE || startingRegion >= RR_MAX) {
+            ERROR_MESSAGE("[SOH] Region should be between 1 and %d", RR_MAX - 1);
+            return 1;
+        }
+    }
+
+    CheckTracker::RecalculateAvailableChecks(startingRegion);
+    return 0;
+}
+
 void DebugConsole_Init(void) {
     // Console
     CMD_REGISTER("file_select", { FileSelectHandler, "Returns to the file select." });
@@ -1706,6 +1756,16 @@ void DebugConsole_Init(void) {
                           {
                               { "reset|randomize", Ship::ArgumentType::TEXT },
                               { "group_name", Ship::ArgumentType::TEXT, true },
+                          } });
+
+    CMD_REGISTER("acpue", { AvailableChecksProcessUndiscoveredExitsHandler,
+                            "Available Checks - Process Undiscovered Exits",
+                            { { "enable", Ship::ArgumentType::NUMBER, true } } });
+
+    CMD_REGISTER("acr", { AvailableChecksRecalculateHandler,
+                          "Available Checks - Recalculate",
+                          {
+                              { "starting_region", Ship::ArgumentType::NUMBER, true },
                           } });
 
     Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();

@@ -13,7 +13,6 @@
 #include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
 #include "soh/Enhancements/timesaver_hook_handlers.h"
-#include "soh/Enhancements/TimeSavers/TimeSavers.h"
 #include "soh/Enhancements/randomizer/hook_handlers.h"
 
 #include "src/overlays/actors/ovl_En_Bb/z_en_bb.h"
@@ -97,6 +96,13 @@ void SwitchAge() {
     gPlayState->transitionType = TRANS_TYPE_INSTANT;
     gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK_FAST;
     gPlayState->linkAgeOnLoad ^= 1;
+
+    // Discover adult/child spawns
+    if (gPlayState->linkAgeOnLoad == LINK_AGE_ADULT) {
+        Entrance_SetEntranceDiscovered(ENTR_HYRULE_FIELD_10, false);
+    } else {
+        Entrance_SetEntranceDiscovered(ENTR_LINKS_HOUSE_CHILD_SPAWN, false);
+    }
 
     static HOOK_ID hookId = 0;
     hookId = REGISTER_VB_SHOULD(VB_INFLICT_VOID_DAMAGE, {
@@ -954,7 +960,6 @@ void InitMods() {
     BossRush_RegisterHooks();
     RandomizerRegisterHooks();
     TimeSaverRegisterHooks();
-    TimeSavers_Register();
     RegisterTTS();
     RegisterOcarinaTimeTravel();
     RegisterPermanentHeartLoss();

@@ -8,14 +8,11 @@
 #include "soh/Enhancements/randomizer/dungeon.h"
 #include "soh/Enhancements/randomizer/fishsanity.h"
 #include "soh/Enhancements/randomizer/static_data.h"
-#include "soh/Enhancements/randomizer/ShufflePots.h"
-#include "soh/Enhancements/randomizer/ShuffleFreestanding.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/SohGui/ImGuiUtils.h"
 #include "soh/Notification/Notification.h"
 #include "soh/SaveManager.h"
-#include "soh/Enhancements/randomizer/ShuffleFairies.h"
 
 extern "C" {
 #include "macros.h"
@@ -971,7 +968,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_BIGGORON_CONSIDER_TRADE_COMPLETE: {
-            // This being true will prevent other biggoron trades, there are already safegaurds in place to prevent
+            // This being true will prevent other biggoron trades, there are already safeguards in place to prevent
             // claim check from being traded multiple times, so we don't really need the quest to ever be considered
             // "complete"
             *should = false;
@@ -1982,6 +1979,10 @@ void RandomizerOnActorInitHandler(void* actorRef) {
         if (ge1Type == GE1_TYPE_TRAINING_GROUND_GUARD &&
             Flags_GetRandomizerInf(RAND_INF_GF_GTG_GATE_PERMANENTLY_OPEN)) {
             enGe1->actionFunc = (EnGe1ActionFunc)EnGe1_SetNormalText;
+        } else if (ge1Type == GE1_TYPE_GATE_OPERATOR && enGe1->actor.world.pos.x != -1358.0f) {
+            // When spawning the gate operator, also spawn an extra gate operator on the wasteland side
+            Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_GE1, -1358.0f, 88.0f, -3018.0f, 0, 0x95B0, 0,
+                        0x0300 | GE1_TYPE_GATE_OPERATOR, true);
         }
     }
 
@@ -2328,11 +2329,6 @@ void RandomizerRegisterHooks() {
     static uint32_t fishsanityOnVanillaBehaviorHook = 0;
     static uint32_t fishsanityOnItemReceiveHook = 0;
 
-    static uint32_t shufflePotsOnActorInitHook = 0;
-    static uint32_t shufflePotsOnVanillaBehaviorHook = 0;
-
-    static uint32_t shuffleFreestandingOnVanillaBehaviorHook = 0;
-
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
         ShipInit::Init("IS_RANDO");
 
@@ -2366,13 +2362,6 @@ void RandomizerRegisterHooks() {
             fishsanityOnVanillaBehaviorHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnItemReceive>(fishsanityOnItemReceiveHook);
 
-        GameInteractor::Instance->UnregisterGameHookForID<GameInteractor::OnActorInit>(shufflePotsOnActorInitHook);
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(
-            shufflePotsOnVanillaBehaviorHook);
-
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(
-            shuffleFreestandingOnVanillaBehaviorHook);
-
         onFlagSetHook = 0;
         onSceneFlagSetHook = 0;
         onPlayerUpdateForRCQueueHook = 0;
@@ -2397,13 +2386,6 @@ void RandomizerRegisterHooks() {
         fishsanityOnSceneInitHook = 0;
         fishsanityOnVanillaBehaviorHook = 0;
         fishsanityOnItemReceiveHook = 0;
-
-        shufflePotsOnActorInitHook = 0;
-        shufflePotsOnVanillaBehaviorHook = 0;
-
-        shuffleFreestandingOnVanillaBehaviorHook = 0;
-
-        ShuffleFairies_UnregisterHooks();
 
         if (!IS_RANDO)
             return;
@@ -2468,24 +2450,6 @@ void RandomizerRegisterHooks() {
                     Rando::Fishsanity::OnVanillaBehaviorHandler);
             fishsanityOnItemReceiveHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>(
                 Rando::Fishsanity::OnItemReceiveHandler);
-        }
-
-        if (RAND_GET_OPTION(RSK_SHUFFLE_POTS) != RO_SHUFFLE_POTS_OFF) {
-            shufflePotsOnActorInitHook = GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnActorInit>(
-                ACTOR_OBJ_TSUBO, ObjTsubo_RandomizerInit);
-            shufflePotsOnVanillaBehaviorHook =
-                GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(
-                    ShufflePots_OnVanillaBehaviorHandler);
-        }
-
-        if (RAND_GET_OPTION(RSK_SHUFFLE_FREESTANDING) != RO_SHUFFLE_FREESTANDING_OFF) {
-            shuffleFreestandingOnVanillaBehaviorHook =
-                GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(
-                    ShuffleFreestanding_OnVanillaBehaviorHandler);
-        }
-
-        if (RAND_GET_OPTION(RSK_SHUFFLE_FAIRIES)) {
-            ShuffleFairies_RegisterHooks();
         }
     });
 }

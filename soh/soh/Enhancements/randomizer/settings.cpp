@@ -398,8 +398,11 @@ void Settings::CreateOptions() {
               "combined with \"Simple damage boosts\" for greater uses.");
     OPT_TRICK(RT_BOMBCHU_BEEHIVES, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Bombchu Beehives",
               "Allows exploding beehives with Bombchus.");
-    OPT_TRICK(RT_BLUE_FIRE_MUD_WALLS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Break Mud Walls with Blue Fire",
-              "Use Blue Fire to break mud walls.");
+    OPT_TRICK(RT_BLUE_FIRE_MUD_WALLS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Blue Fire Beyond Red Ice",
+              "Use Blue Fire to break mud walls, detonate bomb flowers, and break floor to King Dodongo.\nDoes not "
+              "apply to MQ Dead Hand bomb flowers.\nUsing blue fire on bombflower to stop rolling goron also requires "
+              "\"Stop Link the Goron with Din's Fire\".\nUsing blue fire arrows to break floor in King Dodongo's "
+              "chamber also requires \"Dodongo\'s Cavern Smash the Boss Lobby Floor\".");
     OPT_TRICK(RT_KF_ADULT_GS, RCQUEST_BOTH, RA_KOKIRI_FOREST, { Tricks::Tag::NOVICE },
               "Adult Kokiri Forest GS with Hover Boots",
               "Can be obtained without Hookshot by using the Hover Boots off of one of the roots.");
@@ -1740,6 +1743,14 @@ Option& Settings::GetOption(const RandomizerSettingKey key) {
 
 TrickOption& Settings::GetTrickOption(const RandomizerTrick key) {
     return mTrickOptions[key];
+}
+
+int Settings::GetRandomizerTrickByName(const std::string& name) {
+    const auto& it = mTrickNameToEnum.find(name);
+    if (it == mTrickNameToEnum.end()) {
+        return -1;
+    }
+    return it->second;
 }
 
 void Context::ResetTrickOptions() {

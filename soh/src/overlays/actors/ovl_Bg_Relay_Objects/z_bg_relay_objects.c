@@ -169,7 +169,7 @@ void BgRelayObjects_DoNothing(BgRelayObjects* this, PlayState* play) {
 }
 
 void func_808A932C(BgRelayObjects* this, PlayState* play) {
-    if (GameInteractor_Should(VB_SWITCH_TIMER_TICK, this->timer != 0, &this->timer)) {
+    if (GameInteractor_Should(VB_SWITCH_TIMER_TICK, this->timer != 0, this, &this->timer)) {
         this->timer--;
     }
     if (this->timer == 0) {

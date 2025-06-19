@@ -1,17 +1,17 @@
-#include "ShuffleFreestanding.h"
+#include <soh/OTRGlobals.h>
 
 extern "C" {
+#include "variables.h"
 #include "functions.h"
 extern PlayState* gPlayState;
 }
 
 extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
 
-void ShuffleFreestanding_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
-    va_list args;
-    va_copy(args, originalArgs);
+void RegisterShuffleFreestanding() {
+    bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_FREESTANDING);
 
-    if (id == VB_ITEM00_DESPAWN) {
+    COND_VB_SHOULD(VB_ITEM00_DESPAWN, shouldRegister, {
         EnItem00* item00 = va_arg(args, EnItem00*);
 
         // Heart pieces and small keys are handled by default non-freestanding shuffles.
@@ -22,14 +22,16 @@ void ShuffleFreestanding_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* sh
         uint32_t params = TWO_ACTOR_PARAMS((int32_t)item00->actor.world.pos.x, (int32_t)item00->actor.world.pos.z);
         Rando::Location* loc =
             OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(item00->actor.id, gPlayState->sceneNum, params);
+        RandomizerCheck randomizerCheck = loc->GetRandomizerCheck();
+        if (Rando::Context::GetInstance()->GetItemLocation(randomizerCheck)->HasObtained()) {
+            return;
+        }
         uint8_t isDungeon = loc->IsDungeon();
         uint8_t freestandingSetting = RAND_GET_OPTION(RSK_SHUFFLE_FREESTANDING);
-        RandomizerCheck randomizerCheck = loc->GetRandomizerCheck();
-        bool checkObtained = Rando::Context::GetInstance()->GetItemLocation(randomizerCheck)->HasObtained();
 
         // Don't change to randomized item if current freestanding item isn't shuffled or already obtained.
         if ((freestandingSetting == RO_SHUFFLE_FREESTANDING_OVERWORLD && isDungeon) ||
-            (freestandingSetting == RO_SHUFFLE_FREESTANDING_DUNGEONS && !isDungeon) || checkObtained ||
+            (freestandingSetting == RO_SHUFFLE_FREESTANDING_DUNGEONS && !isDungeon) ||
             randomizerCheck == RC_UNKNOWN_CHECK) {
             return;
         }
@@ -41,7 +43,7 @@ void ShuffleFreestanding_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* sh
         item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
 
         *should = false;
-    }
+    });
 }
 
 void Rando::StaticData::RegisterFreestandingLocations() {
@@ -284,4 +286,5 @@ void Rando::StaticData::RegisterFreestandingLocations() {
     // clang-format on
 }
 
-static RegisterShipInitFunc initFunc(Rando::StaticData::RegisterFreestandingLocations);
+static RegisterShipInitFunc registerShuffleFreestanding(RegisterShuffleFreestanding, { "IS_RANDO" });
+static RegisterShipInitFunc registerShuffleFreestandingLocations(Rando::StaticData::RegisterFreestandingLocations);

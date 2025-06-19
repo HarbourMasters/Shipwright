@@ -30,7 +30,6 @@
 #include "soh/SohGui/UIWidgets.hpp"
 #include "static_data.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include <boost_custom/container_hash/hash_32.hpp>
 #include "randomizer_settings_window.h"
 #include "savefile.h"
 #include "entrance.h"
@@ -257,18 +256,128 @@ static const char* englishRupeeNames[188] = {
     "Zorkmids",
 };
 
-static const char* germanRupeeNames[79] = {
-    "Baht",       "Bananen",   "Bitcoin",       "Bonbons",  "Bratwürste", "Brause UFOs", "Brötchen",   "Cent",
-    "Diamanten",  "Dinar",     "Diridari",      "Dollar",   "Draken",     "ECU",         "Elexit",     "Erz",
-    "Erzbrocken", "Euro",      "EXP",           "Forint",   "Franken",    "Freunde",     "Gil",        "Gold",
-    "Groschen",   "Gulden",    "Gummibären",    "Heller",   "Juwelen",    "Karolin",     "Kartoffeln", "Kies",
-    "Knete",      "Knochen",   "Kohle",         "Kraniche", "Kreuzer",    "Kronen",      "Kronkorken", "Kröten",
-    "Lira",       "Mark",      "Mäuse",         "Monde",    "Moorhühner", "Moos",        "Münzen",     "Naira",
-    "Penunze",    "Pesa",      "Pfandflaschen", "Pfennig",  "Pfund",      "Pilze",       "Plastiks",   "Pokédollar",
-    "Radieschen", "Rand",      "Rappen",        "Real",     "Rial",       "Riyal",       "Rubine",     "Rupien",
-    "Saphire",    "Schilling", "Seelen",        "Septime",  "Smaragde",   "Steine",      "Sterne",     "Sternis",
-    "Tael",       "Taler",     "Wagenchips",    "Won",      "Yen",        "Yuan",        "Zenny",
-};
+static const char* germanRupeeNames[114] = { "Baht",
+                                             "Baklava",
+                                             "Bananen",
+                                             "Bitcoin",
+                                             "Bonbons",
+                                             "Bonschen",
+                                             "Brause UFOs",
+                                             "Bucks",
+                                             "Burek",
+                                             "Cent",
+                                             "Chickenwing",
+                                             "Diamanten",
+                                             "Dinar",
+                                             "Diridari",
+                                             "Dogecoin",
+                                             "Dollar",
+                                             "Draken",
+                                             "ECU",
+                                             "Eis",
+                                             "Elexit",
+                                             "Erz",
+                                             "Erzbrocken",
+                                             "Ethereum",
+                                             "Euro",
+                                             "EXP",
+                                             "Fartcoin",
+                                             "Forint",
+                                             "Franken",
+                                             "Freunde",
+                                             "Geister",
+                                             "Gil",
+                                             "Gold",
+                                             "Groschen",
+                                             "Gulden",
+                                             "Haribo",
+                                             "Heller",
+                                             "Juwelen",
+                                             "Kapseln",
+                                             "Karolin",
+                                             "Kartoffeln",
+                                             "Keks",
+                                             "Kies",
+                                             "Knete",
+                                             "Knochen",
+                                             "Knuspertaler",
+                                             "Kohle",
+                                             "Kraniche",
+                                             "Kreuzer",
+                                             "Kronen",
+                                             "Kronkorken",
+                                             "Lauchcoins",
+                                             "Lira",
+                                             "Mana",
+                                             "Mark",
+                                             "Monde",
+                                             "Moos",
+                                             "Naira",
+                                             "Nugget",
+                                             "Penunze",
+                                             "Pesa",
+                                             "Peso",
+                                             "Pfandflaschen",
+                                             "Pfennig",
+                                             "Pfund",
+                                             "Pillen",
+                                             "Pilze",
+                                             "Plastiks",
+                                             "Pok\x96"
+                                             "dollar",
+                                             "Poster",
+                                             "Puzzle",
+                                             "Radieschen",
+                                             "Rand",
+                                             "Rappen",
+                                             "Real",
+                                             "Rial",
+                                             "Riesennugget",
+                                             "Riyal",
+                                             "Rubine",
+                                             "Rupien",
+                                             "Saphire",
+                                             "Schilling",
+                                             "Schokobon",
+                                             "Seelen",
+                                             "Septime",
+                                             "Shitcoin",
+                                             "Smaragde",
+                                             "Solana",
+                                             "Sosis",
+                                             "Steine",
+                                             "Sterne",
+                                             "Sternis",
+                                             "Tael",
+                                             "Taler",
+                                             "Tokens",
+                                             "Wagenchips",
+                                             "Won",
+                                             "Wumpas",
+                                             "Yen",
+                                             "Yuan",
+                                             "Zenny",
+                                             "M\x93use",
+                                             "M\x9Enzen",
+                                             "Kr\x9Bten",
+                                             "D\x9Bner",
+                                             "W\x9Erstchen",
+                                             "Kn\x9B"
+                                             "del",
+                                             "R\x9Bsti",
+                                             "H\x9Brnli",
+                                             "R\x9E"
+                                             "ebli",
+                                             "K\x9B"
+                                             "fte",
+                                             "Bratw\x9E"
+                                             "rste",
+                                             "Br\x98"
+                                             "tchen",
+                                             "Gummib\x93"
+                                             "ren",
+                                             "Moorh\x9E"
+                                             "hner" };
 
 static const char* frenchRupeeNames[39] = {
     "Anneaux",  "Baguettes",   "Balles",      "Bananes", "Bitcoin",    "Blés",     "Bling",   "Capsules",
@@ -365,10 +474,20 @@ std::unordered_map<s16, s16> getItemIdToItemId = {
 bool Randomizer::SpoilerFileExists(const char* spoilerFileName) {
     if (strcmp(spoilerFileName, "") != 0) {
         std::ifstream spoilerFileStream(SohUtils::Sanitize(spoilerFileName));
-        if (!spoilerFileStream) {
-            return false;
-        } else {
-            return true;
+        if (spoilerFileStream) {
+            nlohmann::json contents;
+            spoilerFileStream >> contents;
+            spoilerFileStream.close();
+            if (contents.contains("version") &&
+                strcmp(std::string(contents["version"]).c_str(), (char*)gBuildVersion) == 0) {
+                return true;
+            } else {
+                SohGui::RegisterPopup(
+                    "Old Spoiler Version",
+                    "The spoiler file located at\n" + std::string(spoilerFileName) +
+                        "\nwas made by a version that doesn't match the currently running version.\n" +
+                        "Loading for this file has been cancelled.");
+            }
         }
     }
 
@@ -401,7 +520,7 @@ void Randomizer::LoadHintMessages() {
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, TEXT_WARP_MINUET_OF_FOREST,
         CustomMessage("Warp to&#a mysterious place?#&" + CustomMessages::TWO_WAY_CHOICE() + "#OK&No#",
-                      "Zu&#einem mysteriösen Ort#?&" + CustomMessages::TWO_WAY_CHOICE() + "#OK&No#",
+                      "Das Ziel ist&#ein mysteriöser Ort#!&" + CustomMessages::TWO_WAY_CHOICE() + "#Ja!&Nein!#",
                       "Se téléporter vers&#un endroit mystérieux#?&" + CustomMessages::TWO_WAY_CHOICE() + "#OK!&Non#",
                       { QM_RED, QM_GREEN }));
 
@@ -466,7 +585,7 @@ void Randomizer::LoadMerchantMessages() {
             "\x12\x38\x82"
             "All right! You win! In return for sparing me, I will give you a #[[1]]#!&Please, take it!\x07\x10\xA3",
             "\x12\x38\x82"
-            "In Ordnung! Du gewinnst! Im Austausch dafür, dass Du mich verschont hast, werde ich Dir einen #[[1]]# "
+            "In Ordnung! Du gewinnst! Im Austausch dafür, dass Du mich verschont hast, werde ich Dir #[[1]]# "
             "geben!\x07\x10\xA3",
             "\x12\x38\x82"
             "J'me rends! Laisse-moi partir et en échange, je te donne un #[[1]]#! Vas-y prends le!\x07\x10\xA3",
@@ -477,7 +596,7 @@ void Randomizer::LoadMerchantMessages() {
                       "All right! You win! In return for sparing me, I will sell you a #[[1]]#! #[[2]] Rupees# it "
                       "is!\x07\x10\xA3",
                       "\x12\x38\x82"
-                      "Ich gebe auf! Ich verkaufe Dir einen #[[1]]# für #[[2]] Rubine#!\x07\x10\xA3",
+                      "Ich gebe auf! Ich verkaufe Dir #[[1]]# für #[[2]] Rubine#!\x07\x10\xA3",
                       "\x12\x38\x82"
                       "J'abandonne! Tu veux bien m'acheter un #[[1]]#? Ça fera #[[2]] Rubis#!\x07\x10\xA3",
                       { QM_GREEN, QM_YELLOW }));
@@ -493,10 +612,10 @@ void Randomizer::LoadMerchantMessages() {
     // prompted buy/don't buy
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_SHOP_ITEM_RANDOM,
-        CustomMessage("\x08#[[1]]#  #[[2]]_Rupees#&Special deal! #ONE LEFT#!&Get it while it lasts!\x0A\x02",
-                      "\x08#[[1]]#  #[[2]]_Rubine#&#NUR NOCH EINES VERFÜGBAR#!&Beeilen Sie sich!\x0A\x02",
-                      "\x08#[[1]]#  #[[2]]_Rubis#&#DERNIER EN STOCK#!&Faites vite!\x0A\x02",
-                      { QM_GREEN, QM_YELLOW, QM_RED }));
+        CustomMessage(
+            "\x08#[[1]]#  #[[2]]_Rupees#&Special deal! #ONE LEFT#!&Get it while it lasts!\x0A\x02",
+            "\x08#[[1]]#  #[[2]]_Rubine#&#NUR EIN EXEMPLAR AUF LAGER!#&Schlag zu solange Du noch kannst!\x0A\x02",
+            "\x08#[[1]]#  #[[2]]_Rubis#&#DERNIER EN STOCK#!&Faites vite!\x0A\x02", { QM_GREEN, QM_YELLOW, QM_RED }));
 
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_SHOP_ITEM_RANDOM_CONFIRM,
@@ -510,7 +629,10 @@ void Randomizer::LoadMerchantMessages() {
         CustomMessage(
             "I tried to be a #magic bean# salesman, but it turns out my marketing skills weren't worth "
             "beans!^Anyway, want to buy #[[1]]# for #[[2]] Rupees#?\x1B#Yes&No#",
-            /*german*/ "Möchten Sie #[[1]]# für #[[2]] Rubine# kaufen?\x1B#Ja&Nein#",
+            /*german*/
+            "Ich habe versucht ein Vertreter für #Wundererbsen# zu werden, doch meine Verhandlungskünste waren nicht "
+            "die Bohne wert. Ach egal...^"
+            "Willst Du #[[1]]#?&Deine letzte Chance!^Mein Spezial-Preis!&#[[2]] Rubine#! Greif zu!\x1B#Ja!&Nein!#",
             /*french*/
             "J'ai essayé d'être un vendeur de #haricots magiques#, mais j'étais mauvais au niveau du marketing et ça "
             "me courait sur le haricot...^Enfin bref, ça te dirait de m'acheter #[[1]]# pour #[[2]] "
@@ -522,14 +644,14 @@ void Randomizer::LoadMerchantMessages() {
         CustomMessage(
             "I never thought I'd say this, but I'm selling the last #Magic Bean#.^#99 Rupees#, no less.\x1B#Yes&No#",
             "Ich hätte nie gedacht, daß ich das sage, aber ich verkaufe die letzte^#Wundererbse# für #99 "
-            "Rubine#.\x1B&#Ja&Nein#",
+            "Rubine#.\x1B&#Ja!&Nein!#",
             "Je te vends mon dernier #Haricot&magique# pour #99 Rubis#.\x1B&#AcheterNe pas acheter#",
             { QM_RED, QM_YELLOW, QM_GREEN }));
 
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_MEDIGORON,
         CustomMessage("How about buying #[[1]]# for #[[2]] Rupees#?\x1B#Buy&Don't buy#",
-                      /*german*/ "Möchtest Du #[[1]]# für #[[2]] Rubine# kaufen?\x1B#Klar!&Nie im Leben!#",
+                      /*german*/ "Möchtest Du #[[1]]#?^Für #[[2]] Rubine#!\x1B#Klar!&Nie im Leben!#",
                       /*french*/ "Veux-tu acheter #[[1]]# pour #[[2]] rubis#?\x1B#Acheter&Ne pas acheter#",
                       { QM_GREEN, QM_YELLOW, QM_GREEN }));
     /*spanish*/ // ¿Me compras #[[1]]# por #[[2]] rupias#?\x1B#Comprar&No comprar#
@@ -537,8 +659,8 @@ void Randomizer::LoadMerchantMessages() {
     CustomMessage firstCarpet = CustomMessage(
         "Welcome!^I am selling stuff, strange and rare, from all over the world to everybody. Today's special is...^",
         /*german*/
-        "Sei gegrüßt!^Ich verkaufe allerlei Kuriositäten. Stets sonderliche und seltene Ware aus "
-        "aller Welt für jedermann. Das heutige Angebot bleibt...^",
+        "Willkommen!^Ich verkaufe hier allerlei Kuriositäten. Stets sonderliche und seltene Ware aus "
+        "aller Welt für jedermann. Das heutige Angebot...^",
         /*french*/ "Bienvenue!^Je vends des objets rares et merveilleux du monde entier. En spécial aujourd'hui...^");
     /*spanish*/ // ¡Acércate!^Vendo productos extraños y difíciles de encontrar... De todo el mundo a todo el mundo. La
                 // oferta de hoy es...^#¡
@@ -567,7 +689,7 @@ void Randomizer::LoadMerchantMessages() {
                 "#[[1]]!# It's real, I promise! A lonely man such as myself wouldn't #lie# to you, hmm?^"
                 "How about #[[2]] Rupees#?\x1B#Buy&Don't buy#",
                 /*german*/
-                "#[[1]]#! Ich kann versichern, es ist ein aufrichtiges Angebot!^Ein einsamer Mann wie ich würde Dich "
+                "#[[1]]#! Ich kann versichern, es ist ein aufrichtiges Angebot!^Ein einsamer Mann wie ich würde Euch "
                 "doch "
                 "nicht #anlügen#, oder?^Wie wär's mit #[[2]] Rubinen#?\x1B#Aber sicher!&Ich bin weg!#",
                 /*french*/
@@ -4361,7 +4483,7 @@ CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
                     "%ylight%w.",
                     "Du bist noch nicht gewappnet um Dich %rGanondorf%w stellen zu können.^"
                     "Begib Dich auf die Suche nach dem %cMaster-Schwert%w, %retwas um Deinen Pfeilen einen Sinn zu "
-                    "geben%w,^sowie %gdie Magie%w, um das %yLicht%w herauf beschwören zu können.",
+                    "geben%w,^sowie %gdie Magie%w, um das %yLicht%w heraufzubeschwören.",
                     "@, tu n'es toujours pas prêt à affronter %rGanondorf%w.^"
                     "Cherche l'%cÉpée de Légende%w, %rquelque chose pour ranger tes flèches%w et de la %gmagie%w pour "
                     "invoquer la %ylumière%w.");
@@ -4370,8 +4492,9 @@ CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
                 messageEntry = CustomMessage(
                     "You may have what you need to defeat %rthe Evil King%w, but the %cbarrier%w still "
                     "stands.^Complete the remaining %gtrials%w to destroy it.",
-                    "Du magst das haben, was Du brauchst um %rden bösen König%w zu besiegen, aber die %cBarriere%w "
-                    "steht noch.^Absolviere die verbleibenden %gPrüfungen%w um sie zu zerstören.",
+                    "Du magst haben, was Du brauchst um %rden Großmeister des Bösen%w zu besiegen, doch die "
+                    "%cBarriere%w "
+                    "steht noch.^Breche die verbleibenden %gSiegel%w um sie zu zerstören.",
                     "@, tu as peut-être ce qu'il te faut pour vaincre %rle Malin%w, mais les barrières sont toujours "
                     "actives.^Termine les épreuves restantes pour les détruire.");
             } else {
@@ -4389,8 +4512,8 @@ CustomMessage Randomizer::GetFishingPondOwnerMessage(u16 originalTextId) {
     auto ctx = Rando::Context::GetInstance();
     CustomMessage messageEntry = CustomMessage(
         "Sorry, but the pond is closed.&I've lost my good %rfishing pole%w...&Can't go fishing without it!",
-        "Entschuldigung, aber der Teich ist zu.&Ich habe meine gute %rAngelrute%w verloren.&Ohne kann ich nicht "
-        "fischen!",
+        "Entschuldigung, aber der Teich hat&geschloßen. Ich habe meine gute &%rAngelrute%w verloren.&Ohne kann ich "
+        "nicht fischen!^",
         "Désolé, mais l'étang est fermé.&J'ai perdu ma bonne %rCanne à Pêche%w...&Impossible de pêcher sans elle!");
 
     if (GetRandoSettingValue(RSK_FISHING_POLE_HINT)) {
@@ -4489,7 +4612,6 @@ CustomMessage Randomizer::GetMapGetItemMessageWithHint(GetItemEntry itemEntry) {
 
     // BUG: the icon is not in the message yet so are not accounted for, so overflows are possible
     messageEntry.AutoFormat();
-
     return messageEntry;
 }
 
@@ -4568,7 +4690,7 @@ void CreateTriforcePieceMessages() {
           "Vous avez complété la %yTriforce&du Courage%w! %gFélicitations%w!" },
 
         { "You found a spare %yTriforce Piece%w!&You only needed %c[[required]]%w, but you have %g[[current]]%w!",
-          "Ein übriger %yTriforce-Splitter%w! Du&hast nun %g[[current]]%w von %c[[required]]%w nötigen gefunden.",
+          "Noch ein %yTriforce-Splitter%w! Du&brauchtest nur %c[[required]]%w, hast jetzt aber %g[[current]]%w!",
           "Vous avez trouvé un %yFragment de&Triforce%w en plus! Vous n'aviez besoin&que de %c[[required]]%w, mais "
           "vous en avez %g[[current]]%w en&tout!" },
     };
@@ -4631,13 +4753,13 @@ void CreateNaviRandoMessages() {
           "mouvants%c?" },
 
         { "%cYou can reach the back of %wImpa's&House %cby jumping from the&unfinished house with a %rcucco%c!",
-          "%cDu kannst den Balkon von %wImpas&Haus %cerreichen indem Du von&der Baustelle aus mit einem "
+          "%cDu kannst den Balkon von %wImpas&Haus %cerreichen, indem Du von&der Baustelle aus mit einem "
           "%rHuhn&%cspringst!",
           "%cTu peux atteindre l'arrière de la&%wMaison d'Impa %cen sautant depuis la&maison en construction avec "
           "une&%rcocotte%c!" },
 
         { "%cThe %ySpirit Trial %cin %pGanon's Castle&%chas a %whidden chest %csomewhere.&Did you already know that?",
-          "%cDie %yGeister-Prüfung %cin %pGanons&Schloß %chat irgendwo eine&%wversteckte Kiste%c. Weißt Du schon&wo?",
+          "%cDas %yGeister-Siegel %cin %pGanons&Schloß %chat irgendwo eine&%wversteckte Kiste%c. Wußtest Du&das schon?",
           "%cL'%yÉpreuve de l'Esprit%c dans le %pChâteau&de Ganon %ca un coffre caché quelque&part. Je suppose que tu "
           "le savais&déjà?" },
 
@@ -4656,7 +4778,7 @@ void CreateNaviRandoMessages() {
         { "%cYou might end up with an %wextra&key %cfor the %bWater Temple %cor the&%rFire Temple%c. It's for your "
           "safety!",
           "%cVielleicht verbleibt Dir im&%bWassertempel %coder %rFeuertempel %cein&%wzusätzlicher Schlüssel%c. "
-          "Dies&ist zu Deiner Sicherheit!",
+          "&Nur zu Deiner Sicherheit!",
           "%cIl se peut que tu aies une %wPetite&Clé %cen trop dans le %bTemple de l'Eau&%cou le %rTemple du Feu%c. "
           "C'est pour ta&propre sécurité!" },
 
@@ -4684,20 +4806,20 @@ void CreateNaviRandoMessages() {
           "%wjarre&%cà la figure?" },
 
         { "%cI hear the patch of %wsoft soil&%cin %bZora's River %cis the only one&that isn't home to a %rspider%c!",
-          "%cIch habe gehört, daß die Stelle&%wfeuchten Bodens %cim %bZora-Fluß %cals&einzige keine %rSkulltula "
+          "%cIch habe gehört, daß das&%wErdloch%c am %bZora-Fluß, %cals&einziges keine %rSkulltula "
           "%cbeherbergt.",
           "%cJ'ai entendu dire que la %wterre meuble&%cqui se trouve à la %bRivière Zora %cest&la seule qui ne "
           "contienne pas&d'%raraignée%c." },
 
         { "%cThe people of Hyrule sometimes&have %witems %cfor you, but they won't&like it if you're %wwearing a "
           "mask%c!",
-          "%cDie Bewohner Hyrules haben manchmal&%wGegenstände %cfür Dich, aber sie mögen&es nicht, wenn Du %wMasken "
+          "%cDie Bewohner Hyrules haben manchmal&%wGegenstände %cfür Dich, doch sie mögen&es nicht, wenn Du %wMasken "
           "trägst%c!",
           "%cIl se peut que les habitants d'Hyrule&aient des %wobjets %cpour toi. Par contre,&ils risquent de ne pas "
           "trop apprécier&le fait que tu %wportes un masque%c!" },
 
         { "%cIf you get trapped somewhere, you&might have to %wsave your game %cand&%wreset%c!",
-          "%cSolltest Du irgendwo eingeschlossen&sein, mußt Du vielleicht Dein %wSpiel&speichern %cund %wneu "
+          "%cSolltest Du irgendwo eingeschloßen&sein, mußt Du vielleicht Dein %wSpiel&speichern %cund %wneu "
           "starten%c!",
           "%cSi tu es coincé quelque part, tu&devrais %wsauvegarder ta partie %cet&faire un %wreset%c!" },
 
@@ -4901,10 +5023,10 @@ CustomMessage Randomizer::GetIceTrapMessage() {
         "#Titanic's revenge#.",
     };
 
-    static const char* const germanIceTrapMessages[23] = {
+    static const char* const germanIceTrapMessages[104] = {
         "Du bist ein #DUMMKOPF#!",
         "Du bist eine #Frostbeule#!",
-        "#DUMMKOPF#!",
+        "#NARR#!",
         "Du wurdest #eiskalt# erwischt!",
         "Es läuft Dir #eiskalt# den Rücken hinunter, @.",
         "Bleib #cool#, @.",
@@ -4917,7 +5039,7 @@ CustomMessage Randomizer::GetIceTrapMessage() {
         "Bewahre einen #kühlen#! Kopf.",
         "Ganondorf setzt #Eisstrahl# ein. Das ist sehr effektiv!",
         "Ein Lächeln ist der beste Weg, um das #Eis# zu brechen!",
-        "#Eiskalt# lässt du meine Seele erfrier'n.",
+        "#Eiskalt# lässt Du meine Seele erfrier'n.",
         "Die #Titanic# hätte Angst vor Dir, @.",
         "Oh nein!",
         "Was die Dinosaurier getötet hat?&Die #Eiszeit#!",
@@ -4925,6 +5047,87 @@ CustomMessage Randomizer::GetIceTrapMessage() {
         "Never gonna #give you up#. Never gonna #let you down#. Never gonna run around and #desert you#.",
         "Danke #@#! Aber der Gegenstand ist in einem anderem Schloß!",
         "Kalt. Kalt. Kälter. #EISKALT#!",
+        "Von wegen #Belohnung#!",
+        "Ganon lacht dich aus.",
+        "Zelda wartet... aber nicht auf Dich!",
+        "Hyrule braucht Dich... aber nicht so!",
+        "Master-Schmerz statt Master-Schwert.",
+        "Das passiert wenn man alles looten möchte!",
+        "Ein kleiner Vorgeschmack auf Ganons Kühlschrank.",
+        "Ich hoffe, Du hast gespeichert.",
+        "Dein Gesicht, als Du die Truhe geöffnet hast... unbezahlbar.",
+        "Tut mir leid, aber das Item befindet sich in einer anderen Truhe.",
+        "Noch 5 solcher Truhen und Du bist abgehärtet.",
+        "Keine sorge. Ich bin genau so enttäuscht wie Du.",
+        "Epona läuft gerade ohne Dich los.",
+        "Wow! Ein echtes Nichts!",
+        "Du bist sowas von bereit für den Endboss. Nicht!",
+        "Loot? Nur für Gewinner!",
+        "Pure Enttäuschung.",
+        "RNG meint es nicht gut mit dir...",
+        "Link.exe hat ein Problem erkannt. Spiel wird heruntergefahren.",
+        "Die Truhe war leer, dein Verstand ebenso.",
+        "Hier für Dich, lecker #Eis#.",
+        "Das ist kein Item - das ist Karma.",
+        "Und wieder hat Dich 'ne Kiste besiegt.",
+        "Rauru lacht Dich aus.",
+        "Saria hat sich gerade entfreundet.",
+        "Prinzessin Ruto hat die Verlobung aufgelöst.",
+        "Kein Seed, kein Ärger!",
+        "Diese Truhe wurde Ihnen präsentiert von: ABSICHT!",
+        "Nicht heute.",
+        "Nächster halt, #Frosthausen#!",
+        "Genau so nützlich wie Navi im Bosskampf.",
+        "Zelda? Die kennt Dich nicht.",
+        "Zufall? Nein. Absicht!",
+        "Karma.exe erfolgreich ausgeführt.",
+        "Manchmal gewinnt man, aber Du gehörst nicht dazu.",
+        "#Eiskalt# versagt.",
+        "Tingle lacht Dich aus.",
+        "Du hörst Ganondorf dir folgendes zuflüstern.. \"Danke fürs Öffnen, aber das war mein #Müll#!\"",
+        "Navi: 'Hey, hör zu! Da ist... absolut #nichts# drin.",
+        "Truhe geöffnet, Hoffnung zerstört. Willkommen in Hyrule.",
+        "Die Truhe enthält: 100% pure #Enttäuschung#.",
+        "Na? Wieder zu viel von Malons #Mentos# genascht?",
+        "Du wurdest #eiskalt# beim Öffnen der Truhe erwischt.",
+        "Grats, Du hast Ganons alten #Eiswürfelvorrat# gefunden.",
+        "Die Truhe ist kälter als #Zoras Reich#... und genauso leer.",
+        "#Eis#? Klar, das ist der #kalte# Hauch der Enttäuschung!",
+        "Die Truhe ist so leer, sogar der #Yeti# aus Twilight Princess lacht.",
+        "Die Truhe enthält: 100% #gefrorene# Hoffnungslosigkeit.",
+        "Du hast eine Truhe geöffnet und den #Kälterekord# in Hyrule gebrochen.",
+        "Du hast TM16 erhalten: #Eissturm#!",
+        "Controller Disconnect, jetzt bist Du #gefreezed#.",
+        "Noch drei solcher Truhen, und dein Spielstand wird gelöscht.",
+        "Gengar setzt Schlecker ein! Du bist vollständig #paralysiert#!",
+        "Mumbo Jumbo verwandelt Dich in einen #Eisblock#. Haste jetzt 'nen coolen Look.",
+        "Willkommen in Donkey Kong Country: Tropical #Freeze#!",
+        "Gratuliere! Du hast das Spiel #gefreezed#.",
+        "Triforce des Mutes und trotzdem bekommst Du kalte Füße.",
+        "Fortschritt #eingefroren#. Bitte blasen Sie in die Cartridge.",
+        "Du bist nicht soft-locked. Du bist #frost-locked#.",
+        "Ein #frostiger# Wind weht durch die Truhe... leer, als hätte Kirby den ganzen Inhalt eingesaugt.",
+        "Ein #eisiger# Hauch weht dir entgegen.... Doch die Truhe bleibt #kalt# und leer.",
+        "Die Truhe ist von #Frost# versiegelt... drinnen nichts als eine #kalte#, #frostige# Enttäuschung!",
+        "#Frost# knistert bedrohlich in der Truhe - kein Schatz, nur ein #eisiger# Hohn!",
+        "Diese Falle zu finden ist so #frostig# wie Fangen spielen mit Chill Penguin.",
+        "#Eis# kann funkeln, was kannst Du?",
+        "Niete, selbst die Prinzessin ist enttäuscht.",
+        "Herzteil? Nein, #Eiskalt#!",
+        "Ratet mal wer wieder zu gierig war? Richtig... DU!",
+        "Ganondorf bedankt sich persönlich für deine Inkompetenz.",
+        "Der Spind von Davy Jones!",
+        "Herzog Onkled lacht Dich aus.",
+        "GEWINNER!",
+        "vERLIERER!",
+        "Drücke B, Unten und Select um zu überleben.",
+        "#Chill# mal jetzt.",
+        "Hier halt mal eben.",
+        "Sony lacht Dich aus",
+        "Dieses Item ist nicht in deinem Land verfügbar.",
+        "Es ist wichtig, die #Kühltruhe# mal für einen Tag auszuschalten.",
+        "#Kacknoob#!",
+        "Insert Rupee to continue...",
     };
 
     static const char* const frenchIceTrapMessages[83] = {
@@ -5026,7 +5229,7 @@ CustomMessage Randomizer::GetIceTrapMessage() {
     if (CVarGetInteger(CVAR_GENERAL("LetItSnow"), 0)) {
         msg = CustomMessage(
             /*english*/ "This year for Christmas, all you get is #COAL#!",
-            /*german*/ "This year for Christmas, all you get is #COAL#!",
+            /*german*/ "Dieses Jahr gibt es nur #KOHLE# zu Weihnachten!",
             /*french*/ "Pour Noël, cette année, tu n'auras que du #CHARBON#! %rJoyeux Noël%w!", { QM_BLUE });
     } else {
         msg = CustomMessage(RandomElement(englishIceTrapMessages), RandomElement(germanIceTrapMessages),
@@ -5117,7 +5320,7 @@ void CreateFireTempleGoronMessages() {
         },
         {
             "I dunno why I was thrown in here,&truth be told.&I'm just a %g\"PR\"%w person.",
-            "Wat weiß'n ich, wieso ich hier&eingepfercht wurd. Ich mach&doch nur %g\"Pull&Requests\"%w.",
+            "Wat weiß'n ich, wieso ich hier&eingepfercht wurd. Ich mach&doch nur %g\"Pull Requests\"%w.",
             "Je ne sais pas comment on m'a jeté&ici. Il faut croire que je dors comme&une pierre.",
         },
     };
@@ -5141,7 +5344,7 @@ void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
     const std::array<GetItemMessage, 112> getItemMessages = { {
-        GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON, "You found %gGreg%w!", "%gGreg%w! Du hast ihn wirklich gefunden!",
+        GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON, "You found %gGreg%w!", "%gGreg%w! Du hast ihn&wirklich gefunden!",
                   "Félicitation! Vous avez trouvé %gGreg%w!"),
         GIMESSAGE(RG_MASTER_SWORD, ITEM_SWORD_MASTER, "You found the %gMaster Sword%w!",
                   "Du erhältst das %gMaster-Schwert%w!", "Vous obtenez %gl'Épée de Légende%w!"),
@@ -5166,7 +5369,7 @@ void Randomizer::CreateCustomMessages() {
                   "Vous obtenez une %rBouteille avec&un Poisson%w! Il a l'air délicieux!&Il paraîtrait que %bJabu-Jabu "
                   "%wen&serait friand!"),
         GIMESSAGE(RG_BOTTLE_WITH_BUGS, ITEM_BUG, "You got a %rBug in a Bottle%w!&They love to burrow in&dirt holes!",
-                  "Du hast jetzt %rKäfer in einer&Flasche&%w!&Sie graben gerne&in Erdlöchern.",
+                  "Du hast jetzt %rKäfer in einer&Flasche%w! Sie graben gerne&in Erdlöchern.",
                   "Vous obtenez une %rBouteille avec&des Insectes%w! Ils adorent creuser&dans la terre meuble!"),
         GIMESSAGE(RG_BOTTLE_WITH_FAIRY, ITEM_FAIRY, "You got a %rFairy in a Bottle%w!&Use it wisely!",
                   "Du hast jetzt eine %rFee in einer&Flasche%w! Nutze sie weise!",
@@ -5183,224 +5386,220 @@ void Randomizer::CreateCustomMessages() {
             "Vous obtenez une %rBouteille avec&une Potion Verte%w! Buvez-la pour&restaurer votre %gmagie%w!"),
         GIMESSAGE(RG_BOTTLE_WITH_POE, ITEM_POE,
                   "You got a %rPoe in a Bottle%w!&That creepy Ghost Shop might&be interested in this...",
-                  "Du hast jetzt ein %rIrrlicht in einer&Flasche%w! Der %rGespenstermarkt%w&interessiert sich für "
+                  "Du hast jetzt ein %rIrrlicht in einer&Flasche%w! Der %rGespenstermarkt%w&interessiert sich "
                   "vielleicht&dafür...",
                   "Vous obtenez une %rBouteille avec&un Esprit%w! Ça intéresserait&peut-être le vendeur d'Âme "),
 
         GIMESSAGE(RG_GERUDO_FORTRESS_SMALL_KEY, ITEM_KEY_SMALL, "You found a %yThieves Hideout &%wSmall Key!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für das %yDiebesversteck%w!",
+                  "Du erhältst einen %rkleinen&Schlüssel%w des %yDiebesverstecks%w!",
                   "Vous obtenez une %rPetite Clé %w&du %yRepaire des Voleurs%w!"),
         GIMESSAGE(RG_FOREST_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %gForest Temple &%wSmall Key!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für den %gWaldtempel%w!",
+                  "Du erhältst einen %rkleinen&Schlüssel%w des %gWaldtempels%w!",
                   "Vous obtenez une %rPetite Clé %w&du %gTemple de la Forêt%w!"),
         GIMESSAGE(RG_FIRE_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %rFire Temple &%wSmall Key!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für den %rFeuertempel%w!",
+                  "Du erhältst einen %rkleinen&Schlüssel%w des %rFeuertempels%w!",
                   "Vous obtenez une %rPetite Clé %w&du %rTemple du Feu%w!"),
         GIMESSAGE(RG_WATER_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %bWater Temple &%wSmall Key!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für den %bWassertempel%w!",
+                  "Du erhältst einen %rkleinen&Schlüssel%w des %bWassertempels%w!",
                   "Vous obtenez une %rPetite Clé %w&du %bTemple de l'Eau%w!"),
         GIMESSAGE(RG_SPIRIT_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %ySpirit Temple &%wSmall Key!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für den %yGeistertempel%w!",
+                  "Du erhältst einen %rkleinen&Schlüssel%w des %yGeistertempels%w!",
                   "Vous obtenez une %rPetite Clé %w&du %yTemple de l'Esprit%w!"),
         GIMESSAGE(RG_SHADOW_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %pShadow Temple &%wSmall Key!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für den %pSchattentempel%w!",
+                  "Du erhältst einen %rkleinen&Schlüssel%w des %pSchattentempels%w!",
                   "Vous obtenez une %rPetite Clé %w&du %pTemple de l'Ombre%w!"),
         GIMESSAGE(RG_BOTTOM_OF_THE_WELL_SMALL_KEY, ITEM_KEY_SMALL, "You found a %pBottom of the &Well %wSmall Key!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für den %pGrund des Brunnens%w!",
+                  "Du erhältst einen %rkleinen&Schlüssel%w vom %pGrund des Brunnens%w!",
                   "Vous obtenez une %rPetite Clé %w&du %pPuits%w!"),
         GIMESSAGE(RG_GERUDO_TRAINING_GROUND_SMALL_KEY, ITEM_KEY_SMALL,
                   "You found a %yGerudo Training &Ground %wSmall Key!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für das %yGerudo-Trainingsgelände%w!",
+                  "Du erhältst einen %rkleinen&Schlüssel%w der %yGerudo-Trainingsarena%w!",
                   "Vous obtenez une %rPetite Clé %w&du %yGymnase Gerudo%w!"),
         GIMESSAGE(RG_GANONS_CASTLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %rGanon's Castle &%wSmall Key!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für %rGanons Schloß%w!",
+                  "Du erhältst einen %rkleinen&Schlüssel%w von %rGanons Schloß%w!",
                   "Vous obtenez une %rPetite Clé %w&du %rChâteau de Ganon%w!"),
         GIMESSAGE(RG_GUARD_HOUSE_KEY, ITEM_KEY_SMALL, "You found the key to the&%gGuard House%w!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für das %gHaus der Wachen%w!",
+                  "Du erhältst den %rSchlüssel%w&zum %gWachhaus%w!",
                   "Vous obtenez la %rClé %wde la&%gMaison des Gardes%w!"),
         GIMESSAGE(RG_MARKET_BAZAAR_KEY, ITEM_KEY_SMALL, "You found the key to the&%gMarket Bazaar%w!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für den %gBasar des Marktes%w!",
+                  "Du erhältst den %rSchlüssel%w&zum %gBasar des Marktes%w!",
                   "Vous obtenez la %rClé %wdu %gBazar&de la Place du Marché%w!"),
         GIMESSAGE(RG_MARKET_POTION_SHOP_KEY, ITEM_KEY_SMALL, "You found the key to the&%gMarket Potion Shop%w!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für den %gMagie-Laden des Marktes%w!",
+                  "Du erhältst den %rSchlüssel%w&zum %gMagie-Laden des Marktes%w!",
                   "Vous obtenez la %rClé %wdu&%gMagasin de Potions de la&Place du Marché%w!"),
         GIMESSAGE(RG_MASK_SHOP_KEY, ITEM_KEY_SMALL, "You found the key to the&%gMask Shop%w!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für den %gMaskenladen%w!",
+                  "Du erhältst den %rSchlüssel%w&zum %gMaskenhändler%w!",
                   "Vous obtenez la %rClé %wde la&%gFoire aux Masques%w!"),
         GIMESSAGE(RG_MARKET_SHOOTING_GALLERY_KEY, ITEM_KEY_SMALL,
                   "You found the key to the&%gMarket Shooting Gallery%w!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für die %gSchießbude des Marktes%w!",
+                  "Du erhältst den %rSchlüssel%w&zur %gSchießbude des Marktes%w!",
                   "Vous obtenez la %rClé %wdu %gStand de&Tir de la Place du Marché%w!"),
         GIMESSAGE(RG_BOMBCHU_BOWLING_KEY, ITEM_KEY_SMALL, "You found the key to the&%gBombchu Bowling Alley%w!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für die %gMinenbowlingbahn%w!",
+                  "Du erhältst den %rSchlüssel%w&zur %gMinenbowlingbahn%w!",
                   "Vous obtenez la %rClé %wdu %gBowling&Teigneux%w!"),
         GIMESSAGE(RG_TREASURE_CHEST_GAME_BUILDING_KEY, ITEM_KEY_SMALL,
                   "You found the key to the&%gTreasure Chest Game Building%w!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für das %gHaus des Schatzkisten-Pokers%w!",
+                  "Du erhältst den %rSchlüssel%w&zum %gHaus der Truhenlotterie%w!",
                   "Vous obtenez la %rClé  %wdu %gJeu de la&Chasse au Trésor%w!"),
         GIMESSAGE(RG_BOMBCHU_SHOP_KEY, ITEM_KEY_SMALL, "You found the key to the&%gBombchu Shop%w!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für den %gKrabbelminenladen%w!",
+                  "Du erhältst den %rSchlüssel%w&zum %gKrabbelminenladen%w!",
                   "Vous obtenez la %rClé %wdu %gMagasin&de Missiles%w!"),
         GIMESSAGE(RG_RICHARDS_HOUSE_KEY, ITEM_KEY_SMALL, "You found the key to&%gRichard's House%w!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für das %gHaus von Richard%w!",
+                  "Du erhältst den %rSchlüssel%w&zu %gRichards Haus%w!",
                   "Vous obtenez la %rClé %wde la %gMaison&de Kiki%w!"),
         GIMESSAGE(RG_ALLEY_HOUSE_KEY, ITEM_KEY_SMALL, "You found the key to&the %gAlley House%w!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für das %gHaus in der Gasse%w!",
+                  "Du erhältst den %rSchlüssel%w&zum %gHaus in der Gasse%w!",
                   "Vous obtenez la %rClé %wde la %gMaison&de la Ruelle%w!"),
         GIMESSAGE(RG_KAK_BAZAAR_KEY, ITEM_KEY_SMALL, "You found the key to the&%gKakariko Bazaar%w!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für den %gBasar von Kakariko%w!",
+                  "Du erhältst den %rSchlüssel%w&zum %gBasar von Kakariko%w!",
                   "Vous obtenez la %rClé %wdu %gBazar&de Cocorico%w!"),
         GIMESSAGE(RG_KAK_POTION_SHOP_KEY, ITEM_KEY_SMALL, "You found the key to the&%gKakariko Potion Shop%w!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für den %gMagie-Laden von Kakariko%w!",
+                  "Du erhältst den %rSchlüssel%w&zum %gMagie-Laden von Kakariko%w!",
                   "Vous obtenez la %rClé %wdu %gMagasin de&Potions de Cocorico%w!"),
         GIMESSAGE(RG_BOSS_HOUSE_KEY, ITEM_KEY_SMALL, "You found the key to the&%gBoss's House%w!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für das %gHaus des Chefs%w!",
+                  "Du erhältst den %rSchlüssel%w&zum %gHaus des Chefs%w!",
                   "Vous obtenez la %rClé %wde la %gMaison&du Chef des Ouvriers%w!"),
         GIMESSAGE(RG_GRANNYS_POTION_SHOP_KEY, ITEM_KEY_SMALL, "You found the key to&%gGranny's Potion Shop%w!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für %gAsas Hexenladen%w!",
+                  "Du erhältst den %rSchlüssel%w&zu %gAsas Hexenladen%w!",
                   "Vous obtenez la %rClé %wde&l'%gApothicaire%w!"),
         GIMESSAGE(RG_SKULLTULA_HOUSE_KEY, ITEM_KEY_SMALL, "You found the key to the&%gSkulltula House%w!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für das %gSkulltula-Haus%w!",
+                  "Du erhältst den %rSchlüssel%w&zum %gSkulltula-Haus%w!",
                   "Vous obtenez la %rClé %wde la %gMaison&des Araignées%w!"),
         GIMESSAGE(RG_IMPAS_HOUSE_KEY, ITEM_KEY_SMALL, "You found the key to&%gImpa's House%w!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für das %gHaus von Impa%w!",
+                  "Du erhältst den %rSchlüssel%w&zu %gImpas Haus%w!",
                   "Vous obtenez la %rClé %wde la %gMaison&d'Impa%w!"),
         GIMESSAGE(RG_WINDMILL_KEY, ITEM_KEY_SMALL, "You found the key to the&%gWindmill%w!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für die %gWindmühle%w!",
-                  "Vous obtenez la %rClé %w du %gMoulin%w!"),
+                  "Du erhältst den %rSchlüssel%w&zur %gWindmühle%w!", "Vous obtenez la %rClé %w du %gMoulin%w!"),
         GIMESSAGE(RG_KAK_SHOOTING_GALLERY_KEY, ITEM_KEY_SMALL,
                   "You found the key to the&%gKakariko Shooting Gallery%w!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für die %gSchießbude von Kakariko%w!",
+                  "Du erhältst den %rSchlüssel%w&zur %gSchießbude von Kakariko%w!",
                   "Vous obtenez la %rClé %w du %gStand de&Tir de Cocorico%w!"),
         GIMESSAGE(RG_DAMPES_HUT_KEY, ITEM_KEY_SMALL, "You found the key to&%gDampe's Hut%w!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für die %gHütte von Boris%w!",
+                  "Du erhältst den %rSchlüssel%w&zur %gHütte des Totengräbers%w!",
                   "Vous obtenez la %rClé %wde la %gCabane&d'Igor%w!"),
         GIMESSAGE(RG_TALONS_HOUSE_KEY, ITEM_KEY_SMALL, "You found the key to&%gTalon's House%w!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für das %gHaus von Talon%w!",
+                  "Du erhältst den %rSchlüssel%w&zu %gTalons Haus%w!",
                   "Vous obtenez la %rClé %wde la %gMaison&de Talon%w!"),
         GIMESSAGE(RG_STABLES_KEY, ITEM_KEY_SMALL, "You found the key to the&%gStables%w!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für die %gStälle%w!",
-                  "Vous obtenez la %rClé %wdes %gÉcuries%w!"),
+                  "Du erhältst den %rSchlüssel%w&zu den %gStällen%w!", "Vous obtenez la %rClé %wdes %gÉcuries%w!"),
         GIMESSAGE(RG_BACK_TOWER_KEY, ITEM_KEY_SMALL, "You found the key to the&%gBack Tower%w!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für den %ghinteren Turm%w!",
-                  "Vous obtenez la %rClé %wdu %gSilo%w!"),
+                  "Du erhältst den %rSchlüssel%w&zum %gLon Lon-Turm%w!", "Vous obtenez la %rClé %wdu %gSilo%w!"),
         GIMESSAGE(RG_HYLIA_LAB_KEY, ITEM_KEY_SMALL, "You found the key to the&%gHylia Laboratory%w!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für das %gHylia-Labor%w!",
+                  "Du erhältst den %rSchlüssel%w&zum %gHylia-Labor%w!",
                   "Vous obtenez la %rClé %wdu %gLaboratoire&du Lac Hylia%w!"),
         GIMESSAGE(RG_FISHING_HOLE_KEY, ITEM_KEY_SMALL, "You found the key to the&%gPond%w!",
-                  "Du erhältst einen %rkleinen&Schlüssel%w für den %gFischweiher%w!",
-                  "Vous obtenez la %rClé %wde l'%gÉtang%w!"),
+                  "Du erhältst den %rSchlüssel%w&zum %gFischweiher%w!", "Vous obtenez la %rClé %wde l'%gÉtang%w!"),
 
         GIMESSAGE(RG_GERUDO_FORTRESS_KEY_RING, ITEM_KEY_SMALL, "You found a %yThieves Hideout&%wKeyring!",
-                  "Du erhältst ein %rSchlüsselbund%w&für das %yDiebesversteck%w!",
+                  "Du erhältst das %rSchlüsselbund%w&des %yDiebesverstecks%w!",
                   "Vous obtenez le trousseau de&clés du %yRepaire des Voleurs%w!"),
         GIMESSAGE(RG_FOREST_TEMPLE_KEY_RING, ITEM_KEY_SMALL, "You found a %gForest Temple&%wKeyring!",
-                  "Du erhältst ein %rSchlüsselbund%w&für den %gWaldtempel%w!",
+                  "Du erhältst das %rSchlüsselbund%w&des %gWaldtempels%w!",
                   "Vous obtenez le trousseau de&clés du %gTemple de la Forêt%w!"),
         GIMESSAGE(RG_FIRE_TEMPLE_KEY_RING, ITEM_KEY_SMALL, "You found a %rFire Temple&%wKeyring!",
-                  "Du erhältst ein %rSchlüsselbund%w&für den %rFeuertempel%w!",
+                  "Du erhältst das %rSchlüsselbund%w&des %rFeuertempels%w!",
                   "Vous obtenez le trousseau de&clés du %rTemple du Feu%w!"),
         GIMESSAGE(RG_WATER_TEMPLE_KEY_RING, ITEM_KEY_SMALL, "You found a %bWater Temple&%wKeyring!",
-                  "Du erhältst ein %rSchlüsselbund%w&für den %bWassertempel%w!",
+                  "Du erhältst das %rSchlüsselbund%w&des %bWassertempels%w!",
                   "Vous obtenez le trousseau de&clés du %bTemple de l'Eau%w!"),
         GIMESSAGE(RG_SPIRIT_TEMPLE_KEY_RING, ITEM_KEY_SMALL, "You found a %ySpirit Temple&%wKeyring!",
-                  "Du erhältst ein %rSchlüsselbund%w&für den %yGeistertempel%w!",
+                  "Du erhältst das %rSchlüsselbund%w&des %yGeistertempels%w!",
                   "Vous obtenez le trousseau de&clés du %yTemple de l'Esprit%w!"),
         GIMESSAGE(RG_SHADOW_TEMPLE_KEY_RING, ITEM_KEY_SMALL, "You found a %pShadow Temple&%wKeyring!",
-                  "Du erhältst ein %rSchlüsselbund%w&für den %pSchattentempel%w!",
+                  "Du erhältst das %rSchlüsselbund%w&des %pSchattentempels%w!",
                   "Vous obtenez le trousseau de&clés du %pTemple de l'Ombre%w!"),
         GIMESSAGE(RG_BOTTOM_OF_THE_WELL_KEY_RING, ITEM_KEY_SMALL, "You found a %pBottom of the&Well %wKeyring!",
-                  "Du erhältst ein %rSchlüsselbund%w&für den %pGrund des Brunnens%w!",
+                  "Du erhältst das %rSchlüsselbund%w&vom %pGrund des Brunnens%w!",
                   "Vous obtenez le trousseau de&clés du %pPuits%w!"),
         GIMESSAGE(RG_GERUDO_TRAINING_GROUND_KEY_RING, ITEM_KEY_SMALL, "You found a %yGerudo Training&Ground %wKeyring!",
-                  "Du erhältst ein %rSchlüsselbund%w&für das %yGerudo-Trainingsgelände%w!",
+                  "Du erhältst das %rSchlüsselbund%w&der %yGerudo-Trainingsarena%w!",
                   "Vous obtenez le trousseau de&clés du %yGymnase Gerudo%w!"),
         GIMESSAGE(RG_GANONS_CASTLE_KEY_RING, ITEM_KEY_SMALL, "You found a %rGanon's Castle&%wKeyring!",
-                  "Du erhältst ein %rSchlüsselbund%w&für %rGanons Schloß%w!",
+                  "Du erhältst das %rSchlüsselbund%w&von %rGanons Schloß%w!",
                   "Vous obtenez le trousseau de&clés du %rChâteau de Ganon%w!"),
         GIMESSAGE(RG_TREASURE_GAME_KEY_RING, ITEM_KEY_SMALL, "You found a %rTreasure Chest Game&%wKeyring!",
-                  "Du erhältst ein %rSchlüsselbund%w& für das %rSchatztruhen-Poker&%w!",
+                  "Du erhältst das %rSchlüsselbund%w&der %rTruhenlotterie&%w!",
                   "Vous obtenez le trousseau de&clés du %rJeu de la Chasse au Trésor%w!"),
 
         GIMESSAGE(RG_FOREST_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %gForest Temple&%wBoss Key!",
-                  "Du erhältst den %rMaster-Schlüssel%w&für den %gWaldtempel%w!",
+                  "Du erhältst den %rMaster-Schlüssel%w&des %gWaldtempels%w!",
                   "Vous obtenez la %rClé d'or %wdu&%gTemple de la Forêt%w!"),
         GIMESSAGE(RG_FIRE_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %rFire Temple&%wBoss Key!",
-                  "Du erhältst den %rMaster-Schlüssel%w&für den %rFeuertempel%w!",
+                  "Du erhältst den %rMaster-Schlüssel%w&des %rFeuertempels%w!",
                   "Vous obtenez la %rClé d'or %wdu&%rTemple du Feu%w!"),
         GIMESSAGE(RG_WATER_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %bWater Temple&%wBoss Key!",
-                  "Du erhältst den %rMaster-Schlüssel%w&für den %bWassertempel%w!",
+                  "Du erhältst den %rMaster-Schlüssel%w&des %bWassertempels%w!",
                   "Vous obtenez la %rClé d'or %wdu&%bTemple de l'Eau%w!"),
         GIMESSAGE(RG_SPIRIT_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %ySpirit Temple&%wBoss Key!",
-                  "Du erhältst den %rMaster-Schlüssel%w&für den %yGeistertempel%w!",
+                  "Du erhältst den %rMaster-Schlüssel%w&des %yGeistertempels%w!",
                   "Vous obtenez la %rClé d'or %wdu&%yTemple de l'Esprit%w!"),
         GIMESSAGE(RG_SHADOW_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %pShadow Temple&%wBoss Key!",
-                  "Du erhältst den %rMaster-Schlüssel%w&für den %pSchattentempel%w!",
+                  "Du erhältst den %rMaster-Schlüssel%w&des %pSchattentempels%w!",
                   "Vous obtenez la %rClé d'or %wdu&%pTemple de l'Ombre%w!"),
         GIMESSAGE(RG_GANONS_CASTLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %rGanon's Castle&%wBoss Key!",
-                  "Du erhältst den %rMaster-Schlüssel%w&für %rGanons Schloß%w!",
+                  "Du erhältst den %rMaster-Schlüssel%w&von %rGanons Schloß%w!",
                   "Vous obtenez la %rClé d'or %wdu&%rChâteau de Ganon%w!"),
 
         GIMESSAGE(RG_DEKU_TREE_MAP, ITEM_DUNGEON_MAP, "You found the %gDeku Tree&%wMap![[typeHint]]",
-                  "Du erhältst die %rKarte%w für den&%gDeku-Baum%w![[typeHint]]",
+                  "Du erhältst die %rLabyrinth-&Karte%w des %gDeku-Baumes%w![[typeHint]]",
                   "Vous obtenez la %rCarte %wde&l'%gArbre Mojo%w![[typeHint]]"),
         GIMESSAGE(RG_DODONGOS_CAVERN_MAP, ITEM_DUNGEON_MAP, "You found the %rDodongo's Cavern&%wMap![[typeHint]]",
-                  "Du erhältst die %rKarte%w für&%rDodongos Höhle%w![[typeHint]]",
+                  "Du erhältst die %rLabyrinth-&Karte%w von %rDodongos Höhle%w![[typeHint]]",
                   "Vous obtenez la %rCarte %wde la&%rCaverne Dodongo%w![[typeHint]]"),
         GIMESSAGE(RG_JABU_JABUS_BELLY_MAP, ITEM_DUNGEON_MAP, "You found the %bJabu Jabu's Belly&%wMap![[typeHint]]",
-                  "Du erhältst die %rKarte%w für&%bJabu-Jabus Bauch%w![[typeHint]]",
+                  "Du erhältst die %rLabyrinth-&Karte%w von %bJabu-Jabus Bauch%w![[typeHint]]",
                   "Vous obtenez la %rCarte %wdu&%bVentre de Jabu-Jabu%w![[typeHint]]"),
         GIMESSAGE(RG_FOREST_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %gForest Temple&%wMap![[typeHint]]",
-                  "Du erhältst die %rKarte%w für den&%gWaldtempel%w![[typeHint]]",
+                  "Du erhältst die %rLabyrinth-&Karte%w des %gWaldtempels%w![[typeHint]]",
                   "Vous obtenez la %rCarte %wdu&%gTemple de la Forêt%w![[typeHint]]"),
         GIMESSAGE(RG_FIRE_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %rFire Temple&%wMap![[typeHint]]",
-                  "Du erhältst die %rKarte%w für den&%rFeuertempel%w![[typeHint]]",
+                  "Du erhältst die %rLabyrinth-&Karte%w des %rFeuertempels%w![[typeHint]]",
                   "Vous obtenez la %rCarte %wdu&%rTemple du Feu%w![[typeHint]]"),
         GIMESSAGE(RG_WATER_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %bWater Temple&%wMap![[typeHint]]",
-                  "Du erhältst die %rKarte%w für den&%bWassertempel%w![[typeHint]]",
+                  "Du erhältst die %rLabyrinth-&Karte%w des %bWassertempels%w![[typeHint]]",
                   "Vous obtenez la %rCarte %wdu&%bTemple de l'Eau%w![[typeHint]]"),
         GIMESSAGE(RG_SPIRIT_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %ySpirit Temple&%wMap![[typeHint]]",
-                  "Du erhältst die %rKarte%w für den&%yGeistertempel%w![[typeHint]]",
+                  "Du erhältst die %rLabyrinth-&Karte%w des %yGeistertempels%w![[typeHint]]",
                   "Vous obtenez la %rCarte %wdu&%yTemple de l'Esprit%w![[typeHint]]"),
         GIMESSAGE(RG_SHADOW_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %pShadow Temple&%wMap![[typeHint]]",
-                  "Du erhältst die %rKarte%w für den&%pSchattentempel%w![[typeHint]]",
+                  "Du erhältst die %rLabyrinth-&Karte%w des %pSchattentempels%w![[typeHint]]",
                   "Vous obtenez la %rCarte %wdu&%pTemple de l'Ombre%w![[typeHint]]"),
         GIMESSAGE(RG_BOTTOM_OF_THE_WELL_MAP, ITEM_DUNGEON_MAP, "You found the %pBottom of the&Well %wMap![[typeHint]]",
-                  "Du erhältst die %rKarte%w für den&%pGrund des Brunnens%w![[typeHint]]",
+                  "Du erhältst die %rLabyrinth-&Karte%w vom %pGrund des Brunnens%w![[typeHint]]",
                   "Vous obtenez la %rCarte %wdu&%pPuits%w![[typeHint]]"),
         GIMESSAGE(RG_ICE_CAVERN_MAP, ITEM_DUNGEON_MAP, "You found the %cIce Cavern&%wMap![[typeHint]]",
-                  "Du erhältst die %rKarte%w für die&%cEishöhle%w![[typeHint]]",
+                  "Du erhältst die %rLabyrinth-&Karte%w der %cEishöhle%w![[typeHint]]",
                   "Vous obtenez la %rCarte %wde&la %cCaverne Polaire%w![[typeHint]]"),
 
         GIMESSAGE(RG_DEKU_TREE_COMPASS, ITEM_COMPASS, "You found the %gDeku Tree&%wCompass!",
-                  "Du erhältst den %rKompaß%w für den&%gDeku-Baum%w!",
+                  "Du erhältst den %rKompaß%w des&%gDeku-Baumes%w!",
                   "Vous obtenez la %rBoussole %wde&l'%gArbre Mojo%w!"),
         GIMESSAGE(RG_DODONGOS_CAVERN_COMPASS, ITEM_COMPASS, "You found the %rDodongo's Cavern&%wCompass!",
-                  "Du erhältst den %rKompaß%w für&%rDodongos Höhle%w!",
+                  "Du erhältst den %rKompaß%w von&%rDodongos Höhle%w!",
                   "Vous obtenez la %rBoussole %wde la&%rCaverne Dodongo%w!"),
         GIMESSAGE(RG_JABU_JABUS_BELLY_COMPASS, ITEM_COMPASS, "You found the %bJabu Jabu's Belly&%wCompass!",
-                  "Du erhältst den %rKompaß%w für den&%bJabu-Jabus Bauch%w!",
+                  "Du erhältst den %rKompaß%w von&%bJabu-Jabus Bauch%w!",
                   "Vous obtenez la %rBoussole %wdu&%bVentre de Jabu-Jabu%w!"),
         GIMESSAGE(RG_FOREST_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %gForest Temple&%wCompass!",
-                  "Du erhältst den %rKompaß%w für den&%gWaldtempel%w!",
+                  "Du erhältst den %rKompaß%w des&%gWaldtempels%w!",
                   "Vous obtenez la %rBoussole %wdu&%gTemple de la Forêt%w!"),
         GIMESSAGE(RG_FIRE_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %rFire Temple&%wCompass!",
-                  "Du erhältst den %rKompaß%w für den&%rFeuertempel%w!",
+                  "Du erhältst den %rKompaß%w des&%rFeuertempels%w!",
                   "Vous obtenez la %rBoussole %wdu&%rTemple du Feu%w!"),
         GIMESSAGE(RG_WATER_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %bWater Temple&%wCompass!",
-                  "Du erhältst den %rKompaß%w für den&%bWassertempel%w!",
+                  "Du erhältst den %rKompaß%w des&%bWassertempels%w!",
                   "Vous obtenez la %rBoussole %wdu&%bTemple de l'Eau%w!"),
         GIMESSAGE(RG_SPIRIT_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %ySpirit Temple&%wCompass!",
-                  "Du erhältst den %rKompaß%w für den&%yGeistertempel%w!",
+                  "Du erhältst den %rKompaß%w des&%yGeistertempels%w!",
                   "Vous obtenez la %rBoussole %wdu&%yTemple de l'Esprit%w!"),
         GIMESSAGE(RG_SHADOW_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %pShadow Temple&%wCompass!",
-                  "Du erhältst den %rKompaß%w für den&%pSchattentempel%w!",
+                  "Du erhältst den %rKompaß%w des&%pSchattentempels%w!",
                   "Vous obtenez la %rBoussole %wdu&%pTemple de l'Ombre%w!"),
         GIMESSAGE(RG_BOTTOM_OF_THE_WELL_COMPASS, ITEM_COMPASS, "You found the %pBottom of the&Well %wCompass!",
-                  "Du erhältst den %rKompaß%w für den&%pGrund des Brunnens%w!",
+                  "Du erhältst den %rKompaß%w vom&%pGrund des Brunnens%w!",
                   "Vous obtenez la %rBoussole %wdu&%pPuits%w!"),
         GIMESSAGE(RG_ICE_CAVERN_COMPASS, ITEM_COMPASS, "You found the %cIce Cavern&%wCompass!",
-                  "Du erhältst den %rKompaß%w für die&%cEishöhle%w!",
+                  "Du erhältst den %rKompaß%w der&%cEishöhle%w!",
                   "Vous obtenez la %rBoussole %wde&la %cCaverne Polaire%w!"),
 
         GIMESSAGE(RG_MAGIC_BEAN_PACK, ITEM_BEAN,
@@ -5421,23 +5620,23 @@ void Randomizer::CreateCustomMessages() {
                   "Vous obtenez la %rPetite Bourse%w!&Elle peut contenir jusqu'à %y99 rubis%w!"),
 
         GIMESSAGE(RG_GOHMA_SOUL, ITEM_BIG_POE, "You found the soul for %gGohma%w!",
-                  "Du hast die Seele von %gGohma%w gefunden!", "Vous obtenez l'âme de %gGohma%w!"),
+                  "Du hast die Seele von&%gGohma%w gefunden!", "Vous obtenez l'âme de %gGohma%w!"),
         GIMESSAGE(RG_KING_DODONGO_SOUL, ITEM_BIG_POE, "You found the soul for %rKing&Dodongo%w!",
-                  "Du hast die Seele von %rKönig&Dodongo%w gefunden!", "Vous obtenez l'âme du %rRoi Dodongo%w!"),
+                  "Du hast die Seele von&%rKönig Dodongo%w gefunden!", "Vous obtenez l'âme du %rRoi Dodongo%w!"),
         GIMESSAGE(RG_BARINADE_SOUL, ITEM_BIG_POE, "You found the soul for %bBarinade%w!",
-                  "Du hast die Seele von %bBarinade%w gefunden!", "Vous obtenez l'âme de %bBarinade%w!"),
+                  "Du hast die Seele von&%bBarinade%w gefunden!", "Vous obtenez l'âme de %bBarinade%w!"),
         GIMESSAGE(RG_PHANTOM_GANON_SOUL, ITEM_BIG_POE, "You found the soul for %gPhantom&Ganon%w!",
-                  "Du hast die Seele von %gPhantom-&Ganon%w gefunden!", "Vous obtenez l'âme de %gGanon&Spectral%w!"),
+                  "Du hast die Seele von&%gPhantom-Ganon%w gefunden!", "Vous obtenez l'âme de %gGanon&Spectral%w!"),
         GIMESSAGE(RG_VOLVAGIA_SOUL, ITEM_BIG_POE, "You found the soul for %rVolvagia%w!",
-                  "Du hast die Seele von %rVolvagia%w gefunden!", "Vous obtenez l'âme de %rVolcania%w!"),
+                  "Du hast die Seele von&%rVolvagia%w gefunden!", "Vous obtenez l'âme de %rVolcania%w!"),
         GIMESSAGE(RG_MORPHA_SOUL, ITEM_BIG_POE, "You found the soul for %bMorpha%w!",
-                  "Du hast die Seele von %bMorpha%w gefunden!", "Vous obtenez l'âme de %bMorpha%w!"),
+                  "Du hast die Seele von&%bMorpha%w gefunden!", "Vous obtenez l'âme de %bMorpha%w!"),
         GIMESSAGE(RG_BONGO_BONGO_SOUL, ITEM_BIG_POE, "You found the soul for %pBongo&Bongo%w!",
-                  "Du hast die Seele von %pBongo&Bongo%w gefunden!", "Vous obtenez l'âme de %pBongo&Bongo%w!"),
+                  "Du hast die Seele von&%pBongo Bongo%w gefunden!", "Vous obtenez l'âme de %pBongo&Bongo%w!"),
         GIMESSAGE(RG_TWINROVA_SOUL, ITEM_BIG_POE, "You found the soul for %yTwinrova%w!",
-                  "Du hast die Seele von %yTwinrova%w gefunden!", "Vous obtenez l'âme du %yDuo&Maléfique%w!"),
+                  "Du hast die Seele von&%yTwinrova%w gefunden!", "Vous obtenez l'âme du %yDuo&Maléfique%w!"),
         GIMESSAGE(RG_GANON_SOUL, ITEM_BIG_POE, "You found the soul for %cGanon%w!",
-                  "Du hast die Seele von %cGanon%w gefunden!", "Vous obtenez l'âme de %cGanon%w!"),
+                  "Du hast die Seele von&%cGanon%w gefunden!", "Vous obtenez l'âme de %cGanon%w!"),
 
         GIMESSAGE(RG_OCARINA_A_BUTTON, ITEM_OCARINA_TIME,
                   "You got the %b\x9f%r button for the&Ocarina%w! You can now use it&while playing songs!",
@@ -5466,46 +5665,47 @@ void Randomizer::CreateCustomMessages() {
                   "jouez!"),
 
         GIMESSAGE(RG_BRONZE_SCALE, ITEM_SCALE_SILVER, "You got the %rBronze Scale%w!&The power of buoyancy is yours!",
-                  "Du hast die %rBronzene Schuppe%w erhalten!&Die Macht der Schwungkraft ist dein!",
+                  "Du hast die %rBronzene Schuppe%w&erhalten! Die Fähigkeit zu&Schwimmen ist nun dein!",
                   "Vous obtenez l'%rÉcaille de Bronze%w!&Le pouvoir de la flottabilité est&à vous!"),
         GIMESSAGE(RG_FISHING_POLE, ITEM_FISHING_POLE, "You found a lost %rFishing Pole%w!&Time to hit the pond!",
-                  "Du hast eine verlorene %rAngelrute%w gefunden!&Zeit, im Teich zu angeln!",
+                  "Du hast eine verlorene %rAngelrute%w&gefunden!&Zeit, im Teich&zu angeln!",
                   "Vous obtenez une %rCanne à pêche%w&perdue!&Il est temps d'aller à %gl'étang%w!"),
         GIMESSAGE(RG_BOMBCHU_BAG, ITEM_BOMBCHU, "You found the %rBombchu Bag%w!",
                   "Du hast die %rKrabbelminentasche%w&gefunden!", "Vous obtenez un %rSac de Missiles&Teigneux%w!"),
         GIMESSAGE(
             RG_BOMB_BAG_INF, ITEM_BOMB_BAG_40, "You got an %rInfinite Bomb Bag%w!&Now you have %yinfinite bombs%w!",
-            "Du hast eine %runendliche Bombentasche%w&gefunden! Nun hast Du &%yunendliche Bomben%w!",
+            "Du hast die %rUnendliche Bombentasche%w&gefunden! Nun hast Du &%yunendlich viele Bomben%w!",
             "Vous obtenez un %rSac de Bombes&sans fond%w!&Vous avez maintenant des %ybombes&en quantité illimitée%w!"),
         GIMESSAGE(RG_QUIVER_INF, ITEM_QUIVER_50, "You got an %rInfinite Quiver%w!&Now you have %yinfinite arrows%w!",
-                  "Du hast einen %runendlichen Köcher%w&gefunden! Nun hast Du &%yunendliche Pfeile%w!",
+                  "Du hast den %rUnendlichen Köcher%w&gefunden! Nun hast Du &%yunendlich viele Pfeile%w!",
                   "Vous obtenez un %rCarquois Infini%w!&Vous avez maintenant des %yflèches&de manière illimitée%w!"),
         GIMESSAGE(RG_BULLET_BAG_INF, ITEM_BULLET_BAG_50,
                   "You got an %rInfinite Bullet Bag%w!&Now you have %yinfinite&slingshot seeds%w!",
-                  "Du hast eine %runendliche Samentasche%w&gefunden! Nun hast Du &%yunendliche Samen%w!",
+                  "Du hast die %rUnendliche Munitionstasche%w&gefunden! Nun hast Du &%yunendlich viele Deku-Kerne%w!",
                   "Vous obtenez un %rSac de Graines&sans fond%w!&Vous avez maintenant des %ygraines&de lance-pierres à "
                   "l'infini%w!"),
         GIMESSAGE(RG_STICK_UPGRADE_INF, ITEM_STICK, "You now have %yinfinite%w %rDeku Sticks%w!",
-                  "Du hast nun %yrunendliche%w %rDeku-Stäbe%w!",
+                  "Du hast nun %yrunendlich viele%w %rDeku-Stäbe%w!",
                   "Vous avez maintenant des %yBâtons&Mojo de manière illimitée%w!"),
         GIMESSAGE(RG_NUT_UPGRADE_INF, ITEM_NUT, "You now have %yinfinite%w %rDeku Nuts%w!",
-                  "Du hast nun %yunendliche%w %rDeku-Nüsse%w!",
+                  "Du hast nun %yunendlich viele%w %rDeku-Nüsse%w!",
                   "Vous avez maintenant des %yNoix&Mojo de manière illimitée%w!"),
         GIMESSAGE(RG_MAGIC_INF, ITEM_MAGIC_LARGE, "You now have %yinfinite%w %rMagic%w!",
-                  "Du hast nun %yunendliche%w %rMagiew!", "Vous avez maintenant une quantité&de %ymagie illimitée%w!"),
+                  "Du hast nun %yunendlich viel%w %rMagische Kraft%w!",
+                  "Vous avez maintenant une quantité&de %ymagie illimitée%w!"),
         GIMESSAGE(RG_BOMBCHU_INF, ITEM_BOMBCHU, "You now have %yinfinite%w %rBombchus%w!",
-                  "Du hast nun %yunendliche%w %rKrabbelminen%w!",
+                  "Du hast nun %yunendlich viele%w %rKrabbelminen%w!",
                   "Vous avez maintenant des %yMissiles&Teigneux en quantité illimités%w!"),
         GIMESSAGE(RG_WALLET_INF, ITEM_WALLET_GIANT, "You now have %yinfinite%w %rmoney%w!",
-                  "Du hast nun %yunendliche%w %rRubinew!",
+                  "Du hast nun %yunendlich viele%w %rRubine%w!",
                   "Vous avez maintenant des %yRubis en& quantité illimitée%w!"),
         GIMESSAGE(RG_SKELETON_KEY, ITEM_KEY_SMALL, "You found the %rSkeleton Key%w!",
                   "Du hast den %rSkelettschlüssel%w gefunden!", "Vous avez trouvé la %rClé Squelette%w!"),
         GIMESSAGE(RG_DEKU_STICK_BAG, ITEM_STICK, "You found the %rDeku Stick Bag%w!&You can now hold Deku Sticks!",
-                  "Du hast eine %rDeku-Stab-Tasche%w&gefunden! Nun kannst Du &%yDeku-Stäbe%w halten!",
+                  "Du hast eine %rDeku-Stab-Tasche%w&gefunden! Nun kannst Du &%yDeku-Stäbe%w verwenden!",
                   "Vous avez trouvé le %rSac de Bâtons&Mojo%w!&Vous pouvez maintenant porter des&Bâtons Mojo!"),
         GIMESSAGE(RG_DEKU_NUT_BAG, ITEM_NUT, "You found the %rDeku Nut Bag%w!&You can now hold Deku Nuts!",
-                  "Du hast eine %rDeku-Nuß-Tasche%w&gefunden! Nun kannst Du &%yDeku-Nüsse%w halten!",
+                  "Du hast eine %rDeku-Nuß-Tasche%w&gefunden! Nun kannst Du &%yDeku-Nüsse%w verwenden!",
                   "Vous avez trouvé le %rSac de Noix& Mojo%w!&Vous pouvez maintenant porter des&Noix Mojo!"),
     } };
     CreateGetItemMessages(getItemMessages);
