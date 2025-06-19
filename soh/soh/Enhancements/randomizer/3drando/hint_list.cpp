@@ -150,7 +150,7 @@ void StaticData::HintTable_Init() {
                                                              // /*spanish*/la #máscara de la verdad# premia #[[1]]#.
                                                              {},
                                                              {CustomMessage("They say that showing a #truthful eye to the crowd# rewards #[[1]]#.",
-                                                                 /*german*/ "Man erzählt sich, daß der #Menge ein wahrhaftigen Auge# zu zeigen #[[1]]# einbrächte.",
+                                                                 /*german*/ "Man erzählt sich, daß der #Menge ein wahrhaftiges Auge# zu zeigen #[[1]]# einbrächte.",
                                                                  /*french*/ "Selon moi, montrer #l'oeil de vérité à la foule# donne #[[1]]#.", {QM_RED, QM_GREEN})});
                                                               // /*spanish*/#mostrarle el ojo verdadero# a una multitud brinda #[[1]]#.
 

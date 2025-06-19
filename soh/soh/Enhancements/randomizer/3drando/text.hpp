@@ -62,13 +62,19 @@ class Text {
 
     Text operator+(const Text& right) const {
         return Text{
-            english + right.GetEnglish(), french + right.GetFrench(), german + right.GetGerman(), spanish + right.GetSpanish(),
+            english + right.GetEnglish(),
+            french + right.GetFrench(),
+            german + right.GetGerman(),
+            spanish + right.GetSpanish(),
         };
     }
 
     Text operator+(const std::string& right) const {
         return Text{
-            english + right, french + right, german + right, spanish + right,
+            english + right,
+            french + right,
+            german + right,
+            spanish + right,
         };
     }
 

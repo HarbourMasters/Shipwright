@@ -257,20 +257,128 @@ static const char* englishRupeeNames[188] = {
     "Zorkmids",
 };
 
-static const char* germanRupeeNames[114] = {
-    "Baht",            "Baklava",       "Bananen",            "Bitcoin",         "Bonbons",      "Bonschen",        "Brause UFOs", "Bucks",             "Burek",       "Cent",
-    "Chickenwing",     "Diamanten",     "Dinar",              "Diridari",        "Dogecoin",     "Dollar",          "Draken",      "ECU",               "Eis",         "Elexit",
-    "Erz",             "Erzbrocken",    "Ethereum",           "Euro",            "EXP",          "Fartcoin",        "Forint",      "Franken",           "Freunde",     "Geister",
-    "Gil",             "Gold",          "Groschen",           "Gulden",          "Haribo",       "Heller",          "Juwelen",     "Kapseln",           "Karolin",     "Kartoffeln",
-    "Keks",            "Kies",          "Knete",              "Knochen",         "Knuspertaler", "Kohle",           "Kraniche",    "Kreuzer",           "Kronen",      "Kronkorken",
-    "Lauchcoins",      "Lira",          "Mana",               "Mark",            "Monde",        "Moos",            "Naira",       "Nugget",            "Penunze",     "Pesa",
-    "Peso",            "Pfandflaschen", "Pfennig",            "Pfund",           "Pillen",       "Pilze",           "Plastiks",    "Pok\x96""dollar",   "Poster",      "Puzzle",
-    "Radieschen",      "Rand",          "Rappen",             "Real",            "Rial",         "Riesennugget",    "Riyal",       "Rubine",            "Rupien",      "Saphire",
-    "Schilling",       "Schokobon",     "Seelen",             "Septime",         "Shitcoin",     "Smaragde",        "Solana",      "Sosis",             "Steine",      "Sterne",
-    "Sternis",         "Tael",          "Taler",              "Tokens",          "Wagenchips",   "Won",             "Wumpas",      "Yen",               "Yuan",        "Zenny",
-    "M\x93use",        "M\x9Enzen",     "Kr\x9Bten",          "D\x9Bner",        "W\x9Erstchen", "Kn\x9B" "del",    "R\x9Bsti",    "H\x9Brnli",         "R\x9E""ebli", "K\x9B""fte",
-    "Bratw\x9E""rste", "Br\x98""tchen", "Gummib\x93""ren",  "Moorh\x9E""hner"
-};
+static const char* germanRupeeNames[114] = { "Baht",
+                                             "Baklava",
+                                             "Bananen",
+                                             "Bitcoin",
+                                             "Bonbons",
+                                             "Bonschen",
+                                             "Brause UFOs",
+                                             "Bucks",
+                                             "Burek",
+                                             "Cent",
+                                             "Chickenwing",
+                                             "Diamanten",
+                                             "Dinar",
+                                             "Diridari",
+                                             "Dogecoin",
+                                             "Dollar",
+                                             "Draken",
+                                             "ECU",
+                                             "Eis",
+                                             "Elexit",
+                                             "Erz",
+                                             "Erzbrocken",
+                                             "Ethereum",
+                                             "Euro",
+                                             "EXP",
+                                             "Fartcoin",
+                                             "Forint",
+                                             "Franken",
+                                             "Freunde",
+                                             "Geister",
+                                             "Gil",
+                                             "Gold",
+                                             "Groschen",
+                                             "Gulden",
+                                             "Haribo",
+                                             "Heller",
+                                             "Juwelen",
+                                             "Kapseln",
+                                             "Karolin",
+                                             "Kartoffeln",
+                                             "Keks",
+                                             "Kies",
+                                             "Knete",
+                                             "Knochen",
+                                             "Knuspertaler",
+                                             "Kohle",
+                                             "Kraniche",
+                                             "Kreuzer",
+                                             "Kronen",
+                                             "Kronkorken",
+                                             "Lauchcoins",
+                                             "Lira",
+                                             "Mana",
+                                             "Mark",
+                                             "Monde",
+                                             "Moos",
+                                             "Naira",
+                                             "Nugget",
+                                             "Penunze",
+                                             "Pesa",
+                                             "Peso",
+                                             "Pfandflaschen",
+                                             "Pfennig",
+                                             "Pfund",
+                                             "Pillen",
+                                             "Pilze",
+                                             "Plastiks",
+                                             "Pok\x96"
+                                             "dollar",
+                                             "Poster",
+                                             "Puzzle",
+                                             "Radieschen",
+                                             "Rand",
+                                             "Rappen",
+                                             "Real",
+                                             "Rial",
+                                             "Riesennugget",
+                                             "Riyal",
+                                             "Rubine",
+                                             "Rupien",
+                                             "Saphire",
+                                             "Schilling",
+                                             "Schokobon",
+                                             "Seelen",
+                                             "Septime",
+                                             "Shitcoin",
+                                             "Smaragde",
+                                             "Solana",
+                                             "Sosis",
+                                             "Steine",
+                                             "Sterne",
+                                             "Sternis",
+                                             "Tael",
+                                             "Taler",
+                                             "Tokens",
+                                             "Wagenchips",
+                                             "Won",
+                                             "Wumpas",
+                                             "Yen",
+                                             "Yuan",
+                                             "Zenny",
+                                             "M\x93use",
+                                             "M\x9Enzen",
+                                             "Kr\x9Bten",
+                                             "D\x9Bner",
+                                             "W\x9Erstchen",
+                                             "Kn\x9B"
+                                             "del",
+                                             "R\x9Bsti",
+                                             "H\x9Brnli",
+                                             "R\x9E"
+                                             "ebli",
+                                             "K\x9B"
+                                             "fte",
+                                             "Bratw\x9E"
+                                             "rste",
+                                             "Br\x98"
+                                             "tchen",
+                                             "Gummib\x93"
+                                             "ren",
+                                             "Moorh\x9E"
+                                             "hner" };
 
 static const char* frenchRupeeNames[39] = {
     "Anneaux",  "Baguettes",   "Balles",      "Bananes", "Bitcoin",    "Blés",     "Bling",   "Capsules",
@@ -505,10 +613,10 @@ void Randomizer::LoadMerchantMessages() {
     // prompted buy/don't buy
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_SHOP_ITEM_RANDOM,
-        CustomMessage("\x08#[[1]]#  #[[2]]_Rupees#&Special deal! #ONE LEFT#!&Get it while it lasts!\x0A\x02",
-                      "\x08#[[1]]#  #[[2]]_Rubine#&#NUR EIN EXEMPLAR AUF LAGER!#&Schlag zu solange Du noch kannst!\x0A\x02",
-                      "\x08#[[1]]#  #[[2]]_Rubis#&#DERNIER EN STOCK#!&Faites vite!\x0A\x02",
-                      { QM_GREEN, QM_YELLOW, QM_RED }));
+        CustomMessage(
+            "\x08#[[1]]#  #[[2]]_Rupees#&Special deal! #ONE LEFT#!&Get it while it lasts!\x0A\x02",
+            "\x08#[[1]]#  #[[2]]_Rubine#&#NUR EIN EXEMPLAR AUF LAGER!#&Schlag zu solange Du noch kannst!\x0A\x02",
+            "\x08#[[1]]#  #[[2]]_Rubis#&#DERNIER EN STOCK#!&Faites vite!\x0A\x02", { QM_GREEN, QM_YELLOW, QM_RED }));
 
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_SHOP_ITEM_RANDOM_CONFIRM,
@@ -523,7 +631,8 @@ void Randomizer::LoadMerchantMessages() {
             "I tried to be a #magic bean# salesman, but it turns out my marketing skills weren't worth "
             "beans!^Anyway, want to buy #[[1]]# for #[[2]] Rupees#?\x1B#Yes&No#",
             /*german*/
-            "Ich habe versucht ein Vertreter für #Wundererbsen# zu werden, doch meine Verhandlungskünste waren nicht die Bohne wert. Ach egal...^"
+            "Ich habe versucht ein Vertreter für #Wundererbsen# zu werden, doch meine Verhandlungskünste waren nicht "
+            "die Bohne wert. Ach egal...^"
             "Willst Du #[[1]]#?&Deine letzte Chance!^Mein Spezial-Preis!&#[[2]] Rubine#! Greif zu!\x1B#Ja!&Nein!#",
             /*french*/
             "J'ai essayé d'être un vendeur de #haricots magiques#, mais j'étais mauvais au niveau du marketing et ça "
@@ -4384,7 +4493,8 @@ CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
                 messageEntry = CustomMessage(
                     "You may have what you need to defeat %rthe Evil King%w, but the %cbarrier%w still "
                     "stands.^Complete the remaining %gtrials%w to destroy it.",
-                    "Du magst haben, was Du brauchst um %rden Großmeister des Bösen%w zu besiegen, doch die %cBarriere%w "
+                    "Du magst haben, was Du brauchst um %rden Großmeister des Bösen%w zu besiegen, doch die "
+                    "%cBarriere%w "
                     "steht noch.^Breche die verbleibenden %gSiegel%w um sie zu zerstören.",
                     "@, tu as peut-être ce qu'il te faut pour vaincre %rle Malin%w, mais les barrières sont toujours "
                     "actives.^Termine les épreuves restantes pour les détruire.");
@@ -4403,7 +4513,8 @@ CustomMessage Randomizer::GetFishingPondOwnerMessage(u16 originalTextId) {
     auto ctx = Rando::Context::GetInstance();
     CustomMessage messageEntry = CustomMessage(
         "Sorry, but the pond is closed.&I've lost my good %rfishing pole%w...&Can't go fishing without it!",
-        "Entschuldigung, aber der Teich hat&geschloßen. Ich habe meine gute &%rAngelrute%w verloren.&Ohne kann ich nicht fischen!^",
+        "Entschuldigung, aber der Teich hat&geschloßen. Ich habe meine gute &%rAngelrute%w verloren.&Ohne kann ich "
+        "nicht fischen!^",
         "Désolé, mais l'étang est fermé.&J'ai perdu ma bonne %rCanne à Pêche%w...&Impossible de pêcher sans elle!");
 
     if (GetRandoSettingValue(RSK_FISHING_POLE_HINT)) {
@@ -5359,8 +5470,7 @@ void Randomizer::CreateCustomMessages() {
                   "Du erhältst den %rSchlüssel%w&zu %gImpas Haus%w!",
                   "Vous obtenez la %rClé %wde la %gMaison&d'Impa%w!"),
         GIMESSAGE(RG_WINDMILL_KEY, ITEM_KEY_SMALL, "You found the key to the&%gWindmill%w!",
-                  "Du erhältst den %rSchlüssel%w&zur %gWindmühle%w!",
-                  "Vous obtenez la %rClé %w du %gMoulin%w!"),
+                  "Du erhältst den %rSchlüssel%w&zur %gWindmühle%w!", "Vous obtenez la %rClé %w du %gMoulin%w!"),
         GIMESSAGE(RG_KAK_SHOOTING_GALLERY_KEY, ITEM_KEY_SMALL,
                   "You found the key to the&%gKakariko Shooting Gallery%w!",
                   "Du erhältst den %rSchlüssel%w&zur %gSchießbude von Kakariko%w!",
@@ -5372,17 +5482,14 @@ void Randomizer::CreateCustomMessages() {
                   "Du erhältst den %rSchlüssel%w&zu %gTalons Haus%w!",
                   "Vous obtenez la %rClé %wde la %gMaison&de Talon%w!"),
         GIMESSAGE(RG_STABLES_KEY, ITEM_KEY_SMALL, "You found the key to the&%gStables%w!",
-                  "Du erhältst den %rSchlüssel%w&zu den %gStällen%w!",
-                  "Vous obtenez la %rClé %wdes %gÉcuries%w!"),
+                  "Du erhältst den %rSchlüssel%w&zu den %gStällen%w!", "Vous obtenez la %rClé %wdes %gÉcuries%w!"),
         GIMESSAGE(RG_BACK_TOWER_KEY, ITEM_KEY_SMALL, "You found the key to the&%gBack Tower%w!",
-                  "Du erhältst den %rSchlüssel%w&zum %gLon Lon-Turm%w!",
-                  "Vous obtenez la %rClé %wdu %gSilo%w!"),
+                  "Du erhältst den %rSchlüssel%w&zum %gLon Lon-Turm%w!", "Vous obtenez la %rClé %wdu %gSilo%w!"),
         GIMESSAGE(RG_HYLIA_LAB_KEY, ITEM_KEY_SMALL, "You found the key to the&%gHylia Laboratory%w!",
                   "Du erhältst den %rSchlüssel%w&zum %gHylia-Labor%w!",
                   "Vous obtenez la %rClé %wdu %gLaboratoire&du Lac Hylia%w!"),
         GIMESSAGE(RG_FISHING_HOLE_KEY, ITEM_KEY_SMALL, "You found the key to the&%gPond%w!",
-                  "Du erhältst den %rSchlüssel%w&zum %gFischweiher%w!",
-                  "Vous obtenez la %rClé %wde l'%gÉtang%w!"),
+                  "Du erhältst den %rSchlüssel%w&zum %gFischweiher%w!", "Vous obtenez la %rClé %wde l'%gÉtang%w!"),
 
         GIMESSAGE(RG_GERUDO_FORTRESS_KEY_RING, ITEM_KEY_SMALL, "You found a %yThieves Hideout&%wKeyring!",
                   "Du erhältst das %rSchlüsselbund%w&des %yDiebesverstecks%w!",
@@ -5585,12 +5692,13 @@ void Randomizer::CreateCustomMessages() {
                   "Du hast nun %yunendlich viele%w %rDeku-Nüsse%w!",
                   "Vous avez maintenant des %yNoix&Mojo de manière illimitée%w!"),
         GIMESSAGE(RG_MAGIC_INF, ITEM_MAGIC_LARGE, "You now have %yinfinite%w %rMagic%w!",
-                  "Du hast nun %yunendlich viel%w %rMagische Kraft%w!", "Vous avez maintenant une quantité&de %ymagie illimitée%w!"),
+                  "Du hast nun %yunendlich viel%w %rMagische Kraft%w!",
+                  "Vous avez maintenant une quantité&de %ymagie illimitée%w!"),
         GIMESSAGE(RG_BOMBCHU_INF, ITEM_BOMBCHU, "You now have %yinfinite%w %rBombchus%w!",
                   "Du hast nun %yunendlich viele%w %rKrabbelminen%w!",
                   "Vous avez maintenant des %yMissiles&Teigneux en quantité illimités%w!"),
         GIMESSAGE(RG_WALLET_INF, ITEM_WALLET_GIANT, "You now have %yinfinite%w %rmoney%w!",
-                  "Du hast nun %yunendlich viele%w %rRubinew!",
+                  "Du hast nun %yunendlich viele%w %rRubine%w!",
                   "Vous avez maintenant des %yRubis en& quantité illimitée%w!"),
         GIMESSAGE(RG_SKELETON_KEY, ITEM_KEY_SMALL, "You found the %rSkeleton Key%w!",
                   "Du hast den %rSkelettschlüssel%w gefunden!", "Vous avez trouvé la %rClé Squelette%w!"),

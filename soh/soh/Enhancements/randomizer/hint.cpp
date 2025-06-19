@@ -364,7 +364,6 @@ const CustomMessage Hint::GetHintMessage(MessageFormat format, size_t id) const 
         hintText.InsertNumber(num);
     }
 
-
     if (format == MF_FORMATTED) {
         hintText.Format();
     } else if (format == MF_AUTO_FORMAT) {
