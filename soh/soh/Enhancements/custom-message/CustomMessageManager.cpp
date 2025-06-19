@@ -627,7 +627,7 @@ void CustomMessage::SetSingularPlural() {
     for (std::string& str : messages) {
         size_t firstBar = str.find('|');
         if (firstBar != std::string::npos) {
-            size_t euroSign = str.find('€');
+            size_t euroSign = str.find("€");
             size_t secondBar = str.find('|', firstBar + 1);
             if (secondBar != std::string::npos) {
                 size_t thirdBar = str.find('|', secondBar + 1);
