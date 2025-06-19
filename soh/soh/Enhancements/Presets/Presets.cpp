@@ -110,6 +110,7 @@ void applyPreset(std::string presetName, std::vector<PresetSection> includeSecti
             }
         }
     }
+    ShipInit::InitAll();
 }
 
 void DrawPresetSelector(std::vector<PresetSection> includeSections, std::string presetLoc, bool disabled) {

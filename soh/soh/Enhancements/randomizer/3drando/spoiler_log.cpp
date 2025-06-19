@@ -79,6 +79,9 @@ static void WriteLocation(std::string sphere, const RandomizerCheck locationKey,
         default:
             jsonData["playthrough"][sphere][location->GetName()] = itemLocation->GetPlacedItemName().GetEnglish();
             break;
+        case LANGUAGE_GER:
+            jsonData["playthrough"][sphere][location->GetName()] = itemLocation->GetPlacedItemName().GetGerman();
+            break;
         case LANGUAGE_FRA:
             jsonData["playthrough"][sphere][location->GetName()] = itemLocation->GetPlacedItemName().GetFrench();
             break;
@@ -128,6 +131,7 @@ static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) 
 
     switch (gSaveContext.language) {
         case LANGUAGE_ENG:
+        case LANGUAGE_GER:
         case LANGUAGE_FRA:
         default:
             jsonData["entrancesMap"][sphereString][name] = text;
@@ -269,6 +273,9 @@ static void WriteAllLocations() {
             default:
                 placedItemName = location->GetPlacedItemName().GetEnglish();
                 break;
+            case 1:
+                placedItemName = location->GetPlacedItemName().GetGerman();
+                break;
             case 2:
                 placedItemName = location->GetPlacedItemName().GetFrench();
                 break;
@@ -306,6 +313,15 @@ static void WriteAllLocations() {
                                             .GetEnglish();
                     jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]
                             ["trickName"] = ctx->overrides[location->GetRandomizerCheck()].GetTrickName().GetEnglish();
+                    break;
+                case 1:
+                    jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]
+                            ["model"] = Rando::StaticData::RetrieveItem(
+                                            ctx->overrides[location->GetRandomizerCheck()].LooksLike())
+                                            .GetName()
+                                            .GetGerman();
+                    jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]
+                            ["trickName"] = ctx->overrides[location->GetRandomizerCheck()].GetTrickName().GetGerman();
                     break;
                 case 2:
                     jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]

@@ -123,18 +123,310 @@ bool CanBuyAnother(uint16_t price) {
     return true;
 }
 
+std::set<RandomizerArea> CalculateAreas(SceneID scene) {
+    switch (scene) {
+        case SCENE_DEKU_TREE:
+            return { RA_DEKU_TREE };
+        case SCENE_DODONGOS_CAVERN:
+            return { RA_DODONGOS_CAVERN };
+        case SCENE_JABU_JABU:
+            return { RA_JABU_JABUS_BELLY };
+        case SCENE_FOREST_TEMPLE:
+            return { RA_FOREST_TEMPLE };
+        case SCENE_FIRE_TEMPLE:
+            return { RA_FIRE_TEMPLE };
+        case SCENE_WATER_TEMPLE:
+            return { RA_WATER_TEMPLE };
+        case SCENE_SPIRIT_TEMPLE:
+            return { RA_SPIRIT_TEMPLE };
+        case SCENE_SHADOW_TEMPLE:
+            return { RA_SHADOW_TEMPLE };
+        case SCENE_BOTTOM_OF_THE_WELL:
+            return { RA_BOTTOM_OF_THE_WELL };
+        case SCENE_ICE_CAVERN:
+            return { RA_ICE_CAVERN };
+        case SCENE_INSIDE_GANONS_CASTLE:
+            return { RA_GANONS_CASTLE };
+        case SCENE_GERUDO_TRAINING_GROUND:
+            return { RA_GERUDO_TRAINING_GROUND };
+        case SCENE_THIEVES_HIDEOUT:
+        case SCENE_GERUDOS_FORTRESS:
+            return { RA_GERUDO_FORTRESS };
+        case SCENE_MARKET_ENTRANCE_DAY:
+        case SCENE_MARKET_ENTRANCE_NIGHT:
+        case SCENE_MARKET_ENTRANCE_RUINS:
+        case SCENE_BACK_ALLEY_DAY:
+        case SCENE_BACK_ALLEY_NIGHT:
+        case SCENE_MARKET_DAY:
+        case SCENE_MARKET_NIGHT:
+        case SCENE_MARKET_RUINS:
+        case SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY:
+        case SCENE_TEMPLE_OF_TIME_EXTERIOR_NIGHT:
+        case SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS:
+            return { RA_THE_MARKET };
+        case SCENE_TEMPLE_OF_TIME:
+            return { RA_TEMPLE_OF_TIME };
+        case SCENE_HYRULE_FIELD:
+            return { RA_HYRULE_FIELD };
+        case SCENE_KAKARIKO_VILLAGE:
+            return { RA_KAKARIKO_VILLAGE };
+        case SCENE_GRAVEYARD:
+            return { RA_THE_GRAVEYARD };
+        case SCENE_ZORAS_RIVER:
+            return { RA_ZORAS_RIVER };
+        case SCENE_KOKIRI_FOREST:
+            return { RA_KOKIRI_FOREST };
+        case SCENE_SACRED_FOREST_MEADOW:
+            return { RA_SACRED_FOREST_MEADOW };
+        case SCENE_LAKE_HYLIA:
+            return { RA_LAKE_HYLIA };
+        case SCENE_ZORAS_DOMAIN:
+            return { RA_ZORAS_DOMAIN };
+        case SCENE_ZORAS_FOUNTAIN:
+            return { RA_ZORAS_FOUNTAIN };
+        case SCENE_GERUDO_VALLEY:
+            return { RA_GERUDO_VALLEY };
+        case SCENE_LOST_WOODS:
+            return { RA_THE_LOST_WOODS };
+        case SCENE_DESERT_COLOSSUS:
+            return { RA_DESERT_COLOSSUS };
+        case SCENE_HAUNTED_WASTELAND:
+            return { RA_HAUNTED_WASTELAND };
+        case SCENE_HYRULE_CASTLE:
+            return { RA_HYRULE_CASTLE };
+        case SCENE_DEATH_MOUNTAIN_TRAIL:
+            return { RA_DEATH_MOUNTAIN_TRAIL };
+        case SCENE_DEATH_MOUNTAIN_CRATER:
+            return { RA_DEATH_MOUNTAIN_CRATER };
+        case SCENE_GORON_CITY:
+            return { RA_GORON_CITY };
+        case SCENE_LON_LON_RANCH:
+            return { RA_LON_LON_RANCH };
+        case SCENE_OUTSIDE_GANONS_CASTLE:
+            return { RA_OUTSIDE_GANONS_CASTLE };
+        case SCENE_TREASURE_BOX_SHOP:
+        case SCENE_DEKU_TREE_BOSS:
+        case SCENE_DODONGOS_CAVERN_BOSS:
+        case SCENE_JABU_JABU_BOSS:
+        case SCENE_FOREST_TEMPLE_BOSS:
+        case SCENE_FIRE_TEMPLE_BOSS:
+        case SCENE_WATER_TEMPLE_BOSS:
+        case SCENE_SPIRIT_TEMPLE_BOSS:
+        case SCENE_SHADOW_TEMPLE_BOSS:
+        case SCENE_GANONS_TOWER:
+        case SCENE_GANONDORF_BOSS:
+        case SCENE_KNOW_IT_ALL_BROS_HOUSE:
+        case SCENE_TWINS_HOUSE:
+        case SCENE_MIDOS_HOUSE:
+        case SCENE_SARIAS_HOUSE:
+        case SCENE_KAKARIKO_CENTER_GUEST_HOUSE:
+        case SCENE_BACK_ALLEY_HOUSE:
+        case SCENE_BAZAAR:
+        case SCENE_KOKIRI_SHOP:
+        case SCENE_GORON_SHOP:
+        case SCENE_ZORA_SHOP:
+        case SCENE_POTION_SHOP_KAKARIKO:
+        case SCENE_POTION_SHOP_MARKET:
+        case SCENE_BOMBCHU_SHOP:
+        case SCENE_HAPPY_MASK_SHOP:
+        case SCENE_LINKS_HOUSE:
+        case SCENE_DOG_LADY_HOUSE:
+        case SCENE_STABLE:
+        case SCENE_IMPAS_HOUSE:
+        case SCENE_LAKESIDE_LABORATORY:
+        case SCENE_CARPENTERS_TENT:
+        case SCENE_GRAVEKEEPERS_HUT:
+        case SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC:
+        case SCENE_FAIRYS_FOUNTAIN:
+        case SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS:
+        case SCENE_GROTTOS:
+        case SCENE_REDEAD_GRAVE:
+        case SCENE_GRAVE_WITH_FAIRYS_FOUNTAIN:
+        case SCENE_ROYAL_FAMILYS_TOMB:
+        case SCENE_SHOOTING_GALLERY:
+        case SCENE_CASTLE_COURTYARD_GUARDS_DAY:
+        case SCENE_CASTLE_COURTYARD_GUARDS_NIGHT:
+        case SCENE_WINDMILL_AND_DAMPES_GRAVE:
+        case SCENE_FISHING_POND:
+        case SCENE_CASTLE_COURTYARD_ZELDA:
+        case SCENE_BOMBCHU_BOWLING_ALLEY:
+        case SCENE_LON_LON_BUILDINGS:
+        case SCENE_MARKET_GUARD_HOUSE:
+        case SCENE_POTION_SHOP_GRANNY:
+        case SCENE_HOUSE_OF_SKULLTULA:
+        case SCENE_GANONS_TOWER_COLLAPSE_INTERIOR:
+        case SCENE_INSIDE_GANONS_CASTLE_COLLAPSE:
+        case SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR:
+        case SCENE_GANON_BOSS:
+            return {};
+        case SCENE_CHAMBER_OF_THE_SAGES:
+        case SCENE_CUTSCENE_MAP:
+        case SCENE_TEST01:
+        case SCENE_BESITU:
+        case SCENE_DEPTH_TEST:
+        case SCENE_SYOTES:
+        case SCENE_SYOTES2:
+        case SCENE_SUTARU:
+        case SCENE_HAIRAL_NIWA2:
+        case SCENE_SASATEST:
+        case SCENE_TESTROOM:
+        case SCENE_ID_MAX:
+        default:
+            assert(false);
+            return {};
+    }
+}
+
+bool GetTimePassFromScene(SceneID scene) {
+    switch (scene) {
+        case SCENE_DEKU_TREE:
+        case SCENE_DODONGOS_CAVERN:
+        case SCENE_JABU_JABU:
+        case SCENE_FOREST_TEMPLE:
+        case SCENE_FIRE_TEMPLE:
+        case SCENE_WATER_TEMPLE:
+        case SCENE_SPIRIT_TEMPLE:
+        case SCENE_SHADOW_TEMPLE:
+        case SCENE_BOTTOM_OF_THE_WELL:
+        case SCENE_ICE_CAVERN:
+        case SCENE_GANONS_TOWER:
+        case SCENE_GERUDO_TRAINING_GROUND:
+        case SCENE_THIEVES_HIDEOUT:
+        case SCENE_INSIDE_GANONS_CASTLE:
+        case SCENE_GANONS_TOWER_COLLAPSE_INTERIOR:
+        case SCENE_INSIDE_GANONS_CASTLE_COLLAPSE:
+        case SCENE_TREASURE_BOX_SHOP:
+        case SCENE_DEKU_TREE_BOSS:
+        case SCENE_DODONGOS_CAVERN_BOSS:
+        case SCENE_JABU_JABU_BOSS:
+        case SCENE_FOREST_TEMPLE_BOSS:
+        case SCENE_FIRE_TEMPLE_BOSS:
+        case SCENE_WATER_TEMPLE_BOSS:
+        case SCENE_SPIRIT_TEMPLE_BOSS:
+        case SCENE_SHADOW_TEMPLE_BOSS:
+        case SCENE_GANONDORF_BOSS:
+        case SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR:
+        case SCENE_MARKET_ENTRANCE_DAY:
+        case SCENE_MARKET_ENTRANCE_NIGHT:
+        case SCENE_MARKET_ENTRANCE_RUINS:
+        case SCENE_BACK_ALLEY_DAY:
+        case SCENE_BACK_ALLEY_NIGHT:
+        case SCENE_MARKET_DAY:
+        case SCENE_MARKET_NIGHT:
+        case SCENE_MARKET_RUINS:
+        case SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY:
+        case SCENE_TEMPLE_OF_TIME_EXTERIOR_NIGHT:
+        case SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS:
+        case SCENE_KNOW_IT_ALL_BROS_HOUSE:
+        case SCENE_TWINS_HOUSE:
+        case SCENE_MIDOS_HOUSE:
+        case SCENE_SARIAS_HOUSE:
+        case SCENE_KAKARIKO_CENTER_GUEST_HOUSE:
+        case SCENE_BACK_ALLEY_HOUSE:
+        case SCENE_BAZAAR:
+        case SCENE_KOKIRI_SHOP:
+        case SCENE_GORON_SHOP:
+        case SCENE_ZORA_SHOP:
+        case SCENE_POTION_SHOP_KAKARIKO:
+        case SCENE_POTION_SHOP_MARKET:
+        case SCENE_BOMBCHU_SHOP:
+        case SCENE_HAPPY_MASK_SHOP:
+        case SCENE_LINKS_HOUSE:
+        case SCENE_DOG_LADY_HOUSE:
+        case SCENE_STABLE:
+        case SCENE_IMPAS_HOUSE:
+        case SCENE_LAKESIDE_LABORATORY:
+        case SCENE_CARPENTERS_TENT:
+        case SCENE_GRAVEKEEPERS_HUT:
+        case SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC:
+        case SCENE_FAIRYS_FOUNTAIN:
+        case SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS:
+        case SCENE_GROTTOS:
+        case SCENE_REDEAD_GRAVE:
+        case SCENE_GRAVE_WITH_FAIRYS_FOUNTAIN:
+        case SCENE_ROYAL_FAMILYS_TOMB:
+        case SCENE_SHOOTING_GALLERY:
+        case SCENE_TEMPLE_OF_TIME:
+        case SCENE_CHAMBER_OF_THE_SAGES:
+        case SCENE_CASTLE_COURTYARD_GUARDS_DAY:
+        case SCENE_CASTLE_COURTYARD_GUARDS_NIGHT:
+        case SCENE_CUTSCENE_MAP:
+        case SCENE_WINDMILL_AND_DAMPES_GRAVE:
+        case SCENE_CASTLE_COURTYARD_ZELDA:
+        case SCENE_BOMBCHU_BOWLING_ALLEY:
+        case SCENE_LON_LON_BUILDINGS:
+        case SCENE_MARKET_GUARD_HOUSE:
+        case SCENE_POTION_SHOP_GRANNY:
+        case SCENE_GANON_BOSS:
+        case SCENE_HOUSE_OF_SKULLTULA:
+        case SCENE_KOKIRI_FOREST:
+        case SCENE_SACRED_FOREST_MEADOW:
+        case SCENE_LOST_WOODS:
+        case SCENE_GORON_CITY:
+        case SCENE_OUTSIDE_GANONS_CASTLE:
+        case SCENE_GRAVEYARD:
+        case SCENE_ZORAS_DOMAIN:
+        case SCENE_ZORAS_FOUNTAIN:
+        case SCENE_GERUDOS_FORTRESS:
+        case SCENE_HAUNTED_WASTELAND:
+        case SCENE_DEATH_MOUNTAIN_CRATER:
+        case SCENE_ID_MAX:
+            return false;
+
+        // Time does pass in the fishing pond but it's
+        // extremely slow (more than 2 IRL seconds per in-game minute)
+        // maybe in the future there could be a trick to count it
+        case SCENE_FISHING_POND:
+            return false;
+
+        case SCENE_HYRULE_FIELD:
+        case SCENE_KAKARIKO_VILLAGE:
+        case SCENE_ZORAS_RIVER:
+        case SCENE_LAKE_HYLIA:
+        case SCENE_GERUDO_VALLEY:
+        case SCENE_DESERT_COLOSSUS:
+        case SCENE_HYRULE_CASTLE:
+        case SCENE_DEATH_MOUNTAIN_TRAIL:
+        case SCENE_LON_LON_RANCH:
+            return true;
+
+        case SCENE_TEST01:
+        case SCENE_BESITU:
+        case SCENE_DEPTH_TEST:
+        case SCENE_SYOTES:
+        case SCENE_SYOTES2:
+        case SCENE_SUTARU:
+        case SCENE_HAIRAL_NIWA2:
+        case SCENE_SASATEST:
+        case SCENE_TESTROOM:
+        default:
+            assert(false);
+            return false;
+    }
+}
+
 Region::Region() = default;
-Region::Region(std::string regionName_, std::string scene_, std::set<RandomizerArea> areas, bool timePass_,
+Region::Region(std::string regionName_, SceneID scene_, bool timePass_, std::set<RandomizerArea> areas,
                std::vector<EventAccess> events_, std::vector<LocationAccess> locations_,
                std::list<Rando::Entrance> exits_)
-    : regionName(std::move(regionName_)), scene(std::move(scene_)), areas(areas), timePass(timePass_),
-      events(std::move(events_)), locations(std::move(locations_)), exits(std::move(exits_)) {
+    : regionName(std::move(regionName_)), scene(scene_), timePass(timePass_), areas(areas), events(std::move(events_)),
+      locations(std::move(locations_)), exits(std::move(exits_)) {
+}
+Region::Region(std::string regionName_, SceneID scene_, std::vector<EventAccess> events_,
+               std::vector<LocationAccess> locations_, std::list<Rando::Entrance> exits_)
+    : regionName(std::move(regionName_)), scene(scene_), timePass(GetTimePassFromScene(scene_)),
+      areas(CalculateAreas(scene_)), events(std::move(events_)), locations(std::move(locations_)),
+      exits(std::move(exits_)) {
 }
 
 Region::~Region() = default;
 
+bool Region::TimePass() {
+    return timePass;
+}
+
 void Region::ApplyTimePass() {
-    if (timePass) {
+    if (TimePass()) {
         StartPerformanceTimer(PT_TOD_ACCESS);
         if (Child()) {
             childDay = true;
@@ -322,6 +614,7 @@ bool BeanPlanted(const RandomizerRegion region) {
         default:
             sceneID = SCENE_ID_MAX;
             swchFlag = 0;
+            assert(false);
             break;
     }
 
@@ -373,10 +666,10 @@ void RegionTable_Init() {
     };
     // Clear the array from any previous playthrough attempts. This is important so that
     // locations which appear in both MQ and Vanilla dungeons don't get set in both areas.
-    areaTable.fill(Region("Invalid Region", "Invalid Region", {}, NO_DAY_NIGHT_CYCLE, {}, {}, {}));
+    areaTable.fill(Region("Invalid Region", SCENE_ID_MAX, {}, {}, {}));
 
     // clang-format off
-    areaTable[RR_ROOT] = Region("Root", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {
+    areaTable[RR_ROOT] = Region("Root", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {
         //Events
         EventAccess(&logic->KakarikoVillageGateOpen, []{return ctx->GetOption(RSK_KAK_GATE).Is(RO_KAK_GATE_OPEN);}),
     }, {
@@ -389,7 +682,7 @@ void RegionTable_Init() {
         Entrance(RR_ROOT_EXITS, []{return true;}),
     });
 
-    areaTable[RR_ROOT_EXITS] = Region("Root Exits", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_ROOT_EXITS] = Region("Root Exits", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
         //Exits
         Entrance(RR_CHILD_SPAWN,             []{return logic->IsChild;}),
         Entrance(RR_ADULT_SPAWN,             []{return logic->IsAdult;}),
@@ -401,42 +694,42 @@ void RegionTable_Init() {
         Entrance(RR_PRELUDE_OF_LIGHT_WARP,   []{return logic->CanUse(RG_PRELUDE_OF_LIGHT)   && logic->CanLeaveForest();}),
     });
 
-    areaTable[RR_CHILD_SPAWN] = Region("Child Spawn", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_CHILD_SPAWN] = Region("Child Spawn", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
         //Exits
         Entrance(RR_KF_LINKS_HOUSE, []{return true;}),
     });
 
-    areaTable[RR_ADULT_SPAWN] = Region("Adult Spawn", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_ADULT_SPAWN] = Region("Adult Spawn", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
         //Exits
         Entrance(RR_TEMPLE_OF_TIME, []{return true;}),
     });
 
-    areaTable[RR_MINUET_OF_FOREST_WARP] = Region("Minuet of Forest Warp", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_MINUET_OF_FOREST_WARP] = Region("Minuet of Forest Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
         //Exits
         Entrance(RR_SACRED_FOREST_MEADOW, []{return true;}),
     });
 
-    areaTable[RR_BOLERO_OF_FIRE_WARP] = Region("Bolero of Fire Warp", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_BOLERO_OF_FIRE_WARP] = Region("Bolero of Fire Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
         //Exits
         Entrance(RR_DMC_CENTRAL_LOCAL, []{return true;}),
     });
 
-    areaTable[RR_SERENADE_OF_WATER_WARP] = Region("Serenade of Water Warp", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_SERENADE_OF_WATER_WARP] = Region("Serenade of Water Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
         //Exits
         Entrance(RR_LAKE_HYLIA, []{return true;}),
     });
 
-    areaTable[RR_REQUIEM_OF_SPIRIT_WARP] = Region("Requiem of Spirit Warp", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_REQUIEM_OF_SPIRIT_WARP] = Region("Requiem of Spirit Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
         //Exits
         Entrance(RR_DESERT_COLOSSUS, []{return true;}),
     });
 
-    areaTable[RR_NOCTURNE_OF_SHADOW_WARP] = Region("Nocturne of Shadow Warp", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_NOCTURNE_OF_SHADOW_WARP] = Region("Nocturne of Shadow Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
         //Exits
         Entrance(RR_GRAVEYARD_WARP_PAD_REGION, []{return true;}),
     });
 
-    areaTable[RR_PRELUDE_OF_LIGHT_WARP] = Region("Prelude of Light Warp", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_PRELUDE_OF_LIGHT_WARP] = Region("Prelude of Light Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
         //Exits
         Entrance(RR_TEMPLE_OF_TIME, []{return true;}),
     });
@@ -599,7 +892,7 @@ void ResetAllLocations() {
 bool HasTimePassAccess(uint8_t age) {
     for (const RandomizerRegion regionKey : GetAllRegions()) {
         auto region = RegionTable(regionKey);
-        if (region->timePass &&
+        if (region->TimePass() &&
             ((age == RO_AGE_CHILD && region->Child()) || (age == RO_AGE_ADULT && region->Adult()))) {
             return true;
         }

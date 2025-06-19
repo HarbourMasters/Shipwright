@@ -402,6 +402,8 @@ typedef enum {
     RR_HF_NEAR_KAK_GROTTO,
     RR_HF_TEKTITE_GROTTO,
     RR_LAKE_HYLIA,
+    RR_LH_FROM_SHORTCUT,
+    RR_LH_FROM_WATER_TEMPLE,
     RR_LH_FISHING_ISLAND,
     RR_LH_OWL_FLIGHT,
     RR_LH_LAB,
@@ -507,6 +509,7 @@ typedef enum {
     RR_DMC_DISTANT_PLATFORM,
     RR_ZR_FRONT,
     RR_ZORAS_RIVER,
+    RR_ZR_FROM_SHORTCUT,
     RR_ZR_BEHIND_WATERFALL,
     RR_ZR_OPEN_GROTTO,
     RR_ZR_FAIRY_GROTTO,
@@ -574,6 +577,7 @@ typedef enum {
     RR_DEKU_TREE_MQ_OUTSIDE_BOSS_ROOM,
 
     RR_DEKU_TREE_BOSS_ENTRYWAY,
+    RR_DEKU_TREE_BOSS_EXIT,
     RR_DEKU_TREE_BOSS_ROOM,
 
     RR_DODONGOS_CAVERN_BEGINNING,
@@ -621,7 +625,9 @@ typedef enum {
     RR_DODONGOS_CAVERN_MQ_BEHIND_MOUTH,
     RR_DODONGOS_CAVERN_MQ_BACK_BEHIND_FIRE,
     RR_DODONGOS_CAVERN_MQ_BACK_SWITCH_GRAVE,
+
     RR_DODONGOS_CAVERN_BOSS_ENTRYWAY,
+    RR_DODONGOS_CAVERN_BOSS_EXIT,
     RR_DODONGOS_CAVERN_BOSS_ROOM,
 
     RR_JABU_JABUS_BELLY_BEGINNING,
@@ -650,6 +656,7 @@ typedef enum {
     RR_JABU_JABUS_BELLY_MQ_EAST_ROOM,
 
     RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY,
+    RR_JABU_JABUS_BELLY_BOSS_EXIT,
     RR_JABU_JABUS_BELLY_BOSS_ROOM,
 
     RR_FOREST_TEMPLE_FIRST_ROOM,
@@ -5805,7 +5812,6 @@ typedef enum {
     RSK_STARTING_NUTS,
     RSK_FULL_WALLETS,
     RSK_SHUFFLE_CHEST_MINIGAME,
-    RSK_CUCCO_COUNT,
     RSK_BIG_POE_COUNT,
     RSK_SKIP_EPONA_RACE,
     RSK_COMPLETE_MASK_QUEST,
@@ -6354,6 +6360,11 @@ typedef struct FishIdentity {
     RandomizerInf randomizerInf;
     RandomizerCheck randomizerCheck;
 } FishIdentity;
+
+typedef struct FairyIdentity {
+    RandomizerInf randomizerInf;
+    RandomizerCheck randomizerCheck;
+} FairyIdentity;
 
 typedef struct GrassIdentity {
     RandomizerInf randomizerInf;

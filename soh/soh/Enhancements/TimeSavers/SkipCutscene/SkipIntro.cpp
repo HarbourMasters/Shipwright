@@ -1,6 +1,6 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/OTRGlobals.h"
+#include "soh/Enhancements/randomizer/context.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "z64save.h"
@@ -10,12 +10,13 @@ extern PlayState* gPlayState;
 extern SaveContext gSaveContext;
 }
 
-void SkipIntro_Register() {
-    REGISTER_VB_SHOULD(VB_PLAY_TRANSITION_CS, {
+void RegisterSkipIntro() {
+    bool shouldRegister = CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), 0) || IS_RANDO;
+    COND_VB_SHOULD(VB_PLAY_TRANSITION_CS, shouldRegister, {
         // If we're playing rando and if starting age is adult and/or overworld spawns are shuffled we need to skip
         // the cutscene regardless of the enhancement being on.
         bool adultStart = gSaveContext.linkAge == LINK_AGE_ADULT;
-        bool shuffleEntrances = OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_ENTRANCES).Is(true);
+        bool shuffleEntrances = Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_ENTRANCES).Is(true);
         if ((CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), IS_RANDO) ||
              (IS_RANDO && (adultStart || shuffleEntrances))) &&
             gSaveContext.cutsceneIndex == 0xFFF1) {
@@ -45,3 +46,6 @@ void SkipIntro_Register() {
         }
     });
 }
+
+static RegisterShipInitFunc initFunc(RegisterSkipIntro,
+                                     { CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), "IS_RANDO" });

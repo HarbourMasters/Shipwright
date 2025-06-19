@@ -8,6 +8,7 @@
 #include "overlays/actors/ovl_En_Arrow/z_en_arrow.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_syokudai/object_syokudai.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_HOOKSHOT_PULLS_PLAYER)
 
@@ -239,7 +240,7 @@ void ObjSyokudai_Update(Actor* thisx, PlayState* play2) {
     Collider_UpdateCylinder(&this->actor, &this->colliderFlame);
     CollisionCheck_SetAC(play, &play->colChkCtx, &this->colliderFlame.base);
 
-    if (this->litTimer > 0) {
+    if (GameInteractor_Should(VB_SWITCH_TIMER_TICK, this->litTimer > 0, this, &this->litTimer)) {
         this->litTimer--;
         if ((this->litTimer == 0) && (torchType != 0)) {
             sLitTorchCount--;

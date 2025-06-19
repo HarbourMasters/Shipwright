@@ -26,6 +26,7 @@
 #include "soh/SaveManager.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/ShipUtils.h"
 
 typedef struct {
     s16 left;
@@ -1053,20 +1054,27 @@ void FileChoose_UpdateRandomizer() {
     if (!SpoilerFileExists(CVarGetString(CVAR_GENERAL("SpoilerLog"), "")) &&
         !CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
         CVarSetString(CVAR_GENERAL("SpoilerLog"), "");
+        Randomizer_SetSpoilerLoaded(false);
     }
 
     if (CVarGetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 0) != 0 ||
         !(Randomizer_IsSeedGenerated() || Randomizer_IsSpoilerLoaded()) &&
             SpoilerFileExists(CVarGetString(CVAR_GENERAL("SpoilerLog"), "")) && !fileSelectSpoilerFileLoaded) {
         if (CVarGetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 0) != 0) {
-            CVarSetString(CVAR_GENERAL("SpoilerLog"), CVarGetString(CVAR_GENERAL("RandomizerDroppedFile"), ""));
-            Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
+            if (SpoilerFileExists(CVarGetString(CVAR_GENERAL("RandomizerDroppedFile"), ""))) {
+                CVarSetString(CVAR_GENERAL("SpoilerLog"), CVarGetString(CVAR_GENERAL("RandomizerDroppedFile"), ""));
+                Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
+            } else {
+                Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
+            }
         }
         const char* fileLoc = CVarGetString(CVAR_GENERAL("SpoilerLog"), "");
         CVarSetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 0);
         CVarSetString(CVAR_GENERAL("RandomizerDroppedFile"), "");
-        Randomizer_ParseSpoiler(fileLoc);
-        fileSelectSpoilerFileLoaded = true;
+        if (!Ship_IsCStringEmpty(fileLoc)) {
+            Randomizer_ParseSpoiler(fileLoc);
+            fileSelectSpoilerFileLoaded = true;
+        }
 
         if (SpoilerFileExists(CVarGetString(CVAR_GENERAL("SpoilerLog"), "")) &&
             CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
@@ -1531,6 +1539,8 @@ void FileChoose_UpdateRandomizerMenu(GameState* thisx) {
                 this->randomizerIndex--;
             }
         }
+
+        GameInteractor_ExecuteOnUpdateFileRandomizerOptionSelection(this->randomizerIndex);
 
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
@@ -3557,6 +3567,9 @@ void FileChoose_Main(GameState* thisx) {
     Input* input = &this->state.input[0];
 
     Color_RGB8 helpTextColor = { 100, 255, 255 };
+
+    GameInteractor_ExecuteOnFileChooseMain(thisx);
+
     if (CVarGetInteger(CVAR_COSMETIC("Title.FileChoose.Changed"), 0)) {
         Color_RGB8 backgroundColor =
             CVarGetColor24(CVAR_COSMETIC("Title.FileChoose.Value"), (Color_RGB8){ 100, 150, 255 });

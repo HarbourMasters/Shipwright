@@ -1,4 +1,4 @@
-#include "ShufflePots.h"
+#include "soh/OTRGlobals.h"
 #include "soh_assets.h"
 #include "static_data.h"
 
@@ -51,48 +51,44 @@ void ObjTsubo_RandomizerSpawnCollectible(ObjTsubo* potActor, PlayState* play) {
     item00->actor.world.rot.y = static_cast<int16_t>(Rand_CenteredFloat(65536.0f));
 }
 
-void ObjTsubo_RandomizerInit(void* actorRef) {
-    Actor* actor = static_cast<Actor*>(actorRef);
+void RegisterShufflePots() {
+    bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_POTS);
 
-    ObjTsubo* potActor = static_cast<ObjTsubo*>(actorRef);
+    COND_ID_HOOK(OnActorInit, ACTOR_OBJ_TSUBO, shouldRegister, [](void* actorRef) {
+        Actor* actor = static_cast<Actor*>(actorRef);
+        ObjTsubo* potActor = static_cast<ObjTsubo*>(actorRef);
 
-    potActor->potIdentity = OTRGlobals::Instance->gRandomizer->IdentifyPot(
-        gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
-}
-
-void ShufflePots_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
-    va_list args;
-    va_copy(args, originalArgs);
+        potActor->potIdentity = OTRGlobals::Instance->gRandomizer->IdentifyPot(
+            gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
+    });
 
     // Draw custom model for pot to indicate it holding a randomized item.
-    if (id == VB_POT_SETUP_DRAW) {
+    COND_VB_SHOULD(VB_POT_SETUP_DRAW, shouldRegister, {
         ObjTsubo* potActor = va_arg(args, ObjTsubo*);
         if (ObjTsubo_RandomizerHoldsItem(potActor, gPlayState)) {
             potActor->actor.draw = (ActorFunc)ObjTsubo_RandomizerDraw;
             *should = false;
         }
-    }
+    });
 
     // Do not spawn vanilla item from pot, instead spawn the ranomized item.
-    if (id == VB_POT_DROP_ITEM) {
+    COND_VB_SHOULD(VB_POT_DROP_ITEM, shouldRegister, {
         ObjTsubo* potActor = va_arg(args, ObjTsubo*);
         if (ObjTsubo_RandomizerHoldsItem(potActor, gPlayState)) {
             ObjTsubo_RandomizerSpawnCollectible(potActor, gPlayState);
             *should = false;
         }
-    }
+    });
 
     // Unlock early Ganon's Boss Key doors to allow access to the pots there when pots are shuffled in dungeon
-    if (id == VB_LOCK_BOSS_DOOR) {
+    COND_VB_SHOULD(VB_LOCK_BOSS_DOOR, shouldRegister, {
         DoorShutter* doorActor = va_arg(args, DoorShutter*);
         uint8_t shufflePotSetting = RAND_GET_OPTION(RSK_SHUFFLE_POTS);
         if (gPlayState->sceneNum == SCENE_GANONS_TOWER && doorActor->dyna.actor.world.pos.y == 800 &&
             (shufflePotSetting == RO_SHUFFLE_POTS_DUNGEONS || shufflePotSetting == RO_SHUFFLE_POTS_ALL)) {
             *should = false;
         }
-    }
-
-    va_end(args);
+    });
 }
 
 void Rando::StaticData::RegisterPotLocations() {
@@ -653,4 +649,5 @@ void Rando::StaticData::RegisterPotLocations() {
     // clang-format on
 }
 
-static RegisterShipInitFunc initFunc(Rando::StaticData::RegisterPotLocations);
+static RegisterShipInitFunc registerShufflePots(RegisterShufflePots, { "IS_RANDO" });
+static RegisterShipInitFunc registerShufflePotLocations(Rando::StaticData::RegisterPotLocations);

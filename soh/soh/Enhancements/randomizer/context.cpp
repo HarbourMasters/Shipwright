@@ -11,6 +11,7 @@
 #include "fishsanity.h"
 #include "macros.h"
 #include "3drando/hints.hpp"
+#include "soh/util.h"
 #include "../kaleido.h"
 
 #include <fstream>
@@ -370,25 +371,8 @@ GetItemEntry Context::GetFinalGIEntry(const RandomizerCheck rc, const bool check
     return giEntry;
 }
 
-std::string sanitize(std::string stringValue) {
-    // Add backslashes.
-    for (auto i = stringValue.begin();;) {
-        auto const pos =
-            std::find_if(i, stringValue.end(), [](char const c) { return '\\' == c || '\'' == c || '"' == c; });
-        if (pos == stringValue.end()) {
-            break;
-        }
-        i = std::next(stringValue.insert(pos, '\\'), 2);
-    }
-
-    // Removes others.
-    std::erase_if(stringValue, [](char const c) { return '\n' == c || '\r' == c || '\0' == c || '\x1A' == c; });
-
-    return stringValue;
-}
-
 void Context::ParseSpoiler(const char* spoilerFileName) {
-    std::ifstream spoilerFileStream(sanitize(spoilerFileName));
+    std::ifstream spoilerFileStream(SohUtils::Sanitize(spoilerFileName));
     if (!spoilerFileStream) {
         return;
     }
@@ -397,11 +381,13 @@ void Context::ParseSpoiler(const char* spoilerFileName) {
     try {
         nlohmann::json spoilerFileJson;
         spoilerFileStream >> spoilerFileJson;
+        spoilerFileStream.close();
         ParseHashIconIndexesJson(spoilerFileJson);
         Rando::Settings::GetInstance()->ParseJson(spoilerFileJson);
         ParseItemLocationsJson(spoilerFileJson);
-        ParseHintJson(spoilerFileJson);
+        ParseTricksJson(spoilerFileJson);
         mEntranceShuffler->ParseJson(spoilerFileJson);
+        ParseHintJson(spoilerFileJson);
         mDungeons->ParseJson(spoilerFileJson);
         mTrials->ParseJson(spoilerFileJson);
         mSpoilerLoaded = true;
@@ -469,6 +455,17 @@ void Context::ParseHintJson(nlohmann::json spoilerFileJson) {
     CreateStaticHints();
 }
 
+void Context::ParseTricksJson(nlohmann::json spoilerFileJson) {
+    nlohmann::json enabledTricksJson = spoilerFileJson["enabledTricks"];
+    const auto& settings = Rando::Settings::GetInstance();
+    for (auto it : enabledTricksJson) {
+        int rt = settings->GetRandomizerTrickByName(it);
+        if (rt != -1) {
+            mTrickOptions[rt].Set(RO_GENERIC_ON);
+        }
+    }
+}
+
 std::shared_ptr<EntranceShuffler> Context::GetEntranceShuffler() {
     return mEntranceShuffler;
 }
@@ -522,6 +519,10 @@ OptionValue& Context::GetLocationOption(const RandomizerCheck key) {
 
 RandoOptionLACSCondition Context::LACSCondition() const {
     return mLACSCondition;
+}
+
+void Context::LACSCondition(RandoOptionLACSCondition lacsCondition) {
+    mLACSCondition = lacsCondition;
 }
 
 std::shared_ptr<Kaleido> Context::GetKaleido() {
