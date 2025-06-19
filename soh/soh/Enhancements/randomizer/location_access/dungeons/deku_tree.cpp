@@ -441,7 +441,7 @@ void RegionTable_Init_DekuTree() {
         Entrance(RR_DEKU_TREE_BOSS_ROOM, []{return true;}),
     });
 
-    areaTable[RR_DEKU_TREE_BOSS_EXIT] = Region("Deku Tree Boss Exit", "Deku Tree", {RA_DEKU_TREE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_DEKU_TREE_BOSS_EXIT] = Region("Deku Tree Boss Exit", SCENE_DEKU_TREE, {}, {}, {
         // Exits
         Entrance(RR_DEKU_TREE_OUTSIDE_BOSS_ROOM,    []{return ctx->GetDungeon(DEKU_TREE)->IsVanilla();}),
         Entrance(RR_DEKU_TREE_MQ_OUTSIDE_BOSS_ROOM, []{return ctx->GetDungeon(DEKU_TREE)->IsMQ();}),
