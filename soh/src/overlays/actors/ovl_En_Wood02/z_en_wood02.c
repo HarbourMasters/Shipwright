@@ -6,6 +6,7 @@
 
 #include "z_en_wood02.h"
 #include "objects/object_wood02/object_wood02.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
 
@@ -327,7 +328,6 @@ void EnWood02_Update(Actor* thisx, PlayState* play2) {
     Vec3f dropsSpawnPt;
     s32 i;
     s32 leavesParams;
-    s32 numDrops;
 
     // Despawn extra trees in a group if out of range
     if ((this->spawnType == WOOD_SPAWN_SPAWNED) && (this->actor.parent != NULL)) {
@@ -358,12 +358,7 @@ void EnWood02_Update(Actor* thisx, PlayState* play2) {
             dropsSpawnPt.y += 200.0f;
 
             if ((this->unk_14C >= 0) && (this->unk_14C < 0x64)) {
-                if (CVarGetInteger(CVAR_ENHANCEMENT("TreesDropSticks"), 0) && INV_CONTENT(ITEM_STICK) != ITEM_NONE) {
-                    numDrops = Rand_ZeroOne() * 4;
-                    for (i = 0; i < numDrops; ++i) {
-                        Item_DropCollectible(play, &dropsSpawnPt, ITEM00_STICK);
-                    }
-                } else {
+                if (GameInteractor_Should(VB_TREE_DROP_COLLECTIBLE, true, this)) {
                     Item_DropCollectibleRandom(play, &this->actor, &dropsSpawnPt, this->unk_14C << 4);
                 }
             } else if (this->actor.home.rot.z != 0) {

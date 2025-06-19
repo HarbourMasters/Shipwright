@@ -83,11 +83,11 @@ void Option::RestoreDelayedOption() {
     contextSelection = delayedSelection;
 }
 
-void Option::SetContextIndex(size_t idx) {
+void Option::SetContextIndex(uint8_t idx) {
     // TODO: Set to Context's OptionValue array.
     contextSelection = idx;
-    if (contextSelection > options.size() - 1) {
-        contextSelection = options.size() - 1;
+    if (contextSelection > static_cast<uint8_t>(options.size() - 1)) {
+        contextSelection = static_cast<uint8_t>(options.size() - 1);
     }
 }
 
@@ -105,7 +105,7 @@ bool Option::IsHidden() const {
 
 void Option::ChangeOptions(std::vector<std::string> opts) {
     if (GetOptionIndex() >= opts.size()) {
-        CVarSetInteger(cvarName.c_str(), opts.size() - 1);
+        CVarSetInteger(cvarName.c_str(), static_cast<uint8_t>(opts.size() - 1));
     }
     options = std::move(opts);
 }
@@ -206,8 +206,8 @@ bool Option::RenderCheckbox() {
 bool Option::RenderCombobox() {
     bool changed = false;
     uint8_t selected = CVarGetInteger(cvarName.c_str(), defaultOption);
-    if (selected >= options.size()) {
-        selected = options.size();
+    if (selected >= static_cast<uint8_t>(options.size())) {
+        selected = static_cast<uint8_t>(options.size());
         CVarSetInteger(cvarName.c_str(), selected);
         changed = true;
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
@@ -231,13 +231,13 @@ bool Option::RenderSlider() {
     bool changed = false;
     int val = CVarGetInteger(cvarName.c_str(), defaultOption);
     if (val > options.size() - 1) {
-        val = options.size() - 1;
+        val = static_cast<int>(options.size()) - 1;
         changed = true;
     }
     UIWidgets::IntSliderOptions widgetOptions = UIWidgets::IntSliderOptions()
                                                     .Color(THEME_COLOR)
                                                     .Min(0)
-                                                    .Max(options.size() - 1)
+                                                    .Max(static_cast<uint8_t>(options.size() - 1))
                                                     .Tooltip(description.c_str())
                                                     .Format(options[val].c_str())
                                                     .DefaultValue(defaultOption);

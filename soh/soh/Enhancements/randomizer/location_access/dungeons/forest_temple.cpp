@@ -34,7 +34,7 @@ void RegionTable_Init_ForestTemple() {
 
     areaTable[RR_FOREST_TEMPLE_LOBBY] = Region("Forest Temple Lobby", "Forest Temple", {RA_FOREST_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->ForestTempleMeg, []{return logic->ForestTempleMeg || (logic->ForestTempleJoelle && logic->ForestTempleBeth && logic->ForestTempleAmy && logic->CanUse(RG_FAIRY_BOW));}),
+        EventAccess(&logic->ForestTempleMeg, []{return logic->ForestTempleJoelle && logic->ForestTempleBeth && logic->ForestTempleAmy && logic->CanUse(RG_FAIRY_BOW);}),
     }, {
         //Locations
         LOCATION(RC_FOREST_TEMPLE_GS_LOBBY,    logic->HookshotOrBoomerang()),
@@ -203,7 +203,7 @@ void RegionTable_Init_ForestTemple() {
 
     areaTable[RR_FOREST_TEMPLE_RED_POE_ROOM] = Region("Forest Temple Red Poe Room", "Forest Temple", {RA_FOREST_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->ForestTempleJoelle, []{return logic->ForestTempleJoelle || logic->CanUse(RG_FAIRY_BOW);}),
+        EventAccess(&logic->ForestTempleJoelle, []{return logic->CanUse(RG_FAIRY_BOW);}),
     }, {
         //Locations
         LOCATION(RC_FOREST_TEMPLE_RED_POE_CHEST, logic->ForestTempleJoelle),
@@ -228,7 +228,7 @@ void RegionTable_Init_ForestTemple() {
 
     areaTable[RR_FOREST_TEMPLE_BLUE_POE_ROOM] = Region("Forest Temple Blue Poe Room", "Forest Temple", {RA_FOREST_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->ForestTempleBeth, []{return logic->ForestTempleBeth || logic->CanUse(RG_FAIRY_BOW);}),
+        EventAccess(&logic->ForestTempleBeth, []{return logic->CanUse(RG_FAIRY_BOW);}),
     }, {
         //Locations
         LOCATION(RC_FOREST_TEMPLE_BLUE_POE_CHEST, logic->ForestTempleBeth),
@@ -274,7 +274,7 @@ void RegionTable_Init_ForestTemple() {
 
     areaTable[RR_FOREST_TEMPLE_GREEN_POE_ROOM] = Region("Forest Temple Green Poe Room", "Forest Temple", {RA_FOREST_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->ForestTempleAmy, []{return logic->ForestTempleAmy || logic->CanUse(RG_FAIRY_BOW);}),
+        EventAccess(&logic->ForestTempleAmy, []{return logic->CanUse(RG_FAIRY_BOW);}),
     }, {
         //Locations
         LOCATION(RC_FOREST_TEMPLE_GREEN_POE_POT_1, logic->CanBreakPots()),
@@ -298,7 +298,7 @@ void RegionTable_Init_ForestTemple() {
     }, {
         //Exits
         Entrance(RR_FOREST_TEMPLE_LOBBY,         []{return true;}),
-        Entrance(RR_FOREST_TEMPLE_BOSS_ENTRYWAY, []{return logic->HasItem(RG_FOREST_TEMPLE_BOSS_KEY);}),
+        Entrance(RR_FOREST_TEMPLE_BOSS_ENTRYWAY, []{return true;}),
     });
 
 #pragma endregion
@@ -481,7 +481,7 @@ void RegionTable_Init_ForestTemple() {
         Entrance(RR_FOREST_TEMPLE_MQ_FALLING_ROOM, []{return logic->CanUse(RG_SONG_OF_TIME);}),
     });
 
-    areaTable[RR_FOREST_TEMPLE_MQ_JOELLE_ROOM] = Region("Forest Temple MQ Joelle room", "Forest Temple", {RA_FOREST_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
+    areaTable[RR_FOREST_TEMPLE_MQ_JOELLE_ROOM] = Region("Forest Temple MQ Joelle Room", "Forest Temple", {RA_FOREST_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->ForestTempleJoelle, []{return logic->CanUse(RG_FAIRY_BOW);}),
     }, {
@@ -593,7 +593,7 @@ void RegionTable_Init_ForestTemple() {
     areaTable[RR_FOREST_TEMPLE_MQ_BOSS_REGION] = Region("Forest Temple MQ Boss Region", "Forest Temple", {RA_FOREST_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
         //Exits
         Entrance(RR_FOREST_TEMPLE_MQ_BASEMENT,   []{return logic->ForestOpenBossCorridor;}),
-        Entrance(RR_FOREST_TEMPLE_BOSS_ENTRYWAY, []{return logic->HasItem(RG_FOREST_TEMPLE_BOSS_KEY);}),
+        Entrance(RR_FOREST_TEMPLE_BOSS_ENTRYWAY, []{return true;}),
     });
 
 #pragma endregion
@@ -603,12 +603,12 @@ void RegionTable_Init_ForestTemple() {
         // Exits
         Entrance(RR_FOREST_TEMPLE_BOSS_REGION,    []{return ctx->GetDungeon(FOREST_TEMPLE)->IsVanilla() && false;}),
         Entrance(RR_FOREST_TEMPLE_MQ_BOSS_REGION, []{return ctx->GetDungeon(FOREST_TEMPLE)->IsMQ() && false;}),
-        Entrance(RR_FOREST_TEMPLE_BOSS_ROOM,      []{return true;}),
+        Entrance(RR_FOREST_TEMPLE_BOSS_ROOM,      []{return logic->HasItem(RG_FOREST_TEMPLE_BOSS_KEY);}),
     });
 
     areaTable[RR_FOREST_TEMPLE_BOSS_ROOM] = Region("Forest Temple Boss Room", "Forest Temple", {}, NO_DAY_NIGHT_CYCLE, {
         // Events
-        EventAccess(&logic->ForestTempleClear, []{return logic->ForestTempleClear || logic->CanKillEnemy(RE_PHANTOM_GANON);}),
+        EventAccess(&logic->ForestTempleClear, []{return logic->CanKillEnemy(RE_PHANTOM_GANON);}),
     }, {
         // Locations
         LOCATION(RC_FOREST_TEMPLE_PHANTOM_GANON_HEART, logic->ForestTempleClear),

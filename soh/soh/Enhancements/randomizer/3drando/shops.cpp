@@ -115,7 +115,7 @@ uint16_t GetPriceFromSettings(Rando::Location* loc, PriceSettingsStruct priceSet
                 if (random < ShopPriceProbability[i]) {
                     // The randomly generated value has surpassed the total probability up to this point, so this is the
                     // generated price i in range [0, 59], output in range [0, 295] in increments of 5
-                    return i * 5;
+                    return static_cast<uint16_t>(i) * 5;
                 }
             }
             return 150;
@@ -196,7 +196,8 @@ uint16_t GetCheapBalancedPrice() {
     double random = RandomDouble();
     for (size_t i = 0; i < CheapPriceProbability.size(); i++) {
         if (random < CheapPriceProbability[i]) {
-            return i * 5; // i in range [0, 19], output in range [0, 95] in increments of 5
+            // i in range [0, 19], output in range [0, 95] in increments of 5
+            return static_cast<uint16_t>(i) * 5;
         }
     }
     return -1;

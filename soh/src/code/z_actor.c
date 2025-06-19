@@ -7,6 +7,8 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 #include "objects/object_bdoor/object_bdoor.h"
+#include "soh/ObjectExtension/ObjectExtension.h"
+#include "soh/ObjectExtension/ActorListIndex.h"
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/enemyrandomizer.h"
@@ -1258,11 +1260,6 @@ void Actor_Init(Actor* actor, PlayState* play) {
         actor->init = NULL;
 
         GameInteractor_ExecuteOnActorInit(actor);
-
-        // For enemy health bar we need to know the max health during init
-        if (actor->category == ACTORCAT_ENEMY) {
-            actor->maximumHealth = actor->colChkInfo.health;
-        }
     }
 }
 
@@ -2574,7 +2571,11 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
     if (play->numSetupActors != 0) {
         actorEntry = &play->setupActorList[0];
         for (i = 0; i < play->numSetupActors; i++) {
-            Actor_SpawnEntry(&play->actorCtx, actorEntry++, play);
+            Actor* spawnedActor = Actor_SpawnEntry(&play->actorCtx, actorEntry++, play);
+
+            // #region SOH [ObjectExtension] ActorListIndex tracking
+            SetActorListIndex(spawnedActor, (s16)i);
+            // #endregion
         }
         play->numSetupActors = 0;
         GameInteractor_ExecuteOnSceneSpawnActors();
@@ -2619,11 +2620,6 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
                     actor->init = NULL;
 
                     GameInteractor_ExecuteOnActorInit(actor);
-
-                    // For enemy health bar we need to know the max health during init
-                    if (actor->category == ACTORCAT_ENEMY) {
-                        actor->maximumHealth = actor->colChkInfo.health;
-                    }
                 }
                 actor = actor->next;
             } else if (!Object_IsLoaded(&play->objectCtx, actor->objBankIndex)) {
@@ -3352,6 +3348,10 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
         return NULL;
     }
 
+    // #region SOH [ObjectExtension]
+    SetActorListIndex(actor, -1);
+    // #endregion
+
     assert(dbEntry->numLoaded < 255);
 
     dbEntry->numLoaded++;
@@ -3390,6 +3390,8 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
     temp = gSegments[6];
     Actor_Init(actor, play);
     gSegments[6] = temp;
+
+    GameInteractor_ExecuteOnActorSpawn(actor);
 
     return actor;
 }
@@ -3466,6 +3468,9 @@ Actor* Actor_Delete(ActorContext* actorCtx, Actor* actor, PlayState* play) {
 
     player = GET_PLAYER(play);
 
+    // Execute before actor memory is freed
+    GameInteractor_ExecuteOnActorDestroy(actor);
+
     dbEntry = ActorDB_Retrieve(actor->id);
 
     if (HREG(20) != 0) {
@@ -3493,6 +3498,10 @@ Actor* Actor_Delete(ActorContext* actorCtx, Actor* actor, PlayState* play) {
     Actor_Destroy(actor, play);
 
     newHead = Actor_RemoveFromCategory(play, actorCtx, actor);
+
+    // #region SOH [ObjectExtension]
+    ObjectExtension_Free(actor);
+    // #endregion
 
     ZELDA_ARENA_FREE_DEBUG(actor);
 

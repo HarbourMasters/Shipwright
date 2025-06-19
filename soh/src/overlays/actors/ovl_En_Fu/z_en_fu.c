@@ -154,17 +154,6 @@ void EnFu_WaitChild(EnFu* this, PlayState* play) {
     }
 }
 
-void GivePlayerRandoRewardSongOfStorms(EnFu* windmillGuy, PlayState* play, RandomizerCheck check) {
-    if (windmillGuy->actor.parent != NULL && windmillGuy->actor.parent->id == GET_PLAYER(play)->actor.id &&
-        !Flags_GetTreasure(play, 0x1F)) {
-        Flags_SetTreasure(play, 0x1F);
-        windmillGuy->actionFunc = func_80A1DBD4;
-    } else if (!Flags_GetTreasure(play, 0x1F)) {
-        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SONG_OF_STORMS);
-        GiveItemEntryFromActor(&windmillGuy->actor, play, getItemEntry, 10000.0f, 100.0f);
-    }
-}
-
 void func_80A1DB60(EnFu* this, PlayState* play) {
     if (play->csCtx.state == CS_STATE_IDLE) {
         this->actionFunc = EnFu_WaitAdult;

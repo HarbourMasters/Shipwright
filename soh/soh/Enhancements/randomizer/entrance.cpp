@@ -250,7 +250,319 @@ std::string EntranceNameByRegions(RandomizerRegion parentRegion, RandomizerRegio
     return RegionTable(parentRegion)->regionName + " -> " + RegionTable(connectedRegion)->regionName;
 }
 
-void SetAllEntrancesData(std::vector<EntranceInfoPair>& entranceShuffleTable) {
+std::unordered_map<int16_t, Entrance*> entranceMap;
+
+void SetAllEntrancesData() {
+    std::vector<EntranceInfoPair> entranceShuffleTable = {
+        // clang-format off
+        // Type                         Parent Region                        Connected Region                      Index
+        { { EntranceType::Dungeon,      RR_KF_OUTSIDE_DEKU_TREE,             RR_DEKU_TREE_ENTRYWAY,                ENTR_DEKU_TREE_ENTRANCE },
+          { EntranceType::Dungeon,      RR_DEKU_TREE_ENTRYWAY,               RR_KF_OUTSIDE_DEKU_TREE,              ENTR_KOKIRI_FOREST_OUTSIDE_DEKU_TREE } },
+        { { EntranceType::Dungeon,      RR_DEATH_MOUNTAIN_TRAIL,             RR_DODONGOS_CAVERN_ENTRYWAY,          ENTR_DODONGOS_CAVERN_ENTRANCE },
+          { EntranceType::Dungeon,      RR_DODONGOS_CAVERN_ENTRYWAY,         RR_DEATH_MOUNTAIN_TRAIL,              ENTR_DEATH_MOUNTAIN_TRAIL_OUTSIDE_DODONGOS_CAVERN } },
+        { { EntranceType::Dungeon,      RR_ZORAS_FOUNTAIN,                   RR_JABU_JABUS_BELLY_ENTRYWAY,         ENTR_JABU_JABU_ENTRANCE },
+          { EntranceType::Dungeon,      RR_JABU_JABUS_BELLY_ENTRYWAY,        RR_ZORAS_FOUNTAIN,                    ENTR_ZORAS_FOUNTAIN_OUTSIDE_JABU_JABU } },
+        { { EntranceType::Dungeon,      RR_SACRED_FOREST_MEADOW,             RR_FOREST_TEMPLE_ENTRYWAY,            ENTR_FOREST_TEMPLE_ENTRANCE },
+          { EntranceType::Dungeon,      RR_FOREST_TEMPLE_ENTRYWAY,           RR_SACRED_FOREST_MEADOW,              ENTR_SACRED_FOREST_MEADOW_OUTSIDE_TEMPLE } },
+        { { EntranceType::Dungeon,      RR_DMC_CENTRAL_LOCAL,                RR_FIRE_TEMPLE_ENTRYWAY,              ENTR_FIRE_TEMPLE_ENTRANCE },
+          { EntranceType::Dungeon,      RR_FIRE_TEMPLE_ENTRYWAY,             RR_DMC_CENTRAL_LOCAL,                 ENTR_DEATH_MOUNTAIN_CRATER_OUTSIDE_TEMPLE } },
+        { { EntranceType::Dungeon,      RR_LAKE_HYLIA,                       RR_WATER_TEMPLE_ENTRYWAY,             ENTR_WATER_TEMPLE_ENTRANCE },
+          { EntranceType::Dungeon,      RR_WATER_TEMPLE_ENTRYWAY,            RR_LAKE_HYLIA,                        ENTR_LAKE_HYLIA_OUTSIDE_TEMPLE } },
+        { { EntranceType::Dungeon,      RR_DESERT_COLOSSUS,                  RR_SPIRIT_TEMPLE_ENTRYWAY,            ENTR_SPIRIT_TEMPLE_ENTRANCE },
+          { EntranceType::Dungeon,      RR_SPIRIT_TEMPLE_ENTRYWAY,           RR_DESERT_COLOSSUS_OUTSIDE_TEMPLE,    ENTR_DESERT_COLOSSUS_OUTSIDE_TEMPLE } },
+        { { EntranceType::Dungeon,      RR_GRAVEYARD_WARP_PAD_REGION,        RR_SHADOW_TEMPLE_ENTRYWAY,            ENTR_SHADOW_TEMPLE_ENTRANCE },
+          { EntranceType::Dungeon,      RR_SHADOW_TEMPLE_ENTRYWAY,           RR_GRAVEYARD_WARP_PAD_REGION,         ENTR_GRAVEYARD_OUTSIDE_TEMPLE } },
+        { { EntranceType::Dungeon,      RR_KAK_WELL,                         RR_BOTTOM_OF_THE_WELL_ENTRYWAY,       ENTR_BOTTOM_OF_THE_WELL_ENTRANCE },
+          { EntranceType::Dungeon,      RR_BOTTOM_OF_THE_WELL_ENTRYWAY,      RR_KAK_WELL,                          ENTR_KAKARIKO_VILLAGE_OUTSIDE_BOTTOM_OF_THE_WELL } },
+        { { EntranceType::Dungeon,      RR_ZF_LEDGE,                         RR_ICE_CAVERN_ENTRYWAY,               ENTR_ICE_CAVERN_ENTRANCE },
+          { EntranceType::Dungeon,      RR_ICE_CAVERN_ENTRYWAY,              RR_ZF_LEDGE,                          ENTR_ZORAS_FOUNTAIN_OUTSIDE_ICE_CAVERN } },
+        { { EntranceType::Dungeon,      RR_GERUDO_FORTRESS,                  RR_GERUDO_TRAINING_GROUND_ENTRYWAY,   ENTR_GERUDO_TRAINING_GROUND_ENTRANCE },
+          { EntranceType::Dungeon,      RR_GERUDO_TRAINING_GROUND_ENTRYWAY,  RR_GERUDO_FORTRESS,                   ENTR_GERUDOS_FORTRESS_OUTSIDE_GERUDO_TRAINING_GROUND } },
+        { { EntranceType::GanonDungeon, RR_GANONS_CASTLE_LEDGE,              RR_GANONS_CASTLE_ENTRYWAY,            ENTR_INSIDE_GANONS_CASTLE_ENTRANCE },
+          { EntranceType::GanonDungeon, RR_GANONS_CASTLE_ENTRYWAY,           RR_CASTLE_GROUNDS_FROM_GANONS_CASTLE, ENTR_CASTLE_GROUNDS_RAINBOW_BRIDGE_EXIT } },
+        
+        { { EntranceType::Interior, RR_KOKIRI_FOREST,                 RR_KF_MIDOS_HOUSE,                ENTR_MIDOS_HOUSE_0 },
+          { EntranceType::Interior, RR_KF_MIDOS_HOUSE,                RR_KOKIRI_FOREST,                 ENTR_KOKIRI_FOREST_OUTSIDE_MIDOS_HOUSE } },
+        { { EntranceType::Interior, RR_KOKIRI_FOREST,                 RR_KF_SARIAS_HOUSE,               ENTR_SARIAS_HOUSE_0 },
+          { EntranceType::Interior, RR_KF_SARIAS_HOUSE,               RR_KOKIRI_FOREST,                 ENTR_KOKIRI_FOREST_OUTSIDE_SARIAS_HOUSE } },
+        { { EntranceType::Interior, RR_KOKIRI_FOREST,                 RR_KF_HOUSE_OF_TWINS,             ENTR_TWINS_HOUSE_0 },
+          { EntranceType::Interior, RR_KF_HOUSE_OF_TWINS,             RR_KOKIRI_FOREST,                 ENTR_KOKIRI_FOREST_OUTSIDE_TWINS_HOUSE } },
+        { { EntranceType::Interior, RR_KOKIRI_FOREST,                 RR_KF_KNOW_IT_ALL_HOUSE,          ENTR_KNOW_IT_ALL_BROS_HOUSE_0 },
+          { EntranceType::Interior, RR_KF_KNOW_IT_ALL_HOUSE,          RR_KOKIRI_FOREST,                 ENTR_KOKIRI_FOREST_OUTSIDE_KNOW_IT_ALL_HOUSE } },
+        { { EntranceType::Interior, RR_KOKIRI_FOREST,                 RR_KF_KOKIRI_SHOP,                ENTR_KOKIRI_SHOP_0 },
+          { EntranceType::Interior, RR_KF_KOKIRI_SHOP,                RR_KOKIRI_FOREST,                 ENTR_KOKIRI_FOREST_OUTSIDE_SHOP } },
+        { { EntranceType::Interior, RR_LAKE_HYLIA,                    RR_LH_LAB,                        ENTR_LAKESIDE_LABORATORY_0 },
+          { EntranceType::Interior, RR_LH_LAB,                        RR_LAKE_HYLIA,                    ENTR_LAKE_HYLIA_OUTSIDE_LAB } },
+        { { EntranceType::Interior, RR_LH_FISHING_ISLAND,             RR_LH_FISHING_POND,               ENTR_FISHING_POND_0 },
+          { EntranceType::Interior, RR_LH_FISHING_POND,               RR_LH_FISHING_ISLAND,             ENTR_LAKE_HYLIA_OUTSIDE_FISHING_POND } },
+        { { EntranceType::Interior, RR_GV_FORTRESS_SIDE,              RR_GV_CARPENTER_TENT,             ENTR_CARPENTERS_TENT_0 },
+          { EntranceType::Interior, RR_GV_CARPENTER_TENT,             RR_GV_FORTRESS_SIDE,              ENTR_GERUDO_VALLEY_OUTSIDE_TENT } },
+        { { EntranceType::Interior, RR_MARKET_ENTRANCE,               RR_MARKET_GUARD_HOUSE,            ENTR_MARKET_GUARD_HOUSE_0 },
+          { EntranceType::Interior, RR_MARKET_GUARD_HOUSE,            RR_MARKET_ENTRANCE,               ENTR_MARKET_ENTRANCE_OUTSIDE_GUARD_HOUSE } },
+        { { EntranceType::Interior, RR_THE_MARKET,                    RR_MARKET_MASK_SHOP,              ENTR_HAPPY_MASK_SHOP_0 },
+          { EntranceType::Interior, RR_MARKET_MASK_SHOP,              RR_THE_MARKET,                    ENTR_MARKET_DAY_OUTSIDE_HAPPY_MASK_SHOP } },
+        { { EntranceType::Interior, RR_THE_MARKET,                    RR_MARKET_BOMBCHU_BOWLING,        ENTR_BOMBCHU_BOWLING_ALLEY_0 },
+          { EntranceType::Interior, RR_MARKET_BOMBCHU_BOWLING,        RR_THE_MARKET,                    ENTR_MARKET_DAY_OUTSIDE_BOMBCHU_BOWLING } },
+        { { EntranceType::Interior, RR_THE_MARKET,                    RR_MARKET_POTION_SHOP,            ENTR_POTION_SHOP_MARKET_0 },
+          { EntranceType::Interior, RR_MARKET_POTION_SHOP,            RR_THE_MARKET,                    ENTR_MARKET_DAY_OUTSIDE_POTION_SHOP } },
+        { { EntranceType::Interior, RR_THE_MARKET,                    RR_MARKET_TREASURE_CHEST_GAME,    ENTR_TREASURE_BOX_SHOP_0 },
+          { EntranceType::Interior, RR_MARKET_TREASURE_CHEST_GAME,    RR_THE_MARKET,                    ENTR_MARKET_DAY_OUTSIDE_TREASURE_BOX_SHOP } },
+        { { EntranceType::Interior, RR_MARKET_BACK_ALLEY,             RR_MARKET_BOMBCHU_SHOP,           ENTR_BOMBCHU_SHOP_1 },
+          { EntranceType::Interior, RR_MARKET_BOMBCHU_SHOP,           RR_MARKET_BACK_ALLEY,             ENTR_BACK_ALLEY_DAY_OUTSIDE_BOMBCHU_SHOP } },
+        { { EntranceType::Interior, RR_MARKET_BACK_ALLEY,             RR_MARKET_MAN_IN_GREEN_HOUSE,     ENTR_BACK_ALLEY_MAN_IN_GREEN_HOUSE },
+          { EntranceType::Interior, RR_MARKET_MAN_IN_GREEN_HOUSE,     RR_MARKET_BACK_ALLEY,             ENTR_BACK_ALLEY_DAY_OUTSIDE_MAN_IN_GREEN_HOUSE } },
+        { { EntranceType::Interior, RR_KAKARIKO_VILLAGE,              RR_KAK_CARPENTER_BOSS_HOUSE,      ENTR_KAKARIKO_CENTER_GUEST_HOUSE_0 },
+          { EntranceType::Interior, RR_KAK_CARPENTER_BOSS_HOUSE,      RR_KAKARIKO_VILLAGE,              ENTR_KAKARIKO_VILLAGE_OUTSIDE_CENTER_GUEST_HOUSE } },
+        { { EntranceType::Interior, RR_KAKARIKO_VILLAGE,              RR_KAK_HOUSE_OF_SKULLTULA,        ENTR_HOUSE_OF_SKULLTULA_0 },
+          { EntranceType::Interior, RR_KAK_HOUSE_OF_SKULLTULA,        RR_KAKARIKO_VILLAGE,              ENTR_KAKARIKO_VILLAGE_OUTSIDE_SKULKLTULA_HOUSE } },
+        { { EntranceType::Interior, RR_KAKARIKO_VILLAGE,              RR_KAK_IMPAS_HOUSE,               ENTR_IMPAS_HOUSE_FRONT },
+          { EntranceType::Interior, RR_KAK_IMPAS_HOUSE,               RR_KAKARIKO_VILLAGE,              ENTR_KAKARIKO_VILLAGE_OUTSIDE_IMPAS_HOUSE_FRONT } },
+        { { EntranceType::Interior, RR_KAK_IMPAS_LEDGE,               RR_KAK_IMPAS_HOUSE_BACK,          ENTR_IMPAS_HOUSE_BACK },
+          { EntranceType::Interior, RR_KAK_IMPAS_HOUSE_BACK,          RR_KAK_IMPAS_LEDGE,               ENTR_KAKARIKO_VILLAGE_OUTSIDE_IMPAS_HOUSE_BACK } },
+        { { EntranceType::Interior, RR_KAK_BACKYARD,                  RR_KAK_ODD_POTION_BUILDING,       ENTR_POTION_SHOP_GRANNY_0 },
+          { EntranceType::Interior, RR_KAK_ODD_POTION_BUILDING,       RR_KAK_BACKYARD,                  ENTR_KAKARIKO_VILLAGE_OUTSIDE_SHOP_GRANNY } },
+        { { EntranceType::Interior, RR_THE_GRAVEYARD,                 RR_GRAVEYARD_DAMPES_HOUSE,        ENTR_GRAVEKEEPERS_HUT_0 },
+          { EntranceType::Interior, RR_GRAVEYARD_DAMPES_HOUSE,        RR_THE_GRAVEYARD,                 ENTR_GRAVEYARD_OUTSIDE_DAMPES_HUT } },
+        { { EntranceType::Interior, RR_GORON_CITY,                    RR_GC_SHOP,                       ENTR_GORON_SHOP_0 },
+          { EntranceType::Interior, RR_GC_SHOP,                       RR_GORON_CITY,                    ENTR_GORON_CITY_OUTSIDE_SHOP } },
+        { { EntranceType::Interior, RR_ZORAS_DOMAIN,                  RR_ZD_SHOP,                       ENTR_ZORA_SHOP_0 },
+          { EntranceType::Interior, RR_ZD_SHOP,                       RR_ZORAS_DOMAIN,                  ENTR_ZORAS_DOMAIN_OUTSIDE_SHOP } },
+        { { EntranceType::Interior, RR_LON_LON_RANCH,                 RR_LLR_TALONS_HOUSE,              ENTR_LON_LON_BUILDINGS_TALONS_HOUSE },
+          { EntranceType::Interior, RR_LLR_TALONS_HOUSE,              RR_LON_LON_RANCH,                 ENTR_LON_LON_RANCH_OUTSIDE_TALONS_HOUSE } },
+        { { EntranceType::Interior, RR_LON_LON_RANCH,                 RR_LLR_STABLES,                   ENTR_STABLE_0 },
+          { EntranceType::Interior, RR_LLR_STABLES,                   RR_LON_LON_RANCH,                 ENTR_LON_LON_RANCH_OUTSIDE_STABLES } },
+        { { EntranceType::Interior, RR_LON_LON_RANCH,                 RR_LLR_TOWER,                     ENTR_LON_LON_BUILDINGS_TOWER },
+          { EntranceType::Interior, RR_LLR_TOWER,                     RR_LON_LON_RANCH,                 ENTR_LON_LON_RANCH_OUTSIDE_TOWER } },
+        { { EntranceType::Interior, RR_THE_MARKET,                    RR_MARKET_BAZAAR,                 ENTR_BAZAAR_1 },
+          { EntranceType::Interior, RR_MARKET_BAZAAR,                 RR_THE_MARKET,                    ENTR_MARKET_DAY_OUTSIDE_BAZAAR } },
+        { { EntranceType::Interior, RR_THE_MARKET,                    RR_MARKET_SHOOTING_GALLERY,       ENTR_SHOOTING_GALLERY_1 },
+          { EntranceType::Interior, RR_MARKET_SHOOTING_GALLERY,       RR_THE_MARKET,                    ENTR_MARKET_DAY_OUTSIDE_SHOOTING_GALLERY } },
+        { { EntranceType::Interior, RR_KAKARIKO_VILLAGE,              RR_KAK_BAZAAR,                    ENTR_BAZAAR_0 },
+          { EntranceType::Interior, RR_KAK_BAZAAR,                    RR_KAKARIKO_VILLAGE,              ENTR_KAKARIKO_VILLAGE_OUTSIDE_BAZAAR } },
+        { { EntranceType::Interior, RR_KAKARIKO_VILLAGE,              RR_KAK_SHOOTING_GALLERY,          ENTR_SHOOTING_GALLERY_0 },
+          { EntranceType::Interior, RR_KAK_SHOOTING_GALLERY,          RR_KAKARIKO_VILLAGE,              ENTR_KAKARIKO_VILLAGE_OUTSIDE_SHOOTING_GALLERY } },
+        { { EntranceType::Interior, RR_DESERT_COLOSSUS,               RR_COLOSSUS_GREAT_FAIRY_FOUNTAIN, ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_NAYRUS_COLOSSUS },
+          { EntranceType::Interior, RR_COLOSSUS_GREAT_FAIRY_FOUNTAIN, RR_DESERT_COLOSSUS,               ENTR_DESERT_COLOSSUS_GREAT_FAIRY_EXIT } },
+        { { EntranceType::Interior, RR_HYRULE_CASTLE_GROUNDS,         RR_HC_GREAT_FAIRY_FOUNTAIN,       ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_DINS_HC },
+          { EntranceType::Interior, RR_HC_GREAT_FAIRY_FOUNTAIN,       RR_CASTLE_GROUNDS,                ENTR_CASTLE_GROUNDS_GREAT_FAIRY_EXIT } },
+        { { EntranceType::Interior, RR_GANONS_CASTLE_GROUNDS,         RR_OGC_GREAT_FAIRY_FOUNTAIN,      ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_OGC_DD },
+        // 0x3E8 is an unused entrance index repruposed to differentiate between the HC and OGC fairy
+        // fountain exits (normally they both use 0x340)
+          { EntranceType::Interior, RR_OGC_GREAT_FAIRY_FOUNTAIN,      RR_CASTLE_GROUNDS,                ENTR_POTION_SHOP_KAKARIKO_1 } },
+        { { EntranceType::Interior, RR_DMC_LOWER_NEARBY,              RR_DMC_GREAT_FAIRY_FOUNTAIN,      ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_DMC },
+          { EntranceType::Interior, RR_DMC_GREAT_FAIRY_FOUNTAIN,      RR_DMC_LOWER_LOCAL,               ENTR_DEATH_MOUNTAIN_CRATER_GREAT_FAIRY_EXIT } },
+        { { EntranceType::Interior, RR_DEATH_MOUNTAIN_SUMMIT,         RR_DMT_GREAT_FAIRY_FOUNTAIN,      ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_DMT },
+          { EntranceType::Interior, RR_DMT_GREAT_FAIRY_FOUNTAIN,      RR_DEATH_MOUNTAIN_SUMMIT,         ENTR_DEATH_MOUNTAIN_TRAIL_GREAT_FAIRY_EXIT } },
+        { { EntranceType::Interior, RR_ZORAS_FOUNTAIN,                RR_ZF_GREAT_FAIRY_FOUNTAIN,       ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_FARORES_ZF },
+          { EntranceType::Interior, RR_ZF_GREAT_FAIRY_FOUNTAIN,       RR_ZORAS_FOUNTAIN,                ENTR_ZORAS_FOUNTAIN_OUTSIDE_GREAT_FAIRY } },
+        
+        { { EntranceType::SpecialInterior, RR_KOKIRI_FOREST,         RR_KF_LINKS_HOUSE,        ENTR_LINKS_HOUSE_1 },
+          { EntranceType::SpecialInterior, RR_KF_LINKS_HOUSE,        RR_KOKIRI_FOREST,         ENTR_KOKIRI_FOREST_OUTSIDE_LINKS_HOUSE } },
+        { { EntranceType::SpecialInterior, RR_TOT_ENTRANCE,          RR_TEMPLE_OF_TIME,        ENTR_TEMPLE_OF_TIME_ENTRANCE },
+          { EntranceType::SpecialInterior, RR_TEMPLE_OF_TIME,        RR_TOT_ENTRANCE,          ENTR_TEMPLE_OF_TIME_EXTERIOR_DAY_OUTSIDE_TEMPLE } },
+        { { EntranceType::SpecialInterior, RR_KAKARIKO_VILLAGE,      RR_KAK_WINDMILL,          ENTR_WINDMILL_AND_DAMPES_GRAVE_WINDMILL },
+          { EntranceType::SpecialInterior, RR_KAK_WINDMILL,          RR_KAKARIKO_VILLAGE,      ENTR_KAKARIKO_VILLAGE_OUTSIDE_WINDMILL } },
+        { { EntranceType::SpecialInterior, RR_KAKARIKO_VILLAGE,      RR_KAK_POTION_SHOP_FRONT, ENTR_POTION_SHOP_KAKARIKO_FRONT },
+          { EntranceType::SpecialInterior, RR_KAK_POTION_SHOP_FRONT, RR_KAKARIKO_VILLAGE,      ENTR_KAKARIKO_VILLAGE_OUTSIDE_POTION_SHOP_FRONT } },
+        { { EntranceType::SpecialInterior, RR_KAK_BACKYARD,          RR_KAK_POTION_SHOP_BACK,  ENTR_POTION_SHOP_KAKARIKO_BACK },
+          { EntranceType::SpecialInterior, RR_KAK_POTION_SHOP_BACK,  RR_KAK_BACKYARD,          ENTR_KAKARIKO_VILLAGE_OUTSIDE_POTION_SHOP_BACK } },
+        
+        // Grotto Loads use an entrance index of 0x0700 + their grotto id. The id is used as index for the
+        // grottoLoadTable in soh/soh/Enhancements/randomizer/randomizer_grotto.c
+        // Grotto Returns use an entrance index of 0x0800 + their grotto id. The id is used as index for the
+        // grottoReturnTable in soh/soh/Enhancements/randomizer/randomizer_grotto.c
+        { { EntranceType::GrottoGrave, RR_DESERT_COLOSSUS,          RR_COLOSSUS_GROTTO,          ENTRANCE_GROTTO_LOAD(GROTTO_COLOSSUS_OFFSET) },
+          { EntranceType::GrottoGrave, RR_COLOSSUS_GROTTO,          RR_DESERT_COLOSSUS,          ENTRANCE_GROTTO_EXIT(GROTTO_COLOSSUS_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_LAKE_HYLIA,               RR_LH_GROTTO,                ENTRANCE_GROTTO_LOAD(GROTTO_LH_OFFSET) },
+          { EntranceType::GrottoGrave, RR_LH_GROTTO,                RR_LAKE_HYLIA,               ENTRANCE_GROTTO_EXIT(GROTTO_LH_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_ZORAS_RIVER,              RR_ZR_STORMS_GROTTO,         ENTRANCE_GROTTO_LOAD(GROTTO_ZR_STORMS_OFFSET) },
+          { EntranceType::GrottoGrave, RR_ZR_STORMS_GROTTO,         RR_ZORAS_RIVER,              ENTRANCE_GROTTO_EXIT(GROTTO_ZR_STORMS_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_ZORAS_RIVER,              RR_ZR_FAIRY_GROTTO,          ENTRANCE_GROTTO_LOAD(GROTTO_ZR_FAIRY_OFFSET) },
+          { EntranceType::GrottoGrave, RR_ZR_FAIRY_GROTTO,          RR_ZORAS_RIVER,              ENTRANCE_GROTTO_EXIT(GROTTO_ZR_FAIRY_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_ZORAS_RIVER,              RR_ZR_OPEN_GROTTO,           ENTRANCE_GROTTO_LOAD(GROTTO_ZR_OPEN_OFFSET) },
+          { EntranceType::GrottoGrave, RR_ZR_OPEN_GROTTO,           RR_ZORAS_RIVER,              ENTRANCE_GROTTO_EXIT(GROTTO_ZR_OPEN_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_DMC_LOWER_NEARBY,         RR_DMC_HAMMER_GROTTO,        ENTRANCE_GROTTO_LOAD(GROTTO_DMC_HAMMER_OFFSET) },
+          { EntranceType::GrottoGrave, RR_DMC_HAMMER_GROTTO,        RR_DMC_LOWER_LOCAL,          ENTRANCE_GROTTO_EXIT(GROTTO_DMC_HAMMER_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_DMC_UPPER_NEARBY,         RR_DMC_UPPER_GROTTO,         ENTRANCE_GROTTO_LOAD(GROTTO_DMC_UPPER_OFFSET) },
+          { EntranceType::GrottoGrave, RR_DMC_UPPER_GROTTO,         RR_DMC_UPPER_LOCAL,          ENTRANCE_GROTTO_EXIT(GROTTO_DMC_UPPER_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_GC_GROTTO_PLATFORM,       RR_GC_GROTTO,                ENTRANCE_GROTTO_LOAD(GROTTO_GORON_CITY_OFFSET) },
+          { EntranceType::GrottoGrave, RR_GC_GROTTO,                RR_GC_GROTTO_PLATFORM,       ENTRANCE_GROTTO_EXIT(GROTTO_GORON_CITY_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_DEATH_MOUNTAIN_TRAIL,     RR_DMT_STORMS_GROTTO,        ENTRANCE_GROTTO_LOAD(GROTTO_DMT_STORMS_OFFSET) },
+          { EntranceType::GrottoGrave, RR_DMT_STORMS_GROTTO,        RR_DEATH_MOUNTAIN_TRAIL,     ENTRANCE_GROTTO_EXIT(GROTTO_DMT_STORMS_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_DEATH_MOUNTAIN_SUMMIT,    RR_DMT_COW_GROTTO,           ENTRANCE_GROTTO_LOAD(GROTTO_DMT_COW_OFFSET) },
+          { EntranceType::GrottoGrave, RR_DMT_COW_GROTTO,           RR_DEATH_MOUNTAIN_SUMMIT,    ENTRANCE_GROTTO_EXIT(GROTTO_DMT_COW_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_KAK_BACKYARD,             RR_KAK_OPEN_GROTTO,          ENTRANCE_GROTTO_LOAD(GROTTO_KAK_OPEN_OFFSET) },
+          { EntranceType::GrottoGrave, RR_KAK_OPEN_GROTTO,          RR_KAK_BACKYARD,             ENTRANCE_GROTTO_EXIT(GROTTO_KAK_OPEN_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_KAKARIKO_VILLAGE,         RR_KAK_REDEAD_GROTTO,        ENTRANCE_GROTTO_LOAD(GROTTO_KAK_REDEAD_OFFSET) },
+          { EntranceType::GrottoGrave, RR_KAK_REDEAD_GROTTO,        RR_KAKARIKO_VILLAGE,         ENTRANCE_GROTTO_EXIT(GROTTO_KAK_REDEAD_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_HYRULE_CASTLE_GROUNDS,    RR_HC_STORMS_GROTTO,         ENTRANCE_GROTTO_LOAD(GROTTO_HC_STORMS_OFFSET) },
+          { EntranceType::GrottoGrave, RR_HC_STORMS_GROTTO,         RR_CASTLE_GROUNDS,           ENTRANCE_GROTTO_EXIT(GROTTO_HC_STORMS_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_HYRULE_FIELD,             RR_HF_TEKTITE_GROTTO,        ENTRANCE_GROTTO_LOAD(GROTTO_HF_TEKTITE_OFFSET) },
+          { EntranceType::GrottoGrave, RR_HF_TEKTITE_GROTTO,        RR_HYRULE_FIELD,             ENTRANCE_GROTTO_EXIT(GROTTO_HF_TEKTITE_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_HYRULE_FIELD,             RR_HF_NEAR_KAK_GROTTO,       ENTRANCE_GROTTO_LOAD(GROTTO_HF_NEAR_KAK_OFFSET) },
+          { EntranceType::GrottoGrave, RR_HF_NEAR_KAK_GROTTO,       RR_HYRULE_FIELD,             ENTRANCE_GROTTO_EXIT(GROTTO_HF_NEAR_KAK_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_HYRULE_FIELD,             RR_HF_FAIRY_GROTTO,          ENTRANCE_GROTTO_LOAD(GROTTO_HF_FAIRY_OFFSET) },
+          { EntranceType::GrottoGrave, RR_HF_FAIRY_GROTTO,          RR_HYRULE_FIELD,             ENTRANCE_GROTTO_EXIT(GROTTO_HF_FAIRY_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_HYRULE_FIELD,             RR_HF_NEAR_MARKET_GROTTO,    ENTRANCE_GROTTO_LOAD(GROTTO_HF_NEAR_MARKET_OFFSET) },
+          { EntranceType::GrottoGrave, RR_HF_NEAR_MARKET_GROTTO,    RR_HYRULE_FIELD,             ENTRANCE_GROTTO_EXIT(GROTTO_HF_NEAR_MARKET_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_HYRULE_FIELD,             RR_HF_COW_GROTTO,            ENTRANCE_GROTTO_LOAD(GROTTO_HF_COW_OFFSET) },
+          { EntranceType::GrottoGrave, RR_HF_COW_GROTTO,            RR_HYRULE_FIELD,             ENTRANCE_GROTTO_EXIT(GROTTO_HF_COW_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_HYRULE_FIELD,             RR_HF_INSIDE_FENCE_GROTTO,   ENTRANCE_GROTTO_LOAD(GROTTO_HF_INSIDE_FENCE_OFFSET) },
+          { EntranceType::GrottoGrave, RR_HF_INSIDE_FENCE_GROTTO,   RR_HYRULE_FIELD,             ENTRANCE_GROTTO_EXIT(GROTTO_HF_INSIDE_FENCE_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_HYRULE_FIELD,             RR_HF_OPEN_GROTTO,           ENTRANCE_GROTTO_LOAD(GROTTO_HF_OPEN_OFFSET) },
+          { EntranceType::GrottoGrave, RR_HF_OPEN_GROTTO,           RR_HYRULE_FIELD,             ENTRANCE_GROTTO_EXIT(GROTTO_HF_OPEN_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_HYRULE_FIELD,             RR_HF_SOUTHEAST_GROTTO,      ENTRANCE_GROTTO_LOAD(GROTTO_HF_SOUTHEAST_OFFSET) },
+          { EntranceType::GrottoGrave, RR_HF_SOUTHEAST_GROTTO,      RR_HYRULE_FIELD,             ENTRANCE_GROTTO_EXIT(GROTTO_HF_SOUTHEAST_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_LON_LON_RANCH,            RR_LLR_GROTTO,               ENTRANCE_GROTTO_LOAD(GROTTO_LLR_OFFSET) },
+          { EntranceType::GrottoGrave, RR_LLR_GROTTO,               RR_LON_LON_RANCH,            ENTRANCE_GROTTO_EXIT(GROTTO_LLR_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_SFM_ENTRYWAY,             RR_SFM_WOLFOS_GROTTO,        ENTRANCE_GROTTO_LOAD(GROTTO_SFM_WOLFOS_OFFSET) },
+          { EntranceType::GrottoGrave, RR_SFM_WOLFOS_GROTTO,        RR_SFM_ENTRYWAY,             ENTRANCE_GROTTO_EXIT(GROTTO_SFM_WOLFOS_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_SACRED_FOREST_MEADOW,     RR_SFM_STORMS_GROTTO,        ENTRANCE_GROTTO_LOAD(GROTTO_SFM_STORMS_OFFSET) },
+          { EntranceType::GrottoGrave, RR_SFM_STORMS_GROTTO,        RR_SACRED_FOREST_MEADOW,     ENTRANCE_GROTTO_EXIT(GROTTO_SFM_STORMS_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_SACRED_FOREST_MEADOW,     RR_SFM_FAIRY_GROTTO,         ENTRANCE_GROTTO_LOAD(GROTTO_SFM_FAIRY_OFFSET) },
+          { EntranceType::GrottoGrave, RR_SFM_FAIRY_GROTTO,         RR_SACRED_FOREST_MEADOW,     ENTRANCE_GROTTO_EXIT(GROTTO_SFM_FAIRY_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_LW_BEYOND_MIDO,           RR_LW_SCRUBS_GROTTO,         ENTRANCE_GROTTO_LOAD(GROTTO_LW_SCRUBS_OFFSET) },
+          { EntranceType::GrottoGrave, RR_LW_SCRUBS_GROTTO,         RR_LW_BEYOND_MIDO,           ENTRANCE_GROTTO_EXIT(GROTTO_LW_SCRUBS_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_THE_LOST_WOODS,           RR_LW_NEAR_SHORTCUTS_GROTTO, ENTRANCE_GROTTO_LOAD(GROTTO_LW_NEAR_SHORTCUTS_OFFSET) },
+          { EntranceType::GrottoGrave, RR_LW_NEAR_SHORTCUTS_GROTTO, RR_THE_LOST_WOODS,           ENTRANCE_GROTTO_EXIT(GROTTO_LW_NEAR_SHORTCUTS_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_KOKIRI_FOREST,            RR_KF_STORMS_GROTTO,         ENTRANCE_GROTTO_LOAD(GROTTO_KF_STORMS_OFFSET) },
+          { EntranceType::GrottoGrave, RR_KF_STORMS_GROTTO,         RR_KOKIRI_FOREST,            ENTRANCE_GROTTO_EXIT(GROTTO_KF_STORMS_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_ZORAS_DOMAIN_ISLAND,      RR_ZD_STORMS_GROTTO,         ENTRANCE_GROTTO_LOAD(GROTTO_ZD_STORMS_OFFSET) },
+          { EntranceType::GrottoGrave, RR_ZD_STORMS_GROTTO,         RR_ZORAS_DOMAIN_ISLAND,      ENTRANCE_GROTTO_EXIT(GROTTO_ZD_STORMS_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_GERUDO_FORTRESS,          RR_GF_STORMS_GROTTO,         ENTRANCE_GROTTO_LOAD(GROTTO_GF_STORMS_OFFSET) },
+          { EntranceType::GrottoGrave, RR_GF_STORMS_GROTTO,         RR_GERUDO_FORTRESS,          ENTRANCE_GROTTO_EXIT(GROTTO_GF_STORMS_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_GV_FORTRESS_SIDE,         RR_GV_STORMS_GROTTO,         ENTRANCE_GROTTO_LOAD(GROTTO_GV_STORMS_OFFSET) },
+          { EntranceType::GrottoGrave, RR_GV_STORMS_GROTTO,         RR_GV_FORTRESS_SIDE,         ENTRANCE_GROTTO_EXIT(GROTTO_GV_STORMS_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_GV_GROTTO_LEDGE,          RR_GV_OCTOROK_GROTTO,        ENTRANCE_GROTTO_LOAD(GROTTO_GV_OCTOROK_OFFSET) },
+          { EntranceType::GrottoGrave, RR_GV_OCTOROK_GROTTO,        RR_GV_GROTTO_LEDGE,          ENTRANCE_GROTTO_EXIT(GROTTO_GV_OCTOROK_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_LW_BEYOND_MIDO,           RR_DEKU_THEATER,             ENTRANCE_GROTTO_LOAD(GROTTO_LW_DEKU_THEATRE_OFFSET) },
+          { EntranceType::GrottoGrave, RR_DEKU_THEATER,             RR_LW_BEYOND_MIDO,           ENTRANCE_GROTTO_EXIT(GROTTO_LW_DEKU_THEATRE_OFFSET) } },
+        
+        // Graves have their own specified entrance indices
+        { { EntranceType::GrottoGrave, RR_THE_GRAVEYARD,               RR_GRAVEYARD_SHIELD_GRAVE,      ENTR_GRAVE_WITH_FAIRYS_FOUNTAIN_0 },
+          { EntranceType::GrottoGrave, RR_GRAVEYARD_SHIELD_GRAVE,      RR_THE_GRAVEYARD,               ENTR_GRAVEYARD_SHIELD_GRAVE_EXIT } },
+        { { EntranceType::GrottoGrave, RR_THE_GRAVEYARD,               RR_GRAVEYARD_HEART_PIECE_GRAVE, ENTR_REDEAD_GRAVE_0 },
+          { EntranceType::GrottoGrave, RR_GRAVEYARD_HEART_PIECE_GRAVE, RR_THE_GRAVEYARD,               ENTR_GRAVEYARD_HEART_PIECE_GRAVE_EXIT } },
+        { { EntranceType::GrottoGrave, RR_THE_GRAVEYARD,               RR_GRAVEYARD_COMPOSERS_GRAVE,   ENTR_ROYAL_FAMILYS_TOMB_0 },
+          { EntranceType::GrottoGrave, RR_GRAVEYARD_COMPOSERS_GRAVE,   RR_THE_GRAVEYARD,               ENTR_GRAVEYARD_ROYAL_TOMB_EXIT } },
+        { { EntranceType::GrottoGrave, RR_THE_GRAVEYARD,               RR_GRAVEYARD_DAMPES_GRAVE,      ENTR_WINDMILL_AND_DAMPES_GRAVE_GRAVE },
+          { EntranceType::GrottoGrave, RR_GRAVEYARD_DAMPES_GRAVE,      RR_THE_GRAVEYARD,               ENTR_GRAVEYARD_DAMPES_GRAVE_EXIT } },
+        
+        { { EntranceType::Overworld, RR_KOKIRI_FOREST,           RR_LW_BRIDGE_FROM_FOREST,   ENTR_LOST_WOODS_BRIDGE_EAST_EXIT },
+          { EntranceType::Overworld, RR_LW_BRIDGE,               RR_KOKIRI_FOREST,           ENTR_KOKIRI_FOREST_LOWER_EXIT } },
+        { { EntranceType::Overworld, RR_KOKIRI_FOREST,           RR_THE_LOST_WOODS,          ENTR_LOST_WOODS_SOUTH_EXIT },
+          { EntranceType::Overworld, RR_LW_FOREST_EXIT,          RR_KOKIRI_FOREST,           ENTR_KOKIRI_FOREST_UPPER_EXIT } },
+        { { EntranceType::Overworld, RR_THE_LOST_WOODS,          RR_GC_WOODS_WARP,           ENTR_GORON_CITY_TUNNEL_SHORTCUT },
+          { EntranceType::Overworld, RR_GC_WOODS_WARP,           RR_THE_LOST_WOODS,          ENTR_LOST_WOODS_TUNNEL_SHORTCUT } },
+        { { EntranceType::Overworld, RR_THE_LOST_WOODS,          RR_ZORAS_RIVER,             ENTR_ZORAS_RIVER_UNDERWATER_SHORTCUT },
+          { EntranceType::Overworld, RR_ZORAS_RIVER,             RR_THE_LOST_WOODS,          ENTR_LOST_WOODS_UNDERWATER_SHORTCUT } },
+        { { EntranceType::Overworld, RR_LW_BEYOND_MIDO,          RR_SFM_ENTRYWAY,            ENTR_SACRED_FOREST_MEADOW_SOUTH_EXIT },
+          { EntranceType::Overworld, RR_SFM_ENTRYWAY,            RR_LW_BEYOND_MIDO,          ENTR_LOST_WOODS_NORTH_EXIT } },
+        { { EntranceType::Overworld, RR_LW_BRIDGE,               RR_HYRULE_FIELD,            ENTR_HYRULE_FIELD_WOODED_EXIT },
+          { EntranceType::Overworld, RR_HYRULE_FIELD,            RR_LW_BRIDGE,               ENTR_LOST_WOODS_BRIDGE_WEST_EXIT } },
+        { { EntranceType::Overworld, RR_HYRULE_FIELD,            RR_LAKE_HYLIA,              ENTR_LAKE_HYLIA_NORTH_EXIT },
+          { EntranceType::Overworld, RR_LAKE_HYLIA,              RR_HYRULE_FIELD,            ENTR_HYRULE_FIELD_FENCE_EXIT } },
+        { { EntranceType::Overworld, RR_HYRULE_FIELD,            RR_GERUDO_VALLEY,           ENTR_GERUDO_VALLEY_EAST_EXIT },
+          { EntranceType::Overworld, RR_GERUDO_VALLEY,           RR_HYRULE_FIELD,            ENTR_HYRULE_FIELD_ROCKY_PATH } },
+        { { EntranceType::Overworld, RR_HYRULE_FIELD,            RR_MARKET_ENTRANCE,         ENTR_MARKET_ENTRANCE_NEAR_GUARD_EXIT },
+          { EntranceType::Overworld, RR_MARKET_ENTRANCE,         RR_HYRULE_FIELD,            ENTR_HYRULE_FIELD_ON_BRIDGE_SPAWN } },
+        { { EntranceType::Overworld, RR_HYRULE_FIELD,            RR_KAKARIKO_VILLAGE,        ENTR_KAKARIKO_VILLAGE_FRONT_GATE },
+          { EntranceType::Overworld, RR_KAKARIKO_VILLAGE,        RR_HYRULE_FIELD,            ENTR_HYRULE_FIELD_STAIRS_EXIT } },
+        { { EntranceType::Overworld, RR_HYRULE_FIELD,            RR_ZR_FRONT,                ENTR_ZORAS_RIVER_WEST_EXIT },
+          { EntranceType::Overworld, RR_ZR_FRONT,                RR_HYRULE_FIELD,            ENTR_HYRULE_FIELD_RIVER_EXIT } },
+        { { EntranceType::Overworld, RR_HYRULE_FIELD,            RR_LON_LON_RANCH,           ENTR_LON_LON_RANCH_ENTRANCE },
+          { EntranceType::Overworld, RR_LON_LON_RANCH,           RR_HYRULE_FIELD,            ENTR_HYRULE_FIELD_CENTER_EXIT } },
+        { { EntranceType::Overworld, RR_LAKE_HYLIA,              RR_ZORAS_DOMAIN,            ENTR_ZORAS_DOMAIN_UNDERWATER_SHORTCUT },
+          { EntranceType::Overworld, RR_ZORAS_DOMAIN,            RR_LAKE_HYLIA,              ENTR_LAKE_HYLIA_UNDERWATER_SHORTCUT } },
+        { { EntranceType::Overworld, RR_GV_FORTRESS_SIDE,        RR_GERUDO_FORTRESS,         ENTR_GERUDOS_FORTRESS_EAST_EXIT },
+          { EntranceType::Overworld, RR_GERUDO_FORTRESS,         RR_GV_FORTRESS_SIDE,        ENTR_GERUDO_VALLEY_WEST_EXIT } },
+        { { EntranceType::Overworld, RR_GF_OUTSIDE_GATE,         RR_WASTELAND_NEAR_FORTRESS, ENTR_HAUNTED_WASTELAND_EAST_EXIT },
+          { EntranceType::Overworld, RR_WASTELAND_NEAR_FORTRESS, RR_GF_OUTSIDE_GATE,         ENTR_GERUDOS_FORTRESS_GATE_EXIT } },
+        { { EntranceType::Overworld, RR_WASTELAND_NEAR_COLOSSUS, RR_DESERT_COLOSSUS,         ENTR_DESERT_COLOSSUS_EAST_EXIT },
+          { EntranceType::Overworld, RR_DESERT_COLOSSUS,         RR_WASTELAND_NEAR_COLOSSUS, ENTR_HAUNTED_WASTELAND_WEST_EXIT } },
+        { { EntranceType::Overworld, RR_MARKET_ENTRANCE,         RR_THE_MARKET,              ENTR_MARKET_SOUTH_EXIT },
+          { EntranceType::Overworld, RR_THE_MARKET,              RR_MARKET_ENTRANCE,         ENTR_MARKET_ENTRANCE_NORTH_EXIT } },
+        { { EntranceType::Overworld, RR_THE_MARKET,              RR_CASTLE_GROUNDS,          ENTR_CASTLE_GROUNDS_SOUTH_EXIT },
+          { EntranceType::Overworld, RR_CASTLE_GROUNDS,          RR_THE_MARKET,              ENTR_MARKET_DAY_CASTLE_EXIT } },
+        { { EntranceType::Overworld, RR_THE_MARKET,              RR_TOT_ENTRANCE,            ENTR_TEMPLE_OF_TIME_EXTERIOR_DAY_GOSSIP_STONE_EXIT },
+          { EntranceType::Overworld, RR_TOT_ENTRANCE,            RR_THE_MARKET,              ENTR_MARKET_DAY_TEMPLE_EXIT } },
+        { { EntranceType::Overworld, RR_KAKARIKO_VILLAGE,        RR_THE_GRAVEYARD,           ENTR_GRAVEYARD_ENTRANCE },
+          { EntranceType::Overworld, RR_THE_GRAVEYARD,           RR_KAKARIKO_VILLAGE,        ENTR_KAKARIKO_VILLAGE_SOUTHEAST_EXIT } },
+        { { EntranceType::Overworld, RR_KAK_BEHIND_GATE,         RR_DEATH_MOUNTAIN_TRAIL,    ENTR_DEATH_MOUNTAIN_TRAIL_BOTTOM_EXIT },
+          { EntranceType::Overworld, RR_DEATH_MOUNTAIN_TRAIL,    RR_KAK_BEHIND_GATE,         ENTR_KAKARIKO_VILLAGE_GUARD_GATE } },
+        { { EntranceType::Overworld, RR_DEATH_MOUNTAIN_TRAIL,    RR_GORON_CITY,              ENTR_GORON_CITY_UPPER_EXIT },
+          { EntranceType::Overworld, RR_GORON_CITY,              RR_DEATH_MOUNTAIN_TRAIL,    ENTR_DEATH_MOUNTAIN_TRAIL_GC_EXIT } },
+        { { EntranceType::Overworld, RR_GC_DARUNIAS_CHAMBER,     RR_DMC_LOWER_LOCAL,         ENTR_DEATH_MOUNTAIN_CRATER_GC_EXIT },
+          { EntranceType::Overworld, RR_DMC_LOWER_NEARBY,        RR_GC_DARUNIAS_CHAMBER,     ENTR_GORON_CITY_DARUNIA_ROOM_EXIT } },
+        { { EntranceType::Overworld, RR_DEATH_MOUNTAIN_SUMMIT,   RR_DMC_UPPER_LOCAL,         ENTR_DEATH_MOUNTAIN_CRATER_UPPER_EXIT },
+          { EntranceType::Overworld, RR_DMC_UPPER_NEARBY,        RR_DEATH_MOUNTAIN_SUMMIT,   ENTR_DEATH_MOUNTAIN_TRAIL_SUMMIT_EXIT } },
+        { { EntranceType::Overworld, RR_ZR_BEHIND_WATERFALL,     RR_ZORAS_DOMAIN,            ENTR_ZORAS_DOMAIN_ENTRANCE },
+          { EntranceType::Overworld, RR_ZORAS_DOMAIN,            RR_ZR_BEHIND_WATERFALL,     ENTR_ZORAS_RIVER_WATERFALL_EXIT } },
+        { { EntranceType::Overworld, RR_ZD_BEHIND_KING_ZORA,     RR_ZORAS_FOUNTAIN,          ENTR_ZORAS_FOUNTAIN_TUNNEL_EXIT },
+          { EntranceType::Overworld, RR_ZORAS_FOUNTAIN,          RR_ZD_BEHIND_KING_ZORA,     ENTR_ZORAS_DOMAIN_KING_ZORA_EXIT } },
+        
+        { { EntranceType::Overworld, RR_GV_LOWER_STREAM, RR_LAKE_HYLIA,        ENTR_LAKE_HYLIA_RIVER_EXIT },
+          NO_RETURN_ENTRANCE },
+        
+        { { EntranceType::OwlDrop, RR_LH_OWL_FLIGHT,     RR_HYRULE_FIELD,      ENTR_HYRULE_FIELD_OWL_DROP },
+          NO_RETURN_ENTRANCE },
+        { { EntranceType::OwlDrop, RR_DMT_OWL_FLIGHT,    RR_KAK_IMPAS_ROOFTOP, ENTR_KAKARIKO_VILLAGE_OWL_DROP },
+          NO_RETURN_ENTRANCE },
+        
+        { { EntranceType::Spawn, RR_CHILD_SPAWN,         RR_KF_LINKS_HOUSE,    ENTR_LINKS_HOUSE_CHILD_SPAWN },
+          NO_RETURN_ENTRANCE },
+        { { EntranceType::Spawn, RR_ADULT_SPAWN,         RR_TEMPLE_OF_TIME,    ENTR_HYRULE_FIELD_10 },
+          NO_RETURN_ENTRANCE }, // 0x282 is an unused entrance index repurposed to differentiate between
+                                // Adult Spawn and prelude of light (normally they both use 0x5F4)
+        { { EntranceType::WarpSong, RR_MINUET_OF_FOREST_WARP,   RR_SACRED_FOREST_MEADOW,      ENTR_SACRED_FOREST_MEADOW_WARP_PAD },
+          NO_RETURN_ENTRANCE },
+        { { EntranceType::WarpSong, RR_BOLERO_OF_FIRE_WARP,     RR_DMC_CENTRAL_LOCAL,         ENTR_DEATH_MOUNTAIN_CRATER_WARP_PAD },
+          NO_RETURN_ENTRANCE },
+        { { EntranceType::WarpSong, RR_SERENADE_OF_WATER_WARP,  RR_LAKE_HYLIA,                ENTR_LAKE_HYLIA_WARP_PAD },
+          NO_RETURN_ENTRANCE },
+        { { EntranceType::WarpSong, RR_REQUIEM_OF_SPIRIT_WARP,  RR_DESERT_COLOSSUS,           ENTR_DESERT_COLOSSUS_WARP_PAD },
+          NO_RETURN_ENTRANCE },
+        { { EntranceType::WarpSong, RR_NOCTURNE_OF_SHADOW_WARP, RR_GRAVEYARD_WARP_PAD_REGION, ENTR_GRAVEYARD_WARP_PAD },
+          NO_RETURN_ENTRANCE },
+        { { EntranceType::WarpSong, RR_PRELUDE_OF_LIGHT_WARP,   RR_TEMPLE_OF_TIME,            ENTR_TEMPLE_OF_TIME_WARP_PAD },
+          NO_RETURN_ENTRANCE },
+        
+        { { EntranceType::ChildBoss, RR_DEKU_TREE_BOSS_ENTRYWAY,        RR_DEKU_TREE_BOSS_ROOM,         ENTR_DEKU_TREE_BOSS_ENTRANCE },
+          { EntranceType::ChildBoss, RR_DEKU_TREE_BOSS_ROOM,            RR_DEKU_TREE_BOSS_EXIT,         ENTR_DEKU_TREE_BOSS_DOOR } },
+        { { EntranceType::ChildBoss, RR_DODONGOS_CAVERN_BOSS_ENTRYWAY,  RR_DODONGOS_CAVERN_BOSS_ROOM,   ENTR_DODONGOS_CAVERN_BOSS_ENTRANCE },
+          { EntranceType::ChildBoss, RR_DODONGOS_CAVERN_BOSS_ROOM,      RR_DODONGOS_CAVERN_BOSS_EXIT,   ENTR_DODONGOS_CAVERN_BOSS_DOOR } },
+        { { EntranceType::ChildBoss, RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY, RR_JABU_JABUS_BELLY_BOSS_ROOM,  ENTR_JABU_JABU_BOSS_ENTRANCE },
+          { EntranceType::ChildBoss, RR_JABU_JABUS_BELLY_BOSS_ROOM,     RR_JABU_JABUS_BELLY_BOSS_EXIT,  ENTR_JABU_JABU_BOSS_DOOR } },
+        { { EntranceType::AdultBoss, RR_FOREST_TEMPLE_BOSS_ENTRYWAY,    RR_FOREST_TEMPLE_BOSS_ROOM,     ENTR_FOREST_TEMPLE_BOSS_ENTRANCE },
+          { EntranceType::AdultBoss, RR_FOREST_TEMPLE_BOSS_ROOM,        RR_FOREST_TEMPLE_BOSS_ENTRYWAY, ENTR_FOREST_TEMPLE_BOSS_DOOR } },
+        { { EntranceType::AdultBoss, RR_FIRE_TEMPLE_BOSS_ENTRYWAY,      RR_FIRE_TEMPLE_BOSS_ROOM,       ENTR_FIRE_TEMPLE_BOSS_ENTRANCE },
+          { EntranceType::AdultBoss, RR_FIRE_TEMPLE_BOSS_ROOM,          RR_FIRE_TEMPLE_BOSS_ENTRYWAY,   ENTR_FIRE_TEMPLE_BOSS_DOOR } },
+        { { EntranceType::AdultBoss, RR_WATER_TEMPLE_BOSS_ENTRYWAY,     RR_WATER_TEMPLE_BOSS_ROOM,      ENTR_WATER_TEMPLE_BOSS_ENTRANCE },
+          { EntranceType::AdultBoss, RR_WATER_TEMPLE_BOSS_ROOM,         RR_WATER_TEMPLE_BOSS_ENTRYWAY,  ENTR_WATER_TEMPLE_BOSS_DOOR } },
+        { { EntranceType::AdultBoss, RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY,    RR_SPIRIT_TEMPLE_BOSS_ROOM,     ENTR_SPIRIT_TEMPLE_BOSS_ENTRANCE },
+          { EntranceType::AdultBoss, RR_SPIRIT_TEMPLE_BOSS_ROOM,        RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY, ENTR_SPIRIT_TEMPLE_BOSS_DOOR } },
+        { { EntranceType::AdultBoss, RR_SHADOW_TEMPLE_BOSS_ENTRYWAY,    RR_SHADOW_TEMPLE_BOSS_ROOM,     ENTR_SHADOW_TEMPLE_BOSS_ENTRANCE },
+          { EntranceType::AdultBoss, RR_SHADOW_TEMPLE_BOSS_ROOM,        RR_SHADOW_TEMPLE_BOSS_ENTRYWAY, ENTR_SHADOW_TEMPLE_BOSS_DOOR } },
+        
+        { { EntranceType::BlueWarp, RR_DEKU_TREE_BOSS_ROOM,        RR_KF_OUTSIDE_DEKU_TREE,      ENTR_KOKIRI_FOREST_DEKU_TREE_BLUE_WARP },
+          NO_RETURN_ENTRANCE },
+        { { EntranceType::BlueWarp, RR_DODONGOS_CAVERN_BOSS_ROOM,  RR_DEATH_MOUNTAIN_TRAIL,      ENTR_DEATH_MOUNTAIN_TRAIL_DODONGO_BLUE_WARP },
+          NO_RETURN_ENTRANCE },
+        { { EntranceType::BlueWarp, RR_JABU_JABUS_BELLY_BOSS_ROOM, RR_ZORAS_FOUNTAIN,            ENTR_ZORAS_FOUNTAIN_JABU_JABU_BLUE_WARP },
+          NO_RETURN_ENTRANCE },
+        { { EntranceType::BlueWarp, RR_FOREST_TEMPLE_BOSS_ROOM,    RR_SACRED_FOREST_MEADOW,      ENTR_SACRED_FOREST_MEADOW_FOREST_TEMPLE_BLUE_WARP },
+          NO_RETURN_ENTRANCE },
+        { { EntranceType::BlueWarp, RR_FIRE_TEMPLE_BOSS_ROOM,      RR_DMC_CENTRAL_LOCAL,         ENTR_DEATH_MOUNTAIN_CRATER_FIRE_TEMPLE_BLUE_WARP },
+          NO_RETURN_ENTRANCE },
+        { { EntranceType::BlueWarp, RR_WATER_TEMPLE_BOSS_ROOM,     RR_LAKE_HYLIA,                ENTR_LAKE_HYLIA_WATER_TEMPLE_BLUE_WARP },
+          NO_RETURN_ENTRANCE },
+        { { EntranceType::BlueWarp, RR_SPIRIT_TEMPLE_BOSS_ROOM,    RR_DESERT_COLOSSUS,           ENTR_DESERT_COLOSSUS_SPIRIT_TEMPLE_BLUE_WARP },
+          NO_RETURN_ENTRANCE },
+        { { EntranceType::BlueWarp, RR_SHADOW_TEMPLE_BOSS_ROOM,    RR_GRAVEYARD_WARP_PAD_REGION, ENTR_GRAVEYARD_SHADOW_TEMPLE_BLUE_WARP },
+          NO_RETURN_ENTRANCE },
+        // clang-format on
+    };
+
     auto ctx = Rando::Context::GetInstance();
     for (auto& entrancePair : entranceShuffleTable) {
 
@@ -262,6 +574,7 @@ void SetAllEntrancesData(std::vector<EntranceInfoPair>& entranceShuffleTable) {
         forwardEntrance->SetIndex(forwardEntry.index);
         forwardEntrance->SetType(forwardEntry.type);
         forwardEntrance->SetAsPrimary();
+        entranceMap[forwardEntry.index] = forwardEntrance;
 
         // When decouple entrances is on, mark the forward entrance
         if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
@@ -273,6 +586,7 @@ void SetAllEntrancesData(std::vector<EntranceInfoPair>& entranceShuffleTable) {
             returnEntrance->SetIndex(returnEntry.index);
             returnEntrance->SetType(returnEntry.type);
             forwardEntrance->BindTwoWay(returnEntrance);
+            entranceMap[returnEntry.index] = returnEntrance;
 
             // Mark reverse entrance as decoupled
             if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
@@ -441,12 +755,6 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
         type = entrancePlaced->GetType();
     }
 
-    bool checkPoeCollectorAccess =
-        (ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) ||
-         ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL)) &&
-        (entrancePlaced == nullptr || ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS) || type == EntranceType::Interior ||
-         type == EntranceType::SpecialInterior || type == EntranceType::Overworld || type == EntranceType::Spawn ||
-         type == EntranceType::WarpSong || type == EntranceType::OwlDrop);
     bool checkOtherEntranceAccess =
         (ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) ||
          ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL) ||
@@ -459,7 +767,7 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
     // Conditions will be checked during the search and any that fail will be figured out
     // afterwards
     ctx->GetLogic()->Reset();
-    ValidateEntrances(checkPoeCollectorAccess, checkOtherEntranceAccess);
+    ValidateEntrances(checkOtherEntranceAccess);
 
     if (!ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
         // Unless entrances are decoupled, we don't want the player to end up through certain entrances as the wrong age
@@ -544,15 +852,6 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
             }
         }
 
-        // The Big Poe shop should always be accessible as adult without the need to use any bottles
-        // This is important to ensure that players can never lock their only bottles by filling them with Big Poes they
-        // can't sell
-        if (checkPoeCollectorAccess) {
-            if (!RegionTable(RR_MARKET_GUARD_HOUSE)->Adult()) {
-                SPDLOG_DEBUG("Big Poe Shop access is not guarenteed as adult\n");
-                return false;
-            }
-        }
         SPDLOG_DEBUG("All Locations NOT REACHABLE\n");
         return false;
     }
@@ -857,316 +1156,6 @@ int EntranceShuffler::ShuffleAllEntrances() {
     mTotalRandomizableEntrances = 0;
     mCurNumRandomizedEntrances = 0;
 
-    std::vector<EntranceInfoPair> entranceShuffleTable = {
-        // clang-format off
-        // Type                         Parent Region                        Connected Region                      Index
-        { { EntranceType::Dungeon,      RR_KF_OUTSIDE_DEKU_TREE,             RR_DEKU_TREE_ENTRYWAY,                ENTR_DEKU_TREE_ENTRANCE },
-          { EntranceType::Dungeon,      RR_DEKU_TREE_ENTRYWAY,               RR_KF_OUTSIDE_DEKU_TREE,              ENTR_KOKIRI_FOREST_OUTSIDE_DEKU_TREE } },
-        { { EntranceType::Dungeon,      RR_DEATH_MOUNTAIN_TRAIL,             RR_DODONGOS_CAVERN_ENTRYWAY,          ENTR_DODONGOS_CAVERN_ENTRANCE },
-          { EntranceType::Dungeon,      RR_DODONGOS_CAVERN_ENTRYWAY,         RR_DEATH_MOUNTAIN_TRAIL,              ENTR_DEATH_MOUNTAIN_TRAIL_OUTSIDE_DODONGOS_CAVERN } },
-        { { EntranceType::Dungeon,      RR_ZORAS_FOUNTAIN,                   RR_JABU_JABUS_BELLY_ENTRYWAY,         ENTR_JABU_JABU_ENTRANCE },
-          { EntranceType::Dungeon,      RR_JABU_JABUS_BELLY_ENTRYWAY,        RR_ZORAS_FOUNTAIN,                    ENTR_ZORAS_FOUNTAIN_OUTSIDE_JABU_JABU } },
-        { { EntranceType::Dungeon,      RR_SACRED_FOREST_MEADOW,             RR_FOREST_TEMPLE_ENTRYWAY,            ENTR_FOREST_TEMPLE_ENTRANCE },
-          { EntranceType::Dungeon,      RR_FOREST_TEMPLE_ENTRYWAY,           RR_SACRED_FOREST_MEADOW,              ENTR_SACRED_FOREST_MEADOW_OUTSIDE_TEMPLE } },
-        { { EntranceType::Dungeon,      RR_DMC_CENTRAL_LOCAL,                RR_FIRE_TEMPLE_ENTRYWAY,              ENTR_FIRE_TEMPLE_ENTRANCE },
-          { EntranceType::Dungeon,      RR_FIRE_TEMPLE_ENTRYWAY,             RR_DMC_CENTRAL_LOCAL,                 ENTR_DEATH_MOUNTAIN_CRATER_OUTSIDE_TEMPLE } },
-        { { EntranceType::Dungeon,      RR_LAKE_HYLIA,                       RR_WATER_TEMPLE_ENTRYWAY,             ENTR_WATER_TEMPLE_ENTRANCE },
-          { EntranceType::Dungeon,      RR_WATER_TEMPLE_ENTRYWAY,            RR_LAKE_HYLIA,                        ENTR_LAKE_HYLIA_OUTSIDE_TEMPLE } },
-        { { EntranceType::Dungeon,      RR_DESERT_COLOSSUS,                  RR_SPIRIT_TEMPLE_ENTRYWAY,            ENTR_SPIRIT_TEMPLE_ENTRANCE },
-          { EntranceType::Dungeon,      RR_SPIRIT_TEMPLE_ENTRYWAY,           RR_DESERT_COLOSSUS_OUTSIDE_TEMPLE,    ENTR_DESERT_COLOSSUS_OUTSIDE_TEMPLE } },
-        { { EntranceType::Dungeon,      RR_GRAVEYARD_WARP_PAD_REGION,        RR_SHADOW_TEMPLE_ENTRYWAY,            ENTR_SHADOW_TEMPLE_ENTRANCE },
-          { EntranceType::Dungeon,      RR_SHADOW_TEMPLE_ENTRYWAY,           RR_GRAVEYARD_WARP_PAD_REGION,         ENTR_GRAVEYARD_OUTSIDE_TEMPLE } },
-        { { EntranceType::Dungeon,      RR_KAK_WELL,                         RR_BOTTOM_OF_THE_WELL_ENTRYWAY,       ENTR_BOTTOM_OF_THE_WELL_ENTRANCE },
-          { EntranceType::Dungeon,      RR_BOTTOM_OF_THE_WELL_ENTRYWAY,      RR_KAK_WELL,                          ENTR_KAKARIKO_VILLAGE_OUTSIDE_BOTTOM_OF_THE_WELL } },
-        { { EntranceType::Dungeon,      RR_ZF_LEDGE,                         RR_ICE_CAVERN_ENTRYWAY,               ENTR_ICE_CAVERN_ENTRANCE },
-          { EntranceType::Dungeon,      RR_ICE_CAVERN_ENTRYWAY,              RR_ZF_LEDGE,                          ENTR_ZORAS_FOUNTAIN_OUTSIDE_ICE_CAVERN } },
-        { { EntranceType::Dungeon,      RR_GERUDO_FORTRESS,                  RR_GERUDO_TRAINING_GROUND_ENTRYWAY,   ENTR_GERUDO_TRAINING_GROUND_ENTRANCE },
-          { EntranceType::Dungeon,      RR_GERUDO_TRAINING_GROUND_ENTRYWAY,  RR_GERUDO_FORTRESS,                   ENTR_GERUDOS_FORTRESS_OUTSIDE_GERUDO_TRAINING_GROUND } },
-        { { EntranceType::GanonDungeon, RR_GANONS_CASTLE_LEDGE,              RR_GANONS_CASTLE_ENTRYWAY,            ENTR_INSIDE_GANONS_CASTLE_ENTRANCE },
-          { EntranceType::GanonDungeon, RR_GANONS_CASTLE_ENTRYWAY,           RR_CASTLE_GROUNDS_FROM_GANONS_CASTLE, ENTR_CASTLE_GROUNDS_RAINBOW_BRIDGE_EXIT } },
-
-        { { EntranceType::Interior, RR_KOKIRI_FOREST,                 RR_KF_MIDOS_HOUSE,                ENTR_MIDOS_HOUSE_0 },
-          { EntranceType::Interior, RR_KF_MIDOS_HOUSE,                RR_KOKIRI_FOREST,                 ENTR_KOKIRI_FOREST_OUTSIDE_MIDOS_HOUSE } },
-        { { EntranceType::Interior, RR_KOKIRI_FOREST,                 RR_KF_SARIAS_HOUSE,               ENTR_SARIAS_HOUSE_0 },
-          { EntranceType::Interior, RR_KF_SARIAS_HOUSE,               RR_KOKIRI_FOREST,                 ENTR_KOKIRI_FOREST_OUTSIDE_SARIAS_HOUSE } },
-        { { EntranceType::Interior, RR_KOKIRI_FOREST,                 RR_KF_HOUSE_OF_TWINS,             ENTR_TWINS_HOUSE_0 },
-          { EntranceType::Interior, RR_KF_HOUSE_OF_TWINS,             RR_KOKIRI_FOREST,                 ENTR_KOKIRI_FOREST_OUTSIDE_TWINS_HOUSE } },
-        { { EntranceType::Interior, RR_KOKIRI_FOREST,                 RR_KF_KNOW_IT_ALL_HOUSE,          ENTR_KNOW_IT_ALL_BROS_HOUSE_0 },
-          { EntranceType::Interior, RR_KF_KNOW_IT_ALL_HOUSE,          RR_KOKIRI_FOREST,                 ENTR_KOKIRI_FOREST_OUTSIDE_KNOW_IT_ALL_HOUSE } },
-        { { EntranceType::Interior, RR_KOKIRI_FOREST,                 RR_KF_KOKIRI_SHOP,                ENTR_KOKIRI_SHOP_0 },
-          { EntranceType::Interior, RR_KF_KOKIRI_SHOP,                RR_KOKIRI_FOREST,                 ENTR_KOKIRI_FOREST_OUTSIDE_SHOP } },
-        { { EntranceType::Interior, RR_LAKE_HYLIA,                    RR_LH_LAB,                        ENTR_LAKESIDE_LABORATORY_0 },
-          { EntranceType::Interior, RR_LH_LAB,                        RR_LAKE_HYLIA,                    ENTR_LAKE_HYLIA_OUTSIDE_LAB } },
-        { { EntranceType::Interior, RR_LH_FISHING_ISLAND,             RR_LH_FISHING_POND,               ENTR_FISHING_POND_0 },
-          { EntranceType::Interior, RR_LH_FISHING_POND,               RR_LH_FISHING_ISLAND,             ENTR_LAKE_HYLIA_OUTSIDE_FISHING_POND } },
-        { { EntranceType::Interior, RR_GV_FORTRESS_SIDE,              RR_GV_CARPENTER_TENT,             ENTR_CARPENTERS_TENT_0 },
-          { EntranceType::Interior, RR_GV_CARPENTER_TENT,             RR_GV_FORTRESS_SIDE,              ENTR_GERUDO_VALLEY_OUTSIDE_TENT } },
-        { { EntranceType::Interior, RR_MARKET_ENTRANCE,               RR_MARKET_GUARD_HOUSE,            ENTR_MARKET_GUARD_HOUSE_0 },
-          { EntranceType::Interior, RR_MARKET_GUARD_HOUSE,            RR_MARKET_ENTRANCE,               ENTR_MARKET_ENTRANCE_OUTSIDE_GUARD_HOUSE } },
-        { { EntranceType::Interior, RR_THE_MARKET,                    RR_MARKET_MASK_SHOP,              ENTR_HAPPY_MASK_SHOP_0 },
-          { EntranceType::Interior, RR_MARKET_MASK_SHOP,              RR_THE_MARKET,                    ENTR_MARKET_DAY_OUTSIDE_HAPPY_MASK_SHOP } },
-        { { EntranceType::Interior, RR_THE_MARKET,                    RR_MARKET_BOMBCHU_BOWLING,        ENTR_BOMBCHU_BOWLING_ALLEY_0 },
-          { EntranceType::Interior, RR_MARKET_BOMBCHU_BOWLING,        RR_THE_MARKET,                    ENTR_MARKET_DAY_OUTSIDE_BOMBCHU_BOWLING } },
-        { { EntranceType::Interior, RR_THE_MARKET,                    RR_MARKET_POTION_SHOP,            ENTR_POTION_SHOP_MARKET_0 },
-          { EntranceType::Interior, RR_MARKET_POTION_SHOP,            RR_THE_MARKET,                    ENTR_MARKET_DAY_OUTSIDE_POTION_SHOP } },
-        { { EntranceType::Interior, RR_THE_MARKET,                    RR_MARKET_TREASURE_CHEST_GAME,    ENTR_TREASURE_BOX_SHOP_0 },
-          { EntranceType::Interior, RR_MARKET_TREASURE_CHEST_GAME,    RR_THE_MARKET,                    ENTR_MARKET_DAY_OUTSIDE_TREASURE_BOX_SHOP } },
-        { { EntranceType::Interior, RR_MARKET_BACK_ALLEY,             RR_MARKET_BOMBCHU_SHOP,           ENTR_BOMBCHU_SHOP_1 },
-          { EntranceType::Interior, RR_MARKET_BOMBCHU_SHOP,           RR_MARKET_BACK_ALLEY,             ENTR_BACK_ALLEY_DAY_OUTSIDE_BOMBCHU_SHOP } },
-        { { EntranceType::Interior, RR_MARKET_BACK_ALLEY,             RR_MARKET_MAN_IN_GREEN_HOUSE,     ENTR_BACK_ALLEY_MAN_IN_GREEN_HOUSE },
-          { EntranceType::Interior, RR_MARKET_MAN_IN_GREEN_HOUSE,     RR_MARKET_BACK_ALLEY,             ENTR_BACK_ALLEY_DAY_OUTSIDE_MAN_IN_GREEN_HOUSE } },
-        { { EntranceType::Interior, RR_KAKARIKO_VILLAGE,              RR_KAK_CARPENTER_BOSS_HOUSE,      ENTR_KAKARIKO_CENTER_GUEST_HOUSE_0 },
-          { EntranceType::Interior, RR_KAK_CARPENTER_BOSS_HOUSE,      RR_KAKARIKO_VILLAGE,              ENTR_KAKARIKO_VILLAGE_OUTSIDE_CENTER_GUEST_HOUSE } },
-        { { EntranceType::Interior, RR_KAKARIKO_VILLAGE,              RR_KAK_HOUSE_OF_SKULLTULA,        ENTR_HOUSE_OF_SKULLTULA_0 },
-          { EntranceType::Interior, RR_KAK_HOUSE_OF_SKULLTULA,        RR_KAKARIKO_VILLAGE,              ENTR_KAKARIKO_VILLAGE_OUTSIDE_SKULKLTULA_HOUSE } },
-        { { EntranceType::Interior, RR_KAKARIKO_VILLAGE,              RR_KAK_IMPAS_HOUSE,               ENTR_IMPAS_HOUSE_FRONT },
-          { EntranceType::Interior, RR_KAK_IMPAS_HOUSE,               RR_KAKARIKO_VILLAGE,              ENTR_KAKARIKO_VILLAGE_OUTSIDE_IMPAS_HOUSE_FRONT } },
-        { { EntranceType::Interior, RR_KAK_IMPAS_LEDGE,               RR_KAK_IMPAS_HOUSE_BACK,          ENTR_IMPAS_HOUSE_BACK },
-          { EntranceType::Interior, RR_KAK_IMPAS_HOUSE_BACK,          RR_KAK_IMPAS_LEDGE,               ENTR_KAKARIKO_VILLAGE_OUTSIDE_IMPAS_HOUSE_BACK } },
-        { { EntranceType::Interior, RR_KAK_BACKYARD,                  RR_KAK_ODD_POTION_BUILDING,       ENTR_POTION_SHOP_GRANNY_0 },
-          { EntranceType::Interior, RR_KAK_ODD_POTION_BUILDING,       RR_KAK_BACKYARD,                  ENTR_KAKARIKO_VILLAGE_OUTSIDE_SHOP_GRANNY } },
-        { { EntranceType::Interior, RR_THE_GRAVEYARD,                 RR_GRAVEYARD_DAMPES_HOUSE,        ENTR_GRAVEKEEPERS_HUT_0 },
-          { EntranceType::Interior, RR_GRAVEYARD_DAMPES_HOUSE,        RR_THE_GRAVEYARD,                 ENTR_GRAVEYARD_OUTSIDE_DAMPES_HUT } },
-        { { EntranceType::Interior, RR_GORON_CITY,                    RR_GC_SHOP,                       ENTR_GORON_SHOP_0 },
-          { EntranceType::Interior, RR_GC_SHOP,                       RR_GORON_CITY,                    ENTR_GORON_CITY_OUTSIDE_SHOP } },
-        { { EntranceType::Interior, RR_ZORAS_DOMAIN,                  RR_ZD_SHOP,                       ENTR_ZORA_SHOP_0 },
-          { EntranceType::Interior, RR_ZD_SHOP,                       RR_ZORAS_DOMAIN,                  ENTR_ZORAS_DOMAIN_OUTSIDE_SHOP } },
-        { { EntranceType::Interior, RR_LON_LON_RANCH,                 RR_LLR_TALONS_HOUSE,              ENTR_LON_LON_BUILDINGS_TALONS_HOUSE },
-          { EntranceType::Interior, RR_LLR_TALONS_HOUSE,              RR_LON_LON_RANCH,                 ENTR_LON_LON_RANCH_OUTSIDE_TALONS_HOUSE } },
-        { { EntranceType::Interior, RR_LON_LON_RANCH,                 RR_LLR_STABLES,                   ENTR_STABLE_0 },
-          { EntranceType::Interior, RR_LLR_STABLES,                   RR_LON_LON_RANCH,                 ENTR_LON_LON_RANCH_OUTSIDE_STABLES } },
-        { { EntranceType::Interior, RR_LON_LON_RANCH,                 RR_LLR_TOWER,                     ENTR_LON_LON_BUILDINGS_TOWER },
-          { EntranceType::Interior, RR_LLR_TOWER,                     RR_LON_LON_RANCH,                 ENTR_LON_LON_RANCH_OUTSIDE_TOWER } },
-        { { EntranceType::Interior, RR_THE_MARKET,                    RR_MARKET_BAZAAR,                 ENTR_BAZAAR_1 },
-          { EntranceType::Interior, RR_MARKET_BAZAAR,                 RR_THE_MARKET,                    ENTR_MARKET_DAY_OUTSIDE_BAZAAR } },
-        { { EntranceType::Interior, RR_THE_MARKET,                    RR_MARKET_SHOOTING_GALLERY,       ENTR_SHOOTING_GALLERY_1 },
-          { EntranceType::Interior, RR_MARKET_SHOOTING_GALLERY,       RR_THE_MARKET,                    ENTR_MARKET_DAY_OUTSIDE_SHOOTING_GALLERY } },
-        { { EntranceType::Interior, RR_KAKARIKO_VILLAGE,              RR_KAK_BAZAAR,                    ENTR_BAZAAR_0 },
-          { EntranceType::Interior, RR_KAK_BAZAAR,                    RR_KAKARIKO_VILLAGE,              ENTR_KAKARIKO_VILLAGE_OUTSIDE_BAZAAR } },
-        { { EntranceType::Interior, RR_KAKARIKO_VILLAGE,              RR_KAK_SHOOTING_GALLERY,          ENTR_SHOOTING_GALLERY_0 },
-          { EntranceType::Interior, RR_KAK_SHOOTING_GALLERY,          RR_KAKARIKO_VILLAGE,              ENTR_KAKARIKO_VILLAGE_OUTSIDE_SHOOTING_GALLERY } },
-        { { EntranceType::Interior, RR_DESERT_COLOSSUS,               RR_COLOSSUS_GREAT_FAIRY_FOUNTAIN, ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_NAYRUS_COLOSSUS },
-          { EntranceType::Interior, RR_COLOSSUS_GREAT_FAIRY_FOUNTAIN, RR_DESERT_COLOSSUS,               ENTR_DESERT_COLOSSUS_GREAT_FAIRY_EXIT } },
-        { { EntranceType::Interior, RR_HYRULE_CASTLE_GROUNDS,         RR_HC_GREAT_FAIRY_FOUNTAIN,       ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_DINS_HC },
-          { EntranceType::Interior, RR_HC_GREAT_FAIRY_FOUNTAIN,       RR_CASTLE_GROUNDS,                ENTR_CASTLE_GROUNDS_GREAT_FAIRY_EXIT } },
-        { { EntranceType::Interior, RR_GANONS_CASTLE_GROUNDS,         RR_OGC_GREAT_FAIRY_FOUNTAIN,      ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_OGC_DD },
-        // 0x3E8 is an unused entrance index repruposed to differentiate between the HC and OGC fairy
-        // fountain exits (normally they both use 0x340)
-          { EntranceType::Interior, RR_OGC_GREAT_FAIRY_FOUNTAIN,      RR_CASTLE_GROUNDS,                ENTR_POTION_SHOP_KAKARIKO_1 } },
-        { { EntranceType::Interior, RR_DMC_LOWER_NEARBY,              RR_DMC_GREAT_FAIRY_FOUNTAIN,      ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_DMC },
-          { EntranceType::Interior, RR_DMC_GREAT_FAIRY_FOUNTAIN,      RR_DMC_LOWER_LOCAL,               ENTR_DEATH_MOUNTAIN_CRATER_GREAT_FAIRY_EXIT } },
-        { { EntranceType::Interior, RR_DEATH_MOUNTAIN_SUMMIT,         RR_DMT_GREAT_FAIRY_FOUNTAIN,      ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_DMT },
-          { EntranceType::Interior, RR_DMT_GREAT_FAIRY_FOUNTAIN,      RR_DEATH_MOUNTAIN_SUMMIT,         ENTR_DEATH_MOUNTAIN_TRAIL_GREAT_FAIRY_EXIT } },
-        { { EntranceType::Interior, RR_ZORAS_FOUNTAIN,                RR_ZF_GREAT_FAIRY_FOUNTAIN,       ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_FARORES_ZF },
-          { EntranceType::Interior, RR_ZF_GREAT_FAIRY_FOUNTAIN,       RR_ZORAS_FOUNTAIN,                ENTR_ZORAS_FOUNTAIN_OUTSIDE_GREAT_FAIRY } },
-
-        { { EntranceType::SpecialInterior, RR_KOKIRI_FOREST,         RR_KF_LINKS_HOUSE,        ENTR_LINKS_HOUSE_1 },
-          { EntranceType::SpecialInterior, RR_KF_LINKS_HOUSE,        RR_KOKIRI_FOREST,         ENTR_KOKIRI_FOREST_OUTSIDE_LINKS_HOUSE } },
-        { { EntranceType::SpecialInterior, RR_TOT_ENTRANCE,          RR_TEMPLE_OF_TIME,        ENTR_TEMPLE_OF_TIME_ENTRANCE },
-          { EntranceType::SpecialInterior, RR_TEMPLE_OF_TIME,        RR_TOT_ENTRANCE,          ENTR_TEMPLE_OF_TIME_EXTERIOR_DAY_OUTSIDE_TEMPLE } },
-        { { EntranceType::SpecialInterior, RR_KAKARIKO_VILLAGE,      RR_KAK_WINDMILL,          ENTR_WINDMILL_AND_DAMPES_GRAVE_WINDMILL },
-          { EntranceType::SpecialInterior, RR_KAK_WINDMILL,          RR_KAKARIKO_VILLAGE,      ENTR_KAKARIKO_VILLAGE_OUTSIDE_WINDMILL } },
-        { { EntranceType::SpecialInterior, RR_KAKARIKO_VILLAGE,      RR_KAK_POTION_SHOP_FRONT, ENTR_POTION_SHOP_KAKARIKO_FRONT },
-          { EntranceType::SpecialInterior, RR_KAK_POTION_SHOP_FRONT, RR_KAKARIKO_VILLAGE,      ENTR_KAKARIKO_VILLAGE_OUTSIDE_POTION_SHOP_FRONT } },
-        { { EntranceType::SpecialInterior, RR_KAK_BACKYARD,          RR_KAK_POTION_SHOP_BACK,  ENTR_POTION_SHOP_KAKARIKO_BACK },
-          { EntranceType::SpecialInterior, RR_KAK_POTION_SHOP_BACK,  RR_KAK_BACKYARD,          ENTR_KAKARIKO_VILLAGE_OUTSIDE_POTION_SHOP_BACK } },
-
-        // Grotto Loads use an entrance index of 0x0700 + their grotto id. The id is used as index for the
-        // grottoLoadTable in soh/soh/Enhancements/randomizer/randomizer_grotto.c
-        // Grotto Returns use an entrance index of 0x0800 + their grotto id. The id is used as index for the
-        // grottoReturnTable in soh/soh/Enhancements/randomizer/randomizer_grotto.c
-        { { EntranceType::GrottoGrave, RR_DESERT_COLOSSUS,          RR_COLOSSUS_GROTTO,          ENTRANCE_GROTTO_LOAD(GROTTO_COLOSSUS_OFFSET) },
-          { EntranceType::GrottoGrave, RR_COLOSSUS_GROTTO,          RR_DESERT_COLOSSUS,          ENTRANCE_GROTTO_EXIT(GROTTO_COLOSSUS_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_LAKE_HYLIA,               RR_LH_GROTTO,                ENTRANCE_GROTTO_LOAD(GROTTO_LH_OFFSET) },
-          { EntranceType::GrottoGrave, RR_LH_GROTTO,                RR_LAKE_HYLIA,               ENTRANCE_GROTTO_EXIT(GROTTO_LH_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_ZORAS_RIVER,              RR_ZR_STORMS_GROTTO,         ENTRANCE_GROTTO_LOAD(GROTTO_ZR_STORMS_OFFSET) },
-          { EntranceType::GrottoGrave, RR_ZR_STORMS_GROTTO,         RR_ZORAS_RIVER,              ENTRANCE_GROTTO_EXIT(GROTTO_ZR_STORMS_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_ZORAS_RIVER,              RR_ZR_FAIRY_GROTTO,          ENTRANCE_GROTTO_LOAD(GROTTO_ZR_FAIRY_OFFSET) },
-          { EntranceType::GrottoGrave, RR_ZR_FAIRY_GROTTO,          RR_ZORAS_RIVER,              ENTRANCE_GROTTO_EXIT(GROTTO_ZR_FAIRY_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_ZORAS_RIVER,              RR_ZR_OPEN_GROTTO,           ENTRANCE_GROTTO_LOAD(GROTTO_ZR_OPEN_OFFSET) },
-          { EntranceType::GrottoGrave, RR_ZR_OPEN_GROTTO,           RR_ZORAS_RIVER,              ENTRANCE_GROTTO_EXIT(GROTTO_ZR_OPEN_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_DMC_LOWER_NEARBY,         RR_DMC_HAMMER_GROTTO,        ENTRANCE_GROTTO_LOAD(GROTTO_DMC_HAMMER_OFFSET) },
-          { EntranceType::GrottoGrave, RR_DMC_HAMMER_GROTTO,        RR_DMC_LOWER_LOCAL,          ENTRANCE_GROTTO_EXIT(GROTTO_DMC_HAMMER_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_DMC_UPPER_NEARBY,         RR_DMC_UPPER_GROTTO,         ENTRANCE_GROTTO_LOAD(GROTTO_DMC_UPPER_OFFSET) },
-          { EntranceType::GrottoGrave, RR_DMC_UPPER_GROTTO,         RR_DMC_UPPER_LOCAL,          ENTRANCE_GROTTO_EXIT(GROTTO_DMC_UPPER_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_GC_GROTTO_PLATFORM,       RR_GC_GROTTO,                ENTRANCE_GROTTO_LOAD(GROTTO_GORON_CITY_OFFSET) },
-          { EntranceType::GrottoGrave, RR_GC_GROTTO,                RR_GC_GROTTO_PLATFORM,       ENTRANCE_GROTTO_EXIT(GROTTO_GORON_CITY_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_DEATH_MOUNTAIN_TRAIL,     RR_DMT_STORMS_GROTTO,        ENTRANCE_GROTTO_LOAD(GROTTO_DMT_STORMS_OFFSET) },
-          { EntranceType::GrottoGrave, RR_DMT_STORMS_GROTTO,        RR_DEATH_MOUNTAIN_TRAIL,     ENTRANCE_GROTTO_EXIT(GROTTO_DMT_STORMS_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_DEATH_MOUNTAIN_SUMMIT,    RR_DMT_COW_GROTTO,           ENTRANCE_GROTTO_LOAD(GROTTO_DMT_COW_OFFSET) },
-          { EntranceType::GrottoGrave, RR_DMT_COW_GROTTO,           RR_DEATH_MOUNTAIN_SUMMIT,    ENTRANCE_GROTTO_EXIT(GROTTO_DMT_COW_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_KAK_BACKYARD,             RR_KAK_OPEN_GROTTO,          ENTRANCE_GROTTO_LOAD(GROTTO_KAK_OPEN_OFFSET) },
-          { EntranceType::GrottoGrave, RR_KAK_OPEN_GROTTO,          RR_KAK_BACKYARD,             ENTRANCE_GROTTO_EXIT(GROTTO_KAK_OPEN_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_KAKARIKO_VILLAGE,         RR_KAK_REDEAD_GROTTO,        ENTRANCE_GROTTO_LOAD(GROTTO_KAK_REDEAD_OFFSET) },
-          { EntranceType::GrottoGrave, RR_KAK_REDEAD_GROTTO,        RR_KAKARIKO_VILLAGE,         ENTRANCE_GROTTO_EXIT(GROTTO_KAK_REDEAD_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_HYRULE_CASTLE_GROUNDS,    RR_HC_STORMS_GROTTO,         ENTRANCE_GROTTO_LOAD(GROTTO_HC_STORMS_OFFSET) },
-          { EntranceType::GrottoGrave, RR_HC_STORMS_GROTTO,         RR_CASTLE_GROUNDS,           ENTRANCE_GROTTO_EXIT(GROTTO_HC_STORMS_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_HYRULE_FIELD,             RR_HF_TEKTITE_GROTTO,        ENTRANCE_GROTTO_LOAD(GROTTO_HF_TEKTITE_OFFSET) },
-          { EntranceType::GrottoGrave, RR_HF_TEKTITE_GROTTO,        RR_HYRULE_FIELD,             ENTRANCE_GROTTO_EXIT(GROTTO_HF_TEKTITE_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_HYRULE_FIELD,             RR_HF_NEAR_KAK_GROTTO,       ENTRANCE_GROTTO_LOAD(GROTTO_HF_NEAR_KAK_OFFSET) },
-          { EntranceType::GrottoGrave, RR_HF_NEAR_KAK_GROTTO,       RR_HYRULE_FIELD,             ENTRANCE_GROTTO_EXIT(GROTTO_HF_NEAR_KAK_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_HYRULE_FIELD,             RR_HF_FAIRY_GROTTO,          ENTRANCE_GROTTO_LOAD(GROTTO_HF_FAIRY_OFFSET) },
-          { EntranceType::GrottoGrave, RR_HF_FAIRY_GROTTO,          RR_HYRULE_FIELD,             ENTRANCE_GROTTO_EXIT(GROTTO_HF_FAIRY_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_HYRULE_FIELD,             RR_HF_NEAR_MARKET_GROTTO,    ENTRANCE_GROTTO_LOAD(GROTTO_HF_NEAR_MARKET_OFFSET) },
-          { EntranceType::GrottoGrave, RR_HF_NEAR_MARKET_GROTTO,    RR_HYRULE_FIELD,             ENTRANCE_GROTTO_EXIT(GROTTO_HF_NEAR_MARKET_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_HYRULE_FIELD,             RR_HF_COW_GROTTO,            ENTRANCE_GROTTO_LOAD(GROTTO_HF_COW_OFFSET) },
-          { EntranceType::GrottoGrave, RR_HF_COW_GROTTO,            RR_HYRULE_FIELD,             ENTRANCE_GROTTO_EXIT(GROTTO_HF_COW_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_HYRULE_FIELD,             RR_HF_INSIDE_FENCE_GROTTO,   ENTRANCE_GROTTO_LOAD(GROTTO_HF_INSIDE_FENCE_OFFSET) },
-          { EntranceType::GrottoGrave, RR_HF_INSIDE_FENCE_GROTTO,   RR_HYRULE_FIELD,             ENTRANCE_GROTTO_EXIT(GROTTO_HF_INSIDE_FENCE_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_HYRULE_FIELD,             RR_HF_OPEN_GROTTO,           ENTRANCE_GROTTO_LOAD(GROTTO_HF_OPEN_OFFSET) },
-          { EntranceType::GrottoGrave, RR_HF_OPEN_GROTTO,           RR_HYRULE_FIELD,             ENTRANCE_GROTTO_EXIT(GROTTO_HF_OPEN_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_HYRULE_FIELD,             RR_HF_SOUTHEAST_GROTTO,      ENTRANCE_GROTTO_LOAD(GROTTO_HF_SOUTHEAST_OFFSET) },
-          { EntranceType::GrottoGrave, RR_HF_SOUTHEAST_GROTTO,      RR_HYRULE_FIELD,             ENTRANCE_GROTTO_EXIT(GROTTO_HF_SOUTHEAST_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_LON_LON_RANCH,            RR_LLR_GROTTO,               ENTRANCE_GROTTO_LOAD(GROTTO_LLR_OFFSET) },
-          { EntranceType::GrottoGrave, RR_LLR_GROTTO,               RR_LON_LON_RANCH,            ENTRANCE_GROTTO_EXIT(GROTTO_LLR_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_SFM_ENTRYWAY,             RR_SFM_WOLFOS_GROTTO,        ENTRANCE_GROTTO_LOAD(GROTTO_SFM_WOLFOS_OFFSET) },
-          { EntranceType::GrottoGrave, RR_SFM_WOLFOS_GROTTO,        RR_SFM_ENTRYWAY,             ENTRANCE_GROTTO_EXIT(GROTTO_SFM_WOLFOS_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_SACRED_FOREST_MEADOW,     RR_SFM_STORMS_GROTTO,        ENTRANCE_GROTTO_LOAD(GROTTO_SFM_STORMS_OFFSET) },
-          { EntranceType::GrottoGrave, RR_SFM_STORMS_GROTTO,        RR_SACRED_FOREST_MEADOW,     ENTRANCE_GROTTO_EXIT(GROTTO_SFM_STORMS_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_SACRED_FOREST_MEADOW,     RR_SFM_FAIRY_GROTTO,         ENTRANCE_GROTTO_LOAD(GROTTO_SFM_FAIRY_OFFSET) },
-          { EntranceType::GrottoGrave, RR_SFM_FAIRY_GROTTO,         RR_SACRED_FOREST_MEADOW,     ENTRANCE_GROTTO_EXIT(GROTTO_SFM_FAIRY_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_LW_BEYOND_MIDO,           RR_LW_SCRUBS_GROTTO,         ENTRANCE_GROTTO_LOAD(GROTTO_LW_SCRUBS_OFFSET) },
-          { EntranceType::GrottoGrave, RR_LW_SCRUBS_GROTTO,         RR_LW_BEYOND_MIDO,           ENTRANCE_GROTTO_EXIT(GROTTO_LW_SCRUBS_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_THE_LOST_WOODS,           RR_LW_NEAR_SHORTCUTS_GROTTO, ENTRANCE_GROTTO_LOAD(GROTTO_LW_NEAR_SHORTCUTS_OFFSET) },
-          { EntranceType::GrottoGrave, RR_LW_NEAR_SHORTCUTS_GROTTO, RR_THE_LOST_WOODS,           ENTRANCE_GROTTO_EXIT(GROTTO_LW_NEAR_SHORTCUTS_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_KOKIRI_FOREST,            RR_KF_STORMS_GROTTO,         ENTRANCE_GROTTO_LOAD(GROTTO_KF_STORMS_OFFSET) },
-          { EntranceType::GrottoGrave, RR_KF_STORMS_GROTTO,         RR_KOKIRI_FOREST,            ENTRANCE_GROTTO_EXIT(GROTTO_KF_STORMS_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_ZORAS_DOMAIN_ISLAND,      RR_ZD_STORMS_GROTTO,         ENTRANCE_GROTTO_LOAD(GROTTO_ZD_STORMS_OFFSET) },
-          { EntranceType::GrottoGrave, RR_ZD_STORMS_GROTTO,         RR_ZORAS_DOMAIN_ISLAND,      ENTRANCE_GROTTO_EXIT(GROTTO_ZD_STORMS_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_GERUDO_FORTRESS,          RR_GF_STORMS_GROTTO,         ENTRANCE_GROTTO_LOAD(GROTTO_GF_STORMS_OFFSET) },
-          { EntranceType::GrottoGrave, RR_GF_STORMS_GROTTO,         RR_GERUDO_FORTRESS,          ENTRANCE_GROTTO_EXIT(GROTTO_GF_STORMS_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_GV_FORTRESS_SIDE,         RR_GV_STORMS_GROTTO,         ENTRANCE_GROTTO_LOAD(GROTTO_GV_STORMS_OFFSET) },
-          { EntranceType::GrottoGrave, RR_GV_STORMS_GROTTO,         RR_GV_FORTRESS_SIDE,         ENTRANCE_GROTTO_EXIT(GROTTO_GV_STORMS_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_GV_GROTTO_LEDGE,          RR_GV_OCTOROK_GROTTO,        ENTRANCE_GROTTO_LOAD(GROTTO_GV_OCTOROK_OFFSET) },
-          { EntranceType::GrottoGrave, RR_GV_OCTOROK_GROTTO,        RR_GV_GROTTO_LEDGE,          ENTRANCE_GROTTO_EXIT(GROTTO_GV_OCTOROK_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_LW_BEYOND_MIDO,           RR_DEKU_THEATER,             ENTRANCE_GROTTO_LOAD(GROTTO_LW_DEKU_THEATRE_OFFSET) },
-          { EntranceType::GrottoGrave, RR_DEKU_THEATER,             RR_LW_BEYOND_MIDO,           ENTRANCE_GROTTO_EXIT(GROTTO_LW_DEKU_THEATRE_OFFSET) } },
-
-        // Graves have their own specified entrance indices
-        { { EntranceType::GrottoGrave, RR_THE_GRAVEYARD,               RR_GRAVEYARD_SHIELD_GRAVE,      ENTR_GRAVE_WITH_FAIRYS_FOUNTAIN_0 },
-          { EntranceType::GrottoGrave, RR_GRAVEYARD_SHIELD_GRAVE,      RR_THE_GRAVEYARD,               ENTR_GRAVEYARD_SHIELD_GRAVE_EXIT } },
-        { { EntranceType::GrottoGrave, RR_THE_GRAVEYARD,               RR_GRAVEYARD_HEART_PIECE_GRAVE, ENTR_REDEAD_GRAVE_0 },
-          { EntranceType::GrottoGrave, RR_GRAVEYARD_HEART_PIECE_GRAVE, RR_THE_GRAVEYARD,               ENTR_GRAVEYARD_HEART_PIECE_GRAVE_EXIT } },
-        { { EntranceType::GrottoGrave, RR_THE_GRAVEYARD,               RR_GRAVEYARD_COMPOSERS_GRAVE,   ENTR_ROYAL_FAMILYS_TOMB_0 },
-          { EntranceType::GrottoGrave, RR_GRAVEYARD_COMPOSERS_GRAVE,   RR_THE_GRAVEYARD,               ENTR_GRAVEYARD_ROYAL_TOMB_EXIT } },
-        { { EntranceType::GrottoGrave, RR_THE_GRAVEYARD,               RR_GRAVEYARD_DAMPES_GRAVE,      ENTR_WINDMILL_AND_DAMPES_GRAVE_GRAVE },
-          { EntranceType::GrottoGrave, RR_GRAVEYARD_DAMPES_GRAVE,      RR_THE_GRAVEYARD,               ENTR_GRAVEYARD_DAMPES_GRAVE_EXIT } },
-
-        { { EntranceType::Overworld, RR_KOKIRI_FOREST,           RR_LW_BRIDGE_FROM_FOREST,   ENTR_LOST_WOODS_BRIDGE_EAST_EXIT },
-          { EntranceType::Overworld, RR_LW_BRIDGE,               RR_KOKIRI_FOREST,           ENTR_KOKIRI_FOREST_LOWER_EXIT } },
-        { { EntranceType::Overworld, RR_KOKIRI_FOREST,           RR_THE_LOST_WOODS,          ENTR_LOST_WOODS_SOUTH_EXIT },
-          { EntranceType::Overworld, RR_LW_FOREST_EXIT,          RR_KOKIRI_FOREST,           ENTR_KOKIRI_FOREST_UPPER_EXIT } },
-        { { EntranceType::Overworld, RR_THE_LOST_WOODS,          RR_GC_WOODS_WARP,           ENTR_GORON_CITY_TUNNEL_SHORTCUT },
-          { EntranceType::Overworld, RR_GC_WOODS_WARP,           RR_THE_LOST_WOODS,          ENTR_LOST_WOODS_TUNNEL_SHORTCUT } },
-        { { EntranceType::Overworld, RR_THE_LOST_WOODS,          RR_ZORAS_RIVER,             ENTR_ZORAS_RIVER_UNDERWATER_SHORTCUT },
-          { EntranceType::Overworld, RR_ZORAS_RIVER,             RR_THE_LOST_WOODS,          ENTR_LOST_WOODS_UNDERWATER_SHORTCUT } },
-        { { EntranceType::Overworld, RR_LW_BEYOND_MIDO,          RR_SFM_ENTRYWAY,            ENTR_SACRED_FOREST_MEADOW_SOUTH_EXIT },
-          { EntranceType::Overworld, RR_SFM_ENTRYWAY,            RR_LW_BEYOND_MIDO,          ENTR_LOST_WOODS_NORTH_EXIT } },
-        { { EntranceType::Overworld, RR_LW_BRIDGE,               RR_HYRULE_FIELD,            ENTR_HYRULE_FIELD_WOODED_EXIT },
-          { EntranceType::Overworld, RR_HYRULE_FIELD,            RR_LW_BRIDGE,               ENTR_LOST_WOODS_BRIDGE_WEST_EXIT } },
-        { { EntranceType::Overworld, RR_HYRULE_FIELD,            RR_LAKE_HYLIA,              ENTR_LAKE_HYLIA_NORTH_EXIT },
-          { EntranceType::Overworld, RR_LAKE_HYLIA,              RR_HYRULE_FIELD,            ENTR_HYRULE_FIELD_FENCE_EXIT } },
-        { { EntranceType::Overworld, RR_HYRULE_FIELD,            RR_GERUDO_VALLEY,           ENTR_GERUDO_VALLEY_EAST_EXIT },
-          { EntranceType::Overworld, RR_GERUDO_VALLEY,           RR_HYRULE_FIELD,            ENTR_HYRULE_FIELD_ROCKY_PATH } },
-        { { EntranceType::Overworld, RR_HYRULE_FIELD,            RR_MARKET_ENTRANCE,         ENTR_MARKET_ENTRANCE_NEAR_GUARD_EXIT },
-          { EntranceType::Overworld, RR_MARKET_ENTRANCE,         RR_HYRULE_FIELD,            ENTR_HYRULE_FIELD_ON_BRIDGE_SPAWN } },
-        { { EntranceType::Overworld, RR_HYRULE_FIELD,            RR_KAKARIKO_VILLAGE,        ENTR_KAKARIKO_VILLAGE_FRONT_GATE },
-          { EntranceType::Overworld, RR_KAKARIKO_VILLAGE,        RR_HYRULE_FIELD,            ENTR_HYRULE_FIELD_STAIRS_EXIT } },
-        { { EntranceType::Overworld, RR_HYRULE_FIELD,            RR_ZR_FRONT,                ENTR_ZORAS_RIVER_WEST_EXIT },
-          { EntranceType::Overworld, RR_ZR_FRONT,                RR_HYRULE_FIELD,            ENTR_HYRULE_FIELD_RIVER_EXIT } },
-        { { EntranceType::Overworld, RR_HYRULE_FIELD,            RR_LON_LON_RANCH,           ENTR_LON_LON_RANCH_ENTRANCE },
-          { EntranceType::Overworld, RR_LON_LON_RANCH,           RR_HYRULE_FIELD,            ENTR_HYRULE_FIELD_CENTER_EXIT } },
-        { { EntranceType::Overworld, RR_LAKE_HYLIA,              RR_ZORAS_DOMAIN,            ENTR_ZORAS_DOMAIN_UNDERWATER_SHORTCUT },
-          { EntranceType::Overworld, RR_ZORAS_DOMAIN,            RR_LAKE_HYLIA,              ENTR_LAKE_HYLIA_UNDERWATER_SHORTCUT } },
-        { { EntranceType::Overworld, RR_GV_FORTRESS_SIDE,        RR_GERUDO_FORTRESS,         ENTR_GERUDOS_FORTRESS_EAST_EXIT },
-          { EntranceType::Overworld, RR_GERUDO_FORTRESS,         RR_GV_FORTRESS_SIDE,        ENTR_GERUDO_VALLEY_WEST_EXIT } },
-        { { EntranceType::Overworld, RR_GF_OUTSIDE_GATE,         RR_WASTELAND_NEAR_FORTRESS, ENTR_HAUNTED_WASTELAND_EAST_EXIT },
-          { EntranceType::Overworld, RR_WASTELAND_NEAR_FORTRESS, RR_GF_OUTSIDE_GATE,         ENTR_GERUDOS_FORTRESS_GATE_EXIT } },
-        { { EntranceType::Overworld, RR_WASTELAND_NEAR_COLOSSUS, RR_DESERT_COLOSSUS,         ENTR_DESERT_COLOSSUS_EAST_EXIT },
-          { EntranceType::Overworld, RR_DESERT_COLOSSUS,         RR_WASTELAND_NEAR_COLOSSUS, ENTR_HAUNTED_WASTELAND_WEST_EXIT } },
-        { { EntranceType::Overworld, RR_MARKET_ENTRANCE,         RR_THE_MARKET,              ENTR_MARKET_SOUTH_EXIT },
-          { EntranceType::Overworld, RR_THE_MARKET,              RR_MARKET_ENTRANCE,         ENTR_MARKET_ENTRANCE_NORTH_EXIT } },
-        { { EntranceType::Overworld, RR_THE_MARKET,              RR_CASTLE_GROUNDS,          ENTR_CASTLE_GROUNDS_SOUTH_EXIT },
-          { EntranceType::Overworld, RR_CASTLE_GROUNDS,          RR_THE_MARKET,              ENTR_MARKET_DAY_CASTLE_EXIT } },
-        { { EntranceType::Overworld, RR_THE_MARKET,              RR_TOT_ENTRANCE,            ENTR_TEMPLE_OF_TIME_EXTERIOR_DAY_GOSSIP_STONE_EXIT },
-          { EntranceType::Overworld, RR_TOT_ENTRANCE,            RR_THE_MARKET,              ENTR_MARKET_DAY_TEMPLE_EXIT } },
-        { { EntranceType::Overworld, RR_KAKARIKO_VILLAGE,        RR_THE_GRAVEYARD,           ENTR_GRAVEYARD_ENTRANCE },
-          { EntranceType::Overworld, RR_THE_GRAVEYARD,           RR_KAKARIKO_VILLAGE,        ENTR_KAKARIKO_VILLAGE_SOUTHEAST_EXIT } },
-        { { EntranceType::Overworld, RR_KAK_BEHIND_GATE,         RR_DEATH_MOUNTAIN_TRAIL,    ENTR_DEATH_MOUNTAIN_TRAIL_BOTTOM_EXIT },
-          { EntranceType::Overworld, RR_DEATH_MOUNTAIN_TRAIL,    RR_KAK_BEHIND_GATE,         ENTR_KAKARIKO_VILLAGE_GUARD_GATE } },
-        { { EntranceType::Overworld, RR_DEATH_MOUNTAIN_TRAIL,    RR_GORON_CITY,              ENTR_GORON_CITY_UPPER_EXIT },
-          { EntranceType::Overworld, RR_GORON_CITY,              RR_DEATH_MOUNTAIN_TRAIL,    ENTR_DEATH_MOUNTAIN_TRAIL_GC_EXIT } },
-        { { EntranceType::Overworld, RR_GC_DARUNIAS_CHAMBER,     RR_DMC_LOWER_LOCAL,         ENTR_DEATH_MOUNTAIN_CRATER_GC_EXIT },
-          { EntranceType::Overworld, RR_DMC_LOWER_NEARBY,        RR_GC_DARUNIAS_CHAMBER,     ENTR_GORON_CITY_DARUNIA_ROOM_EXIT } },
-        { { EntranceType::Overworld, RR_DEATH_MOUNTAIN_SUMMIT,   RR_DMC_UPPER_LOCAL,         ENTR_DEATH_MOUNTAIN_CRATER_UPPER_EXIT },
-          { EntranceType::Overworld, RR_DMC_UPPER_NEARBY,        RR_DEATH_MOUNTAIN_SUMMIT,   ENTR_DEATH_MOUNTAIN_TRAIL_SUMMIT_EXIT } },
-        { { EntranceType::Overworld, RR_ZR_BEHIND_WATERFALL,     RR_ZORAS_DOMAIN,            ENTR_ZORAS_DOMAIN_ENTRANCE },
-          { EntranceType::Overworld, RR_ZORAS_DOMAIN,            RR_ZR_BEHIND_WATERFALL,     ENTR_ZORAS_RIVER_WATERFALL_EXIT } },
-        { { EntranceType::Overworld, RR_ZD_BEHIND_KING_ZORA,     RR_ZORAS_FOUNTAIN,          ENTR_ZORAS_FOUNTAIN_TUNNEL_EXIT },
-          { EntranceType::Overworld, RR_ZORAS_FOUNTAIN,          RR_ZD_BEHIND_KING_ZORA,     ENTR_ZORAS_DOMAIN_KING_ZORA_EXIT } },
-
-        { { EntranceType::Overworld, RR_GV_LOWER_STREAM, RR_LAKE_HYLIA,        ENTR_LAKE_HYLIA_RIVER_EXIT },
-          NO_RETURN_ENTRANCE },
-
-        { { EntranceType::OwlDrop, RR_LH_OWL_FLIGHT,     RR_HYRULE_FIELD,      ENTR_HYRULE_FIELD_OWL_DROP },
-          NO_RETURN_ENTRANCE },
-        { { EntranceType::OwlDrop, RR_DMT_OWL_FLIGHT,    RR_KAK_IMPAS_ROOFTOP, ENTR_KAKARIKO_VILLAGE_OWL_DROP },
-          NO_RETURN_ENTRANCE },
-
-        { { EntranceType::Spawn, RR_CHILD_SPAWN,         RR_KF_LINKS_HOUSE,    ENTR_LINKS_HOUSE_CHILD_SPAWN },
-          NO_RETURN_ENTRANCE },
-        { { EntranceType::Spawn, RR_ADULT_SPAWN,         RR_TEMPLE_OF_TIME,    ENTR_HYRULE_FIELD_10 },
-          NO_RETURN_ENTRANCE }, // 0x282 is an unused entrance index repurposed to differentiate between
-                                // Adult Spawn and prelude of light (normally they both use 0x5F4)
-        { { EntranceType::WarpSong, RR_MINUET_OF_FOREST_WARP,   RR_SACRED_FOREST_MEADOW,      ENTR_SACRED_FOREST_MEADOW_WARP_PAD },
-          NO_RETURN_ENTRANCE },
-        { { EntranceType::WarpSong, RR_BOLERO_OF_FIRE_WARP,     RR_DMC_CENTRAL_LOCAL,         ENTR_DEATH_MOUNTAIN_CRATER_WARP_PAD },
-          NO_RETURN_ENTRANCE },
-        { { EntranceType::WarpSong, RR_SERENADE_OF_WATER_WARP,  RR_LAKE_HYLIA,                ENTR_LAKE_HYLIA_WARP_PAD },
-          NO_RETURN_ENTRANCE },
-        { { EntranceType::WarpSong, RR_REQUIEM_OF_SPIRIT_WARP,  RR_DESERT_COLOSSUS,           ENTR_DESERT_COLOSSUS_WARP_PAD },
-          NO_RETURN_ENTRANCE },
-        { { EntranceType::WarpSong, RR_NOCTURNE_OF_SHADOW_WARP, RR_GRAVEYARD_WARP_PAD_REGION, ENTR_GRAVEYARD_WARP_PAD },
-          NO_RETURN_ENTRANCE },
-        { { EntranceType::WarpSong, RR_PRELUDE_OF_LIGHT_WARP,   RR_TEMPLE_OF_TIME,            ENTR_TEMPLE_OF_TIME_WARP_PAD },
-          NO_RETURN_ENTRANCE },
-
-        { { EntranceType::ChildBoss, RR_DEKU_TREE_BOSS_ENTRYWAY,        RR_DEKU_TREE_BOSS_ROOM,            ENTR_DEKU_TREE_BOSS_ENTRANCE },
-          { EntranceType::ChildBoss, RR_DEKU_TREE_BOSS_ROOM,            RR_DEKU_TREE_BOSS_ENTRYWAY,        ENTR_DEKU_TREE_BOSS_DOOR } },
-        { { EntranceType::ChildBoss, RR_DODONGOS_CAVERN_BOSS_ENTRYWAY,  RR_DODONGOS_CAVERN_BOSS_ROOM,      ENTR_DODONGOS_CAVERN_BOSS_ENTRANCE },
-          { EntranceType::ChildBoss, RR_DODONGOS_CAVERN_BOSS_ROOM,      RR_DODONGOS_CAVERN_BOSS_ENTRYWAY,  ENTR_DODONGOS_CAVERN_BOSS_DOOR } },
-        { { EntranceType::ChildBoss, RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY, RR_JABU_JABUS_BELLY_BOSS_ROOM,     ENTR_JABU_JABU_BOSS_ENTRANCE },
-          { EntranceType::ChildBoss, RR_JABU_JABUS_BELLY_BOSS_ROOM,     RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY, ENTR_JABU_JABU_BOSS_DOOR } },
-        { { EntranceType::AdultBoss, RR_FOREST_TEMPLE_BOSS_ENTRYWAY,    RR_FOREST_TEMPLE_BOSS_ROOM,        ENTR_FOREST_TEMPLE_BOSS_ENTRANCE },
-          { EntranceType::AdultBoss, RR_FOREST_TEMPLE_BOSS_ROOM,        RR_FOREST_TEMPLE_BOSS_ENTRYWAY,    ENTR_FOREST_TEMPLE_BOSS_DOOR } },
-        { { EntranceType::AdultBoss, RR_FIRE_TEMPLE_BOSS_ENTRYWAY,      RR_FIRE_TEMPLE_BOSS_ROOM,          ENTR_FIRE_TEMPLE_BOSS_ENTRANCE },
-          { EntranceType::AdultBoss, RR_FIRE_TEMPLE_BOSS_ROOM,          RR_FIRE_TEMPLE_BOSS_ENTRYWAY,      ENTR_FIRE_TEMPLE_BOSS_DOOR } },
-        { { EntranceType::AdultBoss, RR_WATER_TEMPLE_BOSS_ENTRYWAY,     RR_WATER_TEMPLE_BOSS_ROOM,         ENTR_WATER_TEMPLE_BOSS_ENTRANCE },
-          { EntranceType::AdultBoss, RR_WATER_TEMPLE_BOSS_ROOM,         RR_WATER_TEMPLE_BOSS_ENTRYWAY,     ENTR_WATER_TEMPLE_BOSS_DOOR } },
-        { { EntranceType::AdultBoss, RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY,    RR_SPIRIT_TEMPLE_BOSS_ROOM,        ENTR_SPIRIT_TEMPLE_BOSS_ENTRANCE },
-          { EntranceType::AdultBoss, RR_SPIRIT_TEMPLE_BOSS_ROOM,        RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY,    ENTR_SPIRIT_TEMPLE_BOSS_DOOR } },
-        { { EntranceType::AdultBoss, RR_SHADOW_TEMPLE_BOSS_ENTRYWAY,    RR_SHADOW_TEMPLE_BOSS_ROOM,        ENTR_SHADOW_TEMPLE_BOSS_ENTRANCE },
-          { EntranceType::AdultBoss, RR_SHADOW_TEMPLE_BOSS_ROOM,        RR_SHADOW_TEMPLE_BOSS_ENTRYWAY,    ENTR_SHADOW_TEMPLE_BOSS_DOOR } },
-
-        { { EntranceType::BlueWarp, RR_DEKU_TREE_BOSS_ROOM,        RR_KF_OUTSIDE_DEKU_TREE,      ENTR_KOKIRI_FOREST_DEKU_TREE_BLUE_WARP },
-          NO_RETURN_ENTRANCE },
-        { { EntranceType::BlueWarp, RR_DODONGOS_CAVERN_BOSS_ROOM,  RR_DEATH_MOUNTAIN_TRAIL,      ENTR_DEATH_MOUNTAIN_TRAIL_DODONGO_BLUE_WARP },
-          NO_RETURN_ENTRANCE },
-        { { EntranceType::BlueWarp, RR_JABU_JABUS_BELLY_BOSS_ROOM, RR_ZORAS_FOUNTAIN,            ENTR_ZORAS_FOUNTAIN_JABU_JABU_BLUE_WARP },
-          NO_RETURN_ENTRANCE },
-        { { EntranceType::BlueWarp, RR_FOREST_TEMPLE_BOSS_ROOM,    RR_SACRED_FOREST_MEADOW,      ENTR_SACRED_FOREST_MEADOW_FOREST_TEMPLE_BLUE_WARP },
-          NO_RETURN_ENTRANCE },
-        { { EntranceType::BlueWarp, RR_FIRE_TEMPLE_BOSS_ROOM,      RR_DMC_CENTRAL_LOCAL,         ENTR_DEATH_MOUNTAIN_CRATER_FIRE_TEMPLE_BLUE_WARP },
-          NO_RETURN_ENTRANCE },
-        { { EntranceType::BlueWarp, RR_WATER_TEMPLE_BOSS_ROOM,     RR_LAKE_HYLIA,                ENTR_LAKE_HYLIA_WATER_TEMPLE_BLUE_WARP },
-          NO_RETURN_ENTRANCE },
-        { { EntranceType::BlueWarp, RR_SPIRIT_TEMPLE_BOSS_ROOM,    RR_DESERT_COLOSSUS,           ENTR_DESERT_COLOSSUS_SPIRIT_TEMPLE_BLUE_WARP },
-          NO_RETURN_ENTRANCE },
-        { { EntranceType::BlueWarp, RR_SHADOW_TEMPLE_BOSS_ROOM,    RR_GRAVEYARD_WARP_PAD_REGION, ENTR_GRAVEYARD_SHADOW_TEMPLE_BLUE_WARP },
-          NO_RETURN_ENTRANCE },
-        // clang-format on
-    };
-
     std::map<std::string, PriorityEntrance> priorityEntranceTable = {
         { "Bolero", { { RR_DMC_CENTRAL_LOCAL }, { EntranceType::OwlDrop, EntranceType::WarpSong } } },
         { "Nocturne",
@@ -1178,7 +1167,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
     };
 
     mEntranceShuffleFailure = false;
-    SetAllEntrancesData(entranceShuffleTable);
+    SetAllEntrancesData();
 
     EntrancePools oneWayEntrancePools = {};
     EntrancePools entrancePools = {};
@@ -1488,11 +1477,11 @@ int EntranceShuffler::ShuffleAllEntrances() {
     if (true /* ctx->GetOption(RSK_SHUFFLE_BLUEWARP_ENTRANCES).Is(RO_BLUEWARP_ENTRANCE_SHUFFLE_DUNGEON) */) {
         // If a boss room is inside a boss door, make the blue warp go outside the dungeon's entrance
         std::map<std::string, Entrance*> bossExits = {
-            { EntranceNameByRegions(RR_DEKU_TREE_BOSS_ROOM, RR_DEKU_TREE_BOSS_ENTRYWAY),
+            { EntranceNameByRegions(RR_DEKU_TREE_BOSS_ROOM, RR_DEKU_TREE_BOSS_EXIT),
               GetEntrance(RR_DEKU_TREE_ENTRYWAY, RR_KF_OUTSIDE_DEKU_TREE) },
-            { EntranceNameByRegions(RR_DODONGOS_CAVERN_BOSS_ROOM, RR_DODONGOS_CAVERN_BOSS_ENTRYWAY),
+            { EntranceNameByRegions(RR_DODONGOS_CAVERN_BOSS_ROOM, RR_DODONGOS_CAVERN_BOSS_EXIT),
               GetEntrance(RR_DODONGOS_CAVERN_ENTRYWAY, RR_DEATH_MOUNTAIN_TRAIL) },
-            { EntranceNameByRegions(RR_JABU_JABUS_BELLY_BOSS_ROOM, RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY),
+            { EntranceNameByRegions(RR_JABU_JABUS_BELLY_BOSS_ROOM, RR_JABU_JABUS_BELLY_BOSS_EXIT),
               GetEntrance(RR_JABU_JABUS_BELLY_ENTRYWAY, RR_ZORAS_FOUNTAIN) },
             { EntranceNameByRegions(RR_FOREST_TEMPLE_BOSS_ROOM, RR_FOREST_TEMPLE_BOSS_ENTRYWAY),
               GetEntrance(RR_FOREST_TEMPLE_ENTRYWAY, RR_SACRED_FOREST_MEADOW) },
@@ -1530,11 +1519,11 @@ int EntranceShuffler::ShuffleAllEntrances() {
         // Pair <BlueWarp exit, BossRoom reverse exit>
         std::vector<EntrancePair> bossRoomExitPairs = {
             { GetEntrance(RR_DEKU_TREE_BOSS_ROOM, RR_KF_OUTSIDE_DEKU_TREE),
-              GetEntrance(RR_DEKU_TREE_BOSS_ROOM, RR_DEKU_TREE_BOSS_ENTRYWAY) },
+              GetEntrance(RR_DEKU_TREE_BOSS_ROOM, RR_DEKU_TREE_BOSS_EXIT) },
             { GetEntrance(RR_DODONGOS_CAVERN_BOSS_ROOM, RR_DEATH_MOUNTAIN_TRAIL),
-              GetEntrance(RR_DODONGOS_CAVERN_BOSS_ROOM, RR_DODONGOS_CAVERN_BOSS_ENTRYWAY) },
+              GetEntrance(RR_DODONGOS_CAVERN_BOSS_ROOM, RR_DODONGOS_CAVERN_BOSS_EXIT) },
             { GetEntrance(RR_JABU_JABUS_BELLY_BOSS_ROOM, RR_ZORAS_FOUNTAIN),
-              GetEntrance(RR_JABU_JABUS_BELLY_BOSS_ROOM, RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY) },
+              GetEntrance(RR_JABU_JABUS_BELLY_BOSS_ROOM, RR_JABU_JABUS_BELLY_BOSS_EXIT) },
             { GetEntrance(RR_FOREST_TEMPLE_BOSS_ROOM, RR_SACRED_FOREST_MEADOW),
               GetEntrance(RR_FOREST_TEMPLE_BOSS_ROOM, RR_FOREST_TEMPLE_BOSS_ENTRYWAY) },
             { GetEntrance(RR_FIRE_TEMPLE_BOSS_ROOM, RR_DMC_CENTRAL_LOCAL),
@@ -1645,7 +1634,7 @@ void EntranceShuffler::ParseJson(nlohmann::json spoilerFileJson) {
     try {
         nlohmann::json entrancesJson = spoilerFileJson["entrances"];
         size_t i = 0;
-        for (auto it = entrancesJson.begin(); it != entrancesJson.end(); ++it, i++) {
+        for (auto it = entrancesJson.begin(); it != entrancesJson.end() && i < entranceOverrides.size(); ++it, i++) {
             nlohmann::json entranceJson = *it;
             for (auto entranceIt = entranceJson.begin(); entranceIt != entranceJson.end(); ++entranceIt) {
                 if (entranceIt.key() == "type") {
@@ -1662,6 +1651,30 @@ void EntranceShuffler::ParseJson(nlohmann::json spoilerFileJson) {
             }
         }
     } catch (const std::exception& e) { throw e; }
+    // We may need to reset more things here or elsewhere in spoiler loading
+    RegionTable_Init();
+    ApplyEntranceOverrides();
+    SetAreas();
+}
+
+void EntranceShuffler::ApplyEntranceOverrides() {
+    SetAllEntrancesData();
+
+    for (size_t i = 0; i < entranceOverrides.size(); i++) {
+        EntranceOverride entranceOverride = entranceOverrides[i];
+
+        if (entranceOverride.index == 0 && entranceOverride.destination == 0 && entranceOverride.override == 0 &&
+            entranceOverride.overrideDestination == 0) {
+            continue;
+        }
+
+        Entrance* entrance = entranceMap[entranceOverride.index];
+        Entrance* overrideEntrance = entranceMap[entranceOverride.override];
+
+        entrance->Disconnect();
+        entrance->Connect(overrideEntrance->GetOriginalConnectedRegionKey());
+        entrance->SetAsShuffled();
+    }
 }
 } // namespace Rando
 

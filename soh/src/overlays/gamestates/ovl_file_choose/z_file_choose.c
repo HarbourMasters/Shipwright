@@ -26,6 +26,7 @@
 #include "soh/SaveManager.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/ShipUtils.h"
 
 typedef struct {
     s16 left;
@@ -1053,20 +1054,27 @@ void FileChoose_UpdateRandomizer() {
     if (!SpoilerFileExists(CVarGetString(CVAR_GENERAL("SpoilerLog"), "")) &&
         !CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
         CVarSetString(CVAR_GENERAL("SpoilerLog"), "");
+        Randomizer_SetSpoilerLoaded(false);
     }
 
     if (CVarGetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 0) != 0 ||
         !(Randomizer_IsSeedGenerated() || Randomizer_IsSpoilerLoaded()) &&
             SpoilerFileExists(CVarGetString(CVAR_GENERAL("SpoilerLog"), "")) && !fileSelectSpoilerFileLoaded) {
         if (CVarGetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 0) != 0) {
-            CVarSetString(CVAR_GENERAL("SpoilerLog"), CVarGetString(CVAR_GENERAL("RandomizerDroppedFile"), ""));
-            Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
+            if (SpoilerFileExists(CVarGetString(CVAR_GENERAL("RandomizerDroppedFile"), ""))) {
+                CVarSetString(CVAR_GENERAL("SpoilerLog"), CVarGetString(CVAR_GENERAL("RandomizerDroppedFile"), ""));
+                Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
+            } else {
+                Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
+            }
         }
         const char* fileLoc = CVarGetString(CVAR_GENERAL("SpoilerLog"), "");
         CVarSetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 0);
         CVarSetString(CVAR_GENERAL("RandomizerDroppedFile"), "");
-        Randomizer_ParseSpoiler(fileLoc);
-        fileSelectSpoilerFileLoaded = true;
+        if (!Ship_IsCStringEmpty(fileLoc)) {
+            Randomizer_ParseSpoiler(fileLoc);
+            fileSelectSpoilerFileLoaded = true;
+        }
 
         if (SpoilerFileExists(CVarGetString(CVAR_GENERAL("SpoilerLog"), "")) &&
             CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
@@ -1086,10 +1094,6 @@ static s16 sLastFileChooseButtonIndex;
  * Update function for `CM_MAIN_MENU`
  */
 void FileChoose_UpdateMainMenu(GameState* thisx) {
-    static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
-    static u8 emptyNameNES[] = { 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
-    static u8 linkName[] = { 0x15, 0x2C, 0x31, 0x2E, 0x3E, 0x3E, 0x3E, 0x3E };
-    static u8 linkNameNES[] = { 0xB6, 0xB3, 0xB8, 0xB5, 0xDF, 0xDF, 0xDF, 0xDF };
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
     bool dpad = CVarGetInteger(CVAR_SETTING("DpadInText"), 0);
@@ -1300,6 +1304,7 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
     static u8 emptyNameNES[] = { 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
     static u8 linkName[] = { 0x15, 0x2C, 0x31, 0x2E, 0x3E, 0x3E, 0x3E, 0x3E };
     static u8 linkNameNES[] = { 0xB6, 0xB3, 0xB8, 0xB5, 0xDF, 0xDF, 0xDF, 0xDF };
+    static u8 linkNameJP[] = { 0x81, 0x87, 0x61, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
     FileChoose_UpdateStickDirectionPromptAnim(thisx);
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
@@ -1369,7 +1374,16 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
             this->nameEntryBoxAlpha = 0;
             if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
                 defaultName = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkName : &emptyName;
-            } else { // GAME_REGION_NTSC
+            } else if (gSaveContext.language == LANGUAGE_JPN) { // Japanese
+                if (CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) != 0) {
+                    // Set player name to "リンク" ("Link" in Katakana, 3 characters long) when playing in Japanese.
+                    defaultName = &linkNameJP;
+                    this->newFileNameCharCount = 3;
+                } else {
+                    defaultName = &emptyNameNES;
+                }
+                this->charPage = FS_CHAR_PAGE_HIRA; // Default to Hiragana Keyboard
+            } else {                                // GAME_REGION_NTSC
                 defaultName = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkNameNES : &emptyNameNES;
             }
             memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, defaultName, 8);
@@ -1544,6 +1558,7 @@ void FileChoose_UpdateRandomizerMenu(GameState* thisx) {
                 static u8 emptyNameNES[] = { 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
                 static u8 linkName[] = { 0x15, 0x2C, 0x31, 0x2E, 0x3E, 0x3E, 0x3E, 0x3E };
                 static u8 linkNameNES[] = { 0xB6, 0xB3, 0xB8, 0xB5, 0xDF, 0xDF, 0xDF, 0xDF };
+                static u8 linkNameJP[] = { 0x81, 0x87, 0x61, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
                 u8* defaultName;
 
                 this->prevConfigMode = this->configMode;
@@ -1561,7 +1576,16 @@ void FileChoose_UpdateRandomizerMenu(GameState* thisx) {
                 this->nameEntryBoxAlpha = 0;
                 if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
                     defaultName = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkName : &emptyName;
-                } else { // GAME_REGION_NTSC
+                } else if (gSaveContext.language == LANGUAGE_JPN) { // Japanese
+                    if (CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) != 0) {
+                        // Set player name to "リンク" ("Link" in Katakana, 3 characters long) when playing in Japanese.
+                        defaultName = &linkNameJP;
+                        this->newFileNameCharCount = 3;
+                    } else {
+                        defaultName = &emptyNameNES;
+                    }
+                    this->charPage = FS_CHAR_PAGE_HIRA; // Default to Hiragana Keyboard
+                } else {                                // GAME_REGION_NTSC
                     defaultName = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkNameNES : &emptyNameNES;
                 }
                 memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, defaultName, 8);

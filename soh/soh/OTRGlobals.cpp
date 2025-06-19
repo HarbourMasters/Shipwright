@@ -40,6 +40,7 @@
 #include "z64.h"
 #include "macros.h"
 #include "Fonts.h"
+#include "window/FileDropMgr.h"
 #include "window/gui/resource/Font.h"
 #include <utils/StringHelper.h>
 #include "Enhancements/custom-message/CustomMessageManager.h"
@@ -51,7 +52,7 @@
 #include "Extractor/Extract.h"
 #endif
 
-#include <Fast3D/gfx_pc.h>
+#include <Fast3D/interpreter.h>
 
 #ifdef __APPLE__
 #include <SDL_scancode.h>
@@ -271,7 +272,7 @@ OTRGlobals::OTRGlobals() {
     if (std::filesystem::exists(ootPath)) {
         OTRFiles.push_back(ootPath);
     }
-    std::string sohOtrPath = Ship::Context::GetPathRelativeToAppBundle("soh.otr");
+    std::string sohOtrPath = Ship::Context::LocateFileAcrossAppDirs("soh.otr");
     if (std::filesystem::exists(sohOtrPath)) {
         OTRFiles.push_back(sohOtrPath);
     }
@@ -307,6 +308,7 @@ OTRGlobals::OTRGlobals() {
     context->InitGfxDebugger();
     context->InitConfiguration();
     context->InitConsoleVariables();
+    context->InitFileDropMgr();
 
     // tell LUS to reserve 3 SoH specific threads (Game, Audio, Save)
     context->InitResourceManager(OTRFiles, {}, 3);
@@ -329,6 +331,10 @@ OTRGlobals::OTRGlobals() {
 
     context->InitCrashHandler();
     context->InitConsole();
+
+    Ship::Context::GetInstance()->GetLogger()->set_level(
+        (spdlog::level::level_enum)CVarGetInteger(CVAR_DEVELOPER_TOOLS("LogLevel"), 1));
+    Ship::Context::GetInstance()->GetLogger()->set_pattern("[%H:%M:%S.%e] [%s:%#] [%l] %v");
 
     auto sohInputEditorWindow =
         std::make_shared<SohInputEditorWindow>(CVAR_WINDOW("ControllerConfiguration"), "Configure Controller");
@@ -1145,13 +1151,20 @@ extern "C" void InitOTR() {
             "Error", "SoH does not have proper file permissions. Please move it to a folder that does and run again.");
         exit(1);
     }
+    if (ownPath.string().find("OneDrive") != std::string::npos) {
+        Extractor::ShowErrorBox(
+            "Error",
+            "SoH appears to be in a OneDrive folder, which will cause issues. "
+            "Please move it to a folder outside of OneDrive, like the root of a drive (e.g. \"C:\\Games\\SoH\").");
+        exit(1);
+    }
 #endif
 
 #if not defined(__SWITCH__) && not defined(__WIIU__)
     CheckAndCreateModFolder();
 #endif
 
-    CheckSoHOTRVersion(Ship::Context::GetPathRelativeToAppBundle("soh.otr"));
+    CheckSoHOTRVersion(Ship::Context::LocateFileAcrossAppDirs("soh.otr"));
 
     if (!std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs("oot-mq.otr", appShortName)) &&
         !std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs("oot.otr", appShortName))) {
@@ -1434,13 +1447,13 @@ extern "C" void Graph_StartFrame() {
     }
 #endif
 
-    if (CVarGetInteger(CVAR_NEW_FILE_DROPPED, 0)) {
-        std::string filePath = SohUtils::Sanitize(CVarGetString(CVAR_DROPPED_FILE, ""));
+    auto dropMgr = Ship::Context::GetInstance()->GetFileDropMgr();
+    if (dropMgr->FileDropped()) {
+        std::string filePath = dropMgr->GetDroppedFile();
         if (!filePath.empty()) {
             GameInteractor::Instance->ExecuteHooks<GameInteractor::OnFileDropped>(filePath);
         }
-        CVarClear(CVAR_NEW_FILE_DROPPED);
-        CVarClear(CVAR_DROPPED_FILE);
+        dropMgr->ClearDroppedFile();
     }
 }
 
@@ -1899,7 +1912,7 @@ extern "C" void OTRControllerCallback(uint8_t rumble) {
 }
 
 extern "C" float OTRGetAspectRatio() {
-    return gfx_current_dimensions.aspect_ratio;
+    return Ship::Context::GetInstance()->GetWindow()->GetAspectRatio();
 }
 
 extern "C" float OTRGetDimensionFromLeftEdge(float v) {
@@ -1912,12 +1925,34 @@ extern "C" float OTRGetDimensionFromRightEdge(float v) {
 
 // Gets the width of the current render target area
 extern "C" uint32_t OTRGetGameRenderWidth() {
-    return gfx_current_dimensions.width;
+    auto fastWnd = dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow());
+    auto intP = fastWnd->GetInterpreterWeak().lock();
+
+    if (!intP) {
+        assert(false && "Lost reference to Fast::Interpreter");
+        return 320;
+    }
+
+    uint32_t height, width;
+    intP->GetCurDimensions(&width, &height);
+
+    return width;
 }
 
 // Gets the height of the current render target area
 extern "C" uint32_t OTRGetGameRenderHeight() {
-    return gfx_current_dimensions.height;
+    auto fastWnd = dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow());
+    auto intP = fastWnd->GetInterpreterWeak().lock();
+
+    if (!intP) {
+        assert(false && "Lost reference to Fast::Interpreter");
+        return 240;
+    }
+
+    uint32_t height, width;
+    intP->GetCurDimensions(&width, &height);
+
+    return height;
 }
 
 f32 floorf(f32 x); // RANDOTODO False positive error "allowing all exceptions is incompatible with previous function"
@@ -2208,7 +2243,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                     (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_STONE &&
                      CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
 
-            Actor* stone = GET_PLAYER(play)->talkActor;
+            Actor* stone = player->talkActor;
             RandomizerHint stoneHint = RH_NONE;
             s16 hintParams = stone->params & 0xFF;
 
@@ -2266,7 +2301,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                 (RandomizerInf)((textId - TEXT_SHOP_ITEM_RANDOM_CONFIRM) + RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1));
             messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(rc, TEXT_SHOP_ITEM_RANDOM_CONFIRM);
         } else if (textId == TEXT_SCRUB_RANDOM) {
-            EnDns* enDns = (EnDns*)GET_PLAYER(play)->talkActor;
+            EnDns* enDns = (EnDns*)player->talkActor;
             RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf(
                 (RandomizerInf)enDns->sohScrubIdentity.randomizerInf);
             messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(
@@ -2316,7 +2351,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, textId,
                                                                            MF_AUTO_FORMAT);
         } else if (textId == TEXT_SKULLTULA_PEOPLE_IM_CURSED) {
-            actorParams = GET_PLAYER(play)->talkActor->params;
+            actorParams = player->talkActor->params;
             if (actorParams == 1 && ctx->GetOption(RSK_KAK_10_SKULLS_HINT)) {
                 messageEntry = ctx->GetHint(RH_KAK_10_SKULLS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
             } else if (actorParams == 2 && ctx->GetOption(RSK_KAK_20_SKULLS_HINT)) {
@@ -2412,6 +2447,13 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                 CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId, MF_AUTO_FORMAT);
         } else if (textId == TEXT_MASK_SHOP_SIGN && ctx->GetOption(RSK_MASK_SHOP_HINT)) {
             messageEntry = ctx->GetHint(RH_MASK_SHOP_HINT)->GetHintMessage(MF_AUTO_FORMAT);
+        } else if (textId == TEXT_BIG_POE_COLLECTED_RANDO) {
+            messageEntry =
+                CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId, MF_AUTO_FORMAT);
+        } else if (textId == TEXT_GERUDO_GUARD_FRIENDLY && player->talkActor->id == ACTOR_EN_GE2) {
+            // TODO_TRANSLATE Translate into french and german
+            messageEntry = CustomMessage("Want me to throw you in jail?&\x1B#Yes please&No thanks#", { QM_GREEN });
+            messageEntry.AutoFormat();
         }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {
@@ -2423,15 +2465,15 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             // animation until the text box auto-dismisses.
             // RANDOTODO: Implement a way to determine if an item came from a skulltula and
             // inject the auto-dismiss control code if it did.
-            if (CVarGetInteger(CVAR_ENHANCEMENT("SkulltulaFreeze"), 0) != 0 &&
-                !(IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_TOKENS) != RO_TOKENSANITY_OFF)) {
+            bool gsTokensShuffled = Randomizer_GetSettingValue(RSK_SHUFFLE_TOKENS) != RO_TOKENSANITY_OFF;
+            if (CVarGetInteger(CVAR_ENHANCEMENT("SkulltulaFreeze"), 0) != 0 && !(IS_RANDO && gsTokensShuffled)) {
                 textId = TEXT_GS_NO_FREEZE;
             } else {
                 textId = TEXT_GS_FREEZE;
             }
             // In vanilla, GS token count is incremented prior to the text box displaying
             // In rando we need to bump the token count by one to show the correct count
-            s16 gsCount = gSaveContext.inventory.gsTokens + (IS_RANDO ? 1 : 0);
+            s16 gsCount = gSaveContext.inventory.gsTokens + ((IS_RANDO && gsTokensShuffled) ? 1 : 0);
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId, MF_FORMATTED);
             messageEntry.Replace("[[gsCount]]", std::to_string(gsCount));
         } else if (CVarGetInteger(CVAR_ENHANCEMENT("SkulltulaFreeze"), 0) != 0 &&
@@ -2496,11 +2538,23 @@ extern "C" void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex) {
 }
 
 extern "C" void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* replacement) {
-    gfx_register_blended_texture(name, mask, replacement);
+    if (auto intP = dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow())
+                        ->GetInterpreterWeak()
+                        .lock()) {
+        intP->RegisterBlendedTexture(name, mask, replacement);
+    } else {
+        assert(false && "Lost reference to Fast::Interpreter");
+    }
 }
 
 extern "C" void Gfx_UnregisterBlendedTexture(const char* name) {
-    gfx_unregister_blended_texture(name);
+    if (auto intP = dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow())
+                        ->GetInterpreterWeak()
+                        .lock()) {
+        intP->UnregisterBlendedTexture(name);
+    } else {
+        assert(false && "Lost reference to Fast::Interpreter");
+    }
 }
 
 extern "C" void Gfx_TextureCacheDelete(const uint8_t* texAddr) {
@@ -2514,7 +2568,13 @@ extern "C" void Gfx_TextureCacheDelete(const uint8_t* texAddr) {
         texAddr = (const uint8_t*)ResourceMgr_GetResourceDataByNameHandlingMQ(imgName);
     }
 
-    gfx_texture_cache_delete(texAddr);
+    if (auto intP = dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow())
+                        ->GetInterpreterWeak()
+                        .lock()) {
+        intP->TextureCacheDelete(texAddr);
+    } else {
+        assert(false && "Lost reference to Fast::Interpreter");
+    }
 }
 
 void SoH_ProcessDroppedFiles(std::string filePath) {
@@ -2594,4 +2654,7 @@ void SoH_ProcessDroppedFiles(std::string filePath) {
         return;
     }
 }
-// #endregion
+
+extern "C" void CheckTracker_RecalculateAvailableChecks() {
+    CheckTracker::RecalculateAvailableChecks();
+}

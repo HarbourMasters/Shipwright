@@ -2,7 +2,6 @@
 
 #include <stdint.h>
 #include "z64item.h"
-#include "randomizer_inf.h"
 
 #define MAX_TRICK_NAME_SIZE 50
 
@@ -213,6 +212,15 @@ typedef enum {
     LOGIC_TRIFORCE_PIECES,
     LOGIC_MAX
 } LogicVal;
+
+#define DEFINE_RAND_INF(enum) enum,
+
+typedef enum {
+#include "randomizer_inf.h"
+    RAND_INF_MAX,
+} RandomizerInf;
+
+#undef DEFINE_RAND_INF
 
 typedef enum {
     RA_NONE,
@@ -566,6 +574,7 @@ typedef enum {
     RR_DEKU_TREE_MQ_OUTSIDE_BOSS_ROOM,
 
     RR_DEKU_TREE_BOSS_ENTRYWAY,
+    RR_DEKU_TREE_BOSS_EXIT,
     RR_DEKU_TREE_BOSS_ROOM,
 
     RR_DODONGOS_CAVERN_BEGINNING,
@@ -613,7 +622,9 @@ typedef enum {
     RR_DODONGOS_CAVERN_MQ_BEHIND_MOUTH,
     RR_DODONGOS_CAVERN_MQ_BACK_BEHIND_FIRE,
     RR_DODONGOS_CAVERN_MQ_BACK_SWITCH_GRAVE,
+
     RR_DODONGOS_CAVERN_BOSS_ENTRYWAY,
+    RR_DODONGOS_CAVERN_BOSS_EXIT,
     RR_DODONGOS_CAVERN_BOSS_ROOM,
 
     RR_JABU_JABUS_BELLY_BEGINNING,
@@ -642,6 +653,7 @@ typedef enum {
     RR_JABU_JABUS_BELLY_MQ_EAST_ROOM,
 
     RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY,
+    RR_JABU_JABUS_BELLY_BOSS_EXIT,
     RR_JABU_JABUS_BELLY_BOSS_ROOM,
 
     RR_FOREST_TEMPLE_FIRST_ROOM,
@@ -3697,6 +3709,8 @@ typedef enum {
     RT_MEGASIDEHOP_BOMB,
     RT_MEGASIDEHOP_BOMBCHU,
     RT_NAVI_DIVE,
+    RT_BOTTOM_OF_THE_WELL_NAVI_DIVE,
+    RT_LOST_WOOD_NAVI_DIVE,
     RT_OCARINA_ITEMS,
     RT_OCARINA_ITEMS_BOMB,
     RT_OCARINA_ITEMS_ESS,
@@ -5795,7 +5809,6 @@ typedef enum {
     RSK_STARTING_NUTS,
     RSK_FULL_WALLETS,
     RSK_SHUFFLE_CHEST_MINIGAME,
-    RSK_CUCCO_COUNT,
     RSK_BIG_POE_COUNT,
     RSK_SKIP_EPONA_RACE,
     RSK_COMPLETE_MASK_QUEST,
@@ -6139,6 +6152,7 @@ typedef enum {
 
 // Song shuffle Settings (Song locations, Dungeon rewards, anywhere)
 typedef enum {
+    RO_SONG_SHUFFLE_OFF,
     RO_SONG_SHUFFLE_SONG_LOCATIONS,
     RO_SONG_SHUFFLE_DUNGEON_REWARDS,
     RO_SONG_SHUFFLE_ANYWHERE,

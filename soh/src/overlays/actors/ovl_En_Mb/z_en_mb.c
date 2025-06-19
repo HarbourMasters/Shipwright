@@ -303,7 +303,7 @@ void EnMb_Init(Actor* thisx, PlayState* play) {
 
             relYawFromPlayer =
                 this->actor.world.rot.y - Math_Vec3f_Yaw(&this->actor.world.pos, &player->actor.world.pos);
-            if (ABS(relYawFromPlayer) > 0x4000) {
+            if (ABS(relYawFromPlayer) > 0x4000 && !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0)) {
                 this->actor.world.rot.y = thisx->world.rot.y + 0x8000;
                 this->actor.shape.rot.y = thisx->world.rot.y;
                 this->actor.world.pos.z = thisx->world.pos.z + 600.0f;

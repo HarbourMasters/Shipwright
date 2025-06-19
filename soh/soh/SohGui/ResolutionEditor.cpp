@@ -3,7 +3,8 @@
 #include <libultraship/libultraship.h>
 
 #include "soh/SohGui/UIWidgets.hpp"
-#include <graphic/Fast3D/gfx_pc.h>
+#include <graphic/Fast3D/Fast3dWindow.h>
+#include <graphic/Fast3D/interpreter.h>
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
@@ -85,6 +86,16 @@ static bool disabled_everything;
 static bool disabled_pixelCount;
 
 using namespace UIWidgets;
+
+static std::weak_ptr<Fast::Interpreter> mInterpreter;
+
+std::shared_ptr<Fast::Interpreter> GetInterpreter() {
+    auto intP = mInterpreter.lock();
+    if (!intP) {
+        assert(false && "Lost reference to Fast::Interpreter");
+    }
+    return intP;
+}
 
 void ResolutionCustomWidget(WidgetInfo& info) {
     ImGui::BeginDisabled(disabled_everything);
@@ -368,18 +379,23 @@ void ResolutionCustomWidget(WidgetInfo& info) {
 }
 
 void RegisterResolutionWidgets() {
+    auto fastWnd = dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow());
+    mInterpreter = fastWnd->GetInterpreterWeak();
+
     WidgetPath path = { "Settings", "Graphics", SECTION_COLUMN_2 };
 
     // Resolution visualiser
     mSohMenu->AddWidget(path, "Viewport dimensions: {} x {}", WIDGET_TEXT)
         .RaceDisable(false)
         .PreFunc([](WidgetInfo& info) {
+            auto gfx_current_game_window_viewport = GetInterpreter().get()->mGameWindowViewport;
             info.name = fmt::format("Viewport dimensions: {} x {}", gfx_current_game_window_viewport.width,
                                     gfx_current_game_window_viewport.height);
         });
     mSohMenu->AddWidget(path, "Internal resolution: {} x {}", WIDGET_TEXT)
         .RaceDisable(false)
         .PreFunc([](WidgetInfo& info) {
+            auto gfx_current_dimensions = GetInterpreter().get()->mCurDimensions;
             info.name = fmt::format("Internal resolution: {} x {}", gfx_current_dimensions.width,
                                     gfx_current_dimensions.height);
         });
@@ -486,6 +502,7 @@ void RegisterResolutionWidgets() {
                 }
             } else if (showHorizontalResField) { // Show calculated aspect ratio
                 if (item_aspectRatio) {
+                    auto gfx_current_dimensions = GetInterpreter().get()->mCurDimensions;
                     ImGui::Dummy({ 0, 2 });
                     const float resolvedAspectRatio =
                         (float)gfx_current_dimensions.width / gfx_current_dimensions.height;
@@ -539,6 +556,8 @@ void UpdateResolutionVars() {
 
     short integerScale_maximumBounds = 1; // can change when window is resized
     // This is mostly just for UX purposes, as Fit Automatically logic is part of LUS.
+    auto gfx_current_game_window_viewport = GetInterpreter().get()->mGameWindowViewport;
+    auto gfx_current_dimensions = GetInterpreter().get()->mCurDimensions;
     if (((float)gfx_current_game_window_viewport.width / gfx_current_game_window_viewport.height) >
         ((float)gfx_current_dimensions.width / gfx_current_dimensions.height)) {
         // Scale to window height

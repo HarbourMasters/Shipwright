@@ -12,7 +12,6 @@
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
 #include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
-#include "soh/Enhancements/nametag.h"
 #include "soh/Enhancements/timesaver_hook_handlers.h"
 #include "soh/Enhancements/TimeSavers/TimeSavers.h"
 #include "soh/Enhancements/randomizer/hook_handlers.h"
@@ -99,6 +98,13 @@ void SwitchAge() {
     gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK_FAST;
     gPlayState->linkAgeOnLoad ^= 1;
 
+    // Discover adult/child spawns
+    if (gPlayState->linkAgeOnLoad == LINK_AGE_ADULT) {
+        Entrance_SetEntranceDiscovered(ENTR_HYRULE_FIELD_10, false);
+    } else {
+        Entrance_SetEntranceDiscovered(ENTR_LINKS_HOUSE_CHILD_SPAWN, false);
+    }
+
     static HOOK_ID hookId = 0;
     hookId = REGISTER_VB_SHOULD(VB_INFLICT_VOID_DAMAGE, {
         *should = false;
@@ -132,63 +138,6 @@ void RegisterOcarinaTimeTravel() {
         if (justPlayedSoT && notNearAnySource && (hasOcarinaOfTime || doesntNeedOcarinaOfTime) && hasMasterSword) {
             SwitchAge();
         }
-    });
-}
-
-void RegisterRupeeDash() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("RupeeDash"), 0)) {
-            return;
-        }
-
-        // Initialize Timer
-        static uint16_t rupeeDashTimer = 0;
-        uint16_t rdmTime = CVarGetInteger(CVAR_ENHANCEMENT("RupeeDashInterval"), 5) * 20;
-
-        // Did time change by DashInterval?
-        if (rupeeDashTimer >= rdmTime) {
-            rupeeDashTimer = 0;
-            if (gSaveContext.rupees > 0) {
-                uint16_t walletSize = (CUR_UPG_VALUE(UPG_WALLET) + 1) * -1;
-                Rupees_ChangeBy(walletSize);
-            } else {
-                Health_ChangeBy(gPlayState, -16);
-            }
-        } else {
-            rupeeDashTimer++;
-        }
-    });
-}
-
-void RegisterShadowTag() {
-    static bool shouldSpawn = false;
-    static uint16_t delayTimer = 60;
-
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("ShadowTag"), 0)) {
-            return;
-        }
-        if (gPlayState->sceneNum == SCENE_FOREST_TEMPLE && // Forest Temple Scene
-                gPlayState->roomCtx.curRoom.num == 16 ||   // Green Poe Room
-            gPlayState->roomCtx.curRoom.num == 13 ||       // Blue Poe Room
-            gPlayState->roomCtx.curRoom.num == 12) {       // Red Poe Room
-            return;
-        } else {
-            if (shouldSpawn && (delayTimer <= 0)) {
-                Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_WALLMAS, 0, 0, 0, 0, 0, 0, 3, false);
-                shouldSpawn = false;
-            } else {
-                delayTimer--;
-            }
-        }
-    });
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
-        shouldSpawn = true;
-        delayTimer = 60;
-    });
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
-        shouldSpawn = true;
-        delayTimer = 60;
     });
 }
 
@@ -240,65 +189,6 @@ void RegisterDeleteFileOnDeath() {
             std::reinterpret_pointer_cast<Ship::ConsoleWindow>(
                 Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
                 ->Dispatch("reset");
-        }
-    });
-}
-
-struct DayTimeGoldSkulltulas {
-    uint16_t scene;
-    uint16_t room;
-    bool forChild;
-    std::vector<ActorEntry> actorEntries;
-};
-
-using DayTimeGoldSkulltulasList = std::vector<DayTimeGoldSkulltulas>;
-
-void RegisterDaytimeGoldSkultullas() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("NightGSAlwaysSpawn"), 0)) {
-            return;
-        }
-
-        // Gold Skulltulas that are not part of the scene actor list during the day
-        // Actor values copied from the night time scene actor list
-        static const DayTimeGoldSkulltulasList dayTimeGoldSkulltulas = {
-            // Graveyard
-            { SCENE_GRAVEYARD, 1, true, { { ACTOR_EN_SW, { 156, 315, 795 }, { 16384, -32768, 0 }, -20096 } } },
-            // ZF
-            { SCENE_ZORAS_FOUNTAIN, 0, true, { { ACTOR_EN_SW, { -1891, 187, 1911 }, { 16384, 18022, 0 }, -19964 } } },
-            // GF
-            { SCENE_GERUDOS_FORTRESS,
-              0,
-              false,
-              { { ACTOR_EN_SW, { 1598, 999, -2008 }, { 16384, -16384, 0 }, -19198 } } },
-            { SCENE_GERUDOS_FORTRESS, 1, false, { { ACTOR_EN_SW, { 3377, 1734, -4935 }, { 16384, 0, 0 }, -19199 } } },
-            // Kak
-            { SCENE_KAKARIKO_VILLAGE, 0, false, { { ACTOR_EN_SW, { -18, 540, 1800 }, { 0, -32768, 0 }, -20160 } } },
-            { SCENE_KAKARIKO_VILLAGE,
-              0,
-              true,
-              { { ACTOR_EN_SW, { -465, 377, -888 }, { 0, 28217, 0 }, -20222 },
-                { ACTOR_EN_SW, { 5, 686, -171 }, { 0, -32768, 0 }, -20220 },
-                { ACTOR_EN_SW, { 324, 270, 905 }, { 16384, 0, 0 }, -20216 },
-                { ACTOR_EN_SW, { -602, 120, 1120 }, { 16384, 0, 0 }, -20208 } } },
-            // LLR
-            { SCENE_LON_LON_RANCH,
-              0,
-              true,
-              { { ACTOR_EN_SW, { -2344, 180, 672 }, { 16384, 22938, 0 }, -29695 },
-                { ACTOR_EN_SW, { 808, 48, 326 }, { 16384, 0, 0 }, -29694 },
-                { ACTOR_EN_SW, { 997, 286, -2698 }, { 16384, -16384, 0 }, -29692 } } },
-        };
-
-        for (const auto& dayTimeGS : dayTimeGoldSkulltulas) {
-            if (IS_DAY && dayTimeGS.forChild == LINK_IS_CHILD && dayTimeGS.scene == gPlayState->sceneNum &&
-                dayTimeGS.room == gPlayState->roomCtx.curRoom.num) {
-                for (const auto& actorEntry : dayTimeGS.actorEntries) {
-                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, actorEntry.id, actorEntry.pos.x, actorEntry.pos.y,
-                                actorEntry.pos.z, actorEntry.rot.x, actorEntry.rot.y, actorEntry.rot.z,
-                                actorEntry.params, false);
-                }
-            }
         }
     });
 }
@@ -1074,9 +964,6 @@ void InitMods() {
     TimeSavers_Register();
     RegisterTTS();
     RegisterOcarinaTimeTravel();
-    RegisterDaytimeGoldSkultullas();
-    RegisterRupeeDash();
-    RegisterShadowTag();
     RegisterPermanentHeartLoss();
     RegisterDeleteFileOnDeath();
     RegisterHyperBosses();
@@ -1090,7 +977,6 @@ void InitMods() {
     RegisterRandomizedEnemySizes();
     RegisterOpenAllHours();
     RegisterToTMedallions();
-    NameTag_RegisterHooks();
     RegisterFloorSwitchesHook();
     RegisterPatchHandHandler();
     RegisterHurtContainerModeHandler();

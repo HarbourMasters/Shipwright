@@ -706,7 +706,7 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
             sStaggerCount = 0;
         }
     }
-    if (player->linearVelocity == -18.0f) {
+    if (GameInteractor_Should(VB_TORCH2_HANDLE_CLANKING, player->linearVelocity == -18.0f, this)) {
         if (this->actor.xzDistToPlayer > 80.0f) {
             player->linearVelocity = 1.2f;
         } else if (this->actor.xzDistToPlayer < 70.0f) {

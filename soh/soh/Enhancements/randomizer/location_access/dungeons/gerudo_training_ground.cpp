@@ -149,7 +149,7 @@ void RegionTable_Init_GerudoTrainingGround() {
         Entrance(RR_GERUDO_TRAINING_GROUND_MQ_MAZE_CENTER, []{return logic->SmallKeys(RR_GERUDO_TRAINING_GROUND, 3);}),
     });
 
-    areaTable[RR_GERUDO_TRAINING_GROUND_MQ_MAZE_CENTER] = Region("Gerudo Training Ground MQ Center", "Gerudo Training Ground", {RA_GERUDO_TRAINING_GROUND}, NO_DAY_NIGHT_CYCLE, {
+    areaTable[RR_GERUDO_TRAINING_GROUND_MQ_MAZE_CENTER] = Region("Gerudo Training Ground MQ Maze Center", "Gerudo Training Ground", {RA_GERUDO_TRAINING_GROUND}, NO_DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->MQGTGMazeSwitch, []{return logic->CanUse(RG_MEGATON_HAMMER);}),
     }, 

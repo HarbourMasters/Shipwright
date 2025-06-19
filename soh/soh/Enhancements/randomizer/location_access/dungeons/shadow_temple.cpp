@@ -112,7 +112,7 @@ void RegionTable_Init_ShadowTemple() {
         LOCATION(RC_SHADOW_TEMPLE_AFTER_SHIP_LOWER_HEART,       (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_DISTANT_SCARECROW) || (ctx->GetTrickOption(RT_SHADOW_STATUE) && logic->CanUse(RG_BOMBCHU_5))) && logic->CanUse(RG_SONG_OF_TIME) || (logic->CanUse(RG_DISTANT_SCARECROW) && logic->CanUse(RG_HOVER_BOOTS))),
     }, {
         //Exits
-        Entrance(RR_SHADOW_TEMPLE_BOSS_ENTRYWAY, []{return (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_DISTANT_SCARECROW) || (ctx->GetTrickOption(RT_SHADOW_STATUE) && logic->CanUse(RG_BOMBCHU_5))) && logic->SmallKeys(RR_SHADOW_TEMPLE, 5) && logic->CanUse(RG_HOVER_BOOTS) && logic->HasItem(RG_SHADOW_TEMPLE_BOSS_KEY);})
+        Entrance(RR_SHADOW_TEMPLE_BOSS_ENTRYWAY, []{return (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_DISTANT_SCARECROW) || (ctx->GetTrickOption(RT_SHADOW_STATUE) && logic->CanUse(RG_BOMBCHU_5))) && logic->SmallKeys(RR_SHADOW_TEMPLE, 5) && logic->CanUse(RG_HOVER_BOOTS);})
     });
 
 #pragma endregion
@@ -370,7 +370,7 @@ void RegionTable_Init_ShadowTemple() {
     }, {
         //Exits
         Entrance(RR_SHADOW_TEMPLE_MQ_ACROSS_CHASM, []{return logic->CanUse(RG_HOVER_BOOTS) && (ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH));}),
-        Entrance(RR_SHADOW_TEMPLE_BOSS_ENTRYWAY,   []{return logic->HasItem(RG_SHADOW_TEMPLE_BOSS_KEY);}),
+        Entrance(RR_SHADOW_TEMPLE_BOSS_ENTRYWAY,   []{return true;}),
     });
 
     //Assumes lens is checked on entry
@@ -403,12 +403,12 @@ void RegionTable_Init_ShadowTemple() {
         // Exits
         Entrance(RR_SHADOW_TEMPLE_BEYOND_BOAT,    []{return ctx->GetDungeon(SHADOW_TEMPLE)->IsVanilla() && false;}),
         Entrance(RR_SHADOW_TEMPLE_MQ_BEYOND_BOAT, []{return ctx->GetDungeon(SHADOW_TEMPLE)->IsMQ() && false;}),
-        Entrance(RR_SHADOW_TEMPLE_BOSS_ROOM,      []{return true;}),
+        Entrance(RR_SHADOW_TEMPLE_BOSS_ROOM,      []{return logic->HasItem(RG_SHADOW_TEMPLE_BOSS_KEY);}),
     });
 
     areaTable[RR_SHADOW_TEMPLE_BOSS_ROOM] = Region("Shadow Temple Boss Room", "Shadow Temple", {}, NO_DAY_NIGHT_CYCLE, {
         // Events
-        EventAccess(&logic->ShadowTempleClear, []{return logic->ShadowTempleClear || logic->CanKillEnemy(RE_BONGO_BONGO);}),
+        EventAccess(&logic->ShadowTempleClear, []{return logic->CanKillEnemy(RE_BONGO_BONGO);}),
     }, {
         // Locations
         LOCATION(RC_SHADOW_TEMPLE_BONGO_BONGO_HEART, logic->ShadowTempleClear),

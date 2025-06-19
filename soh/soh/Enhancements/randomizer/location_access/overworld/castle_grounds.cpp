@@ -17,7 +17,7 @@ void RegionTable_Init_CastleGrounds() {
     areaTable[RR_HYRULE_CASTLE_GROUNDS] = Region("Hyrule Castle Grounds", "Castle Grounds", {RA_HYRULE_CASTLE}, DAY_NIGHT_CYCLE, {
         //Events
         EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairy();}),
-        EventAccess(&logic->ButterflyFairy,   []{return logic->ButterflyFairy   || logic->CanUse(RG_STICKS);}),
+        EventAccess(&logic->ButterflyFairy,   []{return logic->CanUse(RG_STICKS);}),
         EventAccess(&logic->BugRock,          []{return true;}),
     }, {
         //Locations
