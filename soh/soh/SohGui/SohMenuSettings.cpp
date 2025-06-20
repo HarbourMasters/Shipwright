@@ -63,6 +63,11 @@ static std::unordered_map<int32_t, const char*> overlayTextScaleOptions = {
     { 3, "X-Large" },
 };
 
+static std::unordered_map<int32_t, const char*> overlayTextFontOptions = {
+    { 0, "Press Start 2P" },
+    { 1, "Fipps" },
+};
+
 const char* GetGameVersionString(uint32_t index) {
     uint32_t gameVersion = ResourceMgr_GetGameVersion(index);
     switch (gameVersion) {
@@ -257,6 +262,16 @@ void SohMenu::AddMenuSettings() {
         .Options(ComboboxOptions()
                      .ComboMap(overlayTextScaleOptions)
                      .Tooltip("Changes the font size of Overlay Text.")
+                     .DefaultIndex(0)
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Far))
+        .Callback([](WidgetInfo& info) { OTRGlobals::Instance->LoadOverlayTextFont(); });
+    AddWidget(path, "Overlay Text Font", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_SETTING("OverlayTextFont"))
+        .RaceDisable(false)
+        .Options(ComboboxOptions()
+                     .ComboMap(overlayTextFontOptions)
+                     .Tooltip("Changes the font of Overlay Text.")
                      .DefaultIndex(0)
                      .ComponentAlignment(ComponentAlignments::Right)
                      .LabelPosition(LabelPositions::Far))

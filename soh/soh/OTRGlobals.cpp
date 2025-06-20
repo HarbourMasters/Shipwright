@@ -345,12 +345,15 @@ void OTRGlobals::Initialize() {
     context->InitWindow(sohFast3dWindow);
 
     auto overlay = context->GetInstance()->GetWindow()->GetGui()->GetGameOverlay();
-    overlay->LoadFont("Fipps", 32.0f, "fonts/Fipps-Regular.otf");
     // Currently, differently sized fonts require preloading (reloading font at runtime crashes the game)
     overlay->LoadFont("Press Start 2P", 12.0f, "fonts/PressStart2P-Regular.ttf");
-    overlay->LoadFont("Press Start 2P 24", 24.0f, "fonts/PressStart2P-Regular.ttf");
-    overlay->LoadFont("Press Start 2P 32", 32.0f, "fonts/PressStart2P-Regular.ttf");
-    overlay->LoadFont("Press Start 2P 40", 40.0f, "fonts/PressStart2P-Regular.ttf");
+    overlay->LoadFont("Press Start 2P Normal", 24.0f, "fonts/PressStart2P-Regular.ttf");
+    overlay->LoadFont("Press Start 2P Large", 32.0f, "fonts/PressStart2P-Regular.ttf");
+    overlay->LoadFont("Press Start 2P X-Large", 40.0f, "fonts/PressStart2P-Regular.ttf");
+    overlay->LoadFont("Fipps", 24.0f, "fonts/Fipps-Regular.otf");
+    overlay->LoadFont("Fipps Normal", 32.0f, "fonts/Fipps-Regular.otf");
+    overlay->LoadFont("Fipps Large", 40.0f, "fonts/Fipps-Regular.otf");
+    overlay->LoadFont("Fipps X-Large", 48.0f, "fonts/Fipps-Regular.otf");
     LoadOverlayTextFont();
 
     context->InitAudio({ .SampleRate = 32000, .SampleLength = 1024, .DesiredBuffered = 1680 });
@@ -518,21 +521,43 @@ void OTRGlobals::ScaleImGui() {
 }
 
 void OTRGlobals::LoadOverlayTextFont() {
-    // TODO: Is Fipps font used in somewhere?
     auto overlay = context->GetInstance()->GetWindow()->GetGui()->GetGameOverlay();
-    switch (CVarGetInteger(CVAR_SETTING("OverlayTextScale"), 0)) {
+
+    switch (CVarGetInteger(CVAR_SETTING("OverlayTextFont"), 0)) {
         case 0:
         default:
-            overlay->SetCurrentFont("Press Start 2P");
+            switch (CVarGetInteger(CVAR_SETTING("OverlayTextScale"), 0)) {
+                case 0:
+                default:
+                    overlay->SetCurrentFont("Press Start 2P");
+                    break;
+                case 1:
+                    overlay->SetCurrentFont("Press Start 2P Normal");
+                    break;
+                case 2:
+                    overlay->SetCurrentFont("Press Start 2P Large");
+                    break;
+                case 3:
+                    overlay->SetCurrentFont("Press Start 2P X-Large");
+                    break;
+            }
             break;
         case 1:
-            overlay->SetCurrentFont("Press Start 2P 24");
-            break;
-        case 2:
-            overlay->SetCurrentFont("Press Start 2P 32");
-            break;
-        case 3:
-            overlay->SetCurrentFont("Press Start 2P 40");
+            switch (CVarGetInteger(CVAR_SETTING("OverlayTextScale"), 0)) {
+                case 0:
+                default:
+                    overlay->SetCurrentFont("Fipps");
+                    break;
+                case 1:
+                    overlay->SetCurrentFont("Fipps Normal");
+                    break;
+                case 2:
+                    overlay->SetCurrentFont("Fipps Large");
+                    break;
+                case 3:
+                    overlay->SetCurrentFont("Fipps X-Large");
+                    break;
+            }
             break;
     }
 }
