@@ -245,7 +245,8 @@ Color_RGBA8 Color_Saved_Extra = { 0, 185, 0, 255 };               // Green
 std::vector<uint32_t> buttons = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT, BTN_CRIGHT, BTN_L,
                                   BTN_Z, BTN_R, BTN_START, BTN_DUP,   BTN_DDOWN, BTN_DLEFT,  BTN_DRIGHT };
 static ImGuiTextFilter checkSearch;
-static bool recalculateAvailable = false;
+static bool gameSavedRecalculateAvailable = false;
+static bool gameLoadedRecalculateAvailable = false;
 std::array<bool, RCAREA_INVALID> filterAreasHidden = { 0 };
 std::array<bool, RC_MAX> filterChecksHidden = { 0 };
 
@@ -587,7 +588,7 @@ void CheckTrackerLoadGame(int32_t fileNum) {
         Rando::Context::GetInstance()->GetEntranceShuffler()->ApplyEntranceOverrides();
     }
 
-    RecalculateAvailableChecks();
+    gameLoadedRecalculateAvailable = true;
 }
 
 void CheckTrackerShopSlotChange(uint8_t cursorSlot, int16_t basePrice) {
@@ -885,7 +886,7 @@ void SaveTrackerData(SaveContext* saveContext, int sectionID, bool fullSave) {
 void SaveFile(SaveContext* saveContext, int sectionID, bool fullSave) {
     SaveTrackerData(saveContext, sectionID, fullSave);
     if (fullSave) {
-        recalculateAvailable = true;
+        gameSavedRecalculateAvailable = true;
     }
 }
 
@@ -992,6 +993,11 @@ void CheckTrackerWindow::DrawElement() {
         ImGui::Text("Waiting for file load..."); // TODO Language
         EndFloatWindows();
         return;
+    }
+
+    if (gameLoadedRecalculateAvailable) {
+        gameLoadedRecalculateAvailable = false;
+        RecalculateAvailableChecks();
     }
 
     SceneID sceneId = SCENE_ID_MAX;
@@ -1986,7 +1992,7 @@ void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, 
 }
 
 void RecalculateAvailableChecks(RandomizerRegion startingRegion /* = RR_ROOT */) {
-    if (!enableAvailableChecks || !GameInteractor::IsSaveLoaded(true)) {
+    if (!enableAvailableChecks || !GameInteractor::IsSaveLoaded()) {
         return;
     }
 
@@ -2052,8 +2058,8 @@ static std::unordered_map<int32_t, const char*> buttonStrings = {
 };
 
 void CheckTrackerSettingsWindow::DrawElement() {
-    if (recalculateAvailable) {
-        recalculateAvailable = false;
+    if (gameSavedRecalculateAvailable) {
+        gameSavedRecalculateAvailable = false;
         RecalculateAvailableChecks();
     }
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
