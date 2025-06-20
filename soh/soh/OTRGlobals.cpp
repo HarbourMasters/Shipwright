@@ -1160,7 +1160,7 @@ extern "C" void InitOTR() {
         std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs("oot-mq.o2r", appShortName)) ||
         std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs("oot.o2r", appShortName));
 
-    if (!ootOTRExists && !ootO2RExists) {
+    if (!ootO2RExists) {
 
 #if not defined(__SWITCH__) && not defined(__WIIU__)
         std::string installPath = Ship::Context::GetAppBundlePath();
