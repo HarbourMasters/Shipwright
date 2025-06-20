@@ -34,7 +34,7 @@ void RegionTable_Init_GerudoFortress() {
     }, {
         //Exits
         Entrance(RR_TH_1_TORCH_CELL,       []{return true;}),
-        Entrance(RR_TH_DOUBLE_CELL,        []{return true;}),
+        Entrance(RR_TH_STEEP_SLOPE_CELL,   []{return true;}),
         Entrance(RR_TH_KITCHEN_CORRIDOR,   []{return true;}),
         //Jail
         Entrance(RR_GF_OUTSKIRTS,          []{return true;}),
@@ -113,6 +113,7 @@ void RegionTable_Init_GerudoFortress() {
         //Exits
         Entrance(RR_GF_TOP_OF_LOWER_VINES,    []{return true;}),
         Entrance(RR_GF_NEAR_GS,               []{return true;}),
+        Entrance(RR_GF_BOTTOM_OF_UPPER_VINES, []{return true;}),
         Entrance(RR_GF_TOP_OF_UPPER_VINES,    []{return logic->IsAdult && ctx->GetTrickOption(RT_GF_JUMP).Get();}),
     });
 
