@@ -34,7 +34,6 @@
 #include "Enhancements/randomizer/static_data.h"
 #include "Enhancements/randomizer/dungeon.h"
 #include "Enhancements/gameplaystats.h"
-#include "Enhancements/n64_weird_frame_data.inc"
 #include "frame_interpolation.h"
 #include "variables.h"
 #include "z64.h"
@@ -2031,11 +2030,6 @@ extern "C" int Controller_ShouldRumble(size_t slot) {
 
     // rumble
     return 1;
-}
-
-extern "C" void* getN64WeirdFrame(s32 i) {
-    char* weirdFrameBytes = reinterpret_cast<char*>(n64WeirdFrames);
-    return &weirdFrameBytes[i + sizeof(n64WeirdFrames)];
 }
 
 extern "C" size_t GetEquipNowMessage(char* buffer, char* src, const size_t maxBufferSize) {

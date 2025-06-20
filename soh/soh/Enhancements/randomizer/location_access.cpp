@@ -258,6 +258,7 @@ std::set<RandomizerArea> CalculateAreas(SceneID scene) {
         case SCENE_INSIDE_GANONS_CASTLE_COLLAPSE:
         case SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR:
         case SCENE_GANON_BOSS:
+        case SCENE_ID_MAX:
             return {};
         case SCENE_CHAMBER_OF_THE_SAGES:
         case SCENE_CUTSCENE_MAP:
@@ -270,7 +271,6 @@ std::set<RandomizerArea> CalculateAreas(SceneID scene) {
         case SCENE_HAIRAL_NIWA2:
         case SCENE_SASATEST:
         case SCENE_TESTROOM:
-        case SCENE_ID_MAX:
         default:
             assert(false);
             return {};

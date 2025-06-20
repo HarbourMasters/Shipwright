@@ -3,8 +3,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <assert.h>
-#include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define ANIM_INTERP 1
 
@@ -887,15 +887,10 @@ AnimationEntry* AnimationContext_AddEntry(AnimationContext* animationCtx, Animat
  */
 void AnimationContext_SetLoadFrame(PlayState* play, LinkAnimationHeader* animation, s32 frame, s32 limbCount,
                                    Vec3s* frameTable) {
-    if (CVarGetInteger(CVAR_ENHANCEMENT("N64WeirdFrames"), 0) && frame < 0) {
-        Vec3s* src = (Vec3s*)getN64WeirdFrame((sizeof(Vec3s) * limbCount + 2) * frame);
-        memcpy(frameTable, src, sizeof(Vec3s) * limbCount + 2);
-        return;
-    }
-
     AnimationEntry* entry = AnimationContext_AddEntry(&play->animationCtx, ANIMENTRY_LOADFRAME);
 
-    if (entry != NULL) {
+    if (GameInteractor_Should(VB_LOAD_PLAYER_ANIMATION_FRAME, entry != NULL, entry, animation, frame, limbCount,
+                              frameTable)) {
         if (ResourceMgr_OTRSigCheck(animation) != 0)
             animation = ResourceMgr_LoadAnimByName(animation);
 

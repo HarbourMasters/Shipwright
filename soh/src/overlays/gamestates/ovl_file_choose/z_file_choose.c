@@ -3597,10 +3597,6 @@ void FileChoose_Main(GameState* thisx) {
         sWindowContentColors[0][2] = 255;
     }
 
-    if (CVarGetInteger(CVAR_ENHANCEMENT("TimeFlowFileSelect"), 0) != 0) {
-        gSaveContext.skyboxTime += 0x10;
-    }
-
     OPEN_DISPS(this->state.gfxCtx);
 
     this->n64ddFlag = 0;
