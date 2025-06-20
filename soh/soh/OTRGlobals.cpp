@@ -346,6 +346,11 @@ void OTRGlobals::Initialize() {
 
     auto overlay = context->GetInstance()->GetWindow()->GetGui()->GetGameOverlay();
     overlay->LoadFont("Fipps", 32.0f, "fonts/Fipps-Regular.otf");
+    // Currently, differently sized fonts require preloading (reloading font at runtime crashes the game)
+    overlay->LoadFont("Press Start 2P", 12.0f, "fonts/PressStart2P-Regular.ttf");
+    overlay->LoadFont("Press Start 2P 24", 24.0f, "fonts/PressStart2P-Regular.ttf");
+    overlay->LoadFont("Press Start 2P 32", 32.0f, "fonts/PressStart2P-Regular.ttf");
+    overlay->LoadFont("Press Start 2P 40", 40.0f, "fonts/PressStart2P-Regular.ttf");
     LoadOverlayTextFont();
 
     context->InitAudio({ .SampleRate = 32000, .SampleLength = 1024, .DesiredBuffered = 1680 });
@@ -513,27 +518,23 @@ void OTRGlobals::ScaleImGui() {
 }
 
 void OTRGlobals::LoadOverlayTextFont() {
-    // TODO: Currenty, reloading a font causes crash.
+    // TODO: Is Fipps font used in somewhere?
     auto overlay = context->GetInstance()->GetWindow()->GetGui()->GetGameOverlay();
-    float fontSize;
     switch (CVarGetInteger(CVAR_SETTING("OverlayTextScale"), 0)) {
         case 0:
         default:
-            fontSize = 12.0f;
+            overlay->SetCurrentFont("Press Start 2P");
             break;
         case 1:
-            fontSize = 24.0f;
+            overlay->SetCurrentFont("Press Start 2P 24");
             break;
         case 2:
-            fontSize = 32.0f;
+            overlay->SetCurrentFont("Press Start 2P 32");
             break;
         case 3:
-            fontSize = 40.0f;
+            overlay->SetCurrentFont("Press Start 2P 40");
             break;
     }
-    SPDLOG_DEBUG("Loading Overlay Text Font with size {}", fontSize);
-    overlay->LoadFont("Press Start 2P", fontSize, "fonts/PressStart2P-Regular.ttf");
-    overlay->SetCurrentFont(CVarGetString(CVAR_GAME_OVERLAY_FONT, "Press Start 2P"));
 }
 
 ImFont* OTRGlobals::CreateDefaultFontWithSize(float size) {

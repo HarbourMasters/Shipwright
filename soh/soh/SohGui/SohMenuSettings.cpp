@@ -256,10 +256,11 @@ void SohMenu::AddMenuSettings() {
         .RaceDisable(false)
         .Options(ComboboxOptions()
                      .ComboMap(overlayTextScaleOptions)
-                     .Tooltip("Changes the font size of Overlay Text.\n(REQUIRES RESTART)")
+                     .Tooltip("Changes the font size of Overlay Text.")
                      .DefaultIndex(0)
                      .ComponentAlignment(ComponentAlignments::Right)
-                     .LabelPosition(LabelPositions::Far));
+                     .LabelPosition(LabelPositions::Far))
+        .Callback([](WidgetInfo& info) { OTRGlobals::Instance->LoadOverlayTextFont(); });
 
     // General - About
     path.column = SECTION_COLUMN_2;
