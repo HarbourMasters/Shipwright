@@ -11,7 +11,7 @@ void RegionTable_Init_WaterTemple() {
         //Exits
         Entrance(RR_WATER_TEMPLE_LOBBY,         []{return logic->HasItem(RG_BRONZE_SCALE) && ctx->GetDungeon(WATER_TEMPLE)->IsVanilla();}),
         Entrance(RR_WATER_TEMPLE_MQ_3F_CENTRAL, []{return logic->HasItem(RG_BRONZE_SCALE) && ctx->GetDungeon(WATER_TEMPLE)->IsMQ();}),
-        Entrance(RR_LAKE_HYLIA,                 []{return true;}),
+        Entrance(RR_LH_FROM_WATER_TEMPLE,       []{return true;}),
     });
 
 #pragma region Vanilla
