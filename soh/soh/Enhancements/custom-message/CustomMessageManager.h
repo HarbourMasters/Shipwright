@@ -154,6 +154,13 @@ class CustomMessage {
     void InsertNumber(uint8_t num);
 
     /**
+     * @brief A € sign at the end of an item name signals that it is plural.
+     * If a hint text has |singular|plural| forms specified, the unused one get's deleted.
+     * If no € sign is present, the singular form is used.
+     */
+    void SetSingularPlural();
+
+    /**
      * @brief Replaces various symbols with the control codes necessary to
      * display them in OoT's textboxes. i.e. special characters, colors, newlines,
      * wait for input, etc.

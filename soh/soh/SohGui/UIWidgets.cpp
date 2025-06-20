@@ -204,19 +204,19 @@ bool WindowButton(const char* label, const char* cvarName, std::shared_ptr<Ship:
     return dirty;
 }
 
-void PushStyleCheckbox(const ImVec4& color) {
+void PushStyleCheckbox(const ImVec4& color, ImVec2 padding) {
     ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(color.x, color.y, color.z, 1.0f));
     ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(color.x, color.y, color.z, 0.8f));
     ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4(color.x, color.y, color.z, 0.6f));
     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.0f, 0.0f, 0.0f, 0.3f));
     ImGui::PushStyleColor(ImGuiCol_CheckMark, ImVec4(1.0f, 1.0f, 1.0f, 0.7f));
     ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 3.0f);
-    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10.0f, 6.0f));
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, padding);
     ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 5.0f);
 }
 
-void PushStyleCheckbox(Colors color) {
-    PushStyleCheckbox(ColorValues.at(color));
+void PushStyleCheckbox(Colors color, ImVec2 padding) {
+    PushStyleCheckbox(ColorValues.at(color), padding);
 }
 
 void PopStyleCheckbox() {
@@ -297,6 +297,7 @@ bool Checkbox(const char* _label, bool* value, const CheckboxOptions& options) {
 
     const char* label = labelStr.c_str();
 
+    PushStyleCheckbox(options.color, options.padding);
     ImGuiContext& g = *GImGui;
     const ImGuiStyle& style = g.Style;
     const ImGuiID id = window->GetID(label);
@@ -317,6 +318,7 @@ bool Checkbox(const char* _label, bool* value, const CheckboxOptions& options) {
 
     ImGui::ItemSize(total_bb, style.FramePadding.y);
     if (!ImGui::ItemAdd(total_bb, id)) {
+        PopStyleCheckbox();
         ImGui::EndDisabled();
         return false;
     }
@@ -326,14 +328,13 @@ bool Checkbox(const char* _label, bool* value, const CheckboxOptions& options) {
         *value = !(*value);
         ImGui::MarkItemEdited(id);
     }
-    PushStyleCheckbox(options.color);
     ImVec2 checkPos = pos;
     ImVec2 labelPos = pos;
     if (options.labelPosition == LabelPositions::Above) {
         checkPos.y += label_size.y + (style.ItemInnerSpacing.y * 2.0f);
     } else {
         // Center with checkbox automatically
-        labelPos.y += ImGui::CalcTextSize("g").y / 8;
+        labelPos.y += ImGui::GetStyle().FramePadding.y;
     }
     if (options.alignment == ComponentAlignments::Right) {
         checkPos.x = total_bb.Max.x - square_sz;
@@ -762,6 +763,9 @@ bool InputString(const char* label, std::string* value, const InputOptions& opti
     ImGui::BeginGroup();
     ImGui::BeginDisabled(options.disabled);
     PushStyleInput(options.color);
+    if (options.hasError) {
+        ImGui::PushStyleColor(ImGuiCol_Border, ColorValues.at(Colors::Red));
+    }
     float width = (options.size == ImVec2(0, 0)) ? ImGui::GetContentRegionAvail().x : options.size.x;
     if (options.alignment == ComponentAlignments::Left) {
         if (options.labelPosition == LabelPositions::Above) {
@@ -787,11 +791,17 @@ bool InputString(const char* label, std::string* value, const InputOptions& opti
         ImGui::SameLine(17.0f);
         ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 0.4f), "%s", options.placeholder.c_str());
     }
+    if (options.hasError) {
+        ImGui::PopStyleColor();
+    }
     PopStyleInput();
     ImGui::EndDisabled();
     ImGui::EndGroup();
-    if (options.disabled && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) &&
-        !Ship_IsCStringEmpty(options.disabledTooltip)) {
+    if (options.hasError && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) &&
+        !Ship_IsCStringEmpty(options.errorText)) {
+        ImGui::SetTooltip("%s", WrappedText(options.errorText).c_str());
+    } else if (options.disabled && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) &&
+               !Ship_IsCStringEmpty(options.disabledTooltip)) {
         ImGui::SetTooltip("%s", WrappedText(options.disabledTooltip).c_str());
     } else if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !Ship_IsCStringEmpty(options.tooltip)) {
         ImGui::SetTooltip("%s", WrappedText(options.tooltip).c_str());
@@ -1018,7 +1028,7 @@ bool CVarRadioButton(const char* text, const char* cvarName, int32_t id, const R
     std::string make_invisible = "##" + std::string(text) + std::string(cvarName);
 
     bool ret = false;
-    int val = CVarGetInteger(cvarName, 0);
+    int val = CVarGetInteger(cvarName, options.defaultIndex);
     PushStyleCheckbox(options.color);
     if (ImGui::RadioButton(make_invisible.c_str(), id == val)) {
         CVarSetInteger(cvarName, id);

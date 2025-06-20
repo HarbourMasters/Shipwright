@@ -121,7 +121,7 @@ void Audio_NoteSetResamplingRate(NoteSubEu* noteSubEu, f32 resamplingRateInput) 
     } else {
         noteSubEu->bitField1.hasTwoParts = true;
         if (3.99996f < resamplingRateInput) {
-            if (CVarGetInteger(CVAR_AUDIO("ExperimentalOctaveDrop"), 0)) {
+            if (CVarGetInteger(CVAR_AUDIO("ExperimentalOctaveDrop"), 0) || noteSubEu->bitField1.isSyntheticWave) {
                 resamplingRate = resamplingRateInput * 0.25;
             } else {
                 resamplingRate = 1.99998f;

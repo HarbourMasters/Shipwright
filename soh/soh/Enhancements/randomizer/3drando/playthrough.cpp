@@ -1,7 +1,6 @@
 #include "playthrough.hpp"
 
 #include <libultraship/libultraship.h>
-#include <boost_custom/container_hash/hash_32.hpp>
 #include "fill.hpp"
 #include "../location_access.h"
 #include "random.hpp"
@@ -62,7 +61,7 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
         settingsStr += (char*)gBuildVersion;
     }
 
-    uint32_t finalHash = boost::hash_32<std::string>{}(std::to_string(ctx->GetSeed()) + settingsStr);
+    uint32_t finalHash = SohUtils::Hash(std::to_string(ctx->GetSeed()) + settingsStr);
     Random_Init(finalHash);
     ctx->SetHash(std::to_string(finalHash));
 
@@ -104,9 +103,9 @@ int Playthrough_Repeat(std::set<RandomizerCheck> excludedLocations, std::set<Ran
     auto ctx = Rando::Context::GetInstance();
     uint32_t repeatedSeed = 0;
     for (int i = 0; i < count; i++) {
-        ctx->SetSeedString(std::to_string(rand() % 0xFFFFFFFF));
-        repeatedSeed = boost::hash_32<std::string>{}(ctx->GetSeedString());
-        ctx->SetSeed(repeatedSeed % 0xFFFFFFFF);
+        ctx->SetSeedString(std::to_string(rand()));
+        repeatedSeed = SohUtils::Hash(ctx->GetSeedString());
+        ctx->SetSeed(repeatedSeed);
         SPDLOG_DEBUG("testing seed: %d", repeatedSeed);
         ClearProgress();
         Playthrough_Init(ctx->GetSeed(), excludedLocations, enabledTricks);

@@ -39,6 +39,10 @@ static s16 lastEntranceIndex = -1;
 static s16 currentGrottoId = -1;
 static s16 lastSceneOrEntranceDetected = -1;
 
+static bool presetLoaded = false;
+static ImVec2 presetPos;
+static ImVec2 presetSize;
+
 static std::string spoilerEntranceGroupNames[] = {
     "Spawns/Warp Songs/Owls",
     "Kokiri Forest",
@@ -382,7 +386,7 @@ const EntranceData entranceData[] = {
 };
 
 // Check if Link is in the area and return that scene/entrance for tracking
-s8 LinkIsInArea(const EntranceData* entrance) {
+int16_t LinkIsInArea(const EntranceData* entrance) {
     bool result = false;
 
     if (gPlayState == nullptr) {
@@ -443,6 +447,12 @@ const EntranceData* GetEntranceData(s16 index) {
     }
     // Shouldn't be reached
     return nullptr;
+}
+
+void EntranceTracker_LoadFromPreset(nlohmann::json info) {
+    presetLoaded = true;
+    presetPos = { info["pos"]["x"], info["pos"]["y"] };
+    presetSize = { info["size"]["width"], info["size"]["height"] };
 }
 
 // Used for verifying the names on both sides of entrance pairs match. Keeping for ease of use for further name changes
@@ -757,7 +767,13 @@ void EntranceTrackerWindow::Draw() {
 }
 
 void EntranceTrackerWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(600, 375), ImGuiCond_FirstUseEver);
+    if (presetLoaded) {
+        ImGui::SetNextWindowSize(presetSize);
+        ImGui::SetNextWindowPos(presetPos);
+        presetLoaded = false;
+    } else {
+        ImGui::SetNextWindowSize(ImVec2(600, 375), ImGuiCond_FirstUseEver);
+    }
 
     if (!ImGui::Begin("Entrance Tracker", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();

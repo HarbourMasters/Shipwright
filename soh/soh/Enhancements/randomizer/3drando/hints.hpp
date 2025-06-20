@@ -37,12 +37,12 @@ class HintText {
              std::vector<CustomMessage> obscureText_ = {});
     const CustomMessage& GetClear() const;
     const CustomMessage& GetObscure() const;
-    const CustomMessage& GetObscure(uint8_t selection) const;
+    const CustomMessage& GetObscure(size_t selection) const;
     const CustomMessage& GetAmbiguous() const;
-    const CustomMessage& GetAmbiguous(uint8_t selection) const;
-    uint8_t GetAmbiguousSize() const;
-    uint8_t GetObscureSize() const;
-    const CustomMessage& GetHintMessage(uint8_t selection = 0) const;
+    const CustomMessage& GetAmbiguous(size_t selection) const;
+    size_t GetAmbiguousSize() const;
+    size_t GetObscureSize() const;
+    const CustomMessage& GetHintMessage(size_t selection = 0) const;
     const CustomMessage GetMessageCopy() const;
     bool operator==(const HintText& right) const;
     bool operator!=(const HintText& right) const;

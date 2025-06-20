@@ -35,7 +35,7 @@ typedef struct {
     /* 0x2 */ LightParams params;
 } LightInfo; // size = 0xE
 
-class SetLightList : public SceneCommand<LightInfo> {
+class SetLightList final : public SceneCommand<LightInfo> {
   public:
     using SceneCommand::SceneCommand;
 

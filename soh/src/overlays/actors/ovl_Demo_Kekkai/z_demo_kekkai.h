@@ -6,7 +6,7 @@
 
 struct DemoKekkai;
 
-typedef void (*DemoKekkaiUpdateFunc)(struct DemoKekkai* this, PlayState* play);
+typedef void (*DemoKekkaiUpdateFunc)(struct DemoKekkai* thisx, PlayState* play);
 
 typedef struct DemoKekkai {
     /* 0x0000 */ Actor actor;

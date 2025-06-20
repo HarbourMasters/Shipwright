@@ -5,14 +5,14 @@ using namespace Rando;
 
 void RegionTable_Init_SacredForestMeadow() {
     // clang-format off
-    areaTable[RR_SFM_ENTRYWAY] = Region("SFM Entryway", "Sacred Forest Meadow", {RA_SACRED_FOREST_MEADOW}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_SFM_ENTRYWAY] = Region("SFM Entryway", SCENE_SACRED_FOREST_MEADOW, {}, {}, {
         //Exits
         Entrance(RR_LW_BEYOND_MIDO,       []{return true;}),
         Entrance(RR_SACRED_FOREST_MEADOW, []{return logic->IsAdult || logic->CanKillEnemy(RE_WOLFOS);}),
         Entrance(RR_SFM_WOLFOS_GROTTO,    []{return logic->CanOpenBombGrotto();}),
     });
 
-    areaTable[RR_SACRED_FOREST_MEADOW] = Region("Sacred Forest Meadow", "Sacred Forest Meadow", {RA_SACRED_FOREST_MEADOW}, NO_DAY_NIGHT_CYCLE, {
+    areaTable[RR_SACRED_FOREST_MEADOW] = Region("Sacred Forest Meadow", SCENE_SACRED_FOREST_MEADOW, {
         //Events
         EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairyExceptSuns();}),
     }, {
@@ -37,7 +37,7 @@ void RegionTable_Init_SacredForestMeadow() {
         Entrance(RR_SFM_STORMS_GROTTO,      []{return logic->CanOpenStormsGrotto();}),
     });
 
-    areaTable[RR_SFM_FAIRY_GROTTO] = Region("SFM Fairy Grotto", "SFM Fairy Grotto", {}, NO_DAY_NIGHT_CYCLE, {
+    areaTable[RR_SFM_FAIRY_GROTTO] = Region("SFM Fairy Grotto", SCENE_GROTTOS, {
         //Events
         EventAccess(&logic->FreeFairies, []{return true;}),
     }, {
@@ -55,7 +55,7 @@ void RegionTable_Init_SacredForestMeadow() {
         Entrance(RR_SACRED_FOREST_MEADOW, []{return true;}),
     });
 
-    areaTable[RR_SFM_WOLFOS_GROTTO] = Region("SFM Wolfos Grotto", "SFM Wolfos Grotto", {}, NO_DAY_NIGHT_CYCLE, {}, {
+    areaTable[RR_SFM_WOLFOS_GROTTO] = Region("SFM Wolfos Grotto", SCENE_GROTTOS, {}, {
         //Locations
         LOCATION(RC_SFM_WOLFOS_GROTTO_CHEST, logic->CanKillEnemy(RE_WOLFOS, ED_CLOSE, true, 2)),
     }, {
@@ -63,7 +63,7 @@ void RegionTable_Init_SacredForestMeadow() {
         Entrance(RR_SFM_ENTRYWAY, []{return true;}),
     });
 
-    areaTable[RR_SFM_STORMS_GROTTO] = Region("SFM Storms Grotto", "SFM Storms Grotto", {}, NO_DAY_NIGHT_CYCLE, {}, {
+    areaTable[RR_SFM_STORMS_GROTTO] = Region("SFM Storms Grotto", SCENE_GROTTOS, {}, {
         //Locations
         LOCATION(RC_SFM_DEKU_SCRUB_GROTTO_REAR,  logic->CanStunDeku()),
         LOCATION(RC_SFM_DEKU_SCRUB_GROTTO_FRONT, logic->CanStunDeku()),

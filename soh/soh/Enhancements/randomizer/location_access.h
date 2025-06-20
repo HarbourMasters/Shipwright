@@ -10,6 +10,9 @@
 #include "soh/Enhancements/randomizer/logic.h"
 #include "soh/Enhancements/randomizer/dungeon.h"
 
+#define TIME_PASSES true
+#define TIME_DOESNT_PASS false
+
 typedef bool (*ConditionFn)();
 
 // I hate this but every alternative I can think of right now is worse
@@ -101,9 +104,10 @@ class LocationAccess {
     std::string condition_str;
 
     // Makes sure shop locations are buyable
-    bool CanBuy() const;
+    bool CanBuy(bool calculatingAvailableChecks) const;
 };
 
+bool CanBuyAnother(uint16_t price);
 bool CanBuyAnother(RandomizerCheck rc);
 
 namespace Rando {
@@ -133,14 +137,16 @@ struct SpiritLogicData {
 class Region {
   public:
     Region();
-    Region(std::string regionName_, std::string scene_, std::set<RandomizerArea> areas, bool timePass_,
+    Region(std::string regionName_, SceneID scene_, bool timePass, std::set<RandomizerArea> areas,
            std::vector<EventAccess> events_, std::vector<LocationAccess> locations_, std::list<Rando::Entrance> exits_);
+    Region(std::string regionName_, SceneID scene_, std::vector<EventAccess> events_,
+           std::vector<LocationAccess> locations_, std::list<Rando::Entrance> exits_);
     ~Region();
 
     std::string regionName;
-    std::string scene;
-    std::set<RandomizerArea> areas;
+    SceneID scene;
     bool timePass;
+    std::set<RandomizerArea> areas;
     std::vector<EventAccess> events;
     std::vector<LocationAccess> locations;
     std::list<Rando::Entrance> exits;
@@ -156,7 +162,8 @@ class Region {
     bool adultDay = false;
     bool adultNight = false;
     bool addedToPool = false;
-    ;
+
+    bool TimePass();
 
     void ApplyTimePass();
 
@@ -271,9 +278,6 @@ bool ChildCanAccess(const RandomizerRegion region);
 bool AdultCanAccess(const RandomizerRegion region);
 bool HasAccessTo(const RandomizerRegion region);
 
-#define DAY_NIGHT_CYCLE true
-#define NO_DAY_NIGHT_CYCLE false
-
 namespace Regions {
 extern void AccessReset();
 extern void ResetAllLocations();
@@ -284,7 +288,7 @@ extern void DumpWorldGraph(std::string str);
 void RegionTable_Init();
 Region* RegionTable(const RandomizerRegion regionKey);
 std::vector<Rando::Entrance*> GetShuffleableEntrances(Rando::EntranceType type, bool onlyPrimary = true);
-Rando::Entrance* GetEntrance(const std::string name);
+Rando::Entrance* GetEntrance(RandomizerRegion source, RandomizerRegion destination);
 
 // Overworld
 void RegionTable_Init_KokiriForest();

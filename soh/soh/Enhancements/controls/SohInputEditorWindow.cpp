@@ -642,10 +642,14 @@ void SohInputEditorWindow::DrawStickSection(uint8_t port, uint8_t stick, int32_t
 
     ImGui::SameLine();
     ImGui::BeginGroup();
-    DrawStickDirectionLine(ICON_FA_ARROW_UP, port, stick, Ship::UP, color);
-    DrawStickDirectionLine(ICON_FA_ARROW_DOWN, port, stick, Ship::DOWN, color);
-    DrawStickDirectionLine(ICON_FA_ARROW_LEFT, port, stick, Ship::LEFT, color);
-    DrawStickDirectionLine(ICON_FA_ARROW_RIGHT, port, stick, Ship::RIGHT, color);
+    DrawStickDirectionLine(StringHelper::Sprintf("%s##%d", ICON_FA_ARROW_UP, stick).c_str(), port, stick, Ship::UP,
+                           color);
+    DrawStickDirectionLine(StringHelper::Sprintf("%s##%d", ICON_FA_ARROW_DOWN, stick).c_str(), port, stick, Ship::DOWN,
+                           color);
+    DrawStickDirectionLine(StringHelper::Sprintf("%s##%d", ICON_FA_ARROW_LEFT, stick).c_str(), port, stick, Ship::LEFT,
+                           color);
+    DrawStickDirectionLine(StringHelper::Sprintf("%s##%d", ICON_FA_ARROW_RIGHT, stick).c_str(), port, stick,
+                           Ship::RIGHT, color);
     ImGui::EndGroup();
     ImGui::SetNextItemOpen(true, ImGuiCond_Once);
     if (ImGui::TreeNode(StringHelper::Sprintf("Analog Stick Options##%d", id).c_str())) {
@@ -1335,12 +1339,12 @@ void SohInputEditorWindow::DrawOcarinaControlPanel() {
 
     ImGui::AlignTextToFramePadding();
     ImGui::BulletText("Disable song detection");
-    DrawButtonLine(ICON_FA_BAN, 0, BTN_CUSTOM_OCARINA_DISABLE_SONGS);
+    DrawButtonLine(ICON_FA_BAN "##DisableSongDetection", 0, BTN_CUSTOM_OCARINA_DISABLE_SONGS);
 
     ImGui::AlignTextToFramePadding();
     ImGui::BulletText("Pitch");
-    DrawButtonLine(ICON_FA_ARROW_UP, 0, BTN_CUSTOM_OCARINA_PITCH_UP);
-    DrawButtonLine(ICON_FA_ARROW_DOWN, 0, BTN_CUSTOM_OCARINA_PITCH_DOWN);
+    DrawButtonLine(ICON_FA_ARROW_UP "##Pitch", 0, BTN_CUSTOM_OCARINA_PITCH_UP);
+    DrawButtonLine(ICON_FA_ARROW_DOWN "##Pitch", 0, BTN_CUSTOM_OCARINA_PITCH_DOWN);
 
     if (!CVarGetInteger(CVAR_SETTING("CustomOcarina.Enabled"), 0)) {
         ImGui::EndDisabled();

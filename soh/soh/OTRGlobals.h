@@ -15,6 +15,11 @@
 #define BTN_CUSTOM_OCARINA_PITCH_UP ((CONTROLLERBUTTONS_T)0x00400000)
 #define BTN_CUSTOM_OCARINA_PITCH_DOWN ((CONTROLLERBUTTONS_T)0x00800000)
 
+#define M_PIf 3.14159265358979323846f
+#define M_PI_2f 1.57079632679489661923f // pi/2
+#define M_SQRT2f 1.41421356237309504880f
+#define M_SQRT1_2f 0.70710678118654752440f /* 1/sqrt(2) */
+
 #ifdef __cplusplus
 #include <Context.h>
 #include "Enhancements/savestates.h"
@@ -120,8 +125,7 @@ void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 int Controller_ShouldRumble(size_t slot);
 void Controller_BlockGameInput();
 void Controller_UnblockGameInput();
-void* getN64WeirdFrame(s32 i);
-int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSize);
+size_t GetEquipNowMessage(char* buffer, char* src, const size_t maxBufferSize);
 u32 SpoilerFileExists(const char* spoilerFileName);
 Sprite* GetSeedTexture(uint8_t index);
 uint8_t GetSeedIconIndex(uint8_t index);
@@ -163,6 +167,7 @@ void Gfx_UnregisterBlendedTexture(const char* name);
 void Gfx_TextureCacheDelete(const uint8_t* addr);
 void SaveManager_ThreadPoolWait();
 void CheckTracker_OnMessageClose();
+void CheckTracker_RecalculateAvailableChecks();
 
 GetItemID RetrieveGetItemIDFromItemID(ItemID itemID);
 RandomizerGet RetrieveRandomizerGetFromItemID(ItemID itemID);

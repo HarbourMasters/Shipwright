@@ -25,12 +25,29 @@ bool HasEquipment(ItemTrackerItem);
 #define ITEM_TRACKER_ITEM_CUSTOM(id, name, nameFaded, data, drawFunc) \
     { id, #name, #nameFaded "_Faded", data, drawFunc }
 
+static std::vector<const char*> itemTrackerWindowIDs = { "Item Tracker",
+                                                         "Inventory Items Tracker",
+                                                         "Equipment Items Tracker",
+                                                         "Misc Items Tracker",
+                                                         "Dungeon Rewards Tracker",
+                                                         "Songs Tracker",
+                                                         "Dungeon Items Tracker",
+                                                         "Greg Tracker",
+                                                         "Triforce Piece Tracker",
+                                                         "Boss Soul Tracker",
+                                                         "Ocarina Button Tracker",
+                                                         "Overworld Key Tracker",
+                                                         "Fishing Pole Tracker",
+                                                         "Personal Notes",
+                                                         "Total Checks" };
+void ItemTracker_LoadFromPreset(nlohmann::json trackerInfo);
+
 typedef struct ItemTrackerDungeon {
     uint32_t id;
     std::vector<uint32_t> items;
 } ItemTrackerDungeon;
 
-class ItemTrackerSettingsWindow : public Ship::GuiWindow {
+class ItemTrackerSettingsWindow final : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
 
@@ -40,7 +57,7 @@ class ItemTrackerSettingsWindow : public Ship::GuiWindow {
     void UpdateElement() override{};
 };
 
-class ItemTrackerWindow : public Ship::GuiWindow {
+class ItemTrackerWindow final : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
     void Draw() override;

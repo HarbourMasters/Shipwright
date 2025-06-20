@@ -40,7 +40,7 @@ const CustomMessage& HintText::GetObscure() const {
     return obscureText.size() > 0 ? RandomElement(obscureText) : clearText;
 }
 
-const CustomMessage& HintText::GetObscure(uint8_t selection) const {
+const CustomMessage& HintText::GetObscure(size_t selection) const {
     if (obscureText.size() > selection) {
         return obscureText[selection];
     } else if (obscureText.size() > 0) {
@@ -53,7 +53,7 @@ const CustomMessage& HintText::GetAmbiguous() const {
     return ambiguousText.size() > 0 ? RandomElement(ambiguousText) : clearText;
 }
 
-const CustomMessage& HintText::GetAmbiguous(uint8_t selection) const {
+const CustomMessage& HintText::GetAmbiguous(size_t selection) const {
     if (ambiguousText.size() > selection) {
         return ambiguousText[selection];
     } else if (ambiguousText.size() > 0) {
@@ -62,15 +62,15 @@ const CustomMessage& HintText::GetAmbiguous(uint8_t selection) const {
     return clearText;
 }
 
-uint8_t HintText::GetAmbiguousSize() const {
+size_t HintText::GetAmbiguousSize() const {
     return ambiguousText.size();
 }
 
-uint8_t HintText::GetObscureSize() const {
+size_t HintText::GetObscureSize() const {
     return obscureText.size();
 }
 
-const CustomMessage& HintText::GetHintMessage(uint8_t selection) const {
+const CustomMessage& HintText::GetHintMessage(size_t selection) const {
     auto ctx = Rando::Context::GetInstance();
     if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_OBSCURE)) {
         return GetObscure(selection);
@@ -273,8 +273,8 @@ std::vector<std::pair<RandomizerCheck, std::function<bool()>>> conditionalAlways
     std::make_pair(RC_MARKET_10_BIG_POES,
                    []() {
                        auto ctx = Rando::Context::GetInstance();
-                       return ctx->GetOption(RSK_BIG_POE_COUNT).Get() >= 3 && !ctx->GetOption(RSK_BIG_POES_HINT);
-                   }), // Remember, the option's value being 3 means 4 are required
+                       return ctx->GetOption(RSK_BIG_POE_COUNT).Get() > 3 && !ctx->GetOption(RSK_BIG_POES_HINT);
+                   }),
     std::make_pair(RC_DEKU_THEATER_MASK_OF_TRUTH,
                    []() {
                        auto ctx = Rando::Context::GetInstance();
@@ -598,7 +598,7 @@ static void DistributeHints(std::vector<uint8_t>& selected, size_t stoneCount,
     }
     // if stones are left, assign junk to every remaining stone as a fallback.
     if (stoneCount > 0) {
-        selected[selected.size() - 1] += stoneCount;
+        selected[static_cast<uint8_t>(selected.size()) - 1] += static_cast<uint8_t>(stoneCount);
     }
 }
 
