@@ -239,7 +239,7 @@
         <Texture Name="gGoldSkulltulaItemNameENGTex" OutName="gold_skulltula_item_name_eng" Format="ia4" Width="128" Height="16" Offset="0x3B000"/>
         <Texture Name="gPieceOfHeartItemNameENGTex" OutName="piece_of_heart_item_name_eng" Format="ia4" Width="128" Height="16" Offset="0x3B400"/>
         <Texture Name="gUnusedPieceOfHeartItemName2JPNTex" OutName="piece_of_heart_item_name_unused_jpn_2" Format="ia4" Width="128" Height="16" Offset="0x3B800"/>
-        <Texture Name="gBigKeyItemNameENGTex" OutName="big_key_item_name_eng" Format="ia4" Width="128" Height="16" Offset="0x3BC00"/>
+        <Texture Name="gUnusedBigKeyItemNameENGTex" OutName="big_key_item_name_eng" Format="ia4" Width="128" Height="16" Offset="0x3BC00"/>
         <Texture Name="gCompassItemNameENGTex" OutName="compass_item_name_eng" Format="ia4" Width="128" Height="16" Offset="0x3C000"/>
         <Texture Name="gDungeonMapItemNameENGTex" OutName="dungeon_map_item_name_eng" Format="ia4" Width="128" Height="16" Offset="0x3C400"/>
         <Texture Name="gUnusedBossKeyItemName12JPNTex" OutName="boss_key_item_name_unused_jpn_12" Format="ia4" Width="128" Height="16" Offset="0x3C800"/>

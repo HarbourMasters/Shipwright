@@ -305,7 +305,7 @@ void EnZl4_UpdateFace(EnZl4* this) {
 }
 
 void EnZl4_SetMove(EnZl4* this, PlayState* play) {
-    this->skelAnime.moveFlags |= 1;
+    this->skelAnime.movementFlags |= 1;
     AnimationContext_SetMoveActor(play, &this->actor, &this->skelAnime, 1.0f);
 }
 

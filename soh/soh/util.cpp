@@ -364,22 +364,13 @@ const std::string& SohUtils::GetRandomizerCheckAreaPrefix(int32_t rcarea) {
 }
 
 void SohUtils::CopyStringToCharArray(char* destination, std::string source, size_t size) {
-    strncpy(destination, source.c_str(), size - 1);
-    destination[size - 1] = '\0';
+    if (size > 0) {
+        strncpy(destination, source.c_str(), size - 1);
+        destination[size - 1] = '\0';
+    }
 }
 
 std::string SohUtils::Sanitize(std::string stringValue) {
-    // Add backslashes.
-    for (auto i = stringValue.begin();;) {
-        auto const pos =
-            std::find_if(i, stringValue.end(), [](char const c) { return '\\' == c || '\'' == c || '"' == c; });
-        if (pos == stringValue.end()) {
-            break;
-        }
-        i = std::next(stringValue.insert(pos, '\\'), 2);
-    }
-
-    // Removes others.
     stringValue.erase(std::remove_if(stringValue.begin(), stringValue.end(),
                                      [](char const c) { return '\n' == c || '\r' == c || '\0' == c || '\x1A' == c; }),
                       stringValue.end());
@@ -388,12 +379,9 @@ std::string SohUtils::Sanitize(std::string stringValue) {
 }
 
 size_t SohUtils::CopyStringToCharBuffer(char* buffer, const std::string& source, const size_t maxBufferSize) {
-    if (!source.empty()) {
-        // Prevent potential horrible overflow due to implicit conversion of maxBufferSize to an unsigned. Prevents
-        // negatives.
-        memset(buffer, 0, std::max<size_t>(0, maxBufferSize));
-        // Gaurentee that this value will be greater than 0, regardless of passed variables.
-        const size_t copiedCharLen = std::min<size_t>(std::max<size_t>(0, maxBufferSize - 1), source.length());
+    if (!source.empty() && maxBufferSize > 0) {
+        memset(buffer, 0, maxBufferSize);
+        const size_t copiedCharLen = std::min<size_t>(maxBufferSize - 1, source.length());
         memcpy(buffer, source.c_str(), copiedCharLen);
         return copiedCharLen;
     }
@@ -408,8 +396,16 @@ bool SohUtils::IsStringEmpty(std::string str) {
     std::string::size_type end = str.find_last_not_of(' ');
 
     // Check if the string is empty after stripping spaces
-    if (start == std::string::npos || end == std::string::npos)
-        return true; // The string is empty
-    else
-        return false; // The string is not empty
+    return start == std::string::npos || end == std::string::npos;
+}
+
+uint32_t SohUtils::Hash(std::string str) {
+    // FNV-1a
+    const size_t len = str.size();
+    uint32_t hval = 0x811c9dc5;
+    for (size_t pos = 0; pos < len; pos++) {
+        hval ^= (uint32_t)str[pos];
+        hval *= 0x01000193;
+    }
+    return hval;
 }

@@ -484,8 +484,17 @@ bool EnMag_ShouldDrawPressStart(Font* font, Gfx** gfxP, bool isActualText) {
 // Title logo is shifted to the left in Master Quest
 #define LOGO_X_SHIFT (isMQ ? 0 : -8)
 #define LOGO_TEX (isMQ ? gTitleZeldaShieldLogoMQTex : gTitleZeldaShieldLogoTex)
+// Copyright texture is different depending on the version
+// JPN CE displays two slightly different 2004 copyrights when lang is jpn or not
+// Otherwise the other GC JPN versions either display 2002 for JPN or 2003 for others
+// Else fallback to 2003 for GC or 1998 for N64
+#define COPYRIGHT_TEX                                                                                              \
+    (isJpnGC_CE                                                                                                    \
+         ? (gSaveContext.language == LANGUAGE_JPN ? gTitleCopyright19982004JpnTex : gTitleCopyright19982004EngTex) \
+         : (isGC ? ((isJpnGC_notCE || gSaveContext.language == LANGUAGE_JPN) ? gTitleCopyright19982002Tex          \
+                                                                             : gTitleCopyright19982003Tex)         \
+                 : gTitleCopyright1998Tex))
 // Copyright texture is larger on GC
-#define COPYRIGHT_TEX (isGC ? gTitleCopyright19982003Tex : gTitleCopyright1998Tex)
 #define COPYRIGHT_TEX_WIDTH (isGC ? 160 : 128)
 #define COPYRIGHT_TEX_LEFT (isGC ? 78 : 94)
 
@@ -515,6 +524,9 @@ void EnMag_DrawInner(Actor* thisx, PlayState* play, Gfx** gfxP) {
     u16 rectTop;
     bool isMQ = ResourceMgr_IsGameMasterQuest();
     bool isGC = ResourceMgr_GetGamePlatform(0) == GAME_PLATFORM_GC;
+    bool isJpnGC_CE = isGC && ResourceMgr_GetGameVersion(0) == OOT_NTSC_JP_GC_CE;
+    bool isJpnGC_notCE =
+        isGC && (ResourceMgr_GetGameVersion(0) == OOT_NTSC_JP_GC || ResourceMgr_GetGameVersion(0) == OOT_NTSC_JP_MQ);
 
     gSPSegment(gfx++, 0x06, play->objectCtx.status[this->actor.objBankIndex].segment);
 

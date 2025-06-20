@@ -22,4 +22,5 @@ std::string Sanitize(std::string stringValue);
 size_t CopyStringToCharBuffer(char* buffer, const std::string& source, size_t maxBufferSize);
 
 bool IsStringEmpty(std::string str);
+uint32_t Hash(std::string str);
 } // namespace SohUtils

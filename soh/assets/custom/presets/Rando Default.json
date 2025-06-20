@@ -1,0 +1,9 @@
+{
+    "blocks": {
+        "rando": {
+            "gRandoSettings": null
+        }
+    },
+    "presetName": "Rando Default",
+	"isBuiltIn": true
+}

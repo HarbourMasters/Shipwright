@@ -1,23 +1,10 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/OTRGlobals.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "z64save.h"
 #include "functions.h"
 extern SaveContext gSaveContext;
-}
-
-void SkipZeldaFleeingCastle_ShouldPlayTransitionCS(GIVanillaBehavior _, bool* should, va_list originalArgs) {
-    if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
-        if (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN && gSaveContext.cutsceneIndex == 0xFFF1) {
-            // Normally set in the cutscene
-            gSaveContext.dayTime = gSaveContext.skyboxTime = 0x4AAA;
-
-            gSaveContext.cutsceneIndex = 0;
-            *should = false;
-        }
-    }
 }
 
 /**
@@ -46,7 +33,7 @@ void SkipZeldaFleeingCastle_OnActorUpdate(void* actorPtr) {
 void SkipZeldaFleeingCastle_OnActorInit(void* actorPtr) {
     Actor* actor = static_cast<Actor*>(actorPtr);
 
-    if (actor->params == 3 && CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
+    if (actor->params == 3) {
         framesSinceSpawn = 0;
         itemOcarinaUpdateHook = GameInteractor::Instance->RegisterGameHookForPtr<GameInteractor::OnActorUpdate>(
             (uintptr_t)actorPtr, SkipZeldaFleeingCastle_OnActorUpdate);
@@ -59,9 +46,20 @@ void SkipZeldaFleeingCastle_OnActorInit(void* actorPtr) {
     }
 }
 
-void SkipZeldaFleeingCastle_Register() {
-    GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnActorInit>(ACTOR_ITEM_OCARINA,
-                                                                                 SkipZeldaFleeingCastle_OnActorInit);
-    GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnVanillaBehavior>(
-        VB_PLAY_TRANSITION_CS, SkipZeldaFleeingCastle_ShouldPlayTransitionCS);
+void RegisterSkipZeldaFleeingCastle() {
+    COND_ID_HOOK(OnActorInit, ACTOR_ITEM_OCARINA,
+                 CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO),
+                 SkipZeldaFleeingCastle_OnActorInit);
+    COND_VB_SHOULD(VB_PLAY_TRANSITION_CS, CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO), {
+        if (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN && gSaveContext.cutsceneIndex == 0xFFF1) {
+            // Normally set in the cutscene
+            gSaveContext.dayTime = gSaveContext.skyboxTime = 0x4AAA;
+
+            gSaveContext.cutsceneIndex = 0;
+            *should = false;
+        }
+    });
 }
+
+static RegisterShipInitFunc initFunc(RegisterSkipZeldaFleeingCastle,
+                                     { CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), "IS_RANDO" });

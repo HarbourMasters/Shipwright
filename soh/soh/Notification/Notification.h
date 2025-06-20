@@ -19,7 +19,7 @@ struct Options {
     float remainingTime = 0.0f; // Seconds
 };
 
-class Window : public Ship::GuiWindow {
+class Window final : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
 

@@ -265,6 +265,9 @@ void Draw_SfxTab(const std::string& tabId, SeqType type, const std::string& tabN
         }
     }
 
+    auto playingFromMenu = CVarGetInteger(CVAR_AUDIO("Playing"), 0);
+    auto currentBGM = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
+
     // Longest text in Audio Editor
     ImVec2 columnSize = ImGui::CalcTextSize("Navi - Look/Hey/Watchout (Target Enemy)");
     ImGui::BeginTable(tabId.c_str(), 3, ImGuiTableFlags_SizingFixedFit);
@@ -291,10 +294,13 @@ void Draw_SfxTab(const std::string& tabId, SeqType type, const std::string& tabN
         const std::string lockedButton = ICON_FA_LOCK + hiddenKey;
         const std::string unlockedButton = ICON_FA_UNLOCK + hiddenKey;
         const int currentValue = CVarGetInteger(cvarKey.c_str(), defaultValue);
+        const bool isCurrentlyPlaying = currentValue == playingFromMenu || seqData.sequenceId == currentBGM;
 
         ImGui::TableNextRow();
         ImGui::TableNextColumn();
-        ImGui::Text("%s", seqData.label.c_str());
+        ImGui::TextColored(
+            UIWidgets::ColorValues.at(isCurrentlyPlaying ? UIWidgets::Colors::Yellow : UIWidgets::Colors::White), "%s",
+            seqData.label.c_str());
         ImGui::TableNextColumn();
         ImGui::PushItemWidth(-FLT_MIN);
         const int initialValue = map.contains(currentValue) ? currentValue : defaultValue;

@@ -154,6 +154,7 @@ void RegisterValueViewerHooks() {
 RegisterShipInitFunc initFunc(RegisterValueViewerHooks, { CVAR_NAME });
 
 void ValueViewerWindow::DrawElement() {
+    ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
     UIWidgets::CVarCheckbox("Enable Printing", CVAR_NAME, UIWidgets::CheckboxOptions().Color(THEME_COLOR));
 
     ImGui::BeginGroup();
@@ -275,6 +276,7 @@ void ValueViewerWindow::DrawElement() {
         }
         ImGui::EndGroup();
     }
+    ImGui::EndDisabled();
 }
 
 void ValueViewerWindow::InitElement() {

@@ -77,6 +77,7 @@ void DrawHookRegisteringInfos(const char* hookName) {
 }
 
 void HookDebuggerWindow::DrawElement() {
+    ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
 #ifndef __cpp_lib_source_location
     ImGui::TextColored(yellow, "Some features of the Hook Debugger are unavailable because SoH was compiled "
                                "without \"<source_location>\" support "
@@ -93,6 +94,7 @@ void HookDebuggerWindow::DrawElement() {
     }
 
     ImGui::PopFont();
+    ImGui::EndDisabled();
 }
 
 void HookDebuggerWindow::InitElement() {
