@@ -12,6 +12,7 @@
 #include "message_data_static.h"
 #include "overlays/gamestates/ovl_file_choose/file_choose.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
+#include "soh/Enhancements/FileSelectEnhancements.h"
 #include "soh/resource/type/SohResourceType.h"
 
 extern "C" {
@@ -95,10 +96,8 @@ const char* GetLanguageCode() {
     switch (CVarGetInteger(CVAR_SETTING("Languages"), 0)) {
         case LANGUAGE_FRA:
             return "fr-FR";
-            break;
         case LANGUAGE_GER:
             return "de-DE";
-            break;
     }
 
     return "en-US";
@@ -149,28 +148,25 @@ void RegisterOnInterfaceUpdateHook() {
             timer = gSaveContext.subTimerSeconds;
         }
 
-        if (timer > 0) {
-            if (timer > prevTimer || (timer % 30 == 0 && prevTimer != timer)) {
-                uint32_t minutes = timer / 60;
-                uint32_t seconds = timer % 60;
-                char* announceBuf = ttsAnnounceBuf;
-                char arg[8]; // at least big enough where no s8 string will overflow
-                if (minutes > 0) {
-                    snprintf(arg, sizeof(arg), "%d", minutes);
-                    auto translation = GetParameritizedText((minutes > 1) ? "minutes_plural" : "minutes_singular",
-                                                            TEXT_BANK_MISC, arg);
-                    announceBuf += snprintf(announceBuf, sizeof(ttsAnnounceBuf), "%s ", translation.c_str());
-                }
-                if (seconds > 0) {
-                    snprintf(arg, sizeof(arg), "%d", seconds);
-                    auto translation = GetParameritizedText((seconds > 1) ? "seconds_plural" : "seconds_singular",
-                                                            TEXT_BANK_MISC, arg);
-                    announceBuf += snprintf(announceBuf, sizeof(ttsAnnounceBuf), "%s", translation.c_str());
-                }
-                assert(announceBuf < ttsAnnounceBuf + sizeof(ttsAnnounceBuf));
-                SpeechSynthesizer::Instance->Speak(ttsAnnounceBuf, GetLanguageCode());
-                prevTimer = timer;
+        if (timer > 0 && timer % (timer < 60 ? 10 : 30) == 0 && timer != prevTimer) {
+            uint32_t minutes = timer / 60;
+            uint32_t seconds = timer % 60;
+            char* announceBuf = ttsAnnounceBuf;
+            char arg[8]; // at least big enough where no s8 string will overflow
+            if (minutes > 0) {
+                snprintf(arg, sizeof(arg), "%d", minutes);
+                auto translation =
+                    GetParameritizedText((minutes > 1) ? "minutes_plural" : "minutes_singular", TEXT_BANK_MISC, arg);
+                announceBuf += snprintf(announceBuf, sizeof(ttsAnnounceBuf), "%s ", translation.c_str());
             }
+            if (seconds > 0) {
+                snprintf(arg, sizeof(arg), "%d", seconds);
+                auto translation =
+                    GetParameritizedText((seconds > 1) ? "seconds_plural" : "seconds_singular", TEXT_BANK_MISC, arg);
+                announceBuf += snprintf(announceBuf, sizeof(ttsAnnounceBuf), "%s", translation.c_str());
+            }
+            assert(announceBuf < ttsAnnounceBuf + sizeof(ttsAnnounceBuf));
+            SpeechSynthesizer::Instance->Speak(ttsAnnounceBuf, GetLanguageCode());
         }
 
         prevTimer = timer;
@@ -844,6 +840,16 @@ void RegisterOnUpdateMainMenuSelection() {
             SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
         });
 
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileRandomizerOptionSelection>(
+        [](uint8_t optionIndex) {
+            if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0))
+                return;
+            uint8_t language = (gSaveContext.language == LANGUAGE_JPN) ? LANGUAGE_ENG : gSaveContext.language;
+
+            auto optionName = SohFileSelect_GetSettingText(optionIndex, language);
+            SpeechSynthesizer::Instance->Speak(optionName, GetLanguageCode());
+        });
+
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileNameSelection>([](int16_t charCode) {
         if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0))
             return;
@@ -1148,6 +1154,44 @@ void RegisterOnSetGameLanguageHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSetGameLanguage>([]() { InitTTSBank(); });
 }
 
+void RegisterOnSetDoAction() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSetDoAction>([](uint16_t action) {
+        if (CVarGetInteger(CVAR_SETTING("A11yTTS"), 0)) {
+            uint8_t language = CVarGetInteger(CVAR_SETTING("Languages"), 0);
+            const char* text;
+            switch (action) {
+                case DO_ACTION_CHECK:
+                    text = language == LANGUAGE_FRA ? "voir" : language == LANGUAGE_GER ? "lesen" : "check";
+                    break;
+                case DO_ACTION_ENTER:
+                    text = language == LANGUAGE_FRA ? "entrer" : language == LANGUAGE_GER ? "kriechen" : "enter";
+                    break;
+                case DO_ACTION_OPEN:
+                    text = language == LANGUAGE_FRA ? "ouvrir" : language == LANGUAGE_GER ? "öffnen" : "open";
+                    break;
+                case DO_ACTION_CLIMB:
+                    text = language == LANGUAGE_FRA ? "monter" : language == LANGUAGE_GER ? "hinauf" : "climb";
+                    break;
+                case DO_ACTION_SPEAK:
+                    text = language == LANGUAGE_FRA ? "parler" : language == LANGUAGE_GER ? "reden" : "speak";
+                    break;
+                case DO_ACTION_GRAB:
+                    text = language == LANGUAGE_FRA ? "action" : language == LANGUAGE_GER ? "aktion" : "grab";
+                    break;
+                case DO_ACTION_DOWN: {
+                    Player* player = GET_PLAYER(gPlayState);
+                    if (player == NULL || !(player->stateFlags1 & PLAYER_STATE1_ON_HORSE))
+                        return;
+                    text = language == LANGUAGE_FRA ? "descendre" : language == LANGUAGE_GER ? "herab" : "down";
+                } break;
+                default:
+                    return;
+            }
+            SpeechSynthesizer::Instance->Speak(text, GetLanguageCode());
+        }
+    });
+}
+
 void RegisterTTSModHooks() {
     RegisterOnSetGameLanguageHook();
     RegisterOnDialogMessageHook();
@@ -1156,6 +1200,7 @@ void RegisterTTSModHooks() {
     RegisterOnInterfaceUpdateHook();
     RegisterOnKaleidoscopeUpdateHook();
     RegisterOnUpdateMainMenuSelection();
+    RegisterOnSetDoAction();
 }
 
 void RegisterTTS() {

@@ -1,5 +1,6 @@
 #include "z_bg_mizu_shutter.h"
 #include "objects/object_mizu_objects/object_mizu_objects.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -137,7 +138,9 @@ void BgMizuShutter_Move(BgMizuShutter* this, PlayState* play) {
 
 void BgMizuShutter_WaitForTimer(BgMizuShutter* this, PlayState* play) {
     if (this->timerMax != 0x3F * 20) {
-        this->timer--;
+        if (GameInteractor_Should(VB_SWITCH_TIMER_TICK, true, this, &this->timer)) {
+            this->timer--;
+        }
         func_8002F994(&this->dyna.actor, this->timer);
         if (this->timer == 0) {
             Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_METALDOOR_CLOSE);

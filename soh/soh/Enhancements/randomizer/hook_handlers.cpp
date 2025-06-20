@@ -8,14 +8,11 @@
 #include "soh/Enhancements/randomizer/dungeon.h"
 #include "soh/Enhancements/randomizer/fishsanity.h"
 #include "soh/Enhancements/randomizer/static_data.h"
-#include "soh/Enhancements/randomizer/ShufflePots.h"
-#include "soh/Enhancements/randomizer/ShuffleFreestanding.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/SohGui/ImGuiUtils.h"
 #include "soh/Notification/Notification.h"
 #include "soh/SaveManager.h"
-#include "soh/Enhancements/randomizer/ShuffleFairies.h"
 
 extern "C" {
 #include "macros.h"
@@ -29,6 +26,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Shopnuts/z_en_shopnuts.h"
 #include "src/overlays/actors/ovl_En_Dns/z_en_dns.h"
 #include "src/overlays/actors/ovl_En_Gb/z_en_gb.h"
+#include "src/overlays/actors/ovl_En_Po_Field/z_en_po_field.h"
 #include "src/overlays/actors/ovl_Item_B_Heart/z_item_b_heart.h"
 #include "src/overlays/actors/ovl_En_Ko/z_en_ko.h"
 #include "src/overlays/actors/ovl_En_Mk/z_en_mk.h"
@@ -43,9 +41,9 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Box/z_en_box.h"
 #include "src/overlays/actors/ovl_En_Skj/z_en_skj.h"
 #include "src/overlays/actors/ovl_En_Hy/z_en_hy.h"
-#include "src/overlays/actors/ovl_Obj_Comb/z_obj_comb.h"
 #include "src/overlays/actors/ovl_En_Bom_Bowl_Pit/z_en_bom_bowl_pit.h"
 #include "src/overlays/actors/ovl_En_Ge1/z_en_ge1.h"
+#include "src/overlays/actors/ovl_En_Ge2/z_en_ge2.h"
 #include "src/overlays/actors/ovl_En_Ds/z_en_ds.h"
 #include "src/overlays/actors/ovl_En_Gm/z_en_gm.h"
 #include "src/overlays/actors/ovl_En_Js/z_en_js.h"
@@ -55,7 +53,6 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
 #include "src/overlays/actors/ovl_Fishing/z_fishing.h"
 #include "src/overlays/actors/ovl_En_Mk/z_en_mk.h"
-#include "src/overlays/actors/ovl_En_Ge1/z_en_ge1.h"
 #include "draw.h"
 
 extern SaveContext gSaveContext;
@@ -69,9 +66,9 @@ extern void EnMk_Wait(EnMk* enMk, PlayState* play);
 extern void func_80ABA778(EnNiwLady* enNiwLady, PlayState* play);
 extern void EnGe1_Wait_Archery(EnGe1* enGe1, PlayState* play);
 extern void EnGe1_SetAnimationIdle(EnGe1* enGe1);
+extern void EnGe1_SetAnimationIdle(EnGe1* enGe1);
+extern void EnGe2_SetupCapturePlayer(EnGe2* enGe2, PlayState* play);
 }
-
-#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).Get()
 
 bool LocMatchesQuest(Rando::Location loc) {
     if (loc.GetQuest() == RCQUEST_BOTH) {
@@ -245,10 +242,6 @@ void RandomizerOnFlagSetHandler(int16_t flagType, int16_t flag) {
         Flags_SetRandomizerInf(RAND_INF_ZELDAS_LETTER);
     }
 
-    if (flagType == FLAG_EVENT_CHECK_INF && flag == EVENTCHKINF_OBTAINED_POCKET_EGG) {
-        Flags_SetRandomizerInf(RAND_INF_WEIRD_EGG);
-    }
-
     RandomizerCheck rc = GetRandomizerCheckFromFlag(flagType, flag);
     if (rc == RC_UNKNOWN_CHECK)
         return;
@@ -332,7 +325,7 @@ void RandomizerOnPlayerUpdateForRCQueueHandler() {
                   (getItemEntry.getItemCategory == ITEM_CATEGORY_JUNK ||
                    getItemEntry.getItemCategory == ITEM_CATEGORY_SKULLTULA_TOKEN ||
                    getItemEntry.getItemCategory == ITEM_CATEGORY_LESSER))))) {
-            Item_DropCollectible(gPlayState, &spawnPos, ITEM00_SOH_GIVE_ITEM_ENTRY | 0x8000);
+            Item_DropCollectible(gPlayState, &spawnPos, static_cast<int16_t>(ITEM00_SOH_GIVE_ITEM_ENTRY | 0x8000));
         }
     }
 
@@ -931,13 +924,6 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             *should = Flags_GetRandomizerInf(RAND_INF_LEARNED_EPONA_SONG);
             break;
         }
-        case VB_SET_CUCCO_COUNT: {
-            EnNiwLady* enNiwLady = va_arg(args, EnNiwLady*);
-            // Override starting Cucco count using setting value
-            enNiwLady->cuccosInPen = 7 - RAND_GET_OPTION(RSK_CUCCO_COUNT);
-            *should = false;
-            break;
-        }
         case VB_KING_ZORA_THANK_CHILD: {
             // Allow turning in Ruto's letter even if you have already rescued her
             if (!Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)) {
@@ -982,7 +968,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_BIGGORON_CONSIDER_TRADE_COMPLETE: {
-            // This being true will prevent other biggoron trades, there are already safegaurds in place to prevent
+            // This being true will prevent other biggoron trades, there are already safeguards in place to prevent
             // claim check from being traded multiple times, so we don't really need the quest to ever be considered
             // "complete"
             *should = false;
@@ -1017,7 +1003,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                     if (item00->itemEntry.getItemId == GI_SWORD_BGS) {
                         gSaveContext.bgsFlag = true;
                     }
-                    Item_Give(gPlayState, item00->itemEntry.itemId);
+                    Item_Give(gPlayState, static_cast<uint8_t>(item00->itemEntry.itemId));
                 } else if (item00->itemEntry.modIndex == MOD_RANDOMIZER) {
                     if (item00->itemEntry.getItemId == RG_ICE_TRAP) {
                         gSaveContext.ship.pendingIceTrapCount++;
@@ -1084,12 +1070,35 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             *should = false;
             break;
         }
+        case VB_BOTTLE_BIG_POE: {
+            EnPoField* enPoe = va_arg(args, EnPoField*);
+            enPoe->actor.textId = 0x5090;
+            Flags_SetSwitch(gPlayState, enPoe->actor.params & 0xFF);
+            HIGH_SCORE(HS_POE_POINTS) += 100;
+            if (HIGH_SCORE(HS_POE_POINTS) > 1100) {
+                HIGH_SCORE(HS_POE_POINTS) = 1100;
+            }
+            *should = false;
+            break;
+        }
+        case VB_SELL_POES_TO_POE_COLLECTOR: {
+            if (!Flags_GetRandomizerInf(RAND_INF_10_BIG_POES) && HIGH_SCORE(HS_POE_POINTS) >= 1000) {
+                EnGb* enGb = va_arg(args, EnGb*);
+                enGb->textId = 0x70F8;
+                Message_ContinueTextbox(gPlayState, enGb->textId);
+                enGb->actionFunc = func_80A2FB40;
+                *should = false;
+            }
+            break;
+        }
         case VB_GIVE_ITEM_FROM_POE_COLLECTOR: {
             EnGb* enGb = va_arg(args, EnGb*);
             if (!Flags_GetRandomizerInf(RAND_INF_10_BIG_POES)) {
+                Flags_SetInfTable(INFTABLE_SPOKE_TO_POE_COLLECTOR_IN_RUINED_MARKET);
                 Flags_SetRandomizerInf(RAND_INF_10_BIG_POES);
+                enGb->textId = 0x70F5;
                 enGb->dyna.actor.parent = NULL;
-                enGb->actionFunc = func_80A2FC0C;
+                enGb->actionFunc = func_80A2F83C;
                 *should = false;
             }
             break;
@@ -1425,6 +1434,13 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             }
             break;
         }
+        case VB_GERUDO_GUARD_SET_ACTION_AFTER_TALK:
+            if (gPlayState->msgCtx.choiceIndex == 0) {
+                EnGe2* enGe2 = va_arg(args, EnGe2*);
+                EnGe2_SetupCapturePlayer(enGe2, gPlayState);
+                *should = false;
+            }
+            break;
         case VB_GERUDOS_BE_FRIENDLY: {
             *should = CHECK_QUEST_ITEM(QUEST_GERUDO_CARD);
             break;
@@ -1591,6 +1607,17 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             }
             break;
         }
+        case VB_GIVE_RANDO_GLITCH_FISHING_PRIZE: {
+            if (IS_RANDO) {
+                Fishing* fishing = va_arg(args, Fishing*);
+                if (!Flags_GetRandomizerInf(RAND_INF_ADULT_FISHING)) {
+                    Flags_SetRandomizerInf(RAND_INF_ADULT_FISHING);
+                }
+                *should = true;
+                fishing->stateAndTimer = 0;
+            }
+            break;
+        }
         case VB_TRADE_TIMER_EYEDROPS: {
             EnMk* enMk = va_arg(args, EnMk*);
             Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_LH_TRADE_FROG);
@@ -1632,7 +1659,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                     gPlayState->actorCtx.flags.tempCollect = 0;
 
                     // If the respawnFlag is set for a grotto return, we don't want the void out to happen.
-                    // Set the data flag to one to prevent the respawn point from being overriden by dungeon doors.
+                    // Set the data flag to one to prevent the respawn point from being overridden by dungeon doors.
                     if (gSaveContext.respawnFlag == 2) {
                         gSaveContext.respawn[RESPAWN_MODE_DOWN].data = 1;
                         *should = false;
@@ -1754,10 +1781,6 @@ void RandomizerOnSceneInitHandler(int16_t sceneNum) {
 
         // Handle updated link spawn positions
         Entrance_OverrideSpawnScene(sceneNum, gPlayState->curSpawn);
-
-        Entrance_OverrideWeatherState();
-        // Need to reinitialize the environment after replacing the weather mode
-        Play_InitEnvironment(gPlayState, gPlayState->skyboxId);
     }
 
     // LACs & Prelude checks
@@ -1796,6 +1819,13 @@ void RandomizerOnSceneInitHandler(int16_t sceneNum) {
     });
 }
 
+void RandomizerAfterSceneCommandsHandler(int16_t sceneNum) {
+    // ENTRTODO: Move all entrance rando handling to a dedicated file
+    if (RAND_GET_OPTION(RSK_SHUFFLE_ENTRANCES)) {
+        Entrance_OverrideWeatherState();
+    }
+}
+
 void EnSi_DrawRandomizedItem(EnSi* enSi, PlayState* play) {
     GetItemEntry randoItem = enSi->sohGetItemEntry;
     if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
@@ -1820,65 +1850,6 @@ u32 EnDns_RandomizerPurchaseableCheck(EnDns* enDns) {
 void EnDns_RandomizerPurchase(EnDns* enDns) {
     Rupees_ChangeBy(-enDns->dnsItemEntry->itemPrice);
     Flags_SetRandomizerInf(enDns->sohScrubIdentity.randomizerInf);
-}
-
-void ObjComb_RandomizerChooseItemDrop(ObjComb* objComb, PlayState* play) {
-    s16 params = objComb->actor.params & 0x1F;
-
-    if (RAND_GET_OPTION(RSK_SHUFFLE_BEEHIVES) && !Flags_GetRandomizerInf(objComb->beehiveIdentity.randomizerInf)) {
-        EnItem00* item00 = (EnItem00*)Item_DropCollectible2(play, &objComb->actor.world.pos, ITEM00_SOH_DUMMY);
-        item00->randoInf = objComb->beehiveIdentity.randomizerInf;
-        item00->itemEntry =
-            OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(objComb->beehiveIdentity.randomizerCheck, GI_NONE);
-        item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
-        return;
-    }
-
-    if ((params > 0) || (params < 0x1A)) {
-        if (params == 6) {
-            if (Flags_GetCollectible(play, (objComb->actor.params >> 8) & 0x3F)) {
-                params = -1;
-            } else {
-                params = (params | (((objComb->actor.params >> 8) & 0x3F) << 8));
-            }
-        } else if (Rand_ZeroOne() < 0.5f) {
-            params = -1;
-        }
-        if (params >= 0 && !CVarGetInteger(CVAR_ENHANCEMENT("NoRandomDrops"), 0)) {
-            Item_DropCollectible(play, &objComb->actor.world.pos, params);
-        }
-    }
-}
-
-void ObjComb_RandomizerWait(ObjComb* objComb, PlayState* play) {
-    s32 dmgFlags;
-
-    objComb->unk_1B0 -= 50;
-    if (RAND_GET_OPTION(RSK_SHUFFLE_BEEHIVES) && !Flags_GetRandomizerInf(objComb->beehiveIdentity.randomizerInf)) {
-        if (objComb->unk_1B0 <= -5000) {
-            objComb->unk_1B0 = 1500;
-        }
-    } else if (objComb->unk_1B0 < 0) {
-        objComb->unk_1B0 = 0;
-    }
-
-    if ((objComb->collider.base.acFlags & AC_HIT) != 0) {
-        objComb->collider.base.acFlags &= ~AC_HIT;
-        dmgFlags = objComb->collider.elements[0].info.acHitInfo->toucher.dmgFlags;
-        if (dmgFlags & 0x4001F866) {
-            objComb->unk_1B0 = 1500;
-        } else {
-            ObjComb_Break(objComb, play);
-            ObjComb_RandomizerChooseItemDrop(objComb, play);
-            Actor_Kill(&objComb->actor);
-        }
-    } else {
-        CollisionCheck_SetAC(play, &play->colChkCtx, &objComb->collider.base);
-    }
-
-    if (objComb->actor.update != NULL) {
-        CollisionCheck_SetOC(play, &play->colChkCtx, &objComb->collider.base);
-    }
 }
 
 void RandomizerOnActorInitHandler(void* actorRef) {
@@ -1973,14 +1944,6 @@ void RandomizerOnActorInitHandler(void* actorRef) {
         }
     }
 
-    if (actor->id == ACTOR_OBJ_COMB) {
-        ObjComb* objComb = static_cast<ObjComb*>(actorRef);
-        s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
-        objComb->beehiveIdentity = OTRGlobals::Instance->gRandomizer->IdentifyBeehive(
-            gPlayState->sceneNum, (s16)actor->world.pos.x, respawnData);
-        objComb->actionFunc = (ObjCombActionFunc)ObjComb_RandomizerWait;
-    }
-
     if (actor->id == ACTOR_EN_EX_ITEM) {
         EnExItem* enExItem = static_cast<EnExItem*>(actorRef);
 
@@ -2016,6 +1979,10 @@ void RandomizerOnActorInitHandler(void* actorRef) {
         if (ge1Type == GE1_TYPE_TRAINING_GROUND_GUARD &&
             Flags_GetRandomizerInf(RAND_INF_GF_GTG_GATE_PERMANENTLY_OPEN)) {
             enGe1->actionFunc = (EnGe1ActionFunc)EnGe1_SetNormalText;
+        } else if (ge1Type == GE1_TYPE_GATE_OPERATOR && enGe1->actor.world.pos.x != -1358.0f) {
+            // When spawning the gate operator, also spawn an extra gate operator on the wasteland side
+            Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_GE1, -1358.0f, 88.0f, -3018.0f, 0, 0x95B0, 0,
+                        0x0300 | GE1_TYPE_GATE_OPERATOR, true);
         }
     }
 
@@ -2127,27 +2094,27 @@ void RandomizerOnActorInitHandler(void* actorRef) {
 
 void RandomizerOnGameFrameUpdateHandler() {
     if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_QUIVER)) {
-        AMMO(ITEM_BOW) = CUR_CAPACITY(UPG_QUIVER);
+        AMMO(ITEM_BOW) = static_cast<int8_t>(CUR_CAPACITY(UPG_QUIVER));
     }
 
     if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMB_BAG)) {
-        AMMO(ITEM_BOMB) = CUR_CAPACITY(UPG_BOMB_BAG);
+        AMMO(ITEM_BOMB) = static_cast<int8_t>(CUR_CAPACITY(UPG_BOMB_BAG));
     }
 
     if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BULLET_BAG)) {
-        AMMO(ITEM_SLINGSHOT) = CUR_CAPACITY(UPG_BULLET_BAG);
+        AMMO(ITEM_SLINGSHOT) = static_cast<int8_t>(CUR_CAPACITY(UPG_BULLET_BAG));
     }
 
     if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_STICK_UPGRADE)) {
-        AMMO(ITEM_STICK) = CUR_CAPACITY(UPG_STICKS);
+        AMMO(ITEM_STICK) = static_cast<int8_t>(CUR_CAPACITY(UPG_STICKS));
     }
 
     if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_NUT_UPGRADE)) {
-        AMMO(ITEM_NUT) = CUR_CAPACITY(UPG_NUTS);
+        AMMO(ITEM_NUT) = static_cast<int8_t>(CUR_CAPACITY(UPG_NUTS));
     }
 
     if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MAGIC_METER)) {
-        gSaveContext.magic = gSaveContext.magicCapacity;
+        gSaveContext.magic = static_cast<int8_t>(gSaveContext.magicCapacity);
     }
 
     if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS)) {
@@ -2155,7 +2122,7 @@ void RandomizerOnGameFrameUpdateHandler() {
     }
 
     if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MONEY)) {
-        gSaveContext.rupees = CUR_CAPACITY(UPG_WALLET);
+        gSaveContext.rupees = static_cast<int8_t>(CUR_CAPACITY(UPG_WALLET));
     }
 
     if (!Flags_GetRandomizerInf(RAND_INF_HAS_WALLET)) {
@@ -2178,7 +2145,7 @@ void RandomizerOnActorUpdateHandler(void* refActor) {
                 shutterDoor->unk_16E = 0;
             }
         } else if (actor->id == ACTOR_DOOR_GERUDO) {
-            DoorGerudo* gerudoDoor = (DoorGerudo*)actor;
+            DoorGerudo* gerudoDoor = reinterpret_cast<DoorGerudo*>(actor);
             gerudoDoor->actionFunc = func_8099485C;
             gerudoDoor->dyna.actor.world.pos.y = gerudoDoor->dyna.actor.home.pos.y + 200.0f;
         }
@@ -2188,12 +2155,6 @@ void RandomizerOnActorUpdateHandler(void* refActor) {
     if (RAND_GET_OPTION(RSK_SHUFFLE_ENTRANCES) && actor->id == ACTOR_DEMO_KANKYO &&
         actor->params == 0x000F) { // Warp Song particles
         Entrance_SetWarpSongEntrance();
-    }
-
-    if (actor->id == ACTOR_OBJ_COMB) {
-        ObjComb* combActor = reinterpret_cast<ObjComb*>(actor);
-        combActor->actor.shape.rot.x =
-            Math_SinS(combActor->unk_1B2) * CLAMP_MIN(combActor->unk_1B0, 0) + combActor->actor.home.rot.x;
     }
 }
 
@@ -2206,29 +2167,29 @@ typedef struct {
 // special respawns used when voided out without swim to prevent infinite loops
 std::map<s32, SpecialRespawnInfo> swimSpecialRespawnInfo = {
     { ENTR_ZORAS_RIVER_3, // hf to zr in water
-      { { -1455.443, -20, 1384.826 }, 28761 } },
+      { { -1455.443f, -20.0f, 1384.826f }, 28761 } },
     { ENTR_HYRULE_FIELD_14, // zr to hf in water
-      { { 5730.209, -20, 3725.911 }, -20025 } },
+      { { 5730.209f, -20.0f, 3725.911f }, -20025 } },
     { ENTR_LOST_WOODS_UNDERWATER_SHORTCUT, // zr to lw
-      { { 1978.718, -36.908, -855 }, -16384 } },
+      { { 1978.718f, -36.908f, -855.0f }, -16384 } },
     { ENTR_ZORAS_RIVER_UNDERWATER_SHORTCUT, // lw to zr
-      { { 4082.366, 860.442, -1018.949 }, -32768 } },
+      { { 4082.366f, 860.442f, -1018.949f }, -32768 } },
     { ENTR_LAKE_HYLIA_RIVER_EXIT, // gv to lh
-      { { -3276.416, -1033, 2908.421 }, 11228 } },
+      { { -3276.416f, -1033.0f, 2908.421f }, 11228 } },
     { ENTR_WATER_TEMPLE_ENTRANCE, // lh to water temple
-      { { -182, 780, 759.5 }, -32768 } },
+      { { -182.0f, 780.0f, 759.5f }, -32768 } },
     { ENTR_LAKE_HYLIA_OUTSIDE_TEMPLE, // water temple to lh
-      { { -955.028, -1306.9, 6768.954 }, -32768 } },
+      { { -955.028f, -1306.9f, 6768.954f }, -32768 } },
     { ENTR_ZORAS_DOMAIN_UNDERWATER_SHORTCUT, // lh to zd
-      { { -109.86, 11.396, -9.933 }, -29131 } },
+      { { -109.86f, 11.396f, -9.933f }, -29131 } },
     { ENTR_LAKE_HYLIA_UNDERWATER_SHORTCUT, // zd to lh
-      { { -912, -1326.967, 3391 }, 0 } },
+      { { -912.0f, -1326.967f, 3391.0f }, 0 } },
     { ENTR_GERUDO_VALLEY_1, // caught by gerudos as child
-      { { -424, -2051, -74 }, 16384 } },
+      { { -424.0f, -2051.0f, -74.0f }, 16384 } },
     { ENTR_HYRULE_FIELD_ON_BRIDGE_SPAWN, // mk to hf (can be a problem when it then turns night)
-      { { 0, 0, 1100 }, 0 } },
+      { { 0.0f, 0.0f, 1100.0f }, 0 } },
     { ENTR_ZORAS_FOUNTAIN_JABU_JABU_BLUE_WARP, // jabu blue warp to zf
-      { { -1580, 150, 1670 }, 8000 } },
+      { { -1580.0f, 150.0f, 1670.0f }, 8000 } },
 };
 
 f32 triforcePieceScale;
@@ -2288,8 +2249,8 @@ void RandomizerOnSceneSpawnActorsHandler() {
         switch (gPlayState->sceneNum) {
             case SCENE_TEMPLE_OF_TIME:
                 if (gPlayState->roomCtx.curRoom.num == 1) {
-                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_XC, -104, -40, 2382, 0, 0x8000, 0,
-                                SHEIK_TYPE_RANDO, false);
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_XC, -104, -40, 2382, 0,
+                                static_cast<int16_t>(0x8000), 0, SHEIK_TYPE_RANDO, false);
                 }
                 break;
             case SCENE_INSIDE_GANONS_CASTLE:
@@ -2351,6 +2312,7 @@ void RandomizerRegisterHooks() {
     static uint32_t onDialogMessageHook = 0;
     static uint32_t onVanillaBehaviorHook = 0;
     static uint32_t onSceneInitHook = 0;
+    static uint32_t afterSceneCommandsHook = 0;
     static uint32_t onActorInitHook = 0;
     static uint32_t onActorUpdateHook = 0;
     static uint32_t onPlayerUpdateHook = 0;
@@ -2367,11 +2329,6 @@ void RandomizerRegisterHooks() {
     static uint32_t fishsanityOnVanillaBehaviorHook = 0;
     static uint32_t fishsanityOnItemReceiveHook = 0;
 
-    static uint32_t shufflePotsOnActorInitHook = 0;
-    static uint32_t shufflePotsOnVanillaBehaviorHook = 0;
-
-    static uint32_t shuffleFreestandingOnVanillaBehaviorHook = 0;
-
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
         ShipInit::Init("IS_RANDO");
 
@@ -2387,6 +2344,7 @@ void RandomizerRegisterHooks() {
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnItemReceive>(onDialogMessageHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(onVanillaBehaviorHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(onSceneInitHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::AfterSceneCommands>(afterSceneCommandsHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(onActorInitHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(onActorUpdateHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnPlayerUpdate>(onPlayerUpdateHook);
@@ -2404,13 +2362,6 @@ void RandomizerRegisterHooks() {
             fishsanityOnVanillaBehaviorHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnItemReceive>(fishsanityOnItemReceiveHook);
 
-        GameInteractor::Instance->UnregisterGameHookForID<GameInteractor::OnActorInit>(shufflePotsOnActorInitHook);
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(
-            shufflePotsOnVanillaBehaviorHook);
-
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(
-            shuffleFreestandingOnVanillaBehaviorHook);
-
         onFlagSetHook = 0;
         onSceneFlagSetHook = 0;
         onPlayerUpdateForRCQueueHook = 0;
@@ -2419,6 +2370,7 @@ void RandomizerRegisterHooks() {
         onDialogMessageHook = 0;
         onVanillaBehaviorHook = 0;
         onSceneInitHook = 0;
+        afterSceneCommandsHook = 0;
         onActorInitHook = 0;
         onActorUpdateHook = 0;
         onPlayerUpdateHook = 0;
@@ -2434,13 +2386,6 @@ void RandomizerRegisterHooks() {
         fishsanityOnSceneInitHook = 0;
         fishsanityOnVanillaBehaviorHook = 0;
         fishsanityOnItemReceiveHook = 0;
-
-        shufflePotsOnActorInitHook = 0;
-        shufflePotsOnVanillaBehaviorHook = 0;
-
-        shuffleFreestandingOnVanillaBehaviorHook = 0;
-
-        ShuffleFairies_UnregisterHooks();
 
         if (!IS_RANDO)
             return;
@@ -2470,6 +2415,8 @@ void RandomizerRegisterHooks() {
             RandomizerOnVanillaBehaviorHandler);
         onSceneInitHook =
             GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(RandomizerOnSceneInitHandler);
+        afterSceneCommandsHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::AfterSceneCommands>(
+            RandomizerAfterSceneCommandsHandler);
         onActorInitHook =
             GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(RandomizerOnActorInitHandler);
         onActorUpdateHook =
@@ -2503,24 +2450,6 @@ void RandomizerRegisterHooks() {
                     Rando::Fishsanity::OnVanillaBehaviorHandler);
             fishsanityOnItemReceiveHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>(
                 Rando::Fishsanity::OnItemReceiveHandler);
-        }
-
-        if (RAND_GET_OPTION(RSK_SHUFFLE_POTS) != RO_SHUFFLE_POTS_OFF) {
-            shufflePotsOnActorInitHook = GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnActorInit>(
-                ACTOR_OBJ_TSUBO, ObjTsubo_RandomizerInit);
-            shufflePotsOnVanillaBehaviorHook =
-                GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(
-                    ShufflePots_OnVanillaBehaviorHandler);
-        }
-
-        if (RAND_GET_OPTION(RSK_SHUFFLE_FREESTANDING) != RO_SHUFFLE_FREESTANDING_OFF) {
-            shuffleFreestandingOnVanillaBehaviorHook =
-                GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(
-                    ShuffleFreestanding_OnVanillaBehaviorHandler);
-        }
-
-        if (RAND_GET_OPTION(RSK_SHUFFLE_FAIRIES)) {
-            ShuffleFairies_RegisterHooks();
         }
     });
 }

@@ -1,6 +1,7 @@
 #include "soh/resource/importer/TextFactory.h"
 #include "soh/resource/type/Text.h"
 #include "spdlog/spdlog.h"
+#include <tinyxml2.h>
 
 namespace SOH {
 std::shared_ptr<Ship::IResource>

@@ -61,7 +61,7 @@ void Window::Draw() {
                      ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoFocusOnAppearing |
                          ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar |
                          ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoMove |
-                         ImGuiWindowFlags_NoScrollbar);
+                         ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoSavedSettings);
 
         ImGui::SetWindowFontScale(CVarGetFloat(CVAR_SETTING("Notifications.Size"), 1.8f)); // Make this adjustable
 

@@ -5,18 +5,17 @@ using namespace Rando;
 
 void RegionTable_Init_HauntedWasteland() {
     // clang-format off
-    areaTable[RR_WASTELAND_NEAR_FORTRESS] = Region("Wasteland Near Fortress", "Haunted Wasteland", {RA_HAUNTED_WASTELAND}, NO_DAY_NIGHT_CYCLE, {}, 
+    areaTable[RR_WASTELAND_NEAR_FORTRESS] = Region("Wasteland Near Fortress", SCENE_HAUNTED_WASTELAND, {},
     {
         //Locations
         LOCATION(RC_HW_BEFORE_QUICKSAND_CRATE, logic->CanBreakCrates()),
-    }, 
-    {
+    }, {
         //Exits
         Entrance(RR_GF_OUTSIDE_GATE,   []{return true;}),
         Entrance(RR_HAUNTED_WASTELAND, []{return logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_LONGSHOT) || ctx->GetTrickOption(RT_HW_CROSSING);}),
     });
 
-    areaTable[RR_HAUNTED_WASTELAND] = Region("Haunted Wasteland", "Haunted Wasteland", {RA_HAUNTED_WASTELAND}, NO_DAY_NIGHT_CYCLE, {
+    areaTable[RR_HAUNTED_WASTELAND] = Region("Haunted Wasteland", SCENE_HAUNTED_WASTELAND, {
         //Events
         EventAccess(&logic->FairyPot,       []{return true;}),
         EventAccess(&logic->NutPot,         []{return true;}),
@@ -39,12 +38,10 @@ void RegionTable_Init_HauntedWasteland() {
         Entrance(RR_WASTELAND_NEAR_FORTRESS, []{return logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_LONGSHOT) || ctx->GetTrickOption(RT_HW_CROSSING);}),
     });
 
-    areaTable[RR_WASTELAND_NEAR_COLOSSUS] = Region("Wasteland Near Colossus", "Haunted Wasteland", {RA_HAUNTED_WASTELAND}, NO_DAY_NIGHT_CYCLE, {}, 
-    {
+    areaTable[RR_WASTELAND_NEAR_COLOSSUS] = Region("Wasteland Near Colossus", SCENE_HAUNTED_WASTELAND, {}, {
         //Locations
         LOCATION(RC_HW_NEAR_COLOSSUS_CRATE, logic->CanBreakCrates()),
-    }, 
-    {
+    }, {
         //Exits
         Entrance(RR_DESERT_COLOSSUS,   []{return true;}),
         Entrance(RR_HAUNTED_WASTELAND, []{return ctx->GetTrickOption(RT_HW_REVERSE) || false;}),

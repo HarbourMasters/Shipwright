@@ -65,6 +65,8 @@ uint32_t GetVectorIndexOf(std::vector<std::string>& vector, std::string value) {
     return std::distance(vector.begin(), std::find(vector.begin(), vector.end(), value));
 }
 
+static bool raceDisableActive = false;
+
 void Menu::InsertSidebarSearch() {
     menuEntries["Settings"].sidebars.emplace("Search", searchSidebarEntry);
     uint32_t curIndex = 0;
@@ -183,33 +185,35 @@ bool ModernMenuHeaderEntry(std::string label) {
 }
 
 uint32_t Menu::DrawSearchResults(std::string& menuSearchText) {
-    ImGui::BeginChild("Search Results");
     int searchCount = 0;
-    for (auto& menuLabel : menuOrder) {
-        auto& menuEntry = menuEntries.at(menuLabel);
-        for (auto& sidebarLabel : menuEntry.sidebarOrder) {
-            auto& sidebar = menuEntry.sidebars[sidebarLabel];
-            for (int i = 0; i < sidebar.columnWidgets.size(); i++) {
-                auto& column = sidebar.columnWidgets.at(i);
-                for (auto& info : column) {
-                    if (info.type == WIDGET_SEARCH || info.type == WIDGET_SEPARATOR ||
-                        info.type == WIDGET_SEPARATOR_TEXT || info.isHidden) {
-                        continue;
-                    }
-                    const char* tooltip = info.options->tooltip;
-                    std::string widgetStr = std::string(info.name) + std::string(tooltip != NULL ? tooltip : "");
-                    std::transform(menuSearchText.begin(), menuSearchText.end(), menuSearchText.begin(), ::tolower);
-                    menuSearchText.erase(std::remove(menuSearchText.begin(), menuSearchText.end(), ' '),
-                                         menuSearchText.end());
-                    std::transform(widgetStr.begin(), widgetStr.end(), widgetStr.begin(), ::tolower);
-                    widgetStr.erase(std::remove(widgetStr.begin(), widgetStr.end(), ' '), widgetStr.end());
-                    if (widgetStr.find(menuSearchText) != std::string::npos) {
-                        MenuDrawItem(info, 90 / sidebar.columnCount, menuThemeIndex);
-                        ImGui::PushStyleColor(ImGuiCol_Text, UIWidgets::ColorValues.at(UIWidgets::Colors::Gray));
-                        std::string origin = fmt::format("  ({} -> {}, Col {})", menuEntry.label, sidebarLabel, i + 1);
-                        ImGui::Text("%s", origin.c_str());
-                        ImGui::PopStyleColor();
-                        searchCount++;
+    if (ImGui::BeginChild("Search Results")) {
+        for (auto& menuLabel : menuOrder) {
+            auto& menuEntry = menuEntries.at(menuLabel);
+            for (auto& sidebarLabel : menuEntry.sidebarOrder) {
+                auto& sidebar = menuEntry.sidebars[sidebarLabel];
+                for (int i = 0; i < sidebar.columnWidgets.size(); i++) {
+                    auto& column = sidebar.columnWidgets.at(i);
+                    for (auto& info : column) {
+                        if (info.type == WIDGET_SEARCH || info.type == WIDGET_SEPARATOR ||
+                            info.type == WIDGET_SEPARATOR_TEXT || info.isHidden) {
+                            continue;
+                        }
+                        const char* tooltip = info.options->tooltip;
+                        std::string widgetStr = std::string(info.name) + std::string(tooltip != NULL ? tooltip : "");
+                        std::transform(menuSearchText.begin(), menuSearchText.end(), menuSearchText.begin(), ::tolower);
+                        menuSearchText.erase(std::remove(menuSearchText.begin(), menuSearchText.end(), ' '),
+                                             menuSearchText.end());
+                        std::transform(widgetStr.begin(), widgetStr.end(), widgetStr.begin(), ::tolower);
+                        widgetStr.erase(std::remove(widgetStr.begin(), widgetStr.end(), ' '), widgetStr.end());
+                        if (widgetStr.find(menuSearchText) != std::string::npos) {
+                            MenuDrawItem(info, 90 / sidebar.columnCount, menuThemeIndex);
+                            ImGui::PushStyleColor(ImGuiCol_Text, UIWidgets::ColorValues.at(UIWidgets::Colors::Gray));
+                            std::string origin =
+                                fmt::format("  ({} -> {}, Col {})", menuEntry.label, sidebarLabel, i + 1);
+                            ImGui::Text("%s", origin.c_str());
+                            ImGui::PopStyleColor();
+                            searchCount++;
+                        }
                     }
                 }
             }
@@ -228,7 +232,7 @@ std::unordered_map<uint32_t, disabledInfo>& Menu::GetDisabledMap() {
 }
 
 void Menu::MenuDrawItem(WidgetInfo& widget, uint32_t width, UIWidgets::Colors menuThemeIndex) {
-    disabledTempTooltip = "This setting is disabled because: \n\n";
+    disabledTempTooltip = "This setting is disabled because: \n";
     disabledValue = false;
     disabledTooltip = " ";
 
@@ -241,10 +245,15 @@ void Menu::MenuDrawItem(WidgetInfo& widget, uint32_t width, UIWidgets::Colors me
         if (!widget.activeDisables.empty()) {
             widget.options->disabled = true;
             for (auto option : widget.activeDisables) {
-                disabledTempTooltip += std::string("- ") + disabledMap.at(option).reason + std::string("\n");
+                disabledTempTooltip += std::string("\n- ") + disabledMap.at(option).reason;
             }
             widget.options->disabledTooltip = disabledTempTooltip.c_str();
         }
+    }
+    if (widget.raceDisable && raceDisableActive) {
+        widget.options->disabled = true;
+        disabledTempTooltip += std::string("\n- Race Lockout Active");
+        widget.options->disabledTooltip = disabledTempTooltip.c_str();
     }
 
     if (widget.sameLine) {
@@ -491,6 +500,8 @@ void Menu::DrawElement() {
     for (auto& [reason, info] : disabledMap) {
         info.active = info.evaluation(info);
     }
+
+    raceDisableActive = CVarGetInteger(CVAR_SETTING("DisableChanges"), 0);
 
     windowHeight = ImGui::GetMainViewport()->WorkSize.y;
     windowWidth = ImGui::GetMainViewport()->WorkSize.x;

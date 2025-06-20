@@ -17,7 +17,7 @@ typedef struct {
     N64ButtonMask defaultBtn;
 } CustomButtonMap;
 
-class SohInputEditorWindow : public Ship::GuiWindow {
+class SohInputEditorWindow final : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
     ~SohInputEditorWindow();

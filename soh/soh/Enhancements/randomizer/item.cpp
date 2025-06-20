@@ -46,14 +46,20 @@ Item::~Item() = default;
 
 void Item::ApplyEffect() const {
     auto ctx = Rando::Context::GetInstance();
-    ctx->GetLogic()->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), true);
-    ctx->GetLogic()->SetInLogic(logicVal, true);
+    auto logic = ctx->GetLogic();
+    if (!logic->CalculatingAvailableChecks) {
+        logic->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), true);
+    }
+    logic->SetInLogic(logicVal, true);
 }
 
 void Item::UndoEffect() const {
     auto ctx = Rando::Context::GetInstance();
-    ctx->GetLogic()->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), false);
-    ctx->GetLogic()->SetInLogic(logicVal, false);
+    auto logic = ctx->GetLogic();
+    if (!logic->CalculatingAvailableChecks) {
+        logic->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), false);
+    }
+    logic->SetInLogic(logicVal, false);
 }
 
 const Text& Item::GetName() const {

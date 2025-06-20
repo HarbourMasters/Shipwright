@@ -348,7 +348,7 @@ void func_80B4B834(CsCmdActorCue* npcAction, Vec3f* pos) {
 }
 
 void func_80B4B874(EnZl1* this, PlayState* play) {
-    this->skelAnime.moveFlags |= 1;
+    this->skelAnime.movementFlags |= 1;
     AnimationContext_SetMoveActor(play, &this->actor, &this->skelAnime, 1.0f);
 }
 

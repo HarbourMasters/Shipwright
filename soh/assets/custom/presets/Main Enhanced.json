@@ -1,0 +1,56 @@
+{
+    "blocks": {
+        "enhancements": {
+            "gCheats": null,
+            "gEnhancements": {
+                "AssignableTunicsAndBoots": 1,
+                "Autosave": 1,
+                "BetterOwl": 1,
+                "CreditsFix": 1,
+                "CustomizeFrogsOcarinaGame": 1,
+                "DekuNutUpgradeFix": 1,
+                "DisableLOD": 1,
+                "DpadEquips": 1,
+                "DpadNoDropOcarinaInput": 1,
+                "DynamicWalletIcon": 1,
+                "EnemySpawnsOverWaterboxes": 1,
+                "FasterRupeeAccumulator": 1,
+                "FixBrokenGiantsKnife": 1,
+                "FixDaruniaDanceSpeed": 1,
+                "FixDungeonMinimapIcon": 1,
+                "FixEyesOpenWhileSleeping": 1,
+                "FixFloorSwitches": 1,
+                "FixHammerHand": 1,
+                "FixMenuLR": 1,
+                "FixSawSoftlock": 1,
+                "FixTexturesOOB": 1,
+                "FixVineFall": 1,
+                "FixZoraHintDialogue": 1,
+                "FrogsModifyFailTime": 2,
+                "GerudoWarriorClothingFix": 1,
+                "GravediggingTourFix": 1,
+                "InjectItemCounts": {
+                    "GoldSkulltula": 1,
+                    "HeartContainer": 1,
+                    "HeartPiece": 1
+                },
+                "NaviTextFix": 1,
+                "PulsateBossIcon": 1,
+                "RedGanonBlood": 1,
+                "RememberMapToggleState": 1,
+                "SceneSpecificDirtPathFix": 1,
+                "SilverRupeeJingleExtend": 1,
+                "SkipSaveConfirmation": 1,
+                "SkipText": 1,
+                "TextSpeed": 5,
+                "TimeFlowFileSelect": 1,
+                "TwoHandedIdle": 1,
+                "VisualAgony": 1,
+                "WidescreenActorCulling": 1
+            },
+            "gRandoEnhancements": null
+        }
+    },
+    "presetName": "Main Enhanced",
+	"isBuiltIn": true
+}

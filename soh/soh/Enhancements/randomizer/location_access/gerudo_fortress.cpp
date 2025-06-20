@@ -10,11 +10,11 @@ using namespace Rando;
 
 void RegionTable_Init_GerudoFortress() {
     // clang-format off
-    areaTable[RR_GERUDO_FORTRESS] = Region("Gerudo Fortress", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
+    areaTable[RR_GERUDO_FORTRESS] = Region("Gerudo Fortress", SCENE_GERUDOS_FORTRESS, {
         //Events
         EventAccess(&logic->CarpenterRescue, []{return logic->CanFinishGerudoFortress();}),
         EventAccess(&logic->GF_GateOpen,     []{return logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}),
-        EventAccess(&logic->GtG_GateOpen,    []{return logic->GtG_GateOpen || (logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->HasItem(RG_CHILD_WALLET));}),
+        EventAccess(&logic->GtG_GateOpen,    []{return logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->HasItem(RG_CHILD_WALLET);}),
     }, {
         //Locations
         LOCATION(RC_GF_CHEST,                         logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->CanUse(RG_SCARECROW)) || logic->CanUse(RG_LONGSHOT)),
@@ -27,8 +27,8 @@ void RegionTable_Init_GerudoFortress() {
         LOCATION(RC_GF_GERUDO_MEMBERSHIP_CARD,        logic->CanFinishGerudoFortress()),
         LOCATION(RC_GF_GS_ARCHERY_RANGE,              logic->IsAdult && logic->HookshotOrBoomerang() && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->CanGetNightTimeGS()),
         LOCATION(RC_GF_GS_TOP_FLOOR,                  logic->IsAdult && (logic->CanJumpslashExceptHammer() || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOOMERANG) || logic->HasExplosives() || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_DINS_FIRE)) && (logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_KITCHEN) || ctx->GetTrickOption(RT_GF_JUMP)) && logic->CanGetNightTimeGS()),
-        LOCATION(RC_GF_BREAK_ROOM_POT_1,              ((logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD)) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT)) && logic->CanBreakPots()),
-        LOCATION(RC_GF_BREAK_ROOM_POT_2,              ((logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD)) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT)) && logic->CanBreakPots()),
+        LOCATION(RC_GF_BREAK_ROOM_POT_1,              (logic->CanUse(RG_LONGSHOT) || (logic->IsAdult && logic->CanUse(RG_SCARECROW)) || (logic->CanUse(RG_HOVER_BOOTS) || (ctx->GetTrickOption(RT_GF_JUMP) && (ctx->GetTrickOption(RT_GF_KITCHEN) || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT))))) && logic->CanBreakPots()),
+        LOCATION(RC_GF_BREAK_ROOM_POT_2,              (logic->CanUse(RG_LONGSHOT) || (logic->IsAdult && logic->CanUse(RG_SCARECROW)) || (logic->CanUse(RG_HOVER_BOOTS) || (ctx->GetTrickOption(RT_GF_JUMP) && (ctx->GetTrickOption(RT_GF_KITCHEN) || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT))))) && logic->CanBreakPots()),
         LOCATION(RC_GF_KITCHEN_POT_1,                 (logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT)) && logic->CanBreakPots()),
         LOCATION(RC_GF_KITCHEN_POT_2,                 (logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT)) && logic->CanBreakPots()),
         LOCATION(RC_GF_NORTH_F1_CARPENTER_POT_1,      logic->CanBreakPots()),
@@ -43,7 +43,7 @@ void RegionTable_Init_GerudoFortress() {
         LOCATION(RC_GF_SOUTH_F1_CARPENTER_CELL_POT_2, logic->CanBreakPots()),
         LOCATION(RC_GF_SOUTH_F1_CARPENTER_CELL_POT_3, logic->CanBreakPots()),
         LOCATION(RC_GF_SOUTH_F1_CARPENTER_CELL_POT_4, logic->CanBreakPots()),
-        LOCATION(RC_GF_ABOVE_JAIL_CRATE,              ((logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD)) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT)) && logic->CanBreakCrates()),
+        LOCATION(RC_GF_ABOVE_JAIL_CRATE,              (logic->CanUse(RG_LONGSHOT) || (logic->IsAdult && logic->CanUse(RG_SCARECROW)) || (logic->CanUse(RG_HOOKSHOT) && ctx->GetTrickOption(RT_GF_JUMP))) && logic->CanBreakCrates()),
         LOCATION(RC_GF_OUTSIDE_CENTER_CRATE_1,        logic->CanBreakCrates()),
         LOCATION(RC_GF_OUTSIDE_CENTER_CRATE_2,        logic->CanBreakCrates()),
         LOCATION(RC_GF_OUTSIDE_CENTER_CRATE_3,        logic->CanBreakCrates()),
@@ -60,7 +60,7 @@ void RegionTable_Init_GerudoFortress() {
         LOCATION(RC_GF_ARCHERY_START_CRATE_1,         (logic->IsChild || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD)) && logic->CanBreakCrates()),
         LOCATION(RC_GF_ARCHERY_START_CRATE_2,         (logic->IsChild || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD)) && logic->CanBreakCrates()),
         LOCATION(RC_GF_ARCHERY_LEFT_END_CRATE_1,      (logic->IsChild || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD)) && logic->CanBreakCrates()),
-        LOCATION(RC_GF_ARCHERY_LEFT_END_CRATE_2,      (logic->IsChild || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD)) && logic->CanBreakCrates()),
+        LOCATION(RC_GF_ARCHERY_LEFT_END_CRATE_2,      (logic->IsChild || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD)) && (logic->IsAdult || (logic->BlastOrSmash() || logic->HookshotOrBoomerang() || logic->CanUse(RG_HOVER_BOOTS)))),
         LOCATION(RC_GF_ARCHERY_LEFT_END_CHILD_CRATE,  logic->IsChild && logic->HasExplosives() && logic->CanBreakCrates()),
         LOCATION(RC_GF_ARCHERY_RIGHT_END_CRATE_1,     (logic->IsChild || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD)) && logic->CanBreakCrates()),
         LOCATION(RC_GF_ARCHERY_RIGHT_END_CRATE_2,     (logic->IsChild || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD)) && logic->CanBreakCrates()),
@@ -69,10 +69,10 @@ void RegionTable_Init_GerudoFortress() {
         LOCATION(RC_GF_KITCHEN_CRATE_3,               (logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT)) && logic->CanBreakCrates()),
         LOCATION(RC_GF_KITCHEN_CRATE_4,               (logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT)) && logic->CanBreakCrates()),
         LOCATION(RC_GF_KITCHEN_CRATE_5,               (logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT)) && logic->CanBreakCrates()),
-        LOCATION(RC_GF_BREAK_ROOM_CRATE_1,            ((logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD)) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT)) && logic->CanBreakCrates()),
-        LOCATION(RC_GF_BREAK_ROOM_CRATE_2,            ((logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD)) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT)) && logic->CanBreakCrates()),
-        LOCATION(RC_GF_BREAK_ROOM_CRATE_3,            ((logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD)) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT)) && logic->CanBreakCrates()),
-        LOCATION(RC_GF_BREAK_ROOM_CRATE_4,            ((logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD)) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT)) && logic->CanBreakCrates()),
+        LOCATION(RC_GF_BREAK_ROOM_CRATE_1,            (logic->CanUse(RG_LONGSHOT) || (logic->IsAdult && logic->CanUse(RG_SCARECROW)) || (logic->CanUse(RG_HOVER_BOOTS) || (ctx->GetTrickOption(RT_GF_JUMP) && (ctx->GetTrickOption(RT_GF_KITCHEN) || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT))))) && logic->CanBreakCrates()),
+        LOCATION(RC_GF_BREAK_ROOM_CRATE_2,            (logic->CanUse(RG_LONGSHOT) || (logic->IsAdult && logic->CanUse(RG_SCARECROW)) || (logic->CanUse(RG_HOVER_BOOTS) || (ctx->GetTrickOption(RT_GF_JUMP) && (ctx->GetTrickOption(RT_GF_KITCHEN) || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT))))) && logic->CanBreakCrates()),
+        LOCATION(RC_GF_BREAK_ROOM_CRATE_3,            (logic->CanUse(RG_LONGSHOT) || (logic->IsAdult && logic->CanUse(RG_SCARECROW)) || ((logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_JUMP)) && (logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) || logic->CanUse(RG_FAIRY_BOW)))) && logic->CanBreakCrates()),
+        LOCATION(RC_GF_BREAK_ROOM_CRATE_4,            (logic->CanUse(RG_LONGSHOT) || (logic->IsAdult && logic->CanUse(RG_SCARECROW)) || ((logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_JUMP)) && (logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) || logic->CanUse(RG_FAIRY_BOW)))) && logic->CanBreakCrates()),
         LOCATION(RC_GF_NORTH_F1_CARPENTER_CRATE,      (logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT)) && logic->CanBreakCrates()),
         LOCATION(RC_GF_NORTH_F3_CARPENTER_CRATE,      (logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT)) && logic->CanBreakCrates()),
         LOCATION(RC_GF_SOUTH_F2_CARPENTER_CRATE_1,    logic->CanBreakCrates()),
@@ -89,7 +89,7 @@ void RegionTable_Init_GerudoFortress() {
         Entrance(RR_GF_STORMS_GROTTO,                []{return logic->IsAdult && logic->CanOpenStormsGrotto();}),
     });
 
-    areaTable[RR_GF_OUTSIDE_GATE] = Region("GF Outside Gate", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
+    areaTable[RR_GF_OUTSIDE_GATE] = Region("GF Outside Gate", SCENE_GERUDOS_FORTRESS, {
         //Events
         EventAccess(&logic->GF_GateOpen, []{return logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && (ctx->GetOption(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD) || ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) /*|| ShuffleSpecialIndoorEntrances*/);}),
     }, {}, {
@@ -98,7 +98,7 @@ void RegionTable_Init_GerudoFortress() {
         Entrance(RR_WASTELAND_NEAR_FORTRESS, []{return true;}),
     });
 
-    areaTable[RR_GF_STORMS_GROTTO] = Region("GF Storms Grotto", "GF Storms Grotto", {}, NO_DAY_NIGHT_CYCLE, {
+    areaTable[RR_GF_STORMS_GROTTO] = Region("GF Storms Grotto", SCENE_GROTTOS, {
         //Events
         EventAccess(&logic->FreeFairies, []{return true;}),
     }, {
