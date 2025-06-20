@@ -546,7 +546,7 @@ void AudioEditor::DrawElement() {
                 UIWidgets::CVarSliderInt("Overlay Duration: %d seconds", CVAR_AUDIO("SeqNameOverlayDuration"),
                                          UIWidgets::IntSliderOptions()
                                              .Min(1)
-                                             .Max(10)
+                                             .Max(20)
                                              .DefaultValue(5)
                                              .Size(ImVec2(300.0f, 0.0f))
                                              .Color(THEME_COLOR));

@@ -56,6 +56,13 @@ static const std::unordered_map<int32_t, const char*> bootSequenceLabels = {
     { BOOTSEQUENCE_FILESELECT, "File Select" },
 };
 
+static std::unordered_map<int32_t, const char*> overlayTextScaleOptions = {
+    { 0, "Small" },
+    { 1, "Normal" },
+    { 2, "Large" },
+    { 3, "X-Large" },
+};
+
 const char* GetGameVersionString(uint32_t index) {
     uint32_t gameVersion = ResourceMgr_GetGameVersion(index);
     switch (gameVersion) {
@@ -244,6 +251,15 @@ void SohMenu::AddMenuSettings() {
                      .ComponentAlignment(ComponentAlignments::Right)
                      .LabelPosition(LabelPositions::Far))
         .Callback([](WidgetInfo& info) { OTRGlobals::Instance->ScaleImGui(); });
+    AddWidget(path, "Overlay Text Size", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_SETTING("OverlayTextScale"))
+        .RaceDisable(false)
+        .Options(ComboboxOptions()
+                     .ComboMap(overlayTextScaleOptions)
+                     .Tooltip("Changes the font size of Overlay Text.\n(REQUIRES RESTART)")
+                     .DefaultIndex(0)
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Far));
 
     // General - About
     path.column = SECTION_COLUMN_2;

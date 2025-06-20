@@ -345,9 +345,8 @@ void OTRGlobals::Initialize() {
     context->InitWindow(sohFast3dWindow);
 
     auto overlay = context->GetInstance()->GetWindow()->GetGui()->GetGameOverlay();
-    overlay->LoadFont("Press Start 2P", 12.0f, "fonts/PressStart2P-Regular.ttf");
     overlay->LoadFont("Fipps", 32.0f, "fonts/Fipps-Regular.otf");
-    overlay->SetCurrentFont(CVarGetString(CVAR_GAME_OVERLAY_FONT, "Press Start 2P"));
+    LoadOverlayTextFont();
 
     context->InitAudio({ .SampleRate = 32000, .SampleLength = 1024, .DesiredBuffered = 1680 });
 
@@ -511,6 +510,30 @@ void OTRGlobals::ScaleImGui() {
     ImGui::GetStyle().ScaleAllSizes(newScale);
     ImGui::GetIO().FontGlobalScale = scale;
     previousImGuiScale = scale;
+}
+
+void OTRGlobals::LoadOverlayTextFont() {
+    // TODO: Currenty, reloading a font causes crash.
+    auto overlay = context->GetInstance()->GetWindow()->GetGui()->GetGameOverlay();
+    float fontSize;
+    switch (CVarGetInteger(CVAR_SETTING("OverlayTextScale"), 0)) {
+        case 0:
+        default:
+            fontSize = 12.0f;
+            break;
+        case 1:
+            fontSize = 24.0f;
+            break;
+        case 2:
+            fontSize = 32.0f;
+            break;
+        case 3:
+            fontSize = 40.0f;
+            break;
+    }
+    SPDLOG_DEBUG("Loading Overlay Text Font with size {}", fontSize);
+    overlay->LoadFont("Press Start 2P", fontSize, "fonts/PressStart2P-Regular.ttf");
+    overlay->SetCurrentFont(CVarGetString(CVAR_GAME_OVERLAY_FONT, "Press Start 2P"));
 }
 
 ImFont* OTRGlobals::CreateDefaultFontWithSize(float size) {
