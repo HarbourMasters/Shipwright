@@ -115,6 +115,8 @@ extern "C" MessageTableEntry* sGerMessageEntryTablePtr;
 extern "C" MessageTableEntry* sFraMessageEntryTablePtr;
 extern "C" MessageTableEntry* sJpnMessageEntryTablePtr;
 
+extern "C" void Overlay_DisplayText_Seconds(int seconds, const char* text);
+
 static const std::array<MessageTableEntry**, LANGUAGE_MAX> messageTables = {
     &sNesMessageEntryTablePtr, &sGerMessageEntryTablePtr, &sFraMessageEntryTablePtr, &sJpnMessageEntryTablePtr
 };
@@ -276,6 +278,10 @@ void SohMenu::AddMenuSettings() {
                      .ComponentAlignment(ComponentAlignments::Right)
                      .LabelPosition(LabelPositions::Far))
         .Callback([](WidgetInfo& info) { OTRGlobals::Instance->LoadOverlayTextFont(); });
+    AddWidget(path, "Test Overlay Text", WIDGET_BUTTON)
+        .RaceDisable(false)
+        .Callback([](WidgetInfo& info) { Overlay_DisplayText_Seconds(5, "Overlay Text Test"); })
+        .Options(ButtonOptions().Tooltip("Displays a test Overlay Text."));
 
     // General - About
     path.column = SECTION_COLUMN_2;
