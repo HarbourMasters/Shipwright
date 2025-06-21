@@ -696,10 +696,6 @@ INSTALL(FILES $<TARGET_PDB_FILE:soh> DESTINATION ./debug COMPONENT ship)
 INSTALL(FILES ${CMAKE_BINARY_DIR}/soh/soh.o2r DESTINATION . COMPONENT ship)
 endif()
 
-if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/../scripts/linux/appimage/soh.sh.in ${CMAKE_BINARY_DIR}/linux/soh.sh @ONLY)
-endif()
-
 find_program(CURL NAMES curl DOC "Path to the curl program.  Used to download files.")
 execute_process(COMMAND ${CURL} -sSfL https://raw.githubusercontent.com/gabomdq/SDL_GameControllerDB/master/gamecontrollerdb.txt -o ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt OUTPUT_VARIABLE RESULT)
 
