@@ -1,5 +1,6 @@
 #include "ImGuiUtils.h"
 #include <Context.h>
+#include <Window.h>
 #include "assets/soh_assets.h"
 #include "soh/Enhancements/randomizer/rando_hash.h"
 

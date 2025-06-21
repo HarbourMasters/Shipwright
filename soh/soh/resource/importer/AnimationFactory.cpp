@@ -1,5 +1,6 @@
 #include "soh/resource/importer/AnimationFactory.h"
 #include "soh/resource/type/Animation.h"
+#include "ResourceManager.h"
 #include "spdlog/spdlog.h"
 #include "Context.h"
 

@@ -6,6 +6,7 @@
 
 #include "z_bg_mori_kaitenkabe.h"
 #include "objects/object_mori_objects/object_mori_objects.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
 
@@ -97,7 +98,9 @@ void BgMoriKaitenkabe_Wait(BgMoriKaitenkabe* this, PlayState* play) {
         if ((this->timer > (28 - CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0) * 4)) &&
             !Player_InCsMode(play)) {
             BgMoriKaitenkabe_SetupRotate(this);
-            Player_SetCsActionWithHaltedActors(play, &this->dyna.actor, 8);
+            if (GameInteractor_Should(VB_FREEZE_LINK_FOR_FOREST_PILLARS, true)) {
+                Player_SetCsActionWithHaltedActors(play, &this->dyna.actor, 8);
+            }
             Math_Vec3f_Copy(&this->lockedPlayerPos, &player->actor.world.pos);
             push.x = Math_SinS(this->dyna.unk_158);
             push.y = 0.0f;
@@ -131,7 +134,9 @@ void BgMoriKaitenkabe_Rotate(BgMoriKaitenkabe* this, PlayState* play) {
     Math_StepToF(&this->rotSpeed, 0.6f, 0.02f);
     if (Math_StepToF(&this->rotYdeg, this->rotDirection * 45.0f, this->rotSpeed)) {
         BgMoriKaitenkabe_SetupWait(this);
-        Player_SetCsActionWithHaltedActors(play, thisx, 7);
+        if (GameInteractor_Should(VB_FREEZE_LINK_FOR_FOREST_PILLARS, true)) {
+            Player_SetCsActionWithHaltedActors(play, thisx, 7);
+        }
         if (this->rotDirection > 0.0f) {
             thisx->home.rot.y += 0x2000;
         } else {
@@ -148,7 +153,9 @@ void BgMoriKaitenkabe_Rotate(BgMoriKaitenkabe* this, PlayState* play) {
         this->dyna.unk_150 = 0.0f;
         player->stateFlags2 &= ~PLAYER_STATE2_MOVING_DYNAPOLY;
     }
-    Math_Vec3f_Copy(&player->actor.world.pos, &this->lockedPlayerPos);
+    if (GameInteractor_Should(VB_FREEZE_LINK_FOR_FOREST_PILLARS, true)) {
+        Math_Vec3f_Copy(&player->actor.world.pos, &this->lockedPlayerPos);
+    }
 }
 
 void BgMoriKaitenkabe_Update(Actor* thisx, PlayState* play) {

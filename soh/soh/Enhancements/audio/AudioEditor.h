@@ -7,7 +7,7 @@
 #include <imgui.h>
 #include "AudioCollection.h"
 
-class AudioEditor : public Ship::GuiWindow {
+class AudioEditor final : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
 

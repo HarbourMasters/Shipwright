@@ -241,11 +241,11 @@ class Option {
     void RestoreDelayedOption();
 
     /**
-     * @brief Set the rando context index for this Option. Also calls `SetVariable()`.
+     * @brief Set the rando context index for this Option.
      *
      * @param idx the index to set as the selected index.
      */
-    void SetContextIndex(size_t idx);
+    void SetContextIndex(uint8_t idx);
 
     /**
      * @brief Hides this Option in the menu. (Not currently being used afaik, we prefer to
@@ -302,7 +302,7 @@ class Option {
     /**
      * @brief Automatically renders a widget for this option in ImGui, based on the various
      * properties of this Option. Typically, Bool options are rendered as Checkboxes and
-     * U8 options are rendered as Comboboxes, but this can be overriden during construction with
+     * U8 options are rendered as Comboboxes, but this can be overridden during construction with
      * the `widgetType` property.
      */
     bool RenderImGui();

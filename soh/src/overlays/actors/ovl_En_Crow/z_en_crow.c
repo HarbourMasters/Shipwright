@@ -285,7 +285,7 @@ void EnCrow_FlyIdle(EnCrow* this, PlayState* play) {
     }
     if ((this->timer == 0) && (this->actor.xzDistToPlayer < 300.0f) &&
         !(player->stateFlags1 & PLAYER_STATE1_ON_HORSE) && (this->actor.yDistToWater < -40.0f) &&
-        (Player_GetMask(play) != PLAYER_MASK_SKULL) && !CVarGetInteger(CVAR_CHEAT("NoKeeseGuayTarget"), 0)) {
+        (Player_GetMask(play) != PLAYER_MASK_SKULL) && GameInteractor_Should(VB_GUAY_DO_DIVE_ATTACK, true, this)) {
         EnCrow_SetupDiveAttack(this);
     }
 }
@@ -322,7 +322,7 @@ void EnCrow_DiveAttack(EnCrow* this, PlayState* play) {
 
     if ((this->timer == 0) || (Player_GetMask(play) == PLAYER_MASK_SKULL) || (this->collider.base.atFlags & AT_HIT) ||
         (this->actor.bgCheckFlags & 9) || (player->stateFlags1 & PLAYER_STATE1_ON_HORSE) ||
-        (this->actor.yDistToWater > -40.0f) || CVarGetInteger(CVAR_CHEAT("NoKeeseGuayTarget"), 0)) {
+        (this->actor.yDistToWater > -40.0f) || GameInteractor_Should(VB_GUAY_FORCE_FLY_AWAY, false, this)) {
         if (this->collider.base.atFlags & AT_HIT) {
             this->collider.base.atFlags &= ~AT_HIT;
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_KAICHO_ATTACK);

@@ -58,6 +58,7 @@ struct GetAccessibleLocationsStruct {
 void ClearProgress();
 void VanillaFill();
 int Fill();
+void SetAreas();
 
 std::vector<RandomizerCheck> GetEmptyLocations(std::vector<RandomizerCheck> allowedLocations);
 
@@ -65,11 +66,11 @@ void ProcessRegion(Region* region, GetAccessibleLocationsStruct& gals, Randomize
                    bool stopOnBeatable = false, bool addToPlaythrough = false);
 
 std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerCheck>& allowedLocations,
-                                                RandomizerGet ignore = RG_NONE,
-                                                bool calculatingAvailableChecks = false);
+                                                RandomizerGet ignore = RG_NONE, bool calculatingAvailableChecks = false,
+                                                RandomizerRegion startingRegion = RR_ROOT);
 
 void GeneratePlaythrough();
 
 bool CheckBeatable(RandomizerGet ignore = RG_NONE);
 
-void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAccess);
+void ValidateEntrances(bool checkOtherEntranceAccess);

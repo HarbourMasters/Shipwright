@@ -544,6 +544,8 @@ typedef enum {
     LANGUAGE_MAX
 } Language;
 
+#define TODO_TRANSLATE "TranslateThis" 
+
 // TODO get these properties from the textures themselves
 #define FONT_CHAR_TEX_WIDTH  16
 #define FONT_CHAR_TEX_HEIGHT 16
@@ -1337,9 +1339,9 @@ typedef struct {
     /*      */ char* frenchAge;
 } BetterSceneSelectAgeLabels;
 
-// NTSC TODO: japanese bettersceneselect
+
 typedef struct {
-//   /*      */ char* japaneseName;
+  /*      */ char* japaneseName;
   /*      */ char* englishName;
   /*      */ char* germanName;
   /*      */ char* frenchName;
@@ -1348,7 +1350,7 @@ typedef struct {
 } BetterSceneSelectEntrancePair;
 
 typedef struct {
-    // /*      */ char* japaneseName;
+    /*      */ char* japaneseName;
     /*      */ char* englishName;
     /*      */ char* germanName;
     /*      */ char* frenchName;

@@ -1,4 +1,5 @@
 #include "spdlog/spdlog.h"
+#include <tinyxml2.h>
 #include "soh/resource/type/SohResourceType.h"
 #include "soh/resource/importer/SceneFactory.h"
 #include "soh/resource/type/Scene.h"

@@ -19,6 +19,7 @@ typedef enum {
     DISABLE_FOR_FRAME_ADVANCE_OFF,
     DISABLE_FOR_ADVANCED_RESOLUTION_OFF,
     DISABLE_FOR_VERTICAL_RESOLUTION_OFF,
+    DISABLE_FOR_BOOT_TO_DEBUG_WARP_SCREEN_ON,
 } DisableOption;
 
 struct WidgetInfo;
@@ -109,6 +110,7 @@ struct WidgetInfo {
     const char* windowName = "";
     bool isHidden = false;
     bool sameLine = false;
+    bool raceDisable = true;
 
     WidgetInfo& CVar(const char* cVar_) {
         cVar = cVar_;
@@ -189,6 +191,10 @@ struct WidgetInfo {
     }
     WidgetInfo& CustomFunction(WidgetFunc customFunction_) {
         customFunction = customFunction_;
+        return *this;
+    }
+    WidgetInfo& RaceDisable(bool disable) {
+        raceDisable = disable;
         return *this;
     }
 };

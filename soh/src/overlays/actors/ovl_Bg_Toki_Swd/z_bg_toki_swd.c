@@ -131,8 +131,14 @@ void func_808BAF40(BgTokiSwd* this, PlayState* play) {
                     Item_Give(play, ITEM_SWORD_MASTER);
                 }
                 play->csCtx.segment = D_808BB2F0;
+
+                // Discover adult spawn
+                Entrance_SetEntranceDiscovered(ENTR_HYRULE_FIELD_10, false);
             } else {
                 play->csCtx.segment = D_808BB7A0;
+
+                // Discover child spawn
+                Entrance_SetEntranceDiscovered(ENTR_LINKS_HOUSE_CHILD_SPAWN, false);
             }
             Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_STOP);
             Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_MASTER_SWORD);
