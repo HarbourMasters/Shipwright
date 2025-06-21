@@ -607,6 +607,7 @@ std::string Extractor::Mkdtemp() {
 }
 
 extern "C" int zapd_main(int argc, char** argv);
+static void MessageboxWorker();
 
 bool Extractor::CallZapd(std::string installPath, std::string exportdir) {
     constexpr int argc = 22;
@@ -669,10 +670,8 @@ bool Extractor::CallZapd(std::string installPath, std::string exportdir) {
     SetWindowPos(cmdWindow, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE);
 #else
     // Show extraction in background message until linux/mac can have visual progress
-    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Extracting",
-                             "Extraction will now begin in the background.\n\nPlease be patient for the process to "
-                             "finish. Do not close the main program.",
-                             nullptr);
+    std::thread mbThread(MessageboxWorker);
+    mbThread.detach();
 #endif
 
     zapd_main(argc, (char**)argv.data());
@@ -688,5 +687,12 @@ bool Extractor::CallZapd(std::string installPath, std::string exportdir) {
     std::filesystem::current_path(curdir);
     std::filesystem::remove_all(tempdir);
 
-    return 0;
+    return false;
+}
+
+static void MessageboxWorker() {
+    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Extracting",
+                             "Extraction will now begin in the background.\n\nPlease be patient for the process to "
+                             "finish. Do not close the main program.",
+                             nullptr);
 }

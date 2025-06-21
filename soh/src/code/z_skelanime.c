@@ -894,20 +894,10 @@ void AnimationContext_SetLoadFrame(PlayState* play, LinkAnimationHeader* animati
         if (ResourceMgr_OTRSigCheck(animation) != 0)
             animation = ResourceMgr_LoadAnimByName(animation);
 
-        LinkAnimationHeader* playerAnimHeader = animation;
         Vec3s* ram = frameTable;
 
-        // osCreateMesgQueue(&entry->data.load.msgQueue, &entry->data.load.msg, 1);
-        //
-        // char animPath[2048];
-        //
-        // snprintf(animPath, sizeof(animPath), "misc/link_animetion/gPlayerAnimData_%06X",
-        //         (((uintptr_t)linkAnimHeader->segmentVoid - 0x07000000)));
-        //
-        // printf("Streaming %s, seg = %08X\n", animPath, linkAnimHeader->segment);
-
-        s16* animData = /* ResourceMgr_LoadPlayerAnimByName*/ (animation->segment);
-        // 2S2H [Port] sometimes a HESS can set a negative frame value from a negative playback speed. When converted to
+        s16* animData = animation->segment;
+        // SOH [Port] sometimes a HESS can set a negative frame value from a negative playback speed. When converted to
         // a signed value this will cause a crash due to copying way much data.
         if (frame < 0) {
             frame = 0;
