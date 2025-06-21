@@ -18,4 +18,4 @@ if [[ ! -e "$SHIP_HOME"/mods ]]; then
     touch "$SHIP_HOME"/mods/custom_otr_files_go_here.txt
 fi
 
-(cd "$SHIP_BIN_DIR"; ./soh.elf)
+	(cd "$SHIP_BIN_DIR"; ./soh.elf)
