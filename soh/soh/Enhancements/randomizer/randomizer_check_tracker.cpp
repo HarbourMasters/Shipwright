@@ -245,8 +245,7 @@ Color_RGBA8 Color_Saved_Extra = { 0, 185, 0, 255 };               // Green
 std::vector<uint32_t> buttons = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT, BTN_CRIGHT, BTN_L,
                                   BTN_Z, BTN_R, BTN_START, BTN_DUP,   BTN_DDOWN, BTN_DLEFT,  BTN_DRIGHT };
 static ImGuiTextFilter checkSearch;
-static bool gameSavedRecalculateAvailable = false;
-static bool gameLoadedRecalculateAvailable = false;
+static bool recalculateAvailable = false;
 std::array<bool, RCAREA_INVALID> filterAreasHidden = { 0 };
 std::array<bool, RC_MAX> filterChecksHidden = { 0 };
 
@@ -588,7 +587,7 @@ void CheckTrackerLoadGame(int32_t fileNum) {
         Rando::Context::GetInstance()->GetEntranceShuffler()->ApplyEntranceOverrides();
     }
 
-    gameLoadedRecalculateAvailable = true;
+    recalculateAvailable = true;
 }
 
 void CheckTrackerShopSlotChange(uint8_t cursorSlot, int16_t basePrice) {
@@ -886,7 +885,7 @@ void SaveTrackerData(SaveContext* saveContext, int sectionID, bool fullSave) {
 void SaveFile(SaveContext* saveContext, int sectionID, bool fullSave) {
     SaveTrackerData(saveContext, sectionID, fullSave);
     if (fullSave) {
-        gameSavedRecalculateAvailable = true;
+        recalculateAvailable = true;
     }
 }
 
@@ -995,8 +994,8 @@ void CheckTrackerWindow::DrawElement() {
         return;
     }
 
-    if (gameLoadedRecalculateAvailable) {
-        gameLoadedRecalculateAvailable = false;
+    if (recalculateAvailable) {
+        recalculateAvailable = false;
         RecalculateAvailableChecks();
     }
 
@@ -2058,10 +2057,6 @@ static std::unordered_map<int32_t, const char*> buttonStrings = {
 };
 
 void CheckTrackerSettingsWindow::DrawElement() {
-    if (gameSavedRecalculateAvailable) {
-        gameSavedRecalculateAvailable = false;
-        RecalculateAvailableChecks();
-    }
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
     if (ImGui::BeginTable("CheckTrackerSettingsTable", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
         ImGui::TableSetupColumn("General settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
