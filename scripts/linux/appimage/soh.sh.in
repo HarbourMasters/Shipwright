@@ -306,7 +306,7 @@ while [[ (! -e "$SHIP_HOME"/oot.otr) || (! -e "$SHIP_HOME"/oot-mq.otr) ]]; do
                     else
                         echo "Processing..."
                     fi
-                    assets/extractor/ZAPD.out ed -eh -i assets/xmls/"${ROM}" -b tmp/rom.z64 -fl assets/filelists -o placeholder -osf placeholder -gsf 1 -rconf assets/Config_"${ROM}".xml -se OTR --otrfile "${OTRNAME}" --portVer "@CMAKE_PROJECT_VERSION@" > /dev/null 2>&1
+                    assets/extractor/ZAPD.out ed -eh -i assets/xml/"${ROM}" -b tmp/rom.z64 -fl assets/filelists -o placeholder -osf placeholder -gsf 1 -rconf assets/Config_"${ROM}".xml -se OTR --otrfile "${OTRNAME}" --portVer "@CMAKE_PROJECT_VERSION@" > /dev/null 2>&1
                     cp "$ASSETDIR"/"$OTRNAME" "$SHIP_HOME"
                 fi
             else
