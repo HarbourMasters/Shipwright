@@ -154,9 +154,9 @@ class CustomMessage {
     void InsertNumber(uint8_t num);
 
     /**
-     * @brief A € sign at the end of an item name signals that it is plural.
+     * @brief A â‚¬ sign at the end of an item name signals that it is plural.
      * If a hint text has |singular|plural| forms specified, the unused one get's deleted.
-     * If no € sign is present, the singular form is used.
+     * If no â‚¬ sign is present, the singular form is used.
      */
     void SetSingularPlural();
 
