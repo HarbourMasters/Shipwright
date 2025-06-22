@@ -359,26 +359,72 @@ std::unordered_map<s16, s16> getItemIdToItemId = {
 #pragma GCC push_options
 #pragma GCC optimize("O0")
 bool Randomizer::SpoilerFileExists(const char* spoilerFileName) {
-    if (strcmp(spoilerFileName, "") != 0) {
-        std::ifstream spoilerFileStream(SohUtils::Sanitize(spoilerFileName));
+    static std::unordered_map<std::string, bool> existsCache;
+    static std::unordered_map<std::string, std::filesystem::file_time_type> lastModifiedCache;
+
+    if (strcmp(spoilerFileName, "") == 0) {
+        return false;
+    }
+
+    std::string sanitizedFileName = SohUtils::Sanitize(spoilerFileName);
+
+    try {
+        // Check if file exists and get last modified time
+        std::filesystem::path filePath(sanitizedFileName);
+        if (!std::filesystem::exists(filePath)) {
+            // Cache and return false if file doesn't exist
+            existsCache[sanitizedFileName] = false;
+            lastModifiedCache.erase(sanitizedFileName);
+            return false;
+        }
+
+        auto currentLastModified = std::filesystem::last_write_time(filePath);
+
+        // Check cache first
+        auto existsCacheIt = existsCache.find(sanitizedFileName);
+        auto lastModifiedCacheIt = lastModifiedCache.find(sanitizedFileName);
+
+        // If we have a valid cache entry and the file hasn't been modified
+        if (existsCacheIt != existsCache.end() && lastModifiedCacheIt != lastModifiedCache.end() &&
+            lastModifiedCacheIt->second == currentLastModified) {
+            return existsCacheIt->second;
+        }
+
+        // Cache miss or file modified - need to check contents
+        std::ifstream spoilerFileStream(sanitizedFileName);
         if (spoilerFileStream) {
             nlohmann::json contents;
             spoilerFileStream >> contents;
             spoilerFileStream.close();
-            if (contents.contains("version") &&
-                strcmp(std::string(contents["version"]).c_str(), (char*)gBuildVersion) == 0) {
-                return true;
-            } else {
+
+            bool isValid = contents.contains("version") &&
+                           strcmp(std::string(contents["version"]).c_str(), (char*)gBuildVersion) == 0;
+
+            if (!isValid) {
                 SohGui::RegisterPopup(
                     "Old Spoiler Version",
                     "The spoiler file located at\n" + std::string(spoilerFileName) +
                         "\nwas made by a version that doesn't match the currently running version.\n" +
                         "Loading for this file has been cancelled.");
             }
-        }
-    }
 
-    return false;
+            // Update cache
+            existsCache[sanitizedFileName] = isValid;
+            lastModifiedCache[sanitizedFileName] = currentLastModified;
+            return isValid;
+        }
+
+        // File couldn't be opened
+        existsCache[sanitizedFileName] = false;
+        lastModifiedCache.erase(sanitizedFileName);
+        return false;
+
+    } catch (const std::filesystem::filesystem_error&) {
+        // Handle filesystem errors by invalidating cache
+        existsCache[sanitizedFileName] = false;
+        lastModifiedCache.erase(sanitizedFileName);
+        return false;
+    }
 }
 #pragma GCC pop_options
 #pragma optimize("", on)
