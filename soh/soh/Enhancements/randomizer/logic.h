@@ -187,7 +187,6 @@ class Logic {
     bool Spirit4FSwitch = false;
     bool SpiritPushed4FMirrors = false;
     bool ReverseSpiritChild = false;
-    bool ReverseSpiritAdult = false;
 
     /* --- END OF HELPERS AND LOCATION ACCESS --- */
 

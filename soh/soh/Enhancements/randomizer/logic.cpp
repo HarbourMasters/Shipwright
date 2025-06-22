@@ -926,7 +926,7 @@ bool Logic::CanAvoidEnemy(RandomizerEnemy enemy, bool grounded, uint8_t quantity
         case RE_TORCH_SLUG:
             return !grounded || CanUse(RG_NUTS) || CanUse(RG_HOOKSHOT) || CanUse(RG_DINS_FIRE);
         default:
-            SPDLOG_ERROR("CanPassEnemy reached `default`.");
+            SPDLOG_ERROR("CanAvoidEnemy reached `default`.");
             assert(false);
             return false;
     }
@@ -2364,8 +2364,10 @@ void Logic::SetInLogic(LogicVal logicVal, bool value) {
 }
 
 bool Logic::IsReverseAccessPossible() {
+    //If we ever allow dungeon entrances to connect to boss rooms directly in dungeon chains, or for 1 boss door to lead to another dungeons boss door, add RSK_MIX_DUNGEON_ENTRANCES to the final condition
     return ctx->GetOption(RSK_SHUFFLE_BOSS_ENTRANCES) &&
-           (ctx->GetOption(RSK_DECOUPLED_ENTRANCES) || ctx->GetOption(RSK_MIX_BOSS_ENTRANCES));
+           (ctx->GetOption(RSK_DECOUPLED_ENTRANCES) || 
+            (ctx->GetOption(RSK_MIX_BOSS_ENTRANCES) && (ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES) || ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES))));
 }
 
 bool Logic::SpiritBrokenWallToStatue() {
@@ -2373,12 +2375,12 @@ bool Logic::SpiritBrokenWallToStatue() {
 }
 
 bool Logic::SpiritEastToSwitch() {
-    return (IsAdult && ctx->GetTrickOption(RT_SPIRIT_LOBBY_JUMP)) || CanUse(RG_HOVER_BOOTS) ||
+    return (IsAdult && ctx->GetTrickOption(RT_SPIRIT_STATUE_JUMP)) || CanUse(RG_HOVER_BOOTS) ||
            (CanUse(RG_ZELDAS_LULLABY) && CanUse(RG_HOOKSHOT));
 }
 
 bool Logic::SpiritWestToSkull() {
-    return (IsAdult && ctx->GetTrickOption(RT_SPIRIT_LOBBY_JUMP)) || CanUse(RG_HOVER_BOOTS) || CanUse(RG_SCARECROW);
+    return (IsAdult && ctx->GetTrickOption(RT_SPIRIT_STATUE_JUMP)) || CanUse(RG_HOVER_BOOTS) || CanUse(RG_SCARECROW);
 }
 
 bool Logic::SpiritSunBlockSouthLedge() {
@@ -2393,7 +2395,7 @@ bool Logic::SpiritSunBlockSouthLedge() {
 
 // Combines crossing the ledge directly and the jump from the hand
 bool Logic::MQSpiritWestToPots() {
-    return (IsAdult && ctx->GetTrickOption(RT_SPIRIT_LOBBY_JUMP)) || CanUse(RG_HOVER_BOOTS) || CanUse(RG_SONG_OF_TIME);
+    return (IsAdult && ctx->GetTrickOption(RT_SPIRIT_STATUE_JUMP)) || CanUse(RG_HOVER_BOOTS) || CanUse(RG_SONG_OF_TIME);
 }
 
 bool Logic::MQSpiritStatueToSunBlock() {
@@ -2628,7 +2630,6 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
     Spirit4FSwitch = false;
     SpiritPushed4FMirrors = false;
     ReverseSpiritChild = false;
-    ReverseSpiritAdult = false;
 
     CalculatingAvailableChecks = false;
 

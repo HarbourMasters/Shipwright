@@ -121,7 +121,9 @@ struct SpiritLogicData {
     // This changes for MQ broken wall room as the first child lock can only be opened by Child
     // guaranteeing access with 6 keys
     uint8_t childReverseKeys;
-    uint8_t adultKeys; // the number of keys that guarantees Adult can reach this region
+    // the number of keys that guarantees Adult can reach this region
+    // if it is 9, that means the bombchu edge case is to be checked.
+    uint8_t adultKeys; 
     // The area access condition to reach this region as Child, from the first lock,
     // including the minimum number of keys for ambiguous access
     // 1 key is always assumed to be required

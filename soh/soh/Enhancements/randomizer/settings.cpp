@@ -1023,8 +1023,8 @@ void Settings::CreateOptions() {
               "A bomb can be used to hit the switch on the ceiling, but it must be thrown from a particular distance "
               "away and with precise timing.");
     OPT_TRICK(
-        RT_SPIRIT_LOBBY_JUMP, RCQUEST_BOTH, RA_SPIRIT_TEMPLE, { Tricks::Tag::INTERMEDIATE },
-        "Spirit Temple Main Room Jump from Hands to Upper Ledges",
+        RT_SPIRIT_STATUE_JUMP, RCQUEST_BOTH, RA_SPIRIT_TEMPLE, { Tricks::Tag::INTERMEDIATE },
+        "Spirit Temple Statue Room Jump from Hands to Upper Ledges",
         "A precise jump to obtain the following as adult without needing one of Hover Boots, or Hookshot (in Vanilla) "
         "or Song of Time (in MQ): - Spirit Temple Statue Room Northeast Chest - Spirit Temple GS Lobby - Spirit Temple "
         "MQ Central Chamber Top Left Pot (Left) - Spirit Temple MQ Central Chamber Top Left Pot (Right)");
